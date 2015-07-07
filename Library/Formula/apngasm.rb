@@ -1,9 +1,10 @@
-require "formula"
-
 class Apngasm < Formula
+  desc "Next generation of apngasm, the APNG assembler"
   homepage "https://github.com/apngasm/apngasm"
   url "https://github.com/apngasm/apngasm/archive/3.1.4.tar.gz"
-  sha1 "62bd9f829b383a4f53f4bb1018f1e2d24a846272"
+  sha256 "8767f992460f793c82ca1645e7744f3c49d15a7538c097b2bb233c7a04b65543"
+
+  head "https://github.com/apngasm/apngasm.git"
 
   bottle do
     cellar :any
@@ -20,7 +21,7 @@ class Apngasm < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
-    (share/'test').install "test/samples"
+    (share/"test").install "test/samples"
   end
 
   test do

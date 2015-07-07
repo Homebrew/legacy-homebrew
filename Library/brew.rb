@@ -43,9 +43,9 @@ case HOMEBREW_PREFIX.to_s when '/', '/usr'
   # it may work, but I only see pain this route and don't want to support it
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
-if OS.mac? and MacOS.version < "10.5"
+if OS.mac? and MacOS.version < "10.6"
   abort <<-EOABORT.undent
-    Homebrew requires Leopard or higher. For Tiger support, see:
+    Homebrew requires Snow Leopard or higher. For Tiger and Leopard support, see:
     https://github.com/mistydemeo/tigerbrew
   EOABORT
 end
@@ -65,22 +65,6 @@ end
 begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
-  aliases = {'ls' => 'list',
-             'homepage' => 'home',
-             '-S' => 'search',
-             'up' => 'update',
-             'ln' => 'link',
-             'instal' => 'install', # gem does the same
-             'rm' => 'uninstall',
-             'remove' => 'uninstall',
-             'configure' => 'diy',
-             'abv' => 'info',
-             'dr' => 'doctor',
-             '--repo' => '--repository',
-             'environment' => '--env',
-             '--config' => 'config',
-             }
-
   empty_argv = ARGV.empty?
   help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
   help_flag = false
@@ -96,9 +80,9 @@ begin
     end
   end
 
-  cmd = aliases[cmd] if aliases[cmd]
+  cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
 
-  sudo_check = Set.new %w[ install link pin unpin upgrade ]
+  sudo_check = %w[ install link pin unpin upgrade ]
 
   if sudo_check.include? cmd
     if Process.uid.zero? and not File.stat(HOMEBREW_BREW_FILE).uid.zero?

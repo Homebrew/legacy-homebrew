@@ -1,6 +1,7 @@
 require "formula"
 
 class Cln < Formula
+  desc "CLN: Class Library for Numbers"
   homepage "http://www.ginac.de/CLN/"
   url "http://www.ginac.de/CLN/cln-1.3.4.tar.bz2"
   sha1 "76f73071236ead72ba5c9ee892f29ca24e557b8c"

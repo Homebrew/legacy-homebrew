@@ -1,14 +1,15 @@
 class CrystaxNdk < Formula
+  desc "Drop-in replacement for Google's Android NDK"
   homepage "https://www.crystax.net/android/ndk"
 
-  version "10.1.0"
+  version "10.2.0"
 
   if MacOS.prefer_64_bit?
     url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86_64.7z"
-    sha1 "dc125ae803ede7d4b68ac9d57b30909bfcb1a8d6"
+    sha1 "c75b07a79f7f40d947f70fd36dbcdc08fbee686e"
   else
     url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86.7z"
-    sha1 "d502f57ea314e5a572387b4492c297f77e68a982"
+    sha1 "d199ce7d0c325e8ab71b04a9d41bf925ac7e03a1"
   end
 
   depends_on "android-sdk" => :recommended

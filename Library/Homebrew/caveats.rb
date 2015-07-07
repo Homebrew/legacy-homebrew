@@ -9,9 +9,10 @@ class Caveats
     caveats = []
     s = f.caveats.to_s
     caveats << s.chomp + "\n" if s.length > 0
-    caveats << f.keg_only_text if f.keg_only? && f.respond_to?(:keg_only_text)
+    caveats << keg_only_text
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
+    caveats << fish_completion_caveats
     caveats << plist_caveats
     caveats << python_caveats
     caveats << app_caveats
@@ -30,6 +31,27 @@ class Caveats
     end.compact.first
   end
 
+  def keg_only_text
+    return "" unless f.keg_only?
+
+    s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
+    s << "\n\n#{f.keg_only_reason.to_s}"
+    if f.lib.directory? or f.include.directory?
+      s <<
+        <<-EOS.undent_________________________________________________________72
+
+
+        Generally there are no consequences of this for you. If you build your
+        own software and it requires this formula, you'll need to add to your
+        build variables:
+
+        EOS
+      s << "    LDFLAGS:  -L#{f.opt_lib}\n" if f.lib.directory?
+      s << "    CPPFLAGS: -I#{f.opt_include}\n" if f.include.directory?
+    end
+    s << "\n"
+  end
+
   def bash_completion_caveats
     if keg and keg.completion_installed? :bash then <<-EOS.undent
       Bash completion has been installed to:
@@ -42,6 +64,14 @@ class Caveats
     if keg and keg.completion_installed? :zsh then <<-EOS.undent
       zsh completion has been installed to:
         #{HOMEBREW_PREFIX}/share/zsh/site-functions
+      EOS
+    end
+  end
+
+  def fish_completion_caveats
+    if keg and keg.completion_installed? :fish and which("fish") then <<-EOS.undent
+      fish completion has been installed to:
+        #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
       EOS
     end
   end
@@ -124,16 +154,16 @@ class Caveats
       # https://github.com/Homebrew/homebrew/issues/33815
       if !plist_path.file? || !plist_path.symlink?
         if f.plist_startup
-          s << "To have launchd start #{f.name} at startup:"
+          s << "To have launchd start #{f.full_name} at startup:"
           s << "    sudo mkdir -p #{destination}" unless destination_path.directory?
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
           s << "    sudo chown root #{plist_link}"
         else
-          s << "To have launchd start #{f.name} at login:"
+          s << "To have launchd start #{f.full_name} at login:"
           s << "    mkdir -p #{destination}" unless destination_path.directory?
           s << "    ln -sfv #{f.opt_prefix}/*.plist #{destination}"
         end
-        s << "Then to load #{f.name} now:"
+        s << "Then to load #{f.full_name} now:"
         if f.plist_startup
           s << "    sudo launchctl load #{plist_link}"
         else
@@ -142,17 +172,17 @@ class Caveats
       # For startup plists, we cannot tell whether it's running on launchd,
       # as it requires for `sudo launchctl list` to get real result.
       elsif f.plist_startup
-          s << "To reload #{f.name} after an upgrade:"
+          s << "To reload #{f.full_name} after an upgrade:"
           s << "    sudo launchctl unload #{plist_link}"
           s << "    sudo cp -fv #{f.opt_prefix}/*.plist #{destination}"
           s << "    sudo chown root #{plist_link}"
           s << "    sudo launchctl load #{plist_link}"
       elsif Kernel.system "/bin/launchctl list #{plist_domain} &>/dev/null"
-          s << "To reload #{f.name} after an upgrade:"
+          s << "To reload #{f.full_name} after an upgrade:"
           s << "    launchctl unload #{plist_link}"
           s << "    launchctl load #{plist_link}"
       else
-          s << "To load #{f.name}:"
+          s << "To load #{f.full_name}:"
           s << "    launchctl load #{plist_link}"
       end
 

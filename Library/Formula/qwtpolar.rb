@@ -1,6 +1,7 @@
 require "formula"
 
 class Qwtpolar < Formula
+  desc "Library for displaying values on a polar coordinate system"
   homepage "http://qwtpolar.sourceforge.net/"
   url "https://downloads.sf.net/project/qwtpolar/qwtpolar/1.1.0/qwtpolar-1.1.0.tar.bz2"
   sha1 "94d5f897e75e37f32c910e3bdf2a1ffbaaf76621"

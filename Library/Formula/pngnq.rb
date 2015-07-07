@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pngnq < Formula
+  desc "Tool for optimizing PNG images"
   homepage 'http://pngnq.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/pngnq/pngnq/1.1/pngnq-1.1.tar.gz'
   sha1 '6a43dc046171eee56ac2d91cebb93aecde24d26a'

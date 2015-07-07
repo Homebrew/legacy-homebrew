@@ -1,4 +1,5 @@
 class Checkbashisms < Formula
+  desc "Checks for bashisms in shell scripts"
   homepage "http://manpages.ubuntu.com/manpages/natty/man1/checkbashisms.1.html"
   # Get upgrades at https://launchpad.net/ubuntu/+source/devscripts/
   url "https://launchpad.net/ubuntu/+archive/primary/+files/devscripts_2.13.4.tar.xz"

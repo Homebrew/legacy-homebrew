@@ -1,4 +1,5 @@
 class Mtr < Formula
+  desc "'traceroute' and 'ping' in a single tool"
   homepage "http://www.bitwizard.nl/mtr/"
   url "ftp://ftp.bitwizard.nl/mtr/mtr-0.86.tar.gz"
   sha1 "2c81d0f4c9296861a1159f07eec6acfb4bebecf7"

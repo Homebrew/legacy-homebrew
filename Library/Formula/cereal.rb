@@ -1,4 +1,5 @@
 class Cereal < Formula
+  desc "C++11 library for serialization"
   homepage "https://uscilab.github.io/cereal/"
   url "https://github.com/USCiLab/cereal/archive/v1.1.0.tar.gz"
   sha1 "a7036f3fdb43315b0b6aa6c112c5878c03f1aa9e"

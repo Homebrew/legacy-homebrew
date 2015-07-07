@@ -1,6 +1,7 @@
 require 'formula'
 
 class Swatchbooker < Formula
+  desc "Reads color swatches from various file formats"
   homepage 'http://www.selapa.net/swatchbooker/'
   url 'http://launchpad.net/swatchbooker/trunk/0.7.3/+download/SwatchBooker-0.7.3.tar.gz'
   sha1 'fd2e46c278e762dc0c3ed69f824ab620773f153e'

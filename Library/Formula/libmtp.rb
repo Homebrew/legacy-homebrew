@@ -1,16 +1,14 @@
-require 'formula'
-
 class Libmtp < Formula
+  desc "Implementation of Microsoft's Media Transfer Protocol (MTP)"
   homepage 'http://libmtp.sourceforge.net/'
-  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.8/libmtp-1.1.8.tar.gz"
-  sha1 "6528da141b9f8a04fc97c0b01cf4f3a6142ff64f"
+  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.9/libmtp-1.1.9.tar.gz"
+  sha256 "23f1d3c0b54107388bf2824d56415e9e087c980c86e5d179865652c022b6b189"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "efc495ff51c145e3ba7fc788e7381a9b0c75fb37" => :yosemite
-    sha1 "ad318f5a47cbbc64e17bcd5955c11aaeaa03163e" => :mavericks
-    sha1 "9e40ef6dc2e2068ea3bb73fb7e3d901ee58b470d" => :mountain_lion
+    sha256 "be5a361ac01b6aaa620c48525bff8de6a2f8e46c11b190c6b307de57dd02c03e" => :yosemite
+    sha256 "620dd6cbd96f7e5287c9c6c2e651a69b303e100f0ebab309267fd4686fdd7d7a" => :mavericks
+    sha256 "7f92dfe69e7732ea5e1e583aae5a259b11302020cfb519372d2d5488662bff1f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

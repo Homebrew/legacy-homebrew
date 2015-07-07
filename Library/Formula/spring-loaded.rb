@@ -1,10 +1,11 @@
 require "formula"
 
 class SpringLoaded < Formula
+  desc "Java agent to enable class reloading in a running JVM"
   homepage "https://github.com/spring-projects/spring-loaded"
-  url "http://search.maven.org/remotecontent?filepath=org/springframework/springloaded/1.2.0.RELEASE/springloaded-1.2.0.RELEASE.jar"
-  sha1 "dd02aa7d9fa802f59bd4bd485e18d55ef5c74bba"
-  version "1.2.0"
+  url "https://repo.spring.io/simple/libs-release-local/org/springframework/springloaded/1.2.3.RELEASE/springloaded-1.2.3.RELEASE.jar"
+  sha1 "adb44a1feaae2d717b534fec52210f1838de4aed"
+  version "1.2.3"
 
   def install
     (share/"java").install "springloaded-#{version}.RELEASE.jar" => "springloaded.jar"

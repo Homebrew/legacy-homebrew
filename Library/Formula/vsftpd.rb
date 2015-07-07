@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vsftpd < Formula
+  desc "Secure FTP server for UNIX"
   homepage 'https://security.appspot.com/vsftpd.html'
   url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
   sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'

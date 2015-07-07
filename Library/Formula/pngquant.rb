@@ -1,15 +1,15 @@
 class Pngquant < Formula
-  homepage "http://pngquant.org/"
-  url "https://github.com/pornel/pngquant/archive/2.3.5.tar.gz"
-  sha256 "8907787afca9b83aefe7e29dbf29f4d107255160d0f32c43e7c159ebc2b8d1a7"
-
+  desc "PNG image optimizing utility"
+  homepage "https://pngquant.org/"
+  url "https://github.com/pornel/pngquant/archive/2.4.1.tar.gz"
+  sha256 "28157abfddc83d074cfbe7e9865d3dd656f7be323fbc4e6a049385236e57d3c3"
   head "https://github.com/pornel/pngquant.git"
 
   bottle do
     cellar :any
-    sha256 "ee92d8a4cacf08c1e6c3b9f1b4ec0b1c404e82c89e649c89e4f04d48f2640ae7" => :yosemite
-    sha256 "f868262676416817559699006d2d3d1eb2458a0b94dd8d123d611fa8eda0d131" => :mavericks
-    sha256 "cd3e53b48e29ddbd1315d5913da6de693e543e6e341e8d42ff5d54c76291faf9" => :mountain_lion
+    sha256 "44f37e5dc9360228fcbad23e6635ba7a38d5140e9e34a52875d3cf5f2a846d89" => :yosemite
+    sha256 "423891a9d736c7b7bcaaecd4e6ad74eb5d4bdc77b0d759793635f4318c7502c3" => :mavericks
+    sha256 "5e7a35bc9a97c2af46366824bf60f88f62e2224074c8c6211f6e6130c3272838" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

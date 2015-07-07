@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mcabber < Formula
+  desc "Console Jabber client"
   homepage 'http://mcabber.com/'
   url 'http://mcabber.com/files/mcabber-0.10.3.tar.bz2'
   sha1 '9254f520cb37e691fb55d4fc46df4440e4a17f14'

@@ -1,15 +1,5 @@
-class Emacs23Installed < Requirement
-  fatal true
-  env :userpaths
-  default_formula "emacs"
-
-  satisfy do
-    major_version = `$(which emacs) --batch --eval "(princ emacs-major-version)"`.to_i
-    major_version >= 23
-  end
-end
-
 class Mu < Formula
+  desc "Tool for searching e-mail messages stored in the maildir-format"
   homepage "http://www.djcbsoftware.nl/code/mu/"
   url "https://github.com/djcb/mu/archive/v0.9.12.tar.gz"
   sha256 "b871124fc7774a2593815f89286671a8f31d7243bb898a8ca454685599f2b9af"
@@ -32,9 +22,7 @@ class Mu < Formula
   depends_on "glib"
   depends_on "gmime"
   depends_on "xapian"
-  depends_on Emacs23Installed if build.with? "emacs"
-
-  env :std if build.with? "emacs"
+  depends_on :emacs => ["23", :optional]
 
   def install
     # Explicitly tell the build not to include emacs support as the version

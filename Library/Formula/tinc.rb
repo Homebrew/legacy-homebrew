@@ -1,4 +1,5 @@
 class Tinc < Formula
+  desc "Virtual Private Network (VPN) tool"
   homepage "http://www.tinc-vpn.org"
   url "http://tinc-vpn.org/packages/tinc-1.0.25.tar.gz"
   sha1 "b728e1ed02862aab04b2a53a62c2f67edd0c3949"

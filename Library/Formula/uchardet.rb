@@ -1,6 +1,7 @@
 require 'formula'
 
 class Uchardet < Formula
+  desc "Encoding detector library"
   homepage 'http://code.google.com/p/uchardet/'
   url 'https://uchardet.googlecode.com/files/uchardet-0.0.1.tar.gz'
   sha1 'c81264cca67f3e7c46e284288f8cab7a34b3f386'

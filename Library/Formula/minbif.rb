@@ -1,28 +1,27 @@
-require 'formula'
-
-# Official download has untrusted SSL cert, so use Debian
-
 class Minbif < Formula
-  homepage 'http://minbif.im/'
-  url 'http://ftp.de.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20120508.orig.tar.gz'
-  version '1.0.5'
-  sha1 '5827df8954e29df80d1e81ee5df354b76c5fd86a'
-  revision 1
+  desc "IRC-to-other-IM-networks gateway using Pidgin library"
+  homepage "http://minbif.im/"
+  url "http://ftp.de.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20120508.orig.tar.gz"
+  version "1.0.5"
+  sha256 "307bd98e367c1202cfa119ee8f33ff5b5a2a05d2544709f850a2d26b7919d697"
+  revision 2
 
-  option 'pam', 'Build with PAM support, patching for OSX PAM headers'
+  option "with-pam", "Build with PAM support, patching for OSX PAM headers"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cmake' => :build
-  depends_on 'glib'
-  depends_on 'gettext'
-  depends_on 'pidgin'
-  depends_on 'gnutls'
-  depends_on 'imlib2' => :optional
-  depends_on 'libcaca' => :optional
+  deprecated_option "pam" => "with-pam"
+
+  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "glib"
+  depends_on "gettext"
+  depends_on "pidgin"
+  depends_on "gnutls"
+  depends_on "imlib2" => :optional
+  depends_on "libcaca" => :optional
 
   # Problem:  Apple doesn't have <security/pam_misc.h> so don't ask for it.
   # Reported: https://symlink.me/issues/917
-  patch :DATA if build.include? 'pam'
+  patch :DATA if build.include? "pam"
 
   def install
     inreplace "minbif.conf" do |s|
@@ -37,12 +36,12 @@ class Minbif < Formula
       ENABLE_VIDEO=OFF
       ENABLE_TLS=ON
     ]
-    args << 'ENABLE_IMLIB=' + ((build.include? 'imlib2') ? 'ON' : 'OFF')
-    args << 'ENABLE_CACA=' + ((build.include? 'libcaca') ? 'ON' : 'OFF')
-    args << 'ENABLE_PAM=' + ((build.include? 'pam') ? 'ON' : 'OFF')
+    args << "ENABLE_IMLIB=" + ((build.include? "imlib2") ? "ON" : "OFF")
+    args << "ENABLE_CACA=" + ((build.include? "libcaca") ? "ON" : "OFF")
+    args << "ENABLE_PAM=" + ((build.include? "pam") ? "ON" : "OFF")
 
-    system 'make', *args
-    system 'make install'
+    system "make", *args
+    system "make", "install"
 
     (var + "lib/minbif/users").mkpath
   end
@@ -53,6 +52,10 @@ class Minbif < Formula
 
     Learn more about minbif: http://minbif.im/Quick_start
     EOS
+  end
+
+  test do
+    system "#{bin}/minbif", "--version"
   end
 end
 

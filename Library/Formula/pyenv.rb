@@ -1,13 +1,14 @@
 class Pyenv < Formula
+  desc "Python version management"
   homepage "https://github.com/yyuu/pyenv"
   head "https://github.com/yyuu/pyenv.git"
-  url "https://github.com/yyuu/pyenv/archive/v20150404.tar.gz"
-  sha256 "b7a2b2ef247e9ad66fb34985239fb0f40930bb924f091901475ef4b0731d1152"
+  url "https://github.com/yyuu/pyenv/archive/v20150601.tar.gz"
+  sha256 "42c23185a35eb7ac91eb69e06b2f5b04e9429b02b8648eb1237dfa626e32e49b"
 
   bottle do
-    sha256 "79a8e03546564c1da30737aab388bca75b8be8fcc08943b10aa3454fdc3c80d1" => :yosemite
-    sha256 "c419780d84fde1c1d3d3920d9ced82420a035bb8e29d81cc24ca872a8c0ea942" => :mavericks
-    sha256 "9cf141e71308eb9718350dd0e70d40f2a740b6896ee0b1936363b5bff21df3d6" => :mountain_lion
+    sha256 "bc5efdd3f1a459491c853ffb1d1e522760c33f7301f6f9dfbb90eb44302a8e6e" => :yosemite
+    sha256 "d66e87298a2f121f3388053517df17219b94bf0cbc0e8e8d21f7fad05593776a" => :mavericks
+    sha256 "5bb9436f455a76ad5a78cca2f3d5859ed7f6196fc2c676d6886414e4de2d2ca6" => :mountain_lion
   end
 
   depends_on "autoconf" => [:recommended, :run]

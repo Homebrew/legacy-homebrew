@@ -1,8 +1,9 @@
 require "formula"
 
 class Evas < Formula
-  homepage "http://trac.enlightenment.org/e/wiki/Evas"
-  url "http://download.enlightenment.org/releases/evas-1.7.10.tar.gz"
+  desc "Display canvas API that implements a scene graph"
+  homepage "https://docs.enlightenment.org/auto/eet/evas_main.html"
+  url "https://download.enlightenment.org/releases/evas-1.7.10.tar.gz"
   sha1 "ad1002eded75ea0e90d80b3b6813b3278d9f4228"
 
   bottle do

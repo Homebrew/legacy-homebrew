@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gcab < Formula
+  desc "Windows installer (.MSI) tool"
   homepage 'https://wiki.gnome.org/msitools'
   url 'http://ftp.gnome.org/pub/GNOME/sources/gcab/0.4/gcab-0.4.tar.xz'
   sha1 'd81dfe35125e611e3a94c0d4def37ebf62b9187c'

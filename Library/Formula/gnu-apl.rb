@@ -1,6 +1,7 @@
 require "formula"
 
 class GnuApl < Formula
+  desc "GNU implementation of the programming language APL"
   homepage "http://www.gnu.org/software/apl/"
   url "http://ftpmirror.gnu.org/apl/apl-1.4.tar.gz"
   mirror "http://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"

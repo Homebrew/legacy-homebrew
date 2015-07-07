@@ -1,6 +1,7 @@
 require "formula"
 
 class Ldc < Formula
+  desc "Portable D programming language compiler"
   homepage "http://wiki.dlang.org/LDC"
   url "https://github.com/ldc-developers/ldc/releases/download/v0.15.1/ldc-0.15.1-src.tar.gz"
   sha1 "06db0c07d73bf714e6fc7a4aca4c44123e4a585a"

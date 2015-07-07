@@ -1,58 +1,31 @@
-require 'formula'
-require 'ostruct'
-
 class ProofGeneral < Formula
-  homepage 'http://proofgeneral.inf.ed.ac.uk'
-  url 'http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz'
-  sha1 'c8d2e4457478b9dbf4080d3cf8255325fcffe619'
+  desc "Emacs-based generic interface for theorem provers"
+  homepage "http://proofgeneral.inf.ed.ac.uk"
+  url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz"
+  sha256 "3567b68077798396ccd55c501b7ea7bd2c4d6300e4c74ff609dc19837d050b27"
 
-  option 'with-doc', 'Install HTML documentation'
-  option 'with-emacs=', 'Re-compile lisp files with specified emacs'
-
-  def which_emacs
-    emacs_binary = ARGV.value('with-emacs')
-    if emacs_binary.nil?
-      return OpenStruct.new(
-        :binary => "",
-        :major  => 0,
-        :empty? => true)
-    end
-
-    raise "#{emacs_binary} not found" if not File.exist? "#{emacs_binary}"
-
-    version_info = `#{emacs_binary} --version`
-    version_info =~ /GNU Emacs (\d+)\./
-    major = $1
-
-    if major != '23' && major != '24'
-      raise "Emacs 23.x or 24.x is required; #{major}.x provided."
-    end
-
-    return OpenStruct.new(
-      :binary => emacs_binary,
-      :major  => major,
-      :empty? => false)
+  devel do
+    url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.3pre150313.tgz"
+    sha256 "6e7095fe76f9d750fff3ee1de2415ed1014d4bacdd4f62192eb99330e7f405cb"
   end
+
+  option "with-doc", "Install HTML documentation"
+
+  depends_on :emacs => "23.3"
 
   def install
     ENV.j1 # Otherwise lisp compilation can result in 0-byte files
 
-    emacs = which_emacs
     args = ["PREFIX=#{prefix}",
             "DEST_PREFIX=#{prefix}",
             "ELISPP=share/emacs/site-lisp/ProofGeneral",
             "ELISP_START=#{share}/emacs/site-lisp/site-start.d",
-            "EMACS=#{emacs.binary}"];
+            "EMACS=#{which "emacs"}"]
 
-    Dir.chdir "ProofGeneral" do
-      unless emacs.empty?
-        # http://proofgeneral.inf.ed.ac.uk/trac/ticket/458
-        if emacs.major == "24"
-          inreplace 'Makefile', '(setq byte-compile-error-on-warn t)', ''
-        end
-        system "make clean"
-        system "make", "compile", *args
-      end
+    cd "ProofGeneral" do
+      # http://proofgeneral.inf.ed.ac.uk/trac/ticket/458
+      # remove in next stable release
+      inreplace "Makefile", "(setq byte-compile-error-on-warn t)", "" if build.stable?
       system "make", "install", *args
       man1.install "doc/proofgeneral.1"
       info.install "doc/ProofGeneral.info", "doc/PG-adapting.info"
@@ -65,8 +38,7 @@ class ProofGeneral < Formula
     doc = ""
     if build.with? "doc"
       doc += <<-EOS.undent
-         HTML documentation is available in:
-           #{HOMEBREW_PREFIX}/share/doc/proof-general
+        HTML documentation is available in: #{HOMEBREW_PREFIX}/share/doc/proof-general
       EOS
     end
 
@@ -75,5 +47,9 @@ class ProofGeneral < Formula
       (load-file "#{HOMEBREW_PREFIX}/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
     #{doc}
     EOS
+  end
+
+  test do
+    system bin/"proofgeneral", "--help"
   end
 end

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Yap < Formula
+  desc "Prolog compiler designed for performance and extensibility"
   homepage 'http://www.dcc.fc.up.pt/~vsc/Yap/index.html'
   url 'http://www.dcc.fc.up.pt/~vsc/Yap/yap-6.2.2.tar.gz'
   sha1 'a02f80cac67c287645b2ced9502f5ea24a07f1c3'

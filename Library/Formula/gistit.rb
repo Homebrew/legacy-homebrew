@@ -1,7 +1,10 @@
 class Gistit < Formula
+  desc "Command-line utility for creating Gists"
   homepage "http://gistit.herokuapp.com/"
   url "https://github.com/jrbasso/gistit/archive/v0.1.3.tar.gz"
-  sha1 "62b9797a656b15da9196b6c9ee355c0c81bdc3ac"
+  sha256 "b7203c318460c264bd19b35a767da1cef33e5cae2c65b057e401fe20f47e1cca"
+
+  head "https://github.com/jrbasso/gistit.git"
 
   bottle do
     cellar :any

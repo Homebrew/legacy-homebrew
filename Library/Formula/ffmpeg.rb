@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
+  desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.6.2.tar.bz2"
-  sha256 "889e3aa069b724dc95cbfc79ef83322a8a39d9f6225f39fad1b47294fc1f29ba"
-
+  url "https://ffmpeg.org/releases/ffmpeg-2.7.1.tar.bz2"
+  sha256 "7e07b97d2415feeae9c9b5595e35e7b7aab33207e81bf9f8c0d1eece43f7f720"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "86a7a9e11279a93870255bdb2a3e18d874a7ff6ddaa5062d199172a6cbbe64e2" => :yosemite
-    sha256 "31e0e71be605a8fbdd17c9bacbc8abec81e0ff54803a11e65d24b99664d1c8d3" => :mavericks
-    sha256 "a051897c6cc9b1f4a161a64f77746c280e65795f74d5ac986ab87020d582a8b1" => :mountain_lion
+    sha256 "326c2a662c90fe4e90432b8a6df473cecaede433602241da26c52c68a0402f9f" => :yosemite
+    sha256 "423dc107257192f4aec70fb2b1e83fcafa3247b70590c00edd2b37f388a887dc" => :mavericks
+    sha256 "576c3361d064f2472f9a232322c72a05acf1c62137a36395c8de5d0e5a02d173" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -31,6 +31,7 @@ class Ffmpeg < Formula
   option "with-x265", "Enable x265 encoder"
   option "with-libsoxr", "Enable the soxr resample library"
   option "with-webp", "Enable using libwebp to encode WEBP images"
+  option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
 
   depends_on "pkg-config" => :build
 
@@ -68,6 +69,7 @@ class Ffmpeg < Formula
   depends_on "openssl" => :optional
   depends_on "libssh" => :optional
   depends_on "webp" => :optional
+  depends_on "zeromq" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -110,12 +112,13 @@ class Ffmpeg < Formula
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
+    args << "--enable-libzmq" if build.with? "zeromq"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
-      args << "--extra-cflags=" + %x(pkg-config --cflags libopenjpeg).chomp
+      args << "--extra-cflags=" + `pkg-config --cflags libopenjpeg`.chomp
     end
 
     # These librares are GPL-incompatible, and require ffmpeg be built with

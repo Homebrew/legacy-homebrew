@@ -1,6 +1,7 @@
 require 'formula'
 
 class Freealut < Formula
+  desc "Implementation of OpenAL's ALUT standard"
   homepage 'http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm'
   url 'http://connect.creativelabs.com/openal/Downloads/ALUT/freealut-1.1.0.tar.gz'
   mirror 'http://ftp.de.debian.org/debian/pool/main/f/freealut/freealut_1.1.0.orig.tar.gz'

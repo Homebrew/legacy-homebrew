@@ -1,4 +1,5 @@
 class Knot < Formula
+  desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
   url "https://secure.nic.cz/files/knot-dns/knot-1.6.3.tar.xz"
   mirror "http://http.debian.net/debian/pool/main/k/knot/knot_1.6.3.orig.tar.xz"

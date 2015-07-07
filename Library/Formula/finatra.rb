@@ -1,9 +1,10 @@
 require "formula"
 
 class Finatra < Formula
+  desc "Scala web framework inspired by Sinatra"
   homepage "http://finatra.info/"
   url "https://github.com/twitter/finatra/archive/1.5.3.tar.gz"
-  sha1 "bb9fe6a7175c1bff404f515731f071e9f8cca586"
+  sha1 "7f2fcf458badf42c5401587b7be19a4f5c5b439c"
 
   def install
     libexec.install Dir["*"]

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tivodecode < Formula
+  desc "Convert .tivo to .mpeg"
   homepage 'http://tivodecode.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/tivodecode/tivodecode/0.2pre4/tivodecode-0.2pre4.tar.gz'
   sha1 'efabe4aee461e6da90ddc52abe9ae025c4185032'

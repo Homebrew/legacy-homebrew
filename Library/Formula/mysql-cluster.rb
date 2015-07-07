@@ -1,4 +1,5 @@
 class MysqlCluster < Formula
+  desc "Shared-nothing clustering and auto-sharding for MySQL"
   homepage "https://www.mysql.com/products/cluster/"
   url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.8.tar.gz"
   sha1 "f70ac7955343765146c556576c8b13dbedf9c593"

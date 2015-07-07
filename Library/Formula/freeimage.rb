@@ -9,6 +9,7 @@ class FreeimageHttpDownloadStrategy < CurlDownloadStrategy
 end
 
 class Freeimage < Formula
+  desc "Library for FreeImage, a dependency-free graphics library"
   homepage 'http://sf.net/projects/freeimage'
   url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.16.0/FreeImage3160.zip',
     :using => FreeimageHttpDownloadStrategy

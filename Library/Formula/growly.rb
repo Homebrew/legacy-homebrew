@@ -1,6 +1,7 @@
 require 'formula'
 
 class Growly < Formula
+  desc "Redirect command output to a growl notification"
   homepage 'https://github.com/ryankee/growly'
   head 'https://github.com/ryankee/growly.git'
   url 'https://github.com/downloads/ryankee/growly/growly-v0.2.0.tar.gz'

@@ -7,16 +7,6 @@ module SharedEnvExtension
   CC_FLAG_VARS = %w{CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS}
   FC_FLAG_VARS = %w{FCFLAGS FFLAGS}
 
-  COMPILER_SYMBOL_MAP = {
-    "gcc-4.0"  => :gcc_4_0,
-    "gcc-4.2"  => :gcc,
-    "llvm-gcc" => :llvm,
-    "clang"    => :clang,
-  }
-
-  COMPILERS = COMPILER_SYMBOL_MAP.values +
-    GNU_GCC_VERSIONS.map { |n| "gcc-4.#{n}" }
-
   SANITIZED_VARS = %w[
     CDPATH GREP_OPTIONS CLICOLOR_FORCE
     CPATH C_INCLUDE_PATH CPLUS_INCLUDE_PATH OBJC_INCLUDE_PATH
@@ -24,7 +14,7 @@ module SharedEnvExtension
     CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS
     MACOSX_DEPLOYMENT_TARGET SDKROOT DEVELOPER_DIR
     CMAKE_PREFIX_PATH CMAKE_INCLUDE_PATH CMAKE_FRAMEWORK_PATH
-    GOBIN
+    GOBIN GOPATH GOROOT
     LIBRARY_PATH
   ]
 
@@ -108,10 +98,10 @@ module SharedEnvExtension
 
   def compiler
     @compiler ||= if (cc = ARGV.cc)
-      warn_about_non_apple_gcc($1) if cc =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($&) if cc =~ GNU_GCC_REGEXP
       fetch_compiler(cc, "--cc")
     elsif (cc = homebrew_cc)
-      warn_about_non_apple_gcc($1) if cc =~ GNU_GCC_REGEXP
+      warn_about_non_apple_gcc($&) if cc =~ GNU_GCC_REGEXP
       compiler = fetch_compiler(cc, "HOMEBREW_CC")
 
       if @formula
@@ -198,54 +188,32 @@ module SharedEnvExtension
     append "LDFLAGS", "-B#{ld64.bin}/"
   end
 
-  def gcc_version_formula(version)
-    gcc_name = "gcc-#{version}"
+  def gcc_version_formula(name)
+    version = name[GNU_GCC_REGEXP, 1]
     gcc_version_name = "gcc#{version.delete('.')}"
 
-    gcc_path = HOMEBREW_PREFIX.join "opt/gcc/bin/#{gcc_name}"
-    gcc_formula = Formulary.factory "gcc"
-    gcc_versions_path = \
-      HOMEBREW_PREFIX.join "opt/#{gcc_version_name}/bin/#{gcc_name}"
-
-    if gcc_path.exist?
-      gcc_formula
-    elsif gcc_versions_path.exist?
-      Formulary.factory gcc_version_name
-    elsif gcc_formula.version.to_s.include?(version)
-      gcc_formula
-    elsif (gcc_versions_formula = Formulary.factory(gcc_version_name) rescue nil)
-      gcc_versions_formula
+    gcc = Formulary.factory("gcc")
+    if gcc.opt_bin.join(name).exist?
+      gcc
     else
-      gcc_formula
+      Formulary.factory(gcc_version_name)
     end
   end
 
-  def warn_about_non_apple_gcc(gcc)
-    gcc_name = 'gcc' + gcc.delete('.')
-
+  def warn_about_non_apple_gcc(name)
     begin
-      gcc_formula = gcc_version_formula(gcc)
-      if gcc_formula.name == "gcc"
-        return if gcc_formula.opt_prefix.exist?
-        raise <<-EOS.undent
-        The Homebrew GCC was not installed.
-        You must:
-          brew install gcc
-        EOS
-      end
-
-      if !gcc_formula.opt_prefix.exist?
-        raise <<-EOS.undent
-        The requested Homebrew GCC, #{gcc_name}, was not installed.
-        You must:
-          brew tap homebrew/versions
-          brew install #{gcc_name}
-        EOS
-      end
-    rescue FormulaUnavailableError
+      gcc_formula = gcc_version_formula(name)
+    rescue FormulaUnavailableError => e
       raise <<-EOS.undent
-      Homebrew GCC requested, but formula #{gcc_name} not found!
+      Homebrew GCC requested, but formula #{e.name} not found!
       You may need to: brew tap homebrew/versions
+      EOS
+    end
+
+    unless gcc_formula.opt_prefix.exist?
+      raise <<-EOS.undent
+      The requested Homebrew GCC was not installed. You must:
+        brew install #{gcc_formula.full_name}
       EOS
     end
   end

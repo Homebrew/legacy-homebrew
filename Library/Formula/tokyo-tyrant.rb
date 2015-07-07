@@ -1,6 +1,7 @@
 require 'formula'
 
 class TokyoTyrant < Formula
+  desc "Lightweight database server"
   homepage 'http://fallabs.com/tokyotyrant/'
   url 'http://fallabs.com/tokyotyrant/tokyotyrant-1.1.41.tar.gz'
   sha1 '060ac946a9ac902c1d244ffafd444f0e5840c0ce'

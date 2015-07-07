@@ -1,6 +1,7 @@
 require 'formula'
 
 class Grc < Formula
+  desc "Colorize logfiles and command output"
   homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
   url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.9.orig.tar.gz'
   sha1 '445d3d076bda34c6398c926ca27c5a3a6c64a833'

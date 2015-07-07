@@ -1,4 +1,5 @@
 class EotUtils < Formula
+  desc "Tools to convert fonts from OTF/TTF to EOT format"
   homepage "https://www.w3.org/Tools/eot-utils/"
   url "https://www.w3.org/Tools/eot-utils/eot-utilities-1.1.tar.gz"
   sha256 "4eed49dac7052e4147deaddbe025c7dfb404fc847d9fe71e1c42eba5620e6431"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Powerman < Formula
+  desc "Control (remotely and in parallel) switched power distribution units"
   homepage "https://code.google.com/p/powerman/"
   url "https://github.com/chaos/powerman/releases/download/2.3.20/powerman-2.3.20.tar.gz"
   sha256 "a4b0858d1214aab18e2673596b00ac9bad976cb7b777209e10732467c3551b88"

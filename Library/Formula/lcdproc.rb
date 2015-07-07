@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lcdproc < Formula
+  desc "Display real-time system information on a LCD"
   homepage 'http://www.lcdproc.org/'
   url 'https://downloads.sourceforge.net/project/lcdproc/lcdproc/0.5.6/lcdproc-0.5.6.tar.gz'
   sha1 '1d0a4d068141f3c8526cadea035b58b37697600c'

@@ -1,6 +1,7 @@
 require "formula"
 
 class VowpalWabbit < Formula
+  desc "Online learning algorithm"
   homepage "https://github.com/JohnLangford/vowpal_wabbit"
   head "https://github.com/JohnLangford/vowpal_wabbit.git"
   url "https://github.com/JohnLangford/vowpal_wabbit/archive/7.10.tar.gz"

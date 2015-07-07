@@ -1,7 +1,10 @@
 class Aha < Formula
+  desc "ANSI HTML adapter"
   homepage "https://github.com/theZiz/aha"
   url "https://github.com/theZiz/aha/archive/0.4.8.tar.gz"
-  sha1 "45d91e1cda8663e8bf0c5fa8b94e4d2290aa9895"
+  sha256 "a1ebbbd5ebc37ccca74dc5f894e3066157e9e77fcdf158bf5587215b8968049c"
+
+  head "https://github.com/theZiz/aha.git"
 
   bottle do
     cellar :any
@@ -11,12 +14,13 @@ class Aha < Formula
   end
 
   def install
-    system "make"
-    bin.install "aha"
+    # install manpages under share/man/
+    inreplace "Makefile", "$(PREFIX)/man", "$(PREFIX)/share/man"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
     out = pipe_output(bin/"aha", "[35mrain[34mpill[00m")
-    assert_match /color:purple;">rain.*color:blue;">pill/, out
+    assert_match(/color:purple;">rain.*color:blue;">pill/, out)
   end
 end

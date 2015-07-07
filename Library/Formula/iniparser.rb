@@ -1,6 +1,7 @@
 require 'formula'
 
 class Iniparser < Formula
+  desc "Library for parsing ini files"
   homepage 'http://ndevilla.free.fr/iniparser/'
   head 'https://github.com/ndevilla/iniparser.git'
   url 'http://ndevilla.free.fr/iniparser/iniparser-3.1.tar.gz'

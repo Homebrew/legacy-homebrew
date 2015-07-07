@@ -1,6 +1,7 @@
 require 'formula'
 
 class Remctl < Formula
+  desc "Client/server application for remote execution of tasks"
   homepage 'http://www.eyrie.org/~eagle/software/remctl/'
   url 'http://archives.eyrie.org/software/kerberos/remctl-3.9.tar.gz'
   sha1 '9fbd9c48e085f521ac68fde8336dce2b839a9054'

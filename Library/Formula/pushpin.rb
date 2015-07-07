@@ -1,14 +1,15 @@
 class Pushpin < Formula
+  desc "Reverse proxy for realtime web services"
   homepage "http://pushpin.org"
-  url "http://packages.fanout.io/source/pushpin-1.1.1.tar.bz2"
-  sha256 "ac1bb0d8becb98c3ee396fddf185cdac5d34f06d154fe3d78c9ff769f6f88e32"
+  url "https://dl.bintray.com/fanout/source/pushpin-1.3.3.tar.bz2"
+  sha256 "b48092b48436166c015be074efd614b82f4f9637cc9dcdf29e801998fbcf64f4"
 
   head "https://github.com/fanout/pushpin.git"
 
   bottle do
-    sha256 "8e71804d2734c4b16d02aca9ebed5fff3d46e92f79d029558381260c1a26998f" => :yosemite
-    sha256 "72e5c82ff7bc36c8526210d8e11d68c14e057cc0096e3d693c4d088308b3d62e" => :mavericks
-    sha256 "a7ebf771f8c2588830e743afbb95fe42fa48401130b2d09640fff25e13d16652" => :mountain_lion
+    sha256 "d834969733aa9031b6df88cb29b0a5baaae96409895d4909527258cea8d7755d" => :yosemite
+    sha256 "5af5a5285af75ec9202b4ea21562ae1d75ca27d7dc30dc22c6ee62b8451a6fa5" => :mavericks
+    sha256 "af8d7adb00736cb2e5f8741845e63c0b72d8c5dfe8d9b2a18a8ae668c26d9c59" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -18,6 +19,12 @@ class Pushpin < Formula
   depends_on "qjson"
   depends_on "mongrel2"
   depends_on "zurl"
+
+  # MacOS versions prior to Yosemite need the latest setuptools in order to compile dependencies
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
+    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
+  end
 
   resource "MarkupSafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
@@ -44,10 +51,15 @@ class Pushpin < Formula
     sha256 "55715a5d758214034db179005def47ed842da36c4c48e9e7ae59bcaffed7ca9b"
   end
 
+  resource "blist" do
+    url "https://pypi.python.org/packages/source/b/blist/blist-1.3.6.tar.gz"
+    sha256 "3a12c450b001bdf895b30ae818d4d6d3f1552096b8c995f0fe0c74bef04d1fc3"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[MarkupSafe Jinja2 pyzmq setproctitle tnetstring].each do |r|
+    %w[setuptools MarkupSafe Jinja2 pyzmq setproctitle tnetstring blist].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -57,7 +69,7 @@ class Pushpin < Formula
     system "make", "install", "prefix=#{prefix}", "varprefix=#{var}"
 
     pyenv = { :PYTHONPATH => ENV["PYTHONPATH"] }
-    %w[pushpin pushpin-handler].each do |f|
+    %w[pushpin pushpin-handler pushpin-publish].each do |f|
       (libexec/"bin").install bin/f
       (bin/f).write_env_script libexec/"bin/#{f}", pyenv
     end

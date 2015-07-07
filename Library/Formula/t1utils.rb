@@ -1,4 +1,5 @@
 class T1utils < Formula
+  desc "Command-line tools for dealing with Type 1 fonts"
   homepage "http://www.lcdf.org/type/"
   url "http://www.lcdf.org/type/t1utils-1.39.tar.gz"
   sha256 "0faef3e5c4927b38b05ac99ee177b7d7cddbbf5b4452f98b244f684b52b0d4c4"

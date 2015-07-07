@@ -1,4 +1,5 @@
 class Solid < Formula
+  desc "Collision detection library for geometric objects in 3D space"
   homepage "http://www.dtecta.com/"
   url "http://www.dtecta.com/files/solid-3.5.6.tgz"
   sha1 "bd0afef7842f826c270cff32fc23994aec0b0d65"

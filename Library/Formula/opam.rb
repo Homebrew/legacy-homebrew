@@ -1,17 +1,15 @@
-require 'formula'
-
 class Opam < Formula
-  homepage 'https://opam.ocaml.org'
-  url 'https://github.com/ocaml/opam/archive/1.2.1.tar.gz'
-  sha1 'ec05bb766834c599ea5045eb3b7e92478ddf9dd0'
-
-  head 'https://github.com/ocaml/opam.git'
+  desc "Package manager for OCaml"
+  homepage "https://opam.ocaml.org"
+  url "https://github.com/ocaml/opam/archive/1.2.2.tar.gz"
+  sha256 "3e4a05df6ff8deecba019d885ebe902eb933acb6e2fc7784ffee1ee14871e36a"
+  head "https://github.com/ocaml/opam.git"
 
   bottle do
     cellar :any
-    sha256 "07bb172ee9fe261c4216b94f9fbb6e7789394ae0aa2baaf5edfb7531f31a557a" => :yosemite
-    sha256 "295c0f30bf07605c585810fcd0dd1c767defb5353f681d69a390f518f722a3d4" => :mavericks
-    sha256 "00971c8f7ead433bdac2731715380aef7635847c8f899be6dcf08a9d6d162455" => :mountain_lion
+    sha256 "ad11048ca70e2548f7b825f94ac4885da0f5448a7e2d2dd9eec99889d4858b0e" => :yosemite
+    sha256 "81f126dcb52b514f0e06d4e93465ca1ff8d3260d3ad0abe99950a90112872d71" => :mavericks
+    sha256 "49b51771003bde6912d7563dd8f4bff805691f2c5298d814b62abf845d6b6e2e" => :mountain_lion
   end
 
   depends_on "objective-caml"
@@ -31,42 +29,42 @@ class Opam < Formula
 
   resource "cudf" do
     url "https://gforge.inria.fr/frs/download.php/file/33593/cudf-0.7.tar.gz"
-    sha1 "33d6942caf5f008d6696c1200a2589e28ff7e7fa"
+    sha256 "92c8a9ed730bbac73f3513abab41127d966c9b9202ab2aaffcd02358c030a701"
   end
 
   resource "extlib" do
-    url "http://ocaml-extlib.googlecode.com/files/extlib-1.5.3.tar.gz"
-    sha1 "6e395ae70e690d5ec6f166cce4761798ce494580"
+    url "https://ocaml-extlib.googlecode.com/files/extlib-1.5.3.tar.gz"
+    sha256 "c095eef4202a8614ff1474d4c08c50c32d6ca82d1015387785cf03d5913ec021"
   end
 
   resource "ocaml-re" do
     url "https://github.com/ocaml/ocaml-re/archive/ocaml-re-1.2.0.tar.gz"
-    sha1 "d54439efaaf888d619cbf1ccd92fbb077aed5d6a"
+    sha256 "a34dd9d6136731436a963bbab5c4bbb16e5d4e21b3b851d34887a3dec451999f"
   end
 
   resource "ocamlgraph" do
     url "http://ocamlgraph.lri.fr/download/ocamlgraph-1.8.5.tar.gz"
-    sha1 "e53a92d50685ab38f2b856eb64d93aa36dc7bcdf"
+    sha256 "d167466435a155c779d5ec25b2db83ad851feb42ebc37dca8ffa345ddaefb82f"
   end
 
   resource "dose3" do
     url "https://gforge.inria.fr/frs/download.php/file/34277/dose3-3.3.tar.gz"
-    sha1 "889b1d7daf963ab21b2c06e68ea8c3f51b58960d"
+    sha256 "8dc4dae9b1a81bb3a42abb283df785ba3eb00ade29b13875821c69f03e00680e"
   end
 
   resource "cmdliner" do
     url "http://erratique.ch/software/cmdliner/releases/cmdliner-0.9.7.tbz"
-    sha1 "7eb50ddb16a1e58bf39755117193a53a7613042c"
+    sha256 "9c19893cffb5d3c3469ee0cce85e3eeeba17d309b33b9ace31aba06f68f0bf7a"
   end
 
   resource "uutf" do
     url "http://erratique.ch/software/uutf/releases/uutf-0.9.3.tbz"
-    sha1 "9f9ae5a16ff0cd7ffeebf8b4174c5f041739b231"
+    sha256 "1f364f89b1179e5182a4d3ad8975f57389d45548735d19054845e06a27107877"
   end
 
   resource "jsonm" do
     url "http://erratique.ch/software/jsonm/releases/jsonm-0.9.1.tbz"
-    sha1 "733fe089fb91ac79ac885e9c80d5554aca3e7805"
+    sha256 "3fd4dca045d82332da847e65e981d8b504883571d299a3f7e71447d46bc65f73"
   end
 
   def install
@@ -107,10 +105,10 @@ class Opam < Formula
 
     To export the needed variables every time, add them to your dotfiles.
       * On Bash, add them to `~/.bash_profile`.
-      * On Zsh, add them to `~/.zprofile` instead.
+      * On Zsh, add them to `~/.zprofile` or `~/.zshrc` instead.
 
     Documentation and tutorials are available at https://opam.ocaml.org, or
-    via 'man opam' and 'opam --help'.
+    via "man opam" and "opam --help".
     EOS
   end
 end

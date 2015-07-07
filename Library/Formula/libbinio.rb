@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libbinio < Formula
+  desc "Binary I/O stream class library"
   homepage 'http://libbinio.sf.net'
   url 'https://downloads.sourceforge.net/project/libbinio/libbinio/1.4/libbinio-1.4.tar.bz2'
   sha1 '47db5f7448245f38b9d26c8b11f53a07b6f6da73'

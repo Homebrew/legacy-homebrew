@@ -1,8 +1,16 @@
 class Headphones < Formula
+  desc "Automatic music downloader for SABnzbd"
   homepage "https://github.com/rembo10/headphones"
   head "https://github.com/rembo10/headphones.git"
   url "https://github.com/rembo10/headphones/archive/v0.5.2.tar.gz"
   sha1 "299ec2265a6f362b777712d945b1dff98fc02bf7"
+
+  bottle do
+    cellar :any
+    sha256 "0d08693b084d643f0c994c9b3bfa151cbb3b59e7bfeaf7df51c74dc4ca4a65cb" => :yosemite
+    sha256 "b9770751fa170bb63dd4ed3eec4d0924bfe5c57344a93689d064b50809d10473" => :mavericks
+    sha256 "561f55a8140600eea056c4596a4627d9ce076b24de9daec57cbc2749f8691276" => :mountain_lion
+  end
 
   resource "Markdown" do
     url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.tar.gz"
@@ -40,7 +48,7 @@ class Headphones < Formula
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/$
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
     <dict>
       <key>Label</key>

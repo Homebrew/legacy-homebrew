@@ -1,4 +1,5 @@
 class Tth < Formula
+  desc "TeX/LaTeX to HTML converter"
   homepage "http://hutchinson.belmont.ma.us/tth/"
   url "http://hutchinson.belmont.ma.us/tth/tth_distribution/tth_4.06.tgz"
   sha1 "ba3c653bf05d25ac8a907fb1d51184da1ac42721"

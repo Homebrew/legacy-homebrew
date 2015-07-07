@@ -1,6 +1,7 @@
 require "formula"
 
 class Ngrok < Formula
+  desc "Expose localhost to the internet and capture traffic for replay"
   homepage "https://ngrok.com"
   head "https://github.com/inconshreveable/ngrok.git"
   url "https://github.com/inconshreveable/ngrok/archive/1.7.tar.gz"

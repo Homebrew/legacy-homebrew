@@ -1,4 +1,5 @@
 class Hadoop < Formula
+  desc "Framework for distributed processing of lage data sets"
   homepage "https://hadoop.apache.org/"
   url "https://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz"
   mirror "https://archive.apache.org/dist/hadoop/common/hadoop-2.7.0/hadoop-2.7.0.tar.gz"

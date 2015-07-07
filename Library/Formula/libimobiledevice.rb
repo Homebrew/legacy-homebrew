@@ -1,4 +1,5 @@
 class Libimobiledevice < Formula
+  desc "Library to communicate with iOS devices natively"
   homepage "http://www.libimobiledevice.org/"
   url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.2.0.tar.bz2"
   sha1 "a8e3f21180b1d6df754d04a4080a29cf6891e701"

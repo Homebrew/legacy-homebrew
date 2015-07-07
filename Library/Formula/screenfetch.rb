@@ -1,6 +1,7 @@
 require "formula"
 
 class Screenfetch < Formula
+  desc "Generate ASCII art with terminal, shell, and OS info"
   homepage "https://github.com/KittyKatt/screenFetch"
   url "https://github.com/KittyKatt/screenFetch/archive/v3.6.5.tar.gz"
   sha1 "b409cf4c66fe5cdd8ee9ecfa85d1234a76a63588"

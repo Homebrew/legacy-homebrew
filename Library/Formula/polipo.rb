@@ -1,6 +1,7 @@
 require 'formula'
 
 class Polipo < Formula
+  desc "Web caching proxy"
   homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
   url 'http://www.pps.univ-paris-diderot.fr/~jch/software/files/polipo/polipo-1.1.1.tar.gz'
   sha1 'cf7461a96c4bf012496844d5a54171182c2cb1a7'

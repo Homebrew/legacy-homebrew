@@ -1,6 +1,7 @@
 require "formula"
 
 class Espeak < Formula
+  desc "Text to speech, software speech synthesizer"
   homepage "http://espeak.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/espeak/espeak/espeak-1.48/espeak-1.48.04-source.zip"
   sha1 "b22c0361885d05e61d98ecedca0a4926ea2fb2ad"

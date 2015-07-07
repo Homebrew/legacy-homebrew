@@ -1,6 +1,7 @@
 require "formula"
 
 class Pcrexx < Formula
+  desc "C++ wrapper for the Perl Compatible Regular Expressions"
   homepage "http://www.daemon.de/PCRE"
   url "http://www.daemon.de/idisk/Apps/pcre++/pcre++-0.9.5.tar.gz"
   sha1 "7cb640555c6adf34bf366139b22f6d1a66bd1fb0"

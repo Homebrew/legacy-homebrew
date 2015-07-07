@@ -1,4 +1,5 @@
 class Mmv < Formula
+  desc "Move, copy, append, and link multiple files"
   homepage "https://packages.debian.org/unstable/utils/mmv"
   url "https://mirrors.kernel.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz"
   mirror "http://ftp.us.debian.org/debian/pool/main/m/mmv/mmv_1.01b.orig.tar.gz"

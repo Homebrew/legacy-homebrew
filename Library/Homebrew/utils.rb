@@ -55,7 +55,7 @@ def oh1 title
 end
 
 def opoo warning
-  $stderr.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
@@ -85,7 +85,7 @@ end
 def interactive_shell f=nil
   unless f.nil?
     ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
-    ENV['HOMEBREW_DEBUG_INSTALL'] = f.name
+    ENV['HOMEBREW_DEBUG_INSTALL'] = f.full_name
   end
 
   Process.wait fork { exec ENV['SHELL'] }
@@ -121,13 +121,16 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
   end
 
-  def self.install_gem_setup_path! gem, executable=gem
+  def self.install_gem_setup_path! gem, version=nil, executable=gem
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
-    unless quiet_system "gem", "list", "--installed", gem
+    args = [gem]
+    args << "-v" << version if version
+
+    unless quiet_system "gem", "list", "--installed", *args
       safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", gem
+                                    "--user-install", *args
     end
 
     unless which executable
@@ -147,6 +150,15 @@ ensure
   ENV['PATH'] = old_path
 end
 
+def run_as_not_developer(&block)
+  begin
+    old = ENV.delete "HOMEBREW_DEVELOPER"
+    yield
+  ensure
+    ENV["HOMEBREW_DEVELOPER"] = old
+  end
+end
+
 # Kernel.system but with exceptions
 def safe_system cmd, *args
   Homebrew.system(cmd, *args) or raise ErrorDuringExecution.new(cmd, args)
@@ -163,15 +175,18 @@ def quiet_system cmd, *args
 end
 
 def curl *args
-  curl = Pathname.new '/usr/bin/curl'
+  brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
+  curl = if MacOS.version <= "10.6" && brewed_curl.exist?
+    brewed_curl
+  else
+    Pathname.new '/usr/bin/curl'
+  end
   raise "#{curl} is not executable" unless curl.exist? and curl.executable?
 
   flags = HOMEBREW_CURL_ARGS
   flags = flags.delete("#") if ARGV.verbose?
 
   args = [flags, HOMEBREW_USER_AGENT, *args]
-  # See https://github.com/Homebrew/homebrew/issues/6103
-  args << "--insecure" if MacOS.version < "10.6"
   args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
   args << "--silent" unless $stdout.tty?
 
@@ -314,7 +329,7 @@ module GitHub extend self
         GitHub #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
           https://github.com/settings/tokens
-        and then set it as HOMEBREW_GITHUB_API_TOKEN.
+        and then set the token as: HOMEBREW_GITHUB_API_TOKEN
         EOS
     end
 

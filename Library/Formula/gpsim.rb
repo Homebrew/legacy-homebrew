@@ -1,67 +1,29 @@
-require 'formula'
-
 class Gpsim < Formula
-  homepage 'http://gpsim.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/gpsim/gpsim/0.26.0/gpsim-0.26.1.tar.gz'
-  sha1 '7e1c3cc5a821b3458717a94a09bc484bf6937b25'
+  desc "Simulator for Microchip's PIC microcontrollers"
+  homepage "http://gpsim.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/gpsim/gpsim/0.28.0/gpsim-0.28.1.tar.gz"
+  sha256 "d8d41fb530630e6df31db89a0ca630038395aed4d07c48859655468ed25658ed"
 
-  head 'svn://svn.code.sf.net/p/gpsim/code/trunk'
+  head "svn://svn.code.sf.net/p/gpsim/code/trunk"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'popt'
-  depends_on 'glib'
+  bottle do
+    cellar :any
+    sha256 "78a225eb11338a6699ccdb4c23ad4c1682cfdc34f06cf2c4fbeb571b238b45c9" => :yosemite
+    sha256 "dfdf91a9f332b9880ec59934fe661bbc0d50b45d8f7c2cdde888f31bcaac9c40" => :mavericks
+    sha256 "2d0cc0cf61b5df08cce8f9795666228487876cfda9045be3e371b6cd15c70bee" => :mountain_lion
+  end
 
-  # Patch is upstream; test if it is needed in next release
-  patch :DATA
+  depends_on "pkg-config" => :build
+  depends_on "gputils" => :build
+  depends_on "glib"
+  depends_on "popt"
 
   def install
-    system "./configure", "--disable-gui",
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-gui",
                           "--disable-shared",
                           "--prefix=#{prefix}"
-    system "make all"
-    system "make install"
+    system "make", "all"
+    system "make", "install"
   end
 end
-
-
-__END__
-diff -Naur gpsim-0.26.1/configure.ac gpsim-0.26.1-patch/configure.ac
---- gpsim-0.26.1/configure.ac	2011-04-26 07:13:37.000000000 -0300
-+++ gpsim-0.26.1-patch/configure.ac	2013-04-23 10:42:52.000000000 -0300
-@@ -79,15 +79,20 @@
- else
-   dnl gtk2 checks
-
--  $PKGCONFIG --exists gtkextra-2.0
-+  GTKEXTRAMOD="gtkextra-2.0"
-+  $PKGCONFIG --exists $GTKEXTRAMOD
-   if test $? != 0; then
--    AC_MSG_ERROR(Cannot find gtkextra-2.0 package)
-+    GTKEXTRAMOD="gtkextra-3.0"
-+    $PKGCONFIG --exists $GTKEXTRAMOD
-+    if test $? != 0; then
-+      AC_MSG_ERROR(Cannot find gtkextra-2.0 or gtkextra-3.0 package)
-+    fi
-   fi
-
-   X_LDFLAGS=`$PKGCONFIG --libs gtk+-2.0 gthread-2.0`
-   X_CFLAGS=`$PKGCONFIG --cflags gtk+-2.0`
--  Y_LDFLAGS=`$PKGCONFIG --libs gtkextra-2.0`
--  Y_CFLAGS=`$PKGCONFIG --cflags gtkextra-2.0`
-+  Y_LDFLAGS=`$PKGCONFIG --libs $GTKEXTRAMOD`
-+  Y_CFLAGS=`$PKGCONFIG --cflags $GTKEXTRAMOD`
-   GTK_VERSION_T=`$PKGCONFIG --modversion gtk+-2.0`
-   echo linking with gtk-$GTK_VERSION_T
-   AC_DEFINE_UNQUOTED([GTK_VERSION],"$GTK_VERSION_T",[gtk version])
-diff -Naur gpsim-0.26.1/src/bitlog.h gpsim-0.26.1-patch/src/bitlog.h
---- gpsim-0.26.1/src/bitlog.h	2010-06-05 03:46:30.000000000 -0300
-+++ gpsim-0.26.1-patch/src/bitlog.h	2013-04-23 10:37:09.000000000 -0300
-@@ -25,7 +25,7 @@
-
- // include the absolute minimum portion of GLIB to get the definitions
- // for guint64, etc.
--#include <glibconfig.h>
-+#include <glib.h>
-
- /**********************************************************************
-  * boolean event logging

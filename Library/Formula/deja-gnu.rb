@@ -1,4 +1,5 @@
 class DejaGnu < Formula
+  desc "Framework for testing other programs"
   homepage "https://www.gnu.org/software/dejagnu/"
   url "http://ftpmirror.gnu.org/dejagnu/dejagnu-1.5.2.tar.gz"
   mirror "https://ftp.gnu.org/gnu/dejagnu/dejagnu-1.5.2.tar.gz"

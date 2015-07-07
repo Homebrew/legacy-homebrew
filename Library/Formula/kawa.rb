@@ -1,6 +1,7 @@
 require 'formula'
 
 class Kawa < Formula
+  desc "Programming language for Java (implementation of Scheme)"
   homepage 'http://www.gnu.org/software/kawa/'
   url 'http://ftpmirror.gnu.org/kawa/kawa-2.0.jar'
   mirror 'http://ftp.gnu.org/gnu/kawa/kawa-2.0.jar'

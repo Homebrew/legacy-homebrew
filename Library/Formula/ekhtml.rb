@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ekhtml < Formula
+  desc "Forgiving SAX-style HTML parser"
   homepage 'http://ekhtml.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/ekhtml/ekhtml/0.3.2/ekhtml-0.3.2.tar.gz'
   sha1 'd4e6c25964f7e110073f646950dc307e84d61f1b'

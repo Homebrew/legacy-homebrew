@@ -1,14 +1,14 @@
 class YamlCpp < Formula
-  homepage "https://code.google.com/p/yaml-cpp/"
-  url "https://yaml-cpp.googlecode.com/files/yaml-cpp-0.5.1.tar.gz"
-  sha256 "3e7c9052b43d987d41819a203d97fc45de4eed3ec67e0fdb14265c3d11046f06"
+  desc "C++ YAML parser and emitter for YAML 1.2 spec"
+  homepage "https://github.com/jbeder/yaml-cpp"
+  url "https://github.com/jbeder/yaml-cpp/archive/release-0.5.2.tar.gz"
+  sha256 "6fb92f6f5925e0af918ffbb90acf19b7b88706ebcd40fc186b7caa76609b6350"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "90e07cbad706bc9e3052e91018a2389c8a592e700b0a2c3933d253f933e2c554" => :yosemite
-    sha256 "52257d4f7c38fb6baadfed2f8ed4c0b1731ec0b019bfe463087246b7b3e806f5" => :mavericks
-    sha256 "ed92a64681670a01dbe3113a900b614798179153bbecbf3cea1b24845ad3fa80" => :mountain_lion
+    sha256 "9727c8af2fe48f0d3c7cd3a031f92cb22a5f475bf8aeebecacf81d3bc425aff8" => :yosemite
+    sha256 "58eb6496d8d6e95398fab4d4ace176c0d42284c44ccb9cda3cc9304b29804395" => :mavericks
+    sha256 "6eeeae8bcc43b2425f09184666cdf7b8df9228d94ca64761d6fefc57c7936918" => :mountain_lion
   end
 
   option :cxx11

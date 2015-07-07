@@ -1,4 +1,5 @@
 class E2fsprogs < Formula
+  desc "Utilities for the ext2, ext3, and ext4 file systems"
   homepage "http://e2fsprogs.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/e2fsprogs/e2fsprogs/v1.42.12/e2fsprogs-1.42.12.tar.gz"
   mirror "https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.42.12/e2fsprogs-1.42.12.tar.gz"

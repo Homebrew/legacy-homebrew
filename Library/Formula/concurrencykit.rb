@@ -1,4 +1,5 @@
 class Concurrencykit < Formula
+  desc "Aid design and implementation of concurrent systems"
   homepage "http://concurrencykit.org"
   url "http://concurrencykit.org/releases/ck-0.4.5.tar.gz"
   mirror "https://github.com/concurrencykit/ck/archive/0.4.5.tar.gz"

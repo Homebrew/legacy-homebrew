@@ -1,4 +1,5 @@
 class Minizinc < Formula
+  desc "Medium-level constraint modeling language"
   homepage "http://www.minizinc.org"
   head "https://github.com/MiniZinc/libminizinc.git", :branch => "develop"
 

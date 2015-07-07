@@ -1,4 +1,5 @@
 class Iprint < Formula
+  desc "Provides a print_one function"
   homepage "https://www.samba.org/ftp/unpacked/junkcode/i.c"
   url "https://mirrors.kernel.org/debian/pool/main/i/iprint/iprint_1.3.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/i/iprint/iprint_1.3.orig.tar.gz"

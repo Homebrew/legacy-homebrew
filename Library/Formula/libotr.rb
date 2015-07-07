@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libotr < Formula
+  desc "Off-The-Record (OTR) messaging library"
   homepage 'https://otr.cypherpunks.ca/'
   url 'https://otr.cypherpunks.ca/libotr-4.1.0.tar.gz'
   sha1 'df30bc87a7a8f37678dd679d17fa1f9638ea247e'

@@ -1,18 +1,20 @@
 class Fontforge < Formula
+  desc "Outline and bitmap font editor/converter for many formats"
   homepage "https://fontforge.github.io"
   url "https://github.com/fontforge/fontforge/archive/20150430.tar.gz"
   sha256 "430c6d02611c7ca948df743e9241994efe37eda25f81a94aeadd9b6dd286ff37"
   head "https://github.com/fontforge/fontforge.git"
+  revision 3
 
   bottle do
-    sha256 "db55b0a73b4851077da8dfd48c39675f05eaf437323acccf56602779b21cf414" => :yosemite
-    sha256 "dd876ff9dc19e6a1dba1a83cc1d9c106813a08f98675543359d99b14b2691510" => :mavericks
-    sha256 "bf152c19b04f3ad0ba87e179dfe0bba44c9c770def473698603d9a831f9b3ef0" => :mountain_lion
+    sha256 "32351316ee4effb89c199a7a8abe3c2cab1782d326abe506b92d61b004590a9d" => :yosemite
+    sha256 "0e012b84e88ac322de40fb26d54b8135edfc52cf6f05067c9d3fbd13a15f5bfc" => :mavericks
+    sha256 "a17e8b4989bc0a523d77d6d79c2a035cb1da57ca359e2c5fab6f0601f51ec0c0" => :mountain_lion
   end
 
   option "with-giflib", "Build with GIF support"
+  option "with-extra-tools", "Build with additional font tools"
 
-  deprecated_option "with-x" => "with-x11"
   deprecated_option "with-gif" => "with-giflib"
 
   # Autotools are required to build from source in all releases.
@@ -30,7 +32,6 @@ class Fontforge < Formula
   depends_on "libtiff" => :recommended
   depends_on "giflib" => :optional
   depends_on "libspiro" => :optional
-  depends_on :x11 => :optional
   depends_on :python if MacOS.version <= :snow_leopard
 
   # This may be causing font-display glitches and needs further isolation & fixing.
@@ -45,9 +46,9 @@ class Fontforge < Formula
 
   def install
     if MacOS.version <= :snow_leopard || !build.bottle?
-      pydir = "#{%x(python-config --prefix).chomp}"
+      pydir = `python-config --prefix`.chomp
     else
-      pydir = "#{%x(/usr/bin/python-config --prefix).chomp}"
+      pydir = `/usr/bin/python-config --prefix`.chomp
     end
 
     args = %W[
@@ -55,13 +56,8 @@ class Fontforge < Formula
       --disable-silent-rules
       --disable-dependency-tracking
       --with-pythonbinary=#{pydir}/bin/python2.7
+      --without-x
     ]
-
-    if build.with? "x11"
-      args << "--with-x"
-    else
-      args << "--without-x"
-    end
 
     args << "--without-libpng" if build.without? "libpng"
     args << "--without-libjpeg" if build.without? "jpeg"
@@ -85,8 +81,13 @@ class Fontforge < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
-    # The name is case-sensitive. Don't downcase it when linking.
-    ln_s "#{share}/fontforge/osx/FontForge.app", prefix if build.with? "x11"
+
+    if build.with? "extra-tools"
+      cd "contrib/fonttools" do
+        system "make"
+        bin.install Dir["*"].select { |f| File.executable? f }
+      end
+    end
   end
 
   test do

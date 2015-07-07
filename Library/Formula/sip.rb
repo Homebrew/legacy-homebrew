@@ -1,13 +1,13 @@
 class Sip < Formula
+  desc "Tool to create Python bindings for C and C++ libraries"
   homepage "http://www.riverbankcomputing.co.uk/software/sip"
-  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.5/sip-4.16.5.tar.gz"
-  sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
+  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.8/sip-4.16.8.tar.gz"
+  sha256 "d3141b65e48a30c9ce36612f8bcd1730ebf02d044757e4d6c5234927e2063e18"
 
   bottle do
-    revision 1
-    sha1 "ac110e13e8b0f3f3c908fe4e9b4f6a010d483b64" => :yosemite
-    sha1 "d7cbfc32de5096fd1aa20a9123fba628ce546bf0" => :mavericks
-    sha1 "c67e51ac70a5258c16d6694010f2b9fd2363f346" => :mountain_lion
+    sha256 "d21f39098b5f241d1ea61c414961664941793e3ff5fea56b478c2ad092b7c166" => :yosemite
+    sha256 "7d25d976f4bbcec265c0f144ef839b197f1593ebbf5c6740963d0ac4fc5734ea" => :mavericks
+    sha256 "72383920ab69c92737f791d5e1fb06e45b8babb1d71b3e683489ca3dee8baee1" => :mountain_lion
   end
 
   head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
@@ -39,6 +39,10 @@ class Sip < Formula
       system "make"
       system "make", "install"
       system "make", "clean"
+
+      if Formula[python].installed? && which(python).realpath == (Formula[python].bin/python).realpath
+        inreplace lib/"python#{version}/site-packages/sipconfig.py", Formula[python].prefix, Formula[python].opt_prefix
+      end
     end
   end
 

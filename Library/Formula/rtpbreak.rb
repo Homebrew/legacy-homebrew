@@ -1,5 +1,6 @@
 class Rtpbreak < Formula
   # Homepage and URL dead since at least Feb 2015
+  desc "Detect, reconstruct and analyze any RTP session"
   homepage "http://www.dallachiesa.com/code/rtpbreak/doc/rtpbreak_en.html"
   url "http://dallachiesa.com/code/rtpbreak/rtpbreak-1.3a.tgz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Rtpbreak/rtpbreak-1.3a.tgz"

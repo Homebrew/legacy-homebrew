@@ -1,13 +1,14 @@
 class Ats2Postiats < Formula
+  desc "ATS programming language implementation"
   homepage "http://www.ats-lang.org/"
-  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.11/ATS2-Postiats-0.1.11.tgz"
-  sha1 "89f664ca39fe90057a789f867d6c9f30df5f8c9a"
+  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.2.0/ATS2-Postiats-0.2.0.tgz"
+  sha256 "455e269f5d56f0f92f8aa83d47e8e221135d1fe57f03f4afd9d1a07ab1ad3dfe"
 
   bottle do
     cellar :any
-    sha256 "5230ba943a43a1378e89afa29e15b64d906feaba91500b6444c7b873f2cf37a9" => :yosemite
-    sha256 "5c7edda3dff25844035867982eb9e919907badad5314418e0a09e275926f8235" => :mavericks
-    sha256 "aeb5da8a05d9b085c295196e19e2b3a42636e4592adf772b250103f6ed2bb872" => :mountain_lion
+    sha256 "610c16028ad304d1ceff668caabe1747b0dcdf0e30c53999c7180f71b35fecae" => :yosemite
+    sha256 "ab945998ef2c119a37ca558a0c74c23d447a00598f3c2c3c139648addb3f2631" => :mavericks
+    sha256 "88088dfb23656af89907bf82d280910b6eda7a49420e8e21246f223422614f96" => :mountain_lion
   end
 
   depends_on "gmp"

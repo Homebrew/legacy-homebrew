@@ -1,6 +1,7 @@
 require "formula"
 
 class Hello < Formula
+  desc "Program providing model for GNU coding standards and practices"
   homepage "https://www.gnu.org/software/hello/"
   url "http://ftpmirror.gnu.org/hello/hello-2.10.tar.gz"
   sha1 "f7bebf6f9c62a2295e889f66e05ce9bfaed9ace3"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class AptDater < Formula
+  desc "Manage package updates on remote hosts using SSH"
   homepage 'http://www.ibh.de/apt-dater/'
   url 'https://downloads.sourceforge.net/project/apt-dater/apt-dater/0.9.0/apt-dater-0.9.0.tar.gz'
   sha1 'f62fe55602f2526f2830c3c266b8c392bb908d92'

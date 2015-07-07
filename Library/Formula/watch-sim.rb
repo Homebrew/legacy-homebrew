@@ -1,4 +1,5 @@
 class WatchSim < Formula
+  desc "Command-line WatchKit application launcher"
   homepage "https://github.com/alloy/watch-sim"
   url "https://github.com/alloy/watch-sim/archive/1.0.0.tar.gz"
   sha256 "138616472e980276999fee47072a24501ea53ce3f7095a3de940e683341b7cba"

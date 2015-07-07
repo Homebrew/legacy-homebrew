@@ -1,6 +1,7 @@
 require "formula"
 
 class Ragel < Formula
+  desc "A state machine compiler"
   homepage "http://www.colm.net/ragel/"
   url "http://www.colm.net/files/ragel/ragel-6.9.tar.gz"
   sha1 "70a7fe77aee8423be610fa14c3fa1f96b3119e1d"

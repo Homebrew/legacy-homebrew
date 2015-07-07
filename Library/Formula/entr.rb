@@ -1,4 +1,5 @@
 class Entr < Formula
+  desc "Run arbitrary commands when files change"
   homepage "http://entrproject.org/"
   url "http://entrproject.org/code/entr-3.2.tar.gz"
   mirror "https://bitbucket.org/eradman/entr/get/entr-3.2.tar.gz"

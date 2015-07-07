@@ -1,6 +1,7 @@
 require "formula"
 
 class Premake < Formula
+  desc "Premake is a build script generator"
   homepage "http://industriousone.com/premake"
   url "https://downloads.sourceforge.net/project/premake/Premake/4.3/premake-4.3-src.zip"
   sha1 "8f37a3599121580f18b578811162b9b49a2e122f"

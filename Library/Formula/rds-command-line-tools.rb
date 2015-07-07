@@ -1,7 +1,8 @@
 class RdsCommandLineTools < Formula
+  desc "Amazon RDS command-line toolkit"
   homepage "https://aws.amazon.com/developertools/2928"
-  url "https://s3.amazonaws.com/rds-downloads/RDSCli-1.14.001.zip"
-  sha1 "d0853f066ba1dca699a4a1d91581e11e523ec83a"
+  url "https://s3.amazonaws.com/rds-downloads/RDSCli-1.19.004.zip"
+  sha1 "33be9c7e9d58d4bdd5ffa468b159265bd17cf2fa"
 
   depends_on :java
 

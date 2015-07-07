@@ -1,6 +1,7 @@
 require 'formula'
 
 class MemcacheTop < Formula
+  desc "Grab real-time stats from memcache"
   homepage 'http://code.google.com/p/memcache-top/'
   url 'https://memcache-top.googlecode.com/files/memcache-top-v0.6'
   version '0.6'

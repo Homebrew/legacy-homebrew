@@ -1,6 +1,7 @@
 require 'formula'
 
 class Liblas < Formula
+  desc "C/C++ library for reading and writing the LAS LiDAR format"
   homepage 'http://liblas.org'
   url 'http://download.osgeo.org/liblas/libLAS-1.8.0.tar.bz2'
   sha1 '73a29a97dfb8373d51c5e36bdf12a825c44fa398'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Automysqlbackup < Formula
+  desc "Automate MySQL backups"
   homepage 'http://sourceforge.net/projects/automysqlbackup/'
   url 'https://downloads.sourceforge.net/project/automysqlbackup/AutoMySQLBackup/AutoMySQLBackup%20VER%203.0/automysqlbackup-v3.0_rc6.tar.gz'
   version '3.0-rc6'

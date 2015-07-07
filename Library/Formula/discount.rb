@@ -1,15 +1,16 @@
 require 'formula'
 
 class Discount < Formula
+  desc "C implementation of Markdown"
   homepage 'http://www.pell.portland.or.us/~orc/Code/discount/'
-  url 'http://www.pell.portland.or.us/~orc/Code/discount/discount-2.1.7.tar.bz2'
-  sha1 '517bcf7409d8c02b3e57f51264b2e110f8a03120'
+  url 'http://www.pell.portland.or.us/~orc/Code/discount/discount-2.1.8a.tar.bz2'
+  sha256 'c01502f4eedba8163dcd30c613ba5ee238a068f75291be127856261727e03526'
 
   bottle do
     cellar :any
-    sha1 "5671a9db7f30c9c5ace23a9eb85385a5f3c9aaee" => :yosemite
-    sha1 "e867d81f742a6b27308c352888b5d3123ef2703b" => :mavericks
-    sha1 "7453dfde1ff9b0157032ac123ae389b75867ddc8" => :mountain_lion
+    sha256 "a803af2105ca176a4e525bd7ebbd055cb3d4d1020b9d0fa2ef3f723ffacb1f99" => :yosemite
+    sha256 "2c1442bebb7543681cd076b88037c9a891dbc685ac781d6658dee3821cfbdd61" => :mavericks
+    sha256 "cab7dbc460fe459181e6fa69e530a9b1d9083218449cd36a2a7a30e123f558c0" => :mountain_lion
   end
 
   option "with-fenced-code", "Enable Pandoc-style fenced code blocks."

@@ -1,4 +1,5 @@
 class RbenvVars < Formula
+  desc "Safely sets global and per-project environment variables"
   homepage "https://github.com/sstephenson/rbenv-vars"
   url "https://github.com/sstephenson/rbenv-vars/archive/v1.2.0.tar.gz"
   sha1 "8953cecac154fac96dc1e68b54d66a4c8b569e08"

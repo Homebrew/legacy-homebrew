@@ -1,6 +1,7 @@
 require 'formula'
 
 class Opusfile < Formula
+  desc "API for decoding and seeking in .opus files"
   homepage 'http://www.opus-codec.org/'
   url 'http://downloads.xiph.org/releases/opus/opusfile-0.6.tar.gz'
   sha1 '2422e3c7bf6105a832226850b19053ec5ac41293'

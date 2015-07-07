@@ -1,6 +1,7 @@
 require "formula"
 
 class Pow < Formula
+  desc "Zero-config Rack server for local apps on OS X"
   homepage "http://pow.cx/"
   url "http://get.pow.cx/versions/0.5.0.tar.gz"
   sha1 "ef44f886a444340b91fb28e2fab3ce5471837a08"

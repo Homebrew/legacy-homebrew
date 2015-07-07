@@ -1,4 +1,5 @@
 class Qi < Formula
+  desc "Functional programming language"
   homepage "http://www.lambdassociates.org/"
   url "http://www.lambdassociates.org/Download/QiII1.07.zip"
   sha256 "515bb99efa1da3f8d416c370c9d98776d273c593efa241dc243da543118fc521"

@@ -1,4 +1,5 @@
 class Pyqt < Formula
+  desc "Python bindings for Qt"
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.3/PyQt-mac-gpl-4.11.3.tar.gz"
   sha1 "8c53254b38686e5366d74eba81f02f9611f39166"

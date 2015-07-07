@@ -1,4 +1,5 @@
 class Libepoxy < Formula
+  desc "Library for handling OpenGL function pointer management"
   homepage "https://github.com/anholt/libepoxy"
   url "https://github.com/anholt/libepoxy/archive/v1.2.tar.gz"
   sha256 "42c328440f60a5795835c5ec4bdfc1329e75bba16b6e22b3a87ed17e9679e8f6"
@@ -14,6 +15,7 @@ class Libepoxy < Formula
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
+  depends_on :python => :build if MacOS.version <= :snow_leopard
 
   resource "xorg-macros" do
     url "http://xorg.freedesktop.org/releases/individual/util/util-macros-1.19.0.tar.bz2"

@@ -3,6 +3,7 @@ require "language/haskell"
 class Purescript < Formula
   include Language::Haskell::Cabal
 
+  desc "Strongly typed programming language that compiles to JavaScript"
   homepage "http://www.purescript.org"
   url "https://github.com/purescript/purescript/archive/v0.6.9.5.tar.gz"
   sha256 "b7d24ce85c65a9d2adb178d2e9b628f8d4f5a33103c3da6f3312c63a1048ff80"
@@ -15,6 +16,8 @@ class Purescript < Formula
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
+
+  setup_ghc_compilers
 
   def install
     install_cabal_package

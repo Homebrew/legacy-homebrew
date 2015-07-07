@@ -1,6 +1,7 @@
 require "formula"
 
 class ChrubyFish < Formula
+  desc "Thin wrapper around chruby to make it work with the Fish shell"
   homepage "https://github.com/JeanMertz/chruby-fish#readme"
   head "https://github.com/JeanMertz/chruby-fish.git"
   url "https://github.com/JeanMertz/chruby-fish/archive/v0.6.0.tar.gz"

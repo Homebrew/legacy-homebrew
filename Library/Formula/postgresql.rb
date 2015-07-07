@@ -1,16 +1,16 @@
 class Postgresql < Formula
+  desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  revision 1
 
   stable do
-    url "https://ftp.postgresql.org/pub/source/v9.4.1/postgresql-9.4.1.tar.bz2"
-    sha256 "29ddb77c820095b8f52e5455e9c6c6c20cf979b0834ed1986a8857b84888c3a6"
+    url "https://ftp.postgresql.org/pub/source/v9.4.4/postgresql-9.4.4.tar.bz2"
+    sha256 "538ed99688d6fdbec6fd166d1779cf4588bf2f16c52304e5ef29f904c43b0013"
   end
 
   bottle do
-    sha256 "f52380ae9ff983c5ee701e3fe0cd6801c93814c1f8b279ac9b517849162dc1db" => :yosemite
-    sha256 "d0c1cf0090ac3e2405c29225f6bb4e912a131804b44303ed2ddffd217b8c6bc3" => :mavericks
-    sha256 "ca57563e2443a0caaf5d17b33dc466258493d8d8ff96203b3bcebe08c5de2d35" => :mountain_lion
+    sha256 "25c2e16deaf18141e48f7b567ef02f8c426cc4978a41e1ee0f7f2484d8ddf2c9" => :yosemite
+    sha256 "553b8e7f01b436a9152a737f66addbd7062bb90dc711e1e50a86a6dfa3f3a673" => :mavericks
+    sha256 "78638d3488658f86664b3b98ce78d127dedbe2273e50e2bd4ac7b0af550c20c8" => :mountain_lion
   end
 
   option "32-bit"

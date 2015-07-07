@@ -1,15 +1,16 @@
 require "formula"
 
 class Lrzip < Formula
+  desc "Compression program with a very high compression ratio"
   homepage "http://lrzip.kolivas.org"
-  url "http://ck.kolivas.org/apps/lrzip/lrzip-0.616.tar.bz2"
-  sha1 "374a021ff087ee93b2d5894fd16aa3aef26dfa8f"
+  url "http://ck.kolivas.org/apps/lrzip/lrzip-0.621.tar.bz2"
+  sha1 "9c33f6458d39443dbf71b5c66820d4d653daf3c0"
 
   bottle do
     cellar :any
-    sha1 "c6a098cc34032bf2ad687904894190113506f299" => :mavericks
-    sha1 "fdd1673ca65a01041e4f6d7eba8b0ca26f7cd230" => :mountain_lion
-    sha1 "c98d079acc3df1f3e2b1eabc51b7ac7e3f592109" => :lion
+    sha256 "be8250575e5bb6b3e322d9ca26f333c2918668672349e8f3a489c7d1ddbc4c30" => :yosemite
+    sha256 "188a28b951eda33fc61bb166a2dd0ab44990d471535e746eadaf9ba8ad095cb5" => :mavericks
+    sha256 "1a36857c2c25388efe5fd26b52bb7501084ef2b0d94dec353debf14222f9a849" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

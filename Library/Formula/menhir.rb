@@ -1,4 +1,5 @@
 class Menhir < Formula
+  desc "LR(1) parser generator for the OCaml programming language"
   homepage "http://cristal.inria.fr/~fpottier/menhir"
   url "http://cristal.inria.fr/~fpottier/menhir/menhir-20141215.tar.gz"
   sha1 "0aa5d58a5cdf0daa69bb577daf379997dc3af1c1"

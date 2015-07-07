@@ -1,6 +1,7 @@
 require "formula"
 
 class Vimpc < Formula
+  desc "Ncurses based mpd client with vi like key bindings"
   homepage "http://sourceforge.net/projects/vimpc/"
   url "https://downloads.sourceforge.net/project/vimpc/Release%200.09.1/vimpc-0.09.1.tar.gz"
   sha1 "b4e9790eaf0a25035ba32c2c98993fd6900a2c42"

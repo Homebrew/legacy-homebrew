@@ -1,27 +1,27 @@
-require 'formula'
+require "formula"
 
 class Leptonica < Formula
-  homepage 'http://www.leptonica.org/'
-  url 'http://www.leptonica.org/source/leptonica-1.71.tar.gz'
-  sha1 '1ee59b06fd6c6402876f46c26c21b17ffd3c9b6b'
-  revision 1
+  desc "Image processing and image analysis library"
+  homepage "http://www.leptonica.org/"
+  url "http://www.leptonica.org/source/leptonica-1.72.tar.gz"
+  sha256 "79d5eadd32658c9fea38700c975d60aa3d088eaa3e307659f004d40834de1f56"
 
   bottle do
     cellar :any
-    sha1 "f492ae6f99b341c2fb1f32cadb44402963e3c8ae" => :yosemite
-    sha1 "793835a4e3b6bb19601f842c7a5de5873e340451" => :mavericks
-    sha1 "cba822e6f2e5d1c87789fbcd6c0e78cef487b134" => :mountain_lion
+    sha256 "6f46198e077161bd40654e29da0bb26243701dcb75069ef169542f006c3b745b" => :yosemite
+    sha256 "a4d35adcbf811eb48a2dec51bc6e7dcd3ecf61a0c716ae10de0e55c9eaec5065" => :mavericks
+    sha256 "2c747c2e33de6c93958e34353bdad7c9ce41dfbcbc4588cb19411d8956445895" => :mountain_lion
   end
 
-  depends_on 'libpng' => :recommended
-  depends_on 'jpeg' => :recommended
-  depends_on 'libtiff' => :recommended
-  depends_on 'giflib' => :optional
-  depends_on 'openjpeg' => :optional
-  depends_on 'webp' => :optional
-  depends_on 'pkg-config' => :build
+  depends_on "libpng" => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libtiff" => :recommended
+  depends_on "giflib" => :optional
+  depends_on "openjpeg" => :optional
+  depends_on "webp" => :optional
+  depends_on "pkg-config" => :build
 
-  conflicts_with 'osxutils',
+  conflicts_with "osxutils",
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
 
   def install

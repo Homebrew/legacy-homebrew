@@ -1,4 +1,5 @@
 class Id3tool < Formula
+  desc "ID3 editing tool"
   homepage "http://nekohako.xware.cx/id3tool/"
   url "http://nekohako.xware.cx/id3tool/id3tool-1.2a.tar.gz"
   sha256 "7908d66c5aabe2a53ae8019e8234f4231485d80be4b2fe72c9d04013cff1caec"

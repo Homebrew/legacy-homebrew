@@ -1,22 +1,26 @@
 class Snappystream < Formula
+  desc "C++ snappy stream realization (compatible with snappy)"
   homepage "https://github.com/hoxnox/snappystream"
-  url "https://github.com/hoxnox/snappystream/archive/0.1.2.tar.gz"
-  sha1 "40ceac66a58659d1827cc7375a72210bb84be9b3"
+  url "https://github.com/hoxnox/snappystream/archive/0.2.1.tar.gz"
+  sha1 "b2745a2237081d250238db3b30fb3ffddc18ba05"
 
   head "https://github.com/hoxnox/snappystream.git"
 
   bottle do
     cellar :any
-    sha1 "91ab0e9f503246dc9f9ffaf988c277b1c8799b79" => :yosemite
-    sha1 "8b18651bcb5fbfd4ffd221300883a96759bc093f" => :mavericks
-    sha1 "37d9572034e5d3227401cd3688c586f790691196" => :mountain_lion
+    sha256 "3bca80e05819e5f779ca39880fdadb0f3373ae03532e3a116d22bd49b7266227" => :yosemite
+    sha256 "ff2b8f6fe94c84bdc490a8c5f8d63fbfd64fd79783109be96e0e58adc8805bdb" => :mavericks
+    sha256 "257bfba15d83cb174afafd30d221aaa5134d7c5640b1dbc44d811587997c9073" => :mountain_lion
   end
 
   depends_on "cmake" => :build
   depends_on "snappy"
+  depends_on "boost" => :optional
 
   def install
-    system "cmake", ".", "-DBUILD_TESTS=ON", *std_cmake_args
+    args = std_cmake_args + %w[. -DBUILD_TESTS=ON]
+    args << "-DWITH_BOOST_IOSTREAMS=1" if build.with? "boost"
+    system "cmake", *args
     system "make", "all", "test", "install"
   end
 

@@ -1,6 +1,7 @@
 require "formula"
 
 class HardlinkOsx < Formula
+  desc "Command-line utility that implements hardlinks on OS X"
   homepage "https://github.com/selkhateeb/hardlink"
   url "https://github.com/selkhateeb/hardlink/archive/v0.1.1.tar.gz"
   sha1 "ce89e04b7c6b31a06b497449f2d383a7dab513fb"

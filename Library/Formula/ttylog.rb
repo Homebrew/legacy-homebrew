@@ -1,6 +1,7 @@
 require "formula"
 
 class Ttylog < Formula
+  desc "Serial port logger: print everything from a serial device"
   homepage "http://ttylog.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ttylog/ttylog/0.25/ttylog-0.25.tar.gz"
   sha1 "02bb49066d861690439b351f06b0c3bdb203f06b"

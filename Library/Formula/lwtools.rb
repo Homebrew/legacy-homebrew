@@ -1,6 +1,7 @@
 require "formula"
 
 class Lwtools < Formula
+  desc "Cross-development tools for Motorola 6809 and Hitachi 6309 microprocessors"
   homepage "http://lwtools.projects.l-w.ca/"
   url "http://lwtools.projects.l-w.ca/releases/lwtools/lwtools-4.9.tar.gz"
   sha1 "a9191d9f7a2148757526f8f14166f483feb3e560"

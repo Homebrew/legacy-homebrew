@@ -1,6 +1,7 @@
 require "formula"
 
 class Librem < Formula
+  desc "Toolkit library for real-time audio and video processing"
   homepage "http://www.creytiv.com"
   url "http://www.creytiv.com/pub/rem-0.4.6.tar.gz"
   sha1 "9698b48aee5e720e56440f4c660d8bd4dbb7f8fa"

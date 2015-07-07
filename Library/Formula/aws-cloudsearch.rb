@@ -1,4 +1,5 @@
 class AwsCloudsearch < Formula
+  desc "Client for Amazon CloudSearch web service"
   homepage "https://aws.amazon.com/developertools/9054800585729911"
   url "https://s3.amazonaws.com/amazon-cloudsearch-data/cloud-search-tools-v2-2.0.1.0-2014.10.27.tar.gz"
   version "2.0.1.0-2014.10.27"

@@ -1,4 +1,5 @@
 class Zzuf < Formula
+  desc "A transparent application input fuzzer"
   homepage "http://caca.zoy.org/wiki/zzuf"
   url "http://caca.zoy.org/files/zzuf/zzuf-0.13.tar.gz"
   sha1 "19f904d63d045194885639c381a607ca86a319b5"

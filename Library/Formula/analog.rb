@@ -1,6 +1,7 @@
 require "formula"
 
 class Analog < Formula
+  desc "Logfile analyzer"
   homepage "https://tracker.debian.org/pkg/analog"
   # The previous long-time homepage and url are stone-cold dead. Using Debian instead.
   #homepage "http://analog.cx"

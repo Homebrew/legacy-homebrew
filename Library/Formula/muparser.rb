@@ -1,4 +1,5 @@
 class Muparser < Formula
+  desc "C++ math expression parser library"
   homepage "http://muparser.beltoforion.de/"
   url "https://docs.google.com/uc?export=download&id=0BzuB-ydOOoduejdwdTQwcF9JLTA"
   version "2.2.4"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Box2d < Formula
+  desc "2D physics engine for games"
   homepage 'http://www.box2d.org/'
   url 'https://box2d.googlecode.com/files/Box2D_v2.3.0.7z'
   sha1 '1d3ea1f872b3cab3ef5130a2404d74f9ff66f265'

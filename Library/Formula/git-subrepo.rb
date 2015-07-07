@@ -1,4 +1,5 @@
 class GitSubrepo < Formula
+  desc "Git Submodule Alternative"
   homepage "https://github.com/ingydotnet/git-subrepo"
   head "https://github.com/ingydotnet/git-subrepo.git"
 

@@ -1,14 +1,15 @@
 require 'formula'
 
 class Smartmontools < Formula
-  homepage 'http://sourceforge.net/apps/trac/smartmontools/'
-  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.3/smartmontools-6.3.tar.gz'
-  sha1 '716c5dc339d408d628c55dbe69028b1561df4c7e'
+  desc "SMART hard drive monitoring"
+  homepage 'https://www.smartmontools.org/'
+  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.4/smartmontools-6.4.tar.gz'
+  sha1 '855c7d555dd405e5b392b1631dc36dd9632db8b8'
 
   bottle do
-    sha1 "cf2bcaf04682dbc444735b73a0cbc719871e1951" => :mavericks
-    sha1 "4190a244560811958321f66d8b2544d2f1b9b5a8" => :mountain_lion
-    sha1 "0e13fe2610864bba50fd3fa540656fb8bbaf506b" => :lion
+    sha256 "2a653de9d0f41210a9b139f1e70ae561a72fa87727704f944f32dec6356a0fee" => :yosemite
+    sha256 "1b74b913314ede83f0597bf6df2b2cb763a1fd03490b07a529892cd36c2720c6" => :mavericks
+    sha256 "2b6dadf59bf77a6e711c547405d682b9f0e8af37329fe01d9abdefb3ce41fd7e" => :mountain_lion
   end
 
   def install

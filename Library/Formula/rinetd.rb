@@ -1,4 +1,5 @@
 class Rinetd < Formula
+  desc "Internet TCP redirection server"
   homepage "http://www.boutell.com/rinetd/"
   url "http://www.boutell.com/rinetd/http/rinetd.tar.gz"
   version "0.62"

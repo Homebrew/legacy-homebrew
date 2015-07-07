@@ -20,6 +20,7 @@ class Python273Requirement < Requirement
 end
 
 class Xulrunner < Formula
+  desc "Mozilla runtime package to bootstrap XUL+XPCOM applications"
   homepage "https://developer.mozilla.org/docs/XULRunner"
 
   stable do

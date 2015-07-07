@@ -1,4 +1,5 @@
 class Libcec < Formula
+  desc "Control devices with TV remote control and HDMI cabling"
   homepage "http://libcec.pulse-eight.com/"
   url "https://github.com/Pulse-Eight/libcec/archive/libcec-2.2.0-repack.tar.gz"
   sha1 "42e19328c5b05b5fff27bcdf80e7acc329201913"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ent < Formula
+  desc "Pseudorandom number sequence test program"
   homepage 'http://www.fourmilab.ch/random/'
   # This tarball is versioned and smaller, though non-official
   url 'https://github.com/psm14/ent/archive/1.0.tar.gz'

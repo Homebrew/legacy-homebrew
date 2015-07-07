@@ -1,6 +1,7 @@
 require 'formula'
 
 class Netpbm < Formula
+  desc "Image manipulation"
   homepage 'http://netpbm.sourceforge.net'
   # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
   # for versions and matching revisions

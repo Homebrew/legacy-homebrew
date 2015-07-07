@@ -1,13 +1,16 @@
 class Thefuck < Formula
+  desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.29.tar.gz"
-  sha256 "3e51de66ea29a1bbd9f1aadbd3a2398601e7a5e7ab69fef0f75677ca95f00cb1"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.46.tar.gz"
+  sha256 "d34dbadea0b399229a4f2b19c848d3281c7bd9a1dacd26ee44484a26bba4056d"
+
+  head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any
-    sha256 "257c5674dd683812bda279eb9709809440d7cba032862d234523a0e2dfd38d1d" => :yosemite
-    sha256 "b2cfa406696a624e311bed92ef08c314f0fe6c893308d8e67fecc08102da9b32" => :mavericks
-    sha256 "68a2b3f99d193ab817f31e8c7941d0f4574eccb36f9f29884e9d03e608999afe" => :mountain_lion
+    sha256 "b6d36f2b8327a36a9c25fa6b9a15ad9c4a29cda9be0a64d14fdb8abe68b952c9" => :yosemite
+    sha256 "5b1e61f3a009c8fa0bd31c12cc353b603880f5052eca7f346d1e3e5020d8f454" => :mavericks
+    sha256 "18cbb13454a6472ea01d0e3d512afc0667ac5a833562d0b0f9919bfcb1b649d3" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -36,10 +39,8 @@ class Thefuck < Formula
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
 
-    %w[psutil pathlib colorama six].each do |r|
-      resource(r).stage do
-        system "python", *Language::Python.setup_install_args(libexec/"vendor")
-      end
+    resources.each do |r|
+      r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
     system "python", *Language::Python.setup_install_args(libexec)
 
@@ -54,11 +55,10 @@ class Thefuck < Formula
 
   def caveats; <<-EOS.undent
     Add the following to your .bash_profile or .zshrc:
-      alias fuck='$(thefuck $(fc -ln -1))'
-    Or in config.fish:
-      function fuck
-        eval (thefuck $history[1])
-      end
+      bash: alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
+      zsh: alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
+
+      Other shells: https://github.com/nvbn/thefuck/wiki/Shell-aliases
     EOS
   end
 end

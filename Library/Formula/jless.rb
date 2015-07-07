@@ -4,6 +4,7 @@ require 'formula'
 # jless supports ISO 2022 code extension techniques and Japanese codes.
 
 class Jless < Formula
+  desc "Jless file pager supporting ISO2022"
   homepage 'http://www.greenwoodsoftware.com/less/'
   url 'http://ftp.de.debian.org/debian/pool/main/j/jless/jless_382-iso262.orig.tar.gz'
   version '382+iso262+ext03'

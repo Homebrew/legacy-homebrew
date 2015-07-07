@@ -1,6 +1,7 @@
 require 'formula'
 
 class Simgrid < Formula
+  desc "Studies behavior of large-scale distributed systems"
   homepage 'http://simgrid.gforge.inria.fr'
   url 'http://gforge.inria.fr/frs/download.php/file/33686/SimGrid-3.11.1.tar.gz'
   sha1 'b00585e2ed11d016eff6252384205e1e990f5895'

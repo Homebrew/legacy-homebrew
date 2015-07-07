@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libreplaygain < Formula
+  desc "Library to implement ReplayGain standard for audio"
   homepage 'http://www.musepack.net/'
   url 'http://files.musepack.net/source/libreplaygain_r475.tar.gz'
   version 'r475'

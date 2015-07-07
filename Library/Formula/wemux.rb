@@ -1,6 +1,7 @@
 require 'formula'
 
 class Wemux < Formula
+  desc "Enhances tmux's to provide multiuser terminal multiplexing"
   homepage 'https://github.com/zolrath/wemux'
   url 'https://github.com/zolrath/wemux/archive/v3.2.0.tar.gz'
   sha1 '099e6afbd5313aadd9a4dae7fc416f3846888624'

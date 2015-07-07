@@ -1,16 +1,17 @@
 class Lua51 < Formula
   # 5.2 is not fully backwards compatible so we must retain 2 Luas for now.
   # The transition has begun. Lua will now become Lua51, and Lua52 will become Lua.
+  desc "Powerful, lightweight programming language (v5.1.5)"
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.1.5.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5.orig.tar.gz"
   sha256 "2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 "610b41d679f9cac02b60c1f02a7b538dc7c54f1132a16cf5b3918b11ff00366e" => :yosemite
-    sha256 "327b064ab2e9e9bde95f8a2c19bc59931962a88292a9c1a9e18422dfdd5f32b6" => :mavericks
-    sha256 "96a4bcd4a492e57acbade7af6c098031b0a996c9acddc3d4fab22d353b26e5a2" => :mountain_lion
+    sha256 "9ba65f3942dee733f9612209c844cbdd560890ee558003ec55bd3678f9c2a016" => :yosemite
+    sha256 "dd81b86051197f6cc21abf4822dc3c0be0dc09347850496c00c873d902f0c345" => :mavericks
+    sha256 "c618924af19c957fac536aeb2a90f2c8bfa4068b2236f0c872f9de658c34071b" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -46,8 +47,8 @@ class Lua51 < Formula
   end
 
   resource "luarocks" do
-    url "https://github.com/keplerproject/luarocks/archive/v2.2.1.tar.gz"
-    sha256 "30e5bd99f82f5e3ea174572c1831f9ff83dfe37727f9fcfc89168b4572193571"
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
+    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
   end
 
   def install
@@ -76,7 +77,7 @@ class Lua51 < Formula
     system "make", "macosx", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
     system "make", "install", "INSTALL_TOP=#{prefix}", "INSTALL_MAN=#{man1}", "INSTALL_INC=#{include}/lua-5.1"
 
-    (lib+"pkgconfig").install "etc/lua.pc"
+    (lib/"pkgconfig").install "etc/lua.pc"
 
     # Renaming from Lua to Lua51.
     # Note that the naming must be both lua-version & lua.version.
@@ -99,11 +100,11 @@ class Lua51 < Formula
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
                               "--sysconfdir=#{etc}/luarocks51", "--with-lua=#{prefix}",
-                              "--lua-version=5.1", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks51"
+                              "--lua-version=5.1", "--versioned-rocks-dir"
         system "make", "build"
         system "make", "install"
 
-        (share+"lua/5.1/luarocks").install_symlink Dir["#{libexec}/share/lua/5.1/luarocks/*"]
+        (share/"lua/5.1/luarocks").install_symlink Dir["#{libexec}/share/lua/5.1/luarocks/*"]
         bin.install_symlink libexec/"bin/luarocks-5.1"
         bin.install_symlink libexec/"bin/luarocks-admin-5.1"
 
@@ -125,9 +126,6 @@ class Lua51 < Formula
     This is, for now, unavoidable. If this is troublesome for you, you can build
     rocks with the `--tree=` command to a special, non-conflicting location and
     then add that to your `$PATH`.
-
-    If you have existing Rocks trees in $HOME, you will need to migrate them to the new
-    location manually. You will only have to do this once.
     EOS
   end
 

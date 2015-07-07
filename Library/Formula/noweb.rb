@@ -1,6 +1,7 @@
 require 'formula'
 
 class Noweb < Formula
+  desc "WEB-like literate-programming tool"
   homepage 'http://www.cs.tufts.edu/~nr/noweb/'
   url 'ftp://www.eecs.harvard.edu/pub/nr/noweb.tgz'
   version '2.11b'

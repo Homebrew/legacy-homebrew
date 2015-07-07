@@ -1,6 +1,7 @@
 require 'formula'
 
 class RdiffBackup < Formula
+  desc "Backs up one directory to another--also works over networks"
   homepage 'http://rdiff-backup.nongnu.org/'
   url 'http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz'
   sha1 '14ffe4f5b46a8a96ded536c1d03ae5e85faae318'

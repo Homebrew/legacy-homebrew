@@ -1,6 +1,7 @@
 require "formula"
 
 class Queequeg < Formula
+  desc "English grammar checker for non-native speakers"
   homepage "http://queequeg.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/queequeg/queequeg/queequeg-0.91/queequeg-0.91.tar.gz"
   sha1 "e0ceae717a297ee866e38ae7fd10c216df1232e9"

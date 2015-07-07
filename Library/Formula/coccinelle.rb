@@ -1,6 +1,7 @@
 require 'formula'
 
 class Coccinelle < Formula
+  desc "Program matching and transformation engine for C code"
   homepage 'http://coccinelle.lip6.fr/'
   url 'http://coccinelle.lip6.fr/distrib/coccinelle-1.0.0-rc21.tgz'
   sha1 'edc008da552eb8f4ef7712fc99b4dc630ab6fb35'

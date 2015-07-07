@@ -1,6 +1,7 @@
 require "language/go"
 
 class Deisctl < Formula
+  desc "Deis Control Utility"
   homepage "http://deis.io/"
   url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
   sha1 "c57fb6073b374b95262c36959c6d2b6c508cda59"

@@ -1,15 +1,18 @@
 class Gtkx3 < Formula
+  desc "Toolkit for creating graphical user interfaces"
   homepage "http://gtk.org/"
-  url "http://ftp.gnome.org/pub/gnome/sources/gtk+/3.16/gtk+-3.16.2.tar.xz"
-  sha256 "a03963a61c9f5253a8d4003187190be165d92f95acf97ca783735071a8781cfa"
+  url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.4.tar.xz"
+  sha256 "1ee5dbd7a4cb81a91eaa1b7ae64ba5a3eab6a3c0a764155583ab96524590fc8e"
+  revision 1
 
   bottle do
-    sha256 "3b301ff711350f37f99556603e4d1b74e720ef2ff3f037c3164645c17973599a" => :yosemite
-    sha256 "54c17fb91c52356ffae69438865d1fe0f018bc075d1e803c29c84ac975acd4a8" => :mavericks
-    sha256 "15bcce7131b628d66fdf15797281975b95d33ad72cd704e050d6e8c1c576201d" => :mountain_lion
+    sha256 "8b57025aa63fe428ba5a0552a2fc821595b96662574b71266b05102c4aa76e6a" => :yosemite
+    sha256 "b3b757d5057704009a7b5cd3bfcd69b30023276a06a82367e79e93e2d8a770df" => :mavericks
+    sha256 "a638df465d2761f89218ef976e800a448bd9b94c1bb099e2816f75e341f7eb53" => :mountain_lion
   end
 
   option :universal
+  option "with-quartz-relocation", "Build with quartz relocation support"
 
   depends_on "pkg-config" => :build
   depends_on "gdk-pixbuf"
@@ -20,6 +23,7 @@ class Gtkx3 < Formula
   depends_on "gsettings-desktop-schemas" => :recommended
   depends_on "pango"
   depends_on "glib"
+  depends_on "hicolor-icon-theme"
 
   def install
     ENV.universal_binary if build.universal?
@@ -32,9 +36,10 @@ class Gtkx3 < Formula
       --enable-introspection=yes
       --disable-schemas-compile
       --enable-quartz-backend
-      --enable-quartz-relocation
       --disable-x11-backend
     ]
+
+    args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
 
     system "./configure", *args
     # necessary to avoid gtk-update-icon-cache not being found during make install
@@ -58,7 +63,56 @@ class Gtkx3 < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-I#{HOMEBREW_PREFIX}/include/gtk-3.0", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/gio-unix-2.0/", "-I#{HOMEBREW_PREFIX}/include/cairo", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/pango-1.0", "-I#{HOMEBREW_PREFIX}/include/atk-1.0", "-I#{HOMEBREW_PREFIX}/include/cairo", "-I#{HOMEBREW_PREFIX}/include/pixman-1", "-I#{HOMEBREW_PREFIX}/include", "-I#{HOMEBREW_PREFIX}/include/freetype2", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/gdk-pixbuf-2.0", "-I#{HOMEBREW_PREFIX}/include/libpng16", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "-I/opt/X11/include", "test.c", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/gettext/lib", "-lgtk-3", "-lgdk-3", "-lpangocairo-1.0", "-lpango-1.0", "-latk-1.0", "-lcairo-gobject", "-lcairo", "-lgdk_pixbuf-2.0", "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl", "-o", "test"
+    atk = Formula["atk"]
+    cairo = Formula["cairo"]
+    fontconfig = Formula["fontconfig"]
+    freetype = Formula["freetype"]
+    gdk_pixbuf = Formula["gdk-pixbuf"]
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    libepoxy = Formula["libepoxy"]
+    libpng = Formula["libpng"]
+    pango = Formula["pango"]
+    pixman = Formula["pixman"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{atk.opt_include}/atk-1.0
+      -I#{cairo.opt_include}/cairo
+      -I#{fontconfig.opt_include}
+      -I#{freetype.opt_include}/freetype2
+      -I#{gdk_pixbuf.opt_include}/gdk-pixbuf-2.0
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/gio-unix-2.0/
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}
+      -I#{include}/gtk-3.0
+      -I#{libepoxy.opt_include}
+      -I#{libpng.opt_include}/libpng16
+      -I#{pango.opt_include}/pango-1.0
+      -I#{pixman.opt_include}/pixman-1
+      -D_REENTRANT
+      -L#{atk.opt_lib}
+      -L#{cairo.opt_lib}
+      -L#{gdk_pixbuf.opt_lib}
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -L#{pango.opt_lib}
+      -latk-1.0
+      -lcairo
+      -lcairo-gobject
+      -lgdk-3
+      -lgdk_pixbuf-2.0
+      -lgio-2.0
+      -lglib-2.0
+      -lgobject-2.0
+      -lgtk-3
+      -lintl
+      -lpango-1.0
+      -lpangocairo-1.0
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

@@ -1,4 +1,5 @@
 class Libxml2 < Formula
+  desc "GNOME XML library"
   homepage "http://xmlsoft.org"
   url "http://xmlsoft.org/sources/libxml2-2.9.2.tar.gz"
   mirror "ftp://xmlsoft.org/libxml2/libxml2-2.9.2.tar.gz"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Hping < Formula
+  desc "Command-line oriented TCP/IP packet assembler/analyzer"
   homepage "http://www.hping.org/"
   url "http://www.hping.org/hping3-20051105.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Hping/hping3-20051105.tar.gz"

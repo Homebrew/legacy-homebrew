@@ -1,6 +1,7 @@
 require "formula"
 
 class GmailBackup < Formula
+  desc "Backup and restore the content of your Gmail account"
   homepage "http://www.gmail-backup.com/"
   url "https://gmail-backup-com.googlecode.com/files/gmail-backup-20110307.tar.gz"
   head "http://gmail-backup-com.googlecode.com/svn/trunk"

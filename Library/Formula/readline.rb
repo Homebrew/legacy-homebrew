@@ -1,4 +1,5 @@
 class Readline < Formula
+  desc "Library for command-line editing"
   homepage "http://tiswww.case.edu/php/chet/readline/rltop.html"
   url "http://ftpmirror.gnu.org/readline/readline-6.3.tar.gz"
   mirror "https://ftp.gnu.org/gnu/readline/readline-6.3.tar.gz"

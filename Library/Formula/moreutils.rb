@@ -1,4 +1,5 @@
 class Moreutils < Formula
+  desc "Collection of tools that nobody wrote when UNIX was young"
   homepage "http://joeyh.name/code/moreutils/"
   url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
   mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"

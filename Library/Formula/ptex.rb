@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ptex < Formula
+  desc "Texture mapping system"
   homepage 'http://ptex.us'
   url 'https://github.com/wdas/ptex/archive/v2.0.42.tar.gz'
   sha1 '0dc69452c42ccd4a2e24d931f7a9f2d24b7e60da'

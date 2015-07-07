@@ -1,6 +1,7 @@
 require "formula"
 
 class Vmalloc < Formula
+  desc "Standalone aso+cdt+vmalloc library"
   homepage "http://www2.research.att.com/sw/download/"
   url "http://www2.research.att.com/~astopen/download/tgz/vmalloc.2013-05-31.tgz",
     :user => "I accept www.opensource.org/licenses/eclipse:."

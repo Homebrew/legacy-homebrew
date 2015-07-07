@@ -1,6 +1,7 @@
 require 'formula'
 
 class WildflyAs < Formula
+  desc "Managed application runtime for building applications"
   homepage 'http://wildfly.org/'
   url 'http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.tar.gz'
   sha1 'd78a864386a9bc08812eed9781722e45812a7826'

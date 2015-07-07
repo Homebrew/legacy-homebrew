@@ -1,4 +1,5 @@
 class Subliminal < Formula
+  desc "Library to search and download subtitles"
   homepage "https://subliminal.readthedocs.org"
   url "https://github.com/Diaoul/subliminal/archive/0.7.5.tar.gz"
   sha256 "ade34adc8085feba51cf056410e38bea0042e5956732e430baa5295e6522daa1"

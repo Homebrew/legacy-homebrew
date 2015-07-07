@@ -1,6 +1,7 @@
 require "formula"
 
 class Plan9port < Formula
+  desc "Many Plan 9 programs ported to UNIX-like operating systems"
   homepage "http://swtch.com/plan9port/"
   url "https://plan9port.googlecode.com/files/plan9port-20140306.tgz"
   sha1 "b778a96558e2b67be28ae80cab4482ef3082ec0e"

@@ -1,6 +1,7 @@
 require "formula"
 
 class AircrackNg < Formula
+  desc "Next-generation aircrack with lots of new features"
   homepage "http://aircrack-ng.org/"
   # We can't update this due to linux-only dependencies in >1.1.
   # See https://github.com/Homebrew/homebrew/issues/29450

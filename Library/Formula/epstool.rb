@@ -1,4 +1,5 @@
 class Epstool < Formula
+  desc "Edit preview images and fix bounding boxes in EPS files"
   homepage "http://pages.cs.wisc.edu/~ghost/gsview/epstool.htm"
   url "http://pkgs.fedoraproject.org/repo/pkgs/epstool/epstool-3.08.tar.gz/465a57a598dbef411f4ecbfbd7d4c8d7/epstool-3.08.tar.gz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Epstool/epstool-3.08.tar.gz"

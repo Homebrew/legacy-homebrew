@@ -1,6 +1,7 @@
 require 'formula'
 
 class MecabIpadic < Formula
+  desc "IPA dictionary compiled for MeCab"
   homepage 'http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html'
   url 'https://downloads.sourceforge.net/project/mecab/mecab-ipadic/2.7.0-20070801/mecab-ipadic-2.7.0-20070801.tar.gz'
   sha1 '0d9d021853ba4bb4adfa782ea450e55bfe1a229b'

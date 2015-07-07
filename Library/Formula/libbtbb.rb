@@ -1,6 +1,7 @@
 require "formula"
 
 class Libbtbb < Formula
+  desc "Bluetooth baseband decoding library"
   homepage "https://github.com/greatscottgadgets/libbtbb"
   url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R4.tar.gz"
   sha1 "281bb4a68f5e79553d704a6fe5256944338ac4b3"

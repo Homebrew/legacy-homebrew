@@ -1,6 +1,7 @@
 require 'formula'
 
 class PutmailQueue < Formula
+  desc "Putmail queue package"
   homepage 'http://putmail.sourceforge.net/home.html'
   url 'https://downloads.sourceforge.net/project/putmail/putmail-queue/0.2/putmail-queue-0.2.tar.bz2'
   sha1 '55eca5d8cdeec7f742b3ac5839a266120e50d176'

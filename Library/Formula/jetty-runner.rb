@@ -1,6 +1,7 @@
 require "formula"
 
 class JettyRunner < Formula
+  desc "Use Jetty without an installed distribution"
   homepage "http://www.eclipse.org/jetty/documentation/9.2.2.v20140723/runner.html"
   url "http://central.maven.org/maven2/org/eclipse/jetty/jetty-runner/9.2.2.v20140723/jetty-runner-9.2.2.v20140723.jar"
   version "9.2.2.v20140723"

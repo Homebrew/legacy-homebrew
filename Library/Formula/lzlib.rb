@@ -1,6 +1,7 @@
 require "formula"
 
 class Lzlib < Formula
+  desc "Data compression library"
   homepage "http://www.nongnu.org/lzip/lzlib.html"
   url "http://download.savannah.gnu.org/releases/lzip/lzlib/lzlib-1.6.tar.gz"
   sha1 "4a24e4d17df3fd90f53866ace922c831f26600f6"

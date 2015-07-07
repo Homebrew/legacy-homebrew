@@ -1,4 +1,5 @@
 class PureFtpd < Formula
+  desc "Secure and efficient FTP server"
   homepage "http://www.pureftpd.org/"
   url "http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.37.tar.gz"
   mirror "ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.37.tar.gz"

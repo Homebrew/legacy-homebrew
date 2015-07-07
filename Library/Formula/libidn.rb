@@ -1,5 +1,5 @@
-# encoding: UTF-8
 class Libidn < Formula
+  desc "International domain name library"
   homepage "https://www.gnu.org/software/libidn/"
   url "http://ftpmirror.gnu.org/libidn/libidn-1.30.tar.gz"
   mirror "https://ftp.gnu.org/gnu/libidn/libidn-1.30.tar.gz"

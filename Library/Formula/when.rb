@@ -1,4 +1,5 @@
 class When < Formula
+  desc "Tiny personal calendar"
   homepage "http://www.lightandmatter.com/when/when.html"
   url "https://mirrors.kernel.org/debian/pool/main/w/when/when_1.1.34.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/w/when/when_1.1.34.orig.tar.gz"

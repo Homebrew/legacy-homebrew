@@ -1,6 +1,7 @@
 require 'formula'
 
 class GnuSmalltalk < Formula
+  desc "GNU Smalltalk interpreter and image"
   homepage 'http://smalltalk.gnu.org/'
   url 'http://ftpmirror.gnu.org/smalltalk/smalltalk-3.2.5.tar.xz'
   mirror 'http://ftp.gnu.org/gnu/smalltalk/smalltalk-3.2.5.tar.xz'

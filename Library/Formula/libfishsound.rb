@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libfishsound < Formula
+  desc "Decode and encode audio data using the Xiph.org codecs"
   homepage 'http://xiph.org/fishsound/'
   url 'http://downloads.xiph.org/releases/libfishsound/libfishsound-1.0.0.tar.gz'
   sha1 '5263dfaa12dce71e30c5d80f871d92869c6b5ce2'

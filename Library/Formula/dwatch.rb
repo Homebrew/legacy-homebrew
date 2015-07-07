@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dwatch < Formula
+  desc "Watch programs and perform actions based on a configuration file"
   homepage 'http://siag.nu/dwatch/'
   url 'http://siag.nu/pub/dwatch/dwatch-0.1.1.tar.gz'
   sha1 'd1588364fcbad85b7ba81fa027199e983de55435'

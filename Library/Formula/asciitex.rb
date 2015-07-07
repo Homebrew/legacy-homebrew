@@ -1,6 +1,7 @@
 require 'formula'
 
 class Asciitex < Formula
+  desc "Generate ASCII-art representations of mathematical equations"
   homepage 'http://asciitex.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/asciitex/asciiTeX-0.21.tar.gz'
   sha1 'b37d300910952c117f82f77dd2da99a7b9a79db7'

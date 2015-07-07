@@ -1,4 +1,5 @@
 class Gvp < Formula
+  desc "Go versioning packager"
   homepage "https://github.com/pote/gvp"
   url "https://github.com/pote/gvp/archive/v0.2.0.tar.gz"
   sha1 "d05a2f04ba06127c95fb1d1fb10a2643d6d27ac6"

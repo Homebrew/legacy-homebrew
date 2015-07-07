@@ -1,6 +1,7 @@
 require "formula"
 
 class Namazu < Formula
+  desc "Full-text search engine"
   homepage "http://www.namazu.org/"
   url "http://www.namazu.org/stable/namazu-2.0.21.tar.gz"
   sha1 "35aaff34d0cdbe96fff24da87671b6f902bb7d43"

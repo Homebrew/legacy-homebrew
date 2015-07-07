@@ -1,14 +1,13 @@
-require "formula"
-
 class PdfTools < Formula
-  homepage "https://github.com/axot/pdf-tools"
-  url "https://github.com/axot/pdf-tools/releases/download/v0.20/pdf-tools_v0.20.tgz"
-  sha1 "0592f58d8f6dcdc597525ce887abda564eced285"
+  desc "Emacs support library for PDF files"
+  homepage "https://github.com/politza/pdf-tools"
+  url "https://github.com/politza/pdf-tools/archive/v0.50.tar.gz"
+  sha256 "3a9a17eb51d78d1366381aa3e2224051d5e1668ea91b59a76bb6711428093cc6"
 
   bottle do
-    sha1 "424085396d9c3669957be227e3347595fa620b64" => :mavericks
-    sha1 "12acd5174bc22ccaa8d13359a5cdcaee344d83b5" => :mountain_lion
-    sha1 "9275fd218bdc416b140214adb419d8f8201a491f" => :lion
+    sha256 "66cdc0c25a73a20e34fe3da69a0b3215cb01c6d8e3a8b54be84fc611a21eb1ea" => :yosemite
+    sha256 "309d7f940d2bc3b08003435fbc2251bfcfce7cf2204fa61590e66cf69234985a" => :mavericks
+    sha256 "db1601cb97a5490fa24fb02a8eeaa8bb0f7de3cb8d7db52fec5fc5d807a4ba34" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -19,21 +18,16 @@ class PdfTools < Formula
   depends_on "poppler"
 
   def install
-    ENV["zlib_CFLAGS"] = "-I/usr/include"
-    ENV["zlib_LIBS"] = "-L/usr/lib -lz"
-
-    system "./autogen.sh"
-    system "./configure", "--prefix=#{prefix}"
     system "make"
 
-    prefix.install "pdf-tools-0.20.tar"
+    prefix.install "pdf-tools-0.50.tar"
     (prefix/"elpa").mkpath
-    system "tar", "--strip-components=1", "-xf", "#{prefix}/pdf-tools-0.20.tar", "-C", "#{prefix}/elpa"
+    system "tar", "--strip-components=1", "-xf", "#{prefix}/pdf-tools-0.50.tar", "-C", "#{prefix}/elpa"
   end
 
   def caveats; <<-EOS.undent
     To install to your Emacs run:
-      emacs -Q --batch --eval "(package-install-file \\"#{prefix}/pdf-tools-0.20.tar\\")"
+      emacs -Q --batch --eval "(package-install-file \\"#{prefix}/pdf-tools-0.50.tar\\")"
     EOS
   end
 end

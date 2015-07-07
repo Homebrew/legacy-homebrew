@@ -1,24 +1,18 @@
 class Mariadb < Formula
+  desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.18/source/mariadb-10.0.18.tar.gz"
-  sha256 "686fee90aaa04a112256d1581336fee734f2d1068784be57a27683ca421a9af5"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.20/source/mariadb-10.0.20.tar.gz"
+  sha256 "3a4f6963c794977af5d5fd9ec06a337a2ad556b3a287196fddbd2243c1388b7b"
 
   bottle do
-    sha256 "859db2bd59232b05c04d14a28e8d2aee4a3d5d3ed434514adddd37e898b033e7" => :yosemite
-    sha256 "092b42b532c66e974033dbf0fbb04a9b345d6f7bc8103d5a3ef024801f301c9a" => :mavericks
-    sha256 "6f847f1c3ca65c11ac034e45c53889b2079a4dbb2b089d529e4ca110c86262e3" => :mountain_lion
+    sha256 "66f51ca674ca5e82f1d813507382f9b448f4a96e2de472b9be3297d090780348" => :yosemite
+    sha256 "848299d2e682d2cc353be6119e90ba2670a03361cdbe868f89c6143a838b422e" => :mavericks
+    sha256 "3f760e604dbee14a52e854ab8c85dcb3e68c53652750917eaa90d8e463d8958f" => :mountain_lion
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.4/source/mariadb-10.1.4.tar.gz"
-    sha256 "14cc92414b2c3822923977a6fb544593498dbb5005044db33c193511757d411c"
-
-    patch do
-      # https://mariadb.atlassian.net/browse/MDEV-8073
-      # upstream patch, fixed in 10.1.5
-      url "https://github.com/MariaDB/server/commit/ff1e0821d1174428dd70331bd864de1334ab0567.diff"
-      sha256 "552fe747e05de7c0ffa8af7d0476e74f3bb4b54bb8fa0609b94a1c2147728ebb"
-    end
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.5/source/mariadb-10.1.5.tar.gz"
+    sha256 "af8788bfbb842338882e505612f86ef53a25968663a1519185ecf3de3b1efe83"
   end
 
   depends_on "cmake" => :build

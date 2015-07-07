@@ -1,6 +1,7 @@
 require "formula"
 
 class Bibclean < Formula
+  desc "BibTeX bibliography file pretty printer and syntax checker"
   homepage "http://www.math.utah.edu/~beebe/software/bibclean/bibclean-03.html#HDR.3"
   url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.16.tar.gz"
   sha1 "f6790cd97e7fe05abce06c991d58e96b4b53ad04"

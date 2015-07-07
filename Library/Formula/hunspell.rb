@@ -1,6 +1,7 @@
 require "formula"
 
 class Hunspell < Formula
+  desc "Spell checker and morphological analyzer"
   homepage "http://hunspell.sourceforge.net/"
   url "https://downloads.sourceforge.net/hunspell/hunspell-1.3.3.tar.gz"
   sha1 "219b20f305d6690f666ff3864a16e4674908a553"

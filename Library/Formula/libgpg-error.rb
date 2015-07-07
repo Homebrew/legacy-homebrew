@@ -1,4 +1,5 @@
 class LibgpgError < Formula
+  desc "Common error values for all GnuPG components"
   homepage "https://www.gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.19.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgpg-error/libgpg-error-1.19.tar.bz2"

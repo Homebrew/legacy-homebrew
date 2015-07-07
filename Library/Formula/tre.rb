@@ -1,4 +1,5 @@
 class Tre < Formula
+  desc "Lightweight, POSIX-compliant regular expression (regex) library"
   homepage "http://laurikari.net/tre/"
   url "http://laurikari.net/tre/tre-0.8.0.tar.bz2"
   sha256 "8dc642c2cde02b2dac6802cdbe2cda201daf79c4ebcbb3ea133915edf1636658"

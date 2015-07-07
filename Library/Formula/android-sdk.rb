@@ -1,20 +1,23 @@
+require "base64"
+
 class AndroidSdk < Formula
+  desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.1.2-macosx.zip"
-  version "24.1.2"
-  sha256 "a4441a4770130aa841f350918a16db43aaee18f2d8e0c681a216e0381a763362"
+  url "https://dl.google.com/android/android-sdk_r24.3.3-macosx.zip"
+  version "24.3.3"
+  sha256 "2e855666ff7fd35e9849abc5f091d5e119fab353baa0c9b4fed628f7b979a538"
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
   resource "completion" do
-    url "https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash"
-    sha256 "6ae8fae2a07c7a286d440d5f5bdafdd0c208284d7c8be21a0f59d96bb7426091"
+    url "https://android.googlesource.com/platform/sdk/+/7859e2e738542baf96c15e6c8b50bbdb410131b0/bash_completion/adb.bash?format=TEXT"
+    sha256 "44b3e20ed9cb8fff01dc6907a57bd8648cd0d1bcc7b129ec952a190983ab5e1a"
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "21.1.2"
+    "22.0.1"
   end
 
   def install
@@ -77,14 +80,19 @@ class AndroidSdk < Formula
       EOS
     end
 
-    bash_completion.install resource("completion").files("adb.bash" => "adb-completion.bash")
+    resource("completion").stage do
+      # googlesource.com only serves up the file in base64-encoded format; we
+      # need to decode it before installing
+      decoded_file = buildpath/"adb-completion.bash"
+      decoded_file.write Base64.decode64(File.read("adb.bash"))
+      bash_completion.install decoded_file
+    end
   end
 
   def caveats; <<-EOS.undent
     Now run the 'android' tool to install the actual SDK stuff.
 
-    The Android-SDK location for IDEs such as Eclipse, IntelliJ etc is:
-      #{prefix}
+    The Android-SDK is available at #{opt_prefix}
 
     You will have to install the platform-tools and docs EVERY time this formula
     updates. If you want to try and fix this then see the comment in this formula.

@@ -5,6 +5,7 @@ require 'formula'
 #  - http://wiki.winehq.org/Gecko
 #  - http://wiki.winehq.org/Mono
 class Wine < Formula
+  desc "Wine Is Not an Emulator"
   homepage 'https://www.winehq.org/'
 
   stable do
@@ -29,8 +30,8 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.42.tar.bz2"
-    sha256 "5a7f5c82b120bfe1eca572bd8d7a4ede7e6baf330ce3087199eb5cd175233ba2"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.46.tar.bz2"
+    sha256 "9ab4046cc676de3054f9f2560e7d757b25324f72dd9a9cfed0d4aa48cc87350b"
 
     depends_on "samba" => :optional
     depends_on "gnutls"

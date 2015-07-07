@@ -1,15 +1,17 @@
-require "formula"
-
 class Csfml < Formula
+  # Don't update CSFML until there's a corresponding SFML release
+  desc "SMFL bindings for C"
   homepage "http://www.sfml-dev.org/"
-  url "http://www.sfml-dev.org/download/csfml/CSFML-2.2-sources.zip"
-  sha1 "1dc3d2dadef6e6daa05b0dd868367ad5f02419e4"
+  url "https://github.com/SFML/CSFML/archive/2.3.tar.gz"
+  sha256 "ba8f5529fd264c2778844a8b1bb71ede7e902bbd6841275c344dc488ce7054cd"
+
+  head "https://github.com/SFML/CSFML.git"
 
   bottle do
     cellar :any
-    sha256 "4cc1bc694356a8206e1164cc266ef68b5c45e7a1ee60d0e210c4a8e49c6abb97" => :yosemite
-    sha256 "d1d8e0343fe42fd91029a770cdf912587fbf7388ea997d68ec4f96f33548cb77" => :mavericks
-    sha256 "3ecb8338214a6c0485fe294af23c4ec8440e35878ef0521a4fe6d6da792e6c77" => :mountain_lion
+    sha256 "0f080fd2c809a1c22ba10aee92ccc34b201458e98de3b8c973cdf9fa99d8cf3e" => :yosemite
+    sha256 "32e3cd01b497a73fb7d918841e4df0e980811270d92626d6399e47fae8291ea6" => :mavericks
+    sha256 "afbda33ded196a5dd39ecc68627e6fb6db156ec7a67f71fb16a6d6cb4cd40531" => :mountain_lion
   end
 
   depends_on "cmake" => :build

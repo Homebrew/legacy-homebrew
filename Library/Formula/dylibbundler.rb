@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dylibbundler < Formula
+  desc "Utility to bundle libraries into executables for OS X"
   homepage 'http://macdylibbundler.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/macdylibbundler/macdylibbundler/0.4.4/dylibbundler-0.4.4.zip'
   sha1 '8d120bababc5218927447cf7fec57abf5d093ff6'

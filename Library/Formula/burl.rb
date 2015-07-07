@@ -1,6 +1,7 @@
 require "formula"
 
 class Burl < Formula
+  desc "Shell script wrapper that offers helpful shortcuts for curl(1)"
   homepage "https://github.com/visionmedia/burl"
   url "https://github.com/visionmedia/burl/archive/1.0.1.tar.gz"
   sha1 "ee21caa267af9e3c679f3c4c38d4ccd6ba2dd655"

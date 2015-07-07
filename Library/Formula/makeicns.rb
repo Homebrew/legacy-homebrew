@@ -1,6 +1,7 @@
 require 'formula'
 
 class Makeicns < Formula
+  desc "Create icns files from the command-line"
   homepage 'http://bitbucket.org/mkae/makeicns'
   url 'https://bitbucket.org/mkae/makeicns/downloads/makeicns-1.4.10a.tar.bz2'
   sha1 '2a3b1229781516c8cc36089bf09729d5c17ac17c'

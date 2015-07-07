@@ -1,6 +1,7 @@
 require 'formula'
 
 class Backupninja < Formula
+  desc "Backup automation tool"
   homepage "https://labs.riseup.net/code/projects/backupninja"
   head "git://labs.riseup.net/backupninja.git"
   url "https://labs.riseup.net/code/attachments/download/275/backupninja-1.0.1.tar.gz"

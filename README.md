@@ -4,7 +4,7 @@ Features, usage and installation instructions are [summarised on the homepage](h
 ## What Packages Are Available?
 1. Type `brew search` for a list.
 2. Or visit [braumeister.org](http://braumeister.org) to browse packages online.
-3. Or use [`brew desc`](https://github.com/telemachus/homebrew-desc) to browse packages from the command line.
+3. Or use `brew search --desc` to browse packages from the command line.
 
 ## More Documentation
 `brew help`, `man brew` or check [our documentation](https://github.com/Homebrew/homebrew/tree/master/share/doc/homebrew#readme).
@@ -19,8 +19,13 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 ## Security
 Please report security issues to security@brew.sh.
 
+This is our PGP key which is valid until June 17, 2016.
+* Key ID: `CE59E297`
+* Fingeprint: `C657 8F76 2E23 441E C879  EC5C E33A 3D3C CE59 E297`
+* Full key: https://keybase.io/homebrew/key.asc
+
 ## Who Are You?
-Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Jack Nagel](https://github.com/jacknagel), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Brett Koonce](https://github.com/asparagui) and [Tim Smith](https://github.com/tdsmith).
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4) and [Tim Smith](https://github.com/tdsmith).
 
 Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 

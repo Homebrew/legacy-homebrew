@@ -1,6 +1,7 @@
 require "formula"
 
 class Libtecla < Formula
+  desc "Command-line editing facilities similar to the tcsh shell"
   homepage "http://www.astro.caltech.edu/~mcs/tecla/index.html"
   url "http://www.astro.caltech.edu/~mcs/tecla/libtecla-1.6.3.tar.gz"
   sha1 "1c2ca66c16deea59cde6fff53a5cfb9a02659ffc"

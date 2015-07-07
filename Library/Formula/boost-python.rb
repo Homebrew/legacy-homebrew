@@ -1,40 +1,22 @@
-class UniversalPython < Requirement
-  satisfy(:build_env => false) { archs_for_command("python").universal? }
-
-  def message; <<-EOS.undent
-    A universal build was requested, but Python is not a universal build
-
-    Boost compiles against the Python it finds in the path; if this Python
-    is not a universal build then linking will likely fail.
-    EOS
-  end
-end
-
-class UniversalPython3 < Requirement
-  satisfy(:build_env => false) { archs_for_command("python3").universal? }
-
-  def message; <<-EOS.undent
-    A universal build was requested, but Python 3 is not a universal build
-
-    Boost compiles against the Python 3 it finds in the path; if this Python
-    is not a universal build then linking will likely fail.
-    EOS
-  end
-end
-
 class BoostPython < Formula
+  desc "C++ library for C++/Python interoperability"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.57.0/boost_1_57_0.tar.bz2"
-  sha1 "e151557ae47afd1b43dc3fac46f8b04a8fe51c12"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
+  sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
   head "https://github.com/boostorg/boost.git"
+
+  bottle do
+    cellar :any
+    sha256 "7f627fb1887ecaaea4b6b363d300a21c5274a1607c7dc64f2114d3794b5fec11" => :yosemite
+    sha256 "6239719b00615abb9ce2bd40c680b14182325c2e1844c1bea410c002b42ce1db" => :mavericks
+    sha256 "24acf2ddde1edfabe04239856dec6ce85e8652f3c0d5d8cf357b219c2bf3272a" => :mountain_lion
+  end
 
   option :universal
   option :cxx11
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
-  depends_on UniversalPython if build.universal? and build.with? "python"
-  depends_on UniversalPython3 if build.universal? and build.with? "python3"
 
   if build.cxx11?
     depends_on "boost" => "c++11"
@@ -45,6 +27,15 @@ class BoostPython < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
+  end
+
+  stable do
+    # don't explicitly link a Python framework
+    # https://github.com/boostorg/build/pull/78
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/9026da299ac1bfd3f419/raw/b73a919c38af08941487ca37d46e711864104c4d/boost-python.diff"
+      sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
+    end
   end
 
   def install
@@ -114,10 +105,10 @@ class BoostPython < Formula
         boost::python::def("greet", greet);
       }
     EOS
-    Language::Python.each_python(build) do |python, version|
-      pycflags = `#{python}-config --includes`.strip
-      pyldflags = `#{python}-config --ldflags`.strip
-      system "#{ENV.cxx} -shared hello.cpp #{pycflags} #{pyldflags} -lboost_#{python} -o hello.so"
+    Language::Python.each_python(build) do |python, _|
+      pyflags = (`#{python}-config --includes`.strip +
+                 `#{python}-config --ldflags`.strip).split(" ")
+      system ENV.cxx, "-shared", "hello.cpp", "-lboost_#{python}", "-o", "hello.so", *pyflags
       output = `#{python} -c "from __future__ import print_function; import hello; print(hello.greet())"`
       assert output.include?("Hello, world!")
     end

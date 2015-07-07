@@ -1,6 +1,7 @@
 require 'formula'
 
 class Orfeo < Formula
+  desc "Library of image processing algorithms"
   homepage 'http://www.orfeo-toolbox.org/otb/'
   url 'https://downloads.sourceforge.net/project/orfeo-toolbox/OTB/OTB-3.20/OTB-3.20.0.tgz'
   sha1 '2af5b4eb857d0f1ecb1fd1107c6879f9d79dd0fc'

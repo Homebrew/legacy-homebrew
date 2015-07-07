@@ -1,13 +1,14 @@
 class ShadowsocksLibev < Formula
+  desc "Libev port of shadowsocks"
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
-  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.2.0.tar.gz"
-  sha256 "49688f39649f0f61e323ddba8b02daa5dfe88bf2e051ed91181d266fe824df69"
+  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.2.2.tar.gz"
+  sha256 "9919d041a6ee4f7b7de2ea7209533b0b9d5fd5732eaa430a6f4055f6e7f1c23f"
 
   bottle do
     cellar :any
-    sha256 "0e26d7351e460bf878d9957693fb8e87320a66762600f9bc69e10201f25a0e15" => :yosemite
-    sha256 "cb0f7768bb3b64b0ce2c3d97343f0c4e38054eb5e19215194ca1d7e07e328507" => :mavericks
-    sha256 "827e34eca84e18ad7be87554d686a6257fd71239b35faeb9606a73f87df4cbdc" => :mountain_lion
+    sha256 "04218b8b59658022859e9f0cbad23a3239bc220af33ce129a80b710217c3b827" => :yosemite
+    sha256 "e957a1465f01c7e87b84043921c46ca7017fb092e6df3b054897b9d88f4db47f" => :mavericks
+    sha256 "e6e49efa0d30888891cb79513a0873953df24c899f5461f7369cb31ed81f666b" => :mountain_lion
   end
 
   head "https://github.com/shadowsocks/shadowsocks-libev.git"

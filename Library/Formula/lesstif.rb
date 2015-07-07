@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lesstif < Formula
+  desc "Open source implementation of OSF/Motif"
   homepage 'http://lesstif.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/lesstif/lesstif/0.95.2/lesstif-0.95.2.tar.bz2'
   sha1 'b894e544d529a235a6a665d48ca94a465f44a4e5'
