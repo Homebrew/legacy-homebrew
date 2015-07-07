@@ -33,6 +33,11 @@ class Mpfr < Formula
 
   def install
     ENV.m32 if build.build_32_bit?
+
+    # Fix error makeinfo: command not found
+    # The mpfr.info timestamp is older than the mpfr.texi timestamp.
+    touch "doc/mpfr.info"
+
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
     system "make", "check"
