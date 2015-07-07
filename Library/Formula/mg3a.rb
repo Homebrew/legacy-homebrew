@@ -1,18 +1,18 @@
 class Mg3a < Formula
   homepage "http://www.bengtl.net/files/mg3a/"
-  url "http://www.bengtl.net/files/mg3a/mg3a.150603.tar.gz"
-  sha256 "71d47cb2c4608c8f8563089df9540ba9a25853c8abd8db911738642a893cb8fc"
+  url "http://www.bengtl.net/files/mg3a/mg3a.150703.tar.gz"
+  sha256 "c1e0dec1b2ba1feebc623f5a032653dcab442ef9438449ec556166de504d7a0b"
 
   conflicts_with "mg", :because => "both install `mg`"
 
+  option "without-emacs-quit", "Use ^U ^X ^C to exit saving"
   option "with-c-mode", "Include the original C mode"
   option "with-clike-mode", "Include the C mode that also handles Perl and Java"
   option "with-python-mode", "Include the Python mode"
   option "without-dired", "Exclude dired functions"
   option "without-prefix-region", "Exclude the prefix region mode"
-  option "without-user-modes", "Exclude the support for user defined modes"
-  option "without-user-macros", "Exclude the support for user defined macros"
-  option "without-emacs-quit", "Use ^U ^X ^C to exit saving"
+  option "with-user-modes", "Include the support for user defined modes"
+  option "with-user-macros", "Include the support for user defined macros"
   option "with-most", "Include c-like and python modes, user modes and user macros"
   option "with-all", "Include all fancy stuff"
 
@@ -34,7 +34,6 @@ class Mg3a < Formula
     doc.install Dir["README*"]
   end
   test do
-    # Simple test to check that mg was built correctly
     system "mg", "-e", "save-buffers-kill-emacs"
   end
 end
