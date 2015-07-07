@@ -4,7 +4,7 @@ class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "http://getgauge.io"
   url "https://github.com/getgauge/gauge/archive/v0.1.5.tar.gz"
-  sha1 "02fcf2f29aad3a62fec7506c6d069c9b45ae733f"
+  sha256 "0379ccca32bdba663120e7204f5a403a9f96fdd7d3c140a99e3c4010db8ce323"
 
   bottle do
     cellar :any
