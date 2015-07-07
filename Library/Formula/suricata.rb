@@ -4,6 +4,12 @@ class Suricata < Formula
   url "https://www.openinfosecfoundation.org/download/suricata-2.0.8.tar.gz"
   sha256 "7af6394cb81e464f5c1ac88a1444030e30940caab6e53688a6d9eb652226d1be"
 
+  devel do
+    url 'http://www.openinfosecfoundation.org/download/suricata-2.1beta4.tar.gz'
+    sha256 '12b3c98a7464ef6fb631884aa648b53a9cbb04279f754009fdc9ae2a6b605b95'
+    version '2.1beta4'
+  end
+
   bottle do
     sha256 "269066b7601a3cd2c47d7e0e3c789ff2c334d1eff7dfa47221b1fb66233a7014" => :yosemite
     sha256 "08ea538e48680b7712324dc8fe19a682aa0d485193823408f251f0441f62ec59" => :mavericks
@@ -19,6 +25,7 @@ class Suricata < Formula
   depends_on "geoip" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
+  depends_on "jansson" => :optional
 
   resource "argparse" do
     url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
@@ -45,7 +52,6 @@ class Suricata < Formula
     end
 
     args = %W[
-      --disable-debug
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
@@ -67,6 +73,12 @@ class Suricata < Formula
       args << "--with-libgeoip-libs=#{geoip.opt_lib}"
     end
 
+    if build.with? "jansson"
+      jansson = Formula['jansson']
+      args << "--with-libjansson-includes=#{jansson.opt_include}"
+      args << "--with-libjansson-libraries=#{jansson.opt_lib}"
+    end
+
     system "./configure", *args
     system "make", "install-full"
 
@@ -77,6 +89,6 @@ class Suricata < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/suricata --build-info")
+    assert_match(/#{version}/, shell_output("#{bin}/suricata --build-info"))
   end
 end
