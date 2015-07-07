@@ -8,7 +8,12 @@ class Go < Formula
   sha1 "460caac03379f746c473814a65223397e9c9a2f6"
   version "1.4.2"
 
-  head "https://github.com/golang/go", :using => :git
+  head "https://github.com/golang/go.git"
+
+  devel do
+    url "https://github.com/golang/go.git", :revision => "72970f7f52b1f8d14f10df40098175763a556ebe"
+    version "72970f7f52b1f8d14f10df40098175763a556ebe"
+  end
 
   bottle do
     revision 1
@@ -65,7 +70,7 @@ class Go < Formula
       targets = [["darwin", [""]]]
     end
 
-    if build.head?
+    if build.head? || build.devel?
       # GOROOT_FINAL must be overidden later on real Go install
       ENV["GOROOT_FINAL"] = buildpath/"gobootstrap"
 
@@ -82,7 +87,7 @@ class Go < Formula
 
     # The version check is due to:
     # http://codereview.appspot.com/5654068
-    (buildpath/"VERSION").write("default") if build.head?
+    (buildpath/"VERSION").write("default") if build.head? || build.devel?
 
     cd "src" do
       targets.each do |os, archs|
