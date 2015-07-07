@@ -1,6 +1,6 @@
 class MysqlConnectorOdbc < Formula
   desc "Standardized database driver"
-  homepage "https://dev.mysql.com/doc/refman/5.1/en/connector-odbc.html"
+  homepage "https://dev.mysql.com/doc/connector-odbc/en/index.html"
   url "https://cdn.mysql.com/Downloads/Connector-ODBC/5.3/mysql-connector-odbc-5.3.4-src.tar.gz"
   sha256 "a5f7a490f2958f2768d18b8a57f71909f9699a8619c82776b3ad1c02b8abce0d"
 
@@ -11,7 +11,6 @@ class MysqlConnectorOdbc < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "mysql"
   depends_on "unixodbc"
   depends_on "openssl"
 
@@ -28,5 +27,15 @@ class MysqlConnectorOdbc < Formula
 
     system "cmake", ".", *args
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/myodbc-installer -d -l"
+  end
+
+  def caveats; <<-EOS.undent
+    This MySQL Connector/ODBC is built against unixODBC, not iODBC. System
+    applications using iODBC (like Microsoft Office) will not see it.
+    EOS
   end
 end
