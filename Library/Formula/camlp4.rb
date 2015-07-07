@@ -8,9 +8,9 @@ class Camlp4 < Formula
 
   bottle do
     cellar :any
-    sha1 "f8f1ff8b4c3cb9ca0a691e56c32615b8b1c43912" => :yosemite
-    sha1 "5def247ba43daed533e1b1a88bf2a3dcc3bf4391" => :mavericks
-    sha1 "68c208492b208b060b66418e77dedc059796c2b2" => :mountain_lion
+    sha256 "f02f03f8833600db52b476fe8af881496d3dac597cd2c027026e4e77fcde465b" => :yosemite
+    sha256 "2e9a8659e9ddd0b94f57696d46d4abab56576b4a5f54cd94de381586ffdaf168" => :mavericks
+    sha256 "c8a26afba24e74c42f667e2c561a61a0348748ce7506574dffaa070a3912e0e3" => :mountain_lion
   end
 
   depends_on "objective-caml"
