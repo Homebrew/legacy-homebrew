@@ -1,9 +1,9 @@
 class Perl < Formula
   desc "Highly capable, feature-rich programming language"
   homepage "https://www.perl.org/"
-  url "http://www.cpan.org/src/5.0/perl-5.20.2.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.20.2.orig.tar.bz2"
-  sha256 "e5a4713bc65e1da98ebd833dce425c000768bfe84d17ec5183ec5ca249db71ab"
+  url "http://www.cpan.org/src/5.0/perl-5.22.0.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.22.0.orig.tar.xz"
+  sha256 "be83ead0c5c26cbbe626fa4bac1a4beabe23a9eebc15d35ba49ccde11878e196"
 
   head "git://perl5.git.perl.org/perl.git", :branch => "blead"
 
