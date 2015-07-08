@@ -20,7 +20,7 @@ Second, read the [Troubleshooting Checklist](https://github.com/Homebrew/homebre
 Please report security issues to security@brew.sh.
 
 This is our PGP key which is valid until June 17, 2016.
-* Key ID: `CE59E297`
+* Key ID: `0xE33A3D3CCE59E297`
 * Fingerprint: `C657 8F76 2E23 441E C879  EC5C E33A 3D3C CE59 E297`
 * Full key: https://keybase.io/homebrew/key.asc
 
