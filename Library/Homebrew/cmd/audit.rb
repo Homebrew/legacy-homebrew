@@ -422,6 +422,26 @@ class FormulaAuditor
     end
   end
 
+  def audit_github_repository
+    return unless @strict
+
+    regex = %r{https?://github.com/([^/]+)/([^/]+)/?.*}
+    _, user, repo = *regex.match(formula.stable.url)
+    _, user, repo = *regex.match(formula.homepage) unless user
+    return if !user || !repo
+
+    metadata = GitHub.repository(user, repo)
+    problem "GitHub fork (not canonical repository)" if metadata["fork"]
+    if (metadata["forks_count"] < 5) || (metadata["watchers_count"] < 5) ||
+       (metadata["stargazers_count"] < 10)
+      problem "GitHub repository not notable enough (<5 forks, <5 watchers and/or <10 stars)"
+    end
+
+    if (Date.parse(metadata["created_at"]) > (Date.today - 30))
+      problem "GitHub repository too new (<30 days old)"
+    end
+  end
+
   def audit_specs
     if head_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-head-only"
       problem "Head-only (no stable download)"
@@ -831,6 +851,7 @@ class FormulaAuditor
     audit_specs
     audit_desc
     audit_homepage
+    audit_github_repository
     audit_deps
     audit_conflicts
     audit_options
