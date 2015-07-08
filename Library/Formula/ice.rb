@@ -76,7 +76,7 @@ class Ice < Formula
       system "make", "install", *args
     end
 
-    if (build.with? "java")
+    if build.with? "java"
       cd "java" do
         system "make", "install", *args
       end
@@ -88,5 +88,4 @@ class Ice < Formula
       system "make", "install", *args
     end
   end
-
 end
