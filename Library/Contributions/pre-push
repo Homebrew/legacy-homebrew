@@ -44,4 +44,7 @@ def push_okay(remote_name, remote_url, updates_file):
 if __name__ == "__main__":
     if os.environ.get("HOMEBREW_SKIP_FETCH", "0") != "0":
         sys.exit(0)
+    if len(sys.argv) < 3:
+        print >> sys.stderr, "{}: Expected at least two arguments".format(sys.argv[0])
+        sys.exit(1)
     sys.exit(0 if push_okay(sys.argv[1], sys.argv[2], sys.stdin) else 1)
