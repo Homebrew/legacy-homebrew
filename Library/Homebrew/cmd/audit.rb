@@ -426,7 +426,7 @@ class FormulaAuditor
     return unless @strict
 
     regex = %r{https?://github.com/([^/]+)/([^/]+)/?.*}
-    _, user, repo = *regex.match(formula.stable.url)
+    _, user, repo = *regex.match(formula.stable.url) if formula.stable
     _, user, repo = *regex.match(formula.homepage) unless user
     return if !user || !repo
 
