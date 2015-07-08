@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 FORMULA_RE = re.compile(r"^(Library/Formula/)?([A-Za-z0-9-]+)\.rb")
-TESTBOT_EMAILS = ["brew-test-bot@googlegroups.com"]
+TESTBOT_EMAILS = {"brew-test-bot@googlegroups.com"}
 
 def git(*args):
     return subprocess.check_output(["git"] + list(args)).strip()
