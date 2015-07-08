@@ -6,9 +6,9 @@ class Mapnik < Formula
   sha256 "c88b1ce48899ffe0d75f9e753dcd427e2b6fd3186b40e04508608b2151c0e7b0"
 
   bottle do
-    sha256 "1c362e8436c60b47664dfba2bfd18eab7ef281db3e0f376274676bcb1c66685d" => :yosemite
-    sha256 "7f2f612d1a1cd98cd9cb726ea9f06e8b532765e07e6a9f5f1451321f865bbf15" => :mavericks
-    sha256 "6ee18c569252ef0d25f5756a57e7be64ea7dea38f04a7e0fc8c544558f07a64a" => :mountain_lion
+    sha256 "bcf0efd84fc80d8db0b8f78204ecc1b36221bf53994cad19d6c5ce0083668178" => :yosemite
+    sha256 "160bf811a9148c076c28cf72014aadf6994e46373cf7b83fc79e143f2fd33dcd" => :mavericks
+    sha256 "b60f792870191f6a7b32a628d81120429471e4b24bb589063ea057fba5ad2c5d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
