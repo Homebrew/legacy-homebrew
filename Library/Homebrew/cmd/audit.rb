@@ -434,14 +434,14 @@ class FormulaAuditor
 
     begin
       metadata = GitHub.repository(user, repo)
-    rescue GitHub::HTTPNotFoundError => e
+    rescue GitHub::HTTPNotFoundError
       return
     end
 
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
-    if (metadata["forks_count"] < 5) || (metadata["watchers_count"] < 5) ||
-       (metadata["stargazers_count"] < 10)
-      problem "GitHub repository not notable enough (<5 forks, <5 watchers and/or <10 stars)"
+    if (metadata["forks_count"] < 10) && (metadata["watchers_count"] < 10) &&
+       (metadata["stargazers_count"] < 20)
+      problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
     end
 
     if (Date.parse(metadata["created_at"]) > (Date.today - 30))
