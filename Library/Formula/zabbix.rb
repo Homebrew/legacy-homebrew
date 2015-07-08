@@ -12,6 +12,7 @@ class Zabbix < Formula
 
   option "with-mysql", "Use Zabbix Server with MySQL library instead PostgreSQL."
   option "without-server-proxy", "Install only the Zabbix Agent without Server and Proxy."
+
   deprecated_option "agent-only" => "without-server-proxy"
 
   if build.with? "server-proxy"
@@ -34,7 +35,7 @@ class Zabbix < Formula
       --with-iconv=#{MacOS.sdk_path}/usr
     ]
 
-    unless build.include? "agent-only"
+    if build.with? "server-proxy"
       args += %W[
         --enable-server
         --enable-proxy
@@ -43,6 +44,7 @@ class Zabbix < Formula
         --with-libcurl
         --with-ssh2
       ]
+
       if build.with? "mysql"
         args << "--with-mysql=#{brewed_or_shipped("mysql_config")}"
       else
