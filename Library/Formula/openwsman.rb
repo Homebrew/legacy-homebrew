@@ -18,6 +18,8 @@ class Openwsman < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
+  patch :DATA
+
   def install
     system "./autoconfiscate.sh"
     system "./configure", "--disable-more-warnings",
@@ -60,3 +62,29 @@ class Openwsman < Formula
     system "#{sbin}/openwsmand", "--config-file=#{testpath}/openwsman.conf"
   end
 end
+
+__END__
+diff --git a/configure.ac b/configure.ac
+index a0abde0..1c9cc8d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3,7 +3,7 @@ dnl *** Initialize automake and set version ***
+ dnl *******************************************
+
+ AC_PREREQ(2.53)
+-AC_INIT([openwsman], [2.4.4])
++AC_INIT([openwsman], [2.6.0])
+ AC_CONFIG_SRCDIR(src/server/wsmand.c)
+ AC_CANONICAL_HOST
+ AC_CONFIG_MACRO_DIR([m4])
+@@ -11,8 +11,8 @@ AC_CONFIG_MACRO_DIR([m4])
+ dnl Package version information
+ PACKAGE=openwsman
+ OPENWSMAN_MAJOR=2
+-OPENWSMAN_MINOR=3
+-OPENWSMAN_PATCH=6
++OPENWSMAN_MINOR=6
++OPENWSMAN_PATCH=0
+ OPENWSMAN_VERSION=${OPENWSMAN_MAJOR}.${OPENWSMAN_MINOR}.${OPENWSMAN_PATCH}
+
+ OPENWSMAN_PLUGIN_API_MAJOR=2
