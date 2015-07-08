@@ -24,8 +24,11 @@ class Mapnik < Formula
   depends_on "gdal" => :optional
   depends_on "postgresql" => :optional
   depends_on "cairo" => :optional
+  
+  needs :cxx11
 
   def install
+    ENV.cxx11
     icu = Formula["icu4c"].opt_prefix
     boost = Formula["boost"].opt_prefix
     proj = Formula["proj"].opt_prefix
