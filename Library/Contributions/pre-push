@@ -25,7 +25,7 @@ def commits_between(beginning, end):
     return git("rev-list", "{}..{}".format(beginning, end)).split("\n")
 
 def push_okay(remote_name, remote_url, updates_file):
-    if "omebrew/homebrew" not in remote_url:
+    if "homebrew/homebrew" not in remote_url.lower():
         return True
     updates = [line.strip().split() for line in updates_file.readlines()]
     # remote_ref (at commit remote_sha) will  be updated by local_ref (to commit local_sha)
