@@ -20,7 +20,6 @@ class Mapnik < Formula
   depends_on "icu4c"
   depends_on "jpeg"
   depends_on "webp"
-  depends_on "boost"
   depends_on "gdal" => :optional
   depends_on "postgresql" => :optional
   depends_on "cairo" => :optional
