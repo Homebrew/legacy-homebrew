@@ -5,9 +5,8 @@ class Ice < Formula
   sha256 "77933580cdc7fade0ebfce517935819e9eef5fc6b9e3f4143b07404daf54e25e"
 
   bottle do
-    sha1 "52d43a08202206258c6fa33750aac25d2dc38703" => :yosemite
-    sha1 "df1279e47c8c213a57d04318443605b2871269a7" => :mavericks
-    sha1 "7bdb347052b8df900c2c2e6797726a79d9c0242d" => :mountain_lion
+    sha256 "d540b6efc325fa5c0d4ae6271d338eec91226312f5ba93f98eefdd9698936f8d" => :yosemite
+    sha256 "24de0aa3f2e566911a74f0dfa044bb810aef6d12a37b3639e7cc265596989893" => :mavericks
   end
 
   depends_on "mcpp"
