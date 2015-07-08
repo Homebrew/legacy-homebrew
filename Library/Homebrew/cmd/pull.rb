@@ -191,12 +191,12 @@ module Homebrew
             puts
           end
           unless (Pathname.pwd/".git/hooks/pre-push").exist?
-            opoo "Pre-push hook missing"
+            ohai "Creating pre-push hook"
             puts <<-EOS.undent
-              Please consider symlinking #{HOMEBREW_CONTRIB}/pre-push into
-              #{Pathname.pwd}/.git/hooks to add a check that bottles are published
-              correctly before pushing to master.
+              Adding a pre-push hook to check that bottles are published
+              correctly before pushing to master...
             EOS
+            FileUtils.ln_s HOMEBREW_CONTRIB/"pre-push", Pathname.pwd/".git/hooks"
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
