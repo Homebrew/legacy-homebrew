@@ -430,7 +430,14 @@ class FormulaAuditor
     _, user, repo = *regex.match(formula.homepage) unless user
     return if !user || !repo
 
-    metadata = GitHub.repository(user, repo)
+    repo.gsub!(/.git$/, "")
+
+    begin
+      metadata = GitHub.repository(user, repo)
+    rescue GitHub::HTTPNotFoundError => e
+      return
+    end
+
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
     if (metadata["forks_count"] < 5) || (metadata["watchers_count"] < 5) ||
        (metadata["stargazers_count"] < 10)
