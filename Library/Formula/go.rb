@@ -11,8 +11,9 @@ class Go < Formula
   head "https://github.com/golang/go.git"
 
   devel do
-    url "https://github.com/golang/go.git", :revision => "72970f7f52b1f8d14f10df40098175763a556ebe"
-    version "72970f7f52b1f8d14f10df40098175763a556ebe"
+    url "https://storage.googleapis.com/golang/go1.5beta1.src.tar.gz"
+    sha256 "e02be87011421dc08ae6d03a3dc07492cad03faf83cb4f8ba8d39a403d38d3a1"
+    version "1.5beta1"
   end
 
   bottle do
@@ -83,11 +84,6 @@ class Go < Formula
       # the bootstrap toolchain is aware of this variable too.
       ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
     end
-
-
-    # The version check is due to:
-    # http://codereview.appspot.com/5654068
-    (buildpath/"VERSION").write("default") if build.head? || build.devel?
 
     cd "src" do
       targets.each do |os, archs|
