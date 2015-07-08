@@ -24,7 +24,13 @@ class Mapnik < Formula
   depends_on "gdal" => :optional
   depends_on "postgresql" => :optional
   depends_on "cairo" => :optional
-  
+
+  if MacOS.version < :mavericks
+    depends_on "boost" => "c++11"
+  else
+    depends_on "boost"
+  end
+
   needs :cxx11
 
   def install
