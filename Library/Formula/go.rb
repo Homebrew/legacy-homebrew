@@ -85,11 +85,6 @@ class Go < Formula
       ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
     end
 
-
-    # The version check is due to:
-    # http://codereview.appspot.com/5654068
-    (buildpath/"VERSION").write("default") if build.head? || build.devel?
-
     cd "src" do
       targets.each do |os, archs|
         cgo_enabled = os == "darwin" && build.with?("cgo") ? "1" : "0"
