@@ -16,8 +16,9 @@ class Gif2png < Formula
   end
 
   test do
-    require "base64"
-    (testpath/"test.gif").write(::Base64.decode64("R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs="))
-    system "#{bin}/gif2png", "test.gif"
+    # read test gif from stdin so gif2png will output a PNG file in the
+    # current working directory instead of alterting the PNG test fixture
+    $stdin.reopen(test_fixtures("test.gif"))
+    system "#{bin}/gif2png", "-O"
   end
 end
