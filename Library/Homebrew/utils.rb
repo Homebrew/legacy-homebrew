@@ -399,6 +399,10 @@ module GitHub extend self
     open(uri) { |json| json["items"] }
   end
 
+  def repository(user, repo)
+    open(URI.parse("https://api.github.com/repos/#{user}/#{repo}")) { |j| j }
+  end
+
   def build_query_string(query, qualifiers)
     s = "q=#{uri_escape(query)}+"
     s << build_search_qualifier_string(qualifiers)
