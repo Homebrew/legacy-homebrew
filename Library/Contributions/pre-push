@@ -36,7 +36,7 @@ def push_okay(remote_name, remote_url, updates_file):
             for filename in files_touched_by_commit(commit_sha):
                 match = FORMULA_RE.match(filename)
                 if match is None: continue
-                errorlevel = subprocess.call(["brew", "fetch", "--force-bottle", match.group(2)])
+                errorlevel = subprocess.call(["brew", "fetch", "--retry", "--force-bottle", match.group(2)])
                 if errorlevel > 0:
                     return False
     return True
