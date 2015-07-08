@@ -3,31 +3,25 @@ require 'formula'
 class Spidermonkey < Formula
   desc "JavaScript-C Engine"
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
-  url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
-  version '1.8.5'
-  sha1 '52a01449c48d7a117b35f213d3e4263578d846d6'
-  revision 1
+  url "https://people.mozilla.org/~sstangl/mozjs-31.5.0.tar.bz2"
+  sha256 "4d63976b88c4e2135f1bd6d1f85285fe299713cde4baf2fe1b2f4058286611e1"
 
   head 'https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz'
 
   bottle do
-    sha256 "7ab660cad3aac11fbf4befa3fbbf65a7ee64d858539ad81298271389b2957375" => :yosemite
-    sha256 "cda0b81bd974640690fe067691efca6bc7d1583117cd5db28cca43ab8e2f884c" => :mavericks
-    sha256 "769035a4fa0ed09b71aa9747c2834a51285903e51d9bc478f865c037a8666370" => :mountain_lion
   end
 
   conflicts_with 'narwhal', :because => 'both install a js binary'
 
+  depends_on :python if MacOS.version <= :yosemite
   depends_on 'readline'
   depends_on 'nspr'
 
   def install
-    cd "js/src" do
-      # Remove the broken *(for anyone but FF) install_name
-      inreplace "config/rules.mk",
-        "-install_name @executable_path/$(SHARED_LIBRARY) ",
-        "-install_name #{lib}/$(SHARED_LIBRARY) "
-    end
+    # Remove the broken *(for anyone but FF) install_name
+    inreplace "config/rules.mk",
+              "-install_name @executable_path/$(SHARED_LIBRARY) ",
+              "-install_name #{lib}/$(SHARED_LIBRARY) "
 
     mkdir "brew-build" do
       system "../js/src/configure", "--prefix=#{prefix}",
@@ -37,13 +31,16 @@ class Spidermonkey < Formula
                                     "--with-nspr-prefix=#{Formula["nspr"].opt_prefix}",
                                     "--enable-macos-target=#{MacOS.version}"
 
-      inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
+      cd "js/src" do
+        inreplace "js-config", /JS_CONFIG_LIBS=.*?$/, "JS_CONFIG_LIBS=''"
+      end
+
       # These need to be in separate steps.
       system "make"
       system "make install"
 
       # Also install js REPL.
-      bin.install "shell/js"
+      bin.install "js/src/shell/js"
     end
   end
 
