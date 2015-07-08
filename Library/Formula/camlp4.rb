@@ -1,9 +1,9 @@
 class Camlp4 < Formula
   desc "Tool to write extensible parsers in OCaml"
   homepage "https://github.com/ocaml/camlp4"
-  url "https://github.com/ocaml/camlp4/archive/4.02.1+2.tar.gz"
-  sha1 "ad43587c2bdc46d5d0f028857f5ce90bc9ce7ab5"
-  version "4.02.1+2"
+  url "https://github.com/ocaml/camlp4/archive/4.02+6.tar.gz"
+  sha1 "6dd7e591dfde94c44576dba9b847279ffb92c889"
+  version "4.02.2+6"
   head "https://github.com/ocaml/camlp4.git"
 
   bottle do
