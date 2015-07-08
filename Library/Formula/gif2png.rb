@@ -7,7 +7,9 @@ class Gif2png < Formula
   depends_on "libpng"
 
   def install
-    ENV.deparallelize # parallel install fails
+    # parallel install fails
+    # emailed bug report to upstream author on 2015-07-08
+    ENV.deparallelize
 
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
