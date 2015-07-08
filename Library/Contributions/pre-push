@@ -13,7 +13,7 @@ FORMULA_RE = re.compile(r"^(Library/Formula/)?([A-Za-z0-9-]+)\.rb")
 TESTBOT_EMAILS = {"brew-test-bot@googlegroups.com"}
 
 def git(*args):
-    return subprocess.check_output(["git"] + list(args)).strip()
+    return subprocess.check_output(("git",) + args).strip()
 
 def commit_author_email(commit_sha):
     return git("show", "-s", "--pretty=%ae", commit_sha)
