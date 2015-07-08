@@ -9,6 +9,7 @@ class RdsCommandLineTools < Formula
   def install
     env = Language::Java.java_home_env.merge(:AWS_RDS_HOME => libexec)
     rm Dir["bin/*.cmd"] # Remove Windows versions
+    etc.install "credential-file-path.template"
     libexec.install Dir["*"]
     Pathname.glob("#{libexec}/bin/*") do |file|
       next if file.directory?
