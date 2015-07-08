@@ -1,4 +1,5 @@
 class Clhep < Formula
+  desc "Class Library for High Energy Physics"
   homepage "http://proj-clhep.web.cern.ch/proj-clhep/"
   url "http://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.4.tgz"
   sha1 "60a291b940fdc78bea4aaeaffc147cc25a42cfef"

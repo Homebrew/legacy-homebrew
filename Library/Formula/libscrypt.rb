@@ -1,6 +1,7 @@
 require "formula"
 
 class Libscrypt < Formula
+  desc "Library for scrypt"
   homepage "https://lolware.net/libscrypt.html"
   url "https://github.com/technion/libscrypt/archive/v1.20.tar.gz"
   sha1 "e4d510038c593d404961edbc5822948a6b450610"

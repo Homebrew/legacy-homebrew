@@ -1,6 +1,7 @@
 require 'formula'
 
 class IcalBuddy < Formula
+  desc "Get events and tasks from the OS X calendar database"
   homepage 'http://hasseg.org/icalBuddy/'
   head 'https://github.com/ali-rantakari/icalBuddy.git'
   url 'https://github.com/ali-rantakari/icalBuddy/archive/v1.8.10.tar.gz'

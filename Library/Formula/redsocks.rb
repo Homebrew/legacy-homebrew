@@ -1,6 +1,7 @@
 require 'formula'
 
 class Redsocks < Formula
+  desc "Transparent socks redirector"
   homepage 'http://darkk.net.ru/redsocks'
   url 'https://github.com/darkk/redsocks/archive/release-0.4.tar.gz'
   sha1 '5bc432652b9776c3ee04a3ef58fc9adef8190901'

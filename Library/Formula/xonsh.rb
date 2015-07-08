@@ -1,4 +1,5 @@
 class Xonsh < Formula
+  desc "Python-ish, BASHwards-compatible shell language and command prompt"
   homepage "http://xonsh.org"
   url "https://github.com/scopatz/xonsh/archive/0.1.5.tar.gz"
   sha256 "ed04665d4396837191594f2dd9107403eabecb14add5dfbb8f4fb31e13fc03c2"

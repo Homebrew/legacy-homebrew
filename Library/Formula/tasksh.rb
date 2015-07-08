@@ -1,4 +1,5 @@
 class Tasksh < Formula
+  desc "Shell wrapper for Taskwarrior commands"
   homepage "http://tasktools.org/projects/tasksh.html"
   url "http://taskwarrior.org/download/tasksh-1.0.0.tar.gz"
   head "https://git.tasktools.org/scm/ex/tasksh.git"

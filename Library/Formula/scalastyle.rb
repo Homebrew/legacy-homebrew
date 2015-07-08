@@ -1,22 +1,22 @@
 class Scalastyle < Formula
+  desc "Run scalastyle from the command-line"
   homepage "http://www.scalastyle.org/command-line.html"
-  url "https://oss.sonatype.org/content/repositories/releases/org/scalastyle/scalastyle_2.10/0.6.0/scalastyle_2.10-0.6.0-batch.jar"
-  sha1 "01c744fa7eef25f7183beea5d603ce9658861fcf"
+  url "https://oss.sonatype.org/content/repositories/releases/org/scalastyle/scalastyle_2.11/0.7.0/scalastyle_2.11-0.7.0-batch.jar"
+  sha256 "3f61e6f03615019068ad79a8d70890a0af893650c98009b1c4acb73a0b8341ba"
 
   resource "default_config" do
-    url "https://raw.githubusercontent.com/scalastyle/scalastyle/v0.6.0/lib/scalastyle_config.xml"
-    version "0.6.0"
-    sha1 "c22165ccda7ef285665041ad07a4b31a639a85c3"
+    url "https://raw.githubusercontent.com/scalastyle/scalastyle/v0.7.0/lib/scalastyle_config.xml"
+    version "0.7.0"
+    sha256 "80e7d2324e5cae9bd479d19134488b129c661e0489a8877a31e6f36b333c5f78"
   end
 
   def install
-    libexec.install "scalastyle_2.10-#{version}-batch.jar"
-
+    libexec.install "scalastyle_2.11-#{version}-batch.jar"
     etc.install resource("default_config")
 
     (bin/"scalastyle").write <<-EOS.undent
       #!/bin/sh
-      java -jar "#{libexec}/scalastyle_2.10-#{version}-batch.jar" --config "#{etc}/scalastyle_config.xml" "$@"
+      java -jar "#{libexec}/scalastyle_2.11-#{version}-batch.jar" --config "#{etc}/scalastyle_config.xml" "$@"
     EOS
   end
 
@@ -28,6 +28,13 @@ class Scalastyle < Formula
   end
 
   test do
-    system bin/"scalastyle", "--verbose"
+    (testpath/"test.scala").write <<-EOS.undent
+      object HelloWorld {
+        def main(args: Array[String]) {
+          println("Hello")
+        }
+      }
+    EOS
+    system bin/"scalastyle", testpath/"test.scala"
   end
 end

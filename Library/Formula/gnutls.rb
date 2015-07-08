@@ -2,6 +2,7 @@
 # From 3.4.0 GnuTLS will be permanently disabling SSLv3. Every brew uses will need a revision with that.
 # http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
+  desc "GNU Transport Layer Security (TLS) Library"
   homepage "http://gnutls.org"
   url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.15.tar.xz"
@@ -47,8 +48,8 @@ class Gnutls < Formula
     system "make", "install"
 
     # certtool shadows the OS X certtool utility
-    mv bin+"certtool", bin+"gnutls-certtool"
-    mv man1+"certtool.1", man1+"gnutls-certtool.1"
+    mv bin/"certtool", bin/"gnutls-certtool"
+    mv man1/"certtool.1", man1/"gnutls-certtool.1"
   end
 
   def post_install
@@ -57,9 +58,23 @@ class Gnutls < Formula
       /System/Library/Keychains/SystemRootCertificates.keychain
     ]
 
+    certs_list = `security find-certificate -a -p #{keychains.join(" ")}`
+    certs = certs_list.scan(
+      /-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m
+    )
+
+    valid_certs = certs.select do |cert|
+      IO.popen("openssl x509 -inform pem -checkend 0 -noout", "w") do |openssl_io|
+        openssl_io.write(cert)
+        openssl_io.close_write
+      end
+
+      $?.success?
+    end
+
     openssldir = etc/"openssl"
     openssldir.mkpath
-    (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+    (openssldir/"cert.pem").atomic_write(valid_certs.join("\n"))
   end
 
   test do

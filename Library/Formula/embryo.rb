@@ -1,9 +1,8 @@
-require "formula"
-
 class Embryo < Formula
-  homepage "http://trac.enlightenment.org/e/wiki/Embryo"
-  url "http://download.enlightenment.org/releases/embryo-1.7.10.tar.gz"
-  sha1 "4e4b3eb809211876655564920fdb773fb034f22c"
+  desc "Version of the original Small abstract machine"
+  homepage "https://docs.enlightenment.org/auto/embryo/embryo_main.html"
+  url "https://download.enlightenment.org/releases/embryo-1.7.10.tar.gz"
+  sha256 "d6700ba34d7903f53695246ca3edd3fe463ed1acbadd283219ec9678bc4989a0"
 
   bottle do
     sha1 "8f7302633c71b4cbe0ca77b12a2c9a934c10f9f8" => :yosemite
@@ -12,7 +11,7 @@ class Embryo < Formula
   end
 
   head do
-    url "http://svn.enlightenment.org/svn/e/trunk/embryo/"
+    url "https://git.enlightenment.org/legacy/embryo.git/"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

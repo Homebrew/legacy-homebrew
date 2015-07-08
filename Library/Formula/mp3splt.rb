@@ -1,4 +1,5 @@
 class Mp3splt < Formula
+  desc "Command-line interface to split MP3 and Ogg Vorbis files"
   homepage "http://mp3splt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/mp3splt/mp3splt/2.6.2/mp3splt-2.6.2.tar.gz"
   sha1 "f61094a1348cffb704ef021e59c1d26c4dc652ab"

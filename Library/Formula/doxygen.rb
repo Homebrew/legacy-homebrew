@@ -1,4 +1,5 @@
 class Doxygen < Formula
+  desc "Generate documentation for several programming languages"
   homepage "http://www.doxygen.org/"
   head "https://github.com/doxygen/doxygen.git"
   url "http://ftp.stack.nl/pub/users/dimitri/doxygen-1.8.9.1.src.tar.gz"

@@ -1,4 +1,4 @@
-class SufficientlyRecentGit < Requirement
+class Git182Requirement < Requirement
   fatal true
   default_formula "git"
 
@@ -12,15 +12,24 @@ class SufficientlyRecentGit < Requirement
 end
 
 class GitIntegration < Formula
-  homepage "http://johnkeeping.github.io/git-integration/"
+  desc "Manage git integration branches"
+  homepage "https://johnkeeping.github.io/git-integration/"
   url "https://github.com/johnkeeping/git-integration/archive/v0.3.tar.gz"
-  sha1 "fc64f987a2a6b73c61c8a5278d06bcaa46ee9312"
+  sha256 "7fb0a4ed4e4c23b7fa9334abfd1894ed5821b73be144d56d67d926e3cd7a1eb5"
+  head "https://github.com/johnkeeping/git-integration.git"
+
+  bottle do
+    cellar :any
+    sha256 "0a41fd7d3c278edd15c2ba11a0e55dfec44f261a998a8b1392454a7c9a5445f9" => :yosemite
+    sha256 "6d98f63e393b56144ea6754593eb6c77a252c6876c72febef273a15440a8e655" => :mavericks
+    sha256 "c00c4058c45f75f2c455484c19fc9c761316334e53ae3eb928ddaa140ce1e937" => :mountain_lion
+  end
 
   depends_on "asciidoc" => [:build, :optional]
-  depends_on SufficientlyRecentGit
+  depends_on Git182Requirement
 
   def install
-    ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     (buildpath/"config.mak").write "prefix = #{prefix}"
     system "make", "install"
     if build.with? "asciidoc"

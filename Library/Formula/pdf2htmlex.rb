@@ -1,6 +1,7 @@
 require "formula"
 
 class Pdf2htmlex < Formula
+  desc "PDF to HTML converter"
   homepage "https://coolwanglu.github.io/pdf2htmlEX/"
   url "https://github.com/coolwanglu/pdf2htmlEX/archive/v0.12.tar.gz"
   sha256 "7868ff5cd69758d094fd6076e4d0888e5033bf8799a5355bf4470e91967147a8"

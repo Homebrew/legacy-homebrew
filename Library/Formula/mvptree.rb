@@ -1,6 +1,7 @@
 require "formula"
 
 class Mvptree < Formula
+  desc "Perceptual hash library"
   homepage "http://www.phash.org"
   url "http://www.phash.org/releases/mvptree-1.0.tar.gz"
   sha1 "586bdc458116bed61caf7310804a70d55af9ce6e"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jshon < Formula
+  desc "Parse, read, and create JSON from the shell"
   homepage 'http://kmkeen.com/jshon/'
   url 'http://kmkeen.com/jshon/jshon.tar.gz'
   version '8'

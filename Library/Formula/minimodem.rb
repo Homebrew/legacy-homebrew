@@ -1,4 +1,5 @@
 class Minimodem < Formula
+  desc "General-purpose software audio FSK modem"
   homepage "http://www.whence.com/minimodem/"
   url "http://www.whence.com/minimodem/minimodem-0.21.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/m/minimodem/minimodem_0.21.orig.tar.gz"

@@ -1,12 +1,13 @@
 class Openwsman < Formula
-  homepage "http://openwsman.github.io"
-  url "https://github.com/Openwsman/openwsman/archive/v2.4.12.tar.gz"
-  sha1 "15fbe4454c3d48ab229036b09400afd5037f4ef2"
+  desc "Implementation of WS-Management, enabling in-band resource management"
+  homepage "https://openwsman.github.io"
+  url "https://github.com/Openwsman/openwsman/archive/v2.5.0.tar.gz"
+  sha256 "538ad011c3be59ed9843f8499ce749b98cc245208f7b3ca9ca9d53611fee7fe5"
 
   bottle do
-    sha1 "70ba82023cb43276b4fa40103e1e32a7f9fdb74c" => :yosemite
-    sha1 "bcc6baeef902d33028a4eed009ff10e40edcdfe4" => :mavericks
-    sha1 "abd6f5988eca5fa75c4c18dfd9f1ab2b93eac8b3" => :mountain_lion
+    sha256 "8cd55e679f4ffca631ae1a7d86b4e9c70ee4c85d82dc5b4c7429030d0ded85ea" => :yosemite
+    sha256 "47e118663639ee25428730217e78df51cc7ccfdc9c50648a7d8d0b87460f5b43" => :mavericks
+    sha256 "aeadefecb859c12ad6d95ee42724be21a81e5ce28611b23e3dfa96efb2bfead9" => :mountain_lion
   end
 
   depends_on "libxml2"

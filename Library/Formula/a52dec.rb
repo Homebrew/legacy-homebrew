@@ -1,6 +1,7 @@
 require 'formula'
 
 class A52dec < Formula
+  desc "Library for decoding ATSC A/52 streams (AKA 'AC-3')"
   homepage 'http://liba52.sourceforge.net/'
   url 'http://liba52.sourceforge.net/files/a52dec-0.7.4.tar.gz'
   sha1 '79b33bd8d89dad7436f85b9154ad35667aa37321'

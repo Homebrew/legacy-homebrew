@@ -1,21 +1,22 @@
-# encoding: utf-8
 class Harfbuzz < Formula
+  desc "OpenType text shaping engine"
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
-  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.40.tar.bz2"
-  sha256 "1771d53583be6d91ca961854b2a24fb239ef0545eed221ae3349abae0ab8321f"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.41.tar.bz2"
+  sha256 "d81aa53d0c02b437beeaac159d7fc16394d676bbce0860fb6f6a10b587dc057c"
 
   bottle do
-    cellar :any
-    sha256 "68a58bf28ebd0cb7d8ef3885aa86704f442c15e2c22216debddfb7184a49c3a9" => :yosemite
-    sha256 "374db121d1c3b0182ac121dad24539f408588bf5c60391f7f90002e568cc9c60" => :mavericks
-    sha256 "3a3c89c3ac78239f166ee386a94ba9e3beb263fa7e252eadd655f22af7ab79e3" => :mountain_lion
+    sha256 "127226ca79eb2225b2e96a2919541466b4f93a7ead04dbbbf6b605ac2e7deb43" => :yosemite
+    sha256 "0ee1b49cbb64c20dfd4ac5822a89e0e85168e249fe24ca7c35b8f8814899682c" => :mavericks
+    sha256 "06116bc1ac3ac010211f2c56193e144b242ca4a45988f38637e215be3670e956" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "cairo"
   depends_on "icu4c" => :recommended
+  depends_on "graphite2" => :optional
   depends_on "freetype"
+  depends_on "gobject-introspection"
 
   resource "ttf" do
     url "https://github.com/behdad/harfbuzz/raw/fc0daafab0336b847ac14682e581a8838f36a0bf/test/shaping/fonts/sha1sum/270b89df543a7e48e206a2d830c0e10e5265c630.ttf"
@@ -23,8 +24,15 @@ class Harfbuzz < Formula
   end
 
   def install
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-introspection=yes
+      --with-gobject=yes
+    ]
+
     args << "--with-icu" if build.with? "icu4c"
+    args << "--with-graphite2" if build.with? "graphite2"
     system "./configure", *args
     system "make", "install"
   end

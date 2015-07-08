@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dc3dd < Formula
+  desc "A patched GNU dd that is intended for forensic acquisition of data"
   homepage 'http://sourceforge.net/projects/dc3dd/'
   url 'https://downloads.sourceforge.net/project/dc3dd/dc3dd/7.1.0/dc3dd-7.1.614.tar.gz'
   sha1 '808abb6472861a88efd94fd22ffea7021007d769'

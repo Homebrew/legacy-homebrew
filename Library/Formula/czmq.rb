@@ -1,15 +1,15 @@
 class Czmq < Formula
+  desc "High-level C binding for ZeroMQ"
   homepage "http://czmq.zeromq.org/"
-  url "http://download.zeromq.org/czmq-2.2.0.tar.gz"
-  sha1 "2f4fd8de4cf04a68a8f6e88ea7657d8068f472d2"
+  url "http://download.zeromq.org/czmq-3.0.2.tar.gz"
+  sha256 "8bca39ab69375fa4e981daf87b3feae85384d5b40cef6adbe9d5eb063357699a"
   revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "798cef5fd0d7c79123fe60be9db628e8db5fe351" => :yosemite
-    sha1 "c1361edaea2bbea8f30937741b5346e419c3909c" => :mavericks
-    sha1 "9a8556182c8599cf1a32f0cec8e6dc8eed151035" => :mountain_lion
+    sha256 "cb5e7a40b945b014c92597ce275b76f5a39541e0f96e6ea541cb0d6e706bcfaa" => :yosemite
+    sha256 "42f0561a90ba0d17d17477282a2c2cc3f36ed72eb37209114626f51565852948" => :mavericks
+    sha256 "1b6ecec3b74fb846b025c6da0ae28820569e542eee55c80658c2074a8d2ada87" => :mountain_lion
   end
 
   head do
@@ -35,20 +35,16 @@ class Czmq < Formula
     ENV.universal_binary if build.universal?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    if build.stable?
-      args << "--with-libsodium" if build.with? "libsodium"
-    end
+    args << "--with-libsodium" if build.with? "libsodium"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
+    system "make"
+    system "make", "check"
     system "make", "install"
     rm Dir["#{bin}/*.gsl"]
-  end
 
-  test do
-    bin.cd do
-      system "#{bin}/czmq_selftest"
-    end
+    # makecert clashes with Mono. Rename it less generically.
+    mv bin/"makecert", bin/"czmq-makecert"
   end
 end

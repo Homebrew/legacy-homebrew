@@ -1,4 +1,5 @@
 class Pwnat < Formula
+  desc "Proxy server that works behind a NAT"
   homepage "http://samy.pl/pwnat/"
   url "http://samy.pl/pwnat/pwnat-0.3-beta.tgz"
   sha256 "d5d6ea14f1cf0d52e4f946be5c3630d6440f8389e7467c0117d1fe33b9d130a2"

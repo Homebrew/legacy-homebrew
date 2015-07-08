@@ -1,4 +1,5 @@
 class Fish < Formula
+  desc "User-friendly command-line shell for UNIX-like operating systems"
   homepage "http://fishshell.com"
   url "http://fishshell.com/files/2.1.2/fish-2.1.2.tar.gz"
   sha1 "f7f8d8d26721833be3458b8113c74b747296ec0b"

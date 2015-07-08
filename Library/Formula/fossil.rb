@@ -1,14 +1,15 @@
 class Fossil < Formula
+  desc "Distributed software configuration management"
   homepage "https://www.fossil-scm.org/"
   head "https://www.fossil-scm.org/", :using => :fossil
-  url "https://www.fossil-scm.org/download/fossil-src-1.32.tar.gz"
-  sha256 "cd79c333eb9e86fbb8c17bf5cdf31c387e4ab768eede623aed21adfdbcad686e"
+  url "https://www.fossil-scm.org/download/fossil-src-1.33.tar.gz"
+  sha256 "6295c48289456f09e86099988058a12148dbe0051b72d413b4dff7216d6a7f3e"
 
   bottle do
     cellar :any
-    sha256 "48d1066ffb5380b0e6575925ac240ef1a372b182e2b5983414b45199effb2b13" => :yosemite
-    sha256 "3851f9002dc1dab1a67a1bea554145d431e28f5c9f4e2aa3ab3a701c0ea17208" => :mavericks
-    sha256 "ebc87b4bc8dca46bbbdc8f7e28c7b682f15d42fcb3c8dcb0f74d94d469ce2bca" => :mountain_lion
+    sha256 "93c2998a284d05cdde365f968aacfcb05e6ce746a90e767de85c4e8a98084b4f" => :yosemite
+    sha256 "9e1a6a19e95dfd0a92eaf465a76326ecef672c67a4ba7854b3baa363b96f9dc9" => :mavericks
+    sha256 "3cf1b9a1e660e36e85d24b423c03d8742d515799060a15af3095ec5a3890894e" => :mountain_lion
   end
 
   option "without-json", "Build without 'json' command support"

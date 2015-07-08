@@ -1,13 +1,14 @@
 class Haproxy < Formula
-  homepage "http://haproxy.1wt.eu"
-  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.10.tar.gz"
-  sha1 "2af3b740e84f10cbd0c90a78c30a222a24fb2945"
+  desc "Reliable, high performance TCP/HTTP load balancer"
+  homepage "http://www.haproxy.org/"
+  url "http://www.haproxy.org/download/1.5/src/haproxy-1.5.14.tar.gz"
+  sha256 "9565dd38649064d0350a2883fa81ccfe92eb17dcda457ebdc01535e1ab0c8f99"
 
   bottle do
     cellar :any
-    sha1 "6c80304f8eace5073797f04646ef197099ce39d4" => :yosemite
-    sha1 "3fdaeaae9c33cc73e7314cd4844b46b82572706b" => :mavericks
-    sha1 "c42557822dcf88fdc74d0090e50358d254db7509" => :mountain_lion
+    sha256 "54369189f1b23ee7240f82b1277293eae6fd583cbed0fc3c43f344477149f1a6" => :yosemite
+    sha256 "cc7b5f2b2a2eea08f7b78a15074fcccfa2c1a7e901ffda301ede6a2c479a1fbc" => :mavericks
+    sha256 "9695138dd5bd45cee081720f2ba0791c4f5fdfedf43d883770531c40eefa8377" => :mountain_lion
   end
 
   depends_on "openssl"

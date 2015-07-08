@@ -1,6 +1,7 @@
 require "formula"
 
 class Bigloo < Formula
+  desc "Scheme implementation with object system, C, and Java interfaces"
   homepage "http://www-sop.inria.fr/indes/fp/Bigloo/"
   url "ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.1a-2.tar.gz"
   version "4.1a-2"

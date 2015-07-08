@@ -1,6 +1,7 @@
 require "formula"
 
 class Libbpg < Formula
+  desc "Image format meant to improve on JPEG quality and file size"
   homepage "http://bellard.org/bpg/"
   url "http://bellard.org/bpg/libbpg-0.9.5.tar.gz"
   sha1 "1eee24f9d9d381b574b86a28d2af1073ab07bb55"

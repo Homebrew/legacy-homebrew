@@ -1,6 +1,7 @@
 require "formula"
 
 class Vgmstream < Formula
+  desc "Library for playing streamed audio formats from video games"
   homepage "http://hcs64.com/vgmstream.html"
   url "http://svn.code.sf.net/p/vgmstream/code", :revision => 1040
   version "r1040"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Jslint4java < Formula
+  desc "Java wrapper for JavaScript Lint (jsl)"
   homepage "http://code.google.com/p/jslint4java/"
   url "https://jslint4java.googlecode.com/files/jslint4java-2.0.5-dist.zip"
   sha1 "30a75ce48b64d2c8f0b2b86e20c0d98e6441827d"

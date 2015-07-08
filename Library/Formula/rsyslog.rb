@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rsyslog < Formula
+  desc "Enhanced, multi-threaded syslogd"
   homepage 'http://www.rsyslog.com'
   url 'http://www.rsyslog.com/files/download/rsyslog/rsyslog-7.4.5.tar.gz'
   sha256 'f5e46e9324e366f20368162b4f561cf7a76fecb4aa0570edcaaa49e9f8c2fe70'

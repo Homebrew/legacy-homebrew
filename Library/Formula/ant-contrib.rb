@@ -1,6 +1,7 @@
 require "formula"
 
 class AntContrib < Formula
+  desc "Collection of tasks for Apache Ant"
   homepage "http://ant-contrib.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.tar.gz"
   sha1 "05b74808d51f501a993457fb9b7871484acba901"

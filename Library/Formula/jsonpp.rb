@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jsonpp < Formula
+  desc "Command-line JSON pretty-printer"
   homepage 'http://jmhodges.github.io/jsonpp/'
   url 'https://github.com/jmhodges/jsonpp/releases/v1.2.0/715/jsonpp-1.2.0-osx-x86_64.tar.gz'
   version '1.2.0'

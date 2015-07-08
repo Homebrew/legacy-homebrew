@@ -1,6 +1,7 @@
 require "formula"
 
 class Ssss < Formula
+  desc "Shamir's secret sharing scheme implementation"
   homepage "http://point-at-infinity.org/ssss/"
   url "http://point-at-infinity.org/ssss/ssss-0.5.tar.gz"
   sha1 "3f8f5046c2c5c3a2cf1a93f0a9446681852b190e"

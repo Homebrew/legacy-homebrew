@@ -1,4 +1,5 @@
 class Kes < Formula
+  desc "Fork of the es shell based on the rc command interpreter"
   homepage "https://github.com/epilnivek/kes"
   url "https://github.com/epilnivek/kes/archive/v0.9.tar.gz"
   sha256 "d0db16ba7892d9692cacd552d684f03a9d0333ba0e7b629a998fa9c127ef050e"

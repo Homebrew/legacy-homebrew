@@ -1,15 +1,14 @@
-require "formula"
-
 class PltRacket < Formula
+  desc "Modern programming language in the Lisp/Scheme family"
   homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.1.1/racket-minimal-6.1.1-src-builtpkgs.tgz"
-  sha1 "8800c89a981f7b86808c7d9f2173c7f2a47147bc"
-  version "6.1.1"
+  url "http://mirror.racket-lang.org/installers/6.2/racket-minimal-6.2-src-builtpkgs.tgz"
+  sha256 "ff5d49729e79c109f5d1ea9a6faef9f5fb13861a6e19ca2e095e34a77ad8f03d"
+  version "6.2"
 
   bottle do
-    sha1 "ce1209d975593554d7973bb30d06f4897672c3b5" => :yosemite
-    sha1 "04953a38b638ed718063f123da83a3eed9f3bb99" => :mavericks
-    sha1 "79bf69d88c0479cf180f56e9d67d48833ce0a34a" => :mountain_lion
+    sha256 "e8817da253500c3b51bf818059cfb4174252a939433b1755f965fd06f381a7c2" => :yosemite
+    sha256 "e775405462072cf43df41bc70b2faad9d065f4bb095bf21acd2fbba64be78777" => :mavericks
+    sha256 "165a42022c0543bfcc05954f62315b419efdc789e29a5c6e6aec14af52ee85b2" => :mountain_lion
   end
 
   def install
@@ -19,11 +18,11 @@ class PltRacket < Formula
               "--prefix=#{prefix}",
               "--man=#{man}"]
 
-      args << "--disable-mac64" if not MacOS.prefer_64_bit?
+      args << "--disable-mac64" unless MacOS.prefer_64_bit?
 
       system "./configure", *args
       system "make"
-      system "make install"
+      system "make", "install"
     end
   end
 

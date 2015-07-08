@@ -1,6 +1,7 @@
 require "formula"
 
 class IosClassGuard < Formula
+  desc "Objective-C obfuscator for Mach-O executables"
   homepage "https://github.com/Polidea/ios-class-guard/"
   head "https://github.com/Polidea/ios-class-guard.git"
   url "https://github.com/Polidea/ios-class-guard/archive/0.6.tar.gz"

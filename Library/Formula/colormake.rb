@@ -1,4 +1,5 @@
 class Colormake < Formula
+  desc "Wrapper around make to colorize the output"
   homepage "https://github.com/pagekite/Colormake"
   head "https://github.com/pagekite/Colormake.git"
   url "https://github.com/pagekite/Colormake/archive/0.9.20140503.tar.gz"

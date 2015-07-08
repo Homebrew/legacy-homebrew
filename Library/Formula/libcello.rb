@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libcello < Formula
+  desc "Higher-level programming in C"
   homepage 'http://libcello.org/'
   head 'https://github.com/orangeduck/libCello.git'
   url 'http://libcello.org/static/libCello-1.1.7.tar.gz'

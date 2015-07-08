@@ -1,4 +1,5 @@
 class Libmusicbrainz < Formula
+  desc "MusicBrainz Client Library"
   homepage "https://musicbrainz.org/doc/libmusicbrainz"
   url "https://github.com/metabrainz/libmusicbrainz/releases/download/release-5.1.0/libmusicbrainz-5.1.0.tar.gz"
   sha1 "1576b474c777bb9c4ff906853ef1d3bb14915f50"

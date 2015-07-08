@@ -1,6 +1,7 @@
 require 'formula'
 
 class Opendetex < Formula
+  desc "Tool to strip TeX or LaTeX commands from documents"
   homepage 'https://code.google.com/p/opendetex/'
   url 'https://opendetex.googlecode.com/files/opendetex-2.8.1.tar.bz2'
   sha1 'a811635519dc6573735ca9d406f7032eccacd7e0'

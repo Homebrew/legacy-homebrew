@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libagg < Formula
+  desc "High fidelity 2D graphics library for C++"
   homepage 'http://www.antigrain.com'
   url 'http://www.antigrain.com/agg-2.5.tar.gz'
   sha1 '08f23da64da40b90184a0414369f450115cdb328'

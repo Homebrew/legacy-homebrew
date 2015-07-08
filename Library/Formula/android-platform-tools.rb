@@ -1,4 +1,5 @@
 class AndroidPlatformTools < Formula
+  desc "Tools for the Android SDK"
   homepage "https://developer.android.com/sdk"
   # the url is from:
   # https://dl.google.com/android/repository/repository-10.xml

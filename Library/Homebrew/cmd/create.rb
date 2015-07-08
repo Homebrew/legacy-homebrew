@@ -124,6 +124,7 @@ class FormulaCreator
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formulary.class_s(name)} < Formula
+      desc ""
       homepage ""
       url "#{url}"
     <% unless version.nil? or version.detected_from_url? %>

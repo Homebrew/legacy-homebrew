@@ -1,6 +1,7 @@
 require 'formula'
 
 class Visualnetkit < Formula
+  desc "Graphical environment to configure and manage Netkit lab"
   homepage 'http://code.google.com/p/visual-netkit/'
   url 'https://visual-netkit.googlecode.com/files/visualnetkit-1.4.tar.bz'
   version '1.4'

@@ -1,13 +1,21 @@
 class Qemu < Formula
+  desc "x86 and PowerPC Emulator"
   homepage "http://wiki.qemu.org"
-  url "http://wiki.qemu-project.org/download/qemu-2.2.1.tar.bz2"
-  sha256 "4617154c6ef744b83e10b744e392ad111dd351d435d6563ce24d8da75b1335a0"
+  url "http://wiki.qemu-project.org/download/qemu-2.3.0.tar.bz2"
+  sha256 "b6bab7f763d5be73e7cb5ee7d4c8365b7a8df2972c52fa5ded18893bd8281588"
   head "git://git.qemu-project.org/qemu.git"
 
   bottle do
-    sha256 "48123febfba226d7837055150968ec1df3bae6f525aed64398d00ba63cd7ebbe" => :yosemite
-    sha256 "8e285b64da4d78f753e3913ba982ef7876657362fdeeebc9f71c94211da17d9b" => :mavericks
-    sha256 "805da9cd1c6193e345245a4c33dc090fd8b541190c56d64acb927cb37e794d50" => :mountain_lion
+    sha256 "a8fdc51e7f656136fd8dc926ebefd648a0e1b1bee0a695d4d08e07b4075b19ef" => :yosemite
+    sha256 "db9a906a1d92a209369271ed9d1d041a18e5dd97abbd08f4a79d8c0044f36b30" => :mavericks
+    sha256 "7243043a8a71dbc0a2ca5d80efd8eb646806d8cd8cf1772186efb69fed71cb0d" => :mountain_lion
+  end
+
+  patch do
+    # Fix for VENOM <http://venom.fail>
+    # Patch from QEMU Git
+    url "http://git.qemu.org/?p=qemu.git;a=commitdiff_plain;h=e907746266721f305d67bc0718795fedee2e824c"
+    sha256 "a182ee0e5d6aa040dea51796a410827e8c0b3b928c864846c6e5a1754dde9c88"
   end
 
   depends_on "pkg-config" => :build

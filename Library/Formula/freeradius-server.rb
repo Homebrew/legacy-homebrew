@@ -1,4 +1,5 @@
 class FreeradiusServer < Formula
+  desc "High-performance and highly configurable RADIUS server"
   homepage "http://freeradius.org/"
 
   stable do

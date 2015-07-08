@@ -1,6 +1,7 @@
 require "formula"
 
 class Stuntman < Formula
+  desc "Implementation of the STUN protocol"
   homepage "http://www.stunprotocol.org/"
   url "http://www.stunprotocol.org/stunserver-1.2.7.tgz"
   sha1 "bc315c5f81e5bf9301872d096db8a8ac74089de4"

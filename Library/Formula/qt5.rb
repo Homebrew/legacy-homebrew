@@ -1,6 +1,6 @@
-class OracleHomeVar < Requirement
+class OracleHomeVarRequirement < Requirement
   fatal true
-  satisfy ENV["ORACLE_HOME"]
+  satisfy(:build_env => false) { ENV["ORACLE_HOME"] }
 
   def message; <<-EOS.undent
       To use --with-oci you have to set the ORACLE_HOME environment variable.
@@ -10,15 +10,16 @@ class OracleHomeVar < Requirement
 end
 
 class Qt5 < Formula
+  desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
-  mirror "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/5.4/5.4.1/single/qt-everywhere-opensource-src-5.4.1.tar.xz"
-  sha256 "1b7eb91e153176ac917f72b6bf443f987abf47c4208cdd43e2307684a7fad860"
+  url "https://download.qt.io/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
+  sha256 "8c6d070613b721452f8cffdea6bddc82ce4f32f96703e3af02abb91a59f1ea25"
 
   bottle do
-    sha1 "0c62b742770ae83a97063e688912a719f464dbff" => :yosemite
-    sha1 "0bd4601aac5e1d76aaa6295060312e1f93cd43ff" => :mavericks
-    sha1 "94634131524185beccae4dd5f749cbca6750c91d" => :mountain_lion
+    sha256 "1d3aee1664b44e912ddd307fc7f1eff25e835452ce44705acaa4162f79006ef7" => :yosemite
+    sha256 "f32d4dde1b09d619e5046b9e5717ab48d7dc6b066b09bbde8d44f74b2ef040fb" => :mavericks
+    sha256 "855e075b522199c52876f44fe2d2a63e4c4b4f9bfd5c6edb0e3dc850fd02ef34" => :mountain_lion
   end
 
   head "https://code.qt.io/qt/qt5.git", :branch => "5.4", :shallow => false
@@ -48,7 +49,7 @@ class Qt5 < Formula
   # https://bugreports.qt.io/browse/QTBUG-42161
   # https://bugreports.qt.io/browse/QTBUG-43456
 
-  depends_on OracleHomeVar if build.with? "oci"
+  depends_on OracleHomeVarRequirement if build.with? "oci"
 
   def install
     ENV.universal_binary if build.universal?

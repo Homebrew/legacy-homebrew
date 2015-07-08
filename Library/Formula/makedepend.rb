@@ -1,4 +1,5 @@
 class Makedepend < Formula
+  desc "Creates dependencies in makefiles"
   homepage "http://x.org"
   url "http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
   sha1 "2599afa039d2070bae9df6ce43da288b3a4adf97"

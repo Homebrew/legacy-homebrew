@@ -1,6 +1,7 @@
 require "formula"
 
 class Librtlsdr < Formula
+  desc "Use Realtek DVT-T dongles as a cheap SDR"
   homepage "http://sdr.osmocom.org/trac/wiki/rtl-sdr"
   head "git://git.osmocom.org/rtl-sdr.git", :shallow => false
   url "https://github.com/steve-m/librtlsdr/archive/v0.5.3.tar.gz"

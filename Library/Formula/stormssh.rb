@@ -1,4 +1,5 @@
 class Stormssh < Formula
+  desc "Command-line tool to manage your ssh connections"
   homepage "https://github.com/emre/storm"
   url "https://pypi.python.org/packages/source/s/stormssh/stormssh-0.6.5.tar.gz"
   sha1 "3788fca510dc1a46aa21adea98749c354d85b3cc"

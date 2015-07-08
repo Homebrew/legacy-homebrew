@@ -1,14 +1,12 @@
-require 'formula'
-
-class EucjpMecabIpadic < Requirement
+class EucjpMecabIpadicRequirement < Requirement
   fatal true
 
-  def initialize tags=[]
+  def initialize(tags = [])
     super
-    @mecab_ipadic_installed = Formula['mecab-ipadic'].installed?
+    @mecab_ipadic_installed = Formula["mecab-ipadic"].installed?
   end
 
-  satisfy { @mecab_ipadic_installed && mecab_dic_charset == 'euc' }
+  satisfy(:build_env => false) { @mecab_ipadic_installed && mecab_dic_charset == "euc" }
 
   def message
     if @mecab_ipadic_installed
@@ -51,24 +49,25 @@ class EucjpMecabIpadic < Requirement
   end
 
   def mecab_dic_charset
-    /^charset:\t(\S+)$/ =~ `mecab -D` && $1
+    /^charset:\t(\S+)$/ =~ `mecab -D` && Regexp.last_match[1]
   end
 end
 
 class Hyperestraier < Formula
-  homepage 'http://fallabs.com/hyperestraier/index.html'
-  url 'http://fallabs.com/hyperestraier/hyperestraier-1.4.13.tar.gz'
-  sha1 '1094686f457070323083ecf4f89665c564a0c5f0'
+  desc "Full-text search system for communities"
+  homepage "http://fallabs.com/hyperestraier/index.html"
+  url "http://fallabs.com/hyperestraier/hyperestraier-1.4.13.tar.gz"
+  sha256 "496f21190fa0e0d8c29da4fd22cf5a2ce0c4a1d0bd34ef70f9ec66ff5fbf63e2"
 
-  option 'enable-mecab', 'Include MeCab support'
+  depends_on "qdbm"
+  depends_on "mecab" => :optional
 
-  depends_on 'qdbm'
-
-  if build.include? 'enable-mecab'
-    depends_on 'mecab'
-    depends_on 'mecab-ipadic'
-    depends_on EucjpMecabIpadic
+  if build.with? "mecab"
+    depends_on "mecab-ipadic"
+    depends_on EucjpMecabIpadicRequirement
   end
+
+  deprecated_option "enable-mecab" => "with-mecab"
 
   def install
     args = %W[
@@ -77,12 +76,12 @@ class Hyperestraier < Formula
       --prefix=#{prefix}
     ]
 
-    args << '--enable-mecab' if build.include? 'enable-mecab'
+    args << "--enable-mecab" if build.with? "mecab"
 
     system "./configure", *args
-    system "make mac"
-    system "make check-mac"
-    system "make install-mac"
+    system "make", "mac"
+    system "make", "check-mac"
+    system "make", "install-mac"
   end
 
   test do

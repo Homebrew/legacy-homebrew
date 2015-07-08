@@ -15,33 +15,6 @@ class String
   #               EOS
   alias_method :undent_________________________________________________________72, :undent
 
-  def start_with?(*prefixes)
-    prefixes.any? do |prefix|
-      if prefix.respond_to?(:to_str)
-        prefix = prefix.to_str
-        self[0, prefix.length] == prefix
-      end
-    end
-  end unless method_defined?(:start_with?)
-
-  def end_with?(*suffixes)
-    suffixes.any? do |suffix|
-      if suffix.respond_to?(:to_str)
-        suffix = suffix.to_str
-        self[-suffix.length, suffix.length] == suffix
-      end
-    end
-  end unless method_defined?(:end_with?)
-
-  # 1.8.7 or later; used in bottle code
-  def rpartition(separator)
-    if ind = rindex(separator)
-      [slice(0, ind), separator, slice(ind+1, -1) || '']
-    else
-      ['', '', dup]
-    end
-  end unless method_defined?(:rpartition)
-
   # String.chomp, but if result is empty: returns nil instead.
   # Allows `chuzzle || foo` short-circuits.
   def chuzzle

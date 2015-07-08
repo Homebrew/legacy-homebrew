@@ -1,4 +1,5 @@
 class Bibtexconv < Formula
+  desc "BibTeX file converter"
   homepage "https://www.iem.uni-due.de/~dreibh/bibtexconv/"
   url "https://www.uni-due.de/~be0001/bibtexconv/download/bibtexconv-1.1.0.tar.gz"
   sha1 "c9ea5d067de069ddbe7b6500043ff87cae2fb8ba"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libshout < Formula
+  desc "Data and connectivity library for the icecast server"
   homepage 'http://www.icecast.org/'
   url 'http://downloads.xiph.org/releases/libshout/libshout-2.3.1.tar.gz'
   sha1 '147c5670939727420d0e2ad6a20468e2c2db1e20'

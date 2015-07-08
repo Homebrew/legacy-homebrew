@@ -39,7 +39,7 @@ class DependencyCollectorTests < Homebrew::TestCase
 
   def test_requirement_creation
     @d.add :x11
-    assert_instance_of X11Dependency, find_requirement(X11Dependency)
+    assert_instance_of X11Requirement, find_requirement(X11Requirement)
   end
 
   def test_no_duplicate_requirements
@@ -50,28 +50,28 @@ class DependencyCollectorTests < Homebrew::TestCase
   def test_requirement_tags
     @d.add :x11 => '2.5.1'
     @d.add :xcode => :build
-    assert_empty find_requirement(X11Dependency).tags
-    assert_predicate find_requirement(XcodeDependency), :build?
+    assert_empty find_requirement(X11Requirement).tags
+    assert_predicate find_requirement(XcodeRequirement), :build?
   end
 
   def test_x11_no_tag
     @d.add :x11
-    assert_empty find_requirement(X11Dependency).tags
+    assert_empty find_requirement(X11Requirement).tags
   end
 
   def test_x11_min_version
     @d.add :x11 => '2.5.1'
-    assert_equal "2.5.1", find_requirement(X11Dependency).min_version.to_s
+    assert_equal "2.5.1", find_requirement(X11Requirement).min_version.to_s
   end
 
   def test_x11_tag
     @d.add :x11 => :optional
-    assert_predicate find_requirement(X11Dependency), :optional?
+    assert_predicate find_requirement(X11Requirement), :optional?
   end
 
   def test_x11_min_version_and_tag
     @d.add :x11 => ['2.5.1', :optional]
-    dep = find_requirement(X11Dependency)
+    dep = find_requirement(X11Requirement)
     assert_equal '2.5.1', dep.min_version.to_s
     assert_predicate dep, :optional?
   end
@@ -104,7 +104,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   def test_resource_dep_git_url
     resource = Resource.new
     resource.url("git://example.com/foo/bar.git")
-    assert_instance_of GitDependency, @d.add(resource)
+    assert_instance_of GitRequirement, @d.add(resource)
   end
 
   def test_resource_dep_gzip_url

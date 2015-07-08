@@ -1,19 +1,23 @@
 class ScmManager < Formula
-  homepage "http://www.scm-manager.org"
-  url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.45/scm-server-1.45-app.tar.gz"
-  version "1.45"
-  sha1 "c8a2e9c694525a570460639bbb5cb01b23595ec4"
+  desc "Manage Git, Mercurial, and Subversion repos over HTTP"
+  homepage "https://www.scm-manager.org"
+  url "https://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/scm-server/1.46/scm-server-1.46-app.tar.gz"
+  version "1.46"
+  sha256 "984737422d403f2db95bdd9f268f900a537413b1d78721929faa53785bf7b54c"
+
+  depends_on :java => "1.6+"
 
   bottle do
-    sha1 "4ed2b53994cf1f31bde45a4e819906c39b218ca3" => :yosemite
-    sha1 "38d785287fc539b1b807acfa41c24a58c1cdb2d5" => :mavericks
-    sha1 "0b1169a36a9da089dc2d2257dfc473b16b5ad1f5" => :mountain_lion
+    cellar :any
+    sha256 "cb4f58a1ec6c26ee09534d8b6d42c28a21fb461b1d7e4a8ac1a4793d0a0fecf9" => :yosemite
+    sha256 "142969086cc96c7300bd92b4cc28063a57e9f014aafbcf45360fee5bae0fba1c" => :mavericks
+    sha256 "979071c94926cda759b8270d4d51b0e54c9d70ce4b078864d041b9c926093919" => :mountain_lion
   end
 
   resource "client" do
-    url "http://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.45/scm-cli-client-1.45-jar-with-dependencies.jar"
-    version "1.45"
-    sha1 "debfe596c1d959f7c1c282c747f728818e62b321"
+    url "https://maven.scm-manager.org/nexus/content/repositories/releases/sonia/scm/clients/scm-cli-client/1.46/scm-cli-client-1.46-jar-with-dependencies.jar"
+    version "1.46"
+    sha256 "6f0470d119c534eab6ac0b66c41584bf975cf5f3f845d119ad2cde751e675865"
   end
 
   def install

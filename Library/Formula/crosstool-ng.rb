@@ -1,45 +1,30 @@
-require 'formula'
-
 class CrosstoolNg < Formula
-  homepage 'http://crosstool-ng.org'
-  url 'http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.20.0.tar.bz2'
-  sha1 'b11f7ee706753b8cf822f98b549f8ab9dd8da9c7'
+  desc "Tool for building toolchains"
+  homepage "http://crosstool-ng.org"
+  url "http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.21.0.tar.bz2"
+  sha256 "67122ba42657da258f23de4a639bc49c6ca7fe2173b5efba60ce729c6cce7a41"
 
   bottle do
     cellar :any
-    sha1 "e0b4f5c33aea34c2c94cfbbb71b9e238ab5262c9" => :yosemite
-    sha1 "dc3c1243bb2df823e0db44562e6dc2b869f0a3b1" => :mavericks
-    sha1 "fc2cfb94d4edb31624c5703c07e536e7becb2fa0" => :mountain_lion
+    sha256 "fbc3920e7189b2c7e637890d60df8289b89cc0b2be8dc0bae8c9fdc8bcf35191" => :yosemite
+    sha256 "1c3efe8b7bb00129838870fabb44db60767ea2831ce2e705ada924fc5ea9e66e" => :mavericks
+    sha256 "15d5c1e9803492e947c3649796ffb405324e7573a4b6a1cf64f6b5412808346d" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on 'coreutils' => :build
-  depends_on 'wget'
-  depends_on 'gnu-sed'
-  depends_on 'gawk'
-  depends_on 'binutils'
-  depends_on 'libelf'
-  depends_on 'homebrew/dupes/grep' => :optional
-  depends_on 'homebrew/dupes/make' => :optional
+  depends_on "coreutils" => :build
+  depends_on "wget"
+  depends_on "gnu-sed"
+  depends_on "gawk"
+  depends_on "binutils"
+  depends_on "libelf"
+  depends_on "homebrew/dupes/grep" => :optional
+  depends_on "homebrew/dupes/make" => :optional
 
   # Avoid superenv to prevent https://github.com/mxcl/homebrew/pull/10552#issuecomment-9736248
   env :std
-
-  # Patch to fix clang offsetof. Can be removed when adopted upstream.
-  # http://patchwork.ozlabs.org/patch/400328/
-  patch do
-    url "http://patchwork.ozlabs.org/patch/400328/raw/"
-    sha1 "0baca77c863e6876f6fb1838db9e5cb60c6fe89c"
-  end
-
-  # Patch to make regex BSD grep compatible. Can be removed when adopted upstream.
-  # http://patchwork.ozlabs.org/patch/400351/
-  patch do
-    url "http://patchwork.ozlabs.org/patch/400351/raw/"
-    sha1 "8f8e29aa149e65c2588a2d9ec3849d0ba727e0ad"
-  end
 
   def install
     args = ["--prefix=#{prefix}",

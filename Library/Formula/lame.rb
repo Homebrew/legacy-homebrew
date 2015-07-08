@@ -1,4 +1,5 @@
 class Lame < Formula
+  desc "Lame Aint an MP3 Encoder (LAME)"
   homepage "http://lame.sourceforge.net/"
   url "https://downloads.sourceforge.net/sourceforge/lame/lame-3.99.5.tar.gz"
   sha1 "03a0bfa85713adcc6b3383c12e2cc68a9cfbf4c4"

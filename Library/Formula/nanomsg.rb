@@ -1,6 +1,7 @@
 require 'formula'
 
 class Nanomsg < Formula
+  desc "Socket library in C"
   homepage 'http://nanomsg.org'
   url 'http://download.nanomsg.org/nanomsg-0.5-beta.tar.gz'
   sha1 '2826bf58fe29550777dbe610e12ed20d386a6974'

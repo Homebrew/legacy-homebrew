@@ -1,4 +1,5 @@
 class Ghostscript < Formula
+  desc "Interpreter for PostScript and PDF"
   homepage "http://www.ghostscript.com/"
 
   stable do

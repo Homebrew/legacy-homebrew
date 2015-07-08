@@ -1,4 +1,5 @@
 class Gengetopt < Formula
+  desc "Generate C code to parse command-line arguments via getopt_long"
   homepage "https://www.gnu.org/software/gengetopt/"
   url "http://ftpmirror.gnu.org/gengetopt/gengetopt-2.22.6.tar.gz"
   mirror "https://ftp.gnu.org/gnu/gengetopt/gengetopt-2.22.6.tar.gz"

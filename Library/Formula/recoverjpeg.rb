@@ -1,6 +1,7 @@
 require 'formula'
 
 class Recoverjpeg < Formula
+  desc "Tool to recover JPEG images from a file system image"
   homepage 'http://www.rfc1149.net/devel/recoverjpeg.html'
   url 'http://www.rfc1149.net/download/recoverjpeg/recoverjpeg-2.3.tar.gz'
   sha1 'ed16b9852d85d7a07710d1ca41a03427642f3f38'

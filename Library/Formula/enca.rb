@@ -1,6 +1,7 @@
 require "formula"
 
 class Enca < Formula
+  desc "Charset analyzer and converter"
   homepage "http://cihar.com/software/enca/"
   url "http://dl.cihar.com/enca/enca-1.16.tar.gz"
   sha1 "8cc606a5c0efa49a42374c060faa4fb7a9501d23"

@@ -17,7 +17,7 @@ module Homebrew
         rm_DS_Store
       end
     else
-      ARGV.formulae.each { |f| cleanup_formula(f) }
+      ARGV.resolved_formulae.each { |f| cleanup_formula(f) }
     end
   end
 
@@ -32,8 +32,8 @@ module Homebrew
   def cleanup_cellar
     HOMEBREW_CELLAR.subdirs.each do |rack|
       begin
-        cleanup_formula Formulary.factory(rack.basename.to_s)
-      rescue FormulaUnavailableError
+        cleanup_formula Formulary.from_rack(rack)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
         # Don't complain about directories from DIY installs
       end
     end
@@ -50,7 +50,7 @@ module Homebrew
     elsif f.rack.subdirs.length > 1
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep.
-      opoo "Skipping #{f.name}: most recent version #{f.pkg_version} not installed"
+      opoo "Skipping #{f.full_name}: most recent version #{f.pkg_version} not installed"
     end
   end
 
@@ -69,12 +69,17 @@ module Homebrew
     HOMEBREW_CACHE.children.select(&:file?).each do |file|
       next cleanup_path(file) { file.unlink } if prune && file.mtime < time
 
-      next unless (version = file.version)
+      if Pathname::BOTTLE_EXTNAME_RX === file.to_s
+        version = bottle_resolve_version(file) rescue file.version
+      else
+        version = file.version
+      end
+      next unless version
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
 
       begin
-        f = Formulary.factory(name)
-      rescue FormulaUnavailableError
+        f = Formulary.from_rack(HOMEBREW_CELLAR/name)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
         next
       end
 
@@ -119,9 +124,11 @@ module Homebrew
       true
     elsif formula.opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks
-      Formula.installed.
-        select { |f| f.deps.any? { |d| d.name == formula.name } }.
-        all? { |f| f.rack.subdirs.all? { |keg| Tab.for_keg(keg).HEAD } }
+      Formula.installed.select do |f|
+        f.deps.any? do |d|
+          d.to_formula.full_name == formula.full_name rescue d.name == formula.name
+        end
+      end.all? { |f| f.rack.subdirs.all? { |keg| Tab.for_keg(keg).HEAD } }
     end
   end
 end

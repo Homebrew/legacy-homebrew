@@ -1,6 +1,7 @@
 require "formula"
 
 class Gibbslda < Formula
+  desc "Library wrapping imlib2's context API"
   homepage "http://gibbslda.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/gibbslda/GibbsLDA%2B%2B/0.2/GibbsLDA%2B%2B-0.2.tar.gz"
   sha1 "3264f01ae921b6dcbbe57dd877561271df214cdd"

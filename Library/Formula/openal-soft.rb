@@ -1,20 +1,25 @@
-require "formula"
-
 class OpenalSoft < Formula
+  desc "Implementation of the OpenAL 3D audio API"
   homepage "http://kcat.strangesoft.net/openal.html"
   url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.16.0.tar.bz2"
-  sha1 "f70892fc075ae726320478c0179f7011fea0d157"
+  sha256 "2f3dcd313fe26391284fbf8596863723f99c65d6c6846dccb48e79cadaf40d5f"
 
   bottle do
     cellar :any
-    sha1 "f447363850f71bb2332914cc9915e757cca0556f" => :mavericks
-    sha1 "732aba3be7edf074d9dd619cca10d4108db0b099" => :mountain_lion
-    sha1 "03d64490aaab809fa4095401dbb8508b98c2b99f" => :lion
+    revision 1
+    sha256 "4f31acb42ba76c79984e7ef0c5be5cbc63a6bff524516b3f67d2fb363363ec64" => :yosemite
+    sha256 "e0378ccb0dee6eca4d505ba313512ed12b44f6a58525418a544bce681fa3ad1b" => :mavericks
+    sha256 "b190c7c847f976b7d4938ea84356baa7225b63748c890af151150089f145ec6a" => :mountain_lion
   end
 
   option :universal
 
+  depends_on "pkg-config" => :build
   depends_on "cmake" => :build
+  depends_on "portaudio" => :optional
+  depends_on "pulseaudio" => :optional
+  depends_on "fluid-synth" => :optional
+  depends_on "qt" => :optional
 
   # llvm-gcc does not support the alignas macro
   # clang 4.2's support for alignas is incomplete
@@ -23,7 +28,17 @@ class OpenalSoft < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "cmake", ".", *std_cmake_args
+
+    # Please don't reenable example building. See:
+    # https://github.com/Homebrew/homebrew/issues/38274
+    args = std_cmake_args
+    args << "-DALSOFT_EXAMPLES=OFF"
+
+    args << "-DALSOFT_BACKEND_PORTAUDIO=OFF" if build.without? "portaudio"
+    args << "-DALSOFT_BACKEND_PULSEAUDIO=OFF" if build.without? "pulseaudio"
+    args << "-DALSOFT_MIDI_FLUIDSYNTH=OFF" if build.without? "fluid-synth"
+
+    system "cmake", ".", *args
     system "make", "install"
   end
 

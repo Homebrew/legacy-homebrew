@@ -1,6 +1,7 @@
 require 'formula'
 
 class Asm6 < Formula
+  desc "6502 assembler"
   homepage 'http://home.comcast.net/~olimar/NES/'
   url 'http://home.comcast.net/~olimar/NES/asm6.zip'
   version '1.6'

@@ -1,6 +1,7 @@
 require "language/go"
 
 class Nsq < Formula
+  desc "Realtime distributed messaging platform"
   homepage "http://nsq.io"
   url "https://github.com/bitly/nsq/archive/v0.3.5.tar.gz"
   sha256 "4120ad24e3700be1e65549b9a55eab5d4e744cd114d9b39779a47b6dedda0b35"

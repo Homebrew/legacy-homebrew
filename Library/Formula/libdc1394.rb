@@ -1,6 +1,7 @@
 require "formula"
 
 class Libdc1394 < Formula
+  desc "Provides API for IEEE 1394 cameras"
   homepage "http://damien.douxchamps.net/ieee1394/libdc1394/"
   url "https://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.2/libdc1394-2.2.2.tar.gz"
   sha1 "13958c3cd0709565b5e4a9012dcf2a9b710264e2"

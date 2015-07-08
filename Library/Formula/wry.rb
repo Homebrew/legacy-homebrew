@@ -1,6 +1,7 @@
 require "formula"
 
 class Wry < Formula
+  desc "Command-line App.net tool"
   homepage "http://grailbox.com/wry/"
   url "https://github.com/hoop33/wry/archive/v1.8.2.tar.gz"
   sha1 "eb32f934755992fbd5aafedd37037cba0b73e551"

@@ -1,4 +1,5 @@
 class Qwt < Formula
+  desc "Qt Widgets for Technical Applications (v5.1)"
   homepage "http://qwt.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/qwt/qwt/6.1.2/qwt-6.1.2.tar.bz2"
   sha1 "6af82b6ee4132f779d1c8c2db872f01463b0d61c"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sam2p < Formula
+  desc "Convert raster images to EPS, PDF, and other formats"
   homepage 'http://code.google.com/p/sam2p/'
   url 'https://sam2p.googlecode.com/files/sam2p-0.49.2.tar.gz'
   sha1 'a26db7408dfa42ab615d087774128cc5b20ab61d'

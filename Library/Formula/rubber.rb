@@ -1,6 +1,7 @@
 require 'formula'
 
 class Rubber < Formula
+  desc "Automated building of LaTeX documents"
   homepage 'https://launchpad.net/rubber/'
   url 'http://launchpad.net/rubber/trunk/1.1/+download/rubber-20100306.tar.gz'
   sha1 'cd382a19cc9fc65d114456ec9d6b042dc0e65b53'

@@ -1,4 +1,5 @@
 class Pngcrush < Formula
+  desc "Optimizer for PNG files"
   homepage "http://pmt.sourceforge.net/pngcrush/"
   url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.85/pngcrush-1.7.85.tar.gz"
   sha1 "df48feff10720403dbc52883c5b6228951743c21"

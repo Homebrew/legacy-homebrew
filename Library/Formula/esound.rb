@@ -1,6 +1,7 @@
 require 'formula'
 
 class Esound < Formula
+  desc "Enlightened sound daemon"
   homepage 'http://www.tux.org/~ricdude/EsounD.html'
   url 'http://ftp.gnome.org/pub/gnome/sources/esound/0.2/esound-0.2.41.tar.bz2'
   sha1 '6c343483b3789f439277935eaad7e478bee685ea'

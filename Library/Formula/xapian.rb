@@ -1,6 +1,7 @@
 require 'formula'
 
 class Xapian < Formula
+  desc "C++ search engine library with many bindings"
   homepage 'http://xapian.org'
   url 'http://oligarchy.co.uk/xapian/1.2.19/xapian-core-1.2.19.tar.xz'
   sha1 'a8679cd0f708e32f2ec76bcdc198cd9fa2e1d65e'

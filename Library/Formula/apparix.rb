@@ -1,4 +1,5 @@
 class Apparix < Formula
+  desc "File system navigation via bookmarking directories"
   homepage "http://micans.org/apparix/"
   url "http://micans.org/apparix/src/apparix-11-062.tar.gz"
   version "11-062"

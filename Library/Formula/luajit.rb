@@ -1,11 +1,11 @@
 require "formula"
 
 class Luajit < Formula
+  desc "Just-In-Time Compiler (JIT) for the Lua programming language"
   homepage "http://luajit.org/luajit.html"
-  url "http://luajit.org/download/LuaJIT-2.0.3.tar.gz"
-  sha1 "2db39e7d1264918c2266b0436c313fbd12da4ceb"
+  url "http://luajit.org/download/LuaJIT-2.0.4.tar.gz"
+  sha256 "620fa4eb12375021bef6e4f237cbd2dd5d49e56beb414bee052c746beef1807d"
   head "http://luajit.org/git/luajit-2.0.git"
-  revision 1
 
   devel do
     url "http://luajit.org/git/luajit-2.0.git", :branch => "v2.1"
@@ -13,9 +13,9 @@ class Luajit < Formula
   end
 
   bottle do
-    sha1 "9a6fc01ed0659ecc07a1e34daecdcf82cd150ca4" => :yosemite
-    sha1 "7ed3346a644ca5cd73c51131c54060b13038208e" => :mavericks
-    sha1 "0363e0a9c7ff2580d35363622b228fba7bb8f770" => :mountain_lion
+    sha256 "13b55554d8a6772cec7eb3ba04c484146dc705417591c9455108aa2f9950dd56" => :yosemite
+    sha256 "f3ab35cf3d35a68037f65353ebe6a6e09dc9e021d29e4067c03f90e0805a0acd" => :mavericks
+    sha256 "0d50380c98eef0fcc4be1d91d11d0cd1a6afefa600833f1cfce502336228e36c" => :mountain_lion
   end
 
   skip_clean "lib/lua/5.1", "share/lua/5.1"

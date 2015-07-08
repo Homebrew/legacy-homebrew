@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pike < Formula
+  desc "Dynamic programming language"
   homepage 'http://pike.lysator.liu.se'
   url 'http://pike.lysator.liu.se/pub/pike/all/7.8.866/Pike-v7.8.866.tar.gz'
   sha1 'f3d6cc21e302576c3ac4bb5a525705dbeee2d060'

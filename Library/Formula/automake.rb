@@ -1,4 +1,5 @@
 class Automake < Formula
+  desc "Tool for generating GNU Standards-compliant Makefiles"
   homepage "https://www.gnu.org/software/automake/"
   url "http://ftpmirror.gnu.org/automake/automake-1.15.tar.xz"
   mirror "https://ftp.gnu.org/gnu/automake/automake-1.15.tar.xz"

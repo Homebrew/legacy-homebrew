@@ -1,4 +1,5 @@
 class Libdnet < Formula
+  desc "Portable low-level networking library"
   homepage 'https://code.google.com/p/libdnet/'
   url 'https://libdnet.googlecode.com/files/libdnet-1.12.tgz'
   sha1 '71302be302e84fc19b559e811951b5d600d976f8'

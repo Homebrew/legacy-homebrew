@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sdl2Mixer < Formula
+  desc "Sample multi-channel audio mixer library"
   homepage 'http://www.libsdl.org/projects/SDL_mixer/'
   url 'http://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.0.tar.gz'
   sha1 '9ed975587f09a1776ba9776dcc74a58e695aba6e'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cc65 < Formula
+  desc "6502 C compiler"
   homepage 'https://cc65.github.io/cc65/'
   # CC65 stable has ceased to be maintained as of March 2013.
   # The head build has a new home, and new maintainer, but no new stable release yet.

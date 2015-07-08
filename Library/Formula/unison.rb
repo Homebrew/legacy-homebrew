@@ -1,15 +1,17 @@
 require 'formula'
 
 class Unison < Formula
-  homepage 'http://www.cis.upenn.edu/~bcpierce/unison/'
-  url 'http://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
-  sha1 '74f1c087ee49dc1db4680ad779280f7333d5c968'
+  desc "Unison file synchronizer"
+  homepage 'https://www.cis.upenn.edu/~bcpierce/unison/'
+  url 'https://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
+  sha256 'f40d3cfbe82078d79328b51acab3e5179f844135260c2f4710525b9b45b15483'
 
   bottle do
     cellar :any
-    sha1 "05c2f2b41d9cf864901577829fb71e05fe66d25b" => :yosemite
-    sha1 "681d82f73649d0580acfbce2a6ce66f32ad6da9c" => :mavericks
-    sha1 "0d83d72a11c558eec59ae9aa20476165dc56cb85" => :mountain_lion
+    revision 1
+    sha256 "b4f4ebf0db23e5aa52528ec12c6dd84315ed36e4894cefba9c3c85e293ca9350" => :yosemite
+    sha256 "790d915ca2e98518227626ad2ce91b53f60ce584f4ca8c8392c30a4917e2e167" => :mavericks
+    sha256 "dc4dcbeb2e2f224f9fffede14f8d3c7c220f032023b83626b75409707e93df35" => :mountain_lion
   end
 
   depends_on 'objective-caml' => :build

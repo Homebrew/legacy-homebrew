@@ -1,14 +1,22 @@
-require 'formula'
-
 class Rename < Formula
-  homepage 'http://plasmasturm.org/code/rename'
-  url 'https://github.com/ap/rename/archive/v1.600.tar.gz'
-  sha1 'a7946ce3602e3810aaa70300674ccb26832634ed'
+  desc "Perl-powered file rename script with many helpful built-ins"
+  homepage "http://plasmasturm.org/code/rename"
+  url "https://github.com/ap/rename/archive/v1.600.tar.gz"
+  sha256 "538fa908c9c2c4e7a08899edb6ddb47f7cbeb9b1a1d04e003d3c19b56fcc7f88"
+
+  head "https://github.com/ap/rename.git"
+
+  bottle do
+    cellar :any
+    sha256 "2ed1a6afa1543ca67c85763ac9cc23e40bb85d359234e2d4af0fe79db8439a89" => :yosemite
+    sha256 "70f3263cbca5dbda0b477bf9838fdf4447c101ee89cd7f72fe2105657892431c" => :mavericks
+    sha256 "c632dad8b0ddc1853db87eb88a408ee352a79a95a68f5574a0c2ba6512cf02ce" => :mountain_lion
+  end
 
   def install
-    system 'pod2man', 'rename', 'rename.1'
-    bin.install 'rename'
-    man1.install 'rename.1'
+    system "pod2man", "rename", "rename.1"
+    bin.install "rename"
+    man1.install "rename.1"
   end
 
   test do

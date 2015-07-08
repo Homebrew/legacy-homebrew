@@ -1,4 +1,5 @@
 class Sqtop < Formula
+  desc "Display information about active connections for a Squid proxy"
   homepage "https://github.com/paleg/sqtop"
   url "https://github.com/paleg/sqtop/archive/v2015-02-08.tar.gz"
   version "2015-02-08"

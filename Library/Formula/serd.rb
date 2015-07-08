@@ -1,6 +1,7 @@
 require 'formula'
 
 class Serd < Formula
+  desc "C library for RDF syntax"
   homepage 'http://drobilla.net/software/serd/'
   url 'http://download.drobilla.net/serd-0.20.0.tar.bz2'
   sha1 '38c0c8600270e38d99bc87b0ceb14b25c4c0cea3'

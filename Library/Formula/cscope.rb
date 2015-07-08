@@ -1,4 +1,5 @@
 class Cscope < Formula
+  desc "Tool for browsing source code"
   homepage "http://cscope.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cscope/cscope/15.8a/cscope-15.8a.tar.gz"
   sha1 "00f76825791b895532778f720c509cd13b9d6846"

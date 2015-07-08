@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libdsk < Formula
+  desc "Library for accessing discs and disc image files"
   homepage 'http://www.seasip.info/Unix/LibDsk/'
   url 'http://www.seasip.info/Unix/LibDsk/libdsk-1.3.8.tar.gz'
   sha1 'eac675db4e16f35c86ba2d2f865c8e58a99156a7'

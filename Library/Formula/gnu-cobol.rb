@@ -1,11 +1,11 @@
-require "formula"
-
 class GnuCobol < Formula
+  desc "Implements much of the COBOL 85 and COBOL 2002 standards"
   homepage "http://www.opencobol.org/"
+  revision 1
 
   stable do
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz"
-    sha1 "86e928c43cb3372f1f4564f3fd5e1dde668e8c1f"
+    sha256 "5cd6c99b2b1c82fd0c8fffbb350aaf255d484cde43cf5d9b92de1379343b3d7e"
 
     fails_with :clang do
       cause <<-EOS.undent
@@ -18,14 +18,14 @@ class GnuCobol < Formula
   devel do
     version "2.0_nightly_r411"
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r411.tar.gz"
-    sha1 "009215c090b9a90fbf02bbc913095ce2a9b31910"
+    sha256 "5d6d767bf0255fa63bc5c26493d53f4749eb0e369b81c626d156f346b3664fe7"
   end
 
   bottle do
-    revision 1
-    sha1 "0faef373e0364a8c92e32b828904e0fc10198aab" => :mavericks
-    sha1 "cf08ce9301cfb80a882b37587ef0b9cb5c96f70b" => :mountain_lion
-    sha1 "fc50ad8ec550f6d347044778b795688e4f18ad24" => :lion
+    revision 2
+    sha256 "2836f2bf3362ff9e9d9578a42e7207a3c29411d481279e46c723df8ac5189292" => :yosemite
+    sha256 "c24443ab3ac33ae5d8f1092cba070e62fdc5fbd4cced94fa813b5494424d8aa4" => :mavericks
+    sha256 "3be8e2c52d16b4a829f8669636d2e13f0346855899605e02cb7c6e8c47234b20" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

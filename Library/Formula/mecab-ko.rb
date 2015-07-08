@@ -1,6 +1,7 @@
 require "formula"
 
 class MecabKo < Formula
+  desc "See mecab"
   homepage "https://bitbucket.org/eunjeon/mecab-ko"
   url "https://bitbucket.org/eunjeon/mecab-ko/downloads/mecab-0.996-ko-0.9.2.tar.gz"
   version "0.996-ko-0.9.2"

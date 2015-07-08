@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mdbtools < Formula
+  desc "Tools to facilitate the use of Microsoft Access databases"
   homepage 'https://github.com/brianb/mdbtools/'
   url "https://github.com/brianb/mdbtools/archive/0.7.1.tar.gz"
   sha1 '33b746f29c1308909a1e82546ec24e8f835d461a'

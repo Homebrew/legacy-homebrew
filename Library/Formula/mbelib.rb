@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mbelib < Formula
+  desc "P25 Phase 1 and ProVoice vocoder"
   homepage 'https://github.com/szechyjs/mbelib'
   url  'https://github.com/szechyjs/mbelib/archive/v1.2.5.tar.gz'
   sha1 'ee970823d95f008941132edc6142a1a0282655a8'

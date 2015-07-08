@@ -1,4 +1,5 @@
 class Md < Formula
+  desc "Process raw dependency files produced by cpp"
   homepage "https://opensource.apple.com/source/adv_cmds/adv_cmds-147/md/"
   url "https://opensource.apple.com/tarballs/adv_cmds/adv_cmds-147.tar.gz"
   sha256 "e74d93496dd031ffea1ad8995686c1e9369a92de70c4c95a7f6e3d6ce2e7e434"

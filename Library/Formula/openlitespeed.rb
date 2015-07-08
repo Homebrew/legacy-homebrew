@@ -1,4 +1,5 @@
 class Openlitespeed < Formula
+  desc "High-performance, lightweight HTTP server"
   homepage "http://open.litespeedtech.com/mediawiki/"
   url "http://open.litespeedtech.com/packages/openlitespeed-1.3.10.tgz"
   sha1 "4a409b65cacc3ee5e2855ab213a5f3e9858a8003"

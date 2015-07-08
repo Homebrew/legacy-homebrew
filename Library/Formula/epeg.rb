@@ -1,6 +1,7 @@
 require "formula"
 
 class Epeg < Formula
+  desc "JPEG/JPG thumbnail scaling"
   homepage "https://github.com/mattes/epeg"
   url "https://github.com/mattes/epeg/archive/v0.9.1.042.tar.gz"
   sha1 "51ef8a55c9567e75c64bf3390fe7c92aa76ac306"

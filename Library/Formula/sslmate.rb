@@ -1,13 +1,14 @@
 class Sslmate < Formula
+  desc "Buy SSL certs from the command-line"
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-1.0.1.tar.gz"
-  sha256 "33178a73142a7be4bdd6d916901c596525f1a4aa25f2821758cd558808d1dd3d"
+  url "https://packages.sslmate.com/other/sslmate-1.4.0.tar.gz"
+  sha256 "19194899edda48a9bf0b69e1fbd75fce1a70ef86abf5bb87be31e5f0d13246fe"
 
   bottle do
     cellar :any
-    sha256 "d0765b1db21b52b69f13c31330a6023a8017184b64486dcb3d606fb37e943b7a" => :yosemite
-    sha256 "a0fd044d43399e24282b1266c9fc8f0ff835cb733ad5ca5fb4777261a44c8cad" => :mavericks
-    sha256 "ede8379abb216166470f013682c1b9ce5efed9876f91e48800d40c584cd8978d" => :mountain_lion
+    sha256 "ae027af4e764b92a189a68f2e8f28caa42af93f57c079ef381451ef0d157d79e" => :yosemite
+    sha256 "09cace1eaada4e956c1e1aa0d16920b77b938b54a7ead3edbbeae163e35afb98" => :mavericks
+    sha256 "0dadf33e3ffa8a7bb364dd9cc23ec5562fd3f315b8ce745de4380089c74002b0" => :mountain_lion
   end
 
   option "without-route53", "Disable support for Route 53 DNS approval"
@@ -17,8 +18,8 @@ class Sslmate < Formula
     depends_on "curl"
 
     resource "URI" do
-      url "http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
-      mirror "https://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-1.64.tar.gz"
+      url "http://search.cpan.org/CPAN/authors/id/E/ET/ETHER/URI-1.67.tar.gz"
+      mirror "https://cpan.metacpan.org/authors/id/E/ET/ETHER/URI-1.67.tar.gz"
       sha256 "ab7f5fbc80da4ed9c46d63ed956c68a09e83dae30f20c2778c3e056d41883f9d"
     end
 
@@ -41,8 +42,8 @@ class Sslmate < Formula
     depends_on :python if MacOS.version <= :snow_leopard
 
     resource "boto" do
-      url "https://pypi.python.org/packages/source/b/boto/boto-2.34.0.tar.gz"
-      sha256 "33baab022ecb803414ad0d6cf4041d010cfc2755ff8acc3bea7b32e77ba98be0"
+      url "https://pypi.python.org/packages/source/b/boto/boto-2.38.0.tar.gz"
+      sha256 "d9083f91e21df850c813b38358dc83df16d7f253180a1344ecfedce24213ecf2"
     end
   end
 

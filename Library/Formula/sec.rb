@@ -1,6 +1,7 @@
 require "formula"
 
 class Sec < Formula
+  desc "Event correlation tool for event processing of various kinds"
   homepage "http://simple-evcorr.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/simple-evcorr/sec/2.7.6/sec-2.7.6.tar.gz"
   sha1 "171fe152563832497f2647b6d1b9aa4b8047ba4e"

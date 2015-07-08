@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lcov < Formula
+  desc "Graphical front-end for GCC's coverage testing tool (gcov)"
   homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
   url 'https://downloads.sourceforge.net/ltp/lcov-1.11.tar.gz'
   sha1 'bf8ed68c06805a71528a2a67dd714830afd3ccb5'

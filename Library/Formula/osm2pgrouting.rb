@@ -1,6 +1,7 @@
 require 'formula'
 
 class Osm2pgrouting < Formula
+  desc "Import OSM data into pgRouting database"
   homepage 'http://pgrouting.org/docs/tools/osm2pgrouting.html'
   url 'https://github.com/pgRouting/osm2pgrouting/archive/v2.0.0.tar.gz'
   sha1 '2d100ac9914919993a7c341e2395b8bafdfe3759'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libmonome < Formula
+  desc "Interact with monome devices via C, Python, or FFI"
   homepage 'http://illest.net/libmonome/'
   url 'https://github.com/monome/libmonome/archive/1.2.tar.gz'
   sha1 'a53a232a7b24614c865b7cb536f80cb0219ff1d1'

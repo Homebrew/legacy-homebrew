@@ -1,6 +1,7 @@
 require "formula"
 
 class TomeeWebprofile < Formula
+  desc "All-Apache Java EE 6 Web Profile stack"
   homepage "http://tomee.apache.org/"
   url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-webprofile.tar.gz"
   version "1.7.1"

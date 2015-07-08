@@ -1,4 +1,5 @@
 class GnuTypist < Formula
+  desc "GNU typing tutor"
   homepage "https://www.gnu.org/software/gtypist/"
   url "http://ftpmirror.gnu.org/gtypist/gtypist-2.9.5.tar.xz"
   mirror "https://ftp.gnu.org/gnu/gtypist/gtypist-2.9.5.tar.xz"

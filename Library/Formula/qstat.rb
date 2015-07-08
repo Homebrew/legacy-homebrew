@@ -1,6 +1,7 @@
 require 'formula'
 
 class Qstat < Formula
+  desc "Query Quake servers from the command-line"
   homepage 'http://qstat.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/qstat/qstat/qstat-2.11/qstat-2.11.tar.gz'
   sha1 '107796ab7512bdfdd0c3bb06a3458432b39458c7'

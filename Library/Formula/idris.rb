@@ -3,15 +3,16 @@ require "language/haskell"
 class Idris < Formula
   include Language::Haskell::Cabal
 
+  desc "Pure functional programming language with dependent types"
   homepage "http://www.idris-lang.org"
-  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.17.tar.gz"
-  sha1 "d51d68227b3e3d3967769749314d3a75755a68ef"
+  url "https://github.com/idris-lang/Idris-dev/archive/v0.9.18.tar.gz"
+  sha1 "08b863ab13c306b2643e63a2bb76a01b0305c20d"
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
-    sha256 "bb4ac9869a6dc76d6b4a8ecb4e6edc2ae476872432f71509134d1c47e51abdee" => :yosemite
-    sha256 "69b0bbf45713c1819696bffd870c2f74fa7ff3e8b5d68dc1b96e194579ce3f13" => :mavericks
-    sha256 "bb2d159e3626c95e2f23c20b1e3020151a6ab928b7606fb6790b701360735769" => :mountain_lion
+    sha256 "f7452fb8719478d033473dc7a655f1ffae44bbccf2a2999a2b42c483363de318" => :yosemite
+    sha256 "5c0d4067a4284b4d551ed05824151071463d07493ffb406145e118d7f537d522" => :mavericks
+    sha256 "96c8ee3754b782fddfb879ab6db9a8ad0b247b9b5a83fb91943c07fc767ed101" => :mountain_lion
   end
 
   depends_on "ghc" => :build
@@ -20,6 +21,8 @@ class Idris < Formula
 
   depends_on "libffi" => :recommended
   depends_on "pkg-config" => :build if build.with? "libffi"
+
+  setup_ghc_compilers
 
   def install
     flags = []

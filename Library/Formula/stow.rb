@@ -1,4 +1,5 @@
 class Stow < Formula
+  desc "Organize software neatly under a single directory tree (e.g. /usr/local)"
   homepage "https://www.gnu.org/software/stow/"
   url "http://ftpmirror.gnu.org/stow/stow-2.2.0.tar.gz"
   mirror "https://ftp.gnu.org/gnu/stow/stow-2.2.0.tar.gz"

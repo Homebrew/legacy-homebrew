@@ -1,6 +1,7 @@
 require "formula"
 
 class IrcdHybrid < Formula
+  desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"
   url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.6/ircd-hybrid-8.2.6.tgz"
   sha256 "c712988ef43081e6d2218e4fe2523fdadf22df2959cf4c878f0625d16da5b79d"

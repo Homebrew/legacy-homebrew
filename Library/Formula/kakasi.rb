@@ -1,4 +1,5 @@
 class Kakasi < Formula
+  desc "Convert Kanji characters to Hiragana, Katakana, or Romaji"
   homepage "http://kakasi.namazu.org/"
   url "http://kakasi.namazu.org/stable/kakasi-2.3.6.tar.gz"
   sha1 "5f2e02264dda11940fb7b5387c327d4c4324bdb3"

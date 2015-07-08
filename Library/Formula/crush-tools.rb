@@ -1,4 +1,5 @@
 class CrushTools < Formula
+  desc "Command-line tools for processing delimited text data"
   homepage "https://github.com/google/crush-tools/"
   url "https://github.com/google/crush-tools/archive/2013-04.tar.gz"
   version "2013-04"

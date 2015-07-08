@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libdap < Formula
+  desc "Framework for scientific data networking"
   homepage 'http://www.opendap.org'
   url 'http://www.opendap.org/pub/source/libdap-3.12.1.tar.gz'
   sha1 'bfb72dd3035e7720b1ada0bf762b9ab80bb6bbf2'

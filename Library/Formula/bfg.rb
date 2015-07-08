@@ -1,4 +1,5 @@
 class Bfg < Formula
+  desc "Alternative to git-filter-branch, written in Scala"
   homepage "https://rtyley.github.io/bfg-repo-cleaner/"
   url "https://repo1.maven.org/maven2/com/madgag/bfg/1.12.3/bfg-1.12.3.jar"
   sha1 "4eff57d0418958815681cbbec2f19ed7285252cb"

@@ -1,4 +1,5 @@
 class Ktoblzcheck < Formula
+  desc "Library for German banks"
   homepage "http://ktoblzcheck.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.48.tar.gz"
   sha1 "80d1a586e2d581dce62094fed61b9292f2c72c6b"

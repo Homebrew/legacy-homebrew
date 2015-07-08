@@ -1,6 +1,7 @@
 require "formula"
 
 class Makepkg < Formula
+  desc "Compile and build packages suitable for installation with pacman"
   homepage "https://wiki.archlinux.org/index.php/makepkg"
   url "ftp://ftp.archlinux.org/other/pacman/pacman-4.1.2.tar.gz"
   sha1 "ed9a40a9b532bc43e48680826d57518134132538"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mkvtomp4 < Formula
+  desc "Convert mkv files to mp4"
   homepage 'https://github.com/gavinbeatty/mkvtomp4/'
   url 'https://github.com/gavinbeatty/mkvtomp4/archive/mkvtomp4-v1.3.tar.gz'
   sha1 'eab345f40a2d6f30847300f8e2880354e08356d2'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Malaga < Formula
+  desc "Grammar development environment for natural languages"
   homepage 'http://home.arcor.de/bjoern-beutel/malaga/'
   url 'http://home.arcor.de/bjoern-beutel/malaga/malaga-7.12.tgz'
   sha1 '19d74697575229231c18c83bb7a16b7ee6c31a51'

@@ -1,14 +1,15 @@
 require "formula"
 
 class Fsharp < Formula
+  desc "F#, a functional-first programming language"
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.32",
-    :revision => "a4e1f7111a6d1410df3f33e7205ee34617006b94"
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.2",
+    :revision => "54fedcc879a81d8384ec336a1bb0c5a970ccd0f0"
 
   bottle do
-    sha256 "10e035403f71f47b03e0961f5dc83959b5e2d8600a9af670e559bba811173ae9" => :yosemite
-    sha256 "e19150b83bf8fcc3a21f2ea81e2267441fbf17a6673375a89d7301fd4e1c2ced" => :mavericks
-    sha256 "d9940047cae32d7d6e3e65374f8db5cca452e322136a8b917f5627f5e5c7bd55" => :mountain_lion
+    sha256 "48c08f9e3bfdd74898bd5cc796b3d63e66059bf056bd60822476f474135ab32d" => :yosemite
+    sha256 "8db3d4e0eed760eea54b7c2b0f7efae604fae897781a07d5b78346bbf2ebb787" => :mavericks
+    sha256 "4418bd6dec786b2af2f00979f2924a300abc1374e96ef2a90d06f246ed8e7976" => :mountain_lion
   end
 
   depends_on "automake" => :build

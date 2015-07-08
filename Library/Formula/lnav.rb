@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lnav < Formula
+  desc "Curses-based tool for viewing and analyzing log files"
   homepage 'http://lnav.org'
   url 'https://github.com/tstack/lnav/releases/download/v0.7.3/lnav-0.7.3.tar.gz'
   sha1 '3f9242cc176194e14d50b8b0cbac08a9656cc5b4'

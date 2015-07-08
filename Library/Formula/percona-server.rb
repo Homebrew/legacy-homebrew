@@ -1,16 +1,16 @@
 require 'formula'
 
 class PerconaServer < Formula
+  desc "Drop-in MySQL replacement"
   homepage 'https://www.percona.com'
-  url 'https://www.percona.com/redir/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.23-72.1.tar.gz'
-  version '5.6.23-72.1'
-  sha256 '5382630b98dd05f72e372ede5535ddcad2e389b594311a69f03a3d95f68d4907'
+  url 'https://www.percona.com/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.25-73.0.tar.gz'
+  version '5.6.25-73.0'
+  sha256 '790d056931b9dd5b158a732812490fdaf9407012aaf93d3f1c1b21942dcdc251'
 
   bottle do
-    revision 1
-    sha256 "09850cc13beeef10af3603e65280249a9747073efc41cc3183d39b3f9aabc675" => :yosemite
-    sha256 "d4b72e8e184b43eb42869469ae51039209bc76b5fec279202b9f05ef6b46ed9f" => :mavericks
-    sha256 "572c89abfeadc41b9871c1aed04f7fd81b6d2844868db53e99ebc606a8e126a1" => :mountain_lion
+    sha256 "5c4a1b0ef96f9994d0e61d01b74d75b7c379d372bf81c4e1df13b9c9a56d8c5f" => :yosemite
+    sha256 "d5f17aadf6ecbc7e4000c2630436ffd29f48d518a645164010b671eaa63c34c1" => :mavericks
+    sha256 "b009a0aa363d11af4c49c871c0306bdd902e5f2fc184ee218fb155c3dd594ba1" => :mountain_lion
   end
 
   depends_on 'cmake' => :build

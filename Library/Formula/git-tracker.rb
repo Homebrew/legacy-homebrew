@@ -1,6 +1,7 @@
 require 'formula'
 
 class GitTracker < Formula
+  desc "Integrate Pivotal Tracker into git use"
   homepage 'https://github.com/stevenharman/git_tracker'
   url 'https://github.com/stevenharman/git_tracker/archive/v1.6.3.tar.gz'
   sha1 'c748e564f176165dba2498637e0b99f27647b88a'

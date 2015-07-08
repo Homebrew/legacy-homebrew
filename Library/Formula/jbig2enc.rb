@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jbig2enc < Formula
+  desc "JBIG2 encoder (for monochrome documents)"
   homepage 'https://github.com/agl/jbig2enc'
   revision 1
 

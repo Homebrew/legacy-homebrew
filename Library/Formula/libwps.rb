@@ -1,6 +1,7 @@
 require "formula"
 
 class Libwps < Formula
+  desc "Library to import files in MS Works format"
   homepage 'http://libwps.sourceforge.net'
   url 'http://dev-www.libreoffice.org/src/libwps-0.3.0.tar.bz2'
   sha1 '526323bd59b5f59f8533882fb455e5886bf1f6dc'

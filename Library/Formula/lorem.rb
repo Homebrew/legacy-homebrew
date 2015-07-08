@@ -1,4 +1,5 @@
 class Lorem < Formula
+  desc "Lorem Ipsum generator"
   homepage "https://github.com/per9000/lorem"
   url "https://github.com/per9000/lorem.git", :revision => "6da0a5ac4dcce0e2463a0d820baafde72210fbff"
   version "0.7.4"

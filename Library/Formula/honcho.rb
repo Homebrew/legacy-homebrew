@@ -1,4 +1,5 @@
 class Honcho < Formula
+  desc "Python clone of Foreman, for managing Procfile-based applications"
   homepage "https://github.com/nickstenning/honcho"
   url "https://github.com/nickstenning/honcho/archive/v0.6.6.tar.gz"
   sha256 "02703190e9775c899045e25e7f5b5b1a3b3ec1a4720d6b85a50da680f7f750c7"

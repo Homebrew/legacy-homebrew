@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ohcount < Formula
+  desc "Source code line counter"
   homepage 'https://github.com/blackducksw/ohcount'
   url 'https://github.com/blackducksw/ohcount/archive/3.0.0.tar.gz'
   sha1 '7f3fce48bf2a522c5262215699c36625ca6d3d33'

@@ -1,4 +1,5 @@
 class AppscaleTools < Formula
+  desc "Command-line tools for working with AppScale"
   homepage "https://github.com/AppScale/appscale-tools"
   url "https://github.com/AppScale/appscale-tools/archive/2.3.1.tar.gz"
   sha256 "f24460657d46cb84d657e900999349fbd789d2bc6546a866932cfc20fe195a58"

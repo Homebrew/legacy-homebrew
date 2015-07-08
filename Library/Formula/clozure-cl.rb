@@ -1,6 +1,7 @@
 require 'formula'
 
 class ClozureCl < Formula
+  desc "Common Lisp implementation with a long history"
   homepage 'http://ccl.clozure.com/'
   url 'http://ccl.clozure.com/ftp/pub/release/1.10/ccl-1.10-darwinx86.tar.gz'
   version '1.10'

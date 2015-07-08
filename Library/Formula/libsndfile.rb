@@ -1,6 +1,7 @@
 require "formula"
 
 class Libsndfile < Formula
+  desc "C library for files containing sampled sound"
   homepage "http://www.mega-nerd.com/libsndfile/"
   url "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/libs/libsndfile/libsndfile_1.0.25.orig.tar.gz"

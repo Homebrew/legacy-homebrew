@@ -1,6 +1,7 @@
 require "formula"
 
 class Mosquitto < Formula
+  desc "Message broker implementing MQ telemetry transport protocol"
   homepage "http://mosquitto.org/"
   url "http://mosquitto.org/files/source/mosquitto-1.4.2.tar.gz"
   sha1 "208ce5f01fcf25fff6b241b22add055ba2884822"

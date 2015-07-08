@@ -1,6 +1,7 @@
 require 'formula'
 
 class Povray < Formula
+  desc "Persistence Of Vision RAYtracer (POVRAY)"
   homepage 'http://www.povray.org/'
   url 'https://github.com/POV-Ray/povray/archive/v3.7.0.0.tar.gz'
   sha1 '1d160d45e69d096e4c22f3b034dcc9ee94d22208'

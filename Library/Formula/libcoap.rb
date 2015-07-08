@@ -1,6 +1,7 @@
 require "formula"
 
 class Libcoap < Formula
+  desc "Lightweight application-protocol for resource-constrained devices"
   homepage "http://libcoap.sourceforge.net"
   url "https://downloads.sourceforge.net/project/libcoap/coap-18/libcoap-4.1.1.tar.gz"
   sha1 "137c0bfe25c735b4a85dde65fdded13e8ef0f48f"

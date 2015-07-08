@@ -1,6 +1,7 @@
 require 'formula'
 
 class Caudec < Formula
+  desc "Covert audio files from one format to another"
   homepage 'http://caudec.net'
   url 'http://caudec.net/downloads/caudec-1.7.5.tar.gz'
   sha1 'e3b8ccdb976e02f82be07041a624d1f0cdd005d4'

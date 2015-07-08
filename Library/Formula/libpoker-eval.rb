@@ -1,6 +1,7 @@
 require "formula"
 
 class LibpokerEval < Formula
+  desc "C library to evaluate poker hands"
   homepage "http://pokersource.sourceforge.net"
   url "http://download.gna.org/pokersource/sources/poker-eval-138.0.tar.gz"
   sha1 "b31e8731dd1cd6717002e175a00d309fc8b02781"

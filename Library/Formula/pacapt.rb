@@ -1,4 +1,5 @@
 class Pacapt < Formula
+  desc "Package manager in the style or Arch's pacman"
   homepage "https://github.com/icy/pacapt"
   url "https://github.com/icy/pacapt.git",
     :revision => "70cae6c4022696decb6ac1f807a00049e589d9d4",

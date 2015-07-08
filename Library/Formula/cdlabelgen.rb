@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cdlabelgen < Formula
+  desc "CD/DVD inserts and envelopes"
   homepage 'http://www.aczoom.com/tools/cdinsert/'
   url 'http://www.aczoom.com/pub/tools/cdlabelgen-4.3.0.tgz'
   sha1 '1f7e1c34f7a5f409da19ca768a07778191264b19'

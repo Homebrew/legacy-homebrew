@@ -1,14 +1,15 @@
 class Sbcl < Formula
+  desc "Steel Bank Common Lisp system"
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.11/sbcl-1.2.11-source.tar.bz2"
-  sha256 "88aa04dae72d011f5c22084a35201188d8a02f0cd82e5de542aa4ce6bfaa3e70"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.13/sbcl-1.2.13-source.tar.bz2"
+  sha256 "e6d93a94cbf821b2c500a9440ca640588e9ac6914dba2f6b5445a5e14eeb1205"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha256 "bf5bc33e2baee617f47e20a66fb283638041a903e8f23ded35a9fdb05e5b3f03" => :yosemite
-    sha256 "4a322984fd96c34bc043318a71c7dbd784977cd5269eeadfd204eac0c89e770f" => :mavericks
-    sha256 "14aced9514c59c6d7b1207cfafe60936a564b40f94fa08d57cdbfde640b6faee" => :mountain_lion
+    sha256 "93b1647f07c6bea6e65c2da35b026ebbe8970514787554715c9c029c545692b4" => :yosemite
+    sha256 "5531229290137fb58b13e20029ccc89b888bd4dff0ed1dba7b5511a7b1040acb" => :mavericks
+    sha256 "61e9d2a7f4cfd8acaeab2e8a290d8816fb60bdd910b57e60ab722ebdf9f8bc3b" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -76,7 +77,9 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |_, value|
-      value =~ /[\x80-\xff]/n
+      ascii_val = value.dup
+      ascii_val.force_encoding("ASCII-8BIT") if ascii_val.respond_to? :force_encoding
+      ascii_val =~ /[\x80-\xff]/n
     end
 
     bootstrap = (build.build_32_bit? || !MacOS.prefer_64_bit?) ? "bootstrap32" : "bootstrap64"

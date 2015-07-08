@@ -1,4 +1,5 @@
 class Fmdiff < Formula
+  desc "Use FileMerge as a diff command for Subversion and Mercurial"
   homepage "https://www.defraine.net/~brunod/fmdiff/"
   url "http://bruno.defraine.net/fmdiff/fmscripts-20120813.tar.gz"
   sha256 "7312654040acc29787c15fb2b6d53abe0a397fb9faec6bf43398d25bb31f38ee"

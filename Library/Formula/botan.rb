@@ -1,12 +1,14 @@
 class Botan < Formula
+  desc "Cryptographic algorithms and formats library in C++"
   homepage "http://botan.randombit.net/"
   url "http://botan.randombit.net/releases/Botan-1.10.9.tgz"
   sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
 
   bottle do
-    sha1 "3f9096cdf4156db3af972765fe9b8bb58a7b7261" => :yosemite
-    sha1 "d2f2f165eccbd6db984b83149a1f1df1b66dadbb" => :mavericks
-    sha1 "26196739a9584d6b3a129e32d3a2358484d6d8ed" => :mountain_lion
+    revision 1
+    sha256 "21928e32477150b767937ecfbf8be519c279474eb7273c38475ee39501084977" => :yosemite
+    sha256 "a89a03f87751e838d0e7265fff8f92f19782048b2b17bd0bcadbcef186f4f29f" => :mavericks
+    sha256 "c8899f3e0b379e27e37fd7e3e83bbec52803cce45800c7bf88c509f09a7e520b" => :mountain_lion
   end
 
   option "with-debug", "Enable debug build of Botan"
@@ -22,7 +24,7 @@ class Botan < Formula
   def install
     args = %W[
       --prefix=#{prefix}
-      --docdir=#{share}/doc
+      --docdir=share/doc
       --cpu=#{MacOS.preferred_arch}
       --cc=#{ENV.compiler}
       --os=darwin

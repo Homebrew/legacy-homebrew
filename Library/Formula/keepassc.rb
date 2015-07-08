@@ -1,4 +1,5 @@
 class Keepassc < Formula
+  desc "Curses-based password manager for KeePass v.1.x and KeePassX"
   homepage "https://raymontag.github.com/keepassc/"
   url "https://github.com/raymontag/keepassc/archive/1.7.0.tar.gz"
   sha256 "218537f6a16f70d907d22a23d1a4dec952d7622c65fae65f03c9ee98e64938dd"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Volatility < Formula
+  desc "Advanced memory forensics framework"
   homepage "https://github.com/volatilityfoundation/volatility"
   url "http://downloads.volatilityfoundation.org/releases/2.4/volatility-2.4.tar.gz"
   sha1 "77ae1443062a5103c63377aee6170d6e09ca6354"

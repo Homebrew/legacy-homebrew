@@ -25,7 +25,7 @@ However! Fixing build issues is easier than you think: try
 In short:
 
 1.  [Fork Homebrew](https://github.com/Homebrew/homebrew/fork).
-2.  `brew create http://example.com/foo-0.1.tar.gz`
+2.  `brew create https://example.com/foo-0.1.tar.gz`
 3.  `git checkout -b foo`
 4.  `git commit Library/Formula/foo.rb && git push`
 5.  [Pull Request](https://github.com/Homebrew/homebrew/pulls).

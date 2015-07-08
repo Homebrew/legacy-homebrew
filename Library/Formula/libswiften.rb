@@ -1,9 +1,10 @@
 class Libswiften < Formula
-  homepage "http://swift.im/swiften"
+  desc "C++ library for implementing XMPP applications"
+  homepage "https://swift.im/swiften"
   revision 1
 
   stable do
-    url "http://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz"
+    url "https://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz"
     sha256 "cbcdbe527dc4d112a38f3cdec5f1051d3beba0b97f8082f90debd04a5b45a41f"
 
     # Patch to include lock from boost. Taken from
@@ -12,11 +13,11 @@ class Libswiften < Formula
 
     # boost 1.56 compatibility
     # backported from upstream HEAD at
-    # http://swift.im/git/swift/commit/?id=381b22fc365c27b9cd585f4b78f53ebc698d9f54 and
-    # http://swift.im/git/swift/commit/?id=dc48cc3f34e3e229172202717520e77233c37ed7
+    # https://swift.im/git/swift/commit/?id=381b22fc365c27b9cd585f4b78f53ebc698d9f54 and
+    # https://swift.im/git/swift/commit/?id=dc48cc3f34e3e229172202717520e77233c37ed7
     patch do
       url "https://gist.githubusercontent.com/tdsmith/278e6bdaa5502bc5a5f3/raw/0ca7358786751e1e6b5298f3831c407bdfb4b509/libswiften-boost-156.diff"
-      sha1 "0244938c13fcfa0cfc27f81a4231fe951406e18c"
+      sha256 "70f0263d9cd1d8be87c2a034c5b9046f74f20c7bf38e6ac7a1d09f87acc42436"
     end
   end
 

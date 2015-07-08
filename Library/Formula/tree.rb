@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tree < Formula
+  desc "Display directories as trees (with optional color/HTML output)"
   homepage "http://mama.indstate.edu/users/ice/tree/"
   url "http://mama.indstate.edu/users/ice/tree/src/tree-1.7.0.tgz"
   mirror "https://fossies.org/linux/misc/tree-1.7.0.tgz"

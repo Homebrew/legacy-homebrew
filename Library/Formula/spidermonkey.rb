@@ -1,6 +1,7 @@
 require 'formula'
 
 class Spidermonkey < Formula
+  desc "JavaScript-C Engine"
   homepage 'https://developer.mozilla.org/en/SpiderMonkey'
   url 'http://ftp.mozilla.org/pub/mozilla.org/js/js185-1.0.0.tar.gz'
   version '1.8.5'

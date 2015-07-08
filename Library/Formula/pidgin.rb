@@ -1,13 +1,15 @@
 class Pidgin < Formula
+  desc "GUI-less chat client (e.g., Finch-only)"
   homepage "https://pidgin.im/"
   url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
   sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"
+  revision 1
 
   bottle do
-    revision 3
-    sha256 "7f19887890554a229bb5420cd711efd804185f77e2ade0abba3aca35e6496d9e" => :yosemite
-    sha256 "407a6b5d8084607f93c223007809812cabfaf71ad8c5916f4c2e428bdee62af6" => :mavericks
-    sha256 "9e83c9d5dede335dbf51e03ba9df1af06e98851c54440465dacf96653f3546ce" => :mountain_lion
+    revision 4
+    sha256 "10a81542aa56713c17b788fc84fb4b1efca6b7de835a0d10268a782669979a5d" => :yosemite
+    sha256 "814fe76e025c38aae466f91368c0985db7a7bfee60b9cc0cfb1feed74f84a306" => :mavericks
+    sha256 "a2e99b12d482ae688ffa6ea72b6df5d6d3af144ddc84e108fcc32ee82efa9de7" => :mountain_lion
   end
 
   option "with-perl", "Build Pidgin with Perl support"
@@ -24,7 +26,6 @@ class Pidgin < Formula
   depends_on "libgcrypt"
 
   if build.with? "gui"
-    depends_on :x11 => :optional
     depends_on "gtk+"
     depends_on "cairo"
     depends_on "pango"
@@ -56,6 +57,7 @@ class Pidgin < Formula
       --disable-gtkspell
       --disable-meanwhile
       --disable-vv
+      --without-x
     ]
 
     args << "--disable-perl" if build.without? "perl"
@@ -64,10 +66,8 @@ class Pidgin < Formula
     if build.without? "gui"
       args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
       args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
-      args << "--without-x"
       args << "--disable-gtkui"
     else
-      args << "--with-x"
       args << "--disable-idn"
     end
 

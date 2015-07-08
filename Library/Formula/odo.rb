@@ -1,6 +1,7 @@
 require "formula"
 
 class Odo < Formula
+  desc "Atomic odometer for the command-line"
   homepage "https://github.com/atomicobject/odo"
   url "https://github.com/atomicobject/odo/archive/v0.2.2.tar.gz"
   sha1 "2024e3afeee76eb9f4f7e798ac986f4ce8b489d6"

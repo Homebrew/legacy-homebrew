@@ -1,6 +1,7 @@
 require "formula"
 
 class Lzip < Formula
+  desc "LZMA-based compression program similar to gzip or bzip2"
   homepage "http://www.nongnu.org/lzip/lzip.html"
   url "http://download.savannah.gnu.org/releases/lzip/lzip-1.16.tar.gz"
   sha1 "5bcefbb788305db7be9748d3c0478156518f1025"

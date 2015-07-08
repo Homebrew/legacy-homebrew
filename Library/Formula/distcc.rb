@@ -1,8 +1,6 @@
-require 'formula'
-
-class PythonWithoutPPC < Requirement
+class PythonWithoutPPCRequirement < Requirement
   fatal true
-  satisfy(:build_env => false) { not archs_for_command("python").ppc? }
+  satisfy(:build_env => false) { !archs_for_command("python").ppc? }
 
   def message
     "This software will not compile if your default Python is built with PPC support."
@@ -10,19 +8,20 @@ class PythonWithoutPPC < Requirement
 end
 
 class Distcc < Formula
-  homepage 'http://code.google.com/p/distcc/'
-  url 'https://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz'
-  sha1 '7cd46fe0926a3a859a516274e6ae59fa8ba0262d'
+  desc "Distributed compiler client and server"
+  homepage "https://code.google.com/p/distcc/"
+  url "https://distcc.googlecode.com/files/distcc-3.2rc1.tar.gz"
+  sha256 "8cf474b9e20f5f3608888c6bff1b5f804a9dfc69ae9704e3d5bdc92f0487760a"
 
-  depends_on PythonWithoutPPC
+  depends_on PythonWithoutPPCRequirement
 
   def install
     # Make sure python stuff is put into the Cellar.
     # --root triggers a bug and installs into HOMEBREW_PREFIX/lib/python2.7/site-packages instead of the Cellar.
-    inreplace 'Makefile.in', '--root="$$DESTDIR"', ""
+    inreplace "Makefile.in", '--root="$$DESTDIR"', ""
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
     plist_path.write startup_plist
     plist_path.chmod 0644
   end

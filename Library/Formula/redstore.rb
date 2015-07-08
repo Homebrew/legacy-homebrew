@@ -1,6 +1,7 @@
 require 'formula'
 
 class Redstore < Formula
+  desc "Lightweight RDF triplestore powered by Redland"
   homepage 'http://www.aelius.com/njh/redstore/'
   url 'http://www.aelius.com/njh/redstore/redstore-0.5.4.tar.gz'
   sha1 '6de3eb072ea89cdc0d5a9764b5570c87ca01d5fa'

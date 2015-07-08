@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gmtl < Formula
+  desc "Lightweight math library"
   homepage 'http://ggt.sourceforge.net/'
 
   stable do

@@ -1,4 +1,5 @@
 class Chcase < Formula
+  desc "Perl file-renaming script"
   homepage "http://www.primaledge.ca/chcase.html"
   url "http://www.primaledge.ca/chcase"
   version "2.0"

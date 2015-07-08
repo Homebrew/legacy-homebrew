@@ -1,6 +1,7 @@
 require "formula"
 
 class Libmp3splt < Formula
+  desc "Utility library to split mp3, ogg, and FLAC files"
   homepage "http://mp3splt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.9.2/libmp3splt-0.9.2.tar.gz"
   sha1 "d4e84e1f466e7fdabe30d0a12acb751903bb9203"

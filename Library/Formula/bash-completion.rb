@@ -3,13 +3,20 @@ require 'formula'
 # NOTE: version 2.0 is out, but it requires Bash 4, and OS X ships
 # with 3.2.48. See homebrew-versions for a 2.0 formula.
 class BashCompletion < Formula
-  homepage 'http://bash-completion.alioth.debian.org/'
-  url 'http://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
+  desc "Programmable bash completion"
+  homepage 'https://bash-completion.alioth.debian.org/'
+  url 'https://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
   mirror 'http://pkgs.fedoraproject.org/repo/pkgs/bash-completion/bash-completion-1.3.tar.bz2/a1262659b4bbf44dc9e59d034de505ec/bash-completion-1.3.tar.bz2'
-  sha1 '6a46b93f44c56cc336632ab28d90c0595fbcc98f'
+  sha256 '8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec'
+
+  bottle do
+    sha256 "f522c40d199aff2cdfb71f5b3b17f8e4719e78bed48b13dab1714d3457e93b23" => :yosemite
+    sha256 "2f321fe1b85c9df65b1a3a2b4f1aa66189b59fca4d4a2193f35abd697f9fe40b" => :mavericks
+    sha256 "1b5bae29dc78c12ac39563380c5bfb84d76094b2661a6c12e19704510981f4e4" => :mountain_lion
+  end
 
   # Backports the following upstream patch from 2.x:
-  # http://anonscm.debian.org/gitweb/?p=bash-completion/bash-completion.git;a=patch;h=50ae57927365a16c830899cc1714be73237bdcb2
+  # https://anonscm.debian.org/gitweb/?p=bash-completion/bash-completion.git;a=commitdiff_plain;h=50ae57927365a16c830899cc1714be73237bdcb2
   patch :DATA
 
   def compdir

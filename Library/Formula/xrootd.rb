@@ -1,4 +1,5 @@
 class Xrootd < Formula
+  desc "High performance, scalable, fault-tolerant access to data"
   homepage "http://xrootd.org"
   url "http://xrootd.org/download/v4.1.1/xrootd-4.1.1.tar.gz"
   sha1 "ed19edf50e0c641f74a78e13b78d2d70d59410f7"

@@ -1,19 +1,20 @@
 require "formula"
 
 class Bro < Formula
+  desc "Network security monitor"
   homepage "https://www.bro.org"
   head "https://github.com/bro/bro.git"
 
   stable do
-    url "https://www.bro.org/downloads/release/bro-2.3.2.tar.gz"
-    sha256 "2fe5fbda0a86b5a594116d567fd9a4c2458d30f1c6670ba8e1fac0bc8848c69b"
+    url "https://www.bro.org/downloads/release/bro-2.4.tar.gz"
+    sha256 "740c0d0b0bec279c2acef5e1b6b4d0016c57cd02a729f5e2924ae4a922e208b2"
 
   end
 
   bottle do
-    sha1 "2aa244b83b9aeac9a63624defabc59b9c9f3ce48" => :yosemite
-    sha1 "00140842870f97f164de968471e366882774d84e" => :mavericks
-    sha1 "2710acd445167b1fece844f15367db3ce55036bb" => :mountain_lion
+    sha256 "6ebeb99f7435427fea693cb6a7a1484cbf065a501af389ff6a86b139a16a7cbe" => :yosemite
+    sha256 "6a15212763d47074a8d9cc3783a0e28c245eebc79afc09b4f86d385840a8e07a" => :mavericks
+    sha256 "b1ab1064cba21febae1e902477292a974602881ad4d2aa837ed1ee008df0eaf3" => :mountain_lion
   end
 
   depends_on "cmake" => :build

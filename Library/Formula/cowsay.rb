@@ -1,4 +1,5 @@
 class Cowsay < Formula
+  desc "Configurable talking characters in ASCII art"
   homepage "https://web.archive.org/web/20120225123719/http://www.nog.net/~tony/warez/cowsay.shtml"
   url "http://ftp.acc.umu.se/mirror/cdimage/snapshot/Debian/pool/main/c/cowsay/cowsay_3.03.orig.tar.gz"
   sha1 "cc65a9b13295c87df94a58caa8a9176ce5ec4a27"

@@ -1,4 +1,5 @@
 class Lsh < Formula
+  desc "GNU implementation of the Secure Shell (SSH) protocols"
   homepage "https://www.lysator.liu.se/~nisse/lsh/"
   url "http://ftpmirror.gnu.org/lsh/lsh-2.1.tar.gz"
   mirror "https://ftp.gnu.org/gnu/lsh/lsh-2.1.tar.gz"

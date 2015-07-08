@@ -1,6 +1,7 @@
 require 'formula'
 
 class Wput < Formula
+  desc "Tiny, wget-like FTP client for uploading files"
   homepage 'http://wput.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/wput/wput/0.6.2/wput-0.6.2.tgz'
   sha1 'c058f76395672d1fbbb839c958d6537e82fc88b7'

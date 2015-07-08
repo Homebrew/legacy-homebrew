@@ -1,4 +1,5 @@
 class ChinadnsC < Formula
+  desc "Port of ChinaDNS to C: fix irregularities with DNS in China"
   homepage "https://github.com/clowwindy/ChinaDNS-C"
   url "https://github.com/clowwindy/ChinaDNS/releases/download/1.3.1/chinadns-1.3.1.tar.gz"
   sha1 "3bb6a7dd69c44e99e5794690cbc0efd4b73b7c4b"

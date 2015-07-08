@@ -1,4 +1,5 @@
 class Dcal < Formula
+  desc "dcal(1) is to cal(1) what ddate(1) is to date(1)"
   homepage "http://alexeyt.freeshell.org/"
   url "http://alexeyt.freeshell.org/code/dcal.c"
   version "0.1.0"

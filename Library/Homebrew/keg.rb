@@ -112,6 +112,10 @@ class Keg
     path.to_s
   end
 
+  def rack
+    path.parent
+  end
+
   if Pathname.method_defined?(:to_path)
     alias_method :to_path, :to_s
   else
@@ -218,6 +222,7 @@ class Keg
     dir = case shell
           when :bash then path.join("etc", "bash_completion.d")
           when :zsh  then path.join("share", "zsh", "site-functions")
+          when :fish then path.join("share", "fish", "vendor_completions.d")
           end
     dir && dir.directory? && dir.children.any?
   end

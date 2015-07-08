@@ -8,20 +8,20 @@ module Homebrew
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    ARGV.formulae.each do |f|
+    ARGV.resolved_formulae.each do |f|
       # Cannot test uninstalled formulae
       unless f.installed?
-        ofail "Testing requires the latest version of #{f.name}"
+        ofail "Testing requires the latest version of #{f.full_name}"
         next
       end
 
       # Cannot test formulae without a test method
       unless f.test_defined?
-        ofail "#{f.name} defines no test"
+        ofail "#{f.full_name} defines no test"
         next
       end
 
-      puts "Testing #{f.name}"
+      puts "Testing #{f.full_name}"
 
       env = ENV.to_hash
 
@@ -48,10 +48,10 @@ module Homebrew
           end
         end
       rescue Assertions::FailedAssertion => e
-        ofail "#{f.name}: failed"
+        ofail "#{f.full_name}: failed"
         puts e.message
       rescue Exception => e
-        ofail "#{f.name}: failed"
+        ofail "#{f.full_name}: failed"
         puts e, e.backtrace
       ensure
         ENV.replace(env)

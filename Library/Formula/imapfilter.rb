@@ -1,12 +1,13 @@
 class Imapfilter < Formula
+  desc "IMAP message processor/filter"
   homepage "https://github.com/lefcha/imapfilter/"
-  url "https://github.com/lefcha/imapfilter/archive/v2.5.7.tar.gz"
-  sha1 "216ec7b8563729cf446e9b2839bdcdf3eae351ed"
+  url "https://github.com/lefcha/imapfilter/archive/v2.6.1.tar.gz"
+  sha256 "d9494a52083769687e780da41cf9a4d21beb56af5863afb3dbc4a2109ed5c1d3"
 
   bottle do
-    sha1 "55091d5ccf77951f94489c712c092f7d9b3c8c9a" => :yosemite
-    sha1 "76bb5a5670eae9fbbdbfdc7903107724507abcbb" => :mavericks
-    sha1 "92993d2acab4990578eccd43dc8cfed4ed37f6f5" => :mountain_lion
+    sha256 "faef673eeae6b716575c440240b521da3468f99ae7d7ab9d6a12d0c2b453c7fc" => :yosemite
+    sha256 "5647510f31a23f04aa46b15eb7998073e5f4274a29edd941d4cd759341a8e508" => :mavericks
+    sha256 "ef25b37c894e52f0a6f7a21bb71b8f297bd32662bb08c74126d97a17a976fad2" => :mountain_lion
   end
 
   depends_on "lua"

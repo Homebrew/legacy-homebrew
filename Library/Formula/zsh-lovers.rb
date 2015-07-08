@@ -1,6 +1,7 @@
 require 'formula'
 
 class ZshLovers < Formula
+  desc "Tips, tricks, and examples for zsh"
   homepage 'http://grml.org/zsh/#zshlovers'
   url 'http://grml.org/zsh/zsh-lovers.1'
   version '0.9.0'

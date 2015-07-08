@@ -1,6 +1,7 @@
 require 'formula'
 
 class Tinyscheme < Formula
+  desc "Very small Scheme implementation"
   homepage 'http://tinyscheme.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/tinyscheme/tinyscheme/tinyscheme-1.40/tinyscheme-1.40.tar.gz'
   sha1 'e03f7ac41f0517bb35eced2772c79eb9db42ea82'

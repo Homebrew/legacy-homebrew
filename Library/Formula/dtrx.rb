@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dtrx < Formula
+  desc "Intelligent archive extraction"
   homepage 'http://brettcsmith.org/2007/dtrx/'
   url 'http://brettcsmith.org/2007/dtrx/dtrx-7.1.tar.gz'
   sha1 '05cfe705a04a8b84571b0a5647cd2648720791a4'

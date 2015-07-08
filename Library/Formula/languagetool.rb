@@ -1,6 +1,7 @@
 require 'formula'
 
 class Languagetool < Formula
+  desc "Style and grammar checker"
   homepage 'http://www.languagetool.org/'
   url 'https://www.languagetool.org/download/LanguageTool-2.8.zip'
   sha1 "38b0787d9b4305aa7c71942011b7668a312ffbc1"

@@ -1,4 +1,5 @@
 class Launchdns < Formula
+  desc "Mini DNS server designed soely to route queries to localhost"
   homepage "https://github.com/josh/launchdns"
   url "https://github.com/josh/launchdns/archive/v1.0.1.tar.gz"
   head "https://github.com/josh/launchdns.git"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Mawk < Formula
+  desc "An interpreter for the AWK Programming Language"
   homepage "http://invisible-island.net/mawk/"
   url "ftp://invisible-island.net/mawk/mawk-1.3.4-20141027.tgz"
   sha1 "a0a54bde0c76a351fa073a6fa10ce912a1260144"

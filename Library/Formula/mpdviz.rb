@@ -2,6 +2,7 @@ require "formula"
 require "language/go"
 
 class Mpdviz < Formula
+  desc "Standalone console MPD visualizer"
   homepage "https://github.com/lucy/mpdviz"
   url "http://github.com/lucy/mpdviz/archive/0.4.6.tar.gz"
   sha1 "9b819f1e1a54ef86872d9ece167e7d1f0a337899"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Mlt < Formula
+  desc "Author, manage, and run multitrack audio/video compositions"
   homepage "http://www.mltframework.org/"
   url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.2.tar.gz"
   sha1 "eb1cdb8a1d9e69512716431054e5da7eb3bedb6d"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libnatpmp < Formula
+  desc "NAT port mapping protocol library"
   homepage 'http://miniupnp.free.fr/libnatpmp.html'
   url 'http://miniupnp.free.fr/files/download.php?file=libnatpmp-20130911.tar.gz'
   sha1 'f2ec1ed22ae9f07b2cacf702d291858f13ae8781'

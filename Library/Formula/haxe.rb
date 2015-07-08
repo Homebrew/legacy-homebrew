@@ -1,19 +1,18 @@
 require "formula"
 
 class Haxe < Formula
+  desc "Multi-platform programming language"
   homepage "http://haxe.org"
 
   stable do
-    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.1.3", :revision => "7be30670b2f1f9b6082499c8fb9e23c0a6df6c28"
-    # Remove the below with the next stable release
-    depends_on MaximumMacOSRequirement => :mavericks
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.2.0", :revision => "77d171b15c94932d265e2a03d476bafc9b3a1894"
   end
 
   bottle do
     cellar :any
-    sha1 "83fe01c0ca2997328e88ef7763181ff40cc5082a" => :mavericks
-    sha1 "46c5911f3505c7e102c71dde16ed4ab2bdcc4cbc" => :mountain_lion
-    sha1 "408dbaf0110cb38ee52900bd4910c56913681bab" => :lion
+    sha256 "49e090c6d7dd5afb7518ac7c3e70de9abcc42eb6a16c858a02faaa4cc6eb25e2" => :yosemite
+    sha256 "a6bcceefac96a3db26d39999940c833daed45e5d93140a6d245428e3a2218a2f" => :mavericks
+    sha256 "040bda6d708295debe5ec8753ca700260b284d18a9b81829653904fa131163bd" => :mountain_lion
   end
 
   head do

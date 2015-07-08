@@ -1,6 +1,7 @@
 require "formula"
 
 class Zbackup < Formula
+  desc "Globally-deduplicating backup tool (based on ideas in rsync)"
   homepage "http://zbackup.org"
   url "https://github.com/zbackup/zbackup/archive/1.4.1.tar.gz"
   sha1 "6fc5c7f4bb23ce52bd4e14cb9b07c77662e1703c"

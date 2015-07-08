@@ -13,9 +13,9 @@ module Homebrew
 
       f.deps.each do |dep|
         if dep.optional? || dep.recommended?
-          deps << dep.to_formula.name if tab.with?(dep)
+          deps << dep.to_formula.full_name if tab.with?(dep)
         else
-          deps << dep.to_formula.name
+          deps << dep.to_formula.full_name
         end
       end
 
@@ -23,7 +23,7 @@ module Homebrew
     end
 
     installed.each do |f|
-      puts f.name unless deps_of_installed.include? f.name
+      puts f.full_name unless deps_of_installed.include? f.full_name
     end
   end
 end

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Varnish < Formula
+  desc "High-performance HTTP accelerator"
   homepage 'https://www.varnish-cache.org/'
   url 'https://repo.varnish-cache.org/source/varnish-4.0.3.tar.gz'
   sha1 'ba4668cb7d17f95c4c5e4baf964fe1412a269297'

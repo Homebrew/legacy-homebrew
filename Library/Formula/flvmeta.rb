@@ -1,6 +1,7 @@
 require "formula"
 
 class Flvmeta < Formula
+  desc "Manipulate Adobe flash video files (FLV)"
   homepage "http://www.flvmeta.com"
   url "https://github.com/noirotm/flvmeta/archive/v1.1.2.tar.gz"
   sha1 "114a6b5b9681bcc6d0cd56ce176cb89002e262ff"

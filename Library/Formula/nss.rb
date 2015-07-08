@@ -1,15 +1,16 @@
 require "formula"
 
 class Nss < Formula
+  desc "Libraries for security-enabled client and server applications"
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_19_RTM/src/nss-3.19.tar.gz"
-  sha256 "989ebdf79374f24181f060d332445b1a4baf3df39d08514c4349ba8573cefa9b"
+  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_19_2_RTM/src/nss-3.19.2.tar.gz"
+  sha256 "1306663e8f61d8449ad8cbcffab743a604dcd9f6f34232c210847c51dce2c9ae"
 
   bottle do
     cellar :any
-    sha256 "73f2d526a20013c16a4d9a881ba5ced9fad579fd9fbbf171c62c6778b9302d78" => :yosemite
-    sha256 "928d9f476ef9919c88c573b3a137faf87e5a5aa2a5ae413b741521e02bc229ba" => :mavericks
-    sha256 "2322c1d6f9c34bc27636db92a74cce2aa166c6085c31bfb9896ece31f97ddb7f" => :mountain_lion
+    sha256 "970190740d93ad9e30370f3324255b333050b86e733accf64fb44f93a59ffa28" => :yosemite
+    sha256 "45da5e876dc1ed676f17b39202ae5405685d54f0b5e69b2f83ed250c56c029f6" => :mavericks
+    sha256 "4e524b54cad3ab205e3f40cc382badc169fbd42944867a40e723e94dbfbd4828" => :mountain_lion
   end
 
   keg_only <<-EOS.undent

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Afsctool < Formula
+  desc "Utility for manipulating HFS+ compressed files"
   homepage 'http://brkirch.wordpress.com/afsctool/'
   url 'https://docs.google.com/uc?export=download&id=0BwQlnXqL939ZQjBQNEhRQUo0aUk'
   version '1.6.4'

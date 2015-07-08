@@ -1,6 +1,7 @@
 require 'formula'
 
 class Partio < Formula
+  desc "Particle library for 3D graphics"
   homepage 'http://www.partio.us'
   url 'https://github.com/wdas/partio/archive/v1.1.0.tar.gz'
   sha1 '446879b2a01a838ad23eb84c4e6da36c1a315e49'

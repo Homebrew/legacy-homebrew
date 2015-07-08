@@ -1,4 +1,5 @@
 class Ocamlsdl < Formula
+  desc "OCaml interface with the SDL C library"
   homepage "http://ocamlsdl.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ocamlsdl/OCamlSDL/ocamlsdl-0.9.1/ocamlsdl-0.9.1.tar.gz"
   sha1 "2e54f8984b06cede493c3ad29006dde17077a79a"

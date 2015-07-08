@@ -1,6 +1,7 @@
 require "formula"
 
 class Usbmuxd < Formula
+  desc "USB multiplexor daemon for iPhone and iPod Touch devices"
   homepage "http://www.libimobiledevice.org"
   url "http://www.libimobiledevice.org/downloads/libusbmuxd-1.0.10.tar.bz2"
   sha1 "9d4ce8ac058cfea66e6785d2bad5bb9c93681b16"

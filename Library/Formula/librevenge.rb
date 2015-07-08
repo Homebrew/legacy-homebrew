@@ -1,4 +1,5 @@
 class Librevenge < Formula
+  desc "Base library for writing document import filters"
   homepage "http://sourceforge.net/p/libwpd/wiki/librevenge/"
   url "http://dev-www.libreoffice.org/src/librevenge-0.0.2.tar.bz2"
   mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.2/librevenge-0.0.2.tar.bz2"

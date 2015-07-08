@@ -1,4 +1,5 @@
 class DfuUtil < Formula
+  desc "USB programmer"
   homepage "http://dfu-util.sourceforge.net/"
   url "http://dfu-util.sourceforge.net/releases/dfu-util-0.8.tar.gz"
   sha256 "55cbde9be12a212bd84bce9d1e63941d9a16139ed0d4912401367eba1502f058"

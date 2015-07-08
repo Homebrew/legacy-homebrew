@@ -1,22 +1,21 @@
-require "formula"
-
 class Neo4j < Formula
-  homepage "http://neo4j.org"
-  url "http://dist.neo4j.org/neo4j-community-2.2.1-unix.tar.gz"
-  sha1 "49290968ad53030bd4826335ea104f10ecc3ec42"
-  version "2.2.1"
+  desc "Robust (fully ACID) transactional property graph database"
+  homepage "http://neo4j.com"
+  url "http://dist.neo4j.org/neo4j-community-2.2.3-unix.tar.gz"
+  version "2.2.3"
+  sha256 "b170e54a8af540a30b915a85bdc6e3670c0790466fb90cf7fd9555097165c67c"
+
+  devel do
+    url "http://dist.neo4j.org/neo4j-community-2.3.0-M02-unix.tar.gz"
+    sha256 "54047565659e1230c7a196ff696765e042da5679cf287966efad9e36a8f07046"
+    version "2.3.0-M02"
+  end
 
   option "with-neo4j-shell-tools", "Add neo4j-shell-tools to the standard neo4j-shell"
 
   resource "neo4j-shell-tools" do
     url "http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.2.zip"
-    sha1 "5c1d4d46660149291ca4f484591c25c25be82c5b"
-  end
-
-  devel do
-    url "http://dist.neo4j.org/neo4j-community-2.3.0-M01-unix.tar.gz"
-    sha1 "288f917f5f3822ca70c8eef5bcf1639392a41036"
-    version "2.3.0-M01"
+    sha256 "a84bd306754701c1748a26dcf207c136c9859f60cdd60e003771f0df0a83fb00"
   end
 
   def install

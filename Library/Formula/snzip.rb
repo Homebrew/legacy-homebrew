@@ -1,6 +1,7 @@
 require 'formula'
 
 class Snzip < Formula
+  desc "Compression/decompression tool based on snappy"
   homepage 'https://github.com/kubo/snzip'
   url 'https://bintray.com/artifact/download/kubo/generic/snzip-1.0.2.tar.gz'
   sha1 '6efa5f6e097a9bed10b526cfbf4062e2f547be56'

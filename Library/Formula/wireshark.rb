@@ -1,10 +1,11 @@
 class Wireshark < Formula
+  desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
 
   stable do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.4.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.4.tar.bz2"
-    sha256 "de804e98e252e4b795d28d6ac2d48d7f5aacd9b046ee44d44266983795ebc312"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.6.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.6.tar.bz2"
+    sha256 "22ac0cc872f12cef9bb2cacfe0720eed8533dc5cea102d21de511620606cb3b6"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -14,9 +15,17 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256 "f309207f69b0982b7456c931c738afe855b6da3a420ff6111ca1b0ce50a787e5" => :yosemite
-    sha256 "454c9aea54ab1445d63d60599de8b96f87b38b1b674f68cbfb2714be7c7a5364" => :mavericks
-    sha256 "8f5f81f60f35b6e08ab3ddb47345589d71cd40ca1b6a56c103a6f8110237746b" => :mountain_lion
+    sha256 "6a0cf2653668e7c4f2838c5c7f9e3d025389b78e31afda50020b7876592a9f62" => :yosemite
+    sha256 "ca2db6e47b255c42c9426b4bb61cc9181f8eecb0d5dc0c1c7d3e08899977f735" => :mavericks
+    sha256 "1d98b70b4eef4833446659398090fde23d6647b7f11181ca488a0a38ec3bf71e" => :mountain_lion
+  end
+
+  devel do
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.7.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.7.tar.bz2"
+    sha256 "3d34d51edabc07ceb13734f222421f2fb012a870c837ffb313dc1af51c16b28a"
+
+    depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
   end
 
   head do
@@ -25,14 +34,6 @@ class Wireshark < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  devel do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.5.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.5.tar.bz2"
-    sha256 "d2d5dd1367eb05037651daf7355888f5938d5ca45fcd730fe117605adf9e6c7c"
-
-    depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
   end
 
   option "with-gtk+3", "Build the wireshark command with gtk+3"

@@ -1,26 +1,44 @@
 class Libewf < Formula
+  desc "Library for support of the Expert Witness Compression Format"
   homepage "https://github.com/libyal/libewf"
   url "https://googledrive.com/host/0B3fBvzttpiiSMTdoaVExWWNsRjg/libewf-20140608.tar.gz"
   sha256 "d14030ce6122727935fbd676d0876808da1e112721f3cb108564a4d9bf73da71"
   revision 1
+
+  bottle do
+    cellar :any
+    revision 1
+    sha256 "61d33dfa9e389012a784ec6dd8f5704827539d8502719c13319b9b3835d41f8e" => :yosemite
+    sha256 "8acaab1187c45a9bd493b1f49579c8d813ce2978ccff2d85161b3561346e0b13" => :mavericks
+    sha256 "69b9412398fd45616d47b132dca1ee158bf5f05655f9875ba9592c5e6e639817" => :mountain_lion
+  end
 
   devel do
     url "https://github.com/libyal/libewf/releases/download/20150126/libewf-experimental-20150126.tar.gz"
     sha256 "adba8c45c32c41fccdcfc32ac4b20b9531a04a710f355165c23eaf6f2ec6700e"
   end
 
-  bottle do
-    cellar :any
-    sha1 "3a5b2ae9cedd50aca714dacc91716b845922e9fe" => :yosemite
-    sha1 "077829c293b2da99c076a6328e7e96837103fe6c" => :mavericks
-    sha1 "b3d3877c1683b551badb8a21491faceb27958cf1" => :mountain_lion
+  head do
+    url "https://github.com/libyal/libewf.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "gettext" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
   def install
+    if build.head?
+      system "./synclibs.sh"
+      system "./autogen.sh"
+    end
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/ewfinfo -V")
   end
 end

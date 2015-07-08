@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mpdscribble < Formula
+  desc "Last.fm reporting client for mpd"
   homepage 'http://mpd.wikia.com/wiki/Client:Mpdscribble'
   url 'http://www.musicpd.org/download/mpdscribble/0.22/mpdscribble-0.22.tar.gz'
   sha1 '3b4a1a71130deea1720bbfeb104fdcae298f52de'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Judy < Formula
+  desc "C library that implements a sparse dynamic array"
   homepage 'http://judy.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/judy/judy/Judy-1.0.5/Judy-1.0.5.tar.gz'
   sha1 '3540f003509acac3b1260424380ddf97914f7745'

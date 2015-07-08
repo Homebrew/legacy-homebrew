@@ -1,6 +1,7 @@
 require "formula"
 
 class P0f < Formula
+  desc "Versatile passive OS fingerprinting, masquerade detection tool"
   homepage "http://lcamtuf.coredump.cx/p0f3/"
   url "http://lcamtuf.coredump.cx/p0f3/releases/p0f-3.07b.tgz"
   sha1 "ae2c4fbcddf2a5ced33abd81992405b93207e7c8"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Gitslave < Formula
+  desc "Create group of related repos with one as superproject"
   homepage 'http://gitslave.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/gitslave/gitslave-2.0.2.tar.gz'
   sha1 'e27c3ed89f0dad0e7b6dffc424624c219d96296e'

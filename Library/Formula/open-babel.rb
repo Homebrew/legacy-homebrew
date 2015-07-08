@@ -1,6 +1,7 @@
 require 'formula'
 
 class OpenBabel < Formula
+  desc "A chemical toolbox"
   homepage 'http://www.openbabel.org'
 
   stable do
@@ -55,7 +56,7 @@ class OpenBabel < Formula
       args << "-DCAIRO_LIBRARIES='#{HOMEBREW_PREFIX}/lib/libcairo.dylib'"
     end
 
-    # Point cmake towards correct python
+    # Point cmake towards correct python
     if build.with? 'python'
       pypref = `python -c 'import sys;print(sys.prefix)'`.strip
       pyinc = `python -c 'from distutils import sysconfig;print(sysconfig.get_python_inc(True))'`.strip

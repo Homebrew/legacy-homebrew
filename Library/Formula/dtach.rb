@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dtach < Formula
+  desc "Emulates the detach feature of screen"
   homepage 'http://dtach.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/dtach/dtach/0.8/dtach-0.8.tar.gz'
   sha1 'fb7279e719463aa284676a78cdf96788f4f2706b'

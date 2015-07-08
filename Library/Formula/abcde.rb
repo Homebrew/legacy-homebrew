@@ -1,4 +1,5 @@
 class Abcde < Formula
+  desc "Better CD Encoder"
   homepage "http://abcde.einval.com"
   url "http://abcde.einval.com/download/abcde-2.6.tar.gz"
   sha1 "a1545fb63673e247c8378e9925505e23ace806dc"

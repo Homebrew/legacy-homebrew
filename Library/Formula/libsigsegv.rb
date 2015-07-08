@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libsigsegv < Formula
+  desc "Library for handling page faults in user mode"
   homepage 'http://www.gnu.org/software/libsigsegv/'
   url 'http://ftpmirror.gnu.org/libsigsegv/libsigsegv-2.10.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/libsigsegv/libsigsegv-2.10.tar.gz'

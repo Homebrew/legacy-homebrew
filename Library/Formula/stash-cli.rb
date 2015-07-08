@@ -1,16 +1,25 @@
 class StashCli < Formula
-  homepage "https://bobswift.atlassian.net/wiki/display/SCLI/Stash+Command+Line+Interface"
-  url "https://bobswift.atlassian.net/wiki/download/attachments/16285777/stash-cli-3.9.0-distribution.zip?api=v2"
-  version "3.9.0"
-  sha1 "f615519894b194959754b9a7b5fb9bc03855dbcd"
+  desc "Command-line interface clients for Atlassian products"
+  homepage "https://bobswift.atlassian.net/wiki/pages/viewpage.action?pageId=1966101"
+  url "https://bobswift.atlassian.net/wiki/download/attachments/16285777/atlassian-cli-4.3.0-distribution.zip"
+  version "4.3.0"
+  sha256 "b0487ad7795d1970de09d21c17ebea9caf1d7f9c12449c5102a88b0521e2c363"
+
+  depends_on :java => "1.7+"
 
   def install
-    inreplace "stash.sh", "`dirname $0`", share
+    Dir.glob("*.sh") do |f|
+      cmd = File.basename(f, ".sh")
+      inreplace cmd + ".sh", "`dirname $0`", share
+      bin.install cmd + ".sh" => cmd
+    end
     share.install "lib", "license"
-    bin.install "stash.sh" => "stash"
   end
 
   test do
-    assert shell_output(bin/"stash --help 2>&1 | head").include?("Usage:")
+    Dir.glob(bin/"*") do |f|
+      cmd = File.basename(f, ".sh")
+      assert shell_output(bin/"#{cmd} --help 2>&1 | head").include?("Usage:") unless cmd == "atlassian"
+    end
   end
 end

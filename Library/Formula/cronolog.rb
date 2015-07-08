@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cronolog < Formula
+  desc "Web log rotation"
   homepage "http://web.archive.org/web/20140209202032/http://cronolog.org/"
   url "http://fossies.org/linux/www/cronolog-1.6.2.tar.gz"
   sha1 "6422b7c5e87241eb31d76809a2e0eea77ae4c64e"

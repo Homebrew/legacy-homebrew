@@ -1,15 +1,15 @@
 # Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
+  desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.2/node-v0.12.2.tar.gz"
-  sha256 "ac7e78ade93e633e7ed628532bb8e650caba0c9c33af33581957f3382e2a772d"
+  url "https://nodejs.org/dist/v0.12.6/node-v0.12.6.tar.gz"
+  sha256 "7a3b5ac351973a9dee8edbf0684bc8d0dea44b231e42274ffb008141ffa19ad2"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
-  revision 1
 
   bottle do
-    sha256 "6fa67abcaf006fd9fd749267f08d5e8c33cb7eadd6e94267a49e96659256b06a" => :yosemite
-    sha256 "a995d265c9db0b021de140cdcc78432b96bcbf3fdb6989cc401d9cd7c2164cdd" => :mavericks
-    sha256 "cde73f7ca5b2c080bb8e7d5b99fa02ac43908ec8ad24ef52d9a3a44141ffbe75" => :mountain_lion
+    sha256 "3a87c7d0f8e7873fbb0f1122d2960e6a65ddf1f9ce1b14e8b190f22a71746e9a" => :yosemite
+    sha256 "4e330ad7e630c5b1802c1da92d7d2330ff85b12f865c52c72f6066511d2ff3bb" => :mavericks
+    sha256 "e3ebd6b68e8301bf4d081ac8169378f9080b5b150f22b05e5e062d533adc4558" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -31,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.7.6.tgz"
-    sha256 "a9445167f68a42ffcdaa36f9f5c14a954237fce6898555c362e8785261fd72a1"
+    url "https://registry.npmjs.org/npm/-/npm-2.12.1.tgz"
+    sha256 "6b6512c6f9097da193dfe046053d6d0483b5c5658dc0a763c1ba5609b6bbc16c"
   end
 
   def install
@@ -94,7 +94,7 @@ class Node < Formula
       # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      ln_sf Dir[libexec/"npm/share/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
+      ln_sf Dir[libexec/"npm/lib/node_modules/npm/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"

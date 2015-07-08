@@ -1,4 +1,5 @@
 class Pdfgrep < Formula
+  desc "Search PDFs for strings matching a regular expression"
   homepage "http://pdfgrep.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/pdfgrep/1.3.1/pdfgrep-1.3.1.tar.gz"
   sha1 "8d15760af0803ccea32760d5f68abe4224169639"
@@ -24,7 +25,7 @@ class Pdfgrep < Formula
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    ENV["XML_CATALOG_FILES"] = "#{HOMEBREW_PREFIX}/etc/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     system "make", "install"
   end
 

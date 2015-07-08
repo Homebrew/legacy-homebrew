@@ -1,6 +1,7 @@
 require "formula"
 
 class Duti < Formula
+  desc "Select default apps for documents and URL schemes on OS X"
   homepage "http://duti.org/"
   head "https://github.com/moretension/duti.git"
   url "https://github.com/moretension/duti/archive/duti-1.5.3.tar.gz"

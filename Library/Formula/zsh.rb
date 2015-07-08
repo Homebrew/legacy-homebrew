@@ -1,15 +1,16 @@
 require 'formula'
 
 class Zsh < Formula
+  desc "A UNIX shell (command interpreter)"
   homepage 'http://www.zsh.org/'
-  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.7/zsh-5.0.7.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.7.tar.bz2'
-  sha1 '1500191d16af8a71aec4f719a92775a074682096'
+  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.8/zsh-5.0.8.tar.bz2'
+  mirror 'http://www.zsh.org/pub/zsh-5.0.8.tar.bz2'
+  sha256 '8079cf08cb8beff22f84b56bd72bb6e6962ff4718d816f3d83a633b4c9e17d23'
 
   bottle do
-    sha1 "83d646649569ade648db6a44c480709d63268a25" => :yosemite
-    sha1 "935990ced3a6d3a3027bac4b32ac8f031e8fa244" => :mavericks
-    sha1 "c6e8055106d0b939cec5674469099bfd63d53f9e" => :mountain_lion
+    sha256 "86da8afbbaa7a5a84b6362638f101a0698ac669a55282991c3488de4c1f6d6f3" => :yosemite
+    sha256 "748fd3b2f72b74bc63639aaa0b9bff59cd25592b94b4b84b4574cde7d0399fe8" => :mavericks
+    sha256 "808e64fa41634261b1427eff37ba4b1f1708d642504461c63cc3d10c073c735a" => :mountain_lion
   end
 
   depends_on 'gdbm'

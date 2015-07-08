@@ -1,6 +1,7 @@
 require 'formula'
 
 class Apollo < Formula
+  desc "Multi-protocol messaging broker based on ActiveMQ"
   homepage 'http://activemq.apache.org/apollo'
   url 'https://archive.apache.org/dist/activemq/activemq-apollo/1.7.1/apache-apollo-1.7.1-unix-distro.tar.gz'
   version '1.7.1'

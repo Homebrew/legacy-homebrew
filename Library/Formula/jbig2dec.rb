@@ -1,4 +1,5 @@
 class Jbig2dec < Formula
+  desc "JBIG2 decoder and library (for monochrome documents)"
   homepage "http://ghostscript.com/jbig2dec.html"
   url "http://downloads.ghostscript.com/public/jbig2dec/jbig2dec-0.12.tar.gz"
   sha256 "bcc5f2cc75ee46e9a2c3c68d4a1b740280c772062579a5d0ceda24bee2e5ebf0"
@@ -19,8 +20,8 @@ class Jbig2dec < Formula
   # http://bugs.ghostscript.com/show_bug.cgi?id=695890
   # Remove on next release.
   patch do
-    url "http://git.ghostscript.com/?p=jbig2dec.git;a=patch;h=70c7f1967f43a94f9f0d6808d6ab5700a120d2fc"
-    sha256 "81ae6367ab74a18d88473a81dd2f36d8c892370a63fcf518d6f2a5af346ab867"
+    url "http://git.ghostscript.com/?p=jbig2dec.git;a=commitdiff_plain;h=70c7f1967f43a94f9f0d6808d6ab5700a120d2fc"
+    sha256 "5239e4eb991f198d2ba30d08011c2887599b5cead9db8b1d3eacec4b8912c2d0"
   end
 
   def install

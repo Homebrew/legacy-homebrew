@@ -1,4 +1,5 @@
 class Libgcrypt < Formula
+  desc "Cryptographic library based on the code from GnuPG"
   homepage "https://gnupg.org/"
   url "ftp://ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.3.tar.bz2"
   mirror "http://ftp.heanet.ie/mirrors/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.3.tar.bz2"

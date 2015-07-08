@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ondir < Formula
+  desc "Automatically execute scripts as you traverse directories"
   homepage 'http://swapoff.org/ondir.html'
   head 'https://github.com/alecthomas/ondir.git'
   url 'http://swapoff.org/files/ondir/ondir-0.2.3.tar.gz'

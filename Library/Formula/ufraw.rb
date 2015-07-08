@@ -1,24 +1,23 @@
-require 'formula'
-
 class Ufraw < Formula
-  homepage 'http://ufraw.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.20/ufraw-0.20.tar.gz'
-  sha1 'f2f456c6ec5ab128433502eae05b82a7ed636f3e'
+  desc "Unidentified Flying RAW: RAW image processing utility"
+  homepage "http://ufraw.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/ufraw/ufraw/ufraw-0.22/ufraw-0.22.tar.gz"
+  sha256 "f7abd28ce587db2a74b4c54149bd8a2523a7ddc09bedf4f923246ff0ae09a25e"
 
   bottle do
-    sha1 "114f5807e129d36cf97186160ead6003adb5b6fa" => :yosemite
-    sha1 "3604acf00a45b6e569b264d2e482626214731ca8" => :mavericks
-    sha1 "2ee9849f3b51f2702f67a6626539fcae5a9a6f04" => :mountain_lion
+    sha256 "21f29f6ffe796c76d3d47ba11923f61c9cc69980bb7175ad24ea9d38e88a95a7" => :yosemite
+    sha256 "caf38b978cd614b51eb038f2bdac1cf6c5dfb8697adcae71f7cefceb9a4a2f07" => :mavericks
+    sha256 "549b1471b35978a9695f4ea75044f233e782d32628fe0b86e389583e977f7219" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libpng'
-  depends_on 'dcraw'
-  depends_on 'glib'
-  depends_on 'jpeg'
-  depends_on 'libtiff'
-  depends_on 'little-cms'
-  depends_on 'exiv2' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "libpng"
+  depends_on "dcraw"
+  depends_on "glib"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "little-cms"
+  depends_on "exiv2" => :optional
 
   fails_with :llvm do
     cause "Segfault while linking"
@@ -29,7 +28,11 @@ class Ufraw < Formula
                           "--prefix=#{prefix}",
                           "--without-gtk",
                           "--without-gimp"
-    system "make install"
-    (share+'pixmaps').rmtree
+    system "make", "install"
+    (share+"pixmaps").rmtree
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/ufraw-batch --version 2>&1")
   end
 end

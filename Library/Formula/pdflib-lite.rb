@@ -1,6 +1,7 @@
 require 'formula'
 
 class PdflibLite < Formula
+  desc "Subset of the functionality of PDFlib 7"
   homepage 'http://www.pdflib.com/download/free-software/pdflib-lite/'
   url 'http://www.pdflib.com/binaries/PDFlib/705/PDFlib-Lite-7.0.5p3.tar.gz'
   version '7.0.5p3'

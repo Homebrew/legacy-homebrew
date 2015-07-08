@@ -1,6 +1,7 @@
 require "formula"
 
 class Libextractor < Formula
+  desc "Library to extract meta data from files"
   homepage "http://www.gnu.org/software/libextractor/"
   url "http://ftpmirror.gnu.org/libextractor/libextractor-1.3.tar.gz"
   mirror "http://ftp.gnu.org/gnu/libextractor/libextractor-1.3.tar.gz"

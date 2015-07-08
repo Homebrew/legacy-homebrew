@@ -1,12 +1,20 @@
 class Suricata < Formula
+  desc "Network IDS, IPS, and security monitoring engine"
   homepage "http://suricata-ids.org"
-  url "https://www.openinfosecfoundation.org/download/suricata-2.0.7.tar.gz"
-  sha256 "c5c3ccebeecbace39df0ff2d50ec4515b541103ffaa5e33cd1dc79d4955c0dfd"
+  url "https://www.openinfosecfoundation.org/download/suricata-2.0.8.tar.gz"
+  sha256 "7af6394cb81e464f5c1ac88a1444030e30940caab6e53688a6d9eb652226d1be"
+
+  devel do
+    url 'http://www.openinfosecfoundation.org/download/suricata-2.1beta4.tar.gz'
+    sha256 '12b3c98a7464ef6fb631884aa648b53a9cbb04279f754009fdc9ae2a6b605b95'
+    version '2.1beta4'
+  end
 
   bottle do
-    sha256 "f67922f17fd54ad460fac601c489324a3fc9649332c235b19188db673ac1dd37" => :yosemite
-    sha256 "5da62c060b67d37acccef04a3e94da3c6a12a2d33140ece6d83259144bbf4dfb" => :mavericks
-    sha256 "4e84abe9e22b63d8ab7161d704da16202bfd8320c50b70a87c5da42ee095efbb" => :mountain_lion
+    revision 1
+    sha256 "c60577cacc930289e30fc51adf5bc3a9f2e2a96dc405221e8e7dd9a3792244f0" => :yosemite
+    sha256 "525504681cc58b1c0efa3ab6d77c36f18aff3d11ade6632a59e5a586beed620c" => :mavericks
+    sha256 "6c166db0c146fbe09ee5783cf37d6b261b7c214af8b7877e5c34d7616a32547e" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -18,6 +26,7 @@ class Suricata < Formula
   depends_on "geoip" => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
+  depends_on "jansson" => :optional
 
   resource "argparse" do
     url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
@@ -30,6 +39,9 @@ class Suricata < Formula
   end
 
   def install
+    # bug raised https://redmine.openinfosecfoundation.org/issues/1470
+    ENV.deparallelize
+
     libnet = Formula["libnet"]
     libmagic = Formula["libmagic"]
 
@@ -41,7 +53,6 @@ class Suricata < Formula
     end
 
     args = %W[
-      --disable-debug
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
@@ -63,6 +74,12 @@ class Suricata < Formula
       args << "--with-libgeoip-libs=#{geoip.opt_lib}"
     end
 
+    if build.with? "jansson"
+      jansson = Formula['jansson']
+      args << "--with-libjansson-includes=#{jansson.opt_include}"
+      args << "--with-libjansson-libraries=#{jansson.opt_lib}"
+    end
+
     system "./configure", *args
     system "make", "install-full"
 
@@ -73,6 +90,6 @@ class Suricata < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/suricata --build-info")
+    assert_match(/#{version}/, shell_output("#{bin}/suricata --build-info"))
   end
 end

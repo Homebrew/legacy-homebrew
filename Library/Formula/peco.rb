@@ -1,6 +1,7 @@
 require "language/go"
 
 class Peco < Formula
+  desc "Simplistic interactive filtering tool"
   homepage "https://github.com/peco/peco"
   url "https://github.com/peco/peco/archive/v0.3.2.tar.gz"
   sha256 "ce2d617a49a29a010546b6331f7d3288eeab23226fada591b5c65be035b9c693"

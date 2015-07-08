@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libqglviewer < Formula
+  desc "C++ Qt library to create OpenGL 3D viewers"
   homepage 'http://www.libqglviewer.com/'
   url 'http://www.libqglviewer.com/src/libQGLViewer-2.6.1.tar.gz'
   sha1 '9220b3f2b8629df36bf91cc8de397e65b2cab476'

@@ -1,4 +1,5 @@
 class Omniorb < Formula
+  desc "IOR and naming service utilities for omniORB"
   homepage "http://omniorb.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/omniorb/omniORB/omniORB-4.2.0/omniORB-4.2.0.tar.bz2"
   sha256 "74c273fc997c2881b128feb52182dbe067acfecc4cf37475f43c104338eba8bc"
