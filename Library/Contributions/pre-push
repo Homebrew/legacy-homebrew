@@ -1,0 +1,47 @@
+#!/usr/bin/python
+# Makes sure bottles are fetchable after BrewTestBot modifies a formula.
+# Only checks pushes to master on Homebrew/homebrew* remotes.
+# To use, `ln -s $(brew --repository)/Library/Contributions/pre-push
+# $(brew --repository)/.git/hooks`.
+
+import re
+import os
+import subprocess
+import sys
+
+FORMULA_RE = re.compile(r"^(Library/Formula/)?([A-Za-z0-9-]+)\.rb")
+TESTBOT_EMAILS = ["brew-test-bot@googlegroups.com"]
+
+def git(*args):
+    return subprocess.check_output(["git"] + list(args)).strip()
+
+def commit_author_email(commit_sha):
+    return git("show", "-s", "--pretty=%ae", commit_sha)
+
+def files_touched_by_commit(commit_sha):
+    return git("diff-tree", "--name-only", "-r", "--no-commit-id", commit_sha).split("\n")
+
+def commits_between(beginning, end):
+    return git("rev-list", "{}..{}".format(beginning, end)).split("\n")
+
+def push_okay(remote_name, remote_url, updates_file):
+    if "omebrew/homebrew" not in remote_url:
+        return True
+    updates = [line.strip().split() for line in updates_file.readlines()]
+    # remote_ref (at commit remote_sha) will  be updated by local_ref (to commit local_sha)
+    for local_ref, local_sha, remote_ref, remote_sha in updates:
+        if remote_ref != "refs/heads/master": continue
+        for commit_sha in commits_between(remote_sha, local_sha):
+            if commit_author_email(commit_sha) not in TESTBOT_EMAILS: continue
+            for filename in files_touched_by_commit(commit_sha):
+                match = FORMULA_RE.match(filename)
+                if match is None: continue
+                errorlevel = subprocess.call(["brew", "fetch", "--force-bottle", match.group(2)])
+                if errorlevel > 0:
+                    return False
+    return True
+
+if __name__ == "__main__":
+    if os.environ.get("HOMEBREW_SKIP_FETCH", "0") != "0":
+        sys.exit(0)
+    sys.exit(0 if push_okay(sys.argv[1], sys.argv[2], sys.stdin) else 1)
