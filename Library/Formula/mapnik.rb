@@ -68,7 +68,8 @@ class Mapnik < Formula
             "PROJ_LIBS=#{proj}/lib",
             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config",
             "NIK2IMG=False",
-            "CPP_TESTS=False" # too long to compile to be worth it
+            "CPP_TESTS=False", # too long to compile to be worth it
+            "INPUT_PLUGINS=all"
            ]
 
     if build.with? "cairo"
