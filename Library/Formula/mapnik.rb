@@ -6,6 +6,7 @@ class Mapnik < Formula
   sha256 "c88b1ce48899ffe0d75f9e753dcd427e2b6fd3186b40e04508608b2151c0e7b0"
 
   bottle do
+    cellar :any
     sha256 "bcf0efd84fc80d8db0b8f78204ecc1b36221bf53994cad19d6c5ce0083668178" => :yosemite
     sha256 "160bf811a9148c076c28cf72014aadf6994e46373cf7b83fc79e143f2fd33dcd" => :mavericks
     sha256 "b60f792870191f6a7b32a628d81120429471e4b24bb589063ea057fba5ad2c5d" => :mountain_lion
@@ -47,6 +48,7 @@ class Mapnik < Formula
     args = ["CC=\"#{ENV.cc}\"",
             "CXX=\"#{ENV.cxx}\"",
             "PREFIX=#{prefix}",
+            "CUSTOM_CXXFLAGS=\"-DBOOST_EXCEPTION_DISABLE\"",
             "ICU_INCLUDES=#{icu}/include",
             "ICU_LIBS=#{icu}/lib",
             "JPEG_INCLUDES=#{jpeg}/include",
