@@ -17,9 +17,6 @@ class Openssl < Formula
 
   depends_on "makedepend" => :build
 
-  keg_only :provided_by_osx,
-    "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
-
   def arch_args
     {
       :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
@@ -114,7 +111,7 @@ class Openssl < Formula
     )
 
     valid_certs = certs.select do |cert|
-      IO.popen('openssl x509 -inform pem -checkend 0 -noout', 'w') do |openssl_io|
+      IO.popen("openssl x509 -inform pem -checkend 0 -noout", "w") do |openssl_io|
         openssl_io.write(cert)
         openssl_io.close_write
       end
