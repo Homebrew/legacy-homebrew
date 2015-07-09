@@ -947,12 +947,8 @@ class ResourceAuditor
       problem "MD5 checksums are deprecated, please use SHA256"
       return
     when :sha1
-      if ARGV.include? "--strict"
-        problem "SHA1 checksums are deprecated, please use SHA256"
-        return
-      else
-        len = 40
-      end
+      problem "SHA1 checksums are deprecated, please use SHA256"
+      return
     when :sha256 then len = 64
     end
 
