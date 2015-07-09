@@ -148,11 +148,12 @@ class Updater
     # ensure we don't munge line endings on checkout
     safe_system "git", "config", "core.autocrlf", "false"
 
-    args = ["pull", "origin"]
+    args = ["pull"]
     args << "--rebase" if ARGV.include? "--rebase"
+    args += quiet
+    args << "origin"
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/master:refs/remotes/origin/master"
-    args += quiet
 
     reset_on_interrupt { safe_system "git", *args }
 
