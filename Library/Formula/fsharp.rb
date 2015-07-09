@@ -3,8 +3,8 @@ require "formula"
 class Fsharp < Formula
   desc "F#, a functional-first programming language"
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.2",
-    :revision => "54fedcc879a81d8384ec336a1bb0c5a970ccd0f0"
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.4",
+    :revision => "8d02a54a75de362d6b649dcaaacfefe6db9caf41"
 
   bottle do
     sha256 "48c08f9e3bfdd74898bd5cc796b3d63e66059bf056bd60822476f474135ab32d" => :yosemite
