@@ -397,12 +397,8 @@ class CurlPostDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# Download from an SSL3-only host.
-class CurlSSL3DownloadStrategy < CurlDownloadStrategy
-  def _curl_opts
-    super << '-3'
-  end
-end
+# @deprecated
+CurlSSL3DownloadStrategy = CurlDownloadStrategy
 
 # Use this strategy to download but not unzip a file.
 # Useful for installing jars.
