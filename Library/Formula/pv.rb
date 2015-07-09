@@ -5,9 +5,11 @@ class Pv < Formula
   sha256 "0ece824e0da27b384d11d1de371f20cafac465e038041adab57fcf4b5036ef8d"
 
   bottle do
-    sha256 "3c5bde779bd29a478548bab1fffc869516ed6cb854a09063c80ca8013f4dc400" => :yosemite
-    sha256 "2268e40d7fc4ed41aad651167057d6a3e38d167678063b62b70dae226449ff7a" => :mavericks
-    sha256 "f343368e557cb1c86173bd0c62143b34834e2b825b1a188ac2a37c23d0c685dd" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "82d8e9279d977a9591450142bf90015df62f800df026038a170d7db6d20a198a" => :yosemite
+    sha256 "48c70bdab7cffbc780d15c1d903ae1b7dd80552ed7762e8168629dc1df920fce" => :mavericks
+    sha256 "1b48570302d9357be80e10a3dfd0362863ced93c111cc827c7fab7b2e79dae9e" => :mountain_lion
   end
 
   option "with-gettext", "Build with Native Language Support"
