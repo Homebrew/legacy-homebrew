@@ -6,9 +6,11 @@ class Dos2unix < Formula
   sha256 "9c23907296267fa4ea66e1ee03eb6f6229cf7b64968318d00a77076ae89c2612"
 
   bottle do
-    sha256 "8987013382676381291bcd0bcfd0a36c849386daa83eb854561dd356c7345978" => :yosemite
-    sha256 "8966ddcab53e480003a1d3842bae29b591cacf85b256982b6198f31fe23eca11" => :mavericks
-    sha256 "1e97501a1880660bd4e9b92072764013ff1881c341f42034a6f06756e0ef4578" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "04f84521cde18edf147398e2a9f0052888e66afb438fc7bca453e07072d0655d" => :yosemite
+    sha256 "6362fd9b98df16e16e71fb32c68b833cf5409d42c23d795b89bd1b2f1718e517" => :mavericks
+    sha256 "7a03ca7f532b3d45934affe29e29ff46bf614007da48928fa94ba9eed3ada583" => :mountain_lion
   end
 
   devel do
