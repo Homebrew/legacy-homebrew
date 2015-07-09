@@ -5,10 +5,9 @@ class Readosm < Formula
   sha256 "1fd839e05b411db6ba1ca6199bf3334ab9425550a58e129c07ad3c6d39299acf"
 
   bottle do
-    cellar :any
-    sha1 "048daf9074d277eb64b3d8f479ac3c2cf636d932" => :yosemite
-    sha1 "6c6aaf7961bd728538787e3f9b09022d59ad350e" => :mavericks
-    sha1 "1f59bbb3b9d0a13d56fc592ae60c67e56f3d9d0d" => :mountain_lion
+    sha256 "4449dcac0910846c27c4c5b3fe68b7aa5505132835f1de07d27551eb7f9becd9" => :yosemite
+    sha256 "ab9b88f09f4debd36b0618700952344f38921937855f14937727cac8c2ff9af8" => :mavericks
+    sha256 "a73c751faf283779d13ae63350248e2207ca399a33ec87a753153415f3f52de3" => :mountain_lion
   end
 
   def install
