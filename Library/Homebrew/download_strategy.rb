@@ -323,9 +323,18 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
     curl @url, "-C", downloaded_size, "-o", temporary_path
   end
 
+  # Curl options to be always passed to curl,
+  # with raw head calls (`curl -I`) or with actual `fetch`.
+  def _curl_opts
+    copts = []
+    copts << "--user" << meta.fetch(:user) if meta.key?(:user)
+    copts
+  end
+
   def actual_urls
     urls = []
-    Utils.popen_read("curl", "-I", "-L", @url).scan(/^Location: (.+)$/).map do |m|
+    curl_args = _curl_opts << "-I" << "-L" << @url
+    Utils.popen_read("curl", *curl_args).scan(/^Location: (.+)$/).map do |m|
       urls << URI.join(urls.last || @url, m.first.chomp).to_s
     end
     urls
@@ -336,8 +345,8 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
   end
 
   def curl(*args)
+    args.concat _curl_opts
     args << '--connect-timeout' << '5' unless mirrors.empty?
-    args << "--user" << meta.fetch(:user) if meta.key?(:user)
     super
   end
 end
@@ -390,8 +399,8 @@ end
 
 # Download from an SSL3-only host.
 class CurlSSL3DownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    curl @url, '-3', '-C', downloaded_size, '-o', temporary_path
+  def _curl_opts
+    super << '-3'
   end
 end
 
