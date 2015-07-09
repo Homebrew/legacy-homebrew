@@ -3,7 +3,7 @@ require 'requirement'
 class LanguageModuleRequirement < Requirement
   fatal true
 
-  def initialize language, module_name, import_name=nil
+  def initialize(language, module_name, import_name=nil)
     @language = language
     @module_name = module_name
     @import_name = import_name || module_name
