@@ -233,14 +233,17 @@ class FormulaAuditor
       return
     end
 
-    return unless @online
     same_name_tap_formulae = Formula.tap_names.select do |tap_formula_name|
       user_name, _, formula_name = tap_formula_name.split("/", 3)
       user_name == "homebrew" && formula_name == name
     end
-    same_name_tap_formulae += @@remote_official_taps.map do |tap|
-      Thread.new { Homebrew.search_tap "homebrew", tap, name }
-    end.map(&:value).flatten
+
+    if @online
+      same_name_tap_formulae += @@remote_official_taps.map do |tap|
+        Thread.new { Homebrew.search_tap "homebrew", tap, name }
+      end.map(&:value).flatten
+    end
+
     same_name_tap_formulae.delete(full_name)
 
     if same_name_tap_formulae.size > 0
