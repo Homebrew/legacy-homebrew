@@ -10,7 +10,7 @@ class AntContrib < Formula
   depends_on "ant"
 
   def install
-    libexec.install "lib", "ant-contrib-1.0b3.jar"
+    (share+"ant").install "ant-contrib-1.0b3.jar"
     share.install "docs"
   end
 
@@ -28,6 +28,6 @@ class AntContrib < Formula
         </target>
       </project>
     EOS
-    system Formula["ant"].opt_bin/"ant", "-lib", libexec
+    system Formula["ant"].opt_bin/"ant"
   end
 end
