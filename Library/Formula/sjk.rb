@@ -2,7 +2,6 @@ class Sjk < Formula
   desc "Swiss Java Knife"
   homepage "https://github.com/aragozin/jvm-tools"
   url "https://bintray.com/artifact/download/aragozin/generic/sjk-plus-0.3.6.jar"
-  version "0.3.6"
   sha256 "9420403139c1b843320fe07bac56f704b0d13715d53b5b2b5869d32103a99a47"
 
   depends_on :java
@@ -13,7 +12,6 @@ class Sjk < Formula
   end
 
   def install
-    bin.mkdir
     lib.install "sjk-plus-0.3.6.jar"
     resource("shell_wrapper").stage { bin.install "sjk.sh" => "sjk" }
   end
