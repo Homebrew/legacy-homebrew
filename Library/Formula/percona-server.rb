@@ -3,7 +3,7 @@ require 'formula'
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage 'https://www.percona.com'
-  url 'https://www.percona.com/downloads/Percona-Server-5.6/LATEST/source/tarball/percona-server-5.6.25-73.0.tar.gz'
+  url 'https://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-5.6.25-73.0/source/tarball/percona-server-5.6.25-73.0.tar.gz'
   version '5.6.25-73.0'
   sha256 '790d056931b9dd5b158a732812490fdaf9407012aaf93d3f1c1b21942dcdc251'
 
