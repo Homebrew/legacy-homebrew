@@ -4,6 +4,13 @@ class Khard < Formula
   url "https://github.com/scheibler/khard/archive/v0.4.0.tar.gz"
   sha256 "4140fb06a1da63a5eb26edc7d3e3c01b99c464276a9e590b57ee2451c4416f77"
 
+  bottle do
+    cellar :any
+    sha256 "feaf4976378a4b3a9e7ff1ee9bd9b6804dd084041bc0f1381cc9b2a64437b754" => :yosemite
+    sha256 "744c1982ee4f85d96694be11c616af0eee7fa4470419e713c287f2ba6a8e4a8e" => :mavericks
+    sha256 "67a638ab7cc7055c04d1063877e603f1c77251e655440ad86ea1c4055c7d0e61" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "vobject" do
