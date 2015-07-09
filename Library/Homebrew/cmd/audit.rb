@@ -5,6 +5,7 @@ require "formula_cellar_checks"
 require "official_taps"
 require "tap_migrations"
 require "cmd/search"
+require "date"
 
 module Homebrew
   def audit
