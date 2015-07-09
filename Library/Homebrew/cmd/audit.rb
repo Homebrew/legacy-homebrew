@@ -18,6 +18,8 @@ module Homebrew
       style
     end
 
+    online = ARGV.include? "--online"
+
     ENV.activate_extensions!
     ENV.setup_build_environment
 
@@ -50,7 +52,7 @@ module Homebrew
     output_header = !strict
 
     ff.each do |f|
-      fa = FormulaAuditor.new(f, :strict => strict)
+      fa = FormulaAuditor.new(f, :strict => strict, :online => online)
       fa.audit
 
       unless fa.problems.empty?
@@ -131,6 +133,7 @@ class FormulaAuditor
   def initialize(formula, options={})
     @formula = formula
     @strict = !!options[:strict]
+    @online = !!options[:online]
     @problems = []
     @text = FormulaText.new(formula.path)
     @specs = %w{stable devel head}.map { |s| formula.send(s) }.compact
@@ -230,6 +233,7 @@ class FormulaAuditor
       return
     end
 
+    return unless @online
     same_name_tap_formulae = Formula.tap_names.select do |tap_formula_name|
       user_name, _, formula_name = tap_formula_name.split("/", 3)
       user_name == "homebrew" && formula_name == name
@@ -423,7 +427,7 @@ class FormulaAuditor
   end
 
   def audit_github_repository
-    return unless @strict
+    return unless @online
 
     regex = %r{https?://github.com/([^/]+)/([^/]+)/?.*}
     _, user, repo = *regex.match(formula.stable.url) if formula.stable
