@@ -4,8 +4,8 @@ require "language/go"
 class Aptly < Formula
   desc "Swiss army knife for Debian repository management"
   homepage "https://www.aptly.info/"
-  url "https://github.com/smira/aptly/archive/v0.9.1.tar.gz"
-  sha1 "d38a20f04ba70c67a86a3e04b2cd2641674371d2"
+  url "https://github.com/smira/aptly/archive/v0.9.5.tar.gz"
+  sha256 "43de181dd8770e5c0ffeb4de9f862c22c59381df5d9220a54c680bd2468ff831"
 
   head "https://github.com/smira/aptly.git"
 
