@@ -122,24 +122,52 @@ class Updater
 
   def initialize(repository)
     @repository = repository
+    @stashed = false
   end
 
-  def pull!
-    safe_system "git", "checkout", "-q", "master"
+  def pull!(options={})
+    quiet = []
+    quiet << "--quiet" unless ARGV.verbose?
+
+    unless system "git", "diff", "--quiet"
+      unless options[:silent]
+        puts "Stashing your changes:"
+        system "git", "status", "--short", "--untracked-files"
+      end
+      safe_system "git", "stash", "save", "--include-untracked", *quiet
+      @stashed = true
+    end
+
+    @initial_branch = `git symbolic-ref --short HEAD`.chomp
+    if @initial_branch != "master" && !@initial_branch.empty?
+      safe_system "git", "checkout", "master", *quiet
+    end
 
     @initial_revision = read_current_revision
 
     # ensure we don't munge line endings on checkout
     safe_system "git", "config", "core.autocrlf", "false"
 
-    args = ["pull"]
+    args = ["pull", "origin"]
     args << "--rebase" if ARGV.include? "--rebase"
-    args << "-q" unless ARGV.verbose?
-    args << "origin"
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/master:refs/remotes/origin/master"
+    args += quiet
 
     reset_on_interrupt { safe_system "git", *args }
+
+    if @initial_branch != "master" && !@initial_branch.empty?
+      safe_system "git", "checkout", @initial_branch, *quiet
+    end
+
+    if @stashed
+      safe_system "git", "stash", "pop", *quiet
+      unless options[:silent]
+        puts "Restored your changes:"
+        system "git", "status", "--short", "--untracked-files"
+      end
+      @stashed = false
+    end
 
     @current_revision = read_current_revision
   end
@@ -148,7 +176,9 @@ class Updater
     ignore_interrupts { yield }
   ensure
     if $?.signaled? && $?.termsig == 2 # SIGINT
+      safe_system "git", "checkout", @initial_branch
       safe_system "git", "reset", "--hard", @initial_revision
+      safe_system "git", "stash", "pop" if @stashed
     end
   end
 
