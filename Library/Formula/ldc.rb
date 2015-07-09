@@ -3,14 +3,10 @@ require "formula"
 class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "http://wiki.dlang.org/LDC"
-  url "https://github.com/ldc-developers/ldc/releases/download/v0.15.1/ldc-0.15.1-src.tar.gz"
-  sha1 "06db0c07d73bf714e6fc7a4aca4c44123e4a585a"
+  url "https://github.com/ldc-developers/ldc/releases/download/v0.15.2-beta1/ldc-0.15.2-beta1-src.tar.gz"
+  sha1 "cf5b22ea98f4905ad3ba468aedfdce78d194e59d"
+  version "0.15.2-beta1"
 
-  devel do
-    url "https://github.com/ldc-developers/ldc/releases/download/v0.15.2-beta1/ldc-0.15.2-beta1-src.tar.gz"
-    sha1 "cf5b22ea98f4905ad3ba468aedfdce78d194e59d"
-    version "0.15.2-beta1"
-  end
 
   bottle do
     sha1 "bc329c6a0f9f52d634c99877a6c020436307b941" => :yosemite
