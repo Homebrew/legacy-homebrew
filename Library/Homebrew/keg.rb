@@ -82,7 +82,7 @@ class Keg
   ]
 
   # if path is a file in a keg then this will return the containing Keg object
-  def self.for path
+  def self.for(path)
     path = path.realpath
     while not path.root?
       return Keg.new(path) if path.parent.parent == HOMEBREW_CELLAR.realpath
@@ -94,7 +94,7 @@ class Keg
   attr_reader :path, :name, :linked_keg_record, :opt_record
   protected :path
 
-  def initialize path
+  def initialize(path)
     raise "#{path} is not a valid keg" unless path.parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{path} is not a directory" unless path.directory?
     @path = path
@@ -218,7 +218,7 @@ class Keg
     FormulaLock.new(name).with_lock { yield }
   end
 
-  def completion_installed? shell
+  def completion_installed?(shell)
     dir = case shell
           when :bash then path.join("etc", "bash_completion.d")
           when :zsh  then path.join("share", "zsh", "site-functions")
@@ -252,7 +252,7 @@ class Keg
     path.find(*args, &block)
   end
 
-  def link mode=OpenStruct.new
+  def link(mode=OpenStruct.new)
     raise AlreadyLinkedError.new(self) if linked_keg_record.directory?
 
     ObserverPathnameExtension.reset_counts!
@@ -335,7 +335,7 @@ class Keg
 
   private
 
-  def resolve_any_conflicts dst, mode
+  def resolve_any_conflicts(dst, mode)
     return unless dst.symlink?
 
     src = dst.resolved_path
@@ -366,7 +366,7 @@ class Keg
     end
   end
 
-  def make_relative_symlink dst, src, mode
+  def make_relative_symlink(dst, src, mode)
     if dst.symlink? && src == dst.resolved_path
       puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
@@ -406,7 +406,7 @@ class Keg
   protected
 
   # symlinks the contents of path+relative_dir recursively into #{HOMEBREW_PREFIX}/relative_dir
-  def link_dir relative_dir, mode
+  def link_dir(relative_dir, mode)
     root = path+relative_dir
     return unless root.exist?
     root.find do |src|

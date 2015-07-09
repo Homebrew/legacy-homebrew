@@ -62,7 +62,7 @@ module Homebrew
     end
   end
 
-  def github_info f
+  def github_info(f)
     if f.tap?
       user, repo = f.tap.split("/", 2)
       path = f.path.relative_path_from(HOMEBREW_LIBRARY.join("Taps", f.tap))
@@ -76,7 +76,7 @@ module Homebrew
     end
   end
 
-  def info_formula f
+  def info_formula(f)
     specs = []
 
     if stable = f.stable
@@ -140,7 +140,7 @@ module Homebrew
     ohai 'Caveats', c.caveats unless c.empty?
   end
 
-  def decorate_dependencies dependencies
+  def decorate_dependencies(dependencies)
     # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
     tick = ["2714".hex].pack("U*")
     cross = ["2718".hex].pack("U*")

@@ -32,7 +32,7 @@ class X11Requirement < Requirement
     s
   end
 
-  def <=> other
+  def <=>(other)
     return unless X11Requirement === other
     min_version <=> other.min_version
   end

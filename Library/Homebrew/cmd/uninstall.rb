@@ -43,7 +43,7 @@ module Homebrew
     puts "Use `brew remove --force #{e.name}` to remove all versions."
   end
 
-  def rm_pin rack
+  def rm_pin(rack)
     Formulary.from_rack(rack).unpin rescue nil
   end
 end

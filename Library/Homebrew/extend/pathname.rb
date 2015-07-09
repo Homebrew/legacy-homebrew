@@ -9,7 +9,7 @@ class Pathname
 
   BOTTLE_EXTNAME_RX = /(\.[a-z0-9_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
-  def install *sources
+  def install(*sources)
     sources.each do |src|
       case src
       when Resource
@@ -56,7 +56,7 @@ class Pathname
   private :install_p
 
   # Creates symlinks to sources in this folder.
-  def install_symlink *sources
+  def install_symlink(*sources)
     sources.each do |src|
       case src
       when Array
@@ -94,7 +94,7 @@ class Pathname
   end unless method_defined?(:binread)
 
   # NOTE always overwrites
-  def atomic_write content
+  def atomic_write(content)
     require "tempfile"
     tf = Tempfile.new(basename.to_s, dirname)
     begin
@@ -131,7 +131,7 @@ class Pathname
   end
   private :default_stat
 
-  def cp dst
+  def cp(dst)
     opoo "Pathname#cp is deprecated, use FileUtils.cp"
     if file?
       FileUtils.cp to_s, dst
@@ -141,7 +141,7 @@ class Pathname
     return dst
   end
 
-  def cp_path_sub pattern, replacement
+  def cp_path_sub(pattern, replacement)
     raise "#{self} does not exist" unless self.exist?
 
     dst = sub(pattern, replacement)
@@ -189,7 +189,7 @@ class Pathname
     false
   end
 
-  def chmod_R perms
+  def chmod_R(perms)
     opoo "Pathname#chmod_R is deprecated, use FileUtils.chmod_R"
     require 'fileutils'
     FileUtils.chmod_R perms, to_s
@@ -265,7 +265,7 @@ class Pathname
     incremental_hash(Digest::SHA2)
   end
 
-  def verify_checksum expected
+  def verify_checksum(expected)
     raise ChecksumMissingError if expected.nil? or expected.empty?
     actual = Checksum.new(expected.hash_type, send(expected.hash_type).downcase)
     raise ChecksumMismatchError.new(self, expected, actual) unless expected == actual
@@ -328,7 +328,7 @@ class Pathname
   end
 
   # Writes an exec script in this folder for each target pathname
-  def write_exec_script *targets
+  def write_exec_script(*targets)
     targets.flatten!
     if targets.empty?
       opoo "tried to write exec scripts to #{self} for an empty list of targets"
@@ -345,7 +345,7 @@ class Pathname
   end
 
   # Writes an exec script that sets environment variables
-  def write_env_script target, env
+  def write_env_script(target, env)
     env_export = ''
     env.each {|key, value| env_export += "#{key}=\"#{value}\" "}
     dirname.mkpath
@@ -356,7 +356,7 @@ class Pathname
   end
 
   # Writes a wrapper env script and moves all files to the dst
-  def env_script_all_files dst, env
+  def env_script_all_files(dst, env)
     dst.mkpath
     Pathname.glob("#{self}/*") do |file|
       next if file.directory?
@@ -367,7 +367,7 @@ class Pathname
   end
 
   # Writes an exec script that invokes a java jar
-  def write_jar_script target_jar, script_name, java_opts=""
+  def write_jar_script(target_jar, script_name, java_opts="")
     mkpath
     (self+script_name).write <<-EOS.undent
       #!/bin/bash
@@ -375,7 +375,7 @@ class Pathname
     EOS
   end
 
-  def install_metafiles from=Pathname.pwd
+  def install_metafiles(from=Pathname.pwd)
     Pathname(from).children.each do |p|
       next if p.directory?
       next unless Metafiles.copy?(p.basename.to_s)
@@ -457,20 +457,24 @@ module ObserverPathnameExtension
     puts "rm #{to_s}" if ARGV.verbose?
     ObserverPathnameExtension.n += 1
   end
+
   def rmdir
     super
     puts "rmdir #{to_s}" if ARGV.verbose?
     ObserverPathnameExtension.d += 1
   end
+
   def make_relative_symlink src
     super
     puts "ln -s #{src.relative_path_from(dirname)} #{basename}" if ARGV.verbose?
     ObserverPathnameExtension.n += 1
   end
+
   def install_info
     super
     puts "info #{to_s}" if ARGV.verbose?
   end
+
   def uninstall_info
     super
     puts "uninfo #{to_s}" if ARGV.verbose?

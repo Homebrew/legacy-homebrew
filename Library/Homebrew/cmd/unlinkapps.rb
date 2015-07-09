@@ -23,7 +23,7 @@ module Homebrew
 
   private
 
-  def should_unlink? file
+  def should_unlink?(file)
     if ARGV.named.empty?
       file.match(HOMEBREW_CELLAR) || file.match("#{HOMEBREW_PREFIX}/opt")
     else

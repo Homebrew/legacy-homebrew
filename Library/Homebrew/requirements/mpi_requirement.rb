@@ -23,7 +23,7 @@ class MPIRequirement < Requirement
     super(tags)
   end
 
-  def mpi_wrapper_works? compiler
+  def mpi_wrapper_works?(compiler)
     compiler = which compiler
     return false if compiler.nil? or not compiler.executable?
 

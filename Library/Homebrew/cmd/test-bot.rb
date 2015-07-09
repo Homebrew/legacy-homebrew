@@ -35,7 +35,7 @@ module Homebrew
   EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
   BYTES_IN_1_MEGABYTE = 1024*1024
 
-  def homebrew_git_repo tap=nil
+  def homebrew_git_repo(tap=nil)
     if tap
       user, repo = tap.split "/"
       HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
@@ -47,7 +47,7 @@ module Homebrew
   class Step
     attr_reader :command, :name, :status, :output, :time
 
-    def initialize test, command, options={}
+    def initialize(test, command, options={})
       @test = test
       @category = test.category
       @command = command
@@ -174,7 +174,7 @@ module Homebrew
   class Test
     attr_reader :log_root, :category, :name, :steps
 
-    def initialize argument, tap=nil
+    def initialize(argument, tap=nil)
       @hash = nil
       @url = nil
       @formulae = []
@@ -231,7 +231,7 @@ module Homebrew
     end
 
     def download
-      def shorten_revision revision
+      def shorten_revision(revision)
         git("rev-parse", "--short", revision).strip
       end
 
@@ -243,11 +243,11 @@ module Homebrew
         git("symbolic-ref", "HEAD").gsub("refs/heads/", "").strip
       end
 
-      def single_commit? start_revision, end_revision
+      def single_commit?(start_revision, end_revision)
         git("rev-list", "--count", "#{start_revision}..#{end_revision}").to_i == 1
       end
 
-      def diff_formulae start_revision, end_revision, path, filter
+      def diff_formulae(start_revision, end_revision, path, filter)
         git(
           "diff-tree", "-r", "--name-only", "--diff-filter=#{filter}",
           start_revision, end_revision, "--", path
@@ -332,11 +332,11 @@ module Homebrew
       @formulae += @added_formulae + @modified_formula
     end
 
-    def skip formula_name
+    def skip(formula_name)
       puts "#{Tty.blue}==>#{Tty.white} SKIPPING: #{formula_name}#{Tty.reset}"
     end
 
-    def satisfied_requirements? formula, spec, dependency=nil
+    def satisfied_requirements?(formula, spec, dependency=nil)
       requirements = formula.send(spec).requirements
 
       unsatisfied_requirements = requirements.reject do |requirement|
@@ -370,7 +370,7 @@ module Homebrew
       test "brew", "config"
     end
 
-    def formula formula_name
+    def formula(formula_name)
       @category = "#{__method__}.#{formula_name}"
 
       canonical_formula_name = if @tap
@@ -619,11 +619,11 @@ module Homebrew
       changed_formulae + unchanged_formulae
     end
 
-    def head_only_tap? formula
+    def head_only_tap?(formula)
       formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "homebrew/homebrew-head-only"
     end
 
-    def devel_only_tap? formula
+    def devel_only_tap?(formula)
       formula.devel && formula.stable.nil? && formula.tap == "homebrew/homebrew-devel-only"
     end
 

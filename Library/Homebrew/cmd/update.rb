@@ -281,7 +281,7 @@ class Report
     dump_formula_report :D, "Deleted Formulae"
   end
 
-  def select_formula key
+  def select_formula(key)
     fetch(key, []).map do |path|
       case path.to_s
       when HOMEBREW_TAP_PATH_REGEX
@@ -292,7 +292,7 @@ class Report
     end.sort
   end
 
-  def dump_formula_report key, title
+  def dump_formula_report(key, title)
     formula = select_formula(key)
     unless formula.empty?
       ohai title

@@ -2,7 +2,7 @@ class Keg
   PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
-  def fix_install_names options={}
+  def fix_install_names(options={})
     mach_o_files.each do |file|
       file.ensure_writable do
         change_dylib_id(dylib_id_for(file, options), file) if file.dylib?
@@ -18,7 +18,7 @@ class Keg
     end
   end
 
-  def relocate_install_names old_prefix, new_prefix, old_cellar, new_cellar, options={}
+  def relocate_install_names(old_prefix, new_prefix, old_cellar, new_cellar, options={})
     mach_o_files.each do |file|
       file.ensure_writable do
         if file.dylib?
@@ -85,7 +85,7 @@ class Keg
     results.to_a
   end
 
-  def each_unique_file_matching string
+  def each_unique_file_matching(string)
     Utils.popen_read("/usr/bin/fgrep", "-lr", string, to_s) do |io|
       hardlinks = Set.new
 
@@ -126,7 +126,7 @@ class Keg
     path.join("lib")
   end
 
-  def each_install_name_for file, &block
+  def each_install_name_for(file, &block)
     dylibs = file.dynamically_linked_libraries
     dylibs.reject! { |fn| fn =~ /^@(loader_|executable_|r)path/ }
     dylibs.each(&block)
@@ -146,7 +146,7 @@ class Keg
     end
   end
 
-  def find_dylib name
+  def find_dylib(name)
     lib.find { |pn| break pn if pn.basename == name } if lib.directory?
   end
 

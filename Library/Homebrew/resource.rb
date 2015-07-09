@@ -38,7 +38,7 @@ class Resource
     end
   end
 
-  def initialize name=nil, &block
+  def initialize(name=nil, &block)
     @name = name
     @url = nil
     @version = nil
@@ -114,7 +114,7 @@ class Resource
     cached_download
   end
 
-  def verify_download_integrity fn
+  def verify_download_integrity(fn)
     if fn.file?
       ohai "Verifying #{fn.basename} checksum" if ARGV.verbose?
       fn.verify_checksum(checksum)
@@ -129,7 +129,7 @@ class Resource
     define_method(type) { |val| @checksum = Checksum.new(type, val) }
   end
 
-  def url val=nil, specs={}
+  def url(val=nil, specs={})
     return @url if val.nil?
     @url = val
     @specs.merge!(specs)
@@ -137,11 +137,11 @@ class Resource
     @download_strategy = DownloadStrategyDetector.detect(url, using)
   end
 
-  def version val=nil
+  def version(val=nil)
     @version ||= detect_version(val)
   end
 
-  def mirror val
+  def mirror(val)
     mirrors << val
   end
 
@@ -160,7 +160,7 @@ class Resource
   end
 
   class Go < Resource
-    def stage target
+    def stage(target)
       super(target/name)
     end
   end

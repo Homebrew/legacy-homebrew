@@ -515,7 +515,7 @@ class Formula
   #   skip_clean "bin/foo", "lib/bar"
   # keep .la files with:
   #   skip_clean :la
-  def skip_clean? path
+  def skip_clean?(path)
     return true if path.extname == '.la' and self.class.skip_clean_paths.include? :la
     to_check = path.relative_path_from(prefix).to_s
     self.class.skip_clean_paths.include? to_check
@@ -575,7 +575,7 @@ class Formula
     @pin.unpin
   end
 
-  def == other
+  def ==(other)
     instance_of?(other.class) &&
       name == other.name &&
       active_spec == other.active_spec
@@ -695,7 +695,7 @@ class Formula
     end
   end
 
-  def print_tap_action options={}
+  def print_tap_action(options={})
     if tap?
       verb = options[:verb] || "Installing"
       ohai "#{verb} #{name} from #{tap}"
@@ -708,7 +708,7 @@ class Formula
   end
 
   # @deprecated
-  def self.path name
+  def self.path(name)
     Formulary.core_path(name)
   end
 
@@ -789,7 +789,7 @@ class Formula
     active_spec.fetch
   end
 
-  def verify_download_integrity fn
+  def verify_download_integrity(fn)
     active_spec.verify_download_integrity(fn)
   end
 
@@ -824,7 +824,7 @@ class Formula
 
   protected
 
-  def setup_test_home home
+  def setup_test_home(home)
     # keep Homebrew's site-packages in sys.path when testing with system Python
     user_site_packages = home/"Library/Python/2.7/lib/python/site-packages"
     user_site_packages.mkpath
@@ -836,7 +836,7 @@ class Formula
 
   # Pretty titles the command and buffers stdout/stderr
   # Throws if there's an error
-  def system cmd, *args
+  def system(cmd, *args)
     verbose = ARGV.verbose?
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
@@ -953,7 +953,7 @@ class Formula
     end
   end
 
-  def self.method_added method
+  def self.method_added(method)
     case method
     when :brew
       raise "You cannot override Formula#brew in class #{name}"
@@ -1019,7 +1019,7 @@ class Formula
     # @!attribute [w] url
     # The URL used to download the source for the {#stable} version of the formula.
     # We prefer `https` for security and proxy reasons.
-    def url val, specs={}
+    def url(val, specs={})
       stable.url(val, specs)
     end
 
@@ -1027,7 +1027,7 @@ class Formula
     # The version string for the {#stable} version of the formula.
     # The version is autodetected from the URL and/or tag so only needs to be
     # declared if it cannot be autodetected correctly.
-    def version val=nil
+    def version(val=nil)
       stable.version(val)
     end
 
@@ -1037,7 +1037,7 @@ class Formula
     # there can be more than one. Generally we add them when the main {.url}
     # is unreliable. If {.url} is really unreliable then we may swap the
     # {.mirror} and {.url}.
-    def mirror val
+    def mirror(val)
       stable.mirror(val)
     end
 
@@ -1056,7 +1056,7 @@ class Formula
       define_method(type) { |val| stable.send(type, val) }
     end
 
-    def bottle *, &block
+    def bottle(*, &block)
       stable.bottle(&block)
     end
 
@@ -1064,19 +1064,19 @@ class Formula
       stable.build
     end
 
-    def stable &block
+    def stable(&block)
       @stable ||= SoftwareSpec.new
       return @stable unless block_given?
       @stable.instance_eval(&block)
     end
 
-    def devel &block
+    def devel(&block)
       @devel ||= SoftwareSpec.new
       return @devel unless block_given?
       @devel.instance_eval(&block)
     end
 
-    def head val=nil, specs={}, &block
+    def head(val=nil, specs={}, &block)
       @head ||= HeadSoftwareSpec.new
       if block_given?
         @head.instance_eval(&block)
@@ -1088,33 +1088,33 @@ class Formula
     end
 
     # Define a named resource using a {SoftwareSpec} style block
-    def resource name, klass=Resource, &block
+    def resource(name, klass=Resource, &block)
       specs.each do |spec|
         spec.resource(name, klass, &block) unless spec.resource_defined?(name)
       end
     end
 
-    def go_resource name, &block
+    def go_resource(name, &block)
       specs.each { |spec| spec.go_resource(name, &block) }
     end
 
-    def depends_on dep
+    def depends_on(dep)
       specs.each { |spec| spec.depends_on(dep) }
     end
 
-    def option name, description=""
+    def option(name, description="")
       specs.each { |spec| spec.option(name, description) }
     end
 
-    def deprecated_option hash
+    def deprecated_option(hash)
       specs.each { |spec| spec.deprecated_option(hash) }
     end
 
-    def patch strip=:p1, src=nil, &block
+    def patch(strip=:p1, src=nil, &block)
       specs.each { |spec| spec.patch(strip, src, &block) }
     end
 
-    def plist_options options
+    def plist_options(options)
       @plist_startup = options[:startup]
       @plist_manual = options[:manual]
     end
@@ -1123,12 +1123,12 @@ class Formula
       @conflicts ||= []
     end
 
-    def conflicts_with *names
+    def conflicts_with(*names)
       opts = Hash === names.last ? names.pop : {}
       names.each { |name| conflicts << FormulaConflict.new(name, opts[:because]) }
     end
 
-    def skip_clean *paths
+    def skip_clean(*paths)
       paths.flatten!
       # Specifying :all is deprecated and will become an error
       skip_clean_paths.merge(paths)
@@ -1138,12 +1138,12 @@ class Formula
       @skip_clean_paths ||= Set.new
     end
 
-    def keg_only reason, explanation=""
+    def keg_only(reason, explanation="")
       @keg_only_reason = KegOnlyReason.new(reason, explanation)
     end
 
     # Pass :skip to this method to disable post-install stdlib checking
-    def cxxstdlib_check check_type
+    def cxxstdlib_check(check_type)
       define_method(:skip_cxxstdlib_check?) { true } if check_type == :skip
     end
 
@@ -1174,15 +1174,15 @@ class Formula
     # fails_with :gcc => '4.8' do
     #   version '4.8.1'
     # end
-    def fails_with compiler, &block
+    def fails_with(compiler, &block)
       specs.each { |spec| spec.fails_with(compiler, &block) }
     end
 
-    def needs *standards
+    def needs(*standards)
       specs.each { |spec| spec.needs(*standards) }
     end
 
-    def test &block
+    def test(&block)
       define_method(:test, &block)
     end
   end

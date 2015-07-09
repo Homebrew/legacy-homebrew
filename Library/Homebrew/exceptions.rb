@@ -5,7 +5,7 @@ class KegUnspecifiedError < UsageError; end
 class MultipleVersionsInstalledError < RuntimeError
   attr_reader :name
 
-  def initialize name
+  def initialize(name)
     @name = name
     super "#{name} has multiple installed versions"
   end
@@ -16,7 +16,7 @@ class NotAKegError < RuntimeError; end
 class NoSuchKegError < RuntimeError
   attr_reader :name
 
-  def initialize name
+  def initialize(name)
     @name = name
     super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
   end
@@ -37,7 +37,7 @@ class FormulaUnavailableError < RuntimeError
   attr_reader :name
   attr_accessor :dependent
 
-  def initialize name
+  def initialize(name)
     @name = name
   end
 
@@ -53,7 +53,7 @@ end
 class TapFormulaUnavailableError < FormulaUnavailableError
   attr_reader :user, :repo, :shortname
 
-  def initialize name
+  def initialize(name)
     super
     @user, @repo, @shortname = name.split("/", 3)
   end
@@ -68,7 +68,7 @@ end
 class TapFormulaAmbiguityError < RuntimeError
   attr_reader :name, :paths, :formulae
 
-  def initialize name, paths
+  def initialize(name, paths)
     @name = name
     @paths = paths
     @formulae = paths.map do |path|
@@ -87,7 +87,7 @@ end
 class TapUnavailableError < RuntimeError
   attr_reader :name
 
-  def initialize name
+  def initialize(name)
     @name = name
 
     super <<-EOS.undent
@@ -97,7 +97,7 @@ class TapUnavailableError < RuntimeError
 end
 
 class OperationInProgressError < RuntimeError
-  def initialize name
+  def initialize(name)
     message = <<-EOS.undent
       Operation already in progress for #{name}
       Another active Homebrew process is already using #{name}.
@@ -274,7 +274,7 @@ class ChecksumMissingError < ArgumentError; end
 class ChecksumMismatchError < RuntimeError
   attr_reader :expected, :hash_type
 
-  def initialize fn, expected, actual
+  def initialize(fn, expected, actual)
     @expected = expected
     @hash_type = expected.hash_type.to_s.upcase
 

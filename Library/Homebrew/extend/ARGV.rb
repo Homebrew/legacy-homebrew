@@ -67,14 +67,14 @@ module HomebrewArgvExtension
   end
 
   # self documenting perhaps?
-  def include? arg
+  def include?(arg)
     @n=index arg
   end
   def next
     at @n+1 or raise UsageError
   end
 
-  def value arg
+  def value(arg)
     arg = find {|o| o =~ /--#{arg}=(.+)/}
     $1 if arg
   end
@@ -161,7 +161,7 @@ module HomebrewArgvExtension
     switch?("s") || include?("--build-from-source") || !!ENV["HOMEBREW_BUILD_FROM_SOURCE"]
   end
 
-  def flag? flag
+  def flag?(flag)
     options_only.include?(flag) || switch?(flag[2, 1])
   end
 
@@ -170,7 +170,7 @@ module HomebrewArgvExtension
   end
 
   # eg. `foo -ns -i --bar` has three switches, n, s and i
-  def switch? char
+  def switch?(char)
     return false if char.length > 1
     options_only.any? { |arg| arg[1, 1] != "-" && arg.include?(char) }
   end

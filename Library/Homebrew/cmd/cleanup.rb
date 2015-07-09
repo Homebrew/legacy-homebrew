@@ -39,7 +39,7 @@ module Homebrew
     end
   end
 
-  def cleanup_formula f
+  def cleanup_formula(f)
     if f.installed?
       eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.pkg_version > k.version }
       if eligible_kegs.any? && eligible_for_cleanup?(f)
@@ -54,7 +54,7 @@ module Homebrew
     end
   end
 
-  def cleanup_keg keg
+  def cleanup_keg(keg)
     if keg.linked?
       opoo "Skipping (old) #{keg} due to it being linked"
     else

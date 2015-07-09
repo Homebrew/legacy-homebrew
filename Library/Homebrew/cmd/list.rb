@@ -105,7 +105,7 @@ module Homebrew
 end
 
 class PrettyListing
-  def initialize path
+  def initialize(path)
     Pathname.new(path).children.sort_by { |p| p.to_s.downcase }.each do |pn|
       case pn.basename.to_s
       when 'bin', 'sbin'
@@ -129,7 +129,7 @@ class PrettyListing
     end
   end
 
-  def print_dir root
+  def print_dir(root)
     dirs = []
     remaining_root_files = []
     other = ''
@@ -154,7 +154,7 @@ class PrettyListing
     print_remaining_files remaining_root_files, root, other
   end
 
-  def print_remaining_files files, root, other = ''
+  def print_remaining_files(files, root, other='')
     case files.length
     when 0
       # noop

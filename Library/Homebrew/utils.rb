@@ -28,61 +28,61 @@ class Tty
 
     private
 
-    def color n
+    def color(n)
       escape "0;#{n}"
     end
-    def bold n
+    def bold(n)
       escape "1;#{n}"
     end
-    def underline n
+    def underline(n)
       escape "4;#{n}"
     end
-    def escape n
+    def escape(n)
       "\033[#{n}m" if $stdout.tty?
     end
   end
 end
 
-def ohai title, *sput
+def ohai(title, *sput)
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput
 end
 
-def oh1 title
+def oh1(title)
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
-def opoo warning
+def opoo(warning)
   $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end
 
-def onoe error
+def onoe(error)
   $stderr.puts "#{Tty.red}Error#{Tty.reset}: #{error}"
 end
 
-def ofail error
+def ofail(error)
   onoe error
   Homebrew.failed = true
 end
 
-def odie error
+def odie(error)
   onoe error
   exit 1
 end
 
-def pretty_duration s
+def pretty_duration(s)
   return "2 seconds" if s < 3 # avoids the plural problem ;)
   return "#{s.to_i} seconds" if s < 120
   return "%.1f minutes" % (s/60)
 end
 
-def plural n, s="s"
+def plural(n, s="s")
   (n == 1) ? "" : s
 end
 
-def interactive_shell f=nil
+def interactive_shell(f=nil)
   unless f.nil?
     ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
     ENV['HOMEBREW_DEBUG_INSTALL'] = f.full_name
@@ -101,7 +101,7 @@ def interactive_shell f=nil
 end
 
 module Homebrew
-  def self.system cmd, *args
+  def self.system(cmd, *args)
     puts "#{cmd} #{args*' '}" if ARGV.verbose?
     pid = fork do
       yield if block_given?
@@ -160,12 +160,12 @@ def run_as_not_developer(&block)
 end
 
 # Kernel.system but with exceptions
-def safe_system cmd, *args
+def safe_system(cmd, *args)
   Homebrew.system(cmd, *args) or raise ErrorDuringExecution.new(cmd, args)
 end
 
 # prints no output
-def quiet_system cmd, *args
+def quiet_system(cmd, *args)
   Homebrew.system(cmd, *args) do
     # Redirect output streams to `/dev/null` instead of closing as some programs
     # will fail to execute if they can't write to an open stream.
@@ -174,7 +174,7 @@ def quiet_system cmd, *args
   end
 end
 
-def curl *args
+def curl(*args)
   brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
   curl = if MacOS.version <= "10.6" && brewed_curl.exist?
     brewed_curl
@@ -193,7 +193,7 @@ def curl *args
   safe_system curl, *args
 end
 
-def puts_columns items, star_items=[]
+def puts_columns(items, star_items=[])
   return if items.empty?
 
   if star_items && star_items.any?
@@ -214,7 +214,7 @@ def puts_columns items, star_items=[]
   end
 end
 
-def which cmd, path=ENV['PATH']
+def which(cmd, path=ENV['PATH'])
   path.split(File::PATH_SEPARATOR).each do |p|
     pcmd = File.expand_path(cmd, p)
     return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
@@ -244,23 +244,23 @@ def which_editor
   editor
 end
 
-def exec_editor *args
+def exec_editor(*args)
   safe_exec(which_editor, *args)
 end
 
-def exec_browser *args
+def exec_browser(*args)
   browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || OS::PATH_OPEN
   safe_exec(browser, *args)
 end
 
-def safe_exec cmd, *args
+def safe_exec(cmd, *args)
   # This buys us proper argument quoting and evaluation
   # of environment variables in the cmd parameter.
   exec "/bin/sh", "-c", "#{cmd} \"$@\"", "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
-def gzip *paths
+def gzip(*paths)
   paths.collect do |path|
     with_system_path { safe_system 'gzip', path }
     Pathname.new("#{path}.gz")
@@ -268,7 +268,7 @@ def gzip *paths
 end
 
 # Returns array of architectures that the given command or library is built for.
-def archs_for_command cmd
+def archs_for_command(cmd)
   cmd = which(cmd) unless Pathname.new(cmd).absolute?
   Pathname.new(cmd).archs
 end
@@ -427,7 +427,7 @@ module GitHub extend self
     end
   end
 
-  def issues_for_formula name
+  def issues_for_formula(name)
     issues_matching(name, :state => "open")
   end
 

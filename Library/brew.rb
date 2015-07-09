@@ -54,7 +54,7 @@ end
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
 
-def require? path
+def require?(path)
   require path
 rescue LoadError => e
   # HACK :( because we should raise on syntax errors but

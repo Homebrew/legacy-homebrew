@@ -40,7 +40,7 @@ class Formulary
     end
   end
 
-  def self.class_s name
+  def self.class_s(name)
     class_name = name.capitalize
     class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
     class_name.gsub!('+', 'x')
@@ -81,7 +81,7 @@ class Formulary
 
   # Loads formulae from bottles.
   class BottleLoader < FormulaLoader
-    def initialize bottle_name
+    def initialize(bottle_name)
       @bottle_filename = Pathname(bottle_name).realpath
       name, full_name = bottle_resolve_formula_names @bottle_filename
       super name, Formulary.path(full_name)
@@ -95,7 +95,7 @@ class Formulary
   end
 
   class AliasLoader < FormulaLoader
-    def initialize alias_path
+    def initialize(alias_path)
       path = alias_path.resolved_path
       name = path.basename(".rb").to_s
       super name, path
@@ -104,7 +104,7 @@ class Formulary
 
   # Loads formulae from disk using a path
   class FromPathLoader < FormulaLoader
-    def initialize path
+    def initialize(path)
       path = Pathname.new(path).expand_path
       super path.basename(".rb").to_s, path
     end
@@ -114,7 +114,7 @@ class Formulary
   class FromUrlLoader < FormulaLoader
     attr_reader :url
 
-    def initialize url
+    def initialize(url)
       @url = url
       uri = URI(url)
       formula = File.basename(uri.path, ".rb")
@@ -133,7 +133,7 @@ class Formulary
   class TapLoader < FormulaLoader
     attr_reader :tapped_name
 
-    def initialize tapped_name
+    def initialize(tapped_name)
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       tap = Tap.new user, repo

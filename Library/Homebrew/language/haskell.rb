@@ -9,7 +9,7 @@ module Language
         end
       end
 
-      def self.included base
+      def self.included(base)
         base.extend ClassMethods
       end
 
@@ -66,7 +66,7 @@ module Language
         rm_rf lib
       end
 
-      def install_cabal_package args=[]
+      def install_cabal_package(args=[])
         cabal_sandbox do
           # the dependencies are built first and installed locally, and only the
           # current package is actually installed in the destination dir

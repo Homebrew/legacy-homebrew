@@ -46,7 +46,7 @@ module Homebrew
     not ARGV.named.empty?
   end
 
-  def upgrade_formula f
+  def upgrade_formula(f)
     outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
     tab = Tab.for_formula(f)
 

@@ -59,7 +59,7 @@ module Homebrew
     if origin.empty? then "(none)" else origin end
   end
 
-  def describe_path path
+  def describe_path(path)
     return "N/A" if path.nil?
     realpath = path.realpath
     if realpath == path then path else "#{path} => #{realpath}" end
