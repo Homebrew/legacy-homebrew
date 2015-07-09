@@ -1,9 +1,9 @@
 class Vifm < Formula
   desc "Ncurses based file manager with vi like keybindings"
   homepage "http://vifm.info/"
-  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.7.8.tar.bz2"
-  mirror "https://github.com/vifm/vifm/releases/download/v0.7.8/vifm-0.7.8.tar.bz2"
-  sha256 "5dfbb26c2038a58dcff12026dab736e29d547b4aa3ff5912e4d844064c9e7603"
+  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.8.tar.bz2"
+  mirror "https://github.com/vifm/vifm/releases/download/v0.8/vifm-0.8.tar.bz2"
+  sha256 "69eb6b50dcf462f4233ff987f0b6a295df08a27bc42577ebef725bfe58dbdeeb"
 
   head do
     url "https://github.com/vifm/vifm.git"
@@ -29,7 +29,7 @@ class Vifm < Formula
   end
 
   test do
-    ENV["TERM"] = "xterm"
-    system bin/"vifm", "-c", ":q"
+    assert_match /^Version: #{Regexp.escape(version)}/,
+      shell_output("#{bin}/vifm --version")
   end
 end
