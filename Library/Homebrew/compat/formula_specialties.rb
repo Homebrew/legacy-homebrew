@@ -28,7 +28,7 @@ class AmazonWebServicesFormula < Formula
   alias_method :standard_install, :install
 
   # Use this method to generate standard caveats.
-  def standard_instructions home_name, home_value=libexec
+  def standard_instructions(home_name, home_value=libexec)
     <<-EOS.undent
       Before you can use these tools you must export some variables to your $SHELL.
 
