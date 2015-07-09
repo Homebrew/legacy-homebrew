@@ -3,7 +3,7 @@ require "formula"
 class Fsharp < Formula
   desc "F#, a functional-first programming language"
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.2",
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.4",
     :revision => "54fedcc879a81d8384ec336a1bb0c5a970ccd0f0"
 
   bottle do
