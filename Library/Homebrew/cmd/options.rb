@@ -25,7 +25,7 @@ module Homebrew
     end
   end
 
-  def dump_options_for_formula f
+  def dump_options_for_formula(f)
     f.options.sort_by(&:flag).each do |opt|
       puts "#{opt.flag}\n\t#{opt.description}"
     end

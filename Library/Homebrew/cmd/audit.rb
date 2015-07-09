@@ -78,7 +78,7 @@ module Homebrew
 end
 
 class FormulaText
-  def initialize path
+  def initialize(path)
     @text = path.open("rb", &:read)
     @lines = @text.lines.to_a
   end
@@ -99,11 +99,11 @@ class FormulaText
     /\Z\n/ =~ @text
   end
 
-  def =~ regex
+  def =~(regex)
     regex =~ @text
   end
 
-  def line_number regex
+  def line_number(regex)
     index = @lines.index { |line| line =~ regex }
     index ? index + 1 : nil
   end
@@ -881,7 +881,7 @@ class FormulaAuditor
 
   private
 
-  def problem p
+  def problem(p)
     @problems << p
   end
 
@@ -1116,7 +1116,7 @@ class ResourceAuditor
     end
   end
 
-  def problem text
+  def problem(text)
     @problems << text
   end
 end

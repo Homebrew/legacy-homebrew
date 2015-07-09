@@ -33,10 +33,10 @@ BOTTLE_ERB = <<-EOS
 EOS
 
 module Homebrew
-  def keg_contains string, keg, ignores
+  def keg_contains(string, keg, ignores)
     @put_string_exists_header, @put_filenames = nil
 
-    def print_filename string, filename
+    def print_filename(string, filename)
       unless @put_string_exists_header
         opoo "String '#{string}' still exists in these files:"
         @put_string_exists_header = true
@@ -107,12 +107,12 @@ module Homebrew
     result
   end
 
-  def bottle_output bottle
+  def bottle_output(bottle)
     erb = ERB.new BOTTLE_ERB
     erb.result(bottle.instance_eval { binding }).gsub(/^\s*$\n/, '')
   end
 
-  def bottle_formula f
+  def bottle_formula(f)
     unless f.installed?
       return ofail "Formula not installed or up-to-date: #{f.full_name}"
     end

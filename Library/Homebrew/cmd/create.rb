@@ -76,7 +76,7 @@ class FormulaCreator
   attr_reader :url, :sha256
   attr_accessor :name, :version, :path, :mode
 
-  def url= url
+  def url=(url)
     @url = url
     path = Pathname.new(url)
     if @name.nil?

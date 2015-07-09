@@ -70,7 +70,7 @@ module Homebrew
     end
   end
 
-  def recursive_deps_tree f, prefix
+  def recursive_deps_tree(f, prefix)
     reqs = f.requirements.select(&:default_formula?)
     max = reqs.length - 1
     reqs.each_with_index do |req, i|

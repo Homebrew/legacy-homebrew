@@ -9,7 +9,7 @@ class Volumes
     @volumes = get_mounts
   end
 
-  def which path
+  def which(path)
     vols = get_mounts path
 
     # no volume found
@@ -25,7 +25,7 @@ class Volumes
     return vol_index
   end
 
-  def get_mounts path=nil
+  def get_mounts(path=nil)
     vols = []
     # get the volume of path, if path is nil returns all volumes
 
@@ -52,7 +52,7 @@ class Checks
   # Finds files in HOMEBREW_PREFIX *and* /usr/local.
   # Specify paths relative to a prefix eg. "include/foo.h".
   # Sets @found for your convenience.
-  def find_relative_paths *relative_paths
+  def find_relative_paths(*relative_paths)
     @found = %W[#{HOMEBREW_PREFIX} /usr/local].uniq.inject([]) do |found, prefix|
       found + relative_paths.map{|f| File.join(prefix, f) }.select{|f| File.exist? f }
     end
@@ -392,7 +392,7 @@ def check_for_bad_install_name_tool
   end
 end
 
-def __check_subdir_access base
+def __check_subdir_access(base)
   target = HOMEBREW_PREFIX+base
   return unless target.exist?
 
@@ -934,7 +934,7 @@ def check_for_autoconf
   end
 end
 
-def __check_linked_brew f
+def __check_linked_brew(f)
   f.rack.subdirs.each do |prefix|
     prefix.find do |src|
       next if src == prefix
@@ -1280,7 +1280,7 @@ module Homebrew
     puts "Your system is ready to brew." unless Homebrew.failed?
   end
 
-  def inject_dump_stats checks
+  def inject_dump_stats(checks)
     checks.extend Module.new {
       def send(method, *)
         time = Time.now

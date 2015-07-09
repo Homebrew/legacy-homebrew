@@ -13,7 +13,7 @@ module Homebrew
     end
   end
 
-  def install_tap user, repo, clone_target=nil
+  def install_tap(user, repo, clone_target=nil)
     tap = Tap.new user, repo
     return false if tap.installed?
     ohai "Tapping #{tap}"

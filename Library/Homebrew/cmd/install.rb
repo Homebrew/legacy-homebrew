@@ -147,7 +147,7 @@ module Homebrew
     check_cellar
   end
 
-  def install_formula f
+  def install_formula(f)
     f.print_tap_action
 
     fi = FormulaInstaller.new(f)

@@ -5,7 +5,7 @@ module Homebrew
     ARGV.resolved_formulae.each { |f| reinstall_formula(f) }
   end
 
-  def reinstall_formula f
+  def reinstall_formula(f)
     tab = Tab.for_formula(f)
     options = tab.used_options | f.build.used_options
 
@@ -38,12 +38,12 @@ module Homebrew
     backup_path(keg).rmtree if backup_path(keg).exist?
   end
 
-  def backup keg
+  def backup(keg)
     keg.unlink
     keg.rename backup_path(keg)
   end
 
-  def restore_backup keg, formula
+  def restore_backup(keg, formula)
     path = backup_path(keg)
     if path.directory?
       path.rename keg
@@ -51,7 +51,7 @@ module Homebrew
     end
   end
 
-  def backup_path path
+  def backup_path(path)
     Pathname.new "#{path}.reinstall"
   end
 end

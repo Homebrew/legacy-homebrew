@@ -5,7 +5,7 @@ require 'net/https'
 require 'stringio'
 
 module Homebrew
-  def gistify_logs f
+  def gistify_logs(f)
     files = load_logs(f.logs)
 
     s = StringIO.new
@@ -49,7 +49,7 @@ module Homebrew
     result
   end
 
-  def login request
+  def login(request)
     print 'GitHub User: '
     user = $stdin.gets.chomp
     print 'Password: '
@@ -68,11 +68,11 @@ module Homebrew
     logs
   end
 
-  def create_gist files
+  def create_gist(files)
     post("/gists", { "public" => true, "files" => files })["html_url"]
   end
 
-  def new_issue repo, title, body, auth
+  def new_issue(repo, title, body, auth)
     post("/repos/#{repo}/issues", { "title" => title, "body" => body }, auth)["html_url"]
   end
 

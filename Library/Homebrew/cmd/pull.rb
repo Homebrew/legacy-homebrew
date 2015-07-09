@@ -8,12 +8,12 @@ require 'cmd/tap'
 module Homebrew
   HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
 
-  def tap arg
+  def tap(arg)
     match = arg.match(%r[homebrew-([\w-]+)/])
     match[1].downcase if match
   end
 
-  def pull_url url
+  def pull_url(url)
     # GitHub provides commits/pull-requests raw patches using this URL.
     url += '.patch'
 

@@ -102,7 +102,7 @@ module Homebrew
     end
   end
 
-  def search_tap user, repo, rx
+  def search_tap(user, repo, rx)
     if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory? && \
        "#{user}/#{repo}" != "Caskroom/cask"
       return []
@@ -140,7 +140,7 @@ module Homebrew
     []
   end
 
-  def search_formulae rx
+  def search_formulae(rx)
     aliases = Formula.aliases
     results = (Formula.full_names+aliases).grep(rx).sort
 
