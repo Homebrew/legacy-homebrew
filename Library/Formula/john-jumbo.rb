@@ -65,10 +65,9 @@ class JohnJumbo < Formula
 
   test do
     touch "john2.pot"
-    system "echo dave:`printf secret | openssl md5` > test"
-    output = shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test")
-    assert output.include? "secret"
-    assert (testpath/"john2.pot").read.include?("secret")
+    system "echo dave:`printf secret | /usr/bin/openssl md5` > test"
+    assert_match(/secret/, shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test"))
+    assert_match(/secret/, (testpath/"john2.pot").read)
   end
 end
 
