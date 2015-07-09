@@ -21,9 +21,7 @@ class RdsCommandLineTools < Formula
 
   def caveats
     <<-EOS.undent
-      Before you can use these tools you must export some variables to your $SHELL.
-        export AWS_ACCESS_KEY="<Your AWS Access ID>"
-        export AWS_SECRET_KEY="<Your AWS Secret Key>"
+      Before you can use these tools you must export a variable to your $SHELL.
         export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
 
       To check that your setup works properly, run the following command:
