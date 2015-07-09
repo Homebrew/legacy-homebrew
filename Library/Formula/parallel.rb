@@ -1,9 +1,9 @@
 class Parallel < Formula
   desc "GNU parallel shell command"
   homepage "https://savannah.gnu.org/projects/parallel/"
-  url "http://ftpmirror.gnu.org/parallel/parallel-20150522.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150522.tar.bz2"
-  sha256 "4c4a199740189a4a220a10da29fdb33a0b71abef1f253eeb89a28da6f264f306"
+  url "http://ftpmirror.gnu.org/parallel/parallel-20150622.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150622.tar.bz2"
+  sha256 "963a9c962ac8f4a53535f779ab7a46336dc6e12234d75dc796248bf9117aef48"
   head "http://git.savannah.gnu.org/r/parallel.git"
 
   bottle do
@@ -19,5 +19,10 @@ class Parallel < Formula
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    assert_equal "test\ntest\n",
+                 shell_output("#{bin}/parallel --will-cite echo ::: test test")
   end
 end
