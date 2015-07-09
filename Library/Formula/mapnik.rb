@@ -24,6 +24,8 @@ class Mapnik < Formula
   depends_on "postgresql" => :optional
   depends_on "cairo" => :optional
 
+  option "with-all-input-plugins", "Install all input-plugins"
+
   if MacOS.version < :mavericks
     depends_on "boost" => "c++11"
   else
@@ -67,6 +69,10 @@ class Mapnik < Formula
             "NIK2IMG=False",
             "CPP_TESTS=False" # too long to compile to be worth it
            ]
+
+     if build.with? "all-input-plugins""
+      args << "INPUT_PLUGINS=all"
+     end
 
     if build.with? "cairo"
       args << "CAIRO=True" # cairo paths will come from pkg-config
