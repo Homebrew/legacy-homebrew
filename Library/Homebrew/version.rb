@@ -267,12 +267,12 @@ class Version
     end
   end
 
-  def self.parse spec
+  def self.parse(spec)
     version = _parse(spec)
     new(version) unless version.nil?
   end
 
-  def self._parse spec
+  def self._parse(spec)
     spec = Pathname.new(spec) unless spec.is_a? Pathname
 
     spec_s = spec.to_s

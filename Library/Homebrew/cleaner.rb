@@ -7,7 +7,7 @@
 class Cleaner
 
   # Create a cleaner for the given formula
-  def initialize f
+  def initialize(f)
     @f = f
   end
 
@@ -32,7 +32,7 @@ class Cleaner
 
   private
 
-  def observe_file_removal path
+  def observe_file_removal(path)
     path.extend(ObserverPathnameExtension).unlink if path.exist?
   end
 
@@ -76,7 +76,7 @@ class Cleaner
   #
   # lib may have a large directory tree (see Erlang for instance), and
   # clean_dir applies cleaning rules to the entire tree
-  def clean_dir d
+  def clean_dir(d)
     d.find do |path|
       path.extend(ObserverPathnameExtension)
 

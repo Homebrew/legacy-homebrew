@@ -148,7 +148,7 @@ class Build
     keg.detect_cxx_stdlibs(:skip_executables => true)
   end
 
-  def fixopt f
+  def fixopt(f)
     path = if f.linked_keg.directory? and f.linked_keg.symlink?
       f.linked_keg.resolved_path
     elsif f.prefix.directory?

@@ -30,11 +30,11 @@ class Tab < OpenStruct
     new(attributes)
   end
 
-  def self.from_file path
+  def self.from_file(path)
     from_file_content(File.read(path), path)
   end
 
-  def self.from_file_content content, path
+  def self.from_file_content(content, path)
     attributes = Utils::JSON.load(content)
     attributes["tabfile"] = path
     attributes["source"] ||= {}
@@ -47,7 +47,7 @@ class Tab < OpenStruct
     new(attributes)
   end
 
-  def self.for_keg keg
+  def self.for_keg(keg)
     path = keg.join(FILENAME)
 
     if path.exist?
@@ -57,11 +57,11 @@ class Tab < OpenStruct
     end
   end
 
-  def self.for_name name
+  def self.for_name(name)
     for_formula(Formulary.factory(name))
   end
 
-  def self.remap_deprecated_options deprecated_options, options
+  def self.remap_deprecated_options(deprecated_options, options)
     deprecated_options.each do |deprecated_option|
       option = options.find { |o| o.name == deprecated_option.old }
       next unless option
@@ -71,7 +71,7 @@ class Tab < OpenStruct
     options
   end
 
-  def self.for_formula f
+  def self.for_formula(f)
     paths = []
 
     if f.opt_prefix.symlink? && f.opt_prefix.directory?
@@ -122,16 +122,16 @@ class Tab < OpenStruct
     new(attributes)
   end
 
-  def with? val
+  def with?(val)
     name = val.respond_to?(:option_name) ? val.option_name : val
     include?("with-#{name}") || unused_options.include?("without-#{name}")
   end
 
-  def without? name
+  def without?(name)
     not with? name
   end
 
-  def include? opt
+  def include?(opt)
     used_options.include? opt
   end
 

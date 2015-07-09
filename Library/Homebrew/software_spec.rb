@@ -44,7 +44,7 @@ class SoftwareSpec
     @compiler_failures = []
   end
 
-  def owner= owner
+  def owner=(owner)
     @name = owner.name
     @full_name = owner.full_name
     @bottle_specification.tap = owner.tap
@@ -57,7 +57,7 @@ class SoftwareSpec
     patches.each { |p| p.owner = self }
   end
 
-  def url val=nil, specs={}
+  def url(val=nil, specs={})
     return @resource.url if val.nil?
     @resource.url(val, specs)
     dependency_collector.add(@resource)
@@ -68,15 +68,15 @@ class SoftwareSpec
       (bottle_specification.compatible_cellar? || ARGV.force_bottle?)
   end
 
-  def bottle &block
+  def bottle(&block)
     bottle_specification.instance_eval(&block)
   end
 
-  def resource_defined? name
+  def resource_defined?(name)
     resources.has_key?(name)
   end
 
-  def resource name, klass=Resource, &block
+  def resource(name, klass=Resource, &block)
     if block_given?
       raise DuplicateResourceError.new(name) if resource_defined?(name)
       res = klass.new(name, &block)
@@ -87,7 +87,7 @@ class SoftwareSpec
     end
   end
 
-  def go_resource name, &block
+  def go_resource(name, &block)
     resource name, Resource::Go, &block
   end
 
@@ -110,7 +110,7 @@ class SoftwareSpec
     options << opt
   end
 
-  def deprecated_option hash
+  def deprecated_option(hash)
     raise ArgumentError, "deprecated_option hash must not be empty" if hash.empty?
     hash.each do |old_options, new_options|
       Array(old_options).each do |old_option|
@@ -131,7 +131,7 @@ class SoftwareSpec
     @build = BuildOptions.new(Options.create(@flags), options)
   end
 
-  def depends_on spec
+  def depends_on(spec)
     dep = dependency_collector.add(spec)
     add_dep_option(dep) if dep
   end
@@ -144,15 +144,15 @@ class SoftwareSpec
     dependency_collector.requirements
   end
 
-  def patch strip=:p1, src=nil, &block
+  def patch(strip=:p1, src=nil, &block)
     patches << Patch.create(strip, src, &block)
   end
 
-  def fails_with compiler, &block
+  def fails_with(compiler, &block)
     compiler_failures << CompilerFailure.create(compiler, &block)
   end
 
-  def needs *standards
+  def needs(*standards)
     standards.each do |standard|
       compiler_failures.concat CompilerFailure.for_standard(standard)
     end
@@ -181,7 +181,7 @@ class HeadSoftwareSpec < SoftwareSpec
     @resource.version = Version.new('HEAD')
   end
 
-  def verify_download_integrity fn
+  def verify_download_integrity(fn)
     return
   end
 end

@@ -4,11 +4,11 @@ class BuildOptions
     @options = options
   end
 
-  def include? name
+  def include?(name)
     @args.include?("--#{name}")
   end
 
-  def with? val
+  def with?(val)
     name = val.respond_to?(:option_name) ? val.option_name : val
 
     if option_defined? "with-#{name}"
@@ -20,7 +20,7 @@ class BuildOptions
     end
   end
 
-  def without? name
+  def without?(name)
     not with? name
   end
 
@@ -67,7 +67,7 @@ class BuildOptions
 
   private
 
-  def option_defined? name
+  def option_defined?(name)
     @options.include? name
   end
 end

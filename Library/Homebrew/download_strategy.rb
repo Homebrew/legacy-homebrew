@@ -5,7 +5,7 @@ class AbstractDownloadStrategy
 
   attr_reader :meta, :name, :version, :resource
 
-  def initialize name, resource
+  def initialize(name, resource)
     @name = name
     @resource = resource
     @url = resource.url
@@ -32,7 +32,7 @@ class AbstractDownloadStrategy
     rm_rf(cached_location)
   end
 
-  def expand_safe_system_args args
+  def expand_safe_system_args(args)
     args = args.dup
     args.each_with_index do |arg, ii|
       if arg.is_a? Hash
@@ -49,7 +49,7 @@ class AbstractDownloadStrategy
     args
   end
 
-  def quiet_safe_system *args
+  def quiet_safe_system(*args)
     safe_system(*expand_safe_system_args(args))
   end
 
@@ -104,7 +104,7 @@ end
 class VCSDownloadStrategy < AbstractDownloadStrategy
   REF_TYPES = [:tag, :branch, :revisions, :revision].freeze
 
-  def initialize name, resource
+  def initialize(name, resource)
     super
     @ref_type, @ref = extract_ref(meta)
     @revision = meta[:revision]
@@ -502,7 +502,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def fetch_repo target, url, revision=nil, ignore_externals=false
+  def fetch_repo(target, url, revision=nil, ignore_externals=false)
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
@@ -555,7 +555,7 @@ class GitDownloadStrategy < VCSDownloadStrategy
     %r{http://llvm\.org},
   ]
 
-  def initialize name, resource
+  def initialize(name, resource)
     super
     @ref_type ||= :branch
     @ref ||= "master"
