@@ -16,6 +16,14 @@ class HerokuToolbelt < Formula
     bin.write_exec_script libexec/"bin/heroku"
   end
 
+  def caveats
+    <<-EOS.undent
+      Unlike the standalone download for Heroku Toolbelt, the Homebrew package
+      does not come with Foreman (theforeman.org). Run `gem install foreman`
+      if you would like it.
+    EOS
+  end
+  
   test do
     system "#{bin}/heroku", "version"
   end
