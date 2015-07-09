@@ -7,15 +7,8 @@ class Sjk < Formula
   depends_on :java
 
   def install
-    lib.install "sjk-plus-0.3.6.jar"
-    (bin/"sjk").write <<-EOS.undent
-      #!/bin/sh
-
-      PREFIX=`dirname $0`/../lib
-      JARFILE=$PREFIX/sjk-plus-0.3.6.jar
-
-      java -jar $JARFILE $@
-    EOS
+    libexec.install "sjk-plus-#{version}.jar"
+    bin.write_jar_script "#{libexec}/sjk-plus-#{version}.jar", "sjk"
   end
 
   test do
