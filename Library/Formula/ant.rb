@@ -5,13 +5,6 @@ class Ant < Formula
   sha256 "3019f1b8c18151982bf217d7947a8cf9a526019718251d88cf3eb60b7922f614"
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
 
-  bottle do
-    cellar :any
-    sha256 "4a3e8a137bd2d16160eb9115cb8fab16ba64285d5148d95e9fde569fe485f54c" => :yosemite
-    sha256 "6ae739e720f70613eb74bf020b211c0ed3a535712388ca92559f4060dccc7670" => :mavericks
-    sha256 "f672631ed1927c80759fec557c4d477056453b4ed267458b38916406d6146ee5" => :mountain_lion
-  end
-
   keg_only :provided_by_osx if MacOS.version < :mavericks
 
   option "with-ivy", "Install ivy dependency manager"
