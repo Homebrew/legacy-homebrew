@@ -1,24 +1,44 @@
-require 'formula'
-
 class Libconfig < Formula
   desc "Configuration file processing library"
-  homepage 'http://www.hyperrealm.com/libconfig/'
-  url 'http://www.hyperrealm.com/libconfig/libconfig-1.4.9.tar.gz'
-  sha1 'b7a3c307dfb388e57d9a35c7f13f6232116930ec'
+  homepage "http://www.hyperrealm.com/libconfig/"
+  url "http://www.hyperrealm.com/libconfig/libconfig-1.5.tar.gz"
+  sha256 "e31daa390d8e4461c8830512fe2e13ba1a3d6a02a2305a02429eec61e68703f6"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "28fca89d671c8ebf4f97ac7a6706675e8b957b2f" => :yosemite
-    sha1 "21f6d02c17ab809a63b076dec69d0bc5dbc8f605" => :mavericks
+    sha256 "04d66c5f07d74f31a5b57a6bb50d0c2b73222876e6c4ba40470bfb852e6f7b99" => :yosemite
+    sha256 "b48857221d7df42fdfb5a1e8a61da669ca2d30331539797e57d436d8cd78f4c9" => :mavericks
+    sha256 "3053bef646c2eb74d9f9a723a496a09d786a3e46e193993a0c10281b28500e50" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/hyperrealm/libconfig.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
+    system "autoreconf", "-i" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <libconfig.h>
+      int main() {
+        config_t cfg;
+        config_init(&cfg);
+        config_destroy(&cfg);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{include}", "-L#{lib}", "-lconfig",
+           testpath/"test.c", "-o", testpath/"test"
+    system "./test"
   end
 end

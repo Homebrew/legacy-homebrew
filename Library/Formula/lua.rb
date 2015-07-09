@@ -1,16 +1,13 @@
 class Lua < Formula
   desc "Powerful, lightweight programming language"
   homepage "http://www.lua.org/"
-  url "http://www.lua.org/ftp/lua-5.2.3.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.2/lua5.2_5.2.3.orig.tar.gz"
-  sha256 "13c2fb97961381f7d06d5b5cea55b743c163800896fd5c5e2356201d3619002d"
-  revision 2
+  url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
+  sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
 
   bottle do
-    revision 1
-    sha256 "cae36fb3b4acf3aed7e39d612ded55d25468dc52e0bcbb0ab643ee32ae9fa03d" => :yosemite
-    sha256 "4416560fb728ec134d3762f30dc08689a22bded2874b868f002429cf51d55c05" => :mavericks
-    sha256 "95cf1d7878924ff658566d2b271f676b4de6686669ed68925d9ea7b5989368d7" => :mountain_lion
+    sha256 "50c2d69eeeea78d4a61b9126c5d26109dc0f07e2f5612d6f4cb284f327218ef2" => :yosemite
+    sha256 "1ca69d6f4762433ad74212f8ead6afcb36c4abf52f1d9ab7823a2cc2ca39f9a0" => :mavericks
+    sha256 "aed50b343543c89ea90f386b97b51ad219ee268919c982ccde7ffce40510cebd" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -84,7 +81,7 @@ class Lua < Formula
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
                               "--sysconfdir=#{etc}/luarocks52", "--with-lua=#{prefix}",
-                              "--lua-version=5.2", "--versioned-rocks-dir", "--force-config=#{etc}/luarocks52"
+                              "--lua-version=5.2", "--versioned-rocks-dir"
         system "make", "build"
         system "make", "install"
 
@@ -107,7 +104,7 @@ class Lua < Formula
 
   def pc_file; <<-EOS.undent
     V= 5.2
-    R= 5.2.3
+    R= 5.2.4
     prefix=#{HOMEBREW_PREFIX}
     INSTALL_BIN= ${prefix}/bin
     INSTALL_INC= ${prefix}/include
@@ -121,7 +118,7 @@ class Lua < Formula
 
     Name: Lua
     Description: An Extensible Extension Language
-    Version: 5.2.3
+    Version: 5.2.4
     Requires:
     Libs: -L${libdir} -llua -lm
     Cflags: -I${includedir}
@@ -135,9 +132,6 @@ class Lua < Formula
     This is, for now, unavoidable. If this is troublesome for you, you can build
     rocks with the `--tree=` command to a special, non-conflicting location and
     then add that to your `$PATH`.
-
-    If you have existing Rocks trees in $HOME, you will need to migrate them to the new
-    location manually. You will only have to do this once.
     EOS
   end
 

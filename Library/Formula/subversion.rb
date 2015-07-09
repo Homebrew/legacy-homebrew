@@ -13,9 +13,9 @@ class Subversion < Formula
   end
 
   devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc1.tar.bz2"
-    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc1.tar.bz2"
-    sha256 "4912585249820d9fb9c507dcc91a6495fc9d3581e4bafdf188bb45007204a913"
+    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc2.tar.bz2"
+    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc2.tar.bz2"
+    sha256 "915161d5692d5ee3358bb04ae634d2b7173c308eef78070fe1905e40585ecd85"
   end
 
   deprecated_option "java" => "with-java"

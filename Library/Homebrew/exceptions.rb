@@ -84,6 +84,18 @@ class TapFormulaAmbiguityError < RuntimeError
   end
 end
 
+class TapUnavailableError < RuntimeError
+  attr_reader :name
+
+  def initialize name
+    @name = name
+
+    super <<-EOS.undent
+      No available tap #{name}.
+    EOS
+  end
+end
+
 class OperationInProgressError < RuntimeError
   def initialize name
     message = <<-EOS.undent
@@ -203,6 +215,11 @@ class BuildError < RuntimeError
     unless RUBY_VERSION < "1.8.7" || issues.empty?
       puts "These open issues may also help:"
       puts issues.map{ |i| "#{i['title']} (#{i['html_url']})" }.join("\n")
+    end
+
+    if MacOS.version >= "10.11"
+      require "cmd/doctor"
+      opoo Checks.new.check_for_unsupported_osx
     end
   end
 end

@@ -17,7 +17,8 @@ class Formulary
   def self.load_formula(name, path)
     mod = Module.new
     const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
-    mod.module_eval(path.read, path)
+    contents = path.open("r") { |f| set_encoding(f).read }
+    mod.module_eval(contents, path)
     class_name = class_s(name)
 
     begin
@@ -26,6 +27,16 @@ class Formulary
       raise FormulaUnavailableError, name, e.backtrace
     else
       FORMULAE[path] = klass
+    end
+  end
+
+  if IO.method_defined?(:set_encoding)
+    def self.set_encoding(io)
+      io.set_encoding(Encoding::UTF_8)
+    end
+  else
+    def self.set_encoding(io)
+      io
     end
   end
 
@@ -125,16 +136,9 @@ class Formulary
     def initialize tapped_name
       @tapped_name = tapped_name
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      tap = Pathname.new("#{HOMEBREW_LIBRARY}/Taps/#{user}/homebrew-#{repo}")
-      path = tap.join("#{name}.rb")
-
-      if tap.directory?
-        tap.find_formula do |file|
-          if file.basename(".rb").to_s == name
-            path = file
-          end
-        end
-      end
+      tap = Tap.new user, repo
+      path = tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
+      path ||= tap.path/"#{name}.rb"
 
       super name, path
     end
@@ -240,8 +244,11 @@ class Formulary
   def self.tap_paths(name)
     name = name.downcase
     Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
-      Pathname.glob(["#{tap}#{name}.rb", "#{tap}Formula/#{name}.rb",
-                     "#{tap}HomebrewFormula/#{name}.rb"])
-    end.flatten.select(&:file?)
+      Pathname.glob([
+        "#{tap}Formula/#{name}.rb",
+        "#{tap}HomebrewFormula/#{name}.rb",
+        "#{tap}#{name}.rb",
+      ]).detect(&:file?)
+    end.compact
   end
 end

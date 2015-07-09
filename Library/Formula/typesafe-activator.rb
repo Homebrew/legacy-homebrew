@@ -1,9 +1,9 @@
 class TypesafeActivator < Formula
   desc "Tools for working with Typesafe Reactive Platform"
   homepage "https://typesafe.com/activator"
-  version "1.3.4"
-  url "https://downloads.typesafe.com/typesafe-activator/1.3.4/typesafe-activator-1.3.4-minimal.zip"
-  sha256 "8c403e074165b8a73e75c60c897078ac90295d054dd16c462c2f9aab9413e031"
+  version "1.3.5"
+  url "https://downloads.typesafe.com/typesafe-activator/1.3.5/typesafe-activator-1.3.5-minimal.zip"
+  sha256 "bafa6f3ab8078c446b9c019297fb8123c2987d934924160a3dbba95b8136f8ca"
 
   def install
     rm Dir["*.bat"] # Remove Windows .bat files

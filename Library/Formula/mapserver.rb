@@ -1,15 +1,14 @@
 class Mapserver < Formula
   desc "Publish spatial data and interactive mapping apps to the web"
   homepage 'http://mapserver.org/'
-  url 'http://download.osgeo.org/mapserver/mapserver-6.2.1.tar.gz'
-  sha1 'bbe4234a4dcc179812c6598f68fe59a3dae63e44'
-  revision 2
+  url 'http://download.osgeo.org/mapserver/mapserver-6.2.2.tar.gz'
+  sha256 '79b81286dde030704f59a668a19e5b01af27bb35d05b3daf91cefe06ca29ffd9'
 
   bottle do
     cellar :any
-    sha256 "9dbab28f8434c3468255fd19d1e2677624febecea1fc28f79f04c14df4a6fb5b" => :yosemite
-    sha256 "0fa13f927801f0ccc89c6266257705ece9eaea09ea101e544d6a4040fee6e04b" => :mavericks
-    sha256 "98198c61c8db8dc7b980e53a76542a821cca7c5a0b0facf127e03df1ae49ed01" => :mountain_lion
+    sha256 "8bfa96a50ee83117bd929afc4ed1c6ce3e9e82a7e6da6328e4ca500c4fbb096d" => :yosemite
+    sha256 "7ed6da72cbb724c1dfe92cc701bf292ddac02788dc7976f7a81e5e367b472262" => :mavericks
+    sha256 "28b3fbf520436359a81d6b0a6875c30cb6f8bdb147ebc14f5860f7cf2c61ad47" => :mountain_lion
   end
 
   option "with-fastcgi", "Build with fastcgi support"
@@ -30,6 +29,9 @@ class Mapserver < Formula
   depends_on 'postgresql' => :optional unless MacOS.version >= :lion
   depends_on 'fcgi' if build.with? "fastcgi"
   depends_on 'cairo' => :optional
+
+  # This patch can be removed when this is merged https://github.com/mapserver/mapserver/pull/5113
+  patch :DATA
 
   def install
     args = [
@@ -67,9 +69,7 @@ class Mapserver < Formula
     system "make", "install", *install_args
 
     cd 'mapscript/python' do
-      system "python", "setup.py", "install", "--prefix=#{prefix}",
-                                   "--single-version-externally-managed",
-                                   "--record=installed-files.txt"
+      system "python", *Language::Python.setup_install_args(prefix)
     end
   end
 
@@ -88,3 +88,45 @@ class Mapserver < Formula
     system "#{bin}/mapserver-config", "--version"
   end
 end
+
+__END__
+--- a/mapscript/python/setup.py	2015-06-28 17:43:34.000000000 +0200
++++ b/mapscript/python/setup.py	2015-06-28 17:47:16.000000000 +0200
+@@ -32,6 +32,11 @@
+ except ImportError:
+     import popen2
+
++def update_dirs(list1, list2):
++    for v in list2:
++        if v not in list1 and os.path.isdir(v):
++            list1.append(v)
++
+ #
+ # # Function needed to make unique lists.
+ def unique(list):
+@@ -144,8 +149,12 @@
+         return get_config(option, config =self.mapserver_config)
+
+     def finalize_options(self):
++        if isinstance(self.include_dirs, str):
++            self.include_dirs = [path.strip() for path in self.include_dirs.strip().split(":")]
+         if self.include_dirs is None:
+             self.include_dirs = include_dirs
++
++        update_dirs(self.include_dirs, include_dirs)
+
+         includes =  self.get_mapserver_config('includes')
+         includes = includes.split()
+@@ -154,9 +163,13 @@
+                 if item[2:] not in include_dirs:
+                     self.include_dirs.append( item[2:] )
+
++        if isinstance(self.library_dirs, str):
++            self.library_dirs = [path.strip() for path in self.library_dirs.strip().split(":")]
+         if self.library_dirs is None:
+             self.library_dirs = library_dirs
+
++        update_dirs(self.library_dirs, library_dirs)
++
+         libs =  self.get_mapserver_config('libs')
+         self.library_dirs = self.library_dirs + [x[2:] for x in libs.split() if x[:2] == "-L"]

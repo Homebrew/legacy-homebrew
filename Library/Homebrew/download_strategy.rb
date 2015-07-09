@@ -129,7 +129,7 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
       unless current_revision == @revision
         raise <<-EOS.undent
           #{@ref} tag should be #{@revision}
-          but is actually #{current_revision}!
+          but is actually #{current_revision}
         EOS
       end
     end
@@ -269,7 +269,18 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
 
   def fetch
     ohai "Downloading #{@url}"
+
     unless cached_location.exist?
+      urls = actual_urls
+      unless urls.empty?
+        ohai "Downloading from #{urls.last}"
+        if !ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil? && @url.start_with?("https://") &&
+          urls.any? { |u| !u.start_with? "https://" }
+          raise "HTTPS to HTTP redirect detected & HOMEBREW_NO_INSECURE_REDIRECT is set."
+        end
+        @url = urls.last
+      end
+
       had_incomplete_download = temporary_path.exist?
       begin
         _fetch
@@ -312,13 +323,30 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
     curl @url, "-C", downloaded_size, "-o", temporary_path
   end
 
+  # Curl options to be always passed to curl,
+  # with raw head calls (`curl -I`) or with actual `fetch`.
+  def _curl_opts
+    copts = []
+    copts << "--user" << meta.fetch(:user) if meta.key?(:user)
+    copts
+  end
+
+  def actual_urls
+    urls = []
+    curl_args = _curl_opts << "-I" << "-L" << @url
+    Utils.popen_read("curl", *curl_args).scan(/^Location: (.+)$/).map do |m|
+      urls << URI.join(urls.last || @url, m.first.chomp).to_s
+    end
+    urls
+  end
+
   def downloaded_size
     temporary_path.size? || 0
   end
 
   def curl(*args)
+    args.concat _curl_opts
     args << '--connect-timeout' << '5' unless mirrors.empty?
-    args << "--user" << meta.fetch(:user) if meta.key?(:user)
     super
   end
 end
@@ -371,8 +399,8 @@ end
 
 # Download from an SSL3-only host.
 class CurlSSL3DownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    curl @url, '-3', '-C', downloaded_size, '-o', temporary_path
+  def _curl_opts
+    super << '-3'
   end
 end
 
@@ -385,11 +413,7 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
 end
 
 # @deprecated
-class CurlUnsafeDownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    curl @url, '--insecure', '-C', downloaded_size, '-o', temporary_path
-  end
-end
+CurlUnsafeDownloadStrategy = CurlDownloadStrategy
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
@@ -403,8 +427,8 @@ end
 class LocalBottleDownloadStrategy < AbstractFileDownloadStrategy
   attr_reader :cached_location
 
-  def initialize(formula)
-    @cached_location = formula.local_bottle_path
+  def initialize(path)
+    @cached_location = path
   end
 
   def stage
@@ -478,18 +502,12 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     end
   end
 
-  def fetch_args
-    []
-  end
-
   def fetch_repo target, url, revision=nil, ignore_externals=false
     # Use "svn up" when the repository already exists locally.
     # This saves on bandwidth and will have a similar effect to verifying the
     # cache as it will make any changes to get the right revision.
     svncommand = target.directory? ? 'up' : 'checkout'
-    args = ['svn', svncommand] + fetch_args
-    # SVN shipped with XCode 3.1.4 can't force a checkout.
-    args << '--force' unless MacOS.version == :leopard
+    args = ['svn', svncommand]
     args << url unless target.directory?
     args << target
     args << '-r' << revision if revision
@@ -526,14 +544,8 @@ end
 
 # @deprecated
 StrictSubversionDownloadStrategy = SubversionDownloadStrategy
-
 # @deprecated
-class UnsafeSubversionDownloadStrategy < SubversionDownloadStrategy
-  def fetch_args
-    %w[--non-interactive --trust-server-cert]
-  end
-  private :fetch_args
-end
+UnsafeSubversionDownloadStrategy = SubversionDownloadStrategy
 
 class GitDownloadStrategy < VCSDownloadStrategy
   SHALLOW_CLONE_WHITELIST = [
@@ -577,6 +589,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def shallow_clone?
     @shallow && support_depth?
+  end
+
+  def is_shallow_clone?
+    git_dir.join("shallow").exist?
   end
 
   def support_depth?
@@ -629,7 +645,11 @@ class GitDownloadStrategy < VCSDownloadStrategy
 
   def update_repo
     if @ref_type == :branch || !has_ref?
-      quiet_safe_system 'git', 'fetch', 'origin'
+      if !shallow_clone? && is_shallow_clone?
+        quiet_safe_system 'git', 'fetch', 'origin', '--unshallow'
+      else
+        quiet_safe_system 'git', 'fetch', 'origin'
+      end
     end
   end
 

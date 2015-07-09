@@ -1,24 +1,18 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
-  homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
+  homepage "https://sourceforge.net/projects/cppcheck/"
 
   stable do
-    url "https://github.com/danmar/cppcheck/archive/1.68.tar.gz"
-    sha1 "f08ef07f750f92fafe4f960166072e9d1088d74e"
-
-    # Upstream patches for OS X + Clang compilation
-    patch do
-      url "https://github.com/danmar/cppcheck/commit/141a071.diff"
-      sha1 "4ccc8d814709d0e221c533a5556da4b1aa5fbead"
-    end
+    url "https://github.com/danmar/cppcheck/archive/1.69.tar.gz"
+    sha256 "6e54f0dc97cbcc6c742cef4ceb1ade7f20f88af713a19c7613dba1d78eed6363"
   end
 
   head "https://github.com/danmar/cppcheck.git"
 
   bottle do
-    revision 1
-    sha256 "fd979cd455c04c543bdb81be9c98d265cdab3a451302f1b506a5225c4b5d4bef" => :yosemite
-    sha256 "aa2e66721ab0f605c706c6366c0e92d50b6d1281c2f1656f0f25301b6db29d66" => :mavericks
+    sha256 "3f788dd4abcf544005030332c7c6228a27987699442548e007857ead6f13a5a7" => :yosemite
+    sha256 "7716a9fa9ef5c47250552c9f67c6d024acdd90f42e0427848e24c8af4f8e770e" => :mavericks
+    sha256 "8a81c8a4785239955506ef1f1bb37b0140eba63f20e0e8c2a9052a4afbd226f2" => :mountain_lion
   end
 
   option "without-rules", "Build without rules (no pcre dependency)"
@@ -29,8 +23,11 @@ class Cppcheck < Formula
   depends_on "pcre" if build.with? "rules"
   depends_on "qt" if build.with? "gui"
 
+  needs :cxx11
 
   def install
+    ENV.cxx11
+
     # Man pages aren't installed as they require docbook schemas.
 
     # Pass to make variables.

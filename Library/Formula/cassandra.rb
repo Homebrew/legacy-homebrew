@@ -1,14 +1,14 @@
 class Cassandra < Formula
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.5/apache-cassandra-2.1.5-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/2.1.5/apache-cassandra-2.1.5-bin.tar.gz"
-  sha256 "2d768e2fba9c576289e26247e2ed0b36fb802e06fa0a141783b765d63daf36ff"
+  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.7/apache-cassandra-2.1.7-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/2.1.7/apache-cassandra-2.1.7-bin.tar.gz"
+  sha256 "add1a34b8e07dacb16df6b8dbe50c66d77cb46b89f66424103e2fd4459b79089"
 
   bottle do
-    sha256 "972abe2bcc66a6e2af20e3765ba026cf69797adbe4c652ecdff9a43321244cf6" => :yosemite
-    sha256 "d333a29ab238c46453cf4d8484d44ef9d3d56be4f0b590d89e5b6be5ed13bc2b" => :mavericks
-    sha256 "ec244f4b5b073ca2545a60c3efbdcbbd2ae0d08c40d80dbae578243dfb8c7aff" => :mountain_lion
+    sha256 "24b46c811e585ea4882908a5399108407e83423d7a269b8d49bf378188b724c1" => :yosemite
+    sha256 "396d7e65c4e0ad9a45d6b0c91219b1a4b660c8c430671b8a7e8965925fda27b6" => :mavericks
+    sha256 "f2aa85f9cbb1622e31a614a715b4416d008b1b5ca1354e7264eea8140f42af87" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

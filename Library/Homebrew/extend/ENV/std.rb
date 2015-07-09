@@ -56,7 +56,7 @@ module Stdenv
     send(compiler)
 
     if cc =~ GNU_GCC_REGEXP
-      gcc_formula = gcc_version_formula($1)
+      gcc_formula = gcc_version_formula($&)
       append_path "PATH", gcc_formula.opt_bin.to_s
     end
 
@@ -81,7 +81,6 @@ module Stdenv
   # Removes the MAKEFLAGS environment variable, causing make to use a single job.
   # This is useful for makefiles with race conditions.
   # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
-  # Returns the value of MAKEFLAGS.
   def deparallelize
     old = self['MAKEFLAGS']
     remove 'MAKEFLAGS', /-j\d+/

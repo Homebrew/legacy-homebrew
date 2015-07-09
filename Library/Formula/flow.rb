@@ -3,16 +3,15 @@ require "formula"
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "http://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.11.0.tar.gz"
-  sha1 "714ad08030aab07acf76bf4b6c2603a8b193881d"
+  url "https://github.com/facebook/flow/archive/v0.13.1.tar.gz"
+  sha1 "9595586fb30c6baab6893b0d3fcbbb8719ab41ae"
   head "https://github.com/facebook/flow.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "6e099b230e6daaaf57f365d5a5c054d83279deaeb5144612ab427498fe9ec980" => :yosemite
-    sha256 "5737613181baca6a3659d98f8745c0525685067fa327ba48c0a595f3cd5550dc" => :mavericks
-    sha256 "f364b3e00ec533ca5189a3ea9583c9b2d8e89437a0368674cf0774d90fa65b8d" => :mountain_lion
+    sha256 "760132d9c71d6b835bf089f3c05f4f6112f2e77dcde9492e33fba54fa9ccbc79" => :yosemite
+    sha256 "42cddabfd6154b756c6b8bef0c93dfe7063c04608e10d7ad1b6976d36df77200" => :mavericks
+    sha256 "b4153ae98a7ea82b6091e88dbd89a7bd4e4931e6e1af332c2638f8b71f45f288" => :mountain_lion
   end
 
   depends_on "objective-caml" => :build

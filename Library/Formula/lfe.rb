@@ -1,15 +1,15 @@
 class Lfe < Formula
   desc "LISP syntax front-end to the Erlang compiler"
   homepage "http://lfe.io/"
-  url "https://github.com/rvirding/lfe/archive/v0.9.1.tar.gz"
-  sha1 "015c23e7c761c2ccfefb7a9f97f85fe09f1cd648"
+  url "https://github.com/rvirding/lfe/archive/v0.9.2.tar.gz"
+  sha256 "9ff9661d03432a5f111266e56dcc24f24ceb633541f560333c3ff1acafc20794"
 
   head "https://github.com/rvirding/lfe.git", :branch => "develop"
 
   bottle do
-    sha1 "7b297fcd87472e51a9bbaa996bf87de9ebd3c3d6" => :yosemite
-    sha1 "3b04cf153041bf79eb49218f8006fe2c7a998fa6" => :mavericks
-    sha1 "4fd64b920713e4f5af36fedd04fc9b840e0280cb" => :mountain_lion
+    sha256 "5e0da3e1633d5e289c9a92a684318a286dd97a417b4592bc7df34f470a1a0226" => :yosemite
+    sha256 "b6f986960df221080a22fba8f7f54d19a1122dbe52a6824c076ad896638fb188" => :mavericks
+    sha256 "26b4045d18d3a12945ac308b81e7a2755bd0c1a8f17e37056ec4f77daf042a4f" => :mountain_lion
   end
 
   depends_on "erlang"

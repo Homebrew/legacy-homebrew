@@ -1,14 +1,14 @@
 class Dynamips < Formula
   desc "Cisco 7200/3600/3725/3745/2600/1700 Router Emulator"
-  homepage "http://www.gns3.net/dynamips/"
-  url "https://github.com/GNS3/dynamips/archive/v0.2.14.tar.gz"
-  sha1 "1f0b62d19586365246a957b4eb4dab0cdbd657ad"
+  homepage "https://github.com/GNS3/dynamips"
+  url "https://github.com/GNS3/dynamips/archive/v0.2.15.tar.gz"
+  sha1 "890c9357c668c91b7fd39a96f017b4e5e6ca580e"
 
   bottle do
     cellar :any
-    sha1 "d0d6ed53cac613224298052a4403f215d41cdeaa" => :yosemite
-    sha1 "bdcd75d6bfd8800340620f934193ac952e9ee455" => :mavericks
-    sha1 "14bf80d8127981a9fab5e8cb94fd1c771a0cbe4c" => :mountain_lion
+    sha256 "3b23d9683f4344d5bbca80bfb4328484e409e215ae7aa4c22c01d5e45217b4f9" => :yosemite
+    sha256 "c460f69bc4b30af2d57a7e624bab98ce244b7492d2ef5bd39b24c155708e0625" => :mavericks
+    sha256 "c5732f50e1571b3027d3254cce93c29bd6a6e1973a6f9830e02a9fc95721cc46" => :mountain_lion
   end
 
   depends_on "libelf"

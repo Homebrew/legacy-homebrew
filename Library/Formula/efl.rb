@@ -1,13 +1,13 @@
 class Efl < Formula
   desc "Libraries for the Enlightenment window manager"
   homepage "https://www.enlightenment.org"
-  url "https://download.enlightenment.org/rel/libs/efl/efl-1.14.0.tar.gz"
-  sha256 "30a8a239449e0d068a39787b5a4769dd26ddf0476f58f094c85e65b108086269"
+  url "https://download.enlightenment.org/rel/libs/efl/efl-1.14.2.tar.gz"
+  sha256 "e5699d8183c1540fe45dddaf692254632f9131335e97a09cc313e866a150b42c"
 
   bottle do
-    sha256 "6fc05ee275321d4d2c883a4f7b19b6144d4e02e545d35a88ec8ebbae3ba8f5d2" => :yosemite
-    sha256 "b8dbeab7156541c3f5538d8af78bff8d4fa96e372985e9ecc9e081f469fa2d48" => :mavericks
-    sha256 "c1f2f8cdfe2414f9248d1992edc7d9cfa3c78b51ffdaaaec44c109cd2ba0a982" => :mountain_lion
+    sha256 "783d8e344e04e4f36e624d403a312194c1e2868ffbea4dfab97fbbe167f58e48" => :yosemite
+    sha256 "7d2ad69ce6a98cdfd0c4867b8f302dcf1b5504eeec98a284d528e811084f0e39" => :mavericks
+    sha256 "c6e468a5f11395f2989f6001ddf8eb15232521dcba7f5131fa30b08bd57942de" => :mountain_lion
   end
 
   conflicts_with "eina", :because => "efl aggregates formerly distinct libs, one of which is eina"

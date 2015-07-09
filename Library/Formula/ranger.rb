@@ -18,7 +18,7 @@ class Ranger < Formula
 
   def install
     inreplace %w[ranger.py ranger/ext/rifle.py] do |s|
-      s.gsub! "#!/usr/bin/python", "#!#{PythonDependency.new.which_python}"
+      s.gsub! "#!/usr/bin/python", "#!#{PythonRequirement.new.which_python}"
     end if MacOS.version <= :leopard
 
     man1.install "doc/ranger.1"

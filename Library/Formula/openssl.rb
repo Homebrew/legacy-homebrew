@@ -1,43 +1,21 @@
 class Openssl < Formula
   desc "OpenSSL SSL/TLS cryptography library"
-  homepage "https://openssl.org"
-  url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2a.tar.gz"
-  sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
-  # Work around this being parsed as an alpha version by our
-  # version detection code.
-  version "1.0.2a-1"
+  homepage "https://openssl.org/"
+  url "https://www.openssl.org/source/openssl-1.0.2d.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2d.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2d.tar.gz"
+  sha256 "671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8"
 
   bottle do
-    revision 1
-    sha256 "847e8085763f2950819a6fcbaebeff46cdafc4fb6cf0508c69719736e5b6bfba" => :yosemite
-    sha256 "55b21566026ae075817f28a8292a9a0e326e56d266e918b4bddb9372bc9937c7" => :mavericks
-    sha256 "47e087fa8bbc68a757eb0021f32ac942e5d0edf1abbda3398523aaab2fa58ab5" => :mountain_lion
+    sha256 "e9d8e2c7ab16a8516113093e999c8a6a1bc345badaa48af629963b97a7b9a1ef" => :yosemite
+    sha256 "7209b193915353309167fb6fde874a771e97b154bf303698753cbde9e8105e26" => :mavericks
+    sha256 "f77b9778a1b9d82db1d8dc17174590af0c10582c13097ca1fb70176d9877a9ff" => :mountain_lion
   end
 
   option :universal
   option "without-check", "Skip build-time tests (not recommended)"
 
   depends_on "makedepend" => :build
-
-  keg_only :provided_by_osx,
-    "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
-
-  # Remove both patches with the 1.0.2b release.
-  # They fix:
-  # https://github.com/Homebrew/homebrew/pull/38495
-  # https://github.com/Homebrew/homebrew/issues/38491
-  # Upstream discussions:
-  # https://www.mail-archive.com/openssl-dev@openssl.org/msg38674.html
-  patch do
-    url "https://github.com/openssl/openssl/commit/6281abc796234.diff"
-    sha256 "f8b94201ac2cd7dcdee3b07fb3cd77a2de6b81ea67da9ae075cf06fb0ba73cea"
-  end
-
-  patch do
-    url "https://github.com/openssl/openssl/commit/dfd3322d72a2.diff"
-    sha256 "0602eef6e38368c7b34994deb9b49be1a54037de5e8b814748d55882bfba4eac"
-  end
 
   def arch_args
     {
@@ -127,11 +105,22 @@ class Openssl < Formula
       /System/Library/Keychains/SystemRootCertificates.keychain
     ]
 
-    openssldir.mkpath
-    (openssldir/"cert.pem").atomic_write `security find-certificate -a -p #{keychains.join(" ")}`
+    certs_list = `security find-certificate -a -p #{keychains.join(" ")}`
+    certs = certs_list.scan(
+      /-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m
+    )
 
-    # Remove this once 1.0.2b lands.
-    rm_f openssldir/"certs/Equifax_CA" if MacOS.version == :yosemite
+    valid_certs = certs.select do |cert|
+      IO.popen("openssl x509 -inform pem -checkend 0 -noout", "w") do |openssl_io|
+        openssl_io.write(cert)
+        openssl_io.close_write
+      end
+
+      $?.success?
+    end
+
+    openssldir.mkpath
+    (openssldir/"cert.pem").atomic_write(valid_certs.join("\n"))
   end
 
   def caveats; <<-EOS.undent
@@ -151,8 +140,8 @@ class Openssl < Formula
 
     # Check OpenSSL itself functions as expected.
     (testpath/"testfile.txt").write("This is a test file")
-    expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
-    system "#{bin}/openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
+    expected_checksum = "e2d0fe1585a63ec6009c8016ff8dda8b17719a637405a4e23c0ff81339148249"
+    system "#{bin}/openssl", "dgst", "-sha256", "-out", "checksum.txt", "testfile.txt"
     open("checksum.txt") do |f|
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum

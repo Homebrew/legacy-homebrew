@@ -481,14 +481,11 @@ module Homebrew
       end
       install_passed = steps.last.passed?
       audit_args = [canonical_formula_name]
-      audit_args << "--strict" if @added_formulae.include? formula_name
+      audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
         if formula.stable? && !ARGV.include?('--no-bottle')
           bottle_args = ["--rb", canonical_formula_name]
-          if @tap
-            bottle_args << "--root-url=#{BottleSpecification::DEFAULT_DOMAIN}/#{Bintray.repository(@tap)}"
-          end
           bottle_args << { :puts_output_on_success => true }
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
@@ -553,8 +550,7 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-fdx"
-      git "clean", "-ffdx" unless $?.success?
+      git "clean", "-ffdx"
       pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) {|lock| FileUtils.rm_rf lock }
     end
@@ -564,8 +560,7 @@ module Homebrew
 
       checkout_args = []
       if ARGV.include? '--cleanup'
-        git "clean", "-fdx"
-        test "git", "clean", "-ffdx" unless $?.success?
+        test "git", "clean", "-ffdx"
         checkout_args << "-f"
       end
 

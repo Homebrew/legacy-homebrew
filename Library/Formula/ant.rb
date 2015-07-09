@@ -1,16 +1,9 @@
 class Ant < Formula
   desc "Java build tool"
   homepage "https://ant.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.4-bin.tar.bz2"
-  sha256 "20c16575684b8869dd9d19abe0fb504566adefb5d397881e70a417886e0088cf"
+  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.5-bin.tar.bz2"
+  sha256 "3019f1b8c18151982bf217d7947a8cf9a526019718251d88cf3eb60b7922f614"
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
-
-  bottle do
-    cellar :any
-    sha1 "56eee6f32ab55854b1ccbaa3e106129517e94f7f" => :mavericks
-    sha1 "f09cd5546459a6172a60ed010444dde9cc94bac1" => :mountain_lion
-    sha1 "5e90ad64f1bd68024f4fec659a6734629f349ea1" => :lion
-  end
 
   keg_only :provided_by_osx if MacOS.version < :mavericks
 
@@ -31,6 +24,11 @@ class Ant < Formula
     rm Dir["bin/*.{bat,cmd,dll,exe}"]
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
+    rm bin/"ant"
+    (bin/"ant").write <<-EOS.undent
+      #!/bin/sh
+      #{libexec}/bin/ant -lib #{HOMEBREW_PREFIX}/share/ant "$@"
+    EOS
     if build.with? "ivy"
       resource("ivy").stage do
         (libexec/"lib").install Dir["ivy-*.jar"]

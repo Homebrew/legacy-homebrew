@@ -3,12 +3,12 @@ class Gtkmm < Formula
   homepage "http://www.gtkmm.org/"
   url "https://download.gnome.org/sources/gtkmm/2.24/gtkmm-2.24.4.tar.xz"
   sha256 "443a2ff3fcb42a915609f1779000390c640a6d7fd19ad8816e6161053696f5ee"
+  revision 1
 
   bottle do
-    revision 2
-    sha256 "25747117e0d2b6ff8b012f80c0846ff50fbd3e6175d49d275838df12278d7a69" => :yosemite
-    sha256 "b577998a68e274e8badbd22f45f2741865332fe3cec53f7fa201092f11dd32c7" => :mavericks
-    sha256 "af35b5d473fce6db31d08e6d2e4939873ce8ef51675885a24e58c489a678be66" => :mountain_lion
+    sha256 "a40d400e6c26790b66be7202b4d5b600b46f12c8c1962671f4668f22be53c95f" => :yosemite
+    sha256 "1c37f50965de90cc802c2ec2ce124aa9351d469862ba681cc2f48243ae669b47" => :mavericks
+    sha256 "7e978d4f7b903baf4f843546bd7169619c8c9d8dfc4a15eb8034988f85948c72" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -44,7 +44,6 @@ class Gtkmm < Formula
     glib = Formula["glib"]
     glibmm = Formula["glibmm"]
     gtkx = Formula["gtk+"]
-    harfbuzz = Formula["harfbuzz"]
     libpng = Formula["libpng"]
     libsigcxx = Formula["libsigc++"]
     pango = Formula["pango"]
@@ -70,7 +69,6 @@ class Gtkmm < Formula
       -I#{gtkx.opt_include}/gtk-2.0
       -I#{gtkx.opt_include}/gtk-unix-print-2.0
       -I#{gtkx.opt_lib}/gtk-2.0/include
-      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/gdkmm-2.4
       -I#{include}/gtkmm-2.4
       -I#{libpng.opt_include}/libpng16
@@ -87,8 +85,6 @@ class Gtkmm < Formula
       -L#{atkmm.opt_lib}
       -L#{cairo.opt_lib}
       -L#{cairomm.opt_lib}
-      -L#{fontconfig.opt_lib}
-      -L#{freetype.opt_lib}
       -L#{gdk_pixbuf.opt_lib}
       -L#{gettext.opt_lib}
       -L#{glib.opt_lib}
@@ -102,9 +98,7 @@ class Gtkmm < Formula
       -latkmm-1.6
       -lcairo
       -lcairomm-1.0
-      -lfontconfig
-      -lfreetype
-      -lgdk-x11-2.0
+      -lgdk-quartz-2.0
       -lgdk_pixbuf-2.0
       -lgdkmm-2.4
       -lgio-2.0
@@ -112,12 +106,11 @@ class Gtkmm < Formula
       -lglib-2.0
       -lglibmm-2.4
       -lgobject-2.0
-      -lgtk-x11-2.0
+      -lgtk-quartz-2.0
       -lgtkmm-2.4
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
-      -lpangoft2-1.0
       -lpangomm-1.4
       -lsigc-2.0
     ]

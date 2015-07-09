@@ -4,13 +4,10 @@ require 'keg'
 module Homebrew
   def outdated
     formulae = ARGV.resolved_formulae.any? ? ARGV.resolved_formulae : Formula.installed
-
-    outdated = outdated_brews(formulae) do |f, versions|
-      if ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
-        puts "#{f.full_name} (#{versions*', '} < #{f.pkg_version})"
-      else
-        puts f.full_name
-      end
+    if ARGV.json == "v1"
+      outdated = print_outdated_json(formulae)
+    else
+      outdated = print_outdated(formulae)
     end
     Homebrew.failed = ARGV.resolved_formulae.any? && outdated.any?
   end
@@ -36,5 +33,29 @@ module Homebrew
         f
       end
     end.compact
+  end
+
+  def print_outdated(formulae)
+    verbose = ($stdout.tty? || ARGV.verbose?) && !ARGV.flag?("--quiet")
+
+    outdated_brews(formulae) do |f, versions|
+      if verbose
+        puts "#{f.full_name} (#{versions*', '} < #{f.pkg_version})"
+      else
+        puts f.full_name
+      end
+    end
+  end
+
+  def print_outdated_json(formulae)
+    json = []
+    outdated = outdated_brews(formulae) do |f, versions|
+      json << {:name => f.full_name,
+               :installed_versions => versions.collect(&:to_s),
+               :current_version => f.pkg_version.to_s}
+    end
+    puts Utils::JSON.dump(json)
+
+    outdated
   end
 end

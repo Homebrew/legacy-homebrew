@@ -1,14 +1,14 @@
 class Tor < Formula
   desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.6.8.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.6.8.tar.gz"
-  sha256 "b88b363896454250c3f561b0b48479f18295c93596d2e81baa10c5a3ae609a76"
+  url "https://dist.torproject.org/tor-0.2.6.9.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.6.9.tar.gz"
+  sha256 "4a6c29ad89a98d7832c599d9480d6d8e55355fb3b8f4b506c5df557f15942f9c"
 
   bottle do
-    sha256 "8e951125ab8ccec4f75f042f07bded3b08c4c970b84d84a6962249b7290ba86d" => :yosemite
-    sha256 "4e99238ca821986b63c7b524774c9173ad8b9f0e5075266f9fe254ff0103b0a9" => :mavericks
-    sha256 "a0316b566f6214a0b476f916c8810375bf964844d622512f3faf1ad68bac5ed9" => :mountain_lion
+    sha256 "9ba6b14b210770a7ad1ff11ef85fb1ec7dab3ba23ce999cf0f5123d6dd71659a" => :yosemite
+    sha256 "c6986384324ee9c145b1e33041c033f00bb949ddd99b9c6a5d26556598461ba8" => :mavericks
+    sha256 "c1ee6861812064687b9c32b61070e26a15a8bf10594b06577fe00083b88dc265" => :mountain_lion
   end
 
   devel do
@@ -41,6 +41,15 @@ class Tor < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+    You will find a sample `torrc` file in #{etc}/tor.
+    It is advisable to edit the sample `torrc` to suit
+    your own security needs:
+      https://www.torproject.org/docs/faq#torrc
+    After editing the `torrc` you need to restart tor.
+    EOS
+  end
+
   test do
     system bin/"tor", "--version"
   end
@@ -62,17 +71,12 @@ class Tor < Formula
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/tor.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/tor.log</string>
       </dict>
     </plist>
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-    You will find a sample `torrc` file in #{etc}/tor.
-    It is advisable to edit the sample `torrc` to suit
-    your own security needs:
-      https://www.torproject.org/docs/faq#torrc
-    After editing the `torrc` you need to restart tor.
     EOS
   end
 end

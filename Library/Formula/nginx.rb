@@ -7,8 +7,8 @@ class Nginx < Formula
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   devel do
-    url "http://nginx.org/download/nginx-1.9.0.tar.gz"
-    sha256 "e12aa1d5b701edde880ebcc7be47ca171c3fbeed8fa7c8c62054a6f19d27f248"
+    url "http://nginx.org/download/nginx-1.9.2.tar.gz"
+    sha256 "80b6425be14a005c8cb15115f3c775f4bc06bf798aa1affaee84ed9cf641ed78"
   end
 
   bottle do

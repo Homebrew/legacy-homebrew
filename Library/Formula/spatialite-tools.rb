@@ -1,28 +1,27 @@
 class SpatialiteTools < Formula
   desc "CLI tools supporting SpatiaLite"
-  homepage 'https://www.gaia-gis.it/fossil/spatialite-tools/index'
-  url "http://www.gaia-gis.it/gaia-sins/spatialite-tools-4.2.0.tar.gz"
-  sha1 "de07042afa734b17c840318fa8772466f53f1831"
-  revision 1
+  homepage "https://www.gaia-gis.it/fossil/spatialite-tools/index"
+  url "https://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-4.3.0.tar.gz"
+  sha256 "f739859bc04f38735591be2f75009b98a2359033675ae310dffc3114a17ccf89"
 
   bottle do
     cellar :any
-    sha256 "29e85fb2516194c888c1c743847b0a8d2393adb66799546689df3ab18506b50b" => :yosemite
-    sha256 "5064182ba11aef660e964ce80b7f81da64e7c97f964456eee24aa85e82f88246" => :mavericks
-    sha256 "fdf30d2303fe335c581d509dfb72e616b63b02507cc1992655f7aa771096c270" => :mountain_lion
+    sha256 "727464d0362152f24aa75ffb6ad60e7454394a75fbb2a07ba9e1436a6d7ac8dc" => :yosemite
+    sha256 "a6bd943c2d1bfed507c8b53aa1d2d8e00ea129ab3da6095b90eebf64c6e3b381" => :mavericks
+    sha256 "6dc0983b61eabf074d24acd3bcdc7df675a1abd7caf5069eb4598a81881049d4" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libspatialite'
-  depends_on 'readosm'
+  depends_on "pkg-config" => :build
+  depends_on "libspatialite"
+  depends_on "readosm"
 
   def install
     # See: https://github.com/Homebrew/homebrew/issues/3328
-    ENV.append 'LDFLAGS', '-liconv'
+    ENV.append "LDFLAGS", "-liconv"
     # Ensure Homebrew SQLite is found before system SQLite.
     sqlite = Formula["sqlite"]
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib}"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
+    ENV.append "LDFLAGS", "-L#{sqlite.opt_lib}"
+    ENV.append "CFLAGS", "-I#{sqlite.opt_include}"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
@@ -30,6 +29,6 @@ class SpatialiteTools < Formula
   end
 
   test do
-    system "#{bin}/spatialite --version"
+    system bin/"spatialite", "--version"
   end
 end

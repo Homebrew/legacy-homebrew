@@ -19,6 +19,10 @@ class Devil < Formula
     cause "invalid -std=gnu99 flag while building C++"
   end
 
+  # ./../src-IL/include/il_internal.h:230:54: error: expected ',' or '...' before 'FileName'
+  # https://github.com/Homebrew/homebrew/issues/40442
+  fails_with :gcc => "5"
+
   # fix compilation issue for iluc.c
   patch :DATA
 

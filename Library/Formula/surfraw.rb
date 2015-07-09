@@ -1,9 +1,10 @@
 class Surfraw < Formula
   desc "Shell Users' Revolutionary Front Rage Against the Web"
-  homepage "http://surfraw.alioth.debian.org/"
-  head "git://git.debian.org/surfraw/surfraw.git"
-  url "http://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"
-  sha1 "70bbba44ffc3b1bf7c7c4e0e9f0bdd656698a1c0"
+  homepage "https://surfraw.alioth.debian.org/"
+  url "https://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"
+  sha256 "aa97d9ac24ca4299be39fcde562b98ed556b3bf5ee9a1ae497e0ce040bbcc4bb"
+
+  head "git://git.debian.org/surfraw/surfraw.git", :shallow => false
 
   bottle do
     sha1 "6c592c99adf6c1a0bb4993a36e4392bce6e24eaa" => :yosemite
@@ -22,7 +23,7 @@ class Surfraw < Formula
   end
 
   test do
-    output = shell_output("#{bin}/surfraw -p google -results=1 homebrew")
-    assert_equal "http://www.google.com/search?q=homebrew&num=1\n", output
+    output = shell_output("#{bin}/surfraw -p duckduckgo homebrew")
+    assert_equal "https://www.duckduckgo.com/lite/?q=homebrew\n", output
   end
 end

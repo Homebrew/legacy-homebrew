@@ -1,14 +1,14 @@
 class Chuck < Formula
   desc "Concurrent, on-the-fly audio programming language"
   homepage "http://chuck.cs.princeton.edu/"
-  url "http://chuck.cs.princeton.edu/release/files/chuck-1.3.5.0.tgz"
-  sha1 "a97ad56f9fd1b0793ead099cc9723e888b3782c3"
+  url "http://chuck.cs.princeton.edu/release/files/chuck-1.3.5.1.tgz"
+  sha256 "d141ca61547131edd2b29bdb88183835e4133ef09807674bfa33a4e6e09d1f53"
 
   bottle do
     cellar :any
-    sha1 "08c33bd5071ccbb466fa8347cc034702d1e6fd0b" => :yosemite
-    sha1 "513d888da91c755f743693a607075ee4d87b7661" => :mavericks
-    sha1 "f9831daea9100f13865049b40057fcec6b6e6203" => :mountain_lion
+    sha256 "a7f640aafbc973549793d18e388ac0d95c7ce8380f4fc779796bf0d3bb13ffc1" => :yosemite
+    sha256 "b0b9b98854278972e15ec803ba506756b3baf3049d8b625b5a698277c0be0782" => :mavericks
+    sha256 "d5f7372ca9f939763a4ffd3894d8384797417cdb3455899f80da0f188c84f812" => :mountain_lion
   end
 
   def install

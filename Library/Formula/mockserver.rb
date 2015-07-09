@@ -1,15 +1,15 @@
 class Mockserver < Formula
   desc "Mock HTTP server and proxy"
   homepage "http://www.mock-server.com/"
-  url "https://oss.sonatype.org/content/repositories/releases/org/mock-server/mockserver-netty/3.9.15/mockserver-netty-3.9.15-brew-tar.tar"
-  version "3.9.15"
-  sha256 "0dbe6e78c3753c1da0381322ec0d348c2a3a02783fd65bf280a7bfaff02046d7"
+  url "https://oss.sonatype.org/content/repositories/releases/org/mock-server/mockserver-netty/3.9.17/mockserver-netty-3.9.17-brew-tar.tar"
+  version "3.9.17"
+  sha256 "7d7166b752aabeb65a13a66e0f70653d8fd880a72f1c8d80192d771dc63a9eb9"
 
   bottle do
     cellar :any
-    sha256 "7863dee35cd11f9825d6b14c4e7b09c220ac3c2bbb8387c430df046b80b21482" => :yosemite
-    sha256 "c498debd91b33632811c6fafe761563172f97ddf904a69360ce6335e4a714713" => :mavericks
-    sha256 "df557bf66af8ceead30cf1fc1948e993d04baf7be85a832db28f6b86b4150ddb" => :mountain_lion
+    sha256 "e6052bfc501a81f6330b0c8f5a09f62cc01836400f66a5601f0a99240c958654" => :yosemite
+    sha256 "d25f6ae8de8574c8cc3fa5d4443e4728d1cb7850c713b78dc26acc46d0292a4f" => :mavericks
+    sha256 "99e4bdd7c210ab41bcf4e1af3e1078832cb0b23f4912235aa4127f3c76c37099" => :mountain_lion
   end
 
   depends_on :java => "1.6+"

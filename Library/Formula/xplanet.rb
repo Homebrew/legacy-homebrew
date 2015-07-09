@@ -5,15 +5,13 @@ class Xplanet < Formula
   homepage "http://xplanet.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/xplanet/xplanet/1.3.0/xplanet-1.3.0.tar.gz"
   sha256 "44fb742bb93e5661ea8b11ccabcc12896693e051f3dd5083c9227224c416b442"
+  revision 2
 
   bottle do
-    revision 2
-    sha1 "f4494377cd80ce1332e9a171b914f9fa316406fb" => :mavericks
-    sha1 "bb5488ef9be45bb605560c0af8d85b5e297984fc" => :mountain_lion
-    sha1 "39f3137787a1f753d4fb083aaa05157368705fbd" => :lion
+    sha256 "401b46887f90818530d5996e11ef2977481c51c85716e8da22e2dbaa454c01ab" => :yosemite
+    sha256 "c0816c18de9ed0af9c7bee4e30498661cef65b0bfbea9901631740ce38edb4db" => :mavericks
+    sha256 "6237bcf19e9337e706cfa80232e48aa5f74d52cdf9c6f092bb77b109352a8889" => :mountain_lion
   end
-
-  revision 1
 
   option "with-x11", "Build for X11 instead of Aqua"
   option "with-all", "Build with default Xplanet configuration dependencies"
@@ -40,6 +38,18 @@ class Xplanet < Formula
 
   depends_on "freetype"
   depends_on :x11 => :optional
+
+  # support giflib 4.2.x http://sourceforge.net/p/xplanet/code/185/tree//trunk/src/libimage/gif.c?diff=5056482efd48f8457fc7910a:184
+  patch do
+    url "https://gist.githubusercontent.com/nijikon/e70275a4d9df4e4c6f1a/raw/f42e1b2e508c5f86c39ea20dd9315fd505d0a564/giflib-4.2.x.patch"
+    sha256 "fcc998b9c728bc7232193ffb37d4f1b46fa6936f891345a3e28d0949f966bad4"
+  end
+
+  # support giflib 5.x http://sourceforge.net/p/xplanet/code/186/tree//trunk/src/libimage/gif.c?diff=5056482efd48f8457fc7910a:185
+  patch do
+    url "https://gist.githubusercontent.com/nijikon/e70275a4d9df4e4c6f1a/raw/e684b89b6841e15412199b5521c9822b78c19b5f/giflib-5.x.patch"
+    sha256 "821366f67bacd1b863e48a70e5ba1df571f63df1a545800e424014d1160d3287"
+  end
 
   def install
     args = %W[

@@ -2,10 +2,10 @@ require 'formula'
 
 class Fuseki < Formula
   desc "SPARQL server"
-  homepage 'http://jena.apache.org/documentation/serving_data/'
-  url 'http://www.apache.org/dist/jena/binaries/jena-fuseki-1.1.1-distribution.tar.gz'
-  version '1.1.1'
-  sha1 '12453d3e3de1a01d3413e94712c9219d065c55ad'
+  homepage 'https://jena.apache.org/documentation/serving_data/'
+  url 'https://www.apache.org/dist/jena/binaries/jena-fuseki1-1.1.2-distribution.tar.gz'
+  version '1.1.2'
+  sha256 '78bd92b4e32f9e918d89946d11aed9789416f4058b127af60b251b4a8636b5f0'
 
   def install
     # Remove windows files

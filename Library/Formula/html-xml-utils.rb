@@ -1,5 +1,3 @@
-# encoding: UTF-8
-
 class HtmlXmlUtils < Formula
   desc "Tools for manipulating HTML and XML files"
   homepage "http://www.w3.org/Tools/HTML-XML-utils/"
