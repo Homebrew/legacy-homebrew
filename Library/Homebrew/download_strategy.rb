@@ -388,6 +388,20 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# Download from Gnome HTTPS mirrors if possible
+class CurlGnomeSecureMirrorDownloadStrategy < CurlDownloadStrategy
+  def actual_urls
+    return super unless ENV["HOMEBREW_NO_INSECURE_REDIRECT"]
+    url = actual_url
+    url ? [url] : super
+  end
+
+  def actual_url
+    Utils.popen_read("curl", "-I", @url) =~ %r[^Link: <(https://[^>]+)>; rel=duplicate;]
+    $1
+  end
+end
+
 # Download via an HTTP POST.
 # Query parameters on the URL are converted into POST parameters
 class CurlPostDownloadStrategy < CurlDownloadStrategy
@@ -852,6 +866,8 @@ class DownloadStrategyDetector
       GitDownloadStrategy
     when %r[^https?://www\.apache\.org/dyn/closer\.cgi]
       CurlApacheMirrorDownloadStrategy
+    when %r[^https://download.gnome.org/sources/]
+      CurlGnomeSecureMirrorDownloadStrategy
     when %r[^https?://(.+?\.)?googlecode\.com/svn], %r[^https?://svn\.], %r[^svn://], %r[^https?://(.+?\.)?sourceforge\.net/svnroot/]
       SubversionDownloadStrategy
     when %r[^cvs://]
