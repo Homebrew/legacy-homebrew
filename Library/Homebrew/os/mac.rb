@@ -19,7 +19,7 @@ module OS
       version.to_sym
     end
 
-    def locate tool
+    def locate(tool)
       # Don't call tools (cc, make, strip, etc.) directly!
       # Give the name of the binary you look for as a string to this method
       # in order to get the full path back as a Pathname.
