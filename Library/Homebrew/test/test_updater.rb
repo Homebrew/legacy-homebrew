@@ -19,7 +19,7 @@ class UpdaterTests < Homebrew::TestCase
       @outputs[cmd] << output
     end
 
-    def `(*args)
+    def popen_read(*args)
       cmd = args.join(" ")
       if @expected.include?(cmd) and !@outputs[cmd].empty?
         @called << cmd
@@ -28,7 +28,7 @@ class UpdaterTests < Homebrew::TestCase
         raise "#{inspect} unexpectedly called backticks: `#{cmd}`"
       end
     end
-    alias_method :safe_system, :`
+    alias_method :safe_system, :popen_read
 
     def expectations_met?
       @expected == @called
