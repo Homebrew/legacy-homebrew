@@ -481,7 +481,7 @@ module Homebrew
       end
       install_passed = steps.last.passed?
       audit_args = [canonical_formula_name]
-      audit_args << "--strict" if @added_formulae.include? formula_name
+      audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
         if formula.stable? && !ARGV.include?('--no-bottle')

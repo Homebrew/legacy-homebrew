@@ -44,13 +44,16 @@ Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is su
 .SH "COMMANDS"
 .
 .IP "\(bu" 4
-\fBaudit\fR [\-\-strict] [\fIformulae\fR]: Check \fIformulae\fR for Homebrew coding style violations\. This should be run before submitting a new formula\.
+\fBaudit\fR [\-\-strict] [\-\-online] [\fIformulae\fR]: Check \fIformulae\fR for Homebrew coding style violations\. This should be run before submitting a new formula\.
 .
 .IP
 If no \fIformulae\fR are provided, all of them are checked\.
 .
 .IP
 If \fB\-\-strict\fR is passed, additional checks are run\. This should be used when creating for new formulae\.
+.
+.IP
+If \fB\-\-online\fR is passed, additional slower checks that require a network connection are run\. This should be used when creating for new formulae\.
 .
 .IP
 \fBaudit\fR exits with a non\-zero status if any errors are found\. This is useful, for instance, for implementing pre\-commit hooks\.
