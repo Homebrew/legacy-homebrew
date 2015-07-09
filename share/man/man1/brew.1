@@ -80,7 +80,10 @@ If \fB\-s\fR is passed, scrubs the cache, removing downloads for even the latest
 \fBcommand\fR \fIcmd\fR: Display the path to the file which is used when invoking \fBbrew <cmd>\fR\.
 .
 .IP "\(bu" 4
-\fBcommands\fR: Show a list of built\-in and external commands\.
+\fBcommands [\-\-quiet [\-\-include\-aliases]]\fR: Show a list of built\-in and external commands\.
+.
+.IP
+If \fB\-\-quiet\fR is passed, list only the names of commands without the header\. With \fB\-\-include\-aliases\fR, the aliases of internal commands will be included\.
 .
 .IP "\(bu" 4
 \fBconfig\fR: Show Homebrew and system configuration useful for debugging\. If you file a bug report, you will likely be asked for this information if you do not provide it\.
