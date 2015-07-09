@@ -2,6 +2,8 @@ class Scala < Formula
   desc "Scala programming language"
   homepage "http://www.scala-lang.org/"
 
+  depends_on :java => "1.6+"
+
   bottle do
     cellar :any
     sha256 "abe3bdb7c49c2d8542731b5bff8ddd2b64b361e5fbc104217ca2f2423b73fbb9" => :yosemite
