@@ -8,9 +8,9 @@ class Ldc < Formula
   version "0.15.2-beta2"
 
   bottle do
-    sha1 "bc329c6a0f9f52d634c99877a6c020436307b941" => :yosemite
-    sha1 "86d65479ffc178437ed3f0dd0ea05549eede13ed" => :mavericks
-    sha1 "7a89443907b3d2af67d46f273c0949f0a587c456" => :mountain_lion
+    sha256 "42429da7c6b69babb33d17797492179faf584cee6a55980f5beba8c79d951c5a" => :yosemite
+    sha256 "0b9aaf9f9f5b8dc05a4a0989ce1d54bd81fe857e36d84d54dee0ba3cad008c09" => :mavericks
+    sha256 "8ea1ad6cbd93ca1b909fdce9ff136fe56ada447cd535840f2684088dcab0fea2" => :mountain_lion
   end
 
   needs :cxx11
