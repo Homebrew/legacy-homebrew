@@ -16,9 +16,9 @@ class Dos2unix < Formula
     sha256 "59cea39b181913532bf9e9c234a142c15e330d5eee145cd6b90f54becd6ec27b"
   end
 
-  option "with-nls", "Build with Native Language Support"
+  option "with-gettext", "Build with Native Language Support"
 
-  depends_on "gettext" if build.with? "nls"
+  depends_on "gettext" => :optional
 
   def install
     args = %W[
@@ -29,7 +29,7 @@ class Dos2unix < Formula
       install
     ]
 
-    if build.without? "nls"
+    if build.without? "gettext"
       args << "ENABLE_NLS="
     else
       gettext = Formula["gettext"]
