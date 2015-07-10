@@ -1,8 +1,8 @@
 class St < Formula
   desc "Statistics from the command-line"
   homepage "https://github.com/nferraz/st"
-  url "https://github.com/nferraz/st/archive/v1.1.1.tar.gz"
-  sha256 "fbfb0680e15448efccc6c6c83e4ae2f4c6a24d12c753444bffbd099632fa70c6"
+  url "https://github.com/nferraz/st/archive/v1.1.2.tar.gz"
+  sha256 "46a3d10995a910870d07550ed86c2979a46523059bed4067e9a49a403be331c8"
 
   bottle do
     sha256 "12c6eccd64e7607dbaf7e3f18d3434957047e348e8d7a901352aae46442387c7" => :yosemite
