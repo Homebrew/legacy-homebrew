@@ -4,7 +4,7 @@ class Scirius < Formula
   url "https://github.com/StamusNetworks/scirius/archive/scirius-1.0.tar.gz"
   sha256 "fde16b3ac8f95e2990a44a9d85aa7c3ee6b55e59af9c27ded7319db19c19b2f5"
 
-  depends_on "python"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   resource "daemon" do
     url "https://pypi.python.org/packages/source/d/daemon/daemon-1.1.tar.gz"
@@ -96,7 +96,7 @@ class Scirius < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-plist_options :manual => "python"
+  plist_options :manual => "python"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -109,7 +109,7 @@ plist_options :manual => "python"
             <string>#{plist_name}</string>
             <key>ProgramArguments</key>
             <array>
-                <string>#{HOMEBREW_PREFIX}/bin/python</string>
+                <string>/usr/bin/env python</string>
                 <string>#{prefix}/manage.py</string>
                 <string>runserver</string>
             </array>
