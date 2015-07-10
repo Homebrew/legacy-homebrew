@@ -6,9 +6,9 @@ class Vc4asm < Formula
 
   bottle do
     cellar :any
-    sha256 "2d7c7eaad829267e1fcfba73ee1e31ee17c1a6e86c3be8d6fcab9acf5b311617" => :yosemite
-    sha256 "ad9c0bb8312909a8a601edd37e63ba49a115a85b306e4d7c648142815f70121d" => :mavericks
-    sha256 "763bdc099d24ddb7fe000e675e1a3405544a41e48e92701d06b7199d4bfb4df5" => :mountain_lion
+    sha256 "61d33586464106166ab596587e9e568d966073f328830b96b895cbd0e7f387b7" => :yosemite
+    sha256 "9a4abc2e869f51c8045468e7bc261ae5d863e9fd3eabefd797c898a88580bfc9" => :mavericks
+    sha256 "8c78b6050331c1580dfe22a330a0e449a8b94e18d6432078668f08a2ffc99583" => :mountain_lion
   end
 
   depends_on "cmake" => :build
