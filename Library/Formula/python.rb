@@ -13,8 +13,10 @@ class Python < Formula
     sha256 "35c5e98031dbddf10cc02686e97c9cc8ca53429e1c299185303b49a8408516be" => :mountain_lion
   end
 
-  # Please don't add a wide/ucs4 option as it won't be accepted.
+  # Homebrew doesn't accept a wide/ucs4 option because narrow build is the de facto standard
+  # on Windows and OSX, but wide seems to be the default for linux
   # More details in: https://github.com/Homebrew/homebrew/pull/32368
+  option "with-unicode-ucs4", "Build unicode support with UCS4"'
   option :universal
   option "with-quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
@@ -100,6 +102,7 @@ class Python < Formula
       --without-ensurepip
     ]
     args << "--without-gcc" if ENV.compiler == :clang
+    args << "--enable-unicode=ucs4" if build.with? "unicode-ucs4"
 
     unless MacOS::CLT.installed?
       # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
