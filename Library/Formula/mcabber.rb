@@ -3,8 +3,14 @@ require 'formula'
 class Mcabber < Formula
   desc "Console Jabber client"
   homepage 'http://mcabber.com/'
-  url 'http://mcabber.com/files/mcabber-0.10.3.tar.bz2'
-  sha1 '9254f520cb37e691fb55d4fc46df4440e4a17f14'
+  url 'http://lilotux.net/~mikael/mcabber/files/mcabber-1.0.0.tar.bz2'
+  sha256 '5476bcba395e0b9527823f5a9bce725151756f685ce2dcf6fad3dbe50a157032'
+
+  bottle do
+    sha256 "d1a3153df34801476d80b8ee36c3a04d6b96906890be7d13a9a03da502001292" => :yosemite
+    sha256 "bea407be11ef8b7a078c07a23f43e7141618f8a72902cc2573dbda53e1a862ba" => :mavericks
+    sha256 "eb37bcb8e3352a76e65b48b2f342f04131a0a60a69472f83e573c14755eb84ad" => :mountain_lion
+  end
 
   head do
     url 'http://mcabber.com/hg/', :using => :hg

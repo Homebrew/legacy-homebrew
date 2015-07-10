@@ -5,6 +5,7 @@ require "formula_cellar_checks"
 require "official_taps"
 require "tap_migrations"
 require "cmd/search"
+require "date"
 
 module Homebrew
   def audit
@@ -17,6 +18,8 @@ module Homebrew
       ohai "brew style #{ARGV.formulae.join " "}"
       style
     end
+
+    online = ARGV.include? "--online"
 
     ENV.activate_extensions!
     ENV.setup_build_environment
@@ -50,7 +53,7 @@ module Homebrew
     output_header = !strict
 
     ff.each do |f|
-      fa = FormulaAuditor.new(f, :strict => strict)
+      fa = FormulaAuditor.new(f, :strict => strict, :online => online)
       fa.audit
 
       unless fa.problems.empty?
@@ -131,6 +134,7 @@ class FormulaAuditor
   def initialize(formula, options={})
     @formula = formula
     @strict = !!options[:strict]
+    @online = !!options[:online]
     @problems = []
     @text = FormulaText.new(formula.path)
     @specs = %w{stable devel head}.map { |s| formula.send(s) }.compact
@@ -234,9 +238,13 @@ class FormulaAuditor
       user_name, _, formula_name = tap_formula_name.split("/", 3)
       user_name == "homebrew" && formula_name == name
     end
-    same_name_tap_formulae += @@remote_official_taps.map do |tap|
-      Thread.new { Homebrew.search_tap "homebrew", tap, name }
-    end.map(&:value).flatten
+
+    if @online
+      same_name_tap_formulae += @@remote_official_taps.map do |tap|
+        Thread.new { Homebrew.search_tap "homebrew", tap, name }
+      end.map(&:value).flatten
+    end
+
     same_name_tap_formulae.delete(full_name)
 
     if same_name_tap_formulae.size > 0
@@ -419,6 +427,33 @@ class FormulaAuditor
          %r[^http://www\.gnu\.org/],
          %r[^http://code\.google\.com/]
       problem "Please use https:// for #{homepage}"
+    end
+  end
+
+  def audit_github_repository
+    return unless @online
+
+    regex = %r{https?://github.com/([^/]+)/([^/]+)/?.*}
+    _, user, repo = *regex.match(formula.stable.url) if formula.stable
+    _, user, repo = *regex.match(formula.homepage) unless user
+    return if !user || !repo
+
+    repo.gsub!(/.git$/, "")
+
+    begin
+      metadata = GitHub.repository(user, repo)
+    rescue GitHub::HTTPNotFoundError
+      return
+    end
+
+    problem "GitHub fork (not canonical repository)" if metadata["fork"]
+    if (metadata["forks_count"] < 10) && (metadata["watchers_count"] < 10) &&
+       (metadata["stargazers_count"] < 20)
+      problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
+    end
+
+    if (Date.parse(metadata["created_at"]) > (Date.today - 30))
+      problem "GitHub repository too new (<30 days old)"
     end
   end
 
@@ -831,6 +866,7 @@ class FormulaAuditor
     audit_specs
     audit_desc
     audit_homepage
+    audit_github_repository
     audit_deps
     audit_conflicts
     audit_options
@@ -911,12 +947,8 @@ class ResourceAuditor
       problem "MD5 checksums are deprecated, please use SHA256"
       return
     when :sha1
-      if ARGV.include? "--strict"
-        problem "SHA1 checksums are deprecated, please use SHA256"
-        return
-      else
-        len = 40
-      end
+      problem "SHA1 checksums are deprecated, please use SHA256"
+      return
     when :sha256 then len = 64
     end
 

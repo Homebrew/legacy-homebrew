@@ -1,25 +1,23 @@
-require 'formula'
-
 class Libass < Formula
   desc "Subtitle renderer for the ASS/SSA subtitle format"
-  homepage 'https://github.com/libass/libass'
-  url 'https://github.com/libass/libass/releases/download/0.12.2/libass-0.12.2.tar.gz'
-  sha1 '416efe79a8529c246a4ed98c8698265a87ffa22a'
+  homepage "https://github.com/libass/libass"
+  url "https://github.com/libass/libass/releases/download/0.12.3/libass-0.12.3.tar.gz"
+  sha256 "5aa6b02b00de7aa2d795e8afa77def47485fcc68a190f4326b6e4d40aee30560"
 
   bottle do
     cellar :any
-    sha256 "06264f637a349f9229055e7d0f18b6ff1c360cef75f6376511bd20761880f00b" => :yosemite
-    sha256 "30abe24a8426edd4e101fedbda934f46e63269da66e07dcff7057b90ca8621fb" => :mavericks
-    sha256 "a8c24f02234dc48f1521924547b5957fa7341172f7c7199208d81c2a6a90339c" => :mountain_lion
+    sha256 "5790f99bd0c16069163657ab46601c25ccb1e3586326f0914305797fbf49f1a1" => :yosemite
+    sha256 "0e41667064f0c89ccec2f3e01c67bb6e5fd319bb279921a33da4c4a23eb5a541" => :mavericks
+    sha256 "bf8e4ad18cc7c245db6607cd4ccdae7addebd2a267d8473c1da1b6db508c5bbf" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'yasm' => :build
+  depends_on "pkg-config" => :build
+  depends_on "yasm" => :build
 
-  depends_on 'freetype'
-  depends_on 'fribidi'
-  depends_on 'fontconfig'
-  depends_on 'harfbuzz' => :optional
+  depends_on "freetype"
+  depends_on "fribidi"
+  depends_on "fontconfig"
+  depends_on "harfbuzz" => :optional
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"

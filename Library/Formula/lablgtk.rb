@@ -3,12 +3,12 @@ class Lablgtk < Formula
   homepage "http://lablgtk.forge.ocamlcore.org"
   url "https://forge.ocamlcore.org/frs/download.php/1479/lablgtk-2.18.3.tar.gz"
   sha256 "975bebf2f9ca74dc3bf7431ebb640ff6a924bb80c8ee5f4467c475a7e4b0cbaf"
+  revision 1
 
   bottle do
-    revision 1
-    sha256 "ea5827e301ae1bf1b8f8d2b9e68c4f9066e99410bec60c5c3fb72c283cf6a333" => :yosemite
-    sha256 "543db1eed44c7853960eb88b433a18bea2f04831167d24303fd14d9e161bd98c" => :mavericks
-    sha256 "cb3caa949fd2a83a123a6282a48c35bd296a36d6a8f3975376497cef671aa597" => :mountain_lion
+    sha256 "8b30f87a6c0a13f4ba20c6f6b1047bcba4d1d9f24c98ee99866535d4d516cdbd" => :yosemite
+    sha256 "7452a64cdcf4fc7a6cc705099012cdbd9ffcf2f68395755df53f8c2c04922189" => :mavericks
+    sha256 "d1bd4b3bf0b983183c677a81f2ba2667057a17f743e5f02b066ab370e3edfe23" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -9,6 +9,7 @@ class RdsCommandLineTools < Formula
   def install
     env = Language::Java.java_home_env.merge(:AWS_RDS_HOME => libexec)
     rm Dir["bin/*.cmd"] # Remove Windows versions
+    etc.install "credential-file-path.template"
     libexec.install Dir["*"]
     Pathname.glob("#{libexec}/bin/*") do |file|
       next if file.directory?
@@ -20,9 +21,7 @@ class RdsCommandLineTools < Formula
 
   def caveats
     <<-EOS.undent
-      Before you can use these tools you must export some variables to your $SHELL.
-        export AWS_ACCESS_KEY="<Your AWS Access ID>"
-        export AWS_SECRET_KEY="<Your AWS Secret Key>"
+      Before you can use these tools you must export a variable to your $SHELL.
         export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
 
       To check that your setup works properly, run the following command:

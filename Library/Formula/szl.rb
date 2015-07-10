@@ -10,8 +10,9 @@ class Szl < Formula
     revision 1
     sha256 "92a10b08dae8394ac7ac5db90d351fad99bc74ff94f966bb888d3797e78c2891" => :yosemite
     sha256 "235f69f9ca8061937fe3f72c6f2467027fe2083837cebbeb2d98e33a25c09b83" => :mavericks
-    sha256 "cf31222f970c0ccd5cc34d8704244e6cf86c353b5fe9658ecfeedd914ffe7174" => :mountain_lion
   end
+
+  depends_on :macos => :mavericks
 
   depends_on "binutils" # For objdump
   depends_on "icu4c"
@@ -48,7 +49,7 @@ index 1d64521..e488321 100644
  #include <memory.h>
  #include <assert.h>
 +#include <unistd.h>
- 
+
  #include "public/porting.h"
  #include "public/logging.h"
 diff --git a/src/engine/code.cc b/src/engine/code.cc
@@ -60,7 +61,7 @@ index d149f9a..75ab84b 100644
  #include <errno.h>
  #include <sys/mman.h>
 +#include <unistd.h>
- 
+
  #include "engine/globals.h"
  #include "public/logging.h"
 diff --git a/src/engine/symboltable.cc b/src/engine/symboltable.cc
@@ -70,9 +71,9 @@ index 6d84592..71965f3 100644
 @@ -44,7 +44,7 @@ namespace sawzall {
  // ------------------------------------------------------------------------------
  // Implementation of SymbolTable
- 
+
 -Proc::Proc* SymbolTable::init_proc_ = NULL;
 +Proc* SymbolTable::init_proc_ = NULL;
- 
+
  List<TableType*>* SymbolTable::table_types_ = NULL;
  TableType* SymbolTable::collection_type_ = NULL;

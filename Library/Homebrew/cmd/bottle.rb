@@ -52,6 +52,9 @@ module Homebrew
     result = false
 
     keg.each_unique_file_matching(string) do |file|
+      # skip document file.
+      next if Metafiles::EXTENSIONS.include? file.extname
+
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
       if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?

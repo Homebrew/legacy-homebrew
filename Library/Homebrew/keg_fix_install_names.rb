@@ -43,6 +43,7 @@ class Keg
     end
 
     files = pkgconfig_files | libtool_files | script_files | plist_files
+    files << tab_file if tab_file.file?
 
     files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
       s = first.open("rb", &:read)
@@ -233,5 +234,9 @@ class Keg
       plist_files << pn
     end
     plist_files
+  end
+
+  def tab_file
+    join(Tab::FILENAME)
   end
 end

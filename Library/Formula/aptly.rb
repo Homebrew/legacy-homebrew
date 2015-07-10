@@ -4,16 +4,16 @@ require "language/go"
 class Aptly < Formula
   desc "Swiss army knife for Debian repository management"
   homepage "https://www.aptly.info/"
-  url "https://github.com/smira/aptly/archive/v0.9.1.tar.gz"
-  sha1 "d38a20f04ba70c67a86a3e04b2cd2641674371d2"
+  url "https://github.com/smira/aptly/archive/v0.9.5.tar.gz"
+  sha256 "43de181dd8770e5c0ffeb4de9f862c22c59381df5d9220a54c680bd2468ff831"
 
   head "https://github.com/smira/aptly.git"
 
   bottle do
     cellar :any
-    sha256 "ae41cab3740f582c5be6486c220f92387371f94b6bf014c4915f6cb5f554893d" => :yosemite
-    sha256 "b6032c35e8793255acd7c38a16601e7757670d5ed1ba150829f1aeb59a3dc562" => :mavericks
-    sha256 "c4fa5584fd59586544f7741e8fd1a37a8eea4e3af347fdd77a7959655f2cc569" => :mountain_lion
+    sha256 "e6bb5d551da1205c025af768015d4b0d99623fce2e57497b22dd4c17b56ae222" => :yosemite
+    sha256 "65a20b2324092246736e692655c8a796b22b48ce4b4edfc37244b94810aaea84" => :mavericks
+    sha256 "f5e5b09c51ab2e9369f56d36b26955984c843f49260e05b9a828f4ec65d5f912" => :mountain_lion
   end
 
   depends_on :hg => :build

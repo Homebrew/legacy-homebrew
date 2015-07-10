@@ -387,6 +387,12 @@ class Formula
   # `brew link` for formulae that are not keg-only.
   def share;   prefix+'share'   end
 
+  # The directory where the formula's shared files should be installed,
+  # with the name of the formula appended to avoid linking conflicts.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  def pkgshare;    prefix+'share'+name    end
+
   # The directory where the formula's Frameworks should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.

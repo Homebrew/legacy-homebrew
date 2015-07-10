@@ -3,14 +3,13 @@ require "formula"
 class Fsharp < Formula
   desc "F#, a functional-first programming language"
   homepage "http://fsharp.org/"
-  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.1.32",
-    :revision => "a4e1f7111a6d1410df3f33e7205ee34617006b94"
+  url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.4",
+    :revision => "8d02a54a75de362d6b649dcaaacfefe6db9caf41"
 
   bottle do
-    revision 1
-    sha256 "169f82ce3b728aab7b892e5741c113e9edd1b8428a79c2b933fd67c6c8cd80cb" => :yosemite
-    sha256 "b7456c760c29aaf9d08a0879e1d988ee557ed487cb23ccfd293fcf0895472403" => :mavericks
-    sha256 "069a556dae1420b045acacbe55ecfdfccb0f6179db57be4fd3b29baec9aa9b2d" => :mountain_lion
+    sha256 "5fbd194a07c6427d7e55f0b825bfa19c3e9e0b06ac8c16c74957eafd2f4ecfb2" => :yosemite
+    sha256 "3e40b3abcb7ca34bbc3f075be21b567b55bb500056c8b977ea329237521ae91a" => :mavericks
+    sha256 "8f95f14bc77e4211dac33cc3ab544b608c5e18d43590ea55b9364ef556005cfa" => :mountain_lion
   end
 
   depends_on "automake" => :build
@@ -30,7 +29,7 @@ class Fsharp < Formula
       %w|Microsoft.Portable.FSharp.Targets
          Microsoft.FSharp.Targets|.each do |fsharp_targ|
 
-        tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v4.5"
+        tree_dir   = "lib/mono/Microsoft\ SDKs/F\#/#{fsharp_ver}/Framework/v4.0"
         source_dir = File.expand_path "#{prefix}/../../mono/#{mono_ver}/#{tree_dir}"
 
         # variables:

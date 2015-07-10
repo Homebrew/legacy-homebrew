@@ -4,14 +4,14 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.3.0.tar.gz"
-  sha1 "60fb5978446bae925158b594dbf2e15546fd3168"
+  url "https://github.com/Masterminds/glide/archive/0.4.0.tar.gz"
+  sha256 "59864298cb458b443af3bbaeab9ad8371dbcfd0152cdd444f666062833b83292"
 
   bottle do
     cellar :any
-    sha256 "7c4c13ddcf1c045816b74fa3b00ca21ea451adcf6508d6e7984d61e7f90f86bf" => :yosemite
-    sha256 "f92d3a48b8283f204455c217aae38a42f36503ca85c728d576dcc267a62a0aba" => :mavericks
-    sha256 "0a48ea01a1fd5f4c6f24dc90588edf82200d4c7833befe20a321950426bd7442" => :mountain_lion
+    sha256 "5371ffac49c2a2214aed86a2d221662ff0a25ccc42d2d6054f4307fd11ae80d0" => :yosemite
+    sha256 "17119f94d330b63b2909aa1c944c835babcb5c9af1fc9e065c0236d2d55e9c58" => :mavericks
+    sha256 "009e82b7425cba2c365533600621934ce9209e827f763cb2d51ad9cebc662e89" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -28,7 +28,7 @@ class Glide < Formula
 
   go_resource "github.com/codegangsta/cli" do
     url "https://github.com/codegangsta/cli.git",
-      :revision => "7ad88c27405eca0bb4a04bb45897fb7985bd1217"
+      :revision => "ad480243a8a6cda30acf7cd999ea3e5142154fde"
   end
 
   def install
@@ -37,12 +37,12 @@ class Glide < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.3.0", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.4.0", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
     bin.install "glide"
   end
 
   test do
     version = pipe_output("#{bin}/glide --version")
-    assert_match /0.3.0/, version
+    assert_match /0.4.0/, version
   end
 end
