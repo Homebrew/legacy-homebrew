@@ -4,7 +4,7 @@ class Ddclient < Formula
   desc "Update dynamic DNS entries"
   homepage 'http://sourceforge.net/p/ddclient/wiki/Home'
   url 'https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.3/ddclient-3.8.3.tar.bz2'
-  sha1 '8668d8828a74ef4e7bca90890d7bbe414c37c3ff'
+  sha256 '5f2546687faf82a44c1addf058ef23bd29efba163c7fc1e9660f236aa092e9e51d301320cfdb72b78f2e65860386c30d85773d791f7c298d4ce42ba7dcdb4d2d'
 
   head 'https://github.com/wimpunk/ddclient.git'
 
