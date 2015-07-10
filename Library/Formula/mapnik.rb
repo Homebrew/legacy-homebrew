@@ -70,9 +70,7 @@ class Mapnik < Formula
             "CPP_TESTS=False" # too long to compile to be worth it
            ]
 
-     if build.with? "all-input-plugins""
-      args << "INPUT_PLUGINS=all"
-     end
+    args << "INPUT_PLUGINS=all" if build.with? "all-input-plugins"
 
     if build.with? "cairo"
       args << "CAIRO=True" # cairo paths will come from pkg-config
