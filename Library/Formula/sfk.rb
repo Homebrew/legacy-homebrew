@@ -6,9 +6,9 @@ class Sfk < Formula
 
   bottle do
     cellar :any
-    sha256 "2aae87cc00f346d23426af1003a7d64bd6338ed0ca00baf7c80afcc62b70fdeb" => :yosemite
-    sha256 "a902948f223f2df7c4059d017ff073f8e5c9957296f0b2f7ccb667442fb554eb" => :mavericks
-    sha256 "d3be90bfa93e1ae8c675f6bacbaa836c52305ee5249af29ae8ad8d787e0bc615" => :mountain_lion
+    sha256 "42ced5ac947ad0c40cc4f24ef19415ed349929687b89a41d1f558ccfe7d0f434" => :yosemite
+    sha256 "ad2b87b8118e5c9c5dc6b41207430c29c9a55ca8058e1b8c4210045849398e8e" => :mavericks
+    sha256 "40b99819db133c2b283375d9cd5a6854b962085e69def10e936fc0dff8cd2826" => :mountain_lion
   end
 
   def install
