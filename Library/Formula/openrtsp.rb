@@ -1,10 +1,8 @@
-require 'formula'
-
 class Openrtsp < Formula
   desc "Command-line RTSP client"
-  homepage 'http://www.live555.com/openRTSP'
-  url 'http://www.live555.com/liveMedia/public/live.2014.10.21.tar.gz'
-  sha1 'e493e0d6f7f2bf4be8e88393bb3ba583136bb271'
+  homepage "http://www.live555.com/openRTSP"
+  url "http://live555.com/liveMedia/public/live.2015.06.25.tar.gz"
+  sha256 "c769542f930840ac246155558e163cd94b119f4f6b9e102b6b5b063f9f055875"
 
   bottle do
     cellar :any
@@ -18,11 +16,20 @@ class Openrtsp < Formula
   def install
     if build.build_32_bit? || !MacOS.prefer_64_bit?
       ENV.m32
-      system "./genMakefiles macosx-32bit"
+      system "./genMakefiles", "macosx-32bit"
     else
-      system "./genMakefiles macosx"
+      system "./genMakefiles", "macosx"
     end
 
     system "make", "PREFIX=#{prefix}", "install"
+
+    # Move the testing executables out of the main PATH
+    libexec.install Dir.glob(bin/"test*")
+  end
+
+  def caveats; <<-EOS.undent
+    Testing executables have been placed in:
+      #{libexec}
+    EOS
   end
 end
