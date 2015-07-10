@@ -196,6 +196,7 @@ class Updater
     safe_system "git", "config", "core.autocrlf", "false"
 
     args = ["pull"]
+    args << "--ff"
     args << ((ARGV.include? "--rebase") ? "--rebase" : "--no-rebase")
     args += quiet
     args << "origin"
