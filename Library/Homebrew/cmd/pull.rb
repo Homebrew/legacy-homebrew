@@ -189,8 +189,14 @@ module Homebrew
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
             puts
-            sleep 20
-            safe_system "brew", "fetch", "--retry", "--force-bottle", f.full_name
+          end
+          unless (Pathname.pwd/".git/hooks/pre-push").exist?
+            ohai "Creating pre-push hook"
+            puts <<-EOS.undent
+              Adding a pre-push hook to check that bottles are published
+              correctly before pushing to master...
+            EOS
+            FileUtils.ln_s HOMEBREW_CONTRIB/"pre-push", Pathname.pwd/".git/hooks"
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
