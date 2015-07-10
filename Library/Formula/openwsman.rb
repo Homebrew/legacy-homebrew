@@ -5,9 +5,9 @@ class Openwsman < Formula
   sha256 "449b4972dc7700918f8f674047f0a1a9c19eeee3f4ce82f47890dddfa56e823f"
 
   bottle do
-    sha256 "8cd55e679f4ffca631ae1a7d86b4e9c70ee4c85d82dc5b4c7429030d0ded85ea" => :yosemite
-    sha256 "47e118663639ee25428730217e78df51cc7ccfdc9c50648a7d8d0b87460f5b43" => :mavericks
-    sha256 "aeadefecb859c12ad6d95ee42724be21a81e5ce28611b23e3dfa96efb2bfead9" => :mountain_lion
+    sha256 "8a0fd930fef9bd3c27d87aba598559e40d2c8d1d9d13971b356e77f395766e27" => :yosemite
+    sha256 "1eeb394c2902d5b9b111cdca6e2e07e80e6db93acc33a9050a607ecf4385148e" => :mavericks
+    sha256 "02576b4069a7238f8d65eb16124cdf0f731c14be3968a1e40ff7f981880a2451" => :mountain_lion
   end
 
   depends_on "automake" => :build
