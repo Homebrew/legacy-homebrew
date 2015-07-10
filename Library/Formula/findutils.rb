@@ -2,7 +2,7 @@ require "formula"
 
 class Findutils < Formula
   desc "Collection of GNU find, xargs, and locate"
-  homepage "http://www.gnu.org/software/findutils/"
+  homepage "https://www.gnu.org/software/findutils/"
   url "http://ftpmirror.gnu.org/findutils/findutils-4.4.2.tar.gz"
   mirror "https://ftp.gnu.org/gnu/findutils/findutils-4.4.2.tar.gz"
   sha1 "e8dd88fa2cc58abffd0bfc1eddab9020231bb024"

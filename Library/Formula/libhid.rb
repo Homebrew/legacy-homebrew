@@ -2,7 +2,7 @@ require "formula"
 
 class Libhid < Formula
   desc "Library to access and interact with USB HID devices"
-  homepage "http://libhid.alioth.debian.org/"
+  homepage "https://libhid.alioth.debian.org/"
   url "http://distcache.freebsd.org/ports-distfiles/libhid-0.2.16.tar.gz"
   sha1 "9a25fef674e8f20f97fea6700eb91c21ebbbcc02"
 
