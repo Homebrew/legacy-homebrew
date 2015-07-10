@@ -7,9 +7,9 @@ class Fsharp < Formula
     :revision => "8d02a54a75de362d6b649dcaaacfefe6db9caf41"
 
   bottle do
-    sha256 "48c08f9e3bfdd74898bd5cc796b3d63e66059bf056bd60822476f474135ab32d" => :yosemite
-    sha256 "8db3d4e0eed760eea54b7c2b0f7efae604fae897781a07d5b78346bbf2ebb787" => :mavericks
-    sha256 "4418bd6dec786b2af2f00979f2924a300abc1374e96ef2a90d06f246ed8e7976" => :mountain_lion
+    sha256 "5fbd194a07c6427d7e55f0b825bfa19c3e9e0b06ac8c16c74957eafd2f4ecfb2" => :yosemite
+    sha256 "3e40b3abcb7ca34bbc3f075be21b567b55bb500056c8b977ea329237521ae91a" => :mavericks
+    sha256 "8f95f14bc77e4211dac33cc3ab544b608c5e18d43590ea55b9364ef556005cfa" => :mountain_lion
   end
 
   depends_on "automake" => :build
