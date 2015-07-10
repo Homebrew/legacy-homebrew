@@ -4,7 +4,7 @@ class Macvim < Formula
   homepage 'https://code.google.com/p/macvim/'
   url 'https://github.com/macvim-dev/macvim/archive/snapshot-77.tar.gz'
   version '7.4-77'
-  sha1 '65223f19da35f1a3edc5fb399180c19953b754eb'
+  sha256 '6b7f4b48ecef4a00dca17efef551884fcea1aa9897005497d31f52da7304bc5f'
 
   head 'https://github.com/macvim-dev/macvim.git'
 
