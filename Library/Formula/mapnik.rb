@@ -48,6 +48,7 @@ class Mapnik < Formula
     args = ["CC=\"#{ENV.cc}\"",
             "CXX=\"#{ENV.cxx}\"",
             "PREFIX=#{prefix}",
+            "CUSTOM_CXXFLAGS=\"-DBOOST_EXCEPTION_DISABLE\"",
             "ICU_INCLUDES=#{icu}/include",
             "ICU_LIBS=#{icu}/lib",
             "JPEG_INCLUDES=#{jpeg}/include",
