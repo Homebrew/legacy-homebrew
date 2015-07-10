@@ -53,6 +53,7 @@ class Gcc < Formula
     option "with-multilib", "Build with multilib support"
   end
 
+  depends_on "zlib" unless OS.mac?
   depends_on "binutils" if build.with? "glibc"
   depends_on "glibc" => :optional
   depends_on "gmp"
