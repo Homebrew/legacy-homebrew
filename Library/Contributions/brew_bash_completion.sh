@@ -580,62 +580,7 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        __brewcomp "
-            --cache --cellar
-            --env --prefix --repository
-            aspell-dictionaries
-            audit
-            bottle
-            cat
-            cleanup
-            commands
-            config --config
-            create
-            deps
-            diy configure
-            doctor
-            edit
-            fetch
-            gist-logs
-            help
-            home
-            info abv
-            install
-            irb
-            leaves
-            linkapps
-            link ln
-            list ls
-            log
-            man
-            missing
-            options
-            outdated
-            prune
-            pin
-            postinstall
-            pull
-            readall
-            search
-            reinstall
-            sh
-            style
-            switch
-            tap
-            tap-readme
-            test
-            test-bot
-            tests
-            uninstall remove rm
-            unlink
-            unlinkapps
-            unpack
-            unpin
-            untap
-            update
-            upgrade
-            uses
-            "
+        __brewcomp "$(brew commands --quiet --include-aliases)"
         return
     fi
 
@@ -677,7 +622,7 @@ _brew ()
     uninstall|remove|rm)        _brew_uninstall ;;
     unpack)                     _brew_unpack ;;
     unpin)                      __brew_complete_formulae ;;
-    untap)                      __brew_complete_tapped ;;
+    untap|tap-info)             __brew_complete_tapped ;;
     update)                     _brew_update ;;
     upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;
