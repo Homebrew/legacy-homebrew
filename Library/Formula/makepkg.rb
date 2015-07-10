@@ -1,10 +1,11 @@
-require "formula"
-
 class Makepkg < Formula
   desc "Compile and build packages suitable for installation with pacman"
   homepage "https://wiki.archlinux.org/index.php/makepkg"
-  url "ftp://ftp.archlinux.org/other/pacman/pacman-4.1.2.tar.gz"
-  sha1 "ed9a40a9b532bc43e48680826d57518134132538"
+  url "https://projects.archlinux.org/git/pacman.git",
+      :tag => "v4.2.1",
+      :revision => "068f8cec42057751f528b19cece37db13ae92541"
+
+  head "https://projects.archlinux.org/git/pacman.git"
 
   bottle do
     revision 1
@@ -13,15 +14,25 @@ class Makepkg < Formula
     sha1 "4908957c636158ed40fbdde85f6630df36469699" => :lion
   end
 
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "asciidoc" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "libarchive" => :build
   depends_on "bash"
   depends_on "fakeroot"
+  depends_on "gettext"
+  depends_on "openssl"
+  depends_on "gpgme" => :optional
 
   def install
+    system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}"
+
     system "make", "install"
   end
 
