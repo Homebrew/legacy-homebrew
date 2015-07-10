@@ -19,11 +19,11 @@ class HerokuToolbelt < Formula
   def caveats
     <<-EOS.undent
       Unlike the standalone download for Heroku Toolbelt, the Homebrew package
-      does not come with Foreman (theforeman.org). Run `gem install foreman`
-      if you would like it.
+      does not come with Foreman. It is available via RubyGems, direct download,
+      and other installation methods. See theforeman.org for more info.
     EOS
   end
-  
+
   test do
     system "#{bin}/heroku", "version"
   end
