@@ -46,6 +46,7 @@ class Mutt < Formula
   depends_on "automake" => :build
 
   depends_on "openssl"
+  depends_on "gnutls"
   depends_on "tokyo-cabinet"
   depends_on "s-lang" => :optional
   depends_on "gpgme" => :optional
