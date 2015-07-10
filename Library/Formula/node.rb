@@ -2,8 +2,8 @@
 class Node < Formula
   desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.6/node-v0.12.6.tar.gz"
-  sha256 "7a3b5ac351973a9dee8edbf0684bc8d0dea44b231e42274ffb008141ffa19ad2"
+  url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
+  sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
