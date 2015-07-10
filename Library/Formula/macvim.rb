@@ -8,6 +8,12 @@ class Macvim < Formula
 
   head 'https://github.com/macvim-dev/macvim.git'
 
+  bottle do
+    sha256 "e5542c19c17428b2168c09e855496e3afb596b43cdc6a0b11eccb13ab8fcd705" => :yosemite
+    sha256 "c3437ff4a0e9efcf02f7f250d1c1ec99d869f5d71049c219ac5c5a60820c499f" => :mavericks
+    sha256 "46d98dddb5507bbec5e2c4b1afb973831e7b776b14cca55ddc108610a3840f14" => :mountain_lion
+  end
+
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
 
