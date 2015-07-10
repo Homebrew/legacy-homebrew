@@ -48,7 +48,7 @@ class Ice < Formula
     inreplace "cpp/src/slice2js/Makefile", /install:/, "dontinstall:"
 
     if build.with? "java"
-      inreplace "cpp/src/slice2freezej/Makefile", "${DESTDIR}${binDir}/${appName}.app",  "${prefix}/${appName}.app"
+      inreplace "java/src/IceGridGUI/build.gradle", "${DESTDIR}${binDir}/${appName}.app",  "${prefix}/${appName}.app"
     else
       inreplace "cpp/src/slice2java/Makefile", /install:/, "dontinstall:"
       inreplace "cpp/src/slice2freezej/Makefile", /install:/, "dontinstall:"
