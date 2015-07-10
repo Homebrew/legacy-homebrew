@@ -1,8 +1,8 @@
 class Vc4asm < Formula
   desc "Macro assembler for Broadcom VideoCore IV aka Raspberry Pi GPU"
   homepage "http://maazl.de/project/vc4asm/doc/index.html"
-  url "https://github.com/maazl/vc4asm/archive/V0.1.7.tar.gz"
-  sha256 "db9c50c1cc035a183ce8305a82a01cad08a246d13c718c420a8762296b00e3de"
+  url "https://github.com/maazl/vc4asm/archive/V0.1.8.tar.gz"
+  sha256 "6e98d5263879c7e24762f707961fa3e31db9c43e6ffc2ef5b22d5d44a180d666"
 
   bottle do
     cellar :any
