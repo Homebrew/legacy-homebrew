@@ -25,7 +25,6 @@ _brew_outdated_formulae() {
 local -a _1st_arguments
 _1st_arguments=(
   'audit:check formulae for Homebrew coding style'
-  'bundle:look for a Brewfile and run each line as a brew command'
   'cat:display formula file for a formula'
   'cleanup:uninstall unused and old versions of packages'
   'commands:show a list of commands'
@@ -55,6 +54,7 @@ _1st_arguments=(
   'update:freshen up links'
   'upgrade:upgrade outdated formulae'
   'uses:show formulae which depend on a formula'
+  `brew commands --quiet --include-aliases`
 )
 
 local expl
@@ -97,7 +97,7 @@ case "$words[1]" in
     _arguments \
       '(--macports)--macports[search the macports repository]' \
       '(--fink)--fink[search the fink repository]' ;;
-  untap)
+  untap|tap-info)
     _brew_installed_taps
     _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
   upgrade)
