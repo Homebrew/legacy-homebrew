@@ -1,6 +1,6 @@
 class A2ps < Formula
   desc "Any-to-PostScript filter"
-  homepage "http://www.gnu.org/software/a2ps/"
+  homepage "https://www.gnu.org/software/a2ps/"
   url "http://ftpmirror.gnu.org/a2ps/a2ps-4.14.tar.gz"
   mirror "http://ftp.gnu.org/gnu/a2ps/a2ps-4.14.tar.gz"
   sha1 "365abbbe4b7128bf70dad16d06e23c5701874852"

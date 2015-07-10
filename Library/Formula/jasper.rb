@@ -2,7 +2,7 @@ require 'formula'
 
 class Jasper < Formula
   desc "Library for manipulating JPEG-2000 images"
-  homepage 'http://www.ece.uvic.ca/~frodo/jasper/'
+  homepage 'https://www.ece.uvic.ca/~frodo/jasper/'
   url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
   sha1 'bbf30168ceae74d78e28039972657a90799e68d3'
   version '1.900.1'

@@ -2,7 +2,7 @@ require 'formula'
 
 class BerkeleyDb < Formula
   desc "High performance key/value database"
-  homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
+  homepage 'https://www.oracle.com/technology/products/berkeley-db/index.html'
   url 'http://download.oracle.com/berkeley-db/db-6.1.19.tar.gz'
   sha1 'e266f8ab73f4f1ea276d203ce85426e5a6831501'
 

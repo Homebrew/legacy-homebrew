@@ -1,6 +1,6 @@
 class Whereami < Formula
   desc "Provides user's current location from the command-line"
-  homepage "http://victor.github.io/whereami/"
+  homepage "https://victor.github.io/whereami/"
   url "https://github.com/victor/whereami/archive/v1.0.tar.gz"
   sha1 "2f81e4b05af5f6806590d7212c0dbfbea00a75e0"
   head "https://github.com/victor/whereami.git", :branch => "swift"

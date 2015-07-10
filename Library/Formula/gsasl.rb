@@ -2,7 +2,7 @@ require 'formula'
 
 class Gsasl < Formula
   desc "SASL library command-line interface"
-  homepage 'http://www.gnu.org/software/gsasl/'
+  homepage 'https://www.gnu.org/software/gsasl/'
   url 'http://ftpmirror.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
   bottle do
     cellar :any

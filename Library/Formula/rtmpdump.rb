@@ -4,7 +4,7 @@ require 'formula'
 # http://livestreamer.tanuki.se/en/latest/issues.html#installed-rtmpdump-does-not-support-jtv-argument
 class Rtmpdump < Formula
   desc "Tool for downloading RTMP streaming media"
-  homepage 'http://rtmpdump.mplayerhq.hu'
+  homepage 'https://rtmpdump.mplayerhq.hu'
   url 'http://ftp.debian.org/debian/pool/main/r/rtmpdump/rtmpdump_2.4+20150115.gita107cef.orig.tar.gz'
   version '2.4+20150115'
   sha256 'd47ef3a07815079bf73eb5d053001c4341407fcbebf39f34e6213c4b772cb29a'

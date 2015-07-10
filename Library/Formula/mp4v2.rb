@@ -2,7 +2,7 @@ require "formula"
 
 class Mp4v2 < Formula
   desc "Read, create, and modify MP4 files"
-  homepage "http://code.google.com/p/mp4v2/"
+  homepage "https://code.google.com/p/mp4v2/"
   url "https://mp4v2.googlecode.com/files/mp4v2-2.0.0.tar.bz2"
   sha1 "193260cfb7201e6ec250137bcca1468d4d20e2f0"
 

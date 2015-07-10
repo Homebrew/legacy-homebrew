@@ -1,6 +1,6 @@
 class Binutils < Formula
   desc "FSF Binutils for native development"
-  homepage "http://www.gnu.org/software/binutils/binutils.html"
+  homepage "https://www.gnu.org/software/binutils/binutils.html"
   url "http://ftpmirror.gnu.org/binutils/binutils-2.25.tar.gz"
   mirror "http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.gz"
   sha1 "f10c64e92d9c72ee428df3feaf349c4ecb2493bd"

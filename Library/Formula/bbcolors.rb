@@ -1,7 +1,7 @@
 class Bbcolors < Formula
   desc "Save and load color schemes for BBEdit and TextWrangler"
-  homepage "http://daringfireball.net/projects/bbcolors/"
-  url "http://daringfireball.net/projects/downloads/bbcolors_1.0.1.zip"
+  homepage "https://daringfireball.net/projects/bbcolors/"
+  url "https://daringfireball.net/projects/downloads/bbcolors_1.0.1.zip"
   sha256 "6ea07b365af1eb5f7fb9e68e4648eec24a1ee32157eb8c4a51370597308ba085"
 
   bottle do

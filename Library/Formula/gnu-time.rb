@@ -2,7 +2,7 @@ require 'formula'
 
 class GnuTime < Formula
   desc "GNU implementation of time utility"
-  homepage 'http://www.gnu.org/software/time/'
+  homepage 'https://www.gnu.org/software/time/'
   url 'http://ftpmirror.gnu.org/time/time-1.7.tar.gz'
   mirror 'http://ftp.gnu.org/gnu/time/time-1.7.tar.gz'
   sha1 'dde0c28c7426960736933f3e763320680356cc6a'

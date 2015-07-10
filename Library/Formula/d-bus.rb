@@ -1,7 +1,7 @@
 class DBus < Formula
   # releases: even (1.8.x) = stable, odd (1.9.x) = development
   desc "Message bus system, providing inter-application communication"
-  homepage "http://www.freedesktop.org/wiki/Software/dbus"
+  homepage "https://wiki.freedesktop.org/www/Software/dbus"
   url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.14.tar.gz"
   sha1 "d0b84d6d7af47b8cad7f55befee8e9001daefe01"
 

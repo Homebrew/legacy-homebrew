@@ -1,6 +1,6 @@
 class Libinfinity < Formula
   desc "GObject-based C implementation of the Infinote protocol"
-  homepage "http://gobby.0x539.de/trac/wiki/Infinote/Libinfinity"
+  homepage "https://gobby.github.io"
   url "http://releases.0x539.de/libinfinity/libinfinity-0.6.6.tar.gz"
   sha256 "3df9397b52d61392cbe98084aada9b7362a34811ef21baa0db87fdfd754f92cc"
 

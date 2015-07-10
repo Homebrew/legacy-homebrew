@@ -2,7 +2,7 @@ require "formula"
 
 class Jrnl < Formula
   desc "Command-line note taker"
-  homepage "http://maebert.github.io/jrnl/"
+  homepage "https://maebert.github.io/jrnl/"
   url "https://github.com/maebert/jrnl/archive/1.9.7.tar.gz"
   sha1 "65914c66762ded186201a526b19e702dd35b0939"
 

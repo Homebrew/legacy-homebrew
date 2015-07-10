@@ -1,6 +1,6 @@
 class Plotutils < Formula
   desc "GNU tools based on libplot, a multi-format 2-D vector graphics library"
-  homepage "http://www.gnu.org/software/plotutils/"
+  homepage "https://www.gnu.org/software/plotutils/"
   url "http://ftpmirror.gnu.org/plotutils/plotutils-2.6.tar.gz"
   mirror "http://ftp.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz"
   sha1 "7921301d9dfe8991e3df2829bd733df6b2a70838"
