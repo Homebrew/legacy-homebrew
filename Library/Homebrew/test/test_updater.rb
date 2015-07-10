@@ -61,7 +61,7 @@ class UpdaterTests < Homebrew::TestCase
     @updater.in_repo_expect("git symbolic-ref --short HEAD", "master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
     @updater.in_repo_expect("git config core.autocrlf false")
-    @updater.in_repo_expect("git pull --quiet origin refs/heads/master:refs/remotes/origin/master")
+    @updater.in_repo_expect("git pull --ff --no-rebase --quiet origin refs/heads/master:refs/remotes/origin/master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
     @updater.pull!(:silent => true)
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
