@@ -196,7 +196,8 @@ class Updater
     safe_system "git", "config", "core.autocrlf", "false"
 
     args = ["pull"]
-    args << "--rebase" if ARGV.include? "--rebase"
+    args << "--ff"
+    args << ((ARGV.include? "--rebase") ? "--rebase" : "--no-rebase")
     args += quiet
     args << "origin"
     # the refspec ensures that 'origin/master' gets updated
