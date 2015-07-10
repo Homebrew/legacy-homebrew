@@ -185,11 +185,10 @@ module Homebrew
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
             version = f.pkg_version
-            curl "--silent", "--fail",
+            curl "-w", '\n', "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
+              "-d", '{"publish_wait_for_secs": -1}',
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
-            puts
-            sleep 20
             safe_system "brew", "fetch", "--retry", "--force-bottle", f.full_name
           end
         else
