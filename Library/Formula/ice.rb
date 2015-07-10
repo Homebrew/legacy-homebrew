@@ -5,8 +5,9 @@ class Ice < Formula
   sha256 "77933580cdc7fade0ebfce517935819e9eef5fc6b9e3f4143b07404daf54e25e"
 
   bottle do
-    sha256 "d540b6efc325fa5c0d4ae6271d338eec91226312f5ba93f98eefdd9698936f8d" => :yosemite
-    sha256 "24de0aa3f2e566911a74f0dfa044bb810aef6d12a37b3639e7cc265596989893" => :mavericks
+    revision 1
+    sha256 "8c9d7b09e8b6b19126ada33f6b7cea1a7837993b90203fe6f6dde2bf4bef3460" => :yosemite
+    sha256 "87a5dd2311296bea03889062d4f20ad76a7de31382a42409bfb933d8e66052eb" => :mavericks
   end
 
   depends_on "mcpp"
