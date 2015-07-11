@@ -16,7 +16,7 @@ class GnomeIconTheme < Formula
   depends_on "gtk+3" => :build # for gtk3-update-icon-cache
   depends_on "icon-naming-utils" => :build
   depends_on "intltool" => :build
-  depends_on "librsvg"
+  depends_on "librsvg" => :build
 
   def install
     system "./configure", "--disable-dependency-tracking",
