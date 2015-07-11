@@ -9,9 +9,10 @@ class Mono < Formula
   skip_clean "lib/mono"
 
   bottle do
-    sha256 "636be6e6ebc60017320ec3c205d952fd74ca784fe5d25ac90271fee7bf0ef922" => :yosemite
-    sha256 "2fe5f35cbc70cc434fa20be89d7bd6c63705f06a5ed9f495396427bae3821da7" => :mavericks
-    sha256 "80bddaefcd9c136bc763797cff98f3aa07ec758e348037fd24f07d2b1b795fbb" => :mountain_lion
+    revision 1
+    sha256 "58a84b443f8cf3eac731d87ce8d484fec90ddf43b44b51854a6186d11b53daee" => :yosemite
+    sha256 "7bb30673b0de1d41980da3527f55db7e453da66b0673a5a5c93c464426716db8" => :mavericks
+    sha256 "3a3c35b4bdafc31607fabedece5caa8200ed1deca321bfaeca3869560d6e3d0e" => :mountain_lion
   end
 
   # Fix compile and runtime error on OS X 10.11 Beta 3
