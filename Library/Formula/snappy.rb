@@ -6,9 +6,9 @@ class Snappy < Formula
 
   bottle do
     cellar :any
-    sha256 "c95c90ea412c185d42346f21637157c82ccfd6cfee7830d3fdf7c7427cc1630f" => :yosemite
-    sha256 "3237d3ca278cabb40968699b45914fd3468363cb291bfc19e45a265a68a54c28" => :mavericks
-    sha256 "36ac0b1d4cb6edbe915ba54a79a600674757ce5682fa1389e4a1ef98d7c10884" => :mountain_lion
+    sha256 "b213966add3c3acdce7f612135d9d4a0f1ef3b70ab2bd254e775b27968e14e7a" => :yosemite
+    sha256 "e05b8764ffbf52ef4505471f3db46b1373d4c91be7dfb64bf29a6aff4a454f5e" => :mavericks
+    sha256 "7afb5461d7424be580c7f3b1f04e2145775b21e571a277dae1f604f11c544363" => :mountain_lion
   end
 
   head do
