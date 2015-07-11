@@ -14,7 +14,9 @@
 !/share/man/man1/brew.1
 .DS_Store
 /Library/Homebrew/doc
+/Library/Homebrew/test/.bundle
+/Library/Homebrew/test/bin
+/Library/Homebrew/test/vendor
 /Library/LinkedKegs
 /Library/PinnedKegs
 /Library/Taps
-/Library/Formula/.gitignore
