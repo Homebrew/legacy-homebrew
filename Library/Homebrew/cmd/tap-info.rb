@@ -39,6 +39,7 @@ module Homebrew
         puts unless i == 0
         info = "#{tap}: "
         if tap.installed?
+          info += tap.pinned? ? "pinned, " : "unpinned, "
           formula_count = tap.formula_files.size
           info += "#{formula_count} formula#{plural(formula_count, "e")} " if formula_count > 0
           command_count = tap.command_files.size
