@@ -16,21 +16,17 @@ class Libfreenect < Formula
   end
 
   option :universal
-  option "with-openni2", "Build with OpenNI2 driver"
 
   depends_on "cmake" => :build
   depends_on "libusb"
 
   def install
     args = std_cmake_args
+    args << "-DBUILD_OPENNI2_DRIVER=ON"
 
     if build.universal?
       ENV.universal_binary
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
-    end
-
-    if build.with? "openni2"
-        args << "-DBUILD_OPENNI2_DRIVER=ON"
     end
 
     mkdir "build" do
