@@ -5,12 +5,12 @@ class Radare2 < Formula
   homepage "http://radare.org"
 
   stable do
-    url "http://radare.org/get/radare2-0.9.8.tar.xz"
-    sha256 "8e72caaebdac10300fd7ec86a5d06b1cbecfc6914e5fea4007c6e06e667bfa5a"
+    url "http://radare.org/get/radare2-0.9.9.tar.xz"
+    sha256 "024adba5255f12e58c2c1a5e2263fada75aad6e71b082461dea4a2b94b29df32"
 
     resource "bindings" do
-      url "http://radare.org/get/radare2-bindings-0.9.8.tar.xz"
-      sha256 "28326effb7d1eda9f6df2ef08954774c16617046a33046501bd0332324519f39"
+      url "http://radare.org/get/radare2-bindings-0.9.9.tar.xz"
+      sha256 "817939698cc4534498226c28938288b7b4a7b6216dc6d7ddde72b0f94d987b14"
     end
   end
 
@@ -39,14 +39,23 @@ class Radare2 < Formula
   depends_on "openssl"
 
   def install
+    ENV["PREFIX"] = prefix
+    ENV["INSTALL_TARGET"] = "install"
+    ENV["NOSUDO"] = "1"
+    ENV["HARDEN"] = "1"
+    ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
+
+    # Build scripts assume this directory already exists
+    mkdir_p lib
+
+    # Build script falsely assume this directory is a git repo. Force the
+    # fall-back behavior of re-cloning the repo when the directory is missing
+    rm_rf "shlr/capstone"
+
     # Build Radare2 before bindings, otherwise compile = nope.
-    system "./configure", "--prefix=#{prefix}", "--with-openssl"
-    system "make"
-    system "make", "install"
+    system "./sys/install.sh"
 
     resource("bindings").stage do
-      ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
-
       system "./configure", "--prefix=#{prefix}"
       system "make"
       system "make", "install", "DESTDIR=#{prefix}"
