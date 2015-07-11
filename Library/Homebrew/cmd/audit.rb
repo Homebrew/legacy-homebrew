@@ -428,6 +428,13 @@ class FormulaAuditor
          %r[^http://code\.google\.com/]
       problem "Please use https:// for #{homepage}"
     end
+
+    return unless @online
+    begin
+      nostdout { curl "--connect-timeout", "15", "-IL", "-o", "/dev/null", homepage }
+    rescue ErrorDuringExecution
+      problem "The homepage is not reachable (curl exit code #{$?.exitstatus})"
+    end
   end
 
   def audit_github_repository
