@@ -269,13 +269,28 @@ if MacOS.version >= "10.9"
     end
   end
 
-  def check_xcode_up_to_date
-    if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
-      <<-EOS.undent
-      Your Xcode (#{MacOS::Xcode.version}) is outdated
-      Please update to Xcode #{MacOS::Xcode.latest_version}.
-      Xcode can be updated from the App Store.
-      EOS
+  # TODO: remove when 10.11 is released
+  if MacOS.version >= "10.11"
+    def check_xcode_up_to_date
+      if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
+        <<-EOS.undent
+        Your Xcode (#{MacOS::Xcode.version}) is outdated
+        Please update to Xcode #{MacOS::Xcode.latest_version}.
+        Xcode can be updated from
+          https://developer.apple.com/downloads
+        EOS
+        EOS
+      end
+    end
+  else
+    def check_xcode_up_to_date
+      if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
+        <<-EOS.undent
+        Your Xcode (#{MacOS::Xcode.version}) is outdated
+        Please update to Xcode #{MacOS::Xcode.latest_version}.
+        Xcode can be updated from the App Store.
+        EOS
+      end
     end
   end
 
