@@ -14,6 +14,14 @@ class Mono < Formula
     sha256 "80bddaefcd9c136bc763797cff98f3aa07ec758e348037fd24f07d2b1b795fbb" => :mountain_lion
   end
 
+  # Fix compile and runtime error on OS X 10.11 Beta 3
+  # https://github.com/mono/mono/pull/1919
+  # https://bugzilla.xamarin.com/show_bug.cgi?id=31761
+  patch do
+    url "https://github.com/mono/mono/pull/1919.diff"
+    sha256 "53c39c2145027fdf1a2233e12bd96da2c1164e1422e631cdb50598910b39a020"
+  end
+
   resource "monolite" do
     url "http://storage.bos.xamarin.com/mono-dist-4.0.0-release/c1/c1b37f29b1a439acf7ef42a384550ab1dca5295a/monolite-117-latest.tar.gz"
     sha256 "a3bd1c826186e4896193ad1f909bf8756f66f62d1e249fe301b10bc80ebe0795"
