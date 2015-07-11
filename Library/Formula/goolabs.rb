@@ -1,9 +1,8 @@
 class Goolabs < Formula
   desc "Command-line tool for morphologically analyzing Japanese language"
   homepage "https://pypi.python.org/pypi/goolabs"
-  url "https://pypi.python.org/packages/source/g/goolabs/goolabs-0.1.1.tar.gz"
-  sha1 "3201102ab0fad77d57a09dd7c879f6f163e05799"
-  revision 1
+  url "https://pypi.python.org/packages/source/g/goolabs/goolabs-0.2.2.tar.gz"
+  sha256 "9078bf8d26b69860cf6b9f1e6143014a596ee122743130b082ba2daea8a10e26"
 
   bottle do
     cellar :any
@@ -15,18 +14,18 @@ class Goolabs < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
-    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "click" do
-    url "https://pypi.python.org/packages/source/c/click/click-3.3.tar.gz"
-    sha1 "d716a932b930d71059e49465b6b42e833808369a"
+    url "https://pypi.python.org/packages/source/c/click/click-4.0.tar.gz"
+    sha256 "f49e03611f5f2557788ceeb80710b1c67110f97c5e6740b97edf70245eea2409"
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
-    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
+    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
   end
 
   def install
