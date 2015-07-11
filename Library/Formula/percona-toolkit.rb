@@ -13,7 +13,6 @@ class PerconaToolkit < Formula
     sha256 "95fec4e6b45806a11c940c48f6e811101e7bf711aba758783762b2133229b08f" => :mountain_lion
   end
 
-  depends_on :mysql
   depends_on "openssl"
 
   resource "DBD::mysql" do
