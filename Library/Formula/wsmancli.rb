@@ -1,8 +1,8 @@
 class Wsmancli < Formula
   desc "Openwsman command-line client"
   homepage "https://github.com/Openwsman/wsmancli"
-  url "https://github.com/Openwsman/wsmancli/archive/v2.3.1.tar.gz"
-  sha1 "a9b3dbe14d257687da4ace7c142e829c05c80994"
+  url "https://github.com/Openwsman/wsmancli/archive/v2.6.0.tar.gz"
+  sha256 "766fef60d4c627d8b6129b3c9ae97d8676442bc6110b3a723610c54894365e0d"
 
   bottle do
     cellar :any
