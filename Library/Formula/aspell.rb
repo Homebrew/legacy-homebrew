@@ -11,6 +11,12 @@ class Aspell < Formula
     sha1 "8408ca154004072598e294aad2d17d4665d5b313" => :mountain_lion
   end
 
+  devel do
+    url "ftp://alpha.gnu.org/gnu/aspell/aspell-0.60.7-20110707.tar.gz"
+    sha256 "084005bd37013f17b725eca033fe19053b2ab33144e990685486746cb10416a5"
+    version "0.60.7-20110707"
+  end
+
   option "with-lang-af", "Install af dictionary"
   resource "af" do
     url "http://ftpmirror.gnu.org/aspell/dict/af/aspell-af-0.50-0.tar.bz2"
