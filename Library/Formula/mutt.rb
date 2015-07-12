@@ -66,28 +66,28 @@ class Mutt < Formula
       sha256 "7290e2a5ac12cbf89d615efa38c1ada3b454cb642ecaf520c26e47e7a1c926be"
     end
   end
-  
+
   if build.with? "pgp-verbose-mime-patch"
     patch do
       url "https://raw.githubusercontent.com/psych0tik/mutt/73c09bc56e79605cf421a31c7e36958422055a20/debian/patches/features-old/patch-1.5.4.vk.pgp_verbose_mime"
       sha256 "fbd58cd5466c71e39a3854dc6b91e05ac7ea410eec49148a0eb6ef8aa584789b"
     end
   end
-  
+
   if build.with? "confirm-attachment-patch"
     patch do
       url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
       sha256 "da2c9e54a5426019b84837faef18cc51e174108f07dc7ec15968ca732880cb14"
     end
   end
-  
+
   if build.with? "sidebar-patch"
     patch do
       url "http://lunar-linux.org/~tchan/mutt/patch-1.5.23.sidebar.20140412.txt"
       sha256 "5f473e201519d95b8c2319f286221213386de2d7c27629c70733b40b643b59c4"
     end
   end
-  
+
   def install
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
