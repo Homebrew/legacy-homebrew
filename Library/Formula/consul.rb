@@ -6,6 +6,13 @@ class Consul < Formula
   url "https://github.com/hashicorp/consul.git",
     :tag => "v0.5.2", :revision => "9a9cc9341bb487651a0399e3fc5e1e8a42e62dd9"
 
+  bottle do
+    cellar :any
+    sha256 "a77fef3fc07e7b00f17f93a30361edfdb1351b411506538dad8697cffc5f59f4" => :yosemite
+    sha256 "eb6ae6959dfaac6250bf78d2e7c0658c165e4098e80ec8142edba27920d6d8f9" => :mavericks
+    sha256 "67052157266d536598ba7eb5af31a10fd3e609ca812be6d50869d0fe80a583f9" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/armon/circbuf" do
