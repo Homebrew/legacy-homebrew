@@ -4,6 +4,7 @@ class Makepkg < Formula
   url "https://projects.archlinux.org/git/pacman.git",
       :tag => "v4.2.1",
       :revision => "068f8cec42057751f528b19cece37db13ae92541"
+  revision 1
 
   head "https://projects.archlinux.org/git/pacman.git"
 
