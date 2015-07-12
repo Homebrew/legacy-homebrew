@@ -3,6 +3,7 @@ class Bibtexconv < Formula
   homepage "https://www.uni-due.de/~be0001/bibtexconv/"
   url "https://www.uni-due.de/~be0001/bibtexconv/download/bibtexconv-1.1.3.tar.gz"
   sha256 "f7fd69ff99cd48a77e53aed4219defaf1f45485a07978faec01c2b9074886e03"
+  revision 1
 
   bottle do
     cellar :any
