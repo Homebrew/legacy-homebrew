@@ -5,9 +5,9 @@ class Byobu < Formula
   sha256 "4917013f590110d25b18293a51af02bd1ebcd1c665474f62e2566fb9b8f62916"
 
   bottle do
-    sha256 "00b83c52d088c2ac0b46ebe5f15fc07af5f9bed8d1687ddf3a9ff019cd2340bb" => :yosemite
-    sha256 "8261afcff0043e4f3435e92facf03f686621400a18d9ff6c38b43a49c1d42789" => :mavericks
-    sha256 "c73501b5d8969028206d6a3479b2556e4efbf9c24effaad973a96c6a35d68dcd" => :mountain_lion
+    sha256 "3b5da5651f1d2f0b1233b1ae764c3f4a7e72a4c1725f4889c526bb83d5eca816" => :yosemite
+    sha256 "00f1ef5add1a0c204aedc18c562274d8740c4699b1b28cd21b6e44f9564428ce" => :mavericks
+    sha256 "85c10105b1d5a4b6b1ed3161c755643070fbd446547dbeac44bb4388ecd00669" => :mountain_lion
   end
 
   depends_on "coreutils"
