@@ -3,6 +3,7 @@ class Openwsman < Formula
   homepage "https://openwsman.github.io"
   url "https://github.com/Openwsman/openwsman/archive/v2.6.0.tar.gz"
   sha256 "449b4972dc7700918f8f674047f0a1a9c19eeee3f4ce82f47890dddfa56e823f"
+  revision 1
 
   bottle do
     sha256 "8a0fd930fef9bd3c27d87aba598559e40d2c8d1d9d13971b356e77f395766e27" => :yosemite
