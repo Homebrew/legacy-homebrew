@@ -41,6 +41,7 @@ class Mutt < Formula
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
   option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
+  option "with-sidebar-patch", "Apply sidebar patch"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -71,6 +72,11 @@ class Mutt < Formula
     url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
     sha1 "94da52d50508d8951aa78ca4b073023414866be1"
   end if build.with? "confirm-attachment-patch"
+
+  patch do
+    url "http://lunar-linux.org/~tchan/mutt/patch-1.5.23.sidebar.20140412.txt"
+    sha1 "8b86f148d8e1a0b37b0b77268349f4c94e797561"
+  end if build.with? "sidebar-patch"
 
   def install
     args = ["--disable-dependency-tracking",
