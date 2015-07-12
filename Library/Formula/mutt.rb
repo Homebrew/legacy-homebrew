@@ -51,33 +51,43 @@ class Mutt < Formula
   depends_on "s-lang" => :optional
   depends_on "gpgme" => :optional
 
-  patch do
-    url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/mutt/trashfolder-1.5.22.diff0.gz"
-    sha1 "c597566c26e270b99c6f57e046512a663d2f415e"
-  end if build.with? "trash-patch"
+  if build.with? "trash-patch"
+    patch do
+      url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/mutt/trashfolder-1.5.22.diff0.gz"
+      sha256 "ce964144264a7d4f121e7a2692b1ea92ebea5f03089bfff6961d485f3339c3b8"
+    end
+  end
 
   # original source for this went missing, patch sourced from Arch at
   # https://aur.archlinux.org/packages/mutt-ignore-thread/
-  patch do
-    url "https://gist.githubusercontent.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch"
-    sha1 "dbcf5de46a559bca425028a18da0a63d34f722d3"
-  end if build.with? "ignore-thread-patch"
-
-  patch do
-    url "https://raw.githubusercontent.com/psych0tik/mutt/73c09bc56e79605cf421a31c7e36958422055a20/debian/patches/features-old/patch-1.5.4.vk.pgp_verbose_mime"
-    sha1 "a436f967aa46663cfc9b8933a6499ca165ec0a21"
-  end if build.with? "pgp-verbose-mime-patch"
-
-  patch do
-    url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
-    sha1 "94da52d50508d8951aa78ca4b073023414866be1"
-  end if build.with? "confirm-attachment-patch"
-
-  patch do
-    url "http://lunar-linux.org/~tchan/mutt/patch-1.5.23.sidebar.20140412.txt"
-    sha1 "8b86f148d8e1a0b37b0b77268349f4c94e797561"
-  end if build.with? "sidebar-patch"
-
+  if build.with? "ignore-thread-patch"
+    patch do
+      url "https://gist.githubusercontent.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch"
+      sha256 "7290e2a5ac12cbf89d615efa38c1ada3b454cb642ecaf520c26e47e7a1c926be"
+    end
+  end
+  
+  if build.with? "pgp-verbose-mime-patch"
+    patch do
+      url "https://raw.githubusercontent.com/psych0tik/mutt/73c09bc56e79605cf421a31c7e36958422055a20/debian/patches/features-old/patch-1.5.4.vk.pgp_verbose_mime"
+      sha256 "fbd58cd5466c71e39a3854dc6b91e05ac7ea410eec49148a0eb6ef8aa584789b"
+    end
+  end
+  
+  if build.with? "confirm-attachment-patch"
+    patch do
+      url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
+      sha256 "da2c9e54a5426019b84837faef18cc51e174108f07dc7ec15968ca732880cb14"
+    end
+  end
+  
+  if build.with? "sidebar-patch"
+    patch do
+      url "http://lunar-linux.org/~tchan/mutt/patch-1.5.23.sidebar.20140412.txt"
+      sha256 "5f473e201519d95b8c2319f286221213386de2d7c27629c70733b40b643b59c4"
+    end
+  end
+  
   def install
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
