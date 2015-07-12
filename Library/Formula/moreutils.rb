@@ -1,9 +1,8 @@
 class Moreutils < Formula
   desc "Collection of tools that nobody wrote when UNIX was young"
   homepage "http://joeyh.name/code/moreutils/"
-  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
-  mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
-  sha1 "050c73067d2b5373f2652b91e75699dd79a44590"
+  url "https://distfiles.macports.org/moreutils/moreutils_0.55.orig.tar.gz"
+  sha256 "da9d5cd145ceea967a65dd50031d168d66199c3eb41b9390b57f35d4a5808ab5"
 
   bottle do
     sha1 "a7d3974c453e9b68d0254505f5bb4ed9fa9ba3a3" => :yosemite
@@ -25,14 +24,14 @@ class Moreutils < Formula
 
   resource "Time::Duration" do
     url "http://search.cpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
-    sha1 "5acc5013d8b4ab52416555e1f08546a8d8a3fb41"
+    mirror "https://cpan.metacpan.org/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
+    sha256 "a69c419c4892f21eba10002e2ab8c55b657b6691cf6873544ef99ef5fd188f4e"
   end
 
   resource "IPC::Run" do
     url "http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
-    sha1 "87e0c796722a85e0908bb0224326af1436d35809"
+    mirror "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
+    sha256 "e186b46ddf1577d24f11eec1ba42285963c3f71ec7ecb1ce51d6e88c729d46d2"
   end
 
   def install
