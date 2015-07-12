@@ -3,7 +3,7 @@ class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
   sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
-  revision 1
+  revision 2
 
   bottle do
     revision 13
