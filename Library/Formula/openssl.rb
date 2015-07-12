@@ -5,6 +5,7 @@ class Openssl < Formula
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2d.tar.gz"
   mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2d.tar.gz"
   sha256 "671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8"
+  revision 1
 
   bottle do
     sha256 "e9d8e2c7ab16a8516113093e999c8a6a1bc345badaa48af629963b97a7b9a1ef" => :yosemite
@@ -16,6 +17,9 @@ class Openssl < Formula
   option "without-check", "Skip build-time tests (not recommended)"
 
   depends_on "makedepend" => :build
+
+  keg_only :provided_by_osx,
+    "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
   def arch_args
     {
