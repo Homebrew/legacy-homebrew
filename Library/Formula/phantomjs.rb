@@ -1,6 +1,6 @@
 class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
-  homepage "http://www.phantomjs.org/"
+  homepage "http://phantomjs.org/"
   head "https://github.com/ariya/phantomjs.git"
 
   stable do
