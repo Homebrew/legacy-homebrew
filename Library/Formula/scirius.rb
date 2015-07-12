@@ -4,7 +4,8 @@ class Scirius < Formula
   url "https://github.com/StamusNetworks/scirius/archive/scirius-1.0.tar.gz"
   sha256 "fde16b3ac8f95e2990a44a9d85aa7c3ee6b55e59af9c27ded7319db19c19b2f5"
 
-  depends_on :python if MacOS.version <= :snow_leopard
+  #depends_on :python if MacOS.version <= :snow_leopard
+  depends_on "python"
 
   resource "daemon" do
     url "https://pypi.python.org/packages/source/d/daemon/daemon-1.1.tar.gz"
