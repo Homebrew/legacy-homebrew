@@ -3,7 +3,6 @@ class Goolabs < Formula
   homepage "https://pypi.python.org/pypi/goolabs"
   url "https://pypi.python.org/packages/source/g/goolabs/goolabs-0.2.2.tar.gz"
   sha256 "9078bf8d26b69860cf6b9f1e6143014a596ee122743130b082ba2daea8a10e26"
-  revision 1
 
   bottle do
     cellar :any
