@@ -105,7 +105,6 @@ TAP_MIGRATIONS = {
   "hwloc" => "homebrew/science",
   "ifuse" => "homebrew/fuse",
   "imake" => "homebrew/x11",
-  "inkscape" => "homebrew/x11",
   "ipopt" => "homebrew/science",
   "iptux" => "homebrew/x11",
   "itsol" => "homebrew/science",
