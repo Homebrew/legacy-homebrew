@@ -1,6 +1,6 @@
 class Moreutils < Formula
   desc "Collection of tools that nobody wrote when UNIX was young"
-  homepage "http://joeyh.name/code/moreutils/"
+  homepage "https://joeyh.name/code/moreutils/"
   url "https://distfiles.macports.org/moreutils/moreutils_0.55.orig.tar.gz"
   sha256 "da9d5cd145ceea967a65dd50031d168d66199c3eb41b9390b57f35d4a5808ab5"
 
