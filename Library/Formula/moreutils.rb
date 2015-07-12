@@ -1,9 +1,8 @@
 class Moreutils < Formula
   desc "Collection of tools that nobody wrote when UNIX was young"
   homepage "http://joeyh.name/code/moreutils/"
-  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.56.orig.tar.gz"
-  mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.56.orig.tar.gz"
-  sha256 "ec4b7a1e1d1e1d6ec606d2877301ec06c6cf4091776687d9b76f4d019705e77f"
+  url "https://distfiles.macports.org/moreutils/moreutils_0.55.orig.tar.gz"
+  sha256 "da9d5cd145ceea967a65dd50031d168d66199c3eb41b9390b57f35d4a5808ab5"
 
   bottle do
     sha1 "a7d3974c453e9b68d0254505f5bb4ed9fa9ba3a3" => :yosemite
