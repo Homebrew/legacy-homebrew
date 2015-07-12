@@ -11,10 +11,10 @@ end
 class Freeimage < Formula
   desc "Library for FreeImage, a dependency-free graphics library"
   homepage 'http://sf.net/projects/freeimage'
-  url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.16.0/FreeImage3160.zip',
+  url 'https://downloads.sourceforge.net/project/freeimage/Source%20Distribution/3.17.0/FreeImage3170.zip',
     :using => FreeimageHttpDownloadStrategy
-  version '3.16.0'
-  sha1 'a70600d288fe5bd11131e85e6f857a93bb100ad8'
+  version '3.17.0'
+  sha256 'fbfc65e39b3d4e2cb108c4ffa8c41fd02c07d4d436c594fff8dab1a6d5297f89'
 
   option :universal
 
@@ -31,7 +31,9 @@ end
 
 __END__
 diff --git a/Makefile.fip b/Makefile.fip
-index 6006221..e306d35 100644
+old mode 100755
+new mode 100644
+index b59c419..6e177fc
 --- a/Makefile.fip
 +++ b/Makefile.fip
 @@ -5,8 +5,9 @@ include fipMakefile.srcs
@@ -59,16 +61,16 @@ index 6006221..e306d35 100644
  HEADER = Source/FreeImage.h
  HEADERFIP = Wrapper/FreeImagePlus/FreeImagePlus.h
  
-@@ -48,7 +49,7 @@ all: dist
- 
+@@ -49,7 +50,7 @@ all: dist
  dist: FreeImage
- 	cp *.a Dist
--	cp *.so Dist
-+	cp *.dylib Dist
- 	cp Source/FreeImage.h Dist
- 	cp Wrapper/FreeImagePlus/FreeImagePlus.h Dist
- 
-@@ -67,14 +68,15 @@ $(STATICLIB): $(MODULES)
+	mkdir -p Dist
+	cp *.a Dist/
+-	cp *.so Dist/
++	cp *.dylib Dist/
+	cp Source/FreeImage.h Dist/
+	cp Wrapper/FreeImagePlus/FreeImagePlus.h Dist/
+
+@@ -68,14 +69,15 @@ $(STATICLIB): $(MODULES)
  	$(AR) r $@ $(MODULES)
  
  $(SHAREDLIB): $(MODULES)
@@ -86,11 +88,13 @@ index 6006221..e306d35 100644
 +	install -m 644 $(STATICLIB) $(INSTALLDIR)
 +	install -m 755 $(SHAREDLIB) $(INSTALLDIR)
 +	ln -s $(SHAREDLIB) $(INSTALLDIR)/$(LIBNAME)
- 
- clean:
- 	rm -f core Dist/*.* u2dtmp* $(MODULES) $(STATICLIB) $(SHAREDLIB) $(LIBNAME)
+	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(VERLIBNAME)
+	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)
+
 diff --git a/Makefile.gnu b/Makefile.gnu
-index 5f2c625..c98f44a 100644
+old mode 100755
+new mode 100644
+index 92f6358..264b70f
 --- a/Makefile.gnu
 +++ b/Makefile.gnu
 @@ -5,8 +5,9 @@ include Makefile.srcs
@@ -118,16 +122,16 @@ index 5f2c625..c98f44a 100644
  HEADER = Source/FreeImage.h
  
  
-@@ -48,7 +49,7 @@ all: dist
- 
+@@ -49,7 +50,7 @@ all: dist
  dist: FreeImage
- 	cp *.a Dist
--	cp *.so Dist
-+	cp *.dylib Dist
- 	cp Source/FreeImage.h Dist
+	mkdir -p Dist
+	cp *.a Dist/
+-	cp *.so Dist/
++	cp *.dylib Dist/
+	cp Source/FreeImage.h Dist/
  
  dos2unix:
-@@ -66,13 +67,13 @@ $(STATICLIB): $(MODULES)
+@@ -67,13 +68,13 @@ $(STATICLIB): $(MODULES)
  	$(AR) r $@ $(MODULES)
  
  $(SHAREDLIB): $(MODULES)
@@ -145,15 +149,3 @@ index 5f2c625..c98f44a 100644
  	ln -sf $(SHAREDLIB) $(INSTALLDIR)/$(VERLIBNAME)
  	ln -sf $(VERLIBNAME) $(INSTALLDIR)/$(LIBNAME)	
  #	ldconfig
-diff --git a/Source/OpenEXR/IlmImf/ImfAutoArray.h b/Source/OpenEXR/IlmImf/ImfAutoArray.h
-index 7b4533f..98bf458 100644
---- a/Source/OpenEXR/IlmImf/ImfAutoArray.h
-+++ b/Source/OpenEXR/IlmImf/ImfAutoArray.h
-@@ -44,6 +44,7 @@
- //
- //-----------------------------------------------------------------------------
- 
-+#include <cstring>
- #include "OpenEXRConfig.h"
- #if !defined(_WIN32) || defined(__MINGW32__)
- // needed for memset
