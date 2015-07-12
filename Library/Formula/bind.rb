@@ -7,9 +7,9 @@ class Bind < Formula
   sha256 "b1e6f0af88634aaf48fb9d06bbf82968264f49b8e2685f061dd3fd4c1ab76c5f"
 
   bottle do
-    sha1 "901a4706d23607927fadb78d5495d49f715fdde4" => :yosemite
-    sha1 "ce2cfdc2ebaab7cccc001f9fdefd2d55d6b9fa11" => :mavericks
-    sha1 "b9f513f74bb0ec23af29057fc0eb1e2c410c9769" => :mountain_lion
+    sha256 "63d408519604d63f2483f4e46a315a32a94347f372e69f7066d85f1d781e46a0" => :yosemite
+    sha256 "fccba7b9b78b1e7b5aac00bee9caa9e933075522e30f02af070edbf91d851023" => :mavericks
+    sha256 "f5419ff67f3eb4e5da3200f769fb15e85d2986515777f632fe39030f84c594ee" => :mountain_lion
   end
 
   head "https://source.isc.org/git/bind9.git"
