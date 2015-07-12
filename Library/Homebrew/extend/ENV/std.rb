@@ -56,7 +56,7 @@ module Stdenv
     send(compiler)
 
     if cc =~ GNU_GCC_REGEXP
-      gcc_formula = gcc_version_formula($1)
+      gcc_formula = gcc_version_formula($&)
       append_path "PATH", gcc_formula.opt_bin.to_s
     end
 

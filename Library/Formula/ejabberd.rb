@@ -1,15 +1,15 @@
 class Ejabberd < Formula
   desc "XMPP application server"
   homepage "https://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/15.04/ejabberd-15.04.tgz"
-  sha256 "6750199b75d6b658dabffdf34e20994803b2fc0832e54fea7ab388e5122d63ec"
+  url "https://www.process-one.net/downloads/ejabberd/15.06/ejabberd-15.06.tgz"
+  sha256 "fcc001d0f2fc8b99bb2a4e7a42ec02c3c5d62191ea2aae19636f88e4e08be3a8"
 
   head "https://github.com/processone/ejabberd.git"
 
   bottle do
-    sha256 "b0591b932687ecfc54acedd1cc3b312b90654954a775a516fdd9f1194808cbdb" => :yosemite
-    sha256 "22e2ac10889e5036583ee32914515d30f10c4a3a5b19c70cf3ae90079cd4783d" => :mavericks
-    sha256 "b9fe7179d1cafb381b69ecc3dfcc329038a0aba61db0a53389552f42b6322b3d" => :mountain_lion
+    sha256 "e33ffb53e8872eedb596cf957bff8a5a2da978030e8f16ed0a9356c9a0673734" => :yosemite
+    sha256 "966402cea51d6537cf718cb0dc62fa3bde5f3aa93b25cad1df09335fe36282b2" => :mavericks
+    sha256 "195288bb1ae8f59c29cd57386de6835bd6d67bab2fa7564d19d1c5eff543a5da" => :mountain_lion
   end
 
   option "32-bit"

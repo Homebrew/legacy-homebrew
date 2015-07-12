@@ -1,18 +1,16 @@
-require "formula"
-
 class ChromeCli < Formula
   desc "Control Google Chrome from the command-line"
   homepage "https://github.com/prasmussen/chrome-cli"
   url "https://github.com/prasmussen/chrome-cli/archive/1.5.0.tar.gz"
-  sha1 "aab28c1dfafd6a54f4de757b390bdb2b6ab0c522"
-
+  sha256 "c53a391b112411adef70b7162d2af1ba420cc9975ba1886bc2cfe56793b5ef91"
   head "https://github.com/prasmussen/chrome-cli.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "04f97a42bb938372e4b344b2c543575c2df61e87" => :mavericks
-    sha1 "1ed37da928049461e239d848a77e3cc1838ee17a" => :mountain_lion
+    revision 2
+    sha256 "38d45913effcf3f48d14c5455e006aa99ec36f89ee38da8155a648826a60064f" => :yosemite
+    sha256 "7cc270cf0c223b9dfa27c3498fa863e5309302fc6dbbc00f36c1c128904a9b5c" => :mavericks
+    sha256 "329d94b79632a9750ec875bf6a401575d215f271c2f8f62fa88a0f01cb8e036c" => :mountain_lion
   end
 
   depends_on :xcode => :build
@@ -32,6 +30,6 @@ class ChromeCli < Formula
   end
 
   test do
-    system "#{bin}/chrome-cli", 'version'
+    system "#{bin}/chrome-cli", "version"
   end
 end

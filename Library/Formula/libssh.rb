@@ -1,24 +1,19 @@
 class Libssh < Formula
   desc "C library SSHv1/SSHv2 client and server protocols"
   homepage "https://www.libssh.org/"
-  url "https://red.libssh.org/attachments/download/107/libssh-0.6.4.tar.gz"
-  sha1 "073bf53d9e02f7cfbcc5d8738ca1c9ffb2edd247"
+  url "https://red.libssh.org/attachments/download/154/libssh-0.7.1.tar.xz"
+  sha256 "2fc7ccf96d3263cbd8ab520118cb94d9a2e11714c61e22b3f761fc5352fd046d"
 
   head "git://git.libssh.org/projects/libssh.git"
 
   bottle do
-    sha1 "de5ef207ed3ae4d79f180a5835fe491409a0804d" => :yosemite
-    sha1 "3de5d0a02be7bda59dabe91cd7db4ece978d25bb" => :mavericks
-    sha1 "983355b795316434c54dd61e85495a808a147845" => :mountain_lion
+    sha256 "d4c38799d5f43f7f19d69f5733f884604944cde5458383cf5133ce449524fada" => :yosemite
+    sha256 "f316f85527d2ff721eb897fff84329610241224462d396ff6afdbd0f41b7c73c" => :mavericks
+    sha256 "a090f18299ad75737715fb0b1dd37fff809dc10383232a65c4849f61a7197bf7" => :mountain_lion
   end
 
   depends_on "cmake" => :build
   depends_on "openssl"
-
-  # Fix compilation on 10.10
-  # https://red.libssh.org/issues/164
-  # https://red.libssh.org/issues/174
-  patch :DATA
 
   def install
     mkdir "build" do
@@ -26,21 +21,22 @@ class Libssh < Formula
       system "make", "install"
     end
   end
-end
 
-__END__
-diff --git a/ConfigureChecks.cmake b/ConfigureChecks.cmake
-index 8f76af8..0ce7a31 100644
---- a/ConfigureChecks.cmake
-+++ b/ConfigureChecks.cmake
-@@ -101,8 +101,8 @@ check_function_exists(snprintf HAVE_SNPRINTF)
- check_function_exists(poll HAVE_POLL)
- check_function_exists(select HAVE_SELECT)
- check_function_exists(getaddrinfo HAVE_GETADDRINFO)
--check_function_exists(ntohll HAVE_NTOHLL)
--check_function_exists(htonll HAVE_HTONLL)
-+check_symbol_exists(ntohll arpa/inet.h HAVE_NTOHLL)
-+check_symbol_exists(htonll arpa/inet.h HAVE_HTONLL)
- 
- if (WIN32)
-     check_function_exists(_strtoui64 HAVE__STRTOUI64)
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <libssh/libssh.h>
+      #include <stdlib.h>
+      int main()
+      {
+        ssh_session my_ssh_session = ssh_new();
+        if (my_ssh_session == NULL)
+          exit(-1);
+        ssh_free(my_ssh_session);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{include}", "-L#{lib}", "-lssh",
+           testpath/"test.c", "-o", testpath/"test"
+    system "./test"
+  end
+end

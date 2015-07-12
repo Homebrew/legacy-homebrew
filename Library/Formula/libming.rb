@@ -4,15 +4,15 @@ class Libming < Formula
   desc "C library for generating Macromedia Flash files"
   homepage 'http://www.libming.org'
   url 'https://downloads.sourceforge.net/project/ming/Releases/ming-0.4.4.tar.bz2'
-  sha1 'e803b3b94a00a361e3415105f26112cf6f7bac81'
+  sha256 '40e09d781741ac961338ed8dec7ba2ed06217de9da44dd67af6b881b95d2af7e'
   revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "32b39f8fa04d714d6bf347e949226083d047cbcb" => :yosemite
-    sha1 "74dede7e7d9cc92cf77f75ee3f9e3f203fc45a16" => :mavericks
-    sha1 "a17d5d4085eac1998e3cee52048870f569d37935" => :mountain_lion
+    revision 2
+    sha256 "18eeaa97826666b7a0e056f5a954f14b849da4d5e061454cbeeea8405ac71a58" => :yosemite
+    sha256 "de61c35147f75601b49728366cf0baa958429c50e2a26f1f1bb7eaf1d697259e" => :mavericks
+    sha256 "fe516b67284f8de7a34ed1ac3dc68ee46d0bdb3593db16ba5f62b9e228336144" => :mountain_lion
   end
 
   option 'perl', 'Build the perl extension'

@@ -14,6 +14,7 @@ class Harfbuzz < Formula
   depends_on "glib"
   depends_on "cairo"
   depends_on "icu4c" => :recommended
+  depends_on "graphite2" => :optional
   depends_on "freetype"
   depends_on "gobject-introspection"
 
@@ -31,6 +32,7 @@ class Harfbuzz < Formula
     ]
 
     args << "--with-icu" if build.with? "icu4c"
+    args << "--with-graphite2" if build.with? "graphite2"
     system "./configure", *args
     system "make", "install"
   end

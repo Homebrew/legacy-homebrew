@@ -4,12 +4,13 @@ class Freetype < Formula
   url "https://downloads.sf.net/project/freetype/freetype2/2.6/freetype-2.6.tar.bz2"
   mirror "http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.bz2"
   sha256 "8469fb8124764f85029cc8247c31e132a2c5e51084ddce2a44ea32ee4ae8347e"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "1b5ac5bd027a9862fc63a654b532dfbb6e3155c5160bebe169cecb9527d05546" => :yosemite
-    sha256 "c4ad3873ff7793108a618bf52047bc8cdd320ccc9e7465f8becc910e1019afa6" => :mavericks
-    sha256 "a3dcf81f448f5640340916f5a968e2d23788c6f5b9ff482244d25245315cfe65" => :mountain_lion
+    sha256 "79aa27a0e5416cde4d866a5283fa5b8a9ff1b5c920128edc20ac2f482900d083" => :yosemite
+    sha256 "da9a3df9c363f2b27d7a3a823e39fe54e37f8a0090a4377967b0dbe965b2475f" => :mavericks
+    sha256 "40c36d3383dcc14e27cea0d80b5020d252e7ac9c3e100b725ac3649ef04fe57c" => :mountain_lion
   end
 
   keg_only :provided_pre_mountain_lion
@@ -18,6 +19,14 @@ class Freetype < Formula
   option "without-subpixel", "Disable sub-pixel rendering (a.k.a. LCD rendering, or ClearType)"
 
   depends_on "libpng"
+
+  # Don't define a TYPEOF macro in ftconfig.h
+  # https://savannah.nongnu.org/bugs/index.php?45376
+  # http://git.savannah.gnu.org/cgit/freetype/freetype2.git/commit/?id=5931268eecaeda3e05580bdc8885348fecc43fa8
+  patch do
+    url "https://gist.githubusercontent.com/anonymous/b47d77c41a6801879fd2/raw/fc21c3516b465095da7ed13f98bea491a7d18bbd/patch"
+    sha256 "5b21575d0384c9e502b51b0ba4be0ff453a34bcf9deba52b6baa38c3ffcde063"
+  end
 
   def install
     if build.with? "subpixel"

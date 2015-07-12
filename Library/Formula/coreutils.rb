@@ -1,24 +1,14 @@
 class Coreutils < Formula
   desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  revision 1
-
-  stable do
-    url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
-    mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
-    sha256 "ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d"
-
-    # Patch adapted from upstream commits:
-    # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
-    # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
-    patch :DATA
-  end
+  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.24.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.24.tar.xz"
+  sha256 "a2d75286a4b9ef3a13039c2da3868a61be4ee9f17d8ae380a35a97e506972170"
 
   bottle do
-    revision 2
-    sha256 "e0db37da043274394646c8cfd50aa0aee7c57904f4517d772e4af07fd5d7712f" => :yosemite
-    sha256 "2c1748f05bdcd8ea55754e31094a0b6952363dc3a0d1cca7dbc0126b0270e2ee" => :mavericks
-    sha256 "22685bb77955bafd107abf0301af20b6bfa4704d8d510f8f2b57d811628361e2" => :mountain_lion
+    sha256 "142edfec5f84958bdb27866e3a826f9b580a4ae07bfd805c766ab6a9a368e34f" => :yosemite
+    sha256 "851e007f3edaa58fc00d9c67aeed2ab5a8b9a1bad608dc3e5d76732cc35c593f" => :mavericks
+    sha256 "32ef44141d7dff2995ea0a692a3861ee9049a37a1254a3978c7dc8283c258476" => :mountain_lion
   end
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
@@ -88,18 +78,3 @@ class Coreutils < Formula
     system "#{bin}/gsha1sum", "-c", "test.sha1"
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 140a428..bae3163 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -2566,7 +2566,7 @@ pkglibexecdir = @pkglibexecdir@
- # Use 'ginstall' in the definition of PROGRAMS and in dependencies to avoid
- # confusion with the 'install' target.  The install rule transforms 'ginstall'
- # to install before applying any user-specified name transformations.
--transform = s/ginstall/install/; $(program_transform_name)
-+transform = s/ginstall/install/;/libstdbuf/!$(program_transform_name)
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@

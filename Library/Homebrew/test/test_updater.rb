@@ -1,10 +1,11 @@
 require 'testing_env'
 require 'cmd/update'
+require "formula_versions"
 require 'yaml'
 
 class UpdaterTests < Homebrew::TestCase
   class UpdaterMock < ::Updater
-    attr_accessor :diff
+    attr_accessor :diff, :expected, :called
 
     def initialize(*)
       super
@@ -28,10 +29,7 @@ class UpdaterTests < Homebrew::TestCase
       end
     end
     alias_method :safe_system, :`
-
-    def expectations_met?
-      @expected == @called
-    end
+    alias_method :system, :`
 
     def inspect
       "#<#{self.class.name}>"
@@ -56,15 +54,18 @@ class UpdaterTests < Homebrew::TestCase
   end
 
   def perform_update(fixture_name="")
+    Formulary.stubs(:factory).returns(stub(:pkg_version => "1.0"))
+    FormulaVersions.stubs(:new).returns(stub(:formula_at_revision => "2.0"))
     @updater.diff = fixture(fixture_name)
-    @updater.in_repo_expect("git checkout -q master")
+    @updater.in_repo_expect("git diff --quiet", true)
+    @updater.in_repo_expect("git symbolic-ref --short HEAD", "master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
     @updater.in_repo_expect("git config core.autocrlf false")
-    @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
+    @updater.in_repo_expect("git pull --quiet origin refs/heads/master:refs/remotes/origin/master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-    @updater.pull!
+    @updater.pull!(:silent => true)
     @report.update(@updater.report)
-    assert_predicate @updater, :expectations_met?
+    assert_equal @updater.expected, @updater.called
   end
 
   def test_update_homebrew_without_any_changes

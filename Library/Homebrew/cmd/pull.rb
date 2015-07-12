@@ -59,8 +59,12 @@ module Homebrew
 
     ARGV.named.each do |arg|
       if arg.to_i > 0
-        url = 'https://github.com/Homebrew/homebrew/pull/' + arg
+        url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
         issue = arg
+      elsif (testing_match = arg.match %r{brew.sh/job/Homebrew%20Testing/(\d+)/})
+        _, testing_job = *testing_match
+        url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
+        odie "Testing URLs require `--bottle`!" unless ARGV.include?('--bottle')
       else
         if (api_match = arg.match HOMEBREW_PULL_API_REGEX)
           _, user, tap, pull = *api_match
@@ -74,11 +78,11 @@ module Homebrew
         issue = url_match[3]
       end
 
-      if ARGV.include?("--bottle") && issue.nil?
+      if !testing_job && ARGV.include?("--bottle") && issue.nil?
         raise "No pull request detected!"
       end
 
-      if tap_name = tap(url)
+      if !testing_job && tap_name = tap(url)
         user = url_match[1].downcase
         tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
         safe_system "brew", "tap", "#{user}/#{tap_name}" unless tap_dir.exist?
@@ -150,14 +154,20 @@ module Homebrew
       end
 
       if ARGV.include? "--bottle"
-        bottle_commit_url = if tap_name
-          "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+
+        bottle_commit_url = if testing_job
+          bottle_branch = "testing-bottle-#{testing_job}"
+          url
         else
-          "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+          bottle_branch = "pull-bottle-#{issue}"
+          if tap_name
+            "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
+          else
+            "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+          end
         end
         curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
 
-        bottle_branch = "pull-bottle-#{issue}"
         safe_system "git", "checkout", "-B", bottle_branch, revision
         pull_url bottle_commit_url
         safe_system "git", "rebase", branch
@@ -175,12 +185,16 @@ module Homebrew
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
             version = f.pkg_version
-            curl "--silent", "--fail",
+            curl "-w", '\n', "--silent", "--fail",
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
+              "-d", '{"publish_wait_for_secs": -1}',
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
-            puts
-            sleep 2
-            safe_system "brew", "fetch", "--retry", "--force-bottle", f.full_name
+            success = system "brew", "fetch", "--retry", "--force-bottle", f.full_name
+            unless success
+              ohai "That didn't work; waiting for 15 seconds and trying again..."
+              sleep 15
+              system "brew", "fetch", "--retry", "--force-bottle", f.full_name
+            end
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"

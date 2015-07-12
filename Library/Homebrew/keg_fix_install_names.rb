@@ -39,6 +39,7 @@ class Keg
     end
 
     files = pkgconfig_files | libtool_files | script_files | plist_files
+    files << tab_file if tab_file.file?
 
     files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
       s = first.open("rb", &:read)
@@ -68,8 +69,7 @@ class Keg
   end
 
   # Detects the C++ dynamic libraries in place, scanning the dynamic links
-  # of the files within the keg. This searches only libs contained within
-  # lib/, and ignores binaries and other mach-o objects
+  # of the files within the keg.
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
   # for instance between Apple libstdc++ and GNU libstdc++
   def detect_cxx_stdlibs(options={})
@@ -207,5 +207,9 @@ class Keg
       plist_files << pn
     end
     plist_files
+  end
+
+  def tab_file
+    join(Tab::FILENAME)
   end
 end

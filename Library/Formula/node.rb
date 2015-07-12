@@ -2,14 +2,14 @@
 class Node < Formula
   desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.4/node-v0.12.4.tar.gz"
-  sha256 "3298d0997613a04ac64343e8316da134d04588132554ae402eb344e3369ec912"
+  url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
+  sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
   head "https://github.com/joyent/node.git", :branch => "v0.12"
 
   bottle do
-    sha256 "851eedc0bcfb26ce2c7decc16d97522090c662498d703a51ed1c82dd4392f273" => :yosemite
-    sha256 "dac805242be62d05eb8e5451e9a9a4a1fd8bbaee6b048e7547157e19b3ff1a2d" => :mavericks
-    sha256 "cdee3b33f5b1f54916f456d88d4470c967898214beba5fe5ef23b4f899d74f44" => :mountain_lion
+    sha256 "deae62072a5de00e77f153ffd33b943bba412310528eea0801ccc853e1b3f73f" => :yosemite
+    sha256 "39771c1b6fa382f749afde41e1fb6aeb1bd6b71e98cfa53efb349a93075ef064" => :mavericks
+    sha256 "54dd753c1a0e4e25ffbcd9afbdb7d9ccd6df62e7df4aea08ce97e6b1ffae93d8" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -31,8 +31,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.10.1.tgz"
-    sha256 "5b57c177bcaba628b04aba22f1112f409a0344c74653eb8c9185df24a97ac01b"
+    url "https://registry.npmjs.org/npm/-/npm-2.12.1.tgz"
+    sha256 "6b6512c6f9097da193dfe046053d6d0483b5c5658dc0a763c1ba5609b6bbc16c"
   end
 
   def install

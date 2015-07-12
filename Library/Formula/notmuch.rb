@@ -1,16 +1,14 @@
-require "formula"
-
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "http://notmuchmail.org"
-  url "http://notmuchmail.org/releases/notmuch-0.19.tar.gz"
-  sha1 "df023988f67e329357a5e8d00c4f6fc71249b89f"
+  url "http://notmuchmail.org/releases/notmuch-0.20.tar.gz"
+  sha256 "98475574bfa1341049639ce181f1293b2a8c077a2eb695d96723569e2d2b6d07"
 
   bottle do
     cellar :any
-    sha1 "000f3f7ab9e2a78db874ba95f2a7e73d96cbdcd9" => :yosemite
-    sha1 "43d716940b5b99923ef14dd207fab1c9eb9e591f" => :mavericks
-    sha1 "c5bcffd7d593c4c5dffb85d42b33bdfff26ff113" => :mountain_lion
+    sha256 "557573521aa7783958f6e59bfee86f0e8f277b706654719d5c16e5b9f394c2d3" => :yosemite
+    sha256 "8dc378548f7440c0ce65c170d7ded3aa3115dcb4279b1a2837812a43635d777b" => :mavericks
+    sha256 "11c66bda0c45eac434830bc83bc9365c5ef6dbff08e3b872b3b2001282ede8ae" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -24,7 +22,7 @@ class Notmuch < Formula
   # Requires zlib >= 1.2.5.2
   resource "zlib" do
     url "http://zlib.net/zlib-1.2.8.tar.gz"
-    sha1 "a4d316c404ff54ca545ea71a27af7dbc29817088"
+    sha256 "36658cb768a54c1d4dec43c3116c27ed893e88b02ecfcb44f2166f9c0b7f2a0d"
   end
 
   def install
@@ -45,11 +43,14 @@ class Notmuch < Formula
     system "./configure", *args
     system "make", "V=1", "install"
 
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       cd "bindings/python" do
         system python, *Language::Python.setup_install_args(prefix)
       end
     end
+  end
 
+  test do
+    system "#{bin}/notmuch", "help"
   end
 end

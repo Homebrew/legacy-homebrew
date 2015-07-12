@@ -1,15 +1,31 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.2/cmake-3.2.3.tar.gz"
-  sha256 "a1ebcaf6d288eb4c966714ea457e3b9677cdfde78820d0f088712d7320850297"
   head "http://cmake.org/cmake.git"
+
+  stable do
+    url "http://www.cmake.org/files/v3.2/cmake-3.2.3.tar.gz"
+    sha256 "a1ebcaf6d288eb4c966714ea457e3b9677cdfde78820d0f088712d7320850297"
+
+    patch do
+      # Fix for older bash-completion versions.  This can be removed when 3.3.0
+      # is released.
+      # Use Github because upstream git changes sha and breaks from-source download.
+      url "https://github.com/Kitware/CMake/commit/2ecf168f1909.diff"
+      sha256 "d3f8cd71d0b6ce23a22c55145114012da916f2e42af71cbbad35090d0aeb4f68"
+    end
+  end
 
   bottle do
     cellar :any
     sha256 "52d5da6e275c0c7780d21964a8f7e7350a1978f3370b48fe4776bea0c8ab05af" => :yosemite
     sha256 "d580f7a24217854258bc73c41519579abefe8432176cef3ba4ebf5e71ad48701" => :mavericks
     sha256 "127d5cf21c33d2dc3f7b74d54dd40d3e048ddacbd28370027fb2221ac2d2bdba" => :mountain_lion
+  end
+
+  devel do
+    url "http://www.cmake.org/files/v3.3/cmake-3.3.0-rc3.tar.gz"
+    sha256 "e1302ea14f218c07a94560d42d6f3cafa1942821896316a5555ca78b2597caad"
   end
 
   option "without-docs", "Don't build man pages"
@@ -43,13 +59,6 @@ class Cmake < Formula
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
     sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
-  end
-
-  patch do
-    # fix for older bash-completion versions
-    # Use Github because upstream git changes sha and breaks from-source download.
-    url "https://github.com/Kitware/CMake/commit/2ecf168f1909.diff"
-    sha256 "d3f8cd71d0b6ce23a22c55145114012da916f2e42af71cbbad35090d0aeb4f68"
   end
 
   def install

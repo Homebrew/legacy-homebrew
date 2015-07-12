@@ -11,7 +11,7 @@ class Erlang17Requirement < Requirement
   end
 
   def message; <<-EOS.undent
-    Erlang 17 is required to install.
+    Erlang 17+ is required to install.
 
     You can install this with:
       brew install erlang
@@ -25,15 +25,15 @@ end
 class Elixir < Formula
   desc "Functional metaprogramming aware language built on Erlang VM"
   homepage "http://elixir-lang.org/"
-  url "https://github.com/elixir-lang/elixir/archive/v1.0.4.tar.gz"
-  sha256 "79341fde3b01217aa252b8996d1b1b27cd1006cb89fe43446d5241e3dcb84bad"
+  url "https://github.com/elixir-lang/elixir/archive/v1.0.5.tar.gz"
+  sha256 "5ce5c226b3d11d751b41ad79b915b86f13f8a1b89ef3e733321d3f46ff4d81b8"
 
   head "https://github.com/elixir-lang/elixir.git"
 
   bottle do
-    sha256 "537d5760fbd780fef37a27872f1ee4d93b073a9a466a03c1f5834a804ece0275" => :yosemite
-    sha256 "5aa31b974c75e1d97db4be2e88ee2a34f0518ef183471f18b0225604b362b39a" => :mavericks
-    sha256 "3021ac2b3fe0aae5dfb7bb03d057ccd7df5bb9b733de35399ff7a431cae622ee" => :mountain_lion
+    sha256 "e25c7d985147de85b0e8d0adfc12f92c34af748af2c58557ad4f34aa7f96e63b" => :yosemite
+    sha256 "2c5931b0eea75db2e22c6a20cb17c632c5052d03254bd355c0db5b9dbd90ba51" => :mavericks
+    sha256 "05bafa8e03110933685d0f8888a5b461a8ce51427c7cf23a069995a9a9698794" => :mountain_lion
   end
 
   depends_on Erlang17Requirement

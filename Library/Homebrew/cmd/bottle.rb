@@ -9,7 +9,7 @@ require 'extend/pathname'
 
 BOTTLE_ERB = <<-EOS
   bottle do
-    <% if root_url != BottleSpecification::DEFAULT_ROOT_URL %>
+    <% if !root_url.start_with?(BottleSpecification::DEFAULT_DOMAIN) %>
     root_url "<%= root_url %>"
     <% end %>
     <% if prefix != BottleSpecification::DEFAULT_PREFIX %>
@@ -52,6 +52,9 @@ module Homebrew
     result = false
 
     keg.each_unique_file_matching(string) do |file|
+      # skip document file.
+      next if Metafiles::EXTENSIONS.include? file.extname
+
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
       if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?

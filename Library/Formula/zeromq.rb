@@ -4,9 +4,10 @@ class Zeromq < Formula
 
   bottle do
     cellar :any
-    sha256 "35959e6b6e357d80c35529f410a7429cb53ed0d79d56762c8719ce822dab8431" => :yosemite
-    sha256 "54649139f4cdd17a5780335eda37286feecfed5b5682fd15782b9e4895d14380" => :mavericks
-    sha256 "78951bbe1bb821bdc758ba28ec3220acc6ea85b228250c348120760f7cc45841" => :mountain_lion
+    revision 1
+    sha256 "52bdc9f995f14e3e8cc83cfd3de52f8375278a5d7a1e4e208a7981a946fdf9e1" => :yosemite
+    sha256 "f42f60ac5ac0258b37496628af97b502f801b7332d859857f13e0ee90413caec" => :mavericks
+    sha256 "99fe88c9a673ec6c26c1c3df65747b0de9c811de0c9a9b15f641f6e60d937edb" => :mountain_lion
   end
 
   head do
@@ -24,12 +25,14 @@ class Zeromq < Formula
 
   option :universal
   option "with-libpgm", "Build with PGM extension"
+  option "with-norm", "Build with NORM extension"
 
   deprecated_option "with-pgm" => "with-libpgm"
 
   depends_on "pkg-config" => :build
   depends_on "libpgm" => :optional
   depends_on "libsodium" => :optional
+  depends_on "norm" => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -37,9 +40,9 @@ class Zeromq < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     if build.with? "libpgm"
       # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
-      ENV['OpenPGM_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
-      ENV['OpenPGM_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
-      args << "--with-system-pgm"
+      ENV['pgm_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
+      ENV['pgm_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
+      args << "--with-pgm"
     end
 
     if build.with? "libsodium"
@@ -47,6 +50,8 @@ class Zeromq < Formula
     else
       args << "--without-libsodium"
     end
+
+    args << "--with-norm" if build.with? "norm"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args

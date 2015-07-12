@@ -387,6 +387,12 @@ class Formula
   # `brew link` for formulae that are not keg-only.
   def share;   prefix+'share'   end
 
+  # The directory where the formula's shared files should be installed,
+  # with the name of the formula appended to avoid linking conflicts.
+  # This is symlinked into `HOMEBREW_PREFIX` after installation or with
+  # `brew link` for formulae that are not keg-only.
+  def pkgshare;    prefix+'share'+name    end
+
   # The directory where the formula's Frameworks should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.
@@ -624,22 +630,22 @@ class Formula
 
   # an array of all core {Formula} names
   def self.core_names
-    Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
+    @core_names ||= Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
   end
 
   # an array of all tap {Formula} names
   def self.tap_names
-    Tap.map(&:formula_names).flatten.sort
+    @tap_names ||= Tap.map(&:formula_names).flatten.sort
   end
 
   # an array of all {Formula} names
   def self.names
-    (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+    @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
   end
 
   # an array of all {Formula} names, which the tap formulae have the fully-qualified name
   def self.full_names
-    core_names + tap_names
+    @full_names ||= core_names + tap_names
   end
 
   def self.each
@@ -657,14 +663,16 @@ class Formula
 
   # An array of all installed {Formula}
   def self.installed
-    return [] unless HOMEBREW_CELLAR.directory?
-
-    HOMEBREW_CELLAR.subdirs.map do |rack|
-      begin
-        Formulary.from_rack(rack)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
-      end
-    end.compact
+    @installed ||= if HOMEBREW_CELLAR.directory?
+      HOMEBREW_CELLAR.subdirs.map do |rack|
+        begin
+          Formulary.from_rack(rack)
+        rescue FormulaUnavailableError, TapFormulaAmbiguityError
+        end
+      end.compact
+    else
+      []
+    end
   end
 
   def self.aliases

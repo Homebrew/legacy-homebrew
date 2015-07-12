@@ -47,6 +47,7 @@ class SoftwareSpec
   def owner= owner
     @name = owner.name
     @full_name = owner.full_name
+    @bottle_specification.tap = owner.tap
     @owner = owner
     @resource.owner = self
     resources.each_value do |r|
@@ -258,18 +259,25 @@ end
 class BottleSpecification
   DEFAULT_PREFIX = "/usr/local".freeze
   DEFAULT_CELLAR = "/usr/local/Cellar".freeze
-  DEFAULT_DOMAIN = "https://homebrew.bintray.com".freeze
-  DEFAULT_ROOT_URL = "#{DEFAULT_DOMAIN}/bottles".freeze
+  DEFAULT_DOMAIN = (ENV["HOMEBREW_BOTTLE_DOMAIN"] || "https://homebrew.bintray.com").freeze
 
-  attr_rw :root_url, :prefix, :cellar, :revision
+  attr_rw :prefix, :cellar, :revision
+  attr_accessor :tap
   attr_reader :checksum, :collector
 
   def initialize
     @revision = 0
     @prefix = DEFAULT_PREFIX
     @cellar = DEFAULT_CELLAR
-    @root_url = DEFAULT_ROOT_URL
     @collector = BottleCollector.new
+  end
+
+  def root_url(var=nil)
+    if var.nil?
+      @root_url ||= "#{DEFAULT_DOMAIN}/#{Bintray.repository(tap)}"
+    else
+      @root_url = var
+    end
   end
 
   def compatible_cellar?

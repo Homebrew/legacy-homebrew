@@ -26,7 +26,7 @@ module Homebrew
       rx = query_regexp(query)
       Formula.each do |formula|
         if formula.desc =~ rx
-          puts "#{formula.full_name}: #{formula.desc}"
+          puts "#{Tty.white}#{formula.full_name}:#{Tty.reset} #{formula.desc}"
         end
       end
     elsif ARGV.empty?

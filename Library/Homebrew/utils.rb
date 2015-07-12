@@ -55,7 +55,7 @@ def oh1 title
 end
 
 def opoo warning
-  $stderr.puts "#{Tty.red}Warning#{Tty.reset}: #{warning}"
+  $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end
 
 def onoe error
@@ -329,7 +329,7 @@ module GitHub extend self
         GitHub #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
           https://github.com/settings/tokens
-        and then set it as HOMEBREW_GITHUB_API_TOKEN.
+        and then set the token as: HOMEBREW_GITHUB_API_TOKEN
         EOS
     end
 
@@ -397,6 +397,10 @@ module GitHub extend self
     uri = ISSUES_URI.dup
     uri.query = build_query_string(query, qualifiers)
     open(uri) { |json| json["items"] }
+  end
+
+  def repository(user, repo)
+    open(URI.parse("https://api.github.com/repos/#{user}/#{repo}")) { |j| j }
   end
 
   def build_query_string(query, qualifiers)

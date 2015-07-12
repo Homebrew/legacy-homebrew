@@ -125,6 +125,9 @@ def check_for_stray_dylibs
     "libosxfuse_i32.2.dylib", # OSXFuse
     "libosxfuse_i64.2.dylib", # OSXFuse
     "libTrAPI.dylib", # TrAPI / Endpoint Security VPN
+    "libntfs-3g.*.dylib", # NTFS-3G
+    "libntfs.*.dylib", # NTFS-3G
+    "libublio.*.dylib", # NTFS-3G
   ]
 
   __check_stray_files "/usr/local/lib", "*.dylib", white_list, <<-EOS.undent
@@ -142,6 +145,9 @@ def check_for_stray_static_libs
   white_list = [
     "libsecurity_agent_client.a", # OS X 10.8.2 Supplemental Update
     "libsecurity_agent_server.a", # OS X 10.8.2 Supplemental Update
+    "libntfs-3g.a", # NTFS-3G
+    "libntfs.a", # NTFS-3G
+    "libublio.a", # NTFS-3G
   ]
 
   __check_stray_files "/usr/local/lib", "*.a", white_list, <<-EOS.undent
@@ -160,6 +166,8 @@ def check_for_stray_pcs
     "fuse.pc", # OSXFuse/MacFuse
     "macfuse.pc", # OSXFuse MacFuse compatibility layer
     "osxfuse.pc", # OSXFuse
+    "libntfs-3g.pc", # NTFS-3G
+    "libublio.pc",# NTFS-3G
   ]
 
   __check_stray_files "/usr/local/lib/pkgconfig", "*.pc", white_list, <<-EOS.undent
@@ -177,6 +185,9 @@ def check_for_stray_las
     "libfuse_ino64.la", # MacFuse
     "libosxfuse_i32.la", # OSXFuse
     "libosxfuse_i64.la", # OSXFuse
+    "libntfs-3g.la", # NTFS-3G
+    "libntfs.la", # NTFS-3G
+    "libublio.la", # NTFS-3G
   ]
 
   __check_stray_files "/usr/local/lib", "*.la", white_list, <<-EOS.undent
@@ -194,6 +205,8 @@ def check_for_stray_headers
     "fuse/**/*.h", # MacFuse
     "macfuse/**/*.h", # OSXFuse MacFuse compatibility layer
     "osxfuse/**/*.h", # OSXFuse
+    "ntfs/**/*.h", # NTFS-3G
+    "ntfs-3g/**/*.h", # NTFS-3G
   ]
 
   __check_stray_files "/usr/local/include", "**/*.h", white_list, <<-EOS.undent
@@ -796,7 +809,7 @@ def check_for_multiple_volumes
   # Find the volumes for the TMP folder & HOMEBREW_CELLAR
   real_cellar = HOMEBREW_CELLAR.realpath
 
-  tmp = Pathname.new with_system_path { `mktemp -d #{HOMEBREW_TEMP}/homebrew-brew-doctor-XXXXXX` }.strip
+  tmp = Pathname.new(Dir.mktmpdir("doctor", HOMEBREW_TEMP))
   real_temp = tmp.realpath.parent
 
   where_cellar = volumes.which real_cellar

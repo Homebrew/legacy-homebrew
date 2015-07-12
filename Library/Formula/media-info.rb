@@ -3,15 +3,15 @@ require "formula"
 class MediaInfo < Formula
   desc "Unified display of technical and tag data for audio/video"
   homepage "https://mediaarea.net/"
-  url "https://mediaarea.net/download/binary/mediainfo/0.7.74/MediaInfo_CLI_0.7.74_GNU_FromSource.tar.bz2"
-  version "0.7.74"
-  sha1 "89cf4745e3d9725bf109976a933f36af2a3aa36a"
+  url "https://mediaarea.net/download/binary/mediainfo/0.7.75/MediaInfo_CLI_0.7.75_GNU_FromSource.tar.bz2"
+  version "0.7.75"
+  sha256 "98f3a7ba9daf77e3df2fd308811e20ef6f87c6471fce8d6fe611b56668623f0d"
 
   bottle do
     cellar :any
-    sha256 "a3fb613a28c28aab0a792bd3a13da9ad8715ef2d17421ebc9154f73ec82ae57d" => :yosemite
-    sha256 "7f4f0ef118462e60579754016fa3a64ee81bd8d8f81fd776ff7225fa0a62c43c" => :mavericks
-    sha256 "e69fce673bf6245f7eea82e8a47d39d08a708cdab9f1f1898e235c5e08c0b755" => :mountain_lion
+    sha256 "775f21604db1c9f4d4158d6310970799e040443e3aed15c2caa99f4f6072d618" => :yosemite
+    sha256 "7d812960fc07dc8b5e11438822336c24d5191eaa0d6661418e536ac2584c13f7" => :mavericks
+    sha256 "d50e07286760c0e75e49738e08d8563000b6b5a6d2475604309ea2093dada7af" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

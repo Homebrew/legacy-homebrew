@@ -8,13 +8,19 @@ class Go < Formula
   sha1 "460caac03379f746c473814a65223397e9c9a2f6"
   version "1.4.2"
 
-  head "https://go.googlesource.com/go", :using => :git
+  head "https://github.com/golang/go.git"
+
+  devel do
+    url "https://storage.googleapis.com/golang/go1.5beta1.src.tar.gz"
+    sha256 "e02be87011421dc08ae6d03a3dc07492cad03faf83cb4f8ba8d39a403d38d3a1"
+    version "1.5beta1"
+  end
 
   bottle do
-    revision 1
-    sha1 "b3ec148a548331c3fd75435b7aa6ae2378ce995e" => :yosemite
-    sha1 "a4ea2ffdd9db813c870b0ce73c011788ac60cb51" => :mavericks
-    sha1 "bc52571c43f59f92ca461ff310693501f2419a04" => :mountain_lion
+    revision 2
+    sha256 "bb8b8e79201d93eb69e77763535b201ea812d426e259f106e18f62ddf80f86dd" => :yosemite
+    sha256 "46fbe85b2c75e45686ee463eeaa975ce1604f04ee611815d7c163f5feee90e03" => :mavericks
+    sha256 "7913ecbc952e22f9d6e5df114b857ed23ad97adcbc88419fa3b6425b856ee38e" => :mountain_lion
   end
 
   option "with-cc-all", "Build with cross-compilers and runtime support for all supported platforms"
@@ -29,6 +35,16 @@ class Go < Formula
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
     :revision => "69db398fe0e69396984e3967724820c1f631e971"
+  end
+
+  resource "gobootstrap" do
+    if MacOS.version > :lion
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.8.tar.gz"
+      sha1 "58a04b3eb9853c75319d9076df6f3ac8b7430f7f"
+    else
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.6.tar.gz"
+      sha1 "00c3f9a03daff818b2132ac31d57f054925c60e7"
+    end
   end
 
   def install
@@ -55,9 +71,19 @@ class Go < Formula
       targets = [["darwin", [""]]]
     end
 
-    # The version check is due to:
-    # http://codereview.appspot.com/5654068
-    (buildpath/"VERSION").write("default") if build.head?
+    if build.head? || build.devel?
+      # GOROOT_FINAL must be overidden later on real Go install
+      ENV["GOROOT_FINAL"] = buildpath/"gobootstrap"
+
+      # build the gobootstrap toolchain Go >=1.4
+      (buildpath/"gobootstrap").install resource("gobootstrap")
+      cd "#{buildpath}/gobootstrap/src" do
+        system "./make.bash", "--no-clean"
+      end
+      # This should happen after we build the test Go, just in case
+      # the bootstrap toolchain is aware of this variable too.
+      ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
+    end
 
     cd "src" do
       targets.each do |os, archs|
