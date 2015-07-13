@@ -3,8 +3,8 @@ class Kjell < Formula
   homepage "https://karlll.github.io/kjell/"
   # clone repository in order to get extensions submodule
   url "https://github.com/karlll/kjell.git",
-      :tag => "0.2.5",
-      :revision => "42e2b68742533181fc1da868cceca2efb88bf3f4"
+      :tag => "0.2.6",
+      :revision => "0848ad2d2ddefc74774f0d793f4aebd260efb052"
 
   head "https://github.com/karlll/kjell.git"
 
@@ -23,7 +23,14 @@ class Kjell < Formula
     system "make", "install-extensions"
   end
 
-  def caveats
-    "Extension 'kjell-prompt' requires a powerline patched font. See https://github.com/Lokaltog/powerline-fonts"
+  def caveats; <<-EOS.undent
+    Extension 'kjell-prompt' requires a powerline patched font.
+    See https://github.com/Lokaltog/powerline-fonts
+    EOS
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    system "script", "-q", "/dev/null", bin/"kjell", "-sanity_check", "true"
   end
 end
