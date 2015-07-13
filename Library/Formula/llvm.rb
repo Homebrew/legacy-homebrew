@@ -130,6 +130,8 @@ class Llvm < Formula
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
+    
+    args << "-DCMAKE_CXX_FLAGS_RELEASE='-O3 -DNDEBUG'"
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
 
