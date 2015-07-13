@@ -104,7 +104,7 @@ module FormulaCellarChecks
   end
 
   def check_shadowed_headers
-    ["libtool", "subversion", "berkeley-db", "openssl"].each do |formula_name|
+    ["libtool", "subversion", "berkeley-db"].each do |formula_name|
       return if formula.name.start_with?(formula_name)
     end
 

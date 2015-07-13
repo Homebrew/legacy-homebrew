@@ -5,11 +5,12 @@ class Openssl < Formula
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2d.tar.gz"
   mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2d.tar.gz"
   sha256 "671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8"
+  revision 1
 
   bottle do
-    sha256 "e9d8e2c7ab16a8516113093e999c8a6a1bc345badaa48af629963b97a7b9a1ef" => :yosemite
-    sha256 "7209b193915353309167fb6fde874a771e97b154bf303698753cbde9e8105e26" => :mavericks
-    sha256 "f77b9778a1b9d82db1d8dc17174590af0c10582c13097ca1fb70176d9877a9ff" => :mountain_lion
+    sha256 "65de00409343fb371a065ae514da7a6cbf4f575dee9e0016bd22baccd5b644fa" => :yosemite
+    sha256 "ec0a2591aca21c855790464f691db864d5180cb8ae97c68429ca31560fd5fd29" => :mavericks
+    sha256 "cc001abc92c0991bef7817cd88c078f8110354d1529a194a4b2e16e5e09cbeca" => :mountain_lion
   end
 
   resource "cacert" do
@@ -23,6 +24,9 @@ class Openssl < Formula
 
   depends_on "makedepend" => :build
   depends_on "zlib" unless OS.mac?
+
+  keg_only :provided_by_osx,
+    "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
   def arch_args
     return { :i386  => %w[linux-generic32], :x86_64 => %w[linux-x86_64] } if OS.linux?

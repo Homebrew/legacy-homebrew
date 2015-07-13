@@ -4,11 +4,12 @@ class Stunnel < Formula
   url "https://www.stunnel.org/downloads/stunnel-5.20.tar.gz"
   mirror "https://www.usenix.org.uk/mirrors/stunnel/stunnel-5.20.tar.gz"
   sha256 "4a36a3729a7287d9d82c4b38bf72c4d3496346cb969b86129c5deac22b20292b"
+  revision 1
 
   bottle do
-    sha256 "80388411076139374bbcf751ff458fa659cfaf20254326fb00b99c8a4a3e0488" => :yosemite
-    sha256 "89ab47994b96db9625bac8ae3a62d83f55bffbaa489db69cae5471538f3db19c" => :mavericks
-    sha256 "f765482b57b16c7894a5e65d63f03e42e99d3fb24f2255487f888c9ff39d1a47" => :mountain_lion
+    sha256 "73301c3a8a91c280d4917527cf590272462804c731d1090305048c9de7f5670b" => :yosemite
+    sha256 "2c3023b7de7cbf31472059ee922bf00eb70a5b0a1727bd13c954ed04b051c708" => :mavericks
+    sha256 "2fedc29356e91b4ec9f1fa05831cecb98925b6e767e63876c392ba05bf16420e" => :mountain_lion
   end
 
   # Please revision me whenever OpenSSL is updated

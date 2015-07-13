@@ -279,7 +279,6 @@ if MacOS.version >= "10.9"
         Xcode can be updated from
           https://developer.apple.com/downloads
         EOS
-        EOS
       end
     end
   else

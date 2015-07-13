@@ -4,13 +4,12 @@ class Python < Formula
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz"
   sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
-  revision 1
+  revision 2
 
   bottle do
-    revision 3
-    sha256 "ccba730727091bd73020348787077b224bfd93272ea5c8202ec3415e68c3351b" => :yosemite
-    sha256 "3406eb398c7d89bdf670e2c53feecd54df981d2b5562f7bf6586ac7689e580db" => :mavericks
-    sha256 "35c5e98031dbddf10cc02686e97c9cc8ca53429e1c299185303b49a8408516be" => :mountain_lion
+    sha256 "df7af5b6865765e96acdad1922c4983439f8b058845ac5023f8fe8ec79ea3d4e" => :yosemite
+    sha256 "c0fab9719d000e1f6150423538b01059471b6eb1777257f5e71a29e1457311e4" => :mavericks
+    sha256 "90e0f06ef02d3852cd805776ff172e909a2d69c97536ec0fae599d3ebd00bfec" => :mountain_lion
   end
 
   # Homebrew doesn't accept a wide/ucs4 option because narrow build is the de facto standard
