@@ -5,6 +5,7 @@ class Bind < Formula
   mirror "https://fossies.org/linux/misc/dns/bind9/9.10.2-P2/bind-9.10.2-P2.tar.gz"
   version "9.10.2-P2"
   sha256 "b1e6f0af88634aaf48fb9d06bbf82968264f49b8e2685f061dd3fd4c1ab76c5f"
+  revision 1
 
   bottle do
     sha256 "63d408519604d63f2483f4e46a315a32a94347f372e69f7066d85f1d781e46a0" => :yosemite
