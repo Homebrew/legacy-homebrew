@@ -100,6 +100,7 @@ class Emacs < Formula
       else
         args << "--without-x"
       end
+      args << "--without-ns"
 
       system "./configure", *args
       system "make"
