@@ -16,7 +16,7 @@ class Python < Formula
   # Homebrew doesn't accept a wide/ucs4 option because narrow build is the de facto standard
   # on Windows and OSX, but wide seems to be the default for linux
   # More details in: https://github.com/Homebrew/homebrew/pull/32368
-  option "with-unicode-ucs4", "Build unicode support with UCS4"'
+  option "with-unicode-ucs4", "Build unicode support with UCS4"
   option :universal
   option "with-quicktest", "Run `make quicktest` after the build (for devs; may fail)"
   option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
