@@ -5,9 +5,9 @@ class HtopOsx < Formula
   sha256 "a93be5c9d8a68081590b1646a0f10fb90e966e306560c3b141a61b3849446b72"
 
   bottle do
-    sha256 "d0b96a00a44bdc3ee68bc6e54637a98e578a798915be049a53da3a0c47c1e2ec" => :yosemite
-    sha256 "bb70c1dbd415929263c358288cc21489cdb45f9e18d9d3d9d51ffbe14e0ea6ef" => :mavericks
-    sha256 "b607461d74d89fdd9b9b7835f3c2311cfcfe1ddd16826260bbe089d80c40d60b" => :mountain_lion
+    sha256 "c4f4c2be9f6bda38bef8e57570cb02ec2a60738b5e3e6b27c189e493582daf66" => :yosemite
+    sha256 "1e3fa7862bfcef0eed646b7c2b7f1d3ec491404b2c9312ae1045bb78b8059f30" => :mavericks
+    sha256 "611c4ee686babb880828510fd3b1cfa247aa1e0ba6cb60401e8ad5c6cac1fc75" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
