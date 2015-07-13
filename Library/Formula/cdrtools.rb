@@ -1,16 +1,14 @@
-require 'formula'
-
 class Cdrtools < Formula
-  desc "ISO 9660 file system and CD creation tools"
-  homepage 'http://cdrecord.org/'
+  desc "CD/DVD/Blu-ray premastering and recording software"
+  homepage "http://cdrecord.org/"
 
   stable do
     url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.00.tar.bz2"
-    sha1 "6464844d6b936d4f43ee98a04d637cd91131de4e"
+    sha256 "7f9cb64820055573b880f77b2f16662a512518336ba95ab49228a1617973423d"
 
     patch :p0 do
       url "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
-      sha1 "6c2c06b7546face6dd58c3fb39484b9120e3e1ca"
+      sha256 "59a62420138c54fbea6eaa10a11f69488bb3fecf4f954fda47a3b1e424671d61"
     end
   end
 
@@ -21,10 +19,8 @@ class Cdrtools < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a28.tar.bz2"
-    sha1 "081b1daa9c86f33483213a8d8d0fd75caec51ead"
-
-    patch :p0, :DATA
+    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a30.tar.bz2"
+    sha256 "5b9a2f98771c9d0097a1e7640727655ece2864eea95f38e5611af2b2f6e6d9cd"
   end
 
   depends_on 'smake' => :build
@@ -52,20 +48,3 @@ class Cdrtools < Formula
     assert (testpath/"test.iso").exist?
   end
 end
-
-__END__
---- include/schily/sha2.h.orig	2010-08-27 10:41:30.000000000 +0000
-+++ include/schily/sha2.h
-@@ -104,10 +104,12 @@
- 
- #ifdef	HAVE_LONGLONG
- extern void SHA384Init		__PR((SHA2_CTX *));
-+#ifndef HAVE_PRAGMA_WEAK
- extern void SHA384Transform	__PR((UInt64_t state[8],
- 					const UInt8_t [SHA384_BLOCK_LENGTH]));
- extern void SHA384Update	__PR((SHA2_CTX *, const UInt8_t *, size_t));
- extern void SHA384Pad		__PR((SHA2_CTX *));
-+#endif
- extern void SHA384Final		__PR((UInt8_t [SHA384_DIGEST_LENGTH],
- 					SHA2_CTX *));
- extern char *SHA384End		__PR((SHA2_CTX *, char *));
