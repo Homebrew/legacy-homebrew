@@ -4,7 +4,7 @@ class Libfreenect < Formula
   desc "Drivers and libraries for the Xbox Kinect device"
   homepage "http://openkinect.org"
   url "https://github.com/OpenKinect/libfreenect/archive/v0.5.1.tar.gz"
-  sha1 "1f7296e50c27c07e2f57ee906c195cabf97c1438"
+  sha256 "97e5dd11a0f292b6a3014d1a31c7af16a21cd6574a63057ed7a364064a7614d0"
 
   head "https://github.com/OpenKinect/libfreenect.git"
 
@@ -22,6 +22,7 @@ class Libfreenect < Formula
 
   def install
     args = std_cmake_args
+    args << "-DBUILD_OPENNI2_DRIVER=ON"
 
     if build.universal?
       ENV.universal_binary
