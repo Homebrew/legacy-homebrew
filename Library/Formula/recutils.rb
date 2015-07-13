@@ -1,6 +1,6 @@
 class Recutils < Formula
   desc "Tools to work with human-editable, plain text data files"
-  homepage "http://www.gnu.org/software/recutils/"
+  homepage "https://www.gnu.org/software/recutils/"
   url "http://ftpmirror.gnu.org/recutils/recutils-1.7.tar.gz"
   mirror "http://ftp.gnu.org/gnu/recutils/recutils-1.7.tar.gz"
   sha1 "20d265aecb05ca4e4072df9cfac08b1392da6919"

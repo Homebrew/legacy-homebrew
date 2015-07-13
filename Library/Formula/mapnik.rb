@@ -6,9 +6,11 @@ class Mapnik < Formula
   sha256 "c88b1ce48899ffe0d75f9e753dcd427e2b6fd3186b40e04508608b2151c0e7b0"
 
   bottle do
-    sha256 "bcf0efd84fc80d8db0b8f78204ecc1b36221bf53994cad19d6c5ce0083668178" => :yosemite
-    sha256 "160bf811a9148c076c28cf72014aadf6994e46373cf7b83fc79e143f2fd33dcd" => :mavericks
-    sha256 "b60f792870191f6a7b32a628d81120429471e4b24bb589063ea057fba5ad2c5d" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "601f75cbb775c748c1a7bef73420235a8a61b60e69ce5b735b7c181c07c739df" => :yosemite
+    sha256 "80fdbd2e582886285112aeb921e681d6899b9b9c3b4ad26c778a1e71d495da09" => :mavericks
+    sha256 "896ea2edf99d28fd903a4ae32221bf354f940ae397606c2853656e5185fb366a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -47,6 +49,7 @@ class Mapnik < Formula
     args = ["CC=\"#{ENV.cc}\"",
             "CXX=\"#{ENV.cxx}\"",
             "PREFIX=#{prefix}",
+            "CUSTOM_CXXFLAGS=\"-DBOOST_EXCEPTION_DISABLE\"",
             "ICU_INCLUDES=#{icu}/include",
             "ICU_LIBS=#{icu}/lib",
             "JPEG_INCLUDES=#{jpeg}/include",
@@ -65,7 +68,8 @@ class Mapnik < Formula
             "PROJ_LIBS=#{proj}/lib",
             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config",
             "NIK2IMG=False",
-            "CPP_TESTS=False" # too long to compile to be worth it
+            "CPP_TESTS=False", # too long to compile to be worth it
+            "INPUT_PLUGINS=all"
            ]
 
     if build.with? "cairo"

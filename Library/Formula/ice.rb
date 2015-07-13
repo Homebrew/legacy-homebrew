@@ -5,29 +5,24 @@ class Ice < Formula
   sha256 "77933580cdc7fade0ebfce517935819e9eef5fc6b9e3f4143b07404daf54e25e"
 
   bottle do
-    revision 1
-    sha256 "8c9d7b09e8b6b19126ada33f6b7cea1a7837993b90203fe6f6dde2bf4bef3460" => :yosemite
-    sha256 "87a5dd2311296bea03889062d4f20ad76a7de31382a42409bfb933d8e66052eb" => :mavericks
+    revision 2
+    sha256 "afee4ec276259a24243ce08c848c10c930fecbc3bbd086ca1eec2b9e7863384f" => :yosemite
+    sha256 "0fd42d37aaac81da90b098a6138eac4ade95ddfc6adc5709d0e42f8e91e67c70" => :mavericks
   end
 
+  option "with-java", "Build Ice for Java and the IceGrid Admin app"
+
   depends_on "mcpp"
-  depends_on :java  => ["1.7", :optional]
+  depends_on :java => :optional
   depends_on :macos => :mavericks
 
   resource "berkeley-db" do
-    url "http://download.oracle.com/berkeley-db/db-5.3.28.NC.tar.gz"
-    sha256 "76a25560d9e52a198d37a31440fd07632b5f1f8f9f2b6d5438f4bc3e7c9013ef"
+    url "https://zeroc.com/download/homebrew/db-5.3.28.NC.brew.tar.gz"
+    sha256 "8ac3014578ff9c80a823a7a8464a377281db0e12f7831f72cef1fd36cd506b94"
   end
 
   def install
     resource("berkeley-db").stage do
-      # Fix build under Xcode 4.6
-      # Double-underscore names are reserved, and __atomic_compare_exchange is now
-      # a built-in, so rename this to something non-conflicting.
-      inreplace "src/dbinc/atomic.h" do |s|
-        s.gsub! "__atomic_compare_exchange", "__atomic_compare_exchange_db"
-      end
-
       # BerkeleyDB dislikes parallel builds
       ENV.deparallelize
       args = %W[
@@ -50,9 +45,6 @@ class Ice < Formula
 
     if build.with? "java"
       inreplace "java/src/IceGridGUI/build.gradle", "${DESTDIR}${binDir}/${appName}.app",  "${prefix}/${appName}.app"
-    else
-      inreplace "cpp/src/slice2java/Makefile", /install:/, "dontinstall:"
-      inreplace "cpp/src/slice2freezej/Makefile", /install:/, "dontinstall:"
     end
 
     # Unset ICE_HOME as it interferes with the build
@@ -88,5 +80,40 @@ class Ice < Formula
       args << "install_libdir=#{lib}/php/extensions"
       system "make", "install", *args
     end
+  end
+
+  test do
+    (testpath/"Hello.ice").write <<-EOS.undent
+      module Test {
+        interface Hello {
+          void sayHello();
+        };
+      };
+    EOS
+    (testpath/"Test.cpp").write <<-EOS.undent
+      #include <Ice/Ice.h>
+      #include <Hello.h>
+
+      class HelloI : public Test::Hello {
+      public:
+        virtual void sayHello(const Ice::Current&) {}
+      };
+
+      int main(int argc, char* argv[]) {
+        Ice::CommunicatorPtr communicator;
+        communicator = Ice::initialize(argc, argv);
+        Ice::ObjectAdapterPtr adapter =
+            communicator->createObjectAdapterWithEndpoints("Hello", "default -h localhost -p 10000");
+        adapter->add(new HelloI, communicator->stringToIdentity("hello"));
+        adapter->activate();
+        communicator->destroy();
+        return 0;
+      }
+    EOS
+    system "#{bin}/slice2cpp", "Hello.ice"
+    system "xcrun", "clang++", "-c", "-I#{include}", "-I.", "Hello.cpp"
+    system "xcrun", "clang++", "-c", "-I#{include}", "-I.", "Test.cpp"
+    system "xcrun", "clang++", "-L#{lib}", "-o", "test", "Test.o", "Hello.o", "-lIce", "-lIceUtil"
+    system "./test", "--Ice.InitPlugins=0"
   end
 end
