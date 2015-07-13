@@ -1,8 +1,8 @@
 class HtopOsx < Formula
   desc "Improved top (interactive process viewer) for OS X"
   homepage "https://github.com/max-horvath/htop-osx"
-  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.6.tar.gz"
-  sha1 "f98d42db66136b243851142b3d9325b381caacf4"
+  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.7.tar.gz"
+  sha256 "a93be5c9d8a68081590b1646a0f10fb90e966e306560c3b141a61b3849446b72"
 
   bottle do
     sha256 "d0b96a00a44bdc3ee68bc6e54637a98e578a798915be049a53da3a0c47c1e2ec" => :yosemite
