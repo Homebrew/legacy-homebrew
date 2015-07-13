@@ -9,9 +9,9 @@ class Kjell < Formula
   head "https://github.com/karlll/kjell.git"
 
   bottle do
-    sha256 "a192455ff56b71352922c12cb7bc5c8d13fb0957379414170a6cd87e8294a275" => :yosemite
-    sha256 "c9cf3b4d1ef5785036e9752ae104357e701f4d56d7b330c41e9421cf63f4a3c8" => :mavericks
-    sha256 "d87338b3f6669d917ce0202da53cb0737e6c67b9295d29f5efd55b0aa50574a3" => :mountain_lion
+    sha256 "7e7f90452ecf67a9016b1ba76ffcd17086864412f32caa424e202023a7a5377c" => :yosemite
+    sha256 "729a73ae8920c3b25354da71c3d21ff797ed237e6636dd2adb648b80e44cc582" => :mavericks
+    sha256 "0f8e9a9a31b9bea6227d27cf0aeebc31b925b3ac624314779086be8f943b4483" => :mountain_lion
   end
 
   depends_on "erlang"
