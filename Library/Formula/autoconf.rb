@@ -15,6 +15,9 @@ class Autoconf < Formula
 
   keg_only :provided_until_xcode43
 
+  # Fix configure: error: no acceptable m4 could be found in $PATH.
+  depends_on "m4" unless OS.mac?
+
   def install
     ENV["PERL"] = "/usr/bin/perl" if OS.mac?
 
