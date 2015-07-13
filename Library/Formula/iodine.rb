@@ -9,9 +9,9 @@ class Iodine < Formula
 
   bottle do
     cellar :any
-    sha1 "01e0ab026e082803d4d1f04f90d6afe28b5baeb9" => :mavericks
-    sha1 "39e539f323810586316599e296120398afd55431" => :mountain_lion
-    sha1 "1afe02179eaa83f66382eaf296023c574e351f79" => :lion
+    revision 1
+    sha256 "4bb3858d87351246c6786ddf1f3c09f9f266c83087b6f31755f2c1b610325718" => :mavericks
+    sha256 "371c3443aeebef21ec9ec072e2bcc472bd76d4909466744c66f67a9bbce5d41f" => :mountain_lion
   end
 
   depends_on :tuntap
