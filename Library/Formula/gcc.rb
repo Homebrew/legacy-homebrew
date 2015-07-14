@@ -39,6 +39,14 @@ class Gcc < Formula
       url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=35773"
       sha256 "db4966ade190fff4ed39976be8d13e84839098711713eff1d08920d37a58f5ec"
     end
+
+    # Fixes build --with-java with Xcode 7.
+    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66509
+    # https://github.com/Homebrew/homebrew/issues/41633
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/d248e025029add31e7aa/raw/444e292786df41346a3a1cc6267bba587408a007/gcc.diff"
+      sha256 "636b65a160ccb7417cc4ffc263fc815382f8bb895e32262205cd10d65ea7804a"
+    end
   end
 
   option "with-java", "Build the gcj compiler"
