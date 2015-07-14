@@ -30,14 +30,13 @@ class Allegro < Formula
   depends_on "libvorbis" => :recommended
   depends_on "freetype" => :recommended
   depends_on "flac" => :recommended
-  depends_on "libpng" => :recommended
-  depends_on "jpeg" => :recommended
   depends_on "physfs" => :recommended
 
   def install
-    args = std_cmake_args + ["-DWANT_DOCS=OFF"]
-    system "cmake", ".", *args
-    system "make", "install"
+    mkdir "build" do
+      system "cmake", "..", "-DWANT_DOCS=OFF", *std_cmake_args
+      system "make", "install"
+    end
   end
 
   test do
