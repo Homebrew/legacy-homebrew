@@ -1,8 +1,8 @@
 class Ninja < Formula
   desc "Small build system for use with gyp or CMake"
   homepage "https://martine.github.io/ninja/"
-  url "https://github.com/martine/ninja/archive/v1.5.3.tar.gz"
-  sha256 "7c953b5a7c26cfcd082882e3f3e2cd08fee8848ad228bb47223b18ea18777ec0"
+  url "https://github.com/martine/ninja/archive/v1.6.0.tar.gz"
+  sha256 "b43e88fb068fe4d92a3dfd9eb4d19755dae5c33415db2e9b7b61b4659009cde7"
   head "https://github.com/martine/ninja.git"
 
   bottle do
