@@ -42,10 +42,6 @@ class Mongodb < Formula
   depends_on "openssl" => :optional
 
   def install
-    if MacOS.version >= :el_capitan && build.stable?                                                
-      opoo "OS X 10.11 only support mongodb >= 3.1.5. Please install with `brew install mongodb --devel"
-    end
-
     ENV.libcxx if build.devel?
 
     # New Go tools have their own build script but the server scons "install" target is still
@@ -87,6 +83,7 @@ class Mongodb < Formula
 
     args << "--use-system-boost" if build.with? "boost"
     args << "--use-new-tools"
+    args << "--disable-warnings-as-errors" if MacOS.version >= :el_capitan
 
     if build.with? "openssl"
       args << "--ssl" << "--extrapath=#{Formula["openssl"].opt_prefix}"
