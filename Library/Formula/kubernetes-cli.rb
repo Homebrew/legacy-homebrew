@@ -1,8 +1,8 @@
 class KubernetesCli < Formula
   desc "Command-line tool for kubernetes, a cluster manager for Docker"
   homepage "http://kubernetes.io/"
-  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.19.3.tar.gz"
-  sha256 "1f7161939f3daef8ec8b2af7a2ed10bbdb88c08ce0afb76926c44de5edacc4d2"
+  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v1.0.0.tar.gz"
+  sha256 "8aa74850d5549e9c659d1c2e821e26ae16596ca92d79406959a20f26b7526cf5"
   head "https://github.com/GoogleCloudPlatform/kubernetes.git"
 
   bottle do
