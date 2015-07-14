@@ -6,9 +6,10 @@ class Saltstack < Formula
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
-    sha256 "43e0e1761ea9086b68811ec218879ca92e66e60653f135abddc6ba404a844bc6" => :yosemite
-    sha256 "d25a1695a06bfd567c2889140709fa2cdbd387817a51d4f76045ac19c2f91550" => :mavericks
-    sha256 "4ade05fa044d9649a1a08f11f3a7307e7321ba92598a33d22cc43e65c9fe60e5" => :mountain_lion
+    cellar :any
+    sha256 "309f9ff3cec4f6c0e298d281d1d57e3b49aa5709bf3e0ea7987bfc1060766be9" => :yosemite
+    sha256 "7044ce9fa8102945e1b9881c7dd74c16e6a88b330e0902839451f67148109319" => :mavericks
+    sha256 "d18b6664565d2e0ce3f88965b9fd816fe56b317012641f4f510ab4fcc4e9d72a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
