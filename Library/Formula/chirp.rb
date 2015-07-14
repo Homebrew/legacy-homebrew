@@ -10,7 +10,11 @@ class Chirp < Formula
 
   def install
     prefix.install Dir["*"]
-
     bin.install_symlink "#{prefix}/chirpw"
+  end
+
+  test do
+    # unfortunately chirp returns error code 1 for --version
+    assert_match "CHIRP", shell_output("#{bin}/chirpw --version 2>&1", 1)
   end
 end
