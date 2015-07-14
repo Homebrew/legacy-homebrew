@@ -16,6 +16,7 @@ class Libcec < Formula
   end
 
   depends_on "cmake" => :build
+
   needs :cxx11
 
   # This patch can be removed with the next release bump
@@ -32,14 +33,14 @@ class Libcec < Formula
       mkdir "build" do
         system "cmake", "..", *std_cmake_args
         system "make"
-        system "make install"
+        system "make", "install"
       end
     end
 
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make"
-      system "make install"
+      system "make", "install"
     end
   end
 
