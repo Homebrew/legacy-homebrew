@@ -38,10 +38,7 @@ class Keg
       end
     end
 
-    files = pkgconfig_files | libtool_files | script_files | plist_files
-    files << tab_file if tab_file.file?
-
-    files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
+    text_files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
       s = first.open("rb", &:read)
       changed = s.gsub!(old_cellar, new_cellar)
       changed = s.gsub!(old_prefix, new_prefix) || changed
@@ -161,55 +158,14 @@ class Keg
     mach_o_files
   end
 
-  def script_files
-    script_files = []
-
-    # find all files with shebangs
-    find do |pn|
+  def text_files
+    text_files = []
+    path.find do |pn|
       next if pn.symlink? or pn.directory?
-      script_files << pn if pn.text_executable?
+      next if Metafiles::EXTENSIONS.include? pn.extname
+      text_files << pn if Utils.popen_read("/usr/bin/file", pn).include?("text")
     end
 
-    script_files
-  end
-
-  def pkgconfig_files
-    pkgconfig_files = []
-
-    %w[lib share].each do |dir|
-      pcdir = path.join(dir, "pkgconfig")
-
-      pcdir.find do |pn|
-        next if pn.symlink? or pn.directory? or pn.extname != '.pc'
-        pkgconfig_files << pn
-      end if pcdir.directory?
-    end
-
-    pkgconfig_files
-  end
-
-  def libtool_files
-    libtool_files = []
-
-    # find .la files, which are stored in lib/
-    lib.find do |pn|
-      next if pn.symlink? or pn.directory? or pn.extname != '.la'
-      libtool_files << pn
-    end if lib.directory?
-    libtool_files
-  end
-
-  def plist_files
-    plist_files = []
-
-    self.find do |pn|
-      next if pn.symlink? or pn.directory? or pn.extname != '.plist'
-      plist_files << pn
-    end
-    plist_files
-  end
-
-  def tab_file
-    join(Tab::FILENAME)
+    text_files
   end
 end
