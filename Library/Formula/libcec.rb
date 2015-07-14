@@ -5,10 +5,9 @@ class Libcec < Formula
   sha256 "7e3670c8949a1964d6e5481f56dfff838857da10bdc60b506f6e9b7f117e253e"
 
   bottle do
-    cellar :any
-    sha1 "d80df26b65e04fdc1a4a6ba2801e54231d9b7be7" => :yosemite
-    sha1 "9344093a4180a7f5d0e066ba4b50f301fd1e80b1" => :mavericks
-    sha1 "5b04eb4b157c34ab543082a9c9c0868450412c37" => :mountain_lion
+    sha256 "306d97c80d93ceaf6e2b74cc3da4a969db12bf9d8c6143a485b81f2885aed664" => :yosemite
+    sha256 "25b8dd9dc73cf4127ef1f585a164e44f48390edc4904c76c8642c091ce795325" => :mavericks
+    sha256 "587fe017014efe02fd31e7f7ada38025e9f05f1788ab4b94c4b172aa7d3310b3" => :mountain_lion
   end
 
   resource "platform" do
