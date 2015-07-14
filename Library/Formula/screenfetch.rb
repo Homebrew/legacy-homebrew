@@ -3,8 +3,8 @@ require "formula"
 class Screenfetch < Formula
   desc "Generate ASCII art with terminal, shell, and OS info"
   homepage "https://github.com/KittyKatt/screenFetch"
-  url "https://github.com/KittyKatt/screenFetch/archive/v3.6.5.tar.gz"
-  sha1 "b409cf4c66fe5cdd8ee9ecfa85d1234a76a63588"
+  url "https://github.com/KittyKatt/screenFetch/archive/3.7.0.tar.gz"
+  sha1 "5a3702504e154335e372df56e4cb621840dc5506"
   head "git://git.silverirc.com/screenfetch.git", :shallow => false
 
   bottle do
