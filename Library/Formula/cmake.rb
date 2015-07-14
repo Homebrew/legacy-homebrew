@@ -28,7 +28,7 @@ class Cmake < Formula
     sha256 "e1302ea14f218c07a94560d42d6f3cafa1942821896316a5555ca78b2597caad"
   end
 
-  option "without-docs", "Don't build man pages"
+  option "with-docs", "Build man pages"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
 
