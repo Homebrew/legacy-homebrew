@@ -9,9 +9,9 @@ class Screenfetch < Formula
 
   bottle do
     cellar :any
-    sha1 "2a0024cef77d8b77c6ac4f7a05d4c40b0560547c" => :yosemite
-    sha1 "982ec8491a1ec97ab57063120a3cc95f021c9ae7" => :mavericks
-    sha1 "3a1213b42c9f45cc8ed6c8f4194c4777adbbbeb3" => :mountain_lion
+    sha256 "f06711aa9632682d30fc81ecec15eb9822ed1946fa39880ba18a9d57a27c66d9" => :yosemite
+    sha256 "ec75963396cf12dfd7277d6149a2aa87dd63079ddaccb2a03fd04e55f163e36b" => :mavericks
+    sha256 "16810381df9a010c1c5c84dd1eba262e4e7b276a3e12ca87d5d0e2e3302545bd" => :mountain_lion
   end
 
   def install
