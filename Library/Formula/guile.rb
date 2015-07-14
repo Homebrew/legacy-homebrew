@@ -1,12 +1,10 @@
-require "formula"
-
 class Guile < Formula
   desc "GUILE: GNU Ubiquitous Intelligent Language for Extensions"
   homepage "https://www.gnu.org/software/guile/"
-  url "http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/guile/guile-2.0.11.tar.gz"
-  sha1 "3cdd1c4956414bffadea13e5a1ca08949016a802"
-  revision 1
+  url "http://ftpmirror.gnu.org/guile/guile-2.0.11.tar.xz"
+  mirror "https://ftp.gnu.org/pub/gnu/guile/guile-2.0.11.tar.xz"
+  sha256 "aed0a4a6db4e310cbdfeb3613fa6f86fddc91ef624c1e3f8937a6304c69103e2"
+  revision 2
 
   bottle do
     revision 1
