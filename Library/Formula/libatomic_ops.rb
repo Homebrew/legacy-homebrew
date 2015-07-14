@@ -1,10 +1,8 @@
-require "formula"
-
 class LibatomicOps < Formula
   desc "Implementations for atomic memory update operations"
   homepage "https://github.com/ivmai/libatomic_ops/"
   url "http://www.ivmaisoft.com/_bin/atomic_ops/libatomic_ops-7.4.2.tar.gz"
-  sha1 "57cd7c64e37fca300bd7b24e3d2f14129b25b376"
+  sha256 "04fa615f62992547bcbda562260e28b504bc4c06e2f985f267f3ade30304b5dd"
 
   bottle do
     cellar :any
