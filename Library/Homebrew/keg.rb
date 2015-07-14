@@ -1,5 +1,5 @@
 require "extend/pathname"
-require "keg_fix_install_names"
+require "keg_relocate"
 require "formula_lock"
 require "ostruct"
 
