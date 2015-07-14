@@ -1,8 +1,8 @@
 class Saltstack < Formula
   desc "Dynamic infrastructure communication bus"
   homepage "http://www.saltstack.org"
-  url "https://github.com/saltstack/salt/archive/v2015.5.1.tar.gz"
-  sha256 "bc58fcc175aee1cd00f2b5663955ca60fbec163b878e3dbaa913f522630899e6"
+  url "https://github.com/saltstack/salt/archive/v2015.5.3.tar.gz"
+  sha256 "1873fde1f33691bdf32d5db793a2c98fd03ed86570c40fd555408c77ab17e8e6"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
@@ -67,13 +67,6 @@ class Saltstack < Formula
     sha256 "bfcc581c9dbbf07cc2f951baf30c3249a57e20dcbd60f7e6ffc43ab3cc614794"
   end
 
-  # Can be removed on next release
-  # https://github.com/saltstack/salt/commit/9a3caa27019856a2b2daae608cfbe11a5416ab8a
-  resource "apache-libcloud" do
-    url "https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.17.0.tar.gz"
-    sha256 "8ac4895c5ed2fa51812237dfd587675e3cbc4b7e57d9b44722ce849eab2131c2"
-  end
-
   # Required by tornado
   resource "certifi" do
     url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.04.28.tar.gz"
@@ -101,7 +94,7 @@ class Saltstack < Formula
     ENV.prepend_path "PATH", buildpath/"swig/bin"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    rs = %w[requests pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python apache-libcloud]
+    rs = %w[requests pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python]
     rs += %w[certifi backports.ssl_match_hostname tornado] if build.head?
     rs.each do |r|
       resource(r).stage do
