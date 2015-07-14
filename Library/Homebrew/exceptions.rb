@@ -51,17 +51,17 @@ class FormulaUnavailableError < RuntimeError
 end
 
 class TapFormulaUnavailableError < FormulaUnavailableError
-  attr_reader :user, :repo, :shortname
+  attr_reader :tap
 
-  def initialize name
-    super
-    @user, @repo, @shortname = name.split("/", 3)
+  def initialize tap, name
+    @tap = tap
+    super "#{tap}/#{name}"
   end
 
-  def to_s; <<-EOS.undent
-      No available formula for #{shortname} #{dependent_s}
-      Please tap it and then try again: brew tap #{user}/#{repo}
-    EOS
+  def to_s
+    s = super
+    s += "\nPlease tap it and then try again: brew tap #{tap}" unless tap.installed?
+    s
   end
 end
 
