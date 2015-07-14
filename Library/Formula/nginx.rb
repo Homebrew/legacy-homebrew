@@ -3,18 +3,17 @@ class Nginx < Formula
   homepage "http://nginx.org/"
   url "http://nginx.org/download/nginx-1.8.0.tar.gz"
   sha256 "23cca1239990c818d8f6da118320c4979aadf5386deda691b1b7c2c96b9df3d5"
-
   head "http://hg.nginx.org/nginx/", :using => :hg
-
-  devel do
-    url "http://nginx.org/download/nginx-1.9.2.tar.gz"
-    sha256 "80b6425be14a005c8cb15115f3c775f4bc06bf798aa1affaee84ed9cf641ed78"
-  end
 
   bottle do
     sha256 "9fe0f648fe67dd7c55e46754d72561b2d7a31a09126167088fbe278a65f9c45d" => :yosemite
     sha256 "63f5785c7f7dca36a1b7180a82f1433fde9a3fbccf36af541770541b4d8f4093" => :mavericks
     sha256 "7a17bfbc2d2a325d8c665a0d2bb3c00f70178bc4c065817ec247fcf2ce28d5ae" => :mountain_lion
+  end
+
+  devel do
+    url "http://nginx.org/download/nginx-1.9.3.tar.gz"
+    sha256 "4298c5341b2a262fdb8dbc0a1389756181af8f098c7720abfb30bd3060f673eb"
   end
 
   env :userpaths
@@ -121,10 +120,6 @@ class Nginx < Formula
     end
   end
 
-  test do
-    system "#{bin}/nginx", "-t"
-  end
-
   def passenger_caveats; <<-EOS.undent
 
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
@@ -170,5 +165,9 @@ class Nginx < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/nginx", "-t"
   end
 end
