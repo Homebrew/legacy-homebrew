@@ -354,7 +354,10 @@ class FormulaAuditor
     # Make sure the formula name plus description is no longer than 80 characters
     linelength = formula.full_name.length + ": ".length + desc.length
     if linelength > 80
-      problem "Description is too long. \"name: desc\" should be less than 80 characters (currently #{linelength})."
+      problem <<-EOS.undent
+        Description is too long. \"name: desc\" should be less than 80 characters.
+        Length is calculated as #{formula.full_name} + desc. (currently #{linelength})
+      EOS
     end
 
     if desc =~ %r[[Cc]ommandline]
