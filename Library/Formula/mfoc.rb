@@ -1,16 +1,18 @@
-require 'formula'
-
 class Mfoc < Formula
   desc "Implementation of 'offline nested' attack by Nethemba"
-  homepage 'http://code.google.com/p/mfoc/'
-  url 'https://mfoc.googlecode.com/files/mfoc-0.10.7.tar.bz2'
-  sha1 '162a464baf6498926a72383c6b0040654321012d'
+  homepage "https://github.com/nfc-tools/mfoc"
+  url "https://github.com/nfc-tools/mfoc/archive/mfoc-0.10.7.tar.gz"
+  sha256 "2dfd8ffa4a8b357807680d190a91c8cf3db54b4211a781edc1108af401dbaad7"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libnfc'
-  depends_on 'libusb'
+  depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "libnfc"
+  depends_on "libusb"
 
   def install
+    system "autoreconf", "-fiv"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"

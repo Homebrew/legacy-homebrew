@@ -13,6 +13,11 @@ class Libewf < Formula
     sha256 "69b9412398fd45616d47b132dca1ee158bf5f05655f9875ba9592c5e6e639817" => :mountain_lion
   end
 
+  devel do
+    url "https://github.com/libyal/libewf/releases/download/20150126/libewf-experimental-20150126.tar.gz"
+    sha256 "adba8c45c32c41fccdcfc32ac4b20b9531a04a710f355165c23eaf6f2ec6700e"
+  end
+
   head do
     url "https://github.com/libyal/libewf.git"
     depends_on "automake" => :build
