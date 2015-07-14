@@ -8,9 +8,10 @@ class Allegro < Formula
   end
   bottle do
     cellar :any
-    sha256 "2b960b185c3458e8f9dc39ad80f7861ab4ab11cb18c118ce9d3c9ab13488a422" => :yosemite
-    sha256 "762b4ba85b03478764ce857b905ca141843148a0ffe4f1a6b1e84640a6ce545d" => :mavericks
-    sha256 "32a6ba24e889fb5529edcf6b6da894610942ce4610da8cb9ea021bf97ae13532" => :mountain_lion
+    revision 1
+    sha256 "938c45ba6602727a4b524022387d13622718703f727fa6b1f1d94a0e3e3b357e" => :yosemite
+    sha256 "c75ec1ca7b8b630283f8809607515eb4183d00f3e337ce12b8ef4f05525e1ccb" => :mavericks
+    sha256 "f3cc83adca0beee9fb703f8566ecbffc2fbeba9a0315e09ddad28523b63728e4" => :mountain_lion
   end
 
   devel do
