@@ -42,7 +42,7 @@ class XcodeRequirement < Requirement
       EOS
     else
       message += <<-EOS.undent
-        Xcode can be installed from https://developer.apple.com/downloads/
+        Xcode can be installed from https://developer.apple.com/xcode/downloads/
       EOS
     end
   end
