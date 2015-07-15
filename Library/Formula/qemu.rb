@@ -15,7 +15,7 @@ class Qemu < Formula
     # Fix for VENOM <http://venom.fail>
     # Patch from QEMU Git
     url "http://git.qemu.org/?p=qemu.git;a=commitdiff_plain;h=e907746266721f305d67bc0718795fedee2e824c"
-    sha256 "a182ee0e5d6aa040dea51796a410827e8c0b3b928c864846c6e5a1754dde9c88"
+    sha256 "2aaa9ff9ee492dede64df3fcb59032ae0452bf4790c2d5881e05981fa7452368"
   end
 
   depends_on "pkg-config" => :build
