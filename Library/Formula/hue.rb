@@ -4,14 +4,13 @@ class Hue < Formula
   url "https://github.com/cloudera/hue/archive/release-3.8.1.tar.gz"
   sha256 "582777f567b9f4a34e4ce58cfd5ed24aff15f3e02f193e7990329d8cb0161a8a"
 
+  option "with-system-openssl", "Build with the Mac OS system OpenSSL instead of the (more secure) latest Homebrew version"
+
   depends_on :java
   depends_on :mysql
 
   depends_on "gmp"
-
   depends_on "maven" => :build
-
-  option "with-system-openssl", "Build with the Mac OS system OpenSSL instead of the (more secure) latest Homebrew version"
   depends_on "openssl" if build.without? "system-openssl"
 
   patch :DATA
