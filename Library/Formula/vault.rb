@@ -4,16 +4,16 @@ class Vault < Formula
   desc "secures, stores, and tightly controls access to secrets"
   homepage "https://vaultproject.io/"
   url "https://github.com/hashicorp/vault.git",
-      :tag => "v0.1.2",
-      :revision => "aa55896b93ba8127f79c8aa7b5707868f085b6d1"
+      :tag => "v0.2.0",
+      :revision => "358a3c28815f96f4996ce516795a0cd3673075de"
 
   head "https://github.com/hashicorp/vault.git"
 
   bottle do
     cellar :any
-    sha256 "1a35804f6c32c563b16ec88ee4a96a05b602ad0e1da9d307752c6887d87f9972" => :yosemite
-    sha256 "51471edca0156a5624ad2add4c98a56d8c202d595c4c9b623a092a996c3adcca" => :mavericks
-    sha256 "f85be6356b1704f71ad14c2066c7979b72cb65de91afd47f730e86f432e8d02a" => :mountain_lion
+    sha256 "709004d450717ad5e1ffd6a3cdf04ff5538dfae492bc81da7374c77d83b1b610" => :yosemite
+    sha256 "058f6393dd058e30f0beaa814573f16f09df80b2db7c23775c717718d09c42bd" => :mavericks
+    sha256 "6c5c4eb78a7dbea65e18ccb73ee08ed36e56436723068c3cf758ca3cd9a7a030" => :mountain_lion
   end
 
   depends_on "go" => :build
