@@ -4,6 +4,8 @@ class Kvazaar < Formula
   url "https://github.com/ultravideo/kvazaar/archive/v0.5.0.tar.gz"
   sha256 "2facdbffcf739171127487cd7d1e48c925560f39755a16542c4a40e65e293070"
 
+  head "https://github.com/ultravideo/kvazaar.git"
+
   bottle do
     cellar :any
     sha1 "14925edf1ac9c07c54c872d7b5d3d7708a9f814a" => :yosemite
@@ -15,7 +17,9 @@ class Kvazaar < Formula
 
   def install
     system "make", "-C", "src"
-    bin.install "src/kvazaar"
+    bin.install_symlink "src/kvazaar"
+
+    system "make", "-C", "src", "install" if build.head?
   end
 
   test do
