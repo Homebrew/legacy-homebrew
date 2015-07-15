@@ -12,13 +12,12 @@ class Hue < Formula
   depends_on "maven" => :build
 
   option "with-system-openssl", "Build with the Mac OS system OpenSSL instead of the (more secure) latest Homebrew version"
-  depends_on "openssl" unless build.with? "system-openssl"
+  depends_on "openssl" if build.without? "system-openssl"
 
   patch :DATA
 
   def install
-
-    ENV.append_to_cflags '-I' + `xcrun --show-sdk-path`.strip + '/usr/include/sasl' if MacOS.version >= :mavericks
+    ENV.append_to_cflags "-I" + `xcrun --show-sdk-path`.strip + "/usr/include/sasl" if MacOS.version >= :mavericks
     ENV.deparallelize
 
     # patched the Makefile vars to install to ${PREFIX}/libexec
