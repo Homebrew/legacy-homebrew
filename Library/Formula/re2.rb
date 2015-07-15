@@ -7,6 +7,19 @@ class Re2 < Formula
 
   head "https://github.com/google/re2.git"
 
+  # Fix the symbol table to work with both libc++ and libstdc++
+  # Will be included in the next release
+  # https://github.com/google/re2/issues/1
+  patch do
+    url "https://github.com/google/re2/commit/44cdc782e5debc2c841b3fafa9ee5a61e8c42b95.patch"
+    sha256 "b1720a4f3dd0b28969600698b1aadf15bf30b9e6aef42c589d512c6a2c088579"
+  end
+
+  patch do
+    url "https://github.com/google/re2/commit/a99f38705611f678f70b7e1944d188a3c28a12ab.patch"
+    sha256 "22dac0b90f34b8fa693994831d1ea24b0d2f8fe49e404975a507ed744fb1de83"
+  end
+
   bottle do
     cellar :any
     sha256 "dcae1c0aa876d8c29a5709c0be1851160add2b1da08cf39c397142a0dc390d3e" => :yosemite
@@ -15,14 +28,6 @@ class Re2 < Formula
   end
 
   def install
-    # https://code.google.com/p/re2/issues/detail?id=99
-    if ENV.compiler != :clang || MacOS.version < :mavericks
-      inreplace "libre2.symbols.darwin",
-                # operator<<(std::__1::basic_ostream<char, std::__1::char_traits<char> >&, re2::StringPiece const&)
-                "__ZlsRNSt3__113basic_ostreamIcNS_11char_traitsIcEEEERKN3re211StringPieceE",
-                # operator<<(std::ostream&, re2::StringPiece const&)
-                "__ZlsRSoRKN3re211StringPieceE"
-    end
     system "make", "install", "prefix=#{prefix}"
     mv lib/"libre2.so.0.0.0", lib/"libre2.0.0.0.dylib"
     system "install_name_tool", "-id", "#{lib}/libre2.0.dylib", "#{lib}/libre2.0.0.0.dylib"
