@@ -10,7 +10,7 @@ class Datomic < Formula
   def install
     libexec.install Dir["*"]
     (bin/"datomic").write_env_script libexec/"bin/datomic", Language::Java.java_home_env
-    %w[transactor repl repl-jline rest shell].each do |file|
+    %w[transactor repl repl-jline rest shell groovysh maven-install].each do |file|
       (bin/"datomic-#{file}").write_env_script libexec/"bin/#{file}", Language::Java.java_home_env
     end
   end
