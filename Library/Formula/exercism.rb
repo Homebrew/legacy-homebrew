@@ -7,6 +7,13 @@ class Exercism < Formula
   sha256 "f044645c7e775abcf721939f015fb51df8733a0acf828961e6ebefee57194b03"
   head "https://github.com/exercism.git"
 
+  bottle do
+    cellar :any
+    sha256 "f5895656b08737491b9133eeebdbca20189f9da15c6b8988f918a474d6511d3a" => :yosemite
+    sha256 "e9eb986f33ec43fb4e27f901a705f228e4e5d9fe70fd0b81439a31bb6352300d" => :mavericks
+    sha256 "5f55208642ea2f234dab9672c5847308bcffbfbac57af76c30d013b5e58e0e24" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/codegangsta/cli" do
