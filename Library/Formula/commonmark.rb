@@ -1,8 +1,8 @@
 class Commonmark < Formula
   desc "Strongly specified, highly compatible implementation of Markdown"
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/cmark/archive/0.20.0.tar.gz"
-  sha256 "c8f77eaf5389968cd5737439693f2c8d43606969d5c4674d443e70a90920f48b"
+  url "https://github.com/jgm/cmark/archive/0.21.0.tar.gz"
+  sha256 "dc852412e45489b823392dee334f2db47adbd757b0ac08bc026383627fc13f6e"
 
   bottle do
     cellar :any
