@@ -1,8 +1,8 @@
 class Capstone < Formula
   desc "Multi-platform, multi-architecture disassembly framework"
   homepage "http://capstone-engine.org"
-  url "http://capstone-engine.org/download/3.0.3/capstone-3.0.3.tgz"
-  sha1 "0bb889ac8ba864b98892a17986075dea48be64b2"
+  url "http://capstone-engine.org/download/3.0.4/capstone-3.0.4.tgz"
+  sha256 "3e88abdf6899d11897f2e064619edcc731cc8e97e9d4db86495702551bb3ae7f"
 
   bottle do
     cellar :any
