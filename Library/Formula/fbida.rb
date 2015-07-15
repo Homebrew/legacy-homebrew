@@ -4,6 +4,13 @@ class Fbida < Formula
   url "http://dl.bytesex.org/releases/fbida/fbida-2.10.tar.gz"
   sha256 "7a5a3aac61b40a6a2bbf716d270a46e2f8e8d5c97e314e927d41398a4d0b6cb6"
 
+  bottle do
+    cellar :any
+    sha256 "9d5593851f4e1a378e96219288893de00fb3aaf3b8e454362d8d4c3568bcb694" => :yosemite
+    sha256 "f0c80275d3c79df13d562c200fe2cc53474c9893ceff33686196efd0cc5dd286" => :mavericks
+    sha256 "7f99cfe93aa20461e91af71cba12f362ecedf72410605775914d3a9173a7b7d2" => :mountain_lion
+  end
+
   depends_on "libexif"
   depends_on "jpeg"
 
