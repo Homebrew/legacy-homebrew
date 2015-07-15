@@ -8,3 +8,5 @@ HOMEBREW_TAP_DIR_REGEX = %r{#{Regexp.escape(HOMEBREW_LIBRARY.to_s)}/Taps/([\w-]+
 HOMEBREW_TAP_PATH_REGEX = Regexp.new(HOMEBREW_TAP_DIR_REGEX.source + %r{/(.*)}.source)
 # match the default brew-cask tap e.g. Caskroom/cask
 HOMEBREW_CASK_TAP_FORMULA_REGEX = %r{^(Caskroom)/(cask)/([\w+-.]+)$}
+# match fully qualified core formula, e.g. core/someformula
+HOMEBREW_CORE_FORMULA_REGEX = %r{core/([\w+-.]+)$}

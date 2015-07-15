@@ -13,9 +13,9 @@ module Homebrew
     problem_count = 0
 
     strict = ARGV.include? "--strict"
-    if strict && ARGV.formulae.any? && MacOS.version >= :mavericks
+    if strict && ARGV.formulae(FactoryBehavior::ENFORCE_UNIQUE).any? && MacOS.version >= :mavericks
       require "cmd/style"
-      ohai "brew style #{ARGV.formulae.join " "}"
+      ohai "brew style #{ARGV.formulae(FactoryBehavior::ENFORCE_UNIQUE).join " "}"
       style
     end
 
@@ -47,7 +47,7 @@ module Homebrew
     ff = if ARGV.named.empty?
       Formula
     else
-      ARGV.formulae
+      ARGV.formulae(FactoryBehavior::ENFORCE_UNIQUE)
     end
 
     output_header = !strict

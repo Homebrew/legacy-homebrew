@@ -397,6 +397,20 @@ class Pathname
     out
   end
 
+  def fully_qualified_name
+    "#{self.tap_name}/#{self.basename(".rb")}"
+  end
+
+  def tap_name
+    match = self.to_s =~ HOMEBREW_TAP_PATH_REGEX
+    match ? "#{$1}/#{$2.sub("homebrew-", "")}" : "core"
+  end
+
+  def tap_priority
+    match = self.to_s =~ HOMEBREW_TAP_PATH_REGEX
+    match ? Tap.new($1, $2.sub("homebrew-", "")).get_priority : Tap.core_priority
+  end
+
   # We redefine these private methods in order to add the /o modifier to
   # the Regexp literals, which forces string interpolation to happen only
   # once instead of each time the method is called. This is fixed in 1.9+.

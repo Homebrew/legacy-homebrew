@@ -37,7 +37,7 @@ module Homebrew
     else
       taps.each_with_index do |tap, i|
         puts unless i == 0
-        info = "#{tap}: "
+        info = "[#{tap.padded_priority}] #{tap}: "
         if tap.installed?
           formula_count = tap.formula_files.size
           info += "#{formula_count} formula#{plural(formula_count, "e")} " if formula_count > 0

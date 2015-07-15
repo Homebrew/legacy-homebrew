@@ -13,6 +13,9 @@ module Homebrew
       formula_count = tap.formula_files.size
       tap.path.rmtree
       tap.path.dirname.rmdir_if_possible
+
+      tap.json_path.delete
+
       puts "Untapped #{formula_count} formula#{plural(formula_count, 'e')}"
     end
   end

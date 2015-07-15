@@ -38,7 +38,7 @@ module Homebrew
         end
       end
 
-      ARGV.formulae.each do |f|
+      ARGV.formulae(FactoryBehavior::INSTALL_LIKE).each do |f|
         # head-only without --HEAD is an error
         if not ARGV.build_head? and f.stable.nil? and f.devel.nil?
           raise <<-EOS.undent

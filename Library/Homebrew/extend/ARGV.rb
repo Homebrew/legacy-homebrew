@@ -11,16 +11,16 @@ module HomebrewArgvExtension
     select { |arg| arg.start_with?("--") }
   end
 
-  def formulae
+  def formulae(behavior = FactoryBehavior::KEG_FIRST)
     require "formula"
-    @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec) }
+    @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec, behavior) }
   end
 
   def resolved_formulae
     require "formula"
     @resolved_formulae ||= (downcased_unique_named - casks).map do |name|
       if name.include?("/")
-        Formulary.factory(name, spec)
+        Formulary.factory(name, spec, FactoryBehavior::ENFORCE_UNIQUE)
       else
         Formulary.from_rack(HOMEBREW_CELLAR/name, spec)
       end
