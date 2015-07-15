@@ -3,8 +3,8 @@ require "formula"
 class Ola < Formula
   desc "Open Lighting Architecture for lighting control information"
   homepage "https://www.openlighting.org/ola/"
-  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.6/ola-0.9.6.tar.gz"
-  sha256 "e1bbc7ed833d64107f13d64274ff92b0a0dfc6c1e2f6def18c6ad4b6fa2be744"
+  url "https://github.com/OpenLightingProject/ola/releases/download/0.9.7/ola-0.9.7.tar.gz"
+  sha256 "ce0edd8eac644fc753f2289c1998e5a4829d74246acecd06f73619a5a09206e1"
 
   bottle do
     sha256 "838e2f7a782fc0666c4e32c2ba4748fafc5187bb1c3dea29cadc08780e3b4163" => :yosemite
