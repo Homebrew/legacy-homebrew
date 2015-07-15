@@ -9,9 +9,9 @@ class Docker < Formula
 
   bottle do
     cellar :any
-    sha256 "8c19fe17fc2fc8a9759b80aa1dd85e300336c123842fffedf768b22215c2b2bb" => :yosemite
-    sha256 "ee5333ba2e6d67438d76c954503bb957790bff3dd0ba51e7645c5b8363de6313" => :mavericks
-    sha256 "ca4e419285a250598f05d658fda3dac97c9b0bae4c3361086a9f13a41b40bfc7" => :mountain_lion
+    sha256 "4a149ad01f976c8cd9d51aa56f3cc02281ba7990f80aa23f4e50fabcde1938fb" => :yosemite
+    sha256 "cc07ad5c81a97180a4f17e4d9a7607440110bc3cf9955f916de4e281c1293cf1" => :mavericks
+    sha256 "ea75c3fd9d1c3a2c8fb6194b7c20352ec63f17c06ab9243667e49b88154a9e7a" => :mountain_lion
   end
 
   option "with-experimental", "Enable experimental features"
