@@ -1,17 +1,14 @@
-require "formula"
-
 class Jsoncpp < Formula
   desc "Library for interacting with JSON"
   homepage "https://github.com/open-source-parsers/jsoncpp"
-  url "https://github.com/open-source-parsers/jsoncpp/archive/0.10.2-p1.tar.gz"
-  sha256 "43fe64ffb0630ac3530547e2c4dcec1bfcdf48bdb5b53a0f4971ee420b39c2be"
-  version "0.10.2-p1"
+  url "https://github.com/open-source-parsers/jsoncpp/archive/0.10.4.tar.gz"
+  sha256 "87c42cc93d5242f3b81574a47f5003f247a27b5d0130753aaf3d8447666d653e"
 
   bottle do
     cellar :any
-    sha256 "dbdc5c692eaa9ba0ac7b7026121174a50057d5fbe31e9c27fddc68af200ef343" => :yosemite
-    sha256 "adacf80657b590bebc8b14429697b6499c8e513a7a13166f690c852883744cf0" => :mavericks
-    sha256 "5b8de24bc534d422bfae4a3cfccc1ce64d019b1a409c636de0efbefdc2d7ad00" => :mountain_lion
+    sha256 "7e41500ac30f3f84145096e1550d31659476d3473b66447c9f7fcd3014517ca7" => :yosemite
+    sha256 "19e1205cd37336a1a6b0608f47ac33672961dd6ba6d9c8680fea1e2d1fbb1d47" => :mavericks
+    sha256 "5911263312f4793fd7e5c61d0e25952ee27ba970637323e84805768891617f53" => :mountain_lion
   end
 
   depends_on "scons" => :build
