@@ -21,7 +21,7 @@ class Fish < Formula
     system "autoconf" if build.head?
     # In Homebrew's 'superenv' sed's path will be incompatible, so
     # the correct path is passed into configure here.
-    system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
+    system "./configure", "--prefix=#{prefix}", ("SED=/usr/bin/sed" if OS.mac?)
     system "make", "install"
   end
 
