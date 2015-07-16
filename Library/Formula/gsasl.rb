@@ -1,9 +1,10 @@
-require 'formula'
-
 class Gsasl < Formula
   desc "SASL library command-line interface"
-  homepage 'https://www.gnu.org/software/gsasl/'
-  url 'http://ftpmirror.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
+  homepage "https://www.gnu.org/software/gsasl/"
+  url "http://ftpmirror.gnu.org/gsasl/gsasl-1.8.0.tar.gz"
+  mirror "https://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz"
+  sha256 "310262d1ded082d1ceefc52d6dad265c1decae8d84e12b5947d9b1dd193191e5"
+
   bottle do
     cellar :any
     revision 1
@@ -12,13 +13,14 @@ class Gsasl < Formula
     sha1 "bf3355e1963568a4282ec50bb3d2dfebb5f6b190" => :mountain_lion
   end
 
-  mirror 'http://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
-  sha1 '343fd97ae924dc406986c02fb9b889f4114239ae'
-
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--with-gssapi-impl=mit",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/gsasl")
   end
 end
