@@ -1,9 +1,9 @@
 class Libidn < Formula
   desc "International domain name library"
   homepage "https://www.gnu.org/software/libidn/"
-  url "http://ftpmirror.gnu.org/libidn/libidn-1.30.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/libidn/libidn-1.30.tar.gz"
-  sha256 "39b9fc94d74081c185757b12e0891ce5a22db55268e7d1bb24533ff4432eb053"
+  url "http://ftpmirror.gnu.org/libidn/libidn-1.31.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libidn/libidn-1.31.tar.gz"
+  sha256 "afdf2fce91faea483ce24e26b5e3a9235e332029c9265d07214fd1cfaa08df08"
 
   bottle do
     cellar :any
