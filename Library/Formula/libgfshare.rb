@@ -6,10 +6,9 @@ class Libgfshare < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "22009f2d1a304fcc86ff49b17c19551222522294" => :yosemite
-    sha1 "34f1dbaa969f1cf59f039934c7e1040e7bcdabbd" => :mavericks
-    sha1 "adbd4b89054c0fc412e6a8d79a1036305ec52ace" => :mountain_lion
+    sha256 "6929a937f6f8ee624f02891622375d23aa65114475cf53ce82342976b4705454" => :yosemite
+    sha256 "1696482fdd83b98b999d4b4037ae6c02d06a4b5297d089c826fed92a367d0d5c" => :mavericks
+    sha256 "899c69bbb8b1b527d0f03da2c0118d96e90810ef659abe096d597bc11dcab3f8" => :mountain_lion
   end
 
   def install
