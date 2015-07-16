@@ -6,9 +6,9 @@ class Ffmpegthumbnailer < Formula
 
   bottle do
     cellar :any
-    sha1 "b33cd322e1dd892c3ff492647a9d7fc4b8766388" => :mavericks
-    sha1 "18607817d97b20f2fa3a886ac472f3b63e6cb62d" => :mountain_lion
-    sha1 "052f2227429e215db559dcbddb2cdca838111d59" => :lion
+    sha256 "6140aa9ec7a7d6bcdfe29e196d4c6f49bd9f1d5fbcec2dd0f482d880796930c0" => :yosemite
+    sha256 "31ca101a649a39f1a2e45aacb57465ae34b80eb6b5de663d397a899a35bfa0a3" => :mavericks
+    sha256 "35fb2908a936f82fef0d09985648f977b35a47768d989093b5acede20e590556" => :mountain_lion
   end
 
   # Look for upstream to replace the GNU build process with CMake in the future
