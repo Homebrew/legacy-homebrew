@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libgfshare < Formula
   desc "Library for sharing secrets"
-  homepage 'http://www.digital-scurf.org/software/libgfshare'
-  url 'http://www.digital-scurf.org/files/libgfshare/libgfshare-1.0.5.tar.gz'
-  sha1 '165c721e04a2aa0bd2f3b14377bca8f65603640a'
+  homepage "http://www.digital-scurf.org/software/libgfshare"
+  url "http://www.digital-scurf.org/files/libgfshare/libgfshare-2.0.0.tar.bz2"
+  sha256 "86f602860133c828356b7cf7b8c319ba9b27adf70a624fe32275ba1ed268331f"
 
   bottle do
     cellar :any
