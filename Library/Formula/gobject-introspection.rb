@@ -18,6 +18,8 @@ class GobjectIntrospection < Formula
   depends_on "glib"
   depends_on "libffi"
   depends_on "cairo" => :build if build.with? "tests"
+  depends_on "bison" unless OS.mac?
+  depends_on "flex" unless OS.mac?
 
   # Allow tests to execute on OS X (.so => .dylib)
   patch do
