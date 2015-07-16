@@ -184,7 +184,7 @@ class FormulaAuditor
       [lineno, name]
     end.compact.each_cons(2) do |c1, c2|
       unless c1[0] < c2[0]
-        problem "`#{c1[1]}`(line #{c1[0]}) should be put before `#{c2[1]}`(line #{c2[0]})"
+        problem "`#{c1[1]}` (line #{c1[0]}) should be put before `#{c2[1]}` (line #{c2[0]})"
       end
     end
   end
