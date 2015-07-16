@@ -25,6 +25,15 @@ class Dbxml < Formula
   end
 
   test do
-    assert_match /library version #{Regexp.escape(version)}/, shell_output("#{bin}/dbxml -V")
+    system "curl", "-o", (testpath/"simple.xml"), "http://www.w3schools.com/xml/simple.xml"
+    script = testpath/"dbxml.script"
+    script.write <<-EOS.undent
+      createContainer ""
+      putDocument simple "simple.xml" f
+      cquery 'sum(//food/calories)'
+      print
+      quit
+    EOS
+    assert_equal "4000", shell_output("#{bin}/dbxml -s #{testpath}/dbxml.script").chomp
   end
 end
