@@ -7,6 +7,12 @@ class Enscript < Formula
 
   head "git://git.savannah.gnu.org/enscript.git"
 
+  bottle do
+    sha256 "614a397d67b4da4447da55f4051840b5e8da0162dea08b837d3c3a95ae144045" => :yosemite
+    sha256 "6e6aa80479d9aa46c91a8fe911d6495d71a0902879534f9af00225dbbb53b2cf" => :mavericks
+    sha256 "5949992b171a19ecf7dcc6c411a3e46a6e1aa023cbf5fd8eb0ee973f3595af5b" => :mountain_lion
+  end
+
   keg_only :provided_pre_mountain_lion
 
   depends_on "gettext"
