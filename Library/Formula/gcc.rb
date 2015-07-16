@@ -21,32 +21,15 @@ class Gcc < Formula
 
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
-  sha256 "b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad"
+  url "http://ftpmirror.gnu.org/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
+  sha256 "5f835b04b5f7dd4f4d2dc96190ec1621b8d89f2dc6f638f9f8bc1b1014ba8cad"
 
   bottle do
     revision 2
     sha256 "77f780600830699d4bfb9e6f14e3befd7a5511a7a4937d57ef665a58934972f8" => :yosemite
     sha256 "8c156f6588eb4e83837635b42daa1b5e5d1b88097f0dbd679b0332874113cc97" => :mavericks
     sha256 "77bce635f78bc26bd01010b5ece480251af223bf2dba6d48c29af6b29b441296" => :mountain_lion
-  end
-
-  if MacOS.version >= :el_capitan
-    # Fixes build with Xcode 7.
-    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66523
-    patch do
-      url "https://gcc.gnu.org/bugzilla/attachment.cgi?id=35773"
-      sha256 "db4966ade190fff4ed39976be8d13e84839098711713eff1d08920d37a58f5ec"
-    end
-
-    # Fixes build --with-java with Xcode 7.
-    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66509
-    # https://github.com/Homebrew/homebrew/issues/41633
-    patch do
-      url "https://gist.githubusercontent.com/tdsmith/d248e025029add31e7aa/raw/444e292786df41346a3a1cc6267bba587408a007/gcc.diff"
-      sha256 "636b65a160ccb7417cc4ffc263fc815382f8bb895e32262205cd10d65ea7804a"
-    end
   end
 
   option "with-java", "Build the gcj compiler"
