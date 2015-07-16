@@ -6,9 +6,10 @@ class A2ps < Formula
   sha256 "f3ae8d3d4564a41b6e2a21f237d2f2b104f48108591e8b83497500182a3ab3a4"
 
   bottle do
-    sha1 "c33f22a088a0b1ed22efff0165722e87495a4bd0" => :yosemite
-    sha1 "7ae09c9835ebb1913b97cf5f06bab42a0d1f33a6" => :mavericks
-    sha1 "3d27c530648004119cbf63edf1549357d5775572" => :mountain_lion
+    revision 1
+    sha256 "6129f040daef1e8b85903cf7d8441381229223070832ed914faf11fc5f819a11" => :yosemite
+    sha256 "51c3ad31ff624b50d71e146cef6da8266dbc73a771c2773016b1199211f71b72" => :mavericks
+    sha256 "465f3dca5424aea3d042f759809f59efc6e9605d6fd9dec3e880d0924713574a" => :mountain_lion
   end
 
   # Software was last updated in 2007, so take MacPorts patches to get
