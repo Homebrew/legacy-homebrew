@@ -17,6 +17,11 @@ class GobjectIntrospection < Formula
   depends_on "glib"
   depends_on "libffi"
 
+  if OS.linux?
+    depends_on "bison"
+    depends_on "flex"
+  end
+
   resource "tutorial" do
     url "https://gist.github.com/7a0023656ccfe309337a.git",
         :revision => "499ac89f8a9ad17d250e907f74912159ea216416"
