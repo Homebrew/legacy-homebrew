@@ -128,6 +128,9 @@ If \fB\-\-installed\fR is passed, show dependencies for all installed formulae\.
 By default, \fBdeps\fR shows dependencies for \fIformulae\fR\. To skip the \fB:build\fR type dependencies, pass \fB\-\-skip\-build\fR\. Similarly, pass \fB\-\-skip\-optional\fR to skip \fB:optional\fR dependencies\.
 .
 .IP "\(bu" 4
+\fBdesc\fR \fIformula\fR: Display \fIformula\fR\'s name and one\-line description\.
+.
+.IP "\(bu" 4
 \fBdiy [\-\-name=<name>] [\-\-version=<version>]\fR: Automatically determine the installation prefix for non\-Homebrew software\.
 .
 .IP
@@ -415,10 +418,13 @@ If \fB\-\-git\fR is passed, a Git repository will be initalized in the unpacked 
 \fBuntap\fR \fItap\fR: Remove a tapped repository\.
 .
 .IP "\(bu" 4
-\fBupdate [\-\-rebase]\fR: Fetch the newest version of Homebrew and all formulae from GitHub using \fBgit\fR(1)\.
+\fBupdate [\-\-rebase] [\-\-desc]\fR: Fetch the newest version of Homebrew and all formulae from GitHub using \fBgit\fR(1)\.
 .
 .IP
 If \fB\-\-rebase\fR is specified then \fBgit pull \-\-rebase\fR is used\.
+.
+.IP
+If \fB\-\-desc\fR is specified, update will print the names and descriptions of the new and updated formulae, one per line, rather than just the names in table form\.
 .
 .IP "\(bu" 4
 \fBupgrade [install\-options]\fR [\fIformulae\fR]: Upgrade outdated, unpinned brews\.

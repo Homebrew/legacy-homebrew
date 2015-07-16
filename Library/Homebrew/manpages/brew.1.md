@@ -126,6 +126,9 @@ Note that these flags should only appear after a command.
     type dependencies, pass `--skip-build`. Similarly, pass `--skip-optional`
     to skip `:optional` dependencies.
 
+  * `desc` <formula>:
+    Display <formula>'s name and one-line description.
+
   * `diy [--name=<name>] [--version=<version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
 
@@ -437,11 +440,15 @@ Note that these flags should only appear after a command.
   * `untap` <tap>:
     Remove a tapped repository.
 
-  * `update [--rebase]`:
+  * `update [--rebase] [--desc]`:
     Fetch the newest version of Homebrew and all formulae from GitHub using
      `git`(1).
 
     If `--rebase` is specified then `git pull --rebase` is used.
+
+    If `--desc` is specified, update will print the names and descriptions of
+    the new and updated formulae, one per line, rather than just the names in
+    table form.
 
   * `upgrade [install-options]` [<formulae>]:
     Upgrade outdated, unpinned brews.
