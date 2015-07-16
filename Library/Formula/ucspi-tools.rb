@@ -7,9 +7,9 @@ class UcspiTools < Formula
 
   bottle do
     cellar :any
-    sha256 "efd795bc135e665cb4b4de90cfbe385ad322f51a2853c4a7f8ac897680d80541" => :yosemite
-    sha256 "61b81172eb09f5e6e2df5385fd568b8777b3444c2d4b8cbcae5d5facf4b1450d" => :mavericks
-    sha256 "49912ea7a8e8a67b60f135484f99fc628ed59c745b586250dff196e301c3358d" => :mountain_lion
+    sha256 "2bc0e4a92ba633a9c50891d65d6c1662bfe57244582e04a6f9af6ce2260d6415" => :yosemite
+    sha256 "534be7f4ff272e290d2421f1624ed07cc12e1be18247128a10cd8d34ad3bd4d3" => :mavericks
+    sha256 "63af55f1d06a7185a6f228e2a5519d2815e0a31a184a0cba0b287641b7551778" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
