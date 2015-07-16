@@ -16,6 +16,8 @@ class GobjectIntrospection < Formula
   depends_on "pkg-config" => :run
   depends_on "glib"
   depends_on "libffi"
+  depends_on "bison"
+  depends_on "flex"
 
   resource "tutorial" do
     url "https://gist.github.com/7a0023656ccfe309337a.git",
