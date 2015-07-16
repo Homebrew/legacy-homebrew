@@ -5,8 +5,8 @@ class Pandoc < Formula
 
   desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.15.0.5/pandoc-1.15.0.5.tar.gz"
-  sha256 "424aa157ec5189c84fbb193c3403aa17340d53e79cb4d2b5f60614bca799434b"
+  url "https://hackage.haskell.org/package/pandoc-1.15.0.6/pandoc-1.15.0.6.tar.gz"
+  sha256 "d950968142526d5a765af7dfb26b47c3f60d4f883aa9d9eab668614179f1ed46"
 
   head "https://github.com/jgm/pandoc.git"
 
@@ -31,7 +31,15 @@ class Pandoc < Formula
   end
 
   test do
-    system "pandoc", "-o", testpath/"output.html", prefix/"README"
-    assert (testpath/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
+    input_markdown = <<-EOS.undent
+      # Homebrew
+
+      A package manager for humans. Cats should take a look at Tigerbrew.
+    EOS
+    expected_html = <<-EOS.undent
+      <h1 id="homebrew">Homebrew</h1>
+      <p>A package manager for humans. Cats should take a look at Tigerbrew.</p>
+    EOS
+    assert_equal expected_html, pipe_output("#{bin}/pandoc -f markdown -t html5", input_markdown)
   end
 end
