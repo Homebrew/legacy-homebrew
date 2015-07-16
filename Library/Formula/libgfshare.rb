@@ -1,7 +1,7 @@
 class Libgfshare < Formula
   desc "Library for sharing secrets"
-  homepage "http://www.digital-scurf.org/software/libgfshare"
-  url "http://www.digital-scurf.org/files/libgfshare/libgfshare-2.0.0.tar.bz2"
+  homepage "https://www.digital-scurf.org/software/libgfshare"
+  url "https://www.digital-scurf.org/files/libgfshare/libgfshare-2.0.0.tar.bz2"
   sha256 "86f602860133c828356b7cf7b8c319ba9b27adf70a624fe32275ba1ed268331f"
 
   bottle do
