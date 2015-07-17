@@ -16,6 +16,7 @@ class Bind < Formula
   head "https://source.isc.org/git/bind9.git"
 
   depends_on "openssl"
+  depends_on "json-c"
 
   def install
     ENV.libxml2
