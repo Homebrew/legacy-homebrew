@@ -29,9 +29,11 @@ class ObjectiveCaml < Formula
 
   depends_on :x11 => :optional
 
-  # Upstream fix for a GC crash issue introduced in 4.02.2
-  # See http://caml.inria.fr/mantis/view.php?id=6919
-  patch :DATA
+  unless build.head?
+      # Upstream fix for a GC crash issue introduced in 4.02.2
+      # See http://caml.inria.fr/mantis/view.php?id=6919
+      patch :DATA
+  end
 
   def install
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores
