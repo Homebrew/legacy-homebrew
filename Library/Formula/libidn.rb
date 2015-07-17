@@ -7,9 +7,9 @@ class Libidn < Formula
 
   bottle do
     cellar :any
-    sha256 "986476acf5da5d76e837a99acc35bcf2db332f70442ca9594c1756ca1eb4d5c9" => :yosemite
-    sha256 "85c4054e9504102482379386739d21bb55c5630c68c6f3f37c669c9dffadeb71" => :mavericks
-    sha256 "2785cd21c1e32a7cd6d8e414b18584a41c2eb4f0e26694ea8cbe61e0ef083b38" => :mountain_lion
+    sha256 "d2aac625b2b178072eabb234dd624306bacbc6127ac7c515e9405b1cd9da388a" => :yosemite
+    sha256 "712502e2028144e983f01a80f8fa293e8dc6ef421d6459181770bdb365717ac3" => :mavericks
+    sha256 "0e231bfa4cbd4fcd8d5e047b33a1e0f6a8e320c50a7719adc1812b32d8bdf7db" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
