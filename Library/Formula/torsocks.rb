@@ -8,9 +8,9 @@ class Torsocks < Formula
   head "https://git.torproject.org/torsocks.git"
 
   bottle do
-    sha1 "75a53b9a12c5f3b1dbcdfd659f9bdecf6703a2f8" => :yosemite
-    sha1 "02573816190ad4fa6ee829e59b293224a90b6dad" => :mavericks
-    sha1 "d10034aa108b8a4baf2a6ecd73457cf279681eb3" => :mountain_lion
+    sha256 "eefc247e6b21f0cf8f5e77fff478dc541e1e41cc292c5b955ec12265073375ab" => :yosemite
+    sha256 "d58029eed52863a5b7f024f0942bf02d17e5da248be3d59ccd75d9380be22f2d" => :mavericks
+    sha256 "28f2bdf7f4e5c0fccda688dfbd259addffefa7726dddd703db56bd4769d6b321" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
