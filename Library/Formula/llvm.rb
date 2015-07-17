@@ -133,7 +133,7 @@ class Llvm < Formula
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
 
-    args << "-DLLVM_ENABLE_ASSERTIONS=ON" if build.with? "assertions"
+    args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
     args << "-DCMAKE_CXX_FLAGS_RELEASE='-DNDEBUG'" if build.without? "assertions"
 
     if build.universal?
