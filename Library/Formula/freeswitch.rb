@@ -2,8 +2,8 @@ class Freeswitch < Formula
   desc "Telephony platform to route various communication protocols"
   homepage "https://freeswitch.org"
   url "https://freeswitch.org/stash/scm/fs/freeswitch.git",
-      :tag => "v1.4.19",
-      :revision => "ebf2df68fa6f341311620c6d90f5a8d77334606c"
+      :tag => "v1.4.20",
+      :revision => "0ae8ee7f8f13a37cf48381381b2f30906e750e19"
 
   head "https://freeswitch.org/stash/scm/fs/freeswitch.git"
 
@@ -19,20 +19,24 @@ class Freeswitch < Formula
   depends_on "pkg-config" => :build
   depends_on :apr => :build
 
-  depends_on "jpeg"
+  option "without-moh", "Do not install music-on-hold"
+  option "without-sounds-en", "Do not install English (Callie) sounds"
+  option "with-sounds-fr", "Install French (June) sounds"
+  option "with-sounds-ru", "Install Russian (Elena) sounds"
+
   depends_on "curl"
+  depends_on "jpeg"
+  depends_on "ldns"
   depends_on "openssl"
   depends_on "pcre"
   depends_on "speex"
   depends_on "sqlite"
 
   def install
-    system "./bootstrap.sh", "-j#{ENV.make_jobs}"
+    system "./bootstrap.sh", "-j"
 
     # tiff will fail to find OpenGL unless told not to use X
     inreplace "libs/tiff-4.0.2/configure.gnu", "--with-pic", "--with-pic --without-x"
-    # mod_enum requires libldns-dev which doesn't seem to exist in brew
-    inreplace "modules.conf", "applications/mod_enum", "#applications/mod_enum"
 
     system "./configure", "--disable-dependency-tracking",
                           "--enable-shared",
@@ -40,8 +44,14 @@ class Freeswitch < Formula
                           "--prefix=#{prefix}",
                           "--exec_prefix=#{prefix}"
 
+    make_targets = %w[install all]
+    make_targets << "cd-moh-install" if build.with?("moh")
+    make_targets << "cd-sounds-install" if build.with?("sounds-en")
+    make_targets << "cd-sounds-fr-install" if build.with?("sounds-fr")
+    make_targets << "cd-sounds-ru-install" if build.with?("sounds-ru")
+
     system "make"
-    system "make", "install", "all", "cd-sounds-install", "cd-moh-install"
+    system "make", *make_targets
   end
 
   plist_options :manual => "freeswitch -nc --nonat"
