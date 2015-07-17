@@ -1,8 +1,8 @@
 class Ant < Formula
   desc "Java build tool"
   homepage "https://ant.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.5-bin.tar.bz2"
-  sha256 "3019f1b8c18151982bf217d7947a8cf9a526019718251d88cf3eb60b7922f614"
+  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.6-bin.tar.bz2"
+  sha256 "a43b0928960d63d6b1e2bed37e1ce4fd8fa1788ba84e08388bfe9513f02e8db3"
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
 
   keg_only :provided_by_osx if MacOS.version < :mavericks
