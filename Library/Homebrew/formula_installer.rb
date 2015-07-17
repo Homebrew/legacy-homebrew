@@ -404,7 +404,7 @@ class FormulaInstaller
     ohai "Summary" if verbose? or show_summary_heading?
     puts summary
   ensure
-    unlock if hold_locks?
+    unlock
   end
 
   def emoji
