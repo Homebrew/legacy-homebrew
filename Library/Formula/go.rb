@@ -11,9 +11,9 @@ class Go < Formula
   head "https://github.com/golang/go.git"
 
   devel do
-    url "https://storage.googleapis.com/golang/go1.5beta1.src.tar.gz"
-    sha256 "e02be87011421dc08ae6d03a3dc07492cad03faf83cb4f8ba8d39a403d38d3a1"
-    version "1.5beta1"
+    url "https://storage.googleapis.com/golang/go1.5beta2.src.tar.gz"
+    sha256 "9cad9b5bed4ca3a18469490ded83821a903a64bc630f498878fffcd1a11c9260"
+    version "1.5beta2"
   end
 
   bottle do
