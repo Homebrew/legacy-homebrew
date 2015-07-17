@@ -14,10 +14,17 @@
 class ObjectiveCaml < Formula
   desc "General purpose programming language in the ML family"
   homepage "https://ocaml.org/"
-  url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.2.tar.bz2"
-  sha256 "b18265582b1c2fd5c1e67da3f744bf1ff474d194bb277c3a9ceb5eb16a1ea703"
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
   revision 1
+
+  stable do
+    url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.2.tar.bz2"
+    sha256 "b18265582b1c2fd5c1e67da3f744bf1ff474d194bb277c3a9ceb5eb16a1ea703"
+
+    # Upstream fix for a GC crash issue introduced in 4.02.2
+    # See http://caml.inria.fr/mantis/view.php?id=6919
+    patch :DATA
+  end
 
   bottle do
     sha256 "08c8d8728d3c1fe56bbf06ef3cc7acd407b902adc029cd50ae5fda1c4e31d9db" => :yosemite
@@ -28,10 +35,6 @@ class ObjectiveCaml < Formula
   option "with-x11", "Install with the Graphics module"
 
   depends_on :x11 => :optional
-
-  # Upstream fix for a GC crash issue introduced in 4.02.2
-  # See http://caml.inria.fr/mantis/view.php?id=6919
-  patch :DATA
 
   def install
     ENV.deparallelize # Builds are not parallel-safe, esp. with many cores

@@ -1,8 +1,8 @@
 class Elasticsearch < Formula
   desc "Distributed real-time search & analytics engine for the cloud"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.tar.gz"
-  sha256 "dc336c83394b2f2f72f362e0f959a4cfdec2109aa3de15668401afeab0b02d2e"
+  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.0.tar.gz"
+  sha256 "6fabed2db09e1b88587df15269df328ecef33e155b3c675a2a6d2299bda09c95"
 
   depends_on :java => "1.7+"
 
