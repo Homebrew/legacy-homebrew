@@ -5,15 +5,15 @@ class Go < Formula
   # Perhaps we can use our previous bottles, ala the discussion around PyPy?
   # https://docs.google.com/document/d/1OaatvGhEAq7VseQ9kkavxKNAfepWy2yhPUBs96FGV28
   url "https://storage.googleapis.com/golang/go1.4.2.src.tar.gz"
-  sha1 "460caac03379f746c473814a65223397e9c9a2f6"
+  sha256 "299a6fd8f8adfdce15bc06bde926e7b252ae8e24dd5b16b7d8791ed79e7b5e9b"
   version "1.4.2"
 
   head "https://github.com/golang/go.git"
 
   devel do
-    url "https://storage.googleapis.com/golang/go1.5beta1.src.tar.gz"
-    sha256 "e02be87011421dc08ae6d03a3dc07492cad03faf83cb4f8ba8d39a403d38d3a1"
-    version "1.5beta1"
+    url "https://storage.googleapis.com/golang/go1.5beta2.src.tar.gz"
+    sha256 "9cad9b5bed4ca3a18469490ded83821a903a64bc630f498878fffcd1a11c9260"
+    version "1.5beta2"
   end
 
   bottle do
@@ -40,10 +40,10 @@ class Go < Formula
   resource "gobootstrap" do
     if MacOS.version > :lion
       url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.8.tar.gz"
-      sha1 "58a04b3eb9853c75319d9076df6f3ac8b7430f7f"
+      sha256 "c2f53983fc8fe5159d811081022ebc401b8111759ce008f91193abdae82cdbc9"
     else
       url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.6.tar.gz"
-      sha1 "00c3f9a03daff818b2132ac31d57f054925c60e7"
+      sha256 "da40e85a2c9bda9d2c29755c8b57b8d5932440ba466ca366c2a667697a62da4c"
     end
   end
 
