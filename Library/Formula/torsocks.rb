@@ -6,7 +6,7 @@ class Torsocks < Formula
     :revision => "a43a3656a5bb4391fb1654d5ff44a5257e1f165f"
 
   head "https://git.torproject.org/torsocks.git"
-  
+
   bottle do
     sha1 "75a53b9a12c5f3b1dbcdfd659f9bdecf6703a2f8" => :yosemite
     sha1 "02573816190ad4fa6ee829e59b293224a90b6dad" => :mavericks
