@@ -5,7 +5,7 @@ class JbossForge < Formula
   homepage 'http://forge.jboss.org/'
   url 'https://repository.jboss.org/nexus/service/local/artifact/maven/redirect?r=releases&g=org.jboss.forge&a=forge-distribution&v=2.17.0.Final&e=zip&c=offline'
   version '2.17.0.Final'
-  sha1 '38687342e29d0d39b36856dc5aac74b033f72ce3'
+  sha256 'c0d8cadb315b23d99fb582db670ef32beea51b9b06ea9313ec81daa3998bedd8'
 
   def install
     rm_f Dir["bin/*.bat"]
