@@ -86,7 +86,9 @@ class Fontforge < Formula
 
     # Bootstrap in every build: https://github.com/fontforge/fontforge/issues/1806
     resource("gnulib").fetch
-    system "./bootstrap", "--gnulib-srcdir=#{resource("gnulib").cached_download}"
+    system "./bootstrap",
+           "--gnulib-srcdir=#{resource("gnulib").cached_download}",
+           "--skip-git"
     system "./configure", *args
     system "make"
     system "make", "install"
