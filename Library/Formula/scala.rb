@@ -2,7 +2,7 @@ class Scala < Formula
   desc "Scala programming language"
   homepage "http://www.scala-lang.org/"
 
-  depends_on :java => "1.6+"
+  depends_on :java => build.stable? ? "1.6+" : "1.8+"
 
   bottle do
     cellar :any
