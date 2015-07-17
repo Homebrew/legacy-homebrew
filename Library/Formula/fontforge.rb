@@ -85,6 +85,8 @@ class Fontforge < Formula
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
     # Bootstrap in every build: https://github.com/fontforge/fontforge/issues/1806
+    # "--skip-git" tells the bootstrap script not to pull the latest master
+    # branch of gnulib and just use the commit we've checked out.
     resource("gnulib").fetch
     system "./bootstrap",
            "--gnulib-srcdir=#{resource("gnulib").cached_download}",
