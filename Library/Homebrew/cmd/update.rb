@@ -1,4 +1,5 @@
 require 'cmd/tap'
+require 'Descriptions'
 
 module Homebrew
   def update
@@ -296,7 +297,11 @@ class Report
     formula = select_formula(key)
     unless formula.empty?
       ohai title
-      puts_columns formula
+      if (ARGV.include? '--desc') && (key != :D)
+        Descriptions.print formula
+      else
+        puts_columns formula
+      end
     end
   end
 end

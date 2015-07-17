@@ -189,6 +189,18 @@ _brew_deps ()
     __brew_complete_formulae
 }
 
+_brew_desc ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--search"
+        return
+        ;;
+    esac
+    __brew_complete_formulae
+}
+
 _brew_doctor () {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     __brewcomp "$(brew doctor --list-checks)"
@@ -593,6 +605,7 @@ _brew ()
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
     deps)                       _brew_deps ;;
+    desc)                       _brew_desc ;;
     doctor|dr)                  _brew_doctor ;;
     diy|configure)              _brew_diy ;;
     fetch)                      _brew_fetch ;;
