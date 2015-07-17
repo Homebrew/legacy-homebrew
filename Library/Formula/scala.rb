@@ -2,7 +2,7 @@ class Scala < Formula
   desc "Scala programming language"
   homepage "http://www.scala-lang.org/"
 
-  depends_on :java => "1.6+"
+  depends_on :java => build.stable? ? "1.6+" : "1.8+"
 
   bottle do
     cellar :any
@@ -30,20 +30,20 @@ class Scala < Formula
   end
 
   devel do
-    url "http://www.scala-lang.org/files/archive/scala-2.12.0-M1.tgz"
-    sha256 "e48971939fa0f82ff3190ecafd22ad98d9d00eb4aef09cd2197265dc44f72eee"
-    version "2.12.0-M1"
+    url "http://www.scala-lang.org/files/archive/scala-2.12.0-M2.tgz"
+    sha256 "fe9ad8fd9fd553eaddcdfa1cadef641c37e504d72c151cdda39ffa1eb8896e25"
+    version "2.12.0-M2"
 
     resource "docs" do
-      url "http://www.scala-lang.org/files/archive/scala-docs-2.12.0-M1.zip"
-      sha256 "36683ec16e30b69e3abf424c8cff1d49ebfd5f07b4cd3a015ced767a1ca81221"
-      version "2.12.0-M1"
+      url "http://www.scala-lang.org/files/archive/scala-docs-2.12.0-M2.zip"
+      sha256 "b000b93fee380453068e2570870ea1216df75d10429bf39b8bd85d62b25be426"
+      version "2.12.0-M2"
     end
 
     resource "src" do
-      url "https://github.com/scala/scala/archive/v2.12.0-M1.tar.gz"
-      sha256 "0c129529b8dbafa89782c997904705dc59d5b9abf01f97218f86f1c602fca339"
-      version "2.12.0-M1"
+      url "https://github.com/scala/scala/archive/v2.12.0-M2.tar.gz"
+      sha256 "b149f1def061d58168349a769e3b0b23a803e57c4a434ad8edb7483c515ac9e7"
+      version "2.12.0-M2"
     end
   end
 
