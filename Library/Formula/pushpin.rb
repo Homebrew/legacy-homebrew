@@ -1,8 +1,8 @@
 class Pushpin < Formula
   desc "Reverse proxy for realtime web services"
   homepage "http://pushpin.org"
-  url "https://dl.bintray.com/fanout/source/pushpin-1.3.3.tar.bz2"
-  sha256 "b48092b48436166c015be074efd614b82f4f9637cc9dcdf29e801998fbcf64f4"
+  url "https://dl.bintray.com/fanout/source/pushpin-1.4.0.tar.bz2"
+  sha256 "75a7e99b67a6e85416deb1fe34234b0eba5dbe6b0bc15c314a33c2eddaa79213"
 
   head "https://github.com/fanout/pushpin.git"
 
@@ -51,16 +51,16 @@ class Pushpin < Formula
     sha256 "55715a5d758214034db179005def47ed842da36c4c48e9e7ae59bcaffed7ca9b"
   end
 
-  resource "blist" do
-    url "https://pypi.python.org/packages/source/b/blist/blist-1.3.6.tar.gz"
-    sha256 "3a12c450b001bdf895b30ae818d4d6d3f1552096b8c995f0fe0c74bef04d1fc3"
+  resource "sortedcontainers" do
+    url "https://pypi.python.org/packages/source/s/sortedcontainers/sortedcontainers-0.9.6.tar.gz"
+    sha256 "bacaeb1c3e59c3083eec4d1198ba5625246c012e0342aafa46291632e8458dd3"
   end
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[setuptools MarkupSafe Jinja2 pyzmq setproctitle tnetstring blist].each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
