@@ -5,7 +5,7 @@ class Zsh < Formula
   homepage 'http://www.zsh.org/'
   url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.8/zsh-5.0.8.tar.bz2'
   mirror 'http://www.zsh.org/pub/zsh-5.0.8.tar.bz2'
-  sha256 '8079cf08cb8beff22f84b56bd72bb6e6962ff4718d816f3d83a633b4c9e17d23'
+  sha256 '818a4b8bbcb50878a8b1b9f71b4274d242ab46bf860c74676e98dec1d0248821'
 
   bottle do
     sha256 "86da8afbbaa7a5a84b6362638f101a0698ac669a55282991c3488de4c1f6d6f3" => :yosemite
