@@ -139,6 +139,11 @@ class Bind < Formula
     EOS
   end
 
+  test do
+    system bin/"dig", "-v"
+    system bin/"dig", "brew.sh"
+  end
+
   plist_options :startup => true
 
   def plist; <<-EOS.undent
