@@ -278,13 +278,31 @@ class ChecksumMismatchError < RuntimeError
     @expected = expected
     @hash_type = expected.hash_type.to_s.upcase
 
-    super <<-EOS.undent
+    message = <<-EOS.undent
       #{@hash_type} mismatch
       Expected: #{expected}
       Actual: #{actual}
       Archive: #{fn}
       To retry an incomplete download, remove the file above.
       EOS
+
+    # The great SourceForge outage of July 2015
+    bad_hashes = %w[
+      0103b909e19ca9c6497a7ae696c16480
+      ea60df615387f47bdfdfe4da48f6567c4ec60f74
+      818a4b8bbcb50878a8b1b9f71b4274d242ab46bf860c74676e98dec1d0248821
+    ]
+    if bad_hashes.include?(actual.to_s)
+      message += <<-EOS.undent
+        ******************************************************************************
+        * ATTENTION: This hash is consistent with an error message for SourceForge's *
+        *            continuing service outage!                                      *
+        * More info: https://github.com/Homebrew/homebrew/issues/41778               *
+        ******************************************************************************
+        EOS
+    end
+
+    super message
   end
 end
 
