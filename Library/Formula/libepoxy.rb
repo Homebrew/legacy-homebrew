@@ -6,9 +6,9 @@ class Libepoxy < Formula
 
   bottle do
     cellar :any
-    sha1 "dabb8e5118bc90e09ecd908200dc2d3e7b4318a2" => :yosemite
-    sha1 "0f3d1752a4a3b6783ea5a94327bfdb67428c5041" => :mavericks
-    sha1 "d09e2a326f2bc061fae07f39c5a57421951bcda5" => :mountain_lion
+    sha256 "4c4c34f77832f75974a9ce48020391a03830b5649a6759253ce208a6eca63074" => :yosemite
+    sha256 "edc04249dcc083ed487de29eb8401d788fbcfed58988ebe6a75e1cae5613831f" => :mavericks
+    sha256 "495b9da3d417b836eaf1cdd1aba41782d975d0b3d007e1f9c91fab7e57c2a197" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
