@@ -4,7 +4,7 @@ class Groovysdk < Formula
   desc "SDK for Groovy: a Java-based scripting language"
   homepage "http://www.groovy-lang.org"
   url "https://dl.bintray.com/groovy/maven/apache-groovy-sdk-2.4.4.zip"
-  sha1 "6f738f4167509c72d75926a67126512f56e23df2"
+  sha256 "2e794749f38386c81101c05e83b2ddd2bc3675d1cb01101f3ee2be6cf67b2fc9"
 
   def install
     ENV["GROOVY_HOME"] = libexec
