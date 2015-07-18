@@ -220,6 +220,7 @@ TAP_MIGRATIONS = {
   "wopr" => "homebrew/science",
   "x3270" => "homebrew/x11",
   "xar" => "homebrew/dupes",
+  "xastir" => "homebrew/x11",
   "xchat" => "homebrew/x11",
   "xclip" => "homebrew/x11",
   "xdotool" => "homebrew/x11",
