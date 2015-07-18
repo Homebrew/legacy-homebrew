@@ -828,6 +828,19 @@ class FossilDownloadStrategy < VCSDownloadStrategy
 
 end
 
+class LocalDirectoryDownloadStrategy < AbstractDownloadStrategy
+
+  def initialize(name, resource)
+    super
+    @url = @url.sub(%r[^file://], "")
+  end
+
+  def stage
+    ohai "cp -r #{@url}/* ."
+    cp_r(Dir[@url + "/*"], ".")
+  end
+end
+
 class DownloadStrategyDetector
   def self.detect(url, strategy=nil)
     if strategy.nil?
@@ -844,6 +857,12 @@ class DownloadStrategyDetector
 
   def self.detect_from_url(url)
     case url
+    when %r[^file://]
+      if File.directory?(url.sub(%r[^file://], ""))
+        LocalDirectoryDownloadStrategy
+      else
+        CurlDownloadStrategy
+      end
     when %r[^https?://.+\.git$], %r[^git://]
       GitDownloadStrategy
     when %r[^https?://www\.apache\.org/dyn/closer\.cgi]
