@@ -1,11 +1,9 @@
-require "formula"
-
 class GnuApl < Formula
   desc "GNU implementation of the programming language APL"
-  homepage "http://www.gnu.org/software/apl/"
+  homepage "https://www.gnu.org/software/apl/"
   url "http://ftpmirror.gnu.org/apl/apl-1.4.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"
-  sha1 "ee5dab7f7c0f5d79c435a20f3ddcafbda85ac22e"
+  mirror "https://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"
+  sha256 "69da31db180e6ae17116122758c266e19f62e256f04e3c4959f6f2b224a1893a"
 
   bottle do
     sha1 "e067c7741c9f7e174f0a5f06d99e59fe5b6e930b" => :mavericks
@@ -28,6 +26,17 @@ class GnuApl < Formula
       'Hello world'
       )OFF
     EOS
-    assert_match /Hello world/, shell_output("#{bin}/apl -s -f hello.apl")
+
+    pid = fork do
+      exec "#{bin}/APserver"
+    end
+    sleep 4
+
+    begin
+      assert_match /Hello world/, shell_output("#{bin}/apl -s -f hello.apl")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
