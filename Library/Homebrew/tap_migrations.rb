@@ -232,5 +232,6 @@ TAP_MIGRATIONS = {
   "xplot" => "homebrew/x11",
   "xspringies" => "homebrew/x11",
   "yarp" => "homebrew/x11",
+  "ydict" => "homebrew/boneyard",
   "zenity" => "homebrew/x11",
 }
