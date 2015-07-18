@@ -1,8 +1,8 @@
 class Libepoxy < Formula
   desc "Library for handling OpenGL function pointer management"
   homepage "https://github.com/anholt/libepoxy"
-  url "https://github.com/anholt/libepoxy/archive/v1.2.tar.gz"
-  sha256 "42c328440f60a5795835c5ec4bdfc1329e75bba16b6e22b3a87ed17e9679e8f6"
+  url "https://github.com/anholt/libepoxy/archive/v1.3.1.tar.gz"
+  sha256 "6700ddedffb827b42c72cce1e0be6fba67b678b19bf256e1b5efd3ea38cc2bb4"
 
   bottle do
     cellar :any
@@ -21,12 +21,6 @@ class Libepoxy < Formula
     url "http://xorg.freedesktop.org/releases/individual/util/util-macros-1.19.0.tar.bz2"
     sha256 "2835b11829ee634e19fa56517b4cfc52ef39acea0cd82e15f68096e27cbed0ba"
   end
-
-  # This patch disables GLX on OSX, so that we don't have a runtime
-  # dependency on x11.
-  # It has been submitted at https://github.com/anholt/libepoxy/pull/28 and
-  # will be included in the next release, according to libepoxy's author.
-  patch :DATA
 
   def install
     resource("xorg-macros").stage do
@@ -71,30 +65,3 @@ class Libepoxy < Formula
     system "./test"
   end
 end
-__END__
-diff --git a/configure.ac b/configure.ac
-index f97c9b0..01842a4 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -78,7 +65,7 @@ case $host_os in
-         ;;
-     darwin*)
-         build_egl=no
--        build_glx=yes
-+        build_glx=no
-         build_wgl=no
-         build_apple=yes
-         has_znow=no
-diff --git a/src/dispatch_common.h b/src/dispatch_common.h
-index a4eb0f0..6b8503a 100644
---- a/src/dispatch_common.h
-+++ b/src/dispatch_common.h
-@@ -30,7 +30,7 @@
- #define EPOXY_IMPORTEXPORT __declspec(dllexport)
- #elif defined(__APPLE__)
- #define PLATFORM_HAS_EGL 0
--#define PLATFORM_HAS_GLX 1
-+#define PLATFORM_HAS_GLX 0
- #define PLATFORM_HAS_WGL 0
- #define EPOXY_IMPORTEXPORT
- #elif defined(ANDROID)
