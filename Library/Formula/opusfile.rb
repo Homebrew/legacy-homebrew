@@ -4,6 +4,13 @@ class Opusfile < Formula
   url "http://downloads.xiph.org/releases/opus/opusfile-0.6.tar.gz"
   sha256 "2428717b356e139f18ed2fdb5ad990b5654a238907a0058200b39c46a7d03ea6"
 
+  bottle do
+    cellar :any
+    sha256 "9572680217a176255ffa6536c020d7a264a63ce23eabf5c2b3b21a26b960110c" => :yosemite
+    sha256 "6a67700c57daa7126a650a209d658eda6260d9cfd657390da9dcce97f6f3bdf6" => :mavericks
+    sha256 "cab58eaa9a1cbe26e90ec142b42e717e7cdc5002a9e0222880f914fc32851175" => :mountain_lion
+  end
+
   head do
     url "https://git.xiph.org/opusfile.git"
     depends_on "autoconf" => :build
