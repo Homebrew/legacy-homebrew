@@ -1,11 +1,8 @@
-require "formula"
-
 class Camlp5 < Formula
   desc "Camlp5 is a preprocessor and pretty-printer for OCaml"
   homepage "http://camlp5.gforge.inria.fr/"
-  url "http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.12.tgz"
-  sha1 "d78d89dbd33725d7589181c38cc67180502da2f8"
-  revision 2
+  url "http://camlp5.gforge.inria.fr/distrib/src/camlp5-6.13.tgz"
+  sha256 "d1e948c04079e417d2b616f03f57cda9b6111c563d7ce59a8956ac93772e4aa9"
 
   bottle do
     sha1 "a59c46767de8e867733609b08630953c57523fb3" => :yosemite
