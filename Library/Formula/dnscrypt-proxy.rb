@@ -6,9 +6,9 @@ class DnscryptProxy < Formula
   sha256 "e0cce91dc6ab4ed76478579a899b2abb888b1d7ed133cb55294c2f9ce24edc7d"
 
   bottle do
-    sha256 "e7062b1b7be9232ae720c10a8408947979d067309f858876d69f840682f4c232" => :yosemite
-    sha256 "d68a2f9232aff5b1565221fbd188dd0a763cca36bde24edfc7bc41414c06fa93" => :mavericks
-    sha256 "13a888618cccd52d7fc902fd209d9c681cbf760f06306022f17bdf94e098cf3a" => :mountain_lion
+    sha256 "a76f60b013e819dc3450706bb2988ee4c1ef05747bf2b8cd597f8c9eaba1ed6d" => :yosemite
+    sha256 "3922e2de91dc24934038f97f1a2fa6c6b804ff107586802b36d661c399354c60" => :mavericks
+    sha256 "55a716972bef05e33e3a72581734c61d1a4f23a412de9064fa6386d1ecaacb7b" => :mountain_lion
   end
 
   head do
