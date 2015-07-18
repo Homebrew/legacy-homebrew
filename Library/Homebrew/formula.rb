@@ -775,6 +775,8 @@ class Formula
           "used_options" => tab.used_options.as_flags,
           "built_as_bottle" => tab.built_bottle,
           "poured_from_bottle" => tab.poured_from_bottle
+          if ENV["HOMEBREW_CXX"]: "CXX_Compiler" => ENV["HOMEBREW_CXX"]
+          if ENV["HOMEBREW_CC"]: "CC_Compiler" => ENV["HOMEBREW_CC"]
         }
       end
 
