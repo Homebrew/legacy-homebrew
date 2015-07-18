@@ -5,6 +5,13 @@ class Libhttpserver < Formula
   sha256 "fbdc0a44e92e78e8cc03b0a595e6190d2de002610a6467dc32d703e9c5486189"
   head "https://github.com/etr/libhttpserver.git"
 
+  bottle do
+    cellar :any
+    sha256 "71463901b58cbb162cabbf81086825314369549247a3fb2f5442eefa6b325659" => :yosemite
+    sha256 "bfe56ef562125166dad3629672fc942082e5a8a2aaab491a0e39fc2ddf3dfbb1" => :mavericks
+    sha256 "6c39a1be1de1a374313414acf8bea92c5afdedd34622a85ca82ba4fbbb224bd8" => :mountain_lion
+  end
+
   option :universal
 
   depends_on "libmicrohttpd"
