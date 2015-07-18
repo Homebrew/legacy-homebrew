@@ -1,8 +1,8 @@
 class Gwenhywfar < Formula
   desc "Utility library required by aqbanking and related software"
   homepage "http://www.aqbanking.de/"
-  url "http://www2.aquamaniac.de/sites/download/download.php?package=01&release=77&file=01&dummy=gwenhywfar-4.13.0.tar.gz"
-  sha1 "c4f37eb7fed069f3478e06a9311193a98cc9ddbf"
+  url "http://www2.aquamaniac.de/sites/download/download.php?package=01&release=78&file=01&dummy=gwenhywfar-4.13.1.tar.gz"
+  sha256 "4beca892c1235548ea0ae30132a6d2e57911c22340746585395ccb01d84ec72b"
   head "http://devel.aqbanking.de/svn/gwenhywfar/trunk"
 
   bottle do
@@ -11,6 +11,9 @@ class Gwenhywfar < Formula
     sha1 "746a3db32ec9f3f033752fc594761b596fec7f2d" => :mountain_lion
   end
 
+  option "without-cocoa", "Build without cocoa support"
+  option "with-check", "Run build-time check"
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gnutls"
@@ -18,9 +21,6 @@ class Gwenhywfar < Formula
   depends_on "libgcrypt"
   depends_on "gtk+" => :optional
   depends_on "qt" => :optional
-
-  option "without-cocoa", "Build without cocoa support"
-  option "with-check", "Run build-time check"
 
   def install
     guis = []
