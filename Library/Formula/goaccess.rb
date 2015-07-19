@@ -1,6 +1,6 @@
 class Goaccess < Formula
   desc "Log analyzer and interactive viewer for the Apache Webserver"
-  homepage "http://goaccess.prosoftcorp.com/"
+  homepage "http://goaccess.io/"
   url "http://tar.goaccess.io/goaccess-0.9.2.tar.gz"
   sha256 "b6ee0742f7ecc657633d680bd6cb3497b93b4be2f880ad68e3f48a72d81b2cd0"
 
@@ -11,6 +11,7 @@ class Goaccess < Formula
   end
 
   option "with-geoip", "Enable IP location information using GeoIP"
+
   deprecated_option "enable-geoip" => "with-geoip"
 
   head do
@@ -34,6 +35,6 @@ class Goaccess < Formula
     args << "--enable-geoip" if build.with? "geoip"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
