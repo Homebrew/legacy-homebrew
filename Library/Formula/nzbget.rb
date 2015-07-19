@@ -4,12 +4,6 @@ class Nzbget < Formula
   url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/15.0/nzbget-15.0.tar.gz"
   sha256 "3ef13f3e5917e4cda19c4fc0cd37e79967a19b4e3448c239ff24e37712a6cc0a"
 
-  devel do
-    url "https://downloads.sourceforge.net/project/nzbget/nzbget-testing/15.0-r1207/nzbget-15.0-testing-r1207.tar.gz"
-    sha1 "37f9d069df4bab4a78a1999434a2152aae6c2577"
-    version "15.0-r1207"
-  end
-
   head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
 
   bottle do
