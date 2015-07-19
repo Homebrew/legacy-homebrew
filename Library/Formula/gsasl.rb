@@ -7,10 +7,10 @@ class Gsasl < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "2b96e98966ea3d2b9b362c1adbcf18fc461a73ee" => :yosemite
-    sha1 "ab5cf602f822e6b4e9aab31fa752fc0f22b0e09a" => :mavericks
-    sha1 "bf3355e1963568a4282ec50bb3d2dfebb5f6b190" => :mountain_lion
+    revision 2
+    sha256 "afc44c1161ffa2ae09bee4a82c25e626562d950ae092356fba204789e4b4752e" => :yosemite
+    sha256 "df498ac7247b3f54bdc9720249fa4a1cee72bf8c5011d06889d8ecdebaff1aaa" => :mavericks
+    sha256 "5585b8bddf849b2b4b3f67da253c97556bfa526b8345006595cdefddf3385dd5" => :mountain_lion
   end
 
   def install
