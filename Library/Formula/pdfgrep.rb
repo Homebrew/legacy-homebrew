@@ -1,7 +1,7 @@
 class Pdfgrep < Formula
   desc "Search PDFs for strings matching a regular expression"
-  homepage "http://pdfgrep.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/pdfgrep/1.3.2/pdfgrep-1.3.2.tar.gz"
+  homepage "https://pdfgrep.org/"
+  url "https://pdfgrep.org/download/pdfgrep-1.3.2.tar.gz"
   sha256 "386b167434443dd299d389a0ef292d708123255cbab0e179e11b65ba51d9b386"
 
   head do
