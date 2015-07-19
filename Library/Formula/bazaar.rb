@@ -1,10 +1,8 @@
-require 'formula'
-
 class Bazaar < Formula
   desc "Human-friendly source code management (or 'version control')"
-  homepage 'http://bazaar.canonical.com/'
-  url 'https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz'
-  sha1 '5eb4d0367c6d83396250165da5bb2c8a9f378293'
+  homepage "http://bazaar.canonical.com/"
+  url "https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz"
+  sha256 "0994797182eb828867eee81cccc79480bd2946c99304266bc427b902cf91dab0"
 
   bottle do
     cellar :any
@@ -17,7 +15,7 @@ class Bazaar < Formula
     ENV.j1 # Builds aren't parallel-safe
 
     # Make and install man page first
-    system "make man1/bzr.1"
+    system "make", "man1/bzr.1"
     man1.install "man1/bzr.1"
 
     # Put system Python first in path
@@ -25,8 +23,12 @@ class Bazaar < Formula
 
     system "make"
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python"
-    libexec.install 'bzr', 'bzrlib'
+    libexec.install "bzr", "bzrlib"
 
-    bin.install_symlink libexec+'bzr'
+    bin.install_symlink libexec+"bzr"
+  end
+
+  test do
+    system bin/"bzr", "init-repo", "test"
   end
 end
