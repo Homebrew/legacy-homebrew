@@ -40,7 +40,7 @@ class IntegrationCommandTests < Homebrew::TestCase
   end
 
   def test_version
-    assert_equal HOMEBREW_VERSION.to_s,
+    assert_match HOMEBREW_VERSION.to_s,
                  cmd("--version")
   end
 
