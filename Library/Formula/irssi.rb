@@ -21,6 +21,7 @@ class Irssi < Formula
     sha256 "dbe24bf6031f96b060884f07dcfc33e00fca993001c3676ce949f6f00522ba88" => :mountain_lion
   end
 
+  option "with-dante", "Build with SOCKS support"
   option "without-perl", "Build without perl support"
 
   depends_on "pkg-config" => :build
@@ -47,7 +48,7 @@ class Irssi < Formula
       --with-proxy
       --enable-ipv6
       --enable-true-color
-      --with-socks
+      --with-socks=#{build.with?("dante") ? "yes" : "no"}
       --with-ncurses=#{MacOS.sdk_path}/usr
     ]
 
