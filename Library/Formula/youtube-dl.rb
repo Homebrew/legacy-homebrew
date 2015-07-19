@@ -1,13 +1,19 @@
-require "formula"
-
 # Please only update to versions that are published on PyPi as there are too
 # many releases for us to update to every single one:
 # https://pypi.python.org/pypi/youtube_dl
 class YoutubeDl < Formula
   desc "Download YouTube videos from the command-line"
   homepage "https://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2015.07.07/youtube-dl-2015.07.07.tar.gz"
-  sha256 "634d7a3c369a245e67317ddb4043f8167bce3e774e1246ecb7c2707d311c2b4e"
+
+  stable do
+    url "https://pypi.python.org/packages/source/y/youtube_dl/youtube_dl-2015.07.18.tar.gz"
+    sha256 "826b3e8f0752d26c1180c7cf9955fda297b2f34abfbf7e9b904f9625388bbe92"
+
+    patch do
+      url "https://github.com/rg3/youtube-dl/commit/22603348aa0b3e02c520589dea092507a04ab06a.diff"
+      sha256 "393da327457786a457bd4af5e70cbd2f1a05fb5b55460812a4dba7c00946ba5e"
+    end
+  end
 
   bottle do
     cellar :any
@@ -25,7 +31,12 @@ class YoutubeDl < Formula
   depends_on "rtmpdump" => :optional
 
   def install
-    system "make", "PREFIX=#{prefix}"
+    # Avoids pandoc dependency due to patch. Revert with next relese.
+    if build.stable?
+      system "make", "youtube-dl", "PREFIX=#{prefix}"
+    else
+      system "make", "PREFIX=#{prefix}"
+    end
     bin.install "youtube-dl"
     man1.install "youtube-dl.1"
     bash_completion.install "youtube-dl.bash-completion"
