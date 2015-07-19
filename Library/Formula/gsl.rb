@@ -7,10 +7,10 @@ class Gsl < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "1fe8e32e25366b24b3de3d9ccbf7c72315fc482f" => :yosemite
-    sha1 "5763fbd3bde4d3866b44ea19f841b52b271dfc3b" => :mavericks
-    sha1 "fecff8034949f3b22782d21b3191826d40bb2e1e" => :mountain_lion
+    revision 2
+    sha256 "15ce99a31e31584740852571f4f237195d21083f6675390dc50283429127400a" => :yosemite
+    sha256 "06f9197561e1425ed56820dcab37bc64c35cfaa1b98a353b7fe9d4d220701bd1" => :mavericks
+    sha256 "ab1f1a358a9307f81c0aea895d5ed69b7c20c24ab6d1673010f31f0d25f78ea2" => :mountain_lion
   end
 
   option :universal
