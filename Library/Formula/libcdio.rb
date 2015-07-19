@@ -7,9 +7,10 @@ class Libcdio < Formula
 
   bottle do
     cellar :any
-    sha1 "238264203ea7edf8bbceff7b96769b7d5375e44d" => :yosemite
-    sha1 "8ae5dd507c22a07fc517073878dfbcba44dab38f" => :mavericks
-    sha1 "e85ebcfa037fe2d2615d74cf8a71ffca11a76901" => :mountain_lion
+    revision 1
+    sha256 "a75b52450488b5a058aaf6089d731937b3e0cdf643dac6d4ea187c8e0ea8de0b" => :yosemite
+    sha256 "b70aafbcf1389b6c40bcce0fe9874acc3ae02ca67a4f0652f46484a46517c900" => :mavericks
+    sha256 "5e4dfbdb57def1e77e9327526eb92abe795da59284c6a348e542e55a9bcd8eb4" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
