@@ -1,10 +1,10 @@
-require 'formula'
-
 class CAres < Formula
   desc "Asynchronous DNS library"
-  homepage 'http://c-ares.haxx.se/'
-  url 'http://c-ares.haxx.se/download/c-ares-1.10.0.tar.gz'
-  sha1 'e44e6575d5af99cb3a38461486e1ee8b49810eb5'
+  homepage "http://c-ares.haxx.se/"
+  url "http://c-ares.haxx.se/download/c-ares-1.10.0.tar.gz"
+  mirror "https://github.com/bagder/c-ares/archive/cares-1_10_0.tar.gz"
+  sha256 "3d701674615d1158e56a59aaede7891f2dde3da0f46a6d3c684e0ae70f52d3db"
+  head "https://github.com/bagder/c-ares.git"
 
   bottle do
     cellar :any
@@ -15,8 +15,24 @@ class CAres < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}",
-                          '--disable-dependency-tracking',
-                          '--disable-debug'
-    system "make install"
+                          "--disable-dependency-tracking",
+                          "--disable-debug"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      #include <ares.h>
+
+      int main()
+      {
+        ares_library_init(ARES_LIB_INIT_ALL);
+        ares_library_cleanup();
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-lcares", "-o", "test"
+    system "./test"
   end
 end
