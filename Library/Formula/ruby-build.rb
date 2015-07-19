@@ -8,9 +8,9 @@ class RubyBuild < Formula
 
   bottle do
     cellar :any
-    sha256 "ce607b76a4af929273a733171c9fb79cb37acecbe24c240facac2bcbc73951d8" => :yosemite
-    sha256 "b4f25b3c8bf8adc4367955fb94ca59f2ecb6d777aae661dbe59776cd127cd577" => :mavericks
-    sha256 "b114523afb6b27a37ad20b7279e9c970fa6eb418f066f64fa69efd829663e6ac" => :mountain_lion
+    sha256 "865a1dba53c766869b1a7c513512ce5d1c1947ef0694e50a1bea6235fd707f92" => :yosemite
+    sha256 "ab8cba77b5ee960abbf189286e691cfa130ba4d25d9a4510fc70bbfe6d5a1fd6" => :mavericks
+    sha256 "f7de92c3b4f8fdc014dc841a4986404be4a2dff81928e309fdaed900d7b243ed" => :mountain_lion
   end
 
   depends_on "autoconf" => [:recommended, :run]
