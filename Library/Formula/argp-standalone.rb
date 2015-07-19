@@ -1,10 +1,8 @@
-require 'formula'
-
 class ArgpStandalone < Formula
   desc "Standalone version of arguments parsing functions from GLIBC"
-  homepage 'https://www.lysator.liu.se/~nisse/misc/'
-  url 'https://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz'
-  sha1 '815c560680ebdc11694b88de2f8ec15133e0bfa0'
+  homepage "https://www.lysator.liu.se/~nisse/misc/"
+  url "https://www.lysator.liu.se/~nisse/misc/argp-standalone-1.3.tar.gz"
+  sha256 "dec79694da1319acd2238ce95df57f3680fea2482096e483323fddf3d818d8be"
 
   bottle do
     cellar :any
@@ -17,13 +15,27 @@ class ArgpStandalone < Formula
   # This patch fixes compilation with Clang.
   patch :p0 do
     url "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h"
-    sha1 "61b2d1f416869666cf3f81e3961a82fcbfa84837"
+    sha256 "5656273f622fdb7ca7cf1f98c0c9529bed461d23718bc2a6a85986e4f8ed1cb8"
   end
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
-    lib.install 'libargp.a'
-    include.install 'argp.h'
+    system "make", "install"
+    lib.install "libargp.a"
+    include.install "argp.h"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      #include <argp.h>
+
+      int main(int argc, char ** argv)
+      {
+        return argp_parse(0, argc, argv, 0, 0, 0);
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-largp", "-o", "test"
+    system "./test"
   end
 end
