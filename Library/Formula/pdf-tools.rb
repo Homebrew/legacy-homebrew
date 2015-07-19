@@ -5,9 +5,9 @@ class PdfTools < Formula
   sha256 "3deff1183d69e942a9b9d94897e7aab73550574f953823815f5df925852d13f9"
 
   bottle do
-    sha256 "66cdc0c25a73a20e34fe3da69a0b3215cb01c6d8e3a8b54be84fc611a21eb1ea" => :yosemite
-    sha256 "309d7f940d2bc3b08003435fbc2251bfcfce7cf2204fa61590e66cf69234985a" => :mavericks
-    sha256 "db1601cb97a5490fa24fb02a8eeaa8bb0f7de3cb8d7db52fec5fc5d807a4ba34" => :mountain_lion
+    sha256 "0f43f1670b7d6fb1e068fbfcca30a4aa003e69a23a46ca40458ec13002682b64" => :yosemite
+    sha256 "39a5f5308187cb470142858fb5139882af8860fa56fdbda5640dc6cbc33a6277" => :mavericks
+    sha256 "c8aeb9f41a2a70c28b37460c9c27a53fae6bca69086dcfd323522c5ab7d709a1" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
