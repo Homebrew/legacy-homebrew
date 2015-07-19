@@ -2,8 +2,8 @@ class Plotutils < Formula
   desc "GNU tools based on libplot, a multi-format 2-D vector graphics library"
   homepage "https://www.gnu.org/software/plotutils/"
   url "http://ftpmirror.gnu.org/plotutils/plotutils-2.6.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz"
-  sha1 "7921301d9dfe8991e3df2829bd733df6b2a70838"
+  mirror "https://ftp.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz"
+  sha256 "4f4222820f97ca08c7ea707e4c53e5a3556af4d8f1ab51e0da6ff1627ff433ab"
   revision 1
 
   bottle do
@@ -20,10 +20,14 @@ class Plotutils < Formula
     # Fix usage of libpng to be 1.5 compatible
     inreplace "libplot/z_write.c", "png_ptr->jmpbuf", "png_jmpbuf (png_ptr)"
 
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--enable-libplotter"]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-libplotter
+    ]
+
     args << "--with-x" if build.with? "x11"
 
     system "./configure", *args
