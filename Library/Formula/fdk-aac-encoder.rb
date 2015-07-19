@@ -4,6 +4,13 @@ class FdkAacEncoder < Formula
   url "https://github.com/nu774/fdkaac/archive/v0.6.2.tar.gz"
   sha256 "de758d6e651e81e9be89d2972612fc5b96cb70321234c3339f35483b636458ad"
 
+  bottle do
+    cellar :any
+    sha256 "e0a16df6937c67fdbe68a326ba1bcdebfe0ede86f60b98be9645cfe49c0d9adb" => :yosemite
+    sha256 "7fa6eec6baaf3f62860ccec0a6c27557d8fc9674d2ab9408a8b6159be2101819" => :mavericks
+    sha256 "5ff4e41972f3b9f9424e49541616f8bda05ccc3b5f707c8be068c60d5bdee725" => :mountain_lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
