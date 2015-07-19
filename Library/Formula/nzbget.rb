@@ -7,10 +7,9 @@ class Nzbget < Formula
   head "https://github.com/nzbget/nzbget.git"
 
   bottle do
-    revision 1
-    sha1 "a99dad2495312ed2b6a44f094866edec6de3c60a" => :yosemite
-    sha1 "c88d1e24b4a32652154cfce1ed3e9eb1215f9259" => :mavericks
-    sha1 "254d5ba9030626f11fc3891b8b684917295647f9" => :mountain_lion
+    sha256 "575aa6f2c1e7a0782a0d01a735641b398819eebeedb45fc79893a0d8d8a99e1a" => :yosemite
+    sha256 "4d9ba1a2d89d3f9cd2abccef3e3f3223c2e9d7a68582c1ea11eb20b0bcea37c0" => :mavericks
+    sha256 "34f2fa74cd448347f0161e7adfdcfec754b3991e5058aad826df565f55e9776d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
