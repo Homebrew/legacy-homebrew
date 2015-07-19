@@ -3,6 +3,7 @@ module LinuxCPUs
     :penryn => '-march=core2 -msse4.1',
     :core2 => '-march=core2',
     :core => '-march=prescott',
+    :arm => '',
   }.freeze
   def optimization_flags; OPTIMIZATION_FLAGS; end
 
@@ -18,13 +19,19 @@ module LinuxCPUs
   def type
     @type ||= if cpuinfo =~ /Intel|AMD/
       :intel
+    elsif cpuinfo =~ /ARM/
+      :arm
     else
       :dunno
     end
   end
 
   def family
-    cpuinfo[/^cpu family\s*: ([0-9]+)/, 1].to_i
+    if intel?
+      cpuinfo[/^cpu family\s*: ([0-9]+)/, 1].to_i
+    elsif arm?
+      :arm
+    end
   end
   alias_method :intel_family, :family
 

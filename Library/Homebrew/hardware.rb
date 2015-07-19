@@ -31,6 +31,10 @@ class Hardware
       bits == 64
     end
 
+    def arm?
+      type == :arm
+    end
+
     def intel?
       type == :intel
     end
