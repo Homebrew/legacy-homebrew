@@ -51,10 +51,12 @@ class FormulaUnavailableError < RuntimeError
 end
 
 class TapFormulaUnavailableError < FormulaUnavailableError
-  attr_reader :tap
+  attr_reader :tap, :user, :repo
 
   def initialize tap, name
     @tap = tap
+    @user = tap.user
+    @repo = tap.repo
     super "#{tap}/#{name}"
   end
 
