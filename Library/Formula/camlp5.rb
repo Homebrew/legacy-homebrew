@@ -1,16 +1,13 @@
-require "formula"
-
 class Camlp5 < Formula
   desc "Camlp5 is a preprocessor and pretty-printer for OCaml"
   homepage "http://camlp5.gforge.inria.fr/"
-  url "http://pauillac.inria.fr/~ddr/camlp5/distrib/src/camlp5-6.12.tgz"
-  sha1 "d78d89dbd33725d7589181c38cc67180502da2f8"
-  revision 2
+  url "http://camlp5.gforge.inria.fr/distrib/src/camlp5-6.13.tgz"
+  sha256 "d1e948c04079e417d2b616f03f57cda9b6111c563d7ce59a8956ac93772e4aa9"
 
   bottle do
-    sha1 "a59c46767de8e867733609b08630953c57523fb3" => :yosemite
-    sha1 "02c88c2b521f13d7733630f19c2fc145e6cb2d97" => :mavericks
-    sha1 "73d8bd3f7848902360e171b425a8e807a512d449" => :mountain_lion
+    sha256 "aa844f23752518cdfceba1513388c90b273a78219f1b671809791acebe71fb87" => :yosemite
+    sha256 "de39f4abfd0f57a73d6d45850bd8e3b82f78e25f217649b51b4bc32b0df65df4" => :mavericks
+    sha256 "c5f5d96059f168aee1c86ea8c47789e27bc542baefa351eed463cb3f9c605df5" => :mountain_lion
   end
 
   depends_on "objective-caml"

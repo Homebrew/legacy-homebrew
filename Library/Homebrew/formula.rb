@@ -601,6 +601,14 @@ class Formula
     s << ") #{path}>"
   end
 
+  def file_modified?
+    return false unless which("git")
+    path.parent.cd do
+      diff = Utils.popen_read("git", "diff", "origin/master", "--", "#{path}")
+      !diff.empty? && $?.exitstatus == 0
+    end
+  end
+
   # Standard parameters for CMake builds.
   # Setting CMAKE_FIND_FRAMEWORK to "LAST" tells CMake to search for our
   # libraries before trying to utilize Frameworks, many of which will be from
@@ -938,8 +946,17 @@ class Formula
   def stage
     active_spec.stage do
       @buildpath = Pathname.pwd
-      yield
-      @buildpath = nil
+      env_home = buildpath/".brew_home"
+      mkdir_p env_home
+
+      old_home, ENV["HOME"] = ENV["HOME"], env_home
+
+      begin
+        yield
+      ensure
+        @buildpath = nil
+        ENV["HOME"] = old_home
+      end
     end
   end
 
@@ -1187,4 +1204,3 @@ class Formula
     end
   end
 end
-
