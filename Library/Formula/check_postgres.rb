@@ -8,9 +8,9 @@ class CheckPostgres < Formula
 
   bottle do
     cellar :any
-    sha1 "ff1c0bf88f5db93a9c71e583a8d9675e2db9a0dd" => :mavericks
-    sha1 "5de05e3422ee2af8eb25767048a5b5e1fd4b8421" => :mountain_lion
-    sha1 "d2d291e11a3720a3d0d8fce6d3409457055bee3c" => :lion
+    sha256 "0186b2c9fc3156aeb1d4bae0bd31eb83a8a611d71fa1d4190675c453cf813c15" => :yosemite
+    sha256 "2a0e2935a4e46e12ac58fd2257f2ab771a265dafe90f96a82ace5309506fe3c1" => :mavericks
+    sha256 "ad3e8c1a33a93f60b7a94f24a33cea5f7a6b22dfce01df1464235380ebd5acf9" => :mountain_lion
   end
 
   depends_on :postgresql
