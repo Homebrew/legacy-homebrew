@@ -3,8 +3,8 @@ require "language/go"
 class Cig < Formula
   desc "CLI app for checking the state of your git repositories"
   homepage "https://github.com/stevenjack/cig"
-  url "https://github.com/stevenjack/cig/archive/v0.1.3.tar.gz"
-  sha256 "015c8ec23a5751aa6ef1479bd3f276a45dcb345c5eb1affdf72e96e4978b1f2c"
+  url "https://github.com/stevenjack/cig/archive/v0.1.4.tar.gz"
+  sha256 "2a404649fa9041ddff6e37838d8309e8f2cf7fb7463122035ab8522343842c46"
   head "https://github.com/stevenjack/cig.git"
 
   bottle do
@@ -29,7 +29,7 @@ class Cig < Formula
   end
 
   go_resource "github.com/stevenjack/cig" do
-    url "https://github.com/stevenjack/cig.git", :revision => "c287a1597be58617d4ef173d3391b789df8b27d9"
+    url "https://github.com/stevenjack/cig.git", :revision => "9c35c2f5862fabb5896da89b54f2c88556a5c04c"
   end
 
   def install
