@@ -30,7 +30,7 @@ class Aalib < Formula
   end
 
   test do
-    system bin/"aainfo"
+    system "script", "-q", "/dev/null", bin/"aainfo"
   end
 end
 
