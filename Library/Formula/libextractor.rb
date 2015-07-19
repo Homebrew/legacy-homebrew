@@ -7,10 +7,10 @@ class Libextractor < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "8e3741386b03c28bc8c24e785f3882d277d416e1" => :yosemite
-    sha1 "505b8c3cbbf23e91d80548dc2dd6011a1231a92e" => :mavericks
-    sha1 "bb525c96875785d893080702ef010605424147db" => :mountain_lion
+    revision 2
+    sha256 "8bc531741c401c62dffaef0a29547d80b254eeb9dfd847d125b66c91dbcfc22b" => :yosemite
+    sha256 "b725cac753d996850f3584650a04cd7ab7070ec6772d826ff251457b4c778bc4" => :mavericks
+    sha256 "e26a107ce3e93be06cc6ac89d5edee8c6e18ff799e2198d762f81d524b3ce9ec" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
