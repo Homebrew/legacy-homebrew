@@ -9,9 +9,9 @@ class Cig < Formula
 
   bottle do
     cellar :any
-    sha256 "b2b1d9aab40fee1b584b5401da7e401351f2ecd7c1996472c818fff6fc676790" => :yosemite
-    sha256 "225d3cf7cf547764e52947ce83e143760c9e540bb4382f17cb87eb4c9d69f1ff" => :mavericks
-    sha256 "606e55a83bed061fd122bff114d0659861551388c2689fa7f0549b004504822f" => :mountain_lion
+    sha256 "b25800ad21c429e9d658f39b81c38025e3051706a5b1ade48942bac784cc7c1d" => :yosemite
+    sha256 "b1c2b1e3017d5f37667a3cb4283c5980fe086d3ebe1d299fa7a57d741c5e318a" => :mavericks
+    sha256 "fda6e73c27a3b73ef769a07134346efb22eb393f0f97c4acde9c3715136db401" => :mountain_lion
   end
 
   depends_on "go" => :build
