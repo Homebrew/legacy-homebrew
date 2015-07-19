@@ -5,9 +5,9 @@ class Goaccess < Formula
   sha256 "b6ee0742f7ecc657633d680bd6cb3497b93b4be2f880ad68e3f48a72d81b2cd0"
 
   bottle do
-    sha256 "0bd28778ccb4d3976313ec429f62ec67528aa2db33db32023569fdf2ee5cc065" => :yosemite
-    sha256 "912546461e75e75e3cb44a88715a267b4de82cc4e4573f8a559e9e375680ccde" => :mavericks
-    sha256 "58d9cabba37d663a94e8b1ece0ee794dc9717f918199577a5b422b116557266b" => :mountain_lion
+    sha256 "ca6fd910536691b5325cda7a217006b81f90ffd1a330c0d9aa798a674512de43" => :yosemite
+    sha256 "e6dfced095f25cb96beb0382508ee545073bd7ffc32606471152f32949b429c9" => :mavericks
+    sha256 "bcf46327a8aeb5df14590687da6572ffe529e32dbfc5c2c64b470ba9e6b3143b" => :mountain_lion
   end
 
   option "with-geoip", "Enable IP location information using GeoIP"
