@@ -2,7 +2,7 @@ class Nzbget < Formula
   desc "Binary newsgrabber for nzb files"
   homepage "http://nzbget.net/"
   url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/15.0/nzbget-15.0.tar.gz"
-  sha1 "f86447246faf7f9dd745be789caba2a9cfa7870a"
+  sha256 "3ef13f3e5917e4cda19c4fc0cd37e79967a19b4e3448c239ff24e37712a6cc0a"
 
   devel do
     url "https://downloads.sourceforge.net/project/nzbget/nzbget-testing/15.0-r1207/nzbget-15.0-testing-r1207.tar.gz"
