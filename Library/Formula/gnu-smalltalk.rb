@@ -8,6 +8,12 @@ class GnuSmalltalk < Formula
 
   head "https://github.com/bonzini/smalltalk.git"
 
+  bottle do
+    sha256 "ca6ce25f919156ff2adc37edcf6de586ff5ec627c353437f3fcc6def42c66352" => :yosemite
+    sha256 "9fa7f4649c47babb31db56fc7a28ceac6168c4eee8f33609b690cd36c02255d0" => :mavericks
+    sha256 "a17bac059b377e047360ea70d7c155116b1f6734765b22391f4ffaa1db7b00af" => :mountain_lion
+  end
+
   devel do
     url "ftp://alpha.gnu.org/gnu/smalltalk/smalltalk-3.2.90.tar.gz"
     mirror "https://www.mirrorservice.org/sites/alpha.gnu.org/gnu/smalltalk/smalltalk-3.2.90.tar.gz"
