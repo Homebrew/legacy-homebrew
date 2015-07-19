@@ -17,6 +17,7 @@
 /Library/Homebrew/test/.bundle
 /Library/Homebrew/test/bin
 /Library/Homebrew/test/vendor
+/Library/Homebrew/test/coverage
 /Library/LinkedKegs
 /Library/PinnedKegs
 /Library/Taps
