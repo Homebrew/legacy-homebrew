@@ -1,9 +1,9 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "http://www.imagemagick.org"
-  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-8.tar.xz"
-  mirror "http://ftp.nluug.nl/ImageMagick/ImageMagick-6.9.1-8.tar.xz"
-  sha256 "987b353058482b5ba15d42746eebc51c15eb05241ce94f22381b8aae0b841617"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-9.tar.xz"
+  mirror "http://ftp.nluug.nl/ImageMagick/ImageMagick-6.9.1-9.tar.xz"
+  sha256 "83cd785caeb26a171e185b5deba2900c5b73e79c97364caa4c879d26c9f4a91b"
 
   head "https://subversion.imagemagick.org/subversion/ImageMagick/trunk",
        :using => :svn
