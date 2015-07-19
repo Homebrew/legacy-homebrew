@@ -15,10 +15,10 @@ $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require "global"
 
 if ARGV.first == "--version"
-  puts HOMEBREW_VERSION
+  puts "#{HOMEBREW_VERSION} (#{Homebrew.git_head || "unknown"}; #{Homebrew.git_last_commit_date || "unknown"})"
   exit 0
 elsif ARGV.first == "-v"
-  puts "Homebrew #{HOMEBREW_VERSION}"
+  puts "Homebrew #{HOMEBREW_VERSION} (#{Homebrew.git_head || "unknown"}; #{Homebrew.git_last_commit_date || "unknown"})"
   # Shift the -v to the end of the parameter list
   ARGV << ARGV.shift
   # If no other arguments, just quit here.
