@@ -8,6 +8,7 @@ class Agda < Formula
   url "https://hackage.haskell.org/package/Agda-2.4.2.3/Agda-2.4.2.3.tar.gz"
   mirror "https://github.com/agda/agda/archive/2.4.2.3.tar.gz"
   sha256 "bc6def45e32498f51863d67acfbe048c039d630c6a36761ed27e99a5f68d7b27"
+  revision 1
 
   bottle do
     sha256 "57c0922b13545aff54001664ee7a6cd7edc297be1774de095d6ed0140934c285" => :yosemite
@@ -17,7 +18,6 @@ class Agda < Formula
 
   head "https://github.com/agda/agda.git", :branch => "master"
 
-  option "without-epic-backend", "Exclude the Epic compiler backend"
   option "without-stdlib", "Don't install the Agda standard library"
   option "with-malonzo-ffi",
     "Include the MAlonzo backend's FFI (depends on the standard library)"
@@ -26,7 +26,6 @@ class Agda < Formula
   depends_on "cabal-install" => :build
 
   depends_on "gmp"
-  depends_on "bdw-gc" if build.with? "epic-backend"
   depends_on "emacs" => :optional
 
   setup_ghc_compilers
@@ -51,11 +50,8 @@ class Agda < Formula
     # install Agda core
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "cpphs"
-      if build.with? "epic-backend"
-        cabal_install "--prefix=#{prefix}", "epic"
-      end
-      cabal_install "--only-dependencies", epic_flag
-      cabal_install "--prefix=#{prefix}", epic_flag
+      cabal_install "--only-dependencies"
+      cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib
 
