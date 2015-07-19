@@ -6,9 +6,9 @@ class Argus < Formula
 
   bottle do
     cellar :any
-    sha1 "5b8ca09efc8f4f84d78883f3f866628da061928b" => :yosemite
-    sha1 "c96587d47409a7cb961450ade0b76558c1bf3f9c" => :mavericks
-    sha1 "13a6e2c690d830adddb45bce4b8b0b24a01c9249" => :mountain_lion
+    sha256 "7e369883e4ef8eda6efd19eb31ba83f619fc13b758e40ade9f199c696e9e37b5" => :yosemite
+    sha256 "6f6b81839f5f6a23b3a0be14bea615dab821bbe8be7dbfae886871ad41590191" => :mavericks
+    sha256 "10f68e1435d342133a0d0fbcfc878b9f01fd95fa2d83f0e3adff7fdfaa1f3185" => :mountain_lion
   end
 
   def install
