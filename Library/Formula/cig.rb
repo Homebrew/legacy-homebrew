@@ -28,12 +28,10 @@ class Cig < Formula
     url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
   end
 
-  go_resource "github.com/stevenjack/cig" do
-    url "https://github.com/stevenjack/cig.git", :revision => "9c35c2f5862fabb5896da89b54f2c88556a5c04c"
-  end
-
   def install
     ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/stevenjack/"
+    ln_sf buildpath, buildpath/"src/github.com/stevenjack/cig"
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd "src/github.com/tools/godep" do
