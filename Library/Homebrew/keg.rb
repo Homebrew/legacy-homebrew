@@ -243,6 +243,10 @@ class Keg
     Dir["#{path}/{,libexec/}*.app"].any?
   end
 
+  def elisp_installed?
+    Dir["#{path}/share/emacs/site-lisp/**/*.el"].any?
+  end
+
   def version
     require 'pkg_version'
     PkgVersion.parse(path.basename.to_s)
