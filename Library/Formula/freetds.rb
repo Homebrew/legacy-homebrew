@@ -24,7 +24,6 @@ class Freetds < Formula
   option "with-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
   option "with-odbc-wide", "Enable odbc wide, prevent unicode - MemoryError's"
   option "with-krb5", "Enable Kerberos support"
-  option "without-openssl", "Build without OpenSSL support (default is to use brewed OpenSSL)"
 
   deprecated_option "enable-msdblib" => "with-msdblib"
   deprecated_option "enable-sybase-compat" => "with-sybase-compat"
