@@ -3,8 +3,8 @@ require 'formula'
 class Cgal < Formula
   desc "CGAL: Computational Geometry Algorithm Library"
   homepage 'http://www.cgal.org/'
-  url 'https://gforge.inria.fr/frs/download.php/file/34704/CGAL-4.6.tar.gz'
-  sha1 'fed9a1d95bbf1620c9d7c7fbecd3c651702dd529'
+  url 'https://gforge.inria.fr/frs/download.php/file/34898/CGAL-4.6.1.tar.gz'
+  sha256 '451b582064eededb6672ddd880e38949130187512f26bd91ec90157e2eb151a5'
 
   bottle do
     sha256 "27a0904eca24b6093b9612b5a12fb016f1e3a20b3739ec2db907abbca30ae9e4" => :yosemite
