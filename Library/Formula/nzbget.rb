@@ -27,7 +27,7 @@ class Nzbget < Formula
 
   resource "libpar2" do
     url "https://launchpad.net/libpar2/trunk/0.4/+download/libpar2-0.4.tar.gz"
-    sha1 "c4a5318edac0898dcc8b1d90668cfca2ccfe0375"
+    sha256 "316d6f0eb31eb896f5546171c2e86801aeffe5ae5e2decffc17f0018346796d4"
   end
 
   def install
