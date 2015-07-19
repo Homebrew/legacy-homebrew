@@ -7,10 +7,10 @@ class Pth < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "7453010be4970e6ac7a15becaeab7ce324307c9b" => :yosemite
-    sha1 "1b5d53c617906cd9417bb462fd5b8c93da3c3f66" => :mavericks
-    sha1 "4c286bdadd1d6f3ad49f6df0012f252bbbd8a512" => :mountain_lion
+    revision 2
+    sha256 "7b31c6d65a97c722e661feb4c73a59a9025f1eac6b297ff181931bbdbc894ff3" => :yosemite
+    sha256 "4271f5c483e95641caa088059669dad1ab6d95774ff66eecae2af1c5c0ddaf0a" => :mavericks
+    sha256 "b478e70f3b391d547d98334070185e44d9d9074943bafbb3a7bf2e13dfdc34b9" => :mountain_lion
   end
 
   def install
