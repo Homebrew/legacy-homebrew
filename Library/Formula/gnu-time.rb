@@ -7,9 +7,10 @@ class GnuTime < Formula
 
   bottle do
     cellar :any
-    sha1 "601a630e1fb6892b0c78f75bbfcf92bbc5ddedf3" => :yosemite
-    sha1 "1e503175234b796789f2b1b5ea0b12cd40b26997" => :mavericks
-    sha1 "cb53342bb927e6977df940b6ca8517d0a2c845f3" => :mountain_lion
+    revision 1
+    sha256 "d0b40a36430314f548ab3e5d362c3695b9ab38e83933a7a459deaccfa705232f" => :yosemite
+    sha256 "f69ffe3bd6748843ff7013c016bf69a58efde8fb936251b0f6e9e4a2352e1450" => :mavericks
+    sha256 "0b28fad39645760e643d90a93c994df01151d4ff43dc8b3c63efa8d59d17783f" => :mountain_lion
   end
 
   option "with-default-names", "Do not prepend 'g' to the binary"
