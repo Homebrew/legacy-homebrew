@@ -2,8 +2,9 @@ class Clojurescript < Formula
   desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2913.tar.gz"
-  sha1 "ff33a93516b3c91923667d667d34cc4b404489c8"
+  url "https://github.com/clojure/clojurescript/releases/download/r3308/cljs.jar", :using => :nounzip
+  sha256 "8ec232b2d5660083cb3038bc6e0f509faee398af7c88d01fe7585f68dd3eeac6"
+  version "r3308"
 
   bottle do
     cellar :any
@@ -13,11 +14,9 @@ class Clojurescript < Formula
   end
 
   def install
-    system "./script/bootstrap"
-    inreplace %w[bin/cljsc script/repl script/repljs script/browser-repl],
-      "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{libexec}"
-    libexec.install Dir["*"]
-    bin.write_exec_script libexec/"bin/cljsc"
+    mv "cljs.jar", "cljs-#{version}.jar"
+    libexec.install "cljs-#{version}.jar"
+    bin.write_jar_script libexec/"cljs-#{version}.jar", "cljsc"
   end
 
   def caveats; <<-EOS.undent
