@@ -7,9 +7,10 @@ class Libsigsegv < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "a94a8a97acf78584c8cf8dfcb2dfc17f48597c59" => :yosemite
-    sha1 "3e7f4bfdaeb16fcf38d82e8423774c4baf0f7efd" => :mavericks
+    revision 2
+    sha256 "7cc35675981e54794ac49dcadd6daa30abaf4aaae34a18fdc8a6358fb2201896" => :yosemite
+    sha256 "1eb98d94bf58591e7e2cec76725de88f08c8280db6e4f6216fc5b4eeb6623190" => :mavericks
+    sha256 "70fcc5532a085c178a68d378f75d9926d06ee27b5733e0fb7a8d2e1288e8d80a" => :mountain_lion
   end
 
   fails_with :llvm do
