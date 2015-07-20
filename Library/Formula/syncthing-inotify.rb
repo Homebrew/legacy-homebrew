@@ -6,20 +6,29 @@ class SyncthingInotify < Formula
   sha256 "430297896bb05396268fd29cc555eba6542b42263489784c9843f4daf625ac5c"
 
   depends_on "go" => :build
-  depends_on :hg => :build
+
+  go_resource "github.com/cenkalti/backoff" do
+    url "https://github.com/cenkalti/backoff.git",
+      :revision => "6c45d6bc1e78d94431dff8fc28a99f20bafa355a"
+  end
+
+  go_resource "github.com/zillode/notify" do
+    url "https://github.com/Zillode/notify.git",
+      :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"
+  end
 
   def install
-    ENV["GOPATH"] = cached_download/".gopath"
-    ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
+    ENV["GOPATH"] = buildpath
+    ENV.append_path "PATH", buildpath
 
-    # FIXTHIS: do this without mutating the cache!
-    hack_dir = cached_download/".gopath/src/github.com/syncthing"
-    rm_rf hack_dir
-    mkdir_p hack_dir
-    ln_s cached_download, "#{hack_dir}/syncthing-inotify"
-
-    go_resource
+    # "github.com/cenkalti/backoff"
+    # "github.com/zillode/notify"
+    # system "go", "get", "-d"
     system "go", "build"
+
+    # this is not good !!!
+    mv "syncthing-inotify-#{version}", "syncthing-inotify"
+
     bin.install "syncthing-inotify"
   end
 
