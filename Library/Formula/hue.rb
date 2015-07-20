@@ -4,14 +4,12 @@ class Hue < Formula
   url "https://github.com/cloudera/hue/archive/release-3.8.1.tar.gz"
   sha256 "582777f567b9f4a34e4ce58cfd5ed24aff15f3e02f193e7990329d8cb0161a8a"
 
-  option "with-system-openssl", "Build with the Mac OS system OpenSSL instead of the (more secure) latest Homebrew version"
-
   depends_on :java
   depends_on :mysql
 
   depends_on "gmp"
   depends_on "maven" => :build
-  depends_on "openssl" if build.without? "system-openssl"
+  depends_on "openssl"
 
   patch :DATA
 
@@ -44,77 +42,6 @@ class Hue < Formula
   end
 end
 __END__
-diff --git a/desktop/core/ext-py/tablib-develop/setup.py b/desktop/core/ext-py/tablib-develop/setup.py
-index fb16546..6f3bcfe 100755
---- a/desktop/core/ext-py/tablib-develop/setup.py
-+++ b/desktop/core/ext-py/tablib-develop/setup.py
-@@ -36,36 +36,46 @@ if sys.argv[-1] == 'test':
-     os.system('py.test test_tablib.py')
-     sys.exit()
- 
--setup(
--    name='tablib',
--    version=tablib.__version__,
--    description='Format agnostic tabular data library (XLS, JSON, YAML, CSV)',
--    long_description=(open('README.rst').read() + '\n\n' +
--        open('HISTORY.rst').read()),
--    author='Kenneth Reitz',
--    author_email='me@kennethreitz.com',
--    url='http://python-tablib.org',
--    packages=[
--        'tablib', 'tablib.formats',
--        'tablib.packages',
-+packages = [
-+    'tablib', 'tablib.formats',
-+    'tablib.packages',
-+    'tablib.packages.omnijson',
-+    'tablib.packages.unicodecsv'
-+]
-+
-+if sys.version_info[0] == 2:
-+    packages.extend([
-         'tablib.packages.xlwt',
--        'tablib.packages.xlwt3',
-         'tablib.packages.xlrd',
--        'tablib.packages.xlrd3',
--        'tablib.packages.omnijson',
-         'tablib.packages.odf',
--        'tablib.packages.odf3',
-         'tablib.packages.openpyxl',
-         'tablib.packages.openpyxl.shared',
-         'tablib.packages.openpyxl.reader',
-         'tablib.packages.openpyxl.writer',
-+        'tablib.packages.yaml'
-+    ])
-+else:
-+    packages.extend([
-+        'tablib.packages.xlwt3',
-+        'tablib.packages.xlrd3',
-+        'tablib.packages.odf3',
-         'tablib.packages.openpyxl3',
-         'tablib.packages.openpyxl3.shared',
-         'tablib.packages.openpyxl3.reader',
-         'tablib.packages.openpyxl3.writer',
--        'tablib.packages.yaml',
--        'tablib.packages.unicodecsv'
--    ],
-+        'tablib.packages.yaml3'
-+    ])
-+
-+setup(
-+    name='tablib',
-+    version=tablib.__version__,
-+    description='Format agnostic tabular data library (XLS, JSON, YAML, CSV)',
-+    long_description=(open('README.rst').read() + '\n\n' +
-+        open('HISTORY.rst').read()),
-+    author='Kenneth Reitz',
-+    author_email='me@kennethreitz.com',
-+    url='http://python-tablib.org',
-+    packages=packages,
-     license='MIT',
-     classifiers=(
-         'Development Status :: 5 - Production/Stable',
-
 diff --git a/desktop/core/ext-py/parquet-python/parquet/bitstring.py b/desktop/core/ext-py/parquet-python/parquet/bitstring.py
 index ab807a2..7203c94 100644
 --- a/desktop/core/ext-py/parquet-python/parquet/bitstring.py
