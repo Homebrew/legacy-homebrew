@@ -1,8 +1,8 @@
 class Iojs < Formula
   desc "npm-compatible platform based on Node.js"
   homepage "https://iojs.org/"
-  url "https://iojs.org/dist/v2.3.4/iojs-v2.3.4.tar.xz"
-  sha256 "cf8bdbcf8598a47c514ddd964dcbee40d6cd118f9954ee4afbec9163312e43a2"
+  url "https://iojs.org/dist/v2.4.0/iojs-v2.4.0.tar.xz"
+  sha256 "0081746e2e4b49c95ddbbaa6394960af2c719465c3ddab3bee58637b574eca45"
 
   bottle do
     sha256 "ba290d26dd062790c0b37095eead0f2ab5dcfde0c3ea0637559524a6f379779a" => :yosemite
@@ -17,7 +17,7 @@ class Iojs < Formula
 
   depends_on "pkg-config" => :build
   depends_on "icu4c" => :optional
-  depends_on :python => :build
+  depends_on :python => :build if MacOS.version <= :snow_leopard
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
