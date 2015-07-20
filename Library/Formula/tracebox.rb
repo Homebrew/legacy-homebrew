@@ -1,8 +1,8 @@
 class Tracebox < Formula
   desc "Middlebox detection tool"
   homepage "http://www.tracebox.org/"
-  url "https://github.com/tracebox/tracebox.git", :tag => "v0.3",
-      :revision => "63e89e92164d5f527a8e2bbec08797179b2dacb1"
+  url "https://github.com/tracebox/tracebox.git", :tag => "v0.3.1",
+      :revision => "aec062dcf7198c8b8f3b90ee4216e929ebf0ffcb"
 
   bottle do
     cellar :any
@@ -13,6 +13,8 @@ class Tracebox < Formula
 
   head "https://github.com/tracebox/tracebox.git"
 
+  needs :cxx11
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
@@ -20,6 +22,7 @@ class Tracebox < Formula
   depends_on "json-c"
 
   def install
+    ENV.libcxx
     system "autoreconf", "--install"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
