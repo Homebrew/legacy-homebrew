@@ -6,6 +6,13 @@ class SyncthingInotify < Formula
   url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.5.tar.gz"
   sha256 "430297896bb05396268fd29cc555eba6542b42263489784c9843f4daf625ac5c"
 
+  bottle do
+    cellar :any
+    sha256 "30c9a5de4a72ccf8046aa58c70eb3d010575b675940c2251d34e3c1c01e28ff4" => :yosemite
+    sha256 "0d15a5a3157c4afe71fcecad6fa4dae504abf183036863d8e65f470414010edb" => :mavericks
+    sha256 "6ca9ddd5a10e9efd9c193abced9bbfc03e29c5305f6dd4b98ba0d1da3f6905cf" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/cenkalti/backoff" do
