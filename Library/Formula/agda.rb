@@ -11,9 +11,9 @@ class Agda < Formula
   revision 1
 
   bottle do
-    sha256 "57c0922b13545aff54001664ee7a6cd7edc297be1774de095d6ed0140934c285" => :yosemite
-    sha256 "efa071600ae9dbac5d0934fcaab72b9b4f283de7d26aba27066094a1867727fd" => :mavericks
-    sha256 "1962c4d8e43f885b1840f0556f892cf36cf3a35fd9d25a94c5479673bdfcb023" => :mountain_lion
+    sha256 "9ed012225f561074fdca22991889b72d6df25f31977b4f784c3b54c06b2a3dc3" => :yosemite
+    sha256 "10ea127aa18ea11dd3f0ee5d52f4412cf0f9254b4ff6ee6be9d7c0537da164a6" => :mavericks
+    sha256 "3fbc8ee06a8a479424d7d98ee36cfd7e54417033b061b43319b7f43f1181ab71" => :mountain_lion
   end
 
   head "https://github.com/agda/agda.git", :branch => "master"
