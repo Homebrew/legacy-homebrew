@@ -12,7 +12,6 @@ class Mlt < Formula
 
   depends_on "pkg-config" => :build
 
-  depends_on "atk"
   depends_on "ffmpeg"
   depends_on "frei0r"
   depends_on "libdv"
@@ -21,23 +20,19 @@ class Mlt < Formula
   depends_on "sdl"
   depends_on "sox"
 
-  depends_on "gtk+" => :optional
-
-  if build.with? "gtk+"
-    depends_on "pango"
-    depends_on "gdk-pixbuf"
-  end
-
   def install
     args = ["--prefix=#{prefix}",
             "--disable-jackrack",
-            "--disable-swfdec"]
-
-    args << "--disable-gtk" if build.without? "gtk+"
+            "--disable-swfdec",
+            "--disable-gtk"]
 
     system "./configure", *args
 
     system "make"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/melt", "-version"
   end
 end
