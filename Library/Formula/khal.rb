@@ -6,9 +6,9 @@ class Khal < Formula
 
   bottle do
     cellar :any
-    sha256 "5c9c2c9aeeaffd16d9076d8fb422752cbe0e8227c1cdf6bdbb42a76486a26f9a" => :yosemite
-    sha256 "f381747f9191ddcdbd4bcda97881488e917a4bca6fd3d0d6f858891323bdd939" => :mavericks
-    sha256 "a93d8a7dea73c3638e3cd980ea25b281bb3c9fc70b41521e7233cb18e676d4ba" => :mountain_lion
+    sha256 "1796df34f81473c1ad2eb8527803b8b30c993e20199e00d3457b8c3289b07244" => :yosemite
+    sha256 "67b02a0db471f4799ee54b65b39a3067af158a18d8bea6537eb681185456a4f3" => :mavericks
+    sha256 "06f4f64db39be3cf026439ab604bdb6e83c1db0ef25ce0e3a49076c74764c8d2" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
