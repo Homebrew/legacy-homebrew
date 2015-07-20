@@ -155,6 +155,10 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cd" --date=short HEAD 2>/dev/null`.chuzzle }
   end
 
+  def self.homebrew_version_string
+    "#{HOMEBREW_VERSION} (git revision #{Homebrew.git_head || "unknown"}; last commit #{Homebrew.git_last_commit_date || "unknown"})"
+  end
+
   def self.install_gem_setup_path!(gem, version = nil, executable = gem)
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
