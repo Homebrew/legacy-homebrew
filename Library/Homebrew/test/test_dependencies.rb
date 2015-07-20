@@ -71,6 +71,20 @@ class DependenciesTests < Homebrew::TestCase
     refute_equal a, b
     refute_eql a, b
   end
+
+  def test_empty
+    a = Dependencies.new
+    assert a.empty?
+    a << Dependency.new("foo")
+    refute a.empty?
+  end
+
+  def test_inspect
+    a = Dependencies.new
+    assert_equal "#<Dependencies: []>", a.inspect
+    a << Dependency.new("foo")
+    assert_equal "#<Dependencies: [#<Dependency: \"foo\" []>]>", a.inspect
+  end
 end
 
 class RequirementsTests < Homebrew::TestCase

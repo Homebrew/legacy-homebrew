@@ -257,4 +257,28 @@ class FormulaTests < Homebrew::TestCase
     assert f.option_defined?("bar")
     assert f.option_defined?("baz")
   end
+
+  def test_desc
+    f = formula do
+      desc "a formula"
+      url "foo-1.0"
+    end
+
+    assert_equal "a formula", f.desc
+  end
+
+  def test_post_install_defined
+    f1 = formula do
+      url "foo-1.0"
+
+      def post_install;end
+    end
+
+    f2 = formula do
+      url "foo-1.0"
+    end
+
+    assert f1.post_install_defined?
+    refute f2.post_install_defined?
+  end
 end
