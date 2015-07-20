@@ -25,6 +25,8 @@ class GstValidate < Formula
   depends_on "gst-plugins-base"
 
   def install
+    inreplace "tools/gst-validate-launcher.in", "env python2", "env python"
+
     args = %W[
       --prefix=#{prefix}
       --disable-debug
