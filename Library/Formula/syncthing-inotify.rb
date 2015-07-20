@@ -4,7 +4,6 @@ class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
   url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.5.tar.gz"
-  version "0.6.5"
   sha256 "430297896bb05396268fd29cc555eba6542b42263489784c9843f4daf625ac5c"
 
   depends_on "go" => :build
@@ -19,12 +18,10 @@ class SyncthingInotify < Formula
       :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"   # not sure !
   end
 
-
   def install
     ENV["GOPATH"] = buildpath
     ENV.append_path "PATH", buildpath
     bin_name = "syncthing-inotify"
-
     Language::Go.stage_deps resources, buildpath/"src"
     system "go", "build", "-o", bin_name
     bin.install bin_name
