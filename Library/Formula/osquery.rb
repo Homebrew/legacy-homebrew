@@ -7,7 +7,7 @@ class Osquery < Formula
   url "https://github.com/facebook/osquery.git", :tag => "1.5.0", :revision => "ca09fdb9f80ed632b98a2a9c41a521309e14b611"
 
   bottle do
-    sha256 "e6f20336f26db2aaeba7a400f1e2b18e6b385e3b9a17a951b8c5a7c57f815ec1" => :yosemite
+    sha256 "4eb42ad401dc6ae671b435c15683272150b53d31890a20ca4cdcabe2715cfd30" => :yosemite
   end
 
   # osquery only support OS X Yosemite and above. Do not remove this.
