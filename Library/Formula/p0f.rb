@@ -1,10 +1,8 @@
-require "formula"
-
 class P0f < Formula
   desc "Versatile passive OS fingerprinting, masquerade detection tool"
   homepage "http://lcamtuf.coredump.cx/p0f3/"
-  url "http://lcamtuf.coredump.cx/p0f3/releases/p0f-3.07b.tgz"
-  sha1 "ae2c4fbcddf2a5ced33abd81992405b93207e7c8"
+  url "http://lcamtuf.coredump.cx/p0f3/releases/p0f-3.08b.tgz"
+  sha256 "da89a7fe4ba5db3704207f4bde231643bedd4fe8653ab8111c65766c8c768aec"
 
   bottle do
     cellar :any
