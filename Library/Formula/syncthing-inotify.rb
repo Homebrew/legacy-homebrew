@@ -1,3 +1,5 @@
+require "language/go"
+
 class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
@@ -9,7 +11,7 @@ class SyncthingInotify < Formula
 
   go_resource "github.com/cenkalti/backoff" do
     url "https://github.com/cenkalti/backoff.git",
-      :revision => "6c45d6bc1e78d94431dff8fc28a99f20bafa355a"
+        :revision => "6c45d6bc1e78d94431dff8fc28a99f20bafa355a"
   end
 
   go_resource "github.com/zillode/notify" do
@@ -17,13 +19,12 @@ class SyncthingInotify < Formula
       :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"
   end
 
+
   def install
     ENV["GOPATH"] = buildpath
     ENV.append_path "PATH", buildpath
 
-    # "github.com/cenkalti/backoff"
-    # "github.com/zillode/notify"
-    # system "go", "get", "-d"
+    Language::Go.stage_deps resources, buildpath/"src"
     system "go", "build"
 
     # this is not good !!!
