@@ -66,8 +66,6 @@ class Ghc < Formula
     args = ["--with-gmp-includes=#{gmp}/include",
             "--with-gmp-libraries=#{gmp}/lib",
             "--with-ld=ld", # Avoid hardcoding superenv's ld.
-            # The offending -Wno-[unicode] flags get appended here, so set:
-            "--with-hs-cpp-flags=-E -undef -traditional",
             "--with-gcc=#{ENV.cc}"] # Always.
 
     if ENV.compiler == :clang
