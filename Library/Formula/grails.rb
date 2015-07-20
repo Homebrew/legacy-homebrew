@@ -1,15 +1,13 @@
-require 'formula'
-
 class Grails < Formula
   desc "Web application framework for the Groovy language"
-  homepage 'https://grails.org'
-  url 'https://github.com/grails/grails-core/releases/download/v3.0.1/grails-3.0.1.zip'
-  sha256 'c58da97ad7fb9635c6fb5631755501b97d6ce9ee6668dc12f0722928ffa5abee'
+  homepage "https://grails.org"
+  url "https://github.com/grails/grails-core/releases/download/v3.0.3/grails-3.0.3.zip"
+  sha256 "3de5392a6f9dbc325668503684ab6dba913b38e68b964242eab1130712d55996"
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

@@ -2,17 +2,18 @@ class Binutils < Formula
   desc "FSF Binutils for native development"
   homepage "https://www.gnu.org/software/binutils/binutils.html"
   url "http://ftpmirror.gnu.org/binutils/binutils-2.25.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.gz"
-  sha1 "f10c64e92d9c72ee428df3feaf349c4ecb2493bd"
+  mirror "https://ftp.gnu.org/gnu/binutils/binutils-2.25.tar.gz"
+  sha256 "cccf377168b41a52a76f46df18feb8f7285654b3c1bd69fc8265cb0fc6902f2d"
 
   # --default-names interferes with Mac builds.
   option "with-default-names", "Do not prepend 'g' to the binary" if OS.linux?
   deprecated_option "default-names" => "with-default-names"
 
   bottle do
-    sha1 "a8ae149dd4489d03d742e0ec2e8fc845e6501661" => :yosemite
-    sha1 "525197640a994f0ce80ec61d26090a12e81ce16c" => :mavericks
-    sha1 "8e71e8d290d3c71926ad1bb48b74b8cd462fce3d" => :mountain_lion
+    revision 1
+    sha256 "fbfd4708fb7ce4406b628f376aacd91c2af0aa09ea3e09f97727c312ee7e969d" => :yosemite
+    sha256 "1b0c1fb4b1fc53cca1194bde7d8281cb11cf4f34b245084737cccac2dadb860e" => :mavericks
+    sha256 "971e274200aa6a63469aafc0a65a86427f44d8a78fe00e61225ca9edd75ba0d3" => :mountain_lion
   end
 
   def install
@@ -33,7 +34,6 @@ class Binutils < Formula
   end
 
   test do
-    assert `#{bin}/gnm #{bin}/gnm`.include? 'main'
-    assert_equal 0, $?.exitstatus
+    assert_match /main/, shell_output("#{bin}/gnm #{bin}/gnm")
   end
 end

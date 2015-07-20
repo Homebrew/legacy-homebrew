@@ -2,15 +2,16 @@ class Plotutils < Formula
   desc "GNU tools based on libplot, a multi-format 2-D vector graphics library"
   homepage "https://www.gnu.org/software/plotutils/"
   url "http://ftpmirror.gnu.org/plotutils/plotutils-2.6.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz"
-  sha1 "7921301d9dfe8991e3df2829bd733df6b2a70838"
+  mirror "https://ftp.gnu.org/gnu/plotutils/plotutils-2.6.tar.gz"
+  sha256 "4f4222820f97ca08c7ea707e4c53e5a3556af4d8f1ab51e0da6ff1627ff433ab"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "e77297eb70e65c76f79064fe0b1649200812d90d" => :yosemite
-    sha1 "26e33cc79cfe51e36c3952ea4f541183fbb0605b" => :mavericks
-    sha1 "224bcf0989a50cc12c2eb0890b81c733926e695c" => :mountain_lion
+    revision 1
+    sha256 "fae89f252628820ac83a0896fa022b1c08cacca6e6234b2fb23c10554f424fd3" => :yosemite
+    sha256 "e51b4b5c367e8f9ec533f54e20c9df0b887818ee35c4cde19ba8feb73d4d2ff2" => :mavericks
+    sha256 "f77398849e9a064feee52712c8c71a60e07dbc7a2d00967ed584e046ff4bc4d7" => :mountain_lion
   end
 
   depends_on "libpng"
@@ -20,10 +21,14 @@ class Plotutils < Formula
     # Fix usage of libpng to be 1.5 compatible
     inreplace "libplot/z_write.c", "png_ptr->jmpbuf", "png_jmpbuf (png_ptr)"
 
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--enable-libplotter"]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-libplotter
+    ]
+
     args << "--with-x" if build.with? "x11"
 
     system "./configure", *args

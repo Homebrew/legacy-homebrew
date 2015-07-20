@@ -220,6 +220,7 @@ TAP_MIGRATIONS = {
   "wopr" => "homebrew/science",
   "x3270" => "homebrew/x11",
   "xar" => "homebrew/dupes",
+  "xastir" => "homebrew/x11",
   "xchat" => "homebrew/x11",
   "xclip" => "homebrew/x11",
   "xdotool" => "homebrew/x11",
@@ -231,5 +232,6 @@ TAP_MIGRATIONS = {
   "xplot" => "homebrew/x11",
   "xspringies" => "homebrew/x11",
   "yarp" => "homebrew/x11",
+  "ydict" => "homebrew/boneyard",
   "zenity" => "homebrew/x11",
 }

@@ -1,23 +1,27 @@
-require "formula"
-
 class Libcdio < Formula
   desc "Compact Disc Input and Control Library"
   homepage "https://www.gnu.org/software/libcdio/"
   url "http://ftpmirror.gnu.org/libcdio/libcdio-0.93.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/libcdio/libcdio-0.93.tar.gz"
-  sha1 "bc3f599b0b77d8d186c0afc66495f721747c5293"
+  mirror "https://ftp.gnu.org/gnu/libcdio/libcdio-0.93.tar.gz"
+  sha256 "4972cd22fd8d0e8bff922d35c7a645be0db0ab0e7b3dfaecc9cd8272429d6975"
 
   bottle do
     cellar :any
-    sha1 "238264203ea7edf8bbceff7b96769b7d5375e44d" => :yosemite
-    sha1 "8ae5dd507c22a07fc517073878dfbcba44dab38f" => :mavericks
-    sha1 "e85ebcfa037fe2d2615d74cf8a71ffca11a76901" => :mountain_lion
+    revision 1
+    sha256 "a75b52450488b5a058aaf6089d731937b3e0cdf643dac6d4ea187c8e0ea8de0b" => :yosemite
+    sha256 "b70aafbcf1389b6c40bcce0fe9874acc3ae02ca67a4f0652f46484a46517c900" => :mavericks
+    sha256 "5e4dfbdb57def1e77e9327526eb92abe795da59284c6a348e542e55a9bcd8eb4" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/cd-info -v", 1)
   end
 end

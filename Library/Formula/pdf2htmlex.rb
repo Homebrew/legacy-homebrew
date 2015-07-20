@@ -1,18 +1,16 @@
-require "formula"
-
 class Pdf2htmlex < Formula
   desc "PDF to HTML converter"
   homepage "https://coolwanglu.github.io/pdf2htmlEX/"
-  url "https://github.com/coolwanglu/pdf2htmlEX/archive/v0.12.tar.gz"
-  sha256 "7868ff5cd69758d094fd6076e4d0888e5033bf8799a5355bf4470e91967147a8"
+  url "https://github.com/coolwanglu/pdf2htmlEX/archive/v0.13.6.tar.gz"
+  sha256 "fc133a5791bfd76a4425af16c6a6a2460f672501b490cbda558213cb2b03d5d7"
+  revision 1
 
   head "https://github.com/coolwanglu/pdf2htmlEX.git"
 
   bottle do
-    revision 1
-    sha1 "aac4350489fa9a23b583d509d83090f748e7bc2f" => :yosemite
-    sha1 "be836dde13e65eaf128d3fff264b9ba2eb34f6bf" => :mavericks
-    sha1 "45ed0a997274e332200a0bdd9f00ae7eb6663596" => :mountain_lion
+    sha256 "2a12b4452b799111e540ca552677cac96f2cb763bd46879cf49869516bc377c2" => :yosemite
+    sha256 "1e8664adeae53eff487ef7e617c29e0e4748d9d75e360db3df8ee139ca2bdbc2" => :mavericks
+    sha256 "faf1e7ed618c2d80cce574dae891569260b7ba2329d6830d6bc12257ac75ca69" => :mountain_lion
   end
 
   # Pdf2htmlex use an outdated, customised Fontforge installation.
@@ -45,14 +43,20 @@ class Pdf2htmlex < Formula
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
   end
 
+  # Fix a compilation failure with poppler 0.31.0+
+  # Upstream is aware of the issue and suggested this patch:
+  # https://github.com/coolwanglu/pdf2htmlEX/commit/d4fc82b#commitcomment-12239022
+  patch :DATA
+
   def install
     resource("fontforge").stage do
-      args = ["--prefix=#{prefix}/fontforge",
-              "--without-libzmq",
-              "--without-x",
-              "--without-iconv",
-              "--disable-python-scripting",
-              "--disable-python-extension",
+      args = [
+        "--prefix=#{prefix}/fontforge",
+        "--without-libzmq",
+        "--without-x",
+        "--without-iconv",
+        "--disable-python-scripting",
+        "--disable-python-extension",
       ]
 
       # Fix linker error; see: http://trac.macports.org/ticket/25012
@@ -77,7 +81,21 @@ class Pdf2htmlex < Formula
   end
 
   test do
-    curl "-O", "http://partners.adobe.com/public/developer/en/xml/AdobeXMLFormsSamples.pdf"
-    system "#{bin}/pdf2htmlEX", "AdobeXMLFormsSamples.pdf"
+    system "#{bin}/pdf2htmlEX", test_fixtures("test.pdf")
   end
 end
+
+__END__
+diff --git a/3rdparty/poppler/git/CairoFontEngine.cc b/3rdparty/poppler/git/CairoFontEngine.cc
+index 229a86c..7cc448b 100644
+--- a/3rdparty/poppler/git/CairoFontEngine.cc
++++ b/3rdparty/poppler/git/CairoFontEngine.cc
+@@ -421,7 +421,7 @@ CairoFreeTypeFont *CairoFreeTypeFont::create(GfxFont *gfxFont, XRef *xref,
+   ref = *gfxFont->getID();
+   fontType = gfxFont->getType();
+
+-  if (!(fontLoc = gfxFont->locateFont(xref, gFalse))) {
++  if (!(fontLoc = gfxFont->locateFont(xref, nullptr))) {
+     error(errSyntaxError, -1, "Couldn't find a font for '{0:s}'",
+	gfxFont->getName() ? gfxFont->getName()->getCString()
+	                       : "(unnamed)");

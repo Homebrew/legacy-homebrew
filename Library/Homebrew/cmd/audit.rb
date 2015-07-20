@@ -184,7 +184,7 @@ class FormulaAuditor
       [lineno, name]
     end.compact.each_cons(2) do |c1, c2|
       unless c1[0] < c2[0]
-        problem "`#{c1[1]}`(line #{c1[0]}) should be put before `#{c2[1]}`(line #{c2[0]})"
+        problem "`#{c1[1]}` (line #{c1[0]}) should be put before `#{c2[1]}` (line #{c2[0]})"
       end
     end
   end
@@ -354,7 +354,10 @@ class FormulaAuditor
     # Make sure the formula name plus description is no longer than 80 characters
     linelength = formula.full_name.length + ": ".length + desc.length
     if linelength > 80
-      problem "Description is too long. \"name: desc\" should be less than 80 characters (currently #{linelength})."
+      problem <<-EOS.undent
+        Description is too long. \"name: desc\" should be less than 80 characters.
+        Length is calculated as #{formula.full_name} + desc. (currently #{linelength})
+      EOS
     end
 
     if desc =~ %r[[Cc]ommandline]
@@ -465,11 +468,11 @@ class FormulaAuditor
   end
 
   def audit_specs
-    if head_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-head-only"
+    if head_only?(formula) && formula.tap.to_s.downcase !~ /-head-only$/
       problem "Head-only (no stable download)"
     end
 
-    if devel_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-devel-only"
+    if devel_only?(formula) && formula.tap.to_s.downcase !~ /-devel-only$/
       problem "Devel-only (no stable download)"
     end
 
@@ -789,6 +792,10 @@ class FormulaAuditor
       system = $1
       method = $2
       problem "Use the `#{method}` Ruby method instead of `system #{system}`"
+    end
+
+    if line =~ /assert .*\.include?/
+      problem "Use `assert_match` instead of `assert ...include?`"
     end
 
     if @strict

@@ -1,14 +1,14 @@
 class Capstone < Formula
   desc "Multi-platform, multi-architecture disassembly framework"
   homepage "http://capstone-engine.org"
-  url "http://capstone-engine.org/download/3.0.3/capstone-3.0.3.tgz"
-  sha1 "0bb889ac8ba864b98892a17986075dea48be64b2"
+  url "http://capstone-engine.org/download/3.0.4/capstone-3.0.4.tgz"
+  sha256 "3e88abdf6899d11897f2e064619edcc731cc8e97e9d4db86495702551bb3ae7f"
 
   bottle do
     cellar :any
-    sha256 "4b6a547cde768d88cb7a13549a5e1156282e9d524e691a7840b9689323eb860d" => :yosemite
-    sha256 "7b271a58f25cc409df8c0cf87101250c50ee072f50d41b5fe0f884369327b608" => :mavericks
-    sha256 "aaff57ed10734d1ef15f6e3f2c73be5d1841bad5ea98db9396fd3abe1d267c97" => :mountain_lion
+    sha256 "5bbd8f7d9e0ae0d3b23c7d478fdb02476e8cee847577576d543bf98649985975" => :yosemite
+    sha256 "0cfd7478b21360ffea1aac61ec64eeae612bce247a681b0205ffd14790f8f7dc" => :mavericks
+    sha256 "585042b1452fbeda9efd07da4b8400d56d166afd5e5f1120da20975e41001e88" => :mountain_lion
   end
 
   def install
