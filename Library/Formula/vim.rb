@@ -33,6 +33,7 @@ class Vim < Formula
   depends_on "luajit" => :optional
   depends_on :x11 if build.with? "client-server"
   depends_on "homebrew/dupes/ncurses" unless OS.mac?
+  depends_on "gtk+" => :optional
 
   conflicts_with "ex-vi",
     :because => "vim and ex-vi both install bin/ex and bin/view"
@@ -63,7 +64,7 @@ class Vim < Formula
     end
 
     opts << "--disable-nls" if build.include? "disable-nls"
-    opts << "--enable-gui=no"
+    opts << "--enable-gui=" + (build.with?("gtk+") ? "gtk2" : "no")
 
     if build.with? "client-server"
       opts << "--with-x"
