@@ -6,9 +6,9 @@ class P0f < Formula
 
   bottle do
     cellar :any
-    sha1 "eceeb864d78eb22bd5808690f1ce818f196b0c9b" => :mavericks
-    sha1 "261610220600d44a55fd31c2ca68849cc9e4db4f" => :mountain_lion
-    sha1 "47e0e995504b87ea470c5ebb6583bd67cd447f95" => :lion
+    sha256 "7405d2d0d6070223be3cc0f2ed11c8cd52d886b1480931c1a7e9436d297dbbe7" => :yosemite
+    sha256 "113e04c8f1fba685b42620838cb7fa6907431ff8b4f88ed5ab620f67a7a3aca1" => :mavericks
+    sha256 "cced7b6bab2cdd563d47c6734efb170eb23e3295f25eedaf3294d78ad8812999" => :mountain_lion
   end
 
   def install
