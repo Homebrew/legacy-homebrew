@@ -51,8 +51,8 @@ class Cmake < Formula
   end
 
   resource "babel" do
-    url "https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz"
-    sha256 "9f02d0357184de1f093c10012b52e7454a1008be6a5c185ab7a3307aceb1d12e"
+    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.0.tar.gz"
+    sha256 "44988df191123065af9857eca68e9151526a931c12659ca29904e4f11de7ec1b"
   end
 
   resource "markupsafe" do
@@ -61,8 +61,8 @@ class Cmake < Formula
   end
 
   resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "alabaster" do
@@ -112,6 +112,8 @@ class Cmake < Formula
     cd "Auxiliary/bash-completion/" do
       bash_completion.install "ctest", "cmake", "cpack"
     end
+
+    (share/"emacs/site-lisp/cmake").install "Auxiliary/cmake-mode.el"
   end
 
   test do
