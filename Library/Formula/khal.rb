@@ -1,8 +1,8 @@
 class Khal < Formula
   desc "CLI calendar application."
   homepage "https://github.com/geier/khal"
-  url "https://github.com/geier/khal/archive/v0.5.0.tar.gz"
-  sha256 "da7cda13fce3f727658db5efad049e642d25a47aaf50a33312c6123f912e5ae6"
+  url "https://pypi.python.org/packages/source/k/khal/khal-0.6.0.tar.gz"
+  sha256 "1a2e8d56d20b12ed2c3ef2468ff0ce0c658a8a566b249821b0f4b30cce8ada9a"
 
   bottle do
     cellar :any
@@ -12,6 +12,11 @@ class Khal < Formula
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
+
+  resource "pkginfo" do
+    url "https://pypi.python.org/packages/source/p/pkginfo/pkginfo-1.2.1.tar.gz"
+    sha256 "ad3f6dfe8a831f96a7b56a588ca874137ca102cc6b79fc9b0a1c3b7ab7320f3c"
+  end
 
   resource "icalendar" do
     url "https://pypi.python.org/packages/source/i/icalendar/icalendar-3.9.0.tar.gz"
