@@ -5,9 +5,9 @@ class Mlt < Formula
   sha256 "ab999992828a03dadbf62f6a131aada776cfd7afe63a94d994877fdba31a3000"
 
   bottle do
-    sha1 "8a672be9b09bf79c099755f822afd7837ee715a9" => :mavericks
-    sha1 "6fbdbc9c2422836ce659989f096d1670570d1c57" => :mountain_lion
-    sha1 "b5804ee50a521ee7f09c82fb3d58947ad4413990" => :lion
+    sha256 "46779015d1ce48aa85d887da98e0144cd7b9a43b8166dc587c2b91aad89b52d0" => :yosemite
+    sha256 "54f23f9e8dcfc8ad7f357cd25f0c9855fb6a8ee3a92e6db7a0e390733f79022f" => :mavericks
+    sha256 "3d7bed128cd7a5e98d014e2afaf69ad7f4232d961293cf3cc57e4c0040a8ff80" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
