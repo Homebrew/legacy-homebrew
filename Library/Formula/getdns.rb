@@ -3,8 +3,8 @@ require "formula"
 class Getdns < Formula
   desc "Modern asynchronous DNS API"
   homepage "https://getdnsapi.net"
-  url "https://getdnsapi.net/dist/getdns-0.2.0.tar.gz"
-  sha1 "6843984f7ed8109302bda3b37f5247fd49827f90"
+  url "https://getdnsapi.net/dist/getdns-0.3.1.tar.gz"
+  sha256 "58fd791187d5fd158ba7db1b5f29d4b0274583447f405577c758c7c7751e8883"
 
   head "https://github.com/getdnsapi/getdns.git"
 
