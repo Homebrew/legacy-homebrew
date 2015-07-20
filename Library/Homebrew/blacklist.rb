@@ -38,7 +38,7 @@ def blacklisted? name
       EOS
     else
       <<-EOS.undent
-      Xcode can be installed from https://developer.apple.com/downloads/
+      Xcode can be installed from https://developer.apple.com/xcode/downloads/
       EOS
     end
   when 'gtest', 'googletest', 'google-test' then <<-EOS.undent
