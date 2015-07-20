@@ -163,7 +163,10 @@ class Keg
     path.find do |pn|
       next if pn.symlink? or pn.directory?
       next if Metafiles::EXTENSIONS.include? pn.extname
-      text_files << pn if Utils.popen_read("/usr/bin/file", "--brief", pn).include?("text")
+      if Utils.popen_read("/usr/bin/file", "--brief", pn).include?("text") ||
+            pn.text_executable?
+        text_files << pn
+      end
     end
 
     text_files
