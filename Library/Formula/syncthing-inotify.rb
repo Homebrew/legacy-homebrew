@@ -1,17 +1,9 @@
 class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
-  url "https://github.com/syncthing/syncthing-inotify.git",
-    :tag => "v0.6.5", :revision => "2b290b929e18e7cd1cfea11240e4fa870d6638d5"
-
-  head "https://github.com/syncthing/syncthing-inotify.git"
-
-  bottle do
-    cellar :any
-    sha256 "392d1b861c5eae39e44148842947dfbeb3640cb0d031e0a42fef3ec49d31252b" => :yosemite
-    sha256 "28b78c3826f3a9a6c1b521ad91b2e7c91b3bc6417f7e175a2e83960ad2f78e1d" => :mavericks
-    sha256 "a1c9ae1947ae60898b14820577ffafc4bbb5e92039d02ebf9e8d2aa9e5fffaea" => :mountain_lion
-  end
+  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.5.tar.gz"
+  version "0.6.5"
+  sha256 "430297896bb05396268fd29cc555eba6542b42263489784c9843f4daf625ac5c"
 
   depends_on "go" => :build
   depends_on :hg => :build
@@ -26,7 +18,7 @@ class SyncthingInotify < Formula
     mkdir_p hack_dir
     ln_s cached_download, "#{hack_dir}/syncthing-inotify"
 
-    system "go", "get", "-d"
+    go_resource
     system "go", "build"
     bin.install "syncthing-inotify"
   end
