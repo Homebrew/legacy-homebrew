@@ -33,7 +33,7 @@ class Ats2Postiats < Formula
       val _ = print ("Hello, world!\n")
       implement main0 () = ()
     EOS
-    system "#{bin}/patscc hello.dats -o hello"
+    system "#{bin}/patscc", "hello.dats", "-o", "hello"
     assert_match "Hello, world!", shell_output(testpath/"hello")
   end
 end
