@@ -35,7 +35,7 @@ class Bigdata < Formula
 
   test do
     server = fork do
-      system bin/"bigdata"
+      exec bin/"bigdata"
     end
     sleep 5
     Process.kill("TERM", server)

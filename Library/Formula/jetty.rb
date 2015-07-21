@@ -31,7 +31,7 @@ class Jetty < Formula
   end
 
   test do
-    pid = fork { system bin/"jetty", "start" }
+    pid = fork { exec bin/"jetty", "start" }
     sleep 5 # grace time for server start
     begin
       assert_match /Jetty running pid=\d+/, shell_output("#{bin}/jetty check")

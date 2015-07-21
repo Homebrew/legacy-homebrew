@@ -41,7 +41,7 @@ class Libhttpserver < Formula
   test do
     system ENV.cxx, "#{share}/examples/hello_world.cpp",
       "-o", "hello_world", "-lhttpserver", "-lcurl"
-    pid = fork { system "./hello_world" }
+    pid = fork { exec "./hello_world" }
     sleep 1 # grace time for server start
     begin
       assert_match /Hello World!!!/, shell_output("curl http://127.0.0.1:8080/hello")

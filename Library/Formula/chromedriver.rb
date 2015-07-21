@@ -37,7 +37,7 @@ class Chromedriver < Formula
 
   test do
     driver = fork do
-      system bin/"chromedriver",
+      exec bin/"chromedriver",
              "--port=9999", "--log-path=#{testpath}/cd.log"
     end
     sleep 5
