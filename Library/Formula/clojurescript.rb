@@ -2,22 +2,21 @@ class Clojurescript < Formula
   desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2913.tar.gz"
-  sha1 "ff33a93516b3c91923667d667d34cc4b404489c8"
+  url "https://github.com/clojure/clojurescript/releases/download/r3308/cljs.jar", :using => :nounzip
+  sha256 "8ec232b2d5660083cb3038bc6e0f509faee398af7c88d01fe7585f68dd3eeac6"
+  version "r3308"
 
   bottle do
     cellar :any
-    sha1 "aa8b2bd64da090c12d508e63bbf56a5128abfbcf" => :yosemite
-    sha1 "f56c2dfcd8ee828a2734ea1c39c6c1f1c147178b" => :mavericks
-    sha1 "63127cb547b78d3a7fac2770fe3ed56ce39acc10" => :mountain_lion
+    sha256 "523451b9de06fc49ab0f7a6e2193c105d5ba12fa6e22268c114bfb2afe40bf59" => :yosemite
+    sha256 "d3105232788d6000b37d229ceba4cb872891a78f01b307baf232a7adb6613bbb" => :mavericks
+    sha256 "ce2f3e9931c789cff5dd217432b08167cdfd4670879d597ef2f1d1bab4dcead0" => :mountain_lion
   end
 
   def install
-    system "./script/bootstrap"
-    inreplace %w[bin/cljsc script/repl script/repljs script/browser-repl],
-      "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{libexec}"
-    libexec.install Dir["*"]
-    bin.write_exec_script libexec/"bin/cljsc"
+    mv "cljs.jar", "cljs-#{version}.jar"
+    libexec.install "cljs-#{version}.jar"
+    bin.write_jar_script libexec/"cljs-#{version}.jar", "cljsc"
   end
 
   def caveats; <<-EOS.undent
