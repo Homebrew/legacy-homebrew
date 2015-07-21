@@ -64,7 +64,7 @@ module Homebrew
 
   def puts_deps_tree(formulae)
     formulae.each do |f|
-      puts f.full_name
+      puts "#{f.full_name} (required dependencies)"
       recursive_deps_tree(f, "")
       puts
     end
