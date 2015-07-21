@@ -15,11 +15,12 @@ class KubernetesCli < Formula
   depends_on "go" => :build
 
   def install
+    os = OS.linux? ? "linux" : "darwin"
     arch = MacOS.prefer_64_bit? ? "amd64" : "x86"
 
     system "make", "all", "WHAT=cmd/*", "GOFLAGS=-v"
 
-    dir = "_output/local/bin/darwin/#{arch}"
+    dir = "_output/local/bin/#{os}/#{arch}"
     bin.install "#{dir}/kubectl", "#{dir}/kubernetes"
   end
 
