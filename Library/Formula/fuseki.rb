@@ -2,10 +2,9 @@ require 'formula'
 
 class Fuseki < Formula
   desc "SPARQL server"
-  homepage 'https://jena.apache.org/documentation/serving_data/'
-  url 'https://www.apache.org/dist/jena/binaries/jena-fuseki1-1.1.2-distribution.tar.gz'
-  version '1.1.2'
-  sha256 '78bd92b4e32f9e918d89946d11aed9789416f4058b127af60b251b4a8636b5f0'
+  homepage 'https://jena.apache.org/documentation/fuseki2/index.html'
+  url 'https://www.apache.org/dist/jena/binaries/apache-jena-fuseki-2.3.0.tar.gz'
+  sha256 'b37a81d7b4455ccc07055e50dc13c482c9e2a729e329eec6d2d5d51fc2e724ee'
 
   def install
     # Remove windows files
@@ -22,43 +21,32 @@ class Fuseki < Formula
 
     # Install and symlink wrapper binaries into place
     libexec.install 'fuseki-server'
-    bins = ['s-delete', 's-get', 's-head', 's-post', 's-put', 's-query', 's-update', 's-update-form']
+    bins = ['bin/s-delete', 'bin/s-get', 'bin/s-head', 'bin/s-post', 'bin/s-put', 'bin/s-query', 'bin/s-update', 'bin/s-update-form', 'bin/soh']
     chmod 0755, bins
     libexec.install bins
     bin.install_symlink Dir["#{libexec}/*"]
     # Non-symlinked binaries and application files
-    libexec.install 'fuseki-server.jar', 'pages'
-
-    etc.install 'config.ttl' => 'fuseki.ttl'
+    libexec.install 'fuseki-server.jar', 'webapp'
 
     # Create a location for dataset and log files,
     # in case we're being used in LaunchAgent mode
     (var/'fuseki').mkpath
     (var/'log/fuseki').mkpath
 
-    # Install example configs
-    prefix.install 'config-examples.ttl', 'config-inf-tdb.ttl', 'config-tdb-text.ttl', 'config-tdb.ttl'
-
-    # Install example data
-    prefix.install 'Data'
-
     # Install documentation
-    prefix.install 'LICENSE', 'NOTICE', 'ReleaseNotes.txt'
+    prefix.install 'LICENSE', 'NOTICE'
   end
 
   def caveats; <<-EOS.undent
     Quick-start guide:
 
-    * See the Fuseki documentation for instructions on using an in-memory database:
-      http://jena.apache.org/documentation/serving_data/#fuseki-server-starting-with-an-empty-dataset
+    * See the Fuseki documentation for instructions on running Fuseki from the command line:
+      https://jena.apache.org/documentation/fuseki2/fuseki-run.html#fuseki-as-a-standalone-server
 
-    * Running from the LaunchAgent is different the standard configuration and
-      uses traditional Unix paths: please inspect the settings here first:
-      #{etc}/fuseki.ttl
+    * You may want to set the FUSEKI_BASE environment variable which points to the runtime area
+      for the server instance (defaults to 'run/' of the current directory).
 
-    * NOTE: Fuseki uses 1) log4j.configuration if defined, 2) 'log4j.properties' file if exists,
-      or built-in configuration. See also:
-      https://issues.apache.org/jira/browse/JENA-536
+      For example, set FUSEKI_BASE=/tmp/fuseki to avoid polluting your hard disk with 'run/' folders.
     EOS
   end
 
@@ -73,14 +61,21 @@ class Fuseki < Formula
         <true/>
         <key>KeepAlive</key>
         <false/>
+        <key>EnvironmentVariables</key>
+        <dict>
+           <key>FUSEKI_BASE</key>
+           <string>#{var}/fuseki</string>
+        </dict>
         <key>ProgramArguments</key>
         <array>
           <string>#{opt_bin}/fuseki-server</string>
-          <string>--config</string>
-          <string>/usr/local/etc/fuseki.ttl</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/fuseki.log</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/fuseki.log</string>
       </dict>
     </plist>
     EOS
