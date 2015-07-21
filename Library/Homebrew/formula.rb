@@ -261,13 +261,6 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
-  # @deprecated
-  # The `LinkedKegs` directory for this {Formula}.
-  # You probably want {#opt_prefix} instead.
-  def linked_keg
-    Pathname.new("#{HOMEBREW_LIBRARY}/LinkedKegs/#{name}")
-  end
-
   # The latest prefix for this formula. Checks for {#head}, then {#devel}
   # and then {#stable}'s {#prefix}
   def installed_prefix
@@ -494,12 +487,6 @@ class Formula
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
-  # @deprecated
-  DATA = :DATA
-
-  # @deprecated
-  def patches; {} end
-
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?
@@ -627,15 +614,6 @@ class Formula
     ]
   end
 
-  # @deprecated
-  def python(options={}, &block)
-    opoo 'Formula#python is deprecated and will go away shortly.'
-    block.call if block_given?
-    PythonRequirement.new
-  end
-  alias_method :python2, :python
-  alias_method :python3, :python
-
   # an array of all core {Formula} names
   def self.core_names
     @core_names ||= Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
@@ -713,11 +691,6 @@ class Formula
   # True if this formula is provided by Homebrew itself
   def core_formula?
     path == Formulary.core_path(name)
-  end
-
-  # @deprecated
-  def self.path name
-    Formulary.core_path(name)
   end
 
   def env
