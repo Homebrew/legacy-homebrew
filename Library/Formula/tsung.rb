@@ -3,8 +3,8 @@ require 'formula'
 class Tsung < Formula
   desc "Load testing for HTTP, PostgreSQL, Jabber, and others"
   homepage 'http://tsung.erlang-projects.org/'
-  url 'http://tsung.erlang-projects.org/dist/tsung-1.5.1.tar.gz'
-  sha1 'a997b76399dc40d3bda27d84c701c795ee40b808'
+  url 'http://tsung.erlang-projects.org/dist/tsung-1.6.0.tar.gz'
+  sha256 '56846c3a90fd7037d9a76330cb8f3052238344491e2fe6ef1ebdb0b620eb3d84'
 
   head 'https://github.com/processone/tsung.git'
 
