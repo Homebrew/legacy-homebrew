@@ -1,10 +1,8 @@
-require "formula"
-
 class Lzlib < Formula
   desc "Data compression library"
   homepage "http://www.nongnu.org/lzip/lzlib.html"
-  url "http://download.savannah.gnu.org/releases/lzip/lzlib/lzlib-1.6.tar.gz"
-  sha1 "4a24e4d17df3fd90f53866ace922c831f26600f6"
+  url "http://download.savannah.gnu.org/releases/lzip/lzlib/lzlib-1.7.tar.gz"
+  sha256 "88c919dbb16a8b5409fc8ccec31d3c604551d73e84cec8c964fd639452536214"
 
   bottle do
     cellar :any
