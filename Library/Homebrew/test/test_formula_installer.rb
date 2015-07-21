@@ -23,6 +23,8 @@ class InstallTests < Homebrew::TestCase
       keg.unlink
       keg.uninstall
       formula.clear_cache
+      # there will be log files when sandbox is enable.
+      formula.logs.rmtree if formula.logs.directory?
     end
 
     refute_predicate keg, :exist?
