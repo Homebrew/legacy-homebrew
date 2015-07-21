@@ -35,6 +35,6 @@ class Scw < Formula
 
   test do
     output = shell_output(bin/"scw version")
-    assert output.include? "OS/Arch (client): darwin/amd64"
+    assert_match "OS/Arch (client): darwin/amd64", output
   end
 end
