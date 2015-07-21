@@ -37,16 +37,14 @@ class DockerMachine < Formula
     url "https://github.com/Sirupsen/logrus.git", :revision => "21d4508646ae56d79244bd9046c1df63a5fa8c37"
   end
 
-  go_resource "github.com/docker/machine" do
-    url "https://github.com/docker/machine.git", :revision => "40ee23659b2cd261fb4154db5cdfaae8139b6868" # the 0.3.1 tag
-  end
-
   go_resource "github.com/pmezard/go-difflib/difflib" do
     url "https://github.com/pmezard/go-difflib.git", :revision => "f78a839676152fd9f4863704f5d516195c18fc14"
   end
 
   def install
     ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/docker/"
+    ln_sf buildpath, buildpath/"src/github.com/docker/machine"
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd "src/github.com/tools/godep" do
