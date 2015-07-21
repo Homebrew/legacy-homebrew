@@ -1,8 +1,8 @@
 class Libmaxminddb < Formula
   desc "C library for the MaxMind DB file format"
   homepage "https://github.com/maxmind/libmaxminddb"
-  url "https://github.com/maxmind/libmaxminddb/releases/download/1.0.4/libmaxminddb-1.0.4.tar.gz"
-  sha1 "57548d426d43b9b43c77786b08594d48d0c88c62"
+  url "https://github.com/maxmind/libmaxminddb/releases/download/1.1.0/libmaxminddb-1.1.0.tar.gz"
+  sha1 "11ba150829d2cf169202426932daaf112bb63695"
 
   bottle do
     cellar :any
@@ -20,13 +20,6 @@ class Libmaxminddb < Formula
   end
 
   depends_on "geoipupdate" => :optional
-
-  # This patch is from an upstream post-1.0.4 commit and fixes a test failure
-  # on OS X. See https://github.com/maxmind/libmaxminddb/commit/424953
-  patch do
-    url "https://github.com/maxmind/libmaxminddb/commit/424953.diff"
-    sha1 "362cf3254145188dc9959651ba7ee876007998c9"
-  end
 
   option :universal
 
