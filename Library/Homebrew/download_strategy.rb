@@ -397,9 +397,6 @@ class CurlPostDownloadStrategy < CurlDownloadStrategy
   end
 end
 
-# @deprecated
-CurlSSL3DownloadStrategy = CurlDownloadStrategy
-
 # Use this strategy to download but not unzip a file.
 # Useful for installing jars.
 class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
@@ -407,9 +404,6 @@ class NoUnzipCurlDownloadStrategy < CurlDownloadStrategy
     cp cached_location, basename_without_params
   end
 end
-
-# @deprecated
-CurlUnsafeDownloadStrategy = CurlDownloadStrategy
 
 # This strategy extracts our binary packages.
 class CurlBottleDownloadStrategy < CurlDownloadStrategy
@@ -537,11 +531,6 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
   end
   alias_method :update, :clone_repo
 end
-
-# @deprecated
-StrictSubversionDownloadStrategy = SubversionDownloadStrategy
-# @deprecated
-UnsafeSubversionDownloadStrategy = SubversionDownloadStrategy
 
 class GitDownloadStrategy < VCSDownloadStrategy
   SHALLOW_CLONE_WHITELIST = [
