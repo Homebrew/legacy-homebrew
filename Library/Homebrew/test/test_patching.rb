@@ -106,7 +106,7 @@ class PatchingTests < Homebrew::TestCase
   def test_patch_DATA_constant
     assert_patched formula("test", Pathname.new(__FILE__).expand_path) {
       def patches
-        Formula::DATA
+        :DATA
       end
     }
   end
