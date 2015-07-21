@@ -5,6 +5,7 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git", :tag => "1.5.0", :revision => "ca09fdb9f80ed632b98a2a9c41a521309e14b611"
+  revision 1
 
   bottle do
     sha256 "4eb42ad401dc6ae671b435c15683272150b53d31890a20ca4cdcabe2715cfd30" => :yosemite
@@ -16,7 +17,7 @@ class Osquery < Formula
   depends_on "cmake" => :build
   depends_on "boost" => :build
   depends_on "doxygen" => :build
-  depends_on "gflags" => :build
+  depends_on "gflags"
   depends_on "rocksdb" => :build
   depends_on "thrift" => :build
   depends_on "yara" => :build
