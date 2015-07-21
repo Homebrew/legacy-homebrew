@@ -1,5 +1,5 @@
 class Jsonschema2pojo < Formula
-  desc "Generates Java types from JSON Schema (or example JSON) and annotates those types for data-binding with Jackson 1.x or 2.x, Gson, etc"
+  desc "Generates Java types from JSON Schema (or example JSON)"
   homepage "http://www.jsonschema2pojo.org/"
   url "https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-0.4.13/jsonschema2pojo-0.4.13.tar.gz"
   sha256 "b7002d929645dbadd6367ff2ac8a69bb0978538d4ad4f46a195d645b5d341d21"
@@ -12,6 +12,34 @@ class Jsonschema2pojo < Formula
   end
 
   test do
-    system "jsonschema2pojo"
+    require "tmpdir"
+    require "tempfile"
+
+    json = <<-EOS.undent.chomp
+    {
+      "type":"object",
+      "properties": {
+        "foo": {
+          "type": "string"
+        },
+        "bar": {
+          "type": "integer"
+        },
+        "baz": {
+          "type": "boolean"
+        }
+      }
+    }
+    EOS
+
+    Dir.mktmpdir do |outdir|
+      Dir.mktmpdir do |srcdir|
+        f = File.open("#{srcdir}/jsonschema.json", "w")
+        f.write json
+        f.close
+        system "#{bin}/jsonschema2pojo -s #{f.path} -t #{outdir}"
+        assert File.exists?("#{outdir}/Jsonschema.java")
+      end
+    end
   end
 end
