@@ -10,8 +10,11 @@ class Msmtp < Formula
     sha256 "6e0b109c6d290ce71bc24302b0e4fd0a45a1f1b9db025afde8273e87e99777de" => :mountain_lion
   end
 
+  option "with-gsasl", "Use GNU SASL authentication library"
+
   depends_on "pkg-config" => :build
   depends_on "openssl"
+  depends_on "gsasl" => :optional
 
   def install
     args = %W[
@@ -20,6 +23,8 @@ class Msmtp < Formula
       --prefix=#{prefix}
       --with-tls=openssl
     ]
+
+    args << "--with-libsasl" if build.with? "gsasl"
 
     system "./configure", *args
     system "make", "install"
