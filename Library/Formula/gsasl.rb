@@ -5,6 +5,8 @@ class Gsasl < Formula
   mirror "https://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz"
   sha256 "310262d1ded082d1ceefc52d6dad265c1decae8d84e12b5947d9b1dd193191e5"
 
+  depends_on "libntlm" => :optional
+
   bottle do
     cellar :any
     revision 2
