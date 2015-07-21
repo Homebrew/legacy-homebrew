@@ -1,8 +1,11 @@
 class Moreutils < Formula
   desc "Collection of tools that nobody wrote when UNIX was young"
   homepage "https://joeyh.name/code/moreutils/"
-  url "http://mentors.debian.net/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
   sha256 "3a7d54b0634e5eda8c3c43490d47cea189156700892dea6d876867cef9bc0d1d"
+
+  head "git://git.kitenet.net/moreutils"
 
   bottle do
     cellar :any
@@ -11,9 +14,9 @@ class Moreutils < Formula
     sha256 "d506ebb771c12c334e5597bb57b751c3ad738ca38aaf5cb00f88b7b25f6a776c" => :mountain_lion
   end
 
-  depends_on "docbook-xsl" => :build
-
   option "without-parallel", "Omit the 'parallel' tool. Allows installation of GNU parallel from 'parallel' formula."
+
+  depends_on "docbook-xsl" => :build
 
   if build.with? "parallel"
     conflicts_with "parallel",
