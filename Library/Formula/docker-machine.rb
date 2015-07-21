@@ -3,8 +3,8 @@ require "language/go"
 class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
-  url "https://github.com/docker/machine/archive/v0.3.0.tar.gz"
-  sha256 "fa1cbb8d806ca422b2c80b66952171875a2b092c9661baea7be11d5c60e279ac"
+  url "https://github.com/docker/machine/archive/v0.3.1.tar.gz"
+  sha256 "9afc45f5d0f77c2e96efbc3799b7e7e4d079c01aadcc5cb5d7ef831b855ccf58"
   head "https://github.com/docker/machine.git"
 
   bottle do
@@ -38,7 +38,7 @@ class DockerMachine < Formula
   end
 
   go_resource "github.com/docker/machine" do
-    url "https://github.com/docker/machine.git", :revision => "0a251fe434d868165cca28200ffd71f16abb5c10" # the 0.3.0 tag
+    url "https://github.com/docker/machine.git", :revision => "40ee23659b2cd261fb4154db5cdfaae8139b6868" # the 0.3.1 tag
   end
 
   go_resource "github.com/pmezard/go-difflib/difflib" do
