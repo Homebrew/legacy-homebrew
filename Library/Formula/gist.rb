@@ -3,8 +3,8 @@ require "formula"
 class Gist < Formula
   desc "Command-line utility for uploading Gists"
   homepage "https://github.com/defunkt/gist"
-  url "https://github.com/defunkt/gist/archive/v4.4.0.tar.gz"
-  sha1 "142859ba1eb9385fa78d936ad4efd62584bd618b"
+  url "https://github.com/defunkt/gist/archive/v4.4.2.tar.gz"
+  sha256 "4f570c6c32f04f529d0195c7cad93a48c9a53b2b3a9e69f68b732cdf31d3c362"
   head "https://github.com/defunkt/gist.git"
 
   bottle do
