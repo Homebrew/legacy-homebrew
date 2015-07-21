@@ -75,6 +75,7 @@ class Fig < Formula
     system "python", *Language::Python.setup_install_args(libexec)
 
     bash_completion.install "contrib/completion/bash/docker-compose"
+    zsh_completion.install "contrib/completion/zsh/_docker-compose"
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
