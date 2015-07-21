@@ -37,8 +37,8 @@ class Jsonschema2pojo < Formula
         f = File.open("#{srcdir}/jsonschema.json", "w")
         f.write json
         f.close
-        system "#{bin}/jsonschema2pojo -s #{f.path} -t #{outdir}"
-        assert File.exists?("#{outdir}/Jsonschema.java")
+        system "#{bin}/jsonschema2pojo", "-s", f.path, "-t", outdir
+        File.exist? "#{outdir}/Jsonschema.java"
       end
     end
   end
