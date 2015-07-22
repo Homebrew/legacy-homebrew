@@ -4,16 +4,8 @@ class Pango < Formula
   revision 2
 
   stable do
-    url "https://download.gnome.org/sources/pango/1.36/pango-1.36.8.tar.xz"
-    sha256 "18dbb51b8ae12bae0ab7a958e7cf3317c9acfc8a1e1103ec2f147164a0fc2d07"
-
-    # [coretext] NULL check in ct_font_descriptor_get_weight()
-    # This fixes crashes when displaying certain Unicode characters.
-    # See: https://bugzilla.gnome.org/show_bug.cgi?id=736697
-    patch do
-      url "https://bug736697.bugzilla-attachments.gnome.org/attachment.cgi?id=286234"
-      sha256 "08d803ddedfa98d99b1897c22a61b908cff05bd0e43982f3063f0d77e05ddb17"
-    end
+    url "http://ftp.gnome.org/pub/GNOME/sources/pango/1.37/pango-1.37.2.tar.xz"
+    sha256 "1c1c93959d3c9235f7d4f7b74eff7c357adcd361d717c8679fa8794d679ef5a4"
   end
 
   bottle do
