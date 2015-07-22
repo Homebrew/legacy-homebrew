@@ -560,6 +560,7 @@ module Homebrew
       @category = __method__
       return if ARGV.include? "--skip-homebrew"
       test "brew", "tests"
+      test "brew", "tests", "--no-compat"
       readall_args = []
       readall_args << "--syntax" if MacOS.version >= :mavericks
       test "brew", "readall", *readall_args
