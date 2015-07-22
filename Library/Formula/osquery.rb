@@ -1,13 +1,14 @@
-require "formula"
-
 class Osquery < Formula
   desc "SQL powered operating system instrumentation and analytics"
   homepage "https://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.5.0", :revision => "ca09fdb9f80ed632b98a2a9c41a521309e14b611"
+  url "https://github.com/facebook/osquery.git",
+      :tag => "1.5.0",
+      :revision => "ca09fdb9f80ed632b98a2a9c41a521309e14b611"
+  revision 1
 
   bottle do
-    sha256 "4eb42ad401dc6ae671b435c15683272150b53d31890a20ca4cdcabe2715cfd30" => :yosemite
+    sha256 "2056d44c6b15b9e38619b457974d8b83f041701934743ddfeac19cacb5ffeb21" => :yosemite
   end
 
   # osquery only support OS X Yosemite and above. Do not remove this.
@@ -16,11 +17,11 @@ class Osquery < Formula
   depends_on "cmake" => :build
   depends_on "boost" => :build
   depends_on "doxygen" => :build
-  depends_on "gflags" => :build
   depends_on "rocksdb" => :build
   depends_on "thrift" => :build
   depends_on "yara" => :build
   depends_on "openssl"
+  depends_on "gflags"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
@@ -50,7 +51,7 @@ class Osquery < Formula
   plist_options :startup => true, :manual => "osqueryd"
 
   test do
-    require 'open3'
+    require "open3"
     Open3.popen3("#{bin}/osqueryi") do |stdin, stdout, _|
       stdin.write(".mode line\nSELECT count(version) as lines FROM osquery_info;")
       stdin.close

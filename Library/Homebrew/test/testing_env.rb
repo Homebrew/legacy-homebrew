@@ -11,9 +11,10 @@ if ENV["HOMEBREW_TESTS_COVERAGE"]
     coverage_dir File.expand_path("#{tests_path}/coverage")
     root File.expand_path("#{tests_path}/..")
 
-    add_filter "Homebrew/test"
-    add_filter "vendor/bundle"
-    add_filter "Homebrew/vendor"
+    add_filter "Homebrew/test/"
+    add_filter "vendor/bundle/"
+    add_filter "Homebrew/vendor/"
+    add_filter "Homebrew/compat/"
   end
 end
 
