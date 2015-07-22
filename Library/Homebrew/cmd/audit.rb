@@ -991,9 +991,11 @@ class ResourceAuditor
 
     return unless using
 
-    if using == :ssl3 || using == CurlSSL3DownloadStrategy
+    if using == :ssl3 || \
+      (Object.const_defined?("CurlSSL3DownloadStrategy") && using == CurlSSL3DownloadStrategy)
       problem "The SSL3 download strategy is deprecated, please choose a different URL"
-    elsif using == CurlUnsafeDownloadStrategy || using == UnsafeSubversionDownloadStrategy
+    elsif (Object.const_defined?("CurlUnsafeDownloadStrategy") && using == CurlUnsafeDownloadStrategy) || \
+      (Object.const_defined?("UnsafeSubversionDownloadStrategy") && using == UnsafeSubversionDownloadStrategy)
       problem "#{using.name} is deprecated, please choose a different URL"
     end
 
