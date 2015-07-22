@@ -519,7 +519,7 @@ class FormulaAuditor
     end
   end
 
-  def audit_patches
+  def audit_legacy_patches
     return unless formula.respond_to?(:patches)
     legacy_patches = Patch.normalize_legacy_patches(formula.patches).grep(LegacyPatch)
     if legacy_patches.any?
@@ -885,7 +885,7 @@ class FormulaAuditor
     audit_deps
     audit_conflicts
     audit_options
-    audit_patches
+    audit_legacy_patches
     audit_text
     audit_caveats
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
