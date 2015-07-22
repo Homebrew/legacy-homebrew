@@ -83,7 +83,13 @@ module Homebrew
         next
       end
 
-      if f.version > version || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
+      file_is_stale = if PkgVersion === version
+                        f.pkg_version > version
+                      else
+                        f.version > version
+                      end
+
+      if file_is_stale || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
         cleanup_path(file) { file.unlink }
       end
     end
