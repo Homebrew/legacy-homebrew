@@ -8,9 +8,9 @@ class Sqlitebrowser < Formula
 
   bottle do
     cellar :any
-    sha256 "79e48a66a338264831c56c7354eda5d6f67c2133d05e5ca0c018db5502299f5c" => :yosemite
-    sha256 "7fdd7a3c34bb74e22c120fa005a29c6bd738a2de7d4a0986c8043a1ada8857eb" => :mavericks
-    sha256 "ad1ab29c1449a4deed65abaf6e6a612124fad67b13da13fbdae252fc3e72152f" => :mountain_lion
+    sha256 "0f94ada07ec575124cac4cb5ebc3e4dfa072150a4f79764153e30187077f0ccd" => :yosemite
+    sha256 "7a7abdea93ad0401a29eac53c54066f366619717e07c14b9e2f9a1487a8a54ce" => :mavericks
+    sha256 "d675792776191eb65256b6aba1f7a50099a2768eb5c3975e4efa224cb95978ba" => :mountain_lion
   end
 
   depends_on "qt"
