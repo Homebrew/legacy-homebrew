@@ -1,16 +1,16 @@
 class Ford < Formula
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/cmacmackin/ford/"
-  url "https://pypi.python.org/packages/source/F/FORD/FORD-3.1.0.tar.gz"
-  sha256 "12c615b2a9b253f67dea6b14854a694b1db505d740b7287fc5265801ab2d6f12"
+  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.0.0.tar.gz"
+  sha256 "1c1f6299ea81641fd1e7f7b643d37e620f8230a731ff1b9b1dfe3e81b9cf316f"
 
   head "https://github.com/cmacmackin/ford.git"
 
   bottle do
     cellar :any
-    sha256 "6aac01529d40625427310d04e2ad7fea06632afb870d93c5759a798465f13df8" => :yosemite
-    sha256 "af707af63142211084c4f2f7bcd4b7ecc7391349e5ecb2dd99fc16a3b3c393d9" => :mavericks
-    sha256 "ef14210323bbe1f70419bd3e1ebd1078c38ed8c087714214afd3fb611c94e780" => :mountain_lion
+    sha256 "1ce47f1020ee0b268c4989d3e10fa619c43393c22e65359f7a884668883cc030" => :yosemite
+    sha256 "e9de3afbaf26e3670c4ea208d3d50e581426ffd1ac6ba698e3dddf5f35ac4c16" => :mavericks
+    sha256 "630b4dbc59e870c13643245641619fc41f1be41ad870eaef757639b96023203e" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

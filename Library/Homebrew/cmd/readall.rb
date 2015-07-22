@@ -3,9 +3,9 @@
 # when making significant changes to formula.rb,
 # or to determine if any current formulae have Ruby issues
 
-require 'formula'
-require 'cmd/tap'
-require 'thread'
+require "formula"
+require "cmd/tap"
+require "thread"
 
 module Homebrew
   def readall
@@ -20,7 +20,7 @@ module Homebrew
         Thread.new do
           begin
             while rb = ruby_files.pop(true)
-              nostdout { failed = true unless system "ruby", "-c", "-w", rb }
+              nostdout { failed = true unless system RUBY_PATH, "-c", "-w", rb }
             end
           rescue ThreadError # ignore empty queue error
           end

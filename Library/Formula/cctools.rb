@@ -4,11 +4,11 @@ class Cctools < Formula
 
   if MacOS.version >= :snow_leopard
     url "https://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
-    sha1 "b6997939aa9f4f3c4ac70ec819e719330dcd7bcb"
+    sha256 "751748ddf32c8ea84c175f32792721fa44424dad6acbf163f84f41e9617dbc58"
   else
     # 806 (from Xcode 4.1) is the latest version that supports Tiger or PowerPC
     url "https://opensource.apple.com/tarballs/cctools/cctools-806.tar.gz"
-    sha1 "e4f9a7ee0eef930e81d50b6b7300b8ddc1c7b341"
+    sha256 "6116c06920112c634f6df2fa8b2f171ee3b90ff2176137da5856336695a6a676"
   end
 
   bottle do
@@ -150,6 +150,6 @@ class Cctools < Formula
   end
 
   test do
-    assert shell_output("#{bin}/otool -L #{bin}/install_name_tool").include? "/usr/lib/libSystem.B.dylib"
+    assert_match "/usr/lib/libSystem.B.dylib", shell_output("#{bin}/otool -L #{bin}/install_name_tool")
   end
 end

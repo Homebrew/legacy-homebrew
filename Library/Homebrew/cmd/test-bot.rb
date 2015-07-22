@@ -508,7 +508,7 @@ module Homebrew
       test "brew", "audit", *audit_args
       if install_passed
         if formula.stable? && !ARGV.include?('--no-bottle')
-          bottle_args = ["--rb", canonical_formula_name]
+          bottle_args = ["--verbose", "--rb", canonical_formula_name]
           bottle_args << { :puts_output_on_success => true }
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
@@ -560,6 +560,7 @@ module Homebrew
       @category = __method__
       return if ARGV.include? "--skip-homebrew"
       test "brew", "tests" unless OS.linux?
+      test "brew", "tests", "--no-compat" unless OS.linux?
       readall_args = []
       readall_args << "--syntax" if MacOS.version >= :mavericks
       test "brew", "readall", *readall_args

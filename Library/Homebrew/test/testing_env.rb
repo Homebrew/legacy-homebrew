@@ -1,6 +1,23 @@
 $:.unshift File.expand_path("../..", __FILE__)
 $:.unshift File.expand_path("../lib", __FILE__)
 
+# This must be at the top
+if ENV["HOMEBREW_TESTS_COVERAGE"]
+  require "simplecov"
+  SimpleCov.start do
+    tests_path = File.dirname(__FILE__)
+
+    minimum_coverage 50
+    coverage_dir File.expand_path("#{tests_path}/coverage")
+    root File.expand_path("#{tests_path}/..")
+
+    add_filter "Homebrew/test/"
+    add_filter "vendor/bundle/"
+    add_filter "Homebrew/vendor/"
+    add_filter "Homebrew/compat/"
+  end
+end
+
 require "global"
 
 # Test environment setup
@@ -62,7 +79,7 @@ module Homebrew
 
   class TestCase < ::Minitest::Test
     include VersionAssertions
-    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
+    include FSLeakLogger
 
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
     TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
