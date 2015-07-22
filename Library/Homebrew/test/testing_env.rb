@@ -32,7 +32,7 @@ begin
   require "minitest/autorun"
   require "mocha/setup"
 rescue LoadError
-  abort "Run `rake deps` or install the mocha and minitest gems before running the tests"
+  abort "Run `bundle install` or install the mocha and minitest gems before running the tests"
 end
 
 module Homebrew
