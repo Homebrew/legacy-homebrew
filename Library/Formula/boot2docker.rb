@@ -3,8 +3,8 @@ class Boot2docker < Formula
   homepage "https://github.com/boot2docker/boot2docker-cli"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of docker too
-  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.7.1",
-    :revision => "8fdc6f573bf08149b6311681800d55fda6e19e71"
+  url "https://github.com/boot2docker/boot2docker-cli.git",
+    :tag => "v1.7.1", :revision => "8fdc6f573bf08149b6311681800d55fda6e19e71"
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
@@ -27,6 +27,12 @@ class Boot2docker < Formula
     end
 
     bin.install "bin/boot2docker-cli" => "boot2docker"
+  end
+
+  def caveats; <<-EOF.undent
+      Rebuild the VM after an upgrade with:
+        boot2docker destroy && boot2docker upgrade
+    EOF
   end
 
   def plist; <<-EOS.undent
