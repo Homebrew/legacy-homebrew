@@ -18,9 +18,6 @@ class Gif2png < Formula
   end
 
   test do
-    # read test gif from stdin so gif2png will output a PNG file in the
-    # current working directory instead of alterting the PNG test fixture
-    $stdin.reopen(test_fixtures("test.gif"))
-    system "#{bin}/gif2png", "-O"
+    pipe_output "#{bin}/gif2png -O", File.read(test_fixtures("test.gif"))
   end
 end
