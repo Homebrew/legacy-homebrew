@@ -941,7 +941,7 @@ class Formula
   end
 
   def prepare_patches
-    active_spec.add_legacy_patches(patches)
+    active_spec.add_legacy_patches(patches) if respond_to?(:patches)
 
     patchlist.grep(DATAPatch) { |p| p.path = path }
 

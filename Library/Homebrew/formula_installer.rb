@@ -486,8 +486,12 @@ class FormulaInstaller
       #{formula.path}
     ].concat(build_argv)
 
+    if Sandbox.available? && ARGV.sandbox? && Sandbox.auto_disable?
+      Sandbox.print_autodisable_warning
+    end
+
     Utils.safe_fork do
-      if Sandbox.available? && ARGV.sandbox?
+      if Sandbox.available? && ARGV.sandbox? && !Sandbox.auto_disable?
         sandbox = Sandbox.new
         formula.logs.mkpath
         sandbox.record_log(formula.logs/"sandbox.build.log")

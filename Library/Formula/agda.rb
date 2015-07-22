@@ -22,7 +22,7 @@ class Agda < Formula
   option "with-malonzo-ffi",
     "Include the MAlonzo backend's FFI (depends on the standard library)"
 
-  depends_on "ghc"
+  depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
   depends_on "gmp"
@@ -41,12 +41,6 @@ class Agda < Formula
   end
 
   def install
-    if build.with? "epic-backend"
-      epic_flag = "-fepic"
-    else
-      epic_flag = "-f-epic"
-    end
-
     # install Agda core
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "cpphs"
