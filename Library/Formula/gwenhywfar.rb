@@ -6,9 +6,9 @@ class Gwenhywfar < Formula
   head "http://git.aqbanking.de/git/gwenhywfar.git"
 
   bottle do
-    sha1 "3855ce27d2b51561e7d5fbb720bb13363051d742" => :yosemite
-    sha1 "567cf27a34cb43468ade7422aeec1e410ff819a8" => :mavericks
-    sha1 "746a3db32ec9f3f033752fc594761b596fec7f2d" => :mountain_lion
+    sha256 "83b13c2c8b968c7c19b6cf841dc70bdd23a6cdd1d79aa444ec7ba047358f2ef9" => :yosemite
+    sha256 "53f9edbc41cf1692bd969acac3d1239d7f878bac81efce7fc6889a2a73406afb" => :mavericks
+    sha256 "e81cb75004757c9bb4823c8fa5c126f291eabe10bd238af62de5660c50cdcc3a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
