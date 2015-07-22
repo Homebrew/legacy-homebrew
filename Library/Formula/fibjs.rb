@@ -3,8 +3,8 @@ require "formula"
 class Fibjs < Formula
   desc "JavaScript on Fiber"
   homepage "http://fibjs.org"
-  url "https://github.com/xicilion/fibjs/archive/v0.1.2.tar.gz"
-  sha1 "d19dc40fecfd1ee9cd6cc850d9c83267dc0f7a96"
+  url "https://github.com/xicilion/fibjs/releases/download/v0.1.3/fibjs-0.1.3-fullsrc.zip"
+  sha1 "2841264abb50eeab89f7a1153541f2a1ec1ad853"
 
   head "https://github.com/xicilion/fibjs.git"
 
