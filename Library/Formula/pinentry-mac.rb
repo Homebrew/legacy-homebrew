@@ -10,10 +10,9 @@ class PinentryMac < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "c4a4832d79deb076f727eebde1ca2a2148eb2104" => :yosemite
-    sha1 "c3fceef899c53c1b16fb2262f31fa5b46d6c13f5" => :mavericks
-    sha1 "49db48b86524242985fba13304a2c8116c087e6b" => :mountain_lion
+    sha256 "b96a51a263a9447101d4bb8dc4247f324531bd4fd96218f6e170edfc983a87f7" => :yosemite
+    sha256 "c2538b57edce2eb7ccc10a32e16ccfbbbe8e61c384c4db8d5a62b04d3815c0ed" => :mavericks
+    sha256 "0d6eb6b84a6389e208d4ec055d5f10f84b48bad94d00e9599b9aafb3dfaf71d8" => :mountain_lion
   end
 
   depends_on :xcode => :build
