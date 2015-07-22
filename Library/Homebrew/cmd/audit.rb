@@ -520,6 +520,7 @@ class FormulaAuditor
   end
 
   def audit_patches
+    return unless formula.respond_to?(:patches)
     legacy_patches = Patch.normalize_legacy_patches(formula.patches).grep(LegacyPatch)
     if legacy_patches.any?
       problem "Use the patch DSL instead of defining a 'patches' method"
