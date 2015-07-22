@@ -18,7 +18,6 @@ class Gwenhywfar < Formula
   depends_on "libgcrypt"
   depends_on "gtk+" => :optional
   depends_on "qt" => :optional
-
   option "without-cocoa", "Build without cocoa support"
   option "with-check", "Run build-time check"
 
