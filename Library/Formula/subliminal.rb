@@ -7,10 +7,9 @@ class Subliminal < Formula
 
   bottle do
     cellar :any
-    revision 3
-    sha256 "067176139576ba34459542202aa0e83496ae8a32a3c4e092f10a9314cb4fab60" => :yosemite
-    sha256 "55c3722466c5247853420f55dee85c72567fc8672eb98a24647e5915a9087096" => :mavericks
-    sha256 "9897cb9ccf97f15fb65fbd876b01a795d178e4282ef32a215714ad2675443d3e" => :mountain_lion
+    sha256 "6720ae4c937a50e0c98be4830146c76a56f058c3d3df1f7dfd9fc6c014f5b1f0" => :yosemite
+    sha256 "613a6eca723c5daab743a9ef9591cf08061b412e598d3eda840bf456fe9a03c0" => :mavericks
+    sha256 "5f4cd750afb6013ce09bb0539eaf2d47da029e2abd4f6ebcc6facddbe19ff104" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
