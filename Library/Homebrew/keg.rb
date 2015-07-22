@@ -1,5 +1,5 @@
 require "extend/pathname"
-require "keg_fix_install_names"
+require "keg_relocate"
 require "formula_lock"
 require "ostruct"
 
@@ -274,6 +274,7 @@ class Keg
       # all icons subfolders should also mkpath
       when /^icons\// then :mkpath
       when /^zsh/ then :mkpath
+      when /^fish/ then :mkpath
       else :link
       end
     end

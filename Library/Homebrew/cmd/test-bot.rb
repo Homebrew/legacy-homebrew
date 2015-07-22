@@ -428,9 +428,32 @@ module Homebrew
         return
       end
 
+      conflicts = formula.conflicts
+      formula.recursive_dependencies.each do |dependency|
+        conflicts += dependency.to_formula.conflicts
+      end
+
+      conflicts.each do |conflict|
+        confict_formula = Formulary.factory(conflict.name)
+
+        if confict_formula.installed? && confict_formula.linked_keg.exist?
+          test "brew", "unlink", "--force", conflict.name
+        end
+      end
+
       installed = Utils.popen_read("brew", "list").split("\n")
       dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
                                       canonical_formula_name).split("\n")
+
+      (installed & dependencies).each do |installed_dependency|
+        installed_dependency_formula = Formulary.factory(installed_dependency)
+        if installed_dependency_formula.installed? &&
+            !installed_dependency_formula.keg_only? &&
+            !installed_dependency_formula.linked_keg.exist?
+          test "brew", "link", installed_dependency
+        end
+      end
+
       dependencies -= installed
       unchanged_dependencies = dependencies - @formulae
       changed_dependences = dependencies - unchanged_dependencies
@@ -485,7 +508,7 @@ module Homebrew
       test "brew", "audit", *audit_args
       if install_passed
         if formula.stable? && !ARGV.include?('--no-bottle')
-          bottle_args = ["--rb", canonical_formula_name]
+          bottle_args = ["--verbose", "--rb", canonical_formula_name]
           bottle_args << { :puts_output_on_success => true }
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last

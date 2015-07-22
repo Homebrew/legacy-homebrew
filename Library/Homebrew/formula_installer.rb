@@ -62,7 +62,7 @@ class FormulaInstaller
 
     bottle = formula.bottle
     return true  if force_bottle? && bottle
-    return false if build_from_source? || build_bottle? || interactive?
+    return false if build_from_source? || build_bottle? || interactive? || formula.file_modified?
     return false unless options.empty?
 
     return true if formula.local_bottle_path
@@ -180,6 +180,12 @@ class FormulaInstaller
     build_bottle_preinstall if build_bottle?
 
     unless @poured_bottle
+      if formula.file_modified?
+        filename = formula.path.to_s.gsub("#{HOMEBREW_PREFIX}/", "")
+        opoo "Formula file is modified!"
+        puts "Building from source because #{filename} has local changes"
+        puts "To install from a bottle instead, run with --force-bottle"
+      end
       compute_and_install_dependencies if @pour_failed and not ignore_deps?
       build
       clean
@@ -404,7 +410,7 @@ class FormulaInstaller
     ohai "Summary" if verbose? or show_summary_heading?
     puts summary
   ensure
-    unlock if hold_locks?
+    unlock
   end
 
   def emoji
@@ -480,8 +486,12 @@ class FormulaInstaller
       #{formula.path}
     ].concat(build_argv)
 
+    if Sandbox.available? && ARGV.sandbox? && Sandbox.auto_disable?
+      Sandbox.print_autodisable_warning
+    end
+
     Utils.safe_fork do
-      if Sandbox.available? && ARGV.sandbox?
+      if Sandbox.available? && ARGV.sandbox? && !Sandbox.auto_disable?
         sandbox = Sandbox.new
         formula.logs.mkpath
         sandbox.record_log(formula.logs/"sandbox.build.log")

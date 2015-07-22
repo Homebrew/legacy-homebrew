@@ -51,17 +51,19 @@ class FormulaUnavailableError < RuntimeError
 end
 
 class TapFormulaUnavailableError < FormulaUnavailableError
-  attr_reader :user, :repo, :shortname
+  attr_reader :tap, :user, :repo
 
-  def initialize name
-    super
-    @user, @repo, @shortname = name.split("/", 3)
+  def initialize tap, name
+    @tap = tap
+    @user = tap.user
+    @repo = tap.repo
+    super "#{tap}/#{name}"
   end
 
-  def to_s; <<-EOS.undent
-      No available formula for #{shortname} #{dependent_s}
-      Please tap it and then try again: brew tap #{user}/#{repo}
-    EOS
+  def to_s
+    s = super
+    s += "\nPlease tap it and then try again: brew tap #{tap}" unless tap.installed?
+    s
   end
 end
 
@@ -214,7 +216,7 @@ class BuildError < RuntimeError
     puts
     unless RUBY_VERSION < "1.8.7" || issues.empty?
       puts "These open issues may also help:"
-      puts issues.map{ |i| "#{i['title']} (#{i['html_url']})" }.join("\n")
+      puts issues.map{ |i| "#{i['title']} #{i['html_url']}" }.join("\n")
     end
 
     if MacOS.version >= "10.11"

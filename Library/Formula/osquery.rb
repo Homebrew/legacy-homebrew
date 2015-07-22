@@ -1,13 +1,14 @@
-require "formula"
-
 class Osquery < Formula
   desc "SQL powered operating system instrumentation and analytics"
   homepage "https://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.4.7", :revision => "9d783fee002196c73c4b2622cc7e410d6ce4a4b3"
+  url "https://github.com/facebook/osquery.git",
+      :tag => "1.5.0",
+      :revision => "ca09fdb9f80ed632b98a2a9c41a521309e14b611"
+  revision 1
 
   bottle do
-    sha256 "e6f20336f26db2aaeba7a400f1e2b18e6b385e3b9a17a951b8c5a7c57f815ec1" => :yosemite
+    sha256 "2056d44c6b15b9e38619b457974d8b83f041701934743ddfeac19cacb5ffeb21" => :yosemite
   end
 
   # osquery only support OS X Yosemite and above. Do not remove this.
@@ -16,20 +17,20 @@ class Osquery < Formula
   depends_on "cmake" => :build
   depends_on "boost" => :build
   depends_on "doxygen" => :build
-  depends_on "gflags" => :build
   depends_on "rocksdb" => :build
   depends_on "thrift" => :build
   depends_on "yara" => :build
   depends_on "openssl"
+  depends_on "gflags"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
   resource "jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
   end
 
   def install
@@ -50,7 +51,7 @@ class Osquery < Formula
   plist_options :startup => true, :manual => "osqueryd"
 
   test do
-    require 'open3'
+    require "open3"
     Open3.popen3("#{bin}/osqueryi") do |stdin, stdout, _|
       stdin.write(".mode line\nSELECT count(version) as lines FROM osquery_info;")
       stdin.close

@@ -5,9 +5,10 @@ class GstValidate < Formula
   sha256 "ac30d1041a8cfe5d268439f5cedee7e9753ba49080fc67bff1266581198438d0"
 
   bottle do
-    sha256 "f5dca749834de5b432007b4c2f3d88dd1aaf1b144b5209318c62fa62a75d8c51" => :yosemite
-    sha256 "3f916cd3acd23dac5159684f709c0944c0977a057b25aec0072bd2312a62fb25" => :mavericks
-    sha256 "a19857658ef39937d9702c20d271068edad58f31e2e9d7fa64278c672d920694" => :mountain_lion
+    revision 1
+    sha256 "450bf253e256d9031ad6ab0eb703e85d78e44b8bce2ad91090370abd5d7caf90" => :yosemite
+    sha256 "b08355b9b695b2be027e9f162f36f8b18e98eb876e5c636c244a5dfb2b48e712" => :mavericks
+    sha256 "e0d7815b3658c3227c49562c0c9ca532c66207df2e237e1977ce5dc159a2913f" => :mountain_lion
   end
 
   head do
@@ -25,6 +26,8 @@ class GstValidate < Formula
   depends_on "gst-plugins-base"
 
   def install
+    inreplace "tools/gst-validate-launcher.in", "env python2", "env python"
+
     args = %W[
       --prefix=#{prefix}
       --disable-debug

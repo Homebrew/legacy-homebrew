@@ -52,9 +52,10 @@ class Llvm < Formula
   end
 
   bottle do
-    sha256 "1263ca0485c17f53004103019e60c3569f4651968869df30844db804deb76e23" => :yosemite
-    sha256 "9c0acca6791ea00662923425fa1df59c8dc14c1f30c003fc545fb6e5657a9c88" => :mavericks
-    sha256 "36ed75090669c6fb30b2c9637aaaaf9568aad75c87190760ba1a837ef502c38e" => :mountain_lion
+    revision 1
+    sha256 "54c815d99473ef948bee29b577315461a140117b874396fda617a5c7d1bdbb0b" => :yosemite
+    sha256 "2be603591104a91d0a16ba5a6231717d5252ef860e83af620fbc5d10394fcb61" => :mavericks
+    sha256 "3996bbf655ae2c8457304f41d2c3df0b96f307f9fb624417c76afa75d3b587c0" => :mountain_lion
   end
 
   head do
@@ -133,7 +134,11 @@ class Llvm < Formula
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
 
-    args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
+    if build.with? "assertions"
+      args << "-DLLVM_ENABLE_ASSERTIONS=On"
+    else
+      args << "-DCMAKE_CXX_FLAGS_RELEASE='-DNDEBUG'"
+    end
 
     if build.universal?
       ENV.permit_arch_flags

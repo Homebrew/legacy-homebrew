@@ -6,15 +6,14 @@ require "formula"
 class YoutubeDl < Formula
   desc "Download YouTube videos from the command-line"
   homepage "https://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2015.07.07/youtube-dl-2015.07.07.tar.gz"
-  sha256 "634d7a3c369a245e67317ddb4043f8167bce3e774e1246ecb7c2707d311c2b4e"
+  url "https://yt-dl.org/downloads/2015.07.21/youtube-dl-2015.07.21.tar.gz"
+  sha256 "0b4276ce0df1add4081ca01b5d9460ce8ac6b218fb29ec6b4ddc7130a9ff29d9"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "d4fc2c4ad4706a9df565c28150782719fa1d3fd23b9b2994df3fbe317f260132" => :yosemite
-    sha256 "1f76e4aa5b659ee60cc9f28a13c0a109ef2fd2bcd966b1c695c3d725eb811e10" => :mavericks
-    sha256 "7d1746d6a1b325c4b54f7247f819a8e328f6240ea7253e0efcc49d95030c0985" => :mountain_lion
+    sha256 "b11fdfd73a797259014f47e44edfa6106f63618e25d669ca16362d5c71ab42aa" => :yosemite
+    sha256 "36f027fc31503b2c18bc04fca391ea36519d47668902d4a45d637079054f2687" => :mavericks
+    sha256 "96bd94017eb80d67e4edd687dbba634df480037780dfde92ed7e4700ea27a305" => :mountain_lion
   end
 
   head do

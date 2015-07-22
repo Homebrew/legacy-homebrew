@@ -261,7 +261,7 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
-  # @deprecated
+  # @private
   # The `LinkedKegs` directory for this {Formula}.
   # You probably want {#opt_prefix} instead.
   def linked_keg
@@ -494,12 +494,6 @@ class Formula
   # tell the user about any caveats regarding this package, return a string
   def caveats; nil end
 
-  # @deprecated
-  DATA = :DATA
-
-  # @deprecated
-  def patches; {} end
-
   # rarely, you don't want your library symlinked into the main prefix
   # see gettext.rb for an example
   def keg_only?
@@ -601,6 +595,14 @@ class Formula
     s << ") #{path}>"
   end
 
+  def file_modified?
+    return false unless which("git")
+    path.parent.cd do
+      diff = Utils.popen_read("git", "diff", "origin/master", "--", "#{path}")
+      !diff.empty? && $?.exitstatus == 0
+    end
+  end
+
   # Standard parameters for CMake builds.
   # Setting CMAKE_FIND_FRAMEWORK to "LAST" tells CMake to search for our
   # libraries before trying to utilize Frameworks, many of which will be from
@@ -618,15 +620,6 @@ class Formula
       -Wno-dev
     ]
   end
-
-  # @deprecated
-  def python(options={}, &block)
-    opoo 'Formula#python is deprecated and will go away shortly.'
-    block.call if block_given?
-    PythonRequirement.new
-  end
-  alias_method :python2, :python
-  alias_method :python3, :python
 
   # an array of all core {Formula} names
   def self.core_names
@@ -705,11 +698,6 @@ class Formula
   # True if this formula is provided by Homebrew itself
   def core_formula?
     path == Formulary.core_path(name)
-  end
-
-  # @deprecated
-  def self.path name
-    Formulary.core_path(name)
   end
 
   def env
@@ -938,13 +926,22 @@ class Formula
   def stage
     active_spec.stage do
       @buildpath = Pathname.pwd
-      yield
-      @buildpath = nil
+      env_home = buildpath/".brew_home"
+      mkdir_p env_home
+
+      old_home, ENV["HOME"] = ENV["HOME"], env_home
+
+      begin
+        yield
+      ensure
+        @buildpath = nil
+        ENV["HOME"] = old_home
+      end
     end
   end
 
   def prepare_patches
-    active_spec.add_legacy_patches(patches)
+    active_spec.add_legacy_patches(patches) if respond_to?(:patches)
 
     patchlist.grep(DATAPatch) { |p| p.path = path }
 
@@ -1187,4 +1184,3 @@ class Formula
     end
   end
 end
-

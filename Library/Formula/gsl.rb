@@ -1,18 +1,16 @@
-require 'formula'
-
 class Gsl < Formula
   desc "Numerical library for C and C++"
-  homepage 'https://www.gnu.org/software/gsl/'
-  url 'http://ftpmirror.gnu.org/gsl/gsl-1.16.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz'
-  sha1 '210af9366485f149140973700d90dc93a4b6213e'
+  homepage "https://www.gnu.org/software/gsl/"
+  url "http://ftpmirror.gnu.org/gsl/gsl-1.16.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/gsl/gsl-1.16.tar.gz"
+  sha256 "73bc2f51b90d2a780e6d266d43e487b3dbd78945dd0b04b14ca5980fe28d2f53"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "1fe8e32e25366b24b3de3d9ccbf7c72315fc482f" => :yosemite
-    sha1 "5763fbd3bde4d3866b44ea19f841b52b271dfc3b" => :mavericks
-    sha1 "fecff8034949f3b22782d21b3191826d40bb2e1e" => :mountain_lion
+    revision 2
+    sha256 "15ce99a31e31584740852571f4f237195d21083f6675390dc50283429127400a" => :yosemite
+    sha256 "06f9197561e1425ed56820dcab37bc64c35cfaa1b98a353b7fe9d4d220701bd1" => :mavericks
+    sha256 "ab1f1a358a9307f81c0aea895d5ed69b7c20c24ab6d1673010f31f0d25f78ea2" => :mountain_lion
   end
 
   option :universal
@@ -20,9 +18,12 @@ class Gsl < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make" # A GNU tool which doesn't support just make install! Shameful!
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"gsl-randist", "0", "20", "cauchy", "30"
   end
 end

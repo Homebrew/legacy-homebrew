@@ -277,7 +277,7 @@ if MacOS.version >= "10.9"
         Your Xcode (#{MacOS::Xcode.version}) is outdated
         Please update to Xcode #{MacOS::Xcode.latest_version}.
         Xcode can be updated from
-          https://developer.apple.com/downloads
+          https://developer.apple.com/xcode/downloads/
         EOS
       end
     end
@@ -317,7 +317,7 @@ elsif MacOS.version == "10.8" || MacOS.version == "10.7"
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
       Xcode can be updated from
-        https://developer.apple.com/downloads
+        https://developer.apple.com/xcode/downloads/
       EOS
     end
   end
@@ -336,7 +336,7 @@ else
     unless MacOS::Xcode.installed? then <<-EOS.undent
       Xcode is not installed. Most formulae need Xcode to build.
       It can be installed from
-        https://developer.apple.com/downloads
+        https://developer.apple.com/xcode/downloads/
       EOS
     end
   end
@@ -346,7 +346,7 @@ else
       Your Xcode (#{MacOS::Xcode.version}) is outdated
       Please update to Xcode #{MacOS::Xcode.latest_version}.
       Xcode can be updated from
-        https://developer.apple.com/downloads
+        https://developer.apple.com/xcode/downloads/
       EOS
     end
   end

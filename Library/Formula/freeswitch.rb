@@ -2,15 +2,15 @@ class Freeswitch < Formula
   desc "Telephony platform to route various communication protocols"
   homepage "https://freeswitch.org"
   url "https://freeswitch.org/stash/scm/fs/freeswitch.git",
-      :tag => "v1.4.19",
-      :revision => "ebf2df68fa6f341311620c6d90f5a8d77334606c"
+      :tag => "v1.4.20",
+      :revision => "0ae8ee7f8f13a37cf48381381b2f30906e750e19"
 
   head "https://freeswitch.org/stash/scm/fs/freeswitch.git"
 
   bottle do
-    sha256 "724b0f3f85c5dde65923d7b64b396addccd898a9b0f8977a422e0518a2a62d94" => :yosemite
-    sha256 "f91222c325a6f65da9873559b61912095e23f7bcee0dec1079170b139696e7d2" => :mavericks
-    sha256 "5a3cbf979034485152c4412980d62516e12bb6b0a5e52e7c71f636368960ef0d" => :mountain_lion
+    sha256 "7b39bcf111c401f87c670679b2f9d835c5fd978b36fcb231f930cd4e8d3d2e29" => :yosemite
+    sha256 "33b0488bab7fc54d8f5b2bf04039736bf2e602cb1b1b394b069df622e3f4e48e" => :mavericks
+    sha256 "5b3d705d9a63e9a4d05a9b42c9de02d0524e0d1357c4ffa83efa1c6b9b85009d" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -19,20 +19,24 @@ class Freeswitch < Formula
   depends_on "pkg-config" => :build
   depends_on :apr => :build
 
-  depends_on "jpeg"
+  option "without-moh", "Do not install music-on-hold"
+  option "without-sounds-en", "Do not install English (Callie) sounds"
+  option "with-sounds-fr", "Install French (June) sounds"
+  option "with-sounds-ru", "Install Russian (Elena) sounds"
+
   depends_on "curl"
+  depends_on "jpeg"
+  depends_on "ldns"
   depends_on "openssl"
   depends_on "pcre"
   depends_on "speex"
   depends_on "sqlite"
 
   def install
-    system "./bootstrap.sh", "-j#{ENV.make_jobs}"
+    system "./bootstrap.sh", "-j"
 
     # tiff will fail to find OpenGL unless told not to use X
     inreplace "libs/tiff-4.0.2/configure.gnu", "--with-pic", "--with-pic --without-x"
-    # mod_enum requires libldns-dev which doesn't seem to exist in brew
-    inreplace "modules.conf", "applications/mod_enum", "#applications/mod_enum"
 
     system "./configure", "--disable-dependency-tracking",
                           "--enable-shared",
@@ -40,8 +44,14 @@ class Freeswitch < Formula
                           "--prefix=#{prefix}",
                           "--exec_prefix=#{prefix}"
 
+    make_targets = %w[install all]
+    make_targets << "cd-moh-install" if build.with?("moh")
+    make_targets << "cd-sounds-install" if build.with?("sounds-en")
+    make_targets << "cd-sounds-fr-install" if build.with?("sounds-fr")
+    make_targets << "cd-sounds-ru-install" if build.with?("sounds-ru")
+
     system "make"
-    system "make", "install", "all", "cd-sounds-install", "cd-moh-install"
+    system "make", *make_targets
   end
 
   plist_options :manual => "freeswitch -nc --nonat"

@@ -1,17 +1,22 @@
 class Khal < Formula
   desc "CLI calendar application."
   homepage "https://github.com/geier/khal"
-  url "https://github.com/geier/khal/archive/v0.5.0.tar.gz"
-  sha256 "da7cda13fce3f727658db5efad049e642d25a47aaf50a33312c6123f912e5ae6"
+  url "https://pypi.python.org/packages/source/k/khal/khal-0.6.0.tar.gz"
+  sha256 "1a2e8d56d20b12ed2c3ef2468ff0ce0c658a8a566b249821b0f4b30cce8ada9a"
 
   bottle do
     cellar :any
-    sha256 "5c9c2c9aeeaffd16d9076d8fb422752cbe0e8227c1cdf6bdbb42a76486a26f9a" => :yosemite
-    sha256 "f381747f9191ddcdbd4bcda97881488e917a4bca6fd3d0d6f858891323bdd939" => :mavericks
-    sha256 "a93d8a7dea73c3638e3cd980ea25b281bb3c9fc70b41521e7233cb18e676d4ba" => :mountain_lion
+    sha256 "1796df34f81473c1ad2eb8527803b8b30c993e20199e00d3457b8c3289b07244" => :yosemite
+    sha256 "67b02a0db471f4799ee54b65b39a3067af158a18d8bea6537eb681185456a4f3" => :mavericks
+    sha256 "06f4f64db39be3cf026439ab604bdb6e83c1db0ef25ce0e3a49076c74764c8d2" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
+
+  resource "pkginfo" do
+    url "https://pypi.python.org/packages/source/p/pkginfo/pkginfo-1.2.1.tar.gz"
+    sha256 "ad3f6dfe8a831f96a7b56a588ca874137ca102cc6b79fc9b0a1c3b7ab7320f3c"
+  end
 
   resource "icalendar" do
     url "https://pypi.python.org/packages/source/i/icalendar/icalendar-3.9.0.tar.gz"

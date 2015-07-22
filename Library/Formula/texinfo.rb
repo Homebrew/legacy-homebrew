@@ -2,13 +2,14 @@ class Texinfo < Formula
   desc "Official documentation format of the GNU project"
   homepage "https://www.gnu.org/software/texinfo/"
   url "http://ftpmirror.gnu.org/texinfo/texinfo-5.2.tar.gz"
-  mirror "http://ftp.gnu.org/gnu/texinfo/texinfo-5.2.tar.gz"
-  sha1 "dc54edfbb623d46fb400576b3da181f987e63516"
+  mirror "https://ftp.gnu.org/gnu/texinfo/texinfo-5.2.tar.gz"
+  sha256 "6b8ca30e9b6f093b54fe04439e5545e564c63698a806a48065c0bba16994cf74"
 
   bottle do
-    sha1 "988fc8c195a43ad8b9dea1da2827fb24c794c200" => :yosemite
-    sha1 "40453ac408ede2cb5470935a5c5d2360f64032b5" => :mavericks
-    sha1 "1ac4d9ac120248a5b71cb45199c01bad850a7655" => :mountain_lion
+    revision 1
+    sha256 "c32217fe9d506df49481730dd580a9207931a13c4e0ade3e9caaf83feeaeaba7" => :yosemite
+    sha256 "84d4e2ff689f10d2a68bdd42ccf0726306e74314378d2dd2c78e52fe58945dd3" => :mavericks
+    sha256 "73e86c31e3ae5a971e8bc4f5a5f2823a2f3858ee166f5cdd2cf11a4ac7036728" => :mountain_lion
   end
 
   keg_only :provided_by_osx, <<-EOS.undent
@@ -21,16 +22,6 @@ class Texinfo < Formula
                           "--disable-install-warnings",
                           "--prefix=#{prefix}"
     system "make", "install"
-
-    # The install warns about needing to install texinfo.tex and some other support files.
-    # The texinfo.tex in tex-live 2008 is identical to texinfo's version, so we can ignore this.
-
-    # However, it complains about installing epsf.tex in TEXMF/tex/generic/dvips, so let's do that...
-    # This somewhat breaks the homebrew philosophy, I am sorry.
-    # Also, we don't depend on tex-live, but this directory only exists if it is installed.
-    if File.exist? "#{HOMEBREW_PREFIX}/share/texmf-dist/" then
-      cp "doc/epsf.tex", "#{HOMEBREW_PREFIX}/share/texmf-dist/tex/generic/dvips/"
-    end
   end
 
   test do

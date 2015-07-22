@@ -43,4 +43,20 @@ class Formula
   def self.require_universal_deps
     define_method(:require_universal_deps?) { true }
   end
+
+  def self.path name
+    Formulary.core_path(name)
+  end
+
+  DATA = :DATA
+
+  def patches; {} end
+
+  def python(options={}, &block)
+    opoo 'Formula#python is deprecated and will go away shortly.'
+    block.call if block_given?
+    PythonRequirement.new
+  end
+  alias_method :python2, :python
+  alias_method :python3, :python
 end

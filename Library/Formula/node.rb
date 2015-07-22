@@ -18,7 +18,7 @@ class Node < Formula
 
   deprecated_option "enable-debug" => "with-debug"
 
-  depends_on :python => :build
+  depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "pkg-config" => :build
   depends_on "openssl" => :optional
 
