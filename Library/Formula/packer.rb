@@ -6,7 +6,7 @@ class Packer < Formula
 
   # buildscript requires the .git directory be present
   url "https://github.com/mitchellh/packer.git",
-    :tag => "v0.8.1", :revision => "872e78d5b0a387eb3b87ddeef210264c3199d178"
+    :tag => "v0.8.2", :revision => "28c80a648c7e35c320530561a00c889837bd6b22"
 
   bottle do
     cellar :any
