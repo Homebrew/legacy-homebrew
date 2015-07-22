@@ -18,7 +18,6 @@ class Gdb < Formula
   sha256 "cd9c543a411a05b2b647dd38936034b68c2b5d6f10e0d51dc168c166c973ba40"
 
   bottle do
-    root_url "https://homebrew.bintray.com/bottles-dupes"
     sha256 "61fb08af16a19575c8b0e2b85ca2cbb59ddd1a81e914927b9be64a63fb6df0db" => :yosemite
     sha256 "3ad006cd86d38ae0d2e59eb896f26f2afe924fb973884bad01589baf178841ab" => :mavericks
     sha256 "c19cb81fca3468032e1979c96c3d7ec796af32f96abb6843980fc1621b89db37" => :mountain_lion
