@@ -1,8 +1,8 @@
 class Libmaxminddb < Formula
   desc "C library for the MaxMind DB file format"
   homepage "https://github.com/maxmind/libmaxminddb"
-  url "https://github.com/maxmind/libmaxminddb/releases/download/1.0.4/libmaxminddb-1.0.4.tar.gz"
-  sha1 "57548d426d43b9b43c77786b08594d48d0c88c62"
+  url "https://github.com/maxmind/libmaxminddb/releases/download/1.1.1/libmaxminddb-1.1.1.tar.gz"
+  sha256 "60060bc081573220d4633e4cbb26f999521c0f197304bc7f5ea700fc26ef2276"
 
   bottle do
     cellar :any
@@ -21,13 +21,6 @@ class Libmaxminddb < Formula
 
   depends_on "geoipupdate" => :optional
 
-  # This patch is from an upstream post-1.0.4 commit and fixes a test failure
-  # on OS X. See https://github.com/maxmind/libmaxminddb/commit/424953
-  patch do
-    url "https://github.com/maxmind/libmaxminddb/commit/424953.diff"
-    sha1 "362cf3254145188dc9959651ba7ee876007998c9"
-  end
-
   option :universal
 
   def install
@@ -41,12 +34,11 @@ class Libmaxminddb < Formula
                           "--prefix=#{prefix}"
     system "make", "check"
     system "make", "install"
+    (share/"examples").install buildpath/"t/maxmind-db/test-data/GeoIP2-City-Test.mmdb"
   end
 
   test do
-    system "curl", "-O", "http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz"
-    system "gunzip", "GeoLite2-Country.mmdb.gz"
-    system "#{bin}/mmdblookup", "-f", "GeoLite2-Country.mmdb",
-                                "-i", "8.8.8.8"
+    system "#{bin}/mmdblookup", "-f", "#{share}/examples/GeoIP2-City-Test.mmdb",
+                                "-i", "175.16.199.0"
   end
 end
