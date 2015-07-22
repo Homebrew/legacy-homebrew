@@ -12,10 +12,8 @@ class Httpry < Formula
     sha256 "01bcaee52ad4b3bc23d6b725996b8236d4d5a54cff7984c9bc7f733b44ea557c" => :mountain_lion
   end
 
-  depends_on "bsdmake" => :build
-
   def install
-    system "bsdmake"
+    system "make"
     bin.install "httpry"
     man1.install "httpry.1"
     doc.install Dir["doc/*"]
