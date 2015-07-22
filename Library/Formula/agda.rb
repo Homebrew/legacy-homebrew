@@ -8,7 +8,7 @@ class Agda < Formula
   url "https://hackage.haskell.org/package/Agda-2.4.2.3/Agda-2.4.2.3.tar.gz"
   mirror "https://github.com/agda/agda/archive/2.4.2.3.tar.gz"
   sha256 "bc6def45e32498f51863d67acfbe048c039d630c6a36761ed27e99a5f68d7b27"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "9ed012225f561074fdca22991889b72d6df25f31977b4f784c3b54c06b2a3dc3" => :yosemite
