@@ -500,6 +500,7 @@ class Formula
   def opt_libexec; opt_prefix+'libexec' end
   def opt_sbin;    opt_prefix+'sbin'    end
   def opt_share;   opt_prefix+'share'   end
+  def opt_pkgshare; opt_prefix+'share'+name end
   def opt_frameworks; opt_prefix+'Frameworks' end
 
   # Can be overridden to selectively disable bottles from formulae.
