@@ -79,7 +79,7 @@ module Homebrew
 
   class TestCase < ::Minitest::Test
     include VersionAssertions
-    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
+    include FSLeakLogger
 
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
     TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
