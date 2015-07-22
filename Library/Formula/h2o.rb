@@ -1,8 +1,8 @@
 class H2o < Formula
   desc "HTTP server with support for HTTP/1.x and HTTP/2"
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.3.1.tar.gz"
-  sha256 "8668a7c70cdb59eef4e67889569a45e0cf75b95eec133bd30435879cbdb77fba"
+  url "https://github.com/h2o/h2o/archive/v1.4.1.tar.gz"
+  sha256 "b5695b08c90a22b5f164a632bae68b4e8c4ecf4f231a3d336c7f94562591e4e9"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
@@ -19,10 +19,12 @@ class H2o < Formula
   depends_on "libressl" => :optional
   depends_on "libuv" => :optional
   depends_on "wslay" => :optional
+  depends_on "mruby" => :optional
 
   def install
     args = std_cmake_args
     args << "-DWITH_BUNDLED_SSL=OFF"
+    args << "-DWITH_MRUBY=ON" if build.with? "mruby"
 
     system "cmake", *args
 
