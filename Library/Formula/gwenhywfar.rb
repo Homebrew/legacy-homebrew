@@ -26,7 +26,7 @@ class Gwenhywfar < Formula
     guis = []
     guis << "gtk2" if build.with? "gtk+"
     guis << "qt4" if build.with? "qt"
-    guis << "cocoa" if build.with? "cocoa"
+    guis << "cocoa" if build.with? "cocoa" && OS.mac?
 
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
