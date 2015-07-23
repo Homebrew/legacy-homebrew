@@ -62,7 +62,6 @@ class Thefuck < Formula
   end
 
   test do
-    output = shell_output(bin/"thefuck echho")
-    assert output.include? "echo"
+    assert_match /echo ok/, shell_output(bin/"thefuck echho ok")
   end
 end
