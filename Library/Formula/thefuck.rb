@@ -35,6 +35,11 @@ class Thefuck < Formula
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
+    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+  end
+
   def install
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
