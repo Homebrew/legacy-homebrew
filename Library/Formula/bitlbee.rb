@@ -74,6 +74,8 @@ class Bitlbee < Formula
           <string>IPv4</string>
           <key>SockProtocol</key>
           <string>TCP</string>
+          <key>SockNodeName</key>
+          <string>127.0.0.1</string>
           <key>SockServiceName</key>
           <string>6667</string>
           <key>SockType</key>
