@@ -38,7 +38,9 @@ class Keg
       end
     end
 
-    text_files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
+    files = text_files | libtool_files
+
+    files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
       s = first.open("rb", &:read)
       changed = s.gsub!(old_cellar, new_cellar)
       changed = s.gsub!(old_prefix, new_prefix) || changed
@@ -170,5 +172,16 @@ class Keg
     end
 
     text_files
+  end
+
+  def libtool_files
+    libtool_files = []
+
+    # find .la files, which are stored in lib/
+    lib.find do |pn|
+      next if pn.symlink? or pn.directory? or pn.extname != '.la'
+      libtool_files << pn
+    end if lib.directory?
+    libtool_files
   end
 end
