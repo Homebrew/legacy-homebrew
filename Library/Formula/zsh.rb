@@ -8,9 +8,10 @@ class Zsh < Formula
   sha256 '8079cf08cb8beff22f84b56bd72bb6e6962ff4718d816f3d83a633b4c9e17d23'
 
   bottle do
-    sha256 "86da8afbbaa7a5a84b6362638f101a0698ac669a55282991c3488de4c1f6d6f3" => :yosemite
-    sha256 "748fd3b2f72b74bc63639aaa0b9bff59cd25592b94b4b84b4574cde7d0399fe8" => :mavericks
-    sha256 "808e64fa41634261b1427eff37ba4b1f1708d642504461c63cc3d10c073c735a" => :mountain_lion
+    revision 1
+    sha256 "0b25363741f6511290d28d56f620ccfda25c1e7938d255f35336bef1c0355e94" => :yosemite
+    sha256 "afb1a3bc447b2ba5a8b2a4f30d33750a5195cb08412213a9dc48dc9b7bb4308a" => :mavericks
+    sha256 "c68dff49299b118989c53654f668733afe191cdb2bcd965eca849f331ddc68d6" => :mountain_lion
   end
 
   depends_on 'gdbm'
