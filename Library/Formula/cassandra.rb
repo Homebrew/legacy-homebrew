@@ -1,9 +1,9 @@
 class Cassandra < Formula
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.7/apache-cassandra-2.1.7-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/2.1.7/apache-cassandra-2.1.7-bin.tar.gz"
-  sha256 "add1a34b8e07dacb16df6b8dbe50c66d77cb46b89f66424103e2fd4459b79089"
+  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.2.0/apache-cassandra-2.2.0-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/2.2.0/apache-cassandra-2.2.0-bin.tar.gz"
+  sha256 "6405eb063e7c8a44a485ac12b305c00ad62c526cc021bcce145c29423ae7b0a2"
 
   bottle do
     sha256 "24b46c811e585ea4882908a5399108407e83423d7a269b8d49bf378188b724c1" => :yosemite
@@ -40,8 +40,8 @@ class Cassandra < Formula
   end
 
   resource "cassandra-driver" do
-    url "https://pypi.python.org/packages/source/c/cassandra-driver/cassandra-driver-2.5.1.tar.gz"
-    sha256 "98511b51f3565bf5836079ed31b7be681d5a17b5a98d1214aa64eb06e07bc18d"
+    url "https://pypi.python.org/packages/source/c/cassandra-driver/cassandra-driver-2.6.0.tar.gz"
+    sha256 "753505a02b4c6f9b5ef18dec36a13f17fb458c98925eea62c94a8839d5949717"
   end
 
   def install
