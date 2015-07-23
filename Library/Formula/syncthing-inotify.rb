@@ -61,6 +61,6 @@ class SyncthingInotify < Formula
   end
 
   test do
-    system "syncthing-inotify", "-version"
+    system bin/"syncthing-inotify", "-version"
   end
 end
