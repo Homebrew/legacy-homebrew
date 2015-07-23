@@ -18,6 +18,12 @@ class Zsh < Formula
 
   option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
 
+  # zsh 5.0.8 broke du tab-completion for files, but this has been fixed in
+  # bug #35467. We ship our own version of the patch to avoid CHANGELOG
+  # conflicts.
+  # https://github.com/zsh-users/zsh/commit/806f73a0b3d3959d5af12ce97e0258b4d4fe7d76.patch
+  patch :DATA
+
   def install
     args = %W[
       --prefix=#{prefix}
@@ -62,3 +68,15 @@ class Zsh < Formula
     EOS
   end
 end
+__END__
+diff --git a/Completion/Unix/Command/_du b/Completion/Unix/Command/_du
+index d8871cd..4065a20 100644
+--- a/Completion/Unix/Command/_du
++++ b/Completion/Unix/Command/_du
+@@ -74,5 +74,5 @@ else
+   do
+     [[ $OSTYPE = $~pattern ]] && args+=( $arg )
+   done
+-  _arguments -s -A "-*" $args
++  _arguments -s -A "-*" $args '*:file:_files'
+ fi
