@@ -15,6 +15,8 @@ class Giflib < Formula
     sha256 "d38a310aa80f627a23b65b71e97baf6d08d8daa8281595f523e8116f5d4eace1" => :mountain_lion
   end
 
+  depends_on :x11
+  
   option :universal
 
   def install
