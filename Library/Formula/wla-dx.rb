@@ -2,18 +2,17 @@ require 'formula'
 
 class WlaDx < Formula
   desc "Yet another crossassembler package"
-  homepage 'http://www.villehelin.com/wla.html'
-  url 'http://www.villehelin.com/wla_dx_9.5a.tar.gz'
-  sha1 '2d14c33b985a594686ca8343488de7c41d690b9d'
-  version "9.5a"
+  homepage 'https://github.com/vhelin/wla-dx'
+  url 'https://github.com/vhelin/wla-dx/archive/v9.6.tar.gz'
+  sha256 'd368f4fb7d8a394f65730682dba6fddfe75b3c6119756799cdb3cd5e1ae78e0d'
+  version "9.6"
 
-  head 'https://wladx.svn.sourceforge.net/svnroot/wladx'
+  head 'https://github.com/vhelin/wla-dx.git'
 
   def install
     %w{CFLAGS CXXFLAGS CPPFLAGS}.each { |e| ENV.delete(e) }
     ENV.append_to_cflags '-c -O3 -ansi -pedantic -Wall'
     system "chmod +x unix.sh"
-    system "chmod +x opcode_table_generator/create_tables.sh"
     system "./unix.sh", ENV.make_jobs
     bin.install Dir['./binaries/*']
   end
