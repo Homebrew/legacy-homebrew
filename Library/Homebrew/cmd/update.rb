@@ -22,7 +22,7 @@ module Homebrew
     master_updater = Updater.new(HOMEBREW_REPOSITORY)
     begin
       master_updater.pull!
-    rescue ErrorDuringExecution => e
+    rescue ErrorDuringExecution
       unless HOMEBREW_REPOSITORY.writable_real?
         onoe "Can't write to #{HOMEBREW_REPOSITORY}"
         $stderr.puts <<-EOS.undent
