@@ -8,15 +8,16 @@ class Natalie < Formula
   depends_on :xcode => "6.3"
 
   def install
-    system "xcrun -sdk macosx swiftc -O natalie.swift -o natalie"
-    bin.install "natalie"
+    system *%W[mv natalie.swift natalie-script.swift]
+    system *%W[xcrun -sdk macosx swiftc -O natalie-script.swift -o natalie.swift]
+    bin.install "natalie.swift"
     share.install "NatalieExample"
   end
 
   test do
     example_path = "#{share}/NatalieExample"
     output_path = testpath/"Storyboards.swift"
-    generated_code = `#{bin}/natalie #{example_path}`
+    generated_code = `#{bin}/natalie.swift #{example_path}`
     output_path.write(generated_code)
     line_count = `wc -l #{output_path}`
     assert line_count.to_i > 1
