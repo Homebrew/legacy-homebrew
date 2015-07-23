@@ -1,5 +1,4 @@
 require 'cmd/tap'
-require 'tempfile'
 
 module Homebrew
   def update
@@ -24,7 +23,7 @@ module Homebrew
     begin
       master_updater.pull!
     rescue ErrorDuringExecution => e
-      unless homebrew_repository_writable?
+      unless HOMEBREW_REPOSITORY.writable_real?
         onoe "Can't write to #{HOMEBREW_REPOSITORY}"
         $stderr.puts <<-EOS.undent
           You may be able to fix this error by running
@@ -126,14 +125,6 @@ module Homebrew
   def load_tap_migrations
     require 'tap_migrations'
   rescue LoadError
-    false
-  end
-
-  def homebrew_repository_writable?
-    tf = Tempfile.new(".homebrew-write-probe", tmpdir=HOMEBREW_REPOSITORY)
-    tf.close!
-    true
-  rescue Errno::EACCES
     false
   end
 end
