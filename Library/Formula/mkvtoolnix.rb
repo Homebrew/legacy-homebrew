@@ -1,8 +1,17 @@
 class Mkvtoolnix < Formula
   desc "Matroska media files manipulation tools"
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.2.0.tar.xz"
-  sha256 "eb6d3d7a0254bb4326dccc9983418801783198cdf4a259f31261dab4e843a5c4"
+
+  stable do
+    url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.2.0.tar.xz"
+    sha256 "eb6d3d7a0254bb4326dccc9983418801783198cdf4a259f31261dab4e843a5c4"
+
+    # Fix GUI builds when "--without-curl" is passed, which we do by default.
+    patch do
+      url "https://github.com/mbunkus/mkvtoolnix/commit/5c56d6544ffc212ca39ac59f4ed98b4f04761de8.diff"
+      sha256 "52f0ee02111c85bf6381d86ccf6a5333f8a89aa717235e7f0f919d3f686af2fc"
+    end
+  end
 
   bottle do
     sha256 "875fa8eaa7db4432055e76fe736f7729a434b9205b76749316f6553171ef2d9a" => :yosemite
@@ -30,6 +39,7 @@ class Mkvtoolnix < Formula
   depends_on "wxmac" => :optional
   depends_on "qt5" => :optional
   depends_on "gettext" => :optional
+
   # On Mavericks, the bottle (without c++11) can be used
   # because mkvtoolnix is linked against libc++ by default
   if MacOS.version >= "10.9"
