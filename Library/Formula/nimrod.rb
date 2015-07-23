@@ -13,7 +13,7 @@ class Nimrod < Formula
   end
 
   def install
-    system "/bin/sh", "build.sh"
+    system "/bin/sh", "bootstrap.sh"
     system "/bin/sh", "install.sh", prefix
 
     bin.install_symlink prefix/"nim/bin/nim"
