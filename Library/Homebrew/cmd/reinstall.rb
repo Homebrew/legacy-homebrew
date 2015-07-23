@@ -2,13 +2,7 @@ require "formula_installer"
 
 module Homebrew
   def reinstall
-    if !MacOS.can_build?
-      bf = ARGV.collect_build_flags
-
-      if !bf.empty?
-        raise BuildFlagsError.new(bf)
-      end
-    end
+    FormulaInstaller.prevent_build_flags unless MacOS.can_build?
 
     ARGV.resolved_formulae.each { |f| reinstall_formula(f) }
   end
