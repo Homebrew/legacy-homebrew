@@ -16,7 +16,7 @@ class Giflib < Formula
   end
 
   depends_on :x11
-  
+
   option :universal
 
   def install
