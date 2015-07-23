@@ -31,7 +31,7 @@ module Homebrew
           to reset ownership to your current user account.
         EOS
       end
-      raise e
+      raise
     end
     report.update(master_updater.report)
 
