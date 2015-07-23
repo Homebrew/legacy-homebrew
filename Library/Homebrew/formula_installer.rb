@@ -56,6 +56,13 @@ class FormulaInstaller
     @pour_failed   = false
   end
 
+  # called by install/reinstall/upgrade when no build tools are available
+  def self.prevent_build_flags
+    build_flags = ARGV.collect_build_flags
+
+    raise BuildFlagsError.new(build_flags) unless build_flags.empty?
+  end
+
   def pour_bottle?(install_bottle_options = { :warn=>false })
     return true if Homebrew::Hooks::Bottles.formula_has_bottle?(formula)
 
@@ -234,8 +241,6 @@ class FormulaInstaller
   end
 
   def check_dependencies_bottled(deps)
-    unbottled = []
-
     unbottled = deps.select do |dep, _|
       formula = dep.to_formula
       !formula.pour_bottle? && !MacOS.can_build?

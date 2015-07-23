@@ -3,13 +3,7 @@ require "cmd/outdated"
 
 module Homebrew
   def upgrade
-    if !MacOS.can_build?
-      bf = ARGV.collect_build_flags
-
-      if !bf.empty?
-        raise BuildFlagsError.new(bf)
-      end
-    end
+    FormulaInstaller.prevent_build_flags unless MacOS.can_build?
 
     Homebrew.perform_preinstall_checks
 
