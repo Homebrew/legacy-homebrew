@@ -8,9 +8,9 @@ class Drake < Formula
 
   bottle do
     cellar :any
-    sha256 "0e1d17ad42bb1bd51792aa625664f1d1fb12748ac2f1783a53da4c6e6ba74124" => :yosemite
-    sha256 "7f1113ff253e4dccb34f54ff710da37738d39ce60fe014a97103af38a848fdb8" => :mavericks
-    sha256 "9b83197b887b6ce5f7912afbebcad3dff4c550b4057b45673d826982f94e481f" => :mountain_lion
+    sha256 "e4ee3af345696cf803595939d098879912dae3e6ba2527609ebd53b6d0f1eae3" => :yosemite
+    sha256 "aecf20701580e0bf885180114d019b0892f9ee108da60a8aba5bc119897a9d13" => :mavericks
+    sha256 "70caad1ee5b8f61aaa9cd62f5ff3f4bd456b4e2fc9a6309c127a45cee4375c76" => :mountain_lion
   end
 
   resource "jar" do
