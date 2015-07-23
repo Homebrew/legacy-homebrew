@@ -1,4 +1,5 @@
 require 'cmd/tap'
+require 'tempfile'
 
 module Homebrew
   def update
@@ -20,7 +21,19 @@ module Homebrew
 
     report = Report.new
     master_updater = Updater.new(HOMEBREW_REPOSITORY)
-    master_updater.pull!
+    begin
+      master_updater.pull!
+    rescue ErrorDuringExecution => e
+      unless homebrew_repository_writable?
+        onoe "Can't write to #{HOMEBREW_REPOSITORY}"
+        $stderr.puts <<-EOS.undent
+          You may be able to fix this error by running
+            sudo chown -R #{`whoami`.strip} #{HOMEBREW_REPOSITORY}
+          to reset ownership to your current user account.
+        EOS
+      end
+      raise e
+    end
     report.update(master_updater.report)
 
     # rename Taps directories
@@ -113,6 +126,14 @@ module Homebrew
   def load_tap_migrations
     require 'tap_migrations'
   rescue LoadError
+    false
+  end
+
+  def homebrew_repository_writable?
+    tf = Tempfile.new(".homebrew-write-probe", tmpdir=HOMEBREW_REPOSITORY)
+    tf.close!
+    true
+  rescue Errno::EACCES
     false
   end
 end
