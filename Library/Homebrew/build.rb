@@ -128,6 +128,10 @@ class Build
 
         formula.install
 
+        if formula.build.dsym?
+          formula.install_dsym
+        end
+
         stdlibs = detect_stdlibs(ENV.compiler)
         Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
 

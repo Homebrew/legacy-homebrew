@@ -10,6 +10,7 @@ require 'software_spec'
 require 'install_renamed'
 require 'pkg_version'
 require 'tap'
+require 'Find'
 
 # A formula provides instructions and metadata for Homebrew to install a piece
 # of software. Every Homebrew formula is a {Formula}.
@@ -808,6 +809,26 @@ class Formula
   end
 
   def install
+  end
+
+  def install_dsym
+    macho_magics = [
+      "\xFE\xED\xFA\xCE".b,
+      "\xCE\xFA\xED\xFE".b,
+      "\xFE\xED\xFA\xCF".b,
+      "\xCF\xFA\xED\xFE".b,
+      "\xCA\xFE\xBA\xBE".b]
+    Find.find(prefix.to_s) do |path|
+      if File.file?(path)
+        header = File.binread(path, 4)
+        if macho_magics.include? header
+          rel = Pathname.new(path).relative_path_from(prefix)
+          dsym = prefix + 'dSYM' + rel.dirname + (rel.basename.to_s + ".dSYM")
+          FileUtils.mkpath(dsym.dirname)
+          system "dsymutil", path, "--out="+dsym
+        end
+      end
+    end
   end
 
   protected
