@@ -8,8 +8,8 @@ class Natalie < Formula
   depends_on :xcode => "6.3"
 
   def install
-    system *%W[mv natalie.swift natalie-script.swift]
-    system *%W[xcrun -sdk macosx swiftc -O natalie-script.swift -o natalie.swift]
+    system "mv", "natalie.swift", "natalie-script.swift"
+    system "xcrun", "-sdk", "macosx", "swiftc", "-O", "natalie-script.swift", "-o", "natalie.swift"
     bin.install "natalie.swift"
     share.install "NatalieExample"
   end
