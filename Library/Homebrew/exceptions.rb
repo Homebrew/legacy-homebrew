@@ -301,3 +301,13 @@ class DuplicateResourceError < ArgumentError
     super "Resource #{resource.inspect} is defined more than once"
   end
 end
+
+class BottleVersionMismatchError < RuntimeError
+  def initialize bottle_file, bottle_version, formula, formula_version
+    super <<-EOS.undent
+      Bottle version mismatch
+      Bottle: #{bottle_file} (#{bottle_version})
+      Formula: #{formula.full_name} (#{formula_version})
+    EOS
+  end
+end

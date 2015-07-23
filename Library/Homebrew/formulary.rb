@@ -90,6 +90,11 @@ class Formulary
     def get_formula(spec)
       formula = super
       formula.local_bottle_path = @bottle_filename
+      formula_version = formula.pkg_version
+      bottle_version =  bottle_resolve_version(@bottle_filename)
+      unless formula_version == bottle_version
+        raise BottleVersionMismatchError.new(@bottle_filename, bottle_version, formula, formula_version)
+      end
       formula
     end
   end
