@@ -3,6 +3,7 @@ class Mkvtoolnix < Formula
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
   url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.2.0.tar.xz"
   sha256 "eb6d3d7a0254bb4326dccc9983418801783198cdf4a259f31261dab4e843a5c4"
+  revision 1
 
   bottle do
     sha256 "875fa8eaa7db4432055e76fe736f7729a434b9205b76749316f6553171ef2d9a" => :yosemite
@@ -17,7 +18,7 @@ class Mkvtoolnix < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-wxmac", "Build with wxWidgets GUI"
+  option "without-wxmac", "Build with wxWidgets GUI"
   option "with-qt5", "Build with QT GUI"
 
   depends_on "pkg-config" => :build
@@ -27,7 +28,7 @@ class Mkvtoolnix < Formula
   depends_on "flac" => :recommended
   depends_on "libmagic" => :recommended
   depends_on "lzo" => :optional
-  depends_on "wxmac" => :optional
+  depends_on "wxmac" => :recommended
   depends_on "qt5" => :optional
   depends_on "gettext" => :optional
   # On Mavericks, the bottle (without c++11) can be used
