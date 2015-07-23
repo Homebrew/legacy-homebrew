@@ -83,7 +83,7 @@ class Mongodb < Formula
 
     args << "--use-system-boost" if build.with? "boost"
     args << "--use-new-tools"
-    args << "--disable-warnings-as-errors" if MacOS.version >= :el_capitan
+    args << "--disable-warnings-as-errors" if MacOS.version >= :yosemite
 
     if build.with? "openssl"
       args << "--ssl" << "--extrapath=#{Formula["openssl"].opt_prefix}"
