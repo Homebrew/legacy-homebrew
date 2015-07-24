@@ -173,7 +173,37 @@ class Llvm < Formula
     EOS
   end
 
+  FOO_C = <<'END'
+    #include <stdio.h>
+    int main() {
+        printf("Hello, C!\n"); return 0;
+    }
+END
+
+  FOO_CC = <<'END'
+    #include <iostream>
+    int main() {
+       std::cout << "Hello, C++!\n"; return 0;
+    }
+END
+
   test do
     system "#{bin}/llvm-config", "--version"
+
+    return if build.without? "clang"
+
+    mktemp do
+      File.open("foo.c", "w") do |f|
+        f.write(FOO_C)
+      end
+      system "#{bin}/clang", "foo.c", "-o", "foo"
+      assert `./foo` == "Hello, C!\n"
+
+      File.open("foo.cc", "w") do |f|
+        f.write(FOO_CC)
+      end
+      system "#{bin}/clang++", "foo.cc", "-o", "foo"
+      assert `./foo` == "Hello, C++!\n"
+    end
   end
 end
