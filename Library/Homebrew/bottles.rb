@@ -58,7 +58,7 @@ def bottle_resolve_formula_names bottle_file
 end
 
 def bottle_resolve_version bottle_file
-  Version.new bottle_receipt_path(bottle_file).split("/")[1]
+  PkgVersion.parse bottle_receipt_path(bottle_file).split("/")[1]
 end
 
 class Bintray

@@ -4,28 +4,15 @@ class Cmake < Formula
   head "http://cmake.org/cmake.git"
 
   stable do
-    url "http://www.cmake.org/files/v3.2/cmake-3.2.3.tar.gz"
-    sha256 "a1ebcaf6d288eb4c966714ea457e3b9677cdfde78820d0f088712d7320850297"
-
-    patch do
-      # Fix for older bash-completion versions.  This can be removed when 3.3.0
-      # is released.
-      # Use Github because upstream git changes sha and breaks from-source download.
-      url "https://github.com/Kitware/CMake/commit/2ecf168f1909.diff"
-      sha256 "d3f8cd71d0b6ce23a22c55145114012da916f2e42af71cbbad35090d0aeb4f68"
-    end
+    url "http://www.cmake.org/files/v3.3/cmake-3.3.0.tar.gz"
+    sha256 "857c2f755fe0794d038d6fa462a173d05b210ac2c07ff82f0af853acef231a34"
   end
 
   bottle do
     cellar :any
-    sha256 "52d5da6e275c0c7780d21964a8f7e7350a1978f3370b48fe4776bea0c8ab05af" => :yosemite
-    sha256 "d580f7a24217854258bc73c41519579abefe8432176cef3ba4ebf5e71ad48701" => :mavericks
-    sha256 "127d5cf21c33d2dc3f7b74d54dd40d3e048ddacbd28370027fb2221ac2d2bdba" => :mountain_lion
-  end
-
-  devel do
-    url "http://www.cmake.org/files/v3.3/cmake-3.3.0-rc4.tar.gz"
-    sha256 "986238569889ae90fd874b9fd20cff3c292d5e2b7c324273de3b1271e6934c86"
+    sha256 "534105b1e4678885c7885a8677333199c8cdf205bafd545df54ac3f6896bcc6b" => :yosemite
+    sha256 "066ebec7e6e3b24fc4eb3771b4eb42fa4b365497b37d0c06ce12b87fcdf7cf0a" => :mavericks
+    sha256 "bceb7559a927874adfeef6443467fab566c3e35e182fad0e1c9ade29cddd1db5" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
