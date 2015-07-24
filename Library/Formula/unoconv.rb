@@ -4,7 +4,7 @@ class Unoconv < Formula
   desc "Convert between any document format supported by OpenOffice"
   homepage "http://dag.wiee.rs/home-made/unoconv/"
   url "http://dag.wieers.com/home-made/unoconv/unoconv-0.7.tar.gz"
-  sha1 "c4d764f9cd8461955ca1c3564a522449ed264c19"
+  sha256 "56abbec55632b19dcaff7d506ad6e2fd86f53afff412e622cc1e162afb1263fa"
   head "https://github.com/dagwieers/unoconv.git"
 
   bottle do
