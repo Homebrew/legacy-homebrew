@@ -3,8 +3,8 @@ require "formula"
 class Unoconv < Formula
   desc "Convert between any document format supported by OpenOffice"
   homepage "http://dag.wiee.rs/home-made/unoconv/"
-  url "http://dag.wieers.com/home-made/unoconv/unoconv-0.6.tar.gz"
-  sha1 "d6c3574639b9ceedcb866b84f18ba7158f25db48"
+  url "http://dag.wieers.com/home-made/unoconv/unoconv-0.7.tar.gz"
+  sha1 "c4d764f9cd8461955ca1c3564a522449ed264c19"
   head "https://github.com/dagwieers/unoconv.git"
 
   bottle do
@@ -21,7 +21,7 @@ class Unoconv < Formula
   end
 
   def caveats; <<-EOS.undent
-    In order to use unoconv LibreOffice 3.6.0.1 or later must be installed.
+    In order to use unoconv, a copy of LibreOffice between versions 3.6.0.1 - 4.3.x must be installed.
     EOS
   end
 end
