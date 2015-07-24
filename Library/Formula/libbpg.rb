@@ -1,10 +1,8 @@
-require "formula"
-
 class Libbpg < Formula
   desc "Image format meant to improve on JPEG quality and file size"
   homepage "http://bellard.org/bpg/"
   url "http://bellard.org/bpg/libbpg-0.9.5.tar.gz"
-  sha1 "1eee24f9d9d381b574b86a28d2af1073ab07bb55"
+  sha256 "30de1d0099920e24b7c9aae4d4e6b62f446823f0a1d52eb195dfc25c662ee203"
 
   bottle do
     cellar :any
@@ -13,12 +11,19 @@ class Libbpg < Formula
     sha1 "ae5340b8b0a353282bafea08edce8146cf6d5106" => :mountain_lion
   end
 
+  option "with-x265", "Enable x265 encoder"
+  option "without-jctvc", "Disable built-in JCTVC encoder"
+
   depends_on "libpng"
   depends_on "jpeg"
+  depends_on "x265" => :optional
 
   def install
     bin.mkpath
-    system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y"
+    args = []
+    args << "USE_X265=y" if build.with? "x265"
+    args << "USE_JCTVC=" if build.without? "jctvc"
+    system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y", *args
   end
 
   test do
