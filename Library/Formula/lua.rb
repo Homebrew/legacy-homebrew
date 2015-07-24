@@ -3,6 +3,7 @@ class Lua < Formula
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
   sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
+  revision 1
 
   bottle do
     sha256 "50c2d69eeeea78d4a61b9126c5d26109dc0f07e2f5612d6f4cb284f327218ef2" => :yosemite
@@ -156,7 +157,7 @@ index bd9515f..5940ba9 100644
  TO_BIN= lua luac
  TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
 -TO_LIB= liblua.a
-+TO_LIB= liblua.5.2.3.dylib
++TO_LIB= liblua.5.2.4.dylib
  TO_MAN= lua.1 luac.1
 
  # Lua version and release.
@@ -164,7 +165,7 @@ index bd9515f..5940ba9 100644
 	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
 	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
 	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
-+	ln -s -f liblua.5.2.3.dylib $(INSTALL_LIB)/liblua.5.2.dylib
++	ln -s -f liblua.5.2.4.dylib $(INSTALL_LIB)/liblua.5.2.dylib
 +	ln -s -f liblua.5.2.dylib $(INSTALL_LIB)/liblua.dylib
 
  uninstall:
@@ -178,7 +179,7 @@ index 8c9ee67..7f92407 100644
  PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
 
 -LUA_A=	liblua.a
-+LUA_A=	liblua.5.2.3.dylib
++LUA_A=	liblua.5.2.4.dylib
  CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o \
 	lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o \
 	ltm.o lundump.o lvm.o lzio.o
@@ -189,12 +190,12 @@ index 8c9ee67..7f92407 100644
 -	$(AR) $@ $(BASE_O)
 -	$(RANLIB) $@
 +	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.2.dylib \
-+		-compatibility_version 5.2 -current_version 5.2.3 \
-+		-o liblua.5.2.3.dylib $^
++		-compatibility_version 5.2 -current_version 5.2.4 \
++		-o liblua.5.2.4.dylib $^
 
  $(LUA_T): $(LUA_O) $(LUA_A)
 -	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
-+	$(CC) -fno-common $(MYLDFLAGS) -o $@ $(LUA_O) $(LUA_A) -L. -llua.5.2.3 $(LIBS)
++	$(CC) -fno-common $(MYLDFLAGS) -o $@ $(LUA_O) $(LUA_A) -L. -llua.5.2.4 $(LIBS)
 
  $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
