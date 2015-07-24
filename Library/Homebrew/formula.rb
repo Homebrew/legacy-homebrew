@@ -817,26 +817,12 @@ class Formula
   end
 
   def install_dsym
-    macho_magics = [
-      "\xFE\xED\xFA\xCE".b,
-      "\xCE\xFA\xED\xFE".b,
-      "\xFE\xED\xFA\xCF".b,
-      "\xCF\xFA\xED\xFE".b,
-      "\xCA\xFE\xBA\xBE".b]
-    Find.find(prefix.to_s) do |path|
-      path = Pathname.new(path)
-      if path == source_dir or path == symbols_dir
-        Find.prune
-      elsif path.file? and not path.symlink?
-        header = File.binread(path, 4)
-        if macho_magics.include? header
-          rel = path.relative_path_from(prefix)
-          dsym = symbols_dir + rel.dirname + (rel.basename.to_s + ".dSYM")
-          if not dsym.exist?
-            FileUtils.mkpath(dsym.dirname)
-            system "dsymutil", path, "--out="+dsym
-          end
-        end
+    Keg.new(prefix).mach_o_files.each do |path|
+      rel = path.relative_path_from(prefix)
+      dsym = symbols_dir + rel.dirname + (rel.basename.to_s + ".dSYM")
+      if not dsym.exist?
+        FileUtils.mkpath(dsym.dirname)
+        system "dsymutil", path, "--out="+dsym
       end
     end
   end
