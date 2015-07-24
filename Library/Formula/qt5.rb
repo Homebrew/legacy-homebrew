@@ -13,6 +13,7 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  revision 1
 
   stable do
     url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
@@ -24,6 +25,16 @@ class Qt5 < Formula
     # This is fixed in 5.5 branch and below patch should be removed
     # when this formula is updated to 5.5.1
     patch :DATA
+  end
+
+  # `qmake` generates broken `pkg-config` files with quoted '-framework QtCore'
+  # (and similarly for all other frameworks), that remains a single argument in
+  # projects that use Qt via `pkg-config` and thus causes breakage when linking
+  # ('-framework' and 'QtCore' need to be passed as separate arguments).
+  # https://bugreports.qt.io/browse/QTBUG-47162
+  patch do
+    url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
+    sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
   end
 
   bottle do
