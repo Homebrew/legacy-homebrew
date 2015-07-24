@@ -1,13 +1,14 @@
 class Rtags < Formula
+  desc "ctags-like source code cross-referencer with a clang frontend"
   homepage "https://github.com/Andersbakken/rtags"
+
+  head "https://github.com/Andersbakken/rtags.git"
 
   stable do
     url "https://github.com/Andersbakken/rtags.git",
         :tag => "v2.0",
         :revision => "ba85598841648490e64246be802fc2dcdd45bc3c"
   end
-
-  head "https://github.com/Andersbakken/rtags.git"
 
   depends_on "cmake" => :build
   depends_on "llvm" => "with-clang"
@@ -19,7 +20,7 @@ class Rtags < Formula
     ENV.prepend_path "PATH", "#{opt_libexec}/llvm/bin"
 
     # Homebrew llvm libc++.dylib doesn't correctly reexport libc++abi
-    ENV.append("LDFLAGS", '-lc++abi')
+    ENV.append("LDFLAGS", "-lc++abi")
 
     mkdir "build" do
       args = std_cmake_args
