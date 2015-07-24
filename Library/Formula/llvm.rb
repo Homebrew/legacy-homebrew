@@ -82,6 +82,7 @@ class Llvm < Formula
     end
   end
 
+  option :dsym
   option :universal
   option "with-clang", "Build Clang support library"
   option "with-lld", "Build LLD linker"
@@ -149,13 +150,12 @@ class Llvm < Formula
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
       system "make", "install"
+      install_dsym if build.dsym?
     end
 
     if build.with? "clang"
-      system "make", "-C", "projects/libcxx", "install",
-        "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
-
-      (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
+      # cmake will automatically build libc++ for us
+      (share/"clang/tools").install Dir[buildpath/"tools/clang/tools/scan-{build,view}"]
       inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
       bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
       man1.install_symlink share/"clang/tools/scan-build/scan-build.1"

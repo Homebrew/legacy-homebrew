@@ -611,11 +611,16 @@ class Formula
   # Note: there isn't a std_autotools variant because autotools is a lot
   # less consistent and the standard parameters are more memorable.
   def std_cmake_args
+    if build.dsym?
+      type = "RelWithDebInfo"
+    else
+      type = "Release"
+    end
     %W[
       -DCMAKE_C_FLAGS_RELEASE=
       -DCMAKE_CXX_FLAGS_RELEASE=
       -DCMAKE_INSTALL_PREFIX=#{prefix}
-      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_BUILD_TYPE=#{type}
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
@@ -819,13 +824,18 @@ class Formula
       "\xCF\xFA\xED\xFE".b,
       "\xCA\xFE\xBA\xBE".b]
     Find.find(prefix.to_s) do |path|
-      if File.file?(path)
+      path = Pathname.new(path)
+      if path == source_dir or path == symbols_dir
+        Find.prune
+      elsif path.file? and not path.symlink?
         header = File.binread(path, 4)
         if macho_magics.include? header
-          rel = Pathname.new(path).relative_path_from(prefix)
-          dsym = prefix + 'dSYM' + rel.dirname + (rel.basename.to_s + ".dSYM")
-          FileUtils.mkpath(dsym.dirname)
-          system "dsymutil", path, "--out="+dsym
+          rel = path.relative_path_from(prefix)
+          dsym = symbols_dir + rel.dirname + (rel.basename.to_s + ".dSYM")
+          if not dsym.exist?
+            FileUtils.mkpath(dsym.dirname)
+            system "dsymutil", path, "--out="+dsym
+          end
         end
       end
     end
@@ -944,9 +954,23 @@ class Formula
     exit! 1 # never gets here unless exec threw or failed
   end
 
+  def source_dir
+    if build.dsym?
+      prefix + "Source"
+    else
+      nil
+    end
+  end
+
+  def symbols_dir
+    prefix + 'Symbols'
+  end
+
   def stage
-    active_spec.stage do
+
+    active_spec.stage source_dir do
       @buildpath = Pathname.pwd
+
       env_home = buildpath/".brew_home"
       mkdir_p env_home
 

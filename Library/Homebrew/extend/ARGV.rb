@@ -142,7 +142,7 @@ module HomebrewArgvExtension
   end
 
   def build_dsym?
-    flag? '--dsym'
+    include? '--dsym'
   end
 
   # Request a 32-bit only build.

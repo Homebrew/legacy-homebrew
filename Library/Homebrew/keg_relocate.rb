@@ -151,8 +151,12 @@ class Keg
   def mach_o_files
     mach_o_files = []
     path.find do |pn|
-      next if pn.symlink? or pn.directory?
-      mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
+      if pn == path/"Source"
+        Find.prune
+      else
+        next if pn.symlink? or pn.directory?
+        mach_o_files << pn if pn.dylib? or pn.mach_o_bundle? or pn.mach_o_executable?
+      end
     end
 
     mach_o_files
