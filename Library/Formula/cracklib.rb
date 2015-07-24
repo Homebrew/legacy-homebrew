@@ -5,9 +5,10 @@ class Cracklib < Formula
   sha256 "59ab0138bc8cf90cccb8509b6969a024d5e58d2d02bcbdccbb9ba9b88be3fa33"
 
   bottle do
-    sha1 "51805becd70c9f2d62c40ab28b5e4a2d041b8b24" => :yosemite
-    sha1 "418f78244ce9b7d8ab16bd5869d353981ce9afe7" => :mavericks
-    sha1 "eb566f302ca1118f26a9e88aa537bbcf76c088d0" => :mountain_lion
+    cellar :any
+    sha256 "cdc073935379e4c2e14a5e98c7d16a4a6303d2682b9d77ed8addee555bdd9354" => :yosemite
+    sha256 "c974bd4f5515644268c6f9ff13bb392508d6148bc22be8f5fc2da3afe1fa6c89" => :mavericks
+    sha256 "3fe3f4737cee1d27465100119dc9f194a985cc8ec1f4a55cecb45d7669c04484" => :mountain_lion
   end
 
   resource "cracklib-words" do
