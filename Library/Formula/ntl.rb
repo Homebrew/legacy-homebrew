@@ -1,10 +1,8 @@
 class Ntl < Formula
   desc "C++ number theory library"
   homepage "http://www.shoup.net/ntl"
-  url "http://www.shoup.net/ntl/ntl-9.2.0.tar.gz"
-  sha256 "2bca70534b133904dd814a1d2a111f787a7506fa6f08f2e7f3fc9288b3bfd101"
-
-  depends_on "gmp" => :optional
+  url "http://www.shoup.net/ntl/ntl-9.3.0.tar.gz"
+  sha256 "8f31508a9176b3fc843f08468b1632017f2450677bfd5147ead5136e0f24b68f"
 
   bottle do
     cellar :any
@@ -13,9 +11,12 @@ class Ntl < Formula
     sha256 "8547e62f4569969797dcbc4eba941ef8733d7e07173852364577d7d7f77e9045" => :mountain_lion
   end
 
+  depends_on "gmp" => :optional
+
   def install
     args = ["PREFIX=#{prefix}"]
     args << "NTL_GMP_LIP=on" if build.with? "gmp"
+
     cd "src" do
       system "./configure", *args
       system "make"
