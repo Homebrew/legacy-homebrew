@@ -5,10 +5,17 @@ class Agda < Formula
 
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  url "https://hackage.haskell.org/package/Agda-2.4.2.3/Agda-2.4.2.3.tar.gz"
-  mirror "https://github.com/agda/agda/archive/2.4.2.3.tar.gz"
-  sha256 "bc6def45e32498f51863d67acfbe048c039d630c6a36761ed27e99a5f68d7b27"
   revision 2
+
+  stable do
+    url "https://hackage.haskell.org/package/Agda-2.4.2.3/Agda-2.4.2.3.tar.gz"
+    mirror "https://github.com/agda/agda/archive/2.4.2.3.tar.gz"
+    sha256 "bc6def45e32498f51863d67acfbe048c039d630c6a36761ed27e99a5f68d7b27"
+
+    resource "stdlib" do
+      url "https://github.com/agda/agda-stdlib.git", :branch => "2.4.2.4"
+    end
+  end
 
   bottle do
     sha256 "b5dfadfde1b45ca3d70f2ac812e98a6d72caf1d840d4cb9c4eee95e81d74ff0b" => :yosemite
@@ -16,7 +23,13 @@ class Agda < Formula
     sha256 "d0e17808ee896cdedc499b010b67961dc3db3c430c501faef16c4b4482238447" => :mountain_lion
   end
 
-  head "https://github.com/agda/agda.git", :branch => "master"
+  head do
+    url "https://github.com/agda/agda.git", :branch => "master"
+
+    resource "stdlib" do
+      url "https://github.com/agda/agda-stdlib.git", :branch => "master"
+    end
+  end
 
   option "without-stdlib", "Don't install the Agda standard library"
   option "with-malonzo-ffi",
@@ -29,16 +42,6 @@ class Agda < Formula
   depends_on "emacs" => :optional
 
   setup_ghc_compilers
-
-  head do
-    resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib.git", :branch => "master"
-    end
-  end
-
-  resource "stdlib" do
-    url "https://github.com/agda/agda-stdlib.git", :branch => "2.4.2.4"
-  end
 
   def install
     # install Agda core
