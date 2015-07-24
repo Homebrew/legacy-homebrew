@@ -4,6 +4,12 @@ class Gtkspell3 < Formula
   url "http://gtkspell.sourceforge.net/download/gtkspell3-3.0.7.tar.gz"
   sha256 "13f2e6d3e2554cc24253ef592074b28c117db33b7a4465c98c69a3e0a4fa3cc2"
 
+  bottle do
+    sha256 "68bb9cc7e7772731552b06a0496e79754658eedab6f81b6609a4c1d1a23f9b1b" => :yosemite
+    sha256 "d1d6fbec19ca11ddaebf3d445dbaf04d98981650a08043d0e369fba2f44a9160" => :mavericks
+    sha256 "a33273b5ae3190d67028acdd991a848c9089f1819d3781c4b19dbd7a20358421" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gtk+3"
