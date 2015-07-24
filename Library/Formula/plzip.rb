@@ -6,9 +6,9 @@ class Plzip < Formula
 
   bottle do
     cellar :any
-    sha1 "c555c0fff979bfdbd28e91b992395bc1f78c8ad1" => :yosemite
-    sha1 "991dad931e4083afa7a5c50ebbf9bb8459bb266e" => :mavericks
-    sha1 "3371a5b356a73f401951dd621c2d5782be2b275b" => :mountain_lion
+    sha256 "d6034ff78f2a1e85f7794450bdd06bc95b1a07e30ee99c1227bf642d5be09ad4" => :yosemite
+    sha256 "8cd3d1ac2c5b8c04a172188efdbc89dd1a7cfe936057d047d728484691e67adb" => :mavericks
+    sha256 "7e8f6bbcb52876b808fc247a46e9f189b1e8a04f829717dc27979d1393f7a15a" => :mountain_lion
   end
 
   depends_on "lzlib"
