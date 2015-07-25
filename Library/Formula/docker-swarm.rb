@@ -3,8 +3,8 @@ require "language/go"
 class DockerSwarm < Formula
   desc "Turn a pool of Docker hosts into a single, virtual host"
   homepage "https://github.com/docker/swarm"
-  url "https://github.com/docker/swarm/archive/v0.2.0.tar.gz"
-  sha256 "7c9bb5b820f740e2963edc37cb0a2fc8160d42537870bf4caedb09036276008f"
+  url "https://github.com/docker/swarm/archive/v0.3.0.tar.gz"
+  sha256 "3db5f261483b87330743e16b340a2f76349e2dcca6b1dd85b9e1b1288d50af22"
 
   head "https://github.com/docker/swarm.git"
 
@@ -32,6 +32,6 @@ class DockerSwarm < Formula
 
   test do
     output = shell_output(bin/"docker-swarm --version")
-    assert output.include? "swarm version 0.2.0 (HEAD)"
+    assert_match "swarm version #{version} (HEAD)", output
   end
 end
