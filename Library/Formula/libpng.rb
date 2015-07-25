@@ -14,6 +14,14 @@ class Libpng < Formula
 
   keg_only :provided_pre_mountain_lion
 
+  head do
+    url "https://github.com/glennrp/libpng.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   option :universal
 
   def install
