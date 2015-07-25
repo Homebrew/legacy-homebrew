@@ -19,7 +19,7 @@ class Libgcrypt < Formula
   depends_on "libgpg-error"
 
   resource "config.h.ed" do
-    url "http://trac.macports.org/export/113198/trunk/dports/devel/libgcrypt/files/config.h.ed"
+    url "https://trac.macports.org/export/113198/trunk/dports/devel/libgcrypt/files/config.h.ed"
     version "113198"
     sha256 "d02340651b18090f3df9eed47a4d84bed703103131378e1e493c26d7d0c7aab1"
   end
