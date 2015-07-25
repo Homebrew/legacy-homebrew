@@ -24,4 +24,8 @@ class Ntl < Formula
       system "make", "install"
     end
   end
+
+  test do
+    assert File.exist? "#{lib}/libntl.a"
+  end
 end
