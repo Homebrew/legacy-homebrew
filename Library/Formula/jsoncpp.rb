@@ -6,9 +6,9 @@ class Jsoncpp < Formula
 
   bottle do
     cellar :any
-    sha256 "7e41500ac30f3f84145096e1550d31659476d3473b66447c9f7fcd3014517ca7" => :yosemite
-    sha256 "19e1205cd37336a1a6b0608f47ac33672961dd6ba6d9c8680fea1e2d1fbb1d47" => :mavericks
-    sha256 "5911263312f4793fd7e5c61d0e25952ee27ba970637323e84805768891617f53" => :mountain_lion
+    sha256 "23e7bafcd961be747ab26c3d754f5723ba8a86d4915cf31bcaee002618898b18" => :yosemite
+    sha256 "72c73a2a679f8196bed4fb65cfa04cbb16fa7a565901830f34c3a8d5734c3911" => :mavericks
+    sha256 "7d3400af12dbe322fec3aab9894a920e68b711d01e6205767966ad102cbd8e14" => :mountain_lion
   end
 
   depends_on "scons" => :build
