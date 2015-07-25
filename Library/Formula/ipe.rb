@@ -1,9 +1,9 @@
 class Ipe < Formula
   desc "Drawing editor for creating figures in PDF or PS formats"
-  homepage "http://ipe7.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.7-src.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.7-src.tar.gz"
-  sha256 "ec670cd7f0fa521271fc54bf9b663570d82280bdbe405be6de59535fec7c00d2"
+  homepage "http://ipe.otfried.org/"
+  url "https://github.com/otfried/ipe/raw/master/releases/7.1/ipe-7.1.8-src.tar.gz"
+  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.8-src.tar.gz"
+  sha256 "6a7b8dfb0a012ef9e96b62c317974d910ab6904bef29ae7636d5ac1cb26fa6ff"
 
   bottle do
     sha256 "f694eff81d650fb2777380b6a4038edca3db023dce2682a5a4f7a332aa5023ef" => :yosemite
@@ -33,18 +33,13 @@ class Ipe < Formula
     ENV.deparallelize
 
     cd "src" do
-      # Ipe also build shared objects instead of dylibs. Boo.
-      # https://sourceforge.net/p/ipe7/tickets/20
-      # Will be fixed in next release, allegedly.
-      inreplace "common.mak" do |s|
-        s.gsub! ".so.$(IPEVERS)", ".$(IPEVERS).dylib"
-        s.gsub! "lib$1.so", "lib$1.dylib"
-        s.gsub! "ipelets/$1.so", "ipelets/$1.dylib"
-      end
-
       # Comment this out so we can make use of pkg-config.
       # Upstream have said they will *never* support OS X, so we have free reign.
-      inreplace "config.mak", "ifndef MACOS", "ifdef MACOS"
+      inreplace "config.mak" do |s|
+        s.gsub! "ifndef MACOS", "ifdef MACOS"
+        s.gsub! "moc-qt4", "moc"
+      end
+
       system "make", "IPEPREFIX=#{HOMEBREW_PREFIX}"
       system "make", "IPEPREFIX=#{prefix}", "install"
     end
