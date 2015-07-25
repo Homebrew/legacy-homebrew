@@ -31,6 +31,12 @@ class Noweb < Formula
                                 "LIB=#{lib}",
                                 "MAN=#{man}",
                                 "TEXINPUTS=#{texmf}/tex/generic/noweb"
+      cd "icon" do
+        system "make", "install", "BIN=#{bin}",
+                                  "LIB=#{lib}",
+                                  "MAN=#{man}",
+                                  "TEXINPUTS=#{texmf}/tex/generic/noweb"
+      end
     end
   end
 end
