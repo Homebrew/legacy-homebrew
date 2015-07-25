@@ -15,6 +15,7 @@ class Bear < Formula
   depends_on "cmake" => :build
 
   def install
+    ENV.universal_binary
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make", "install"
