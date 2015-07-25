@@ -817,13 +817,27 @@ class Formula
   end
 
   def install_dsym
-    Keg.new(prefix).mach_o_files.each do |path|
-      rel = path.relative_path_from(prefix)
-      dsym = symbols_dir + rel.dirname + (rel.basename.to_s + ".dSYM")
-      if not dsym.exist?
-        FileUtils.mkpath(dsym.dirname)
-        system "dsymutil", path, "--out="+dsym
+    # create a makefile for this so we can take advantage of multiple cores.
+    require 'Shellwords'
+    mktemp do
+      File.open("Makefile", "w") do |f|
+        f.write("all: dsyms\n\n")
+        dsyms = []
+        Keg.new(prefix).mach_o_files.each do |path|
+          rel = path.relative_path_from(prefix)
+          dsym = symbols_dir + rel.dirname + (rel.basename.to_s + ".dSYM")
+          dsyms << dsym
+          f.write("#{Shellwords.shellescape dsym}: #{Shellwords.shellescape path}\n")
+          f.write("\tdsymutil #{Shellwords.shellescape path} --out=#{Shellwords.shellescape dsym}\n")
+          FileUtils.mkpath(dsym.dirname)
+        end
+        f.write("\n")
+        f.write("dsyms:")
+        dsyms.each {|dsym| f.write(" #{Shellwords.shellescape dsym}")}
+        f.write("\n")
       end
+      system "cat", "Makefile"
+      system "make", "dsyms"
     end
   end
 
