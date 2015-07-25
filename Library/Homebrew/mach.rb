@@ -109,7 +109,12 @@ module MachO
   end
 
   def archs
-    mach_data.map{ |m| m.fetch :arch }.extend(ArchitectureListExtension)
+    data = mach_data?
+    if data == nil
+      []
+    else
+      mach_data.map{ |m| m.fetch :arch }.extend(ArchitectureListExtension)
+    end
   end
 
   def arch
