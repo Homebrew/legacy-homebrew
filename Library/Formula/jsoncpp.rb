@@ -1,8 +1,8 @@
 class Jsoncpp < Formula
   desc "Library for interacting with JSON"
   homepage "https://github.com/open-source-parsers/jsoncpp"
-  url "https://github.com/open-source-parsers/jsoncpp/archive/0.10.4.tar.gz"
-  sha256 "87c42cc93d5242f3b81574a47f5003f247a27b5d0130753aaf3d8447666d653e"
+  url "https://github.com/open-source-parsers/jsoncpp/archive/0.10.5.tar.gz"
+  sha256 "56afb14d2ef1c52e72771a221346d4b94f0d46d4e67f796bbcaedb176ca823df"
 
   bottle do
     cellar :any
