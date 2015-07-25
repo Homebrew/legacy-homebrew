@@ -10,7 +10,6 @@ require 'software_spec'
 require 'install_renamed'
 require 'pkg_version'
 require 'tap'
-require 'Find'
 
 # A formula provides instructions and metadata for Homebrew to install a piece
 # of software. Every Homebrew formula is a {Formula}.
@@ -818,26 +817,30 @@ class Formula
 
   def install_dsym
     # create a makefile for this so we can take advantage of multiple cores.
-    require 'Shellwords'
+    dsyms = []
     mktemp do
       File.open("Makefile", "w") do |f|
         f.write("all: dsyms\n\n")
-        dsyms = []
         Keg.new(prefix).mach_o_files.each do |path|
           rel = path.relative_path_from(prefix)
           dsym = symbols_dir + rel.dirname + (rel.basename.to_s + ".dSYM")
-          dsyms << dsym
-          f.write("#{Shellwords.shellescape dsym}: #{Shellwords.shellescape path}\n")
-          f.write("\tdsymutil #{Shellwords.shellescape path} --out=#{Shellwords.shellescape dsym}\n")
           FileUtils.mkpath(dsym.dirname)
+          if /[^\w\d\/\.\,\-\_]/.match(dsym.to_s)
+            system "dsymutil", path, "--out=#{dsym}"
+            next
+          end
+          dsyms << dsym
+          f.write("#{dsym}: #{path}\n")
+          f.write("\tdsymutil #{path} --out=#{dsym}\n")
         end
         f.write("\n")
         f.write("dsyms:")
-        dsyms.each {|dsym| f.write(" #{Shellwords.shellescape dsym}")}
+        dsyms.each {|dsym| f.write(" #{dsym}")}
         f.write("\n")
       end
-      system "cat", "Makefile"
-      system "make", "dsyms"
+      if dsyms
+        system "make", "dsyms"
+      end
     end
   end
 
