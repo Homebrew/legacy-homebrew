@@ -6,24 +6,24 @@ class Bash < Formula
     url "http://ftpmirror.gnu.org/bash/bash-4.3.tar.gz"
     mirror "https://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
-    version "4.3.33"
+    version "4.3.39"
 
     # Vendor the patches. The mirrors are unreliable for getting the patches,
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
-      url "https://gist.githubusercontent.com/jacknagel/c1cf23775c774e2b4b6d/raw/838118bf0e07dcde8a552cb8556600b7e453d4ac/bash-4.3.33.diff"
-      sha1 "71fc36bced0d15a2c221cfcbff02ea412d4bf5fa"
+      url "https://gist.githubusercontent.com/dunn/6d64e94f36a4e2416bab/raw/ed7e7fe6e1111d88f5f987a7201de48cfe461a3b/bash-4.3.39.diff"
+      sha256 "9fe461b0d461a3918b32a0fed3bcfef4c2e774e0f867730a1bbfa8d510cfbcfd"
     end
   end
+
+  head "http://git.savannah.gnu.org/r/bash.git"
 
   bottle do
     sha1 "1cc6e02daae58e10da97078702bc28e8f0c56adf" => :yosemite
     sha1 "d22fc7bad782868c96b5879534915bfcd8d4116d" => :mavericks
     sha1 "b4fcec9a0f33d2dd2bb375cbf83d46e6f88bf982" => :mountain_lion
   end
-
-  head "git://git.savannah.gnu.org/bash.git"
 
   depends_on "readline"
 
@@ -37,7 +37,7 @@ class Bash < Formula
     ENV.append_to_cflags "-DSSH_SOURCE_BASHRC"
 
     system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
