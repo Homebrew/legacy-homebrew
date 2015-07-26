@@ -245,8 +245,8 @@ class Bottle
     @spec.compatible_cellar?
   end
 
-  def needs_relocation?
-    @spec.needs_relocation?
+  def skip_relocation?
+    @spec.skip_relocation?
   end
 
   def stage
@@ -274,7 +274,6 @@ class BottleSpecification
     @prefix = DEFAULT_PREFIX
     @cellar = DEFAULT_CELLAR
     @collector = BottleCollector.new
-    @does_not_need_relocation = false
   end
 
   def root_url(var = nil)
@@ -286,15 +285,11 @@ class BottleSpecification
   end
 
   def compatible_cellar?
-    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+    cellar == :any || cellar == :any_skip_relocation || cellar == HOMEBREW_CELLAR.to_s
   end
 
-  def does_not_need_relocation
-    @does_not_need_relocation = true
-  end
-
-  def needs_relocation?
-    !@does_not_need_relocation
+  def skip_relocation?
+    cellar == :any_skip_relocation
   end
 
   def tag?(tag)
