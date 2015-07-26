@@ -11,19 +11,27 @@ class Hue < Formula
   depends_on "maven" => :build
   depends_on "openssl"
 
+  # Patches have been merged upstream.  Should try building next release
+  # (> 3.8.1) without them.
+  #
+  # Syntax error in 'parquet-python' library: 
+  #   https://github.com/cloudera/hue/pull/206
+  #
+  # Fix to allow 'pyopenssl' == 0.13 to build w/ OpenSSL >= 1.0.2a:
+  #   https://github.com/cloudera/hue/pull/207
+  #
   patch :DATA
 
   def install
     ENV.append_to_cflags "-I" + `xcrun --show-sdk-path`.strip + "/usr/include/sasl" if MacOS.version >= :mavericks
     ENV.deparallelize
 
-    # patched the Makefile vars to install to ${PREFIX}/libexec
-    system "make", "install", "PREFIX=#{prefix}", "SKIP_PYTHONDEV_CHECK=1"
+    system "make", "install", "PREFIX=#{libexec}", "SKIP_PYTHONDEV_CHECK=1"
 
-    (libexec/"desktop/conf").install "desktop/conf.dist/hue.ini"
-    etc.install_symlink "#{libexec}/desktop/conf/hue.ini"
+    (libexec/"hue/desktop/conf").install "desktop/conf.dist/hue.ini"
+    etc.install_symlink "#{libexec}/hue/desktop/conf/hue.ini"
 
-    bin.install_symlink "#{libexec}/build/env/bin/hue"
+    bin.install_symlink "#{libexec}/hue/build/env/bin/hue"
   end
 
   test do
@@ -84,16 +92,3 @@ index eec5bcb..b2fd681 100644
      X509_REVOKED *dupe = NULL;
  
      dupe = X509_REVOKED_new();
-diff --git a/Makefile.vars.priv b/Makefile.vars.priv
-index 79bc443..e17e192 100644
---- a/Makefile.vars.priv
-+++ b/Makefile.vars.priv
-@@ -53,7 +53,7 @@ BLD_DIR_DOC := $(BLD_DIR)/docs
- 
- # Installation directory
- PREFIX ?= /usr/local
--INSTALL_DIR ?= $(PREFIX)/hue
-+INSTALL_DIR ?= $(PREFIX)/libexec
- INSTALL_APPS_DIR ?= $(INSTALL_DIR)/desktop/apps
- 
- ifeq ($(INSTALL_DIR),$(patsubst /%,%,$(INSTALL_DIR)))
