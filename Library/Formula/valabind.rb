@@ -9,9 +9,9 @@ class Valabind < Formula
 
   bottle do
     cellar :any
-    sha256 "8aab7c9f2004e9e2378ed9320b3e3aca5b226a921fe097aa878077e58c1aac6c" => :yosemite
-    sha256 "45a23247c6eaf72c3a5e5fcfb5542d29eded403c3a1e72e80979a72625a454f8" => :mavericks
-    sha256 "74553dd4ddef8e5e2ceeda4a77d2c154de6388e224b23d94d04e37dbc6bf17f6" => :mountain_lion
+    sha256 "ff86a94b9f31232eb5cb00285765d9b3df37a588cf01798c8c65c163f2d7416c" => :yosemite
+    sha256 "5d726be71c0fbd7cc9fbfcdf308f7f3734514606d6a7df5afbfead9642e085fe" => :mavericks
+    sha256 "fd736eaa0cc6f6823b48633cfd6be15dc2f26de0dba9b895fbe6ea50907e292c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
