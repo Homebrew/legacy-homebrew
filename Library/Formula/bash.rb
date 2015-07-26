@@ -20,9 +20,9 @@ class Bash < Formula
   head "http://git.savannah.gnu.org/r/bash.git"
 
   bottle do
-    sha1 "1cc6e02daae58e10da97078702bc28e8f0c56adf" => :yosemite
-    sha1 "d22fc7bad782868c96b5879534915bfcd8d4116d" => :mavericks
-    sha1 "b4fcec9a0f33d2dd2bb375cbf83d46e6f88bf982" => :mountain_lion
+    sha256 "ee7ba6eec21b7ff28f7f4af4aa61410e898a332a962890ba427ababff461b476" => :yosemite
+    sha256 "cd77ab76ba9669e9aaa7530d3f8050af402e5216093ac5d601d0bc1e71243ced" => :mavericks
+    sha256 "d02261c71893bcde61fb1b1c84b49e0e7d60df9fd62b4d5af76afd1f4b29de7e" => :mountain_lion
   end
 
   depends_on "readline"
