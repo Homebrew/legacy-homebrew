@@ -9,7 +9,7 @@ class Embulk < Formula
   skip_clean "libexec"
 
   def install
-    (libexec/"bin").install "embulk-0.6.19.jar" => "embulk"
+    (libexec/"bin").install "embulk-#{version}.jar" => "embulk"
     bin.write_jar_script libexec/"bin/embulk", "embulk"
   end
 
