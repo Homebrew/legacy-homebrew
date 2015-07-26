@@ -170,7 +170,7 @@ class Consul < Formula
 
   test do
     fork do
-      system "#{bin}/consul", "agent", "-data-dir", "."
+      exec "#{bin}/consul", "agent", "-data-dir", "."
     end
     sleep 3
     system "#{bin}/consul", "leave"

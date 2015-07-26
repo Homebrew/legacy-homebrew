@@ -1,8 +1,8 @@
 class HerokuToolbelt < Formula
   desc "Everything you need to get started with Heroku"
   homepage "https://toolbelt.heroku.com/other"
-  url "https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.40.5.tgz"
-  sha256 "7aa72d5b49aa192403256126265717fc91226164dbc15bffcd54dd20ec46ce86"
+  url "https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.40.6.tgz"
+  sha256 "7429b37f6a095a9e92e12325577a26caa2915e5e2bbd1bb09641e79a0dd0a9ac"
   head "https://github.com/heroku/heroku.git"
 
   depends_on :ruby => "1.9"

@@ -44,4 +44,10 @@ class MacOSVersionTests < Homebrew::TestCase
     assert_equal @v, MacOS::Version.from_symbol(:lion)
     assert_raises(ArgumentError) { MacOS::Version.from_symbol(:foo) }
   end
+
+  def test_pretty_name
+    assert_equal "El Capitan", MacOS::Version.new("10.11").pretty_name
+    assert_equal "Mountain Lion", MacOS::Version.new("10.8").pretty_name
+    assert_equal "Yosemite", MacOS::Version.new("10.10").pretty_name
+  end
 end

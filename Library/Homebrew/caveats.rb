@@ -32,7 +32,7 @@ class Caveats
   end
 
   def keg_only_text
-    return "" unless f.keg_only?
+    return unless f.keg_only?
 
     s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
     s << "\n\n#{f.keg_only_reason.to_s}"
