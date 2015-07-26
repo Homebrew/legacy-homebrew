@@ -154,7 +154,7 @@ class FormulaInstaller
 
     check_conflicts
 
-    if !pour_bottle? && !MacOS.can_build?
+    if !pour_bottle? && !MacOS.has_apple_developer_tools?
       raise BuildToolsError.new([formula])
     end
 
@@ -182,7 +182,7 @@ class FormulaInstaller
 
     if pour_bottle?(:warn => true)
       begin
-        install_relocation_tools if formula.bottle.needs_relocation?
+        install_relocation_tools unless formula.bottle.skip_relocation?
         pour
       rescue => e
         raise if ARGV.homebrew_developer?
@@ -243,7 +243,7 @@ class FormulaInstaller
   def check_dependencies_bottled(deps)
     unbottled = deps.select do |dep, _|
       formula = dep.to_formula
-      !formula.pour_bottle? && !MacOS.can_build?
+      !formula.pour_bottle? && !MacOS.has_apple_developer_tools?
     end
 
     raise BuildToolsError.new(unbottled) unless unbottled.empty?
@@ -434,9 +434,7 @@ class FormulaInstaller
     keg = Keg.new(formula.prefix)
     link(keg)
 
-    # this needs to be changed to a test against build_bottle? and
-    # formula.bottle.needs_relocation?
-    fix_install_names(keg) unless formula.name == 'cctools'
+    fix_install_names(keg) unless @poured_bottle && formula.bottle.skip_relocation?
 
     if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"
@@ -668,8 +666,10 @@ class FormulaInstaller
     end
 
     keg = Keg.new(formula.prefix)
-    keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
-      Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
+    unless formula.bottle.skip_relocation?
+      keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
+        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
+    end
 
     Pathname.glob("#{formula.bottle_prefix}/{etc,var}/**/*") do |path|
       path.extend(InstallRenamed)
