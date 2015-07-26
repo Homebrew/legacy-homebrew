@@ -1,8 +1,8 @@
 class Libgit2Glib < Formula
   desc "Glib wrapper library around libgit2 git access library"
   homepage "https://github.com/GNOME/libgit2-glib"
-  url "https://download.gnome.org/sources/libgit2-glib/0.22/libgit2-glib-0.22.8.tar.xz"
-  sha256 "05c9453b195f1af0df2a5d8bc71472c9fb26d14bb8fbb5b688ad1b8ef7a30959"
+  url "https://download.gnome.org/sources/libgit2-glib/0.23/libgit2-glib-0.23.0.tar.xz"
+  sha256 "de12ce1d317fc1d8d32191fc121f5de86d557387f3782edd79fe7b8daa2c6345"
 
   bottle do
     sha256 "d01cf240b6b3c2706d3131c58df04b72ecd93925866ef7730f92d61c30a6fbde" => :yosemite
@@ -46,8 +46,7 @@ class Libgit2Glib < Formula
   end
 
   test do
-    mkdir "horatio"
-    cd "horatio" do
+    mkdir "horatio" do
       system "git", "init"
     end
     system "#{libexec}/general", testpath/"horatio"
