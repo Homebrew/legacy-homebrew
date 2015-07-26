@@ -8,9 +8,6 @@ class Bash < Formula
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
     version "4.3.39"
 
-    # Vendor the patches. The mirrors are unreliable for getting the patches,
-    # and the more patches there are, the more unreliable they get. Upstream
-    # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
       url "https://gist.githubusercontent.com/dunn/6d64e94f36a4e2416bab/raw/ed7e7fe6e1111d88f5f987a7201de48cfe461a3b/bash-4.3.39.diff"
       sha256 "9fe461b0d461a3918b32a0fed3bcfef4c2e774e0f867730a1bbfa8d510cfbcfd"
