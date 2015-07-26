@@ -2,7 +2,7 @@ class Dub < Formula
   desc "Build tool for D projects"
   homepage "http://code.dlang.org/about"
   url "https://github.com/D-Programming-Language/dub/archive/v0.9.23.tar.gz"
-  sha1 "88c908cab5d396435091cb9cc31dcd886fdb26c9"
+  sha256 "7ecbce89c0e48b43705d7c48003394f383556f33562c4b5d884a786cd85814d1"
 
   bottle do
     sha256 "e2613efeb8173e8f1beb2a4b1bf14baa70a4fa7781919c87be435bb1d55d8ae2" => :yosemite
@@ -11,9 +11,9 @@ class Dub < Formula
   end
 
   devel do
-      url "https://github.com/D-Programming-Language/dub/archive/v0.9.24-rc.2.tar.gz"
-      version "0.9.24-rc2"
-      sha1 "43fbdbca2313b997b219c50e13ff43742ae0d302"
+    url "https://github.com/D-Programming-Language/dub/archive/v0.9.24-rc.2.tar.gz"
+    version "0.9.24-rc2"
+    sha256 "d6ed2ed16cc954aff3595dfdb0a9bb4a73ff64463b455d5baaa4fe2b30dd22c7"
   end
 
   head "https://github.com/D-Programming-Language/dub.git", :shallow => false
