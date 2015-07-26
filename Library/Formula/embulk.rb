@@ -10,8 +10,7 @@ class Embulk < Formula
 
   def install
     (libexec/"bin").install "embulk-0.6.19.jar" => "embulk"
-    chmod 0755, libexec/"bin/embulk"
-    bin.write_exec_script libexec/"bin/embulk"
+    bin.write_jar_script libexec/"bin/embulk", "embulk"
   end
 
   test do
