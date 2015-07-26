@@ -29,7 +29,7 @@ module Stdenv
     self["PKG_CONFIG_LIBDIR"] = determine_pkg_config_libdir
 
     # make any aclocal stuff installed in Homebrew available
-    self["ACLOCAL_PATH"] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS::Xcode.provides_autotools?
+    self["ACLOCAL_PATH"] = "#{HOMEBREW_PREFIX}/share/aclocal" if MacOS.has_apple_developer_tools? && MacOS::Xcode.provides_autotools?
 
     self["MAKEFLAGS"] = "-j#{make_jobs}"
 

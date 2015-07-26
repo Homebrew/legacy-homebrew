@@ -3,7 +3,7 @@ require "cmd/outdated"
 
 module Homebrew
   def upgrade
-    FormulaInstaller.prevent_build_flags unless MacOS.can_build?
+    FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
 
     Homebrew.perform_preinstall_checks
 

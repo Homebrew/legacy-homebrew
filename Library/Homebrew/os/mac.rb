@@ -52,7 +52,7 @@ module OS
       end
     end
 
-    def can_build?
+    def has_apple_developer_tools?
       Xcode.installed? || CLT.installed?
     end
 

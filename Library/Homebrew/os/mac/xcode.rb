@@ -76,6 +76,8 @@ module OS
 
         return "0" unless OS.mac?
 
+        return nil if !MacOS::Xcode.installed? && !MacOS::CLT.installed?
+
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
             Utils.popen_read(path, "-version") =~ /Xcode (\d(\.\d)*)/

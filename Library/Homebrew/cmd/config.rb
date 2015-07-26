@@ -7,23 +7,23 @@ module Homebrew
   end
 
   def llvm
-    @llvm ||= MacOS.llvm_build_version
+    @llvm ||= MacOS.llvm_build_version if MacOS.has_apple_developer_tools?
   end
 
   def gcc_42
-    @gcc_42 ||= MacOS.gcc_42_build_version
+    @gcc_42 ||= MacOS.gcc_42_build_version if MacOS.has_apple_developer_tools?
   end
 
   def gcc_40
-    @gcc_40 ||= MacOS.gcc_40_build_version
+    @gcc_40 ||= MacOS.gcc_40_build_version if MacOS.has_apple_developer_tools?
   end
 
   def clang
-    @clang ||= MacOS.clang_version
+    @clang ||= MacOS.clang_version if MacOS.has_apple_developer_tools?
   end
 
   def clang_build
-    @clang_build ||= MacOS.clang_build_version
+    @clang_build ||= MacOS.clang_build_version if MacOS.has_apple_developer_tools?
   end
 
   def xcode
