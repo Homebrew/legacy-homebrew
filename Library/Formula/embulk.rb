@@ -14,9 +14,9 @@ class Embulk < Formula
   end
 
   test do
-    system "embulk", "example", "./try1"
-    system "embulk", "guess", "./try1/example.yml", "-o", "config.yml"
-    system "embulk", "preview", "config.yml"
-    system "embulk", "run", "config.yml"
+    system bin/"embulk", "example", "./try1"
+    system bin/"embulk", "guess", "./try1/example.yml", "-o", "config.yml"
+    system bin/"embulk", "preview", "config.yml"
+    system bin/"embulk", "run", "config.yml"
   end
 end
