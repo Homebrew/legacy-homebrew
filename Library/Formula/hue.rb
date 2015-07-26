@@ -14,7 +14,7 @@ class Hue < Formula
   # Patches have been merged upstream.  Should try building next release
   # (> 3.8.1) without them.
   #
-  # Syntax error in 'parquet-python' library: 
+  # Syntax error in 'parquet-python' library:
   #   https://github.com/cloudera/hue/pull/206
   #
   # Fix to allow 'pyopenssl' == 0.13 to build w/ OpenSSL >= 1.0.2a:
