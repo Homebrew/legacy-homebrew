@@ -58,7 +58,7 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 ## Other Interesting Taps
 
 *   [osx-cross/avr](https://github.com/osx-cross/homebrew-avr)
-    - GNU AVR toolchain (Libc, compilers and other tools for Atmel MCUs, usefull for Arduino hackers and AVR programmers).
+    - GNU AVR toolchain (Libc, compilers and other tools for Atmel MCUs, useful for Arduino hackers and AVR programmers).
 
 *   [titanous/gnuradio](https://github.com/titanous/homebrew-gnuradio)
     -  GNU Radio and friends running on OS X.
