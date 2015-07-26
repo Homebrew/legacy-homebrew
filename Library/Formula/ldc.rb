@@ -13,6 +13,8 @@ class Ldc < Formula
     sha256 "8ea1ad6cbd93ca1b909fdce9ff136fe56ada447cd535840f2684088dcab0fea2" => :mountain_lion
   end
 
+  head "https://github.com/ldc-developers/ldc.git", :shallow => false
+
   needs :cxx11
 
   depends_on "cmake" => :build
