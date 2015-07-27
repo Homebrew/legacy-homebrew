@@ -6,6 +6,13 @@ class Amtterm < Formula
 
   head "git://git.kraxel.org/amtterm"
 
+  bottle do
+    cellar :any
+    sha256 "39d3fe96eceb64eb9ac76e114a3b16ee44edb461117d4c5ec05aac875f18f4c2" => :yosemite
+    sha256 "35a6a905a27ca56c505aeea83538d874c1d184be55c68dae67842c6588960b3c" => :mavericks
+    sha256 "38c350c1295d79e7c9cb6c78e7ec788139c9228f0130ffe2804971b0c8419799" => :mountain_lion
+  end
+
   resource "SOAP::Lite" do
     url "https://cpan.metacpan.org/authors/id/P/PH/PHRED/SOAP-Lite-1.11.tar.gz"
     sha256 "e4dee589ef7d66314b3dc956569b2541e0b917e834974e078c256571b6011efe"
