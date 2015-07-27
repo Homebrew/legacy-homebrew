@@ -23,6 +23,12 @@ class Tmux < Formula
   depends_on "pkg-config" => :build
   depends_on "libevent"
 
+  option "with-truecolor", "Build with truecolor patch enabled"
+  patch do
+    url "https://gist.githubusercontent.com/choppsv1/dd00858d4f7f356ce2cf/raw/75b073e85f3d539ed24907f1615d9e0fa3e303f4/tmux-24.diff"
+    sha1 "101aa54529adf8aa22216c3f35d55fc837c246e8"
+  end if build.with? "truecolor"
+
   def install
     system "sh", "autogen.sh" if build.head?
 
