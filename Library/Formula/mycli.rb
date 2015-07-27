@@ -4,6 +4,13 @@ class Mycli < Formula
   url "https://pypi.python.org/packages/source/m/mycli/mycli-1.0.0.tar.gz"
   sha256 "4d9258440b3a569066dc3c74a29d787bf89b0914aace080e6baa7dbf7ddb5f40"
 
+  bottle do
+    cellar :any
+    sha256 "7c38c538c674adcad3ea3a53486e35c6f21ff6d2c62d14d51eb57820c5ec472a" => :yosemite
+    sha256 "ad59d7f12743b3aaffd0b767ab7369f299a3fa86a6189d16ea9bb916cf9148b6" => :mavericks
+    sha256 "1a31ee972d8e8f753f224099c42e37d2f5e918349d4c06bda9e857dff9d3e6a9" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "openssl"
 
