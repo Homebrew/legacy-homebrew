@@ -4,13 +4,6 @@ class Mycli < Formula
   url "https://pypi.python.org/packages/source/m/mycli/mycli-1.0.0.tar.gz"
   sha256 "4d9258440b3a569066dc3c74a29d787bf89b0914aace080e6baa7dbf7ddb5f40"
 
-  bottle do
-    cellar :any
-    sha256 "e777938c9c25c9a3c0077a414d5d2ecf48e2fe91e769ce193d403308a36dc24a" => :yosemite
-    sha256 "07a2a41835ae74229d7866d3cfb95bf4b3027c6eb0c55e73dfb3a747f635db54" => :mavericks
-    sha256 "d6c8bf046088a100a2a9989c9406a5b590c733d0a29ea32a7eddc73f114a04b8" => :mountain_lion
-  end
-
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "openssl"
 
@@ -53,6 +46,7 @@ class Mycli < Formula
     url "https://pypi.python.org/packages/source/w/wcwidth/wcwidth-0.1.4.tar.gz"
     sha256 "906d3123045d77027b49fe912458e1a1e1d6ca1a51558a4bd9168d143b129d2b"
   end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     %w[click prompt_toolkit PyMySQL sqlparse Pygments wcwidth six configobj].each do |r|
