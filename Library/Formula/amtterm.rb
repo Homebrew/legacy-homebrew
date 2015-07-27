@@ -1,15 +1,14 @@
 class Amtterm < Formula
   desc "Serial-over-LAN (sol) client for Intel AMT"
   homepage "http://www.kraxel.org/blog/linux/amtterm/"
-  url "http://www.kraxel.org/releases/amtterm/amtterm-1.3.tar.gz"
-  sha1 "cfd199cc870f48a59caa89408b039239eab85322"
+  url "http://www.kraxel.org/releases/amtterm/amtterm-1.4.tar.gz"
+  sha256 "e10af2b02dbf66fb24abd292b9ddc6d86b31eea09887da5cb0eb8fb2ee900e21"
 
   head "git://git.kraxel.org/amtterm"
 
   resource "SOAP::Lite" do
-    url "http://search.cpan.org/CPAN/authors/id/P/PH/PHRED/SOAP-Lite-1.11.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/P/PH/PHRED/SOAP-Lite-1.11.tar.gz"
-    sha1 "b9e22c82a240737e87d6c720998feadcfb583768"
+    url "https://cpan.metacpan.org/authors/id/P/PH/PHRED/SOAP-Lite-1.11.tar.gz"
+    sha256 "e4dee589ef7d66314b3dc956569b2541e0b917e834974e078c256571b6011efe"
   end
 
   def install
