@@ -1,9 +1,9 @@
 class Parallel < Formula
   desc "GNU parallel shell command"
   homepage "https://savannah.gnu.org/projects/parallel/"
-  url "http://ftpmirror.gnu.org/parallel/parallel-20150622.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150622.tar.bz2"
-  sha256 "963a9c962ac8f4a53535f779ab7a46336dc6e12234d75dc796248bf9117aef48"
+  url "http://ftpmirror.gnu.org/parallel/parallel-20150722.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150722.tar.bz2"
+  sha256 "7d2ee5d7c76aed193f5373425ed395289a795986b21ffba836bf64ae08a3f34a"
   head "http://git.savannah.gnu.org/r/parallel.git"
 
   bottle do
