@@ -28,6 +28,7 @@ class MidnightCommander < Formula
                           "--with-screen=slang",
                           "--enable-vfs-sftp"
     system "make", "install"
+    inreplace libexec/"mc/ext.d/text.sh", "man -P cat -l ", "man -P cat "
   end
 
   test do
