@@ -1,7 +1,7 @@
 class Golo < Formula
   desc "Lightweight dynamic language for the JVM"
   homepage "http://golo-lang.org"
-  url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/2.1.0/golo-2.1.0-distribution.tar.gz"
+  url "https://repo1.maven.org/maven2/org/golo-lang/golo/2.1.0/golo-2.1.0-distribution.tar.gz"
   sha256 "59c7324b7eac88dfe2cb9612468cf5639ae0b84e44319b2ee617e0e054eed422"
 
   devel do
