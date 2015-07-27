@@ -395,6 +395,13 @@ Note that these flags should only appear after a command.
     See the docs for examples of using the JSON:
     <https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md>
 
+  * `tap-pin` <tap>:
+    Pin <tap>, prioritizing its formulae over core when formula names are supplied
+    by the user. See also `tap-unpin`.
+
+  * `tap-unpin` <tap>:
+    Unpin <tap> so its formulae are no longer prioritized. See also `tap-pin`.
+
   * `test` [--devel|--HEAD] [--debug] <formula>:
     A few formulae provide a test method. `brew test <formula>` runs this
     test method. There is no standard output or return code, but it should
