@@ -7,7 +7,7 @@ class Xhyve < Formula
 
   bottle do
     cellar :any
-    sha256 "cfbc2e2bf6b8e2fe8892779c9e6dadedab2f0cedfb63aa648bc26febd0c1257a" => :yosemite
+    sha256 "4b7fe0a81da6d1a6777a42c41d3465d7777047a1ec9581fcfdef949e13d68010" => :yosemite
   end
 
   depends_on :macos => :yosemite
