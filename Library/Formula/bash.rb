@@ -2,6 +2,8 @@ class Bash < Formula
   desc "Bash (Bourne-again SHell) is a UNIX command interpreter"
   homepage "https://www.gnu.org/software/bash/"
 
+  head "http://git.savannah.gnu.org/r/bash.git"
+
   stable do
     url "http://ftpmirror.gnu.org/bash/bash-4.3.tar.gz"
     mirror "https://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
@@ -16,8 +18,6 @@ class Bash < Formula
       sha256 "9fe461b0d461a3918b32a0fed3bcfef4c2e774e0f867730a1bbfa8d510cfbcfd"
     end
   end
-
-  head "http://git.savannah.gnu.org/r/bash.git"
 
   bottle do
     sha256 "ee7ba6eec21b7ff28f7f4af4aa61410e898a332a962890ba427ababff461b476" => :yosemite
