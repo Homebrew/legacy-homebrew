@@ -22,6 +22,12 @@ class Bro < Formula
   depends_on "geoip" => :recommended
   depends_on "openssl"
 
+  # Initially empty directories
+  skip_clean "spool"
+  skip_clean "logs"
+  # Initially a broken symlink
+  skip_clean "share/broctl/scripts/broctl-config.sh"
+
   def install
     system "./configure", "--prefix=#{prefix}", "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
