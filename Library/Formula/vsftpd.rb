@@ -52,7 +52,7 @@ index 9dc8a5e..66dbe30 100644
 +++ b/sysdeputil.c
 @@ -64,6 +64,10 @@
  #include <utmpx.h>
- 
+
  /* BEGIN config */
 +#if defined(__APPLE__)
 +  #undef VSF_SYSDEP_HAVE_UTMPX
