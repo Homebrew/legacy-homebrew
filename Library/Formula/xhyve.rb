@@ -1,8 +1,8 @@
 class Xhyve < Formula
   desc "xhyve, lightweight OS X virtualization solution based on FreeBSD's bhyve"
   homepage "https://github.com/mist64/xhyve"
-  url "https://github.com/mist64/xhyve/archive/v0.1.0.tar.gz"
-  sha256 "75be0cf1ab345874aef00833e34cf337e71aad0f946d7f9bf8ade248fc4f6b59"
+  url "https://github.com/mist64/xhyve/archive/v0.2.0.tar.gz"
+  sha256 "32c390529a73c8eb33dbc1aede7baab5100c314f726cac14627d2204ad9d3b3c"
   head "https://github.com/mist64/xhyve.git"
 
   bottle do
@@ -13,11 +13,13 @@ class Xhyve < Formula
   depends_on :macos => :yosemite
 
   def install
-    system "make"
+    args = []
+    args << "GIT_VERSION=#{version}" if build.stable?
+    system "make", *args
     bin.install "build/xhyve"
   end
 
   test do
-    system "#{bin}/xhyve", "-h"
+    system "#{bin}/xhyve", "-v"
   end
 end
