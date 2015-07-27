@@ -14,6 +14,7 @@ class Sqlite < Formula
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
 
+  option :dsym
   option :universal
   option "with-docs", "Install HTML documentation"
   option "without-rtree", "Disable the R*Tree index module"
@@ -58,19 +59,23 @@ class Sqlite < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
-    system "make", "install"
+    src = Pathname.pwd
+    mktemp do
+      system "#{src}/configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
+      system "make", "install"
 
-    if build.with? "functions"
-      buildpath.install resource("functions")
-      system ENV.cc, "-fno-common",
-                     "-dynamiclib",
-                     "extension-functions.c",
-                     "-o", "libsqlitefunctions.dylib",
-                     *ENV.cflags.to_s.split
-      lib.install "libsqlitefunctions.dylib"
+      if build.with? "functions"
+        buildpath.install resource("functions")
+        system ENV.cc, "-fno-common",
+               "-dynamiclib",
+               "#{src}/extension-functions.c",
+               "-o", "libsqlitefunctions.dylib",
+               *ENV.cflags.to_s.split
+        lib.install "libsqlitefunctions.dylib"
+      end
+      doc.install resource("docs") if build.with? "docs"
+      install_dsym if build.dsym?
     end
-    doc.install resource("docs") if build.with? "docs"
   end
 
   def caveats
