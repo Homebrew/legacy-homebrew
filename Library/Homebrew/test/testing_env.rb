@@ -1,23 +1,7 @@
 $:.unshift File.expand_path("../..", __FILE__)
 $:.unshift File.expand_path("../lib", __FILE__)
 
-# This must be at the top
-if ENV["HOMEBREW_TESTS_COVERAGE"]
-  require "simplecov"
-  SimpleCov.start do
-    tests_path = File.dirname(__FILE__)
-
-    minimum_coverage 50
-    coverage_dir File.expand_path("#{tests_path}/coverage")
-    root File.expand_path("#{tests_path}/..")
-
-    add_filter "Homebrew/test/"
-    add_filter "vendor/bundle/"
-    add_filter "Homebrew/vendor/"
-    add_filter "Homebrew/compat/"
-  end
-end
-
+require "simplecov" if ENV["HOMEBREW_TESTS_COVERAGE"]
 require "global"
 
 # Test environment setup
