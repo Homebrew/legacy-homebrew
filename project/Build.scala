@@ -104,13 +104,21 @@ object JobServerBuild extends Build {
       new sbtdocker.mutable.Dockerfile {
         // Alternatively, find, download and unpack the correct Spark distro....
         from(s"sequenceiq/spark:$sparkVersion")
+        // Dockerfile best practices: https://docs.docker.com/articles/dockerfile_best-practices/
         expose(8090)
-        add(artifact, artifactTargetPath)
-        add(baseDirectory(_ / "bin" / "server_start.sh").value, file("app/server_start.sh"))
-        add(baseDirectory(_ / "bin" / "server_stop.sh").value, file("app/server_stop.sh"))
-        add(baseDirectory(_ / "config" / "log4j-server.properties").value, file("app/log4j-server.properties"))
-        add(baseDirectory(_ / "config" / "docker.conf").value, file("app/docker.conf"))
-        add(baseDirectory(_ / "config" / "docker.sh").value, file("app/settings.sh"))
+        expose(9999)    // for JMX
+        copy(artifact, artifactTargetPath)
+        copy(baseDirectory(_ / "bin" / "server_start.sh").value, file("app/server_start.sh"))
+        copy(baseDirectory(_ / "bin" / "server_stop.sh").value, file("app/server_stop.sh"))
+        copy(baseDirectory(_ / "config" / "log4j-server.properties").value, file("app/log4j-server.properties"))
+        copy(baseDirectory(_ / "config" / "docker.conf").value, file("app/docker.conf"))
+        copy(baseDirectory(_ / "config" / "docker.sh").value, file("app/settings.sh"))
+        // Including envs in Dockerfile makes it easy to override from docker command
+        env("JOBSERVER_MEMORY", "1G")
+        // Use a volume to persist database between container invocations
+        run("mkdir", "-p", "/database")
+        run("mkdir", "-p", "/logs")
+        volume("/database", "/logs")
         entryPoint("app/server_start.sh")
       }
     }

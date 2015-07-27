@@ -1,8 +1,9 @@
 # Docker environment vars
-LOG_DIR=/var/log/job-server
+# NOTE: only static vars not intended to be changed by users should appear here, because
+#       this file gets sourced in the middle of server_start.sh, so it will override
+#       any env vars set in the docker run command line.
+LOG_DIR=/logs
 PIDFILE=spark-jobserver.pid
-# DRIVER_MEMORY=2G
-JOBSERVER_MEMORY=512m
 SPARK_HOME=/usr/local/spark
 SPARK_CONF_DIR=$SPARK_HOME/conf
 # For Docker, always run start script as foreground
