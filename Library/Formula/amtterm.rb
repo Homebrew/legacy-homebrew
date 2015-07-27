@@ -1,7 +1,7 @@
 class Amtterm < Formula
   desc "Serial-over-LAN (sol) client for Intel AMT"
-  homepage "http://www.kraxel.org/blog/linux/amtterm/"
-  url "http://www.kraxel.org/releases/amtterm/amtterm-1.4.tar.gz"
+  homepage "https://www.kraxel.org/blog/linux/amtterm/"
+  url "https://www.kraxel.org/releases/amtterm/amtterm-1.4.tar.gz"
   sha256 "e10af2b02dbf66fb24abd292b9ddc6d86b31eea09887da5cb0eb8fb2ee900e21"
 
   head "git://git.kraxel.org/amtterm"
