@@ -6,9 +6,9 @@ class Lynis < Formula
 
   bottle do
     cellar :any
-    sha256 "ffe1367ab34281bad4881f5e9e241ce7588b8e1c3bf91d30c9b7046ce3719840" => :yosemite
-    sha256 "b69c72aa39d5df2f29e8b71ce9c2e046737acc0198d0c713e4ff682684a72f7c" => :mavericks
-    sha256 "4640574990172e652c31299a3982fdbd3db1db79eeb03f0e1706471b093e3bde" => :mountain_lion
+    sha256 "93bbd36e428e726b5471e6263b81238718dd768fc746f3218f71c11775c1e9d6" => :yosemite
+    sha256 "79a494362cd5726d34da7dfe36b7028e294ded054c10c18ff6dd81b1a1bbf86d" => :mavericks
+    sha256 "c45fd90de1946c059a807ec0cdb59c704186335a836b14f1075b80a7ef26203d" => :mountain_lion
   end
 
   def install
