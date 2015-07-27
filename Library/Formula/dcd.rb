@@ -10,7 +10,7 @@ class Dcd < Formula
     sha256 "f159386dfbfb7d225010f3fa24e9b0dc911a718bd81a059be243edb6af4f880c" => :mavericks
     sha256 "84a24c63e3b05ce812ffb7453f1fd5edfb47dfe053bd6c02401f264dd9febc60" => :mountain_lion
   end
-  
+
   head "https://github.com/Hackerpilot/dcd.git", :shallow => false
 
   depends_on "dmd" => :build
