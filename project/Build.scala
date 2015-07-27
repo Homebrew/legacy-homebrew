@@ -121,7 +121,12 @@ object JobServerBuild extends Build {
         volume("/database", "/logs")
         entryPoint("app/server_start.sh")
       }
-    }
+    },
+    imageNames in docker := Seq(
+      sbtdocker.ImageName(namespace = Some("velvia"),
+                          repository = "spark-jobserver",
+                          tag = Some(version.value))
+    )
   )
 
   lazy val rootSettings = Seq(
