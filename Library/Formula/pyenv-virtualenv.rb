@@ -15,6 +15,7 @@ class PyenvVirtualenv < Formula
 
   def caveats; <<-EOS.undent
     To enable auto-activation add to your profile:
+      eval "$(pyenv init -)"
       if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
     EOS
   end
