@@ -7,8 +7,8 @@ class Creduce < Formula
   revision 2
 
   bottle do
-    sha256 "50d5f701b36606f0dc798e2c82050b4c8a129fd5fe1911509f6c1820ab4622f6" => :yosemite
-    sha256 "6782679d25a31affcf620083c5001aa4c99a55d3375c6ae91ec7318bd09dfeca" => :mavericks
+    sha256 "e946da51208fa460a8bdd203a20bbc8a80f2a2f508f97294ae3c598891b1230a" => :yosemite
+    sha256 "2a82aa51b0c3bf17438d0bf11c42ec7df2141b92c5dbd05d8311d07f8cd093f6" => :mavericks
   end
 
   depends_on "astyle"
