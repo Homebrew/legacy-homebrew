@@ -1,5 +1,5 @@
 class Pidgin < Formula
-  desc "GUI-less chat client (e.g., Finch-only)"
+  desc "Multi-protocol chat client"
   homepage "https://pidgin.im/"
   url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
   sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"
@@ -13,7 +13,7 @@ class Pidgin < Formula
   end
 
   option "with-perl", "Build Pidgin with Perl support"
-  option "without-gui", "Build Finch instead of Pidgin"
+  option "without-gui", "Build only Finch, the command-line client"
 
   deprecated_option "perl" => "with-perl"
   deprecated_option "without-GUI" => "without-gui"
@@ -63,9 +63,9 @@ class Pidgin < Formula
     args << "--disable-perl" if build.without? "perl"
     args << "--enable-cyrus-sasl" if build.with? "gsasl"
 
+    args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+    args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
     if build.without? "gui"
-      args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
-      args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
       args << "--disable-gtkui"
     else
       args << "--disable-idn"

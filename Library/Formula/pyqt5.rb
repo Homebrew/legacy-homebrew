@@ -3,13 +3,13 @@ require 'formula'
 class Pyqt5 < Formula
   desc "Python bindings for v5 of Qt"
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
-  url "https://downloads.sf.net/project/pyqt/PyQt5/PyQt-5.4.2/PyQt-gpl-5.4.2.tar.gz"
-  sha256 "4cd90580558722ef24d499700faafbdc242d930cb36f55cc1a27b5cf67b10290"
+  url "http://www.riverbankcomputing.com/static/Downloads/PyQt5/PyQt-gpl-5.5.tar.gz"
+  sha256 "cdd1bb55b431acdb50e9210af135428a13fb32d7b1ab86e972ac7101f6acd814"
 
   bottle do
-    sha256 "bb04bac3c3495dbaac4fb3f0a2ccf082e6f26b3576167d256e2eac6ec34d709c" => :yosemite
-    sha256 "9f8a400a1958632ee2a81c467e2b02e15dae02159243f1096f1f37ed46f3216b" => :mavericks
-    sha256 "c1c2046fccea79524266cf396719a4103ce749de2167dde3f174ec3f18a3bdea" => :mountain_lion
+    sha256 "031c5f439bb11d97d2262edce4b50151bd94272cea8889dee710c6eadfd8c3db" => :yosemite
+    sha256 "02276afa07267aa91f61e98a411172e59de31dbfceb253581d184c1a0fed096d" => :mavericks
+    sha256 "d514535d8c758b7a978c99d38d2275adab714846dd33885e72c98d3a73a84ca5" => :mountain_lion
   end
 
   option 'enable-debug', "Build with debug symbols"

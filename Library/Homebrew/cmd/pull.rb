@@ -99,7 +99,7 @@ module Homebrew
       branch = `git symbolic-ref --short HEAD`.strip
 
       unless branch == "master"
-        opoo "Current branch is #{branch}: do you need to pull inside master?"
+        opoo "Current branch is #{branch}: do you need to pull inside master?" unless ARGV.include? "--clean"
       end
 
       pull_url url
@@ -189,10 +189,11 @@ module Homebrew
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "-d", '{"publish_wait_for_secs": -1}',
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
+            sleep 5
             success = system "brew", "fetch", "--retry", "--force-bottle", f.full_name
             unless success
-              ohai "That didn't work; waiting for 15 seconds and trying again..."
-              sleep 15
+              ohai "That didn't work; sleeping another 10 and trying again..."
+              sleep 10
               system "brew", "fetch", "--retry", "--force-bottle", f.full_name
             end
           end

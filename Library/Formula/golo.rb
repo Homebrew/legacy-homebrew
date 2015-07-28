@@ -1,12 +1,20 @@
 class Golo < Formula
   desc "Lightweight dynamic language for the JVM"
   homepage "http://golo-lang.org"
-  url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/2.1.0/golo-2.1.0-distribution.tar.gz"
-  sha1 "42bc1f44007b7aa4dfc85ad8da0a75918faf65fb"
+  url "https://repo1.maven.org/maven2/org/golo-lang/golo/2.1.0/golo-2.1.0-distribution.tar.gz"
+  sha256 "59c7324b7eac88dfe2cb9612468cf5639ae0b84e44319b2ee617e0e054eed422"
+
+  devel do
+    url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation-M1-distribution.zip&r=1"
+    sha256 "fd92e70e11a7c4dccd160b1236a0981cfa3cb22d8af190d177c5c4e909e020ae"
+    version "3.0.0-incubation-M1"
+    depends_on :java => "1.8+"
+  end
 
   head do
-    url "https://github.com/golo-lang/golo-lang.git"
+    url "https://github.com/eclipse/golo-lang.git"
     depends_on "maven" => :build
+    depends_on :java => "1.8+"
   end
 
   depends_on :java => "1.7+"
