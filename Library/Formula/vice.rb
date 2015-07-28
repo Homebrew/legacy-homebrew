@@ -5,7 +5,7 @@ class Vice < Formula
   homepage 'http://vice-emu.sourceforge.net/'
   url 'http://www.zimmers.net/anonftp/pub/cbm/crossplatform/emulators/VICE/vice-2.4.tar.gz'
   sha256 'ff8b8d5f0f497d1f8e75b95bbc4204993a789284a08a8a59ba727ad81dcace10'
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -17,7 +17,7 @@ class Vice < Formula
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libpng'
-  depends_on 'giflib' => :optional
+  depends_on 'giflib'
   depends_on 'lame' => :optional
 
   fails_with :llvm do
