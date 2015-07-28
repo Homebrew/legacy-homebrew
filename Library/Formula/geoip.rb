@@ -8,9 +8,9 @@ class Geoip < Formula
 
   bottle do
     cellar :any
-    sha256 "eedb986a2e5daf59d9f7982455773de7f3bc5be6948911a8e5667b6598e37e38" => :yosemite
-    sha256 "619929de31b302b9423465399c1954f9071aacd0c0f02d1c86760a7918e868b5" => :mavericks
-    sha256 "a8c5a78c7bb3587e9f84c7474aa85e1f2a4b6b2bcdb9b5de103ef2e7472acfa2" => :mountain_lion
+    sha256 "8394441f236c3f35fb436da2a52798aaac637818213883f074d2f976e296e11d" => :yosemite
+    sha256 "ccc2707ef9e8b24747ad772cfa1949781f8e4063a90a692ad4317a699ae84526" => :mavericks
+    sha256 "ad4d958f99890a460f9d8c32e7ed589d91651ce6537eed620832840c36dc699c" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
