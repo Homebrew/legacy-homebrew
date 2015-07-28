@@ -88,6 +88,10 @@ def interactive_shell f=nil
     ENV['HOMEBREW_DEBUG_INSTALL'] = f.full_name
   end
 
+  if ENV["SHELL"].include?("zsh") && ENV["HOME"].start_with?(HOMEBREW_TEMP.resolved_path.to_s)
+    FileUtils.touch "#{ENV["HOME"]}/.zshrc"
+  end
+
   Process.wait fork { exec ENV['SHELL'] }
 
   if $?.success?
