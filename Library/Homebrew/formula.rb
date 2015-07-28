@@ -62,6 +62,11 @@ class Formula
   attr_reader :active_spec
   protected :active_spec
 
+  # A symbol to indicate currently active {SoftwareSpec}.
+  # It's either :stable, :devel or :head
+  # @see #active_spec
+  attr_reader :active_spec_sym
+
   # The {PkgVersion} for this formula with version and {#revision} information.
   attr_reader :pkg_version
 
@@ -105,6 +110,13 @@ class Formula
     set_spec :head
 
     @active_spec = determine_active_spec(spec)
+    @active_spec_sym = if head?
+      :head
+    elsif devel?
+      :devel
+    else
+      :stable
+    end
     validate_attributes!
     @pkg_version = PkgVersion.new(version, revision)
     @build = active_spec.build
@@ -590,9 +602,7 @@ class Formula
   end
 
   def inspect
-    s = "#<Formula #{name} ("
-    s << if head? then "head" elsif devel? then "devel" else "stable" end
-    s << ") #{path}>"
+    "#<Formula #{name} (#{active_spec_sym}) #{path}>"
   end
 
   def file_modified?
