@@ -2,7 +2,6 @@ require 'formula'
 
 class Agrep < Formula
   desc "Approximate GREP for fast fuzzy string searching."
-  revision 2
   version "3.41.4"
   homepage "http://en.wikipedia.org/wiki/Agrep"
   url "https://github.com/timemachine3030/agrep.git", :using => :git, :tag => "osx/3.41.4"
