@@ -23,9 +23,10 @@ class Launch < Formula
 
   bottle do
     cellar :any
-    sha1 "32c11675ab351420dcb35742f66ae8a7ca987acf" => :mavericks
-    sha1 "702b8164d60d13ef3480c98caee053a242193aaf" => :mountain_lion
-    sha1 "1166c77e00378087195ad5273685d839dbb9f305" => :lion
+    revision 1
+    sha256 "a09175831e58a463d93cd455cabdfb44540ee05c97efe394a940c64a689c644b" => :yosemite
+    sha256 "b6509fcd6b4026395974124b4445d005d26728582013afb51e345d7bf0379570" => :mavericks
+    sha256 "f60d39c5fa69188415811aee32405fbd4d730e1da3326c2f9a6d281c5cec2013" => :mountain_lion
   end
 
   depends_on :xcode => :build
