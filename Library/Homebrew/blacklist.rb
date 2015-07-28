@@ -1,15 +1,7 @@
 def blacklisted? name
   case name.downcase
-  when 'screen', /^rubygems?$/ then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/bin.
-    EOS
-  when 'libpcap' then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/lib.
-    EOS
-  when 'libiconv' then <<-EOS.undent
-    Apple distributes #{name} with OS X, you can find it in /usr/lib.
-    Some build scripts fail to detect it correctly, please check existing
-    formulae for solutions.
+  when 'gem', /^rubygems?$/ then <<-EOS.undent
+    Homebrew provides gem via: `brew install ruby`.
     EOS
   when 'tex', 'tex-live', 'texlive', 'latex' then <<-EOS.undent
     Installing TeX from source is weird and gross, requires a lot of patches,
