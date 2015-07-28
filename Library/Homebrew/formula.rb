@@ -928,7 +928,6 @@ class Formula
       @buildpath = Pathname.pwd
       env_home = buildpath/".brew_home"
       mkdir_p env_home
-      touch env_home/".zshrc" if ENV["SHELL"].include? "zsh"
 
       old_home, ENV["HOME"] = ENV["HOME"], env_home
 
