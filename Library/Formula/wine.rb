@@ -30,8 +30,9 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.47.tar.bz2"
-    sha256 "ba74f75aec400dc4b1d64ddc29560e4946837e73cb19d9c231604ff0147bbb2e"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.48.tar.bz2"
+    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.48.tar.bz2"
+    sha256 "e3f55ce56e2092d49b317fea8802e314be2b2170fd434f5e45f7141773946c8e"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
