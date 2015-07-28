@@ -1,8 +1,8 @@
 class Getxbook < Formula
   desc "Tools to download ebooks from various sources"
-  homepage "http://njw.me.uk/software/getxbook/"
-  url "http://njw.me.uk/software/getxbook/getxbook-1.1.tar.bz2"
-  sha1 "9d47918ed77e8fb4f4e8b3c412cdcc82834be3e8"
+  homepage "https://njw.name/getxbook"
+  url "https://njw.name/getxbook/getxbook-1.2.tar.xz"
+  sha256 "7a4b1636ecb6dace814b818d9ff6a68167799b81ac6fc4dca1485efd48cf1c46"
 
   bottle do
     cellar :any
@@ -13,6 +13,7 @@ class Getxbook < Formula
 
   option "with-gui", "Build the GUI"
 
+  depends_on "openssl"
   depends_on "tcl-tk" if build.with? "gui"
 
   def install
