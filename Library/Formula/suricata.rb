@@ -51,7 +51,7 @@ class Suricata < Formula
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
-
+#      --enable-pfring
     args = %W[
       --disable-dependency-tracking
       --disable-silent-rules
