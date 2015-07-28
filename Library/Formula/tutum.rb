@@ -3,8 +3,8 @@ require "formula"
 class Tutum < Formula
   desc "Docker platform for dev and ops"
   homepage "https://www.tutum.co/"
-  url "https://pypi.python.org/packages/source/t/tutum/tutum-0.16.0.1.tar.gz"
-  sha256 "8a9ed5288842d705f40a554f0c3598885e2b1ce0667ced452d7b46b45eb0228b"
+  url "https://pypi.python.org/packages/source/t/tutum/tutum-0.16.21.tar.gz"
+  sha256 "0804d5b6bcbd3aef26b74033bfda9ad33deb23547b176b7ef0ee4272f425503d"
 
   bottle do
     cellar :any
@@ -32,8 +32,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.16.0.1.tar.gz"
-    sha256 "c668a15a2c336df31e53933cd5b3d1397350f6595dd2d4e3e5341b9d241d9835"
+    url "https://pypi.python.org/packages/source/p/python-tutum/python-tutum-0.16.21.tar.gz"
+    sha256 "562bc3570630a411f6c8601a61c746e6bc14b5ed114f7eb36c8e1457e627ed39"
   end
 
   resource "backports.ssl-match-hostname" do
@@ -47,8 +47,8 @@ class Tutum < Formula
   end
 
   resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.2.tar.gz"
-    sha256 "eec865307ebe7f329a6a9945c15453265a449cdaaf3710340828a1934d53e468"
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.2.tar.gz"
+    sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
   end
 
   resource "requests" do
