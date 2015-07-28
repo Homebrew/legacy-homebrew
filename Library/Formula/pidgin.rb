@@ -24,15 +24,14 @@ class Pidgin < Formula
   depends_on "gsasl" => :optional
   depends_on "gnutls"
   depends_on "libgcrypt"
+  depends_on "libidn"
+  depends_on "glib"
 
   if build.with? "gui"
     depends_on "gtk+"
     depends_on "cairo"
     depends_on "pango"
     depends_on "libotr"
-  else
-    depends_on "glib"
-    depends_on "libidn"
   end
 
   # Finch has an equal port called purple-otr but it is a NIGHTMARE to compile
@@ -67,8 +66,6 @@ class Pidgin < Formula
     args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
     if build.without? "gui"
       args << "--disable-gtkui"
-    else
-      args << "--disable-idn"
     end
 
     system "./configure", *args
