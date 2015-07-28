@@ -1,14 +1,14 @@
 class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "http://notmuchmail.org"
-  url "http://notmuchmail.org/releases/notmuch-0.20.tar.gz"
-  sha256 "98475574bfa1341049639ce181f1293b2a8c077a2eb695d96723569e2d2b6d07"
+  url "http://notmuchmail.org/releases/notmuch-0.20.2.tar.gz"
+  sha256 "f741a26345bff389fd8a4a119c4174c6585730f71844809583a54ef2a865adec"
 
   bottle do
     cellar :any
-    sha256 "557573521aa7783958f6e59bfee86f0e8f277b706654719d5c16e5b9f394c2d3" => :yosemite
-    sha256 "8dc378548f7440c0ce65c170d7ded3aa3115dcb4279b1a2837812a43635d777b" => :mavericks
-    sha256 "11c66bda0c45eac434830bc83bc9365c5ef6dbff08e3b872b3b2001282ede8ae" => :mountain_lion
+    sha256 "71dec597c7bdc80560dae9a7be082f1338198e05ff58b11433f6ef5cee47c5c1" => :yosemite
+    sha256 "a5e09b5d4f8f441208d27769170d3bb75b55ea7c9c871a2d34ca2807af52f98f" => :mavericks
+    sha256 "78bd94ae533358108c9dfcebec77b8b3e77ba77f3056f536d0ebd4d2a1b648d5" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

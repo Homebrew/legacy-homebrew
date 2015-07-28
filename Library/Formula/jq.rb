@@ -12,8 +12,8 @@ class Jq < Formula
   end
 
   devel do
-    url "https://github.com/stedolan/jq/archive/jq-1.5rc1.tar.gz"
-    sha256 "fea2ac70143b93add57b8df9596247f6c3cbf50553d7eaaef32fa73490a402dc"
+    url "https://github.com/stedolan/jq/releases/download/jq-1.5rc2/jq-1.5rc2.tar.gz"
+    sha256 "2fd209ca34d0891499bd32f59ec332b0b3048c449c388d428e5c5e8132a13e81"
   end
   head do
     url "https://github.com/stedolan/jq.git"
