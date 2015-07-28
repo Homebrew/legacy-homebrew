@@ -1,8 +1,8 @@
 class Getxbook < Formula
   desc "Tools to download ebooks from various sources"
-  homepage "http://njw.me.uk/software/getxbook/"
-  url "http://njw.me.uk/software/getxbook/getxbook-1.1.tar.bz2"
-  sha1 "9d47918ed77e8fb4f4e8b3c412cdcc82834be3e8"
+  homepage "https://njw.name/getxbook"
+  url "https://njw.name/getxbook/getxbook-1.2.tar.xz"
+  sha1 "41a4be6f68a0e5ac7f30ebdc6788661a6a37519a"
 
   bottle do
     cellar :any
