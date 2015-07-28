@@ -1,11 +1,11 @@
-require "formula"
-
 class Texlive < Formula
+  desc "TeX Live is a free software distribution for the TeX typesetting system"
   homepage "http://www.tug.org/texlive/"
+  # tag "linuxbrew"
 
-  url "https://downloads.sourceforge.net/project/linuxbrew/mirror/texlive-20141204.tar.gz"
-  mirror "http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
-  sha1 "bff2fd78c9c4c0818fe3d0c1c795813777d6a5d0"
+  url "http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
+  version "20150727"
+  sha256 "144f5875b4f85e27df8992f453f62be50c3f0e5fbf84d7634146688506fc4379"
 
   option "with-full", "install everything"
   option "with-medium", "install small + more packages and languages"
@@ -29,6 +29,6 @@ class Texlive < Formula
   end
 
   test do
-    system "#{bin}/tex --version"
+    system "#{bin}/tex", "--version"
   end
 end
