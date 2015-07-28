@@ -13,6 +13,7 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  revision 1
 
   stable do
     url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
@@ -26,10 +27,20 @@ class Qt5 < Formula
     patch :DATA
   end
 
+  # `qmake` generates broken `pkg-config` files with quoted '-framework QtCore'
+  # (and similarly for all other frameworks), that remains a single argument in
+  # projects that use Qt via `pkg-config` and thus causes breakage when linking
+  # ('-framework' and 'QtCore' need to be passed as separate arguments).
+  # https://bugreports.qt.io/browse/QTBUG-47162
+  patch do
+    url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
+    sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
+  end
+
   bottle do
-    sha256 "3f334cdb65ea7ab4255abfd254f08cf095b3ba2c9f1e403afe6236975a88b160" => :yosemite
-    sha256 "9bef8bea9a731fc5b26434f817858931442783c8a4a62bf4dc95fa6944550ed8" => :mavericks
-    sha256 "946991e0aa83dfb119e9ed306a61645b9648537212758477db7772179f7503e4" => :mountain_lion
+    sha256 "87ca007b65008693f476781067863847b6581867aa065cbeb11a6e5f551fbb81" => :yosemite
+    sha256 "657c6351038aeeb6e974a69cf6a74134d7e898e241020b3c48320c7cde6963ab" => :mavericks
+    sha256 "f22b3df65044eda803cfed1580f580561e35e669e1fb2138103b2af332c4d210" => :mountain_lion
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
