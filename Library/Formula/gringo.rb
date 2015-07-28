@@ -6,9 +6,9 @@ class Gringo < Formula
 
   bottle do
     cellar :any
-    sha256 "61e06e100961608e832b74a8221adfbea645269a268485d42808300cb0014c8d" => :yosemite
-    sha256 "987a5a8c950f5df5d5626ed4cc9ba174cb011313ba9ee60263dff94c854202f3" => :mavericks
-    sha256 "c800b81cec82149a45dfa2485d3e4e99ad26b71c7a5543841aa01259ff199dd7" => :mountain_lion
+    sha256 "43fcc7b73c6d854535dda78755a76790ae9410b95aa00d1ed155c8b6610350f2" => :yosemite
+    sha256 "3aa1597570e03f0dbb4741b6cb4a5834f6799d0e64514baa1cf7de5b5e1f7b07" => :mavericks
+    sha256 "ec8e660616f582857b9f2943fae273460db3de9d2524eebedc922118fd4fec2e" => :mountain_lion
   end
 
   depends_on "re2c" => :build
