@@ -17,7 +17,7 @@ class Vice < Formula
   depends_on 'pkg-config' => :build
   depends_on 'jpeg'
   depends_on 'libpng'
-  depends_on 'giflib' => :optional
+  depends_on 'giflib'
   depends_on 'lame' => :optional
 
   fails_with :llvm do
