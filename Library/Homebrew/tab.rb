@@ -24,6 +24,7 @@ class Tab < OpenStruct
       "source" => {
         "path" => formula.path.to_s,
         "tap" => formula.tap,
+        "spec" => formula.active_spec_sym.to_s,
       },
     }
 
@@ -42,6 +43,15 @@ class Tab < OpenStruct
     tapped_from = attributes["tapped_from"]
     unless tapped_from.nil? || tapped_from == "path or URL"
       attributes["source"]["tap"] = attributes.delete("tapped_from")
+    end
+
+    if attributes["source"]["spec"].nil?
+      version = PkgVersion.parse path.to_s.split("/")[-2]
+      if version.head?
+        attributes["source"]["spec"] = "head"
+      else
+        attributes["source"]["spec"] = "stable"
+      end
     end
 
     new(attributes)
@@ -97,7 +107,7 @@ class Tab < OpenStruct
     else
       tab = empty
       tab.unused_options = f.options.as_flags
-      tab.source = { "path" => f.path.to_s, "tap" => f.tap }
+      tab.source = { "path" => f.path.to_s, "tap" => f.tap, "spec" => f.active_spec_sym.to_s }
     end
 
     tab
@@ -116,6 +126,7 @@ class Tab < OpenStruct
       "source" => {
         "path" => nil,
         "tap" => nil,
+        "spec" => nil,
       },
     }
 
@@ -179,6 +190,10 @@ class Tab < OpenStruct
 
   def tap=(tap)
     source["tap"] = tap
+  end
+
+  def spec
+    source["spec"].to_sym
   end
 
   def to_json
