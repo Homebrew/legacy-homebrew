@@ -1,8 +1,8 @@
 class Osm2pgsql < Formula
   desc "Convert OpenStreetMap data to postGIS-enabled PostgreSQL db"
   homepage "https://wiki.openstreetmap.org/wiki/Osm2pgsql"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/0.87.0.tar.gz"
-  sha1 "6f302500e52d6e42147cc8dff8f344677e3131f8"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/0.88.0.tar.gz"
+  sha256 "45a6768e680a50c416fdae72cf4b26091644947a7ead44c8b7484f2276b2f119"
   revision 1
 
   bottle do
@@ -19,14 +19,6 @@ class Osm2pgsql < Formula
   depends_on "geos"
   depends_on "proj"
   depends_on "protobuf-c" => :optional
-
-  # Fixes an upstream issue:
-  #   https://github.com/openstreetmap/osm2pgsql/issues/196
-  # Remove the patch when upgrading
-  patch do
-    url "https://github.com/openstreetmap/osm2pgsql/commit/943684a9b86bee46d245970b3e5870f83afc9208.diff"
-    sha1 "01c681513959b285038b3582afc1c1d63e440209"
-  end
 
   def install
     args = [
