@@ -1,8 +1,8 @@
 class Gringo < Formula
   desc "Grounder to translate user-provided logic programs"
   homepage "http://potassco.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/potassco/gringo/4.5.0/gringo-4.5.0-source.tar.gz"
-  sha256 "fd7bd8756d3bdf3ed1df1fae9e8a8efdc4bcc613c41086640205e677e0e22f6f"
+  url "https://downloads.sourceforge.net/project/potassco/gringo/4.5.1/gringo-4.5.1-source.tar.gz"
+  sha256 "942be5977070859dc164347368248c1d22c451a55c2fd002081fa9abe0b5c50c"
 
   bottle do
     cellar :any
@@ -24,10 +24,6 @@ class Gringo < Formula
     inreplace "SConstruct",
               "env['CXX']            = 'g++'",
               "env['CXX']            = '#{ENV.cxx}'"
-
-    # Fix build problems
-    # https://sourceforge.net/p/potassco/bugs/104/
-    inreplace "libclasp/src/clasp_output.cpp", "using std::isnan;", "// using std::isnan;"
 
     scons "--build-dir=release", "gringo", "clingo", "reify"
     bin.install "build/release/gringo", "build/release/clingo", "build/release/reify"
