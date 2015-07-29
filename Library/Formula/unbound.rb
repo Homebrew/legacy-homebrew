@@ -3,8 +3,8 @@ require "formula"
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://unbound.net/downloads/unbound-1.5.3.tar.gz"
-  sha256 "76bdc875ed4d1d3f8e4cfe960e6df78ee5c6c7c18abac11331cf93a7ae129eca"
+  url "https://unbound.net/downloads/unbound-1.5.4.tar.gz"
+  sha256 "a1e1c1a578cf8447cb51f6033714035736a0f04444854a983123c094cc6fb137"
 
   depends_on "openssl"
   depends_on "libevent"
