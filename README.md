@@ -19,7 +19,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Fuse Elements
 - Frontline Solvers
 - Aruba Networks
-- [Zed Worldwide](www.zed.com)
+- [Zed Worldwide](http://www.zed.com)
 
 ## Features
 
