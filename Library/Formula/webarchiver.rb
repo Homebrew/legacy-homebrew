@@ -5,6 +5,8 @@ class Webarchiver < Formula
   sha256 "8ea826038e923c72e75a4bbb1416910368140a675421f6aaa51fd0dea703f75c"
   head "https://github.com/newzealandpaul/webarchiver.git"
 
+  depends_on :macos => :mavericks
+
   def install
     xcodebuild
     bin.install "./build/Release/webarchiver"
