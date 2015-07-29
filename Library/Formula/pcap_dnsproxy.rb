@@ -1,8 +1,8 @@
 class PcapDnsproxy < Formula
   desc "A powerful DNS proxy designed to anti DNS spoofing"
   homepage "https://github.com/chengr28/Pcap_DNSProxy"
-  url "https://github.com/chengr28/Pcap_DNSProxy/archive/v0.4.2.tar.gz"
-  sha256 "0737b16283e84bc94f63066f448ba84416141b8d5a86b5e01f1f97164d9d44f2"
+  url "https://github.com/chengr28/Pcap_DNSProxy/archive/v0.4.3.tar.gz"
+  sha256 "6db76bbd51a54c77db45a525771b907fc1c29cf793989222e51a347be6506132"
   head "https://github.com/chengr28/Pcap_DNSProxy.git"
 
   bottle do
@@ -31,7 +31,8 @@ class PcapDnsproxy < Formula
     mkdir testpath/"pcap_dnsproxy"
     cp Dir[etc/"pcap_dnsproxy/*"], testpath/"pcap_dnsproxy/"
     inreplace testpath/"pcap_dnsproxy/Config.ini" do |s|
-      s.gsub! /^Hosts Only.*/, "Hosts Only = 1"
+      s.gsub! /^Direct Request.*/, "Direct Request = 1"
+      s.gsub! /^Operation Mode.*/, "Operation Mode = Proxy"
       s.gsub! /^Listen Port.*/, "Listen Port = 9999"
     end
     pid = fork { exec bin/"Pcap_DNSProxy", "-c", testpath/"pcap_dnsproxy/" }
