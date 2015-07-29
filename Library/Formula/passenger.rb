@@ -6,9 +6,10 @@ class Passenger < Formula
   head "https://github.com/phusion/passenger.git"
 
   bottle do
-    sha256 "363d02c670176c9c2d2e557462e5ba01c5da2af9f580aa17597a8922cb078d1a" => :yosemite
-    sha256 "c9566cc5f32716d746b635f7853e16a96c65c1d8962748fd26da2f9e79cce562" => :mavericks
-    sha256 "60dc377f45e4ada37125967e6733706548d641db3b57393ba9710041e82450d0" => :mountain_lion
+    cellar :any
+    sha256 "4877190e1306f83d8980a82321e0f3ec0d565b01b5e052f0df8518f3cd651e8f" => :yosemite
+    sha256 "06df810ebb0ada72c875b53122a08f597195249dbc8abb6b4e673c9c2cfdb92d" => :mavericks
+    sha256 "42dbb150e5e0e8130085f730f1fcb013d32046d44819e08149d2f03af931da50" => :mountain_lion
   end
 
   depends_on "pcre"
