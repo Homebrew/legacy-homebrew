@@ -5,9 +5,9 @@ class Libgsf < Formula
   sha256 "f0fea447e0374a73df45b498fd1701393f8e6acb39746119f8a292fb4a0cb528"
 
   bottle do
-    sha256 "14271c2772c66337c0e2a745ee5ff0ede489e0d98241d72f33d2ac0f14a54491" => :yosemite
-    sha256 "f9ee5d95f63ab462e12bf94e27578e1fe8d12c5deb5fd690feec49e4140f8828" => :mavericks
-    sha256 "2074d7a6866bcf220595784683c6669822b018d660da6300bb840106fb7edd26" => :mountain_lion
+    sha256 "359010b22bffe86b2050b5ac7070135c0aba002e82e6859ac08e4591e34e8e8d" => :yosemite
+    sha256 "b2ba99018e027a52cf5ab35adfa2b61cb8c48d311260a20afb39967ac3acac7f" => :mavericks
+    sha256 "81569d95a4947a5c022cad55c974ffbb47588720c6b97693e0e4fff62c9fbee9" => :mountain_lion
   end
 
   head do
