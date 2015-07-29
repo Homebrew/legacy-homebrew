@@ -18,24 +18,27 @@ class M2c < Formula
   end
 
   test do
-    hello_mod = testpath/"hello.mod"
-    hello = testpath/"hello"
+    # -make mode for now needs running in source directory.
+    cd testpath do
+      hello_mod = "Hello.mod"
+      hello_exe = "Hello"
 
-    hello_mod.write <<-EOF.undent
-      MODULE Hello;
+      (testpath/hello_mod).write <<-EOF.undent
+        MODULE Hello;
 
-      FROM InOut IMPORT
-        WriteLn, WriteString;
+        FROM InOut IMPORT
+          WriteLn, WriteString;
 
-      BEGIN
-        WriteString ("Hello world!");
-        WriteLn;
-      END HiThere.
-    EOF
+        BEGIN
+          WriteString ("Hello world!");
+          WriteLn;
+        END Hello.
+      EOF
 
-    system "#{bin}/m2c", "-make", hello_mod, "-o", hello
+      system "#{bin}/m2c", "-make", hello_mod, "-o", testpath/hello_exe
 
-    output = shell_output(hello)
-    assert output.equal?("Hello world!")
+      output = shell_output(testpath/hello_exe)
+      assert_equal "Hello world!\n", output
+    end
   end
 end
