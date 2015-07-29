@@ -4,7 +4,7 @@ class Minidlna < Formula
   desc "Media server software, compliant with DLNA/UPnP-AV clients"
   homepage "http://sourceforge.net/projects/minidlna/"
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.4/minidlna-1.1.4.tar.gz"
-  sha1 "56f333f8af91105ce5f0861d1f1918ebf5b0a028"
+  sha256 "9814c04a2c506a0dd942c4218d30c07dedf90dabffbdef2d308a3f9f23545314"
   revision 2
 
   bottle do
