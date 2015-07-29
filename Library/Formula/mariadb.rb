@@ -13,6 +13,8 @@ class Mariadb < Formula
   devel do
     url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.6/source/mariadb-10.1.6.tar.gz"
     sha256 "492f28f0d7aee5bf0a0efd21c542ca4f291f349e66063695c5003df16e064959"
+
+    patch :DATA
   end
 
   option :universal
@@ -78,11 +80,6 @@ class Mariadb < Formula
       args << "-DWITHOUT_TOKUDB=1"
     else
       args << "-DPLUGIN_TOKUDB=NO"
-    end
-
-    # disable Mroonga on 10.1
-    if build.devel?
-      args << "-DWITHOUT_MROONGA_STORAGE_ENGINE=1"
     end
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? "tests"
@@ -223,3 +220,19 @@ class Mariadb < Formula
     end
   end
 end
+__END__
+diff --git a/storage/mroonga/vendor/groonga/CMakeLists.txt b/storage/mroonga/vendor/groonga/CMakeLists.txt
+index ebe7f6b..609f77d 100644
+--- a/storage/mroonga/vendor/groonga/CMakeLists.txt
++++ b/storage/mroonga/vendor/groonga/CMakeLists.txt
+@@ -192,6 +192,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
+   check_build_flag("-Wno-clobbered")
+ endif()
+
++if(CMAKE_COMPILER_IS_CLANGCXX)
++  check_cxxflag("-fexceptions")
++endif()
++
+ if(NOT DEFINED CMAKE_C_COMPILE_OPTIONS_PIC)
+   # For old CMake
+   if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGCXX)
