@@ -11,13 +11,9 @@ class Mariadb < Formula
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.5/source/mariadb-10.1.5.tar.gz"
-    sha256 "af8788bfbb842338882e505612f86ef53a25968663a1519185ecf3de3b1efe83"
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.6/source/mariadb-10.1.6.tar.gz"
+    sha256 "492f28f0d7aee5bf0a0efd21c542ca4f291f349e66063695c5003df16e064959"
   end
-
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
-  depends_on "openssl"
 
   option :universal
   option "with-tests", "Keep test when installing"
@@ -29,6 +25,10 @@ class Mariadb < Formula
   option "with-local-infile", "Build with local infile loading support"
 
   deprecated_option "enable-local-infile" => "with-local-infile"
+
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   conflicts_with "mysql", "mysql-cluster", "percona-server",
     :because => "mariadb, mysql, and percona install the same binaries."
@@ -78,6 +78,11 @@ class Mariadb < Formula
       args << "-DWITHOUT_TOKUDB=1"
     else
       args << "-DPLUGIN_TOKUDB=NO"
+    end
+
+    # disable Mroonga on 10.1
+    if build.devel?
+      args << "-DWITHOUT_MROONGA_STORAGE_ENGINE=1"
     end
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? "tests"
