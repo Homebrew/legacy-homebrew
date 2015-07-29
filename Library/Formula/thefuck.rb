@@ -1,8 +1,8 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.4.tar.gz"
-  sha256 "e942e6613e1bf2619d01476c5404fae67abce7adfae88c713689f41f0f51213e"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.5.6.tar.gz"
+  sha256 "bbfe72cc679d39c3045ef81b16515b620cda907039e9c9c3260009192a189eeb"
 
   head "https://github.com/nvbn/thefuck.git"
 
@@ -58,9 +58,10 @@ class Thefuck < Formula
 
   def caveats; <<-EOS.undent
     Add the following to your .bash_profile, .bashrc or .zshrc:
-      bash: eval "$(thefuck-alias)"
 
-      Other shells: https://github.com/nvbn/thefuck/wiki/Shell-aliases
+      eval "$(thefuck-alias)"
+
+    For other shells, check https://github.com/nvbn/thefuck/wiki/Shell-aliases
     EOS
   end
 
