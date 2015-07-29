@@ -7,9 +7,9 @@ class AflFuzz < Formula
   head "http://lcamtuf.coredump.cx/afl/releases/afl-latest.tgz"
 
   bottle do
-    sha256 "0c1f666cb9b1e564d1f08cd3f0186d410e16e1cf408d23c2ddd374f8cbcfef5f" => :yosemite
-    sha256 "7b3b32a1623059d186e3fa78b72de772501107c53eab62c87d8f5484d9d0a831" => :mavericks
-    sha256 "9d92d7eb9c958bf673fe5d8bd64bcc5ba4b502db9f8654773842b8cdac7b7d4b" => :mountain_lion
+    sha256 "daf905b47531442caf0e5b9584e0b4d1d7bd2be1a4d6d9af9391d9e0b8deef2e" => :yosemite
+    sha256 "cf5a8517524d36590daf4c2d5faa887721b16a83981479f74746ec664a53daeb" => :mavericks
+    sha256 "ea2a25b1e69bd02d25b6164691bcc903a6bd088f44bf90f9839dd65797074a5f" => :mountain_lion
   end
 
   def install
