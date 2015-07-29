@@ -29,7 +29,7 @@ class Mongoose < Formula
     system ENV.cc, "-dynamiclib", "mongoose.c", "-o", "libmongoose.dylib"
     include.install "mongoose.h"
     lib.install "libmongoose.dylib"
-    share.install "examples", "jni"
+    pkgshare.install "examples", "jni"
     doc.install Dir["docs/*"]
   end
 

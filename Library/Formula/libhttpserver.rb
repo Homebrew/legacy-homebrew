@@ -35,11 +35,11 @@ class Libhttpserver < Formula
       system "../configure", *args
       system "make", "install"
     end
-    share.install "examples"
+    pkgshare.install "examples"
   end
 
   test do
-    system ENV.cxx, "#{share}/examples/hello_world.cpp",
+    system ENV.cxx, pkgshare/"examples/hello_world.cpp",
       "-o", "hello_world", "-lhttpserver", "-lcurl"
     pid = fork { exec "./hello_world" }
     sleep 1 # grace time for server start
