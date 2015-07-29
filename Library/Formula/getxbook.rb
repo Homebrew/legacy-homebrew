@@ -6,9 +6,9 @@ class Getxbook < Formula
 
   bottle do
     cellar :any
-    sha1 "ec68ebd4b467ad6c3ffbb90a64118f670cf07445" => :yosemite
-    sha1 "6a7f366ad91c8cfc0bdf3f40892eb95734f7149a" => :mavericks
-    sha1 "048a83fbd2e824e8ad77fa86a7c6a91fd69cb6a3" => :mountain_lion
+    sha256 "b0b609d26eb1faeba89e929f6f6099297d14957d22653720adb61fbed9e492da" => :yosemite
+    sha256 "00f0f25a3d3440b0c7f98b2881c0750c9e568cfa685de2f89dbc43f58e667fce" => :mavericks
+    sha256 "74b03216052c58cfe830e69c169342ae6eba9fb24a92b25f3fa3794a015564d2" => :mountain_lion
   end
 
   option "with-gui", "Build the GUI"
