@@ -4,6 +4,7 @@
 --no-private
 --exclude Library/Homebrew/test/
 --exclude Library/Homebrew/vendor/
+--exclude Library/Homebrew/compat/
 Library/Homebrew/**/*.rb
 -
 Library/Homebrew/*.md

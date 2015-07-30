@@ -163,7 +163,7 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.11" then "700.0.57.2"
+        when "10.11" then "700.0.59.1"
         when "10.10" then "602.0.53"
         when "10.9"  then "600.0.57"
         when "10.8"  then "503.0.40"
@@ -178,7 +178,7 @@ module OS
         else
           version = `/usr/bin/clang --version`
         end
-        version = version[%r{clang-(\d+\.\d+\.\d+)}, 1] || "0"
+        version = version[%r{clang-(\d+\.\d+\.\d+(\.\d+)?)}, 1] || "0"
         version < latest_version
       end
 
