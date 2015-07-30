@@ -2,8 +2,8 @@ require 'formula'
 
 class Acme < Formula
   desc "Crossassembler for multiple environments"
-  homepage 'http://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/'
-  url 'http://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/current/acme091src.tar.gz'
+  homepage 'http://web.archive.org/web/20150520143433/https://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/'
+  url 'http://ftp.lip6.fr/pub/minix/distfiles/backup/acme091src.tar.gz'
   version '0.91'
   sha1 '7104ea01a2ca2962294aaac4974e10c6486534a8'
 
