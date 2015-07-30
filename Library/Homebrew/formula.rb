@@ -274,6 +274,12 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
+  # If at least one version of {Formula} is installed.
+  def any_version_installed?
+    require "tab"
+    rack.directory? && rack.subdirs.any? { |keg| (keg/Tab::FILENAME).file? }
+  end
+
   # @private
   # The `LinkedKegs` directory for this {Formula}.
   # You probably want {#opt_prefix} instead.
