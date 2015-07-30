@@ -71,6 +71,8 @@ class Transmission < Formula
           <key>NetworkState</key>
           <true/>
         </dict>
+        <key>RunAtLoad</key>
+        <true/>
       </dict>
     </plist>
     EOS
