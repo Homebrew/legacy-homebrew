@@ -20,7 +20,7 @@ class HerokuToolbelt < Formula
     <<-EOS.undent
       Unlike the standalone download for Heroku Toolbelt, the Homebrew package
       does not come with Foreman. It is available via RubyGems, direct download,
-      and other installation methods. See theforeman.org for more info.
+      and other installation methods. See https://ddollar.github.io/foreman/ for more info.
     EOS
   end
 
