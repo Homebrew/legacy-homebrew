@@ -67,9 +67,6 @@ class Formula
   # @see #active_spec
   attr_reader :active_spec_sym
 
-  # The {PkgVersion} for this formula with version and {#revision} information.
-  attr_reader :pkg_version
-
   # Used for creating new Homebrew versions of software without new upstream
   # versions.
   # @see .revision
@@ -118,7 +115,6 @@ class Formula
       :stable
     end
     validate_attributes!
-    @pkg_version = PkgVersion.new(version, revision)
     @build = active_spec.build
     @pin = FormulaPin.new(self)
   end
@@ -205,6 +201,11 @@ class Formula
   # @see .version
   def version
     active_spec.version
+  end
+
+  # The {PkgVersion} for this formula with {version} and {#revision} information.
+  def pkg_version
+    PkgVersion.new(version, revision)
   end
 
   # A named Resource for the currently active {SoftwareSpec}.
