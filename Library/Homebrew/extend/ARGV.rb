@@ -190,13 +190,13 @@ module HomebrewArgvExtension
 
   private
 
-  def spec
+  def spec(default=:stable)
     if include?("--HEAD")
       :head
     elsif include?("--devel")
       :devel
     else
-      :stable
+      default
     end
   end
 
