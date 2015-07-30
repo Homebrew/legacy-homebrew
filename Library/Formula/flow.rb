@@ -3,8 +3,8 @@ require "formula"
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "http://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.13.1.tar.gz"
-  sha1 "9595586fb30c6baab6893b0d3fcbbb8719ab41ae"
+  url "https://github.com/facebook/flow/archive/v0.14.0.tar.gz"
+  sha1 "2450941786c51d943ae2ca53b0a6fe6feb457bb1"
   head "https://github.com/facebook/flow.git"
 
   bottle do
