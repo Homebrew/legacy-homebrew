@@ -1,9 +1,7 @@
-require 'formula'
-
 class Noweb < Formula
   desc "WEB-like literate-programming tool"
-  homepage 'http://www.cs.tufts.edu/~nr/noweb/'
-  url 'ftp://www.eecs.harvard.edu/pub/nr/noweb.tgz'
+  homepage "https://www.cs.tufts.edu/~nr/noweb/"
+  url "ftp://www.eecs.harvard.edu/pub/nr/noweb.tgz"
   version '2.11b'
   sha256 'c913f26c1edb37e331c747619835b4cade000b54e459bb08f4d38899ab690d82'
 
@@ -14,10 +12,10 @@ class Noweb < Formula
     sha256 "d422058f08a621f2d6ab78adabb887b550754cbb3c8581c31fe72f52300fc3f5" => :mountain_lion
   end
 
-  depends_on 'icon'
+  depends_on "icon"
 
   def texpath
-    prefix/'tex/generic/noweb'
+    prefix/"tex/generic/noweb"
   end
 
   def install
