@@ -1,9 +1,12 @@
 class Bgpdump < Formula
   homepage "https://bitbucket.org/ripencc/bgpdump/wiki/Home"
-  url "http://www.ris.ripe.net/source/bgpdump/libbgpdump-1.4.99.14.tgz"
-  sha256 "cfa3d4c0df85acaf90612ae9374fb88e01968ba49d3f8d57a080b39085009b08"
+  desc "A  C library designed to help with analyzing dump files produced by Zebra/Quagga or MRT"
+  url "https://bitbucket.org/ripencc/bgpdump/get/1.4.99.15.tar.gz"
+  sha256 "6da4ef4020345c68a2551460919ec02b7b63c194324e209fc73bea9889fb5c7c"
+  depends_on "autoconf" => :build
 
   def install
+    system "./bootstrap.sh"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
