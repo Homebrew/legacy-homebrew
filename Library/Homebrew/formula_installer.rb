@@ -398,7 +398,7 @@ class FormulaInstaller
 
     keg = Keg.new(formula.prefix)
     link(keg)
-    fix_install_names(keg) if OS.mac?
+    fix_install_names(keg)
 
     if build_bottle? && formula.post_install_defined?
       ohai "Not running post_install as we're building a bottle"
@@ -580,11 +580,6 @@ class FormulaInstaller
 
   def fix_install_names(keg)
     keg.fix_install_names(:keg_only => formula.keg_only?)
-
-    if @poured_bottle
-      keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
-        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
-    end
   rescue Exception => e
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"
@@ -629,6 +624,10 @@ class FormulaInstaller
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
+
+    keg = Keg.new(formula.prefix)
+    keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
+      Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
 
     Pathname.glob("#{formula.bottle_prefix}/{etc,var}/**/*") do |path|
       path.extend(InstallRenamed)
