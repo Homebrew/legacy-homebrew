@@ -10,6 +10,7 @@ class Phraseapp < Formula
   end
 
   test do
-    system bin/"phraseapp", "help"
+    output = `#{bin}/phraseapp help`
+    assert_match /Built at .+/, output
   end
 end
