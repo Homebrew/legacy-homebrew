@@ -284,11 +284,7 @@ class ExampleFormula < Formula
     end
 
     # If a formula presents a user with a choice, but the choice must be fulfilled:
-    if build.with? "example2"
-      args << "--with-example2"
-    else
-      args << "--with-example1"
-    end
+    args << build.with? "example2" ? "--with-example2" : "--with-example1"
 
     # The `build.with?` and `build.without?` are smart enough to do the
     # right thing with respect to defaults defined via `:optional` and
