@@ -29,6 +29,7 @@ class A2ps < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "echo dog"
     system "make", "install"
   end
 
