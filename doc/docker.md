@@ -37,6 +37,10 @@ See the [Docker Volumes Guide](http://docs-stage.docker.com/userguide/dockervolu
 
 Another option is to configure job server to persist metadata in PostGres, MySQL, or similar database.  To do that, create a new config, pass it into the docker container as above using `JOBSERVER_CONFIG` and the `/config` volume, and point to your shared database, perhaps using `--link` to a PostGres or MySQL container.
 
-Logs go to the `/logs` directory, which is again a Docker volume.  This is done to make it easier to debug logs from the host.
+Logging goes to stdout, as per standard Docker conventions.  Therefore:
+
+* Use `docker logs -f <containerHash>` to follow logs
+* Use `docker logs --tail=100 <containerHash>` to list the last 100 lines
+* Use Docker logging drivers to redirect logs to syslog, SumoLogic, etc.
 
 ## Marathon

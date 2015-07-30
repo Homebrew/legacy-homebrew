@@ -110,15 +110,14 @@ object JobServerBuild extends Build {
         copy(artifact, artifactTargetPath)
         copy(baseDirectory(_ / "bin" / "server_start.sh").value, file("app/server_start.sh"))
         copy(baseDirectory(_ / "bin" / "server_stop.sh").value, file("app/server_stop.sh"))
-        copy(baseDirectory(_ / "config" / "log4j-server.properties").value, file("app/log4j-server.properties"))
+        copy(baseDirectory(_ / "config" / "log4j-stdout.properties").value, file("app/log4j-server.properties"))
         copy(baseDirectory(_ / "config" / "docker.conf").value, file("app/docker.conf"))
         copy(baseDirectory(_ / "config" / "docker.sh").value, file("app/settings.sh"))
         // Including envs in Dockerfile makes it easy to override from docker command
         env("JOBSERVER_MEMORY", "1G")
         // Use a volume to persist database between container invocations
         run("mkdir", "-p", "/database")
-        run("mkdir", "-p", "/logs")
-        volume("/database", "/logs")
+        volume("/database")
         entryPoint("app/server_start.sh")
       }
     },
