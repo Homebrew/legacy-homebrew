@@ -4,7 +4,7 @@ class Transmission < Formula
   desc "Lightweight BitTorrent client"
   homepage "http://www.transmissionbt.com/"
   url "https://transmission.cachefly.net/transmission-2.84.tar.xz"
-  sha1 "455359bc1fa34aeecc1bac9255ad0c884b94419c"
+  sha256 "a9fc1936b4ee414acc732ada04e84339d6755cd0d097bcbd11ba2cfc540db9eb"
 
   option "with-nls", "Build with native language support"
 
@@ -71,6 +71,8 @@ class Transmission < Formula
           <key>NetworkState</key>
           <true/>
         </dict>
+        <key>RunAtLoad</key>
+        <true/>
       </dict>
     </plist>
     EOS
