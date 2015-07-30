@@ -5,6 +5,12 @@ class M2c < Formula
   sha256 "b725ed617f376e1a321e059bf1985098e950965d5edab161c6b24526f10a59bc"
   head "http://git.savannah.gnu.org/cgit/m2c.git"
 
+  bottle do
+    sha256 "67659bd6a5fe922c1b34d5068a5cecbfee1f804e5ff432e32c8682a04029ccac" => :yosemite
+    sha256 "7bf62153eeb0976851785db04e1319f745709294aa9d0bc99e47ffee3eba1315" => :mavericks
+    sha256 "6db02ad1e1a355edfd1770d29952812baac666d6d2a7d3a599357f796eb7d891" => :mountain_lion
+  end
+
   # Hacks purely for this 0.7 release. Git head already fixes installation glitches.
   # Will remove hacks on release of next version.
   def install
