@@ -1,5 +1,3 @@
-require "formula"
-
 class Mruby < Formula
   desc "Lightweight implementation of the Ruby language"
   homepage "http://www.mruby.org"
