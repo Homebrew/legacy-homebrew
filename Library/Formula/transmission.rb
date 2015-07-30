@@ -6,6 +6,12 @@ class Transmission < Formula
   url "https://transmission.cachefly.net/transmission-2.84.tar.xz"
   sha256 "a9fc1936b4ee414acc732ada04e84339d6755cd0d097bcbd11ba2cfc540db9eb"
 
+  bottle do
+    sha256 "ad78662725cb4b924a7c1f7ad2fe1de2e9b8bf998233aee26b0f51c23d53b4de" => :yosemite
+    sha256 "488408f72a451333d1c06e71bbc100cba255c4cfd541645ce1f7e4e800212d01" => :mavericks
+    sha256 "3e20545a9e0ca3a4c11e645585427cb00be1cebbf7a76f76fce595ff883fd11c" => :mountain_lion
+  end
+
   option "with-nls", "Build with native language support"
 
   depends_on "pkg-config" => :build
