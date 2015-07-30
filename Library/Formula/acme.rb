@@ -8,9 +8,10 @@ class Acme < Formula
 
   bottle do
     cellar :any
-    sha1 "1d11ae93af38d5c851bbc53bb485b7278e50447c" => :yosemite
-    sha1 "84b5a3f996dab2603f7ad0c6edef309620672a0c" => :mavericks
-    sha1 "86a9fb8fd72407d787032bdc98282d9af036c5d9" => :mountain_lion
+    revision 1
+    sha256 "f5ed6e96c9210436569e97f2c1dff5607814fc21952db39e095c5c34ff6d9502" => :yosemite
+    sha256 "990425c3d467e3ab7bb0b4ff88cf12ad7095a0bd8f22b91f86105d569e87a6a9" => :mavericks
+    sha256 "1831e423ed2389b961ffd3baa9299552aa9c7553455edce8bf94bbe72de54986" => :mountain_lion
   end
 
   devel do
