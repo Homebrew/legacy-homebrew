@@ -284,10 +284,12 @@ class Formula
   # The latest prefix for this formula. Checks for {#head}, then {#devel}
   # and then {#stable}'s {#prefix}
   def installed_prefix
-    if head && (head_prefix = prefix(head.version)).directory?
+    if head && (head_prefix = prefix(PkgVersion.new(head.version, revision))).directory?
       head_prefix
-    elsif devel && (devel_prefix = prefix(devel.version)).directory?
+    elsif devel && (devel_prefix = prefix(PkgVersion.new(devel.version, revision))).directory?
       devel_prefix
+    elsif stable && (stable_prefix = prefix(PkgVersion.new(stable.version, revision))).directory?
+      stable_prefix
     else
       prefix
     end
