@@ -175,13 +175,16 @@ class Formulary
   end
 
   # Return a Formula instance for the given rack.
-  def self.from_rack(rack, spec=:stable)
+  # It will auto resolve formula's spec when requested spec is nil
+  def self.from_rack(rack, spec=nil)
     kegs = rack.directory? ? rack.subdirs.map { |d| Keg.new(d) } : []
 
     keg = kegs.detect(&:linked?) || kegs.detect(&:optlinked?) || kegs.max_by(&:version)
-    return factory(rack.basename.to_s, spec) unless keg
+    return factory(rack.basename.to_s, spec || :stable) unless keg
 
-    tap = Tab.for_keg(keg).tap
+    tab = Tab.for_keg(keg)
+    tap = tab.tap
+    spec ||= tab.spec
 
     if tap.nil? || tap == "Homebrew/homebrew" || tap == "mxcl/master"
       factory(rack.basename.to_s, spec)
