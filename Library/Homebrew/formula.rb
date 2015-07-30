@@ -119,6 +119,16 @@ class Formula
     @pin = FormulaPin.new(self)
   end
 
+  # @private
+  def set_active_spec(spec_sym)
+    spec = send(spec_sym)
+    raise FormulaSpecificationError, "#{spec_sym} spec is not available for #{full_name}" unless spec
+    @active_spec = spec
+    @active_spec_sym = spec_sym
+    validate_attributes!
+    @build = active_spec.build
+  end
+
   private
 
   def set_spec(name)
