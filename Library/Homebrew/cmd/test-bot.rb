@@ -500,7 +500,7 @@ module Homebrew
       # Don't care about e.g. bottle failures for dependencies.
       run_as_not_developer do
         test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
-        test "brew", "install", "--build-from-source", *install_args
+        test "brew", "install", *install_args
       end
       install_passed = steps.last.passed?
       audit_args = [canonical_formula_name]
