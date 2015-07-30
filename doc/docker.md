@@ -25,6 +25,14 @@ The standard way to replace the config is to derive a custom Docker image from t
     from velvia/spark-jobserver:0.5.2-SNAPSHOT
     add /path/to/my/jobserver.conf /app/docker.conf
 
+Similarly, to change the logging configuration, inherit from this container and overwrite `/app/log4j-server.properties`.
+
+## Jars / Passing Arguments to the Start Script
+
+Any `spark-submit` arguments can be passed to the tail of the `docker run` command.  A very common use of this is to add custom jars to your Spark job environment.  For example, to add the Datastax Spark-Cassandra Connector to your job:
+
+    docker run -d -p 8090:8090 velvia/spark-jobserver:0.5.2-SNAPSHOT --packages com.datastax.spark:spark-cassandra-connector_2.10:1.3.0-M1
+
 ## Database, Persistence, Logs
 
 Docker containers are usually stateless, but it wouldn't be very useful to have the jars and job config reset every time you had to kill and restart a container.
