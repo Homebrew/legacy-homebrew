@@ -126,7 +126,7 @@ class Tab < OpenStruct
       "source" => {
         "path" => nil,
         "tap" => nil,
-        "spec" => nil,
+        "spec" => "stable",
       },
     }
 
