@@ -19,6 +19,7 @@ class TabTests < Homebrew::TestCase
       "source"             => {
         "tap" => "Homebrew/homebrew",
         "path" => nil,
+        "spec" => "stable",
       },
     })
   end
@@ -66,6 +67,22 @@ class TabTests < Homebrew::TestCase
     assert_predicate @tab, :poured_from_bottle
   end
 
+  def test_from_old_version_file
+    path = Pathname.new(TEST_DIRECTORY).join("fixtures", "receipt_old.json")
+    tab = Tab.from_file(path)
+
+    assert_equal @used.sort, tab.used_options.sort
+    assert_equal @unused.sort, tab.unused_options.sort
+    refute_predicate tab, :built_as_bottle
+    assert_predicate tab, :poured_from_bottle
+    assert_equal "Homebrew/homebrew", tab.tap
+    assert_equal :stable, tab.spec
+    refute_nil tab.time
+    assert_equal TEST_SHA1, tab.HEAD
+    assert_equal :clang, tab.cxxstdlib.compiler
+    assert_equal :libcxx, tab.cxxstdlib.type
+  end
+
   def test_from_file
     path = Pathname.new(TEST_DIRECTORY).join("fixtures", "receipt.json")
     tab = Tab.from_file(path)
@@ -75,6 +92,7 @@ class TabTests < Homebrew::TestCase
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
     assert_equal "Homebrew/homebrew", tab.tap
+    assert_equal :stable, tab.spec
     refute_nil tab.time
     assert_equal TEST_SHA1, tab.HEAD
     assert_equal :clang, tab.cxxstdlib.compiler
@@ -88,6 +106,7 @@ class TabTests < Homebrew::TestCase
     assert_equal @tab.built_as_bottle, tab.built_as_bottle
     assert_equal @tab.poured_from_bottle, tab.poured_from_bottle
     assert_equal @tab.tap, tab.tap
+    assert_equal @tab.spec, tab.spec
     assert_equal @tab.time, tab.time
     assert_equal @tab.HEAD, tab.HEAD
     assert_equal @tab.compiler, tab.compiler
