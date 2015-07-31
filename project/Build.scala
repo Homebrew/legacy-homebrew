@@ -70,7 +70,7 @@ object JobServerBuild extends Build {
   //
   // NOTE: if we don't define a root project, SBT does it for us, but without our settings
   lazy val root = Project(id = "root", base = file("."),
-                    settings = commonSettings210 ++ ourReleaseSettings ++ rootSettings
+                    settings = commonSettings210 ++ ourReleaseSettings ++ rootSettings ++ dockerSettings
                   ).aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp, jobServerExtras).
                    dependsOn(jobServer, jobServerExtras)
 
@@ -91,6 +91,47 @@ object JobServerBuild extends Build {
     publishArtifact := false,
     description := "Test jar for Spark Job Server",
     exportJars := true        // use the jar instead of target/classes
+  )
+
+  import sbtdocker.DockerKeys._
+
+  lazy val dockerSettings = Seq(
+    // Make the docker task depend on the assembly task, which generates a fat JAR file
+    docker <<= (docker dependsOn (AssemblyKeys.assembly in jobServerExtras)),
+    dockerfile in docker := {
+      val artifact = (AssemblyKeys.outputPath in AssemblyKeys.assembly in jobServerExtras).value
+      val artifactTargetPath = s"/app/${artifact.name}"
+      new sbtdocker.mutable.Dockerfile {
+        from("ottoops/mesos-java7")
+        // Dockerfile best practices: https://docs.docker.com/articles/dockerfile_best-practices/
+        expose(8090)
+        expose(9999)    // for JMX
+        copy(artifact, artifactTargetPath)
+        copy(baseDirectory(_ / "bin" / "server_start.sh").value, file("app/server_start.sh"))
+        copy(baseDirectory(_ / "bin" / "server_stop.sh").value, file("app/server_stop.sh"))
+        copy(baseDirectory(_ / "config" / "log4j-stdout.properties").value, file("app/log4j-server.properties"))
+        copy(baseDirectory(_ / "config" / "docker.conf").value, file("app/docker.conf"))
+        copy(baseDirectory(_ / "config" / "docker.sh").value, file("app/settings.sh"))
+        // Including envs in Dockerfile makes it easy to override from docker command
+        env("JOBSERVER_MEMORY", "1G")
+        env("SPARK_HOME", "/spark")
+        env("SPARK_BUILD", s"spark-${sparkVersion}-bin-hadoop2.4")
+        // Use a volume to persist database between container invocations
+        run("mkdir", "-p", "/database")
+        runRaw("""wget http://d3kbcqa49mib13.cloudfront.net/$SPARK_BUILD.tgz && \
+                  tar -xvf $SPARK_BUILD.tgz && \
+                  mv $SPARK_BUILD /spark && \
+                  rm $SPARK_BUILD.tgz
+               """)
+        volume("/database")
+        entryPoint("app/server_start.sh")
+      }
+    },
+    imageNames in docker := Seq(
+      sbtdocker.ImageName(namespace = Some("velvia"),
+                          repository = "spark-jobserver",
+                          tag = Some(version.value))
+    )
   )
 
   lazy val rootSettings = Seq(

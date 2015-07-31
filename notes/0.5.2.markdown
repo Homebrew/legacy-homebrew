@@ -1,7 +1,9 @@
 #Scala #akka @ApacheSpark
 
 * Spark streaming context support !!  (@zeitos)
-* Configurable JDBC driver
+* Configurable JDBC driver - connect to PostGres or MySQL
+* Docker container!!
 * Change `server_start.sh` to use `spark-submit`.  This should fix some edge case bugs.
-* Configurable driver memory (@acidghost)
+* Configurable driver memory (`JOBSERVER_MEMORY`) (@acidghost)
+* `server_start.sh` - run in foreground (`JOBSERVER_FG`) and change config file (`JOBSERVER_CONFIG`)
 * Be able to accept environment vars in job server config files, eg `master = ${?MY_SPARK_HOST}`   (see the [Typesafe Config docs](https://github.com/typesafehub/config#uses-of-substitutions))

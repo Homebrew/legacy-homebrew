@@ -27,7 +27,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Support for Spark SQL, Hive, Streaming Contexts/jobs and custom job contexts!  See [Contexts](doc/contexts.md).
 - Supports sub-second low-latency jobs via long-running job contexts
 - Start and stop job contexts for RDD sharing and low-latency jobs; change resources on restart
-- Kill running jobs via stop context
+- Kill running jobs via stop context and delete job
 - Separate jar uploading step for faster job startup
 - Asynchronous and synchronous job API.  Synchronous API is great for low latency jobs!
 - Works with Standalone Spark as well as Mesos and yarn-client
@@ -47,9 +47,13 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 
 For release notes, look in the `notes/` directory.  They should also be up on [ls.implicit.ly](http://ls.implicit.ly/spark-jobserver/spark-jobserver).
 
-## Quick start / development mode
+## Quick Start
 
-NOTE: This quick start guide uses SBT to run the job server and the included test jar, but the normal development process is to create a separate project for Job Server jobs and to deploy the job server to a Spark cluster.  Please see the deployment section below for more details.
+The easiest way to get started is to try the [Docker container](doc/docker.md) which prepackages a Spark distribution with the job server and lets you start and deploy it.
+
+## Development mode
+
+The example walk-through below shows you how to use the job server with an included example job, by running the job server in local development mode in SBT.  This is not an example of usage in production.
 
 You need to have [SBT](http://www.scala-sbt.org/release/docs/Getting-Started/Setup.html) installed.
 
