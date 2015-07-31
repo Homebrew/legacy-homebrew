@@ -25,7 +25,7 @@ class Stack < Formula
 
   test do
     system "#{bin}/stack", "new"
-    system "#{bin}/stack", "setup"
+    ENV.deparallelize { system "#{bin}/stack", "setup" }
     system "#{bin}/stack", "build"
   end
 end
