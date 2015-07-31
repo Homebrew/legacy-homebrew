@@ -24,8 +24,7 @@ module Homebrew
     elsif ARGV.include? "--desc"
       query = ARGV.next
       rx = query_regexp(query)
-      results = Descriptions.matching(rx, :desc)
-      Descriptions.print(results)
+      Descriptions.search(rx, :desc).print
     elsif ARGV.empty?
       puts_columns Formula.full_names
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX

@@ -131,18 +131,17 @@ Note that these flags should only appear after a command.
 
   * `desc [-s|-n|-d] <pattern>`:
     Search both name and description (`-s`), just the names (`-n`), or just  the
-    descriptions (`-d`) for `<pattern>`. `<pattern>` is by default  interpreted
+    descriptions (`-d`) for `<pattern>`. `<pattern>` is by default interpreted
     as a literal string; if flanked by slashes, it is instead interpreted as a
     regular expression. Formula descriptions are cached, and the cache is
-    created on the first search, making it slower than succeeding ones.
+    created on the first search, making that search slower than subsequent
+    ones.
 
-  * `desc --recache`:
+  * `desc --create-cache`:
 
-    This forces the [re]construction of the name/description cache. It can be
-    combined with a search, in which case the construction will take place
-    first.
+    Force the [re]construction of the name/description cache.
 
-  * `desc --decache`:
+  * `desc --delete-cache`:
 
     Delete the name/description cache, if it exists.
 

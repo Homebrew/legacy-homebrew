@@ -1,5 +1,5 @@
-require 'formula'
-require 'csv'
+require "formula"
+require "csv"
 
 class Descriptions
 
@@ -27,7 +27,7 @@ class Descriptions
     @cache = {}
     CSV.open(CACHE_FILE, 'w') do |csv|
       Formula.map do |f|
-        name, desc = f.name, f.desc
+        name, desc = f.full_name, f.desc
         @cache[name] = desc
         csv << [name, desc]
       end
@@ -60,42 +60,48 @@ class Descriptions
     self.ensure_cache
 
     if names.empty?
-      @cache
+      results = {}
     else
-      names.inject({}) do |descriptions, name|
-        descriptions[name] = @cache[name]
-        descriptions
+      results = names.inject({}) do |results, name|
+        results[name] = @cache[name]
+        results
       end
     end
+
+    new(results)
   end
 
   # Given a regex, find all formulae whose specified fields contain a match for it.
 
-  def self.matching(regex, field = :either)
+  def self.search(regex, field = :either)
     self.ensure_cache
 
-    matchers = {
-      :name   => proc { |name, desc| name =~ regex },
-      :desc   => proc { |name, desc| desc =~ regex },
-      :either => proc { |name, desc| (name =~ regex) || (desc =~ regex) }
-    }
-
-    results = @cache.select(&(matchers[field]))
-
-    if RUBY_VERSION <= "1.8.7"
-      Hash[results]
-    else
-      results
+    results = case field
+    when :name
+      @cache.select { |name, _| name =~ regex }
+    when :desc
+      @cache.select { |_, desc| desc =~ regex }
+    when :either
+      @cache.select { |name, desc| (name =~ regex) || (desc =~ regex) }
     end
+
+    results = Hash[results] if RUBY_VERSION <= "1.8.7"
+
+    new(results)
+  end
+
+
+  def initialize(descriptions)
+    @descriptions = descriptions
   end
 
   # Take search results -- a hash mapping formula names to descriptions -- and
   # print them.
 
-  def self.print(descriptions)
+  def print
     blank = "#{Tty.yellow}[no description]#{Tty.reset}"
-    descriptions.keys.sort.each do |name|
-      description = descriptions[name] || blank
+    @descriptions.keys.sort.each do |name|
+      description = @descriptions[name] || blank
       puts "#{Tty.white}#{name}:#{Tty.reset} #{description}"
     end
   end
