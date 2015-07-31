@@ -655,14 +655,29 @@ class Formula
     @core_names ||= Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
   end
 
+  # an array of all core {Formula} files
+  def self.core_files
+    @core_files ||= Pathname.glob("#{HOMEBREW_LIBRARY}/Formula/*.rb")
+  end
+
   # an array of all tap {Formula} names
   def self.tap_names
     @tap_names ||= Tap.map(&:formula_names).flatten.sort
   end
 
+  # an array of all tap {Formula} files
+  def self.tap_files
+    @tap_files ||= Tap.map(&:formula_files).flatten
+  end
+
   # an array of all {Formula} names
   def self.names
     @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+  end
+
+  # an array of all {Formula} files
+  def self.files
+    @files ||= core_files + tap_files
   end
 
   # an array of all {Formula} names, which the tap formulae have the fully-qualified name
@@ -671,12 +686,12 @@ class Formula
   end
 
   def self.each
-    full_names.each do |name|
+    files.each do |file|
       begin
-        yield Formulary.factory(name)
+        yield Formulary.factory(file)
       rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
-        onoe "Failed to import: #{name}"
+        onoe "Failed to import: #{file}"
         puts e
         next
       end
