@@ -22,9 +22,10 @@ class ObjectiveCaml < Formula
   end
 
   bottle do
-    sha256 "08c8d8728d3c1fe56bbf06ef3cc7acd407b902adc029cd50ae5fda1c4e31d9db" => :yosemite
-    sha256 "7384240852677805db33e0e8e71cb083eceec378d692edfc1532041f31c841ed" => :mavericks
-    sha256 "57e0ed61d2cb90c25ad2982f2a5fd27381b2d8920342cb83e7ba3b03d37c4a81" => :mountain_lion
+    cellar :any
+    sha256 "b0a69f73027d6bd6fedea3a4828665b0dd2d10c8b4fd14b427c7b76963dfee40" => :yosemite
+    sha256 "6eaaae269acbe7353b058f12f5f9d52ead4e7921f0e21dffe9aaab6fdf79d23e" => :mavericks
+    sha256 "638b4c9d3cef687b895b24bb9dd0e3f042aa3def5c8446636c0b389196593181" => :mountain_lion
   end
 
   option "with-x11", "Install with the Graphics module"
