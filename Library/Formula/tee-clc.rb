@@ -1,5 +1,3 @@
-require 'formula'
-
 class TeeClc < Formula
   desc 'Eclipse client for Visual Studio 2010 Team Foundation Server'
   homepage 'http://www.microsoft.com/en-us/download/details.aspx?id=47727'
