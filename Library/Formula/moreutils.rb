@@ -14,17 +14,12 @@ class Moreutils < Formula
     sha256 "d506ebb771c12c334e5597bb57b751c3ad738ca38aaf5cb00f88b7b25f6a776c" => :mountain_lion
   end
 
-  option "without-parallel", "Omit the 'parallel' tool. Allows installation of GNU parallel from 'parallel' formula."
+  option "without-parallel", "Build without the 'parallel' tool."
 
   depends_on "docbook-xsl" => :build
 
-  if build.with? "parallel"
-    conflicts_with "parallel",
-      :because => "both install a 'parallel' executable. See the '--without-parallel' option"
-  end
-
-  conflicts_with "task-spooler",
-    :because => "both install a 'ts' executable."
+  conflicts_with "parallel", :because => "Both install a 'parallel' executable."
+  conflicts_with "task-spooler", :because => "Both install a 'ts' executable."
 
   resource "Time::Duration" do
     url "http://search.cpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
