@@ -1,5 +1,3 @@
-require 'formula'
-
 class Liblinear < Formula
   desc "Library for large linear classification"
   homepage "http://www.csie.ntu.edu.tw/~cjlin/liblinear/"
@@ -18,7 +16,7 @@ class Liblinear < Formula
   # Fix sonames
   patch :p0 do
     url "https://trac.macports.org/export/94156/trunk/dports/math/liblinear/files/patch-Makefile.diff"
-    sha1 "3eab2f28bd9964bacb515ecc1ce9bea35ad29298"
+    sha256 "ffb5206f0a6c15832574ec77863cda12eb2012e0f052bacebfe1ad722d31ea22"
   end
 
   def install
