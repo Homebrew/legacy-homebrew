@@ -1,8 +1,8 @@
 class Euca2ools < Formula
   desc "Eucalyptus client API tools-works with Amazon EC2 and IAM"
   homepage "https://github.com/eucalyptus/euca2ools"
-  url "https://github.com/eucalyptus/euca2ools/archive/v3.2.0.tar.gz"
-  sha256 "4cfbae3b978312fa23e6a0329ec346568823afbbae0bc01075c8cff6707e7cb8"
+  url "https://github.com/eucalyptus/euca2ools/archive/v3.2.1.tar.gz"
+  sha256 "1d232d6c389b1fa1de9132abd04356bd3e28160e8410a0e5a41f5e0f3da4a125"
   head "https://github.com/eucalyptus/euca2ools.git"
 
   bottle do
@@ -15,8 +15,8 @@ class Euca2ools < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "requestbuilder" do
-    url "https://github.com/boto/requestbuilder/archive/v0.2.3.tar.gz"
-    sha256 "37991003f838847b9bfe041d08383964f8da5f5027656f631fafc3099c6ef4c9"
+    url "https://github.com/boto/requestbuilder/archive/v0.3.4.tar.gz"
+    sha256 "f4fa8fab964b7ed94163d941c752e33dce3fd059f29618c9243808fd89a9aeb4"
   end
 
   resource "requests" do
