@@ -1,11 +1,19 @@
 class Stack < Formula
   desc "The Haskell Tool Stack"
   homepage "https://www.stackage.org"
-  url "https://github.com/commercialhaskell/stack/releases/download/v0.1.2.0/stack-0.1.2.0-x86_64-osx.gz"
-  sha256 "6e1039d9c5144fb03dbfb1f569a830724593191305998e9be87579d985feb36c"
+  url "https://github.com/commercialhaskell/stack/archive/v0.1.2.0.tar.gz"
+  sha256 "20ff0a36f773c2993e00c6f1bffaa33e881906d20f66cde0d557133842fc464c"
+
+  depends_on "ghc" => :build
+  depends_on "cabal-install" => :build
 
   def install
-    bin.install "stack-#{version}-x86_64-osx" => "stack"
+    system "cabal", "sandbox", "init"
+    system "cabal", "update"
+    system "cabal", "install", "--only-dependencies"
+    system "cabal", "build"
+    system "strip", "dist/build/stack/stack"
+    bin.install "dist/build/stack/stack" => "stack"
   end
 
   test do
