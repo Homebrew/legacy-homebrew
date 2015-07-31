@@ -5,6 +5,7 @@ class Coccinelle < Formula
   homepage 'http://coccinelle.lip6.fr/'
   url 'http://coccinelle.lip6.fr/distrib/coccinelle-1.0.0-rc21.tgz'
   sha1 'edc008da552eb8f4ef7712fc99b4dc630ab6fb35'
+  revision 1
 
   bottle do
     sha1 "907762ffd74c58637cfc1968c0812cf324ad8ac1" => :yosemite

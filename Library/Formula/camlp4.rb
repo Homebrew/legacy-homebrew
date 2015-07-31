@@ -5,6 +5,7 @@ class Camlp4 < Formula
   sha1 "6dd7e591dfde94c44576dba9b847279ffb92c889"
   version "4.02.2+6"
   head "https://github.com/ocaml/camlp4.git"
+  revision 1
 
   bottle do
     cellar :any

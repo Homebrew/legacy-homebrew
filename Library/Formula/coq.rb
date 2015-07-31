@@ -16,6 +16,7 @@ class Coq < Formula
   url "https://coq.inria.fr/distrib/V8.4pl6/files/coq-8.4pl6.tar.gz"
   version "8.4pl6"
   sha256 "a540a231a9970a49353ca039f3544616ff86a208966ab1c593779ae13c91ebd6"
+  revision 1
 
   head "git://scm.gforge.inria.fr/coq/coq.git", :branch => "trunk"
 
