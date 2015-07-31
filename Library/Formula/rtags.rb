@@ -26,7 +26,6 @@ class Rtags < Formula
     # not using shell_output because on HEAD the exit code will be 0, but on
     # stable it will be 1.
     cmd = "#{bin}/rc --help"
-    ohai cmd
     assert_match /rc options/, `#{cmd}`
   end
 end
