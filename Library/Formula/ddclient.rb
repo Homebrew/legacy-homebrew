@@ -3,8 +3,8 @@ require 'formula'
 class Ddclient < Formula
   desc "Update dynamic DNS entries"
   homepage 'http://sourceforge.net/p/ddclient/wiki/Home'
-  url 'https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.2/ddclient-3.8.2.tar.bz2'
-  sha1 '8c887c06a580773c48a1eaced82a08c3077e1325'
+  url 'https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.3/ddclient-3.8.3.tar.bz2'
+  sha256 '3562441a130235ec9aae6881f7c24809d0036a7070e9cff02df9afd676861c57'
 
   head 'https://github.com/wimpunk/ddclient.git'
 
