@@ -2,9 +2,9 @@ require 'formula'
 
 class Liblinear < Formula
   desc "Library for large linear classification"
-  homepage 'http://www.csie.ntu.edu.tw/~cjlin/liblinear/'
-  url 'http://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/liblinear-2.01.tar.gz'
-  sha1 '1c3114436dfff8a44332308075cd6e1e201419c1'
+  homepage "http://www.csie.ntu.edu.tw/~cjlin/liblinear/"
+  url "http://www.csie.ntu.edu.tw/~cjlin/liblinear/oldfiles/liblinear-2.01.tar.gz"
+  sha256 "ebc71999224f5779574b11e248f1e2ef647b5d839c0380c1c5a4ac8789aa95a9"
 
   bottle do
     cellar :any
