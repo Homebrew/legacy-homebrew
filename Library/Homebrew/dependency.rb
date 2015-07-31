@@ -5,14 +5,16 @@ class Dependency
   include Dependable
 
   attr_reader :name, :tags, :env_proc, :option_name
+  attr_accessor :owner_tap
 
   DEFAULT_ENV_PROC = proc {}
 
-  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name)
+  def initialize(name, tags = [], owner_tap = nil, env_proc = DEFAULT_ENV_PROC, option_name = name)
     @name = name
     @tags = tags
     @env_proc = env_proc
     @option_name = option_name
+    @owner_tap = owner_tap == "Homebrew/homebrew" ? nil : owner_tap
   end
 
   def to_s
@@ -29,7 +31,23 @@ class Dependency
   end
 
   def to_formula
-    formula = Formulary.factory(name)
+    if owner_tap.nil? || name =~ HOMEBREW_TAP_FORMULA_REGEX
+      formula = Formulary.factory(name)
+    else
+      begin
+        formula = Formulary.factory("#{owner_tap}/#{name}")
+      rescue FormulaUnavailableError
+        formula = Formulary.factory(name)
+        unless formula.core_formula? or (@@warned_cross_tap_dependency ||= []).include?(name)
+          opoo <<-EOS.undent
+            #{name} is required but is not provided by either #{owner_tap} or core.
+            We are installing from #{formula.tap} instead.
+            You may wish to contact the author of #{owner_tap} to report this.
+          EOS
+          @@warned_cross_tap_dependency << name
+        end
+      end
+    end
     formula.build = BuildOptions.new(options, formula.options)
     formula
   end
@@ -125,7 +143,14 @@ class Dependency
         deps = grouped.fetch(name)
         dep  = deps.first
         tags = deps.flat_map(&:tags).uniq
-        dep.class.new(name, tags, dep.env_proc)
+        taps = deps.flat_map(&:owner_tap).uniq.compact
+        unless taps.length <= 1
+          onoe <<-EOS.undent
+            Dependency tree has conflict. You may wish to contact the author
+            of the formula to report this.
+          EOS
+        end
+        dep.class.new(name, tags, taps.first, dep.env_proc)
       end
     end
   end
@@ -134,9 +159,9 @@ end
 class TapDependency < Dependency
   attr_reader :tap
 
-  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name.split("/").last)
+  def initialize(name, tags = [], owner_tap = nil, env_proc = DEFAULT_ENV_PROC, option_name = name.split("/").last)
     @tap = name.rpartition("/").first
-    super(name, tags, env_proc, option_name)
+    super(name, tags, owner_tap, env_proc, option_name)
   end
 
   def installed?
