@@ -1,4 +1,8 @@
+require "language/haskell"
+
 class Stack < Formula
+  include Language::Haskell::Cabal
+
   desc "The Haskell Tool Stack"
   homepage "https://www.stackage.org"
   url "https://github.com/commercialhaskell/stack/archive/v0.1.2.0.tar.gz"
@@ -8,12 +12,11 @@ class Stack < Formula
   depends_on "cabal-install" => :build
 
   def install
-    system "cabal", "sandbox", "init"
-    system "cabal", "update"
-    system "cabal", "install", "--only-dependencies"
-    system "cabal", "build"
-    system "strip", "dist/build/stack/stack"
-    bin.install "dist/build/stack/stack" => "stack"
+    cabal_sandbox do
+      cabal_install "--only-dependencies"
+      cabal_install "--prefix=#{prefix}"
+    end
+    cabal_clean_lib
   end
 
   test do
