@@ -9,13 +9,9 @@
   ],
   "built_as_bottle": false,
   "poured_from_bottle": true,
+  "tapped_from": "Homebrew/homebrew",
   "time": 1403827774,
   "HEAD": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
   "stdlib": "libcxx",
-  "compiler": "clang",
-  "source": {
-      "path": "/usr/local/Library/Formula/foo.rb",
-      "tap": "Homebrew/homebrew",
-      "spec": "stable"
-  }
+  "compiler": "clang"
 }
