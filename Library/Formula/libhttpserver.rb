@@ -7,9 +7,10 @@ class Libhttpserver < Formula
 
   bottle do
     cellar :any
-    sha256 "71463901b58cbb162cabbf81086825314369549247a3fb2f5442eefa6b325659" => :yosemite
-    sha256 "bfe56ef562125166dad3629672fc942082e5a8a2aaab491a0e39fc2ddf3dfbb1" => :mavericks
-    sha256 "6c39a1be1de1a374313414acf8bea92c5afdedd34622a85ca82ba4fbbb224bd8" => :mountain_lion
+    revision 1
+    sha256 "c0a9c40d4774fced64f48d12efbb2d2486c0562cf0a6b2975d3ff84e6d9630df" => :yosemite
+    sha256 "49e910937e4afb7ceba0186e654102f4bfcc1b408503bfe6c8d8d23190bd5846" => :mavericks
+    sha256 "fc8eba8eadd50d18aa3049c627fb91b3cefb7ad389fdf0fb86141a39b18fc5a7" => :mountain_lion
   end
 
   option :universal
