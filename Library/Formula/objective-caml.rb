@@ -15,15 +15,10 @@ class ObjectiveCaml < Formula
   desc "General purpose programming language in the ML family"
   homepage "https://ocaml.org/"
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
-  revision 1
 
   stable do
-    url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.2.tar.bz2"
-    sha256 "b18265582b1c2fd5c1e67da3f744bf1ff474d194bb277c3a9ceb5eb16a1ea703"
-
-    # Upstream fix for a GC crash issue introduced in 4.02.2
-    # See http://caml.inria.fr/mantis/view.php?id=6919
-    patch :DATA
+    url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.3.tar.gz"
+    sha256 "928fb5f64f4e141980ba567ff57b62d8dc7b951b58be9590ffb1be2172887a72"
   end
 
   bottle do
@@ -53,17 +48,3 @@ class ObjectiveCaml < Formula
     assert_match "#{HOMEBREW_PREFIX}", shell_output("ocamlc -where")
   end
 end
-__END__
-diff --git a/byterun/minor_gc.c b/byterun/minor_gc.c
-index 4aaec96..859a72a 100644
---- a/byterun/minor_gc.c
-+++ b/byterun/minor_gc.c
-@@ -259,6 +259,8 @@ void caml_empty_minor_heap (void)
-     ++ caml_stat_minor_collections;
-     caml_final_empty_young ();
-     if (caml_minor_gc_end_hook != NULL) (*caml_minor_gc_end_hook) ();
-+  } else {
-+    caml_final_empty_young ();
-   }
- #ifdef DEBUG
-   {
