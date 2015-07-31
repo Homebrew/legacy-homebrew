@@ -75,20 +75,28 @@ class Descriptions
     self.ensure_cache
 
     matchers = {
-      name:   proc { |name, desc| name =~ regex },
-      desc:   proc { |name, desc| desc =~ regex },
-      either: proc { |name, desc| (name =~ regex) || (desc =~ regex) }
+      :name   => proc { |name, desc| name =~ regex },
+      :desc   => proc { |name, desc| desc =~ regex },
+      :either => proc { |name, desc| (name =~ regex) || (desc =~ regex) }
     }
 
-    @cache.select(&(matchers[field]))
+    results = @cache.select(&(matchers[field]))
+
+    if RUBY_VERSION <= "1.8.7"
+      Hash[results]
+    else
+      results
+    end
   end
 
   # Take search results -- a hash mapping formula names to descriptions -- and
   # print them.
 
   def self.print(descriptions)
-    descriptions.each do |name, desc|
-      puts "#{Tty.white}#{name}:#{Tty.reset} #{desc}"
+    blank = "#{Tty.yellow}[no description]#{Tty.reset}"
+    descriptions.keys.sort.each do |name|
+      description = descriptions[name] || blank
+      puts "#{Tty.white}#{name}:#{Tty.reset} #{description}"
     end
   end
 

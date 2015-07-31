@@ -134,10 +134,10 @@ By default, \fBdeps\fR shows dependencies for \fIformulae\fR\. To skip the \fB:b
 \fBdesc [\-s|\-n|\-d] <pattern>\fR: Search both name and description (\fB\-s\fR), just the names (\fB\-n\fR), or just the descriptions (\fB\-d\fR) for \fB<pattern>\fR\. \fB<pattern>\fR is by default interpreted as a literal string; if flanked by slashes, it is instead interpreted as a regular expression\. Formula descriptions are cached, and the cache is created on the first search, making it slower than succeeding ones\.
 .
 .IP "\(bu" 4
-\fBdesc \-\-cache\fR:
+\fBdesc \-\-recache\fR:
 .
 .IP
-This forces the construction of the name/description cache\. It can be combined with a search, in which case the construction will take place first\.
+This forces the [re]construction of the name/description cache\. It can be combined with a search, in which case the construction will take place first\.
 .
 .IP "\(bu" 4
 \fBdesc \-\-decache\fR:

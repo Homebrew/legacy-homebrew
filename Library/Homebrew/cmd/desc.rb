@@ -1,6 +1,19 @@
 require 'descriptions'
 require 'cmd/search'
 
+USAGE =<<EOM
+Print formula descriptions.
+
+Usage:
+
+    brew desc --decache             Delete the cache, if present
+    brew desc --recache             [Re]generate the cache
+    brew desc name [name ...]       Describe the named formula(e)
+    brew desc (-s|-n|-d) <string>   Search specifed fields for string
+    brew desc (-s|-n|-d) /<regex>/  Search specifed fields for regex
+EOM
+
+
 module Homebrew
   def desc
     options = ARGV.options_only
@@ -8,15 +21,22 @@ module Homebrew
     if options.include?("--decache")
       Descriptions.delete_cache
       options.delete("--decache")
+      cache_op = true
     end
 
-    if options.include?("--cache")
+    if options.include?("--recache")
       Descriptions.generate_cache
-      options.delete("--cache")
+      options.delete("--recache")
+      cache_op = true
     end
 
     if options.empty?
-      results = Descriptions.named(ARGV.named)
+      if ARGV.named.empty?
+        print USAGE unless cache_op
+        exit
+      else
+        results = Descriptions.named(ARGV.named)
+      end
     else
       searches = {
         '-s' => :either,

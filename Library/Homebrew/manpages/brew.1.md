@@ -136,9 +136,9 @@ Note that these flags should only appear after a command.
     regular expression. Formula descriptions are cached, and the cache is
     created on the first search, making it slower than succeeding ones.
 
-  * `desc --cache`:
+  * `desc --recache`:
 
-    This forces the construction of the name/description cache. It can be
+    This forces the [re]construction of the name/description cache. It can be
     combined with a search, in which case the construction will take place
     first.
 
