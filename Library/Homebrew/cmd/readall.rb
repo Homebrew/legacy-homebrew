@@ -32,18 +32,18 @@ module Homebrew
 
     formulae = []
     if ARGV.named.empty?
-      formulae = Formula.full_names
+      formulae = Formula.files
     else
       tap = Tap.new(*tap_args)
       raise TapUnavailableError, tap.name unless tap.installed?
       formulae = tap.formula_files
     end
 
-    formulae.sort.each do |n|
+    formulae.each do |file|
       begin
-        Formulary.factory(n)
+        Formulary.factory(file)
       rescue Exception => e
-        onoe "problem in #{Formulary.path(n)}"
+        onoe "problem in #{file}"
         puts e
         Homebrew.failed = true
       end
