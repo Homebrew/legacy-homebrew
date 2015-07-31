@@ -16,9 +16,9 @@ class Go < Formula
   end
 
   devel do
-    url "https://storage.googleapis.com/golang/go1.5beta2.src.tar.gz"
-    version "1.5beta2"
-    sha256 "9cad9b5bed4ca3a18469490ded83821a903a64bc630f498878fffcd1a11c9260"
+    url "https://storage.googleapis.com/golang/go1.5beta3.src.tar.gz"
+    version "1.5beta3"
+    sha256 "701092f728d0a2b4c35ebe50630244528080427bbb23bd2148ef1fd7a22a754a"
   end
 
   option "with-cc-all", "Build with cross-compilers and runtime support for all supported platforms"
