@@ -20,9 +20,14 @@ module HomebrewArgvExtension
     require "formula"
     @resolved_formulae ||= (downcased_unique_named - casks).map do |name|
       if name.include?("/")
-        Formulary.factory(name, spec)
+        f = Formulary.factory(name, spec)
+        if spec(default=nil).nil? && f.any_version_installed?
+          installed_spec = Tab.for_formula(f).spec
+          f.set_active_spec(installed_spec) if f.send(installed_spec)
+        end
+        f
       else
-        Formulary.from_rack(HOMEBREW_CELLAR/name, spec)
+        Formulary.from_rack(HOMEBREW_CELLAR/name, spec(default=nil))
       end
     end
   end
