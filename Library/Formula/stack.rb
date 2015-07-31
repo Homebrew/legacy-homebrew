@@ -8,6 +8,8 @@ class Stack < Formula
   url "https://github.com/commercialhaskell/stack/archive/v0.1.2.0.tar.gz"
   sha256 "20ff0a36f773c2993e00c6f1bffaa33e881906d20f66cde0d557133842fc464c"
 
+  head "https://github.com/commercialhaskell/stack.git"
+
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
