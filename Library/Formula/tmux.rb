@@ -34,12 +34,12 @@ class Tmux < Formula
     system "make", "install"
 
     bash_completion.install "examples/bash_completion_tmux.sh" => "tmux"
-    (share/"tmux").install "examples"
+    pkgshare.install "examples"
   end
 
   def caveats; <<-EOS.undent
     Example configurations have been installed to:
-      #{share}/tmux/examples
+      #{pkgshare}/examples
     EOS
   end
 
