@@ -4,6 +4,12 @@ class Fq < Formula
   url "https://github.com/circonus-labs/fq/archive/v0.9.1.tar.gz"
   sha256 "9fd8d51211a5ebe776c0e4e61a9d4475ba39e4597fe5cd45ea9a1043da3cf4ef"
 
+  bottle do
+    sha256 "908fdba172e7d559382baeab3d36a5a9792042a3051dc539489f7c922a82fc1a" => :yosemite
+    sha256 "3e48aaf8bc11985c72030cd1868daf82b7de9227f129f15c98d54242827f2397" => :mavericks
+    sha256 "43310698b968c5d252498889d0489d3d8449d3a5f6d3f431fb004fa69f4df6e7" => :mountain_lion
+  end
+
   depends_on "concurrencykit"
   depends_on "jlog"
   depends_on "openssl"
