@@ -109,22 +109,17 @@ class Openssl < Formula
       /System/Library/Keychains/SystemRootCertificates.keychain
     ]
 
-    certs_list = `security find-certificate -a -p #{keychains.join(" ")}`
-    certs = certs_list.scan(
-      /-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m
-    )
-
-    valid_certs = certs.select do |cert|
-      IO.popen("openssl x509 -inform pem -checkend 0 -noout", "w") do |openssl_io|
-        openssl_io.write(cert)
-        openssl_io.close_write
-      end
-
-      $?.success?
-    end
+    # We filter out:
+    # * Not yet valid certificates
+    # * Expired certificates
+    certs = `security find-certificate -a -p #{keychains.join(" ")}`
+            .scan(/-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/m)
+            .map { |pem| OpenSSL::X509::Certificate.new pem }
+            .reject { |cert| cert.not_before > Time.now }
+            .reject { |cert| cert.not_after < Time.now }
 
     openssldir.mkpath
-    (openssldir/"cert.pem").atomic_write(valid_certs.join("\n"))
+    (openssldir/"cert.pem").atomic_write(certs.map(&:to_pem).join("\n"))
   end
 
   def caveats; <<-EOS.undent
