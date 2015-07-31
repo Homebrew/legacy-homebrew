@@ -7,9 +7,9 @@ class Euca2ools < Formula
 
   bottle do
     cellar :any
-    sha256 "e6bafd8e267f6c685546518aec24fb3fd42d38fdea9c0afffdb89a99a9b8a9e6" => :yosemite
-    sha256 "1b8b1f2d726a702bd726e231cae76b4304fed808e6052464ab54aa8040c9804b" => :mavericks
-    sha256 "05983e41263f7796f8fab91e9d9099ec604cb964fea0452aa77ef3bbeb4dac4b" => :mountain_lion
+    sha256 "8c7ef23097472b3b801d13abdfb4d416ea8156ea69915b5ab09051f7bbc1e4c8" => :yosemite
+    sha256 "fe63a3a7c44cd0f276962ff87e3f39d02ed667f09006f1357a30ce96616a0b34" => :mavericks
+    sha256 "fd09cae80f9a8648fc1a7048bd8eb3f2856c6df746baeae2ded8f33829eafb5b" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
