@@ -14,9 +14,16 @@ class Sandbox
   end
 
   def self.print_autodisable_warning
-    unless @print_autodisable_warning
+    unless @printed_autodisable_warning
       opoo "The sandbox cannot be used in debug or interactive mode."
-      @print_autodisable_warning = true
+      @printed_autodisable_warning = true
+    end
+  end
+
+  def self.print_sandbox_message
+    unless @printed_sandbox_message
+      ohai "Using the sandbox"
+      @printed_sandbox_message = true
     end
   end
 
