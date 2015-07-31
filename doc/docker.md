@@ -6,7 +6,7 @@ To get started:
 
     docker run -d -p 8090:8090 velvia/spark-jobserver:0.5.2-SNAPSHOT
 
-This will start job server on port 8090 in a container, and expose that port to the host on which you run the container.
+This will start job server on port 8090 in a container, with H2 database and Mesos support, and expose that port to the host on which you run the container.
 
 If you would like to debug job server using JMX / VisualVM etc., then also expose port 9999.
 

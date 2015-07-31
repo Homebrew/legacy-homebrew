@@ -102,8 +102,7 @@ object JobServerBuild extends Build {
       val artifact = (AssemblyKeys.outputPath in AssemblyKeys.assembly in jobServerExtras).value
       val artifactTargetPath = s"/app/${artifact.name}"
       new sbtdocker.mutable.Dockerfile {
-        // Alternatively, find, download and unpack the correct Spark distro....
-        from(s"sequenceiq/spark:$sparkVersion")
+        from("ottoops/mesos-java7")
         // Dockerfile best practices: https://docs.docker.com/articles/dockerfile_best-practices/
         expose(8090)
         expose(9999)    // for JMX
@@ -115,8 +114,15 @@ object JobServerBuild extends Build {
         copy(baseDirectory(_ / "config" / "docker.sh").value, file("app/settings.sh"))
         // Including envs in Dockerfile makes it easy to override from docker command
         env("JOBSERVER_MEMORY", "1G")
+        env("SPARK_HOME", "/spark")
+        env("SPARK_BUILD", s"spark-${sparkVersion}-bin-hadoop2.4")
         // Use a volume to persist database between container invocations
         run("mkdir", "-p", "/database")
+        runRaw("""wget http://d3kbcqa49mib13.cloudfront.net/$SPARK_BUILD.tgz && \
+                  tar -xvf $SPARK_BUILD.tgz && \
+                  mv $SPARK_BUILD /spark && \
+                  rm $SPARK_BUILD.tgz
+               """)
         volume("/database")
         entryPoint("app/server_start.sh")
       }
