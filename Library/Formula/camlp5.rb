@@ -5,9 +5,9 @@ class Camlp5 < Formula
   sha256 "09f9ed12893d2ec39c88106af2306865c966096bedce0250f2fe52b67d2480e2"
 
   bottle do
-    sha256 "aa844f23752518cdfceba1513388c90b273a78219f1b671809791acebe71fb87" => :yosemite
-    sha256 "de39f4abfd0f57a73d6d45850bd8e3b82f78e25f217649b51b4bc32b0df65df4" => :mavericks
-    sha256 "c5f5d96059f168aee1c86ea8c47789e27bc542baefa351eed463cb3f9c605df5" => :mountain_lion
+    sha256 "0f8a0cf06129ef87819e72d9eba821322d9d41e6ef85ffda19ce7753ac7e8b3e" => :yosemite
+    sha256 "4780b3746a506a52e9921fef376f47e283670610c67875182979cd9bf7e8f2a0" => :mavericks
+    sha256 "60312c75054d1db597c8afaf2d0563d41e192480531b74b2ad40908e36bbfb8b" => :mountain_lion
   end
 
   depends_on "objective-caml"
