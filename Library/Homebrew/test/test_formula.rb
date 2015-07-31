@@ -25,6 +25,20 @@ class FormulaTests < Homebrew::TestCase
     assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
   end
 
+  def test_any_version_installed?
+    f = formula do
+      url 'foo'
+      version '1.0'
+    end
+    refute_predicate f, :any_version_installed?
+    prefix = HOMEBREW_CELLAR+f.name+"0.1"
+    prefix.mkpath
+    FileUtils.touch (prefix+Tab::FILENAME)
+    assert_predicate f, :any_version_installed?
+  ensure
+    f.rack.rmtree
+  end
+
   def test_installed?
     f = Testball.new
     f.stubs(:installed_prefix).returns(stub(:directory? => false))
@@ -170,6 +184,27 @@ class FormulaTests < Homebrew::TestCase
     assert_version_equal "0.1", f.stable.version
     assert_version_equal "0.2", f.devel.version
     assert_version_equal "HEAD", f.head.version
+  end
+
+  def test_formula_set_active_spec
+    f = formula do
+      url 'foo'
+      version '1.0'
+      revision 1
+
+      devel do
+        url 'foo'
+        version '1.0beta'
+      end
+    end
+    assert_equal :stable, f.active_spec_sym
+    assert_equal f.stable, f.send(:active_spec)
+    assert_equal "1.0_1", f.pkg_version.to_s
+    f.set_active_spec(:devel)
+    assert_equal :devel, f.active_spec_sym
+    assert_equal f.devel, f.send(:active_spec)
+    assert_equal "1.0beta_1", f.pkg_version.to_s
+    assert_raises(FormulaSpecificationError) { f.set_active_spec(:head) }
   end
 
   def test_path
