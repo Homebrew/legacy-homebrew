@@ -2,9 +2,21 @@ require "dependable"
 
 # A dependency on another Homebrew formula.
 class Dependency
+  class DependencyMergeConflict < RuntimeError
+    def initialize(formulae)
+      super <<-EOS.undent
+        Cannot merge dependencies, multiple conflicting formalae are requested.
+         * #{formulae.join("\n * ")}
+      EOS
+    end
+  end
+
   include Dependable
 
   attr_reader :name, :tags, :env_proc, :option_name
+
+  # @private
+  attr_accessor :owner_tap, :formula
 
   DEFAULT_ENV_PROC = proc {}
 
@@ -29,9 +41,32 @@ class Dependency
   end
 
   def to_formula
-    formula = Formulary.factory(name)
-    formula.build = BuildOptions.new(options, formula.options)
-    formula
+    return @formula if @formula
+
+    if owner_tap.nil? || name =~ HOMEBREW_TAP_FORMULA_REGEX
+      @formula = Formulary.factory(name)
+    else
+      begin
+        @formula = Formulary.factory("#{owner_tap}/#{name}")
+      rescue FormulaUnavailableError
+        @formula = Formulary.factory(name)
+        unless @formula.core_formula? or (@@warned_cross_tap_dependency ||= []).include?(name)
+          provider = if owner_tap == "Homebrew/homebrew"
+            "core"
+          else
+            "either #{owner_tap} or core"
+          end
+          opoo <<-EOS.undent
+            #{name} is required but is not provided by #{provider}.
+            We are installing from #{@formula.tap} instead.
+            You may wish to contact the author of #{owner_tap} to report this.
+          EOS
+          @@warned_cross_tap_dependency << name
+        end
+      end
+    end
+    @formula.build = BuildOptions.new(options, @formula.options)
+    @formula
   end
 
   def installed?
@@ -52,7 +87,7 @@ class Dependency
   end
 
   def inspect
-    "#<#{self.class.name}: #{name.inspect} #{tags.inspect}>"
+    "#<#{self.class.name}: #{name.inspect} #{tags.inspect} owner_tap=#{owner_tap.inspect}>"
   end
 
   # Define marshaling semantics because we cannot serialize @env_proc
@@ -122,10 +157,20 @@ class Dependency
       grouped = all.group_by(&:name)
 
       all.map(&:name).uniq.map do |name|
-        deps = grouped.fetch(name)
-        dep  = deps.first
-        tags = deps.flat_map(&:tags).uniq
-        dep.class.new(name, tags, dep.env_proc)
+        deps     = grouped.fetch(name)
+        dep      = deps.first
+        tags     = deps.flat_map(&:tags).uniq
+        formulae = deps.flat_map(&:to_formula)
+        formula  = formulae.first
+
+        unless (formula_names = formulae.map(&:full_name).uniq).size == 1
+          raise DependencyMergeConflict.new(formula_names)
+        end
+
+        merged_dep = dep.class.new(name, tags, dep.env_proc, dep.option_name)
+        merged_dep.formula = formula
+        merged_dep.formula.build = BuildOptions.new(merged_dep.options, formula.options)
+        merged_dep
       end
     end
   end
