@@ -20,6 +20,10 @@ class Ldc < Formula
   depends_on "libconfig"
 
   def install
+    # Fix the error:
+    # CMakeFiles/LDCShared.dir/build.make:68: recipe for target 'dmd2/id.h' failed
+    ENV.deparallelize if OS.linux?
+
     ENV.cxx11
     mkdir "build"
     cd "build" do
