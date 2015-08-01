@@ -1,8 +1,9 @@
 class Jpegoptim < Formula
   desc "Utility to optimize JPEG files"
   homepage "https://github.com/tjko/jpegoptim"
-  url "https://github.com/tjko/jpegoptim/archive/RELEASE.1.4.2.tar.gz"
-  sha1 "7eb558f2fa240d6ef2f8476aa8ea51f7903666ad"
+  url "https://github.com/tjko/jpegoptim/archive/RELEASE.1.4.3.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/j/jpegoptim/jpegoptim_1.4.3.orig.tar.gz"
+  sha256 "f892f5917c8dd8259d319df204e4bc13806b90389041ca7a4a24d8a5c25c7013"
   head "https://github.com/tjko/jpegoptim.git"
 
   bottle do
