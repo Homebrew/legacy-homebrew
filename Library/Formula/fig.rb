@@ -78,8 +78,19 @@ class Fig < Formula
     bash_completion.install "contrib/completion/bash/docker-compose"
     zsh_completion.install "contrib/completion/zsh/_docker-compose"
 
+    # allow PYTHONWARNINGS to squelch irrelevant InsecurePlatformWarning
+    # https://github.com/Homebrew/homebrew/issues/41766
+    # https://github.com/shazow/urllib3/issues/602
+    inreplace libexec/"vendor/lib/python2.7/site-packages/requests/packages/urllib3/__init__.py" do |s|
+      s.gsub! "warnings.simplefilter('always', exceptions.SecurityWarning)",
+              "warnings.simplefilter('always', exceptions.SecurityWarning, append=True)"
+      s.gsub! "warnings.simplefilter('default', exceptions.InsecurePlatformWarning)",
+              "warnings.simplefilter('default', exceptions.InsecurePlatformWarning, append=True)"
+    end
+
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"],
+                                            :PYTHONWARNINGS => "ignore")
     ln_s bin/"docker-compose", bin/"fig"
   end
 
