@@ -1,5 +1,5 @@
 class Libffi < Formula
-  desc "A portable Foreign Function Interface library"
+  desc "Portable Foreign Function Interface library"
   homepage "https://sourceware.org/libffi/"
   url "https://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.13.tar.gz"
   mirror "ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz"

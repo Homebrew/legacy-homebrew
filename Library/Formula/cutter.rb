@@ -1,5 +1,5 @@
 class Cutter < Formula
-  desc "a Unit Testing Framework for C and C++"
+  desc "Unit Testing Framework for C and C++"
   homepage "http://cutter.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cutter/cutter/1.2.4/cutter-1.2.4.tar.gz"
   sha256 "b917a5b67b1d5f24458db5ab177dc11d23b47f04f9cb7eef757f456483c629c6"

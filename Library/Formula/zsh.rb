@@ -1,5 +1,5 @@
 class Zsh < Formula
-  desc "A UNIX shell (command interpreter)"
+  desc "UNIX shell (command interpreter)"
   homepage "http://www.zsh.org/"
   url "https://downloads.sourceforge.net/project/zsh/zsh/5.0.8/zsh-5.0.8.tar.bz2"
   mirror "http://www.zsh.org/pub/zsh-5.0.8.tar.bz2"
