@@ -1,10 +1,8 @@
-require "formula"
-
 class Scons < Formula
   desc "Substitute for classic 'make' tool with autoconf/automake functionality"
   homepage "http://www.scons.org"
-  url "https://downloads.sourceforge.net/scons/scons-2.3.5.tar.gz"
-  sha256 "8a8993e1914801ace5ce83c92bf4c43127669750e9dec8eb93574e57729e9c42"
+  url "https://downloads.sourceforge.net/project/scons/scons/2.3.6/scons-2.3.6.tar.gz"
+  sha256 "98adaa351d8f4e4068a5bf1894bdd7f85b390c8c3f80d437cf8bb266012404df"
 
   bottle do
     cellar :any
@@ -14,7 +12,6 @@ class Scons < Formula
   end
 
   def install
-    bin.mkpath # Script won't create this if it doesn't already exist
     man1.install gzip("scons-time.1", "scons.1", "sconsign.1")
     system "/usr/bin/python", "setup.py", "install",
              "--prefix=#{prefix}",
@@ -32,5 +29,18 @@ class Scons < Formula
       mv p, "#{libexec}/#{p.basename}.py"
       bin.install_symlink "#{libexec}/#{p.basename}.py" => p.basename
     end
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+        printf("Homebrew");
+      }
+    EOS
+    (testpath/"SConstruct").write "Program('test.c')"
+    system bin/"scons"
+    assert_equal "Homebrew", shell_output("#{testpath}/test")
   end
 end
