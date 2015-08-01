@@ -6,9 +6,9 @@ class Gitbucket < Formula
 
   bottle do
     cellar :any
-    sha256 "11ec3f54dca6e54515feaae91ed666dce516f0ad5586920934516fb18d38e25f" => :yosemite
-    sha256 "e817a050e05128c5c30da71391e044997646e090611ac2bbe53a76ed249e7309" => :mavericks
-    sha256 "aa767e27d98c81fe402588f0780d1f58b84b2042c5c2e43b0aa929f6dbfa1969" => :mountain_lion
+    sha256 "5607d41d7a351c243fa23898f15bb8b91cce6044069d3e0a994467cfc3ebb859" => :yosemite
+    sha256 "1ebcb9865318411a998fbd9299952762f746d3408ab44eb1d1fe113b324496f2" => :mavericks
+    sha256 "df163b51ed70f10f1809ed26e3cbe40c16057c056fd2641cfde70a23a6666290" => :mountain_lion
   end
 
   head do
