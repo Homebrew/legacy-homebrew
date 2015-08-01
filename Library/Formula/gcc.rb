@@ -21,9 +21,21 @@ class Gcc < Formula
 
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
-  sha256 "5f835b04b5f7dd4f4d2dc96190ec1621b8d89f2dc6f638f9f8bc1b1014ba8cad"
+  head "https://github.com/gcc-mirror/gcc.git"
+
+  stable do
+    url "http://ftpmirror.gnu.org/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
+    sha256 "5f835b04b5f7dd4f4d2dc96190ec1621b8d89f2dc6f638f9f8bc1b1014ba8cad"
+
+    # Fix for ISL 0.15; merged upstream
+    # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66732
+    # https://github.com/gcc-mirror/gcc/commit/a26dad6a5955ed8574efc8d149faca3963a48d46
+    patch do
+      url "https://gist.github.com/dunn/8c79e473fdf78c9056dc/raw/8a8cdb03eb7469fa575c1741a519e6202eb25155/gcc-5.2.0-isl-min.diff"
+      sha256 "86635aaeb5a7fd1ad839ebc526a828438aa54b0180bf6f6e5913ebb9307261d1"
+    end
+  end
   revision 1
 
   bottle do
@@ -117,7 +129,7 @@ class Gcc < Formula
       "--with-build-config=bootstrap-debug",
       "--disable-werror",
       "--with-pkgversion=Homebrew #{name} #{pkg_version} #{build.used_options*" "}".strip,
-      "--with-bugurl=https://github.com/Homebrew/homebrew/issues"
+      "--with-bugurl=https://github.com/Homebrew/homebrew/issues",
     ]
 
     # "Building GCC with plugin support requires a host that supports
@@ -178,7 +190,7 @@ class Gcc < Formula
         "#{lib}/gcc/#{version_suffix}/logging.properties",
         "#{lib}/gcc/#{version_suffix}/security/classpath.security",
         "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
-        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security"
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file
