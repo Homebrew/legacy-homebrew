@@ -23,9 +23,38 @@ class Rtags < Formula
   end
 
   test do
-    # not using shell_output because on HEAD the exit code will be 0, but on
-    # stable it will be 1.
-    cmd = "#{bin}/rc --help"
-    assert_match /rc options/, `#{cmd}`
+    mkpath testpath/"src"
+    (testpath/"src/foo.c").write(<<-END.undent)
+        void zaphod() {
+        }
+
+        void beeblebrox() {
+          zaphod();
+        }
+        END
+    (testpath/"src/README").write(<<-END.undent)
+        42
+      END
+    rdm = spawn("sh", "-c", "#{bin}/rdm -L log >/dev/null 2>&1")
+    def pause
+      slept = 0
+      while slept < 5
+        Kernel.system "#{bin}/rc --is-indexing >/dev/null 2>&1"
+        if $? == 0
+          break
+        end
+        dt = 0.01
+        sleep dt
+        slept += dt
+      end
+    end
+    pause
+    system "sh", "-c", "echo clang -c src/foo.c | #{bin}/rc -c"
+    assert_equal $?, 0
+    pause
+    assert_match /foo\.c:1:6/, shell_output("#{bin}/rc -f src/foo.c:5:3")
+    system "#{bin}/rc", "-q"
+    assert_equal $?, 0
+    Process.wait(rdm)
   end
 end
