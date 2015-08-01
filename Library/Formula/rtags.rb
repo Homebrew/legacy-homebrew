@@ -35,7 +35,11 @@ class Rtags < Formula
     (testpath/"src/README").write(<<-END.undent)
         42
       END
-    rdm = spawn("sh", "-c", "#{bin}/rdm -L log >/dev/null 2>&1")
+    rdm = fork do
+      $stdout.reopen("/dev/null")
+      $stderr.reopen("/dev/null")
+      exec "#{bin}/rdm", "-L", "log"
+    end
     def pause
       slept = 0
       while slept < 5
