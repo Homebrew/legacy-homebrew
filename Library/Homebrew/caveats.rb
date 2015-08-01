@@ -16,6 +16,7 @@ class Caveats
     caveats << plist_caveats
     caveats << python_caveats
     caveats << app_caveats
+    caveats << sbin_caveats
     caveats.compact.join("\n")
   end
 
@@ -194,5 +195,17 @@ class Caveats
       s << "" << "WARNING: launchctl will fail when run under tmux." if ENV["TMUX"]
     end
     s.join("\n") unless s.empty?
+  end
+
+  def sbin_caveats
+    paths = ENV["PATH"].split(File::PATH_SEPARATOR)
+    sbin_path_missing = !(paths.include? (HOMEBREW_PREFIX/"sbin").to_s)
+    return unless keg && (keg/"sbin").directory? && sbin_path_missing
+    <<-EOS.undent
+      Homebrew's sbin was not found in your PATH but this formula
+      put executables in #{HOMEBREW_PREFIX}/sbin. Consider including
+      #{HOMEBREW_PREFIX}/sbin in your PATH by doing something like:
+          echo 'export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH"' >> #{shell_profile}      
+    EOS
   end
 end
