@@ -13,9 +13,7 @@ class Webarchiver < Formula
   end
 
   test do
-    mktemp do
-      system "webarchiver", "-url", "http://www.google.com", "-output", "foo.webarchive"
-      assert_match /Apple binary property list/, shell_output("file foo.webarchive", 0)
-    end
+    system "webarchiver", "-url", "http://www.google.com", "-output", "foo.webarchive"
+    assert_match /Apple binary property list/, shell_output("file foo.webarchive", 0)
   end
 end
