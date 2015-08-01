@@ -9,9 +9,9 @@ class Openjpeg < Formula
 
   bottle do
     cellar :any
-    sha1 "c4f3c9cc6bbc264aa7f1a4aefc06c6fa75596a14" => :yosemite
-    sha1 "c93cbb9697d0ec93eb90673861387220f6ec0f13" => :mavericks
-    sha1 "adf2186e0a1962e495cd6e1d17ec89087dd48635" => :mountain_lion
+    sha256 "48a46a59c9e2ce3bd5f0658b4228151cd865ebaff551ae9885646ee35c20dd89" => :yosemite
+    sha256 "63eb21603315fe49f0ed32226e08ab53c9fc7b232869d05959dc8240d51a7c2b" => :mavericks
+    sha256 "1b3651ee19bd39d9a9877a3ff95736a78a419a437a6629f3ee2f85fc98e8872c" => :mountain_lion
   end
 
   depends_on "cmake" => :build
