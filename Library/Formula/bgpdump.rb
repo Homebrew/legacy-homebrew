@@ -3,6 +3,7 @@ class Bgpdump < Formula
   homepage "https://bitbucket.org/ripencc/bgpdump/wiki/Home"
   url "https://bitbucket.org/ripencc/bgpdump/get/1.4.99.15.tar.gz"
   sha256 "6da4ef4020345c68a2551460919ec02b7b63c194324e209fc73bea9889fb5c7c"
+
   bottle do
     cellar :any
     sha256 "b891499f28cf91dcc347eaca860d2cb69945c52a65827b634da27cf79b933b0e" => :yosemite
