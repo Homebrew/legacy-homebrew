@@ -6,7 +6,6 @@ class Pulledpork < Formula
   head "http://pulledpork.googlecode.com/svn/trunk/"
 
   depends_on "Switch" => :perl
-  depends_on "Crypt::SSLeay" => :perl
 
   def install
     bin.install "pulledpork.pl"

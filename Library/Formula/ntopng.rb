@@ -5,6 +5,7 @@ class Ntopng < Formula
   homepage "http://www.ntop.org/products/ntop/"
   url "https://downloads.sourceforge.net/project/ntop/ntopng/ntopng-2.0.tar.gz"
   sha1 "ef8ec9a31637445ab3797930d27b448071239348"
+  head "https://github.com/ntop/ntopng"
 
   bottle do
     sha256 "c3a9c8be354c9fd3cbed7f84a6b9585d2b2d9bd1111a44e68c37694ea85707ba" => :yosemite
