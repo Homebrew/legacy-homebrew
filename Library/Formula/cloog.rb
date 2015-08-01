@@ -1,9 +1,8 @@
 class Cloog < Formula
   desc "Generate code for scanning Z-polyhedra"
   homepage "http://www.cloog.org/"
-  url "http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.3.tar.gz"
-  sha256 "460c6c740acb8cdfbfbb387156b627cf731b3837605f2ec0001d079d89c69734"
-  revision 1
+  url "http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.4.tar.gz"
+  sha256 "325adf3710ce2229b7eeb9e84d3b539556d093ae860027185e7af8a8b00a750e"
 
   bottle do
     cellar :any
@@ -35,7 +34,7 @@ class Cloog < Formula
       "--with-gmp=system",
       "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
       "--with-isl=system",
-      "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
+      "--with-isl-prefix=#{Formula["isl"].opt_prefix}",
     ]
 
     args << "--with-osl=bundled" if build.head?
@@ -62,6 +61,6 @@ class Cloog < Formula
     EOS
 
     output = shell_output("#{bin}/cloog #{testpath}/test")
-    assert_match %r{Generated from /dev/stdin by CLooG}, output
+    assert_match %r{Generated from #{testpath}/test by CLooG}, output
   end
 end
