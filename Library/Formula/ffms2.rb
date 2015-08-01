@@ -1,5 +1,5 @@
 class Ffms2 < Formula
-  desc "A libav/ffmpeg based source library and Avisynth plugin"
+  desc "Libav/ffmpeg based source library and Avisynth plugin"
   homepage "https://github.com/FFMS/ffms2"
   url "https://github.com/FFMS/ffms2/archive/2.20.tar.gz"
   sha256 "c7d880172756c253f2c5673044dabf03c19890dcfe64da5104ee9f42a1a573a0"

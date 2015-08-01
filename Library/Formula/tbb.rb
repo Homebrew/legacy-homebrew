@@ -1,5 +1,5 @@
 class Tbb < Formula
-  desc "A rich and complete approach to parallelism in C++"
+  desc "Rich and complete approach to parallelism in C++"
   homepage "https://www.threadingbuildingblocks.org/"
   url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20150611oss_src.tgz"
   sha1 "5457cd15ad13625442283e67844199a79e88a3a4"

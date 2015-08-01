@@ -1,7 +1,7 @@
 require "formula"
 
 class Clasp < Formula
-  desc "An answer set solver for (extended) normal logic programs"
+  desc "Answer set solver for (extended) normal logic programs"
   homepage "http://potassco.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/potassco/clasp/3.1.2/clasp-3.1.2-source.tar.gz"
   sha256 "77d5b8fc9617436f7ba37f3c80ad2ce963dfefb7ddaf8ae14d5a4f40a30cc9d3"

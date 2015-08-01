@@ -1,5 +1,5 @@
 class Hayai < Formula
-  desc "A C++ benchmarking framework inspired by the googletest framework"
+  desc "C++ benchmarking framework inspired by the googletest framework"
   homepage "http://nickbruun.dk/2012/02/07/easy-cpp-benchmarking"
   url "https://github.com/nickbruun/hayai/archive/v1.0.1.tar.gz"
   sha256 "40798cb3a7b5fcd4e0be65f9358dad4efeef7c4ebe8319327d99a2b8e5dcea4c"
