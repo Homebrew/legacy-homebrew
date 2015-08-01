@@ -1,7 +1,7 @@
 class ClangFormat < Formula
   desc "C, C++, Obj-C, Java, JavaScript, TypeScript formatting tools and editor plugins"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-06-18"
+  version "2015-07-31"
 
   bottle do
     cellar :any
@@ -11,15 +11,15 @@ class ClangFormat < Formula
   end
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-06-18/", :using => :svn
+    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-07-31/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-06-18/", :using => :svn
+      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-07-31/", :using => :svn
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.0/libcxx-3.6.0.src.tar.xz"
-      sha1 "5445194366ae2291092fd2204030cb3d01ad6272"
+      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
+      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
     end
   end
 
@@ -31,8 +31,8 @@ class ClangFormat < Formula
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.0/libcxx-3.6.0.src.tar.xz"
-      sha1 "5445194366ae2291092fd2204030cb3d01ad6272"
+      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
+      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
     end
   end
 
