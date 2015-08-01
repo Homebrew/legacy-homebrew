@@ -174,7 +174,7 @@ module FormulaCellarChecks
   end
 
   def check_emacs_lisp(share, name)
-    return unless share.directory?
+    return unless (share/"emacs/site-lisp").directory?
 
     # Emacs itself can do what it wants
     return if name == "emacs"
