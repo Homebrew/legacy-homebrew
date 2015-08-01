@@ -26,4 +26,16 @@ class Liblinear < Formula
     lib.install_symlink "liblinear.dylib" => "liblinear.1.dylib"
     include.install "linear.h"
   end
+
+  test do
+    (testpath/"train_classification.txt").write <<-EOS.undent
+    +1 201:1.2 3148:1.8 3983:1 4882:1
+    -1 874:0.3 3652:1.1 3963:1 6179:1
+    +1 1168:1.2 3318:1.2 3938:1.8 4481:1
+    +1 350:1 3082:1.5 3965:1 6122:0.2
+    -1 99:1 3057:1 3957:1 5838:0.3
+    EOS
+
+    system "#{bin}/train", "train_classification.txt"
+  end
 end
