@@ -37,13 +37,8 @@ class Coreutils < Formula
       --program-prefix=g
     ]
     args << "--without-gmp" if build.without? "gmp"
-
-    src = Pathname.pwd
-    mktemp do
-      system "#{src}/configure", *args
-      system "make", "install"
-      install_dsym if build.dsym?
-    end
+    system "./configure", *args
+    system "make", "install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix
     coreutils_filenames(bin).each do |cmd|

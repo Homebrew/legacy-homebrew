@@ -139,11 +139,6 @@ class Git < Formula
     # If you need it, install git --with-brewed-openssl.
     rm "#{libexec}/git-core/git-imap-send" if build.without? "brewed-openssl"
 
-    if build.dsym?
-      install_dsym
-      system "make", "clean"
-    end
-
   end
 
   def caveats; <<-EOS.undent

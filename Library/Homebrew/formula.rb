@@ -844,6 +844,27 @@ class Formula
     end
   end
 
+  def commit_source
+    if not build.dsym?
+      return
+    end
+
+    safe_system "git", "add", "-A"
+
+    status = `git status --porcelain`
+    if $? != 0
+      raise ErrorDuringExecution.new("git", ["status", "--porcelain"])
+    end
+
+    if status == ""
+      #nothing to commit
+      return
+    end
+
+    safe_system "git", "commit", "--quiet", "-m", "Homebrew automatic commit: saving source",
+                "--author=Homebrew <brew-auto-commit@brew.sh>"
+  end
+
   protected
 
   def setup_test_home home

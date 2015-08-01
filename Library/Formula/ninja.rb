@@ -1,34 +1,9 @@
-
-class GitPatchDownloadStrategy < GitDownloadStrategy
-  def initialize(name, resource)
-    super
-    @baseref = meta[:base]
-  end
-
-  def stage
-    Homebrew.system("git", "-C", cached_location, "diff", @baseref, @ref) do
-      $stdout.reopen("patch")
-    end
-  end
-end
-
 class Ninja < Formula
   desc "Small build system for use with gyp or CMake"
   homepage "https://martine.github.io/ninja/"
+  url "https://github.com/martine/ninja/archive/v1.6.0.tar.gz"
+  sha256 "b43e88fb068fe4d92a3dfd9eb4d19755dae5c33415db2e9b7b61b4659009cde7"
   head "https://github.com/martine/ninja.git"
-  stable do
-    url "https://github.com/martine/ninja/archive/v1.6.0.tar.gz"
-    sha256 "b43e88fb068fe4d92a3dfd9eb4d19755dae5c33415db2e9b7b61b4659009cde7"
-    patch :p1 do
-      # cherry-pick from HEAD
-      #   d3441a0 Search for generated headers relative to build dir.
-      #   1beea93 Allow configure script to bootstrap out of source.
-      url "https://github.com/martine/ninja.git",
-          :using    => GitPatchDownloadStrategy,
-          :revision => "d3441a03386e0d1766c1a4b79d5fa5098786860f",
-          :base     => "a05d4644d13624e716093fc4bd88a21e6d20223c"
-    end
-  end
 
   bottle do
     cellar :any
@@ -46,20 +21,16 @@ class Ninja < Formula
   end
 
   def install
-    mktemp do
-      system "python", "#{buildpath}/configure.py", "--bootstrap"
+    system "python", "configure.py", "--bootstrap"
 
-      if build.with? "tests"
-        (buildpath/"gtest").install resource("gtest")
-        system buildpath/"configure.py", "--with-gtest=gtest"
-        system "./ninja", "ninja_test"
-        system "./ninja_test", "--gtest_filter=-SubprocessTest.SetWithLots"
-      end
-
-      bin.install "ninja"
-      install_dsym if build.dsym?
+    if build.with? "tests"
+      (buildpath/"gtest").install resource("gtest")
+      system buildpath/"configure.py", "--with-gtest=gtest"
+      system buildpath/"ninja", "ninja_test"
+      system buildpath/"ninja_test", "--gtest_filter=-SubprocessTest.SetWithLots"
     end
 
+    bin.install "ninja"
     bash_completion.install "misc/bash-completion" => "ninja-completion.sh"
     zsh_completion.install "misc/zsh-completion" => "_ninja"
   end

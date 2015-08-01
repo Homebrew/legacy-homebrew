@@ -41,11 +41,6 @@ class Ispell < Formula
 
     (lib/"ispell").mkpath
     system "make", "install"
-
-    if build.dsym?
-      install_dsym
-      system "make", "clean"
-    end
   end
 
   test do

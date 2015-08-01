@@ -59,23 +59,19 @@ class Sqlite < Formula
 
     ENV.universal_binary if build.universal?
 
-    src = Pathname.pwd
-    mktemp do
-      system "#{src}/configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
-      system "make", "install"
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
+    system "make", "install"
 
-      if build.with? "functions"
-        buildpath.install resource("functions")
-        system ENV.cc, "-fno-common",
-               "-dynamiclib",
-               "#{src}/extension-functions.c",
-               "-o", "libsqlitefunctions.dylib",
-               *ENV.cflags.to_s.split
-        lib.install "libsqlitefunctions.dylib"
-      end
-      doc.install resource("docs") if build.with? "docs"
-      install_dsym if build.dsym?
+    if build.with? "functions"
+      buildpath.install resource("functions")
+      system ENV.cc, "-fno-common",
+                     "-dynamiclib",
+                     "extension-functions.c",
+                     "-o", "libsqlitefunctions.dylib",
+                     *ENV.cflags.to_s.split
+      lib.install "libsqlitefunctions.dylib"
     end
+    doc.install resource("docs") if build.with? "docs"
   end
 
   def caveats
