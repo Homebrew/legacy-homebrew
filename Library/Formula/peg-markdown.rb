@@ -1,5 +1,5 @@
 class PegMarkdown < Formula
-  desc "A Markdown implementation based on a PEG grammar"
+  desc "Markdown implementation based on a PEG grammar"
   homepage "https://github.com/jgm/peg-markdown"
   url "https://github.com/jgm/peg-markdown/archive/0.4.14.tar.gz"
   sha256 "111bc56058cfed11890af11bec7419e2f7ccec6b399bf05f8c55dae0a1712980"

@@ -1,5 +1,5 @@
 class Ice < Formula
-  desc "A comprehensive RPC framework"
+  desc "Comprehensive RPC framework"
   homepage "https://zeroc.com"
   url "https://github.com/zeroc-ice/ice/archive/v3.6.0.tar.gz"
   sha256 "77933580cdc7fade0ebfce517935819e9eef5fc6b9e3f4143b07404daf54e25e"
