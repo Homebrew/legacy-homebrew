@@ -3,8 +3,8 @@ require "formula"
 class Clasp < Formula
   desc "An answer set solver for (extended) normal logic programs"
   homepage "http://potassco.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/potassco/clasp/3.1.1/clasp-3.1.1-source.tar.gz"
-  sha1 "01a35f05fb4c138bb0bfd8759f36b2eebafa7069"
+  url "https://downloads.sourceforge.net/project/potassco/clasp/3.1.2/clasp-3.1.2-source.tar.gz"
+  sha256 "77d5b8fc9617436f7ba37f3c80ad2ce963dfefb7ddaf8ae14d5a4f40a30cc9d3"
 
   bottle do
     cellar :any
@@ -34,5 +34,9 @@ class Clasp < Formula
     bin.mkpath
     system "./configure.sh", *args
     system "make", "-C", build_dir, "install"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/clasp --version")
   end
 end
