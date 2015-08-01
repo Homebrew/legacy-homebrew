@@ -11,7 +11,12 @@ class Cowpatty < Formula
     sha256 "35fba0f92c5e8fb0710453d0c2c5fe5e9c64857dd53b219977871340b22c4942"
   end
 
+  def patches
+    [ "http://proton.cygnusx-1.org/~edgan/cowpatty/cowpatty-4.6-fixup16.patch" ]
+  end
+
   def install
+    system "make"
     system "make", "BINDIR=#{bin}", "install"
   end
 
