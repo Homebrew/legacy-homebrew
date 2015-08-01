@@ -1,9 +1,6 @@
 class Collectd < Formula
   desc "Statistics collection and monitoring daemon"
   homepage "https://collectd.org/"
-  url "https://collectd.org/files/collectd-5.5.0.tar.bz2"
-  mirror "http://pkgs.fedoraproject.org/repo/pkgs/collectd/collectd-5.5.0.tar.bz2/c39305ef5514b44238b0d31f77e29e6a/collectd-5.5.0.tar.bz2"
-  sha256 "847684cf5c10de1dc34145078af3fcf6e0d168ba98c14f1343b1062a4b569e88"
 
   bottle do
     sha256 "b35bfeb9b9e5318e502c7e2a76eee1508dcf3739df96554b89f3ee49e38d6b48" => :yosemite
@@ -17,6 +14,17 @@ class Collectd < Formula
     depends_on "libtool" => :build
     depends_on "automake" => :build
     depends_on "autoconf" => :build
+  end
+
+  stable do
+    url "https://collectd.org/files/collectd-5.5.0.tar.bz2"
+    mirror "http://pkgs.fedoraproject.org/repo/pkgs/collectd/collectd-5.5.0.tar.bz2/c39305ef5514b44238b0d31f77e29e6a/collectd-5.5.0.tar.bz2"
+    sha256 "847684cf5c10de1dc34145078af3fcf6e0d168ba98c14f1343b1062a4b569e88"
+
+    patch do
+      url "https://github.com/collectd/collectd/commit/e0683047a42e217c352c2419532b8e029f9f3f0a.diff"
+      sha256 "7053170a072d27465b69eed269d32190ec810bcb0db59f139a1682e71a326fdd"
+    end
   end
 
   # Will fail against Java 1.7
@@ -39,6 +47,10 @@ class Collectd < Formula
   end
 
   def install
+    # collectd breaks with makejobs
+    # see: https://github.com/collectd/collectd/issues/1146
+    ENV.deparallelize
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking
