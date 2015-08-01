@@ -27,32 +27,32 @@ class Sbcl < Formula
 
   resource "bootstrap64" do
     url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2"
-    sha1 "cffd8c568588f48bd0c69295a385b662d27983cf"
+    sha256 "729054dc27d6b53bd734eac4dffeaa9e231e97bdbe4927d7a68c8f0210cad700"
   end
 
   resource "bootstrap32" do
     url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2"
-    sha1 "35a76b93f8714bc34ba127df4aaf69aacfc08164"
+    sha256 "5801c60e2a875d263fccde446308b613c0253a84a61ab63569be62eb086718b3"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff"
-    sha1 "49cf79e8d687e0a90db0fdc022a5f73181629d6e"
+    sha256 "e101d7dc015ea71c15a58a5c54777283c89070bf7801a13cd3b3a1969a6d8b75"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff"
-    sha1 "65d0beec43707ff5bf3262b8f12ca4514e58ce15"
+    sha256 "7c21c89fd6ec022d4f17670c3253bd33a4ac2784744e4c899c32fbe27203d87e"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff"
-    sha1 "cde8db247d153c6272cc96a6716721fd623010cb"
+    sha256 "06908aaa94ba82447d64cf15eb8e011ac4c2ae4c3050b19b36316f64992ee21d"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
-    sha1 "4d08e56e7e261db47ffdfef044149b001e6cd7c1"
+    sha256 "089b8fdc576a9a32da0b2cdf2b7b2d8bfebf3d542ac567f1cb06f19c03eaf57d"
   end
 
   def write_features
