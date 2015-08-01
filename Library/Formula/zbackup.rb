@@ -6,6 +6,13 @@ class Zbackup < Formula
   url "https://github.com/zbackup/zbackup/archive/1.4.2.tar.gz"
   sha256 "6259e8206ef996c8f925a536dda09d955bd6308d1e9b3b5b6bcdfd00e8ac8f41"
 
+  bottle do
+    cellar :any
+    sha256 "3dc75fac25bf9386a54e7d658dbc05d36f9e6d2088d9f5386bee664073391d98" => :yosemite
+    sha256 "0fc29c22f2931f44fde65103de530b8fe1231248935b15f8e36ae87665b4ea58" => :mavericks
+    sha256 "d12adbb695bcaa3482ef071c25339514e90c3688cd5eb81ce8dcdb4edfbc3d6f" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
   depends_on "openssl"
   depends_on "protobuf"
