@@ -79,6 +79,9 @@ class Glib < Formula
       system "ed -s - config.h <config.h.ed"
     end
 
+    # disable creating directory for GIO_MOUDLE_DIR, we will do this manually in post_install
+    inreplace "gio/Makefile", "$(mkinstalldirs) $(DESTDIR)$(GIO_MODULE_DIR)", ""
+
     system "make"
     # the spawn-multithreaded tests require more open files
     system "ulimit -n 1024; make check" if build.with? "test"
@@ -95,6 +98,10 @@ class Glib < Formula
     end
 
     (share+"gtk-doc").rmtree
+  end
+
+  def post_install
+    (HOMEBREW_PREFIX/"lib/gio/modules").mkpath
   end
 
   test do

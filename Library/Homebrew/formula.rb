@@ -62,8 +62,10 @@ class Formula
   attr_reader :active_spec
   protected :active_spec
 
-  # The {PkgVersion} for this formula with version and {#revision} information.
-  attr_reader :pkg_version
+  # A symbol to indicate currently active {SoftwareSpec}.
+  # It's either :stable, :devel or :head
+  # @see #active_spec
+  attr_reader :active_spec_sym
 
   # Used for creating new Homebrew versions of software without new upstream
   # versions.
@@ -105,10 +107,26 @@ class Formula
     set_spec :head
 
     @active_spec = determine_active_spec(spec)
+    @active_spec_sym = if head?
+      :head
+    elsif devel?
+      :devel
+    else
+      :stable
+    end
     validate_attributes!
-    @pkg_version = PkgVersion.new(version, revision)
     @build = active_spec.build
     @pin = FormulaPin.new(self)
+  end
+
+  # @private
+  def set_active_spec(spec_sym)
+    spec = send(spec_sym)
+    raise FormulaSpecificationError, "#{spec_sym} spec is not available for #{full_name}" unless spec
+    @active_spec = spec
+    @active_spec_sym = spec_sym
+    validate_attributes!
+    @build = active_spec.build
   end
 
   private
@@ -195,6 +213,11 @@ class Formula
     active_spec.version
   end
 
+  # The {PkgVersion} for this formula with {version} and {#revision} information.
+  def pkg_version
+    PkgVersion.new(version, revision)
+  end
+
   # A named Resource for the currently active {SoftwareSpec}.
   def resource(name)
     active_spec.resource(name)
@@ -261,6 +284,12 @@ class Formula
     (dir = installed_prefix).directory? && dir.children.length > 0
   end
 
+  # If at least one version of {Formula} is installed.
+  def any_version_installed?
+    require "tab"
+    rack.directory? && rack.subdirs.any? { |keg| (keg/Tab::FILENAME).file? }
+  end
+
   # @private
   # The `LinkedKegs` directory for this {Formula}.
   # You probably want {#opt_prefix} instead.
@@ -271,10 +300,12 @@ class Formula
   # The latest prefix for this formula. Checks for {#head}, then {#devel}
   # and then {#stable}'s {#prefix}
   def installed_prefix
-    if head && (head_prefix = prefix(head.version)).directory?
+    if head && (head_prefix = prefix(PkgVersion.new(head.version, revision))).directory?
       head_prefix
-    elsif devel && (devel_prefix = prefix(devel.version)).directory?
+    elsif devel && (devel_prefix = prefix(PkgVersion.new(devel.version, revision))).directory?
       devel_prefix
+    elsif stable && (stable_prefix = prefix(PkgVersion.new(stable.version, revision))).directory?
+      stable_prefix
     else
       prefix
     end
@@ -590,9 +621,7 @@ class Formula
   end
 
   def inspect
-    s = "#<Formula #{name} ("
-    s << if head? then "head" elsif devel? then "devel" else "stable" end
-    s << ") #{path}>"
+    "#<Formula #{name} (#{active_spec_sym}) #{path}>"
   end
 
   def file_modified?
@@ -626,14 +655,29 @@ class Formula
     @core_names ||= Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map{ |f| File.basename f, ".rb" }.sort
   end
 
+  # an array of all core {Formula} files
+  def self.core_files
+    @core_files ||= Pathname.glob("#{HOMEBREW_LIBRARY}/Formula/*.rb")
+  end
+
   # an array of all tap {Formula} names
   def self.tap_names
     @tap_names ||= Tap.map(&:formula_names).flatten.sort
   end
 
+  # an array of all tap {Formula} files
+  def self.tap_files
+    @tap_files ||= Tap.map(&:formula_files).flatten
+  end
+
   # an array of all {Formula} names
   def self.names
     @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+  end
+
+  # an array of all {Formula} files
+  def self.files
+    @files ||= core_files + tap_files
   end
 
   # an array of all {Formula} names, which the tap formulae have the fully-qualified name
@@ -642,12 +686,12 @@ class Formula
   end
 
   def self.each
-    full_names.each do |name|
+    files.each do |file|
       begin
-        yield Formulary.factory(name)
+        yield Formulary.factory(file)
       rescue StandardError => e
         # Don't let one broken formula break commands. But do complain.
-        onoe "Failed to import: #{name}"
+        onoe "Failed to import: #{file}"
         puts e
         next
       end

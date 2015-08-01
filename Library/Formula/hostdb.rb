@@ -7,11 +7,11 @@ class Hostdb < Formula
   def install
     bin.install Dir["bin/*"]
     doc.install Dir["docs/*"]
-    (share+"examples"+name).install Dir["examples/*"]
+    pkgshare.install "examples"
   end
 
   test do
-    system("#{bin}/mkzones -z #{share}/examples/#{name}/example1/zoneconf.txt < #{share}/examples/#{name}/example1/hostdb.txt")
+    system("#{bin}/mkzones -z #{pkgshare}/examples/example1/zoneconf.txt < #{pkgshare}/examples/example1/hostdb.txt")
     expected = /^4 \s+ IN \s+ PTR \s+ vector\.example\.com\.$/x
     assert_match(expected, (testpath/"INTERNAL.179.32.64.in-addr.arpa").read)
   end
