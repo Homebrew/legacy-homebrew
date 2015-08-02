@@ -20,6 +20,31 @@ class Uptimed < Formula
     system "make", "install"
   end
 
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <false/>
+        <key>WorkingDirectory</key>
+        <string>#{opt_prefix}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_sbin}/uptimed</string>
+          <string>-f</string>
+          <string>-p</string>
+          <string>#{var}/run/uptimed.pid</string>
+        </array>
+      </dict>
+    </plist>
+    EOS
+  end
+
   test do
     system "#{bin}/uprecords"
   end
