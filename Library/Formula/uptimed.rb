@@ -4,6 +4,12 @@ class Uptimed < Formula
   url "https://github.com/rpodgorny/uptimed/archive/v0.4.0.tar.gz"
   sha256 "26891965bb499065e34072cecd3eb8087102b1c05f530c8fe8504a07c722f9bf"
 
+  bottle do
+    sha256 "cd0bd1b637357439872b01eeb3b32e10c111dd630b711bbd0ea7488f66c68a64" => :yosemite
+    sha256 "3ce223958f06002df59fc9738b539832a9198a9f574b86f8ceab3c4f38936d6c" => :mavericks
+    sha256 "ad260249020068e03bf37c944db598799ed08d57f485ae78d7831c3f9f027cf2" => :mountain_lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
