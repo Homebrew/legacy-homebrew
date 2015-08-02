@@ -127,12 +127,16 @@ Style/SignalException:
 Style/TrailingComma:
   Enabled: false
 
-# We prefer compact if-else-end/case-when-end alignment
+# we prefer compact if-else-end/case-when-end alignment
 Lint/EndAlignment:
   AlignWith: variable
 Style/CaseIndentation:
   IndentWhenRelativeTo: end
 
-# We prefer Perl-style regex back references
+# we prefer Perl-style regex back references
 Style/PerlBackrefs:
   Enabled: false
+
+# this is required for Ruby 1.8
+Style/DotPosition:
+  EnforcedStyle: trailing
