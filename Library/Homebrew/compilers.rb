@@ -1,6 +1,15 @@
 module CompilerConstants
   GNU_GCC_VERSIONS = %w[4.3 4.4 4.5 4.6 4.7 4.8 4.9 5]
   GNU_GCC_REGEXP = /^gcc-(4\.[3-9]|5)$/
+  COMPILER_SYMBOL_MAP = {
+    "gcc-4.0"  => :gcc_4_0,
+    "gcc-4.2"  => :gcc,
+    "llvm-gcc" => :llvm,
+    "clang"    => :clang,
+  }
+
+  COMPILERS = COMPILER_SYMBOL_MAP.values +
+    GNU_GCC_VERSIONS.map { |n| "gcc-#{n}" }
 end
 
 class CompilerFailure
@@ -23,7 +32,7 @@ class CompilerFailure
   def self.create(spec, &block)
     # Non-Apple compilers are in the format fails_with compiler => version
     if spec.is_a?(Hash)
-      _, major_version = spec.each { |e| break e }
+      _, major_version = spec.first
       name = "gcc-#{major_version}"
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       version = "#{major_version}.999"
@@ -108,11 +117,11 @@ class CompilerSelector
       when :gnu
         GNU_GCC_VERSIONS.reverse_each do |v|
           name = "gcc-#{v}"
-          version = versions.non_apple_gcc_version(name)
+          version = compiler_version(name)
           yield Compiler.new(name, version) if version
         end
       else
-        version = versions.send("#{compiler}_build_version")
+        version = compiler_version(compiler)
         yield Compiler.new(compiler, version) if version
       end
     end
@@ -120,5 +129,14 @@ class CompilerSelector
 
   def fails_with?(compiler)
     failures.any? { |failure| failure === compiler }
+  end
+
+  def compiler_version(name)
+    case name
+    when GNU_GCC_REGEXP
+      versions.non_apple_gcc_version(name)
+    else
+      versions.send("#{name}_build_version")
+    end
   end
 end

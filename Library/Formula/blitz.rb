@@ -1,6 +1,7 @@
 require 'formula'
 
 class Blitz < Formula
+  desc "C++ class library for scientific computing"
   homepage 'http://blitz.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/blitz/blitz/Blitz++%200.10/blitz-0.10.tar.gz'
   sha1 '7e157ec22ed2d261e896b7de4e8e8d3bf7d780e2'

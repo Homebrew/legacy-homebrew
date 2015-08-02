@@ -1,6 +1,7 @@
 require "formula"
 
 class Nailgun < Formula
+  desc "Command-line client, protocol and server for Java programs"
   homepage "http://www.martiansoftware.com/nailgun/"
   url "https://github.com/martylamb/nailgun/archive/nailgun-all-0.9.1.tar.gz"
   sha1 "75f21504e8a6d41f263560b74c33188e91ec1a27"

@@ -1,4 +1,5 @@
 class Gloox < Formula
+  desc "C++ Jabber/XMPP library that handles the low-level protocol"
   homepage "https://camaya.net/gloox/"
   url "https://camaya.net/download/gloox-1.0.12.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/g/gloox/gloox_1.0.12.orig.tar.bz2"

@@ -23,7 +23,8 @@ module Superenv
   end
 
   def self.bin
-    (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin = (HOMEBREW_REPOSITORY/"Library/ENV").subdirs.reject { |d| d.basename.to_s > MacOS::Xcode.version }.max
+    bin.realpath unless bin.nil?
   end
 
   def reset
@@ -55,7 +56,7 @@ module Superenv
     self['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
     self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
     self['ACLOCAL_PATH'] = determine_aclocal_path
-    self['M4'] = MacOS.locate("m4") if deps.include? "autoconf"
+    self['M4'] = MacOS.locate("m4") if deps.any? { |d| d.name == "autoconf" }
     self["HOMEBREW_ISYSTEM_PATHS"] = determine_isystem_paths
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
@@ -102,7 +103,7 @@ module Superenv
     paths = [Superenv.bin]
 
     # Formula dependencies can override standard tools.
-    paths += deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/bin" }
+    paths += deps.map { |d| d.opt_bin.to_s }
 
     # On 10.9, there are shims for all tools in /usr/bin.
     # On 10.7 and 10.8 we need to add these directories ourselves.
@@ -124,7 +125,7 @@ module Superenv
       end
       paths << apple_gcc42.opt_bin.to_s if apple_gcc42
     when GNU_GCC_REGEXP
-      gcc_formula = gcc_version_formula($1)
+      gcc_formula = gcc_version_formula($&)
       paths << gcc_formula.opt_bin.to_s
     end
 
@@ -132,8 +133,8 @@ module Superenv
   end
 
   def determine_pkg_config_path
-    paths  = deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib/pkgconfig" }
-    paths += deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/pkgconfig" }
+    paths  = deps.map { |d| "#{d.opt_lib}/pkgconfig" }
+    paths += deps.map { |d| "#{d.opt_share}/pkgconfig" }
     paths.to_path_s
   end
 
@@ -144,7 +145,7 @@ module Superenv
   end
 
   def determine_aclocal_path
-    paths = keg_only_deps.map{|dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/share/aclocal" }
+    paths = keg_only_deps.map { |d| "#{d.opt_share}/aclocal" }
     paths << "#{HOMEBREW_PREFIX}/share/aclocal"
     paths << "#{MacOS::X11.share}/aclocal" if x11?
     paths.to_path_s
@@ -153,7 +154,7 @@ module Superenv
   def determine_isystem_paths
     paths = []
     paths << "#{HOMEBREW_PREFIX}/include"
-    paths << "#{effective_sysroot}/usr/include/libxml2" unless deps.include? "libxml2"
+    paths << "#{effective_sysroot}/usr/include/libxml2" unless deps.any? { |d| d.name == "libxml2" }
     paths << "#{effective_sysroot}/usr/include/apache2" if MacOS::Xcode.without_clt?
     paths << MacOS::X11.include.to_s << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{effective_sysroot}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers"
@@ -161,7 +162,7 @@ module Superenv
   end
 
   def determine_include_paths
-    paths = keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/include" }
+    paths = keg_only_deps.map { |d| d.opt_include.to_s }
 
     # https://github.com/Homebrew/homebrew/issues/38514
     if MacOS::CLT.installed? && MacOS.active_developer_dir.include?("CommandLineTools") &&
@@ -173,7 +174,7 @@ module Superenv
   end
 
   def determine_library_paths
-    paths = keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/lib" }
+    paths = keg_only_deps.map { |d| d.opt_lib.to_s }
     paths << "#{HOMEBREW_PREFIX}/lib"
     paths << MacOS::X11.lib.to_s if x11?
     paths << "#{effective_sysroot}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Libraries"
@@ -181,14 +182,14 @@ module Superenv
   end
 
   def determine_cmake_prefix_path
-    paths = keg_only_deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}" }
+    paths = keg_only_deps.map { |d| d.opt_prefix.to_s }
     paths << HOMEBREW_PREFIX.to_s
     paths.to_path_s
   end
 
   def determine_cmake_include_path
     paths = []
-    paths << "#{effective_sysroot}/usr/include/libxml2" unless deps.include? "libxml2"
+    paths << "#{effective_sysroot}/usr/include/libxml2" unless deps.any? { |d| d.name == "libxml2" }
     paths << "#{effective_sysroot}/usr/include/apache2" if MacOS::Xcode.without_clt?
     paths << MacOS::X11.include.to_s << "#{MacOS::X11.include}/freetype2" if x11?
     paths << "#{effective_sysroot}/System/Library/Frameworks/OpenGL.framework/Versions/Current/Headers"
@@ -203,7 +204,7 @@ module Superenv
   end
 
   def determine_cmake_frameworks_path
-    paths = deps.map { |dep| "#{HOMEBREW_PREFIX}/opt/#{dep}/Frameworks" }
+    paths = deps.map { |d| d.opt_frameworks.to_s }
     paths << "#{effective_sysroot}/System/Library/Frameworks" if MacOS::Xcode.without_clt?
     paths.to_path_s
   end
@@ -244,7 +245,6 @@ module Superenv
   # Removes the MAKEFLAGS environment variable, causing make to use a single job.
   # This is useful for makefiles with race conditions.
   # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
-  # Returns the value of MAKEFLAGS.
   def deparallelize
     old = delete('MAKEFLAGS')
     if block_given?
@@ -293,7 +293,7 @@ module Superenv
     when "clang"
       append 'HOMEBREW_CCCFG', "x", ''
       append 'HOMEBREW_CCCFG', "g", ''
-    when /gcc-4\.(8|9)/
+    when /gcc-(4\.(8|9)|5)/
       append 'HOMEBREW_CCCFG', "x", ''
     else
       raise "The selected compiler doesn't support C++11: #{homebrew_cc}"

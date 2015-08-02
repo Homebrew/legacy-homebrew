@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libfaketime < Formula
+  desc "Report faked system time to programs"
   homepage 'http://www.code-wizards.com/projects/libfaketime'
   url 'http://code-wizards.com/projects/libfaketime/libfaketime-0.9.5.tar.gz'
   sha1 '12199af854004f231892ab6976c2e99b937e2d61'

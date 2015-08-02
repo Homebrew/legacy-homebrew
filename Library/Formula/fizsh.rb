@@ -1,4 +1,5 @@
 class Fizsh < Formula
+  desc "Fish-like front end for ZSH"
   homepage "https://github.com/zsh-users/fizsh"
 
   stable do

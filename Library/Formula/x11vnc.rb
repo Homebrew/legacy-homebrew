@@ -1,6 +1,7 @@
 require 'formula'
 
 class X11vnc < Formula
+  desc "VNC server for real X displays"
   homepage 'http://www.karlrunge.com/x11vnc/'
   url 'https://downloads.sourceforge.net/project/libvncserver/x11vnc/0.9.13/x11vnc-0.9.13.tar.gz'
   sha1 'f011d81488ac94dc8dce2d88739c23bd85a976fa'

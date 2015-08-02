@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libnxml < Formula
+  desc "C library for parsing, writing, and creating XML files"
   homepage 'http://www.autistici.org/bakunin/libnxml/'
   url 'http://www.autistici.org/bakunin/libnxml/libnxml-0.18.3.tar.gz'
   sha1 '2bcb17ea01aa953d0f8cbc116e025bb837bec4aa'

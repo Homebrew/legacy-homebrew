@@ -1,4 +1,5 @@
 class Jbigkit < Formula
+  desc "JBIG1 data compression standard implementation"
   homepage "https://www.cl.cam.ac.uk/~mgk25/jbigkit/"
   url "https://www.cl.cam.ac.uk/~mgk25/jbigkit/download/jbigkit-2.1.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/j/jbigkit/jbigkit_2.1.orig.tar.gz"

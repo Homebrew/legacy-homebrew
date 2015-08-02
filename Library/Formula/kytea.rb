@@ -1,6 +1,7 @@
 require 'formula'
 
 class Kytea < Formula
+  desc "Toolkit for analyzing text, especially Japanese and Chinese"
   homepage 'http://www.phontron.com/kytea/'
   url 'http://www.phontron.com/kytea/download/kytea-0.4.7.tar.gz'
   sha1 '684f6b90bd4ae048ea3a6fc9762b1baecb006eb3'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cdrdao < Formula
+  desc "Record CDs in Disk-At-Once mode"
   homepage 'http://cdrdao.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/cdrdao/cdrdao/1.2.3/cdrdao-1.2.3.tar.bz2'
   sha1 '70d6547795a1342631c7ab56709fd1940c2aff9f'

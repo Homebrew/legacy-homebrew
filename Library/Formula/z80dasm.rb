@@ -1,6 +1,7 @@
 require 'formula'
 
 class Z80dasm < Formula
+  desc "Disassembler for the Zilog Z80 microprocessor and compatibles"
   homepage 'http://www.tablix.org/~avian/blog/articles/z80dasm/'
   url 'http://www.tablix.org/~avian/z80dasm/z80dasm-1.1.3.tar.gz'
   sha1 'da1e2525bc0db1b86e28f65ba510196998448ed1'

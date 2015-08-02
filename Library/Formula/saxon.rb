@@ -1,6 +1,7 @@
 require "formula"
 
 class Saxon < Formula
+  desc "XSLT and XQuery processor"
   homepage "http://saxon.sourceforge.net"
   url "https://downloads.sourceforge.net/project/saxon/Saxon-HE/9.6/SaxonHE9-6-0-5J.zip"
   sha1 "10bb2091e8b891065918ff55c01190fab38acc85"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Minizip < Formula
+  desc "C library for zip/unzip via zLib"
   homepage 'http://www.winimage.com/zLibDll/minizip.html'
   url 'http://zlib.net/zlib-1.2.8.tar.gz'
   sha1 'a4d316c404ff54ca545ea71a27af7dbc29817088'

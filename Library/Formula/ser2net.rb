@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ser2net < Formula
+  desc "Allow network connections to serial ports"
   homepage 'http://ser2net.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/ser2net/ser2net/ser2net-2.9.1.tar.gz'
   sha1 'dc8662a1c83391a6b437bc9d2443fb7a65548a9a'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libsoup < Formula
+  desc "HTTP client/server library for GNOME"
   homepage 'https://live.gnome.org/LibSoup'
   url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.48/libsoup-2.48.1.tar.xz'
   sha256 '9b0d14b36e36a3131a06c6e3aa7245716e6904e3e636df81c0b6c8bd3f646f9a'

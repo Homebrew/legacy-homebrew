@@ -1,4 +1,5 @@
 class Fontconfig < Formula
+  desc "XML-based font configuration API for X Windows"
   homepage "http://fontconfig.org/"
   url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
   sha1 "08565feea5a4e6375f9d8a7435dac04e52620ff2"

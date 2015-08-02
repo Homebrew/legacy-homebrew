@@ -18,7 +18,7 @@ module Homebrew
       if ARGV.include? '--compact'
         puts f.options.as_flags.sort * " "
       else
-        puts f.name if formulae.length > 1
+        puts f.full_name if formulae.length > 1
         dump_options_for_formula f
         puts
       end

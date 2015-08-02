@@ -1,4 +1,5 @@
 class JpegArchive < Formula
+  desc "Utilities for archiving JPEGs for long term storage"
   homepage "https://github.com/danielgtaylor/jpeg-archive"
   url "https://github.com/danielgtaylor/jpeg-archive/archive/2.1.1.tar.gz"
   sha256 "494534f5308f99743f11f3a7c151a8d5ca8a5f1f8b61ea119098511d401bc618"

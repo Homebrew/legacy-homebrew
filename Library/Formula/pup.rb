@@ -1,6 +1,7 @@
 require "language/go"
 
 class Pup < Formula
+  desc "Parse HTML at the command-line"
   homepage "https://github.com/EricChiang/pup"
   url "https://github.com/ericchiang/pup/archive/v0.3.9.tar.gz"
   sha256 "5e59805edf84d73b2b4c58fe5aeb9a12fc70c028b4aaf58ded6b91ff418b0dda"

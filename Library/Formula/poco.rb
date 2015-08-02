@@ -1,6 +1,7 @@
 require "formula"
 
 class Poco < Formula
+  desc "POCO C++ Libraries"
   homepage "http://pocoproject.org/"
   url "http://pocoproject.org/releases/poco-1.6.0/poco-1.6.0-all.tar.gz"
   sha1 "b45486757bfc132631d31724342a62cf41dc2795"

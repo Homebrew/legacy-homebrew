@@ -1,6 +1,7 @@
 require 'formula'
 
 class OpusTools < Formula
+  desc "Utilities to encode, inspect, and decode .opus files"
   homepage 'http://www.opus-codec.org'
   url 'http://downloads.xiph.org/releases/opus/opus-tools-0.1.9.tar.gz'
   sha1 '03551ec3b206288e93a2f2bb18768a5a9e033206'

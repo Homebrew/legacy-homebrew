@@ -1,4 +1,5 @@
 class Mp3cat < Formula
+  desc "Reads and writes mp3 files"
   homepage "http://tomclegg.net/mp3cat"
   url "http://tomclegg.net/software/mp3cat-0.4.tar.gz"
   sha1 "442d2b2b546fec4535c2aa892a8fc61db21eb917"

@@ -1,4 +1,5 @@
 class AwsElasticache < Formula
+  desc "Client for Amazon ElastiCache web service"
   homepage "https://aws.amazon.com/developertools/2310261897259567"
   url "https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2014-09-30-1.12.000.zip"
   version "1.12.000"

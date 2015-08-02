@@ -24,6 +24,7 @@ class Tab < OpenStruct
       "source" => {
         "path" => formula.path.to_s,
         "tap" => formula.tap,
+        "spec" => formula.active_spec_sym.to_s,
       },
     }
 
@@ -31,13 +32,30 @@ class Tab < OpenStruct
   end
 
   def self.from_file path
-    attributes = Utils::JSON.load(File.read(path))
+    from_file_content(File.read(path), path)
+  end
+
+  def self.from_file_content content, path
+    attributes = Utils::JSON.load(content)
     attributes["tabfile"] = path
     attributes["source"] ||= {}
 
     tapped_from = attributes["tapped_from"]
     unless tapped_from.nil? || tapped_from == "path or URL"
       attributes["source"]["tap"] = attributes.delete("tapped_from")
+    end
+
+    if attributes["source"]["tap"] == "mxcl/master"
+      attributes["source"]["tap"] = "Homebrew/homebrew"
+    end
+
+    if attributes["source"]["spec"].nil?
+      version = PkgVersion.parse path.to_s.split("/")[-2]
+      if version.head?
+        attributes["source"]["spec"] = "head"
+      else
+        attributes["source"]["spec"] = "stable"
+      end
     end
 
     new(attributes)
@@ -93,7 +111,7 @@ class Tab < OpenStruct
     else
       tab = empty
       tab.unused_options = f.options.as_flags
-      tab.source = { "path" => f.path.to_s, "tap" => f.tap }
+      tab.source = { "path" => f.path.to_s, "tap" => f.tap, "spec" => f.active_spec_sym.to_s }
     end
 
     tab
@@ -112,6 +130,7 @@ class Tab < OpenStruct
       "source" => {
         "path" => nil,
         "tap" => nil,
+        "spec" => "stable",
       },
     }
 
@@ -151,11 +170,14 @@ class Tab < OpenStruct
     Options.create(super)
   end
 
+  def compiler
+    super || MacOS.default_compiler
+  end
+
   def cxxstdlib
     # Older tabs won't have these values, so provide sensible defaults
     lib = stdlib.to_sym if stdlib
-    cc = compiler || MacOS.default_compiler
-    CxxStdlib.create(lib, cc.to_sym)
+    CxxStdlib.create(lib, compiler.to_sym)
   end
 
   def build_bottle?
@@ -168,6 +190,14 @@ class Tab < OpenStruct
 
   def tap
     source["tap"]
+  end
+
+  def tap=(tap)
+    source["tap"] = tap
+  end
+
+  def spec
+    source["spec"].to_sym
   end
 
   def to_json
@@ -199,7 +229,7 @@ class Tab < OpenStruct
     unless used_options.empty?
       s << "Installed" if s.empty?
       s << "with:"
-      s << used_options.to_a.join(", ")
+      s << used_options.to_a.join(" ")
     end
     s.join(" ")
   end

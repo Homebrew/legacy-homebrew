@@ -1,6 +1,7 @@
 require 'formula'
 
 class GambitScheme < Formula
+  desc "Complete, portable implementation of Scheme"
   homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
   url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_3.tgz'
   sha256 '59c4c62f2cfaf698b54a862e7af9c1b3e4cc27e46d386f31c66e00fed4701777'

@@ -1,4 +1,5 @@
 class CKermit < Formula
+  desc "Scriptable network and serial communication for UNIX and VMS"
   homepage "http://www.kermitproject.org/"
   url "http://www.kermitproject.org/ftp/kermit/archives/cku302.tar.gz"
   version "9.0.302"

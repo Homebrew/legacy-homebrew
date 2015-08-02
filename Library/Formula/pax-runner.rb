@@ -1,6 +1,7 @@
 require 'formula'
 
 class PaxRunner < Formula
+  desc "Tool to provision OSGi bundles"
   homepage 'http://team.ops4j.org'
   url 'http://repo1.maven.org/maven2/org/ops4j/pax/runner/pax-runner-assembly/1.8.6/pax-runner-assembly-1.8.6-jdk15.tar.gz'
   version '1.8.6'

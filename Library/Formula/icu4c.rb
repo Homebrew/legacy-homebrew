@@ -1,7 +1,9 @@
 class Icu4c < Formula
+  desc "C/C++ and Java libraries for Unicode and globalization"
   homepage "http://site.icu-project.org/"
   head "https://ssl.icu-project.org/repos/icu/icu/trunk/", :using => :svn
   url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
+  mirror "https://fossies.org/linux/misc/icu4c-55_1-src.tgz"
   version "55.1"
   sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
 

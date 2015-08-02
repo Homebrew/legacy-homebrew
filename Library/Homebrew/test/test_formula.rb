@@ -5,7 +5,7 @@ class FormulaTests < Homebrew::TestCase
   def test_formula_instantiation
     klass = Class.new(Formula) { url "http://example.com/foo-1.0.tar.gz" }
     name = "formula_name"
-    path = Formula.path(name)
+    path = Formulary.core_path(name)
     spec = :stable
 
     f = klass.new(name, path, spec)
@@ -23,6 +23,20 @@ class FormulaTests < Homebrew::TestCase
   def test_revised_prefix
     f = Class.new(Testball) { revision 1 }.new
     assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
+  end
+
+  def test_any_version_installed?
+    f = formula do
+      url 'foo'
+      version '1.0'
+    end
+    refute_predicate f, :any_version_installed?
+    prefix = HOMEBREW_CELLAR+f.name+"0.1"
+    prefix.mkpath
+    FileUtils.touch (prefix+Tab::FILENAME)
+    assert_predicate f, :any_version_installed?
+  ensure
+    f.rack.rmtree
   end
 
   def test_installed?
@@ -172,9 +186,30 @@ class FormulaTests < Homebrew::TestCase
     assert_version_equal "HEAD", f.head.version
   end
 
+  def test_formula_set_active_spec
+    f = formula do
+      url 'foo'
+      version '1.0'
+      revision 1
+
+      devel do
+        url 'foo'
+        version '1.0beta'
+      end
+    end
+    assert_equal :stable, f.active_spec_sym
+    assert_equal f.stable, f.send(:active_spec)
+    assert_equal "1.0_1", f.pkg_version.to_s
+    f.set_active_spec(:devel)
+    assert_equal :devel, f.active_spec_sym
+    assert_equal f.devel, f.send(:active_spec)
+    assert_equal "1.0beta_1", f.pkg_version.to_s
+    assert_raises(FormulaSpecificationError) { f.set_active_spec(:head) }
+  end
+
   def test_path
     name = 'foo-bar'
-    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formula.path(name)
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formulary.core_path(name)
   end
 
   def test_factory
@@ -256,5 +291,29 @@ class FormulaTests < Homebrew::TestCase
     assert f.option_defined?("foo")
     assert f.option_defined?("bar")
     assert f.option_defined?("baz")
+  end
+
+  def test_desc
+    f = formula do
+      desc "a formula"
+      url "foo-1.0"
+    end
+
+    assert_equal "a formula", f.desc
+  end
+
+  def test_post_install_defined
+    f1 = formula do
+      url "foo-1.0"
+
+      def post_install;end
+    end
+
+    f2 = formula do
+      url "foo-1.0"
+    end
+
+    assert f1.post_install_defined?
+    refute f2.post_install_defined?
   end
 end

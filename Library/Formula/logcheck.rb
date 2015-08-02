@@ -1,4 +1,5 @@
 class Logcheck < Formula
+  desc "Mail anomalies in the system logfiles to the administrator"
   homepage "https://logcheck.alioth.debian.org/"
   url "https://mirrors.kernel.org/debian/pool/main/l/logcheck/logcheck_1.3.17.tar.xz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/l/logcheck/logcheck_1.3.17.tar.xz"

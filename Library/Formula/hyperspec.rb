@@ -1,4 +1,5 @@
 class Hyperspec < Formula
+  desc "Common Lisp ANSI-standard Hyperspec"
   homepage "http://www.lispworks.com/documentation/common-lisp.html"
   url "ftp://ftp.lispworks.com/pub/software_tools/reference/HyperSpec-7-0.tar.gz"
   version "7.0"

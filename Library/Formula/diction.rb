@@ -1,4 +1,5 @@
 class Diction < Formula
+  desc "GNU diction and style"
   homepage "https://www.gnu.org/software/diction/"
   url "http://ftpmirror.gnu.org/diction/diction-1.11.tar.gz"
   mirror "https://ftp.gnu.org/gnu/diction/diction-1.11.tar.gz"

@@ -1,7 +1,8 @@
 require 'formula'
 
 class Libpgm < Formula
-  homepage 'http://code.google.com/p/openpgm/'
+  desc "Implements the PGM reliable multicast protocol"
+  homepage 'https://code.google.com/p/openpgm/'
   url 'https://openpgm.googlecode.com/files/libpgm-5.2.122%7Edfsg.tar.gz'
   sha1 '788efcb223a05bb68b304bcdd3c37bb54fe4de28'
   version '5.2.122'

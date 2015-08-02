@@ -1,6 +1,7 @@
 require "formula"
 
 class Parrot < Formula
+  desc "Open source virtual machine (for Perl6, et al.)"
   homepage "http://www.parrot.org/"
   head "https://github.com/parrot/parrot.git"
   url "ftp://ftp.parrot.org/pub/parrot/releases/supported/6.9.0/parrot-6.9.0.tar.bz2"

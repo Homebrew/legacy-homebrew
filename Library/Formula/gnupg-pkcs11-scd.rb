@@ -1,6 +1,7 @@
 require 'formula'
 
 class GnupgPkcs11Scd < Formula
+  desc "Enable the use of PKCS#11 tokens with GnuPG"
   homepage 'http://gnupg-pkcs11.sourceforge.net'
   url 'https://github.com/alonbl/gnupg-pkcs11-scd/archive/gnupg-pkcs11-scd-0.7.3.tar.gz'
   sha1 '60a3d523f5e814c89eeff69b12f9d0adb0d63937'

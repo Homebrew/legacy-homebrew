@@ -1,8 +1,9 @@
 require 'formula'
 
 class Liblqr < Formula
-  homepage 'http://liblqr.wikidot.com/'
-  url 'http://liblqr.wdfiles.com/local--files/en:download-page/liblqr-1-0.4.2.tar.bz2'
+  desc "C/C++ seam carving library"
+  homepage 'https://liblqr.wikidot.com/'
+  url 'https://liblqr.wdfiles.com/local--files/en:download-page/liblqr-1-0.4.2.tar.bz2'
   version '0.4.2'
   sha1 '69639f7dc56a084f59a3198f3a8d72e4a73ff927'
 

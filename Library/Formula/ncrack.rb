@@ -1,6 +1,7 @@
 require "formula"
 
 class Ncrack < Formula
+  desc "Network authentication cracking tool"
   homepage "http://nmap.org/ncrack/"
   url "http://nmap.org/ncrack/dist/ncrack-0.4ALPHA.tar.gz"
   sha256 "f8bd7e0ef68559490064ec0a5f139b2b9c49aeaf9f6323e080db9ff344c87603"

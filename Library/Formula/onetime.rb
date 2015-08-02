@@ -1,6 +1,7 @@
 require "formula"
 
 class Onetime < Formula
+  desc "Encryption with one-time pads"
   homepage "http://red-bean.com/onetime/"
   url "http://red-bean.com/onetime/onetime-1.81.tar.gz"
   sha1 "db8f84963ed7b5831fdf4c19b4494cf7bfd5b753"

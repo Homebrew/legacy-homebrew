@@ -1,6 +1,7 @@
 $:.unshift File.expand_path("../..", __FILE__)
 $:.unshift File.expand_path("../lib", __FILE__)
 
+require "simplecov" if ENV["HOMEBREW_TESTS_COVERAGE"]
 require "global"
 
 # Test environment setup
@@ -15,7 +16,7 @@ begin
   require "minitest/autorun"
   require "mocha/setup"
 rescue LoadError
-  abort "Run `rake deps` or install the mocha and minitest gems before running the tests"
+  abort "Run `bundle install` or install the mocha and minitest gems before running the tests"
 end
 
 module Homebrew
@@ -62,12 +63,12 @@ module Homebrew
 
   class TestCase < ::Minitest::Test
     include VersionAssertions
-    include FSLeakLogger if ENV["LOG_FS_LEAKS"]
+    include FSLeakLogger
 
     TEST_SHA1   = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
     TEST_SHA256 = "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef".freeze
 
-    def formula(name="formula_name", path=Formula.path(name), spec=:stable, &block)
+    def formula(name="formula_name", path=Formulary.core_path(name), spec=:stable, &block)
       @_f = Class.new(Formula, &block).new(name, path, spec)
     end
 

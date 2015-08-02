@@ -1,6 +1,7 @@
 require "formula"
 
 class Reclass < Formula
+  desc "Recursive external node classification"
   homepage "http://reclass.pantsfullofunix.net/"
   head "https://github.com/madduck/reclass.git"
   url "https://github.com/madduck/reclass/archive/reclass-1.4.1.tar.gz"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Minidjvu < Formula
+  desc "DjVu multipage encoder, single page encoder/decoder"
   homepage 'http://minidjvu.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/minidjvu/minidjvu/0.8/minidjvu-0.8.tar.gz'
   sha1 '23835f73bc3580b72c6afe1f77feaf1e2611e714'

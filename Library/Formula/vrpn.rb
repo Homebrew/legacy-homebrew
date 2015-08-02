@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vrpn < Formula
+  desc "Virtual reality peripheral network"
   homepage 'http://vrpn.org'
   url 'http://www.cs.unc.edu/Research/vrpn/downloads/vrpn_07_33.zip'
   sha1 '3c908c333e501aeb5051484fafbb89e79064ba20'

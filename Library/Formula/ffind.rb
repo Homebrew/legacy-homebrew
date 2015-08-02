@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ffind < Formula
+  desc "Friendlier find"
   homepage 'https://github.com/sjl/friendly-find'
   url 'https://github.com/sjl/friendly-find/archive/v0.3.2.tar.gz'
   sha1 'fe4d943642e5bf344e2095122bb49216bcc2e2bd'

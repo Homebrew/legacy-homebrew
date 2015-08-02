@@ -1,4 +1,5 @@
 class Pwgen < Formula
+  desc "Password generator"
   homepage "http://pwgen.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/pwgen/pwgen/2.07/pwgen-2.07.tar.gz"
   sha1 "51180f9cd5530d79eea18b2443780dec4ec5ea43"

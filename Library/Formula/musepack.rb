@@ -1,4 +1,5 @@
 class Musepack < Formula
+  desc "Audio compression format and tools"
   homepage "https://www.musepack.net/"
   url "http://files.musepack.net/source/musepack_src_r475.tar.gz"
   version "r475"

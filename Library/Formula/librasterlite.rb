@@ -1,6 +1,7 @@
 require 'formula'
 
 class Librasterlite < Formula
+  desc "Library to store and retrieve huge raster coverages"
   homepage 'https://www.gaia-gis.it/fossil/librasterlite/index'
   url 'http://www.gaia-gis.it/gaia-sins/librasterlite-sources/librasterlite-1.1g.tar.gz'
   sha1 '87f0abab90600db64a7d468343163e760769f0c7'

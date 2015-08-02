@@ -1,6 +1,7 @@
 require 'formula'
 
 class Ghi < Formula
+  desc "Work on GitHub issues on the command-line"
   homepage 'https://github.com/stephencelis/ghi'
   url 'https://github.com/stephencelis/ghi/archive/0.9.3.tar.gz'
   head 'https://github.com/stephencelis/ghi.git'

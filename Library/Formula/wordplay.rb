@@ -1,6 +1,7 @@
 require 'formula'
 
 class Wordplay < Formula
+  desc "Anagram generator"
   homepage 'http://hsvmovies.com/static_subpages/personal_orig/wordplay/index.html'
   url 'http://hsvmovies.com/static_subpages/personal_orig/wordplay/wordplay722.tar.Z'
   version '7.22'

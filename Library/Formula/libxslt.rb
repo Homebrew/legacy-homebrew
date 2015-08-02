@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libxslt < Formula
+  desc "C XSLT library for GNOME"
   homepage 'http://xmlsoft.org/XSLT/'
   url 'http://xmlsoft.org/sources/libxslt-1.1.28.tar.gz'
   mirror 'ftp://xmlsoft.org/libxml2/libxslt-1.1.28.tar.gz'

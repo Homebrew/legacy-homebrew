@@ -1,9 +1,6 @@
-# encoding: UTF-8
-
-require 'formula'
-
 class Unac < Formula
-  homepage 'http://savannah.nongnu.org/projects/unac'
+  desc "C library and command that removes accents from a string"
+  homepage 'https://savannah.nongnu.org/projects/unac'
   url 'http://ftp.de.debian.org/debian/pool/main/u/unac/unac_1.8.0.orig.tar.gz'
   sha1 '3e779bb7f3b505880ac4f43b48ee2f935ef8aa36'
 
@@ -15,12 +12,12 @@ class Unac < Formula
   patch :DATA
 
   patch :p0 do
-    url "http://bugs.debian.org/cgi-bin/bugreport.cgi?msg=5;filename=patch-libunac1.txt;att=1;bug=623340"
+    url "https://bugs.debian.org/cgi-bin/bugreport.cgi?msg=5;filename=patch-libunac1.txt;att=1;bug=623340"
     sha1 "5b273127609b98092b8f3bb1b4c3e9f137968151"
   end
 
   patch :p0 do
-    url "http://bugs.debian.org/cgi-bin/bugreport.cgi?msg=10;filename=patch-unaccent.c.txt;att=1;bug=623340"
+    url "https://bugs.debian.org/cgi-bin/bugreport.cgi?msg=10;filename=patch-unaccent.c.txt;att=1;bug=623340"
     sha1 "689a1f32cdf08e3dab04bef1605666e4288ae64e"
   end
 

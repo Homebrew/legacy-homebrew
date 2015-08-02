@@ -1,6 +1,7 @@
 require 'formula'
 
 class Mfcuk < Formula
+  desc "MiFare Classic Universal toolKit"
   homepage 'http://code.google.com/p/mfcuk/'
   url 'https://mfcuk.googlecode.com/files/mfcuk-0.3.8.tar.gz'
   sha1 '2a8259440ac5bed8516c8d771a945b713dacd2bc'

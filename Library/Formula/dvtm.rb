@@ -1,4 +1,5 @@
 class Dvtm < Formula
+  desc "Dynamic Virtual Terminal Manager"
   homepage "http://www.brain-dump.org/projects/dvtm/"
   url "http://www.brain-dump.org/projects/dvtm/dvtm-0.14.tar.gz"
   sha1 "205a2165e70455309f7ed6a6f11b3072fb9b13c3"

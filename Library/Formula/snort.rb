@@ -1,14 +1,14 @@
 class Snort < Formula
+  desc "Flexible Network Intrusion Detection System"
   homepage "https://www.snort.org"
-  url "https://www.snort.org/downloads/snort/snort-2.9.7.0.tar.gz"
-  sha256 "9738afea45d20b7f77997cc00055e7dd70f6aea0101209d87efec4bc4eace49b"
+  url "https://www.snort.org/downloads/snort/snort-2.9.7.3.tar.gz"
+  sha256 "8cc3613b888fc54947a2beec773c76d9a20368f2659b31d45a9f0b11e66cc229"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "336919a67861f4273ff6b85b725e5dae8e2f9f107f9a3220753df7fbdc370c07" => :yosemite
-    sha256 "df0fc95331633b5b7cdac54081ac722ddca7ddf19b51994d7c10549e631bf978" => :mavericks
-    sha256 "8cee5d29d41e5d54491871ade0dfdc59caf05151814d58bebaf73e0d32ed4597" => :mountain_lion
+    sha256 "500a6e7527ccd71d95cad8dc6fa2ee4c09ea516c7c866357efecda0dca70389f" => :yosemite
+    sha256 "a9a9f2afbe4ebcad4814da730399510ca68c6eed201ca71e17069cc97ce6092c" => :mavericks
+    sha256 "2b4871dcf9ac94c842458fcf190ee35390ecc49be2c077cce1c074b3ebc306fb" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -1,6 +1,7 @@
 require "formula"
 
 class Sickbeard < Formula
+  desc "PVR application to search and manage TV shows"
   homepage "http://www.sickbeard.com/"
   head "https://github.com/midgetspy/Sick-Beard.git"
   url "https://github.com/midgetspy/Sick-Beard/archive/build-507.tar.gz"

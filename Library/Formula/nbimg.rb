@@ -1,6 +1,7 @@
 require 'formula'
 
 class Nbimg < Formula
+  desc "Smartphone boot splash screen converter for Android and winCE"
   homepage 'https://github.com/poliva/nbimg'
   url 'https://github.com/poliva/nbimg/archive/v1.2.1.tar.gz'
   sha1 '21a12e2451eefb5296e682744614b3f46e1f427a'

@@ -1,4 +1,5 @@
 class RbenvAliases < Formula
+  desc "Make aliases for Ruby versions"
   homepage "https://github.com/tpope/rbenv-aliases"
   url "https://github.com/tpope/rbenv-aliases/archive/v1.0.1.tar.gz"
   sha1 "7fcfe5ea3011c5f9e00ad41d85bebc2d19869b61"

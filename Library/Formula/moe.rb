@@ -1,4 +1,5 @@
 class Moe < Formula
+  desc "Console text editor for ISO-8859 and ASCII"
   homepage "https://www.gnu.org/software/moe/moe.html"
   url "http://ftpmirror.gnu.org/moe/moe-1.7.tar.lz"
   mirror "https://ftp.gnu.org/pub/gnu/moe/moe-1.7.tar.lz"

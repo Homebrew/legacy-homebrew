@@ -1,7 +1,8 @@
 require 'formula'
 
 class Liblunar < Formula
-  homepage 'http://code.google.com/p/liblunar/'
+  desc "Lunar date calendar"
+  homepage 'https://code.google.com/p/liblunar/'
   url 'https://liblunar.googlecode.com/files/liblunar-2.2.5.tar.gz'
   sha1 'c149dc32776667ed8d53124eec414ab15ace0981'
 

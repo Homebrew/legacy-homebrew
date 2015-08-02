@@ -1,8 +1,9 @@
 require 'formula'
 
 class Libvbucket < Formula
-  homepage 'http://couchbase.com/develop/c/current'
-  url 'http://packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz'
+  desc "Utility library providing mapping to virtual buckets"
+  homepage 'https://couchbase.com/develop/c/current'
+  url 'https://s3.amazonaws.com/packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz'
   sha1 '4f24a85d251c0fca69e7705681a2170dd794492a'
 
   bottle do

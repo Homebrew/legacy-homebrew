@@ -1,6 +1,7 @@
 require 'formula'
 
 class Clens < Formula
+  desc "Library to help port code from OpenBSD to other operating systems"
   homepage 'https://opensource.conformal.com/wiki/clens'
   url 'https://github.com/conformal/clens/archive/CLENS_0_7_0.tar.gz'
   sha1 '565ca40e4389c835c12f4898ea6b355425e62e27'

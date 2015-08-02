@@ -1,6 +1,7 @@
 require 'formula'
 
 class Avra < Formula
+  desc "Assember for the Atmel AVR microcontroller family"
   homepage 'http://avra.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/avra/1.3.0/avra-1.3.0.tar.bz2'
   sha1 '7ad7d168b02107d4f2d72951155798c2fd87d5a9'

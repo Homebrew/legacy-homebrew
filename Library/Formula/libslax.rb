@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libslax < Formula
+  desc "Implementation of the SLAX language (an XSLT alternative)"
   homepage 'http://www.libslax.org/'
   url 'https://github.com/Juniper/libslax/releases/download/0.19.0/libslax-0.19.0.tar.gz'
   sha1 '0e55e62065012a9bd51d775a949b3d5c71957374'

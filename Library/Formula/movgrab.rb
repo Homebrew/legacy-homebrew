@@ -1,6 +1,7 @@
 require 'formula'
 
 class Movgrab < Formula
+  desc "Downloader for youtube, dailymotion, and other video websites"
   homepage 'https://sites.google.com/site/columscode/home/movgrab'
   url 'https://sites.google.com/site/columscode/files/movgrab-1.2.1.tar.gz'
   sha1 'f5f2f115dfdc2bb3d637f12d6b311910826e2123'

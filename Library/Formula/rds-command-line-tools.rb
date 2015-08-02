@@ -1,13 +1,15 @@
 class RdsCommandLineTools < Formula
+  desc "Amazon RDS command-line toolkit"
   homepage "https://aws.amazon.com/developertools/2928"
-  url "https://s3.amazonaws.com/rds-downloads/RDSCli-1.14.001.zip"
-  sha1 "d0853f066ba1dca699a4a1d91581e11e523ec83a"
+  url "https://s3.amazonaws.com/rds-downloads/RDSCli-1.19.004.zip"
+  sha1 "33be9c7e9d58d4bdd5ffa468b159265bd17cf2fa"
 
   depends_on :java
 
   def install
     env = Language::Java.java_home_env.merge(:AWS_RDS_HOME => libexec)
     rm Dir["bin/*.cmd"] # Remove Windows versions
+    etc.install "credential-file-path.template"
     libexec.install Dir["*"]
     Pathname.glob("#{libexec}/bin/*") do |file|
       next if file.directory?
@@ -19,9 +21,7 @@ class RdsCommandLineTools < Formula
 
   def caveats
     <<-EOS.undent
-      Before you can use these tools you must export some variables to your $SHELL.
-        export AWS_ACCESS_KEY="<Your AWS Access ID>"
-        export AWS_SECRET_KEY="<Your AWS Secret Key>"
+      Before you can use these tools you must export a variable to your $SHELL.
         export AWS_CREDENTIAL_FILE="<Path to the credentials file>"
 
       To check that your setup works properly, run the following command:

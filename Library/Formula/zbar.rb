@@ -1,6 +1,7 @@
 require 'formula'
 
 class Zbar < Formula
+  desc "Suite of barcodes-reading tools"
   homepage 'http://zbar.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2'
   sha1 '273b47c26788faba4325baecc34063e27a012963'

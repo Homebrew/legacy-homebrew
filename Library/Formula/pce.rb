@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pce < Formula
+  desc "PC emulator"
   homepage 'http://www.hampa.ch/pce/'
   url 'http://www.hampa.ch/pub/pce/pce-0.2.2.tar.gz'
   sha1 'b12dffbacaad44532b5c576bcffae5d11f17cc56'

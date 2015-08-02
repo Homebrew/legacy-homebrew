@@ -1,6 +1,7 @@
 require "formula"
 
 class Opencbm < Formula
+  desc "Provides access to various floppy drive formats"
   homepage "http://www.trikaliotis.net/opencbm-alpha"
   url "http://www.trikaliotis.net/Download/opencbm-0.4.99.97/opencbm-0.4.99.97.tar.bz2"
   sha1 "e0f4b6c3d134d77e3da66ce4e2e1d945fded5fb6"

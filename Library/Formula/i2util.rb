@@ -1,6 +1,7 @@
 require "formula"
 
 class I2util < Formula
+  desc "Internet2 utility tools"
   homepage "http://software.internet2.edu/"
   url "http://software.internet2.edu/sources/I2util/I2util-1.2.tar.gz"
   sha1 "56218a6e0f1306a70b641246fa6f63dd686e6766"

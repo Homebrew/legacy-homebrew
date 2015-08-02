@@ -1,6 +1,7 @@
 require "formula"
 
 class Unifdef < Formula
+  desc "Selectively process conditional C preprocessor directives"
   homepage "http://dotat.at/prog/unifdef/"
   head "https://github.com/fanf2/unifdef.git"
   url "http://dotat.at/prog/unifdef/unifdef-2.10.tar.gz"

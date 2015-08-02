@@ -1,6 +1,7 @@
 require 'formula'
 
 class Redo < Formula
+  desc "Implements djb's redo: an alternative to make(1)"
   homepage 'https://github.com/apenwarr/redo'
   url 'https://github.com/apenwarr/redo/archive/redo-0.11.tar.gz'
   sha1 'f9f939e599047d9dc7fdadacc3308c6722f3a512'

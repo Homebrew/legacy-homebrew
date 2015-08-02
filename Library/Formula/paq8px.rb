@@ -1,4 +1,5 @@
 class Paq8px < Formula
+  desc "Data compression archivers"
   homepage "http://dhost.info/paq8/"
   url "http://dhost.info/paq8/paq8px_v69.zip"
   sha1 "77667a3c61b858d71897f47fc4c4d8eabf3d715c"

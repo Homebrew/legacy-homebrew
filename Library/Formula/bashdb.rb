@@ -1,6 +1,7 @@
 require "formula"
 
 class Bashdb < Formula
+  desc "Bash shell debugger"
   homepage "http://bashdb.sourceforge.net"
   url "https://downloads.sourceforge.net/project/bashdb/bashdb/4.3-0.91/bashdb-4.3-0.91.tar.bz2"
   sha1 "e84841e51ebf6b1727d31c94722ef55c6b0a26af"

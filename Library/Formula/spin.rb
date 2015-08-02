@@ -1,6 +1,7 @@
 require "formula"
 
 class Spin < Formula
+  desc "Spin model checker"
   homepage "http://spinroot.com/spin/whatispin.html"
   url "http://spinroot.com/spin/Src/spin642.tar.gz"
   version "6.4.2"

@@ -1,4 +1,5 @@
 class Links < Formula
+  desc "Lynx-like WWW browser that supports tables, menus, etc."
   homepage "http://links.twibright.com/"
   url "http://links.twibright.com/download/links-2.9.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/links2/links2_2.9.orig.tar.bz2"

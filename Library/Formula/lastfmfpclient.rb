@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lastfmfpclient < Formula
+  desc "Last.fm fingerprint library"
   homepage 'https://github.com/lastfm/Fingerprinter'
   url 'https://github.com/lastfm/Fingerprinter/archive/9ee83a51ac9058ff53c9.tar.gz'
   version '1.6'

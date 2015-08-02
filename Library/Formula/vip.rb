@@ -1,6 +1,7 @@
 require 'formula'
 
 class Vip < Formula
+  desc "Program that provides for interactive editing in a pipeline"
   homepage 'http://www.cs.duke.edu/~des/vip.html'
   url 'http://www.cs.duke.edu/~des/scripts/vip'
   version '19971113'

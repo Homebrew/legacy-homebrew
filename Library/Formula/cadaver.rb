@@ -1,6 +1,7 @@
 require "formula"
 
 class Cadaver < Formula
+  desc "Command-line client for DAV"
   homepage "http://www.webdav.org/cadaver/"
   url "http://www.webdav.org/cadaver/cadaver-0.23.3.tar.gz"
   sha1 "4ad8ea2341b77e7dee26b46e4a8a496f1a2962cd"

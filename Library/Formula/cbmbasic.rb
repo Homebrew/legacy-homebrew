@@ -1,4 +1,5 @@
 class Cbmbasic < Formula
+  desc "Commodore BASIC V2 as a scripting language"
   homepage "https://github.com/mist64/cbmbasic"
   url "https://downloads.sourceforge.net/project/cbmbasic/cbmbasic/1.0/cbmbasic-1.0.tgz"
   sha1 "54564daa7f28be98b03ae7dd1eece9e5439c95c3"

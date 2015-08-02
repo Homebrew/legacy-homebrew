@@ -3,7 +3,7 @@ module Homebrew
     if ARGV.named.empty?
       puts HOMEBREW_CELLAR
     else
-      puts ARGV.formulae.map(&:rack)
+      puts ARGV.resolved_formulae.map(&:rack)
     end
   end
 end

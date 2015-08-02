@@ -1,14 +1,15 @@
 class Weechat < Formula
+  desc "Extensible IRC client"
   homepage "https://www.weechat.org"
-  url "https://weechat.org/files/src/weechat-1.1.1.tar.gz"
-  sha1 "25a595ce738c401c583edebee259acf755fd5f17"
+  url "https://weechat.org/files/src/weechat-1.2.tar.gz"
+  sha256 "0f9b00e3fe4d0a4e864111d4231e1756f7be5c1b2b6d17da43bd785ab9f035d8"
 
   head "https://github.com/weechat/weechat.git"
 
   bottle do
-    sha1 "c377d403426bda1fd6b9c6b6b960828a9a76120c" => :yosemite
-    sha1 "b9d703f8c661aed1cd3bf20e92ad95d178361fb6" => :mavericks
-    sha1 "9f5ba4d88436a6ba73b6edb4eb08f91e37d7f849" => :mountain_lion
+    sha256 "76442d9f00e028e17d4188bd7c9e48fce5092f13dc200ac6644da5484e539151" => :yosemite
+    sha256 "7a45ae6e8e6f40a3fe7acc71b694cfbee64db8d525d5d439eed6edc80b94aef5" => :mavericks
+    sha256 "e93668032407955e73e3fea60ce79d6f4a00fe39f98e8e5a1b862951f6146caf" => :mountain_lion
   end
 
   option "with-perl", "Build the perl module"
@@ -29,12 +30,13 @@ class Weechat < Formula
 
     args = std_cmake_args
 
-    args << "-DENABLE_LUA=OFF"    if build.without? "lua"
-    args << "-DENABLE_PERL=OFF"   if build.without? "perl"
-    args << "-DENABLE_RUBY=OFF"   if build.without? "ruby"
+    args << "-DENABLE_LUA=OFF" if build.without? "lua"
+    args << "-DENABLE_PERL=OFF" if build.without? "perl"
+    args << "-DENABLE_RUBY=OFF" if build.without? "ruby"
     args << "-DENABLE_ASPELL=OFF" if build.without? "aspell"
-    args << "-DENABLE_GUILE=OFF"  if build.without? "guile"
+    args << "-DENABLE_GUILE=OFF" if build.without? "guile"
     args << "-DENABLE_PYTHON=OFF" if build.without? "python"
+    args << "-DENABLE_JAVASCRIPT=OFF"
 
     mkdir "build" do
       system "cmake", "..", *args

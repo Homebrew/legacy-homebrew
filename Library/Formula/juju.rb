@@ -1,18 +1,17 @@
-require 'formula'
-
 class Juju < Formula
-  homepage 'https://juju.ubuntu.com'
-  url 'https://launchpad.net/juju-core/1.23/1.23.2/+download/juju-core_1.23.2.tar.gz'
-  sha1 '8dcdd1ba016c51a94a1fff000c393423ed704da7'
+  desc "DevOps management tool"
+  homepage "https://juju.ubuntu.com"
+  url "https://launchpad.net/juju-core/1.24/1.24.3/+download/juju-core_1.24.3.tar.gz"
+  sha256 "edd3054ecfe141760f796292d800d1043d0e0232471a161b3e83be0ac7fde4e7"
 
   bottle do
     cellar :any
-    sha256 "986506830f8eec0e88f34d44bdec64df04c71ddf837ef1af53bbdf0a41d61844" => :yosemite
-    sha256 "54e5ce0832b220b43055575c73f94703a423fdfca399888ef9f250b133c99c85" => :mavericks
-    sha256 "4854036932825c0278d407a6ac1f8831a3cdc3712274e6f199d2fc80d62e8687" => :mountain_lion
+    sha256 "dcd84d22f5db89f5cdb580da7dc1fd3b74182b86412447e09a081b77b864676c" => :yosemite
+    sha256 "f233e51247a1a03a7b4547ab16ee6befd3758db7b2be9f1a0214921dcdd4efcf" => :mavericks
+    sha256 "75dddcfac10a97017408eb32b7f47b8df413c092a57b28556a4e6e7df1a04ce3" => :mountain_lion
   end
 
-  depends_on 'go' => :build
+  depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath

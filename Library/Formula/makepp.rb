@@ -1,6 +1,7 @@
 require 'formula'
 
 class Makepp < Formula
+  desc "Drop-in replacement for GNU make"
   homepage 'http://makepp.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/makepp/2.0/makepp-2.0.tgz'
   sha1 '23995b1fc17255be6a42e5778f6027441dc44661'

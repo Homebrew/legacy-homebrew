@@ -1,6 +1,7 @@
 require 'formula'
 
 class Par2tbb < Formula
+  desc "Create and repair data files using Reed Solomon coding"
   homepage 'http://chuchusoft.com/par2_tbb/'
   url 'http://chuchusoft.com/par2_tbb/par2cmdline-0.4-tbb-20141125.tar.gz'
   sha256 '17a5bb5e63c1b9dfcf5feb5447cee60a171847be7385d95f1e2193a7b59a01ad'

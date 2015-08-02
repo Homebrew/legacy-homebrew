@@ -1,6 +1,7 @@
 require "formula"
 
 class Irods < Formula
+  desc "Integrated data grid software solution"
   homepage "https://www.irods.org"
   url "https://github.com/irods/irods-legacy/archive/3.3.1.tar.gz"
   sha1 "c5d1b3acc1ec58a51466437afbddd2ab46cb1e8f"

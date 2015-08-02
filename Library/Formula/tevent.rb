@@ -1,6 +1,7 @@
 require "formula"
 
 class Tevent < Formula
+  desc "Event system based on the talloc memory management library"
   homepage "http://tevent.samba.org/"
   url "http://www.samba.org/ftp/tevent/tevent-0.9.21.tar.gz"
   sha1 "daa1a4f457773be2e0f645beede93db6943224a5"

@@ -1,4 +1,5 @@
 class Ispell < Formula
+  desc "International Ispell"
   homepage "http://lasr.cs.ucla.edu/geoff/ispell.html"
   url "http://www.cs.hmc.edu/~geoff/tars/ispell-3.4.00.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/i/ispell/ispell_3.4.00.orig.tar.gz"

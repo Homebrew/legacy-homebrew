@@ -1,27 +1,30 @@
 class Openwsman < Formula
-  homepage "http://openwsman.github.io"
-  url "https://github.com/Openwsman/openwsman/archive/v2.4.12.tar.gz"
-  sha1 "15fbe4454c3d48ab229036b09400afd5037f4ef2"
+  desc "Implementation of WS-Management, enabling in-band resource management"
+  homepage "https://openwsman.github.io"
+  url "https://github.com/Openwsman/openwsman/archive/v2.6.0.tar.gz"
+  sha256 "449b4972dc7700918f8f674047f0a1a9c19eeee3f4ce82f47890dddfa56e823f"
+  revision 1
 
   bottle do
-    sha1 "70ba82023cb43276b4fa40103e1e32a7f9fdb74c" => :yosemite
-    sha1 "bcc6baeef902d33028a4eed009ff10e40edcdfe4" => :mavericks
-    sha1 "abd6f5988eca5fa75c4c18dfd9f1ab2b93eac8b3" => :mountain_lion
+    sha256 "e6e5675c6163c2e58811571e82f2e016563718aeabeca7abc30dcc055be0396e" => :yosemite
+    sha256 "134ab348c9a14fde95d021b77fcf265edc19e6697e3f4b336bf47e4b3d7822d0" => :mavericks
+    sha256 "4626e6f4c61e3c01a442d19c0246eb149ba5e280f66b1b046e0cb9362ef5c322" => :mountain_lion
   end
 
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
   depends_on "libxml2"
   depends_on "sblim-sfcc"
-  depends_on "automake"   => :build
-  depends_on "autoconf"   => :build
-  depends_on "libtool"    => :build
-  depends_on "pkg-config" => :build
   depends_on "openssl"
 
   def install
     system "./autoconfiscate.sh"
     system "./configure", "--disable-more-warnings",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     system "make", "install"
   end
 

@@ -1,6 +1,7 @@
 require "formula"
 
 class Dante < Formula
+  desc "SOCKS server and client, implementing RFC 1928 and related standards"
   homepage "http://www.inet.no/dante/"
   url "http://www.inet.no/dante/files/dante-1.4.1.tar.gz"
   mirror "ftp://ftp.inet.no/pub/socks/dante-1.4.1.tar.gz"

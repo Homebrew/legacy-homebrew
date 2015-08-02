@@ -1,6 +1,7 @@
 require 'formula'
 
 class ClassDump < Formula
+  desc "Utility for examining the Objective-C segment of Mach-O files"
   homepage 'http://stevenygard.com/projects/class-dump/'
   head 'https://github.com/nygard/class-dump.git'
   url 'https://github.com/nygard/class-dump/archive/3.5.tar.gz'

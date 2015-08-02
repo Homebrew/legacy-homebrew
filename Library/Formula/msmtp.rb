@@ -1,4 +1,5 @@
 class Msmtp < Formula
+  desc "SMTP client that can be used as an SMTP plugin for Mutt"
   homepage "http://msmtp.sourceforge.net"
   url "https://downloads.sourceforge.net/project/msmtp/msmtp/1.6.2/msmtp-1.6.2.tar.xz"
   sha256 "2f6ecd7cbfadf548fd55205bd24cb63b84bcbb1185efed917dd7800595a48789"
@@ -9,8 +10,11 @@ class Msmtp < Formula
     sha256 "6e0b109c6d290ce71bc24302b0e4fd0a45a1f1b9db025afde8273e87e99777de" => :mountain_lion
   end
 
+  option "with-gsasl", "Use GNU SASL authentication library"
+
   depends_on "pkg-config" => :build
   depends_on "openssl"
+  depends_on "gsasl" => :optional
 
   def install
     args = %W[
@@ -19,6 +23,8 @@ class Msmtp < Formula
       --prefix=#{prefix}
       --with-tls=openssl
     ]
+
+    args << "--with-libsasl" if build.with? "gsasl"
 
     system "./configure", *args
     system "make", "install"

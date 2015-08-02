@@ -1,6 +1,7 @@
 require 'formula'
 
 class Narwhal < Formula
+  desc "General purpose JavaScript platform for building applications"
   homepage 'https://github.com/280north/narwhal'
   head 'https://github.com/280north/narwhal.git'
   url 'https://github.com/280north/narwhal/archive/v0.3.2.tar.gz'

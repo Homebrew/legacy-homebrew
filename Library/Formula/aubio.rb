@@ -1,6 +1,7 @@
 require 'formula'
 
 class Aubio < Formula
+  desc "Extract annotations from audio signals"
   homepage 'http://aubio.org/'
   url 'http://aubio.org/pub/aubio-0.4.1.tar.bz2'
   sha1 '338ec9f633e82c371a370b9727d6f0b86b0ba376'

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Dvdauthor < Formula
+  desc "DVD-authoring toolset"
   homepage 'http://dvdauthor.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/dvdauthor/dvdauthor/0.7.1/dvdauthor-0.7.1.tar.gz'
   sha1 'a9636d165bf546e3e2b25b7397c33dbfa2895e6a'

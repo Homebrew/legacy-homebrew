@@ -1,7 +1,8 @@
 require 'formula'
 
 class Libvpx < Formula
-  homepage 'http://www.webmproject.org/code/'
+  desc "VP8 video codec"
+  homepage 'https://www.webmproject.org/code/'
   url "https://github.com/webmproject/libvpx/archive/v1.4.0.tar.gz"
   sha256 "eca30ea7fae954286c9fe9de9d377128f36b56ea6b8691427783b20c67bcfc13"
 

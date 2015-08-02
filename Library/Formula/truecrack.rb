@@ -1,6 +1,7 @@
 require "formula"
 
 class Truecrack < Formula
+  desc "Brute-force password cracker for TrueCrypt"
   homepage "https://code.google.com/p/truecrack/"
   url "https://truecrack.googlecode.com/files/truecrack_v35.tar.gz"
   sha1 "21b2a0f2f860ecf401cfc1ac8191638b7410fc64"

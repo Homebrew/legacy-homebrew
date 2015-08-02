@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libsamplerate < Formula
+  desc "Library for sample rate conversion of audio data"
   homepage 'http://www.mega-nerd.com/SRC'
   url 'http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz'
   sha1 'e5fe82c4786be2fa33ca6bd4897db4868347fe70'

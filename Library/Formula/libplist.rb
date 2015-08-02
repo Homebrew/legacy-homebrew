@@ -1,6 +1,7 @@
 require "formula"
 
 class Libplist < Formula
+  desc "Library for Apple Binary- and XML-Property Lists"
   homepage "http://www.libimobiledevice.org"
   url "http://www.libimobiledevice.org/downloads/libplist-1.12.tar.bz2"
   sha1 "48f071c723387637ef2cc2980d4ca0627aab067b"

@@ -1,4 +1,5 @@
 class Atk < Formula
+  desc "GNOME accessibility toolkit"
   homepage "https://library.gnome.org/devel/atk/"
   url "https://download.gnome.org/sources/atk/2.16/atk-2.16.0.tar.xz"
   sha256 "095f986060a6a0b22eb15eef84ae9f14a1cf8082488faa6886d94c37438ae562"
@@ -23,6 +24,7 @@ class Atk < Formula
     system "make"
     system "make", "install"
   end
+
   test do
     (testpath/"test.c").write <<-EOS.undent
       #include <atk/atk.h>
@@ -32,7 +34,23 @@ class Atk < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-I#{HOMEBREW_PREFIX}/include/atk-1.0", "-I#{HOMEBREW_PREFIX}/include/glib-2.0", "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include", "-I#{HOMEBREW_PREFIX}/opt/gettext/include", "test.c", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/lib", "-L#{HOMEBREW_PREFIX}/opt/gettext/lib", "-latk-1.0", "-lgobject-2.0", "-lglib-2.0", "-lintl", "-o", "test"
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}/atk-1.0
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -latk-1.0
+      -lglib-2.0
+      -lgobject-2.0
+      -lintl
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"
   end
 end

@@ -1,6 +1,7 @@
 require "formula"
 
 class Cspice < Formula
+  desc "Observation geometry system for robotic space science missions"
   homepage "http://naif.jpl.nasa.gov/naif/index.html"
   url "http://naif.jpl.nasa.gov/pub/naif/toolkit/C/MacIntel_OSX_AppleC_64bit/packages/cspice.tar.Z"
   sha256 "c009981340de17fb1d9b55e1746f32336e1a7a3ae0b4b8d68f899ecb6e96dd5d"

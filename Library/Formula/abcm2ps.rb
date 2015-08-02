@@ -1,4 +1,5 @@
 class Abcm2ps < Formula
+  desc "ABC music notation software"
   homepage "http://moinejf.free.fr"
   url "http://moinejf.free.fr/abcm2ps-7.8.14.tar.gz"
   sha256 "31c55865a914d56c12e2b7cbeaf5e4a09b47bbe79f1c7b5cd1576a16f3753d07"
@@ -10,8 +11,8 @@ class Abcm2ps < Formula
   end
 
   devel do
-    url "http://moinejf.free.fr/abcm2ps-8.7.4.tar.gz"
-    sha256 "c81ada90810f7f70aff08c5962edc209c78e1aed34892ff871ba85765274dc17"
+    url "http://moinejf.free.fr/abcm2ps-8.7.8.tar.gz"
+    sha256 "f9120e8ffd8e9eba3095fc800c7cceca5017eadeedcc2e1e19d7c59082201cbc"
   end
 
   depends_on "pkg-config" => :build

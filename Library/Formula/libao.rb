@@ -1,7 +1,8 @@
 require 'formula'
 
 class Libao < Formula
-  homepage 'http://www.xiph.org/ao/'
+  desc "Cross-platform Audio Library"
+  homepage 'https://www.xiph.org/ao/'
   url 'http://downloads.xiph.org/releases/ao/libao-1.2.0.tar.gz'
   sha1 '6b1d2c6a2e388e3bb6ebea158d51afef18aacc56'
 

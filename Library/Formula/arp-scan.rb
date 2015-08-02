@@ -1,6 +1,7 @@
 require "formula"
 
 class ArpScan < Formula
+  desc "ARP scanning and fingerprinting tool"
   homepage "http://www.nta-monitor.com/tools-resources/security-tools/arp-scan"
   url "http://www.nta-monitor.com/files/arp-scan/arp-scan-1.9.tar.gz"
   mirror "https://github.com/royhills/arp-scan/releases/download/1.9/arp-scan-1.9.tar.gz"

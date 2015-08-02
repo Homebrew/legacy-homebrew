@@ -1,4 +1,5 @@
 class JohnJumbo < Formula
+  desc "Enhanced version of john, a UNIX password cracker"
   homepage "http://www.openwall.com/john/"
   url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
   sha1 "38196f21d2c9c4b539529d0820eb242d5373241f"
@@ -64,10 +65,9 @@ class JohnJumbo < Formula
 
   test do
     touch "john2.pot"
-    system "echo dave:`printf secret | openssl md5` > test"
-    output = shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test")
-    assert output.include? "secret"
-    assert (testpath/"john2.pot").read.include?("secret")
+    system "echo dave:`printf secret | /usr/bin/openssl md5` > test"
+    assert_match(/secret/, shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test"))
+    assert_match(/secret/, (testpath/"john2.pot").read)
   end
 end
 

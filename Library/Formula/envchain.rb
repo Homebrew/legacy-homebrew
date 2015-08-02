@@ -1,4 +1,5 @@
 class Envchain < Formula
+  desc "Secure your credentials in environment variables"
   homepage "https://github.com/sorah/envchain"
   head "https://github.com/sorah/envchain.git"
   url "https://github.com/sorah/envchain/archive/v0.2.0.tar.gz"

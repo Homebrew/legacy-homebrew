@@ -1,6 +1,7 @@
 require "formula"
 
 class Rlwrap < Formula
+  desc "Readline wrapper: adds readline support to tools that lack it"
   homepage "http://utopia.knoware.nl/~hlub/rlwrap/"
   url "http://utopia.knoware.nl/~hlub/rlwrap/rlwrap-0.42.tar.gz"
   sha1 "8d2ad1be9b6c362439825ae5456a2ba5cdd7eb07"

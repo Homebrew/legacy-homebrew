@@ -1,13 +1,14 @@
 class Mesos < Formula
+  desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.22.0/mesos-0.22.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.22.0/mesos-0.22.0.tar.gz"
-  sha256 "689f66f63bec043eb1bbf16be1cbe15ea5f359f308f7f5b01dd48075f20e0c7d"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.23.0/mesos-0.23.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.23.0/mesos-0.23.0.tar.gz"
+  sha256 "b967355ec1f7cf9ffcef76b58939ed48dd4975ea90d1c976669b50c589bdbdec"
 
   bottle do
-    sha256 "84beeabe62b02983b3f31c65cda9065a44325aecbd717700589e309253c9d64f" => :yosemite
-    sha256 "c5e465bf5324dd820173c67cf6764bee66647fdb8aca97c6c17dfadfab1c1ad4" => :mavericks
-    sha256 "826b53520eaf9c162904f59bb7fc80a6f5ee0af4c8209d706546de00bcc29c59" => :mountain_lion
+    sha256 "717f73125b020b89e545384a3e5c1fbf2c36647b365fb181423954b9ceaa7b5d" => :yosemite
+    sha256 "090168dc4599d005491053e3fee6b0e932b7cf388066adec20e1e6eeb128e2b4" => :mavericks
+    sha256 "5c0916e2622083f4903449576a8b751e9dcc64da88ef0434efce6d76f14ab2cf" => :mountain_lion
   end
 
   depends_on :java => "1.7+"
@@ -18,38 +19,38 @@ class Mesos < Formula
 
   resource "boto" do
     url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
-    sha1 "f230ff9b041d3b43244086e38b7b6029450898be"
+    sha256 "8033c6f7a7252976df0137b62536cfe38f1dbd1ef443a7a6d8bc06c063bc36bd"
   end
 
   resource "protobuf" do
     url "https://pypi.python.org/packages/source/p/protobuf/protobuf-2.6.1.tar.gz"
-    sha1 "3dff24d019729060eff569d7a718bdbb10db13a3"
+    sha256 "8faca1fb462ee1be58d00f5efb4ca4f64bde92187fe61fde32615bbee7b3e745"
   end
 
 # build dependencies for protobuf
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
-    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
+    sha256 "439df33ce47ef1478a4f4765f3390eab0ed3ec4ae10be32f2930000c8d19f417"
   end
 
   resource "pytz" do
     url "https://pypi.python.org/packages/source/p/pytz/pytz-2014.10.tar.bz2"
-    sha1 "74a1869c804dd422afbc49cb92206a0ca1529ddc"
+    sha256 "387f968fde793b142865802916561839f5591d8b4b14c941125eb0fca7e4e58d"
   end
 
   resource "python-gflags" do
     url "https://pypi.python.org/packages/source/p/python-gflags/python-gflags-2.0.tar.gz"
-    sha1 "1529a1102da2fc671f2a9a5e387ebabd1ceacbbf"
+    sha256 "0dff6360423f3ec08cbe3bfaf37b339461a54a21d13be0dd5d9c9999ce531078"
   end
 
   resource "google-apputils" do
     url "https://pypi.python.org/packages/source/g/google-apputils/google-apputils-0.4.2.tar.gz"
-    sha1 "6f82069efd1a2cbc168dfb814d077df2fca4cff1"
+    sha256 "47959d0651c32102c10ad919b8a0ffe0ae85f44b8457ddcf2bdc0358fb03dc29"
   end
 
   needs :cxx11

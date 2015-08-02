@@ -1,6 +1,7 @@
 require 'formula'
 
 class Unar < Formula
+  desc "RAR archive command-line tools"
   homepage 'http://unarchiver.c3.cx/commandline'
   url 'https://theunarchiver.googlecode.com/files/unar1.8.1_src.zip'
   version '1.8.1'

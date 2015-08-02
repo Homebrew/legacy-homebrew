@@ -1,4 +1,5 @@
 class Glm < Formula
+  desc "C++ mathematics library for graphics software"
   homepage "http://glm.g-truc.net/"
   url "https://mirrors.kernel.org/debian/pool/main/g/glm/glm_0.9.6.3.orig.tar.xz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/g/glm/glm_0.9.6.3.orig.tar.xz"

@@ -1,6 +1,7 @@
 require "formula"
 
 class HachoirMetadata < Formula
+  desc "Extract metadata from video, music and other files"
   homepage "https://bitbucket.org/haypo/hachoir/wiki/Home"
   url "http://cheeseshop.python.org/packages/source/h/hachoir-metadata/hachoir-metadata-1.3.3.tar.gz"
   sha1 "6f44f2f15a5d24866636117901d0b870137d8af7"

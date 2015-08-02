@@ -1,4 +1,5 @@
 class GnuTypist < Formula
+  desc "GNU typing tutor"
   homepage "https://www.gnu.org/software/gtypist/"
   url "http://ftpmirror.gnu.org/gtypist/gtypist-2.9.5.tar.xz"
   mirror "https://ftp.gnu.org/gnu/gtypist/gtypist-2.9.5.tar.xz"
@@ -28,7 +29,7 @@ class GnuTypist < Formula
 
   test do
     session = fork do
-      system bin/"gtypist", "-t", "-q", "-l", "DEMO_0", share/"gtypist/demo.typ"
+      exec bin/"gtypist", "-t", "-q", "-l", "DEMO_0", share/"gtypist/demo.typ"
     end
     sleep 2
     Process.kill("TERM", session)

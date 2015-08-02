@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libzdb < Formula
+  desc "Database connection pool library"
   homepage 'http://tildeslash.com/libzdb/'
   url 'http://tildeslash.com/libzdb/dist/libzdb-3.0.tar.gz'
   sha1 'bcf14c11cfcd0c05ecc8740f43cd0d6170406dc1'

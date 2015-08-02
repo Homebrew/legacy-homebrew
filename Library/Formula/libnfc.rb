@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libnfc < Formula
+  desc "Low level NFC SDK and Programmers API"
   homepage 'http://www.libnfc.org/'
   url 'https://libnfc.googlecode.com/files/libnfc-1.7.0.tar.bz2'
   sha1 '5adfb6c6238b1659ad8609837dc8e59eb41a8768'

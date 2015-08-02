@@ -1,6 +1,7 @@
 require 'formula'
 
 class Wordnet < Formula
+  desc "Lexical database for the English language"
   homepage 'http://wordnet.princeton.edu/'
   url 'http://wordnetcode.princeton.edu/3.0/WordNet-3.0.tar.bz2'
   sha1 'aeb7887cb4935756cf77deb1ea86973dff0e32fb'

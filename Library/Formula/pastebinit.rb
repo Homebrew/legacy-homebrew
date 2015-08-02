@@ -1,6 +1,7 @@
 require "formula"
 
 class Pastebinit < Formula
+  desc "Send things to pastebin from the command-line"
   homepage "https://launchpad.net/pastebinit"
   url "https://launchpad.net/pastebinit/trunk/1.4.1/+download/pastebinit-1.4.1.tar.gz"
   sha1 "1482311559bc939bb78bbd3e05b15400105bb9c8"

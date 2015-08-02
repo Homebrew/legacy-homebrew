@@ -1,4 +1,5 @@
 class Nacl < Formula
+  desc "Network communication, encryption, decryption, signatures library"
   homepage "http://nacl.cr.yp.to/"
   url "https://hyperelliptic.org/nacl/nacl-20110221.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/n/nacl/nacl_20110221.orig.tar.bz2"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Phantomjs < Formula
+  desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://www.phantomjs.org/"
 
   stable do

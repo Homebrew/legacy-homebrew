@@ -1,4 +1,5 @@
 class PyenvCcache < Formula
+  desc "Make Python build faster, using the leverage of `ccache`"
   homepage "https://github.com/yyuu/pyenv-ccache"
   url "https://github.com/yyuu/pyenv-ccache/archive/v0.0.2.tar.gz"
   sha1 "bd68c92315c5aa8e2d596981f0fab31e6c366137"

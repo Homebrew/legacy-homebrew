@@ -23,7 +23,7 @@ module Homebrew
         rm_rf stage_dir
       end
 
-      oh1 "Unpacking #{f.name} to: #{stage_dir}"
+      oh1 "Unpacking #{f.full_name} to: #{stage_dir}"
 
       ENV['VERBOSE'] = '1' # show messages about tar
       f.brew do

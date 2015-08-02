@@ -1,18 +1,21 @@
 require "formula"
 
 class Getdns < Formula
-  homepage "http://getdnsapi.net"
-  url "http://getdnsapi.net/dist/getdns-0.1.6.tar.gz"
-  sha1 "675fe336b98de78d3b0f25c5d5e0005dc14021ca"
+  desc "Modern asynchronous DNS API"
+  homepage "https://getdnsapi.net"
+  url "https://getdnsapi.net/dist/getdns-0.3.1.tar.gz"
+  sha256 "58fd791187d5fd158ba7db1b5f29d4b0274583447f405577c758c7c7751e8883"
 
   head "https://github.com/getdnsapi/getdns.git"
 
   bottle do
-    sha1 "86879ca8d95414125287abc89393781bcd801f88" => :yosemite
-    sha1 "c826c175dc647cf68bd8ba12dcc9c78da232fb87" => :mavericks
-    sha1 "1c393a248ef0633265f1e40c335a6ddf1fd7794e" => :mountain_lion
+    cellar :any
+    sha256 "66be49d1fe111e14d181aa1054041fa14b87a5cddabb0333bbb6cdc29e4c580f" => :yosemite
+    sha256 "5910d400f5e2f83b49ccc01379691e7a2b2300af815bc517d079811f7968fcf9" => :mavericks
+    sha256 "b3eb2d9b1db54455204c1bdb0e40ea5b44cc1fe9b4ef6de13085e9553c1f0366" => :mountain_lion
   end
 
+  depends_on "openssl"
   depends_on "ldns"
   depends_on "unbound"
   depends_on "libidn"
@@ -21,7 +24,10 @@ class Getdns < Formula
   depends_on "libev" => :optional
 
   def install
-    args = []
+    args = [
+      "--with-ssl=#{Formula["openssl"].opt_prefix}",
+      "--with-trust-anchor=#{etc}/getdns-root.key"
+    ]
     args << "--with-libevent" if build.with? "libevent"
     args << "--with-libev" if build.with? "libev"
     args << "--with-libuv" if build.with? "libuv"

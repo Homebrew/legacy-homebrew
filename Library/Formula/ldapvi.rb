@@ -1,6 +1,7 @@
 require "formula"
 
 class Ldapvi < Formula
+  desc "Update LDAP entries with a text editor"
   homepage "http://www.lichteblau.com/ldapvi/"
   url "http://www.lichteblau.com/download/ldapvi-1.7.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/l/ldapvi/ldapvi_1.7.orig.tar.gz"

@@ -1,4 +1,5 @@
 class Libmatroska < Formula
+  desc "Extensible, open standard container format for audio/video"
   homepage "http://www.matroska.org/"
 
   stable do

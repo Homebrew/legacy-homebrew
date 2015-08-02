@@ -1,4 +1,5 @@
 class Boxes < Formula
+  desc "Draw boxes around text"
   homepage "http://boxes.thomasjensen.com/"
   url "https://github.com/ascii-boxes/boxes/archive/v1.1.2.tar.gz"
   head "https://github.com/ascii-boxes/boxes.git"

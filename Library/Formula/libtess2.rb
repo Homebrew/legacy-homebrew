@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libtess2 < Formula
+  desc "Refactored version of GLU tesselator"
   homepage 'https://code.google.com/p/libtess2/'
   url 'https://libtess2.googlecode.com/files/libtess2-1.0.zip'
   sha1 '53e968add78711c3eb5cdc0948d85c9bd1db2751'

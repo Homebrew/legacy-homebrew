@@ -1,4 +1,5 @@
 class Ccrypt < Formula
+  desc "Encrypt and decrypt files and streams"
   homepage "http://ccrypt.sourceforge.net/"
   url "http://ccrypt.sourceforge.net/download/ccrypt-1.10.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/c/ccrypt/ccrypt_1.10.orig.tar.gz"

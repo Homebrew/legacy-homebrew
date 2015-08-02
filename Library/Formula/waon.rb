@@ -1,6 +1,7 @@
 require "formula"
 
 class Waon < Formula
+  desc "Wave-to-notes transcriber"
   homepage "http://waon.sourceforge.net"
   url "https://downloads.sourceforge.net/project/waon/waon/0.10/waon-0.10.tar.gz"
   sha1 "392c97e6b210de46ca67e3f23ddeeb2f18ee312f"

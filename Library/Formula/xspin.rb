@@ -1,6 +1,7 @@
 require 'formula'
 
 class Xspin < Formula
+  desc "Software verification tool (developed at Bell Labs)"
   homepage 'http://spinroot.com/spin/Src/index.html'
   url 'http://spinroot.com/spin/Src/xspin525.tcl'
   version '5.2.5'

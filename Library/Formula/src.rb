@@ -1,4 +1,5 @@
 class Src < Formula
+  desc "Simple revision control: RCS reloaded with a modern UI"
   homepage "http://www.catb.org/~esr/src/"
   url "http://www.catb.org/~esr/src/src-0.19.tar.gz"
   sha256 "3d9c5c2fe816b3f273aab17520b917a774e90776c766f165efb6ae661378a65c"
@@ -25,9 +26,7 @@ class Src < Formula
     #   https://github.com/Homebrew/homebrew/pull/34165#discussion_r22342214
     inreplace "src", "#!/usr/bin/env python2", "#!/usr/bin/env python"
 
-    if build.head?
-      ENV["XML_CATALOG_FILES"] = HOMEBREW_PREFIX/"etc/xml/catalog"
-    end
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog" if build.head?
 
     system "make", "install", "prefix=#{prefix}"
   end

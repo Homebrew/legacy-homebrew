@@ -1,6 +1,7 @@
 require 'formula'
 
 class CrushTools < Formula
+  desc "Command-line tools for processing delimited text data"
   homepage 'http://crush-tools.googlecode.com/'
   url 'https://crush-tools.googlecode.com/files/crush-tools-2013-04.tar.gz'
   version '2013-04'

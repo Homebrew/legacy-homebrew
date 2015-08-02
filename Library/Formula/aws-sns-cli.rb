@@ -1,4 +1,5 @@
 class AwsSnsCli < Formula
+  desc "Client for Amazon Simple Notification web service"
   homepage "https://aws.amazon.com/developertools/3688"
   url "https://sns-public-resources.s3.amazonaws.com/SimpleNotificationServiceCli-2010-03-31.zip"
   # The version in the tarball is the API version; this is the tool version

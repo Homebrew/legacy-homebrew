@@ -1,4 +1,5 @@
 class Kettle < Formula
+  desc "Pentaho Data Integration software"
   homepage "http://community.pentaho.com/projects/data-integration/"
   url "https://downloads.sourceforge.net/project/pentaho/Data%20Integration/5.0.1-stable/pdi-ce-5.0.1-stable.zip"
   sha1 "c34fa3dbe8b75280fd3f7ddcaf609acbcdd2ed78"

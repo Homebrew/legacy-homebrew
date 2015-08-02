@@ -1,6 +1,7 @@
 require "formula"
 
 class Lv < Formula
+  desc "Powerful multi-lingual file viewer/grep"
   homepage "http://www.ff.iij4u.or.jp/~nrt/lv/"
   url "http://www.ff.iij4u.or.jp/~nrt/freeware/lv451.tar.gz"
   version "4.51"

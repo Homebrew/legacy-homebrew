@@ -1,4 +1,5 @@
 class Tmpreaper < Formula
+  desc "Clean up files in directories based on their age"
   homepage "https://packages.debian.org/tmpreaper"
   url "https://mirrors.kernel.org/debian/pool/main/t/tmpreaper/tmpreaper_1.6.13+nmu1.tar.gz"
   mirror "http://ftp.us.debian.org/debian/pool/main/t/tmpreaper/tmpreaper_1.6.13+nmu1.tar.gz"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Devil < Formula
+  desc "Cross-platform image library"
   homepage 'http://sourceforge.net/projects/openil/'
   url 'https://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz'
   sha1 'bc27e3e830ba666a3af03548789700d10561fcb1'
@@ -17,6 +18,10 @@ class Devil < Formula
   fails_with :clang do
     cause "invalid -std=gnu99 flag while building C++"
   end
+
+  # ./../src-IL/include/il_internal.h:230:54: error: expected ',' or '...' before 'FileName'
+  # https://github.com/Homebrew/homebrew/issues/40442
+  fails_with :gcc => "5"
 
   # fix compilation issue for iluc.c
   patch :DATA

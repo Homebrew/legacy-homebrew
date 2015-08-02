@@ -1,6 +1,7 @@
 require 'formula'
 
 class Sdcc < Formula
+  desc "ANSI C compiler for Intel 8051, Maxim 80DS390, and Zilog Z80"
   homepage 'http://sdcc.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/sdcc/sdcc/3.4.0/sdcc-src-3.4.0.tar.bz2'
   sha1 '469649acbd22376933154ab1e16d0a59806594c4'

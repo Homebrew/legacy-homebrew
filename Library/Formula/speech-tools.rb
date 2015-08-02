@@ -1,4 +1,5 @@
 class SpeechTools < Formula
+  desc "C++ general speech software library from the University of Edinburgh"
   homepage "http://festvox.org/docs/speech_tools-2.4.0/"
   url "http://festvox.org/packed/festival/2.4/speech_tools-2.4-release.tar.gz"
   sha1 "5b0ebd39bb7afa33e4093724a2123bdc62a6aebc"

@@ -1,4 +1,5 @@
 class Gssh < Formula
+  desc "SSH automation tool based on Groovy DSL"
   homepage "https://github.com/int128/groovy-ssh"
   url "https://github.com/int128/groovy-ssh/releases/download/v1.1.5/gssh.jar"
   version "1.1.5"

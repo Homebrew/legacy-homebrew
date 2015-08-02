@@ -5,7 +5,7 @@ additional [Interesting Taps & Branches](Interesting-Taps-&-Branches.md) and any
 own!
 
 ### We try hard to avoid dupes in Homebrew/homebrew
-Stuff that comes with OS X or is a library that is provided by
+Stuff that comes with OS X or libraries that are provided by
 [RubyGems, CPAN or PyPi](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md)
 should not be duplicated. There are good reasons for this:
 
@@ -101,7 +101,7 @@ Please trust that we need to use our discretion based on our experience
 running a package manager.
 
 ### Stuff that builds a .app
-Don’t make your formula build an `.app` (native OS X Application), we
+Don’t make your formula build an `.app` (native OS X Application); we
 don’t want those things in Homebrew. Make it build a command line tool
 or a library. However, we have a few exceptions to that, e.g. when the
 App is just additional to CLI or if the GUI-application is non-native

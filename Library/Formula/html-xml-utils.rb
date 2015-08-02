@@ -1,6 +1,5 @@
-# encoding: UTF-8
-
 class HtmlXmlUtils < Formula
+  desc "Tools for manipulating HTML and XML files"
   homepage "http://www.w3.org/Tools/HTML-XML-utils/"
   url "http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz"
   sha1 "f67fc705802ef0b10b9bf84c5b2fa4253b260acd"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Xtail < Formula
+  desc "Watch growth of multiple files or directories (like `tail -f`)"
   homepage 'http://www.unicom.com/sw/xtail'
   url 'http://www.unicom.com/files/xtail-2.1.tar.gz'
   sha1 '1188baaf47e19a1ed6176a17ee6d144078657c17'

@@ -1,4 +1,5 @@
 class UnittestCpp < Formula
+  desc "Unit testing framework for C++"
   homepage "https://github.com/unittest-cpp/unittest-cpp"
 
   stable do

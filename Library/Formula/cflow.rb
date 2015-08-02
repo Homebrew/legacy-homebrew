@@ -1,4 +1,5 @@
 class Cflow < Formula
+  desc "Generate call graphs from C code"
   homepage "https://www.gnu.org/software/cflow/"
   url "http://ftpmirror.gnu.org/cflow/cflow-1.4.tar.bz2"
   mirror "https://ftp.gnu.org/gnu/cflow/cflow-1.4.tar.bz2"

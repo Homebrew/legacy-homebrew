@@ -1,37 +1,43 @@
 class Magit < Formula
+  desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-  url "https://github.com/magit/magit/releases/download/1.4.1/magit-1.4.1.tar.gz"
-  sha256 "e7b18d2acb7b79a622017726d7b2e48fcb893f3055ecd43b3672175599f97b2d"
+  url "https://github.com/magit/magit/releases/download/2.1.0/magit-2.1.0.tar.gz"
+  sha256 "835ba1cc461583b012671aea8271b8faf372324f0156706d5801cc1b0e533fc8"
+
+  head "https://github.com/magit/magit.git", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "7cc9075b7384022feafc41cc993788491771e4d24c6a3b7e92618feffb95c281" => :yosemite
-    sha256 "f4d97a2e79c5ea3b56ebb895fa8c6330d2256ad2d1f5d2b0de8255ed622751c1" => :mavericks
-    sha256 "e4db292d7cc955b343cbacec8e0d1ed02195b4e0992945cff0bac38ce6c7ea32" => :mountain_lion
+    sha256 "b8a6d761f1417cc1dd28907508f820491c0e0c3687b8a97b5ec5a81d67721719" => :yosemite
+    sha256 "317e4c59fd1f3616ebb1dbc34beab2dbad9ccd4900b5d38dbf0e1378c3fc0de9" => :mavericks
+    sha256 "5b9ae10a1253e28ccbf196e3cba3b6433e9253156dae8510344c94900bd0eb7a" => :mountain_lion
   end
 
-  # see https://github.com/magit/magit/tree/master#its-magit--a-git-porcelain-inside-emacs
-  # will require 24.4 upon release of magit 2.1.0
-  depends_on :emacs => "23.2"
+  depends_on :emacs => "24.4"
 
-  # remove at 2.1.0
-  resource "git-commit-mode" do
-    url "https://github.com/magit/git-modes/raw/3423997a89f63eb4c8a4ce495928bc5951767932/git-commit-mode.el"
-    sha256 "ed33f324e46ab81232bed5c38c4f8f794bd689f58aa49e98e386b628182b32e0"
-  end
-
-  # remove at 2.1.0
-  resource "git-rebase-mode" do
-    url "https://github.com/magit/git-modes/raw/3423997a89f63eb4c8a4ce495928bc5951767932/git-rebase-mode.el"
-    sha256 "21670e2dcabadc18f2c2caff9b97d7affe1697a64d522a40fce6d8f1f5cd5ea5"
+  resource "dash" do
+    url "https://github.com/magnars/dash.el/archive/2.11.0.tar.gz"
+    sha256 "d888d34b9b86337c5740250f202e7f2efc3bf059b08a817a978bf54923673cde"
   end
 
   def install
-    buildpath.install resource("git-commit-mode"),
-                      resource("git-rebase-mode")
-    system "make", "install", "PREFIX=#{prefix}"
-    (share/"emacs/site-lisp").install "git-commit-mode.el",
-                                      "git-rebase-mode.el"
+    resource("dash").stage do
+      (share/"emacs/site-lisp").install "dash.el"
+    end
+
+    (buildpath/"config.mk").write <<-EOS
+      LOAD_PATH = -L #{buildpath}/lisp -L #{share}/emacs/site-lisp
+    EOS
+
+    args = %W[
+      PREFIX=#{prefix}
+      lispdir=#{share}/emacs/site-lisp
+      docdir=#{doc}
+    ]
+    # Can't run `make install` alone without ENV.j1:
+    # https://github.com/magit/magit/issues/1670
+    system "make"
+    system "make", "install", *args
   end
 
   def caveats; <<-EOS.undent

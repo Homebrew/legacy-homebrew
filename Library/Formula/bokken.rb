@@ -1,6 +1,7 @@
 require "formula"
 
 class Bokken < Formula
+  desc "GUI for the Pyew and Radare projects"
   homepage "https://inguma.eu/projects/bokken"
   url "https://inguma.eu/attachments/download/197/bokken-1.6.tar.gz"
   sha1 "9d7a3f8773f01c26c9db84e00c415dbff063f224"

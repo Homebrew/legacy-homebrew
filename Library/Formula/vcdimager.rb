@@ -1,4 +1,5 @@
 class Vcdimager < Formula
+  desc "(Super) video CD authoring solution"
   homepage "https://www.gnu.org/software/vcdimager/"
   url "http://ftpmirror.gnu.org/vcdimager/vcdimager-0.7.24.tar.gz"
   mirror "https://ftp.gnu.org/gnu/vcdimager/vcdimager-0.7.24.tar.gz"

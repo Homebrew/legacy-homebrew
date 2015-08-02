@@ -1,6 +1,7 @@
 require 'formula'
 
 class Lrzsz < Formula
+  desc "Tools for zmodem/xmodem/ymodem file transfer"
   homepage 'http://www.ohse.de/uwe/software/lrzsz.html'
   url 'http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz'
   sha1 '451e6a1813dfb71a412c973acd1b88b9ee3f28c4'

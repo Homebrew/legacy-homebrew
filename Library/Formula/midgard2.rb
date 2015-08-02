@@ -1,6 +1,7 @@
 require 'formula'
 
 class Midgard2 < Formula
+  desc "Generic content repository for web and desktop applications"
   homepage 'http://www.midgard-project.org/'
   url 'https://github.com/downloads/midgardproject/midgard-core/midgard2-core-12.09.tar.gz'
   sha1 'dc5f21833b4a9ba9e714dd523a563b7e6ee777af'

@@ -1,14 +1,15 @@
 class Sqlite < Formula
+  desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3081000.tar.gz"
-  sha256 "c4b8f9eefbdf0b9bef2044bdc3510c8a3f3b0ddb0489661fb433034187f5a428"
-  version "3.8.10"
+  url "https://sqlite.org/2015/sqlite-autoconf-3081100.tar.gz"
+  sha256 "89640082f56b0aec1e691ba4976fb592ac905c791e616905d0a5f0c38e88b616"
+  version "3.8.11"
 
   bottle do
     cellar :any
-    sha256 "897f5a1bacfe7673b166f10740b377c1d300cac66218ee39a256f2280293da4b" => :yosemite
-    sha256 "d23318632ed2fb18f16bd482b62776b80f72ca452ab7123f3fa3f425a43824cf" => :mavericks
-    sha256 "a4a8d3868135695a81a4899bfe4757bd03cd315bcabd528f19223d1c7409daad" => :mountain_lion
+    sha256 "a3a7f8e291c1fea08149243776b3c123599e7e34aa22d6300a29d91121ffebd1" => :yosemite
+    sha256 "4daa2b1368deb11ecf8d4b3a4b1fc9719c4031504c3b5fbef2e0a7b94a2e850e" => :mavericks
+    sha256 "1ed6ef3d95c4213210fbedccae777111407c27f97faed76d56b99e791c0dc808" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -33,9 +34,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3081000.zip"
-    version "3.8.10"
-    sha256 "ef94f17493c93be9f7f4884e0599eb2182ef45e075ab0048cd3c98246d872edd"
+    url "https://sqlite.org/2015/sqlite-doc-3081100.zip"
+    version "3.8.11"
+    sha256 "54d1679325a1df1b62cff9c969c2a916139a78cc7a90256b00659089769856ae"
   end
 
   def install
@@ -79,7 +80,7 @@ class Sqlite < Formula
         In your application, call sqlite3_enable_load_extension(db,1) to
         allow loading external libraries.  Then load the library libsqlitefunctions
         using sqlite3_load_extension; the third argument should be 0.
-        See https://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
+        See https://www.sqlite.org/loadext.html.
         Select statements may now use these functions, as in
         SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
 

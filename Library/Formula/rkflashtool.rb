@@ -1,6 +1,7 @@
 require "formula"
 
 class Rkflashtool < Formula
+  desc "Tools for flashing Rockchip devices"
   homepage "https://sourceforge.net/projects/rkflashtool/"
   url "https://downloads.sourceforge.net/project/rkflashtool/rkflashtool-5.1/rkflashtool-5.1-src.tar.bz2"
   sha1 "5b786298376649a2d44069d5aa7053318b983fa1"

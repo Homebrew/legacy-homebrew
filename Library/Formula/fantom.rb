@@ -1,4 +1,5 @@
 class Fantom < Formula
+  desc "Object oriented, portable programming language"
   homepage "http://fantom.org"
   url "https://bitbucket.org/fantom/fan-1.0/downloads/fantom-1.0.67.zip"
   sha1 "36e45cc713c14b56df2bdbb19a8ccee98420ad1e"

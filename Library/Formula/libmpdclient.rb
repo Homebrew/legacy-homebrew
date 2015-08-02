@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libmpdclient < Formula
+  desc "Library for MPD in the C, C++, and Objective-C languages"
   homepage 'http://www.musicpd.org/libs/libmpdclient/'
   url 'http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.10.tar.gz'
   sha1 '106de0e8f0e63ec3899c91c38d1bcc171df61637'

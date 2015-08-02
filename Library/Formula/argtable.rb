@@ -1,6 +1,7 @@
 require 'formula'
 
 class Argtable < Formula
+  desc "ANSI C library for parsing GNU-style command-line options"
   homepage 'http://argtable.sourceforge.net'
   url 'https://downloads.sourceforge.net/project/argtable/argtable/argtable-2.13/argtable2-13.tar.gz'
   version '2.13'

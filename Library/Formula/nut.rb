@@ -1,4 +1,5 @@
 class Nut < Formula
+  desc "Network UPS Tools: Support for various power devices"
   homepage "http://www.networkupstools.org"
   url "http://www.networkupstools.org/source/2.7/nut-2.7.3.tar.gz"
   sha256 "ff44d95d06a51559a0a018eef7f8d17911c1002b6352a7d7580ff75acb12126b"
@@ -39,7 +40,7 @@ class Nut < Formula
 
   def install
     if build.head?
-      ENV["XML_CATALOG_FILES"] = HOMEBREW_PREFIX/"etc/xml/catalog"
+      ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
       system "./autogen.sh"
     end
 

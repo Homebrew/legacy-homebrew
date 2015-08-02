@@ -31,7 +31,7 @@ A shell script for an command named `extcmd` should be named `brew-extcmd`. This
 	</tr>
   <tr>
     <td>HOMEBREW_CELLAR</td>
-		<td>The location of the Homebrew Cellar, where software is staged, by default <code>/usr/local/Cellar</code>.</td>
+		<td>The location of the Homebrew Cellar, where software is staged. This will be <code>$HOMEBREW_PREFIX/Cellar</code> if that directory exists, or <code>$HOMEBREW_REPOSITORY/Cellar</code> otherwise.</td>
   </tr>
   <tr>
     <td>HOMEBREW_LIBRARY_PATH</td>
@@ -39,7 +39,7 @@ A shell script for an command named `extcmd` should be named `brew-extcmd`. This
 	</tr>
   <tr>
     <td>HOMEBREW_PREFIX</td>
-		<td>Where Homebrew installs software to, by default <code>/usr/local</code>.</td>
+		<td>Where Homebrew installs software. This is always the grandparent directory of the `brew` executable, <code>/usr/local</code> by default.</td>
 	</tr>
   <tr>
     <td>HOMEBREW_REPOSITORY</td>

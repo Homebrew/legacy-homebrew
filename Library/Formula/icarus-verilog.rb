@@ -1,6 +1,7 @@
 require 'formula'
 
 class IcarusVerilog < Formula
+  desc "Verilog simulation and synthesis tool"
   homepage 'http://iverilog.icarus.com/'
   url 'ftp://icarus.com/pub/eda/verilog/v0.9/verilog-0.9.7.tar.gz'
   sha1 '714c2a605779957490cca24e3dc01d096dbc1474'

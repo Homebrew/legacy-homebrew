@@ -1,6 +1,7 @@
 require "formula"
 
 class Rssh < Formula
+  desc "Restricted shell for use with OpenSSH"
   homepage "http://www.pizzashack.org/rssh"
   url "https://downloads.sourceforge.net/project/rssh/rssh/2.3.4/rssh-2.3.4.tar.gz"
   sha1 "e13ae1fdce4b0c89ef70f4695689139c8409e2e8"

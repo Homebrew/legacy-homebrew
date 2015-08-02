@@ -1,6 +1,7 @@
 require 'formula'
 
 class Chruby < Formula
+  desc "Ruby environment tool"
   homepage 'https://github.com/postmodern/chruby#readme'
   url 'https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz'
   sha1 '64365226210f82b58092ed01a3fb57d379b99c80'

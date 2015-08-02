@@ -1,4 +1,5 @@
 class Scalariform < Formula
+  desc "Scala source code formatter"
   homepage "https://github.com/daniel-trinh/scalariform"
   url "https://github.com/daniel-trinh/scalariform/releases/download/0.1.6/scalariform.jar"
   sha256 "346276c5f3a25a44d64ed38f43739813933487299a651f7c64db748427641c54"

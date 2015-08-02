@@ -1,6 +1,7 @@
 require "formula"
 
 class Kdiff3 < Formula
+  desc "Compare and merge 2 or 3 files or directories"
   homepage "http://kdiff3.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/kdiff3/kdiff3/0.9.98/kdiff3-0.9.98.tar.gz"
   sha1 "1390b4ca9c58316de49cb0aabb433f14ebf2dc3f"

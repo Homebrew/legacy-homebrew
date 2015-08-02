@@ -1,6 +1,7 @@
 require "formula"
 
 class WithReadline < Formula
+  desc "Allow GNU Readline to be used with arbitrary programs"
   homepage "http://www.greenend.org.uk/rjk/sw/withreadline.html"
   url "http://www.greenend.org.uk/rjk/sw/with-readline-0.1.1.tar.gz"
   sha1 "ac32f4b23853024f2a42441fa09b20cbe7617ff5"

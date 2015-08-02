@@ -1,6 +1,7 @@
 require 'formula'
 
 class Grass < Formula
+  desc "Geographic Resources Analysis Support System"
   homepage 'http://grass.osgeo.org/'
   revision 1
 

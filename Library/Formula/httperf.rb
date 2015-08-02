@@ -1,6 +1,7 @@
 require "formula"
 
 class Httperf < Formula
+  desc "Tool for measuring webserver performance"
   homepage "https://code.google.com/p/httperf/"
   url "https://httperf.googlecode.com/files/httperf-0.9.0.tar.gz"
   sha1 "2aa885c0c143d809c0e50a6eca5063090bddee35"

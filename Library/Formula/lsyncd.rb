@@ -1,6 +1,7 @@
 require "formula"
 
 class Lsyncd < Formula
+  desc "Synchronize local directories with remote targets"
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
   sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"

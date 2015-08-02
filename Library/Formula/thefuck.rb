@@ -1,13 +1,16 @@
 class Thefuck < Formula
+  desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.29.tar.gz"
-  sha256 "3e51de66ea29a1bbd9f1aadbd3a2398601e7a5e7ab69fef0f75677ca95f00cb1"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.6.tar.gz"
+  sha256 "eae2689c1e1acc0011f8297c38c7c85a9b17bb443b55bf9d273d5f75f63e288c"
+
+  head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any
-    sha256 "257c5674dd683812bda279eb9709809440d7cba032862d234523a0e2dfd38d1d" => :yosemite
-    sha256 "b2cfa406696a624e311bed92ef08c314f0fe6c893308d8e67fecc08102da9b32" => :mavericks
-    sha256 "68a2b3f99d193ab817f31e8c7941d0f4574eccb36f9f29884e9d03e608999afe" => :mountain_lion
+    sha256 "eb4268205873628a8b05ae9655fd9ed49fb7475156c87eb5976c81d457a93fcc" => :yosemite
+    sha256 "67f15694072ce229001a49ffc75bf53a2d08eeb7300125a0684fe34233c3a656" => :mavericks
+    sha256 "3858b25a6c178e095451357e68321184379f2d4bd2f87578cacb7b56d5af4d2e" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -32,33 +35,37 @@ class Thefuck < Formula
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
-  def install
-    ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
+    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+  end
 
-    %w[psutil pathlib colorama six].each do |r|
+  def install
+    xy = Language::Python.major_minor_version "python"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
+    %w[setuptools pathlib psutil colorama six].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  test do
-    output = shell_output(bin/"thefuck echho")
-    assert output.include? "echo"
+  def caveats; <<-EOS.undent
+    Add the following to your .bash_profile, .bashrc or .zshrc:
+
+      eval "$(thefuck-alias)"
+
+    For other shells, check https://github.com/nvbn/thefuck/wiki/Shell-aliases
+    EOS
   end
 
-  def caveats; <<-EOS.undent
-    Add the following to your .bash_profile or .zshrc:
-      alias fuck='$(thefuck $(fc -ln -1))'
-    Or in config.fish:
-      function fuck
-        eval (thefuck $history[1])
-      end
-    EOS
+  test do
+    assert_match /echo ok/, shell_output(bin/"thefuck echho ok")
   end
 end

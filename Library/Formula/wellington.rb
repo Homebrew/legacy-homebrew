@@ -1,51 +1,79 @@
 require "language/go"
 
 class Wellington < Formula
+  desc "Adds file awareness to SASS"
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/v0.7.1.tar.gz"
-  sha256 "3f23fffee02ce03f177fb1489f3dee92879c59edda6230e5a2c16aaa149fb1a8"
-  head "https://github.com/wellington/wellington.git"
+
+  stable do
+    url "https://github.com/wellington/wellington/archive/v0.9.1.tar.gz"
+    sha256 "133a3d698f98139808c4a86955a9cdc0d9e91a0ed886c0851aceaed4595d8022"
+
+    depends_on "libsass"
+  end
 
   bottle do
     cellar :any
-    sha256 "9054893acde51c1fc992dc4172e0eb5177e08755fa7397624803bc3dc678fea7" => :yosemite
-    sha256 "495c1410412a58dac9c8643dee36130a2becc75d853b03c24a694824005664e8" => :mavericks
-    sha256 "8e132ad0a7183d9ce11f64c342b6db7f1ba2e33d096a1f5f1bd85b56354c2751" => :mountain_lion
+    sha256 "843f251fe4157482b0c758512f734c7931016e9fcfd501ed1a5e267ac3efcd36" => :yosemite
+    sha256 "860cdde8a2327cfd11910fb434f3c9666e1b186928c6fbf5cb106eb5d7f19ae9" => :mavericks
+    sha256 "10c2b1bbbe26bbfd5f5644c1d0047292b896d6b5555e275d0d47788566e7973f" => :mountain_lion
   end
 
   needs :cxx11
 
-  depends_on "go" => :build
-  depends_on "pkg-config" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
+  head do
+    url "https://github.com/wellington/wellington.git"
 
-  go_resource "github.com/wellington/spritewell" do
-    url "https://github.com/wellington/spritewell.git",
-        :revision => "748bfe956f31c257605c304b41a0525a4487d17d"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
-  go_resource "github.com/go-fsnotify/fsnotify" do
-    url "https://github.com/go-fsnotify/fsnotify.git",
-        :revision => "f582d920d11386e8ae15227bb5933a8f9b4c3dec"
+  depends_on "go" => :build
+  depends_on "pkg-config" => :build
+
+  go_resource "github.com/tools/godep" do
+    url "https://github.com/tools/godep.git",
+      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
+  end
+
+  go_resource "github.com/kr/fs" do
+    url "https://github.com/kr/fs.git",
+      :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+  end
+
+  go_resource "golang.org/x/tools" do
+    url "https://github.com/golang/tools.git",
+      :revision => "ea5101579e09ace53571c8a5bae6ebb896f8d5e4"
   end
 
   def install
-    ENV.cxx11
-    # go_resource doesn't support gopkg, do it manually then symlink
-    mkdir_p buildpath/"src/gopkg.in"
-    ln_s buildpath/"src/github.com/go-fsnotify/fsnotify",
-         buildpath/"src/gopkg.in/fsnotify.v1"
-    ENV["PKG_CONFIG_PATH"] = buildpath/"libsass/lib/pkgconfig"
+    ENV.cxx11 if MacOS.version < :mavericks
+
+    version = File.read("version.txt").chomp
+    ENV["GOPATH"] = buildpath
+    Language::Go.stage_deps resources, buildpath/"src"
+
+    cd "src/github.com/tools/godep" do
+      system "go", "install"
+    end
+    system "bin/godep", "restore"
+
+    # Build libsass from source for head build
+    if build.head?
+      ENV.cxx11
+      ENV["PKG_CONFIG_PATH"] = buildpath/"src/github.com/wellington/go-libsass/lib/pkgconfig"
+
+      ENV.append "CGO_LDFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
+      cd "src/github.com/wellington/go-libsass/" do
+        system "make", "deps"
+      end
+    end
+
+    # symlink into $GOPATH so builds work
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
-    Language::Go.stage_deps resources, buildpath/"src"
-    ENV["GOPATH"] = buildpath
-    ENV.append "CGO_LDFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
-    system "make", "deps"
-    system "go", "build", "-x", "-v", "-o", "dist/wt", "wt/main.go"
 
+    system "go", "build", "-ldflags", "-X main.version #{version}", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
   end
 
@@ -53,11 +81,10 @@ class Wellington < Formula
     s = "div { p { color: red; } }"
     expected = <<-EOS.undent
       Reading from stdin, -h for help
-      /* line 6, stdin */
+      /* line 1, stdin */
       div p {
         color: red; }
     EOS
-    output = `echo '#{s}' | #{bin}/wt`
-    assert_equal(expected, output)
+    assert_equal expected, pipe_output("#{bin}/wt", s, 0)
   end
 end

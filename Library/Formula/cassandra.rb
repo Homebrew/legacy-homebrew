@@ -1,8 +1,15 @@
 class Cassandra < Formula
+  desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.1.4/apache-cassandra-2.1.4-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/2.1.4/apache-cassandra-2.1.4-bin.tar.gz"
-  sha256 "fb5debada72905f169866ca43c21ade4782f9c036b160894e42b9072190cb7f1"
+  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.2.0/apache-cassandra-2.2.0-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/2.2.0/apache-cassandra-2.2.0-bin.tar.gz"
+  sha256 "6405eb063e7c8a44a485ac12b305c00ad62c526cc021bcce145c29423ae7b0a2"
+
+  bottle do
+    sha256 "c8d7b9ed7d9e63822db5d5a2a4d808df678a8fcda3c72a46f5ddd0c6d20754c9" => :yosemite
+    sha256 "b7756603f8e8edd9c9ec4579c3a5e92c1abedc04260b0057fbb008a5b3843721" => :mavericks
+    sha256 "8cd40421528e1cbd4a128b265750e0c678dd09144a5a1da367c8740ba29612e5" => :mountain_lion
+  end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
@@ -33,8 +40,8 @@ class Cassandra < Formula
   end
 
   resource "cassandra-driver" do
-    url "https://pypi.python.org/packages/source/c/cassandra-driver/cassandra-driver-2.5.0.tar.gz"
-    sha256 "b9751efab561dbddc4da97f4d05db7ea6c1c4cdefb2d767f55ca3dd151eaa090"
+    url "https://pypi.python.org/packages/source/c/cassandra-driver/cassandra-driver-2.6.0.tar.gz"
+    sha256 "753505a02b4c6f9b5ef18dec36a13f17fb458c98925eea62c94a8839d5949717"
   end
 
   def install

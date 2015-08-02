@@ -1,8 +1,9 @@
 require 'formula'
 
 class LibunwindHeaders < Formula
-  homepage 'http://opensource.apple.com/'
-  url 'http://opensource.apple.com/tarballs/libunwind/libunwind-35.1.tar.gz'
+  desc "C API for determining the call-chain of a program"
+  homepage 'https://opensource.apple.com/'
+  url 'https://opensource.apple.com/tarballs/libunwind/libunwind-35.1.tar.gz'
   sha1 '86908428aaa0ae6cec5038dc6eeb8b64dbb6cd63'
 
   bottle do

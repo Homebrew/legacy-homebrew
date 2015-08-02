@@ -1,14 +1,15 @@
 class UcspiTools < Formula
+  desc "Various tools to handle UCSPI connections"
   homepage "https://github.com/younix/ucspi/blob/master/README.md"
   url "https://github.com/younix/ucspi/archive/v1.2.tar.gz"
   sha256 "38cd0ae9113324602a600a6234d60ec9c3a8c13c8591e9b730f91ffb77e5412a"
-  revision 1
+  revision 3
 
   bottle do
     cellar :any
-    sha1 "dc55b01e189f599a40b976d115702f83de1f7f80" => :yosemite
-    sha1 "bdfeb899f5b422a4f4b818227c12cde0b33b4a74" => :mavericks
-    sha1 "5a20954f54ddcdc0e3e3d71dba8eb1e0ecb47068" => :mountain_lion
+    sha256 "2bc0e4a92ba633a9c50891d65d6c1662bfe57244582e04a6f9af6ce2260d6415" => :yosemite
+    sha256 "534be7f4ff272e290d2421f1624ed07cc12e1be18247128a10cd8d34ad3bd4d3" => :mavericks
+    sha256 "63af55f1d06a7185a6f228e2a5519d2815e0a31a184a0cba0b287641b7551778" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

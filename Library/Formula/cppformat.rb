@@ -1,4 +1,5 @@
 class Cppformat < Formula
+  desc "Open-source formatting library for C++"
   homepage "https://cppformat.github.io/"
   url "https://github.com/cppformat/cppformat/releases/download/1.1.0/cppformat-1.1.0.zip"
   sha256 "bfa5db9d5bafe079b711981c336ec33b3980715aadf89efc7855aca507845a0e"

@@ -327,17 +327,6 @@ class Pathname
     quiet_system "/usr/bin/install-info", "--delete", "--quiet", to_s, "#{dirname}/dir"
   end
 
-  def find_formula
-    [join("Formula"), join("HomebrewFormula"), self].each do |d|
-      if d.exist?
-        d.children.each do |pn|
-          yield pn if pn.extname == ".rb"
-        end
-        break
-      end
-    end
-  end
-
   # Writes an exec script in this folder for each target pathname
   def write_exec_script *targets
     targets.flatten!
@@ -404,7 +393,9 @@ class Pathname
     out = ""
     n = Utils.popen_read("find", expand_path.to_s, "-type", "f", "!", "-name", ".DS_Store").split("\n").size
     out << "#{n} files, " if n > 1
-    out << Utils.popen_read("/usr/bin/du", "-hs", expand_path.to_s).split("\t")[0].strip
+    size = Utils.popen_read("/usr/bin/du", "-hs", expand_path.to_s).split("\t")[0]
+    size ||= "0B"
+    out << size.strip
     out
   end
 

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Jsvc < Formula
+  desc "Wrapper to launch Java applications as daemons"
   homepage 'http://commons.apache.org/daemon/jsvc.html'
   url 'http://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.15-native-src.tar.gz'
   version '1.0.15'

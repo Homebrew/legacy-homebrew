@@ -1,6 +1,7 @@
 require "formula"
 
 class Owamp < Formula
+  desc "Implementation of the One-Way Active Measurement Protocol"
   homepage "http://www.internet2.edu/performance/owamp/"
   url "http://software.internet2.edu/sources/owamp/owamp-3.4-10.tar.gz"
   sha1 "acf7502eef15fc0ac14d1b1d86e28759b4bc39fe"

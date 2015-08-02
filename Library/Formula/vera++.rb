@@ -1,6 +1,7 @@
 require "formula"
 
 class Veraxx < Formula
+  desc "Programmable tool for C++ source code"
   homepage "https://bitbucket.org/verateam/vera"
   url "https://bitbucket.org/verateam/vera/downloads/vera++-1.3.0.tar.gz"
   sha1 "696c143e42df6854c9e5674b9e713fa8b9dae6f0"

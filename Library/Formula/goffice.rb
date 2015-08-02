@@ -1,12 +1,13 @@
 class Goffice < Formula
+  desc "Gnumeric spreadsheet program"
   homepage "https://developer.gnome.org/goffice/"
-  url "https://download.gnome.org/sources/goffice/0.10/goffice-0.10.22.tar.xz"
-  sha256 "0206a87a323b52a874dc54491374245f9e1c5f62e93a2ce4a02fb444a26b0e28"
+  url "https://download.gnome.org/sources/goffice/0.10/goffice-0.10.23.tar.xz"
+  sha256 "1325fc38f2476977bd8d71588ccb2a57aa418260406b7c28a20098b6b4e33f9f"
 
   bottle do
-    sha256 "51f1067664b72d91c61bdeb7a3f2218afcba8c37d5aa958f390986bd1db5c7c1" => :yosemite
-    sha256 "c3f9c729a1db2dd973c9894ec645db354dc8e883d27ad82d5af4fc0a1ebc6dfe" => :mavericks
-    sha256 "9d69ebfd454ebcecaf56cf7e7eca1484ac3c200e974ffbd2308b11da810090d8" => :mountain_lion
+    sha256 "4b08f3f552e838833b51e258c9f08a58d69abeccb9fb1a78240e9d3edad5dc1a" => :yosemite
+    sha256 "543790e68fe098849ec4dc5815f0c75c7aa0cdd63897db56ba07806afb145676" => :mavericks
+    sha256 "a16a9c78288020b9c1cec62048eff2ac34bb933d4dc6d1eaea9cdfdb34d40cce" => :mountain_lion
   end
 
   head do
@@ -29,7 +30,6 @@ class Goffice < Formula
   depends_on "librsvg"
   depends_on "pango"
   depends_on "pcre"
-  depends_on :x11
 
   def install
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]

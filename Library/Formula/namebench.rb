@@ -1,6 +1,7 @@
 require 'formula'
 
 class Namebench < Formula
+  desc "DNS benchmark utility"
   homepage 'https://code.google.com/p/namebench/'
   url 'https://namebench.googlecode.com/files/namebench-1.3.1-source.tgz'
   sha1 '2e6ca5a4f20512cb967c5ac43b023cc38c271131'

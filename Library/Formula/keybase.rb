@@ -1,7 +1,8 @@
 class Keybase < Formula
+  desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/node-client/archive/v0.7.8.tar.gz"
-  sha256 "87fda71a1559e418ba67d64eeca29b7e0caa4a7696de130bd2da7379da3a62aa"
+  url "https://github.com/keybase/node-client/archive/v0.8.16.tar.gz"
+  sha256 "b69bf40c2f9a03d63b96c5805ed6df856f6f219911dd994f8cbbb29ebffcc912"
   head "https://github.com/keybase/node-client.git"
 
   depends_on "node"
@@ -23,6 +24,8 @@ class Keybase < Formula
   end
 
   test do
-    system "#{bin}/keybase", "id", "maria"
+    # Keybase requires a valid GPG keychain to be set up. Fetch Homebrew's pubkey.
+    system "gpg", "--keyserver", "pgp.mit.edu", "--recv-keys", "0xE33A3D3CCE59E297"
+    system "#{bin}/keybase", "id", "homebrew"
   end
 end

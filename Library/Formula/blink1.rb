@@ -1,4 +1,5 @@
 class Blink1 < Formula
+  desc "Control blink(1) indicator light"
   homepage "http://thingm.com/products/blink-1.html"
   url "https://github.com/todbot/blink1/archive/v1.96.tar.gz"
   sha1 "474487e72afa22b3dced246571546e8a6f49c939"

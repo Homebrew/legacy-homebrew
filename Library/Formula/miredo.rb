@@ -1,6 +1,7 @@
 require "formula"
 
 class Miredo < Formula
+  desc "Teredo IPv6 tunneling through NATs"
   homepage "http://www.remlab.net/miredo/"
   url "http://www.remlab.net/files/miredo/miredo-1.2.6.tar.xz"
   sha1 "630c84e9919952f6f4792ceda54a12e0aef43bbf"

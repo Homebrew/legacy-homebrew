@@ -1,6 +1,7 @@
 require 'formula'
 
 class BaculaFd < Formula
+  desc "Network backup solution"
   homepage 'http://www.bacula.org/'
   url 'https://downloads.sourceforge.net/project/bacula/bacula/7.0.5/bacula-7.0.5.tar.gz'
   sha256 '1457849eb33011b43371801b62ffa13d29bebe51be8d5a36da563b87bb094a49'

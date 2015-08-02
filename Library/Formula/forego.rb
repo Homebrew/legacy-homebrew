@@ -1,6 +1,7 @@
 require "language/go"
 
 class Forego < Formula
+  desc "Foreman in Go"
   homepage "https://github.com/ddollar/forego"
   url "https://github.com/ddollar/forego/archive/v0.16.1.tar.gz"
   sha256 "d4c8305262ac18c7e51d9d8028827f83b37fb3f9373d304686d084d68033ac6d"

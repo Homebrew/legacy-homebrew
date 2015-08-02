@@ -1,6 +1,7 @@
 require "formula"
 
 class Restund < Formula
+  desc "Modular STUN/TURN server"
   homepage "http://www.creytiv.com"
   url "http://www.creytiv.com/pub/restund-0.4.11.tar.gz"
   sha1 "7fb98e6d8dd5e48b62f5ad23d3dc5ee6546f8c15"

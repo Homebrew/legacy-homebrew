@@ -1,6 +1,7 @@
 require 'formula'
 
 class Genstats < Formula
+  desc "Generate statistics about stdin or textfiles"
   homepage 'http://www.vanheusden.com/genstats/'
   url 'http://www.vanheusden.com/genstats/genstats-1.2.tgz'
   sha1 '9b60278d3b0cc5dace63f081f4d5a7c3b6cbc473'

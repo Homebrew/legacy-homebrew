@@ -1,6 +1,7 @@
 require "formula"
 
 class Lft < Formula
+  desc "Layer Four Traceroute (LFT), an advanced traceroute tool"
   homepage "http://pwhois.org/lft/"
   url "http://pwhois.org/dl/index.who?file=lft-3.73.tar.gz"
   sha1 "c5a37bef74d7466d5202ee8136acc3213711252e"

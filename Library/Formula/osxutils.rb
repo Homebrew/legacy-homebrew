@@ -1,4 +1,5 @@
 class Osxutils < Formula
+  desc "Command-line access of Mac-specific information, settings, and metadata"
   homepage "https://github.com/vasi/osxutils"
   head "https://github.com/vasi/osxutils.git"
   url "https://github.com/vasi/osxutils/archive/v1.8.1.tar.gz"

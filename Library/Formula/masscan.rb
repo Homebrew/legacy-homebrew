@@ -1,6 +1,7 @@
 require 'formula'
 
 class Masscan < Formula
+  desc "TCP port scanner, scans entire Internet in under 5 minutes"
   homepage 'https://github.com/robertdavidgraham/masscan/'
   url 'https://github.com/robertdavidgraham/masscan/archive/1.0.3.tar.gz'
   sha1 'a10a2475e97c7d2b2999e4c9ce9e19863782dc8f'

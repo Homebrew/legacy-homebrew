@@ -1,6 +1,7 @@
 require "formula"
 
 class Spdylay < Formula
+  desc "Experimental implementation of SPDY protocol versions 2, 3, and 3.1"
   homepage "https://github.com/tatsuhiro-t/spdylay"
   url "https://github.com/tatsuhiro-t/spdylay/archive/v1.3.2.tar.gz"
   sha1 "0ad6989f93781012efab3602ba1ffffe9002abf3"

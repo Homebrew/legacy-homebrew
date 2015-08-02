@@ -1,6 +1,7 @@
 # This formula is intended to be used by gcc formulae with java support.
 
 class Ecj < Formula
+  desc "Standalone version of the Eclipse Java compiler"
   homepage "https://gcc.gnu.org/"
   url "ftp://sourceware.org/pub/java/ecj-4.9.jar"
   mirror "https://mirrors.kernel.org/sources.redhat.com/java/ecj-4.9.jar"

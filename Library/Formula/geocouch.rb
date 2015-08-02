@@ -1,6 +1,7 @@
 require 'formula'
 
 class Geocouch < Formula
+  desc "Spatial index for CouchDB"
   homepage 'https://github.com/couchbase/geocouch'
   url 'https://github.com/couchbase/geocouch/archive/couchdb1.3.x.tar.gz'
   sha1 '73f5586c06cdec2fb6c5ab88da1ff99ef76beeb7'

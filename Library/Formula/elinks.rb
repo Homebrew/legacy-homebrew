@@ -1,6 +1,7 @@
 require 'formula'
 
 class Elinks < Formula
+  desc "Text mode web browser"
   homepage 'http://elinks.or.cz/'
   url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
   sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'

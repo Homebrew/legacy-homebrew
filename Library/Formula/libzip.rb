@@ -1,4 +1,5 @@
 class Libzip < Formula
+  desc "C library for reading, creating, and modifying zip archives"
   homepage "http://www.nih.at/libzip/"
   url "http://www.nih.at/libzip/libzip-0.11.2.tar.gz"
   sha1 "eeb3b5567fcf3532fa4bcb6440a87c7ad8507d2d"

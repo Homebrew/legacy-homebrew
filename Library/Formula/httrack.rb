@@ -1,4 +1,5 @@
 class Httrack < Formula
+  desc "Website copier/offline browser"
   homepage "https://www.httrack.com/"
   # Always use mirror.httrack.com when you link to a new version of HTTrack, as
   # link to download.httrack.com will break on next HTTrack update.

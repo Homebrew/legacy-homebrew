@@ -8,6 +8,25 @@ class Sandbox
     OS.mac? && File.executable?(SANDBOX_EXEC)
   end
 
+  # there are times the sandbox cannot be used.
+  def self.auto_disable?
+    @auto_disable ||= ARGV.interactive? || ARGV.debug?
+  end
+
+  def self.print_autodisable_warning
+    unless @printed_autodisable_warning
+      opoo "The sandbox cannot be used in debug or interactive mode."
+      @printed_autodisable_warning = true
+    end
+  end
+
+  def self.print_sandbox_message
+    unless @printed_sandbox_message
+      ohai "Using the sandbox"
+      @printed_sandbox_message = true
+    end
+  end
+
   def initialize
     @profile = SandboxProfile.new
   end
@@ -110,10 +129,11 @@ class Sandbox
       (debug deny) ; log all denied operations to /var/log/system.log
       <%= rules.join("\n") %>
       (allow file-write*
+          (literal "/dev/ptmx")
           (literal "/dev/dtracehelper")
           (literal "/dev/null")
-          (regex #"^/dev/fd/\\d+$")
-          (regex #"^/dev/tty\\d*$")
+          (regex #"^/dev/fd/[0-9]+$")
+          (regex #"^/dev/ttys?[0-9]*$")
           )
       (deny file-write*) ; deny non-whitelist file write operations
       (allow default) ; allow everything else

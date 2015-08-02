@@ -1,4 +1,5 @@
 class Unp < Formula
+  desc "Unpack everything with one command"
   homepage "https://packages.debian.org/source/stable/unp"
   url "https://mirrors.kernel.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz"
   mirror "https://ftp.us.debian.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz"
@@ -22,5 +23,13 @@ class Unp < Formula
     mv "debian/README.Debian", "README"
     mv "debian/copyright", "COPYING"
     mv "debian/changelog", "ChangeLog"
+  end
+
+  test do
+    path = testpath/"test"
+    path.write "Homebrew"
+    system "gzip", "test"
+    system "#{bin}/unp", "test.gz"
+    assert_equal "Homebrew", path.read
   end
 end

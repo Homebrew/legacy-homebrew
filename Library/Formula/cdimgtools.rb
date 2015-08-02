@@ -1,6 +1,7 @@
 require 'formula'
 
 class Cdimgtools < Formula
+  desc "Command-line tools to inspect and manipulate CD/DVD images"
   homepage 'http://home.gna.org/cdimgtools/'
   url 'http://download.gna.org/cdimgtools/cdimgtools-0.3.tar.gz'
   sha1 'bc4d9f7b50aa59e3f4f32fc61c01b6a8241eb1af'

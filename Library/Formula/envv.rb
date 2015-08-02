@@ -1,4 +1,5 @@
 class Envv < Formula
+  desc "Shell-independent handling of environment variables"
   homepage "https://github.com/jakewendt/envv#readme"
   url "https://github.com/jakewendt/envv/archive/v1.7.tar.gz"
   sha1 "ec92fc104f9cdaee7d53bf2d20489c4746cfaec3"

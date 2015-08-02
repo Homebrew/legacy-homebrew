@@ -1,6 +1,7 @@
 require "formula"
 
 class TeensyLoaderCli < Formula
+  desc "Command-line integration for Teensy USB development boards"
   homepage "https://www.pjrc.com/teensy/loader_cli.html"
   url "https://www.pjrc.com/teensy/teensy_loader_cli.2.1.zip"
   sha1 "041459720e733f78ba4e6a14abdbaa8bf04eb007"

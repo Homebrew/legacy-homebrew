@@ -1,12 +1,13 @@
 class CabalInstall < Formula
+  desc "Command-line interface for Cabal and Hackage"
   homepage "https://www.haskell.org/cabal/"
-  url "https://hackage.haskell.org/package/cabal-install-1.22.2.0/cabal-install-1.22.2.0.tar.gz"
-  sha256 "25bc2ea88f60bd0f19bf40984ea85491461973895480b8633d87f54aa7ae6adb"
+  url "https://hackage.haskell.org/package/cabal-install-1.22.6.0/cabal-install-1.22.6.0.tar.gz"
+  sha256 "9d239e385696a7faa49f068aea451882baec6a7df26fbddbd08271c9053cb0b4"
 
   bottle do
-    sha256 "28be6f29bde3ae58c67acbb6cf8d9f09f035bf2f1f14225242eb050cd4cec405" => :yosemite
-    sha256 "c92e20e918f01bc88aace10a6250bf49e36f724354b69b50eb0e7e4c8b826417" => :mavericks
-    sha256 "6fe44ef6d3f82bf2010fa2779bea5164962e68626f30f4e6d608f793911bf7ce" => :mountain_lion
+    sha256 "07890be8c3dd1cf938117fd9ef33e22dca9602b17d99aa8f2189b0d36ac522e4" => :yosemite
+    sha256 "a31402a686055a7107e50b2c952991d7969f8ba1fa77ff97680657772feaece2" => :mavericks
+    sha256 "3b88e5bc77f90b3cce16f3b7c0e21ef68117abbb74a022e36e444edf1740709f" => :mountain_lion
   end
 
   depends_on "ghc"

@@ -1,4 +1,5 @@
 class Tin < Formula
+  desc "Threaded, NNTP-, and spool-based UseNet newsreader"
   homepage "http://www.tin.org"
   url "http://ftp.cuhk.edu.hk/pub/packages/news/tin/v2.2/tin-2.2.1.tar.gz"
   sha1 "9ef12345ed1cfb482138c5c54a7f73dfb91b9039"

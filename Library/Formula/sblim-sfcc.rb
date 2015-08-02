@@ -1,4 +1,5 @@
 class SblimSfcc < Formula
+  desc "Project to enhance the manageability of GNU/Linux system"
   homepage "https://sourceforge.net/projects/sblim/"
   url "https://downloads.sourceforge.net/project/sblim/sblim-sfcc/sblim-sfcc-2.2.8.tar.bz2"
   sha1 "794e9e15ed54f391f227427445789463560f0990"

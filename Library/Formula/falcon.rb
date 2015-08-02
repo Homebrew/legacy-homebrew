@@ -1,4 +1,5 @@
 class Falcon < Formula
+  desc "Multi-paradigm programming language and scripting engine"
   homepage "http://www.falconpl.org/"
   url "http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz"
   sha256 "f4b00983e7f91a806675d906afd2d51dcee048f12ad3af4b1dadd92059fa44b9"

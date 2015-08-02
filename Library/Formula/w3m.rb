@@ -1,6 +1,7 @@
 require 'formula'
 
 class W3m < Formula
+  desc "Pager/text based browser"
   homepage 'http://w3m.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/w3m/w3m/w3m-0.5.3/w3m-0.5.3.tar.gz'
   sha1 '444b6c8cf7094ee95f8e9de96b37f814b9d83237'

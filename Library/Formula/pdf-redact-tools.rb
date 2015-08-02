@@ -1,4 +1,5 @@
 class PdfRedactTools < Formula
+  desc "Securely redacting and stripping metadata"
   homepage "https://github.com/micahflee/pdf-redact-tools"
   url "https://github.com/micahflee/pdf-redact-tools/archive/v0.1.tar.gz"
   sha256 "9d5f095e5d056eb527c08c4736b45c99aa6399424dd6ed7155e3d7cd1600c55e"

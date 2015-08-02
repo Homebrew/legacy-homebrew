@@ -1,6 +1,7 @@
 require 'formula'
 
 class Pdftohtml < Formula
+  desc "PDF to HTML converter (based on xpdf)"
   homepage 'http://pdftohtml.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/pdftohtml/Experimental%20Versions/pdftohtml%200.40/pdftohtml-0.40a.tar.gz'
   sha1 '409572da65cf5234d026a5b199a81a26e75ca4d8'

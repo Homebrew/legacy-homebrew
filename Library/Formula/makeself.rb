@@ -1,6 +1,7 @@
 require "formula"
 
 class Makeself < Formula
+  desc "Make self-extractable archives on UNIX"
   homepage "http://www.megastep.org/makeself/"
   url "https://github.com/megastep/makeself/archive/release-2.2.0.tar.gz"
   sha1 "e512745f7aa5becea4f4f85a8dc0aa6fd6ca38aa"

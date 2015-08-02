@@ -1,4 +1,5 @@
 class Sslyze < Formula
+  desc "SSL scanner"
   homepage "https://github.com/nabla-c0d3/sslyze"
   url "https://github.com/nabla-c0d3/sslyze/archive/release-0.11.tar.gz"
   sha256 "d0adf9be09d5b27803a923dfabd459c84a2eddb457dac2418f1bf074153f8f93"

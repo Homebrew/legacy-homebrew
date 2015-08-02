@@ -1,6 +1,7 @@
 require 'formula'
 
 class ArgyllCms < Formula
+  desc "ICC compatible color management system"
   homepage 'http://www.argyllcms.com/'
   url 'http://www.argyllcms.com/Argyll_V1.6.3_src.zip'
   sha1 '0c4d48a6cf6800a8d445bf6cd3c248a40799cf14'

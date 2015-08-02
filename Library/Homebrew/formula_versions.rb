@@ -15,7 +15,7 @@ class FormulaVersions
     @entry_name = formula.path.relative_path_from(repository).to_s
   end
 
-  def rev_list(branch="HEAD")
+  def rev_list(branch)
     repository.cd do
       Utils.popen_read("git", "rev-list", "--abbrev-commit", "--remove-empty", branch, "--", entry_name) do |io|
         yield io.readline.chomp until io.eof?
@@ -32,8 +32,6 @@ class FormulaVersions
       path = Pathname.pwd.join("#{name}.rb")
       path.write file_contents_at_revision(rev)
 
-      old_const = Formulary.unload_formula(name)
-
       begin
         nostdout { yield Formulary.factory(path.to_s) }
       rescue *IGNORED_EXCEPTIONS => e
@@ -42,13 +40,11 @@ class FormulaVersions
         ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
       rescue FormulaUnavailableError
         # Suppress this error
-      ensure
-        Formulary.restore_formula(name, old_const)
       end
     end
   end
 
-  def bottle_version_map(branch="HEAD")
+  def bottle_version_map(branch)
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_at_revision(rev) do |f|

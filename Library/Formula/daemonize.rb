@@ -1,6 +1,7 @@
 require "formula"
 
 class Daemonize < Formula
+  desc "Run a command as a UNIX daemon"
   homepage "http://software.clapper.org/daemonize/"
   url "https://github.com/bmc/daemonize/archive/release-1.7.6.tar.gz"
   sha1 "5fec633880ef0a81fe0ca9d9eaeeeefd969f5dbd"

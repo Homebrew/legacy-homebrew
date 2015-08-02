@@ -1,4 +1,5 @@
 class Aacgain < Formula
+  desc "AAC-supporting version of mp3gain"
   homepage "http://aacgain.altosdesign.com/"
   # This server will autocorrect a 1.9 url back to this 1.8 tarball.
   # The 1.9 version mentioned on the website is pre-release, so make

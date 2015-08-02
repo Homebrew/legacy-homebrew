@@ -1,4 +1,5 @@
 class Ttfautohint < Formula
+  desc "Automated hinting process for web fonts"
   homepage "http://www.freetype.org/ttfautohint"
   url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.3/ttfautohint-1.3.tar.gz"
   sha1 "5de45f0b5e3f87ad0a6b4153e5382765f17974ed"

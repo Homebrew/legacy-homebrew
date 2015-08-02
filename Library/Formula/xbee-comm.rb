@@ -4,6 +4,7 @@ require 'formula'
 # Original project: https://github.com/roysjosh/xbee-comm
 
 class XbeeComm < Formula
+  desc "XBee communication libraries and utilities"
   homepage 'https://github.com/guyzmo/xbee-comm.git'
   url 'https://github.com/guyzmo/xbee-comm/archive/v1.5.tar.gz'
   sha1 '1eefd2818fcffb2da9e217c7df48b1ff4f72ef3a'

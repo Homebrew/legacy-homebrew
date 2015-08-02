@@ -1,6 +1,7 @@
 require 'formula'
 
 class TinyFugue < Formula
+  desc "Programmable MUD client"
   homepage 'http://tinyfugue.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/tinyfugue/tinyfugue/5.0%20beta%208/tf-50b8.tar.gz'
   sha1 '37bb70bfb7b44d36c28606c6bd45e435502fb4b4'

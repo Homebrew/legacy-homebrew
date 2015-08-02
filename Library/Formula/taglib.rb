@@ -1,7 +1,8 @@
 require 'formula'
 
 class Taglib < Formula
-  homepage 'http://taglib.github.io/'
+  desc "Audio metadata library"
+  homepage 'https://taglib.github.io/'
   url 'https://github.com/taglib/taglib/archive/v1.9.1.tar.gz'
   sha1 '44165eda04d49214a0c4de121a4d99ae18b9670b'
 

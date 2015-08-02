@@ -1,15 +1,15 @@
 class Libgit2 < Formula
+  desc "C library of Git core methods that is re-entrant and linkable"
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.22.0.tar.gz"
-  sha1 "a37dc29511422eec9828e129ad057e77ca962c5e"
+  url "https://github.com/libgit2/libgit2/archive/v0.23.0.tar.gz"
+  sha256 "49d75c601eb619481ecc0a79f3356cc26b89dfa646f2268e434d7b4c8d90c8a1"
   head "https://github.com/libgit2/libgit2.git"
-  revision 1
 
   bottle do
     cellar :any
-    sha256 "722c0d7fee0826e2534f43d71bd7f3df20b09802db53bbcdf1f3b72c073b888d" => :yosemite
-    sha256 "4ebcae368e74ebe396032744b5790e2af3ce37ec3035a852ba1ed08d9559fff5" => :mavericks
-    sha256 "d0a6034bc1dcabd209ca79727320cc64fe13f9b336ae51cc3cb8f9d62fd39d99" => :mountain_lion
+    sha256 "2d25f1c36cdef7902c36192590244986d5bd0d0bbbef82084c07734b947416eb" => :yosemite
+    sha256 "f7f74c93652fba0e228b814d15ea56c02024b79216050ad07c88e17e2fd63ecf" => :mavericks
+    sha256 "c61ca3ddd7fcd6b861b9ac51963d32c7584c99ab863204365806fef4cf0bc6b5" => :mountain_lion
   end
 
   option :universal
@@ -31,5 +31,26 @@ class Libgit2 < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <git2.h>
+
+      int main(int argc, char *argv[]) {
+        int options = git_libgit2_features();
+        return 0;
+      }
+    EOS
+    libssh2 = Formula["libssh2"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{include}
+      -I#{libssh2.opt_include}
+      -L#{lib}
+      -lgit2
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end

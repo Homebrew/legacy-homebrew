@@ -1,6 +1,7 @@
 require "formula"
 
 class Zookeeper < Formula
+  desc "Centralized server for distributed coordination of services"
   homepage "https://zookeeper.apache.org/"
   revision 1
 

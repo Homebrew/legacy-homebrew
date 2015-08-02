@@ -1,6 +1,7 @@
 require "formula"
 
 class Burp < Formula
+  desc "Network backup and restore"
   homepage "http://burp.grke.org/"
   url "https://downloads.sourceforge.net/project/burp/burp-1.4.28/burp-1.4.28.tar.bz2"
   sha1 "ddd5340db6aac1fa2e58c1e66c89730d8fd9bfb5"

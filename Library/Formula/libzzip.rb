@@ -1,4 +1,5 @@
 class Libzzip < Formula
+  desc "Library providing read access on ZIP-archives"
   homepage "http://sourceforge.net/projects/zziplib/"
   url "https://downloads.sourceforge.net/project/zziplib/zziplib13/0.13.62/zziplib-0.13.62.tar.bz2"
   sha1 "cf8b642abd9db618324a1b98cc71492a007cd687"

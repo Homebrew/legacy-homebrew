@@ -1,6 +1,7 @@
 require 'formula'
 
 class ColladaDom < Formula
+  desc "C++ library for loading and saving COLLADA data"
   homepage 'http://www.collada.org/mediawiki/index.php/Portal:COLLADA_DOM'
   url 'https://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.4/collada-dom-2.4.0.tgz'
   sha1 '74e28d670497abc897c06a41df7d28eea2bac836'

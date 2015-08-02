@@ -1,5 +1,5 @@
 require "extend/pathname"
-require "keg_fix_install_names"
+require "keg_relocate"
 require "formula_lock"
 require "ostruct"
 
@@ -112,6 +112,10 @@ class Keg
     path.to_s
   end
 
+  def rack
+    path.parent
+  end
+
   if Pathname.method_defined?(:to_path)
     alias_method :to_path, :to_s
   else
@@ -218,6 +222,7 @@ class Keg
     dir = case shell
           when :bash then path.join("etc", "bash_completion.d")
           when :zsh  then path.join("share", "zsh", "site-functions")
+          when :fish then path.join("share", "fish", "vendor_completions.d")
           end
     dir && dir.directory? && dir.children.any?
   end
@@ -236,6 +241,10 @@ class Keg
 
   def app_installed?
     Dir["#{path}/{,libexec/}*.app"].any?
+  end
+
+  def elisp_installed?
+    Dir["#{path}/share/emacs/site-lisp/**/*.el"].any?
   end
 
   def version
@@ -269,6 +278,7 @@ class Keg
       # all icons subfolders should also mkpath
       when /^icons\// then :mkpath
       when /^zsh/ then :mkpath
+      when /^fish/ then :mkpath
       else :link
       end
     end

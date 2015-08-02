@@ -1,6 +1,7 @@
 require 'formula'
 
 class Glui < Formula
+  desc "C++ user interface library"
   homepage 'http://glui.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/glui/Source/2.36/glui-2.36.tgz'
   sha256 'c1ef5e83cf338e225ce849f948170cd681c99661a5c2158b4074515926702787'

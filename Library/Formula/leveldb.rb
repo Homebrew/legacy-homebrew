@@ -1,6 +1,7 @@
 require "formula"
 
 class Leveldb < Formula
+  desc "Key-value storage library with ordered mapping"
   homepage "https://github.com/google/leveldb/"
   url "https://github.com/google/leveldb/archive/v1.18.tar.gz"
   sha1 "18684a0ad7a07920d10f5295b171fbf5eeec7337"

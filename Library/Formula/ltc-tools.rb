@@ -1,6 +1,7 @@
 require "formula"
 
 class LtcTools < Formula
+  desc "Tools to deal with linear-timecode (LTC)"
   homepage "https://github.com/x42/ltc-tools"
   url "https://github.com/x42/ltc-tools/archive/v0.6.4.tar.gz"
   sha1 "b126223996b06ac3dd900b322e3ccda9267bcbb3"

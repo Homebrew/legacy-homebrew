@@ -1,6 +1,7 @@
 require 'formula'
 
 class RestShell < Formula
+  desc "Shell to work with Spring HATEOAS-compliant REST resources"
   homepage 'https://github.com/spring-projects/rest-shell'
   url 'http://download.gopivotal.com/rest-shell/1.2.1/rest-shell-1.2.1.RELEASE.tar.gz'
   version '1.2.1.RELEASE'

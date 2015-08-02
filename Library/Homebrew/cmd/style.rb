@@ -6,7 +6,7 @@ module Homebrew
       ARGV.formulae.map(&:path)
     end
 
-    Homebrew.install_gem_setup_path! "rubocop"
+    Homebrew.install_gem_setup_path! "rubocop", "0.32.1"
 
     args = [
       "--format", "simple", "--config",

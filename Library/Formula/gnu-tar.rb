@@ -1,4 +1,5 @@
 class GnuTar < Formula
+  desc "GNU version of the tar archiving utility"
   homepage "https://www.gnu.org/software/tar/"
   url "http://ftpmirror.gnu.org/tar/tar-1.28.tar.gz"
   mirror "https://ftp.gnu.org/gnu/tar/tar-1.28.tar.gz"

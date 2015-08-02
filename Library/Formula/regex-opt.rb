@@ -1,6 +1,7 @@
 require 'formula'
 
 class RegexOpt < Formula
+  desc "Perl-compatible regular expression optimizer"
   homepage 'http://bisqwit.iki.fi/source/regexopt.html'
   url 'http://bisqwit.iki.fi/src/arch/regex-opt-1.2.3.tar.gz'
   sha1 'a3b58af5a173a9b77ede7d0cb01831ae7a315b38'

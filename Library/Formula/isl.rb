@@ -1,4 +1,5 @@
 class Isl < Formula
+  desc "Integer Set Library for the polyhedral model"
   homepage "http://freecode.com/projects/isl"
   # Note: Always use tarball instead of git tag for stable version.
   #
@@ -6,18 +7,15 @@ class Isl < Formula
   # and update isl_version() function accordingly.  All other names will
   # result in isl_version() function returning "UNKNOWN" and hence break
   # package detection.
-  #
-  # 0.13 is out, but we can't upgrade until a compatible version of cloog is
-  # released.
-  url "http://isl.gforge.inria.fr/isl-0.12.2.tar.bz2"
-  sha1 "ca98a91e35fb3ded10d080342065919764d6f928"
+  url "http://isl.gforge.inria.fr/isl-0.14.1.tar.xz"
+  sha256 "8882c9e36549fc757efa267706a9af733bb8d7fe3905cbfde43e17a89eea4675"
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "502db664090c83f36515b901e8a066d9ef4f0bb4" => :yosemite
-    sha1 "f669eadf21a26782f4700facbec71f8d3d1dff7d" => :mavericks
-    sha1 "808982b34df706187f041d7b21e644aa3d74b747" => :mountain_lion
+    revision 3
+    sha256 "8f2930559c015c477a094e67f2f70aff8ef0fb37296432e95921569fa9080db9" => :yosemite
+    sha256 "835d04dc9d6be86f7480b31824522ece83895ec0ed78314caf900c4bfd5611fa" => :mavericks
+    sha256 "19f797f8031bd373bb13a61ceefd9d74ee74cca0af1790617020f8a951ae8ce2" => :mountain_lion
   end
 
   head do

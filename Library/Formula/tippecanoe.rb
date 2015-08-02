@@ -1,15 +1,16 @@
 require "formula"
 
 class Tippecanoe < Formula
+  desc "Build vector tilesets from collections of GeoJSON features"
   homepage "https://github.com/mapbox/tippecanoe"
-  url "https://github.com/mapbox/tippecanoe/archive/v1.1.0.tar.gz"
-  sha1 "5b50dc19c1e56ea4051dee5e790dd5cd328df005"
+  url "https://github.com/mapbox/tippecanoe/archive/v1.2.0.tar.gz"
+  sha1 "348563c57629260d17e1761f9aedd85b1a0453ba"
 
   bottle do
     cellar :any
-    sha1 "6fa77446f3ad21f346f25ab42c6bbb83f29e58b4" => :yosemite
-    sha1 "ee7a92d3ad37e334eb386a45764b5018467e6f5f" => :mavericks
-    sha1 "98ee5c744cdd44a4e85475028bf043f15a9f5e2a" => :mountain_lion
+    sha256 "249c74b9b656aa43b687afd62d202dce1ad308ace3d3d02b60f115d55d17f18f" => :yosemite
+    sha256 "6a0663d76c8c3b320dfc0a09dd2ba8d282cab0dbcf227ac86b4ec1af410f13bf" => :mavericks
+    sha256 "71c71a42d35fa01a9516bd5731378dbf97087da190207e5a1e8c2222b91a50da" => :mountain_lion
   end
 
   depends_on "protobuf-c"
@@ -26,6 +27,6 @@ class Tippecanoe < Formula
     EOS
     output = `#{bin}/tippecanoe -o test.mbtiles #{path}`.strip
     assert_equal 0, $?.exitstatus
-    assert_equal "using layer name test", output
+    assert_equal "using layer 0 name test", output
   end
 end

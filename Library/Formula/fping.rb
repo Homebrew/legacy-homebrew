@@ -1,6 +1,7 @@
 require "formula"
 
 class Fping < Formula
+  desc "Scriptable ping program for checking if multiple hosts are up"
   homepage "http://fping.org/"
   url "http://fping.org/dist/fping-3.10.tar.gz"
   sha1 "d8a1fa3ec13289d67d70102c1ef16c461a7eb505"

@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libstfl < Formula
+  desc "Library implementing a curses-based widget set for terminals"
   homepage 'http://www.clifford.at/stfl/'
   url 'http://www.clifford.at/stfl/stfl-0.22.tar.gz'
   sha1 '226488be2b33867dfb233f0fa2dde2d066e494bd'

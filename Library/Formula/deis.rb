@@ -1,4 +1,5 @@
 class Deis < Formula
+  desc "Deploy and manage applications on your own servers"
   homepage "http://deis.io"
   url "https://github.com/deis/deis/archive/v1.5.1.tar.gz"
   sha1 "3a4b0caa0720785a6c093d15a62f2bcbb76324a4"

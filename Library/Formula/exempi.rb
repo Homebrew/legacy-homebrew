@@ -1,6 +1,7 @@
 require "formula"
 
 class Exempi < Formula
+  desc "Library to parse XMP metadata"
   homepage "http://libopenraw.freedesktop.org/wiki/Exempi"
   url "http://libopenraw.freedesktop.org/download/exempi-2.2.2.tar.bz2"
   sha1 "c0a0014e18f05aa7fac210c84788ef073718a9d8"

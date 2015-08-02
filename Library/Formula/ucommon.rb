@@ -1,6 +1,7 @@
 require "formula"
 
 class Ucommon < Formula
+  desc "GNU C++ runtime library for threads, sockets, and parsing"
   homepage "https://www.gnu.org/software/commoncpp/"
   url "http://ftpmirror.gnu.org/commonc++/ucommon-6.2.2.tar.gz"
   sha1 "867e06988de3dea1d04a71155bf77063df6fcd8f"

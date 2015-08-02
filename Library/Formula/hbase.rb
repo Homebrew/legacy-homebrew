@@ -1,4 +1,5 @@
 class Hbase < Formula
+  desc "Hadoop database: a distributed, scalable, big data store"
   homepage "https://hbase.apache.org"
   url "https://www.apache.org/dyn/closer.cgi?path=hbase/hbase-1.0.1/hbase-1.0.1-bin.tar.gz"
   sha256 "bd9586e94b22ad12ae16fa229a017d7370913b4ce2fead717832630127e3a08e"

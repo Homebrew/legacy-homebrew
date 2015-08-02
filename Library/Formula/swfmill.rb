@@ -1,6 +1,7 @@
 require 'formula'
 
 class Swfmill < Formula
+  desc "xml2swf and swf2xml processor"
   homepage 'http://swfmill.org'
   url 'http://swfmill.org/releases/swfmill-0.3.3.tar.gz'
   sha1 '7aa2c674e20f5649985b6dde3838393c5efefb6e'

@@ -1,4 +1,5 @@
 class CouchdbLucene < Formula
+  desc "Full-text search of CouchDB documents using Lucene"
   homepage "https://github.com/rnewson/couchdb-lucene"
   url "https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz"
   sha1 "75e0c55a87f47903c6cd122286ea3e4568809f7e"

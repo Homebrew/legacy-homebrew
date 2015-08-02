@@ -1,6 +1,7 @@
 require 'formula'
 
 class Libpano < Formula
+  desc "Build panoramic images from a set of overlapping images"
   homepage 'http://panotools.sourceforge.net/'
   url 'https://downloads.sourceforge.net/project/panotools/libpano13/libpano13-2.9.19/libpano13-2.9.19.tar.gz'
   version '13-2.9.19'

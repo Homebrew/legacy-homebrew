@@ -1,13 +1,15 @@
 require 'formula'
 
 class Libgda < Formula
+  desc "Provides unified data access to the GNOME project"
   homepage 'http://www.gnome-db.org/'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libgda/5.2/libgda-5.2.0.tar.xz'
-  sha256 '41bd14aaaf50efc7b80d7279c69ed9c90d3a1894cb5123385d86883a1d7d5f30'
+  url 'https://download.gnome.org/sources/libgda/5.2/libgda-5.2.4.tar.xz'
+  sha256 '2cee38dd583ccbaa5bdf6c01ca5f88cc08758b9b144938a51a478eb2684b765e'
+
   bottle do
-    sha1 "446acb6ebf7b20f8adb7e270a1de64815dc397c3" => :yosemite
-    sha1 "408c2544e9416932199431d358d34658c38c1654" => :mavericks
-    sha1 "b13d0a7d8f7884fba9abf79e0ee9845083e15add" => :mountain_lion
+    sha256 "2738974d4592d4d760c64a793e9e140a74f8a93c2292c3baee3e64f6506b521d" => :yosemite
+    sha256 "89a345a4eff5729024d6ba8b9425c3fa8408f2349d0205d095e9c5e26e55094d" => :mavericks
+    sha256 "cf2ce1122dfe0f754f811a901114bfa5e4918368ec1acfb915038c2ec84c5215" => :mountain_lion
   end
 
   revision 1
@@ -20,6 +22,7 @@ class Libgda < Formula
   depends_on 'readline'
   depends_on 'libgcrypt'
   depends_on 'sqlite'
+  depends_on 'openssl'
 
   def install
     ENV.libxml2

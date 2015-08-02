@@ -1,4 +1,5 @@
 class Darkstat < Formula
+  desc "Network traffic analyzer"
   homepage "https://unix4lyfe.org/darkstat/"
   url "https://unix4lyfe.org/darkstat/darkstat-3.0.718.tar.bz2"
   sha256 "682f3e53f4e89ea6ad08236b4225a5e0859428299765d8d995374cd7fa22adff"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Es < Formula
+  desc "Extensible shell with first class functions, lexical scoping, and more"
   homepage "http://wryun.github.io/es-shell/"
   url "https://github.com/downloads/wryun/es-shell/es-0.9.tar.gz"
   sha1 "40b0b3838c07a434b4cccca9a8bb173c71eda7d8"

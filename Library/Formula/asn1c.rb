@@ -1,6 +1,7 @@
 require "formula"
 
 class Asn1c < Formula
+  desc "Compile ASN.1 specifications into C source code"
   homepage "http://lionet.info/asn1c/blog/"
   url "http://lionet.info/soft/asn1c-0.9.26.tar.gz"
   sha1 "9b1d86b91d37884419f9f062ecd787e293c48637"

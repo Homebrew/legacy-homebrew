@@ -1,9 +1,10 @@
 require "formula"
 
 class SvtplayDl < Formula
+  desc "Download videos from http://svtplay.se"
   homepage "https://github.com/spaam/svtplay-dl"
-  url "https://github.com/spaam/svtplay-dl/archive/0.10.2015.03.25.tar.gz"
-  sha1 "2de30ed457395c8eccb3e86261f8f9986672cdf8"
+  url "https://github.com/spaam/svtplay-dl/archive/0.10.2015.05.24.tar.gz"
+  sha1 "760a6459842ec66dfdc47c13dca7a4892ea6db56"
 
   depends_on "rtmpdump"
 

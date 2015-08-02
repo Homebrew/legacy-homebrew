@@ -1,4 +1,5 @@
 class Xmp < Formula
+  desc "Command-line player for module music formats (MOD, S3M, IT, etc)"
   homepage "http://xmp.sourceforge.net"
   url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.10/xmp-4.0.10.tar.gz"
   sha1 "e6a39a5158a9e36d437b233d68a8dc7756a971e1"

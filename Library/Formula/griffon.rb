@@ -1,6 +1,7 @@
 require 'formula'
 
 class Griffon < Formula
+  desc "Application framework for desktop applications in the JVM"
   homepage 'http://griffon.codehaus.org/'
   url 'http://dl.bintray.com/content/aalmiray/Griffon/griffon-1.5.0-bin.tgz'
   sha1 'de28b792c37cf103b5745f2f323403ec6990c58a'

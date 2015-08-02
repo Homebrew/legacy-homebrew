@@ -9,10 +9,11 @@ require 'build_environment'
 class Requirement
   include Dependable
 
-  attr_reader :tags, :name, :cask, :download
+  attr_reader :tags, :name, :cask, :download, :default_formula
   alias_method :option_name, :name
 
   def initialize(tags=[])
+    @default_formula = self.class.default_formula
     @cask ||= self.class.cask
     @download ||= self.class.download
     tags.each do |tag|

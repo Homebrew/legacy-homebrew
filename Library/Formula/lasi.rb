@@ -1,6 +1,7 @@
 require "formula"
 
 class Lasi < Formula
+  desc "C++ stream output interface for creating Postscript documents"
   homepage "http://www.unifont.org/lasi/"
   url "https://downloads.sourceforge.net/project/lasi/lasi/1.1.2%20Source/libLASi-1.1.2.tar.gz"
   sha1 "5f1764273c71cc196c095998da8110ca4ad620ae"

@@ -1,6 +1,7 @@
 require "formula"
 
 class Reop < Formula
+  desc "Encrypted keypair management"
   homepage "http://www.tedunangst.com/flak/post/reop"
   head "https://github.com/tedu/reop.git"
   url "https://github.com/tedu/reop/archive/1.0.0.tar.gz"

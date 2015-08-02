@@ -1,14 +1,15 @@
 class Abcmidi < Formula
+  desc "Converts abc music notation files to MIDI files"
   homepage "http://www.ifdo.ca/~seymour/runabc/top.html"
-  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2014-12-25.zip"
-  version "2014-12-25"
-  sha1 "a8d9509b32131015f38e0a31432b6c8990607888"
+  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2015-05-13.zip"
+  version "2015-05-13"
+  sha256 "0129ec9b6986a422f5725ddeb65398668542b0fd331de44cd1dcf6e5f916f2ef"
 
   bottle do
     cellar :any
-    sha1 "63b792b7623b9706183a9ea6513b53a536899403" => :yosemite
-    sha1 "d75b566f2cef9f3614b04d36847f95a162ae9341" => :mavericks
-    sha1 "1fdd827245c315ab25d8eb8a65e00d02d518e174" => :mountain_lion
+    sha256 "9b2be3671e753b520558102e78a9be1bbab0da63e3170d4d005c4d455429914b" => :yosemite
+    sha256 "043e1224a88df07142dcc12393ced13f1f57bf5de5969d383a3630767afb5149" => :mavericks
+    sha256 "c754d08663264788f78cf3e8945b31c724d528b4e6b171188a86a164eee453e9" => :mountain_lion
   end
 
   def install

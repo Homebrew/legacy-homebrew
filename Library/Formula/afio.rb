@@ -1,6 +1,7 @@
 require 'formula'
 
 class Afio < Formula
+  desc "Creates cpio-format archives"
   homepage 'http://members.chello.nl/~k.holtman/afio.html'
   url 'http://members.chello.nl/~k.holtman/afio-2.5.1.tgz'
   sha1 'bff6b9a147dc5b0e6bd7f1a76f0b84e4dd9a7dc9'

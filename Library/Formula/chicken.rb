@@ -1,6 +1,7 @@
 require 'formula'
 
 class Chicken < Formula
+  desc "Compiler for the Scheme programming language"
   homepage 'http://www.call-cc.org/'
   url 'http://code.call-cc.org/releases/4.9.0/chicken-4.9.0.1.tar.gz'
   sha1 'd6ec6eb51c6d69e006cc72939b34855013b8535a'

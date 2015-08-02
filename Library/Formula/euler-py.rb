@@ -1,9 +1,10 @@
-require "formula"
-
 class EulerPy < Formula
+  desc "Project Euler command-line tool written in Python"
   homepage "https://github.com/iKevinY/EulerPy"
   url "https://github.com/iKevinY/EulerPy/archive/v1.2.3.tar.gz"
-  sha1 "88d97d7807f6b06ebfe475eee31ebd021b4ef275"
+  sha256 "d751d561caf6296ecc59bc77ec2fb0c81af1b045a117b8ea3334b6a948230bbb"
+
+  head "https://github.com/iKevinY/EulerPy.git"
 
   bottle do
     cellar :any
@@ -15,8 +16,8 @@ class EulerPy < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "click" do
-    url "https://pypi.python.org/packages/source/c/click/click-3.3.tar.gz"
-    sha1 "d716a932b930d71059e49465b6b42e833808369a"
+    url "https://pypi.python.org/packages/source/c/click/click-4.0.tar.gz"
+    sha256 "f49e03611f5f2557788ceeb80710b1c67110f97c5e6740b97edf70245eea2409"
   end
 
   def install

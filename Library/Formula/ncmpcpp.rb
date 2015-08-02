@@ -1,13 +1,14 @@
 class Ncmpcpp < Formula
+  desc "Ncurses-based client for the Music Player Daemon"
   homepage "http://ncmpcpp.rybczak.net/"
-  url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.2.tar.bz2"
-  sha1 "0e7e60d61af42f9fa543e16f06bac8d6c42d5fe9"
+  url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.5.tar.bz2"
+  sha256 "51128f6835c592c8d4367a66b08e06a9419a86c9d5c6e91d0f1dc73af56cd1fd"
 
   bottle do
     cellar :any
-    sha1 "d83fa7fec86b69363f352f7b88d5ae26b90a6bdc" => :yosemite
-    sha1 "efd63c4b5afec557ec43202a545ab03bbf6ac488" => :mavericks
-    sha1 "8223ccaed03a7f77b7f287e49c8ea4eb1584e1d9" => :mountain_lion
+    sha256 "eeebc0e54750327c801476979ebd04c68294010f5ae6c75516a5cf96041b1072" => :yosemite
+    sha256 "b05ea9ce4622731d3bade13b7e2bee7744c9ef848edc069b2da3be944577aeb1" => :mavericks
+    sha256 "1a73a56715ac4633a73a848445049a3222d8dbf676e58126326ac51e11910ce5" => :mountain_lion
   end
 
   head do

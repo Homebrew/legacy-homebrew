@@ -1,21 +1,24 @@
 class Yara < Formula
+  desc "Malware identification and classification tool"
   homepage "https://github.com/plusvic/yara/"
-  url "https://github.com/plusvic/yara/archive/v3.3.0.tar.gz"
-  sha1 "6f72d80f21336c098f9013212d496d3920d9ef18"
+  url "https://github.com/plusvic/yara/archive/v3.4.0.tar.gz"
+  sha1 "70756b291a08254de751726ee565cf454a1eb566"
   head "https://github.com/plusvic/yara.git"
 
   bottle do
     cellar :any
-    sha1 "75e874c69b0a326e200ec289fd7fd3bdb2d5c146" => :yosemite
-    sha1 "0459df8e18781fdaf365bb54d62b28585e36cda2" => :mavericks
-    sha1 "4b39059db000f82d8dde03b99db89354761e3c6a" => :mountain_lion
+    sha256 "464eb3be9b5d1ca097e3c8bd85820fd3d8ad6089a8043f82b2e933f0eccca01d" => :yosemite
+    sha256 "85229abc8299bb2946949e4db5acde29a007fc53dae7b7ee38d2df7cfbad6ed2" => :mavericks
+    sha256 "b0b6a9ae09e1e42e5a173a2e2589271c9d9ef4038a7165ecd6fa9ce9dd6c73a6" => :mountain_lion
   end
 
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pcre"
   depends_on "openssl"
+
 
   # fixes a variable redefinition error with clang
   patch do
@@ -35,6 +38,10 @@ class Yara < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+
+    cd "yara-python" do
+      system "python", *Language::Python.setup_install_args(prefix)
+    end
   end
 
   test do
