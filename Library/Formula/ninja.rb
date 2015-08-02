@@ -12,6 +12,7 @@ class Ninja < Formula
     sha256 "3717352656bb260ac96de4a0db856ebaa6602c6b4f4d42a0d2475ba511ab834f" => :mountain_lion
   end
 
+  option :dsym
   option "without-tests", "Run build-time tests"
 
   resource "gtest" do

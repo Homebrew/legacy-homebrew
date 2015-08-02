@@ -640,11 +640,16 @@ class Formula
   # Note: there isn't a std_autotools variant because autotools is a lot
   # less consistent and the standard parameters are more memorable.
   def std_cmake_args
+    if build.dsym?
+      type = "RelWithDebInfo"
+    else
+      type = "Release"
+    end
     %W[
       -DCMAKE_C_FLAGS_RELEASE=
       -DCMAKE_CXX_FLAGS_RELEASE=
       -DCMAKE_INSTALL_PREFIX=#{prefix}
-      -DCMAKE_BUILD_TYPE=Release
+      -DCMAKE_BUILD_TYPE=#{type}
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
       -Wno-dev
@@ -855,6 +860,56 @@ class Formula
   def install
   end
 
+  def install_dsym
+    # create a makefile for this so we can take advantage of multiple cores.
+    dsyms = []
+    mktemp do
+      File.open("Makefile", "w") do |f|
+        f.write("all: dsyms\n\n")
+        Keg.new(prefix).mach_o_files.each do |path|
+          rel = path.relative_path_from(prefix)
+          dsym = symbols_dir + rel.dirname + (rel.basename.to_s + ".dSYM")
+          FileUtils.mkpath(dsym.dirname)
+          if /[^\w\d\/\.\,\-\_]/.match(dsym.to_s)
+            system "dsymutil", path, "--out=#{dsym}"
+            next
+          end
+          dsyms << dsym
+          f.write("#{dsym}: #{path}\n")
+          f.write("\tdsymutil #{path} --out=#{dsym}\n")
+        end
+        f.write("\n")
+        f.write("dsyms:")
+        dsyms.each {|dsym| f.write(" #{dsym}")}
+        f.write("\n")
+      end
+      if dsyms
+        system "make", "dsyms"
+      end
+    end
+  end
+
+  def commit_source
+    if not build.dsym?
+      return
+    end
+
+    safe_system "git", "add", "-A"
+
+    status = `git status --porcelain`
+    if $? != 0
+      raise ErrorDuringExecution.new("git", ["status", "--porcelain"])
+    end
+
+    if status == ""
+      #nothing to commit
+      return
+    end
+
+    safe_system "git", "commit", "--quiet", "-m", "Homebrew automatic commit: saving source",
+                "--author=Homebrew <brew-auto-commit@brew.sh>"
+  end
+
   protected
 
   def setup_test_home home
@@ -968,9 +1023,23 @@ class Formula
     exit! 1 # never gets here unless exec threw or failed
   end
 
+  def source_dir
+    if build.dsym?
+      prefix + "Source"
+    else
+      nil
+    end
+  end
+
+  def symbols_dir
+    prefix + 'Symbols'
+  end
+
   def stage
-    active_spec.stage do
+
+    active_spec.stage source_dir do
       @buildpath = Pathname.pwd
+
       env_home = buildpath/".brew_home"
       mkdir_p env_home
 

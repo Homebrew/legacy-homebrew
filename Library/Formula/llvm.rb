@@ -82,6 +82,7 @@ class Llvm < Formula
     end
   end
 
+  option :dsym
   option :universal
   option "with-clang", "Build Clang support library"
   option "with-lld", "Build LLD linker"
@@ -128,6 +129,8 @@ class Llvm < Formula
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
     (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
 
+    commit_source
+
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
     ]
@@ -145,17 +148,15 @@ class Llvm < Formula
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
-    mktemp do
+    mkdir "build" do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
       system "make", "install"
     end
 
     if build.with? "clang"
-      system "make", "-C", "projects/libcxx", "install",
-        "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
-
-      (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
+      # cmake will automatically build libc++ for us
+      (share/"clang/tools").install Dir[buildpath/"tools/clang/tools/scan-{build,view}"]
       inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
       bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
       man1.install_symlink share/"clang/tools/scan-build/scan-build.1"

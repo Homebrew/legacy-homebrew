@@ -11,6 +11,8 @@ class Ispell < Formula
     sha256 "dbbaabbc715f6f16dfb9f2cd05755a88e471b92c63d7f87f79a940a5df8dadfb" => :mountain_lion
   end
 
+  option :dsym
+
   def install
     ENV.deparallelize
     ENV.no_optimization
@@ -22,12 +24,18 @@ class Ispell < Formula
       s.gsub! "/usr/local", prefix
       s.gsub! "/man/man", "/share/man/man"
       s.gsub! "/lib", "/lib/ispell"
+      s.gsub! "#endif", %(#define CFLAGS "-g"\n\n#endif) if build.dsym?
+    end
+    if build.dsym?
+      inreplace ["Makefile", "deformatters/Makefile"] do |s|
+        s.gsub! /^\t\s*strip.*?\n/, ""
+      end
     end
 
     chmod 0644, "correct.c"
     inreplace "correct.c", "getline", "getline_ispell"
 
-    system "make config.sh"
+    system "make", "config.sh"
     chmod 0644, "config.sh"
     inreplace "config.sh", "/usr/share/dict", "#{share}/dict"
 

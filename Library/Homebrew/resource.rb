@@ -83,15 +83,19 @@ class Resource
 
   # If a target is given, unpack there; else unpack to a temp folder
   # If block is given, yield to that block
-  # A target or a block must be given, but not both
   def unpack(target=nil)
     mktemp(download_name) do
       downloader.stage
-      if block_given?
+      if target==nil
         yield self
       elsif target
         target = Pathname.new(target) unless target.is_a? Pathname
         target.install Dir['*']
+        if block_given?
+          chdir target do
+            yield self
+          end
+        end
       end
     end
   end

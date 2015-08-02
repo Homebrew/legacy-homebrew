@@ -14,6 +14,7 @@ class Sqlite < Formula
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
 
+  option :dsym
   option :universal
   option "with-docs", "Install HTML documentation"
   option "without-rtree", "Disable the R*Tree index module"

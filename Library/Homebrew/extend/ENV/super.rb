@@ -218,17 +218,19 @@ module Superenv
   end
 
   def determine_optflags
+    flags = ""
     if ARGV.build_bottle?
       arch = ARGV.bottle_arch || Hardware.oldest_cpu
-      Hardware::CPU.optimization_flags.fetch(arch)
+      flags << Hardware::CPU.optimization_flags.fetch(arch)
     elsif Hardware::CPU.intel? && !Hardware::CPU.sse4?
-      Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
+      flags << Hardware::CPU.optimization_flags.fetch(Hardware.oldest_cpu)
     elsif compiler == :clang
-      "-march=native"
-    # This is mutated elsewhere, so return an empty string in this case
-    else
-      ""
+      flags << "-march=native"
     end
+    if ARGV.build_dsym?
+      flags << " -g"
+    end
+    return flags
   end
 
   def determine_cccfg

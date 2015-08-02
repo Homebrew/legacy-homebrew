@@ -22,6 +22,7 @@ class Git < Formula
     sha256 "0924b290834e2a361a489cbc845a9bf04e56117597dc9c1a40e879cce655e4e2"
   end
 
+  option :dsym
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"
   option "without-completions", "Disable bash/zsh completions from 'contrib' directory"
   option "with-brewed-openssl", "Build with Homebrew OpenSSL instead of the system version"
@@ -137,6 +138,7 @@ class Git < Formula
     # To avoid this feature hooking into the system OpenSSL, remove it.
     # If you need it, install git --with-brewed-openssl.
     rm "#{libexec}/git-core/git-imap-send" if build.without? "brewed-openssl"
+
   end
 
   def caveats; <<-EOS.undent

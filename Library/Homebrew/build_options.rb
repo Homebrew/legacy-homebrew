@@ -50,6 +50,11 @@ class BuildOptions
     include?("c++11") && option_defined?("c++11")
   end
 
+  # True if the user requested debug symbols.
+  def dsym?
+    include?("dsym") && option_defined?("dsym")
+  end
+
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.

@@ -26,13 +26,23 @@ class Coreutils < Formula
     depends_on "wget" => :build
   end
 
+  option :dsym
+
   depends_on "gmp" => :optional
 
   def install
+    # ./configure makes a diabolical un-deleteable directory called confdir-14B---
+    # Let's skip that test.
+    (buildpath/"config.cache").write(<<-END.undent)
+      gl_cv_func_getcwd_path_max='no, but it is partly working'
+      gl_cv_func_getcwd_abort_bug='yes'
+    END
+
     system "./bootstrap" if build.head?
     args = %W[
       --prefix=#{prefix}
       --program-prefix=g
+      -C
     ]
     args << "--without-gmp" if build.without? "gmp"
     system "./configure", *args
