@@ -1,3 +1,8 @@
+AllCops:
+  Exclude:
+    - 'Homebrew/vendor/**/*'
+    - 'Homebrew/test/vendor/**/*'
+
 # 1.8-style hash keys
 Style/HashSyntax:
     EnforcedStyle: hash_rockets

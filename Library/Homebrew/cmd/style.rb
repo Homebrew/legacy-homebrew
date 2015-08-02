@@ -9,7 +9,7 @@ module Homebrew
     Homebrew.install_gem_setup_path! "rubocop", "0.32.1"
 
     args = [
-      "--format", "simple", "--config",
+      "--format", "simple", "--force-exclusion", "--config",
       "#{HOMEBREW_LIBRARY}/.rubocop.yml"
     ]
 
