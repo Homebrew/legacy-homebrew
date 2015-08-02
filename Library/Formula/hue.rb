@@ -13,17 +13,23 @@ class Hue < Formula
 
   # Patches have been merged upstream.  Should try building next release
   # (> 3.8.1) without them.
-  #
+
   # Syntax error in 'parquet-python' library:
   #   https://github.com/cloudera/hue/pull/206
-  #
+  patch do
+    url "https://patch-diff.githubusercontent.com/raw/cloudera/hue/pull/206.patch"
+    sha256 "20870269b1c903f9430fa6a924bb6be2010e8106aab9dd53970c2f8754d09fcc"
+  end
+
   # Fix to allow 'pyopenssl' == 0.13 to build w/ OpenSSL >= 1.0.2a:
   #   https://github.com/cloudera/hue/pull/207
-  #
-  patch :DATA
+  patch do
+    url "https://patch-diff.githubusercontent.com/raw/cloudera/hue/pull/207.patch"
+    sha256 "3ae46b9e0a899d87199b4ee0511b3988bb91958603db8c543ef91462217bb2a8"
+  end
 
   def install
-    ENV.append_to_cflags "-I" + `xcrun --show-sdk-path`.strip + "/usr/include/sasl" if MacOS.version >= :mavericks
+    ENV.append_to_cflags "-I#{MacOS.sdk_path}/usr/include/sasl" if MacOS.version >= :mavericks
     ENV.deparallelize
 
     system "make", "install", "PREFIX=#{libexec}", "SKIP_PYTHONDEV_CHECK=1"
@@ -49,46 +55,3 @@ class Hue < Formula
     end
   end
 end
-__END__
-diff --git a/desktop/core/ext-py/parquet-python/parquet/bitstring.py b/desktop/core/ext-py/parquet-python/parquet/bitstring.py
-index ab807a2..7203c94 100644
---- a/desktop/core/ext-py/parquet-python/parquet/bitstring.py
-+++ b/desktop/core/ext-py/parquet-python/parquet/bitstring.py
-@@ -1,7 +1,5 @@
--
- SINGLE_BIT_MASK =  [1 << x for x in range(7, -1, -1)]
- 
--]
- 
- class BitString(object):
- 
-@@ -10,7 +8,6 @@ class BitString(object):
- 		self.offset = offset if offset is not None else 0
- 		self.length = length if length is not None else 8 * len(data) - self.offset 
- 
--
- 	def __getitem__(self, key):
- 		try:
- 			start = key.start
-@@ -18,5 +15,5 @@ class BitString(object):
- 		except AttributeError:
- 			if key < 0 or key >= length:
- 				raise IndexError()
--			byte_index, bit_offset = divmod(self.offset + key), 8)
--			return self.bytes[byte_index] & SINGLE_BIT_MASK[bit_offset]
-\ No newline at end of file
-+			byte_index, bit_offset = (divmod(self.offset + key), 8)
-+			return self.bytes[byte_index] & SINGLE_BIT_MASK[bit_offset]
-diff --git a/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c b/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c
-index eec5bcb..b2fd681 100644
---- a/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c
-+++ b/desktop/core/ext-py/pyopenssl/OpenSSL/crypto/crl.c
-@@ -3,7 +3,7 @@
- #include "crypto.h"
- 
- 
--static X509_REVOKED * X509_REVOKED_dup(X509_REVOKED *orig) {
-+X509_REVOKED * X509_REVOKED_dup(X509_REVOKED *orig) {
-     X509_REVOKED *dupe = NULL;
- 
-     dupe = X509_REVOKED_new();
