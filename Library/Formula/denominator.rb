@@ -1,12 +1,12 @@
 class Denominator < Formula
   desc "Portable Java library for manipulating DNS clouds"
-  homepage "https://github.com/Netflix/denominator/tree/v4.5.0/cli"
-  url "https://bintray.com/artifact/download/netflixoss/maven/com/netflix/denominator/denominator-cli/4.5.0/denominator-cli-4.5.0-fat.jar"
-  version "4.5.0"
-  sha256 "3583720e813916d8ab69cc83403f9b34873016a282716846c5bc55ba8c75e5ac"
+  homepage "https://github.com/Netflix/denominator/tree/v4.6.0/cli"
+  url "https://bintray.com/artifact/download/netflixoss/maven/com/netflix/denominator/denominator-cli/4.6.0/denominator-cli-4.6.0-fat.jar"
+  version "4.6.0"
+  sha256 "03317037e892d725154051f259aef3354166ea93515da9c27a02eb4becc320ec"
 
   def install
-    bin.install "denominator-cli-4.5.0-fat.jar" => "denominator"
+    bin.install "denominator-cli-4.6.0-fat.jar" => "denominator"
   end
 
   test do
