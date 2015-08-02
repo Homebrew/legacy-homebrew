@@ -1,8 +1,10 @@
 class Kvazaar < Formula
   desc "HEVC encoder"
   homepage "https://github.com/ultravideo/kvazaar"
-  url "https://github.com/ultravideo/kvazaar/archive/v0.4.0.tar.gz"
-  sha1 "28fce493e8fcd7274993ab46eb1a1c5d07569853"
+  url "https://github.com/ultravideo/kvazaar/archive/v0.5.0.tar.gz"
+  sha256 "2facdbffcf739171127487cd7d1e48c925560f39755a16542c4a40e65e293070"
+
+  head "https://github.com/ultravideo/kvazaar.git"
 
   bottle do
     cellar :any
@@ -15,7 +17,9 @@ class Kvazaar < Formula
 
   def install
     system "make", "-C", "src"
-    bin.install "src/kvazaar"
+    bin.install_symlink "src/kvazaar"
+
+    system "make", "-C", "src", "install" if build.head?
   end
 
   test do
