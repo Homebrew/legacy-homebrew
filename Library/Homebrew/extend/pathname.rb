@@ -337,10 +337,12 @@ class Pathname
     mkpath
     targets.each do |target|
       target = Pathname.new(target) # allow pathnames or strings
-      (self+target.basename()).write <<-EOS.undent
-        #!/bin/bash
-        exec "#{target}" "$@"
-      EOS
+      if target.file? && target.executable?
+        (self+target.basename()).write <<-EOS.undent
+          #!/bin/bash
+          exec "#{target}" "$@"
+        EOS
+      end
     end
   end
 
