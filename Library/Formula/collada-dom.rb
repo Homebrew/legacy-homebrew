@@ -2,34 +2,40 @@ require 'formula'
 
 class ColladaDom < Formula
   desc "C++ library for loading and saving COLLADA data"
-  homepage 'http://www.collada.org/mediawiki/index.php/Portal:COLLADA_DOM'
-  url 'https://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.4/collada-dom-2.4.0.tgz'
-  sha1 '74e28d670497abc897c06a41df7d28eea2bac836'
+  homepage 'https://www.khronos.org/collada/wiki/Portal:COLLADA_DOM'
+  url 'https://github.com/rdiankov/collada-dom/archive/v2.4.3.tar.gz'
+  sha256 'ba4d273ff68b882b89a536dc9e6d057b37c651cb476a6cfe85d119b7e60b6cce'
 
   depends_on 'cmake' => :build
   depends_on 'pcre'
   depends_on 'boost'
 
-  # Fix build of minizip: quoting arguments to cmake's add_definitions doesn't work the way they thought it did.
-  patch :DATA
-
   def install
     system "cmake", ".", *std_cmake_args
     system "make install"
   end
+
+  test do
+    (testpath/'test_simple.cpp').write <<-EOS.undent
+      #include "dae.h"
+
+      int main() {
+        DAE dae;
+        dae.add("simple.dae");
+        dae.writeAll();
+        return 0;
+      }
+    EOS
+
+    system ENV.cc, "test_simple.cpp", "-I#{include}/collada-dom2.4",
+                   "-lstdc++", "-lcollada-dom2.4-dp",
+                   "-L#{Formula["boost"].opt_lib}", "-lboost_system"
+    system "./a.out"
+
+    expected = <<-EOS.undent
+      <?xml version="1.0" encoding="UTF-8"?>
+      <COLLADA xmlns="http://www.collada.org/2008/03/COLLADASchema" version="1.5.0"/>
+    EOS
+    assert_equal expected, File.open("simple.dae", "rb").read
+  end
 end
-
-__END__
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 72b6deb..0c7f7ce 100644
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -100,7 +100,7 @@ endif()
-
- if( APPLE OR ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-   # apple doesn't have 64bit versions of file opening functions, so add them
--  add_definitions("-Dfopen64=fopen -Dfseeko64=fseeko -Dfseek64=fseek -Dftell64=ftell -Dftello64=ftello")
-+  add_definitions(-Dfopen64=fopen -Dfseeko64=fseeko -Dfseek64=fseek -Dftell64=ftell -Dftello64=ftello)
- endif()
-
- set(COLLADA_DOM_INCLUDE_INSTALL_DIR "include/collada-dom")
