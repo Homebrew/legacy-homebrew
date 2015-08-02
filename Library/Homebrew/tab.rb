@@ -43,6 +43,10 @@ class Tab < OpenStruct
     tapped_from = attributes["tapped_from"]
     unless tapped_from.nil? || tapped_from == "path or URL"
       attributes["source"]["tap"] = attributes.delete("tapped_from")
+
+      if attributes["source"]["tap"] == "mxcl/master"
+        attributes["source"]["tap"] == "Homebrew/homebrew"
+      end
     end
 
     if attributes["source"]["spec"].nil?
