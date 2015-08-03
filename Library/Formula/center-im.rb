@@ -6,9 +6,10 @@ class CenterIm < Formula
   revision 1
 
   bottle do
-    sha1 "e5787bc7881f9f8ff841aba8884f2e75a5bf53de" => :yosemite
-    sha1 "6652a637a3a2cf79e79a721bda64a833f1ffcf0d" => :mavericks
-    sha1 "a53626fb4f16e7ba8266ab275070e5218c5e4213" => :mountain_lion
+    revision 1
+    sha256 "5a51f0130fcd601aeed50ae6f66008aaa0ec96f6ac3e7bc828b627f04b46b9f2" => :yosemite
+    sha256 "673992c76745d9509dd32e71c964946018584db447b37d02a21f332b508c619d" => :mavericks
+    sha256 "934ab216ab1f6eb9033cfb1bbbe720f2a7fa5190eb64c245d2140694c832a965" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
