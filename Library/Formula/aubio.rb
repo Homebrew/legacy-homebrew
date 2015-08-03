@@ -1,12 +1,10 @@
-require 'formula'
-
 class Aubio < Formula
   desc "Extract annotations from audio signals"
-  homepage 'http://aubio.org/'
-  url 'http://aubio.org/pub/aubio-0.4.1.tar.bz2'
-  sha1 '338ec9f633e82c371a370b9727d6f0b86b0ba376'
+  homepage "http://aubio.org/"
+  url "http://aubio.org/pub/aubio-0.4.1.tar.bz2"
+  sha256 "25d7df0a9cd6366fda764a803424caddf5fb819fc75b42a7a03e1e6f8eb3c695"
 
-  head 'https://github.com/piem/aubio.git', :branch => 'develop'
+  head "https://github.com/piem/aubio.git", :branch => "develop"
 
   bottle do
     cellar :any
@@ -20,17 +18,17 @@ class Aubio < Formula
   depends_on :macos => :lion
 
   depends_on :python => :optional
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on "libtool" => :build
 
-  depends_on 'libav' => :optional
-  depends_on 'libsndfile' => :optional
-  depends_on 'libsamplerate' => :optional
-  depends_on 'fftw' => :optional
-  depends_on 'jack' => :optional
+  depends_on "libav" => :optional
+  depends_on "libsndfile" => :optional
+  depends_on "libsamplerate" => :optional
+  depends_on "fftw" => :optional
+  depends_on "jack" => :optional
 
-  if build.with? 'python'
-    depends_on 'numpy' => :python
+  if build.with? "python"
+    depends_on "numpy" => :python
   end
 
   def install
@@ -43,17 +41,17 @@ class Aubio < Formula
     system "./waf", "build"
     system "./waf", "install"
 
-    if build.with? 'python'
-      cd 'python' do
+    if build.with? "python"
+      cd "python" do
         system "python", "./setup.py", "build"
         system "python", "./setup.py", "install", "--prefix", prefix
-        bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+        bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
       end
     end
   end
 
   test do
-    if build.with? 'python'
+    if build.with? "python"
       system "#{bin}/aubiocut", "--verbose", "/System/Library/Sounds/Glass.aiff"
     end
     system "#{bin}/aubioonset", "--verbose", "/System/Library/Sounds/Glass.aiff"

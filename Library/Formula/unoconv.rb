@@ -1,5 +1,3 @@
-require "formula"
-
 class Unoconv < Formula
   desc "Convert between any document format supported by OpenOffice"
   homepage "http://dag.wiee.rs/home-made/unoconv/"

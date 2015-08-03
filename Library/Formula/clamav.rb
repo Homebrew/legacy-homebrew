@@ -2,7 +2,7 @@ class Clamav < Formula
   desc "Anti-virus software"
   homepage "http://www.clamav.net/"
   url "https://downloads.sourceforge.net/clamav/clamav-0.98.7.tar.gz"
-  sha1 "c9793d67c041e2b944116d912f8681c8bd6e4432"
+  sha256 "282417b707740de13cd8f18d4cbca9ddd181cf96b444db2cad98913a5153e272"
 
   bottle do
     sha256 "3c8049f743c8968556ff116b22dfaa23e328210d66f2d53a4623ddc9d03c3b9e" => :yosemite
@@ -32,7 +32,7 @@ class Clamav < Formula
       "--sysconfdir=#{etc}/clamav",
       "--disable-zlib-vcheck",
       "--with-zlib=#{MacOS.sdk_path}/usr",
-      "--with-openssl=#{Formula["openssl"].opt_prefix}",
+      "--with-openssl=#{Formula["openssl"].opt_prefix}"
     ]
 
     args << "--with-libjson=#{Formula["json-c"].opt_prefix}" if build.with? "json-c"

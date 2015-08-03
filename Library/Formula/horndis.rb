@@ -2,7 +2,7 @@ class Horndis < Formula
   desc "USB tethering driver for OS X"
   homepage "http://joshuawise.com/horndis"
   url "https://github.com/jwise/HoRNDIS/archive/rel7.tar.gz"
-  sha1 "b3186de7c43ff0398e429f1af8e73cb3a255e5cd"
+  sha256 "62963e3c4e7fc81f3babd6843e516fde682f5065730d6eb62dc58480719917cd"
 
   bottle do
     cellar :any

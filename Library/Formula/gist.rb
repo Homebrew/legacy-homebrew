@@ -1,5 +1,3 @@
-require "formula"
-
 class Gist < Formula
   desc "Command-line utility for uploading Gists"
   homepage "https://github.com/defunkt/gist"

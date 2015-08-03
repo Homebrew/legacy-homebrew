@@ -1,10 +1,8 @@
-require "formula"
-
 class Libnice < Formula
   desc "GLib ICE implementation"
   homepage "http://nice.freedesktop.org/wiki/"
   url "http://nice.freedesktop.org/releases/libnice-0.1.7.tar.gz"
-  sha1 "94d459fc409da9cf5e4ac30d680ee6c0ded2cb64"
+  sha256 "4ed165aa2203136dce548c7cef735d8becf5d9869793f96b99dcbbaa9acf78d8"
 
   bottle do
     cellar :any
@@ -27,6 +25,6 @@ class Libnice < Formula
     ]
 
     system "./configure",  *args
-    system "make install"
+    system "make", "install"
   end
 end

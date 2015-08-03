@@ -1,11 +1,9 @@
-require "formula"
-
 class SaneBackends < Formula
   desc "Backends for scanner access"
   homepage "http://www.sane-project.org/"
-  url "http://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz"
+  url "https://fossies.org/linux/misc/sane-backends-1.0.24.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/sane-backends/sane-backends_1.0.24.orig.tar.gz"
-  sha1 "c10bcb30a1b092b2c2fe5a86d6a5efc29123ccf9"
+  sha256 "27c7085a54f1505d8b551e6f1e69d30e1ee57328b18429bb2225dabf4c45462d"
   bottle do
     revision 1
     sha1 "36cbd09583ba8282b149467de09e963d8c2c2a6f" => :yosemite

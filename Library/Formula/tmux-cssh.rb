@@ -14,5 +14,4 @@ class TmuxCssh < Formula
   test do
     system "#{bin}/tmux-cssh", "--help"
   end
-
 end

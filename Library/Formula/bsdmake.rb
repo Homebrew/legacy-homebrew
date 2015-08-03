@@ -2,7 +2,7 @@ class Bsdmake < Formula
   desc "BSD make (build tool)"
   homepage "https://opensource.apple.com/"
   url "https://opensource.apple.com/tarballs/bsdmake/bsdmake-24.tar.gz"
-  sha1 "9ce3c3fc01e0eb47d82827b1eb227eb371fefd5c"
+  sha256 "82a948b80c2abfc61c4aa5c1da775986418a8e8eb3dd896288cfadf2e19c4985"
 
   bottle do
     revision 1
@@ -17,22 +17,22 @@ class Bsdmake < Formula
   # Also a MacPorts patch to circumvent setrlimit error
   patch :p0 do
     url "https://trac.macports.org/export/90868/trunk/dports/devel/bsdmake/files/patch-Makefile.diff"
-    sha1 "d09ea3742fd2cff97bf28510b585751b47ecd067"
+    sha256 "1e247cb7d8769d50e675e3f66b6f19a1bc7663a7c0800fc29a2489f3f6397242"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-mk.diff"
-    sha1 "cf3ea9a27e225bdb28573222acf7f0db533cf8b7"
+    sha256 "b7146bfe7a28fc422e740e28e56e5bf0166a29ddf47a54632ad106bca2d72559"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/90611/trunk/dports/devel/bsdmake/files/patch-pathnames.diff"
-    sha1 "0797e402973aeccae41a82f5a9e444739948edc8"
+    sha256 "b24d73e5fe48ac2ecdfbe381e9173f97523eed5b82a78c69dcdf6ce936706ec6"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/105220/trunk/dports/devel/bsdmake/files/patch-setrlimit.diff"
-    sha1 "c3fb48eb24e01aef2bba7e528442330c1af4a2ce"
+    sha256 "cab53527564d775d9bd9a6e4969f116fdd85bcf0ad3f3e57ec2dcc648f7ed448"
   end
 
   def install

@@ -36,7 +36,6 @@ class Platypus < Formula
     cd "ScriptExec.app/Contents" do
       (share/"platypus").install "Resources/MainMenu.nib", "MacOS/ScriptExec"
     end
-
   end
 
   test do

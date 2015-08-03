@@ -1,10 +1,8 @@
-require "formula"
-
 class Jrnl < Formula
   desc "Command-line note taker"
   homepage "https://maebert.github.io/jrnl/"
   url "https://github.com/maebert/jrnl/archive/1.9.7.tar.gz"
-  sha1 "65914c66762ded186201a526b19e702dd35b0939"
+  sha256 "789de4bffe0c22911a4968e525feeb20a6c7c4f4fe762a936ce2dac2213cd855"
 
   bottle do
     cellar :any
@@ -17,39 +15,38 @@ class Jrnl < Formula
 
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.tar.gz"
-    sha1 "c17e41a80b3fbf2ee4e8f2d8bb9e28c5d08bbb84"
+    sha256 "7293c9d7e8af2e44a82f86eb9c3b058880f4bcc884bf3ad6c8a34b64986edde8"
   end
 
   resource "keyring" do
     url "https://pypi.python.org/packages/source/k/keyring/keyring-4.0.zip"
-    sha1 "45d6d052dda9ba5ed072e29abf88b1b473cb38c4"
+    sha256 "ea93c3cd9666c648263df4daadc5f34aeb27415dbf8e4d76579a8a737f1741cf"
   end
 
   resource "parsedatetime" do
     url "https://pypi.python.org/packages/source/p/parsedatetime/parsedatetime-1.4.tar.gz"
-    sha1 "4b9189d38f819cc8144f30d91779716a696d97f8"
+    sha256 "09bfcd8f3c239c75e77b3ff05d782ab2c1aed0892f250ce2adf948d4308fe9dc"
   end
 
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-1.5.tar.gz"
-    sha1 "28dec6c6361dd12805dc8e8887cd7da7e3348f39"
+    sha256 "6f197348b46fb8cdf9f3fcfc2a7d5a97da95db3e2e8667cf657216274fe1b009"
   end
 
   resource "pytz" do
     url "https://pypi.python.org/packages/source/p/pytz/pytz-2014.7.tar.bz2"
-    sha1 "93f461ed9e3fb0e42becf8d7f09647daafc54d66"
+    sha256 "56dec1e94d2fad13d9009a140b816808086a79ddf7edf9eb4931c84f65abb12a"
   end
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
-    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+    sha256 "047bbbba41bac37c444c75ddfdf0573dd6e2f1fbd824e6247bb26fa7d8fa3830"
   end
 
   resource "tzlocal" do
     url "https://pypi.python.org/packages/source/t/tzlocal/tzlocal-1.1.1.zip"
-    sha1 "6f3d6d1fc5a7dcdd41d5be22ab90351be4a6ed47"
+    sha256 "696bfd8d7c888de039af6c6fdf86fd52e32508277d89c75d200eb2c150487ed4"
   end
-
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"

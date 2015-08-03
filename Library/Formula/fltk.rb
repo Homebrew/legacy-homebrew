@@ -1,10 +1,8 @@
-require "formula"
-
 class Fltk < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "http://www.fltk.org/"
-  url "http://fossies.org/linux/misc/fltk-1.3.3-source.tar.gz"
-  sha1 "873aac49b277149e054b9740378e2ca87b0bd435"
+  url "https://fossies.org/linux/misc/fltk-1.3.3-source.tar.gz"
+  sha256 "f8398d98d7221d40e77bc7b19e761adaf2f1ef8bb0c30eceb7beb4f2273d0d97"
 
   bottle do
     sha1 "33c75cce41deadbfe54bdcc22ae91d17d3ecc782" => :mavericks
@@ -30,7 +28,7 @@ class Fltk < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-shared"
-    system "make install"
+    system "make", "install"
   end
 end
 

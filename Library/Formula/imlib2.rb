@@ -27,7 +27,7 @@ class Imlib2 < Formula
     args << "--without-x" if build.without? "x11"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

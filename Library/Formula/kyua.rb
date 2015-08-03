@@ -1,10 +1,8 @@
-require "formula"
-
 class Kyua < Formula
   desc "Testing framework for infrastructure software"
   homepage "https://github.com/jmmv/kyua"
   url "https://github.com/jmmv/kyua/releases/download/kyua-0.11/kyua-0.11.tar.gz"
-  sha1 "ba4b822c7157bf9b3478717fc3ff9bb9883d7a8f"
+  sha256 "2b8b64a458b642df75086eeb73e8073d105b8d9cff04c9b1a905b68bc8502560"
 
   bottle do
     sha1 "d9aec0a429eea528157e8f9442a39601047b29c9" => :yosemite

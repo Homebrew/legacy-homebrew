@@ -1,10 +1,8 @@
-require "formula"
-
 class Aamath < Formula
   desc "Renders mathematical expressions as ASCII art"
   homepage "http://fuse.superglue.se/aamath/"
   url "http://fuse.superglue.se/aamath/aamath-0.3.tar.gz"
-  sha1 "dc68abaf2131c73ddb1a520c95d65596e30f1b0a"
+  sha256 "9843f4588695e2cd55ce5d8f58921d4f255e0e65ed9569e1dcddf3f68f77b631"
 
   # Fix build on clang; patch by Homebrew team
   # https://github.com/Homebrew/homebrew/issues/23872

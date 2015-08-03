@@ -1,18 +1,16 @@
-require "formula"
-
 class TomeePlume < Formula
   desc "Apache TomEE Plume"
-  homepage "http://tomee.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plume.tar.gz"
+  homepage "https://tomee.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plume.tar.gz"
   version "1.7.1"
-  sha1 "b27386dd16df4cc936283dd3739012a5eed3224a"
+  sha256 "b07ed7bc41bdb54921d2ca099b6a2b5aec19293f9c2e7634501708dcd7488e20"
 
   def install
     # Remove Windows scripts
     rm_rf Dir["bin/*.bat"]
 
     # Install files
-    prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
+    prefix.install %w[NOTICE LICENSE RELEASE-NOTES RUNNING.txt]
     libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-plume-startup"
   end

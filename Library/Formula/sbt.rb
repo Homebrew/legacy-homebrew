@@ -1,10 +1,8 @@
-require "formula"
-
 class Sbt < Formula
   desc "Build tool for Scala projects"
   homepage "http://www.scala-sbt.org"
   url "https://dl.bintray.com/sbt/native-packages/sbt/0.13.8/sbt-0.13.8.tgz"
-  sha1 "155d6ff3bc178745ad4f951b74792b257ed14105"
+  sha256 "f481c5db5b9e5ef35d87be9cd30a917e363812d67f218b25ae0c9e66078417dd"
 
   bottle do
     cellar :any

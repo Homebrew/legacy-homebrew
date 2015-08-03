@@ -83,7 +83,7 @@ class Ffmpeg < Formula
             "--enable-opencl",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
-            "--host-ldflags=#{ENV.ldflags}",
+            "--host-ldflags=#{ENV.ldflags}"
            ]
 
     args << "--enable-libx264" if build.with? "x264"

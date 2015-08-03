@@ -2,7 +2,7 @@ class LittleCms < Formula
   desc "Version 1 of the Little CMS library"
   homepage "http://www.littlecms.com/"
   url "https://downloads.sourceforge.net/project/lcms/lcms/1.19/lcms-1.19.tar.gz"
-  sha1 "d5b075ccffc0068015f74f78e4bc39138bcfe2d4"
+  sha256 "80ae32cb9f568af4dc7ee4d3c05a4c31fc513fc3e31730fed0ce7378237273a9"
 
   bottle do
     cellar :any
@@ -20,7 +20,7 @@ class LittleCms < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    args = %W{--disable-dependency-tracking --disable-debug --prefix=#{prefix}}
+    args = %W[--disable-dependency-tracking --disable-debug --prefix=#{prefix}]
     args << "--without-tiff" if build.without? "libtiff"
     args << "--without-jpeg" if build.without? "jpeg"
     if build.with? "python"
