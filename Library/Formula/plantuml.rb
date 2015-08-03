@@ -1,5 +1,3 @@
-require "formula"
-
 class Plantuml < Formula
   desc "Draw UML diagrams"
   homepage "http://plantuml.sourceforge.net/"

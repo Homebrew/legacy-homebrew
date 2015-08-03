@@ -1,10 +1,8 @@
-require 'formula'
-
 class CupsPdf < Formula
   desc "Print-to-PDF feature through CUPS"
-  homepage 'http://www.cups-pdf.de/'
-  url 'http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz'
-  sha1 '6806f0004dfed5216625ab60cfe307ded23c2f6a'
+  homepage "http://www.cups-pdf.de/"
+  url "http://www.cups-pdf.de/src/cups-pdf_2.6.1.tar.gz"
+  sha256 "04e17eb563dceea048e1a435edcbcf52faa5288f85e8390cd64d702edb6745f1"
 
   # Patch derived from MacPorts.
   patch :DATA
@@ -12,9 +10,9 @@ class CupsPdf < Formula
   def install
     system "#{ENV.cc} #{ENV.cflags} -o cups-pdf src/cups-pdf.c"
 
-    (etc+'cups').install "extra/cups-pdf.conf"
-    (lib+'cups/backend').install "cups-pdf"
-    (share+'cups/model').install "extra/CUPS-PDF.ppd"
+    (etc+"cups").install "extra/cups-pdf.conf"
+    (lib+"cups/backend").install "cups-pdf"
+    (share+"cups/model").install "extra/CUPS-PDF.ppd"
   end
 
   def caveats; <<-EOF.undent

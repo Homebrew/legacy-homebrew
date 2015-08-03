@@ -1,10 +1,8 @@
-require "formula"
-
 class Flac < Formula
   desc "Free lossless audio codec"
   homepage "https://xiph.org/flac/"
   url "http://downloads.xiph.org/releases/flac/flac-1.3.1.tar.xz"
-  sha1 "38e17439d11be26207e4af0ff50973815694b26f"
+  sha256 "4773c0099dba767d963fd92143263be338c48702172e8754b9bc5103efe1c56c"
 
   head do
     url "https://git.xiph.org/flac.git"

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Fribidi < Formula
   desc "Implementation of the Unicode BiDi algorithm"
-  homepage 'http://fribidi.org/'
-  url 'http://fribidi.org/download/fribidi-0.19.6.tar.bz2'
-  sha1 '5a6ff82fdee31d27053c39e03223666ac1cb7a6a'
+  homepage "http://fribidi.org/"
+  url "http://fribidi.org/download/fribidi-0.19.6.tar.bz2"
+  sha256 "cba8b7423c817e5adf50d28ec9079d14eafcec9127b9e8c8f1960c5ad585e17d"
 
   bottle do
     cellar :any
@@ -20,6 +18,6 @@ class Fribidi < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

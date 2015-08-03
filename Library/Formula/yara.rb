@@ -2,7 +2,7 @@ class Yara < Formula
   desc "Malware identification and classification tool"
   homepage "https://github.com/plusvic/yara/"
   url "https://github.com/plusvic/yara/archive/v3.4.0.tar.gz"
-  sha1 "70756b291a08254de751726ee565cf454a1eb566"
+  sha256 "528571ff721364229f34f6d1ff0eedc3cd5a2a75bb94727dc6578c6efe3d618b"
   head "https://github.com/plusvic/yara.git"
 
   bottle do
@@ -19,11 +19,10 @@ class Yara < Formula
   depends_on "pcre"
   depends_on "openssl"
 
-
   # fixes a variable redefinition error with clang
   patch do
     url "https://github.com/plusvic/yara/pull/261.diff"
-    sha1 "17ed1efbd2c4575109bb7b7e2f0c883795dc3163"
+    sha256 "6b5c135b577a71ca1c1a5f0a15e512f5157b13dfbd08710f9679fb4cd0b47dba"
   end
 
   def install

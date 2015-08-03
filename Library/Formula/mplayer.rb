@@ -1,17 +1,15 @@
-require 'formula'
-
 class Mplayer < Formula
   desc "UNIX movie player"
-  homepage 'http://www.mplayerhq.hu/'
+  homepage "http://www.mplayerhq.hu/"
 
   stable do
     url "http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz"
-    sha1 "ba2f3bd1442d04b17b0143680850273d928689c1"
+    sha256 "ce8fc7c3179e6a57eb3a58cb7d1604388756b8a61764cc93e095e7aff3798c76"
 
     # Fix compilation on 10.9, adapted from upstream revision r36500
     patch do
       url "https://gist.githubusercontent.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
-      sha1 "92717335aed9ec5d01fcf62f9787c6d50cf5d911"
+      sha256 "19296cbfa2d3b9af4f12d3fc8a4fdbf5b095bc85fc31b3328ab20bfbadb12b3d"
     end
   end
 
@@ -31,15 +29,15 @@ class Mplayer < Formula
     patch :DATA
   end
 
-  option 'without-osd', 'Build without OSD'
+  option "without-osd", "Build without OSD"
 
-  depends_on 'yasm' => :build
-  depends_on 'libcaca' => :optional
+  depends_on "yasm" => :build
+  depends_on "libcaca" => :optional
   depends_on :x11 => :optional
 
   deprecated_option "with-x" => "with-x11"
 
-  if build.with? 'osd' or build.with? 'x11'
+  if build.with?("osd") || build.with?("x11")
     # These are required for the OSD. We can get them from X11, or we can
     # build our own.
     depends_on "fontconfig"
@@ -49,7 +47,7 @@ class Mplayer < Formula
 
   fails_with :clang do
     build 211
-    cause 'Inline asm errors during compile on 32bit Snow Leopard.'
+    cause "Inline asm errors during compile on 32bit Snow Leopard."
   end unless MacOS.prefer_64_bit?
 
   # ld fails with: Unknown instruction for architecture x86_64
@@ -73,14 +71,14 @@ class Mplayer < Formula
       --disable-libopenjpeg
     ]
 
-    args << "--enable-menu" if build.with? 'osd'
-    args << "--disable-x11" if build.without? 'x11'
-    args << "--enable-freetype" if build.with?('osd') || build.with?('x11')
-    args << "--enable-caca" if build.with? 'libcaca'
+    args << "--enable-menu" if build.with? "osd"
+    args << "--disable-x11" if build.without? "x11"
+    args << "--enable-freetype" if build.with?("osd") || build.with?("x11")
+    args << "--enable-caca" if build.with? "libcaca"
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Tinyscheme < Formula
   desc "Very small Scheme implementation"
-  homepage 'http://tinyscheme.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/tinyscheme/tinyscheme/tinyscheme-1.40/tinyscheme-1.40.tar.gz'
-  sha1 'e03f7ac41f0517bb35eced2772c79eb9db42ea82'
+  homepage "http://tinyscheme.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/tinyscheme/tinyscheme/tinyscheme-1.40/tinyscheme-1.40.tar.gz"
+  sha256 "c594c84633b1dcfe832e0416cbc9f889b6bae352845e14503883119a941a12fc"
 
   bottle do
     sha1 "4946723ab6e7e3689ca087574a3ae7078d50ff84" => :mavericks
@@ -16,10 +14,10 @@ class Tinyscheme < Formula
   patch :DATA
 
   def install
-    system 'make', "INITDEST=#{share}"
-    lib.install('libtinyscheme.dylib')
-    share.install('init.scm')
-    bin.install('scheme')
+    system "make", "INITDEST=#{share}"
+    lib.install("libtinyscheme.dylib")
+    share.install("init.scm")
+    bin.install("scheme")
   end
 end
 

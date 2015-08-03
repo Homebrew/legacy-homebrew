@@ -2,7 +2,7 @@ class Blazeblogger < Formula
   desc "CMS for the command-line"
   homepage "http://blaze.blackened.cz/"
   url "https://blazeblogger.googlecode.com/files/blazeblogger-1.2.0.tar.gz"
-  sha1 "280894fca6594d0c0df925aa0a16b9116ee19f17"
+  sha256 "39024b70708be6073e8aeb3943eb3b73d441fbb7b8113e145c0cf7540c4921aa"
 
   bottle do
     cellar :any

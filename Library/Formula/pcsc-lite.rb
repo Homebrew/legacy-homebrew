@@ -1,10 +1,8 @@
-require "formula"
-
 class PcscLite < Formula
   desc "Middleware to access a smart card using SCard API"
   homepage "https://pcsclite.alioth.debian.org"
   url "https://alioth.debian.org/frs/download.php/file/4126/pcsc-lite-1.8.13.tar.bz2"
-  sha1 "baa1ac3a477c336805cdf375912da5cbc8ebab8d"
+  sha256 "f315047e808d63a3262c4a040f77548af2e04d1fd707e0c2759369b926fbbc3b"
 
   bottle do
     sha1 "8b726aaf4467583d1fd808650229757c9561c4d5" => :yosemite

@@ -1,11 +1,9 @@
-require "formula"
-
 class Autossh < Formula
   desc "Automatically restart SSH sessions and tunnels"
   homepage "http://www.harding.motd.ca/autossh/"
   url "http://www.harding.motd.ca/autossh/autossh-1.4e.tgz"
   mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4e.orig.tar.gz"
-  sha1 "268b5f2556ecfbb18b750b26d9816e53fb9501f4"
+  sha256 "9e8e10a59d7619176f4b986e256f776097a364d1be012781ea52e08d04679156"
 
   bottle do
     cellar :any
@@ -20,7 +18,7 @@ class Autossh < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
     bin.install "rscreen"
   end
 end

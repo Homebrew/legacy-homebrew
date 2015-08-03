@@ -1,11 +1,9 @@
-require "formula"
-
 class Libsndfile < Formula
   desc "C library for files containing sampled sound"
   homepage "http://www.mega-nerd.com/libsndfile/"
   url "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.25.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/libs/libsndfile/libsndfile_1.0.25.orig.tar.gz"
-  sha1 "e95d9fca57f7ddace9f197071cbcfb92fa16748e"
+  sha256 "59016dbd326abe7e2366ded5c344c853829bebfd1702ef26a07ef662d6aa4882"
 
   bottle do
     cellar :any
@@ -29,7 +27,7 @@ class Libsndfile < Formula
   # fixed upstream: https://github.com/erikd/libsndfile/commit/d04e1de82ae0af48fd09d5cb09bf21b4ca8d513c
   patch do
     url "https://gist.githubusercontent.com/metabr/8623583/raw/90966b76c6f52e1293b5303541e1f2d72e2afd08/0001-libsndfile-doesn-t-find-Carbon.h-using-XCode-4.3.patch"
-    sha1 "90f31bf3fe0998e2eb2ec36f85f9efe5b23e0a83"
+    sha256 "6b5fd749ef3b4990ca011eb65289c369cff82285e99773e4a74de4615f082df5"
   end
 
   # libsndfile fails to build with libvorbis 1.3.4
@@ -39,7 +37,7 @@ class Libsndfile < Formula
   # https://github.com/erikd/libsndfile/commit/50d1df56f7f9b90d0fafc618d4947611e9689ae9
   patch do
     url "https://gist.githubusercontent.com/metabr/8623583/raw/cd3540f4abd8521edf0011ab6dd40888cfadfd7a/0002-libsndfile-fails-to-build-with-libvorbis-1.3.4.patch"
-    sha1 "051c2c2467a0d287b02dd3ef287a0fce68074040"
+    sha256 "00697cfe8e13e6d4b36f6ad6327dd670be5a6542371b2ccabcc3175527731a41"
   end
 
   def install

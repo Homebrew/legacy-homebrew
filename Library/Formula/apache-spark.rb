@@ -1,5 +1,3 @@
-require "formula"
-
 class ApacheSpark < Formula
   desc "Engine for large-scale data processing"
   homepage "https://spark.apache.org/"

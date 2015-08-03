@@ -1,5 +1,3 @@
-require "formula"
-
 class Ola < Formula
   desc "Open Lighting Architecture for lighting control information"
   homepage "https://www.openlighting.org/ola/"

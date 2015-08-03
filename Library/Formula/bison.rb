@@ -3,7 +3,7 @@ class Bison < Formula
   homepage "https://www.gnu.org/software/bison/"
   url "http://ftpmirror.gnu.org/bison/bison-3.0.4.tar.gz"
   mirror "https://ftp.gnu.org/gnu/bison/bison-3.0.4.tar.gz"
-  sha1 "ec1f2706a7cfedda06d29dc394b03e092a1e1b74"
+  sha256 "b67fd2daae7a64b5ba862c66c07c1addb9e6b1b05c5f2049392cfd8a2172952e"
 
   bottle do
     sha1 "4a2c74267f6adff751ed407b18ba5a7e21f756fa" => :yosemite

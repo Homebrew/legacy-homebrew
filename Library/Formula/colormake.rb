@@ -3,7 +3,7 @@ class Colormake < Formula
   homepage "https://github.com/pagekite/Colormake"
   head "https://github.com/pagekite/Colormake.git"
   url "https://github.com/pagekite/Colormake/archive/0.9.20140503.tar.gz"
-  sha1 "2804a550bfee7304015569552ff77a2d9c3eddf8"
+  sha256 "a3f9fae9a455ac96be1cce0371b28bda33a9af73b06fa8e4329aa2f693d68d22"
 
   def install
     inreplace "colormake", "colormake.pl", "#{libexec}/colormake.pl"

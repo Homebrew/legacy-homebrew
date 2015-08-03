@@ -2,7 +2,7 @@ class Faac < Formula
   desc "ISO AAC audio encoder"
   homepage "http://www.audiocoding.com/faac.html"
   url "https://downloads.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.gz"
-  sha1 "d00b023a3642f81bb1fb13d962a65079121396ee"
+  sha256 "c5141199f4cfb17d749c36ba8cfe4b25f838da67c22f0fec40228b6b9c3d19df"
 
   bottle do
     cellar :any

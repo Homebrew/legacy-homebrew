@@ -1,10 +1,8 @@
-require 'formula'
-
 class Spatialindex < Formula
   desc "General framework for developing spatial indices"
-  homepage 'https://libspatialindex.github.io'
+  homepage "https://libspatialindex.github.io"
   url "http://download.osgeo.org/libspatialindex/spatialindex-src-1.8.5.tar.gz"
-  sha1 "08af1fefd0a30c895d7d714056c2a8f021f46eb4"
+  sha256 "7caa46a2cb9b40960f7bc82c3de60fa14f8f3e000b02561b36cbf2cfe6a9bfef"
 
   bottle do
     cellar :any
@@ -16,6 +14,6 @@ class Spatialindex < Formula
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Lnav < Formula
   desc "Curses-based tool for viewing and analyzing log files"
-  homepage 'http://lnav.org'
-  url 'https://github.com/tstack/lnav/releases/download/v0.7.3/lnav-0.7.3.tar.gz'
-  sha1 '3f9242cc176194e14d50b8b0cbac08a9656cc5b4'
+  homepage "http://lnav.org"
+  url "https://github.com/tstack/lnav/releases/download/v0.7.3/lnav-0.7.3.tar.gz"
+  sha256 "7eb052a8dc60bef6c5f4a8e7135b7089b4413edbf156cc8bafce0557d3166df3"
 
   bottle do
     sha256 "073daae7ca0ff228f829642a5c780ca339952db2c9d2524e6e92c40091679721" => :yosemite
@@ -19,8 +17,8 @@ class Lnav < Formula
     depends_on "automake" => :build
   end
 
-  depends_on 'readline'
-  depends_on 'pcre'
+  depends_on "readline"
+  depends_on "pcre"
 
   def install
     system "./autogen.sh" if build.head?

@@ -1,11 +1,9 @@
-require "formula"
-
 class Ngrok < Formula
   desc "Expose localhost to the internet and capture traffic for replay"
   homepage "https://ngrok.com"
   head "https://github.com/inconshreveable/ngrok.git"
   url "https://github.com/inconshreveable/ngrok/archive/1.7.tar.gz"
-  sha1 "4a6baf98a23193c21d7732c6573f53dbbede5033"
+  sha256 "da9a063bc2f2cd6f14018c4e00304225d949fe42d525ed40d9be8f35daf4c23c"
 
   bottle do
     sha1 "71920267073415ccc1ea1305bac6ce51e00d4833" => :mavericks

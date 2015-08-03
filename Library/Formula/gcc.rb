@@ -114,7 +114,7 @@ class Gcc < Formula
       "--with-build-config=bootstrap-debug",
       "--disable-werror",
       "--with-pkgversion=Homebrew #{name} #{pkg_version} #{build.used_options*" "}".strip,
-      "--with-bugurl=https://github.com/Homebrew/homebrew/issues",
+      "--with-bugurl=https://github.com/Homebrew/homebrew/issues"
     ]
 
     # "Building GCC with plugin support requires a host that supports
@@ -175,7 +175,7 @@ class Gcc < Formula
         "#{lib}/gcc/#{version_suffix}/logging.properties",
         "#{lib}/gcc/#{version_suffix}/security/classpath.security",
         "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
-        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security"
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file

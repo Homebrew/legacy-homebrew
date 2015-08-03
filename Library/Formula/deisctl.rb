@@ -4,7 +4,7 @@ class Deisctl < Formula
   desc "Deis Control Utility"
   homepage "http://deis.io/"
   url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
-  sha1 "c57fb6073b374b95262c36959c6d2b6c508cda59"
+  sha256 "7f4fc7ddddf3157d59ed9e726a5be5510a4b208a936227e65f9041ceb3627a14"
 
   bottle do
     cellar :any

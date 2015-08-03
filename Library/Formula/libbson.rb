@@ -1,5 +1,3 @@
-require "formula"
-
 class Libbson < Formula
   desc "BSON utility library"
   homepage "https://github.com/mongodb/libbson"

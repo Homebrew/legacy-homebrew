@@ -3,7 +3,7 @@ class DBus < Formula
   desc "Message bus system, providing inter-application communication"
   homepage "https://wiki.freedesktop.org/www/Software/dbus"
   url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.14.tar.gz"
-  sha1 "d0b84d6d7af47b8cad7f55befee8e9001daefe01"
+  sha256 "83425250a6a4c93b9ab4a349771a7700e8ddff2d73a5a088222ca47ae9ce1f1a"
 
   bottle do
     sha1 "22806b6107833bea3b69099848c6f12add3625cc" => :yosemite
@@ -16,7 +16,7 @@ class DBus < Formula
   # This is fixed in 1.9.x but won't be fixed upstream for 1.8.x
   patch do
     url "http://cgit.freedesktop.org/dbus/dbus/patch/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472"
-    sha1 "ebb383abb86eeafbe048dbb8b77d83bdf0b7c9bb"
+    sha256 "35a021c54da36b22d720acc23f5f133a609cb268e7cb16e36a772552e9cf3e69"
   end
 
   def install

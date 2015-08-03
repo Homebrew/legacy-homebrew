@@ -1,11 +1,9 @@
-require 'formula'
-
 class ArgyllCms < Formula
   desc "ICC compatible color management system"
-  homepage 'http://www.argyllcms.com/'
-  url 'http://www.argyllcms.com/Argyll_V1.6.3_src.zip'
-  sha1 '0c4d48a6cf6800a8d445bf6cd3c248a40799cf14'
-  version '1.6.3'
+  homepage "http://www.argyllcms.com/"
+  url "http://www.argyllcms.com/Argyll_V1.6.3_src.zip"
+  sha256 "188beaa03dd2459403415023f8f8f9aab362bf3062a9822b3622dde6902e4b84"
+  version "1.6.3"
 
   bottle do
     cellar :any
@@ -14,9 +12,9 @@ class ArgyllCms < Formula
     sha1 "716adfdabde0d81124ca57388655dc36e9e1c365" => :lion
   end
 
-  depends_on 'jam' => :build
-  depends_on 'jpeg'
-  depends_on 'libtiff'
+  depends_on "jam" => :build
+  depends_on "jpeg"
+  depends_on "libtiff"
 
   def install
     system "sh", "makeall.sh"

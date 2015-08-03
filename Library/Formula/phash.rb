@@ -17,7 +17,7 @@ class Phash < Formula
   option "disable-video-hash", "Disable video hash"
   option "disable-audio-hash", "Disable audio hash"
 
-  depends_on "cimg" unless build.include? "disable-image-hash" and build.include? "disable-video-hash"
+  depends_on "cimg" unless build.include?("disable-image-hash") && build.include?("disable-video-hash")
   depends_on "ffmpeg" unless build.include? "disable-video-hash"
 
   unless build.include? "disable-audio-hash"

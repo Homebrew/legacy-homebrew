@@ -1,10 +1,8 @@
-require "formula"
-
 class Uru < Formula
   desc "Use multiple rubies on multiple platforms"
   homepage "https://bitbucket.org/jonforums/uru"
   url "https://bitbucket.org/jonforums/uru/get/v0.7.6.tar.gz"
-  sha1 "c1618f861c94318004cdede66946f31436b410e7"
+  sha256 "b6243315801ce28ec7f7c12c02de558188752b14dba9da0813da83ccafdb91cd"
 
   bottle do
     cellar :any

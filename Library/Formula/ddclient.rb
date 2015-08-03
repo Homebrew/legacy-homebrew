@@ -1,16 +1,14 @@
-require 'formula'
-
 class Ddclient < Formula
   desc "Update dynamic DNS entries"
-  homepage 'http://sourceforge.net/p/ddclient/wiki/Home'
-  url 'https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.2/ddclient-3.8.2.tar.bz2'
-  sha1 '8c887c06a580773c48a1eaced82a08c3077e1325'
+  homepage "http://sourceforge.net/p/ddclient/wiki/Home"
+  url "https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.2/ddclient-3.8.2.tar.bz2"
+  sha256 "f343d2297b97b769949d4d6c3f603a8c52433acf2104245538808a2ea003ed5e"
 
-  head 'https://github.com/wimpunk/ddclient.git'
+  head "https://github.com/wimpunk/ddclient.git"
 
   def install
     # Adjust default paths in script
-    inreplace 'ddclient' do |s|
+    inreplace "ddclient" do |s|
       s.gsub! "/etc/ddclient", "#{etc}/ddclient"
       s.gsub! "/var/cache/ddclient", "#{var}/run/ddclient"
     end
@@ -18,24 +16,24 @@ class Ddclient < Formula
     sbin.install "ddclient"
 
     # Install sample files
-    inreplace 'sample-ddclient-wrapper.sh',
+    inreplace "sample-ddclient-wrapper.sh",
       "/etc/ddclient", "#{etc}/ddclient"
 
-    inreplace 'sample-etc_cron.d_ddclient',
+    inreplace "sample-etc_cron.d_ddclient",
       "/usr/sbin/ddclient", "#{sbin}/ddclient"
 
-    inreplace 'sample-etc_ddclient.conf',
+    inreplace "sample-etc_ddclient.conf",
       "/var/run/ddclient.pid", "#{var}/run/ddclient/pid"
 
-    doc.install %w(
+    doc.install %w[
       sample-ddclient-wrapper.sh
       sample-etc_cron.d_ddclient
       sample-etc_ddclient.conf
-    )
+    ]
 
     # Create etc & var paths
-    (etc+'ddclient').mkpath
-    (var+'run/ddclient').mkpath
+    (etc+"ddclient").mkpath
+    (var+"run/ddclient").mkpath
   end
 
   def caveats; <<-EOS.undent

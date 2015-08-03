@@ -1,10 +1,8 @@
-require "formula"
-
 class Pgformatter < Formula
   desc "PostgreSQL syntax beautifier"
   homepage "http://sqlformat.darold.net/"
   url "https://github.com/darold/pgFormatter/archive/v1.4.tar.gz"
-  sha1 "bdbeefd9b3d8088a69816d3f578453c4a886feae"
+  sha256 "d8bb04f1f0d35cbae9aeb8ae91273f3d13ce07305226605c1b2db161010bedc9"
 
   def install
     system "perl", "Makefile.PL", "DESTDIR=."
@@ -14,8 +12,8 @@ class Pgformatter < Formula
   end
 
   test do
-    test_file = (testpath/'test.sql')
-    test_file.write('SELECT * FROM foo')
+    test_file = (testpath/"test.sql")
+    test_file.write("SELECT * FROM foo")
     system "#{bin}/pg_format", test_file
   end
 end

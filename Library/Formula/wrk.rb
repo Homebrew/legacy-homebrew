@@ -1,5 +1,3 @@
-require "formula"
-
 class Wrk < Formula
   desc "HTTP benchmarking tool"
   homepage "https://github.com/wg/wrk"
@@ -25,6 +23,6 @@ class Wrk < Formula
   end
 
   test do
-    system *%W{#{bin}/wrk -c 1 -t 1 -d 1 http://example.com/}
+    system *%W[#{bin}/wrk -c 1 -t 1 -d 1 http://example.com/]
   end
 end

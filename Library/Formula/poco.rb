@@ -1,10 +1,8 @@
-require "formula"
-
 class Poco < Formula
   desc "POCO C++ Libraries"
   homepage "http://pocoproject.org/"
   url "http://pocoproject.org/releases/poco-1.6.0/poco-1.6.0-all.tar.gz"
-  sha1 "b45486757bfc132631d31724342a62cf41dc2795"
+  sha256 "ed1be29ee413141269e7ccee861b11a2992a9f70072dbb28bec31ad432d71cab"
 
   bottle do
     cellar :any
@@ -20,7 +18,7 @@ class Poco < Formula
   def install
     ENV.cxx11 if build.cxx11?
 
-    arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
+    arch = Hardware.is_64_bit? ? "Darwin64": "Darwin32"
     system "./configure", "--prefix=#{prefix}",
                           "--config=#{arch}",
                           "--omit=Data/MySQL,Data/ODBC",

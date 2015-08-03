@@ -1,10 +1,8 @@
-require "formula"
-
 class TitanServer < Formula
   desc "Distributed graph database"
   homepage "https://thinkaurelius.github.io/titan/"
   url "http://s3.thinkaurelius.com/downloads/titan/titan-server-0.4.4.zip"
-  sha1 "549f14f372fb94bf567a34f7e1bcc650addfee8a"
+  sha256 "46703d315aa6ca0602b022fadca3846a58ba69bb490acb210bedd5be3bf12ef5"
 
   # In reference to PR #30107 this patch will update the titan.sh and rexster-console.sh
   # scripts to properly follow multiple symlinks so that java calls can accurately find

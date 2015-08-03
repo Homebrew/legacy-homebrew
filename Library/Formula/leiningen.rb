@@ -3,11 +3,11 @@ class Leiningen < Formula
   homepage "https://github.com/technomancy/leiningen"
   head "https://github.com/technomancy/leiningen.git"
   url "https://github.com/technomancy/leiningen/archive/2.5.1.tar.gz"
-  sha1 "4f6e2e189be0a163f400c3a8060896285fe731f7"
+  sha256 "37eeb83f45f713e9e1ab79c5f30f378d0173101698c28eee97180c100de4e1bc"
 
   resource "jar" do
     url "https://github.com/technomancy/leiningen/releases/download/2.5.1/leiningen-2.5.1-standalone.zip", :using => :nounzip
-    sha1 "1c526e6573713b0635a1f2d52502ffa04ae45383"
+    sha256 "b475c08f505f58f70839195a70a842dcd9b903b70d8447f45a3de06e0c1f34c7"
   end
 
   def install

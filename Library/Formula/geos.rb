@@ -2,7 +2,7 @@ class Geos < Formula
   desc "GEOS Geometry Engine"
   homepage "https://trac.osgeo.org/geos"
   url "http://download.osgeo.org/geos/geos-3.4.2.tar.bz2"
-  sha1 "b8aceab04dd09f4113864f2d12015231bb318e9a"
+  sha256 "15e8bfdf7e29087a957b56ac543ea9a80321481cef4d4f63a7b268953ad26c53"
 
   bottle do
     cellar :any
@@ -28,7 +28,7 @@ class Geos < Formula
 
     args = [
       "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
+      "--prefix=#{prefix}"
     ]
 
     args << "--enable-php" if build.with?("php")

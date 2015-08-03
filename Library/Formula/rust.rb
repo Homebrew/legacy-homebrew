@@ -1,10 +1,10 @@
 class Rust < Formula
   desc "Safe, concurrent, practical language"
-  homepage 'http://www.rust-lang.org/'
+  homepage "http://www.rust-lang.org/"
 
   stable do
-    url 'https://static.rust-lang.org/dist/rustc-1.1.0-src.tar.gz'
-    sha256 'cb09f443b37ec1b81fe73c04eb413f9f656859cf7d00bc5088008cbc2a63fa8a'
+    url "https://static.rust-lang.org/dist/rustc-1.1.0-src.tar.gz"
+    sha256 "cb09f443b37ec1b81fe73c04eb413f9f656859cf7d00bc5088008cbc2a63fa8a"
 
     resource "cargo" do
       url "https://github.com/rust-lang/cargo.git", :revision => "b030d35d5cf6b35bf8a6bfd218ab4df9d6a86361"
@@ -58,7 +58,7 @@ class Rust < Formula
     end
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     resource("cargo").stage do
       cargo_stage_path = pwd

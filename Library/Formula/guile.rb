@@ -48,7 +48,7 @@ class Guile < Formula
                           "--prefix=#{prefix}",
                           "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}",
                           "--with-libgmp-prefix=#{Formula["gmp"].opt_prefix}"
-    system "make install"
+    system "make", "install"
 
     # A really messed up workaround required on OS X --mkhl
     Pathname.glob("#{lib}/*.dylib") do |dylib|

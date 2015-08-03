@@ -1,5 +1,3 @@
-require "formula"
-
 class Aget < Formula
   desc "Multithreaded HTTP download accelerator"
   homepage "http://www.enderunix.org/aget/"

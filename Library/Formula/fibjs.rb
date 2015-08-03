@@ -1,5 +1,3 @@
-require "formula"
-
 class Fibjs < Formula
   desc "JavaScript on Fiber"
   homepage "http://fibjs.org"

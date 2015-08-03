@@ -1,10 +1,8 @@
-require "formula"
-
 class Pazpar2 < Formula
   desc "Metasearching middleware webservice"
   homepage "http://www.indexdata.com/pazpar2"
   url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.8.7.tar.gz"
-  sha1 "e4e5c1c7cdeea7f06c0242c1b85c32b35c52ee69"
+  sha256 "bf1d99f0c410c8c01dd9e5e71c8b449b262d20edd3cf33016b375c667ab2b32a"
   revision 1
 
   bottle do

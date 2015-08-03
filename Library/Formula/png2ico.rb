@@ -2,7 +2,7 @@ class Png2ico < Formula
   desc "PNG to icon converter"
   homepage "http://www.winterdrache.de/freeware/png2ico/"
   url "http://www.winterdrache.de/freeware/png2ico/data/png2ico-src-2002-12-08.tar.gz"
-  sha1 "955004bee9a20f12b225aa01895762cbbafaeb28"
+  sha256 "d6bc2b8f9dacfb8010e5f5654aaba56476df18d88e344ea1a32523bb5843b68e"
   bottle do
     cellar :any
     sha1 "b3c0353afa9ea55e8dc9e8f41eeaac8968f569d3" => :yosemite

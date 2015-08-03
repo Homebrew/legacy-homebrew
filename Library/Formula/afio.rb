@@ -1,10 +1,8 @@
-require 'formula'
-
 class Afio < Formula
   desc "Creates cpio-format archives"
-  homepage 'http://members.chello.nl/~k.holtman/afio.html'
-  url 'http://members.chello.nl/~k.holtman/afio-2.5.1.tgz'
-  sha1 'bff6b9a147dc5b0e6bd7f1a76f0b84e4dd9a7dc9'
+  homepage "http://members.chello.nl/~k.holtman/afio.html"
+  url "http://members.chello.nl/~k.holtman/afio-2.5.1.tgz"
+  sha256 "363457a5d6ee422d9b704ef56d26369ca5ee671d7209cfe799cab6e30bf2b99a"
 
   bottle do
     cellar :any
@@ -13,7 +11,7 @@ class Afio < Formula
     sha1 "68ecadc2fc7e8dd268ac9e6a63fc12927d60f897" => :lion
   end
 
-  #Note - The Freecode website is being no longer being updated and alternative links should be found from now on.
+  # Note - The Freecode website is being no longer being updated and alternative links should be found from now on.
 
   option "bzip2", "Use bzip2(1) instead of gzip(1) for compression/decompression"
 
@@ -27,10 +25,10 @@ class Afio < Formula
 
     system "make", "DESTDIR=#{prefix}"
     bin.install "afio"
-    man1.install 'afio.1'
+    man1.install "afio.1"
 
     prefix.install "ANNOUNCE-#{version}" => "ANNOUNCE"
-    prefix.install %w(HISTORY INSTALLATION README SCRIPTS)
+    prefix.install %w[HISTORY INSTALLATION README SCRIPTS]
     share.install Dir["script*"]
   end
 end

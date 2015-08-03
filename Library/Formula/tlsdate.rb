@@ -1,11 +1,9 @@
-require "formula"
-
 class Tlsdate < Formula
   desc "Secure rdate replacement"
   homepage "https://www.github.com/ioerror/tlsdate/"
   head "https://github.com/ioerror/tlsdate.git"
   url "https://github.com/ioerror/tlsdate/archive/tlsdate-0.0.8.tar.gz"
-  sha1 "9de7c712ba21b61b06c130fe0e68fd6fdd3ab4aa"
+  sha256 "65b2f8bd36556c7685916f7a783f3bec7b0712a012a6f34247a2fd5e8b410d17"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

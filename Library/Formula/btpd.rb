@@ -2,7 +2,7 @@ class Btpd < Formula
   desc "BitTorrent protocol daemon"
   homepage "https://github.com/btpd/btpd"
   url "https://github.com/downloads/btpd/btpd/btpd-0.16.tar.gz"
-  sha1 "fb7d396ed5c224dc6e743ac481e4feb4a3cf7b75"
+  sha256 "296bdb718eaba9ca938bee56f0976622006c956980ab7fc7a339530d88f51eb8"
   bottle do
     cellar :any
     sha1 "4d71a2e91abdcd9040d0941fe72d7a19af3c35e5" => :yosemite

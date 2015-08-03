@@ -2,7 +2,7 @@ class Knock < Formula
   desc "Port-knock server"
   homepage "http://www.zeroflux.org/projects/knock"
   url "http://www.zeroflux.org/proj/knock/files/knock-0.7.tar.gz"
-  sha1 "186a687c9db11733cf23a7423884a863873ebb27"
+  sha256 "9938479c321066424f74c61f6bee46dfd355a828263dc89561a1ece3f56578a4"
 
   bottle do
     cellar :any

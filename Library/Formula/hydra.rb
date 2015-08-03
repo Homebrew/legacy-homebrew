@@ -1,5 +1,3 @@
-require "formula"
-
 class Hydra < Formula
   desc "Network logon cracker which supports many services"
   homepage "https://www.thc.org/thc-hydra/"

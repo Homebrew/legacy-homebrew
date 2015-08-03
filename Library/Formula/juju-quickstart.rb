@@ -1,10 +1,8 @@
-require "formula"
-
 class JujuQuickstart < Formula
   desc "Opinionated command-line tool for quickly starting Juju"
   homepage "https://launchpad.net/juju-quickstart"
   url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.2.0.tar.gz"
-  sha1 "4f009d463cb4249a0b9e5c1201d910186321c12e"
+  sha256 "651ed1e0fe5fd90b333c880df0d7c3a96a925086f8b832e2a375c480c54dba0d"
 
   bottle do
     cellar :any
@@ -17,10 +15,10 @@ class JujuQuickstart < Formula
   depends_on "juju"
 
   def install
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     system "python", "setup.py", "install", "--prefix=#{libexec}"
-    bin.install Dir[libexec/'bin/juju-quickstart']
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.install Dir[libexec/"bin/juju-quickstart"]
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

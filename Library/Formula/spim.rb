@@ -1,11 +1,9 @@
-require 'formula'
-
 class Spim < Formula
   desc "MIPS32 simulator"
-  homepage 'http://spimsimulator.sourceforge.net/'
+  homepage "http://spimsimulator.sourceforge.net/"
   # No source code tarball exists
-  url 'http://svn.code.sf.net/p/spimsimulator/code', :revision => 641
-  version '9.1.13'
+  url "http://svn.code.sf.net/p/spimsimulator/code", :revision => 641
+  version "9.1.13"
 
   bottle do
     sha1 "98be77d9b3af625b26981a5c53c10d74b6754bee" => :mavericks
@@ -15,7 +13,7 @@ class Spim < Formula
 
   def install
     bin.mkpath
-    cd 'spim' do
+    cd "spim" do
       system "make", "EXCEPTION_DIR=#{share}"
       system "make", "install", "BIN_DIR=#{bin}",
                                 "EXCEPTION_DIR=#{share}",

@@ -1,16 +1,14 @@
-require 'formula'
-
 class Sqoop < Formula
   desc "Transfer bulk data between Hadoop and structured datastores"
-  homepage 'http://sqoop.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=sqoop/1.4.5/sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz'
-  version '1.4.5'
-  sha1 'cb1831d0da2b6f508f62b144d405d859e371e111'
+  homepage "https://sqoop.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=sqoop/1.4.5/sqoop-1.4.5.bin__hadoop-2.0.4-alpha.tar.gz"
+  version "1.4.5"
+  sha256 "2f36ba52ae64f2f674780984aa4ed53d43565098f208a4fcbd800af664b1def9"
 
-  depends_on 'hadoop'
-  depends_on 'hbase'
-  depends_on 'hive'
-  depends_on 'zookeeper'
+  depends_on "hadoop"
+  depends_on "hbase"
+  depends_on "hive"
+  depends_on "zookeeper"
 
   def spoop_envs
     <<-EOS.undent
@@ -23,11 +21,11 @@ class Sqoop < Formula
 
   def install
     libexec.install %w[bin conf lib]
-    libexec.install Dir['*.jar']
+    libexec.install Dir["*.jar"]
     bin.write_exec_script Dir["#{libexec}/bin/*"]
 
     # Install a sqoop-env.sh file
-    envs = libexec/'conf/sqoop-env.sh'
+    envs = libexec/"conf/sqoop-env.sh"
     envs.write(spoop_envs) unless envs.exist?
   end
 

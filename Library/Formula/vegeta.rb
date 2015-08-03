@@ -4,7 +4,7 @@ class Vegeta < Formula
   desc "HTTP load testing tool and library"
   homepage "https://github.com/tsenart/vegeta"
   url "https://github.com/tsenart/vegeta/archive/v5.7.1.tar.gz"
-  sha1 "2d10d66460fdd7bd6a4e0cabc50d519dd72244bd"
+  sha256 "8bf49431f9eb1b36cd3f8b816f12a8e9e5b2b5b601223e45aae13d702bda9117"
 
   bottle do
     cellar :any

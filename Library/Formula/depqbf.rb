@@ -2,7 +2,7 @@ class Depqbf < Formula
   desc "Solver for quantified boolean formulae (QBF)"
   homepage "https://lonsing.github.io/depqbf/"
   url "https://github.com/lonsing/depqbf/archive/version-4.0.tar.gz"
-  sha1 "dd7dd35aded11bb348ff9ef16626d481b7da3fe4"
+  sha256 "be7e1440a60737fa8be9b1bcb7bdcf612810f3f8c5af2730556b0f212368eeee"
   head "https://github.com/lonsig/depqbf.git"
 
   bottle do

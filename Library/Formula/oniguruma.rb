@@ -2,7 +2,7 @@ class Oniguruma < Formula
   desc "Regular expressions library"
   homepage "http://www.geocities.jp/kosako3/oniguruma/"
   url "http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.9.6.tar.gz"
-  sha1 "08d2d7b64b15cbd024b089f0924037f329bc7246"
+  sha256 "d5642010336a6f68b7f2e34b1f1cb14be333e4d95c2ac02b38c162caf44e47a7"
 
   bottle do
     cellar :any

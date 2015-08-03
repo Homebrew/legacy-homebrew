@@ -2,7 +2,7 @@ class WirouterKeyrec < Formula
   desc "Recover the default WPA passphrases from supported routers"
   homepage "http://www.salvatorefresta.net/tools/"
   url "http://tools.salvatorefresta.net/WiRouter_KeyRec_1.1.2.zip"
-  sha1 "3c17f2d0bf3d6201409862fd903ebfd60c1e8a2e"
+  sha256 "3e59138f35502b32b47bd91fe18c0c232921c08d32525a2ae3c14daec09058d4"
 
   bottle do
     sha1 "70d0cc222e0a6215d9ba9868c281603eac63c8a7" => :yosemite

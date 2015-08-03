@@ -1,5 +1,3 @@
-require "formula"
-
 class Nss < Formula
   desc "Libraries for security-enabled client and server applications"
   homepage "https://developer.mozilla.org/docs/NSS"

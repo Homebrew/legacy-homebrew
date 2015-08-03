@@ -30,7 +30,7 @@ class Hashpump < Formula
                    "CXX=#{ENV.cxx}",
                    "install"
 
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system python, *Language::Python.setup_install_args(prefix)
     end
   end

@@ -1,15 +1,13 @@
-require 'formula'
-
 class Lxsplit < Formula
   desc "Tool for splitting or joining files"
-  homepage 'http://lxsplit.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/lxsplit/lxsplit-0.2.4.tar.gz'
-  sha1 '4e906cb95fcc756ff8c5d58c103e2659493052e0'
+  homepage "http://lxsplit.sourceforge.net/"
+  url "https://downloads.sourceforge.net/lxsplit/lxsplit-0.2.4.tar.gz"
+  sha256 "858fa939803b2eba97ccc5ec57011c4f4b613ff299abbdc51e2f921016845056"
 
   def install
     bin.mkpath
-    inreplace 'Makefile', '/usr/local/bin', bin
+    inreplace "Makefile", "/usr/local/bin", bin
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

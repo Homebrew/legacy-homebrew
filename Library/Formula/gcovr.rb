@@ -2,7 +2,7 @@ class Gcovr < Formula
   desc "Reports from gcov test coverage program"
   homepage "http://gcovr.com/"
   url "https://github.com/gcovr/gcovr/archive/3.2.tar.gz"
-  sha1 "97e44794969378db99cb77ee3c71b110dc634a8f"
+  sha256 "5a969caf61452705a39f6642f4707d23644bdd2e5ef913014bf95c4bd0263db6"
   head "https://github.com/gcovr/gcovr.git"
 
   def install

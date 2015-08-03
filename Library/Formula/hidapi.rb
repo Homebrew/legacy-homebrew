@@ -1,10 +1,8 @@
-require 'formula'
-
 class Hidapi < Formula
   desc "Library for communicating with USB and Bluetooth HID devices"
   homepage "https://github.com/signal11/hidapi"
   url "https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz"
-  sha1 "5e72a4c7add8b85c8abcdd360ab8b1e1421da468"
+  sha256 "3c147200bf48a04c1e927cd81589c5ddceff61e6dac137a605f6ac9793f4af61"
 
   # This patch addresses a bug discovered in the HidApi IOHidManager back-end
   # that is being used with Macs.
@@ -25,19 +23,19 @@ class Hidapi < Formula
     sha256 "b7ced91d5e87d1d47ffc12de47ffbeac3391f1070fb0e2b47b84c929f372e99e" => :mountain_lion
   end
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'pkg-config' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
 
   def install
-    system './bootstrap'
+    system "./bootstrap"
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include "hidapi.h"
       int main(void)
       {
@@ -47,6 +45,6 @@ class Hidapi < Formula
 
     flags = ["-I#{include}/hidapi", "-L#{lib}", "-lhidapi"] + ENV.cflags.to_s.split
     system ENV.cc, "-o", "test", "test.c", *flags
-    system './test'
+    system "./test"
   end
 end

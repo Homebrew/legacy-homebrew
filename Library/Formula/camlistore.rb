@@ -1,9 +1,9 @@
 class Camlistore < Formula
   desc "Content-addressable multi-layer indexed storage"
-  homepage 'http://camlistore.org'
-  head 'https://camlistore.googlesource.com/camlistore', :using => :git
-  url 'https://github.com/bradfitz/camlistore/archive/0.8.tar.gz'
-  sha1 '076db79303fe1c62323b9dc0713ef1bfceb286b2'
+  homepage "http://camlistore.org"
+  head "https://camlistore.googlesource.com/camlistore", :using => :git
+  url "https://github.com/bradfitz/camlistore/archive/0.8.tar.gz"
+  sha256 "61b75708ae25ac4dc1c5c31c1cf8f806ccaafaaacf618caf1aa9d31489fec50f"
 
   bottle do
     sha1 "0e23421d8dcd222bdaebbd9cdd4027f570e9c76d" => :mavericks
@@ -11,9 +11,9 @@ class Camlistore < Formula
     sha1 "f72efd9e3c4654a0520b1ecf9991e2a23ea4cdad" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'go' => :build
-  depends_on 'sqlite'
+  depends_on "pkg-config" => :build
+  depends_on "go" => :build
+  depends_on "sqlite"
 
   def install
     system "go", "run", "make.go"

@@ -1,10 +1,8 @@
-require "formula"
-
 class Libmms < Formula
   desc "Library for parsing mms:// and mmsh:// network streams"
   homepage "http://sourceforge.net/projects/libmms/"
   url "https://downloads.sourceforge.net/project/libmms/libmms/0.6.4/libmms-0.6.4.tar.gz"
-  sha1 "b03ef84a9eedc68fdf2866265b667b75e1a33bee"
+  sha256 "3c05e05aebcbfcc044d9e8c2d4646cd8359be39a3f0ba8ce4e72a9094bee704f"
 
   bottle do
     cellar :any
@@ -27,6 +25,6 @@ class Libmms < Formula
     ENV.append "LDFLAGS", "-liconv"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

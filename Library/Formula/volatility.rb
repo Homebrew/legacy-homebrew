@@ -1,10 +1,8 @@
-require "formula"
-
 class Volatility < Formula
   desc "Advanced memory forensics framework"
   homepage "https://github.com/volatilityfoundation/volatility"
   url "http://downloads.volatilityfoundation.org/releases/2.4/volatility-2.4.tar.gz"
-  sha1 "77ae1443062a5103c63377aee6170d6e09ca6354"
+  sha256 "684fdffd79ca4453298ee2eb001137cff802bc4b3dfaaa38c4335321f7cccef1"
   head "https://github.com/volatilityfoundation/volatility.git"
 
   bottle do
@@ -19,49 +17,49 @@ class Volatility < Formula
 
   resource "yara-python" do
     url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
-    sha1 "dd1a92b1469cd629f6cd368aec32f207375b125b"
+    sha256 "4a062ac3b44a3cb1487240e32d3dcbdb4e4d2e742174d87e36a95f18a3963507"
   end
 
   resource "distorm3" do
     url "https://distorm.googlecode.com/files/distorm3.zip"
-    sha1 "774acbb1d734bc83d4c487185dbe9acd51c61851"
+    sha256 "d311d232e108def8acac0d4f6514e7bc070e37d7aa123ab9a9a05b9322321582"
   end
 
   resource "pycrypto" do
     url "https://github.com/dlitz/pycrypto/archive/v2.6.1.tar.gz"
-    sha1 "9b7fb7fd9c59624f2db7c1d98f62adde1b85f4c5"
+    sha256 "41542a5be24da239e0841cb66e9dd28b772e79684b78d0b8292118e5c0d4e184"
   end
 
   resource "PIL" do
     url "http://effbot.org/downloads/Imaging-1.1.7.tar.gz"
-    sha1 "76c37504251171fda8da8e63ecb8bc42a69a5c81"
+    sha256 "895bc7c2498c8e1f9b99938f1a40dc86b3f149741f105cf7c7bd2e0725405211"
   end
 
   resource "openpyxl" do
     url "https://pypi.python.org/packages/source/o/openpyxl/openpyxl-2.0.5.tar.gz"
-    sha1 "8a2c7de46719edfcd2d551ea29fe0409dc3c2763"
+    sha256 "874c2f1180b0b6c84173abac1b9de87f4cb4eef59b83b3095ef345f77c824a93"
   end
 
   resource "ipython" do
     url "https://pypi.python.org/packages/source/i/ipython/ipython-2.2.0.tar.gz"
-    sha1 "ff8e3a2f756d62405f200a2c73aedfafd84076ac"
+    sha256 "b7ca77ba54a02f032055b73f5f62b01431f818ae00f63716b78f881c2b2564e2"
   end
 
   resource "readline" do
     url "https://pypi.python.org/packages/source/r/readline/readline-6.2.4.1.tar.gz"
-    sha1 "8d9c29e527177a1d4597e356a090b7547fc32d3a"
+    sha256 "e00f86e03dfe52e7d1502cec5c64070b32621c85509c0081a4cfa6a0294bd107"
   end
 
   resource "pytz" do
     url "https://pypi.python.org/packages/source/p/pytz/pytz-2014.4.tar.gz"
-    sha1 "ea81b61079da4cf04839b1c369232137465d88f3"
+    sha256 "fddc081b9aead4d4ec09685c6e9ed6c7d3f5cace1ff7d39c76ba770f2c8d1049"
   end
 
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
-    res = %w(distorm3 pycrypto PIL openpyxl pytz ipython readline)
+    res = %w[distorm3 pycrypto PIL openpyxl pytz ipython readline]
 
     res.each do |r|
       resource(r).stage do

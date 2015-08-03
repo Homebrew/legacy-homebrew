@@ -1,5 +1,3 @@
-require "formula"
-
 class Rocksdb < Formula
   desc "Persistent key-value store for fast storage environments"
   homepage "http://rocksdb.org"

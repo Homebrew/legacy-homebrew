@@ -1,10 +1,8 @@
-require 'formula'
-
 class Mysqlxx < Formula
   desc "C++ wrapper for MySQL's C API"
-  homepage 'http://tangentsoft.net/mysql++/'
-  url 'http://tangentsoft.net/mysql++/releases/mysql++-3.2.1.tar.gz'
-  sha1 '1ce5a4484b66d9852718412315e1409cafd8c397'
+  homepage "http://tangentsoft.net/mysql++/"
+  url "http://tangentsoft.net/mysql++/releases/mysql++-3.2.1.tar.gz"
+  sha256 "aee521873d4dbb816d15f22ee93b6aced789ce4e3ca59f7c114a79cb72f75d20"
 
   bottle do
     cellar :any
@@ -13,8 +11,7 @@ class Mysqlxx < Formula
     sha1 "9fedd7c2ae4b463a0ff730e29a0e493274896d2b" => :mountain_lion
   end
 
-
-  depends_on 'mysql-connector-c'
+  depends_on "mysql-connector-c"
 
   def install
     system "./configure", "--disable-debug",
@@ -23,6 +20,6 @@ class Mysqlxx < Formula
                           "--with-field-limit=40",
                           "--with-mysql-lib=#{HOMEBREW_PREFIX}/lib",
                           "--with-mysql-include=#{HOMEBREW_PREFIX}/include"
-    system "make install"
+    system "make", "install"
   end
 end

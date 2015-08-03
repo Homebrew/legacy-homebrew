@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libofx < Formula
   desc "Library to support OFX command responses"
-  homepage 'http://libofx.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/libofx/libofx/0.9.9/libofx-0.9.9.tar.gz'
-  sha1 'b8ea875cee16953166449de8ddd1b69fb181f61b'
+  homepage "http://libofx.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/libofx/libofx/0.9.9/libofx-0.9.9.tar.gz"
+  sha256 "94ef88c5cdc3e307e473fa2a55d4a05da802ee2feb65c85c63b9019c83747b23"
 
   bottle do
     revision 1
@@ -13,11 +11,11 @@ class Libofx < Formula
     sha1 "ac76937c8a7dded8bb89f1ece1ea9ede2f8e41a4" => :mountain_lion
   end
 
-  depends_on 'open-sp'
+  depends_on "open-sp"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

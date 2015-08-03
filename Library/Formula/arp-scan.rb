@@ -1,11 +1,9 @@
-require "formula"
-
 class ArpScan < Formula
   desc "ARP scanning and fingerprinting tool"
   homepage "http://www.nta-monitor.com/tools-resources/security-tools/arp-scan"
   url "http://www.nta-monitor.com/files/arp-scan/arp-scan-1.9.tar.gz"
   mirror "https://github.com/royhills/arp-scan/releases/download/1.9/arp-scan-1.9.tar.gz"
-  sha1 "6bf698572b21242778df9d2019fd386b2a21a135"
+  sha256 "ce908ac71c48e85dddf6dd4fe5151d13c7528b1f49717a98b2a2535bd797d892"
 
   bottle do
     sha1 "90cc962c894c21bddbaf2d88fe47c9fcef784c47" => :mavericks

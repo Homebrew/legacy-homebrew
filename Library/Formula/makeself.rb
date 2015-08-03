@@ -1,10 +1,8 @@
-require "formula"
-
 class Makeself < Formula
   desc "Make self-extractable archives on UNIX"
   homepage "http://www.megastep.org/makeself/"
   url "https://github.com/megastep/makeself/archive/release-2.2.0.tar.gz"
-  sha1 "e512745f7aa5becea4f4f85a8dc0aa6fd6ca38aa"
+  sha256 "9c9d003e097d9c198433a05926e64d9b7cd330c7f10cb4e6048877d0a87de341"
   head "https://github.com/megastep/makeself.git"
 
   def install

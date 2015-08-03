@@ -1,10 +1,8 @@
-require "formula"
-
 class Pastebinit < Formula
   desc "Send things to pastebin from the command-line"
   homepage "https://launchpad.net/pastebinit"
   url "https://launchpad.net/pastebinit/trunk/1.4.1/+download/pastebinit-1.4.1.tar.gz"
-  sha1 "1482311559bc939bb78bbd3e05b15400105bb9c8"
+  sha256 "39e3dcb98d2aa9d65f86c648c375ca75fa312fc773e568963e9aefffea0c9bf7"
 
   depends_on "python3"
   depends_on "docbook2x" => :build

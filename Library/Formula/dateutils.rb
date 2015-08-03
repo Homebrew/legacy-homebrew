@@ -2,7 +2,7 @@ class Dateutils < Formula
   desc "Tools to manipulate dates with a focus on financial data"
   homepage "http://www.fresse.org/dateutils/"
   url "https://bitbucket.org/hroptatyr/dateutils/downloads/dateutils-0.2.5.tar.xz"
-  sha1 "47f2ba469daff7586d47473f54a77848b724ba45"
+  sha256 "7ecf1f92e1282f4975031f63148b5c778ce70b404a30846fb6bc5de64d3f3211"
 
   bottle do
     cellar :any

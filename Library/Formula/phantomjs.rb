@@ -1,5 +1,3 @@
-require "formula"
-
 class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://www.phantomjs.org/"
@@ -13,7 +11,7 @@ class Phantomjs < Formula
     # https://github.com/ariya/phantomjs/pull/12934
     patch do
       url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
-      sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
+      sha256 "f54bd1592185f031552d3ad5c8809ff27e8f3be4f1c05c81b59bf7dbc4a59de1"
     end
   end
 

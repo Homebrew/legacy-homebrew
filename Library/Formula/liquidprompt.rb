@@ -1,14 +1,12 @@
-require 'formula'
-
 class Liquidprompt < Formula
   desc "Adaptive prompt for bash and zsh shells"
-  homepage 'https://github.com/nojhan/liquidprompt'
-  url 'https://github.com/nojhan/liquidprompt/archive/v_1.9.tar.gz'
-  sha1 'c4bc4027810bd5fd1b727f2be724eaf12c03e7cb'
+  homepage "https://github.com/nojhan/liquidprompt"
+  url "https://github.com/nojhan/liquidprompt/archive/v_1.9.tar.gz"
+  sha256 "4751665b6dbf37517ba8e7b6af067369937006b60ca23fc320fd5416b1a065fd"
 
   def install
-    share.install 'liquidpromptrc-dist'
-    share.install 'liquidprompt'
+    share.install "liquidpromptrc-dist"
+    share.install "liquidprompt"
   end
 
   def caveats; <<-EOS.undent

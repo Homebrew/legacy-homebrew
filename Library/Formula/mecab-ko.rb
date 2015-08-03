@@ -1,11 +1,9 @@
-require "formula"
-
 class MecabKo < Formula
   desc "See mecab"
   homepage "https://bitbucket.org/eunjeon/mecab-ko"
   url "https://bitbucket.org/eunjeon/mecab-ko/downloads/mecab-0.996-ko-0.9.2.tar.gz"
   version "0.996-ko-0.9.2"
-  sha1 "4947620429dea49a69be84efc17736c4875c7180"
+  sha256 "d0e0f696fc33c2183307d4eb87ec3b17845f90b81bf843bd0981e574ee3c38cb"
 
   def install
     # https://bitbucket.org/eunjeon/mecab-ko/pull-request/1/mecab-ko-ipadic-ipadic/diff
@@ -20,6 +18,6 @@ class MecabKo < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -44,7 +44,7 @@ class Shiboken < Formula
   end
 
   test do
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system python, "-c", "import shiboken"
     end
   end

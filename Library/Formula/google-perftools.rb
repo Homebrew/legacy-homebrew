@@ -2,7 +2,7 @@ class GooglePerftools < Formula
   desc "Multi-threaded malloc() and performance analysis tools"
   homepage "https://code.google.com/p/gperftools/"
   url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.4.tar.gz"
-  sha1 "13b904d0d1f220e43e4495f3403ee280c6da26ea"
+  sha256 "982a37226eb42f40714e26b8076815d5ea677a422fb52ff8bfca3704d9c30a2d"
 
   bottle do
     cellar :any

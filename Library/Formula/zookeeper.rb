@@ -1,20 +1,18 @@
-require "formula"
-
 class Zookeeper < Formula
   desc "Centralized server for distributed coordination of services"
   homepage "https://zookeeper.apache.org/"
   revision 1
 
   stable do
-    url "http://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
-    sha1 "2a9e53f5990dfe0965834a525fbcad226bf93474"
+    url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
+    sha256 "01b3938547cd620dc4c93efe07c0360411f4a66962a70500b163b59014046994"
 
     # To resolve Yosemite build errors.
     # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
     if MacOS.version == :yosemite
       patch :p0 do
         url "https://issues.apache.org/jira/secure/attachment/12673210/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
-        sha1 "ff0e971c028050ccebd8cc7caa348ab14716d664"
+        sha256 "b90eda47d21e60655dffe476eb437400afed24b37bbd71e7291faa8ece35c62b"
       end
     end
   end
@@ -49,7 +47,7 @@ class Zookeeper < Formula
 
   depends_on :python => :optional
 
-  def shim_script target
+  def shim_script(target)
     <<-EOS.undent
       #!/usr/bin/env bash
       . "#{etc}/zookeeper/defaults"

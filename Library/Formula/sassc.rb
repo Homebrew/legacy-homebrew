@@ -1,5 +1,3 @@
-require "formula"
-
 class Sassc < Formula
   desc "Wrapper around libsass that helps to create command-line apps"
   homepage "https://github.com/sass/sassc"
@@ -35,7 +33,7 @@ class Sassc < Formula
       }
     EOS
 
-   assert_equal "div img{border:0px}",
-   shell_output("#{bin}/sassc --style compressed input.scss").strip
+    assert_equal "div img{border:0px}",
+    shell_output("#{bin}/sassc --style compressed input.scss").strip
   end
 end

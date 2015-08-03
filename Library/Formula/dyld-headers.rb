@@ -1,10 +1,8 @@
-require 'formula'
-
 class DyldHeaders < Formula
   desc "Header files for the dynamic linker"
-  homepage 'http://opensource.apple.com/'
-  url 'https://opensource.apple.com/tarballs/dyld/dyld-239.4.tar.gz'
-  sha1 '9a366d4d31423c959b249c45245d93ea9acc14b9'
+  homepage "http://opensource.apple.com/"
+  url "https://opensource.apple.com/tarballs/dyld/dyld-239.4.tar.gz"
+  sha256 "c76eacb0863669d68538173ff261cb3afe302863d5c3b2287dc6816eb6a7e71f"
 
   keg_only :provided_by_osx
 
@@ -12,7 +10,7 @@ class DyldHeaders < Formula
   patch :DATA if MacOS.version < :leopard
 
   def install
-    include.install Dir['include/*']
+    include.install Dir["include/*"]
   end
 end
 

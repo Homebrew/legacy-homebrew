@@ -2,7 +2,7 @@ class Samba < Formula
   desc "SMB/CIFS file, print, and login server for UNIX"
   homepage "https://samba.org/"
   url "https://download.samba.org/pub/samba/stable/samba-3.6.25.tar.gz"
-  sha1 "86fbfcfe80454cc7dbe510e7d58c02922cac3efa"
+  sha256 "8f2c8a7f2bd89b0dfd228ed917815852f7c625b2bc0936304ac3ed63aaf83751"
 
   bottle do
     sha1 "d573b77cb2f4187d366e6a5314982661089c91bf" => :yosemite

@@ -35,7 +35,7 @@ class Lldpd < Formula
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   plist_options :startup => true

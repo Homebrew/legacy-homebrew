@@ -1,21 +1,19 @@
-require 'formula'
-
 class Makensis < Formula
   desc "System to create Windows installers"
-  homepage 'http://nsis.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2'
-  sha1 '2cc9bff130031a0b1d76b01ec0a9136cdf5992ce'
+  homepage "http://nsis.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2"
+  sha256 "f5f9e5e22505e44b25aea14fe17871c1ed324c1f3cc7a753ef591f76c9e8a1ae"
 
-  depends_on 'scons' => :build
+  depends_on "scons" => :build
 
   # scons appears to have no builtin way to override the compiler selection,
   # and the only options supported on OS X are 'gcc' and 'g++'.
   # Use the right compiler by forcibly altering the scons config to set these
   patch :DATA
 
-  resource 'nsis' do
-    url 'https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip'
-    sha1 'adeff823a1f8af3c19783700a6b8d9054cf0f3c2'
+  resource "nsis" do
+    url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip"
+    sha256 "ced6561f8aed81c8f3d6bc5a33684e03ca36a618110c0a849880c703337f26cc"
   end
 
   def install
@@ -27,7 +25,7 @@ class Makensis < Formula
     # Don't strip, see https://github.com/Homebrew/homebrew/issues/28718
     scons "STRIP=0", "makensis"
     bin.install "build/release/makensis/makensis"
-    (share/'nsis').install resource('nsis')
+    (share/"nsis").install resource("nsis")
   end
 end
 

@@ -3,7 +3,7 @@ class Nacl < Formula
   homepage "http://nacl.cr.yp.to/"
   url "https://hyperelliptic.org/nacl/nacl-20110221.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/n/nacl/nacl_20110221.orig.tar.bz2"
-  sha1 "6007a6aee249f5a534ec53fddfc364601fba9629"
+  sha256 "4f277f89735c8b0b8a6bbd043b3efb3fa1cc68a9a5da6a076507d067fc3b3bf8"
 
   bottle do
     cellar :any

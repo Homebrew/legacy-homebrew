@@ -1,10 +1,8 @@
-require "formula"
-
 class Xmlsh < Formula
   desc "XML shell"
   homepage "http://www.xmlsh.org"
   url "https://downloads.sourceforge.net/project/xmlsh/xmlsh/1.2.5/xmlsh_1_2_5.zip"
-  sha1 "3bce1c66eab4795f24abec56c025fd184a5321c4"
+  sha256 "489df45f19a6bb586fdb5abd1f8ba9397048597895cb25def747b0118b02b1c8"
 
   def install
     rm_rf %w[win32 cygwin]

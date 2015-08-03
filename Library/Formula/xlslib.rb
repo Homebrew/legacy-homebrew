@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Xlslib < Formula
   desc "C++/C library to construct Excel .xls files in code"
-  homepage 'http://sourceforge.net/projects/xlslib'
-  url 'https://downloads.sourceforge.net/project/xlslib/xlslib-package-2.4.0.zip'
-  sha1 '73447c5c632c0e92c1852bd2a2cada7dd25f5492'
+  homepage "http://sourceforge.net/projects/xlslib"
+  url "https://downloads.sourceforge.net/project/xlslib/xlslib-package-2.4.0.zip"
+  sha1 "73447c5c632c0e92c1852bd2a2cada7dd25f5492"
 
   bottle do
     cellar :any
@@ -15,7 +15,7 @@ class Xlslib < Formula
   end
 
   def install
-    cd 'xlslib'
+    cd "xlslib"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make install"

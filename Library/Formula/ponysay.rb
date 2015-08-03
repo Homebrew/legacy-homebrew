@@ -2,7 +2,7 @@ class Ponysay < Formula
   desc "Cowsay but with ponies"
   homepage "http://erkin.co/ponysay/"
   url "https://github.com/erkin/ponysay/archive/3.0.2.tar.gz"
-  sha1 "e152b4ffea3dff8d2ca18ab597344e9b50ab78e6"
+  sha256 "69e98a7966353de2f232cbdaccd8ef7dbc5d0bcede9bf7280a676793e8625b0d"
 
   bottle do
     revision 1

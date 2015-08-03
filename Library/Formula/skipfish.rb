@@ -1,10 +1,8 @@
-require 'formula'
-
 class Skipfish < Formula
   desc "Web application security scanner"
-  homepage 'http://code.google.com/p/skipfish/'
-  url 'https://skipfish.googlecode.com/files/skipfish-2.10b.tgz'
-  sha1 '2564162a13d02f8310eef5edcbaf74ed6043be99'
+  homepage "https://code.google.com/p/skipfish/"
+  url "https://skipfish.googlecode.com/files/skipfish-2.10b.tgz"
+  sha256 "1a4fbc9d013f1f9b970946ea7228d943266127b7f4100c994ad26c82c5352a9e"
 
   bottle do
     sha1 "509453d1b4e717ab4858b22c6fffe1d5f98744a2" => :mavericks
@@ -12,8 +10,8 @@ class Skipfish < Formula
     sha1 "516a27501c45f82c782cbe61867cc958f0063113" => :lion
   end
 
-  depends_on 'libidn'
-  depends_on 'pcre'
+  depends_on "libidn"
+  depends_on "pcre"
 
   def install
     ENV.append "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
@@ -24,9 +22,9 @@ class Skipfish < Formula
       "#define ASSETS_DIR              \"assets\"",
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
 
-    system 'make'
-    bin.install 'skipfish'
-    libexec.install %w(assets dictionaries config signatures doc)
+    system "make"
+    bin.install "skipfish"
+    libexec.install %w[assets dictionaries config signatures doc]
   end
 
   def caveats; <<-EOS.undent

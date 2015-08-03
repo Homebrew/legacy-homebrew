@@ -1,12 +1,10 @@
-require 'formula'
-
 class Polipo < Formula
   desc "Web caching proxy"
-  homepage 'http://www.pps.jussieu.fr/~jch/software/polipo/'
-  url 'http://www.pps.univ-paris-diderot.fr/~jch/software/files/polipo/polipo-1.1.1.tar.gz'
-  sha1 'cf7461a96c4bf012496844d5a54171182c2cb1a7'
+  homepage "http://www.pps.jussieu.fr/~jch/software/polipo/"
+  url "http://www.pps.univ-paris-diderot.fr/~jch/software/files/polipo/polipo-1.1.1.tar.gz"
+  sha256 "a259750793ab79c491d05fcee5a917faf7d9030fb5d15e05b3704e9c9e4ee015"
 
-  head 'git://git.wifi.pps.jussieu.fr/polipo'
+  head "git://git.wifi.pps.jussieu.fr/polipo"
 
   bottle do
     sha1 "b8a3690483249552c1ca12c8173767b847f7e296" => :yosemite
@@ -14,7 +12,7 @@ class Polipo < Formula
     sha1 "e293417dcc1d1708cdef6cc5476445741ee97bb4" => :mountain_lion
   end
 
-  option 'with-large-chunks', 'Set chunk size to 16k (more RAM, but more performance)'
+  option "with-large-chunks", "Set chunk size to 16k (more RAM, but more performance)"
 
   def install
     cache_root = (var + "cache/polipo")

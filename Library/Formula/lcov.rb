@@ -1,12 +1,10 @@
-require 'formula'
-
 class Lcov < Formula
   desc "Graphical front-end for GCC's coverage testing tool (gcov)"
-  homepage 'http://ltp.sourceforge.net/coverage/lcov.php'
-  url 'https://downloads.sourceforge.net/ltp/lcov-1.11.tar.gz'
-  sha1 'bf8ed68c06805a71528a2a67dd714830afd3ccb5'
+  homepage "http://ltp.sourceforge.net/coverage/lcov.php"
+  url "https://downloads.sourceforge.net/ltp/lcov-1.11.tar.gz"
+  sha256 "c282de8d678ecbfda32ce4b5c85fc02f77c2a39a062f068bd8e774d29ddc9bf8"
 
-  head 'https://github.com/linux-test-project/lcov.git'
+  head "https://github.com/linux-test-project/lcov.git"
 
   bottle do
     cellar :any

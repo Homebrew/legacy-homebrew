@@ -2,7 +2,7 @@ class Mdr < Formula
   desc "Make diffs readable"
   homepage "https://github.com/halffullheart/mdr"
   url "https://github.com/halffullheart/mdr/archive/v1.0.1.tar.gz"
-  sha1 "dbadda07e8ee7baaa1a3d6c82cbae8434b8327d5"
+  sha256 "103d52c47133a43cc7a6cb8a21bfabe2d6e35e222d5b675bc0c868699a127c67"
 
   bottle do
     cellar :any

@@ -1,5 +1,3 @@
-require "formula"
-
 class Lzo < Formula
   desc "Real-time data compression library"
   homepage "http://www.oberhumer.com/opensource/lzo/"

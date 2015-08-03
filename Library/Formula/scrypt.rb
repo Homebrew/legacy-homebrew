@@ -1,5 +1,3 @@
-require "formula"
-
 class Scrypt < Formula
   desc "Encrypt and decrypt files using memory-hard password function"
   homepage "https://www.tarsnap.com/scrypt.html"

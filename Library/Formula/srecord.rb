@@ -1,10 +1,8 @@
-require "formula"
-
 class Srecord < Formula
   desc "Tools for manipulating EPROM load files"
   homepage "http://srecord.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/srecord/srecord/1.64/srecord-1.64.tar.gz"
-  sha1 "f947751084f5837a1a7988cbfe5fcf3800958cb7"
+  sha256 "49a4418733c508c03ad79a29e95acec9a2fbc4c7306131d2a8f5ef32012e67e2"
 
   depends_on "libtool" => :build
   depends_on "boost"
@@ -15,7 +13,7 @@ class Srecord < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "LIBTOOL=glibtool"
-    system "make install"
+    system "make", "install"
   end
 end
 

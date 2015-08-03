@@ -16,8 +16,8 @@ class Vim < Formula
   option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  LANGUAGES_OPTIONAL = %w(lua mzscheme python3 tcl)
-  LANGUAGES_DEFAULT  = %w(perl python ruby)
+  LANGUAGES_OPTIONAL = %w[lua mzscheme python3 tcl]
+  LANGUAGES_DEFAULT  = %w[perl python ruby]
 
   option "with-python3", "Build vim with python3 instead of python[2] support"
   LANGUAGES_OPTIONAL.each do |language|
@@ -54,11 +54,11 @@ class Vim < Formula
       opts << "--enable-#{language}interp" if build.with? language
     end
 
-    if opts.include? "--enable-pythoninterp" and opts.include? "--enable-python3interp"
+    if opts.include?("--enable-pythoninterp") && opts.include?("--enable-python3interp")
       # only compile with either python or python3 support, but not both
       # (if vim74 is compiled with +python3/dyn, the Python[3] library lookup segfaults
       # in other words, a command like ":py3 import sys" leads to a SEGV)
-      opts = opts - %W[--enable-pythoninterp]
+      opts -= %W[--enable-pythoninterp]
     end
 
     opts << "--disable-nls" if build.include? "disable-nls"

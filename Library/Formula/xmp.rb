@@ -2,7 +2,7 @@ class Xmp < Formula
   desc "Command-line player for module music formats (MOD, S3M, IT, etc)"
   homepage "http://xmp.sourceforge.net"
   url "https://downloads.sourceforge.net/project/xmp/xmp/4.0.10/xmp-4.0.10.tar.gz"
-  sha1 "e6a39a5158a9e36d437b233d68a8dc7756a971e1"
+  sha256 "b6d45fef0dbdb4ad4948b9f82335cbfaf60eaec3a63cc9a0050a1e5cf7a65e3e"
 
   bottle do
     sha1 "fb720ca09235acac04666f9661eb106717450f11" => :yosemite
@@ -30,6 +30,6 @@ class Xmp < Formula
     end
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libshout < Formula
   desc "Data and connectivity library for the icecast server"
-  homepage 'http://www.icecast.org/'
-  url 'http://downloads.xiph.org/releases/libshout/libshout-2.3.1.tar.gz'
-  sha1 '147c5670939727420d0e2ad6a20468e2c2db1e20'
+  homepage "http://www.icecast.org/"
+  url "http://downloads.xiph.org/releases/libshout/libshout-2.3.1.tar.gz"
+  sha256 "cf3c5f6b4a5e3fcfbe09fb7024aa88ad4099a9945f7cb037ec06bcee7a23926e"
 
   bottle do
     cellar :any
@@ -14,14 +12,14 @@ class Libshout < Formula
     sha1 "946c3352ba99927dcb798c44b77928128fffd653" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libogg'
-  depends_on 'libvorbis'
-  depends_on 'theora'
-  depends_on 'speex'
+  depends_on "pkg-config" => :build
+  depends_on "libogg"
+  depends_on "libvorbis"
+  depends_on "theora"
+  depends_on "speex"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

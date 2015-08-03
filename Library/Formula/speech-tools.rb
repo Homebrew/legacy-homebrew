@@ -2,7 +2,7 @@ class SpeechTools < Formula
   desc "C++ general speech software library from the University of Edinburgh"
   homepage "http://festvox.org/docs/speech_tools-2.4.0/"
   url "http://festvox.org/packed/festival/2.4/speech_tools-2.4-release.tar.gz"
-  sha1 "5b0ebd39bb7afa33e4093724a2123bdc62a6aebc"
+  sha256 "fbc2482c443919aa79d2e599d6a5faee4e793df55a79ef377f1dc7e8ba237010"
 
   bottle do
     cellar :any
@@ -28,7 +28,7 @@ class SpeechTools < Formula
     wavfile = "#{basename}.wav"
     ptcfile = "#{basename}.ptc"
 
-    File.open(txtfile, 'w') do |f|
+    File.open(txtfile, "w") do |f|
       scale = 2 ** 15 - 1
       f.puts Array.new(duration_secs * rate_hz) { |i| (scale * Math.sin(frequency_hz * 2 * Math::PI * i / rate_hz)).to_i }
     end

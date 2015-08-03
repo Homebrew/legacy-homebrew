@@ -2,7 +2,7 @@ class Aria2 < Formula
   desc "Download with resuming and segmented downloading"
   homepage "http://aria2.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.9/aria2-1.18.9.tar.bz2"
-  sha1 "31ac90d9ffcdba4cdf936ddfbc3d8f08416360e6"
+  sha256 "e24bca91edbe8fff52615420085317ce22faec4a0a9c34843f86dbcc2a79c4b2"
 
   bottle do
     cellar :any

@@ -2,7 +2,7 @@ class Calc < Formula
   desc "Arbitrary precision calculator"
   homepage "http://www.isthe.com/chongo/tech/comp/calc/"
   url "http://www.isthe.com/chongo/src/calc/calc-2.12.5.0.tar.bz2"
-  sha1 "65e5a6c77f7f5f3a500959a5deafd1b89a356335"
+  sha256 "a0e7b47af38330f188970998c8e5039134dadf6f2e3f2c00d7efdae272a4338d"
 
   bottle do
     sha1 "9d99ec472782f23cd5cd05a215cb3b8418b28032" => :yosemite

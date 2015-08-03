@@ -1,5 +1,3 @@
-require "formula"
-
 class Libfreenect < Formula
   desc "Drivers and libraries for the Xbox Kinect device"
   homepage "http://openkinect.org"
@@ -32,7 +30,7 @@ class Libfreenect < Formula
 
     mkdir "build" do
       system "cmake", "..", *args
-      system "make install"
+      system "make", "install"
     end
   end
 end

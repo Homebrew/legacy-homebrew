@@ -1,10 +1,8 @@
-require 'formula'
-
 class Gecode < Formula
   desc "Toolkit for developing constraint-based systems and applications"
-  homepage 'http://www.gecode.org/'
-  url 'http://www.gecode.org/download/gecode-4.3.3.tar.gz'
-  sha1 '392f079979a582e040ff1d58736f23e985ca53ff'
+  homepage "http://www.gecode.org/"
+  url "http://www.gecode.org/download/gecode-4.3.3.tar.gz"
+  sha256 "31c85b7f7fb2efceaaaf51e17b5d863628140522f723759b76c7557cc5d8acdb"
 
   bottle do
     cellar :any
@@ -15,6 +13,6 @@ class Gecode < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-examples"
-    system "make install"
+    system "make", "install"
   end
 end

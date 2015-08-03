@@ -1,24 +1,22 @@
-require 'formula'
-
 class Automysqlbackup < Formula
   desc "Automate MySQL backups"
-  homepage 'http://sourceforge.net/projects/automysqlbackup/'
-  url 'https://downloads.sourceforge.net/project/automysqlbackup/AutoMySQLBackup/AutoMySQLBackup%20VER%203.0/automysqlbackup-v3.0_rc6.tar.gz'
-  version '3.0-rc6'
-  sha1 'a21123a2c5fbf568a7fe167698a82697ae1cbb21'
+  homepage "http://sourceforge.net/projects/automysqlbackup/"
+  url "https://downloads.sourceforge.net/project/automysqlbackup/AutoMySQLBackup/AutoMySQLBackup%20VER%203.0/automysqlbackup-v3.0_rc6.tar.gz"
+  version "3.0-rc6"
+  sha256 "889e064d086b077e213da11e937ea7242a289f9217652b9051c157830dc23cc0"
 
   def install
-    inreplace 'automysqlbackup' do |s|
+    inreplace "automysqlbackup" do |s|
       s.gsub! "/etc", etc
       s.gsub! "/var", var
     end
-    inreplace 'automysqlbackup.conf' do |s|
+    inreplace "automysqlbackup.conf" do |s|
       s.gsub! "/var", var
     end
 
-    conf_path = (etc/'automysqlbackup')
-    conf_path.install 'automysqlbackup.conf' unless (conf_path/'automysqlbackup.conf').exist?
-    sbin.install 'automysqlbackup'
+    conf_path = (etc/"automysqlbackup")
+    conf_path.install "automysqlbackup.conf" unless (conf_path/"automysqlbackup.conf").exist?
+    sbin.install "automysqlbackup"
   end
 
   def caveats; <<-EOS.undent

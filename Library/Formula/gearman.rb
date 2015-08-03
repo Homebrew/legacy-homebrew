@@ -68,7 +68,6 @@ class Gearman < Formula
       args << "--disable-libmemcached" << "--without-memcached"
     end
 
-
     args << "--disable-libtokyocabinet" if build.without? "tokyo-cabinet"
 
     args << (build.with?("mysql") ? "--with-mysql=#{Formula["mysql"].opt_bin}/mysql_config" : "--without-mysql")

@@ -1,10 +1,8 @@
-require "formula"
-
 class Ssreflect < Formula
   desc "Virtual package provided by libssreflect-coq"
   homepage "http://www.msr-inria.fr/projects/mathematical-components-2/"
   url "http://ssr.msr-inria.inria.fr/FTP/ssreflect-1.5.tar.gz"
-  sha1 "131f4e2746b4a97627ae91a9f980f61ec42a00c9"
+  sha256 "bad978693d1bfd0a89586a34678bcc244e3b7efba6431e0f83d8e1ae8f82a142"
 
   depends_on "objective-caml"
   depends_on "coq"
@@ -20,9 +18,9 @@ class Ssreflect < Formula
 
     # Enable static linking.
     if build.with? "static"
-      inreplace 'Make' do |s|
-        s.gsub! /#\-custom/, '-custom'
-        s.gsub! /#SSRCOQ/, 'SSRCOQ'
+      inreplace "Make" do |s|
+        s.gsub! /#\-custom/, "-custom"
+        s.gsub! /#SSRCOQ/, "SSRCOQ"
       end
     end
 

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Ngrep < Formula
   desc "network grep"
-  homepage 'http://ngrep.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/ngrep/ngrep/1.45/ngrep-1.45.tar.bz2'
-  sha1 'f26090a6ac607db66df99c6fa9aef74968f3330f'
+  homepage "http://ngrep.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/ngrep/ngrep/1.45/ngrep-1.45.tar.bz2"
+  sha256 "aea6dd337da8781847c75b3b5b876e4de9c58520e0d77310679a979fc6402fa7"
   revision 1
 
   bottle do
@@ -16,8 +14,8 @@ class Ngrep < Formula
 
   # http://sourceforge.net/p/ngrep/bugs/27/
   patch do
-    url  'https://launchpadlibrarian.net/44952147/ngrep-fix-ipv6-support.patch'
-    sha1 '84ff02f59b4fab8692a3ff2a61b45a4b9d067177'
+    url "https://launchpadlibrarian.net/44952147/ngrep-fix-ipv6-support.patch"
+    sha256 "f1bcc0a344e5f454207254746cab5b1d216d3de3efaf08f59732f2182d42bbb1"
   end
 
   def install
@@ -31,6 +29,6 @@ class Ngrep < Formula
                           # see https://github.com/jpr5/ngrep/commit/e29fc29
                           # https://github.com/Homebrew/homebrew/issues/27171
                           "--disable-pcap-restart"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,20 +1,18 @@
-require 'formula'
-
 class Aiccu < Formula
   desc "AICCU (Automatic IPv6 Connectivity Client Utility)"
-  homepage 'https://www.sixxs.net/tools/aiccu/'
-  url 'http://www.sixxs.net/archive/sixxs/aiccu/unix/aiccu_20070115.tar.gz'
-  sha1 '7b3c51bfe291c777e74b2688e9339b4fb72e6a39'
+  homepage "https://www.sixxs.net/tools/aiccu/"
+  url "http://www.sixxs.net/archive/sixxs/aiccu/unix/aiccu_20070115.tar.gz"
+  sha256 "2260f426c13471169ccff8cb4a3908dc5f79fda18ddb6a55363e7824e6c4c760"
 
   # Patches per MacPorts
   patch :DATA
 
   def install
-    inreplace 'doc/aiccu.conf', 'daemonize true', 'daemonize false'
+    inreplace "doc/aiccu.conf", "daemonize true", "daemonize false"
     system "make", "prefix=#{prefix}"
     system "make", "install", "prefix=#{prefix}"
 
-    etc.install 'doc/aiccu.conf'
+    etc.install "doc/aiccu.conf"
   end
 
   plist_options :startup => true

@@ -1,11 +1,9 @@
-require 'formula'
-
 class Csup < Formula
   desc "Rewrite of CVSup in C"
-  homepage 'https://bitbucket.org/mux/csup'
-  url 'https://bitbucket.org/mux/csup/get/REL_20120305.tar.gz'
-  sha1 'caef119168723f1c1d6d32c0f2a1ac392df87afe'
-  head 'https://bitbucket.org/mux/csup', :using => :hg
+  homepage "https://bitbucket.org/mux/csup"
+  url "https://bitbucket.org/mux/csup/get/REL_20120305.tar.gz"
+  sha256 "6b9a8fa2d2e70d89b2780cbc3f93375915571497f59c77230d4233a27eef77ef"
+  head "https://bitbucket.org/mux/csup", :using => :hg
 
   def install
     system "make"

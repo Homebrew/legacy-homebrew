@@ -1,5 +1,3 @@
-require "formula"
-
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "http://flowtype.org/"

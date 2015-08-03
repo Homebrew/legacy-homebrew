@@ -1,10 +1,8 @@
-require 'formula'
-
 class Bmon < Formula
   desc "Interface bandwidth monitor"
-  homepage 'https://github.com/tgraf/bmon'
+  homepage "https://github.com/tgraf/bmon"
   url "https://github.com/tgraf/bmon/releases/download/v3.6/bmon-3.6.tar.gz"
-  sha1 "abbe4362061493a1120eed074debd875916dd49a"
+  sha256 "62c8c20d00572a7670891d4c112924786cb69ec4ca92d5052951566f000d1514"
 
   bottle do
     sha1 "a6288882c0c468f2d3d3c484c2f58c3ec2ec1856" => :yosemite
@@ -27,7 +25,7 @@ class Bmon < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make" # two steps to prevent blowing up
-    system "make install"
+    system "make", "install"
   end
 
   test do

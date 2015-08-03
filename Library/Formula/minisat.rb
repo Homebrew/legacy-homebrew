@@ -1,10 +1,8 @@
-require "formula"
-
 class Minisat < Formula
   desc "Boolean satisfiability (SAT) problem solver"
   homepage "http://minisat.se"
   url "https://github.com/niklasso/minisat/archive/releases/2.2.0.tar.gz"
-  sha1 "28c14eed485f4adb8dde9e26f05476f7eedc8f77"
+  sha256 "3ed44da999744c0a1be269df23c3ed8731cdb83c44a4f3aa29b3d6859bb2a4da"
 
   # Fix some declaration errors; see:
   # http://groups.google.com/group/minisat/browse_thread/thread/f5b6a180cadbb214

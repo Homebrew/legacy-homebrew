@@ -47,7 +47,7 @@ class Wavpack < Formula
   def install
     args = [
       "--prefix=#{prefix}",
-      "--disable-dependency-tracking",
+      "--disable-dependency-tracking"
     ]
     if build.head?
       system "./autogen.sh", *args

@@ -1,10 +1,8 @@
-require "formula"
-
 class ArgusClients < Formula
   desc "Audit Record Generation and Utilization System clients"
   homepage "http://qosient.com/argus/"
   url "http://qosient.com/argus/src/argus-clients-3.0.8.tar.gz"
-  sha1 "3b9d764dc067af64670bcd8328d6f48088b9b5ca"
+  sha256 "aee8585d50959e00070a382f3121edfaa844a0a51dc0b73edf84c0f4eb8912c9"
 
   bottle do
     cellar :any

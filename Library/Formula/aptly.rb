@@ -1,4 +1,3 @@
-require "formula"
 require "language/go"
 
 class Aptly < Formula

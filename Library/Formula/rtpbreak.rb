@@ -4,7 +4,7 @@ class Rtpbreak < Formula
   homepage "http://www.dallachiesa.com/code/rtpbreak/doc/rtpbreak_en.html"
   url "http://dallachiesa.com/code/rtpbreak/rtpbreak-1.3a.tgz"
   mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Rtpbreak/rtpbreak-1.3a.tgz"
-  sha1 "d22e9c37cc28c2fc36475d221b4eb2cc2c5aafbb"
+  sha256 "9ec7276e3775c13306bcf90ba573cfb77b8162a18f90d5805a3c5a288f4466f8"
 
   bottle do
     cellar :any

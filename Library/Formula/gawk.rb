@@ -1,5 +1,3 @@
-require "formula"
-
 class Gawk < Formula
   desc "GNU awk utility"
   homepage "https://www.gnu.org/software/gawk/"
@@ -26,12 +24,12 @@ class Gawk < Formula
                           "--without-mpfr",
                           "--without-libsigsegv-prefix"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 
   test do
     output = pipe_output("#{bin}/gawk '{ gsub(/Macro/, \"Home\"); print }' -", "Macrobrew")
-    assert_equal 'Homebrew', output.strip
+    assert_equal "Homebrew", output.strip
   end
 end

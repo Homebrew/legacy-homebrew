@@ -2,7 +2,7 @@ class Tinyxml < Formula
   desc "XML parser"
   homepage "http://www.grinninglizard.com/tinyxml/"
   url "https://downloads.sourceforge.net/project/tinyxml/tinyxml/2.6.2/tinyxml_2_6_2.tar.gz"
-  sha1 "cba3f50dd657cb1434674a03b21394df9913d764"
+  sha256 "15bdfdcec58a7da30adc87ac2b078e4417dbe5392f3afb719f9ba6d062645593"
 
   bottle do
     cellar :any
@@ -23,17 +23,17 @@ class Tinyxml < Formula
   #   submitted upstream as https://sourceforge.net/p/tinyxml/patches/66/
   patch do
     url "https://raw.githubusercontent.com/robotology/yarp/master/extern/tinyxml/patches/enforce-use-stl.patch"
-    sha1 "a1e243c0fb2fe3ba0f1138861d781284409116e2"
+    sha256 "16a5b5e842eb0336be606131e5fb12a9165970f7bd943780ba09df2e1e8b29b1"
   end
 
   patch do
     url "https://raw.githubusercontent.com/robotology/yarp/master/extern/tinyxml/patches/entity-encoding.patch"
-    sha1 "a64b7ace370419d36d95452befd82935ef8b0221"
+    sha256 "c5128e03933cd2e22eb85554d58f615f4dbc9177bd144cae2913c0bd7b140c2b"
   end
 
   patch do
     url "https://gist.githubusercontent.com/scpeters/6325123/raw/cfb079be67997cb19a1aee60449714a1dedefed5/tinyxml_CMakeLists.patch"
-    sha1 "90c69322296a4144795aa66a94233a9409ff7ea5"
+    sha256 "32160135c27dc9fb7f7b8fb6cf0bf875a727861db9a07cf44535d39770b1e3c7"
   end
 
   def install

@@ -1,11 +1,9 @@
-require "formula"
-
 class Libcanberra < Formula
   desc "Implementation of XDG Sound Theme and Name Specifications"
   homepage "http://0pointer.de/lennart/projects/libcanberra/"
   head "git://git.0pointer.de/libcanberra"
   url "http://0pointer.de/lennart/projects/libcanberra/libcanberra-0.30.tar.xz"
-  sha1 "fd4c16e341ffc456d688ed3462930d17ca6f6c20"
+  sha256 "c2b671e67e0c288a69fc33dc1b6f1b534d07882c2aceed37004bf48c601afa72"
 
   depends_on "pkg-config" => :build
   depends_on "libvorbis"
@@ -17,7 +15,7 @@ class Libcanberra < Formula
   # Remove --as-needed and --gc-sections linker flag as it causes linking to fail
   patch :p0 do
     url "https://trac.macports.org/export/104881/trunk/dports/audio/libcanberra/files/patch-configure.diff"
-    sha1 "a3cd66c64d26c871c724a9ff54b2c5f7199daf2c"
+    sha256 "614084839beb507c705d1b8d32f6ad1fa0c8379d6705fb3c866e6d7c5d3cf0b8"
   end
 
   def install

@@ -1,10 +1,8 @@
-require "formula"
-
 class Gibbslda < Formula
   desc "Library wrapping imlib2's context API"
   homepage "http://gibbslda.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/gibbslda/GibbsLDA%2B%2B/0.2/GibbsLDA%2B%2B-0.2.tar.gz"
-  sha1 "3264f01ae921b6dcbbe57dd877561271df214cdd"
+  sha256 "4ca7b51bd2f098534f2fdf82c3f861f5d8bf92e29a6b7fbdc50c3c2baeb070ae"
 
   bottle do
     cellar :any

@@ -61,9 +61,9 @@ class Ruby < Formula
       Formula["openssl"].opt_prefix
     ]
 
-    %w[readline gdbm gmp libffi].each { |dep|
+    %w[readline gdbm gmp libffi].each do |dep|
       paths << Formula[dep].opt_prefix if build.with? dep
-    }
+    end
 
     args << "--with-opt-dir=#{paths.join(":")}"
 

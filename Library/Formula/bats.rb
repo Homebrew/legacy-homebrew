@@ -2,7 +2,7 @@ class Bats < Formula
   desc "TAP-compliant test framework for Bash scripts"
   homepage "https://github.com/sstephenson/bats"
   url "https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz"
-  sha1 "cb8a5f4c844a5f052f915036130def31140fce94"
+  sha256 "480d8d64f1681eee78d1002527f3f06e1ac01e173b761bc73d0cf33f4dc1d8d7"
   head "https://github.com/sstephenson/bats.git"
 
   def install

@@ -1,10 +1,8 @@
-require "formula"
-
 class Lv2 < Formula
   desc "Portable plugin standard for audio systems"
   homepage "http://lv2plug.in"
   url "http://lv2plug.in/spec/lv2-1.12.0.tar.bz2"
-  sha1 "fc914f00d3230354145748a2a4e55df0a03bcbe2"
+  sha256 "7a4a53138f10ed997174c8bc5a8573d5f5a5d8441aaac2de6cf2178ff90658e9"
 
   bottle do
     cellar :any

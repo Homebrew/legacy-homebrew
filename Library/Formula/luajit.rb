@@ -1,5 +1,3 @@
-require "formula"
-
 class Luajit < Formula
   desc "Just-In-Time Compiler (JIT) for the Lua programming language"
   homepage "http://luajit.org/luajit.html"

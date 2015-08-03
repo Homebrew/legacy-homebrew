@@ -3,7 +3,7 @@ class AwsElasticache < Formula
   homepage "https://aws.amazon.com/developertools/2310261897259567"
   url "https://s3.amazonaws.com/elasticache-downloads/AmazonElastiCacheCli-2014-09-30-1.12.000.zip"
   version "1.12.000"
-  sha1 "aeed292beada4aabe7d88562af0f1353556c0767"
+  sha256 "0aee0849a78c8129ed16e99706dde34972c02ed1846e70b76a1e21a133d9648f"
 
   depends_on "ec2-api-tools"
   depends_on :java

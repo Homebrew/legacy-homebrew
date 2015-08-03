@@ -2,7 +2,7 @@ class Deis < Formula
   desc "Deploy and manage applications on your own servers"
   homepage "http://deis.io"
   url "https://github.com/deis/deis/archive/v1.5.1.tar.gz"
-  sha1 "3a4b0caa0720785a6c093d15a62f2bcbb76324a4"
+  sha256 "9158f1678dfe6c3071c492007167800c23b6e3df988cea230babebb5406189f6"
 
   bottle do
     cellar :any
@@ -16,37 +16,37 @@ class Deis < Formula
 
   resource "docopt" do
     url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
-    sha1 "224a3ec08b56445a1bd1583aad06b00692671e04"
+    sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
   end
 
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.post1.tar.gz"
-    sha1 "55c712dac45ad14532d9bc05b64ba7e4bf6b56c6"
+    sha256 "aa9bdbd60c395db90204609f1fb5aeb3797870f65c09f04f243476d22f8f4615"
   end
 
   resource "PyYAML" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
-    sha1 "1a2d5df8b31124573efb9598ec6d54767f3c4cd4"
+    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
   resource "requests" do
     url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
+    sha256 "7b7735efd3b1e2323dc9fcef060b380d05f5f18bd0f247f5e9e74a628279de66"
   end
 
   resource "termcolor" do
     url "https://pypi.python.org/packages/source/t/termcolor/termcolor-1.1.0.tar.gz"
-    sha1 "52045880a05c0fbd192343d9c9aad46a73d20e8c"
+    sha256 "1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"
   end
 
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "tabulate" do
     url "https://pypi.python.org/packages/source/t/tabulate/tabulate-0.7.4.tar.gz"
-    sha1 "8aa77884fc87932855f1a7eb7d741cc60e72281d"
+    sha256 "6bcd5e47372cca82088f87dfe2f365f79965b2be7837e3bac5a75adf4e0b0ba8"
   end
 
   def install

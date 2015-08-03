@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libmpdclient < Formula
   desc "Library for MPD in the C, C++, and Objective-C languages"
-  homepage 'http://www.musicpd.org/libs/libmpdclient/'
-  url 'http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.10.tar.gz'
-  sha1 '106de0e8f0e63ec3899c91c38d1bcc171df61637'
+  homepage "http://www.musicpd.org/libs/libmpdclient/"
+  url "http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.10.tar.gz"
+  sha256 "bf88ddd9beceadef11144811adaabe45008005af02373595daa03446e6b1bf3d"
 
   bottle do
     cellar :any
@@ -14,24 +12,24 @@ class Libmpdclient < Formula
   end
 
   head do
-    url 'git://git.musicpd.org/master/libmpdclient.git'
+    url "git://git.musicpd.org/master/libmpdclient.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on 'doxygen' => :build
+  depends_on "doxygen" => :build
 
   option :universal
 
   def install
-    inreplace 'autogen.sh', 'libtoolize', 'glibtoolize'
+    inreplace "autogen.sh", "libtoolize", "glibtoolize"
     system "./autogen.sh" if build.head?
 
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

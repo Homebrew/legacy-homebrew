@@ -1,10 +1,8 @@
-require "formula"
-
 class Libxmlsec1 < Formula
   desc "XML security library"
   homepage "https://www.aleksey.com/xmlsec/"
   url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.20.tar.gz"
-  sha1 "40117ab0f788e43deef6eaf028c88f6abc3a30d0"
+  sha256 "3221593ca50f362b546a0888a1431ad24be1470f96b2469c0e0df5e1c55e7305"
 
   bottle do
     sha1 "7cfecf66f3608695321bc195b35957f2dddeb354" => :yosemite
@@ -27,7 +25,7 @@ class Libxmlsec1 < Formula
             "--prefix=#{prefix}",
             "--disable-crypto-dl",
             "--disable-apps-crypto-dl"
-    ]
+           ]
 
     args << "--with-openssl=#{Formula["openssl"].opt_prefix}" if build.with? "openssl"
     args << "--with-libxml=#{Formula["libxml2"].opt_prefix}" if build.with? "libxml2"

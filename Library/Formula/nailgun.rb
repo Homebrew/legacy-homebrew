@@ -1,10 +1,8 @@
-require "formula"
-
 class Nailgun < Formula
   desc "Command-line client, protocol and server for Java programs"
   homepage "http://www.martiansoftware.com/nailgun/"
   url "https://github.com/martylamb/nailgun/archive/nailgun-all-0.9.1.tar.gz"
-  sha1 "75f21504e8a6d41f263560b74c33188e91ec1a27"
+  sha256 "c487735b07f3d65e4c4d9bfa9aaef86d0d78128e4c055c6c24da818a4a47b2ab"
 
   bottle do
     cellar :any
@@ -15,7 +13,7 @@ class Nailgun < Formula
 
   resource "nailgun-jar" do
     url "http://central.maven.org/maven2/com/martiansoftware/nailgun-server/0.9.1/nailgun-server-0.9.1.jar"
-    sha1 "d57ea0a6f6c1bb1b616c5b3b311b3726c6ff35ad"
+    sha256 "4518faa6bf4bd26fccdc4d85e1625dc679381a08d56872d8ad12151dda9cef25"
   end
 
   # The makefile is not prefix aware: https://github.com/martylamb/nailgun/pull/45

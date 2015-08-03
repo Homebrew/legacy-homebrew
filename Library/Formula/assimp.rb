@@ -1,10 +1,8 @@
-require "formula"
-
 class Assimp < Formula
   desc "Portable library for importing many well-known 3D model formats"
   homepage "http://assimp.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip"
-  sha1 "d7bc1d12b01d5c7908d85ec9ff6b2d972e565e2d"
+  sha256 "da9827876f10a8b447270368753392cfd502e70a2e9d1361554e5dfcb1fede9e"
   version "3.1.1"
 
   head "https://github.com/assimp/assimp.git"
@@ -29,7 +27,7 @@ class Assimp < Formula
 
   test do
     # Library test.
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <assimp/Importer.hpp>
       int main() {
         Assimp::Importer importer;

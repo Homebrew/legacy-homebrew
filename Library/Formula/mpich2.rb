@@ -46,7 +46,7 @@ class Mpich2 < Formula
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}",
-      "--mandir=#{man}",
+      "--mandir=#{man}"
     ]
 
     args << "--disable-fortran" if build.without? "fortran"

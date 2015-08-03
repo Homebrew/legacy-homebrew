@@ -1,10 +1,8 @@
-require "formula"
-
 class Portaudio < Formula
   desc "Cross-platform library for audio I/O"
   homepage "http://www.portaudio.com"
   url "http://www.portaudio.com/archives/pa_stable_v19_20140130.tgz"
-  sha1 "526a7955de59016a06680ac24209ecb6ce05527d"
+  sha256 "8fe024a5f0681e112c6979808f684c3516061cc51d3acc0b726af98fc96c8d57"
   head "https://subversion.assembla.com/svn/portaudio/portaudio/trunk/", :using => :svn
 
   bottle do
@@ -23,7 +21,7 @@ class Portaudio < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--enable-mac-universal=#{build.universal? ? 'yes' : 'no'}"
+                          "--enable-mac-universal=#{build.universal? ? "yes" : "no"}"
     system "make", "install"
 
     # Need 'pa_mac_core.h' to compile PyAudio

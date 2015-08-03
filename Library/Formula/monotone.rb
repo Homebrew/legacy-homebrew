@@ -1,10 +1,8 @@
-require "formula"
-
 class Monotone < Formula
   desc "Distributed version control system (DVCS)"
   homepage "http://monotone.ca/"
   url "http://www.monotone.ca/downloads/1.1/monotone-1.1.tar.bz2"
-  sha1 "2b97559b252decaee3a374b81bf714cf33441ba3"
+  sha256 "f95cf60a22d4e461bec9d0e72f5d3609c9a4576fb1cc45f553d0202ce2e38c88"
   revision 1
 
   bottle do
@@ -35,7 +33,7 @@ class Monotone < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
 
     # Explicitly remove the bash completion script, as it uses features
     # specific to Bash 4, and the default on OS X is Bash 3.

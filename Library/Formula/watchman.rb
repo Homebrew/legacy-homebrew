@@ -1,5 +1,3 @@
-require "formula"
-
 class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
@@ -24,14 +22,14 @@ class Watchman < Formula
                           "--prefix=#{prefix}",
                           "--with-pcre"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
     system "#{bin}/watchman", "shutdown-server"
     system "#{bin}/watchman", "watch", testpath
     list = `#{bin}/watchman watch-list`
-    if list.index(testpath) === nil then
+    if list.index(testpath).nil?
       raise "failed to watch tmpdir"
     end
     system "#{bin}/watchman", "watch-del", testpath

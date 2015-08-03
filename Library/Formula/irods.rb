@@ -1,10 +1,8 @@
-require "formula"
-
 class Irods < Formula
   desc "Integrated data grid software solution"
   homepage "https://www.irods.org"
   url "https://github.com/irods/irods-legacy/archive/3.3.1.tar.gz"
-  sha1 "c5d1b3acc1ec58a51466437afbddd2ab46cb1e8f"
+  sha256 "e34e7be8646317d5be1c84e680d8f59d50a223ea25a3c9717b6bf7b57df5b9f6"
 
   conflicts_with "sleuthkit", :because => "both install `ils`"
 
@@ -22,7 +20,7 @@ class Irods < Formula
 
     system "make"
 
-    bin.install Dir["clients/icommands/bin/*"].select {|f| File.executable? f}
+    bin.install Dir["clients/icommands/bin/*"].select { |f| File.executable? f }
 
     # patch in order to use osxfuse
     if build.with? "osxfuse"
@@ -33,7 +31,7 @@ class Irods < Formula
         inreplace "Makefile", "-I$(fuseHomeDir)/include", "-I$(fuseHomeDir)/include/osxfuse"
         system "make"
       end
-      bin.install Dir["clients/fuse/bin/*"].select {|f| File.executable? f}
+      bin.install Dir["clients/fuse/bin/*"].select { |f| File.executable? f }
     end
   end
 

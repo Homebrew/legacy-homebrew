@@ -1,14 +1,12 @@
-require 'formula'
-
 class Csshx < Formula
   desc "Cluster ssh tool for Terminal.app"
-  homepage 'http://code.google.com/p/csshx/'
-  url 'https://csshx.googlecode.com/files/csshX-0.74.tgz'
-  sha1 'aa686b71161d6144d539d077b960da10d7b96993'
+  homepage "https://code.google.com/p/csshx/"
+  url "https://csshx.googlecode.com/files/csshX-0.74.tgz"
+  sha256 "eaa9e52727c8b28dedc87398ed33ffa2340d6d0f3ea9d261749c715cb7a0e9c8"
 
-  head 'https://code.google.com/p/csshx/', :using => :git
+  head "https://code.google.com/p/csshx/", :using => :git
 
   def install
-    bin.install 'csshX'
+    bin.install "csshX"
   end
 end

@@ -1,5 +1,3 @@
-require "formula"
-
 class GoogleAppEngine < Formula
   desc "Google App Engine"
   homepage "https://cloud.google.com/appengine/docs"

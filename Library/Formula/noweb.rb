@@ -2,8 +2,8 @@ class Noweb < Formula
   desc "WEB-like literate-programming tool"
   homepage "https://www.cs.tufts.edu/~nr/noweb/"
   url "ftp://www.eecs.harvard.edu/pub/nr/noweb.tgz"
-  version '2.11b'
-  sha256 'c913f26c1edb37e331c747619835b4cade000b54e459bb08f4d38899ab690d82'
+  version "2.11b"
+  sha256 "c913f26c1edb37e331c747619835b4cade000b54e459bb08f4d38899ab690d82"
 
   bottle do
     cellar :any

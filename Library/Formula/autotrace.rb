@@ -1,25 +1,23 @@
-require 'formula'
-
 class Autotrace < Formula
   desc "Convert bitmap to vector graphics"
-  homepage 'http://autotrace.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/autotrace/AutoTrace/0.31.1/autotrace-0.31.1.tar.gz'
-  sha1 '679e4912528030b86f23db5b99e60f8e7df883fd'
+  homepage "http://autotrace.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/autotrace/AutoTrace/0.31.1/autotrace-0.31.1.tar.gz"
+  sha256 "5a1a923c3335dfd7cbcccb2bbd4cc3d68cafe7713686a2f46a1591ed8a92aff6"
   revision 1
 
-  depends_on 'pkg-config' => :build
-  depends_on 'imagemagick' => :recommended
+  depends_on "pkg-config" => :build
+  depends_on "imagemagick" => :recommended
 
   # Issue 16569: Use MacPorts patch to port input-png.c to libpng 1.5.
   # Fix underquoted m4
   patch :p0 do
     url "https://trac.macports.org/export/100575/trunk/dports/graphics/autotrace/files/patch-libpng-1.5.diff"
-    sha1 "b9b8bd6eca4ca41586ac1bd22cc0c5df2e1bf601"
+    sha256 "9c57a03d907db94956324e9199c7b5431701c51919af6dfcff4793421a1f31fe"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/77101/trunk/dports/graphics/autotrace/files/patch-autotrace.m4.diff"
-    sha1 "e9969fc23f83ad739f6c7f572b5c6d48eae910f5"
+    sha256 "12d794c99938994f5798779ab268a88aff56af8ab4d509e14383a245ae713720"
   end
 
   def install
@@ -28,9 +26,9 @@ class Autotrace < Formula
             "--prefix=#{prefix}",
             "--mandir=#{man}"]
 
-    args << "--without-magick" if build.without? 'imagemagick'
+    args << "--without-magick" if build.without? "imagemagick"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

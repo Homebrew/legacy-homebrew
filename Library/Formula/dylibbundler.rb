@@ -1,10 +1,8 @@
-require 'formula'
-
 class Dylibbundler < Formula
   desc "Utility to bundle libraries into executables for OS X"
-  homepage 'http://macdylibbundler.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/macdylibbundler/macdylibbundler/0.4.4/dylibbundler-0.4.4.zip'
-  sha1 '8d120bababc5218927447cf7fec57abf5d093ff6'
+  homepage "http://macdylibbundler.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/macdylibbundler/macdylibbundler/0.4.4/dylibbundler-0.4.4.zip"
+  sha256 "65d050327df99d12d96ae31a693bace447f4115e6874648f1b3960a014362200"
 
   bottle do
     cellar :any

@@ -1,5 +1,3 @@
-require "formula"
-
 class Ncrack < Formula
   desc "Network authentication cracking tool"
   homepage "http://nmap.org/ncrack/"

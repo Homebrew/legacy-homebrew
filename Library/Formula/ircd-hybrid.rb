@@ -1,5 +1,3 @@
-require "formula"
-
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"

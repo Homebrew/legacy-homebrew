@@ -1,5 +1,3 @@
-require "formula"
-
 class Minidlna < Formula
   desc "Media server software, compliant with DLNA/UPnP-AV clients"
   homepage "http://sourceforge.net/projects/minidlna/"
@@ -55,9 +53,9 @@ class Minidlna < Formula
 
   def sample_config; <<-EOS.undent
     friendly_name=Mac DLNA Server
-    media_dir=#{ENV['HOME']}/.config/minidlna/media
-    db_dir=#{ENV['HOME']}/.config/minidlna/cache
-    log_dir=#{ENV['HOME']}/.config/minidlna
+    media_dir=#{ENV["HOME"]}/.config/minidlna/media
+    db_dir=#{ENV["HOME"]}/.config/minidlna/cache
+    log_dir=#{ENV["HOME"]}/.config/minidlna
     EOS
   end
 

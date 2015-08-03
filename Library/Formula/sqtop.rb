@@ -3,7 +3,7 @@ class Sqtop < Formula
   homepage "https://github.com/paleg/sqtop"
   url "https://github.com/paleg/sqtop/archive/v2015-02-08.tar.gz"
   version "2015-02-08"
-  sha1 "379a97e0190f3da39e2d67096955c40217b39ae5"
+  sha256 "eae4c8bc16dbfe70c776d990ecf14328acab0ed736f0bf3bd1647a3ac2f5e8bf"
 
   bottle do
     cellar :any

@@ -1,11 +1,9 @@
-require 'formula'
-
 class Unixodbc < Formula
   desc "ODBC 3 connectivity for UNIX"
-  homepage 'http://www.unixodbc.org/'
-  url 'http://www.unixodbc.org/unixODBC-2.3.2.tar.gz'
-  mirror 'ftp://mirror.ovh.net/gentoo-distfiles/distfiles/unixODBC-2.3.2.tar.gz'
-  sha1 'f84520fd58143625b614fde551435178a558ee2e'
+  homepage "http://www.unixodbc.org/"
+  url "http://www.unixodbc.org/unixODBC-2.3.2.tar.gz"
+  mirror "ftp://mirror.ovh.net/gentoo-distfiles/distfiles/unixODBC-2.3.2.tar.gz"
+  sha256 "9c3459742f25df5aa3c10a61429bde51a6d4f11552c03095f1d33d7eb02b5c9a"
   revision 1
 
   bottle do
@@ -17,7 +15,7 @@ class Unixodbc < Formula
 
   option :universal
 
-  conflicts_with 'virtuoso', :because => 'Both install `isql` binaries.'
+  conflicts_with "virtuoso", :because => "Both install `isql` binaries."
 
   keg_only "Shadows system iODBC header files" if MacOS.version < :mavericks
 
@@ -27,6 +25,6 @@ class Unixodbc < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-gui=no"
-    system "make install"
+    system "make", "install"
   end
 end

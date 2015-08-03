@@ -1,10 +1,8 @@
-require 'formula'
-
 class JsTestDriver < Formula
   desc "JavaScript test runner"
-  homepage 'http://code.google.com/p/js-test-driver/'
-  url 'https://js-test-driver.googlecode.com/files/JsTestDriver-1.3.5.jar'
-  sha1 '7a29ace71b9d5a82f5f0abe0ea22b73d7fd07826'
+  homepage "https://code.google.com/p/js-test-driver/"
+  url "https://js-test-driver.googlecode.com/files/JsTestDriver-1.3.5.jar"
+  sha256 "78c0ff60a76bea38db0fa6f9c9f8e003d1bfd07517f44c3879f484abfbe87a68"
 
   def install
     libexec.install "JsTestDriver-#{version}.jar"

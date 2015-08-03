@@ -1,5 +1,3 @@
-require "formula"
-
 class SilcClient < Formula
   desc "SILC conferencing client"
   homepage "http://silcnet.org/client.html"

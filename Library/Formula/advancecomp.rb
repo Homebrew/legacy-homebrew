@@ -1,5 +1,3 @@
-require "formula"
-
 class Advancecomp < Formula
   desc "Recompression utilities for .PNG, .MNG, .ZIP, and .GZ files"
   homepage "http://advancemame.sourceforge.net/comp-readme.html"
@@ -9,7 +7,7 @@ class Advancecomp < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

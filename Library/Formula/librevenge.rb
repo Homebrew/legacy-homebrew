@@ -3,7 +3,7 @@ class Librevenge < Formula
   homepage "http://sourceforge.net/p/libwpd/wiki/librevenge/"
   url "http://dev-www.libreoffice.org/src/librevenge-0.0.2.tar.bz2"
   mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.2/librevenge-0.0.2.tar.bz2"
-  sha1 "a59cf2372b8deac044a407d05730befcd010e997"
+  sha256 "dedd6fe1f643fc2f254f2ad3719547084bd86bcc482104b995caf3b828368b18"
 
   bottle do
     cellar :any

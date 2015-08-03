@@ -7,7 +7,7 @@ class Cvs < Formula
   desc "Version control system"
   homepage "http://cvs.nongnu.org/"
   url "https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2"
-  sha1 "93a8dacc6ff0e723a130835713235863f1f5ada9"
+  sha256 "78853613b9a6873a30e1cc2417f738c330e75f887afdaf7b3d0800cb19ca515e"
 
   bottle do
     cellar :any
@@ -31,7 +31,7 @@ class Cvs < Formula
     "remove-info"       => "7c0c9c406ae8e3d1c81eec5b4ca9e1abe6a8b660",
     "remove-libcrypto"  => "6c83063cb625cd124dcac75527dbaaa2d52d55b6",
     "tag"               => "44374b8601dc7e48cf0f3a558565d28b2d0066ab",
-    "zlib"              => "7781dc997c895df8cfa991ab7a04add245169ea4",
+    "zlib"              => "7781dc997c895df8cfa991ab7a04add245169ea4"
   }.each do |name, sha|
     patch :p0 do
       url "https://opensource.apple.com/source/cvs/cvs-45/patches/#{name}.diff?txt"

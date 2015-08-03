@@ -1,10 +1,8 @@
-require "formula"
-
 class Qbs < Formula
   desc "Qt Build Suite"
   homepage "https://wiki.qt.io/Qt_Build_Suite"
   url "https://download.qt.io/official_releases/qbs/1.4.1/qbs-src-1.4.1.tar.gz"
-  sha1 "05aac5341859159556bc0f3f1ba96c46179d12d3"
+  sha256 "eea8e0c1b2ef71f295fa5f1798a04a9f0509a701094fec11a691a4d7ae0155a9"
 
   bottle do
     sha256 "1a97288225e37a20e8686e5fa2cbbfed4f812becd03f1eb39e5ca9e9364273a3" => :yosemite

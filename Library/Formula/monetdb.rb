@@ -1,9 +1,7 @@
-require "formula"
-
 class RRequirement < Requirement
   fatal true
 
-  satisfy { which('r') }
+  satisfy { which("r") }
 
   def message; <<-EOS.undent
     R not found. The R integration module requires R.
@@ -36,8 +34,8 @@ class Monetdb < Formula
     depends_on "autoconf" => :build
   end
 
-  option "with-java", 'Build the JDBC dirver'
-  option "with-r", 'Build the R integration module'
+  option "with-java", "Build the JDBC dirver"
+  option "with-r", "Build the R integration module"
 
   depends_on RRequirement => :optional
 
@@ -70,6 +68,6 @@ class Monetdb < Formula
     args << "--disable-rintegration" if build.without? "r"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

@@ -3,7 +3,7 @@ class Pyside < Formula
   homepage "http://qt-project.org/wiki/PySide"
   url "https://download.qt.io/official_releases/pyside/pyside-qt4.8+1.2.2.tar.bz2"
   mirror "https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2"
-  sha1 "955e32d193d173faa64edc51111289cdcbe3b96e"
+  sha256 "a1a9df746378efe52211f1a229f77571d1306fb72830bbf73f0d512ed9856ae1"
 
   head "https://gitorious.org/pyside/pyside.git"
 
@@ -31,7 +31,7 @@ class Pyside < Formula
 
   resource "sphinx" do
     url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
-    sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
+    sha256 "94933b64e2fe0807da0612c574a021c0dac28c7bd3c4a23723ae5a39ea8f3d04"
   end
 
   def install
@@ -50,7 +50,7 @@ class Pyside < Formula
 
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |_python, version|
       mkdir "macbuild#{version}" do
         qt = Formula["qt"].opt_prefix
         args = std_cmake_args + %W[
@@ -58,11 +58,11 @@ class Pyside < Formula
           -DALTERNATIVE_QT_INCLUDE_DIR=#{qt}/include
           -DQT_SRC_DIR=#{qt}/src
         ]
-        if version.to_s[0,1] == "2"
+        if version.to_s[0, 1] == "2"
           args << "-DPYTHON_SUFFIX=-python#{version}"
         else
-          major_version = version.to_s[0,1]
-          minor_version = version.to_s[2,3]
+          major_version = version.to_s[0, 1]
+          minor_version = version.to_s[2, 3]
           args << "-DPYTHON_SUFFIX=.cpython-#{major_version}#{minor_version}m"
           args << "-DUSE_PYTHON3=1"
         end
@@ -75,7 +75,7 @@ class Pyside < Formula
   end
 
   test do
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system python, "-c", "from PySide import QtCore"
     end
   end

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Smartmontools < Formula
   desc "SMART hard drive monitoring"
-  homepage 'https://www.smartmontools.org/'
-  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.4/smartmontools-6.4.tar.gz'
-  sha1 '855c7d555dd405e5b392b1631dc36dd9632db8b8'
+  homepage "https://www.smartmontools.org/"
+  url "https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.4/smartmontools-6.4.tar.gz"
+  sha256 "eab75600c1eda9c34b13097db71138ab376f3dad8a6a4667fb4d1d081feb7a85"
 
   bottle do
     sha256 "2a653de9d0f41210a9b139f1e70ae561a72fa87727704f944f32dec6356a0fee" => :yosemite
@@ -13,8 +11,8 @@ class Smartmontools < Formula
   end
 
   def install
-    (var/'run').mkpath
-    (var/'lib/smartmontools').mkpath
+    (var/"run").mkpath
+    (var/"lib/smartmontools").mkpath
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -24,6 +22,6 @@ class Smartmontools < Formula
                           "--enable-drivedb",
                           "--enable-savestates",
                           "--enable-attributelog"
-    system "make install"
+    system "make", "install"
   end
 end

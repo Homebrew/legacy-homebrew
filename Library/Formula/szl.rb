@@ -2,7 +2,7 @@ class Szl < Formula
   desc "Compiler and runtime for the Sawzall language"
   homepage "https://code.google.com/p/szl/"
   url "https://szl.googlecode.com/files/szl-1.0.tar.gz"
-  sha1 "e4c6d4aec1afc025257d41dd77b8f5c25ea120d4"
+  sha256 "af5c647276fd0dea658eae6016957b7ad09ac68efe13ae2a3c867043b5889f87"
   revision 5
 
   bottle do

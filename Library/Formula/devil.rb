@@ -1,14 +1,12 @@
-require 'formula'
-
 class Devil < Formula
   desc "Cross-platform image library"
-  homepage 'http://sourceforge.net/projects/openil/'
-  url 'https://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz'
-  sha1 'bc27e3e830ba666a3af03548789700d10561fcb1'
+  homepage "http://sourceforge.net/projects/openil/"
+  url "https://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz"
+  sha256 "682ffa3fc894686156337b8ce473c954bf3f4fb0f3ecac159c73db632d28a8fd"
   revision 1
 
-  depends_on 'libpng'
-  depends_on 'jpeg'
+  depends_on "libpng"
+  depends_on "jpeg"
 
   option :universal
 
@@ -34,7 +32,7 @@ class Devil < Formula
                           "--prefix=#{prefix}",
                           "--enable-ILU",
                           "--enable-ILUT"
-    system "make install"
+    system "make", "install"
   end
 end
 

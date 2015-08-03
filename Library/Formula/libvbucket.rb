@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libvbucket < Formula
   desc "Utility library providing mapping to virtual buckets"
-  homepage 'https://couchbase.com/develop/c/current'
-  url 'https://s3.amazonaws.com/packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz'
-  sha1 '4f24a85d251c0fca69e7705681a2170dd794492a'
+  homepage "https://couchbase.com/develop/c/current"
+  url "https://s3.amazonaws.com/packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz"
+  sha256 "398ba491d434fc109fd64f38678916e1aa19c522abc8c090dbe4e74a2a2ea38d"
 
   bottle do
     cellar :any
@@ -19,18 +17,16 @@ class Libvbucket < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-docs"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    require 'utils/json'
+    require "utils/json"
     json = Utils::JSON.dump(
-      {
-        "hashAlgorithm" => "CRC",
-        "numReplicas" => 2,
-        "serverList" => ["server1:11211","server2:11210","server3:11211"],
-        "vBucketMap" => [[0,1,2],[1,2,0],[2,1,-1],[1,2,0]],
-      }
+      "hashAlgorithm" => "CRC",
+      "numReplicas" => 2,
+      "serverList" => ["server1:11211", "server2:11210", "server3:11211"],
+      "vBucketMap" => [[0, 1, 2], [1, 2, 0], [2, 1, -1], [1, 2, 0]]
     )
 
     expected = <<-EOS.undent

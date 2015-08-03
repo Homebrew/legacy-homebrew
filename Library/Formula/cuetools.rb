@@ -1,10 +1,8 @@
-require "formula"
-
 class Cuetools < Formula
   desc "Utilities for .cue and .toc files"
   homepage "https://github.com/svend/cuetools"
   url "https://github.com/svend/cuetools/archive/1.4.0.tar.gz"
-  sha1 "2954eb1b33ed7c22ce5201f69ec5480560d650ad"
+  sha256 "5dc86e9736929757b338827efa0ecae1b2fcee2273debc718511749a4178ddf6"
 
   head "https://github.com/svend/cuetools.git"
 
@@ -25,7 +23,7 @@ class Cuetools < Formula
   def install
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 

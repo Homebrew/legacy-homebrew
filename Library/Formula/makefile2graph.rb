@@ -2,7 +2,7 @@ class Makefile2graph < Formula
   desc "Create a graph of dependencies from GNU-Make"
   homepage "https://github.com/lindenb/makefile2graph"
   url "https://github.com/lindenb/makefile2graph/archive/v1.5.0.tar.gz"
-  sha1 "0f7be09d8b77e3a0b1769ddd011a45283ea4f1f4"
+  sha256 "9464c6c1291609c211284a9889faedbab22ef504ce967b903630d57a27643b40"
   head "https://github.com/lindenb/makefile2graph.git"
 
   bottle do

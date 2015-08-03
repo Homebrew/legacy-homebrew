@@ -1,5 +1,3 @@
-require "formula"
-
 class GstPluginsBase < Formula
   desc "GStreamer plugins (well-supported, basic set)"
   homepage "http://gstreamer.freedesktop.org/"
@@ -36,7 +34,6 @@ class GstPluginsBase < Formula
   depends_on "libvorbis" => :optional
 
   def install
-
     # gnome-vfs turned off due to lack of formula for it.
     args = %W[
       --prefix=#{prefix}

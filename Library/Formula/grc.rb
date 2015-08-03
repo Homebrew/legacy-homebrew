@@ -1,23 +1,21 @@
-require 'formula'
-
 class Grc < Formula
   desc "Colorize logfiles and command output"
-  homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.9.orig.tar.gz'
-  sha1 '445d3d076bda34c6398c926ca27c5a3a6c64a833'
+  homepage "http://korpus.juls.savba.sk/~garabik/software/grc.html"
+  url "http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.9.orig.tar.gz"
+  sha256 "41626e571ca255e1a9fe0816f3c0dfd1a30d9564d0decaf4b7365e28e3c54f5b"
 
-  conflicts_with 'cc65', :because => 'both install `grc` binaries'
+  conflicts_with "cc65", :because => "both install `grc` binaries"
 
   def install
-    inreplace ['grc', 'grc.1'], '/etc', etc
-    inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
+    inreplace ["grc", "grc.1"], "/etc", etc
+    inreplace ["grcat", "grcat.1"], "/usr/local", prefix
 
-    etc.install 'grc.conf'
+    etc.install "grc.conf"
     bin.install %w[grc grcat]
-    (share+'grc').install Dir['conf.*']
+    (share+"grc").install Dir["conf.*"]
     man1.install %w[grc.1 grcat.1]
 
-    (prefix+'etc/grc.bashrc').write rc_script
+    (prefix+"etc/grc.bashrc").write rc_script
   end
 
   def rc_script; <<-EOS.undent

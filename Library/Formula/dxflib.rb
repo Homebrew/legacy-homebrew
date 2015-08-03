@@ -1,10 +1,8 @@
-require 'formula'
-
 class Dxflib < Formula
   desc "C++ library for parsing DXF files"
-  homepage 'http://www.ribbonsoft.com/en/what-is-dxflib'
-  url 'http://www.ribbonsoft.com/archives/dxflib/dxflib-2.5.0.0-1.src.tar.gz'
-  sha1 'af2e496aaf097e40bdb5d6155ba9b0d176d71729'
+  homepage "http://www.ribbonsoft.com/en/what-is-dxflib"
+  url "http://www.ribbonsoft.com/archives/dxflib/dxflib-2.5.0.0-1.src.tar.gz"
+  sha256 "20ad9991eec6b0f7a3cc7c500c044481a32110cdc01b65efa7b20d5ff9caefa9"
 
   bottle do
     cellar :any
@@ -16,6 +14,6 @@ class Dxflib < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,26 +1,24 @@
-require 'formula'
-
 class Ogmtools < Formula
   desc "OGG media streams manipulation tools"
-  homepage 'http://www.bunkus.org/videotools/ogmtools/'
-  url 'http://www.bunkus.org/videotools/ogmtools/ogmtools-1.5.tar.bz2'
-  sha1 'a23ba7e6ac490ffb60e8fb739e790b7a020a444c'
+  homepage "http://www.bunkus.org/videotools/ogmtools/"
+  url "http://www.bunkus.org/videotools/ogmtools/ogmtools-1.5.tar.bz2"
+  sha256 "c8d61d1dbceb981dc7399c1a85e43b509fd3d071fb8d3ca89ea9385e6e40fdea"
 
-  depends_on 'libogg'
-  depends_on 'libvorbis'
-  depends_on 'libdvdread' => :optional
+  depends_on "libogg"
+  depends_on "libvorbis"
+  depends_on "libdvdread" => :optional
 
   # Borrow patch from MacPorts
   patch :p0 do
     url "https://trac.macports.org/export/87593/trunk/dports/multimedia/ogmtools/files/common.h.diff"
-    sha1 "cd7206eebbe939f1c4e0203c612ad5aeb6d8ea56"
+    sha256 "2dd18dea6de0d2820221bde8dfea163101d0037196cb2e94cd910808d10119c0"
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 
   # Borrow warning from MacPorts

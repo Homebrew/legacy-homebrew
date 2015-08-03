@@ -1,5 +1,3 @@
-require "formula"
-
 class GoAppEngine64 < Formula
   desc "Google App Engine SDK for Go!"
   homepage "https://cloud.google.com/appengine/docs/go/"

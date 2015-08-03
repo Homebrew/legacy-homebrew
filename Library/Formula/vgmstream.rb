@@ -1,5 +1,3 @@
-require "formula"
-
 class Vgmstream < Formula
   desc "Library for playing streamed audio formats from video games"
   homepage "http://hcs64.com/vgmstream.html"

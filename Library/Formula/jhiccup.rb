@@ -1,16 +1,14 @@
-require "formula"
-
 class Jhiccup < Formula
   desc "Measure pauses and stalls of an app's Java runtime platform"
   homepage "http://www.jhiccup.com"
   url "http://www.azulsystems.com/sites/default/files/images/jHiccup.1.3.7.zip"
-  sha1 "2bd5ad585b50b80b6a12d6b2d5338fde8c18a10b"
+  sha256 "abc029bfb55bbe59824d0b6db6845bd0f08befba3b860747ed601a6c27573f24"
 
   def install
     bin.install "jHiccup"
 
     # Simple script to create and open a new plotter spreadsheet
-    (bin+'jHiccupPlotter').write <<-EOS.undent
+    (bin+"jHiccupPlotter").write <<-EOS.undent
       #!/bin/sh
       TMPFILE="/tmp/jHiccupPlotter.$$.xls"
       cp "#{prefix}/jHiccupPlotter.xls" $TMPFILE

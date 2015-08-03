@@ -1,5 +1,3 @@
-require "formula"
-
 class GnomeCommon < Formula
   desc "Core files for GNOME"
   homepage "http://git.gnome.org/browse/gnome-common/"
@@ -8,6 +6,6 @@ class GnomeCommon < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

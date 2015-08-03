@@ -1,5 +1,3 @@
-require "formula"
-
 class Pixman < Formula
   desc "Low-level library for pixel manipulation"
   homepage "http://cairographics.org/"

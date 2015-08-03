@@ -21,5 +21,4 @@ class Ddrescue < Formula
   test do
     system bin/"ddrescue", "--force", "--size=64Ki", "/dev/zero", "/dev/null"
   end
-
 end

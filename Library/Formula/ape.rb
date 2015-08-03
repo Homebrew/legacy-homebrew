@@ -1,10 +1,8 @@
-require "formula"
-
 class Ape < Formula
   desc "Ajax Push Engine"
   homepage "http://www.ape-project.org/"
   url "https://github.com/APE-Project/APE_Server/archive/v1.1.2.tar.gz"
-  sha1 "a2710108c0130fb4c00777ddde238f68aa4bc0e3"
+  sha256 "c5f6ec0740f20dd5eb26c223149fc4bade3daadff02a851e2abb7e00be97db42"
 
   bottle do
     cellar :any

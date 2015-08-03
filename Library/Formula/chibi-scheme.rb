@@ -1,12 +1,10 @@
-require "formula"
-
 class ChibiScheme < Formula
   desc "Small footprint Scheme for use as a C Extension Language"
   homepage "http://synthcode.com/wiki/chibi-scheme"
 
   stable do
     url "http://synthcode.com/scheme/chibi/chibi-scheme-0.7.3.tgz"
-    sha1 "752cf11a507f3deeedc49cb51f40dfe0c9bda18a"
+    sha256 "21a0cf669d42a670a11c08f50dc5aedb7b438fae892260900da58f0ed545fc7d"
   end
 
   head "https://github.com/ashinn/chibi-scheme.git"

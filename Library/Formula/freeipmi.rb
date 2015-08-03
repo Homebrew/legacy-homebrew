@@ -3,7 +3,7 @@ class Freeipmi < Formula
   homepage "https://www.gnu.org/software/freeipmi/"
   url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.8.tar.gz"
   mirror "https://ftp.gnu.org/gnu/freeipmi/freeipmi-1.4.8.tar.gz"
-  sha1 "64f3400922a273f4b2f591b13517608876b6bf98"
+  sha256 "9fa7e9df7f848445cf6035b26b4167a79711ecc05d8e96ab16bbec10b36e551b"
 
   bottle do
     sha1 "338a3c360926a64e1fb640ba06b53cc8ac79b7fc" => :yosemite

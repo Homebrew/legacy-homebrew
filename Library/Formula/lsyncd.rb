@@ -1,10 +1,8 @@
-require "formula"
-
 class Lsyncd < Formula
   desc "Synchronize local directories with remote targets"
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
-  sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  sha256 "aa82fd9bf5737395e374650720c02f033d74a7101b57878ac92f5720ae9e7ece"
   revision 2
 
   bottle do
@@ -40,10 +38,10 @@ class Lsyncd < Formula
     "10.9.5" => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
     "10.10"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
     "10.10.1"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
-    "10.10.2"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
+    "10.10.2"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"]
   }
 
-  # TODO wrap MACOS_FULL_VERSION in a MacOS module method
+  # TODO: wrap MACOS_FULL_VERSION in a MacOS module method
   if xnu_headers.key? MACOS_FULL_VERSION
     tarball, checksum = xnu_headers.fetch(MACOS_FULL_VERSION)
     resource "xnu" do
@@ -57,7 +55,7 @@ class Lsyncd < Formula
   # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-8990
   patch do
     url "https://gist.githubusercontent.com/tdsmith/d807811d3c6965b0221e/raw/965545662eec39b60d50645487e6ade9d7d43834/cve-2014-8990.diff"
-    sha1 "3ef7d28db8a5e1719a0b7298cb204809f6b5d9d7"
+    sha256 "c6476855acaefd4619bd6900751247c2af12983ed2aff9bdfbf971ffcb662fc2"
   end
 
   def install
@@ -75,7 +73,6 @@ class Lsyncd < Formula
                           "--without-inotify",
                           "--prefix=#{prefix}"
     system "make", "install"
-
   end
 
   test do

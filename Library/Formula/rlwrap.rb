@@ -1,10 +1,8 @@
-require "formula"
-
 class Rlwrap < Formula
   desc "Readline wrapper: adds readline support to tools that lack it"
   homepage "http://utopia.knoware.nl/~hlub/rlwrap/"
   url "http://utopia.knoware.nl/~hlub/rlwrap/rlwrap-0.42.tar.gz"
-  sha1 "8d2ad1be9b6c362439825ae5456a2ba5cdd7eb07"
+  sha256 "5a70d8469db9d0a6630628f2d5d2972ad16c092400b7fbbdf699693ec0f87e44"
 
   bottle do
     sha1 "d895f5ac3cf2db5fce06deb670c8d4877f83ec4d" => :yosemite

@@ -3,9 +3,9 @@
 # See https://github.com/Homebrew/homebrew/issues/40559
 class BibToolDownloadStrategy < CurlDownloadStrategy
   def stage
-     with_system_path { safe_system 'tar', 'xqf', cached_location, 'BibTool/doc/bibtool.tex' }
-     with_system_path { safe_system 'tar', 'xf', cached_location, '--exclude', 'BibTool/doc/bibtool.tex' }
-     chdir
+    with_system_path { safe_system "tar", "xqf", cached_location, "BibTool/doc/bibtool.tex" }
+    with_system_path { safe_system "tar", "xf", cached_location, "--exclude", "BibTool/doc/bibtool.tex" }
+    chdir
   end
 end
 

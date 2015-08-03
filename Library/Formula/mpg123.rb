@@ -25,6 +25,6 @@ class Mpg123 < Formula
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,10 +1,8 @@
-require "formula"
-
 class Termshare < Formula
   desc "Interactive or view-only terminal sharing via client or web"
   homepage "https://termsha.re"
   url "https://github.com/progrium/termshare/archive/v0.2.0.tar.gz"
-  sha1 "8da6f60cbcab9eee68fe9483f23338a0ca1ec196"
+  sha256 "fa09a5492d6176feff32bbcdb3b2dc3ff1b5ab2d1cf37572cc60eb22eb531dcd"
 
   head "https://github.com/progrium/termshare.git"
 

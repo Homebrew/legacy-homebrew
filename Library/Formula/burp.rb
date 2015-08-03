@@ -64,7 +64,6 @@ class Burp < Formula
     #{etc}/burp/burp.conf
     EOS
   end
-
 end
 
 __END__

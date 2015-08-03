@@ -1,11 +1,9 @@
-require 'formula'
-
 class Jasper < Formula
   desc "Library for manipulating JPEG-2000 images"
-  homepage 'https://www.ece.uvic.ca/~frodo/jasper/'
-  url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
-  sha1 'bbf30168ceae74d78e28039972657a90799e68d3'
-  version '1.900.1'
+  homepage "https://www.ece.uvic.ca/~frodo/jasper/"
+  url "http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz"
+  sha256 "0021684d909de1eb2f7f5a4d608af69000ce37773d51d1fb898e03b8d488087d"
+  version "1.900.1"
 
   bottle do
     cellar :any
@@ -17,7 +15,7 @@ class Jasper < Formula
 
   option :universal
 
-  depends_on 'jpeg'
+  depends_on "jpeg"
 
   fails_with :llvm do
     build 2326
@@ -37,7 +35,7 @@ class Jasper < Formula
                           "--enable-shared",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 

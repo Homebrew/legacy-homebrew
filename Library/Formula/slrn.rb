@@ -2,7 +2,7 @@ class Slrn < Formula
   desc "Powerful console-based newsreader"
   homepage "http://slrn.sourceforge.net/"
   url "http://jedsoft.org/releases/slrn/slrn-1.0.2.tar.bz2"
-  sha1 "2a3a305fd887183625b65d3a1316351b5ac3c259"
+  sha256 "99acbc51e7212ccc5c39556fa8ec6ada772f0bb5cc45a3bb90dadb8fe764fb59"
 
   head "git://git.jedsoft.org/git/slrn.git"
 

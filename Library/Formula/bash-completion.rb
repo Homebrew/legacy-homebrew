@@ -1,13 +1,11 @@
-require 'formula'
-
 # NOTE: version 2.0 is out, but it requires Bash 4, and OS X ships
 # with 3.2.48. See homebrew-versions for a 2.0 formula.
 class BashCompletion < Formula
   desc "Programmable bash completion"
-  homepage 'https://bash-completion.alioth.debian.org/'
-  url 'https://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2'
-  mirror 'http://pkgs.fedoraproject.org/repo/pkgs/bash-completion/bash-completion-1.3.tar.bz2/a1262659b4bbf44dc9e59d034de505ec/bash-completion-1.3.tar.bz2'
-  sha256 '8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec'
+  homepage "https://bash-completion.alioth.debian.org/"
+  url "https://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2"
+  mirror "http://pkgs.fedoraproject.org/repo/pkgs/bash-completion/bash-completion-1.3.tar.bz2/a1262659b4bbf44dc9e59d034de505ec/bash-completion-1.3.tar.bz2"
+  sha256 "8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec"
 
   bottle do
     sha256 "f522c40d199aff2cdfb71f5b3b17f8e4719e78bed48b13dab1714d3457e93b23" => :yosemite
@@ -20,20 +18,20 @@ class BashCompletion < Formula
   patch :DATA
 
   def compdir
-    etc/'bash_completion.d'
+    etc/"bash_completion.d"
   end
 
   def install
     inreplace "bash_completion" do |s|
-      s.gsub! '/etc/bash_completion', etc/'bash_completion'
-      s.gsub! 'readlink -f', "readlink"
+      s.gsub! "/etc/bash_completion", etc/"bash_completion"
+      s.gsub! "readlink -f", "readlink"
     end
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
 
-    unless (compdir/'brew_bash_completion.sh').exist?
-      compdir.install_symlink HOMEBREW_CONTRIB/'brew_bash_completion.sh'
+    unless (compdir/"brew_bash_completion.sh").exist?
+      compdir.install_symlink HOMEBREW_CONTRIB/"brew_bash_completion.sh"
     end
   end
 

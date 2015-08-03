@@ -1,16 +1,14 @@
-require 'formula'
-
 class Libopkele < Formula
   desc "C++ implementation of OpenID decentralized identity system"
-  homepage 'http://kin.klever.net/libopkele/'
+  homepage "http://kin.klever.net/libopkele/"
 
   stable do
     url "http://kin.klever.net/dist/libopkele-2.0.4.tar.bz2"
-    sha1 "0c403d118efe6b4ee4830914448078c0ee967757"
+    sha256 "102e22431e4ec6f1f0baacb6b1b036476f5e5a83400f2174807a090a14f4dc67"
 
     patch do
       url "https://github.com/hacker/libopkele/commit/9ff6244998b0d41e71f7cc7351403ad590e990e4.diff"
-      sha1 "dd86d5a493a54f57ac3bc842878cba5c6608aa7e"
+      sha256 "381b5533a2704a96f0be9ddec16afbc2b853240084168ff40c04dcb34417b9a3"
     end
   end
 
@@ -20,7 +18,7 @@ class Libopkele < Formula
   end
 
   head do
-    url 'https://github.com/hacker/libopkele.git'
+    url "https://github.com/hacker/libopkele.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

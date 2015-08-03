@@ -1,5 +1,3 @@
-require "formula"
-
 class Squashfs < Formula
   desc "Compressed read-only file system for Linux"
   homepage "http://squashfs.sourceforge.net/"
@@ -21,14 +19,14 @@ class Squashfs < Formula
   # Originally from https://github.com/plougher/squashfs-tools/pull/3
   patch do
     url "https://raw.githubusercontent.com/DomT4/scripts/master/Homebrew_Resources/Squashfs/squashfs.diff"
-    sha1 "bf8aad479180a0614b74d4aa2fb5b8a0c1dc567b"
+    sha256 "276763d01ec675793ddb0ae293fbe82cbf96235ade0258d767b6a225a84bc75f"
   end
 
   def install
     cd "squashfs-tools" do
       system "make XATTR_SUPPORT=0 EXTRA_CFLAGS=-std=gnu89 LZO_SUPPORT=1 LZO_DIR='#{HOMEBREW_PREFIX}' XZ_SUPPORT=1 XZ_DIR='#{HOMEBREW_PREFIX}' LZMA_XZ_SUPPORT=1"
-      bin.install %w{mksquashfs unsquashfs}
+      bin.install %w[mksquashfs unsquashfs]
     end
-    doc.install %w{ACKNOWLEDGEMENTS CHANGES COPYING INSTALL OLD-READMEs PERFORMANCE.README README README-4.3}
+    doc.install %w[ACKNOWLEDGEMENTS CHANGES COPYING INSTALL OLD-READMEs PERFORMANCE.README README README-4.3]
   end
 end

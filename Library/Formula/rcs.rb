@@ -3,7 +3,7 @@ class Rcs < Formula
   homepage "https://www.gnu.org/software/rcs/"
   url "http://ftpmirror.gnu.org/rcs/rcs-5.9.4.tar.xz"
   mirror "https://ftp.gnu.org/gnu/rcs/rcs-5.9.4.tar.xz"
-  sha1 "e87fb2e587fa165204ef69f69b7d5cd354c4e44d"
+  sha256 "063d5a0d7da1821754b80c639cdae2c82b535c8ff4131f75dc7bbf0cd63a5dff"
 
   bottle do
     cellar :any

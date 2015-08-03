@@ -1,10 +1,8 @@
-require "formula"
-
 class Dcraw < Formula
   desc "Digital camera RAW photo decoding software"
   homepage "http://www.cybercom.net/~dcoffin/dcraw/"
   url "http://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.22.tar.gz"
-  sha1 "f786f12d6cbf2a5571881bcf7f9945365459d433"
+  sha256 "0290aef2dc60fe434f8ecadf5f158c1c657c1d18b1adc6a91d33e5925d41bf01"
 
   bottle do
     cellar :any

@@ -1,10 +1,8 @@
-require "formula"
-
 class Xa < Formula
   desc "6502 cross assembler"
   homepage "http://www.floodgap.com/retrotech/xa/"
   url "http://www.floodgap.com/retrotech/xa/dists/xa-2.3.7.tar.gz"
-  sha1 "e5a6eb86c5683c217a778553a78a30780702c1d9"
+  sha256 "34e792c159584153f5b5a246ae5d2142dfc92a20b673ea8c9e04584bde594442"
 
   bottle do
     cellar :any

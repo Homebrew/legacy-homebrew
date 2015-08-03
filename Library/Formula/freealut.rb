@@ -1,11 +1,9 @@
-require 'formula'
-
 class Freealut < Formula
   desc "Implementation of OpenAL's ALUT standard"
-  homepage 'http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm'
-  url 'http://connect.creativelabs.com/openal/Downloads/ALUT/freealut-1.1.0.tar.gz'
-  mirror 'http://ftp.de.debian.org/debian/pool/main/f/freealut/freealut_1.1.0.orig.tar.gz'
-  sha1 'b2c04d2b5e0896b3164c01deda39f58933c8055f'
+  homepage "http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm"
+  url "http://connect.creativelabs.com/openal/Downloads/ALUT/freealut-1.1.0.tar.gz"
+  mirror "http://ftp.de.debian.org/debian/pool/main/f/freealut/freealut_1.1.0.orig.tar.gz"
+  sha256 "60d1ea8779471bb851b89b49ce44eecb78e46265be1a6e9320a28b100c8df44f"
 
   # Adds the OpenAL frameworks to the library list so linking succeeds
   patch :DATA
@@ -19,7 +17,7 @@ class Freealut < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 

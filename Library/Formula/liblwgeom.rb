@@ -5,14 +5,14 @@ class Liblwgeom < Formula
 
   stable do
     url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
-    sha1 "5ac24b95495be258a7430c08b3407d7beca1832a"
+    sha256 "0d0e27f72f12b8dba456fbde25ed0f6913f42baf57332a7f1b9bbc6f29fddbf4"
     # Strip all the PostgreSQL functions from PostGIS configure.ac, to allow
     # building liblwgeom.dylib without needing PostgreSQL
     # NOTE: this will need to be maintained per postgis version
     # Somehow, this still works for 2.1.5, which is awesome!
     patch do
       url "https://gist.githubusercontent.com/dakcarto/7458788/raw/8df39204eef5a1e5671828ded7f377ad0f61d4e1/postgis-config_strip-pgsql.diff"
-      sha1 "3d93c9ede79439f1c683a604f9d906f5c788c690"
+      sha256 "0bccd1a9b42d8ef537a3851392e378ee252f813464a91ab8fe21ff7f7cae20c1"
     end
   end
 

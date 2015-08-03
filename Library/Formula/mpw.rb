@@ -2,7 +2,7 @@ class Mpw < Formula
   desc "Master Password for the terminal"
   homepage "http://masterpasswordapp.com"
   url "https://ssl.masterpasswordapp.com/mpw-2.1-cli4-0-gf6b2287.tar.gz"
-  sha1 "036b3d8f4bd6f0676ae16e7e9c3de65f6030874f"
+  sha256 "6ea76592eb8214329072d04f651af99d73de188a59ef76975d190569c7fa2b90"
   version "2.1-cli4"
 
   bottle do
@@ -18,7 +18,7 @@ class Mpw < Formula
 
   resource "libscrypt" do
     url "http://masterpasswordapp.com/libscrypt-b12b554.tar.gz"
-    sha1 "ee871e0f93a786c4e3622561f34565337cfdb815"
+    sha256 "c726daec68a345e420896f005394a948dc5a6924713ed94b684c856d4c247f0b"
   end
 
   def install

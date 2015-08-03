@@ -1,10 +1,8 @@
-require "formula"
-
 class Mosquitto < Formula
   desc "Message broker implementing MQ telemetry transport protocol"
   homepage "http://mosquitto.org/"
   url "http://mosquitto.org/files/source/mosquitto-1.4.2.tar.gz"
-  sha1 "208ce5f01fcf25fff6b241b22add055ba2884822"
+  sha256 "5ebc3800a0018bfbec62dcc3748fb29f628df068acd39c62c4ef651d9276647e"
 
   bottle do
     sha256 "5ddaaa8d6a3b1243e56a401352a30c98baac64912d727db4f1d863c91cde49d5" => :yosemite

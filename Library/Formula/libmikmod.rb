@@ -1,5 +1,3 @@
-require "formula"
-
 class Libmikmod < Formula
   desc "Portable sound library"
   homepage "http://mikmod.shlomifish.org"
@@ -29,7 +27,7 @@ class Libmikmod < Formula
     args << "--with-debug" if build.with? "debug"
     mkdir "macbuild" do
       system "../configure", *args
-      system "make install"
+      system "make", "install"
     end
   end
 

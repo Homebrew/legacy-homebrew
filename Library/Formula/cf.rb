@@ -2,7 +2,7 @@ class Cf < Formula
   desc "Filter to replace numeric timestamps with a formated date time"
   homepage "http://ee.lbl.gov"
   url "ftp://ee.lbl.gov/cf-1.2.5.tar.gz"
-  sha1 "0ef0b03c1ea7221d75dac0ce110fd677e1f0182a"
+  sha256 "ef65e9eb57c56456dfd897fec12da8617c775e986c23c0b9cbfab173b34e5509"
 
   bottle do
     cellar :any

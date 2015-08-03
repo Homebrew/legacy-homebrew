@@ -1,10 +1,8 @@
-require 'formula'
-
 class Malaga < Formula
   desc "Grammar development environment for natural languages"
-  homepage 'http://home.arcor.de/bjoern-beutel/malaga/'
-  url 'http://home.arcor.de/bjoern-beutel/malaga/malaga-7.12.tgz'
-  sha1 '19d74697575229231c18c83bb7a16b7ee6c31a51'
+  homepage "http://home.arcor.de/bjoern-beutel/malaga/"
+  url "http://home.arcor.de/bjoern-beutel/malaga/malaga-7.12.tgz"
+  sha256 "8811e5feaae03e1b6e3008116fdc7471a53b6c0c5036751c637b15058f855ace"
 
   bottle do
     cellar :any
@@ -13,9 +11,9 @@ class Malaga < Formula
     sha1 "3f93dd5b8ab479471e20e05c9a617ddb8a8e298d" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'gtk+' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "gtk+" => :optional
 
   def install
     system "./configure", "--disable-debug",
@@ -24,5 +22,4 @@ class Malaga < Formula
 
     system "make", "install"
   end
-
 end

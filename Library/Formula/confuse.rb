@@ -1,10 +1,8 @@
-require 'formula'
-
 class Confuse < Formula
   desc "Configuration file parser library written in C"
-  homepage 'http://www.nongnu.org/confuse/'
-  url 'http://savannah.nongnu.org/download/confuse/confuse-2.7.tar.gz'
-  sha1 'b3f74f9763e6c9012476dbd323d083af4be34cad'
+  homepage "http://www.nongnu.org/confuse/"
+  url "http://savannah.nongnu.org/download/confuse/confuse-2.7.tar.gz"
+  sha256 "e32574fd837e950778dac7ade40787dd2259ef8e28acd6ede6847ca895c88778"
 
   bottle do
     cellar :any
@@ -13,11 +11,11 @@ class Confuse < Formula
     sha1 "9ede76f809eb464d96a8f703fb74c1678fc0c48d" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

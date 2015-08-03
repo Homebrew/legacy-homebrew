@@ -1,10 +1,8 @@
-require "formula"
-
 class SpringRoo < Formula
   desc "Rapid application development tool for Java developers"
   homepage "http://www.springsource.org/spring-roo"
   url "https://s3.amazonaws.com/spring-roo-repository.springsource.org/release/ROO/spring-roo-1.3.1.RELEASE.zip"
-  sha1 "31c9d57c4a8ed38dc059bffcde192886e96e25ea"
+  sha256 "50be1c39ee56a0f2fba0109ed9326fbab018e08f9377dca3202fc8f8a4b5a784"
   version "1.3.1"
 
   def install

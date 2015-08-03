@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 class Cronolog < Formula
   desc "Web log rotation"

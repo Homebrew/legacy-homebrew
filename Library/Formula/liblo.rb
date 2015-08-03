@@ -1,10 +1,8 @@
-require 'formula'
-
 class Liblo < Formula
   desc "Lightweight Open Sound Control implementation"
-  homepage 'http://liblo.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/liblo/liblo/0.28/liblo-0.28.tar.gz'
-  sha1 '949d5f0c9919741c67602514786b9c7366fa001b'
+  homepage "http://liblo.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/liblo/liblo/0.28/liblo-0.28.tar.gz"
+  sha256 "da94a9b67b93625354dd89ff7fe31e5297fc9400b6eaf7378c82ee1caf7db909"
 
   bottle do
     cellar :any
@@ -15,11 +13,11 @@ class Liblo < Formula
   end
 
   head do
-    url 'git://liblo.git.sourceforge.net/gitroot/liblo/liblo'
+    url "git://liblo.git.sourceforge.net/gitroot/liblo/liblo"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option "enable-ipv6", "Compile with support for ipv6"
@@ -40,6 +38,6 @@ class Liblo < Formula
       system "./configure", *args
     end
 
-    system "make install"
+    system "make", "install"
   end
 end

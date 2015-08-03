@@ -1,11 +1,9 @@
-require 'formula'
-
 class Lorem < Formula
   desc "Lorem Ipsum generator"
-  homepage 'http://code.google.com/p/lorem/'
-  url 'http://lorem.googlecode.com/svn-history/r4/trunk/lorem', :using => :curl
-  version '0.6.1'
-  sha1 'aa6ef66e5ee1151397f19b358d772af316cf333b'
+  homepage "https://code.google.com/p/lorem/"
+  url "http://lorem.googlecode.com/svn-history/r4/trunk/lorem", :using => :curl
+  version "0.6.1"
+  sha256 "fa2db7c3db356d76ed6dd5244a76d9b6e0d261d89d5efa646c8fe2924be5abcf"
 
   def install
     inreplace "lorem", "!/usr/bin/python", "!/usr/bin/env python"

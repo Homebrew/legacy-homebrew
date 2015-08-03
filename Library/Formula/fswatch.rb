@@ -1,10 +1,8 @@
-require "formula"
-
 class Fswatch < Formula
   desc "Monitor a directory for changes and run a shell command"
   homepage "https://github.com/emcrisostomo/fswatch"
   url "https://github.com/emcrisostomo/fswatch/releases/download/1.4.7/fswatch-1.4.7.tar.gz"
-  sha1 "bfc41da5a56ab810b28945506a0ad4198b13ffef"
+  sha256 "1601e91393c943eb168371f710cfbb54511900d92ace0e829dcd335a2c6da61d"
 
   bottle do
     sha256 "1263ca1127a202ffd678803608d2620af5c43a4a8b3db1d987147df2b8a0cf7a" => :yosemite

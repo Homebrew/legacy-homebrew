@@ -1,5 +1,3 @@
-require "formula"
-
 class Miniupnpc < Formula
   desc "UpnP IGD client library and daemon"
   homepage "http://miniupnp.tuxfamily.org"

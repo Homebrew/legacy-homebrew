@@ -2,7 +2,7 @@ class Fabric < Formula
   desc "Library and command-line tool for SSH"
   homepage "http://www.fabfile.org"
   url "https://github.com/fabric/fabric/archive/1.10.1.tar.gz"
-  sha1 "8ce104f6a66ed62e1fe057a6a9e6da0f02eb464a"
+  sha256 "08baf5cfcc9624a907261e5fb177d66430ad810cdb98b022675ca34a06823117"
 
   head "https://github.com/fabric/fabric.git"
 
@@ -18,17 +18,17 @@ class Fabric < Formula
 
   resource "paramiko" do
     url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.15.2.tar.gz"
-    sha1 "754ffa47fd6f78b93fc56437cf14a79bef094f0f"
+    sha256 "4f56a671a3eecbb76e6143e6e4ca007d503a39aa79aa9e14ade667fa53fd6e55"
   end
 
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.6.1.tar.gz"
-    sha1 "aeda3ed41caf1766409d4efc689b9ca30ad6aeb2"
+    sha256 "f2ce1e989b272cfcb677616763e0a2e7ec659effa67a88aa92b3a65528f60a3c"
   end
 
   resource "ecdsa" do
     url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.11.tar.gz"
-    sha1 "f732f8cdb064bbe47aa830cc2654688da95b78f0"
+    sha256 "8e3b6c193f91dc94b2f3b0261e3eabbdc604f78ff99fdad324a56fdd0b5e958c"
   end
 
   def install

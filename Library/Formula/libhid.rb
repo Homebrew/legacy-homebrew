@@ -1,10 +1,8 @@
-require "formula"
-
 class Libhid < Formula
   desc "Library to access and interact with USB HID devices"
   homepage "https://libhid.alioth.debian.org/"
   url "http://distcache.freebsd.org/ports-distfiles/libhid-0.2.16.tar.gz"
-  sha1 "9a25fef674e8f20f97fea6700eb91c21ebbbcc02"
+  sha256 "f6809ab3b9c907cbb05ceba9ee6ca23a705f85fd71588518e14b3a7d9f2550e5"
 
   bottle do
     cellar :any
@@ -24,7 +22,7 @@ class Libhid < Formula
                           "--prefix=#{prefix}",
                           "--disable-swig"
 
-    system "make install"
+    system "make", "install"
   end
 end
 

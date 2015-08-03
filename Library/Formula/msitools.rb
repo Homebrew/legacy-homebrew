@@ -1,19 +1,17 @@
-require 'formula'
-
 class Msitools < Formula
   desc "Windows installer (.MSI) tool"
-  homepage 'https://wiki.gnome.org/msitools'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/msitools/0.93/msitools-0.93.tar.xz'
-  sha1 'b8dcf394a1aeddd8404ae1702ce42af623f54101'
+  homepage "https://wiki.gnome.org/msitools"
+  url "http://ftp.gnome.org/pub/GNOME/sources/msitools/0.93/msitools-0.93.tar.xz"
+  sha256 "a2d25f05437047749a068946ed019839b88350928511cc7c021ea390413b9dc5"
 
-  depends_on 'intltool' => :build
-  depends_on 'pkg-config' => :build
-  depends_on 'e2fsprogs'
-  depends_on 'gcab'
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'libgsf'
-  depends_on 'vala'
+  depends_on "intltool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "e2fsprogs"
+  depends_on "gcab"
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "libgsf"
+  depends_on "vala"
 
   def install
     system "./configure", "--disable-debug",

@@ -1,11 +1,9 @@
-require 'formula'
-
 class Libiscsi < Formula
   desc "Client library and utilities for iscsi"
-  homepage 'https://github.com/sahlberg/libiscsi'
-  url 'https://sites.google.com/site/libiscsitarballs/libiscsitarballs/libiscsi-1.10.0.tar.gz'
-  sha1 'b65de46e9a688078211c1ef8f8a5af2a828d71a6'
-  head 'https://github.com/sahlberg/libiscsi.git'
+  homepage "https://github.com/sahlberg/libiscsi"
+  url "https://sites.google.com/site/libiscsitarballs/libiscsitarballs/libiscsi-1.10.0.tar.gz"
+  sha256 "ba44519c9b04d6b0e2cf8d66e83611212da96d5cfab7c5c4d19cf00a5f919cba"
+  head "https://github.com/sahlberg/libiscsi.git"
 
   bottle do
     cellar :any
@@ -15,7 +13,7 @@ class Libiscsi < Formula
     sha1 "2edaf3c3a74dcb17365ef51d8d460939f0a5594c" => :mountain_lion
   end
 
-  option 'with-noinst', 'Install the noinst binaries (e.g. iscsi-test-cu)'
+  option "with-noinst", "Install the noinst binaries (e.g. iscsi-test-cu)"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -24,14 +22,14 @@ class Libiscsi < Formula
   depends_on "popt"
 
   def install
-    if build.with? 'noinst'
+    if build.with? "noinst"
       # Install the noinst binaries
-      inreplace 'Makefile.am', 'noinst_PROGRAMS +=', 'bin_PROGRAMS +='
+      inreplace "Makefile.am", "noinst_PROGRAMS +=", "bin_PROGRAMS +="
     end
 
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

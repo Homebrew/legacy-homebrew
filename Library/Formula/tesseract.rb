@@ -1,10 +1,8 @@
-require "formula"
-
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
   homepage "https://github.com/tesseract-ocr/"
   url "https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.02.tar.gz"
-  sha1 "a950acf7b75cf851de2de787e9abb62c58ca1827"
+  sha256 "26cd39cb3f2a6f6f1bf4050d1cc0aae35edee49eb49a92df3cb7f9487caa013d"
   revision 3
 
   bottle do
@@ -16,7 +14,7 @@ class Tesseract < Formula
 
   devel do
     url "https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download"
-    sha1 "5bd12482a69f0a1fdf3c9e0d652de08db763ee93"
+    sha256 "d244956236f7491d74d7f342895f611a6c46c45fa9900173d5b7625d8461d2ea"
     version "3.03rc1"
 
     needs :cxx11
@@ -130,7 +128,7 @@ class Tesseract < Formula
   resource "osd" do
     url "https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.01.osd.tar.gz"
     version "3.01"
-    sha1 "a559801a42be8a3dc15ae2ec27da99bd8b0b85ac"
+    sha256 "7861210fd0970ad30503e8c70d7841de6716bd293d8512fd8787a1a07219b7aa"
   end
 
   def install
@@ -142,7 +140,7 @@ class Tesseract < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
     if build.head?
       resource("tessdata-head").stage { mv Dir["*"], share/"tessdata" }
     elsif build.include? "all-languages"

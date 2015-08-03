@@ -1,18 +1,16 @@
-require "formula"
-
 class Valgrind < Formula
   desc "Dynamic analysis tools (memory, debug, profiling)"
   homepage "http://www.valgrind.org/"
 
   stable do
     url "http://valgrind.org/downloads/valgrind-3.10.1.tar.bz2"
-    sha1 "15518427de842547ffa84eff8b2b67f3b16581a8"
+    sha256 "fa253dc26ddb661b6269df58144eff607ea3f76a9bcfe574b0c7726e1dfcb997"
 
     # Look for headers in the SDK on Xcode-only systems: https://bugs.kde.org/show_bug.cgi?id=295084
     # Fix duplicate symbols error on Lion: https://bugs.kde.org/show_bug.cgi?id=307415
     patch do
       url "https://gist.githubusercontent.com/jacknagel/369bedc191e0a0795358/raw/a71e6c0fdcb786fdfde2fc33d71d555b18bcfe8d/valgrind-sdk-paths-Makefile-in.diff"
-      sha1 "4210431e2a12c191875391b144b9a45cc76496c1"
+      sha256 "ff8e8186af6985f9ffb8dca8fbea944e807d1caf144f320dca0f995d0417db7f"
     end
 
     # Revisit the below requirement with each release

@@ -37,10 +37,12 @@ class Osquery < Formula
     ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
 
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install",
+      r.stage do
+        system "python", "setup.py", "install",
                                  "--prefix=#{buildpath}/third-party/python/",
                                  "--single-version-externally-managed",
-                                 "--record=installed.txt"}
+                                 "--record=installed.txt"
+      end
     end
 
     system "cmake", ".", *std_cmake_args

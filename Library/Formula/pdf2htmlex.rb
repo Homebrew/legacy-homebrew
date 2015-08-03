@@ -56,7 +56,7 @@ class Pdf2htmlex < Formula
         "--without-x",
         "--without-iconv",
         "--disable-python-scripting",
-        "--disable-python-extension",
+        "--disable-python-extension"
       ]
 
       # Fix linker error; see: http://trac.macports.org/ticket/25012

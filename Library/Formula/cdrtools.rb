@@ -23,10 +23,10 @@ class Cdrtools < Formula
     sha256 "5b9a2f98771c9d0097a1e7640727655ece2864eea95f38e5611af2b2f6e6d9cd"
   end
 
-  depends_on 'smake' => :build
+  depends_on "smake" => :build
 
-  conflicts_with 'dvdrtools',
-    :because => 'both dvdrtools and cdrtools install binaries by the same name'
+  conflicts_with "dvdrtools",
+    :because => "both dvdrtools and cdrtools install binaries by the same name"
 
   def install
     system "smake", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"

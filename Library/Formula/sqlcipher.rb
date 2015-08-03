@@ -18,7 +18,6 @@ class Sqlcipher < Formula
   depends_on "openssl"
 
   def install
-
     args = %W[
       --prefix=#{prefix}
       --enable-tempstore=yes

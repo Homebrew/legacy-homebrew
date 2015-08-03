@@ -1,10 +1,8 @@
-require 'formula'
-
 class Rolldice < Formula
   desc "Rolls an amount of virtual dice"
-  homepage 'https://github.com/sstrickl/rolldice'
-  url 'https://github.com/sstrickl/rolldice/archive/v1.14.tar.gz'
-  sha1 '56d1abbf6d84b3392f51c2c5a25c7227c2835c5b'
+  homepage "https://github.com/sstrickl/rolldice"
+  url "https://github.com/sstrickl/rolldice/archive/v1.14.tar.gz"
+  sha256 "57b77e9d2f8d04c7d81fa01433a73f1f86b4b21771f959acc3bb5d99347030eb"
 
   def install
     system "make", "CC=#{ENV.cc}"

@@ -1,10 +1,8 @@
-require "formula"
-
 class Ndpi < Formula
   desc "Superset of the popular OpenDPI library"
   homepage "http://www.ntop.org/products/ndpi/"
   url "https://downloads.sourceforge.net/project/ntop/nDPI/nDPI-1.6.tar.gz"
-  sha1 "60a4969bb456293dea8a847049cfb6cadeaf9c10"
+  sha256 "0e2201d0d003ac5df0de904f8e4df149ca55a59e708a32ce55500be92a031444"
 
   bottle do
     cellar :any
@@ -21,7 +19,7 @@ class Ndpi < Formula
 
   def install
     system "./autogen.sh"
-    system "./configure","--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
     system "make"
     system "make", "install"
   end

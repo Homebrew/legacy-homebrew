@@ -1,5 +1,3 @@
-require "formula"
-
 class Vpnc < Formula
   desc "Cisco VPN concentrator client"
   homepage "http://www.unix-ag.uni-kl.de/~massar/vpnc/"

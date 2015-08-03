@@ -4,7 +4,7 @@ class Gnupg < Formula
   url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.19.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-1.4.19.tar.bz2"
   mirror "http://mirror.switch.ch/ftp/mirror/gnupg/gnupg/gnupg-1.4.19.tar.bz2"
-  sha1 "5503f7faa0a0e84450838706a67621546241ca50"
+  sha256 "7f09319d044b0f6ee71fe3587bb873be701723ac0952cff5069046a78de8fd86"
 
   bottle do
     sha1 "22482f6bceecb726ad428b06308d918308bf06e3" => :yosemite

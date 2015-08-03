@@ -28,7 +28,7 @@ class Libhttpserver < Formula
     args = [
       "--disable-dependency-tracking",
       "--disable-silent-rules",
-      "--prefix=#{prefix}",
+      "--prefix=#{prefix}"
     ]
 
     system "./bootstrap"

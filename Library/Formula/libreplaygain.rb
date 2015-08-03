@@ -1,11 +1,9 @@
-require 'formula'
-
 class Libreplaygain < Formula
   desc "Library to implement ReplayGain standard for audio"
-  homepage 'http://www.musepack.net/'
-  url 'http://files.musepack.net/source/libreplaygain_r475.tar.gz'
-  version 'r475'
-  sha1 '7739b4b9cf46e0846663f707a9498a4db0345eaf'
+  homepage "http://www.musepack.net/"
+  url "http://files.musepack.net/source/libreplaygain_r475.tar.gz"
+  version "r475"
+  sha256 "8258bf785547ac2cda43bb195e07522f0a3682f55abe97753c974609ec232482"
 
   bottle do
     cellar :any
@@ -15,11 +13,11 @@ class Libreplaygain < Formula
     sha1 "6baabf93ea2d9d9188081b92894736b26ca57ecd" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   def install
     system "cmake", ".", *std_cmake_args
-    system "make install"
-    include.install 'include/replaygain/'
+    system "make", "install"
+    include.install "include/replaygain/"
   end
 end

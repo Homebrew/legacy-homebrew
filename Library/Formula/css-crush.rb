@@ -2,7 +2,7 @@ class CssCrush < Formula
   desc "Extensible PHP based CSS preprocessor"
   homepage "http://the-echoplex.net/csscrush"
   url "https://github.com/peteboere/css-crush/archive/v2.3.0.tar.gz"
-  sha1 "1141311ad12e4472d5ec2fddcefec42d98655725"
+  sha256 "0ddc0862f2588ff59fdf8bf56507cf4232165137af63cf9746efe97f2b256242"
 
   def install
     libexec.install Dir["*"]

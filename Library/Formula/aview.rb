@@ -1,12 +1,10 @@
-require 'formula'
-
 class Aview < Formula
   desc "ASCII-art image browser and animation viewer"
-  homepage 'http://aa-project.sourceforge.net/aview/'
-  url 'https://downloads.sourceforge.net/aa-project/aview-1.3.0rc1.tar.gz'
-  sha1 'd757ff9f62e6ce4d926c03ae4f4096d9fcf353fc'
+  homepage "http://aa-project.sourceforge.net/aview/"
+  url "https://downloads.sourceforge.net/aa-project/aview-1.3.0rc1.tar.gz"
+  sha256 "42d61c4194e8b9b69a881fdde698c83cb27d7eda59e08b300e73aaa34474ec99"
 
-  depends_on 'aalib'
+  depends_on "aalib"
 
   patch :DATA
 
@@ -15,7 +13,7 @@ class Aview < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 

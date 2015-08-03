@@ -2,7 +2,7 @@ class CouchdbLucene < Formula
   desc "Full-text search of CouchDB documents using Lucene"
   homepage "https://github.com/rnewson/couchdb-lucene"
   url "https://github.com/rnewson/couchdb-lucene/archive/v1.0.2.tar.gz"
-  sha1 "75e0c55a87f47903c6cd122286ea3e4568809f7e"
+  sha256 "c3f33890670160b14515fd1e26aa30df89f6101f36148639f213c40a6fff8e7d"
 
   bottle do
     sha1 "6df93e1cf958760cd4d822822728693092d2289f" => :yosemite

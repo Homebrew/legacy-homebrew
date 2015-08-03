@@ -2,7 +2,7 @@ class Mp3val < Formula
   desc "Program for MPEG audio stream validation"
   homepage "http://mp3val.sourceforge.net/"
   url "https://downloads.sourceforge.net/mp3val/mp3val-0.1.8-src.tar.gz"
-  sha1 "19f7506d387f72def2861ec271c5cb4135bd8f5e"
+  sha256 "95a16efe3c352bb31d23d68ee5cb8bb8ebd9868d3dcf0d84c96864f80c31c39f"
 
   bottle do
     cellar :any

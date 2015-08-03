@@ -1,10 +1,8 @@
-require 'formula'
-
 class Cpmtools < Formula
   desc "Tools to access CP/M file systems"
-  homepage 'http://www.moria.de/~michael/cpmtools/'
-  url 'http://www.moria.de/~michael/cpmtools/files/cpmtools-2.20.tar.gz'
-  sha1 '5a2703265d903fe615ec3c71e3ce4ff8d58637af'
+  homepage "http://www.moria.de/~michael/cpmtools/"
+  url "http://www.moria.de/~michael/cpmtools/files/cpmtools-2.20.tar.gz"
+  sha256 "d8c7e78a9750994124f3aab6e461da8fa0021acc7dbad76eafbac8b0ed8279d3"
 
   bottle do
     sha1 "a437721156fa15a612e823e4f1ee0fdbfe2d0ed7" => :yosemite
@@ -19,7 +17,7 @@ class Cpmtools < Formula
     man1.mkpath
     man5.mkpath
 
-    system "make install"
+    system "make", "install"
   end
 
   test do

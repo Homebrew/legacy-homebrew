@@ -1,10 +1,8 @@
-require "formula"
-
 class Lhasa < Formula
   desc "LHA implementation to decompress .lzh and .lzs archives"
-  homepage "http://fragglet.github.io/lhasa/"
+  homepage "https://fragglet.github.io/lhasa/"
   url "https://github.com/fragglet/lhasa/archive/v0.2.0.tar.gz"
-  sha1 "95dae252410648f629b275dedef218f81b835b3b"
+  sha256 "c26a60f9b0b728abf3b67b98b7baee52e1fedc9fd531866e58135f2587514d91"
   head "https://github.com/fragglet/lhasa.git"
 
   bottle do
@@ -27,7 +25,7 @@ class Lhasa < Formula
   end
 
   test do
-    str = "MQAtbGgwLQQAAAAEAAAA9ZQTUyACg2JVBQAA" +
+    str = "MQAtbGgwLQQAAAAEAAAA9ZQTUyACg2JVBQAA" \
           "hloGAAFmb28FAFCkgQcAURQA9QEAAGZvbwoA"
     system "echo #{str} | /usr/bin/base64 -D | #{bin}/lha x -"
     assert_equal "foo\n", `cat foo`

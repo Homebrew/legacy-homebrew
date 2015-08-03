@@ -1,10 +1,8 @@
-require 'formula'
-
 class OpenOcd < Formula
   desc "On-chip debugging, in-system programming and boundary-scan testing"
-  homepage 'http://sourceforge.net/projects/openocd/'
-  url 'https://downloads.sourceforge.net/project/openocd/openocd/0.9.0/openocd-0.9.0.tar.bz2'
-  sha256 '837042ac9a156b9363cbffa1fcdaf463bfb83a49331addf52e63119642b5f443'
+  homepage "http://sourceforge.net/projects/openocd/"
+  url "https://downloads.sourceforge.net/project/openocd/openocd/0.9.0/openocd-0.9.0.tar.bz2"
+  sha256 "837042ac9a156b9363cbffa1fcdaf463bfb83a49331addf52e63119642b5f443"
 
   bottle do
     sha256 "4122f7c2510f900833e0cd6009fc42d8e019684eeca3588befd00888acd8c610" => :yosemite
@@ -13,7 +11,7 @@ class OpenOcd < Formula
   end
 
   head do
-    url 'git://git.code.sf.net/p/openocd/code'
+    url "git://git.code.sf.net/p/openocd/code"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -21,16 +19,16 @@ class OpenOcd < Formula
     depends_on "texinfo" => :build
   end
 
-  option 'without-hidapi', 'Disable building support for devices using HIDAPI (CMSIS-DAP)'
-  option 'without-libftdi', 'Disable building support for libftdi-based drivers (USB-Blaster, ASIX Presto, OpenJTAG)'
-  option 'without-libusb',  'Disable building support for all other USB adapters'
+  option "without-hidapi", "Disable building support for devices using HIDAPI (CMSIS-DAP)"
+  option "without-libftdi", "Disable building support for libftdi-based drivers (USB-Blaster, ASIX Presto, OpenJTAG)"
+  option "without-libusb",  "Disable building support for all other USB adapters"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libusb' => :recommended
+  depends_on "pkg-config" => :build
+  depends_on "libusb" => :recommended
   # some drivers are still not converted to libusb-1.0
-  depends_on 'libusb-compat' if build.with? 'libusb'
-  depends_on 'libftdi' => :recommended
-  depends_on 'hidapi' => :recommended
+  depends_on "libusb-compat" if build.with? "libusb"
+  depends_on "libftdi" => :recommended
+  depends_on "hidapi" => :recommended
 
   def install
     # all the libusb and hidapi-based drivers are auto-enabled when
@@ -51,10 +49,10 @@ class OpenOcd < Formula
       args << "--enable-legacy-ft2232_libftdi"
     end
 
-    ENV['CCACHE'] = 'none'
+    ENV["CCACHE"] = "none"
 
     system "./bootstrap", "nosubmodule" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

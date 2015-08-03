@@ -1,10 +1,8 @@
-require "formula"
-
 class Gammaray < Formula
   desc "Examine and manipulate Qt application internals at runtime"
   homepage "https://www.kdab.com/kdab-products/gammaray/"
   url "https://github.com/KDAB/GammaRay/archive/v2.2.0.tar.gz"
-  sha1 "c6055ae24b67465528b1747f2ac291adcd805a8e"
+  sha256 "43a370cf31f799763388d6c01626219352375cffdea74710ccec82cb705e2e1b"
 
   bottle do
     sha1 "07bfe7c133e5a72e116f07b5cd65e70b6e5ee00b" => :yosemite
@@ -27,8 +25,8 @@ class Gammaray < Formula
   def install
     args = std_cmake_args
     args << "-DGAMMARAY_ENFORCE_QT4_BUILD=" + ((build.with? "qt4") ? "ON" : "OFF")
-    args << "-DCMAKE_DISABLE_FIND_PACKAGE_VTK=" + ((build.without? "vtk") ? "ON" : "OFF" )
-    args << "-DCMAKE_DISABLE_FIND_PACKAGE_Graphviz=" + ((build.without? "graphviz") ? "ON" : "OFF" )
+    args << "-DCMAKE_DISABLE_FIND_PACKAGE_VTK=" + ((build.without? "vtk") ? "ON" : "OFF")
+    args << "-DCMAKE_DISABLE_FIND_PACKAGE_Graphviz=" + ((build.without? "graphviz") ? "ON" : "OFF")
 
     mkdir "build" do
       system "cmake", "..", *args
@@ -37,6 +35,6 @@ class Gammaray < Formula
   end
 
   test do
-    assert_match /^qt/, %x[#{bin}/gammaray --list-probes].chomp
+    assert_match /^qt/, `#{bin}/gammaray --list-probes`.chomp
   end
 end

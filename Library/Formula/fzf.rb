@@ -1,4 +1,3 @@
-require "formula"
 require "language/go"
 
 class Fzf < Formula
@@ -6,7 +5,7 @@ class Fzf < Formula
   homepage "https://github.com/junegunn/fzf"
   url "https://github.com/junegunn/fzf/archive/0.10.2.tar.gz"
   sha256 "7f71ec91fe2234e6ad3a32f291e7030d4ae25d9e9751b3dd1d8a91666a3652a8"
-  head 'https://github.com/junegunn/fzf.git'
+  head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any

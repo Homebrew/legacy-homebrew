@@ -1,10 +1,8 @@
-require 'formula'
-
 class LibsvgCairo < Formula
   desc "SVG rendering library using Cairo"
-  homepage 'http://cairographics.org/'
-  url 'http://cairographics.org/snapshots/libsvg-cairo-0.1.6.tar.gz'
-  sha1 'c7bf131b59e8c00a80ce07c6f2f90f25a7c61f81'
+  homepage "http://cairographics.org/"
+  url "http://cairographics.org/snapshots/libsvg-cairo-0.1.6.tar.gz"
+  sha256 "a380be6a78ec2938100ce904363815a94068fca372c666b8cc82aa8711a0215c"
   revision 1
 
   bottle do
@@ -14,14 +12,14 @@ class LibsvgCairo < Formula
     sha1 "0ee61ff2dc93ca0eb2536c931bd187bb7d07a7ff" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libsvg'
-  depends_on 'libpng'
-  depends_on 'cairo'
+  depends_on "pkg-config" => :build
+  depends_on "libsvg"
+  depends_on "libpng"
+  depends_on "cairo"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--disable-debug",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

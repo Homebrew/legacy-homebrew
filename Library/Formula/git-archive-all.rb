@@ -1,12 +1,10 @@
-require 'formula'
-
 class GitArchiveAll < Formula
   desc "Archive a project and its submodules"
-  homepage 'https://github.com/Kentzo/git-archive-all'
-  url 'https://github.com/Kentzo/git-archive-all/archive/1.10.tar.gz'
-  sha1 '6627953816c5494e87360cf6c244b1ae71958ae4'
+  homepage "https://github.com/Kentzo/git-archive-all"
+  url "https://github.com/Kentzo/git-archive-all/archive/1.10.tar.gz"
+  sha256 "1791e08559d66c6db42ad8f990dfe1fb4954e9b3f8e4d8404e77b9e7fb4d3d14"
 
-  head 'https://github.com/Kentzo/git-archive-all.git'
+  head "https://github.com/Kentzo/git-archive-all.git"
 
   bottle do
     cellar :any

@@ -1,5 +1,3 @@
-require "formula"
-
 class Codequery < Formula
   desc "Index, query, or search C, C++, Java, Python, Ruby, or Go code"
   homepage "https://github.com/ruben2020/codequery"

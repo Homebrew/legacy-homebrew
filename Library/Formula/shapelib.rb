@@ -1,10 +1,8 @@
-require 'formula'
-
 class Shapelib < Formula
   desc "Library for reading and writing ArcView Shapefiles"
-  homepage 'http://shapelib.maptools.org/'
-  url 'http://download.osgeo.org/shapelib/shapelib-1.3.0.tar.gz'
-  sha1 '599fde6f69424fa55da281506b297f3976585b85'
+  homepage "http://shapelib.maptools.org/"
+  url "http://download.osgeo.org/shapelib/shapelib-1.3.0.tar.gz"
+  sha256 "23d474016158ab5077db2f599527631706ba5c0dc7c4178a6a1d685bb014f68f"
 
   bottle do
     cellar :any

@@ -2,7 +2,7 @@ class Lib3ds < Formula
   desc "Library for managing 3D-Studio Release 3 and 4 '.3DS' files"
   homepage "https://code.google.com/p/lib3ds/"
   url "https://lib3ds.googlecode.com/files/lib3ds-1.3.0.zip"
-  sha1 "544262eac73c1e4a1d77f0f1cbd90b990a996db8"
+  sha256 "f5b00c302955a67fa5fb1f2d3f2583767cdc61fdbc6fd843c0c7c9d95c5629e3"
 
   bottle do
     cellar :any

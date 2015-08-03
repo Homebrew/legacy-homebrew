@@ -1,10 +1,8 @@
-require 'formula'
-
 class Mon < Formula
   desc "Monitor hosts/services/whatever and alert about problems"
-  homepage 'https://github.com/visionmedia/mon'
-  url 'https://github.com/visionmedia/mon/archive/1.2.3.tar.gz'
-  sha1 '9c5013332b6ecccb6368b100e6aee377e35b5bb1'
+  homepage "https://github.com/visionmedia/mon"
+  url "https://github.com/visionmedia/mon/archive/1.2.3.tar.gz"
+  sha256 "978711a1d37ede3fc5a05c778a2365ee234b196a44b6c0c69078a6c459e686ac"
 
   bottle do
     cellar :any

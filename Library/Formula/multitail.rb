@@ -2,7 +2,7 @@ class Multitail < Formula
   desc "Tail multiple files in one terminal simultaneously"
   homepage "http://vanheusden.com/multitail/"
   url "http://www.vanheusden.com/multitail/multitail-6.4.1.tgz"
-  sha1 "9191b807f8d727810b2824a9bc8aafa17cb0d10e"
+  sha256 "8a6baecf3537c791f70645f3613bfea0c91a22040f2531bfe03b6d0cdd112134"
 
   bottle do
     cellar :any
@@ -16,7 +16,7 @@ class Multitail < Formula
   # https://github.com/flok99/multitail/pull/13
   patch do
     url "https://github.com/flok99/multitail/pull/13.diff"
-    sha1 "cf1c457ecfc2fbe76f60050829af30c8a6698d5c"
+    sha256 "056036fb76a56eb388ef9d32bfd4e1c7aca161b3f3c60f4c542ff1134f57d71f"
   end
 
   def install

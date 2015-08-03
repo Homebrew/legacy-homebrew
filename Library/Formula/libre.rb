@@ -1,5 +1,3 @@
-require "formula"
-
 class Libre < Formula
   desc "Toolkit library for asynchronous network I/O with protocol stacks"
   homepage "http://www.creytiv.com"
@@ -21,7 +19,7 @@ class Libre < Formula
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <re/re.h>
       int main() {
         return libre_init();

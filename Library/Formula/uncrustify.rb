@@ -2,7 +2,7 @@ class Uncrustify < Formula
   desc "Source code beautifier"
   homepage "http://uncrustify.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/uncrustify/uncrustify/uncrustify-0.61/uncrustify-0.61.tar.gz"
-  sha1 "711f6f081e596aa7e162b6035997d5e2eed2f49a"
+  sha256 "1df0e5a2716e256f0a4993db12f23d10195b3030326fdf2e07f8e6421e172df9"
 
   head "https://github.com/bengardner/uncrustify.git"
 
