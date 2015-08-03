@@ -4,6 +4,7 @@ OFFICIAL_TAPS = %w[
   completions
   devel-only
   dupes
+  emacs
   fuse
   games
   head-only
