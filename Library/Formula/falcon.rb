@@ -26,20 +26,19 @@ class Falcon < Formula
 
   def install
     args = std_cmake_args + %W[
-      -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DFALCON_BIN_DIR=#{bin}
       -DFALCON_LIB_DIR=#{lib}
       -DFALCON_MAN_DIR=#{man1}
       -DFALCON_WITH_INTERNAL_PCRE=OFF
       -DFALCON_WITH_MANPAGES=ON]
 
-    if build.include? "editline"
+    if build.with? "editline"
       args << "-DFALCON_WITH_EDITLINE=ON"
     else
       args << "-DFALCON_WITH_EDITLINE=OFF"
     end
 
-    if build.include? "feathers"
+    if build.with? "feathers"
       args << "-DFALCON_WITH_FEATHERS=feathers"
     else
       args << "-DFALCON_WITH_FEATHERS=NO"
