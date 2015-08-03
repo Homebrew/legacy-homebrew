@@ -1,12 +1,10 @@
-require 'formula'
-
 class Libwebsockets < Formula
   desc "C websockets server library"
-  homepage 'http://libwebsockets.org'
-  url 'http://git.libwebsockets.org/cgi-bin/cgit/libwebsockets/snapshot/libwebsockets-1.4-chrome43-firefox-36.tar.gz'
-  version '1.4'
-  sha1 'f2c4cb05abb3ddac09a61f63cbd018665da2d450'
-  head 'git://git.libwebsockets.org/libwebsockets'
+  homepage "http://libwebsockets.org"
+  url "http://git.libwebsockets.org/cgi-bin/cgit/libwebsockets/snapshot/libwebsockets-1.4-chrome43-firefox-36.tar.gz"
+  version "1.4"
+  sha256 "e11492477e582ef0b1a6ea2f18d81a9619b449170a3a5c43f32a9468461a9798"
+  head "git://git.libwebsockets.org/libwebsockets"
 
   depends_on "openssl"
 
@@ -16,7 +14,7 @@ class Libwebsockets < Formula
     sha256 "60f191872c2c470fbd5716109df094bf82dad51fa9c4f76a5debcd45a11bf280" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   def install
     system "cmake", ".", *std_cmake_args

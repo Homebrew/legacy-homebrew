@@ -1,17 +1,15 @@
-require 'formula'
-
 class Ekg2 < Formula
   desc "Multiplatform, multiprotocol, plugin-based instant messenger"
-  homepage 'http://ekg2.org'
-  url 'http://pl.ekg2.org/ekg2-0.3.1.tar.gz'
-  sha1 '8b6f53086e8e1d2890fdc1ec274a7b1615da0fa1'
+  homepage "http://ekg2.org"
+  url "http://pl.ekg2.org/ekg2-0.3.1.tar.gz"
+  sha256 "6ad360f8ca788d4f5baff226200f56922031ceda1ce0814e650fa4d877099c63"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline'
-  depends_on 'libgadu' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "readline"
+  depends_on "libgadu" => :optional
 
   def install
-    readline = Formula['readline'].opt_prefix
+    readline = Formula["readline"].opt_prefix
 
     args = ["--disable-debug", "--disable-dependency-tracking",
             "--prefix=#{prefix}",
@@ -24,7 +22,7 @@ class Ekg2 < Formula
     args << (build.with?("libgadu") ? "--with-libgadu" : "--without-libgadu")
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
 

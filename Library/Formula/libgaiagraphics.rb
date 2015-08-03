@@ -2,7 +2,7 @@ class Libgaiagraphics < Formula
   desc "Library supporting common-utility raster handling"
   homepage "https://www.gaia-gis.it/fossil/libgaiagraphics/index"
   url "http://www.gaia-gis.it/gaia-sins/gaiagraphics-sources/libgaiagraphics-0.5.tar.gz"
-  sha1 "db9eaef329fc650da737c71aac6136088fcb6549"
+  sha256 "ccab293319eef1e77d18c41ba75bc0b6328d0fc3c045bb1d1c4f9d403676ca1c"
   revision 1
 
   bottle do
@@ -22,6 +22,6 @@ class Libgaiagraphics < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

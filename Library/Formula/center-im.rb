@@ -2,7 +2,7 @@ class CenterIm < Formula
   desc "Text-mode multi-protocol instant messaging client"
   homepage "http://www.centerim.org/index.php/Main_Page"
   url "http://www.centerim.org/download/releases/centerim-4.22.10.tar.gz"
-  sha1 "46fbac7a55f33b0d4f42568cca21ed83770650e5"
+  sha256 "93ce15eb9c834a4939b5aa0846d5c6023ec2953214daf8dc26c85ceaa4413f6e"
   revision 1
 
   bottle do
@@ -21,7 +21,7 @@ class CenterIm < Formula
   patch :DATA
   patch :p0 do
     url "https://trac.macports.org/export/113135/trunk/dports/net/centerim/files/patch-libjabber_jconn.c.diff"
-    sha1 "70bf1cb777e086fb773d99aadbcaa8db77b19bec"
+    sha256 "ed8d10075c23c7dec2a782214cb53be05b11c04e617350f6f559f3c3bf803cfe"
   end
 
   def install

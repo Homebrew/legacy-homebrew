@@ -1,12 +1,10 @@
-require 'formula'
-
 class Giflib < Formula
   desc "GIF library using patented LZW algorithm"
-  homepage 'http://giflib.sourceforge.net/'
+  homepage "http://giflib.sourceforge.net/"
   # 4.2.0 has breaking API changes; don't update until
   # things in $(brew uses giflib) are compatible
-  url 'https://downloads.sourceforge.net/project/giflib/giflib-4.x/giflib-4.2.3.tar.bz2'
-  sha256 '0ac8d56726f77c8bc9648c93bbb4d6185d32b15ba7bdb702415990f96f3cb766'
+  url "https://downloads.sourceforge.net/project/giflib/giflib-4.x/giflib-4.2.3.tar.bz2"
+  sha256 "0ac8d56726f77c8bc9648c93bbb4d6185d32b15ba7bdb702415990f96f3cb766"
 
   bottle do
     cellar :any
@@ -20,6 +18,6 @@ class Giflib < Formula
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 end

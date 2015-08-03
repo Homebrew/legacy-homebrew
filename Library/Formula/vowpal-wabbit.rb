@@ -1,11 +1,9 @@
-require "formula"
-
 class VowpalWabbit < Formula
   desc "Online learning algorithm"
   homepage "https://github.com/JohnLangford/vowpal_wabbit"
   head "https://github.com/JohnLangford/vowpal_wabbit.git"
   url "https://github.com/JohnLangford/vowpal_wabbit/archive/8.0.tar.gz"
-  sha1 "a83b37851d8743358339d3dfa1342b3c1caef18b"
+  sha256 "ebf7fea91eead6da3d9fd479b901a320d5ab3ed20b2b134b5ce86aec771b0a60"
 
   bottle do
     cellar :any
@@ -29,7 +27,7 @@ class VowpalWabbit < Formula
     ENV.cxx11
     ENV["AC_PATH"] = "#{HOMEBREW_PREFIX}/share"
     system "./autogen.sh", "--prefix=#{prefix}",
-                           "--with-boost=#{Formula['boost'].opt_prefix}"
+                           "--with-boost=#{Formula["boost"].opt_prefix}"
     system "make"
     system "make", "install"
   end
@@ -40,8 +38,8 @@ class VowpalWabbit < Formula
       1 2 'second_house | price:.18 sqft:.15 age:.35 1976
       0 1 0.5 'third_house | price:.53 sqft:.32 age:.87 1924
     EOS
-    system bin/"vw", "house_dataset",  "-l", "10",  "-c",  "--passes", "25",  "--holdout_off",  "--audit",  "-f" ,"house.model", "--nn", "5"
-    system bin/"vw", "-t", "-i", "house.model", "-d", "house_dataset", "-p" ,"house.predict"
+    system bin/"vw", "house_dataset",  "-l", "10",  "-c",  "--passes", "25",  "--holdout_off",  "--audit",  "-f", "house.model", "--nn", "5"
+    system bin/"vw", "-t", "-i", "house.model", "-d", "house_dataset", "-p", "house.predict"
 
     (testpath/"csoaa.dat").write <<-EOS.undent
       1:1.0 a1_expect_1| a
@@ -78,6 +76,5 @@ class VowpalWabbit < Formula
     EOS
     system bin/"vw", "-d", "train.dat", "--cb", "4", "-f", "cb.model"
     system bin/"vw", "-t", "-i", "cb.model", "-d", "test.dat", "-p", "cb.predict"
-
   end
 end

@@ -2,7 +2,7 @@ class Bvi < Formula
   desc "Vi-like binary file (hex) editor"
   homepage "http://bvi.sourceforge.net"
   url "https://downloads.sourceforge.net/bvi/bvi-1.4.0.src.tar.gz"
-  sha1 "7b3c0760f0779dba920e08eafcf2fe23a09d70da"
+  sha256 "015a3c2832c7c097d98a5527deef882119546287ba8f2a70c736227d764ef802"
 
   bottle do
     sha1 "d14b7c6362ffe938f1fd500334a06cc69389c465" => :yosemite

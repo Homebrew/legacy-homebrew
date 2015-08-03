@@ -1,5 +1,3 @@
-require "formula"
-
 class Riak < Formula
   desc "Distributed database"
   homepage "http://basho.com/riak/"

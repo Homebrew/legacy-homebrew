@@ -2,7 +2,7 @@ class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "http://wiki.znc.in/ZNC"
   url "http://znc.in/releases/archive/znc-1.6.0.tar.gz"
-  sha1 "548d31fa63d50494bdf4b1d3c0f43a8ceda66849"
+  sha256 "df622aeae34d26193c738dff6499e56ad669ec654484e19623738d84cc80aba7"
 
   head do
     url "https://github.com/znc/znc.git"

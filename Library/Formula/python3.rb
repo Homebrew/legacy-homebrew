@@ -32,7 +32,7 @@ class Python3 < Formula
   depends_on "openssl"
   depends_on "xz" => :recommended  # for the lzma module added in 3.3
   depends_on "homebrew/dupes/tcl-tk" => :optional
-  depends_on :x11 if build.with? "tcl-tk" and Tab.for_name("homebrew/dupes/tcl-tk").with? "x11"
+  depends_on :x11 if build.with?("tcl-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
   skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5"
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
@@ -322,7 +322,7 @@ class Python3 < Formula
     EOS
 
     text += tk_caveats unless MacOS.version >= :lion
-    return text
+    text
   end
 
   test do

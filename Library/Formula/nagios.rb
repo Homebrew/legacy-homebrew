@@ -1,21 +1,36 @@
-require 'formula'
-
 class Nagios < Formula
   desc "Network monitoring and management system"
-  homepage 'http://www.nagios.org/'
-  url 'https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.0.6/nagios-4.0.6.tar.gz'
-  sha1 'aacd0ebc1a0a91692702667bd98f8a016b59780f'
+  homepage "http://www.nagios.org/"
+  url "https://downloads.sourceforge.net/project/nagios/nagios-4.x/nagios-4.0.6/nagios-4.0.6.tar.gz"
+  sha256 "d400190c771eb90e0ba16351f6358fa7e22e42a7be986f2066db63518a14397b"
 
-  depends_on 'gd'
-  depends_on 'nagios-plugins'
-  depends_on 'libpng'
+  depends_on "gd"
+  depends_on "nagios-plugins"
+  depends_on "libpng"
 
-  def nagios_sbin;  prefix+'cgi-bin';       end
-  def nagios_etc;   etc+'nagios';           end
-  def nagios_var;   var+'lib/nagios';       end
-  def htdocs;       share+'nagios/htdocs';  end
-  def user;         `id -un`.chomp;         end
-  def group;        `id -gn`.chomp;         end
+  def nagios_sbin
+    prefix+"cgi-bin"
+  end
+
+  def nagios_etc
+    etc+"nagios"
+  end
+
+  def nagios_var
+    var+"lib/nagios"
+  end
+
+  def htdocs
+    share+"nagios/htdocs"
+  end
+
+  def user
+    `id -un`.chomp
+  end
+
+  def group
+    `id -gn`.chomp
+  end
 
   def install
     system "./configure", "--disable-debug",
@@ -33,13 +48,13 @@ class Nagios < Formula
                           "--with-command-user=#{user}",
                           "--with-command-group=_www",
                           "--with-httpd-conf=#{share}"
-    system "make all"
-    system "make install"
+    system "make", "all"
+    system "make", "install"
 
     # Install config
     system "make install-config"
     system "make install-webconf"
-    mkdir HOMEBREW_PREFIX+'var/lib/nagios/rw' unless File.exist? HOMEBREW_PREFIX+'var/lib/nagios/rw'
+    mkdir HOMEBREW_PREFIX+"var/lib/nagios/rw" unless File.exist? HOMEBREW_PREFIX+"var/lib/nagios/rw"
   end
 
   plist_options :startup => true, :manual => "nagios #{HOMEBREW_PREFIX}/etc/nagios/nagios.cfg"

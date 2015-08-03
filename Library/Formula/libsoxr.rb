@@ -1,11 +1,9 @@
-require "formula"
-
 class Libsoxr < Formula
   desc "High quality, one-dimensional sample-rate conversion library"
   homepage "http://sourceforge.net/projects/soxr/"
   url "https://downloads.sourceforge.net/project/soxr/soxr-0.1.1-Source.tar.xz"
   mirror "https://mirrors.kernel.org/debian/pool/main/libs/libsoxr/libsoxr_0.1.1.orig.tar.xz"
-  sha1 "f5d90e375db3914a522fef477898bde8c70243e7"
+  sha256 "dcc16868d1a157079316f84233afcc2b52dd0bd541dd8439dc25bceb306faac2"
 
   bottle do
     cellar :any

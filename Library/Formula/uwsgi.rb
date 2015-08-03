@@ -1,5 +1,3 @@
-require "formula"
-
 class Uwsgi < Formula
   desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
@@ -7,7 +5,7 @@ class Uwsgi < Formula
 
   stable do
     url "http://projects.unbit.it/downloads/uwsgi-2.0.10.tar.gz"
-    sha1 "31bae2dac113af8d95dbc9b982df139ff61ce209"
+    sha256 "c0b381d6c22da931e85e3efe612629fe33a01ac25b0f028aa631b85d86d5028b"
   end
 
   bottle do
@@ -50,7 +48,7 @@ class Uwsgi < Formula
   option "with-ruby", "Compile with Ruby support"
 
   def install
-    ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
+    ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
@@ -81,7 +79,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper","ugreen", "webdav", "zergpool"]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"

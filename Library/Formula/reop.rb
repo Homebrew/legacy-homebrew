@@ -1,5 +1,3 @@
-require "formula"
-
 class Reop < Formula
   desc "Encrypted keypair management"
   homepage "http://www.tedunangst.com/flak/post/reop"

@@ -1,27 +1,25 @@
-require 'formula'
-
 class Ohcount < Formula
   desc "Source code line counter"
-  homepage 'https://github.com/blackducksw/ohcount'
-  url 'https://github.com/blackducksw/ohcount/archive/3.0.0.tar.gz'
-  sha1 '7f3fce48bf2a522c5262215699c36625ca6d3d33'
+  homepage "https://github.com/blackducksw/ohcount"
+  url "https://github.com/blackducksw/ohcount/archive/3.0.0.tar.gz"
+  sha256 "46ef92e1bbf9313de507a03decaf8279173584555fb580bb3d46d42c65aa4a6d"
 
   head do
-    url 'https://github.com/blackducksw/ohcount.git'
-    depends_on 'libmagic'
+    url "https://github.com/blackducksw/ohcount.git"
+    depends_on "libmagic"
   end
 
-  depends_on 'ragel'
-  depends_on 'pcre'
+  depends_on "ragel"
+  depends_on "pcre"
 
   patch :DATA
 
   def install
     # find Homebrew's libpcre
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
 
     system "./build", "ohcount"
-    bin.install 'bin/ohcount'
+    bin.install "bin/ohcount"
   end
 
   test do

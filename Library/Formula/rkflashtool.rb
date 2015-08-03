@@ -1,10 +1,8 @@
-require "formula"
-
 class Rkflashtool < Formula
   desc "Tools for flashing Rockchip devices"
   homepage "https://sourceforge.net/projects/rkflashtool/"
   url "https://downloads.sourceforge.net/project/rkflashtool/rkflashtool-5.1/rkflashtool-5.1-src.tar.bz2"
-  sha1 "5b786298376649a2d44069d5aa7053318b983fa1"
+  sha256 "2cad0e0c116357b721a6ac98fb3a91b43fe0269cda66e75eda4adec3330b7735"
 
   head "git://git.code.sf.net/p/rkflashtool/Git"
 
@@ -20,7 +18,7 @@ class Rkflashtool < Formula
   # Add file 'version.h' that has been forgotten in the tarball
   resource "version" do
     url "https://downloads.sourceforge.net/project/rkflashtool/rkflashtool-5.1/version.h"
-    sha1 "eaf56bbcaebb6f169233e6792459c62186f65e06"
+    sha256 "b7bd8e3c66170d5f6e6a68c5add677ad365e37b4121251de87ad29e7fdf06cd6"
   end
 
   def install

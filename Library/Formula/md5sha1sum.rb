@@ -3,7 +3,7 @@ class Md5sha1sum < Formula
   homepage "http://www.microbrew.org/tools/md5sha1sum/"
   url "http://www.microbrew.org/tools/md5sha1sum/md5sha1sum-0.9.5.tar.gz"
   mirror "http://www.sourcefiles.org/Utilities/Console/M-P/md5sha1sum-0.9.5.tar.gz"
-  sha1 "84a46bfd2b49daa0a601a9c55b7d87c27e19ef87"
+  sha256 "2fe6b4846cb3e343ed4e361d1fd98fdca6e6bf88e0bba5b767b0fdc5b299f37b"
 
   bottle do
     cellar :any
@@ -32,5 +32,4 @@ class Md5sha1sum < Formula
     EOS
     system "#{bin}/sha1sum", "--check", "file.txt.sha1"
   end
-
 end

@@ -1,10 +1,8 @@
-require "formula"
-
 class Pex < Formula
   desc "Package manager for PostgreSQL"
   homepage "https://github.com/petere/pex"
   url "https://github.com/petere/pex/archive/1.20140409.tar.gz"
-  sha1 "7cc652cd89bc6c6bf2488c8eb1ee91588053262a"
+  sha256 "5047946a2f83e00de4096cd2c3b1546bc07be431d758f97764a36b32b8f0ae57"
 
   depends_on :postgresql
 

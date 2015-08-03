@@ -1,56 +1,54 @@
-require 'formula'
-
 class Cherokee < Formula
   desc "Cherokee web server"
-  homepage 'http://cherokee-project.com/'
+  homepage "http://cherokee-project.com/"
 
   stable do
     url "http://pkgs.fedoraproject.org/repo/pkgs/cherokee/cherokee-1.2.103.tar.gz/527b3de97ef9727bfd5f6832043cf916/cherokee-1.2.103.tar.gz"
-    sha1 "8af2b93eb08f3719d21c7ae8fd94b9a99fb674c0"
+    sha256 "790777e7b4355b60698443161e45b5a20a9d0ab8c4c47924e00d19da8b74dfcd"
 
     # OSX 10.9 patch
     patch do
       url "https://github.com/cherokee/webserver/commit/d0213768fdc6cf3aee61fe0be398d7825c01198f.diff"
-      sha1 "6f6443e7b1fce20bf36660e6a75c889fd1121c16"
+      sha256 "c1dd1cf1d7a392b697ebd32b4860ae7bbdb569112ff7b8380a220300afd62b7f"
     end
   end
 
   head do
-    url 'https://github.com/cherokee/webserver.git'
+    url "https://github.com/cherokee/webserver.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on 'wget' => :build
+    depends_on "wget" => :build
   end
 
-  depends_on 'gettext'
+  depends_on "gettext"
   depends_on "openssl"
 
   def install
     if build.head?
-      ENV['LIBTOOL'] = 'glibtool'
-      ENV['LIBTOOLIZE'] = 'glibtoolize'
-      cmd = './autogen.sh'
+      ENV["LIBTOOL"] = "glibtool"
+      ENV["LIBTOOLIZE"] = "glibtoolize"
+      cmd = "./autogen.sh"
     else
-      cmd = './configure'
+      cmd = "./configure"
     end
 
     system cmd, "--disable-dependency-tracking",
                 "--prefix=#{prefix}",
                 "--sysconfdir=#{etc}",
                 "--localstatedir=#{var}/cherokee",
-                "--with-wwwuser=#{ENV['USER']}",
+                "--with-wwwuser=#{ENV["USER"]}",
                 "--with-wwwgroup=www",
                 "--enable-internal-pcre",
                 # Don't install to /Library
                 "--with-wwwroot=#{etc}/cherokee/htdocs",
                 "--with-cgiroot=#{etc}/cherokee/cgi-bin"
-    system "make install"
+    system "make", "install"
 
     prefix.install "org.cherokee.webserver.plist"
-    (prefix+'org.cherokee.webserver.plist').chmod 0644
-    (share+'cherokee/admin/server.py').chmod 0755
+    (prefix+"org.cherokee.webserver.plist").chmod 0644
+    (share+"cherokee/admin/server.py").chmod 0755
   end
 
   def caveats

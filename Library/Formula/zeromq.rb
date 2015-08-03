@@ -20,7 +20,7 @@ class Zeromq < Formula
 
   stable do
     url "http://download.zeromq.org/zeromq-4.1.2.tar.gz"
-    sha1 "86c17096f7f4bf46cbcd2ad242cf8fec8a7cfb7b"
+    sha256 "f9162ead6d68521e5154d871bac304f88857308bb02366b81bb588497a345927"
   end
 
   option :universal
@@ -40,8 +40,8 @@ class Zeromq < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     if build.with? "libpgm"
       # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
-      ENV['pgm_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
-      ENV['pgm_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
+      ENV["pgm_CFLAGS"] = `pkg-config --cflags openpgm-5.2`.chomp
+      ENV["pgm_LIBS"] = `pkg-config --libs openpgm-5.2`.chomp
       args << "--with-pgm"
     end
 

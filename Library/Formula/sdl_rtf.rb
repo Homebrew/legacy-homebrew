@@ -1,17 +1,15 @@
-require 'formula'
-
 class SdlRtf < Formula
   desc "Sample library to display Rich Text Format (RTF) documents"
-  homepage 'http://www.libsdl.org/projects/SDL_rtf/'
-  url 'http://www.libsdl.org/projects/SDL_rtf/release/SDL_rtf-0.1.0.tar.gz'
-  sha1 'daf749fd87b1d76cd43880c9c5b61c9741847197'
+  homepage "http://www.libsdl.org/projects/SDL_rtf/"
+  url "http://www.libsdl.org/projects/SDL_rtf/release/SDL_rtf-0.1.0.tar.gz"
+  sha256 "3dc0274b666e28010908ced24844ca7d279e07b66f673c990d530d4ea94b757e"
 
-  head 'http://hg.libsdl.org/SDL_rtf', :using => :hg
+  head "http://hg.libsdl.org/SDL_rtf", :using => :hg
 
-  depends_on 'sdl'
+  depends_on "sdl"
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

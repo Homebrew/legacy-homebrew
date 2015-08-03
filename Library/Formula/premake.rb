@@ -1,10 +1,8 @@
-require "formula"
-
 class Premake < Formula
   desc "Premake is a build script generator"
   homepage "http://industriousone.com/premake"
   url "https://downloads.sourceforge.net/project/premake/Premake/4.3/premake-4.3-src.zip"
-  sha1 "8f37a3599121580f18b578811162b9b49a2e122f"
+  sha256 "36536490f8928d8ecde135da80cd8b751ea5bebe50cabba5c0de49cd41cb2780"
 
   bottle do
     cellar :any
@@ -15,7 +13,7 @@ class Premake < Formula
 
   devel do
     url "https://downloads.sourceforge.net/project/premake/Premake/4.4/premake-4.4-beta5-src.zip"
-    sha1 "02472d4304ed9ff66cde57038c17fbd42a159028"
+    sha256 "0fa1ed02c5229d931e87995123cdb11d44fcc8bd99bba8e8bb1bbc0aaa798161"
   end
 
   def install

@@ -1,10 +1,8 @@
-require "formula"
-
 class OpenMesh < Formula
   desc "Generic data structure to represent and manipulate polygonal meshes"
   homepage "http://openmesh.org"
   url "http://www.openmesh.org/media/Releases/3.3/OpenMesh-3.3.tar.gz"
-  sha1 "673677702a27a929c9124f8d4ea2b188a0500c50"
+  sha256 "1fbc458e6f7d43d24a0e13005c094d15f08cc2f734a943d6c5417f0e6d9ad70e"
 
   bottle do
     cellar :any
@@ -21,7 +19,7 @@ class OpenMesh < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      system "make install"
+      system "make", "install"
     end
   end
 

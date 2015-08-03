@@ -1,10 +1,8 @@
-require 'formula'
-
 class Swftools < Formula
   desc "SWF manipulation and generation tools"
-  homepage 'http://www.swftools.org'
-  url 'http://www.swftools.org/swftools-0.9.2.tar.gz'
-  sha256 'bf6891bfc6bf535a1a99a485478f7896ebacbe3bbf545ba551298080a26f01f1'
+  homepage "http://www.swftools.org"
+  url "http://www.swftools.org/swftools-0.9.2.tar.gz"
+  sha256 "bf6891bfc6bf535a1a99a485478f7896ebacbe3bbf545ba551298080a26f01f1"
   revision 1
 
   bottle do
@@ -13,17 +11,17 @@ class Swftools < Formula
     sha256 "900f2dd522f48c9ea72a3bf8dba53a8f0f35a4867dc68fab5dc85921a769c206" => :mountain_lion
   end
 
-  option 'with-xpdf', 'Build with PDF support'
+  option "with-xpdf", "Build with PDF support"
 
   depends_on :x11 if build.with? "xpdf"
-  depends_on 'jpeg' => :optional
-  depends_on 'lame' => :optional
-  depends_on 'giflib' => :optional
-  depends_on 'fftw' => :optional
+  depends_on "jpeg" => :optional
+  depends_on "lame" => :optional
+  depends_on "giflib" => :optional
+  depends_on "fftw" => :optional
 
-  resource 'xpdf' do
-    url 'ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.04.tar.gz', :using  => :nounzip
-    sha1 'b9b1dbb0335742a09d0442c60fd02f4f934618bd'
+  resource "xpdf" do
+    url "ftp://ftp.foolabs.com/pub/xpdf/xpdf-3.04.tar.gz", :using  => :nounzip
+    sha256 "11390c74733abcb262aaca4db68710f13ffffd42bfe2a0861a5dfc912b2977e5"
   end
 
   # Fixes a conftest for libfftwf.dylib that mistakenly calls fftw_malloc()
@@ -39,10 +37,10 @@ class Swftools < Formula
   end
 
   def install
-    (buildpath+'lib/pdf').install resource('xpdf') if build.with? "xpdf"
+    (buildpath+"lib/pdf").install resource("xpdf") if build.with? "xpdf"
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

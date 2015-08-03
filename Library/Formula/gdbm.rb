@@ -3,7 +3,7 @@ class Gdbm < Formula
   homepage "https://www.gnu.org/software/gdbm/"
   url "http://ftpmirror.gnu.org/gdbm/gdbm-1.11.tar.gz"
   mirror "https://ftp.gnu.org/gnu/gdbm/gdbm-1.11.tar.gz"
-  sha1 "ce433d0f192c21d41089458ca5c8294efe9806b4"
+  sha256 "8d912f44f05d0b15a4a5d96a76f852e905d051bb88022fcdfd98b43be093e3c3"
 
   bottle do
     cellar :any

@@ -1,18 +1,16 @@
-require "formula"
-
 class TomeePlus < Formula
   desc "Everything in TomEE Web Profile and JAX-RS, plus more"
-  homepage "http://tomee.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plus.tar.gz"
+  homepage "https://tomee.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plus.tar.gz"
   version "1.7.1"
-  sha1 "c957652b205ec2395dfc30004e88088d4fb41aa5"
+  sha256 "638f70c55d3927ff8e15281e4a24aa17f632a9eabaa3c52f448b7009d1d289eb"
 
   def install
     # Remove Windows scripts
     rm_rf Dir["bin/*.bat"]
 
     # Install files
-    prefix.install %w{ NOTICE LICENSE RELEASE-NOTES RUNNING.txt }
+    prefix.install %w[NOTICE LICENSE RELEASE-NOTES RUNNING.txt]
     libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/startup.sh" => "tomee-plus-startup"
   end

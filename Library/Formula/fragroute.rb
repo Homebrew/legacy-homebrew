@@ -1,27 +1,25 @@
-require 'formula'
-
 class Fragroute < Formula
   desc "Intercepts, modifies, and rewrites egress traffic for a specified host"
-  homepage 'http://www.monkey.org/~dugsong/fragroute/'
-  url 'http://www.monkey.org/~dugsong/fragroute/fragroute-1.2.tar.gz'
-  sha1 '0e85daf40f4910d56d75e6cdee163305a1cb9004'
+  homepage "http://www.monkey.org/~dugsong/fragroute/"
+  url "http://www.monkey.org/~dugsong/fragroute/fragroute-1.2.tar.gz"
+  sha256 "6899a61ecacba3bb400a65b51b3c0f76d4e591dbf976fba0389434a29efc2003"
 
-  depends_on 'libdnet'
-  depends_on 'libevent'
+  depends_on "libdnet"
+  depends_on "libevent"
 
   patch :p0 do
     url "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/configure.patch"
-    sha1 "a858f069dffcb539edbb3fe543200596214669f8"
+    sha256 "215e21d92304e47239697945963c61445f961762aea38afec202e4dce4487557"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/fragroute.c.patch"
-    sha1 "a865ee37762c4f31882a2b54a03bf74e5c1b7832"
+    sha256 "f4475dbe396ab873dcd78e3697db9d29315dcc4147fdbb22acb6391c0de011eb"
   end
 
   patch :p0 do
     url "https://trac.macports.org/export/105753/trunk/dports/net/fragroute/files/pcaputil.c.patch"
-    sha1 "e5fac9731901d5a20d202511ab2acd76a3b12da9"
+    sha256 "c1036f61736289d3e9b9328fcb723dbe609453e5f2aab4875768068faade0391"
   end
 
   def install

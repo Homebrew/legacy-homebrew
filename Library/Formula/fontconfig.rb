@@ -2,7 +2,7 @@ class Fontconfig < Formula
   desc "XML-based font configuration API for X Windows"
   homepage "http://fontconfig.org/"
   url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
-  sha1 "08565feea5a4e6375f9d8a7435dac04e52620ff2"
+  sha256 "dc62447533bca844463a3c3fd4083b57c90f18a70506e7a9f4936b5a1e516a99"
 
   # The bottle tooling is too lenient and thinks fontconfig
   # is relocatable, but it has hardcoded paths in the executables.

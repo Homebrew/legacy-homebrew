@@ -2,7 +2,7 @@ class Bar < Formula
   desc "Provide progress bars for shell scripts"
   homepage "http://www.theiling.de/projects/bar.html"
   url "http://www.theiling.de/downloads/bar-1.4-src.tar.bz2"
-  sha1 "00b55ca1d52ca6ed099937692697c2257833c73c"
+  sha256 "8034c405b6aa0d474c75ef9356cde1672b8b81834edc7bd94fc91e8ae097033e"
 
   def install
     bin.install "bar"

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Udis86 < Formula
   desc "Minimalistic disassembler library for x86"
-  homepage 'http://udis86.sourceforge.net'
-  url 'https://downloads.sourceforge.net/udis86/udis86-1.7.2.tar.gz'
-  sha1 'f55dec2d5319aac9d0a7ae2614ddcc7aa73d3744'
+  homepage "http://udis86.sourceforge.net"
+  url "https://downloads.sourceforge.net/udis86/udis86-1.7.2.tar.gz"
+  sha256 "9c52ac626ac6f531e1d6828feaad7e797d0f3cce1e9f34ad4e84627022b3c2f4"
 
   option :universal
 
@@ -13,7 +11,7 @@ class Udis86 < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--enable-shared"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

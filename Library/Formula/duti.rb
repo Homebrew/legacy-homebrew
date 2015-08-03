@@ -1,11 +1,9 @@
-require "formula"
-
 class Duti < Formula
   desc "Select default apps for documents and URL schemes on OS X"
   homepage "http://duti.org/"
   head "https://github.com/moretension/duti.git"
   url "https://github.com/moretension/duti/archive/duti-1.5.3.tar.gz"
-  sha1 "2a4e34002db33133feb8057968d1f670bf422ea5"
+  sha256 "0e71b7398e01aedf9dde0ffe7fd5389cfe82aafae38c078240780e12a445b9fa"
 
   bottle do
     cellar :any

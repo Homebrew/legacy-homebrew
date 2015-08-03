@@ -1,10 +1,8 @@
-require "formula"
-
 class Libstrophe < Formula
   desc "XMPP library for C"
   homepage "http://strophe.im/libstrophe/"
   url "https://github.com/strophe/libstrophe/archive/0.8.6.tar.gz"
-  sha1 "fc30c78945cb075a636cff8c76be671c8a364eb0"
+  sha256 "a2158134381e544a7697e9379f45abe18da817cd05eb3272eabec2151599d702"
   head "https://github.com/strophe/libstrophe.git"
   revision 1
 
@@ -35,7 +33,7 @@ class Libstrophe < Formula
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <strophe.h>
       #include <assert.h>
 
