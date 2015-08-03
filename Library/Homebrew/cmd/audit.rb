@@ -367,6 +367,10 @@ class FormulaAuditor
     if desc =~ %r[[Cc]ommand line]
       problem "It should be \"command-line\", not \"command line\"."
     end
+
+    if desc =~ %r[^([Aa]n?)\s]
+      problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
+    end
   end
 
   def audit_homepage
