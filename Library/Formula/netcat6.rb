@@ -5,6 +5,12 @@ class Netcat6 < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/n/nc6/nc6_1.0.orig.tar.gz"
   sha256 "db7462839dd135ff1215911157b666df8512df6f7343a075b2f9a2ef46fe5412"
 
+  bottle do
+    sha256 "7020abcd43b4b1714a43e42f468895c6c02ad2a8a214bc36761b6b5f615cd127" => :yosemite
+    sha256 "7b1d4a701e8fadedea4e5cc89d7cbcb5bf476476557975a71a681850c50bf872" => :mavericks
+    sha256 "361c72d301addec6d417b52535da84dd924fdcdf9794889dc5ac0f240bb31b02" => :mountain_lion
+  end
+
   option "with-silence-patch", "Use silence patch from Debian"
 
   deprecated_option "silence-patch" => "with-silence-patch"
