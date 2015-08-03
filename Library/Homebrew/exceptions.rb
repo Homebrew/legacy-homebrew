@@ -5,7 +5,7 @@ class KegUnspecifiedError < UsageError; end
 class MultipleVersionsInstalledError < RuntimeError
   attr_reader :name
 
-  def initialize name
+  def initialize(name)
     @name = name
     super "#{name} has multiple installed versions"
   end
@@ -16,7 +16,7 @@ class NotAKegError < RuntimeError; end
 class NoSuchKegError < RuntimeError
   attr_reader :name
 
-  def initialize name
+  def initialize(name)
     @name = name
     super "No such keg: #{HOMEBREW_CELLAR}/#{name}"
   end
@@ -37,12 +37,12 @@ class FormulaUnavailableError < RuntimeError
   attr_reader :name
   attr_accessor :dependent
 
-  def initialize name
+  def initialize(name)
     @name = name
   end
 
   def dependent_s
-    "(dependency of #{dependent})" if dependent and dependent != name
+    "(dependency of #{dependent})" if dependent && dependent != name
   end
 
   def to_s
@@ -53,7 +53,7 @@ end
 class TapFormulaUnavailableError < FormulaUnavailableError
   attr_reader :tap, :user, :repo
 
-  def initialize tap, name
+  def initialize(tap, name)
     @tap = tap
     @user = tap.user
     @repo = tap.repo
@@ -70,7 +70,7 @@ end
 class TapFormulaAmbiguityError < RuntimeError
   attr_reader :name, :paths, :formulae
 
-  def initialize name, paths
+  def initialize(name, paths)
     @name = name
     @paths = paths
     @formulae = paths.map do |path|
@@ -89,7 +89,7 @@ end
 class TapUnavailableError < RuntimeError
   attr_reader :name
 
-  def initialize name
+  def initialize(name)
     @name = name
 
     super <<-EOS.undent
@@ -99,7 +99,7 @@ class TapUnavailableError < RuntimeError
 end
 
 class OperationInProgressError < RuntimeError
-  def initialize name
+  def initialize(name)
     message = <<-EOS.undent
       Operation already in progress for #{name}
       Another active Homebrew process is already using #{name}.
@@ -149,7 +149,7 @@ class FormulaConflictError < RuntimeError
     message << "Cannot install #{formula.full_name} because conflicting formulae are installed.\n"
     message.concat conflicts.map { |c| conflict_message(c) } << ""
     message << <<-EOS.undent
-      Please `brew unlink #{conflicts.map(&:name)*' '}` before continuing.
+      Please `brew unlink #{conflicts.map(&:name)*" "}` before continuing.
 
       Unlinking removes a formula's symlinks from #{HOMEBREW_PREFIX}. You can
       link the formula again after the install finishes. You can --force this
@@ -166,7 +166,7 @@ class BuildError < RuntimeError
   def initialize(formula, cmd, args, env)
     @formula = formula
     @env = env
-    args = args.map{ |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
+    args = args.map { |arg| arg.to_s.gsub " ", "\\ " }.join(" ")
     super "Failed executing: #{cmd} #{args}"
   end
 
@@ -182,7 +182,7 @@ class BuildError < RuntimeError
   end
 
   def dump
-    if not ARGV.verbose?
+    if !ARGV.verbose?
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
@@ -196,8 +196,8 @@ class BuildError < RuntimeError
         end
       end
     else
-      require 'cmd/config'
-      require 'cmd/--env'
+      require "cmd/config"
+      require "cmd/--env"
 
       ohai "Formula"
       puts "Tap: #{formula.tap}" if formula.tap?
@@ -210,13 +210,13 @@ class BuildError < RuntimeError
       onoe "#{formula.full_name} #{formula.version} did not build"
       unless (logs = Dir["#{formula.logs}/*"]).empty?
         puts "Logs:"
-        puts logs.map{|fn| "     #{fn}"}.join("\n")
+        puts logs.map { |fn| "     #{fn}" }.join("\n")
       end
     end
     puts
     unless RUBY_VERSION < "1.8.7" || issues.empty?
       puts "These open issues may also help:"
-      puts issues.map{ |i| "#{i['title']} #{i['html_url']}" }.join("\n")
+      puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
 
     if MacOS.version >= "10.11"
@@ -253,7 +253,7 @@ end
 class CurlDownloadStrategyError < RuntimeError
   def initialize(url)
     case url
-    when %r[^file://(.+)]
+    when %r{^file://(.+)}
       super "File does not exist: #{$1}"
     else
       super "Download failed: #{url}"
@@ -263,7 +263,7 @@ end
 
 # raised by safe_system in utils.rb
 class ErrorDuringExecution < RuntimeError
-  def initialize(cmd, args=[])
+  def initialize(cmd, args = [])
     args = args.map { |a| a.to_s.gsub " ", "\\ " }.join(" ")
     super "Failure while executing: #{cmd} #{args}"
   end
@@ -276,7 +276,7 @@ class ChecksumMissingError < ArgumentError; end
 class ChecksumMismatchError < RuntimeError
   attr_reader :expected, :hash_type
 
-  def initialize fn, expected, actual
+  def initialize(fn, expected, actual)
     @expected = expected
     @hash_type = expected.hash_type.to_s.upcase
 
@@ -303,7 +303,7 @@ class DuplicateResourceError < ArgumentError
 end
 
 class BottleVersionMismatchError < RuntimeError
-  def initialize bottle_file, bottle_version, formula, formula_version
+  def initialize(bottle_file, bottle_version, formula, formula_version)
     super <<-EOS.undent
       Bottle version mismatch
       Bottle: #{bottle_file} (#{bottle_version})

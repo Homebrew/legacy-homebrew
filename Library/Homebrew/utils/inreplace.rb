@@ -8,7 +8,7 @@ module Utils
   end
 
   module Inreplace
-    def inreplace paths, before=nil, after=nil
+    def inreplace(paths, before = nil, after = nil)
       errors = {}
 
       Array(paths).each do |path|

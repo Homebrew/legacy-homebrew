@@ -1,4 +1,4 @@
-require 'options'
+require "options"
 
 module Dependable
   RESERVED_TAGS = [:build, :optional, :recommended, :run]

@@ -1,27 +1,26 @@
-require 'formula'
-require 'blacklist'
-require 'utils'
-require 'thread'
+require "formula"
+require "blacklist"
+require "utils"
+require "thread"
 require "official_taps"
 
 module Homebrew
-
   SEARCH_ERROR_QUEUE = Queue.new
 
   def search
-    if ARGV.include? '--macports'
+    if ARGV.include? "--macports"
       exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
-    elsif ARGV.include? '--fink'
+    elsif ARGV.include? "--fink"
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
-    elsif ARGV.include? '--debian'
+    elsif ARGV.include? "--debian"
       exec_browser "https://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
-    elsif ARGV.include? '--opensuse'
+    elsif ARGV.include? "--opensuse"
       exec_browser "https://software.opensuse.org/search?q=#{ARGV.next}"
-    elsif ARGV.include? '--fedora'
+    elsif ARGV.include? "--fedora"
       exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
-    elsif ARGV.include? '--ubuntu'
+    elsif ARGV.include? "--ubuntu"
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
-    elsif ARGV.include? '--desc'
+    elsif ARGV.include? "--desc"
       query = ARGV.next
       rx = query_regexp(query)
       Formula.each do |formula|
@@ -48,7 +47,7 @@ module Homebrew
       local_results = search_formulae(rx)
       puts_columns(local_results)
 
-      if not query.empty? and $stdout.tty? and msg = blacklisted?(query)
+      if !query.empty? && $stdout.tty? && msg = blacklisted?(query)
         unless local_results.empty?
           puts
           puts "If you meant #{query.inspect} precisely:"
@@ -61,7 +60,7 @@ module Homebrew
       puts_columns(tap_results)
       count = local_results.length + tap_results.length
 
-      if count == 0 and not blacklisted? query
+      if count == 0 and !blacklisted? query
         puts "No formula found for #{query.inspect}."
         begin
           GitHub.print_pull_requests_matching(query)
@@ -73,7 +72,7 @@ module Homebrew
     metacharacters = %w[\\ | ( ) [ ] { } ^ $ * + ? .]
     bad_regex = metacharacters.any? do |char|
       ARGV.any? do |arg|
-        arg.include?(char) && !arg.start_with?('/')
+        arg.include?(char) && !arg.start_with?("/")
       end
     end
     if ARGV.any? && bad_regex
@@ -84,7 +83,7 @@ module Homebrew
   end
 
   SEARCHABLE_TAPS = OFFICIAL_TAPS.map { |tap| ["Homebrew", tap] } + [
-    %w{Caskroom cask},
+    %w[Caskroom cask]
   ]
 
   def query_regexp(query)
@@ -102,7 +101,7 @@ module Homebrew
     end
   end
 
-  def search_tap user, repo, rx
+  def search_tap(user, repo, rx)
     if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory? && \
        "#{user}/#{repo}" != "Caskroom/cask"
       return []
@@ -140,7 +139,7 @@ module Homebrew
     []
   end
 
-  def search_formulae rx
+  def search_formulae(rx)
     aliases = Formula.aliases
     results = (Formula.full_names+aliases).grep(rx).sort
 

@@ -1,4 +1,4 @@
-require 'hardware'
+require "hardware"
 require "software_spec"
 
 module Homebrew
@@ -59,7 +59,7 @@ module Homebrew
     if origin.empty? then "(none)" else origin end
   end
 
-  def describe_path path
+  def describe_path(path)
     return "N/A" if path.nil?
     realpath = path.realpath
     if realpath == path then path else "#{path} => #{realpath}" end
@@ -67,16 +67,16 @@ module Homebrew
 
   def describe_x11
     return "N/A" unless MacOS::XQuartz.installed?
-    return "#{MacOS::XQuartz.version} => #{describe_path(MacOS::XQuartz.prefix)}"
+    "#{MacOS::XQuartz.version} => #{describe_path(MacOS::XQuartz.prefix)}"
   end
 
   def describe_perl
-    describe_path(which 'perl')
+    describe_path(which "perl")
   end
 
   def describe_python
-    python = which 'python'
-    if %r{/shims/python$} =~ python && which('pyenv')
+    python = which "python"
+    if %r{/shims/python$} =~ python && which("pyenv")
       "#{python} => #{Pathname.new(`pyenv which python`.strip).realpath}" rescue describe_path(python)
     else
       describe_path(python)
@@ -84,8 +84,8 @@ module Homebrew
   end
 
   def describe_ruby
-    ruby = which 'ruby'
-    if %r{/shims/ruby$} =~ ruby && which('rbenv')
+    ruby = which "ruby"
+    if %r{/shims/ruby$} =~ ruby && which("rbenv")
       "#{ruby} => #{Pathname.new(`rbenv which ruby`.strip).realpath}" rescue describe_path(ruby)
     else
       describe_path(ruby)
@@ -114,7 +114,7 @@ module Homebrew
       s << RUBY_VERSION
     end
 
-    if RUBY_PATH.to_s !~ %r[^/System/Library/Frameworks/Ruby.framework/Versions/[12]\.[089]/usr/bin/ruby]
+    if RUBY_PATH.to_s !~ %r{^/System/Library/Frameworks/Ruby.framework/Versions/[12]\.[089]/usr/bin/ruby}
       s << " => #{RUBY_PATH}"
     end
     s
@@ -131,7 +131,7 @@ module Homebrew
     end
   end
 
-  def dump_verbose_config(f=$stdout)
+  def dump_verbose_config(f = $stdout)
     f.puts "HOMEBREW_VERSION: #{HOMEBREW_VERSION}"
     f.puts "ORIGIN: #{origin}"
     f.puts "HEAD: #{head}"

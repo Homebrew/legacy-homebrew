@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'formula'
+require "testing_env"
+require "formula"
 
 class PatchingTests < Homebrew::TestCase
   PATCH_URL_A = "file://#{TEST_DIRECTORY}/patches/noop-a.diff"
@@ -80,19 +80,35 @@ class PatchingTests < Homebrew::TestCase
   end
 
   def test_patch_p0
-    assert_patched formula { def patches; { :p0 => PATCH_URL_B }; end }
+    assert_patched formula { 
+      def patches 
+        { :p0 => PATCH_URL_B } 
+              end 
+    }
   end
 
   def test_patch_array
-    assert_patched formula { def patches; [PATCH_URL_A]; end }
+    assert_patched formula { 
+      def patches 
+        [PATCH_URL_A] 
+              end 
+    }
   end
 
   def test_patch_hash
-    assert_patched formula { def patches; { :p1 => PATCH_URL_A }; end }
+    assert_patched formula { 
+      def patches 
+        { :p1 => PATCH_URL_A } 
+              end 
+    }
   end
 
   def test_patch_hash_array
-    assert_patched formula { def patches; { :p1 => [PATCH_URL_A] } end }
+    assert_patched formula { 
+      def patches 
+        { :p1 => [PATCH_URL_A] } 
+              end 
+    }
   end
 
   def test_patch_string

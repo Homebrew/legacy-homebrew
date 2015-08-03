@@ -39,9 +39,17 @@ class PythonRequirement < Requirement
     Pathname.new Utils.popen_read(python, "-c", "import sys; print(sys.executable)").strip
   end
 
-  def system_python; "/usr/bin/#{python_binary}" end
-  def system_python?; system_python == which_python.to_s end
-  def python_binary; "python" end
+  def system_python 
+    "/usr/bin/#{python_binary}" 
+  end
+
+  def system_python? 
+    system_python == which_python.to_s 
+  end
+
+  def python_binary 
+    "python" 
+  end
 
   # Deprecated
   alias_method :to_s, :python_binary
@@ -54,5 +62,7 @@ class Python3Requirement < PythonRequirement
 
   satisfy(:build_env => false) { which_python }
 
-  def python_binary; "python3" end
+  def python_binary 
+    "python3" 
+  end
 end

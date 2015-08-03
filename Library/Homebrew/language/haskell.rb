@@ -9,7 +9,7 @@ module Language
         end
       end
 
-      def self.included base
+      def self.included(base)
         base.extend ClassMethods
       end
 
@@ -23,7 +23,7 @@ module Language
         ENV["HOME"] = pwd
 
         # use cabal's sandbox feature if available
-        cabal_version = `cabal --version`[/[0-9.]+/].split('.').collect(&:to_i)
+        cabal_version = `cabal --version`[/[0-9.]+/].split(".").collect(&:to_i)
         if (cabal_version <=> [1, 20]) > -1
           system "cabal", "sandbox", "init"
           cabal_sandbox_bin = pwd/".cabal-sandbox/bin"
@@ -34,7 +34,7 @@ module Language
         # cabal may build useful tools that should be found in the PATH
         mkdir_p cabal_sandbox_bin
         path = ENV["PATH"]
-        ENV.prepend_path 'PATH', cabal_sandbox_bin
+        ENV.prepend_path "PATH", cabal_sandbox_bin
         # update cabal package database
         system "cabal", "update"
         yield
@@ -55,7 +55,7 @@ module Language
       # package. The tools are installed sequentially in order to make possible
       # to install several tools that depends on each other
       def cabal_install_tools(*opts)
-        opts.each {|t| cabal_install t}
+        opts.each { |t| cabal_install t }
         rm_rf Dir[".cabal*/*packages.conf.d/"]
       end
 
@@ -66,7 +66,7 @@ module Language
         rm_rf lib
       end
 
-      def install_cabal_package args=[]
+      def install_cabal_package(args = [])
         cabal_sandbox do
           # the dependencies are built first and installed locally, and only the
           # current package is actually installed in the destination dir
