@@ -11,8 +11,9 @@ class Cowpatty < Formula
     sha256 "35fba0f92c5e8fb0710453d0c2c5fe5e9c64857dd53b219977871340b22c4942"
   end
 
-  def patches
-    [ "http://proton.cygnusx-1.org/~edgan/cowpatty/cowpatty-4.6-fixup16.patch" ]
+  patch do
+    url "http://proton.cygnusx-1.org/~edgan/cowpatty/cowpatty-4.6-fixup16.patch"
+    sha256 "2cf392c4dec543a6d77d7d420dae231938df3ba427e30f05256f6ab5baa47e5d"
   end
 
   def install
