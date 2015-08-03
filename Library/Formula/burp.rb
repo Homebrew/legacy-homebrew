@@ -8,9 +8,11 @@ class Burp < Formula
   head "https://github.com/grke/burp.git"
 
   bottle do
-    sha1 "d27f35a6552777084aac22adadb989d3bd6fab90" => :yosemite
-    sha1 "48e9795082e84df84155bd0d23f4613aecd5b278" => :mavericks
-    sha1 "9ef6db0acae148b70d4fc266db84b7174904aa52" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "712a71cb917b533f403b676aff9e24c44d7ab48e253cf3ee87a50e502f01f5ad" => :yosemite
+    sha256 "fff5e534ef2e6746ad67ac5f58387ea31158a853cdb833b7d8723d38e96e8a1b" => :mavericks
+    sha256 "0816d7da7eaf1fb90058bebe4a72649b2ae1697ed08cfbaf860908c763a1eb41" => :mountain_lion
   end
 
   depends_on "librsync"
