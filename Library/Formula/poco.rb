@@ -18,9 +18,22 @@ class Poco < Formula
   depends_on "openssl"
 
   def install
+    #This modifies the install name of shared libraries so the path is the install directory instead of the build directory.
+    #https://github.com/pocoproject/poco/pull/670
+    files = ['build/config/Darwin-clang','build/config/Darwin-clang-libc++','build/config/Darwin-gcc']
+    inreplace files, '-dynamiclib', '-dynamiclib -Wl,-install_name,$(POCO_PREFIX)/lib/$(notdir \$@)'
+
     ENV.cxx11 if build.cxx11?
 
-    arch = Hardware.is_64_bit? ? 'Darwin64': 'Darwin32'
+    if ENV.compiler == :clang
+      if build.cxx11?
+        arch = Hardware.is_64_bit? ? 'Darwin64-clang-libc++': 'Darwin32-clang-libc++'
+      else
+        arch = Hardware.is_64_bit? ? 'Darwin64-clang': 'Darwin32-clang'
+      end
+    else # ENV.compiler == :gcc
+     arch = Hardware.is_64_bit? ? 'Darwin64-gcc': 'Darwin32-gcc'
+    end
     system "./configure", "--prefix=#{prefix}",
                           "--config=#{arch}",
                           "--omit=Data/MySQL,Data/ODBC",
