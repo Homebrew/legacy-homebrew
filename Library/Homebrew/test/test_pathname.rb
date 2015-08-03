@@ -1,7 +1,7 @@
-require 'testing_env'
-require 'tmpdir'
-require 'extend/pathname'
-require 'install_renamed'
+require "testing_env"
+require "tmpdir"
+require "extend/pathname"
+require "install_renamed"
 
 module PathnameTestExtension
   include FileUtils
@@ -9,8 +9,8 @@ module PathnameTestExtension
   def setup
     @src  = Pathname.new(mktmpdir)
     @dst  = Pathname.new(mktmpdir)
-    @file = @src+'foo'
-    @dir  = @src+'bar'
+    @file = @src+"foo"
+    @dir  = @src+"bar"
   end
 
   def teardown
@@ -24,41 +24,41 @@ class PathnameTests < Homebrew::TestCase
 
   def test_rmdir_if_possible
     mkdir_p @dir
-    touch @dir+'foo'
+    touch @dir+"foo"
 
     assert !@dir.rmdir_if_possible
     assert_predicate @dir, :directory?
 
-    rm_f @dir+'foo'
+    rm_f @dir+"foo"
     assert @dir.rmdir_if_possible
     refute_predicate @dir, :exist?
   end
 
   def test_rmdir_if_possible_ignore_DS_Store
     mkdir_p @dir
-    touch @dir+'.DS_Store'
+    touch @dir+".DS_Store"
     assert @dir.rmdir_if_possible
     refute_predicate @dir, :exist?
   end
 
   def test_write
-    @file.write('CONTENT')
-    assert_equal 'CONTENT', File.read(@file)
+    @file.write("CONTENT")
+    assert_equal "CONTENT", File.read(@file)
   end
 
   def test_write_does_not_overwrite
     touch @file
-    assert_raises(RuntimeError) { @file.write('CONTENT') }
+    assert_raises(RuntimeError) { @file.write("CONTENT") }
   end
 
   def test_atomic_write
     touch @file
-    @file.atomic_write('CONTENT')
-    assert_equal 'CONTENT', File.read(@file)
+    @file.atomic_write("CONTENT")
+    assert_equal "CONTENT", File.read(@file)
   end
 
   def test_atomic_write_preserves_permissions
-    File.open(@file, "w", 0100777) { }
+    File.open(@file, "w", 0100777) {}
     @file.atomic_write("CONTENT")
     assert_equal 0100777 & ~File.umask, @file.stat.mode
   end
@@ -78,13 +78,13 @@ class PathnameTests < Homebrew::TestCase
   end
 
   def test_extname
-    assert_equal '.tar.gz', Pathname('foo-0.1.tar.gz').extname
-    assert_equal '.cpio.gz', Pathname('foo-0.1.cpio.gz').extname
+    assert_equal ".tar.gz", Pathname("foo-0.1.tar.gz").extname
+    assert_equal ".cpio.gz", Pathname("foo-0.1.cpio.gz").extname
   end
 
   def test_stem
-    assert_equal 'foo-0.1', Pathname('foo-0.1.tar.gz').stem
-    assert_equal 'foo-0.1', Pathname('foo-0.1.cpio.gz').stem
+    assert_equal "foo-0.1", Pathname("foo-0.1.tar.gz").stem
+    assert_equal "foo-0.1", Pathname("foo-0.1.cpio.gz").stem
   end
 
   def test_install_missing_file

@@ -1,7 +1,7 @@
 class Hardware
   class << self
     def is_32_bit?
-      not CPU.is_64_bit?
+      !CPU.is_64_bit?
     end
 
     def is_64_bit?
