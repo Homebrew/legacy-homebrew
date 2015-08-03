@@ -9,7 +9,7 @@ class Keg
 
         each_install_name_for(file) do |bad_name|
           # Don't fix absolute paths unless they are rooted in the build directory
-          next if bad_name.start_with? "/" && !bad_name.start_with?(HOMEBREW_TEMP.to_s)
+          next if bad_name.start_with?("/") && !bad_name.start_with?(HOMEBREW_TEMP.to_s)
 
           new_name = fixed_name(file, bad_name)
           change_install_name(bad_name, new_name, file) unless new_name == bad_name
