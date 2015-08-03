@@ -576,7 +576,7 @@ class Checks
   end
 
   def check_xcode_select_path
-    if !MacOS::CLT.installed? and !File.file? "#{MacOS.active_developer_dir}/usr/bin/xcodebuild"
+    if !MacOS::CLT.installed? && !File.file?("#{MacOS.active_developer_dir}/usr/bin/xcodebuild")
       path = MacOS::Xcode.bundle_path
       path = "/Developer" if path.nil? || !path.directory?
       <<-EOS.undent
