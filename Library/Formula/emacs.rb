@@ -26,6 +26,7 @@ class Emacs < Formula
 
   option "with-cocoa", "Build a Cocoa version of emacs"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
+  option "without-libxml2", "Don't build with libxml2 support"
 
   deprecated_option "cocoa" => "with-cocoa"
   deprecated_option "keep-ctags" => "with-ctags"
@@ -57,6 +58,12 @@ class Emacs < Formula
             "--infodir=#{info}/emacs"]
 
     args << "--with-file-notification=gfile" if build.with? "glib"
+
+    if build.with? "libxml2"
+      args << "--with-xml2"
+    else
+      args << "--without-xml2"
+    end
 
     if build.with? "d-bus"
       args << "--with-dbus"
