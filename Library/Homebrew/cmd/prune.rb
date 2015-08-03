@@ -1,5 +1,5 @@
-require 'keg'
-require 'cmd/tap'
+require "keg"
+require "cmd/tap"
 
 module Homebrew
   def prune
@@ -44,7 +44,7 @@ module Homebrew
       n, d = ObserverPathnameExtension.counts
       print "Pruned #{n} symbolic links "
       print "and #{d} directories " if d > 0
-      puts  "from #{HOMEBREW_PREFIX}"
+      puts "from #{HOMEBREW_PREFIX}"
     end unless ARGV.dry_run?
   end
 end

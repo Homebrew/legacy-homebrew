@@ -1,5 +1,5 @@
-require 'os/mac'
-require 'extend/ENV/shared'
+require "os/mac"
+require "extend/ENV/shared"
 
 ### Why `superenv`?
 # 1) Only specify the environment we need (NO LDFLAGS for cmake)
@@ -34,29 +34,29 @@ module Superenv
     delete("as_nl")
   end
 
-  def setup_build_environment(formula=nil)
+  def setup_build_environment(formula = nil)
     super
     send(compiler)
 
-    self['MAKEFLAGS'] ||= "-j#{determine_make_jobs}"
-    self['PATH'] = determine_path
-    self['PKG_CONFIG_PATH'] = determine_pkg_config_path
-    self['PKG_CONFIG_LIBDIR'] = determine_pkg_config_libdir
-    self['HOMEBREW_CCCFG'] = determine_cccfg
-    self['HOMEBREW_OPTIMIZATION_LEVEL'] = 'Os'
-    self['HOMEBREW_BREW_FILE'] = HOMEBREW_BREW_FILE.to_s
-    self['HOMEBREW_PREFIX'] = HOMEBREW_PREFIX.to_s
-    self['HOMEBREW_CELLAR'] = HOMEBREW_CELLAR.to_s
-    self['HOMEBREW_TEMP'] = HOMEBREW_TEMP.to_s
-    self['HOMEBREW_SDKROOT'] = effective_sysroot
-    self['HOMEBREW_OPTFLAGS'] = determine_optflags
-    self['HOMEBREW_ARCHFLAGS'] = ''
-    self['CMAKE_PREFIX_PATH'] = determine_cmake_prefix_path
-    self['CMAKE_FRAMEWORK_PATH'] = determine_cmake_frameworks_path
-    self['CMAKE_INCLUDE_PATH'] = determine_cmake_include_path
-    self['CMAKE_LIBRARY_PATH'] = determine_cmake_library_path
-    self['ACLOCAL_PATH'] = determine_aclocal_path
-    self['M4'] = MacOS.locate("m4") if deps.any? { |d| d.name == "autoconf" }
+    self["MAKEFLAGS"] ||= "-j#{determine_make_jobs}"
+    self["PATH"] = determine_path
+    self["PKG_CONFIG_PATH"] = determine_pkg_config_path
+    self["PKG_CONFIG_LIBDIR"] = determine_pkg_config_libdir
+    self["HOMEBREW_CCCFG"] = determine_cccfg
+    self["HOMEBREW_OPTIMIZATION_LEVEL"] = "Os"
+    self["HOMEBREW_BREW_FILE"] = HOMEBREW_BREW_FILE.to_s
+    self["HOMEBREW_PREFIX"] = HOMEBREW_PREFIX.to_s
+    self["HOMEBREW_CELLAR"] = HOMEBREW_CELLAR.to_s
+    self["HOMEBREW_TEMP"] = HOMEBREW_TEMP.to_s
+    self["HOMEBREW_SDKROOT"] = effective_sysroot
+    self["HOMEBREW_OPTFLAGS"] = determine_optflags
+    self["HOMEBREW_ARCHFLAGS"] = ""
+    self["CMAKE_PREFIX_PATH"] = determine_cmake_prefix_path
+    self["CMAKE_FRAMEWORK_PATH"] = determine_cmake_frameworks_path
+    self["CMAKE_INCLUDE_PATH"] = determine_cmake_include_path
+    self["CMAKE_LIBRARY_PATH"] = determine_cmake_library_path
+    self["ACLOCAL_PATH"] = determine_aclocal_path
+    self["M4"] = MacOS.locate("m4") if deps.any? { |d| d.name == "autoconf" }
     self["HOMEBREW_ISYSTEM_PATHS"] = determine_isystem_paths
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
@@ -83,11 +83,11 @@ module Superenv
 
   private
 
-  def cc= val
+  def cc=(val)
     self["HOMEBREW_CC"] = super
   end
 
-  def cxx= val
+  def cxx=(val)
     self["HOMEBREW_CXX"] = super
   end
 
@@ -96,7 +96,7 @@ module Superenv
   end
 
   def determine_cxx
-    determine_cc.to_s.gsub('gcc', 'g++').gsub('clang', 'clang++')
+    determine_cc.to_s.gsub("gcc", "g++").gsub("clang", "clang++")
   end
 
   def determine_path
@@ -113,15 +113,15 @@ module Superenv
     end
 
     paths << MacOS::X11.bin.to_s if x11?
-    paths += %w{/usr/bin /bin /usr/sbin /sbin}
+    paths += %w[/usr/bin /bin /usr/sbin /sbin]
 
     # Homebrew's apple-gcc42 will be outside the PATH in superenv,
     # so xcrun may not be able to find it
     case homebrew_cc
     when "gcc-4.2"
       begin
-       apple_gcc42 = Formulary.factory('apple-gcc42')
-      rescue FormulaUnavailableError
+        apple_gcc42 = Formulary.factory("apple-gcc42")
+       rescue FormulaUnavailableError
       end
       paths << apple_gcc42.opt_bin.to_s if apple_gcc42
     when GNU_GCC_REGEXP
@@ -139,7 +139,7 @@ module Superenv
   end
 
   def determine_pkg_config_libdir
-    paths = %W{/usr/lib/pkgconfig #{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}}
+    paths = %W[/usr/lib/pkgconfig #{HOMEBREW_LIBRARY}/ENV/pkgconfig/#{MacOS.version}]
     paths << "#{MacOS::X11.lib}/pkgconfig" << "#{MacOS::X11.share}/pkgconfig" if x11?
     paths.to_path_s
   end
@@ -210,7 +210,7 @@ module Superenv
   end
 
   def determine_make_jobs
-    if (j = self['HOMEBREW_MAKE_JOBS'].to_i) < 1
+    if (j = self["HOMEBREW_MAKE_JOBS"].to_i) < 1
       Hardware::CPU.cores
     else
       j
@@ -234,9 +234,9 @@ module Superenv
   def determine_cccfg
     s = ""
     # Fix issue with sed barfing on unicode characters on Mountain Lion
-    s << 's' if MacOS.version >= :mountain_lion
+    s << "s" if MacOS.version >= :mountain_lion
     # Fix issue with >= 10.8 apr-1-config having broken paths
-    s << 'a' if MacOS.version >= :mountain_lion
+    s << "a" if MacOS.version >= :mountain_lion
     s
   end
 
@@ -246,12 +246,12 @@ module Superenv
   # This is useful for makefiles with race conditions.
   # When passed a block, MAKEFLAGS is removed only for the duration of the block and is restored after its completion.
   def deparallelize
-    old = delete('MAKEFLAGS')
+    old = delete("MAKEFLAGS")
     if block_given?
       begin
         yield
       ensure
-        self['MAKEFLAGS'] = old
+        self["MAKEFLAGS"] = old
       end
     end
 
@@ -260,16 +260,16 @@ module Superenv
   alias_method :j1, :deparallelize
 
   def make_jobs
-    self['MAKEFLAGS'] =~ /-\w*j(\d)+/
+    self["MAKEFLAGS"] =~ /-\w*j(\d)+/
     [$1.to_i, 1].max
   end
 
   def universal_binary
-    self['HOMEBREW_ARCHFLAGS'] = Hardware::CPU.universal_archs.as_arch_flags
+    self["HOMEBREW_ARCHFLAGS"] = Hardware::CPU.universal_archs.as_arch_flags
 
     # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"
     if compiler != :clang && Hardware.is_32_bit?
-      self['HOMEBREW_OPTFLAGS'] = self['HOMEBREW_OPTFLAGS'].sub(
+      self["HOMEBREW_OPTFLAGS"] = self["HOMEBREW_OPTFLAGS"].sub(
         /-march=\S*/,
         "-Xarch_#{Hardware::CPU.arch_32_bit} \\0"
       )
@@ -291,10 +291,10 @@ module Superenv
   def cxx11
     case homebrew_cc
     when "clang"
-      append 'HOMEBREW_CCCFG', "x", ''
-      append 'HOMEBREW_CCCFG', "g", ''
+      append "HOMEBREW_CCCFG", "x", ""
+      append "HOMEBREW_CCCFG", "g", ""
     when /gcc-(4\.(8|9)|5)/
-      append 'HOMEBREW_CCCFG', "x", ''
+      append "HOMEBREW_CCCFG", "x", ""
     else
       raise "The selected compiler doesn't support C++11: #{homebrew_cc}"
     end
@@ -309,32 +309,31 @@ module Superenv
   end
 
   def refurbish_args
-    append 'HOMEBREW_CCCFG', "O", ''
+    append "HOMEBREW_CCCFG", "O", ""
   end
 
-  %w{O3 O2 O1 O0 Os}.each do |opt|
+  %w[O3 O2 O1 O0 Os].each do |opt|
     define_method opt do
-      self['HOMEBREW_OPTIMIZATION_LEVEL'] = opt
+      self["HOMEBREW_OPTIMIZATION_LEVEL"] = opt
     end
   end
 
-  def noop(*args); end
+  def noop(*_args); end
   noops = []
 
   # These methods are no longer necessary under superenv, but are needed to
   # maintain an interface compatible with stdenv.
-  noops.concat %w{fast O4 Og libxml2 set_cpu_flags macosxsdk remove_macosxsdk}
+  noops.concat %w[fast O4 Og libxml2 set_cpu_flags macosxsdk remove_macosxsdk]
 
   # These methods provide functionality that has not yet been ported to
   # superenv.
-  noops.concat %w{gcc_4_0_1 minimal_optimization no_optimization enable_warnings}
+  noops.concat %w[gcc_4_0_1 minimal_optimization no_optimization enable_warnings]
 
   noops.each { |m| alias_method m, :noop }
 end
 
-
 class Array
   def to_path_s
-    map(&:to_s).uniq.select{|s| File.directory? s }.join(File::PATH_SEPARATOR).chuzzle
+    map(&:to_s).uniq.select { |s| File.directory? s }.join(File::PATH_SEPARATOR).chuzzle
   end
 end

@@ -1,4 +1,4 @@
-require 'cmd/tap' # for tap_args
+require "cmd/tap" # for tap_args
 
 module Homebrew
   def untap
@@ -13,7 +13,7 @@ module Homebrew
       formula_count = tap.formula_files.size
       tap.path.rmtree
       tap.path.dirname.rmdir_if_possible
-      puts "Untapped #{formula_count} formula#{plural(formula_count, 'e')}"
+      puts "Untapped #{formula_count} formula#{plural(formula_count, "e")}"
     end
   end
 end

@@ -1,18 +1,18 @@
-require 'cxxstdlib'
-require 'exceptions'
-require 'formula'
-require 'keg'
-require 'tab'
-require 'bottles'
-require 'caveats'
-require 'cleaner'
-require 'formula_cellar_checks'
-require 'install_renamed'
-require 'cmd/tap'
-require 'cmd/postinstall'
-require 'hooks/bottles'
-require 'debrew'
-require 'sandbox'
+require "cxxstdlib"
+require "exceptions"
+require "formula"
+require "keg"
+require "tab"
+require "bottles"
+require "caveats"
+require "cleaner"
+require "formula_cellar_checks"
+require "install_renamed"
+require "cmd/tap"
+require "cmd/postinstall"
+require "hooks/bottles"
+require "debrew"
+require "sandbox"
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -55,7 +55,7 @@ class FormulaInstaller
     @pour_failed   = false
   end
 
-  def pour_bottle? install_bottle_options={:warn=>false}
+  def pour_bottle?(install_bottle_options = { :warn=>false })
     return true if Homebrew::Hooks::Bottles.formula_has_bottle?(formula)
 
     return false if @pour_failed
@@ -84,7 +84,7 @@ class FormulaInstaller
     return false unless dep.bottle && dep.pour_bottle?
     return false unless build.used_options.empty?
     return false unless dep.bottle.compatible_cellar?
-    return true
+    true
   end
 
   def prelude
@@ -113,10 +113,10 @@ class FormulaInstaller
 
     unless ignore_deps?
       unlinked_deps = formula.recursive_dependencies.map(&:to_formula).select do |dep|
-        dep.installed? and not dep.keg_only? and not dep.linked_keg.directory?
+        dep.installed? && !dep.keg_only? && !dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*' '}' before #{formula.full_name} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*" "}' before #{formula.full_name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -186,7 +186,7 @@ class FormulaInstaller
         puts "Building from source because #{filename} has local changes"
         puts "To install from a bottle instead, run with --force-bottle"
       end
-      compute_and_install_dependencies if @pour_failed and not ignore_deps?
+      compute_and_install_dependencies if @pour_failed && !ignore_deps?
       build
       clean
     end
@@ -222,7 +222,7 @@ class FormulaInstaller
 
     deps = expand_dependencies(req_deps + formula.deps)
 
-    if deps.empty? and only_deps?
+    if deps.empty? && only_deps?
       puts "All dependencies for #{formula.full_name} are satisfied."
     else
       install_dependencies(deps)
@@ -275,7 +275,7 @@ class FormulaInstaller
       end
     end
 
-    return unsatisfied_reqs, deps
+    [unsatisfied_reqs, deps]
   end
 
   def expand_dependencies(deps)
@@ -300,7 +300,7 @@ class FormulaInstaller
     expanded_deps.map { |dep| [dep, inherited_options[dep.name]] }
   end
 
-  def effective_build_options_for(dependent, inherited_options=[])
+  def effective_build_options_for(dependent, inherited_options = [])
     args  = dependent.build.used_options
     args |= dependent == formula ? options : inherited_options
     args |= Tab.for_formula(dependent).used_options
@@ -379,20 +379,20 @@ class FormulaInstaller
   def caveats
     return if only_deps?
 
-    audit_installed if ARGV.homebrew_developer? and not formula.keg_only?
+    audit_installed if ARGV.homebrew_developer? && !formula.keg_only?
 
     c = Caveats.new(formula)
 
     unless c.empty?
       @show_summary_heading = true
-      ohai 'Caveats', c.caveats
+      ohai "Caveats", c.caveats
     end
   end
 
   def finish
     return if only_deps?
 
-    ohai 'Finishing up' if verbose?
+    ohai "Finishing up" if verbose?
 
     install_plist
 
@@ -407,19 +407,19 @@ class FormulaInstaller
       post_install
     end
 
-    ohai "Summary" if verbose? or show_summary_heading?
+    ohai "Summary" if verbose? || show_summary_heading?
     puts summary
   ensure
     unlock
   end
 
   def emoji
-    ENV['HOMEBREW_INSTALL_BADGE'] || "\xf0\x9f\x8d\xba"
+    ENV["HOMEBREW_INSTALL_BADGE"] || "\xf0\x9f\x8d\xba"
   end
 
   def summary
     s = ""
-    s << "#{emoji}  " if MacOS.version >= :lion and not ENV['HOMEBREW_NO_EMOJI']
+    s << "#{emoji}  " if MacOS.version >= :lion && !ENV["HOMEBREW_NO_EMOJI"]
     s << "#{formula.prefix}: #{formula.prefix.abv}"
     s << ", built in #{pretty_duration build_time}" if build_time
     s

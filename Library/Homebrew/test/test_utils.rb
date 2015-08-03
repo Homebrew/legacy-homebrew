@@ -1,4 +1,4 @@
-require 'testing_env'
+require "testing_env"
 
 class UtilTests < Homebrew::TestCase
   def test_put_columns_empty

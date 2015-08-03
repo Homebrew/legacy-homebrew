@@ -1,6 +1,6 @@
-require 'formula'
-require 'keg'
-require 'bottles'
+require "formula"
+require "keg"
+require "bottles"
 
 module Homebrew
   def cleanup
@@ -39,7 +39,7 @@ module Homebrew
     end
   end
 
-  def cleanup_formula f
+  def cleanup_formula(f)
     if f.installed?
       eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.pkg_version > k.version }
       if eligible_kegs.any? && eligible_for_cleanup?(f)
@@ -54,7 +54,7 @@ module Homebrew
     end
   end
 
-  def cleanup_keg keg
+  def cleanup_keg(keg)
     if keg.linked?
       opoo "Skipping (old) #{keg} due to it being linked"
     else
@@ -84,12 +84,12 @@ module Homebrew
       end
 
       file_is_stale = if PkgVersion === version
-                        f.pkg_version > version
-                      else
-                        f.version > version
-                      end
+        f.pkg_version > version
+      else
+        f.version > version
+      end
 
-      if file_is_stale || ARGV.switch?('s') && !f.installed? || bottle_file_outdated?(f, file)
+      if file_is_stale || ARGV.switch?("s") && !f.installed? || bottle_file_outdated?(f, file)
         cleanup_path(file) { file.unlink }
       end
     end
@@ -107,15 +107,15 @@ module Homebrew
   def cleanup_lockfiles
     return unless HOMEBREW_CACHE_FORMULA.directory?
     candidates = HOMEBREW_CACHE_FORMULA.children
-    lockfiles  = candidates.select { |f| f.file? && f.extname == '.brewing' }
+    lockfiles  = candidates.select { |f| f.file? && f.extname == ".brewing" }
     lockfiles.select(&:readable?).each do |file|
-      file.open.flock(File::LOCK_EX | File::LOCK_NB) and file.unlink
+      file.open.flock(File::LOCK_EX | File::LOCK_NB) && file.unlink
     end
   end
 
   def rm_DS_Store
     paths = %w[Cellar Frameworks Library bin etc include lib opt sbin share var].
-      map { |p| HOMEBREW_PREFIX/p }.select(&:exist?)
+            map { |p| HOMEBREW_PREFIX/p }.select(&:exist?)
     args = paths.map(&:to_s) + %w[-name .DS_Store -delete]
     quiet_system "find", *args
   end
@@ -126,7 +126,7 @@ module Homebrew
     # introduced the opt symlink, and built against that instead. So provided
     # no brew exists that was built against an old-style keg-only keg, we can
     # remove it.
-    if not formula.keg_only? or ARGV.force?
+    if !formula.keg_only? || ARGV.force?
       true
     elsif formula.opt_prefix.directory?
       # SHA records were added to INSTALL_RECEIPTS the same day as opt symlinks

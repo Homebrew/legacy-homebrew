@@ -40,10 +40,10 @@ class Formulary
     end
   end
 
-  def self.class_s name
+  def self.class_s(name)
     class_name = name.capitalize
     class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
-    class_name.gsub!('+', 'x')
+    class_name.gsub!("+", "x")
     class_name
   end
 
@@ -81,7 +81,7 @@ class Formulary
 
   # Loads formulae from bottles.
   class BottleLoader < FormulaLoader
-    def initialize bottle_name
+    def initialize(bottle_name)
       @bottle_filename = Pathname(bottle_name).realpath
       name, full_name = bottle_resolve_formula_names @bottle_filename
       super name, Formulary.path(full_name)
@@ -100,7 +100,7 @@ class Formulary
   end
 
   class AliasLoader < FormulaLoader
-    def initialize alias_path
+    def initialize(alias_path)
       path = alias_path.resolved_path
       name = path.basename(".rb").to_s
       super name, path
@@ -109,7 +109,7 @@ class Formulary
 
   # Loads formulae from disk using a path
   class FromPathLoader < FormulaLoader
-    def initialize path
+    def initialize(path)
       path = Pathname.new(path).expand_path
       super path.basename(".rb").to_s, path
     end
@@ -119,7 +119,7 @@ class Formulary
   class FromUrlLoader < FormulaLoader
     attr_reader :url
 
-    def initialize url
+    def initialize(url)
       @url = url
       uri = URI(url)
       formula = File.basename(uri.path, ".rb")
@@ -138,7 +138,7 @@ class Formulary
   class TapLoader < FormulaLoader
     attr_reader :tap
 
-    def initialize tapped_name
+    def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.new user, repo.sub(/^homebrew-/, "")
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
@@ -159,7 +159,7 @@ class Formulary
       super name, Formulary.core_path(name)
     end
 
-    def get_formula(spec)
+    def get_formula(_spec)
       raise FormulaUnavailableError.new(name)
     end
   end
@@ -170,13 +170,13 @@ class Formulary
   # * a formula pathname
   # * a formula URL
   # * a local bottle reference
-  def self.factory(ref, spec=:stable)
+  def self.factory(ref, spec = :stable)
     loader_for(ref).get_formula(spec)
   end
 
   # Return a Formula instance for the given rack.
   # It will auto resolve formula's spec when requested spec is nil
-  def self.from_rack(rack, spec=nil)
+  def self.from_rack(rack, spec = nil)
     kegs = rack.directory? ? rack.subdirs.map { |d| Keg.new(d) } : []
 
     keg = kegs.detect(&:linked?) || kegs.detect(&:optlinked?) || kegs.max_by(&:version)
@@ -207,7 +207,7 @@ class Formulary
 
   def self.loader_for(ref)
     case ref
-    when %r[(https?|ftp)://]
+    when %r{(https?|ftp)://}
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
@@ -241,7 +241,7 @@ class Formulary
       return FormulaLoader.new(ref, possible_cached_formula)
     end
 
-    return NullLoader.new(ref)
+    NullLoader.new(ref)
   end
 
   def self.core_path(name)
@@ -254,7 +254,7 @@ class Formulary
       Pathname.glob([
         "#{tap}Formula/#{name}.rb",
         "#{tap}HomebrewFormula/#{name}.rb",
-        "#{tap}#{name}.rb",
+        "#{tap}#{name}.rb"
       ]).detect(&:file?)
     end.compact
   end

@@ -1,6 +1,6 @@
-require 'testing_env'
-require 'keg'
-require 'stringio'
+require "testing_env"
+require "keg"
+require "stringio"
 
 class LinkTests < Homebrew::TestCase
   include FileUtils
@@ -9,7 +9,7 @@ class LinkTests < Homebrew::TestCase
     keg = HOMEBREW_CELLAR.join("foo", "1.0")
     keg.join("bin").mkpath
 
-    %w{hiworld helloworld goodbye_cruel_world}.each do |file|
+    %w[hiworld helloworld goodbye_cruel_world].each do |file|
       touch keg.join("bin", file)
     end
 
@@ -54,7 +54,7 @@ class LinkTests < Homebrew::TestCase
     assert_equal 0, @keg.link(@mode)
     refute_predicate @keg, :linked?
 
-    ['hiworld', 'helloworld', 'goodbye_cruel_world'].each do |file|
+    ["hiworld", "helloworld", "goodbye_cruel_world"].each do |file|
       assert_match "#{HOMEBREW_PREFIX}/bin/#{file}", $stdout.string
     end
     assert_equal 3, $stdout.string.lines.count

@@ -12,7 +12,7 @@ class ExampleFormula < Formula
   desc "Example formula" # shows up in `brew info`, and can be searched with `brew search --desc`.
   homepage "https://www.example.com" # used by `brew home example-formula`.
   revision 1 # This is used when there's no new version but it needs recompiling for another reason.
-             # 0 is default & unwritten.
+  # 0 is default & unwritten.
 
   # The URL of the archive. Prefer https (security and proxy issues):
   url "https://packed.sources.and.we.prefer.https.example.com/archive-1.2.3.tar.bz2"
@@ -72,7 +72,6 @@ class ExampleFormula < Formula
     depends_on "pixman"
   end
 
-
   ## Options
 
   # Options can be used as arguments to `brew install`.
@@ -119,7 +118,6 @@ class ExampleFormula < Formula
   # Homebrew. This way, we don't shadow software provided by OS X.
   keg_only :provided_by_osx
   keg_only "because I want it so"
-
 
   ## Dependencies
 
@@ -184,7 +182,6 @@ class ExampleFormula < Formula
   # If this formula conflicts with another one:
   conflicts_with "imagemagick", :because => "because this is just a stupid example"
 
-
   ## Failing with a certain compiler?
 
   # If it is failing for certain compiler:
@@ -207,7 +204,6 @@ class ExampleFormula < Formula
     url "https://example.com/additional-stuff.tar.gz"
     sha256 "c6bc3f48ce8e797854c4b865f6a8ff969867bbcaebd648ae6fd825683e59fef2"
   end
-
 
   ## Patches
 
@@ -399,7 +395,6 @@ class ExampleFormula < Formula
     # `name` and `version` are accessible too, if you need them.
   end
 
-
   ## Caveats
 
   def caveats
@@ -415,7 +410,6 @@ class ExampleFormula < Formula
     s += "Some issue only on older systems" if MacOS.version < :mountain_lion
     s
   end
-
 
   ## Test (is optional but makes us happy)
 
@@ -443,7 +437,6 @@ class ExampleFormula < Formula
     # The test will fail if it returns false, or if an exception is raised.
     # Failed assertions and failed `system` commands will raise exceptions.
   end
-
 
   ## Plist handling
 

@@ -4,24 +4,22 @@ require "formula"
 
 class TabTests < Homebrew::TestCase
   def setup
-    @used = Options.create(%w(--with-foo --without-bar))
-    @unused = Options.create(%w(--with-baz --without-qux))
+    @used = Options.create(%w[--with-foo --without-bar])
+    @unused = Options.create(%w[--with-baz --without-qux])
 
-    @tab = Tab.new({
-      "used_options"       => @used.as_flags,
-      "unused_options"     => @unused.as_flags,
-      "built_as_bottle"    => false,
-      "poured_from_bottle" => true,
-      "time"               => nil,
-      "HEAD"               => TEST_SHA1,
-      "compiler"           => "clang",
-      "stdlib"             => "libcxx",
-      "source"             => {
-        "tap" => "Homebrew/homebrew",
-        "path" => nil,
-        "spec" => "stable",
-      },
-    })
+    @tab = Tab.new("used_options"       => @used.as_flags,
+                   "unused_options"     => @unused.as_flags,
+                   "built_as_bottle"    => false,
+                   "poured_from_bottle" => true,
+                   "time"               => nil,
+                   "HEAD"               => TEST_SHA1,
+                   "compiler"           => "clang",
+                   "stdlib"             => "libcxx",
+                   "source"             => {
+                     "tap" => "Homebrew/homebrew",
+                     "path" => nil,
+                     "spec" => "stable"
+                   })
   end
 
   def test_defaults

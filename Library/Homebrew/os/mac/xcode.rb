@@ -60,7 +60,7 @@ module OS
       end
 
       def installed?
-        not prefix.nil?
+        !prefix.nil?
       end
 
       def version
@@ -178,7 +178,7 @@ module OS
         else
           version = `/usr/bin/clang --version`
         end
-        version = version[%r{clang-(\d+\.\d+\.\d+(\.\d+)?)}, 1] || "0"
+        version = version[/clang-(\d+\.\d+\.\d+(\.\d+)?)/, 1] || "0"
         version < latest_version
       end
 

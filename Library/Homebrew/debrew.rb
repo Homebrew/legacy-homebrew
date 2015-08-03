@@ -85,8 +85,8 @@ module Debrew
     @active
   end
 
-  def self.debugged_exceptions
-    @debugged_exceptions
+  class << self
+    attr_reader :debugged_exceptions
   end
 
   def self.debrew

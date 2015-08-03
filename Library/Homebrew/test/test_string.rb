@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'extend/string'
+require "testing_env"
+require "extend/string"
 
 class StringTest < Homebrew::TestCase
   def test_undent

@@ -37,8 +37,8 @@ module HomebrewArgvExtension
   end
 
   def kegs
-    require 'keg'
-    require 'formula'
+    require "keg"
+    require "formula"
     @kegs ||= downcased_unique_named.collect do |name|
       canonical_name = Formulary.canonical_name(name)
       rack = HOMEBREW_CELLAR/canonical_name
@@ -72,38 +72,45 @@ module HomebrewArgvExtension
   end
 
   # self documenting perhaps?
-  def include? arg
+  def include?(arg)
     @n=index arg
   end
+
   def next
-    at @n+1 or raise UsageError
+    at(@n+1) || raise(UsageError)
   end
 
-  def value arg
-    arg = find {|o| o =~ /--#{arg}=(.+)/}
+  def value(arg)
+    arg = find { |o| o =~ /--#{arg}=(.+)/ }
     $1 if arg
   end
 
   def force?
-    flag? '--force'
+    flag? "--force"
   end
+
   def verbose?
-    flag? '--verbose' or !ENV['VERBOSE'].nil? or !ENV['HOMEBREW_VERBOSE'].nil?
+    flag?("--verbose") || !ENV["VERBOSE"].nil? || !ENV["HOMEBREW_VERBOSE"].nil?
   end
+
   def debug?
-    flag? '--debug' or !ENV['HOMEBREW_DEBUG'].nil?
+    flag?("--debug") || !ENV["HOMEBREW_DEBUG"].nil?
   end
+
   def quieter?
-    flag? '--quieter'
+    flag? "--quieter"
   end
+
   def interactive?
-    flag? '--interactive'
+    flag? "--interactive"
   end
+
   def one?
-    flag? '--1'
+    flag? "--1"
   end
+
   def dry_run?
-    include?('--dry-run') || switch?('n')
+    include?("--dry-run") || switch?("n")
   end
 
   def git?
@@ -111,7 +118,7 @@ module HomebrewArgvExtension
   end
 
   def homebrew_developer?
-    include? '--homebrew-developer' or !ENV['HOMEBREW_DEVELOPER'].nil?
+    include?("--homebrew-developer") || !ENV["HOMEBREW_DEVELOPER"].nil?
   end
 
   def sandbox?
@@ -119,46 +126,46 @@ module HomebrewArgvExtension
   end
 
   def ignore_deps?
-    include? '--ignore-dependencies'
+    include? "--ignore-dependencies"
   end
 
   def only_deps?
-    include? '--only-dependencies'
+    include? "--only-dependencies"
   end
 
   def json
-    value 'json'
+    value "json"
   end
 
   def build_head?
-    include? '--HEAD'
+    include? "--HEAD"
   end
 
   def build_devel?
-    include? '--devel'
+    include? "--devel"
   end
 
   def build_stable?
-    not (build_head? or build_devel?)
+    !(build_head? || build_devel?)
   end
 
   def build_universal?
-    include? '--universal'
+    include? "--universal"
   end
 
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
   def build_32_bit?
-    include? '--32-bit'
+    include? "--32-bit"
   end
 
   def build_bottle?
-    include? '--build-bottle' or !ENV['HOMEBREW_BUILD_BOTTLE'].nil?
+    include?("--build-bottle") || !ENV["HOMEBREW_BUILD_BOTTLE"].nil?
   end
 
   def bottle_arch
-    arch = value 'bottle-arch'
+    arch = value "bottle-arch"
     arch.to_sym if arch
   end
 
@@ -166,36 +173,36 @@ module HomebrewArgvExtension
     switch?("s") || include?("--build-from-source") || !!ENV["HOMEBREW_BUILD_FROM_SOURCE"]
   end
 
-  def flag? flag
+  def flag?(flag)
     options_only.include?(flag) || switch?(flag[2, 1])
   end
 
   def force_bottle?
-    include? '--force-bottle'
+    include? "--force-bottle"
   end
 
   # eg. `foo -ns -i --bar` has three switches, n, s and i
-  def switch? char
+  def switch?(char)
     return false if char.length > 1
     options_only.any? { |arg| arg[1, 1] != "-" && arg.include?(char) }
   end
 
   def usage
-    require 'cmd/help'
+    require "cmd/help"
     Homebrew.help_s
   end
 
   def cc
-    value 'cc'
+    value "cc"
   end
 
   def env
-    value 'env'
+    value "env"
   end
 
   private
 
-  def spec(default=:stable)
+  def spec(default = :stable)
     if include?("--HEAD")
       :head
     elsif include?("--devel")

@@ -1,6 +1,6 @@
-require 'testing_env'
-require 'version'
-require 'os/mac/version'
+require "testing_env"
+require "version"
+require "os/mac/version"
 
 class MacOSVersionTests < Homebrew::TestCase
   def setup

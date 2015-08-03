@@ -1,5 +1,5 @@
 # Links any Applications (.app) found in installed prefixes to /Applications
-require 'keg'
+require "keg"
 
 module Homebrew
   def linkapps
@@ -16,7 +16,7 @@ module Homebrew
       kegs = racks.map do |rack|
         keg = rack.subdirs.map { |d| Keg.new(d) }
         next if keg.empty?
-        keg.detect(&:linked?) || keg.max {|a,b| a.version <=> b.version}
+        keg.detect(&:linked?) || keg.max { |a, b| a.version <=> b.version }
       end
     else
       kegs = ARGV.kegs

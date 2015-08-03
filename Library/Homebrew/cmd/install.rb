@@ -9,7 +9,7 @@ module Homebrew
   def install
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    if ARGV.include? '--head'
+    if ARGV.include? "--head"
       raise "Specify `--HEAD` in uppercase to build from trunk."
     end
 
@@ -40,7 +40,7 @@ module Homebrew
 
       ARGV.formulae.each do |f|
         # head-only without --HEAD is an error
-        if not ARGV.build_head? and f.stable.nil? and f.devel.nil?
+        if !ARGV.build_head? && f.stable.nil? && f.devel.nil?
           raise <<-EOS.undent
           #{f.full_name} is a head-only formula
           Install with `brew install --HEAD #{f.full_name}`
@@ -48,30 +48,30 @@ module Homebrew
         end
 
         # devel-only without --devel is an error
-        if not ARGV.build_devel? and f.stable.nil? and f.head.nil?
+        if !ARGV.build_devel? && f.stable.nil? && f.head.nil?
           raise <<-EOS.undent
           #{f.full_name} is a devel-only formula
           Install with `brew install --devel #{f.full_name}`
           EOS
         end
 
-        if ARGV.build_stable? and f.stable.nil?
+        if ARGV.build_stable? && f.stable.nil?
           raise "#{f.full_name} has no stable download, please choose --devel or --HEAD"
         end
 
         # --HEAD, fail with no head defined
-        if ARGV.build_head? and f.head.nil?
+        if ARGV.build_head? && f.head.nil?
           raise "No head is defined for #{f.full_name}"
         end
 
         # --devel, fail with no devel defined
-        if ARGV.build_devel? and f.devel.nil?
+        if ARGV.build_devel? && f.devel.nil?
           raise "No devel block is defined for #{f.full_name}"
         end
 
         if f.installed?
           msg = "#{f.full_name}-#{f.installed_version} already installed"
-          msg << ", it's just not linked" unless f.linked_keg.symlink? or f.keg_only?
+          msg << ", it's just not linked" unless f.linked_keg.symlink? || f.keg_only?
           opoo msg
         else
           formulae << f
@@ -107,17 +107,18 @@ module Homebrew
   end
 
   def check_ppc
-    case Hardware::CPU.type when :ppc, :dunno
+    case Hardware::CPU.type
+    when :ppc, :dunno
       abort <<-EOS.undent
         Sorry, Homebrew does not support your computer's CPU architecture.
         For PPC support, see: https://github.com/mistydemeo/tigerbrew
-        EOS
+      EOS
     end
   end
 
   def check_writable_install_location
-    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? and not HOMEBREW_CELLAR.writable_real?
-    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable_real? or HOMEBREW_PREFIX.to_s == '/usr/local'
+    raise "Cannot write to #{HOMEBREW_CELLAR}" if HOMEBREW_CELLAR.exist? && !HOMEBREW_CELLAR.writable_real?
+    raise "Cannot write to #{HOMEBREW_PREFIX}" unless HOMEBREW_PREFIX.writable_real? || HOMEBREW_PREFIX.to_s == "/usr/local"
   end
 
   def check_xcode
@@ -143,7 +144,7 @@ module Homebrew
   end
 
   def check_cellar
-    FileUtils.mkdir_p HOMEBREW_CELLAR if not File.exist? HOMEBREW_CELLAR
+    FileUtils.mkdir_p HOMEBREW_CELLAR unless File.exist? HOMEBREW_CELLAR
   rescue
     raise <<-EOS.undent
       Could not create #{HOMEBREW_CELLAR}
@@ -158,7 +159,7 @@ module Homebrew
     check_cellar
   end
 
-  def install_formula f
+  def install_formula(f)
     f.print_tap_action
 
     fi = FormulaInstaller.new(f)

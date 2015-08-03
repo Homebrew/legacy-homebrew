@@ -41,8 +41,6 @@ class Tap
         @path.cd do
           Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
         end
-      else
-        nil
       end
     else
       raise TapUnavailableError, name
@@ -113,7 +111,7 @@ class Tap
       "custom_remote" => custom_remote?,
       "formula_names" => formula_names,
       "formula_files" => formula_files.map(&:to_s),
-      "command_files" => command_files.map(&:to_s),
+      "command_files" => command_files.map(&:to_s)
     }
   end
 

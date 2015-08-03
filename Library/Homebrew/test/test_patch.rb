@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'patch'
+require "testing_env"
+require "patch"
 
 class PatchTests < Homebrew::TestCase
   def test_create_simple
@@ -47,7 +47,7 @@ class LegacyPatchTests < Homebrew::TestCase
 
   def test_patch_array
     patches = Patch.normalize_legacy_patches(
-      %w{http://example.com/patch1.diff http://example.com/patch2.diff}
+      %w[http://example.com/patch1.diff http://example.com/patch2.diff]
     )
 
     assert_equal 2, patches.length
@@ -79,8 +79,8 @@ class LegacyPatchTests < Homebrew::TestCase
       :p0 => "http://example.com/patch0.diff"
     )
     assert_equal 2, patches.length
-    assert_equal 1, patches.select { |p| p.strip == :p0 }.length
-    assert_equal 1, patches.select { |p| p.strip == :p1 }.length
+    assert_equal 1, patches.count { |p| p.strip == :p0 }
+    assert_equal 1, patches.count { |p| p.strip == :p1 }
   end
 
   def test_mixed_hash_to_arrays
@@ -92,8 +92,8 @@ class LegacyPatchTests < Homebrew::TestCase
     )
 
     assert_equal 4, patches.length
-    assert_equal 2, patches.select { |p| p.strip == :p0 }.length
-    assert_equal 2, patches.select { |p| p.strip == :p1 }.length
+    assert_equal 2, patches.count { |p| p.strip == :p0 }
+    assert_equal 2, patches.count { |p| p.strip == :p1 }
   end
 
   def test_nil

@@ -1,5 +1,5 @@
 module FormulaCellarChecks
-  def check_PATH bin
+  def check_PATH(bin)
     # warn the user if stuff was installed outside of their PATH
     return unless bin.directory?
     return unless bin.children.length > 0
@@ -18,7 +18,7 @@ module FormulaCellarChecks
 
   def check_manpages
     # Check for man pages that aren't in share/man
-    return unless (formula.prefix+'man').directory?
+    return unless (formula.prefix+"man").directory?
 
     <<-EOS.undent
       A top-level "man" directory was found
@@ -29,7 +29,7 @@ module FormulaCellarChecks
 
   def check_infopages
     # Check for info pages that aren't in share/info
-    return unless (formula.prefix+'info').directory?
+    return unless (formula.prefix+"info").directory?
 
     <<-EOS.undent
       A top-level "info" directory was found
@@ -57,11 +57,11 @@ module FormulaCellarChecks
   def check_non_libraries
     return unless formula.lib.directory?
 
-    valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
-                          .jar .prl .pm .sh)
+    valid_extensions = %w[.a .dylib .framework .jnilib .la .o .so
+                          .jar .prl .pm .sh]
     non_libraries = formula.lib.children.select do |g|
       next if g.directory?
-      not valid_extensions.include? g.extname
+      !valid_extensions.include? g.extname
     end
     return if non_libraries.empty?
 
@@ -73,10 +73,10 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_non_executables bin
+  def check_non_executables(bin)
     return unless bin.directory?
 
-    non_exes = bin.children.select { |g| g.directory? or not g.executable? }
+    non_exes = bin.children.select { |g| g.directory? || !g.executable? }
     return if non_exes.empty?
 
     <<-EOS.undent
@@ -86,7 +86,7 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_generic_executables bin
+  def check_generic_executables(bin)
     return unless bin.directory?
     generic_names = %w[run service start stop]
     generics = bin.children.select { |g| generic_names.include? g.basename.to_s }
@@ -126,7 +126,7 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_easy_install_pth lib
+  def check_easy_install_pth(lib)
     pth_found = Dir["#{lib}/python{2.7,3}*/site-packages/easy-install.pth"].map { |f| File.dirname(f) }
     return if pth_found.empty?
 
@@ -156,7 +156,7 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_python_framework_links lib
+  def check_python_framework_links(lib)
     python_modules = Pathname.glob lib/"python*/site-packages/**/*.so"
     framework_links = python_modules.select do |obj|
       dlls = obj.dynamically_linked_libraries
@@ -206,7 +206,7 @@ module FormulaCellarChecks
     audit_check_output(check_easy_install_pth(formula.lib))
     audit_check_output(check_openssl_links)
     audit_check_output(check_python_framework_links(formula.lib))
-    audit_check_output(check_emacs_lisp(formula.share,formula.name))
+    audit_check_output(check_emacs_lisp(formula.share, formula.name))
   end
 
   private

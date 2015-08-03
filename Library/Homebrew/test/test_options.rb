@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'options'
+require "testing_env"
+require "options"
 
 class OptionTests < Homebrew::TestCase
   def setup
@@ -96,7 +96,7 @@ class OptionsTests < Homebrew::TestCase
 
   def test_as_flags
     @options << Option.new("foo")
-    assert_equal %w{--foo}, @options.as_flags
+    assert_equal %w[--foo], @options.as_flags
   end
 
   def test_to_a
@@ -112,14 +112,14 @@ class OptionsTests < Homebrew::TestCase
   end
 
   def test_intersection
-    foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
+    foo, bar, baz = %w[foo bar baz].map { |o| Option.new(o) }
     options = Options.new << foo << bar
     @options << foo << baz
     assert_equal [foo], (@options & options).to_a
   end
 
   def test_set_union
-    foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
+    foo, bar, baz = %w[foo bar baz].map { |o| Option.new(o) }
     options = Options.new << foo << bar
     @options << foo << baz
     assert_equal [foo, bar, baz].sort, (@options | options).sort
@@ -131,7 +131,7 @@ class OptionsTests < Homebrew::TestCase
   end
 
   def test_create_with_array
-    array = %w{--foo --bar}
+    array = %w[--foo --bar]
     option1 = Option.new("foo")
     option2 = Option.new("bar")
     assert_equal [option1, option2].sort, Options.create(array).sort

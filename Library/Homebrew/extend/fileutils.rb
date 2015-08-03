@@ -3,10 +3,9 @@ require "tmpdir"
 
 # We enhance FileUtils to make our Formula code more readable.
 module FileUtils
-
   # Create a temporary directory then yield. When the block returns,
   # recursively delete the temporary directory.
-  def mktemp(prefix=name)
+  def mktemp(prefix = name)
     prev = pwd
     tmp  = Dir.mktmpdir(prefix, HOMEBREW_TEMP)
 
@@ -26,7 +25,7 @@ module FileUtils
 
   # A version of mkdir that also changes to that folder in a block.
   alias_method :old_mkdir, :mkdir
-  def mkdir name, &block
+  def mkdir(name, &_block)
     old_mkdir(name)
     if block_given?
       chdir name do
@@ -46,8 +45,8 @@ module FileUtils
     class Entry_
       alias_method :old_copy_metadata, :copy_metadata
       def copy_metadata(path)
-        st = lstat()
-        if !st.symlink?
+        st = lstat
+        unless st.symlink?
           File.utime st.atime, st.mtime, path
         end
         begin
@@ -87,20 +86,20 @@ module FileUtils
 
   # Run scons using a Homebrew-installed version, instead of whatever
   # is in the user's PATH
-  def scons *args
+  def scons(*args)
     system Formulary.factory("scons").opt_bin/"scons", *args
   end
 
-  def rake *args
-    system RUBY_BIN/'rake', *args
+  def rake(*args)
+    system RUBY_BIN/"rake", *args
   end
 
   alias_method :old_ruby, :ruby if method_defined?(:ruby)
-  def ruby *args
+  def ruby(*args)
     system RUBY_PATH, *args
   end
 
-  def xcodebuild *args
+  def xcodebuild(*args)
     removed = ENV.remove_cc_etc
     system "xcodebuild", *args
   ensure

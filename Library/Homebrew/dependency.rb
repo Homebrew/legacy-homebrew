@@ -1,4 +1,4 @@
-require 'dependable'
+require "dependable"
 
 # A dependency on another Homebrew formula.
 class Dependency
@@ -8,7 +8,7 @@ class Dependency
 
   DEFAULT_ENV_PROC = proc {}
 
-  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name)
     @name = name
     @tags = tags
     @env_proc = env_proc
@@ -70,11 +70,11 @@ class Dependency
     # the list.
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
-    def expand(dependent, deps=dependent.deps, &block)
+    def expand(dependent, deps = dependent.deps, &block)
       expanded_deps = []
 
       deps.each do |dep|
-        # FIXME don't hide cyclic dependencies
+        # FIXME: don't hide cyclic dependencies
         next if dependent.name == dep.name
 
         case action(dependent, dep, &block)
@@ -93,7 +93,7 @@ class Dependency
       merge_repeats(expanded_deps)
     end
 
-    def action(dependent, dep, &block)
+    def action(dependent, dep, &_block)
       catch(:action) do
         if block_given?
           yield dependent, dep
@@ -134,7 +134,7 @@ end
 class TapDependency < Dependency
   attr_reader :tap
 
-  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name)
     @tap, _, option_name = option_name.rpartition "/"
     super(name, tags, env_proc, option_name)
   end

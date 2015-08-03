@@ -63,10 +63,10 @@ class Keg
 
   # locale-specific directories have the form language[_territory][.codeset][@modifier]
   LOCALEDIR_RX = /(locale|man)\/([a-z]{2}|C|POSIX)(_[A-Z]{2})?(\.[a-zA-Z\-0-9]+(@.+)?)?/
-  INFOFILE_RX = %r[info/([^.].*?\.info|dir)$]
+  INFOFILE_RX = %r{info/([^.].*?\.info|dir)$}
   TOP_LEVEL_DIRECTORIES = %w[bin etc include lib sbin share var Frameworks]
   PRUNEABLE_DIRECTORIES = %w[bin etc include lib sbin share Frameworks LinkedKegs].map do |d|
-    case d when 'LinkedKegs' then HOMEBREW_LIBRARY/d else HOMEBREW_PREFIX/d end
+    case d when "LinkedKegs" then HOMEBREW_LIBRARY/d else HOMEBREW_PREFIX/d end
   end
 
   # These paths relative to the keg's share directory should always be real
@@ -82,9 +82,9 @@ class Keg
   ]
 
   # if path is a file in a keg then this will return the containing Keg object
-  def self.for path
+  def self.for(path)
     path = path.realpath
-    while not path.root?
+    until path.root?
       return Keg.new(path) if path.parent.parent == HOMEBREW_CELLAR.realpath
       path = path.parent.realpath # realpath() prevents root? failing
     end
@@ -94,7 +94,7 @@ class Keg
   attr_reader :path, :name, :linked_keg_record, :opt_record
   protected :path
 
-  def initialize path
+  def initialize(path)
     raise "#{path} is not a valid keg" unless path.parent.parent.realpath == HOMEBREW_CELLAR.realpath
     raise "#{path} is not a directory" unless path.directory?
     @path = path
@@ -190,7 +190,7 @@ class Keg
 
     dirs = []
 
-    TOP_LEVEL_DIRECTORIES.map{ |d| path.join(d) }.each do |dir|
+    TOP_LEVEL_DIRECTORIES.map { |d| path.join(d) }.each do |dir|
       next unless dir.exist?
       dir.find do |src|
         dst = HOMEBREW_PREFIX + src.relative_path_from(path)
@@ -218,7 +218,7 @@ class Keg
     FormulaLock.new(name).with_lock { yield }
   end
 
-  def completion_installed? shell
+  def completion_installed?(shell)
     dir = case shell
           when :bash then path.join("etc", "bash_completion.d")
           when :zsh  then path.join("share", "zsh", "site-functions")
@@ -248,7 +248,7 @@ class Keg
   end
 
   def version
-    require 'pkg_version'
+    require "pkg_version"
     PkgVersion.parse(path.basename.to_s)
   end
 
@@ -256,21 +256,21 @@ class Keg
     path.find(*args, &block)
   end
 
-  def link mode=OpenStruct.new
+  def link(mode = OpenStruct.new)
     raise AlreadyLinkedError.new(self) if linked_keg_record.directory?
 
     ObserverPathnameExtension.reset_counts!
 
     # yeah indeed, you have to force anything you need in the main tree into
     # these dirs REMEMBER that *NOT* everything needs to be in the main tree
-    link_dir('etc', mode) {:mkpath}
-    link_dir('bin', mode) {:skip_dir}
-    link_dir('sbin', mode) {:skip_dir}
-    link_dir('include', mode) {:link}
+    link_dir("etc", mode) { :mkpath }
+    link_dir("bin", mode) { :skip_dir }
+    link_dir("sbin", mode) { :skip_dir }
+    link_dir("include", mode) { :link }
 
-    link_dir('share', mode) do |relative_path|
+    link_dir("share", mode) do |relative_path|
       case relative_path.to_s
-      when 'locale/locale.alias' then :skip_file
+      when "locale/locale.alias" then :skip_file
       when INFOFILE_RX then :info
       when LOCALEDIR_RX then :mkpath
       when *SHARE_PATHS then :mkpath
@@ -283,22 +283,22 @@ class Keg
       end
     end
 
-    link_dir('lib', mode) do |relative_path|
+    link_dir("lib", mode) do |relative_path|
       case relative_path.to_s
-      when 'charset.alias' then :skip_file
+      when "charset.alias" then :skip_file
       # pkg-config database gets explicitly created
-      when 'pkgconfig' then :mkpath
+      when "pkgconfig" then :mkpath
       # cmake database gets explicitly created
-      when 'cmake' then :mkpath
+      when "cmake" then :mkpath
       # lib/language folders also get explicitly created
-      when 'dtrace' then :mkpath
+      when "dtrace" then :mkpath
       when /^gdk-pixbuf/ then :mkpath
-      when 'ghc' then :mkpath
-      when 'lua' then :mkpath
+      when "ghc" then :mkpath
+      when "lua" then :mkpath
       when /^node/ then :mkpath
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
-      when 'php' then :mkpath
+      when "php" then :mkpath
       when /^python[23]\.\d/ then :mkpath
       when /^ruby/ then :mkpath
       # Everything else is symlinked to the cellar
@@ -306,7 +306,7 @@ class Keg
       end
     end
 
-    link_dir('Frameworks', mode) do |relative_path|
+    link_dir("Frameworks", mode) do |relative_path|
       # Frameworks contain symlinks pointing into a subdir, so we have to use
       # the :link strategy. However, for Foo.framework and
       # Foo.framework/Versions we have to use :mkpath so that multiple formulae
@@ -329,7 +329,7 @@ class Keg
     ObserverPathnameExtension.total
   end
 
-  def optlink(mode=OpenStruct.new)
+  def optlink(mode = OpenStruct.new)
     opt_record.delete if opt_record.symlink? || opt_record.exist?
     make_relative_symlink(opt_record, path, mode)
   end
@@ -340,7 +340,7 @@ class Keg
 
   private
 
-  def resolve_any_conflicts dst, mode
+  def resolve_any_conflicts(dst, mode)
     return unless dst.symlink?
 
     src = dst.resolved_path
@@ -371,14 +371,14 @@ class Keg
     end
   end
 
-  def make_relative_symlink dst, src, mode
+  def make_relative_symlink(dst, src, mode)
     if dst.symlink? && src == dst.resolved_path
       puts "Skipping; link already exists: #{dst}" if ARGV.verbose?
       return
     end
 
     # cf. git-clean -n: list files to delete, don't really link or delete
-    if mode.dry_run and mode.overwrite
+    if mode.dry_run && mode.overwrite
       if dst.symlink?
         puts "#{dst} -> #{dst.resolved_path}"
       elsif dst.exist?
@@ -411,7 +411,7 @@ class Keg
   protected
 
   # symlinks the contents of path+relative_dir recursively into #{HOMEBREW_PREFIX}/relative_dir
-  def link_dir relative_dir, mode
+  def link_dir(relative_dir, mode)
     root = path+relative_dir
     return unless root.exist?
     root.find do |src|
@@ -420,10 +420,10 @@ class Keg
       dst.extend ObserverPathnameExtension
 
       if src.symlink? || src.file?
-        Find.prune if File.basename(src) == '.DS_Store'
+        Find.prune if File.basename(src) == ".DS_Store"
         # Don't link pyc files because Python overwrites these cached object
         # files and next time brew wants to link, the pyc file is in the way.
-        if src.extname == '.pyc' && src.to_s =~ /site-packages/
+        if src.extname == ".pyc" && src.to_s =~ /site-packages/
           Find.prune
         end
 
@@ -431,7 +431,7 @@ class Keg
         when :skip_file, nil
           Find.prune
         when :info
-          next if File.basename(src) == 'dir' # skip historical local 'dir' files
+          next if File.basename(src) == "dir" # skip historical local 'dir' files
           make_relative_symlink dst, src, mode
           dst.install_info
         else
@@ -439,10 +439,10 @@ class Keg
         end
       elsif src.directory?
         # if the dst dir already exists, then great! walk the rest of the tree tho
-        next if dst.directory? and not dst.symlink?
+        next if dst.directory? && !dst.symlink?
         # no need to put .app bundles in the path, the user can just use
         # spotlight, or the open command and actual mac apps use an equivalent
-        Find.prune if src.extname == '.app'
+        Find.prune if src.extname == ".app"
 
         case yield src.relative_path_from(root)
         when :skip_dir
