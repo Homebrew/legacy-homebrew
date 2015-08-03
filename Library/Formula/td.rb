@@ -8,9 +8,9 @@ class Td < Formula
 
   bottle do
     cellar :any
-    sha256 "d179a7f6a9e29d08c10c6f3a96e4a234c2cffb241955b179a8dedf182fe9f986" => :yosemite
-    sha256 "61ae9c8acb8dd104260f8a17bc3a6edb5238ff501b71d8318474158a44f89399" => :mavericks
-    sha256 "b51a8354038f95935dae37df2273b979acdb09bb4c138139d56094df23eaeee4" => :mountain_lion
+    sha256 "38428b68601f84a7cf0360bea09b17d891bd5bb2a5d6fbc6bce420011de698d2" => :yosemite
+    sha256 "f73a1a4e82115217791c73e95938f474f906f5215164abd71d71c9304674895e" => :mavericks
+    sha256 "c3e12ecfa1b4c9530f2f27c6707cf8e493377ca6132170814476d715564c536f" => :mountain_lion
   end
 
   depends_on "go" => :build
