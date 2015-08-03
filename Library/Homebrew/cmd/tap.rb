@@ -6,6 +6,9 @@ module Homebrew
       puts Tap.names
     elsif ARGV.first == "--repair"
       migrate_taps :force => true
+    elsif ARGV.first == "--list-official"
+      require "official_taps"
+      puts OFFICIAL_TAPS.map { |t| "homebrew/#{t}" } * "\n"
     else
       user, repo = tap_args
       clone_target = ARGV.named[1]
