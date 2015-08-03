@@ -6,9 +6,9 @@ class AptCacherNg < Formula
   sha256 "f4e80adb02ad68a5f79a23335f1cc1e6b8a610b2c70749d9a1ce44171766775c"
 
   bottle do
-    sha1 "10658beb0ba8bb53e2c99a40a79833d04c8215df" => :mavericks
-    sha1 "88b90f06af2229837cf3086f035e02316719e679" => :mountain_lion
-    sha1 "351cd708e659a1ec9959044568e71c2278a9debd" => :lion
+    cellar :any
+    sha256 "56ac8cc5e3302ef36487a0732272cc054725488335312ba20cc3c890b11f4031" => :mavericks
+    sha256 "be6580890689b19b1d8c89becaaa173e6cb857e32318be40ca06360758905e5d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
