@@ -360,12 +360,8 @@ class FormulaAuditor
       EOS
     end
 
-    if desc =~ /[Cc]ommandline/
-      problem "It should be \"command-line\", not \"commandline\"."
-    end
-
-    if desc =~ /[Cc]ommand line/
-      problem "It should be \"command-line\", not \"command line\"."
+    if desc =~ %r[([Cc]ommand ?line)]
+      problem "Description should use \"command-line\" instead of \"#{$1}\""
     end
   end
 
