@@ -60,7 +60,7 @@ module Homebrew
       puts_columns(tap_results)
       count = local_results.length + tap_results.length
 
-      if count == 0 and !blacklisted? query
+      if count == 0 && !blacklisted?(query)
         puts "No formula found for #{query.inspect}."
         begin
           GitHub.print_pull_requests_matching(query)

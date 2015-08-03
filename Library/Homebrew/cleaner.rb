@@ -22,7 +22,7 @@ class Cleaner
 
     # Get rid of any info 'dir' files, so they don't conflict at the link stage
     info_dir_file = @f.info + "dir"
-    if info_dir_file.file? and !@f.skip_clean? info_dir_file
+    if info_dir_file.file? && !@f.skip_clean?(info_dir_file)
       observe_file_removal info_dir_file
     end
 

@@ -39,10 +39,12 @@ if OS.mac? && MacOS.version < :mavericks && MacOS.active_developer_dir == "/"
   EOS
 end
 
-case HOMEBREW_PREFIX.to_s when "/", "/usr"
-                            # it may work, but I only see pain this route and don't want to support it
-                            abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
+case HOMEBREW_PREFIX.to_s
+when "/", "/usr"
+  # it may work, but I only see pain this route and don't want to support it
+  abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
+
 if OS.mac? and MacOS.version < "10.6"
   abort <<-EOABORT.undent
     Homebrew requires Snow Leopard or higher. For Tiger and Leopard support, see:
