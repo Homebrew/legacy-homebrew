@@ -9,7 +9,7 @@ class FormulaValidationTests < Homebrew::TestCase
 
   def test_cant_override_brew
     e = assert_raises(RuntimeError) { formula { def brew; end } }
-    assert_match /You cannot override Formula#brew/, e.message
+    assert_match(/You cannot override Formula#brew/, e.message)
   end
 
   def test_validates_name

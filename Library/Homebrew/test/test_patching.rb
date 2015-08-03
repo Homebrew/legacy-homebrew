@@ -83,7 +83,7 @@ class PatchingTests < Homebrew::TestCase
     assert_patched formula {
       def patches
         { :p0 => PATCH_URL_B }
-              end
+      end
     }
   end
 
@@ -91,7 +91,7 @@ class PatchingTests < Homebrew::TestCase
     assert_patched formula {
       def patches
         [PATCH_URL_A]
-              end
+      end
     }
   end
 
@@ -99,7 +99,7 @@ class PatchingTests < Homebrew::TestCase
     assert_patched formula {
       def patches
         { :p1 => PATCH_URL_A }
-              end
+      end
     }
   end
 
@@ -107,7 +107,7 @@ class PatchingTests < Homebrew::TestCase
     assert_patched formula {
       def patches
         { :p1 => [PATCH_URL_A] }
-              end
+      end
     }
   end
 

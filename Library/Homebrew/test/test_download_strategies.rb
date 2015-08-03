@@ -42,7 +42,7 @@ class VCSDownloadStrategyTests < Homebrew::TestCase
     strategy = Class.new(VCSDownloadStrategy) do
       def cache_tag
         "foo"
-                                     end
+      end
     end
     downloader = strategy.new("baz", resource)
     assert_equal HOMEBREW_CACHE.join("baz--foo"), downloader.cached_location
