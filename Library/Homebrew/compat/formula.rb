@@ -16,7 +16,7 @@ class Formula
     "-DCMAKE_INSTALL_PREFIX='#{prefix}' -DCMAKE_BUILD_TYPE=None -DCMAKE_FIND_FRAMEWORK=LAST -Wno-dev"
   end
 
-  def cxxstdlib_check check_type
+  def cxxstdlib_check(check_type)
     self.class.cxxstdlib_check check_type
   end
 
@@ -44,16 +44,18 @@ class Formula
     define_method(:require_universal_deps?) { true }
   end
 
-  def self.path name
+  def self.path(name)
     Formulary.core_path(name)
   end
 
   DATA = :DATA
 
-  def patches; {} end
+  def patches
+    {}
+  end
 
-  def python(options={}, &block)
-    opoo 'Formula#python is deprecated and will go away shortly.'
+  def python(_options = {}, &block)
+    opoo "Formula#python is deprecated and will go away shortly."
     block.call if block_given?
     PythonRequirement.new
   end

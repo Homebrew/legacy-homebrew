@@ -1,5 +1,5 @@
-require 'formula'
-require 'keg'
+require "formula"
+require "keg"
 
 module Homebrew
   def outdated
@@ -40,7 +40,7 @@ module Homebrew
 
     outdated_brews(formulae) do |f, versions|
       if verbose
-        puts "#{f.full_name} (#{versions*', '} < #{f.pkg_version})"
+        puts "#{f.full_name} (#{versions*", "} < #{f.pkg_version})"
       else
         puts f.full_name
       end
@@ -50,9 +50,9 @@ module Homebrew
   def print_outdated_json(formulae)
     json = []
     outdated = outdated_brews(formulae) do |f, versions|
-      json << {:name => f.full_name,
-               :installed_versions => versions.collect(&:to_s),
-               :current_version => f.pkg_version.to_s}
+      json << { :name => f.full_name,
+                :installed_versions => versions.collect(&:to_s),
+                :current_version => f.pkg_version.to_s }
     end
     puts Utils::JSON.dump(json)
 

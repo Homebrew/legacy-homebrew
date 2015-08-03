@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 module Homebrew
   SOURCE_PATH=HOMEBREW_REPOSITORY/"Library/Homebrew/manpages"

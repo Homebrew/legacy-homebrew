@@ -1,5 +1,5 @@
-require 'cmd/install'
-require 'cmd/outdated'
+require "cmd/install"
+require "cmd/outdated"
 
 module Homebrew
   def upgrade
@@ -29,24 +29,24 @@ module Homebrew
 
     unless outdated.empty?
       oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
-      puts outdated.map{ |f| "#{f.full_name} #{f.pkg_version}" } * ", "
+      puts outdated.map { |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
-      puts pinned.map{ |f| "#{f.full_name} #{f.pkg_version}" } * ", "
+      puts pinned.map { |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     end
 
     outdated.each { |f| upgrade_formula(f) }
   end
 
   def upgrade_pinned?
-    not ARGV.named.empty?
+    !ARGV.named.empty?
   end
 
-  def upgrade_formula f
+  def upgrade_formula(f)
     outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
     tab = Tab.for_formula(f)
 
@@ -89,7 +89,6 @@ module Homebrew
     ofail e
   ensure
     # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not f.installed? rescue nil
+    outdated_keg.link if outdated_keg && !f.installed? rescue nil
   end
-
 end

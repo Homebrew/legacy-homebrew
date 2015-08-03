@@ -1,4 +1,4 @@
-require 'fcntl'
+require "fcntl"
 
 class FormulaLock
   LOCKDIR = HOMEBREW_CACHE_FORMULA

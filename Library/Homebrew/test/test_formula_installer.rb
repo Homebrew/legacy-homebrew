@@ -40,7 +40,7 @@ class InstallTests < Homebrew::TestCase
       assert_predicate f.libexec, :directory?
       assert_equal 1, f.libexec.children.length
 
-      refute_predicate f.prefix+'main.c', :exist?
+      refute_predicate f.prefix+"main.c", :exist?
 
       # Test that things make it into the Cellar
       keg = Keg.new f.prefix

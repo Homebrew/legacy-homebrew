@@ -36,8 +36,8 @@ class Caveats
     return unless f.keg_only?
 
     s = "This formula is keg-only, which means it was not symlinked into #{HOMEBREW_PREFIX}."
-    s << "\n\n#{f.keg_only_reason.to_s}"
-    if f.lib.directory? or f.include.directory?
+    s << "\n\n#{f.keg_only_reason}"
+    if f.lib.directory? || f.include.directory?
       s <<
         <<-EOS.undent_________________________________________________________72
 
@@ -54,7 +54,7 @@ class Caveats
   end
 
   def bash_completion_caveats
-    if keg and keg.completion_installed? :bash then <<-EOS.undent
+    if keg && keg.completion_installed?(:bash) then <<-EOS.undent
       Bash completion has been installed to:
         #{HOMEBREW_PREFIX}/etc/bash_completion.d
       EOS
@@ -62,7 +62,7 @@ class Caveats
   end
 
   def zsh_completion_caveats
-    if keg and keg.completion_installed? :zsh then <<-EOS.undent
+    if keg && keg.completion_installed?(:zsh) then <<-EOS.undent
       zsh completion has been installed to:
         #{HOMEBREW_PREFIX}/share/zsh/site-functions
       EOS
@@ -70,7 +70,7 @@ class Caveats
   end
 
   def fish_completion_caveats
-    if keg and keg.completion_installed? :fish and which("fish") then <<-EOS.undent
+    if keg && keg.completion_installed?(:fish) && which("fish") then <<-EOS.undent
       fish completion has been installed to:
         #{HOMEBREW_PREFIX}/share/fish/vendor_completions.d
       EOS
@@ -125,7 +125,7 @@ class Caveats
   end
 
   def app_caveats
-    if keg and keg.app_installed?
+    if keg && keg.app_installed?
       <<-EOS.undent
         .app bundles were installed.
         Run `brew linkapps #{keg.name}` to symlink these to /Applications.
@@ -148,9 +148,9 @@ class Caveats
 
   def plist_caveats
     s = []
-    if f.plist or (keg and keg.plist_installed?)
-      destination = f.plist_startup ? '/Library/LaunchDaemons' \
-                                    : '~/Library/LaunchAgents'
+    if f.plist || (keg && keg.plist_installed?)
+      destination = f.plist_startup ? "/Library/LaunchDaemons" \
+                                    : "~/Library/LaunchAgents"
 
       plist_filename = if f.plist
         f.plist_path.basename
@@ -158,7 +158,7 @@ class Caveats
         File.basename Dir["#{keg}/*.plist"].first
       end
       plist_link = "#{destination}/#{plist_filename}"
-      plist_domain = f.plist_path.basename('.plist')
+      plist_domain = f.plist_path.basename(".plist")
       destination_path = Pathname.new File.expand_path destination
       plist_path = destination_path/plist_filename
 
