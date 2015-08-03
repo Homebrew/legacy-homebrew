@@ -3,8 +3,8 @@ require "formula"
 class Burp < Formula
   desc "Network backup and restore"
   homepage "http://burp.grke.org/"
-  url "https://downloads.sourceforge.net/project/burp/burp-1.4.28/burp-1.4.28.tar.bz2"
-  sha1 "ddd5340db6aac1fa2e58c1e66c89730d8fd9bfb5"
+  url "http://burp.grke.org/downloads/burp-1.4.28/burp-1.4.28.tar.bz2"
+  sha256 "01c41c07805ebe8c882d7cb9f294e779b6decbe2eb2c81fd65d8fb2b174e18f0"
   head "https://github.com/grke/burp.git"
 
   bottle do
