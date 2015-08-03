@@ -1,5 +1,3 @@
-require "formula"
-
 class AppEngineJavaSdk < Formula
   desc "Google App Engine for Java"
   homepage "https://cloud.google.com/appengine/docs/java/gettingstarted/introduction"

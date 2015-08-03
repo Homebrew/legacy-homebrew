@@ -23,7 +23,7 @@ class BdwGc < Formula
                           "--prefix=#{prefix}",
                           "--enable-cplusplus"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 end

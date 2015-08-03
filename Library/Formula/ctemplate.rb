@@ -1,5 +1,3 @@
-require "formula"
-
 class Ctemplate < Formula
   desc "Template language for C++"
   homepage "https://ctemplate.googlecode.com/"
@@ -9,6 +7,6 @@ class Ctemplate < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

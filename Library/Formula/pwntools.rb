@@ -17,38 +17,38 @@ class Pwntools < Formula
 
   resource "paramiko" do
     url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.15.2.tar.gz"
-    sha1 "754ffa47fd6f78b93fc56437cf14a79bef094f0f"
+    sha256 "4f56a671a3eecbb76e6143e6e4ca007d503a39aa79aa9e14ade667fa53fd6e55"
   end
 
   resource "argparse" do
     url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
-    sha1 "8a8d6c9624669055c2c4f70adcb129139dc50ee6"
+    sha256 "b3a79a23d37b5a02faa550b92cbbbebeb4aa1d77e649c3eb39c19abf5262da04"
   end
 
   resource "mako" do
     url "https://pypi.python.org/packages/source/M/Mako/Mako-1.0.0.tar.gz"
-    sha1 "580b3a8043833e3c3340d4b661a33f6ccc6a35d5"
+    sha256 "a3cd72cfef507204b50f74ffcbfcfde7e856437891d3f6cfe780866986d006fe"
   end
 
   resource "pyelftools" do
     url "https://pypi.python.org/packages/source/p/pyelftools/pyelftools-0.23.tar.gz"
-    sha1 "4639467a51b1edc8c279468c6b42446f414166ea"
+    sha256 "fc57aadd096e8f9b9b03f1a9578f673ee645e1513a5ff0192ef439e77eab21de"
   end
 
   # Don't bump this beyond 2.1.
   resource "capstone" do
     url "https://pypi.python.org/packages/source/c/capstone/capstone-2.1.tar.gz"
-    sha1 "9f40f5421a8fcc3ae9e8b7b424ae742f32bc1b27"
+    sha256 "b86ba2b9189fe60e286341da75d0ac24322014303f72ab3d6ba3d800f3af7864"
   end
 
   resource "ropgadget" do
     url "https://github.com/JonathanSalwan/ROPgadget/archive/v5.3.tar.gz"
-    sha1 "09087bc89b2b07939e60cd27b034ef5c26eacbb7"
+    sha256 "809090fe07705b222923b64585c2447a2d7fd3b15468be614e3d0b776966c143"
   end
 
   resource "pyserial" do
     url "https://pypi.python.org/packages/source/p/pyserial/pyserial-2.7.tar.gz"
-    sha1 "f15694b1bea9e4369c1931dc5cf09e37e5c562cf"
+    sha256 "3542ec0838793e61d6224e27ff05e8ce4ba5a5c5cc4ec5c6a3e8d49247985477"
   end
 
   resource "requests" do
@@ -58,23 +58,23 @@ class Pwntools < Formula
 
   resource "psutil" do
     url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.0.tar.gz"
-    sha1 "bc4d6d7641afa2f9619121da5194cba83098341a"
+    sha256 "b15cc9e7cad0991bd1cb806fa90ea85ba3a95d0f1226625ecef993294ad61521"
   end
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
   resource "ecdsa" do
     url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.11.tar.gz"
-    sha1 "f732f8cdb064bbe47aa830cc2654688da95b78f0"
+    sha256 "8e3b6c193f91dc94b2f3b0261e3eabbdc604f78ff99fdad324a56fdd0b5e958c"
   end
 
   # Don't bump this beyond 2.3.
   resource "pycrypto" do
     url "https://pypi.python.org/packages/source/p/pycrypto/pycrypto-2.3.tar.gz"
-    sha1 "96b33b77e729893bd0837a09a6aa7a12b5070037"
+    sha256 "4f11e85fbcf13960373650fc2dae8f088f9b001f07fb6d3efb2fcb5334987182"
   end
 
   def install

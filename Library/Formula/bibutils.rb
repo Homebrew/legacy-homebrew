@@ -2,7 +2,7 @@ class Bibutils < Formula
   desc "Bibliography conversion utilities"
   homepage "http://sourceforge.net/p/bibutils/home/Bibutils/"
   url "https://downloads.sourceforge.net/project/bibutils/bibutils_5.6_src.tgz"
-  sha1 "effec35d97ed2d8454721eaf37ba8b484f02e8da"
+  sha256 "9fc7ba38b69379e501af9d6228f6e2ebaebcca52b6810583d901219d83537423"
 
   bottle do
     cellar :any

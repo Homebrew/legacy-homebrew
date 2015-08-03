@@ -2,7 +2,7 @@ class Eigen < Formula
   desc "C++ template library for linear algebra"
   homepage "http://eigen.tuxfamily.org/"
   url "http://bitbucket.org/eigen/eigen/get/3.2.4.tar.bz2"
-  sha1 "64ea809acc449adbd8fe616def7d48ff4f0776a8"
+  sha256 "d64332c92e31803d2c59f6646ed893965c666acfc7c284e4f5e9ffbb4d148922"
 
   bottle do
     cellar :any
@@ -25,7 +25,7 @@ class Eigen < Formula
       args << "-DCMAKE_BUILD_TYPE=Release"
       args << "-Dpkg_config_libdir=#{lib}" << ".."
       system "cmake", *args
-      system "make install"
+      system "make", "install"
     end
     (share/"cmake/Modules").install "cmake/FindEigen3.cmake"
   end

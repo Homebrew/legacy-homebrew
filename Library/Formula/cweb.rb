@@ -1,10 +1,8 @@
-require "formula"
-
 class Cweb < Formula
   desc "Literate documentation system for C, C++, and Java"
   homepage "http://www-cs-faculty.stanford.edu/~uno/cweb.html"
   url "ftp://ftp.cs.stanford.edu/pub/cweb/cweb-3.64ad.tar.gz"
-  sha1 "a9828b66b525d7cf91c57b3c4891168caa4af10a"
+  sha256 "1f0bb7aa35b8d43b721d588ed5003620d38de1959652f23bac2847ffcb922c0f"
 
   bottle do
     sha1 "ab57d1005e2c2c9fddd67b4260d37f791deed5c0" => :mavericks
@@ -20,9 +18,7 @@ class Cweb < Formula
     cwebinputs = (lib/"cweb")
 
     # make install doesn't use `mkdir -p` so this is needed
-    [bin, man1, macrosdir, emacsdir, cwebinputs].each do |path|
-        path.mkpath
-    end
+    [bin, man1, macrosdir, emacsdir, cwebinputs].each(&:mkpath)
 
     system "make", "install",
       "DESTDIR=#{bin}/",

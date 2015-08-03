@@ -1,10 +1,8 @@
-require "formula"
-
 class Lutok < Formula
   desc "Lightweight C++ API for Lua"
   homepage "https://github.com/jmmv/lutok"
   url "https://github.com/jmmv/lutok/releases/download/lutok-0.4/lutok-0.4.tar.gz"
-  sha1 "f13ea7cd8344e43c71c41f87c9fdbc2b9047a504"
+  sha256 "2cec51efa0c8d65ace8b21eaa08384b77abc5087b46e785f78de1c21fb754cd5"
 
   bottle do
     cellar :any

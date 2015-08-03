@@ -1,10 +1,8 @@
-require "formula"
-
 class Fail2ban < Formula
   desc "Scan log files and ban IPs showing malicious signs"
   homepage "http://www.fail2ban.org/"
   url "https://github.com/fail2ban/fail2ban/archive/0.8.14.tar.gz"
-  sha1 "fb104335acf9d71552a4a1cec06fac1187846867"
+  sha256 "2d579d9f403eb95064781ffb28aca2b258ca55d7a2ba056a8fa2b3e6b79721f2"
 
   bottle do
     sha1 "ab90e39f9669b929dd4ec43b9f736a1ab1cac652" => :mavericks

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libgtop < Formula
   desc "Library for portably obtaining information about processes"
-  homepage 'https://library.gnome.org/devel/libgtop/stable/'
-  url 'http://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.5.tar.xz'
-  sha1 '7104a7546252e3fb26d162e9b34e1f7df42236d1'
+  homepage "https://library.gnome.org/devel/libgtop/stable/"
+  url "http://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.5.tar.xz"
+  sha256 "c812c174e44a8971a1f33265437cfd10f1e99869c7f5c05f8ee95846a70a3342"
 
   bottle do
     revision 1
@@ -13,15 +11,15 @@ class Libgtop < Formula
     sha1 "52f47e23108f5530f53dacfcaf01e3e78cb05d3f" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "gettext"
+  depends_on "glib"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-x"
-    system "make install"
+    system "make", "install"
   end
 end

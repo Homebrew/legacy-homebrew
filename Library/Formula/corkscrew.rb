@@ -1,10 +1,8 @@
-require 'formula'
-
 class Corkscrew < Formula
   desc "Tunnel SSH through HTTP proxies"
-  homepage 'http://www.agroman.net/corkscrew/'
-  url 'http://www.agroman.net/corkscrew/corkscrew-2.0.tar.gz'
-  sha1 '8bdb4c0dc71048136c721c33229b9bf795230b32'
+  homepage "http://www.agroman.net/corkscrew/"
+  url "http://www.agroman.net/corkscrew/corkscrew-2.0.tar.gz"
+  sha256 "0d0fcbb41cba4a81c4ab494459472086f377f9edb78a2e2238ed19b58956b0be"
 
   depends_on "libtool" => :build
 

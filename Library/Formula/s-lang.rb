@@ -3,7 +3,7 @@ class SLang < Formula
   homepage "http://www.jedsoft.org/slang/"
   url "http://www.jedsoft.org/releases/slang/slang-2.3.0.tar.bz2"
   mirror "http://pkgs.fedoraproject.org/repo/pkgs/slang/slang-2.3.0.tar.bz2/3bcc790460d52db1316c20395b7ac2f1/slang-2.3.0.tar.bz2"
-  sha1 "6e26e90307d4569e5feef195648c0858ba27f7ac"
+  sha256 "f95224060f45e0d8212a5039b339afa5f1a94a1bb0298e796104e5b12e926129"
 
   bottle do
     sha1 "5ee9afbf50de909d6e0a74d00b5e32162dc890e3" => :yosemite

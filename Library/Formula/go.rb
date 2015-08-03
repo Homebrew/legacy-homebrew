@@ -57,13 +57,13 @@ class Go < Formula
         ["dragonfly", ["386", "amd64"]],
         ["plan9",   ["386", "amd64"]],
         ["solaris", ["amd64"]],
-        ["darwin",  ["386", "amd64"]],
+        ["darwin",  ["386", "amd64"]]
       ]
     elsif build.with? "cc-common"
       targets = [
         ["linux",   ["386", "amd64", "arm"]],
         ["windows", ["386", "amd64"]],
-        ["darwin",  ["386", "amd64"]],
+        ["darwin",  ["386", "amd64"]]
       ]
     else
       targets = [["darwin", [""]]]

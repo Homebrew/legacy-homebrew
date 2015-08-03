@@ -1,10 +1,8 @@
-require 'formula'
-
 class Setweblocthumb < Formula
   desc "Assigns custom icons to webloc files"
-  homepage 'http://hasseg.org/setWeblocThumb'
-  url 'https://github.com/ali-rantakari/setWeblocThumb/archive/v1.0.0.tar.gz'
-  sha1 '60fb2858e6f45216166f31e951432805d7f9dcc0'
+  homepage "http://hasseg.org/setWeblocThumb"
+  url "https://github.com/ali-rantakari/setWeblocThumb/archive/v1.0.0.tar.gz"
+  sha256 "0258fdabbd24eed2ad3ff425b7832c4cd9bc706254861a6339f886efc28e35be"
 
   def install
     system "make"
@@ -12,7 +10,7 @@ class Setweblocthumb < Formula
   end
 
   test do
-    Pathname.new('google.webloc').write('{URL = "https://google.com";}')
-    system "#{bin}/setWeblocThumb", 'google.webloc'
+    Pathname.new("google.webloc").write('{URL = "https://google.com";}')
+    system "#{bin}/setWeblocThumb", "google.webloc"
   end
 end

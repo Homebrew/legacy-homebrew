@@ -3,7 +3,7 @@ class Osxutils < Formula
   homepage "https://github.com/vasi/osxutils"
   head "https://github.com/vasi/osxutils.git"
   url "https://github.com/vasi/osxutils/archive/v1.8.1.tar.gz"
-  sha1 "b6c0e2b0c699a4bf9d51c582c8107ce40cfdec8b"
+  sha256 "26c49f00435d2b58a3768f0712d25afc09139e91994ba2bdaa21915004214186"
 
   bottle do
     cellar :any
@@ -12,10 +12,10 @@ class Osxutils < Formula
     sha1 "a76a3906847c9bdfa934ee46c7bcdeee772f1c26" => :mountain_lion
   end
 
-  conflicts_with "trash", :because => 'both install a trash binary'
+  conflicts_with "trash", :because => "both install a trash binary"
   conflicts_with "leptonica",
     :because => "both leptonica and osxutils ship a `fileinfo` executable."
-  conflicts_with "googlecl", :because => 'both install a google binary'
+  conflicts_with "googlecl", :because => "both install a google binary"
 
   def install
     system "make"

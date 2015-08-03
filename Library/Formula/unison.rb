@@ -1,10 +1,8 @@
-require 'formula'
-
 class Unison < Formula
   desc "Unison file synchronizer"
-  homepage 'https://www.cis.upenn.edu/~bcpierce/unison/'
-  url 'https://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz'
-  sha256 'f40d3cfbe82078d79328b51acab3e5179f844135260c2f4710525b9b45b15483'
+  homepage "https://www.cis.upenn.edu/~bcpierce/unison/"
+  url "https://www.seas.upenn.edu/~bcpierce/unison//download/releases/stable/unison-2.48.3.tar.gz"
+  sha256 "f40d3cfbe82078d79328b51acab3e5179f844135260c2f4710525b9b45b15483"
 
   bottle do
     cellar :any
@@ -14,7 +12,7 @@ class Unison < Formula
     sha256 "dc4dcbeb2e2f224f9fffede14f8d3c7c220f032023b83626b75409707e93df35" => :mountain_lion
   end
 
-  depends_on 'objective-caml' => :build
+  depends_on "objective-caml" => :build
 
   def install
     ENV.j1
@@ -22,6 +20,6 @@ class Unison < Formula
     ENV.delete "NAME" # https://github.com/Homebrew/homebrew/issues/28642
     system "make ./mkProjectInfo"
     system "make UISTYLE=text"
-    bin.install 'unison'
+    bin.install "unison"
   end
 end

@@ -1,10 +1,8 @@
-require "formula"
-
 class Sparkey < Formula
   desc "Constant key-value store, best for frequent read/infrequent write uses"
   homepage "https://github.com/spotify/sparkey/"
   url "https://github.com/spotify/sparkey/archive/sparkey-0.2.0.tar.gz"
-  sha1 "1b7dca2410dffb55d96b8e6eef384830b7d96553"
+  sha256 "a06caf23c64e7ebae5b8b67272b21ab4c57f21a66d190bfe0a95f5af1dc69154"
 
   bottle do
     cellar :any

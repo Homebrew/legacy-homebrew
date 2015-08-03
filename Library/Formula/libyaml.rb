@@ -3,7 +3,7 @@ class Libyaml < Formula
   homepage "http://pyyaml.org/wiki/LibYAML"
   url "http://pyyaml.org/download/libyaml/yaml-0.1.6.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/liby/libyaml/libyaml_0.1.6.orig.tar.gz"
-  sha1 "f3d404e11bec3c4efcddfd14c42d46f1aabe0b5d"
+  sha256 "7da6971b4bd08a986dd2a61353bc422362bd0edcc67d7ebaac68c95f74182749"
   revision 1
 
   bottle do
@@ -19,7 +19,7 @@ class Libyaml < Formula
   # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-9130
   patch do
     url "https://bitbucket.org/xi/libyaml/commits/2b9156756423e967cfd09a61d125d883fca6f4f2/raw/"
-    sha1 "174dbe1f5161853cdb1c6ba94df6a826cf25870c"
+    sha256 "30546a280c4f9764a93ff5f4f88671a02222e9886e7f63ee19aebf1b2086a7fe"
   end
 
   def install

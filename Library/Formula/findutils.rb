@@ -1,11 +1,9 @@
-require "formula"
-
 class Findutils < Formula
   desc "Collection of GNU find, xargs, and locate"
   homepage "https://www.gnu.org/software/findutils/"
   url "http://ftpmirror.gnu.org/findutils/findutils-4.4.2.tar.gz"
   mirror "https://ftp.gnu.org/gnu/findutils/findutils-4.4.2.tar.gz"
-  sha1 "e8dd88fa2cc58abffd0bfc1eddab9020231bb024"
+  sha256 "434f32d171cbc0a5e72cfc5372c6fc4cb0e681f8dce566a0de5b6fccd702b62a"
 
   bottle do
     revision 1

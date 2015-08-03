@@ -1,10 +1,8 @@
-require 'formula'
-
 class VorbisTools < Formula
   desc "Ogg Vorbis CODEC tools"
-  homepage 'http://vorbis.com'
-  url 'http://downloads.xiph.org/releases/vorbis/vorbis-tools-1.4.0.tar.gz'
-  sha1 'fc6a820bdb5ad6fcac074721fab5c3f96eaf6562'
+  homepage "http://vorbis.com"
+  url "http://downloads.xiph.org/releases/vorbis/vorbis-tools-1.4.0.tar.gz"
+  sha256 "a389395baa43f8e5a796c99daf62397e435a7e73531c9f44d9084055a05d22bc"
 
   bottle do
     sha1 "9d71b311da8692a1b58f8cf2d3e84229ea2d645e" => :mavericks
@@ -12,14 +10,13 @@ class VorbisTools < Formula
     sha1 "6ada37aaab0e6a9ab6388910ce80f9ac36fc0b04" => :lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libogg'
-  depends_on 'libvorbis'
-  depends_on 'libao'
-  depends_on 'flac' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "libogg"
+  depends_on "libvorbis"
+  depends_on "libao"
+  depends_on "flac" => :optional
 
   def install
-
     args = [
       "--disable-debug",
       "--disable-dependency-tracking",
@@ -27,9 +24,9 @@ class VorbisTools < Formula
       "--prefix=#{prefix}"
     ]
 
-    args << "--without-flac" if build.without? 'flac'
+    args << "--without-flac" if build.without? "flac"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

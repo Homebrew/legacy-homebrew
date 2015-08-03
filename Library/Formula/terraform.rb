@@ -1,4 +1,3 @@
-require "formula"
 require "language/go"
 
 class Terraform < Formula
@@ -76,7 +75,7 @@ class Terraform < Formula
 
   go_resource "code.google.com/p/go-uuid" do
     url "https://code.google.com/p/go-uuid", :using => :hg,
-      :revision => "35bc42037350"
+                                             :revision => "35bc42037350"
   end
 
   %w[
@@ -84,7 +83,7 @@ class Terraform < Formula
     net f0cf018861e2b54077eced91659e255072b5f215
     oauth2 8914e5017ca260f2a3a1575b1e6868874050d95e
     tools 87156cb7667343326165d84f3557bd91ab57428b
-    ].each_slice(2) do |x, y|
+  ].each_slice(2) do |x, y|
     go_resource "golang.org/x/#{x}" do
       url "https://go.googlesource.com/#{x}.git", :revision => y
     end

@@ -2,7 +2,7 @@ class Graphviz < Formula
   desc "Graph visualization software from AT&T and Bell Labs"
   homepage "http://graphviz.org/"
   url "http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz"
-  sha1 "053c771278909160916ca5464a0a98ebf034c6ef"
+  sha256 "81aa238d9d4a010afa73a9d2a704fc3221c731e1e06577c2ab3496bdef67859e"
 
   bottle do
     revision 1
@@ -44,7 +44,7 @@ class Graphviz < Formula
 
   patch :p0 do
     url "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff"
-    sha1 "b242fb8fa81489dd16830e5df6bbf5448a3874d5"
+    sha256 "7c8d5c2fd475f07de4ca3a4340d722f472362615a369dd3f8524021306605684"
   end
 
   def install

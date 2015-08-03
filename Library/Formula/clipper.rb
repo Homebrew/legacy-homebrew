@@ -1,20 +1,18 @@
-require 'formula'
-
 class Clipper < Formula
   desc "Share OS X clipboard with tmux and other local and remote apps"
-  homepage 'https://wincent.com/products/clipper'
-  url 'https://github.com/wincent/clipper/archive/0.2.tar.gz'
-  sha1 'e4dd31b1f1398975edc46f9e9fe9035c46ec3318'
+  homepage "https://wincent.com/products/clipper"
+  url "https://github.com/wincent/clipper/archive/0.2.tar.gz"
+  sha256 "4c202238e37ed313d467d933c6fd815f095e7e7c225208b2b710f981d58df72a"
 
-  depends_on 'go' => :build
+  depends_on "go" => :build
 
   def install
-    ENV['GOPATH'] = buildpath
-    system 'go', 'build', 'clipper.go'
-    bin.install 'clipper'
+    ENV["GOPATH"] = buildpath
+    system "go", "build", "clipper.go"
+    bin.install "clipper"
   end
 
-  plist_options :manual => 'clipper'
+  plist_options :manual => "clipper"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

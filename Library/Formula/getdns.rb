@@ -1,5 +1,3 @@
-require "formula"
-
 class Getdns < Formula
   desc "Modern asynchronous DNS API"
   homepage "https://getdnsapi.net"

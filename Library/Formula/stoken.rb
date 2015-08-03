@@ -1,10 +1,8 @@
-require "formula"
-
 class Stoken < Formula
   desc "Tokencode generator compatible with RSA SecurID 128-bit (AES)"
   homepage "http://stoken.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/stoken/stoken-0.81.tar.gz"
-  sha1 "db36aec5a8bd3f5f92deaebdea08cb639b78da73"
+  sha256 "786d15973f15097ba76d3231bfb7da649ffbab08a0bde55089a3d8e476cf69f7"
 
   bottle do
     cellar :any

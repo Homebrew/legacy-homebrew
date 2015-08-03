@@ -1,10 +1,8 @@
-require 'formula'
-
 class BulkExtractor < Formula
   desc "Stream-based forensics tool"
   homepage "https://github.com/simsong/bulk_extractor/wiki"
   url "http://digitalcorpora.org/downloads/bulk_extractor/bulk_extractor-1.5.5.tar.gz"
-  sha1 "59cab1d96089043ad4a74483bd09179262b136ab"
+  sha256 "297a57808c12b81b8e0d82222cf57245ad988804ab467eb0a70cf8669594e8ed"
 
   bottle do
     cellar :any
@@ -22,7 +20,7 @@ class BulkExtractor < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Install documentation
     (share/"bulk_extractor/doc").install Dir["doc/*.{html,txt,pdf}"]

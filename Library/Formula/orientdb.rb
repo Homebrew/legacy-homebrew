@@ -1,11 +1,9 @@
-require 'formula'
-
 class Orientdb < Formula
   desc "Graph database"
-  homepage 'http://www.orientdb.org/index.htm'
-  url 'http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.11.tar.gz&os=mac'
-  version '2.0.11'
-  sha1 '812df4b971c3afc7bc9760b7de9bcc6680c060f0'
+  homepage "http://www.orientdb.org/index.htm"
+  url "http://www.orientechnologies.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.0.11.tar.gz&os=mac"
+  version "2.0.11"
+  sha256 "da6935761823f1e92aa9e10afd4ce47d9ab192aa4fdffef046bdd8696c80da92"
 
   bottle do
     cellar :any
@@ -17,25 +15,25 @@ class Orientdb < Formula
   # Fixing OrientDB init scripts
   patch do
     url "https://gist.githubusercontent.com/maggiolo00/84835e0b82a94fe9970a/raw/1ed577806db4411fd8b24cd90e516580218b2d53/orientdbsh"
-    sha1 "280284f3a8b6e280e46078b746f8250aa5648979"
+    sha256 "d8b89ecda7cb78c940b3c3a702eee7b5e0f099338bb569b527c63efa55e6487e"
   end
 
   def install
-    rm_rf Dir['{bin,benchmarks}/*.{bat,exe}']
+    rm_rf Dir["{bin,benchmarks}/*.{bat,exe}"]
 
     inreplace %W[bin/orientdb.sh bin/console.sh bin/gremlin.sh],
       '"YOUR_ORIENTDB_INSTALLATION_PATH"', libexec
 
     chmod 0755, Dir["bin/*"]
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
 
     mkpath "#{libexec}/log"
     touch "#{libexec}/log/orientdb.err"
     touch "#{libexec}/log/orientdb.log"
 
-    bin.install_symlink "#{libexec}/bin/orientdb.sh" => 'orientdb'
-    bin.install_symlink "#{libexec}/bin/console.sh" => 'orientdb-console'
-    bin.install_symlink "#{libexec}/bin/gremlin.sh" => 'orientdb-gremlin'
+    bin.install_symlink "#{libexec}/bin/orientdb.sh" => "orientdb"
+    bin.install_symlink "#{libexec}/bin/console.sh" => "orientdb-console"
+    bin.install_symlink "#{libexec}/bin/gremlin.sh" => "orientdb-gremlin"
   end
 
   def caveats

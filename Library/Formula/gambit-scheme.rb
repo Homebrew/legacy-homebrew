@@ -1,10 +1,8 @@
-require 'formula'
-
 class GambitScheme < Formula
   desc "Complete, portable implementation of Scheme"
-  homepage 'http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page'
-  url 'http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_3.tgz'
-  sha256 '59c4c62f2cfaf698b54a862e7af9c1b3e4cc27e46d386f31c66e00fed4701777'
+  homepage "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page"
+  url "http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_3.tgz"
+  sha256 "59c4c62f2cfaf698b54a862e7af9c1b3e4cc27e46d386f31c66e00fed4701777"
 
   bottle do
     sha1 "4f04f85300495e2c3fad49206b57605d010ad1f7" => :mavericks
@@ -12,11 +10,11 @@ class GambitScheme < Formula
     sha1 "f4002601e8f904d064909b5df30479a26c916f8d" => :lion
   end
 
-  conflicts_with 'ghostscript', :because => 'both install `gsc` binaries'
-  conflicts_with 'scheme48', :because => 'both install `scheme-r5rs` binaries'
+  conflicts_with "ghostscript", :because => "both install `gsc` binaries"
+  conflicts_with "scheme48", :because => "both install `scheme-r5rs` binaries"
 
-  option 'with-check', 'Execute "make check" before installing'
-  option 'enable-shared', 'Build Gambit Scheme runtime as shared library'
+  option "with-check", 'Execute "make check" before installing'
+  option "enable-shared", "Build Gambit Scheme runtime as shared library"
 
   fails_with :llvm
 
@@ -34,7 +32,7 @@ class GambitScheme < Formula
     # Don't enable this when using clang, per configure warning.
     args << "--enable-single-host" unless ENV.compiler == :clang
 
-    args << "--enable-shared" if build.include? 'enable-shared'
+    args << "--enable-shared" if build.include? "enable-shared"
 
     if ENV.compiler == :clang
       opoo <<-EOS.undent
@@ -50,7 +48,7 @@ class GambitScheme < Formula
 
     ENV.j1
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

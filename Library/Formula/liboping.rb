@@ -1,10 +1,8 @@
-require 'formula'
-
 class Liboping < Formula
   desc "C library to generate ICMP echo requests"
-  homepage 'http://noping.cc'
-  url 'http://noping.cc/files/liboping-1.8.0.tar.bz2'
-  sha256 '1dcb9182c981b31d67522ae24e925563bed57cf950dc681580c4b0abb6a65bdb'
+  homepage "http://noping.cc"
+  url "http://noping.cc/files/liboping-1.8.0.tar.bz2"
+  sha256 "1dcb9182c981b31d67522ae24e925563bed57cf950dc681580c4b0abb6a65bdb"
 
   bottle do
     sha1 "227e7e74330510ac76e8442c685b8a6a5edea9cb" => :yosemite
@@ -16,7 +14,7 @@ class Liboping < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats

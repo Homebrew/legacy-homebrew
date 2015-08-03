@@ -47,9 +47,9 @@ class Geoip < Formula
     cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
     full = Pathname.new "#{geoip_data}/GeoIP.dat"
-    ln_s "GeoLiteCountry.dat", full unless full.exist? or full.symlink?
+    ln_s "GeoLiteCountry.dat", full unless full.exist? || full.symlink?
     full = Pathname.new "#{geoip_data}/GeoIPCity.dat"
-    ln_s "GeoLiteCity.dat", full unless full.exist? or full.symlink?
+    ln_s "GeoLiteCity.dat", full unless full.exist? || full.symlink?
   end
 
   test do

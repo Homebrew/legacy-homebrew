@@ -16,6 +16,6 @@ class GroongaNormalizerMysql < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

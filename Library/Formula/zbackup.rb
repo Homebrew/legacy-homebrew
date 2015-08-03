@@ -1,5 +1,3 @@
-require "formula"
-
 class Zbackup < Formula
   desc "Globally-deduplicating backup tool (based on ideas in rsync)"
   homepage "http://zbackup.org"

@@ -2,7 +2,7 @@ class Resty < Formula
   desc "Command-line REST client that can be used in pipelines"
   homepage "https://github.com/micha/resty"
   url "https://github.com/micha/resty/archive/2.2.tar.gz"
-  sha1 "a4dc1b55cee034e72fcf8d58831c734e19f5869a"
+  sha256 "a6961e16f1489ffa25bf9f2d8b38b9599c008d49267e32adf93f4f87184d4857"
 
   head "https://github.com/micha/resty.git"
 

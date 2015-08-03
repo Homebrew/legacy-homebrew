@@ -1,7 +1,7 @@
 class Pig < Formula
   desc "Platform for analyzing large data sets"
   homepage "https://pig.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.14.0/pig-0.14.0.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?path=pig/pig-0.14.0/pig-0.14.0.tar.gz"
   mirror "https://archive.apache.org/dist/pig/pig-0.14.0/pig-0.14.0.tar.gz"
   sha256 "6aea66dda4791f82bad9654ec5290efc6179d333077b0ce9f07624c9c8b071a0"
 

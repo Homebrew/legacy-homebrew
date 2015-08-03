@@ -1,10 +1,8 @@
-require "formula"
-
 class Libsecret < Formula
   desc "Library for storing/retrieving passwords and other secrets"
   homepage "https://wiki.gnome.org/Projects/Libsecret"
   url "http://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.tar.xz"
-  sha1 "af62de3958bbe0ccf59a02101a6704e036378a6f"
+  sha256 "0c73aa762dbd1e38ba7b03de350e23ce818cb810b0784375e95ef61e004b02e3"
 
   bottle do
     revision 2
@@ -24,10 +22,10 @@ class Libsecret < Formula
 
   def install
     args = %W[
-        --disable-debug
-        --disable-dependency-tracking
-        --disable-silent-rules
-        --prefix=#{prefix}
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
     ]
 
     args << "--enable-gobject-introspection" if build.with? "gobject-introspection"

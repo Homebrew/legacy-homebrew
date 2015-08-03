@@ -11,7 +11,7 @@ class Lolcode < Formula
 
   # note: 0.10.* releases are stable versions, 0.11.* are dev ones
   url "https://github.com/justinmeza/lci/archive/v0.11.2.tar.gz"
-  sha1 "6c5b996bb4defb77542a8fb525df9991b21139f9"
+  sha256 "cb1065936d3a7463928dcddfc345a8d7d8602678394efc0e54981f9dd98c27d2"
 
   depends_on "cmake" => :build
 

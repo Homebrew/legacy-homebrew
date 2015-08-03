@@ -1,10 +1,8 @@
-require 'formula'
-
 class Par2 < Formula
   desc "Parchive: Parity Archive Volume Set for data recovery"
-  homepage 'http://parchive.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/parchive/par2cmdline/0.4/par2cmdline-0.4.tar.gz'
-  sha1 '2fcdc932b5d7b4b1c68c4a4ca855ca913d464d2f'
+  homepage "http://parchive.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/parchive/par2cmdline/0.4/par2cmdline-0.4.tar.gz"
+  sha256 "9e32b7dbcf7bca8249f98824757d4868714156fe2276516504cd26f736e9f677"
 
   conflicts_with "par2tbb",
     :because => "par2 and par2tbb install the same binaries."
@@ -15,19 +13,19 @@ class Par2 < Formula
   # Fixes compilation with GCC 4 and still required for clang
   patch do
     url "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-gcc4.patch?revision=1.1"
-    sha1 "e91540f729115c5ddc210c93bdda34090e2a2cf1"
+    sha256 "eda0a381f944b1bc9d3d78bf4526f77620bcb01de48abcb08878178e47c833f7"
   end
 
   # http://parchive.cvs.sourceforge.net/viewvc/parchive/par2-cmdline/par2creatorsourcefile.cpp?r1=1.4&r2=1.5
   patch :p0 do
     url "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/app-arch/par2cmdline/files/par2cmdline-0.4-offset.patch?revision=1.2"
-    sha1 "5a4e0274ef177c09deb237394b1c5c691b10d83a"
+    sha256 "c4820b11376c9932ece944752ddd388fb50fcbcd47aaadda073997142952d969"
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

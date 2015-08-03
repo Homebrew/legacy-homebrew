@@ -2,7 +2,7 @@ class SpatialiteGui < Formula
   desc "GUI tool supporting SpatiaLite"
   homepage "https://www.gaia-gis.it/fossil/spatialite_gui/index"
   url "http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
-  sha1 "3b9d88e84ffa5a4f913cf74b098532c2cd15398f"
+  sha256 "cb9cb1ede7f83a5fc5f52c83437e556ab9cb54d6ace3c545d31b317fd36f05e4"
   revision 1
 
   bottle do

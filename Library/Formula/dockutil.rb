@@ -1,10 +1,8 @@
-require "formula"
-
 class Dockutil < Formula
   desc "Tool for managing dock items"
   homepage "https://github.com/kcrawford/dockutil"
   url "https://github.com/kcrawford/dockutil/archive/2.0.2.tar.gz"
-  sha1 "d937d20d4ba6ce2bee347966d84048215a7e52ce"
+  sha256 "7d7a546adb825b0fba3f13d2dfc0cc08f2f3f6935c8bfa05c396bcc6e5df56b3"
 
   bottle do
     cellar :any
@@ -17,11 +15,11 @@ class Dockutil < Formula
 
   resource "plistlib" do
     url "https://pypi.python.org/packages/source/p/plist/plist-0.2.tar.gz"
-    sha1 "eac8a0d71a20515f955101429101b3b9f445f809"
+    sha256 "531595d63ee4b7de6a168fc4ca715c475be9700de93455a7c73a176a1e1f3345"
   end
 
   def install
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
     resource("plistlib").stage { system "python", "setup.py", "install", "--prefix=#{libexec}" }
 

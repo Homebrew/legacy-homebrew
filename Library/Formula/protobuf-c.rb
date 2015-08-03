@@ -1,5 +1,3 @@
-require "formula"
-
 class ProtobufC < Formula
   desc "Protocol buffers library"
   homepage "https://github.com/protobuf-c/protobuf-c"
@@ -21,6 +19,6 @@ class ProtobufC < Formula
     ENV.universal_binary if build.universal?
 
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

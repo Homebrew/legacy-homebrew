@@ -6,7 +6,7 @@ class Aacgain < Formula
   # sure 1.9 is actually out before updating.
   # See: https://github.com/Homebrew/homebrew/issues/16838
   url "http://aacgain.altosdesign.com/alvarez/aacgain-1.8.tar.bz2"
-  sha1 "331039c4231e4d85ae878795ce3095dd96dcbfdb"
+  sha256 "2bb8e27aa8f8434a4861fdbc70adb9cb4b47e1dfe472910d62d6042cb80a2ee1"
 
   bottle do
     cellar :any

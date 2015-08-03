@@ -2,7 +2,7 @@ class Nrpe < Formula
   desc "Nagios remote plugin executor"
   homepage "http://www.nagios.org/"
   url "https://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz"
-  sha1 "45f434758c547c0af516e8b3324717f8dcd100a3"
+  sha256 "66383b7d367de25ba031d37762d83e2b55de010c573009c6f58270b137131072"
   revision 1
 
   bottle do
