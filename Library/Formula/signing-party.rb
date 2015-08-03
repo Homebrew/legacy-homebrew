@@ -6,9 +6,10 @@ class SigningParty < Formula
   sha256 "cc23e48b2f06dee7cbf7b80ee4dfbed69908cb4584d3d5fa29ed7b2f962ec16e"
 
   bottle do
-    sha1 "d8214823c908caf3d8793915b1f9a39c040830f2" => :yosemite
-    sha1 "acb48de86cd5524f5ba4631e2d49c03ecc2b4e4c" => :mavericks
-    sha1 "8070e9cebac432ce0033f9b27b439ea2c16acd06" => :mountain_lion
+    cellar :any
+    sha256 "061247a4e861862dc0b8e247f4a8c6de630e970c14dc902bd29c93992e3dfc2d" => :yosemite
+    sha256 "d5adde6973b31e1011900a222a4cfaf7b5bb2cf1e16fe1c9e6152a65b7825d9e" => :mavericks
+    sha256 "20863e6bc105d06aaa714c5af4f3f6c83dcea69948803ba39a74c9f12fced4be" => :mountain_lion
   end
 
   option "with-rename-pgpring", "Install pgpring as pgppubring to avoid conflicting with mutt"
