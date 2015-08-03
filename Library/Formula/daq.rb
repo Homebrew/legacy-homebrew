@@ -1,8 +1,8 @@
 class Daq < Formula
   desc "Network intrusion prevention and detection system"
   homepage "https://www.snort.org/"
-  url "https://www.snort.org/downloads/snort/daq-2.0.5.tar.gz"
-  sha256 "7704b5db858732142586f5043deb0733e2c396535c83081e918fb6993258bc6d"
+  url "https://www.snort.org/downloads/snort/daq-2.0.6.tar.gz"
+  sha256 "b40e1d1273e08aaeaa86e69d4f28d535b7e53bdb3898adf539266b63137be7cb"
 
   bottle do
     cellar :any
