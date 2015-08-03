@@ -25,7 +25,7 @@ module Homebrew
     EOS
 
     puts template if ARGV.verbose?
-    path = Pathname.new('./README.md')
+    path = Pathname.new("./README.md")
     raise "#{path} already exists" if path.exist?
     path.write template
   end

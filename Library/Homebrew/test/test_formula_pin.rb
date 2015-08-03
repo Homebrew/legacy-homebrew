@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'formula_pin'
+require "testing_env"
+require "formula_pin"
 
 class FormulaPinTests < Homebrew::TestCase
   class FormulaDouble
@@ -23,12 +23,12 @@ class FormulaPinTests < Homebrew::TestCase
   end
 
   def test_pinnable_if_kegs_exist
-    (@f.rack+'0.1').mkpath
+    (@f.rack+"0.1").mkpath
     assert_predicate @pin, :pinnable?
   end
 
   def test_unpin
-    (@f.rack+'0.1').mkpath
+    (@f.rack+"0.1").mkpath
     @pin.pin
 
     assert_predicate @pin, :pinned?

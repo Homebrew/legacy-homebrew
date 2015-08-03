@@ -1,11 +1,11 @@
-require 'keg'
-require 'formula'
+require "keg"
+require "formula"
 
 module Homebrew
   def uninstall
     raise KegUnspecifiedError if ARGV.named.empty?
 
-    if not ARGV.force?
+    if !ARGV.force?
       ARGV.kegs.each do |keg|
         keg.lock do
           puts "Uninstalling #{keg}... (#{keg.abv})"
@@ -43,7 +43,7 @@ module Homebrew
     puts "Use `brew remove --force #{e.name}` to remove all versions."
   end
 
-  def rm_pin rack
+  def rm_pin(rack)
     Formulary.from_rack(rack).unpin rescue nil
   end
 end

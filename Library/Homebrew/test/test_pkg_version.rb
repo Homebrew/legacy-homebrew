@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'pkg_version'
+require "testing_env"
+require "pkg_version"
 
 class PkgVersionTests < Homebrew::TestCase
   def v(version)
