@@ -1,13 +1,15 @@
 class TomeePlume < Formula
   desc "Apache TomEE Plume"
   homepage "https://tomee.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.1/apache-tomee-1.7.1-plume.tar.gz"
-  version "1.7.1"
-  sha256 "b07ed7bc41bdb54921d2ca099b6a2b5aec19293f9c2e7634501708dcd7488e20"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.2/apache-tomee-1.7.2-plume.tar.gz"
+  version "1.7.2"
+  sha256 "7e6c67a19c6f0cc352e6a107fdf7ee1908eda6e4bfbdcc6d43dcf984de360508"
 
   def install
     # Remove Windows scripts
     rm_rf Dir["bin/*.bat"]
+    rm_rf Dir["bin/*.bat.original"]
+    rm_rf Dir["bin/*.exe"]
 
     # Install files
     prefix.install %w[NOTICE LICENSE RELEASE-NOTES RUNNING.txt]
