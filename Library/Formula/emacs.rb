@@ -26,6 +26,7 @@ class Emacs < Formula
 
   option "with-cocoa", "Build a Cocoa version of emacs"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
+  option "with-libxml2", "Build with libxml2 support"
 
   deprecated_option "cocoa" => "with-cocoa"
   deprecated_option "keep-ctags" => "with-ctags"
@@ -39,6 +40,7 @@ class Emacs < Formula
   depends_on "imagemagick" => :optional
   depends_on "mailutils" => :optional
   depends_on "glib" => :optional
+  depends_on "libxml2" => :optional
 
   # https://github.com/Homebrew/homebrew/issues/37803
   if build.with? "x11"
@@ -57,6 +59,12 @@ class Emacs < Formula
             "--infodir=#{info}/emacs"]
 
     args << "--with-file-notification=gfile" if build.with? "glib"
+
+    if build.with? "libxml2"
+      args << "--with-xml2"
+    else
+      args << "--without-xml2"
+    end
 
     if build.with? "d-bus"
       args << "--with-dbus"
