@@ -2,7 +2,7 @@ class Botan < Formula
   desc "Cryptographic algorithms and formats library in C++"
   homepage "http://botan.randombit.net/"
   url "http://botan.randombit.net/releases/Botan-1.10.9.tgz"
-  sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
+  sha256 "487d27d3a081ae403cf87c0fc78c2a64183f001b48f9feb87e8de1e16fba8df2"
 
   bottle do
     revision 1

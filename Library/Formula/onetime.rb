@@ -1,10 +1,8 @@
-require "formula"
-
 class Onetime < Formula
   desc "Encryption with one-time pads"
   homepage "http://red-bean.com/onetime/"
   url "http://red-bean.com/onetime/onetime-1.81.tar.gz"
-  sha1 "db8f84963ed7b5831fdf4c19b4494cf7bfd5b753"
+  sha256 "36a83a83ac9f4018278bf48e868af00f3326b853229fae7e43b38d167e628348"
 
   bottle do
     cellar :any
@@ -16,14 +14,14 @@ class Onetime < Formula
   devel do
     url "http://red-bean.com/onetime/onetime-2.0-beta3.tar.gz"
     version "2.0.03"
-    sha1 "db488e9c1463bc4d4b8905546137e15f4fa864e2"
+    sha256 "a2b851f125427bb711f093d0c5f66e604a3e3f0c56443029f85d67581730bb12"
   end
 
   # Fixes the Makefile to permit destination specification
   # https://github.com/kfogel/OneTime/pull/12
   patch do
     url "https://github.com/kfogel/OneTime/pull/12.diff"
-    sha1 "24c3d023c13b556bb34f28909a6ce455f641504c"
+    sha256 "9901ec7ed24b8db30f5d1a6fd40e1f882a0915f2d590830c554abed26369f8df"
   end
 
   def install
@@ -32,7 +30,7 @@ class Onetime < Formula
 
   test do
     system "dd", "if=/dev/random", "of=pad_data.txt", "bs=1024", "count=1"
-    (testpath+'input.txt').write "INPUT"
+    (testpath+"input.txt").write "INPUT"
     system "#{bin}/onetime", "-e", "--pad=pad_data.txt", "--no-trace",
                              "--config=.", "input.txt"
     system "#{bin}/onetime", "-d", "--pad=pad_data.txt", "--no-trace",

@@ -1,10 +1,8 @@
-require "formula"
-
 class Udpxy < Formula
   desc "UDP-to-HTTP multicast traffic relay daemon"
   homepage "http://www.udpxy.com/"
   url "http://www.udpxy.com/download/1_23/udpxy.1.0.23-9-prod.tar.gz"
-  sha1 "4194fc98d51284da48d07c44bbc5bdfa4813a4b8"
+  sha256 "6ce33b1d14a1aeab4bd2566aca112e41943df4d002a7678d9a715108e6b714bd"
   version "1.0.23-9"
 
   bottle do

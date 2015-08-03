@@ -1,5 +1,3 @@
-require "formula"
-
 class Rtorrent < Formula
   desc "Console-based BitTorrent client"
   # Both homepage and primary url have been down since at least ~April 2015

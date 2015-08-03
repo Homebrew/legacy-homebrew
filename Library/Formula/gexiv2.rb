@@ -39,7 +39,7 @@ class Gexiv2 < Formula
       "-I#{HOMEBREW_PREFIX}/include/glib-2.0",
       "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include",
       "-L#{lib}",
-      "-lgexiv2",
+      "-lgexiv2"
     ]
 
     system ENV.cc, "test.c", "-o", "test", *flags

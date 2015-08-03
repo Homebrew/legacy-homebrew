@@ -1,10 +1,8 @@
-require "formula"
-
 class Ctunnel < Formula
   desc "Cryptographic or plain tunnels for TCP/UDP connections"
   homepage "https://github.com/alienrobotarmy/ctunnel"
   url "http://alienrobotarmy.com/ctunnel/0.7/ctunnel-0.7.tar.gz"
-  sha1 "9d369fe3df9ba65880caacede0e9bb9e8e79021b"
+  sha256 "3c90e14af75f7c31372fcdeb8ad24b5f874bfb974aa0906f25a059a2407a358f"
 
   bottle do
     cellar :any

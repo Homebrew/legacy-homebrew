@@ -2,7 +2,7 @@ class Vpcs < Formula
   desc "Virtual PC simulator for testing IP routing"
   homepage "http://vpcs.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/vpcs/0.6/vpcs-0.6-src.tbz"
-  sha1 "6ecdc42f3026286ff6decd588a08898b52ec558f"
+  sha256 "cc311b0dea9ea02ef95f26704d73e34d293caa503600a0acca202d577afd3ceb"
 
   bottle do
     cellar :any

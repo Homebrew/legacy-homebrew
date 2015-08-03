@@ -16,7 +16,7 @@ class Bmake < Formula
     inreplace "mk/man.mk", "MANTARGET?", "MANTARGET"
 
     # -DWITHOUT_PROG_LINK means "don't symlink as bmake-VERSION."
-    args = [ "--prefix=#{prefix}", "-DWITHOUT_PROG_LINK", "--install" ]
+    args = ["--prefix=#{prefix}", "-DWITHOUT_PROG_LINK", "--install"]
 
     system "sh", "boot-strap", *args
 

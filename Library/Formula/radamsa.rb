@@ -1,13 +1,13 @@
 class Radamsa < Formula
   desc "Test case generator for robustness testing (a.k.a. a \"fuzzer\")"
-  homepage 'https://code.google.com/p/ouspg/wiki/Radamsa'
-  url 'https://ouspg.googlecode.com/files/radamsa-0.3.tar.gz'
-  sha1 '94664298b9c5c1563fe4aa7b8fc8530bb6628a51'
+  homepage "https://code.google.com/p/ouspg/wiki/Radamsa"
+  url "https://ouspg.googlecode.com/files/radamsa-0.3.tar.gz"
+  sha256 "17131a19fb28e5c97c28bf0b407a82744c251aa8aedfa507967a92438cd803be"
 
   def install
     system "make"
     man1.install "doc/radamsa.1"
-    prefix.install Dir['*']
+    prefix.install Dir["*"]
   end
 
   def caveats; <<-EOS.undent

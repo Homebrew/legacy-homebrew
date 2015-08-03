@@ -5,11 +5,11 @@ class Babeld < Formula
 
   stable do
     url "http://www.pps.univ-paris-diderot.fr/~jch/software/files/babeld-1.5.1.tar.gz"
-    sha1 "6ff3a7685e62034df83b143a36a4960b2e4d89b9"
+    sha256 "73aac784d57a02932cdf1774099927b85bc746fbd4807098c1fed62a85b509b2"
 
     patch do
       url "https://github.com/jech/babeld/commit/049003.diff"
-      sha1 "acbe00c7591476f96b3494cb7a4685b3a4dc7513"
+      sha256 "eeb72a61a7c35631c78d4afe54bc48d6aff2b16f92a1eebd95bbc382d909306c"
     end
   end
 

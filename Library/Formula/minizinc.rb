@@ -19,7 +19,6 @@ class Minizinc < Formula
     sha256 "d5d00aeaf5f6bb6b3f2cb0d78a29271d98fa73deeb7d939055992f631da78f34" => :mountain_lion
   end
 
-
   depends_on :arch => :x86_64
   depends_on "cmake" => :build
 

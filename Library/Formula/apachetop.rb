@@ -1,10 +1,8 @@
-require 'formula'
-
 class Apachetop < Formula
   desc "Top-like display of Apache log"
-  homepage 'http://freecode.com/projects/apachetop'
-  url 'http://ftp.debian.org/debian/pool/main/a/apachetop/apachetop_0.12.6.orig.tar.gz'
-  sha1 '005c9479800a418ee7febe5027478ca8cbf3c51b'
+  homepage "http://freecode.com/projects/apachetop"
+  url "http://ftp.debian.org/debian/pool/main/a/apachetop/apachetop_0.12.6.orig.tar.gz"
+  sha256 "850062414517055eab2440b788b503d45ebe9b290d4b2e027a5f887ad70f3f29"
 
   bottle do
     cellar :any
@@ -23,7 +21,7 @@ class Apachetop < Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-logfile=/var/log/apache2/access_log"
-    system "make install"
+    system "make", "install"
   end
 end
 

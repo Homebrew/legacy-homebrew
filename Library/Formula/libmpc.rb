@@ -3,7 +3,7 @@ class Libmpc < Formula
   homepage "http://multiprecision.org"
   url "http://ftpmirror.gnu.org/mpc/mpc-1.0.3.tar.gz"
   mirror "http://multiprecision.org/mpc/download/mpc-1.0.3.tar.gz"
-  sha1 "b8be66396c726fdc36ebb0f692ed8a8cca3bcc66"
+  sha256 "617decc6ea09889fb08ede330917a00b16809b8db88c29c31bfbb49cbf88ecc3"
 
   bottle do
     cellar :any

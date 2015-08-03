@@ -2,7 +2,7 @@ class RiemannClient < Formula
   desc "C client library for the Riemann monitoring system"
   homepage "https://github.com/algernon/riemann-c-client"
   url "https://github.com/algernon/riemann-c-client/archive/riemann-c-client-1.3.0.tar.gz"
-  sha1 "0b360e12839683a3a89caf2cd58a8fb1e337e19e"
+  sha256 "64bb7ccdb6d7267110932feddcd8c3149588baf3227b05c330bfef97347be995"
 
   bottle do
     cellar :any

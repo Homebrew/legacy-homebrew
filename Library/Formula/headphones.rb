@@ -3,7 +3,7 @@ class Headphones < Formula
   homepage "https://github.com/rembo10/headphones"
   head "https://github.com/rembo10/headphones.git"
   url "https://github.com/rembo10/headphones/archive/v0.5.2.tar.gz"
-  sha1 "299ec2265a6f362b777712d945b1dff98fc02bf7"
+  sha256 "d2d5783ea4e2b3dcb77a266be594834c29b5b51adb0e9e718749c8d758a57453"
 
   bottle do
     cellar :any
@@ -14,12 +14,12 @@ class Headphones < Formula
 
   resource "Markdown" do
     url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.tar.gz"
-    sha1 "7a4a96cd79c4e36918484c634055c4cc27bdf7d4"
+    sha256 "b8370fce4fbcd6b68b6b36c0fb0f4ec24d6ba37ea22988740f4701536611f1ae"
   end
 
   resource "Cheetah" do
     url "https://pypi.python.org/packages/source/C/Cheetah/Cheetah-2.4.4.tar.gz"
-    sha1 "c218f5d8bc97b39497680f6be9b7bd093f696e89"
+    sha256 "be308229f0c1e5e5af4f27d7ee06d90bb19e6af3059794e5fd536a6f29a9b550"
   end
 
   def startup_script; <<-EOS.undent
@@ -30,13 +30,13 @@ class Headphones < Formula
   end
 
   def install
-    # TODO - strip down to the minimal install
+    # TODO: - strip down to the minimal install
     prefix.install_metafiles
     libexec.install Dir["*"]
 
     ENV["CHEETAH_INSTALL_WITHOUT_SETUPTOOLS"] = "1"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+    install_args = ["setup.py", "install", "--prefix=#{libexec}"]
 
     resource("Markdown").stage { system "python", *install_args }
     resource("Cheetah").stage { system "python", *install_args }

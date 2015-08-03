@@ -1,10 +1,8 @@
-require "formula"
-
 class Fping < Formula
   desc "Scriptable ping program for checking if multiple hosts are up"
   homepage "http://fping.org/"
   url "http://fping.org/dist/fping-3.10.tar.gz"
-  sha1 "d8a1fa3ec13289d67d70102c1ef16c461a7eb505"
+  sha256 "cd47e842f32fe6aa72369d8a0e3545f7c137bb019e66f47379dc70febad357d8"
 
   head "https://github.com/schweikert/fping.git"
 
@@ -13,7 +11,6 @@ class Fping < Formula
                           "--prefix=#{prefix}",
                           "--sbindir=#{bin}",
                           "--enable-ipv6"
-    system "make install"
+    system "make", "install"
   end
-
 end

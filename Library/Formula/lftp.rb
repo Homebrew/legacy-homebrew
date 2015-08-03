@@ -1,5 +1,3 @@
-require "formula"
-
 class Lftp < Formula
   desc "Sophisticated file transfer program"
   homepage "http://lftp.yar.ru/"

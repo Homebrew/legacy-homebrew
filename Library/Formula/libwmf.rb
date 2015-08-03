@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libwmf < Formula
   desc "Library for converting WMF (Window Metafile Format) files"
-  homepage 'http://wvware.sourceforge.net/libwmf.html'
-  url 'https://downloads.sourceforge.net/project/wvware/libwmf/0.2.8.4/libwmf-0.2.8.4.tar.gz'
-  sha1 '822ab3bd0f5e8f39ad732f2774a8e9f18fc91e89'
+  homepage "http://wvware.sourceforge.net/libwmf.html"
+  url "https://downloads.sourceforge.net/project/wvware/libwmf/0.2.8.4/libwmf-0.2.8.4.tar.gz"
+  sha256 "5b345c69220545d003ad52bfd035d5d6f4f075e65204114a9e875e84895a7cf8"
   revision 1
 
   bottle do
@@ -13,11 +11,11 @@ class Libwmf < Formula
     sha1 "d195e1c4297a0563a021a76a5e1ee61dd2b1be4d" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gd'
-  depends_on 'freetype'
-  depends_on 'libpng'
-  depends_on 'jpeg'
+  depends_on "pkg-config" => :build
+  depends_on "gd"
+  depends_on "freetype"
+  depends_on "libpng"
+  depends_on "jpeg"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -26,6 +24,6 @@ class Libwmf < Formula
                           "--with-freetype=#{Formula["freetype"].opt_prefix}"
     system "make"
     ENV.j1 # yet another rubbish Makefile
-    system "make install"
+    system "make", "install"
   end
 end

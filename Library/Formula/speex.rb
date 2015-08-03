@@ -1,10 +1,8 @@
-require 'formula'
-
 class Speex < Formula
   desc "Audio codec designed for speech"
-  homepage 'http://speex.org'
-  url 'http://downloads.us.xiph.org/releases/speex/speex-1.2rc1.tar.gz'
-  sha1 '52daa72572e844e5165315e208da539b2a55c5eb'
+  homepage "http://speex.org"
+  url "http://downloads.us.xiph.org/releases/speex/speex-1.2rc1.tar.gz"
+  sha256 "342f30dc57bd4a6dad41398365baaa690429660b10d866b7d508e8f1179cb7a6"
 
   bottle do
     cellar :any
@@ -14,13 +12,13 @@ class Speex < Formula
     sha1 "d9cb07f7de4d226c25d0b8ddbddd3fb0de5f5c53" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libogg' => :recommended
+  depends_on "pkg-config" => :build
+  depends_on "libogg" => :recommended
 
   def install
     ENV.j1
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,5 +1,3 @@
-require "formula"
-
 class Tarsnap < Formula
   desc "Online backups for the truly paranoid"
   homepage "https://www.tarsnap.com/"

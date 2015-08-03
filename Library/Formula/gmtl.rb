@@ -1,12 +1,10 @@
-require 'formula'
-
 class Gmtl < Formula
   desc "Lightweight math library"
-  homepage 'http://ggt.sourceforge.net/'
+  homepage "http://ggt.sourceforge.net/"
 
   stable do
     url "https://downloads.sourceforge.net/project/ggt/Generic%20Math%20Template%20Library/0.6.1/gmtl-0.6.1.tar.gz"
-    sha1 "473a454d17956d3ce3babafdb57f73c0685579fd"
+    sha256 "f7d8e6958d96a326cb732a9d3692a3ff3fd7df240eb1d0921a7c5c77e37fc434"
 
     # Build assumes that Python is a framework, which isn't always true. See:
     # https://sourceforge.net/tracker/?func=detail&aid=3172856&group_id=43735&atid=437247
@@ -21,15 +19,15 @@ class Gmtl < Formula
     sha1 "3444ed4b6eb1859a64f3f7250656ae5c1e074fd3" => :lion
   end
 
-  head 'https://ggt.svn.sourceforge.net/svnroot/ggt/trunk/'
+  head "https://ggt.svn.sourceforge.net/svnroot/ggt/trunk/"
 
-  depends_on 'scons' => :build
+  depends_on "scons" => :build
 
   # The scons script in gmtl only works for gcc, patch it
   # https://sourceforge.net/p/ggt/bugs/28/
   patch do
     url "https://gist.githubusercontent.com/anonymous/c16cad998a4903e6b3a8/raw/e4669b3df0e14996c7b7b53937dd6b6c2cbc7c04/gmtl_Sconstruct.diff"
-    sha1 "6470e7db1df3c5b3d73d301c761bfcffc8de5913"
+    sha256 "1167f89f52f88764080d5760b6d054036734b26c7fef474692ff82e9ead7eb3c"
   end
 
   def install

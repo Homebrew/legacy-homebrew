@@ -1,10 +1,8 @@
-require "formula"
-
 class NanopbGenerator < Formula
   desc "ANSI C library for encoding and decoding Protocol Buffer messages"
   homepage "http://koti.kapsi.fi/jpa/nanopb/docs/index.html"
   url "http://koti.kapsi.fi/~jpa/nanopb/download/nanopb-0.2.7.tar.gz"
-  sha1 "7dce0b9e1f9e5d0614697a8ea1678cee76f14858"
+  sha256 "acaac15e0a623451b6db0e8c72233bd765b190e7449c1e0ddd9165d3ef41c223"
   revision 1
 
   bottle do
@@ -19,7 +17,7 @@ class NanopbGenerator < Formula
 
   resource "protobuf-python" do
     url "https://pypi.python.org/packages/source/p/protobuf/protobuf-2.6.0.tar.gz"
-    sha1 "2e630252c75d9deb14843b11418a302383b745ba"
+    sha256 "b1556c5e9cca9069143b41312fd45d0d4785ca0cab682b2624195a6bc4ec296f"
   end
 
   def install

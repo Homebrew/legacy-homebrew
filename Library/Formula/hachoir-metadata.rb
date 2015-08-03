@@ -1,10 +1,8 @@
-require "formula"
-
 class HachoirMetadata < Formula
   desc "Extract metadata from video, music and other files"
   homepage "https://bitbucket.org/haypo/hachoir/wiki/Home"
   url "http://cheeseshop.python.org/packages/source/h/hachoir-metadata/hachoir-metadata-1.3.3.tar.gz"
-  sha1 "6f44f2f15a5d24866636117901d0b870137d8af7"
+  sha256 "ec403f13a44e2cf3d26001f8f440cdc4329a316a4c971035944bfadacc90eb3c"
 
   bottle do
     cellar :any
@@ -17,17 +15,17 @@ class HachoirMetadata < Formula
 
   resource "hachoir-core" do
     url "http://cheeseshop.python.org/packages/source/h/hachoir-core/hachoir-core-1.3.3.tar.gz"
-    sha1 "e1d3b5da7d57087c922942b7653cb3b195c7769f"
+    sha256 "ecf5d16eccc76b22071d6062e54edb67595f70d827644d3a6dff04289b4058df"
   end
 
   resource "hachoir-parser" do
     url "http://cheeseshop.python.org/packages/source/h/hachoir-parser/hachoir-parser-1.3.4.tar.gz"
-    sha1 "8433e1598b1e8d9404e6978117a203775e68c075"
+    sha256 "775be5e10d72c6122b1ba3202dfce153c09ebcb60080d8edbd51aa89aa4e6b3f"
   end
 
   resource "hachoir-regex" do
     url "http://cheeseshop.python.org/packages/source/h/hachoir-regex/hachoir-regex-1.0.5.tar.gz"
-    sha1 "98a3c7e8922f926fdb6c1dec92e093d75712eb3b"
+    sha256 "a35b2bb0ff11418230fffbb97605adba012bf65d2aba3e5e7d8295774d5ba986"
   end
 
   def install

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Log4cxx < Formula
   desc "Library of C++ classes for flexible logging"
-  homepage 'https://logging.apache.org/log4cxx/index.html'
-  url 'https://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz'
-  sha1 'd79c053e8ac90f66c5e873b712bb359fd42b648d'
+  homepage "https://logging.apache.org/log4cxx/index.html"
+  url "https://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz"
+  sha256 "0de0396220a9566a580166e66b39674cb40efd2176f52ad2c65486c99c920c8c"
 
   bottle do
     cellar :any
@@ -53,11 +51,11 @@ class Log4cxx < Formula
     # Fixes build error with clang, old libtool scripts. cf. #12127
     # Reported upstream here: https://issues.apache.org/jira/browse/LOGCXX-396
     # Remove at: unknown, waiting for developer comments.
-    system './autogen.sh'
+    system "./autogen.sh"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           # Docs won't install on OS X
                           "--disable-doxygen"
-    system "make install"
+    system "make", "install"
   end
 end

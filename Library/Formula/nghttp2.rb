@@ -114,10 +114,10 @@ class Nghttp2 < Formula
     end
 
     if build.with? "python3"
-       ENV.prepend_create_path "PYTHONPATH", buildpath/"cython/lib/python#{Language::Python.major_minor_version "python3"}/site-packages"
-       resource("Cython").stage do
-         system "python3", *(Language::Python.setup_install_args(buildpath/"cython") << "--install-scripts=#{buildpath}/cython/bin")
-       end
+      ENV.prepend_create_path "PYTHONPATH", buildpath/"cython/lib/python#{Language::Python.major_minor_version "python3"}/site-packages"
+      resource("Cython").stage do
+        system "python3", *(Language::Python.setup_install_args(buildpath/"cython") << "--install-scripts=#{buildpath}/cython/bin")
+      end
     end
 
     args = %W[

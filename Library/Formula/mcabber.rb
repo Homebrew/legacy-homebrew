@@ -1,10 +1,8 @@
-require 'formula'
-
 class Mcabber < Formula
   desc "Console Jabber client"
-  homepage 'http://mcabber.com/'
-  url 'http://lilotux.net/~mikael/mcabber/files/mcabber-1.0.0.tar.bz2'
-  sha256 '5476bcba395e0b9527823f5a9bce725151756f685ce2dcf6fad3dbe50a157032'
+  homepage "http://mcabber.com/"
+  url "http://lilotux.net/~mikael/mcabber/files/mcabber-1.0.0.tar.bz2"
+  sha256 "5476bcba395e0b9527823f5a9bce725151756f685ce2dcf6fad3dbe50a157032"
 
   bottle do
     sha256 "d1a3153df34801476d80b8ee36c3a04d6b96906890be7d13a9a03da502001292" => :yosemite
@@ -13,7 +11,7 @@ class Mcabber < Formula
   end
 
   head do
-    url 'http://mcabber.com/hg/', :using => :hg
+    url "http://mcabber.com/hg/", :using => :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -23,13 +21,13 @@ class Mcabber < Formula
   deprecated_option "enable-aspell" => "with-aspell"
   deprecated_option "enable-enchant" => "with-enchant"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'loudmouth'
-  depends_on 'gpgme'
-  depends_on 'libgcrypt'
-  depends_on 'libotr'
-  depends_on 'libidn'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "loudmouth"
+  depends_on "gpgme"
+  depends_on "libgcrypt"
+  depends_on "libotr"
+  depends_on "libidn"
   depends_on "aspell" => :optional
   depends_on "enchant" => :optional
 
@@ -48,9 +46,9 @@ class Mcabber < Formula
     args << "--enable-enchant" if build.with? "enchant"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
 
-    (share+'mcabber').install %w[mcabberrc.example contrib]
+    (share+"mcabber").install %w[mcabberrc.example contrib]
   end
 
   def caveats; <<-EOS.undent

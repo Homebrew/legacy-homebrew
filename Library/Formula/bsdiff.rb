@@ -1,10 +1,8 @@
-require 'formula'
-
 class Bsdiff < Formula
   desc "Generate and apply patches to binary files"
-  homepage 'http://www.daemonology.net/bsdiff'
-  url 'http://www.daemonology.net/bsdiff/bsdiff-4.3.tar.gz'
-  sha1 '0c0a89d604fc55ef2b5e69cd18372b2972edd8b8'
+  homepage "http://www.daemonology.net/bsdiff"
+  url "http://www.daemonology.net/bsdiff/bsdiff-4.3.tar.gz"
+  sha256 "18821588b2dc5bf159aa37d3bcb7b885d85ffd1e19f23a0c57a58723fea85f48"
 
   depends_on "bsdmake" => :build
 

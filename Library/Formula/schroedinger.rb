@@ -3,7 +3,7 @@ class Schroedinger < Formula
   homepage "http://diracvideo.org/"
   url "http://diracvideo.org/download/schroedinger/schroedinger-1.0.11.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/s/schroedinger/schroedinger_1.0.11.orig.tar.gz"
-  sha1 "c01ee0bed6c1bd7608763927f719f94ebc6aaa41"
+  sha256 "1e572a0735b92aca5746c4528f9bebd35aa0ccf8619b22fa2756137a8cc9f912"
 
   bottle do
     cellar :any
