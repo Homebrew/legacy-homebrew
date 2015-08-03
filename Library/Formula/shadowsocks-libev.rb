@@ -3,6 +3,7 @@ class ShadowsocksLibev < Formula
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
   url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.2.3.tar.gz"
   sha256 "41a4746190698fc78b8e06c0f0e3638ca0bb1180a8cb77246736d88553b277f7"
+  head "https://github.com/shadowsocks/shadowsocks-libev.git"
 
   bottle do
     cellar :any
@@ -11,22 +12,10 @@ class ShadowsocksLibev < Formula
     sha256 "80619c40934b9dcc1e799f4240d3e05a93b4128f27c3cf052355c7bccec93f58" => :mountain_lion
   end
 
-  head "https://github.com/shadowsocks/shadowsocks-libev.git"
-
-  option "with-polarssl", "Use PolarSSL instead of OpenSSL"
-
-  depends_on "polarssl" => :optional
-  depends_on "openssl" if build.without? "polarssl"
+  depends_on "openssl"
 
   def install
     args = ["--prefix=#{prefix}"]
-
-    if build.with? "polarssl"
-      polarssl = Formula["polarssl"]
-
-      args << "--with-crypto-library=polarssl"
-      args << "--with-polarssl=#{polarssl.opt_prefix}"
-    end
 
     system "./configure", *args
     system "make"
