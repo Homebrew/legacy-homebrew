@@ -7,10 +7,9 @@ class Polarssl < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "9f073fda6a57f9ce78768f9391c0c92850d187de" => :yosemite
-    sha1 "722cb2387ea35a3c394cb6854068fc124badca09" => :mavericks
-    sha1 "4a0effaa65d9fa92a0c6da1914de2dbdd318ecf4" => :mountain_lion
+    sha256 "cb5cfc1e0a888aa765b2daf5221f0dbf3be84756104256fe583ad64097dfb5d4" => :yosemite
+    sha256 "2382d6afa0fbe0b16c8ee9cdfa3040a429bca50450f9a5449775b741461109f5" => :mavericks
+    sha256 "748679c378c9a2d98d880b66ac3bfb507fe79804bb00073084a532bd4d5cb020" => :mountain_lion
   end
 
   depends_on "cmake" => :build
