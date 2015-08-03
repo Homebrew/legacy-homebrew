@@ -1,8 +1,9 @@
 class Cxxtest < Formula
   desc "CxxTest Unit Testing Framework"
   homepage "http://cxxtest.com"
-  url "https://github.com/CxxTest/cxxtest/archive/4.3.tar.gz"
-  sha256 "356d0f4810e8eb5c344147a0cca50fc0d84122c286e7644b61cb365c2ee22083"
+  url "https://github.com/CxxTest/cxxtest/releases/download/4.4/cxxtest-4.4.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/cxxtest/cxxtest_4.4.orig.tar.gz"
+  sha256 "1c154fef91c65dbf1cd4519af7ade70a61d85a923b6e0c0b007dc7f4895cf7d8"
 
   bottle do
     cellar :any
