@@ -140,6 +140,7 @@ _brew_complete_tap ()
         return
         ;;
     esac
+    __brewcomp "$(brew tap --list-official)"
 }
 
 _brew_bottle ()
