@@ -15,11 +15,10 @@ class Md5sha1sum < Formula
 
   depends_on "openssl"
 
-  conflicts_with "polarssl", :because => "both install conflicting binaries"
-
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
+
     bin.install "md5sum"
     bin.install_symlink bin/"md5sum" => "sha1sum"
     bin.install_symlink bin/"md5sum" => "ripemd160sum"
