@@ -17,15 +17,15 @@ class Upx < Formula
   depends_on "ucl"
 
   resource "lzma" do
-    url "https://downloads.sourceforge.net/project/sevenzip/LZMA%20SDK/lzma938.7z"
-    sha256 "721f4f15378e836686483811d7ea1282463e3dec1932722e1010d3102c5c3b20"
+    url "https://downloads.sourceforge.net/project/sevenzip/LZMA%20SDK/lzma1505.7z"
+    sha256 "0ec15e40c4cba2b4b0350b7b4f479816efa1ed3bc6749947fd2679785ca92ff5"
   end
 
   def install
     inreplace "src/compress_lzma.cpp", "C/Types.h", "C/7zTypes.h"
     (buildpath/"lzmasdk").install resource("lzma")
     ENV["UPX_LZMADIR"] = buildpath/"lzmasdk"
-    ENV["UPX_LZMA_VERSION"] = "0x938"
+    ENV["UPX_LZMA_VERSION"] = "0x1505"
     system "make", "all"
     bin.install "src/upx.out" => "upx"
     man1.install "doc/upx.1"
