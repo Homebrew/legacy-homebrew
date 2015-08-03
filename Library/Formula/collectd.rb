@@ -1,21 +1,13 @@
 class Collectd < Formula
   desc "Statistics collection and monitoring daemon"
   homepage "https://collectd.org/"
-  url "https://collectd.org/files/collectd-5.4.2.tar.gz"
-  sha256 "9778080ee9ee676c7130b1ce86c2843c7359e29b9bd1c1c0e48fcd9cccf089eb"
 
   bottle do
-    sha256 "dedd8a693c756ab947c56cbebe570c0b45692762c2b193e15214b8005a771efc" => :yosemite
-    sha256 "fb2c605c2095b592fee5a413317b399b43310eae1857ea5afa81b3b3ccd0ef39" => :mavericks
-    sha256 "918e199332c503a0b6dbd81e46233897c807051f8238698e29c5c2b7fdea8698" => :mountain_lion
+    revision 1
+    sha256 "9e6e01ec3af8ddda0b52756fc1516b4e9dcb68464e3fea414ab3e394f43d926b" => :yosemite
+    sha256 "f964c5b63bc491b136899357923858b066069291e1210a649fa143fa8ba29145" => :mavericks
+    sha256 "62c64c1d76e9c2b37845391b5dd7ec5b534190b5172ac68ca483aa3ef8241c80" => :mountain_lion
   end
-
-  # Will fail against Java 1.7
-  option "with-java", "Enable Java 1.6 support"
-  option "with-debug", "Enable debug support"
-
-  deprecated_option "java" => "with-java"
-  deprecated_option "debug" => "with-debug"
 
   head do
     url "git://git.verplant.org/collectd.git"
@@ -24,6 +16,24 @@ class Collectd < Formula
     depends_on "automake" => :build
     depends_on "autoconf" => :build
   end
+
+  stable do
+    url "https://collectd.org/files/collectd-5.5.0.tar.bz2"
+    mirror "http://pkgs.fedoraproject.org/repo/pkgs/collectd/collectd-5.5.0.tar.bz2/c39305ef5514b44238b0d31f77e29e6a/collectd-5.5.0.tar.bz2"
+    sha256 "847684cf5c10de1dc34145078af3fcf6e0d168ba98c14f1343b1062a4b569e88"
+
+    patch do
+      url "https://github.com/collectd/collectd/commit/e0683047a42e217c352c2419532b8e029f9f3f0a.diff"
+      sha256 "7053170a072d27465b69eed269d32190ec810bcb0db59f139a1682e71a326fdd"
+    end
+  end
+
+  # Will fail against Java 1.7
+  option "with-java", "Enable Java 1.6 support"
+  option "with-debug", "Enable debug support"
+
+  deprecated_option "java" => "with-java"
+  deprecated_option "debug" => "with-debug"
 
   depends_on "pkg-config" => :build
   depends_on :java => ["1.6", :optional]
@@ -38,6 +48,10 @@ class Collectd < Formula
   end
 
   def install
+    # collectd breaks with makejobs
+    # see: https://github.com/collectd/collectd/issues/1146
+    ENV.deparallelize
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking
@@ -79,5 +93,15 @@ class Collectd < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    begin
+      pid = fork { exec sbin/"collectd", "-f" }
+      assert shell_output("nc -u -w 2 127.0.0.1 25826", 0)
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

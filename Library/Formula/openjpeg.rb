@@ -1,27 +1,46 @@
-require 'formula'
-
 class Openjpeg < Formula
   desc "Library for JPEG-2000 image manipulation"
-  homepage 'http://www.openjpeg.org/'
-  url 'https://openjpeg.googlecode.com/files/openjpeg-1.5.1.tar.gz'
-  sha1 '1b0b74d1af4c297fd82806a9325bb544caf9bb8b'
-  revision 1
+  homepage "http://www.openjpeg.org"
+  url "https://mirrors.kernel.org/debian/pool/main/o/openjpeg/openjpeg_1.5.2.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/o/openjpeg/openjpeg_1.5.2.orig.tar.gz"
+  sha256 "aef498a293b4e75fa1ca8e367c3f32ed08e028d3557b069bf8584d0c1346026d"
+
+  head "https://github.com/uclouvain/openjpeg.git", :branch => "openjpeg-1.5"
 
   bottle do
     cellar :any
-    sha1 "c4f3c9cc6bbc264aa7f1a4aefc06c6fa75596a14" => :yosemite
-    sha1 "c93cbb9697d0ec93eb90673861387220f6ec0f13" => :mavericks
-    sha1 "adf2186e0a1962e495cd6e1d17ec89087dd48635" => :mountain_lion
+    sha256 "48a46a59c9e2ce3bd5f0658b4228151cd865ebaff551ae9885646ee35c20dd89" => :yosemite
+    sha256 "63eb21603315fe49f0ed32226e08ab53c9fc7b232869d05959dc8240d51a7c2b" => :mavericks
+    sha256 "1b3651ee19bd39d9a9877a3ff95736a78a419a437a6629f3ee2f85fc98e8872c" => :mountain_lion
   end
 
-  head 'http://openjpeg.googlecode.com/svn/trunk/'
-
-  depends_on 'little-cms2'
-  depends_on 'libtiff'
-  depends_on 'libpng'
+  depends_on "cmake" => :build
+  depends_on "little-cms2"
+  depends_on "libtiff"
+  depends_on "libpng"
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "cmake", ".", *std_cmake_args
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <openjpeg.h>
+
+      int main () {
+        opj_image_cmptparm_t cmptparm;
+        const OPJ_COLOR_SPACE color_space = CLRSPC_GRAY;
+
+        opj_image_t *image;
+        image = opj_image_create(1, &cmptparm, color_space);
+
+        opj_image_destroy(image);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-I#{include}/openjpeg-1.5", "-L#{lib}", "-lopenjpeg",
+           testpath/"test.c", "-o", "test"
+    system "./test"
   end
 end

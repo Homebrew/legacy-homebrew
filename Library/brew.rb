@@ -68,6 +68,7 @@ begin
   empty_argv = ARGV.empty?
   help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
   help_flag = false
+  internal_cmd = true
   cmd = nil
 
   ARGV.dup.each_with_index do |arg, i|
@@ -157,8 +158,10 @@ rescue RuntimeError, SystemCallError => e
   exit 1
 rescue Exception => e
   onoe e
-  puts "#{Tty.white}Please report this bug:"
-  puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
+  if internal_cmd
+    puts "#{Tty.white}Please report this bug:"
+    puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
+  end
   puts e.backtrace
   exit 1
 else

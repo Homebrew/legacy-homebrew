@@ -4,12 +4,13 @@ class Opam < Formula
   url "https://github.com/ocaml/opam/archive/1.2.2.tar.gz"
   sha256 "3e4a05df6ff8deecba019d885ebe902eb933acb6e2fc7784ffee1ee14871e36a"
   head "https://github.com/ocaml/opam.git"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "ad11048ca70e2548f7b825f94ac4885da0f5448a7e2d2dd9eec99889d4858b0e" => :yosemite
-    sha256 "81f126dcb52b514f0e06d4e93465ca1ff8d3260d3ad0abe99950a90112872d71" => :mavericks
-    sha256 "49b51771003bde6912d7563dd8f4bff805691f2c5298d814b62abf845d6b6e2e" => :mountain_lion
+    sha256 "0f2d33bd48a28f2427e58bdddb6057b39674de3547a150eaf88f12028c819e55" => :yosemite
+    sha256 "c09cf278e8d576955808468ec494238205e00bd9bfd52fb94c02a3ac2153cc9d" => :mavericks
+    sha256 "fab436947193e2e0b402320e520daa2826af8c80d0ddb4f9cf37d11ebd009ddf" => :mountain_lion
   end
 
   depends_on "objective-caml"

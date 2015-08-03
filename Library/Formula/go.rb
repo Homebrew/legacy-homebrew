@@ -2,6 +2,7 @@ class Go < Formula
   desc "Go programming environment"
   homepage "https://golang.org"
   url "https://storage.googleapis.com/golang/go1.4.2.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.4.2.src.tar.gz"
   version "1.4.2"
   sha256 "299a6fd8f8adfdce15bc06bde926e7b252ae8e24dd5b16b7d8791ed79e7b5e9b"
 
@@ -15,9 +16,9 @@ class Go < Formula
   end
 
   devel do
-    url "https://storage.googleapis.com/golang/go1.5beta2.src.tar.gz"
-    version "1.5beta2"
-    sha256 "9cad9b5bed4ca3a18469490ded83821a903a64bc630f498878fffcd1a11c9260"
+    url "https://storage.googleapis.com/golang/go1.5beta3.src.tar.gz"
+    version "1.5beta3"
+    sha256 "701092f728d0a2b4c35ebe50630244528080427bbb23bd2148ef1fd7a22a754a"
   end
 
   option "with-cc-all", "Build with cross-compilers and runtime support for all supported platforms"

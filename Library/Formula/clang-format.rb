@@ -1,25 +1,25 @@
 class ClangFormat < Formula
   desc "C, C++, Obj-C, Java, JavaScript, TypeScript formatting tools and editor plugins"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-06-18"
+  version "2015-07-31"
 
   bottle do
     cellar :any
-    sha256 "bace422bbad1e05f889c2e35325897f25a5d25288584059eb0eed13430a29ec9" => :yosemite
-    sha256 "1529788bc854b6ff23ed688b092f0cdaef82a747ae4619596aca78c5c0b656db" => :mavericks
-    sha256 "4df7ba32d7930031848e5387db341b9dedad6f914c0f4993d8a27c67fa471fdf" => :mountain_lion
+    sha256 "23f3215f23cd4bc36d9b37ee566a3482f7b70a3baa887730a83067934a300b10" => :yosemite
+    sha256 "c645415feb57129f30247ade34fc25ca17fc9e72619d52f1b93b086cca411426" => :mavericks
+    sha256 "280f1a6c6c1d7823739027582c568f32bd88ca5d96d946230e6a7bfeddd46962" => :mountain_lion
   end
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-06-18/", :using => :svn
+    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-07-31/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-06-18/", :using => :svn
+      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-07-31/", :using => :svn
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.0/libcxx-3.6.0.src.tar.xz"
-      sha1 "5445194366ae2291092fd2204030cb3d01ad6272"
+      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
+      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
     end
   end
 
@@ -31,8 +31,8 @@ class ClangFormat < Formula
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.0/libcxx-3.6.0.src.tar.xz"
-      sha1 "5445194366ae2291092fd2204030cb3d01ad6272"
+      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
+      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
     end
   end
 

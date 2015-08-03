@@ -434,7 +434,7 @@ class FormulaAuditor
 
     return unless @online
     begin
-      nostdout { curl "--connect-timeout", "15", "-IL", "-o", "/dev/null", homepage }
+      nostdout { curl "--connect-timeout", "15", "-o", "/dev/null", homepage }
     rescue ErrorDuringExecution
       problem "The homepage is not reachable (curl exit code #{$?.exitstatus})"
     end

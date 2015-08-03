@@ -4,11 +4,18 @@ class GoAppEngine64 < Formula
   desc "Google App Engine SDK for Go!"
   homepage "https://cloud.google.com/appengine/docs/go/"
   if OS.mac?
-    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.23.zip"
-    sha256 "4eb357055f5c4d2ddc95253b6613ddeb5459dfa17c247ad0ba44f930d47096db"
+    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.24.zip"
+    sha256 "6a072ef4cdb0cc42d0b4a32494cbe1500d702208e345cef196b5878917df32f8"
   elsif OS.linux?
-    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.23.zip"
-    sha256 "d1a0caf17f36bff3d108926f5f9bf4a3872648ad5c985728c837c0c9e8ffa6c0"
+    url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_linux_amd64-1.9.24.zip"
+    sha256 "08b554a9d8883a378e9ed6e615ce0432c33f1ae0016430747ec39f13de5ce75c"
+  end
+
+  bottle do
+    cellar :any
+    sha256 "570879ba2f65c72dd6810f66634acaf4ab26490a1bba56abb7dc9af64b0a9246" => :yosemite
+    sha256 "4cc613d80404728a2166458e07d2973c1330206229e4149aa4580fc9c83d4882" => :mavericks
+    sha256 "532269adfd541ac1ac9c8d9828f2460af20ecb466f0993239001b782635c9940" => :mountain_lion
   end
 
   def install

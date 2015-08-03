@@ -494,8 +494,12 @@ class FormulaInstaller
       #{formula.path}
     ].concat(build_argv)
 
-    if Sandbox.available? && ARGV.sandbox? && Sandbox.auto_disable?
-      Sandbox.print_autodisable_warning
+    if Sandbox.available? && ARGV.sandbox?
+      if Sandbox.auto_disable?
+        Sandbox.print_autodisable_warning
+      else
+        Sandbox.print_sandbox_message
+      end
     end
 
     Utils.safe_fork do
@@ -588,11 +592,6 @@ class FormulaInstaller
 
   def fix_install_names(keg)
     keg.fix_install_names(:keg_only => formula.keg_only?)
-
-    if @poured_bottle
-      keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
-        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
-    end
   rescue Exception => e
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"
@@ -637,6 +636,10 @@ class FormulaInstaller
     HOMEBREW_CELLAR.cd do
       downloader.stage
     end
+
+    keg = Keg.new(formula.prefix)
+    keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
+      Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
 
     Pathname.glob("#{formula.bottle_prefix}/{etc,var}/**/*") do |path|
       path.extend(InstallRenamed)

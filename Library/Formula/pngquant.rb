@@ -14,12 +14,28 @@ class Pngquant < Formula
 
   depends_on "pkg-config" => :build
   depends_on "libpng"
+  depends_on "little-cms2" => :optional
+
+  option "with-openmp", "Enable OpenMP"
+  needs :openmp if build.with? "openmp"
 
   def install
     ENV.append_to_cflags "-DNDEBUG" # Turn off debug
-    system "make", "install",
-           "PREFIX=#{prefix}", "CC=#{ENV.cc}"
+
+    args = ["--prefix=#{prefix}"]
+    args << "--with-lcms2" if build.with? "little-cms2"
+
+    if build.with? "openmp"
+      args << "--with-openmp"
+      args << "--without-cocoa"
+    end
+
+    system "./configure", *args
+    system "make", "install", "CC=#{ENV.cc}"
+
     man1.install "pngquant.1"
+    lib.install "lib/libimagequant.a"
+    include.install "lib/libimagequant.h"
   end
 
   test do
