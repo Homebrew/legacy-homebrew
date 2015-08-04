@@ -56,6 +56,7 @@ class Couchpotatoserver < Formula
   end
 
   test do
+<<<<<<< HEAD
     (testpath/"settings.conf").write <<-EOS.undent
       [core]
       launch_browser = False
@@ -72,5 +73,8 @@ class Couchpotatoserver < Formula
       Process.kill("SIGTERM", pid)
       Process.wait(pid)
     end
+=======
+    system "#{bin}/couchpotatoserver", "-h"
+>>>>>>> 268ae60aaec97d2d83d47f783be682a7b6c5a7f3
   end
 end
