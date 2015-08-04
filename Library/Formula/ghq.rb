@@ -3,8 +3,8 @@ require "language/go"
 class Ghq < Formula
   desc "Remote repository management made easy"
   homepage "https://github.com/motemen/ghq"
-  url "https://github.com/motemen/ghq.git", :tag => "v0.6", :revision => "b6f7aadbeb21ae18972577173ce175af83ce239d"
-  sha256 "d8ab0ef7386647b30210aabc79bf0391ea5c2887be0d4c6a3fb58b8c31eb9b24"
+  url "https://github.com/motemen/ghq/archive/v0.7.tar.gz"
+  sha256 "ed71e44d35440236d13b85a176ad352d38f6a22f6de55800c3f6a275030f8123"
 
   head "https://github.com/motemen/ghq.git"
 
@@ -42,7 +42,7 @@ class Ghq < Formula
     ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "ghq"
+    system "go", "build", "-ldflags", "-X main.Version #{version}", "-o", "ghq"
     bin.install "ghq"
 
     if build.with? "completions"
