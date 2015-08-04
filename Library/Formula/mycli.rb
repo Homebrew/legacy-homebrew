@@ -1,8 +1,8 @@
 class Mycli < Formula
   desc "CLI for MySQL with auto-completion and syntax highlighting"
   homepage "http://mycli.net/"
-  url "https://pypi.python.org/packages/source/m/mycli/mycli-1.0.1.tar.gz"
-  sha256 "9ef67c40b32410c7dbc1bca9058b542b5b2ccc33a3826c419fcd33b46a21f5f4"
+  url "https://pypi.python.org/packages/source/m/mycli/mycli-1.2.0.tar.gz"
+  sha256 "5a440fab6af03272e932e90a97e625fb8b304cfbf134ea2ccee14e2cb2e261e9"
 
   bottle do
     cellar :any
@@ -25,8 +25,8 @@ class Mycli < Formula
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.38.tar.gz"
-    sha256 "6cee2959747580a1f93e3e14ef2826f1d89845d19e5bc32f374c23988e2d5e66"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.45.tar.gz"
+    sha256 "553fd2b9169674adacf227ede2e056c2bbd7181a4a3ca614960467c0720997a6"
   end
 
   resource "Pygments" do
