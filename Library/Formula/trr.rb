@@ -7,9 +7,9 @@ class Trr < Formula
   revision 1
 
   bottle do
-    sha256 "9db1d6af43f8797b99e098261a16288b34da8f137135b218b1ceb156544c283b" => :yosemite
-    sha256 "64140988ac10d12d10db976cc6e598b7aef23cb81eceed5007536023adf0af72" => :mavericks
-    sha256 "0b48f5995fb731eca7ecf381f27d6d3f83e2995508b026c8336bb7d583323a03" => :mountain_lion
+    sha256 "b965ca412e2a97b20bda8afb03fb042fe05f162c6391ea5460e05473c9260ced" => :yosemite
+    sha256 "1b24783f3b7060b6c1ac0a9edac5a990fc2bcefcccef9746897a627c912a931f" => :mavericks
+    sha256 "2373aaab80559228b2d5510494ba23f22fa6527d6e906ce4c7c6dbc6ff8a9ce4" => :mountain_lion
   end
 
   depends_on "apel"
