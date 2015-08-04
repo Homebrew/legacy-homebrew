@@ -13,8 +13,8 @@ class Discount < Formula
 
   option "with-fenced-code", "Enable Pandoc-style fenced code blocks."
 
-  conflicts_with "markdown",
-    :because => "both discount and markdown ship a `markdown` executable."
+  conflicts_with "markdown", :because => "both install `markdown` binaries"
+  conflicts_with "multimarkdown", :because => "both install `markdown` binaries"
 
   def install
     args = %W[

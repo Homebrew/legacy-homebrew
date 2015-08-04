@@ -15,6 +15,7 @@ class Multimarkdown < Formula
 
   conflicts_with "mtools", :because => "both install `mmd` binaries"
   conflicts_with "markdown", :because => "both install `markdown` binaries"
+  conflicts_with "discount", :because => "both install `markdown` binaries"
 
   def install
     ENV.append "CFLAGS", "-g -O3 -include GLibFacade.h"
