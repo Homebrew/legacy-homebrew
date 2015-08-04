@@ -4,7 +4,6 @@ class MusicBox < Formula
   url "https://pypi.python.org/packages/source/N/NetEase-MusicBox/NetEase-MusicBox-0.1.6.5.tar.gz"
   version "0.1.6.5"
   sha256 "8383d773bd1d4f5e1f4b41897fe34e3dac25c47d3f1b59f1cef62c35ce14a07e"
-  sha1 "d2f8cf412ba4a963ed76ec4dee2dc6fcd34a5652"
 
   depends_on "mpg123"
 
