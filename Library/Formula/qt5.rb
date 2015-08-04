@@ -34,10 +34,15 @@ class Qt5 < Formula
     # https://codereview.qt-project.org/#/c/121545/
     # Should land in the 5.5.1 release.
     if MacOS.version >= :el_capitan
-      patch do
+       patch do
         url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
         sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
-      end
+       end
+       patch do
+        url "https://gist.githubusercontent.com/jaeyeun97/a0fb101d57f96c725d17/raw/93850f391a00a095b3dae8cb85feb20707dae31b/qt5-10.11.diff"
+        sha256 "b8f04efd047eeed7cfd15b029ece20b5fe3c0960b74f7a5cb98bd36475463227"
+    end
+
     end
   end
 
