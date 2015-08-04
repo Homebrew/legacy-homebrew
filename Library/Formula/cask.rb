@@ -8,9 +8,9 @@ class Cask < Formula
 
   bottle do
     cellar :any
-    sha256 "68b9e9f496dabaf85bdbef1414679bb5cbd5531383db02ab625d7bab454b6a78" => :yosemite
-    sha256 "b8bb1e95119383cb7fa3e22eea1d73cafd77cadcc8fff32b22414115b24faabc" => :mavericks
-    sha256 "2a9c3376bc81daa443d7b9a10043e871f7439eb8d11ae2523b18ca0cf11e3832" => :mountain_lion
+    sha256 "dbe1031ea0043666e49f923982676305b0534323c5ce7e347369d641a33720f1" => :yosemite
+    sha256 "7b4d7cde97d91b2b457f093b63095f9ba14b0d1dc22d45c96dd95b656878eff6" => :mavericks
+    sha256 "8262e37f32afc254ff6a25baabaa48537961bec0094e5b01aae73a9cc4baf87c" => :mountain_lion
   end
 
   depends_on :emacs => "24"
