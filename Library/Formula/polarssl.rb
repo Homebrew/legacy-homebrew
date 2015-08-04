@@ -17,7 +17,7 @@ class Polarssl < Formula
   def install
     # "Comment this macro to disable support for SSL 3.0"
     inreplace "include/mbedtls/config.h" do |s|
-      s.gsub! "#define MBEDTLS_SSL_PROTO_SSL3", "//#define POLARSSL_SSL_PROTO_SSL3"
+      s.gsub! "#define MBEDTLS_SSL_PROTO_SSL3", "//#define MBEDTLS_SSL_PROTO_SSL3"
     end
 
     system "cmake", *std_cmake_args
