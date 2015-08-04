@@ -6,6 +6,13 @@ class Oauth2Proxy < Formula
   url "https://github.com/bitly/oauth2_proxy/archive/v2.0.1.tar.gz"
   sha256 "febc33244d63f69a4c973e4ff2556fea2bc414308ce9979fb43db5863da87b5a"
 
+  bottle do
+    cellar :any
+    sha256 "dcb93accc34447cccc4306c42804b8b9adb409556d9922a03be1cced4fe28e9a" => :yosemite
+    sha256 "f6f33eb43df4fd594f0df9bfb3931b66f3e3399152e5021add31bfa41199a439" => :mavericks
+    sha256 "b1b6486c7218d727c911825337c59d2531dedc4219116164d1414610a149fe06" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/BurntSushi/toml" do
