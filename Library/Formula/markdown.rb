@@ -4,8 +4,7 @@ class Markdown < Formula
   url "http://daringfireball.net/projects/downloads/Markdown_1.0.1.zip"
   sha256 "6520e9b6a58c5555e381b6223d66feddee67f675ed312ec19e9cee1b92bc0137"
 
-  conflicts_with "discount",
-    :because => "both markdown and discount ship a `markdown` executable."
+  conflicts_with "discount", :because => "both install `markdown` binaries"
   conflicts_with "multimarkdown", :because => "both install `markdown` binaries"
 
   def install
