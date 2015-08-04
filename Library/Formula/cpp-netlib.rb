@@ -7,9 +7,10 @@ class CppNetlib < Formula
   revision 1
 
   bottle do
-    sha256 "c6d9909b1d7a4402782ed86d80c97c612f24e8893e266a7064362dc0a6323324" => :yosemite
-    sha256 "8cd73fdc6597e1223f1cf12a0908c1d4c469f1a0dddf7f88d6f5d522f59129c3" => :mavericks
-    sha256 "1409987a309cdf2a03d8161c6357770626d265d622101bf246011290126de2f9" => :mountain_lion
+    cellar :any
+    sha256 "908f012404ef102a2c9d537bb09852f2b6547eb00f32a0694a7a65e634fc05c4" => :yosemite
+    sha256 "63797d147576de712c1d4e02722767d8335239464fe3e28b09a15e07f33ef2d4" => :mavericks
+    sha256 "a933931c06e160a3792e1d71cc0c12ae47b8ad058c37dffae5e92f217edd11f5" => :mountain_lion
   end
 
   depends_on "cmake" => :build
