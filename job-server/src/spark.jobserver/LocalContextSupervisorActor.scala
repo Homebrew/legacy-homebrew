@@ -6,9 +6,11 @@ import akka.util.Timeout
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import ooyala.common.akka.InstrumentedActor
+import spark.jobserver.JobManagerActor.IsSparkContextAlive
 import spark.jobserver.io.JobDAO
 import spark.jobserver.util.SparkJobUtils
 import scala.collection.mutable
+import scala.concurrent.Await
 import scala.util.{Failure, Success, Try}
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
@@ -126,7 +128,16 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
 
     case GetContext(name) =>
       if (contexts contains name) {
-        sender ! (contexts(name), resultActors(name))
+        val future = (contexts(name) ? IsSparkContextAlive) (contextTimeout.seconds)
+        Await.result(future, contextTimeout.seconds) match {
+          case true => {
+            sender ! (contexts(name), resultActors(name))
+          }
+          case false => {
+            self ! StopContext(name)
+            sender ! NoSuchContext
+          }
+        }
       } else {
         sender ! NoSuchContext
       }

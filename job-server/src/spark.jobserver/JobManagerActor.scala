@@ -20,6 +20,7 @@ object JobManagerActor {
   case class StartJob(appName: String, classPath: String, config: Config,
                       subscribedEvents: Set[Class[_]])
   case class KillJob(jobId: String)
+  case object IsSparkContextAlive
 
   // Results/Data
   case class Initialized(resultActor: ActorRef)
@@ -122,6 +123,22 @@ class JobManagerActor(dao: JobDAO,
     case KillJob(jobId: String) => {
       jobContext.sparkContext.cancelJobGroup(jobId)
       statusActor ! JobKilled(jobId, DateTime.now())
+    }
+
+    case IsSparkContextAlive => {
+      if (jobContext.sparkContext == null)
+        sender ! false
+      else {
+        try {
+          jobContext.sparkContext.getSchedulingMode
+          sender ! true
+        } catch {
+          case e: Exception => {
+            logger.error("SparkContext is not exist!")
+            sender ! false
+          }
+        }
+      }
     }
   }
 
