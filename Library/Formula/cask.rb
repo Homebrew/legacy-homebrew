@@ -4,6 +4,7 @@ class Cask < Formula
   url "https://github.com/cask/cask/archive/v0.7.2.tar.gz"
   sha256 "5c8804933dd395ec79e957c96179bf6ac20af24066928685a713e54f44107a2c"
   head "https://github.com/cask/cask.git"
+  revision 1
 
   bottle do
     cellar :any
