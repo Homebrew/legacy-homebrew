@@ -35,6 +35,7 @@ class Osquery < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
+    ENV["THRIFT_HOME"] = Formula["thrift"].opt_prefix
 
     resources.each do |r|
       r.stage do
