@@ -6,9 +6,9 @@ class Freexl < Formula
 
   bottle do
     cellar :any
-    sha256 "5684d45dcd517ae87312fff00b4ac0eb16f3343ddd8df25d39206839b022cadd" => :yosemite
-    sha256 "5d007d42d495824c89f50b8eeabd35deaf32abf343573f30d68502bf8979d157" => :mavericks
-    sha256 "53345a758e705765c6473327cb91c591ab50858144490973549f89750b31656d" => :mountain_lion
+    sha256 "8e7233c0b1c33adad45ef88a52e1e797aa677933b5348fe46cc99085a6975a7c" => :yosemite
+    sha256 "04495f65384391622533b8fbe4c23579a3704ce4da491e3b7c53cb171c50c8c6" => :mavericks
+    sha256 "ae6d78c69b399ea733ff6ef346d83499408c0c510fe40484072c423b9552925b" => :mountain_lion
   end
 
   option "without-check", "Skip compile-time make checks."
