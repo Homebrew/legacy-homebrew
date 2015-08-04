@@ -1,9 +1,9 @@
 class Libidn < Formula
   desc "International domain name library"
   homepage "https://www.gnu.org/software/libidn/"
-  url "http://ftpmirror.gnu.org/libidn/libidn-1.31.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/libidn/libidn-1.31.tar.gz"
-  sha256 "afdf2fce91faea483ce24e26b5e3a9235e332029c9265d07214fd1cfaa08df08"
+  url "http://ftpmirror.gnu.org/libidn/libidn-1.32.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libidn/libidn-1.32.tar.gz"
+  sha256 "ba5d5afee2beff703a34ee094668da5c6ea5afa38784cebba8924105e185c4f5"
 
   bottle do
     cellar :any
@@ -12,15 +12,16 @@ class Libidn < Formula
     sha256 "0e231bfa4cbd4fcd8d5e047b33a1e0f6a8e320c50a7719adc1812b32d8bdf7db" => :mountain_lion
   end
 
-  depends_on "pkg-config" => :build
-
   option :universal
+
+  depends_on "pkg-config" => :build
 
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-csharp"
+                          "--disable-csharp",
+                          "--with-lispdir=#{share}/emacs/site-lisp/#{name}"
     system "make", "install"
   end
 
