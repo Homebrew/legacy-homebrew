@@ -6,9 +6,9 @@ class Jenkins < Formula
 
   bottle do
     cellar :any
-    sha256 "dfcbc53fd68537da7975209ed8adee8887e0fd106c86a44823defbc580ba1ca4" => :yosemite
-    sha256 "74c689f2e749b3ac26b8a4cf4631649d0565696b10aa430e1168f3fc5a60917b" => :mavericks
-    sha256 "356c460681bb460d3f4cdb89b86446b4c899db6cf6cdf5018a448fb86e266b96" => :mountain_lion
+    sha256 "449c298e7e578d33250bede3c858f56c4a30261d18d91ace0118d7073f01c245" => :yosemite
+    sha256 "86cea889328370bcff786929d6adee9cdd8802e50274a6c2adef4a8babe5a9c5" => :mavericks
+    sha256 "171f081796c5f4abb409fee0573ddd1e076bd8dd28269bed6c4c6683b53f3c44" => :mountain_lion
   end
 
   head do
