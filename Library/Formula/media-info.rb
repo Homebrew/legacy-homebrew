@@ -1,5 +1,3 @@
-require "formula"
-
 class MediaInfo < Formula
   desc "Unified display of technical and tag data for audio/video"
   homepage "https://mediaarea.net/"
@@ -31,13 +29,17 @@ class MediaInfo < Formula
               "--with-libcurl",
               "--prefix=#{prefix}"]
       system "./configure", *args
-      system "make install"
+      system "make", "install"
     end
 
     cd "MediaInfo/Project/GNU/CLI" do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}"
-      system "make install"
+      system "make", "install"
     end
+  end
+
+  test do
+    pipe_output("#{bin}/mediainfo", test_fixtures("test.mp3"))
   end
 end

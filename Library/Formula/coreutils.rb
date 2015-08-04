@@ -26,11 +26,16 @@ class Coreutils < Formula
     depends_on "wget" => :build
   end
 
+  depends_on "gmp" => :optional
+
   def install
     system "./bootstrap" if build.head?
-    system "./configure", "--prefix=#{prefix}",
-                          "--program-prefix=g",
-                          "--without-gmp"
+    args = %W[
+      --prefix=#{prefix}
+      --program-prefix=g
+    ]
+    args << "--without-gmp" if build.without? "gmp"
+    system "./configure", *args
     system "make", "install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix

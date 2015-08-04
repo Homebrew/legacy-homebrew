@@ -22,40 +22,40 @@ class Llvm < Formula
   homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.6.1/llvm-3.6.1.src.tar.xz"
-    sha256 "2f00c615913aa0b56607ee1548936e60ad2aa89e6d56f23fb032a4463366fc7a"
+    url "http://llvm.org/releases/3.6.2/llvm-3.6.2.src.tar.xz"
+    sha256 "f60dc158bfda6822de167e87275848969f0558b3134892ff54fced87e4667b94"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.6.1/cfe-3.6.1.src.tar.xz"
-      sha256 "74f92d0c93b86678b015e87655f59474b2f657769680efdeb3c0524ffbd2dad7"
+      url "http://llvm.org/releases/3.6.2/cfe-3.6.2.src.tar.xz"
+      sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.1/libcxx-3.6.1.src.tar.xz"
-      sha256 "5a5c653becf3978d4c4f6095708660855bed691210a9426bb839eecd88b6c0f9"
+      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
+      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.6.1/lld-3.6.1.src.tar.xz"
-      sha256 "3aee0513caeac6dd55930838425f63ad79bee9ccdf081cafbd853bbd65486feb"
+      url "http://llvm.org/releases/3.6.2/lld-3.6.2.src.tar.xz"
+      sha256 "43f553c115563600577764262f1f2fac3740f0c639750f81e125963c90030b33"
     end
 
     resource "lldb" do
-      url "http://llvm.org/releases/3.6.1/lldb-3.6.1.src.tar.xz"
-      sha256 "cefb5c64e78e85ad05a06b80f017ccfe1208b74d3da34eb425c505c6fef9aaba"
+      url "http://llvm.org/releases/3.6.2/lldb-3.6.2.src.tar.xz"
+      sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
     end
 
     resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.6.1/clang-tools-extra-3.6.1.src.tar.xz"
-      sha256 "f4ee70d870d550a9147ac6a548ce7daf7d9e6897348bf411f43c572966fb92b6"
+      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
+      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
     end
   end
 
   bottle do
-    revision 1
-    sha256 "54c815d99473ef948bee29b577315461a140117b874396fda617a5c7d1bdbb0b" => :yosemite
-    sha256 "2be603591104a91d0a16ba5a6231717d5252ef860e83af620fbc5d10394fcb61" => :mavericks
-    sha256 "3996bbf655ae2c8457304f41d2c3df0b96f307f9fb624417c76afa75d3b587c0" => :mountain_lion
+    cellar :any
+    sha256 "a0ec4b17ae8c1c61071e603d0dcf3e1c39a5aae63c3f8237b4363a06701a3319" => :yosemite
+    sha256 "17a62c19d119c88972fa3dce920cfbc6150af8892ba8e29ce551ae7e2e84f42e" => :mavericks
+    sha256 "6d780faae2647ebce704b2f0a246b52d4037ebf4a2f796644814607e7751af93" => :mountain_lion
   end
 
   head do

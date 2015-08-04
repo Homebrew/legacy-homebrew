@@ -11,13 +11,12 @@ class Mariadb < Formula
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.5/source/mariadb-10.1.5.tar.gz"
-    sha256 "af8788bfbb842338882e505612f86ef53a25968663a1519185ecf3de3b1efe83"
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.6/source/mariadb-10.1.6.tar.gz"
+    sha256 "492f28f0d7aee5bf0a0efd21c542ca4f291f349e66063695c5003df16e064959"
+    # fix compilation failure with clang in mroonga storage engine
+    # https://mariadb.atlassian.net/projects/MDEV/issues/MDEV-8551
+    patch :DATA
   end
-
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
-  depends_on "openssl"
 
   option :universal
   option "with-tests", "Keep test when installing"
@@ -29,6 +28,10 @@ class Mariadb < Formula
   option "with-local-infile", "Build with local infile loading support"
 
   deprecated_option "enable-local-infile" => "with-local-infile"
+
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   conflicts_with "mysql", "mysql-cluster", "percona-server",
     :because => "mariadb, mysql, and percona install the same binaries."
@@ -218,3 +221,19 @@ class Mariadb < Formula
     end
   end
 end
+__END__
+diff --git a/storage/mroonga/vendor/groonga/CMakeLists.txt b/storage/mroonga/vendor/groonga/CMakeLists.txt
+index ebe7f6b..609f77d 100644
+--- a/storage/mroonga/vendor/groonga/CMakeLists.txt
++++ b/storage/mroonga/vendor/groonga/CMakeLists.txt
+@@ -192,6 +192,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
+   check_build_flag("-Wno-clobbered")
+ endif()
+
++if(CMAKE_COMPILER_IS_CLANGCXX)
++  check_cxxflag("-fexceptions")
++endif()
++
+ if(NOT DEFINED CMAKE_C_COMPILE_OPTIONS_PIC)
+   # For old CMake
+   if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGCXX)

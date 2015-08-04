@@ -15,21 +15,17 @@ class ObjectiveCaml < Formula
   desc "General purpose programming language in the ML family"
   homepage "https://ocaml.org/"
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
-  revision 1
 
   stable do
-    url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.2.tar.bz2"
-    sha256 "b18265582b1c2fd5c1e67da3f744bf1ff474d194bb277c3a9ceb5eb16a1ea703"
-
-    # Upstream fix for a GC crash issue introduced in 4.02.2
-    # See http://caml.inria.fr/mantis/view.php?id=6919
-    patch :DATA
+    url "http://caml.inria.fr/pub/distrib/ocaml-4.02/ocaml-4.02.3.tar.gz"
+    sha256 "928fb5f64f4e141980ba567ff57b62d8dc7b951b58be9590ffb1be2172887a72"
   end
 
   bottle do
-    sha256 "08c8d8728d3c1fe56bbf06ef3cc7acd407b902adc029cd50ae5fda1c4e31d9db" => :yosemite
-    sha256 "7384240852677805db33e0e8e71cb083eceec378d692edfc1532041f31c841ed" => :mavericks
-    sha256 "57e0ed61d2cb90c25ad2982f2a5fd27381b2d8920342cb83e7ba3b03d37c4a81" => :mountain_lion
+    cellar :any
+    sha256 "b0a69f73027d6bd6fedea3a4828665b0dd2d10c8b4fd14b427c7b76963dfee40" => :yosemite
+    sha256 "6eaaae269acbe7353b058f12f5f9d52ead4e7921f0e21dffe9aaab6fdf79d23e" => :mavericks
+    sha256 "638b4c9d3cef687b895b24bb9dd0e3f042aa3def5c8446636c0b389196593181" => :mountain_lion
   end
 
   option "with-x11", "Install with the Graphics module"
@@ -53,17 +49,3 @@ class ObjectiveCaml < Formula
     assert_match "#{HOMEBREW_PREFIX}", shell_output("ocamlc -where")
   end
 end
-__END__
-diff --git a/byterun/minor_gc.c b/byterun/minor_gc.c
-index 4aaec96..859a72a 100644
---- a/byterun/minor_gc.c
-+++ b/byterun/minor_gc.c
-@@ -259,6 +259,8 @@ void caml_empty_minor_heap (void)
-     ++ caml_stat_minor_collections;
-     caml_final_empty_young ();
-     if (caml_minor_gc_end_hook != NULL) (*caml_minor_gc_end_hook) ();
-+  } else {
-+    caml_final_empty_young ();
-   }
- #ifdef DEBUG
-   {

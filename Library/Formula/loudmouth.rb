@@ -1,11 +1,9 @@
-require "formula"
-
 class Loudmouth < Formula
   desc "Lightweight C library for the Jabber protocol"
   homepage "http://mcabber.com"
   url "http://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2"
   version "1.5.0.20121201"
-  sha1 "502963c3068f7033bb21d788918c1e5cd14f386e"
+  sha256 "d8ff057dc98c99ab19a68c3890c7f5ab47870e45d67bb65891f01a78c77dfcf9"
   revision 1
 
   bottle do
@@ -42,7 +40,7 @@ class Loudmouth < Formula
   stable do
     patch do
       url "https://github.com/mcabber/loudmouth/commit/369844a0fc.diff"
-      sha1 "e52ee2e24a06ebea52b90866a347daf1f1d28382"
+      sha256 "35fa20c2b91dc470a76db41b67b2f589763aaed7da8537c58a5002a8f896eb09"
     end
   end
 

@@ -37,16 +37,19 @@ class Tap
   # e.g. `https://github.com/user/homebrew-repo`
   def remote
     @remote ||= if installed?
-      if (@path/".git").exist?
+      if git?
         @path.cd do
           Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
         end
-      else
-        nil
       end
     else
       raise TapUnavailableError, name
     end
+  end
+
+  # True if this {Tap} is a git repository.
+  def git?
+    (@path/".git").exist?
   end
 
   def to_s
@@ -108,7 +111,7 @@ class Tap
       "custom_remote" => custom_remote?,
       "formula_names" => formula_names,
       "formula_files" => formula_files.map(&:to_s),
-      "command_files" => command_files.map(&:to_s),
+      "command_files" => command_files.map(&:to_s)
     }
   end
 
@@ -117,9 +120,7 @@ class Tap
 
     TAP_DIRECTORY.subdirs.each do |user|
       user.subdirs.each do |repo|
-        if (repo/".git").directory?
-          yield new(user.basename.to_s, repo.basename.to_s.sub("homebrew-", ""))
-        end
+        yield new(user.basename.to_s, repo.basename.to_s.sub("homebrew-", ""))
       end
     end
   end

@@ -1,5 +1,3 @@
-require "formula"
-
 class Stlink < Formula
   desc "stm32 discovery line Linux programmer"
   homepage "https://github.com/texane/stlink"

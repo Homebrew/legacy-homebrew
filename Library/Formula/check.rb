@@ -1,10 +1,8 @@
-require "formula"
-
 class Check < Formula
   desc "C unit testing framework"
   homepage "http://check.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/check/check/0.9.14/check-0.9.14.tar.gz"
-  sha1 "4b79e2d485d014ddb438e322b64235347d57b0ff"
+  sha256 "c272624645b1b738cf57fd5d81a3e4d9b722b99d6133ee3f3c4007d4d279840a"
 
   bottle do
     cellar :any
@@ -19,6 +17,6 @@ class Check < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

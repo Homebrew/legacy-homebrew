@@ -1,5 +1,3 @@
-require "formula"
-
 class Mackup < Formula
   desc "Keep your Mac's application settings in sync"
   homepage "https://github.com/lra/mackup"

@@ -9,12 +9,17 @@ class OracleHomeVarRequirement < Requirement
   end
 end
 
+# Patches for Qt5 must be at the very least submitted to Qt's Gerrit codereview
+# rather than their bug-report Jira. The latter is rarely reviewed by Qt.
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
 
   stable do
+    # 5.5.0 has a compile-breaking pkg-config error when projects use that to find libs.
+    # https://bugreports.qt.io/browse/QTBUG-47162
+    # This is known to impact Wireshark & Poppler optional Qt5 usage in the core.
     url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
     mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
     sha256 "7ea2a16ecb8088e67db86b0835b887d5316121aeef9565d5d19be3d539a2c2af"
@@ -24,6 +29,16 @@ class Qt5 < Formula
     # This is fixed in 5.5 branch and below patch should be removed
     # when this formula is updated to 5.5.1
     patch :DATA
+
+    # Upstream commit to fix the fatal build error on OS X El Capitan.
+    # https://codereview.qt-project.org/#/c/121545/
+    # Should land in the 5.5.1 release.
+    if MacOS.version >= :el_capitan
+      patch do
+        url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
+        sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
+      end
+    end
   end
 
   bottle do

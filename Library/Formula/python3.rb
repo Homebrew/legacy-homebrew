@@ -14,8 +14,8 @@ class Python3 < Formula
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b3.tgz"
-    sha256 "5d1437676e75826963028eece5e84c31a8f6e4a781b86d860df89607ddb62f29"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b4.tgz"
+    sha256 "e2f9ddb8eca441a5ae2bfccc015b61268d6bf612b3fd5b084d6ec2bf52c7d943"
   end
 
   option :universal
@@ -32,7 +32,7 @@ class Python3 < Formula
   depends_on "openssl"
   depends_on "xz" => :recommended  # for the lzma module added in 3.3
   depends_on "homebrew/dupes/tcl-tk" => :optional
-  depends_on :x11 if build.with? "tcl-tk" and Tab.for_name("homebrew/dupes/tcl-tk").with? "x11"
+  depends_on :x11 if build.with?("tcl-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
   skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5"
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
@@ -322,7 +322,7 @@ class Python3 < Formula
     EOS
 
     text += tk_caveats unless MacOS.version >= :lion
-    return text
+    text
   end
 
   test do

@@ -1,18 +1,16 @@
-require 'formula'
-
 class DynamodbLocal < Formula
   desc "Cient-side database and server imitating DynamoDB"
-  homepage 'https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html'
-  url 'https://dynamodb-local.s3.amazonaws.com/dynamodb_local_2015-04-27_1.0.tar.gz'
-  version '2015-04-27_1.0'
-  sha256 '16c074a787af2572e8d6867c2cff47c02fe1b2eb6c956ae2ca604d844d95331c'
+  homepage "https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Tools.DynamoDBLocal.html"
+  url "https://dynamodb-local.s3.amazonaws.com/dynamodb_local_2015-07-16_1.0.tar.gz"
+  version "2015-07-16_1.0"
+  sha256 "5868fd4b9f624001cda88059af7a54f412a4794dea0d3497e7c57470bfb272fa"
 
   def data_path
-    var/'data/dynamodb-local'
+    var/"data/dynamodb-local"
   end
 
   def log_path
-    var/'log/dynamodb-local.log'
+    var/"log/dynamodb-local.log"
   end
 
   def bin_wrapper; <<-EOS.undent
@@ -24,7 +22,7 @@ class DynamodbLocal < Formula
   def install
     prefix.install %w[LICENSE.txt README.txt third_party_licenses]
     libexec.install %w[DynamoDBLocal_lib DynamoDBLocal.jar]
-    (bin/'dynamodb-local').write(bin_wrapper)
+    (bin/"dynamodb-local").write(bin_wrapper)
   end
 
   def post_install

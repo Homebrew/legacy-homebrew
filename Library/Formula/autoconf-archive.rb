@@ -1,9 +1,9 @@
 class AutoconfArchive < Formula
-  desc "A collection of over 500 reusable autoconf macros"
+  desc "Collection of over 500 reusable autoconf macros"
   homepage "https://savannah.gnu.org/projects/autoconf-archive/"
   url "http://ftpmirror.gnu.org/autoconf-archive/autoconf-archive-2015.02.24.tar.xz"
   mirror "https://ftp.gnu.org/gnu/autoconf-archive/autoconf-archive-2015.02.24.tar.xz"
-  sha1 "3b85294775df75acce4b89d99ad268a6e7219d9c"
+  sha256 "69715bdd078f552ca85e498a94543e11cb8bcdf0359e659b84d84d19372b0dc5"
 
   bottle do
     sha1 "379b87f4f2a0ab895b98566a9d846e39143febb9" => :yosemite

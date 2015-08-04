@@ -1,10 +1,8 @@
-require "formula"
-
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
   homepage "http://www.cse.wustl.edu/~schmidt/ACE.html"
   url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.0.tar.bz2"
-  sha1 "f7f0ba28f61774e3b269af65461819f31c999529"
+  sha256 "e22b6adb1fdd0af45e1c78087d8fd24555b7dcbf0cd6a22b4b131a737602b561"
 
   bottle do
     sha1 "90cb518c4554949453de2eb406a7d1ef8fda3880" => :yosemite

@@ -5,8 +5,8 @@ class Logstash < Formula
   sha256 "1d1805d388392a69f5049b35c176186389a7f8bf7347c4528c255edc1f9b0d6a"
 
   def install
-    inreplace %w{bin/logstash}, /^\. "\$\(cd `dirname \$0`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"/, ". #{libexec}/bin/logstash.lib.sh"
-    inreplace %w{bin/logstash.lib.sh}, /^LOGSTASH_HOME=.*$/, "LOGSTASH_HOME=#{libexec}"
+    inreplace %w[bin/logstash], /^\. "\$\(cd `dirname \$0`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"/, ". #{libexec}/bin/logstash.lib.sh"
+    inreplace %w[bin/logstash.lib.sh], /^LOGSTASH_HOME=.*$/, "LOGSTASH_HOME=#{libexec}"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/logstash"
   end

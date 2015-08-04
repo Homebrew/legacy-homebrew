@@ -1,26 +1,20 @@
 class GitLfs < Formula
   desc "Git extension for versioning large files"
   homepage "https://github.com/github/git-lfs"
-  url "https://github.com/github/git-lfs/archive/v0.5.2.tar.gz"
-  sha256 "c7453d15fd817c50c5bff86e5bbd45781b3a7213cd70de9ff8f9240cf04fb626"
+  url "https://github.com/github/git-lfs/archive/v0.5.4-homebrew.tar.gz"
+  version "0.5.4"
+  sha256 "cf860d56d86cda40a5b883b81f4d991617788c13d5e09be6b35c8bb9ac878ad7"
 
   bottle do
     cellar :any
-    sha256 "64d049e5e8c0e5138b25a259fd4e3e44e323b9c963dc83a1d48a1759bccae90e" => :yosemite
-    sha256 "c129806c1f4b9aabe7a8c53358894e9875c96ccc0d37326f5db9788ea93b58d6" => :mavericks
-    sha256 "d171c299bd1b446be6a23adf2e84629e84c7fea050e5a499df6fa00862695efd" => :mountain_lion
+    sha256 "e866568127b874c7829f43971a616b97ac4047a177f9128bdeddcfd3a5120841" => :yosemite
+    sha256 "a043735ec2976520653261d4615897b9e2199e17bf811cd270a00959ee0e0660" => :mavericks
+    sha256 "a467ea335510e5ac387cdf3f3c5896f8b65557bd1fbd30f780788b4d4352c650" => :mountain_lion
   end
 
   depends_on "go" => :build
 
   def install
-    # These three lines can be removed with 0.5.3 as the bootstrap script has
-    # now been fixed to set GOPATH again in:
-    # https://github.com/github/git-lfs/pull/458
-    ENV["GOPATH"] = buildpath
-    mkdir_p buildpath/"src/github.com/github"
-    ln_s buildpath, buildpath/"src/github.com/github/git-lfs"
-
     system "./script/bootstrap"
     bin.install "bin/git-lfs"
   end

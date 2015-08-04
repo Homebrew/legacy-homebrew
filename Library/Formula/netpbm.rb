@@ -1,14 +1,12 @@
-require 'formula'
-
 class Netpbm < Formula
   desc "Image manipulation"
-  homepage 'http://netpbm.sourceforge.net'
+  homepage "http://netpbm.sourceforge.net"
   # Maintainers: Look at http://netpbm.svn.sourceforge.net/viewvc/netpbm/
   # for versions and matching revisions
-  url 'http://svn.code.sf.net/p/netpbm/code/advanced', :revision => 2294
-  version '10.68'
+  url "http://svn.code.sf.net/p/netpbm/code/advanced", :revision => 2294
+  version "10.68"
 
-  head 'http://svn.code.sf.net/p/netpbm/code/trunk'
+  head "http://svn.code.sf.net/p/netpbm/code/trunk"
 
   bottle do
     cellar :any
@@ -47,21 +45,21 @@ class Netpbm < Formula
     system "make"
     system "make", "package", "pkgdir=#{buildpath}/stage"
 
-    cd 'stage' do
+    cd "stage" do
       inreplace "pkgconfig_template" do |s|
         s.gsub! "@VERSION@", File.read("VERSION").sub("Netpbm ", "").chomp
         s.gsub! "@LINKDIR@", lib
         s.gsub! "@INCLUDEDIR@", include
       end
 
-      prefix.install %w{ bin include lib misc }
+      prefix.install %w[bin include lib misc]
       # do man pages explicitly; otherwise a junk file is installed in man/web
-      man1.install Dir['man/man1/*.1']
-      man5.install Dir['man/man5/*.5']
-      lib.install Dir['link/*.a']
+      man1.install Dir["man/man1/*.1"]
+      man5.install Dir["man/man5/*.5"]
+      lib.install Dir["link/*.a"]
       (lib/"pkgconfig").install "pkgconfig_template" => "netpbm.pc"
     end
 
-    (bin/'doc.url').unlink
+    (bin/"doc.url").unlink
   end
 end

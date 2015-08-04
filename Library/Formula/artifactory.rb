@@ -2,7 +2,7 @@ class Artifactory < Formula
   desc "Manages binaries"
   homepage "http://www.jfrog.com/artifactory/"
   url "https://dl.bintray.com/jfrog/artifactory/artifactory-3.8.0.zip"
-  sha1 "ade88a068f58a3847f9591ee0b9bfd0bcbd20049"
+  sha256 "8f5e2b46bb5db96afd2185cd74edd5ec87a5ee5e7d7d3ec86500e44730917c69"
 
   depends_on :java => "1.7+"
 

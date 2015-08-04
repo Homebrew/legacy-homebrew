@@ -1,5 +1,3 @@
-require "formula"
-
 class Vala < Formula
   desc "Compiler for the GObject type system"
   homepage "https://live.gnome.org/Vala"
@@ -37,14 +35,14 @@ class Vala < Formula
         print ("#{test_string}");
       }
     EOS
-    valac_args = [# Build with debugging symbols.
-                  "-g",
-                  # Use Homebrew's default C compiler.
-                  "--cc=#{ENV.cc}",
-                  # Save generated C source code.
-                  "--save-temps",
-                  # Vala source code path.
-                  "#{path}"]
+    valac_args = [ # Build with debugging symbols.
+      "-g",
+      # Use Homebrew's default C compiler.
+      "--cc=#{ENV.cc}",
+      # Save generated C source code.
+      "--save-temps",
+      # Vala source code path.
+      "#{path}"]
     system "#{bin}/valac", *valac_args
     assert File.exist?(testpath/"hello.c")
 

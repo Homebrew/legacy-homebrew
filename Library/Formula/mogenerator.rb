@@ -1,12 +1,10 @@
-require 'formula'
-
 class Mogenerator < Formula
   desc "Generate Objective-C code for Core Data custom classes"
-  homepage 'http://rentzsch.github.io/mogenerator/'
-  url 'https://github.com/rentzsch/mogenerator/archive/1.28.tar.gz'
-  sha1 '2c92204c76cbe88091494d0730cf986efab8ef1a'
+  homepage "https://rentzsch.github.io/mogenerator/"
+  url "https://github.com/rentzsch/mogenerator/archive/1.28.tar.gz"
+  sha256 "5b3c8a907cc77709524a225f51b2fd8d2187f131c6338cbaf50fe4b2adfbeec7"
 
-  head 'https://github.com/rentzsch/mogenerator.git'
+  head "https://github.com/rentzsch/mogenerator.git"
 
   bottle do
     cellar :any
@@ -18,7 +16,7 @@ class Mogenerator < Formula
   depends_on :xcode => :build
 
   def install
-    xcodebuild "-target", "mogenerator", "-configuration", "Release","SYMROOT=symroot", "OBJROOT=objroot"
+    xcodebuild "-target", "mogenerator", "-configuration", "Release", "SYMROOT=symroot", "OBJROOT=objroot"
     bin.install "symroot/Release/mogenerator"
   end
 end

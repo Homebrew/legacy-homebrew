@@ -16,7 +16,7 @@ class Vte3 < Formula
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
       "--disable-Bsymbolic",
-      "--enable-introspection=yes",
+      "--enable-introspection=yes"
     ]
 
     system "./configure", *args

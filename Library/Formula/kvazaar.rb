@@ -2,7 +2,7 @@ class Kvazaar < Formula
   desc "HEVC encoder"
   homepage "https://github.com/ultravideo/kvazaar"
   url "https://github.com/ultravideo/kvazaar/archive/v0.4.0.tar.gz"
-  sha1 "28fce493e8fcd7274993ab46eb1a1c5d07569853"
+  sha256 "19af3e92a9689819e69fecff6d3f51c3dac98bda774c45ca2403cfe354da2684"
 
   bottle do
     cellar :any

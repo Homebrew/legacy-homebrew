@@ -46,7 +46,7 @@ class Emscripten < Formula
     # OSX doesn't provide a "python2" binary so use "python" instead.
     python2_shebangs = `grep --recursive --files-with-matches ^#!/usr/bin/.*python2$ #{buildpath}`
     python2_shebang_files = python2_shebangs.lines.sort.uniq
-    python2_shebang_files.map! {|f| Pathname(f.chomp)}
+    python2_shebang_files.map! { |f| Pathname(f.chomp) }
     python2_shebang_files.reject! &:symlink?
     inreplace python2_shebang_files, %r{^(#!/usr/bin/.*python)2$}, "\\1"
 
@@ -63,7 +63,7 @@ class Emscripten < Formula
       "--enable-optimized",
       "--enable-targets=host,js",
       "--disable-assertions",
-      "--disable-bindings",
+      "--disable-bindings"
     ]
 
     cd "fastcomp" do
@@ -72,8 +72,8 @@ class Emscripten < Formula
       system "make", "install"
     end
 
-    %w(em++ em-config emar emcc emcmake emconfigure emlink.py emmake
-       emranlib emrun emscons).each do |emscript|
+    %w[em++ em-config emar emcc emcmake emconfigure emlink.py emmake
+       emranlib emrun emscons].each do |emscript|
       bin.install_symlink libexec/emscript
     end
   end

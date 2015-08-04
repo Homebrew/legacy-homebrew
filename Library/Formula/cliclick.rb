@@ -1,5 +1,3 @@
-require "formula"
-
 class Cliclick < Formula
   desc "Tool for automating emulated mouse clicks"
   homepage "https://www.bluem.net/jump/cliclick/"

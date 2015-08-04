@@ -1,5 +1,3 @@
-require "formula"
-
 class JsonC < Formula
   desc "JSON parser for C"
   homepage "https://github.com/json-c/json-c/wiki"

@@ -1,10 +1,8 @@
-require "formula"
-
 class LtcTools < Formula
   desc "Tools to deal with linear-timecode (LTC)"
   homepage "https://github.com/x42/ltc-tools"
   url "https://github.com/x42/ltc-tools/archive/v0.6.4.tar.gz"
-  sha1 "b126223996b06ac3dd900b322e3ccda9267bcbb3"
+  sha256 "8fc9621df6f43ab24c65752a9fee67bee6625027c19c088e5498d2ea038a22ec"
   head "https://github.com/x42/ltc-tools.git"
 
   depends_on "pkg-config" => :build

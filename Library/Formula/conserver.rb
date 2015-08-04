@@ -18,9 +18,9 @@ class Conserver < Formula
 
   test do
     console = fork do
-      system bin/"console", "-n", "-p", "8000", "test"
+      exec bin/"console", "-n", "-p", "8000", "test"
     end
     sleep 1
-    Process.kill("TERM",console)
+    Process.kill("TERM", console)
   end
 end

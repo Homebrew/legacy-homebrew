@@ -1,5 +1,3 @@
-require "formula"
-
 class Thrift < Formula
   desc "Framework for scalable cross-language services development"
   homepage "https://thrift.apache.org/"

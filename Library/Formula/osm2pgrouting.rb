@@ -1,14 +1,12 @@
-require 'formula'
-
 class Osm2pgrouting < Formula
   desc "Import OSM data into pgRouting database"
-  homepage 'http://pgrouting.org/docs/tools/osm2pgrouting.html'
-  url 'https://github.com/pgRouting/osm2pgrouting/archive/v2.0.0.tar.gz'
-  sha1 '2d100ac9914919993a7c341e2395b8bafdfe3759'
-  head 'https://github.com/pgRouting/osm2pgrouting.git'
+  homepage "http://pgrouting.org/docs/tools/osm2pgrouting.html"
+  url "https://github.com/pgRouting/osm2pgrouting/archive/v2.0.0.tar.gz"
+  sha256 "0438624f02b58b14388962d6b538187f16993a5e1e9766acf8099dc0255dfb34"
+  head "https://github.com/pgRouting/osm2pgrouting.git"
 
-  depends_on 'cmake' => :build
-  depends_on 'boost'
+  depends_on "cmake" => :build
+  depends_on "boost"
   depends_on :postgresql
 
   def install

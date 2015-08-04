@@ -14,7 +14,7 @@ class Chuck < Formula
   def install
     system "make", "-C", "src", "osx"
     bin.install "src/chuck"
-    (share/"chuck").install "examples"
+    pkgshare.install "examples"
   end
 
   test do

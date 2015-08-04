@@ -7,9 +7,10 @@ class Ansible < Formula
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha256 "84b991d2a81e2ec8a0329f0e5f91894a6ed6ad75fe8747e8adaf40da75feffec" => :yosemite
-    sha256 "9806adac0d52e2cd59bd6f87c93ede60b45c3f2fd9bdbd20cdfc942fc1c19920" => :mavericks
-    sha256 "2d40456fcf2f47e7ce8999b55010e30a5dfd972be8c4123a8157fddf2cfcf9ae" => :mountain_lion
+    revision 1
+    sha256 "729136bdae93c41b0ba8dced267b099cfd84e1eb21a3f0967580ab3d257c8d01" => :yosemite
+    sha256 "3c5787548e2f2841214377151318ab51392e512e82a767a1274cba341932255c" => :mavericks
+    sha256 "584ff3ab3bf27148103af6b31a7aef2963579d839907c6fefd05abb6cbf040fb" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -280,6 +281,11 @@ class Ansible < Formula
   resource "python-keyczar" do
     url "https://pypi.python.org/packages/source/p/python-keyczar/python-keyczar-0.715.tar.gz"
     sha256 "f43f9f15b0b719de94cab2754dcf78ef63b40ee2a12cea296e7af788b28501bb"
+  end
+
+  resource "passlib" do
+    url "https://pypi.python.org/packages/source/p/passlib/passlib-1.6.4.tar.gz"
+    sha256 "d41bd7a2d22f9bd7e19ff4eed0eea2316eb737f3ec6a7c361dde6b2785b08cdc"
   end
 
   def install

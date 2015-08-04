@@ -70,7 +70,7 @@ class Libav < Formula
       "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
-      "--host-ldflags=#{ENV.ldflags}",
+      "--host-ldflags=#{ENV.ldflags}"
     ]
 
     args << "--enable-frei0r" if build.with? "frei0r"

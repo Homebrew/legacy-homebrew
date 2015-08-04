@@ -1,11 +1,9 @@
-require 'formula'
-
 class PdflibLite < Formula
   desc "Subset of the functionality of PDFlib 7"
-  homepage 'http://www.pdflib.com/download/free-software/pdflib-lite/'
-  url 'http://www.pdflib.com/binaries/PDFlib/705/PDFlib-Lite-7.0.5p3.tar.gz'
-  version '7.0.5p3'
-  sha1 '42e0605ae21f4b6d25fa2d20e78fed6df36fbaa9'
+  homepage "http://www.pdflib.com/download/free-software/pdflib-lite/"
+  url "http://www.pdflib.com/binaries/PDFlib/705/PDFlib-Lite-7.0.5p3.tar.gz"
+  version "7.0.5p3"
+  sha256 "e5fb30678165d28b2bf066f78d5f5787e73a2a28d4902b63e3e07ce1678616c9"
 
   bottle do
     cellar :any
@@ -18,7 +16,7 @@ class PdflibLite < Formula
     # Without the following substitution, pdflib-lite runs into weird
     # build errors due to bad interactions with the TIFF headers.
     # This workaround comes from the MacPorts.org portfile for pdflib.
-    ENV['CPPFLAGS'] = "-isystem#{prefix}"
+    ENV["CPPFLAGS"] = "-isystem#{prefix}"
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -28,7 +26,7 @@ class PdflibLite < Formula
                           "--without-tcl",
                           "--without-ruby"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

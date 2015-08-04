@@ -1,10 +1,8 @@
-require "formula"
-
 class AvroTools < Formula
   desc "Avro command-line tools and utilities"
-  homepage "http://avro.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=avro/avro-1.7.7/java/avro-tools-1.7.7.jar"
-  sha1 "a2c493c897583892b0423f0c9c732c242cd8816d"
+  homepage "https://avro.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=avro/avro-1.7.7/java/avro-tools-1.7.7.jar"
+  sha256 "ca1658c64d3609e9b7fe62039b3a95993fa18ed3244121c1f71d677ec51ab092"
 
   def install
     libexec.install "avro-tools-#{version}.jar"

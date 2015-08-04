@@ -1,9 +1,9 @@
-require 'dependency'
-require 'dependencies'
-require 'ld64_dependency'
-require 'requirement'
-require 'requirements'
-require 'set'
+require "dependency"
+require "dependencies"
+require "ld64_dependency"
+require "requirement"
+require "requirements"
+require "set"
 
 ## A dependency is a formula that another formula needs to install.
 ## A requirement is something other than a formula that another formula
@@ -177,10 +177,10 @@ class DependencyCollector
 
   def parse_url_spec(url, tags)
     case File.extname(url)
-    when '.xz'  then Dependency.new('xz', tags)
-    when '.lz'  then Dependency.new('lzip', tags)
-    when '.rar' then Dependency.new('unrar', tags)
-    when '.7z'  then Dependency.new('p7zip', tags)
+    when ".xz"  then Dependency.new("xz", tags)
+    when ".lz"  then Dependency.new("lzip", tags)
+    when ".rar" then Dependency.new("unrar", tags)
+    when ".7z"  then Dependency.new("p7zip", tags)
     end
   end
 end

@@ -1,11 +1,9 @@
-require 'formula'
-
 class IrcdIrc2 < Formula
   desc "Original IRC server daemon"
-  homepage 'http://www.irc.org/'
-  url 'http://www.irc.org/ftp/irc/server/irc2.11.2p3.tgz'
-  sha1 '1ab317daeac324cc3f10fe939588de04d52e47c5'
-  version '2.11.2p3'
+  homepage "http://www.irc.org/"
+  url "http://www.irc.org/ftp/irc/server/irc2.11.2p3.tgz"
+  sha256 "be94051845f9be7da0e558699c4af7963af7e647745d339351985a697eca2c81"
+  version "2.11.2p3"
 
   def default_ircd_conf
     <<-EOS.undent

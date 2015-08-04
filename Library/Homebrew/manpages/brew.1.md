@@ -679,7 +679,7 @@ Homebrew Documentation: <https://github.com/Homebrew/homebrew/blob/master/share/
 
 ## AUTHORS
 
-Homebrew's current maintainers are Misty De Meo, Adam Vandenberg, Xu Cheng, Mike McQuaid, Baptiste Fontaine, Brett Koonce, Dominyk Tiller and Tim Smith.
+Homebrew's current maintainers are Misty De Meo, Adam Vandenberg, Xu Cheng, Mike McQuaid, Baptiste Fontaine, Brett Koonce, Dominyk Tiller, Tim Smith and Alex Dunn.
 
 Homebrew was originally created by Max Howell.
 

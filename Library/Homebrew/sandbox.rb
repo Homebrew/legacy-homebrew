@@ -14,9 +14,16 @@ class Sandbox
   end
 
   def self.print_autodisable_warning
-    unless @print_autodisable_warning
+    unless @printed_autodisable_warning
       opoo "The sandbox cannot be used in debug or interactive mode."
-      @print_autodisable_warning = true
+      @printed_autodisable_warning = true
+    end
+  end
+
+  def self.print_sandbox_message
+    unless @printed_sandbox_message
+      ohai "Using the sandbox"
+      @printed_sandbox_message = true
     end
   end
 
@@ -32,11 +39,11 @@ class Sandbox
     @profile.add_rule(rule)
   end
 
-  def allow_write(path, options={})
+  def allow_write(path, options = {})
     add_rule :allow => true, :operation => "file-write*", :filter => path_filter(path, options[:type])
   end
 
-  def deny_write(path, options={})
+  def deny_write(path, options = {})
     add_rule :allow => false, :operation => "file-write*", :filter => path_filter(path, options[:type])
   end
 
@@ -72,33 +79,33 @@ class Sandbox
   end
 
   def exec(*args)
-    begin
-      seatbelt = Tempfile.new(["homebrew", ".sb"], HOMEBREW_TEMP)
-      seatbelt.write(@profile.dump)
-      seatbelt.close
-      @start = Time.now
-      safe_system SANDBOX_EXEC, "-f", seatbelt.path, *args
-    rescue
-      if ARGV.verbose?
-        ohai "Sandbox profile:"
-        puts @profile.dump
-      end
-      raise
-    ensure
-      seatbelt.unlink
-      unless @log.nil?
-        sleep 0.1 # wait for a bit to let syslog catch up the latest events.
-        syslog_args = %W[
-          -F '$((Time)(local))\ $(Sender)[$(PID)]:\ $Message'
-          -k Time ge #{@start.to_i.to_s}
-          -k Sender kernel
-          -o
-          -k Time ge #{@start.to_i.to_s}
-          -k Sender sandboxd
-        ]
-        quiet_system "syslog #{syslog_args * " "} | grep deny > #{@log}"
-      end
+
+    seatbelt = Tempfile.new(["homebrew", ".sb"], HOMEBREW_TEMP)
+    seatbelt.write(@profile.dump)
+    seatbelt.close
+    @start = Time.now
+    safe_system SANDBOX_EXEC, "-f", seatbelt.path, *args
+  rescue
+    if ARGV.verbose?
+      ohai "Sandbox profile:"
+      puts @profile.dump
     end
+    raise
+  ensure
+    seatbelt.unlink
+    unless @log.nil?
+      sleep 0.1 # wait for a bit to let syslog catch up the latest events.
+      syslog_args = %W[
+        -F '$((Time)(local))\ $(Sender)[$(PID)]:\ $Message'
+        -k Time ge #{@start.to_i}
+        -k Sender kernel
+        -o
+        -k Time ge #{@start.to_i}
+        -k Sender sandboxd
+      ]
+      quiet_system "syslog #{syslog_args * " "} | grep deny > #{@log}"
+    end
+
   end
 
   private

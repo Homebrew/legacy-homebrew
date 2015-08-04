@@ -1,12 +1,10 @@
-require 'formula'
-
 class Vtclock < Formula
   desc "Text-mode fullscreen digital clock"
-  homepage 'http://webonastick.com/vtclock/'
-  url 'http://webonastick.com/vtclock/vtclock-2005-02-20.tar.gz'
-  sha1 'aabc321bd46ceb9015ee5cd84b526487d63f2dc1'
+  homepage "http://webonastick.com/vtclock/"
+  url "http://webonastick.com/vtclock/vtclock-2005-02-20.tar.gz"
+  sha256 "5fcbceff1cba40c57213fa5853c4574895755608eaf7248b6cc2f061133dab68"
 
-  version '2005-02-20'
+  version "2005-02-20"
 
   def install
     system "make"

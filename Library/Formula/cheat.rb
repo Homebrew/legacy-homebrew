@@ -1,15 +1,15 @@
 class Cheat < Formula
   desc "Create and view interactive cheat sheets for *nix commands"
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.1.9.tar.gz"
-  sha256 "58e4bc81a29d1ca659430c5bced6aaba836a023c55a265561c1a51af44fdce3c"
+  url "https://github.com/chrisallenlane/cheat/archive/2.1.10.tar.gz"
+  sha256 "e2620ffa0b37154d07e18aeb3e10edc786709cc582e8f710e46cb2d46097537b"
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
     cellar :any
-    sha256 "8714e9f07442f4fc5eb68bfcdb874e7dc272a69eb1a35a1dd863c1a2f7ba6831" => :yosemite
-    sha256 "b309758b2d56b9b905bf324aa58f3754084ef3b1b912af405a860fc92ddb3657" => :mavericks
-    sha256 "59ab95aa1ea9d4dd2ce2f9b934cf96edda4ce48132e929263752add723b5c28f" => :mountain_lion
+    sha256 "d9f5898a743c725bcf6619f427c0df4ca29e8092742b7424720ec1f90cb286ea" => :yosemite
+    sha256 "d6a10fadd0f461c9cd49471de8c06cb21efcd80f3e5b175e5acc56735bab4468" => :mavericks
+    sha256 "ade889c77c1bf84693c8ee38daab29e59c2ba94ff44c5db3a4d4ed7b6f522f23" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

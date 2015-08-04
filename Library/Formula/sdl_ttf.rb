@@ -1,10 +1,8 @@
-require "formula"
-
 class SdlTtf < Formula
   desc "Library for using TrueType fonts in SDL applications"
   homepage "https://www.libsdl.org/projects/SDL_ttf/"
   url "https://www.libsdl.org/projects/SDL_ttf/release/SDL_ttf-2.0.11.tar.gz"
-  sha1 "0ccf7c70e26b7801d83f4847766e09f09db15cc6"
+  sha256 "724cd895ecf4da319a3ef164892b72078bd92632a5d812111261cde248ebcdb7"
 
   bottle do
     cellar :any

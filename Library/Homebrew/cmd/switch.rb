@@ -25,7 +25,7 @@ module Homebrew
       onoe "#{name} does not have a version \"#{version}\" in the Cellar."
 
       versions = rack.subdirs.map { |d| Keg.new(d).version }
-      puts "Versions available: #{versions.join(', ')}"
+      puts "Versions available: #{versions.join(", ")}"
 
       exit 3
     end

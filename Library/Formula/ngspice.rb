@@ -1,10 +1,8 @@
-require 'formula'
-
 class Ngspice < Formula
   desc "Spice circuit simulator"
-  homepage 'http://ngspice.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/26/ngspice-26.tar.gz'
-  sha1 '7c043c604b61f76ad1941defeeac6331efc48ad2'
+  homepage "http://ngspice.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/26/ngspice-26.tar.gz"
+  sha256 "51e230c8b720802d93747bc580c0a29d1fb530f3dd06f213b6a700ca9a4d0108"
 
   option "without-xspice", "Build without x-spice extensions"
 
@@ -19,14 +17,14 @@ class Ngspice < Formula
       --with-editline=yes
     ]
     if build.with? "x11"
-        args << "--with-x"
+      args << "--with-x"
     else
-        args << "--without-x"
+      args << "--without-x"
     end
     args << "--enable-xspice" if build.with? "xspice"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do
