@@ -4,6 +4,7 @@ class Trr < Formula
   url "https://trr22.googlecode.com/files/trr22_0.99-5.tar.gz"
   version "22.0.99.5"
   sha256 "6bac2f947839cebde626cdaab0c0879de8f6f6e40bfd7a14ccdfe1a035a3bcc6"
+  revision 1
 
   bottle do
     sha256 "9db1d6af43f8797b99e098261a16288b34da8f137135b218b1ceb156544c283b" => :yosemite
