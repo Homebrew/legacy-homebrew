@@ -14,5 +14,9 @@ class MusicBox < Formula
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
-
+  
+  test do
+    assert_match /echo ok/, shell_output(bin/"musicbox echho ok")
+  end
+  
 end
