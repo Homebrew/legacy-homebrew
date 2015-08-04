@@ -16,7 +16,7 @@ class MusicBox < Formula
   end
   
   test do
-    assert_match /echo ok/, shell_output(bin/"musicbox echho ok")
+    assert_match /echo ok/, shell_output(bin/"musicbox echo ok")
   end
   
 end
