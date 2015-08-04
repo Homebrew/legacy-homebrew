@@ -25,6 +25,7 @@ class Descriptions
 
   def self.generate_cache
     @cache = {}
+    HOMEBREW_CACHE.mkpath
     CSV.open(CACHE_FILE, 'w') do |csv|
       Formula.map do |f|
         name, desc = f.full_name, f.desc
