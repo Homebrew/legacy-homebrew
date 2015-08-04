@@ -80,11 +80,12 @@ class Ffmpeg < Formula
             "--enable-version3",
             "--enable-hardcoded-tables",
             "--enable-avresample",
-            "--enable-opencl",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
             "--host-ldflags=#{ENV.ldflags}"
            ]
+
+    args << "--enable-opencl" if MacOS.version > :lion
 
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libmp3lame" if build.with? "lame"
