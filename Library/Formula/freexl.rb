@@ -27,8 +27,4 @@ class Freexl < Formula
       doc.install "html"
     end
   end
-
-  test do
-    assert File.exist? "#{lib}/libfreexl.a"
-  end
 end
