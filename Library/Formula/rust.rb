@@ -1,6 +1,6 @@
 class Rust < Formula
   desc "Safe, concurrent, practical language"
-  homepage "http://www.rust-lang.org/"
+  homepage "https://www.rust-lang.org/"
 
   stable do
     url "https://static.rust-lang.org/dist/rustc-1.1.0-src.tar.gz"
@@ -36,9 +36,9 @@ class Rust < Formula
     sha256 "f56191dd3cf36717649184111f4d8a4a9ddcefe7d12706f67cd3151ca1cfe6be" => :mountain_lion
   end
 
-  depends_on "openssl"
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0
