@@ -6,9 +6,9 @@ class Screenbrightness < Formula
 
   bottle do
     cellar :any
-    sha1 "af2ab5c5ba668e9be32b95ed3ac581423e14b1b8" => :yosemite
-    sha1 "c780916b31a50d6a599b1c6238548a8db3a008a1" => :mavericks
-    sha1 "9cf03ce35a3cb24a25bd28b9a213963f64a3dfdd" => :mountain_lion
+    sha256 "daba4223ac40edc23967a4b5f18fd21d292d5e698ce2808483dba8cd77980135" => :yosemite
+    sha256 "cb4a3e3e7089a675d9067d7d64b5e5f783758e859301516849b65c4ab9fe6c70" => :mavericks
+    sha256 "9bc33321a6f83786f092c0b7e83bdccf2e103f84962f9defa02856f9336db97f" => :mountain_lion
   end
 
   def install
