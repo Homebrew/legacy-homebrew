@@ -6,9 +6,9 @@ class OpenMesh < Formula
 
   bottle do
     cellar :any
-    sha256 "e4bc6932d6a585fa96b9cc8f09c3037d852dae79072a8feea47612ba48598212" => :yosemite
-    sha256 "7806df7d4f499a801350087017944a79365336aec3b266bb5bee2ef17ffa017a" => :mavericks
-    sha256 "0ca60ff704a7d442bdd432d9a63f58d2e453d787648f3831bcaa27ac2f5a1114" => :mountain_lion
+    sha256 "9ceb0b6d3509bb66bb88c24696bdbbee9a18fa49046efc14264385e3e4f15bcc" => :yosemite
+    sha256 "583abd22356415032be1fb72bcf56f3fd5ad208a00351c7e37f07a080688b0cf" => :mavericks
+    sha256 "b529044fa24d46f04a88f52fe26ab57f1b455e2b5bc71054b05c9aaeb5f8c029" => :mountain_lion
   end
 
   head "http://openmesh.org/svnrepo/OpenMesh/trunk/", :using => :svn
