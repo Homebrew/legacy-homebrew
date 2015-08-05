@@ -1,8 +1,8 @@
 class Pgcli < Formula
   desc "CLI for Postgres with auto-completion and syntax highlighting"
   homepage "http://pgcli.com/"
-  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.18.0.tar.gz"
-  sha256 "1d611349894f5925c02fa19613e26b3479783688a7e2e462c4e31596faf507dd"
+  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.19.1.tar.gz"
+  sha256 "0d383203279be0b7fff469b55de88a4ed540290fd6b1292d64aa1f0923b76217"
 
   bottle do
     cellar :any
@@ -26,8 +26,8 @@ class Pgcli < Formula
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.42.tar.gz"
-    sha256 "064184bdc0f040cc7c9fae3715e346112f9d632a292601d5c383cedf3de7de12"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.45.tar.gz"
+    sha256 "553fd2b9169674adacf227ede2e056c2bbd7181a4a3ca614960467c0720997a6"
   end
 
   resource "psycopg2" do
