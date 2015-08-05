@@ -213,9 +213,13 @@ module HomebrewArgvExtension
   end
 
   def downcased_unique_named
-    # Only lowercase names, not paths or URLs
+    # Only lowercase names, not paths, bottle filenames or URLs
     @downcased_unique_named ||= named.map do |arg|
-      arg.include?("/") ? arg : arg.downcase
+      if arg.include?("/") || arg.end_with?(".tar.gz")
+        arg
+      else
+        arg.downcase
+      end
     end.uniq
   end
 end
