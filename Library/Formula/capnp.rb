@@ -5,9 +5,10 @@ class Capnp < Formula
   sha256 "cdb17c792493bdcd4a24bcd196eb09f70ee64c83a3eccb0bc6534ff560536afb"
 
   bottle do
-    sha256 "df70e870b12a65442ced879e21418554e1594de20e86691f68c6a1ec17e60bf4" => :yosemite
-    sha256 "26b92dca28761c408adfdfcc44d39baa7b0adfcccdc6d03a57377e14750ab3d0" => :mavericks
-    sha256 "d6ffe25d6652a0dd63bd035889f08202ceb40e39413e2e64adea1af5cc2cb2bd" => :mountain_lion
+    cellar :any
+    sha256 "bd5a6b2c7961bad80928fdcf612619495e0c9208fe69ba5c207b797cd9fc8bb2" => :yosemite
+    sha256 "f99f439becc2eb9bf12e60cb8af0245fffee9aecf9ed07dc460196fe3f2d5f6e" => :mavericks
+    sha256 "9c11b6174a97e022be4ebe5e05435818234dedc11c194afe09bce81fbf8f9a50" => :mountain_lion
   end
 
   needs :cxx11
