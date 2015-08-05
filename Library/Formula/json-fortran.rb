@@ -1,8 +1,8 @@
 class JsonFortran < Formula
   desc "Fortran 2008 JSON API"
   homepage "https://github.com/jacobwilliams/json-fortran"
-  url "https://github.com/jacobwilliams/json-fortran/archive/4.1.1.tar.gz"
-  sha256 "97f258d28536035ef70e9ead5c7053e654106760a12db2cc652587ed61b76124"
+  url "https://github.com/jacobwilliams/json-fortran/archive/4.2.0.tar.gz"
+  sha256 "5cf12ce527809b644ae35a0a34ce330804285d3b7987b17488d1752330dd7a81"
 
   head "https://github.com/jacobwilliams/json-fortran.git"
 
@@ -15,9 +15,11 @@ class JsonFortran < Formula
 
   option "with-unicode-support", "Build json-fortran to support unicode text in json objects and files"
   option "without-test", "Skip running build-time tests (not recommended)"
-  option "without-robodoc", "Do not build and install ROBODoc generated documentation for json-fortran"
+  option "without-docs", "Do not build and install FORD generated documentation for json-fortran"
 
-  depends_on "robodoc" => [:recommended, :build]
+  deprecated_option "without-robodoc" => "without-docs"
+
+  depends_on "ford" => :build if build.with? "docs"
   depends_on "cmake" => :build
   depends_on :fortran
 
@@ -26,9 +28,9 @@ class JsonFortran < Formula
       args = std_cmake_args
       args << "-DUSE_GNU_INSTALL_CONVENTION:BOOL=TRUE" # Use more GNU/Homebrew-like install layout
       args << "-DENABLE_UNICODE:BOOL=TRUE" if build.with? "unicode-support"
-      args << "-DSKIP_DOC_GEN:BOOL=TRUE" if build.without? "robodoc"
+      args << "-DSKIP_DOC_GEN:BOOL=TRUE" if build.without? "docs"
       system "cmake", "..", *args
-      system "make", "all", "test" if build.with? "test" # CMake doesn't build tests when `make test`
+      system "make", "check" if build.with? "test"
       system "make", "install"
     end
   end
