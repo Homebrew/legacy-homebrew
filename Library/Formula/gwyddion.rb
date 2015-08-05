@@ -5,10 +5,9 @@ class Gwyddion < Formula
   sha256 "093e5e20e85cbfc14786a8dcc319943ad30419bffd5ab883e7d0400161fb3cd4"
 
   bottle do
-    revision 1
-    sha256 "f3a8511395ab3752d03d69e0ae8cc5607803ba33e7adfcb275257a03bcee991e" => :yosemite
-    sha256 "a5bdfac3b34d95547c35dfb559616e037048efb36e880bd9367b3f102a20b642" => :mavericks
-    sha256 "66a3aa0f4154e483b64427c6459cd6cdd514a66c4838cada26793a077586a124" => :mountain_lion
+    sha256 "557467222d7732e7ab0909336e60cf40e865db1802b424716c749c0acd1f3338" => :yosemite
+    sha256 "51840b592615b74443d82450486a26834b2b154ff9a34d6e0452c67a3d6b7658" => :mavericks
+    sha256 "70333e143e8e5e6845fcc891cecd2123c2aa9b84e74572daf52637fde5857914" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
