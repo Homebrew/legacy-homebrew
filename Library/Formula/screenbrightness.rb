@@ -1,8 +1,8 @@
 class Screenbrightness < Formula
   desc "Change OS X display brightness from the command-line"
-  homepage "https://github.com/jmstacey/screenbrightness"
-  url "https://github.com/jmstacey/screenbrightness/archive/1.1.tar.gz"
-  sha256 "05c6ec76f50a0d2c6dd9d3597311c97ff3c23b2da2501eed9950e89bf8f079fa"
+  homepage "https://github.com/nriley/brightness"
+  url "https://github.com/nriley/brightness/archive/1.2.tar.gz"
+  sha256 "6094c9f0d136f4afaa823d299f5ea6100061c1cec7730bf45c155fd98761f86b"
 
   bottle do
     cellar :any
@@ -17,6 +17,6 @@ class Screenbrightness < Formula
   end
 
   test do
-    system "#{bin}/screenbrightness", "-l"
+    system "#{bin}/brightness", "-l"
   end
 end
