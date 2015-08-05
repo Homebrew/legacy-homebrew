@@ -4,6 +4,13 @@ class BzrFastimport < Formula
   url "https://launchpad.net/bzr-fastimport/trunk/0.13.0/+download/bzr-fastimport-0.13.0.tar.gz"
   sha256 "5e296dc4ff8e9bf1b6447e81fef41e1217656b43368ee4056a1f024221e009eb"
 
+  bottle do
+    cellar :any
+    sha256 "d72b41c0aad53a702677d75810369da2ad14a8006bfe46750de3ed2d98ddccbd" => :yosemite
+    sha256 "74e3a541a5e6436475d886a0a438540c31249b9c5d4c48a9111239227a0f8b85" => :mavericks
+    sha256 "e214595d2db088abe607c92f163eec3cf10118c52e00fbc5cf28c4440b33919c" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "bazaar"
 
