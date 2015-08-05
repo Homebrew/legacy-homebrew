@@ -8,7 +8,7 @@ class Libiodbc < Formula
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
 
-  keg_only :provided_pre_mountain_lion
+  keg_only :provided_pre_mavericks
 
   def install
     system "sh",  "./bootstrap.sh"
