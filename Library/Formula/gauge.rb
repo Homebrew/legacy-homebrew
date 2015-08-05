@@ -3,8 +3,8 @@ require "language/go"
 class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "http://getgauge.io"
-  url "https://github.com/getgauge/gauge/archive/v0.1.6.tar.gz"
-  sha256 "5b8ff4aee34a40ab61f5838b63f31ac665aaf6728a747f60c0132a371257d419"
+  url "https://github.com/getgauge/gauge/archive/v0.1.7.tar.gz"
+  sha256 "41e2c27acb1ddbe716f671148eb1b33ca50035181f20c5e9635003b48d36d477"
 
   bottle do
     cellar :any
@@ -74,6 +74,7 @@ class Gauge < Formula
       system "go", "run", "build/make.go"
       system "go", "run", "build/make.go", "--install", "--prefix", prefix
     end
+    puts "To install Gauge plugin, run `gauge --install <plugin_name>`. Language plugins supported are `java`, `csharp` and `ruby`. Report plugins available are `html-report` and `xml-report`."
   end
 
   test do
