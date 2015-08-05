@@ -130,13 +130,11 @@ class LocalContextSupervisorActor(dao: JobDAO) extends InstrumentedActor {
       if (contexts contains name) {
         val future = (contexts(name) ? SparkContextStatus) (contextTimeout.seconds)
         Await.result(future, contextTimeout.seconds) match {
-          case SparkContextAlive => {
-            sender ! (contexts(name), resultActors(name))
-          }
-          case SparkContextDead => {
+          case SparkContextAlive => sender ! (contexts(name), resultActors(name))
+          case SparkContextDead =>
+            logger.info("SparkContext {} is dead", name)
             self ! StopContext(name)
             sender ! NoSuchContext
-          }
         }
       } else {
         sender ! NoSuchContext
