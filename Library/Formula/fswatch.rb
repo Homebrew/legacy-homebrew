@@ -5,9 +5,9 @@ class Fswatch < Formula
   sha256 "153e7d5358e25579964f353d387d814fe6bea57fa1bad7b883b940d402903e59"
 
   bottle do
-    sha256 "1263ca1127a202ffd678803608d2620af5c43a4a8b3db1d987147df2b8a0cf7a" => :yosemite
-    sha256 "ce054437060df774bd2a0d8587e5fd8230ecd738b3a06471c5c0cb4ec8713557" => :mavericks
-    sha256 "76e5f7ee8a312b6f9b21e5e4f547586d2788b74c7467bcf5e4596300af3a4346" => :mountain_lion
+    sha256 "a11024232973e598af6791beb0ab8a7679bb4a6c1db522f01328aa21ca68688f" => :yosemite
+    sha256 "b11715bcea622723cdad29b79024ab387a05b0334a97394cd44e0d85ea979cca" => :mavericks
+    sha256 "fd5cf0501efd4bf87a5069d9af73a6280bfcc004ec77fc003ed619a84448ffe2" => :mountain_lion
   end
 
   needs :cxx11
