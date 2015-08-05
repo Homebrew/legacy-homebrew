@@ -74,7 +74,6 @@ class Gauge < Formula
       system "go", "run", "build/make.go"
       system "go", "run", "build/make.go", "--install", "--prefix", prefix
     end
-    puts "To install Gauge plugin, run `gauge --install <plugin_name>`. Language plugins supported are `java`, `csharp` and `ruby`. Report plugins available are `html-report` and `xml-report`."
   end
 
   test do
