@@ -46,7 +46,7 @@ class MusicBox < Formula
 
 
   test do
-    assert_match /echo ok/, shell_output(bin/"musicbox echo ok")
+    system "musicbox"
   end
   
 end
