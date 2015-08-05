@@ -5,6 +5,12 @@ class Ftimes < Formula
   sha256 "70178e80c4ea7a8ce65404dd85a4bf5958a78f6a60c48f1fd06f78741c200f64"
   revision 1
 
+  bottle do
+    sha256 "0cc52b1c4396b5adca1a3adc4a2942f0beef27392f23cb6533db79c54a3657ca" => :yosemite
+    sha256 "214b8092f738542005f77d146cc6b85ee69f2f100469dc6e2b78b5f2f0b5c132" => :mavericks
+    sha256 "fbe09e2f091d3b828a2f3802674203f4f72b6e0136fe6f442bf8313234be5373" => :mountain_lion
+  end
+
   depends_on "pcre"
   depends_on "openssl"
 
