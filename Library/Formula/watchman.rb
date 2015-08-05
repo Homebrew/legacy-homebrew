@@ -4,7 +4,7 @@ class Watchman < Formula
   head "https://github.com/facebook/watchman.git"
   url "https://github.com/facebook/watchman/archive/v3.7.0.tar.gz"
   sha256 "dc0afbe2f64a80926325a61428e3d69d4412f9093a8119db26fa26f7b599bd07"
-  
+
   bottle do
     sha256 "69ae44ef507948e8f8c0ea81e591fe33bb417b4fa4249f56a64a0de978440272" => :yosemite
     sha256 "73de2ab287a7af1c35114a0e1225997e6c6309a22e2bccb91e5d7203f87fe63e" => :mavericks
