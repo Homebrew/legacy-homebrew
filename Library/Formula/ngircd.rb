@@ -13,6 +13,8 @@ class Ngircd < Formula
 
   option "with-iconv", "Enable character conversion using libiconv."
   option "with-pam", "Enable user authentication using PAM."
+  option "with-sniffer", "Enable IRC traffic sniffer (also enables additional debug output)."
+  option "with-debug", "Enable additional debug output."
 
   # Older Formula used the next option by default, so keep it unless
   # deactivated by the user:
@@ -23,7 +25,6 @@ class Ngircd < Formula
 
   def install
     args = %W[
-      --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
       --sysconfdir=#{HOMEBREW_PREFIX}/etc
@@ -34,6 +35,8 @@ class Ngircd < Formula
     args << "--with-iconv" if build.with? "iconv"
     args << "--with-ident" if build.with? "ident"
     args << "--with-pam" if build.with? "pam"
+    args << "--enable-debug" if build.with? "debug"
+    args << "--enable-sniffer" if build.with? "sniffer"
 
     system "./configure", *args
     system "make", "install"
