@@ -1,5 +1,3 @@
-require "formula"
-
 class Netperf < Formula
   desc "Benchmarks performance of many different types of networking"
   homepage "http://netperf.org"
@@ -16,7 +14,7 @@ class Netperf < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
