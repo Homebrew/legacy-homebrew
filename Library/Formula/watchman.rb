@@ -2,7 +2,7 @@ class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
   head "https://github.com/facebook/watchman.git"
-  version "3.7.0"
+  version "3.7.1"
   url "https://github.com/facebook/watchman/archive/mlion_1.tar.gz"
   sha256 "9819a81d3ecec7bc04ede7bc2f470fce9a659e6b72933aabb05e64c24d76af7d"
 
