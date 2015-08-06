@@ -1,4 +1,5 @@
 require "cmd/tap"
+require "formula_versions"
 
 module Homebrew
   def update
@@ -201,7 +202,6 @@ class Updater
         when "M"
           file = repository.join(src)
           begin
-            require "formula_versions"
             formula = Formulary.factory(file)
             new_version = formula.pkg_version
             old_version = FormulaVersions.new(formula).formula_at_revision(@initial_revision, &:pkg_version)
