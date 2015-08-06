@@ -1,9 +1,9 @@
 class ArgyllCms < Formula
   desc "ICC compatible color management system"
   homepage "http://www.argyllcms.com/"
-  url "http://www.argyllcms.com/Argyll_V1.6.3_src.zip"
-  sha256 "188beaa03dd2459403415023f8f8f9aab362bf3062a9822b3622dde6902e4b84"
-  version "1.6.3"
+  url "http://www.argyllcms.com/Argyll_V1.7.0_src.zip"
+  version "1.7.0"
+  sha256 "dac51cf5d8f6d04bb02f2f5b119fa0e8b773a010e6377116768b082ef018f663"
 
   bottle do
     cellar :any
@@ -21,5 +21,11 @@ class ArgyllCms < Formula
     system "./makeinstall.sh"
     rm "bin/License.txt"
     prefix.install "bin", "ref", "doc"
+  end
+
+  test do
+    system bin/"targen", "-d", "0", "test.ti1"
+    system bin/"printtarg", testpath/"test.ti1"
+    %w[test.ti1.ps test.ti1.ti1 test.ti1.ti2].each { |f| File.exist? f }
   end
 end
