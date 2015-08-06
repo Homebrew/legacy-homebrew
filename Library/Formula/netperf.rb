@@ -13,7 +13,8 @@ class Netperf < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-demo"
     system "make", "install"
   end
 
