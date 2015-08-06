@@ -44,4 +44,9 @@ class MusicBox < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
   
+  test do
+    system "where", "musicbox"
+    assert_equal "/usr/local/bin/musicbox", shell_output("musicbox install success")
+  end
+  
 end
