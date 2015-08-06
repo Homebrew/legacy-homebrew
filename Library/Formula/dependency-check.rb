@@ -1,9 +1,9 @@
 class DependencyCheck < Formula
   desc "OWASP Dependency Check"
   homepage "https://www.owasp.org/index.php/OWASP_Dependency_Check"
-  url "https://dl.bintray.com/jeremy-long/owasp/dependency-check-1.2.11-release.zip"
-  version "1.2.11"
-  sha256 "1a622a1c79a7bff88950fa42294d634a8155958960d656d9d796785f056d88b2"
+  url "https://dl.bintray.com/jeremy-long/owasp/dependency-check-1.3.0-release.zip"
+  version "1.3.0"
+  sha256 "075f48aca75000a51c1741a612f3732517c1bb4c779103656f6a403c82a93b71"
 
   depends_on :java
 
@@ -26,13 +26,14 @@ class DependencyCheck < Formula
     corejar = libexec/"repo/org/owasp/dependency-check-core/#{version}/"\
       "dependency-check-core-#{version}.jar"
     system "unzip", "-o", corejar, "dependencycheck.properties", "-d", \
-      etc/"dependencycheck"
-    libexec.install_symlink etc/"dependencycheck" => "etc"
+      libexec/"etc"
+    etc.install_symlink libexec/"etc/dependencycheck.properties" => \
+      "dependencycheck/dependencycheck.properties"
   end
 
   test do
     output = `#{libexec}/bin/dependency-check --version`.strip
-    assert_equal("Dependency-Check Core version 1.2.11", output)
+    assert_match("Dependency-Check Core version #{version}", output)
 
     props = File.open("temp-props.properties", "w")
     props.puts "cve.startyear=2015"
