@@ -46,7 +46,7 @@ class MusicBox < Formula
 
 
   test do
-    system "#{bin}/musicbox"
+    system "#{bin}/musicbox", shell_output(bin/"musicbox ok")
   end
   
 end
