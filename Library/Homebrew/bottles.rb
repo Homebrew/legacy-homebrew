@@ -63,12 +63,12 @@ end
 
 class Bintray
   def self.package(formula_name)
-    formula_name.to_s.gsub "+", "x"
+    formula_name.to_s.tr("+", "x")
   end
 
   def self.repository(tap = nil)
     return "bottles" if tap.nil? || tap == "Homebrew/homebrew"
-    "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
+    "bottles-#{tap.sub(%r{^homebrew/(homebrew-)?}i, "")}"
   end
 end
 

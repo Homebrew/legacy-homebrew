@@ -136,7 +136,7 @@ class PrettyListing
     root.children.sort.each do |pn|
       if pn.directory?
         dirs << pn
-      elsif block_given? and yield pn
+      elsif block_given? && yield(pn)
         puts pn
         other = "other "
       else

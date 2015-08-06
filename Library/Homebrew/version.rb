@@ -299,7 +299,7 @@ class Version
 
     # e.g. boost_1_39_0
     m = /((?:\d+_)+\d+)$/.match(stem)
-    return m.captures.first.gsub("_", ".") unless m.nil?
+    return m.captures.first.tr("_", ".") unless m.nil?
 
     # e.g. foobar-4.5.1-1
     # e.g. unrtf_0.20.4-1

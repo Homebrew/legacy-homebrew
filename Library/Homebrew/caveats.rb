@@ -149,8 +149,11 @@ class Caveats
   def plist_caveats
     s = []
     if f.plist || (keg && keg.plist_installed?)
-      destination = f.plist_startup ? "/Library/LaunchDaemons" \
-                                    : "~/Library/LaunchAgents"
+      destination = if f.plist_startup
+        "/Library/LaunchDaemons"
+      else
+        "~/Library/LaunchAgents"
+      end
 
       plist_filename = if f.plist
         f.plist_path.basename

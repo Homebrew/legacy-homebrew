@@ -16,7 +16,7 @@ module Homebrew
         fields = line.split('"')
         lang = fields[1]
         path = fields[3]
-        lang.gsub!("-", "_")
+        lang.tr!("-", "_")
         languages[lang] = path
       end
     end

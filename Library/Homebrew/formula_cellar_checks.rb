@@ -152,7 +152,7 @@ module FormulaCellarChecks
       object files were linked against system openssl
       These object files were linked against the deprecated system OpenSSL.
       Adding `depends_on "openssl"` to the formula may help.
-        #{system_openssl  * "\n        "}
+        #{system_openssl * "\n        "}
     EOS
   end
 

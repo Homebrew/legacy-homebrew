@@ -85,7 +85,7 @@ class InreplaceTest < Homebrew::TestCase
     s.sub!("f", "b")
     assert_equal "boo", s
 
-    s.gsub!("o", "e")
+    s.tr!("o", "e")
     assert_equal "bee", s
   end
 
@@ -99,7 +99,7 @@ class InreplaceTest < Homebrew::TestCase
     end
 
     assert_raises(Utils::InreplaceError) do
-      inreplace("test") { |s| s.gsub! "d", "f" }
+      inreplace("test") { |s| s.tr!("d", "f") }
     end
 
     assert_raises(Utils::InreplaceError) do

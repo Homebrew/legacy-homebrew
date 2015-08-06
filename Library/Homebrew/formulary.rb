@@ -43,7 +43,7 @@ class Formulary
   def self.class_s(name)
     class_name = name.capitalize
     class_name.gsub!(/[-_.\s]([a-zA-Z0-9])/) { $1.upcase }
-    class_name.gsub!("+", "x")
+    class_name.tr!("+", "x")
     class_name
   end
 
