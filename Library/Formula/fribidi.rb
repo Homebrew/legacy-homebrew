@@ -6,10 +6,9 @@ class Fribidi < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "a8953ae123d463733cd73fd28972955e886a5821" => :yosemite
-    sha1 "cc92ce67750c60add21cc8cd4eebdc5b1057d01b" => :mavericks
-    sha1 "f1d37cf53fd17aa8e6c09aa7b8045f67de82f19d" => :mountain_lion
+    sha256 "cb0bfe8325e4f8080bb6035f33a71af75482b9d6ca9b7b1f0acb8581a888df9e" => :yosemite
+    sha256 "2aba6a847848ca88141dbe840ff3465cb882d6c7f7b2951d39ac88abc0d3e578" => :mavericks
+    sha256 "1bc5b4d99f7d9efd38f1ca3e36f24c69c0a39751d4633d842d110065b4eca036" => :mountain_lion
   end
 
   option :universal
