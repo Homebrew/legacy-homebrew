@@ -1,8 +1,9 @@
 class Abcde < Formula
   desc "Better CD Encoder"
   homepage "http://abcde.einval.com"
-  url "http://abcde.einval.com/download/abcde-2.6.tar.gz"
-  sha256 "683ea7e215142784a28afcda4a18d9a2b8f7ef7bcd9c2881ee110a3b86784c78"
+  url "http://abcde.einval.com/download/abcde-2.7.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/a/abcde/abcde_2.7.orig.tar.gz"
+  sha256 "0148698a09fedcbae37ee9da295afe411a1190cf8ae224b7814d31b5bf737746"
   head "http://git.einval.com/git/abcde.git"
 
   bottle do
@@ -21,9 +22,7 @@ class Abcde < Formula
   depends_on "vorbis-tools" => :optional
 
   def install
-    bin.install "abcde", "abcde-musicbrainz-tool", "cddb-tool"
-    etc.install "abcde.conf"
-    man1.install "abcde.1", "cddb-tool.1"
+    system "make", "install", "prefix=#{prefix}", "etcdir=#{etc}"
   end
 
   test do
