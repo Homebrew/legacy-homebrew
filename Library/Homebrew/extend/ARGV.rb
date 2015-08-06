@@ -27,7 +27,8 @@ module HomebrewArgvExtension
         end
         f
       else
-        Formulary.from_rack(HOMEBREW_CELLAR/name, spec(default=nil))
+        canonical_name = Formulary.canonical_name(name)
+        Formulary.from_rack(HOMEBREW_CELLAR/canonical_name, spec(default=nil))
       end
     end
   end
