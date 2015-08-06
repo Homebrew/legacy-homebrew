@@ -211,6 +211,8 @@ class Formulary
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
+    when HOMEBREW_CORE_FORMULA_REGEX
+      return FormulaLoader.new($1, core_path($1))
     when HOMEBREW_TAP_FORMULA_REGEX
       return TapLoader.new(ref)
     end
