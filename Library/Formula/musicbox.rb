@@ -1,9 +1,9 @@
 class MusicBox < Formula
   desc "A concise command line interface musicbox"
   homepage "https://github.com/darknessomi/musicbox"
-  url "https://pypi.python.org/packages/source/N/NetEase-MusicBox/NetEase-MusicBox-0.1.6.5.tar.gz"
-  version "0.1.6.5"
-  sha256 "8383d773bd1d4f5e1f4b41897fe34e3dac25c47d3f1b59f1cef62c35ce14a07e"
+  url "https://pypi.python.org/packages/source/N/NetEase-MusicBox/NetEase-MusicBox-0.1.6.6.tar.gz"
+  version "0.1.6.6"
+  sha256 "982958b2e578939201956d8868597a730b849aab2632b3be1c2ec7ec306feb43"
 
   depends_on "mpg123"
   depends_on :python if MacOS.version <= :snow_leopard
@@ -45,8 +45,7 @@ class MusicBox < Formula
   end
   
   test do
-    system "where", "musicbox"
-    assert_equal "/usr/local/bin/musicbox", shell_output("musicbox install success")
+    system "musicbox", "--version"
   end
   
 end
