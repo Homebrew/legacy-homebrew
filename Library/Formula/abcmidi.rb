@@ -1,9 +1,9 @@
 class Abcmidi < Formula
   desc "Converts abc music notation files to MIDI files"
   homepage "http://www.ifdo.ca/~seymour/runabc/top.html"
-  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2015-05-13.zip"
-  version "2015-05-13"
-  sha256 "0129ec9b6986a422f5725ddeb65398668542b0fd331de44cd1dcf6e5f916f2ef"
+  url "http://ifdo.ca/~seymour/runabc/abcMIDI-2015-08-06.zip"
+  version "2015-08-06"
+  sha256 "6ada64028344b5d778714bca02e41ed98a97c656aa45ea0e4a21de926502304e"
 
   bottle do
     cellar :any
@@ -18,11 +18,12 @@ class Abcmidi < Formula
     # be overridden and will be chosen over the "Makefile" file.
     rm "makefile"
 
-    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     # The Makefile is broken when using --prefix (value is added to path twice).
     # abcmidi author is notified (2012-06-20). In the meantime, here's a fix.
     inreplace "Makefile", "$(DESTDIR)${prefix}", "$(DESTDIR)"
-
     system "make", "install"
   end
 
