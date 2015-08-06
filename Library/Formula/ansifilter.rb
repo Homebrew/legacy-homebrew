@@ -1,8 +1,8 @@
 class Ansifilter < Formula
   desc "Strip or convert ANSI codes into HTML, (La)Tex, RTF, or BBCode"
   homepage "http://www.andre-simon.de/doku/ansifilter/ansifilter.html"
-  url "http://www.andre-simon.de/zip/ansifilter-1.11.tar.gz"
-  sha256 "bdbd6cda51be643e070c98139e79061ab3c2935c4b26c4a098bc64fa3328d1a3"
+  url "http://www.andre-simon.de/zip/ansifilter-1.12.tar.bz2"
+  sha256 "05f64cbc8440b44e8cfe26ae679074531997d14ecbbf595a9e03c0b489bf1cd1"
 
   bottle do
     cellar :any
@@ -12,7 +12,6 @@ class Ansifilter < Formula
   end
 
   def install
-    # both steps required and with PREFIX, last checked v1.11
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end
