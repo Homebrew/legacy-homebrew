@@ -124,7 +124,7 @@ class Dependency
       all.map(&:name).uniq.map do |name|
         deps = grouped.fetch(name)
         dep  = deps.first
-        tags = deps.map(&:tags).flatten.uniq
+        tags = deps.flat_map(&:tags).uniq
         dep.class.new(name, tags, dep.env_proc)
       end
     end
