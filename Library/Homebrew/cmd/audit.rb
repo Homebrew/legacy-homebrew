@@ -242,7 +242,7 @@ class FormulaAuditor
     if @online
       same_name_tap_formulae += @@remote_official_taps.map do |tap|
         Thread.new { Homebrew.search_tap "homebrew", tap, name }
-      end.map(&:value).flatten
+      end.flat_map(&:value)
     end
 
     same_name_tap_formulae.delete(full_name)
