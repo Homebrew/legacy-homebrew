@@ -29,7 +29,7 @@ module SharedEnvExtension
 
   def remove_cc_etc
     keys = %w[CC CXX OBJC OBJCXX LD CPP CFLAGS CXXFLAGS OBJCFLAGS OBJCXXFLAGS LDFLAGS CPPFLAGS]
-    removed = Hash[*keys.map { |key| [key, self[key]] }.flatten]
+    removed = Hash[*keys.flat_map { |key| [key, self[key]] }]
     keys.each do |key|
       delete(key)
     end

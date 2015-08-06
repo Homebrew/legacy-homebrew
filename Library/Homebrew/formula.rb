@@ -757,12 +757,12 @@ class Formula
 
   # an array of all tap {Formula} names
   def self.tap_names
-    @tap_names ||= Tap.map(&:formula_names).flatten.sort
+    @tap_names ||= Tap.flat_map(&:formula_names).sort
   end
 
   # an array of all tap {Formula} files
   def self.tap_files
-    @tap_files ||= Tap.map(&:formula_files).flatten
+    @tap_files ||= Tap.flat_map(&:formula_files)
   end
 
   # an array of all {Formula} names

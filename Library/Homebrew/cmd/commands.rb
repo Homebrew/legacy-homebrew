@@ -26,7 +26,7 @@ module Homebrew
   end
 
   def external_commands
-    paths.map { |p| Dir["#{p}/brew-*"] }.flatten.
+    paths.flat_map { |p| Dir["#{p}/brew-*"] }.
       map { |f| File.basename(f, ".rb")[5..-1] }.
       reject { |f| f =~ /\./ }
   end
