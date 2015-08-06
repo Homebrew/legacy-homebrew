@@ -2,8 +2,9 @@ class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
   head "https://github.com/facebook/watchman.git"
-  url "https://github.com/facebook/watchman/archive/v3.7.0.tar.gz"
-  sha256 "dc0afbe2f64a80926325a61428e3d69d4412f9093a8119db26fa26f7b599bd07"
+  version "3.7.0"
+  url "https://github.com/facebook/watchman/archive/mlion_1.tar.gz"
+  sha256 "9819a81d3ecec7bc04ede7bc2f470fce9a659e6b72933aabb05e64c24d76af7d"
 
   bottle do
     sha256 "69ae44ef507948e8f8c0ea81e591fe33bb417b4fa4249f56a64a0de978440272" => :yosemite
