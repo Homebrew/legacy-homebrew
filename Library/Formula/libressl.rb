@@ -1,9 +1,8 @@
 class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.1.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.2.1.tar.gz"
-  sha256 "4f331750abfc3b605b02eeca1e8994fa0d2629985bc3f62924378197fbfe572d"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.2.tar.gz"
+  sha256 "e094b09f33d468545edbb2b16dc178f958ec2f66de1a2fc7cc2a20bd2489a114"
 
   bottle do
     cellar :any
