@@ -56,6 +56,10 @@ class Jenkins < Formula
 
   def caveats; <<-EOS.undent
     Note: When using launchctl the port will be 8080.
-    EOS
+  EOS
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/jenkins --version")
   end
 end
