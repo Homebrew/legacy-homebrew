@@ -11,9 +11,9 @@ class Dub < Formula
   end
 
   devel do
-    url "https://github.com/D-Programming-Language/dub/archive/v0.9.24-rc.2.tar.gz"
-    version "0.9.24-rc2"
-    sha256 "d6ed2ed16cc954aff3595dfdb0a9bb4a73ff64463b455d5baaa4fe2b30dd22c7"
+    url "https://github.com/D-Programming-Language/dub/archive/v0.9.24-rc.3.tar.gz"
+    version "0.9.24-rc3"
+    sha256 "c5a0ea2d99a2321861dc2f0e5f5807b7af6bbb758fc2acea1c64c6c8e74edb5b"
   end
 
   head "https://github.com/D-Programming-Language/dub.git", :shallow => false
