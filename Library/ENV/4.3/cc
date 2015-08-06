@@ -21,7 +21,7 @@ class Cmd
   end
 
   def mode
-    if @arg0 == "cpp" or @arg0 == "ld"
+    if @arg0 == "cpp" || @arg0 == "ld"
       @arg0.to_sym
     elsif @args.include? "-c"
       if @arg0 =~ /(?:c|g|clang)\+\+/
@@ -61,7 +61,7 @@ class Cmd
   end
 
   def args
-    if @args.length == 1 and @args[0] == "-v"
+    if @args.length == 1 && @args[0] == "-v"
       # Don't add linker arguments if -v passed as sole option. This stops gcc
       # -v with no other arguments from outputting a linker error. Some
       # software uses gcc -v (wrongly) to sniff the GCC version.

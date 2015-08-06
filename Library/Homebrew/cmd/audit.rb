@@ -360,7 +360,7 @@ class FormulaAuditor
       EOS
     end
 
-    if desc =~ %r[([Cc]ommand ?line)]
+    if desc =~ /([Cc]ommand ?line)/
       problem "Description should use \"command-line\" instead of \"#{$1}\""
     end
   end

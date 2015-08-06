@@ -793,7 +793,7 @@ module Homebrew
       bottle_args << "--tap=#{tap}" if tap
       safe_system "brew", "bottle", *bottle_args
 
-      remote_repo = tap ? tap.gsub("/", "-") : "homebrew"
+      remote_repo = tap ? tap.tr("/", "-") : "homebrew"
 
       remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
       tag = pr ? "pr-#{pr}" : "testing-#{number}"

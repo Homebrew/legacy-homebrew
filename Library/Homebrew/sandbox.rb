@@ -79,7 +79,6 @@ class Sandbox
   end
 
   def exec(*args)
-
     seatbelt = Tempfile.new(["homebrew", ".sb"], HOMEBREW_TEMP)
     seatbelt.write(@profile.dump)
     seatbelt.close
@@ -105,7 +104,6 @@ class Sandbox
       ]
       quiet_system "syslog #{syslog_args * " "} | grep deny > #{@log}"
     end
-
   end
 
   private

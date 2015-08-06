@@ -57,7 +57,7 @@ class Resource
   # to be used as resource names without confusing software that
   # interacts with download_name, e.g. github.com/foo/bar
   def escaped_name
-    name.gsub("/", "-")
+    name.tr("/", "-")
   end
 
   def download_name
