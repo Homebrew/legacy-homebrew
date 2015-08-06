@@ -12,7 +12,7 @@ class Planck < Formula
   depends_on "leiningen" => :build
 
   depends_on :xcode => :build
-  depends_on :macos => :yosemite
+  depends_on :macos => :mavericks
 
   def install
     system "./build.sh"
