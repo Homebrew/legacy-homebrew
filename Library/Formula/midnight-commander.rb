@@ -2,7 +2,7 @@ class MidnightCommander < Formula
   desc "Terminal-based visual file manager"
   homepage "https://www.midnight-commander.org/"
   url "http://ftp.midnight-commander.org/mc-4.8.14.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/midnightcommander/mc-4.8.14.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mc/mc_4.8.14.orig.tar.xz"
   sha256 "6b1f74efbdf394bfab084f4d2ea2e72173de5f12cd42be2533ca2c3b72edb8e6"
 
   head "https://github.com/MidnightCommander/mc.git"
@@ -15,7 +15,7 @@ class MidnightCommander < Formula
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "openssl" if MacOS.version <= :leopard
+  depends_on "openssl"
   depends_on "s-lang"
   depends_on "libssh2"
 
