@@ -4,6 +4,14 @@ class Graphviz < Formula
   url "http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz"
   sha256 "81aa238d9d4a010afa73a9d2a704fc3221c731e1e06577c2ab3496bdef67859e"
 
+  head do
+    url "https://github.com/ellson/graphviz.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
   bottle do
     revision 1
     sha1 "a3461628baba501e16c63ceaa0414027f7e26c7f" => :yosemite
@@ -67,7 +75,11 @@ class Graphviz < Formula
                              'PYTHON_LIBS="-L$PYTHON_PREFIX/lib -lpython$PYTHON_VERSION_SHORT"'
     end
 
-    system "./configure", *args
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
     system "make", "install"
 
     if build.with? "app"
