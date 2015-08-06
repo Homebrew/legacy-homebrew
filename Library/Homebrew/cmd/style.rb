@@ -2,6 +2,8 @@ module Homebrew
   def style
     target = if ARGV.named.empty?
       [HOMEBREW_LIBRARY]
+    elsif ARGV.named.any? { |file| File.exist? file }
+      ARGV.named
     else
       ARGV.formulae.map(&:path)
     end
