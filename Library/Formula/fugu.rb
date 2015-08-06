@@ -6,6 +6,13 @@ class Fugu < Formula
   url "https://github.com/mattes/fugu/archive/v1.1.1.tar.gz"
   sha256 "94ec61037c3afa1267ea990ffd03ba1d0d1628926b3fdde0133fece36fa81929"
 
+  bottle do
+    cellar :any
+    sha256 "ea7fc32f2683bd6902bdddb3bcd9a51bf40fce495e3aeb5d52e493d57a928c9b" => :yosemite
+    sha256 "7f0774ebb3abec005f5c0e44cb3a2e574d3382ee33bf43ae6b4981e1ab80907a" => :mavericks
+    sha256 "547f6aa26659e6f13a2dd0b83b1d95e375f905d52a5447bf797a4395386e37c0" => :mountain_lion
+  end
+
   depends_on "go" => :build
   depends_on "docker" => :recommended
 
