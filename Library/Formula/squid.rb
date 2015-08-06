@@ -1,8 +1,8 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.6.tar.xz"
-  sha256 "cd080e8d5eaabebf6808792751322bd05f2a9c8fe4377f54c7155682ef6c38d5"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.7.tar.xz"
+  sha256 "ec6f861bddee007b1dd320667a26ddc9ff76847bbe4cbb59c0134588e65c8699"
 
   bottle do
     sha256 "32851629ae767bddf825dafa49126cfdb9fcf2a3c2dc25032e8b649891afa74c" => :yosemite
@@ -57,5 +57,19 @@ class Squid < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    pid = fork do
+      exec "#{sbin}/squid"
+    end
+    sleep 2
+
+    begin
+      system "#{sbin}/squid", "-k", "check"
+    ensure
+      exec "#{sbin}/squid -k interrupt"
+      Process.wait(pid)
+    end
   end
 end
