@@ -1,17 +1,9 @@
 class Babeld < Formula
   desc "Loop-avoiding distance-vector routing protocol"
   homepage "http://www.pps.univ-paris-diderot.fr/~jch/software/babel/"
+  url "http://www.pps.univ-paris-diderot.fr/~jch/software/files/babeld-1.6.2.tar.gz"
+  sha256 "09de0d99684e95466f07be1eb22fa639c8820d8aaaa7a8db2a18a354cb3d0fb7"
   head "https://github.com/jech/babeld.git"
-
-  stable do
-    url "http://www.pps.univ-paris-diderot.fr/~jch/software/files/babeld-1.5.1.tar.gz"
-    sha256 "73aac784d57a02932cdf1774099927b85bc746fbd4807098c1fed62a85b509b2"
-
-    patch do
-      url "https://github.com/jech/babeld/commit/049003.diff"
-      sha256 "eeb72a61a7c35631c78d4afe54bc48d6aff2b16f92a1eebd95bbc382d909306c"
-    end
-  end
 
   bottle do
     cellar :any
@@ -25,9 +17,12 @@ class Babeld < Formula
     system "make", "install", "PREFIX=#{prefix}"
   end
 
-  def caveats; <<-EOS.undent
-    Due to changing network interfaces, this tool
-    requires the usage of `sudo` at runtime.
+  test do
+    shell_output("#{bin}/babeld -I #{testpath}/test.pid -L #{testpath}/test.log", 1)
+    expected = <<-EOS.undent
+      Couldn't tweak forwarding knob.: Operation not permitted
+      kernel_setup failed.
     EOS
+    assert_equal expected, (testpath/"test.log").read
   end
 end
