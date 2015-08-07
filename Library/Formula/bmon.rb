@@ -1,8 +1,8 @@
 class Bmon < Formula
   desc "Interface bandwidth monitor"
   homepage "https://github.com/tgraf/bmon"
-  url "https://github.com/tgraf/bmon/releases/download/v3.6/bmon-3.6.tar.gz"
-  sha256 "62c8c20d00572a7670891d4c112924786cb69ec4ca92d5052951566f000d1514"
+  url "https://github.com/tgraf/bmon/releases/download/v3.8/bmon-3.8.tar.gz"
+  sha256 "da3e9f5f82f6e65bf08d912cc1e6ba450e488c543151f4b37791da03373054ff"
 
   bottle do
     sha1 "a6288882c0c468f2d3d3c484c2f58c3ec2ec1856" => :yosemite
@@ -24,7 +24,6 @@ class Bmon < Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make" # two steps to prevent blowing up
     system "make", "install"
   end
 
