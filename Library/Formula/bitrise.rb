@@ -6,6 +6,13 @@ class Bitrise < Formula
   url "https://github.com/bitrise-io/bitrise/archive/0.9.7.tar.gz"
   sha256 "cecd0cd112941c6b6f9d6cd334ea6a31aef1123af89e17c3950fbc8e8dbe5de2"
 
+  bottle do
+    cellar :any
+    sha256 "8d8cdcda113f12ab497db0700a04849143e733e2cf9c35c5e028b434f694d67c" => :yosemite
+    sha256 "9eb2435bdc04f4acaf975a5adf7bbbcced64c6ac60a678696919d67e59f04ef4" => :mavericks
+    sha256 "54e66ee1699983c1bb4a9662a8ff66a2e50aac85cd0eb0c613513b6cffa004b7" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   resource "envman" do
