@@ -25,9 +25,13 @@ object SparkJobUtils {
    */
   def configToSparkConf(config: Config, contextConfig: Config,
                         contextName: String): SparkConf = {
+
+    val sparkMaster = SparkMasterProvider.fromConfig(config).getSparkMaster(config)
+
     val conf = new SparkConf()
-    conf.setMaster(config.getString("spark.master"))
-        .setAppName(contextName)
+    conf
+      .setMaster(sparkMaster)
+      .setAppName(contextName)
 
     for (cores <- Try(contextConfig.getInt("num-cpu-cores"))) {
       conf.set("spark.cores.max", cores.toString)
@@ -43,7 +47,7 @@ object SparkJobUtils {
     conf.set("spark.ui.port", "0")
 
     // Set spark broadcast factory in yarn-client mode
-    if (config.getString("spark.master") == "yarn-client") {
+    if (sparkMaster == "yarn-client") {
       conf.set("spark.broadcast.factory", config.getString("spark.jobserver.yarn-broadcast-factory"))
     }
 
