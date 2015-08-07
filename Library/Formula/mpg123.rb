@@ -7,9 +7,9 @@ class Mpg123 < Formula
 
   bottle do
     cellar :any
-    sha256 "6beab6e2bf6bf73dd95c9cad5d2bf006009ae0901073c0f02f100a517a613b23" => :yosemite
-    sha256 "7a182cdd2294116093e8d4d7cb664ae3af8bc67e95861665a451acd2f4adc998" => :mavericks
-    sha256 "0ecb0fb9e8a3144a166685adc9100c53d8082351224238189634cf8615a61d4d" => :mountain_lion
+    sha256 "4c609f1a3f05bb39d1897531f7aae4b164e40bb86d2f0347002f8149515344ae" => :yosemite
+    sha256 "f82ce3c8ad1175ca652f9db8fdd69364675c2391dc82e9b2fbfd09a27138cc72" => :mavericks
+    sha256 "f01408cc9e8a9cfac9dc2251e8010fb40f56700785373ab26690cb4432ee375b" => :mountain_lion
   end
 
   def install
