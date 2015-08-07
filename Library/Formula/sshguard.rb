@@ -1,9 +1,9 @@
 class Sshguard < Formula
   desc "Protect from brute force attacks against SSH"
   homepage "http://www.sshguard.net/"
-  url "https://downloads.sourceforge.net/project/sshguard/sshguard/1.6.0/sshguard-1.6.0.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/s/sshguard/sshguard_1.6.0.orig.tar.xz"
-  sha256 "dce32b1fc3fb0f8d15b6c56b9822c300434faaa87240e5373c095dc22bfa07e4"
+  url "https://downloads.sourceforge.net/project/sshguard/sshguard/1.6.1/sshguard-1.6.1.tar.xz"
+  mirror "https://dl.bintray.com/homebrew/mirror/sshguard-1.6.1.tar.xz"
+  sha256 "f431899c20fa2f41fa293605af96ff97d44823b84db41c914ee60da44f1ff6c8"
 
   bottle do
     cellar :any
@@ -15,17 +15,10 @@ class Sshguard < Formula
   depends_on "automake" => :build
   depends_on "autoconf" => :build
 
-  # Fix blacklist flag (-b) so that it doesn't abort on first usage.
-  # Upstream bug report:
-  # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
-  patch do
-    url "http://sourceforge.net/p/sshguard/bugs/_discuss/thread/3d94b7ef/c062/attachment/sshguard.c.diff"
-    sha256 "1bdf1db9e0bd730cfc6926dde683fcf5cd7b420ae003f9ec44dce083fe8eb54b"
-  end
-
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-firewall=#{firewall}"
     system "make", "install"
