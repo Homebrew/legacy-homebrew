@@ -1,8 +1,8 @@
 class Winetricks < Formula
   desc "Download and install various runtime libraries"
   homepage "https://github.com/Winetricks/winetricks"
-  url "https://github.com/Winetricks/winetricks/archive/20150416.tar.gz"
-  sha256 "6b1bda0d9ec34c7a8596d59a49fa29fbe00848d9f0fecbf9dff8b314d51a1945"
+  url "https://github.com/Winetricks/winetricks/archive/20150706.tar.gz"
+  sha256 "989290d0a6b2a51da69b348e986ec67de48c625ca461b2da928884f17d834c4e"
   head "https://github.com/Winetricks/winetricks.git"
 
   depends_on "cabextract"
