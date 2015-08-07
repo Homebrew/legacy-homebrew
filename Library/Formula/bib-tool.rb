@@ -1,20 +1,8 @@
-# This is needed because of a problem with the tarball for 2.60
-# Hopefully, it will not be needed for future releases
-# See https://github.com/Homebrew/homebrew/issues/40559
-class BibToolDownloadStrategy < CurlDownloadStrategy
-  def stage
-    with_system_path { safe_system "tar", "xqf", cached_location, "BibTool/doc/bibtool.tex" }
-    with_system_path { safe_system "tar", "xf", cached_location, "--exclude", "BibTool/doc/bibtool.tex" }
-    chdir
-  end
-end
-
 class BibTool < Formula
   desc "Manipulates BibTeX databases"
   homepage "http://www.gerd-neugebauer.de/software/TeX/BibTool/index.en.html"
-  url "http://www.gerd-neugebauer.de/software/TeX/BibTool/BibTool-2.60.tar.gz",
-    :using => BibToolDownloadStrategy
-  sha256 "db84b264df7c069b5b1c8e0778dc70f4e335cd1c39d711dcd65bae02df809ad1"
+  url "https://github.com/ge-ne/bibtool/releases/download/BibTool_2_61/BibTool-2.61.tar.gz"
+  sha256 "8eaf351f1685078345a4446346559698fb58d8d1dfdf057418e5221132f9a8a4"
 
   bottle do
     sha256 "62861fe6407c2953ada2a8066ac23790b52eeab4c748a893a64358cffb7149e4" => :yosemite
