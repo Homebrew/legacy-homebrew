@@ -1,4 +1,4 @@
-class MusicBox < Formula
+class Musicbox < Formula
   desc "A concise command line interface musicbox"
   homepage "https://github.com/darknessomi/musicbox"
   url "https://pypi.python.org/packages/source/N/NetEase-MusicBox/NetEase-MusicBox-0.1.6.6.tar.gz"
