@@ -7,9 +7,9 @@ class Babeld < Formula
 
   bottle do
     cellar :any
-    sha1 "a965f70b84f8fea7ce7a7f92252e61d01a6b9e7b" => :yosemite
-    sha1 "22262a12d06cf83d35f351a49d6af7e40e7f554d" => :mavericks
-    sha1 "69e5c32092ccfdaeaff3615fbbaf15e41e327e41" => :mountain_lion
+    sha256 "980282deb71194aa092f3e0b706bc4305a8e9224943e0adeeadb4d06278b6af8" => :yosemite
+    sha256 "b69f241357333d7cfb90d419cc5305c08d92a87110971e8ad164716a92ad3129" => :mavericks
+    sha256 "e4baaabd8690aa60b4874eb606ce62f5de0d7c378e8c0eccc409724b898fb212" => :mountain_lion
   end
 
   def install
