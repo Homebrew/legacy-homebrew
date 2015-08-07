@@ -6,7 +6,7 @@ Example usage:
   brew search [foo]
   brew list [FORMULA...]
   brew update
-  brew upgrade [--all | FORMULA...]
+  brew upgrade [FORMULA...]
   brew pin/unpin [FORMULA...]
 
 Troubleshooting:
