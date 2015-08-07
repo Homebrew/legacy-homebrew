@@ -4,6 +4,14 @@ class GobjectIntrospection < Formula
   url "https://download.gnome.org/sources/gobject-introspection/1.46/gobject-introspection-1.46.0.tar.xz"
   sha256 "6658bd3c2b8813eb3e2511ee153238d09ace9d309e4574af27443d87423e4233"
 
+  head do
+    url "https://github.com/GNOME/gobject-introspection.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   bottle do
     sha256 "8cc016da6173e849904b707d9183f77078770bcda5db26838c28808b18b93dc0" => :el_capitan
     sha256 "55644f76743a7d0ff9536876272ad3de9c40fe13e411fb34ccec0f4d4536c96f" => :yosemite
