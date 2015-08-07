@@ -20,11 +20,14 @@ object JobManagerActor {
   case class StartJob(appName: String, classPath: String, config: Config,
                       subscribedEvents: Set[Class[_]])
   case class KillJob(jobId: String)
+  case object SparkContextStatus
 
   // Results/Data
   case class Initialized(resultActor: ActorRef)
   case class InitError(t: Throwable)
   case class JobLoadingError(err: Throwable)
+  case object SparkContextAlive
+  case object SparkContextDead
 
   // Akka 2.2.x style actor props for actor creation
   def props(dao: JobDAO, name: String, config: Config, isAdHoc: Boolean,
@@ -122,6 +125,22 @@ class JobManagerActor(dao: JobDAO,
     case KillJob(jobId: String) => {
       jobContext.sparkContext.cancelJobGroup(jobId)
       statusActor ! JobKilled(jobId, DateTime.now())
+    }
+
+    case SparkContextStatus => {
+      if (jobContext.sparkContext == null) {
+        sender ! SparkContextDead
+      } else {
+        try {
+          jobContext.sparkContext.getSchedulingMode
+          sender ! SparkContextAlive
+        } catch {
+          case e: Exception => {
+            logger.error("SparkContext is not exist!")
+            sender ! SparkContextDead
+          }
+        }
+      }
     }
   }
 
