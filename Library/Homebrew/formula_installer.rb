@@ -400,11 +400,13 @@ class FormulaInstaller
     link(keg)
     fix_install_names(keg)
 
-    if build_bottle? && formula.post_install_defined?
-      ohai "Not running post_install as we're building a bottle"
-      puts "You can run it manually using `brew postinstall #{formula.full_name}`"
-    else
-      post_install
+    if formula.post_install_defined?
+      if build_bottle?
+        ohai "Not running post_install as we're building a bottle"
+        puts "You can run it manually using `brew postinstall #{formula.full_name}`"
+      else
+        post_install
+      end
     end
 
     ohai "Summary" if verbose? || show_summary_heading?
