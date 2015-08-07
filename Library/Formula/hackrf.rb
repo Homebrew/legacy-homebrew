@@ -1,8 +1,8 @@
 class Hackrf < Formula
   desc "Low cost software radio platform"
   homepage "https://github.com/mossmann/hackrf"
-  url "https://github.com/mossmann/hackrf/archive/v2014.08.1.tar.gz"
-  sha256 "5ab1641a9af766c476e04bfe2f7cbe3d7edd22c324453c22e58e3f0ef51082eb"
+  url "https://github.com/mossmann/hackrf/archive/v2015.07.2.tar.gz"
+  sha256 "5e3d9c36928b88cdbc0d66ee54e24e8682972dba478abfca0e31069515b870b6"
 
   bottle do
     cellar :any
