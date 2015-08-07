@@ -7,9 +7,9 @@ class Bgpq3 < Formula
 
   bottle do
     cellar :any
-    sha256 "95674d0494d12f72694e626187a8d86afc190f659d7892e4c221a096f84c918d" => :yosemite
-    sha256 "efa7ce918847349cc6e3c9751e8833cdb5d5ff14f69a5e303ec339abd5888ef8" => :mavericks
-    sha256 "f3ba1d27e86678f9159da82b47e7597e829f4a9b6e847f63cd9b212909e986ca" => :mountain_lion
+    sha256 "f0be355cc0ce42364f31d1a0190d4239d0a05ee3545d166ec4630c305af23dd0" => :yosemite
+    sha256 "66251ef2771eef19ea08c52961d142f787a4b0184ad73905a5f80d3191700306" => :mavericks
+    sha256 "e4c36bd2ac02efee5c2f74bbf4c207e552d95069773713e3b25c27493a23ebd3" => :mountain_lion
   end
 
   devel do
