@@ -1,8 +1,8 @@
 class Libuv < Formula
-  desc "Platform layer for Node.js"
+  desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.6.1.tar.gz"
-  sha256 "f558ede285878d6a69f6a6d43b5df0241f3c35d62ac989477bdbd418badd83d7"
+  url "https://github.com/libuv/libuv/archive/v1.7.0.tar.gz"
+  sha256 "27a66f944c8cf1baf0fb53f5cfe11f01035cc80622d8ecc8e18bd1b2ae35ef5f"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
@@ -109,6 +109,7 @@ class Libuv < Formula
   test do
     (testpath/"test.c").write <<-EOS.undent
       #include <uv.h>
+      #include <stdlib.h>
 
       int main()
       {
