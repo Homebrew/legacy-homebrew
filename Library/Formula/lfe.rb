@@ -1,5 +1,5 @@
 class Lfe < Formula
-  desc "LISP syntax front-end to the Erlang compiler"
+  desc "A Concurrent Lisp for the Erlang VM"
   homepage "http://lfe.io/"
   url "https://github.com/rvirding/lfe/archive/v0.9.2.tar.gz"
   sha256 "9ff9661d03432a5f111266e56dcc24f24ceb633541f560333c3ff1acafc20794"
@@ -22,6 +22,6 @@ class Lfe < Formula
   end
 
   test do
-    system bin/"lfe", "-eval", "'(io:format \"42\")'"
+    system bin/"lfe", "-eval", '"(io:format \"~p\" (list (* 2 (lists:foldl #\'+/2 0 (lists:seq 1 6)))))"'
   end
 end
