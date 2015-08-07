@@ -1,8 +1,8 @@
 class Buildapp < Formula
   desc "Creates executables with SBCL"
   homepage "http://www.xach.com/lisp/buildapp/"
-  url "https://github.com/xach/buildapp/archive/release-1.5.4.tar.gz"
-  sha256 "8a3918d740f21fd46c18b08e066fec7525dad790b1355a1e3e5950f2d3ca4291"
+  url "https://github.com/xach/buildapp/archive/release-1.5.5.tar.gz"
+  sha256 "dbe5dd4e0d35eb36f1f6870fa820c841db9cbbef4090d4b4e5bb10f4ea37882c"
   head "https://github.com/xach/buildapp.git"
 
   bottle do
