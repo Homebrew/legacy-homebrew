@@ -47,5 +47,4 @@ class Musicbox < Formula
   test do
     system "musicbox", "--version"
   end
-  
 end
