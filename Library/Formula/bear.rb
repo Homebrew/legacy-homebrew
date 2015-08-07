@@ -7,9 +7,10 @@ class Bear < Formula
   head "https://github.com/rizsotto/Bear.git"
 
   bottle do
-    sha256 "c2a70963145a8ec644ebd7c0025ced786b8311fae9d10f858649b9418dba065e" => :yosemite
-    sha256 "c9b63970285cbd5b341f18dddaaed63de3cc36582aa673058111bfb05a5deecf" => :mavericks
-    sha256 "5aae5f1bd8f92e2528304ecb6719f0bd495f2b7f0fb9a5051e266bcfade6ee70" => :mountain_lion
+    cellar :any
+    sha256 "aff45ff41f7af8ba7e8e4417e4f9aea0a7ebadf5f9832b908262af49243be9a7" => :yosemite
+    sha256 "5b88173b16b68c9c1d3882b7b1c02025619baf3efb9e099e3b72fff3f34bbc18" => :mavericks
+    sha256 "2953c07183bd1ff2f5cfd30e9a1ec88c4e414d6db1acb9d35ce740dc86a83b65" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
