@@ -22,6 +22,6 @@ class Lfe < Formula
   end
 
   test do
-    system bin/"lfe", "-eval", '"(io:format \"~p\" (list (* 2 (lists:foldl #'+/2 0 (lists:seq 1 6)))))"'
+    system bin/"lfe", "-eval", '"(io:format \"~p\" (list (* 2 (lists:foldl #\'+/2 0 (lists:seq 1 6)))))"'
   end
 end
