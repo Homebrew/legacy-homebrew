@@ -4,6 +4,13 @@ class Corkscrew < Formula
   url "http://www.agroman.net/corkscrew/corkscrew-2.0.tar.gz"
   sha256 "0d0fcbb41cba4a81c4ab494459472086f377f9edb78a2e2238ed19b58956b0be"
 
+  bottle do
+    cellar :any
+    sha256 "5a0916aa242a22808bbbb652664f1e44620c1c78b896982f67c9a5a1b85a5efc" => :yosemite
+    sha256 "79ca3f19c2a8df1cd7b43410ab600d32c4fc7038f99998acb656e5cc61807f25" => :mavericks
+    sha256 "8844bb407417189b8ded9d8843017a86306f7832b776906d18db5817503faa84" => :mountain_lion
+  end
+
   depends_on "libtool" => :build
 
   def install
