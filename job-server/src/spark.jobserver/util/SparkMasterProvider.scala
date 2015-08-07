@@ -30,7 +30,6 @@ object SparkMasterProvider {
 
     try {
       val sparkMasterObjectName = config.getString(SparkMasterProperty)
-      println(s"Using $sparkMasterObjectName to determine Spark Master")
       logger.info(s"Using $sparkMasterObjectName to determine Spark Master")
       val m = ru.runtimeMirror(getClass.getClassLoader)
       val module = m.staticModule(sparkMasterObjectName)
