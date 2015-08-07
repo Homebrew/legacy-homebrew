@@ -1,8 +1,8 @@
 class Bgpq3 < Formula
   desc "bgp filtering automation for Cisco and Juniper routers"
   homepage "http://snar.spb.ru/prog/bgpq3/"
-  url "https://github.com/snar/bgpq3/archive/v0.1.30.tar.gz"
-  sha256 "f54a285568c66deae9ad22fd647300fb5f4160426d63f35638c0be8b8b2c8cd0"
+  url "https://github.com/snar/bgpq3/archive/v0.1.31.tar.gz"
+  sha256 "839da59b153b2c748ca021d742cb9da248681e323f380e614ac546b796fbe71b"
   head "https://github.com/snar/bgpq3.git"
 
   bottle do
@@ -10,6 +10,12 @@ class Bgpq3 < Formula
     sha256 "95674d0494d12f72694e626187a8d86afc190f659d7892e4c221a096f84c918d" => :yosemite
     sha256 "efa7ce918847349cc6e3c9751e8833cdb5d5ff14f69a5e303ec339abd5888ef8" => :mavericks
     sha256 "f3ba1d27e86678f9159da82b47e7597e829f4a9b6e847f63cd9b212909e986ca" => :mountain_lion
+  end
+
+  devel do
+    url "https://github.com/snar/bgpq3/archive/0.1.32-rc5.tar.gz"
+    sha256 "80da4ff47cc527f6c2d33eb39e41a11a75e71f85d94ce5e8206d9c6c87107c19"
+    version "0.1.32-rc5"
   end
 
   # Makefile: upstream has been informed of the patch through email (multiple
