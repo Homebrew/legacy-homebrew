@@ -1,20 +1,20 @@
 # Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
   desc "GUI for vim, made for OS X"
-  homepage 'https://code.google.com/p/macvim/'
-  url 'https://github.com/macvim-dev/macvim/archive/snapshot-77.tar.gz'
-  version '7.4-77'
-  sha256 '6b7f4b48ecef4a00dca17efef551884fcea1aa9897005497d31f52da7304bc5f'
+  homepage "https://code.google.com/p/macvim/"
+  url "https://github.com/macvim-dev/macvim/archive/snapshot-77.tar.gz"
+  version "7.4-77"
+  sha256 "6b7f4b48ecef4a00dca17efef551884fcea1aa9897005497d31f52da7304bc5f"
 
-  head 'https://github.com/macvim-dev/macvim.git'
+  head "https://github.com/macvim-dev/macvim.git"
 
   option "custom-icons", "Try to generate custom document icons"
   option "override-system-vim", "Override system vim"
 
   depends_on :xcode => :build
-  depends_on 'cscope' => :recommended
-  depends_on 'lua' => :optional
-  depends_on 'luajit' => :optional
+  depends_on "cscope" => :recommended
+  depends_on "lua" => :optional
+  depends_on "luajit" => :optional
   depends_on :python => :recommended
   depends_on :python3 => :optional
 
@@ -23,12 +23,12 @@ class Macvim < Formula
 
   def install
     # MacVim doesn't have and required any Python package, unset PYTHONPATH.
-    ENV.delete('PYTHONPATH')
+    ENV.delete("PYTHONPATH")
 
     # Set ARCHFLAGS so the Python app (with C extension) that is
     # used to create the custom icons will not try to compile in
     # PPC support (which isn't needed in Homebrew-supported systems.)
-    ENV['ARCHFLAGS'] = "-arch #{MacOS.preferred_arch}"
+    ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
@@ -79,7 +79,7 @@ class Macvim < Formula
 
     # configure appends "SDKS/..." to the value of `xcode-select -print-path`,
     # but this isn't correct on recent Xcode, so we need to set it manually.
-    # FIXME this is a bug, and it should be fixed upstream.
+    # FIXME: this is a bug, and it should be fixed upstream.
     unless MacOS::CLT.installed?
       args << "--with-developer-dir=#{MacOS::Xcode.prefix}/Platforms/MacOSX.platform/Developer"
       args << "--with-macsdk=#{MacOS.version}"
@@ -110,7 +110,7 @@ class Macvim < Formula
   end
 
   def caveats
-    if build.with? "python" and build.with? "python3"
+    if build.with?("python") && build.with?("python3")
       <<-EOS.undent
         MacVim can no longer be brewed with dynamic support for both Python versions.
         Only Python 3 support has been provided.

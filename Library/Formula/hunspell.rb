@@ -1,10 +1,8 @@
-require "formula"
-
 class Hunspell < Formula
   desc "Spell checker and morphological analyzer"
   homepage "http://hunspell.sourceforge.net/"
   url "https://downloads.sourceforge.net/hunspell/hunspell-1.3.3.tar.gz"
-  sha1 "219b20f305d6690f666ff3864a16e4674908a553"
+  sha256 "a7b2c0de0e2ce17426821dc1ac8eb115029959b3ada9d80a81739fa19373246c"
 
   depends_on "readline"
 
@@ -19,7 +17,7 @@ class Hunspell < Formula
                           "--with-readline"
     system "make"
     ENV.deparallelize
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

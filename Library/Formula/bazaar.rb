@@ -3,12 +3,13 @@ class Bazaar < Formula
   homepage "http://bazaar.canonical.com/"
   url "https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz"
   sha256 "0994797182eb828867eee81cccc79480bd2946c99304266bc427b902cf91dab0"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "13eb87ddde4c81d02a54ba014712fa5d152b3f3c" => :yosemite
-    sha1 "79a3661c5a85e6041cbabb12fb237263dee1eaa9" => :mavericks
-    sha1 "d13db375fa4c2edf0119ffefbb995e4da59c7681" => :mountain_lion
+    sha256 "459e279d7c6292c44924556f47b453ec9849f2e4a7112b681e9c66b7741c4fbe" => :yosemite
+    sha256 "683d52ced08e8899b3da2433ce97ad2cdcd506c80a0de7a9fe1f67c9ff185f43" => :mavericks
+    sha256 "fd13919c93924bf726a1fda442d4a6d6858754fc80b6e278fd43525b7e983147" => :mountain_lion
   end
 
   def install
@@ -25,10 +26,40 @@ class Bazaar < Formula
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python"
     libexec.install "bzr", "bzrlib"
 
-    bin.install_symlink libexec+"bzr"
+    bin.install_symlink libexec/"bzr"
+  end
+
+  def post_install
+    # Install the plugins under /var/bazaar/plugins/
+    plugins_orig = libexec/"bzrlib/plugins"
+    plugins_new = var/"bazaar/plugins"
+
+    Dir[plugins_orig/"*"].each do |plugin|
+      path = Pathname.new plugin
+      plugins_new.install plugin unless File.exist? (plugins_new/path.basename)
+    end
+
+    rm_rf plugins_orig
+    ln_s plugins_new, plugins_orig
+  end
+
+  def caveats; <<-EOS
+      The plugins directory is located at:
+        #{var}/bazaar/plugins
+    EOS
   end
 
   test do
-    system bin/"bzr", "init-repo", "test"
+    bzr = "#{bin}/bzr"
+    whoami = "Homebrew"
+    system bzr, "whoami", whoami
+    assert_match whoami, shell_output("#{bin}/bzr whoami")
+    system bzr, "init-repo", "sample"
+    system bzr, "init", "sample/trunk"
+    touch testpath/"sample/trunk/test.txt"
+    cd "sample/trunk" do
+      system bzr, "add", "test.txt"
+      system bzr, "commit", "-m", "test"
+    end
   end
 end

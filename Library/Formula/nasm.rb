@@ -1,5 +1,3 @@
-require "formula"
-
 class Nasm < Formula
   desc "Netwide Assembler (NASM) is an 80x86 assembler"
   homepage "http://www.nasm.us/"

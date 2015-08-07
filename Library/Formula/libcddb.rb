@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libcddb < Formula
   desc "CDDB server access library"
-  homepage 'http://libcddb.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/libcddb/libcddb-1.3.2.tar.bz2'
-  sha1 '2a7855918689692ff5ca3316d078a859d51959ce'
+  homepage "http://libcddb.sourceforge.net/"
+  url "https://downloads.sourceforge.net/libcddb/libcddb-1.3.2.tar.bz2"
+  sha256 "35ce0ee1741ea38def304ddfe84a958901413aa829698357f0bee5bb8f0a223b"
 
   bottle do
     cellar :any
@@ -14,12 +12,12 @@ class Libcddb < Formula
     sha1 "a23458d0ab82864cb515dfd7c84f5e363de9e7a5" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libcdio'
+  depends_on "pkg-config" => :build
+  depends_on "libcdio"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

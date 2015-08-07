@@ -204,11 +204,12 @@ A Hash specifies a formula dependency with some additional information. Given a 
 
 Sometimes there’s hard conflict between formulae, and it can’t be avoided or circumvented with `keg_only`.
 
-PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L36-L37) formula for minor conflict.
+PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb) formula for minor conflict.
 
-PolarSSL ship GNU’s Hello, and compiles a `hello` binary. This is obviously non-essential to PolarSSL’s functionality, and conflict with the `hello` formula would be overkill, so we just remove it.
+PolarSSL ship and compile a "Hello World" executable. This is obviously non-essential to PolarSSL’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
 
-However, also in the PolarSSL formulae is a [firm conflict](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L19) with `md5sha1sum`, because both `md5sha1sum` and `polarssl` compile identically-named binaries that *are* important for core functionality.
+[pdftohtml](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/pdftohtml.rb) provides an example of a serious
+conflict, where both formula ship a identically-named binary that is essential to functionality, so a `conflicts_with` is preferable.
 
 As a general rule, `conflicts_with` should be a last-resort option. It’s a fairly blunt instrument.
 
@@ -860,17 +861,11 @@ end
 if build.without? "ham"
   # works as you'd expect. True if `--without-ham` was given.
 end
-
-if build.include? "enable-ham"
-  # the deprecated style, only useful for options other than `with`/`without` style
-end
 ```
 
-Option names should be prefixed with one of the words `with`, `without`, `no`, or a verb in the imperative tense describing the action to be taken. For example, an option to run a test suite should be named `--with-test` or `--with-check` rather than `--test`, and an option to enable a shared library should be named `--enable-shared` rather than `--shared`.
+Option names should be prefixed with the words `with` or `without`. For example, an option to run a test suite should be named `--with-test` or `--with-check` rather than `--test`, and an option to enable a shared library `--with-shared` rather than `--shared` or `--enable-shared`.
 
 Note that options that aren’t ` build.with? ` or ` build.without? ` should be actively deprecated where possible. See [wget](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/wget.rb#L27-L31) for an example.
-
-See the [graphviz](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/graphviz.rb) formula for an example.
 
 
 ## File level operations

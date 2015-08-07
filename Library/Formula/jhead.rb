@@ -2,7 +2,7 @@ class Jhead < Formula
   desc "Extract Digicam setting info from EXIF JPEG headers"
   homepage "http://www.sentex.net/~mwandel/jhead/"
   url "http://www.sentex.net/~mwandel/jhead/jhead-3.00.tar.gz"
-  sha1 "6bd3faa38cc884b5370e8e8f15bc10cbb706ec7a"
+  sha256 "88cc01da018e242fe2e05db73f91b6288106858dd70f27506c4989a575d2895e"
 
   bottle do
     cellar :any

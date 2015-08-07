@@ -2,7 +2,7 @@ class Mtr < Formula
   desc "'traceroute' and 'ping' in a single tool"
   homepage "http://www.bitwizard.nl/mtr/"
   url "ftp://ftp.bitwizard.nl/mtr/mtr-0.86.tar.gz"
-  sha1 "2c81d0f4c9296861a1159f07eec6acfb4bebecf7"
+  sha256 "c5d948920b641cc35f8b380fc356ddfe07cce6a9c6474afe242fc58113f28c06"
 
   bottle do
     cellar :any
@@ -32,7 +32,7 @@ class Mtr < Formula
     args << "--without-glib" if build.without? "glib"
     system "./bootstrap.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

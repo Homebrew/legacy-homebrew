@@ -1,10 +1,10 @@
 class Rust < Formula
   desc "Safe, concurrent, practical language"
-  homepage 'http://www.rust-lang.org/'
+  homepage "https://www.rust-lang.org/"
 
   stable do
-    url 'https://static.rust-lang.org/dist/rustc-1.1.0-src.tar.gz'
-    sha256 'cb09f443b37ec1b81fe73c04eb413f9f656859cf7d00bc5088008cbc2a63fa8a'
+    url "https://static.rust-lang.org/dist/rustc-1.1.0-src.tar.gz"
+    sha256 "cb09f443b37ec1b81fe73c04eb413f9f656859cf7d00bc5088008cbc2a63fa8a"
 
     resource "cargo" do
       url "https://github.com/rust-lang/cargo.git", :revision => "b030d35d5cf6b35bf8a6bfd218ab4df9d6a86361"
@@ -46,9 +46,9 @@ class Rust < Formula
     sha256 "f56191dd3cf36717649184111f4d8a4a9ddcefe7d12706f67cd3151ca1cfe6be" => :mountain_lion
   end
 
-  depends_on "openssl"
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0
@@ -68,7 +68,7 @@ class Rust < Formula
     end
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     resource("cargo").stage do
       cargo_stage_path = pwd

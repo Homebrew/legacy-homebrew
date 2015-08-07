@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libsoup < Formula
   desc "HTTP client/server library for GNOME"
-  homepage 'https://live.gnome.org/LibSoup'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.48/libsoup-2.48.1.tar.xz'
-  sha256 '9b0d14b36e36a3131a06c6e3aa7245716e6904e3e636df81c0b6c8bd3f646f9a'
+  homepage "https://live.gnome.org/LibSoup"
+  url "http://ftp.gnome.org/pub/GNOME/sources/libsoup/2.48/libsoup-2.48.1.tar.xz"
+  sha256 "9b0d14b36e36a3131a06c6e3aa7245716e6904e3e636df81c0b6c8bd3f646f9a"
 
   bottle do
     sha1 "58bfb3f803cdb164301d33754d80cf0b12b44f4c" => :yosemite
@@ -12,12 +10,12 @@ class Libsoup < Formula
     sha1 "94ad9a680bdd06cb14721217ffbe091c2f46c143" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'glib-networking'
-  depends_on 'gnutls'
-  depends_on 'sqlite'
-  depends_on 'gobject-introspection' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "glib-networking"
+  depends_on "gnutls"
+  depends_on "sqlite"
+  depends_on "gobject-introspection" => :optional
 
   def install
     args = [
@@ -36,6 +34,6 @@ class Libsoup < Formula
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,10 +1,8 @@
-require "formula"
-
 class Libgee < Formula
   desc "Collection library providing GObject-based interfaces"
   homepage "https://wiki.gnome.org/Projects/Libgee"
   url "http://ftp.gnome.org/pub/GNOME/sources/libgee/0.16/libgee-0.16.0.tar.xz"
-  sha1 "d67e718138fb5788d6a1aea7f344e670adb77375"
+  sha256 "a26243eac4280f2d2ebd34b377fc5dc7a73633bcc4c339af6162031943d76aae"
 
   bottle do
     cellar :any
@@ -22,6 +20,6 @@ class Libgee < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--enable-introspection=yes"
-    system "make install"
+    system "make", "install"
   end
 end

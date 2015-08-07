@@ -1,5 +1,3 @@
-require "formula"
-
 class Tutum < Formula
   desc "Docker platform for dev and ops"
   homepage "https://www.tutum.co/"

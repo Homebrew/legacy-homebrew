@@ -1,10 +1,8 @@
-require "formula"
-
 class Couchpotatoserver < Formula
   desc "Download movies automatically"
   homepage "https://couchpota.to"
   url "https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.6.1.tar.gz"
-  sha1 "a0fa3b7b187e416bd78357a2738b09e0539972b9"
+  sha256 "1e0ab9536d61be39b4ee8f8a988af48fe56a521406fe01fc77deefadebdfb986"
 
   head "https://github.com/RuudBurger/CouchPotatoServer.git"
 

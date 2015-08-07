@@ -1,15 +1,16 @@
 class Abcde < Formula
   desc "Better CD Encoder"
   homepage "http://abcde.einval.com"
-  url "http://abcde.einval.com/download/abcde-2.6.tar.gz"
-  sha1 "a1545fb63673e247c8378e9925505e23ace806dc"
+  url "http://abcde.einval.com/download/abcde-2.7.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/a/abcde/abcde_2.7.orig.tar.gz"
+  sha256 "0148698a09fedcbae37ee9da295afe411a1190cf8ae224b7814d31b5bf737746"
   head "http://git.einval.com/git/abcde.git"
 
   bottle do
     cellar :any
-    sha1 "fb1aa6a4cb064c1b6d26ab87f7b7eb1a61388963" => :yosemite
-    sha1 "4fd607f7adef90f95d47dae5e1ae43bdbbd3c543" => :mavericks
-    sha1 "b98cc145bbbae45421b36721f39f0a5a7a8ee3f7" => :mountain_lion
+    sha256 "e290c7b2658678e4a10f6a717805e06478c1466b424e9d6589929dd9175f994d" => :yosemite
+    sha256 "1f140fb80601a5b8376b83c5502a2c7c89df42be42a814b02d40f6bfb8ee50a8" => :mavericks
+    sha256 "e7f32cb2199c87c28f24c6d23e6f577d0d7d16f8880f56c8c5b1635e3772f3e4" => :mountain_lion
   end
 
   depends_on "cd-discid"
@@ -21,9 +22,7 @@ class Abcde < Formula
   depends_on "vorbis-tools" => :optional
 
   def install
-    bin.install "abcde", "abcde-musicbrainz-tool", "cddb-tool"
-    etc.install "abcde.conf"
-    man1.install "abcde.1", "cddb-tool.1"
+    system "make", "install", "prefix=#{prefix}", "etcdir=#{etc}"
   end
 
   test do

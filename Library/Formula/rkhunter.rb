@@ -1,10 +1,8 @@
-require 'formula'
-
 class Rkhunter < Formula
   desc "Rootkit hunter"
-  homepage 'http://rkhunter.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/rkhunter/rkhunter/1.4.2/rkhunter-1.4.2.tar.gz'
-  sha1 'da01bc6757e14549560ad6ea46d1e93dbf5ac90f'
+  homepage "http://rkhunter.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/rkhunter/rkhunter/1.4.2/rkhunter-1.4.2.tar.gz"
+  sha256 "789cc84a21faf669da81e648eead2e62654cfbe0b2d927119d8b1e55b22b65c3"
 
   def install
     system "./installer.sh", "--layout", "custom", prefix, "--install"

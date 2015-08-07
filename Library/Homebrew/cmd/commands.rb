@@ -21,13 +21,13 @@ module Homebrew
   def internal_commands
     with_directory = false
     (HOMEBREW_REPOSITORY/"Library/Homebrew/cmd").
-       children(with_directory).
-       map {|f| File.basename(f, '.rb')}
+      children(with_directory).
+      map { |f| File.basename(f, ".rb") }
   end
 
   def external_commands
-    paths.map{ |p| Dir["#{p}/brew-*"] }.flatten.
-      map{ |f| File.basename(f, '.rb')[5..-1] }.
-      reject{ |f| f =~ /\./ }
+    paths.flat_map { |p| Dir["#{p}/brew-*"] }.
+      map { |f| File.basename(f, ".rb")[5..-1] }.
+      reject { |f| f =~ /\./ }
   end
 end

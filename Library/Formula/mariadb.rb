@@ -1,13 +1,13 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.20/source/mariadb-10.0.20.tar.gz"
-  sha256 "3a4f6963c794977af5d5fd9ec06a337a2ad556b3a287196fddbd2243c1388b7b"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.21/source/mariadb-10.0.21.tar.gz"
+  sha256 "4b9a32e15ceadefdb1057a02eb3e0addf702b75aef631a3c9194b832ecfa3545"
 
   bottle do
-    sha256 "66f51ca674ca5e82f1d813507382f9b448f4a96e2de472b9be3297d090780348" => :yosemite
-    sha256 "848299d2e682d2cc353be6119e90ba2670a03361cdbe868f89c6143a838b422e" => :mavericks
-    sha256 "3f760e604dbee14a52e854ab8c85dcb3e68c53652750917eaa90d8e463d8958f" => :mountain_lion
+    sha256 "882f16e1470538aea11ac21f6ab354b83215f35c15bda104af90cc3c5c746107" => :yosemite
+    sha256 "5f5935d262db325ddbf217c6dbaa36c50a362bba6f84c52e65c16c4038c01f02" => :mavericks
+    sha256 "628ea0cd2b057cfad5fbb02d7caabe50c18860b71f6dd082dee9e8d477e88e92" => :mountain_lion
   end
 
   devel do

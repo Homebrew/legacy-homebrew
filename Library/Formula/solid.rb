@@ -2,7 +2,7 @@ class Solid < Formula
   desc "Collision detection library for geometric objects in 3D space"
   homepage "http://www.dtecta.com/"
   url "http://www.dtecta.com/files/solid-3.5.6.tgz"
-  sha1 "bd0afef7842f826c270cff32fc23994aec0b0d65"
+  sha256 "4acfa20266f0aa5722732794f8e93d7bb446e467719c947a3ca583f197923af0"
 
   bottle do
     cellar :any

@@ -12,6 +12,7 @@ module Homebrew
     if ARGV.delete("--syntax")
       ruby_files = Queue.new
       Dir.glob("#{HOMEBREW_LIBRARY}/Homebrew/**/*.rb").each do |rb|
+        next if rb.include?("/vendor/")
         ruby_files << rb
       end
 

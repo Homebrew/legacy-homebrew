@@ -1,10 +1,8 @@
-require 'formula'
-
 class Visitors < Formula
   desc "eb server log analyzer"
-  homepage 'http://www.hping.org/visitors/'
-  url 'http://www.hping.org/visitors/visitors-0.7.tar.gz'
-  sha1 'cdccdfb82001c7c3dadf68456574cac1a5d941e3'
+  homepage "http://www.hping.org/visitors/"
+  url "http://www.hping.org/visitors/visitors-0.7.tar.gz"
+  sha256 "d2149e33ffe96b1f52b0587cff65973b0bc0b24ec43cdf072a782c1bd52148ab"
 
   bottle do
     cellar :any

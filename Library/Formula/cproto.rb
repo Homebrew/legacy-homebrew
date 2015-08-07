@@ -1,10 +1,8 @@
-require "formula"
-
 class Cproto < Formula
   desc "Generate function prototypes for functions in input files"
   homepage "http://invisible-island.net/cproto"
   url "ftp://invisible-island.net/cproto/cproto-4.7l.tgz"
-  sha1 "528d7b172cf206ad5b399e9c48d66eaa5029db86"
+  sha256 "823a1e0480bbb39958c6c322c665932dd74286a8eb6dfe652528b6b8c3d873a5"
 
   bottle do
     cellar :any

@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 module Homebrew
   def fetch
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
-    if ARGV.include? '--deps'
+    if ARGV.include? "--deps"
       bucket = []
       ARGV.formulae.each do |f|
         bucket << f
@@ -15,7 +15,7 @@ module Homebrew
       bucket = ARGV.formulae
     end
 
-    puts "Fetching: #{bucket * ', '}" if bucket.size > 1
+    puts "Fetching: #{bucket * ", "}" if bucket.size > 1
     bucket.each do |f|
       f.print_tap_action :verb => "Fetching"
 
@@ -29,7 +29,7 @@ module Homebrew
     end
   end
 
-  def fetch_bottle? f
+  def fetch_bottle?(f)
     return true if ARGV.force_bottle? && f.bottle
     return false unless f.bottle && f.pour_bottle?
     return false if ARGV.build_from_source? || ARGV.build_bottle?
@@ -41,10 +41,10 @@ module Homebrew
       return false
     end
     return false unless f.bottle.compatible_cellar?
-    return true
+    true
   end
 
-  def fetch_resource r
+  def fetch_resource(r)
     puts "Resource: #{r.name}"
     fetch_fetchable r
   rescue ChecksumMismatchError => e
@@ -52,14 +52,14 @@ module Homebrew
     opoo "Resource #{r.name} reports different #{e.hash_type}: #{e.expected}"
   end
 
-  def fetch_formula f
+  def fetch_formula(f)
     fetch_fetchable f
   rescue ChecksumMismatchError => e
     retry if retry_fetch? f
     opoo "Formula reports different #{e.hash_type}: #{e.expected}"
   end
 
-  def fetch_patch p
+  def fetch_patch(p)
     fetch_fetchable p
   rescue ChecksumMismatchError => e
     Homebrew.failed = true
@@ -68,7 +68,7 @@ module Homebrew
 
   private
 
-  def retry_fetch? f
+  def retry_fetch?(f)
     @fetch_failed ||= Set.new
     if ARGV.include?("--retry") && @fetch_failed.add?(f)
       ohai "Retrying download"
@@ -80,7 +80,7 @@ module Homebrew
     end
   end
 
-  def fetch_fetchable f
+  def fetch_fetchable(f)
     f.clear_cache if ARGV.force?
 
     already_fetched = f.cached_download.exist?

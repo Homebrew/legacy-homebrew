@@ -2,7 +2,7 @@ class Osm2pgsql < Formula
   desc "Convert OpenStreetMap data to postGIS-enabled PostgreSQL db"
   homepage "https://wiki.openstreetmap.org/wiki/Osm2pgsql"
   url "https://github.com/openstreetmap/osm2pgsql/archive/0.87.0.tar.gz"
-  sha1 "6f302500e52d6e42147cc8dff8f344677e3131f8"
+  sha256 "6f5538d098e17a578a384f70f61b335f10edb04114d5cdc5233ca97f868ad0f6"
   revision 1
 
   bottle do
@@ -25,7 +25,7 @@ class Osm2pgsql < Formula
   # Remove the patch when upgrading
   patch do
     url "https://github.com/openstreetmap/osm2pgsql/commit/943684a9b86bee46d245970b3e5870f83afc9208.diff"
-    sha1 "01c681513959b285038b3582afc1c1d63e440209"
+    sha256 "608b702d79fd53f2af98e9651634377126778ff91087cf35a81b65150d8cd963"
   end
 
   def install
@@ -37,7 +37,7 @@ class Osm2pgsql < Formula
       "--with-zlib=/usr",
       "--with-bzip2=/usr",
       # Related to the patch, remove this line when upgrading
-      "--without-lockfree",
+      "--without-lockfree"
     ]
     puts args
     if build.with? "protobuf-c"

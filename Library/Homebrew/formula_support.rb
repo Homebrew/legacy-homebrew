@@ -15,6 +15,8 @@ class KegOnlyReason
       OS.mac?
     when :provided_pre_mountain_lion
       OS.mac? && MacOS.version < :mountain_lion
+    when :provided_pre_mavericks
+      OS.mac? && MacOS.version < :mavericks
     when :provided_until_xcode43
       OS.mac? && MacOS::Xcode.version < "4.3"
     when :provided_until_xcode5
@@ -32,8 +34,11 @@ OS X already provides this software and installing another version in
 parallel can cause all kinds of trouble.
 EOS
     when :shadowed_by_osx then <<-EOS
-OS X provides similar software, and installing this software in
+OS X provides similar software and installing this software in
 parallel can cause all kinds of trouble.
+EOS
+    when :provided_pre_mavericks then <<-EOS
+OS X already provides this software in versions before Mavericks.
 EOS
     when :provided_pre_mountain_lion then <<-EOS
 OS X already provides this software in versions before Mountain Lion.

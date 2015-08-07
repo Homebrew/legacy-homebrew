@@ -1,6 +1,6 @@
-require 'download_strategy'
-require 'checksum'
-require 'version'
+require "download_strategy"
+require "checksum"
+require "version"
 
 # Resource is the fundamental representation of an external resource. The
 # primary formula download, along with other declared resources, are instances
@@ -38,7 +38,7 @@ class Resource
     end
   end
 
-  def initialize name=nil, &block
+  def initialize(name = nil, &block)
     @name = name
     @url = nil
     @version = nil
@@ -57,7 +57,7 @@ class Resource
   # to be used as resource names without confusing software that
   # interacts with download_name, e.g. github.com/foo/bar
   def escaped_name
-    name.gsub("/", '-')
+    name.tr("/", "-")
   end
 
   def download_name
@@ -72,7 +72,7 @@ class Resource
     downloader.clear_cache
   end
 
-  def stage(target=nil, &block)
+  def stage(target = nil, &block)
     unless target || block
       raise ArgumentError, "target directory or block is required"
     end
@@ -84,14 +84,14 @@ class Resource
   # If a target is given, unpack there; else unpack to a temp folder
   # If block is given, yield to that block
   # A target or a block must be given, but not both
-  def unpack(target=nil)
+  def unpack(target = nil)
     mktemp(download_name) do
       downloader.stage
       if block_given?
         yield self
       elsif target
         target = Pathname.new(target) unless target.is_a? Pathname
-        target.install Dir['*']
+        target.install Dir["*"]
       end
     end
   end
@@ -114,7 +114,7 @@ class Resource
     cached_download
   end
 
-  def verify_download_integrity fn
+  def verify_download_integrity(fn)
     if fn.file?
       ohai "Verifying #{fn.basename} checksum" if ARGV.verbose?
       fn.verify_checksum(checksum)
@@ -129,7 +129,7 @@ class Resource
     define_method(type) { |val| @checksum = Checksum.new(type, val) }
   end
 
-  def url val=nil, specs={}
+  def url(val = nil, specs = {})
     return @url if val.nil?
     @url = val
     @specs.merge!(specs)
@@ -137,11 +137,11 @@ class Resource
     @download_strategy = DownloadStrategyDetector.detect(url, using)
   end
 
-  def version val=nil
+  def version(val = nil)
     @version ||= detect_version(val)
   end
 
-  def mirror val
+  def mirror(val)
     mirrors << val
   end
 
@@ -160,7 +160,7 @@ class Resource
   end
 
   class Go < Resource
-    def stage target
+    def stage(target)
       super(target/name)
     end
   end

@@ -1,10 +1,8 @@
-require "formula"
-
 class Libvoikko < Formula
   desc "Linguistic software for Finnish"
   homepage "http://voikko.puimula.org/"
   url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-3.7.1.tar.gz"
-  sha1 "b6d7ec669bbc33ba5f526f53b1d297f9ee315178"
+  sha256 "83c7620595e82fa065fffff306cbe4cbedfa56b8d0203a5424997c18305ca43c"
 
   bottle do
     cellar :any

@@ -1,10 +1,8 @@
-require "formula"
-
 class Snap7 < Formula
   desc "Ethernet communication suite that works natively with Siemens S7 PLCs"
   homepage "http://snap7.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/snap7/1.3.0/snap7-full-1.3.0.tar.gz"
-  sha1 "341e8678d2e3e818296ec054c78b740cce182c0e"
+  sha256 "41f972133abd12b8bda9f0cd51a6beae68824f69c2a0740e4c157a4a8e3c1558"
 
   bottle do
     cellar :any

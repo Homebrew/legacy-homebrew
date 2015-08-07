@@ -1,5 +1,3 @@
-require "formula"
-
 class AtSpi2Core < Formula
   desc "Protocol definitions and daemon for D-Bus at-spi"
   homepage "http://a11y.org"
@@ -23,6 +21,6 @@ class AtSpi2Core < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-introspection=no"
-    system "make install"
+    system "make", "install"
   end
 end

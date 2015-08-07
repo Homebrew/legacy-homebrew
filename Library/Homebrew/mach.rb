@@ -21,26 +21,26 @@ module ArchitectureListExtension
   end
 
   def ppc?
-    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).any? {|a| self.include? a}
+    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).any? { |a| self.include? a }
   end
 
   def remove_ppc!
-    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).each {|a| self.delete a}
+    (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).each { |a| delete a }
   end
 
   def as_arch_flags
-    self.collect{ |a| "-arch #{a}" }.join(' ')
+    collect { |a| "-arch #{a}" }.join(" ")
   end
 
   def as_cmake_arch_flags
-    self.join(';')
+    join(";")
   end
 
   protected
 
   def intersects_all?(*set)
     set.all? do |archset|
-      archset.any? {|a| self.include? a}
+      archset.any? { |a| self.include? a }
     end
   end
 end
@@ -111,7 +111,7 @@ module MachO
   end
 
   def archs
-    mach_data.map{ |m| m.fetch :arch }.extend(ArchitectureListExtension)
+    mach_data.map { |m| m.fetch :arch }.extend(ArchitectureListExtension)
   end
 
   def arch

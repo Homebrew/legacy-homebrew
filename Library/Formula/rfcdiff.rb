@@ -2,7 +2,7 @@ class Rfcdiff < Formula
   desc "Compare RFC Internet Draft versions"
   homepage "https://tools.ietf.org/tools/rfcdiff/"
   url "https://tools.ietf.org/tools/rfcdiff/rfcdiff-1.42.tgz"
-  sha1 "fc5b40cc262d169d92a8e0454ec1ebaf3444b594"
+  sha256 "1ff5f34a007e9219725d9e3d40767aec5e895d9f890085bec554d0e2a4150634"
 
   bottle do
     cellar :any
@@ -17,12 +17,12 @@ class Rfcdiff < Formula
 
   resource "rfc42" do
     url "https://tools.ietf.org/rfc/rfc42.txt"
-    sha1 "5d6a73c63f2d69deba3849bcb7f7c8be158a016c"
+    sha256 "ba2c826790cae67eb7b4f4ff0f8fe608f620d29f789969c06abbc8da696c8e35"
   end
 
   resource "rfc43" do
     url "https://tools.ietf.org/rfc/rfc43.txt"
-    sha1 "9f4c5dd7b20c4c62c31217b19d93a41054376bd8"
+    sha256 "b6fc6c8e185ef122f3a2b025f9e66a5f4242bdec789d2e467c07bbcfef4deebb"
   end
 
   def install

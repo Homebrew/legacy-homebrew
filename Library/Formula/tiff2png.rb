@@ -2,7 +2,7 @@ class Tiff2png < Formula
   desc "TIFF to PNG converter"
   homepage "http://www.libpng.org/pub/png/apps/tiff2png.html"
   url "https://github.com/rillian/tiff2png/archive/v0.92.tar.gz"
-  sha1 "b838d0e43410a237837b46654e3fb1644fd9891f"
+  sha256 "64e746560b775c3bd90f53f1b9e482f793d80ea6e7f5d90ce92645fd1cd27e4a"
 
   bottle do
     cellar :any

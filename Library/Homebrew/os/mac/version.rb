@@ -1,17 +1,17 @@
-require 'version'
+require "version"
 
 module OS
   module Mac
     class Version < ::Version
       SYMBOLS = {
-        :el_capitan    => '10.11',
-        :yosemite      => '10.10',
-        :mavericks     => '10.9',
-        :mountain_lion => '10.8',
-        :lion          => '10.7',
-        :snow_leopard  => '10.6',
-        :leopard       => '10.5',
-        :tiger         => '10.4',
+        :el_capitan    => "10.11",
+        :yosemite      => "10.10",
+        :mavericks     => "10.9",
+        :mountain_lion => "10.8",
+        :lion          => "10.7",
+        :snow_leopard  => "10.6",
+        :leopard       => "10.5",
+        :tiger         => "10.4"
       }
 
       def self.from_symbol(sym)
@@ -38,7 +38,7 @@ module OS
       end
 
       def pretty_name
-        to_sym.to_s.split('_').map(&:capitalize).join(' ')
+        to_sym.to_s.split("_").map(&:capitalize).join(" ")
       end
     end
   end

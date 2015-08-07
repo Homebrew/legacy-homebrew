@@ -1,7 +1,7 @@
 class Pygtk < Formula
   desc "GTK+ bindings for Python"
-  homepage 'http://www.pygtk.org/'
-  url 'https://download.gnome.org/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2'
+  homepage "http://www.pygtk.org/"
+  url "https://download.gnome.org/sources/pygtk/2.24/pygtk-2.24.0.tar.bz2"
   sha256 "cd1c1ea265bd63ff669e92a2d3c2a88eb26bcd9e5363e0f82c896e649f206912"
   revision 1
 

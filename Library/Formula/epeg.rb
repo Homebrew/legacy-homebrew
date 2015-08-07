@@ -1,10 +1,8 @@
-require "formula"
-
 class Epeg < Formula
   desc "JPEG/JPG thumbnail scaling"
   homepage "https://github.com/mattes/epeg"
   url "https://github.com/mattes/epeg/archive/v0.9.1.042.tar.gz"
-  sha1 "51ef8a55c9567e75c64bf3390fe7c92aa76ac306"
+  sha256 "644362f87605e92f1e1cc0c421867252e4402939aeb4b36ad7cb385cc57a137c"
 
   head "https://github.com/mattes/epeg.git"
 
@@ -31,6 +29,6 @@ class Epeg < Formula
     system "epeg", "--width=1",
                    "--height=1",
                    test_fixtures("test.jpg")
-                   "out.jpg"
+    "out.jpg"
   end
 end

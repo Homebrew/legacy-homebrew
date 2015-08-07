@@ -1,13 +1,11 @@
-require 'formula'
-
 class Automoc4 < Formula
   desc "Tool to add rules for generating Qt moc files"
-  homepage 'https://techbase.kde.org/Development/Tools/Automoc4'
-  url 'http://download.kde.org/stable/automoc4/0.9.88/automoc4-0.9.88.tar.bz2'
-  sha1 'd864c3dda99d8b5f625b9267acfa1d88ff617e3a'
+  homepage "https://techbase.kde.org/Development/Tools/Automoc4"
+  url "http://download.kde.org/stable/automoc4/0.9.88/automoc4-0.9.88.tar.bz2"
+  sha256 "234116f4c05ae21d828594d652b4c4a052ef75727e2d8a4f3a4fb605de9e4c49"
 
-  depends_on 'cmake' => :build
-  depends_on 'qt'
+  depends_on "cmake" => :build
+  depends_on "qt"
 
   # Patch needed to find Qt in Homebrew upstreamed but upstream version
   # does not apply. Won't be needed for next version.
@@ -16,7 +14,7 @@ class Automoc4 < Formula
 
   def install
     system "cmake", ".", *std_cmake_args
-    system "make install"
+    system "make", "install"
   end
 end
 

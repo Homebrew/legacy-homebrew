@@ -1,10 +1,8 @@
-require 'formula'
-
 class LibunwindHeaders < Formula
   desc "C API for determining the call-chain of a program"
-  homepage 'https://opensource.apple.com/'
-  url 'https://opensource.apple.com/tarballs/libunwind/libunwind-35.1.tar.gz'
-  sha1 '86908428aaa0ae6cec5038dc6eeb8b64dbb6cd63'
+  homepage "https://opensource.apple.com/"
+  url "https://opensource.apple.com/tarballs/libunwind/libunwind-35.1.tar.gz"
+  sha256 "d88ecd5c37f0c0c4d18feb9be52e7b2363ef2709cd2eb36e2e205f3226110de1"
 
   bottle do
     cellar :any
@@ -28,8 +26,8 @@ class LibunwindHeaders < Formula
         "Availability.h", "AvailabilityMacros.h"
     end
 
-    include.install Dir['include/*']
-    (include/'libunwind').install Dir['src/*.h*']
-    (include/'libunwind/libunwind_priv.h').unlink
+    include.install Dir["include/*"]
+    (include/"libunwind").install Dir["src/*.h*"]
+    (include/"libunwind/libunwind_priv.h").unlink
   end
 end

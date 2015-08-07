@@ -4,27 +4,27 @@ class BuildOptions
     @options = options
   end
 
-  def include? name
+  def include?(name)
     # Enable --with-default-names by default on Linux.
     # It would be good to add a --without-default-names option.
     return true if OS.linux? && ["default-names", "with-default-names"].include?(name)
     @args.include?("--#{name}")
   end
 
-  def with? val
+  def with?(val)
     name = val.respond_to?(:option_name) ? val.option_name : val
 
     if option_defined? "with-#{name}"
       include? "with-#{name}"
     elsif option_defined? "without-#{name}"
-      not include? "without-#{name}"
+      !include? "without-#{name}"
     else
       false
     end
   end
 
-  def without? name
-    not with? name
+  def without?(name)
+    !with? name
   end
 
   def bottle?
@@ -40,7 +40,7 @@ class BuildOptions
   end
 
   def stable?
-    not (head? or devel?)
+    !(head? || devel?)
   end
 
   # True if the user requested a universal build.
@@ -70,7 +70,7 @@ class BuildOptions
 
   private
 
-  def option_defined? name
+  def option_defined?(name)
     @options.include? name
   end
 end

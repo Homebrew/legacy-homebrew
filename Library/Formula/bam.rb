@@ -2,7 +2,7 @@ class Bam < Formula
   desc "Build system that uses Lua to describe the build process"
   homepage "https://matricks.github.io/bam/"
   url "https://github.com/downloads/matricks/bam/bam-0.4.0.tar.gz"
-  sha1 "c0f32ff9272d5552e02a9d68fbdd72106437ee69"
+  sha256 "5e4e4920b4d265da582f66774e9b1ec8ddfbe75ddc028fba86c12f686ea18db3"
 
   head "https://github.com/matricks/bam.git"
 

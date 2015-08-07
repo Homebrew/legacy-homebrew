@@ -1,10 +1,8 @@
-require 'formula'
-
 class Udns < Formula
   desc "DNS resolver library"
-  homepage 'http://www.corpit.ru/mjt/udns.html'
-  url 'http://www.corpit.ru/mjt/udns/udns-0.4.tar.gz'
-  sha1 'ffa0abf9d1654feb64d571b2615d8b70e1dd92ce'
+  homepage "http://www.corpit.ru/mjt/udns.html"
+  url "http://www.corpit.ru/mjt/udns/udns-0.4.tar.gz"
+  sha256 "115108dc791a2f9e99e150012bcb459d9095da2dd7d80699b584ac0ac3768710"
 
   # Build target for dylib. See:
   # http://www.corpit.ru/pipermail/udns/2011q3/000154.html
@@ -13,7 +11,7 @@ class Udns < Formula
   def install
     system "./configure"
     system "make"
-    system "make dylib"
+    system "make", "dylib"
 
     bin.install "dnsget", "rblcheck"
     doc.install "NOTES", "TODO", "ex-rdns.c"

@@ -1,5 +1,3 @@
-require "formula"
-
 class Fleetctl < Formula
   desc "Distributed init system"
   homepage "https://github.com/coreos/fleet"

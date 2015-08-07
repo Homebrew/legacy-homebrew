@@ -1,14 +1,14 @@
 class Pgcli < Formula
   desc "CLI for Postgres with auto-completion and syntax highlighting"
   homepage "http://pgcli.com/"
-  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.18.0.tar.gz"
-  sha256 "1d611349894f5925c02fa19613e26b3479783688a7e2e462c4e31596faf507dd"
+  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.19.1.tar.gz"
+  sha256 "0d383203279be0b7fff469b55de88a4ed540290fd6b1292d64aa1f0923b76217"
 
   bottle do
     cellar :any
-    sha256 "1f632816864f0fd689fb2b5ece68f95437ccba5ad122fa43f5863e2c9ee1e70c" => :yosemite
-    sha256 "9d7cd08a0a87549dcb244472fdae896ac797b7a1e0d49036cdc6332577cd67c4" => :mavericks
-    sha256 "0089e8ad741f865040f443d0433664cdf54ef6a702b416f08878dc5d84388ea7" => :mountain_lion
+    sha256 "cfb848bc7c8c55209b8610047d67b2fa21125ff68fc37b2a9cdb30ed70522ce6" => :yosemite
+    sha256 "e8cfd69a6839f114d0b25823d4484a311af1e840c859d63ba5642fcb85bad9ca" => :mavericks
+    sha256 "8a0be06ff9e0194ebd04458ac9c30de1d3b39c103e75ba33050fa06774c38d71" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -26,8 +26,8 @@ class Pgcli < Formula
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.42.tar.gz"
-    sha256 "064184bdc0f040cc7c9fae3715e346112f9d632a292601d5c383cedf3de7de12"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.45.tar.gz"
+    sha256 "553fd2b9169674adacf227ede2e056c2bbd7181a4a3ca614960467c0720997a6"
   end
 
   resource "psycopg2" do

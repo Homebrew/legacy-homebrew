@@ -20,7 +20,7 @@ class Sshguard < Formula
   # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
   patch do
     url "http://sourceforge.net/p/sshguard/bugs/_discuss/thread/3d94b7ef/c062/attachment/sshguard.c.diff"
-    sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
+    sha256 "1bdf1db9e0bd730cfc6926dde683fcf5cd7b420ae003f9ec44dce083fe8eb54b"
   end
 
   def install

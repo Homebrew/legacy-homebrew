@@ -16,7 +16,7 @@ class Pstree < Formula
   end
 
   def install
-    system "make pstree"
+    system "make", "pstree"
     bin.install "pstree"
   end
 

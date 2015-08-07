@@ -1,24 +1,22 @@
-require 'formula'
-
 class Vncsnapshot < Formula
   desc "Command-line utility for taking VNC snapshots"
-  homepage 'http://sourceforge.net/projects/vncsnapshot/'
-  url 'https://downloads.sourceforge.net/project/vncsnapshot/vncsnapshot/1.2a/vncsnapshot-1.2a-src.tar.gz'
-  sha1 '115d9497467e5e5f13df2c108893db3d1d4c51bc'
+  homepage "http://sourceforge.net/projects/vncsnapshot/"
+  url "https://downloads.sourceforge.net/project/vncsnapshot/vncsnapshot/1.2a/vncsnapshot-1.2a-src.tar.gz"
+  sha256 "20f5bdf6939a0454bc3b41e87e41a5f247d7efd1445f4fac360e271ddbea14ee"
 
-  depends_on 'jpeg'
+  depends_on "jpeg"
 
   patch :DATA # remove old PPC __APPLE__ ifdef from sockets.cxx
 
   def install
     # From Ubuntu
-    inreplace 'rfb.h' do |s|
-      s.gsub! /typedef unsigned long CARD32;/, 'typedef unsigned int CARD32;'
+    inreplace "rfb.h" do |s|
+      s.gsub! /typedef unsigned long CARD32;/, "typedef unsigned int CARD32;"
     end
 
     system "make"
-    bin.install 'vncsnapshot', 'vncpasswd'
-    man1.install 'vncsnapshot.man1' => 'vncsnapshot.1'
+    bin.install "vncsnapshot", "vncpasswd"
+    man1.install "vncsnapshot.man1" => "vncsnapshot.1"
   end
 end
 

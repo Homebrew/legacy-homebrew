@@ -1,14 +1,14 @@
-require 'tab'
-require 'os/mac'
-require 'extend/ARGV'
+require "tab"
+require "os/mac"
+require "extend/ARGV"
 
-def built_as_bottle? f
+def built_as_bottle?(f)
   return false unless f.installed?
   tab = Tab.for_keg(f.installed_prefix)
   tab.built_as_bottle
 end
 
-def bottle_file_outdated? f, file
+def bottle_file_outdated?(f, file)
   filename = file.basename.to_s
   return unless f.bottle && filename.match(Pathname::BOTTLE_EXTNAME_RX)
 
@@ -40,13 +40,13 @@ def bottle_tag
   end
 end
 
-def bottle_receipt_path bottle_file
+def bottle_receipt_path(bottle_file)
   Utils.popen_read("tar", "-tzf", bottle_file,
     ("--wildcards" if OS.linux?),
     "*/*/INSTALL_RECEIPT.json").chomp
 end
 
-def bottle_resolve_formula_names bottle_file
+def bottle_resolve_formula_names(bottle_file)
   receipt_file_path = bottle_receipt_path bottle_file
   receipt_file = Utils.popen_read("tar", "-xOzf", bottle_file, receipt_file_path)
   name = receipt_file_path.split("/").first
@@ -61,18 +61,18 @@ def bottle_resolve_formula_names bottle_file
   [name, full_name]
 end
 
-def bottle_resolve_version bottle_file
+def bottle_resolve_version(bottle_file)
   PkgVersion.parse bottle_receipt_path(bottle_file).split("/")[1]
 end
 
 class Bintray
   def self.package(formula_name)
-    formula_name.to_s.gsub "+", "x"
+    formula_name.to_s.tr("+", "x")
   end
 
-  def self.repository(tap=nil)
+  def self.repository(tap = nil)
     return "bottles" if tap.nil? || tap == "Homebrew/homebrew"
-    "bottles-#{tap.sub(/^homebrew\/(homebrew-)?/i, "")}"
+    "bottles-#{tap.sub(%r{^homebrew/(homebrew-)?}i, "")}"
   end
 end
 
