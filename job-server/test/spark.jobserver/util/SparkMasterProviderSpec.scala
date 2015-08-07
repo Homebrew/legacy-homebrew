@@ -38,7 +38,7 @@ class SparkMasterProviderSpec extends FunSpec with Matchers {
     }
 
     it(s"should throw an exception if an invalid class is set as ${SparkMasterProvider.SparkMasterProperty}") {
-      intercept[scala.reflect.internal.MissingRequirementError] {
+      intercept[Exception] {
         val config = ConfigFactory.parseMap(Map(
           "spark.home" -> "/etc/spark",
           "spark.master.provider" -> "not.exists.provider"
