@@ -1,6 +1,6 @@
 class Nrpe < Formula
   desc "Nagios remote plugin executor"
-  homepage "http://www.nagios.org/"
+  homepage "https://www.nagios.org/"
   url "https://downloads.sourceforge.net/project/nagios/nrpe-2.x/nrpe-2.15/nrpe-2.15.tar.gz"
   sha256 "66383b7d367de25ba031d37762d83e2b55de010c573009c6f58270b137131072"
   revision 1
@@ -18,10 +18,13 @@ class Nrpe < Formula
     user  = `id -un`.chomp
     group = `id -gn`.chomp
 
-    inreplace "sample-config/nrpe.cfg.in", "/var/run/nrpe.pid", var+"run/nrpe.pid"
+    (var/"run").mkpath
+    inreplace "sample-config/nrpe.cfg.in", "/var/run/nrpe.pid", var/"run/nrpe.pid"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--libexecdir=#{sbin}",
+                          "--sysconfdir=#{etc}",
                           "--with-nrpe-user=#{user}",
                           "--with-nrpe-group=#{group}",
                           "--with-nagios-user=#{user}",
@@ -34,7 +37,6 @@ class Nrpe < Formula
     system "make", "all"
     system "make", "install"
     system "make", "install-daemon-config"
-    (var+"run").mkpath
   end
 
   def plist; <<-EOS.undent
