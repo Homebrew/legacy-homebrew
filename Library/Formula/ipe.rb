@@ -2,7 +2,6 @@ class Ipe < Formula
   desc "Drawing editor for creating figures in PDF or PS formats"
   homepage "http://ipe.otfried.org/"
   url "https://github.com/otfried/ipe/raw/master/releases/7.1/ipe-7.1.8-src.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.8-src.tar.gz"
   sha256 "6a7b8dfb0a012ef9e96b62c317974d910ab6904bef29ae7636d5ac1cb26fa6ff"
 
   bottle do
