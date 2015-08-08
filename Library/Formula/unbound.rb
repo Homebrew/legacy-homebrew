@@ -22,6 +22,10 @@ class Unbound < Formula
     system "make", "install"
   end
 
+  def post_install
+    inreplace etc/"unbound/unbound.conf", 'username: "unbound"', "username: \"#{ENV["USER"]}\""
+  end
+
   plist_options :startup => true
 
   def plist; <<-EOS.undent
@@ -51,5 +55,9 @@ class Unbound < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system sbin/"unbound-control-setup", "-d", testpath
   end
 end
