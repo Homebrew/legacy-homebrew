@@ -6,9 +6,10 @@ class Bullet < Formula
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
-    sha256 "4dea2d45fd71ae072e95f2e0c85030298ed9789f01e19d8171429e2c89abe8f4" => :yosemite
-    sha256 "891b36d8dc81d0f0335ecb936acdddb4fd0fe1d96352af5b325003230cc40811" => :mavericks
-    sha256 "a2faed86dda67fe343ccbd302a0598dcde27b41868d057f048a27fe80145a4f0" => :mountain_lion
+    cellar :any
+    sha256 "1ea49cb319991969ada6567ffdfa227e2b2a1789371df29ab3468f13e35a1273" => :yosemite
+    sha256 "cac6c51229ea72bb3ba4c174ed302d235a2bd34050e7834ff19af05931ff654b" => :mavericks
+    sha256 "1e3e54e77cba617722599ccb0dde40b9b7858b054f1d24032fd458d4e0a04030" => :mountain_lion
   end
 
   depends_on "cmake" => :build
