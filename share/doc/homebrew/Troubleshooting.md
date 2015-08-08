@@ -1,5 +1,5 @@
 # Troubleshooting
-**If you saw `Error: uninitialized constant Formulary::HOMEBREW_CORE_FORMULA_REGEX. Please report this bug: ...` don't worry: it's [already been fixed](https://github.com/Homebrew/homebrew/commit/ac5707c37470c25583d8fb712bf5dc04ab91db4b). Please only create an issue (or comment on [the existing one](https://github.com/Homebrew/homebrew/issues/42553) if running `brew update` again doesn't fix it. Thanks!**
+**If you saw `Error: uninitialized constant Formulary::HOMEBREW_CORE_FORMULA_REGEX. Please report this bug: ...` don't worry: it's [already been fixed](https://github.com/Homebrew/homebrew/commit/ac5707c37470c25583d8fb712bf5dc04ab91db4b). Please only create an issue (or comment on [the existing one](https://github.com/Homebrew/homebrew/issues/42553)) if running `brew update` again doesn't fix it. Thanks!**
 
 ## Read this first!
 
