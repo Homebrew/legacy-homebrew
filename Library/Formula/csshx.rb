@@ -10,4 +10,17 @@ class Csshx < Formula
   def install
     bin.install "csshX"
   end
+
+  def caveats
+    s = ""
+
+    if ENV["TMUX"]
+      s << <<-EOS.undent
+        Csshx will fail to run under Tmux. See:
+          https://github.com/brockgr/csshx/issues/61
+      EOS
+    end
+
+    s
+  end
 end
