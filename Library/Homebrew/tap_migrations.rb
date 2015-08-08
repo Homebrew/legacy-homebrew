@@ -53,6 +53,7 @@ TAP_MIGRATIONS = {
   "dwm" => "homebrew/x11",
   "dzen2" => "homebrew/x11",
   "easy-tag" => "homebrew/x11",
+  "echoping" => "homebrew/boneyard",
   "electric-fence" => "homebrew/boneyard",
   "encfs" => "homebrew/fuse",
   "ext2fuse" => "homebrew/fuse",
