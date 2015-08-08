@@ -8,14 +8,13 @@ class AwsCloudsearch < Formula
   depends_on :java => "1.7+"
 
   def install
-    inreplace "bin/cs-cmd", 'LIBDIR="${CS_HOME}/lib"', 'LIBDIR="${CS_HOME}/jars/lib"'
-    (libexec/"jars").install "lib"
-    libexec.install %w[conf help third-party]
+    libexec.install %w[conf help third-party lib]
     bin.install Dir["bin/*"]
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.7+").merge(:CS_HOME => libexec))
   end
 
   test do
-    system "#{bin}/cs-configure-from-batches", "-h"
+    system bin/"cs-configure-from-batches", "-h"
+    system bin/"cs-import-documents", "-h"
   end
 end
