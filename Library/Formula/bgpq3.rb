@@ -18,6 +18,12 @@ class Bgpq3 < Formula
     version "0.1.32-rc5"
   end
 
+  devel do
+    url "https://github.com/snar/bgpq3/archive/0.1.32-rc5.tar.gz"
+    sha256 "80da4ff47cc527f6c2d33eb39e41a11a75e71f85d94ce5e8206d9c6c87107c19"
+    version "0.1.32-rc5"
+  end
+
   # Makefile: upstream has been informed of the patch through email (multiple
   # times) but no plans yet to incorporate it https://github.com/snar/bgpq3/pull/2
   # there was discussion about this patch for 0.1.18 and 0.1.19 as well
