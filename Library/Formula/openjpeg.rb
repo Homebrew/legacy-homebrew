@@ -4,6 +4,7 @@ class Openjpeg < Formula
   url "https://mirrors.kernel.org/debian/pool/main/o/openjpeg/openjpeg_1.5.2.orig.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/o/openjpeg/openjpeg_1.5.2.orig.tar.gz"
   sha256 "aef498a293b4e75fa1ca8e367c3f32ed08e028d3557b069bf8584d0c1346026d"
+  revision 1
 
   head "https://github.com/uclouvain/openjpeg.git", :branch => "openjpeg-1.5"
 
@@ -22,6 +23,9 @@ class Openjpeg < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
+
+    # https://github.com/uclouvain/openjpeg/issues/562
+    (lib/"pkgconfig").install_symlink lib/"pkgconfig/libopenjpeg1.pc" => "libopenjpeg.pc"
   end
 
   test do
