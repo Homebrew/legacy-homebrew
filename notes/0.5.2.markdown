@@ -5,6 +5,7 @@
 * Docker container!!
 * Change `server_start.sh` to use `spark-submit`.  This should fix some edge case bugs.
 * Configurable driver memory (`JOBSERVER_MEMORY`) (@acidghost)
+* Dynamic spark.master provider, for certain HA master environments like Datastax DSE (@RussellSpitzer)
 * Proper cleanup if context is killed while submitting a job (@litao-buptsse)
 * `server_start.sh` - run in foreground (`JOBSERVER_FG`) and change config file (`JOBSERVER_CONFIG`)
 * Be able to accept environment vars in job server config files, eg `master = ${?MY_SPARK_HOST}`   (see the [Typesafe Config docs](https://github.com/typesafehub/config#uses-of-substitutions))
