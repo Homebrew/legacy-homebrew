@@ -44,6 +44,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 | 0.4.1       | 1.1.0         |
 | 0.5.0       | 1.2.0         |
 | 0.5.1       | 1.3.0         |
+| 0.5.2       | 1.3.1         |
 
 For release notes, look in the `notes/` directory.  They should also be up on [ls.implicit.ly](http://ls.implicit.ly/spark-jobserver/spark-jobserver).
 
@@ -154,11 +155,11 @@ In your `build.sbt`, add this to use the job server jar:
 
 	resolvers += "Job Server Bintray" at "https://dl.bintray.com/spark-jobserver/maven"
 
-	libraryDependencies += "spark.jobserver" %% "job-server-api" % "0.5.1" % "provided"
+	libraryDependencies += "spark.jobserver" %% "job-server-api" % "0.5.2" % "provided"
 
 If a SQL or Hive job/context is desired, you also want to pull in `job-server-extras`:
 
-    libraryDependencies += "spark.jobserver" %% "job-server-extras" % "0.5.1" % "provided"
+    libraryDependencies += "spark.jobserver" %% "job-server-extras" % "0.5.2" % "provided"
 
 For most use cases it's better to have the dependencies be "provided" because you don't want SBT assembly to include the whole job server jar.
 
@@ -363,16 +364,12 @@ for instance: `sbt ++2.11.6 job-server/compile`
 
 ### Publishing packages
 
-- Be sure you are in the master project
-- Run `+test` to ensure all tests pass for all scala versions
-- Now just run `+publish` and package will be published to bintray
+In the root project, do `release cross`.
 
 To announce the release on [ls.implicit.ly](http://ls.implicit.ly/), use
 [Herald](https://github.com/n8han/herald#install) after adding release notes in
 the `notes/` dir.  Also regenerate the catalog with `lsWriteVersion` SBT task
 and `lsync`, in project job-server.
-
-TODO: Automate the above steps with `sbt-release`.
 
 ## Contact
 
@@ -385,11 +382,8 @@ Please report bugs/problems to:
 ## License
 Apache 2.0, see LICENSE.md
 
-Copyright(c) 2014, Ooyala, Inc.
-
 ## TODO
 
-- Have server_start.sh use spark-submit (#155, others)  - would help resolve classpath/dependency issues.
 - More debugging for classpath issues
 - Update .g8 template, consider creating Activator template for sample job	
 - Add Swagger support.  See the spray-swagger project.
