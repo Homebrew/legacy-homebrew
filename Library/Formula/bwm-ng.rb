@@ -1,8 +1,8 @@
 class BwmNg < Formula
   desc "Console-based live network and disk I/O bandwidth monitor"
-  homepage "http://www.gropp.org/?id=projects&sub=bwm-ng"
+  homepage "https://www.gropp.org/?id=projects&sub=bwm-ng"
   url "https://github.com/vgropp/bwm-ng/releases/download/v0.6.1/bwm-ng-0.6.1.tar.gz"
-  mirror "http://www.gropp.org/bwm-ng/bwm-ng-0.6.1.tar.gz"
+  mirror "https://www.gropp.org/bwm-ng/bwm-ng-0.6.1.tar.gz"
   sha256 "027cf3c960cd96fc9ffacdf7713df62d0fc55eeef4a1388289f8a62ae5e50df0"
 
   bottle do
