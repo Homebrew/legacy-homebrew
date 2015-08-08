@@ -6,9 +6,11 @@ class Nrpe < Formula
   revision 1
 
   bottle do
-    sha1 "77296b8467517f9f44db6fafcf59ded8ee539cb1" => :yosemite
-    sha1 "b9dc272a925a241b44eb4cbcdbca24875148faa0" => :mavericks
-    sha1 "a9397e15adb111ad52db175cd7d3221f4ae6f863" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "66602b7dff3b178bc40e463dcd32c9f62d3373fe85c8bf1f4e0f4f0a2f242b8a" => :yosemite
+    sha256 "9da1efed0c4792e156388dfafcb679b23a35b358552d76095838deae14de6a86" => :mavericks
+    sha256 "f8db970188a4e10c4cb1610dd32cdb1b45093279ce03bc9ce6f4d19a40b813ec" => :mountain_lion
   end
 
   depends_on "nagios-plugins"
