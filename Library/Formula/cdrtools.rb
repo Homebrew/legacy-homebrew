@@ -13,9 +13,10 @@ class Cdrtools < Formula
   end
 
   bottle do
-    sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
-    sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
-    sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
+    revision 1
+    sha256 "c5961aaef116ae0dd425197550ae59c91f16da2552992de6c44331685dea58b6" => :yosemite
+    sha256 "6dad15e2cfc911cda652271f764b830fe913affc85c1e92407006141594ac267" => :mavericks
+    sha256 "ab6ca1d2649635c76c83343eba34fe89b3720613cdeee5cf2ee82789c6fa0687" => :mountain_lion
   end
 
   devel do
