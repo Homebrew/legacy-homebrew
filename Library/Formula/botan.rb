@@ -10,10 +10,10 @@ class Botan < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "21928e32477150b767937ecfbf8be519c279474eb7273c38475ee39501084977" => :yosemite
-    sha256 "a89a03f87751e838d0e7265fff8f92f19782048b2b17bd0bcadbcef186f4f29f" => :mavericks
-    sha256 "c8899f3e0b379e27e37fd7e3e83bbec52803cce45800c7bf88c509f09a7e520b" => :mountain_lion
+    cellar :any
+    sha256 "8a78b816e7523d9a333bb27f9065af459fe42b1df09095e7bcca49724aedf6ad" => :yosemite
+    sha256 "8f59de29b4f33d1fc7eb17101e6832a8441267e5af4b510bf3ffe253e0e79b99" => :mavericks
+    sha256 "021e96762fd63d37cf932422248e44b0a7fad4fc4928e24c82f075b9e770955a" => :mountain_lion
   end
 
   devel do
