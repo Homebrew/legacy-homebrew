@@ -16,7 +16,8 @@ class Vte3 < Formula
       "--disable-dependency-tracking",
       "--prefix=#{prefix}",
       "--disable-Bsymbolic",
-      "--enable-introspection=yes"
+      "--enable-introspection=yes",
+      "--enable-gnome-pty-helper"
     ]
 
     system "./configure", *args
