@@ -3,23 +3,23 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.1.0-src.tar.gz"
-    sha256 "cb09f443b37ec1b81fe73c04eb413f9f656859cf7d00bc5088008cbc2a63fa8a"
+    url "https://static.rust-lang.org/dist/rustc-1.2.0-src.tar.gz"
+    sha256 "ea6eb983daf2a073df57186a58f0d4ce0e85c711bec13c627a8c85d51b6a6d78"
 
     resource "cargo" do
-      url "https://github.com/rust-lang/cargo.git", :revision => "b030d35d5cf6b35bf8a6bfd218ab4df9d6a86361"
+      url "https://github.com/rust-lang/cargo.git", :revision => "425fd85ffd9d54ac9901bd8f91398679a839928b"
     end
 
     # name includes date to satisfy cache
-    resource "cargo-nightly-2015-06-25" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-06-25/cargo-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "b2e07bbee79cb8ad1e4f91a43cc3d93603e068a46b89bbe934d01ff97bfb0060"
+    resource "cargo-nightly-2015-08-07" do
+      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-08-07/cargo-nightly-x86_64-apple-darwin.tar.gz"
+      sha256 "d52c1e2d6290b9935ffdd2d079303e541cc995735a3f8fc4fa3e83857c384e78"
     end
 
     # name includes date to satisfy cache
-    resource "rustc-nightly-2015-06-25" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/dist/2015-06-25/rustc-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "c4eb0a639b6deb3e2aceb1713afe6570118d1055bf189f1057a839238dbe7165"
+    resource "rustc-nightly-2015-08-07" do
+      url "https://static-rust-lang-org.s3.amazonaws.com/dist/2015-08-07/rustc-nightly-x86_64-apple-darwin.tar.gz"
+      sha256 "18ee0e3ce5d6696f913a5f030d8dc2a5b0b9e81b0d0203da3c609a16eaeb3831"
     end
   end
 
@@ -64,11 +64,11 @@ class Rust < Formula
       cargo_stage_path = pwd
 
       if build.stable?
-        resource("rustc-nightly-2015-06-25").stage do
+        resource("rustc-nightly-2015-08-07").stage do
           system "./install.sh", "--prefix=#{cargo_stage_path}/rustc"
         end
 
-        resource("cargo-nightly-2015-06-25").stage do
+        resource("cargo-nightly-2015-08-07").stage do
           system "./install.sh", "--prefix=#{cargo_stage_path}/target/snapshot/cargo"
           # satisfy make target to skip download
           touch "#{cargo_stage_path}/target/snapshot/cargo/bin/cargo"
