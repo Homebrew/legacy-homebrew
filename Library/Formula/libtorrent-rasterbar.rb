@@ -57,8 +57,7 @@ class LibtorrentRasterbar < Formula
 
   test do
     system ENV.cxx, "-L#{lib}", "-ltorrent-rasterbar",
-           "-I#{Formula["boost"].include}/boost",
-           "-L#{Formula["boost"].lib}/boost/bind", "-lboost_system",
+           "-I#{Formula["boost"].include}/boost", "-lboost_system",
            libexec/"examples/make_torrent.cpp", "-o", "test"
     system "./test", test_fixtures("test.mp3"), "-o", "test.torrent"
     File.exist? testpath/"test.torrent"
