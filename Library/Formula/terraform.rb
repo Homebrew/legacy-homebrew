@@ -162,6 +162,6 @@ class Terraform < Formula
         count = 4
       }
     EOS
-    system "#{bin}/terraform", "plan", "-var", "aws.region=us-west-2", testpath
+    system "#{bin}/terraform", "graph", testpath
   end
 end
