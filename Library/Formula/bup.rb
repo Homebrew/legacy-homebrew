@@ -6,6 +6,13 @@ class Bup < Formula
 
   head "https://github.com/bup/bup.git"
 
+  bottle do
+    cellar :any
+    sha256 "3cf4a28be9d177fe8db9be897981a61fddb98c5b4e98bddc6cc2b5a9967324b0" => :yosemite
+    sha256 "e37ae889d53612d81f29a747367595f8ef17e04aea91aee2a564d452c9b43cc1" => :mavericks
+    sha256 "9c7b4eda48367a6c62786e8c74aa1b455ecc9525a6431d2a2837d13fb592c0f6" => :mountain_lion
+  end
+
   option "with-tests", "Run unit tests after compilation"
   option "with-pandoc", "Build and install the manpages"
 
