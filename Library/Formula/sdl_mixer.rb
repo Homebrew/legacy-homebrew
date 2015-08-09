@@ -16,6 +16,8 @@ class SdlMixer < Formula
   depends_on "pkg-config" => :build
   depends_on "sdl"
   depends_on "flac" => :optional
+  depends_on "fluid-synth" => :optional
+  depends_on "smpeg" => :optional
   depends_on "libmikmod" => :optional
   depends_on "libvorbis" => :optional
 
