@@ -250,14 +250,32 @@ class Formulary
     Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
   end
 
-  def self.tap_paths(name)
+  def self.tap_paths(name, taps=Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"])
     name = name.downcase
-    Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
+    taps.map do |tap|
       Pathname.glob([
         "#{tap}Formula/#{name}.rb",
         "#{tap}HomebrewFormula/#{name}.rb",
         "#{tap}#{name}.rb"
       ]).detect(&:file?)
     end.compact
+  end
+
+  def self.find_with_priority(ref, spec=:stable)
+    possible_pinned_tap_formulae = tap_paths(ref, Dir["#{HOMEBREW_LIBRARY}/PinnedTaps/*/*/"]).map(&:realpath)
+    if possible_pinned_tap_formulae.size > 1
+      raise TapFormulaAmbiguityError.new(ref, possible_pinned_tap_formulae)
+    elsif possible_pinned_tap_formulae.size == 1
+      selected_formula = factory(possible_pinned_tap_formulae.first, spec)
+      if core_path(ref).file?
+        opoo <<-EOS.undent
+          #{ref} is provided by core, but is now shadowed by #{selected_formula.full_name}.
+          To refer to the core formula, use Homebrew/homebrew/#{ref} instead.
+        EOS
+      end
+      selected_formula
+    else
+      factory(ref, spec)
+    end
   end
 end
