@@ -10,6 +10,7 @@ require "software_spec"
 require "install_renamed"
 require "pkg_version"
 require "tap"
+require "formula_renames"
 
 # A formula provides instructions and metadata for Homebrew to install a piece
 # of software. Every Homebrew formula is a {Formula}.
@@ -221,6 +222,21 @@ class Formula
   # A named Resource for the currently active {SoftwareSpec}.
   def resource(name)
     active_spec.resource(name)
+  end
+
+  # An old name for the formula
+  def oldname
+    @oldname ||= if core_formula?
+      if FORMULA_RENAMES && FORMULA_RENAMES.value?(name)
+        FORMULA_RENAMES.to_a.rassoc(name).first
+      end
+    elsif tap?
+      user, repo = tap.split("/")
+      formula_renames = Tap.new(user, repo.sub("homebrew-", "")).formula_renames
+      if formula_renames.value?(name)
+        formula_renames.to_a.rassoc(name).first
+      end
+    end
   end
 
   # The {Resource}s for the currently active {SoftwareSpec}.
@@ -864,6 +880,7 @@ class Formula
       "full_name" => full_name,
       "desc" => desc,
       "homepage" => homepage,
+      "oldname" => oldname,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
         "bottle" => bottle ? true : false,
