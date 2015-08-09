@@ -49,4 +49,24 @@ class Putty < Formula
       man1.install %w[plink.1 pscp.1 psftp.1 puttygen.1]
     end
   end
+
+  test do
+    (testpath/"testing/command.sh").write <<-EOS.undent
+      #!/usr/bin/expect -f
+      set timeout -1
+      spawn #{bin}/puttygen -t rsa -b 4096 -q -o test.key
+      expect -exact "Enter passphrase to save key: "
+      send -- "Homebrew\n"
+      expect -exact "\r
+      Re-enter passphrase to verify: "
+      send -- "Homebrew\n"
+      expect eof
+    EOS
+    chmod 0755, testpath/"testing/command.sh"
+
+    cd "testing" do
+      system "./command.sh"
+      assert File.exist?("test.key")
+    end
+  end
 end
