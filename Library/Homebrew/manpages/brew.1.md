@@ -298,6 +298,13 @@ Note that these flags should only appear after a command.
 
     If no <formulae> are given, check all installed brews.
 
+  * `migrate [--force]` <formulae>:
+    Migrate renamed packages to new name, where <formulae> are old names of
+    packages.
+
+    If `--force` is passed and installed <formulae> have nil tap, then treat
+    them like packages installed from core.
+
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
 
