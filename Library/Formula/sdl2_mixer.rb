@@ -6,17 +6,21 @@ class Sdl2Mixer < Formula
 
   head "http://hg.libsdl.org/SDL_mixer", :using => :hg
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "sdl2"
   depends_on "flac" => :optional
+  depends_on "fluid-synth" => :optional
+  depends_on "smpeg2" => :optional
   depends_on "libmikmod" => :optional
   depends_on "libvorbis" => :optional
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?
     inreplace "SDL2_mixer.pc.in", "@prefix@", HOMEBREW_PREFIX
+
+    ENV["SMPEG_CONFIG"] = "#{Formula["smpeg2"].bin}/smpeg2-config" if build.with? "smpeg2"
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking"
