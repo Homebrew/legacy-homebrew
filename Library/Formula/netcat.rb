@@ -12,4 +12,8 @@ class Netcat < Formula
                           "--infodir=#{info}"
     system "make", "install"
   end
+
+  test do
+    assert_match "HTTP/1.0", pipe_output("#{bin}/nc www.google.com 80", "GET / HTTP/1.0\r\n\r\n")
+  end
 end
