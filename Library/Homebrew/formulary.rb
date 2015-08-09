@@ -1,4 +1,5 @@
 require "digest/md5"
+require "formula_renames"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -141,6 +142,7 @@ class Formulary
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.new user, repo.sub(/^homebrew-/, "")
+      name = @tap.formula_renames.fetch(name, name)
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
       path ||= @tap.path/"#{name}.rb"
 
@@ -212,7 +214,13 @@ class Formulary
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
     when HOMEBREW_CORE_FORMULA_REGEX
-      return FormulaLoader.new($1, core_path($1))
+      name = $1
+      formula_with_that_name = core_path(name)
+      if (newname = FORMULA_RENAMES[name]) && !formula_with_that_name.file?
+        return FormulaLoader.new(newname, core_path(newname))
+      else
+        return FormulaLoader.new(name, formula_with_that_name)
+      end
     when HOMEBREW_TAP_FORMULA_REGEX
       return TapLoader.new(ref)
     end
@@ -231,11 +239,31 @@ class Formulary
       return AliasLoader.new(possible_alias)
     end
 
-    possible_tap_formulae = tap_paths(ref)
+   possible_tap_formulae = tap_paths(ref)
     if possible_tap_formulae.size > 1
       raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
     elsif possible_tap_formulae.size == 1
       return FormulaLoader.new(ref, possible_tap_formulae.first)
+    end
+
+    if newref = FORMULA_RENAMES[ref]
+      formula_with_that_oldname = core_path(newref)
+      if formula_with_that_oldname.file?
+        return FormulaLoader.new(newref, formula_with_that_oldname)
+      end
+    end
+
+    possible_tap_newname_formulae = []
+    Tap.each do |tap|
+      if newref = tap.formula_renames[ref]
+        possible_tap_newname_formulae << "#{tap.name}/#{newref}"
+      end
+    end
+
+    if possible_tap_newname_formulae.size > 1
+      raise TapFormulaWithOldnameAmbiguityError.new(ref, possible_tap_newname_formulae)
+    elsif !possible_tap_newname_formulae.empty?
+      return TapLoader.new(possible_tap_newname_formulae.first)
     end
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
