@@ -4,6 +4,9 @@ class GoogleAppEngine < Formula
   url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.23.zip"
   sha256 "6d4e442d4814dea6a49b39fde8b0a82e228f962c8dcac883fe9ae8fffa6d1c2a"
 
+  conflicts_with "go-app-engine-32", :because => "multiple conflicting files"
+  conflicts_with "go-app-engine-64", :because => "multiple conflicting files"
+
   def install
     cd ".."
     share.install "google_appengine" => name
