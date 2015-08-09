@@ -10,9 +10,10 @@ class Harfbuzz < Formula
     sha256 "42a8ee7134fe0bd07b0c2aad7bde033e7be721dee43970a414764868f6754a15" => :mountain_lion
   end
 
+  option "with-cairo", "Build command-line utilities that depend on Cairo"
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "cairo"
+  depends_on "cairo" => :optional
   depends_on "icu4c" => :recommended
   depends_on "graphite2" => :optional
   depends_on "freetype"
@@ -33,6 +34,7 @@ class Harfbuzz < Formula
 
     args << "--with-icu" if build.with? "icu4c"
     args << "--with-graphite2" if build.with? "graphite2"
+    args << "--with-cairo" if build.with? "cairo"
     system "./configure", *args
     system "make", "install"
   end
