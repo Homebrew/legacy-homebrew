@@ -795,7 +795,7 @@ class FormulaAuditor
       problem "Use the `#{method}` Ruby method instead of `system #{system}`"
     end
 
-    if line =~ /assert .*\.include?/
+    if line =~ /assert [^!]+\.include?/
       problem "Use `assert_match` instead of `assert ...include?`"
     end
 
