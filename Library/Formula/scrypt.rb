@@ -6,9 +6,9 @@ class Scrypt < Formula
 
   bottle do
     cellar :any
-    sha1 "7886f689ff87097389b38de18ecbd6a6122de393" => :mavericks
-    sha1 "ee18f05a2a5f03029eff09112210c9dd91a88be1" => :mountain_lion
-    sha1 "55a0f5c9af71e15f801c1a94252150a356e73b20" => :lion
+    sha256 "2be3e6d53234791bcb7e22b5c7824425259238607ec94c20537a3e8d77865113" => :yosemite
+    sha256 "fffd73cea8ac255b12dfc2ed1a5445f0053e5d8ec0d1f9da55e3a5c64b9f27fd" => :mavericks
+    sha256 "451f8217e0d27b265b6aa7f9752488b7c4986d5dce77e394aeae35361e839bd7" => :mountain_lion
   end
 
   depends_on "openssl"
