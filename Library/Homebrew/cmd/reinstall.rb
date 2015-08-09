@@ -27,7 +27,6 @@ module Homebrew
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install
-    fi.caveats
     fi.finish
   rescue FormulaInstallationAlreadyAttemptedError
     # next

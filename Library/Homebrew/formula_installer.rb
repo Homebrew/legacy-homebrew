@@ -364,7 +364,6 @@ class FormulaInstaller
     fi.prelude
     oh1 "Installing #{formula.full_name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     fi.install
-    fi.caveats
     fi.finish
   rescue Exception
     ignore_interrupts do
@@ -408,6 +407,8 @@ class FormulaInstaller
         post_install
       end
     end
+
+    caveats
 
     ohai "Summary" if verbose? || show_summary_heading?
     puts summary

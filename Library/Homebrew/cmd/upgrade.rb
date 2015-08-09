@@ -67,7 +67,6 @@ module Homebrew
     outdated_keg.unlink if outdated_keg
 
     fi.install
-    fi.caveats
     fi.finish
 
     # If the formula was pinned, and we were force-upgrading it, unpin and
