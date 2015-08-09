@@ -13,7 +13,13 @@ module HomebrewArgvExtension
 
   def formulae
     require "formula"
-    @formulae ||= (downcased_unique_named - casks).map { |name| Formulary.factory(name, spec) }
+    @formulae ||= (downcased_unique_named - casks).map do |name|
+      if name.include?("/") || File.exist?(name)
+        Formulary.factory(name, spec)
+      else
+        Formulary.find_with_priority(name, spec)
+      end
+    end
   end
 
   def resolved_formulae
