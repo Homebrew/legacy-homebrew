@@ -176,7 +176,6 @@ module Homebrew
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install
-    fi.caveats
     fi.finish
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of
