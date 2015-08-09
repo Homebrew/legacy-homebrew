@@ -3,6 +3,7 @@ class Capnp < Formula
   homepage "https://capnproto.org/"
   url "https://capnproto.org/capnproto-c++-0.5.3.tar.gz"
   sha256 "cdb17c792493bdcd4a24bcd196eb09f70ee64c83a3eccb0bc6534ff560536afb"
+  revision 1
 
   bottle do
     cellar :any
@@ -12,16 +13,22 @@ class Capnp < Formula
   end
 
   needs :cxx11
-  depends_on "cmake" => :build
+  option "without-shared", "Disable building shared library variant"
 
   def install
     ENV.cxx11
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "check"
-      system "make", "install"
-    end
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+    ]
+    args << "--disable-shared" if build.without? "shared"
+
+    system "./configure", *args
+    system "make", "check"
+    system "make", "install"
   end
 
   test do
