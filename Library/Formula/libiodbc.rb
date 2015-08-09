@@ -18,7 +18,7 @@ class Libiodbc < Formula
   keg_only :provided_pre_mavericks
 
   def install
-    system "sh",  "./bootstrap.sh"
+    system "sh", "./bootstrap.sh"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
