@@ -7,9 +7,9 @@ class Cheat < Formula
 
   bottle do
     cellar :any
-    sha256 "d9f5898a743c725bcf6619f427c0df4ca29e8092742b7424720ec1f90cb286ea" => :yosemite
-    sha256 "d6a10fadd0f461c9cd49471de8c06cb21efcd80f3e5b175e5acc56735bab4468" => :mavericks
-    sha256 "ade889c77c1bf84693c8ee38daab29e59c2ba94ff44c5db3a4d4ed7b6f522f23" => :mountain_lion
+    sha256 "fd467fb04b87e29cf834b13cea7ec3656006716a7a6525e5533593fb2a933619" => :yosemite
+    sha256 "2013c308fdd0bfa02145ca83764d0b3cdae350853f454f0c1be0ba9dfc29d986" => :mavericks
+    sha256 "f536da0f0676547d9f34a817eb68291589ec1d9a986abd3f38205899ac1cb570" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
