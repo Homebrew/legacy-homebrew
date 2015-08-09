@@ -1,8 +1,9 @@
 class Cfengine < Formula
   desc "Help manage and understand IT infrastructure"
   homepage "https://cfengine.com/"
-  url "https://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.4.tar.gz"
-  sha256 "0df910185e41004a5d9eeb91718d92583508efcf1d19df7caecc7d288dc5a933"
+  url "https://cfengine-package-repos.s3.amazonaws.com/tarballs/cfengine-3.7.0-2.tar.gz"
+  version "3.7.0"
+  sha256 "53e3fcae50b14d29a7a86920e13586cafed4eb5e2d081597dc9a7e34393c7f77"
 
   bottle do
     cellar :any
@@ -13,8 +14,9 @@ class Cfengine < Formula
   end
 
   resource "masterfiles" do
-    url "https://s3.amazonaws.com/cfengine.package-repos/tarballs/masterfiles-3.6.4.tar.gz"
-    sha256 "209e15b1ff83efd77e84a8f255679715d9a85ef171e205bc7dfed8867008ecdd"
+    url "https://cfengine-package-repos.s3.amazonaws.com/tarballs/cfengine-masterfiles-3.7.0-2.tar.gz"
+    version "3.7.0"
+    sha256 "b9bc621484abb7fb06789ce79615e42501af50fdb2af4dadb115edc1b0b0980c"
   end
 
   depends_on "pcre"
@@ -39,6 +41,7 @@ class Cfengine < Formula
   end
 
   test do
-    system "#{bin}/cf-agent", "-V"
+    system bin/"cf-key", "--show-hosts"
+    assert_equal "CFEngine Core #{version}", shell_output("#{bin}/cf-agent -V").chomp
   end
 end
