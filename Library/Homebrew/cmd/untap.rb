@@ -10,6 +10,8 @@ module Homebrew
       raise TapUnavailableError, tap.name unless tap.installed?
       puts "Untapping #{tap}... (#{tap.path.abv})"
 
+      tap.unpin if tap.pinned?
+
       formula_count = tap.formula_files.size
       tap.path.rmtree
       tap.path.dirname.rmdir_if_possible
