@@ -42,7 +42,7 @@ class Gdb < Formula
       "--disable-debug",
       "--disable-dependency-tracking",
       "--with-system-readline",
-      "--with-lzma",
+      "--with-lzma"
     ]
 
     args << "--with-guile" if build.with? "guile"
