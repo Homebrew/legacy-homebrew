@@ -290,6 +290,12 @@ If \fB\-\-pinned\fR is passed, show the versions of pinned formulae, or only the
 If no \fIformulae\fR are given, check all installed brews\.
 .
 .IP "\(bu" 4
+\fBmigrate [\-\-force]\fR \fIformulae\fR: Migrate renamed packages to new name, where \fIformulae\fR are old names of packages\.
+.
+.IP
+If \fB\-\-force\fR is passed and installed \fIformulae\fR have nil tap, then treat them like packages installed from core\.
+.
+.IP "\(bu" 4
 \fBoptions [\-\-compact] [\-\-all] [\-\-installed]\fR \fIformula\fR: Display install options specific to \fIformula\fR\.
 .
 .IP
