@@ -28,6 +28,6 @@ class Socat < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/socat -V")
+    assert_match "HTTP/1.0", pipe_output("#{bin}/socat - tcp:www.google.com:80", "GET / HTTP/1.0\r\n\r\n")
   end
 end
