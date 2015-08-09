@@ -19,4 +19,12 @@ class Fribidi < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.input").write <<-EOS.undent
+      a _lsimple _RteST_o th_oat
+    EOS
+
+    assert_match /a simple TSet that/, shell_output("#{bin}/fribidi --charset=CapRTL --test test.input")
+  end
 end
