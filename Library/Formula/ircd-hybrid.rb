@@ -1,8 +1,8 @@
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.6/ircd-hybrid-8.2.6.tgz"
-  sha256 "c712988ef43081e6d2218e4fe2523fdadf22df2959cf4c878f0625d16da5b79d"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.8/ircd-hybrid-8.2.8.tgz"
+  sha256 "651031ca86c829535ef91ff8a344c36cd5d79d2c6fb4a1c10bbd12a3b8fb2f9f"
 
   bottle do
     sha256 "b0c505ad232ad94432d513595558dd5e92cb73c0f7fdda3a1ead22ea0ca1f84a" => :yosemite
@@ -14,6 +14,8 @@ class IrcdHybrid < Formula
   skip_clean :la
 
   depends_on "openssl"
+
+  conflicts_with "ircd-irc2", :because => "both install an `ircd` binary"
 
   def install
     ENV.j1 # build system trips over itself
