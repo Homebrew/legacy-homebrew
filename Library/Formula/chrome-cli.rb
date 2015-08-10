@@ -29,7 +29,7 @@ class ChromeCli < Formula
     bin.install "build/Release/chrome-cli" => "chrome-canary-cli"
 
     # Chromium builds; see:
-    # https://github.com/prasmussen/chrome-cli/issues/42349
+    # https://github.com/prasmussen/chrome-cli/issues/31
     rm_rf "build"
     inreplace "chrome-cli/App.m", "com.google.Chrome", "org.Chromium.chromium"
     xcodebuild "SDKROOT=", "SYMROOT=build"
