@@ -164,7 +164,13 @@ class Boost < Formula
         return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp", "-std=c++1y", "-lboost_system", "-o", "test"
+    test_args = ["-std=c++1y"]
+    if build.with? "single"
+      test_args << "-lboost_system"
+    else
+      test_args << "-lboost_system-mt"
+    end
+    system ENV.cxx, "test.cpp", *test_args, "-o", "test"
     system "./test"
   end
 end
