@@ -1,9 +1,8 @@
 class ClosureLinter < Formula
   desc "Check JavaScript files for style and documentation"
   homepage "https://developers.google.com/closure/utilities/"
-  url "https://closure-linter.googlecode.com/files/closure_linter-2.3.13.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/c/closure-linter/closure-linter_2.3.13.orig.tar.gz"
-  sha256 "7a1131389855a26be3449ba483ec3af59572859786b06b5ef8b9396440658f5a"
+  url "https://github.com/google/closure-linter/archive/v2.3.19.tar.gz"
+  sha256 "cd472f560be5af80afccbe94c9d9b534f7c30085510961ad408f8a314ea5c4c2"
 
   head "https://github.com/google/closure-linter.git"
 
@@ -37,7 +36,7 @@ class ClosureLinter < Formula
 
   test do
     (testpath/"test.js").write("var test = 1;\n")
-    system "#{bin}/gjslint", "test.js"
+    assert_equal "1 files checked, no errors found.", shell_output("#{bin}/gjslint test.js").chomp
     system "#{bin}/fixjsstyle", "test.js"
   end
 end
