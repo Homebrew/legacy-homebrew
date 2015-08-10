@@ -7,9 +7,9 @@ class ClosureCompiler < Formula
 
   bottle do
     cellar :any
-    sha256 "72e0992ba4be24216a35b4c19a7165f326d1b65ee92e528fab18390fe8e009f1" => :yosemite
-    sha256 "eb17bd8c3de9ece500c9fdfe9c9cb2cf4920c8311f0ca7d649dafecd488e6ebe" => :mavericks
-    sha256 "5c69940a23bc17167ff751a5e65945a08fb01ceaddabb8ea35579289730d819f" => :mountain_lion
+    sha256 "904cc70d5bf207b8e0306b7e2ccbbfbf91732e6ac1ee0f7d55c15e8a45d79644" => :yosemite
+    sha256 "a7e8f3502ce9d1604d75ae1af6293caf8c888d5185d060ae88fdab8cbbc32f94" => :mavericks
+    sha256 "34ab6fa29a3c22ec2951882b0f31e1aef2457b363590e516511dbb5376cd546e" => :mountain_lion
   end
 
   depends_on :ant => :build
