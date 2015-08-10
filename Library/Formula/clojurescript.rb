@@ -8,9 +8,9 @@ class Clojurescript < Formula
 
   bottle do
     cellar :any
-    sha256 "523451b9de06fc49ab0f7a6e2193c105d5ba12fa6e22268c114bfb2afe40bf59" => :yosemite
-    sha256 "d3105232788d6000b37d229ceba4cb872891a78f01b307baf232a7adb6613bbb" => :mavericks
-    sha256 "ce2f3e9931c789cff5dd217432b08167cdfd4670879d597ef2f1d1bab4dcead0" => :mountain_lion
+    sha256 "25a06ff74ef9c2429519df725d5b6f85d8e785fe4667f74151ff015f47d7e620" => :yosemite
+    sha256 "8309cca75c4f58246c87272d6bd0b5a0bb74aefcc76742984caabc00f6b0ced2" => :mavericks
+    sha256 "bf9d97d201956ccef5a5edede53db97ea2a57a5772fed255ad4cdd50ceea530b" => :mountain_lion
   end
 
   def install
