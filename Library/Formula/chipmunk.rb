@@ -1,7 +1,7 @@
 class Chipmunk < Formula
   desc "2D rigid body physics library written in C"
-  homepage "http://chipmunk-physics.net/"
-  url "http://chipmunk-physics.net/release/Chipmunk-7.x/Chipmunk-7.0.1.tgz"
+  homepage "https://chipmunk-physics.net/"
+  url "https://chipmunk-physics.net/release/Chipmunk-7.x/Chipmunk-7.0.1.tgz"
   sha256 "fe54b464777d89882a9f9d3d6deb17189af8bc5d63833b25bb1a7d16c3e69260"
 
   head "https://github.com/slembcke/Chipmunk2D.git"
