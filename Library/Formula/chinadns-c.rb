@@ -17,6 +17,12 @@ class ChinadnsC < Formula
     depends_on "autoconf" => :build
   end
 
+  head do
+    url "https://github.com/clowwindy/ChinaDNS.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"
