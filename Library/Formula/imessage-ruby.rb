@@ -6,6 +6,11 @@ class ImessageRuby < Formula
   head "https://github.com/linjunpop/imessage.git"
 
   def install
+    if MacOS.version <= :mountain_lion
+      onoe "imessage-ruby does not works on OS X older than Mountain Lion"
+      exit(1)
+    end
+
     rake "install", "prefix=#{prefix}"
   end
 
