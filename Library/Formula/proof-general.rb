@@ -6,10 +6,11 @@ class ProofGeneral < Formula
 
   devel do
     url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.3pre150313.tgz"
+    version "4.3pre150313"
     sha256 "6e7095fe76f9d750fff3ee1de2415ed1014d4bacdd4f62192eb99330e7f405cb"
   end
 
-  depends_on :emacs => "23.3"
+  depends_on :emacs => "22.3"
 
   def install
     ENV.j1 # Otherwise lisp compilation can result in 0-byte files
