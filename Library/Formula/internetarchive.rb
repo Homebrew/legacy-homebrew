@@ -2,9 +2,9 @@ require "utils/json"
 
 class Internetarchive < Formula
   desc "Python wrapper for the various Internet Archive APIs"
-  homepage "https://github.com/jjjake/ia-wrapper"
-  url "https://pypi.python.org/packages/source/i/internetarchive/internetarchive-0.7.9.tar.gz"
-  sha256 "4976c8c0b60289e6abe0a893df35403038692df7704ebbf11fddb6590324dd03"
+  homepage "https://github.com/jjjake/internetarchive"
+  url "https://pypi.python.org/packages/source/i/internetarchive/internetarchive-0.8.5.tar.gz"
+  sha256 "2ba5e8db802953b1ac25a73c88d0955df2e4cd947bc664d94d6000003b91f14e"
 
   bottle do
     cellar :any
@@ -39,8 +39,8 @@ class Internetarchive < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.3.0.tar.gz"
-    sha256 "1c1473875d846fe563d70868acf05b1953a4472f4695b7b3566d1d978957b8fc"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
+    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
   end
 
   resource "py" do
@@ -58,10 +58,30 @@ class Internetarchive < Formula
     sha256 "43d725fb21d31740b4af177d482d9ae53fe23daccb13b2b7da2113fe80b3191e"
   end
 
+  resource "ujson" do
+    url "https://pypi.python.org/packages/source/u/ujson/ujson-1.33.zip"
+    sha256 "68cf825f227c82e1ac61e423cfcad923ff734c27b5bdd7174495d162c42c602b"
+  end
+
+  resource "cython" do
+    url "https://pypi.python.org/packages/source/C/Cython/Cython-0.18.tar.gz"
+    sha256 "cf4ad7faed6bcfdb76da42492ce26ebf927129da3d4849d6982dd2e843d7de8c"
+  end
+
+  resource "greenlet" do
+    url "https://pypi.python.org/packages/source/g/greenlet/greenlet-0.4.7.zip"
+    sha256 "f32c4fa4e06443e1bdb0d32b69e7617c25ff772c3ffc6d0aa63d192e9fd795fe"
+  end
+
+  resource "gevent" do
+    url "https://pypi.python.org/packages/source/g/gevent/gevent-1.0.tar.gz"
+    sha256 "bfa9d846db91a7d8b6a36e87353eed641c7e3e7d0bfa0b9975796d227f2db4eb"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[PyYAML args clint six docopt requests py pytest jsonpatch].each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
