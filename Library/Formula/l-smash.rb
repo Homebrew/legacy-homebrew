@@ -8,9 +8,9 @@ class LSmash < Formula
 
   bottle do
     cellar :any
-    sha1 "468918e2a5008899f0630ce2a5cfc39e7cef7f77" => :mavericks
-    sha1 "174bb9962f8d81a3d2f5914eeca9dd8a8a5e4557" => :mountain_lion
-    sha1 "d39f42b173264a333e0d90298713e280ec892452" => :lion
+    sha256 "3703bdeb1dfe66aef898e60a990f4e64f0ab3c1fe26a49cf824b3c6998acaacc" => :yosemite
+    sha256 "78c5c52a90e1609694b43a45240126515f97be8a1d129a57215d4a7ba9e3717f" => :mavericks
+    sha256 "5e2cd2ae65a0aeb7d1429f18fbd41dd7bdbfc03fcd10f320e41fc0cf6c95aef4" => :mountain_lion
   end
 
   def install
