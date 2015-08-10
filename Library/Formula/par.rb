@@ -12,6 +12,8 @@ class Par < Formula
     sha1 "9e4409e4e71a8f6b45ca1e38e53b257d69a3decd" => :mountain_lion
   end
 
+  conflicts_with "rancid", :because => "both install `par` binaries"
+
   # A patch by Jérôme Pouiller that adds support for multibyte
   # charsets (like UTF-8), plus Debian packaging.
   patch do
