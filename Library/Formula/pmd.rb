@@ -1,8 +1,8 @@
 class Pmd < Formula
   desc "Source code analyzer for Java, JavaScript, and more"
   homepage "http://pmd.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/pmd/pmd/5.3.2/pmd-src-5.3.2.zip"
-  sha256 "721d0fbfe970d6507233517c92c4541ffa7490d8f7bf1b1ed8dafc28e5abc5b9"
+  url "https://github.com/pmd/pmd/releases/download/pmd_releases/5.3.3/pmd-src-5.3.3.zip"
+  sha256 "38004ea3274d2f71701f438606a4c4095b7a86110e8d7f2a8940170c9bd5ddbb"
 
   depends_on "maven" => :build
 
