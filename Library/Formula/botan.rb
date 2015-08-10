@@ -21,6 +21,11 @@ class Botan < Formula
     sha256 "4b0f3be4262bdc71629ea4a38e2ed85ff53e573054ad84ba37d65fc1477b3028"
   end
 
+  devel do
+    url "http://botan.randombit.net/releases/Botan-1.11.19.tgz"
+    sha256 "4b0f3be4262bdc71629ea4a38e2ed85ff53e573054ad84ba37d65fc1477b3028"
+  end
+
   option "with-debug", "Enable debug build of Botan"
 
   deprecated_option "enable-debug" => "with-debug"
