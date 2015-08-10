@@ -4,6 +4,13 @@ class Reop < Formula
   url "http://www.tedunangst.com/flak/files/reop-2.1.0.tgz"
   sha256 "e429c7ff47f130bd465eaa0c23a1783b476bc484d32793592b54a568b55e49af"
 
+  bottle do
+    cellar :any
+    sha256 "8a2d331d09e89bc22a9b629c538354cbb8072a5f0af6f0d1fc240bf02d490532" => :yosemite
+    sha256 "08fef96cf3ded044ad16eeda01bfcc493980c2fbc0b7a8dcede18f94e3b36d15" => :mavericks
+    sha256 "9380d6e814132f02957fbb5256c69fb77cd20a887659e8026cac45cd34dcb057" => :mountain_lion
+  end
+
   depends_on "libsodium"
 
   def install
