@@ -6,9 +6,9 @@ class Clasp < Formula
 
   bottle do
     cellar :any
-    sha256 "d55865143a46df97accfa26272d8e0e126c7aa4b0c7dc47dd792e971563b6f77" => :yosemite
-    sha256 "8cfe71e8a7df4fb78c8a5adfc0cb196e570a92a33684eb8dec10e8306b816fd6" => :mavericks
-    sha256 "8a9687f4b906e97b44f6f865b1f4474a56f92398ff4b7a88f5890b2b95564056" => :mountain_lion
+    sha256 "1cb2579b887870f73fc216c474e841951b01ff26f120273bf536665403f65826" => :yosemite
+    sha256 "06c9bce4ff95e45e4fb78351c658f2d4bbc80fadd2db581e6b9673ec383d4755" => :mavericks
+    sha256 "20058e023ad293199f0c1619953adaea03f84aa25c07f42e3edb9d177447cd52" => :mountain_lion
   end
 
   option "with-mt", "Enable multi-thread support"
