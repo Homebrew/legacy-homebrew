@@ -1,16 +1,15 @@
 class Reop < Formula
   desc "Encrypted keypair management"
   homepage "http://www.tedunangst.com/flak/post/reop"
-  head "https://github.com/tedu/reop.git"
-  url "https://github.com/tedu/reop/archive/1.0.0.tar.gz"
-  sha256 "8c2bf9a0b66e9a43cbcf3291858a97ccdc62736a378cd98aa3d3fc47f5db3798"
-  revision 1
+  url "http://www.tedunangst.com/flak/files/reop-2.1.0.tgz"
+  sha256 "e429c7ff47f130bd465eaa0c23a1783b476bc484d32793592b54a568b55e49af"
 
   depends_on "libsodium"
 
   def install
-    system "make", "-f", "Makefile.osx"
+    system "make", "-f", "GNUmakefile"
     bin.install "reop"
+    man1.install "reop.1"
   end
 
   test do
