@@ -3,8 +3,8 @@ require "language/go"
 class Ghq < Formula
   desc "Remote repository management made easy"
   homepage "https://github.com/motemen/ghq"
-  url "https://github.com/motemen/ghq/archive/v0.7.tar.gz"
-  sha256 "ed71e44d35440236d13b85a176ad352d38f6a22f6de55800c3f6a275030f8123"
+  url "https://github.com/motemen/ghq/archive/v0.7.1.tar.gz"
+  sha256 "c43c469e47761ca67103c056c79d976933265905bd7ddd662035162532c76fb2"
 
   head "https://github.com/motemen/ghq.git"
 
@@ -32,7 +32,7 @@ class Ghq < Formula
   end
 
   go_resource "github.com/daviddengcn/go-colortext" do
-    url "https://github.com/daviddengcn/go-colortext.git", :revision => "13eaeb896f5985a1ab74ddea58707a73d875ba57"
+    url "https://github.com/daviddengcn/go-colortext.git", :revision => "3b18c8575a432453d41fdafb340099fff5bba2f7"
   end
 
   def install
