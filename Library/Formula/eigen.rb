@@ -6,9 +6,9 @@ class Eigen < Formula
 
   bottle do
     cellar :any
-    sha1 "24b12f960b5d1b29814baee5d4ffd1f070d82b93" => :yosemite
-    sha1 "4aeb1dc9374989f6721e655a51443c5fd92770bf" => :mavericks
-    sha1 "69d4e8c691887006dfdae968ea8650c11cff3b51" => :mountain_lion
+    sha256 "6f3d26b12625d87f96a92c0c14745c444889377d7990aed6d43ae373e5647f42" => :yosemite
+    sha256 "38a61f7b2d6926411b14bf93b685d35ba8648993f1f35e3fe98c024de811e310" => :mavericks
+    sha256 "96ae43217989839b2adbc41dd43a4a02dd6346b4847b93935c5dc481091a7585" => :mountain_lion
   end
 
   head "https://bitbucket.org/eigen/eigen", :using => :hg
