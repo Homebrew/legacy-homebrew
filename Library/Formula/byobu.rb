@@ -10,6 +10,8 @@ class Byobu < Formula
     sha256 "85c10105b1d5a4b6b1ed3161c755643070fbd446547dbeac44bb4388ecd00669" => :mountain_lion
   end
 
+  conflicts_with "ctail", :because => "both install `ctail` binaries"
+
   depends_on "coreutils"
   depends_on "gnu-sed" # fails with BSD sed
   depends_on "tmux"
