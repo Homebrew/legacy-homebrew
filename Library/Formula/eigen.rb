@@ -21,8 +21,6 @@ class Eigen < Formula
     ENV.universal_binary if build.universal?
     mkdir "eigen-build" do
       args = std_cmake_args
-      args.delete "-DCMAKE_BUILD_TYPE=None"
-      args << "-DCMAKE_BUILD_TYPE=Release"
       args << "-Dpkg_config_libdir=#{lib}" << ".."
       system "cmake", *args
       system "make", "install"
