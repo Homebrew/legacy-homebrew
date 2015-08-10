@@ -1052,7 +1052,8 @@ class ResourceAuditor
            %r{^http://mirrors\.kernel\.org/},
            %r{^http://([^/]*\.|)bintray\.com/},
            %r{^http://tools\.ietf\.org/},
-           %r{^http://www\.mirrorservice\.org/}
+           %r{^http://www\.mirrorservice\.org/},
+           %r{^http://launchpad\.net/}
         problem "Please use https:// for #{p}"
       when %r{^http://search\.mcpan\.org/CPAN/(.*)}i
         problem "#{p} should be `https://cpan.metacpan.org/#{$1}`"
