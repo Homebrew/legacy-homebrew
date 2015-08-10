@@ -12,6 +12,7 @@ class Harfbuzz < Formula
   end
 
   option "with-cairo", "Build command-line utilities that depend on Cairo"
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "cairo" => :optional
