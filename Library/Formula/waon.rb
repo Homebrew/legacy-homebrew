@@ -1,6 +1,6 @@
 class Waon < Formula
   desc "Wave-to-notes transcriber"
-  homepage "http://kichiki.github.io/WaoN/"
+  homepage "https://kichiki.github.io/WaoN/"
   url "https://github.com/kichiki/WaoN/archive/v0.11.tar.gz"
   sha256 "75d5c1721632afee55a54bcbba1a444e53b03f4224b03da29317e98aa223c30b"
 
