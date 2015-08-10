@@ -1,9 +1,8 @@
 class Waon < Formula
   desc "Wave-to-notes transcriber"
   homepage "http://kichiki.github.io/WaoN/"
-  url "https://github.com/kichiki/WaoN/archive/0a45b687add1cdbfdefc993554053a2153934e44.tar.gz"
-  version "2013-03-03"
-  sha256 "9e585a4ab38917599e4c376f21e9049c7c94e98892459b61efda866267f6376b"
+  url "https://github.com/kichiki/WaoN/archive/v0.11.tar.gz"
+  sha256 "75d5c1721632afee55a54bcbba1a444e53b03f4224b03da29317e98aa223c30b"
 
   depends_on "fftw"
   depends_on "libsndfile"
