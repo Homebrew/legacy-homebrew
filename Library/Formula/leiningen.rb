@@ -6,8 +6,8 @@ class Leiningen < Formula
   sha256 "37eeb83f45f713e9e1ab79c5f30f378d0173101698c28eee97180c100de4e1bc"
 
   resource "jar" do
-    url "https://github.com/technomancy/leiningen/releases/download/2.5.1/leiningen-2.5.1-standalone.zip", :using => :nounzip
-    sha256 "b475c08f505f58f70839195a70a842dcd9b903b70d8447f45a3de06e0c1f34c7"
+    url "https://github.com/technomancy/leiningen/releases/download/2.5.2/leiningen-2.5.2-standalone.zip", :using => :nounzip
+    sha256 "64c70202dc7989de1b9d8b8b9b99e87dbb7698338e24d25722777412e37e1b62"
   end
 
   def install
