@@ -90,7 +90,7 @@ class Migrator
     # newname's tap is the same as tap to which oldname migrated, then we
     # can perform migrations and the taps for oldname and newname are the same.
     elsif TAP_MIGRATIONS && (rec = TAP_MIGRATIONS[formula.oldname]) \
-          && rec == formula.tap.sub("homebrew-", "")
+        && rec == formula.tap.sub("homebrew-", "") && old_tap == "Homebrew/homebrew"
       fix_tabs
       true
     elsif formula.tap
