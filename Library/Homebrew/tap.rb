@@ -1,3 +1,5 @@
+require "utils/json"
+
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
 # a Github repository with the name of `user/homebrew-repo`. In such
@@ -135,6 +137,15 @@ class Tap
       "command_files" => command_files.map(&:to_s),
       "pinned" => pinned?
     }
+  end
+
+  # Hash with tap formula renames
+  def formula_renames
+    @formula_renames ||= if (rename_file = path/"formula_renames.json").file?
+      Utils::JSON.load(rename_file.read)
+    else
+      {}
+    end
   end
 
   def self.each

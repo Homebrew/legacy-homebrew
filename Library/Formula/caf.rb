@@ -1,6 +1,5 @@
-class Libcppa < Formula
-  # TODO: since libcppa has been renamed to CAF, this formula should eventually
-  # be renamed to 'caf.rb'.
+class Caf < Formula
+  # Renamed from libccpa
   desc "Implementation of the Actor Model for C++"
   homepage "http://actor-framework.org/"
   url "https://github.com/actor-framework/actor-framework/archive/0.14.0.tar.gz"
@@ -15,12 +14,12 @@ class Libcppa < Formula
     sha256 "0ca6c6a6cae249472146a938458464b275b8d409a81ab9ffa36f22c7523d365a" => :mountain_lion
   end
 
-  depends_on "cmake" => :build
-
   needs :cxx11
 
   option "with-opencl", "build with support for OpenCL actors"
   option "without-check", "skip unit tests (not recommended)"
+
+  depends_on "cmake" => :build
 
   def install
     args = %W[./configure --prefix=#{prefix} --no-examples --build-static]
