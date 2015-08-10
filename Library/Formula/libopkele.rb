@@ -16,7 +16,9 @@ class Libopkele < Formula
 
   bottle do
     cellar :any
-    sha1 "7f83e74f921f023c804c0b6956e384289a52ac6a" => :mountain_lion
+    sha256 "57dbb32ce8982e2ad8135917ac1794933edf92b8e2514c16a016bccaaaa1c6aa" => :yosemite
+    sha256 "142d206a9bde1877b84e1206fc0b49c6fa47577510b9b22d8d9d07cf385c54bf" => :mavericks
+    sha256 "87db53d167b5954fea2eaf8fd3a3d051a4fc23494aa1b606d94aabbd2152f4c0" => :mountain_lion
   end
 
   head do
