@@ -99,6 +99,27 @@ class Tap
     Pathname.glob("#{path}/cmd/brew-*").select(&:executable?)
   end
 
+  def pinned_symlink_path
+    HOMEBREW_LIBRARY/"PinnedTaps/#{@name}"
+  end
+
+  def pinned?
+    @pinned ||= pinned_symlink_path.directory?
+  end
+
+  def pin
+    raise TapUnavailableError, name unless installed?
+    raise TapPinStatusError.new(name, true) if pinned?
+    pinned_symlink_path.make_relative_symlink(@path)
+  end
+
+  def unpin
+    raise TapUnavailableError, name unless installed?
+    raise TapPinStatusError.new(name, false) unless pinned?
+    pinned_symlink_path.delete
+    pinned_symlink_path.dirname.rmdir_if_possible
+  end
+
   def to_hash
     {
       "name" => @name,
@@ -111,7 +132,8 @@ class Tap
       "custom_remote" => custom_remote?,
       "formula_names" => formula_names,
       "formula_files" => formula_files.map(&:to_s),
-      "command_files" => command_files.map(&:to_s)
+      "command_files" => command_files.map(&:to_s),
+      "pinned" => pinned?
     }
   end
 

@@ -29,7 +29,11 @@ module Homebrew
       ARGV.named.each_with_index do |f, i|
         puts unless i == 0
         begin
-          info_formula Formulary.factory(f)
+          if f.include?("/") || File.exist?(f)
+            info_formula Formulary.factory(f)
+          else
+            info_formula Formulary.find_with_priority(f)
+          end
         rescue FormulaUnavailableError
           # No formula with this name, try a blacklist lookup
           if (blacklist = blacklisted?(f))
