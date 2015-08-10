@@ -29,7 +29,7 @@ class PythonRequirement < Requirement
     end
 
     if python_binary == "python"
-      ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{version}/site-packages"
+      ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
     end
   end
 
