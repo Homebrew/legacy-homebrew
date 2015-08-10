@@ -11,6 +11,8 @@ class Ctail < Formula
     sha1 "58dbf4d30c8fb951a6c86c892098082627b9e3ee" => :mountain_lion
   end
 
+  conflicts_with "byobu", :because => "both install `ctail` binaries"
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
