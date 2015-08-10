@@ -148,7 +148,7 @@ module Homebrew
   end
 
   def load_tap_migrations
-    load "tap_migrations"
+    load "tap_migrations.rb"
   rescue LoadError
     false
   end
