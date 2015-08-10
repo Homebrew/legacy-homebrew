@@ -8,9 +8,9 @@ class Internetarchive < Formula
 
   bottle do
     cellar :any
-    sha1 "3e2652bc8bb090c55c58465fe3d89112e65f9f9f" => :yosemite
-    sha1 "d6d08b15f7e8a3ab9c1dc79494dec4278cd823c9" => :mavericks
-    sha1 "996ccdd1ee9ec8b5adf4b16063f1f02b2b03ba63" => :mountain_lion
+    sha256 "9b7d0ec74c77c7e8d64f496199c83c9a6b5b986ae4292d073d09fd9dd3b3cee3" => :yosemite
+    sha256 "a76cbf8fb2b26b66aec9d107c8cad3546143f084c78b3fe30f9ea77db98611b8" => :mavericks
+    sha256 "e31e96459aa0c732fa2b39778c863ca2ea1935f36e74548fe93499304cc0ca9a" => :mountain_lion
   end
 
   resource "PyYAML" do
