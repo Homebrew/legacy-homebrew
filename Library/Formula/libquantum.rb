@@ -11,7 +11,25 @@ class Libquantum < Formula
   end
 
   test do
-    # No test
-    system "true"
+    (testpath/"qtest.c").write <<-EOS.undent
+      #include <stdio.h>
+      #include <stdlib.h>
+      #include <time.h>
+      #include <quantum.h>
+
+      int main ()
+      {
+        quantum_reg reg;
+        int result;
+        srand(time(0));
+        reg = quantum_new_qureg(0, 1);
+        quantum_hadamard(0, &reg);
+        result = quantum_bmeasure(0, &reg);
+        printf("The Quantum RNG returned %i!\\n", result);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-O3", "-o", "qtest", "qtest.c", "-lquantum"
+    system testpath/"qtest"
   end
 end
