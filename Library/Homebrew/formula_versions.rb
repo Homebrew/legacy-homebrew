@@ -28,19 +28,16 @@ class FormulaVersions
   end
 
   def formula_at_revision(rev)
-    FileUtils.mktemp(name) do
-      path = Pathname.pwd.join("#{name}.rb")
-      path.write file_contents_at_revision(rev)
+    io = StringIO.new file_contents_at_revision(rev)
 
-      begin
-        nostdout { yield Formulary.factory(path.to_s) }
-      rescue *IGNORED_EXCEPTIONS => e
-        # We rescue these so that we can skip bad versions and
-        # continue walking the history
-        ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
-      rescue FormulaUnavailableError
-        # Suppress this error
-      end
+    begin
+      nostdout { yield Formulary.from_io(name, io) }
+    rescue *IGNORED_EXCEPTIONS => e
+      # We rescue these so that we can skip bad versions and
+      # continue walking the history
+      ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
+    rescue FormulaUnavailableError
+      # Suppress this error
     end
   end
 

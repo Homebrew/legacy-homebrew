@@ -14,11 +14,15 @@ class Formulary
     FORMULAE.fetch(path)
   end
 
-  def self.load_formula(name, path)
+  def self.load_formula_from_path(name, path)
+    path.open("r") { |f| load_formula(name, path, f) }
+  end
+
+  def self.load_formula(name, path, io)
     mod = Module.new
     const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
-    contents = path.open("r") { |f| set_encoding(f).read }
-    mod.module_eval(contents, path)
+    content = set_encoding(io).read
+    mod.module_eval(content, path.to_s)
     class_name = class_s(name)
 
     begin
@@ -75,7 +79,7 @@ class Formulary
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
       raise FormulaUnavailableError.new(name) unless path.file?
-      Formulary.load_formula(name, path)
+      Formulary.load_formula_from_path(name, path)
     end
   end
 
@@ -112,6 +116,24 @@ class Formulary
     def initialize(path)
       path = Pathname.new(path).expand_path
       super path.basename(".rb").to_s, path
+    end
+  end
+
+  # Loads formulae from IO object
+  class FromIOLoader < FormulaLoader
+    def initialize name, io
+      @name = name
+      @path = io.inspect
+      @io = io
+    end
+
+    def get_formula(spec)
+      klass.new(name, Pathname.new("/dev/null"), spec)
+    end
+
+    def load_file
+      STDERR.puts "#{$0} (#{self.class.name}): loading #{@io.inspect}" if ARGV.debug?
+      Formulary.load_formula(@name, @io.inspect, @io)
     end
   end
 
@@ -191,6 +213,11 @@ class Formulary
     else
       factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
     end
+  end
+
+  # Return a Formula instance for the given name and io.
+  def self.from_io(name, io, spec=:stable)
+    FromIOLoader.new(name, io).get_formula(spec)
   end
 
   def self.canonical_name(ref)
