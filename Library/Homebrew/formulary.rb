@@ -196,21 +196,14 @@ class Formulary
   end
 
   def self.to_rack(ref)
-    name = canonical_name(ref)
-    rack = HOMEBREW_CELLAR/name
-
-    # Handle the case when ref is an old name and the installation
-    # hasn't been migrated or when it's a package installed from
-    # path but same name formula was renamed.
-    unless rack.directory?
-      if ref =~ HOMEBREW_TAP_FORMULA_REGEX
-        rack = HOMEBREW_CELLAR/$3
-      elsif !ref.include?("/")
-        rack = HOMEBREW_CELLAR/ref
-      end
+    # First, check whether the rack with the given name exists.
+    if (rack = HOMEBREW_CELLAR/File.basename(ref, ".rb")).directory?
+      return rack
     end
 
-    rack
+    # Second, use canonical name to locate rack.
+    name = canonical_name(ref)
+    HOMEBREW_CELLAR/name
   end
 
   def self.canonical_name(ref)
