@@ -1,4 +1,4 @@
-class Imessage < Formula
+class ImessageRuby < Formula
   desc "Command-line tool to send iMessage"
   homepage "https://github.com/linjunpop/imessage"
   url "https://github.com/linjunpop/imessage/archive/v0.2.0.tar.gz"
