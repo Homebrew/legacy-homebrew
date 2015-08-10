@@ -15,7 +15,7 @@ class BzrFastimport < Formula
   depends_on "bazaar"
 
   resource "python-fastimport" do
-    url "http://launchpad.net/python-fastimport/trunk/0.9.0/+download/python-fastimport-0.9.0.tar.gz"
+    url "https://launchpad.net/python-fastimport/trunk/0.9.0/+download/python-fastimport-0.9.0.tar.gz"
     sha256 "07d1d3800b1cfaa820b62c5a88c40cc7e32be9b14d9c6d3298721f32df8e1dec"
   end
 
