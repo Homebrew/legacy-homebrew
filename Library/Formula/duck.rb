@@ -7,9 +7,9 @@ class Duck < Formula
 
   bottle do
     cellar :any
-    sha256 "bfe86da78894f372c068519d0ad4c460bc30f575fa7d340fc598ca8347b959c2" => :yosemite
-    sha256 "815df4596b0403106df8a896c250af44b76ecaf1670a239b97a7c5926ce95d71" => :mavericks
-    sha256 "e0183f13dcf4caa7522b25896708ad2ba1de370749eae07a0216c44b408f6223" => :mountain_lion
+    sha256 "1cf4fd37421f57153d17789025ad2b95909e009e8507226d3e33457474f47121" => :yosemite
+    sha256 "0be31b18470ab4fe70bedbaa730ca1de5204355c2ddd3d114ad4763afdf611f0" => :mavericks
+    sha256 "b2a3135eee96ba4ab7d66b049f16467e61c6cb69a6bbfd98b32c46ef570be9f0" => :mountain_lion
   end
 
   depends_on :java => ["1.7+", :build]
