@@ -4,8 +4,8 @@ class Uwsgi < Formula
   head "https://github.com/unbit/uwsgi.git"
 
   stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.10.tar.gz"
-    sha256 "c0b381d6c22da931e85e3efe612629fe33a01ac25b0f028aa631b85d86d5028b"
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.11.1.tar.gz"
+    sha256 "75a7d3138cfa9cd81a760c2f8a43f3d80961edc8e4f27043dc1412206c926287"
   end
 
   bottle do
@@ -156,5 +156,25 @@ class Uwsgi < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (testpath/"helloworld.py").write <<-EOS.undent
+      def application(env, start_response):
+        start_response('200 OK', [('Content-Type','text/html')])
+        return [b"Hello World"]
+    EOS
+
+    pid = fork do
+      exec "#{bin}/uwsgi --http-socket 127.0.0.1:8080 --protocol=http --plugin python -w helloworld"
+    end
+    sleep 2
+
+    begin
+      assert_match /Hello World/, shell_output("curl localhost:8080")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
