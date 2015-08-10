@@ -567,10 +567,6 @@ class FormulaAuditor
        Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
       EOS
     end
-
-    if text =~ /system "npm", "install"/ && text !~ /"HOME"/
-      problem "Please add ENV[\"HOME\"] = buildpath/\".brew_home\" to def install"
-    end
   end
 
   def audit_line(line, lineno)
