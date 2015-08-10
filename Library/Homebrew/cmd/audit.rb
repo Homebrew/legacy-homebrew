@@ -438,7 +438,8 @@ class FormulaAuditor
          %r{^http://[^/.]+\.ietf\.org},
          %r{^http://[^/.]+\.tools\.ietf\.org},
          %r{^http://www\.gnu\.org/},
-         %r{^http://code\.google\.com/}
+         %r{^http://code\.google\.com/},
+         %r{^http://bitbucket\.org/}
       problem "Please use https:// for #{homepage}"
     end
 
@@ -1059,7 +1060,8 @@ class ResourceAuditor
            %r{^http://([^/]*\.|)bintray\.com/},
            %r{^http://tools\.ietf\.org/},
            %r{^http://www\.mirrorservice\.org/},
-           %r{^http://launchpad\.net/}
+           %r{^http://launchpad\.net/},
+           %r{^http://bitbucket\.org/}
         problem "Please use https:// for #{p}"
       when %r{^http://search\.mcpan\.org/CPAN/(.*)}i
         problem "#{p} should be `https://cpan.metacpan.org/#{$1}`"
