@@ -5,6 +5,13 @@ class Leiningen < Formula
   url "https://github.com/technomancy/leiningen/archive/2.5.2.tar.gz"
   sha256 "50cd21d718603bfa4b6da673696c60482271d310f67b98a794d0413a79121a9d"
 
+  bottle do
+    cellar :any
+    sha256 "5c41d3bd528fc99d527d0061d13189d1d4a1b71727ae03e8963d375b007fb49c" => :yosemite
+    sha256 "fbe674b4a26f6f3c9e23ec86707ae2e07489c1a287269650b592727e6ec167ec" => :mavericks
+    sha256 "cb3fdfcf22220913a2222179f4cc220fbb1b6c04a0ba6f37f8750bacbbf7859a" => :mountain_lion
+  end
+
   resource "jar" do
     url "https://github.com/technomancy/leiningen/releases/download/2.5.2/leiningen-2.5.2-standalone.zip", :using => :nounzip
     sha256 "64c70202dc7989de1b9d8b8b9b99e87dbb7698338e24d25722777412e37e1b62"
