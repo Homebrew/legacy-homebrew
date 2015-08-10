@@ -10,9 +10,9 @@ class Ghq < Formula
 
   bottle do
     cellar :any
-    sha256 "cc9970bbbea096ed290fa88eef327ac552c016c2b1db7d8a7376ffe17538317b" => :yosemite
-    sha256 "dc69157c78931f46074f5456ceb03c1e31f4d96e46ed69dfafb94db80e24dd2c" => :mavericks
-    sha256 "4dbdf8bb2462ddd5ec2f9ecfe37982b25759a19a8ea5d5f8e06fb5fe0dff6a7a" => :mountain_lion
+    sha256 "df6df9c2100ad46586d62233dfdb99401bb5beab42a0d87635419bf439797212" => :yosemite
+    sha256 "80a4db2f17fb2c3614604231921fd867f0a85e2034942c96e1f9d33dd6b1b136" => :mavericks
+    sha256 "7d6e66fef647214c51a79a0759be423e990894c3dc03be45fc654b8e74270148" => :mountain_lion
   end
 
   option "without-completions", "Disable zsh completions"
