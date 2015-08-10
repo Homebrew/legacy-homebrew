@@ -1,10 +1,10 @@
 class Clojurescript < Formula
   desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
+  url "https://github.com/clojure/clojurescript/releases/download/r1.7.48/cljs.jar"
+  version "1.7.48"
+  sha256 "91d56866aa0d91b09673598b37f6cc59682b11f79e25cef4b6d058df87cd54b3"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/releases/download/r3308/cljs.jar", :using => :nounzip
-  sha256 "8ec232b2d5660083cb3038bc6e0f509faee398af7c88d01fe7585f68dd3eeac6"
-  version "r3308"
 
   bottle do
     cellar :any
@@ -14,9 +14,8 @@ class Clojurescript < Formula
   end
 
   def install
-    mv "cljs.jar", "cljs-#{version}.jar"
-    libexec.install "cljs-#{version}.jar"
-    bin.write_jar_script libexec/"cljs-#{version}.jar", "cljsc"
+    libexec.install "cljs.jar"
+    bin.write_jar_script libexec/"cljs.jar", "cljsc"
   end
 
   def caveats; <<-EOS.undent
