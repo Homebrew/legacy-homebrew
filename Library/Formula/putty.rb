@@ -14,6 +14,8 @@ class Putty < Formula
     sha256 "0c3d48155005e602a8c278b9df98d8c2d7df3464c39207b72bbcfdcc0ac6fb83" => :mountain_lion
   end
 
+  conflicts_with "pssh", :because => "both install `pscp` binaries"
+
   head do
     url "svn://svn.tartarus.org/sgt/putty"
     depends_on "halibut" => :build
