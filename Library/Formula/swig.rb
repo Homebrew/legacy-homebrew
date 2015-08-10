@@ -12,6 +12,8 @@ class Swig < Formula
 
   option :universal
 
+  patch :DATA
+
   depends_on "pcre"
 
   def install
@@ -46,3 +48,17 @@ class Swig < Formula
     assert_equal "2", shell_output("ruby run.rb").strip
   end
 end
+__END__
+diff --git a/configure b/configure
+index 8c2c463..eb036e6 100755
+--- a/configure
++++ b/configure
+@@ -7663,7 +7663,7 @@ $as_echo_n "checking for Python lib dir... " >&6; }
+       PYLIBDIR=`($PYTHON -c "import sys; sys.stdout.write(sys.lib)") 2>/dev/null`
+       if test -z "$PYLIBDIR"; then
+         # Fedora patch Python to add sys.lib, for other distros we assume "lib".
+-        PYLIBDIR="lib"
++        PYLIBDIR="$PYPREFIX/lib"
+       fi
+       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PYLIBDIR" >&5
+ $as_echo "$PYLIBDIR" >&6; }
