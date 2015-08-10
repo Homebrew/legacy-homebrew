@@ -77,8 +77,10 @@ class Gauge < Formula
   end
 
   def caveats; <<-EOS.undent
-    Installing gauge with homebrew doesn't install Gauge plugins which are required to run Gauge specs.
-    To install Gauge plugin, please explicitly run `gauge --install <plugin_name>`. Language plugins supported are `java`, `csharp` and `ruby`. Report plugins available are `html-report` and `xml-report`.
+    Installing gauge with homebrew doesn't install plugins required to run Gauge specs.
+    To install Gauge plugin, please explicitly run `gauge --install <plugin_name>`.
+    Language plugins supported are `java`, `csharp` and `ruby`.
+    Report plugins supported are `html-report` and `xml-report`.
   EOS
   end
   test do
