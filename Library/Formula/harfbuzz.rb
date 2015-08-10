@@ -32,7 +32,6 @@ class Harfbuzz < Formula
       --prefix=#{prefix}
       --enable-introspection=yes
       --with-gobject=yes
-      --with-coretext=yes
     ]
 
     args << "--with-icu" if build.with? "icu4c"
