@@ -7,9 +7,9 @@ class Bazaar < Formula
 
   bottle do
     cellar :any
-    sha256 "459e279d7c6292c44924556f47b453ec9849f2e4a7112b681e9c66b7741c4fbe" => :yosemite
-    sha256 "683d52ced08e8899b3da2433ce97ad2cdcd506c80a0de7a9fe1f67c9ff185f43" => :mavericks
-    sha256 "fd13919c93924bf726a1fda442d4a6d6858754fc80b6e278fd43525b7e983147" => :mountain_lion
+    sha256 "29ff8d9c8fe3eee3a2a2172d5247970a68fa8d24c7516ae06bed9b3849259f2c" => :yosemite
+    sha256 "cfda2b2e1b18687428c407155cb2e497563279d861120d0aa3f5a9e886cabf76" => :mavericks
+    sha256 "7aa76616196f64b7a979708bb67703d9e70d4fe74bae55f204c9c844dfe71611" => :mountain_lion
   end
 
   def install
