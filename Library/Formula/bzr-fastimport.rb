@@ -7,9 +7,9 @@ class BzrFastimport < Formula
 
   bottle do
     cellar :any
-    sha256 "d72b41c0aad53a702677d75810369da2ad14a8006bfe46750de3ed2d98ddccbd" => :yosemite
-    sha256 "74e3a541a5e6436475d886a0a438540c31249b9c5d4c48a9111239227a0f8b85" => :mavericks
-    sha256 "e214595d2db088abe607c92f163eec3cf10118c52e00fbc5cf28c4440b33919c" => :mountain_lion
+    sha256 "1155531ccdff247dcf8ab9cae133263199cbd708a1ae6ddc4d6e68133d1ab712" => :yosemite
+    sha256 "d784f0b66db2e31f53f7b21fa5263c3d050b490a45684d0f206c9488ca0335a6" => :mavericks
+    sha256 "fab457013d0f24e2d88b2dd76ad72d6b0101b9356e231bb0255b71866d318259" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
