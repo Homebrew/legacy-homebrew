@@ -5,9 +5,9 @@ class IrcdHybrid < Formula
   sha256 "651031ca86c829535ef91ff8a344c36cd5d79d2c6fb4a1c10bbd12a3b8fb2f9f"
 
   bottle do
-    sha256 "b0c505ad232ad94432d513595558dd5e92cb73c0f7fdda3a1ead22ea0ca1f84a" => :yosemite
-    sha256 "41f6f18ae7b788d87bf0bc65e286547c082ce6189c145c39b08bfb478c8b8249" => :mavericks
-    sha256 "681aa8d8494ed80b13f147d2134acb1d7d3b5daca02d9ebe8fee1e051c09ca6e" => :mountain_lion
+    sha256 "0967877f3d687ece2b7dd5bf132ceadfbed5ecdf003102c17cbb8d061c8ba5c6" => :yosemite
+    sha256 "e723c57f791e6ff5dc0dd6fe7a54f782da0176ce4c750cc7ad8f6d364afaa876" => :mavericks
+    sha256 "e7753f62a75b4fa22603897487352132833b2602d790b1af1e0ab94415e751d2" => :mountain_lion
   end
 
   # ircd-hybrid needs the .la files
