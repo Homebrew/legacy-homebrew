@@ -3,7 +3,7 @@ class Libfixbuf < Formula
   homepage "https://tools.netsa.cert.org/fixbuf/"
   url "https://tools.netsa.cert.org/releases/libfixbuf-1.7.0.tar.gz"
   sha256 "0cb7e29ad5ae9d0186718f325ec12786222794cc25adc2e28707322112e15a3d"
- 
+
   bottle do
     cellar :any
     sha1 "2984798716e4bea8aaeec7e7db201a3867b435f1" => :yosemite
