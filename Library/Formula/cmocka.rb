@@ -6,9 +6,10 @@ class Cmocka < Formula
   sha256 "b36050d7a1224296803d216cba1a9d4c58c31bf308b2d6d6649d61aa5a36753b"
 
   bottle do
-    sha1 "7ce09408d9d5d7b08c19dd7d483058c9fd6bd9fa" => :yosemite
-    sha1 "d9f4f45dd1338eaf3b19d42fc3b5b88f538c997d" => :mavericks
-    sha1 "4e365b5ba01862722e3d91e1c1cdc8d34c6e3e34" => :mountain_lion
+    cellar :any
+    sha256 "33765424588cf149679e394842f6132dbb003913e774bc30d0115294952c3cad" => :yosemite
+    sha256 "28ea3d6de51e920dae544f9b4f36288a04f1ee6215dd34f833c6e98bc43de0f9" => :mavericks
+    sha256 "544f9a2bd42b2a868322cc9942afb191733260bb33e8a2731a53311b6c538d7d" => :mountain_lion
   end
 
   depends_on "cmake" => :build
