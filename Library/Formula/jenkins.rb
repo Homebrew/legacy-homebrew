@@ -1,8 +1,8 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.623/jenkins.war"
-  sha256 "49c0f43f9e18b233de9506e7a23b86e215f76ea9f2b1fc392a5775d137f13f38"
+  url "http://mirrors.jenkins-ci.org/war/1.624/jenkins.war"
+  sha256 "f8be718fe5ca3b025f53c89ddb484e1844995902816f739f93f5d2746e6db48a"
 
   bottle do
     cellar :any
@@ -60,6 +60,16 @@ class Jenkins < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/jenkins --version")
+    pid = fork do
+      exec "#{bin}/jenkins"
+    end
+    sleep 60
+
+    begin
+      assert_match /"mode":"NORMAL"/, shell_output("curl localhost:8080/api/json")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
