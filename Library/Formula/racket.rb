@@ -1,9 +1,9 @@
-class PltRacket < Formula
+class Racket < Formula
   desc "Modern programming language in the Lisp/Scheme family"
   homepage "http://racket-lang.org/"
   url "http://mirror.racket-lang.org/installers/6.2.1/racket-minimal-6.2.1-src-builtpkgs.tgz"
-  sha256 "47eceb5f23ab66a939650fa44dd89ffcb17a6227f58c6bc80e90aa8999c86b36"
   version "6.2.1"
+  sha256 "47eceb5f23ab66a939650fa44dd89ffcb17a6227f58c6bc80e90aa8999c86b36"
 
   bottle do
     sha256 "80af5793e7bfa204023d9151e7cf6094ab9be9fa593287b0d6f0b66d9667baae" => :yosemite
