@@ -252,8 +252,10 @@ module Homebrew
           "diff-tree", "-r", "--name-only", "--diff-filter=#{filter}",
           start_revision, end_revision, "--", path
         ).lines.map do |line|
-          File.basename(line.chomp, ".rb")
-        end
+          file = line.chomp
+          next unless File.extname(file) == ".rb"
+          File.basename(file, ".rb")
+        end.compact
       end
 
       def brew_update
