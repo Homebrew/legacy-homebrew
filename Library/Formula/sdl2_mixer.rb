@@ -1,7 +1,7 @@
 class Sdl2Mixer < Formula
   desc "Sample multi-channel audio mixer library"
-  homepage "http://www.libsdl.org/projects/SDL_mixer/"
-  url "http://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.0.tar.gz"
+  homepage "https://www.libsdl.org/projects/SDL_mixer/"
+  url "https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-2.0.0.tar.gz"
   sha256 "a8ce0e161793791adeff258ca6214267fdd41b3c073d2581cd5265c8646f725b"
 
   bottle do
@@ -11,7 +11,7 @@ class Sdl2Mixer < Formula
     sha256 "b66197fe45e0a83fb658c94c95c5d755ace4fef16fb1d5c94f3b0f68876e0afc" => :mountain_lion
   end
 
-  head "http://hg.libsdl.org/SDL_mixer", :using => :hg
+  head "https://hg.libsdl.org/SDL_mixer", :using => :hg
 
   option :universal
 
