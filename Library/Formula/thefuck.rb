@@ -1,8 +1,8 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.6.tar.gz"
-  sha256 "eae2689c1e1acc0011f8297c38c7c85a9b17bb443b55bf9d273d5f75f63e288c"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.7.tar.gz"
+  sha256 "5486f9244315b83645efd1aaba98d83a74e23ccad8499d24d80a6b64dde850a7"
 
   head "https://github.com/nvbn/thefuck.git"
 
@@ -66,6 +66,13 @@ class Thefuck < Formula
   end
 
   test do
-    assert_match /echo ok/, shell_output(bin/"thefuck echho ok")
+    assert_equal "The Fuck #{version}", shell_output("#{bin}/thefuck --version 2>&1").chomp
+    assert_match /.+TF_ALIAS.+thefuck.+/, shell_output("#{bin}/thefuck --alias").chomp
+    IO.popen("#{bin}/thefuck git branchh 2>&1", "r+") do |pipe|
+      pipe.puts "\n"
+      pipe.close_write
+      assert_match /git branch.+/, pipe.gets.chomp
+      pipe.close
+    end
   end
 end
