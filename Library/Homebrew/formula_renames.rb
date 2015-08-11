@@ -1,3 +1,4 @@
 FORMULA_RENAMES = {
-  "libcppa" => "caf"
+  "libcppa" => "caf",
+  "plt-racket" => "racket"
 }
