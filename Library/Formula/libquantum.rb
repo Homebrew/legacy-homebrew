@@ -30,6 +30,6 @@ class Libquantum < Formula
       }
     EOS
     system ENV.cc, "-O3", "-o", "qtest", "qtest.c", "-lquantum"
-    system testpath/"qtest"
+    system "./qtest"
   end
 end
