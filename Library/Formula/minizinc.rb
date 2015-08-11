@@ -7,9 +7,9 @@ class Minizinc < Formula
 
   bottle do
     cellar :any
-    sha256 "ae9f777c740457c2d5698e339ac0434682f43bbc1e154cf797d586647624e5bf" => :yosemite
-    sha256 "58bf476cbe2181e3a6420aa709ade2aecde6b400a70f291aeb7c3a7e747d1e05" => :mavericks
-    sha256 "d5d00aeaf5f6bb6b3f2cb0d78a29271d98fa73deeb7d939055992f631da78f34" => :mountain_lion
+    sha256 "57ecab3e20c9353ba8e0945c20885469b8e4890f4f931346f27398458c7241dd" => :yosemite
+    sha256 "661e0eb3d7b3cb601ba4a1d08ebc277cfc42ab0d05370a6d9c9989e03abf7dd1" => :mavericks
+    sha256 "6e450774291e5065beaef7337e66869cb698f1cb8bd07089d7d9ffe3188fca96" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
