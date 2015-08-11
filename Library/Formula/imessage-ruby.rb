@@ -5,7 +5,7 @@ class ImessageRuby < Formula
   sha256 "5d67df55a53d0fa657ea439c240a3b322dd0b83a102fa881915569f44431eb00"
   head "https://github.com/linjunpop/imessage.git"
 
-  depends_on :macos => :maverick
+  depends_on :macos => :mavericks
 
   def install
     rake "install", "prefix=#{prefix}"
