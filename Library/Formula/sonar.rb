@@ -1,8 +1,8 @@
 class Sonar < Formula
   desc "Manage code quality"
   homepage "http://www.sonarqube.org/"
-  url "http://dist.sonar.codehaus.org/sonarqube-5.1.1.zip"
-  sha256 "8626ff7b4eaf8aba92856b27ed0cdcea432d5596bd1ac167ec27cce70ad0557f"
+  url "http://dist.sonar.codehaus.org/sonarqube-5.1.2.zip"
+  sha256 "a8d63d837242d0d07c0b3f65cfa9c84d5ae82ee51c6cbb52248bcf0d1bc58491"
 
   bottle do
     cellar :any
