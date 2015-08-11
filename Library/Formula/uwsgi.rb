@@ -9,9 +9,9 @@ class Uwsgi < Formula
   end
 
   bottle do
-    sha256 "85e9a1c89c49f76818c87be4a6a9fe200ccc4ff39d9d788d328702b1463c740f" => :yosemite
-    sha256 "12ce6b55caecc1fb74979e2d3d858dafd9e64805f748d78792e6c87948fb6664" => :mavericks
-    sha256 "9c0a86e07730a797191d06e01b9c30bce6af0edf15cf212be5b3a7ec5ac492fb" => :mountain_lion
+    sha256 "436efd8be3e0436ba29c8bf0d78481509f3e5f0385822dbe39f4990b22695ff9" => :yosemite
+    sha256 "3c2cd79b3dca8a375b4948dcd1ba7639b0485bc16e970b1e280d69eef7d99837" => :mavericks
+    sha256 "82e388d191e58db251720c9b54cafc7f8d09de8924d400971cb5cb2652a18e33" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
