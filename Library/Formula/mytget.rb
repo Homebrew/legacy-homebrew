@@ -15,7 +15,7 @@ class Mytget < Formula
   end
 
   test do
-    system bin/"wytget", "https://google.com"
+    system bin/"mytget", "https://google.com"
   end
 end
 
