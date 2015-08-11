@@ -5,12 +5,9 @@ class ImessageRuby < Formula
   sha256 "5d67df55a53d0fa657ea439c240a3b322dd0b83a102fa881915569f44431eb00"
   head "https://github.com/linjunpop/imessage.git"
 
-  def install
-    if MacOS.version <= :mountain_lion
-      onoe "imessage-ruby does not works on OS X older than Mountain Lion"
-      exit(1)
-    end
+  depends_on :macos => :maverick
 
+  def install
     rake "install", "prefix=#{prefix}"
   end
 
