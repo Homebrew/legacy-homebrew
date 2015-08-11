@@ -98,7 +98,7 @@ Note that these flags should only appear after a command.
     If `--cmake` is passed, create a basic template for a CMake-style build.
 
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
-    will thus not add the SHA-1 to the formula for you.
+    will thus not add the SHA256 to the formula for you.
 
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
