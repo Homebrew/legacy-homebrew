@@ -4,6 +4,7 @@ class Ffmpeg < Formula
   url "https://ffmpeg.org/releases/ffmpeg-2.7.2.tar.bz2"
   sha256 "7ceb7550ad628c526fa6c9ff23fdfb687a62f54d90c4a730998d8c2b417b9ef2"
   head "https://github.com/FFmpeg/FFmpeg.git"
+  revision 1
 
   bottle do
     revision 1
