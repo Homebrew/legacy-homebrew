@@ -26,7 +26,7 @@ class Emacs < Formula
 
   option "with-cocoa", "Build a Cocoa version of emacs"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
-  option "with-libxml2", "Build with libxml2 support"
+  option "without-libxml2", "Don't build with libxml2 support"
 
   deprecated_option "cocoa" => "with-cocoa"
   deprecated_option "keep-ctags" => "with-ctags"
