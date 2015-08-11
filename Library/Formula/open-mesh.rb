@@ -1,8 +1,8 @@
 class OpenMesh < Formula
   desc "Generic data structure to represent and manipulate polygonal meshes"
   homepage "http://openmesh.org"
-  url "http://www.openmesh.org/media/Releases/4.0/OpenMesh-4.0.tar.gz"
-  sha256 "93cdd9a7d41842fba39a6b53ec494d99127302d43e60812697a1397deeeff344"
+  url "http://www.openmesh.org/media/Releases/4.1/OpenMesh-4.1.tar.gz"
+  sha256 "32e8d2218ebcb1c8ad9bd8645dcead26b76ee7d0980fc7a866683ac9860e5f20"
 
   bottle do
     cellar :any
@@ -15,19 +15,6 @@ class OpenMesh < Formula
 
   depends_on "cmake" => :build
   depends_on "qt" => :optional
-
-  # For 4.0 version, when BUILD_APPS=OFF, the fixbundle.cmake will not be
-  # generated for a lacking cmake command `configure_file`.
-  # the oirinal patch for version 3.3 is submitted to openmesh-bounces@lists.rwth-aachen.de on July 8, 2015.
-  # And the bug has been confirmed from upstream by moebius@cs.rwth-aachen.de on July 24.
-  # The cmakelists.txt is patched a little by adding the missing line to
-  # generate the fixbundle file even when build app. option is off. Another way
-  # (cleaner way) is to disable customized target option.
-  patch do
-    url "https://gist.githubusercontent.com/autosquid/d41d6348bbf028c4d6f8/raw/1f9296b81b998e73f9980f7504460fc3bc00b030/CMakeLists.patch"
-    sha256 "19a795c9e0760085944470f5c3baf846edb251be20ff5cc7c24d0e2b47244c36"
-  end
-
 
   def install
     mkdir "build" do
