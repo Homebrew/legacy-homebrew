@@ -1,7 +1,7 @@
 require "language/go"
 
 class Podgen < Formula
-  desc "Static site generator, especially for podcast site. It will generate a web site holding the podcast as well as a itunes compatible rss."
+  desc "Static podcast site generator, especially for itunes podcast."
   homepage "https://github.com/tyrchen/podgen/"
   url "https://github.com/tyrchen/podgen/archive/v0.3.2.tar.gz"
   sha256 "c05c70ae79c437c31cafa0a8d38e7d42636d66d10d804b18480d329eb890e84b"
@@ -86,7 +86,7 @@ class Podgen < Formula
   end
 
   test do
-    system "touch items.yml"
+    File.write("items.yml", "")
     system "#{bin}/podgen", "new"
     assert File.open("items.yml").read.length > 0
   end
