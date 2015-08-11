@@ -8,14 +8,6 @@ class Podgen < Formula
 
   head "https://github.com/tyrchen/podgen.git"
 
-  bottle do
-    cellar :any
-    revision 1
-    sha256 "" => :yosemite
-    sha256 "" => :mavericks
-    sha256 "" => :mountain_lion
-  end
-
   depends_on "go" => :build
 
   go_resource "github.com/codegangsta/inject" do
