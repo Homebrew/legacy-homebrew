@@ -28,7 +28,6 @@ class Znc < Formula
   depends_on "icu4c" => :optional
 
   def install
-    ENV.cxx11
     args = ["--prefix=#{prefix}"]
     args << "--enable-debug" if build.with? "debug"
 
