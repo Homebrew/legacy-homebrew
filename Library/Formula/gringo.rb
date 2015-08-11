@@ -1,8 +1,8 @@
 class Gringo < Formula
   desc "Grounder to translate user-provided logic programs"
   homepage "http://potassco.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/potassco/gringo/4.5.1/gringo-4.5.1-source.tar.gz"
-  sha256 "942be5977070859dc164347368248c1d22c451a55c2fd002081fa9abe0b5c50c"
+  url "https://downloads.sourceforge.net/project/potassco/gringo/4.5.2/gringo-4.5.2-source.tar.gz"
+  sha256 "36d86321c54499cabf498dac0923b39e43c7a248919224a11c2d15e4ecec9d65"
 
   bottle do
     cellar :any
