@@ -1,8 +1,8 @@
 class Mackup < Formula
   desc "Keep your Mac's application settings in sync"
   homepage "https://github.com/lra/mackup"
-  url "https://pypi.python.org/packages/source/m/mackup/mackup-0.8.8.tar.gz"
-  sha256 "26a71b56e68690a64a9a114012411e3ca50560f5af661fbe8ccc944ac70441de"
+  url "https://github.com/lra/mackup/archive/0.8.9.tar.gz"
+  sha256 "9c8a9fe64446256cf86a116296105e2009e8e5c9421512962219690af7372741"
 
   head "https://github.com/lra/mackup.git"
 
