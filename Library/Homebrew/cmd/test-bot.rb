@@ -575,6 +575,7 @@ module Homebrew
     def cleanup_before
       @category = __method__
       return unless ARGV.include? "--cleanup"
+      git "gc", "--auto"
       git "stash"
       git "am", "--abort"
       git "rebase", "--abort"
@@ -604,6 +605,7 @@ module Homebrew
         test "git", "reset", "--hard"
         git "stash", "pop"
         test "brew", "cleanup", "--prune=30"
+        git "gc", "--auto"
       end
 
       FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
