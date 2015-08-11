@@ -59,7 +59,7 @@ module Homebrew
             old_opt.parent.rmdir_if_possible
           end
 
-          lnk.unlink if lnk.exist? && lnk.realpath == rack.realpath
+          link.unlink if link.exist? && link.realpath == rack.realpath
         end
 
         if rack.directory?
