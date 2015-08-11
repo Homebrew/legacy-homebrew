@@ -19,6 +19,42 @@ class Cjdns < Formula
     (share+"test").install "build_darwin/test_testcjdroute_c" => "cjdroute_test"
   end
 
+  def caveats
+    s = <<-EOS.undent
+      !!!IMPORTANT!!!
+      Before using cjdns, you must generate a configuration file and find peers manually.
+      Once you have found eligible peers, use the following command to generate a config that is appropriate for Launchd
+        sudo bash -c "cjdroute --genconf | sed 's@\\"noBackground\\":0@\\"noBackground\\":1@' > /etc/cjdroute.conf"
+    EOS
+  end
+
+  plist_options :manual => "cjdroute"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>sudo</string>
+          <string>bash</string>
+          <string>-c</string>
+          <string>/usr/local/bin/cjdroute &lt; /etc/cjdroute.conf</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>ProcessType</key>
+        <string>Interactive</string>
+      </dict>
+    </plist>
+    EOS
+  end
+
   test do
     system "#{share}/test/cjdroute_test", "all"
   end
