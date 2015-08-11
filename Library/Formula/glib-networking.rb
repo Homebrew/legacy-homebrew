@@ -27,7 +27,11 @@ class GlibNetworking < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--with-ca-certificates=#{etc}/openssl/cert.pem"
+                          "--with-ca-certificates=#{etc}/openssl/cert.pem",
+                          # Remove when p11-kit >= 0.20.7 builds on OSX
+                          # see https://github.com/Homebrew/homebrew/issues/36323
+                          # and https://bugs.freedesktop.org/show_bug.cgi?id=91602
+                          "--without-pkcs11"
     system "make", "install"
 
     # Delete the cache, will regenerate it in post_install
