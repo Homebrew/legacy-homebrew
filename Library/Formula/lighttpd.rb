@@ -124,7 +124,7 @@ class Lighttpd < Formula
         <string>#{opt_bin}/lighttpd</string>
         <string>-D</string>
         <string>-f</string>
-        <string>#{config_path}lighttpd.conf</string>
+        <string>#{config_path}/lighttpd.conf</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
