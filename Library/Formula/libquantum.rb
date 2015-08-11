@@ -9,10 +9,12 @@ class Libquantum < Formula
     sha256 "d8e3c4407076558f87640f1e618501ec85bc5f4c5a84db4117ceaec7105046e5"
   end
 
+  option "with-quobtools", "Install quobtools for debug"
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
-    system "make", "quobtools_install"
+    system "make", "quobtools_install" if build.with? "quobtools"
   end
 
   test do
