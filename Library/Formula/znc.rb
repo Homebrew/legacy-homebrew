@@ -29,6 +29,12 @@ class Znc < Formula
 
   def install
     ENV.cxx11
+    # These need to be set in CXXFLAGS, because ZNC will embed them in its
+    # znc-buildmod script; ZNC's configure script won't add the appropriate
+    # flags itself if they're set in superenv and not in the environment.
+    ENV.append "CXXFLAGS", "-std=c++11"
+    ENV.append "CXXFLAGS", "-stdlib=libc++" if ENV.compiler == :clang
+
     args = ["--prefix=#{prefix}"]
     args << "--enable-debug" if build.with? "debug"
 
