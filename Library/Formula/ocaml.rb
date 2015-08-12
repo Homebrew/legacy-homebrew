@@ -23,9 +23,9 @@ class Ocaml < Formula
 
   bottle do
     cellar :any
-    sha256 "b0a69f73027d6bd6fedea3a4828665b0dd2d10c8b4fd14b427c7b76963dfee40" => :yosemite
-    sha256 "6eaaae269acbe7353b058f12f5f9d52ead4e7921f0e21dffe9aaab6fdf79d23e" => :mavericks
-    sha256 "638b4c9d3cef687b895b24bb9dd0e3f042aa3def5c8446636c0b389196593181" => :mountain_lion
+    sha256 "8b0f9c7ce7b8a710c00f3363709dfa7cee46d2c8d18af6a88affb348eb6a0adb" => :yosemite
+    sha256 "afa78cad62971725b4eab39e9d15bc49b7ae224f42c2a27e2bfbe6fad7b292a9" => :mavericks
+    sha256 "a0fcad6dc20417725ff9fefb0468ead98a6faa0bb4a99a63351171e4b0dc22b1" => :mountain_lion
   end
 
   option "with-x11", "Install with the Graphics module"
