@@ -79,6 +79,10 @@ class Fig < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    
+    # change shebang from system python to env python
+    inreplace libexec/"bin/docker-compose", "#!/usr/bin/python", "#!/usr/bin/env python"
+    
     ln_s bin/"docker-compose", bin/"fig"
   end
 
