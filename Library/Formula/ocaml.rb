@@ -11,7 +11,7 @@
 # - coq
 # - coccinelle
 # - unison
-class ObjectiveCaml < Formula
+class Ocaml < Formula
   desc "General purpose programming language in the ML family"
   homepage "https://ocaml.org/"
   head "http://caml.inria.fr/svn/ocaml/trunk", :using => :svn
