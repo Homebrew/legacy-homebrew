@@ -1,19 +1,9 @@
 class GitSubrepo < Formula
   desc "Git Submodule Alternative"
   homepage "https://github.com/ingydotnet/git-subrepo"
+  url "https://github.com/ingydotnet/git-subrepo/archive/0.2.3.tar.gz"
+  sha256 "c0db888e841e06ae6f5c74dc9bde4e7ef33ce31b46caeb504885d5b85df1ceef"
   head "https://github.com/ingydotnet/git-subrepo.git"
-
-  stable do
-    url "https://github.com/ingydotnet/git-subrepo/archive/0.2.1.tar.gz"
-    sha256 "2caa7f7c50af637b2338f0a6051401e6567ee059dc036eff7d859450a56865f1"
-
-    # Allow symbolic linking of git-subrepo script.
-    # https://github.com/ingydotnet/git-subrepo/issues/75
-    patch do
-      url "https://github.com/a1russell/git-subrepo/commit/393adca1ba49a53d01a8192900f500c4ed53fc27.diff"
-      sha256 "2ba7666fa5eb34e2e84777e7e9fcd1c4a0248400e1af50b10f670a11494b1e17"
-    end
-  end
 
   bottle do
     cellar :any
