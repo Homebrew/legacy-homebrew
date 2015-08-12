@@ -223,7 +223,7 @@ class Migrator
   # Link keg to opt if it was linked before migrating.
   def link_oldname_opt
     if old_opt_record
-      old_opt_record.delete if old_opt_record.symlink? || old_opt_record.exist?
+      old_opt_record.delete if old_opt_record.symlink?
       old_opt_record.make_relative_symlink(formula.installed_prefix)
     end
   end
@@ -241,8 +241,9 @@ class Migrator
   # Remove opt/oldname link if it belongs to newname.
   def unlink_oldname_opt
     return unless old_opt_record
-    if old_opt_record.symlink? && formula.installed_prefix.exist? \
-              && formula.installed_prefix.realpath == old_opt_record.realpath
+    if (old_opt_record.symlink? && old_opt_record.exist?) \
+        && formula.installed_prefix.exist? \
+        && formula.installed_prefix.realpath == old_opt_record.realpath
       old_opt_record.unlink
       old_opt_record.parent.rmdir_if_possible
     end
