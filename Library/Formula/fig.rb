@@ -1,8 +1,8 @@
 class Fig < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.3.3.tar.gz"
-  sha256 "9cf4f02f897ff2f0df6e46e3d46f9f91271856cc52680928d916b0d4c969218f"
+  url "https://github.com/docker/compose/archive/1.4.0.tar.gz"
+  sha256 "96875473fdb1cce1d63c4bc21c2bc9bf620820fb3bdf8c590618965733418115"
 
   bottle do
     revision 1
@@ -20,8 +20,8 @@ class Fig < Formula
   depends_on "boot2docker" => :recommended
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.0.tar.gz"
-    sha256 "ac4c960e84a44f5dbbcee775c46c3a8a194241e37767f60d64aa84d704c95dfd"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
+    sha256 "743f3fc78f6159d14ac603def6470cf1b4edefc04de8b1ad8c349b380b503f50"
   end
 
   resource "pyyaml" do
