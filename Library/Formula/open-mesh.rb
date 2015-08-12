@@ -19,13 +19,15 @@ class OpenMesh < Formula
   def install
     mkdir "build" do
       args = std_cmake_args
+
       if build.with? "qt"
         args << "-DBUILD_APPS=ON"
       else
         args << "-DBUILD_APPS=OFF"
       end
+
       system "cmake", "..", *args
-      system "make install"
+      system "make", "install"
     end
   end
 
@@ -71,6 +73,5 @@ class OpenMesh < Formula
     flags += %W[ -I#{include} -L#{lib} -lOpenMeshCore -lOpenMeshTools]
     system ENV.cxx, "test.cpp", "-o", "test", *flags
     system "./test"
-
   end
 end
