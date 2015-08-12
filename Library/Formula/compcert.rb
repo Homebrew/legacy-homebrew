@@ -1,8 +1,8 @@
 class Compcert < Formula
   desc "CompCert C verified compiler"
   homepage "http://compcert.inria.fr"
-  url "http://compcert.inria.fr/release/compcert-2.4.tgz"
-  sha256 "2afa2be284f02edf749e5054b9edf7a2c8b08fe9d310166ce7658f4e2f0b2be3"
+  url "https://github.com/AbsInt/CompCert/archive/v2.5.tar.gz"
+  sha256 "36847b00fa5436ac8e052489b728adef2bc68064fe22dbdc18bf22256856fd95"
 
   depends_on "objective-caml" => :build
   depends_on "coq" => :build
