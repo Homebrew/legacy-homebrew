@@ -6,9 +6,9 @@ class Sonar < Formula
 
   bottle do
     cellar :any
-    sha256 "5f9746f44899ba83bb3f3fd519b52a0ed6016270e6c0e1b19a1c1c5b8e349fdd" => :yosemite
-    sha256 "3b6dab1eee1a304a01ed3032b712d9425bf424c94bfcda4aef68f7a4e75483af" => :mavericks
-    sha256 "564ac67dc416a49ee68473d820fb02712b011e24e2f125bf6304db56308f6814" => :mountain_lion
+    sha256 "11fb73a3453a40950765be6bf38132b9aff0bdc8cc9b145769203af50b495187" => :yosemite
+    sha256 "0adbea02c047442482e499970016459a02e9178e4372df64105092ce0e6c4455" => :mavericks
+    sha256 "ae1b37b616b16a233a48913b872e26aa5345d5c8ef0daaa6cad4f4e2510eb16b" => :mountain_lion
   end
 
   def install
