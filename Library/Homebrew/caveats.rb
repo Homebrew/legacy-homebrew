@@ -134,6 +134,7 @@ class Caveats
   end
 
   def elisp_caveats
+    return if f.keg_only?
     if keg && keg.elisp_installed?
       <<-EOS.undent
         Emacs Lisp files have been installed to:
