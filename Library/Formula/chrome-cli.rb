@@ -7,10 +7,10 @@ class ChromeCli < Formula
 
   bottle do
     cellar :any
-    revision 3
-    sha256 "cc9183708695b487f989680ece10676dbfdecf7ec1c146fee10c98de4fdbc0d7" => :yosemite
-    sha256 "d4a67b8432b254e6ce98d88abc9e31e1d1a67b4cf15fe75cec476fa4a45de8d5" => :mavericks
-    sha256 "adec26d9c69c62a35aa6c42845f05f567ce5c6c5c170fb7defc315479d3531c1" => :mountain_lion
+    revision 4
+    sha256 "05deec5813a4979652a645737a7ed7868878934f77ee5c4cc27140e11811b2d1" => :yosemite
+    sha256 "4b40b52e047b6b8db966a75155d94d5c42d293c5b8058d1e887eb294e96129c9" => :mavericks
+    sha256 "ccdfa38c03563f671508958ec1be43ef47fa368e3bb7c78743964a809409acba" => :mountain_lion
   end
 
   depends_on :xcode => :build
