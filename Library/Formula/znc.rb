@@ -27,6 +27,8 @@ class Znc < Formula
   depends_on "openssl"
   depends_on "icu4c" => :optional
 
+  needs :cxx11
+
   def install
     ENV.cxx11
     # These need to be set in CXXFLAGS, because ZNC will embed them in its
