@@ -44,8 +44,8 @@ class Internetarchive < Formula
   end
 
   resource "py" do
-    url "https://pypi.python.org/packages/source/p/py/py-1.4.26.tar.gz"
-    sha256 "28dd0b90d29b386afb552efc4e355c889f4639ce93658a7872a2150ece28bb89"
+    url "https://pypi.python.org/packages/source/p/py/py-1.4.30.tar.gz"
+    sha256 "b703e57685ed7c280b1a51c496a4984d83d89def2a930b5e9e5da5a6ca151514"
   end
 
   resource "pytest" do
@@ -58,14 +58,9 @@ class Internetarchive < Formula
     sha256 "43d725fb21d31740b4af177d482d9ae53fe23daccb13b2b7da2113fe80b3191e"
   end
 
-  resource "ujson" do
-    url "https://pypi.python.org/packages/source/u/ujson/ujson-1.33.zip"
-    sha256 "68cf825f227c82e1ac61e423cfcad923ff734c27b5bdd7174495d162c42c602b"
-  end
-
   resource "cython" do
-    url "https://pypi.python.org/packages/source/C/Cython/Cython-0.18.tar.gz"
-    sha256 "cf4ad7faed6bcfdb76da42492ce26ebf927129da3d4849d6982dd2e843d7de8c"
+    url "https://pypi.python.org/packages/source/C/Cython/Cython-0.23.tar.gz"
+    sha256 "9fd01e8301c24fb3ba0411ad8eb16f5d9f9f8e66b1281fbe7aba2a9bd9d343dc"
   end
 
   resource "greenlet" do
@@ -73,12 +68,22 @@ class Internetarchive < Formula
     sha256 "f32c4fa4e06443e1bdb0d32b69e7617c25ff772c3ffc6d0aa63d192e9fd795fe"
   end
 
+  # For "speedups": https://pypi.python.org/pypi/internetarchive, Installation
+  resource "ujson" do
+    url "https://pypi.python.org/packages/source/u/ujson/ujson-1.33.zip"
+    sha256 "68cf825f227c82e1ac61e423cfcad923ff734c27b5bdd7174495d162c42c602b"
+  end
+
+  # For "speedups": https://pypi.python.org/pypi/internetarchive, Installation
   resource "gevent" do
-    url "https://pypi.python.org/packages/source/g/gevent/gevent-1.0.tar.gz"
-    sha256 "bfa9d846db91a7d8b6a36e87353eed641c7e3e7d0bfa0b9975796d227f2db4eb"
+    url "https://pypi.python.org/packages/source/g/gevent/gevent-1.0.2.tar.gz"
+    sha256 "3ae1ca0f533ddcb17aab16ce66b424b3f3b855ff3b9508526915d3c6b73fba31"
   end
 
   def install
+    # Required with Apple clang 7.0.0+/LLVM clang 3.6.0+ for gevent < 1.1.
+    ENV.append "CFLAGS", "-std=gnu99" if ENV.compiler == :clang
+
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
       r.stage do
