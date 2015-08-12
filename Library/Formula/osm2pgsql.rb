@@ -5,9 +5,9 @@ class Osm2pgsql < Formula
   sha256 "45a6768e680a50c416fdae72cf4b26091644947a7ead44c8b7484f2276b2f119"
 
   bottle do
-    sha256 "6b1bc9ca723e3c8bf23c9bb5704fa99205a1037085d408102050da03ac703a5c" => :yosemite
-    sha256 "2835cacfecdbca3f00255cfc5b95107d54fa640e1eb1ca728520f4c252da983f" => :mavericks
-    sha256 "63c279201caf3f6c0359dbe27eb1c2e2a144cdf0cfd130ef6d218b95a9d009fe" => :mountain_lion
+    sha256 "ca63b113b0b300a3bb6c0f8b1426185906806a6ba44ef13a68b01642824f6c0b" => :yosemite
+    sha256 "063f2103411bcd38fe106296e844fd650d1f23dd889adbf919f5ffc290e3e6a5" => :mavericks
+    sha256 "e4cd15756f097fa326e4887027931788a47070a9bc6e574b62eb05085c4dd7e0" => :mountain_lion
   end
 
   depends_on :postgresql
