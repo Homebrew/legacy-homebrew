@@ -6,7 +6,7 @@ class Packer < Formula
 
   # buildscript requires the .git directory be present
   url "https://github.com/mitchellh/packer.git",
-    :tag => "v0.8.2", :revision => "28c80a648c7e35c320530561a00c889837bd6b22"
+    :tag => "v0.8.5", :revision => "60bbe850ef0b7fec19eba1929d83e7267ca1572b"
 
   bottle do
     cellar :any
@@ -30,7 +30,7 @@ class Packer < Formula
 
   go_resource "github.com/hashicorp/atlas-go" do
     url "https://github.com/hashicorp/atlas-go.git",
-      :revision => "1b403631cd2d44764a68a9549874213cf95b285e"
+      :revision => "d1d08e8e25f0659388ede7bb8157aaa4895f5347"
   end
 
   go_resource "github.com/hashicorp/go-checkpoint" do
@@ -43,6 +43,11 @@ class Packer < Formula
       :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
   end
 
+  go_resource "github.com/hashicorp/go-multierror" do
+    url "https://github.com/hashicorp/go-multierror.git",
+      :revision => "56912fb08d85084aa318edcf2bba735b97cf35c5"
+  end
+
   go_resource "github.com/hashicorp/go-version" do
     url "https://github.com/hashicorp/go-version.git",
       :revision => "999359b6b7a041ce16e695d51e92145b83f01087"
@@ -50,7 +55,7 @@ class Packer < Formula
 
   go_resource "github.com/hashicorp/yamux" do
     url "https://github.com/hashicorp/yamux.git",
-      :revision => "b2e55852ddaf823a85c67f798080eb7d08acd71d"
+      :revision => "8e00b30457b1486b012f204b82ec92ae6b547de8"
   end
 
   go_resource "github.com/mitchellh/cli" do
@@ -60,7 +65,7 @@ class Packer < Formula
 
   go_resource "github.com/mitchellh/mapstructure" do
     url "https://github.com/mitchellh/mapstructure.git",
-      :revision => "2caf8efc93669b6c43e0441cdc6aed17546c96f3"
+      :revision => "281073eb9eb092240d33ef253c404f1cca550309"
   end
 
   go_resource "github.com/mitchellh/osext" do
@@ -76,6 +81,11 @@ class Packer < Formula
   go_resource "github.com/mitchellh/prefixedio" do
     url "https://github.com/mitchellh/prefixedio.git",
       :revision => "89d9b535996bf0a185f85b59578f2e245f9e1724"
+  end
+
+  go_resource "github.com/mitchellh/reflectwalk" do
+    url "https://github.com/mitchellh/reflectwalk.git",
+      :revision => "eecf4c70c626c7cfbb95c90195bc34d386c74ac6"
   end
 
   go_resource "code.google.com/p/go.crypto" do
@@ -110,12 +120,12 @@ class Packer < Formula
 
   go_resource "google.golang.org/api" do
     url "https://github.com/google/google-api-go-client.git",
-      :revision => "a09229c13c2f13bbdedf7b31b506cad4c83ef3bf"
+      :revision => "0a735f7ec81c85ce7ec31bf7a67e125ef62266ec"
   end
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "2f677ffe0a128ed6d4e3ecb565e4d29a6c6365da"
+      :revision => "83f1503f771a82af8a31f358eb825e9efb5dae6c"
   end
 
   go_resource "golang.org/x/oauth2" do
@@ -125,22 +135,22 @@ class Packer < Formula
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git",
-      :revision => "d9558e5c97f85372afee28cf2b6059d7d3818919"
+      :revision => "4a71d182556e05375344f3da665304f3d5784ab4"
   end
 
   go_resource "google.golang.org/appengine" do
     url "https://github.com/golang/appengine.git",
-      :revision => "e335b53aaf7a699963a1cfea40b65ee3bf09f711"
+      :revision => "cdd515334b113fdc9b35cb1e7a3b457eeb5ad5cf"
   end
 
   go_resource "google.golang.org/cloud" do
     url "https://github.com/GoogleCloudPlatform/gcloud-golang.git",
-      :revision => "feda659df33f28fe2d0524fad496b4d01a2015af"
+      :revision => "e34a32f9b0ecbc0784865fb2d47f3818c09521d4"
   end
 
   go_resource "github.com/golang/protobuf" do
     url "https://github.com/golang/protobuf.git",
-      :revision => "a1463b958edbdb9d1fa8daa3a0a469bf678a1b89"
+      :revision => "73aaaa9eb61d74fbf7e256ca586a3a565b308eea"
   end
 
   go_resource "github.com/mitchellh/gophercloud-fork-40444fb" do
@@ -179,6 +189,8 @@ class Packer < Formula
   end
 
   def install
+    ENV["XC_OS"] = "darwin"
+    ENV["XC_ARCH"] = MacOS.prefer_64_bit? ? "amd64" : "386"
     ENV["GOPATH"] = buildpath
     # For the gox buildtool used by packer, which doesn't need to
     # get installed permanently
