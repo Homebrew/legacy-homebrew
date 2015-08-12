@@ -131,7 +131,7 @@ class Migrator
       unlink_oldname
       move_to_new_directory
       repin
-      link_newname
+      link_newname if oldkeg_linked?
       link_oldname_opt
       link_oldname_cellar
       update_tabs
@@ -182,7 +182,10 @@ class Migrator
     oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
     keg = Keg.new(formula.installed_prefix)
 
-    if formula.keg_only?
+    # If old_keg wasn't linked then we just optlink a keg.
+    # If old keg wasn't optlinked and linked, we don't call this method at all.
+    # If formula is keg-only we also optlink it.
+    if formula.keg_only? || !old_linked_keg_record
       begin
         keg.optlink
       rescue Keg::LinkError => e
@@ -241,7 +244,7 @@ class Migrator
   # Remove opt/oldname link if it belongs to newname.
   def unlink_oldname_opt
     return unless old_opt_record
-    if (old_opt_record.symlink? && old_opt_record.exist?) \
+    if old_opt_record.symlink? && old_opt_record.exist? \
         && formula.installed_prefix.exist? \
         && formula.installed_prefix.realpath == old_opt_record.realpath
       old_opt_record.unlink
@@ -285,18 +288,27 @@ class Migrator
     end
 
     if oldkeg_linked?
-      begin
-        # The keg used to be linked  and when we backup everything we restore
-        # Cellar/oldname, the target also gets restored, so we are able to
-        # create a keg using its old path
-        keg = Keg.new(Pathname.new(oldkeg.to_s))
-        keg.link
-      rescue Keg::LinkError
-        keg.unlink
-        raise
-      rescue Keg::AlreadyLinkedError
-        keg.unlink
-        retry
+      # The keg used to be linked and when we backup everything we restore
+      # Cellar/oldname, the target also gets restored, so we are able to
+      # create a keg using its old path
+      if old_linked_keg_record
+        begin
+          oldkeg.link
+        rescue Keg::LinkError
+          oldkeg.unlink
+          raise
+        rescue Keg::AlreadyLinkedError
+          oldkeg.unlink
+          retry
+        end
+      else
+        begin
+          oldkeg.optlink
+        rescue Keg::LinkError => e
+          onoe "Failed to create #{formula.opt_prefix}"
+          puts e
+          raise
+        end
       end
     end
   end
