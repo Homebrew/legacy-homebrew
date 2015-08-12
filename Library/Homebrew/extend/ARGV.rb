@@ -207,7 +207,8 @@ module HomebrewArgvExtension
     value "env"
   end
 
-  # collect any supplied build flags into an array for reporting
+  # If the user passes any flags that trigger building over installing from
+  # a bottle, they are collected here and returned as an Array for checking.
   def collect_build_flags
     build_flags = []
 
