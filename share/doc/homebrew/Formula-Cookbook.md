@@ -792,6 +792,11 @@ Generally we'd rather you were specific about what files or directories need to 
       <td><code>/usr/local/Cellar/foo/0.1/share</code></td>
     </tr>
     <tr>
+      <th><code>pkgshare</code></th>
+      <td><code>#{prefix}/share/foo</code></td>
+      <td><code>/usr/local/Cellar/foo/0.1/share/foo</code></td>
+    </tr>
+    <tr>
       <th><code>etc</code></th>
       <td><code>#{HOMEBREW_PREFIX}/etc</code></td>
       <td><code>/usr/local/etc</code></td>
@@ -847,6 +852,7 @@ class Yourformula < Formula
   ...
   option "with-ham", "Description of the option"
   option "without-spam", "Another description"
+
   depends_on "foo" => :optional  # will automatically add a with-foo option
   ...
 ```
