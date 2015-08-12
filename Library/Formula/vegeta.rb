@@ -27,7 +27,7 @@ class Vegeta < Formula
     ENV["CGO_ENABLED"] = "0"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-ldflags", "-X main.Version v5.8.0", "-o", "vegeta"
+    system "go", "build", "-ldflags", "-X main.Version #{version}", "-o", "vegeta"
     bin.install "vegeta"
   end
 
