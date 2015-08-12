@@ -1,4 +1,4 @@
-class GoAppEngine32 < Formula
+class AppEngineGo32 < Formula
   desc "Google App Engine SDK for Go!"
   homepage "https://cloud.google.com/appengine/docs/go/"
   url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_386-1.9.23.zip"
