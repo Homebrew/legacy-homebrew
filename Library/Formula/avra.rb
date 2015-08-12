@@ -5,10 +5,11 @@ class Avra < Formula
   sha256 "a62cbf8662caf9cc4e75da6c634efce402778639202a65eb2d149002c1049712"
 
   bottle do
-    cellar :any
-    sha256 "b3063d26dedacb12dcb20cce18653227d4ba0b6b7de999748f75c8b7bb816ad3" => :yosemite
-    sha256 "c991364ca6331ba74ccc59efb085040d1fb62178e4b8acb69f0fffd255733041" => :mavericks
-    sha256 "256106f07e192dc8d94f1fb21c4b61e1233b3bd79b48353bb514ad42dd6e5e56" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2269beb5581fec707e544f281ae7e5b21250fd0975ee10daed45212aabb31413" => :el_capitan
+    sha256 "8a382baf62c225aef1730ff1c53dd81257cea6da6c43f227b3405b673968e363" => :yosemite
+    sha256 "2e208cec5f270c91c9afc0349236a9abb0622e1e8208c67d25c90f017fcecf65" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -23,7 +24,7 @@ class Avra < Formula
       system "./configure", "--prefix=#{prefix}"
       system "make", "install"
     end
-    (share/"avra").install Dir["includes/*"]
+    pkgshare.install Dir["includes/*"]
   end
 
   test do

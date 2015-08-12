@@ -1,6 +1,15 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
+#!/bin/sh
+# Make sure this shim uses the same Ruby interpreter that is used by Homebrew.
+unset RUBYLIB
+unset RUBYOPT
+if [ -z "$HOMEBREW_RUBY_PATH" ]
+then
+  echo "${0##*/}: The build tool has reset ENV; --env=std required." >&2
+  exit 1
+fi
+exec "$HOMEBREW_RUBY_PATH" -x "$0" "$@"
+#!/usr/bin/env ruby -W0
 
-$:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require "pathname"
 require "set"
 
@@ -151,7 +160,7 @@ class Cmd
       args << arg unless tool =~ /^clang/
     when "-Wno-deprecated-register"
       # older gccs don't support these flags
-      args << arg unless tool =~ /^gcc-4.[02]/
+      args << arg unless tool =~ /^g..-4.[02]/
     when /^-W[alp],/, /^-Wno-/
       args << arg
     when /^-W.*/
@@ -304,7 +313,6 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   ##################################################################### sanity
-  abort "The build-tool has reset ENV. --env=std required." unless ENV["HOMEBREW_BREW_FILE"]
 
   if (cc = ENV["HOMEBREW_CC"]).nil? || cc.empty? || cc == "cc"
     # those values are not allowed

@@ -3,16 +3,23 @@ require "language/go"
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdata.com/time-series-platform/influxdb/"
-  url "https://github.com/influxdb/influxdb/archive/v0.9.6.1.tar.gz"
-  sha256 "4e5e2a83f885d1c531ea538397cef1de94717eab02c7e589b9696f22dd65d3e2"
-
-  head "https://github.com/influxdb/influxdb.git"
+  url "https://github.com/influxdata/influxdb/archive/v0.10.1.tar.gz"
+  sha256 "6a66373006a249cb6ab2a2f33b924694486ee07b1d9096c3f770376d0351b703"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5abab60d9a86c7bcd801ea3883565cad64010bc679d35974206812f4f5383ea1" => :el_capitan
-    sha256 "5fa26bb3d1c3f8e832cc1dcc5fee10b26f2d4f140cb96180d7b26762f7a23327" => :yosemite
-    sha256 "f356125427c3fa3bdc90485d2af6f7399da185b925c9542842b788890c977d1d" => :mavericks
+    sha256 "4ea28e218a7805755ac516094c691f3799257f182abc06c86f6eb5caf1702d6e" => :el_capitan
+    sha256 "0ed3eec3c34d166e063375e4583ca4b9c16fb345d72f60e122749a1c057cb052" => :yosemite
+    sha256 "eff6e107c1e1ad6272464771945855d08c9bf700bafafbabd25f9e90a918a380" => :mavericks
+  end
+
+  head do
+    url "https://github.com/influxdata/influxdb.git"
+
+    go_resource "github.com/influxdata/usage-client" do
+      url "https://github.com/influxdata/usage-client.git",
+      :revision => "475977e68d79883d9c8d67131c84e4241523f452"
+    end
   end
 
   depends_on "go" => :build
@@ -24,22 +31,22 @@ class Influxdb < Formula
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-    :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
+    :revision => "312db06c6c6dbfa9899e58564bacfaa584f18ab7"
   end
 
   go_resource "github.com/armon/go-metrics" do
     url "https://github.com/armon/go-metrics.git",
-    :revision => "06b60999766278efd6d2b5d8418a58c3d5b99e87"
+    :revision => "345426c77237ece5dab0e1605c3e4b35c3f54757"
   end
 
   go_resource "github.com/bmizerany/pat" do
     url "https://github.com/bmizerany/pat.git",
-    :revision => "b8a35001b773c267eb260a691f4e5499a3531600"
+    :revision => "c068ca2f0aacee5ac3681d68e4d0a003b7d1fd2c"
   end
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-    :revision => "b34b35ea8d06bb9ae69d9a349119252e4c1d8ee0"
+    :revision => "2f846c3551b76d7710f159be840d66c3d064abbe"
   end
 
   go_resource "github.com/davecgh/go-spew" do
@@ -59,12 +66,12 @@ class Influxdb < Formula
 
   go_resource "github.com/gogo/protobuf" do
     url "https://github.com/gogo/protobuf.git",
-    :revision => "e492fd34b12d0230755c45aa5fb1e1eea6a84aa9"
+    :revision => "82d16f734d6d871204a3feb1a73cb220cc92574c"
   end
 
   go_resource "github.com/golang/snappy" do
     url "https://github.com/golang/snappy.git",
-    :revision => "723cc1e459b8eea2dea4583200fd60757d40097a"
+    :revision => "d1d908a252c22fd7afd36190d5cffb144aa8f777"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -74,7 +81,7 @@ class Influxdb < Formula
 
   go_resource "github.com/hashicorp/raft" do
     url "https://github.com/hashicorp/raft.git",
-    :revision => "d136cd15dfb7876fd7c89cad1995bc4f19ceb294"
+    :revision => "057b893fd996696719e98b6c44649ea14968c811"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
@@ -104,7 +111,7 @@ class Influxdb < Formula
 
   go_resource "github.com/peterh/liner" do
     url "https://github.com/peterh/liner.git",
-    :revision => "4d47685ab2fd2dbb46c66b831344d558bc4be5b9"
+    :revision => "ad1edfd30321d8f006ccf05f1e0524adeb943060"
   end
 
   go_resource "github.com/rakyll/statik" do
@@ -114,7 +121,7 @@ class Influxdb < Formula
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-    :revision => "7b85b097bf7527677d54d3220065e966a0e3b613"
+    :revision => "1f22c0103821b9390939b6776727195525381532"
   end
 
   go_resource "gopkg.in/fatih/pool.v2" do
@@ -124,16 +131,20 @@ class Influxdb < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
+    if build.head?
+      influxdb_path = buildpath/"src/github.com/influxdata/influxdb"
+    else
+      influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
+    end
     influxdb_path.install Dir["*"]
 
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version=0.10.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.11.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version=0.9.6.1 -X main.branch=0.9.6 -X main.commit=6d3a8603cfdaf1a141779ed88b093dcc5c528e5e", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.10.1 -X main.branch=0.10.0 -X main.commit=b8bb32ecad9808ef00219e7d2469514890a0987a", "./..."
       end
     end
 
@@ -192,22 +203,13 @@ class Influxdb < Formula
     EOS
   end
 
-  def caveats; <<-EOS.undent
-    Config files from old InfluxDB versions are incompatible with version 0.9.
-    If upgrading from a pre-0.9 version, the new configuration file will be named:
-        #{etc}/influxdb.conf.default
-    To generate a new config file:
-        influxd config > influxdb.conf.generated
-    EOS
-  end
-
   test do
     (testpath/"config.toml").write shell_output("influxd config")
     inreplace testpath/"config.toml" do |s|
-      s.gsub! /\/.*\/\.influxdb\/data/, "#{testpath}/influxdb/data"
-      s.gsub! /\/.*\/\.influxdb\/meta/, "#{testpath}/influxdb/meta"
-      s.gsub! /\/.*\/\.influxdb\/hh/, "#{testpath}/influxdb/hh"
-      s.gsub! /\/.*\/\.influxdb\/wal/, "#{testpath}/influxdb/wal"
+      s.gsub! %r{/.*/.influxdb/data}, "#{testpath}/influxdb/data"
+      s.gsub! %r{/.*/.influxdb/meta}, "#{testpath}/influxdb/meta"
+      s.gsub! %r{/.*/.influxdb/hh}, "#{testpath}/influxdb/hh"
+      s.gsub! %r{/.*/.influxdb/wal}, "#{testpath}/influxdb/wal"
     end
 
     pid = fork do

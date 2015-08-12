@@ -16,8 +16,8 @@ class Allegro < Formula
   end
 
   devel do
-    url "http://download.gna.org/allegro/allegro-unstable/5.1.12/allegro-5.1.12.tar.gz"
-    sha256 "78d1056d6cc0e4527ef35646f612a80456442a7866445ca7cf61a11bd64e79c0"
+    url "http://download.gna.org/allegro/allegro-unstable/5.1.13/allegro-5.1.13.tar.gz"
+    sha256 "f3c5be792bc0fc6e657de473112196823598120cfa2e6e19d6f87543f2a273fd"
 
     depends_on "theora" => :recommended
   end

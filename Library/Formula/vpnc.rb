@@ -5,11 +5,11 @@ class Vpnc < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/v/vpnc/vpnc_0.5.3r550.orig.tar.gz"
   version "0.5.3r550"
   sha256 "a6afdd55db20e2c17b3e1ea9e3f017894111ec4ad94622644fc841c146942e71"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "bcc7bac704cea45efaff21308a78ef9e68c7bdcd285060fc5a23e64556f910d6" => :mavericks
-    sha256 "e125949c014abb7340ed587f821b2fdfcb2b34b229ab14cc9a4c1cae330f0a10" => :mountain_lion
+    sha256 "72bd72d4bcf33f125389400f2c0b498eec5aa6bd566e4f618067bb9026dc71ae" => :mavericks
   end
 
   option "with-hybrid", "Use vpnc hybrid authentication"

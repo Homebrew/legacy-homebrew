@@ -30,8 +30,8 @@ module Homebrew
       assert_equal Version.new(expected), actual
     end
 
-    def assert_version_detected(expected, url)
-      assert_equal expected, Version.parse(url).to_s
+    def assert_version_detected(expected, url, specs={})
+      assert_equal expected, Version.detect(url, specs).to_s
     end
 
     def assert_version_nil(url)
@@ -91,6 +91,10 @@ module Homebrew
 
     def mktmpdir(prefix_suffix = nil, &block)
       Dir.mktmpdir(prefix_suffix, HOMEBREW_TEMP, &block)
+    end
+
+    def needs_compat
+      skip "Requires compat/ code" if ENV["HOMEBREW_NO_COMPAT"]
     end
 
     def assert_nothing_raised

@@ -3,13 +3,13 @@ class Rdup < Formula
   homepage "https://archive.miek.nl/projects/rdup/"
   url "https://archive.miek.nl/projects/rdup/rdup-1.1.14.tar.bz2"
   sha256 "b25e2b0656d2e6a9cb97a37f493913c4156468d4c21cea15a9a0c7b353e3742a"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "30ae4e73e58b80d081378978a93962ef798eb32ecc5b14eb015f707c766ee161" => :el_capitan
-    sha256 "a61678fecdd52fef40014327b604d03a96b506c7552ed2e2b8d22934d37cdbbb" => :yosemite
-    sha256 "979a3ef9ddaad9545d9cc9f943aef2fa0c7d69fabf05abd742740620239a8271" => :mavericks
+    sha256 "9ea24b36882c48e95dd8c8f8653ee9568ce1bc73e5feaf1cc0c815939776f1bf" => :el_capitan
+    sha256 "163ee2ee0b3a2ada8119779d071d5dd52bbf26c242f0114e39b42d5ce47bb352" => :yosemite
+    sha256 "955fc1c20fd4d9daddef07f0cc4f8475f310040ed797ba0e00e1a76f91a74a46" => :mavericks
   end
 
   depends_on "pkg-config" => :build

@@ -25,7 +25,7 @@ class SoftwareSpec
   attr_reader :bottle_specification
   attr_reader :compiler_failures
 
-  def_delegators :@resource, :stage, :fetch, :verify_download_integrity
+  def_delegators :@resource, :stage, :fetch, :verify_download_integrity, :source_modified_time
   def_delegators :@resource, :cached_download, :clear_cache
   def_delegators :@resource, :checksum, :mirrors, :specs, :using
   def_delegators :@resource, :version, :mirror, *Checksum::TYPES
@@ -342,5 +342,19 @@ class BottleSpecification
       checksums[checksum.hash_type] << { checksum => osx }
     end
     checksums
+  end
+end
+
+class PourBottleCheck
+  def initialize(formula)
+    @formula = formula
+  end
+
+  def reason(reason)
+    @formula.pour_bottle_check_unsatisfied_reason = reason
+  end
+
+  def satisfy(&block)
+    @formula.send(:define_method, :pour_bottle?, &block)
   end
 end

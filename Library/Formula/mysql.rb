@@ -1,14 +1,13 @@
 class Mysql < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.10.tar.gz"
-  sha256 "1ea1644884d086a23eafd8ccb04d517fbd43da3a6a06036f23c5c3a111e25c74"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-boost-5.7.11.tar.gz"
+  sha256 "ab21347ba004a5aa349b911d829a14e79b1e36e4bcd007d39d75212071414e28"
 
   bottle do
-    revision 1
-    sha256 "866d0adbfe88f626452006bb50aa9489413a81a03cbef40c3175f7e7daaab879" => :el_capitan
-    sha256 "048629d5759e5aa7cabd934214a011c30c1f94c57ea47c8b853b338213572c77" => :yosemite
-    sha256 "84b963def9d2ff10bd21435ac2b9b87cce34a8e68bb9e82e3b2c6a0200970975" => :mavericks
+    sha256 "2399c32ad0271b150c06e442f10460edf83b2af218b97f44131d58bec1e35195" => :el_capitan
+    sha256 "e6e6139bdf4043ac432bb4f7a28e473dbdcbaa8ea3ac91532935173338468f83" => :yosemite
+    sha256 "03f1395d2a117788571a3e84b7c8c76263f4ed0ee9017170b12d363a93da4ef3" => :mavericks
   end
 
   option :universal
@@ -26,7 +25,6 @@ class Mysql < Formula
   deprecated_option "with-tests" => "with-test"
 
   depends_on "cmake" => :build
-  depends_on "boost" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion
   depends_on "openssl"
 
@@ -34,6 +32,8 @@ class Mysql < Formula
     :because => "mysql, mariadb, and percona install the same binaries."
   conflicts_with "mysql-connector-c",
     :because => "both install MySQL client libraries"
+  conflicts_with "mariadb-connector-c",
+    :because => "both install plugins"
 
   fails_with :llvm do
     build 2326
@@ -74,6 +74,7 @@ class Mysql < Formula
       -DSYSCONFDIR=#{etc}
       -DCOMPILATION_COMMENT=Homebrew
       -DWITH_EDITLINE=system
+      -DWITH_BOOST=boost
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite

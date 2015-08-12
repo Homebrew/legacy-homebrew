@@ -1,14 +1,14 @@
 class AwsElasticbeanstalk < Formula
   desc "Client for Amazon Elastic Beanstalk web service"
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.7.tar.gz"
-  sha256 "2716cfd458b54127e5218efe9db70c8657ca56664d71c4e0a9b1e8e094f9827f"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.7.3.tar.gz"
+  sha256 "4e1c7cb66db8255df134197d6663decebc792dcd617cef19878289c9e1d8e294"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6516fbecf206693e3264abec5c87d4efa68793d4a16dc1bfff3e89409ec7ad16" => :el_capitan
-    sha256 "f808cdb99d8db602a2b97b5c1d45d4e29227ce038fcc75ff4373351274c217b6" => :yosemite
-    sha256 "94caa6df86d5706ca44b2d588a77d9f717cd6ef5b0c1246a5880b994ec5af432" => :mavericks
+    sha256 "cc38a14e0b32f4e10a5546ab070e2d10010d179c83d72c4d28034100c583e504" => :el_capitan
+    sha256 "b94321b23b83c7dddc6630fa054f8c5ecc9ed3aef002b8976ed010c38ed99118" => :yosemite
+    sha256 "9218b69c3b8111d71855a40ac2970661bd4e627434cd9020836011525442df1b" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

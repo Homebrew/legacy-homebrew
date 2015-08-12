@@ -6,14 +6,15 @@ class Otto < Formula
   url "https://github.com/hashicorp/otto.git",
       :tag => "v0.2.0",
       :revision => "d3d825bb135a2fa27a604e82e40f60151a5e2118"
+  revision 1
 
   head "https://github.com/hashicorp/otto.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7b5ba7dcc5320554e6597289e639470b0de06059f0d47cb6039e96476869d8c1" => :el_capitan
-    sha256 "64c858f546c5e0aae92e3808c1fec3921e754c3c0a1e64a534d5d0bf35defd51" => :yosemite
-    sha256 "1d58e25bbbc32a45e3e18c59c077eeebade29c6bde91546ce7d82ac4ddf4123d" => :mavericks
+    sha256 "f527af6c8898e57e8980265417d5668e9afa3fff77ad80a302b4c9f30fadbb69" => :el_capitan
+    sha256 "b58b7ecfeca7fb51a5bde24a52c490933c1db8af432bd83e9becd135a3b62dd1" => :yosemite
+    sha256 "43452b4d11dc836d12198e1589e77f342b0a473995216f667785c1aa568352eb" => :mavericks
   end
 
   depends_on "go" => :build

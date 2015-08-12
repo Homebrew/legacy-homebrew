@@ -6,10 +6,11 @@ class Abduco < Formula
   head "git://repo.or.cz/abduco.git"
 
   bottle do
-    cellar :any
-    sha256 "d7dde9fc66e7681927e1d871ab13bc78f2fc1561509ce8037c5b96ef020cb086" => :yosemite
-    sha256 "1d04d33ff81e970c2f709d33cd3ec24dc91aa2a892635d0e1d85f46bec1e7cba" => :mavericks
-    sha256 "ba4005c688b6e9a1d67c0de127ee67e6ffe011c98436f2f2c1480fe551caa94d" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2b9d5528732044e5ba1793220493542967b8e09b7a4cdff1c842c9c18d980731" => :el_capitan
+    sha256 "99bdf1b296de53f9aa8f94e441f38d5994096d5daa1bb615f579e75c3037f186" => :yosemite
+    sha256 "3cced176f22ecb811112948fb175408ce106ee7fa74e2c152915893bb9e27ddb" => :mavericks
   end
 
   def install

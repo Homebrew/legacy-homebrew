@@ -5,6 +5,7 @@ class Dar < Formula
   sha256 "5d861c39698b77124680914741e1e40e7e9bedb3fcedc6df8d468e619479833c"
 
   bottle do
+    sha256 "8b15f98a70067c4438c93e51345a07b2d04580c8df7e0880cbf422eae2993bf9" => :el_capitan
     sha256 "23e1c63d1796575d398c12ed4d2d30b727f4f1df015965d1decfb8fc233b9d96" => :yosemite
     sha256 "26098cdd3e59ddd9598cd71d5c018c89ba48f803eb43924a7e8cded84c768ab9" => :mavericks
     sha256 "bc09f5b9d90b75d1c98fb70887e08b3fbd325477b03f70b1837f3a3ae754b77e" => :mountain_lion

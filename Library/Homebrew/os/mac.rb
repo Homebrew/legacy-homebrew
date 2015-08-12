@@ -4,6 +4,7 @@ require "os/mac/xcode"
 require "os/mac/xquartz"
 require "os/mac/pathname"
 require "os/mac/sdk"
+require "os/mac/keg"
 
 module OS
   module Mac
@@ -132,7 +133,7 @@ module OS
     def gcc_40_build_version
       @gcc_40_build_version ||=
         if (path = locate("gcc-4.0"))
-          `#{path} --version`[/build (\d{4,})/, 1].to_i
+          `#{path} --version 2>/dev/null`[/build (\d{4,})/, 1].to_i
         end
     end
     alias_method :gcc_4_0_build_version, :gcc_40_build_version
@@ -141,8 +142,8 @@ module OS
       @gcc_42_build_version ||=
         begin
           gcc = MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2")
-          if gcc.exist? && gcc.realpath.basename.to_s !~ /^llvm/
-            `#{gcc} --version`[/build (\d{4,})/, 1].to_i
+          if gcc.exist? && !gcc.realpath.basename.to_s.start_with?("llvm")
+            `#{gcc} --version 2>/dev/null`[/build (\d{4,})/, 1].to_i
           end
         end
     end
@@ -150,7 +151,7 @@ module OS
 
     def llvm_build_version
       @llvm_build_version ||=
-        if (path = locate("llvm-gcc")) && path.realpath.basename.to_s !~ /^clang/
+        if (path = locate("llvm-gcc")) && !path.realpath.basename.to_s.start_with?("clang")
           `#{path} --version`[/LLVM build (\d{4,})/, 1].to_i
         end
     end
@@ -269,6 +270,7 @@ module OS
       "7.1"   => { :clang => "7.0", :clang_build => 700 },
       "7.1.1" => { :clang => "7.0", :clang_build => 700 },
       "7.2"   => { :clang => "7.0", :clang_build => 700 },
+      "7.2.1" => { :clang => "7.0", :clang_build => 700 },
     }
 
     def compilers_standard?

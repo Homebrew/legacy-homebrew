@@ -42,6 +42,7 @@ module Homebrew
 
   UNBREWED_EXCLUDE_FILES = %w[.DS_Store]
   UNBREWED_EXCLUDE_PATHS = %w[
+    .github/*
     bin/brew
     lib/gdk-pixbuf-2.0/*
     lib/gio/*
@@ -100,7 +101,7 @@ module Homebrew
     else # --versions without --pinned
       names.each do |d|
         versions = d.subdirs.map { |pn| pn.basename.to_s }
-        next if ARGV.include?("--multiple") && versions.count < 2
+        next if ARGV.include?("--multiple") && versions.length < 2
         puts "#{d.basename} #{versions*" "}"
       end
     end

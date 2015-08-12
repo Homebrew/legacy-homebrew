@@ -1,20 +1,20 @@
 class Taylor < Formula
   desc "Measure Swift code metrics and get reports in Xcode and Jenkins."
   homepage "https://github.com/yopeso/Taylor/"
-  url "https://github.com/yopeso/Taylor/archive/0.1.1.tar.gz"
-  sha256 "0fd11aeed6d99bf76dbad9359d706db4ff62450f7903474771c36fd6c5e6f0a7"
+  url "https://github.com/yopeso/Taylor/archive/0.1.2.tar.gz"
+  sha256 "6d7c903c093e118d243e4ef58827f715133ba60aa3ea309c72cb92ae4c1e8624"
   head "https://github.com/yopeso/Taylor.git"
 
   bottle do
     cellar :any
-    sha256 "b1f6569df01e41996bdd8176951b0aa5b6bf3f72a28fc0501ed3d4f8f83db323" => :el_capitan
-    sha256 "89a80e4442f3518b09475d8dc8a47d497712e30d734cc9bbded5178a6a1aeaff" => :yosemite
+    sha256 "d8985bb008d9bc04d8f0ba1857389d13ce708e6df1fe13d9a3068ecc9128ecf6" => :el_capitan
+    sha256 "5701b33481fea36eef1240eb9107c63f045d0138998476a30f9692dc3d6711f0" => :yosemite
   end
 
-  depends_on :xcode => ["7.2", :build]
+  depends_on :xcode => ["7.2.1", :build]
 
   def install
-    system "make", "install_homebrew", "PREFIX=#{prefix}"
+    system "make", "install", "PREFIX=#{prefix}", "MAKE_SYMLINKS=no"
   end
 
   test do

@@ -14,12 +14,12 @@ module OS
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
         when "10.9"  then "6.2"
-        when "10.10" then "7.2"
-        when "10.11" then "7.2"
+        when "10.10" then "7.2.1"
+        when "10.11" then "7.2.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
           if OS::Mac.prerelease?
-            "7.2"
+            "7.2.1"
           else
             raise "OS X '#{MacOS.version}' is invalid"
           end
@@ -141,9 +141,9 @@ module OS
 
       def default_prefix?
         if version < "4.3"
-          %r{^/Developer} === prefix
+          prefix.to_s.start_with? "/Developer"
         else
-          %r{^/Applications/Xcode.app} === prefix
+          prefix.to_s.start_with? "/Applications/Xcode.app"
         end
       end
     end

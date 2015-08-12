@@ -68,12 +68,12 @@ class CoreFormulaRepository < Tap
     FORMULA_RENAMES
   end
 
-  private
-
+  # @private
   def formula_file_to_name(file)
     file.basename(".rb").to_s
   end
 
+  # @private
   def alias_file_to_name(file)
     file.basename.to_s
   end

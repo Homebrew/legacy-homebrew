@@ -5,14 +5,15 @@ class Nsq < Formula
   homepage "http://nsq.io"
   url "https://github.com/nsqio/nsq/archive/v0.3.6.tar.gz"
   sha256 "2cf00ddfd63508ab98d052cb36ac7ec5b591abe1896b92d158c04964e2c6cb97"
+  revision 1
 
   head "https://github.com/nsqio/nsq.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a4c1a6724b3e91d6564b9188b1d099639a26999a36ae71ecb0ca7413703c106c" => :el_capitan
-    sha256 "3fe3404d2439cb43e16d38ecd5ec384ef95f9660bd789a06959b17a8ff077968" => :yosemite
-    sha256 "44452e103eb6e5dce242311497c30c905fe9fbf775bec20880fe7277cef5a288" => :mavericks
+    sha256 "2b74e0f20554251ea1060d4f306770fa658378a9dad34851675f12c15226fb0e" => :el_capitan
+    sha256 "686768ca33222259e4eae655de601119da6621fc10c8a8d30ffa27d7736298f8" => :yosemite
+    sha256 "6829fc7d9d4de5a5ff5ef5629e7f9e41919193436ce9f82159f34e33d4983c59" => :mavericks
   end
 
   depends_on "go" => :build

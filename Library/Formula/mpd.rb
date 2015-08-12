@@ -3,13 +3,13 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
   url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.12.tar.xz"
   sha256 "7b6fe6c7ce72f5f80a276d680072b524ecb395e546e252b8f3a0756377e1e875"
+  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "74fb8ae7870946873685a5b8c24645ea428bbc954c7085d31f54c06bff7e4df1" => :el_capitan
-    sha256 "697c3ecf1ae16ad64544bef0ffb3172bca1aa06ec2eb3169c76bb77c11ea9b72" => :yosemite
-    sha256 "4c4e2cf7804434c23511fe7cc933bdc52e300935a6cb03d41ad38bd5ea173c7e" => :mavericks
+    sha256 "519db64468e6d743e37cc7d312dfd9313bf1cbd0b18c12d99cf18b38ef3c4dc0" => :el_capitan
+    sha256 "87bda8fa0657f2faf637243b965769446d3318e023c2ca3e50f6f07f7cbf35e3" => :yosemite
+    sha256 "84616412b8473feb5bec4925a976c730a478a364239fd786e088d94970a12964" => :mavericks
   end
 
   head do

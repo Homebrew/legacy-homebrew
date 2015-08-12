@@ -1,8 +1,8 @@
 class Logstash < Formula
   desc "Tool for managing events and logs"
   homepage "https://www.elastic.co/products/logstash"
-  url "https://download.elastic.co/logstash/logstash/logstash-2.1.1.tar.gz"
-  sha256 "2ea975e16a02b416a5bd9eed5ab280224820f278d54f6e0ec4cccf0d8f5ca610"
+  url "https://download.elastic.co/logstash/logstash/logstash-2.2.2.tar.gz"
+  sha256 "f0a29ec8fd327e42f3023bd6bf85a00ac20617bfc214df59c765453977398312"
 
   bottle :unneeded
 
@@ -24,14 +24,17 @@ class Logstash < Formula
     end
 
     inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$SOURCEPATH`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
+    inreplace %w[bin/plugin], %r{^\. "\$\(cd `dirname \$0`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
     inreplace %w[bin/logstash.lib.sh], /^LOGSTASH_HOME=.*$/, "LOGSTASH_HOME=#{libexec}"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/logstash"
+    bin.install_symlink libexec/"bin/plugin" => "logstash-plugin"
   end
 
   def caveats; <<-EOS.undent
     Please read the getting started guide located at:
       https://www.elastic.co/guide/en/logstash/current/getting-started-with-logstash.html
+    The logstash `plugin` command is available as `logstash-plugin`.
     EOS
   end
 

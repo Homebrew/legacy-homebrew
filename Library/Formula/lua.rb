@@ -3,19 +3,20 @@ class Lua < Formula
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
   sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
-  revision 2
+  revision 3
 
   bottle do
     cellar :any
-    sha256 "bcfe6e55b145affbeff3aea1bfcee8fbdad6106805830567b0a206ab2d79c7a0" => :el_capitan
-    sha256 "def867c35c0c88c5b339b861e57ddbc4febcd475172650b1e035bfe12a9683f3" => :yosemite
-    sha256 "10f937e562674a0e07e676f11ea5baaeeb08b2883680d65031eb282fe91406fa" => :mavericks
+    sha256 "5e52670b9b9c2554018545afcc13a08efde638aab521d39740c273992fc65922" => :el_capitan
+    sha256 "3a1f5bfe0fd490c96e933b0726d327079b6a1cd6b9e881440173351ff9a349ad" => :yosemite
+    sha256 "a84d3ebd9afa4a61b0120471e5a0dfcc670d294701a64edebd25fcc815fe76f8" => :mavericks
   end
 
-  def pour_bottle?
+  pour_bottle? do
+    reason "The bottle needs to be installed into /usr/local."
     # DomT4: I'm pretty sure this can be fixed, so don't leave this in place forever.
     # https://github.com/Homebrew/homebrew/issues/44619
-    HOMEBREW_PREFIX.to_s == "/usr/local"
+    satisfy { HOMEBREW_PREFIX.to_s == "/usr/local" }
   end
 
   fails_with :llvm do

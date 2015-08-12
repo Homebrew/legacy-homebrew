@@ -3,15 +3,22 @@ class Boost < Formula
   homepage "http://www.boost.org"
   url "https://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2"
   sha256 "686affff989ac2488f79a97b9479efb9f2abae035b5ed4d8226de6857933fd3b"
+  revision 1
 
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha256 "9af12c105ac8f561340bf6bfb69c1f071912203a8fb6f197a184408bc4c4000f" => :el_capitan
-    sha256 "149c31c8bdb7b4f47bed445e3c5985f63dd41ba32cefc08358b873699c7d6f5d" => :yosemite
-    sha256 "dae5d86bbcedd981d353e812770477fe104e349e5cfb253a735bbe1c6c32cc0a" => :mavericks
+    sha256 "2f7a84ca6edf978eef4fc23b6f1d4c540b343f5941f068dfc59eb1c103f01dc7" => :el_capitan
+    sha256 "cdea70d456a842617a9aa59dd297da2e63e95eddd74c1fa302eedfed21a51538" => :yosemite
+    sha256 "1a7feb411f4e89237fc212cab55c0f3acd1abe86a887069236ef6e7c58bdd82a" => :mavericks
   end
+
+  # Handle compile failure with boost/graph/adjacency_matrix.hpp
+  # https://github.com/Homebrew/homebrew/pull/48262
+  # https://svn.boost.org/trac/boost/ticket/11880
+  # patch derived from https://github.com/boostorg/graph/commit/1d5f43d
+  patch :DATA
 
   env :userpaths
 
@@ -169,3 +176,17 @@ class Boost < Formula
     system "./test"
   end
 end
+
+__END__
+diff -Nur boost_1_60_0/boost/graph/adjacency_matrix.hpp boost_1_60_0-patched/boost/graph/adjacency_matrix.hpp
+--- boost_1_60_0/boost/graph/adjacency_matrix.hpp	2015-10-23 05:50:19.000000000 -0700
++++ boost_1_60_0-patched/boost/graph/adjacency_matrix.hpp	2016-01-19 14:03:29.000000000 -0800
+@@ -443,7 +443,7 @@
+     // graph type. Instead, use directedS, which also provides the
+     // functionality required for a Bidirectional Graph (in_edges,
+     // in_degree, etc.).
+-    BOOST_STATIC_ASSERT(type_traits::ice_not<(is_same<Directed, bidirectionalS>::value)>::value);
++    BOOST_STATIC_ASSERT(!(is_same<Directed, bidirectionalS>::value));
+
+     typedef typename mpl::if_<is_directed,
+                                     bidirectional_tag, undirected_tag>::type

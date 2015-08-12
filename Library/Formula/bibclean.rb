@@ -1,14 +1,14 @@
 class Bibclean < Formula
   desc "BibTeX bibliography file pretty printer and syntax checker"
   homepage "http://www.math.utah.edu/~beebe/software/bibclean/bibclean-03.html#HDR.3"
-  url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.16.tar.gz"
-  sha256 "b8e7f89219e04a2b130d9d506b79265e9981b065ad32652a912211a6057428df"
+  url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.17.tar.gz"
+  sha256 "d79b191fda9658fa83cb43f638321ae98b4acec5bef23a029ef2fd695639ff24"
 
   bottle do
-    cellar :any
-    sha256 "825009ac0bf781d29eedf23461d0032c1e57658fb53a4568931bd8e11bbec4bb" => :mavericks
-    sha256 "8bf50caf3f23d51de83e0805597bb1ca4f6aeb9e8a28bd03514f5345bdff7cc1" => :mountain_lion
-    sha256 "fb6023f2320a019d6bc0a46376f636e2b330776a22510469fc00715f10203044" => :lion
+    cellar :any_skip_relocation
+    sha256 "1e09e98ec9528bbe6386fc12274bf56fcdc69ddccdef119b0dd3381cebefc8c0" => :el_capitan
+    sha256 "6cba0c4e4d59324ed70a64718c6541dddba994c8cc509db1d7914a1e7f584dcb" => :yosemite
+    sha256 "8e72af36765c47807c07faec8d56d811e0b2cd2ca511adbefad95fbd65aa72cd" => :mavericks
   end
 
   def install
@@ -32,21 +32,21 @@ class Bibclean < Formula
       # Place all initialization files in $(prefix)/bibclean/share/ instead of
       # ./bin/ to comply with standard Unix practice.
       s.gsub! /install-ini.*uninstall-ini/,
-              "install-ini:  uninstall-ini\n\tmkdir -p #{share}/bibclean"
+              "install-ini:  uninstall-ini\n\tmkdir -p #{pkgshare}"
       s.gsub! /[$][(]bindir[)].*bibcleanrc/,
-              "#{share}/bibclean/.bibcleanrc"
+              "#{pkgshare}/.bibcleanrc"
       s.gsub! /[$][(]bindir[)].*bibclean.key/,
-              "#{share}/bibclean/.bibclean.key"
+              "#{pkgshare}/.bibclean.key"
       s.gsub! /[$][(]bindir[)].*bibclean.isbn/,
-              "#{share}/bibclean/.bibclean.isbn"
+              "#{pkgshare}/.bibclean.isbn"
     end
 
     system "make", "all"
     system "make", "check"
     system "make", "install"
 
-    ENV.prepend_path "PATH", share+"bibclean"
-    bin.env_script_all_files(share+"bibclean", :PATH => ENV["PATH"])
+    ENV.prepend_path "PATH", pkgshare
+    bin.env_script_all_files(pkgshare, :PATH => ENV["PATH"])
   end
 
   test do

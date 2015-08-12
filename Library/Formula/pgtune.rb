@@ -11,13 +11,11 @@ class Pgtune < Formula
 
   def install
     # By default, pgtune searches for settings in the directory
-    # where the script is being run from. We replace the default
-    # path with pgtune_share.
-    pgtune_share = share/"pgtune"
+    # where the script is being run from.
     inreplace "pgtune" do |s|
-      s.sub! /(parser\.add_option\('-S'.*default=).*,/, "\\1\"#{pgtune_share}\","
+      s.sub! /(parser\.add_option\('-S'.*default=).*,/, "\\1\"#{pkgshare}\","
     end
     bin.install "pgtune"
-    pgtune_share.install Dir["pg_settings*"]
+    pkgshare.install Dir["pg_settings*"]
   end
 end

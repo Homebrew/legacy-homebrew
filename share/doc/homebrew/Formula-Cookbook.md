@@ -34,7 +34,7 @@ Before submitting a new formula make sure your package:
 *   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release versions belong.
 *   passes all `brew audit --strict --online $FORMULA` tests.
 
-Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md).
+Before submitting a new formula make sure you read over our [contribution guidelines](https://github.com/Homebrew/homebrew/blob/master/.github/CONTRIBUTING.md).
 
 ## Grab the URL
 
@@ -70,11 +70,11 @@ so you can override this with `brew create <url> --set-name <name>`.
 
 ## Fill in the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)
 
-**We don’t accept formulae without [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)s!**
+**We don’t accept formulae without a [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)!**
 
 A SSL/TLS (https) [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) is preferred, if one is available.
 
-Try to summarize from the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) what the formula does in the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription. Note that the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription is automatically preprended with the formula name.
+Try to summarize from the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) what the formula does in the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription. Note that the [`desc`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#desc%3D-class_method)ription is automatically prepended with the formula name.
 
 ## Check the build system
 
@@ -165,7 +165,7 @@ Sometimes there’s hard conflict between formulae, and it can’t be avoided or
 `mbedtls` ships and compiles a "Hello World" executable. This is obviously non-essential to `mbedtls`’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
 
 [pdftohtml](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/pdftohtml.rb) provides an example of a serious
-conflict, where both formula ship a identically-named binary that is essential to functionality, so a [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) is preferable.
+conflict, where both formula ship an identically-named binary that is essential to functionality, so a [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) is preferable.
 
 As a general rule, [`conflicts_with`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#conflicts_with-class_method) should be a last-resort option. It’s a fairly blunt instrument.
 
@@ -303,7 +303,7 @@ The established standard for Git commit messages is:
 
 * the first line is a commit summary of *50 characters or less*
 * two (2) newlines, then
-* explain the commit throughly
+* explain the commit thoroughly
 
 At Homebrew, we like to put the name of the formula up front like so: `foobar 7.3 (new formula)`.
 This may seem crazy short, but you’ll find that forcing yourself to summarise the commit encourages you to be atomic and concise. If you can’t summarise it in 50-80 characters, you’re probably trying to commit two commits as one. For a more thorough explanation, please read Tim Pope’s excellent blog post, [A Note About Git Commit Messages](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
@@ -815,7 +815,7 @@ When using Homebrew's `gfortran` compiler, the standard `CFLAGS` are used and us
 
 # How to start over (reset to  upstream `master`)
 
-Have you created a real mess in git which stops you from creating a commit you want to submit to us? You might want to consider consider starting again from scratch. Your changes can be reset to the Homebrew's `master` branch by running:
+Have you created a real mess in git which stops you from creating a commit you want to submit to us? You might want to consider starting again from scratch. Your changes can be reset to the Homebrew's `master` branch by running:
 
 ```shell
 git checkout -f master

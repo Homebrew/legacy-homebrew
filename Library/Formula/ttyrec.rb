@@ -5,10 +5,11 @@ class Ttyrec < Formula
   sha256 "ef5e9bf276b65bb831f9c2554cd8784bd5b4ee65353808f82b7e2aef851587ec"
 
   bottle do
-    cellar :any
-    sha256 "71882b7cbbd055cee53e5db3110c0cb00f315e00e00258350b147c1e73807203" => :yosemite
-    sha256 "3980851f760e70ca0eca0dca0101c2e65bd6f3a17fda14557482ae428d4f162b" => :mavericks
-    sha256 "2ec245ff0f7e2340f6837ef6973696cd6efb8ded899bc9b9070c0f2dff6aa780" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "f24cda5af4db432d89cf3d3f5fb68a6f4afd1950c2c7e32456c8a8a779dfefd6" => :el_capitan
+    sha256 "86ff5251f02aa7becad5f95ff8a6bdb62572d2cac4f99a72166bda8cfffc7981" => :yosemite
+    sha256 "0324a2412722841b8f58bf41ab18d50e3dd15bed3d956f7d3738a6b1911f1130" => :mavericks
   end
 
   resource "matrix.tty" do
@@ -24,7 +25,7 @@ class Ttyrec < Formula
 
   test do
     resource("matrix.tty").stage do
-      assert_equal "9\tmatrix.tty", shell_output("ttytime matrix.tty").strip
+      assert_equal "9\tmatrix.tty", shell_output("#{bin}/ttytime matrix.tty").strip
     end
   end
 end

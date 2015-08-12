@@ -17,15 +17,10 @@ class Plan9port < Formula
   def install
     ENV["PLAN9_TARGET"] = libexec
 
-    if build.with? "x11"
-      # Make OS X system fonts available to Plan 9
-      File.open("LOCAL.config", "a") do |f|
-        f.puts "FONTSRV=fontsrv"
-      end
-    end
+    # Make OS X system fonts available to Plan 9
+    (buildpath/"LOCAL.config").write "FONTSRV=fontsrv" if build.with? "x11"
 
     system "./INSTALL"
-
     libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/9"
     prefix.install Dir["#{libexec}/mac/*.app"]

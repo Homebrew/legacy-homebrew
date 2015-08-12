@@ -21,11 +21,11 @@ However! Fixing build issues is easier than you think: try
 `brew edit $FORMULA` and see how you fare.
 
 ## Contributing
-Read [CONTRIBUTING.md](/CONTRIBUTING.md).
+Read [CONTRIBUTING.md](/.github/CONTRIBUTING.md).
 
 ### Community Forums
 -  [@MacHomebrew](https://twitter.com/MacHomebrew)
--  [homebrew@librelist.com](mailto:homebrew@librelist.com) ([archive](http://librelist.com/browser/homebrew))
+-  [homebrew-discuss@googlegroups.com](mailto:homebrew-discuss@googlegroups.com) ([archive](https://groups.google.com/forum/#!forum/homebrew-discuss)) - subscribe by sending a mail to  [homebrew-discuss+subscribe@googlegroups.com](mailto:homebrew-discuss+subscribe@googlegroups.com)
 -  [freenode.net\#machomebrew](irc://irc.freenode.net/#machomebrew)
 
 ## Supporters

@@ -5,13 +5,10 @@ class Cryptopp < Formula
   mirror "https://www.cryptopp.com/cryptopp563.zip"
   version "5.6.3"
   sha256 "9390670a14170dd0f48a6b6b06f74269ef4b056d4718a1a329f6f6069dc957c9"
+  revision 1
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "6a1df1d638f115f46665337a43c04da6c573e34e6970636df1679b81b6b55ef5" => :el_capitan
-    sha256 "8bb962c7ec3895b111cc57c726ceffb191a84034192b18573fcb6107a2b869c2" => :yosemite
-    sha256 "9192678ac6745d338d412af85b071d86c8e75de64ba6664775d322065dbc0ea4" => :mavericks
-  end
+  # https://cryptopp.com/wiki/Config.h#Options_and_Defines
+  bottle :disable, "Library and clients must be built on the same microarchitecture"
 
   option :cxx11
 

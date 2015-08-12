@@ -4,15 +4,16 @@ class Ipfs < Formula
   desc "IPFS is The Permanent Web - A new peer-to-peer hypermedia protocol"
   homepage "https://ipfs.io/"
   url "https://github.com/ipfs/go-ipfs.git",
-    :tag => "v0.3.10",
-    :revision => "f9dc4c726b770199f4ee64d97775d5fe8122814e"
+    :tag => "v0.3.11",
+    :revision => "7070b4d878baad57dcc8da80080dd293aa46cabd"
   head "https://github.com/ipfs/go-ipfs.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0f897b4a0d31c8d0e0e66a79cd10a8ae270c7b47ec52cd5e24d729263bae6a4d" => :el_capitan
-    sha256 "1929865f63dc44c6bc9e0100e513533377a545a9e7cebc4b016be9af90d1fc77" => :yosemite
-    sha256 "f1f68e35dd9494a4f9dda54039aedc6b6450c3ffecd3e937e885af6e89aa156a" => :mavericks
+    revision 1
+    sha256 "6744fb99a312598513e260adbd3b5895db82c0f0b6f447a58b0cc9084bf4b5cc" => :el_capitan
+    sha256 "3b641f107ec102859819afcea8ed5b8265e7b295fba1913af6b1b55593d5956e" => :yosemite
+    sha256 "dd9de372d81abb5e624b320fa4fb00f175c991bf3b6705b12423973b4cafaa97" => :mavericks
   end
 
   depends_on "go" => :build
@@ -31,6 +32,7 @@ class Ipfs < Formula
 
   def install
     ENV["GOPATH"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "0"
     mkdir_p buildpath/"src/github.com/ipfs/"
     ln_sf buildpath, buildpath/"src/github.com/ipfs/go-ipfs"
     Language::Go.stage_deps resources, buildpath/"src"

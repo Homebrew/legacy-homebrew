@@ -1,36 +1,27 @@
 class Bazel < Formula
   desc "Google's own build tool"
   homepage "http://bazel.io/"
-  url "https://github.com/bazelbuild/bazel/archive/0.1.3.tar.gz"
-  sha256 "5ba3e69b0867e00c3c765b499a5e836db791e3f2f5112f5684782eef5bab0218"
+  url "https://github.com/bazelbuild/bazel/archive/0.2.0.tar.gz"
+  sha256 "3685ce039e44224260a7ed5b80dd951155998a6e128b2bebe984ea1d85a674b3"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fe665d9ff99da2a40531106ad78cbe9ac41bfeacc17822280960aa86eea23a01" => :el_capitan
-    sha256 "e1cefe27d4eaa65a42578d0872b6936bb0670d03f013e790da4dbda27449c6b1" => :yosemite
-    sha256 "333a3699765ced173ece8d9f355d9cba8b9007de4a67c5dacb88511ec3bc7774" => :mavericks
+    sha256 "c9390c4e57fa55597c674d184470577b1a3e1af6cdd7a4bb894500242a44574e" => :el_capitan
+    sha256 "458e4baa2e9a1a99903292bbdcf8d0bd855905d44b3f5cd0b3d96f2c3661928a" => :yosemite
   end
 
   depends_on :java => "1.8+"
+  depends_on :macos => :yosemite
 
   def install
-    inreplace "src/main/cpp/blaze_startup_options.cc",
-      "/etc/bazel.bazelrc",
-      "#{etc}/bazel/bazel.bazelrc"
-
     ENV["EMBED_LABEL"] = "#{version}-homebrew"
 
     system "./compile.sh"
+    system "./output/bazel", "build", "scripts:bash_completion"
 
-    (prefix/"base_workspace").mkdir
-    cp_r Dir["base_workspace/*"], (prefix/"base_workspace"), :dereference_root => true
     bin.install "output/bazel" => "bazel"
-    (prefix/"etc/bazel.bazelrc").write <<-EOS.undent
-      build --package_path=%workspace%:#{prefix}/base_workspace
-      query --package_path=%workspace%:#{prefix}/base_workspace
-      fetch --package_path=%workspace%:#{prefix}/base_workspace
-    EOS
-    (etc/"bazel").install prefix/"etc/bazel.bazelrc"
+    bash_completion.install "bazel-bin/scripts/bazel-complete.bash"
+    zsh_completion.install "scripts/zsh_completion/_bazel"
   end
 
   test do

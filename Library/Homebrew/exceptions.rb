@@ -441,6 +441,9 @@ class DuplicateResourceError < ArgumentError
   end
 end
 
+# raised when a single patch file is not found and apply hasn't been specified
+class MissingApplyError < RuntimeError ; end
+
 class BottleVersionMismatchError < RuntimeError
   def initialize(bottle_file, bottle_version, formula, formula_version)
     super <<-EOS.undent

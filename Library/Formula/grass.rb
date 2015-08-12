@@ -1,7 +1,7 @@
 class Grass < Formula
   desc "Geographic Resources Analysis Support System"
   homepage "https://grass.osgeo.org/"
-  revision 1
+  revision 2
 
   stable do
     url "https://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"

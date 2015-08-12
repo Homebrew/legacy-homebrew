@@ -1,20 +1,20 @@
 class Vifm < Formula
   desc "Ncurses based file manager with vi like keybindings"
   homepage "https://vifm.info/"
-  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.8.tar.bz2"
-  mirror "https://github.com/vifm/vifm/releases/download/v0.8/vifm-0.8.tar.bz2"
-  sha256 "69eb6b50dcf462f4233ff987f0b6a295df08a27bc42577ebef725bfe58dbdeeb"
+  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.8.1a.tar.bz2"
+  mirror "https://github.com/vifm/vifm/releases/download/v0.8.1a/vifm-0.8.1a.tar.bz2"
+  sha256 "974fb2aa5e32d2c729ceff678c595070c701bd30a6ccc5cb6ca64807a9dd4422"
+
+  bottle do
+    sha256 "46ad2f98c56e9306c00540ead159cbc70f02e4a7947e9f3f80f2408a01752f01" => :el_capitan
+    sha256 "140c708112af6fc1c4f7c740abdca3af0e3fc12a8205cfa428800f7794541b6f" => :yosemite
+    sha256 "ba80ce8c6d4762404cfd8f1595823ad1d7e347447dbbe50c1d73ad75a10efdcf" => :mavericks
+  end
 
   head do
     url "https://github.com/vifm/vifm.git"
     depends_on "automake" => :build
     depends_on "autoconf" => :build
-  end
-
-  bottle do
-    sha256 "bbd822c0eb5c57e044d256ca2e45a8a8511ef2a500a99b293975e99e36e9da8e" => :yosemite
-    sha256 "ef3ee7dcece9fd892e284cff8887ab050b08bc976d8131cd5c511957724d2fc5" => :mavericks
-    sha256 "4adfb953326729dbcd921343719c833483340012da18760e4d3951dc6a758758" => :mountain_lion
   end
 
   def install
@@ -24,6 +24,7 @@ class Vifm < Formula
     else
       system "./configure", *args
     end
+
     ENV.deparallelize
     system "make", "install"
   end

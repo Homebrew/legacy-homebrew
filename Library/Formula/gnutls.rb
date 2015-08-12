@@ -1,19 +1,16 @@
-# GnuTLS has previous, current, and next stable branches, we use current.
-# From 3.4.0 GnuTLS will be permanently disabling SSLv3. Every brew uses will need a revision with that.
-# http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
   desc "GNU Transport Layer Security (TLS) Library"
   homepage "http://gnutls.org/"
-  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.20.tar.xz"
-  mirror "https://gnupg.org/ftp/gcrypt/gnutls/v3.3/gnutls-3.3.20.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.20.tar.xz"
-  sha256 "4c903e5cde7a8f15318af9a7a6c9b7fc8348594b0a1e9ac767636ef2187399ea"
+  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.4/gnutls-3.4.9.tar.xz"
+  mirror "https://gnupg.org/ftp/gcrypt/gnutls/v3.4/gnutls-3.4.9.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.4/gnutls-3.4.9.tar.xz"
+  sha256 "48594fadba33d450f796ec69526cf2bce6ff9bc3dc90fbd7bf38dc3601f57c3f"
 
   bottle do
     cellar :any
-    sha256 "cbf86659cf003d97e9ccb8c95fd16993cd72392757c133c98460da015c1fb6c9" => :el_capitan
-    sha256 "79184c2aa6a0861967f3575fde728002cd9bd36f467e70f9232330088a3b9288" => :yosemite
-    sha256 "d9b116e3e6844dde469efc4ec5025e667849d1aa3fc54ca41d93c9f9b6584893" => :mavericks
+    sha256 "cf6c87f91362a8d7537772264081fe62a4b4e98c36dd553c8ad49b511b11a4d7" => :el_capitan
+    sha256 "2ecaa12e65ee121744faedea9dab69a199fb595cd9036aa8ae3701627254577f" => :yosemite
+    sha256 "47b07ecbdf219d9d68d5fdb49d0a67a809e731c64c9b374c04815b02f33c7224" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -37,6 +34,7 @@ class Gnutls < Formula
       --sysconfdir=#{etc}
       --with-default-trust-store-file=#{etc}/openssl/cert.pem
       --disable-heartbeat-support
+      --without-p11-kit
     ]
 
     if build.with? "guile"

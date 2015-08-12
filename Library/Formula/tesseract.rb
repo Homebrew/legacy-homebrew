@@ -1,14 +1,13 @@
 class Tesseract < Formula
   desc "OCR (Optical Character Recognition) engine"
   homepage "https://github.com/tesseract-ocr/"
-  url "https://github.com/tesseract-ocr/tesseract/archive/3.04.00.tar.gz"
-  sha256 "7e6e48b625e1fba9bc825a4ef8c39f12c60aae1084939133b3c6a00f8f8dc38c"
+  url "https://github.com/tesseract-ocr/tesseract/archive/3.04.01.tar.gz"
+  sha256 "57f63e1b14ae04c3932a2683e4be4954a2849e17edd638ffe91bc5a2156adc6a"
 
   bottle do
-    sha256 "f5a816886dc08e21af1e54f5f858aad467bb89d58675b7cbabf85cc4660e57bc" => :el_capitan
-    sha256 "78c7929c7e5cd92db137aa16a5d787bb53dca84031c7afcd91039a4adfcaabe1" => :yosemite
-    sha256 "0c331fa0bb3a247039af2f96441cc7ac7e1e687cb2e48e315bcabd227f9ba97d" => :mavericks
-    sha256 "141b3d5d09b1cf6448ca32f8377e40eeafc6f2e71134ccd5c67ce4b76cd6388a" => :mountain_lion
+    sha256 "03c047a1b844454c9f02b0b75ef95e851d5e4b017a0d5ab863bfa5b3b44d98f9" => :el_capitan
+    sha256 "0251215f2ffefeb9857041b883780bdf1e7f5a4489baa29bbfe0b5e0e77198a1" => :yosemite
+    sha256 "cf90c87132162f9e9d1f3a8b4ee32b0d3896144a0034614882a51b13381294ad" => :mavericks
   end
 
   head do
@@ -24,12 +23,14 @@ class Tesseract < Formula
     end
   end
 
-  option "all-languages", "Install recognition data for all languages"
+  option "with-all-languages", "Install recognition data for all languages"
   option "with-training-tools", "Install OCR training tools"
   option "with-opencl", "Enable OpenCL support"
 
-  depends_on "libtiff" => :recommended
+  deprecated_option "all-languages" => "with-all-languages"
+
   depends_on "leptonica"
+  depends_on "libtiff" => :recommended
 
   if build.with? "training-tools"
     depends_on "libtool" => :build
@@ -85,11 +86,15 @@ class Tesseract < Formula
     end
     if build.head?
       resource("tessdata-head").stage { mv Dir["*"], share/"tessdata" }
-    elsif build.include? "all-languages"
+    elsif build.with? "all-languages"
       resource("tessdata").stage { mv Dir["*"], share/"tessdata" }
     else
       resource("eng").stage { mv "eng.traineddata", share/"tessdata" }
       resource("osd").stage { mv "osd.traineddata", share/"tessdata" }
     end
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/tesseract -v 2>&1")
   end
 end

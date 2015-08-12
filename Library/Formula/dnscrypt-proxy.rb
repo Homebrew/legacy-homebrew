@@ -1,15 +1,14 @@
 class DnscryptProxy < Formula
   desc "Secure communications between a client and a DNS resolver"
   homepage "https://dnscrypt.org"
-  url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.6.0/dnscrypt-proxy-1.6.0.tar.bz2"
-  mirror "https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.6.0.tar.bz2"
-  sha256 "e0cce91dc6ab4ed76478579a899b2abb888b1d7ed133cb55294c2f9ce24edc7d"
-  revision 3
+  url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.6.1/dnscrypt-proxy-1.6.1.tar.bz2"
+  mirror "https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.6.1.tar.bz2"
+  sha256 "895ac36f5d4898dabf0ed65e0a579d0aa4d9a9be9cca4dca7b573a0ff170919a"
 
   bottle do
-    sha256 "ae42ff6bda755911a3dbc779f4a2e7ab7b08f4a1d7d34ca41652098e48bde4a5" => :el_capitan
-    sha256 "45227eab94dfbfd887f15f09d5e9fb418c317f8817e811d748643c4234a6ac35" => :yosemite
-    sha256 "e92e0eb7409cfb9230c571ab5943095a4150f1409f9bcf32d512c285d0792e52" => :mavericks
+    sha256 "c089de06f984630d2300f898688dec2a514d072508ff23070ae15d1fde1eca99" => :el_capitan
+    sha256 "2b1f3f19d36ad59322979b673cb9a4f7a79c01601dfb2748884ee92148cccc0b" => :yosemite
+    sha256 "5542541954544fec6589553bfcb0c6dd6a35b3878874994364361f393ad5246d" => :mavericks
   end
 
   head do
@@ -121,7 +120,7 @@ class DnscryptProxy < Formula
         <array>
           <string>#{opt_sbin}/dnscrypt-proxy</string>
           <string>--ephemeral-keys</string>
-          <string>--resolvers-list=#{share}/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
+          <string>--resolvers-list=#{opt_pkgshare}/dnscrypt-resolvers.csv</string>
           <string>--resolver-name=dnscrypt.eu-dk</string>
           <string>--user=nobody</string>
         </array>

@@ -5,14 +5,15 @@ class Boot2docker < Formula
   # Please update the version of docker too
   url "https://github.com/boot2docker/boot2docker-cli.git",
     :tag => "v1.8.0", :revision => "9a2606673efcfa282fb64a5a5c9e1b2f89d86fb4"
+  revision 1
+
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8ba0d66cbf6945d807389d122f8e9978a268aabee3893fed98efab09251d4fb7" => :el_capitan
-    sha256 "087e79bf9afee354f5a7ef8034ecb683b5645c82706a9fcbd34bf0bb5b71bfc7" => :yosemite
-    sha256 "ca6772a87763b4690dd9e513d685a282bedeee689034f45828d66ffd19f79c37" => :mavericks
-    sha256 "18ec9445c6c39777c0b390fa1ddf409817d62b3e17312778b77c29640f54a40e" => :mountain_lion
+    sha256 "40ee29e8a44e50bdacdbe81e9bcebb6b9ed01dc7045d5c7178a1e4d97ba3f8e6" => :el_capitan
+    sha256 "abb90647cee5070ec8f627ccf5c1742f4178af44aa457269c397cc0a0bcf7fe3" => :yosemite
+    sha256 "df535640233157d16e153391019bd2dc2ed3448be77dbf77dde4586b071cd407" => :mavericks
   end
 
   depends_on "docker" => :recommended

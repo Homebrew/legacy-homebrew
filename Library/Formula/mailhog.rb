@@ -5,14 +5,15 @@ class Mailhog < Formula
   homepage "https://github.com/mailhog/MailHog"
   url "https://github.com/mailhog/MailHog/archive/0.1.8.tar.gz"
   sha256 "849d60fb6cd0ae38437477ae3dff665430fc73676f53038f6c7ebf4dc0e8d60e"
+  revision 1
 
   head "https://github.com/mailhog/MailHog.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "603d0fc9467467f9c3744a22bae4a16dbab4afe1b4d1bc13a5db8fc780acb2e7" => :el_capitan
-    sha256 "6faeae3d0c3ebbf936f33bcd21f93d9c7dc83ed3ff3ac35e52e1983c42491612" => :yosemite
-    sha256 "2ced3231c6816d0a46c77fa932d2df6e19a7a4c5cb53cac8513d95eb3bae0b2b" => :mavericks
+    sha256 "3dd48eed82e2d07198630ee5be971ca3ef4bc975154b2859b97ae3e2d680e434" => :el_capitan
+    sha256 "365e678cdd2cc4530a8169a54c4080759e8daa10f2520eaca438567ca0718dfd" => :yosemite
+    sha256 "10a1d619424575d647b066f789390509f03dd750ad0892849a7801caa924832f" => :mavericks
   end
 
   depends_on "go" => :build

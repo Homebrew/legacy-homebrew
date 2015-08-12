@@ -1,23 +1,25 @@
 class GitExtras < Formula
   desc "Small git utilities"
   homepage "https://github.com/tj/git-extras"
-  url "https://github.com/tj/git-extras/archive/4.0.0.tar.gz"
-  sha256 "4adaadc1f22f3240ae9607963ede29a5c010ae14b877b90c27d17d6b0c06f430"
   head "https://github.com/tj/git-extras.git"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "63f77e06b416f08bc7a55056d03cda28fbc35ef4cfd1c7934c8d261a03893c0c" => :el_capitan
-    sha256 "2136bb696bc80dc637da2f97ccd83d5c8b55494d639386b7c661b092955a9a1c" => :yosemite
-    sha256 "04ffdb7d30d88977a15585638fc869a7719bc2cb740cb052dc580893558f22ef" => :mavericks
-  end
-
   stable do
+    url "https://github.com/tj/git-extras/archive/4.1.0.tar.gz"
+    sha256 "d4c028e2fe78abde8f3e640b70f431318fb28d82894dde22772efe8ba3563f85"
     # Disable "git extras update", which will produce a broken install under Homebrew
     # https://github.com/Homebrew/homebrew/issues/44520
     # https://github.com/tj/git-extras/pull/491
     patch :DATA
   end
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "f820c2530817015aa26f4fd8879e67847496b4c958a232adfde962dcd7b5a488" => :el_capitan
+    sha256 "6a9555f8c96d1b2bc146eaf1778dee50787f44ee4d98b21a862b50a17556dc47" => :yosemite
+    sha256 "1b0d3064c639782265ed8180c3136e86cfc65e8fa607a3b347113320888e85fe" => :mavericks
+  end
+
+  conflicts_with "git-town", :because => "git-extras also ships a git-sync binary"
 
   def install
     system "make", "PREFIX=#{prefix}", "install"

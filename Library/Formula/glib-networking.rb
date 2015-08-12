@@ -3,12 +3,13 @@ class GlibNetworking < Formula
   homepage "https://launchpad.net/glib-networking"
   url "https://download.gnome.org/sources/glib-networking/2.46/glib-networking-2.46.1.tar.xz"
   sha256 "d5034214217f705891b6c9e719cc2c583c870bfcfdc454ebbb5e5e8940ac90b1"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "019a74e4cf9d8479d2379ac3d2833150bca7d30fdc662df0046c05ca739c0503" => :el_capitan
-    sha256 "35da1bacbc373d4430dccf0cba27cc84eebc69b6710b36efc63f236c61e09481" => :yosemite
-    sha256 "ab88b21eb30c66be5ba5c7ae77e991849e5370e395f85d2bd0824e78704efede" => :mavericks
+    sha256 "2c4202897e60b020f8e22dd29d49e70e733fd052afb2f317e9cfbfb19eebc2c6" => :el_capitan
+    sha256 "789512fa7455394db752adf309edef0a25704d4e2308df6e1d378c9f78863452" => :yosemite
+    sha256 "847f7b23da31ce1344d381a26f9193baa2510a36a447198e3c5ff759fd2bc341" => :mavericks
   end
 
   depends_on "pkg-config" => :build

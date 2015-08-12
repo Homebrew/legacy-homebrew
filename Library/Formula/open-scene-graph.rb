@@ -1,20 +1,22 @@
 class OpenSceneGraph < Formula
   desc "3D graphics toolkit"
   homepage "http://www.openscenegraph.org/projects/osg"
-  url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.4.0.zip"
-  sha256 "5c727d84755da276adf8c4a4a3a8ba9c9570fc4b4969f06f1d2e9f89b1e3040e"
+  url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.5.1.zip"
+  sha256 "c409e9095d77faab3db8fe2047d75e7ef348fd9f06ecd8b7629fceb8fe1d24e0"
 
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
   bottle do
-    sha256 "d24a9ba62fdd3d700e8c326e0ac8786229a4d84ca9786fac58b1ff8d785148ff" => :yosemite
-    sha256 "a2bb83a0e02b1f5a75e802053cba6c81b6928c716fb805caf7d53becc9e0ee8e" => :mavericks
-    sha256 "86e946339bf8293c784e4ceb78b2ff5f203bf7166427d2e66abb462d6f03e406" => :mountain_lion
+    sha256 "d75dbe609dc34b520dd70a8a04548252e3cb68e9faa28221420ceb7e5e56f2cf" => :mavericks
   end
 
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
+
+  # Currently does not build on 10.10+, possibly due to Xcode 7 issue
+  # https://github.com/Homebrew/homebrew/pull/46776
+  depends_on MaximumMacOSRequirement => :mavericks
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
@@ -33,8 +35,6 @@ class OpenSceneGraph < Formula
   depends_on "qt5" => :optional
   depends_on "qt" => :optional
 
-  # patch necessary to ensure support for gtkglext-quartz
-  # filed as an issue to the developers https://github.com/openscenegraph/osg/issues/34
   patch :DATA
 
   if build.with? "docs"
@@ -52,6 +52,7 @@ class OpenSceneGraph < Formula
 
     args = std_cmake_args
     args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
+    args << "-DCMAKE_CXX_FLAGS='-Wno-c++11-narrowing'"
 
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"
@@ -96,16 +97,47 @@ class OpenSceneGraph < Formula
   end
 end
 __END__
-diff --git a/CMakeModules/FindGtkGl.cmake b/CMakeModules/FindGtkGl.cmake
-index 321cede..6497589 100644
---- a/CMakeModules/FindGtkGl.cmake
-+++ b/CMakeModules/FindGtkGl.cmake
-@@ -10,7 +10,7 @@ IF(PKG_CONFIG_FOUND)
-     IF(WIN32)
-         PKG_CHECK_MODULES(GTKGL gtkglext-win32-1.0)
-     ELSE()
--        PKG_CHECK_MODULES(GTKGL gtkglext-x11-1.0)
-+        PKG_CHECK_MODULES(GTKGL gtkglext-quartz-1.0)
-     ENDIF()
-
- ENDIF()
+--- a/include/osgViewer/View	2015-11-26 11:37:57.000000000 +0100
++++ b/include/osgViewer/View	2015-11-26 11:38:53.000000000 +0100
+@@ -127,7 +127,7 @@
+         /** Set the View's image pager.*/
+         void setImagePager(osgDB::ImagePager* ip);
+ 
+-        template<class T> void setImagePager(const osg::ref_ptr<T>* ip) { setImagePager(ip.get()); }
++        template<class T> void setImagePager(const osg::ref_ptr<T>& ip) { setImagePager(ip.get()); }
+ 
+         /** Get the View's image pager.*/
+         osgDB::ImagePager* getImagePager();
+--- a/include/osgUtil/IntersectionVisitor	2015-11-28 02:42:23.000000000 +0100
++++ b/include/osgUtil/IntersectionVisitor	2015-11-28 02:41:59.000000000 +0100
+@@ -160,7 +160,7 @@
+           * tighter integration.*/
+         struct ReadCallback : public osg::Referenced
+         {
+-            virtual osg::ref_ptr<osg::Node> readNodeFile(const std::string& filename) = 0;
++            virtual osg::Node* readNodeFile(const std::string& filename) = 0;
+         };
+ 
+ 
+--- a/include/osgSim/LineOfSight	2015-11-28 02:44:57.000000000 +0100
++++ a/include/osgSim/LineOfSight	2015-11-28 02:44:51.000000000 +0100
+@@ -32,7 +32,7 @@
+ 
+         void pruneUnusedDatabaseCache();
+ 
+-        virtual osg::ref_ptr<osg::Node> readNodeFile(const std::string& filename);
++        virtual osg::Node* readNodeFile(const std::string& filename);
+ 
+     protected:
+ 
+--- a/src/osgSim/LineOfSight.cpp	2015-11-28 04:00:38.000000000 +0100
++++ a/src/osgSim/LineOfSight.cpp	2015-11-28 04:00:35.000000000 +0100
+@@ -34,7 +34,7 @@
+ {
+ }
+ 
+-osg::ref_ptr<osg::Node> DatabaseCacheReadCallback::readNodeFile(const std::string& filename)
++osg::Node* DatabaseCacheReadCallback::readNodeFile(const std::string& filename)
+ {
+     // first check to see if file is already loaded.
+     {

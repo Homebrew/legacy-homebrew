@@ -1,31 +1,26 @@
 class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://phantomjs.org/"
+  url "https://github.com/ariya/phantomjs.git",
+      :tag => "2.1.1",
+      :revision => "d9cda3dcd26b0e463533c5cc96e39c0f39fc32c1"
   head "https://github.com/ariya/phantomjs.git"
-  # Temporarily use Vitallium's fork (who is a maintainer) until 2.1.0.
-  url "https://github.com/Vitallium/phantomjs.git",
-      :tag => "2.0.1",
-      :revision => "33aaaff64a197b20076faab1b08b8757516aa976"
 
   bottle do
     cellar :any
-    sha256 "8c1e531d9d6f06a1c8cfd1a8b58de013c67311a63b7ef7527a74c94c96bd1a5b" => :el_capitan
-    sha256 "6d70d6aa35b60f8ae26ac7a40c41ab0cb7e70a55b07abac6d236545116b83822" => :yosemite
-    sha256 "8712122649fa42ca342fa98a4588dac3402f7038e11540e541e6dc80193cbe82" => :mavericks
+    sha256 "f66255cd772834de297a10fc7053800bfbd99c4833196958c18f05299dec6bc9" => :el_capitan
+    sha256 "0ba4152cce3869cc01ed697d9bbf4dfe55d7749693dfbf6bede24c191c0f177f" => :yosemite
+    sha256 "908cacf9af85893f54c5330987099896448c2699a7f3712de3e2232348c433b2" => :mavericks
   end
 
+  depends_on :xcode => :build
   depends_on "openssl"
 
   def install
-    if build.stable?
-      system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
-             "--qt-config", "-I #{Formula["openssl"].opt_include} -L #{Formula["openssl"].opt_lib}"
-    else
-      inreplace "build.py", "/usr/local", HOMEBREW_PREFIX
-      system "./build.py", "--confirm", "--jobs", ENV.make_jobs
-    end
+    inreplace "build.py", "/usr/local", HOMEBREW_PREFIX
+    system "./build.py", "--confirm", "--jobs", ENV.make_jobs
     bin.install "bin/phantomjs"
-    (share/"phantomjs").install "examples"
+    pkgshare.install "examples"
   end
 
   test do

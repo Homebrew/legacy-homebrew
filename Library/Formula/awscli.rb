@@ -1,15 +1,15 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.9.18.tar.gz"
-  mirror "https://github.com/aws/aws-cli/archive/1.9.18.tar.gz"
-  sha256 "c33a8bb77cc305dead1f45cac8c2be618546bd3b4dd5f1e6be093432977c5b23"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.10.6.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.10.6.tar.gz"
+  sha256 "191c75dde86dd4ee9e74f3c531922b718e84107f496a34d3d8dde450ea8b9f8b"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c4a981f42a6767354b4c3db4340fd6484a0e5978ca04a3c51bbd2531072e2a72" => :el_capitan
-    sha256 "59fb86533dda0b3dd52375976acb3a67dcc186c23c3af5831fe5520630eb5685" => :yosemite
-    sha256 "3c3fc3186f86f79212d2fc7afed0e24159138a036c48fb3ebdb57cf7ac72d080" => :mavericks
+    sha256 "573610ff4daa6ff88e5e4aadf0d0c5ce587ecedb0a432c2beff44c806cba4ac8" => :el_capitan
+    sha256 "0f982916104c7ce783299fa1bdd09dc6376d6e2be7666a91576a133f8c7b0640" => :yosemite
+    sha256 "aa400a8fd3141b0b72dcea2a3ea7dda01d3a28cb8fae11d841d0feba66fed865" => :mavericks
   end
 
   head do
@@ -21,6 +21,10 @@ class Awscli < Formula
 
     resource "jmespath" do
       url "https://github.com/boto/jmespath.git", :branch => "develop"
+    end
+
+    resource "s3transfer" do
+      url "https://github.com/boto/s3transfer.git", :branch => "develop"
     end
   end
 
@@ -39,8 +43,13 @@ class Awscli < Formula
   end
 
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.6.tar.gz"
-    sha256 "ec9efcccb086a1d727876384f94ee6358d2f3f096688c1ba18b0f318f2b453b5"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz"
+    sha256 "eb21f2ba718fbf357afdfdf6f641ab393901c7ca8d9f37edd0bee4806ffa269c"
+  end
+
+  resource "botocore" do
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.28.tar.gz"
+    sha256 "244234d0df9829562fb62b4bfc4a4523ebcfa56d471ff0bd3f08f2e63afd351b"
   end
 
   resource "jmespath" do
@@ -48,9 +57,14 @@ class Awscli < Formula
     sha256 "08dfaa06d4397f283a01e57089f3360e3b52b5b9da91a70e1fd91e9f0cdd3d3d"
   end
 
-  resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.18.tar.gz"
-    sha256 "6a21bbf3a569fd32ae9b672e6732462ac0f75a4bc8b21f051d367a5f79521211"
+  resource "s3transfer" do
+    url "https://pypi.python.org/packages/source/s/s3transfer/s3transfer-0.0.1.tar.gz"
+    sha256 "2bb9ed8db58af94dfa78f75f554d646dfe4b4741fc87f63a20c2bfb3f70f4355"
+  end
+
+  resource "futures" do
+    url "https://pypi.python.org/packages/source/f/futures/futures-3.0.5.tar.gz"
+    sha256 "0542525145d5afc984c88f914a0c85c77527f65946617edb5274f72406f981df"
   end
 
   resource "docutils" do
@@ -64,8 +78,13 @@ class Awscli < Formula
   end
 
   resource "rsa" do
-    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.2.3.tar.gz"
-    sha256 "14db288cc40d6339dedf60d7a47053ab004b4a8976a5c59402a211d8fc5bf21f"
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.3.tar.gz"
+    sha256 "03f3d9bebad06681771016b8752a40b12f615ff32363c7aa19b3798e73ccd615"
+  end
+
+  resource "tox" do
+    url "https://pypi.python.org/packages/source/t/tox/tox-2.3.1.tar.gz"
+    sha256 "bf7fcc140863820700d3ccd65b33820ba747b61c5fe4e2b91bb8c64cb21a47ee"
   end
 
   def install

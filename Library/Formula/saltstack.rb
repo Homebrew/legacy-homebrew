@@ -5,15 +5,15 @@ class Saltstack < Formula
   # (URLs starting with https://github.com/saltstack/salt/releases/download)
   # github tag archives will report wrong version number
   # https://github.com/Homebrew/homebrew/issues/43493
-  url "https://github.com/saltstack/salt/releases/download/v2015.8.3/salt-2015.8.3.tar.gz"
-  sha256 "4cda3a49d9dc57e849ec93014d31a1983a191c0a88c8ee4d7162e975b67a6b56"
+  url "https://github.com/saltstack/salt/releases/download/v2015.8.5/salt-2015.8.5.tar.gz"
+  sha256 "db395702f048ea384ccc440201c24d7044685977ae6a8588d0d0933246f0c673"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "582d09b4f2b5c4231dd3a552a47fd80612a6a9c924edb774fd6a8060915caece" => :el_capitan
-    sha256 "889cec460d10d59fdd7ba797e39265a675fa4e4f92bbc545fa0f0856a584d2b1" => :yosemite
-    sha256 "5f9e12ce508da8cf3c8ba48250356ef6e0167b5255980f6da04da4c59800824f" => :mavericks
+    sha256 "522c3968784dea001e8194c5e6a1156f0671c99e8cdf803d27c20eb9cec0b559" => :el_capitan
+    sha256 "8327b4ab5e1fdb07462915877babf16f34b9ee841f62d361751bbe60e2d2f5b0" => :yosemite
+    sha256 "20e5f30a0b5b76121341346e520742d297b17df5c679b310cf9815bf7ac84a77" => :mavericks
   end
 
   depends_on "swig" => :build
@@ -28,13 +28,13 @@ class Saltstack < Formula
   end
 
   resource "m2crypto" do
-    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.6rc4.tar.gz"
-    sha256 "466c6058bcdf504e6e83c731bbb69490cf73a314459fb4c183e5aee29d066f81"
+    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.23.0.tar.gz"
+    sha256 "1ac3b6eafa5ff7e2a0796675316d7569b28aada45a7ab74042ad089d15a9567f"
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.0.tar.gz"
-    sha256 "4881966532b5a36c552244fd909de66d1b8c4a26086f56fd5837cfcde63f8eb8"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
   end
 
   resource "futures" do
@@ -63,8 +63,8 @@ class Saltstack < Formula
   end
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.1.0.tar.gz"
-    sha256 "bd5b279998538bb197baf59c81584550d713b1b17761e8a638bb6fbda9e5d08d"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.2.0.tar.gz"
+    sha256 "2dafa322670a94e20283aba2a44b92134d425bd326419b68ad4db8d0831a26ec"
   end
 
   resource "msgpack-python" do
@@ -80,8 +80,8 @@ class Saltstack < Formula
 
   # Required by tornado
   resource "backports.ssl_match_hostname" do
-    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
-    sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
+    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.5.0.1.tar.gz"
+    sha256 "502ad98707319f4a51fa2ca1c677bd659008d27ded9f6380c79e8932e38dcdf2"
   end
 
   # Required by tornado

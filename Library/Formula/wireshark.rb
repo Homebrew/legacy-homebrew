@@ -4,11 +4,12 @@ class Wireshark < Formula
   url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.1.tar.bz2"
   mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.1.tar.bz2"
   sha256 "c9bd07dd0d0045d6ca7537390a1afbcdf33716d193ea7d7084ae4f6c30b683ab"
+  revision 1
 
   bottle do
-    sha256 "adaeb1341d1292d42895c05425c16ae247dd8ebf7e2e5636cc4a95a54631f424" => :el_capitan
-    sha256 "09cb81722bc6b6a5602581f10c7bcf6adf4e6fb20b00e9776d87fb75f498911b" => :yosemite
-    sha256 "09ee4ca55d9cf8c393430180c32248945f8141eeaf58fa58bd23c9cb8088a1df" => :mavericks
+    sha256 "f9251b00cf5ba7e45016e2ce13dccae979e0bf72e0dd47b415920069db3d9eeb" => :el_capitan
+    sha256 "88b9017a72c477adc9f8fd91171e5f2ae541d375dc79e77342f9dd152149c208" => :yosemite
+    sha256 "a263818e06ec83d18c60683125507b5750a3bd19cd045e23eba2c785273ba62c" => :mavericks
   end
 
   head do

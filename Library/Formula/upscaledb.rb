@@ -3,12 +3,13 @@ class Upscaledb < Formula
   homepage "http://upscaledb.com/"
   url "http://files.upscaledb.com/dl/upscaledb-2.1.12.tar.gz"
   sha256 "f68c7e7b8f5aaf41ab47d60e351db35506f96ebf8be2ad695a0d8a12035001df"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "9f10d82a1189c8de362efb53e7cb0a67fd6e804f1c64626087f089dd882bbef0" => :el_capitan
-    sha256 "fb96b299611a38359cbbc6befbfcf8a43a3cd6807248e1e685d73d344e1c3fa8" => :yosemite
-    sha256 "9ba5cc10a0be221f02f43b700754a4dee74c7de70db47e2cf342e6134d2fe349" => :mavericks
+    sha256 "8bc4b570a3f180c30d34cba9b0068cc1772bd063f333e2441e40a41f1fc58b0c" => :el_capitan
+    sha256 "0eb354e3472e86f8a37b921331b9971bd7a0be790d93aeeec8e219cf50876f4c" => :yosemite
+    sha256 "917d73902d02e6a970dec78b63d1a6bd165aa77cbb77838cf5711773be29ebf0" => :mavericks
   end
 
   head do

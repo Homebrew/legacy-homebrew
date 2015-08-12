@@ -3,14 +3,15 @@ class Knot < Formula
   homepage "https://www.knot-dns.cz/"
   url "https://secure.nic.cz/files/knot-dns/knot-2.0.2.tar.xz"
   sha256 "0418a22f9e801503993b3c872f2403bf73eab5ef7266128789b0531b41ea0c7e"
+  revision 1
 
   head "https://gitlab.labs.nic.cz/labs/knot.git"
 
   bottle do
     cellar :any
-    sha256 "d3a4fb096ec0503c1190c9f2f5149606715688d4dd841e69f000d4939bd6cdbb" => :el_capitan
-    sha256 "ed2c25d4630c57cf993ea5dff1086968ac02dd2bdcd8fdbb5d221ea826d823c1" => :yosemite
-    sha256 "faf9359de7ca2f7b2285d28c28c8881e35c7e8e30dd843091b73c144243fd139" => :mavericks
+    sha256 "d50cdf56ab983378103904777db2561f26735b5dd54cec6a8e42b0aca4fd0c40" => :el_capitan
+    sha256 "f33daf162fb1f7d48eed000c855312a0c5890a13b83bfd91ae4e7b3272e64a5f" => :yosemite
+    sha256 "f0ad7de6798ae89ce64618345265ea345c404868c869fbaccb9d6060c4329465" => :mavericks
   end
 
   depends_on "automake" => :build

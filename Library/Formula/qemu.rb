@@ -4,18 +4,20 @@ class Qemu < Formula
   url "http://wiki.qemu-project.org/download/qemu-2.5.0.tar.bz2"
   mirror "http://ftp.osuosl.org/pub/blfs/conglomeration/qemu/qemu-2.5.0.tar.bz2"
   sha256 "3443887401619fe33bfa5d900a4f2d6a79425ae2b7e43d5b8c36eb7a683772d4"
+  revision 2
+
   head "git://git.qemu-project.org/qemu.git"
 
   bottle do
-    revision 1
-    sha256 "747e62d3b982a1dc3ec5a5de3e0eaebf1593aaea316b7a66f4f0c3369093d205" => :el_capitan
-    sha256 "dd872e1e7dddfb8707013d3945ffc5525e7c21d33166e1a7272d8526e4c5346d" => :yosemite
-    sha256 "b355aebf054dcef25dfafda7cacaba6f5a61e3cd449127b3227b645619ffc13c" => :mavericks
+    sha256 "bc9faeed43aa6c6e8a5212cf983468d4c3e55f99c812e9c66ce80d0d0436cb56" => :el_capitan
+    sha256 "d32bc574ae7489ac4ae981247eb3e7e980de30b684f080ec29b56e21d81a29f3" => :yosemite
+    sha256 "e60b1ffe823022f680d3dcb38bbd621bfd73b8a794e53bc78e6ac3f3991d6af5" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "libtool" => :build
   depends_on "jpeg"
+  depends_on "libpng" => :recommended
   depends_on "gnutls"
   depends_on "glib"
   depends_on "pixman"
@@ -65,6 +67,7 @@ class Qemu < Formula
   end
 
   test do
+    system "#{bin}/qemu-system-i386", "--version"
     resource("armtest").stage testpath
     assert_match "file format: raw", shell_output("#{bin}/qemu-img info arm_root.img")
   end

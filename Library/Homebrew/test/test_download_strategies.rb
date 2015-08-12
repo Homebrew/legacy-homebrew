@@ -11,6 +11,8 @@ class ResourceDouble
 end
 
 class AbstractDownloadStrategyTests < Homebrew::TestCase
+  include FileUtils
+
   def setup
     @name = "foo"
     @resource = ResourceDouble.new
@@ -33,6 +35,15 @@ class AbstractDownloadStrategyTests < Homebrew::TestCase
     result = @strategy.expand_safe_system_args(@args)
     assert_equal %w[foo bar baz], @args
     refute_same @args, result
+  end
+
+  def test_source_modified_time
+    mktemp "mtime" do
+      touch "foo", :mtime => Time.now - 10
+      touch "bar", :mtime => Time.now - 100
+      ln_s "not-exist", "baz"
+      assert_equal File.mtime("foo"), @strategy.source_modified_time
+    end
   end
 end
 

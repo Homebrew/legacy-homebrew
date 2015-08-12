@@ -4,15 +4,15 @@ class KubernetesCli < Formula
   head "https://github.com/kubernetes/kubernetes.git"
 
   stable do
-    url "https://github.com/kubernetes/kubernetes/archive/v1.1.3.tar.gz"
-    sha256 "b844e82fad688f62ed29ede1c61677d45d1a4c4c52ac08958e3ad1e650c10756"
+    url "https://github.com/kubernetes/kubernetes/archive/v1.1.8.tar.gz"
+    sha256 "fbc1a01edc6683dc3c59830a63622730c5baece1e02dfa1cd32a852bf4415581"
   end
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d44cdd07b83b85cc258230a0d8e112c051cd22bbcde9078537282e0acb044864" => :el_capitan
-    sha256 "bc307191e88c0a53b561995830f605ecbe30edff04aa8708abb68de0046154b0" => :yosemite
-    sha256 "d31979735c45bdce569a7cbaacc3fa81531d5f0280ef666bf437a7e795f56ba6" => :mavericks
+    sha256 "0ebbae000a1f339588e052d1aba970b8d04fc4050aa2362bc865198acf535de5" => :el_capitan
+    sha256 "47bc25716067a1804506be5d670c148dc75c750cadad0475af0ee9048c6ee3b7" => :yosemite
+    sha256 "afb9bb03e2df5018d92ee7a09c2f3e7d080736094dd1150d1b5f4f587f805ab1" => :mavericks
   end
 
   devel do

@@ -5,12 +5,13 @@ class Minbif < Formula
   mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20150505.orig.tar.gz"
   version "1.0.5-20150505"
   sha256 "4e264fce518a0281de9fc3d44450677c5fa91097a0597ef7a0d2a688ee66d40b"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "dad011900de96b796e7738bc5641c4d699d217959007be9971f3cd4041be6b49" => :el_capitan
-    sha256 "d861dcf51038caeab530d2f0fc1f986bfa28d5d408209b29402de0db89d349f0" => :yosemite
-    sha256 "f02386c6871f4c4762c62a377760b5a18c70c337f9266b4995b350bbe97a868e" => :mavericks
+    sha256 "a2975f09ebf6254df989164f832f80e7bf9e7d65a6c160375ffff6512c2b10bd" => :el_capitan
+    sha256 "78a992db3b47f3ecaf331d3f81d5920f99b611f2dec1f8cafa5b1d318bb87abc" => :yosemite
+    sha256 "a2affd1a3d8691f4f794a7d20b4d45b03c0ef79f9253d4d4bb0fdda79e5fe30d" => :mavericks
   end
 
   option "with-pam", "Build with PAM support, patching for OSX PAM headers"

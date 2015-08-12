@@ -7,15 +7,16 @@ class TabTests < Homebrew::TestCase
     @used = Options.create(%w[--with-foo --without-bar])
     @unused = Options.create(%w[--with-baz --without-qux])
 
-    @tab = Tab.new("used_options"       => @used.as_flags,
-                   "unused_options"     => @unused.as_flags,
-                   "built_as_bottle"    => false,
-                   "poured_from_bottle" => true,
-                   "time"               => nil,
-                   "HEAD"               => TEST_SHA1,
-                   "compiler"           => "clang",
-                   "stdlib"             => "libcxx",
-                   "source"             => {
+    @tab = Tab.new("used_options"         => @used.as_flags,
+                   "unused_options"       => @unused.as_flags,
+                   "built_as_bottle"      => false,
+                   "poured_from_bottle"   => true,
+                   "time"                 => nil,
+                   "source_modified_time" => 0,
+                   "HEAD"                 => TEST_SHA1,
+                   "compiler"             => "clang",
+                   "stdlib"               => "libcxx",
+                   "source"               => {
                      "tap" => "Homebrew/homebrew",
                      "path" => nil,
                      "spec" => "stable"

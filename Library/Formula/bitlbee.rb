@@ -3,13 +3,14 @@ class Bitlbee < Formula
   homepage "https://www.bitlbee.org/"
   url "https://get.bitlbee.org/src/bitlbee-3.4.1.tar.gz"
   sha256 "500a0b19943040d67458eb3beb0a63d004abb2aa54a777addeb2a895d4f5c0e1"
+  revision 1
+
   head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
-    revision 1
-    sha256 "c552e34eb416291007a14c7ed0cdeae340d80ea1fdde2a4897be212f1975d60f" => :el_capitan
-    sha256 "8b2e589ed8072562ce34d891b8e077e60654c845f4e77c0b0b9c80f0665c0766" => :yosemite
-    sha256 "6e59b6545bd5c51a35d28f3411d76870414b5ada5bd0023098f1ad68ad4ff97e" => :mavericks
+    sha256 "b736c902609a430ca96856f09d956bdabcb544a8c768e035dbf103e61a5fdc77" => :el_capitan
+    sha256 "4d0f0e8560de296d49ffa340d0b50adfd4eaf1fe86abb332011fc44b283564fc" => :yosemite
+    sha256 "bfd5d013c21129aa2d87e6fff261d7428a8c883f0b2682da0ae4fe8740d76345" => :mavericks
   end
 
   option "with-pidgin", "Use finch/libpurple for all communication with instant messaging networks"

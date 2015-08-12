@@ -1,13 +1,13 @@
 class Libfabric < Formula
   desc "OpenFabrics libfabric"
   homepage "https://ofiwg.github.io/libfabric/"
-  url "https://downloads.openfabrics.org/downloads/ofi/libfabric-1.1.1.tar.bz2"
-  sha256 "228c50d1f9595009a026bb2293f372a04d89ecb3b0f7fcde3905476dbf49fc95"
+  url "https://downloads.openfabrics.org/downloads/ofi/libfabric-1.2.0.tar.bz2"
+  sha256 "179da0e27b47ca35b5ec823c30cdcc63cf991f0f86bfd655e091a1268d1a3182"
 
   bottle do
-    sha256 "aba7aa15e9ea1666faa54569e3a84d8bcc8fe194836dd4dbc03eb1eade69269b" => :el_capitan
-    sha256 "4b9a5d0f42d6f29531b6b497ed9054afbb1f42dc7587f27fa9dc4f6b9a44f6fd" => :yosemite
-    sha256 "0e757a155e62a7a547e17e81eae96b2b3cf77be70872c0a108fe6d9f29995db5" => :mavericks
+    sha256 "fb5c566ee556d050f53f19568f752cb5bab989ef01198eddd1b64df26cbdbcdc" => :el_capitan
+    sha256 "34ad02c68e5d921bcf0e0d5086aeb0cbb39157353bbc7dba4cf03d3e4fcbb748" => :yosemite
+    sha256 "e3f95c8408b8b0ec925c65c812a4f1aec3206b1363dfe8fb85d886c099b7b6cd" => :mavericks
   end
 
   def install

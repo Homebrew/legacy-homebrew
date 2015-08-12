@@ -4,15 +4,16 @@ class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
   url "https://github.com/docker/machine.git",
-    :tag => "v0.5.6",
-    :revision => "61388e98540321b34f4a27f88df9e7a4443b9ac8"
+    :tag => "v0.6.0",
+    :revision => "e27fb87286cb8e7454183ce46a6e1e84b31965e9"
+
   head "https://github.com/docker/machine.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "375dab55757b24a748c8fed3c6ccfc8fc5bc8a3e11b760d4b4bca23a48059342" => :el_capitan
-    sha256 "769f5e530c02952ccc39f21d3a192b828268d1bc3f324e919a621d1997ccc2e8" => :yosemite
-    sha256 "3980502fec793ca87b6704820dd19aa9a0169f5672f971855d9da067501ac4ee" => :mavericks
+    sha256 "d8f5419d5b9fdf3632e546190755d63df852fa89125b8bb68d932c3c30650286" => :el_capitan
+    sha256 "b5b2a08a5295290799e7d352cb177659a64823ccea5ddc3246c04ece2c16e8d1" => :yosemite
+    sha256 "ef3a096090e2abf7cae56f52b9d4f5aed14cc79ae534d4fd21ff5b11be159cd5" => :mavericks
   end
 
   depends_on "go" => :build
@@ -36,6 +37,6 @@ class DockerMachine < Formula
   end
 
   test do
-    system bin/"docker-machine", "ls"
+    assert_match /#{version}/, shell_output(bin/"docker-machine --version")
   end
 end

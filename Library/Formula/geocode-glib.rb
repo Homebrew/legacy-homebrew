@@ -1,13 +1,13 @@
 class GeocodeGlib < Formula
   desc "GNOME library for gecoding and reverse geocoding"
   homepage "https://developer.gnome.org/geocode-glib"
-  url "https://download.gnome.org/sources/geocode-glib/3.18/geocode-glib-3.18.0.tar.xz"
-  sha256 "8fb7f0d569e3e6696aaa1fdf275cb3094527ec5e9fa36fd88dd633dfec63495d"
+  url "https://download.gnome.org/sources/geocode-glib/3.18/geocode-glib-3.18.2.tar.xz"
+  sha256 "95b11ef2697ac5dbb2f397e7117e08e157b2168624c71507656928095012494e"
 
   bottle do
-    sha256 "f85aee0dbf1e2b66693efac35cd0a9340c277bbdb1dedcf09bb467dace95ffd1" => :el_capitan
-    sha256 "e14086597467c257fce1e2654cd35980da46f544ea548af0d5425505906dee98" => :yosemite
-    sha256 "d20e9d72630794b217e9d0c4a46e704cc7201a98d1aa2a821da737f276ba2959" => :mavericks
+    sha256 "dad6f3fbbb15e9964b4d754ce82de4466c3f3079f8d1686b96230c01fb2e914b" => :el_capitan
+    sha256 "5f793b1eb08cdfa39596edf4adf9ee9fccc0ff7827ba9461dda0a0c53dcf89e2" => :yosemite
+    sha256 "5c4ac97212c4ba832658efd625e182d1574569280b02975772a7b07413dd169a" => :mavericks
   end
 
   depends_on "pkg-config" => :build

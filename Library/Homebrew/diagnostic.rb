@@ -175,6 +175,7 @@ module Homebrew
           "libmacfuse_i64.2.dylib", # OSXFuse MacFuse compatibility layer
           "libosxfuse_i32.2.dylib", # OSXFuse
           "libosxfuse_i64.2.dylib", # OSXFuse
+          "libosxfuse.2.dylib", # OSXFuse
           "libTrAPI.dylib", # TrAPI / Endpoint Security VPN
           "libntfs-3g.*.dylib", # NTFS-3G
           "libntfs.*.dylib", # NTFS-3G
@@ -238,6 +239,7 @@ module Homebrew
           "libfuse_ino64.la", # MacFuse
           "libosxfuse_i32.la", # OSXFuse
           "libosxfuse_i64.la", # OSXFuse
+          "libosxfuse.la", # OSXFuse
           "libntfs-3g.la", # NTFS-3G
           "libntfs.la", # NTFS-3G
           "libublio.la", # NTFS-3G
@@ -514,9 +516,10 @@ module Homebrew
         unless HOMEBREW_PREFIX.writable_real? then <<-EOS.undent
         The /usr/local directory is not writable.
         Even if this directory was writable when you installed Homebrew, other
-        software may change permissions on this directory. Some versions of the
+        software may change permissions on this directory. For example, upgrading
+        to OS X El Capitan has been known to do this. Some versions of the
         "InstantOn" component of Airfoil or running Cocktail cleanup/optimizations
-        are known to do this.
+        are known to do this as well.
 
         You should probably change the ownership and permissions of /usr/local
         back to your user account.
@@ -1043,6 +1046,7 @@ module Homebrew
       end
 
       def check_for_autoconf
+        return unless MacOS::Xcode.installed?
         return unless MacOS::Xcode.provides_autotools?
 
         autoconf = which("autoconf")
@@ -1196,19 +1200,28 @@ module Homebrew
       end
 
       def check_for_non_prefixed_coreutils
-        gnubin = "#{Formulary.factory("coreutils").prefix}/libexec/gnubin"
-        if paths.include? gnubin then <<-EOS.undent
+        coreutils = Formula["coreutils"]
+        return unless coreutils.any_version_installed?
+
+        gnubin = %W[#{coreutils.opt_libexec}/gnubin #{coreutils.libexec}/gnubin]
+        return if (paths & gnubin).empty?
+
+        <<-EOS.undent
           Putting non-prefixed coreutils in your path can cause gmp builds to fail.
-          EOS
-        end
+        EOS
       end
 
       def check_for_non_prefixed_findutils
+        findutils = Formula["findutils"]
+        return unless findutils.any_version_installed?
+
+        gnubin = %W[#{findutils.opt_libexec}/gnubin #{findutils.libexec}/gnubin]
         default_names = Tab.for_name("findutils").with? "default-names"
-        if default_names then <<-EOS.undent
+        return if !default_names && (paths & gnubin).empty?
+
+        <<-EOS.undent
           Putting non-prefixed findutils in your path can cause python builds to fail.
-          EOS
-        end
+        EOS
       end
 
       def check_for_pydistutils_cfg_in_home
@@ -1223,28 +1236,27 @@ module Homebrew
 
       def check_for_outdated_homebrew
         return unless Utils.git_available?
-        HOMEBREW_REPOSITORY.cd do
-          if File.directory? ".git"
+
+        timestamp = if File.directory?("#{HOMEBREW_REPOSITORY}/.git")
+          HOMEBREW_REPOSITORY.cd { `git log -1 --format="%ct" HEAD`.to_i }
+        else
+          HOMEBREW_LIBRARY.mtime.to_i
+        end
+        return if Time.now.to_i - timestamp <= 60 * 60 * 24 # 24 hours
+
+        if File.directory?("#{HOMEBREW_REPOSITORY}/.git")
+          HOMEBREW_REPOSITORY.cd do
             local = `git rev-parse -q --verify refs/remotes/origin/master`.chomp
             remote = /^([a-f0-9]{40})/.match(`git ls-remote origin refs/heads/master 2>/dev/null`)
-            if remote.nil? || local == remote[0]
-              return
-            end
+            return if remote.nil? || local == remote[0]
           end
+        end
 
-          timestamp = if File.directory? ".git"
-            `git log -1 --format="%ct" HEAD`.to_i
-          else
-            HOMEBREW_LIBRARY.mtime.to_i
-          end
-
-          if Time.now.to_i - timestamp > 60 * 60 * 24 then <<-EOS.undent
+        <<-EOS.undent
           Your Homebrew is outdated.
           You haven't updated for at least 24 hours. This is a long time in brewland!
           To update Homebrew, run `brew update`.
-          EOS
-          end
-        end
+        EOS
       end
 
       def check_for_unlinked_but_not_keg_only

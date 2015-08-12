@@ -1,21 +1,13 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
   homepage "https://www.lighttpd.net/"
-  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.38.tar.xz"
-  sha256 "4912568b7befcf3f552ca4668bd7f38cd85f42a22944359d00816ec27eb1e504"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.39.tar.xz"
+  sha256 "7eb9a1853c3d6dd5851682b0733a729ba4158d6bdff80974d5ef5f1f6887365b"
 
   bottle do
-    revision 1
-    sha256 "c88a139e5914a38194eba56154f3472cb6467ef343bc3c0b209f2df3e1e16c9a" => :el_capitan
-    sha256 "aeada1a7d5c027b6716755b1e61a8a3d3dca3617e1f61a8318dc866617f60e3b" => :yosemite
-    sha256 "a4a350a5ec1e2d295db457bfffb6e6ad238140e78d54de761c00002ac2ab759a" => :mavericks
-  end
-
-  # this patch can be removed with the next release
-  # https://redmine.lighttpd.net/issues/2698
-  patch do
-    url "https://redmine.lighttpd.net/attachments/download/1671/0001-core-fix-memset_s-call-fixes-2698.patch"
-    sha256 "e04c11ce6ce5a32f1208311671acb7413fbeca5ce3fefa9a0e3121cd920a5cdb"
+    sha256 "980a717148dd248f4577af9918c402b531bbb0eccc8e446584d9a0145024d6d7" => :el_capitan
+    sha256 "b07856b57079ea6e83a19c7f653c607214bfe8a35e8b43623cb6469936ac2c35" => :yosemite
+    sha256 "3a9497a510e6a002295deb6a98ccff5cc3ad12fde75193c61d783df10c611477" => :mavericks
   end
 
   option "with-lua51", "Include Lua scripting support for mod_magnet"
