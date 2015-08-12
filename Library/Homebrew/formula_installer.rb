@@ -56,7 +56,9 @@ class FormulaInstaller
     @pour_failed   = false
   end
 
-  # called by install/reinstall/upgrade when no build tools are available
+  # When no build tools are available and build flags are passed through ARGV,
+  # it's necessary to interrupt the user before any sort of installation
+  # can proceed. Only invoked when the user has no developer tools.
   def self.prevent_build_flags
     build_flags = ARGV.collect_build_flags
 
@@ -232,6 +234,8 @@ class FormulaInstaller
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
   end
 
+  # Compute and collect the dependencies needed by the formula currently
+  # being installed.
   def compute_dependencies
     req_map, req_deps = expand_requirements
     check_requirements(req_map)
@@ -240,6 +244,9 @@ class FormulaInstaller
     deps
   end
 
+  # Check that each dependency in deps has a bottle available, terminating
+  # abnormally with a BuildToolsError if one or more don't.
+  # Only invoked when the user has no developer tools.
   def check_dependencies_bottled(deps)
     unbottled = deps.select do |dep, _|
       formula = dep.to_formula
@@ -352,6 +359,10 @@ class FormulaInstaller
     @show_header = true unless deps.empty?
   end
 
+  # Installs the relocation tools (as provided by the cctools formula) as a hard
+  # dependency for every formula installed from a bottle when the user has no
+  # developer tools. Invoked unless the formula explicitly sets
+  # :any_skip_relocation in its bottle DSL.
   def install_relocation_tools
     cctools = CctoolsRequirement.new
     dependency = cctools.to_dependency
