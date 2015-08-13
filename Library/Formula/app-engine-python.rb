@@ -1,4 +1,4 @@
-class GoogleAppEngine < Formula
+class AppEnginePython < Formula
   desc "Google App Engine"
   homepage "https://cloud.google.com/appengine/docs"
   url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.23.zip"
