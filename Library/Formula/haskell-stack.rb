@@ -11,9 +11,9 @@ class HaskellStack < Formula
   head "https://github.com/commercialhaskell/stack.git"
 
   bottle do
-    sha256 "1def37b5df9d9423081b8d5a8fa3d5958fcecfa664b75695d6fdde2fb5877e4a" => :yosemite
-    sha256 "4c106bef7f02774b35ddae28f409b5b51d0630a77e0436befb65ac7430277001" => :mavericks
-    sha256 "86d6ea580bbfa3b645ea6a3558cfde24979b8d87fd6eb211ffc82415d721fcaa" => :mountain_lion
+    sha256 "cb28bda6f3aae15015f5fcf58b1ef36655a609542da709fb51ce8138440fa341" => :yosemite
+    sha256 "ca459d7260b5092be38c2a395d5dd5f248b6f9020ab2f3c5032a29ad7754ebb5" => :mavericks
+    sha256 "d538c8a32841c5f6203297c8b8b059f2e98a01ba82e9c353a24194952f19d203" => :mountain_lion
   end
 
   depends_on "ghc" => :build
