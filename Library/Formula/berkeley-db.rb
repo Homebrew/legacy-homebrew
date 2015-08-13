@@ -1,8 +1,8 @@
 class BerkeleyDb < Formula
   desc "High performance key/value database"
   homepage "https://www.oracle.com/technology/products/berkeley-db/index.html"
-  url "http://download.oracle.com/berkeley-db/db-6.1.19.tar.gz"
-  sha256 "ad8aa5f9ede68118732f78718128e29e4d765e46a87dce54fa9143d9de8684ce"
+  url "http://download.oracle.com/berkeley-db/db-6.1.26.tar.gz"
+  sha256 "dd1417af5443f326ee3998e40986c3c60e2a7cfb5bfa25177ef7cadb2afb13a6"
 
   bottle do
     cellar :any
@@ -11,8 +11,9 @@ class BerkeleyDb < Formula
     sha1 "9573e87c5c4a5bf39f89b712c59b5329cb7c0b41" => :mountain_lion
   end
 
+  deprecated_option "enable-sql" => "with-sql"
   option "with-java", "Compile with Java support."
-  option "enable-sql", "Compile with SQL support."
+  option "with-sql", "Compile with SQL support."
 
   def install
     # BerkeleyDB dislikes parallel builds
@@ -27,7 +28,7 @@ class BerkeleyDb < Formula
       --enable-compat185
     ]
     args << "--enable-java" if build.with? "java"
-    args << "--enable-sql" if build.include? "enable-sql"
+    args << "--enable-sql" if build.with? "sql"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory
     cd "build_unix" do
