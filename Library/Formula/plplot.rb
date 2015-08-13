@@ -1,8 +1,8 @@
 class Plplot < Formula
   desc "Cross-platform software package for creating scientific plots"
   homepage "http://plplot.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/plplot/plplot/5.11.0%20Source/plplot-5.11.0.tar.gz"
-  sha256 "bfa8434e6e1e7139a5651203ec1256c8581e2fac3122f907f7d8d25ed3bd5f7e"
+  url "https://downloads.sourceforge.net/project/plplot/plplot/5.11.1%20Source/plplot-5.11.1.tar.gz"
+  sha256 "289dff828c440121e57b70538b3f0fb4056dc47159bc1819ea444321f2ff1c4c"
 
   bottle do
     sha256 "d3241c1a7251b2a57a16c8ebc46c3372c7fd8b788f3863f419a6bc37cf2924a9" => :yosemite
@@ -19,13 +19,6 @@ class Plplot < Formula
   depends_on "freetype"
   depends_on :x11 => :optional
   depends_on :fortran => :optional
-
-  # patch taken from http://sourceforge.net/p/plplot/bugs/163/
-  # already include upstream, should be removed when update is released
-  patch :p0 do
-    url "http://sourceforge.net/p/plplot/bugs/163/attachment/cmake_modules_pkg-config.cmake.diff"
-    sha256 "eb33a578ddf2bb06db9d700f25ab12febe27f3ce43bccbf734011859566d9531"
-  end
 
   def install
     args = std_cmake_args
