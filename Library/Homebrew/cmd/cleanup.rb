@@ -73,7 +73,7 @@ module Homebrew
         if path.file?
           cleanup_path(path) { path.unlink }
         elsif path.directory? && path.to_s.include?("--")
-          cleanup_path(path) { path.rmdir }
+          cleanup_path(path) { FileUtils.rm_rf path }
         end
         next
       end
