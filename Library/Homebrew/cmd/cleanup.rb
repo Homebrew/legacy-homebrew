@@ -31,12 +31,8 @@ module Homebrew
   end
 
   def cleanup_cellar
-    Formula.racks.each do |rack|
-      begin
-        cleanup_formula Formulary.from_rack(rack)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
-        # Don't complain about directories from DIY installs
-      end
+    Formula.installed.each do |formula|
+      cleanup_formula formula
     end
   end
 
