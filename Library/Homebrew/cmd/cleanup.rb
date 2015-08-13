@@ -31,8 +31,7 @@ module Homebrew
   end
 
   def cleanup_cellar
-    return unless HOMEBREW_CELLAR.directory?
-    HOMEBREW_CELLAR.subdirs.each do |rack|
+    Formula.racks.each do |rack|
       begin
         cleanup_formula Formulary.from_rack(rack)
       rescue FormulaUnavailableError, TapFormulaAmbiguityError
