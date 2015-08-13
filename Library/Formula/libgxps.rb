@@ -1,8 +1,8 @@
 class Libgxps < Formula
   desc "GObject based library for handling and rendering XPS documents"
   homepage "https://live.gnome.org/libgxps"
-  url "http://ftp.gnome.org/pub/gnome/sources/libgxps/0.2/libgxps-0.2.2.tar.xz"
-  sha256 "39d104739bf0db43905c315de1d8002460f1a098576f4418f69294013a5820be"
+  url "https://download.gnome.org/sources/libgxps/0.2/libgxps-0.2.3.1.tar.xz"
+  sha256 "370ec84251e2d3759ef6487d39f65157a22e49fbaf2c51e7a08bdbe198d6a536"
 
   bottle do
     cellar :any
@@ -14,12 +14,13 @@ class Libgxps < Formula
   head do
     url "https://github.com/GNOME/libgxps.git"
 
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
     depends_on "libtool" => :build
     depends_on "gnome-common" => :build
     depends_on "gtk-doc" => :build
   end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "pkg-config" => :build
   depends_on "cairo"
   depends_on "libarchive"
