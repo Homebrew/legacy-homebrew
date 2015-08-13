@@ -1,4 +1,4 @@
-class DBus < Formula
+class Dbus < Formula
   # releases: even (1.8.x) = stable, odd (1.9.x) = development
   desc "Message bus system, providing inter-application communication"
   homepage "https://wiki.freedesktop.org/www/Software/dbus"
