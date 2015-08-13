@@ -4,10 +4,6 @@ require "bottles"
 
 module Homebrew
   def cleanup
-    # individual cleanup_ methods should also check for the existence of the
-    # appropriate directories before assuming they exist
-    return unless HOMEBREW_CELLAR.directory?
-
     if ARGV.named.empty?
       cleanup_cellar
       cleanup_cache
@@ -35,6 +31,7 @@ module Homebrew
   end
 
   def cleanup_cellar
+    return unless HOMEBREW_CELLAR.directory?
     HOMEBREW_CELLAR.subdirs.each do |rack|
       begin
         cleanup_formula Formulary.from_rack(rack)
@@ -91,6 +88,8 @@ module Homebrew
       end
       next unless version
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
+
+      next unless HOMEBREW_CELLAR.directory?
 
       begin
         f = Formulary.from_rack(HOMEBREW_CELLAR/name)
