@@ -78,6 +78,11 @@ class AwsElasticbeanstalk < Formula
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
+  resource "blessed" do
+    url "https://pypi.python.org/packages/source/b/blessed/blessed-1.9.5.tar.gz"
+    sha256 "b93b5c7600814638c0913c8325608327a24e3731977d9a4f003ecf37b08ca6e5"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
