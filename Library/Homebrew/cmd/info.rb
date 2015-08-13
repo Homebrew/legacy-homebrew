@@ -22,7 +22,7 @@ module Homebrew
   def print_info
     if ARGV.named.empty?
       if HOMEBREW_CELLAR.exist?
-        count = HOMEBREW_CELLAR.subdirs.length
+        count = Formula.racks.length
         puts "#{count} keg#{plural(count)}, #{HOMEBREW_CELLAR.abv}"
       end
     else

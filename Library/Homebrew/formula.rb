@@ -809,18 +809,23 @@ class Formula
     end
   end
 
-  # An array of all installed {Formula}
-  def self.installed
-    @installed ||= if HOMEBREW_CELLAR.directory?
-      HOMEBREW_CELLAR.subdirs.map do |rack|
-        begin
-          Formulary.from_rack(rack)
-        rescue FormulaUnavailableError, TapFormulaAmbiguityError
-        end
-      end.compact
+  # An array of all racks currently installed.
+  def self.racks
+    @racks ||= if HOMEBREW_CELLAR.directory?
+      HOMEBREW_CELLAR.subdirs.reject(&:symlink?)
     else
       []
     end
+  end
+
+  # An array of all installed {Formula}
+  def self.installed
+    @installed ||= racks.map do |rack|
+      begin
+        Formulary.from_rack(rack)
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError
+      end
+    end.compact
   end
 
   def self.aliases

@@ -78,7 +78,7 @@ module Homebrew
 
   def filtered_list
     names = if ARGV.named.empty?
-      HOMEBREW_CELLAR.subdirs
+      Formula.racks
     else
       ARGV.named.map { |n| HOMEBREW_CELLAR+n }.select(&:exist?)
     end
