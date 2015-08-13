@@ -5,9 +5,9 @@ class Plplot < Formula
   sha256 "289dff828c440121e57b70538b3f0fb4056dc47159bc1819ea444321f2ff1c4c"
 
   bottle do
-    sha256 "d3241c1a7251b2a57a16c8ebc46c3372c7fd8b788f3863f419a6bc37cf2924a9" => :yosemite
-    sha256 "f97ec3e39264ef40d31b6b8b516649bbbd53591b2a5debcd30ab38fafdfdf121" => :mavericks
-    sha256 "6d295b3f17311517054ac418bb8716346d82cdb02faff4080355c6adb7192b99" => :mountain_lion
+    sha256 "81eb90e08ac42f6f5ea9f41159baf2cbf95f93f6f1390ddd1b12f00bb415e079" => :yosemite
+    sha256 "7e4c364b66c61d7f35cb6a5417ee5ef1d06fe7a30d78b8d237a36b4beaa458f8" => :mavericks
+    sha256 "b779762659e485d6c9cad54206b1e72f2db5e82950b19a356439e9ce3ef79138" => :mountain_lion
   end
 
   option "with-java"
