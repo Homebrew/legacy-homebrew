@@ -16,6 +16,10 @@ class Md5sha1sum < Formula
   depends_on "openssl"
 
   def install
+    openssl = Formula["openssl"]
+    ENV["SSLINCPATH"] = openssl.opt_include
+    ENV["SSLLIBPATH"] = openssl.opt_lib
+
     system "./configure", "--prefix=#{prefix}"
     system "make"
 
