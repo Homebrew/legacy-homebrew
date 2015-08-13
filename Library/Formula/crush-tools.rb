@@ -4,6 +4,13 @@ class CrushTools < Formula
   url "https://github.com/google/crush-tools/releases/download/20150716/crush-tools-20150716.tar.gz"
   sha256 "ef2f9c919536a2f13b3065af3a9a9756c90ede53ebd67d3e169c90ad7cd1fb05"
 
+  bottle do
+    cellar :any
+    sha256 "90c901bd6daf8178407232c6b3be7f3c5056e9cf2ab88750d09b151e0973d4ff" => :yosemite
+    sha256 "f1319787a7aafc6610f0217299791c428e5784d11cc93c8cd623e8a5cba5c414" => :mavericks
+    sha256 "4fe244ac195a6051551f610c9435de7bf65beaa0b3c00ef5ff39945e9d2f3b3f" => :mountain_lion
+  end
+
   head do
     url "https://github.com/google/crush-tools.git"
     depends_on "automake" => :build
