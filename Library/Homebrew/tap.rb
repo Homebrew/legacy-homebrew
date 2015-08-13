@@ -123,20 +123,25 @@ class Tap
   end
 
   def to_hash
-    {
+    hash = {
       "name" => @name,
       "user" => @user,
       "repo" => @repo,
       "path" => @path.to_s,
-      "remote" => remote,
       "installed" => installed?,
       "official" => official?,
-      "custom_remote" => custom_remote?,
       "formula_names" => formula_names,
       "formula_files" => formula_files.map(&:to_s),
       "command_files" => command_files.map(&:to_s),
       "pinned" => pinned?
     }
+
+    if installed?
+      hash["remote"] = remote
+      hash["custom_remote"] = custom_remote?
+    end
+
+    hash
   end
 
   # Hash with tap formula renames
