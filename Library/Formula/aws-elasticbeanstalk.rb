@@ -88,6 +88,11 @@ class AwsElasticbeanstalk < Formula
     sha256 "eb21f2ba718fbf357afdfdf6f641ab393901c7ca8d9f37edd0bee4806ffa269c"
   end
 
+  resource "botocore" do
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.1.8.tar.gz"
+    sha256 "636d6d64537d5e2f3345587366533a1cc503b50a7d295998bffc89ecc3555f63"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
