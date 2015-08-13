@@ -20,25 +20,24 @@ class Descriptions
     end
   end
 
-  # Create a hash mapping all formulae to their descriptions;
-  # save it for future use.
-
-  def self.generate_cache
-    @cache = {}
+  def self.save_cache
     HOMEBREW_CACHE.mkpath
     CSV.open(CACHE_FILE, 'w') do |csv|
-      Formula.map do |f|
-        name, desc = f.full_name, f.desc
-        @cache[name] = desc
+      @cache.each do |name, desc|
         csv << [name, desc]
       end
     end
   end
 
-  # Generate a new copy of the cache, but only if the cache already exists.
+  # Create a hash mapping all formulae to their descriptions;
+  # save it for future use.
 
-  def self.refresh_cache
-    self.generate_cache if self.cache
+  def self.generate_cache
+    @cache = {}
+    Formula.map do |f|
+      @cache[f.full_name] = f.desc
+    end
+    self.save_cache
   end
 
   # Create the cache if it doesn't already exist.
@@ -47,6 +46,24 @@ class Descriptions
     self.generate_cache unless self.cache
   end
 
+  # If the cache already exists, update it using the `brew update` report.
+
+  def self.update_cache(report)
+    if self.cache
+      alterations = report.select_formula(:A) + report.select_formula(:M)
+      alterations.each do |alteration|
+        @cache[alteration] = Formula[alteration].desc
+      end
+
+      report.select_formula(:D).each do |deleted|
+        @cache.delete(deleted)
+      end
+
+      self.save_cache
+    end
+  end
+
+
   # Delete the cache.
 
   def self.delete_cache
@@ -54,18 +71,16 @@ class Descriptions
   end
 
   # Given an array of formula names, return a hash mapping those names to
-  # their descriptions. If the array is empty, return a hash of all
-  # descriptions.
+  # their descriptions.
 
   def self.named(names)
     self.ensure_cache
 
-    if names.empty?
-      results = {}
-    else
-      results = names.inject({}) do |results, name|
-        results[name] = @cache[name]
-        results
+    results = {}
+    unless names.empty?
+      results = names.inject({}) do |accum, name|
+        accum[name] = @cache[name]
+        accum
       end
     end
 

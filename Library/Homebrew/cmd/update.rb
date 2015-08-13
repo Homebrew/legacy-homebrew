@@ -96,8 +96,8 @@ module Homebrew
     else
       puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} to #{master_updater.current_revision[0, 8]}."
       report.dump
-      Descriptions.refresh_cache
     end
+    Descriptions.update_cache(report)
   end
 
   private
