@@ -1,8 +1,16 @@
 class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "http://wiki.znc.in/ZNC"
-  url "http://znc.in/releases/archive/znc-1.6.0.tar.gz"
-  sha256 "df622aeae34d26193c738dff6499e56ad669ec654484e19623738d84cc80aba7"
+  url "http://znc.in/releases/archive/znc-1.6.1.tar.gz"
+  mirror "https://github.com/znc/znc/archive/znc-1.6.1.tar.gz"
+  sha256 "ba49397364f48d6d32ae5242bc1166f21d972f85dd390d6bbe68a63ecbb6c140"
+
+  bottle do
+    revision 1
+    sha256 "436eb30246b2ac8655323d86b0a2612715d6060edf06e0958bbf9a5b9efef74b" => :yosemite
+    sha256 "b8358a11e50cae4d7b29ea67b8243f3e738954d90b14cda9fdf622b1d1b1a380" => :mavericks
+    sha256 "6b5316549277d9eb5c10e8194323fb79f3cebd5454680c0417fd0b599d5ad0c5" => :mountain_lion
+  end
 
   head do
     url "https://github.com/znc/znc.git"
@@ -10,13 +18,6 @@ class Znc < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  bottle do
-    revision 1
-    sha256 "436eb30246b2ac8655323d86b0a2612715d6060edf06e0958bbf9a5b9efef74b" => :yosemite
-    sha256 "b8358a11e50cae4d7b29ea67b8243f3e738954d90b14cda9fdf622b1d1b1a380" => :mavericks
-    sha256 "6b5316549277d9eb5c10e8194323fb79f3cebd5454680c0417fd0b599d5ad0c5" => :mountain_lion
   end
 
   option "with-debug", "Compile ZNC with debug support"
