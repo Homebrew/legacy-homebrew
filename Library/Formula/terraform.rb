@@ -3,8 +3,8 @@ require "language/go"
 class Terraform < Formula
   desc "Tool to build, change, and version infrastructure"
   homepage "https://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.6.2.tar.gz"
-  sha256 "ecd523f6cafdf6ce2595674deb34dda66415d50a205b4bd15717bca935adac58"
+  url "https://github.com/hashicorp/terraform/archive/v0.6.3.tar.gz"
+  sha256 "2cc1cedb7c08310f49fb1c0a382248884aa6bd4a5e35461e2fb056fe14e3e60d"
 
   bottle do
     cellar :any
@@ -17,20 +17,20 @@ class Terraform < Formula
 
   go_resource "github.com/awslabs/aws-sdk-go" do
     url "https://github.com/aws/aws-sdk-go.git",
-        :revision => "5df83ba895b6ba073c0513dddcec6d7473c95592"
+        :revision => "26610c929a183317d5bfa24af9a4c5484bc50fc8"
   end
 
   terraform_deps = %w[
     github.com/Azure/azure-sdk-for-go 99b5c364c7be7088d138aef0afce0b5a70855b03
     github.com/Azure/go-pkcs12 a635c0684cd517745ca5c9552a312627791d5ba0
     github.com/armon/circbuf f092b4f207b6e5cce0569056fba9e1a2735cb6cf
-    github.com/aws/aws-sdk-go 5df83ba895b6ba073c0513dddcec6d7473c95592
+    github.com/aws/aws-sdk-go 26610c929a183317d5bfa24af9a4c5484bc50fc8
     github.com/cyberdelia/heroku-go 594d483b9b6a8ddc7cd2f1e3e7d1de92fa2de665
     github.com/dylanmei/iso8601 2075bf119b58e5576c6ed9f867b8f3d17f2e54d4
     github.com/dylanmei/winrmtest 3e9661c52c45dab9a8528966a23d421922fca9b9
-    github.com/fsouza/go-dockerclient 3ef29fee64703523b191df64d96a28204c86460c
+    github.com/fsouza/go-dockerclient a8690093fcc33c6d03838677c4d694406326fa76
     github.com/hashicorp/atlas-go d1d08e8e25f0659388ede7bb8157aaa4895f5347
-    github.com/hashicorp/consul 066e77253696dd2c2a320ed84408ba5713f82811
+    github.com/hashicorp/consul 00e35cdc416d7a3ab997dd8b930c63bd0e8b93f8
     github.com/hashicorp/errwrap 7554cd9344cec97297fa6649b055a8c98c2a1e55
     github.com/hashicorp/go-checkpoint 88326f6851319068e7b34981032128c0b1a6524d
     github.com/hashicorp/go-multierror 56912fb08d85084aa318edcf2bba735b97cf35c5
@@ -50,7 +50,7 @@ class Terraform < Formula
     github.com/mitchellh/go-linereader 07bab5fdd9580500aea6ada0e09df4aa28e68abd
     github.com/mitchellh/mapstructure 281073eb9eb092240d33ef253c404f1cca550309
     github.com/mitchellh/osext 0dd3f918b21bec95ace9dc86c7e70266cfc5c702
-    github.com/mitchellh/packer a4e8a92a13bce92db7598323b55625f4ea25f413
+    github.com/mitchellh/packer 60bbe850ef0b7fec19eba1929d83e7267ca1572b
     github.com/mitchellh/panicwrap 45cbfd3bae250c7676c077fb275be1a2968e066a
     github.com/mitchellh/prefixedio 89d9b535996bf0a185f85b59578f2e245f9e1724
     github.com/mitchellh/reflectwalk eecf4c70c626c7cfbb95c90195bc34d386c74ac6
@@ -79,10 +79,10 @@ class Terraform < Formula
   end
 
   %w[
-    crypto 2f3083f6163ef51179ad42ed523a18c9a1141467
-    net 1bc0720082d79ce7ffc6ef6e523d00d46b0dee45
+    crypto 173ce04bfaf66c7bb0fa9d5c0bfd93e773909dbd
+    net 4a71d182556e05375344f3da665304f3d5784ab4
     oauth2 8914e5017ca260f2a3a1575b1e6868874050d95e
-    tools d02228d1857b9f49cd0252788516ff5584266eb6
+    tools 4f50f44d7a3206e9e28b984e023efce2a4a75369
   ].each_slice(2) do |x, y|
     go_resource "golang.org/x/#{x}" do
       url "https://go.googlesource.com/#{x}.git", :revision => y
