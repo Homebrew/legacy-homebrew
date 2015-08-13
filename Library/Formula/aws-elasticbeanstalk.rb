@@ -1,8 +1,8 @@
 class AwsElasticbeanstalk < Formula
   desc "Client for Amazon Elastic Beanstalk web service"
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.4.7.tar.gz"
-  sha256 "a07a2f4278f91d8e94f9525dca2ce0ae9b6d13582c9a619f831375c8218c4abd"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.5.tar.gz"
+  sha256 "d8434c243174369c058de35d8c89e9df404a3a6302d6a11dc68b8f05c6216f0f"
 
   bottle do
     cellar :any
@@ -76,6 +76,31 @@ class AwsElasticbeanstalk < Formula
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+  end
+
+  resource "blessed" do
+    url "https://pypi.python.org/packages/source/b/blessed/blessed-1.9.5.tar.gz"
+    sha256 "b93b5c7600814638c0913c8325608327a24e3731977d9a4f003ecf37b08ca6e5"
+  end
+
+  resource "colorama" do
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz"
+    sha256 "eb21f2ba718fbf357afdfdf6f641ab393901c7ca8d9f37edd0bee4806ffa269c"
+  end
+
+  resource "botocore" do
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.1.8.tar.gz"
+    sha256 "636d6d64537d5e2f3345587366533a1cc503b50a7d295998bffc89ecc3555f63"
+  end
+
+  resource "wcwidth" do
+    url "https://pypi.python.org/packages/source/w/wcwidth/wcwidth-0.1.4.tar.gz"
+    sha256 "906d3123045d77027b49fe912458e1a1e1d6ca1a51558a4bd9168d143b129d2b"
+  end
+
+  resource "docutils" do
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
   end
 
   def install
