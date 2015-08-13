@@ -48,11 +48,11 @@ module Homebrew
           command_count = tap.command_files.size
           info += "#{command_count} command#{plural(command_count)} " if command_count > 0
           info += "\n#{tap.path} (#{tap.path.abv})"
+          info += "\nFrom: #{tap.remote.nil? ? "N/A" : tap.remote}"
         else
           info += "Not installed"
         end
         puts info
-        puts "From: #{tap.remote.nil? ? "N/A" : tap.remote}"
       end
     end
   end
