@@ -126,6 +126,8 @@ class DependencyCollector
       Dependency.new("libtool", tags)
     when :python2
       PythonRequirement.new(tags)
+    when :blas
+      BlasRequirement.new(tags)
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
