@@ -5,6 +5,7 @@ class Oauth2Proxy < Formula
   homepage "https://github.com/bitly/oauth2_proxy"
   url "https://github.com/bitly/oauth2_proxy/archive/v2.0.1.tar.gz"
   sha256 "febc33244d63f69a4c973e4ff2556fea2bc414308ce9979fb43db5863da87b5a"
+  head "https://github.com/bitly/oauth2_proxy.git"
 
   bottle do
     cellar :any
@@ -73,7 +74,7 @@ class Oauth2Proxy < Formula
     begin
       Timeout.timeout(10) do
         loop do
-          Utils.popen_read "curl", "-s", "http://127.0.0.1:" + port.to_s
+          Utils.popen_read "curl", "-s", "http://127.0.0.1:#{port}"
           break if $?.exitstatus == 0
           sleep 1
         end
