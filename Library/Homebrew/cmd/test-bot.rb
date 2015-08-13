@@ -606,7 +606,7 @@ module Homebrew
       if ARGV.include? "--cleanup"
         test "git", "reset", "--hard"
         git "stash", "pop"
-        test "brew", "cleanup", "--prune=30"
+        test "brew", "cleanup", "--prune=7"
         git "gc", "--auto"
       end
 
