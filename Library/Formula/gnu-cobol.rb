@@ -1,7 +1,7 @@
 class GnuCobol < Formula
   desc "Implements much of the COBOL 85 and COBOL 2002 standards"
   homepage "http://www.opencobol.org/"
-  revision 1
+  revision 2
 
   stable do
     url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/1.1/gnu-cobol-1.1.tar.gz"
@@ -30,7 +30,7 @@ class GnuCobol < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "berkeley-db4"
+  depends_on "berkeley-db"
   depends_on "gmp"
   depends_on "gcc"
 
@@ -42,7 +42,7 @@ class GnuCobol < Formula
     # the cobol compiler takes these variables for calling cc during its run
     # if the paths to gmp and bdb are not provided, the run of cobc fails
     gmp = Formula["gmp"]
-    bdb = Formula["berkeley-db4"]
+    bdb = Formula["berkeley-db"]
     ENV.append "CPPFLAGS", "-I#{gmp.opt_include} -I#{bdb.opt_include}"
     ENV.append "LDFLAGS", "-L#{gmp.opt_lib} -L#{bdb.opt_lib}"
 
