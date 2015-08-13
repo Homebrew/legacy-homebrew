@@ -14,7 +14,7 @@ class Jigdo < Formula
 
   depends_on "pkg-config" => :build
   depends_on "wget" => :recommended
-  depends_on "berkeley-db4"
+  depends_on "berkeley-db"
   depends_on "gtk+"
 
   # Use MacPorts patch for compilation on 10.9; this software is no longer developed.
@@ -33,6 +33,6 @@ class Jigdo < Formula
   end
 
   test do
-    system "#{bin}/jigdo-file", "-h"
+    assert_match "version #{version}", shell_output("#{bin}/jigdo-file -v")
   end
 end
