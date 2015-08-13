@@ -5,8 +5,8 @@ class HaskellStack < Formula
 
   desc "The Haskell Tool Stack"
   homepage "https://www.stackage.org"
-  url "https://github.com/commercialhaskell/stack/archive/v0.1.2.0.tar.gz"
-  sha256 "20ff0a36f773c2993e00c6f1bffaa33e881906d20f66cde0d557133842fc464c"
+  url "https://github.com/commercialhaskell/stack/archive/v0.1.3.1.tar.gz"
+  sha256 "3e6a575a3f5206af345912c4deba9552dfb156391357cec4eb1c2a9028ba4c51"
 
   head "https://github.com/commercialhaskell/stack.git"
 
@@ -30,6 +30,6 @@ class HaskellStack < Formula
   end
 
   test do
-    system "#{bin}/stack", "new"
+    system "#{bin}/stack", "new", "test"
   end
 end
