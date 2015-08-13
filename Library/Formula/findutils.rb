@@ -28,6 +28,7 @@ class Findutils < Formula
   end
 
   test do
-    system "#{bin}/gfind", "--version"
+    gfind_binary = build.without?("default-names") ? "#{bin}/gfind" : "#{bin}/find"
+    system gfind_binary, "--version"
   end
 end
