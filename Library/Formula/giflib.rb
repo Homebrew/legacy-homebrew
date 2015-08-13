@@ -1,8 +1,6 @@
 class Giflib < Formula
   desc "GIF library using patented LZW algorithm"
   homepage "http://giflib.sourceforge.net/"
-  # 4.2.0 has breaking API changes; don't update until
-  # things in $(brew uses giflib) are compatible
   url "https://downloads.sourceforge.net/project/giflib/giflib-4.x/giflib-4.2.3.tar.bz2"
   sha256 "0ac8d56726f77c8bc9648c93bbb4d6185d32b15ba7bdb702415990f96f3cb766"
 
@@ -15,9 +13,27 @@ class Giflib < Formula
 
   option :universal
 
+  depends_on :x11 => :optional
+
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--prefix=#{prefix}", "--disable-debug", "--disable-dependency-tracking"
+
+    args = %W[
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+    ]
+
+    if build.without? "x11"
+      args << "--disable-x11" << "--without-x"
+    else
+      args << "--with-x" << "--enable-x11"
+    end
+
+    system "./configure", *args
     system "make", "install"
+  end
+
+  test do
+    assert_match /Size: 1x1/, shell_output("#{bin}/gifinfo #{test_fixtures("test.gif")}")
   end
 end
