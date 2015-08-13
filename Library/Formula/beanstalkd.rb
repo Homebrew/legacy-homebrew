@@ -1,4 +1,4 @@
-class Beanstalk < Formula
+class Beanstalkd < Formula
   desc "Generic work queue originally designed to reduce web latency"
   homepage "https://kr.github.io/beanstalkd/"
   url "https://github.com/kr/beanstalkd/archive/v1.10.tar.gz"
