@@ -6,9 +6,9 @@ class JujuQuickstart < Formula
 
   bottle do
     cellar :any
-    sha256 "f6a3b86834ac7f5d8523ff1070bcb4cc6893c6c6e050aa90b27b99f458b12789" => :yosemite
-    sha256 "06decd0e63754e9fd0aaaa5dbb0dad56d372d1fad9ccac81f34dee0a2c1b39f0" => :mavericks
-    sha256 "582c7d89b1584bd06a984f5f84babf667c2bef654c446e0d0ae8319b678df896" => :mountain_lion
+    sha256 "eb14552c0e67007efc2b46d4150e6c85dc149915d573fefcc67c183e5b837a34" => :yosemite
+    sha256 "70deb77d00ece41d3f70d580e56356e333267a9e690b7d5f6854dc94cf372d53" => :mavericks
+    sha256 "f6274e17584f6fee0995d3fcae372c6f63af8fc9c615533eb3d50da1b580548d" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
