@@ -18,6 +18,7 @@ class Cairo < Formula
   option :universal
 
   depends_on "pkg-config" => :build
+  depends_on :x11 => :optional if MacOS.version > :leopard
   depends_on "freetype"
   depends_on "fontconfig"
   depends_on "libpng"
@@ -38,7 +39,7 @@ class Cairo < Formula
       --enable-quartz-image
     ]
 
-    args << "--enable-xcb=no" if MacOS.version <= :leopard
+    args << (build.with?("x11") ? "--enable-xcb=yes" : "--enable-xcb=no")
 
     system "./configure", *args
     system "make", "install"
