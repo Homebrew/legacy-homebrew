@@ -389,12 +389,13 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+# Will convert "https://downloads.sourceforge.net/project/..." URLs to mirrorservice.org
+# In case environment variable HOMEBREW_NO_INSECURE_REDIRECT is set, so the Sourceforge is not ultimately broken
 class CurlSourceForgeSecureMirrorDownloadStrategy < CurlDownloadStrategy
   def fetch
-    if !ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil?
-      oldurl = @url
+    unless ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil?
+      ohai "Sourceforge HTTPS: #{@url}"
       @url = https_mirror
-      ohai "Sourceforge HTTPS: #{oldurl}"
       ohai "=> converted to #{@url}"
     end
     super
