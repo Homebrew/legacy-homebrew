@@ -244,7 +244,13 @@ end
 
 def which(cmd, path = ENV["PATH"])
   path.split(File::PATH_SEPARATOR).each do |p|
-    pcmd = File.expand_path(cmd, p)
+    begin
+      pcmd = File.expand_path(cmd, p)
+    rescue ArgumentError
+      # File.expand_path will raise an ArgumentError if the path is malformed.
+      # See https://github.com/Homebrew/homebrew/issues/32789
+      next
+    end
     return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   nil
