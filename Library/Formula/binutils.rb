@@ -8,10 +8,9 @@ class Binutils < Formula
   # No --default-names option as it interferes with Homebrew builds.
 
   bottle do
-    revision 1
-    sha256 "fbfd4708fb7ce4406b628f376aacd91c2af0aa09ea3e09f97727c312ee7e969d" => :yosemite
-    sha256 "1b0c1fb4b1fc53cca1194bde7d8281cb11cf4f34b245084737cccac2dadb860e" => :mavericks
-    sha256 "971e274200aa6a63469aafc0a65a86427f44d8a78fe00e61225ca9edd75ba0d3" => :mountain_lion
+    sha256 "299f9bbdf522b68b803ce6cdb109a34b018459f3815771b3530ba95e06ee19f7" => :yosemite
+    sha256 "30b13f1b4ddfe09f5140c2f00d0d34d42ed471ed2ab241405d8f5b7d3fb8eb41" => :mavericks
+    sha256 "689d5c651fba64a18fed5f8f66ba9d156af7f3b8787e383afe8979f535432d64" => :mountain_lion
   end
 
   def install
