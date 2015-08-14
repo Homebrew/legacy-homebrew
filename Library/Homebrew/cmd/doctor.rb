@@ -862,11 +862,14 @@ class Checks
     # https://help.github.com/articles/https-cloning-errors
     `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
 
-    if $1 && Version.new($1) < Version.new("1.7.10") then <<-EOS.undent
-    An outdated version of Git was detected in your PATH.
-    Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
-    Please upgrade: brew upgrade git
-    EOS
+    if $1 && Version.new($1) < Version.new("1.7.10") then
+      git_upgrade_cmd = Formula["git"].any_version_installed? ? "upgrade" : "install"
+
+      <<-EOS.undent
+        An outdated version of Git was detected in your PATH.
+        Git 1.7.10 or newer is required to perform checkouts over HTTPS from GitHub.
+        Please upgrade: brew #{git_upgrade_cmd} git
+      EOS
     end
   end
 
