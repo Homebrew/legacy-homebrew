@@ -1,4 +1,5 @@
 require "tap"
+require "descriptions"
 
 module Homebrew
   def tap
@@ -27,6 +28,7 @@ module Homebrew
 
     formula_count = tap.formula_files.size
     puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{tap.path.abv})"
+    Descriptions.cache_formulae(tap.formula_names)
 
     if !clone_target && tap.private?
       puts <<-EOS.undent
