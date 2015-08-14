@@ -4,6 +4,13 @@ class Fobis < Formula
   url "https://pypi.python.org/packages/source/F/FoBiS.py/FoBiS.py-1.7.4.tar.gz"
   sha256 "f63d38e532afa5b5fbe7e6d50591e161a86b78e9ecfe2273d164c330f7feb3ba"
 
+  bottle do
+    cellar :any
+    sha256 "6affca56db763b24d9d3a7db3526004e614df671287c4fc6cf5f7f067d911efc" => :yosemite
+    sha256 "224de2b8cb546ab9a7cdd5857d6ab69a850c865897e158b742c4761401b83538" => :mavericks
+    sha256 "b39611e4c9f259abe876ea6b9bee4332be1fa5576e812826d33117e1942b01e3" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on :fortran
 
