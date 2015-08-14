@@ -4,6 +4,15 @@ require "tab"
 require "tap_migrations"
 
 class Migrator
+  class MigrationNeededError < RuntimeError
+    def initialize(formula)
+      super <<-EOS.undent
+        #{formula.oldname} was renamed to #{formula.name} and needs to be migrated.
+        Please run `brew migrate #{formula.oldname}`
+      EOS
+    end
+  end
+
   class MigratorNoOldnameError < RuntimeError
     def initialize(formula)
       super "#{formula.name} doesn't replace any formula."
