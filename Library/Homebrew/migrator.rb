@@ -53,6 +53,9 @@ class Migrator
   attr_reader :newname, :newpath, :new_pin_record
   attr_reader :old_pin_link_record
 
+  # Path to new linked keg
+  attr_reader :new_keg
+
   def initialize(formula)
     @oldname = formula.oldname
     @newname = formula.name
@@ -71,6 +74,7 @@ class Migrator
     if @oldkeg = get_linked_oldkeg
       @old_linked_keg_record = oldkeg.linked_keg_record if oldkeg.linked?
       @old_opt_record = oldkeg.opt_record if oldkeg.optlinked?
+      @new_keg = HOMEBREW_CELLAR/"#{newname}/#{File.basename(oldkeg)}"
     end
 
     @old_pin_record = HOMEBREW_LIBRARY/"PinnedKegs"/oldname
@@ -180,7 +184,7 @@ class Migrator
 
   def link_newname
     oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
-    keg = Keg.new(formula.installed_prefix)
+    keg = Keg.new(new_keg)
 
     # If old_keg wasn't linked then we just optlink a keg.
     # If old keg wasn't optlinked and linked, we don't call this method at all.
@@ -190,7 +194,6 @@ class Migrator
         keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{formula.opt_prefix}"
-        puts e
         raise
       end
       return
@@ -227,7 +230,7 @@ class Migrator
   def link_oldname_opt
     if old_opt_record
       old_opt_record.delete if old_opt_record.symlink?
-      old_opt_record.make_relative_symlink(formula.installed_prefix)
+      old_opt_record.make_relative_symlink(new_keg)
     end
   end
 
@@ -245,8 +248,8 @@ class Migrator
   def unlink_oldname_opt
     return unless old_opt_record
     if old_opt_record.symlink? && old_opt_record.exist? \
-        && formula.installed_prefix.exist? \
-        && formula.installed_prefix.realpath == old_opt_record.realpath
+        && new_keg.exist? \
+        && new_keg.realpath == old_opt_record.realpath
       old_opt_record.unlink
       old_opt_record.parent.rmdir_if_possible
     end
@@ -302,13 +305,7 @@ class Migrator
           retry
         end
       else
-        begin
-          oldkeg.optlink
-        rescue Keg::LinkError => e
-          onoe "Failed to create #{formula.opt_prefix}"
-          puts e
-          raise
-        end
+        oldkeg.optlink
       end
     end
   end
