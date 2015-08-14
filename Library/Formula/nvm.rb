@@ -5,6 +5,13 @@ class Nvm < Formula
   sha256 "2838e8d54e9c748b20bc9915a23714fb8d75d1539b2b76f0ff11493222011d79"
   head "https://github.com/creationix/nvm.git"
 
+  bottle do
+    cellar :any
+    sha256 "ab9996b2ceb66f35a545e922403ab64a5010d647521d4bdbf743b3583dbd15ec" => :yosemite
+    sha256 "db4e26b82f10a0585b62d35fa3ef7c55d0e9b4ecd48e8a8b4f625f993e6036b5" => :mavericks
+    sha256 "7b1de04a747bfd4bcd6403a70b5907be8d782ebb11c9bdcaaab9a952c2eb8289" => :mountain_lion
+  end
+
   resource "nvm-exec" do
     url "https://raw.githubusercontent.com/creationix/nvm/v0.26.0/nvm-exec"
     sha256 "a0581795f10114b9759992a82a43496daf4b4a52ad381a3072d8eee9866a28c5"
