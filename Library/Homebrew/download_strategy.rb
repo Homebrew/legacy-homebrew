@@ -402,9 +402,8 @@ class CurlSourceForgeSecureMirrorDownloadStrategy < CurlDownloadStrategy
   end
 
   def https_mirror
-     re = /(^https?:\/\/)(.+\.net\/project\/)(.+)/
-     @url.gsub(re) do
-       $1 + "www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/" + $3[0] + "/" + $3[0,2] + "/" + $3
+     @url.gsub(%r{(^https?://)(?:.+)(.net/project/)(.+)}) do
+       "#{$1}www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/#{$3[0]}/#{$3[0,2]}/#{$3}"
      end
   end
 end
