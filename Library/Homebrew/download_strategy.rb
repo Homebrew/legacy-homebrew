@@ -389,6 +389,25 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
   end
 end
 
+class CurlSourceForgeSecureMirrorDownloadStrategy < CurlDownloadStrategy
+  def fetch
+    if !ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil?
+      oldurl = @url
+      @url = https_mirror
+      ohai "Sourceforge HTTPS: #{oldurl}"
+      ohai "=> converted to #{@url}"
+    end
+    super
+  end
+
+  def https_mirror
+     re = /(^https?:\/\/)(.+\.net\/project\/)(.+)/
+     @url.gsub(re) do
+       $1 + "www.mirrorservice.org/sites/download.sourceforge.net/pub/sourceforge/" + $3[0] + "/" + $3[0,2] + "/" + $3
+     end
+  end
+end
+
 # Download via an HTTP POST.
 # Query parameters on the URL are converted into POST parameters
 class CurlPostDownloadStrategy < CurlDownloadStrategy
@@ -854,6 +873,8 @@ class DownloadStrategyDetector
       SubversionDownloadStrategy
     when %r{^https?://(.+?\.)?sourceforge\.net/hgweb/}
       MercurialDownloadStrategy
+    when %r{^https://(.+?\.)?sourceforge\.net}
+      CurlSourceForgeSecureMirrorDownloadStrategy
     else
       CurlDownloadStrategy
     end
