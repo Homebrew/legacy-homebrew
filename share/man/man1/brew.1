@@ -131,19 +131,7 @@ By default, \fBdeps\fR shows dependencies for \fIformulae\fR\. To skip the \fB:b
 \fBdesc\fR \fIformula\fR: Display \fIformula\fR\'s name and one\-line description\.
 .
 .IP "\(bu" 4
-\fBdesc [\-s|\-n|\-d] <pattern>\fR: Search both name and description (\fB\-s\fR), just the names (\fB\-n\fR), or just the descriptions (\fB\-d\fR) for \fB<pattern>\fR\. \fB<pattern>\fR is by default interpreted as a literal string; if flanked by slashes, it is instead interpreted as a regular expression\. Formula descriptions are cached, and the cache is created on the first search, making that search slower than subsequent ones\.
-.
-.IP "\(bu" 4
-\fBdesc \-\-create\-cache\fR:
-.
-.IP
-Force the [re]construction of the name/description cache\.
-.
-.IP "\(bu" 4
-\fBdesc \-\-delete\-cache\fR:
-.
-.IP
-Delete the name/description cache, if it exists\.
+\fBdesc [\-s|\-n|\-d] <pattern>\fR: Search both name and description (\fB\-s\fR), just the names (\fB\-n\fR), or just the descriptions (\fB\-d\fR) for \fB<pattern>\fR\. \fB<pattern>\fR is by default interpreted as a literal string; if flanked by slashes, it is instead interpreted as a regular expression\. Formula descriptions are cached; the cache is created on the first search, making that search slower than subsequent ones\.
 .
 .IP "\(bu" 4
 \fBdiy [\-\-name=<name>] [\-\-version=<version>]\fR: Automatically determine the installation prefix for non\-Homebrew software\.

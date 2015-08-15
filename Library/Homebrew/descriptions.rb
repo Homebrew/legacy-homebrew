@@ -2,7 +2,6 @@ require "formula"
 require "csv"
 
 class Descriptions
-
   CACHE_FILE = HOMEBREW_CACHE + "desc_cache"
 
   def self.cache
@@ -11,7 +10,6 @@ class Descriptions
 
   # If the cache file exists, load it into, and return, a hash; otherwise,
   # return nil.
-
   def self.load_cache
     if CACHE_FILE.exist?
       @cache = {}
@@ -22,7 +20,6 @@ class Descriptions
 
   # Write the cache to disk after ensuring the existence of the containing
   # directory.
-
   def self.save_cache
     HOMEBREW_CACHE.mkpath
     CSV.open(CACHE_FILE, 'w') do |csv|
@@ -34,7 +31,6 @@ class Descriptions
 
   # Create a hash mapping all formulae to their descriptions;
   # save it for future use.
-
   def self.generate_cache
     @cache = {}
     Formula.map do |f|
@@ -45,7 +41,6 @@ class Descriptions
 
   # Return true if the cache exists, and neither Homebrew nor any of the Taps
   # repos were updated more recently than it was.
-
   def self.cache_fresh?
     if CACHE_FILE.exist?
       cache_date = File.mtime(CACHE_FILE)
@@ -64,7 +59,6 @@ class Descriptions
   end
 
   # Create the cache if it doesn't already exist.
-
   def self.ensure_cache
     self.generate_cache unless self.cache_fresh? && self.cache
   end
@@ -73,7 +67,6 @@ class Descriptions
   # Unless the cache file exists, do nothing.
   # If it does exist, but the Report is empty, just touch the cache file.
   # Otherwise, use the report to update the cache.
-
   def self.update_cache(report)
     if CACHE_FILE.exist?
       if report.empty?
@@ -88,7 +81,6 @@ class Descriptions
 
   # Given an array of formula names, add them and their descriptions to the
   # cache. Save the updated cache to disk, unless explicitly told not to.
-
   def self.cache_formulae(formula_names, options = { :save => true })
     if self.cache
       formula_names.each { |name| @cache[name] = Formula[name].desc }
@@ -98,7 +90,6 @@ class Descriptions
 
   # Given an array of formula names, remove them and their descriptions from
   # the cache. Save the updated cache to disk, unless explicitly told not to.
-
   def self.uncache_formulae(formula_names, options = { :save => true })
     if self.cache
       formula_names.each { |name| @cache.delete(name) }
@@ -107,14 +98,12 @@ class Descriptions
   end
 
   # Delete the cache.
-
   def self.delete_cache
     CACHE_FILE.delete if CACHE_FILE.exist?
   end
 
   # Given an array of formula names, return a {Descriptions} object mapping
   # those names to their descriptions.
-
   def self.named(names)
     self.ensure_cache
 
@@ -130,7 +119,6 @@ class Descriptions
   end
 
   # Given a regex, find all formulae whose specified fields contain a match.
-
   def self.search(regex, field = :either)
     self.ensure_cache
 
@@ -148,14 +136,13 @@ class Descriptions
     new(results)
   end
 
-
+  # Create an actual instance.
   def initialize(descriptions)
     @descriptions = descriptions
   end
 
   # Take search results -- a hash mapping formula names to descriptions -- and
   # print them.
-
   def print
     blank = "#{Tty.yellow}[no description]#{Tty.reset}"
     @descriptions.keys.sort.each do |name|
@@ -163,5 +150,4 @@ class Descriptions
       puts "#{Tty.white}#{name}:#{Tty.reset} #{description}"
     end
   end
-
 end
