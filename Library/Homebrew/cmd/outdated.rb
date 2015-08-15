@@ -18,10 +18,8 @@ module Homebrew
       all_versions = []
       older_or_same_tap_versions = []
 
-      if f.oldname && !f.rack.exist?
-        if Pathname.new("#{HOMEBREW_CELLAR}/#{f.oldname}").exist?
-          raise Migrator::MigrationNeededError.new(f)
-        end
+      if f.oldname && !f.rack.exist? && (HOMEBREW_CELLAR/f.oldname).exist?
+        raise Migrator::MigrationNeededError.new(f)
       end
 
       f.rack.subdirs.each do |dir|
