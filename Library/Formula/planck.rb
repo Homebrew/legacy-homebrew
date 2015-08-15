@@ -1,8 +1,8 @@
 class Planck < Formula
   desc "A command-line ClojureScript REPL for OS X."
   homepage "http://planck.fikesfarm.com/"
-  url "https://github.com/mfikes/planck/archive/1.4.tar.gz"
-  sha256 "57e4fdfb3dbb80b20aa71baa40ed03fe845a442d2ddd6ba9e942b4993ed13385"
+  url "https://github.com/mfikes/planck/archive/1.5.tar.gz"
+  sha256 "a01e5f2a136b3780eb4949693672e4179c2bcf8447dda570b7262a111a8fb9e3"
 
   bottle do
     cellar :any
@@ -21,6 +21,6 @@ class Planck < Formula
   end
 
   test do
-    system "#{bin}/planck", "-e", "'(- 1 1)'"
+    system "#{bin}/planck", "-e", "(- 1 1)"
   end
 end
