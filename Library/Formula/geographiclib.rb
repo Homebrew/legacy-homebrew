@@ -6,9 +6,9 @@ class Geographiclib < Formula
 
   bottle do
     cellar :any
-    sha256 "71b8bbdd29951d7e32e690f9b03df844f2d3750f40211a0d80a54e55bc17d2e1" => :yosemite
-    sha256 "9f88fd085316b05f7196de74780b9b7968481bb5810e2f157a626d8bc033a03d" => :mavericks
-    sha256 "0759e226f6722727f6ea3f42999064b31fc660e8e881f7163a2dcf0881303941" => :mountain_lion
+    sha256 "5835892b418d17e5c082d0386fc76a3507740f5350e16d6b1b454258e236ace2" => :yosemite
+    sha256 "4d3396d27b6d87046dcb278a97e3be642617f48907dd3f64176e8638623c05cd" => :mavericks
+    sha256 "c6024ea22fbb2dc922cf12e8d7b56a62ce19de4c624c76f8636e52026a5c066e" => :mountain_lion
   end
 
   depends_on "cmake" => :build
