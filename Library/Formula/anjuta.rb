@@ -4,12 +4,6 @@ class Anjuta < Formula
   url "https://download.gnome.org/sources/anjuta/3.16/anjuta-3.16.0.tar.xz"
   sha256 "77432a01b37b46f5558bf4cc435f9a023abf17c5273d472e17dff1f9b3d9943c"
 
-  bottle do
-    sha256 "35f0e1aa9abc6d220ed456cb77c4c269a6b04f8197526a2748750e18313036a3" => :yosemite
-    sha256 "7f2cb93873391cab72a6406343639d4ca7b2f650c20eea10e5ac5ff28da98971" => :mavericks
-    sha256 "8a2cad632502533dd94fc10c73afa3df3e17977b3a7dbaadbe4a57d2ee9a8a64" => :mountain_lion
-  end
-
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
