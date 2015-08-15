@@ -7,9 +7,9 @@ class Kibana < Formula
 
   bottle do
     cellar :any
-    sha256 "932177c7581bdeffceff3eca3019267cfcb334742e15ba6c0e6212d5efe100c0" => :yosemite
-    sha256 "b8b741d84dddd27df01956fbd560f7025036e15c87639947904105912396a0f8" => :mavericks
-    sha256 "a616da0b414e515cf895dcb278280e055dc7273d4cd38242dee597ec7d319100" => :mountain_lion
+    sha256 "f8768f21442e9ce85b3c9b3da58d8e73c176d7bf656b636d15ab582074f14991" => :yosemite
+    sha256 "0bcea2ae726c5a175660c6350f4d60ee07a364d1574c90a2bd691ee25123afbb" => :mavericks
+    sha256 "5d102f006b25dae70bd62c99d9787abe10111460bc2119e5e5ceb412d6335dae" => :mountain_lion
   end
 
   depends_on "node"
