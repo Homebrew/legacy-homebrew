@@ -198,12 +198,11 @@ class Formulary
   def self.to_rack(ref)
     # First, check whether the rack with the given name exists.
     if (rack = HOMEBREW_CELLAR/File.basename(ref, ".rb")).directory?
-      return rack
+      return rack.resolved_path
     end
 
     # Second, use canonical name to locate rack.
-    name = canonical_name(ref)
-    HOMEBREW_CELLAR/name
+    (HOMEBREW_CELLAR/canonical_name(ref)).resolved_path
   end
 
   def self.canonical_name(ref)
