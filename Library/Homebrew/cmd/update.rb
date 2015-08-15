@@ -122,9 +122,8 @@ module Homebrew
   def rename_taps_dir_if_necessary
     Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
-        tapd_basename = File.basename(tapd)
-
         if File.directory?(tapd + "/.git")
+          tapd_basename = File.basename(tapd)
           if tapd_basename.include?("-")
             # only replace the *last* dash: yes, tap filenames suck
             user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
