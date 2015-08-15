@@ -142,8 +142,9 @@ class Migrator
     rescue Interrupt
       ignore_interrupts { backup_oldname }
     rescue Exception => e
-      onoe "error occured while migrating."
-      puts e if ARGV.debug?
+      onoe "Error occured while migrating."
+      puts e
+      puts e.backtrace if ARGV.debug?
       puts "Backuping..."
       ignore_interrupts { backup_oldname }
     end
@@ -220,9 +221,9 @@ class Migrator
     rescue Exception => e
       onoe "An unexpected error occurred during linking"
       puts e
-      puts e.backtrace
+      puts e.backtrace if ARGV.debug?
       ignore_interrupts { keg.unlink }
-      raise e
+      raise
     end
   end
 
