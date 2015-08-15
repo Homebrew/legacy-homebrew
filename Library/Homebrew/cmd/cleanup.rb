@@ -115,10 +115,20 @@ module Homebrew
   end
 
   def rm_DS_Store
-    paths = %w[Cellar Frameworks Library bin etc include lib opt sbin share var].
-            map { |p| HOMEBREW_PREFIX/p }.select(&:exist?)
-    args = paths.map(&:to_s) + %w[-name .DS_Store -delete]
-    quiet_system "find", *args
+    paths = Queue.new
+    %w[Cellar Frameworks Library bin etc include lib opt sbin share var].
+      map { |p| HOMEBREW_PREFIX/p }.select(&:exist?).each { |p| paths << p }
+    workers = (0...Hardware::CPU.cores).map do
+      Thread.new do
+        begin
+          while p = paths.pop(true)
+            quiet_system "find", p, "-name", ".DS_Store", "-delete"
+          end
+        rescue ThreadError # ignore empty queue error
+        end
+      end
+    end
+    workers.map(&:join)
   end
 
   def prune?(path, options={})
