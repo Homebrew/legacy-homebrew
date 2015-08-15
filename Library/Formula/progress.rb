@@ -1,9 +1,9 @@
-class Cv < Formula
+class Progress < Formula
   desc "Coreutils Viewer: Show progress for coreutils"
-  homepage "https://github.com/Xfennec/cv"
-  url "https://github.com/Xfennec/cv/archive/v0.7.1.tar.gz"
-  sha256 "c8ab81b09f6026cbfdc94c9453d4a0fad7ea5e1e34efd1c1559f88f7398cf4ee"
-  head "https://github.com/Xfennec/cv.git"
+  homepage "https://github.com/Xfennec/progress"
+  url "https://github.com/Xfennec/progress/archive/v0.8.tar.gz"
+  sha256 "52ad6d805eb9826de297ba495cfde3df1deb6288f97ff67e7f93431efa006d34"
+  head "https://github.com/Xfennec/progress.git"
 
   bottle do
     cellar :any
@@ -17,13 +17,12 @@ class Cv < Formula
   end
 
   test do
-    system "cv", "--help"
     pid = fork do
       system "/bin/dd", "if=/dev/zero", "of=/dev/null", "bs=100000", "count=1000000"
     end
     sleep 1
     begin
-      assert_match /dd/, shell_output("cv")
+      assert_match(/dd/, shell_output("#{bin}/progress"))
     ensure
       Process.kill 9, pid
       Process.wait pid
