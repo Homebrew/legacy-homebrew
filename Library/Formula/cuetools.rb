@@ -8,9 +8,9 @@ class Cuetools < Formula
 
   bottle do
     cellar :any
-    sha1 "9e4a137755218db67958c1dd0d700a0a5f8f05d2" => :mavericks
-    sha1 "4ef7bdce473feaa1fe4d3e5ea1b71b8d2d43f627" => :mountain_lion
-    sha1 "c21d19db598c92f1829c6b92bdafa0215cd33a6f" => :lion
+    sha256 "81d06ef2e3d98061f332a535b810102c1be0505371c1ac1aed711cf2ae8de5a3" => :yosemite
+    sha256 "95216c0df3840b2602e61dd3bef7d4c9b65cec0315e5b23ac87329320d9f6be9" => :mavericks
+    sha256 "cc5240434bb054a51ebb4e4bb3adc8e97844da66aa425fc667f54ecf53ad9aa6" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
