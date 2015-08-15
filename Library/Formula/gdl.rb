@@ -4,6 +4,13 @@ class Gdl < Formula
   url "https://download.gnome.org/sources/gdl/3.16/gdl-3.16.0.tar.xz"
   sha256 "34cbe104f5df9a20ea26aa8acca2b6d1a73035448aa854162c598e90f4e6ff80"
 
+  bottle do
+    revision 1
+    sha256 "be662ba065cffbfe5d9b9499b51a829d0990a4d147d4893070bf2134aeb9ffc7" => :yosemite
+    sha256 "8dce0ae0f0aac31b16e09010c5b7287f5158ebc4337c631e6983b3560ec612a1" => :mavericks
+    sha256 "4cca328a630b1b6e009d31eeb5546fcd653a278d153f57193d56bb1c6993fb6d" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gtk+3"
