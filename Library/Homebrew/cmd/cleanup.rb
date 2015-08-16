@@ -20,7 +20,7 @@ module Homebrew
   def cleanup_logs
     return unless HOMEBREW_LOGS.directory?
     HOMEBREW_LOGS.subdirs.each do |dir|
-      cleanup_path(dir) { dir.rmtree } if prune?(:logs, dir.mtime)
+      cleanup_path(dir) { dir.rmtree } if prune?(dir, :days_default => 14)
     end
   end
 
@@ -56,7 +56,7 @@ module Homebrew
   def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.each do |path|
-      if prune?(:cache, path.mtime)
+      if prune?(path)
         if path.file?
           cleanup_path(path) { path.unlink }
         elsif path.directory? && path.to_s.include?("--")
@@ -121,27 +121,25 @@ module Homebrew
     quiet_system "find", *args
   end
 
-  def prune?(kind, time)
-    unless @cleanup_prune_limit
-      # Infer and cache prune limits for cleanup: Use '--prune' or fall back to
-      # defaults (never prune download cache and prune logs after two weeks).
-      days = ARGV.value "prune"
-      offset = Time.now
-      @cleanup_prune_limit = {}
-      { :cache => nil, :logs => 14 }.each do |k, days_default|
-        @cleanup_prune_limit[k] = if days == "all"
-          "all"
-        elsif days
-          offset - 60 * 60 * 24 * days.to_i
-        elsif days_default
-          offset - 60 * 60 * 24 * days_default
-        end
-      end
+  def prune?(path, options={})
+    @time ||= Time.now
+
+    path_modified_time = path.mtime
+    days_default = options[:days_default]
+
+    prune = ARGV.value "prune"
+
+    return true if prune == "all"
+
+    prune_time = if prune
+      @time - 60 * 60 * 24 * prune.to_i
+    elsif days_default
+      @time - 60 * 60 * 24 * days_default.to_i
     end
 
-    if limit = @cleanup_prune_limit[kind]
-      limit == "all" || time < limit
-    end
+    return false unless prune_time
+
+    prune_time < path_modified_time
   end
 
   def eligible_for_cleanup?(formula)
