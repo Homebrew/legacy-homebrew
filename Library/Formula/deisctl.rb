@@ -8,9 +8,9 @@ class Deisctl < Formula
 
   bottle do
     cellar :any
-    sha1 "db686dbc4dc02122cd98a77c74ca2b57ab859fd9" => :yosemite
-    sha1 "e4e8d2339df740dd10f8a396eb2d9f7502cfba55" => :mavericks
-    sha1 "3effb5512f9ac39b69b639c067a62239b1171677" => :mountain_lion
+    sha256 "e5fe216c7f63394410837ac23e46f9fd3ddf85ebf5d39ff58265eb993f6da95c" => :yosemite
+    sha256 "b001eec00c2ea9fdd4d6e12113990e3e7c9addf7b22a9c506541ff0236a17d75" => :mavericks
+    sha256 "3c909d77ab06101b9b9c63a7b02de500545cef50f0d98757a62587b251576cde" => :mountain_lion
   end
 
   depends_on "go" => :build
