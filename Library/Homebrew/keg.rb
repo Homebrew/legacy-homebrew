@@ -183,6 +183,7 @@ class Keg
     path.rmtree
     path.parent.rmdir_if_possible
     remove_opt_record if optlinked?
+    remove_oldname_opt_record
   end
 
   def unlink
@@ -254,6 +255,14 @@ class Keg
 
   def find(*args, &block)
     path.find(*args, &block)
+  end
+
+  def oldname_opt_record
+    @oldname_opt_record ||= if (opt_dir = HOMEBREW_PREFIX/"opt").directory?
+      opt_dir.subdirs.detect do |dir|
+        dir.symlink? && dir != opt_record && path.parent == dir.resolved_path.parent
+      end
+    end
   end
 
   def link(mode = OpenStruct.new)
@@ -330,9 +339,22 @@ class Keg
     ObserverPathnameExtension.total
   end
 
+  def remove_oldname_opt_record
+    return unless oldname_opt_record
+    return unless oldname_opt_record.resolved_path == path
+    @oldname_opt_record.unlink
+    @oldname_opt_record.parent.rmdir_if_possible
+    @oldname_opt_record = nil
+  end
+
   def optlink(mode = OpenStruct.new)
     opt_record.delete if opt_record.symlink? || opt_record.exist?
     make_relative_symlink(opt_record, path, mode)
+
+    if oldname_opt_record
+      oldname_opt_record.delete
+      make_relative_symlink(oldname_opt_record, path, mode)
+    end
   end
 
   def delete_pyc_files!
