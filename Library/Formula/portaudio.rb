@@ -15,13 +15,16 @@ class Portaudio < Formula
   depends_on "pkg-config" => :build
 
   option :universal
+  option "without-cxx", "Build C++ bindings"
 
   def install
     ENV.universal_binary if build.universal?
+
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--enable-mac-universal=#{build.universal? ? "yes" : "no"}"
+                          "--enable-mac-universal=#{build.universal? ? "yes" : "no"}",
+                          "--enable-cxx=#{(build.without? "cxx") ? "no": "yes"}"
     system "make", "install"
 
     # Need 'pa_mac_core.h' to compile PyAudio
