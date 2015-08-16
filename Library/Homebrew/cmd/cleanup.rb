@@ -139,7 +139,7 @@ module Homebrew
 
     return false unless prune_time
 
-    prune_time < path_modified_time
+    path_modified_time < prune_time
   end
 
   def eligible_for_cleanup?(formula)
