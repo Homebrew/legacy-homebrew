@@ -3,8 +3,8 @@ require "language/go"
 class Deisctl < Formula
   desc "Deis Control Utility"
   homepage "http://deis.io/"
-  url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
-  sha256 "7f4fc7ddddf3157d59ed9e726a5be5510a4b208a936227e65f9041ceb3627a14"
+  url "https://github.com/deis/deis/archive/v1.9.0.tar.gz"
+  sha256 "6acca76008b1e48961eb23ddd62f8db742be053983ce34b1a516bb2d4719bf82"
 
   bottle do
     cellar :any
@@ -13,19 +13,26 @@ class Deisctl < Formula
     sha1 "3effb5512f9ac39b69b639c067a62239b1171677" => :mountain_lion
   end
 
-  depends_on :hg => :build
   depends_on "go" => :build
 
-  go_resource "github.com/kr/godep" do
-    url "https://github.com/kr/godep.git", :revision => "07a96a1131ddff383e0f502d24c0f989ed0a8bb1"
+  go_resource "github.com/tools/godep" do
+    url "https://github.com/tools/godep.git", :revision => "66fa30a455532b64a7f70f8716a274c833bee3c6"
   end
 
-  go_resource "github.com/kr/fs" do
-    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+  go_resource "github.com/docopt/docopt-go" do
+    url "https://github.com/docopt/docopt-go.git", :revision => "854c423c810880e30b9fecdabb12d54f4a92f9bb"
   end
 
-  go_resource "golang.org/x/tools" do
-    url "https://code.google.com/p/go.tools/", :revision => "140fcaadc586", :using => :hg
+  go_resource "github.com/coreos/go-etcd" do
+    url "https://github.com/coreos/go-etcd.git", :revision => "c904d7032a70da6551c43929f199244f6a45f4c1"
+  end
+
+  go_resource "github.com/coreos/fleet" do
+    url "https://github.com/coreos/fleet.git", :tag => "v0.9.2", :revision => "e0f7a2316dc6ae610979598c4efe127ac8ff1ae9"
+  end
+
+  go_resource "github.com/ugorji/go" do
+    url "https://github.com/ugorji/go.git", :revision => "821cda7e48749cacf7cad2c6ed01e96457ca7e9d"
   end
 
   def install
@@ -38,7 +45,7 @@ class Deisctl < Formula
 
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/kr/godep" do
+    cd "src/github.com/tools/godep" do
       system "go", "install"
     end
 
@@ -49,6 +56,6 @@ class Deisctl < Formula
   end
 
   test do
-    system "#{bin}/deisctl", "help"
+    system bin/"deisctl", "help"
   end
 end
