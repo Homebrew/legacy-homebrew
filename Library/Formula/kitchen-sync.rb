@@ -29,8 +29,6 @@ class KitchenSync < Formula
   end
 
   test do
-    assert File.exist?("#{bin}/ks")
-    assert File.exist?("#{bin}/ks_mysql") if build.with? "mysql"
-    assert File.exist?("#{bin}/ks_postgresql") if build.with? "postgresql"
+    shell_output "#{bin}/ks 2>&1", 1
   end
 end
