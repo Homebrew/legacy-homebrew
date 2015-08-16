@@ -97,11 +97,6 @@ class Descriptions
     end
   end
 
-  # Delete the cache.
-  def self.delete_cache
-    CACHE_FILE.delete if CACHE_FILE.exist?
-  end
-
   # Given an array of formula names, return a {Descriptions} object mapping
   # those names to their descriptions.
   def self.named(names)

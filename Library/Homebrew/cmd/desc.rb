@@ -3,11 +3,7 @@ require "cmd/search"
 
 module Homebrew
   def desc
-    if ARGV.include? "--delete-cache"
-      Descriptions.delete_cache
-    elsif ARGV.include? "--create-cache"
-      Descriptions.generate_cache
-    elsif ARGV.options_only.empty?
+    if ARGV.options_only.empty?
       if ARGV.named.empty?
         raise FormulaUnspecifiedError
         exit
