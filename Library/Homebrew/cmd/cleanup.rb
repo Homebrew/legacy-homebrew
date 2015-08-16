@@ -1,6 +1,7 @@
 require "formula"
 require "keg"
 require "bottles"
+require "thread"
 
 module Homebrew
   def cleanup
