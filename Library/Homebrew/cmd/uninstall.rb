@@ -18,14 +18,8 @@ module Homebrew
           # Remove every symlink that links to keg, because it can
           # be left by migrator
           links.each do |link|
-            old_opt = HOMEBREW_PREFIX/"opt/#{link.basename}"
             if link.exist? && link.realpath == keg.rack.realpath
               old_cellars << link
-            end
-
-            if old_opt.symlink? && old_opt.realpath.to_s == keg.to_s
-              old_opt.unlink
-              old_opt.parent.rmdir_if_possible
             end
           end
 
@@ -52,13 +46,6 @@ module Homebrew
         name = rack.basename
 
         links.each do |link|
-          old_opt = HOMEBREW_PREFIX/"opt/#{link.basename}"
-          if old_opt.symlink? && old_opt.exist? \
-              && old_opt.realpath.parent == rack.realpath
-            old_opt.unlink
-            old_opt.parent.rmdir_if_possible
-          end
-
           link.unlink if link.exist? && link.realpath == rack.realpath
         end
 
