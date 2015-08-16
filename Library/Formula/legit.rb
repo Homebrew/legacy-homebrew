@@ -5,6 +5,13 @@ class Legit < Formula
   version "0.1.0"
   sha256 "dce86a16d9c95e2a7d93be75f1fc17c67d3cd2a137819fa498e179bf21daf39e"
 
+  bottle do
+    cellar :any
+    sha256 "9fa6ed92b611e6e8810c19f5e130320723bc7752ce69f223d145c1b087b14266" => :yosemite
+    sha256 "279762cb281dd6e8416a3b5e06438a5300819ba6aa6732472cfff35e80c4881a" => :mavericks
+    sha256 "e7a0e18464490895a21c794e25c44806dcd62ce3f6e8d354a2c68c7435836baf" => :mountain_lion
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "clint" do
