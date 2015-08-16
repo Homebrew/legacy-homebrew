@@ -1,8 +1,8 @@
 class Magit < Formula
   desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-  url "https://github.com/magit/magit/releases/download/2.1.0/magit-2.1.0.tar.gz"
-  sha256 "835ba1cc461583b012671aea8271b8faf372324f0156706d5801cc1b0e533fc8"
+  url "https://github.com/magit/magit/archive/2.2.0.tar.gz"
+  sha256 "947c47961d5adbcbccda2ed50b7ef59e82ff91e089dedd645f14eeeb7d9acac9"
 
   head "https://github.com/magit/magit.git", :shallow => false
 
@@ -20,18 +20,21 @@ class Magit < Formula
     sha256 "d888d34b9b86337c5740250f202e7f2efc3bf059b08a817a978bf54923673cde"
   end
 
+  resource "async" do
+    url "https://github.com/jwiegley/emacs-async/archive/v1.4.tar.gz"
+    sha256 "295d6d5dd759709ef714a7d05c54aa2934f2ffb4bb2e90e4434415f75f05473b"
+  end
+
   def install
-    resource("dash").stage do
-      (share/"emacs/site-lisp").install "dash.el"
-    end
+    resource("dash").stage { (share/"emacs/site-lisp/magit").install "dash.el" }
+    resource("async").stage { (share/"emacs/site-lisp/magit").install Dir["*.el"] }
 
     (buildpath/"config.mk").write <<-EOS
-      LOAD_PATH = -L #{buildpath}/lisp -L #{share}/emacs/site-lisp
+      LOAD_PATH = -L #{buildpath}/lisp -L #{share}/emacs/site-lisp/magit
     EOS
 
     args = %W[
       PREFIX=#{prefix}
-      lispdir=#{share}/emacs/site-lisp
       docdir=#{doc}
     ]
     # Can't run `make install` alone without ENV.j1:
@@ -40,19 +43,13 @@ class Magit < Formula
     system "make", "install", *args
   end
 
-  def caveats; <<-EOS.undent
-    Add the following to your Emacs init file to allow loading of packages installed by Homebrew:
-
-    (add-to-list 'load-path "#{HOMEBREW_PREFIX}/share/emacs/site-lisp")
-  EOS
-  end
-
   test do
     (testpath/"test.el").write <<-EOS.undent
-      (add-to-list 'load-path "#{share}/emacs/site-lisp")
-      (require 'magit)
-      (print (minibuffer-prompt-width))
+      (add-to-list 'load-path "#{share}/emacs/site-lisp/magit")
+      (load "magit")
+      (magit-run-git "init")
     EOS
-    assert_equal "0", shell_output("emacs -batch -l #{testpath}/test.el").strip
+    system "emacs", "--batch", "-Q", "-l", "#{testpath}/test.el"
+    File.exist? ".git"
   end
 end
