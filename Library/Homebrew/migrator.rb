@@ -28,23 +28,19 @@ class Migrator
 
   class MigratorDifferentTapsError < RuntimeError
     def initialize(formula, tap)
-      if tap.nil?
-        super <<-EOS.undent
-        #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} wasn't installed from taps or core formulae
-
-        You can try `brew migrate --force #{formula.oldname}`.
-        EOS
-      else
+      msg = if tap == "Homebrew/homebrew"
+        "Please try to use #{formula.oldname} to refer the formula.\n"
+      elsif tap
         user, repo = tap.split("/")
         repo.sub!("homebrew-", "")
-        name = "fully-qualified #{user}/#{repo}/#{formula.oldname}"
-        name = formula.oldname if tap == "Homebrew/homebrew"
-        super <<-EOS.undent
-        #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} was installed from #{tap}
-
-        Please try to use #{name} to refer the formula
-        EOS
+        "Please try to use fully-qualified #{user}/#{repo}/#{formula.oldname} to refer the formula.\n"
       end
+
+      super <<-EOS.undent
+      #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} was installed from #{tap ? tap : "path or url"}.
+
+      #{msg}To force migrate use `brew migrate --force #{formula.oldname}`.
+      EOS
     end
   end
 
@@ -68,7 +64,10 @@ class Migrator
 
     @old_tabs = oldpath.subdirs.each.map { |d| Tab.for_keg(Keg.new(d)) }
     @old_tap = old_tabs.first.tap
-    raise MigratorDifferentTapsError.new(formula, old_tap) unless from_same_taps?
+
+    if !ARGV.force? && !from_same_taps?
+      raise MigratorDifferentTapsError.new(formula, old_tap)
+    end
 
     @newpath = HOMEBREW_CELLAR/formula.name
 
@@ -93,9 +92,7 @@ class Migrator
   end
 
   def from_same_taps?
-    if old_tap == nil && formula.core_formula? && ARGV.force?
-      true
-    elsif formula.tap == old_tap
+    if formula.tap == old_tap
       true
     # Homebrew didn't use to update tabs while performing tap-migrations,
     # so there can be INSTALL_RECEIPT's containing wrong information about
