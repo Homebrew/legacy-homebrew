@@ -159,7 +159,7 @@ module Homebrew
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
-    check_xcode if MacOS::Xcode.installed?
+    check_xcode if MacOS.has_apple_developer_tools?
     check_cellar
   end
 
