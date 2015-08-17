@@ -7,7 +7,6 @@ class GnuBarcode < Formula
 
   # Patch and ac_cv_func_calloc_0_nonnull config addresses the following issue:
   # https://github.com/Homebrew/homebrew/issues/41115
-
   patch :DATA
 
   def install
