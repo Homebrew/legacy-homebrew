@@ -5,7 +5,7 @@ class AndroidPlatformTools < Formula
   # https://dl.google.com/android/repository/repository-10.xml
   url "https://dl.google.com/android/repository/platform-tools_r23-macosx.zip"
   version "23.0.0"
-  sha256 "1403fa0d1bb57ec31170d7905e8505e3b0ed05ee"
+  sha256 "a5ed48f56f784fcba35e3650c001fff49de75d3631d2fc2c83479a9ebaa92724"
 
   conflicts_with "android-sdk",
     :because => "the Android Platform-tools are part of the Android SDK"
