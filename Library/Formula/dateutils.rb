@@ -18,6 +18,13 @@ class Dateutils < Formula
     depends_on "libtool" => :build
   end
 
+  head do
+    url "https://github.com/hroptatyr/dateutils.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
     system "autoreconf", "-iv" if build.head?
     system "./configure", "--disable-dependency-tracking",
