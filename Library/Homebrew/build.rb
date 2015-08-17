@@ -81,7 +81,7 @@ class Build
     if superenv?
       ENV.keg_only_deps = keg_only_deps
       ENV.deps = deps.map(&:to_formula)
-      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Requirement) }
+      ENV.x11 = reqs.any? { |rq| rq.is_a?(X11Requirement) }
       ENV.setup_build_environment(formula)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
@@ -148,12 +148,12 @@ class Build
     keg.detect_cxx_stdlibs(:skip_executables => true)
   end
 
-  def fixopt f
-    path = if f.linked_keg.directory? and f.linked_keg.symlink?
+  def fixopt(f)
+    path = if f.linked_keg.directory? && f.linked_keg.symlink?
       f.linked_keg.resolved_path
     elsif f.prefix.directory?
       f.prefix
-    elsif (kids = f.rack.children).size == 1 and kids.first.directory?
+    elsif (kids = f.rack.children).size == 1 && kids.first.directory?
       kids.first
     else
       raise

@@ -1,13 +1,13 @@
 class Fig < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.3.1.tar.gz"
-  sha256 "04b60b805dc305543d5fe9a0880b8e1ad5818c440587a26b0eb01f9e3e8e79eb"
+  url "https://github.com/docker/compose/archive/1.4.0.tar.gz"
+  sha256 "96875473fdb1cce1d63c4bc21c2bc9bf620820fb3bdf8c590618965733418115"
 
   bottle do
-    sha256 "e37e96200d6319f27524f5db76796bc9a8aea0deef52929d2d23ccea496f989d" => :yosemite
-    sha256 "9f6e36adba7692404464b886d547ad32fc1f78bd51e8cb634246b5f7909ea914" => :mavericks
-    sha256 "227cfb33c6acb003086484b12d6aa737ef021e1bd8e8624a8721259849af476d" => :mountain_lion
+    sha256 "8ca0af6c6e0d12bc64cd1af93627f1e201f7666c0626a4fa2603fb3a799aef6a" => :yosemite
+    sha256 "85d0e45da45e8e7ab14bdeccd866825d7a6d857b424a2f652dcc6971284301f2" => :mavericks
+    sha256 "8bf9ab8a86f85433a1c9f2ebbd35b667feb52d3f6135bce98bc11e23516cd841" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -19,8 +19,8 @@ class Fig < Formula
   depends_on "boot2docker" => :recommended
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.2.3.tar.gz"
-    sha256 "5328a7f4a2d812da166b3fb59211fca976c9f48bb9f8b17d9f3fd4ef7c765ac5"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
+    sha256 "743f3fc78f6159d14ac603def6470cf1b4edefc04de8b1ad8c349b380b503f50"
   end
 
   resource "pyyaml" do
@@ -54,8 +54,8 @@ class Fig < Formula
   end
 
   resource "websocket-client" do
-    url "https://github.com/liris/websocket-client/archive/v0.29.0.tar.gz"
-    sha256 "011487a1fd3158ec670f3c25a40bbe7523f6d22fa342ca870fefe0fa2168aeec"
+    url "https://github.com/liris/websocket-client/archive/v0.32.0.tar.gz"
+    sha256 "255d07ffa677f571b5f51c11703f2f4bd5f331b58442677bcb4395dfa1809a5f"
   end
 
   resource "backports.ssl_match_hostname" do
@@ -75,6 +75,7 @@ class Fig < Formula
     system "python", *Language::Python.setup_install_args(libexec)
 
     bash_completion.install "contrib/completion/bash/docker-compose"
+    zsh_completion.install "contrib/completion/zsh/_docker-compose"
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])

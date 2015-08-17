@@ -1,3 +1,5 @@
+require "utils/json"
+
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
 # a Github repository with the name of `user/homebrew-repo`. In such
@@ -37,16 +39,19 @@ class Tap
   # e.g. `https://github.com/user/homebrew-repo`
   def remote
     @remote ||= if installed?
-      if (@path/".git").exist?
+      if git?
         @path.cd do
           Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
         end
-      else
-        nil
       end
     else
       raise TapUnavailableError, name
     end
+  end
+
+  # True if this {Tap} is a git repository.
+  def git?
+    (@path/".git").exist?
   end
 
   def to_s
@@ -96,20 +101,56 @@ class Tap
     Pathname.glob("#{path}/cmd/brew-*").select(&:executable?)
   end
 
+  def pinned_symlink_path
+    HOMEBREW_LIBRARY/"PinnedTaps/#{@name}"
+  end
+
+  def pinned?
+    @pinned ||= pinned_symlink_path.directory?
+  end
+
+  def pin
+    raise TapUnavailableError, name unless installed?
+    raise TapPinStatusError.new(name, true) if pinned?
+    pinned_symlink_path.make_relative_symlink(@path)
+  end
+
+  def unpin
+    raise TapUnavailableError, name unless installed?
+    raise TapPinStatusError.new(name, false) unless pinned?
+    pinned_symlink_path.delete
+    pinned_symlink_path.dirname.rmdir_if_possible
+  end
+
   def to_hash
-    {
+    hash = {
       "name" => @name,
       "user" => @user,
       "repo" => @repo,
       "path" => @path.to_s,
-      "remote" => remote,
       "installed" => installed?,
       "official" => official?,
-      "custom_remote" => custom_remote?,
       "formula_names" => formula_names,
       "formula_files" => formula_files.map(&:to_s),
       "command_files" => command_files.map(&:to_s),
+      "pinned" => pinned?
     }
+
+    if installed?
+      hash["remote"] = remote
+      hash["custom_remote"] = custom_remote?
+    end
+
+    hash
+  end
+
+  # Hash with tap formula renames
+  def formula_renames
+    @formula_renames ||= if (rename_file = path/"formula_renames.json").file?
+      Utils::JSON.load(rename_file.read)
+    else
+      {}
+    end
   end
 
   def self.each
@@ -117,9 +158,7 @@ class Tap
 
     TAP_DIRECTORY.subdirs.each do |user|
       user.subdirs.each do |repo|
-        if (repo/".git").directory?
-          yield new(user.basename.to_s, repo.basename.to_s.sub("homebrew-", ""))
-        end
+        yield new(user.basename.to_s, repo.basename.to_s.sub("homebrew-", ""))
       end
     end
   end

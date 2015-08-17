@@ -1,5 +1,3 @@
-require "formula"
-
 class LcdfTypetools < Formula
   desc "Manipulate OpenType and multiple-master fonts"
   homepage "http://www.lcdf.org/type/"
@@ -12,6 +10,6 @@ class LcdfTypetools < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-kpathsea"
-    system "make install"
+    system "make", "install"
   end
 end

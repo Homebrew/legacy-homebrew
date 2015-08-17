@@ -1,16 +1,14 @@
-require "formula"
-
 class Clasp < Formula
-  desc "An answer set solver for (extended) normal logic programs"
+  desc "Answer set solver for (extended) normal logic programs"
   homepage "http://potassco.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/potassco/clasp/3.1.1/clasp-3.1.1-source.tar.gz"
-  sha1 "01a35f05fb4c138bb0bfd8759f36b2eebafa7069"
+  url "https://downloads.sourceforge.net/project/potassco/clasp/3.1.3/clasp-3.1.3-source.tar.gz"
+  sha256 "f08684eadfa5ae5efa5c06439edc361b775fc55b7c1a9ca862eda8f5bf7e5f1f"
 
   bottle do
     cellar :any
-    sha1 "0ac56c1eb46713865ead22812d8000978e0ff63b" => :yosemite
-    sha1 "b40b58db856ac11dfbaa64fb28213bc3350fc986" => :mavericks
-    sha1 "16aca848e54eae150b7f6b2a3d9d8bdd4d510fac" => :mountain_lion
+    sha256 "1cb2579b887870f73fc216c474e841951b01ff26f120273bf536665403f65826" => :yosemite
+    sha256 "06c9bce4ff95e45e4fb78351c658f2d4bbc80fadd2db581e6b9673ec383d4755" => :mavericks
+    sha256 "20058e023ad293199f0c1619953adaea03f84aa25c07f42e3edb9d177447cd52" => :mountain_lion
   end
 
   option "with-mt", "Enable multi-thread support"
@@ -34,5 +32,9 @@ class Clasp < Formula
     bin.mkpath
     system "./configure.sh", *args
     system "make", "-C", build_dir, "install"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/clasp --version")
   end
 end

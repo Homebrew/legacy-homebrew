@@ -1,15 +1,15 @@
 # encoding: UTF-8
-require 'formula'
-require 'ostruct'
+require "formula"
+require "ostruct"
 
 module Homebrew
   def deps
     mode = OpenStruct.new(
-      :installed?  => ARGV.include?('--installed'),
-      :tree?       => ARGV.include?('--tree'),
-      :all?        => ARGV.include?('--all'),
-      :topo_order? => ARGV.include?('-n'),
-      :union?      => ARGV.include?('--union')
+      :installed?  => ARGV.include?("--installed"),
+      :tree?       => ARGV.include?("--tree"),
+      :all?        => ARGV.include?("--all"),
+      :topo_order? => ARGV.include?("-n"),
+      :union?      => ARGV.include?("--union")
     )
 
     if mode.installed? && mode.tree?
@@ -30,7 +30,7 @@ module Homebrew
     end
   end
 
-  def deps_for_formula(f, recursive=false)
+  def deps_for_formula(f, recursive = false)
     ignores = []
     ignores << "build?" if ARGV.include? "--skip-build"
     ignores << "optional?" if ARGV.include? "--skip-optional"
@@ -54,8 +54,8 @@ module Homebrew
     deps + reqs.select(&:default_formula?).map(&:to_dependency)
   end
 
-  def deps_for_formulae(formulae, recursive=false, &block)
-    formulae.map {|f| deps_for_formula(f, recursive) }.inject(&block)
+  def deps_for_formulae(formulae, recursive = false, &block)
+    formulae.map { |f| deps_for_formula(f, recursive) }.inject(&block)
   end
 
   def puts_deps(formulae)
@@ -64,13 +64,13 @@ module Homebrew
 
   def puts_deps_tree(formulae)
     formulae.each do |f|
-      puts f.full_name
+      puts "#{f.full_name} (required dependencies)"
       recursive_deps_tree(f, "")
       puts
     end
   end
 
-  def recursive_deps_tree f, prefix
+  def recursive_deps_tree(f, prefix)
     reqs = f.requirements.select(&:default_formula?)
     max = reqs.length - 1
     reqs.each_with_index do |req, i|

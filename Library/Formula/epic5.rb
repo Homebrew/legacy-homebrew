@@ -24,7 +24,7 @@ class Epic5 < Formula
 
   test do
     connection = fork do
-      system bin/"epic5", "irc.freenode.net"
+      exec bin/"epic5", "irc.freenode.net"
     end
     sleep 5
     Process.kill("TERM", connection)

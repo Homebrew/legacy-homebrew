@@ -1,32 +1,44 @@
 class Dos2unix < Formula
   desc "Convert text between DOS, UNIX, and Mac formats"
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
-  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.2.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.2.2/dos2unix-7.2.2.tar.gz"
-  sha256 "9c23907296267fa4ea66e1ee03eb6f6229cf7b64968318d00a77076ae89c2612"
+  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.3.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.2.3/dos2unix-7.2.3.tar.gz"
+  sha256 "8039ea97a9fc3b0bffed0218099aeb078ebb550127fa6c10e2647aad52669c83"
 
   bottle do
-    sha256 "8987013382676381291bcd0bcfd0a36c849386daa83eb854561dd356c7345978" => :yosemite
-    sha256 "8966ddcab53e480003a1d3842bae29b591cacf85b256982b6198f31fe23eca11" => :mavericks
-    sha256 "1e97501a1880660bd4e9b92072764013ff1881c341f42034a6f06756e0ef4578" => :mountain_lion
+    cellar :any
+    sha256 "c70b03f60b52144cbcfadcf3b9fc35ca4140a8927364e2f88daac20ad614f4da" => :yosemite
+    sha256 "eddb0cb3f7b3ab3ab52d7d55e925fc649262adc8590a96df3c84d723cea23eef" => :mavericks
+    sha256 "fded9be40db63372d20db2ff4f1d8b724fb326a7c7ee4d9df67c8d250f2c0cd5" => :mountain_lion
   end
 
   devel do
-    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.3-beta1.tar.gz"
-    sha256 "59cea39b181913532bf9e9c234a142c15e330d5eee145cd6b90f54becd6ec27b"
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3-beta3.tar.gz"
+    sha256 "4b34d0aa81891795566982af901a84efd54344e1e1bcba138329eb5afe0fdc68"
   end
 
-  depends_on "gettext"
+  option "with-gettext", "Build with Native Language Support"
+
+  depends_on "gettext" => :optional
 
   def install
-    gettext = Formula["gettext"]
-    system "make", "prefix=#{prefix}",
-                   "CC=#{ENV.cc}",
-                   "CPP=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "CFLAGS_OS=-I#{gettext.include}",
-                   "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl",
-                   "install"
+    args = %W[
+      prefix=#{prefix}
+      CC=#{ENV.cc}
+      CPP=#{ENV.cc}
+      CFLAGS=#{ENV.cflags}
+      install
+    ]
+
+    if build.without? "gettext"
+      args << "ENABLE_NLS="
+    else
+      gettext = Formula["gettext"]
+      args << "CFLAGS_OS=-I#{gettext.include}"
+      args << "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl"
+    end
+
+    system "make", *args
   end
 
   test do

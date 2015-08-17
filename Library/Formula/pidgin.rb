@@ -1,19 +1,19 @@
 class Pidgin < Formula
-  desc "GUI-less chat client (e.g., Finch-only)"
+  desc "Multi-protocol chat client"
   homepage "https://pidgin.im/"
   url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
   sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"
   revision 1
 
   bottle do
-    revision 4
-    sha256 "10a81542aa56713c17b788fc84fb4b1efca6b7de835a0d10268a782669979a5d" => :yosemite
-    sha256 "814fe76e025c38aae466f91368c0985db7a7bfee60b9cc0cfb1feed74f84a306" => :mavericks
-    sha256 "a2e99b12d482ae688ffa6ea72b6df5d6d3af144ddc84e108fcc32ee82efa9de7" => :mountain_lion
+    revision 5
+    sha256 "67e7892b128e2b5589cd7649c74bb449aa54adf133789ff1a0a3bd9f3c52ec57" => :yosemite
+    sha256 "8d6452281c705226b987d79ae1642a256ec010a47a613d2674c0750215efe528" => :mavericks
+    sha256 "b7daac4be432e5420d690750c8403486edbcb3ba173f4165c32f2aa79b85859f" => :mountain_lion
   end
 
   option "with-perl", "Build Pidgin with Perl support"
-  option "without-gui", "Build Finch instead of Pidgin"
+  option "without-gui", "Build only Finch, the command-line client"
 
   deprecated_option "perl" => "with-perl"
   deprecated_option "without-GUI" => "without-gui"
@@ -24,15 +24,14 @@ class Pidgin < Formula
   depends_on "gsasl" => :optional
   depends_on "gnutls"
   depends_on "libgcrypt"
+  depends_on "libidn"
+  depends_on "glib"
 
   if build.with? "gui"
     depends_on "gtk+"
     depends_on "cairo"
     depends_on "pango"
     depends_on "libotr"
-  else
-    depends_on "glib"
-    depends_on "libidn"
   end
 
   # Finch has an equal port called purple-otr but it is a NIGHTMARE to compile
@@ -63,12 +62,10 @@ class Pidgin < Formula
     args << "--disable-perl" if build.without? "perl"
     args << "--enable-cyrus-sasl" if build.with? "gsasl"
 
+    args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+    args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
     if build.without? "gui"
-      args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
-      args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
       args << "--disable-gtkui"
-    else
-      args << "--disable-idn"
     end
 
     system "./configure", *args

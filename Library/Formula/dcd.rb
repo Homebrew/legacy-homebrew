@@ -5,10 +5,19 @@ class Dcd < Formula
       :tag => "v0.6.0",
       :revision => "633b1667ef223e6eda7bcfd2d2d746f59036571f"
 
+  head "https://github.com/Hackerpilot/dcd.git", :shallow => false
+
   bottle do
     sha256 "b2bfea971d1cce8f221a524d3ddd10f5b2e6775acfe29754d765785d875a6bb6" => :yosemite
     sha256 "f159386dfbfb7d225010f3fa24e9b0dc911a718bd81a059be243edb6af4f880c" => :mavericks
     sha256 "84a24c63e3b05ce812ffb7453f1fd5edfb47dfe053bd6c02401f264dd9febc60" => :mountain_lion
+  end
+
+  devel do
+    url "https://github.com/Hackerpilot/DCD.git",
+        :tag => "v0.7.0-alpha1",
+        :revision => "fb5ad8ea350cc639de86d972b89f961922719b58"
+    version "0.7.0-a1"
   end
 
   depends_on "dmd" => :build

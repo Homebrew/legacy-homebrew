@@ -3,19 +3,20 @@ class Python3 < Formula
   homepage "https://www.python.org/"
   url "https://www.python.org/ftp/python/3.4.3/Python-3.4.3.tar.xz"
   sha256 "b5b3963533768d5fc325a4d7a6bd6f666726002d696f1d399ec06b043ea996b8"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 "021f88d68c87fe761ba6d158464c60c8c58fee703ed970327d6ebb5fe704cde6" => :yosemite
-    sha256 "4319f624ab2877c676ae79ca4e48a26d23c26acbec4f424866575d6d345da7ab" => :mavericks
-    sha256 "07c908972c96221b467bb4eabfa8e53cc94a4a6f8f5a8e4654d671fa634189b7" => :mountain_lion
+    revision 1
+    sha256 "56a1b3a22e73fc804c26b2c6cab9f19a4f8db52958d8f74affd5e2d322b9ecb1" => :yosemite
+    sha256 "913a4b5dda0a07107f7ad10a051615689d2f534abd92fb6d853dfe1339c0920b" => :mavericks
+    sha256 "5d9fc73a5ed4754be0bcb0efd7f639dc95a9ea86bae87c86fb6358294c45c8db" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b2.tgz"
-    sha256 "3487dbdea5b78ec25be73321e5d54f56d76e8de22bf818e2a529eeb9feb34fe8"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0rc1.tgz"
+    sha256 "af300225b740401aaa3cb741568cd8a12fdb870b5f395ef8b1015dd45a6330bf"
   end
 
   option :universal
@@ -32,14 +33,14 @@ class Python3 < Formula
   depends_on "openssl"
   depends_on "xz" => :recommended  # for the lzma module added in 3.3
   depends_on "homebrew/dupes/tcl-tk" => :optional
-  depends_on :x11 if build.with? "tcl-tk" and Tab.for_name("homebrew/dupes/tcl-tk").with? "x11"
+  depends_on :x11 if build.with?("tcl-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
   skip_clean "bin/pip3", "bin/pip-3.4", "bin/pip-3.5"
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
-    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.1.tar.gz"
+    sha256 "ad52a9d5b3a6f39c2a1c2deb96cc4f6aff29d6511bdea2994322c40b60c9c36a"
   end
 
   resource "pip" do
@@ -101,6 +102,7 @@ class Python3 < Formula
       --datarootdir=#{share}
       --datadir=#{share}
       --enable-framework=#{frameworks}
+      --without-ensurepip
     ]
 
     args << "--without-gcc" if ENV.compiler == :clang
@@ -321,7 +323,7 @@ class Python3 < Formula
     EOS
 
     text += tk_caveats unless MacOS.version >= :lion
-    return text
+    text
   end
 
   test do

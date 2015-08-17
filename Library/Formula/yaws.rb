@@ -1,14 +1,14 @@
 class Yaws < Formula
   desc "Webserver for dynamic content (written in Erlang)"
   homepage "http://yaws.hyber.org"
-  url "https://github.com/klacke/yaws/archive/yaws-1.99.tar.gz"
-  sha1 "ea407afe7b080ed065182d73503899a75360dfaf"
+  url "https://github.com/klacke/yaws/archive/yaws-2.0.tar.gz"
+  sha256 "1b51a5c442ca70e9de562efd2e1d36a7a4ccde05fbeb961a4b538641b7c8173c"
   head "https://github.com/klacke/yaws.git"
 
   bottle do
-    sha1 "22a14414e75ac551799dfae222c65b13732e8e2a" => :yosemite
-    sha1 "b8485c79ccb25b36a3591e5962389b5cd97c9eaa" => :mavericks
-    sha1 "75802258262ab4a400136cb702a92f9b74904e81" => :mountain_lion
+    sha256 "00521fe8163065f6486332d103f2fab37236e359ade42eec6ca7996d68a2d82d" => :yosemite
+    sha256 "9014e19666883f9aa5e2cd103b3de9fbea2328055b0396917e9e23eace056d64" => :mavericks
+    sha256 "8a26e3ef1807631a32935fe3013b0dd77328bff0d8075d7e0fa25ad40c6423c0" => :mountain_lion
   end
 
   option "without-yapp", "Omit yaws applications"

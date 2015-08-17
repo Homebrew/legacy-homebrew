@@ -1,10 +1,8 @@
-require "formula"
-
 class Disco < Formula
   desc "Distributed computing framework based on the MapReduce paradigm"
   homepage "http://discoproject.org/"
   url "https://github.com/discoproject/disco/archive/0.5.4.tar.gz"
-  sha1 "43bc8fac5d5d657a81a8d7b628d1f72f97470b6e"
+  sha256 "a1872b91fd549cea6e709041deb0c174e18d0e1ea36a61395be37e50d9df1f8f"
 
   bottle do
     cellar :any
@@ -35,7 +33,7 @@ class Disco < Formula
     system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
 
     system "make"
-    system "make install"
+    system "make", "install"
     prefix.install %w[contrib doc examples]
 
     # Fix the config file to point at the linked files, not in to cellar

@@ -1,15 +1,15 @@
 class Ninja < Formula
   desc "Small build system for use with gyp or CMake"
   homepage "https://martine.github.io/ninja/"
-  url "https://github.com/martine/ninja/archive/v1.5.3.tar.gz"
-  sha256 "7c953b5a7c26cfcd082882e3f3e2cd08fee8848ad228bb47223b18ea18777ec0"
+  url "https://github.com/martine/ninja/archive/v1.6.0.tar.gz"
+  sha256 "b43e88fb068fe4d92a3dfd9eb4d19755dae5c33415db2e9b7b61b4659009cde7"
   head "https://github.com/martine/ninja.git"
 
   bottle do
     cellar :any
-    sha1 "e82dc5e952531ce5a586275c1078e3c35a15246b" => :yosemite
-    sha1 "04e4fc5a7ee416e248fd42eab9fe04a26f79fc96" => :mavericks
-    sha1 "553fca852991a02ed526d4a37f79aa60c50f23ee" => :mountain_lion
+    sha256 "827e1ce721bd8c95fea9093b74fa5c9d9b5aa0e2660241b44b5f5233833c58f0" => :yosemite
+    sha256 "7a8da38c247855e12054ea7dc8ca8796be19151a2683fcaf50772780d122e90a" => :mavericks
+    sha256 "3717352656bb260ac96de4a0db856ebaa6602c6b4f4d42a0d2475ba511ab834f" => :mountain_lion
   end
 
   option "without-tests", "Run build-time tests"

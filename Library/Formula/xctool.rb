@@ -1,11 +1,9 @@
-require 'formula'
-
 class Xctool < Formula
   desc "Drop-in replacement for xcodebuild with a few extra features"
-  homepage 'https://github.com/facebook/xctool'
-  url 'https://github.com/facebook/xctool/archive/v0.2.4.tar.gz'
-  sha256 '0eb7a0ed45feb413ee12fd10f2425975124c1ee3c5dd55e35fa1ff271cea841a'
-  head 'https://github.com/facebook/xctool.git'
+  homepage "https://github.com/facebook/xctool"
+  url "https://github.com/facebook/xctool/archive/v0.2.4.tar.gz"
+  sha256 "0eb7a0ed45feb413ee12fd10f2425975124c1ee3c5dd55e35fa1ff271cea841a"
+  head "https://github.com/facebook/xctool.git"
 
   bottle do
     cellar :any

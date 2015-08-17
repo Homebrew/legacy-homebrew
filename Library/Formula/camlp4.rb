@@ -1,16 +1,17 @@
 class Camlp4 < Formula
   desc "Tool to write extensible parsers in OCaml"
   homepage "https://github.com/ocaml/camlp4"
-  url "https://github.com/ocaml/camlp4/archive/4.02.1+2.tar.gz"
-  sha1 "ad43587c2bdc46d5d0f028857f5ce90bc9ce7ab5"
-  version "4.02.1+2"
+  url "https://github.com/ocaml/camlp4/archive/4.02+6.tar.gz"
+  sha256 "820c35b69fdff3225bda6045fabffe5d7c54dda00fb157444ac8bda5e1778d45"
+  version "4.02.2+6"
   head "https://github.com/ocaml/camlp4.git"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "f8f1ff8b4c3cb9ca0a691e56c32615b8b1c43912" => :yosemite
-    sha1 "5def247ba43daed533e1b1a88bf2a3dcc3bf4391" => :mavericks
-    sha1 "68c208492b208b060b66418e77dedc059796c2b2" => :mountain_lion
+    sha256 "c04f0052bceed26bf5432a1304f13b4a15fae8757f530776874b714c50754c7a" => :yosemite
+    sha256 "586755085fa262615cbd9bbc5a869351ffec0dcf142113fbfc80c253be98eb06" => :mavericks
+    sha256 "a4a1d70eb2002d3773f4a1d9ae989b613d8b3772c02baacabbbba0309463c7ff" => :mountain_lion
   end
 
   depends_on "objective-caml"

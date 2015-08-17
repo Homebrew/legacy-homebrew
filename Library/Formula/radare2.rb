@@ -1,5 +1,3 @@
-require "formula"
-
 class Radare2 < Formula
   desc "Reverse engineering framework"
   homepage "http://radare.org"

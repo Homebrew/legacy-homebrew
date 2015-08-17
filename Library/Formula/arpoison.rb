@@ -1,10 +1,8 @@
-require 'formula'
-
 class Arpoison < Formula
   desc "UNIX arp cache update utility"
-  homepage 'http://www.arpoison.net/'
-  url 'http://www.arpoison.net/arpoison-0.7.tar.gz'
-  sha1 '14e89b1acbd09874fd389b3cef0dd1a7c7f253ae'
+  homepage "http://www.arpoison.net/"
+  url "http://www.arpoison.net/arpoison-0.7.tar.gz"
+  sha256 "63571633826e413a9bdaab760425d0fab76abaf71a2b7ff6a00d1de53d83e741"
 
   bottle do
     cellar :any
@@ -13,7 +11,7 @@ class Arpoison < Formula
     sha1 "465efcfc1778734810c249a71892d062eaf41b45" => :lion
   end
 
-  depends_on 'libnet'
+  depends_on "libnet"
 
   def install
     system "make"

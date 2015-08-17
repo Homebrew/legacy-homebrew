@@ -1,5 +1,3 @@
-require "formula"
-
 class AtSpi2Atk < Formula
   desc "Accessibility Toolkit GTK+ module"
   homepage "http://a11y.org"

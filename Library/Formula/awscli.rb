@@ -1,14 +1,15 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.36.tar.gz"
-  sha256 "81d5f021d8d5c3df22e9d66521fb248454c31ad4bb4bdfc18e559a3997fabfac"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.45.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.7.45.tar.gz"
+  sha256 "dc9e8b3de5f5a06e0c205cc0e458eb41a6e46cabb1052008cc0a77abdc642d3e"
 
   bottle do
     cellar :any
-    sha256 "c45507aeee27e0b93a89c91be84720bcc2c49d22e8702dadee0377086ebdb43e" => :yosemite
-    sha256 "47a486397dffbd4e3a8d16f02b112d7872c83b393c44c44c4ca0eab5df575b3f" => :mavericks
-    sha256 "f57939208186d2d265dedc609a5b7841c59555d89622a3f3c797375837ac1421" => :mountain_lion
+    sha256 "a3c643b403193381350f2eb1c23b46f5b5ea69e1b89ff2ef2f17c3335a655219" => :yosemite
+    sha256 "9c851f5924bd45c1e6a97f8d7fe914889ccc1c1cf8f540257f97188ee90e973d" => :mavericks
+    sha256 "a4e89c157af86d547c512ad8d1eabae688ea16f72aeffdbbf02eac485e1d2644" => :mountain_lion
   end
 
   head do
@@ -49,8 +50,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.0.1.tar.gz"
-    sha256 "87773ebc7b70206506836f79bab8300e963e522d25c60f2d5992643745556a8b"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.1.8.tar.gz"
+    sha256 "636d6d64537d5e2f3345587366533a1cc503b50a7d295998bffc89ecc3555f63"
   end
 
   resource "docutils" do
@@ -64,8 +65,8 @@ class Awscli < Formula
   end
 
   resource "pyasn1" do
-    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.7.tar.gz"
-    sha256 "e4f81d53c533f6bd9526b047f047f7b101c24ab17339c1a7ad8f98b25c101eab"
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.8.tar.gz"
+    sha256 "5d33be7ca0ec5997d76d29ea4c33b65c00c0231407fff975199d7f40530b8347"
   end
 
   resource "rsa" do
@@ -89,7 +90,7 @@ class Awscli < Formula
     zsh_completion.install "bin/aws_zsh_completer.sh" => "_aws"
 
     # Install the examples
-    (share+"awscli").install "awscli/examples"
+    pkgshare.install "awscli/examples"
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])

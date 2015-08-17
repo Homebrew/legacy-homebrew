@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'options'
+require "testing_env"
+require "options"
 
 class OptionTests < Homebrew::TestCase
   def setup
@@ -22,6 +22,10 @@ class OptionTests < Homebrew::TestCase
   def test_description
     assert_empty @option.description
     assert_equal "foo", Option.new("foo", "foo").description
+  end
+
+  def test_inspect
+    assert_equal "#<Option: \"--foo\">", @option.inspect
   end
 end
 
@@ -92,7 +96,7 @@ class OptionsTests < Homebrew::TestCase
 
   def test_as_flags
     @options << Option.new("foo")
-    assert_equal %w{--foo}, @options.as_flags
+    assert_equal %w[--foo], @options.as_flags
   end
 
   def test_to_a
@@ -108,23 +112,34 @@ class OptionsTests < Homebrew::TestCase
   end
 
   def test_intersection
-    foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
+    foo, bar, baz = %w[foo bar baz].map { |o| Option.new(o) }
     options = Options.new << foo << bar
     @options << foo << baz
     assert_equal [foo], (@options & options).to_a
   end
 
   def test_set_union
-    foo, bar, baz = %w{foo bar baz}.map { |o| Option.new(o) }
+    foo, bar, baz = %w[foo bar baz].map { |o| Option.new(o) }
     options = Options.new << foo << bar
     @options << foo << baz
     assert_equal [foo, bar, baz].sort, (@options | options).sort
   end
 
+  def test_times
+    @options << Option.new("aa") << Option.new("bb") << Option.new("cc")
+    assert_equal %w[--aa --bb --cc], (@options * "XX").split("XX").sort
+  end
+
   def test_create_with_array
-    array = %w{--foo --bar}
+    array = %w[--foo --bar]
     option1 = Option.new("foo")
     option2 = Option.new("bar")
     assert_equal [option1, option2].sort, Options.create(array).sort
+  end
+
+  def test_inspect
+    assert_equal "#<Options: []>", @options.inspect
+    @options << Option.new("foo")
+    assert_equal "#<Options: [#<Option: \"--foo\">]>", @options.inspect
   end
 end

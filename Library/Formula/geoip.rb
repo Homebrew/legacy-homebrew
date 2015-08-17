@@ -1,16 +1,16 @@
 class Geoip < Formula
   desc "GeoIP databases in a number of formats"
   homepage "https://github.com/maxmind/geoip-api-c"
-  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.5.tar.gz"
-  sha1 "55950b436718a32ff9f8c9cfb36cec0aa3674253"
+  url "https://github.com/maxmind/geoip-api-c/archive/v1.6.6.tar.gz"
+  sha256 "db8ed5d07292c75cb3018738e6411037f15cc2a517f38ee04c1232cbe3d30b46"
 
   head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
-    sha256 "eedb986a2e5daf59d9f7982455773de7f3bc5be6948911a8e5667b6598e37e38" => :yosemite
-    sha256 "619929de31b302b9423465399c1954f9071aacd0c0f02d1c86760a7918e868b5" => :mavericks
-    sha256 "a8c5a78c7bb3587e9f84c7474aa85e1f2a4b6b2bcdb9b5de103ef2e7472acfa2" => :mountain_lion
+    sha256 "8394441f236c3f35fb436da2a52798aaac637818213883f074d2f976e296e11d" => :yosemite
+    sha256 "ccc2707ef9e8b24747ad772cfa1949781f8e4063a90a692ad4317a699ae84526" => :mavericks
+    sha256 "ad4d958f99890a460f9d8c32e7ed589d91651ce6537eed620832840c36dc699c" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -47,9 +47,9 @@ class Geoip < Formula
     cp Dir["#{legacy_data}/*"], geoip_data if legacy_data.exist?
 
     full = Pathname.new "#{geoip_data}/GeoIP.dat"
-    ln_s "GeoLiteCountry.dat", full unless full.exist? or full.symlink?
+    ln_s "GeoLiteCountry.dat", full unless full.exist? || full.symlink?
     full = Pathname.new "#{geoip_data}/GeoIPCity.dat"
-    ln_s "GeoLiteCity.dat", full unless full.exist? or full.symlink?
+    ln_s "GeoLiteCity.dat", full unless full.exist? || full.symlink?
   end
 
   test do

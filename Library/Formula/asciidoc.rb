@@ -2,7 +2,7 @@ class Asciidoc < Formula
   desc "Formatter/translator for text files to numerous formats"
   homepage "http://asciidoc.org/"
   url "https://downloads.sourceforge.net/project/asciidoc/asciidoc/8.6.9/asciidoc-8.6.9.tar.gz"
-  sha1 "82e574dd061640561fa0560644bc74df71fb7305"
+  sha256 "78db9d0567c8ab6570a6eff7ffdf84eadd91f2dfc0a92a2d0105d323cab4e1f0"
 
   bottle do
     cellar :any

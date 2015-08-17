@@ -2,14 +2,16 @@ module Homebrew
   def style
     target = if ARGV.named.empty?
       [HOMEBREW_LIBRARY]
+    elsif ARGV.named.any? { |file| File.exist? file }
+      ARGV.named
     else
       ARGV.formulae.map(&:path)
     end
 
-    Homebrew.install_gem_setup_path! "rubocop", "0.32.1"
+    Homebrew.install_gem_setup_path! "rubocop", "0.33.0"
 
     args = [
-      "--format", "simple", "--config",
+      "--format", "simple", "--force-exclusion", "--config",
       "#{HOMEBREW_LIBRARY}/.rubocop.yml"
     ]
 

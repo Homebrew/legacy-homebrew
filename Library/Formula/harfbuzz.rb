@@ -1,18 +1,21 @@
 class Harfbuzz < Formula
   desc "OpenType text shaping engine"
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
-  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.41.tar.bz2"
-  sha256 "d81aa53d0c02b437beeaac159d7fc16394d676bbce0860fb6f6a10b587dc057c"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.0.1.tar.bz2"
+  sha256 "32a1a7ad584a2f2cfba5c1d234d046c0521e86e7a21d403e15e89aa509ef0ea8"
 
   bottle do
-    sha256 "127226ca79eb2225b2e96a2919541466b4f93a7ead04dbbbf6b605ac2e7deb43" => :yosemite
-    sha256 "0ee1b49cbb64c20dfd4ac5822a89e0e85168e249fe24ca7c35b8f8814899682c" => :mavericks
-    sha256 "06116bc1ac3ac010211f2c56193e144b242ca4a45988f38637e215be3670e956" => :mountain_lion
+    revision 2
+    sha256 "08fc47ec6f4d9e2540c0b9ecea24c23bbc5b8cc05da1b1e1919d153752702877" => :yosemite
+    sha256 "485695af7c95035a82579624dcd9aed9b1ead4b31a7ff26a4e10745bce4b87a4" => :mavericks
+    sha256 "ec6c92337dc06d28704640e038523c693c6921d90b167aed769d2aff353a49cf" => :mountain_lion
   end
+
+  option "with-cairo", "Build command-line utilities that depend on Cairo"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "cairo"
+  depends_on "cairo" => :optional
   depends_on "icu4c" => :recommended
   depends_on "graphite2" => :optional
   depends_on "freetype"
@@ -29,10 +32,12 @@ class Harfbuzz < Formula
       --prefix=#{prefix}
       --enable-introspection=yes
       --with-gobject=yes
+      --with-coretext=yes
     ]
 
     args << "--with-icu" if build.with? "icu4c"
     args << "--with-graphite2" if build.with? "graphite2"
+    args << "--with-cairo" if build.with? "cairo"
     system "./configure", *args
     system "make", "install"
   end

@@ -24,7 +24,7 @@ class Version
   end
 
   class NullToken < Token
-    def initialize(value=nil)
+    def initialize(value = nil)
       super
     end
 
@@ -172,7 +172,7 @@ class Version
   end
 
   def self.detect(url, specs)
-    if specs.has_key?(:tag)
+    if specs.key?(:tag)
       FromURL.new(specs[:tag][/((?:\d+\.)*\d+)/, 1])
     else
       FromURL.parse(url)
@@ -227,7 +227,7 @@ class Version
       end
     end
 
-    return 0
+    0
   end
   alias_method :eql?, :==
 
@@ -267,19 +267,19 @@ class Version
     end
   end
 
-  def self.parse spec
+  def self.parse(spec)
     version = _parse(spec)
     new(version) unless version.nil?
   end
 
-  def self._parse spec
+  def self._parse(spec)
     spec = Pathname.new(spec) unless spec.is_a? Pathname
 
     spec_s = spec.to_s
 
     stem = if spec.directory?
       spec.basename.to_s
-    elsif %r[((?:sourceforge.net|sf.net)/.*)/download$].match(spec_s)
+    elsif %r{((?:sourceforge.net|sf.net)/.*)/download$}.match(spec_s)
       Pathname.new(spec.dirname).stem
     else
       spec.stem
@@ -290,7 +290,7 @@ class Version
     # e.g. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
     # e.g. https://github.com/isaacs/npm/tarball/v0.2.5-1
     # e.g. https://github.com/petdance/ack/tarball/1.93_02
-    m = %r[github.com/.+/(?:zip|tar)ball/(?:v|\w+-)?((?:\d+[-._])+\d*)$].match(spec_s)
+    m = %r{github.com/.+/(?:zip|tar)ball/(?:v|\w+-)?((?:\d+[-._])+\d*)$}.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
@@ -299,7 +299,7 @@ class Version
 
     # e.g. boost_1_39_0
     m = /((?:\d+_)+\d+)$/.match(stem)
-    return m.captures.first.gsub('_', '.') unless m.nil?
+    return m.captures.first.tr("_", ".") unless m.nil?
 
     # e.g. foobar-4.5.1-1
     # e.g. unrtf_0.20.4-1

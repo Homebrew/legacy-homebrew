@@ -1,16 +1,16 @@
 class Checkbashisms < Formula
   desc "Checks for bashisms in shell scripts"
-  homepage "http://manpages.ubuntu.com/manpages/natty/man1/checkbashisms.1.html"
-  # Get upgrades at https://launchpad.net/ubuntu/+source/devscripts/
-  url "https://launchpad.net/ubuntu/+archive/primary/+files/devscripts_2.13.4.tar.xz"
-  sha1 "94e7225c2f9f9062cea35c8010e984ae98834c28"
+  homepage "https://launchpad.net/ubuntu/+source/devscripts/"
+  url "https://launchpad.net/ubuntu/+archive/primary/+files/devscripts_2.15.8.tar.xz"
+  sha256 "7d2df363f9a725096d281321e0c2a41e1613e645955c3956a78bd91715bc87ff"
+
+  head "lp:ubuntu/devscripts", :using => :bzr
 
   bottle do
     cellar :any
-    sha1 "ba3d65481d041cc28b3f1c2a0887a1c2a08694d0" => :yosemite
-    sha1 "0a2f8609c179a3096683645b64410dc3388245e6" => :mavericks
-    sha1 "973505a805eadf37740db75a646e168b8c6545c7" => :mountain_lion
-    sha1 "81691ff80d98176deefb878972ae419567326d12" => :lion
+    sha256 "b4a455ac40a27e2478900bebece0c6538271bc4b6c033f24fefec9ab50e5208d" => :yosemite
+    sha256 "ea49cbf4cb6af2f8a8dfd82be51639f1836016b934cdf392457faf17c90b45c3" => :mavericks
+    sha256 "86d58dda562653996957b8d3fdf454890f36258a2b1e290a237259473cdcd09a" => :mountain_lion
   end
 
   def install
@@ -20,6 +20,16 @@ class Checkbashisms < Formula
   end
 
   test do
-    system "#{bin}/checkbashisms --version | grep #{version}"
+    (testpath/"test.sh").write <<-EOS.undent
+      #!/bin/sh
+
+      if [[ "home == brew" ]]; then
+        echo "dog"
+      fi
+    EOS
+    expected = <<-EOS.undent
+      (alternative test command ([[ foo ]] should be [ foo ])):
+    EOS
+    assert_match expected, shell_output("#{bin}/checkbashisms #{testpath}/test.sh 2>&1", 1)
   end
 end

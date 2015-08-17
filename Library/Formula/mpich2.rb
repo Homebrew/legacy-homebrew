@@ -24,8 +24,8 @@ class Mpich2 < Formula
   end
 
   devel do
-    url "https://www.mpich.org/static/downloads/3.2b2/mpich-3.2b2.tar.gz"
-    sha256 "8ef37f88bbcfab0e9e173c36745b79f4dbbc3409476773c4489670d82d923155"
+    url "https://www.mpich.org/static/downloads/3.2b4/mpich-3.2b4.tar.gz"
+    sha256 "4fecce31b02095643a093aa01900fc1c6dec7690259c7459cc423f0ed10e949b"
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
@@ -46,7 +46,7 @@ class Mpich2 < Formula
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}",
-      "--mandir=#{man}",
+      "--mandir=#{man}"
     ]
 
     args << "--disable-fortran" if build.without? "fortran"

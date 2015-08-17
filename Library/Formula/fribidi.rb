@@ -1,17 +1,14 @@
-require 'formula'
-
 class Fribidi < Formula
   desc "Implementation of the Unicode BiDi algorithm"
-  homepage 'http://fribidi.org/'
-  url 'http://fribidi.org/download/fribidi-0.19.6.tar.bz2'
-  sha1 '5a6ff82fdee31d27053c39e03223666ac1cb7a6a'
+  homepage "http://fribidi.org/"
+  url "http://fribidi.org/download/fribidi-0.19.7.tar.bz2"
+  sha256 "08222a6212bbc2276a2d55c3bf370109ae4a35b689acbc66571ad2a670595a8e"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "a8953ae123d463733cd73fd28972955e886a5821" => :yosemite
-    sha1 "cc92ce67750c60add21cc8cd4eebdc5b1057d01b" => :mavericks
-    sha1 "f1d37cf53fd17aa8e6c09aa7b8045f67de82f19d" => :mountain_lion
+    sha256 "cb0bfe8325e4f8080bb6035f33a71af75482b9d6ca9b7b1f0acb8581a888df9e" => :yosemite
+    sha256 "2aba6a847848ca88141dbe840ff3465cb882d6c7f7b2951d39ac88abc0d3e578" => :mavericks
+    sha256 "1bc5b4d99f7d9efd38f1ca3e36f24c69c0a39751d4633d842d110065b4eca036" => :mountain_lion
   end
 
   option :universal
@@ -20,6 +17,14 @@ class Fribidi < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.input").write <<-EOS.undent
+      a _lsimple _RteST_o th_oat
+    EOS
+
+    assert_match /a simple TSet that/, shell_output("#{bin}/fribidi --charset=CapRTL --test test.input")
   end
 end

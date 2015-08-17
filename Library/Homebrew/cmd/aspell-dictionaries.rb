@@ -1,6 +1,6 @@
-require 'open-uri'
-require 'resource'
-require 'formula'
+require "open-uri"
+require "resource"
+require "formula"
 
 module Homebrew
   def aspell_dictionaries
@@ -14,8 +14,9 @@ module Homebrew
         next unless /^<tr><td><a/ === line
 
         fields = line.split('"')
-        lang, path = fields[1], fields[3]
-        lang.gsub!("-", "_")
+        lang = fields[1]
+        path = fields[3]
+        lang.tr!("-", "_")
         languages[lang] = path
       end
     end

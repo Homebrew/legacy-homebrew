@@ -3,54 +3,52 @@ require "language/go"
 class Wellington < Formula
   desc "Adds file awareness to SASS"
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/v0.8.1.tar.gz"
-  sha256 "77b41ee1b3e0095dd54a8575c6b05fdef7bf7bc059b46e534b3d06f84ab2422c"
-  head "https://github.com/wellington/wellington.git"
+
+  stable do
+    url "https://github.com/wellington/wellington/archive/v0.9.1.tar.gz"
+    sha256 "133a3d698f98139808c4a86955a9cdc0d9e91a0ed886c0851aceaed4595d8022"
+
+    depends_on "libsass"
+  end
 
   bottle do
     cellar :any
-    sha256 "c997930e1d617e3bc0f09136c3d102c592634cec1d9ef8c9e26c1592af58619f" => :yosemite
-    sha256 "fed8ce27ec30e8d648fd148dc83d7ad937456b04a7b1d5eb435ed0db4fae6698" => :mavericks
-    sha256 "e3fa0c5f9dea85b93b43f4cc4681c8e67dcfbf4dae34a51d0a59f81c6fed063a" => :mountain_lion
+    sha256 "843f251fe4157482b0c758512f734c7931016e9fcfd501ed1a5e267ac3efcd36" => :yosemite
+    sha256 "860cdde8a2327cfd11910fb434f3c9666e1b186928c6fbf5cb106eb5d7f19ae9" => :mavericks
+    sha256 "10c2b1bbbe26bbfd5f5644c1d0047292b896d6b5555e275d0d47788566e7973f" => :mountain_lion
   end
 
   needs :cxx11
 
+  head do
+    url "https://github.com/wellington/wellington.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on "go" => :build
   depends_on "pkg-config" => :build
 
-  stable do
-    depends_on "libsass"
-  end
-
-  devel do
-    url "https://github.com/wellington/wellington/archive/c574754c39806e8c52682f15f49c8ff819d0f962.tar.gz"
-    sha256 "92c5d4bdd6260f96aed0e20fa06c6200b1c57281dbd32dbd00b1c06636ef6e10"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  head do
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
+    url "https://github.com/tools/godep.git",
+      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
   end
 
   go_resource "github.com/kr/fs" do
-    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+    url "https://github.com/kr/fs.git",
+      :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
   end
 
   go_resource "golang.org/x/tools" do
-    url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
+    url "https://github.com/golang/tools.git",
+      :revision => "ea5101579e09ace53571c8a5bae6ebb896f8d5e4"
   end
 
   def install
+    ENV.cxx11 if MacOS.version < :mavericks
+
     version = File.read("version.txt").chomp
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
@@ -60,8 +58,8 @@ class Wellington < Formula
     end
     system "bin/godep", "restore"
 
-    # Build libsass from source for devel build
-    unless stable?
+    # Build libsass from source for head build
+    if build.head?
       ENV.cxx11
       ENV["PKG_CONFIG_PATH"] = buildpath/"src/github.com/wellington/go-libsass/lib/pkgconfig"
 
@@ -87,7 +85,6 @@ class Wellington < Formula
       div p {
         color: red; }
     EOS
-    output = `echo '#{s}' | #{bin}/wt`
-    assert_equal(expected, output)
+    assert_equal expected, pipe_output("#{bin}/wt", s, 0)
   end
 end

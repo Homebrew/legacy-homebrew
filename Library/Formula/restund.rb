@@ -1,10 +1,8 @@
-require "formula"
-
 class Restund < Formula
   desc "Modular STUN/TURN server"
   homepage "http://www.creytiv.com"
   url "http://www.creytiv.com/pub/restund-0.4.11.tar.gz"
-  sha1 "7fb98e6d8dd5e48b62f5ad23d3dc5ee6546f8c15"
+  sha256 "d4630dfb8777f12cc48ed118da0ea6445bc60e94ff916ab0ca5d436c74bdc2d7"
 
   bottle do
     cellar :any
@@ -19,7 +17,7 @@ class Restund < Formula
   # using select() for polling with max 1024 file descriptors.
   patch :p0 do
     url "http://www.creytiv.com/tmp/restund-homebrew.patch"
-    sha1 "a7ddaf0da0396e50ffe40552eeab5436b3141180"
+    sha256 "5890036319dd55e6522762a28022554024c849ce25e5c690364686e6a5571c93"
   end
 
   def install

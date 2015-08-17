@@ -1,7 +1,7 @@
 class GobjectIntrospection < Formula
   desc "Generate interface introspection data for GObject libraries"
   homepage "https://live.gnome.org/GObjectIntrospection"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
+  url "https://download.gnome.org/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
   sha256 "6f0c2c28aeaa37b5037acbf21558098c4f95029b666db755d3a12c2f1e1627ad"
 
   bottle do
@@ -12,18 +12,10 @@ class GobjectIntrospection < Formula
   end
 
   option :universal
-  option "with-tests", "Run tests in addition to the build (requires cairo)"
 
   depends_on "pkg-config" => :run
   depends_on "glib"
   depends_on "libffi"
-  depends_on "cairo" => :build if build.with? "tests"
-
-  # Allow tests to execute on OS X (.so => .dylib)
-  patch do
-    url "https://gist.githubusercontent.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
-    sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
-  end if build.with? "tests"
 
   resource "tutorial" do
     url "https://gist.github.com/7a0023656ccfe309337a.git",
@@ -38,12 +30,8 @@ class GobjectIntrospection < Formula
       s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
     end
 
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
-    args << "--with-cairo" if build.with? "tests"
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make", "check" if build.with? "tests"
     system "make", "install"
   end
 

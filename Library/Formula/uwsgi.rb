@@ -1,19 +1,17 @@
-require "formula"
-
 class Uwsgi < Formula
   desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
   head "https://github.com/unbit/uwsgi.git"
 
   stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.10.tar.gz"
-    sha1 "31bae2dac113af8d95dbc9b982df139ff61ce209"
+    url "http://projects.unbit.it/downloads/uwsgi-2.0.11.1.tar.gz"
+    sha256 "75a7d3138cfa9cd81a760c2f8a43f3d80961edc8e4f27043dc1412206c926287"
   end
 
   bottle do
-    sha256 "85e9a1c89c49f76818c87be4a6a9fe200ccc4ff39d9d788d328702b1463c740f" => :yosemite
-    sha256 "12ce6b55caecc1fb74979e2d3d858dafd9e64805f748d78792e6c87948fb6664" => :mavericks
-    sha256 "9c0a86e07730a797191d06e01b9c30bce6af0edf15cf212be5b3a7ec5ac492fb" => :mountain_lion
+    sha256 "436efd8be3e0436ba29c8bf0d78481509f3e5f0385822dbe39f4990b22695ff9" => :yosemite
+    sha256 "3c2cd79b3dca8a375b4948dcd1ba7639b0485bc16e970b1e280d69eef7d99837" => :mavericks
+    sha256 "82e388d191e58db251720c9b54cafc7f8d09de8924d400971cb5cb2652a18e33" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -50,7 +48,7 @@ class Uwsgi < Formula
   option "with-ruby", "Compile with Ruby support"
 
   def install
-    ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
+    ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
@@ -81,7 +79,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper","ugreen", "webdav", "zergpool"]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"
@@ -158,5 +156,25 @@ class Uwsgi < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (testpath/"helloworld.py").write <<-EOS.undent
+      def application(env, start_response):
+        start_response('200 OK', [('Content-Type','text/html')])
+        return [b"Hello World"]
+    EOS
+
+    pid = fork do
+      exec "#{bin}/uwsgi --http-socket 127.0.0.1:8080 --protocol=http --plugin python -w helloworld"
+    end
+    sleep 2
+
+    begin
+      assert_match /Hello World/, shell_output("curl localhost:8080")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

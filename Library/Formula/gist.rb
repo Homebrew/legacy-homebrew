@@ -1,17 +1,15 @@
-require "formula"
-
 class Gist < Formula
   desc "Command-line utility for uploading Gists"
   homepage "https://github.com/defunkt/gist"
-  url "https://github.com/defunkt/gist/archive/v4.4.0.tar.gz"
-  sha1 "142859ba1eb9385fa78d936ad4efd62584bd618b"
+  url "https://github.com/defunkt/gist/archive/v4.4.2.tar.gz"
+  sha256 "4f570c6c32f04f529d0195c7cad93a48c9a53b2b3a9e69f68b732cdf31d3c362"
   head "https://github.com/defunkt/gist.git"
 
   bottle do
     cellar :any
-    sha256 "c0c9c72e201561ad39f5a3a75b2df8ec4de02c10c7ba0d4a322c3bce2b41d7e5" => :yosemite
-    sha256 "09c7ca22267c70e5c9e7382aec49a74ade8723df7c94a5d7b13ef5f8864fed64" => :mavericks
-    sha256 "c8591b8d83a21737899487c461ee856a768b024bf58dfc76a0f0331757884c7a" => :mountain_lion
+    sha256 "164ad1f9427b51c135bb57699abc9b8ab42a1210097db88fb09387e81ceaa46a" => :yosemite
+    sha256 "5342577ed510c43e1293e0b0571311dbde3cc17f6754a211adf3a471141a9119" => :mavericks
+    sha256 "fff6af8f6c17c308009a4496032059defb8355ca646317dc8961475d2ffe683c" => :mountain_lion
   end
 
   def install

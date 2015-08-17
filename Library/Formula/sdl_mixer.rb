@@ -1,33 +1,34 @@
-require 'formula'
-
 class SdlMixer < Formula
   desc "Sample multi-channel audio mixer library"
-  homepage 'http://www.libsdl.org/projects/SDL_mixer/'
-  url 'http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-1.2.12.tar.gz'
-  sha1 'a20fa96470ad9e1052f1957b77ffa68fb090b384'
+  homepage "http://www.libsdl.org/projects/SDL_mixer/"
+  url "http://www.libsdl.org/projects/SDL_mixer/release/SDL_mixer-1.2.12.tar.gz"
+  sha256 "1644308279a975799049e4826af2cfc787cad2abb11aa14562e402521f86992a"
 
   bottle do
     cellar :any
-    sha1 "1ad2648cd71bd7f13eae35cdcb6c89573908bd24" => :mavericks
-    sha1 "980edb62430840facb54ab8cd065eea576fba9c5" => :mountain_lion
-    sha1 "5ba6a1d7bc5dc2a8b032ce45e779b7cbd8d91d42" => :lion
+    revision 1
+    sha256 "80e6127e15c1613bad625841cad39c1df3935d332b6c38a8ded1f022e38b3850" => :yosemite
+    sha256 "5fc9bb3ce927e706e413b9171a7a312f0d22e663f8cd362012fc8cdb66c20c25" => :mavericks
+    sha256 "bb94a051a4426e1014c6a5005a225ad87722fc57f3f44effa8bc602b67c9cf8e" => :mountain_lion
   end
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'sdl'
-  depends_on 'flac' => :optional
-  depends_on 'libmikmod' => :optional
-  depends_on 'libvorbis' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "sdl"
+  depends_on "flac" => :optional
+  depends_on "fluid-synth" => :optional
+  depends_on "smpeg" => :optional
+  depends_on "libmikmod" => :optional
+  depends_on "libvorbis" => :optional
 
   def install
-    inreplace 'SDL_mixer.pc.in', '@prefix@', HOMEBREW_PREFIX
+    inreplace "SDL_mixer.pc.in", "@prefix@", HOMEBREW_PREFIX
 
     ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 end

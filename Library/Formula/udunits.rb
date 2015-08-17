@@ -1,6 +1,6 @@
 class Udunits < Formula
   desc "Unidata unit conversion library"
-  homepage "http://www.unidata.ucar.edu/software/udunits/"
+  homepage "https://www.unidata.ucar.edu/software/udunits/"
   url "ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.19.tar.gz"
   sha256 "9449d50a5d408e8e8dce0953b5462071bab96d92d921808c6bce7e33a3524e90"
 

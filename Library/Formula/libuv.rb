@@ -1,15 +1,15 @@
 class Libuv < Formula
-  desc "Platform layer for Node.js"
+  desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.6.1.tar.gz"
-  sha256 "f558ede285878d6a69f6a6d43b5df0241f3c35d62ac989477bdbd418badd83d7"
+  url "https://github.com/libuv/libuv/archive/v1.7.0.tar.gz"
+  sha256 "27a66f944c8cf1baf0fb53f5cfe11f01035cc80622d8ecc8e18bd1b2ae35ef5f"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
     cellar :any
-    sha256 "41a2ffe18121ad982123e9d87289738ac107627b3ddbcfd161d33b0e3e967270" => :yosemite
-    sha256 "27588272130bbd2a88758563567a5d3f2e714baa3404578326dcc77c28dcebf5" => :mavericks
-    sha256 "89e3307c8a4d180840f76f27129048d4f79cfd98d9035b7187f166cbfd174a21" => :mountain_lion
+    sha256 "01a5c05e25422a4f6986822c5ba3d68c5b1f52d257b3813dd767cf15400132a9" => :yosemite
+    sha256 "8fe6f59a631b800bcf87404e055f5af25a994220e89aebdf9b5ce7f305255e15" => :mavericks
+    sha256 "d71328890a072ffd452891bd2e99b2510bd562e73ce8d20c59dbc91105ca1cee" => :mountain_lion
   end
 
   option "without-docs", "Don't build and install documentation"
@@ -109,6 +109,7 @@ class Libuv < Formula
   test do
     (testpath/"test.c").write <<-EOS.undent
       #include <uv.h>
+      #include <stdlib.h>
 
       int main()
       {

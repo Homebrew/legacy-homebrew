@@ -1,10 +1,8 @@
-require 'formula'
-
 class GstLibav < Formula
   desc "GStreamer plugins for Libav (a fork of FFmpeg)"
-  homepage 'http://gstreamer.freedesktop.org'
-  url 'http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.4.5.tar.xz'
-  mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-libav-1.4.5.tar.xz'
+  homepage "http://gstreamer.freedesktop.org"
+  url "http://gstreamer.freedesktop.org/src/gst-libav/gst-libav-1.4.5.tar.xz"
+  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-libav-1.4.5.tar.xz"
   sha256 "605c62624604f3bb5c870844cc1f2711779cc533b004c2aa1d8c0d58557afbbc"
 
   bottle do
@@ -14,7 +12,7 @@ class GstLibav < Formula
   end
 
   head do
-    url 'git://anongit.freedesktop.org/gstreamer/gst-libav'
+    url "git://anongit.freedesktop.org/gstreamer/gst-libav"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

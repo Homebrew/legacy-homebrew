@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libsamplerate < Formula
   desc "Library for sample rate conversion of audio data"
-  homepage 'http://www.mega-nerd.com/SRC'
-  url 'http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz'
-  sha1 'e5fe82c4786be2fa33ca6bd4897db4868347fe70'
+  homepage "http://www.mega-nerd.com/SRC"
+  url "http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz"
+  sha256 "93b54bdf46d5e6d2354b7034395fe329c222a966790de34520702bb9642f1c06"
 
   bottle do
     cellar :any
@@ -14,9 +12,9 @@ class Libsamplerate < Formula
     sha1 "64fd25bc4134aa6f3d3d463892c662e0e73bc333" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libsndfile' => :optional
-  depends_on 'fftw' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "libsndfile" => :optional
+  depends_on "fftw" => :optional
 
   # configure adds `/Developer/Headers/FlatCarbon` to the include, but this is
   # very deprecated. Correct the use of Carbon.h to the non-flat location.
@@ -26,7 +24,7 @@ class Libsamplerate < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

@@ -1,11 +1,9 @@
-require "formula"
-
 class GmailBackup < Formula
   desc "Backup and restore the content of your Gmail account"
   homepage "http://www.gmail-backup.com/"
   url "https://gmail-backup-com.googlecode.com/files/gmail-backup-20110307.tar.gz"
   head "http://gmail-backup-com.googlecode.com/svn/trunk"
-  sha1 "561c467b3cf12fab47304eac153586954f06b88b"
+  sha256 "caf7cb40ea580e506f90a6029a64fedaf1234093c729ca7e6e36efbd709deb93"
 
   def install
     bin.install "gmail-backup.py" => "gmail-backup"

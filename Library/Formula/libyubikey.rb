@@ -1,14 +1,14 @@
 class Libyubikey < Formula
   desc "C library for manipulating Yubico one-time passwords"
   homepage "https://yubico.github.io/yubico-c/"
-  url "https://developers.yubico.com/yubico-c/Releases/libyubikey-1.12.tar.gz"
-  sha256 "b95387f791dad4d2544282299800f016736c363838e1e732f199bf90eba717b8"
+  url "https://developers.yubico.com/yubico-c/Releases/libyubikey-1.13.tar.gz"
+  sha256 "04edd0eb09cb665a05d808c58e1985f25bb7c5254d2849f36a0658ffc51c3401"
 
   bottle do
     cellar :any
-    sha1 "220ecad49555d9b8fb07f27c45114d22d6d2c07a" => :yosemite
-    sha1 "554afeb53a8ea2cd5e94da98dee63107cb4f555a" => :mavericks
-    sha1 "131b7d2a109089877855f53eaf7784fe480afc8d" => :mountain_lion
+    sha256 "7f5c7a55b9e5bf373f01f8f02a983d45ae11d801acc8110cd8f5e13edf0e2973" => :yosemite
+    sha256 "efaf65ea86cb01821d8c3145ab0f0528f6bb9e8afa0090ffbf2c0818e093c357" => :mavericks
+    sha256 "53122ea8a869ed5c811273df1c2767e46138797f1af122db93beda2b7254b407" => :mountain_lion
   end
 
   option :universal

@@ -6,7 +6,7 @@ Example usage:
   brew search [foo]
   brew list [FORMULA...]
   brew update
-  brew upgrade [--all | FORMULA...]
+  brew upgrade [FORMULA...]
   brew pin/unpin [FORMULA...]
 
 Troubleshooting:
@@ -35,6 +35,7 @@ module Homebrew
   def help
     puts HOMEBREW_HELP
   end
+
   def help_s
     HOMEBREW_HELP
   end

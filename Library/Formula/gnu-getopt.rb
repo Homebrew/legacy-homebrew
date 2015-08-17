@@ -2,7 +2,7 @@ class GnuGetopt < Formula
   desc "Command-line option parsing library"
   homepage "http://software.frodo.looijaard.name/getopt/"
   url "http://frodo.looijaard.name/system/files/software/getopt/getopt-1.1.6.tar.gz"
-  sha1 "98725b4878d19ab6b126cd16263fed1f6090f6a7"
+  sha256 "d0bf1dc642a993e7388a1cddfb9409bed375c21d5278056ccca3a0acd09dc5fe"
 
   bottle do
     sha1 "a9028999ae9bb3e606df3ff6a1b246311b77fae5" => :yosemite

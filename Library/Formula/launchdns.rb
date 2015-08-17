@@ -3,7 +3,7 @@ class Launchdns < Formula
   homepage "https://github.com/josh/launchdns"
   url "https://github.com/josh/launchdns/archive/v1.0.1.tar.gz"
   head "https://github.com/josh/launchdns.git"
-  sha1 "7310bb558a3b910e98b5364652e3a4fb48375494"
+  sha256 "e96d1b92819a294f1e325df629ae4bf202fd137b8504cf4ddd00cda7e47f7099"
 
   bottle do
     sha1 "592ca0ff9d89f00613dd850be91fa15a8d2cfc6a" => :yosemite

@@ -52,7 +52,7 @@ class Wxpython < Formula
       # OpenGL and stuff
       "BUILD_GLCANVAS=1",
       "BUILD_GIZMOS=1",
-      "BUILD_STC=1",
+      "BUILD_STC=1"
     ]
 
     cd "wxPython" do

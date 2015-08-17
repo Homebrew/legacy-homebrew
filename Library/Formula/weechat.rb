@@ -27,7 +27,6 @@ class Weechat < Formula
   depends_on "curl" => :optional
 
   def install
-
     args = std_cmake_args
 
     args << "-DENABLE_LUA=OFF" if build.without? "lua"

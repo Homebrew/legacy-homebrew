@@ -9,20 +9,43 @@ class OracleHomeVarRequirement < Requirement
   end
 end
 
+# Patches for Qt5 must be at the very least submitted to Qt's Gerrit codereview
+# rather than their bug-report Jira. The latter is rarely reviewed by Qt.
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
-  sha256 "8c6d070613b721452f8cffdea6bddc82ce4f32f96703e3af02abb91a59f1ea25"
+  head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
 
-  bottle do
-    sha256 "1d3aee1664b44e912ddd307fc7f1eff25e835452ce44705acaa4162f79006ef7" => :yosemite
-    sha256 "f32d4dde1b09d619e5046b9e5717ab48d7dc6b066b09bbde8d44f74b2ef040fb" => :mavericks
-    sha256 "855e075b522199c52876f44fe2d2a63e4c4b4f9bfd5c6edb0e3dc850fd02ef34" => :mountain_lion
+  stable do
+    # 5.5.0 has a compile-breaking pkg-config error when projects use that to find libs.
+    # https://bugreports.qt.io/browse/QTBUG-47162
+    # This is known to impact Wireshark & Poppler optional Qt5 usage in the core.
+    url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
+    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
+    sha256 "7ea2a16ecb8088e67db86b0835b887d5316121aeef9565d5d19be3d539a2c2af"
+
+    # Apple's 3.6.0svn based clang doesn't support -Winconsistent-missing-override
+    # https://bugreports.qt.io/browse/QTBUG-46833
+    # This is fixed in 5.5 branch and below patch should be removed
+    # when this formula is updated to 5.5.1
+    patch :DATA
+
+    # Upstream commit to fix the fatal build error on OS X El Capitan.
+    # https://codereview.qt-project.org/#/c/121545/
+    # Should land in the 5.5.1 release.
+    if MacOS.version >= :el_capitan
+      patch do
+        url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
+        sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
+      end
+    end
   end
 
-  head "https://code.qt.io/qt/qt5.git", :branch => "5.4", :shallow => false
+  bottle do
+    sha256 "3f334cdb65ea7ab4255abfd254f08cf095b3ba2c9f1e403afe6236975a88b160" => :yosemite
+    sha256 "9bef8bea9a731fc5b26434f817858931442783c8a4a62bf4dc95fa6944550ed8" => :mavericks
+    sha256 "946991e0aa83dfb119e9ed306a61645b9648537212758477db7772179f7503e4" => :mountain_lion
+  end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
@@ -43,20 +66,15 @@ class Qt5 < Formula
   depends_on :mysql => :optional
   depends_on :xcode => :build
 
-  # There needs to be an OpenSSL dep here ideally, but qt keeps ignoring it.
-  # Keep nagging upstream for a fix to this problem, and revision when possible.
-  # https://github.com/Homebrew/homebrew/pull/34929
-  # https://bugreports.qt.io/browse/QTBUG-42161
-  # https://bugreports.qt.io/browse/QTBUG-43456
-
   depends_on OracleHomeVarRequirement if build.with? "oci"
 
   def install
     ENV.universal_binary if build.universal?
 
     args = ["-prefix", prefix,
-            "-system-zlib",
+            "-system-zlib", "-securetransport",
             "-qt-libpng", "-qt-libjpeg",
+            "-no-rpath", "-no-openssl",
             "-confirm-license", "-opensource",
             "-nomake", "tests", "-release"]
 
@@ -117,13 +135,54 @@ class Qt5 < Formula
     Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
-  test do
-    system "#{bin}/qmake", "-project"
-  end
-
   def caveats; <<-EOS.undent
     We agreed to the Qt opensource license for you.
     If this is unacceptable you should uninstall.
     EOS
   end
+
+  test do
+    (testpath/"hello.pro").write <<-EOS.undent
+      QT       += core
+      QT       -= gui
+      TARGET = hello
+      CONFIG   += console
+      CONFIG   -= app_bundle
+      TEMPLATE = app
+      SOURCES += main.cpp
+    EOS
+
+    (testpath/"main.cpp").write <<-EOS.undent
+      #include <QCoreApplication>
+      #include <QDebug>
+
+      int main(int argc, char *argv[])
+      {
+        QCoreApplication a(argc, argv);
+        qDebug() << "Hello World!";
+        return 0;
+      }
+    EOS
+
+    system bin/"qmake", testpath/"hello.pro"
+    system "make"
+    assert File.exist?("hello")
+    assert File.exist?("main.o")
+    system "./hello"
+  end
 end
+
+__END__
+diff --git a/qtbase/src/corelib/global/qcompilerdetection.h b/qtbase/src/corelib/global/qcompilerdetection.h
+index 7ff1b67..060af29 100644
+--- a/qtbase/src/corelib/global/qcompilerdetection.h
++++ b/qtbase/src/corelib/global/qcompilerdetection.h
+@@ -155,7 +155,7 @@
+ /* Clang also masquerades as GCC */
+ #    if defined(__apple_build_version__)
+ #      /* http://en.wikipedia.org/wiki/Xcode#Toolchain_Versions */
+-#      if __apple_build_version__ >= 6020049
++#      if __apple_build_version__ >= 7000053
+ #        define Q_CC_CLANG 306
+ #      elif __apple_build_version__ >= 6000051
+ #        define Q_CC_CLANG 305

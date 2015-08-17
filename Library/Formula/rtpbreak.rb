@@ -3,8 +3,8 @@ class Rtpbreak < Formula
   desc "Detect, reconstruct and analyze any RTP session"
   homepage "http://www.dallachiesa.com/code/rtpbreak/doc/rtpbreak_en.html"
   url "http://dallachiesa.com/code/rtpbreak/rtpbreak-1.3a.tgz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Rtpbreak/rtpbreak-1.3a.tgz"
-  sha1 "d22e9c37cc28c2fc36475d221b4eb2cc2c5aafbb"
+  mirror "https://dl.bintray.com/homebrew/mirror/rtpbreak-1.3a.tgz"
+  sha256 "9ec7276e3775c13306bcf90ba573cfb77b8162a18f90d5805a3c5a288f4466f8"
 
   bottle do
     cellar :any
@@ -19,7 +19,7 @@ class Rtpbreak < Formula
   patch :p0, :DATA
 
   def install
-    mkdir_p bin
+    bin.mkpath
     system "make", "CC=#{ENV.cc}"
     system "make", "install", "INSTALL_DIR=#{bin}"
   end

@@ -1,5 +1,3 @@
-require "formula"
-
 class Rebar < Formula
   desc "Erlang build tool"
   homepage "https://github.com/rebar/rebar"

@@ -27,7 +27,7 @@ class Zpython < Formula
     # later on, we hope to use https://bitbucket.org/ZyX_I/zsh.git to download a tagged release.
     patch do
       url "https://gist.githubusercontent.com/felixbuenemann/5790777/raw/cb5ea3b34617174e50fd3972792ec0944959de3c/zpython.patch"
-      sha1 "b6ebdaf5f18da9c152f17f9a93987596a37fbf14"
+      sha256 "73d6565536abe269cc7715e5200ba63000b7fb830c8975db7e5e6db2222e8f09"
     end
   end
 

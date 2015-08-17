@@ -1,10 +1,8 @@
-require "formula"
-
 class Flvmeta < Formula
   desc "Manipulate Adobe flash video files (FLV)"
   homepage "http://www.flvmeta.com"
   url "https://github.com/noirotm/flvmeta/archive/v1.1.2.tar.gz"
-  sha1 "114a6b5b9681bcc6d0cd56ce176cb89002e262ff"
+  sha256 "ee98c61e08b997b96d9ca4ea20ee9cff2047d8875d09c743d97b1b1cc7b28d13"
 
   depends_on "cmake" => :build
 

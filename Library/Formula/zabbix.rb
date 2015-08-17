@@ -1,17 +1,19 @@
 class Zabbix < Formula
   desc "Availability and monitoring solution"
-  homepage "http://www.zabbix.com/"
+  homepage "https://www.zabbix.com/"
   url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.4/zabbix-2.4.4.tar.gz"
   sha256 "e9f31b96104681b050fd27b4a669736dea9c5d4efc8444effb2bff1eab6cc34c"
 
   bottle do
-    sha256 "e272ac2b88acd2d65dcc471c350177104c7a8c0e8c4139531bcb1c5b48074ac5" => :yosemite
-    sha256 "46263a6fdf284327bdb8d211ecd60a0374469c23371cd281ec07863743fbce23" => :mavericks
-    sha256 "d55dfd1d6a784ca564ffd20ce3969f9d1b89715f65317b7449c9d20ecb12571e" => :mountain_lion
+    revision 1
+    sha256 "da258ee3875028433d61757fa6025aab5af1cd22b397f3bb470f826e69464878" => :yosemite
+    sha256 "429ed618c9b1be7546595b4a227e440037f0b5322cb4f35b42d5720cee22edf4" => :mavericks
+    sha256 "63acb31c04f4d4e9edbe5cc4e3016df4712466de42efc7c1c9c1c9874cd246f4" => :mountain_lion
   end
 
   option "with-mysql", "Use Zabbix Server with MySQL library instead PostgreSQL."
   option "without-server-proxy", "Install only the Zabbix Agent without Server and Proxy."
+
   deprecated_option "agent-only" => "without-server-proxy"
 
   if build.with? "server-proxy"
@@ -34,7 +36,7 @@ class Zabbix < Formula
       --with-iconv=#{MacOS.sdk_path}/usr
     ]
 
-    unless build.include? "agent-only"
+    if build.with? "server-proxy"
       args += %W[
         --enable-server
         --enable-proxy
@@ -43,6 +45,7 @@ class Zabbix < Formula
         --with-libcurl
         --with-ssh2
       ]
+
       if build.with? "mysql"
         args << "--with-mysql=#{brewed_or_shipped("mysql_config")}"
       else

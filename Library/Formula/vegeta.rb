@@ -3,14 +3,14 @@ require "language/go"
 class Vegeta < Formula
   desc "HTTP load testing tool and library"
   homepage "https://github.com/tsenart/vegeta"
-  url "https://github.com/tsenart/vegeta/archive/v5.7.1.tar.gz"
-  sha1 "2d10d66460fdd7bd6a4e0cabc50d519dd72244bd"
+  url "https://github.com/tsenart/vegeta/archive/v5.8.0.tar.gz"
+  sha256 "682f3ce81fd7be2eeea22803d3be4d8176078a506f237b91f704693551f09b8b"
 
   bottle do
     cellar :any
-    sha256 "ef0965454eb37a26a2113647d4214e14d38d8f3e89f26de2da2471972e8962a9" => :yosemite
-    sha256 "46b4b7560d65c47deb00bedc5b6f2e80549074bc0b9c0d639ca7cac1e83e22c3" => :mavericks
-    sha256 "8cfd06e0427cacb68bb65357fab9bf95375748b7b8c7a64fcb21076701b6ce5f" => :mountain_lion
+    sha256 "9a075caf5287795b6ae27a469afb5a6b0d77bcc87d856b2c3b20186f2f8b560e" => :yosemite
+    sha256 "45acababb4d359610d56320443e7fe1b3f3d9ef00e2dffd6a1ebc03565205a12" => :mavericks
+    sha256 "6ebf4739e99568b697ec7eabbd703b9ecf332fef4e6180d6535340f819b87a42" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -27,7 +27,7 @@ class Vegeta < Formula
     ENV["CGO_ENABLED"] = "0"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-ldflags", "-X main.Version v5.7.1", "-o", "vegeta"
+    system "go", "build", "-ldflags", "-X main.Version #{version}", "-o", "vegeta"
     bin.install "vegeta"
   end
 

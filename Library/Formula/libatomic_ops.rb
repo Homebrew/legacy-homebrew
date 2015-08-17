@@ -1,17 +1,15 @@
-require "formula"
-
 class LibatomicOps < Formula
   desc "Implementations for atomic memory update operations"
   homepage "https://github.com/ivmai/libatomic_ops/"
   url "http://www.ivmaisoft.com/_bin/atomic_ops/libatomic_ops-7.4.2.tar.gz"
-  sha1 "57cd7c64e37fca300bd7b24e3d2f14129b25b376"
+  sha256 "04fa615f62992547bcbda562260e28b504bc4c06e2f985f267f3ade30304b5dd"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "5820ac7413428e5a0ade9b34cb3394b2abddfd58" => :yosemite
-    sha1 "b314405de1ecda4e8ee8082443b642f1a4b11ae6" => :mavericks
-    sha1 "7dbd87d8daef4b8a91397f07091323f2a2580b3b" => :mountain_lion
+    revision 2
+    sha256 "9a149cc8ba1978bd27eeac295ba0b68026d32b4f732f61937534435cbf3e5558" => :yosemite
+    sha256 "74f72421aaf164af27890dc4d53d87fd1e06ca175c611d474b782afd967cd399" => :mavericks
+    sha256 "b9d20bfe742eb48b6bc491459ee20f69acde47e757b03817544e79c5be80ec61" => :mountain_lion
   end
 
   def install

@@ -1,15 +1,15 @@
-require 'formula'
-require 'bottles'
-require 'tab'
-require 'keg'
-require 'formula_versions'
-require 'utils/inreplace'
-require 'erb'
-require 'extend/pathname'
+require "formula"
+require "bottles"
+require "tab"
+require "keg"
+require "formula_versions"
+require "utils/inreplace"
+require "erb"
+require "extend/pathname"
 
 BOTTLE_ERB = <<-EOS
   bottle do
-    <% if root_url != BottleSpecification::DEFAULT_ROOT_URL %>
+    <% if !root_url.start_with?(BottleSpecification::DEFAULT_DOMAIN) %>
     root_url "<%= root_url %>"
     <% end %>
     <% if prefix != BottleSpecification::DEFAULT_PREFIX %>
@@ -33,10 +33,10 @@ BOTTLE_ERB = <<-EOS
 EOS
 
 module Homebrew
-  def keg_contains string, keg, ignores
+  def keg_contains(string, keg, ignores)
     @put_string_exists_header, @put_filenames = nil
 
-    def print_filename string, filename
+    def print_filename(string, filename)
       unless @put_string_exists_header
         opoo "String '#{string}' still exists in these files:"
         @put_string_exists_header = true
@@ -52,9 +52,12 @@ module Homebrew
     result = false
 
     keg.each_unique_file_matching(string) do |file|
+      # skip document file.
+      next if Metafiles::EXTENSIONS.include? file.extname
+
       # Check dynamic library linkage. Importantly, do not run otool on static
       # libraries, which will falsely report "linkage" to themselves.
-      if file.mach_o_executable? or file.dylib? or file.mach_o_bundle?
+      if file.mach_o_executable? || file.dylib? || file.mach_o_bundle?
         linked_libraries = file.dynamically_linked_libraries
         linked_libraries = linked_libraries.select { |lib| lib.include? string }
         result ||= linked_libraries.any?
@@ -74,7 +77,7 @@ module Homebrew
         until io.eof?
           str = io.readline.chomp
 
-          next if ignores.any? {|i| i =~ str }
+          next if ignores.any? { |i| i =~ str }
 
           next unless str.include? string
 
@@ -107,12 +110,12 @@ module Homebrew
     result
   end
 
-  def bottle_output bottle
+  def bottle_output(bottle)
     erb = ERB.new BOTTLE_ERB
-    erb.result(bottle.instance_eval { binding }).gsub(/^\s*$\n/, '')
+    erb.result(bottle.instance_eval { binding }).gsub(/^\s*$\n/, "")
   end
 
-  def bottle_formula f
+  def bottle_formula(f)
     unless f.installed?
       return ofail "Formula not installed or up-to-date: #{f.full_name}"
     end
@@ -125,7 +128,7 @@ module Homebrew
       return ofail "Formula has no stable version: #{f.full_name}"
     end
 
-    if ARGV.include? '--no-revision'
+    if ARGV.include? "--no-revision"
       bottle_revision = 0
     else
       ohai "Determining #{f.full_name} bottle revision..."
@@ -155,14 +158,14 @@ module Homebrew
         cd cellar do
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
           # or an uncompressed tarball (and more bandwidth friendly).
-          safe_system 'tar', 'czf', bottle_path, "#{f.name}/#{f.pkg_version}"
+          safe_system "tar", "czf", bottle_path, "#{f.name}/#{f.pkg_version}"
         end
 
         if bottle_path.size > 1*1024*1024
           ohai "Detecting if #{filename} is relocatable..."
         end
 
-        if prefix == '/usr/local'
+        if prefix == "/usr/local"
           prefix_check = File.join(prefix, "opt")
         else
           prefix_check = prefix
@@ -203,7 +206,7 @@ module Homebrew
     puts "./#{filename}"
     puts output
 
-    if ARGV.include? '--rb'
+    if ARGV.include? "--rb"
       File.open("#{filename.prefix}.bottle.rb", "w") do |file|
         file.write("\# #{f.full_name}\n")
         file.write(output)
@@ -221,7 +224,7 @@ module Homebrew
     merge_hash = {}
     ARGV.named.each do |argument|
       bottle_block = IO.read(argument)
-      formula_name = bottle_block.lines.first.sub(/^# /,"").chomp
+      formula_name = bottle_block.lines.first.sub(/^# /, "").chomp
       merge_hash[formula_name] ||= []
       merge_hash[formula_name] << bottle_block
     end
@@ -235,18 +238,18 @@ module Homebrew
       output = bottle_output bottle
       puts output
 
-      if ARGV.include? '--write'
+      if ARGV.include? "--write"
         f = Formulary.factory(formula_name)
         update_or_add = nil
 
         Utils::Inreplace.inreplace(f.path) do |s|
-          if s.include? 'bottle do'
-            update_or_add = 'update'
+          if s.include? "bottle do"
+            update_or_add = "update"
             string = s.sub!(/  bottle do.+?end\n/m, output)
-            odie 'Bottle block update failed!' unless string
+            odie "Bottle block update failed!" unless string
           else
-            update_or_add = 'add'
-            if s.include? 'stable do'
+            update_or_add = "add"
+            if s.include? "stable do"
               indent = s.slice(/^ +stable do/).length - "stable do".length
               string = s.sub!(/^ {#{indent}}stable do(.|\n)+?^ {#{indent}}end\n/m, '\0' + output + "\n")
             else
@@ -264,7 +267,7 @@ module Homebrew
                  )+
                /mx, '\0' + output + "\n")
             end
-            odie 'Bottle block addition failed!' unless string
+            odie "Bottle block addition failed!" unless string
           end
         end
 
@@ -279,7 +282,7 @@ module Homebrew
   end
 
   def bottle
-    merge if ARGV.include? '--merge'
+    merge if ARGV.include? "--merge"
 
     ARGV.resolved_formulae.each do |f|
       bottle_formula f

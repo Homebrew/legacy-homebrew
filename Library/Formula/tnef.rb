@@ -1,5 +1,3 @@
-require "formula"
-
 class Tnef < Formula
   desc "Microsoft MS-TNEF attachment unpacker"
   homepage "https://github.com/verdammelt/tnef"
@@ -20,6 +18,6 @@ class Tnef < Formula
   def install
     system "autoreconf", "-i"
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

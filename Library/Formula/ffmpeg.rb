@@ -1,14 +1,15 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.7.1.tar.bz2"
-  sha256 "7e07b97d2415feeae9c9b5595e35e7b7aab33207e81bf9f8c0d1eece43f7f720"
+  url "https://ffmpeg.org/releases/ffmpeg-2.7.2.tar.bz2"
+  sha256 "7ceb7550ad628c526fa6c9ff23fdfb687a62f54d90c4a730998d8c2b417b9ef2"
   head "https://github.com/FFmpeg/FFmpeg.git"
+  revision 1
 
   bottle do
-    sha256 "326c2a662c90fe4e90432b8a6df473cecaede433602241da26c52c68a0402f9f" => :yosemite
-    sha256 "423dc107257192f4aec70fb2b1e83fcafa3247b70590c00edd2b37f388a887dc" => :mavericks
-    sha256 "576c3361d064f2472f9a232322c72a05acf1c62137a36395c8de5d0e5a02d173" => :mountain_lion
+    sha256 "060199677b66b5b745612ef01893893a688af372763621666a3e9425c1c5a144" => :yosemite
+    sha256 "ea3800f6731c92c0e0274ed1677fd4a39067f7e620b7fe9d460f4a4c3a3a0378" => :mavericks
+    sha256 "1615e14ba8159b46794fa46a83dd733df73df6699fd69036ecd3ce5e49182618" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -81,8 +82,10 @@ class Ffmpeg < Formula
             "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
-            "--host-ldflags=#{ENV.ldflags}",
+            "--host-ldflags=#{ENV.ldflags}"
            ]
+
+    args << "--enable-opencl" if MacOS.version > :lion
 
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libmp3lame" if build.with? "lame"

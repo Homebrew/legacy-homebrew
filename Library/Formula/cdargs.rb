@@ -1,10 +1,8 @@
-require 'formula'
-
 class Cdargs < Formula
   desc "Bookmarks for the shell"
-  homepage 'http://www.skamphausen.de/cgi-bin/ska/CDargs'
-  url 'http://www.skamphausen.de/downloads/cdargs/cdargs-1.35.tar.gz'
-  sha1 '20017d09d3259fcd1385754554a3e17a1c975f9b'
+  homepage "http://www.skamphausen.de/cgi-bin/ska/CDargs"
+  url "http://www.skamphausen.de/downloads/cdargs/cdargs-1.35.tar.gz"
+  sha256 "ee35a8887c2379c9664b277eaed9b353887d89480d5749c9ad957adf9c57ed2c"
 
   fails_with :llvm do
     build 2334
@@ -20,8 +18,8 @@ class Cdargs < Formula
     system "make"
     system "make install-strip"
 
-    rm Dir['contrib/Makefile*']
-    prefix.install 'contrib'
+    rm Dir["contrib/Makefile*"]
+    prefix.install "contrib"
     bash_completion.install_symlink "#{prefix}/contrib/cdargs-bash.sh"
   end
 

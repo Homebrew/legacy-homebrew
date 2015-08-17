@@ -24,6 +24,9 @@ class Sfml < Formula
   depends_on "libvorbis"
   depends_on "openal-soft"
 
+  # https://github.com/Homebrew/homebrew/issues/40301
+  depends_on :macos => :lion
+
   def install
     args = std_cmake_args
     args << "-DSFML_BUILD_DOC=TRUE" if build.with? "doxygen"

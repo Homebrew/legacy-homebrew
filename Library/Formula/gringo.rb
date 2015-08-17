@@ -1,14 +1,14 @@
 class Gringo < Formula
   desc "Grounder to translate user-provided logic programs"
   homepage "http://potassco.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/potassco/gringo/4.5.0/gringo-4.5.0-source.tar.gz"
-  sha256 "fd7bd8756d3bdf3ed1df1fae9e8a8efdc4bcc613c41086640205e677e0e22f6f"
+  url "https://downloads.sourceforge.net/project/potassco/gringo/4.5.2/gringo-4.5.2-source.tar.gz"
+  sha256 "36d86321c54499cabf498dac0923b39e43c7a248919224a11c2d15e4ecec9d65"
 
   bottle do
     cellar :any
-    sha256 "61e06e100961608e832b74a8221adfbea645269a268485d42808300cb0014c8d" => :yosemite
-    sha256 "987a5a8c950f5df5d5626ed4cc9ba174cb011313ba9ee60263dff94c854202f3" => :mavericks
-    sha256 "c800b81cec82149a45dfa2485d3e4e99ad26b71c7a5543841aa01259ff199dd7" => :mountain_lion
+    sha256 "af11fe60cfa45810026ba55e5c33cd413610a2473f30dd587e84cab0f8502766" => :yosemite
+    sha256 "010d4f22a7c47424429ef1b7d27d29362d5f1d583588b4232fd761fe8dd16ad3" => :mavericks
+    sha256 "2510f63c6adba3367c596ebd54ba796155d9e1d4a1a37dfc642f444cb51ab7da" => :mountain_lion
   end
 
   depends_on "re2c" => :build
@@ -24,10 +24,6 @@ class Gringo < Formula
     inreplace "SConstruct",
               "env['CXX']            = 'g++'",
               "env['CXX']            = '#{ENV.cxx}'"
-
-    # Fix build problems
-    # https://sourceforge.net/p/potassco/bugs/104/
-    inreplace "libclasp/src/clasp_output.cpp", "using std::isnan;", "// using std::isnan;"
 
     scons "--build-dir=release", "gringo", "clingo", "reify"
     bin.install "build/release/gringo", "build/release/clingo", "build/release/reify"

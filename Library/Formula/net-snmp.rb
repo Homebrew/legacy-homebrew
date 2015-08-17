@@ -1,10 +1,8 @@
-require "formula"
-
 class NetSnmp < Formula
   desc "Implements SNMP v1, v2c, and v3, using IPv4 and IPv6"
   homepage "http://www.net-snmp.org/"
   url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3/net-snmp-5.7.3.tar.gz"
-  sha1 "97dc25077257680815de44e34128d365c76bd839"
+  sha256 "12ef89613c7707dc96d13335f153c1921efc9d61d3708ef09f3fc4a7014fb4f0"
 
   bottle do
     revision 1
@@ -30,7 +28,7 @@ class NetSnmp < Formula
       "--without-rpm",
       "--without-kmem-usage",
       "--disable-embedded-perl",
-      "--without-perl-modules",
+      "--without-perl-modules"
     ]
 
     if build.with? "python"

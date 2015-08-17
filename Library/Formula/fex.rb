@@ -2,7 +2,7 @@ class Fex < Formula
   desc "Powerful field extraction tool"
   homepage "http://www.semicomplete.com/projects/fex/"
   url "https://semicomplete.googlecode.com/files/fex-2.0.0.tar.gz"
-  sha1 "014938009ffe0b2ec3d1293154a22e4a40fee4a9"
+  sha256 "03043c8eac74f43173068a2e693b6f73d5b45f453a063e6da11f34455d0e374e"
 
   bottle do
     cellar :any

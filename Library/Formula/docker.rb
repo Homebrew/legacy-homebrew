@@ -1,17 +1,15 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  # Boot2docker and docker are generally updated at the same time.
-  # Please update the version of boot2docker too
-  url "https://github.com/docker/docker.git", :tag => "v1.7.0",
-    :revision => "0baf60984522744eed290348f33f396c046b2f3a"
+  url "https://github.com/docker/docker.git", :tag => "v1.8.1",
+                                              :revision => "d12ea79c9de6d144ce6bc7ccfe41c507cca6fd35"
   head "https://github.com/docker/docker.git"
 
   bottle do
     cellar :any
-    sha256 "8c19fe17fc2fc8a9759b80aa1dd85e300336c123842fffedf768b22215c2b2bb" => :yosemite
-    sha256 "ee5333ba2e6d67438d76c954503bb957790bff3dd0ba51e7645c5b8363de6313" => :mavericks
-    sha256 "ca4e419285a250598f05d658fda3dac97c9b0bae4c3361086a9f13a41b40bfc7" => :mountain_lion
+    sha256 "c462e7f8e35f6a3a24c92e77adf6d9edaeca0677b5d7b0f2e265b60e6bb2690b" => :yosemite
+    sha256 "a2f91f72b04ee275d484e887fe679ba16190991aba46c3a4845b63c714dc1726" => :mavericks
+    sha256 "6ef8a317664148cc3af5939468a577bde2090bd65814c2ae7ea66fd5f5809e01" => :mountain_lion
   end
 
   option "with-experimental", "Enable experimental features"

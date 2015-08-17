@@ -1,20 +1,21 @@
 class Cfengine < Formula
   desc "Help manage and understand IT infrastructure"
   homepage "https://cfengine.com/"
-  url "https://s3.amazonaws.com/cfengine.package-repos/tarballs/cfengine-3.6.4.tar.gz"
-  sha256 "0df910185e41004a5d9eeb91718d92583508efcf1d19df7caecc7d288dc5a933"
+  url "https://cfengine-package-repos.s3.amazonaws.com/tarballs/cfengine-3.7.0-2.tar.gz"
+  version "3.7.0"
+  sha256 "53e3fcae50b14d29a7a86920e13586cafed4eb5e2d081597dc9a7e34393c7f77"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "6ef9ed9115344ac99db5a758541b83296ab493f15d9c0bee91852c46d80dfd71" => :yosemite
-    sha256 "52619169e80a684b906e27d72c8af9c51b30e7821d2c225b7c0171dc2c2e38d2" => :mavericks
-    sha256 "afc7ed7c92d3a2403add0ed4ae20fc28cba7d7cf060d477e9f2c48694c87efd7" => :mountain_lion
+    sha256 "9f385aae7fcd38256be3a72ce91fbcc1b86c6b3345b959db87161a75186134db" => :yosemite
+    sha256 "b5ad2d8d0cb6f5c1be9bd3c8d27e7a3ca8b8bc0e266a60daed62fe7e671ad86a" => :mavericks
+    sha256 "ede0bd07c38d96d290c74303e4469f5dfa3da29f23e539b67ea411c450f008ab" => :mountain_lion
   end
 
   resource "masterfiles" do
-    url "https://s3.amazonaws.com/cfengine.package-repos/tarballs/masterfiles-3.6.4.tar.gz"
-    sha256 "209e15b1ff83efd77e84a8f255679715d9a85ef171e205bc7dfed8867008ecdd"
+    url "https://cfengine-package-repos.s3.amazonaws.com/tarballs/cfengine-masterfiles-3.7.0-2.tar.gz"
+    version "3.7.0"
+    sha256 "b9bc621484abb7fb06789ce79615e42501af50fdb2af4dadb115edc1b0b0980c"
   end
 
   depends_on "pcre"
@@ -39,6 +40,7 @@ class Cfengine < Formula
   end
 
   test do
-    system "#{bin}/cf-agent", "-V"
+    system bin/"cf-key", "--show-hosts"
+    assert_equal "CFEngine Core #{version}", shell_output("#{bin}/cf-agent -V").chomp
   end
 end
