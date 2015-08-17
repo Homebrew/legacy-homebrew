@@ -63,7 +63,7 @@ module Homebrew
     end
   rescue MultipleVersionsInstalledError => e
     ofail e
-    puts "Use `brew remove --force #{e.name}` to remove all versions."
+    puts "Use `brew uninstall --force #{e.name}` to remove all versions."
   end
 
   def rm_pin(rack)
