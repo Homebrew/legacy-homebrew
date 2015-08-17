@@ -5,6 +5,13 @@ class GnuBarcode < Formula
   mirror "https://ftp.gnu.org/gnu/barcode/barcode-0.99.tar.gz"
   sha256 "7c031cf3eb811242f53664379aebbdd9fae0b7b26b5e5d584c31a9f338154b64"
 
+  bottle do
+    cellar :any
+    sha256 "819af5d364f041397c7c6b768829df7fcbd617f86194a1656b5523eeaed9415a" => :yosemite
+    sha256 "285a9fa2833e843765087545f778aeadc670555bcac38193788c866826a88d42" => :mavericks
+    sha256 "344fb3bd8c8b078f79a76c7aa39e1986315bbd8e586ad16ddb54e285b73afa3c" => :mountain_lion
+  end
+
   # Patch and ac_cv_func_calloc_0_nonnull config addresses the following issue:
   # https://lists.gnu.org/archive/html/bug-barcode/2015-06/msg00001.html
   patch :DATA
