@@ -1,22 +1,15 @@
 class Minizinc < Formula
   desc "Medium-level constraint modeling language"
   homepage "http://www.minizinc.org"
+  url "https://github.com/MiniZinc/libminizinc/archive/2.0.6.tar.gz"
+  sha256 "95b413c82f510e406f32bbb779fe1221a3b6bf2931854f61ca44bcefc0788f50"
   head "https://github.com/MiniZinc/libminizinc.git", :branch => "develop"
 
-  stable do
-    url "http://www.minizinc.org/downloads/release-2.0.1/libminizinc-2.0.1.tar.gz"
-    sha256 "b2dedd456d71d5670b24ec4b159a05d53c00e2aae232171c0e3be31cec915aff"
-
-    patch do
-      url "https://github.com/MiniZinc/libminizinc/commit/5c9341c32df7f6d1f11249bc93ef62fd860444ab.diff"
-      sha256 "30562c42e08bda8f79ff87e53054c7def125ce5e4a7ee1d74599068bdd572505"
-    end
-  end
   bottle do
     cellar :any
-    sha256 "ae9f777c740457c2d5698e339ac0434682f43bbc1e154cf797d586647624e5bf" => :yosemite
-    sha256 "58bf476cbe2181e3a6420aa709ade2aecde6b400a70f291aeb7c3a7e747d1e05" => :mavericks
-    sha256 "d5d00aeaf5f6bb6b3f2cb0d78a29271d98fa73deeb7d939055992f631da78f34" => :mountain_lion
+    sha256 "57ecab3e20c9353ba8e0945c20885469b8e4890f4f931346f27398458c7241dd" => :yosemite
+    sha256 "661e0eb3d7b3cb601ba4a1d08ebc277cfc42ab0d05370a6d9c9989e03abf7dd1" => :mavericks
+    sha256 "6e450774291e5065beaef7337e66869cb698f1cb8bd07089d7d9ffe3188fca96" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
@@ -25,8 +18,7 @@ class Minizinc < Formula
   def install
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
-      system "cmake", "--build", "."
-      system "make", "install"
+      system "cmake", "--build", ".", "--target", "install"
     end
   end
 

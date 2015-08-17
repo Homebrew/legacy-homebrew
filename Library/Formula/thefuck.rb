@@ -1,16 +1,16 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.6.tar.gz"
-  sha256 "eae2689c1e1acc0011f8297c38c7c85a9b17bb443b55bf9d273d5f75f63e288c"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.7.tar.gz"
+  sha256 "5486f9244315b83645efd1aaba98d83a74e23ccad8499d24d80a6b64dde850a7"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any
-    sha256 "eb4268205873628a8b05ae9655fd9ed49fb7475156c87eb5976c81d457a93fcc" => :yosemite
-    sha256 "67f15694072ce229001a49ffc75bf53a2d08eeb7300125a0684fe34233c3a656" => :mavericks
-    sha256 "3858b25a6c178e095451357e68321184379f2d4bd2f87578cacb7b56d5af4d2e" => :mountain_lion
+    sha256 "fafef0f2d06b9ccab5d035f041d656167c37372e33d0039b0d260a27b7067938" => :yosemite
+    sha256 "90a62137449bc70c077d98e5fa1ee4a233a84550de8a1ceaa78eb215fdc9d66a" => :mavericks
+    sha256 "48eb9527a4c6405d90f9d8c328635da50d5445ba5e78c1c1b51e203d0bfe8d0c" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -59,13 +59,20 @@ class Thefuck < Formula
   def caveats; <<-EOS.undent
     Add the following to your .bash_profile, .bashrc or .zshrc:
 
-      eval "$(thefuck-alias)"
+      eval "$(thefuck --alias)"
 
     For other shells, check https://github.com/nvbn/thefuck/wiki/Shell-aliases
     EOS
   end
 
   test do
-    assert_match /echo ok/, shell_output(bin/"thefuck echho ok")
+    assert_equal "The Fuck #{version}", shell_output("#{bin}/thefuck --version 2>&1").chomp
+    assert_match /.+TF_ALIAS.+thefuck.+/, shell_output("#{bin}/thefuck --alias").chomp
+    IO.popen("#{bin}/thefuck git branchh 2>&1", "r+") do |pipe|
+      pipe.puts "\n"
+      pipe.close_write
+      assert_match /git branch.+/, pipe.gets.chomp
+      pipe.close
+    end
   end
 end

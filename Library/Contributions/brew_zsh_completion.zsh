@@ -1,4 +1,5 @@
 #compdef brew
+#autoload
 
 # Brew ZSH completion function
 # Drop this somewhere in your $fpath (like /usr/share/zsh/site-functions)
@@ -37,25 +38,33 @@ _1st_arguments=(
   'deps:list dependencies and dependants of a formula'
   'doctor:audits your installation for common issues'
   'edit:edit a formula'
+  'fetch:download formula resources to the cache'
+  'gist-logs:generate a gist of the full build logs'
   'home:visit the homepage of a formula or the brew project'
   'info:information about a formula'
   'install:install a formula'
   'reinstall:install a formula anew; re-using its current options'
+  'leaves:show installed formulae that are not dependencies of another installed formula'
   'link:link a formula'
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
   'missing:check all installed formuale for missing dependencies.'
+  'migrate:migrate renamed formula to new name'
   'outdated:list formulae for which a newer version is available'
   'pin:pin specified formulae'
+  'postinstall:perform post_install for a given formula'
   'prune:remove dead links'
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
   'switch:switch between different versions of a formula'
   'tap:tap a new formula repository from GitHub, or list existing taps'
+  'tap-info:information about a tap'
+  'test-bot:test a formula and build a bottle'
+  'uninstall:uninstall a formula'
   'unlink:unlink a formula'
   'unpin:unpin specified formulae'
   'untap:remove a tapped repository'
-  'update:freshen up links'
+  'update:fetch latest version of Homebrew and all formulae'
   'upgrade:upgrade outdated formulae'
   'uses:show formulae which depend on a formula'
   `brew commands --quiet --include-aliases`

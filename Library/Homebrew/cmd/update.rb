@@ -1,5 +1,7 @@
 require "cmd/tap"
 require "formula_versions"
+require "migrator"
+require "formulary"
 
 module Homebrew
   def update
@@ -28,7 +30,9 @@ module Homebrew
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
-    Tap.select(&:git?).each do |tap|
+    Tap.each do |tap|
+      next unless tap.git?
+
       tap.path.cd do
         updater = Updater.new(tap.path)
 
@@ -46,12 +50,47 @@ module Homebrew
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
-      next unless (HOMEBREW_CELLAR/f).exist?
+      next unless (dir = HOMEBREW_CELLAR/f).exist?
       migration = TAP_MIGRATIONS[f]
       next unless migration
       tap_user, tap_repo = migration.split "/"
       install_tap tap_user, tap_repo
+      # update tap for each Tab
+      tabs = dir.subdirs.each.map { |d| Tab.for_keg(Keg.new(d)) }
+      next if tabs.first.source["tap"] != "Homebrew/homebrew"
+      tabs.each { |tab| tab.source["tap"] = "#{tap_user}/homebrew-#{tap_repo}" }
+      tabs.each(&:write)
     end if load_tap_migrations
+
+    # Migrate installed renamed formulae from main Homebrew repository.
+    if load_formula_renames
+      report.select_formula(:D).each do |oldname|
+        newname = FORMULA_RENAMES[oldname]
+        next unless newname
+        next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?
+
+        begin
+          migrator = Migrator.new(Formulary.factory("homebrew/homebrew/#{newname}"))
+          migrator.migrate
+        rescue Migrator::MigratorDifferentTapsError
+        end
+      end
+    end
+
+    # Migrate installed renamed formulae from taps
+    report.select_formula(:D).each do |oldname|
+      user, repo, oldname = oldname.split("/", 3)
+      next unless user && repo && oldname
+      tap = Tap.new(user, repo)
+      next unless newname = tap.formula_renames[oldname]
+      next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?
+
+      begin
+        migrator = Migrator.new(Formulary.factory("#{user}/#{repo}/#{newname}"))
+        migrator.migrate
+      rescue Migrator::MigratorDifferentTapsError
+      end
+    end
 
     if report.empty?
       puts "Already up-to-date."
@@ -85,9 +124,8 @@ module Homebrew
   def rename_taps_dir_if_necessary
     Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
-        tapd_basename = File.basename(tapd)
-
         if File.directory?(tapd + "/.git")
+          tapd_basename = File.basename(tapd)
           if tapd_basename.include?("-")
             # only replace the *last* dash: yes, tap filenames suck
             user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
@@ -112,7 +150,13 @@ module Homebrew
   end
 
   def load_tap_migrations
-    require "tap_migrations"
+    load "tap_migrations.rb"
+  rescue LoadError
+    false
+  end
+
+  def load_formula_renames
+    load "formula_renames.rb"
   rescue LoadError
     false
   end

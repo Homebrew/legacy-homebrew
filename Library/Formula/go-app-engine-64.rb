@@ -9,6 +9,9 @@ class GoAppEngine64 < Formula
     sha256 "08b554a9d8883a378e9ed6e615ce0432c33f1ae0016430747ec39f13de5ce75c"
   end
 
+  conflicts_with "go-app-engine-32", :because => "multiple conflicting files"
+  conflicts_with "google-app-engine", :because => "multiple conflicting files"
+
   bottle do
     cellar :any
     sha256 "570879ba2f65c72dd6810f66634acaf4ab26490a1bba56abb7dc9af64b0a9246" => :yosemite

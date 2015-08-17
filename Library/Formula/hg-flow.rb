@@ -4,7 +4,7 @@ class HgFlow < Formula
   url "https://bitbucket.org/yujiewu/hgflow/downloads/hgflow-v0.9.8.tar.bz2"
   sha256 "0078d5a562f7a0e1eaf2b1018de10540c56756d91f5f1c3b1b40b753cbccab95"
 
-  head "http://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => "develop"
+  head "https://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => "develop"
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on :hg

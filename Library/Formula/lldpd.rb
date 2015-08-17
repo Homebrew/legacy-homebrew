@@ -1,13 +1,13 @@
 class Lldpd < Formula
   desc "Implementation library for LLDP"
   homepage "https://vincentbernat.github.io/lldpd/"
-  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.15.tar.gz"
-  sha256 "c891d6d4480a6a890561ac43d8cc923bd027deb82a3999d65f37d96ca368c246"
+  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.16.tar.gz"
+  sha256 "a0b85a5e685b8e7dad08b6f20ea79d8bec47d8dbf39daef419bd20ad7f37d63f"
 
   bottle do
-    sha256 "168901752a250081bcfb46a44ec627fc5694716a1a5c76ad85685777f50d3adb" => :yosemite
-    sha256 "712cc05430e9af6156f6e9148bbf33a082bcbd2bae2b74dc118384e7d65ca9dd" => :mavericks
-    sha256 "08e223c0809438da4762a568518b3b86a28fe3d30dc245fb9318c75514b923bc" => :mountain_lion
+    sha256 "437aee53ffb9e71b91c2f53316fa0df319f2927b29e0c5cc3b3ee7b3141ae7c4" => :yosemite
+    sha256 "8425d6857f0d9161f61d3c31e55d9c7c761c4a72bb37da8d94fd6ee518fda865" => :mavericks
+    sha256 "b77527b4056776a1218ce5f4e97ee611a748112912b5c50a989853eabd4410b9" => :mountain_lion
   end
 
   option "with-snmp", "Build SNMP subagent support"
@@ -22,6 +22,8 @@ class Lldpd < Formula
   def install
     readline = Formula["readline"]
     args = ["--prefix=#{prefix}",
+            "--sysconfdir=#{etc}",
+            "--localstatedir=#{var}",
             "--with-xml",
             "--with-readline",
             "--with-privsep-chroot=/var/empty",
@@ -30,8 +32,8 @@ class Lldpd < Formula
             "--with-launchddaemonsdir=no",
             "CPPFLAGS=-I#{readline.include} -DRONLY=1",
             "LDFLAGS=-L#{readline.lib}"]
-    args << "--with-snmp" if build.with? "snmp"
-    args << "--with-json" if build.with? "json"
+    args << (build.with?("snmp") ? "--with-snmp" : "--without-snmp")
+    args << (build.with?("json") ? "--with-json" : "--without-json")
 
     system "./configure", *args
     system "make"

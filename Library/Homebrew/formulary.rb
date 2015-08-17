@@ -1,4 +1,5 @@
 require "digest/md5"
+require "formula_renames"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -141,6 +142,7 @@ class Formulary
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.new user, repo.sub(/^homebrew-/, "")
+      name = @tap.formula_renames.fetch(name, name)
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
       path ||= @tap.path/"#{name}.rb"
 
@@ -193,6 +195,16 @@ class Formulary
     end
   end
 
+  def self.to_rack(ref)
+    # First, check whether the rack with the given name exists.
+    if (rack = HOMEBREW_CELLAR/File.basename(ref, ".rb")).directory?
+      return rack.resolved_path
+    end
+
+    # Second, use canonical name to locate rack.
+    (HOMEBREW_CELLAR/canonical_name(ref)).resolved_path
+  end
+
   def self.canonical_name(ref)
     loader_for(ref).name
   rescue TapFormulaAmbiguityError
@@ -212,7 +224,13 @@ class Formulary
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
     when HOMEBREW_CORE_FORMULA_REGEX
-      return FormulaLoader.new($1, core_path($1))
+      name = $1
+      formula_with_that_name = core_path(name)
+      if (newname = FORMULA_RENAMES[name]) && !formula_with_that_name.file?
+        return FormulaLoader.new(newname, core_path(newname))
+      else
+        return FormulaLoader.new(name, formula_with_that_name)
+      end
     when HOMEBREW_TAP_FORMULA_REGEX
       return TapLoader.new(ref)
     end
@@ -231,11 +249,31 @@ class Formulary
       return AliasLoader.new(possible_alias)
     end
 
-    possible_tap_formulae = tap_paths(ref)
+   possible_tap_formulae = tap_paths(ref)
     if possible_tap_formulae.size > 1
       raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
     elsif possible_tap_formulae.size == 1
       return FormulaLoader.new(ref, possible_tap_formulae.first)
+    end
+
+    if newref = FORMULA_RENAMES[ref]
+      formula_with_that_oldname = core_path(newref)
+      if formula_with_that_oldname.file?
+        return FormulaLoader.new(newref, formula_with_that_oldname)
+      end
+    end
+
+    possible_tap_newname_formulae = []
+    Tap.each do |tap|
+      if newref = tap.formula_renames[ref]
+        possible_tap_newname_formulae << "#{tap.name}/#{newref}"
+      end
+    end
+
+    if possible_tap_newname_formulae.size > 1
+      raise TapFormulaWithOldnameAmbiguityError.new(ref, possible_tap_newname_formulae)
+    elsif !possible_tap_newname_formulae.empty?
+      return TapLoader.new(possible_tap_newname_formulae.first)
     end
 
     possible_cached_formula = Pathname.new("#{HOMEBREW_CACHE_FORMULA}/#{ref}.rb")
@@ -250,14 +288,32 @@ class Formulary
     Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name.downcase}.rb")
   end
 
-  def self.tap_paths(name)
+  def self.tap_paths(name, taps=Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"])
     name = name.downcase
-    Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/"].map do |tap|
+    taps.map do |tap|
       Pathname.glob([
         "#{tap}Formula/#{name}.rb",
         "#{tap}HomebrewFormula/#{name}.rb",
         "#{tap}#{name}.rb"
       ]).detect(&:file?)
     end.compact
+  end
+
+  def self.find_with_priority(ref, spec=:stable)
+    possible_pinned_tap_formulae = tap_paths(ref, Dir["#{HOMEBREW_LIBRARY}/PinnedTaps/*/*/"]).map(&:realpath)
+    if possible_pinned_tap_formulae.size > 1
+      raise TapFormulaAmbiguityError.new(ref, possible_pinned_tap_formulae)
+    elsif possible_pinned_tap_formulae.size == 1
+      selected_formula = factory(possible_pinned_tap_formulae.first, spec)
+      if core_path(ref).file?
+        opoo <<-EOS.undent
+          #{ref} is provided by core, but is now shadowed by #{selected_formula.full_name}.
+          To refer to the core formula, use Homebrew/homebrew/#{ref} instead.
+        EOS
+      end
+      selected_formula
+    else
+      factory(ref, spec)
+    end
   end
 end

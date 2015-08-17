@@ -162,15 +162,7 @@ module Superenv
   end
 
   def determine_include_paths
-    paths = keg_only_deps.map { |d| d.opt_include.to_s }
-
-    # https://github.com/Homebrew/homebrew/issues/38514
-    if MacOS::CLT.installed? && MacOS.active_developer_dir.include?("CommandLineTools") &&
-       MacOS::CLT.version == "6.3.0.0.1.1428348375"
-      paths << "#{HOMEBREW_LIBRARY}/ENV/include/6.3"
-    end
-
-    paths.to_path_s
+    keg_only_deps.map { |d| d.opt_include.to_s }.to_path_s
   end
 
   def determine_library_paths

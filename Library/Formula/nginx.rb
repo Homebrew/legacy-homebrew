@@ -6,9 +6,10 @@ class Nginx < Formula
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha256 "9fe0f648fe67dd7c55e46754d72561b2d7a31a09126167088fbe278a65f9c45d" => :yosemite
-    sha256 "63f5785c7f7dca36a1b7180a82f1433fde9a3fbccf36af541770541b4d8f4093" => :mavericks
-    sha256 "7a17bfbc2d2a325d8c665a0d2bb3c00f70178bc4c065817ec247fcf2ce28d5ae" => :mountain_lion
+    revision 1
+    sha256 "6df7b883f9214c5c0969559f6cc9ed56f9537263a1ef4882dae77b0b7af5a1df" => :yosemite
+    sha256 "68741910d6ee58f7ee1134c7b4c62dfd490ee337c9c0beb0d188edc418b0bd93" => :mavericks
+    sha256 "a622d0e1bfd55d8634520d72b41319da19828b9ab11063b6243d5b5f3d77ad08" => :mountain_lion
   end
 
   devel do
@@ -35,7 +36,7 @@ class Nginx < Formula
   def install
     # Changes default port to 8080
     inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
-    open("conf/nginx.conf", "a") { |f| f.puts "include servers/*;" }
+    inreplace "conf/nginx.conf", "    #}\n\n}", "    #}\n    include servers/*;\n}"
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
@@ -86,9 +87,12 @@ class Nginx < Formula
       system "./configure", *args
     end
 
-    system "make"
     system "make", "install"
-    man8.install "objs/nginx.8"
+    if build.head?
+      man8.install "docs/man/nginx.8"
+    else
+      man8.install "man/nginx.8"
+    end
 
     (etc/"nginx/servers").mkpath
     (var/"run/nginx").mkpath
@@ -136,7 +140,7 @@ class Nginx < Formula
 
     nginx will load all files in #{etc}/nginx/servers/.
     EOS
-    s << passenger_caveats if build.with? "passenger"
+    s << "\n" << passenger_caveats if build.with? "passenger"
     s
   end
 

@@ -71,7 +71,13 @@ module Homebrew
 
         if f.installed?
           msg = "#{f.full_name}-#{f.installed_version} already installed"
-          msg << ", it's just not linked" unless f.linked_keg.symlink? || f.keg_only?
+          unless f.linked_keg.symlink?
+            if f.oldname && (HOMEBREW_CELLAR/f.oldname).exist?
+              msg << ", it's just not migrated"
+            elsif !f.keg_only?
+              msg << ", it's just not linked"
+            end
+          end
           opoo msg
         else
           formulae << f
@@ -176,7 +182,6 @@ module Homebrew
     fi.debug               = ARGV.debug?
     fi.prelude
     fi.install
-    fi.caveats
     fi.finish
   rescue FormulaInstallationAlreadyAttemptedError
     # We already attempted to install f as part of the dependency tree of

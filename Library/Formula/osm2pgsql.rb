@@ -1,14 +1,13 @@
 class Osm2pgsql < Formula
-  desc "Convert OpenStreetMap data to postGIS-enabled PostgreSQL db"
+  desc "OpenStreetMap data to PostgreSQL converter"
   homepage "https://wiki.openstreetmap.org/wiki/Osm2pgsql"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/0.87.0.tar.gz"
-  sha256 "6f5538d098e17a578a384f70f61b335f10edb04114d5cdc5233ca97f868ad0f6"
-  revision 1
+  url "https://github.com/openstreetmap/osm2pgsql/archive/0.88.0.tar.gz"
+  sha256 "45a6768e680a50c416fdae72cf4b26091644947a7ead44c8b7484f2276b2f119"
 
   bottle do
-    sha256 "6b1bc9ca723e3c8bf23c9bb5704fa99205a1037085d408102050da03ac703a5c" => :yosemite
-    sha256 "2835cacfecdbca3f00255cfc5b95107d54fa640e1eb1ca728520f4c252da983f" => :mavericks
-    sha256 "63c279201caf3f6c0359dbe27eb1c2e2a144cdf0cfd130ef6d218b95a9d009fe" => :mountain_lion
+    sha256 "ca63b113b0b300a3bb6c0f8b1426185906806a6ba44ef13a68b01642824f6c0b" => :yosemite
+    sha256 "063f2103411bcd38fe106296e844fd650d1f23dd889adbf919f5ffc290e3e6a5" => :mavericks
+    sha256 "e4cd15756f097fa326e4887027931788a47070a9bc6e574b62eb05085c4dd7e0" => :mountain_lion
   end
 
   depends_on :postgresql
@@ -18,14 +17,14 @@ class Osm2pgsql < Formula
   depends_on "boost"
   depends_on "geos"
   depends_on "proj"
-  depends_on "protobuf-c" => :optional
+  depends_on "protobuf-c" => :recommended
+  depends_on "lua" => :recommended
 
-  # Fixes an upstream issue:
-  #   https://github.com/openstreetmap/osm2pgsql/issues/196
-  # Remove the patch when upgrading
+  # Apply a fix from the 0.88.x branch.
+  # This will be in 0.88.1, so won't be needed when that's tagged
   patch do
-    url "https://github.com/openstreetmap/osm2pgsql/commit/943684a9b86bee46d245970b3e5870f83afc9208.diff"
-    sha256 "608b702d79fd53f2af98e9651634377126778ff91087cf35a81b65150d8cd963"
+    url "https://github.com/openstreetmap/osm2pgsql/commit/cb449abc73e5ef076f1f8b6535b7d9641a1237f7.diff"
+    sha256 "e0175a3b1de82b67d45adbd50b8194c16673e147401f25dcc22c1c0c8d44aec6"
   end
 
   def install
@@ -35,14 +34,16 @@ class Osm2pgsql < Formula
       "--with-proj=#{Formula["proj"].opt_prefix}",
       "--with-boost=#{Formula["boost"].opt_prefix}",
       "--with-zlib=/usr",
-      "--with-bzip2=/usr",
-      # Related to the patch, remove this line when upgrading
-      "--without-lockfree"
+      "--with-bzip2=/usr"
     ]
     puts args
     if build.with? "protobuf-c"
       args << "--with-protobuf-c=#{Formula["protobuf-c"].opt_prefix}"
     end
+    # Mountain Lion has some problems with C++11.
+    # This is probably going to be a fatal issue for 0.89 and 0.90 on it, but
+    # for now it can be worked around
+    args << "--without-cxx11" if MacOS.version < :mavericks
     system "./autogen.sh"
     system "./configure", *args
     system "make"

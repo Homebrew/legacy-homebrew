@@ -372,7 +372,6 @@ class FormulaInstaller
     fi.prelude
     oh1 "Installing #{formula.full_name} dependency: #{Tty.green}#{dep.name}#{Tty.reset}"
     fi.install
-    fi.caveats
     fi.finish
   rescue Exception
     ignore_interrupts do
@@ -408,12 +407,16 @@ class FormulaInstaller
     link(keg)
     fix_install_names(keg)
 
-    if build_bottle? && formula.post_install_defined?
-      ohai "Not running post_install as we're building a bottle"
-      puts "You can run it manually using `brew postinstall #{formula.full_name}`"
-    else
-      post_install
+    if formula.post_install_defined?
+      if build_bottle?
+        ohai "Not running post_install as we're building a bottle"
+        puts "You can run it manually using `brew postinstall #{formula.full_name}`"
+      else
+        post_install
+      end
     end
+
+    caveats
 
     ohai "Summary" if verbose? || show_summary_heading?
     puts summary

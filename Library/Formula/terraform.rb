@@ -3,34 +3,34 @@ require "language/go"
 class Terraform < Formula
   desc "Tool to build, change, and version infrastructure"
   homepage "https://www.terraform.io/"
-  url "https://github.com/hashicorp/terraform/archive/v0.6.1.tar.gz"
-  sha256 "dd1b3eebd680e23b0c4279226f3ef149a9e1fa36c905ab63da502c8557b719ab"
+  url "https://github.com/hashicorp/terraform/archive/v0.6.3.tar.gz"
+  sha256 "2cc1cedb7c08310f49fb1c0a382248884aa6bd4a5e35461e2fb056fe14e3e60d"
 
   bottle do
     cellar :any
-    sha256 "d36cfeee50ff1e2a1ae7bfb59b1dda67ddecedb0d2b3378e3fe8f8f466f199f2" => :yosemite
-    sha256 "8bdd92c0fda4c479641bc81a4dd396385be72ef3dfc68a0c2ea37c3adb4c942a" => :mavericks
-    sha256 "3b46f31fcd38476970f04cd3afc6f1b4aa92fbdb782f897ce817d565b8c8c5fb" => :mountain_lion
+    sha256 "6a51fd8cb76c6d477eed5e1384a2b3945799efedac7e15b63ee5d49f215cf317" => :yosemite
+    sha256 "b9c9fe043bf4b740167572de8eeab5ae17606e707dd6f8c81a8677e32dd9e08e" => :mavericks
+    sha256 "30b629bd1ff2dd1a3ac49417171498862865d7975ad5a11cbfbd0061e816de6f" => :mountain_lion
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/awslabs/aws-sdk-go" do
     url "https://github.com/aws/aws-sdk-go.git",
-        :revision => "2a6648c479175ce005bca95780f948a196a46062"
+        :revision => "26610c929a183317d5bfa24af9a4c5484bc50fc8"
   end
 
   terraform_deps = %w[
-    github.com/Azure/azure-sdk-for-go 91977650587a7bc48318c0430649d7fea886f111
+    github.com/Azure/azure-sdk-for-go 99b5c364c7be7088d138aef0afce0b5a70855b03
     github.com/Azure/go-pkcs12 a635c0684cd517745ca5c9552a312627791d5ba0
     github.com/armon/circbuf f092b4f207b6e5cce0569056fba9e1a2735cb6cf
-    github.com/aws/aws-sdk-go 2a6648c479175ce005bca95780f948a196a46062
+    github.com/aws/aws-sdk-go 26610c929a183317d5bfa24af9a4c5484bc50fc8
     github.com/cyberdelia/heroku-go 594d483b9b6a8ddc7cd2f1e3e7d1de92fa2de665
     github.com/dylanmei/iso8601 2075bf119b58e5576c6ed9f867b8f3d17f2e54d4
     github.com/dylanmei/winrmtest 3e9661c52c45dab9a8528966a23d421922fca9b9
-    github.com/fsouza/go-dockerclient f6e9f5396e0e8f34472efe443d0cb7f9af162b88
-    github.com/hashicorp/atlas-go 785958ffcd6a8857890651f3f4d9a289ddc27633
-    github.com/hashicorp/consul c34bcb45c670af076846826ea72c436fbd0e2c35
+    github.com/fsouza/go-dockerclient a8690093fcc33c6d03838677c4d694406326fa76
+    github.com/hashicorp/atlas-go d1d08e8e25f0659388ede7bb8157aaa4895f5347
+    github.com/hashicorp/consul 00e35cdc416d7a3ab997dd8b930c63bd0e8b93f8
     github.com/hashicorp/errwrap 7554cd9344cec97297fa6649b055a8c98c2a1e55
     github.com/hashicorp/go-checkpoint 88326f6851319068e7b34981032128c0b1a6524d
     github.com/hashicorp/go-multierror 56912fb08d85084aa318edcf2bba735b97cf35c5
@@ -50,7 +50,7 @@ class Terraform < Formula
     github.com/mitchellh/go-linereader 07bab5fdd9580500aea6ada0e09df4aa28e68abd
     github.com/mitchellh/mapstructure 281073eb9eb092240d33ef253c404f1cca550309
     github.com/mitchellh/osext 0dd3f918b21bec95ace9dc86c7e70266cfc5c702
-    github.com/mitchellh/packer 2010a0c966175b3c0fa8d158a879c10acbba0d76
+    github.com/mitchellh/packer 60bbe850ef0b7fec19eba1929d83e7267ca1572b
     github.com/mitchellh/panicwrap 45cbfd3bae250c7676c077fb275be1a2968e066a
     github.com/mitchellh/prefixedio 89d9b535996bf0a185f85b59578f2e245f9e1724
     github.com/mitchellh/reflectwalk eecf4c70c626c7cfbb95c90195bc34d386c74ac6
@@ -60,8 +60,8 @@ class Terraform < Formula
     github.com/pearkes/digitalocean e966f00c2d9de5743e87697ab77c7278f5998914
     github.com/pearkes/dnsimple 2a807d118c9e52e94819f414a6ec0293b45cad01
     github.com/pearkes/mailgun 5b02e7e9ffee9869f81393e80db138f6ff726260
-    github.com/rackspace/gophercloud e83aa011e019917c7bd951444d61c42431b4d21d
-    github.com/satori/go.uuid afe1e2ddf0f05b7c29d388a3f8e76cb15c2231ca
+    github.com/rackspace/gophercloud efb1971cbd1d39f6fc762a86cccccfad387019e6
+    github.com/satori/go.uuid 6b8e5b55d20d01ad47ecfe98e5171688397c61e9
     github.com/soniah/dnsmadeeasy 5578a8c15e33958c61cf7db720b6181af65f4a9e
     github.com/vaughan0/go-ini a98ad7ee00ec53921f08832bc06ecf7fd600e6a1
     github.com/xanzy/go-cloudstack 00319560eeca5e6ffef3ba048c97c126a465854f
@@ -79,10 +79,10 @@ class Terraform < Formula
   end
 
   %w[
-    crypto 7d5b0be716b9d6d4269afdaae10032bb296d3cdf
-    net f0cf018861e2b54077eced91659e255072b5f215
+    crypto 173ce04bfaf66c7bb0fa9d5c0bfd93e773909dbd
+    net 4a71d182556e05375344f3da665304f3d5784ab4
     oauth2 8914e5017ca260f2a3a1575b1e6868874050d95e
-    tools 87156cb7667343326165d84f3557bd91ab57428b
+    tools 4f50f44d7a3206e9e28b984e023efce2a4a75369
   ].each_slice(2) do |x, y|
     go_resource "golang.org/x/#{x}" do
       url "https://go.googlesource.com/#{x}.git", :revision => y
@@ -91,12 +91,12 @@ class Terraform < Formula
 
   go_resource "google.golang.org/api" do
     url "https://code.googlesource.com/google-api-go-client.git",
-      :revision => "18450f4e95c7e76ce3a5dc3a8cb7178ab6d56121"
+      :revision => "0a735f7ec81c85ce7ec31bf7a67e125ef62266ec"
   end
 
   go_resource "google.golang.org/cloud" do
     url "https://code.googlesource.com/gocloud.git",
-      :revision => "522a8ceb4bb83c2def27baccf31d646bce11a4b2"
+      :revision => "e34a32f9b0ecbc0784865fb2d47f3818c09521d4"
   end
 
   def install
@@ -162,6 +162,6 @@ class Terraform < Formula
         count = 4
       }
     EOS
-    system "#{bin}/terraform", "plan", "-var", "aws.region=us-west-2", testpath
+    system "#{bin}/terraform", "graph", testpath
   end
 end

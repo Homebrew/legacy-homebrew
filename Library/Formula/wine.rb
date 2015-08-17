@@ -28,9 +28,9 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.48.tar.bz2"
-    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.48.tar.bz2"
-    sha256 "e3f55ce56e2092d49b317fea8802e314be2b2170fd434f5e45f7141773946c8e"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.49.tar.bz2"
+    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.49.tar.bz2"
+    sha256 "c8a1589753493cb6b71b3772b730cdf90059fe0f29cbfb369fc9a2339766b789"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -140,7 +140,7 @@ class Wine < Formula
 
         # Emulate some things that superenv would normally handle for us
         # We're configured to use GNU GCC, so remote an unsupported flag
-        s.gsub! "-gstabs+", ""
+        s.gsub! "-gstabs+", "" if build.stable?
         # Pass the sysroot to support Xcode-only systems
         cflags  = s.get_make_var("CFLAGS")
         cflags += " --sysroot=#{MacOS.sdk_path}"

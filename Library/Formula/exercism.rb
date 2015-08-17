@@ -3,15 +3,15 @@ require "language/go"
 class Exercism < Formula
   desc "command-line tool to interact with exercism.io"
   homepage "http://cli.exercism.io"
-  url "https://github.com/exercism/cli/archive/v2.2.0.tar.gz"
-  sha256 "f044645c7e775abcf721939f015fb51df8733a0acf828961e6ebefee57194b03"
+  url "https://github.com/exercism/cli/archive/v2.2.1.tar.gz"
+  sha256 "a4d71b98fc3e28f96868bcef140b3888a6fb85f942c4cbe168abaea253177aab"
   head "https://github.com/exercism.git"
 
   bottle do
     cellar :any
-    sha256 "f5895656b08737491b9133eeebdbca20189f9da15c6b8988f918a474d6511d3a" => :yosemite
-    sha256 "e9eb986f33ec43fb4e27f901a705f228e4e5d9fe70fd0b81439a31bb6352300d" => :mavericks
-    sha256 "5f55208642ea2f234dab9672c5847308bcffbfbac57af76c30d013b5e58e0e24" => :mountain_lion
+    sha256 "9959b2578131f7a19c234753277e535317a7d421f67bd384ea47f6cc2e886575" => :yosemite
+    sha256 "4ab067a75cba97a079a5580c66f6d2be3e0927910bb04590671a98fd93b65882" => :mavericks
+    sha256 "bac42ae1c756c328155b6561e5ae451683c3b5aff8824aa6e7b52445db27b1d4" => :mountain_lion
   end
 
   depends_on "go" => :build

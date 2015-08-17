@@ -1,18 +1,25 @@
 class CdDiscid < Formula
   desc "Read CD and get CDDB discid information"
   homepage "http://linukz.org/cd-discid.shtml"
-  url "http://linukz.org/download/cd-discid-1.1.tar.gz"
-  sha256 "5d28ea26947ea364edfcd1af617d369fad92cb7b1944faa971d66cfbff627d69"
+  url "http://linukz.org/download/cd-discid-1.4.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/cd-discid/cd-discid_1.4.orig.tar.gz"
+  sha256 "ffd68cd406309e764be6af4d5cbcc309e132c13f3597c6a4570a1f218edd2c63"
+  head "https://github.com/taem/cd-discid.git"
 
-  patch :p0 do
-    url "https://trac.macports.org/export/70630/trunk/dports/audio/cd-discid/files/patch-cd-discid.c.diff"
-    sha256 "45719b39bf70ee6d247027102dfd76ccdda10cb40c047ce25e5e0d77218cbf5b"
+  bottle do
+    cellar :any
+    sha256 "0647971b092ef9505401fef5987a99ff3a9e4bc2956fc167899a85e9361c335b" => :yosemite
+    sha256 "d16b9fb0eb3820f7531ce223e0e0c18ad85bb6e24020319151afff09e8d2e80f" => :mavericks
+    sha256 "b12730d1530c45bce73cb6ae8cb7337c6063dea9d1fe50981111dd843269c1f1" => :mountain_lion
   end
 
   def install
-    system "make", "prefix=#{prefix}",
-                   "CC=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "install"
+    system "make", "CC=#{ENV.cc}"
+    bin.install "cd-discid"
+    man1.install "cd-discid.1"
+  end
+
+  test do
+    assert_equal "cd-discid #{version}.", shell_output("#{bin}/cd-discid --version 2>&1").chomp
   end
 end

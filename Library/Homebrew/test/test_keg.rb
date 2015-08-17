@@ -48,6 +48,36 @@ class LinkTests < Homebrew::TestCase
     refute_predicate @dst, :symlink?
   end
 
+  def test_oldname_opt_record
+    assert_nil @keg.oldname_opt_record
+    oldname_opt_record = HOMEBREW_PREFIX/"opt/oldfoo"
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/1.0")
+    assert_equal oldname_opt_record, @keg.oldname_opt_record
+  end
+
+  def test_optlink_relink
+    oldname_opt_record = HOMEBREW_PREFIX/"opt/oldfoo"
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/1.0")
+    keg_record = HOMEBREW_CELLAR.join("foo", "2.0")
+    keg_record.join("bin").mkpath
+    keg = Keg.new(keg_record)
+    keg.optlink
+    assert_equal keg_record, oldname_opt_record.resolved_path
+    keg.uninstall
+    refute_predicate oldname_opt_record, :symlink?
+  end
+
+  def test_remove_oldname_opt_record
+    oldname_opt_record = HOMEBREW_PREFIX/"opt/oldfoo"
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/2.0")
+    @keg.remove_oldname_opt_record
+    assert_predicate oldname_opt_record, :symlink?
+    oldname_opt_record.unlink
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/1.0")
+    @keg.remove_oldname_opt_record
+    refute_predicate oldname_opt_record, :symlink?
+  end
+
   def test_link_dry_run
     @mode.dry_run = true
 

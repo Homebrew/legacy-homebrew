@@ -1,14 +1,14 @@
 class Gecode < Formula
   desc "Toolkit for developing constraint-based systems and applications"
   homepage "http://www.gecode.org/"
-  url "http://www.gecode.org/download/gecode-4.3.3.tar.gz"
-  sha256 "31c85b7f7fb2efceaaaf51e17b5d863628140522f723759b76c7557cc5d8acdb"
+  url "http://www.gecode.org/download/gecode-4.4.0.tar.gz"
+  sha256 "430398d6900b999f92c6329636f3855f2d4e985fed420a6c4d42b46bfc97782a"
 
   bottle do
     cellar :any
-    sha256 "a2038d4e65773dadec944dcf2d1d25730590b6c3d4c584253cf0d0a0f3beb173" => :yosemite
-    sha256 "ff06aa1e2dd83ac13da3c3a64433ed844e2eb5d74a5ef25d992b8d6369943d44" => :mavericks
-    sha256 "83c052f33a9a13f74d4d0b22d9d8d9adf7569d35cecaf626ea5a0b0adc5601f9" => :mountain_lion
+    sha256 "4df88b3f67a4d188f00883f182f3893b9df99b90637635abf18441ebfbeb0c9c" => :yosemite
+    sha256 "b48b0a8755542484f5eeb5647e41db0824cfb769060c28c118df6267fa98aaab" => :mavericks
+    sha256 "a6cf500df618c42f0668bb227c090e6c1d3d3369c8b4537220d3deb78d5f8286" => :mountain_lion
   end
 
   def install

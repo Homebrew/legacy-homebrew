@@ -1,13 +1,10 @@
 require "formula"
 require "keg"
 require "bottles"
+require "thread"
 
 module Homebrew
   def cleanup
-    # individual cleanup_ methods should also check for the existence of the
-    # appropriate directories before assuming they exist
-    return unless HOMEBREW_CELLAR.directory?
-
     if ARGV.named.empty?
       cleanup_cellar
       cleanup_cache
@@ -23,19 +20,14 @@ module Homebrew
 
   def cleanup_logs
     return unless HOMEBREW_LOGS.directory?
-    time = Time.now - 2 * 7 * 24 * 60 * 60 # two weeks
     HOMEBREW_LOGS.subdirs.each do |dir|
-      cleanup_path(dir) { dir.rmtree } if dir.mtime < time
+      cleanup_path(dir) { dir.rmtree } if prune?(dir, :days_default => 14)
     end
   end
 
   def cleanup_cellar
-    HOMEBREW_CELLAR.subdirs.each do |rack|
-      begin
-        cleanup_formula Formulary.from_rack(rack)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
-        # Don't complain about directories from DIY installs
-      end
+    Formula.installed.each do |formula|
+      cleanup_formula formula
     end
   end
 
@@ -64,10 +56,18 @@ module Homebrew
 
   def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
-    prune = ARGV.value "prune"
-    time = Time.now - 60 * 60 * 24 * prune.to_i
-    HOMEBREW_CACHE.children.select(&:file?).each do |file|
-      next cleanup_path(file) { file.unlink } if prune && file.mtime < time
+    HOMEBREW_CACHE.children.each do |path|
+      if prune?(path)
+        if path.file?
+          cleanup_path(path) { path.unlink }
+        elsif path.directory? && path.to_s.include?("--")
+          cleanup_path(path) { FileUtils.rm_rf path }
+        end
+        next
+      end
+
+      next unless path.file?
+      file = path
 
       if Pathname::BOTTLE_EXTNAME_RX === file.to_s
         version = bottle_resolve_version(file) rescue file.version
@@ -76,6 +76,8 @@ module Homebrew
       end
       next unless version
       next unless (name = file.basename.to_s[/(.*)-(?:#{Regexp.escape(version)})/, 1])
+
+      next unless HOMEBREW_CELLAR.directory?
 
       begin
         f = Formulary.from_rack(HOMEBREW_CELLAR/name)
@@ -108,16 +110,48 @@ module Homebrew
     return unless HOMEBREW_CACHE_FORMULA.directory?
     candidates = HOMEBREW_CACHE_FORMULA.children
     lockfiles  = candidates.select { |f| f.file? && f.extname == ".brewing" }
-    lockfiles.select(&:readable?).each do |file|
+    lockfiles.each do |file|
+      next unless file.readable?
       file.open.flock(File::LOCK_EX | File::LOCK_NB) && file.unlink
     end
   end
 
   def rm_DS_Store
-    paths = %w[Cellar Frameworks Library bin etc include lib opt sbin share var].
-            map { |p| HOMEBREW_PREFIX/p }.select(&:exist?)
-    args = paths.map(&:to_s) + %w[-name .DS_Store -delete]
-    quiet_system "find", *args
+    paths = Queue.new
+    %w[Cellar Frameworks Library bin etc include lib opt sbin share var].
+      map { |p| HOMEBREW_PREFIX/p }.each { |p| paths << p if p.exist? }
+    workers = (0...Hardware::CPU.cores).map do
+      Thread.new do
+        begin
+          while p = paths.pop(true)
+            quiet_system "find", p, "-name", ".DS_Store", "-delete"
+          end
+        rescue ThreadError # ignore empty queue error
+        end
+      end
+    end
+    workers.map(&:join)
+  end
+
+  def prune?(path, options={})
+    @time ||= Time.now
+
+    path_modified_time = path.mtime
+    days_default = options[:days_default]
+
+    prune = ARGV.value "prune"
+
+    return true if prune == "all"
+
+    prune_time = if prune
+      @time - 60 * 60 * 24 * prune.to_i
+    elsif days_default
+      @time - 60 * 60 * 24 * days_default.to_i
+    end
+
+    return false unless prune_time
+
+    path_modified_time < prune_time
   end
 
   def eligible_for_cleanup?(formula)

@@ -1,15 +1,15 @@
 class Subliminal < Formula
   desc "Library to search and download subtitles"
   homepage "https://subliminal.readthedocs.org"
-  url "https://github.com/Diaoul/subliminal/archive/1.0.tar.gz"
-  sha256 "1187a4ed8e1f6f0646b49004020c5eb852999f777db9e4eb6311e6dec6f0cecb"
+  url "https://github.com/Diaoul/subliminal/archive/1.0.1.tar.gz"
+  sha256 "b2db67d6a6d68c3fc5a2fda9ee5831879548c288af61de726cae508d72fc4816"
   head "https://github.com/Diaoul/subliminal.git"
 
   bottle do
     cellar :any
-    sha256 "6720ae4c937a50e0c98be4830146c76a56f058c3d3df1f7dfd9fc6c014f5b1f0" => :yosemite
-    sha256 "613a6eca723c5daab743a9ef9591cf08061b412e598d3eda840bf456fe9a03c0" => :mavericks
-    sha256 "5f4cd750afb6013ce09bb0539eaf2d47da029e2abd4f6ebcc6facddbe19ff104" => :mountain_lion
+    sha256 "29d0af54b61269c0e371494ebb56429afc6a98e6e21423e692c25c367af2a07d" => :yosemite
+    sha256 "8f3eff7ac992dce702753f2058c1c9513567658d2928e5dc82634db5f8df07cc" => :mavericks
+    sha256 "419f7156a3b2cce921860d39dba17cdcb544b910c8223aa4e4fa1cf68a29950f" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

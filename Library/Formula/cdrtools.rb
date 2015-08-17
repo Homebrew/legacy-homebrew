@@ -13,14 +13,15 @@ class Cdrtools < Formula
   end
 
   bottle do
-    sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
-    sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
-    sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
+    revision 1
+    sha256 "c5961aaef116ae0dd425197550ae59c91f16da2552992de6c44331685dea58b6" => :yosemite
+    sha256 "6dad15e2cfc911cda652271f764b830fe913affc85c1e92407006141594ac267" => :mavericks
+    sha256 "ab6ca1d2649635c76c83343eba34fe89b3720613cdeee5cf2ee82789c6fa0687" => :mountain_lion
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a30.tar.bz2"
-    sha256 "5b9a2f98771c9d0097a1e7640727655ece2864eea95f38e5611af2b2f6e6d9cd"
+    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a31.tar.bz2"
+    sha256 "183b5c12777779e78d8b69461aae52401f863768e7e7391d60730006f8cadc5a"
   end
 
   depends_on "smake" => :build

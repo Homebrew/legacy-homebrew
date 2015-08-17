@@ -5,14 +5,17 @@ class Harfbuzz < Formula
   sha256 "32a1a7ad584a2f2cfba5c1d234d046c0521e86e7a21d403e15e89aa509ef0ea8"
 
   bottle do
-    sha256 "89ef0eac9a10ee07293bc769663c55368eef6af6e0cd4faa9798b72bd5dd336d" => :yosemite
-    sha256 "9bf6b6d48271957398aa2db68ec0df65e55fc488ce55c64ad811c68595ba53ca" => :mavericks
-    sha256 "42a8ee7134fe0bd07b0c2aad7bde033e7be721dee43970a414764868f6754a15" => :mountain_lion
+    revision 2
+    sha256 "08fc47ec6f4d9e2540c0b9ecea24c23bbc5b8cc05da1b1e1919d153752702877" => :yosemite
+    sha256 "485695af7c95035a82579624dcd9aed9b1ead4b31a7ff26a4e10745bce4b87a4" => :mavericks
+    sha256 "ec6c92337dc06d28704640e038523c693c6921d90b167aed769d2aff353a49cf" => :mountain_lion
   end
+
+  option "with-cairo", "Build command-line utilities that depend on Cairo"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "cairo"
+  depends_on "cairo" => :optional
   depends_on "icu4c" => :recommended
   depends_on "graphite2" => :optional
   depends_on "freetype"
@@ -29,10 +32,12 @@ class Harfbuzz < Formula
       --prefix=#{prefix}
       --enable-introspection=yes
       --with-gobject=yes
+      --with-coretext=yes
     ]
 
     args << "--with-icu" if build.with? "icu4c"
     args << "--with-graphite2" if build.with? "graphite2"
+    args << "--with-cairo" if build.with? "cairo"
     system "./configure", *args
     system "make", "install"
   end

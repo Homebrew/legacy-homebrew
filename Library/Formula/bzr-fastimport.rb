@@ -3,20 +3,21 @@ class BzrFastimport < Formula
   homepage "https://launchpad.net/bzr-fastimport"
   url "https://launchpad.net/bzr-fastimport/trunk/0.13.0/+download/bzr-fastimport-0.13.0.tar.gz"
   sha256 "5e296dc4ff8e9bf1b6447e81fef41e1217656b43368ee4056a1f024221e009eb"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "d72b41c0aad53a702677d75810369da2ad14a8006bfe46750de3ed2d98ddccbd" => :yosemite
-    sha256 "74e3a541a5e6436475d886a0a438540c31249b9c5d4c48a9111239227a0f8b85" => :mavericks
-    sha256 "e214595d2db088abe607c92f163eec3cf10118c52e00fbc5cf28c4440b33919c" => :mountain_lion
+    sha256 "1155531ccdff247dcf8ab9cae133263199cbd708a1ae6ddc4d6e68133d1ab712" => :yosemite
+    sha256 "d784f0b66db2e31f53f7b21fa5263c3d050b490a45684d0f206c9488ca0335a6" => :mavericks
+    sha256 "fab457013d0f24e2d88b2dd76ad72d6b0101b9356e231bb0255b71866d318259" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "bazaar"
 
   resource "python-fastimport" do
-    url "http://launchpad.net/python-fastimport/trunk/0.9.0/+download/python-fastimport-0.9.0.tar.gz"
-    sha256 "07d1d3800b1cfaa820b62c5a88c40cc7e32be9b14d9c6d3298721f32df8e1dec"
+    url "https://launchpad.net/python-fastimport/trunk/0.9.2/+download/python-fastimport-0.9.2.tar.gz"
+    sha256 "fd60f1173e64a5da7c5d783f17402f795721b7548ea3a75e29c39d89a60f261e"
   end
 
   def install
@@ -24,33 +25,20 @@ class BzrFastimport < Formula
       system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
-    libexec.install Dir["*"]
-
-    # The plugin must be symlinked in bazaar/plugins to work
-    target = var/"bazaar/plugins/fastimport"
-    # we need to remove the target before symlinking it because if we don't and
-    # the symlink exists from a previous installation the new symlink will be
-    # created inside libexec instead of overriding the previous one because ln
-    # itself follows symlinks.
-    rm_rf target if target.exist?
-    ln_s libexec, target
+    (share/"bazaar/plugins/fastimport").install Dir["*"]
   end
 
   def caveats; <<-EOS.undent
     In order to use this plugin you must set your PYTHONPATH in your ~/.bashrc:
 
-      export PYTHONPATH="#{libexec}/vendor/lib/python2.7/site-packages:$PYTHONPATH"
+      export PYTHONPATH="#{opt_libexec}/vendor/lib/python2.7/site-packages:$PYTHONPATH"
 
   EOS
   end
 
   test do
-    bazaar = Formula["bazaar"]
-    assert File.exist?(bazaar.libexec/"bzrlib/plugins/fastimport/__init__.py"),
-      "The fastimport plugin must have been symlinked under bzrlib/plugins/"
-
-    bzr = bazaar.bin/"bzr"
     ENV.prepend_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    bzr = Formula["bazaar"].bin/"bzr"
     system bzr, "init"
     assert_match(/fastimport #{version}/,
                  shell_output("#{bzr} plugins --verbose"))
