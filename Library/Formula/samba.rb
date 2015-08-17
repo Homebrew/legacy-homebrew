@@ -43,6 +43,8 @@ class Samba < Formula
       touch prefix/"etc/smb.conf"
       (prefix/"private").mkpath
       (var/"locks").mkpath
+      # makefile doesn't have an install target for these
+      (lib/"pkgconfig").install Dir["pkgconfig/*.pc"]
     end
   end
 
