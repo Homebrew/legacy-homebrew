@@ -1,8 +1,9 @@
 class Dateutils < Formula
   desc "Tools to manipulate dates with a focus on financial data"
   homepage "http://www.fresse.org/dateutils/"
-  url "https://bitbucket.org/hroptatyr/dateutils/downloads/dateutils-0.2.5.tar.xz"
-  sha256 "7ecf1f92e1282f4975031f63148b5c778ce70b404a30846fb6bc5de64d3f3211"
+  url "https://bitbucket.org/hroptatyr/dateutils/downloads/dateutils-0.3.3.tar.xz"
+  mirror "https://github.com/hroptatyr/dateutils/releases/download/v0.3.3/dateutils-0.3.3.tar.xz"
+  sha256 "3eb0b1dbf4519c86bc890a12c78cc85eae2cc10c20ff894a90ed55140efeee7a"
 
   bottle do
     cellar :any
@@ -11,7 +12,15 @@ class Dateutils < Formula
     sha1 "628ce464741daf92af6dd31d8c93bb012324ae87" => :mountain_lion
   end
 
+  head do
+    url "https://github.com/hroptatyr/dateutils.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
+    system "autoreconf", "-iv" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
