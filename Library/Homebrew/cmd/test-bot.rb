@@ -710,6 +710,7 @@ module Homebrew
     end
 
     ENV["HOMEBREW_DEVELOPER"] = "1"
+    ENV["HOMEBREW_SANDBOX"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
        || ARGV.include?("--ci-testing")
