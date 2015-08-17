@@ -12,6 +12,7 @@ class Libressl < Formula
 
   head do
     url "https://github.com/libressl-portable/portable.git"
+
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "libtool" => :build
@@ -27,6 +28,9 @@ class Libressl < Formula
       --with-openssldir=#{etc}/libressl
       --sysconfdir=#{etc}/libressl
     ]
+
+    # https://github.com/libressl-portable/portable/issues/121
+    args << "--disable-asm" if MacOS.version <= :snow_leopard
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
