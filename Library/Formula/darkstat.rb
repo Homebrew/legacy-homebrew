@@ -6,9 +6,9 @@ class Darkstat < Formula
 
   bottle do
     cellar :any
-    sha256 "149200f26467aa269ddea52f85a59af1439a73f923f7282ec2b5e7185116bfe3" => :yosemite
-    sha256 "d82fe76abca04e5928ea0923e8a4927262091ed40f86cf0f2822cb7ac72ced0d" => :mavericks
-    sha256 "a1532b5219ce54e9a6609f3b717fa83b23de163d033553d7d784573143385138" => :mountain_lion
+    sha256 "290629ecfb0a650104bd6560bb352af9b54e2d0c1e1e0de0d7113dab13167133" => :yosemite
+    sha256 "c613e70eb9f84aa7acaef6f1791495762537ab0fe12368ddec009a66fb91d3f8" => :mavericks
+    sha256 "fba985f30c240602c9b5ebccda87fcea7c52caba69c4c8cc5375e090a773ce19" => :mountain_lion
   end
 
   head do
