@@ -1,4 +1,5 @@
 require "formula"
+require "formula_lock"
 require "keg"
 require "tab"
 require "tap_migrations"
@@ -132,6 +133,7 @@ class Migrator
 
     begin
       oh1 "Migrating #{Tty.green}#{oldname}#{Tty.white} to #{Tty.green}#{newname}#{Tty.reset}"
+      lock
       unlink_oldname
       move_to_new_directory
       repin
@@ -147,6 +149,8 @@ class Migrator
       puts e.backtrace if ARGV.debug?
       puts "Backuping..."
       ignore_interrupts { backup_oldname }
+    ensure
+      unlock
     end
   end
 
@@ -319,5 +323,17 @@ class Migrator
 
   def backup_old_tabs
     old_tabs.each(&:write)
+  end
+
+  def lock
+    @newname_lock = FormulaLock.new newname
+    @oldname_lock = FormulaLock.new oldname
+    @newname_lock.lock
+    @oldname_lock.lock
+  end
+
+  def unlock
+    @newname_lock.unlock
+    @oldname_lock.unlock
   end
 end
