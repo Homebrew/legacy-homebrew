@@ -234,7 +234,8 @@ class Checks
   def check_for_broken_symlinks
     broken_symlinks = []
 
-    Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |d|
+    Keg::PRUNEABLE_DIRECTORIES.each do |d|
+      next unless d.directory?
       d.find do |path|
         if path.symlink? && !path.resolved_path_exists?
           broken_symlinks << path

@@ -46,7 +46,7 @@ module Homebrew
   def migrate_taps(options = {})
     ignore = HOMEBREW_LIBRARY/"Formula/.gitignore"
     return unless ignore.exist? || options.fetch(:force, false)
-    (HOMEBREW_LIBRARY/"Formula").children.select(&:symlink?).each(&:unlink)
+    (HOMEBREW_LIBRARY/"Formula").children.each { |c| c.unlink if c.symlink? }
     ignore.unlink if ignore.exist?
   end
 

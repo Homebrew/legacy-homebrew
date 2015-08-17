@@ -30,7 +30,9 @@ module Homebrew
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
-    Tap.select(&:git?).each do |tap|
+    Tap.each do |tap|
+      next unless tap.git?
+
       tap.path.cd do
         updater = Updater.new(tap.path)
 

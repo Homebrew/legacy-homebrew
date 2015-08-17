@@ -501,7 +501,7 @@ class FormulaAuditor
         }
       end
 
-      spec.patches.select(&:external?).each { |p| audit_patch(p) }
+      spec.patches.each { |p| audit_patch(p) if p.external? }
     end
 
     %w[Stable Devel].each do |name|
@@ -1135,12 +1135,14 @@ class ResourceAuditor
     end
 
     # Use new-style archive downloads
-    urls.select { |u| u =~ %r{https://.*github.*/(?:tar|zip)ball/} && u !~ /\.git$/ }.each do |u|
+    urls.each do |u|
+      next unless u =~ %r{https://.*github.*/(?:tar|zip)ball/} && u !~ /\.git$/
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
     # Don't use GitHub .zip files
-    urls.select { |u| u =~ %r{https://.*github.*/(archive|releases)/.*\.zip$} && u !~ %r{releases/download} }.each do |u|
+    urls.each do |u|
+      next unless u =~ %r{https://.*github.*/(archive|releases)/.*\.zip$} && u !~ %r{releases/download}
       problem "Use GitHub tarballs rather than zipballs (url is #{u})."
     end
   end

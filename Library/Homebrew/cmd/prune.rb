@@ -7,7 +7,8 @@ module Homebrew
 
     dirs = []
 
-    Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |dir|
+    Keg::PRUNEABLE_DIRECTORIES.each do |dir|
+      next unless dir.directory?
       dir.find do |path|
         path.extend(ObserverPathnameExtension)
         if path.symlink?
