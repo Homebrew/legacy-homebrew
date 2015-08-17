@@ -18,7 +18,7 @@ class Cleaner
     # and will conflict if more than one formula provides it
     observe_file_removal @f.lib/"charset.alias"
 
-    [@f.bin, @f.sbin, @f.lib].select(&:exist?).each { |d| clean_dir d }
+    [@f.bin, @f.sbin, @f.lib].each { |d| clean_dir(d) if d.exist? }
 
     # Get rid of any info 'dir' files, so they don't conflict at the link stage
     info_dir_file = @f.info + "dir"

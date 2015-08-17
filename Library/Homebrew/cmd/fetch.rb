@@ -24,7 +24,7 @@ module Homebrew
       else
         fetch_formula(f)
         f.resources.each { |r| fetch_resource(r) }
-        f.patchlist.select(&:external?).each { |p| fetch_patch(p) }
+        f.patchlist.each { |p| fetch_patch(p) if p.external? }
       end
     end
   end
