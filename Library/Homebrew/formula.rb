@@ -1105,8 +1105,8 @@ class Formula
 
     patchlist.grep(DATAPatch) { |p| p.path = path }
 
-    patchlist.select(&:external?).each do |patch|
-      patch.verify_download_integrity(patch.fetch)
+    patchlist.each do |patch|
+      patch.verify_download_integrity(patch.fetch) if patch.external?
     end
   end
 
