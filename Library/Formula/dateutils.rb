@@ -6,10 +6,9 @@ class Dateutils < Formula
   sha256 "3eb0b1dbf4519c86bc890a12c78cc85eae2cc10c20ff894a90ed55140efeee7a"
 
   bottle do
-    cellar :any
-    sha1 "bcacbd417ff8109bd9bd73aaa0397e7738cda974" => :yosemite
-    sha1 "aea972b1c122db46172d6e37fbfd3fd015fa7bdc" => :mavericks
-    sha1 "628ce464741daf92af6dd31d8c93bb012324ae87" => :mountain_lion
+    sha256 "c74ecda07d3a64ca6d7df955952b63eb5666a6fbb3292ba60effa57bba44e98b" => :yosemite
+    sha256 "ae5de247bc72823fc9568c8592ba44850388883068b702ed3ef81e1439c2e4f5" => :mavericks
+    sha256 "1d1f07a896893e1b2440067835c8de442b423a0fbaec66630740024bb790f1ef" => :mountain_lion
   end
 
   head do
