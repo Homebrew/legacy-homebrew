@@ -1,8 +1,8 @@
 class Darkstat < Formula
   desc "Network traffic analyzer"
   homepage "https://unix4lyfe.org/darkstat/"
-  url "https://unix4lyfe.org/darkstat/darkstat-3.0.718.tar.bz2"
-  sha256 "682f3e53f4e89ea6ad08236b4225a5e0859428299765d8d995374cd7fa22adff"
+  url "https://unix4lyfe.org/darkstat/darkstat-3.0.719.tar.bz2"
+  sha256 "aeaf909585f7f43dc032a75328fdb62114e58405b06a92a13c0d3653236dedd7"
 
   bottle do
     cellar :any
@@ -11,12 +11,14 @@ class Darkstat < Formula
     sha256 "a1532b5219ce54e9a6609f3b717fa83b23de163d033553d7d784573143385138" => :mountain_lion
   end
 
-  devel do
-    url "https://unix4lyfe.org/darkstat/darkstat-3.0.719rc1.tar.bz2"
-    sha256 "827e91aa9261d3f6783cf3f8affa80590800cc5740dcac5f42c88e2bc781390b"
+  head do
+    url "https://www.unix4lyfe.org/git/darkstat", :using => :git
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
   end
 
   def install
+    system "autoreconf", "-iv" if build.head?
     system "./configure", "--disable-debug", "--prefix=#{prefix}"
     system "make", "install"
   end
