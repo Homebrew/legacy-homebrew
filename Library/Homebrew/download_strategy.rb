@@ -394,9 +394,7 @@ end
 class CurlSourceForgeSecureMirrorDownloadStrategy < CurlDownloadStrategy
   def fetch
     unless ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil?
-      ohai "Sourceforge HTTPS: #{@url}"
-      @url = https_mirror
-      ohai "=> converted to #{@url}"
+      mirrors.unshift *https_mirror
     end
     super
   end
