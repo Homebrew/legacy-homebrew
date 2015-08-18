@@ -302,8 +302,8 @@ Note that these flags should only appear after a command.
     Migrate renamed packages to new name, where <formulae> are old names of
     packages.
 
-    If `--force` is passed and installed <formulae> have nil tap, then treat
-    them like packages installed from core.
+    If `--force` is passed, then treat installed <formulae> and passed <formulae>
+    like if they are from same taps and migrate them anyway.
 
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
