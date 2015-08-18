@@ -12,6 +12,8 @@ class Samba < Formula
 
   conflicts_with "talloc", :because => "both install `include/talloc.h`"
 
+  # Once the smbd daemon is executed with required root permissions
+  # contents of these two directories becomes owned by root. Sad face.
   skip_clean "private"
   skip_clean "var/locks"
 
@@ -38,14 +40,19 @@ class Samba < Formula
         s.gsub! /(lib\w+).dylib(.[\.\d]+)/, "\\1\\2.dylib"
       end
 
-      system "make", "install"
-      (prefix/"etc").mkpath
-      touch prefix/"etc/smb.conf"
       (prefix/"private").mkpath
-      (var/"locks").mkpath
+      (prefix/"var/locks").mkpath
+
+      system "make", "install"
       # makefile doesn't have an install target for these
       (lib/"pkgconfig").install Dir["pkgconfig/*.pc"]
     end
+
+    # Install basic example configuration
+    inreplace "examples/smb.conf.default" do |s|
+      s.gsub! "/usr/local/samba/var/log.%m", "#{prefix}/var/log/samba/log.%m"
+    end
+    (prefix/"etc").install "examples/smb.conf.default" => "smb.conf"
   end
 
   plist_options :manual => "smbd"
