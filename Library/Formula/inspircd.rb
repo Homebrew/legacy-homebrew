@@ -43,7 +43,9 @@ class Inspircd < Formula
     system "./configure", "--enable-extras=#{modules.join(",")}" unless modules.empty?
     system "./configure", "--prefix=#{prefix}", "--with-cc=#{ENV.cc}"
     system "make", "install"
+  end
 
+  def post_install
     inreplace "#{prefix}/org.inspircd.plist", "ircdaemon", ENV["USER"]
   end
 
