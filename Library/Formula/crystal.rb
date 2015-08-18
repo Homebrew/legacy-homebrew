@@ -15,7 +15,6 @@ class Crystal < Formula
 
   def install
     ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
-    ENV["HOME"] = "#{buildpath}/.brew_home"
 
     system "npm", "install"
     libexec.install Dir["*", ".crystal"]
