@@ -36,14 +36,15 @@ class Mtr < Formula
   end
 
   def caveats; <<-EOS.undent
-    mtr requires superuser privileges. You can either run the program
-    via `sudo`, or change its ownership to root and set the setuid bit:
+    mtr requires superuser privileges for raw sockets access. You can either
+    run the program via `sudo`, or change its ownership to root and set the
+    setuid bit:
 
       sudo chown root:wheel #{sbin}/mtr
       sudo chmod u+s #{sbin}/mtr
 
-    In any case, you should be certain that you trust the software you
-    are executing with elevated privileges.
+    mtr drops privileges immediately after starting up and should be fairly
+    safe to setuid.
     EOS
   end
 end
