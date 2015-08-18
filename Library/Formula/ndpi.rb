@@ -1,8 +1,8 @@
 class Ndpi < Formula
-  desc "Superset of the popular OpenDPI library"
+  desc "Deep Packet Inspection (DPI) library"
   homepage "http://www.ntop.org/products/ndpi/"
-  url "https://downloads.sourceforge.net/project/ntop/nDPI/nDPI-1.6.tar.gz"
-  sha256 "0e2201d0d003ac5df0de904f8e4df149ca55a59e708a32ce55500be92a031444"
+  url "https://downloads.sourceforge.net/project/ntop/nDPI/nDPI-1.7.tar.gz"
+  sha256 "714b745103a072462130b0e14cf31b2eb5270f580b7c839da5cf5ea75150262d"
 
   bottle do
     cellar :any
