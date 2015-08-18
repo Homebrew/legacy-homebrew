@@ -293,7 +293,7 @@ If no \fIformulae\fR are given, check all installed brews\.
 \fBmigrate [\-\-force]\fR \fIformulae\fR: Migrate renamed packages to new name, where \fIformulae\fR are old names of packages\.
 .
 .IP
-If \fB\-\-force\fR is passed and installed \fIformulae\fR have nil tap, then treat them like packages installed from core\.
+If \fB\-\-force\fR is passed, then treat installed \fIformulae\fR and passed \fIformulae\fR like if they are from same taps and migrate them anyway\.
 .
 .IP "\(bu" 4
 \fBoptions [\-\-compact] [\-\-all] [\-\-installed]\fR \fIformula\fR: Display install options specific to \fIformula\fR\.
