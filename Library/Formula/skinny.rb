@@ -17,7 +17,6 @@ class Skinny < Formula
 
   def install
     ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
-    ENV["HOME"] = buildpath/".brew_home"
 
     if build.with? "npm-generator"
       system "npm", "install", "yo"

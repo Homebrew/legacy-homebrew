@@ -15,7 +15,6 @@ class Kibana < Formula
   depends_on "node"
 
   def install
-    ENV["HOME"] = buildpath/".brew_home"
     ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
 
     system "npm", "install"
