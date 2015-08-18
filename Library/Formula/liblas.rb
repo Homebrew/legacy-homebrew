@@ -3,6 +3,7 @@ class Liblas < Formula
   homepage "http://liblas.org"
   url "http://download.osgeo.org/liblas/libLAS-1.8.0.tar.bz2"
   sha256 "17310082845e45e5c4cece78af98ee93aa5d992bf6d4ba9a6e9f477228738d7a"
+  revision 1
 
   head "https://github.com/libLAS/libLAS.git"
 
