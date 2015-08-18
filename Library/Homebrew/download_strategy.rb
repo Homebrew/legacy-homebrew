@@ -359,6 +359,7 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     buf = ""
 
     pid = fork do
+      ENV.delete "HOMEBREW_CURL_VERBOSE"
       rd.close
       $stdout.reopen(wr)
       $stderr.reopen(wr)
