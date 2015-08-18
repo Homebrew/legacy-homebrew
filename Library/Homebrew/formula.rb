@@ -689,10 +689,15 @@ class Formula
   def lock
     @lock = FormulaLock.new(name)
     @lock.lock
+    if oldname && (oldname_rack = HOMEBREW_CELLAR/oldname).exist? && oldname_rack.resolved_path == rack
+      @oldname_lock = FormulaLock.new(oldname)
+      @oldname_lock.lock
+    end
   end
 
   def unlock
     @lock.unlock unless @lock.nil?
+    @oldname_lock.unlock unless @oldname_lock.nil?
   end
 
   def pinnable?
