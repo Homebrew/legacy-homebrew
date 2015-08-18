@@ -13,6 +13,7 @@ class Cmake < Formula
   end
 
   option "without-docs", "Don't build man pages"
+  option "with-completion", "Install Bash completion (Has potential problems with system bash)"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
 
@@ -109,8 +110,10 @@ class Cmake < Formula
     system "make"
     system "make", "install"
 
-    cd "Auxiliary/bash-completion/" do
-      bash_completion.install "ctest", "cmake", "cpack"
+    if build.with? "completion"
+      cd "Auxiliary/bash-completion/" do
+        bash_completion.install "ctest", "cmake", "cpack"
+      end
     end
 
     (share/"emacs/site-lisp/cmake").install "Auxiliary/cmake-mode.el"
