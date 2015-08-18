@@ -18,8 +18,7 @@ class When < Formula
   end
 
   test do
-    temp_home = Pathname(ENV["HOME"])
-    (temp_home/".when/preferences").write <<-EOS.undent
+    (testpath/".when/preferences").write <<-EOS.undent
       calendar = #{testpath}/calendar
     EOS
 
