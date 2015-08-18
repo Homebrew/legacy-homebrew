@@ -6,9 +6,10 @@ class Inspircd < Formula
   head "https://github.com/inspircd/inspircd.git"
 
   bottle do
-    sha256 "fec94f81b70029ca744f6560236606cdaea923cad8f1a04568891a1d9f07a785" => :yosemite
-    sha256 "8f517ee50663da8638c58b729634f57bd8486c841f4027a61910ce3b80276f41" => :mavericks
-    sha256 "250eba4355daa9ffe60aba0892f78ff6092f16d00a13afa6aab59a9402ef6eff" => :mountain_lion
+    revision 1
+    sha256 "b224270f471897506b1ec091fbe9470392416d0e08ad59aadb2a4ca678c9831f" => :yosemite
+    sha256 "56a85222822adba5ce3fb86c8873963b4b5b70435985cc7fc7956afa25d5c78d" => :mavericks
+    sha256 "142864c79850cb4a7a1a46e85e5d1ba087de67e938801585e1bd254f21da70d5" => :mountain_lion
   end
 
   skip_clean "data"
