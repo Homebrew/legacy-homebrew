@@ -5,9 +5,10 @@ class Samba < Formula
   sha256 "8f2c8a7f2bd89b0dfd228ed917815852f7c625b2bc0936304ac3ed63aaf83751"
 
   bottle do
-    sha1 "d573b77cb2f4187d366e6a5314982661089c91bf" => :yosemite
-    sha1 "2b74fcea8edca1c15e597fd469d682ccee558a9c" => :mavericks
-    sha1 "32546ed646eec7798f25d18c3bce9d5fef23da06" => :mountain_lion
+    revision 1
+    sha256 "f1fc6a41e7ff919d7c0d2459df72df4dfa84d557481301338cbb74489e80b659" => :yosemite
+    sha256 "3fe2b2aa3b3623dd7d8bc3f2ef7308600125eed03817ecf0fa9d10c0c9911705" => :mavericks
+    sha256 "f6c02ca7f1dd074a3b5c021810351904cbe8b447bd81adc9598e64e1eb342e10" => :mountain_lion
   end
 
   conflicts_with "talloc", :because => "both install `include/talloc.h`"
