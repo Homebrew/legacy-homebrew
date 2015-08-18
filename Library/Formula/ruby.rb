@@ -1,8 +1,8 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.bz2"
-  sha256 "f3b8ffa6089820ee5bdc289567d365e5748d4170e8aa246d2ea6576f24796535"
+  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2"
+  sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
 
   bottle do
     sha256 "a3899bcda507cb92ec8b56c85ce87f243d36ad515b349a5cde0817d6eadd8761" => :yosemite
@@ -34,8 +34,6 @@ class Ruby < Formula
   end
 
   def install
-    system "autoconf" if build.head?
-
     args = %W[
       --prefix=#{prefix} --enable-shared --disable-silent-rules
       --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
@@ -67,6 +65,7 @@ class Ruby < Formula
 
     args << "--with-opt-dir=#{paths.join(":")}"
 
+    system "autoconf" if build.head?
     system "./configure", *args
     system "make"
     system "make", "install"
