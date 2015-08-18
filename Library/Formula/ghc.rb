@@ -4,6 +4,8 @@ class Ghc < Formula
   url "https://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-src.tar.xz"
   sha256 "54cd73755b784d78e2f13d5eb161bfa38d3efee9e8a56f7eb6cd9f2d6e2615f5"
 
+  revision 1
+
   bottle do
     revision 1
     sha256 "cc097abdfd1d392ffe6f8193627168279441fb868555823ac5aa75c41f2d9e74" => :yosemite
