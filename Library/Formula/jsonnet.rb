@@ -1,5 +1,5 @@
 class Jsonnet < Formula
-  desc "Jsonnet is a domain specific configuration language that helps you define JSON data."
+  desc "A domain specific configuration language for defining JSON data."
   homepage "https://google.github.io/jsonnet/doc/"
   url "https://github.com/google/jsonnet/archive/v0.7.9.tar.gz"
   sha256 "103a262636b8db3bfc7dcef7a5d93912d6bf713dd468e188760f6622a9889e44"
