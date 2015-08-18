@@ -41,6 +41,7 @@ fi
 FILES="job-server-extras/target/scala-$majorVersion/spark-job-server.jar
        bin/server_start.sh
        bin/server_stop.sh
+       bin/kill-process-tree.sh
        $CONFIG_DIR/$ENV.conf
        config/log4j-server.properties"
 
