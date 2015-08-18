@@ -13,13 +13,13 @@ class Liblas < Formula
     sha256 "c628a4cd7a2904e9536b494f9ad015046184ae2b44c5ab7bbc662e43f844b6c5" => :mountain_lion
   end
 
+  option "with-test", "Verify during install with `make test`"
+
   depends_on "cmake" => :build
   depends_on "libgeotiff"
   depends_on "gdal"
   depends_on "boost"
   depends_on "laszip" => :optional
-
-  option "with-test", "Verify during install with `make test`"
 
   def install
     mkdir "macbuild" do
@@ -30,9 +30,10 @@ class Liblas < Formula
       ENV["Boost_LIBRARY_DIRS"] = "#{HOMEBREW_PREFIX}/lib"
       args = ["-DWITH_GEOTIFF=ON", "-DWITH_GDAL=ON"] + std_cmake_args
       args << "-DWITH_LASZIP=ON" if build.with? "laszip"
+
       system "cmake", "..", *args
       system "make"
-      system "make test" if build.with? "test"
+      system "make", "test" if build.bottle? || build.with?("test")
       system "make", "install"
     end
   end
