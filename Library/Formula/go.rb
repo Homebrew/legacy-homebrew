@@ -32,17 +32,12 @@ class Go < Formula
 
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
-    :revision => "69db398fe0e69396984e3967724820c1f631e971"
+    :revision => "d02228d1857b9f49cd0252788516ff5584266eb6"
   end
 
   resource "gobootstrap" do
-    if MacOS.version > :lion
-      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.8.tar.gz"
-      sha256 "c2f53983fc8fe5159d811081022ebc401b8111759ce008f91193abdae82cdbc9"
-    else
-      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.6.tar.gz"
-      sha256 "da40e85a2c9bda9d2c29755c8b57b8d5932440ba466ca366c2a667697a62da4c"
-    end
+    url "https://storage.googleapis.com/golang/go1.5.darwin-amd64.tar.gz"
+    sha256 "fff51671abfbe3e68109d8bc5c7ee66d2da17fb1235ed834ce7fd294d607803f"
   end
 
   def install
