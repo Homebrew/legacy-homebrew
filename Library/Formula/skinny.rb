@@ -1,8 +1,8 @@
 class Skinny < Formula
   desc "Full-stack web app framework built on Scalatra"
   homepage "http://skinny-framework.org/"
-  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.19/skinny-1.3.19.tar.gz"
-  sha256 "a130086dfacc1719b25871c01a1bf27daeffe27a54940e8d3d90eee79868b29b"
+  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.20/skinny-1.3.20.tar.gz"
+  sha256 "b47d3df42fa9b54c77e72bd921261131b565a51a0e4578acac699a83c7365233"
 
   bottle do
     cellar :any
