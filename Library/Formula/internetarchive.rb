@@ -3,8 +3,8 @@ require "utils/json"
 class Internetarchive < Formula
   desc "Python wrapper for the various Internet Archive APIs"
   homepage "https://github.com/jjjake/internetarchive"
-  url "https://pypi.python.org/packages/source/i/internetarchive/internetarchive-0.8.5.tar.gz"
-  sha256 "2ba5e8db802953b1ac25a73c88d0955df2e4cd947bc664d94d6000003b91f14e"
+  url "https://pypi.python.org/packages/source/i/internetarchive/internetarchive-0.9.8.tar.gz"
+  sha256 "d89a0e04ea99e65ead8f5a00114c807e0d75108b76eaf34be4abd9f0c41bf73e"
 
   bottle do
     cellar :any
@@ -14,8 +14,8 @@ class Internetarchive < Formula
   end
 
   resource "PyYAML" do
-    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.10.tar.gz"
-    sha256 "e713da45c96ca53a3a8b48140d4120374db622df16ab71759c9ceb5b8d46fe7c"
+    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
+    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
   resource "args" do
@@ -34,8 +34,8 @@ class Internetarchive < Formula
   end
 
   resource "docopt" do
-    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.1.tar.gz"
-    sha256 "71ad940a773fbc23be6093e9476ad57b2ecec446946a28d30127501f3b29aa35"
+    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
+    sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
   end
 
   resource "requests" do
@@ -44,13 +44,13 @@ class Internetarchive < Formula
   end
 
   resource "py" do
-    url "https://pypi.python.org/packages/source/p/py/py-1.4.30.tar.gz"
-    sha256 "b703e57685ed7c280b1a51c496a4984d83d89def2a930b5e9e5da5a6ca151514"
+    url "https://pypi.python.org/packages/source/p/py/py-1.4.31.tar.gz"
+    sha256 "a6501963c725fc2554dabfece8ae9a8fb5e149c0ac0a42fd2b02c5c1c57fc114"
   end
 
   resource "pytest" do
-    url "https://pypi.python.org/packages/source/p/pytest/pytest-2.3.4.zip"
-    sha256 "5616f744a311c5f5fbb44943aaa41c32df70ba132159a0a9fb6c999060d7645c"
+    url "https://pypi.python.org/packages/source/p/pytest/pytest-2.8.5.zip"
+    sha256 "44bb32fb3925b5a284ceee1af55e0a63d25436ec415232089403eed3a347667e"
   end
 
   resource "jsonpatch" do
@@ -59,22 +59,22 @@ class Internetarchive < Formula
   end
 
   resource "cython" do
-    url "https://pypi.python.org/packages/source/C/Cython/Cython-0.23.tar.gz"
-    sha256 "9fd01e8301c24fb3ba0411ad8eb16f5d9f9f8e66b1281fbe7aba2a9bd9d343dc"
+    url "https://pypi.python.org/packages/source/C/Cython/Cython-0.23.4.tar.gz"
+    sha256 "fec42fecee35d6cc02887f1eef4e4952c97402ed2800bfe41bbd9ed1a0730d8e"
   end
 
   resource "greenlet" do
-    url "https://pypi.python.org/packages/source/g/greenlet/greenlet-0.4.7.zip"
-    sha256 "f32c4fa4e06443e1bdb0d32b69e7617c25ff772c3ffc6d0aa63d192e9fd795fe"
+    url "https://pypi.python.org/packages/source/g/greenlet/greenlet-0.4.9.tar.gz"
+    sha256 "79f9b8bbbb1c599c66aed5e643e8b53bae697cae46e0acfc4ee461df48a90012"
   end
 
   # For "speedups": https://pypi.python.org/pypi/internetarchive, Installation
+
   resource "ujson" do
-    url "https://pypi.python.org/packages/source/u/ujson/ujson-1.33.zip"
-    sha256 "68cf825f227c82e1ac61e423cfcad923ff734c27b5bdd7174495d162c42c602b"
+    url "https://pypi.python.org/packages/source/u/ujson/ujson-1.34.tar.gz"
+    sha256 "3d09807685ecf2eed3b68985aca4f7ad619eadfae9054d1e23a20c54ea861102"
   end
 
-  # For "speedups": https://pypi.python.org/pypi/internetarchive, Installation
   resource "gevent" do
     url "https://pypi.python.org/packages/source/g/gevent/gevent-1.0.2.tar.gz"
     sha256 "3ae1ca0f533ddcb17aab16ce66b424b3f3b855ff3b9508526915d3c6b73fba31"
