@@ -6,9 +6,9 @@ class Embulk < Formula
 
   bottle do
     cellar :any
-    sha256 "119f18cd8960821c6471c4ac96dcbc3801e786b4853e3a68891c68e3a5ec06a5" => :yosemite
-    sha256 "e6bcbf6bb5af67f2d497cb05408fc1c4d626fd3011a7ee65e76fda2e866eb1f2" => :mavericks
-    sha256 "507ba927665752e730843b9cb36fade80ff2849b2a5b8e30eb4c34d2df2beb34" => :mountain_lion
+    sha256 "a2f5cecc6ce56ffe2a4f2260ddfc93c520e1ee6db23bbee68ceca6807e72cd1c" => :yosemite
+    sha256 "0fa1e08a9faf1f1302c569881756001daffffce31c371c43bfb961bb0dc5e74e" => :mavericks
+    sha256 "6decb163913f25365090cf6ce61cd5ab6a2b6e51be6bb6170e696c18880a0b7b" => :mountain_lion
   end
 
   depends_on :java
