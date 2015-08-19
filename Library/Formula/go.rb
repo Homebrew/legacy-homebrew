@@ -38,19 +38,17 @@ class Go < Formula
 
   def install
 
-    if build.head? || build.devel?
-      # GOROOT_FINAL must be overidden later on real Go install
-      ENV["GOROOT_FINAL"] = buildpath/"gobootstrap"
+    # GOROOT_FINAL must be overidden later on real Go install
+    ENV["GOROOT_FINAL"] = buildpath/"gobootstrap"
 
-      # build the gobootstrap toolchain Go >=1.4
-      (buildpath/"gobootstrap").install resource("gobootstrap")
-      cd "#{buildpath}/gobootstrap/src" do
-        system "./make.bash", "--no-clean"
-      end
-      # This should happen after we build the test Go, just in case
-      # the bootstrap toolchain is aware of this variable too.
-      ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
+    # build the gobootstrap toolchain Go >=1.4
+    (buildpath/"gobootstrap").install resource("gobootstrap")
+    cd "#{buildpath}/gobootstrap/src" do
+      system "./make.bash", "--no-clean"
     end
+    # This should happen after we build the test Go, just in case
+    # the bootstrap toolchain is aware of this variable too.
+    ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
 
     cd "src" do
       targets.each do |os, archs|
