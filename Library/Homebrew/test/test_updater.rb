@@ -64,6 +64,7 @@ class UpdaterTests < Homebrew::TestCase
     @updater.in_repo_expect("git pull --quiet origin refs/heads/master:refs/remotes/origin/master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
     @updater.pull!(:silent => true)
+    @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
     @report.update(@updater.report)
     assert_equal @updater.expected, @updater.called
   end
