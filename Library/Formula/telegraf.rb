@@ -6,6 +6,13 @@ class Telegraf < Formula
   url "https://github.com/influxdb/telegraf/archive/v0.1.4.tar.gz"
   sha256 "df586d0ada7e808b62ff476efd87c5a35e69a98bc45b3bf9823751cbccecc017"
 
+  bottle do
+    cellar :any
+    sha256 "2df489ade5c2c8d7dceab4912ec222e2b29d0eb86c8d698cbaa6a8952e82f04d" => :yosemite
+    sha256 "9e1afbd2f99e39dc784612590244875c13604009b0bb1a768ca4153617259787" => :mavericks
+    sha256 "ab551eda436b160eb872a36da91203c1739538ca4ad379ecfcae0c9017677a8b" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/tools/godep" do
