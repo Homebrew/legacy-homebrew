@@ -7,10 +7,10 @@ class Internetarchive < Formula
   sha256 "d89a0e04ea99e65ead8f5a00114c807e0d75108b76eaf34be4abd9f0c41bf73e"
 
   bottle do
-    cellar :any
-    sha256 "9b7d0ec74c77c7e8d64f496199c83c9a6b5b986ae4292d073d09fd9dd3b3cee3" => :yosemite
-    sha256 "a76cbf8fb2b26b66aec9d107c8cad3546143f084c78b3fe30f9ea77db98611b8" => :mavericks
-    sha256 "e31e96459aa0c732fa2b39778c863ca2ea1935f36e74548fe93499304cc0ca9a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3e27214dbc22967ff042bca21dad0ac37646c369317a4ef17e6235f8c9a8b839" => :el_capitan
+    sha256 "29ffd79cce847a599d26757f63d59a72e6a7e02e9c6444472925628a2a315003" => :yosemite
+    sha256 "c8541a556cbabb8e3ae77eab1642b4bf1ff54984a796b04fa4daabc2e6eb8f6c" => :mavericks
   end
 
   resource "PyYAML" do
