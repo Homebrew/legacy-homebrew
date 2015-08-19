@@ -4,6 +4,8 @@ class Jsonnet < Formula
   url "https://github.com/google/jsonnet/archive/v0.7.9.tar.gz"
   sha256 "103a262636b8db3bfc7dcef7a5d93912d6bf713dd468e188760f6622a9889e44"
 
+  depends_on :macos => :yosemite
+
   def install
     system "make"
     bin.install "jsonnet"
