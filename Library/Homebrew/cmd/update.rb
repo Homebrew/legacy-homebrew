@@ -202,6 +202,8 @@ class Updater
 
     reset_on_interrupt { safe_system "git", *args }
 
+    @current_revision = read_current_revision
+
     if @initial_branch != "master" && !@initial_branch.empty?
       safe_system "git", "checkout", @initial_branch, *quiet
     end
@@ -214,8 +216,6 @@ class Updater
       end
       @stashed = false
     end
-
-    @current_revision = read_current_revision
   end
 
   def reset_on_interrupt
