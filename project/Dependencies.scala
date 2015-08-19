@@ -19,7 +19,7 @@ object Dependencies {
     // Akka is provided because Spark already includes it, and Spark's version is shaded so it's not safe
     // to use this one
     "com.typesafe.akka" %% "akka-slf4j" % "2.3.4" % "provided",
-    "io.spray" %% "spray-json" % "1.3.1",
+    "io.spray" %% "spray-json" % "1.3.2",
     "io.spray" %% "spray-can" % "1.3.2",
     "io.spray" %% "spray-routing" % "1.3.2",
     "io.spray" %% "spray-client" % "1.3.2",
