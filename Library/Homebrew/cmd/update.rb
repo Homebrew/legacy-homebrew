@@ -232,6 +232,8 @@ class Updater
     map = Hash.new { |h, k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
+      wc_revision = read_current_revision
+
       diff.each_line do |line|
         status, *paths = line.split
         src = paths.first
@@ -247,7 +249,11 @@ class Updater
           file = repository.join(src)
           begin
             formula = Formulary.factory(file)
-            new_version = formula.pkg_version
+            new_version = if wc_revision == current_revision
+              formula.pkg_version
+            else
+              FormulaVersions.new(formula).formula_at_revision(@current_revision, &:pkg_version)
+            end
             old_version = FormulaVersions.new(formula).formula_at_revision(@initial_revision, &:pkg_version)
             next if new_version == old_version
           rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS => e
