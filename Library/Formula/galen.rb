@@ -1,8 +1,8 @@
 class Galen < Formula
   desc "Automated testing of look and feel for responsive websites"
   homepage "http://galenframework.com/"
-  url "https://github.com/galenframework/galen/releases/download/galen-1.6.4/galen-bin-1.6.4.zip"
-  sha256 "f81fb9af846662fd89778654d13246184561fde11a23b67e23b144cfac56f88c"
+  url "https://github.com/galenframework/galen/releases/download/galen-2.0.7/galen-bin-2.0.7.zip"
+  sha256 "cbc041e3bdb975aa75ff2e76196f0610fddfb89540ffe23293368e3024ce118e"
 
   bottle do
     cellar :any
@@ -18,7 +18,7 @@ class Galen < Formula
     (bin/"galen").write <<-EOS.undent
       #!/bin/sh
       set -e
-      java -cp "#{libexec}/galen.jar:lib/*:libs/*" net.mindengine.galen.GalenMain "$@"
+      java -cp "#{libexec}/galen.jar:lib/*:libs/*" com.galenframework.GalenMain "$@"
     EOS
   end
 
