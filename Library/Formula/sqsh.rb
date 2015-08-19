@@ -1,4 +1,5 @@
 class Sqsh < Formula
+  desc "Sybase Shell"
   homepage "https://sourceforge.net/projects/sqsh/"
   url "https://downloads.sourceforge.net/project/sqsh/sqsh/sqsh-2.5/sqsh-2.5.16.1.tgz"
   sha256 "d6641f365ace60225fc0fa48f82b9dbed77a4e506a0e497eb6889e096b8320f2"

@@ -1,4 +1,5 @@
 class Blockhash < Formula
+  desc "Perceptual image hash calculation tool"
   homepage "http://blockhash.io/"
   head "https://github.com/commonsmachinery/blockhash.git"
   url "https://github.com/commonsmachinery/blockhash/archive/0.1.tar.gz"

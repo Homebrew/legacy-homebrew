@@ -1,4 +1,5 @@
 class Maven < Formula
+  desc "Java-based project management"
   homepage "https://maven.apache.org/"
   url "https://www.apache.org/dyn/closer.cgi?path=maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz"
   mirror "https://archive.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz"
@@ -31,8 +32,8 @@ class Maven < Formula
   test do
     (testpath/"pom.xml").write <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
-      <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+      <project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
         <modelVersion>4.0.0</modelVersion>
         <groupId>org.homebrew</groupId>
         <artifactId>maven-test</artifactId>

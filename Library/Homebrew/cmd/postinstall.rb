@@ -2,7 +2,7 @@ require "sandbox"
 
 module Homebrew
   def postinstall
-    ARGV.resolved_formulae.each { |f| run_post_install(f) }
+    ARGV.resolved_formulae.each { |f| run_post_install(f) if f.post_install_defined? }
   end
 
   def run_post_install(formula)
@@ -15,8 +15,16 @@ module Homebrew
       #{formula.path}
     ].concat(ARGV.options_only)
 
+    if Sandbox.available? && ARGV.sandbox?
+      if Sandbox.auto_disable?
+        Sandbox.print_autodisable_warning
+      else
+        Sandbox.print_sandbox_message
+      end
+    end
+
     Utils.safe_fork do
-      if Sandbox.available? && ARGV.sandbox?
+      if Sandbox.available? && ARGV.sandbox? && !Sandbox.auto_disable?
         sandbox = Sandbox.new
         formula.logs.mkpath
         sandbox.record_log(formula.logs/"sandbox.postinstall.log")

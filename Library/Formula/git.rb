@@ -1,24 +1,25 @@
 class Git < Formula
+  desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.4.2.tar.xz"
-  sha256 "4801ec1cd8c2175b58cfdbc721d0bf50d74ae226f36905fceb894c2fb620c9e5"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.5.0.tar.xz"
+  sha256 "cc59b1bac6c1c67a9159872863f6c5bbe0d9404cac2a85c3e9d9fa49923ce45c"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "3fd3d81806e8cc40c21dc7f5017c9122d964396afea10ec7ae029207005df1c2" => :yosemite
-    sha256 "32a287b782012038636fe05e1592ec9c862f13bbabc96edf255241bdb7d98812" => :mavericks
-    sha256 "d6d6d9184095022fb0aa200baadf6129f3e92301b7c250746b859bbed0b775c4" => :mountain_lion
+    sha256 "1aff22dff3c093f6108d0eef131f65da825beb72a6e68ce1b3e0005521118073" => :yosemite
+    sha256 "8dce49e4558d3f0247f9d29c6dff1125633b3a8ef415d0067f760d75dde8e8fb" => :mavericks
+    sha256 "491848d26ba4f901a4ccad1a34a4b85a82a792c71c5dd01d178a6f3edb0cde4d" => :mountain_lion
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.4.2.tar.xz"
-    sha256 "1b1830e804725e90ff319d801ab25f84ad956564379ef976bdc91bd58b743c32"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.5.0.tar.xz"
+    sha256 "1a6ea7220b1693eb384af0978a990ea8c0c634a7869d1ef63a2c8e427fc7f6ea"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.4.2.tar.xz"
-    sha256 "792cfc6c8236fdb58dfd66e39766c7b8097080361eed28443207bc6c36e07911"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.5.0.tar.xz"
+    sha256 "0924b290834e2a361a489cbc845a9bf04e56117597dc9c1a40e879cce655e4e2"
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"
@@ -58,9 +59,9 @@ class Git < Formula
         #{MacOS.active_developer_dir}
         /Library/Developer/CommandLineTools
         /Applications/Xcode.app/Contents/Developer
-      ].uniq.map { |p|
+      ].uniq.map do |p|
         "#{p}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
-      }.join(":")
+      end.join(":")
     end
 
     unless quiet_system ENV["PERL_PATH"], "-e", "use ExtUtils::MakeMaker"
@@ -76,12 +77,16 @@ class Git < Formula
 
     ENV["NO_GETTEXT"] = "1" if build.without? "gettext"
 
-    system "make", "prefix=#{prefix}",
-                   "sysconfdir=#{etc}",
-                   "CC=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "LDFLAGS=#{ENV.ldflags}",
-                   "install"
+    args = %W[
+      prefix=#{prefix}
+      sysconfdir=#{etc}
+      CC=#{ENV.cc}
+      CFLAGS=#{ENV.cflags}
+      LDFLAGS=#{ENV.ldflags}
+    ]
+    args << "NO_OPENSSL=1" << "APPLE_COMMON_CRYPTO=1" if build.without? "brewed-openssl"
+
+    system "make", "install", *args
 
     # Install the OS X keychain credential helper
     cd "contrib/credential/osxkeychain" do

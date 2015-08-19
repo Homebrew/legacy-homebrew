@@ -1,4 +1,5 @@
 class Djvulibre < Formula
+  desc "DjVu viewer"
   homepage "http://djvu.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/djvu/DjVuLibre/3.5.27/djvulibre-3.5.27.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/d/djvulibre/djvulibre_3.5.27.orig.tar.gz"

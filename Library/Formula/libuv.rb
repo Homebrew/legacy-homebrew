@@ -1,14 +1,15 @@
 class Libuv < Formula
+  desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.5.0.tar.gz"
-  sha256 "f9c6ad4b7a2c90d93c8e09d2e739bb46d199639c4d884ba30323359521b09367"
+  url "https://github.com/libuv/libuv/archive/v1.7.0.tar.gz"
+  sha256 "27a66f944c8cf1baf0fb53f5cfe11f01035cc80622d8ecc8e18bd1b2ae35ef5f"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
     cellar :any
-    sha256 "36280ae768a4bad91583ae76488d46c31a1e68f6f01b684a5e01f8a88cb1ec7a" => :yosemite
-    sha256 "2468bc83ef571b9631f1a26c5d017bdf8bf3daf23c965cb80b22cbe692713a48" => :mavericks
-    sha256 "c7ceebd9e3f941e2e9962580e2b18879952f1cd9aa111f70d26109e879a1e43c" => :mountain_lion
+    sha256 "01a5c05e25422a4f6986822c5ba3d68c5b1f52d257b3813dd767cf15400132a9" => :yosemite
+    sha256 "8fe6f59a631b800bcf87404e055f5af25a994220e89aebdf9b5ce7f305255e15" => :mavericks
+    sha256 "d71328890a072ffd452891bd2e99b2510bd562e73ce8d20c59dbc91105ca1cee" => :mountain_lion
   end
 
   option "without-docs", "Don't build and install documentation"
@@ -31,8 +32,8 @@ class Libuv < Formula
   end
 
   resource "alabaster" do
-    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.3.tar.gz"
-    sha256 "0703c1ea5a6af0bb6d0cec24708301334949d56ebc7f95c64028d9c66f9d8d5d"
+    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.4.tar.gz"
+    sha256 "ce77e2fdbaabaae393ffce2a6252a0a666e3977c6c2fa1c48c4ded0569785951"
   end
 
   resource "babel" do
@@ -71,15 +72,15 @@ class Libuv < Formula
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.2.tar.bz2"
-    sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.4.tar.bz2"
+    sha256 "a78b484d5472dd8c688f8b3eee18646a25c66ce45b2c26652850f6af9ce52b17"
   end
 
   def install
     ENV.universal_binary if build.universal?
 
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python2.7/site-packages"
       resources.each do |r|
         r.stage do
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
@@ -108,6 +109,7 @@ class Libuv < Formula
   test do
     (testpath/"test.c").write <<-EOS.undent
       #include <uv.h>
+      #include <stdlib.h>
 
       int main()
       {

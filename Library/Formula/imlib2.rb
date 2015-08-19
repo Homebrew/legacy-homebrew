@@ -1,4 +1,5 @@
 class Imlib2 < Formula
+  desc "Image loading and rendering library"
   homepage "http://sourceforge.net/projects/enlightenment/files/"
   url "https://downloads.sourceforge.net/project/enlightenment/imlib2-src/1.4.7/imlib2-1.4.7.tar.bz2"
   sha256 "35d733ce23ad7d338cff009095d37e656cb8a7a53717d53793a38320f9924701"
@@ -26,7 +27,7 @@ class Imlib2 < Formula
     args << "--without-x" if build.without? "x11"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

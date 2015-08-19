@@ -1,9 +1,9 @@
-require 'set'
+require "set"
 
 class Option
   attr_reader :name, :description, :flag
 
-  def initialize(name, description="")
+  def initialize(name, description = "")
     @name = name
     @flag = "--#{name}"
     @description = description

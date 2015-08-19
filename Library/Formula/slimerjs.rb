@@ -1,4 +1,4 @@
-class FirefoxDependency < Requirement
+class FirefoxRequirement < Requirement
   fatal true
   default_formula "xulrunner" if MacOS.version < :yosemite
 
@@ -10,7 +10,7 @@ class FirefoxDependency < Requirement
     paths.find { |p| File.exist? File.expand_path(p) }
   end
 
-  satisfy { Formula["xulrunner"].installed? || FirefoxDependency.firefox_installation }
+  satisfy(:build_env => false) { Formula["xulrunner"].installed? || FirefoxRequirement.firefox_installation }
 
   def message
     "Firefox or xulrunner must be available."
@@ -18,6 +18,7 @@ class FirefoxDependency < Requirement
 end
 
 class Slimerjs < Formula
+  desc "Scriptable browser for Web developers"
   homepage "https://slimerjs.org/"
   url "https://download.slimerjs.org/releases/0.9.5/slimerjs-0.9.5-mac.tar.bz2"
   sha256 "4333ae1c7898789c71b65ba5767cd1781290cdad36cb64d58ef289933482c81b"
@@ -31,7 +32,7 @@ class Slimerjs < Formula
 
   # Min supported OS X version by Firefox & xulrunner is 10.6
   depends_on :macos => :leopard
-  depends_on FirefoxDependency
+  depends_on FirefoxRequirement
 
   def install
     if build.head?
@@ -49,7 +50,7 @@ class Slimerjs < Formula
   def caveats
     s = ""
 
-    if (firefox_installation = FirefoxDependency.firefox_installation)
+    if (firefox_installation = FirefoxRequirement.firefox_installation)
       s += <<-EOS.undent
         You MUST provide an installation of Mozilla Firefox and set
         the environment variable SLIMERJSLAUNCHER pointing to it, e.g.:

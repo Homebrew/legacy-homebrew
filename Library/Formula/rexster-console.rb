@@ -1,4 +1,5 @@
 class RexsterConsole < Formula
+  desc "Graph server exposing Blueprints graph via REST"
   homepage "https://github.com/tinkerpop/rexster/wiki"
   url "http://tinkerpop.com/downloads/rexster/rexster-console-2.6.0.zip"
   sha256 "5f3af7bfc95847e8efa28610b23e2c175c6d92c14e5f3a468b9476cb1f2dfe1e"

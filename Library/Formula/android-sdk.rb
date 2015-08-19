@@ -1,20 +1,23 @@
+require "base64"
+
 class AndroidSdk < Formula
+  desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.2-macosx.zip"
-  version "24.2"
-  sha256 "9e0cd4844a696c555563a2daad5ff6731a4175b7a56f00c8f8dd831dbca9511b"
+  url "https://dl.google.com/android/android-sdk_r24.3.4-macosx.zip"
+  version "24.3.4"
+  sha256 "074da140b380177108b9b74869403df7a65c5b555d4f5e439fa8556f1018352b"
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
   resource "completion" do
-    url "https://raw.githubusercontent.com/CyanogenMod/android_sdk/938c8d70af7d77dfcd1defe415c1e0deaa7d301b/bash_completion/adb.bash"
-    sha256 "6ae8fae2a07c7a286d440d5f5bdafdd0c208284d7c8be21a0f59d96bb7426091"
+    url "https://android.googlesource.com/platform/sdk/+/7859e2e738542baf96c15e6c8b50bbdb410131b0/bash_completion/adb.bash?format=TEXT"
+    sha256 "44b3e20ed9cb8fff01dc6907a57bd8648cd0d1bcc7b129ec952a190983ab5e1a"
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "22.0.1"
+    "23.0.0"
   end
 
   def install
@@ -77,7 +80,13 @@ class AndroidSdk < Formula
       EOS
     end
 
-    bash_completion.install resource("completion").files("adb.bash" => "adb-completion.bash")
+    resource("completion").stage do
+      # googlesource.com only serves up the file in base64-encoded format; we
+      # need to decode it before installing
+      decoded_file = buildpath/"adb-completion.bash"
+      decoded_file.write Base64.decode64(File.read("adb.bash"))
+      bash_completion.install decoded_file
+    end
   end
 
   def caveats; <<-EOS.undent

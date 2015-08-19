@@ -1,7 +1,8 @@
 class Mvnvm < Formula
+  desc "Maven version manager"
   homepage "http://mvnvm.org"
-  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.5.zip"
-  sha256 "dd065cfbf40bfc2e4623569cd2f0d435cec2b61953d47b8e4d7213b23e3178e5"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.6.zip"
+  sha256 "bd82f1281c333c0af6a2c4b3bf3a8dc8fece78c81c874e5f8810c17335938bd7"
 
   head "https://bitbucket.org/mjensen/mvnvm.git"
 
@@ -20,8 +21,8 @@ class Mvnvm < Formula
     EOS
     (testpath/"pom.xml").write <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
-      <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+      <project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
         <modelVersion>4.0.0</modelVersion>
         <groupId>org.homebrew</groupId>
         <artifactId>maven-test</artifactId>

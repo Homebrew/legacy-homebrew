@@ -1,4 +1,5 @@
 class Colorsvn < Formula
+  desc "Subversion output colorizer"
   homepage "http://colorsvn.tigris.org/"
   url "http://colorsvn.tigris.org/files/documents/4414/49311/colorsvn-0.3.3.tar.gz"
   sha256 "db58d5b8f60f6d4def14f8f102ff137b87401257680c1acf2bce5680b801394e"

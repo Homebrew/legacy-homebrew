@@ -1,4 +1,5 @@
 class Plod < Formula
+  desc "Keep an online journal of what you're working on"
   homepage "http://www.deer-run.com/~hal/"
   url "http://www.deer-run.com/~hal/plod/plod.shar"
   version "1.9"

@@ -1,4 +1,5 @@
 class GnomeIconTheme < Formula
+  desc "Icons for the GNOME project"
   homepage "https://developer.gnome.org"
   url "https://download.gnome.org/sources/adwaita-icon-theme/3.16/adwaita-icon-theme-3.16.2.1.tar.xz"
   sha256 "b4556dfbf555d4fac12d4d5c12f7519de0d43ec42a1b649611439a50bf7acb96"
@@ -15,7 +16,7 @@ class GnomeIconTheme < Formula
   depends_on "gtk+3" => :build # for gtk3-update-icon-cache
   depends_on "icon-naming-utils" => :build
   depends_on "intltool" => :build
-  depends_on "librsvg"
+  depends_on "librsvg" => :build
 
   def install
     system "./configure", "--disable-dependency-tracking",

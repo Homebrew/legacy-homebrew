@@ -15,7 +15,7 @@ To make a new branch and submit it for review:
 4. Make your changes to any Homebrew formula with `brew edit` (following all the requirements in the [Formula Cookbook](Formula-Cookbook.md)). Run `brew audit ANY_CHANGED_FORMULA`, `brew tests` and `brew install ANY_CHANGED_FORMULA && brew test ANY_CHANGED_FORMULA` and ensure all of these pass without issue. If there's a `bottle do` block in the formula: don't remove it; we'll update it when we pull it.
 5. Make a separate commit for each changed formula with `git add` and `git commit`.
 6. Upload your new commits to the branch to your fork with `git push --set-upstream YOUR_USERNAME YOUR_BRANCH_NAME`
-7. Go to https://github.com/Homebrew/homebrew and create a pull request to request review and merge of commits in your pushed branch. Make sure you explain why the change is needed and, if fixing a bug, how to reproduce the bug. Please note that the preferred commit message format for simple version updates is "FORMULA_NAME NEW_VERSION", e.g. "`source-highlight 3.1.8`". Await feedback or a merge from Homebrew's maintainers.
+7. Go to https://github.com/Homebrew/homebrew and create a pull request to request review and merge of commits in your pushed branch. Make sure you explain why the change is needed and, if fixing a bug, how to reproduce the bug. Please note that the preferred commit message format for simple version updates is "FORMULA_NAME NEW_VERSION", e.g. "`source-highlight 3.1.8`". `devel` version bumps should have the commit message marked with addtional `(devel)` suffix like "`nginx 1.9.1 (devel)`". Await feedback or a merge from Homebrew's maintainers.
 
 To respond well to feedback:
 

@@ -1,4 +1,5 @@
 class Sub2srt < Formula
+  desc "Convert subtitles from .sub to subviewer .srt format"
   homepage "https://github.com/robelix/sub2srt"
   url "https://github.com/robelix/sub2srt/archive/0.5.5.tar.gz"
   sha256 "169d94d1d0e946a5d57573b7b7b5883875996f802362341fe1a1a0220229b905"

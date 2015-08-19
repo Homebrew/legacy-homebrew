@@ -1,15 +1,14 @@
-require 'formula'
-
 class Serialosc < Formula
-  homepage 'http://docs.monome.org/doku.php?id=app:serialosc'
-  url 'https://github.com/monome/serialosc/archive/1.2.tar.gz'
-  sha1 '230c3f0cb6176da6aec3b80500e175cb7f90a76a'
+  desc "Opensound control server for monome devices"
+  homepage "http://docs.monome.org/doku.php?id=app:serialosc"
+  url "https://github.com/monome/serialosc/archive/1.2.tar.gz"
+  sha256 "9b4852b8ea402f2675b39bec98ec976fdd718f3295713743e3e898349e0f1b77"
 
-  head 'https://github.com/monome/serialosc.git'
+  head "https://github.com/monome/serialosc.git"
 
-  depends_on 'liblo'
-  depends_on 'confuse'
-  depends_on 'libmonome'
+  depends_on "liblo"
+  depends_on "confuse"
+  depends_on "libmonome"
 
   def install
     system "./waf", "configure", "--prefix=#{prefix}"

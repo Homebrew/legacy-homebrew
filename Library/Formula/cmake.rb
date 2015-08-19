@@ -1,18 +1,20 @@
 class Cmake < Formula
+  desc "Cross-platform make"
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.2/cmake-3.2.2.tar.gz"
-  sha256 "ade94e6e36038774565f2aed8866415443444fb7a362eb0ea5096e40d5407c78"
+  url "http://www.cmake.org/files/v3.3/cmake-3.3.1.tar.gz"
+  sha256 "cd65022c6a0707f1c7112f99e9c981677fdd5518f7ddfa0f778d4cee7113e3d6"
   head "http://cmake.org/cmake.git"
 
   bottle do
     cellar :any
-    revision 3
-    sha256 "da3c5fae000164e94cf2a58ca9ec7cc970b009f9413443af903e5069eb564dc3" => :yosemite
-    sha256 "147aa92c60d006b544aaef8a4fe549d3ce35de6265d9476d66853939fa33e4ca" => :mavericks
-    sha256 "d9ccd1a85b5376a4b0dce0563f7c705ad21df0f379b31fe98fffdcda2c4fe21a" => :mountain_lion
+    revision 1
+    sha256 "fe55506ba09b02d36f0af20fa769e515431a722985151f38201f578ecd45dcd4" => :yosemite
+    sha256 "9a5060be50cac455398811938187148ee86b07fde2de979ff316ce470519aa86" => :mavericks
+    sha256 "56c8b25e50060f6f221038a697d6ad23bdd1824c57d62531569702919cbba8de" => :mountain_lion
   end
 
   option "without-docs", "Don't build man pages"
+  option "with-completion", "Install Bash completion (Has potential problems with system bash)"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
 
@@ -20,40 +22,64 @@ class Cmake < Formula
   # CMake is built with Qt support and Qt is built with MySQL support as MySQL uses CMake.
   # For the GUI application please instead use brew install caskroom/cask/cmake.
 
-  resource "sphinx" do
-    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
-    sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
+  resource "sphinx_rtd_theme" do
+    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.8.tar.gz"
+    sha256 "74f633ed3a61da1d1d59c3185483c81a9d7346bf0e7b5f29ad0764a6f159b68a"
   end
 
-  resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
-    sha1 "002450621b33c5690060345b0aac25bc2426d675"
+  resource "snowballstemmer" do
+    url "https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-1.2.0.tar.gz"
+    sha256 "6d54f350e7a0e48903a4e3b6b2cabd1b43e23765fbc975065402893692954191"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "pygments" do
     url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
+    sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
   end
 
-  resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+  resource "docutils" do
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
+  end
+
+  resource "pytz" do
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.4.tar.bz2"
+    sha256 "a78b484d5472dd8c688f8b3eee18646a25c66ce45b2c26652850f6af9ce52b17"
+  end
+
+  resource "babel" do
+    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.0.tar.gz"
+    sha256 "44988df191123065af9857eca68e9151526a931c12659ca29904e4f11de7ec1b"
   end
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
-  patch do
-    # fix for older bash-completion versions
-    url "http://www.cmake.org/gitweb?p=cmake.git;a=commitdiff_plain;h=2ecf168f"
-    sha256 "147854010874cd68289e3ca203399d5c149287167bca0b67f9c5677f0ee22eb8"
+  resource "jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
+  end
+
+  resource "alabaster" do
+    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.6.tar.gz"
+    sha256 "309d33e0282c8209f792f3527f41ec04e508ff837c61fc1906dde988a256deeb"
+  end
+
+  resource "sphinx" do
+    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
+    sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
   end
 
   def install
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python2.7/site-packages"
       resources.each do |r|
         r.stage do
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
@@ -85,9 +111,13 @@ class Cmake < Formula
     system "make"
     system "make", "install"
 
-    cd "Auxiliary/bash-completion/" do
-      bash_completion.install "ctest", "cmake", "cpack"
+    if build.with? "completion"
+      cd "Auxiliary/bash-completion/" do
+        bash_completion.install "ctest", "cmake", "cpack"
+      end
     end
+
+    (share/"emacs/site-lisp/cmake").install "Auxiliary/cmake-mode.el"
   end
 
   test do

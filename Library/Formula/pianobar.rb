@@ -1,6 +1,5 @@
-require "formula"
-
 class Pianobar < Formula
+  desc "Command-line player for http://pandora.com"
   homepage "https://github.com/PromyLOPh/pianobar/"
   url "http://6xq.net/projects/pianobar/pianobar-2014.09.28.tar.bz2"
   sha256 "6bd10218ad5d68c4c761e02c729627d2581b4a6db559190e7e52dc5df177e68f"
@@ -8,9 +7,10 @@ class Pianobar < Formula
 
   bottle do
     cellar :any
-    sha1 "e066326185eb541a755e6ba41842e5593d3f00ee" => :mavericks
-    sha1 "46ecff61b1eddb11ffd5d7dbb7f099efc84777a4" => :mountain_lion
-    sha1 "89df962c29ad93849cadae65251c873aabec3844" => :lion
+    revision 1
+    sha256 "02b39caa7b8e62aa061d8bb416e914c4ad3002073eb47d541a04c3437f8e92cc" => :yosemite
+    sha256 "ad95ed05407af335e80867e06379e898036745aa7a92b5438de255cfd22e4e12" => :mavericks
+    sha256 "f2c38f52caa79e5a4aa2c852d2b0bcf72f59c15eef21ec2e186d3520752d2506" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -29,7 +29,7 @@ class Pianobar < Formula
 
   def install
     # Discard Homebrew's CFLAGS as Pianobar reportedly doesn't like them
-    ENV['CFLAGS'] = "-O2 -DNDEBUG " +
+    ENV["CFLAGS"] = "-O2 -DNDEBUG " +
                     # Or it doesn't build at all
                     "-std=c99 " +
                     # build if we aren't /usr/local'

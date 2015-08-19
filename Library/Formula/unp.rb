@@ -1,4 +1,5 @@
 class Unp < Formula
+  desc "Unpack everything with one command"
   homepage "https://packages.debian.org/source/stable/unp"
   url "https://mirrors.kernel.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz"
   mirror "https://ftp.us.debian.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz"

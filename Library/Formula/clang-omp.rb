@@ -1,4 +1,5 @@
 class ClangOmp < Formula
+  desc "OpenMP C/C++ language extensions in Clang/LLVM compiler"
   homepage "https://clang-omp.github.io/"
   url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
   version "2015-04-01"

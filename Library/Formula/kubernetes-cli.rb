@@ -1,13 +1,15 @@
 class KubernetesCli < Formula
+  desc "Command-line tool for kubernetes, a cluster manager for Docker"
   homepage "http://kubernetes.io/"
-  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v0.17.0.tar.gz"
-  sha256 "fc138505b3dca03585b42a91e48f56d87d17f22affe6947c6b501c2098f8d301"
+  url "https://github.com/GoogleCloudPlatform/kubernetes/archive/v1.0.1.tar.gz"
+  sha256 "a2f6a3ebd7ecda2b93ebd4fb2f2fb9e6c41153e40de29306c78fdd1316490247"
+  head "https://github.com/GoogleCloudPlatform/kubernetes.git"
 
   bottle do
     cellar :any
-    sha256 "78c8fb63ae5d9f889a301b9178583d617d074c1e6732e4ff25e9a438df273e5f" => :yosemite
-    sha256 "7c58197b78ed716985b2beeb2727a53891ada287537971eba3c7317d52160e09" => :mavericks
-    sha256 "ced9e46affcc309ead764a23a711a27cb5b610cf28a2139eca716d16e3e89ad8" => :mountain_lion
+    sha256 "d5b5ae622a2744a524f9888fe531bccf5c4b6f588ae1125d1c13ea99e4279659" => :yosemite
+    sha256 "67147c72573f6cca613900cf2cbd0495aa496a93c0258527d5bc17682e0b565b" => :mavericks
+    sha256 "7f627039b58de7689edf4bdd7a8ac24da309efa27e20ceea9a2add69b60b500c" => :mountain_lion
   end
 
   depends_on "go" => :build

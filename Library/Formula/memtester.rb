@@ -1,4 +1,5 @@
 class Memtester < Formula
+  desc "Utility for testing the memory subsystem"
   homepage "http://pyropus.ca/software/memtester/"
   url "http://pyropus.ca/software/memtester/old-versions/memtester-4.3.0.tar.gz"
   sha256 "f9dfe2fd737c38fad6535bbab327da9a21f7ce4ea6f18c7b3339adef6bf5fd88"

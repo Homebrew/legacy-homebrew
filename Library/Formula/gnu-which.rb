@@ -1,4 +1,5 @@
 class GnuWhich < Formula
+  desc "GNU implementation of which utility"
   # Previous homepage is dead. Have linked to the GNU Projects page for now.
   homepage "https://savannah.gnu.org/projects/which/"
   url "http://ftpmirror.gnu.org/which/which-2.21.tar.gz"

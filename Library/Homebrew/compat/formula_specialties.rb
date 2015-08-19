@@ -3,7 +3,7 @@
 # See chcase for an example
 class ScriptFileFormula < Formula
   def install
-    bin.install Dir['*']
+    bin.install Dir["*"]
   end
 end
 
@@ -21,14 +21,14 @@ class AmazonWebServicesFormula < Formula
   # Use this method to peform a standard install for Java-based tools,
   # keeping the .jars out of HOMEBREW_PREFIX/lib
   def install
-    rm Dir['bin/*.cmd'] # Remove Windows versions
-    libexec.install Dir['*']
+    rm Dir["bin/*.cmd"] # Remove Windows versions
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"] - ["#{libexec}/bin/service"]
   end
   alias_method :standard_install, :install
 
   # Use this method to generate standard caveats.
-  def standard_instructions home_name, home_value=libexec
+  def standard_instructions(home_name, home_value = libexec)
     <<-EOS.undent
       Before you can use these tools you must export some variables to your $SHELL.
 

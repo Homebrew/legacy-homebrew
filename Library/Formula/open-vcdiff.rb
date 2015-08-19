@@ -1,4 +1,5 @@
 class OpenVcdiff < Formula
+  desc "Encoder/decoder for the VCDIFF (RFC3284) format"
   homepage "https://code.google.com/p/open-vcdiff/"
   url "https://drive.google.com/uc?id=0B5WpIi2fQU1aNGJwVE9hUjU5clU&export=download"
   version "0.8.4"

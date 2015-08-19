@@ -1,15 +1,16 @@
-require "formula"
-
 class Watchman < Formula
+  desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
+  url "https://github.com/facebook/watchman/archive/v3.7.0-brew.tar.gz"
+  version "3.7.0"
+  sha256 "55a3ea1ee3990a5e5c11f1a37ad5bafbb63e8002f48f449c083e598f6f332154"
+
   head "https://github.com/facebook/watchman.git"
-  url "https://github.com/facebook/watchman/archive/v3.1.tar.gz"
-  sha1 "eb5572cd9cf4ce2b8e31d51ed22d5ec8cc6301ae"
 
   bottle do
-    sha256 "dd66354cdbe2ab6a9672b6f4619e2e8123cf26f60fa10b7ffaa32fb9e93bab90" => :yosemite
-    sha256 "8c8f84947bc5430ee8f5909bc2aa5dd6f49869c18cc600b24e1ae566eb5ecef5" => :mavericks
-    sha256 "923fd3ac8d2ac1b3752c82bb7559e311a2bfdacf30e61e4c3e371e7fb74298e8" => :mountain_lion
+    sha256 "988bc7562fe67087f281935d2b064c172161b036a22539c50ec04b215235749c" => :yosemite
+    sha256 "ae7410503f560b5ad62277e468a477c6cf7457986834ca7e2d13871661d7a131" => :mavericks
+    sha256 "cc77325547e91585adbdf7341808abbced3c352ff73742365592b1654184f2dd" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -23,14 +24,17 @@ class Watchman < Formula
                           "--prefix=#{prefix}",
                           "--with-pcre"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
+    # Currently fails under HOMEBREW_SANDBOX: Operation not permitted
+    # "Failed to open /path/to/LaunchAgents/plist for write"
     system "#{bin}/watchman", "shutdown-server"
     system "#{bin}/watchman", "watch", testpath
-    list = `#{bin}/watchman watch-list`
-    if list.index(testpath) === nil then
+
+    list = shell_output("#{bin}/watchman watch-list")
+    if list.index(testpath).nil?
       raise "failed to watch tmpdir"
     end
     system "#{bin}/watchman", "watch-del", testpath

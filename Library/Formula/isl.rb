@@ -1,4 +1,5 @@
 class Isl < Formula
+  desc "Integer Set Library for the polyhedral model"
   homepage "http://freecode.com/projects/isl"
   # Note: Always use tarball instead of git tag for stable version.
   #

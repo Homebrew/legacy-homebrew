@@ -1,4 +1,5 @@
 class GitFlow < Formula
+  desc "Extensions to follow Vincent Driessen's branching model"
   homepage "https://github.com/nvie/gitflow"
 
   # Use the tag instead of the tarball to get submodules
@@ -21,7 +22,7 @@ class GitFlow < Formula
 
   resource "completion" do
     url "https://github.com/bobthecow/git-flow-completion/archive/0.4.2.2.tar.gz"
-    sha1 "d6a041b22ebdfad40efd3dedafd84c020d3f4cb4"
+    sha256 "1e82d039596c0e73bfc8c59d945ded34e4fce777d9b9bb45c3586ee539048ab9"
   end
 
   conflicts_with "git-flow-avh"

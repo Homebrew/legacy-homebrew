@@ -1,6 +1,5 @@
-require "formula"
-
 class Pidcat < Formula
+  desc "Colored logcat script to show entries only for specified app"
   homepage "https://github.com/JakeWharton/pidcat"
   head "https://github.com/JakeWharton/pidcat.git"
   url "https://github.com/JakeWharton/pidcat/archive/2.0.0.tar.gz"
@@ -8,6 +7,7 @@ class Pidcat < Formula
 
   def install
     bin.install "pidcat.py" => "pidcat"
+    bash_completion.install "bash_completion.d/pidcat"
   end
 
   test do

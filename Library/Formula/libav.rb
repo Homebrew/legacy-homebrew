@@ -1,14 +1,16 @@
 class Libav < Formula
+  desc "Audio and video processing tools"
   homepage "https://libav.org/"
-  url "https://libav.org/releases/libav-11.3.tar.xz"
-  sha256 "12ae6c051967765ae5faeddf94c4584129ac0b18edb884afffc5fcedcdb5e030"
+  url "https://libav.org/releases/libav-11.4.tar.xz"
+  sha256 "0b7dabc2605f3a254ee410bb4b1a857945696aab495fe21b34c3b6544ff5d525"
+  revision 1
 
   head "git://git.libav.org/libav.git"
 
   bottle do
-    sha256 "9a5947ed844346e6833fd13321ff794038c980cbfb02960a4627b3b53b9a6def" => :yosemite
-    sha256 "8d231acea028c5c6c942a91ed206ade71355a467f8c525a43b7d47257f51b4df" => :mavericks
-    sha256 "97cdcdc0605e9052d7d0f00afc3f703edbf7bfb19afb948c7d51b8603665784c" => :mountain_lion
+    sha256 "6e177af0f3542941c2da2d4a7ac4a8f5a235d46df391dfb369b1898a0ca8fa4a" => :yosemite
+    sha256 "fdb2471385a510975a745a83a854298b485a99188d938d2683f21e65a84264e0" => :mavericks
+    sha256 "74430bdad28f782040426d29bcde9be907bc20462bc20bb41c913f041d969617" => :mountain_lion
   end
 
   option "without-faac", "Disable AAC encoder via faac"
@@ -40,6 +42,7 @@ class Libav < Formula
   depends_on "x264" => :recommended
   depends_on "xvid" => :recommended
 
+  depends_on "fontconfig" => :optional
   depends_on "freetype" => :optional
   depends_on "fdk-aac" => :optional
   depends_on "frei0r" => :optional
@@ -68,13 +71,14 @@ class Libav < Formula
       "--enable-vda",
       "--cc=#{ENV.cc}",
       "--host-cflags=#{ENV.cflags}",
-      "--host-ldflags=#{ENV.ldflags}",
+      "--host-ldflags=#{ENV.ldflags}"
     ]
 
     args << "--enable-frei0r" if build.with? "frei0r"
     args << "--enable-gnutls" if build.with? "gnutls"
     args << "--enable-libfaac" if build.with? "faac"
     args << "--enable-libfdk-aac" if build.with? "fdk-aac"
+    args << "--enable-libfontconfig" if build.with? "fontconfig"
     args << "--enable-libfreetype" if build.with? "freetype"
     args << "--enable-libmp3lame" if build.with? "lame"
     args << "--enable-libopencore-amrnb" if build.with? "opencore-amr"

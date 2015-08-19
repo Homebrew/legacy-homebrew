@@ -3,16 +3,17 @@ require "language/haskell"
 class Pandoc < Formula
   include Language::Haskell::Cabal
 
+  desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.14/pandoc-1.14.tar.gz"
-  sha256 "e1c36ae6ba4937ebaaf49a68bdeee2fec9089b8894136ba25e5fa2b6bf1c9458"
+  url "https://hackage.haskell.org/package/pandoc-1.15.0.6/pandoc-1.15.0.6.tar.gz"
+  sha256 "d950968142526d5a765af7dfb26b47c3f60d4f883aa9d9eab668614179f1ed46"
 
   head "https://github.com/jgm/pandoc.git"
 
   bottle do
-    sha256 "0574980cdcb828c6106e2454b77d36f0f9098c601da8b7bd945146c93f5909a1" => :yosemite
-    sha256 "086b3caa8e26cc764940d0ab502aeae9711862d5fbc3267c3aee5e6d69a64877" => :mavericks
-    sha256 "ea5e61cdfaedd15e11637c3177d4c4c4af142a84cde744b7e7e47f7fe16474e2" => :mountain_lion
+    sha256 "c0937b35c02d975d9c42d547eae6eef22f44c3f800b4369000b153265294458f" => :yosemite
+    sha256 "45de8f7c956c415b9b94b46dec624f8c28d52fc46079721186bff9dd5bfc56e7" => :mavericks
+    sha256 "129ba9b0fd78c82474f9d4b146efe5bac923a78700111e3a0b26398db5a30a54" => :mountain_lion
   end
 
   depends_on "ghc" => :build
@@ -30,7 +31,15 @@ class Pandoc < Formula
   end
 
   test do
-    system "pandoc", "-o", testpath/"output.html", prefix/"README"
-    assert (testpath/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
+    input_markdown = <<-EOS.undent
+      # Homebrew
+
+      A package manager for humans. Cats should take a look at Tigerbrew.
+    EOS
+    expected_html = <<-EOS.undent
+      <h1 id="homebrew">Homebrew</h1>
+      <p>A package manager for humans. Cats should take a look at Tigerbrew.</p>
+    EOS
+    assert_equal expected_html, pipe_output("#{bin}/pandoc -f markdown -t html5", input_markdown)
   end
 end

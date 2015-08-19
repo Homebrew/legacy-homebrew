@@ -1,4 +1,7 @@
-require 'cmd/tap'
+require "cmd/tap"
+require "formula_versions"
+require "migrator"
+require "formulary"
 
 module Homebrew
   def update
@@ -10,7 +13,7 @@ module Homebrew
     end
 
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
-    ENV.delete('GIT_CONFIG')
+    ENV.delete("GIT_CONFIG")
 
     cd HOMEBREW_REPOSITORY
     git_init_if_necessary
@@ -27,16 +30,18 @@ module Homebrew
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
-    each_tap do |user, repo|
-      repo.cd do
-        updater = Updater.new(repo)
+    Tap.each do |tap|
+      next unless tap.git?
+
+      tap.path.cd do
+        updater = Updater.new(tap.path)
 
         begin
           updater.pull!
         rescue
-          onoe "Failed to update tap: #{user.basename}/#{repo.basename.sub("homebrew-", "")}"
+          onoe "Failed to update tap: #{tap}"
         else
-          report.update(updater.report) do |key, oldval, newval|
+          report.update(updater.report) do |_key, oldval, newval|
             oldval.concat(newval)
           end
         end
@@ -45,17 +50,52 @@ module Homebrew
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
-      next unless (HOMEBREW_CELLAR/f).exist?
+      next unless (dir = HOMEBREW_CELLAR/f).exist?
       migration = TAP_MIGRATIONS[f]
       next unless migration
-      tap_user, tap_repo = migration.split '/'
+      tap_user, tap_repo = migration.split "/"
       install_tap tap_user, tap_repo
+      # update tap for each Tab
+      tabs = dir.subdirs.each.map { |d| Tab.for_keg(Keg.new(d)) }
+      next if tabs.first.source["tap"] != "Homebrew/homebrew"
+      tabs.each { |tab| tab.source["tap"] = "#{tap_user}/homebrew-#{tap_repo}" }
+      tabs.each(&:write)
     end if load_tap_migrations
+
+    # Migrate installed renamed formulae from main Homebrew repository.
+    if load_formula_renames
+      report.select_formula(:D).each do |oldname|
+        newname = FORMULA_RENAMES[oldname]
+        next unless newname
+        next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?
+
+        begin
+          migrator = Migrator.new(Formulary.factory("homebrew/homebrew/#{newname}"))
+          migrator.migrate
+        rescue Migrator::MigratorDifferentTapsError
+        end
+      end
+    end
+
+    # Migrate installed renamed formulae from taps
+    report.select_formula(:D).each do |oldname|
+      user, repo, oldname = oldname.split("/", 3)
+      next unless user && repo && oldname
+      tap = Tap.new(user, repo)
+      next unless newname = tap.formula_renames[oldname]
+      next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?
+
+      begin
+        migrator = Migrator.new(Formulary.factory("#{user}/#{repo}/#{newname}"))
+        migrator.migrate
+      rescue Migrator::MigratorDifferentTapsError
+      end
+    end
 
     if report.empty?
       puts "Already up-to-date."
     else
-      puts "Updated Homebrew from #{master_updater.initial_revision[0,8]} to #{master_updater.current_revision[0,8]}."
+      puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} to #{master_updater.current_revision[0, 8]}."
       report.dump
     end
   end
@@ -84,9 +124,8 @@ module Homebrew
   def rename_taps_dir_if_necessary
     Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
       begin
-        tapd_basename = File.basename(tapd)
-
         if File.directory?(tapd + "/.git")
+          tapd_basename = File.basename(tapd)
           if tapd_basename.include?("-")
             # only replace the *last* dash: yes, tap filenames suck
             user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
@@ -111,7 +150,13 @@ module Homebrew
   end
 
   def load_tap_migrations
-    require 'tap_migrations'
+    load "tap_migrations.rb"
+  rescue LoadError
+    false
+  end
+
+  def load_formula_renames
+    load "formula_renames.rb"
   rescue LoadError
     false
   end
@@ -122,10 +167,26 @@ class Updater
 
   def initialize(repository)
     @repository = repository
+    @stashed = false
   end
 
-  def pull!
-    safe_system "git", "checkout", "-q", "master"
+  def pull!(options = {})
+    quiet = []
+    quiet << "--quiet" unless ARGV.verbose?
+
+    unless system "git", "diff", "--quiet"
+      unless options[:silent]
+        puts "Stashing your changes:"
+        system "git", "status", "--short", "--untracked-files"
+      end
+      safe_system "git", "stash", "save", "--include-untracked", *quiet
+      @stashed = true
+    end
+
+    @initial_branch = `git symbolic-ref --short HEAD`.chomp
+    if @initial_branch != "master" && !@initial_branch.empty?
+      safe_system "git", "checkout", "master", *quiet
+    end
 
     @initial_revision = read_current_revision
 
@@ -134,12 +195,25 @@ class Updater
 
     args = ["pull"]
     args << "--rebase" if ARGV.include? "--rebase"
-    args << "-q" unless ARGV.verbose?
+    args += quiet
     args << "origin"
     # the refspec ensures that 'origin/master' gets updated
     args << "refs/heads/master:refs/remotes/origin/master"
 
     reset_on_interrupt { safe_system "git", *args }
+
+    if @initial_branch != "master" && !@initial_branch.empty?
+      safe_system "git", "checkout", @initial_branch, *quiet
+    end
+
+    if @stashed
+      safe_system "git", "stash", "pop", *quiet
+      unless options[:silent]
+        puts "Restored your changes:"
+        system "git", "status", "--short", "--untracked-files"
+      end
+      @stashed = false
+    end
 
     @current_revision = read_current_revision
   end
@@ -148,24 +222,38 @@ class Updater
     ignore_interrupts { yield }
   ensure
     if $?.signaled? && $?.termsig == 2 # SIGINT
+      safe_system "git", "checkout", @initial_branch
       safe_system "git", "reset", "--hard", @initial_revision
+      safe_system "git", "stash", "pop" if @stashed
     end
   end
 
   def report
-    map = Hash.new{ |h,k| h[k] = [] }
+    map = Hash.new { |h, k| h[k] = [] }
 
     if initial_revision && initial_revision != current_revision
       diff.each_line do |line|
         status, *paths = line.split
-        src, dst = paths.first, paths.last
+        src = paths.first
+        dst = paths.last
 
         next unless File.extname(dst) == ".rb"
         next unless paths.any? { |p| File.dirname(p) == formula_directory }
 
         case status
-        when "A", "M", "D"
+        when "A", "D"
           map[status.to_sym] << repository.join(src)
+        when "M"
+          file = repository.join(src)
+          begin
+            formula = Formulary.factory(file)
+            new_version = formula.pkg_version
+            old_version = FormulaVersions.new(formula).formula_at_revision(@initial_revision, &:pkg_version)
+            next if new_version == old_version
+          rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS => e
+            onoe e if ARGV.homebrew_developer?
+          end
+          map[:M] << file
         when /^R\d{0,3}/
           map[:D] << repository.join(src) if File.dirname(src) == formula_directory
           map[:A] << repository.join(dst) if File.dirname(dst) == formula_directory
@@ -212,7 +300,6 @@ class Updater
   end
 end
 
-
 class Report
   def initialize
     @hash = {}
@@ -238,7 +325,7 @@ class Report
     dump_formula_report :D, "Deleted Formulae"
   end
 
-  def select_formula key
+  def select_formula(key)
     fetch(key, []).map do |path|
       case path.to_s
       when HOMEBREW_TAP_PATH_REGEX
@@ -249,7 +336,7 @@ class Report
     end.sort
   end
 
-  def dump_formula_report key, title
+  def dump_formula_report(key, title)
     formula = select_formula(key)
     unless formula.empty?
       ohai title

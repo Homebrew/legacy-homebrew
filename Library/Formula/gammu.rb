@@ -1,4 +1,5 @@
 class Gammu < Formula
+  desc "Command-line utility to control a phone"
   homepage "http://wammu.eu/gammu/"
   url "https://dl.cihar.com/gammu/releases/gammu-1.36.0.tar.xz"
   mirror "https://mirrors.kernel.org/debian/pool/main/g/gammu/gammu_1.36.0.orig.tar.xz"

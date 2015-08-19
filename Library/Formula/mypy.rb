@@ -1,4 +1,5 @@
 class Mypy < Formula
+  desc "Experimental optional static type checker for Python"
   homepage "http://www.mypy-lang.org/"
   url "https://github.com/JukkaL/mypy/archive/v0.2.0.tar.gz"
   sha256 "0c24f50509bdf3e0d9bd386a08ef4f11ee0114e1f5a9b2afeacbf9561cf022c1"

@@ -1,4 +1,5 @@
 class Boost < Formula
+  desc "Collection of portable C++ source libraries"
   homepage "http://www.boost.org"
   url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
   sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
@@ -35,6 +36,8 @@ class Boost < Formula
     build 2335
     cause "Dropped arguments to functions when linking with boost"
   end
+
+  needs :cxx11 if build.cxx11?
 
   def install
     # https://svn.boost.org/trac/boost/ticket/8841

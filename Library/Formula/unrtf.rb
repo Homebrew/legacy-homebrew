@@ -1,4 +1,5 @@
 class Unrtf < Formula
+  desc "RTF to other formats converter"
   homepage "https://www.gnu.org/software/unrtf/"
   url "http://ftpmirror.gnu.org/unrtf/unrtf-0.21.9.tar.gz"
   mirror "https://ftp.gnu.org/gnu/unrtf/unrtf-0.21.9.tar.gz"

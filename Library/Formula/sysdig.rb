@@ -1,13 +1,13 @@
 class Sysdig < Formula
+  desc "System-level exploration and troubleshooting tool"
   homepage "http://www.sysdig.org/"
-  url "https://github.com/draios/sysdig/archive/0.1.99.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/s/sysdig/sysdig_0.1.99.orig.tar.gz"
-  sha256 "e6f00493feaa42f05720c708ab87b7150b465306dae18f9b97f2c40334e2ca09"
+  url "https://github.com/draios/sysdig/archive/0.1.102.tar.gz"
+  sha256 "e0bac2262f075ec75cc2c01a002b6d47bb5ee5c80b47925b44152db639093f57"
 
   bottle do
-    sha256 "42cf03077f83db8d0171ec9139a2d87f28bbe76f4311db8518d87e153d857192" => :yosemite
-    sha256 "cbe221595e2e49772a669abaebc8da1ba1d91dab561ad4515318d3a17e7461f4" => :mavericks
-    sha256 "9e7f40f91e50bdc256835a5f5b15e8469f09477fc3164d4bad385614a65b3f10" => :mountain_lion
+    sha256 "7c7b3811314837d435c2d417f33dadc974c993f8a1dd47d7fceef7b1e54ab171" => :yosemite
+    sha256 "502342ee5e92bda0673db5c9556ddf62d4ba385b90dd7455be1aa9a42b570bb0" => :mavericks
+    sha256 "49649ecbf5a81778ff850145fe6ca4779a121f868d106caf0e108b4f6077f04f" => :mountain_lion
   end
 
   depends_on "cmake" => :build

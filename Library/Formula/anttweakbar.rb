@@ -1,8 +1,9 @@
 class Anttweakbar < Formula
+  desc "C/C++ library for adding GUIs to OpenGL apps"
   homepage "http://www.antisphere.com/Wiki/tools:anttweakbar"
   url "https://downloads.sourceforge.net/project/anttweakbar/AntTweakBar_116.zip"
   version "1.16"
-  sha1 "5743321df3b074f9a82b5ef3e6b54830a715b938"
+  sha256 "fbceb719c13ceb13b9fd973840c2c950527b6e026f9a7a80968c14f76fcf6e7c"
 
   bottle do
     cellar :any

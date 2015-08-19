@@ -3,7 +3,7 @@ require "extend/ENV"
 module Homebrew
   def __env
     ENV.activate_extensions!
-    ENV.deps = ARGV.formulae.map(&:name) if superenv?
+    ENV.deps = ARGV.formulae if superenv?
     ENV.setup_build_environment
     ENV.universal_binary if ARGV.build_universal?
 
@@ -16,7 +16,7 @@ module Homebrew
     end
   end
 
-  def build_env_keys env
+  def build_env_keys(env)
     %w[
       CC CXX LD OBJC OBJCXX
       HOMEBREW_CC HOMEBREW_CXX
@@ -30,7 +30,7 @@ module Homebrew
       ACLOCAL_PATH PATH CPATH].select { |key| env.key?(key) }
   end
 
-  def dump_build_env env, f=$stdout
+  def dump_build_env(env, f = $stdout)
     keys = build_env_keys(env)
     keys -= %w[CC CXX OBJC OBJCXX] if env["CC"] == env["HOMEBREW_CC"]
 

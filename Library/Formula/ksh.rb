@@ -1,5 +1,6 @@
 
 class Ksh < Formula
+  desc "ksh93, the KornShell"
   homepage "http://www.kornshell.com"
   url "http://www2.research.att.com/~astopen/download/tgz/ast-ksh.2012-08-01.tgz",
     :using => :nounzip, :user => "I accept www.opensource.org/licenses/eclipse:."

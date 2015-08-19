@@ -1,4 +1,5 @@
 class Yasm < Formula
+  desc "Modular BSD reimplementation of NASM"
   homepage "http://yasm.tortall.net/"
   url "http://www.tortall.net/projects/yasm/releases/yasm-1.3.0.tar.gz"
   sha256 "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
@@ -21,7 +22,7 @@ class Yasm < Formula
 
   resource "cython" do
     url "http://cython.org/release/Cython-0.20.2.tar.gz"
-    sha1 "e3fd4c32bdfa4a388cce9538417237172c656d55"
+    sha256 "ed13b606a2aeb5bd6c235f8ed6c9988c99d01a033d0d21d56137c13d5c7be63f"
   end
 
   depends_on :python => :optional

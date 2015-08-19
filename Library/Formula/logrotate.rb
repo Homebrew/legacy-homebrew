@@ -1,4 +1,5 @@
 class Logrotate < Formula
+  desc "Rotates, compresses, and mails system logs"
   homepage "https://fedorahosted.org/logrotate/"
   url "https://fedorahosted.org/releases/l/o/logrotate/logrotate-3.9.1.tar.gz"
   sha256 "022769e3288c80981559a8421703c88e8438b447235e36dd3c8e97cd94c52545"

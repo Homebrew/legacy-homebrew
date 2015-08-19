@@ -1,15 +1,18 @@
 class OpenSceneGraph < Formula
+  desc "3D graphics toolkit"
   homepage "http://www.openscenegraph.org/projects/osg"
   url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.3.3.zip"
-  sha1 "98697c3e3b3c6e7e2ec7a6a75ece8f790b709cd7"
-
-  bottle do
-    sha1 "2f7f0292cf0d66cc37f94ff9d769c7d397e4a19c" => :yosemite
-    sha1 "eb231106f731af9f9803e38a2aa152276d99bb79" => :mavericks
-    sha1 "f613127ed57c7fba5a8de44f65ea49501c9b1d83" => :mountain_lion
-  end
+  sha256 "b81cda123ffb3bd108e0fe4be4fff1351d6636e6fb0a1475b2c4fb9618d3ae2b"
+  revision 1
 
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
+
+  bottle do
+    revision 1
+    sha256 "84a2fb06650a9b61bcefe3abcc3619263a1e36fa086e85ccc5b749e4948cb793" => :yosemite
+    sha256 "c5de6622bedf78bc453db80ec34f9d784c453444e2046f17061a7e1da272772f" => :mavericks
+    sha256 "1be15b3c3e807af706d6a6a5ddf985550c4eabc6ebeceb92908f5fdc6c90d081" => :mountain_lion
+  end
 
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
@@ -31,6 +34,10 @@ class OpenSceneGraph < Formula
   depends_on "ffmpeg" => :optional
   depends_on "qt5" => :optional
   depends_on "qt" => :optional
+
+  # patch necessary to ensure support for gtkglext-quartz
+  # filed as an issue to the developers https://github.com/openscenegraph/osg/issues/34
+  patch :DATA
 
   if build.with? "docs"
     depends_on "doxygen" => :build
@@ -90,3 +97,17 @@ class OpenSceneGraph < Formula
     assert_equal `./test`.chomp, version.to_s
   end
 end
+__END__
+diff --git a/CMakeModules/FindGtkGl.cmake b/CMakeModules/FindGtkGl.cmake
+index 321cede..6497589 100644
+--- a/CMakeModules/FindGtkGl.cmake
++++ b/CMakeModules/FindGtkGl.cmake
+@@ -10,7 +10,7 @@ IF(PKG_CONFIG_FOUND)
+     IF(WIN32)
+         PKG_CHECK_MODULES(GTKGL gtkglext-win32-1.0)
+     ELSE()
+-        PKG_CHECK_MODULES(GTKGL gtkglext-x11-1.0)
++        PKG_CHECK_MODULES(GTKGL gtkglext-quartz-1.0)
+     ENDIF()
+
+ ENDIF()

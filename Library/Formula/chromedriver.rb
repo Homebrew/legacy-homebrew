@@ -1,8 +1,9 @@
 class Chromedriver < Formula
+  desc "Tool for automated testing of webapps across many browsers"
   homepage "https://sites.google.com/a/chromium.org/chromedriver/"
-  url "https://chromedriver.storage.googleapis.com/2.15/chromedriver_mac32.zip"
-  sha256 "37f7ed1cb1bbafd2139486f44c81ebe0b1561c594d2ad2004bd66c3b07453427"
-  version "2.15"
+  url "https://chromedriver.storage.googleapis.com/2.17/chromedriver_mac32.zip"
+  version "2.17"
+  sha256 "355bbedd402ba3d1206f7bfa00337ef5c1642a4adc1b4fa393bd300234599574"
 
   def install
     bin.install "chromedriver"
@@ -36,7 +37,7 @@ class Chromedriver < Formula
 
   test do
     driver = fork do
-      system bin/"chromedriver",
+      exec bin/"chromedriver",
              "--port=9999", "--log-path=#{testpath}/cd.log"
     end
     sleep 5

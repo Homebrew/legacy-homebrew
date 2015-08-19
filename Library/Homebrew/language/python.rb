@@ -2,21 +2,21 @@ require "utils.rb"
 
 module Language
   module Python
-    def self.major_minor_version python
+    def self.major_minor_version(python)
       version = /\d\.\d/.match `#{python} --version 2>&1`
       return unless version
       Version.new(version.to_s)
     end
 
-    def self.homebrew_site_packages(version="2.7")
+    def self.homebrew_site_packages(version = "2.7")
       HOMEBREW_PREFIX/"lib/python#{version}/site-packages"
     end
 
-    def self.each_python build, &block
+    def self.each_python(build, &block)
       original_pythonpath = ENV["PYTHONPATH"]
       ["python", "python3"].each do |python|
         next if build.without? python
-        version = self.major_minor_version python
+        version = major_minor_version python
         ENV["PYTHONPATH"] = if Formulary.factory(python).installed?
           nil
         else
@@ -27,7 +27,7 @@ module Language
       ENV["PYTHONPATH"] = original_pythonpath
     end
 
-    def self.reads_brewed_pth_files? python
+    def self.reads_brewed_pth_files?(python)
       version = major_minor_version python
       return unless homebrew_site_packages(version).directory?
       return unless homebrew_site_packages(version).writable_real?
@@ -40,11 +40,11 @@ module Language
       end
     end
 
-    def self.user_site_packages python
+    def self.user_site_packages(python)
       Pathname.new(`#{python} -c "import site; print(site.getusersitepackages())"`.chomp)
     end
 
-    def self.in_sys_path? python, path
+    def self.in_sys_path?(python, path)
       script = <<-EOS.undent
         import os, sys
         [os.path.realpath(p) for p in sys.path].index(os.path.realpath("#{path}"))
@@ -53,7 +53,7 @@ module Language
     end
 
     # deprecated; use system "python", *setup_install_args(prefix) instead
-    def self.setup_install python, prefix, *args
+    def self.setup_install(python, prefix, *args)
       opoo <<-EOS.undent
         Language::Python.setup_install is deprecated.
         If you are a formula author, please use
@@ -75,7 +75,7 @@ module Language
       system python, "-c", shim, "install", *args
     end
 
-    def self.setup_install_args prefix
+    def self.setup_install_args(prefix)
       shim = <<-EOS.undent
         import setuptools, tokenize
         __file__ = 'setup.py'
@@ -93,7 +93,7 @@ module Language
       ]
     end
 
-    def self.package_available? python, module_name
+    def self.package_available?(python, module_name)
       quiet_system python, "-c", "import #{module_name}"
     end
   end

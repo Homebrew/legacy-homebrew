@@ -1,16 +1,17 @@
-require "formula"
-
 class Valabind < Formula
+  desc "Vala bindings for radare, reverse engineering framework"
   homepage "http://radare.org/"
+  url "https://github.com/radare/valabind/archive/0.9.2.tar.gz"
+  sha256 "84cc2be21acb671e737dab50945b3717f1c68917faf23af443d3911774f5e578"
+  revision 1
+
   head "https://github.com/radare/valabind.git"
-  url "https://github.com/radare/valabind/archive/0.9.0.tar.gz"
-  sha1 "65af558a0116c1d8598992637cfd994cc7e23407"
 
   bottle do
     cellar :any
-    sha1 "960e67a45a8b486e4d38d2d8bbfd16a93658f747" => :yosemite
-    sha1 "369e7b1c0a1cc1ab88d7a2fe0700d57a957dd9d3" => :mavericks
-    sha1 "4fd99adf2bb6ad5ca350c4ac76bf4ba7b1b0737c" => :mountain_lion
+    sha256 "ff86a94b9f31232eb5cb00285765d9b3df37a588cf01798c8c65c163f2d7416c" => :yosemite
+    sha256 "5d726be71c0fbd7cc9fbfcdf308f7f3734514606d6a7df5afbfead9642e085fe" => :mavericks
+    sha256 "fd736eaa0cc6f6823b48633cfd6be15dc2f26de0dba9b895fbe6ea50907e292c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -20,5 +21,9 @@ class Valabind < Formula
   def install
     system "make"
     system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  test do
+    system bin/"valabind", "--help"
   end
 end

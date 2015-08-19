@@ -1,16 +1,24 @@
 require "language/go"
 
 class ThePlatinumSearcher < Formula
+  desc "Multi-platform code-search similar to ack and ag"
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.6.tar.gz"
-  sha256 "7c7249f88eab09b8f1b89aad2987dc5e23b8ae0df73390150ae9a8a77df346e2"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.8.tar.gz"
+  sha256 "965f33c1b30d76d083fc425160ec2562acf64fb087dd62ebce510424bee787b8"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
+
+  bottle do
+    cellar :any
+    sha256 "b54f456ff639feb502bb0d2e26e56d88226df18588617c43be4701cd04a68be7" => :yosemite
+    sha256 "a3d438fb5d3caf361b58b482b77d58a72534ed4d91d16194702d35c3790c182a" => :mavericks
+    sha256 "66fa09e74f3cb51a3e54623e0a6b4af1fe3cc1b2b010abd62157f7c189f06aec" => :mountain_lion
+  end
 
   depends_on "go" => :build
 
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
-        :revision => "5e118789801496c93ba210d34ef1f2ce5a9173bd"
+        :revision => "1b89bf73cd2c3a911d7b2a279ab085c4a18cf539"
   end
 
   go_resource "github.com/monochromegane/terminal" do
@@ -20,23 +28,15 @@ class ThePlatinumSearcher < Formula
 
   go_resource "github.com/shiena/ansicolor" do
     url "https://github.com/shiena/ansicolor.git",
-        :revision => "8368d3b31cf6f2c2464c7a91675342c9a0ac6658"
+        :revision => "a5e2b567a4dd6cc74545b8a4f27c9d63b9e7735b"
   end
 
   go_resource "golang.org/x/text" do
     url "https://github.com/golang/text.git",
-        :revision => "6c3b324efd553c7d76e4da4ed671de76c6bbc791"
-  end
-
-  bottle do
-    cellar :any
-    sha256 "52562cbb714273a6f4904f710219cfbaa9931f3c4bf730243385d7b13f246772" => :yosemite
-    sha256 "3a7769aa7ca77e802413af794399de7233d4aef9468ab3caaaf223fd531e76ad" => :mavericks
-    sha256 "1a77aac2822772732f24c3e57b67e351110ad580aa07de74b1475168724f2873" => :mountain_lion
+        :revision => "3eb7007b740b66a77f3c85f2660a0240b284115a"
   end
 
   def install
-    # configure buildpath for local dependencies
     mkdir_p buildpath/"src/github.com/monochromegane"
     ln_s buildpath, buildpath/"src/github.com/monochromegane/the_platinum_searcher"
 

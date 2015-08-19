@@ -1,19 +1,18 @@
-require "formula"
-
 class Vala < Formula
+  desc "Compiler for the GObject type system"
   homepage "https://live.gnome.org/Vala"
-  url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.26/vala-0.26.1.tar.xz"
-  sha256 "8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b"
+  url "https://download.gnome.org/sources/vala/0.28/vala-0.28.1.tar.xz"
+  sha256 "1c0eaea6134b75af17221cb699f13d7236d607bb48192565c3d865c38f184f47"
 
   bottle do
-    sha1 "9e829527c2662e38375a04116802f8975109fc5b" => :yosemite
-    sha1 "22d08887de342be1704472063003caa6c3a33f03" => :mavericks
-    sha1 "0ad74c02e196ac61098dddc8b8c4caec7d91a044" => :mountain_lion
+    sha256 "edc3bc272827dd848deed5b85a1a6d372eb296b0c988ec792df09a2497b1b0b1" => :yosemite
+    sha256 "afa1ae537d0c90408eb919465c05bc005735a5b62837f445d594c5acb3798cfb" => :mavericks
+    sha256 "b55053adbebaf5d9d016002fb8d2a26b72398649e5a54c5621a68a9e62a31e62" => :mountain_lion
   end
 
   devel do
-    url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.27/vala-0.27.1.tar.xz"
-    sha256 "0bce939c011c34478da840f869b3c24d02e8f1c92691c587c1fe289a5533cd77"
+    url "https://download.gnome.org/sources/vala/0.29/vala-0.29.3.tar.xz"
+    sha256 "687f89c404cec528bc6c8e80d80146be0a42aa30f60475fcaefad37bd12949fe"
   end
 
   depends_on "pkg-config" => :run
@@ -36,14 +35,14 @@ class Vala < Formula
         print ("#{test_string}");
       }
     EOS
-    valac_args = [# Build with debugging symbols.
-                  "-g",
-                  # Use Homebrew's default C compiler.
-                  "--cc=#{ENV.cc}",
-                  # Save generated C source code.
-                  "--save-temps",
-                  # Vala source code path.
-                  "#{path}"]
+    valac_args = [ # Build with debugging symbols.
+      "-g",
+      # Use Homebrew's default C compiler.
+      "--cc=#{ENV.cc}",
+      # Save generated C source code.
+      "--save-temps",
+      # Vala source code path.
+      "#{path}"]
     system "#{bin}/valac", *valac_args
     assert File.exist?(testpath/"hello.c")
 

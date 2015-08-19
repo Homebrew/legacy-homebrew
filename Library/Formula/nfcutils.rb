@@ -1,6 +1,7 @@
 require 'formula'
 
 class Nfcutils < Formula
+  desc "Near Field Communication (NFC) tools under POSIX systems"
   homepage 'https://code.google.com/p/nfc-tools/'
   url 'https://nfc-tools.googlecode.com/files/nfcutils-0.3.2.tar.gz'
   sha1 'e560ba7683175257ef9e72838b9f02cf75ce99b8'

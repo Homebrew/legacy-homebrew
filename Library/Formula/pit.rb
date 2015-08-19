@@ -1,4 +1,5 @@
 class Pit < Formula
+  desc "Project manager from hell (integrates with Git)"
   homepage "https://github.com/michaeldv/pit"
   url "https://github.com/michaeldv/pit/archive/0.1.0.tar.gz"
   sha256 "ddf78b2734c6dd3967ce215291c3f2e48030e0f3033b568eb080a22f041c7a0e"
@@ -30,7 +31,6 @@ class Pit < Formula
     sha256 "c6f76895ea5cb711a29223c034eb028af81321d33c6c184550134fd166143a79" => :mavericks
     sha256 "549ecc5ef0be59559d121fd558b02c0d42e149a205fed55b31e9d92b133a1dd2" => :mountain_lion
   end
-
 
   def install
     bin.mkpath

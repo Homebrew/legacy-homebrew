@@ -1,6 +1,7 @@
 require "language/go"
 
 class Nsq < Formula
+  desc "Realtime distributed messaging platform"
   homepage "http://nsq.io"
   url "https://github.com/bitly/nsq/archive/v0.3.5.tar.gz"
   sha256 "4120ad24e3700be1e65549b9a55eab5d4e744cd114d9b39779a47b6dedda0b35"
@@ -75,19 +76,19 @@ class Nsq < Formula
   test do
     begin
       lookupd = fork do
-        system bin/"nsqlookupd"
+        exec bin/"nsqlookupd"
       end
       sleep 2
       d = fork do
-        system bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
+        exec bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
       end
       sleep 2
       admin = fork do
-        system bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
+        exec bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
       end
       sleep 2
       to_file = fork do
-        system bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
+        exec bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
                "--lookupd-http-address=127.0.0.1:4161"
       end
       sleep 2

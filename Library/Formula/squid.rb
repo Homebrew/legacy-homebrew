@@ -1,12 +1,13 @@
 class Squid < Formula
+  desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.4.tar.xz"
-  sha256 "dce615d08e349caf3975fc5d51ce4c3c69b9995fb83f51dc5d55ae873d8bf6a4"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.7.tar.xz"
+  sha256 "ec6f861bddee007b1dd320667a26ddc9ff76847bbe4cbb59c0134588e65c8699"
 
   bottle do
-    sha256 "db246b52297badab3b482ff6525300e81633d5ff547f25a1c02a0dc3330648eb" => :yosemite
-    sha256 "6e271226f1f30ac69e2dd05e95730dcdd62768c4511b6c6dd88d14e1fd4abdf7" => :mavericks
-    sha256 "ec37c74bc79b7847cdf1f78a07fbcebcb371577fb962c4dfad862549145f1182" => :mountain_lion
+    sha256 "ab7daa5dcdbe372d9318ecb396188ba5f9ebc79fd7cd2b49dbff4feabefa1db8" => :yosemite
+    sha256 "e2a7a7c0a090fbc042024417cf5f6337bedc7c5422bd428c72bc7b9e1b580ffe" => :mavericks
+    sha256 "56d053ba7a36ad5d930452156db61e66d08b3baba645db5598fcd611be78539d" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -56,5 +57,19 @@ class Squid < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    pid = fork do
+      exec "#{sbin}/squid"
+    end
+    sleep 2
+
+    begin
+      system "#{sbin}/squid", "-k", "check"
+    ensure
+      exec "#{sbin}/squid -k interrupt"
+      Process.wait(pid)
+    end
   end
 end

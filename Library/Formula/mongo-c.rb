@@ -1,4 +1,5 @@
 class MongoC < Formula
+  desc "Official C driver for MongoDB"
   homepage "https://docs.mongodb.org/ecosystem/drivers/c/"
   url "https://github.com/mongodb/mongo-c-driver/releases/download/1.1.6/mongo-c-driver-1.1.6.tar.gz"
   sha256 "231d0d038c848e8871fa03b70f74284dd8481734eac2bf05fb240e94c9279130"

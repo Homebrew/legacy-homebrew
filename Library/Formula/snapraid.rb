@@ -1,4 +1,5 @@
 class Snapraid < Formula
+  desc "Backup program for disk arrays"
   homepage "http://snapraid.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/snapraid/snapraid-8.1.tar.gz"
   sha256 "6bf89a1319ac3403958cd2c98a9c6102728c0070cfa1aedd90c4561d93c54e5d"

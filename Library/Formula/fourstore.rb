@@ -1,4 +1,5 @@
 class Fourstore < Formula
+  desc "Efficient, stable RDF database"
   homepage "http://4store.org/"
   url "http://4store.org/download/4store-v1.1.5.tar.gz"
   sha256 "2bdd6fb804288802187c5779e365eea2b3ddebce419b3da0609be38edc9e8c5b"

@@ -14,4 +14,4 @@
 -   [CouchDB: The Definitive Guide (Installing on OS X, Appendix
     B)](http://oreilly.com/catalog/9780596155902)
 -   [Installing ActiveMQ on OS
-    X](http://activemq.apache.org/getting-started.html#GettingStarted-UsingHomebrewinstalleronOSX)
+    X](https://activemq.apache.org/getting-started.html#GettingStarted-UsingHomebrewinstalleronOSX)

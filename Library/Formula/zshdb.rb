@@ -1,4 +1,5 @@
 class Zshdb < Formula
+  desc "Debugger for zsh"
   homepage "https://github.com/rocky/zshdb"
   url "https://downloads.sourceforge.net/project/bashdb/zshdb/0.9/zshdb-0.09.tar.bz2"
   sha256 "3ad756485a5bfd014649f4ede15187d0cf070919d2ddb15b4ded61e8990e8d4f"

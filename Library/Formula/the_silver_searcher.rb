@@ -1,4 +1,5 @@
 class TheSilverSearcher < Formula
+  desc "Code-search similar to ack"
   homepage "https://github.com/ggreer/the_silver_searcher"
   head "https://github.com/ggreer/the_silver_searcher.git"
   url "https://github.com/ggreer/the_silver_searcher/archive/0.30.0.tar.gz"

@@ -1,9 +1,11 @@
 # Troubleshooting
+**If you saw `Error: uninitialized constant Formulary::HOMEBREW_CORE_FORMULA_REGEX. Please report this bug: ...` don't worry: it's [already been fixed](https://github.com/Homebrew/homebrew/commit/ac5707c37470c25583d8fb712bf5dc04ab91db4b). Please only create an issue (or comment on [the existing one](https://github.com/Homebrew/homebrew/issues/42553)) if running `brew update` again doesn't fix it. Thanks!**
+
 ## Read this first!
 
 Please run `brew update` and `brew doctor` *before* creating an issue!
 
-If you create an issue, please also create a [Gist][] by running
+If you create an issue related to a formula, please also create a [Gist][] by running
 
 ```
 brew gist-logs <formula name>
@@ -52,5 +54,5 @@ Thank you!
 
 [Gist]:https://gist.github.com
 [Apple Developer]:https://developer.apple.com/downloads
-[Java Developer Update]:http://support.apple.com/kb/DL1572
+[Java Developer Update]:https://support.apple.com/kb/DL1572
 [JDK 7]:https://docs.oracle.com/javase/7/docs/webnotes/install/mac/mac-install-faq.html

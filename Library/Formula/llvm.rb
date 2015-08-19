@@ -1,40 +1,61 @@
+class CodesignRequirement < Requirement
+  include FileUtils
+  fatal true
+
+  satisfy(:build_env => false) do
+    mktemp do
+      touch "llvm_check.txt"
+      quiet_system "/usr/bin/codesign", "-s", "lldb_codesign", "llvm_check.txt"
+    end
+  end
+
+  def message
+    <<-EOS.undent
+      lldb_codesign identity must be available to build with LLDB.
+      See: https://llvm.org/svn/llvm-project/lldb/trunk/docs/code-signing.txt
+    EOS
+  end
+end
+
 class Llvm < Formula
+  desc "llvm (Low Level Virtual Machine): a next-gen compiler infrastructure"
   homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.6.0/llvm-3.6.0.src.tar.xz"
-    sha256 "b39a69e501b49e8f73ff75c9ad72313681ee58d6f430bfad4d81846fe92eb9ce"
+    url "http://llvm.org/releases/3.6.2/llvm-3.6.2.src.tar.xz"
+    sha256 "f60dc158bfda6822de167e87275848969f0558b3134892ff54fced87e4667b94"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.6.0/cfe-3.6.0.src.tar.xz"
-      sha256 "be0e69378119fe26f0f2f74cffe82b7c26da840c9733fe522ed3c1b66b11082d"
+      url "http://llvm.org/releases/3.6.2/cfe-3.6.2.src.tar.xz"
+      sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.0/libcxx-3.6.0.src.tar.xz"
-      sha256 "299c1e82b0086a79c5c1aa1885ea3be3bbce6979aaa9b886409b14f9b387fbb7"
+      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
+      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.6.0/lld-3.6.0.src.tar.xz"
-      sha256 "fb6f787188485b1fac17b73eed9db1dbc0481d6d1fbc273ea1fcd51fdb49a230"
+      url "http://llvm.org/releases/3.6.2/lld-3.6.2.src.tar.xz"
+      sha256 "43f553c115563600577764262f1f2fac3740f0c639750f81e125963c90030b33"
     end
 
     resource "lldb" do
-      url "http://llvm.org/releases/3.6.0/lldb-3.6.0.src.tar.xz"
-      sha256 "2b1ad1d42c4ea3fa2f9dd6db7c522d86e80891659b24dbb3d0d80386d8eaf0b2"
+      url "http://llvm.org/releases/3.6.2/lldb-3.6.2.src.tar.xz"
+      sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
     end
 
     resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.6.0/clang-tools-extra-3.6.0.src.tar.xz"
-      sha256 "3aa949ba82913490a75697287d9ee8598c619fae0aa6bb8fddf0095ff51bc812"
+      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
+      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
     end
   end
 
   bottle do
-    sha256 "a1788dcad685a25e4851885c0081347d146783ec2e5ef23c55bdbfd5b29e2869" => :yosemite
-    sha256 "bdeecd4844420bedbdf80947c25a125aa275fb69657388c15a316d00e4774133" => :mavericks
-    sha256 "a9c45cff37c72cb17dc00eb5ce34ca9f91a0812f3194492e6e6a90c4160f2849" => :mountain_lion
+    cellar :any
+    sha256 "a0ec4b17ae8c1c61071e603d0dcf3e1c39a5aae63c3f8237b4363a06701a3319" => :yosemite
+    sha256 "17a62c19d119c88972fa3dce920cfbc6150af8892ba8e29ce551ae7e2e84f42e" => :mavericks
+    sha256 "6d780faae2647ebce704b2f0a246b52d4037ebf4a2f796644814607e7751af93" => :mountain_lion
   end
 
   head do
@@ -78,7 +99,11 @@ class Llvm < Formula
     depends_on :python => :optional
   end
   depends_on "cmake" => :build
-  depends_on "swig" if build.with? "lldb"
+
+  if build.with? "lldb"
+    depends_on "swig"
+    depends_on CodesignRequirement
+  end
 
   keg_only :provided_by_osx
 
@@ -109,7 +134,11 @@ class Llvm < Formula
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
 
-    args << "-DLLVM_ENABLE_ASSERTIONS=On" if build.with? "assertions"
+    if build.with? "assertions"
+      args << "-DLLVM_ENABLE_ASSERTIONS=On"
+    else
+      args << "-DCMAKE_CXX_FLAGS_RELEASE='-DNDEBUG'"
+    end
 
     if build.universal?
       ENV.permit_arch_flags
@@ -133,12 +162,8 @@ class Llvm < Formula
     end
 
     # install llvm python bindings
-    (lib+"python2.7/site-packages").install buildpath/"bindings/python/llvm"
-    (lib+"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
-  end
-
-  test do
-    system "#{bin}/llvm-config", "--version"
+    (lib/"python2.7/site-packages").install buildpath/"bindings/python/llvm"
+    (lib/"python2.7/site-packages").install buildpath/"tools/clang/bindings/python/clang" if build.with? "clang"
   end
 
   def caveats
@@ -146,5 +171,9 @@ class Llvm < Formula
       LLVM executables are installed in #{opt_bin}.
       Extra tools are installed in #{opt_share}/llvm.
     EOS
+  end
+
+  test do
+    system "#{bin}/llvm-config", "--version"
   end
 end

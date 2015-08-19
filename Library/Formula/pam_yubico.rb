@@ -1,4 +1,5 @@
 class PamYubico < Formula
+  desc "Yubico pluggable authentication module"
   homepage "https://developers.yubico.com/yubico-pam/"
   url "https://github.com/Yubico/yubico-pam/archive/2.19.tar.gz"
   sha256 "64900586555adadd515189a6f58aaf3b12c5fb0012d030a94ce4d7c1747c702c"

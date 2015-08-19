@@ -1,4 +1,5 @@
 class Libgxps < Formula
+  desc "GObject based library for handling and rendering XPS documents"
   homepage "https://live.gnome.org/libgxps"
   url "http://ftp.gnome.org/pub/gnome/sources/libgxps/0.2/libgxps-0.2.2.tar.xz"
   sha256 "39d104739bf0db43905c315de1d8002460f1a098576f4418f69294013a5820be"
@@ -35,7 +36,7 @@ class Libgxps < Formula
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--enable-man",
-      "--prefix=#{prefix}",
+      "--prefix=#{prefix}"
     ]
 
     args << "--without-libjpeg" if build.without? "libjpeg"
@@ -54,7 +55,7 @@ class Libgxps < Formula
   test do
     mkdir_p [
       (testpath/"Documents/1/Pages/_rels/"),
-      (testpath/"_rels/"),
+      (testpath/"_rels/")
     ]
 
     (testpath/"FixedDocumentSequence.fdseq").write <<-EOS.undent
@@ -78,7 +79,7 @@ class Libgxps < Formula
     [
       "_rels/FixedDocumentSequence.fdseq.rels",
       "Documents/1/_rels/FixedDocument.fdoc.rels",
-      "Documents/1/Pages/_rels/1.fpage.rels",
+      "Documents/1/Pages/_rels/1.fpage.rels"
     ].each do |f|
       (testpath/f).write <<-EOS.undent
         <Relationships />

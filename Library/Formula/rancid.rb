@@ -1,4 +1,5 @@
 class Rancid < Formula
+  desc "Really Awesome New Cisco confIg Differ"
   homepage "http://www.shrubbery.net/rancid/"
   url "ftp://ftp.shrubbery.net/pub/rancid/rancid-3.2.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/r/rancid/rancid_3.2.orig.tar.gz"
@@ -9,6 +10,8 @@ class Rancid < Formula
     sha256 "b58dfdca8ca5769648a3eec9f801bac32419185e2602043a1c7ee032de06da8c" => :mavericks
     sha256 "dc6eb5f1cec36fb614ba2dc1bfd5590b19d9b57aaac1a88d00c635af5f46b2ae" => :mountain_lion
   end
+
+  conflicts_with "par", :because => "both install `par` binaries"
 
   def install
     system "./configure", "--prefix=#{prefix}", "--exec-prefix=#{prefix}", "--mandir=#{man}"

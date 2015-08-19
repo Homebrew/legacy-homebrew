@@ -1,4 +1,5 @@
 class Lzop < Formula
+  desc "File compressor"
   homepage "http://www.lzop.org/"
   url "http://www.lzop.org/download/lzop-1.03.tar.gz"
   sha256 "c1425b8c77d49f5a679d5a126c90ea6ad99585a55e335a613cae59e909dbb2c9"

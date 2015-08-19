@@ -1,4 +1,5 @@
 class Unpaper < Formula
+  desc "Post-processing for scanned/photocopied books"
   homepage "https://www.flameeyes.eu/projects/unpaper"
   url "https://www.flameeyes.eu/files/unpaper-6.1.tar.xz"
   sha256 "237c84f5da544b3f7709827f9f12c37c346cdf029b1128fb4633f9bafa5cb930"

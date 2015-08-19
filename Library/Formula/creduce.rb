@@ -1,12 +1,14 @@
 class Creduce < Formula
+  desc "Reduce a C/C++ program while keeping a property of interest"
   homepage "https://embed.cs.utah.edu/creduce/"
   url "https://github.com/csmith-project/creduce/archive/creduce-2.3.0.tar.gz"
   sha256 "47a42751aab8b51bc10d8df62f359bdc1b4a644f16feb85b9f7325f0c5bce4a3"
   head "https://github.com/csmith-project/creduce.git"
+  revision 2
 
   bottle do
-    sha256 "cb27ed455261c1839800d26ad5c66a3afa1ac76717857cc6797fea9a21162d44" => :yosemite
-    sha256 "5afedc24dbb4be00f7e89ee377e6f5500a0804fd914c4eaa75e3c7d7f27fbddb" => :mavericks
+    sha256 "e946da51208fa460a8bdd203a20bbc8a80f2a2f508f97294ae3c598891b1230a" => :yosemite
+    sha256 "2a82aa51b0c3bf17438d0bf11c42ec7df2141b92c5dbd05d8311d07f8cd093f6" => :mavericks
   end
 
   depends_on "astyle"

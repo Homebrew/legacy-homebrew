@@ -1,9 +1,8 @@
-require "formula"
-
 class Marst < Formula
-  homepage "http://www.gnu.org/software/marst"
+  desc "Algol-to-C translator"
+  homepage "https://www.gnu.org/software/marst"
   url "http://ftpmirror.gnu.org/marst/marst-2.7.tar.gz"
-  sha1 "a55ef653887c09045f04e00a179309463546f548"
+  sha256 "3ee7b9d1cbe3cd9fb5f622717da7bb5506f1a6da3b30f812e2384b87bce4da50"
 
   bottle do
     cellar :any
@@ -19,7 +18,7 @@ class Marst < Formula
   end
 
   test do
-    (testpath/'hello.alg').write('begin outstring(1, "Hello, world!\n") end')
+    (testpath/"hello.alg").write('begin outstring(1, "Hello, world!\n") end')
     system "#{bin}/marst -o hello.c hello.alg"
     system "#{ENV.cc} hello.c -lalgol -lm -o hello"
     system "./hello"

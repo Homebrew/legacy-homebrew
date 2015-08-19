@@ -1,4 +1,5 @@
 class Curlpp < Formula
+  desc "C++ wrapper for libcURL"
   homepage "http://www.curlpp.org"
   url "https://github.com/jpbarrette/curlpp/archive/v0.7.3.tar.gz"
   sha256 "b72093f221a9e2d0f7ce0bd0f846587835e01607a7bb0f106ff4317a8c30a81c"

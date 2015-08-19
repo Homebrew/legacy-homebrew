@@ -1,9 +1,8 @@
-require 'formula'
-
 class GdkPixbuf < Formula
-  homepage 'http://gtk.org'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.8.tar.xz'
-  sha256 '4853830616113db4435837992c0aebd94cbb993c44dc55063cee7f72a7bef8be'
+  desc "Toolkit for image loading and pixel buffer manipulation"
+  homepage "http://gtk.org"
+  url "https://download.gnome.org/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.8.tar.xz"
+  sha256 "4853830616113db4435837992c0aebd94cbb993c44dc55063cee7f72a7bef8be"
 
   bottle do
     revision 1
@@ -22,10 +21,11 @@ class GdkPixbuf < Formula
   depends_on "gobject-introspection"
 
   # 'loaders.cache' must be writable by other packages
-  skip_clean 'lib/gdk-pixbuf-2.0'
+  skip_clean "lib/gdk-pixbuf-2.0"
 
   def install
     ENV.universal_binary if build.universal?
+    ENV.append_to_cflags "-DGDK_PIXBUF_LIBDIR=\\\"#{HOMEBREW_PREFIX}/lib\\\""
     system "./configure", "--disable-dependency-tracking",
                           "--disable-maintainer-mode",
                           "--enable-debug=no",
@@ -38,11 +38,14 @@ class GdkPixbuf < Formula
 
     # Other packages should use the top-level modules directory
     # rather than dumping their files into the gdk-pixbuf keg.
-    inreplace lib/'pkgconfig/gdk-pixbuf-2.0.pc' do |s|
-      libv = s.get_make_var 'gdk_pixbuf_binary_version'
-      s.change_make_var! 'gdk_pixbuf_binarydir',
-        HOMEBREW_PREFIX/'lib/gdk-pixbuf-2.0'/libv
+    inreplace lib/"pkgconfig/gdk-pixbuf-2.0.pc" do |s|
+      libv = s.get_make_var "gdk_pixbuf_binary_version"
+      s.change_make_var! "gdk_pixbuf_binarydir",
+        HOMEBREW_PREFIX/"lib/gdk-pixbuf-2.0"/libv
     end
+
+    # Remove the cache. We will regenerate it in post_install
+    (lib/"gdk-pixbuf-2.0/2.10.0/loaders.cache").unlink
   end
 
   def post_install
@@ -57,5 +60,9 @@ class GdkPixbuf < Formula
     If you need to manually update the query loader cache, set GDK_PIXBUF_MODULEDIR then run
       #{bin}/gdk-pixbuf-query-loaders --update-cache
     EOS
+  end
+
+  test do
+    system bin/"gdk-pixbuf-csource", test_fixtures("test.png")
   end
 end

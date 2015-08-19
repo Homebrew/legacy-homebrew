@@ -1,4 +1,5 @@
 class Abcm2ps < Formula
+  desc "ABC music notation software"
   homepage "http://moinejf.free.fr"
   url "http://moinejf.free.fr/abcm2ps-7.8.14.tar.gz"
   sha256 "31c55865a914d56c12e2b7cbeaf5e4a09b47bbe79f1c7b5cd1576a16f3753d07"

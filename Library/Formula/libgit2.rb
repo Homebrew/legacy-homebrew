@@ -1,14 +1,15 @@
 class Libgit2 < Formula
+  desc "C library of Git core methods that is re-entrant and linkable"
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.22.1.tar.gz"
-  sha256 "c7f1bf99ed8aeba65a485489869e2a50f022f3cd847df85e192fc99fdd6c8b5e"
+  url "https://github.com/libgit2/libgit2/archive/v0.23.0.tar.gz"
+  sha256 "49d75c601eb619481ecc0a79f3356cc26b89dfa646f2268e434d7b4c8d90c8a1"
   head "https://github.com/libgit2/libgit2.git"
 
   bottle do
     cellar :any
-    sha256 "2a82725022d06bb36807274f003797938f9b2b0544270b6ba04c29acfdfbd0de" => :yosemite
-    sha256 "e8fa9e5bda12a415c8da8ca0d38ae22a5e59794159cc3d0f5a5527d51d494029" => :mavericks
-    sha256 "4b050924591f0ef948c713c767e9f50504648e191bce4439ebe952c52b56ef8a" => :mountain_lion
+    sha256 "2d25f1c36cdef7902c36192590244986d5bd0d0bbbef82084c07734b947416eb" => :yosemite
+    sha256 "f7f74c93652fba0e228b814d15ea56c02024b79216050ad07c88e17e2fd63ecf" => :mavericks
+    sha256 "c61ca3ddd7fcd6b861b9ac51963d32c7584c99ab863204365806fef4cf0bc6b5" => :mountain_lion
   end
 
   option :universal
@@ -30,5 +31,26 @@ class Libgit2 < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <git2.h>
+
+      int main(int argc, char *argv[]) {
+        int options = git_libgit2_features();
+        return 0;
+      }
+    EOS
+    libssh2 = Formula["libssh2"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{include}
+      -I#{libssh2.opt_include}
+      -L#{lib}
+      -lgit2
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end

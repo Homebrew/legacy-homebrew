@@ -1,4 +1,5 @@
 class Yconalyzer < Formula
+  desc "TCP traffic analyzer"
   homepage "https://sourceforge.net/projects/yconalyzer/"
   url "https://downloads.sourceforge.net/project/yconalyzer/yconalyzer-1.0.4.tar.bz2"
   sha256 "3b2bd33ffa9f6de707c91deeb32d9e9a56c51e232be5002fbed7e7a6373b4d5b"
@@ -16,13 +17,12 @@ class Yconalyzer < Formula
                           "--mandir=#{man}"
     system "make"
     chmod 0755, "./install-sh"
-    system "make install"
+    system "make", "install"
   end
 
   # Fix build issues issue on OS X 10.9/clang
   # Patch reported to upstream - https://sourceforge.net/p/yconalyzer/bugs/3/
   patch :p0, :DATA
-
 end
 __END__
 --- yconalyzer.cc.orig	2014-01-12 14:15:17.000000000 +0800

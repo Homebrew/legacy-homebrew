@@ -1,16 +1,16 @@
 class ApacheDrill < Formula
+  desc "Schema-free SQL query engine for Hadoop and NoSQL"
   homepage "https://drill.apache.org/download/"
-  url "https://www.apache.org/dyn/closer.cgi?path=drill/drill-0.9.0/apache-drill-0.9.0.tar.gz"
-  sha256 "1680b4b937d26623f0f01d7719b0809decf3341f445f5caea3feed1ecbc16c4d"
+  url "https://www.apache.org/dyn/closer.cgi?path=drill/drill-1.1.0/apache-drill-1.1.0.tar.gz"
+  mirror "http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz"
+  sha256 "04b6b21eb526f0491050a432f7d2bbea77d0bf231ac404843840c604310a41d2"
 
   def install
     libexec.install Dir["*"]
-    ["drill_dumpcat", "runbit", "sqlline"].each do |bin_file|
-      bin.write_exec_script Dir["#{libexec}/bin/#{bin_file}"]
-    end
+    bin.write_exec_script Dir["#{libexec}/bin/*"]
   end
 
   test do
-    system "#{bin}/sqlline <<< 'SELECT * FROM cp.`employee.json`;'"
+    pipe_output("#{bin}/sqlline -u jdbc:drill:zk=local", "!tables", 0)
   end
 end

@@ -1,4 +1,5 @@
 class Luvit < Formula
+  desc "Asynchronous I/O for Lua"
   homepage "https://luvit.io"
   url "https://luvit.io/dist/latest/luvit-0.8.2.tar.gz"
   sha256 "c2639348d1716c38ac3cd66ea4c4ff1c8a72f4610dbd6e50cf31426d3956c5ff"

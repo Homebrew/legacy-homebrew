@@ -1,4 +1,5 @@
 class Rapidjson < Formula
+  desc "JSON parser/generator for C++ with SAX and DOM style APIs"
   homepage "https://miloyip.github.io/rapidjson/"
   url "https://github.com/miloyip/rapidjson/archive/v1.0.2.tar.gz"
   sha256 "c3711ed2b3c76a5565ee9f0128bb4ec6753dbcc23450b713842df8f236d08666"

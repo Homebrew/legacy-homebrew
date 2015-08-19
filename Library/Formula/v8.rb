@@ -3,6 +3,7 @@
 # https://omahaproxy.appspot.com/
 
 class V8 < Formula
+  desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
   url "https://github.com/v8/v8-git-mirror/archive/4.1.0.27.tar.gz"
   sha256 "88bafa0bf80154f8f00e9808acd90a9233c0589c5da46ac4ebe3489ce914b87a"

@@ -1,4 +1,5 @@
 class Gource < Formula
+  desc "Version Control Visualization Tool"
   homepage "https://github.com/acaudwell/Gource"
   url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
   sha256 "85a40ac8e4f5c277764216465c248d6b76589ceac012541c4cc03883a24abde4"

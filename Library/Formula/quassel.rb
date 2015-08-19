@@ -1,4 +1,5 @@
 class Quassel < Formula
+  desc "Distributed IRC client (Qt-based)"
   homepage "http://www.quassel-irc.org/"
   head "https://github.com/quassel/quassel.git"
 
@@ -17,7 +18,6 @@ class Quassel < Formula
     sha256 "02b90ddfb94c0be796a5941174b8887c3ebbbaf3d01c1dca22c1abfe07ec4c11" => :mavericks
     sha256 "fc50ef842a23cfcf35ac45a4050030b93ab2cb1652b584750ced1014d9d48c9f" => :mountain_lion
   end
-
 
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build

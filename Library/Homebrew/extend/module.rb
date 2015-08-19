@@ -1,6 +1,6 @@
 class Module
   def attr_rw(*attrs)
-    file, line, _ = caller.first.split(":")
+    file, line, = caller.first.split(":")
     line = line.to_i
 
     attrs.each do |attr|

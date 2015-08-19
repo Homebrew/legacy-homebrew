@@ -1,4 +1,5 @@
 class Irssi < Formula
+  desc "Modular IRC client"
   homepage "http://irssi.org/"
   url "http://irssi.org/files/irssi-0.8.17.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/i/irssi/irssi_0.8.17.orig.tar.gz"
@@ -20,6 +21,7 @@ class Irssi < Formula
     sha256 "dbe24bf6031f96b060884f07dcfc33e00fca993001c3676ce949f6f00522ba88" => :mountain_lion
   end
 
+  option "with-dante", "Build with SOCKS support"
   option "without-perl", "Build without perl support"
 
   depends_on "pkg-config" => :build
@@ -28,11 +30,14 @@ class Irssi < Formula
   depends_on "dante" => :optional
 
   def install
-    # Make paths in man page Homebrew-specific
-    # https://github.com/irssi/irssi/issues/251
-    inreplace "docs/irssi.1" do |s|
-      s.gsub! "/usr/share", "#{HOMEBREW_PREFIX}/share"
-      s.gsub! "/etc/irssi.conf", "#{HOMEBREW_PREFIX}/etc/irssi.conf"
+    if build.stable?
+      # Make paths in man page Homebrew-specific
+      # (https://github.com/irssi/irssi/issues/251); can be removed in
+      # next stable release
+      inreplace "docs/irssi.1" do |s|
+        s.gsub! "/usr/share", "#{HOMEBREW_PREFIX}/share"
+        s.gsub! "/etc/irssi.conf", "#{HOMEBREW_PREFIX}/etc/irssi.conf"
+      end
     end
 
     args = %W[
@@ -43,7 +48,7 @@ class Irssi < Formula
       --with-proxy
       --enable-ipv6
       --enable-true-color
-      --with-socks
+      --with-socks=#{build.with?("dante") ? "yes" : "no"}
       --with-ncurses=#{MacOS.sdk_path}/usr
     ]
 

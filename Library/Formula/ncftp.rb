@@ -1,4 +1,5 @@
 class Ncftp < Formula
+  desc "FTP client with an advanced user interface"
   homepage "http://www.ncftp.com"
   url "ftp://ftp.ncftp.com/ncftp/ncftp-3.2.5-src.tar.gz"
   sha256 "ac111b71112382853b2835c42ebe7bd59acb7f85dd00d44b2c19fbd074a436c4"

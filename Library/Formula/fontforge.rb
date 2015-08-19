@@ -1,19 +1,19 @@
 class Fontforge < Formula
+  desc "Outline and bitmap font editor/converter for many formats"
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/archive/20150430.tar.gz"
-  sha256 "430c6d02611c7ca948df743e9241994efe37eda25f81a94aeadd9b6dd286ff37"
+  url "https://github.com/fontforge/fontforge/archive/20150612.tar.gz"
+  sha256 "af4997a07c96f7057f08cb5c7d71b19a0e8ac6336e0c48476471b471c0574247"
   head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha256 "db55b0a73b4851077da8dfd48c39675f05eaf437323acccf56602779b21cf414" => :yosemite
-    sha256 "dd876ff9dc19e6a1dba1a83cc1d9c106813a08f98675543359d99b14b2691510" => :mavericks
-    sha256 "bf152c19b04f3ad0ba87e179dfe0bba44c9c770def473698603d9a831f9b3ef0" => :mountain_lion
+    sha256 "318c0e6febcb410194f4bf43ebcbb798a7c4a9508e8b579448fd4629aa2dd8da" => :yosemite
+    sha256 "82fb0329ee807dd6adaa258999c5036c480d80a8e5c1c9337eef53d8f75fb5f1" => :mavericks
+    sha256 "4407ede75e6523f2f21be86af9837aead911ed5010ae59498ade768b5118d5c1" => :mountain_lion
   end
 
   option "with-giflib", "Build with GIF support"
   option "with-extra-tools", "Build with additional font tools"
 
-  deprecated_option "with-x" => "with-x11"
   deprecated_option "with-gif" => "with-giflib"
 
   # Autotools are required to build from source in all releases.
@@ -31,7 +31,6 @@ class Fontforge < Formula
   depends_on "libtiff" => :recommended
   depends_on "giflib" => :optional
   depends_on "libspiro" => :optional
-  depends_on :x11 => :optional
   depends_on :python if MacOS.version <= :snow_leopard
 
   # This may be causing font-display glitches and needs further isolation & fixing.
@@ -39,30 +38,39 @@ class Fontforge < Formula
   # https://github.com/Homebrew/homebrew/issues/37803
   depends_on "fontconfig"
 
+  resource "gnulib" do
+    url "git://git.savannah.gnu.org/gnulib.git",
+        :revision => "9a417cf7d48fa231c937c53626da6c45d09e6b3e"
+  end
+
   fails_with :llvm do
     build 2336
     cause "Compiling cvexportdlg.c fails with error: initializer element is not constant"
   end
 
   def install
-    if MacOS.version <= :snow_leopard || !build.bottle?
-      pydir = "#{%x(python-config --prefix).chomp}"
-    else
-      pydir = "#{%x(/usr/bin/python-config --prefix).chomp}"
+    # Don't link libraries to libpython, but do link binaries that expect
+    # to embed a python interpreter
+    # https://github.com/fontforge/fontforge/issues/2353#issuecomment-121009759
+    ENV["PYTHON_CFLAGS"] = `python-config --cflags`.chomp
+    ENV["PYTHON_LIBS"] = "-undefined dynamic_lookup"
+    python_libs = `python2.7-config --ldflags`.chomp
+    inreplace "fontforgeexe/Makefile.am" do |s|
+      oldflags = s.get_make_var "libfontforgeexe_la_LDFLAGS"
+      s.change_make_var! "libfontforgeexe_la_LDFLAGS", "#{python_libs} #{oldflags}"
     end
+
+    # Disable Homebrew detection
+    # https://github.com/fontforge/fontforge/issues/2425
+    inreplace "configure.ac", 'test "y$HOMEBREW_BREW_FILE" != "y"', "false"
 
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
       --disable-dependency-tracking
-      --with-pythonbinary=#{pydir}/bin/python2.7
+      --with-pythonbinary=#{which "python2.7"}
+      --without-x
     ]
-
-    if build.with? "x11"
-      args << "--with-x"
-    else
-      args << "--without-x"
-    end
 
     args << "--without-libpng" if build.without? "libpng"
     args << "--without-libjpeg" if build.without? "jpeg"
@@ -76,13 +84,11 @@ class Fontforge < Formula
     # Reset ARCHFLAGS to match how we build
     ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
-    # And for finding the correct Python, not always Homebrew's.
-    ENV.prepend "CFLAGS", "-I#{pydir}/include"
-    ENV.prepend "LDFLAGS", "-L#{pydir}/lib"
-    ENV.prepend_path "PKG_CONFIG_PATH", "#{pydir}/lib/pkgconfig"
-
     # Bootstrap in every build: https://github.com/fontforge/fontforge/issues/1806
-    system "./bootstrap"
+    resource("gnulib").fetch
+    system "./bootstrap",
+           "--gnulib-srcdir=#{resource("gnulib").cached_download}",
+           "--skip-git"
     system "./configure", *args
     system "make"
     system "make", "install"
@@ -93,12 +99,10 @@ class Fontforge < Formula
         bin.install Dir["*"].select { |f| File.executable? f }
       end
     end
-
-    # The name is case-sensitive. Don't downcase it when linking.
-    ln_s "#{share}/fontforge/osx/FontForge.app", prefix if build.with? "x11"
   end
 
   test do
     system bin/"fontforge", "-version"
+    system "python", "-c", "import fontforge"
   end
 end

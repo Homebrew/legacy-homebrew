@@ -1,21 +1,25 @@
-# encoding: utf-8
 class Harfbuzz < Formula
+  desc "OpenType text shaping engine"
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
-  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.40.tar.bz2"
-  sha256 "1771d53583be6d91ca961854b2a24fb239ef0545eed221ae3349abae0ab8321f"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.0.1.tar.bz2"
+  sha256 "32a1a7ad584a2f2cfba5c1d234d046c0521e86e7a21d403e15e89aa509ef0ea8"
 
   bottle do
-    cellar :any
-    sha256 "68a58bf28ebd0cb7d8ef3885aa86704f442c15e2c22216debddfb7184a49c3a9" => :yosemite
-    sha256 "374db121d1c3b0182ac121dad24539f408588bf5c60391f7f90002e568cc9c60" => :mavericks
-    sha256 "3a3c89c3ac78239f166ee386a94ba9e3beb263fa7e252eadd655f22af7ab79e3" => :mountain_lion
+    revision 2
+    sha256 "08fc47ec6f4d9e2540c0b9ecea24c23bbc5b8cc05da1b1e1919d153752702877" => :yosemite
+    sha256 "485695af7c95035a82579624dcd9aed9b1ead4b31a7ff26a4e10745bce4b87a4" => :mavericks
+    sha256 "ec6c92337dc06d28704640e038523c693c6921d90b167aed769d2aff353a49cf" => :mountain_lion
   end
+
+  option "with-cairo", "Build command-line utilities that depend on Cairo"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "cairo"
+  depends_on "cairo" => :optional
   depends_on "icu4c" => :recommended
+  depends_on "graphite2" => :optional
   depends_on "freetype"
+  depends_on "gobject-introspection"
 
   resource "ttf" do
     url "https://github.com/behdad/harfbuzz/raw/fc0daafab0336b847ac14682e581a8838f36a0bf/test/shaping/fonts/sha1sum/270b89df543a7e48e206a2d830c0e10e5265c630.ttf"
@@ -23,8 +27,17 @@ class Harfbuzz < Formula
   end
 
   def install
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --enable-introspection=yes
+      --with-gobject=yes
+      --with-coretext=yes
+    ]
+
     args << "--with-icu" if build.with? "icu4c"
+    args << "--with-graphite2" if build.with? "graphite2"
+    args << "--with-cairo" if build.with? "cairo"
     system "./configure", *args
     system "make", "install"
   end

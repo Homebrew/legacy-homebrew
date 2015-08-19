@@ -1,4 +1,5 @@
 class Psftools < Formula
+  desc "Tools for fixed-width bitmap fonts"
   homepage "http://www.seasip.info/Unix/PSF/index.html"
   url "http://www.seasip.info/Unix/PSF/psftools-1.0.7.tar.gz"
   sha256 "d6f83e76efddaff86d69392656a5623b54e79cfe7aa74b75684ae3fef1093baf"

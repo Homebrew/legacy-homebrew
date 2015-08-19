@@ -1,9 +1,10 @@
 class UnittestCpp < Formula
+  desc "Unit testing framework for C++"
   homepage "https://github.com/unittest-cpp/unittest-cpp"
 
   stable do
     url "https://github.com/unittest-cpp/unittest-cpp/archive/v1.4.tar.gz"
-    sha1 "ec7bdbebeb6f4d7a069f1125f7b4f473198e491d"
+    sha256 "e075760b7082380058e7bbe3a69f8739524c73dc82d8362b418aaa0f873c6c20"
 
     # Clang failure fixed in the HEAD already
     fails_with :clang do

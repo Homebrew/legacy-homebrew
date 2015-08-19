@@ -1,6 +1,5 @@
-require 'formula'
-
 class Nspr < Formula
+  desc "Platform-neutral API for system-level and libc-like functions"
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
   url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.8/src/nspr-4.10.8.tar.gz"
   sha256 "507ea57c525c0c524dae4857a642b4ef5c9d795518754c7f83422d22fe544a15"
@@ -25,7 +24,7 @@ class Nspr < Formula
     cd "nspr" do
       # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
-      target_frameworks = (Hardware.is_32_bit? or MacOS.version <= :leopard) ? "-framework Carbon" : ""
+      target_frameworks = (Hardware.is_32_bit? || MacOS.version <= :leopard) ? "-framework Carbon" : ""
       inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", target_frameworks
 
       args = %W[
@@ -42,7 +41,7 @@ class Nspr < Formula
       inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", "-install_name #{lib}/$@ "
 
       system "make"
-      system "make install"
+      system "make", "install"
 
       (bin/"compile-et.pl").unlink
       (bin/"prerr.properties").unlink

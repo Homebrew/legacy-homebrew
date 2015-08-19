@@ -1,13 +1,14 @@
 class Ats2Postiats < Formula
+  desc "ATS programming language implementation"
   homepage "http://www.ats-lang.org/"
-  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.1.13/ATS2-Postiats-0.1.13.tgz"
-  sha1 "d6cc8b5bcd8a323701d7c6a86cf4466ad36af4b4"
+  url "https://downloads.sourceforge.net/project/ats2-lang/ats2-lang/ats2-postiats-0.2.1/ATS2-Postiats-0.2.1.tgz"
+  sha256 "0a0d3a7e762a7a7ae77e5d3e27ccdc43766d19316579bfa2015a9f7977e86f7b"
 
   bottle do
     cellar :any
-    sha256 "07927a049396017ed2afeaf0eb71134b5759e1864535ef38a2b3ffbda7df9f4b" => :yosemite
-    sha256 "61a899de07271245f29713e3f52ecfe9c365d0cb9deb07745a6fec4a895520c9" => :mavericks
-    sha256 "1097d605c57f3baccb3a63acbd9185f5d33c1edcd2c7bdebbe0ad633d09d84ef" => :mountain_lion
+    sha256 "be9ab239456434d4208d9a7cd50cb9131771729792b0c327b00b996451eb6c4d" => :yosemite
+    sha256 "5d85ec1cac8ba021da8103c5dfdb1bb6eac825475c3a4a7e0a0961ea96df324a" => :mavericks
+    sha256 "1cdd861830a35f51c2050621e518d5a7d1e47aca432a58e677cf85b600531959" => :mountain_lion
   end
 
   depends_on "gmp"
@@ -32,7 +33,7 @@ class Ats2Postiats < Formula
       val _ = print ("Hello, world!\n")
       implement main0 () = ()
     EOS
-    system "#{bin}/patscc hello.dats -o hello"
+    system "#{bin}/patscc", "hello.dats", "-o", "hello"
     assert_match "Hello, world!", shell_output(testpath/"hello")
   end
 end

@@ -1,4 +1,5 @@
 class Kafka < Formula
+  desc "Publish-subscribe messaging rethought as a distributed commit log"
   homepage "https://kafka.apache.org"
   head "https://git-wip-us.apache.org/repos/asf/kafka.git"
   url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
