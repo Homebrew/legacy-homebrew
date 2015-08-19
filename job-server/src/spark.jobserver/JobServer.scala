@@ -48,15 +48,21 @@ object JobServer {
     val system = makeSystem(config)
     val clazz = Class.forName(config.getString("spark.jobserver.jobdao"))
     val ctor = clazz.getDeclaredConstructor(Class.forName("com.typesafe.config.Config"))
-    val jobDAO = ctor.newInstance(config).asInstanceOf[JobDAO]
+    try {
+      val jobDAO = ctor.newInstance(config).asInstanceOf[JobDAO]
+      val jarManager = system.actorOf(Props(classOf[JarManager], jobDAO), "jar-manager")
+      val supervisor = system.actorOf(Props(classOf[LocalContextSupervisorActor], jobDAO),
+        "context-supervisor")
+      val jobInfo = system.actorOf(Props(classOf[JobInfoActor], jobDAO, supervisor), "job-info")
 
-    val jarManager = system.actorOf(Props(classOf[JarManager], jobDAO), "jar-manager")
-    val supervisor = system.actorOf(Props(classOf[LocalContextSupervisorActor], jobDAO), "context-supervisor")
-    val jobInfo = system.actorOf(Props(classOf[JobInfoActor], jobDAO, supervisor), "job-info")
-
-    // Create initial contexts
-    supervisor ! ContextSupervisor.AddContextsFromConfig
-    new WebApi(system, config, port, jarManager, supervisor, jobInfo).start()
+      // Create initial contexts
+      supervisor ! ContextSupervisor.AddContextsFromConfig
+      new WebApi(system, config, port, jarManager, supervisor, jobInfo).start()
+    } catch {
+      case e: Exception =>
+        logger.error("Unable to start Spark JobServer: ", e)
+        sys.exit(1)
+    }
 
   }
 
