@@ -13,16 +13,17 @@ class Jq < Formula
 
   head do
     url "https://github.com/stedolan/jq.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "oniguruma"  # jq depends > 1.5
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
   depends_on "bison" => :build # jq depends on bison > 2.5
 
   def install
-    system "autoreconf", "-iv"
+    system "autoreconf", "-iv" unless build.stable?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
