@@ -6,9 +6,9 @@ class Skinny < Formula
 
   bottle do
     cellar :any
-    sha256 "b4c935695d70c76e939cd5d37d3fb3fe631a6e5bc0ef93be7ef12bb2c66c5854" => :yosemite
-    sha256 "e24d6147aec3faeff41a1147f4fa0c3b646e4f321b7459943eef7eacfdcf4117" => :mavericks
-    sha256 "925d1f6bf905805e98d5d316de2baff5f0258928d3db0cffc6bb7592ba6e0667" => :mountain_lion
+    sha256 "d111d7e0cd3a6c8d759a3eeb2a4039f186c79b4a2ae69458dff3eeef773d9364" => :yosemite
+    sha256 "3f5fe80d9a51b7f7b9c82d0e547ca26933d9ce9be3f15fa3ad24c62dd5436f42" => :mavericks
+    sha256 "9ae8759b4feef01177fcfda6c84f450a028bc71a4bb3de6a413a8105e99b87e7" => :mountain_lion
   end
 
   option "without-npm-generator", "Yeoman generator will not be installed"
