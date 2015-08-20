@@ -31,8 +31,8 @@ class Go < Formula
   deprecated_option "cross-compile-common" => "with-cc-common"
 
   resource "gotools" do
-    url "https://go.googlesource.com/tools.git",
-    :revision => "69db398fe0e69396984e3967724820c1f631e971"
+    url "https://github.com/golang/tools.git",
+    :revision => "9f2124fb70150373b1fa070cb5547a7d8d6f2930"
   end
 
   resource "gobootstrap" do
