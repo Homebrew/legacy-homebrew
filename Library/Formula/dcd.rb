@@ -4,7 +4,6 @@ class Dcd < Formula
   url "https://github.com/Hackerpilot/DCD.git",
       :tag => "v0.6.0",
       :revision => "633b1667ef223e6eda7bcfd2d2d746f59036571f"
-
   head "https://github.com/Hackerpilot/dcd.git", :shallow => false
 
   bottle do
@@ -15,9 +14,9 @@ class Dcd < Formula
 
   devel do
     url "https://github.com/Hackerpilot/DCD.git",
-        :tag => "v0.7.0-alpha1",
-        :revision => "fb5ad8ea350cc639de86d972b89f961922719b58"
-    version "0.7.0-a1"
+        :tag => "v0.7.0-beta1",
+        :revision => "1d4c2fd72c5f7a39737ce2fa1a2e95a3a64a16a5"
+    version "0.7.0-b1"
   end
 
   depends_on "dmd" => :build
@@ -31,8 +30,6 @@ class Dcd < Formula
     begin
       # spawn a server, using a non-default port to avoid
       # clashes with pre-existing dcd-server instances
-      puts "==> dcd-server -p9167"
-      # would use spawn, can't on M-L as ruby 1.8
       server = fork do
         exec "dcd-server", "-p9167"
       end
