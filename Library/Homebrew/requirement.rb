@@ -117,7 +117,11 @@ class Requirement
   def to_dependency
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
-    Dependency.new(f, tags, method(:modify_build_environment), name)
+    if HOMEBREW_TAP_FORMULA_REGEX === f
+      TapDependency.new(f, tags, method(:modify_build_environment), name)
+    else
+      Dependency.new(f, tags, method(:modify_build_environment), name)
+    end
   end
 
   private
