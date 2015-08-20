@@ -82,6 +82,10 @@ class Influxdb < Formula
     url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
   end
 
+  go_resource "github.com/golang/snappy" do
+    url "https://github.com/golang/snappy.git", :revision => "723cc1e459b8eea2dea4583200fd60757d40097a"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
     influxdb_path = buildpath/"src/github.com/influxdb/influxdb"
