@@ -2,8 +2,8 @@ class Smlnj < Formula
   desc "Standard ML of New Jersey"
   homepage "http://www.smlnj.org/"
   url "http://smlnj.cs.uchicago.edu/dist/working/110.78/config.tgz"
-  sha256 "e2dd00b39b00ad892f182ce3f824d1540b0e350f2aee748ca971d44b5d340c05"
   version "110.78"
+  sha256 "e2dd00b39b00ad892f182ce3f824d1540b0e350f2aee748ca971d44b5d340c05"
 
   bottle do
     sha256 "faa649b3781c84abd7f83855ecaa566c26e1a01a80df746ceaf762f07bdb3205" => :yosemite
@@ -125,6 +125,12 @@ class Smlnj < Formula
     sha256 "2d48e6466314c7563f7f7b07700f3d93430c8082199874de0b1ff25d1a536821"
   end
 
+  # Pings `unname -r` to determine OS X version & panics that
+  # it doesn't recognise El Capitan. Already fixed upstream, but
+  # patch doesn't apply cleanly from trunk.
+  # http://smlnj-gforge.cs.uchicago.edu/scm/viewvc.php?view=rev&root=smlnj&revision=4073
+  patch :DATA
+
   def install
     ENV.deparallelize
     ENV.m32 # does not build 64-bit
@@ -193,4 +199,24 @@ class Smlnj < Formula
       request heap2asm
     EOS
   end
+
+  test do
+    system bin/"ml-nlffigen"
+    assert File.exist?("NLFFI-Generated/nlffi-generated.cm")
+  end
 end
+
+__END__
+
+diff --git a/_arch-n-opsys b/_arch-n-opsys
+index 2da504c..020e1a0 100644
+--- a/_arch-n-opsys
++++ b/_arch-n-opsys
+@@ -47,6 +47,7 @@ case `uname -s` in
+	  12*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.8 Mountain Lion
+	  13*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.9 Mavericks
+	  14*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.10 Yosemite
++	  15*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.11 El Capitan
+	  *) exit 1;;
+	esac;;
+     esac
