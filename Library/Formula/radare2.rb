@@ -3,12 +3,12 @@ class Radare2 < Formula
   homepage "http://radare.org"
 
   stable do
-    url "http://radare.org/get/radare2-0.9.8.tar.xz"
-    sha256 "8e72caaebdac10300fd7ec86a5d06b1cbecfc6914e5fea4007c6e06e667bfa5a"
+    url "http://radare.org/get/radare2-0.9.9.tar.xz"
+    sha256 "024adba5255f12e58c2c1a5e2263fada75aad6e71b082461dea4a2b94b29df32"
 
     resource "bindings" do
-      url "http://radare.org/get/radare2-bindings-0.9.8.tar.xz"
-      sha256 "28326effb7d1eda9f6df2ef08954774c16617046a33046501bd0332324519f39"
+      url "http://radare.org/get/radare2-bindings-0.9.9.tar.xz"
+      sha256 "817939698cc4534498226c28938288b7b4a7b6216dc6d7ddde72b0f94d987b14"
     end
   end
 
@@ -35,6 +35,13 @@ class Radare2 < Formula
   depends_on "gmp"
   depends_on "lua51" # It seems to latch onto Lua51 rather than Lua. Enquire this upstream.
   depends_on "openssl"
+
+  # https://github.com/radare/radare2/issues/3019
+  # Also fixes dylib naming issue with https://github.com/radare/radare2/commit/a497a6cf5b19da8bb857803e582a3afb3d4af673
+  patch do
+    url "https://gist.githubusercontent.com/sparkhom/d4584cfefb58243995e8/raw/cb62b0e45d62832efb0db037de5a63cfa895bfa0/radare2-0.9.9-homebrew.patch"
+    sha256 "9b032de6e31ffeb302384a3fed284fee8a14b7b452405789419e78a15cb83145"
+  end
 
   def install
     # Build Radare2 before bindings, otherwise compile = nope.
