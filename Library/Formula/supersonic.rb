@@ -17,15 +17,20 @@ class Supersonic < Formula
     depends_on "protobuf"
     depends_on "boost"
   end
-  depends_on "glog"
+
   depends_on "pkg-config" => :build
+  depends_on "glog"
+
   needs :cxx11
 
   def install
     ENV.cxx11
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+
+    # gflags no longer supply .pc files; supersonic's compile expects them.
+    ENV["GFLAGS_CFLAGS"] = "-I#{Formula["gflags"].opt_include}"
+    ENV["GFLAGS_LIBS"] = "-L#{Formula["gflags"].opt_lib} -lgflags"
+
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-re2"
     system "make", "clean"
