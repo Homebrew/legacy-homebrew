@@ -1,8 +1,8 @@
 class Zbackup < Formula
   desc "Globally-deduplicating backup tool (based on ideas in rsync)"
   homepage "http://zbackup.org"
-  url "https://github.com/zbackup/zbackup/archive/1.4.2.tar.gz"
-  sha256 "6259e8206ef996c8f925a536dda09d955bd6308d1e9b3b5b6bcdfd00e8ac8f41"
+  url "https://github.com/zbackup/zbackup/archive/1.4.3.tar.gz"
+  sha256 "7bb027d34b98ae2c5aa5066177ba7a1542c786e16e52d47dc3c29bb326b1cd4a"
 
   bottle do
     cellar :any
@@ -17,7 +17,7 @@ class Zbackup < Formula
   depends_on "xz" # get liblzma compression algorithm library from XZutils
   depends_on "lzo"
 
-  # These fixes are upstream and can be removed in the next released version.
+  # These fixes are upstream and can be removed in version 1.5+
   patch do
     url "https://github.com/zbackup/zbackup/commit/7e6adda6b1df9c7b955fc06be28fe6ed7d8125a2.diff"
     sha256 "564c494b02be7b159b21f1cfcc963df29350061e050e66b7b3d96ed829552351"
