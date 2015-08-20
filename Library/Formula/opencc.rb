@@ -5,9 +5,9 @@ class Opencc < Formula
   sha256 "5738c6996c6576539e8c5dea103456d86005b0656b476b9d97c65d468a9e7d97"
 
   bottle do
-    sha1 "f49556768692c346a700382cec6746ee3d425ff3" => :yosemite
-    sha1 "e7024a546b9b322a5cdb43703004a93a5dcd21b9" => :mavericks
-    sha1 "535532648a4f756a5c20ddda3da12953c7520128" => :mountain_lion
+    sha256 "017b96bc4e668ce364e70f4b960b8a56d4593f27c9244e3b2e79a4ce53353cfa" => :yosemite
+    sha256 "65527b74afd6a34dcdfd454c6bf365683bec1a63ffd6cea0d0a580790f85ae0e" => :mavericks
+    sha256 "71c920c49cf7173a77cf1532cb445b83f7aef1a47817540b879432b631b768c1" => :mountain_lion
   end
 
   depends_on "cmake" => :build
