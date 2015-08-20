@@ -258,6 +258,7 @@ class Checks
     end
   end
 
+  # TODO: distill down into single method definition a la BuildToolsError
   if MacOS.version >= "10.9"
     def check_for_installed_developer_tools
       unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
