@@ -1,8 +1,8 @@
 class ExtractUrl < Formula
   desc "Perl script to extracts URLs from emails or plain text."
   homepage "http://www.memoryhole.net/~kyle/extract_url/"
-  url "https://extracturl.googlecode.com/files/extract_url-1.5.8.tar.gz"
-  sha256 "58eac907cb926deba74ab81e7503a1055fd3cbe20952f011d8e6b75da12d6bcc"
+  url "https://github.com/m3m0ryh0l3/extracturl/archive/v1.6.tar.gz"
+  sha256 "2f8fb4c361a02ee0053d2e1791d283e9b202297e4b861d7ff676ac00438ddcaf"
 
   bottle do
     sha256 "d30e8c0391caf4f3b9e13c911e4c552d7f754e7dc593b253caf113af1b58b4b1" => :yosemite
