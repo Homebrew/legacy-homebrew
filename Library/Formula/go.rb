@@ -51,17 +51,11 @@ class Go < Formula
     ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
 
     cd "src" do
-      targets.each do |os, archs|
-        cgo_enabled = os == "darwin" && build.with?("cgo") ? "1" : "0"
-        archs.each do |arch|
-          ENV["GOROOT_FINAL"] = libexec
-          ENV["GOOS"]         = os
-          ENV["GOARCH"]       = arch
-          ENV["CGO_ENABLED"]  = cgo_enabled
-          ohai "Building go for #{arch}-#{os}"
-          system "./make.bash", "--no-clean"
-        end
-      end
+      cgo_enabled = os == "darwin" && build.with?("cgo") ? "1" : "0"
+      ENV["GOROOT_FINAL"] = libexec
+      ENV["CGO_ENABLED"]  = cgo_enabled
+      ohai "Building go for #{arch}-#{os}"
+      system "./make.bash", "--no-clean"
     end
 
     (buildpath/"pkg/obj").rmtree
