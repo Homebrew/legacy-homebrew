@@ -23,6 +23,12 @@ class Influxdb < Formula
     version "0.9.3-rc1"
   end
 
+  devel do
+    url "https://github.com/influxdb/influxdb/archive/v0.9.3-rc1.tar.gz"
+    sha256 "cce989aa2e7da6d6c1d91755a320dfd81d631cabae0d21ea441c2df2612f8d13"
+    version "0.9.3-rc1"
+  end
+
   head do
     url "https://github.com/influxdb/influxdb.git"
   end
