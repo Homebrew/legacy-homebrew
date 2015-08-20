@@ -6,11 +6,8 @@ class Rl < Formula
   sha256 "1cfca23d6a14acd190c5a6261923757d20cb94861c9b2066991ec7a7cae33bc8"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    system "make", "install" # if this fails, try separate make/make install steps
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
   end
 
   test do
