@@ -1,8 +1,8 @@
 class Fleetctl < Formula
   desc "Distributed init system"
   homepage "https://github.com/coreos/fleet"
-  url "https://github.com/coreos/fleet/archive/v0.11.2.tar.gz"
-  sha256 "85aa7c30b835b0145efe67b1cb4ecc3236d625a120a1b5c75b22feb3ca06f818"
+  url "https://github.com/coreos/fleet/archive/v0.11.4.tar.gz"
+  sha256 "2b386c6eec23741095df7b87db01ef9263c3423921b6804218ff4eca8c82f159"
   head "https://github.com/coreos/fleet.git"
 
   bottle do
@@ -18,5 +18,9 @@ class Fleetctl < Formula
     ENV["GOPATH"] = buildpath
     system "./build"
     bin.install "bin/fleetctl"
+  end
+
+  test do
+    system "#{bin}/fleetctl", "-version"
   end
 end
