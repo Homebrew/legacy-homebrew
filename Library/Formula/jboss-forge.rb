@@ -7,9 +7,9 @@ class JbossForge < Formula
 
   bottle do
     cellar :any
-    sha256 "4accd77051ff6cd0e425bbb17e6557b8110999430d1ab504336325605b198efc" => :yosemite
-    sha256 "aff4bb3754d83399de23494e3f223cd071678cd5f5a204b4883f0ecb784c4290" => :mavericks
-    sha256 "d69a922b8ac9cf315f8e2af074c068e163b13aa551bfc7641c557f7bc137305e" => :mountain_lion
+    sha256 "da78b619648205a7ba737479f0aaf3295ed1a999a407b89f301882c569b7fc79" => :yosemite
+    sha256 "b44f27108a15632dde330d380622079459812a2cf6787f3f8dc45ecb5b0c75c9" => :mavericks
+    sha256 "a9c88bab36a57b0f0a69d323c27d1577beaed60bdf32f5ee00d487eae4a1bc65" => :mountain_lion
   end
 
   def install
