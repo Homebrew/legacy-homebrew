@@ -19,6 +19,7 @@ class JbossForge < Formula
   end
 
   test do
+    ENV["FORGE_OPTS"] = "-Duser.home=#{testpath}"`    
     assert_match "org.jboss.forge.addon:core", shell_output("#{bin}/forge --list")
   end
 end
