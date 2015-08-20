@@ -318,7 +318,7 @@ class Report
   end
 
   def update_renamed
-    @hash[:R] ||= []
+    renamed_formulae = []
 
     fetch(:D, []).each do |path|
       case path.to_s
@@ -333,12 +333,15 @@ class Report
       end
 
       if fetch(:A, []).include?(newpath = path.dirname.join("#{newname}.rb"))
-        @hash[:R] << [path, newpath]
+        renamed_formulae << [path, newpath]
       end
     end
 
-    @hash[:A] -= @hash[:R].map(&:last) if @hash[:A]
-    @hash[:D] -= @hash[:R].map(&:first) if @hash[:D]
+    unless renamed_formulae.empty?
+      @hash[:A] -= renamed_formulae.map(&:last) if @hash[:A]
+      @hash[:D] -= renamed_formulae.map(&:first) if @hash[:D]
+      @hash[:R] = renamed_formulae
+    end
   end
 
   def select_formula(key)
