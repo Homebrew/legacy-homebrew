@@ -19,8 +19,8 @@ class Nanomsg < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-test", "Verify the build with make check"
-  option "with-doc", "Install man pages"
+  option "without-test", "Skip verifying the build (Not Recommended)"
+  option "without-doc", "Skip building manpages"
   option "without-nanocat", "Do not install nanocat tool"
   option "with-debug", "Compile with debug symbols"
 
@@ -34,18 +34,37 @@ class Nanomsg < Formula
   def install
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog" if build.with? "doc"
 
-    system "./autogen.sh" if build.head?
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+    ]
 
-    args = ["--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}"]
     args << "--disable-nanocat" if build.without? "nanocat"
     args << "--enable-debug" if build.with? "debug"
     args << "--enable-doc" if build.with? "doc"
 
+    system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make"
-    system "make", "-j1", "check" if build.with? "test"
+    system "make", "-j1", "check" if build.bottle? || build.with?("test")
     system "make", "install"
+  end
+
+  test do
+    bind = "tcp://127.0.0.1:8000"
+
+    pid = fork do
+      exec "#{bin}/nanocat --rep --bind #{bind} --format ascii --data home"
+    end
+    sleep 2
+
+    begin
+      output = shell_output("#{bin}/nanocat --req --connect #{bind} --format ascii --data brew")
+      assert_match /home/, output
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
