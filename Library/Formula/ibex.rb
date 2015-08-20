@@ -5,6 +5,7 @@ class Ibex < Formula
   sha256 "d92ff32f14d27ad7b390ae693beb311b58cf6babccac85bbdaa5f5d0b8648845"
 
   option "with-java", "Build Java bindings for Choco solver."
+
   depends_on :java => ["1.8+", :optional]
   depends_on "bison" => :build
   depends_on "flex" => :build
@@ -12,25 +13,18 @@ class Ibex < Formula
 
   def install
     if build.with? "java"
-      system "./waf", "configure",
-        "--with-jni",
-        "--prefix=#{prefix}"
+      system "./waf", "configure", "--with-jni", "--prefix=#{prefix}"
     else
-      system "./waf", "configure",
-        "--enable-shared",
-        "--prefix=#{prefix}"
+      system "./waf", "configure", "--enable-shared", "--prefix=#{prefix}"
     end
     system "./waf", "install"
 
-    # copy and compile examples and benchmark for the test
     pkgshare.install "examples"
     pkgshare.install "benchs"
+    cd "#{pkgshare}/examples"
     cxxflags = "-frounding-math -ffloat-store -I#{include} -I#{include}/ibex"
     libflags = "-L#{lib} -libex -lprim -lClp -lCoinUtils -lm"
-    cd "#{pkgshare}/examples"
-    system "make", "defaultsolver",
-      "LIBS=#{libflags}",
-      "CXXFLAGS=#{cxxflags}"
+    system "make", "defaultsolver", "LIBS=#{libflags}", "CXXFLAGS=#{cxxflags}"
   end
 
   test do
