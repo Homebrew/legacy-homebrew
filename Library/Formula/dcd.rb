@@ -31,12 +31,12 @@ class Dcd < Formula
       # spawn a server, using a non-default port to avoid
       # clashes with pre-existing dcd-server instances
       server = fork do
-        exec "dcd-server", "-p9167"
+        exec "#{bin}/dcd-server", "-p9167"
       end
       # Give it generous time to load
       sleep 0.5
       # query the server from a client
-      system "dcd-client", "-q", "-p9167"
+      system "#{bin}/dcd-client", "-q", "-p9167"
     ensure
       Process.kill "TERM", server
       Process.wait server
