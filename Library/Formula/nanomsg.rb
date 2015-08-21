@@ -6,9 +6,10 @@ class Nanomsg < Formula
 
   bottle do
     cellar :any
-    sha256 "3d0724e03b1bda43509ddd2697241aebdf67e084814141fe02ff964a2b51496b" => :yosemite
-    sha256 "c0f3ffe0375e039168efb280749671ee4c0cb228d5b1324d8f2a155f54f4a3fc" => :mavericks
-    sha256 "9668ea4539430d48e20eb61e363506d884ebf2a5a1413004c9ec01ed6e5d3e65" => :mountain_lion
+    revision 1
+    sha256 "4938a9377541b66566101d55b27d13d356f34f0a8426a2cd579cc7349ace824d" => :yosemite
+    sha256 "8a5f9f04595732195ae673d4ff4ca28b8bdc980528b95f8b75a005c472eead28" => :mavericks
+    sha256 "c84dbd9e0f86d2435d1ac94ec7af6ea83f7f11bfa50e3f5d7593c266bfba9ee3" => :mountain_lion
   end
 
   head do
