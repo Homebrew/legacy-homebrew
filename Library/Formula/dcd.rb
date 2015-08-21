@@ -37,14 +37,9 @@ class Dcd < Formula
       sleep 0.5
       # query the server from a client
       system "dcd-client", "-q", "-p9167"
-    rescue
-      if server
-        # clean up the server process
-        Process.kill "TERM", server
-      end
-      raise
+    ensure
+      Process.kill "TERM", server
+      Process.wait server
     end
-    # Ditto
-    Process.kill "TERM", server
   end
 end
