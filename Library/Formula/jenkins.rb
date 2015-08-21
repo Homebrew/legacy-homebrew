@@ -60,6 +60,7 @@ class Jenkins < Formula
   end
 
   test do
+    ENV["JENKINS_HOME"] = testpath
     pid = fork do
       exec "#{bin}/jenkins"
     end
