@@ -62,7 +62,9 @@ class JobSqlDAO(config: Config) extends JobDAO {
 
   // DB initialization
   val jdbcUrl = config.getString("spark.jobserver.sqldao.jdbc.url")
-  val db = Database.forURL(jdbcUrl, driver = jdbcDriverClass)
+  val jdbcUser = config.getString("spark.jobserver.sqldao.jdbc.user")
+  val jdbcPassword = config.getString("spark.jobserver.sqldao.jdbc.password")
+  val db = Database.forURL(jdbcUrl, driver = jdbcDriverClass, user = jdbcUser, password = jdbcPassword)
 
   // Server initialization
   init()
