@@ -6,7 +6,8 @@
 
 ### Configuring the Spark-Jobserver Docker package to run in Yarn-Client Mode
 
-To run the Spark-Jobserver in yarn-client mode you have to do a little bit extra of configuration. 
+To run the Spark-Jobserver in yarn-client mode you have to do a little bit extra of configuration.
+You can either follow the instructions here for a little bit of explanations or check out the [example repository](https://github.com/MeiSign/spark-jobserver-yarn-client-example) and adjust it to your needson your own.
 First of all make sure that your have a correct docker installation on the host that shall run the spark-jobserver.
 
 I suggest you to create a new directory for your custom config files.
@@ -114,7 +115,7 @@ The last step to your jarn-client is to run the docker container that you have j
   The -p parameters are necessary to publish the ports for the rest interface and to communicate with the cluster.
   The --net parameter is necessary to make the docker container accessible from the spark cluster. I have found no way to do this in bridging mode (pullrequests appreciated).
   
-Your Spark-Jobserver should now be up and running  
+Your Spark-Jobserver should now be up and running
 
 ### Important Context Settings for yarn
 
