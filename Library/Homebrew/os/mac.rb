@@ -36,6 +36,33 @@ module OS
       end
     end
 
+    # Locates a (working) copy of install_name_tool, guaranteed to function
+    # whether the user has developer tools installed or not.
+    def install_name_tool
+      if File.executable?(path = "#{HOMEBREW_PREFIX}/opt/cctools/bin/install_name_tool")
+        Pathname.new(path)
+      else
+        locate("install_name_tool")
+      end
+    end
+
+    # Locates a (working) copy of otool, guaranteed to function whether the user
+    # has developer tools installed or not.
+    def otool
+      if File.executable?(path = "#{HOMEBREW_PREFIX}/opt/cctools/bin/otool")
+        Pathname.new(path)
+      else
+        locate("otool")
+      end
+    end
+
+    # Checks if the user has any developer tools installed, either via Xcode
+    # or the CLT. Convenient for guarding against formula builds when building
+    # is impossible.
+    def has_apple_developer_tools?
+      Xcode.installed? || CLT.installed?
+    end
+
     def active_developer_dir
       @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end

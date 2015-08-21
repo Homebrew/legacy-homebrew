@@ -257,6 +257,100 @@ class BuildError < RuntimeError
   end
 end
 
+# raised by FormulaInstaller.check_dependencies_bottled and
+# FormulaInstaller.install if the formula or its dependencies are not bottled
+# and are being installed on a system without necessary build tools
+class BuildToolsError < RuntimeError
+  def initialize(formulae)
+    if formulae.length > 1
+      formula_text = "formulae"
+      package_text = "binary packages"
+    else
+      formula_text = "formula"
+      package_text = "a binary package"
+    end
+
+    if MacOS.version >= "10.10"
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode from the App Store,
+              or the CLT by running:
+                xcode-select --install
+      EOS
+    elsif MacOS.version == "10.9"
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode from:
+                https://developer.apple.com/downloads/
+              or the CLT by running:
+                xcode-select --install
+      EOS
+    elsif MacOS.version >= "10.7"
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode or the CLT from:
+                https://developer.apple.com/downloads/
+      EOS
+    else
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode from:
+                https://developer.apple.com/downloads/
+      EOS
+    end
+
+    super <<-EOS.undent
+      The following #{formula_text}:
+        #{formulae.join(', ')}
+      cannot be installed as a #{package_text} and must be built from source.
+      #{xcode_text}
+    EOS
+  end
+end
+
+# raised by Homebrew.install, Homebrew.reinstall, and Homebrew.upgrade
+# if the user passes any flags/environment that would case a bottle-only
+# installation on a system without build tools to fail
+class BuildFlagsError < RuntimeError
+  def initialize(flags)
+    if flags.length > 1
+      flag_text = "flags"
+      require_text = "require"
+    else
+      flag_text = "flag"
+      require_text = "requires"
+    end
+
+    if MacOS.version >= "10.10"
+      xcode_text = <<-EOS.undent
+        or install Xcode from the App Store, or the CLT by running:
+                xcode-select --install
+      EOS
+    elsif MacOS.version == "10.9"
+      xcode_text = <<-EOS.undent
+        or install Xcode from:
+                https://developer.apple.com/downloads/
+              or the CLT by running:
+                xcode-select --install
+      EOS
+    elsif MacOS.version >= "10.7"
+      xcode_text = <<-EOS.undent
+        or install Xcode or the CLT from:
+                https://developer.apple.com/downloads/
+      EOS
+    else
+      xcode_text = <<-EOS.undent
+        or install Xcode from:
+                https://developer.apple.com/downloads/
+      EOS
+    end
+
+    super <<-EOS.undent
+      The following #{flag_text}:
+        #{flags.join(', ')}
+      #{require_text} building tools, but none are installed.
+      Either remove the #{flag_text} to attempt bottle installation,
+      #{xcode_text}
+    EOS
+  end
+end
+
 # raised by CompilerSelector if the formula fails with all of
 # the compilers available on the user's system
 class CompilerSelectionError < RuntimeError
