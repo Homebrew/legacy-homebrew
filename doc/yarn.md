@@ -109,7 +109,7 @@ Output should look like this:
 
 The last step to your jarn-client is to run the docker container that you have just created:
 
-    docker run -d -p 8090:8090 -p 32456-32472:32456-32472 --net=host
+    docker run -d -p 8090:8090 -p 32456-32472:32456-32472 --net=host your-container-name
     
   The -p parameters are necessary to publish the ports for the rest interface and to communicate with the cluster.
   The --net parameter is necessary to make the docker container accessible from the spark cluster. I have found no way to do this in bridging mode (pullrequests appreciated).
