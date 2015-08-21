@@ -8,7 +8,9 @@ module Homebrew
       migrate_taps :force => true
     elsif ARGV.first == "--list-official"
       require "official_taps"
-      puts OFFICIAL_TAPS.map { |t| "homebrew/#{t}" } * "\n"
+      puts OFFICIAL_TAPS.map { |t| "homebrew/#{t}" }
+    elsif ARGV.first == "--list-pinned"
+      puts Tap.select(&:pinned?).map(&:name)
     else
       user, repo = tap_args
       clone_target = ARGV.named[1]
