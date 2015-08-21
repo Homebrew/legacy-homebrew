@@ -390,6 +390,12 @@ Note that these flags should only appear after a command.
   * `tap --repair`:
     Migrate tapped formulae from symlink-based to directory-based structure.
 
+  * `tap --list-official`:
+    List all official taps.
+
+  * `tap --list-pinned`:
+    List all pinned taps.
+
   * `tap-info` <tap>:
     Display information about <tap>.
 
