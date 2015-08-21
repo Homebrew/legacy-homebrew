@@ -9,8 +9,10 @@ class AircrackNg < Formula
   depends_on "sqlite"
   depends_on "openssl"
 
-  # Remove root requirement from OUI update script. See:
+  # 1st patch: Remove root requirement from OUI update script. See:
   # https://github.com/Homebrew/homebrew/pull/12755
+  # 2nd patch: Fix build errors by adding an OS X-friendly version of endian.h
+  # http://trac.aircrack-ng.org/ticket/1609
   patch :DATA
 
   def install
