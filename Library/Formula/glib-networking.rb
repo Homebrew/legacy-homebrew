@@ -5,12 +5,6 @@ class GlibNetworking < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/g/glib-networking/glib-networking_2.44.0.orig.tar.xz"
   sha256 "8f8a340d3ba99bfdef38b653da929652ea6640e27969d29f7ac51fbbe11a4346"
 
-  def pour_bottle?
-    # This formula installs files directly into the top-level gio modules
-    # directory, so it can't be bottled.
-    false
-  end
-
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gettext"
@@ -19,11 +13,34 @@ class GlibNetworking < Formula
   depends_on "gsettings-desktop-schemas"
 
   def install
+    # Block installation into top-level HOMEBREW_PREFIX to sandbox & bottle.
+    # Will still get installed into HOMEBREW_PREFIX in the expected place in post_install.
+    inreplace "configure", "$($PKG_CONFIG --variable giomoduledir gio-2.0)", libexec/"gio/modules"
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-ca-certificates=#{etc}/openssl/cert.pem"
     system "make", "install"
+  end
+
+  def post_install
+    # Sandboxing fixes. Resolves users seeing something like this:
+    # https://github.com/Homebrew/homebrew/issues/41501#issuecomment-130959611
+    gd = HOMEBREW_PREFIX/"lib/gio/modules"
+    gd.mkpath
+    gios = [
+      gd/"giomodule.cache",
+      gd/"libgiognomeproxy.a",
+      gd/"libgiognomeproxy.la",
+      gd/"libgiognomeproxy.so",
+      gd/"libgiognutls.a",
+      gd/"libgiognutls.la",
+      gd/"libgiognutls.so"
+    ]
+
+    gios.each { |f| f.unlink if f.exist? }
+    cp_r Dir[libexec/"gio/modules/*"], gd
   end
 
   test do
