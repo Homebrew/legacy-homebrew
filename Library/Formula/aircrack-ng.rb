@@ -11,9 +11,13 @@ class AircrackNg < Formula
 
   # 1st patch: Remove root requirement from OUI update script. See:
   # https://github.com/Homebrew/homebrew/pull/12755
+  patch :DATA
   # 2nd patch: Fix build errors by adding an OS X-friendly version of endian.h
   # http://trac.aircrack-ng.org/ticket/1609
-  patch :DATA
+  patch do
+    url "http://trac.aircrack-ng.org/raw-attachment/ticket/1609/aircrack-1.2rc2.patch"
+    sha256 4f41ee4fae158098d1236588251e9b3430c1e8ed4b3a35ff49d72d3df8143542
+  end
 
   def install
     system "make", "CC=#{ENV.cc}"
