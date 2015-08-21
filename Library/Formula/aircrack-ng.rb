@@ -14,9 +14,9 @@ class AircrackNg < Formula
   patch :DATA
   # 2nd patch: Fix build errors by adding an OS X-friendly version of endian.h
   # http://trac.aircrack-ng.org/ticket/1609
-  patch do
-    url "http://trac.aircrack-ng.org/raw-attachment/ticket/1609/aircrack-1.2rc2.patch"
-    sha256 4f41ee4fae158098d1236588251e9b3430c1e8ed4b3a35ff49d72d3df8143542
+  patch :p0 do
+    url "http://trac.aircrack-ng.org/raw-attachment/ticket/1609/aircrack-ng-1.2-rc2.patch"
+    sha256 "c70cd98c2b0a9463b0536776238459b6b38e86a813c4291ad1b6b5b9c5aa0e6c" 
   end
 
   def install
