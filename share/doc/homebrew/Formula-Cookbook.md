@@ -343,7 +343,7 @@ Add aliases by creating symlinks in `Library/Aliases`.
 
 ## Audit the formula
 
-You can run `brew audit` to test formulae for adherence to Homebrew house style. This includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+You can run `brew audit` to test formulae for adherence to Homebrew house style. To audit a specific formula, you can run `brew audit <formula name> --strict`, which is what is run by the Brew Bot for automated build and tests.  The audit command includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
 
 Use `brew info` and check if the version guessed by Homebrew from the URL is
 correct. Add an explicit `version` if not.
