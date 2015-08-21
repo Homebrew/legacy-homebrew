@@ -279,7 +279,7 @@ class BuildToolsError < RuntimeError
     elsif MacOS.version == "10.9"
       xcode_text = <<-EOS.undent
         To continue, you must install Xcode from:
-                https://developer.apple.com/downloads/
+                https://developer.apple.com/xcode/downloads/
               or the CLT by running:
                 xcode-select --install
       EOS
@@ -291,7 +291,7 @@ class BuildToolsError < RuntimeError
     else
       xcode_text = <<-EOS.undent
         To continue, you must install Xcode from:
-                https://developer.apple.com/downloads/
+                https://developer.apple.com/xcode/downloads/
       EOS
     end
 
@@ -325,7 +325,7 @@ class BuildFlagsError < RuntimeError
     elsif MacOS.version == "10.9"
       xcode_text = <<-EOS.undent
         or install Xcode from:
-                https://developer.apple.com/downloads/
+                https://developer.apple.com/xcode/downloads/
               or the CLT by running:
                 xcode-select --install
       EOS
@@ -337,7 +337,7 @@ class BuildFlagsError < RuntimeError
     else
       xcode_text = <<-EOS.undent
         or install Xcode from:
-                https://developer.apple.com/downloads/
+                https://developer.apple.com/xcode/downloads/
       EOS
     end
 
