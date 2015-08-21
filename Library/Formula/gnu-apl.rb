@@ -1,9 +1,9 @@
 class GnuApl < Formula
+  version "1.5"
   desc "GNU implementation of the programming language APL"
   homepage "https://www.gnu.org/software/apl/"
-  url "http://ftpmirror.gnu.org/apl/apl-1.4.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/apl/apl-1.4.tar.gz"
-  sha256 "69da31db180e6ae17116122758c266e19f62e256f04e3c4959f6f2b224a1893a"
+  url "svn://svn.sv.gnu.org/apl/trunk", :revision => "662"
+  head "svn://svn.sv.gnu.org/apl/trunk"
 
   bottle do
     revision 1
@@ -14,12 +14,11 @@ class GnuApl < Formula
   # GNU Readline is required; libedit won't work.
   depends_on "readline"
   depends_on :macos => :mavericks
+  depends_on "postgresql" => :recommended
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}"
+    system "make"
     system "make", "install"
   end
 
