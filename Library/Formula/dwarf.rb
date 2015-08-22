@@ -14,8 +14,16 @@ class Dwarf < Formula
     cause "error: unknown type name 'intmax_t'"
   end
 
+  # /usr/include/inttypes.h:256:8: error: unknown type name 'uintmax_t'
+  # https://github.com/elboza/dwarf-ng/issues/1
+  fails_with :gcc => "5"
+
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/dwarf --help", 1)
   end
 end
