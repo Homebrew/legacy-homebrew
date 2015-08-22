@@ -10,4 +10,8 @@ class Daemontools < Formula
       bin.install Dir["command/*"]
     end
   end
+
+  test do
+    assert_match /Homebrew/, shell_output("#{bin}/softlimit -t 1 echo 'Homebrew'")
+  end
 end
