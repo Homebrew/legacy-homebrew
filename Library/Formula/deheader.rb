@@ -1,15 +1,19 @@
 class Deheader < Formula
   desc "Analyze C/C++ files for unnecessary headers"
   homepage "http://www.catb.org/~esr/deheader"
-  url "http://www.catb.org/~esr/deheader/deheader-1.1.tar.gz"
-  sha256 "69f69e9c7d9398221cb49f7de91df0d122e4b0ec942bede2d7c592401e4b913c"
-  head "git://thyrsus.com/repositories/deheader.git"
+  url "http://www.catb.org/~esr/deheader/deheader-1.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/d/deheader/deheader_1.2.orig.tar.gz"
+  sha256 "c4e4a4af6f0707a2f8b10b10f3776674c589a569c3451dea978f2d0b76c71d12"
+  head "https://gitlab.com/esr/deheader.git"
+
+  depends_on "xmlto" => :build
 
   def install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+
+    system "make"
     bin.install "deheader"
-    # Man page is defined in a DocBook XML file, the DTD for which is MIA,
-    # thus there's no way to build it from HEAD...
-    man1.install "deheader.1" unless build.head?
+    man1.install "deheader.1"
   end
 
   test do
