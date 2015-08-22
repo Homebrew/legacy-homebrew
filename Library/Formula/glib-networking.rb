@@ -5,12 +5,6 @@ class GlibNetworking < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/g/glib-networking/glib-networking_2.44.0.orig.tar.xz"
   sha256 "8f8a340d3ba99bfdef38b653da929652ea6640e27969d29f7ac51fbbe11a4346"
 
-  def pour_bottle?
-    # This formula installs files directly into the top-level gio modules
-    # directory, so it can't be bottled.
-    false
-  end
-
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gettext"
@@ -19,11 +13,20 @@ class GlibNetworking < Formula
   depends_on "gsettings-desktop-schemas"
 
   def install
+    # Install files to `lib` instead of `HOMEBREW_PREFIX/lib`.
+    inreplace "configure", "$($PKG_CONFIG --variable giomoduledir gio-2.0)", lib/"gio/modules"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-ca-certificates=#{etc}/openssl/cert.pem"
     system "make", "install"
+
+    # Delete the cache, will regenerate it in post_install
+    rm lib/"gio/modules/giomodule.cache"
+  end
+
+  def post_install
+    system Formula["glib"].opt_bin/"gio-querymodules", HOMEBREW_PREFIX/"lib/gio/modules"
   end
 
   test do
