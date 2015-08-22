@@ -345,7 +345,7 @@ Add aliases by creating symlinks in `Library/Aliases`.
 
 You can run `brew audit` to test formulae for adherence to Homebrew house style. The audit command includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
 
-New formulae being introduced to homebrew should run `brew audit <formula name> --strict`. This command is performed by the Brew Bot in cases when a formula is being added as part of the automated build and test process, and is more stringent in its inspection.
+New formulae being submitted to Homebrew should run `brew audit <formula name> --strict --online`. This command is performed by the Brew Test Bot on new submissions as part of the automated build and test process, and highlights more potential issues than the standard audit.
 
 Use `brew info` and check if the version guessed by Homebrew from the URL is
 correct. Add an explicit `version` if not.
