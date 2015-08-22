@@ -2,7 +2,6 @@ require "testing_env"
 require "tempfile"
 
 class UtilTests < Homebrew::TestCase
-
   def setup
     @dir = Pathname.new(mktmpdir)
   end

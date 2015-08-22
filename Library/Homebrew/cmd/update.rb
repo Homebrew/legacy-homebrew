@@ -71,7 +71,8 @@ module Homebrew
         user, repo, oldname = oldname.split("/", 3)
         newname = newname.split("/", 3).last
       else
-        user, repo = "homebrew", "homebrew"
+        user = "homebrew"
+        repo = "homebrew"
       end
 
       next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?

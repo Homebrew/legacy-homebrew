@@ -160,7 +160,7 @@ class FormulaInstaller
       raise BuildToolsError.new([formula])
     end
 
-    if !ignore_deps?
+    unless ignore_deps?
       deps = compute_dependencies
       check_dependencies_bottled(deps) if pour_bottle?
       install_dependencies(deps)

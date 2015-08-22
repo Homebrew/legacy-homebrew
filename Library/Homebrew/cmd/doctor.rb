@@ -864,7 +864,7 @@ class Checks
     # https://help.github.com/articles/https-cloning-errors
     `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
 
-    if $1 && Version.new($1) < Version.new("1.7.10") then
+    if $1 && Version.new($1) < Version.new("1.7.10")
       git_upgrade_cmd = Formula["git"].any_version_installed? ? "upgrade" : "install"
 
       <<-EOS.undent
