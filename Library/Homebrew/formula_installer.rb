@@ -184,7 +184,7 @@ class FormulaInstaller
 
     if pour_bottle?(:warn => true)
       begin
-        install_relocation_tools unless formula.bottle.skip_relocation?
+        install_relocation_tools unless formula.bottle_specification.skip_relocation?
         pour
       rescue => e
         raise if ARGV.homebrew_developer?
@@ -444,7 +444,9 @@ class FormulaInstaller
     keg = Keg.new(formula.prefix)
     link(keg)
 
-    fix_install_names(keg) unless @poured_bottle && formula.bottle.skip_relocation?
+    unless @poured_bottle && formula.bottle_specification.skip_relocation?
+      fix_install_names(keg)
+    end
 
     if formula.post_install_defined?
       if build_bottle?
@@ -680,7 +682,7 @@ class FormulaInstaller
     end
 
     keg = Keg.new(formula.prefix)
-    unless formula.bottle.skip_relocation?
+    unless formula.bottle_specification.skip_relocation?
       keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
         Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
     end
