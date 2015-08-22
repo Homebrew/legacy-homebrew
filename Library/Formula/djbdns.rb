@@ -5,15 +5,29 @@ class Djbdns < Formula
   sha256 "3ccd826a02f3cde39be088e1fc6aed9fd57756b8f970de5dc99fcd2d92536b48"
 
   depends_on "daemontools"
+  depends_on "ucspi-tcp"
 
   def install
     inreplace "hier.c", 'c("/"', "c(auto_home"
     inreplace "dnscache-conf.c", "/etc/dnsroots", "#{etc}/dnsroots"
-    system "echo gcc -O2 -include /usr/include/errno.h > conf-cc"
-    system "echo #{prefix} > conf-home"
-    system "echo gcc > conf-ld"
+
+    # Write these variables ourselves.
+    rm %w[conf-home conf-ld conf-cc]
+    (buildpath/"conf-home").write prefix
+    (buildpath/"conf-ld").write "gcc"
+
+    if MacOS::CLT.installed?
+      (buildpath/"conf-cc").write "gcc -O2 -include /usr/include/errno.h"
+    else
+      (buildpath/"conf-cc").write "gcc -O2 -include #{MacOS.sdk_path}/usr/include/errno.h"
+    end
+
     bin.mkpath
-    (prefix+"etc").mkpath
-    system "make setup check"
+    (prefix/"etc").mkpath # Otherwise "file does not exist"
+    system "make", "setup", "check"
+  end
+
+  test do
+    assert_match /localhost/, shell_output("#{bin}/dnsname 127.0.0.1")
   end
 end
