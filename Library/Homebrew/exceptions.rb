@@ -99,7 +99,7 @@ class TapFormulaWithOldnameAmbiguityError < RuntimeError
     end
 
     super <<-EOS.undent
-      Formulae with '#{name}' old name found in multiple taps: #{taps.map { |t|  "\n       * #{t}" }.join}
+      Formulae with '#{name}' old name found in multiple taps: #{taps.map { |t| "\n       * #{t}" }.join}
 
       Please use the fully-qualified name e.g. #{taps.first}/#{name} to refer the formula or use its new name.
     EOS
@@ -121,7 +121,7 @@ end
 class TapPinStatusError < RuntimeError
   attr_reader :name, :pinned
 
-  def initialize name, pinned
+  def initialize(name, pinned)
     @name = name
     @pinned = pinned
 
@@ -297,7 +297,7 @@ class BuildToolsError < RuntimeError
 
     super <<-EOS.undent
       The following #{formula_text}:
-        #{formulae.join(', ')}
+        #{formulae.join(", ")}
       cannot be installed as a #{package_text} and must be built from source.
       #{xcode_text}
     EOS
@@ -343,7 +343,7 @@ class BuildFlagsError < RuntimeError
 
     super <<-EOS.undent
       The following #{flag_text}:
-        #{flags.join(', ')}
+        #{flags.join(", ")}
       #{require_text} building tools, but none are installed.
       Either remove the #{flag_text} to attempt bottle installation,
       #{xcode_text}

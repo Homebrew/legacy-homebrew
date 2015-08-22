@@ -5,7 +5,7 @@ require "tab"
 require "keg"
 
 class Formula
-  def set_oldname oldname
+  def set_oldname(oldname)
     @oldname = oldname
   end
 end

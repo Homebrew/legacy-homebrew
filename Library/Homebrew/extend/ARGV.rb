@@ -212,11 +212,11 @@ module HomebrewArgvExtension
   def collect_build_flags
     build_flags = []
 
-    build_flags << '--HEAD' if build_head?
-    build_flags << '--universal' if build_universal?
-    build_flags << '--32-bit' if build_32_bit?
-    build_flags << '--build-bottle' if build_bottle?
-    build_flags << '--build-from-source' if build_from_source?
+    build_flags << "--HEAD" if build_head?
+    build_flags << "--universal" if build_universal?
+    build_flags << "--32-bit" if build_32_bit?
+    build_flags << "--build-bottle" if build_bottle?
+    build_flags << "--build-from-source" if build_from_source?
 
     build_flags
   end

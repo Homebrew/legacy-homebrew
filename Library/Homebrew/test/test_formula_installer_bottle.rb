@@ -70,7 +70,7 @@ class InstallBottleTests < Homebrew::TestCase
     installer = FormulaInstaller.new(formula)
 
     assert_raises(BuildToolsError) do
-        installer.install
+      installer.install
     end
 
     refute_predicate formula, :installed?
