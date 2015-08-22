@@ -16,9 +16,10 @@ class Casperjs < Formula
 
   bottle do
     cellar :any
-    sha256 "bc43ae16d5d8cd9e4f2a7e674c14c5323498fe95a3a8563649ecc9dad541767f" => :yosemite
-    sha256 "872cda52831ac7591328e0829751a4a76674252f846a43cc45e9acb53ac7180e" => :mavericks
-    sha256 "09690809c67e2f307ab1c7e10e29a08c639055bdbaedafa52420745d6e5022c8" => :mountain_lion
+    revision 1
+    sha256 "e4ad0b7e9f7c8b1a65142a5ac3a82e0adc7f571ba32192019898d0d854362ef5" => :yosemite
+    sha256 "dc0297e379af5b10c3ef6e7d8ac00610adf7cb17bf8b1790a7d41b56a0e9692b" => :mavericks
+    sha256 "fc20c22ec10d175d84bec4dd05d83fa8ea7fc78723a4e8d0f4041d5c00878651" => :mountain_lion
   end
 
   devel do
