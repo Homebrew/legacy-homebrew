@@ -7,6 +7,13 @@ class Gollum < Formula
   sha256 "a4f4944d97ef06f73e7aee5688c611d49580278a6c12ded649bc92b70493ef3f"
   head "https://github.com/trivago/gollum.git"
 
+  bottle do
+    cellar :any
+    sha256 "a645d12362633d918302a2dc7f814aa49b862779808a97f8db89335483f9b6de" => :yosemite
+    sha256 "93fcf08659ca1ae810c5b1f4f562aeea9c2ddc2e3cfd0b0f05d1da0e408168a5" => :mavericks
+    sha256 "410c0ae44cec0e4b10acaf18f0da6f92bb38cb7435fc82e27d83f08a4f341e18" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/araddon/gou" do
