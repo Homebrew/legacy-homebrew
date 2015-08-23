@@ -8,10 +8,10 @@ class Mercurial < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "e898db2838af928886d849f5d3db058189824eabb469d5b950bacf62f47c624b" => :yosemite
-    sha256 "70febfeb93a25fddf1a53f081ce129347f3896893ec6ff4f0acb93d7bfcc6aed" => :mavericks
-    sha256 "43e273e2a20d66d05e25505578949b042257df64bfe731d4a5e7d1b37b3c4c0c" => :mountain_lion
+    revision 2
+    sha256 "eaf7343005f12a18afd3a89b4a544bc3a4030b31f4c79d6b8bfafe22394174bd" => :yosemite
+    sha256 "8f7d6f7164a9733748601a773d8ac7728746a0b11f6c91d6689e7f99aa605310" => :mavericks
+    sha256 "909661f928983f83e79433d45a8a73b2b4fdc155e712edfb25fd245a50dc41cc" => :mountain_lion
   end
 
   def install
