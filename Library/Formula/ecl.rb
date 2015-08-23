@@ -12,6 +12,11 @@ class Ecl < Formula
     sha256 "8fa7523cebcef944a2a6538ef89dd59119bfce64ae5abcaaaf36c5c5c7def4bf" => :mountain_lion
   end
 
+  devel do
+    url "https://common-lisp.net/project/ecl/files/ecl-16.0.0-rc1.tgz"
+    sha256 "014acdd8ae85d70b90a83008dcd3389aeca0ce2f255b15c8d3d25bec8b222c74"
+  end
+
   depends_on "gmp"
 
   def install
@@ -27,7 +32,6 @@ class Ecl < Formula
     (testpath/"simple.cl").write <<-EOS.undent
       (write-line (write-to-string (+ 2 2)))
     EOS
-    assert_equal "4",
-                 shell_output("#{bin}/ecl -shell #{testpath}/simple.cl").chomp
+    assert_equal "4", shell_output("#{bin}/ecl -shell #{testpath}/simple.cl").chomp
   end
 end
