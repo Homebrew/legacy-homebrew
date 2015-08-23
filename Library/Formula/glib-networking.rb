@@ -12,6 +12,8 @@ class GlibNetworking < Formula
   depends_on "gnutls"
   depends_on "gsettings-desktop-schemas"
 
+  link_overwrite "lib/gio/modules"
+
   def install
     # Install files to `lib` instead of `HOMEBREW_PREFIX/lib`.
     inreplace "configure", "$($PKG_CONFIG --variable giomoduledir gio-2.0)", lib/"gio/modules"
