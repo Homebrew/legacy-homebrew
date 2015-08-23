@@ -31,6 +31,8 @@ class Dependency
   end
 
   def to_formula
+    return @formula unless @formula.nil?
+
     if owner_tap.nil? || name =~ HOMEBREW_TAP_FORMULA_REGEX
       formula = Formulary.factory(name)
     else
@@ -49,7 +51,8 @@ class Dependency
       end
     end
     formula.build = BuildOptions.new(options, formula.options)
-    formula
+    @formula = formula
+    return formula
   end
 
   def installed?
