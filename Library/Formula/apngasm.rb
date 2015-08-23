@@ -1,8 +1,8 @@
 class Apngasm < Formula
   desc "Next generation of apngasm, the APNG assembler"
   homepage "https://github.com/apngasm/apngasm"
-  url "https://github.com/apngasm/apngasm/archive/3.1.4.tar.gz"
-  sha256 "8767f992460f793c82ca1645e7744f3c49d15a7538c097b2bb233c7a04b65543"
+  url "https://github.com/apngasm/apngasm/archive/3.1.6.tar.gz"
+  sha256 "0068e31cd878e07f3dffa4c6afba6242a753dac83b3799470149d2e816c1a2a7"
 
   head "https://github.com/apngasm/apngasm.git"
 
@@ -19,12 +19,14 @@ class Apngasm < Formula
   depends_on "lzlib"
 
   def install
+    inreplace "cli/CMakeLists.txt", "${CMAKE_INSTALL_PREFIX}/man/man1",
+                                    "${CMAKE_INSTALL_PREFIX}/share/man/man1"
     system "cmake", ".", *std_cmake_args
     system "make", "install"
-    (share/"test").install "test/samples"
+    (pkgshare/"test").install "test/samples"
   end
 
   test do
-    system "apngasm", "#{share}/test/samples/clock*.png"
+    system "apngasm", "#{pkgshare}/test/samples/clock*.png"
   end
 end
