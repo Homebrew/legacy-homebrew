@@ -1,22 +1,12 @@
 class ClangOmp < Formula
   desc "OpenMP C/C++ language extensions in Clang/LLVM compiler"
   homepage "https://clang-omp.github.io/"
-  head "https://github.com/clang-omp/llvm_trunk.git"
-  url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
-  version "2015-04-01"
-  sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
-
-  bottle do
-    revision 2
-    sha256 "2d29cc7bcde757610a325e57c0ea0162cee97c2cf04ea424f8e4010c57ae2295" => :yosemite
-    sha256 "3989eb56c26ca2903ea1bde7aaf0b02c05a5dbfc1eae59056860abca9c6d5fec" => :mavericks
-    sha256 "2a848d5efa46b5cc6e906f2c71608c8098238a397e6979912dcef2b5b1d2807c" => :mountain_lion
-  end
-
-  depends_on "libiomp"
-  depends_on "cmake" => :build
 
   stable do
+    url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
+    version "2015-04-01"
+    sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
+
     resource "compiler-rt" do
       url "https://github.com/clang-omp/compiler-rt/archive/2015-04-01.tar.gz"
       sha256 "5a8d39ff6ce524e23fae32870f85b18d43f2795da2011d3cbb6b29d471bb27b7"
@@ -34,18 +24,30 @@ class ClangOmp < Formula
   end
 
   head do
+    url "https://github.com/clang-omp/llvm_trunk.git"
+
     resource "compiler-rt" do
-      url "https://github.com/clang-omp/compiler-rt_trunk.git"
+      url "https://github.com/clang-omp/compiler-rt_trunk"
     end
 
     resource "clang" do
-      url "https://github.com/clang-omp/clang_trunk.git"
+      url "https://github.com/clang-omp/clang_trunk"
     end
 
     resource "libcxx" do
       url "https://github.com/llvm-mirror/libcxx.git"
     end
   end
+
+  bottle do
+    revision 2
+    sha256 "2d29cc7bcde757610a325e57c0ea0162cee97c2cf04ea424f8e4010c57ae2295" => :yosemite
+    sha256 "3989eb56c26ca2903ea1bde7aaf0b02c05a5dbfc1eae59056860abca9c6d5fec" => :mavericks
+    sha256 "2a848d5efa46b5cc6e906f2c71608c8098238a397e6979912dcef2b5b1d2807c" => :mountain_lion
+  end
+
+  depends_on "libiomp"
+  depends_on "cmake" => :build
 
   needs :cxx11
 
