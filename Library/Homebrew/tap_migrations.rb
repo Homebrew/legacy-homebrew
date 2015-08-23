@@ -24,6 +24,7 @@ TAP_MIGRATIONS = {
   "cardpeek" => "homebrew/x11",
   "catdoc" => "homebrew/boneyard",
   "cdf" => "homebrew/boneyard",
+  "cdimgtools" => "homebrew/boneyard",
   "celt" => "homebrew/boneyard",
   "chktex" => "homebrew/tex",
   "clam" => "homebrew/boneyard",
