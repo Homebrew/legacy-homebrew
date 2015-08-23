@@ -5,6 +5,13 @@ class GlibNetworking < Formula
   mirror "https://mirrors.kernel.org/debian/pool/main/g/glib-networking/glib-networking_2.44.0.orig.tar.xz"
   sha256 "8f8a340d3ba99bfdef38b653da929652ea6640e27969d29f7ac51fbbe11a4346"
 
+  bottle do
+    cellar :any
+    sha256 "715679f9ff9cf23d4b0846638ac850bd62347081cbeaacab88632818b02ee501" => :yosemite
+    sha256 "147cad820da481a3c6db26927e8b07460f82e42809f1ec9557b462644bd5d3d0" => :mavericks
+    sha256 "5367f03c7b0af525c54483fd3bdf1ecc7322b5660a90a82c54dfe8857456274a" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gettext"
