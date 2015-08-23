@@ -589,9 +589,20 @@ class FormulaInstaller
       keg.remove_linked_keg_record
     end
 
+    link_overwrite_backup = {} # dict: conflict file -> backup file
+    backup_dir = HOMEBREW_CACHE/"Backup"
+
     begin
       keg.link
     rescue Keg::ConflictError => e
+      conflict_file = e.dst
+      if formula.link_overwrite?(conflict_file) && !link_overwrite_backup.key?(conflict_file)
+        backup_file = backup_dir/conflict_file.relative_path_from(HOMEBREW_PREFIX).to_s
+        backup_file.parent.mkpath
+        conflict_file.rename backup_file
+        link_overwrite_backup[conflict_file] = backup_file
+        retry
+      end
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts e
@@ -616,9 +627,23 @@ class FormulaInstaller
       puts e
       puts e.backtrace if debug?
       @show_summary_heading = true
-      ignore_interrupts { keg.unlink }
+      ignore_interrupts do
+        keg.unlink
+        link_overwrite_backup.each do |conflict_file, backup_file|
+          conflict_file.parent.mkpath
+          backup_file.rename conflict_file
+        end
+      end
       Homebrew.failed = true
       raise
+    end
+
+    unless link_overwrite_backup.empty?
+      opoo "These files were overwritten during `brew link` step:"
+      puts link_overwrite_backup.keys
+      puts
+      puts "They are backup in #{backup_dir}"
+      @show_summary_heading = true
     end
   end
 
