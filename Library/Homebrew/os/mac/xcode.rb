@@ -76,6 +76,8 @@ module OS
 
         return "0" unless OS.mac?
 
+        return nil if !MacOS::Xcode.installed? && !MacOS::CLT.installed?
+
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
             Utils.popen_read(path, "-version") =~ /Xcode (\d(\.\d)*)/
@@ -163,7 +165,7 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.11" then "700.0.59.1"
+        when "10.11" then "700.0.65"
         when "10.10" then "602.0.53"
         when "10.9"  then "600.0.57"
         when "10.8"  then "503.0.40"

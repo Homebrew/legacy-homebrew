@@ -1,9 +1,19 @@
 require "formula"
+require "formula_lock"
 require "keg"
 require "tab"
 require "tap_migrations"
 
 class Migrator
+  class MigrationNeededError < RuntimeError
+    def initialize(formula)
+      super <<-EOS.undent
+        #{formula.oldname} was renamed to #{formula.name} and needs to be migrated.
+        Please run `brew migrate #{formula.oldname}`
+      EOS
+    end
+  end
+
   class MigratorNoOldnameError < RuntimeError
     def initialize(formula)
       super "#{formula.name} doesn't replace any formula."
@@ -18,23 +28,19 @@ class Migrator
 
   class MigratorDifferentTapsError < RuntimeError
     def initialize(formula, tap)
-      if tap.nil?
-        super <<-EOS.undent
-        #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} wasn't installed from taps or core formulae
-
-        You can try `brew migrate --force #{formula.oldname}`.
-        EOS
-      else
+      msg = if tap == "Homebrew/homebrew"
+        "Please try to use #{formula.oldname} to refer the formula.\n"
+      elsif tap
         user, repo = tap.split("/")
         repo.sub!("homebrew-", "")
-        name = "fully-qualified #{user}/#{repo}/#{formula.oldname}"
-        name = formula.oldname if tap == "Homebrew/homebrew"
-        super <<-EOS.undent
-        #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} was installed from #{tap}
-
-        Please try to use #{name} to refer the formula
-        EOS
+        "Please try to use fully-qualified #{user}/#{repo}/#{formula.oldname} to refer the formula.\n"
       end
+
+      super <<-EOS.undent
+      #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} was installed from #{tap ? tap : "path or url"}.
+
+      #{msg}To force migrate use `brew migrate --force #{formula.oldname}`.
+      EOS
     end
   end
 
@@ -43,6 +49,9 @@ class Migrator
   attr_reader :old_linked_keg_record, :oldkeg, :old_tabs, :old_tap
   attr_reader :newname, :newpath, :new_pin_record
   attr_reader :old_pin_link_record
+
+  # Path to new linked keg
+  attr_reader :new_keg
 
   def initialize(formula)
     @oldname = formula.oldname
@@ -55,13 +64,17 @@ class Migrator
 
     @old_tabs = oldpath.subdirs.each.map { |d| Tab.for_keg(Keg.new(d)) }
     @old_tap = old_tabs.first.tap
-    raise MigratorDifferentTapsError.new(formula, old_tap) unless from_same_taps?
+
+    if !ARGV.force? && !from_same_taps?
+      raise MigratorDifferentTapsError.new(formula, old_tap)
+    end
 
     @newpath = HOMEBREW_CELLAR/formula.name
 
     if @oldkeg = get_linked_oldkeg
       @old_linked_keg_record = oldkeg.linked_keg_record if oldkeg.linked?
       @old_opt_record = oldkeg.opt_record if oldkeg.optlinked?
+      @new_keg = HOMEBREW_CELLAR/"#{newname}/#{File.basename(oldkeg)}"
     end
 
     @old_pin_record = HOMEBREW_LIBRARY/"PinnedKegs"/oldname
@@ -79,9 +92,7 @@ class Migrator
   end
 
   def from_same_taps?
-    if old_tap == nil && formula.core_formula? && ARGV.force?
-      true
-    elsif formula.tap == old_tap
+    if formula.tap == old_tap
       true
     # Homebrew didn't use to update tabs while performing tap-migrations,
     # so there can be INSTALL_RECEIPT's containing wrong information about
@@ -119,20 +130,24 @@ class Migrator
 
     begin
       oh1 "Migrating #{Tty.green}#{oldname}#{Tty.white} to #{Tty.green}#{newname}#{Tty.reset}"
+      lock
       unlink_oldname
       move_to_new_directory
       repin
-      link_newname
+      link_newname if oldkeg_linked?
       link_oldname_opt
       link_oldname_cellar
       update_tabs
     rescue Interrupt
       ignore_interrupts { backup_oldname }
     rescue Exception => e
-      onoe "error occured while migrating."
-      puts e if ARGV.debug?
+      onoe "Error occured while migrating."
+      puts e
+      puts e.backtrace if ARGV.debug?
       puts "Backuping..."
       ignore_interrupts { backup_oldname }
+    ensure
+      unlock
     end
   end
 
@@ -171,14 +186,16 @@ class Migrator
 
   def link_newname
     oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
-    keg = Keg.new(formula.installed_prefix)
+    keg = Keg.new(new_keg)
 
-    if formula.keg_only?
+    # If old_keg wasn't linked then we just optlink a keg.
+    # If old keg wasn't optlinked and linked, we don't call this method at all.
+    # If formula is keg-only we also optlink it.
+    if formula.keg_only? || !old_linked_keg_record
       begin
         keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{formula.opt_prefix}"
-        puts e
         raise
       end
       return
@@ -205,17 +222,17 @@ class Migrator
     rescue Exception => e
       onoe "An unexpected error occurred during linking"
       puts e
-      puts e.backtrace
+      puts e.backtrace if ARGV.debug?
       ignore_interrupts { keg.unlink }
-      raise e
+      raise
     end
   end
 
   # Link keg to opt if it was linked before migrating.
   def link_oldname_opt
     if old_opt_record
-      old_opt_record.delete if old_opt_record.symlink? || old_opt_record.exist?
-      old_opt_record.make_relative_symlink(formula.installed_prefix)
+      old_opt_record.delete if old_opt_record.symlink?
+      old_opt_record.make_relative_symlink(new_keg)
     end
   end
 
@@ -232,8 +249,9 @@ class Migrator
   # Remove opt/oldname link if it belongs to newname.
   def unlink_oldname_opt
     return unless old_opt_record
-    if old_opt_record.symlink? && formula.installed_prefix.exist? \
-              && formula.installed_prefix.realpath == old_opt_record.realpath
+    if old_opt_record.symlink? && old_opt_record.exist? \
+        && new_keg.exist? \
+        && new_keg.realpath == old_opt_record.realpath
       old_opt_record.unlink
       old_opt_record.parent.rmdir_if_possible
     end
@@ -275,18 +293,21 @@ class Migrator
     end
 
     if oldkeg_linked?
-      begin
-        # The keg used to be linked  and when we backup everything we restore
-        # Cellar/oldname, the target also gets restored, so we are able to
-        # create a keg using its old path
-        keg = Keg.new(Pathname.new(oldkeg.to_s))
-        keg.link
-      rescue Keg::LinkError
-        keg.unlink
-        raise
-      rescue Keg::AlreadyLinkedError
-        keg.unlink
-        retry
+      # The keg used to be linked and when we backup everything we restore
+      # Cellar/oldname, the target also gets restored, so we are able to
+      # create a keg using its old path
+      if old_linked_keg_record
+        begin
+          oldkeg.link
+        rescue Keg::LinkError
+          oldkeg.unlink
+          raise
+        rescue Keg::AlreadyLinkedError
+          oldkeg.unlink
+          retry
+        end
+      else
+        oldkeg.optlink
       end
     end
   end
@@ -299,5 +320,17 @@ class Migrator
 
   def backup_old_tabs
     old_tabs.each(&:write)
+  end
+
+  def lock
+    @newname_lock = FormulaLock.new newname
+    @oldname_lock = FormulaLock.new oldname
+    @newname_lock.lock
+    @oldname_lock.lock
+  end
+
+  def unlock
+    @newname_lock.unlock
+    @oldname_lock.unlock
   end
 end

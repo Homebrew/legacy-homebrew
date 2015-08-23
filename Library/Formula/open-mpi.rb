@@ -1,13 +1,13 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.6.tar.bz2"
-  sha256 "b9fe3bdfb86bd42cc53448e17f11278531b989b05ff9513bc88ba1a523f14e87"
+  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.8.tar.bz2"
+  sha256 "a28382d1e6a36f4073412dc00836ff2524e42b674da9caf6ca7377baad790b94"
 
   bottle do
-    sha256 "7e2e8fa7bea94e1ac4ff3eb8c4912c71b2854355f9a0eff42e52a068a24290ac" => :yosemite
-    sha256 "5d8130410f17a814bf40f6e6bd89da01f1f10ac7803341f15a8f9e6da6722d2e" => :mavericks
-    sha256 "299f483c52a86264f31617c086b49c1ab451910211e8e5bfb778fc16396460bb" => :mountain_lion
+    sha256 "38858a42972aef48bbc6b3fef1167ae22b05e955df4e4ee2cff265c60564dba4" => :yosemite
+    sha256 "24b0a5fdb57f47532677e44676483ab05fd9ad2425d125231f380c01272cce59" => :mavericks
+    sha256 "df7a987f73800e3d582905e8a144881f6e58d5ff816105b370a51e1ce6038cff" => :mountain_lion
   end
 
   head do

@@ -1,26 +1,25 @@
 class Duplicity < Formula
   desc "Bandwidth-efficient encrypted backup"
   homepage "http://www.nongnu.org/duplicity/"
-  url "https://code.launchpad.net/duplicity/0.6-series/0.6.25/+download/duplicity-0.6.25.tar.gz"
-  sha256 "ac44f44abc1c5fe775a49b77e722d238c0b3bbb105e083fd505e2dca8e2c1725"
-  revision 1
+  url "https://code.launchpad.net/duplicity/0.6-series/0.6.26/+download/duplicity-0.6.26.tar.gz"
+  sha256 "8bef8a5d805b79ae177e54d42152238bce1b2aaf9ad32e03a2c3a20cbd4e074a"
+
+  bottle do
+    sha256 "9fa603fc7c3d6045ec7c6cea234deb9856bf68466bf78d298fac7790fb96ab25" => :yosemite
+    sha256 "a267026d1d4493393a73e956eeee3066e865ed670377c0b78299ddbc38446f85" => :mavericks
+    sha256 "c7dce4bcb594d60c23c96d8c7df5b56bf81f90b47440879a83ee041122222165" => :mountain_lion
+  end
 
   devel do
     url "https://code.launchpad.net/duplicity/0.7-series/0.7.04/+download/duplicity-0.7.04.tar.gz"
     sha256 "b49fb7bbdf0a457adf67e9c9127c107695437cef135aca69bca90d495a97dd7a"
   end
 
-  bottle do
-    sha256 "8b3e2f2ed2cc68ac4c991e9fe3fb3d0d10c3deade91f5709f174ee278fa81cbe" => :yosemite
-    sha256 "937593295eb3f24892582d2f8b5724b3579ef5ad4ce659514879ec821bd031c3" => :mavericks
-    sha256 "f5650df238e0350eab37b7147adb59fe18e4bf8c11e1175ec5b962d2294579e5" => :mountain_lion
-  end
+  option :universal
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "librsync"
   depends_on "gnupg"
-
-  option :universal
 
   # generated with homebrew-pypi-poet from
   # for i in boto pyrax dropbox mega.py paramiko pycrypto
@@ -227,6 +226,6 @@ class Duplicity < Formula
   end
 
   test do
-    system bin/"duplicity", "--version"
+    system bin/"duplicity", "--dry-run", "--no-encryption",  testpath, "file:///#{testpath}/test"
   end
 end

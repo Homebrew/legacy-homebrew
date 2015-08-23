@@ -98,7 +98,7 @@ Note that these flags should only appear after a command.
     If `--cmake` is passed, create a basic template for a CMake-style build.
 
     If `--no-fetch` is passed, Homebrew will not download <URL> to the cache and
-    will thus not add the SHA-1 to the formula for you.
+    will thus not add the SHA256 to the formula for you.
 
     The options `--set-name` and `--set-version` each take an argument and allow
     you to explicitly set the name and version of the package you are creating.
@@ -270,14 +270,14 @@ Note that these flags should only appear after a command.
     If provided, `--local` will move them into the user's `~/Applications`
     directory instead of the system directory. It may need to be created, first.
 
-  * `ls, list [--full-name]`
+  * `ls`, `list [--full-name]`
     List all installed formulae. If `--full-name` is passed, print formulae with
     full-qualified names.
 
-  * `ls, list --unbrewed`
+  * `ls`, `list --unbrewed`
     List all files in the Homebrew prefix not installed by Homebrew.
 
-  * `ls, list [--versions [--multiple]] [--pinned]` [<formulae>]:
+  * `ls`, `list [--versions [--multiple]] [--pinned]` [<formulae>]:
     List the installed files for <formulae>. Combined with `--verbose`, recursively
     list the contents of all subdirectories in each <formula>'s keg.
 
@@ -302,8 +302,8 @@ Note that these flags should only appear after a command.
     Migrate renamed packages to new name, where <formulae> are old names of
     packages.
 
-    If `--force` is passed and installed <formulae> have nil tap, then treat
-    them like packages installed from core.
+    If `--force` is passed, then treat installed <formulae> and passed <formulae>
+    like if they are from same taps and migrate them anyway.
 
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
@@ -389,6 +389,12 @@ Note that these flags should only appear after a command.
 
   * `tap --repair`:
     Migrate tapped formulae from symlink-based to directory-based structure.
+
+  * `tap --list-official`:
+    List all official taps.
+
+  * `tap --list-pinned`:
+    List all pinned taps.
 
   * `tap-info` <tap>:
     Display information about <tap>.

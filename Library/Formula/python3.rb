@@ -6,16 +6,17 @@ class Python3 < Formula
   revision 2
 
   bottle do
-    sha256 "a35778cce2c568bc4ad5e7e461dba8b4204dc9d3c9e4c6b715786efda6be2541" => :yosemite
-    sha256 "5463d81260dc651c13c8c89b642551258f5b9c60499d8aa9bea7e8e3bd361185" => :mavericks
-    sha256 "9b8a317417f5c1ca958c5c17af4fb85b1f8827e33e1422a5b99056d524cbe8e1" => :mountain_lion
+    revision 1
+    sha256 "56a1b3a22e73fc804c26b2c6cab9f19a4f8db52958d8f74affd5e2d322b9ecb1" => :yosemite
+    sha256 "913a4b5dda0a07107f7ad10a051615689d2f534abd92fb6d853dfe1339c0920b" => :mavericks
+    sha256 "5d9fc73a5ed4754be0bcb0efd7f639dc95a9ea86bae87c86fb6358294c45c8db" => :mountain_lion
   end
 
   head "https://hg.python.org/cpython", :using => :hg
 
   devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0b4.tgz"
-    sha256 "e2f9ddb8eca441a5ae2bfccc015b61268d6bf612b3fd5b084d6ec2bf52c7d943"
+    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0rc1.tgz"
+    sha256 "af300225b740401aaa3cb741568cd8a12fdb870b5f395ef8b1015dd45a6330bf"
   end
 
   option :universal
@@ -38,8 +39,8 @@ class Python3 < Formula
   skip_clean "bin/easy_install3", "bin/easy_install-3.4", "bin/easy_install-3.5"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
-    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.1.tar.gz"
+    sha256 "ad52a9d5b3a6f39c2a1c2deb96cc4f6aff29d6511bdea2994322c40b60c9c36a"
   end
 
   resource "pip" do

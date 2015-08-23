@@ -1,18 +1,16 @@
 class Bullet < Formula
   desc "Physics SDK"
   homepage "http://bulletphysics.org/wordpress/"
-  url "https://github.com/bulletphysics/bullet3/archive/2.83.5.tar.gz"
-  sha256 "df6d58898d3d3bf117854dd64467dbd09625e048624c797649b46bf1c595b152"
+  url "https://github.com/bulletphysics/bullet3/archive/2.83.6.tar.gz"
+  sha256 "dcd5448f31ded71c7bd22fddd7d816ac590ae7b97e1fdda8d1253f8ff3655571"
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
     cellar :any
-    sha256 "1ea49cb319991969ada6567ffdfa227e2b2a1789371df29ab3468f13e35a1273" => :yosemite
-    sha256 "cac6c51229ea72bb3ba4c174ed302d235a2bd34050e7834ff19af05931ff654b" => :mavericks
-    sha256 "1e3e54e77cba617722599ccb0dde40b9b7858b054f1d24032fd458d4e0a04030" => :mountain_lion
+    sha256 "79e79f3dcc6dbe62ca2422df12469a545be28ee150eaba3d67fa66826da7c730" => :yosemite
+    sha256 "bc42f536182a138dc1007df0ab7188a9c8fbaa6e6c9ac27d1ed550ab1372816f" => :mavericks
+    sha256 "f63b943a84faa74f80756ba3aae7b3c12f6a934a50953fcf367a7f088c769615" => :mountain_lion
   end
-
-  depends_on "cmake" => :build
 
   deprecated_option "framework" => "with-framework"
   deprecated_option "shared" => "with-shared"
@@ -26,6 +24,8 @@ class Bullet < Formula
   option "with-demo",             "Build demo applications"
   option "with-extra",            "Build extra library"
   option "with-double-precision", "Use double precision"
+
+  depends_on "cmake" => :build
 
   def install
     args = []

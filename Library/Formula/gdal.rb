@@ -3,12 +3,12 @@ class Gdal < Formula
   homepage "http://www.gdal.org/"
   url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
   sha256 "66bc8192d24e314a66ed69285186d46e6999beb44fc97eeb9c76d82a117c0845"
-  revision 2
+  revision 3
 
   bottle do
-    sha256 "4f09a9aeb578a5c6039aa4d96c6d41c1640c02564f5c8ab70d5ccc5f8909936c" => :yosemite
-    sha256 "f5db3c5b5c078d5774123c58ca3a9c705809c99f0c9037056384649e55e5678a" => :mavericks
-    sha256 "cf5f2b7858b09850fd25031ca84b430392ce8cde14f44c0d9996e60b15987736" => :mountain_lion
+    sha256 "ee6dd88dbf4c617673407efd4ff29507fc772d9cf1f6f3f33871fff9c7615191" => :yosemite
+    sha256 "92ea1a96742b8a85f3f6cc9856b75c7f719547069181221cd29b72653bb659d8" => :mavericks
+    sha256 "52587ccb0f9eb8d3c6560eb9ca0e3b01d215594644000edacea9a5db275a71e7" => :mountain_lion
   end
 
   head do
@@ -75,6 +75,7 @@ class Gdal < Formula
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
     depends_on "poppler"
+    depends_on "podofo"
     depends_on "json-c"
   end
 
@@ -160,7 +161,7 @@ class Gdal < Formula
       dods-root
       epsilon
       webp
-      poppler
+      podofo
     ]
     if build.with? "complete"
       supported_backends.delete "liblzma"

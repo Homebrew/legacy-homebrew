@@ -1,16 +1,16 @@
 class Ford < Formula
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/cmacmackin/ford/"
-  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.0.0.tar.gz"
-  sha256 "1c1f6299ea81641fd1e7f7b643d37e620f8230a731ff1b9b1dfe3e81b9cf316f"
+  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.1.0.tar.gz"
+  sha256 "ec04b08468f75ac0acbda4fd6a15a432eb267e9c28098b5937125a95d2c6fdff"
 
   head "https://github.com/cmacmackin/ford.git"
 
   bottle do
     cellar :any
-    sha256 "1ce47f1020ee0b268c4989d3e10fa619c43393c22e65359f7a884668883cc030" => :yosemite
-    sha256 "e9de3afbaf26e3670c4ea208d3d50e581426ffd1ac6ba698e3dddf5f35ac4c16" => :mavericks
-    sha256 "630b4dbc59e870c13643245641619fc41f1be41ad870eaef757639b96023203e" => :mountain_lion
+    sha256 "b69f60eaef6d9f2ce43a8a17ad6e96fdc14b5a44508ce7c35e9ce083334a46b6" => :yosemite
+    sha256 "9b16cc8ab21faa866d70a954f8b54d9824f6cc09fcfa9a99659d38d4e3824eea" => :mavericks
+    sha256 "c149f7b6422be7355dac922c4ed691716e8c5eb0258af294777fefff308af615" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -26,8 +26,8 @@ class Ford < Formula
   end
 
   resource "beautifulsoup4" do
-    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.3.2.tar.gz"
-    sha256 "a2b29bd048ca2fe54a046b29770964738872a9747003a371344a93eedf7ad58e"
+    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.0.tar.gz"
+    sha256 "fad91da88f69438b9ba939ab1b2cabaa31b1d914f1cccb4bb157a993ed2917f6"
   end
 
   resource "markdown-include" do
@@ -41,8 +41,8 @@ class Ford < Formula
   end
 
   resource "Jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "Pygments" do

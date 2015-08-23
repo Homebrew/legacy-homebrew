@@ -343,7 +343,9 @@ Add aliases by creating symlinks in `Library/Aliases`.
 
 ## Audit the formula
 
-You can run `brew audit` to test formulae for adherence to Homebrew house style. This includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+You can run `brew audit` to test formulae for adherence to Homebrew house style. The audit command includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+
+New formulae being submitted to Homebrew should run `brew audit <formula name> --strict --online`. This command is performed by the Brew Test Bot on new submissions as part of the automated build and test process, and highlights more potential issues than the standard audit.
 
 Use `brew info` and check if the version guessed by Homebrew from the URL is
 correct. Add an explicit `version` if not.
@@ -792,6 +794,11 @@ Generally we'd rather you were specific about what files or directories need to 
       <td><code>/usr/local/Cellar/foo/0.1/share</code></td>
     </tr>
     <tr>
+      <th><code>pkgshare</code></th>
+      <td><code>#{prefix}/share/foo</code></td>
+      <td><code>/usr/local/Cellar/foo/0.1/share/foo</code></td>
+    </tr>
+    <tr>
       <th><code>etc</code></th>
       <td><code>#{HOMEBREW_PREFIX}/etc</code></td>
       <td><code>/usr/local/etc</code></td>
@@ -847,6 +854,7 @@ class Yourformula < Formula
   ...
   option "with-ham", "Description of the option"
   option "without-spam", "Another description"
+
   depends_on "foo" => :optional  # will automatically add a with-foo option
   ...
 ```

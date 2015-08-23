@@ -1,14 +1,13 @@
 class Fig < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.3.3.tar.gz"
-  sha256 "9cf4f02f897ff2f0df6e46e3d46f9f91271856cc52680928d916b0d4c969218f"
+  url "https://github.com/docker/compose/archive/1.4.0.tar.gz"
+  sha256 "96875473fdb1cce1d63c4bc21c2bc9bf620820fb3bdf8c590618965733418115"
 
   bottle do
-    revision 1
-    sha256 "d5287f9fbe8782831d7ace82cc5bbff5f19efe6661ef8673ac353f997126389d" => :yosemite
-    sha256 "2ab2be5cf007d40f2fe7e0e88b6ae91935c1d33dba0759b3cd2f441570498142" => :mavericks
-    sha256 "202709f720aef74713063551117874ab8c3a68db53b05a3bc5886975bdf9dfdd" => :mountain_lion
+    sha256 "8ca0af6c6e0d12bc64cd1af93627f1e201f7666c0626a4fa2603fb3a799aef6a" => :yosemite
+    sha256 "85d0e45da45e8e7ab14bdeccd866825d7a6d857b424a2f652dcc6971284301f2" => :mavericks
+    sha256 "8bf9ab8a86f85433a1c9f2ebbd35b667feb52d3f6135bce98bc11e23516cd841" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -20,8 +19,8 @@ class Fig < Formula
   depends_on "boot2docker" => :recommended
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.0.tar.gz"
-    sha256 "ac4c960e84a44f5dbbcee775c46c3a8a194241e37767f60d64aa84d704c95dfd"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
+    sha256 "743f3fc78f6159d14ac603def6470cf1b4edefc04de8b1ad8c349b380b503f50"
   end
 
   resource "pyyaml" do

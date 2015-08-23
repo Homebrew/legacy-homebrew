@@ -13,6 +13,7 @@ require "cmd/postinstall"
 require "hooks/bottles"
 require "debrew"
 require "sandbox"
+require "requirements/cctools_requirement"
 
 class FormulaInstaller
   include FormulaCellarChecks
@@ -53,6 +54,15 @@ class FormulaInstaller
 
     @poured_bottle = false
     @pour_failed   = false
+  end
+
+  # When no build tools are available and build flags are passed through ARGV,
+  # it's necessary to interrupt the user before any sort of installation
+  # can proceed. Only invoked when the user has no developer tools.
+  def self.prevent_build_flags
+    build_flags = ARGV.collect_build_flags
+
+    raise BuildFlagsError.new(build_flags) unless build_flags.empty?
   end
 
   def pour_bottle?(install_bottle_options = { :warn=>false })
@@ -146,7 +156,15 @@ class FormulaInstaller
 
     check_conflicts
 
-    compute_and_install_dependencies unless ignore_deps?
+    if !pour_bottle? && !MacOS.has_apple_developer_tools?
+      raise BuildToolsError.new([formula])
+    end
+
+    unless ignore_deps?
+      deps = compute_dependencies
+      check_dependencies_bottled(deps) if pour_bottle?
+      install_dependencies(deps)
+    end
 
     return if only_deps?
 
@@ -166,6 +184,7 @@ class FormulaInstaller
 
     if pour_bottle?(:warn => true)
       begin
+        install_relocation_tools unless formula.bottle_specification.skip_relocation?
         pour
       rescue => e
         raise if ARGV.homebrew_developer?
@@ -215,18 +234,31 @@ class FormulaInstaller
     raise FormulaConflictError.new(formula, conflicts) unless conflicts.empty?
   end
 
-  def compute_and_install_dependencies
+  # Compute and collect the dependencies needed by the formula currently
+  # being installed.
+  def compute_dependencies
     req_map, req_deps = expand_requirements
-
     check_requirements(req_map)
-
     deps = expand_dependencies(req_deps + formula.deps)
 
-    if deps.empty? && only_deps?
-      puts "All dependencies for #{formula.full_name} are satisfied."
-    else
-      install_dependencies(deps)
+    deps
+  end
+
+  # Check that each dependency in deps has a bottle available, terminating
+  # abnormally with a BuildToolsError if one or more don't.
+  # Only invoked when the user has no developer tools.
+  def check_dependencies_bottled(deps)
+    unbottled = deps.select do |dep, _|
+      formula = dep.to_formula
+      !formula.pour_bottle? && !MacOS.has_apple_developer_tools?
     end
+
+    raise BuildToolsError.new(unbottled) unless unbottled.empty?
+  end
+
+  def compute_and_install_dependencies
+    deps = compute_dependencies
+    install_dependencies(deps)
   end
 
   def check_requirements(req_map)
@@ -317,13 +349,27 @@ class FormulaInstaller
   end
 
   def install_dependencies(deps)
-    if deps.length > 1
-      oh1 "Installing dependencies for #{formula.full_name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}"
+    if deps.empty? && only_deps?
+      puts "All dependencies for #{formula.full_name} are satisfied."
+    else
+      oh1 "Installing dependencies for #{formula.full_name}: #{Tty.green}#{deps.map(&:first)*", "}#{Tty.reset}" unless deps.empty?
+      deps.each { |dep, options| install_dependency(dep, options) }
     end
 
-    deps.each { |dep, options| install_dependency(dep, options) }
-
     @show_header = true unless deps.empty?
+  end
+
+  # Installs the relocation tools (as provided by the cctools formula) as a hard
+  # dependency for every formula installed from a bottle when the user has no
+  # developer tools. Invoked unless the formula explicitly sets
+  # :any_skip_relocation in its bottle DSL.
+  def install_relocation_tools
+    cctools = CctoolsRequirement.new
+    dependency = cctools.to_dependency
+    formula = dependency.to_formula
+    return if cctools.satisfied? || @@attempted.include?(formula)
+
+    install_dependency(dependency, inherited_options_for(cctools))
   end
 
   class DependencyInstaller < FormulaInstaller
@@ -397,7 +443,10 @@ class FormulaInstaller
 
     keg = Keg.new(formula.prefix)
     link(keg)
-    fix_install_names(keg)
+
+    unless @poured_bottle && formula.bottle_specification.skip_relocation?
+      fix_install_names(keg)
+    end
 
     if formula.post_install_defined?
       if build_bottle?
@@ -540,9 +589,20 @@ class FormulaInstaller
       keg.remove_linked_keg_record
     end
 
+    link_overwrite_backup = {} # dict: conflict file -> backup file
+    backup_dir = HOMEBREW_CACHE/"Backup"
+
     begin
       keg.link
     rescue Keg::ConflictError => e
+      conflict_file = e.dst
+      if formula.link_overwrite?(conflict_file) && !link_overwrite_backup.key?(conflict_file)
+        backup_file = backup_dir/conflict_file.relative_path_from(HOMEBREW_PREFIX).to_s
+        backup_file.parent.mkpath
+        conflict_file.rename backup_file
+        link_overwrite_backup[conflict_file] = backup_file
+        retry
+      end
       onoe "The `brew link` step did not complete successfully"
       puts "The formula built, but is not symlinked into #{HOMEBREW_PREFIX}"
       puts e
@@ -567,9 +627,23 @@ class FormulaInstaller
       puts e
       puts e.backtrace if debug?
       @show_summary_heading = true
-      ignore_interrupts { keg.unlink }
+      ignore_interrupts do
+        keg.unlink
+        link_overwrite_backup.each do |conflict_file, backup_file|
+          conflict_file.parent.mkpath
+          backup_file.rename conflict_file
+        end
+      end
       Homebrew.failed = true
       raise
+    end
+
+    unless link_overwrite_backup.empty?
+      opoo "These files were overwritten during `brew link` step:"
+      puts link_overwrite_backup.keys
+      puts
+      puts "They are backup in #{backup_dir}"
+      @show_summary_heading = true
     end
   end
 
@@ -633,8 +707,10 @@ class FormulaInstaller
     end
 
     keg = Keg.new(formula.prefix)
-    keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
-      Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
+    unless formula.bottle_specification.skip_relocation?
+      keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
+        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
+    end
 
     Pathname.glob("#{formula.bottle_prefix}/{etc,var}/**/*") do |path|
       path.extend(InstallRenamed)

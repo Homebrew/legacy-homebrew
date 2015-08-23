@@ -98,7 +98,7 @@ If \fB\-\-quiet\fR is passed, list only the names of commands without the header
 If \fB\-\-autotools\fR is passed, create a basic template for an Autotools\-style build\. If \fB\-\-cmake\fR is passed, create a basic template for a CMake\-style build\.
 .
 .IP
-If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the SHA\-1 to the formula for you\.
+If \fB\-\-no\-fetch\fR is passed, Homebrew will not download \fIURL\fR to the cache and will thus not add the SHA256 to the formula for you\.
 .
 .IP
 The options \fB\-\-set\-name\fR and \fB\-\-set\-version\fR each take an argument and allow you to explicitly set the name and version of the package you are creating\.
@@ -266,13 +266,13 @@ If no \fIformulae\fR are provided, all of them will have their \.apps symlinked\
 If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR directory instead of the system directory\. It may need to be created, first\.
 .
 .IP "\(bu" 4
-\fBls, list [\-\-full\-name]\fR List all installed formulae\. If \fB\-\-full\-name\fR is passed, print formulae with full\-qualified names\.
+\fBls\fR, \fBlist [\-\-full\-name]\fR List all installed formulae\. If \fB\-\-full\-name\fR is passed, print formulae with full\-qualified names\.
 .
 .IP "\(bu" 4
-\fBls, list \-\-unbrewed\fR List all files in the Homebrew prefix not installed by Homebrew\.
+\fBls\fR, \fBlist \-\-unbrewed\fR List all files in the Homebrew prefix not installed by Homebrew\.
 .
 .IP "\(bu" 4
-\fBls, list [\-\-versions [\-\-multiple]] [\-\-pinned]\fR [\fIformulae\fR]: List the installed files for \fIformulae\fR\. Combined with \fB\-\-verbose\fR, recursively list the contents of all subdirectories in each \fIformula\fR\'s keg\.
+\fBls\fR, \fBlist [\-\-versions [\-\-multiple]] [\-\-pinned]\fR [\fIformulae\fR]: List the installed files for \fIformulae\fR\. Combined with \fB\-\-verbose\fR, recursively list the contents of all subdirectories in each \fIformula\fR\'s keg\.
 .
 .IP
 If \fB\-\-versions\fR is passed, show the version number for installed formulae, or only the specified formulae if \fIformulae\fR are given\. With \fB\-\-multiple\fR, only show formulae with multiple versions installed\.
@@ -293,7 +293,7 @@ If no \fIformulae\fR are given, check all installed brews\.
 \fBmigrate [\-\-force]\fR \fIformulae\fR: Migrate renamed packages to new name, where \fIformulae\fR are old names of packages\.
 .
 .IP
-If \fB\-\-force\fR is passed and installed \fIformulae\fR have nil tap, then treat them like packages installed from core\.
+If \fB\-\-force\fR is passed, then treat installed \fIformulae\fR and passed \fIformulae\fR like if they are from same taps and migrate them anyway\.
 .
 .IP "\(bu" 4
 \fBoptions [\-\-compact] [\-\-all] [\-\-installed]\fR \fIformula\fR: Display install options specific to \fIformula\fR\.
@@ -371,6 +371,12 @@ By default, the repository is cloned as a shallow copy (\fB\-\-depth=1\fR), but 
 .
 .IP "\(bu" 4
 \fBtap \-\-repair\fR: Migrate tapped formulae from symlink\-based to directory\-based structure\.
+.
+.IP "\(bu" 4
+\fBtap \-\-list\-official\fR: List all official taps\.
+.
+.IP "\(bu" 4
+\fBtap \-\-list\-pinned\fR: List all pinned taps\.
 .
 .IP "\(bu" 4
 \fBtap\-info\fR \fItap\fR: Display information about \fItap\fR\.

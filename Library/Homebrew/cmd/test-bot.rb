@@ -252,8 +252,10 @@ module Homebrew
           "diff-tree", "-r", "--name-only", "--diff-filter=#{filter}",
           start_revision, end_revision, "--", path
         ).lines.map do |line|
-          File.basename(line.chomp, ".rb")
-        end
+          file = line.chomp
+          next unless File.extname(file) == ".rb"
+          File.basename(file, ".rb")
+        end.compact
       end
 
       def brew_update
@@ -408,11 +410,15 @@ module Homebrew
       end
 
       begin
+        formula.recursive_dependencies
+      rescue TapFormulaUnavailableError => e
+        raise if e.tap.installed?
+        safe_system "brew", "tap", e.tap.name
+        retry
+      end
+
+      begin
         deps.each do |dep|
-          if dep.is_a?(TapDependency) && dep.tap
-            tap_dir = Homebrew.homebrew_git_repo dep.tap
-            test "brew", "tap", dep.tap unless tap_dir.directory?
-          end
           CompilerSelector.select_for(dep.to_formula)
         end
         CompilerSelector.select_for(formula)
@@ -575,6 +581,7 @@ module Homebrew
     def cleanup_before
       @category = __method__
       return unless ARGV.include? "--cleanup"
+      git "gc", "--auto"
       git "stash"
       git "am", "--abort"
       git "rebase", "--abort"
@@ -603,7 +610,12 @@ module Homebrew
       if ARGV.include? "--cleanup"
         test "git", "reset", "--hard"
         git "stash", "pop"
-        test "brew", "cleanup", "--prune=30"
+        test "brew", "cleanup", "--prune=7"
+        git "gc", "--auto"
+        if ARGV.include? "--local"
+          FileUtils.rm_rf ENV["HOMEBREW_HOME"]
+          FileUtils.rm_rf ENV["HOMEBREW_LOGS"]
+        end
       end
 
       FileUtils.rm_rf @brewbot_root unless ARGV.include? "--keep-logs"
@@ -702,6 +714,7 @@ module Homebrew
     end
 
     ENV["HOMEBREW_DEVELOPER"] = "1"
+    ENV["HOMEBREW_SANDBOX"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
        || ARGV.include?("--ci-testing")
@@ -713,7 +726,7 @@ module Homebrew
     end
 
     if ARGV.include? "--local"
-      ENV["HOME"] = "#{Dir.pwd}/home"
+      ENV["HOMEBREW_HOME"] = ENV["HOME"] = "#{Dir.pwd}/home"
       mkdir_p ENV["HOME"]
       ENV["HOMEBREW_LOGS"] = "#{Dir.pwd}/logs"
     end

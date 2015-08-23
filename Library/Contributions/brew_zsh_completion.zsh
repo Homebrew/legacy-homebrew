@@ -1,4 +1,5 @@
 #compdef brew
+#autoload
 
 # Brew ZSH completion function
 # Drop this somewhere in your $fpath (like /usr/share/zsh/site-functions)
@@ -22,6 +23,10 @@ _brew_official_taps() {
   official_taps=(`brew tap --list-official`)
 }
 
+_brew_pinned_taps() {
+  pinned_taps=(`brew tap --list-pinned`)
+}
+
 _brew_outdated_formulae() {
   outdated_formulae=(`brew outdated`)
 }
@@ -37,25 +42,35 @@ _1st_arguments=(
   'deps:list dependencies and dependants of a formula'
   'doctor:audits your installation for common issues'
   'edit:edit a formula'
+  'fetch:download formula resources to the cache'
+  'gist-logs:generate a gist of the full build logs'
   'home:visit the homepage of a formula or the brew project'
   'info:information about a formula'
   'install:install a formula'
   'reinstall:install a formula anew; re-using its current options'
+  'leaves:show installed formulae that are not dependencies of another installed formula'
   'link:link a formula'
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
   'missing:check all installed formuale for missing dependencies.'
+  'migrate:migrate renamed formula to new name'
   'outdated:list formulae for which a newer version is available'
   'pin:pin specified formulae'
+  'postinstall:perform post_install for a given formula'
   'prune:remove dead links'
   'remove:remove a formula'
   'search:search for a formula (/regex/ or string)'
   'switch:switch between different versions of a formula'
   'tap:tap a new formula repository from GitHub, or list existing taps'
+  'tap-info:information about a tap'
+  'tap-pin:pin a tap'
+  'tap-unpin:unpin a tap'
+  'test-bot:test a formula and build a bottle'
+  'uninstall:uninstall a formula'
   'unlink:unlink a formula'
   'unpin:unpin specified formulae'
   'untap:remove a tapped repository'
-  'update:freshen up links'
+  'update:fetch latest version of Homebrew and all formulae'
   'upgrade:upgrade outdated formulae'
   'uses:show formulae which depend on a formula'
   `brew commands --quiet --include-aliases`
@@ -101,12 +116,15 @@ case "$words[1]" in
     _arguments \
       '(--macports)--macports[search the macports repository]' \
       '(--fink)--fink[search the fink repository]' ;;
-  untap|tap-info)
+  untap|tap-info|tap-pin)
     _brew_installed_taps
     _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
   tap)
     _brew_official_taps
     _wanted official_taps expl 'official taps' compadd -a official_taps ;;
+  tap-unpin)
+    _brew_pinned_taps
+    _wanted pinned_taps expl 'pinned taps' compadd -a pinned_taps ;;
   upgrade)
     _brew_outdated_formulae
     _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;

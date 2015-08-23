@@ -326,16 +326,17 @@ class ExampleFormula < Formula
 
     # Need to install into the bin but the makefile doesn't mkdir -p prefix/bin?
     bin.mkpath
-    # A custom directory?
-    mkdir_p share/"example"
-    # And then move something from the buildpath to that directory?
-    mv "ducks.txt", share/"example/ducks.txt"
+    # Need a custom directory?
+    (share/"concept").mkpath
+    # Installing something into another custom directory?
+    (share/"concept2").install "ducks.txt"
     # No "make", "install" available?
     bin.install "binary1"
     include.install "example.h"
     lib.install "example.dylib"
     man1.install "example.1"
     man3.install "example.3"
+    pkgshare.install "examples"
     # Maybe you'd like to remove a broken or unnecessary element?
     # Empty directories will be removed by Homebrew automatically post-install!
     rm "bin/example"
@@ -371,6 +372,7 @@ class ExampleFormula < Formula
     man8 # man+"man8"
     sbin # prefix+"sbin"
     share # prefix+"share"
+    pkgshare # prefix+"share"+name
     frameworks # prefix+"Frameworks"
     kext_prefix # prefix+"Library/Extensions"
     # Configuration stuff that will survive formula updates
@@ -397,8 +399,9 @@ class ExampleFormula < Formula
 
   ## Caveats
 
-  def caveats
-    "Are optional. Something the user should know?"
+  def caveats; <<-EOS.undent
+    Are optional. Something the user should know?
+  EOS
   end
 
   def caveats
@@ -411,7 +414,7 @@ class ExampleFormula < Formula
     s
   end
 
-  ## Test (is optional but makes us happy)
+  ## Test (is required for new formula & makes us happy)
 
   test do
     # `test do` will create, run in, and delete a temporary directory.
@@ -459,7 +462,7 @@ class ExampleFormula < Formula
         <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{bin}/example</string>
+        <string>#{opt_bin}/example</string>
         <string>--do-this</string>
       </array>
       <key>RunAtLoad</key>

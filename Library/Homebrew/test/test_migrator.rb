@@ -5,7 +5,7 @@ require "tab"
 require "keg"
 
 class Formula
-  def set_oldname oldname
+  def set_oldname(oldname)
     @oldname = oldname
   end
 end
@@ -93,6 +93,8 @@ class MigratorTests < Homebrew::TestCase
     rmtree HOMEBREW_PREFIX/"opt" if (HOMEBREW_PREFIX/"opt").directory?
     # What to do with pin?
     @new_f.unpin
+
+    FormulaLock::LOCKDIR.children.each(&:unlink)
   end
 
   def test_move_cellar
