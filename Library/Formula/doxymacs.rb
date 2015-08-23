@@ -4,6 +4,13 @@ class Doxymacs < Formula
   url "https://downloads.sourceforge.net/project/doxymacs/doxymacs/1.8.0/doxymacs-1.8.0.tar.gz"
   sha256 "a23fd833bc3c21ee5387c62597610941e987f9d4372916f996bf6249cc495afa"
 
+  bottle do
+    cellar :any
+    sha256 "09eb19921c2ecce5bb02b185c1040caef07d18706866006bdd5fa428bf6b8560" => :yosemite
+    sha256 "9efc35f7eee0ff431afbd36367676afb608498f823e6094b67d4c86d83694dd4" => :mavericks
+    sha256 "2a08771aecf0d6475b8f1e3bf9858c13fa190529a1fe1652ad59dc927a141de4" => :mountain_lion
+  end
+
   head do
     url "git://git.code.sf.net/p/doxymacs/code"
     depends_on "autoconf" => :build
