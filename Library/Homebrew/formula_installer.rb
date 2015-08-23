@@ -642,7 +642,7 @@ class FormulaInstaller
       opoo "These files were overwritten during `brew link` step:"
       puts link_overwrite_backup.keys
       puts
-      puts "They are backup in #{backup_dir}"
+      puts "They have been backed up in #{backup_dir}"
       @show_summary_heading = true
     end
   end
