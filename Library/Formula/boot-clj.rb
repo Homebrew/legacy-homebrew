@@ -9,6 +9,12 @@ class BootClj < Formula
     bin.install "boot.sh" => "boot"
   end
 
+  def post_install
+    # Use the wrapper to update Boot's JAR files too.
+    # (Q.v. <https://github.com/boot-clj/boot/tree/2.2.0#install>)
+    system bin/"boot", "--update"
+  end
+
   test do
     system "#{bin}/boot", "repl", "-e", "(System/exit 0)"
   end
