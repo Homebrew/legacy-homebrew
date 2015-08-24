@@ -7,9 +7,9 @@ class Nvm < Formula
 
   bottle do
     cellar :any
-    sha256 "ab9996b2ceb66f35a545e922403ab64a5010d647521d4bdbf743b3583dbd15ec" => :yosemite
-    sha256 "db4e26b82f10a0585b62d35fa3ef7c55d0e9b4ecd48e8a8b4f625f993e6036b5" => :mavericks
-    sha256 "7b1de04a747bfd4bcd6403a70b5907be8d782ebb11c9bdcaaab9a952c2eb8289" => :mountain_lion
+    sha256 "bda39c68500fdefd63389e2b496e41288a7d9a087f48de546f37ad7a122ba1a9" => :yosemite
+    sha256 "a28caf45d1b9f65bc73493562bf3eb7191fb8c4b54fcd75cf36692446245115f" => :mavericks
+    sha256 "262c46a1496abb2b060a46c19ce05eb36043e2c06c29e77f90c77d64639b2870" => :mountain_lion
   end
 
   resource "nvm-exec" do
