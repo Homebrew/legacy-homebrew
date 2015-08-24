@@ -1,8 +1,8 @@
 class Nvm < Formula
   desc "Manage multiple Node.js versions"
   homepage "https://github.com/creationix/nvm"
-  url "https://github.com/creationix/nvm/archive/v0.26.0.tar.gz"
-  sha256 "2838e8d54e9c748b20bc9915a23714fb8d75d1539b2b76f0ff11493222011d79"
+  url "https://github.com/creationix/nvm/archive/v0.26.1.tar.gz"
+  sha256 "6add56210bd3a60517fea64eef11de01f5abfd5a23ca62c68ade9f115475b864"
   head "https://github.com/creationix/nvm.git"
 
   bottle do
@@ -13,9 +13,9 @@ class Nvm < Formula
   end
 
   resource "nvm-exec" do
-    url "https://raw.githubusercontent.com/creationix/nvm/v0.26.0/nvm-exec"
+    url "https://raw.githubusercontent.com/creationix/nvm/v0.26.1/nvm-exec"
     sha256 "a0581795f10114b9759992a82a43496daf4b4a52ad381a3072d8eee9866a28c5"
-    version "0.26.0"
+    version "0.26.1"
   end
 
   def install
