@@ -12,6 +12,8 @@ class PipesSh < Formula
     sha256 "b48d90407346007abae552a9b8466ec716f6b0ef0547e27ee19fc364005e83d9" => :mountain_lion
   end
 
+  depends_on "bash"
+
   def install
     system "make", "install", "PREFIX=#{prefix}"
   end
