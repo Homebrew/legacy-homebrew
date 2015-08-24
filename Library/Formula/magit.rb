@@ -8,9 +8,10 @@ class Magit < Formula
 
   bottle do
     cellar :any
-    sha256 "830752375a231adf04b97293ebc12189c94e99fbe59bbd644cdb471729e139d2" => :yosemite
-    sha256 "c4a4c50f8d85c07e88e79e9d455086f61e08aeb619fd8db6c618b4d1aeb8dddf" => :mavericks
-    sha256 "5b81cdfb924d4a259f759469947ac80cfab38c77bdfd24d46b9bbf9ec9c508ab" => :mountain_lion
+    revision 1
+    sha256 "39bb319eaf4f0fcecec2e0e6d25b40d5f5837597dbc1fb687f1fea71f274d81c" => :yosemite
+    sha256 "d87188bd976bb881697e69b014e1040cc18f9a69d28ad1d11e4f864284e829f4" => :mavericks
+    sha256 "99717730946ae8952ae3c6873cf49f35c9a13c4808f8d4ee32f808f1bfba026b" => :mountain_lion
   end
 
   depends_on :emacs => "24.4"
