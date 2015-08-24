@@ -34,7 +34,8 @@ class Quantlib < Formula
       system "./autogen.sh"
     end
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{share}/emacs/site-lisp/quantlib"
     system "make", "install"
   end
 
