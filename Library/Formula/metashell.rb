@@ -24,9 +24,7 @@ class Metashell < Formula
       system "make", "templight"
     end
 
-    if MacOS.version == :yosemite
-      system "tools/clang_default_path", "--gcc=clang", ">", "lib/core/extra_sysinclude.hpp"
-    end
+    system "tools/clang_default_path", "--gcc=clang", ">", "lib/core/extra_sysinclude.hpp"
 
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
