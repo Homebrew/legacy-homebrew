@@ -1,8 +1,8 @@
 class SvtplayDl < Formula
   desc "Download videos from http://svtplay.se"
   homepage "https://github.com/spaam/svtplay-dl"
-  url "https://github.com/spaam/svtplay-dl/archive/0.10.2015.05.24.tar.gz"
-  sha256 "2796bc95b8b8839831696356f0fa09e961e32a0765f97db16e7ce187876ae231"
+  url "https://github.com/spaam/svtplay-dl/archive/0.10.2015.08.24.tar.gz"
+  sha256 "0dcd2c6862ad0ed00a2b782f6484f005431de3229360e1797810f7adf16aedd9"
 
   depends_on "rtmpdump"
 
