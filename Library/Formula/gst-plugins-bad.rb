@@ -31,6 +31,8 @@ class GstPluginsBad < Formula
   depends_on "libdvdread" => :optional
   depends_on "libexif" => :optional
   depends_on "libmms" => :optional
+  depends_on "homebrew/science/opencv" => :optional
+  depends_on "opus" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "schroedinger" => :optional
 
