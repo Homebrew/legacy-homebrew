@@ -5,10 +5,15 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.typesafe.config.{ Config, ConfigFactory, ConfigException, ConfigRenderOptions }
 import java.util.NoSuchElementException
+import javax.net.ssl.SSLContext
+import javax.net.ssl.KeyManagerFactory
+import java.security.KeyStore
+import java.io.FileInputStream
 import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import spark.jobserver.util.SparkJobUtils
+import spark.jobserver.util.PasswordRequester
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
 import spark.jobserver.io.JobInfo
@@ -18,6 +23,7 @@ import spray.http.StatusCodes
 import spray.httpx.SprayJsonSupport.sprayJsonMarshaller
 import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
+import spray.io.ServerSSLEngineProvider
 
 class WebApi(system: ActorSystem,
              config: Config,
@@ -49,6 +55,47 @@ class WebApi(system: ActorSystem,
   val myRoutes = jarRoutes ~ contextRoutes ~ jobRoutes ~ healthzRoutes ~ otherRoutes
 
   def start() {
+
+    //TODO - move into trait, but need config.....
+    /**
+     * based on
+     * https://github.com/spray/spray/blob/v1.2-M8/examples/
+     * spray-can/simple-http-server/src/main/scala/spray/examples/MySslConfiguration.scala
+     */
+    implicit def sslContext: SSLContext = {
+
+      if (config.hasPath("spray.can.server.ssl-encryption") &&
+          config.getBoolean("spray.can.server.ssl-encryption")) {
+        logger.info("SSL encryption activated.")
+        val sslContext = SSLContext.getInstance("SSL") //TLS?
+
+        val ksName = config.getString("spray.can.server.keystore")
+        val myPass = {
+          if (config.hasPath("spray.can.server.keystorePW")) {
+            config.getString("spray.can.server.keystorePW").toCharArray()
+          } else {
+            PasswordRequester.requestPassword("Keystore Password> ")
+          }
+        }
+        val ks = KeyStore.getInstance("JKS")
+        ks.load(new FileInputStream(ksName), myPass);
+        val kmf = KeyManagerFactory.getInstance("SunX509");
+        kmf.init(ks, myPass);
+        sslContext.init(kmf.getKeyManagers(), null, null);
+
+        sslContext
+      } else {
+        SSLContext.getDefault
+      }
+    }
+
+    implicit def sslEngineProvider: ServerSSLEngineProvider = {
+      ServerSSLEngineProvider { engine =>
+        engine.setEnabledProtocols(Array("SSLv3", "TLSv1"))
+        engine
+      }
+    }
+
     logger.info("Starting browser web service...")
     WebService.start(myRoutes ~ commonRoutes, system, bindAddress, port)
   }
