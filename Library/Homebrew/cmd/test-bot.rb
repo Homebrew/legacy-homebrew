@@ -398,19 +398,19 @@ module Homebrew
       if formula.stable
         return unless satisfied_requirements?(formula, :stable)
 
-        deps |= formula.stable.deps.to_a
-        reqs |= formula.stable.requirements.to_a
+        deps |= formula.stable.deps.to_a.reject(&:optional?)
+        reqs |= formula.stable.requirements.to_a.reject(&:optional?)
       elsif formula.devel
         return unless satisfied_requirements?(formula, :devel)
       end
 
       if formula.devel && !ARGV.include?("--HEAD")
-        deps |= formula.devel.deps.to_a
-        reqs |= formula.devel.requirements.to_a
+        deps |= formula.devel.deps.to_a.reject(&:optional?)
+        reqs |= formula.devel.requirements.to_a.reject(&:optional?)
       end
 
       begin
-        formula.recursive_dependencies
+        deps.each { |d| d.to_formula.recursive_dependencies }
       rescue TapFormulaUnavailableError => e
         raise if e.tap.installed?
         safe_system "brew", "tap", e.tap.name
