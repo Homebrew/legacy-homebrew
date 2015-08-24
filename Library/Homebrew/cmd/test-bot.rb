@@ -398,15 +398,15 @@ module Homebrew
       if formula.stable
         return unless satisfied_requirements?(formula, :stable)
 
-        deps |= formula.stable.deps.to_a
-        reqs |= formula.stable.requirements.to_a
+        deps |= formula.stable.deps.to_a.select { |d| !d.optional? }
+        reqs |= formula.stable.requirements.to_a.select { |r| !r.optional? }
       elsif formula.devel
         return unless satisfied_requirements?(formula, :devel)
       end
 
       if formula.devel && !ARGV.include?("--HEAD")
-        deps |= formula.devel.deps.to_a
-        reqs |= formula.devel.requirements.to_a
+        deps |= formula.devel.deps.to_a.select { |d| !d.optional? }
+        reqs |= formula.devel.requirements.to_a.select { |r| !r.optional? }
       end
 
       begin
