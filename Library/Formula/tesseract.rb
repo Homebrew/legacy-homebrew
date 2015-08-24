@@ -24,9 +24,20 @@ class Tesseract < Formula
   end
 
   option "all-languages", "Install recognition data for all languages"
+  option "with-training-tools", "Install OCR training tools"
+  option "with-opencl", "Enable OpenCL support"
 
   depends_on "libtiff" => :recommended
   depends_on "leptonica"
+
+  if build.with? "training-tools"
+    depends_on "libtool" => :build
+    depends_on "icu4c"
+    depends_on "glib"
+    depends_on "cairo"
+    depends_on "pango"
+    depends_on :x11
+  end
 
   needs :cxx11
 
@@ -58,8 +69,19 @@ class Tesseract < Formula
     ENV.cxx11
 
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+    args << "--enable-opencl" if build.with? "opencl"
+    system "./configure", *args
+
     system "make", "install"
+    if build.with? "training-tools"
+      system "make", "training"
+      system "make", "training-install"
+    end
     if build.head?
       resource("tessdata-head").stage { mv Dir["*"], share/"tessdata" }
     elsif build.include? "all-languages"
