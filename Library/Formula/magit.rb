@@ -39,7 +39,7 @@ class Magit < Formula
     ]
     # Can't run `make install` alone without ENV.j1:
     # https://github.com/magit/magit/issues/1670
-    system "make"
+    system "make", "VERSION=#{version}"
     system "make", "install", *args
   end
 
