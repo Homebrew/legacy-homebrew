@@ -6,20 +6,17 @@ class Nifi < Formula
 
   depends_on :java => "1.7+"
 
-  # Wrap our nifi executable to point to the appropriate location within the brew environment
-  def script; <<-EOS.undent
-    #!/bin/sh
-    export NIFI_HOME="#{libexec}"
-    exec "#{libexec}/bin/nifi.sh" "$@"
-    EOS
-  end
-
   def install
     libexec.install Dir["*"]
-    (bin/"nifi").write script
+
+    ENV["NIFI_HOME"] = libexec
+
+    bin.install libexec/"bin/nifi.sh"
+    mv bin/"nifi.sh", bin/"nifi"
+    bin.env_script_all_files libexec/"bin/", :NIFI_HOME => libexec
   end
 
   test do
-    system "nifi", "status"
+    system bin/"nifi", "status"
   end
 end
