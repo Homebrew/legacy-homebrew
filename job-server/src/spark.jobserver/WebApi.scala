@@ -65,6 +65,7 @@ class WebApi(system: ActorSystem,
     implicit def sslContext: SSLContext = {
 
       if (config.hasPath("spray.can.server.ssl-encryption") &&
+          config.hasPath("spray.can.server.keystore") &&
           config.getBoolean("spray.can.server.ssl-encryption")) {
         logger.info("SSL encryption activated.")
         val sslContext = SSLContext.getInstance("SSL") //TLS?
