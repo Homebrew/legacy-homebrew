@@ -76,8 +76,9 @@ object JobServer {
   }
 
   private def storeInitialJars(config: Config, jarManager: ActorRef): Unit = {
-    if(config.hasPath("spark.jobserver.job-jar-uris")) {
-      val initialJarsConfig = config.getConfig("spark.jobserver.job-jar-uris").root
+    val initialJarPathsKey = "spark.jobserver.job-jar-paths"
+    if(config.hasPath(initialJarPathsKey)) {
+      val initialJarsConfig = config.getConfig(initialJarPathsKey).root
 
       logger.info("Adding initial job jars: {}", initialJarsConfig.render())
 
