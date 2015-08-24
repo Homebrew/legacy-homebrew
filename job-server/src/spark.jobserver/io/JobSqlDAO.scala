@@ -3,11 +3,13 @@ package spark.jobserver.io
 import com.typesafe.config.{ConfigRenderOptions, Config, ConfigFactory}
 import java.io.{FileOutputStream, BufferedOutputStream, File}
 import java.sql.Timestamp
+import javax.sql.DataSource
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import scala.slick.driver.JdbcProfile
 import scala.slick.jdbc.meta.MTable
 import scala.reflect.runtime.universe
+import org.apache.commons.dbcp.BasicDataSource
 
 class JobSqlDAO(config: Config) extends JobDAO {
   val slickDriverClass = config.getString("spark.jobserver.sqldao.slick-driver")
@@ -64,7 +66,21 @@ class JobSqlDAO(config: Config) extends JobDAO {
   val jdbcUrl = config.getString("spark.jobserver.sqldao.jdbc.url")
   val jdbcUser = config.getString("spark.jobserver.sqldao.jdbc.user")
   val jdbcPassword = config.getString("spark.jobserver.sqldao.jdbc.password")
-  val db = Database.forURL(jdbcUrl, driver = jdbcDriverClass, user = jdbcUser, password = jdbcPassword)
+  val dbcpMaxActive = config.getInt("spark.jobserver.sqldao.dbcp.maxactive")
+  val dbcpMaxIdle = config.getInt("spark.jobserver.sqldao.dbcp.maxidle")
+  val dbcpInitialSize = config.getInt("spark.jobserver.sqldao.dbcp.initialsize")
+  val dataSource: DataSource = {
+    val ds = new BasicDataSource
+    ds.setDriverClassName(jdbcDriverClass)
+    ds.setUsername(jdbcUser)
+    ds.setPassword(jdbcPassword)
+    ds.setMaxActive(dbcpMaxActive)
+    ds.setMaxIdle(dbcpMaxIdle)
+    ds.setInitialSize(dbcpInitialSize)
+    ds.setUrl(jdbcUrl)
+    ds
+  }
+  val db = Database.forDataSource(dataSource)
 
   // Server initialization
   init()
