@@ -11,8 +11,7 @@ class Nifi < Formula
 
     ENV["NIFI_HOME"] = libexec
 
-    bin.install libexec/"bin/nifi.sh"
-    mv bin/"nifi.sh", bin/"nifi"
+    bin.install libexec/"bin/nifi.sh" => "nifi"
     bin.env_script_all_files libexec/"bin/", :NIFI_HOME => libexec
   end
 
