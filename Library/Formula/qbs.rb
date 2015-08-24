@@ -1,8 +1,8 @@
 class Qbs < Formula
   desc "Qt Build Suite"
   homepage "https://wiki.qt.io/Qt_Build_Suite"
-  url "https://download.qt.io/official_releases/qbs/1.4.1/qbs-src-1.4.1.tar.gz"
-  sha256 "eea8e0c1b2ef71f295fa5f1798a04a9f0509a701094fec11a691a4d7ae0155a9"
+  url "https://download.qt.io/official_releases/qbs/1.4.2/qbs-src-1.4.2.tar.gz"
+  sha256 "b9d36118c3ae0f7d4df6bf7239a0a0163c0340b701d00191fa5f832cef341ce5"
 
   bottle do
     sha256 "1a97288225e37a20e8686e5fa2cbbfed4f812becd03f1eb39e5ca9e9364273a3" => :yosemite
@@ -11,12 +11,9 @@ class Qbs < Formula
   end
 
   depends_on "qt5"
-  depends_on :java => :optional
 
   def install
-    args = []
-    args << "CONFIG+=qbs_enable_java" if build.with? "java"
-    system "qmake", "qbs.pro", "-r", "QBS_INSTALL_PREFIX=/", *args
+    system "qmake", "qbs.pro", "-r", "QBS_INSTALL_PREFIX=/"
     system "make", "install", "INSTALL_ROOT=#{prefix}"
   end
 
