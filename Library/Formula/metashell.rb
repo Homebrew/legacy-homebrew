@@ -24,7 +24,7 @@ class Metashell < Formula
       system "make", "templight"
     end
 
-    system "tools/clang_default_path", "--gcc=clang", ">", "lib/core/extra_sysinclude.hpp"
+    system "tools/clang_default_path --gcc=clang > lib/core/extra_sysinclude.hpp"
 
     mkdir "build" do
       system "cmake", "..", *std_cmake_args
