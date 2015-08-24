@@ -19,10 +19,12 @@ class Libbluray < Formula
     depends_on "libtool" => :build
   end
 
+  option "without-ant", "Disable Support for BD Java"
+
   depends_on "pkg-config" => :build
   depends_on "freetype" => :recommended
   depends_on "fontconfig"
-  depends_on "ant" => :build
+  depends_on "ant" => [:build, :optional]
 
   def install
     # https://mailman.videolan.org/pipermail/libbluray-devel/2014-April/001401.html
@@ -31,6 +33,7 @@ class Libbluray < Formula
 
     args = %W[--prefix=#{prefix} --disable-dependency-tracking]
     args << "--without-freetype" if build.without? "freetype"
+    args << "--disable-bdjava" if build.without? "ant"
 
     system "./bootstrap" if build.head?
     system "./configure", *args
