@@ -16,6 +16,9 @@ class Libcroco < Formula
   depends_on "intltool" => :build
   depends_on "glib"
 
+  # Fix error: No package 'libxml-2.0' found
+  depends_on "libxml2" unless OS.mac?
+
   def install
     ENV.libxml2
     system "./configure", "--disable-dependency-tracking",
