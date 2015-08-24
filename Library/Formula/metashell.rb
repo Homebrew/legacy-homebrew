@@ -13,8 +13,15 @@ class Metashell < Formula
 
   needs :cxx11
 
+  # This patch is required because Mountain Lion uses an old compiler which breaks
+  # compiling some Templight code. The patch comments out unused parts of Templight,
+  # so patched version is functionally equivalent. This error should be fixed in
+  # the next release of Metashell.
+  patch :DATA if MacOS.version == :mountain_lion
+
   def install
     ENV.cxx11
+
     # Build internal Clang
     mkdir "3rd/templight/build" do
       system "cmake", "../llvm", "-DLIBCLANG_BUILD_STATIC=ON", *std_cmake_args
@@ -40,3 +47,25 @@ class Metashell < Formula
     assert_match /const int/, shell_output("cat #{testpath}/test.hpp | #{bin}/metashell -H")
   end
 end
+
+__END__
+diff --git a/3rd/templight/llvm/tools/clang/tools/templight/TemplightDebugger.cpp b/3rd/templight/llvm/tools/clang/tools/templight/TemplightDebugger.cpp
+index 7a5a2d3..c60d7de 100644
+--- a/3rd/templight/llvm/tools/clang/tools/templight/TemplightDebugger.cpp
++++ b/3rd/templight/llvm/tools/clang/tools/templight/TemplightDebugger.cpp
+@@ -672,6 +672,7 @@ public:
+   };
+
+   void processInputs() {
++#if 0
+     std::string user_in;
+     while(true) {
+       llvm::outs() << "(tdb) ";
+@@ -958,6 +959,7 @@ public:
+       }
+
+     };
++#endif
+   };
+
+   void printRawEntry(const TemplateDebuggerEntry &Entry) {
