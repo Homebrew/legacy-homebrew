@@ -5,6 +5,12 @@ class Metashell < Formula
   sha256 "64d3680a536a254de8556a9792c5d35e6709f2f347d7187614271123d87246ee"
   depends_on "cmake" => :build
 
+  bottle do
+    sha1 "35cb28330f73ec44ecf27244347805dc2561439f" => :yosemite
+    sha1 "0d8a62d552ae6ff960ac26fe8344181ed62895d5" => :mavericks
+    sha1 "76874d93ced1815ccfcbddb6da75e8c56aff44e4" => :mountain_lion
+  end
+
   needs :cxx11
 
   def install
