@@ -34,12 +34,14 @@ class Cairo < Formula
       --enable-gobject=yes
       --enable-svg=yes
       --enable-tee=yes
-      --enable-xlib=no
-      --enable-xlib-xrender=no
       --enable-quartz-image
     ]
 
-    args << (build.with?("x11") ? "--enable-xcb=yes" : "--enable-xcb=no")
+    if build.with? "x11"
+      args << "--enable-xcb=yes" << "--enable-xlib=yes" << "--enable-xlib-xrender=yes"
+    else
+      args << "--enable-xcb=no" << "--enable-xlib=no" << "--enable-xlib-xrender=no"
+    end
 
     system "./configure", *args
     system "make", "install"
