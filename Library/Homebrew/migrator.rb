@@ -62,7 +62,7 @@ class Migrator
     @oldpath = HOMEBREW_CELLAR/formula.oldname
     raise MigratorNoOldpathError.new(formula) unless oldpath.exist?
 
-    @old_tabs = oldpath.subdirs.each.map { |d| Tab.for_keg(Keg.new(d)) }
+    @old_tabs = oldpath.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
     @old_tap = old_tabs.first.tap
 
     if !ARGV.force? && !from_same_taps?
