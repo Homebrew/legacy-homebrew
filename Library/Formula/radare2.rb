@@ -44,14 +44,23 @@ class Radare2 < Formula
   end
 
   def install
+    ENV["PREFIX"] = prefix
+    ENV["INSTALL_TARGET"] = "install"
+    ENV["NOSUDO"] = "1"
+    ENV["HARDEN"] = "1"
+    ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
+
+    # Build scripts assume this directory already exists
+    mkdir_p lib
+
+    # Build script falsely assume this directory is a git repo. Force the
+    # fall-back behavior of re-cloning the repo when the directory is missing
+    rm_rf "shlr/capstone"
+
     # Build Radare2 before bindings, otherwise compile = nope.
-    system "./configure", "--prefix=#{prefix}", "--with-openssl"
-    system "make"
-    system "make", "install"
+    system "./sys/install.sh"
 
     resource("bindings").stage do
-      ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
-
       system "./configure", "--prefix=#{prefix}"
       system "make"
       system "make", "install", "DESTDIR=#{prefix}"
