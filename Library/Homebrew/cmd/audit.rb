@@ -303,7 +303,7 @@ class FormulaAuditor
           problem <<-EOS.undent
             #{dep} dependency should be
               depends_on "#{dep}" => :build
-            Or if it is indeed a runtime denpendency
+            Or if it is indeed a runtime dependency
               depends_on "#{dep}" => :run
           EOS
         when "git"
