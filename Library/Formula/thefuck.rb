@@ -1,8 +1,8 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.7.tar.gz"
-  sha256 "5486f9244315b83645efd1aaba98d83a74e23ccad8499d24d80a6b64dde850a7"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.8.tar.gz"
+  sha256 "40ac6c27974fc749557fe37f00e29100c26f25f038f3e63034f721442ac0b489"
 
   head "https://github.com/nvbn/thefuck.git"
 
@@ -16,8 +16,8 @@ class Thefuck < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
-    sha256 "a0e9b96f1946975064724e242ac159f3260db24ffa591c3da0a355361a3a337f"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.1.1.tar.gz"
+    sha256 "d3290bd4a027fa0b3a2e2ee87728056fe49d4112640e2b8c2ea4dd94ba0cf057"
   end
 
   resource "pathlib" do
@@ -36,8 +36,8 @@ class Thefuck < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
-    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.2.tar.gz"
+    sha256 "0994a58df27ea5dc523782a601357a2198b7493dcc99a30d51827a23585b5b1d"
   end
 
   def install
