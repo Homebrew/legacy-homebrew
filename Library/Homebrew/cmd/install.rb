@@ -75,13 +75,7 @@ module Homebrew
 
         if f.installed?
           msg = "#{f.full_name}-#{f.installed_version} already installed"
-          unless f.linked_keg.symlink?
-            if f.oldname && (HOMEBREW_CELLAR/f.oldname).exist?
-              msg << ", it's just not migrated"
-            elsif !f.keg_only?
-              msg << ", it's just not linked"
-            end
-          end
+          msg << ", it's just not linked" unless f.linked_keg.symlink? || f.keg_only?
           opoo msg
         else
           formulae << f
