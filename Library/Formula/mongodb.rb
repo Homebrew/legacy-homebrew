@@ -17,9 +17,9 @@ class Mongodb < Formula
 
   bottle do
     cellar :any
-    sha256 "3a748f6609e1c83149b018592a7642729395a074034da924c68ad6d4c62e16ef" => :yosemite
-    sha256 "868bb486e1f3e2afae8791305c54061921d7760ab690c7980437bd24a40020da" => :mavericks
-    sha256 "a57923e2f82283476fb887c9a8b630436eeece36ff68de5e03538a9a2a696081" => :mountain_lion
+    sha256 "9194f749a0f400d687e93ca41be83d0419c4d59a95d738ae0f99618aa91076ca" => :yosemite
+    sha256 "7cf4a87166774c9276eb0e20b15219f05da236f21c2378823625a65c9983d1f1" => :mavericks
+    sha256 "aef1a270e9946d298b076804161510f1acbcbc33fd35ff4558a4c06ce1206a13" => :mountain_lion
   end
 
   devel do
