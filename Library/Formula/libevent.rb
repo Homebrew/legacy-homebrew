@@ -10,6 +10,11 @@ class Libevent < Formula
     sha1 "7d86d36fff109699bcec092f708d1be61c86ef78" => :mavericks
     sha1 "e074607f84ab34a1e939f6a93bf3fc2b6c90d9bd" => :mountain_lion
   end
+  
+  devel do
+    url "https://sourceforge.net/projects/levent/files/libevent/libevent-2.1/libevent-2.1.5-beta.tar.gz"
+    sha256 "79e1b82236a02f1432b6d95ef94186915790eb9910211647f9c01a85149066d8"
+  end
 
   head do
     url "https://github.com/libevent/libevent.git"
