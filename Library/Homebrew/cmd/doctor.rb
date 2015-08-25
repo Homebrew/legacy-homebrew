@@ -664,6 +664,17 @@ class Checks
     end
   end
 
+  def check_for_unsupported_curl_vars
+    # Support for SSL_CERT_DIR seemed to be removed in the 10.10.5 update.
+    if MacOS.version >= :yosemite && !ENV["SSL_CERT_DIR"].nil? then <<-EOS.undent
+      SSL_CERT_DIR support was removed from Apple's curl.
+      If fetching formulae fails you should:
+        unset SSL_CERT_DIR
+      and remove it from #{shell_profile} if present.
+      EOS
+    end
+  end
+
   def check_which_pkg_config
     binary = which "pkg-config"
     return if binary.nil?
