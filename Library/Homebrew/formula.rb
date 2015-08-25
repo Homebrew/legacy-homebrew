@@ -765,10 +765,15 @@ class Formula
   end
 
   def file_modified?
-    git_dir = MacOS.locate("git").dirname.to_s
+    # New Homebrew installs may not be a git repo yet
+    return false unless File.exist? "#{HOMEBREW_PREFIX}/.git"
+
+    git = MacOS.locate("git")
+    # git isn't installed by older Xcodes
+    return false if git.nil?
 
     # /usr/bin/git is a popup stub when Xcode/CLT aren't installed, so bail out
-    return false if git_dir == "/usr/bin" && !MacOS.has_apple_developer_tools?
+    return false if git.dirname.to_s == "/usr/bin" && !MacOS.has_apple_developer_tools?
 
     path.parent.cd do
       diff = Utils.popen_read("git", "diff", "origin/master", "--", "#{path}")
