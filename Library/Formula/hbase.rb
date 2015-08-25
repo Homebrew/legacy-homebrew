@@ -1,8 +1,8 @@
 class Hbase < Formula
   desc "Hadoop database: a distributed, scalable, big data store"
   homepage "https://hbase.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=hbase/hbase-1.0.1/hbase-1.0.1-bin.tar.gz"
-  sha256 "bd9586e94b22ad12ae16fa229a017d7370913b4ce2fead717832630127e3a08e"
+  url "https://www.apache.org/dyn/closer.cgi?path=hbase/1.0.1.1/hbase-1.0.1.1-bin.tar.gz"
+  sha256 "fd20fd98e9c11d96d0281077e3040c81f45bafcc1e4f14318cede31e45819fdf"
 
   depends_on :java => "1.6+"
   depends_on "hadoop"
@@ -25,5 +25,9 @@ class Hbase < Formula
     For more details:
       http://wiki.apache.org/hadoop/Hbase
     EOS
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/hbase mapredcp")
   end
 end
