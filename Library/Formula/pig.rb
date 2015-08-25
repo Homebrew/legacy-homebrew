@@ -7,9 +7,9 @@ class Pig < Formula
 
   bottle do
     cellar :any
-    sha1 "fce3bdc6c643263546405826d48cf991683ac3d9" => :yosemite
-    sha1 "43cc11e90b60410a30946d919051d0fbda001605" => :mavericks
-    sha1 "e0eac12c79628e4426de5e72645df0b175cc8a07" => :mountain_lion
+    sha256 "c937d3472443b64d1f7cbbd1e98caf1bee32787b02be552d0b82f3e1d44225e2" => :yosemite
+    sha256 "1a6a720a36bf3b9812caee860828b028b253190f9cfcc73078afcf6e251176f2" => :mavericks
+    sha256 "ce4626cd10cb18e6c1ef25fee0e6a10a47be587d2913b48fdee0f4ede1a9dc25" => :mountain_lion
   end
 
   depends_on :java
