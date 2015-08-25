@@ -1,11 +1,11 @@
 class Mahout < Formula
   desc "Library to help build scalable machine learning libraries"
   homepage "https://mahout.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=mahout/0.10.0/mahout-distribution-0.10.0.tar.gz"
-  sha256 "0f76800f6ff93f47b9ebf794522a6c5a58155eba7233a53863e7486454b96b53"
+  url "https://www.apache.org/dyn/closer.cgi?path=mahout/0.11.0/apache-mahout-distribution-0.11.0.zip"
+  sha256 "3b4a68c69cff2ce41b9ddd789469eaa85ea3d7bab980717182bf94ea71c22904"
 
   head do
-    url "https://svn.apache.org/repos/asf/mahout/trunk"
+    url "https://github.com/apache/mahout.git"
     depends_on "maven" => :build
   end
 
@@ -15,7 +15,7 @@ class Mahout < Formula
   def install
     if build.head?
       chmod 755, "./bin"
-      system "mvn -DskipTests clean install"
+      system "mvn", "-DskipTests", "clean", "install"
     end
 
     libexec.install "bin"
@@ -29,12 +29,16 @@ class Mahout < Formula
       libexec.install Dir["*.jar"]
     end
 
-    bin.write_exec_script Dir["#{libexec}/bin/*"]
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env)
   end
 
-  def caveats; <<-EOS.undent
-    Mahout requires JAVA_HOME to be set:
-      export JAVA_HOME=$(/usr/libexec/java_home)
+  test do
+    (testpath/"test.csv").write <<-EOS.undent
+      "x","y"
+      0.1234567,0.101201201
     EOS
+
+    assert_match /0.101201201/, pipe_output("#{bin}/mahout cat #{testpath}/test.csv")
   end
 end
