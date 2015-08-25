@@ -765,10 +765,8 @@ class Formula
   end
 
   def file_modified?
-    # New Homebrew installs may not be a git repo yet
-    return false unless File.exist? "#{HOMEBREW_PREFIX}/.git"
-
     git = which("git")
+
     # git isn't installed by older Xcodes
     return false if git.nil?
 
