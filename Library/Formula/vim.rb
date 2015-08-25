@@ -1,7 +1,7 @@
 class Vim < Formula
   desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
-  head "https://vim.googlecode.com/hg/"
+  head "https://github.com/vim/vim.git"
   # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
   url "https://mirrors.kernel.org/debian/pool/main/v/vim/vim_7.4.712.orig.tar.gz"
   sha256 "b334ba9f6682c605d29fcf45e7fe246b88061736b86c3e7cdfa309404a66b55c"
