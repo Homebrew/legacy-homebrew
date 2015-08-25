@@ -410,7 +410,7 @@ module Homebrew
       end
 
       begin
-        formula.recursive_dependencies
+        deps.each { |d| d.to_formula.recursive_dependencies }
       rescue TapFormulaUnavailableError => e
         raise if e.tap.installed?
         safe_system "brew", "tap", e.tap.name
