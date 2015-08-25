@@ -2,10 +2,8 @@ require "cmd/tap"
 
 module Homebrew
   def tap_pin
-    taps = ARGV.named.map do |name|
-      Tap.new(*tap_args(name))
-    end
-    taps.each do |tap|
+    ARGV.named.each do |name|
+      tap = Tap.new(*tap_args(name))
       tap.pin
       ohai "Pinned #{tap.name}"
     end
