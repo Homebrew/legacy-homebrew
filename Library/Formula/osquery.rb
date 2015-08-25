@@ -3,24 +3,23 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-      :tag => "1.5.0",
-      :revision => "ca09fdb9f80ed632b98a2a9c41a521309e14b611"
-  revision 1
+      :tag => "1.5.2",
+      :revision => "225a14660abeb1071fff58e73cc753d54037c6ae"
 
   bottle do
     sha256 "2056d44c6b15b9e38619b457974d8b83f041701934743ddfeac19cacb5ffeb21" => :yosemite
   end
 
-  # osquery only support OS X Yosemite and above. Do not remove this.
-  depends_on :macos => :yosemite
+  # osquery only supports OS X 10.9 and above. Do not remove this.
+  depends_on :macos => :mavericks
 
   depends_on "cmake" => :build
-  depends_on "boost" => :build
   depends_on "doxygen" => :build
-  depends_on "rocksdb" => :build
-  depends_on "thrift" => :build
-  depends_on "yara" => :build
-  depends_on "openssl"
+  depends_on "boost"
+  depends_on "rocksdb"
+  depends_on "thrift"
+  depends_on "yara"
+  depends_on "libressl"
   depends_on "gflags"
 
   resource "markupsafe" do
@@ -34,6 +33,15 @@ class Osquery < Formula
   end
 
   def install
+    # Link dynamically against brew-installed libraries.
+    ENV["BUILD_LINK_SHARED"] = "1"
+
+    # Use LibreSSL instead of the system provided OpenSSL.
+    ENV["BUILD_USE_LIBRESSL"] = "1"
+
+    # Skip test and benchmarking.
+    ENV["SKIP_TESTS"] = "1"
+
     ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
     ENV["THRIFT_HOME"] = Formula["thrift"].opt_prefix
 
