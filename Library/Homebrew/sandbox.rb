@@ -57,6 +57,7 @@ class Sandbox
 
   def allow_write_temp_and_cache
     allow_write_path "/private/tmp"
+    allow_write_path "/private/var/tmp"
     allow_write "^/private/var/folders/[^/]+/[^/]+/[C,T]/", :type => :regex
     allow_write_path HOMEBREW_TEMP
     allow_write_path HOMEBREW_CACHE
@@ -66,6 +67,11 @@ class Sandbox
     allow_write_path formula.rack
     allow_write_path formula.etc
     allow_write_path formula.var
+  end
+
+  # Xcode projects expect access to certain cache/archive dirs.
+  def allow_write_xcode
+    allow_write_path "/Users/#{ENV["USER"]}/Library/Developer/Xcode/DerivedData/"
   end
 
   def allow_write_log(formula)

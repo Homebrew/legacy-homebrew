@@ -553,6 +553,7 @@ class FormulaInstaller
         sandbox.record_log(formula.logs/"sandbox.build.log")
         sandbox.allow_write_temp_and_cache
         sandbox.allow_write_log(formula)
+        sandbox.allow_write_xcode
         sandbox.allow_write_cellar(formula)
         sandbox.exec(*args)
       else
