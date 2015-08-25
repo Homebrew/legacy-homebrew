@@ -1,9 +1,8 @@
 class Softhsm < Formula
   desc "Cryptographic store accessible through a PKCS#11 interface"
   homepage "https://www.opendnssec.org/softhsm/"
-  url "https://dist.opendnssec.org/source/softhsm-1.3.7.tar.gz"
-  sha256 "d12d6456a85561266d9da427565f3ee3746a35df6670d5e6be75de253c2810a4"
-  revision 1
+  url "https://dist.opendnssec.org/source/softhsm-2.0.0.tar.gz"
+  sha256 "eae8065f6c472af24f4c056d6728edda0fd34306f41a818697f765a6a662338d"
 
   bottle do
     sha256 "3ce8010a15659fd4dd8381d3306d9627892584585cef04bd7ff92d257c3e63af" => :yosemite
@@ -22,9 +21,9 @@ class Softhsm < Formula
   end
 
   test do
-    (testpath/"softhsm.conf").write("0:#{testpath}/hsm.db")
-    ENV["SOFTHSM_CONF"] = "#{testpath}/softhsm.conf"
-    system *%W[#{bin}/softhsm --init-token --slot 0 --label testing --so-pin 1234 --pin 1234]
-    system *%W[#{bin}/softhsm --show-slots]
+    (testpath/"softhsm2.conf").write("directories.tokendir = #{testpath}")
+    ENV["SOFTHSM2_CONF"] = "#{testpath}/softhsm2.conf"
+    system *%W[#{bin}/softhsm2-util --init-token --slot 0 --label testing --so-pin 1234 --pin 1234]
+    system *%W[#{bin}/softhsm2-util --show-slots]
   end
 end
