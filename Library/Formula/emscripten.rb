@@ -1,8 +1,21 @@
 class Emscripten < Formula
   desc "LLVM bytecode to JavaScript compiler"
   homepage "https://kripken.github.io/emscripten-site/"
-  url "https://github.com/kripken/emscripten/archive/1.34.4.tar.gz"
-  sha256 "d2a600bf68db41c6ae4d0689504ceca2ebf00c1cfe4263cf86c48a5330c16ad4"
+
+  stable do
+    url "https://github.com/kripken/emscripten/archive/1.34.6.tar.gz"
+    sha256 "630722efebbfd4840ece7dfb8c0bccd714ad9257eab9ac2777db372e4ecf4bb5"
+
+    resource "fastcomp" do
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.34.6.tar.gz"
+      sha256 "06a619890de5f40cb4e7ba078c5f053d0df4f58eed30d9afe14f782884088160"
+    end
+
+    resource "fastcomp-clang" do
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.34.6.tar.gz"
+      sha256 "72eb853cb532daf339a81fbcb86874d3dc29e837acb2c5362044da2b74a4f6df"
+    end
+  end
 
   bottle do
     sha256 "629a670f9cc330ee6509b27efe87e2435b424d49938f19b405f3bead59c393a4" => :yosemite
@@ -19,18 +32,6 @@ class Emscripten < Formula
 
     resource "fastcomp-clang" do
       url "https://github.com/kripken/emscripten-fastcomp-clang.git", :branch => "incoming"
-    end
-  end
-
-  stable do
-    resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.34.4.tar.gz"
-      sha256 "61769db5fc51f70b46a07f1efa095121b204ace4e8516401b09c68479aad99a9"
-    end
-
-    resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.34.4.tar.gz"
-      sha256 "70e77714380345ed2c175959f5f33198860f631baf95a88cce7358ccab017e5b"
     end
   end
 
@@ -78,14 +79,14 @@ class Emscripten < Formula
     end
   end
 
-  test do
-    system "#{libexec}/llvm/bin/llvm-config", "--version"
-  end
-
   def caveats; <<-EOS.undent
     Manually set LLVM_ROOT to
       #{opt_libexec}/llvm/bin
     in ~/.emscripten after running `emcc` for the first time.
     EOS
+  end
+
+  test do
+    system "#{libexec}/llvm/bin/llvm-config", "--version"
   end
 end
