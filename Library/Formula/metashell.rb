@@ -3,6 +3,7 @@ class Metashell < Formula
   homepage "https://github.com/sabel83/metashell"
   url "https://github.com/sabel83/metashell/archive/v2.1.0.tar.gz"
   sha256 "64d3680a536a254de8556a9792c5d35e6709f2f347d7187614271123d87246ee"
+
   depends_on "cmake" => :build
 
   bottle do
