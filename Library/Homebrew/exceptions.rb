@@ -273,25 +273,25 @@ class BuildToolsError < RuntimeError
     if MacOS.version >= "10.10"
       xcode_text = <<-EOS.undent
         To continue, you must install Xcode from the App Store,
-              or the CLT by running:
-                xcode-select --install
+        or the CLT by running:
+          xcode-select --install
       EOS
     elsif MacOS.version == "10.9"
       xcode_text = <<-EOS.undent
         To continue, you must install Xcode from:
-                https://developer.apple.com/downloads/
-              or the CLT by running:
-                xcode-select --install
+          https://developer.apple.com/downloads/
+        or the CLT by running:
+          xcode-select --install
       EOS
     elsif MacOS.version >= "10.7"
       xcode_text = <<-EOS.undent
         To continue, you must install Xcode or the CLT from:
-                https://developer.apple.com/downloads/
+          https://developer.apple.com/downloads/
       EOS
     else
       xcode_text = <<-EOS.undent
         To continue, you must install Xcode from:
-                https://developer.apple.com/xcode/downloads/
+          https://developer.apple.com/xcode/downloads/
       EOS
     end
 
@@ -320,24 +320,24 @@ class BuildFlagsError < RuntimeError
     if MacOS.version >= "10.10"
       xcode_text = <<-EOS.undent
         or install Xcode from the App Store, or the CLT by running:
-                xcode-select --install
+          xcode-select --install
       EOS
     elsif MacOS.version == "10.9"
       xcode_text = <<-EOS.undent
         or install Xcode from:
-                https://developer.apple.com/downloads/
-              or the CLT by running:
-                xcode-select --install
+          https://developer.apple.com/downloads/
+        or the CLT by running:
+          xcode-select --install
       EOS
     elsif MacOS.version >= "10.7"
       xcode_text = <<-EOS.undent
         or install Xcode or the CLT from:
-                https://developer.apple.com/downloads/
+          https://developer.apple.com/downloads/
       EOS
     else
       xcode_text = <<-EOS.undent
         or install Xcode from:
-                https://developer.apple.com/xcode/downloads/
+          https://developer.apple.com/xcode/downloads/
       EOS
     end
 
