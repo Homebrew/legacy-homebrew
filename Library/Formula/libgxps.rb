@@ -6,9 +6,9 @@ class Libgxps < Formula
 
   bottle do
     cellar :any
-    sha1 "924309fd03db773717136c28f18c252287fb594e" => :yosemite
-    sha1 "824b1ccbe6227f3daf53ba511186f45b7e57a8d2" => :mavericks
-    sha1 "1782c7a78c41172a401cef801e0995818ec23e33" => :mountain_lion
+    sha256 "fa03aed3a2f74fcf5e679f4a9b20a11a079bb99f6bb41f5de8cac4fabe3e1b90" => :yosemite
+    sha256 "aaa4b251edb7849ffafc1a333e9491f5ad1c22d71765bf30197ab3d94ef42e81" => :mavericks
+    sha256 "5771617e37c86898335f97531f67fbd19c76b4eea47bf71db4d9627ca519ffa8" => :mountain_lion
   end
 
   head do
