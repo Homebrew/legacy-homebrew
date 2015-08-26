@@ -173,9 +173,9 @@ object SampleJob  extends SparkJob {
 ```
 
 - `runJob` contains the implementation of the Job. The SparkContext is managed by the JobServer and will be provided to the job through this method.
-  This releaves the developer from the boiler-plate configuration management that comes with the creation of a Spark job and allows the Job Server to
+  This relieves the developer from the boiler-plate configuration management that comes with the creation of a Spark job and allows the Job Server to
 manage and re-use contexts.
-- `validate` allows for an initial validation of the context and any provided configuration. If the context and configuration are OK to run the job, returning `spark.jobserver.SparkJobValid` will let the job execute, otherwise returning `spark.jobserver.SparkJobInvalid(reason)` prevents the job from running and provides means to convey the reason of failure. In this case, the call immediatly returns an `HTTP/1.1 400 Bad Request` status code.  
+- `validate` allows for an initial validation of the context and any provided configuration. If the context and configuration are OK to run the job, returning `spark.jobserver.SparkJobValid` will let the job execute, otherwise returning `spark.jobserver.SparkJobInvalid(reason)` prevents the job from running and provides means to convey the reason of failure. In this case, the call immediately returns an `HTTP/1.1 400 Bad Request` status code.  
 `validate` helps you preventing running jobs that will eventually fail due to missing or wrong configuration and save both time and resources.  
 
 Let's try running our sample job with an invalid configuration:
@@ -251,7 +251,7 @@ use `bin/server_package.sh <environment>`.
 ## Architecture
 
 The job server is intended to be run as one or more independent processes, separate from the Spark cluster
-(though it very well may be colocated with say the Master).
+(though it very well may be collocated with say the Master).
 
 At first glance, it seems many of these functions (eg job management) could be integrated into the Spark standalone master.  While this is true, we believe there are many significant reasons to keep it separate:
 
@@ -271,8 +271,8 @@ Flow diagrams are checked in in the doc/ subdirectory.  .diagram files are for w
 
 ### Contexts
 
-    GET /contexts         - lists all current contexts
-    POST /contexts/<name> - creates a new context
+    GET /contexts           - lists all current contexts
+    POST /contexts/<name>   - creates a new context
     DELETE /contexts/<name> - stops a context and all jobs running in it
 
 ### Jobs
