@@ -5,8 +5,8 @@ class Influxdb < Formula
   homepage "https://influxdb.com"
 
   stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.2.tar.gz"
-    sha256 "5e0f33c3d4076509118ad9b02c61f64f7db138ada141675c84a5326e77b21115"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.3.tar.gz"
+    sha256 "f49f7a007f821991984dd8716a6ddccc94a1832c5ac1abf4bb1cb88d9616c2e9"
   end
 
   bottle do
@@ -15,12 +15,6 @@ class Influxdb < Formula
     sha256 "2a323f0d437d4098b392111781c89a796131057d8af731df85a63c681a077f00" => :yosemite
     sha256 "a8e24e3a17dcb7b5370357be5dd82166d511e89808f4b75d8158c034ee79632a" => :mavericks
     sha256 "2aaa49e097ac99e7ccbc7d70ceb08f61defd344b833370519f22b036e38c207a" => :mountain_lion
-  end
-
-  devel do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.3-rc1.tar.gz"
-    sha256 "cce989aa2e7da6d6c1d91755a320dfd81d631cabae0d21ea441c2df2612f8d13"
-    version "0.9.3-rc1"
   end
 
   head do
@@ -103,10 +97,8 @@ class Influxdb < Formula
     cd influxdb_path do
       if build.head?
         system "go", "install", "-ldflags", "-X main.version 0.9.4-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
-      elsif build.devel?
-        system "go", "install", "-ldflags", "-X main.version 0.9.3-rc1 -X main.commit b4b71f40ccf3c7c067195baf47524acaf15e9424", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version 0.9.2 -X main.commit 6c0a91f775f9fc0e625d17ffa04a3fe86945ba09", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.3 -X main.commit 2094f3fec17e7f675e5cacc8e984d98b1aec662d", "./..."
       end
     end
 
