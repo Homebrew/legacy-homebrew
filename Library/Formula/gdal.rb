@@ -80,7 +80,11 @@ class Gdal < Formula
   end
 
   depends_on :java => ["1.7+", :optional, :build]
-  depends_on "swig" if build.with? "swig-java"
+
+  if build.with? "swig-java"
+    depends_on "ant" => :build
+    depends_on "swig" => :build
+  end
 
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
@@ -304,6 +308,10 @@ class Gdal < Formula
         inreplace "java.opt", "#JAVA_HOME = /usr/lib/jvm/java-6-openjdk/", "JAVA_HOME=$(shell echo $$JAVA_HOME)"
         system "make"
         system "make", "install"
+
+        # Install the jar that complements the native JNI bindings
+        system "ant"
+        lib.install "gdal.jar"
       end
     end
 
