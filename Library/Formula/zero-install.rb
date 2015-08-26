@@ -4,6 +4,13 @@ class ZeroInstall < Formula
   url "https://downloads.sf.net/project/zero-install/0install/2.8/0install-2.8.tar.bz2"
   sha256 "12de771be748bce9350c90bc4720029a566b078ceabd335af09386ac6a37df2b"
 
+  bottle do
+    cellar :any
+    sha256 "3ab466845d13b43ea73eace0f6c56536f224303f056962f57c35709bf5204385" => :yosemite
+    sha256 "ebd5dc48e1bd1d6acaa97fa628fcb16facf0ed24b3a907a657b6087cb7c267cf" => :mavericks
+    sha256 "6eca41e9ec6f3fb6e575a34838dca9c87b28bc756f9aa3992bc0da508d47dd55" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "ocaml" => :build
   depends_on "opam" => :build
