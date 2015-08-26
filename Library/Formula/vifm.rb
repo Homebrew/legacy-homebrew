@@ -1,9 +1,9 @@
 class Vifm < Formula
   desc "Ncurses based file manager with vi like keybindings"
   homepage "http://vifm.info/"
-  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.7.8.tar.bz2"
-  mirror "https://github.com/vifm/vifm/releases/download/v0.7.8/vifm-0.7.8.tar.bz2"
-  sha256 "5dfbb26c2038a58dcff12026dab736e29d547b4aa3ff5912e4d844064c9e7603"
+  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.8.tar.bz2"
+  mirror "https://github.com/vifm/vifm/releases/download/v0.8/vifm-0.8.tar.bz2"
+  sha256 "69eb6b50dcf462f4233ff987f0b6a295df08a27bc42577ebef725bfe58dbdeeb"
 
   head do
     url "https://github.com/vifm/vifm.git"
@@ -12,9 +12,9 @@ class Vifm < Formula
   end
 
   bottle do
-    sha1 "9c91b72060c3fb9abf43cecc1a2304816deb0334" => :yosemite
-    sha1 "f6adc73279074c20f52dcb355bff076bf31cca40" => :mavericks
-    sha1 "cc3f9c80da284c39c2460f81eb53ec9bc98ccded" => :mountain_lion
+    sha256 "bbd822c0eb5c57e044d256ca2e45a8a8511ef2a500a99b293975e99e36e9da8e" => :yosemite
+    sha256 "ef3ee7dcece9fd892e284cff8887ab050b08bc976d8131cd5c511957724d2fc5" => :mavericks
+    sha256 "4adfb953326729dbcd921343719c833483340012da18760e4d3951dc6a758758" => :mountain_lion
   end
 
   def install
@@ -29,7 +29,7 @@ class Vifm < Formula
   end
 
   test do
-    ENV["TERM"] = "xterm"
-    system bin/"vifm", "-c", ":q"
+    assert_match /^Version: #{Regexp.escape(version)}/,
+      shell_output("#{bin}/vifm --version")
   end
 end

@@ -1,15 +1,15 @@
 class Help2man < Formula
   desc "Automatically generate simple man pages"
   homepage "https://www.gnu.org/software/help2man/"
-  url "http://ftpmirror.gnu.org/help2man/help2man-1.46.5.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/help2man/help2man-1.46.5.tar.xz"
-  sha256 "0ada23867183c5e779e06e6441801c5c74ff77af258e2f1bb5fce181fbc30ebf"
+  url "http://ftpmirror.gnu.org/help2man/help2man-1.47.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/help2man/help2man-1.47.1.tar.xz"
+  sha256 "c59b26f60cb06e45b00e729dea721e7a17220e2c17d800eb428271a750382b06"
 
   bottle do
     cellar :any
-    sha1 "9da6d2c455736f4798fe0a61a5f3d36fdba7dcc1" => :yosemite
-    sha1 "82f41da658678b31550bd68a627530f777fb68c9" => :mavericks
-    sha1 "b58ab63750f1725c5daa4f5c5ad0b961d1fe2df4" => :mountain_lion
+    sha256 "40c09efa98f1d4a76aef58206a6e161b21f2d34e86959f1272f785a68c3f7734" => :yosemite
+    sha256 "c0fd556bfa0a791590d4233c1856e492605a9078735789927dd1c2ec0653e6c2" => :mavericks
+    sha256 "bc3d57b4a32e616fbc8d7da3610441a710a7eb6f855b839de0e7a1b91e1cb712" => :mountain_lion
   end
 
   def install

@@ -1,26 +1,24 @@
-require 'formula'
-
 class Basex < Formula
   desc "Light-weight XML database and XPath/XQuery processor"
-  homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/8.2.1/BaseX821.zip'
-  version '8.2.1'
-  sha256 '4073aa250a9551619b9fb254d3022da97b97d2b5085fdf7535fb92a53d3f1589'
+  homepage "http://basex.org"
+  url "http://files.basex.org/releases/8.2.3/BaseX823.zip"
+  version "8.2.3"
+  sha256 "69167fc8bbac97fd140404c1c37572016b23488bec7fc85fa19fdb391f33f3b8"
 
   bottle do
     cellar :any
-    sha256 "446ecf222327f0a3914cb677b4dccb7bfabeac81451c1ddd989a78375171fd90" => :yosemite
-    sha256 "deac3806b1c4e7c7ba2faf448ae2062e5ef073c796791018807a42a48dea81bb" => :mavericks
-    sha256 "6a2dd33330cafa32e823c48bad20e763daff81be3b3d7d6721d151c3943184c6" => :mountain_lion
+    sha256 "3a60d9d8bfb00f2defe4cdedaa802594d1ec7d64ccc47d50b0a4c7c87e4a3a7c" => :yosemite
+    sha256 "b0148c05d4b7158a74e487d9768b3c40b1482fd316cc638dc8494cb4e98c1a3d" => :mavericks
+    sha256 "ebaa68271b2801062ca47d876a6ef3c81990cdb9cb7289f68d4245c0e752d4b1" => :mountain_lion
   end
 
   def install
-    rm Dir['bin/*.bat']
+    rm Dir["bin/*.bat"]
     rm_rf "repo"
     rm_rf "data"
     rm_rf "etc"
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

@@ -1,25 +1,20 @@
 class Rust < Formula
   desc "Safe, concurrent, practical language"
-  homepage 'http://www.rust-lang.org/'
+  homepage "https://www.rust-lang.org/"
 
   stable do
-    url 'https://static.rust-lang.org/dist/rustc-1.0.0-src.tar.gz'
-    sha256 'c304cbd4f7b25d116b73c249f66bdb5c9da8645855ce195a41bda5077b995eba'
+    url "https://static.rust-lang.org/dist/rustc-1.2.0-src.tar.gz"
+    sha256 "ea6eb983daf2a073df57186a58f0d4ce0e85c711bec13c627a8c85d51b6a6d78"
 
     resource "cargo" do
-      url "https://github.com/rust-lang/cargo.git", :revision => "a48358155c90467ed9c897930dd0da4614605dac"
+      # git required because of submodules
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.4.0", :revision => "553b363bcfcf444c5bd4713e30382a6ffa2a52dd"
     end
 
     # name includes date to satisfy cache
-    resource "cargo-nightly-2015-05-14" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-05-14/cargo-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "46403af9abb0dd0d9e3c31c20aa2508878ae1e8d0f1e7913addbfc08605b9733"
-    end
-
-    # name includes date to satisfy cache
-    resource "rustc-nightly-2015-05-14" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/dist/2015-05-14/rustc-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "1f7f447e369190d4d0d3f8c516e6c4d07e458f258f71737422b3f542b6d4da1e"
+    resource "cargo-nightly-2015-08-12" do
+      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-08-12/cargo-nightly-x86_64-apple-darwin.tar.gz"
+      sha256 "3d0ea9e20215e6450e2ae3977bbe20b9fb2bbf51ce145017ab198ea3409ffda2"
     end
   end
 
@@ -31,14 +26,14 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "a4768e9bf0fb5ddc3860854c9be392e270627208b18fc3f0d5440b0d07338e7e" => :yosemite
-    sha256 "e6a43e8d0870793a12f6981facf6614d51965f48b52b90061f660c31b99bb826" => :mavericks
-    sha256 "dc1c3864cfb62b884857d3c9b20c81bd7e2289098aaa6adc3f87034add9b721b" => :mountain_lion
+    sha256 "c9bb07ae7830548c875f6d65bbc09ecde943a2c87b5564a8e63dac5e08ca276d" => :yosemite
+    sha256 "74a4271c86bc8a5ed0bfaac0cdd9d793b8f2c23e845f1107c1709d8bfca0d6f6" => :mavericks
+    sha256 "bfa7e32786aef2065c14fc8ca1464bc59301f4479462adefba99b491a9dc74be" => :mountain_lion
   end
 
-  depends_on "openssl"
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0
@@ -58,32 +53,27 @@ class Rust < Formula
     end
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     resource("cargo").stage do
       cargo_stage_path = pwd
 
       if build.stable?
-        resource("rustc-nightly-2015-05-14").stage do
-          system "./install.sh", "--prefix=#{cargo_stage_path}/rustc"
-        end
-
-        resource("cargo-nightly-2015-05-14").stage do
+        resource("cargo-nightly-2015-08-12").stage do
           system "./install.sh", "--prefix=#{cargo_stage_path}/target/snapshot/cargo"
           # satisfy make target to skip download
           touch "#{cargo_stage_path}/target/snapshot/cargo/bin/cargo"
         end
       end
 
-      args = ["--prefix=#{prefix}"]
-
-      if build.head?
-        args << "--local-rust-root=#{prefix}"
-      else
-        args << "--local-rust-root=#{cargo_stage_path}/rustc"
+      # Fix for El Capitan DYLD_LIBRARY_PATH behavior
+      # https://github.com/rust-lang/cargo/issues/1816
+      inreplace "Makefile.in" do |s|
+        s.gsub! '"$$(CFG_RUSTC)"', '$$(CFG_RUSTC)'
+        s.gsub! '"$$(CARGO)"', '$$(CARGO)'
       end
 
-      system "./configure", *args
+      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}"
       system "make"
       system "make", "install"
     end

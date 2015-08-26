@@ -1,8 +1,8 @@
 #!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
 
 $:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
-require 'pathname'
-require 'set'
+require "pathname"
+require "set"
 
 class Cmd
   attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
@@ -12,24 +12,24 @@ class Cmd
     @arg0 = arg0
     @args = args.freeze
     @config = ENV.fetch("HOMEBREW_CCCFG") { "" }
-    @prefix = ENV['HOMEBREW_PREFIX']
-    @cellar = ENV['HOMEBREW_CELLAR']
-    @tmpdir = ENV['HOMEBREW_TEMP']
-    @sysroot = ENV['HOMEBREW_SDKROOT']
+    @prefix = ENV["HOMEBREW_PREFIX"]
+    @cellar = ENV["HOMEBREW_CELLAR"]
+    @tmpdir = ENV["HOMEBREW_TEMP"]
+    @sysroot = ENV["HOMEBREW_SDKROOT"]
     @archflags = ENV.fetch("HOMEBREW_ARCHFLAGS") { "" }.split(" ")
     @optflags = ENV.fetch("HOMEBREW_OPTFLAGS") { "" }.split(" ")
   end
 
   def mode
-    if @arg0 == 'cpp' or @arg0 == 'ld'
+    if @arg0 == "cpp" || @arg0 == "ld"
       @arg0.to_sym
-    elsif @args.include? '-c'
+    elsif @args.include? "-c"
       if @arg0 =~ /(?:c|g|clang)\+\+/
         :cxx
       else
         :cc
       end
-    elsif @args.include? '-E'
+    elsif @args.include? "-E"
       :ccE
     else
       if @arg0 =~ /(?:c|g|clang)\+\+/
@@ -42,26 +42,26 @@ class Cmd
 
   def tool
     @tool ||= case @arg0
-    when 'ld' then 'ld'
-    when 'cpp' then 'cpp'
+    when "ld" then "ld"
+    when "cpp" then "cpp"
     when /\w\+\+(-\d(\.\d)?)?$/
-      case ENV['HOMEBREW_CC']
+      case ENV["HOMEBREW_CC"]
       when /clang/
-        'clang++'
+        "clang++"
       when /llvm-gcc/
-        'llvm-g++-4.2'
+        "llvm-g++-4.2"
       when /gcc(-\d(\.\d)?)?$/
-        'g++' + $1.to_s
+        "g++" + $1.to_s
       end
     else
       # Note that this is a universal fallback, so that we'll always invoke
       # HOMEBREW_CC regardless of what name under which the tool was invoked.
-      ENV['HOMEBREW_CC']
+      ENV["HOMEBREW_CC"]
     end
   end
 
   def args
-    if @args.length == 1 and @args[0] == '-v'
+    if @args.length == 1 && @args[0] == "-v"
       # Don't add linker arguments if -v passed as sole option. This stops gcc
       # -v with no other arguments from outputting a linker error. Some
       # software uses gcc -v (wrongly) to sniff the GCC version.
@@ -135,34 +135,34 @@ class Cmd
     args = []
 
     case arg
-    when /^-g\d?/, /^-gstabs\d+/, '-gstabs+', /^-ggdb\d?/, '-gdwarf-2',
+    when /^-g\d?/, /^-gstabs\d+/, "-gstabs+", /^-ggdb\d?/, "-gdwarf-2",
       /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
-      /^-O[0-9zs]?$/, '-fast', '-no-cpp-precomp',
-      '-pedantic', '-pedantic-errors', '-Wno-long-double',
-      '-Wno-unused-but-set-variable'
-    when '-fopenmp', '-lgomp', '-mno-fused-madd', '-fforce-addr', '-fno-defer-pop',
-      '-mno-dynamic-no-pic', '-fearly-inlining', /^-f(?:no-)?inline-functions-called-once/,
-      /^-finline-limit/, /^-f(?:no-)?check-new/, '-fno-delete-null-pointer-checks',
-      '-fcaller-saves', '-fthread-jumps', '-fno-reorder-blocks', '-fcse-skip-blocks',
-      '-frerun-cse-after-loop', '-frerun-loop-opt', '-fcse-follow-jumps',
-      '-fno-regmove', '-fno-for-scope', '-fno-tree-pre', '-fno-tree-dominator-opts',
-      '-fuse-linker-plugin'
+      /^-O[0-9zs]?$/, "-fast", "-no-cpp-precomp",
+      "-pedantic", "-pedantic-errors", "-Wno-long-double",
+      "-Wno-unused-but-set-variable"
+    when "-fopenmp", "-lgomp", "-mno-fused-madd", "-fforce-addr", "-fno-defer-pop",
+      "-mno-dynamic-no-pic", "-fearly-inlining", /^-f(?:no-)?inline-functions-called-once/,
+      /^-finline-limit/, /^-f(?:no-)?check-new/, "-fno-delete-null-pointer-checks",
+      "-fcaller-saves", "-fthread-jumps", "-fno-reorder-blocks", "-fcse-skip-blocks",
+      "-frerun-cse-after-loop", "-frerun-loop-opt", "-fcse-follow-jumps",
+      "-fno-regmove", "-fno-for-scope", "-fno-tree-pre", "-fno-tree-dominator-opts",
+      "-fuse-linker-plugin"
       # clang doesn't support these flags
-      args << arg if not tool =~ /^clang/
+      args << arg unless tool =~ /^clang/
     when /^-W[alp],/, /^-Wno-/
       args << arg
     when /^-W.*/
       # prune warnings
-    when '-macosx_version_min', '-dylib_install_name'
+    when "-macosx_version_min", "-dylib_install_name"
       args << "-Wl,#{arg},#{enum.next}"
-    when '-multiply_definedsuppress'
+    when "-multiply_definedsuppress"
       args << "-Wl,-multiply_defined,suppress"
-    when '-undefineddynamic_lookup'
+    when "-undefineddynamic_lookup"
       args << "-Wl,-undefined,dynamic_lookup"
     when /^-isysroot/, /^--sysroot/
       # We set the sysroot
       enum.next
-    when '-dylib'
+    when "-dylib"
       args << "-Wl,#{arg}"
     when /^-I(.+)?/
       # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
@@ -180,7 +180,7 @@ class Cmd
     args
   end
 
-  def keep? path
+  def keep?(path)
     path.start_with?(prefix, cellar, tmpdir) || !path.start_with?("/opt", "/sw", "/usr/X11")
   end
 
@@ -189,8 +189,8 @@ class Cmd
 
     return args unless refurbish_args? || configure?
 
-    args << '-pipe'
-    args << '-w' unless configure?
+    args << "-pipe"
+    args << "-w" unless configure?
     args << "-#{ENV["HOMEBREW_OPTIMIZATION_LEVEL"]}"
     args.concat(optflags)
     args.concat(archflags)
@@ -234,12 +234,12 @@ class Cmd
   end
 
   def system_library_paths
-    %W{#{sysroot}/usr/lib /usr/local/lib}
+    %W[#{sysroot}/usr/lib /usr/local/lib]
   end
 
   def configure?
     # configure scripts generated with autoconf 2.61 or later export as_nl
-    ENV.key? 'as_nl'
+    ENV.key? "as_nl"
   end
 
   def refurbish_args?
@@ -300,11 +300,11 @@ end
 
 if __FILE__ == $PROGRAM_NAME
   ##################################################################### sanity
-  abort "The build-tool has reset ENV. --env=std required." unless ENV['HOMEBREW_BREW_FILE']
+  abort "The build-tool has reset ENV. --env=std required." unless ENV["HOMEBREW_BREW_FILE"]
 
   if (cc = ENV["HOMEBREW_CC"]).nil? || cc.empty? || cc == "cc"
     # those values are not allowed
-    ENV['HOMEBREW_CC'] = 'clang'
+    ENV["HOMEBREW_CC"] = "clang"
   end
 
   ####################################################################### main
@@ -312,7 +312,8 @@ if __FILE__ == $PROGRAM_NAME
   dirname, basename = File.split($0)
 
   cmd = Cmd.new(basename, ARGV)
-  tool, args = cmd.tool, cmd.args
+  tool = cmd.tool
+  args = cmd.args
 
   log(basename, ARGV, tool, args)
 

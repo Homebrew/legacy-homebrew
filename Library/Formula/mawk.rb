@@ -1,10 +1,8 @@
-require "formula"
-
 class Mawk < Formula
-  desc "An interpreter for the AWK Programming Language"
+  desc "Interpreter for the AWK Programming Language"
   homepage "http://invisible-island.net/mawk/"
   url "ftp://invisible-island.net/mawk/mawk-1.3.4-20141027.tgz"
-  sha1 "a0a54bde0c76a351fa073a6fa10ce912a1260144"
+  sha256 "a88f50c1a0800ae6d2cedb0672b15bd32cc57e482715ca7c1471fb398e89767a"
 
   bottle do
     cellar :any

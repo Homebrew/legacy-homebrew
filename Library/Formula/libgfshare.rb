@@ -1,17 +1,14 @@
-require 'formula'
-
 class Libgfshare < Formula
   desc "Library for sharing secrets"
-  homepage 'http://www.digital-scurf.org/software/libgfshare'
-  url 'http://www.digital-scurf.org/files/libgfshare/libgfshare-1.0.5.tar.gz'
-  sha1 '165c721e04a2aa0bd2f3b14377bca8f65603640a'
+  homepage "https://www.digital-scurf.org/software/libgfshare"
+  url "https://www.digital-scurf.org/files/libgfshare/libgfshare-2.0.0.tar.bz2"
+  sha256 "86f602860133c828356b7cf7b8c319ba9b27adf70a624fe32275ba1ed268331f"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "22009f2d1a304fcc86ff49b17c19551222522294" => :yosemite
-    sha1 "34f1dbaa969f1cf59f039934c7e1040e7bcdabbd" => :mavericks
-    sha1 "adbd4b89054c0fc412e6a8d79a1036305ec52ace" => :mountain_lion
+    sha256 "6929a937f6f8ee624f02891622375d23aa65114475cf53ce82342976b4705454" => :yosemite
+    sha256 "1696482fdd83b98b999d4b4037ae6c02d06a4b5297d089c826fed92a367d0d5c" => :mavericks
+    sha256 "899c69bbb8b1b527d0f03da2c0118d96e90810ef659abe096d597bc11dcab3f8" => :mountain_lion
   end
 
   def install

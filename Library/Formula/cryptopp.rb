@@ -8,12 +8,23 @@ class Cryptopp < Formula
 
   bottle do
     cellar :any
-    sha256 "501fe96896a6163537109a046f491358eaa3075d94b693ac751f4028638d484b" => :yosemite
-    sha256 "87e605330ba941823be11abf5517354b1d7aeecc3e53bea4a1aa6415acc9f89a" => :mavericks
-    sha256 "30508cb32dc476ff24e405c64d3b535a6e6a61dabb93810860c58344759c7de5" => :mountain_lion
+    revision 1
+    sha256 "a136d3cf1d63f9b22d5bde0a0bb6df00ff2b39dc265de0382ac1220518aad1e0" => :yosemite
+    sha256 "27fd4366af9bd34c6008d8e7508f3d95f119b8a1f55a33b2c78215933f30bbb4" => :mavericks
+    sha256 "650e6e1ca3b24ed922b67d842ff702bb0574cac20fa054812558787cfcfba9e1" => :mountain_lion
+  end
+
+  option :cxx11
+
+  # Incorporated upstream, remove on next version update
+  # https://groups.google.com/forum/#!topic/cryptopp-users/1wdyb2FSwc4
+  patch :p1 do
+    url "https://github.com/weidai11/cryptopp/commit/44015c26ba215f955b1e653f9c8f3c894a532707.patch"
+    sha256 "2ca6c2f9dda56fa29df952d0ee829c9501a2cbc43a68bdc786d8241aefaddea6"
   end
 
   def install
+    ENV.cxx11 if build.cxx11?
     system "make", "CXX=#{ENV.cxx}"
     system "make", "install", "PREFIX=#{prefix}"
   end
@@ -33,6 +44,7 @@ class Cryptopp < Formula
         return 0;
       }
     EOS
+    ENV.cxx11 if build.cxx11?
     system ENV.cxx, "test.cpp", "-L#{lib}", "-lcryptopp", "-o", "test"
     system "./test"
   end

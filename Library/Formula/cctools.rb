@@ -4,21 +4,23 @@ class Cctools < Formula
 
   if MacOS.version >= :snow_leopard
     url "https://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
-    sha1 "b6997939aa9f4f3c4ac70ec819e719330dcd7bcb"
+    sha256 "751748ddf32c8ea84c175f32792721fa44424dad6acbf163f84f41e9617dbc58"
   else
     # 806 (from Xcode 4.1) is the latest version that supports Tiger or PowerPC
     url "https://opensource.apple.com/tarballs/cctools/cctools-806.tar.gz"
-    sha1 "e4f9a7ee0eef930e81d50b6b7300b8ddc1c7b341"
+    sha256 "6116c06920112c634f6df2fa8b2f171ee3b90ff2176137da5856336695a6a676"
   end
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     sha1 "1acad163d4a245f5bd7ad2668cc87a5c9102163a" => :yosemite
     sha1 "2629465c3d063d3a108adc987bbaa910a49db5f4" => :mavericks
     sha1 "b5ccf7ea27f82e7eb8aeed1e327079c8a07434fb" => :mountain_lion
   end
 
   depends_on :ld64
+
+  cxxstdlib_check :skip
 
   keg_only :provided_by_osx,
     "This package duplicates tools shipped by Xcode."
@@ -30,23 +32,23 @@ class Cctools < Formula
     # These patches apply to cctools 855, for newer OSes
     patch :p0 do
       url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-829-lto.patch"
-      sha1 "b774fb58dbc0e1b5ad9c6a5d6e35d4207018a338"
+      sha256 "8ed90e0eef2a3afc810b375f9d3873d1376e16b17f603466508793647939a868"
     end
 
     patch :p0 do
       url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/PR-37520.patch"
-      sha1 "338faf38ee7eca09185f6eab30cc01b0ad2253ae"
+      sha256 "921cba3546389809500449b08f4275cfd639295ace28661c4f06174b455bf3d4"
     end
 
     patch :p0 do
       url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-839-static-dis_info.patch"
-      sha1 "125b42ddc081b70d1ef03a340feb1e827eb36cea"
+      sha256 "f49162b5c5d2753cf19923ff09e90949f01379f8de5604e86c59f67441a1214c"
     end
 
     # Fix building libtool with LTO disabled
     patch do
       url "https://gist.githubusercontent.com/mistydemeo/9fc5589d568d2fc45fb5/raw/c752d5c4567809c10b14d623b6c2d7416211b33a/libtool-no-lto.diff"
-      sha1 "f4750ffad99d034e874972e67e57841dd4225065"
+      sha256 "3b687f2b9388ac6c4acac2b7ba28d9fd07f2a16e7d2dad09aa2255d98ec1632b"
     end
 
     # strnlen patch only needed on Snow Leopard
@@ -150,6 +152,6 @@ class Cctools < Formula
   end
 
   test do
-    assert shell_output("#{bin}/otool -L #{bin}/install_name_tool").include? "/usr/lib/libSystem.B.dylib"
+    assert_match "/usr/lib/libSystem.B.dylib", shell_output("#{bin}/otool -L #{bin}/install_name_tool")
   end
 end

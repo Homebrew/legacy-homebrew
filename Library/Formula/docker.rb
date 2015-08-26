@@ -1,18 +1,18 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  # Boot2docker and docker are generally updated at the same time.
-  # Please update the version of boot2docker too
-  url "https://github.com/docker/docker.git", :tag => "v1.6.2",
-    :revision => "7c8fca2ddb58c8d2c4fb4df31c242886df7dd257"
+  url "https://github.com/docker/docker.git", :tag => "v1.8.1",
+                                              :revision => "d12ea79c9de6d144ce6bc7ccfe41c507cca6fd35"
+  head "https://github.com/docker/docker.git"
 
   bottle do
     cellar :any
-    sha256 "8139ce8f2f2bd6e3217e33a07d6bb5f8df2666a37c720ca9116d22fefb937f1b" => :yosemite
-    sha256 "af05ca45e1d041333351576cdda888fab81dd233690061cba709ae00cadf1c32" => :mavericks
-    sha256 "94e5d68a79447b14d7ca3d64ce05aa0a471c57a89ccee295e3281049ddf5628a" => :mountain_lion
+    sha256 "c462e7f8e35f6a3a24c92e77adf6d9edaeca0677b5d7b0f2e265b60e6bb2690b" => :yosemite
+    sha256 "a2f91f72b04ee275d484e887fe679ba16190991aba46c3a4845b63c714dc1726" => :mavericks
+    sha256 "6ef8a317664148cc3af5939468a577bde2090bd65814c2ae7ea66fd5f5809e01" => :mountain_lion
   end
 
+  option "with-experimental", "Enable experimental features"
   option "without-completions", "Disable bash/zsh completions"
 
   depends_on "go" => :build
@@ -20,9 +20,12 @@ class Docker < Formula
   def install
     ENV["AUTO_GOPATH"] = "1"
     ENV["DOCKER_CLIENTONLY"] = "1"
+    ENV["DOCKER_EXPERIMENTAL"] = "1" if build.with? "experimental"
 
     system "hack/make.sh", "dynbinary"
-    bin.install "bundles/#{version}/dynbinary/docker-#{version}" => "docker"
+
+    build_version = build.head? ? File.read("VERSION").chomp : version
+    bin.install "bundles/#{build_version}/dynbinary/docker-#{build_version}" => "docker"
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"

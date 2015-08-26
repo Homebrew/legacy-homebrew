@@ -1,27 +1,27 @@
-require 'formula'
-
 class Jsvc < Formula
   desc "Wrapper to launch Java applications as daemons"
-  homepage 'http://commons.apache.org/daemon/jsvc.html'
-  url 'http://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.15-native-src.tar.gz'
-  version '1.0.15'
-  sha1 'f99fa9bcbc3faf6660e760af099eb003e2553b39'
+  homepage "https://commons.apache.org/daemon/jsvc.html"
+  url "https://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.15-native-src.tar.gz"
+  version "1.0.15"
+  sha256 "e98d96c7c71e02d1a05ce1c417eedb588678ccecc55ba2e9ae2969e4ea910a90"
 
   # Enable Java 7 JVMs: https://issues.apache.org/jira/browse/DAEMON-281
   patch :DATA
+
+  depends_on :java
 
   def install
     ENV.append "CFLAGS", "-arch #{MacOS.preferred_arch}"
     ENV.append "LDFLAGS", "-arch #{MacOS.preferred_arch}"
     ENV.append "CPPFLAGS", "-I/System/Library/Frameworks/JavaVM.framework/Versions/Current/Headers"
 
-    prefix.install %w{ NOTICE.txt LICENSE.txt RELEASE-NOTES.txt }
+    prefix.install %w[NOTICE.txt LICENSE.txt RELEASE-NOTES.txt]
 
-    cd 'unix'
-    system './configure', '--with-java=/System/Library/Frameworks/JavaVM.framework',
-                          '--with-os-type=Headers'
-    system 'make'
-    bin.install 'jsvc'
+    cd "unix"
+    system "./configure", "--with-java=/System/Library/Frameworks/JavaVM.framework",
+                          "--with-os-type=Headers"
+    system "make"
+    bin.install "jsvc"
   end
 end
 

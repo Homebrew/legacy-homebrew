@@ -1,15 +1,13 @@
 class Gwyddion < Formula
   desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage "http://gwyddion.net/"
-  url "http://gwyddion.net/download/2.40/gwyddion-2.40.tar.gz"
-  sha256 "b3838dab5a4ff8e1f62d2ab859fabb42c3a8c31f5dc4f72dc679a46de2b67bab"
-  revision 1
+  url "http://gwyddion.net/download/2.41/gwyddion-2.41.tar.gz"
+  sha256 "093e5e20e85cbfc14786a8dcc319943ad30419bffd5ab883e7d0400161fb3cd4"
 
   bottle do
-    revision 1
-    sha256 "f3a8511395ab3752d03d69e0ae8cc5607803ba33e7adfcb275257a03bcee991e" => :yosemite
-    sha256 "a5bdfac3b34d95547c35dfb559616e037048efb36e880bd9367b3f102a20b642" => :mavericks
-    sha256 "66a3aa0f4154e483b64427c6459cd6cdd514a66c4838cada26793a077586a124" => :mountain_lion
+    sha256 "557467222d7732e7ab0909336e60cf40e865db1802b424716c749c0acd1f3338" => :yosemite
+    sha256 "51840b592615b74443d82450486a26834b2b154ff9a34d6e0452c67a3d6b7658" => :mavericks
+    sha256 "70333e143e8e5e6845fcc891cecd2123c2aa9b84e74572daf52637fde5857914" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -23,6 +21,14 @@ class Gwyddion < Formula
   depends_on "gtksourceview" if build.with? "python"
 
   def install
+    # Add Python library path and prevent explicit linkage for the gwy module.
+    # Upstream patch: <http://sourceforge.net/p/gwyddion/mailman/message/34347458/>
+    inreplace "configure", 'PYTHON_LIBS=-l$libpython',
+                           %(py_prefix=`$PYTHON -c "import sys; print sys.prefix"`
+                           PYTHON_LIBS="-L${py_prefix}/lib -l$libpython")
+    inreplace "modules/pygwy/Makefile.in", '$(PYTHON_LIBS) $(PYGTK_LIBS) @GTK_LIBS@',
+                                           '-undefined dynamic_lookup $(PYGTK_LIBS) @GTK_LIBS@'
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-desktop-file-update",
                           "--prefix=#{prefix}",

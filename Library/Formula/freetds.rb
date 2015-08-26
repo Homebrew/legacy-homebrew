@@ -1,13 +1,14 @@
 class Freetds < Formula
   desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "http://www.freetds.org/"
-  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.1.tar.gz"
-  sha256 "bb81968691502c4f2ce904e1cf4e3c3e6da311999d1e9829d12a4271e6811a7c"
+  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.18.tar.gz"
+  mirror "https://fossies.org/linux/privat/freetds-0.95.18.tar.gz"
+  sha256 "4a85876ed353efe8c204b991ff1d972912f18a7a4856f56e8cc76b32d3fbd2dc"
 
   bottle do
-    sha256 "e49cee90451411cafccf7a967519814cf2a25a120e8703012c8ad674c5b0f40c" => :yosemite
-    sha256 "809bc9ded6749e29dce21633b281ce48e32e349d57712645a588291afe50ad1f" => :mavericks
-    sha256 "6f2f8964dfdc0020b03ab9c28f37fa60343c7316f063c9c4e47293e4e6e6f764" => :mountain_lion
+    sha256 "2ff87990763c11fdfa2a59c754faa5610430796f6af80afc8166a414f179efa8" => :yosemite
+    sha256 "67af4da49ced9863022329c98ab448a93444550115c3779ed13a48953309394f" => :mavericks
+    sha256 "4b19c0fd08a6efbaa982a6eaa564f4bd44c26a3b0ef9021862840c5bfe6e795c" => :mountain_lion
   end
 
   head do
@@ -23,7 +24,6 @@ class Freetds < Formula
   option "with-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
   option "with-odbc-wide", "Enable odbc wide, prevent unicode - MemoryError's"
   option "with-krb5", "Enable Kerberos support"
-  option "without-openssl", "Build without OpenSSL support (default is to use brewed OpenSSL)"
 
   deprecated_option "enable-msdblib" => "with-msdblib"
   deprecated_option "enable-sybase-compat" => "with-sybase-compat"

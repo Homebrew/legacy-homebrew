@@ -1,13 +1,13 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "http://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.2.tar.bz2"
-  sha256 "f3b8ffa6089820ee5bdc289567d365e5748d4170e8aa246d2ea6576f24796535"
+  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2"
+  sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
 
   bottle do
-    sha256 "a3899bcda507cb92ec8b56c85ce87f243d36ad515b349a5cde0817d6eadd8761" => :yosemite
-    sha256 "adeaf776e7f24bdefd0c2f012432650e85e05ccb55735a68edb225c13cb96105" => :mavericks
-    sha256 "d7d2f35a774a39f565f27bfbcbf7e5813c4b8535c8c70eaee0cd9a9f834d5b0d" => :mountain_lion
+    sha256 "45f8ba8eb5cb90ba89e0bf950148be4f50a88d3d1daf496b954d288543025735" => :yosemite
+    sha256 "40b34f18f354dc2bb55fdae3082c1004483f44141628c473a5fe0c0882fdee80" => :mavericks
+    sha256 "ae3460dc786fd5ad45d984a700ccb134cdab445da3c6c2fa8053136d2a9ff1f3" => :mountain_lion
   end
 
   head do
@@ -61,13 +61,27 @@ class Ruby < Formula
       Formula["openssl"].opt_prefix
     ]
 
-    %w[readline gdbm gmp libffi].each { |dep|
+    %w[readline gdbm gmp libffi].each do |dep|
       paths << Formula[dep].opt_prefix if build.with? dep
-    }
+    end
 
     args << "--with-opt-dir=#{paths.join(":")}"
 
     system "./configure", *args
+
+    # Ruby has been configured to look in the HOMEBREW_PREFIX for the
+    # sitedir and vendordir directories; however we don't actually want to create
+    # them during the install.
+    #
+    # These directories are empty on install; sitedir is used for non-rubygems
+    # third party libraries, and vendordir is used for packager-provided libraries.
+    inreplace "tool/rbinstall.rb" do |s|
+      s.gsub! 'prepare "extension scripts", sitelibdir', ""
+      s.gsub! 'prepare "extension scripts", vendorlibdir', ""
+      s.gsub! 'prepare "extension objects", sitearchlibdir', ""
+      s.gsub! 'prepare "extension objects", vendorarchlibdir', ""
+    end
+
     system "make"
     system "make", "install"
   end
@@ -75,7 +89,13 @@ class Ruby < Formula
   def post_install
     # Customize rubygems to look/install in the global gem directory
     # instead of in the Cellar, making gems last across reinstalls
-    (lib/"ruby/#{abi_version}/rubygems/defaults/operating_system.rb").write rubygems_config
+    config_file = lib/"ruby/#{abi_version}/rubygems/defaults/operating_system.rb"
+    config_file.unlink if config_file.exist?
+    config_file.write rubygems_config
+
+    # Create the sitedir and vendordir that were skipped during install
+    mkdir_p `#{bin}/ruby -e 'require "rbconfig"; print RbConfig::CONFIG["sitearchdir"]'`
+    mkdir_p `#{bin}/ruby -e 'require "rbconfig"; print RbConfig::CONFIG["vendorarchdir"]'`
   end
 
   def abi_version

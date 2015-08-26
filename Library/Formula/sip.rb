@@ -1,14 +1,14 @@
 class Sip < Formula
   desc "Tool to create Python bindings for C and C++ libraries"
   homepage "http://www.riverbankcomputing.co.uk/software/sip"
-  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.5/sip-4.16.5.tar.gz"
-  sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
-  revision 1
+  url "https://downloads.sourceforge.net/project/pyqt/sip/sip-4.16.9/sip-4.16.9.tar.gz"
+  sha256 "dbe173aa566e26ca0bb5bcbc1d30ef780f416267bb3b5df48149a737ea6b0555"
 
   bottle do
-    sha256 "0b6980e990a743676e7c1bac9a49a9a428c79b001bc40784e8d28b23bf119dcb" => :yosemite
-    sha256 "b775749bcfafaf189f2bfae15a9ae40cb016d06cce41ef98a1cce5bd0c7b4abf" => :mavericks
-    sha256 "ca4b9b761080abe76670072d000d256791a05a440bb608579759b3ca499c41ad" => :mountain_lion
+    cellar :any
+    sha256 "d30742d2a5112adcf8c9a5384f86fb0fb664e41f6f2eea1fe029a03ac2e181f5" => :yosemite
+    sha256 "c734993751d086bac0e0f2ec5ec0849542712dec753defb56605b6d6c5b563f5" => :mavericks
+    sha256 "9b368ad8f6871948e41c6744a73ac1fbc9d89c86abcc7b6f7707724be37efb61" => :mountain_lion
   end
 
   head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg

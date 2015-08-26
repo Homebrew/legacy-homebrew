@@ -1,18 +1,16 @@
-require "formula"
-
 class Fibjs < Formula
   desc "JavaScript on Fiber"
   homepage "http://fibjs.org"
-  url "https://github.com/xicilion/fibjs/archive/v0.1.2.tar.gz"
-  sha1 "d19dc40fecfd1ee9cd6cc850d9c83267dc0f7a96"
+  url "https://github.com/xicilion/fibjs/releases/download/v0.1.5/fibjs-0.1.5-fullsrc.zip"
+  sha256 "ef9484c743446581a4f0aa34fe1cc520d80b70a3218fbbe4dfcfe292756e340f"
 
   head "https://github.com/xicilion/fibjs.git"
 
   bottle do
     cellar :any
-    sha1 "055349bc97bd548fbde2819e3361131fed609e22" => :yosemite
-    sha1 "3b80e72eccff9e45cec662b9506aa3875beeaf67" => :mavericks
-    sha1 "27ab582d18228f794ef3460f7ee60fdce804fb0a" => :mountain_lion
+    sha256 "41f6eeb1f5f81f6d151647c3cbe01358a6d099dacf05e245b2317ff1a722faa8" => :yosemite
+    sha256 "e298976f55cc51c772da3d256867d1f071199b09c906ead9eeb3613da938d7dd" => :mavericks
+    sha256 "fec11a40de8afdecda385fefb6cb96763522c895cc01a18d3e796b48f9584fca" => :mountain_lion
   end
 
   depends_on "cmake" => :build

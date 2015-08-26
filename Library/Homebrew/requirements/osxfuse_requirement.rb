@@ -6,7 +6,7 @@ class OsxfuseRequirement < Requirement
   cask "osxfuse"
   download "https://osxfuse"
 
-  satisfy { Formula["osxfuse"].installed? || self.class.binary_osxfuse_installed? }
+  satisfy(:build_env => false) { Formula["osxfuse"].installed? || self.class.binary_osxfuse_installed? }
 
   def self.binary_osxfuse_installed?
     File.exist?("/usr/local/include/osxfuse/fuse.h") && !File.symlink?("/usr/local/include/osxfuse")
@@ -19,7 +19,7 @@ end
 
 class NonBinaryOsxfuseRequirement < Requirement
   fatal true
-  satisfy { HOMEBREW_PREFIX.to_s != "/usr/local" || !OsxfuseRequirement.binary_osxfuse_installed? }
+  satisfy(:build_env => false) { HOMEBREW_PREFIX.to_s != "/usr/local" || !OsxfuseRequirement.binary_osxfuse_installed? }
 
   def message
     <<-EOS.undent

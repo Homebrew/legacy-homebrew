@@ -2,7 +2,7 @@ class Libimobiledevice < Formula
   desc "Library to communicate with iOS devices natively"
   homepage "http://www.libimobiledevice.org/"
   url "http://www.libimobiledevice.org/downloads/libimobiledevice-1.2.0.tar.bz2"
-  sha1 "a8e3f21180b1d6df754d04a4080a29cf6891e701"
+  sha256 "786b0de0875053bf61b5531a86ae8119e320edab724fc62fe2150cc931f11037"
 
   bottle do
     cellar :any
@@ -33,6 +33,6 @@ class Libimobiledevice < Formula
                           # As long as libplist builds without Cython
                           # bindings, libimobiledevice must as well.
                           "--without-cython"
-    system "make install"
+    system "make", "install"
   end
 end

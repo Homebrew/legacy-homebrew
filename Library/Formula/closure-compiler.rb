@@ -1,15 +1,15 @@
 class ClosureCompiler < Formula
   desc "JavaScript optimizing compiler"
   homepage "https://github.com/google/closure-compiler"
-  url "https://github.com/google/closure-compiler/archive/maven-release-v20150315.tar.gz"
-  sha256 "9e4ad6367913f1b2f3b3a3a9d68dc4779144336b06aa9732dd0a6caca2d83ba1"
+  url "https://github.com/google/closure-compiler/archive/maven-release-v20150729.tar.gz"
+  sha256 "6564bd642e25154da0364f964deb02710a3952066954fe082bacd0b85d965d54"
   head "https://github.com/google/closure-compiler.git"
 
   bottle do
     cellar :any
-    sha256 "03bf823ee5f71f31c88ed4a412506bb7e0af4eb90f608d89aae86ac0d0828fec" => :yosemite
-    sha256 "94a4040f31ff31c318906e6fbf757cf3669b700a9ed07f9d665abbed30444575" => :mavericks
-    sha256 "e2609e83ace94265ebbbeeff90e3b2599917375eb5aecaaa694ba2998dea86c6" => :mountain_lion
+    sha256 "904cc70d5bf207b8e0306b7e2ccbbfbf91732e6ac1ee0f7d55c15e8a45d79644" => :yosemite
+    sha256 "a7e8f3502ce9d1604d75ae1af6293caf8c888d5185d060ae88fdab8cbbc32f94" => :mavericks
+    sha256 "34ab6fa29a3c22ec2951882b0f31e1aef2457b363590e516511dbb5376cd546e" => :mountain_lion
   end
 
   depends_on :ant => :build

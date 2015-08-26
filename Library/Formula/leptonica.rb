@@ -1,5 +1,3 @@
-require "formula"
-
 class Leptonica < Formula
   desc "Image processing and image analysis library"
   homepage "http://www.leptonica.org/"
@@ -39,7 +37,7 @@ class Leptonica < Formula
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

@@ -1,10 +1,8 @@
-require "formula"
-
 class Blucat < Formula
   desc "netcat for Bluetooth"
   homepage "http://blucat.sourceforge.net/blucat/"
   url "http://blucat.sourceforge.net/blucat/wp-content/uploads/blucat-aa3e02.zip"
-  sha1 "c5c801700b5d4d59f6bf0a5f0e4a405237de1840"
+  sha256 "6dcd6bf538a06c2f29d21a9e94d859d91667a7014244462bffca9767bba5307d"
   version "0.9"
 
   depends_on "ant" => :build

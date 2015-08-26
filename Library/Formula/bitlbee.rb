@@ -1,15 +1,15 @@
 class Bitlbee < Formula
   desc "IRC to other chat networks gateway"
   homepage "http://www.bitlbee.org/"
-  url "http://get.bitlbee.org/src/bitlbee-3.4.tar.gz"
-  sha256 "cebad646bbfd17c80923743244039fd970e3ca27e8c1b7cf872622e773239d5e"
+  url "http://get.bitlbee.org/src/bitlbee-3.4.1.tar.gz"
+  sha256 "500a0b19943040d67458eb3beb0a63d004abb2aa54a777addeb2a895d4f5c0e1"
 
   head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
-    sha256 "69514cb51c5d562a10b10ea950bc51f066a12ae0b68fa74d8b77c61b368fc4c9" => :yosemite
-    sha256 "85d411185c1f7e5095777d567e5d63a6ba3566fc0ce51635cb18bc999147f689" => :mavericks
-    sha256 "85f062d5044055a73f4000c9db27c07094f4aedf4299c96fa7fa0b96e1fb7427" => :mountain_lion
+    sha256 "7dc007cc8b1261638f7befb9eb2d13da8b591f8bbd43638cc7135e6b7ccf303d" => :yosemite
+    sha256 "6831944fd930a47850629ded938ab8147e9d931c6f0ae2734d72839dc45be95d" => :mavericks
+    sha256 "6524553e7d8e8f9b1dec0e4f8002dbe20134905b970b05c16266f8d6cbd3d14a" => :mountain_lion
   end
 
   option "with-pidgin", "Use finch/libpurple for all communication with instant messaging networks"
@@ -74,6 +74,8 @@ class Bitlbee < Formula
           <string>IPv4</string>
           <key>SockProtocol</key>
           <string>TCP</string>
+          <key>SockNodeName</key>
+          <string>127.0.0.1</string>
           <key>SockServiceName</key>
           <string>6667</string>
           <key>SockType</key>

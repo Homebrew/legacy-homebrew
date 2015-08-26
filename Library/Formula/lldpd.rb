@@ -1,29 +1,29 @@
-require 'formula'
-
 class Lldpd < Formula
   desc "Implementation library for LLDP"
-  homepage 'http://vincentbernat.github.io/lldpd/'
-  url 'http://media.luffy.cx/files/lldpd/lldpd-0.7.12.tar.gz'
-  sha1 '2d602aaaad01d1f76f8e1c87e48dca1c6725ba78'
+  homepage "https://vincentbernat.github.io/lldpd/"
+  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.16.tar.gz"
+  sha256 "a0b85a5e685b8e7dad08b6f20ea79d8bec47d8dbf39daef419bd20ad7f37d63f"
 
   bottle do
-    sha1 "c77debb346c325a44b8e91a7b983b251dc1db76f" => :yosemite
-    sha1 "52737f6933bc2d052ece4877d36c021fd6e648c1" => :mavericks
-    sha1 "6d6d4f6d4b7e23b9f707db180c99c24174ff9293" => :mountain_lion
+    sha256 "437aee53ffb9e71b91c2f53316fa0df319f2927b29e0c5cc3b3ee7b3141ae7c4" => :yosemite
+    sha256 "8425d6857f0d9161f61d3c31e55d9c7c761c4a72bb37da8d94fd6ee518fda865" => :mavericks
+    sha256 "b77527b4056776a1218ce5f4e97ee611a748112912b5c50a989853eabd4410b9" => :mountain_lion
   end
 
-  option 'with-snmp', "Build SNMP subagent support"
-  option 'with-json', "Build JSON support for lldpcli"
+  option "with-snmp", "Build SNMP subagent support"
+  option "with-json", "Build JSON support for lldpcli"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'readline'
-  depends_on 'libevent'
-  depends_on 'net-snmp' if build.with? "snmp"
-  depends_on 'jansson'  if build.with? "json"
+  depends_on "pkg-config" => :build
+  depends_on "readline"
+  depends_on "libevent"
+  depends_on "net-snmp" if build.with? "snmp"
+  depends_on "jansson"  if build.with? "json"
 
   def install
     readline = Formula["readline"]
     args = ["--prefix=#{prefix}",
+            "--sysconfdir=#{etc}",
+            "--localstatedir=#{var}",
             "--with-xml",
             "--with-readline",
             "--with-privsep-chroot=/var/empty",
@@ -32,12 +32,12 @@ class Lldpd < Formula
             "--with-launchddaemonsdir=no",
             "CPPFLAGS=-I#{readline.include} -DRONLY=1",
             "LDFLAGS=-L#{readline.lib}"]
-    args << "--with-snmp" if build.with? "snmp"
-    args << "--with-json" if build.with? "json"
+    args << (build.with?("snmp") ? "--with-snmp" : "--without-snmp")
+    args << (build.with?("json") ? "--with-json" : "--without-json")
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   plist_options :startup => true
@@ -47,7 +47,7 @@ class Lldpd < Formula
     if build.with? "snmp"
       additional_args += "<string>-x</string>"
     end
-    return <<-EOS.undent
+    <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
@@ -65,5 +65,4 @@ class Lldpd < Formula
     </plist>
     EOS
   end
-
 end

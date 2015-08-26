@@ -1,25 +1,17 @@
-require "formula"
-
 class Jsoncpp < Formula
   desc "Library for interacting with JSON"
   homepage "https://github.com/open-source-parsers/jsoncpp"
-  url "https://github.com/open-source-parsers/jsoncpp/archive/svn-release-0.6.0-rc2.tar.gz"
-  sha1 "6cc51ed1f31e742637a512201b585e0bc4e06980"
+  url "https://github.com/open-source-parsers/jsoncpp/archive/0.10.5.tar.gz"
+  sha256 "56afb14d2ef1c52e72771a221346d4b94f0d46d4e67f796bbcaedb176ca823df"
 
   bottle do
     cellar :any
-    sha1 "701adf90e494bfabf0bc54b9d3628fb125bd1244" => :yosemite
-    sha1 "c6cd33fe89d9b91c1864dc7e8158a507199c1454" => :mavericks
-    sha1 "d315e5fab004b81e068a624c37fb0afc6b4318b2" => :mountain_lion
+    sha256 "23e7bafcd961be747ab26c3d754f5723ba8a86d4915cf31bcaee002618898b18" => :yosemite
+    sha256 "72c73a2a679f8196bed4fb65cfa04cbb16fa7a565901830f34c3a8d5734c3911" => :mavericks
+    sha256 "7d3400af12dbe322fec3aab9894a920e68b711d01e6205767966ad102cbd8e14" => :mountain_lion
   end
 
   depends_on "scons" => :build
-
-  patch :p1 do
-    # use the usual environment variables for the compilation flags
-    url "https://github.com/open-source-parsers/jsoncpp/pull/55.patch"
-    sha1 "d2e985a0877fc811acfb34f62713a35ba4742452"
-  end
 
   def install
     gccversion = `g++ -dumpversion`.strip

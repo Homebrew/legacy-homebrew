@@ -1,10 +1,8 @@
-require "formula"
-
 class Tpl < Formula
   desc "Store and retrieve binary data in C"
-  homepage "http://troydhanson.github.io/tpl/"
+  homepage "https://troydhanson.github.io/tpl/"
   url "https://github.com/troydhanson/tpl/archive/v1.6.1.tar.gz"
-  sha1 "2ee92627e8f67400061d8fc606b601988ed90217"
+  sha256 "0b3750bf62f56be4c42f83c89d8449b24f1c5f1605a104801d70f2f3c06fb2ff"
   head "https://github.com/troydhanson/tpl.git"
 
   depends_on "autoconf" => :build

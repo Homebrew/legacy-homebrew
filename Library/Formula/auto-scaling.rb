@@ -3,7 +3,7 @@ class AutoScaling < Formula
   homepage "https://aws.amazon.com/developertools/2535"
   url "https://ec2-downloads.s3.amazonaws.com/AutoScaling-2011-01-01.zip"
   version "1.0.61.6"
-  sha1 "2e3aaaa2567f4dcafcedbfc05678270ab02ed341"
+  sha256 "2c81e092d5c479896007e7d1a3cf40631d09e6bffd83b42f49a56f42207326b6"
 
   depends_on :java
 

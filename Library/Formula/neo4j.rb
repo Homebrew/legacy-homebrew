@@ -1,9 +1,9 @@
 class Neo4j < Formula
   desc "Robust (fully ACID) transactional property graph database"
-  homepage "http://neo4j.org"
-  url "http://dist.neo4j.org/neo4j-community-2.2.2-unix.tar.gz"
-  version "2.2.2"
-  sha256 "18d6d88c61d9077340adf774359bd1d8f458f68ec51bcf96deb3f00894db1ded"
+  homepage "http://neo4j.com"
+  url "http://dist.neo4j.org/neo4j-community-2.2.4-unix.tar.gz"
+  version "2.2.4"
+  sha256 "b3fa5d547e50c3f619e39290266979e72f7222be7644fbb3bad2fc31d074aab9"
 
   devel do
     url "http://dist.neo4j.org/neo4j-community-2.3.0-M02-unix.tar.gz"
@@ -31,17 +31,17 @@ class Neo4j < Formula
     # Eventually, install neo4j-shell-tools
     # omiting "opencsv-2.3.jar" because it already comes with neo4j (see libexec/lib)
     if build.with? "neo4j-shell-tools"
-      resource("neo4j-shell-tools").stage {
+      resource("neo4j-shell-tools").stage do
         (libexec/"lib").install "geoff-0.5.0.jar", "import-tools-2.2.jar", "mapdb-0.9.3.jar"
-      }
+      end
     end
 
     # Adjust UDC props
-    open("#{libexec}/conf/neo4j-wrapper.conf", "a") { |f|
+    open("#{libexec}/conf/neo4j-wrapper.conf", "a") do |f|
       f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
 
       # suppress the empty, focus-stealing java gui
       f.puts "wrapper.java.additional=-Djava.awt.headless=true"
-    }
+    end
   end
 end

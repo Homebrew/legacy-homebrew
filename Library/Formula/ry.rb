@@ -1,10 +1,8 @@
-require "formula"
-
 class Ry < Formula
   desc "Ruby virtual env tool"
   homepage "https://github.com/jayferd/ry"
   url "https://github.com/jayferd/ry/archive/v0.5.2.tar.gz"
-  sha1 "1c44fa222911b5b3fdb806fa97752b16404aae0f"
+  sha256 "b53b51569dfa31233654b282d091b76af9f6b8af266e889b832bb374beeb1f59"
 
   head "https://github.com/jayferd/ry.git"
 
@@ -28,10 +26,17 @@ class Ry < Formula
   def caveats; <<-EOS.undent
     Please add to your profile:
       which ry &>/dev/null && eval "$(ry setup)"
-    EOS
+
+    If you want your Rubies to persist across updates you
+    should set the `RY_RUBIES` variable in your profile, i.e.
+      export RY_RUBIES="#{HOMEBREW_PREFIX}/var/ry/rubies"
+  EOS
   end
 
   test do
+    ENV["RY_RUBIES"] = testpath/"rubies"
+
     system bin/"ry", "ls"
+    assert File.exist?(testpath/"rubies")
   end
 end

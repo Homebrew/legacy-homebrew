@@ -2,7 +2,7 @@ class Libharu < Formula
   desc "Library for generating PDF files"
   homepage "http://www.libharu.org/"
   url "https://github.com/libharu/libharu/archive/RELEASE_2_3_0.tar.gz"
-  sha1 "434177d4baaf2a37b2d2d16467dd786961919e0d"
+  sha256 "8f9e68cc5d5f7d53d1bc61a1ed876add1faf4f91070dbc360d8b259f46d9a4d2"
   head "https://github.com/libharu/libharu.git"
 
   bottle do
@@ -19,10 +19,17 @@ class Libharu < Formula
 
   def install
     system "./buildconf.sh", "--force"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-png=#{Formula["libpng"].opt_prefix}"
+
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-png=#{Formula["libpng"].opt_prefix}
+    ]
+
+    args << "--with-zlib=#{MacOS.sdk_path}/usr" unless MacOS::CLT.installed?
+
+    system "./configure", *args
     system "make", "install"
   end
 

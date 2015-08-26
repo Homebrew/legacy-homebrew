@@ -1,18 +1,17 @@
-require "formula"
-
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://unbound.net/downloads/unbound-1.5.3.tar.gz"
-  sha256 "76bdc875ed4d1d3f8e4cfe960e6df78ee5c6c7c18abac11331cf93a7ae129eca"
+  url "https://unbound.net/downloads/unbound-1.5.4.tar.gz"
+  sha256 "a1e1c1a578cf8447cb51f6033714035736a0f04444854a983123c094cc6fb137"
 
   depends_on "openssl"
   depends_on "libevent"
 
   bottle do
-    sha256 "4ec2891a47855facb66da9178f966cb524ed725c328f8a8278764676049d048e" => :yosemite
-    sha256 "7e0775a27cae29b72fe55e1b74f8dad51fa413a0ffba924b79d7c18d0d5d916d" => :mavericks
-    sha256 "a977d1f977b7ee9abe834cefff90d29f3e3d878ee09ff066adfcc616cdf859b1" => :mountain_lion
+    cellar :any
+    sha256 "6cfca30c6a6f4de11b21242ce77fd2b7ba9c1dfd6301ef8f440fb0db44fb2a1f" => :yosemite
+    sha256 "312200fd62a1392bc2e52101b1e90a5651b0710707e51764e64da1ba66c38889" => :mavericks
+    sha256 "b1b0ce7456c45862729e06ff4177dc9ec5023bd72f58bdd51d464bfa2d2d3b10" => :mountain_lion
   end
 
   def install
@@ -21,6 +20,10 @@ class Unbound < Formula
                           "--with-libevent=#{Formula["libevent"].opt_prefix}",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
+  end
+
+  def post_install
+    inreplace etc/"unbound/unbound.conf", 'username: "unbound"', "username: \"#{ENV["USER"]}\""
   end
 
   plist_options :startup => true
@@ -52,5 +55,9 @@ class Unbound < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system sbin/"unbound-control-setup", "-d", testpath
   end
 end

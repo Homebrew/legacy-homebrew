@@ -19,13 +19,17 @@ class PythonRequirement < Requirement
   end
 
   env do
-    if system_python?
-      if python_binary == "python"
-        version = python_short_version
-        ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{version}/site-packages"
-      end
-    elsif which_python
+    short_version = python_short_version
+
+    if !system_python? && short_version == Version.new("2.7")
       ENV.prepend_path "PATH", which_python.dirname
+    # Homebrew Python should take precedence over older Pythons in the PATH
+    elsif short_version != Version.new("2.7")
+      ENV.prepend_path "PATH", Formula["python"].opt_bin
+    end
+
+    if python_binary == "python"
+      ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
     end
   end
 
@@ -39,9 +43,17 @@ class PythonRequirement < Requirement
     Pathname.new Utils.popen_read(python, "-c", "import sys; print(sys.executable)").strip
   end
 
-  def system_python; "/usr/bin/#{python_binary}" end
-  def system_python?; system_python == which_python.to_s end
-  def python_binary; "python" end
+  def system_python
+    "/usr/bin/#{python_binary}"
+  end
+
+  def system_python?
+    system_python == which_python.to_s
+  end
+
+  def python_binary
+    "python"
+  end
 
   # Deprecated
   alias_method :to_s, :python_binary
@@ -54,5 +66,7 @@ class Python3Requirement < PythonRequirement
 
   satisfy(:build_env => false) { which_python }
 
-  def python_binary; "python3" end
+  def python_binary
+    "python3"
+  end
 end

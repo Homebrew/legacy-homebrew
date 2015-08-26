@@ -1,15 +1,13 @@
-require 'formula'
-
 class Swatchbooker < Formula
   desc "Reads color swatches from various file formats"
-  homepage 'http://www.selapa.net/swatchbooker/'
-  url 'http://launchpad.net/swatchbooker/trunk/0.7.3/+download/SwatchBooker-0.7.3.tar.gz'
-  sha1 'fd2e46c278e762dc0c3ed69f824ab620773f153e'
+  homepage "http://www.selapa.net/swatchbooker/"
+  url "https://launchpad.net/swatchbooker/trunk/0.7.3/+download/SwatchBooker-0.7.3.tar.gz"
+  sha256 "c0c8bf038156337f1eebdf6f7c99f5b7a8e8f9a332cd625c57269ddc8ba18eb7"
 
   depends_on :python
   depends_on "pillow" => [:python, "PIL"]
-  depends_on 'little-cms' => 'with-python'
-  depends_on 'pyqt'
+  depends_on "little-cms" => "with-python"
+  depends_on "pyqt"
 
   patch :DATA
 
@@ -20,8 +18,8 @@ class Swatchbooker < Formula
     end
 
     system "python", "setup.py", "install", "--prefix=#{prefix}"
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
-    chmod 0755, libexec/'bin/swatchbooker'
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    chmod 0755, libexec/"bin/swatchbooker"
   end
 
   test do

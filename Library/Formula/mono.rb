@@ -1,22 +1,31 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-4.0.1.44.tar.bz2"
-  sha256 "eaf5bd9d19818cb89483b3c9cae2ee3569643fd621560da036f6a49f6b3e3a6f"
+  url "http://download.mono-project.com/sources/mono/mono-4.0.2.5.tar.bz2"
+  sha256 "b074584eea5bbaaf29362486a69d70abe53d0d2feb334f231fa9c841cf6fd651"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha256 "bf7c66c98bd84cb94626666f7c0c94dddf4296abaa67a47e70882198332e5190" => :yosemite
-    sha256 "119736581b0d5fdcdc98cda215b2c58f74203b6800a4ff30034c26aef1d56a6c" => :mavericks
-    sha256 "28e4d3eaa4752b0060825dce2aef767ccabe62a3d38d7f5595aa44b101acbd64" => :mountain_lion
+    revision 1
+    sha256 "58a84b443f8cf3eac731d87ce8d484fec90ddf43b44b51854a6186d11b53daee" => :yosemite
+    sha256 "7bb30673b0de1d41980da3527f55db7e453da66b0673a5a5c93c464426716db8" => :mavericks
+    sha256 "3a3c35b4bdafc31607fabedece5caa8200ed1deca321bfaeca3869560d6e3d0e" => :mountain_lion
+  end
+
+  # Fix compile and runtime error on OS X 10.11 Beta 3
+  # https://github.com/mono/mono/pull/1919
+  # https://bugzilla.xamarin.com/show_bug.cgi?id=31761
+  patch do
+    url "https://github.com/mono/mono/pull/1919.diff"
+    sha256 "53c39c2145027fdf1a2233e12bd96da2c1164e1422e631cdb50598910b39a020"
   end
 
   resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-4.0.0-release/79/7975f5090d8b0d266dc0ba824295d92edd8873da/monolite-117-latest.tar.gz"
-    sha256 "7c48200e4c8bdfe890a0b5301975feac0b2fc6797e6accd00e7a366edbba92e7"
+    url "http://storage.bos.xamarin.com/mono-dist-4.0.0-release/c1/c1b37f29b1a439acf7ef42a384550ab1dca5295a/monolite-117-latest.tar.gz"
+    sha256 "a3bd1c826186e4896193ad1f909bf8756f66f62d1e249fe301b10bc80ebe0795"
   end
 
   def install

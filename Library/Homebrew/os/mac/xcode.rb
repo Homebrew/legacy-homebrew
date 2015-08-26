@@ -14,7 +14,7 @@ module OS
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
         when "10.9"  then "6.2"
-        when "10.10" then "6.3.2"
+        when "10.10" then "6.4"
         when "10.11" then "7.0"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
@@ -60,7 +60,7 @@ module OS
       end
 
       def installed?
-        not prefix.nil?
+        !prefix.nil?
       end
 
       def version
@@ -75,6 +75,8 @@ module OS
         # if return is used in the middle, which we do many times in here.
 
         return "0" unless OS.mac?
+
+        return nil if !MacOS::Xcode.installed? && !MacOS::CLT.installed?
 
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
@@ -119,7 +121,8 @@ module OS
           when 51      then "5.1"
           when 60      then "6.0"
           when 61      then "6.1"
-          else "6.1"
+          when 70      then "7.0"
+          else "7.0"
           end
         end
       end
@@ -162,7 +165,7 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.11" then "700.0.53"
+        when "10.11" then "700.0.65"
         when "10.10" then "602.0.53"
         when "10.9"  then "600.0.57"
         when "10.8"  then "503.0.40"
@@ -177,7 +180,7 @@ module OS
         else
           version = `/usr/bin/clang --version`
         end
-        version = version[%r{clang-(\d+\.\d+\.\d+)}, 1] || "0"
+        version = version[/clang-(\d+\.\d+\.\d+(\.\d+)?)/, 1] || "0"
         version < latest_version
       end
 

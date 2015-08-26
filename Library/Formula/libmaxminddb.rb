@@ -1,14 +1,14 @@
 class Libmaxminddb < Formula
   desc "C library for the MaxMind DB file format"
   homepage "https://github.com/maxmind/libmaxminddb"
-  url "https://github.com/maxmind/libmaxminddb/releases/download/1.0.4/libmaxminddb-1.0.4.tar.gz"
-  sha1 "57548d426d43b9b43c77786b08594d48d0c88c62"
+  url "https://github.com/maxmind/libmaxminddb/releases/download/1.1.1/libmaxminddb-1.1.1.tar.gz"
+  sha256 "60060bc081573220d4633e4cbb26f999521c0f197304bc7f5ea700fc26ef2276"
 
   bottle do
     cellar :any
-    sha256 "f923147f3aacda41439e72737c22899356b11d61f2c9628839bac361d365a57e" => :yosemite
-    sha256 "ffc9884a7818e4b31b0a4d7e7a2d9edb10de783039b3ee4a20084a91373447ea" => :mavericks
-    sha256 "1c3da6449a58c7f2840b51dd0de405b1d27a6d3c8ae211d0a6f38a21a17f780a" => :mountain_lion
+    sha256 "f5356fa88e5f46074c2037d67e514f7ca1d2856618f3657da54df457a6b0b03c" => :yosemite
+    sha256 "7fbf6931665e63ce247c7aef488efcb3d58b98a511fc67f20fdfb1bc7c4a3acc" => :mavericks
+    sha256 "017af226ff521f3486f7ae40c318c5ee7c9da5b18f9c02b74d69a0d0826c254b" => :mountain_lion
   end
 
   head do
@@ -20,13 +20,6 @@ class Libmaxminddb < Formula
   end
 
   depends_on "geoipupdate" => :optional
-
-  # This patch is from an upstream post-1.0.4 commit and fixes a test failure
-  # on OS X. See https://github.com/maxmind/libmaxminddb/commit/424953
-  patch do
-    url "https://github.com/maxmind/libmaxminddb/commit/424953.diff"
-    sha1 "362cf3254145188dc9959651ba7ee876007998c9"
-  end
 
   option :universal
 
@@ -41,12 +34,11 @@ class Libmaxminddb < Formula
                           "--prefix=#{prefix}"
     system "make", "check"
     system "make", "install"
+    (share/"examples").install buildpath/"t/maxmind-db/test-data/GeoIP2-City-Test.mmdb"
   end
 
   test do
-    system "curl", "-O", "http://geolite.maxmind.com/download/geoip/database/GeoLite2-Country.mmdb.gz"
-    system "gunzip", "GeoLite2-Country.mmdb.gz"
-    system "#{bin}/mmdblookup", "-f", "GeoLite2-Country.mmdb",
-                                "-i", "8.8.8.8"
+    system "#{bin}/mmdblookup", "-f", "#{share}/examples/GeoIP2-City-Test.mmdb",
+                                "-i", "175.16.199.0"
   end
 end

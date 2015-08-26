@@ -3,7 +3,7 @@ class Lightning < Formula
   homepage "https://www.gnu.org/software/lightning/"
   url "http://ftpmirror.gnu.org/lightning/lightning-2.1.0.tar.gz"
   mirror "https://ftp.gnu.org/gnu/lightning/lightning-2.1.0.tar.gz"
-  sha1 "d08aa434fba8fb29d0c1b240b034042c26cbf2b3"
+  sha256 "1fa3a2421852598b3162d6765645bb3cd0fccb5f0c105d0800c64c8428b749a6"
 
   bottle do
     cellar :any
@@ -19,7 +19,7 @@ class Lightning < Formula
     args = [
       "--disable-dependency-tracking",
       "--disable-silent-rules",
-      "--prefix=#{prefix}",
+      "--prefix=#{prefix}"
     ]
     args << "--disable-disassembler" if build.without? "binutils"
 

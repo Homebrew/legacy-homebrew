@@ -1,17 +1,17 @@
-require "formula"
 require "language/go"
 
 class Fzf < Formula
   desc "Fuzzy finder for your shell"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.9.12.tar.gz"
-  sha256 "644f741530120856c4bd8e63b95174af172c85a2c378eaf87db9e8e4717aabb3"
-  head 'https://github.com/junegunn/fzf.git'
+  url "https://github.com/junegunn/fzf/archive/0.10.2.tar.gz"
+  sha256 "7f71ec91fe2234e6ad3a32f291e7030d4ae25d9e9751b3dd1d8a91666a3652a8"
+  head "https://github.com/junegunn/fzf.git"
 
   bottle do
-    sha256 "285db0bacd6a94a1451fea10aede60d0ed279a4a5f33e0acc6183b2856682bd9" => :yosemite
-    sha256 "a86b5e5b95cef5e8a7f641c7aff666683ba45d322f5728ad2366bcdcc2545173" => :mavericks
-    sha256 "cbcb6535430eb6b404f023448705591d3a9767d20b973855e80fac73a80972c2" => :mountain_lion
+    cellar :any
+    sha256 "4387284e94e137f020705d7f3262a88896f405b807bc39dbf101ed2dba42a4e3" => :yosemite
+    sha256 "52f9f81c3f3a581c990ced1a227438d3f47711c22f8c2fd36256710bf7b586ce" => :mavericks
+    sha256 "8262db91999bf59b41df10a90d93e57bacf2cc89024e223bd3dcfeaeaebad533" => :mountain_lion
   end
 
   depends_on "go" => :build

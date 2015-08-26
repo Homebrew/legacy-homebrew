@@ -3,18 +3,18 @@ class Nginx < Formula
   homepage "http://nginx.org/"
   url "http://nginx.org/download/nginx-1.8.0.tar.gz"
   sha256 "23cca1239990c818d8f6da118320c4979aadf5386deda691b1b7c2c96b9df3d5"
-
   head "http://hg.nginx.org/nginx/", :using => :hg
 
-  devel do
-    url "http://nginx.org/download/nginx-1.9.1.tar.gz"
-    sha256 "09f555fae694c0944f172b575ad239f56d40d14559d98e843de0a690f38c1dad"
+  bottle do
+    revision 1
+    sha256 "6df7b883f9214c5c0969559f6cc9ed56f9537263a1ef4882dae77b0b7af5a1df" => :yosemite
+    sha256 "68741910d6ee58f7ee1134c7b4c62dfd490ee337c9c0beb0d188edc418b0bd93" => :mavericks
+    sha256 "a622d0e1bfd55d8634520d72b41319da19828b9ab11063b6243d5b5f3d77ad08" => :mountain_lion
   end
 
-  bottle do
-    sha256 "9fe0f648fe67dd7c55e46754d72561b2d7a31a09126167088fbe278a65f9c45d" => :yosemite
-    sha256 "63f5785c7f7dca36a1b7180a82f1433fde9a3fbccf36af541770541b4d8f4093" => :mavericks
-    sha256 "7a17bfbc2d2a325d8c665a0d2bb3c00f70178bc4c065817ec247fcf2ce28d5ae" => :mountain_lion
+  devel do
+    url "http://nginx.org/download/nginx-1.9.3.tar.gz"
+    sha256 "4298c5341b2a262fdb8dbc0a1389756181af8f098c7720abfb30bd3060f673eb"
   end
 
   env :userpaths
@@ -36,7 +36,7 @@ class Nginx < Formula
   def install
     # Changes default port to 8080
     inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
-    open("conf/nginx.conf", "a") { |f| f.puts "include servers/*;" }
+    inreplace "conf/nginx.conf", "    #}\n\n}", "    #}\n    include servers/*;\n}"
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
@@ -87,9 +87,12 @@ class Nginx < Formula
       system "./configure", *args
     end
 
-    system "make"
     system "make", "install"
-    man8.install "objs/nginx.8"
+    if build.head?
+      man8.install "docs/man/nginx.8"
+    else
+      man8.install "man/nginx.8"
+    end
 
     (etc/"nginx/servers").mkpath
     (var/"run/nginx").mkpath
@@ -121,12 +124,7 @@ class Nginx < Formula
     end
   end
 
-  test do
-    system "#{bin}/nginx", "-t"
-  end
-
   def passenger_caveats; <<-EOS.undent
-
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
       passenger_root #{Formula["passenger"].opt_libexec}/lib/phusion_passenger/locations.ini;
       passenger_ruby /usr/bin/ruby;
@@ -142,7 +140,7 @@ class Nginx < Formula
 
     nginx will load all files in #{etc}/nginx/servers/.
     EOS
-    s << passenger_caveats if build.with? "passenger"
+    s << "\n" << passenger_caveats if build.with? "passenger"
     s
   end
 
@@ -170,5 +168,9 @@ class Nginx < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{bin}/nginx", "-t"
   end
 end

@@ -1,13 +1,13 @@
 class Ponyc < Formula
   desc "Object-oriented, actor-model, capabilities-secure programming language"
   homepage "http://www.ponylang.org"
-  url "http://www.ponylang.org/releases/source/ponyc-0.1.6.tar.bz2"
-  sha256 "28592dd60320e1a587d256e08e7053e42975f8dc3dd5fb5eb0fd57baae5dc01e"
+  url "http://releases.ponylang.org/source/ponyc-0.1.7.tar.bz2"
+  sha256 "fc6f783f65cd6708a80bdea71f414cada801528143ea22d9bb13957cb7061eb6"
 
   bottle do
-    sha256 "c5d4837fdcdcb8abff9faef03002b64ea589e53cb10cfcd703eee505483f5fed" => :yosemite
-    sha256 "9b96cf934f39d9f61170704ba1165b718b868bd56bc089a343970a9ef0ca8d3d" => :mavericks
-    sha256 "49e11ccb179955ad14703e5ce2c965b28519d2937b82b4b93379c8356aac4925" => :mountain_lion
+    sha256 "ccee2ae558144cd1bda30376b3fe922e7eb6224ab9e69247deb066f663a4c9ae" => :yosemite
+    sha256 "afcef61c4daec2e845e5a99d63fe60c11236d75a1bb9788570ec149dd9eff82c" => :mavericks
+    sha256 "b195bbd971219e3a9598e38833589b73b8dd12280a800a91d02bab74e8b1787b" => :mountain_lion
   end
 
   depends_on "llvm" => "with-rtti"

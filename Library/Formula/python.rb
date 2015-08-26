@@ -4,12 +4,12 @@ class Python < Formula
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
   url "https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz"
   sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
+  revision 2
 
   bottle do
-    revision 2
-    sha256 "c09a2be2afed41d72235364fac7b172e07f248c28b24ceee8d3be2084bf2b138" => :yosemite
-    sha256 "08b8454aa0a753feffb7db0601485ae1f79253c0094917b6ddbabe7354e8de13" => :mavericks
-    sha256 "1ec521bf24e2c1b87e7739811b9e7413edc1a2dd008714b416b7c110d97e2a3b" => :mountain_lion
+    sha256 "df7af5b6865765e96acdad1922c4983439f8b058845ac5023f8fe8ec79ea3d4e" => :yosemite
+    sha256 "c0fab9719d000e1f6150423538b01059471b6eb1777257f5e71a29e1457311e4" => :mavericks
+    sha256 "90e0f06ef02d3852cd805776ff172e909a2d69c97536ec0fae599d3ebd00bfec" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -28,19 +28,25 @@ class Python < Formula
   depends_on "gdbm" => :recommended
   depends_on "openssl"
   depends_on "homebrew/dupes/tcl-tk" => :optional
+  depends_on "berkeley-db4" => :optional
   depends_on :x11 if build.with?("tcl-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
   skip_clean "bin/pip", "bin/pip-2.7"
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.1.1.tar.gz"
-    sha256 "5bf42dbf406fd58a41029f53cffff1c90db5de1c5e0e560b5545cf2ec949c431"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
+    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.3.tar.gz"
-    sha256 "b4c598825a6f6dc2cac65968feb28e6be6c1f7f1408493c60a07eaa731a0affd"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.0.tar.gz"
+    sha256 "d5275ba3221182a5dd1b6bcfbfc5ec277fb399dd23226d6fa018048f7e0f10f2"
+  end
+
+  resource "wheel" do
+    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.24.0.tar.gz"
+    sha256 "ef832abfedea7ed86b6eae7400128f88053a1da81a37c00613b1279544d585aa"
   end
 
   # Patch for pyport.h macro issue
@@ -90,6 +96,7 @@ class Python < Formula
       --datarootdir=#{share}
       --datadir=#{share}
       --enable-framework=#{frameworks}
+      --without-ensurepip
     ]
 
     args << "--without-gcc" if ENV.compiler == :clang
@@ -117,6 +124,7 @@ class Python < Formula
       s.gsub! "do_readline = self.compiler.find_library_file(lib_dirs, 'readline')",
               "do_readline = '#{Formula["readline"].opt_lib}/libhistory.dylib'"
       s.gsub! "/usr/local/ssl", Formula["openssl"].opt_prefix
+      s.gsub! "/usr/include/db4", Formula["berkeley-db4"].opt_include
     end
 
     if build.universal?
@@ -178,6 +186,7 @@ class Python < Formula
 
     (libexec/"setuptools").install resource("setuptools")
     (libexec/"pip").install resource("pip")
+    (libexec/"wheel").install resource("wheel")
   end
 
   def post_install
@@ -201,18 +210,22 @@ class Python < Formula
     # setuptools-0.9.5-py3.3.egg
     rm_rf Dir["#{site_packages}/setuptools*"]
     rm_rf Dir["#{site_packages}/distribute*"]
+    rm_rf Dir["#{site_packages}/pip[-_.][0-9]*", "#{site_packages}/pip"]
 
     setup_args = ["-s", "setup.py", "--no-user-cfg", "install", "--force",
                   "--verbose",
+                  "--single-version-externally-managed",
+                  "--record=installed.txt",
                   "--install-scripts=#{bin}",
                   "--install-lib=#{site_packages}"]
 
     (libexec/"setuptools").cd { system "#{bin}/python", *setup_args }
     (libexec/"pip").cd { system "#{bin}/python", *setup_args }
+    (libexec/"wheel").cd { system "#{bin}/python", *setup_args }
 
     # When building from source, these symlinks will not exist, since
     # post_install happens after linking.
-    %w[pip pip2 pip2.7 easy_install easy_install-2.7].each do |e|
+    %w[pip pip2 pip2.7 easy_install easy_install-2.7 wheel].each do |e|
       (HOMEBREW_PREFIX/"bin").install_symlink bin/e
     end
 
@@ -232,11 +245,7 @@ class Python < Formula
 
     cfg = lib_cellar/"distutils/distutils.cfg"
     cfg.atomic_write <<-EOF.undent
-      [global]
-      verbose=1
-
       [install]
-      force=1
       prefix=#{HOMEBREW_PREFIX}
 
       [build_ext]

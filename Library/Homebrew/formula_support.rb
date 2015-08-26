@@ -13,6 +13,8 @@ class KegOnlyReason
     case @reason
     when :provided_pre_mountain_lion
       MacOS.version < :mountain_lion
+    when :provided_pre_mavericks
+      MacOS.version < :mavericks
     when :provided_until_xcode43
       MacOS::Xcode.version < "4.3"
     when :provided_until_xcode5
@@ -23,28 +25,26 @@ class KegOnlyReason
   end
 
   def to_s
+    return @explanation unless @explanation.empty?
     case @reason
     when :provided_by_osx then <<-EOS
 OS X already provides this software and installing another version in
 parallel can cause all kinds of trouble.
-
-#{@explanation}
 EOS
     when :shadowed_by_osx then <<-EOS
-OS X provides similar software, and installing this software in
+OS X provides similar software and installing this software in
 parallel can cause all kinds of trouble.
-
-#{@explanation}
+EOS
+    when :provided_pre_mavericks then <<-EOS
+OS X already provides this software in versions before Mavericks.
 EOS
     when :provided_pre_mountain_lion then <<-EOS
 OS X already provides this software in versions before Mountain Lion.
-
-#{@explanation}
 EOS
     when :provided_until_xcode43
-      "Xcode provides this software prior to version 4.3.\n\n#{@explanation}"
+      "Xcode provides this software prior to version 4.3."
     when :provided_until_xcode5
-      "Xcode provides this software prior to version 5.\n\n#{@explanation}"
+      "Xcode provides this software prior to version 5."
     else
       @reason
     end.strip

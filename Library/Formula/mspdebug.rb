@@ -1,12 +1,10 @@
-require 'formula'
-
 class Mspdebug < Formula
   desc "Debugger for use with MSP430 MCUs"
-  homepage 'http://mspdebug.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/mspdebug/mspdebug-0.22.tar.gz'
-  sha1 'f55692d90ccb1f3686e94df53e5e30408fde963f'
+  homepage "http://mspdebug.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/mspdebug/mspdebug-0.22.tar.gz"
+  sha256 "9a0550f3c7911bcc4e3231fff652c8f14763eb6a945609ce715db7164bf76c55"
 
-  depends_on 'libusb-compat'
+  depends_on "libusb-compat"
 
   def install
     system "make", "PREFIX=#{prefix}", "install"

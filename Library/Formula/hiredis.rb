@@ -8,9 +8,10 @@ class Hiredis < Formula
 
   bottle do
     cellar :any
-    sha256 "cbcfc5ac79ad99522782df9359843891878278f5abbee0e35bb502b8a4f3ea00" => :yosemite
-    sha256 "86f08f41e2a520b33d3cf57065dd734807747965aca10ad2422183c301052f13" => :mavericks
-    sha256 "ad6fc97188b03efc75810be131ce6c565cc399fbf88b3e4cd256edbaa72e37c9" => :mountain_lion
+    revision 1
+    sha256 "0574fa67843dfe0070123d2bf60a7087701f90195b46ad2d7e7b9f9da321d4d7" => :yosemite
+    sha256 "832daedc5036ef20e9cf166ce3817ec2a5da8b0b0808b39e6911154550bb59c7" => :mavericks
+    sha256 "ab30e930930d581ae6e86b6a0440692c152004915e14d066f16edc029f9aad6d" => :mountain_lion
   end
 
   def install
@@ -18,14 +19,14 @@ class Hiredis < Formula
     ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
 
     system "make", "install", "PREFIX=#{prefix}"
-    share.install "examples"
+    pkgshare.install "examples"
   end
 
   test do
     # running `./test` requires a database to connect to, so just make
     # sure it compiles
     system ENV.cc, "-I#{include}/hiredis", "-L#{lib}", "-lhiredis",
-           share/"examples/example.c", "-o", testpath/"test"
+           pkgshare/"examples/example.c", "-o", testpath/"test"
     File.exist? testpath/"test"
   end
 end

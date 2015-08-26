@@ -1,14 +1,14 @@
 class Libfixbuf < Formula
   desc "Implements the IPFIX Protocol as a C library"
   homepage "https://tools.netsa.cert.org/fixbuf/"
-  url "https://tools.netsa.cert.org/releases/libfixbuf-1.6.2.tar.gz"
-  sha1 "5bb7a46927b33081820241586fb1112c7802c9de"
+  url "https://tools.netsa.cert.org/releases/libfixbuf-1.7.0.tar.gz"
+  sha256 "0cb7e29ad5ae9d0186718f325ec12786222794cc25adc2e28707322112e15a3d"
 
   bottle do
     cellar :any
-    sha1 "2984798716e4bea8aaeec7e7db201a3867b435f1" => :yosemite
-    sha1 "5da62db9b86f601cf987a8972925dcbbdcc2d6c7" => :mavericks
-    sha1 "694b147a1d8563d56602f44e1f02923b84238d2d" => :mountain_lion
+    sha256 "3711773aba1acc3212b07ba5029e6368a7f22306609da9f7e9f3fae0e21a48dc" => :yosemite
+    sha256 "e67dbd4fa9c4f77f840adfeb0e85d300a380429f843f7d82d1e7b1b902b3437a" => :mavericks
+    sha256 "5e4ec8f9f0068350f26b8a578621e65506adac352d929d0b3bf007aa7f2c9b08" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

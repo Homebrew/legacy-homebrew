@@ -7,6 +7,12 @@ class Postgresql < Formula
     sha256 "538ed99688d6fdbec6fd166d1779cf4588bf2f16c52304e5ef29f904c43b0013"
   end
 
+  devel do
+    url "https://ftp.postgresql.org/pub/source/v9.5alpha2/postgresql-9.5alpha2.tar.bz2"
+    sha256 "87a55f39fb465ffe47701251665d3bff431760d9941f884be7f5ff67435ba485"
+    version "9.5alpha2"
+  end
+
   bottle do
     sha256 "25c2e16deaf18141e48f7b567ef02f8c426cc4978a41e1ee0f7f2484d8ddf2c9" => :yosemite
     sha256 "553b8e7f01b436a9152a737f66addbd7062bb90dc711e1e50a86a6dfa3f3a673" => :mavericks
@@ -70,7 +76,7 @@ class Postgresql < Formula
     args << "--with-uuid=e2fs"
 
     if build.build_32_bit?
-      ENV.append %w{CFLAGS LDFLAGS}, "-arch #{Hardware::CPU.arch_32_bit}"
+      ENV.append %w[CFLAGS LDFLAGS], "-arch #{Hardware::CPU.arch_32_bit}"
     end
 
     system "./configure", *args

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Gocr < Formula
   desc "Optical Character Recognition (OCR), converts images back to text"
-  homepage 'http://jocr.sourceforge.net/'
-  url 'http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-0.50.tar.gz'
-  sha1 '2018ddf7be1c95dcc12f63f7ac40ad98da06f8a4'
+  homepage "http://jocr.sourceforge.net/"
+  url "http://www-e.uni-magdeburg.de/jschulen/ocr/gocr-0.50.tar.gz"
+  sha256 "bc261244f887419cba6d962ec1ad58eefd77176885093c4a43061e7fd565f5b5"
 
   bottle do
     cellar :any
@@ -13,9 +11,9 @@ class Gocr < Formula
     sha1 "7137e18511cfd756baa7d19e81ce33cd5bdbf8c5" => :lion
   end
 
-  option 'with-lib', 'Install library and headers'
+  option "with-lib", "Install library and headers"
 
-  depends_on 'netpbm' => :optional
+  depends_on "netpbm" => :optional
 
   # Edit makefile to install libs per developer documentation
   patch :DATA if build.with? "lib"
@@ -27,11 +25,11 @@ class Gocr < Formula
 
     # --mandir doesn't work correctly; fix broken Makefile
     inreplace "man/Makefile" do |s|
-      s.change_make_var! 'mandir', '/share/man'
+      s.change_make_var! "mandir", "/share/man"
     end
 
     system "make libs" if build.with? "lib"
-    system "make install"
+    system "make", "install"
   end
 
   test do

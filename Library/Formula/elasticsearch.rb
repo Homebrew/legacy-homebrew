@@ -1,15 +1,15 @@
 class Elasticsearch < Formula
   desc "Distributed real-time search & analytics engine for the cloud"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.tar.gz"
-  sha256 "dc336c83394b2f2f72f362e0f959a4cfdec2109aa3de15668401afeab0b02d2e"
-
-  depends_on :java => "1.7+"
+  url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.1.tar.gz"
+  sha256 "86a0c20eea6ef55b14345bff5adf896e6332437b19180c4582a346394abde019"
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
     depends_on "maven" => :build
   end
+
+  depends_on :java => "1.7+"
 
   def cluster_name
     "elasticsearch_#{ENV["USER"]}"
@@ -105,7 +105,7 @@ class Elasticsearch < Formula
           <key>ProgramArguments</key>
           <array>
             <string>#{HOMEBREW_PREFIX}/bin/elasticsearch</string>
-            <string>--config=#{prefix}/config/elasticsearch.yml</string>
+            <string>--config=#{etc}/elasticsearch/elasticsearch.yml</string>
           </array>
           <key>EnvironmentVariables</key>
           <dict>

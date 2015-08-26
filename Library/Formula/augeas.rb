@@ -1,13 +1,13 @@
 class Augeas < Formula
   desc "Configuration editing tool and API"
   homepage "http://augeas.net"
-  url "http://download.augeas.net/augeas-1.3.0.tar.gz"
-  sha1 "052694bc84e3b8246dd32808b0e0e8c41c3de40b"
+  url "http://download.augeas.net/augeas-1.4.0.tar.gz"
+  sha256 "659fae7ac229029e60a869a3b88c616cfd51cf2fba286cdfe3af3a052cb35b30"
 
   bottle do
-    sha1 "374c491053aff309ba2ae417f3bb6e888a4fbae9" => :yosemite
-    sha1 "21e1bb5ec9d1bf623e61cf6ab1179a1d09cd9060" => :mavericks
-    sha1 "3b3c437736fb3e4edb5c60a73f0097e91703dd1f" => :mountain_lion
+    sha256 "9f9d87829624afc741c590614bb0dbf8858ebd5df6728e55925d3a8d82125d84" => :yosemite
+    sha256 "2e6bed040b7f9fadce3c059327fbbbb60830b0ffb7eda41ccd452d9ebe04c865" => :mavericks
+    sha256 "df76e18d45e3240416b47d2dc91a82a3ae0dc9291fd3e350953646b0148b9b41" => :mountain_lion
   end
 
   head do
@@ -44,5 +44,9 @@ class Augeas < Formula
     Lenses have been installed to:
       #{HOMEBREW_PREFIX}/share/augeas/lenses/dist
     EOS
+  end
+
+  test do
+    system bin/"augtool", "print", etc
   end
 end

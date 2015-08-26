@@ -1,8 +1,8 @@
 class Httpie < Formula
-  desc "A user-friendly cURL replacement (command-line HTTP client)"
+  desc "User-friendly cURL replacement (command-line HTTP client)"
   homepage "https://github.com/jakubroztocil/httpie"
   url "https://github.com/jakubroztocil/httpie/archive/0.9.2.tar.gz"
-  sha1 "39e9aab7f6f27973098c22c81fe5b9e7a5866a8b"
+  sha256 "1f0b0b6563de25bad0ed190d62f1130573124201382824756d015b1422a234cc"
   revision 1
 
   head "https://github.com/jakubroztocil/httpie.git"
@@ -18,7 +18,7 @@ class Httpie < Formula
 
   resource "pygments" do
     url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
+    sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
   end
 
   resource "requests" do

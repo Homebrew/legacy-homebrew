@@ -1,13 +1,13 @@
 class HtopOsx < Formula
   desc "Improved top (interactive process viewer) for OS X"
   homepage "https://github.com/max-horvath/htop-osx"
-  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.5.tar.gz"
-  sha1 "53b05ba70658ee1372588797438896b5fd5aa570"
+  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.7.tar.gz"
+  sha256 "a93be5c9d8a68081590b1646a0f10fb90e966e306560c3b141a61b3849446b72"
 
   bottle do
-    sha256 "6799da108aa993d1cbc5a7f638c3529cbf16e53a7b5622694df601c0d7eac085" => :yosemite
-    sha256 "e0ed38e75cd7953fcbb66b20c2fabb673a087eae04cfa0bac64fcfe85b442262" => :mavericks
-    sha256 "503c8385134741cc7f3974c5097d3bef4227e1717b26a1a745fd768c31fb5f6f" => :mountain_lion
+    sha256 "c4f4c2be9f6bda38bef8e57570cb02ec2a60738b5e3e6b27c189e493582daf66" => :yosemite
+    sha256 "1e3fa7862bfcef0eed646b7c2b7f1d3ec491404b2c9312ae1045bb78b8059f30" => :mavericks
+    sha256 "611c4ee686babb880828510fd3b1cfa247aa1e0ba6cb60401e8ad5c6cac1fc75" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

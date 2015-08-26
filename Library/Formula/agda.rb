@@ -5,24 +5,19 @@ class Agda < Formula
 
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  url "http://hackage.haskell.org/package/Agda-2.4.2.2/Agda-2.4.2.2.tar.gz"
-  sha1 "fbdf7df3d5a036e683210ac7ccf4f8ec0c9fea05"
-  revision 1
+  url "https://hackage.haskell.org/package/Agda-2.4.2.3/Agda-2.4.2.3.tar.gz"
+  mirror "https://github.com/agda/agda/archive/2.4.2.3.tar.gz"
+  sha256 "bc6def45e32498f51863d67acfbe048c039d630c6a36761ed27e99a5f68d7b27"
+  revision 2
 
   bottle do
-    sha1 "ce3cd69caaa5644f23db06dba5a1b558badca8ad" => :yosemite
-    sha1 "8157fc67f29852e133e1e17f28530388a0f99d00" => :mavericks
-    sha1 "c6d0c8b66e676f4f7eae63b4fe9b3a40e5a6a36c" => :mountain_lion
-  end
-
-  devel do
-    url "https://github.com/agda/agda.git", :branch => "maint-2.4.2"
-    version "2.4.2.3-beta"
+    sha256 "b5dfadfde1b45ca3d70f2ac812e98a6d72caf1d840d4cb9c4eee95e81d74ff0b" => :yosemite
+    sha256 "4513aecea2fbf5d1a682e04e4cccfd795d48836bcf1b16f79c24fa3bd6482854" => :mavericks
+    sha256 "d0e17808ee896cdedc499b010b67961dc3db3c430c501faef16c4b4482238447" => :mountain_lion
   end
 
   head "https://github.com/agda/agda.git", :branch => "master"
 
-  option "without-epic-backend", "Exclude the Epic compiler backend"
   option "without-stdlib", "Don't install the Agda standard library"
   option "with-malonzo-ffi",
     "Include the MAlonzo backend's FFI (depends on the standard library)"
@@ -31,7 +26,6 @@ class Agda < Formula
   depends_on "cabal-install" => :build
 
   depends_on "gmp"
-  depends_on "bdw-gc" if build.with? "epic-backend"
   depends_on "emacs" => :optional
 
   setup_ghc_compilers
@@ -41,26 +35,17 @@ class Agda < Formula
       url "https://github.com/agda/agda-stdlib.git", :branch => "master"
     end
   end
+
   resource "stdlib" do
-    url "https://github.com/agda/agda-stdlib/archive/v0.9.tar.gz"
-    sha1 "f39d5685ab2dc47758c87d9068047fce6b4b99a1"
+    url "https://github.com/agda/agda-stdlib.git", :branch => "2.4.2.4"
   end
 
   def install
-    if build.with? "epic-backend"
-      epic_flag = "-fepic"
-    else
-      epic_flag = "-f-epic"
-    end
-
     # install Agda core
     cabal_sandbox do
       cabal_install_tools "alex", "happy", "cpphs"
-      if build.with? "epic-backend"
-        cabal_install "--prefix=#{prefix}", "epic"
-      end
-      cabal_install "--only-dependencies", epic_flag
-      cabal_install "--prefix=#{prefix}", epic_flag
+      cabal_install "--only-dependencies"
+      cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib
 
@@ -119,7 +104,7 @@ class Agda < Formula
     system bin/"agda", "--js", "--safe", test_file_path
 
     # typecheck, compile, and run a program that uses the standard library
-    if build.with? "stdlib" and build.with? "malonzo-ffi"
+    if build.with?("stdlib") && build.with?("malonzo-ffi")
       test_file_path = testpath/"stdlib-test.agda"
       test_file_path.write <<-EOS.undent
         module stdlib-test where

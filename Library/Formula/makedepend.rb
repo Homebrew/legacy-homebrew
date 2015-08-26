@@ -2,7 +2,7 @@ class Makedepend < Formula
   desc "Creates dependencies in makefiles"
   homepage "http://x.org"
   url "http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
-  sha1 "2599afa039d2070bae9df6ce43da288b3a4adf97"
+  sha256 "f7a80575f3724ac3d9b19eaeab802892ece7e4b0061dd6425b4b789353e25425"
 
   bottle do
     cellar :any
@@ -16,12 +16,12 @@ class Makedepend < Formula
 
   resource "xproto" do
     url "http://xorg.freedesktop.org/releases/individual/proto/xproto-7.0.25.tar.bz2"
-    sha1 "335f84713f9da3f77c48536f53abb9b03bcb3961"
+    sha256 "92247485dc4ffc3611384ba84136591923da857212a7dc29f4ad7797e13909fe"
   end
 
   resource "xorg-macros" do
     url "http://xorg.freedesktop.org/releases/individual/util/util-macros-1.18.0.tar.bz2"
-    sha1 "c0b04a082e50bb8d56a904648f61a8f3eea63043"
+    sha256 "e5e3d132a852f0576ea2cf831a9813c54a58810a59cdb198f56b884c5a78945b"
   end
 
   def install

@@ -3,15 +3,15 @@ require "language/go"
 class Algernon < Formula
   desc "HTTP/2 web server with Lua support"
   homepage "http://algernon.roboticoverlords.org/"
-  url "https://github.com/xyproto/algernon/archive/0.74.tar.gz"
-  sha256 "1341af6864643a968d85bfa63ca231604b6d1123919c6826ae179908c6c4a176"
+  url "https://github.com/xyproto/algernon/archive/0.84.tar.gz"
+  sha256 "bc6c9899744ae50736dee1cea1e6c3228d89f8ccf436eb22694664b828e927fc"
   head "https://github.com/xyproto/algernon.git"
 
   bottle do
     cellar :any
-    sha256 "a41696ad4ccfa134a4dd27f38fa3a9238985e24684d0420741ea960eff726dc7" => :yosemite
-    sha256 "67d4783e10c6a3e4d4963e6bef5cc86ba09e6ce18017e2f3b50126842f1b6dcb" => :mavericks
-    sha256 "4252fb3be4ab5c417c593ecc86ad15c2c221bc59d506e72757858c80fe715568" => :mountain_lion
+    sha256 "4ebddb2a0305b89d5b266412f4b25174ad60fff9032a97f64d45e9f2aad86bb7" => :yosemite
+    sha256 "81b3ea73e9a7cae9cee08b02db3d3029d2340335b5b8957dcd128eb93246c906" => :mavericks
+    sha256 "4d6aaf877dd6f8d5606d076f39ebc1d93998ccaba26f683b998525e730449ccb" => :mountain_lion
   end
 
   depends_on "readline"
@@ -31,16 +31,20 @@ class Algernon < Formula
     github.com/go-fsnotify/fsnotify 6549b98005f3e4026ad9f50ef7d5011f40ba1397
     github.com/go-sql-driver/mysql 66b7d5c4956096efd4c945494d64ad73f1d9ec39
     github.com/juju/ratelimit faa59ce93750e747b2997635e8b7daf30024b1ac
+    github.com/klauspost/pgzip 49eeca5953c2a6c7be4e34e8803029e6354d9bb7
     github.com/mamaar/risotto 2683127f39af835e766a70b203efc6a51dd2ebe6
     github.com/mattn/go-runewidth 5890272cd41c5103531cd7b79e428d99c9e97f76
-    github.com/natefinch/pie 704bec149c2c6e52bcb2570c2d8c5e30e0ddc732
-    github.com/nsf/termbox-go 598cdb8b3c49430c1c91604805461732064bde1d
+    github.com/mitchellh/go-homedir 1f6da4a72e57d4e7edd4a7295a585e0a3999a2d4
+    github.com/mitchellh/mapstructure 2caf8efc93669b6c43e0441cdc6aed17546c96f3
+    github.com/natefinch/pie 83bfd1821ee0ba96a47d98cbed424313fb60f57a
+    github.com/nsf/termbox-go 675ffd907b7401b8a709a5ef2249978af5616bb2
     github.com/russross/blackfriday 386ef80f18233ea97960e855a54382ec446c6637
-    github.com/shiena/ansicolor 8368d3b31cf6f2c2464c7a91675342c9a0ac6658
+    github.com/shiena/ansicolor 23296fbcefa1c43b2151a2c65812b71b85cf9f9b
     github.com/shurcooL/sanitized_anchor_name 11a20b799bf22a02808c862eb6ca09f7fb38f84a
-    github.com/sirupsen/logrus 386ccca031649304b1b3e6db057e8cecdaabe760
-    github.com/tylerb/graceful ff20838629c6b3e602864634a75949b3685d584a
+    github.com/sirupsen/logrus d3e4ea403263d5e349c43ba8309e81f820325393
+    github.com/tylerb/graceful ac9ebe4f1ee151ac1eeeaef32957085cba64d508
     github.com/xyproto/cookie b84c85ae2aa3e21b2c7fc8c37d5a3081c0c9c83b
+    github.com/xyproto/jpath d9213e11ca293e9e2705217ed372f53467d079ab
     github.com/xyproto/mime 58d5c367ee5b5e10f4662848579b8ccd759b280e
     github.com/xyproto/permissionbolt b94c45a7f4c70603f12aa1d47a325a37036fd3ba
     github.com/xyproto/permissions2 b5248dea92e87c670813edf4e68dc16eff59c05b
@@ -53,6 +57,7 @@ class Algernon < Formula
     github.com/xyproto/term c9eabb15c0681f48654ee132a8bc6608c7bed8b3
     github.com/xyproto/unzip 823950573952ff86553b26381fe7472549873cb4
     github.com/yosssi/gcss 39677598ea4f3ec1da5568173b4d43611f307edb
+    github.com/yuin/gluamapper d836955830e75240d46ce9f0e6d148d94f2e1d3a
     github.com/yuin/gopher-lua 54750d6aec1c2706990e9ec17438bd88d30231ab
   ].each_slice(2) do |resurl, rev|
     go_resource resurl do
@@ -62,12 +67,12 @@ class Algernon < Formula
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "1e856cbfdf9bc25eefca75f83f25d55e35ae72e0"
+      :revision => "4ed45ec682102c643324fae5dff8dab085b6c300"
   end
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git",
-      :revision => "dfcbca9c45aeabb8971affa4f76b2d40f6f72328"
+      :revision => "dfe268fd2bb5c793f4c083803609fce9806c6f80"
   end
 
   def install
@@ -83,21 +88,13 @@ class Algernon < Formula
       tempdb = "/tmp/_brew_test.db"
       cport = ":45678"
 
-      # Start the server in a detached process
-      fork_pid = fork do
-        `#{bin}/algernon --httponly --server --addr #{cport} --boltdb #{tempdb} --log /dev/null`
+      # Start the server in a fork and retrieve the PID
+      algernon_pid = fork do
+        exec "#{bin}/algernon", "--quiet", "--httponly", "--server", "--boltdb", tempdb, "--addr", cport
       end
-      child_pid = fork_pid + 1
-      Process.detach fork_pid
 
       # Give the server some time to start serving
       sleep(1)
-
-      # Check that we have the right PID
-      pgrep_output = `pgrep algernon`
-      assert_equal 1, pgrep_output.count("\n")
-      assert_equal pgrep_output.to_i, child_pid
-      algernon_pid = child_pid
 
       # Check that the server is responding correctly
       output = `curl -sIm3 -o- http://localhost#{cport}`

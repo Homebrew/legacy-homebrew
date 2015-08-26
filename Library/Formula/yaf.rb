@@ -1,13 +1,14 @@
 class Yaf < Formula
   desc "Yet another flowmeter: processes packet data from pcap(3)"
   homepage "https://tools.netsa.cert.org/yaf/"
-  url "https://tools.netsa.cert.org/releases/yaf-2.6.0.tar.gz"
-  sha1 "ac1ac70a8d1ed8b8dbbfd5ec803880a74fa2894b"
+  url "https://tools.netsa.cert.org/releases/yaf-2.7.1.tar.gz"
+  sha256 "b3fbaa667ea052bdb83a6e6a5bd6529daa93f8f926fa278778716f6dfadd8e5e"
 
   bottle do
-    sha1 "08cbd663f3673eef87f3c086ad149a289c24959b" => :yosemite
-    sha1 "3f44f3792eb169334cbc8bfacabf6883fdc79b83" => :mavericks
-    sha1 "75c573eef68f5e27bffcf04919974759ba73a471" => :mountain_lion
+    cellar :any
+    sha256 "14f8698ab1e0eb80dab5fcfe3321ed81353ad2e81d778123b881943f52d45384" => :yosemite
+    sha256 "9a80bbd53e02e0646e0dcea1bb2246898476bc9bba96f3c9ed2903d6ac114e53" => :mavericks
+    sha256 "35eda635f388b8ab2a69fda16fd80cf00aa1882c166ecc4b944384941ab42d92" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

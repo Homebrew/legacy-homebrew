@@ -4,7 +4,7 @@ class TuntapRequirement < Requirement
   fatal true
   default_formula "tuntap"
   cask "tuntap"
-  satisfy { self.class.binary_tuntap_installed? || Formula["tuntap"].installed? }
+  satisfy(:build_env => false) { self.class.binary_tuntap_installed? || Formula["tuntap"].installed? }
 
   def self.binary_tuntap_installed?
     File.exist?("/Library/Extensions/tun.kext") && File.exist?("/Library/Extensions/tap.kext")

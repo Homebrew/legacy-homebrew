@@ -1,10 +1,8 @@
-require 'formula'
-
 class Aalib < Formula
   desc "Portable ASCII art graphics library"
-  homepage 'http://aa-project.sourceforge.net/aalib/'
-  url 'https://downloads.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz'
-  sha1 'a23269e950a249d2ef93625837cace45ddbce03b'
+  homepage "http://aa-project.sourceforge.net/aalib/"
+  url "https://downloads.sourceforge.net/aa-project/aalib-1.4rc5.tar.gz"
+  sha256 "fbddda9230cf6ee2a4f5706b4b11e2190ae45f5eda1f0409dc4f99b35e0a70ee"
 
   bottle do
     cellar :any
@@ -28,7 +26,11 @@ class Aalib < Formula
                           "--enable-shared=yes",
                           "--enable-static=yes",
                           "--without-x"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "script", "-q", "/dev/null", bin/"aainfo"
   end
 end
 

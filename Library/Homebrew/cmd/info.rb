@@ -12,7 +12,7 @@ module Homebrew
     # awhile around for compatibility
     if ARGV.json == "v1"
       print_json
-    elsif ARGV.flag? '--github'
+    elsif ARGV.flag? "--github"
       exec_browser(*ARGV.formulae.map { |f| github_info(f) })
     else
       print_info
@@ -22,14 +22,18 @@ module Homebrew
   def print_info
     if ARGV.named.empty?
       if HOMEBREW_CELLAR.exist?
-        count = HOMEBREW_CELLAR.subdirs.length
+        count = Formula.racks.length
         puts "#{count} keg#{plural(count)}, #{HOMEBREW_CELLAR.abv}"
       end
     else
-      ARGV.named.each_with_index do |f,i|
+      ARGV.named.each_with_index do |f, i|
         puts unless i == 0
         begin
-          info_formula Formulary.factory(f)
+          if f.include?("/") || File.exist?(f)
+            info_formula Formulary.factory(f)
+          else
+            info_formula Formulary.find_with_priority(f)
+          end
         rescue FormulaUnavailableError
           # No formula with this name, try a blacklist lookup
           if (blacklist = blacklisted?(f))
@@ -44,13 +48,13 @@ module Homebrew
 
   def print_json
     ff = if ARGV.include? "--all"
-           Formula
-         elsif ARGV.include? "--installed"
-           Formula.installed
-         else
-           ARGV.formulae
-         end
-    json = ff.map {|f| f.to_hash}
+      Formula
+    elsif ARGV.include? "--installed"
+      Formula.installed
+    else
+      ARGV.formulae
+    end
+    json = ff.map(&:to_hash)
     puts Utils::JSON.dump(json)
   end
 
@@ -62,7 +66,7 @@ module Homebrew
     end
   end
 
-  def github_info f
+  def github_info(f)
     if f.tap?
       user, repo = f.tap.split("/", 2)
       path = f.path.relative_path_from(HOMEBREW_LIBRARY.join("Taps", f.tap))
@@ -76,7 +80,7 @@ module Homebrew
     end
   end
 
-  def info_formula f
+  def info_formula(f)
     specs = []
 
     if stable = f.stable
@@ -93,7 +97,7 @@ module Homebrew
 
     specs << "HEAD" if f.head
 
-    puts "#{f.full_name}: #{specs*', '}#{' (pinned)' if f.pinned?}"
+    puts "#{f.full_name}: #{specs*", "}#{" (pinned)" if f.pinned?}"
 
     puts f.desc if f.desc
 
@@ -107,12 +111,12 @@ module Homebrew
     end
 
     conflicts = f.conflicts.map(&:name).sort!
-    puts "Conflicts with: #{conflicts*', '}" unless conflicts.empty?
+    puts "Conflicts with: #{conflicts*", "}" unless conflicts.empty?
 
     if f.rack.directory?
       kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
       kegs.each do |keg|
-        puts "#{keg} (#{keg.abv})#{' *' if keg.linked?}"
+        puts "#{keg} (#{keg.abv})#{" *" if keg.linked?}"
         tab = Tab.for_keg(keg).to_s
         puts "  #{tab}" unless tab.empty?
       end
@@ -125,7 +129,7 @@ module Homebrew
 
     unless f.deps.empty?
       ohai "Dependencies"
-      %w{build required recommended optional}.map do |type|
+      %w[build required recommended optional].map do |type|
         deps = f.deps.send(type).uniq
         puts "#{type.capitalize}: #{decorate_dependencies deps}" unless deps.empty?
       end
@@ -137,10 +141,10 @@ module Homebrew
     end
 
     c = Caveats.new(f)
-    ohai 'Caveats', c.caveats unless c.empty?
+    ohai "Caveats", c.caveats unless c.empty?
   end
 
-  def decorate_dependencies dependencies
+  def decorate_dependencies(dependencies)
     # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
     tick = ["2714".hex].pack("U*")
     cross = ["2718".hex].pack("U*")
@@ -153,7 +157,7 @@ module Homebrew
         color = Tty.red
         symbol = cross
       end
-      if ENV['HOMEBREW_NO_EMOJI']
+      if ENV["HOMEBREW_NO_EMOJI"]
         colored_dep = "#{color}#{dep}"
       else
         colored_dep = "#{dep} #{color}#{symbol}"

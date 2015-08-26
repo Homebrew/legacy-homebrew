@@ -17,7 +17,6 @@ class Tegh < Formula
   def install
     if build.head?
       ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
-      ENV["HOME"] = buildpath/".brew_home"
       system "npm", "install"
     end
 

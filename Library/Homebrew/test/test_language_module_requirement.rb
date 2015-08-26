@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'requirements/language_module_requirement'
+require "testing_env"
+require "requirements/language_module_requirement"
 
 class LanguageModuleRequirementTests < Homebrew::TestCase
   parallelize_me!
@@ -32,7 +32,7 @@ class LanguageModuleRequirementTests < Homebrew::TestCase
   end
 
   def test_good_perl_deps
-    assert_deps_pass "ENV" => :perl
+    assert_deps_pass "Env" => :perl
   end
 
   def test_bad_python_deps

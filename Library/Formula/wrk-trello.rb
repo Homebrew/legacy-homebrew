@@ -1,12 +1,10 @@
-require 'formula'
-
 class WrkTrello < Formula
   desc "Command-line interface to Trello"
-  homepage 'https://github.com/blangel/wrk'
-  url 'http://cloud.github.com/downloads/blangel/wrk/wrk-1.0.1.tar.gz'
-  sha1 'e517e9fb66dc285321b38a398aae35956c83a0ea'
+  homepage "https://github.com/blangel/wrk"
+  url "http://cloud.github.com/downloads/blangel/wrk/wrk-1.0.1.tar.gz"
+  sha256 "85aea066c49fd52ad3e30f3399ba1a5e60ec18c10909c5061f68b09d80f5befe"
 
-  conflicts_with 'wrk', :because => 'both install `wrk` binaries'
+  conflicts_with "wrk", :because => "both install `wrk` binaries"
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -16,8 +14,8 @@ class WrkTrello < Formula
   end
 
   def install
-    libexec.install Dir['*']
-    (bin/'wrk').write script
+    libexec.install Dir["*"]
+    (bin/"wrk").write script
   end
 
   def caveats; <<-EOS.undent

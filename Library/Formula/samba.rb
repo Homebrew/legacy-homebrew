@@ -2,16 +2,19 @@ class Samba < Formula
   desc "SMB/CIFS file, print, and login server for UNIX"
   homepage "https://samba.org/"
   url "https://download.samba.org/pub/samba/stable/samba-3.6.25.tar.gz"
-  sha1 "86fbfcfe80454cc7dbe510e7d58c02922cac3efa"
+  sha256 "8f2c8a7f2bd89b0dfd228ed917815852f7c625b2bc0936304ac3ed63aaf83751"
 
   bottle do
-    sha1 "d573b77cb2f4187d366e6a5314982661089c91bf" => :yosemite
-    sha1 "2b74fcea8edca1c15e597fd469d682ccee558a9c" => :mavericks
-    sha1 "32546ed646eec7798f25d18c3bce9d5fef23da06" => :mountain_lion
+    revision 1
+    sha256 "f1fc6a41e7ff919d7c0d2459df72df4dfa84d557481301338cbb74489e80b659" => :yosemite
+    sha256 "3fe2b2aa3b3623dd7d8bc3f2ef7308600125eed03817ecf0fa9d10c0c9911705" => :mavericks
+    sha256 "f6c02ca7f1dd074a3b5c021810351904cbe8b447bd81adc9598e64e1eb342e10" => :mountain_lion
   end
 
   conflicts_with "talloc", :because => "both install `include/talloc.h`"
 
+  # Once the smbd daemon is executed with required root permissions
+  # contents of these two directories becomes owned by root. Sad face.
   skip_clean "private"
   skip_clean "var/locks"
 
@@ -38,12 +41,19 @@ class Samba < Formula
         s.gsub! /(lib\w+).dylib(.[\.\d]+)/, "\\1\\2.dylib"
       end
 
-      system "make", "install"
-      (prefix/"etc").mkpath
-      touch prefix/"etc/smb.conf"
       (prefix/"private").mkpath
-      (var/"locks").mkpath
+      (prefix/"var/locks").mkpath
+
+      system "make", "install"
+      # makefile doesn't have an install target for these
+      (lib/"pkgconfig").install Dir["pkgconfig/*.pc"]
     end
+
+    # Install basic example configuration
+    inreplace "examples/smb.conf.default" do |s|
+      s.gsub! "/usr/local/samba/var/log.%m", "#{prefix}/var/log/samba/log.%m"
+    end
+    (prefix/"etc").install "examples/smb.conf.default" => "smb.conf"
   end
 
   plist_options :manual => "smbd"

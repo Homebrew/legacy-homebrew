@@ -1,15 +1,15 @@
 class DnscryptWrapper < Formula
   desc "Server-side proxy that adds dnscrypt support to name resolvers"
   homepage "https://cofyc.github.io/dnscrypt-wrapper/"
-  url "https://github.com/Cofyc/dnscrypt-wrapper/releases/download/v0.1.15/dnscrypt-wrapper-v0.1.15.tar.bz2"
-  sha256 "d486f3f923c6809c830e9db39290b0f44b1683f63f8bd3aeaa6225c64af232c1"
+  url "https://github.com/Cofyc/dnscrypt-wrapper/releases/download/v0.2/dnscrypt-wrapper-v0.2.tar.bz2"
+  sha256 "d26f9d6329653b71bed5978885385b45f16596021f219f46e49da60d5813054e"
   head "https://github.com/Cofyc/dnscrypt-wrapper.git"
 
   bottle do
     cellar :any
-    sha1 "6275cdc455d328a0b1201c0b4dd6543487b42715" => :yosemite
-    sha1 "384d364ee11cfb150b8072d303de6a7ed72ba450" => :mavericks
-    sha1 "db2434e57e8deb88e066cc575ca1052076156eec" => :mountain_lion
+    sha256 "9a68b02511377f4912555eecc0b82d7bc0d29551fadabcd08436e2f73a338730" => :yosemite
+    sha256 "bba2f1f2761a693f099eaaa4a34c6be2e1591ed86b1b07555401ddb6874cfe54" => :mavericks
+    sha256 "c86c520f58207134ec8e365781cb7d8d80d4ff145d8c859ebca1518b565b5702" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -25,7 +25,7 @@ class DnscryptWrapper < Formula
   end
 
   test do
-    system "#{bin}/dnscrypt-wrapper", "--gen-provider-keypair"
-    system "#{bin}/dnscrypt-wrapper", "--gen-crypt-keypair"
+    system "#{sbin}/dnscrypt-wrapper", "--gen-provider-keypair"
+    system "#{sbin}/dnscrypt-wrapper", "--gen-crypt-keypair"
   end
 end

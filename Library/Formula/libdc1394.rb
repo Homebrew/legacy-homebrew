@@ -1,10 +1,8 @@
-require "formula"
-
 class Libdc1394 < Formula
   desc "Provides API for IEEE 1394 cameras"
   homepage "http://damien.douxchamps.net/ieee1394/libdc1394/"
   url "https://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.2/libdc1394-2.2.2.tar.gz"
-  sha1 "13958c3cd0709565b5e4a9012dcf2a9b710264e2"
+  sha256 "ff8744a92ab67a276cfaf23fa504047c20a1ff63262aef69b4f5dbaa56a45059"
 
   bottle do
     cellar :any
@@ -26,7 +24,7 @@ class Libdc1394 < Formula
                           "--prefix=#{prefix}",
                           "--disable-examples",
                           "--disable-sdltest"
-    system "make install"
+    system "make", "install"
   end
 end
 

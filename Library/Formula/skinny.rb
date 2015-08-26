@@ -1,14 +1,14 @@
 class Skinny < Formula
   desc "Full-stack web app framework built on Scalatra"
   homepage "http://skinny-framework.org/"
-  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.18/skinny-1.3.18.tar.gz"
-  sha256 "03551f3d87d85bbd0ab5ec1279c8ef62db3588921fe6ffca88892a4c896715d1"
+  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.20/skinny-1.3.20.tar.gz"
+  sha256 "b47d3df42fa9b54c77e72bd921261131b565a51a0e4578acac699a83c7365233"
 
   bottle do
     cellar :any
-    sha256 "ee2dcfdd576d69810a50176c9b879b1f567e600edc3e892b0bb9dcbaca72763d" => :yosemite
-    sha256 "0b93e3d12480db7a506129d71e0ed74198eec08ee2ad363bef6c2cacc30ca396" => :mavericks
-    sha256 "54dda9c068592af2c27c77ba38049d64119c78a5c2a7c7ab722d248473f0394a" => :mountain_lion
+    sha256 "d111d7e0cd3a6c8d759a3eeb2a4039f186c79b4a2ae69458dff3eeef773d9364" => :yosemite
+    sha256 "3f5fe80d9a51b7f7b9c82d0e547ca26933d9ce9be3f15fa3ad24c62dd5436f42" => :mavericks
+    sha256 "9ae8759b4feef01177fcfda6c84f450a028bc71a4bb3de6a413a8105e99b87e7" => :mountain_lion
   end
 
   option "without-npm-generator", "Yeoman generator will not be installed"
@@ -17,7 +17,6 @@ class Skinny < Formula
 
   def install
     ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
-    ENV["HOME"] = buildpath/".brew_home"
 
     if build.with? "npm-generator"
       system "npm", "install", "yo"

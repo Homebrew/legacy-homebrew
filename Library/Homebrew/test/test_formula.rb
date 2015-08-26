@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'testball'
+require "testing_env"
+require "testball"
 
 class FormulaTests < Homebrew::TestCase
   def test_formula_instantiation
@@ -16,13 +16,27 @@ class FormulaTests < Homebrew::TestCase
 
   def test_prefix
     f = Testball.new
-    assert_equal HOMEBREW_CELLAR/f.name/'0.1', f.prefix
+    assert_equal HOMEBREW_CELLAR/f.name/"0.1", f.prefix
     assert_kind_of Pathname, f.prefix
   end
 
   def test_revised_prefix
     f = Class.new(Testball) { revision 1 }.new
-    assert_equal HOMEBREW_CELLAR/f.name/'0.1_1', f.prefix
+    assert_equal HOMEBREW_CELLAR/f.name/"0.1_1", f.prefix
+  end
+
+  def test_any_version_installed?
+    f = formula do
+      url "foo"
+      version "1.0"
+    end
+    refute_predicate f, :any_version_installed?
+    prefix = HOMEBREW_CELLAR+f.name+"0.1"
+    prefix.mkpath
+    FileUtils.touch (prefix+Tab::FILENAME)
+    assert_predicate f, :any_version_installed?
+  ensure
+    f.rack.rmtree
   end
 
   def test_installed?
@@ -48,10 +62,10 @@ class FormulaTests < Homebrew::TestCase
 
   def test_installed_prefix_head_installed
     f = formula do
-      head 'foo'
+      head "foo"
       devel do
-        url 'foo'
-        version '1.0'
+        url "foo"
+        version "1.0"
       end
     end
     prefix = HOMEBREW_CELLAR+f.name+f.head.version
@@ -63,10 +77,10 @@ class FormulaTests < Homebrew::TestCase
 
   def test_installed_prefix_devel_installed
     f = formula do
-      head 'foo'
+      head "foo"
       devel do
-        url 'foo'
-        version '1.0'
+        url "foo"
+        version "1.0"
       end
     end
     prefix = HOMEBREW_CELLAR+f.name+f.devel.version
@@ -78,10 +92,10 @@ class FormulaTests < Homebrew::TestCase
 
   def test_installed_prefix_stable_installed
     f = formula do
-      head 'foo'
+      head "foo"
       devel do
-        url 'foo'
-        version '1.0-devel'
+        url "foo"
+        version "1.0-devel"
       end
     end
     prefix = HOMEBREW_CELLAR+f.name+f.version
@@ -93,10 +107,10 @@ class FormulaTests < Homebrew::TestCase
 
   def test_installed_prefix_head
     f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
-      head 'foo'
+      head "foo"
       devel do
-        url 'foo'
-        version '1.0-devel'
+        url "foo"
+        version "1.0-devel"
       end
     end
     prefix = HOMEBREW_CELLAR+f.name+f.head.version
@@ -105,10 +119,10 @@ class FormulaTests < Homebrew::TestCase
 
   def test_installed_prefix_devel
     f = formula("test", Pathname.new(__FILE__).expand_path, :devel) do
-      head 'foo'
+      head "foo"
       devel do
-        url 'foo'
-        version '1.0-devel'
+        url "foo"
+        version "1.0-devel"
       end
     end
     prefix = HOMEBREW_CELLAR+f.name+f.devel.version
@@ -140,31 +154,31 @@ class FormulaTests < Homebrew::TestCase
   end
 
   def test_class_naming
-    assert_equal 'ShellFm', Formulary.class_s('shell.fm')
-    assert_equal 'Fooxx', Formulary.class_s('foo++')
-    assert_equal 'SLang', Formulary.class_s('s-lang')
-    assert_equal 'PkgConfig', Formulary.class_s('pkg-config')
-    assert_equal 'FooBar', Formulary.class_s('foo_bar')
+    assert_equal "ShellFm", Formulary.class_s("shell.fm")
+    assert_equal "Fooxx", Formulary.class_s("foo++")
+    assert_equal "SLang", Formulary.class_s("s-lang")
+    assert_equal "PkgConfig", Formulary.class_s("pkg-config")
+    assert_equal "FooBar", Formulary.class_s("foo_bar")
   end
 
   def test_formula_spec_integration
     f = formula do
-      homepage 'http://example.com'
-      url 'http://example.com/test-0.1.tbz'
-      mirror 'http://example.org/test-0.1.tbz'
+      homepage "http://example.com"
+      url "http://example.com/test-0.1.tbz"
+      mirror "http://example.org/test-0.1.tbz"
       sha1 TEST_SHA1
 
-      head 'http://example.com/test.git', :tag => 'foo'
+      head "http://example.com/test.git", :tag => "foo"
 
       devel do
-        url 'http://example.com/test-0.2.tbz'
-        mirror 'http://example.org/test-0.2.tbz'
+        url "http://example.com/test-0.2.tbz"
+        mirror "http://example.org/test-0.2.tbz"
         sha256 TEST_SHA256
       end
     end
 
-    assert_equal 'http://example.com', f.homepage
-    assert_version_equal '0.1', f.version
+    assert_equal "http://example.com", f.homepage
+    assert_version_equal "0.1", f.version
     assert_predicate f, :stable?
 
     assert_version_equal "0.1", f.stable.version
@@ -172,74 +186,111 @@ class FormulaTests < Homebrew::TestCase
     assert_version_equal "HEAD", f.head.version
   end
 
+  def test_formula_set_active_spec
+    f = formula do
+      url "foo"
+      version "1.0"
+      revision 1
+
+      devel do
+        url "foo"
+        version "1.0beta"
+      end
+    end
+    assert_equal :stable, f.active_spec_sym
+    assert_equal f.stable, f.send(:active_spec)
+    assert_equal "1.0_1", f.pkg_version.to_s
+    f.set_active_spec(:devel)
+    assert_equal :devel, f.active_spec_sym
+    assert_equal f.devel, f.send(:active_spec)
+    assert_equal "1.0beta_1", f.pkg_version.to_s
+    assert_raises(FormulaSpecificationError) { f.set_active_spec(:head) }
+  end
+
   def test_path
-    name = 'foo-bar'
+    name = "foo-bar"
     assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Formula/#{name}.rb"), Formulary.core_path(name)
   end
 
   def test_factory
-    name = 'foo-bar'
+    name = "foo-bar"
     path = HOMEBREW_PREFIX+"Library/Formula/#{name}.rb"
     path.dirname.mkpath
-    File.open(path, 'w') do |f|
-      f << %{
+    File.open(path, "w") do |f|
+      f << %(
         class #{Formulary.class_s(name)} < Formula
           url 'foo-1.0'
         end
-      }
+            )
     end
     assert_kind_of Formula, Formulary.factory(name)
   ensure
     path.unlink
   end
 
-  def test_class_specs_are_always_initialized
-    f = formula { url 'foo-1.0' }
+  def test_factory_with_fully_qualified_name
+    name = "foo-bar"
+    path = HOMEBREW_PREFIX+"Library/Formula/#{name}.rb"
+    path.dirname.mkpath
+    File.open(path, "w") do |f|
+      f << %(
+        class #{Formulary.class_s(name)} < Formula
+          url 'foo-1.0'
+        end
+            )
+    end
+    assert_kind_of Formula, Formulary.factory("homebrew/homebrew/#{name}")
+  ensure
+    path.unlink
+  end
 
-    %w{stable devel head}.each do |spec|
+  def test_class_specs_are_always_initialized
+    f = formula { url "foo-1.0" }
+
+    %w[stable devel head].each do |spec|
       assert_kind_of SoftwareSpec, f.class.send(spec)
     end
   end
 
   def test_incomplete_instance_specs_are_not_accessible
-    f = formula { url 'foo-1.0' }
+    f = formula { url "foo-1.0" }
 
-    %w{devel head}.each { |spec| assert_nil f.send(spec) }
+    %w[devel head].each { |spec| assert_nil f.send(spec) }
   end
 
   def test_honors_attributes_declared_before_specs
     f = formula do
-      url 'foo-1.0'
-      depends_on 'foo'
-      devel { url 'foo-1.1' }
+      url "foo-1.0"
+      depends_on "foo"
+      devel { url "foo-1.1" }
     end
 
-    %w{stable devel head}.each do |spec|
-      assert_equal 'foo', f.class.send(spec).deps.first.name
+    %w[stable devel head].each do |spec|
+      assert_equal "foo", f.class.send(spec).deps.first.name
     end
   end
 
   def test_simple_version
-    assert_equal PkgVersion.parse('1.0'), formula { url 'foo-1.0.bar' }.pkg_version
+    assert_equal PkgVersion.parse("1.0"), formula { url "foo-1.0.bar" }.pkg_version
   end
 
   def test_version_with_revision
     f = formula do
-      url 'foo-1.0.bar'
+      url "foo-1.0.bar"
       revision 1
     end
 
-    assert_equal PkgVersion.parse('1.0_1'), f.pkg_version
+    assert_equal PkgVersion.parse("1.0_1"), f.pkg_version
   end
 
   def test_head_ignores_revisions
     f = formula("test", Pathname.new(__FILE__).expand_path, :head) do
-      url 'foo-1.0.bar'
+      url "foo-1.0.bar"
       revision 1
-      head 'foo'
+      head "foo"
     end
 
-    assert_equal PkgVersion.parse('HEAD'), f.pkg_version
+    assert_equal PkgVersion.parse("HEAD"), f.pkg_version
   end
 
   def test_legacy_options
@@ -256,5 +307,29 @@ class FormulaTests < Homebrew::TestCase
     assert f.option_defined?("foo")
     assert f.option_defined?("bar")
     assert f.option_defined?("baz")
+  end
+
+  def test_desc
+    f = formula do
+      desc "a formula"
+      url "foo-1.0"
+    end
+
+    assert_equal "a formula", f.desc
+  end
+
+  def test_post_install_defined
+    f1 = formula do
+      url "foo-1.0"
+
+      def post_install; end
+    end
+
+    f2 = formula do
+      url "foo-1.0"
+    end
+
+    assert f1.post_install_defined?
+    refute f2.post_install_defined?
   end
 end

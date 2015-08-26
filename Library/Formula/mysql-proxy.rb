@@ -1,10 +1,8 @@
-require "formula"
-
 class MysqlProxy < Formula
   desc "Proxy for MySQL-Server"
   homepage "http://dev.mysql.com/doc/refman/5.6/en/mysql-proxy.html"
   url "https://cdn.mysql.com/Downloads/MySQL-Proxy/mysql-proxy-0.8.5.tar.gz"
-  sha1 "e8599ef16bc7d16daffa654368e02ba73182bfbc"
+  sha256 "e5bac3df8bca2eed41cdbf09439264b34c77339cfe1eda506b0d76eaa2d2b2d5"
 
   depends_on :mysql
   depends_on "pkg-config" => :build
@@ -19,7 +17,7 @@ class MysqlProxy < Formula
                           # Ugh, don't dump these directly into /usr/local/include.
                           # Use a subfolder, please.
                           "--includedir=#{include}/mysqlproxy"
-    system "make install"
+    system "make", "install"
     # Copy over the example scripts
     (share+"mysqlproxy").install Dir["examples/*.lua"]
   end

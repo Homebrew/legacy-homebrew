@@ -1,10 +1,8 @@
-require "formula"
-
 class Bokken < Formula
   desc "GUI for the Pyew and Radare projects"
   homepage "https://inguma.eu/projects/bokken"
   url "https://inguma.eu/attachments/download/197/bokken-1.6.tar.gz"
-  sha1 "9d7a3f8773f01c26c9db84e00c415dbff063f224"
+  sha256 "4770602585b3e77b2977a8a6906c91ae0d64373eae328f42688106224c8bbc12"
 
   bottle do
     cellar :any
@@ -21,13 +19,13 @@ class Bokken < Formula
 
   resource "distorm64" do
     url "http://ftp.de.debian.org/debian/pool/main/d/distorm64/distorm64_1.7.30.orig.tar.gz"
-    sha1 "420b0750ab23775bf3e4ff0ccd4b9a4ebb498787"
+    sha256 "98b218e5a436226c5fb30d3b27fcc435128b4e28557c44257ed2ba66bb1a9cf1"
   end
 
   resource "pyew" do
     # Upstream only provides binary packages so pull from Debian.
     url "http://ftp.de.debian.org/debian/pool/main/p/pyew/pyew_2.0.orig.tar.gz"
-    sha1 "d158b65c17cccda4dd8b7a3d39f1795dfb8e68c4"
+    sha256 "64a4dfb1850efbe2c9b06108697651f9ff25223fd132eec66c6fe84d5ecc17ae"
   end
 
   def install

@@ -1,18 +1,20 @@
 class Dovecot < Formula
   desc "IMAP/POP3 server"
   homepage "http://dovecot.org/"
-  url "http://dovecot.org/releases/2.2/dovecot-2.2.16.tar.gz"
-  mirror "https://fossies.org/linux/misc/dovecot-2.2.16.tar.gz"
-  sha256 "56ce1287a17fa88a2083116db00200deff1a5390af5eac1c8ae3f59a2079cff0"
+  url "http://dovecot.org/releases/2.2/dovecot-2.2.18.tar.gz"
+  mirror "https://fossies.org/linux/misc/dovecot-2.2.18.tar.gz"
+  sha256 "b6d8468cea47f1227f47b80618f7fb872e2b2e9d3302adc107a005dd083865bb"
 
   bottle do
-    sha256 "c7e6a66e2c2feeaee294ce730d839476ea2ee8f6bd6e0be15d3de7f51d0c7c91" => :yosemite
-    sha256 "2f06258ea249f6f74d5ac21eb91456800936949ee9d92ce59baf524684c4c596" => :mavericks
-    sha256 "4dc666bce910531c1696c36b4082f69f6f0102cbc543c60595c686d7cc5fe45f" => :mountain_lion
+    sha256 "2d1e25f40b1006b08da06e87f5b363d4b9654e6c936d7388d2b85239c7e202be" => :yosemite
+    sha256 "f26ea1738aba89131294f2ae229799af0a7e2c4b704362da248563d6b94c4a95" => :mavericks
+    sha256 "5b5f8427b67da36ce686c14d0fc9230fe42884e69c116d46d8eca37f86e79c8a" => :mountain_lion
   end
 
   depends_on "openssl"
   depends_on "clucene" => :optional
+
+  option "with-pam", "Build with PAM support"
 
   def install
     args = %W[
@@ -28,6 +30,7 @@ class Dovecot < Formula
     ]
 
     args << "--with-lucene" if build.with? "clucene"
+    args << "--with-pam" if build.with? "pam"
 
     system "./configure",  *args
     system "make", "install"
@@ -53,6 +56,10 @@ class Dovecot < Formula
         </array>
         <key>ServiceDescription</key>
         <string>Dovecot mail server</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/dovecot/dovecot.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/dovecot/dovecot.log</string>
       </dict>
     </plist>
     EOS

@@ -4,7 +4,7 @@ class AprRequirement < Requirement
   fatal true
   default_formula "apr-util"
 
-  satisfy { MacOS::CLT.installed? }
+  satisfy(:build_env => false) { MacOS::CLT.installed? }
 
   env do
     unless MacOS::CLT.installed?

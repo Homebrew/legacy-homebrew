@@ -1,14 +1,16 @@
 class Groonga < Formula
   desc "Fulltext search engine and column store"
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.0.4.tar.gz"
-  sha256 "338b7a921e6f6dcf3e65d2147a55a9fe646544eeb97653194261111159b4fe10"
+  url "http://packages.groonga.org/source/groonga/groonga-5.0.6.tar.gz"
+  sha256 "85813b6e53d36207e778303b1fe845a2a5843c54e157d5a98af57b5941f071d3"
 
   bottle do
-    sha256 "73dd96e27fcc896f7625fb834f4869ed515c97a41213ceb06c35c379e45a2bfc" => :yosemite
-    sha256 "a79bacfd254ef168aa2f20d116bd6f3ed207cf17b7a7b9a9d8a15b0fa79e861f" => :mavericks
-    sha256 "5d7041fac2246ffda0a056e86a03a8e49eef6617f06dfda6ee1c1e709bb9c09c" => :mountain_lion
+    sha256 "2a3f4bda1bb9e950984dec0560e510bed114a640ec08279b75d0e04bccc4ab38" => :yosemite
+    sha256 "85fdde9af961eac3113f39e096c3a20bc77f0bbade07b91f81daf372a2c2dd6e" => :mavericks
+    sha256 "e5ab452df6b2d7d36f883fe23433a0c286cccf6320888e91de7d83600d391237" => :mountain_lion
   end
+
+  option "with-benchmark", "With benchmark program for developer use"
 
   depends_on "pkg-config" => :build
   depends_on "pcre"
@@ -18,9 +20,9 @@ class Groonga < Formula
   depends_on "lz4" => :optional
   depends_on "openssl"
 
-  depends_on "glib" if build.include? "enable-benchmark"
+  depends_on "glib" if build.with? "benchmark"
 
-  option "enable-benchmark", "Enable benchmark program for developer use"
+  deprecated_option "enable-benchmark" => "with-benchmark"
 
   def install
     args = %W[
@@ -37,7 +39,11 @@ class Groonga < Formula
 
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
-    system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    output = shell_output("groonga --version")
+    assert_match /groonga #{version}/, output
   end
 end

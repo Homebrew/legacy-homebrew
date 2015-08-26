@@ -3,15 +3,15 @@ require "language/go"
 class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
-  url "https://github.com/docker/machine/archive/v0.2.0.tar.gz"
-  sha256 "ba4df6728280732e70dcabc2aeb903babac0bbefb3f1c11e7f131e3aad0f2131"
+  url "https://github.com/docker/machine/archive/v0.4.1.tar.gz"
+  sha256 "f089657b2de7a3ce15374e69be3f654b0866f75eb077ca363f8a5933ccf51cda"
   head "https://github.com/docker/machine.git"
 
   bottle do
     cellar :any
-    sha256 "3c4f95abe4ea2f9fe3f74675fe4a615a7e0dacc5b19fd8736890ef8f7986ed76" => :yosemite
-    sha256 "dccb6caa7f58f2bdc38c1c9d4b4e7cf6344caeb64228b5292ea00066bbffd74e" => :mavericks
-    sha256 "ed22e427b1ecb3965eac5184951d807c4ec91e49eb17997bbc10b1987e0450c4" => :mountain_lion
+    sha256 "ec656857e23724204cb94cf6eea10feb887b9db0ae6027c751b95ae62e77d315" => :yosemite
+    sha256 "4890545e0d50d8920394803313b95af81368414aa3a27f3fa16475e4fe9b69a7" => :mavericks
+    sha256 "f282138ad3860b2b05c86f1a070c6fe3722220ea358c61ece16e8098b0798430" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -32,12 +32,18 @@ class DockerMachine < Formula
     url "https://github.com/golang/crypto.git", :revision => "8b27f58b78dbd60e9a26b60b0d908ea642974b6d"
   end
 
-  go_resource "github.com/docker/machine" do
-    url "https://github.com/docker/machine.git", :revision => "8b9eaf2b6fda23550e09bde1054eeab78e5493bd"
+  go_resource "github.com/Sirupsen/logrus" do
+    url "https://github.com/Sirupsen/logrus.git", :revision => "21d4508646ae56d79244bd9046c1df63a5fa8c37"
+  end
+
+  go_resource "github.com/pmezard/go-difflib/difflib" do
+    url "https://github.com/pmezard/go-difflib.git", :revision => "f78a839676152fd9f4863704f5d516195c18fc14"
   end
 
   def install
     ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/docker/"
+    ln_sf buildpath, buildpath/"src/github.com/docker/machine"
     Language::Go.stage_deps resources, buildpath/"src"
 
     cd "src/github.com/tools/godep" do

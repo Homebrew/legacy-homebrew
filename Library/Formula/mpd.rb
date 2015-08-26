@@ -4,16 +4,15 @@ class Mpd < Formula
   revision 1
 
   stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.9.tar.xz"
-    sha256 "47851423053cd38cfad65be5985b41b7cd5bdbe8d0d13378e11748a28b19f26f"
+    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.10.tar.xz"
+    sha256 "c386eb3d22f98dc993b5ae3c272f969aa7763713483c6800040ebf1791b15851"
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "17b549191c5093717380ec7401199b387dd1d89d1ac7f807f20c25d87ce16586" => :yosemite
-    sha256 "aba64fcb2dd7d5ad2f756d0f3a6c8edeb8e6c85883a25a66e635e92f73076d91" => :mavericks
-    sha256 "f84f912abb45f3f99c2c1233c4117667aaa6248e94115c7d3f5e9611028f8bae" => :mountain_lion
+    sha256 "a6615df5ecee11a47d2e89492ba1d0eceb51bc832947fa819bab7b047ce09769" => :yosemite
+    sha256 "e42806034935a83e74af7be956dd1bb2c01dacad3243713f0af806a16ac4068f" => :mavericks
+    sha256 "6b2bd4efd0e48f603327446c40229fc67fc697b0011859cdefb3cb0fa3ef8059" => :mountain_lion
   end
 
   head do

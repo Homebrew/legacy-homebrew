@@ -1,79 +1,60 @@
 class Go < Formula
   desc "Go programming environment"
   homepage "https://golang.org"
-  # Version 1.5 is going to require version 1.4 present to bootstrap 1.4
-  # Perhaps we can use our previous bottles, ala the discussion around PyPy?
-  # https://docs.google.com/document/d/1OaatvGhEAq7VseQ9kkavxKNAfepWy2yhPUBs96FGV28
-  url "https://storage.googleapis.com/golang/go1.4.2.src.tar.gz"
-  sha1 "460caac03379f746c473814a65223397e9c9a2f6"
-  version "1.4.2"
+  url "https://storage.googleapis.com/golang/go1.5.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.5.src.tar.gz"
+  version "1.5"
+  sha256 "be81abec996d5126c05f2d36facc8e58a94d9183a56f026fc9441401d80062db"
 
-  head "https://go.googlesource.com/go", :using => :git
+  head "https://github.com/golang/go.git"
 
   bottle do
-    revision 1
-    sha1 "b3ec148a548331c3fd75435b7aa6ae2378ce995e" => :yosemite
-    sha1 "a4ea2ffdd9db813c870b0ce73c011788ac60cb51" => :mavericks
-    sha1 "bc52571c43f59f92ca461ff310693501f2419a04" => :mountain_lion
+    sha256 "5733b061936b485265f8e2a3f34eda693ae15c3e1326b6fba65b421af2ebccaf" => :yosemite
+    sha256 "6eff306a07221d06bc5fb374561eab5df9074da55c1862c415f699b5189d3387" => :mavericks
+    sha256 "f4dc40f7a48a5dde33dc02ff601e9a02c0f516204b2bd57a46184bdd07a63f53" => :mountain_lion
   end
 
-  option "with-cc-all", "Build with cross-compilers and runtime support for all supported platforms"
-  option "with-cc-common", "Build with cross-compilers and runtime support for darwin, linux and windows"
   option "without-cgo", "Build without cgo"
   option "without-godoc", "godoc will not be installed for you"
   option "without-vet", "vet will not be installed for you"
 
-  deprecated_option "cross-compile-all" => "with-cc-all"
-  deprecated_option "cross-compile-common" => "with-cc-common"
-
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
-    :revision => "69db398fe0e69396984e3967724820c1f631e971"
+    :revision => "d02228d1857b9f49cd0252788516ff5584266eb6"
+  end
+
+  resource "gobootstrap" do
+    if MacOS.version > :lion
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.8.tar.gz"
+      sha256 "c2f53983fc8fe5159d811081022ebc401b8111759ce008f91193abdae82cdbc9"
+    else
+      url "https://storage.googleapis.com/golang/go1.4.2.darwin-amd64-osx10.6.tar.gz"
+      sha256 "da40e85a2c9bda9d2c29755c8b57b8d5932440ba466ca366c2a667697a62da4c"
+    end
   end
 
   def install
-    # host platform (darwin) must come last in the targets list
-    if build.with? "cc-all"
-      targets = [
-        ["linux",   ["386", "amd64", "arm"]],
-        ["freebsd", ["386", "amd64", "arm"]],
-        ["netbsd",  ["386", "amd64", "arm"]],
-        ["openbsd", ["386", "amd64"]],
-        ["windows", ["386", "amd64"]],
-        ["dragonfly", ["386", "amd64"]],
-        ["plan9",   ["386", "amd64"]],
-        ["solaris", ["amd64"]],
-        ["darwin",  ["386", "amd64"]],
-      ]
-    elsif build.with? "cc-common"
-      targets = [
-        ["linux",   ["386", "amd64", "arm"]],
-        ["windows", ["386", "amd64"]],
-        ["darwin",  ["386", "amd64"]],
-      ]
-    else
-      targets = [["darwin", [""]]]
-    end
+    # GOROOT_FINAL must be overidden later on real Go install
+    ENV["GOROOT_FINAL"] = buildpath/"gobootstrap"
 
-    # The version check is due to:
-    # http://codereview.appspot.com/5654068
-    (buildpath/"VERSION").write("default") if build.head?
+    # build the gobootstrap toolchain Go >=1.4
+    (buildpath/"gobootstrap").install resource("gobootstrap")
+    cd "#{buildpath}/gobootstrap/src" do
+      system "./make.bash", "--no-clean"
+    end
+    # This should happen after we build the test Go, just in case
+    # the bootstrap toolchain is aware of this variable too.
+    ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
 
     cd "src" do
-      targets.each do |os, archs|
-        cgo_enabled = os == "darwin" && build.with?("cgo") ? "1" : "0"
-        archs.each do |arch|
-          ENV["GOROOT_FINAL"] = libexec
-          ENV["GOOS"]         = os
-          ENV["GOARCH"]       = arch
-          ENV["CGO_ENABLED"]  = cgo_enabled
-          ohai "Building go for #{arch}-#{os}"
-          system "./make.bash", "--no-clean"
-        end
-      end
+      ENV["GOROOT_FINAL"] = libexec
+      ENV["GOOS"]         = "darwin"
+      ENV["CGO_ENABLED"]  = build.with?("cgo") ? "1" : "0"
+      system "./make.bash", "--no-clean"
     end
 
     (buildpath/"pkg/obj").rmtree
+    rm_rf "gobootstrap" # Bootstrap not required beyond compile.
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/go*"]
 

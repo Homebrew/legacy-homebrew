@@ -4,7 +4,7 @@ class FormulaVersions
   IGNORED_EXCEPTIONS = [
     ArgumentError, NameError, SyntaxError, TypeError,
     FormulaSpecificationError, FormulaValidationError,
-    ErrorDuringExecution, LoadError,
+    ErrorDuringExecution, LoadError
   ]
 
   attr_reader :name, :repository, :entry_name

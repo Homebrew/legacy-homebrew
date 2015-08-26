@@ -6,10 +6,10 @@ class Mongoose < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "e3a80b68e0a50275295218d1400666cc079c24f39d2ae1f7a3b59fbd7e9c674d" => :yosemite
-    sha256 "731126c1b98a2e42c593378881c7f8ed7d9b9b54720f6896ca5aedd5fba8819d" => :mavericks
-    sha256 "ba1fc7d05e6c7afe5be544e7089c2e26dde5cdfde93c0128353be19081ed86db" => :mountain_lion
+    revision 2
+    sha256 "158f24303e018ec3f9ee05d3ffe10a2399b700cfdf869e9fe2970f68105b1fe5" => :yosemite
+    sha256 "53cbd378f59876d7922ba743c99dedc305707c13caeea0339667bf5006080b24" => :mavericks
+    sha256 "e9ee23cf028f5be715fbae963cf661dffc9850b71039c90f2aae70e07c410fda" => :mountain_lion
   end
 
   depends_on "openssl" => :recommended
@@ -29,7 +29,7 @@ class Mongoose < Formula
     system ENV.cc, "-dynamiclib", "mongoose.c", "-o", "libmongoose.dylib"
     include.install "mongoose.h"
     lib.install "libmongoose.dylib"
-    share.install "examples", "jni"
+    pkgshare.install "examples", "jni"
     doc.install Dir["docs/*"]
   end
 

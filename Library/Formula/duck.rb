@@ -1,15 +1,15 @@
 class Duck < Formula
   desc "Command-line interface for Cyberduck (a multi-protocol file transfer tool)"
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-4.7.17432.tar.gz"
-  sha1 "100996ffbabf2586eb149efd3097b4af20efa728"
+  url "https://dist.duck.sh/duck-src-4.8.18026.tar.gz"
+  sha256 "ff75b2b0a4df30aef4f6cd2ba20fb3fa1198760fb7d8216abc62e032df4aa1e4"
   head "https://svn.cyberduck.io/trunk/"
 
   bottle do
     cellar :any
-    sha256 "d514c0960a9d735b84257e57f7878b87bdc99d425aa7dd3cab456ec57f5fcafe" => :yosemite
-    sha256 "4b2278554fe444de99c510fce0d236058ddf3c63d504a566d3ad33eb34f66b53" => :mavericks
-    sha256 "e6963de8e17bd35f4299e9add6176bdb434b9760450019ef1d36ca99577ea73a" => :mountain_lion
+    sha256 "b14924b6c4dac4b231f66cc7884bddf038d37f40be590c8862971c861b625375" => :yosemite
+    sha256 "64101f8ba099696c0fce07e14fe7986ffe7d31a91c58bae50abe402af490b1a1" => :mavericks
+    sha256 "84feb0fe67c6efc85b4afb7ad029989623046f4b5dab717098af371900d0b887" => :mountain_lion
   end
 
   depends_on :java => ["1.7+", :build]
@@ -24,8 +24,7 @@ class Duck < Formula
   end
 
   test do
-    filename = (testpath/"test")
-    system "#{bin}/duck", "--download", stable.url, filename
-    filename.verify_checksum stable.checksum
+    system "#{bin}/duck", "--download", Formula["when"].stable.url, testpath/"test"
+    (testpath/"test").verify_checksum Formula["when"].stable.checksum
   end
 end

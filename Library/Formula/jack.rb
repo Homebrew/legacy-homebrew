@@ -9,7 +9,7 @@ class Jack < Formula
   desc "Jack Audio Connection Kit (JACK)"
   homepage "http://jackaudio.org"
   url "http://jackaudio.org/downloads/jack-audio-connection-kit-0.124.1.tar.gz"
-  sha1 "e9ba4a4c754ec95fbe653dcf7344edd6cc47cd60"
+  sha256 "eb42df6065576f08feeeb60cb9355dce4eb53874534ad71534d7aa31bae561d6"
 
   bottle do
     revision 2
@@ -53,6 +53,11 @@ class Jack < Formula
   end
 
   def install
+    # Makefile hardcodes Carbon header location
+    inreplace Dir["drivers/coreaudio/Makefile.{am,in}"],
+      "/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h",
+      "#{MacOS.sdk_path}/System/Library/Frameworks/Carbon.framework/Headers/Carbon.h"
+
     ENV["LINKFLAGS"] = ENV.ldflags
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"

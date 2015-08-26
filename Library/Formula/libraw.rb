@@ -2,7 +2,7 @@ class Libraw < Formula
   desc "Library for reading RAW files from digital photo cameras"
   homepage "http://www.libraw.org/"
   url "http://www.libraw.org/data/LibRaw-0.16.0.tar.gz"
-  sha1 "492239aa209b1ddd1f030da4fc2978498c32a29b"
+  sha256 "71f43871ec2535345c5c9b748f07813e49915170f9510b721a2be6478426cf96"
 
   bottle do
     cellar :any
@@ -18,21 +18,21 @@ class Libraw < Formula
   resource "librawtestfile" do
     url "http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF",
       :using => :nounzip
-    sha1 "d84d47caeb8275576b1c7c4550263de21855cf42"
+    sha256 "7886d8b0e1257897faa7404b98fe1086ee2d95606531b6285aed83a0939b768f"
   end
 
   resource "gpl2" do
     url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.16.0.tar.gz"
-    sha1 "af4959b111e8cd927c3a23cca5ad697521fae3d2"
+    sha256 "749d49694ce729166ec7a1faf7580780687ef190c756931bb075455ee8ed6697"
   end
 
   resource "gpl3" do
     url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.16.0.tar.gz"
-    sha1 "8a709ae35e7a040b78ffb6b9d21faab25f7146cb"
+    sha256 "f2e904f9baa7d173b5ade163c795f26e110255a758e31bd213086a5a61500b5c"
   end
 
   def install
-    %w(gpl2 gpl3).each {|f| (buildpath/f).install resource(f)}
+    %w[gpl2 gpl3].each { |f| (buildpath/f).install resource(f) }
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--enable-demosaic-pack-gpl2=#{buildpath}/gpl2",

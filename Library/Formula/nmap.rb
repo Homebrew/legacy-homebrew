@@ -14,7 +14,7 @@ class Nmap < Formula
 
   depends_on "openssl"
 
-  conflicts_with 'ndiff', :because => 'both install `ndiff` binaries'
+  conflicts_with "ndiff", :because => "both install `ndiff` binaries"
 
   fails_with :llvm do
     build 2334
@@ -39,6 +39,6 @@ class Nmap < Formula
   end
 
   test do
-    system "#{bin}/nmap", '-p80,443', 'google.com'
+    system "#{bin}/nmap", "-p80,443", "google.com"
   end
 end

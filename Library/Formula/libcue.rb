@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libcue < Formula
   desc "Cue sheet parser library for C"
-  homepage 'http://sourceforge.net/projects/libcue/'
-  url 'https://downloads.sourceforge.net/project/libcue/libcue/1.4.0/libcue-1.4.0.tar.bz2'
-  sha1 '3fd31f2da7c0e3967d5f56363f3051a85a8fd50d'
+  homepage "http://sourceforge.net/projects/libcue/"
+  url "https://downloads.sourceforge.net/project/libcue/libcue/1.4.0/libcue-1.4.0.tar.bz2"
+  sha256 "8b7276ec2a2b3918cbc59a3cc03c68dc0775965cc20e4b88757b852ff369729e"
 
   bottle do
     cellar :any
@@ -17,6 +15,6 @@ class Libcue < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

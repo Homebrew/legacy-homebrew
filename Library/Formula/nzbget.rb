@@ -1,22 +1,15 @@
 class Nzbget < Formula
   desc "Binary newsgrabber for nzb files"
   homepage "http://nzbget.net/"
-  url "https://downloads.sourceforge.net/project/nzbget/nzbget-stable/14.2/nzbget-14.2.tar.gz"
-  sha1 "25adf5565d228cf1cbb8fa305732f61a6f869aa0"
+  url "https://github.com/nzbget/nzbget/releases/download/v15.0/nzbget-15.0-src.tar.gz"
+  sha256 "3ef13f3e5917e4cda19c4fc0cd37e79967a19b4e3448c239ff24e37712a6cc0a"
 
-  devel do
-    url "https://downloads.sourceforge.net/project/nzbget/nzbget-testing/15.0-r1207/nzbget-15.0-testing-r1207.tar.gz"
-    sha1 "37f9d069df4bab4a78a1999434a2152aae6c2577"
-    version "15.0-r1207"
-  end
-
-  head "https://nzbget.svn.sourceforge.net/svnroot/nzbget/trunk"
+  head "https://github.com/nzbget/nzbget.git"
 
   bottle do
-    revision 1
-    sha1 "a99dad2495312ed2b6a44f094866edec6de3c60a" => :yosemite
-    sha1 "c88d1e24b4a32652154cfce1ed3e9eb1215f9259" => :mavericks
-    sha1 "254d5ba9030626f11fc3891b8b684917295647f9" => :mountain_lion
+    sha256 "575aa6f2c1e7a0782a0d01a735641b398819eebeedb45fc79893a0d8d8a99e1a" => :yosemite
+    sha256 "4d9ba1a2d89d3f9cd2abccef3e3f3223c2e9d7a68582c1ea11eb20b0bcea37c0" => :mavericks
+    sha256 "34f2fa74cd448347f0161e7adfdcfec754b3991e5058aad826df565f55e9776d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -33,7 +26,7 @@ class Nzbget < Formula
 
   resource "libpar2" do
     url "https://launchpad.net/libpar2/trunk/0.4/+download/libpar2-0.4.tar.gz"
-    sha1 "c4a5318edac0898dcc8b1d90668cfca2ccfe0375"
+    sha256 "316d6f0eb31eb896f5546171c2e86801aeffe5ae5e2decffc17f0018346796d4"
   end
 
   def install

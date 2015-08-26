@@ -12,7 +12,7 @@ class ExampleFormula < Formula
   desc "Example formula" # shows up in `brew info`, and can be searched with `brew search --desc`.
   homepage "https://www.example.com" # used by `brew home example-formula`.
   revision 1 # This is used when there's no new version but it needs recompiling for another reason.
-             # 0 is default & unwritten.
+  # 0 is default & unwritten.
 
   # The URL of the archive. Prefer https (security and proxy issues):
   url "https://packed.sources.and.we.prefer.https.example.com/archive-1.2.3.tar.bz2"
@@ -72,7 +72,6 @@ class ExampleFormula < Formula
     depends_on "pixman"
   end
 
-
   ## Options
 
   # Options can be used as arguments to `brew install`.
@@ -119,7 +118,6 @@ class ExampleFormula < Formula
   # Homebrew. This way, we don't shadow software provided by OS X.
   keg_only :provided_by_osx
   keg_only "because I want it so"
-
 
   ## Dependencies
 
@@ -184,7 +182,6 @@ class ExampleFormula < Formula
   # If this formula conflicts with another one:
   conflicts_with "imagemagick", :because => "because this is just a stupid example"
 
-
   ## Failing with a certain compiler?
 
   # If it is failing for certain compiler:
@@ -207,7 +204,6 @@ class ExampleFormula < Formula
     url "https://example.com/additional-stuff.tar.gz"
     sha256 "c6bc3f48ce8e797854c4b865f6a8ff969867bbcaebd648ae6fd825683e59fef2"
   end
-
 
   ## Patches
 
@@ -330,16 +326,17 @@ class ExampleFormula < Formula
 
     # Need to install into the bin but the makefile doesn't mkdir -p prefix/bin?
     bin.mkpath
-    # A custom directory?
-    mkdir_p share/"example"
-    # And then move something from the buildpath to that directory?
-    mv "ducks.txt", share/"example/ducks.txt"
+    # Need a custom directory?
+    (share/"concept").mkpath
+    # Installing something into another custom directory?
+    (share/"concept2").install "ducks.txt"
     # No "make", "install" available?
     bin.install "binary1"
     include.install "example.h"
     lib.install "example.dylib"
     man1.install "example.1"
     man3.install "example.3"
+    pkgshare.install "examples"
     # Maybe you'd like to remove a broken or unnecessary element?
     # Empty directories will be removed by Homebrew automatically post-install!
     rm "bin/example"
@@ -375,6 +372,7 @@ class ExampleFormula < Formula
     man8 # man+"man8"
     sbin # prefix+"sbin"
     share # prefix+"share"
+    pkgshare # prefix+"share"+name
     frameworks # prefix+"Frameworks"
     kext_prefix # prefix+"Library/Extensions"
     # Configuration stuff that will survive formula updates
@@ -399,11 +397,11 @@ class ExampleFormula < Formula
     # `name` and `version` are accessible too, if you need them.
   end
 
-
   ## Caveats
 
-  def caveats
-    "Are optional. Something the user should know?"
+  def caveats; <<-EOS.undent
+    Are optional. Something the user should know?
+  EOS
   end
 
   def caveats
@@ -416,8 +414,7 @@ class ExampleFormula < Formula
     s
   end
 
-
-  ## Test (is optional but makes us happy)
+  ## Test (is required for new formula & makes us happy)
 
   test do
     # `test do` will create, run in, and delete a temporary directory.
@@ -444,7 +441,6 @@ class ExampleFormula < Formula
     # Failed assertions and failed `system` commands will raise exceptions.
   end
 
-
   ## Plist handling
 
   # Does your plist need to be loaded at startup?
@@ -466,7 +462,7 @@ class ExampleFormula < Formula
         <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{bin}/example</string>
+        <string>#{opt_bin}/example</string>
         <string>--do-this</string>
       </array>
       <key>RunAtLoad</key>
