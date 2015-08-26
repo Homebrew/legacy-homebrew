@@ -8,14 +8,14 @@ class Bash < Formula
     url "http://ftpmirror.gnu.org/bash/bash-4.3.tar.gz"
     mirror "https://ftp.gnu.org/gnu/bash/bash-4.3.tar.gz"
     sha256 "afc687a28e0e24dc21b988fa159ff9dbcf6b7caa92ade8645cc6d5605cd024d4"
-    version "4.3.39"
+    version "4.3.42"
 
     # Vendor the patches. The mirrors are unreliable for getting the patches,
     # and the more patches there are, the more unreliable they get. Upstream
     # patches can be found in: http://git.savannah.gnu.org/cgit/bash.git
     patch do
-      url "https://gist.githubusercontent.com/dunn/6d64e94f36a4e2416bab/raw/ed7e7fe6e1111d88f5f987a7201de48cfe461a3b/bash-4.3.39.diff"
-      sha256 "9fe461b0d461a3918b32a0fed3bcfef4c2e774e0f867730a1bbfa8d510cfbcfd"
+      url "https://gist.githubusercontent.com/dunn/a8986687991b57eb3b25/raw/76dd864812e821816f4b1c18e3333c8fced3919b/bash-4.3.42.diff"
+      sha256 "2eeb9b3ed71f1e13292c2212b6b8036bc258c58ec9c82eec7a86a091b05b15d2"
     end
   end
 
