@@ -1,8 +1,8 @@
 class Fontforge < Formula
-  desc "Outline and bitmap font editor/converter for many formats"
+  desc "Command-line outline and bitmap font editor/converter"
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/archive/20150612.tar.gz"
-  sha256 "af4997a07c96f7057f08cb5c7d71b19a0e8ac6336e0c48476471b471c0574247"
+  url "https://github.com/fontforge/fontforge/archive/20150824.tar.gz"
+  sha256 "28ab2471cb010c1fa75b8ab8191a1dded81fe1e9490aa5ff6ab4706a4c78ff27"
   head "https://github.com/fontforge/fontforge.git"
 
   bottle do
