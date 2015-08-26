@@ -2,6 +2,7 @@
 
 * Fix server-stop.sh so it works with spark-submit (@addisonj @RussellSpitzer @jmelching)
 * Upgrade to spray-json 1.3.2 (@v-gerasimov)
+* Upgrade joda-time to 2.2 (@jwalgran)
 * Docker fixes, such as for logging (@MeiSign)
 * JobSqlDAO to support username, password, DB connection pooling (@ffarozan)
 * Doc: Instructions for running job-server docker container in yarn-client (@MeiSign)
