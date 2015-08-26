@@ -12,7 +12,7 @@ object Dependencies {
 
   lazy val yodaDeps = Seq(
     "org.joda" % "joda-convert" % "1.2",
-    "joda-time" % "joda-time" % "2.1"
+    "joda-time" % "joda-time" % "2.2"
   )
 
   lazy val akkaDeps = Seq(
