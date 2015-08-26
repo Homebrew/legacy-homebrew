@@ -236,6 +236,8 @@ def validate(sc:SparkContext, config: Contig): SparkJobValidation = {
 
 ## Deployment
 
+### Manual steps
+
 1. Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.  NOTE: be sure to set SPARK_VERSION if you need to compile against a different version, ie. 1.4.1 for job server 0.5.2
 2. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
    it to the remotes you have configured in `<environment>.sh`
@@ -247,6 +249,10 @@ NOTE: by default the assembly jar from `job-server-extras`, which includes suppo
 
 Note: to test out the deploy to a local staging dir, or package the job server for Mesos,
 use `bin/server_package.sh <environment>`.
+
+### Chef
+
+There is also a [Chef cookbook](https://github.com/spark-jobserver/chef-spark-jobserver) which can be used to deploy Spark Jobserver.
 
 ## Architecture
 
