@@ -17,7 +17,8 @@ class Metashell < Formula
   # This patch is required because Mountain Lion uses an old compiler which breaks
   # compiling some Templight code. The patch comments out unused parts of Templight,
   # so patched version is functionally equivalent. This error should be fixed in
-  # the next release of Metashell.
+  # the next release of Metashell. 
+  # Link: https://github.com/sabel83/metashell/issues/28
   patch :DATA if MacOS.version == :mountain_lion
 
   def install
