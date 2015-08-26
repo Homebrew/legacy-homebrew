@@ -7,6 +7,13 @@ class Snag < Formula
   sha256 "3b9df4e2409e37c8f74ab16e4d276544bac81acd66caabdab62b07f321adc0a1"
   head "https://github.com/Tonkpils/snag.git"
 
+  bottle do
+    cellar :any
+    sha256 "28b858b8b2cba0a79444018fbf382c002ecd905a35d75353a6db0626e436aa41" => :yosemite
+    sha256 "9fea39e73b26377b0904e88f954f2ebbb575fcd668ea32723f50aae1770ec9cd" => :mavericks
+    sha256 "a279c7f9e5f754480acdec327628b0b0593ba5390aac2408498b1930fc72434f" => :mountain_lion
+  end
+
   depends_on "go" => :build
 
   go_resource "gopkg.in/yaml.v2" do
