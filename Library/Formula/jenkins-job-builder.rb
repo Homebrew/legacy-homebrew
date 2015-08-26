@@ -1,8 +1,8 @@
 class JenkinsJobBuilder < Formula
   desc "Configure Jenkins jobs with YAML files stored in Git"
   homepage "http://ci.openstack.org/jjb.html"
-  url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.2.0.tar.gz"
-  sha256 "77ac34ff3679c4cd6e1b205955240a479a95e43433eef5caacb7d308166cdd26"
+  url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.3.0.tar.gz"
+  sha256 "dd74dc9673c1f18e41ccd83d6d78b21409375bc84981881bab62fd0f8dbb3b84"
 
   bottle do
     cellar :any
@@ -29,13 +29,13 @@ class JenkinsJobBuilder < Formula
   end
 
   resource "python-jenkins" do
-    url "https://pypi.python.org/packages/source/p/python-jenkins/python-jenkins-0.4.5.tar.gz"
-    sha256 "e69949ff81064b17bf9f82f89ce511b4c19a8ddd0a69c180494278905e86e85b"
+    url "https://pypi.python.org/packages/source/p/python-jenkins/python-jenkins-0.4.8.tar.gz"
+    sha256 "ec33a1b6d1b74350d84ccff05cf41d4fb2677fc63bac8a471db5038c67fcdd93"
   end
 
   resource "pbr" do
-    url "https://pypi.python.org/packages/source/p/pbr/pbr-0.10.8.tar.gz"
-    sha256 "a741650c697abe9dd3da00039a57a45a15a6eed017a16f6b7e4c0161fae2b4b2"
+    url "https://pypi.python.org/packages/source/p/pbr/pbr-1.6.0.tar.gz"
+    sha256 "4eaee8ff5544703edd1951ed1dc0b283da99a74f740d9f9055eeefcf329de1d1"
   end
 
   resource "six" do
@@ -44,8 +44,8 @@ class JenkinsJobBuilder < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha256 "0d58487a1b7f5be2e5e965c11afbea1dc44ecec8069de03491a4d0d6c85f4551"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
+    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
   def install
