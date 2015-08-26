@@ -20,9 +20,9 @@ class Bash < Formula
   end
 
   bottle do
-    sha256 "ee7ba6eec21b7ff28f7f4af4aa61410e898a332a962890ba427ababff461b476" => :yosemite
-    sha256 "cd77ab76ba9669e9aaa7530d3f8050af402e5216093ac5d601d0bc1e71243ced" => :mavericks
-    sha256 "d02261c71893bcde61fb1b1c84b49e0e7d60df9fd62b4d5af76afd1f4b29de7e" => :mountain_lion
+    sha256 "e4c37730749adcdbc274fa57b62300f2f2c68078b962cfd196a7e8f0764b543c" => :yosemite
+    sha256 "4078f42a58506e67d25ec0f82f85efd265bf2eac606a9aeca50a7e7bd5b7e025" => :mavericks
+    sha256 "4fded417b56f73ffcf48b5d05bc22e04beb521c7f91f4d6b5671876173584c27" => :mountain_lion
   end
 
   depends_on "readline"
