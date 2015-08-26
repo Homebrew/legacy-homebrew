@@ -13,7 +13,7 @@ class Sdl < Formula
   end
 
   head do
-    url "http://hg.libsdl.org/SDL", :branch => "SDL-1.2", :using => :hg
+    url "https://hg.libsdl.org/SDL", :branch => "SDL-1.2", :using => :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -35,7 +35,7 @@ class Sdl < Formula
 
     # Fix build against recent libX11; requires regenerating configure script
     patch do
-      url "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
+      url "https://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
       sha1 "1b35949d9ac360a7e39aac76d1f0a6ad5381b0f4"
     end
   end
@@ -43,13 +43,13 @@ class Sdl < Formula
   # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
   # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
   patch do
-    url "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320"
+    url "https://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320"
     sha256 "ba0bf2dd8b3f7605db761be11ee97a686c8516a809821a4bc79be738473ddbf5"
   end
 
   # Fix compilation error on 10.6 introduced by the above patch
   patch do
-    url "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1324"
+    url "https://bugzilla-attachments.libsdl.org/attachment.cgi?id=1324"
     sha256 "ee7eccb51cefff15c6bf8313a7cc7a3f347dc8e9fdba7a3c3bd73f958070b3eb"
   end
 
@@ -85,12 +85,12 @@ class Sdl < Formula
         system "./configure"
         system "make"
         # Upstream - Why no make install? Why?
-        (share+"tests").install %w[checkkeys graywin loopwave testalpha testbitmap testblitspeed testcdrom
+        (share/"tests").install %w[checkkeys graywin loopwave testalpha testbitmap testblitspeed testcdrom
                                    testcursor testdyngl testerror testfile testgamma testgl testhread testiconv
                                    testjoystick testkeys testloadso testlock testoverlay testoverlay2 testpalette
                                    testplatform testsem testsprite testtimer testver testvidinfo testwin testwm
                                    threadwin torturethread]
-        (share+"test_extras").install %w[icon.bmp moose.dat picture.xbm sail.bmp sample.bmp sample.wav]
+        (share/"test_extras").install %w[icon.bmp moose.dat picture.xbm sail.bmp sample.bmp sample.wav]
         bin.write_exec_script Dir["#{share}/tests/*"]
       end
       # And then we undo stupid but necessary so it doesn't break all the other things.
