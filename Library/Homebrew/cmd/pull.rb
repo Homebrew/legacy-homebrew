@@ -198,22 +198,6 @@ module Homebrew
         end
       end
 
-      bintray_fetch_formulae.each do |f|
-        max_retries = 5
-        retry_count = 0
-        begin
-          success = system "brew", "fetch", "--force-bottle", f.full_name
-          raise "Failed to download #{f} bottle!" unless success
-        rescue RuntimeError => e
-          retry_count += 1
-          raise e if retry_count >= max_retries
-          sleep_seconds = 2**retry_count
-          ohai "That didn't work; sleeping #{sleep_seconds} seconds and trying again..."
-          sleep sleep_seconds
-          retry
-        end
-      end
-
       ohai "Patch changed:"
       safe_system "git", "diff-tree", "-r", "--stat", revision, "HEAD"
 
@@ -223,6 +207,22 @@ module Homebrew
           install = f.installed? ? "upgrade" : "install"
           safe_system "brew", install, "--debug", f.full_name
         end
+      end
+    end
+
+    bintray_fetch_formulae.each do |f|
+      max_retries = 5
+      retry_count = 0
+      begin
+        success = system "brew", "fetch", "--force-bottle", f.full_name
+        raise "Failed to download #{f} bottle!" unless success
+      rescue RuntimeError => e
+        retry_count += 1
+        raise e if retry_count >= max_retries
+        sleep_seconds = 2**retry_count
+        ohai "That didn't work; sleeping #{sleep_seconds} seconds and trying again..."
+        sleep sleep_seconds
+        retry
       end
     end
   end
