@@ -311,6 +311,7 @@ class Keg
       when "ghc" then :mkpath
       when /^gio/ then :mkpath
       when "lua" then :mkpath
+      when /^mecab/ then :mkpath
       when /^node/ then :mkpath
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath
