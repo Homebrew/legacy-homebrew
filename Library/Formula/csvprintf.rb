@@ -4,6 +4,13 @@ class Csvprintf < Formula
   url "https://github.com/archiecobbs/csvprintf/archive/1.0.3.tar.gz"
   sha256 "484db6a5f0cdb1a09b375274b30fbbde3c886d5da974d3f247c83b0bf853ef83"
 
+  bottle do
+    cellar :any
+    sha256 "58691d8d4819618731ebdd034ae390ae8668b7e26017ef74d5edfe2c6daa4eb1" => :yosemite
+    sha256 "269a3ceaa3acb2a0f8c3df760af3647cb64215d5dee4c8907af7b20200aab418" => :mavericks
+    sha256 "762b98a66e435d7a9d4661565c73df656d8f7adc8ae7defe84e0d1ed0a31d280" => :mountain_lion
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
 
