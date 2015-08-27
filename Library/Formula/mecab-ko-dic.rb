@@ -11,11 +11,21 @@ class MecabKoDic < Formula
   def install
     system "./autogen.sh"
     system "./configure", "--prefix=#{prefix}",
-                          "--with-dicdir=#{prefix}"
+                          "--with-dicdir=#{lib}/mecab/dic/mecab-ko-dic"
     system "make", "install"
+  end
 
-    if File.readlines("#{etc}/mecabrc").grep(/^dicdir.*=/).empty?
-      open("#{etc}/mecabrc", "a") { |f| f.puts "dicdir = #{opt_prefix}\n" }
-    end
+  def caveats; <<-EOS.undent
+     To enable mecab-ko-dic dictionary, add to #{HOMEBREW_PREFIX}/etc/mecabrc:
+       dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/mecab-ko-dic
+    EOS
+  end
+
+  test do
+    (testpath/"mecabrc").write <<-EOS.undent
+      dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/mecab-ko-dic
+    EOS
+
+    pipe_output("mecab --rcfile=#{testpath}/mecabrc", "화학 이외의 것\n", 0)
   end
 end
