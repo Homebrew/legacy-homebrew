@@ -4,6 +4,12 @@ class Msitools < Formula
   url "https://download.gnome.org/sources/msitools/0.94/msitools-0.94.tar.xz"
   sha256 "152eb4149cb44f178af93d17bbe0921b5312f30fb4780e5be113b35747b5cd2e"
 
+  bottle do
+    sha256 "cdca1a71f773df3e0f9b011c96d0bc7f111802ef59fc23911cb311fcb1c5bbfc" => :yosemite
+    sha256 "49b08369397ee127391c04899faec0cfe667c655e31578f7b1138c08eb016982" => :mavericks
+    sha256 "ce0f1a31f98f3565b739bd11ed4b7b64a97a81bded5ff22bd82987ac0813d63b" => :mountain_lion
+  end
+
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
   depends_on "e2fsprogs"
