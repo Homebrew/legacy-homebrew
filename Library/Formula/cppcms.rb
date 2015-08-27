@@ -4,6 +4,13 @@ class Cppcms < Formula
   url "https://downloads.sourceforge.net/project/cppcms/cppcms/1.0.5/cppcms-1.0.5.tar.bz2"
   sha256 "84b685977bca97c3e997497f227bd5906adb80555066d811a7046b01c2f51865"
 
+  bottle do
+    cellar :any
+    sha256 "6fec4bca41a688f32b5a8b7cef4de2585b14d59ddedc5967a967917e8727dea0" => :yosemite
+    sha256 "fe7c1581986e533596f9d12e4f199ecb1af9a15438d80911829af6365f4d3d05" => :mavericks
+    sha256 "b129b55fa688f760864a0cfecbf67c112411518e70c77b6b2c88af0ea2035205" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
   depends_on "pcre"
   depends_on "openssl"
