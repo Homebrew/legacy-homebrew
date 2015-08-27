@@ -69,6 +69,7 @@ TAP_MIGRATIONS = {
   "fuse-zip" => "homebrew/fuse",
   "fuse4x-kext" => "homebrew/fuse",
   "fuse4x" => "homebrew/fuse",
+  "gant" => "homebrew/boneyard",
   "gcsfuse" => "homebrew/fuse",
   "geany" => "homebrew/x11",
   "geda-gaf" => "homebrew/x11",
