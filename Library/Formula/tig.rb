@@ -32,5 +32,18 @@ class Tig < Formula
     system "make", "install"
     system "make install-doc-man" if build.with? "docs"
     bash_completion.install "contrib/tig-completion.bash"
+    zsh_completion_code = """\
+#compdef tig
+
+_tig () {
+  local e
+  e=$(dirname ${funcsourcetrace[1]%:*})/tig-completion.bash
+  if [ -f $e ]; then
+    . $e
+  fi
+}"""
+    File.open("contrib/_tig", "w") {|f| f.write(zsh_completion_code)}
+    zsh_completion.install "contrib/_tig"
+    cp "#{bash_completion}/tig-completion.bash", zsh_completion
   end
 end
