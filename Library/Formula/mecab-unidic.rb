@@ -6,15 +6,27 @@ class MecabUnidic < Formula
 
   depends_on "mecab"
 
+  link_overwrite "lib/mecab/dic"
+
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
+                          "--with-dicdir=#{lib}/mecab/dic/unidic"
     system "make", "install"
   end
 
   def caveats; <<-EOS.undent
-    If you want to use UniDic, please rewrite "dicdir".
-       #{Formula["mecab"].opt_prefix}/etc/mecabrc
+     To enable mecab-unidic dictionary, add to #{HOMEBREW_PREFIX}/etc/mecabrc:
+       dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/unidic
     EOS
+  end
+
+  test do
+    (testpath/"mecabrc").write <<-EOS.undent
+      dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/unidic
+    EOS
+
+    pipe_output("mecab --rcfile=#{testpath}/mecabrc", "すもももももももものうち\n", 0)
   end
 end
