@@ -1,7 +1,7 @@
 class Libgtop < Formula
   desc "Library for portably obtaining information about processes"
   homepage "https://library.gnome.org/devel/libgtop/stable/"
-  url "http://ftp.gnome.org/pub/gnome/sources/libgtop/2.28/libgtop-2.28.5.tar.xz"
+  url "https://download.gnome.org/sources/libgtop/2.28/libgtop-2.28.5.tar.xz"
   sha256 "c812c174e44a8971a1f33265437cfd10f1e99869c7f5c05f8ee95846a70a3342"
 
   bottle do
