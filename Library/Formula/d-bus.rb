@@ -10,9 +10,9 @@ class DBus < Formula
   end
 
   bottle do
-    sha256 "ea3d2959691805ffcf1e7e617cf2313cd5b1acc39af73592a0abfedf5c508508" => :yosemite
-    sha256 "e435021d0865d78a1f9596deccbb8ea0d8214e8a9fbd125c3463e9f37b3b930d" => :mavericks
-    sha256 "a5db4a301a2053bc7b264b63e0d1062e4285c97d01d5dc69df87c30556866ba0" => :mountain_lion
+    sha256 "5a49bcf55334b90e3cd6725b7cc6f0383bcf0160ca7a8d12611107ac7f6a022a" => :yosemite
+    sha256 "a2b9e6c8e84a6e199dcd22d748b3c617285a1eba4ec0b042fa16e9171e96bd91" => :mavericks
+    sha256 "8f571788a6bd6209e27b4e4cbdd4e1d2179b7f3bbdb35262c3159ff28336b76a" => :mountain_lion
   end
 
   def install
