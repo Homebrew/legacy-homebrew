@@ -3,11 +3,10 @@ require "formula"
 class Mongrel2 < Formula
   desc "Application, language, and network architecture agnostic web server"
   homepage "http://mongrel2.org/"
-  url "https://github.com/zedshaw/mongrel2/releases/download/1.9.2/mongrel2-v1.9.2.tar.bz2"
-  sha1 "1b44d8028bba7f427cfda3fc7bf6c4350d810a75"
-  revision 1
+  url "https://github.com/mongrel2/mongrel2/releases/download/v1.9.3/mongrel2-v1.9.3.tar.bz2"
+  sha256 "40ee0e804053f812cc36906464289ea656a4fc53b4a82d49796cafbe37f97425"
 
-  head "https://github.com/zedshaw/mongrel2.git"
+  head "https://github.com/mongrel2/mongrel2.git"
 
   bottle do
     cellar :any
