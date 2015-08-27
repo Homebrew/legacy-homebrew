@@ -1,8 +1,8 @@
 class Magit < Formula
   desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-  url "https://github.com/magit/magit/archive/2.2.0.tar.gz"
-  sha256 "947c47961d5adbcbccda2ed50b7ef59e82ff91e089dedd645f14eeeb7d9acac9"
+  url "https://github.com/magit/magit/releases/download/2.2.1/magit-2.2.1.tar.gz"
+  sha256 "b0e2c8c7ecf175f223c85849b8c9f80458b3f435ab9014851cbc446408914d2e"
 
   head "https://github.com/magit/magit.git", :shallow => false
 
@@ -37,10 +37,8 @@ class Magit < Formula
     args = %W[
       PREFIX=#{prefix}
       docdir=#{doc}
+      VERSION=#{version}
     ]
-    # Can't run `make install` alone without ENV.j1:
-    # https://github.com/magit/magit/issues/1670
-    system "make", "VERSION=#{version}"
     system "make", "install", *args
   end
 
