@@ -18,7 +18,7 @@ class Haxe < Formula
     url "https://github.com/HaxeFoundation/haxe.git", :branch => "development"
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
   depends_on "camlp4" => :build
   depends_on "neko" => :optional
 
