@@ -1,7 +1,7 @@
 class GnomeDocUtils < Formula
   desc "Documentation utilities for the GNOME project"
   homepage "https://live.gnome.org/GnomeDocUtils"
-  url "http://ftp.gnome.org/pub/gnome/sources/gnome-doc-utils/0.20/gnome-doc-utils-0.20.10.tar.xz"
+  url "https://download.gnome.org/sources/gnome-doc-utils/0.20/gnome-doc-utils-0.20.10.tar.xz"
   sha256 "cb0639ffa9550b6ddf3b62f3b1add92fb92ab4690d351f2353cffe668be8c4a6"
 
   bottle do
