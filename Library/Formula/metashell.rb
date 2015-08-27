@@ -7,9 +7,9 @@ class Metashell < Formula
   depends_on "cmake" => :build
 
   bottle do
-    sha1 "35cb28330f73ec44ecf27244347805dc2561439f" => :yosemite
-    sha1 "0d8a62d552ae6ff960ac26fe8344181ed62895d5" => :mavericks
-    sha1 "76874d93ced1815ccfcbddb6da75e8c56aff44e4" => :mountain_lion
+    sha256 "889f85d4601b30dd3b2eed8c64a3dbb0554600c0f624e6b8fbfff533922a9e79" => :yosemite
+    sha256 "3f134dccf6bff48ab61cfdb312b03a3318591e6e41396f0b98795e9423f31421" => :mavericks
+    sha256 "1c772d98ec272ed38167fa7cec02f91c4666616fbe189af8c9377cb8f28f579b" => :mountain_lion
   end
 
   needs :cxx11
