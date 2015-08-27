@@ -9,6 +9,8 @@ class MecabJumandic < Formula
 
   depends_on "mecab"
 
+  link_overwrite "lib/mecab/dic"
+
   def install
     charset = ARGV.value("charset") || "utf8"
     args = %W[
@@ -16,9 +18,24 @@ class MecabJumandic < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --with-charset=#{charset}
+      --with-dicdir=#{lib}/mecab/dic/jumandic
     ]
 
     system "./configure", *args
     system "make", "install"
+  end
+
+  def caveats; <<-EOS.undent
+     To enable mecab-jumandic dictionary, add to #{HOMEBREW_PREFIX}/etc/mecabrc:
+       dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/jumandic
+    EOS
+  end
+
+  test do
+    (testpath/"mecabrc").write <<-EOS.undent
+      dicdir = #{HOMEBREW_PREFIX}/lib/mecab/dic/jumandic
+    EOS
+
+    pipe_output("mecab --rcfile=#{testpath}/mecabrc", "すもももももももものうち\n", 0)
   end
 end
