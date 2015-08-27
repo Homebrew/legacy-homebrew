@@ -20,6 +20,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Frontline Solvers
 - Aruba Networks
 - [Zed Worldwide](http://www.zed.com)
+- [KNIME](https://www.knime.org/)
 
 ## Features
 
@@ -246,7 +247,7 @@ You will need a keystore that contains the server certificate. The bare minimum 
 ```
  keytool -genkey -keyalg RSA -alias jobserver -keystore ~/sjs.jks -storepass changeit -validity 360 -keysize 2048
 ```
-You may place the keystore anywhere.
+You may place the keystore anywhere.    
 Here is an example of simple curl command that utilizes ssl:
 ```
 curl -k https://localhost:8090/contexts
