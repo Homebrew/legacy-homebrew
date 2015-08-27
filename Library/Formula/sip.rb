@@ -13,7 +13,8 @@ class Sip < Formula
 
   head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python2 support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
 
   if build.without?("python3") && build.without?("python")
@@ -40,10 +41,6 @@ class Sip < Formula
       system "make"
       system "make", "install"
       system "make", "clean"
-
-      if Formula[python].installed? && which(python).realpath == (Formula[python].bin/python).realpath
-        inreplace lib/"python#{version}/site-packages/sipconfig.py", Formula[python].prefix, Formula[python].opt_prefix
-      end
     end
   end
 
