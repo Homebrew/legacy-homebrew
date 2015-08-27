@@ -1,7 +1,7 @@
 class Msitools < Formula
   desc "Windows installer (.MSI) tool"
   homepage "https://wiki.gnome.org/msitools"
-  url "http://ftp.gnome.org/pub/GNOME/sources/msitools/0.93/msitools-0.93.tar.xz"
+  url "https://download.gnome.org/sources/msitools/0.93/msitools-0.93.tar.xz"
   sha256 "a2d25f05437047749a068946ed019839b88350928511cc7c021ea390413b9dc5"
 
   depends_on "intltool" => :build
