@@ -1,6 +1,8 @@
 class Zeromq < Formula
   desc "High-performance, asynchronous messaging library"
   homepage "http://www.zeromq.org/"
+  url "http://download.zeromq.org/zeromq-4.1.3.tar.gz"
+  sha256 "61b31c830db377777e417235a24d3660a4bcc3f40d303ee58df082fcd68bf411"
 
   bottle do
     cellar :any
@@ -16,11 +18,6 @@ class Zeromq < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  stable do
-    url "http://download.zeromq.org/zeromq-4.1.2.tar.gz"
-    sha256 "f9162ead6d68521e5154d871bac304f88857308bb02366b81bb588497a345927"
   end
 
   option :universal
