@@ -1,7 +1,7 @@
 package ooyala.common.akka.web
 
 import akka.actor.ActorSystem
-import spray.routing.{ Route, SimpleRoutingApp }
+import spray.routing.{Route, SimpleRoutingApp}
 import javax.net.ssl.SSLContext
 import spray.io.ServerSSLEngineProvider
 

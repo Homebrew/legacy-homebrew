@@ -6,14 +6,11 @@ import akka.util.Timeout
 import com.typesafe.config.{ Config, ConfigFactory, ConfigException, ConfigRenderOptions }
 import java.util.NoSuchElementException
 import javax.net.ssl.SSLContext
-import javax.net.ssl.KeyManagerFactory
-import java.security.KeyStore
-import java.io.FileInputStream
 import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import spark.jobserver.util.SparkJobUtils
-import spark.jobserver.util.PasswordRequester
+import spark.jobserver.util.SslContextFactory
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
 import spark.jobserver.io.JobInfo
@@ -56,43 +53,18 @@ class WebApi(system: ActorSystem,
 
   def start() {
 
-    //TODO - move into trait, but need config.....
     /**
-     * based on
-     * https://github.com/spray/spray/blob/v1.2-M8/examples/
-     * spray-can/simple-http-server/src/main/scala/spray/examples/MySslConfiguration.scala
+     * activates ssl or tsl encryption between client and SJS if so requested
+     * in config
      */
-    implicit def sslContext: SSLContext = {
-
-      if (config.hasPath("spray.can.server.ssl-encryption") &&
-          config.hasPath("spray.can.server.keystore") &&
-          config.getBoolean("spray.can.server.ssl-encryption")) {
-        logger.info("SSL encryption activated.")
-        val sslContext = SSLContext.getInstance("SSL") //TLS?
-
-        val ksName = config.getString("spray.can.server.keystore")
-        val myPass = {
-          if (config.hasPath("spray.can.server.keystorePW")) {
-            config.getString("spray.can.server.keystorePW").toCharArray()
-          } else {
-            PasswordRequester.requestPassword("Keystore Password> ")
-          }
-        }
-        val ks = KeyStore.getInstance("JKS")
-        ks.load(new FileInputStream(ksName), myPass);
-        val kmf = KeyManagerFactory.getInstance("SunX509");
-        kmf.init(ks, myPass);
-        sslContext.init(kmf.getKeyManagers(), null, null);
-
-        sslContext
-      } else {
-        SSLContext.getDefault
-      }
+    implicit val sslContext: SSLContext = {
+      SslContextFactory.createContext(config.getConfig("spray.can.server"))
     }
 
     implicit def sslEngineProvider: ServerSSLEngineProvider = {
       ServerSSLEngineProvider { engine =>
-        engine.setEnabledProtocols(Array("SSLv3", "TLSv1"))
+        val protocols = config.getStringList("spray.can.server.enabledProtocols")
+        engine.setEnabledProtocols(protocols.toArray(Array[String]()))
         engine
       }
     }
