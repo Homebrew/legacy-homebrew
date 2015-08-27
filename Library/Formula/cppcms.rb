@@ -1,5 +1,5 @@
 class Cppcms < Formula
-  desc "A Free High Performance Web Development Framework"
+  desc "Free High Performance Web Development Framework"
   homepage "http://cppcms.com/wikipp/en/page/main"
   url "https://downloads.sourceforge.net/project/cppcms/cppcms/1.0.5/cppcms-1.0.5.tar.bz2"
   sha256 "84b685977bca97c3e997497f227bd5906adb80555066d811a7046b01c2f51865"
@@ -14,6 +14,7 @@ class Cppcms < Formula
   depends_on "cmake" => :build
   depends_on "pcre"
   depends_on "openssl"
+
   needs :cxx11
 
   def install
@@ -84,7 +85,7 @@ class Cppcms < Formula
 
     sleep 1 # grace time for server start
     begin
-      assert_match /Hello World/, shell_output("curl http://127.0.0.1:8080/hello")
+      assert_match(/Hello World/, shell_output("curl http://127.0.0.1:8080/hello"))
     ensure
       Process.kill 9, pid
       Process.wait pid
