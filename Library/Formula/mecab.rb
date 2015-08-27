@@ -12,14 +12,24 @@ class Mecab < Formula
     sha1 "9747369cd4c0aa246e6a973c4f2e5652e174bae8" => :mountain_lion
   end
 
+  conflicts_with "mecab-ko", :because => "both install mecab binaries"
+
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     system "make", "install"
+
+    # Put dic files in HOMEBREW_PREFIX/lib instead of lib
+    inreplace "#{bin}/mecab-config", "${exec_prefix}/lib/mecab/dic", "#{HOMEBREW_PREFIX}/lib/mecab/dic"
+    inreplace "#{etc}/mecabrc", "#{lib}/mecab/dic", "#{HOMEBREW_PREFIX}/lib/mecab/dic"
+  end
+
+  def post_install
+    (HOMEBREW_PREFIX/"lib/mecab/dic").mkpath
   end
 
   test do
-    result = `echo "mecabのテストです。" | mecab |md5`.chomp
-    assert_equal "3518edb94fe7fbd3784474f2ddc02905", result
+    assert_equal "#{HOMEBREW_PREFIX}/lib/mecab/dic", shell_output("#{bin}/mecab-config --dicdir").chomp
   end
 end
