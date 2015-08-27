@@ -1,8 +1,8 @@
 class Libuv < Formula
   desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.7.1.tar.gz"
-  sha256 "a515145a34672d26527c7555e73315c66a9213ab445ba591864efc11f91fc340"
+  url "https://github.com/libuv/libuv/archive/v1.7.3.tar.gz"
+  sha256 "db5d46318e18330c696d954747036e1be8e2346411d4f30236d7e2f499f0cfab"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
@@ -87,7 +87,7 @@ class Libuv < Formula
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
         end
       end
-      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+      ENV.prepend_path "PATH", buildpath/"sphinx/bin"
       # This isn't yet handled by the make install process sadly.
       cd "docs" do
         system "make", "man"
