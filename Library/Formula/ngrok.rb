@@ -6,9 +6,10 @@ class Ngrok < Formula
   sha256 "ffb1ad90d5aa3c8b3a9bfd8109a71027645a78d5e61fccedd0873fee060da665"
 
   bottle do
-    sha1 "71920267073415ccc1ea1305bac6ce51e00d4833" => :mavericks
-    sha1 "e0a622225d38ee57652b84eaffbca95ab43c3ce2" => :mountain_lion
-    sha1 "60b7a16a28265e6e9a9adbac44b3c5069a802d34" => :lion
+    cellar :any
+    sha256 "d626cc4d60628236e13c4a7e4e9f66f73b9a9d865178006fc16327c29ead2bbf" => :yosemite
+    sha256 "a4c522524765cdb27fe6b531c0694cad70bdf21bf42f4ded4a95e8822f2a482c" => :mavericks
+    sha256 "ede711ae53e7a26d249657461101a1cfb9c5cd7c3dc602e3091a2579a87b59aa" => :mountain_lion
   end
 
   depends_on "go" => :build
