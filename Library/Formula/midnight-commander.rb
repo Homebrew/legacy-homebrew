@@ -8,9 +8,10 @@ class MidnightCommander < Formula
   head "https://github.com/MidnightCommander/mc.git"
 
   bottle do
-    sha256 "f970c724cc382ae72b6f96b52d7b1150103f92ff7264468f92089adb72f7399f" => :yosemite
-    sha256 "ecfe69da36ed93971799b4f521fbf2cc5e88f4590820c8cc6950210493b510ce" => :mavericks
-    sha256 "e666054bd7bd889492f0298df8b2a5816cb4474b7834634c481753c65a6860db" => :mountain_lion
+    revision 1
+    sha256 "9e25d3d107929070400bcf8f928e5adc3f77c6f4942544cbf7b26822ecc425d6" => :yosemite
+    sha256 "faa3115190a66947d3141619d285c55fac451cd154be9a6ea053b37239ecd085" => :mavericks
+    sha256 "e75f3aed5a28a381a1bce9461108d21e76abb094d98ad8cfe580720ad390d7e8" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
