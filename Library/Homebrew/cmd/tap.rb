@@ -25,7 +25,16 @@ module Homebrew
     remote = clone_target || "https://github.com/#{tap.user}/homebrew-#{tap.repo}"
     args = %W[clone #{remote} #{tap.path}]
     args << "--depth=1" unless ARGV.include?("--full")
-    safe_system "git", *args
+
+    begin
+      safe_system "git", *args
+    rescue Interrupt, ErrorDuringExecution
+      ignore_interrupts do
+        sleep 0.1 # wait for git to cleanup the top directory when interrupt happens.
+        tap.path.parent.rmdir_if_possible
+      end
+      raise
+    end
 
     formula_count = tap.formula_files.size
     puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{tap.path.abv})"
