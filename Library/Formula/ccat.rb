@@ -11,6 +11,8 @@ class Ccat < Formula
     sha256 "7f31873c0412ff8fa3c04ab70cdb4ecb4f2232c415ca535b6e7b149f166695d1" => :mountain_lion
   end
 
+  conflicts_with "ccrypt", :because => "both install `ccat` binaries"
+
   depends_on "go" => :build
 
   def install
