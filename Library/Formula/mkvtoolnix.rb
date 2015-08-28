@@ -21,7 +21,7 @@ class Mkvtoolnix < Formula
   option "with-qt5", "Build with QT GUI"
 
   depends_on "pkg-config" => :build
-  depends_on :ruby => "1.9"
+  depends_on :ruby => ["1.9", :build]
   depends_on "libogg"
   depends_on "libvorbis"
   depends_on "flac" => :recommended
