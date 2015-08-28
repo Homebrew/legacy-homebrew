@@ -86,14 +86,6 @@ http_proxy=http://<proxyhost>:<proxyport> brew install $FORMULA
 http_proxy=http://<user>:<password>@<proxyhost>:<proxyport>  brew install $FORMULA
 ```
 
-**NB:** this technique will also work if you prefer to use `sudo` with Homebrew.  But as `sudo` clears the environment before executing Homebrew, your proxy settings may get lost.
-
-**Workaround:**
-
-```bash
-$ http_proxy=http://<proxyhost>:<proxyport>  sudo -E brew install $FORMULA
-```
-
 ## Installing stuff without the Xcode-CLT
 
 ```sh
