@@ -4,6 +4,13 @@ class Ibex < Formula
   url "http://www.ibex-lib.org/sites/default/files/ibex-2.1.16.tar.gz"
   sha256 "d92ff32f14d27ad7b390ae693beb311b58cf6babccac85bbdaa5f5d0b8648845"
 
+  bottle do
+    cellar :any
+    sha256 "8f3820e87fea2799f4789bf956803dadab7789e2c51c29567e339db4e08473b7" => :yosemite
+    sha256 "51288d9af477d65a26f8f37bee74e07913df0e77be6bbc979758a8486a1d6fd3" => :mavericks
+    sha256 "41327b6a0da9b8b2ed888c3c2c33d5f6ff061ea13eceb4b9e8b6e660049d624d" => :mountain_lion
+  end
+
   option "with-java", "Build Java bindings for Choco solver."
 
   depends_on :java => ["1.8+", :optional]
