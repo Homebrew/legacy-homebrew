@@ -118,7 +118,14 @@ $ brew irb
 export HOMEBREW_NO_EMOJI=1
 ```
 
-This sets the HOMEBREW_NO_EMOJI environment variable, causing homebrew to hide all emoji.
+This sets the HOMEBREW_NO_EMOJI environment variable, causing Homebrew
+to hide all emoji.
+
+The beer emoji can also be replaced with other character(s):
+
+```bash
+export HOMEBREW_INSTALL_BADGE="☕️ 🐸"
+```
 
 ## Editor plugins
 
