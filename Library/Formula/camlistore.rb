@@ -1,6 +1,6 @@
 class Camlistore < Formula
   desc "Content-addressable multi-layer indexed storage"
-  homepage "http://camlistore.org"
+  homepage "https://camlistore.org"
   url "https://github.com/camlistore/camlistore/archive/0.8.tar.gz"
   sha256 "61b75708ae25ac4dc1c5c31c1cf8f806ccaafaaacf618caf1aa9d31489fec50f"
   head "https://camlistore.googlesource.com/camlistore", :using => :git
