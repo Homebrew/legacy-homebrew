@@ -1,17 +1,8 @@
 class Mkvtoolnix < Formula
   desc "Matroska media files manipulation tools"
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-
-  stable do
-    url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.2.0.tar.xz"
-    sha256 "eb6d3d7a0254bb4326dccc9983418801783198cdf4a259f31261dab4e843a5c4"
-
-    # Fix GUI builds when "--without-curl" is passed, which we do by default.
-    patch do
-      url "https://github.com/mbunkus/mkvtoolnix/commit/5c56d6544ffc212ca39ac59f4ed98b4f04761de8.diff"
-      sha256 "52f0ee02111c85bf6381d86ccf6a5333f8a89aa717235e7f0f919d3f686af2fc"
-    end
-  end
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.3.0.tar.xz"
+  sha256 "87bd82222995d35c310a426ed43e0b27cbfefa0caadcbcca8296787314affc37"
 
   bottle do
     revision 1
