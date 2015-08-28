@@ -32,7 +32,7 @@ class Sandbox
   end
 
   def record_log(file)
-    @log = file
+    @logfile = file
   end
 
   def add_rule(rule)
@@ -91,24 +91,34 @@ class Sandbox
     @start = Time.now
     safe_system SANDBOX_EXEC, "-f", seatbelt.path, *args
   rescue
-    if ARGV.verbose?
-      ohai "Sandbox profile:"
-      puts @profile.dump
-    end
+    @failed = true
     raise
   ensure
     seatbelt.unlink
-    unless @log.nil?
-      sleep 0.1 # wait for a bit to let syslog catch up the latest events.
-      syslog_args = %W[
-        -F '$((Time)(local))\ $(Sender)[$(PID)]:\ $Message'
-        -k Time ge #{@start.to_i}
-        -k Sender kernel
-        -o
-        -k Time ge #{@start.to_i}
-        -k Sender sandboxd
-      ]
-      quiet_system "syslog #{syslog_args * " "} | grep deny > #{@log}"
+    sleep 0.1 # wait for a bit to let syslog catch up the latest events.
+    syslog_args = %W[
+      -F $((Time)(local))\ $(Sender)[$(PID)]:\ $(Message)
+      -k Time ge #{@start.to_i}
+      -k Message S deny
+      -k Sender kernel
+      -o
+      -k Time ge #{@start.to_i}
+      -k Message S deny
+      -k Sender sandboxd
+    ]
+    logs = Utils.popen_read("syslog", *syslog_args)
+    unless logs.empty?
+      if @logfile
+        log = open(@logfile, "w")
+        log.write logs
+        log.write "\nWe use time to filter sandbox log. Therefore, unrelated logs may be recorded.\n"
+        log.close
+      end
+
+      if @failed && ARGV.verbose?
+        ohai "Sandbox log"
+        puts logs
+      end
     end
   end
 
