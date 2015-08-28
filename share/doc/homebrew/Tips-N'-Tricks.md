@@ -120,10 +120,21 @@ export HOMEBREW_NO_EMOJI=1
 
 This sets the HOMEBREW_NO_EMOJI environment variable, causing homebrew to hide all emoji.
 
-## Sublime text: Syntax for formulae including the diff
+## Editor plugins
 
-In Sublime Text 2/3, you can use Package Control to install [Homebrew-formula-syntax](https://github.com/samueljohn/Homebrew-formula-syntax).
+### Sublime Text
 
-## Vim Syntax for formulae including the diff
+In Sublime Text 2/3, you can use Package Control to install
+[Homebrew-formula-syntax](https://github.com/samueljohn/Homebrew-formula-syntax),
+which adds highlighting for inline patches.
 
-If you are vim user, you can install [brew.vim](https://github.com/xu-cheng/brew.vim) plugin.
+### Vim
+
+[brew.vim](https://github.com/xu-cheng/brew.vim) adds highlighting to
+inline patches in Vim.
+
+### Emacs
+
+[homebrew-mode](https://github.com/dunn/homebrew-mode) provides syntax
+highlighting for inline patches as well as a number of helper functions
+for editing formula files.
