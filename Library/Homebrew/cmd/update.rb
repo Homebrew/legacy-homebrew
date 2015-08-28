@@ -78,7 +78,14 @@ module Homebrew
       next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?
 
       begin
-        migrator = Migrator.new(Formulary.factory("#{user}/#{repo}/#{newname}"))
+        f = Formulary.factory("#{user}/#{repo}/#{newname}")
+      rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS
+      end
+
+      next unless f
+
+      begin
+        migrator = Migrator.new(f)
         migrator.migrate
       rescue Migrator::MigratorDifferentTapsError
       end
