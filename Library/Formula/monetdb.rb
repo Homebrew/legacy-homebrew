@@ -20,9 +20,9 @@ class Monetdb < Formula
   sha256 "ed9f40a68a8a9af0723cde6380492cae28082c900eae06cc4d3266c15fe540ea"
 
   bottle do
-    sha256 "41605243b56eb90d354d970de4815f09e79f0920494e1a698457c69877018ac1" => :yosemite
-    sha256 "7b1b973ac5e55cfd3be69279ae2cb56bde3a45ed09a7b8997df6aa0a56c78fd7" => :mavericks
-    sha256 "477c96cd73680b694972e4cf9b32ade1d3d4f1fcb2a1c254938f21da5a46667d" => :mountain_lion
+    sha256 "39d2fd657f2d58f3340fa2cd512cfa5cb857650ebd5209e7208a6cb7c59cec01" => :yosemite
+    sha256 "f0b1a35b03593d29a67ca788bd646a50149d4c60ab86d5622a44ff879a60f4a2" => :mavericks
+    sha256 "c5d2f28101e1d4e06b35bd56af9450b3fa76a39854e9b33572046465ed59cbcd" => :mountain_lion
   end
 
   head do
