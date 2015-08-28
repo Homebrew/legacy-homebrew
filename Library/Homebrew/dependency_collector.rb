@@ -105,6 +105,7 @@ class DependencyCollector
     when :tex        then TeXRequirement.new(tags)
     when :arch       then ArchRequirement.new(tags)
     when :hg         then MercurialRequirement.new(tags)
+    when :perl       then PerlRequirement.new(tags)
     when :python     then PythonRequirement.new(tags)
     when :python3    then Python3Requirement.new(tags)
     when :java       then JavaRequirement.new(tags)
