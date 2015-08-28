@@ -93,6 +93,10 @@ class Fontforge < Formula
     system "make"
     system "make", "install"
 
+    # The app here is not functional. You should install Fontforge
+    # via the Cask if you want GUI/App support.
+    (share/"fontforge/osx/FontForge.app").rmtree
+
     if build.with? "extra-tools"
       cd "contrib/fonttools" do
         system "make"
