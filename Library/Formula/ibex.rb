@@ -12,24 +12,29 @@ class Ibex < Formula
   depends_on "pkg-config" => :build
 
   def install
+    args = ["--prefix=#{prefix}"]
+
     if build.with? "java"
-      system "./waf", "configure", "--with-jni", "--prefix=#{prefix}"
+      args << "--with-jni"
     else
-      system "./waf", "configure", "--enable-shared", "--prefix=#{prefix}"
+      args << "--enable-shared"
     end
+
+    system "./waf", "configure", *args
     system "./waf", "install"
 
-    pkgshare.install "examples"
-    pkgshare.install "benchs"
-    cd "#{pkgshare}/examples"
-    cxxflags = "-frounding-math -ffloat-store -I#{include} -I#{include}/ibex"
-    libflags = "-L#{lib} -libex -lprim -lClp -lCoinUtils -lm"
-    system "make", "defaultsolver", "LIBS=#{libflags}", "CXXFLAGS=#{cxxflags}"
+    cd "examples" do
+      cxxflags = "-frounding-math -ffloat-store -I#{include} -I#{include}/ibex"
+      libflags = "-L#{lib} -libex -lprim -lClp -lCoinUtils -lm"
+      system "make", "defaultsolver", "LIBS=#{libflags}", "CXXFLAGS=#{cxxflags}"
+    end
+
+    pkgshare.install %w[examples benchs]
   end
 
   test do
-    cp_r "#{pkgshare}/examples/.", "#{testpath}"
-    cp "#{pkgshare}/benchs/cyclohexan3D.bch", "#{testpath}"
+    cp_r "#{pkgshare}/examples/.", "testpath"
+    cp "#{pkgshare}/benchs/cyclohexan3D.bch", "testpath"
     system "./defaultsolver", "cyclohexan3D.bch", "1e-05", "10"
   end
 end
