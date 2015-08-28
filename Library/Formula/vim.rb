@@ -6,14 +6,12 @@ class Vim < Formula
   sha256 "02f07b60eff53f45d58686e43b72e83aa8f24a94acfa69b95fa84dc020671a38"
   head "https://github.com/vim/vim.git"
 
-  # We only have special support for finding depends_on :python, but not yet for
-  # :ruby, :perl etc., so we use the standard environment that leaves the
-  # PATH as the user has set it right now.
-  env :std
-
-  option "override-system-vi", "Override system vi"
-  option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
+  option "with-override-system-vi", "Override system vi"
+  option "without-nls", "Build vim without National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
+
+  deprecated_option "override-system-vi" => "with-override-system-vi"
+  deprecated_option "disable-nls" => "without-nls"
 
   LANGUAGES_OPTIONAL = %w[lua mzscheme python3 tcl]
   LANGUAGES_DEFAULT  = %w[perl python ruby]
@@ -28,12 +26,23 @@ class Vim < Formula
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
+  depends_on :ruby => "1.8"
+  depends_on :perl => "5.3"
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
   depends_on :x11 if build.with? "client-server"
 
   conflicts_with "ex-vi",
     :because => "vim and ex-vi both install bin/ex and bin/view"
+
+  # Default requirements mean installing the bottle here requires
+  # installing our Perl, Python & Ruby. To prevent that for everyone
+  # just pour the bottle when requirements already satisfied.
+  def pour_bottle?
+    (which("python") == HOMEBREW_PREFIX/"bin/python") &&
+      (which("ruby") == HOMEBREW_PREFIX/"bin/ruby") &&
+      Formula["perl"].installed?
+  end
 
   def install
     ENV["LUA_PREFIX"] = HOMEBREW_PREFIX if build.with?("lua") || build.with?("luajit")
@@ -60,7 +69,7 @@ class Vim < Formula
       opts -= %W[--enable-pythoninterp]
     end
 
-    opts << "--disable-nls" if build.include? "disable-nls"
+    opts << "--disable-nls" if build.without? "nls"
     opts << "--enable-gui=no"
 
     if build.with? "client-server"
@@ -74,15 +83,12 @@ class Vim < Formula
       opts << "--enable-luainterp"
     end
 
-    # XXX: Please do not submit a pull request that hardcodes the path
-    # to ruby: vim can be compiled against 1.8.x or 1.9.3-p385 and up.
-    # If you have problems with vim because of ruby, ensure a compatible
-    # version is first in your PATH when building vim.
-
     # We specify HOMEBREW_PREFIX as the prefix to make vim look in the
     # the right place (HOMEBREW_PREFIX/share/vim/{vimrc,vimfiles}) for
     # system vimscript files. We specify the normal installation prefix
     # when calling "make install".
+    # Homebrew will use the first suitable Perl & Ruby in your $PATH if you
+    # build from source. Please don't attempt to hardcode either here.
     system "./configure", "--prefix=#{HOMEBREW_PREFIX}",
                           "--mandir=#{man}",
                           "--enable-multibyte",
@@ -93,10 +99,9 @@ class Vim < Formula
                           *opts
     system "make"
     # If stripping the binaries is enabled, vim will segfault with
-    # statically-linked interpreters like ruby
-    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    # statically-linked interpreters like ruby.
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
-    bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
+    bin.install_symlink "vim" => "vi" if build.with? "override-system-vi"
   end
 
   test do
