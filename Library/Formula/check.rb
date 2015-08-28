@@ -1,8 +1,8 @@
 class Check < Formula
   desc "C unit testing framework"
   homepage "http://check.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/check/check/0.9.14/check-0.9.14.tar.gz"
-  sha256 "c272624645b1b738cf57fd5d81a3e4d9b722b99d6133ee3f3c4007d4d279840a"
+  url "https://downloads.sourceforge.net/project/check/check/0.10.0/check-0.10.0.tar.gz"
+  sha256 "f5f50766aa6f8fe5a2df752666ca01a950add45079aa06416b83765b1cf71052"
 
   bottle do
     cellar :any
