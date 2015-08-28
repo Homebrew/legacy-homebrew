@@ -10,7 +10,7 @@ import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import spark.jobserver.util.SparkJobUtils
-import spark.jobserver.util.SslContextFactory
+import spark.jobserver.util.SSLContextFactory
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
 import spark.jobserver.io.JobInfo
@@ -58,7 +58,7 @@ class WebApi(system: ActorSystem,
      * in config
      */
     implicit val sslContext: SSLContext = {
-      SslContextFactory.createContext(config.getConfig("spray.can.server"))
+      SSLContextFactory.createContext(config.getConfig("spray.can.server"))
     }
 
     implicit def sslEngineProvider: ServerSSLEngineProvider = {
