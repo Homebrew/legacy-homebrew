@@ -1,8 +1,8 @@
 class Libiscsi < Formula
   desc "Client library and utilities for iscsi"
   homepage "https://github.com/sahlberg/libiscsi"
-  url "https://sites.google.com/site/libiscsitarballs/libiscsitarballs/libiscsi-1.10.0.tar.gz"
-  sha256 "ba44519c9b04d6b0e2cf8d66e83611212da96d5cfab7c5c4d19cf00a5f919cba"
+  url "https://sites.google.com/site/libiscsitarballs/libiscsitarballs/libiscsi-1.15.0.tar.gz"
+  sha256 "26aa5583053d4fe0d4686f76a76c216c7dce00130f008e652ece305b88758ff1"
   head "https://github.com/sahlberg/libiscsi.git"
 
   bottle do
