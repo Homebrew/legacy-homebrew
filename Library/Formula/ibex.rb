@@ -33,8 +33,8 @@ class Ibex < Formula
   end
 
   test do
-    cp_r "#{pkgshare}/examples/.", "testpath"
-    cp "#{pkgshare}/benchs/cyclohexan3D.bch", "testpath"
+    cp_r "#{pkgshare}/examples/.", testpath
+    cp "#{pkgshare}/benchs/cyclohexan3D.bch", testpath
     system "./defaultsolver", "cyclohexan3D.bch", "1e-05", "10"
   end
 end
