@@ -11,6 +11,8 @@ class Hello < Formula
     sha1 "31f4537c7c3d231bf48fa50a14c1d82a958066c4" => :mountain_lion
   end
 
+  conflicts_with "camlistore", :because => "both install `hello` binaries"
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
