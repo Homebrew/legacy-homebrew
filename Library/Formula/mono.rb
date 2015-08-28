@@ -9,10 +9,9 @@ class Mono < Formula
   skip_clean "lib/mono"
 
   bottle do
-    revision 1
-    sha256 "58a84b443f8cf3eac731d87ce8d484fec90ddf43b44b51854a6186d11b53daee" => :yosemite
-    sha256 "7bb30673b0de1d41980da3527f55db7e453da66b0673a5a5c93c464426716db8" => :mavericks
-    sha256 "3a3c35b4bdafc31607fabedece5caa8200ed1deca321bfaeca3869560d6e3d0e" => :mountain_lion
+    sha256 "0c18edef9deeb162ff119527a3113ee1d98b308f70d266f6f5d66619ecd12d12" => :yosemite
+    sha256 "8b70a9ae0465cbb4648ef3d7042ed8d7aab7d2eca25ae1b8f686696b37ac28aa" => :mavericks
+    sha256 "d3d9b118a27e3af2455925e83de0c44d4464660886c07fe5d21695f21471377a" => :mountain_lion
   end
 
   resource "monolite" do
