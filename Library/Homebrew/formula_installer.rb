@@ -547,6 +547,9 @@ class FormulaInstaller
     end
 
     Utils.safe_fork do
+      # Invalidate the current sudo timestamp in case a build script calls sudo
+      system "/usr/bin/sudo", "-k"
+
       if Sandbox.available? && ARGV.sandbox? && !Sandbox.auto_disable?
         sandbox = Sandbox.new
         formula.logs.mkpath
