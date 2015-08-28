@@ -157,6 +157,7 @@ TAP_MIGRATIONS = {
   "ori" => "homebrew/fuse",
   "pan" => "homebrew/boneyard",
   "pari" => "homebrew/x11",
+  "par2tbb" => "homebrew/boneyard",
   "pathfinder" => "homebrew/boneyard",
   "pcb" => "homebrew/x11",
   "pdfjam" => "homebrew/tex",
