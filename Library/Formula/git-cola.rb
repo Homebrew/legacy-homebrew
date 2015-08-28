@@ -7,9 +7,9 @@ class GitCola < Formula
   head "https://github.com/git-cola/git-cola.git"
 
   bottle do
-    sha1 "fc7b0c0eeed41bb42764a25b8b229f39b3dc4fb3" => :yosemite
-    sha1 "1f7e728856585487951f48b9e612cf628e112ac8" => :mavericks
-    sha1 "864bafa798ff86c6213238a6c9922549aee94a95" => :mountain_lion
+    sha256 "62e8ac62b5281dc299a7a1042f41bdf60e3a6b796a2c1bfd55cbfc2d6364b708" => :yosemite
+    sha256 "b464caa7c1520561e0fd97afcd83faa6f81789c28108dacf0c25fed026dd1fc7" => :mavericks
+    sha256 "b67df2e41d37a3226d4e5a5819c1c9a33cc02bf08cee321e10897ea198fde086" => :mountain_lion
   end
 
   option "with-docs", "Build man pages using asciidoc and xmlto"
