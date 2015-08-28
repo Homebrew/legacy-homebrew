@@ -1,8 +1,8 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-4.0.2.5.tar.bz2"
-  sha256 "b074584eea5bbaaf29362486a69d70abe53d0d2feb334f231fa9c841cf6fd651"
+  url "http://download.mono-project.com/sources/mono/mono-4.2.0.179.tar.bz2"
+  sha256 "fc53c825b8f1e83eaa52a681410261a5b0ac47d36ffd2b58581c476c2690933f"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
@@ -15,17 +15,9 @@ class Mono < Formula
     sha256 "3a3c35b4bdafc31607fabedece5caa8200ed1deca321bfaeca3869560d6e3d0e" => :mountain_lion
   end
 
-  # Fix compile and runtime error on OS X 10.11 Beta 3
-  # https://github.com/mono/mono/pull/1919
-  # https://bugzilla.xamarin.com/show_bug.cgi?id=31761
-  patch do
-    url "https://github.com/mono/mono/pull/1919.diff"
-    sha256 "53c39c2145027fdf1a2233e12bd96da2c1164e1422e631cdb50598910b39a020"
-  end
-
   resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-4.0.0-release/c1/c1b37f29b1a439acf7ef42a384550ab1dca5295a/monolite-117-latest.tar.gz"
-    sha256 "a3bd1c826186e4896193ad1f909bf8756f66f62d1e249fe301b10bc80ebe0795"
+    url "http://storage.bos.xamarin.com/mono-dist-4.2.0-release/9b/9b990f2b19b1a534925cce3ddaabb70654b76066/monolite-135-latest.tar.gz"
+    sha256 "1529edbf34ebe498d315464e1211e65531ba25c492ba678a5bb079986a784131"
   end
 
   def install
