@@ -6,9 +6,9 @@ class Check < Formula
 
   bottle do
     cellar :any
-    sha1 "5f7d4c82f1c2bdb365718e97299efd47ec9c7272" => :mavericks
-    sha1 "2390f4c06a316a18cd4a9164fcd510c1ffb9a276" => :mountain_lion
-    sha1 "99d8dfd79c4498071ac91dcc782b5b27f2182614" => :lion
+    sha256 "bb824d8cb8a74ebbc1eb9d22b8ea15327dfe3ce91151b37c7f41c80939609f52" => :yosemite
+    sha256 "022667ec28a8af0bf6e19f3afbaa144542f1754ebaff5710229484fa8071084e" => :mavericks
+    sha256 "b223c76b5519c5aa3300488b230c5b5b2cbd32d896f2fab0f1a0700a24e1f975" => :mountain_lion
   end
 
   option :universal
