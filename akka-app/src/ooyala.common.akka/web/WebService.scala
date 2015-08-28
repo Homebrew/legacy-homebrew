@@ -2,6 +2,8 @@ package ooyala.common.akka.web
 
 import akka.actor.ActorSystem
 import spray.routing.{Route, SimpleRoutingApp}
+import javax.net.ssl.SSLContext
+import spray.io.ServerSSLEngineProvider
 
 /**
  * Contains methods for starting an embedded Spray web server.
@@ -17,7 +19,8 @@ object WebService extends SimpleRoutingApp {
    * @param port The port number to bind to
    */
   def start(route: Route, system: ActorSystem,
-            host: String = "0.0.0.0", port: Int = 8080) {
+            host: String = "0.0.0.0", port: Int = 8080)(implicit sslContext: SSLContext,
+                                                        sslEngineProvider: ServerSSLEngineProvider) {
     implicit val actorSystem = system
     startServer(host, port)(route)
   }

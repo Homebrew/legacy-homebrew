@@ -5,10 +5,12 @@ import akka.pattern.ask
 import akka.util.Timeout
 import com.typesafe.config.{ Config, ConfigFactory, ConfigException, ConfigRenderOptions }
 import java.util.NoSuchElementException
+import javax.net.ssl.SSLContext
 import ooyala.common.akka.web.{ WebService, CommonRoutes }
 import org.joda.time.DateTime
 import org.slf4j.LoggerFactory
 import spark.jobserver.util.SparkJobUtils
+import spark.jobserver.util.SslContextFactory
 import scala.concurrent.{Await, ExecutionContext}
 import scala.util.Try
 import spark.jobserver.io.JobInfo
@@ -18,6 +20,7 @@ import spray.http.StatusCodes
 import spray.httpx.SprayJsonSupport.sprayJsonMarshaller
 import spray.json.DefaultJsonProtocol._
 import spray.routing.{ HttpService, Route, RequestContext }
+import spray.io.ServerSSLEngineProvider
 
 class WebApi(system: ActorSystem,
              config: Config,
@@ -49,6 +52,23 @@ class WebApi(system: ActorSystem,
   val myRoutes = jarRoutes ~ contextRoutes ~ jobRoutes ~ healthzRoutes ~ otherRoutes
 
   def start() {
+
+    /**
+     * activates ssl or tsl encryption between client and SJS if so requested
+     * in config
+     */
+    implicit val sslContext: SSLContext = {
+      SslContextFactory.createContext(config.getConfig("spray.can.server"))
+    }
+
+    implicit def sslEngineProvider: ServerSSLEngineProvider = {
+      ServerSSLEngineProvider { engine =>
+        val protocols = config.getStringList("spray.can.server.enabledProtocols")
+        engine.setEnabledProtocols(protocols.toArray(Array[String]()))
+        engine
+      }
+    }
+
     logger.info("Starting browser web service...")
     WebService.start(myRoutes ~ commonRoutes, system, bindAddress, port)
   }
