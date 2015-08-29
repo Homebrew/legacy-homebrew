@@ -19,6 +19,7 @@ class Qt5 < Formula
   stable do
     # 5.5.0 has a compile-breaking pkg-config error when projects use that to find libs.
     # https://bugreports.qt.io/browse/QTBUG-47162
+    # https://bugreports.qt.io/browse/QTBUG-47477
     # This is known to impact Wireshark & Poppler optional Qt5 usage in the core.
     url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
     mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
@@ -74,12 +75,11 @@ class Qt5 < Formula
     args = ["-prefix", prefix,
             "-system-zlib", "-securetransport",
             "-qt-libpng", "-qt-libjpeg",
-            "-no-rpath", "-no-openssl",
-            "-confirm-license", "-opensource",
-            "-nomake", "tests", "-release"]
+            "-no-openssl", "-confirm-license",
+            "-opensource", "-nomake", "tests",
+            "-release"]
 
     args << "-nomake" << "examples" if build.without? "examples"
-
     args << "-plugin-sql-mysql" if build.with? "mysql"
 
     if build.with? "d-bus"
