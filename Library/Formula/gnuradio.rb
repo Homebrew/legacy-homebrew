@@ -4,6 +4,12 @@ class Gnuradio < Formula
   url "http://gnuradio.org/releases/gnuradio/gnuradio-3.7.8.tar.gz"
   sha256 "fe19cb54b5d77fb76dde61d5cf184c6dee7066779b45c51676bae6e6d0cd4172"
 
+  bottle do
+    sha256 "5968cb5c61c7f44cb3b8c66c6ca418949d34c633f181ddcea78c5e1656b5a34a" => :yosemite
+    sha256 "7fedd78a538330c8f48afd5caab61e25c39c484e45458099d0bf6d133c800e7a" => :mavericks
+    sha256 "09e37da8c6acd59adb657be9f1b638ae005d522f47524b26c2653682d60bfae7" => :mountain_lion
+  end
+
   # These python extension modules were linked directly to a Python
   # framework binary.
   # Replace -lpython with -undefined dynamic_lookup in linker flags.
