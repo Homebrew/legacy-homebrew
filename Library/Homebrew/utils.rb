@@ -80,6 +80,7 @@ def oh1(title)
   puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
+# Print a warning (do this rarely)
 def opoo(warning)
   $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end

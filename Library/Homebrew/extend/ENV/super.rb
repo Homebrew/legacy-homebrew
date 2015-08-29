@@ -1,20 +1,23 @@
 require "os/mac"
 require "extend/ENV/shared"
 
-### Why `superenv`?
-# 1) Only specify the environment we need (NO LDFLAGS for cmake)
-# 2) Only apply compiler specific options when we are calling that compiler
-# 3) Force all incpaths and libpaths into the cc instantiation (less bugs)
-# 4) Cater toolchain usage to specific Xcode versions
-# 5) Remove flags that we don't want or that will break builds
-# 6) Simpler code
-# 7) Simpler formula that *just work*
-# 8) Build-system agnostic configuration of the tool-chain
-
+# ### Why `superenv`?
+#
+# 1. Only specify the environment we need (NO LDFLAGS for cmake)
+# 2. Only apply compiler specific options when we are calling that compiler
+# 3. Force all incpaths and libpaths into the cc instantiation (less bugs)
+# 4. Cater toolchain usage to specific Xcode versions
+# 5. Remove flags that we don't want or that will break builds
+# 6. Simpler code
+# 7. Simpler formula that *just work*
+# 8. Build-system agnostic configuration of the tool-chain
 module Superenv
   include SharedEnvExtension
 
-  attr_accessor :keg_only_deps, :deps, :x11
+  # @private
+  attr_accessor :keg_only_deps, :deps
+
+  attr_accessor :x11
   alias_method :x11?, :x11
 
   def self.extended(base)
@@ -22,6 +25,7 @@ module Superenv
     base.deps = []
   end
 
+  # @private
   def self.bin
     return unless MacOS.has_apple_developer_tools?
 
@@ -36,6 +40,7 @@ module Superenv
     delete("as_nl")
   end
 
+  # @private
   def setup_build_environment(formula = nil)
     super
     send(compiler)
@@ -302,6 +307,7 @@ module Superenv
     append "HOMEBREW_CCCFG", "h", "" if compiler == :clang
   end
 
+  # @private
   def refurbish_args
     append "HOMEBREW_CCCFG", "O", ""
   end
@@ -312,6 +318,7 @@ module Superenv
     end
   end
 
+  # @private
   def noop(*_args); end
   noops = []
 
