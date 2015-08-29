@@ -95,7 +95,7 @@ class Sandbox
     raise
   ensure
     seatbelt.unlink
-    sleep 0.1 # wait for a bit to let syslog catch up the latest events.
+    sleep 1 # wait for a bit to let syslog catch up the latest events.
     syslog_args = %W[
       -F $((Time)(local))\ $(Sender)[$(PID)]:\ $(Message)
       -k Time ge #{@start.to_i}
@@ -106,7 +106,10 @@ class Sandbox
       -k Message S deny
       -k Sender sandboxd
     ]
+    p '---debug----'
     logs = Utils.popen_read("syslog", *syslog_args)
+    p logs
+    p '---debug----'
     unless logs.empty?
       if @logfile
         log = open(@logfile, "w")
