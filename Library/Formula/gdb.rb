@@ -18,9 +18,9 @@ class Gdb < Formula
   sha256 "7ebdaa44f9786ce0c142da4e36797d2020c55fa091905ac5af1846b5756208a8"
 
   bottle do
-    sha256 "61fb08af16a19575c8b0e2b85ca2cbb59ddd1a81e914927b9be64a63fb6df0db" => :yosemite
-    sha256 "3ad006cd86d38ae0d2e59eb896f26f2afe924fb973884bad01589baf178841ab" => :mavericks
-    sha256 "c19cb81fca3468032e1979c96c3d7ec796af32f96abb6843980fc1621b89db37" => :mountain_lion
+    sha256 "396c6fb9355d90f42a8f6e0ad2aab7fc238564eae722b320059080e8371bd563" => :yosemite
+    sha256 "2cd247384fc1f084803b68dce5ea7440f83503da1c32ed4468ac60b7e4c7a69c" => :mavericks
+    sha256 "6c1d75eb6090a25f6307d129ec3e79bd06024824791e731cfeef797f10414836" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
