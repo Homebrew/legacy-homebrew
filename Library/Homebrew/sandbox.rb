@@ -106,7 +106,10 @@ class Sandbox
       -k Message S deny
       -k Sender sandboxd
     ]
+    p '---debug----'
     logs = Utils.popen_read("syslog", *syslog_args)
+    p logs
+    p '---debug----'
     unless logs.empty?
       if @logfile
         log = open(@logfile, "w")
