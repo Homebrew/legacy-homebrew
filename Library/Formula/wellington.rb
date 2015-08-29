@@ -5,10 +5,8 @@ class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
 
   stable do
-    url "https://github.com/wellington/wellington/archive/v0.9.1.tar.gz"
-    sha256 "133a3d698f98139808c4a86955a9cdc0d9e91a0ed886c0851aceaed4595d8022"
-
-    depends_on "libsass"
+    url "https://github.com/wellington/wellington/archive/v0.9.2.tar.gz"
+    sha256 "9b2fe9794ee5ed73f5be42f98edd1c1415c6af1e2e7215073fe3b9e386546993"
   end
 
   bottle do
