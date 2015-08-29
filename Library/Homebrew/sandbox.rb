@@ -118,6 +118,7 @@ class Sandbox
       if @failed && ARGV.verbose?
         ohai "Sandbox log"
         puts logs
+        $stdout.flush # without it, brew test-bot would fail to catch the log
       end
     end
   end
