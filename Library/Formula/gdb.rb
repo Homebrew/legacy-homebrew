@@ -13,9 +13,9 @@ end
 
 class Gdb < Formula
   homepage "https://www.gnu.org/software/gdb/"
-  url "http://ftpmirror.gnu.org/gdb/gdb-7.9.1.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.9.1.tar.xz"
-  sha256 "cd9c543a411a05b2b647dd38936034b68c2b5d6f10e0d51dc168c166c973ba40"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.10.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.tar.xz"
+  sha256 "7ebdaa44f9786ce0c142da4e36797d2020c55fa091905ac5af1846b5756208a8"
 
   bottle do
     sha256 "61fb08af16a19575c8b0e2b85ca2cbb59ddd1a81e914927b9be64a63fb6df0db" => :yosemite
