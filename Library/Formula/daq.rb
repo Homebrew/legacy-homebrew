@@ -19,6 +19,19 @@ class Daq < Formula
   end
 
   test do
-    assert File.exist? "#{include}/daq.h"
+    (testpath/"test.c").write <<-EOS.undent
+      #include <daq.h>
+      #include <stdio.h>
+
+      int main()
+      {
+        DAQ_Module_Info_t* list;
+        int size = daq_get_module_list(&list);
+        daq_free_module_list(list, size);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-ldaq", "-o", "test"
+    system "./test"
   end
 end
