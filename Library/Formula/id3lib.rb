@@ -24,9 +24,10 @@ class Id3lib < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "ccb2a5ec637f99a36996920c1bbd9d284bb91958" => :yosemite
-    sha1 "9db89ba6ca30f1ae05d7af44ad6ba82931a88c42" => :mavericks
+    revision 2
+    sha256 "062c57d74fb0ffa2be7ee3266d204dcd963d91108750301879912cc65e907dd8" => :yosemite
+    sha256 "c29d0ddd008b5f7a2d1fbf19faf675f8c08799ed98a6e8511b0cbd17d8959ffb" => :mavericks
+    sha256 "2ce3337dbd9e051edbd6be7c899d11d741576817ed9f8d61d78d1ba3d21b90df" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
