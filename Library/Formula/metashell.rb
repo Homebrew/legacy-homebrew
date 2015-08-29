@@ -4,13 +4,13 @@ class Metashell < Formula
   url "https://github.com/sabel83/metashell/archive/v2.1.0.tar.gz"
   sha256 "64d3680a536a254de8556a9792c5d35e6709f2f347d7187614271123d87246ee"
 
-  depends_on "cmake" => :build
-
   bottle do
     sha256 "889f85d4601b30dd3b2eed8c64a3dbb0554600c0f624e6b8fbfff533922a9e79" => :yosemite
     sha256 "3f134dccf6bff48ab61cfdb312b03a3318591e6e41396f0b98795e9423f31421" => :mavericks
     sha256 "1c772d98ec272ed38167fa7cec02f91c4666616fbe189af8c9377cb8f28f579b" => :mountain_lion
   end
+
+  depends_on "cmake" => :build
 
   needs :cxx11
 
@@ -18,7 +18,7 @@ class Metashell < Formula
   # compiling some Templight code. The patch comments out unused parts of Templight,
   # so patched version is functionally equivalent. This error should be fixed in
   # the next release of Metashell.
-  # Link: https://github.com/sabel83/metashell/issues/28
+  # https://github.com/sabel83/metashell/issues/28
   patch :DATA if MacOS.version == :mountain_lion
 
   def install
