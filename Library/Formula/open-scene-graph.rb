@@ -7,10 +7,9 @@ class OpenSceneGraph < Formula
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
 
   bottle do
-    revision 1
-    sha256 "84a2fb06650a9b61bcefe3abcc3619263a1e36fa086e85ccc5b749e4948cb793" => :yosemite
-    sha256 "c5de6622bedf78bc453db80ec34f9d784c453444e2046f17061a7e1da272772f" => :mavericks
-    sha256 "1be15b3c3e807af706d6a6a5ddf985550c4eabc6ebeceb92908f5fdc6c90d081" => :mountain_lion
+    sha256 "d24a9ba62fdd3d700e8c326e0ac8786229a4d84ca9786fac58b1ff8d785148ff" => :yosemite
+    sha256 "a2bb83a0e02b1f5a75e802053cba6c81b6928c716fb805caf7d53becc9e0ee8e" => :mavericks
+    sha256 "86e946339bf8293c784e4ceb78b2ff5f203bf7166427d2e66abb462d6f03e406" => :mountain_lion
   end
 
   option :cxx11
