@@ -1,0 +1,599 @@
+<div class='mp'>
+<h2 id="NAME">NAME</h2>
+<p class="man-name">
+  <code>brew</code> - <span class="man-whatis">The missing package manager for OS X</span>
+</p>
+
+<h2 id="SYNOPSIS">SYNOPSIS</h2>
+
+<p><code>brew</code> --version<br />
+<code>brew</code> command [--verbose|-v] [options] [formula] ...</p>
+
+<h2 id="DESCRIPTION">DESCRIPTION</h2>
+
+<p>Homebrew is the easiest and most flexible way to install the UNIX tools Apple
+didn't include with OS X.</p>
+
+<h2 id="ESSENTIAL-COMMANDS">ESSENTIAL COMMANDS</h2>
+
+<p>For the full command list, see the COMMANDS section.</p>
+
+<p>With <code>--verbose</code> or <code>-v</code>, many commands print extra debugging information.
+Note that these flags should only appear after a command.</p>
+
+<dl>
+<dt><code>install</code> <var>formula</var></dt><dd><p>Install <var>formula</var>.</p></dd>
+<dt><code>remove</code> <var>formula</var></dt><dd><p>Uninstall <var>formula</var>.</p></dd>
+<dt class="flush"><code>update</code></dt><dd><p>Fetch the newest version of Homebrew from GitHub using <code>git</code>(1).</p></dd>
+<dt class="flush"><code>list</code></dt><dd><p>List all installed formulae.</p></dd>
+<dt><code>search</code> <var>text</var>|/<var>text</var>/</dt><dd><p>Perform a substring search of formula names for <var>text</var>. If <var>text</var> is
+surrounded with slashes, then it is interpreted as a regular expression.
+The search for <var>text</var> is extended online to some popular taps.
+If no search term is given, all locally available formulae are listed.</p></dd>
+</dl>
+
+
+<h2 id="COMMANDS">COMMANDS</h2>
+
+<ul>
+<li><p><code>audit</code> [--strict] [--online] [<var>formulae</var>]:
+Check <var>formulae</var> for Homebrew coding style violations. This should be
+run before submitting a new formula.</p>
+
+<p>If no <var>formulae</var> are provided, all of them are checked.</p>
+
+<p>If <code>--strict</code> is passed, additional checks are run. This should be used
+when creating for new formulae.</p>
+
+<p>If <code>--online</code> is passed, additional slower checks that require a network
+connection are run. This should be used when creating for new formulae.</p>
+
+<p><code>audit</code> exits with a non-zero status if any errors are found. This is useful,
+for instance, for implementing pre-commit hooks.</p></li>
+<li><p><code>cat</code> <var>formula</var>:
+Display the source to <var>formula</var>.</p></li>
+<li><p><code>cleanup [--force] [--prune=&lt;days>] [-ns]</code> [<var>formulae</var>]:
+For all installed or specific formulae, remove any older versions from the
+cellar. By default, does not remove out-of-date keg-only brews, as other
+software may link directly to specific versions. In addition old downloads from
+the Homebrew download-cache are deleted.</p>
+
+<p>If <code>--force</code> is passed, remove out-of-date keg-only brews as well.</p>
+
+<p>If <code>--prune=&lt;days></code> is specified, remove all cache files older than <var>days</var>.</p>
+
+<p>If <code>-n</code> is passed, show what would be removed, but do not actually remove anything.</p>
+
+<p>If <code>-s</code> is passed, scrubs the cache, removing downloads for even the latest
+versions of formula. Note downloads for any installed formula will still not be
+deleted. If you want to delete those too: <code>rm -rf $(brew --cache)</code></p></li>
+<li><p><code>command</code> <var>cmd</var>:
+Display the path to the file which is used when invoking <code>brew &lt;cmd></code>.</p></li>
+<li><p><code>commands [--quiet [--include-aliases]]</code>:
+Show a list of built-in and external commands.</p>
+
+<p>If <code>--quiet</code> is passed, list only the names of commands without the header.
+With <code>--include-aliases</code>, the aliases of internal commands will be included.</p></li>
+<li><p><code>config</code>:
+Show Homebrew and system configuration useful for debugging. If you file
+a bug report, you will likely be asked for this information if you do not
+provide it.</p></li>
+<li><p><code>create &lt;URL> [--autotools|--cmake] [--no-fetch] [--set-name &lt;name>] [--set-version &lt;version>]</code>:
+Generate a formula for the downloadable file at <var>URL</var> and open it in the editor.
+Homebrew will attempt to automatically derive the formula name
+and version, but if it fails, you'll have to make your own template. The wget
+formula serves as a simple example. For a complete cheat-sheet, have a look at</p>
+
+<p><a href="http://www.rubydoc.info/github/Homebrew/homebrew/master/frames" data-bare-link="true">http://www.rubydoc.info/github/Homebrew/homebrew/master/frames</a></p>
+
+<p>If <code>--autotools</code> is passed, create a basic template for an Autotools-style build.
+If <code>--cmake</code> is passed, create a basic template for a CMake-style build.</p>
+
+<p>If <code>--no-fetch</code> is passed, Homebrew will not download <var>URL</var> to the cache and
+will thus not add the SHA256 to the formula for you.</p>
+
+<p>The options <code>--set-name</code> and <code>--set-version</code> each take an argument and allow
+you to explicitly set the name and version of the package you are creating.</p></li>
+<li><p><code>deps [--1] [-n] [--union] [--tree] [--all] [--installed] [--skip-build] [--skip-optional]</code> <var>formulae</var>:
+Show dependencies for <var>formulae</var>. When given multiple formula arguments,
+show the intersection of dependencies for <var>formulae</var>, except when passed
+<code>--tree</code>, <code>--all</code>, or <code>--installed</code>.</p>
+
+<p>If <code>--1</code> is passed, only show dependencies one level down, instead of
+recursing.</p>
+
+<p>If <code>-n</code> is passed, show dependencies in topological order.</p>
+
+<p>If <code>--union</code> is passed, show the union of dependencies for <var>formulae</var>,
+instead of the intersection.</p>
+
+<p>If <code>--tree</code> is passed, show dependencies as a tree.</p>
+
+<p>If <code>--all</code> is passed, show dependencies for all formulae.</p>
+
+<p>If <code>--installed</code> is passed, show dependencies for all installed formulae.</p>
+
+<p>By default, <code>deps</code> shows dependencies for <var>formulae</var>. To skip the <code>:build</code>
+type dependencies, pass <code>--skip-build</code>. Similarly, pass <code>--skip-optional</code>
+to skip <code>:optional</code> dependencies.</p></li>
+<li><p><code>diy [--name=&lt;name>] [--version=&lt;version>]</code>:
+Automatically determine the installation prefix for non-Homebrew software.</p>
+
+<p>Using the output from this command, you can install your own software into
+the Cellar and then link it into Homebrew's prefix with <code>brew link</code>.</p>
+
+<p>The options <code>--name=&lt;name></code> and <code>--version=&lt;version></code> each take an argument
+and allow you to explicitly set the name and version of the package you are
+installing.</p></li>
+<li><p><code>doctor</code>:
+Check your system for potential problems. Doctor exits with a non-zero status
+if any problems are found.</p></li>
+<li><p><code>edit</code>:
+Open all of Homebrew for editing.</p></li>
+<li><p><code>edit</code> <var>formula</var>:
+Open <var>formula</var> in the editor.</p></li>
+<li><p><code>fetch [--force] [-v] [--devel|--HEAD] [--deps] [--build-from-source|--force-bottle]</code> <var>formulae</var>:
+Download the source packages for the given <var>formulae</var>.
+For tarballs, also print SHA1 and SHA-256 checksums.</p>
+
+<p>If <code>--HEAD</code> or <code>--devel</code> is passed, fetch that version instead of the
+stable version.</p>
+
+<p>If <code>-v</code> is passed, do a verbose VCS checkout, if the URL represents a CVS.
+This is useful for seeing if an existing VCS cache has been updated.</p>
+
+<p>If <code>--force</code> is passed, remove a previously cached version and re-fetch.</p>
+
+<p>If <code>--deps</code> is passed, also download dependencies for any listed <var>formulae</var>.</p>
+
+<p>If <code>--build-from-source</code> is passed, download the source rather than a
+bottle.</p>
+
+<p>If <code>--force-bottle</code> is passed, download a bottle if it exists for the current
+version of OS X, even if it would not be used during installation.</p></li>
+<li><p><code>home</code>:
+Open Homebrew's own homepage in a browser.</p></li>
+<li><p><code>home</code> <var>formula</var>:
+Open <var>formula</var>'s homepage in a browser.</p></li>
+<li><p><code>info</code> <var>formula</var>:
+Display information about <var>formula</var>.</p></li>
+<li><p><code>info --github</code> <var>formula</var>:
+Open a browser to the GitHub History page for formula <var>formula</var>.</p>
+
+<p>To view formula history locally: <code>brew log -p &lt;formula></code>.</p></li>
+<li><p><code>info --json=&lt;version></code> (--all|--installed|<var>formulae</var>):
+Print a JSON representation of <var>formulae</var>. Currently the only accepted value
+for <var>version</var> is <code>v1</code>.</p>
+
+<p>Pass <code>--all</code> to get information on all formulae, or <code>--installed</code> to get
+information on all installed formulae.</p>
+
+<p>See the docs for examples of using the JSON:
+<a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md" data-bare-link="true">https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md</a></p></li>
+<li><p><code>install [--debug] [--env=&lt;std|super>] [--ignore-dependencies] [--only-dependencies] [--cc=&lt;compiler>] [--build-from-source|--force-bottle] [--devel|--HEAD]</code> <var>formula</var>:
+Install <var>formula</var>.</p>
+
+<p><var>formula</var> is usually the name of the formula to install, but it can be specified
+several different ways. See <a href="#SPECIFYING-FORMULAE" title="SPECIFYING FORMULAE" data-bare-link="true">SPECIFYING FORMULAE</a>.</p>
+
+<p>If <code>--debug</code> is passed and brewing fails, open an interactive debugging
+session with access to IRB or a shell inside the temporary build directory.</p>
+
+<p>If <code>--env=std</code> is passed, use the standard build environment instead of superenv.</p>
+
+<p>If <code>--env=super</code> is passed, use superenv even if the formula specifies the
+standard build environment.</p>
+
+<p>If <code>--ignore-dependencies</code> is passed, skip installing any dependencies of
+any kind. If they are not already present, the formula will probably fail
+to install.</p>
+
+<p>If <code>--only-dependencies</code> is passed, install the dependencies with specified
+options but do not install the specified formula.</p>
+
+<p>If <code>--cc=&lt;compiler></code> is passed, attempt to compile using <var>compiler</var>.
+<var>compiler</var> should be the name of the compiler's executable, for instance
+<code>gcc-4.2</code> for Apple's GCC 4.2, or <code>gcc-4.9</code> for a Homebrew-provided GCC
+4.9.</p>
+
+<p>If <code>--build-from-source</code> is passed, compile from source even if a bottle
+is provided for <var>formula</var>.</p>
+
+<p>If <code>--force-bottle</code> is passed, install from a bottle if it exists
+for the current version of OS X, even if custom options are given.</p>
+
+<p>If <code>--devel</code> is passed, and <var>formula</var> defines it, install the development version.</p>
+
+<p>If <code>--HEAD</code> is passed, and <var>formula</var> defines it, install the HEAD version,
+aka master, trunk, unstable.</p>
+
+<p>To install a newer version of HEAD use
+<code>brew rm &lt;foo> &amp;&amp; brew install --HEAD &lt;foo></code>.</p></li>
+<li><p><code>install --interactive [--git]</code> <var>formula</var>:
+Download and patch <var>formula</var>, then open a shell. This allows the user to
+run <code>./configure --help</code> and otherwise determine how to turn the software
+package into a Homebrew formula.</p>
+
+<p>If <code>--git</code> is passed, Homebrew will create a Git repository, useful for
+creating patches to the software.</p></li>
+<li><p><code>irb [--examples]</code>:
+Enter the interactive Homebrew Ruby shell.</p>
+
+<p>If <code>--examples</code> is passed, several examples will be shown.</p></li>
+<li><p><code>leaves</code>:
+Show installed formulae that are not dependencies of another installed formula.</p></li>
+<li><p><code>ln</code>, <code>link [--overwrite] [--dry-run] [--force]</code> <var>formula</var>:
+Symlink all of <var>formula</var>'s installed files into the Homebrew prefix. This
+is done automatically when you install formulae but can be useful for DIY
+installations.</p>
+
+<p>If <code>--overwrite</code> is passed, Homebrew will delete files which already exist in
+the prefix while linking.</p>
+
+<p>If <code>--dry-run</code> or <code>-n</code> is passed, Homebrew will list all files which would
+be linked or which would be deleted by <code>brew link --overwrite</code>, but will not
+actually link or delete any files.</p>
+
+<p>If <code>--force</code> is passed, Homebrew will allow keg-only formulae to be linked.</p></li>
+<li><p><code>linkapps [--local]</code> [<var>formulae</var>]:
+Find installed formulae that have compiled <code>.app</code>-style "application"
+packages for OS X, and symlink those apps into <code>/Applications</code>, allowing
+for easier access.</p>
+
+<p>If no <var>formulae</var> are provided, all of them will have their .apps symlinked.</p>
+
+<p>If provided, <code>--local</code> will move them into the user's <code>~/Applications</code>
+directory instead of the system directory. It may need to be created, first.</p></li>
+<li><p><code>ls</code>, <code>list [--full-name]</code>
+List all installed formulae. If <code>--full-name</code> is passed, print formulae with
+full-qualified names.</p></li>
+<li><p><code>ls</code>, <code>list --unbrewed</code>
+List all files in the Homebrew prefix not installed by Homebrew.</p></li>
+<li><p><code>ls</code>, <code>list [--versions [--multiple]] [--pinned]</code> [<var>formulae</var>]:
+List the installed files for <var>formulae</var>. Combined with <code>--verbose</code>, recursively
+list the contents of all subdirectories in each <var>formula</var>'s keg.</p>
+
+<p>If <code>--versions</code> is passed, show the version number for installed formulae,
+or only the specified formulae if <var>formulae</var> are given. With <code>--multiple</code>,
+only show formulae with multiple versions installed.</p>
+
+<p>If <code>--pinned</code> is passed, show the versions of pinned formulae, or only the
+specified (pinned) formulae if <var>formulae</var> are given.
+See also <code>pin</code>, <code>unpin</code>.</p></li>
+<li><p><code>log [git-log-options]</code> <var>formula</var> ...:
+Show the git log for the given formulae. Options that <code>git-log</code>(1)
+recognizes can be passed before the formula list.</p></li>
+<li><p><code>missing</code> [<var>formulae</var>]:
+Check the given <var>formulae</var> for missing dependencies.</p>
+
+<p>If no <var>formulae</var> are given, check all installed brews.</p></li>
+<li><p><code>migrate [--force]</code> <var>formulae</var>:
+Migrate renamed packages to new name, where <var>formulae</var> are old names of
+packages.</p>
+
+<p>If <code>--force</code> is passed, then treat installed <var>formulae</var> and passed <var>formulae</var>
+like if they are from same taps and migrate them anyway.</p></li>
+<li><p><code>options [--compact] [--all] [--installed]</code> <var>formula</var>:
+Display install options specific to <var>formula</var>.</p>
+
+<p>If <code>--compact</code> is passed, show all options on a single line separated by
+spaces.</p>
+
+<p>If <code>--all</code> is passed, show options for all formulae.</p>
+
+<p>If <code>--installed</code> is passed, show options for all installed formulae.</p></li>
+<li><p><code>outdated [--quiet | --verbose | --json=v1 ]</code>:
+Show formulae that have an updated version available.</p>
+
+<p>By default, version information is displayed in interactive shells, and
+suppressed otherwise.</p>
+
+<p>If <code>--quiet</code> is passed, list only the names of outdated brews (takes
+precedence over <code>--verbose</code>).</p>
+
+<p>If <code>--verbose</code> is passed, display detailed version information.</p>
+
+<p>If <code>--json=&lt;version></code> is passed, the output will be in JSON format. The only
+valid version is <code>v1</code>.</p></li>
+<li><p><code>pin</code> <var>formulae</var>:
+Pin the specified <var>formulae</var>, preventing them from being upgraded when
+issuing the <code>brew upgrade</code> command. See also <code>unpin</code>.</p></li>
+<li><p><code>prune</code>:
+Remove dead symlinks from the Homebrew prefix. This is generally not
+needed, but can be useful when doing DIY installations.</p></li>
+<li><p><code>reinstall</code> <var>formula</var>:
+Uninstall then install <var>formula</var></p></li>
+<li><p><code>rm</code>, <code>remove</code>, <code>uninstall [--force]</code> <var>formula</var>:
+Uninstall <var>formula</var>.</p>
+
+<p>If <code>--force</code> is passed, and there are multiple versions of <var>formula</var>
+installed, delete all installed versions.</p></li>
+<li><p><code>search</code>, <code>-S</code>:
+Display all locally available formulae for brewing (including tapped ones).
+No online search is performed if called without arguments.</p></li>
+<li><p><code>search</code>, <code>-S</code> <var>text</var>|/<var>text</var>/:
+Perform a substring search of formula names for <var>text</var>. If <var>text</var> is
+surrounded with slashes, then it is interpreted as a regular expression.
+The search for <var>text</var> is extended online to some popular taps.</p></li>
+<li><p><code>search --debian</code>|<code>--fedora</code>|<code>--fink</code>|<code>--macports</code>|<code>--opensuse</code>|<code>--ubuntu</code> <var>text</var>:
+Search for <var>text</var> in the given package manager's list.</p></li>
+<li><p><code>sh [--env=std]</code>:
+Instantiate a Homebrew build environment. Uses our years-battle-hardened
+Homebrew build logic to help your <code>./configure &amp;&amp; make &amp;&amp; make install</code>
+or even your <code>gem install</code> succeed. Especially handy if you run Homebrew
+in a Xcode-only configuration since it adds tools like make to your PATH
+which otherwise build-systems would not find.</p></li>
+<li><p><code>switch</code> <var>name</var> <var>version</var>:
+Symlink all of the specific <var>version</var> of <var>name</var>'s install to Homebrew prefix.</p></li>
+<li><p><code>tap</code> [--full] [<user/repo>] [<var>URL</var>]:
+Tap a formula repository or list existing taps. This command can be invoked
+in three ways.</p>
+
+<ul>
+<li><p><code>tap</code> without arguments displays existing taps.</p></li>
+<li><p><code>tap &lt;user/repo&gt;</code> taps a formula repository from GitHub using HTTPS.
+Since so many taps are hosted on GitHub, this command is a shortcut for
+<code>tap user/repo https://github.com/#{user}/homebrew-#{repo}</code>.</p></li>
+<li><p><code>tap &lt;user/repo&gt; &lt;URL></code> taps a formula repository from anywhere, using
+any transport protocol that <code>git</code> handles. The one-argument form of <code>tap</code>
+simplifies but also limits.  This two-argument command makes no
+assumptions, so taps can be cloned from places other than GitHub and
+using protocols other than HTTPS, e.g., SSH, GIT, HTTP, FTP(S), RSYNC.</p></li>
+</ul>
+
+
+<p>By default, the repository is cloned as a shallow copy (<code>--depth=1</code>), but
+if <code>--full</code> is passed, a full clone will be used.</p></li>
+<li><p><code>tap --repair</code>:
+Migrate tapped formulae from symlink-based to directory-based structure.</p></li>
+<li><p><code>tap --list-official</code>:
+List all official taps.</p></li>
+<li><p><code>tap --list-pinned</code>:
+List all pinned taps.</p></li>
+<li><p><code>tap-info</code> <var>tap</var>:
+Display information about <var>tap</var>.</p></li>
+<li><p><code>tap-info --json=&lt;version></code> (--installed|<var>taps</var>):
+Print a JSON representation of <var>taps</var>. Currently the only accepted value
+for <var>version</var> is <code>v1</code>.</p>
+
+<p>Pass <code>--installed</code> to get information on installed taps.</p>
+
+<p>See the docs for examples of using the JSON:
+<a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md" data-bare-link="true">https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Querying-Brew.md</a></p></li>
+<li><p><code>tap-pin</code> <var>tap</var>:
+Pin <var>tap</var>, prioritizing its formulae over core when formula names are supplied
+by the user. See also <code>tap-unpin</code>.</p></li>
+<li><p><code>tap-unpin</code> <var>tap</var>:
+Unpin <var>tap</var> so its formulae are no longer prioritized. See also <code>tap-pin</code>.</p></li>
+<li><p><code>test</code> [--devel|--HEAD] [--debug] <var>formula</var>:
+A few formulae provide a test method. <code>brew test &lt;formula></code> runs this
+test method. There is no standard output or return code, but it should
+generally indicate to the user if something is wrong with the installed
+formula.</p>
+
+<p>To test the development or head version of a formula, use <code>--devel</code> or
+<code>--HEAD</code>.</p>
+
+<p>If <code>--debug</code> is passed and the test fails, an interactive debugger will be
+launched with access to IRB or a shell inside the temporary test directory.</p>
+
+<p>Example: <code>brew install jruby &amp;&amp; brew test jruby</code></p></li>
+<li><p><code>unlink</code> <var>formula</var>:
+Remove symlinks for <var>formula</var> from the Homebrew prefix. This can be useful
+for temporarily disabling a formula:
+<code>brew unlink foo &amp;&amp; commands &amp;&amp; brew link foo</code>.</p></li>
+<li><p><code>unlinkapps [--local]</code> [<var>formulae</var>]:
+Removes links created by <code>brew linkapps</code>.</p>
+
+<p>If no <var>formulae</var> are provided, all linked app will be removed.</p></li>
+<li><p><code>unpack [--git|--patch] [--destdir=&lt;path>]</code> <var>formulae</var>:
+Unpack the source files for <var>formulae</var> into subdirectories of the current
+working directory. If <code>--destdir=&lt;path></code> is given, the subdirectories will
+be created in the directory named by <code>&lt;path></code> instead.</p>
+
+<p>If <code>--patch</code> is passed, patches for <var>formulae</var> will be applied to the
+unpacked source.</p>
+
+<p>If <code>--git</code> is passed, a Git repository will be initalized in the unpacked
+source. This is useful for creating patches for the software.</p></li>
+<li><p><code>unpin</code> <var>formulae</var>:
+Unpin <var>formulae</var>, allowing them to be upgraded by <code>brew upgrade</code>. See also
+<code>pin</code>.</p></li>
+<li><p><code>untap</code> <var>tap</var>:
+Remove a tapped repository.</p></li>
+<li><p><code>update [--rebase]</code>:
+Fetch the newest version of Homebrew and all formulae from GitHub using
+ <code>git</code>(1).</p>
+
+<p>If <code>--rebase</code> is specified then <code>git pull --rebase</code> is used.</p></li>
+<li><p><code>upgrade [install-options]</code> [<var>formulae</var>]:
+Upgrade outdated, unpinned brews.</p>
+
+<p>Options for the <code>install</code> command are also valid here.</p>
+
+<p>If <var>formulae</var> are given, upgrade only the specified brews (but do so even
+if they are pinned; see <code>pin</code>, <code>unpin</code>).</p></li>
+<li><p><code>uses [--installed] [--recursive] [--skip-build] [--skip-optional] [--devel|--HEAD]</code> <var>formulae</var>:
+Show the formulae that specify <var>formulae</var> as a dependency. When given
+multiple formula arguments, show the intersection of formulae that use
+<var>formulae</var>.</p>
+
+<p>Use <code>--recursive</code> to resolve more than one level of dependencies.</p>
+
+<p>If <code>--installed</code> is passed, only list installed formulae.</p>
+
+<p>By default, <code>uses</code> shows all formulae that specify <var>formulae</var> as a dependency.
+To skip the <code>:build</code> type dependencies, pass <code>--skip-build</code>. Similarly, pass
+<code>--skip-optional</code> to skip <code>:optional</code> dependencies.</p>
+
+<p>By default, <code>uses</code> shows usages of <code>formula</code> by stable builds. To find
+cases where <code>formula</code> is used by development or HEAD build, pass
+<code>--devel</code> or <code>--HEAD</code>.</p></li>
+<li><p><code>--cache</code>:
+Display Homebrew's download cache. See also <code>HOMEBREW_CACHE</code>.</p></li>
+<li><p><code>--cache</code> <var>formula</var>:
+Display the file or directory used to cache <var>formula</var>.</p></li>
+<li><p><code>--cellar</code>:
+Display Homebrew's Cellar path. <em>Default:</em> <code>$(brew --prefix)/Cellar</code>, or if
+that directory doesn't exist, <code>$(brew --repository)/Cellar</code>.</p></li>
+<li><p><code>--cellar</code> <var>formula</var>:
+Display the location in the cellar where <var>formula</var> would be installed,
+without any sort of versioned directory as the last path.</p></li>
+<li><p><code>--env</code>:
+Show a summary of the Homebrew build environment.</p></li>
+<li><p><code>--prefix</code>:
+Display Homebrew's install path. <em>Default:</em> <code>/usr/local</code></p></li>
+<li><p><code>--prefix</code> <var>formula</var>:
+Display the location in the cellar where <var>formula</var> is or would be installed.</p></li>
+<li><p><code>--repository</code>:
+Display where Homebrew's <code>.git</code> directory is located. For standard installs,
+the <code>prefix</code> and <code>repository</code> are the same directory.</p></li>
+<li><p><code>--version</code>:
+Print the version number of brew to standard error and exit.</p></li>
+</ul>
+
+
+<h2 id="EXTERNAL-COMMANDS">EXTERNAL COMMANDS</h2>
+
+<p>Homebrew, like <code>git</code>(1), supports external commands. These are executable
+scripts that reside somewhere in the PATH, named <code>brew-&lt;cmdname></code> or
+<code>brew-&lt;cmdname>.rb</code>, which can be invoked like <code>brew cmdname</code>. This allows you
+to create your own commands without modifying Homebrew's internals.</p>
+
+<p>Instructions for creating your own commands can be found in the docs:
+<a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md" data-bare-link="true">https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md</a></p>
+
+<h2 id="SPECIFYING-FORMULAE">SPECIFYING FORMULAE</h2>
+
+<p>Many Homebrew commands accept one or more <var>formula</var> arguments. These arguments
+can take several different forms:</p>
+
+<dl>
+<dt>The name of a formula</dt><dd><p>e.g. <code>git</code>, <code>node</code>, <code>wget</code>.</p></dd>
+<dt>The fully-qualified name of a tapped formula</dt><dd><p>Sometimes a formula from a tapped repository may conflict with one in Homebrew/homebrew.
+You can still access these formulae by using a special syntax, e.g.
+<code>homebrew/dupes/vim</code> or <code>homebrew/versions/node4</code>.</p></dd>
+<dt>An arbitrary URL</dt><dd><p>Homebrew can install formulae via URL, e.g.
+<code>https://raw.github.com/Homebrew/homebrew/master/Library/Formula/git.rb</code>.
+The formula file will be cached for later use.</p></dd>
+</dl>
+
+
+<h2 id="ENVIRONMENT">ENVIRONMENT</h2>
+
+<dl>
+<dt>AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY</dt><dd><p>When using the S3 download strategy, Homebrew will look in
+these variables for access credentials (see
+<a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment" data-bare-link="true">https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html#cli-environment</a>
+to retrieve these access credentials from AWS).  If they are not set,
+the S3 download strategy will download with a public
+(unsigned) URL.</p></dd>
+<dt class="flush">BROWSER</dt><dd><p>If set, and <code>HOMEBREW_BROWSER</code> is not, use <code>BROWSER</code> as the web browser
+when opening project homepages.</p></dd>
+<dt class="flush">EDITOR</dt><dd><p>If set, and <code>HOMEBREW_EDITOR</code> and <code>VISUAL</code> are not, use <code>EDITOR</code> as the text editor.</p></dd>
+<dt class="flush">GIT</dt><dd><p>When using Git, Homebrew will use <code>GIT</code> if set,
+a Homebrew-built Git if installed, or the system-provided binary.</p>
+
+<p>Set this to force Homebrew to use a particular git binary.</p></dd>
+<dt>HOMEBREW_BOTTLE_DOMAIN</dt><dd><p>If set, instructs Homebrew to use the given URL as a download mirror for bottles.</p></dd>
+<dt>HOMEBREW_BROWSER</dt><dd><p>If set, uses this setting as the browser when opening project homepages,
+instead of the OS default browser.</p></dd>
+<dt>HOMEBREW_BUILD_FROM_SOURCE</dt><dd><p>If set, instructs Homebrew to compile from source even when a formula
+provides a bottle.</p></dd>
+<dt>HOMEBREW_CACHE</dt><dd><p>If set, instructs Homebrew to use the given directory as the download cache.</p>
+
+<p><em>Default:</em> <code>~/Library/Caches/Homebrew</code> if it exists; otherwise,
+<code>/Library/Caches/Homebrew</code>.</p></dd>
+<dt>HOMEBREW_CURL_VERBOSE</dt><dd><p>If set, Homebrew will pass <code>--verbose</code> when invoking <code>curl</code>(1).</p></dd>
+<dt>HOMEBREW_DEBUG</dt><dd><p>If set, any commands that can emit debugging information will do so.</p></dd>
+<dt>HOMEBREW_DEBUG_INSTALL</dt><dd><p>When <code>brew install -d</code> or <code>brew install -i</code> drops into a shell,
+<code>HOMEBREW_DEBUG_INSTALL</code> will be set to the name of the formula being
+brewed.</p></dd>
+<dt>HOMEBREW_DEBUG_PREFIX</dt><dd><p>When <code>brew install -d</code> or <code>brew install -i</code> drops into a shell,
+<code>HOMEBREW_DEBUG_PREFIX</code> will be set to the target prefix in the Cellar
+of the formula being brewed.</p></dd>
+<dt>HOMEBREW_DEVELOPER</dt><dd><p>If set, Homebrew will print warnings that are only relevant to Homebrew
+developers (active or budding).</p></dd>
+<dt>HOMEBREW_EDITOR</dt><dd><p>If set, Homebrew will use this editor when editing a single formula, or
+several formulae in the same directory.</p>
+
+<p><em>NOTE</em>: <code>brew edit</code> will open all of Homebrew as discontinuous files and
+directories. TextMate can handle this correctly in project mode, but many
+editors will do strange things in this case.</p></dd>
+<dt>HOMEBREW_GITHUB_API_TOKEN</dt><dd><p>A personal access token for the GitHub API, which you can create at
+<a href="https://github.com/settings/tokens" data-bare-link="true">https://github.com/settings/tokens</a>. If set, GitHub will allow you a
+greater number of API requests. See
+<a href="https://developer.github.com/v3/#rate-limiting" data-bare-link="true">https://developer.github.com/v3/#rate-limiting</a> for more information.
+Homebrew uses the GitHub API for features such as <code>brew search</code>.</p></dd>
+<dt>HOMEBREW_LOGS</dt><dd><p>If set, Homebrew will use the given directory to store log files.</p></dd>
+<dt>HOMEBREW_MAKE_JOBS</dt><dd><p>If set, instructs Homebrew to use the value of <code>HOMEBREW_MAKE_JOBS</code> as
+the number of parallel jobs to run when building with <code>make</code>(1).</p>
+
+<p><em>Default:</em> the number of available CPU cores.</p></dd>
+<dt>HOMEBREW_NO_EMOJI</dt><dd><p>If set, Homebrew will not print the <code>HOMEBREW_INSTALL_BADGE</code> on a
+successful build.</p>
+
+<p><em>Note:</em> Homebrew will only try to print emoji on Lion or newer.</p></dd>
+<dt>HOMEBREW_NO_INSECURE_REDIRECT</dt><dd><p>If set, Homebrew will not permit redirects from secure HTTPS
+to insecure HTTP.</p>
+
+<p>While ensuring your downloads are fully secure, this is likely
+to cause from-source Sourceforge &amp; GNOME based formulae
+to fail to download.</p>
+
+<p>Apache formulae are currently unaffected by this variable and
+can redirect to plaintext.</p></dd>
+<dt>HOMEBREW_NO_GITHUB_API</dt><dd><p>If set, Homebrew will not use the GitHub API for e.g searches or
+fetching relevant issues on a failed install.</p></dd>
+<dt>HOMEBREW_INSTALL_BADGE</dt><dd><p>Text printed before the installation summary of each successful build.
+Defaults to the beer emoji.</p></dd>
+<dt>HOMEBREW_SVN</dt><dd><p>When exporting from Subversion, Homebrew will use <code>HOMEBREW_SVN</code> if set,
+a Homebrew-built Subversion if installed, or the system-provided binary.</p>
+
+<p>Set this to force Homebrew to use a particular svn binary.</p></dd>
+<dt>HOMEBREW_TEMP</dt><dd><p>If set, instructs Homebrew to use <code>HOMEBREW_TEMP</code> as the temporary directory
+for building packages. This may be needed if your system temp directory and
+Homebrew Prefix are on different volumes, as OS X has trouble moving
+symlinks across volumes when the target does not yet exist.</p>
+
+<p>This issue typically occurs when using FileVault or custom SSD
+configurations.</p></dd>
+<dt>HOMEBREW_VERBOSE</dt><dd><p>If set, Homebrew always assumes <code>--verbose</code> when running commands.</p></dd>
+<dt class="flush">VISUAL</dt><dd><p>If set, and <code>HOMEBREW_EDITOR</code> is not, use <code>VISUAL</code> as the text editor.</p></dd>
+</dl>
+
+
+<h2 id="USING-HOMEBREW-BEHIND-A-PROXY">USING HOMEBREW BEHIND A PROXY</h2>
+
+<p>Homebrew uses several commands for downloading files (e.g. curl, git, svn).
+Many of these tools can download via a proxy. It's common for these tools
+to read proxy parameters from environment variables.</p>
+
+<p>For the majority of cases setting <code>http_proxy</code> is enough. You can set this in
+your shell profile, or you can use it before a brew command:</p>
+
+<pre><code>http_proxy=http://&lt;host>:&lt;port> brew install foo
+</code></pre>
+
+<p>If your proxy requires authentication:</p>
+
+<pre><code>http_proxy=http://&lt;user>:&lt;password>@&lt;host>:&lt;port> brew install foo
+</code></pre>
+
+<h2 id="SEE-ALSO">SEE ALSO</h2>
+
+<p>Homebrew Documentation: <a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/" data-bare-link="true">https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/</a></p>
+
+<p><code>git</code>(1), <code>git-log</code>(1)</p>
+
+<h2 id="AUTHORS">AUTHORS</h2>
+
+<p>Homebrew's current maintainers are Misty De Meo, Adam Vandenberg, Xu Cheng, Mike McQuaid, Baptiste Fontaine, Brett Koonce, Dominyk Tiller, Tim Smith and Alex Dunn.</p>
+
+<p>Homebrew was originally created by Max Howell.</p>
+
+<h2 id="BUGS">BUGS</h2>
+
+<p>See Issues on GitHub: <a href="https://github.com/Homebrew/homebrew/issues" data-bare-link="true">https://github.com/Homebrew/homebrew/issues</a></p>
+
+</div>

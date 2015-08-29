@@ -1,21 +1,26 @@
 module ArchitectureListExtension
+  # @private
   def fat?
     length > 1
   end
 
+  # @private
   def intel_universal?
     intersects_all?(Hardware::CPU::INTEL_32BIT_ARCHS, Hardware::CPU::INTEL_64BIT_ARCHS)
   end
 
+  # @private
   def ppc_universal?
     intersects_all?(Hardware::CPU::PPC_32BIT_ARCHS, Hardware::CPU::PPC_64BIT_ARCHS)
   end
 
   # Old-style 32-bit PPC/Intel universal, e.g. ppc7400 and i386
+  # @private
   def cross_universal?
     intersects_all?(Hardware::CPU::PPC_32BIT_ARCHS, Hardware::CPU::INTEL_32BIT_ARCHS)
   end
 
+  # @private
   def universal?
     intel_universal? || ppc_universal? || cross_universal?
   end
@@ -24,6 +29,7 @@ module ArchitectureListExtension
     (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).any? { |a| self.include? a }
   end
 
+  # @private
   def remove_ppc!
     (Hardware::CPU::PPC_32BIT_ARCHS+Hardware::CPU::PPC_64BIT_ARCHS).each { |a| delete a }
   end
@@ -46,12 +52,13 @@ module ArchitectureListExtension
 end
 
 module MachO
+  # @private
   OTOOL_RX = /\t(.*) \(compatibility version (?:\d+\.)*\d+, current version (?:\d+\.)*\d+\)/
 
   # Mach-O binary methods, see:
   # /usr/include/mach-o/loader.h
   # /usr/include/mach-o/fat.h
-
+  # @private
   def mach_data
     @mach_data ||= begin
       offsets = []
@@ -132,18 +139,22 @@ module MachO
     arch == :ppc64
   end
 
+  # @private
   def dylib?
     mach_data.any? { |m| m.fetch(:type) == :dylib }
   end
 
+  # @private
   def mach_o_executable?
     mach_data.any? { |m| m.fetch(:type) == :executable }
   end
 
+  # @private
   def mach_o_bundle?
     mach_data.any? { |m| m.fetch(:type) == :bundle }
   end
 
+  # @private
   class Metadata
     attr_reader :path, :dylib_id, :dylibs
 
@@ -171,6 +182,7 @@ module MachO
     end
   end
 
+  # @private
   def mach_metadata
     @mach_metadata ||= Metadata.new(self)
   end
@@ -180,10 +192,12 @@ module MachO
   # to be absolute paths.
   # Returns an empty array both for software that links against no libraries,
   # and for non-mach objects.
+  # @private
   def dynamically_linked_libraries
     mach_metadata.dylibs
   end
 
+  # @private
   def dylib_id
     mach_metadata.dylib_id
   end

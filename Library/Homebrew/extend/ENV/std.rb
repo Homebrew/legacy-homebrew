@@ -2,9 +2,11 @@ require "hardware"
 require "os/mac"
 require "extend/ENV/shared"
 
+# @deprecated
 module Stdenv
   include SharedEnvExtension
 
+  # @private
   SAFE_CFLAGS_FLAGS = "-w -pipe"
   DEFAULT_FLAGS = "-march=core2 -msse4"
 
@@ -14,6 +16,7 @@ module Stdenv
     end
   end
 
+  # @private
   def setup_build_environment(formula = nil)
     super
 
@@ -69,6 +72,7 @@ module Stdenv
     end
   end
 
+  # @private
   def determine_pkg_config_libdir
     paths = []
     paths << "#{HOMEBREW_PREFIX}/lib/pkgconfig"
@@ -106,11 +110,13 @@ module Stdenv
     end
   end
 
+  # @private
   def determine_cc
     s = super
     MacOS.locate(s) || Pathname.new(s)
   end
 
+  # @private
   def determine_cxx
     dir, base = determine_cc.split
     dir / base.to_s.sub("gcc", "g++").sub("clang", "clang++")
@@ -295,6 +301,7 @@ module Stdenv
     end
   end
 
+  # @private
   def replace_in_cflags(before, after)
     CC_FLAG_VARS.each do |key|
       self[key] = self[key].sub(before, after) if key?(key)
@@ -308,6 +315,7 @@ module Stdenv
 
   # Sets architecture-specific flags for every environment variable
   # given in the list `flags`.
+  # @private
   def set_cpu_flags(flags, default = DEFAULT_FLAGS, map = Hardware::CPU.optimization_flags)
     cflags =~ /(-Xarch_#{Hardware::CPU.arch_32_bit} )-march=/
     xarch = $1.to_s
@@ -319,6 +327,7 @@ module Stdenv
     append flags, map.fetch(effective_arch, default)
   end
 
+  # @private
   def effective_arch
     if ARGV.build_bottle?
       ARGV.bottle_arch || Hardware.oldest_cpu
@@ -332,6 +341,7 @@ module Stdenv
     end
   end
 
+  # @private
   def set_cpu_cflags(default = DEFAULT_FLAGS, map = Hardware::CPU.optimization_flags)
     set_cpu_flags CC_FLAG_VARS, default, map
   end
@@ -346,5 +356,6 @@ module Stdenv
   end
 
   # This method does nothing in stdenv since there's no arg refurbishment
+  # @private
   def refurbish_args; end
 end
