@@ -1,4 +1,8 @@
-# Homebrew Public API
-We're (finally) working on a documented public API for Homebrew. It's currently a work in progress; a bunch of public stuff is documented and a bunch of private stuff is undocumented. Sorry about that!
+# Homebrew's Formula API
+This is the (partially) documented public API for Homebrew. It's currently a work in progress. Sorry about that!
 
-The main class you should look at is {Formula}. Assume everything else is private for now.
+The main class you should look at is the {Formula} class (and classes linked from there). That's the class that's used to create Homebrew formulae (i.e. package descriptions). Assume anything else you stumble upon is private.
+
+You may also find the [Formula Cookbook](Formula-Cookbook.md) and [Ruby Style Guide](https://github.com/styleguide/ruby) helpful in creating formulae.
+
+Good luck!

@@ -92,7 +92,7 @@ Note that these flags should only appear after a command.
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example. For a complete cheat-sheet, have a look at
 
-    `$(brew --repository)/Library/Contributions/example-formula.rb`
+    <http://www.rubydoc.info/github/Homebrew/homebrew/master/frames>
 
     If `--autotools` is passed, create a basic template for an Autotools-style build.
     If `--cmake` is passed, create a basic template for a CMake-style build.
