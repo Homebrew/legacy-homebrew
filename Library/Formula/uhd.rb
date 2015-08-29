@@ -5,6 +5,12 @@ class Uhd < Formula
   sha256 "e0a36e64bffa7d06ac948fd8fc07ff3ce321e1efc3f7e8604b53e0c3ce842989"
   head "https://github.com/EttusResearch/uhd.git"
 
+  bottle do
+    sha256 "c1ef5c34f15a2a49ee31ec78a64f2b84b445a23c71722a8045872aaffd092127" => :yosemite
+    sha256 "09bc2c3e1cd960106e290d372401403d1117d6afebf8733061fa6e8e91cf69d7" => :mavericks
+    sha256 "c7e7164248fc83cd496ca622306b785d2490aea1552c1dc463c247f03297a009" => :mountain_lion
+  end
+
   option :universal
 
   depends_on "cmake" => :build
