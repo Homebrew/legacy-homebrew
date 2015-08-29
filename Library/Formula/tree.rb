@@ -26,6 +26,7 @@ class Tree < Formula
   end
 
   test do
+    touch "/1"
     system "#{bin}/tree", prefix
   end
 end
