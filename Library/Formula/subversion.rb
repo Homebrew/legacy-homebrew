@@ -72,19 +72,6 @@ class Subversion < Formula
   end
 
   def install
-    # OS X's Python is built universally and can't link with Homebrew's deps
-    # unless Homebrew's deps are universal as well.
-    # https://github.com/Homebrew/homebrew-versions/issues/777
-    # https://github.com/Homebrew/homebrew/issues/34119
-    if build.with?("python") && (which "python").universal?
-      unless build.universal?
-        raise <<-EOS.undent
-          You must build subversion --universal unless Homebrew's
-          Python is installed, otherwise the build will fail.
-        EOS
-      end
-    end
-
     serf_prefix = libexec+"serf"
 
     resource("serf").stage do
@@ -166,6 +153,13 @@ class Subversion < Formula
       args << "--with-ruby-sitedir=#{lib}/ruby"
       # Peg to system Ruby
       args << "RUBY=/usr/bin/ruby"
+    end
+
+    # If Python is built universally, then extensions built with that Python
+    # are too. This default behaviour is not desired when building an extension
+    # for a single architecture.
+    if build.with?("python") && (which "python").universal? && !build.universal?
+      ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
     end
 
     # The system Python is built with llvm-gcc, so we override this
