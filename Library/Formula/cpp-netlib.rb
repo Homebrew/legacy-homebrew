@@ -1,10 +1,9 @@
 class CppNetlib < Formula
   desc "C++ libraries for high level network programming"
   homepage "http://cpp-netlib.org"
-  url "https://storage.googleapis.com/cpp-netlib-downloads/0.11.1/cpp-netlib-0.11.1-final.tar.bz2"
-  version "0.11.1"
-  sha256 "8f5a0bb7e5940490b4e409f9c805b752ee4b598e06d740d04adfc76eb5c8e23e"
-  revision 1
+  url "http://downloads.cpp-netlib.org/0.11.2/cpp-netlib-0.11.2-final.tar.gz"
+  version "0.11.2"
+  sha256 "71953379c5a6fab618cbda9ac6639d87b35cab0600a4450a7392bc08c930f2b1"
 
   bottle do
     cellar :any
