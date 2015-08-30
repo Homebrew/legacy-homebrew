@@ -137,6 +137,7 @@ module Homebrew
     f.puts "HEAD: #{head}"
     f.puts "Last commit: #{last_commit}"
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
+    f.puts "HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}"
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     f.puts "HOMEBREW_BOTTLE_DOMAIN: #{BottleSpecification::DEFAULT_DOMAIN}"
     f.puts hardware
