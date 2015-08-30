@@ -5,9 +5,9 @@ class Libressl < Formula
   sha256 "a1ccc21adf91d60e99246031b99c930c9af5e1b1b5a61b1bec87beef6f16d882"
 
   bottle do
-    sha256 "4db03eb91925f036531883745405b54cb8ca50f0a656f1ebe50110146a20b40e" => :yosemite
-    sha256 "415a5ab39c8ea5e113711f30af3ff766f495b7ce6f944580dbc0c234953e4c8f" => :mavericks
-    sha256 "295f2f4baba7c07944058bae8d57d9a50d8b967613904d22e7f5ae16a4e5e8cf" => :mountain_lion
+    sha256 "a4e4afd644d5a603e99ad091a87c10cf132b40b7e8bf3990971223e49a290591" => :yosemite
+    sha256 "fcebe2fdce64cbbd8d6b2e3fe0bd876b5591decfc87f614f754013ed170077a7" => :mavericks
+    sha256 "aa98a4c2a616a67e7352ee1dd9432d03703a2f26804fbba45e8d915d2fa05ed6" => :mountain_lion
   end
 
   head do
