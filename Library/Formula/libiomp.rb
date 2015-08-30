@@ -9,9 +9,9 @@ class Libiomp < Formula
 
   bottle do
     cellar :any
-    sha256 "b330ef085dbff40bdf5b3bf67beb8efd0573c67d5abe9c193f34f8cba1ba7e2c" => :yosemite
-    sha256 "bc754820685040c0567edf3d7aeef1d5c1a25f532409b43673371854e16caca7" => :mavericks
-    sha256 "231ec294a8d99a93a2336d06e2ebf5a1550f76f08ef168fa26c54dc15e0482bf" => :mountain_lion
+    sha256 "f2490f1e40a320426bcc1756cdfc875bfa04643edb0ee988537b6431c0ab4a57" => :yosemite
+    sha256 "cea20104475e6e430146d55a9d1d926402435a10a69ebd0ef994c36e4e33e233" => :mavericks
+    sha256 "6a45040d4af6ea384bee226ca99ab97857d60b717f19b8273b935c3ca43e3a19" => :mountain_lion
   end
 
   fails_with :gcc  do
