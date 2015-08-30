@@ -1,9 +1,8 @@
 class Gstreamer < Formula
   desc "GStreamer is a development framework for multimedia applications"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.5.tar.xz"
-  sha256 "40801aa7f979024526258a0e94707ba42b8ab6f7d2206e56adbc4433155cb0ae"
+  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.5.90.tar.xz"
+  sha256 "7cd8094880b5dc4b7f457a9288b611c15aaf1b9cf4a63da49c821ab687eb56ed"
 
   bottle do
     revision 2
