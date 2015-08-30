@@ -13,7 +13,7 @@ class Cask < Formula
     sha256 "8262e37f32afc254ff6a25baabaa48537961bec0094e5b01aae73a9cc4baf87c" => :mountain_lion
   end
 
-  depends_on :emacs => "24"
+  depends_on :emacs => ["24", :run]
 
   def install
     bin.install "bin/cask"
