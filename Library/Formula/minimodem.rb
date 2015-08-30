@@ -1,9 +1,9 @@
 class Minimodem < Formula
   desc "General-purpose software audio FSK modem"
   homepage "http://www.whence.com/minimodem/"
-  url "http://www.whence.com/minimodem/minimodem-0.21.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/m/minimodem/minimodem_0.21.orig.tar.gz"
-  sha256 "a3ae6861b65360d520e1ce047d7d4d6cf1a833a2ff42d627a1846cf24b3931cf"
+  url "http://www.whence.com/minimodem/minimodem-0.22.1.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/m/minimodem/minimodem_0.22.1.orig.tar.gz"
+  sha256 "f41dd27367ffe1607c6b631bb7ab6e1c5c099490e295ce1b603cc54416845ce9"
 
   bottle do
     cellar :any
