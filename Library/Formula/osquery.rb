@@ -5,6 +5,7 @@ class Osquery < Formula
   url "https://github.com/facebook/osquery.git",
       :tag => "1.5.2",
       :revision => "225a14660abeb1071fff58e73cc753d54037c6ae"
+  revision 1
 
   bottle do
     sha256 "dfe4afd944279cec839b178c3b0d1e59ece023d3c28a2973745829569d62f965" => :yosemite
@@ -43,7 +44,7 @@ class Osquery < Formula
     # Skip test and benchmarking.
     ENV["SKIP_TESTS"] = "1"
 
-    ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", buildpath/"third-party/python/lib/python2.7/site-packages"
     ENV["THRIFT_HOME"] = Formula["thrift"].opt_prefix
 
     resources.each do |r|
