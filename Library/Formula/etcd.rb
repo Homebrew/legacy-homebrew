@@ -18,6 +18,12 @@ class Etcd < Formula
     sha256 "fae915a409321866ca5fc253a5b5a7f2501dfbc8cb8dc54e574db7c6666f82e3"
   end
 
+  devel do
+    url "https://github.com/coreos/etcd/archive/v2.2.0-rc.0.tar.gz"
+    version "2.2.0-rc.0"
+    sha256 "fae915a409321866ca5fc253a5b5a7f2501dfbc8cb8dc54e574db7c6666f82e3"
+  end
+
   depends_on "go" => :build
 
   def install
