@@ -17,6 +17,11 @@ class Epic5 < Formula
     sha256 "3bc04e07768040db266667513158d2c640544abb49cbab29343f6ef05ebd621e"
   end
 
+  devel do
+    url "http://ftp.epicsol.org/pub/epic/EPIC5-PRODUCTION/epic5-1.4.tar.xz"
+    sha256 "3bc04e07768040db266667513158d2c640544abb49cbab29343f6ef05ebd621e"
+  end
+
   depends_on "openssl"
 
   def install
