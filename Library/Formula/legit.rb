@@ -2,7 +2,6 @@ class Legit < Formula
   desc "Command-line interface for Git, optimized for workflow simplicity"
   homepage "http://www.git-legit.org/"
   url "https://github.com/kennethreitz/legit/archive/v0.2.0.tar.gz"
-  version "0.1.0"
   sha256 "dce86a16d9c95e2a7d93be75f1fc17c67d3cd2a137819fa498e179bf21daf39e"
 
   bottle do
