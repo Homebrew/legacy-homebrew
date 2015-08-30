@@ -1,8 +1,8 @@
 class Nghttp2 < Formula
   desc "HTTP/2 C Library"
   homepage "https://nghttp2.org/"
-  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v1.2.1/nghttp2-1.2.1.tar.xz"
-  sha256 "e41bca1d99eadf004faa49bbc482067398a2550dddd4098211566b5622e9af03"
+  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v1.3.0/nghttp2-1.3.0.tar.xz"
+  sha256 "85be1e859cf310bd13204c58d1e4539cfb1d74eb5ef6b0146063fa2907d7b3f2"
 
   bottle do
     sha256 "751dbe954087d3661543aa13a8647ca0ebd4bc3aecf2445a89d739f35e349e23" => :yosemite
@@ -41,8 +41,8 @@ class Nghttp2 < Formula
   end
 
   resource "sphinx_rtd_theme" do
-    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.7.tar.gz"
-    sha256 "9a490c861f6cf96a0050c29a92d5d1e01eda02ae6f50760ad5c96a327cdf14e8"
+    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.8.tar.gz"
+    sha256 "74f633ed3a61da1d1d59c3185483c81a9d7346bf0e7b5f29ad0764a6f159b68a"
   end
 
   resource "docutils" do
@@ -56,8 +56,8 @@ class Nghttp2 < Formula
   end
 
   resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "markupsafe" do
@@ -66,8 +66,8 @@ class Nghttp2 < Formula
   end
 
   resource "alabaster" do
-    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.3.tar.gz"
-    sha256 "0703c1ea5a6af0bb6d0cec24708301334949d56ebc7f95c64028d9c66f9d8d5d"
+    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.6.tar.gz"
+    sha256 "309d33e0282c8209f792f3527f41ec04e508ff837c61fc1906dde988a256deeb"
   end
 
   resource "babel" do
@@ -86,13 +86,13 @@ class Nghttp2 < Formula
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.2.tar.bz2"
-    sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.4.tar.bz2"
+    sha256 "a78b484d5472dd8c688f8b3eee18646a25c66ce45b2c26652850f6af9ce52b17"
   end
 
   resource "Cython" do
-    url "https://pypi.python.org/packages/source/C/Cython/cython-0.22.tar.gz"
-    sha256 "14307e7a69af9a0d0e0024d446af7e51cc0e3e4d0dfb10d36ba837e5e5844015"
+    url "https://pypi.python.org/packages/source/C/Cython/Cython-0.23.1.tar.gz"
+    sha256 "bdfd12d6a2a2e34b9a1bbc1af5a772cabdeedc3851703d249a52dcda8378018a"
   end
 
   # https://github.com/tatsuhiro-t/nghttp2/issues/125
