@@ -7,9 +7,9 @@ class Minimodem < Formula
 
   bottle do
     cellar :any
-    sha256 "dff8b43ec99ba9b0cf93cdda0d08e38116e9748267fb8e47243b2a72528bb21e" => :yosemite
-    sha256 "119eaeabfeceebb0e429413deb6e77a7e5e50916a8ddb0f7de6fef4cc1ce2e0d" => :mavericks
-    sha256 "8d136f2e977ffa388ee4bd9a983c75bceb2c829e1b7e288f9f2f22e170d46f59" => :mountain_lion
+    sha256 "44a3af4831b9737bfdb8e70ac1bd32828c109b0d30a098cbb0fa6632e4e4d0bb" => :yosemite
+    sha256 "6102f448bead7d286f3def6b62db40cced52ce34a49414100db0edb1ead2a7dc" => :mavericks
+    sha256 "1b87248c4cf2ed36d245531e5e9799ada3ea05aa448258d2023790c65503ba58" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
