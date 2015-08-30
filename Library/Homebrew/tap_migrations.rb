@@ -161,6 +161,7 @@ TAP_MIGRATIONS = {
   "par2tbb" => "homebrew/boneyard",
   "pathfinder" => "homebrew/boneyard",
   "pcb" => "homebrew/x11",
+  "pdal" => "OSGeo/osgeo4mac",
   "pdfjam" => "homebrew/tex",
   "pdf2image" => "homebrew/x11",
   "pdftoipe" => "homebrew/head-only",
