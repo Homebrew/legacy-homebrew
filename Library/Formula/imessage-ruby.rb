@@ -7,8 +7,8 @@ class ImessageRuby < Formula
 
   bottle do
     cellar :any
-    sha256 "ea733fabe5eb0fa1800ec04070586edd6f77de13b22f48064de08d8e8c1b4bd0" => :yosemite
-    sha256 "b88419c5ee493a9d96bde86a81ec88866315f41ab91f19eef0402eeab5491d08" => :mavericks
+    sha256 "1024e6cee26ed9fc8ae4ef1941edc64d0e6d16006bd2a530d5644e7c00f8a350" => :yosemite
+    sha256 "7b546ccf5cf13a7d474c635a57eebc8e74ff61ea6c7c3cdfefffe4c78737ab47" => :mavericks
   end
 
   depends_on :macos => :mavericks
