@@ -5,9 +5,9 @@ class OpenMpi < Formula
   sha256 "26b432ce8dcbad250a9787402f2c999ecb6c25695b00c9c6ee05a306c78b6490"
 
   bottle do
-    sha256 "38858a42972aef48bbc6b3fef1167ae22b05e955df4e4ee2cff265c60564dba4" => :yosemite
-    sha256 "24b0a5fdb57f47532677e44676483ab05fd9ad2425d125231f380c01272cce59" => :mavericks
-    sha256 "df7a987f73800e3d582905e8a144881f6e58d5ff816105b370a51e1ce6038cff" => :mountain_lion
+    sha256 "27b7652c76a14b6cc2587963a7b90384844cbc52e947569f24bee71697447b37" => :yosemite
+    sha256 "8db6160f29874dac3705f5c18a3cb9e62e0b36c8beaed70b72dc4aeda642d1c8" => :mavericks
+    sha256 "823851cf8e01825899d97dc1766dc1c44eb11f5cc1a3a25b60b5c087c35ec81d" => :mountain_lion
   end
 
   head do
