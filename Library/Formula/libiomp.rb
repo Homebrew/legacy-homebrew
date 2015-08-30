@@ -1,8 +1,8 @@
 class Libiomp < Formula
   desc "Manage multiple threads in an OpenMP program as it executes"
   homepage "https://www.openmprtl.org/download"
-  url "https://www.openmprtl.org/sites/default/files/libomp_20150401_oss.tgz"
-  sha256 "476dcf62d29134a3549d49542a74345bb5389f93670f2313d7c610a690f9048e"
+  url "https://www.openmprtl.org/sites/default/files/libomp_20150701_oss.tgz"
+  sha256 "d0c1fcb5997c53e0c9ff4eec1de3392a21308731c06e6663f9d32ceb15f14e88"
 
   depends_on :arch => :intel
   depends_on "cmake" => :build
@@ -31,10 +31,9 @@ class Libiomp < Formula
   def install
     intel_arch = MacOS.prefer_64_bit? ? "mac_32e" : "mac_32"
     args = std_cmake_args
-    args << (MacOS.prefer_64_bit? ? "-Darch=32e" : "-Darch=32")
-    args << "-DCMAKE_BUILD_TYPE=Release"
+    args << (MacOS.prefer_64_bit? ? "-DLIBOMP_ARCH=32e" : "-DLIBOMP_ARCH=32")
     system "cmake", ".", *args
-    system "make", "all", "common"
+    system "make", "all"
 
     (include/"libiomp").install Dir["exports/common/include/*"]
     lib.install "exports/#{intel_arch}/lib.thin/libiomp5.dylib"
