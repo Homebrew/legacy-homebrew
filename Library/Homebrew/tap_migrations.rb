@@ -224,6 +224,7 @@ TAP_MIGRATIONS = {
   "wkhtmltopdf" => "homebrew/boneyard",
   "wmctrl" => "homebrew/x11",
   "wopr" => "homebrew/science",
+  "wps2odt" => "homebrew/boneyard",
   "x3270" => "homebrew/x11",
   "xar" => "homebrew/dupes",
   "xastir" => "homebrew/x11",
