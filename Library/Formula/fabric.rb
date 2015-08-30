@@ -1,8 +1,8 @@
 class Fabric < Formula
   desc "Library and command-line tool for SSH"
   homepage "http://www.fabfile.org"
-  url "https://github.com/fabric/fabric/archive/1.10.1.tar.gz"
-  sha256 "08baf5cfcc9624a907261e5fb177d66430ad810cdb98b022675ca34a06823117"
+  url "https://github.com/fabric/fabric/archive/1.10.2.tar.gz"
+  sha256 "f142aca5a20624036a35faa387dd5c409ad534a130f39172115fd57d7e9c3a8d"
 
   head "https://github.com/fabric/fabric.git"
 
@@ -27,8 +27,8 @@ class Fabric < Formula
   end
 
   resource "ecdsa" do
-    url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.11.tar.gz"
-    sha256 "8e3b6c193f91dc94b2f3b0261e3eabbdc604f78ff99fdad324a56fdd0b5e958c"
+    url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.13.tar.gz"
+    sha256 "64cf1ee26d1cde3c73c6d7d107f835fed7c6a2904aef9eac223d57ad800c43fa"
   end
 
   def install
