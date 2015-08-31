@@ -143,15 +143,16 @@ module Homebrew
     aliases = Formula.aliases
     results = (Formula.full_names+aliases).grep(rx).sort
 
-    results.each_with_index do |name, i|
+    results.map do |name|
       canonical_name = Formulary.canonical_name(name)
-      # Remove aliases from results when the full name was also found
+      # Ignore aliases from results when the full name was also found
       if aliases.include?(name) && results.include?(canonical_name)
-        results.delete_at(i)
-      # Notify the user if the formula is installed
+        next
       elsif (HOMEBREW_CELLAR/canonical_name).directory?
-        results[i] = "#{name} (installed)"
+        "#{name} (installed)"
+      else
+        name
       end
-    end
+    end.compact
   end
 end
