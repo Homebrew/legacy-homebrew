@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory
  * if encryption is not activated in the configuration, then the default ssl context is used which
  * falls back to un-encrypted communication
  */
-object SslContextFactory {
+object SSLContextFactory {
   val logger = LoggerFactory.getLogger(getClass)
 
   /**
@@ -32,7 +32,8 @@ object SslContextFactory {
       val ksName = config.getString("keystore")
       val ksPassphrase = config.getString("keystorePW").toCharArray()
       val keystoreType = config.getString("keystoreType")
-      logger.info(keystoreType + " encryption activated.")
+      val encryptionType = config.getString("encryptionType")
+      logger.info(encryptionType + " encryption activated.")
       val ks = KeyStore.getInstance(keystoreType)
       //throws exception if keystore cannot be found or accessed
       // and prevents start-up
