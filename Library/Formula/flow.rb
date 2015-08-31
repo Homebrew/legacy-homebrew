@@ -17,15 +17,18 @@ class Flow < Formula
   def install
     system "make"
     bin.install "bin/flow"
-    (share/"flow").install "bin/examples"
 
     bash_completion.install "resources/shell/bash-completion" => "flow-completion.bash"
     zsh_completion.install_symlink bash_completion/"flow-completion.bash" => "_flow"
   end
 
   test do
-    output = `#{bin}/flow single #{share}/flow/examples/01_HelloWorld`
-    assert_match(/This type is incompatible with/, output)
-    assert_match(/Found 1 error/, output)
+    system "#{bin}/flow init #{testpath}"
+    (testpath/"test.js").write <<-EOS.undent
+      /* @flow */
+      var x: string = 123;
+    EOS
+    expected = /number\nThis type is incompatible with\n.*string\n\nFound 1 error/
+    assert_match expected, shell_output("#{bin}/flow check #{testpath}", 2)
   end
 end
