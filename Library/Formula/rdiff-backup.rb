@@ -4,6 +4,11 @@ class RdiffBackup < Formula
   url "http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz"
   sha256 "0d91a85b40949116fa8aaf15da165c34a2d15449b3cbe01c8026391310ac95db"
 
+  devel do
+    url "http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.3.3.tar.gz"
+    sha256 "ee030ce638df0eb1047cf72578e0de15d9a3ee9ab24da2dc0023e2978be30c06"
+  end
+
   depends_on "librsync"
 
   def install
