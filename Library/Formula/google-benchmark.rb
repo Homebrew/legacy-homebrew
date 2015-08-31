@@ -3,6 +3,7 @@ class GoogleBenchmark < Formula
   homepage "https://github.com/google/benchmark"
   url "https://github.com/google/benchmark/archive/v0.1.0.tar.gz"
   sha256 "41aa7dca7aa94911deee078e39f7602d760f2911bb33086b5a2c8204717ddad4"
+  head "https://github.com/google/benchmark.git"
 
   bottle do
     cellar :any
