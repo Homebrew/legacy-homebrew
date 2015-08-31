@@ -1,7 +1,7 @@
 class Dcraw < Formula
   desc "Digital camera RAW photo decoding software"
-  homepage "http://www.cybercom.net/~dcoffin/dcraw/"
-  url "http://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.26.0.tar.gz"
+  homepage "https://www.cybercom.net/~dcoffin/dcraw/"
+  url "https://www.cybercom.net/~dcoffin/dcraw/archive/dcraw-9.26.0.tar.gz"
   sha256 "85791d529e037ad5ca09770900ae975e2e4cc1587ca1da4192ca072cbbfafba3"
 
   bottle do
