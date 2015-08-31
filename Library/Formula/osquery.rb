@@ -5,10 +5,11 @@ class Osquery < Formula
   url "https://github.com/facebook/osquery.git",
       :tag => "1.5.2",
       :revision => "225a14660abeb1071fff58e73cc753d54037c6ae"
+  revision 1
 
   bottle do
-    sha256 "dfe4afd944279cec839b178c3b0d1e59ece023d3c28a2973745829569d62f965" => :yosemite
-    sha256 "fb97defae4eee0119f7fe047a091a5528398fa5ce938a1b1a3ad9da8fd44ff5c" => :mavericks
+    sha256 "c9ac3d50168afa1bbbf22a426f731f61a27dfdd8d6e5a8ee59953243fa792e86" => :yosemite
+    sha256 "0e635ad69a7c4351f7d41d66c48b54c731d2ba92d701e5b66ccce305c826a92d" => :mavericks
   end
 
   # osquery only supports OS X 10.9 and above. Do not remove this.
@@ -43,7 +44,7 @@ class Osquery < Formula
     # Skip test and benchmarking.
     ENV["SKIP_TESTS"] = "1"
 
-    ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", buildpath/"third-party/python/lib/python2.7/site-packages"
     ENV["THRIFT_HOME"] = Formula["thrift"].opt_prefix
 
     resources.each do |r|
