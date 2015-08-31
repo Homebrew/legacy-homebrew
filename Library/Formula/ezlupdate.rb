@@ -8,9 +8,9 @@ class Ezlupdate < Formula
 
   bottle do
     cellar :any
-    sha256 "e806bb39c4d4753e82bd03d9cbcfe08b3299b0c07a7f89a58b8287c4bb82f753" => :yosemite
-    sha256 "15da172b1bd18f7dc2db82ffec7866cfa7fdc8b8cb11113d025bb5af4a335835" => :mavericks
-    sha256 "4d5a6ce1f59247f3f7e2973653f70477f8abd8d95e496644aa90d888477f8b44" => :mountain_lion
+    sha256 "68df4f04b7e23877182f848c3626eeb6a7b6ea677042736252e337e91216fa53" => :yosemite
+    sha256 "c9ba7248ae420ad5b53cabe1a9184bac07894ec86199d024f60eaff7a3f185a6" => :mavericks
+    sha256 "4c09e545f0e9f011ed6d281a2eb3b53a5dfba04ddd4a5c6df2bc3628a285b8b5" => :mountain_lion
   end
 
   depends_on "qt"
