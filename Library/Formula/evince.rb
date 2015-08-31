@@ -4,6 +4,12 @@ class Evince < Formula
   url "https://download.gnome.org/sources/evince/3.16/evince-3.16.1.tar.xz"
   sha256 "06ff75065b2a30cd588c402f6bd2ea88ee3166181805e0cc00bd54f71dbf6130"
 
+  bottle do
+    sha256 "113c827b24af3cb2b4b9c35cb080c6e85a528079a8e2283877aa337a534445ae" => :yosemite
+    sha256 "f4449f5159a41abd5f843bfe3dfd5fe7e5a8e182756fdbd676ef197283ebba2b" => :mavericks
+    sha256 "4e834b66d05b7dff90f814e3a47bfc9273577199ece5ea9414e3f433a7e5316a" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
