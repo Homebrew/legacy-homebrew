@@ -4,6 +4,12 @@ class Baobab < Formula
   url "https://download.gnome.org/sources/baobab/3.16/baobab-3.16.1.tar.xz"
   sha256 "1fe40433df3adda0bcc4d0a6edc2bc2501888798d7e8336ad51d443c9a1fcef2"
 
+  bottle do
+    sha256 "3c1abb546e17fa589ba508bd1ce8756c26324ab6eca51f6adaa8a660d67bda02" => :yosemite
+    sha256 "1584538290dee932fb278d0659c03bfb697dda6cdb262ce47b12191ba93ec5a1" => :mavericks
+    sha256 "fad12e594a6f45ac1b082b2ec13d2eedba468721a51028c7ce5a25f0bf4c8b1f" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
