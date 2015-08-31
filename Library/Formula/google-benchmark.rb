@@ -4,6 +4,13 @@ class GoogleBenchmark < Formula
   url "https://github.com/google/benchmark/archive/v0.1.0.tar.gz"
   sha256 "41aa7dca7aa94911deee078e39f7602d760f2911bb33086b5a2c8204717ddad4"
 
+  bottle do
+    cellar :any
+    sha256 "b0aef4edb826741cc345ab10ba7cc171f8e43500e6002c68652553b59a7b36de" => :yosemite
+    sha256 "e92b46b0076f5b770a05815de28dbad066a95213be8d484a7a8f6e8f02efd840" => :mavericks
+    sha256 "0bf91d493e9f78a949c6794276be0365cd9e8436d8e8d84ed4083b2fb6256700" => :mountain_lion
+  end
+
   depends_on "cmake" => :build
 
   needs :cxx11
