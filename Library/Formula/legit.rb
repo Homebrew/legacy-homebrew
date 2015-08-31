@@ -3,6 +3,7 @@ class Legit < Formula
   homepage "http://www.git-legit.org/"
   url "https://github.com/kennethreitz/legit/archive/v0.2.0.tar.gz"
   sha256 "dce86a16d9c95e2a7d93be75f1fc17c67d3cd2a137819fa498e179bf21daf39e"
+  head "https://github.com/kennethreitz/legit.git", :branch => "develop"
 
   bottle do
     cellar :any
@@ -54,6 +55,8 @@ class Legit < Formula
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
+    man1.install "extra/man/legit.1" if build.head?
   end
 
   test do
