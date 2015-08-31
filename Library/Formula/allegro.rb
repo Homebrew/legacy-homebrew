@@ -22,7 +22,7 @@ class Allegro < Formula
   end
 
   head do
-    url "git://git.code.sf.net/p/alleg/allegro", :branch => "5.1"
+    url "https://github.com/liballeg/allegro5.git", :branch => "5.1"
 
     depends_on "theora" => :recommended
   end
