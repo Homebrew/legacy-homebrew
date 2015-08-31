@@ -23,6 +23,7 @@ class Osquery < Formula
   depends_on "yara"
   depends_on "libressl"
   depends_on "gflags"
+  depends_on "glog"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
@@ -64,11 +65,40 @@ class Osquery < Formula
   plist_options :startup => true, :manual => "osqueryd"
 
   test do
-    require "open3"
-    Open3.popen3("#{bin}/osqueryi") do |stdin, stdout, _|
-      stdin.write(".mode line\nSELECT count(version) as lines FROM osquery_info;")
-      stdin.close
-      assert_equal "lines = 1\n", stdout.read
-    end
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <osquery/sdk.h>
+
+      using namespace osquery;
+
+      class ExampleTablePlugin : public TablePlugin {
+       private:
+        TableColumns columns() const {
+          return {{"example_text", "TEXT"}, {"example_integer", "INTEGER"}};
+        }
+
+        QueryData generate(QueryContext& request) {
+          QueryData results;
+          Row r;
+
+          r["example_text"] = "example";
+          r["example_integer"] = INTEGER(1);
+          results.push_back(r);
+          return results;
+        }
+      };
+
+      REGISTER_EXTERNAL(ExampleTablePlugin, "table", "example");
+
+      int main(int argc, char* argv[]) {
+        Initializer runner(argc, argv, OSQUERY_EXTENSION);
+        runner.shutdown();
+        return 0;
+      }
+    EOS
+
+    system ENV.cxx, "test.cpp", "-o", "test", "-v", "-std=c++11",
+      "-losquery", "-lthrift", "-lboost_system", "-lboost_thread-mt",
+      "-lboost_filesystem", "-lglog", "-lgflags", "-lrocksdb"
+    system "./test"
   end
 end
