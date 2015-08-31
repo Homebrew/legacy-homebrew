@@ -8,9 +8,9 @@ class V8 < Formula
 
   bottle do
     cellar :any
-    sha256 "e089d591be39c02780383607dfa75786baff911c8691129792ad2761202aabf9" => :yosemite
-    sha256 "b4727655d6f46b416571d7c522db41f770cc0c74d87ca8e560b6d673aaef8687" => :mavericks
-    sha256 "043d0048611cbbbc3cfc4c6a95a92ebcc6c70e9b9510a1bce1091110788e6d62" => :mountain_lion
+    sha256 "6ab6d77e3c0612dc0777ff19ab6a24cea2d86540e0054fab4ab61b73706db477" => :yosemite
+    sha256 "79400eda8e69de54c078df7917abb73d2e1bd3457d2d80a7a0069c1c563951cf" => :mavericks
+    sha256 "238efb2a557364f5e6c869a6efc7dfb545ed2f7b11e946f608a54453edcf9c71" => :mountain_lion
   end
 
   option "with-readline", "Use readline instead of libedit"
