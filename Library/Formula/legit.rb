@@ -1,10 +1,19 @@
 class Legit < Formula
   desc "Command-line interface for Git, optimized for workflow simplicity"
   homepage "http://www.git-legit.org/"
-  url "https://github.com/kennethreitz/legit/archive/v0.2.0.tar.gz"
-  sha256 "dce86a16d9c95e2a7d93be75f1fc17c67d3cd2a137819fa498e179bf21daf39e"
   head "https://github.com/kennethreitz/legit.git", :branch => "develop"
   revision 1
+
+  stable do
+    url "https://github.com/kennethreitz/legit/archive/v0.2.0.tar.gz"
+    sha256 "dce86a16d9c95e2a7d93be75f1fc17c67d3cd2a137819fa498e179bf21daf39e"
+
+    # Merged in HEAD; remove in next stable release
+    patch do
+      url "https://github.com/kennethreitz/legit/commit/610faf46b7b340e5233187c75cd83f7c1bf1999e.diff"
+      sha256 "7958433a5d594b8a982825ef4af1050f6f00b8bfb79fbed7e099be844403a3cd"
+    end
+  end
 
   bottle do
     cellar :any
@@ -59,7 +68,7 @@ class Legit < Formula
 
     bash_completion.install "extra/bash-completion/legit"
     zsh_completion.install "extra/zsh-completion/_legit"
-    man1.install "extra/man/legit.1" if build.head?
+    man1.install "extra/man/legit.1"
   end
 
   test do
