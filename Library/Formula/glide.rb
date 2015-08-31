@@ -3,8 +3,8 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.5.0.tar.gz"
-  sha256 "1fc09fe79e81bd59011c46ec42a76b136fb21bccbb3ab2f4fa0f01ef86f4b38c"
+  url "https://github.com/Masterminds/glide/archive/0.5.1.tar.gz"
+  sha256 "b7dd696690cee45f505cfab9652602208d6da6e5453213a5ac14b82d1b968628"
 
   bottle do
     cellar :any
@@ -27,7 +27,7 @@ class Glide < Formula
 
   go_resource "github.com/Masterminds/vcs" do
     url "https://github.com/Masterminds/vcs.git",
-      :revision => "c709a4244b817af98a8ecb495ca4ab0b11f27ecd"
+      :revision => "5eb2d6a13243848441718e349b5ce6542db01685"
   end
 
   go_resource "github.com/codegangsta/cli" do
@@ -41,12 +41,12 @@ class Glide < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.5.0", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.5.1", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
     bin.install "glide"
   end
 
   test do
     version = pipe_output("#{bin}/glide --version")
-    assert_match /0.5.0/, version
+    assert_match /0.5.1/, version
   end
 end
