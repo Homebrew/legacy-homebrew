@@ -1,6 +1,7 @@
 class Id3lib < Formula
   desc "ID3 tag manipulation"
   homepage "http://id3lib.sourceforge.net/"
+  revision 1
 
   stable do
     url "https://downloads.sourceforge.net/project/id3lib/id3lib/3.8.3/id3lib-3.8.3.tar.gz"
@@ -50,6 +51,12 @@ class Id3lib < Formula
     url "https://raw.githubusercontent.com/DomT4/scripts/c24f2952/Homebrew_Resources/MacPorts_Import/id3lib/r112430/boolcheck.patch"
     mirror "https://trac.macports.org/export/112430/trunk/dports/audio/id3lib/files/boolcheck.patch"
     sha256 "a7881dc25665f284798934ba19092d1eb45ca515a34e5c473accd144aa1a215a"
+  end
+
+  # fixes Unicode display problem in easytag: see Homebrew/homebrew-x11#123
+  patch do
+    url "https://git.gnome.org/browse/easytag/plain/src/tags/id3lib/patch_id3lib_3.8.3_UTF16_writing_bug.diff"
+    sha256 "71c79002d9485965a3a93e87ecbd7fed8f89f64340433b7ccd263d21385ac969"
   end
 
   fails_with :llvm do
