@@ -3,8 +3,8 @@ require "language/go"
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/0.9.10.tar.gz"
-  sha256 "4e76667c6992331f38da4e662cf54cc9375c3bf069af373b2183b7ef16ec7be7"
+  url "https://github.com/bitrise-io/bitrise/archive/0.9.11.tar.gz"
+  sha256 "dee1418f188480e125555a47981e2c28b0972e21181606648cf3b5d7a298e084"
 
   bottle do
     cellar :any
@@ -16,13 +16,13 @@ class Bitrise < Formula
   depends_on "go" => :build
 
   resource "envman" do
-    url "https://github.com/bitrise-io/envman/archive/0.9.5.tar.gz"
-    sha256 "94017e7b5840452e32264e20c9b5e3c268db074bbceb813bc2f4a50dc7fee5e0"
+    url "https://github.com/bitrise-io/envman/archive/0.9.7.tar.gz"
+    sha256 "8ee00feae482768e80c86652dd99fa821353e9a1a20ca4fbad19d1635cfb013a"
   end
 
   resource "stepman" do
-    url "https://github.com/bitrise-io/stepman/archive/0.9.10.tar.gz"
-    sha256 "1a11485dd809176baa20b7efa28debf21b9538afa8eda0cbc01f34cc1921eec1"
+    url "https://github.com/bitrise-io/stepman/archive/0.9.12.tar.gz"
+    sha256 "7a4f9175046f182b4bcea9f35839870f56bf7bdde32cc221ac67e6de37e1cae4"
   end
 
   def go_install_package(basepth, pkgname)
