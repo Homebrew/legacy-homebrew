@@ -8,7 +8,7 @@ import org.apache.spark.streaming.StreamingContext
 import scala.collection.mutable
 
 @VisibleForTesting
-object StreamingTestJob extends SparkStramingJob {
+object StreamingTestJob extends SparkStreamingJob {
   def validate(ssc: StreamingContext, config: Config): SparkJobValidation = SparkJobValid
 
 

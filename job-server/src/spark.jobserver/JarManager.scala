@@ -8,9 +8,17 @@ import org.joda.time.DateTime
 import java.nio.file.{Files, Paths}
 
 // Messages to JarManager actor
+
+/** Message for storing a JAR for an application given the byte array of the JAR file */
 case class StoreJar(appName: String, jarBytes: Array[Byte])
+
+/** Message requesting a listing of the available JARs */
 case object ListJars
-case class StoreInitialJars(initialJars: Map[String, String])
+
+/** Message for storing one or more local JARs based on the given map.
+  * @param  localJars    Map where the key is the appName and the value is the local path to the JAR.
+  */
+case class StoreLocalJars(localJars: Map[String, String])
 
 // Responses
 case object InvalidJar
@@ -29,9 +37,9 @@ class JarManager(jobDao: JobDAO) extends InstrumentedActor {
   override def wrappedReceive: Receive = {
     case ListJars => sender ! createJarsList()
 
-    case StoreInitialJars(initialJars) =>
+    case StoreLocalJars(localJars) =>
       val success =
-        initialJars.foldLeft(true) { (success, pair) =>
+        localJars.foldLeft(true) { (success, pair) =>
           success && {
             val (appName, jarPath) = pair
             try {
@@ -49,7 +57,7 @@ class JarManager(jobDao: JobDAO) extends InstrumentedActor {
           }
         }
 
-      sender ! (if(success) { JarStored } else { InvalidJar })
+      sender ! (if (success) { JarStored } else { InvalidJar })
 
     case StoreJar(appName, jarBytes) =>
       logger.info("Storing jar for app {}, {} bytes", appName, jarBytes.size)

@@ -89,6 +89,8 @@ fi
 
 # This needs to be exported for standalone mode so drivers can connect to the Spark cluster
 export SPARK_HOME
+export YARN_CONF_DIR
+export HADOOP_CONF_DIR
 
 cmd='$SPARK_HOME/bin/spark-submit --class $MAIN --driver-memory $JOBSERVER_MEMORY
   --conf "spark.executor.extraJavaOptions=$LOGGING_OPTS"

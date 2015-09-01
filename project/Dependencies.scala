@@ -12,7 +12,7 @@ object Dependencies {
 
   lazy val yodaDeps = Seq(
     "org.joda" % "joda-convert" % "1.2",
-    "joda-time" % "joda-time" % "2.1"
+    "joda-time" % "joda-time" % "2.2"
   )
 
   lazy val akkaDeps = Seq(
@@ -41,7 +41,9 @@ object Dependencies {
 
   lazy val slickDeps = Seq(
     "com.typesafe.slick" %% "slick" % "2.1.0",
-    "com.h2database" % "h2" % "1.3.170"
+    "com.h2database" % "h2" % "1.3.170",
+    "commons-dbcp" % "commons-dbcp" % "1.4"
+
   )
 
   lazy val logbackDeps = Seq(

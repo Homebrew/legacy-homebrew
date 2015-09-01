@@ -77,7 +77,7 @@ object JobServer {
 
   private def storeInitialJars(config: Config, jarManager: ActorRef): Unit = {
     val initialJarPathsKey = "spark.jobserver.job-jar-paths"
-    if(config.hasPath(initialJarPathsKey)) {
+    if (config.hasPath(initialJarPathsKey)) {
       val initialJarsConfig = config.getConfig(initialJarPathsKey).root
 
       logger.info("Adding initial job jars: {}", initialJarsConfig.render())
@@ -91,12 +91,12 @@ object JobServer {
       // Ensure that the jars exist
       for(jarPath <- initialJars.values) {
         val f = new java.io.File(jarPath)
-        if(!f.exists) {
+        if (!f.exists) {
           val msg =
-            if(f.isAbsolute) {
-              s"Inital Jar File $jarPath does not exist"
+            if (f.isAbsolute) {
+              s"Initial Jar File $jarPath does not exist"
             } else {
-              s"Inital Jar File $jarPath (${f.getAbsolutePath}) does not exist"
+              s"Initial Jar File $jarPath (${f.getAbsolutePath}) does not exist"
             }
 
           throw new java.io.IOException(msg)
@@ -105,7 +105,7 @@ object JobServer {
 
       val contextTimeout = util.SparkJobUtils.getContextTimeout(config)
       val future =
-        (jarManager ? StoreInitialJars(initialJars))(contextTimeout.seconds)
+        (jarManager ? StoreLocalJars(initialJars))(contextTimeout.seconds)
 
       Await.result(future, contextTimeout.seconds) match {
         case InvalidJar => sys.error("Could not store initial job jars.")
