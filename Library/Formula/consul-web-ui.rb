@@ -9,8 +9,6 @@ class ConsulWebUi < Formula
   def install
     # copying the unzipped dist folder to prefix
     prefix.install "../dist"
-    # create a symlink in opt
-    opt_prefix.install_symlink prefix
   end
   test do
     assert_equal true, File.exist?("#{opt_prefix}/dist/index.html")
