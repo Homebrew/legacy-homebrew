@@ -5,6 +5,7 @@ require "utils/json"
 require "utils/inreplace"
 require "utils/popen"
 require "utils/fork"
+require "utils/git"
 require "open-uri"
 
 class Tty
