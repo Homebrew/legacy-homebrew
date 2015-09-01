@@ -12,6 +12,9 @@ module Homebrew
       EOS
     end
 
+    # ensure git is installed
+    Utils.ensure_git_installed!
+
     # ensure GIT_CONFIG is unset as we need to operate on .git/config
     ENV.delete("GIT_CONFIG")
 
