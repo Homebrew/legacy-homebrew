@@ -73,6 +73,8 @@ Note that reStart (SBT Revolver) forks the job server in a separate process.  If
 type reStart again at the SBT shell prompt, it will compile your changes and restart the jobserver.  It enables
 very fast turnaround cycles.
 
+**NOTE2**: You cannot do `sbt reStart` from the OS shell.  SBT will start job server and immediately kill it.
+
 For example jobs see the job-server-tests/ project / folder.
 
 When you use `reStart`, the log file goes to `job-server/job-server-local.log`.  There is also an environment variable
