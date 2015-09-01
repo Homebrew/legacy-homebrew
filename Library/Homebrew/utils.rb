@@ -162,8 +162,7 @@ module Homebrew
   end
 
   def self.homebrew_version_string
-    pretty_revision = git_short_head
-    if pretty_revision
+    if Utils.git_available? && (pretty_revision = git_short_head)
       last_commit = git_last_commit_date
       "#{HOMEBREW_VERSION} (git revision #{pretty_revision}; last commit #{last_commit})"
     else
