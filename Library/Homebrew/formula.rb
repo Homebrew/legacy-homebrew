@@ -918,13 +918,7 @@ class Formula
 
   # @private
   def file_modified?
-    git = which("git")
-
-    # git isn't installed by older Xcodes
-    return false if git.nil?
-
-    # /usr/bin/git is a popup stub when Xcode/CLT aren't installed, so bail out
-    return false if git == "/usr/bin/git" && !MacOS.has_apple_developer_tools?
+    return false unless Utils.git_available?
 
     path.parent.cd do
       diff = Utils.popen_read("git", "diff", "origin/master", "--", "#{path}")
