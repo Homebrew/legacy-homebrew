@@ -17,9 +17,10 @@ class Legit < Formula
 
   bottle do
     cellar :any
-    sha256 "ec8b37896fe4c19ee8e313103d1f41a5e2a289fcaf6acd33d6a5f82beed27893" => :yosemite
-    sha256 "0c392e429ad2ffc921d96b847ff4f542d9fabc05b16f648a82bdd0f0de16862c" => :mavericks
-    sha256 "e59e88a94c770a4abfab93ab881bfea970308b2c13f2feb0c2e0e4d3fd850f4e" => :mountain_lion
+    revision 1
+    sha256 "1730b03f14976f54108a63fdd880c916ff3d0ce0624c594dba1d886ae63e200a" => :yosemite
+    sha256 "ed1637ede4f8e5b5a4abc3d77c159b036501aa94ea0f560582ec77e312135556" => :mavericks
+    sha256 "72416a4f9d0ebbb0b61bd2573269dd0662a72b00d377e3642ce2ad82e6c8272e" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
