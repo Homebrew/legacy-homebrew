@@ -261,9 +261,10 @@ The ```-k``` flag tells curl to "Allow connections to SSL sites without certs". 
 ### Manual steps
 
 1. Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.  NOTE: be sure to set SPARK_VERSION if you need to compile against a different version, ie. 1.4.1 for job server 0.5.2
-2. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
+2. Copy `config/local.conf.template` to `<environment>.conf` and edit as appropriate.
+3. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
    it to the remotes you have configured in `<environment>.sh`
-3. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
+4. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
 
 The `server_start.sh` script uses `spark-submit` under the hood and may be passed any of the standard extra arguments from `spark-submit`.
 
