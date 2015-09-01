@@ -1,7 +1,7 @@
 class TomeeJaxRs < Formula
   desc "TomeEE Web Profile plus JAX-RS"
   homepage "https://tomee.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.2/apache-tomee-1.7.2-jaxrs.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=tomee/tomee-1.7.2/apache-tomee-1.7.2-jaxrs.tar.gz"
   version "1.7.2"
   sha256 "561ef98f69b312a03b305f37fd492ed59f9802137e2995ea57db98d438b0b9c8"
 

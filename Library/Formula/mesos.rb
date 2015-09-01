@@ -1,7 +1,7 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.23.0/mesos-0.23.0.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=mesos/0.23.0/mesos-0.23.0.tar.gz"
   mirror "https://archive.apache.org/dist/mesos/0.23.0/mesos-0.23.0.tar.gz"
   sha256 "b967355ec1f7cf9ffcef76b58939ed48dd4975ea90d1c976669b50c589bdbdec"
 

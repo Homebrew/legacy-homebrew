@@ -1,5 +1,3 @@
-require "utils/json"
-
 class AbstractDownloadStrategy
   include FileUtils
 
@@ -349,44 +347,6 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
     args.concat _curl_opts
     args << "--connect-timeout" << "5" unless mirrors.empty?
     super
-  end
-end
-
-# Detect and download from Apache Mirror
-class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
-  def apache_mirrors
-    rd, wr = IO.pipe
-    buf = ""
-
-    pid = fork do
-      ENV.delete "HOMEBREW_CURL_VERBOSE"
-      rd.close
-      $stdout.reopen(wr)
-      $stderr.reopen(wr)
-      curl "#{@url}&asjson=1"
-    end
-    wr.close
-
-    rd.readline if ARGV.verbose? # Remove Homebrew output
-    buf << rd.read until rd.eof?
-    rd.close
-    Process.wait(pid)
-    buf
-  end
-
-  def _fetch
-    return super if @tried_apache_mirror
-    @tried_apache_mirror = true
-
-    mirrors = Utils::JSON.load(apache_mirrors)
-    path_info = mirrors.fetch("path_info")
-    @url = mirrors.fetch("preferred") + path_info
-    @mirrors |= %W[https://archive.apache.org/dist/#{path_info}]
-
-    ohai "Best Mirror #{@url}"
-    super
-  rescue IndexError, Utils::JSON::Error
-    raise CurlDownloadStrategyError, "Couldn't determine mirror, try again later."
   end
 end
 
@@ -837,8 +797,6 @@ class DownloadStrategyDetector
     case url
     when %r{^https?://.+\.git$}, %r{^git://}
       GitDownloadStrategy
-    when %r{^https?://www\.apache\.org/dyn/closer\.cgi}
-      CurlApacheMirrorDownloadStrategy
     when %r{^https?://(.+?\.)?googlecode\.com/svn}, %r{^https?://svn\.}, %r{^svn://}, %r{^https?://(.+?\.)?sourceforge\.net/svnroot/}
       SubversionDownloadStrategy
     when %r{^cvs://}

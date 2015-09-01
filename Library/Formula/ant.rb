@@ -1,7 +1,7 @@
 class Ant < Formula
   desc "Java build tool"
   homepage "https://ant.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.6-bin.tar.bz2"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=ant/binaries/apache-ant-1.9.6-bin.tar.bz2"
   sha256 "a43b0928960d63d6b1e2bed37e1ce4fd8fa1788ba84e08388bfe9513f02e8db3"
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
 
@@ -18,7 +18,7 @@ class Ant < Formula
   option "with-bcel", "Install Byte Code Engineering Library"
 
   resource "ivy" do
-    url "https://www.apache.org/dyn/closer.cgi?path=ant/ivy/2.4.0/apache-ivy-2.4.0-bin.tar.gz"
+    url "https://www.apache.org/dyn/closer.cgi?action=download&filename=ant/ivy/2.4.0/apache-ivy-2.4.0-bin.tar.gz"
     sha256 "7a3d13a80b69d71608191463dfc2a74fff8ef638ce0208e70d54d28ba9785ee9"
   end
 

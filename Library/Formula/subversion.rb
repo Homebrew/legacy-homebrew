@@ -1,7 +1,7 @@
 class Subversion < Formula
   desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.13.tar.bz2"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=subversion/subversion-1.8.13.tar.bz2"
   mirror "https://archive.apache.org/dist/subversion/subversion-1.8.13.tar.bz2"
   sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
 
@@ -13,7 +13,7 @@ class Subversion < Formula
   end
 
   devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc3.tar.bz2"
+    url "https://www.apache.org/dyn/closer.cgi?action=download&filename=subversion/subversion-1.9.0-rc3.tar.bz2"
     mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc3.tar.bz2"
     sha256 "c49432a1a2e83fa3babd7a0602d207c8c11feb1d0660828609710f101737fa6d"
   end

@@ -1,7 +1,7 @@
 class Jmeter < Formula
   desc "Load testing and performance measurement application"
   homepage "https://jmeter.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.13.tgz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=jmeter/binaries/apache-jmeter-2.13.tgz"
   sha256 "9fe33d3d6e381103d3ced2962cdef5c164a06fc58c55e247eadf5a5dbcd4d8fe"
 
   resource "jmeterplugins-standard" do

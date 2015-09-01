@@ -1,7 +1,7 @@
 class Solr < Formula
   desc "Enterprise search platform from the Apache Lucene project"
   homepage "https://lucene.apache.org/solr/"
-  url "https://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.3.0/solr-5.3.0.tgz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=lucene/solr/5.3.0/solr-5.3.0.tgz"
   mirror "https://archive.apache.org/dist/lucene/solr/5.3.0/solr-5.3.0.tgz"
   sha256 "26aec63d81239a65f182f17bbf009b1070f7db0bb83657ac2a67a08b57227f7c"
 
