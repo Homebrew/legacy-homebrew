@@ -1,9 +1,8 @@
 class Pypy < Formula
   desc "Implementation of Python 2 in Python"
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.0-src.tar.bz2"
-  sha256 "9bf353f22d25e97a85a6d3766619966055edea1ea1b2218445d683a8ad0399d9"
-  revision 1
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.1-src.tar.bz2"
+  sha256 "7fddd414c9348c2f899f79ad86adc3fc2b19443855b5243f58487e1f0ac46560"
 
   bottle do
     cellar :any
