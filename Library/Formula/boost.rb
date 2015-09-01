@@ -119,6 +119,7 @@ class Boost < Formula
     end
 
     system "./bootstrap.sh", *bootstrap_args
+    system "./b2 headers"
     system "./b2", *args
   end
 
