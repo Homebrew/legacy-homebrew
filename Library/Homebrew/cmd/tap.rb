@@ -19,6 +19,9 @@ module Homebrew
   end
 
   def install_tap(user, repo, clone_target = nil)
+    # ensure git is installed
+    Utils.ensure_git_installed!
+
     tap = Tap.new user, repo
     return false if tap.installed?
     ohai "Tapping #{tap}"
