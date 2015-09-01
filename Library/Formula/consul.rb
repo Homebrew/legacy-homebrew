@@ -13,6 +13,8 @@ class Consul < Formula
     sha256 "67052157266d536598ba7eb5af31a10fd3e609ca812be6d50869d0fe80a583f9" => :mountain_lion
   end
 
+  option "with-web-ui", "Installs the consul web ui"
+
   depends_on "go" => :build
 
   go_resource "github.com/armon/circbuf" do
@@ -150,6 +152,11 @@ class Consul < Formula
       :revision => "f6a608df624ae17d57958a8a294c66da81730577"
   end
 
+  resource "web-ui" do
+    url "https://dl.bintray.com/mitchellh/consul/0.5.2_web_ui.zip"
+    sha256 "ad883aa52e1c0136ab1492bbcedad1210235f26d59719fb6de3ef6464f1ff3b1"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
 
@@ -166,6 +173,15 @@ class Consul < Formula
       system "make"
       bin.install "bin/consul"
     end
+
+    # install web-ui to package share folder.
+    (pkgshare/"web-ui").install resource("web-ui") if build.with? "web-ui"
+  end
+
+  def caveats; <<-EOS.undent
+    If consul was built with --with-web-ui, you can activate the UI by running
+    consul with `-ui-dir #{pkgshare}/web-ui`.
+    EOS
   end
 
   test do
