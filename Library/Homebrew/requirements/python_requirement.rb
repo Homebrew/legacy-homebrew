@@ -14,10 +14,6 @@ class PythonRequirement < Requirement
     version == Version.new("2.7")
   end
 
-  def pour_bottle?
-    build? || system_python?
-  end
-
   env do
     short_version = python_short_version
 
