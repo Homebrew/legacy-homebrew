@@ -4,7 +4,7 @@ class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
   sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
-  head "https://github.com/joyent/node.git", :branch => "v0.12"
+  head "https://github.com/nodejs/node.git", :branch => "v0.12"
 
   bottle do
     sha256 "deae62072a5de00e77f153ffd33b943bba412310528eea0801ccc853e1b3f73f" => :yosemite
@@ -22,7 +22,7 @@ class Node < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl" => :optional
 
-  # https://github.com/joyent/node/issues/7919
+  # https://github.com/nodejs/node-v0.x-archive/issues/7919
   # https://github.com/Homebrew/homebrew/issues/36681
   depends_on "icu4c" => :optional
 
@@ -117,7 +117,7 @@ class Node < Formula
         Please note `icu4c` is built with a newer deployment target than Node and
         this may cause issues in certain usage. Node itself is built against the
         outdated `libstdc++` target, which is the root cause. For more information see:
-          https://github.com/joyent/node/issues/7919
+          https://github.com/nodejs/node-v0.x-archive/issues/7919
 
         If this is an issue for you, do `brew install node --without-icu4c`.
       EOS
