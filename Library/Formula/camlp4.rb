@@ -4,7 +4,7 @@ class Camlp4 < Formula
   url "https://github.com/ocaml/camlp4/archive/4.02+6.tar.gz"
   sha256 "820c35b69fdff3225bda6045fabffe5d7c54dda00fb157444ac8bda5e1778d45"
   version "4.02.2+6"
-  head "https://github.com/ocaml/camlp4.git"
+  head "https://github.com/ocaml/camlp4.git", :branch => "trunk"
   revision 1
 
   bottle do
@@ -14,7 +14,7 @@ class Camlp4 < Formula
     sha256 "a4a1d70eb2002d3773f4a1d9ae989b613d8b3772c02baacabbbba0309463c7ff" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   def install
     # this build fails if jobs are parallelized
