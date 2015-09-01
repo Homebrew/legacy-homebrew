@@ -1,7 +1,7 @@
 class Oniguruma < Formula
   desc "Regular expressions library"
   homepage "http://www.geocities.jp/kosako3/oniguruma/"
-  url "http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.9.6.tar.gz"
+  url "http://pkgs.fedoraproject.org/repo/pkgs/oniguruma/onig-5.9.6.tar.gz/md5/d08f10ea5c94919780e6b7bed1ef9830/onig-5.9.6.tar.gz"
   sha256 "d5642010336a6f68b7f2e34b1f1cb14be333e4d95c2ac02b38c162caf44e47a7"
 
   bottle do
