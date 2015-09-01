@@ -3,7 +3,6 @@ class Pypy < Formula
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.1-src.tar.bz2"
   sha256 "7fddd414c9348c2f899f79ad86adc3fc2b19443855b5243f58487e1f0ac46560"
-  revision 1
 
   bottle do
     cellar :any
