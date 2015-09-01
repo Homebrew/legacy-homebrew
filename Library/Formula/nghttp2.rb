@@ -21,7 +21,7 @@ class Nghttp2 < Formula
 
   option "with-examples", "Compile and install example programs"
   option "without-docs", "Don't build man pages"
-  option "with-python3", "This is required for enabling the python bindings"
+  option "with-python3", "Build python3 bindings"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
   depends_on :python3 => :optional
@@ -104,20 +104,15 @@ class Nghttp2 < Formula
     ENV.cxx11
 
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      ENV["PYTHONPATH"] = sphinxpath = buildpath/"sphinx/lib/python2.7/site-packages"
+      sphinxpath.mkpath
       resources.each do |r|
+        next if r.name == "Cython"
         r.stage do
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
-        end unless r.name == "Cython"
+        end
       end
       ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
-    end
-
-    if build.with? "python3"
-      ENV.prepend_create_path "PYTHONPATH", buildpath/"cython/lib/python#{Language::Python.major_minor_version "python3"}/site-packages"
-      resource("Cython").stage do
-        system "python3", *(Language::Python.setup_install_args(buildpath/"cython") << "--install-scripts=#{buildpath}/cython/bin")
-      end
     end
 
     args = %W[
@@ -130,11 +125,7 @@ class Nghttp2 < Formula
 
     args << "--enable-examples" if build.with? "examples"
     args << "--with-spdylay" if build.with? "spdylay"
-    if build.with? "python3"
-      args << "--enable-python-bindings" << "PYTHON=python3" << "CYTHON=#{buildpath}/cython/bin/cython" << "PYTHON_EXTRA_LDFLAGS=-undefined dynamic_lookup"
-    else
-      args << "--disable-python-bindings"
-    end
+    args << "--disable-python-bindings"
 
     system "autoreconf", "-ivf" if build.head?
     system "./configure", *args
@@ -149,6 +140,22 @@ class Nghttp2 < Formula
 
     system "make", "install"
     libexec.install "examples" if build.with? "examples"
+
+    if build.with? "python3"
+      pyver = Language::Python.major_minor_version "python3"
+      ENV["PYTHONPATH"] = cythonpath = buildpath/"cython/lib/python#{pyver}/site-packages"
+      cythonpath.mkpath
+      ENV.prepend_create_path "PYTHONPATH", lib/"python#{pyver}/site-packages"
+
+      resource("Cython").stage do
+        system "python3", *Language::Python.setup_install_args(buildpath/"cython")
+      end
+
+      cd "python" do
+        system buildpath/"cython/bin/cython", "nghttp2.pyx"
+        system "python3", *Language::Python.setup_install_args(prefix)
+      end
+    end
   end
 
   test do
