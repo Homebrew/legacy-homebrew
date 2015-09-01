@@ -6,9 +6,9 @@ class Uhd < Formula
   head "https://github.com/EttusResearch/uhd.git"
 
   bottle do
-    sha256 "c1ef5c34f15a2a49ee31ec78a64f2b84b445a23c71722a8045872aaffd092127" => :yosemite
-    sha256 "09bc2c3e1cd960106e290d372401403d1117d6afebf8733061fa6e8e91cf69d7" => :mavericks
-    sha256 "c7e7164248fc83cd496ca622306b785d2490aea1552c1dc463c247f03297a009" => :mountain_lion
+    sha256 "f8da1e24e138f9f19efc7ba7c1040a468d0860a2afedf0e9e098957879935279" => :yosemite
+    sha256 "93d052af92640e75ae411c8721ea79e6d1581fffd78a8695b9c38bd95d2c34d6" => :mavericks
+    sha256 "252ba91714607cccee3ad1a6917e8efd40c10170f9f1c5ca9a6f21672d26aaf2" => :mountain_lion
   end
 
   option :universal
