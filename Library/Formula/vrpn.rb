@@ -3,8 +3,8 @@ require "formula"
 class Vrpn < Formula
   desc "Virtual reality peripheral network"
   homepage "http://vrpn.org"
-  url "http://www.cs.unc.edu/Research/vrpn/downloads/vrpn_07_33.zip"
-  sha1 "3c908c333e501aeb5051484fafbb89e79064ba20"
+  url "https://github.com/vrpn/vrpn/releases/download/v07.33/vrpn_07_33.zip"
+  sha256 "3cb9e71f17eb756fbcf738e6d5084d47b3b122b68b66d42d6769105cb18a79be"
 
   head "git://git.cs.unc.edu/vrpn.git"
 
