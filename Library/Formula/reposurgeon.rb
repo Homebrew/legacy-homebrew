@@ -1,19 +1,8 @@
 class Reposurgeon < Formula
   desc "Edit version-control repository history"
   homepage "http://www.catb.org/esr/reposurgeon/"
-
-  stable do
-    url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.28.tar.gz"
-    sha256 "3225b44109b8630310a0ea6fe63a3485d27aa46deaf80e8d07820e01a6f62626"
-
-    # Fixes https://gitlab.com/esr/reposurgeon/issues/17
-    # Can be removed in next stable release
-    patch do
-      url "https://gitlab.com/esr/reposurgeon/commit/6cab1aa7c811ac11cd61e044e60ad6f160c1d8c1.diff"
-      sha256 "8e067cb551f8a5f48c701f60a9c46e4ad9312a833f26fefde99f46b47e92cf77"
-    end
-  end
-
+  url "http://www.catb.org/~esr/reposurgeon/reposurgeon-3.29.tar.xz"
+  sha256 "51105e18a2f350146e23c01ea559a07400c3b715f8ec338206f19c19197b0a0f"
   head "https://gitlab.com/esr/reposurgeon.git"
 
   bottle do
@@ -30,8 +19,8 @@ class Reposurgeon < Formula
   depends_on "xmlto" => :build
 
   resource "cython" do
-    url "http://cython.org/release/Cython-0.22.1.tar.gz"
-    sha256 "7fff120e65e7b66edb4a42823f5642bad3bc1e5601bf882d66aee50248cf0682"
+    url "http://cython.org/release/Cython-0.23.1.tar.gz"
+    sha256 "bdfd12d6a2a2e34b9a1bbc1af5a772cabdeedc3851703d249a52dcda8378018a"
   end
 
   def install
@@ -44,7 +33,7 @@ class Reposurgeon < Formula
 
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     system "make", "install", "prefix=#{prefix}"
-    (share/"emacs/site-lisp").install "reposurgeon-mode.el"
+    (share/"emacs/site-lisp/reposurgeon").install "reposurgeon-mode.el"
 
     if build.with? "cython"
       resource("cython").stage do
@@ -56,12 +45,6 @@ class Reposurgeon < Formula
              "pyinclude=" + `python-config --cflags`.chomp,
              "pylib=" + `python-config --ldflags`.chomp
     end
-  end
-
-  def caveats; <<-EOS.undent
-    An Emacs mode has been installed in #{HOMEBREW_PREFIX}/share/emacs/site-lisp
-    Add it to your load-path to use reposurgeon-mode.el
-    EOS
   end
 
   test do
