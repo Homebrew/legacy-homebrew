@@ -1,6 +1,10 @@
 class Saltstack < Formula
   desc "Dynamic infrastructure communication bus"
   homepage "http://www.saltstack.org"
+  # please use sdists published as release downloads
+  # (URLs starting with https://github.com/saltstack/salt/releases/download)
+  # github tag archives will report wrong version number
+  # https://github.com/Homebrew/homebrew/issues/43493
   url "https://github.com/saltstack/salt/releases/download/v2015.5.5/salt-2015.5.5.tar.gz"
   sha256 "5cd8d317616abab691a83f7fd3f8bcf9ad8aecaa95fcfdc0f6d788de87f0beeb"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
