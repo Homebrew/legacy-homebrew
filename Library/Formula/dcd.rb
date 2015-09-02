@@ -12,13 +12,6 @@ class Dcd < Formula
     sha256 "84a24c63e3b05ce812ffb7453f1fd5edfb47dfe053bd6c02401f264dd9febc60" => :mountain_lion
   end
 
-  devel do
-    url "https://github.com/Hackerpilot/DCD.git",
-        :tag => "v0.7.0-rc1",
-        :revision => "70c78a2a109cd2cc83534f43350d24c879c41eaa"
-    version "0.7.0-rc1"
-  end
-
   depends_on "dmd" => :build
 
   def install
