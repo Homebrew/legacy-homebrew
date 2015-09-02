@@ -14,10 +14,9 @@ class Harfbuzz < Formula
   end
 
   bottle do
-    revision 2
-    sha256 "08fc47ec6f4d9e2540c0b9ecea24c23bbc5b8cc05da1b1e1919d153752702877" => :yosemite
-    sha256 "485695af7c95035a82579624dcd9aed9b1ead4b31a7ff26a4e10745bce4b87a4" => :mavericks
-    sha256 "ec6c92337dc06d28704640e038523c693c6921d90b167aed769d2aff353a49cf" => :mountain_lion
+    sha256 "da999851aa3c3ab9360dcc6a0bf3c9eadc706aa64872dcb7a3bbfcbee6d4c5d2" => :yosemite
+    sha256 "402f4d9eedf463f18c5212ddcca2ce97bf5a2b6c1f43309bcb7e16229dffadba" => :mavericks
+    sha256 "df929ddd154ea8a05c066bd727dcb2fc3fc8fd209c5a82dbfa24a10ceee4828a" => :mountain_lion
   end
 
   option "with-cairo", "Build command-line utilities that depend on Cairo"
