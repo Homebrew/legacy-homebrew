@@ -3,6 +3,7 @@ class Physfs < Formula
   homepage "https://icculus.org/physfs/"
   url "https://icculus.org/physfs/downloads/physfs-2.0.3.tar.bz2"
   sha256 "ca862097c0fb451f2cacd286194d071289342c107b6fe69079c079883ff66b69"
+  head "https://hg.icculus.org/icculus/physfs/", :using => :hg
 
   bottle do
     cellar :any
