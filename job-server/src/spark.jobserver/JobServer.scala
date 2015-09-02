@@ -1,11 +1,17 @@
 package spark.jobserver
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorSystem, ActorRef}
 import akka.actor.Props
+import akka.pattern.ask
+
 import com.typesafe.config.{Config, ConfigFactory}
 import java.io.File
 import spark.jobserver.io.JobDAO
 import org.slf4j.LoggerFactory
+
+import scala.collection.JavaConverters._
+import scala.concurrent.{Await, ExecutionContext}
+import scala.concurrent.duration._
 
 /**
  * The Spark Job Server is a web service that allows users to submit and run Spark jobs, check status,
@@ -55,6 +61,9 @@ object JobServer {
         "context-supervisor")
       val jobInfo = system.actorOf(Props(classOf[JobInfoActor], jobDAO, supervisor), "job-info")
 
+      // Add initial job JARs, if specified in configuration.
+      storeInitialJars(config, jarManager)
+
       // Create initial contexts
       supervisor ! ContextSupervisor.AddContextsFromConfig
       new WebApi(system, config, port, jarManager, supervisor, jobInfo).start()
@@ -64,6 +73,45 @@ object JobServer {
         sys.exit(1)
     }
 
+  }
+
+  private def storeInitialJars(config: Config, jarManager: ActorRef): Unit = {
+    val initialJarPathsKey = "spark.jobserver.job-jar-paths"
+    if (config.hasPath(initialJarPathsKey)) {
+      val initialJarsConfig = config.getConfig(initialJarPathsKey).root
+
+      logger.info("Adding initial job jars: {}", initialJarsConfig.render())
+
+      val initialJars =
+        initialJarsConfig
+          .asScala
+          .map { case (key, value) => (key, value.unwrapped.toString) }
+          .toMap
+
+      // Ensure that the jars exist
+      for(jarPath <- initialJars.values) {
+        val f = new java.io.File(jarPath)
+        if (!f.exists) {
+          val msg =
+            if (f.isAbsolute) {
+              s"Initial Jar File $jarPath does not exist"
+            } else {
+              s"Initial Jar File $jarPath (${f.getAbsolutePath}) does not exist"
+            }
+
+          throw new java.io.IOException(msg)
+        }
+      }
+
+      val contextTimeout = util.SparkJobUtils.getContextTimeout(config)
+      val future =
+        (jarManager ? StoreLocalJars(initialJars))(contextTimeout.seconds)
+
+      Await.result(future, contextTimeout.seconds) match {
+        case InvalidJar => sys.error("Could not store initial job jars.")
+        case _ =>
+      }
+    }
   }
 
   def main(args: Array[String]) {

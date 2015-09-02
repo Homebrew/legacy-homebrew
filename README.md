@@ -21,6 +21,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Aruba Networks
 - [Zed Worldwide](http://www.zed.com)
 - [KNIME](https://www.knime.org/)
+- [Azavea](http://azavea.com)
 
 ## Features
 
@@ -88,7 +89,7 @@ Then go ahead and start the job server using the instructions above.
 
 Let's upload the jar:
 
-    curl --data-binary @job-server-tests/target/job-server-tests-$VER.jar localhost:8090/jars/test
+    curl --data-binary @job-server-tests/target/scala-2.10/job-server-tests-$VER.jar localhost:8090/jars/test
     OK⏎
 
 #### Ad-hoc Mode - Single, Unrelated Jobs (Transient Context)
