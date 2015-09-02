@@ -7,12 +7,13 @@ class FormulaVersions
     ErrorDuringExecution, LoadError
   ]
 
-  attr_reader :name, :repository, :entry_name
+  attr_reader :name, :path, :repository, :entry_name
 
   def initialize(formula)
     @name = formula.name
+    @path = formula.path
     @repository = formula.tap? ? HOMEBREW_LIBRARY.join("Taps", formula.tap) : HOMEBREW_REPOSITORY
-    @entry_name = formula.path.relative_path_from(repository).to_s
+    @entry_name = @path.relative_path_from(repository).to_s
   end
 
   def rev_list(branch)
@@ -28,19 +29,16 @@ class FormulaVersions
   end
 
   def formula_at_revision(rev)
-    FileUtils.mktemp(name) do
-      path = Pathname.pwd.join("#{name}.rb")
-      path.write file_contents_at_revision(rev)
+    contents = file_contents_at_revision(rev)
 
-      begin
-        nostdout { yield Formulary.factory(path.to_s) }
-      rescue *IGNORED_EXCEPTIONS => e
-        # We rescue these so that we can skip bad versions and
-        # continue walking the history
-        ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
-      rescue FormulaUnavailableError
-        # Suppress this error
-      end
+    begin
+      nostdout { yield Formulary.from_contents(name, path, contents) }
+    rescue *IGNORED_EXCEPTIONS => e
+      # We rescue these so that we can skip bad versions and
+      # continue walking the history
+      ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
+    rescue FormulaUnavailableError
+      # Suppress this error
     end
   end
 
