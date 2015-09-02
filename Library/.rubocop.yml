@@ -106,15 +106,6 @@ Style/WordArray:
 Style/UnneededCapitalW:
     Enabled: false
 
-# TODO: rubocop bug regarding __END__
-# see https://github.com/bbatsov/rubocop/issues/1541
-Style/TrailingWhitespace:
-    Enabled: false
-Style/Tab:
-    Enabled: false
-Style/TrailingBlankLines:
-    Enabled: false
-
 # we use raise, not fail
 Style/SignalException:
   EnforcedStyle: only_raise
