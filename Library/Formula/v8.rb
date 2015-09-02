@@ -3,8 +3,8 @@
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.4.63.31.tar.gz"
-  sha256 "f384461a492243cd4ceac8f144b32c9b2f89b5935afccf4f2dc4479127dc019b"
+  url "https://github.com/v8/v8-git-mirror/archive/4.5.103.29.tar.gz"
+  sha256 "5ebcab22d168f59a91319b7e99859f36b8affc3872bf33ad7a1f400750b83040"
 
   bottle do
     cellar :any
@@ -27,22 +27,22 @@ class V8 < Formula
   # Update from "DEPS" file in tarball.
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "0bb67471bca068996e15b56738fa4824dfa19de0"
+        :revision => "5122240c5e5c4d8da12c543d82b03d6089eb77c5"
   end
 
   resource "icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        :revision => "f8c0e585b0a046d83d72b5d37356cb50d5b2031a"
+        :revision => "c81a1a3989c3b66fa323e9a6ee7418d7c08297af"
   end
 
   resource "buildtools" do
     url "https://chromium.googlesource.com/chromium/buildtools.git",
-        :revision => "b0ede9c89f9d5fbe5387d961ad4c0ec665b6c821"
+        :revision => "ecc8e253abac3b6186a97573871a084f4c0ca3ae"
   end
 
   resource "clang" do
     url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
-        :revision => "5bab78c6ced45a71a8e095a09697ca80492e57e1"
+        :revision => "73ec8804ed395b0886d6edf82a9f33583f4a7902"
   end
 
   resource "gmock" do
@@ -52,7 +52,7 @@ class V8 < Formula
 
   resource "gtest" do
     url "https://chromium.googlesource.com/external/googletest.git",
-        :revision => "be1868139ffe0ccd0e8e3b37292b84c821d9c8ad"
+        :revision => "23574bf2333f834ff665f894c97bef8a5b33a0a9"
   end
 
   def install
