@@ -170,6 +170,23 @@ class Formulary
     end
   end
 
+  # Load formulae directly from their contents
+  class FormulaContentsLoader < FormulaLoader
+    # The formula's contents
+    attr_reader :contents
+
+    def initialize(name, path, contents)
+      @contents = contents
+      super name, path
+    end
+
+    def klass
+      STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
+      namespace = "FormulaNamespace#{Digest::MD5.hexdigest(contents)}"
+      Formulary.load_formula(name, path, contents, namespace)
+    end
+  end
+
   # Return a Formula instance for the given reference.
   # `ref` is string containing:
   # * a formula name
@@ -197,6 +214,11 @@ class Formulary
     else
       factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
     end
+  end
+
+  # Return a Formula instance directly from contents
+  def self.from_contents(name, path, contents, spec = :stable)
+    FormulaContentsLoader.new(name, path, contents).get_formula(spec)
   end
 
   def self.to_rack(ref)
