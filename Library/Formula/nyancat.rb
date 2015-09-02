@@ -4,6 +4,13 @@ class Nyancat < Formula
   url "https://github.com/klange/nyancat/archive/1.4.4.tar.gz"
   sha256 "bbd0e573f01b7b5ee3b9c379de3ce12bb2575654e49b790f09388b2b9bd1f462"
 
+  bottle do
+    cellar :any
+    sha256 "31fe5465d62a4f922bd29ffdc6ef555517435ba3f76f1e671d8d6adbcfc2acf2" => :yosemite
+    sha256 "70811e60480b682b3f6ad8f02dc52bd0bde2df97437df1aa3744f098619f4d2b" => :mavericks
+    sha256 "37afa1b385b8a8b07dc762f212e40a42105c23cd9c0ea079cc7c1ec4103a46de" => :mountain_lion
+  end
+
   # Add _DARWIN_C_SOURCE to allow compiling on OSX
   patch do
     url "https://github.com/klange/nyancat/pull/30.patch"
