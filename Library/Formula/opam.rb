@@ -13,7 +13,7 @@ class Opam < Formula
     sha256 "fab436947193e2e0b402320e520daa2826af8c80d0ddb4f9cf37d11ebd009ddf" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "camlp4" => :recommended
 
   # aspcud has a fairly large buildtime dep tree, and uses gringo,

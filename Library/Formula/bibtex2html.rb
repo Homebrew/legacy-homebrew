@@ -11,7 +11,7 @@ class Bibtex2html < Formula
     sha1 "32377bea1f584fedf5d2abb604a1d46e5e92ac5c" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "hevea"
   depends_on :tex => :optional
 

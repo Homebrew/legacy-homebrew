@@ -12,7 +12,7 @@ class Unison < Formula
     sha256 "dc4dcbeb2e2f224f9fffede14f8d3c7c220f032023b83626b75409707e93df35" => :mountain_lion
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
 
   def install
     ENV.j1

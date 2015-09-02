@@ -10,7 +10,7 @@ class Hevea < Formula
     sha256 "1777a109ad7bf3693bd3cb0c09ec99846fbb73611e705eba4a7a48cf195c7ce4" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "ghostscript" => :optional
 
   def install
