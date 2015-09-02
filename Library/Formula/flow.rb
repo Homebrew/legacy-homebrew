@@ -12,7 +12,7 @@ class Flow < Formula
     sha256 "5cf57fcca47de49144872145c9bb8b004c649f0ff12b1927573ddf821710275a" => :mountain_lion
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
 
   def install
     system "make"

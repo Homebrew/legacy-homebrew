@@ -18,7 +18,7 @@ class Mldonkey < Formula
   end
 
   depends_on "camlp4" => :build
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
   depends_on "pkg-config" => :build
   depends_on "gd"
   depends_on "libpng"
