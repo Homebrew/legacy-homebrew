@@ -15,20 +15,24 @@ class Formulary
     FORMULAE.fetch(path)
   end
 
-  def self.load_formula(name, path)
+  def self.load_formula(name, path, contents, namespace)
     mod = Module.new
-    const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
-    contents = path.open("r") { |f| set_encoding(f).read }
+    const_set(namespace, mod)
     mod.module_eval(contents, path)
     class_name = class_s(name)
 
     begin
-      klass = mod.const_get(class_name)
+      mod.const_get(class_name)
     rescue NameError => e
       raise FormulaUnavailableError, name, e.backtrace
-    else
-      FORMULAE[path] = klass
     end
+  end
+
+  def self.load_formula_from_path(name, path)
+    contents = path.open("r") { |f| set_encoding(f).read }
+    namespace = "FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}"
+    klass = load_formula(name, path, contents, namespace)
+    FORMULAE[path] = klass
   end
 
   if IO.method_defined?(:set_encoding)
@@ -76,7 +80,7 @@ class Formulary
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
       raise FormulaUnavailableError.new(name) unless path.file?
-      Formulary.load_formula(name, path)
+      Formulary.load_formula_from_path(name, path)
     end
   end
 
