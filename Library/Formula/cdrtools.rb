@@ -8,10 +8,9 @@ class Cdrtools < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "c5961aaef116ae0dd425197550ae59c91f16da2552992de6c44331685dea58b6" => :yosemite
-    sha256 "6dad15e2cfc911cda652271f764b830fe913affc85c1e92407006141594ac267" => :mavericks
-    sha256 "ab6ca1d2649635c76c83343eba34fe89b3720613cdeee5cf2ee82789c6fa0687" => :mountain_lion
+    sha256 "bc99e1777e2723361b2c410ac8665eac163e0269815b04c4d1e0f28fa036193d" => :yosemite
+    sha256 "825662b7641aa454f1d1aee4bcc4968e9d74887988af5d793e33aa2a92e420d8" => :mavericks
+    sha256 "8f4e80ac5e512312227029504b52d39085c80b5f7d1f06d0911aaf0eaca1b6a5" => :mountain_lion
   end
 
   depends_on "smake" => :build
