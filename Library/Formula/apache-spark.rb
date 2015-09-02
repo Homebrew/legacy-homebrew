@@ -2,7 +2,7 @@ class ApacheSpark < Formula
   desc "Engine for large-scale data processing"
   homepage "https://spark.apache.org/"
   head "https://github.com/apache/spark.git"
-  url "https://www.apache.org/dyn/closer.cgi?path=spark/spark-1.4.1/spark-1.4.1-bin-hadoop2.6.tgz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=spark/spark-1.4.1/spark-1.4.1-bin-hadoop2.6.tgz"
   version "1.4.1"
   sha256 "9cde95349cccfeb99643d2dadb63f8e88ac355e0038aae7d5029142ce94ae370"
 

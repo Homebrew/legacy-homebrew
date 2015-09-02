@@ -4,7 +4,7 @@ class Zookeeper < Formula
   revision 1
 
   stable do
-    url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
+    url "https://www.apache.org/dyn/closer.cgi?action=download&filename=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
     sha256 "01b3938547cd620dc4c93efe07c0360411f4a66962a70500b163b59014046994"
 
     # To resolve Yosemite build errors.

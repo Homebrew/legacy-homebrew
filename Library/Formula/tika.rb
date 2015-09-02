@@ -1,7 +1,7 @@
 class Tika < Formula
   desc "Content analysis toolkit"
   homepage "https://tika.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tika/tika-app-1.10.jar"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=tika/tika-app-1.10.jar"
   sha256 "21ac3c156c2b53c451599f1b2c441c7898fce8efb7e912f6894e5e543d7cd48c"
 
   depends_on :java => "1.7+"

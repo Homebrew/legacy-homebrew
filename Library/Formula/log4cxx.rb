@@ -1,7 +1,7 @@
 class Log4cxx < Formula
   desc "Library of C++ classes for flexible logging"
   homepage "https://logging.apache.org/log4cxx/index.html"
-  url "https://www.apache.org/dyn/closer.cgi?path=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=logging/log4cxx/0.10.0/apache-log4cxx-0.10.0.tar.gz"
   sha256 "0de0396220a9566a580166e66b39674cb40efd2176f52ad2c65486c99c920c8c"
 
   bottle do

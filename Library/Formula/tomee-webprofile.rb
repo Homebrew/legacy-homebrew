@@ -1,7 +1,7 @@
 class TomeeWebprofile < Formula
   desc "All-Apache Java EE 6 Web Profile stack"
   homepage "https://tomee.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.2/apache-tomee-1.7.2-webprofile.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=tomee/tomee-1.7.2/apache-tomee-1.7.2-webprofile.tar.gz"
   version "1.7.2"
   sha256 "9802fef834a3d2944fc325440e1aadbd3b00956e5ef43f5ef9eea8b91a12d230"
 

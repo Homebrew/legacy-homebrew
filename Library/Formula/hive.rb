@@ -1,7 +1,7 @@
 class Hive < Formula
   desc "Hadoop-based data summarization, query, and analysis"
   homepage "https://hive.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz"
+  url "https://www.apache.org/dyn/closer.cgi?action=download&filename=hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz"
   sha256 "29d9780c4af887ef623bafe6a73ec6f1bea9759bbe31fb4aeeb5b0f68c4c9979"
 
   depends_on "hadoop"
