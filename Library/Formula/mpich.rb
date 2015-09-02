@@ -9,10 +9,9 @@ class Mpich < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "b9a72ad2144103682aa485cada4d429c4f9397ffa94e5935d3fb44a59d54f18d" => :yosemite
-    sha256 "17b5fbbc2e19645ab9b20c39c7da8c02ca44addc5df7de020cf5b17acfa5c681" => :mavericks
-    sha256 "733c9baca04fcb032a8eb0fc812b429c1f54430f9cf4534814df1f0941aa8194" => :mountain_lion
+    sha256 "52f8f331dbb01514fca1d7921c38c6cab2dd77b06ee6a0c42e608d0719041aeb" => :yosemite
+    sha256 "2d99e877646cc27a13dd4b901050d1e1f5a716f2b2c775cbeaec263886a2d12d" => :mavericks
+    sha256 "56070798b3958bced4b32c3ef3c21f21b07df5e0f14389645d4ba03119d09a78" => :mountain_lion
   end
 
   devel do
