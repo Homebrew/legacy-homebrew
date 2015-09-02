@@ -8,9 +8,7 @@ import org.apache.shiro.subject.PrincipalCollection
 import org.apache.shiro.authz._
 import javax.naming.ldap.LdapContext
 import javax.naming.directory._
-import javax.naming.NamingEnumeration
 import org.slf4j.LoggerFactory
-import com.typesafe.config.{ Config, ConfigFactory }
 
 /**
  * LDAP realm implementation that retrieves group information from LDAP and matches
@@ -96,7 +94,7 @@ class LdapGroupRealm extends JndiLdapRealm {
       groupSearchAtts, searchCtls).asScala
 
     groupAnswer.map(sr2 => {
-      logger.debug("Checking members of group [%s]" format (sr2.getName()))
+      logger.debug("Checking members of group [%s]", sr2.getName())
       sr2.getName() -> getMembers(sr2)
     }).toMap
   }
@@ -130,7 +128,7 @@ class LdapGroupRealm extends JndiLdapRealm {
   def isInAllowedGroupOrNoCheckOnGroups(roles: Set[String]): Boolean = {
     allowedGroups match {
       case Some(groups) =>
-        roles.foldLeft(false)((isInGroup, r) => isInGroup || groups.contains(r))
+        roles.exists(r => groups.contains(r))
       case None =>
         true
     }

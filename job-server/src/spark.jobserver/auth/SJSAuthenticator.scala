@@ -57,7 +57,7 @@ trait SJSAuthenticator {
       //  realm implementation may for example throw an exception
       //  if user is not a member of a valid group
       currentUser.isPermitted("*")
-      logger.trace("ACCESS GRANTED, user [%s]" format fullName)
+      logger.trace("ACCESS GRANTED, user [%s]", fullName)
       currentUser.logout()
       Option(new AuthInfo(new User(fullName)))
     } catch {

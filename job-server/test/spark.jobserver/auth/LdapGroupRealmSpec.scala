@@ -68,6 +68,18 @@ securityManager.cacheManager = $cacheManager
       realm.allowedGroups.get should equal(Array("cn=group1,ou=groups", "cn=group2,ou=groups"))
     }
 
+    it("should match groups to allowed groups (all same)") {
+      realm.isInAllowedGroupOrNoCheckOnGroups(Set("cn=group1,ou=groups", "cn=group2,ou=groups")) should equal(true)
+    }
+
+    it("should match groups to allowed groups (intersection)") {
+      realm.isInAllowedGroupOrNoCheckOnGroups(Set("cn=other,ou=xxx", "some other role", "cn=group1,ou=groups")) should equal(true)
+    }
+
+    it("should match groups to allowed groups (no match)") {
+      realm.isInAllowedGroupOrNoCheckOnGroups(Set("cn=other,ou=xxx", "cn=o,ou=group", "cn=z,ou=group")) should equal(false)
+    }
+
     it("should retrieve group names") {
       realm.retrieveGroups(new TestLdapContext()).keys should equal(Set("cn=group1,ou=groups", "cn=group2,ou=groups", "cn=groupXX,ou=groups"))
     }
