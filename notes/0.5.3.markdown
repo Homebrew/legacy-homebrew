@@ -1,6 +1,7 @@
 #Scala #akka @ApacheSpark
 
-* HTTPS Support! (@koettert @TimMaltGermany)
+* HTTPS Support! (@koettert @TimMaltGermany / KNIME)
+* Load jars automatically on startup (@lossyrob / Azavea)
 * Fix server-stop.sh so it works with spark-submit (@addisonj @RussellSpitzer @jmelching)
 * Upgrade to spray-json 1.3.2 (@v-gerasimov)
 * Upgrade joda-time to 2.2 (@jwalgran)
