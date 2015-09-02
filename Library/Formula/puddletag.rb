@@ -1,3 +1,7 @@
+# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
+#                /usr/local/Library/Contributions/example-formula.rb
+# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
+
 class Puddletag < Formula
   desc "Powerful, simple, audio tag editor."
   homepage "http://puddletag.sf.net"
@@ -48,6 +52,11 @@ class Puddletag < Formula
     #
     # The installed folder is not in the path, so use the entire path to any
     # executables being tested: `system "#{bin}/program", "do", "something"`.
-    system "puddletag"
+    Pathname("test.py").write <<-EOS.undent
+      import puddlestuff
+    EOS
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", "test.py"
   end
 end
