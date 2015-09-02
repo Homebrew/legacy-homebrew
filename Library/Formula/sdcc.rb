@@ -6,6 +6,12 @@ class Sdcc < Formula
 
   head "https://sdcc.svn.sourceforge.net/svnroot/sdcc/trunk/sdcc/"
 
+  bottle do
+    sha256 "f22ecc49004e7e760c3510d90a8818289974c702e18887a46d04104d11e3a69b" => :yosemite
+    sha256 "2ad5b170ee4c018faeb6c5ec3a1b7dc01a34cec0b635ea8c654f5d290b801f19" => :mavericks
+    sha256 "79f62fa7c8972a9b8b25bf1a96b92262ddc916517bda7567b2c761c5ea211ffe" => :mountain_lion
+  end
+
   depends_on "gputils"
   depends_on "boost"
 
