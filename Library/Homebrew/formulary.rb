@@ -245,7 +245,7 @@ class Formulary
 
   def self.loader_for(ref)
     case ref
-    when %r{(https?|ftp)://}
+    when %r{(https?|ftp|file)://}
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
