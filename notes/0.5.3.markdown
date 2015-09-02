@@ -8,6 +8,6 @@
 * Docker fixes, such as for logging (@MeiSign)
 * JobSqlDAO to support username, password, DB connection pooling (@ffarozan)
 * Doc: Instructions for running job-server docker container in yarn-client (@MeiSign)
-* Doc: Various fixes to README (@noorul)
+* Doc: Various fixes to README (@noorul) and deploy instructions (@mvle)
 * Fix typo in SparkStreamingJob that used to be called SparkStramingJob. This will break your code if you used SparkStramingJob (@zeitos)
  
