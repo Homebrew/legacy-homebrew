@@ -7,9 +7,9 @@ class Reposurgeon < Formula
 
   bottle do
     cellar :any
-    sha256 "ebb4814ee867bf1dcef371b24b7ee678ee0047cdee8051253d46a887ccdda4be" => :yosemite
-    sha256 "2ff04b1a906524331c7c40270b0c7ffcd01fbe18a22b714726f1cb818e7af864" => :mavericks
-    sha256 "0485707cc564f06070a9048a4cc893ef7a8e45130d6482dc3a432c3bbbcace34" => :mountain_lion
+    sha256 "afe3bcd343cfe1897e9951720feef41037de0dd2abb2799747956f98c2930cbb" => :yosemite
+    sha256 "bac28e15ce2610589c4adc6a8b40327843fbdbbf3081195fbfa8eb2bc9a17dbd" => :mavericks
+    sha256 "a2b14e3135d25089933abf0bb28e79048d9788972636c70eadb30a37277e45fa" => :mountain_lion
   end
 
   option "without-cython", "Build without cython (faster compile)"
