@@ -485,6 +485,14 @@ class Ansible < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
+  def caveats; <<-EOS.undent
+    Homebrew writes wrapper scripts that set PYTHONPATH in ansible's
+    execution environment, which is inherited by Python scripts invoked
+    by ansible. If this causes problems, you can modify your playbooks
+    to invoke python with -E, which causes python to ignore PYTHONPATH.
+    EOS
+  end
+
   test do
     ENV["ANSIBLE_REMOTE_TEMP"] = testpath/"tmp"
     (testpath/"playbook.yml").write <<-EOF.undent
