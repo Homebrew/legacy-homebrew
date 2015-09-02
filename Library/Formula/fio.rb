@@ -1,15 +1,15 @@
 class Fio < Formula
   desc "I/O benchmark and stress test"
   homepage "http://freecode.com/projects/fio"
-  url "http://brick.kernel.dk/snaps/fio-2.2.7.tar.bz2"
-  sha256 "6e3cd5bda0747e61cbfd42c7b3cfe044ea8981d8d3a486f0a2f2fafdb954296f"
+  url "http://brick.kernel.dk/snaps/fio-2.2.9.tar.bz2"
+  sha256 "c881d9cf15500bd4436970d0467c356c5c021417131587931ba78845e965bf56"
   head "git://git.kernel.dk/fio.git"
 
   bottle do
     cellar :any
-    sha256 "9627e56c1f5b74afc9af0e2c636f7001f678fb3f891c65a7460380445f62e8d0" => :yosemite
-    sha256 "366b0622ac63192a2482e77a04840d2e795223a5bf0d0d2e6fbab46ac6d6fb39" => :mavericks
-    sha256 "12c9075cadd1fb68ce4ff23560da9d1a1aa0f357602df9a0973d5edfd3a041a0" => :mountain_lion
+    sha256 "afacb2020505d8b1476c2822c13cd9793662c7c88ce445e2a735d4fbb2cd1cc0" => :yosemite
+    sha256 "bab17199f99db3192d81d05adc61c35f39098b343bd4876434beb0125b44652b" => :mavericks
+    sha256 "6614227f2226a9989de3441ca3be6dc061cbaad3cdabd72e68e9329f061b0e04" => :mountain_lion
   end
 
   def install
