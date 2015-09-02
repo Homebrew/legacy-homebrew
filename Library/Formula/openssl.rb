@@ -14,9 +14,9 @@ class Openssl < Formula
   end
 
   resource "cacert" do
-    # homepage "http://curl.haxx.se/docs/caextract.html"
-    url "http://curl.haxx.se/ca/cacert.pem"
-    sha256 "ccde89388cac12c5d3c8e68b9458add7e22b849371818dfdd240c994d6193641"
+    # homepage "http://curl.haxx.se/docs/caextract.html", "https://github.com/bagder/ca-bundle"
+    url "https://raw.githubusercontent.com/bagder/ca-bundle/bff056d04b9e2c92ea8c83b2e39be9c8d0501039/ca-bundle.crt"
+    sha256 "0f119da204025da7808273fab42ed8e030cafb5c7ea4e1deda4e75f066f528fb"
   end
 
   option :universal
@@ -114,7 +114,7 @@ class Openssl < Formula
   def post_install
     unless OS.mac?
       # Download and install cacert.pem from curl.haxx.se
-      (etc/"openssl").install resource("cacert").files("cacert.pem" => "cert.pem")
+      (etc/"openssl").install resource("cacert").files("ca-bundle.crt" => "cert.pem")
       return
     end
 
