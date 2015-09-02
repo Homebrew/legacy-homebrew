@@ -19,13 +19,15 @@ class Pdns < Formula
     sha256 "723e2b4f9b9e92e657a6ef37f4fb3e9b6d7823d933517e92b569314300934322" => :mountain_lion
   end
 
-  option "pgsql", "Enable the PostgreSQL backend"
+  option "with-pgsql", "Enable the PostgreSQL backend"
+
+  deprecated_option "pgsql" => "with-pgsql"
 
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "lua"
   depends_on "sqlite"
-  depends_on :postgresql if build.include? "pgsql"
+  depends_on :postgresql if build.with? "pgsql"
 
   def install
     # https://github.com/Homebrew/homebrew/pull/33739
@@ -36,7 +38,7 @@ class Pdns < Formula
             "--with-sqlite3"]
 
     # Include the PostgreSQL backend if requested
-    if build.include? "pgsql"
+    if build.with? "pgsql"
       args << "--with-modules=gsqlite3 gpgsql"
     else
       # SQLite3 backend only is the default
