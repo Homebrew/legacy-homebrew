@@ -72,9 +72,12 @@ class Descriptions
       if report.empty?
         FileUtils.touch CACHE_FILE
       else
-        alterations = report.select_formula(:A) + report.select_formula(:M)
+        renamings = report.select_formula(:R)
+        alterations = report.select_formula(:A) + report.select_formula(:M) +
+                      renamings.map(&:last)
         self.cache_formulae(alterations, :save => false)
-        self.uncache_formulae(report.select_formula(:D))
+        self.uncache_formulae(report.select_formula(:D) +
+                              renamings.map(&:first))
       end
     end
   end
