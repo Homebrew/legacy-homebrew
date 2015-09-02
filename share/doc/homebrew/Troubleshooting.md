@@ -29,12 +29,12 @@ Thank you!
 * If `brew doctor` warns about unbrewed dylibs, be advised that they are **very likely to cause build problems**.
 
 ## Check to see if the issue has been reported
-* Browse open issues on the [issue tracker](https://github.com/Homebrew/homebrew/issues) to see if someone else has already reported the same problem.
+* Browse open issues on the [issue tracker](https://github.com/Homebrew/linuxbrew/issues) to see if someone else has already reported the same problem.
 * Make sure you check issues on the correct repository. If the formula that failed to build is part of a tap, like [homebrew-science](https://github.com/Homebrew/homebrew-science) or [homebrew-dupes](https://github.com/Homebrew/homebrew-dupes), check there instead.
 
 ## Create an issue
 
-1. [Create a new issue](https://github.com/Homebrew/homebrew/issues/new)
+1. [Create a new issue](https://github.com/Homebrew/linuxbrew/issues/new)
   * Again, make sure you file the issue against the correct repository.
   * If you are reporting a build failure, title it "\<formula name> failed to build on \<Distribution> \<Version>", where \<formula name> is the name of the formula that failed to build, and \<Distribution> and \<Version> is the Linux distribution and version you are using, e.g., Ubuntu Trusty.
   * Otherwise, choose a title that best describes the problem you are experiencing.
