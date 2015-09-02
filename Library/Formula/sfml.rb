@@ -4,6 +4,7 @@ class Sfml < Formula
   homepage "http://www.sfml-dev.org/"
   url "http://www.sfml-dev.org/files/SFML-2.3-sources.zip"
   sha256 "a1dc8b00958000628c5394bc8438ba1aa5971fbeeef91a2cf3fa3fff443de7c1"
+  revision 1
 
   head "https://github.com/SFML/SFML.git"
 
@@ -22,7 +23,7 @@ class Sfml < Formula
   depends_on "jpeg"
   depends_on "libogg"
   depends_on "libvorbis"
-  depends_on "openal-soft"
+  depends_on "openal-soft" => :optional
 
   # https://github.com/Homebrew/homebrew/issues/40301
   depends_on :macos => :lion
