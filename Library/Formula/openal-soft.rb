@@ -3,6 +3,7 @@ class OpenalSoft < Formula
   homepage "http://kcat.strangesoft.net/openal.html"
   url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.16.0.tar.bz2"
   sha256 "2f3dcd313fe26391284fbf8596863723f99c65d6c6846dccb48e79cadaf40d5f"
+  revision 1
 
   bottle do
     cellar :any
@@ -25,6 +26,8 @@ class OpenalSoft < Formula
   # clang 4.2's support for alignas is incomplete
   fails_with :llvm
   fails_with(:clang) { build 425 }
+
+  keg_only :provided_by_osx, "OS X provides OpenAL.framework."
 
   def install
     ENV.universal_binary if build.universal?
@@ -53,6 +56,6 @@ class OpenalSoft < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lopenal"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lopenal"
   end
 end
