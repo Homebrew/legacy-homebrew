@@ -1,8 +1,8 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
   homepage "http://www.lighttpd.net/"
-  url "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.36.tar.xz"
-  sha256 "897ab6b1cc7bd51671f8af759e7846245fbbca0685c30017e93a5882a9ac1a53"
+  url "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.37.tar.xz"
+  sha256 "804e6f60567ca1da2b3927f92b7e9332b93aca9560f282ca135b86b7558979bd"
 
   bottle do
     revision 1
@@ -57,9 +57,6 @@ class Lighttpd < Formula
     args << "--with-lua" if build.with? "lua51"
     args << "--with-libev" if build.with? "libev"
 
-    # fixed upstream, should be in next release: http://redmine.lighttpd.net/issues/2517
-    inreplace "src/Makefile.am", "$(LDAP_LIB)", "$(SSL_LIB) $(LDAP_LIB)"
-
     # autogen must be run, otherwise prebuilt configure may complain
     # about a version mismatch between included automake and Homebrew's
     system "./autogen.sh"
@@ -86,7 +83,7 @@ class Lighttpd < Formula
         s.sub!(/^server\.username\s*=\s*".+"$/, 'server.username  = "_www"')
         s.sub!(/^server\.groupname\s*=\s*".+"$/, 'server.groupname = "_www"')
         s.sub!(/^server\.event-handler\s*=\s*"linux-sysepoll"$/, 'server.event-handler = "select"')
-        s.sub!(/^server\.network-backend\s*=\s*"linux-sendfile"$/, 'server.network-backend = "writev"')
+        s.sub!(/^server\.network-backend\s*=\s*"sendfile"$/, 'server.network-backend = "writev"')
 
         # "max-connections == max-fds/2",
         # http://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
