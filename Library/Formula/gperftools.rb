@@ -1,4 +1,4 @@
-class GooglePerftools < Formula
+class Gperftools < Formula
   desc "Multi-threaded malloc() and performance analysis tools"
   homepage "https://code.google.com/p/gperftools/"
   url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.4.tar.gz"
