@@ -8,8 +8,9 @@ class Osquery < Formula
   revision 1
 
   bottle do
-    sha256 "c9ac3d50168afa1bbbf22a426f731f61a27dfdd8d6e5a8ee59953243fa792e86" => :yosemite
-    sha256 "0e635ad69a7c4351f7d41d66c48b54c731d2ba92d701e5b66ccce305c826a92d" => :mavericks
+    revision 1
+    sha256 "0f45aeb033ed4393c66bbf7b926ab9ecb9f537372fc12b4127d2d61c236e3450" => :yosemite
+    sha256 "c8c818319a762e0f300cf2d01c2697b0de2348bc83075b8d6713ab5ebbe280a5" => :mavericks
   end
 
   # osquery only supports OS X 10.9 and above. Do not remove this.
