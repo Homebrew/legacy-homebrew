@@ -5,6 +5,11 @@ class Gjstest < Formula
   sha256 "c64d1b8d153b9afaa17ce521d9a7d07acbf13838dab7b2e57822f0bf046f80e5"
   head "https://github.com/google/gjstest.git"
 
+  bottle do
+    sha256 "04e13af1e255cd8eb0e954a0d4922822cc49418bbe9f1dd8b488a6c07d6edd03" => :yosemite
+    sha256 "9fcb3f583f39b58926c4010be7471240a72587339a1ae44af57d6c5301218523" => :mavericks
+  end
+
   depends_on :macos => :mavericks
 
   depends_on "gflags"
