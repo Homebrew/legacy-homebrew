@@ -13,7 +13,7 @@ class Consul < Formula
     sha256 "67052157266d536598ba7eb5af31a10fd3e609ca812be6d50869d0fe80a583f9" => :mountain_lion
   end
 
-  option "with-web-ui"
+  option "with-web-ui", "Installs the consul web ui (to /usr/local/share/consul directory)"
 
   depends_on "go" => :build
 
