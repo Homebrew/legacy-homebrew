@@ -186,33 +186,39 @@ class Keg
     remove_oldname_opt_record
   end
 
-  def unlink
-    ObserverPathnameExtension.reset_counts!
+  def unlink(mode = OpenStruct.new)
+	ObserverPathnameExtension.reset_counts!
 
-    dirs = []
+	dirs = []
 
-    TOP_LEVEL_DIRECTORIES.map { |d| path.join(d) }.each do |dir|
-      next unless dir.exist?
-      dir.find do |src|
-        dst = HOMEBREW_PREFIX + src.relative_path_from(path)
-        dst.extend(ObserverPathnameExtension)
+	TOP_LEVEL_DIRECTORIES.map { |d| path.join(d) }.each do |dir|
+	  next unless dir.exist?
+	  dir.find do |src|
+	    dst = HOMEBREW_PREFIX + src.relative_path_from(path)
+		dst.extend(ObserverPathnameExtension)
 
-        dirs << dst if dst.directory? && !dst.symlink?
+		dirs << dst if dst.directory? && !dst.symlink?
 
-        # check whether the file to be unlinked is from the current keg first
-        if dst.symlink? && src == dst.resolved_path
-          dst.uninstall_info if dst.to_s =~ INFOFILE_RX
-          dst.unlink
-          Find.prune if src.directory?
-        end
-      end
-    end
+		# check whether the file to be unlinked is from the current keg first
+		if dst.symlink? && src == dst.resolved_path
+		  if mode.dry_run
+			puts dst
+			next
+		  end
+		  dst.uninstall_info if dst.to_s =~ INFOFILE_RX
+		  dst.unlink 
+		  Find.prune if src.directory?
+		end
+	  end
+	end
 
-    remove_linked_keg_record if linked?
+	unless mode.dry_run
+	  remove_linked_keg_record if linked?
 
-    dirs.reverse_each(&:rmdir_if_possible)
+	  dirs.reverse_each(&:rmdir_if_possible)
+	end
 
-    ObserverPathnameExtension.total
+	ObserverPathnameExtension.total
   end
 
   def lock
