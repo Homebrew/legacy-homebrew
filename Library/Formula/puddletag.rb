@@ -4,7 +4,7 @@ class Puddletag < Formula
   url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
   sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
 
-  depends_on "pyqt" 
+  depends_on "pyqt"
 
   resource "pyparsing" do
     url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-1.5.7.tar.gz"
@@ -35,6 +35,11 @@ class Puddletag < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
+    mkdir_p "Puddletag.app/Contents/MacOS"
+    cp libexec/"bin/puddletag", "Puddletag.app/Contents/MacOS/Puddletag"
+    chmod "+x", "Puddletag.app/Contents/MacOS/Puddletag"
+    prefix.install Dir[Puddletag.app]
   end
 
   test do
