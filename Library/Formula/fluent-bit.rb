@@ -4,7 +4,7 @@ class FluentBit < Formula
   url "https://github.com/fluent/fluent-bit/archive/0.1.0.tar.gz"
   sha256 "5d77c75b1261695ca7f7b4752f5563b80c63c9d68f89fa6f5a1bfcd197a2a785"
 
-  head "https://github.com/fluent/fluent-bit.git", :branch => "master"
+  head "https://github.com/fluent/fluent-bit.git"
 
   depends_on "cmake" => :build
 
