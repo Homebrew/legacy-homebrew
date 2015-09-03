@@ -1,8 +1,8 @@
 class Magit < Formula
   desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-  url "https://github.com/magit/magit/releases/download/2.2.1/magit-2.2.1.tar.gz"
-  sha256 "b0e2c8c7ecf175f223c85849b8c9f80458b3f435ab9014851cbc446408914d2e"
+  url "https://github.com/magit/magit/releases/download/2.2.2/magit-2.2.2.tar.gz"
+  sha256 "08e61898e23dbeb3a152d82e58fc9f6c769fe36d35d87617dcd1e69b2f91b3c6"
 
   head "https://github.com/magit/magit.git", :shallow => false
 
