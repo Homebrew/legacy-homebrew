@@ -5,6 +5,7 @@ class Node < Formula
   url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
   sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
   head "https://github.com/nodejs/node.git", :branch => "v0.12"
+  revision 1
 
   bottle do
     sha256 "deae62072a5de00e77f153ffd33b943bba412310528eea0801ccc853e1b3f73f" => :yosemite
@@ -31,8 +32,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.12.1.tgz"
-    sha256 "6b6512c6f9097da193dfe046053d6d0483b5c5658dc0a763c1ba5609b6bbc16c"
+    url "https://registry.npmjs.org/npm/-/npm-2.14.1.tgz"
+    sha256 "2587615ddd25c3177271445cd205d848440f9ce10e7d067e33bf9a82eeac724d"
   end
 
   def install
