@@ -31,7 +31,7 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.12.1.tgz"
+    url "https://registry.npmjs.org/npm/-/npm-2.14.1.tgz"
     sha256 "6b6512c6f9097da193dfe046053d6d0483b5c5658dc0a763c1ba5609b6bbc16c"
   end
 
