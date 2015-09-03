@@ -6,13 +6,6 @@ class V8 < Formula
   url "https://github.com/v8/v8-git-mirror/archive/4.5.103.29.tar.gz"
   sha256 "5ebcab22d168f59a91319b7e99859f36b8affc3872bf33ad7a1f400750b83040"
 
-  bottle do
-    cellar :any
-    sha256 "739f6745233c716427c48e3e1a45ea431ce9dbd2113a5fb3a77bc1a95fdfe92a" => :yosemite
-    sha256 "080c276ce0665755a55202e6ed594b0134b3b358969253c0a501f7231b63cbdb" => :mavericks
-    sha256 "91894c7a268bfc7221a37191d6b69d3b528e70d4dfa00184a36ad97b2d1a2f09" => :mountain_lion
-  end
-
   option "with-readline", "Use readline instead of libedit"
 
   # not building on Snow Leopard:
