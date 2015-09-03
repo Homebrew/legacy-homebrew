@@ -13,7 +13,7 @@ class Consul < Formula
     sha256 "67052157266d536598ba7eb5af31a10fd3e609ca812be6d50869d0fe80a583f9" => :mountain_lion
   end
 
-  option "with-web-ui", "Installs the consul web ui (to /usr/local/share/consul directory)"
+  option "with-web-ui", "Installs the consul web ui"
 
   depends_on "go" => :build
 
@@ -175,7 +175,13 @@ class Consul < Formula
     end
 
     # install web-ui to package share folder.
-    pkgshare.install resource("web-ui") if build.with? "web-ui"
+    (pkgshare/"web-ui").install resource("web-ui") if build.with? "web-ui"
+  end
+
+  def caveats; <<-EOS.undent
+    If consul was built with --with-web-ui, you can activate the UI by running
+    consul with `-ui-dir #{pkgshare}/web-ui`.
+    EOS
   end
 
   test do
@@ -184,7 +190,5 @@ class Consul < Formula
     end
     sleep 3
     system "#{bin}/consul", "leave"
-
-    assert_equal true, File.exist?("#{pkgshare}/index.html") if build.with? "web-ui"
   end
 end
