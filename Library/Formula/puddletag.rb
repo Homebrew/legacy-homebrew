@@ -1,12 +1,7 @@
-# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                /usr/local/Library/Contributions/example-formula.rb
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class Puddletag < Formula
   desc "Powerful, simple, audio tag editor."
   homepage "http://puddletag.sf.net"
   url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
-  version "1.0.5"
   sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
 
   depends_on "pyqt" 
@@ -16,7 +11,7 @@ class Puddletag < Formula
     sha256 "646e14f90b3689b005c19ac9b6b390c9a39bf976481849993e277d7380e6e79f"
   end
 
-  resource "mutagen" do
+  rseource "mutagen" do
     url "https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.21.tar.gz"
     sha256 "4dd30af3a291c0a152838f2bbf1d592bf6ede752b11a159cbf84e75815bcc2b5"
   end
@@ -34,7 +29,7 @@ class Puddletag < Formula
       end
     end
 
-    system "cp", "-r", buildpath/"source/", buildpath 
+    FileUtils.cp_r buildpath/"source/", buildpath 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
@@ -43,15 +38,6 @@ class Puddletag < Formula
   end
 
   test do
-    # `test do` will create, run in and delete a temporary directory.
-    #
-    # This test will fail and we won't accept that! It's enough to just replace
-    # "false" with the main program this formula installs, but it'd be nice if you
-    # were more thorough. Run the test with `brew test puddletag`. Options passed
-    # to `brew install` such as `--HEAD` also need to be provided to `brew test`.
-    #
-    # The installed folder is not in the path, so use the entire path to any
-    # executables being tested: `system "#{bin}/program", "do", "something"`.
     Pathname("test.py").write <<-EOS.undent
       import puddlestuff
     EOS
