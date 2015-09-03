@@ -1,8 +1,7 @@
 class Qore < Formula
   desc "Multi-threaded embeddable scripting language"
-  homepage ""
+  homepage "http://qore.org"
   url "https://github.com/qorelanguage/qore/releases/download/release-0.8.11.1/qore-0.8.11.1.tar.bz2"
-  version "0.8.11.1"
   sha256 "bd9b8463024c204a06c4c32336d63ad573a27fce331f0345eb95c12f7c7a77fe"
   head "https://github.com/qorelanguage/qore.git"
 
