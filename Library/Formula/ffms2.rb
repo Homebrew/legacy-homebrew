@@ -19,6 +19,13 @@ class Ffms2 < Formula
     depends_on "autoconf" => :build
   end
 
+  head do
+    url "https://github.com/FFMS/ffms2.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
   depends_on "pkg-config" => :build
   depends_on "ffmpeg"
 
