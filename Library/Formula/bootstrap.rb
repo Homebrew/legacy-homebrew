@@ -5,7 +5,7 @@ class Bootstrap < Formula
   version "r8"
   sha256 "386c9f69a8bc1e12908d0a9b41c40c126c0f95627bc81d3d15bd868649798f91"
 
-   def install
+  def install
     libexec.install %w[bootstrap bootstrap.jar conf]
     bin.install_symlink "#{libexec}/bootstrap" => "bootstrap"
   end
