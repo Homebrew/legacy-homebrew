@@ -18,8 +18,8 @@ class Newt < Formula
 
   # build dylibs with -dynamiclib; version libraries
   patch :p0 do
-    url "https://trac.macports.org/export/132914/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff"
-    sha1 "f366a650ed100317344a3e7f49981a6dca1f4889"
+    url "ftp://ftp.ca.freebsd.org/MacPorts/release/ports/devel/libnewt/files/patch-Makefile.in.diff"
+    sha256 "6672c253b42696fdacd23424ae0e07af6d86313718e06cd44e40e532a892db16"
   end
 
   def install
