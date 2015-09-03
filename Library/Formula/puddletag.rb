@@ -11,7 +11,7 @@ class Puddletag < Formula
     sha256 "646e14f90b3689b005c19ac9b6b390c9a39bf976481849993e277d7380e6e79f"
   end
 
-  rseource "mutagen" do
+  resource "mutagen" do
     url "https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.21.tar.gz"
     sha256 "4dd30af3a291c0a152838f2bbf1d592bf6ede752b11a159cbf84e75815bcc2b5"
   end
