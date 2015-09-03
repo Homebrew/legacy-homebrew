@@ -5,6 +5,13 @@ class Chromedriver < Formula
   version "2.19"
   sha256 "7bce0af6739db1a21086dd509a1d382796f254e063de58344c9071bb7b49c91b"
 
+  bottle do
+    cellar :any
+    sha256 "e21c9f5dc6c28a842f85cff78cd5b407fe5f134427d2e736be6aaa9a302c51b4" => :yosemite
+    sha256 "1b30598a6a5ac42bc36e3b672841c5cd8d70d0afe0d34d8703d7519bf521b0d8" => :mavericks
+    sha256 "bb9731138c804c4eb7398fa1b716ded80609630a99172e2b673bb7a969d2621d" => :mountain_lion
+  end
+
   def install
     bin.install "chromedriver"
   end
