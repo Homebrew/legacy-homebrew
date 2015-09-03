@@ -102,4 +102,5 @@ class Osquery < Formula
       "-lboost_filesystem", "-lglog", "-lgflags", "-lrocksdb"
     system "./test"
   end
+
 end
