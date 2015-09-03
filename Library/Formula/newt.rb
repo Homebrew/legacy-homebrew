@@ -1,8 +1,8 @@
 class Newt < Formula
   desc "Library for color text mode, widget based user interfaces"
-  homepage 'https://fedorahosted.org/newt/'
-  url 'https://fedorahosted.org/releases/n/e/newt/newt-0.52.18.tar.gz'
-  sha1 '2992c926bd3699ff0d6fd7549d4a8a018e3ac8fd'
+  homepage "https://fedorahosted.org/newt/"
+  url "https://fedorahosted.org/releases/n/e/newt/newt-0.52.18.tar.gz"
+  sha256 "771b0e634ede56ae6a6acd910728bb5832ac13ddb0d1d27919d2498dab70c91e"
 
   bottle do
     cellar :any
@@ -11,20 +11,22 @@ class Newt < Formula
     sha1 "599600fa6e92c38dbaa7bb6e1138eda04a4c5bf1" => :mountain_lion
   end
 
-  depends_on 'gettext'
-  depends_on 'popt'
-  depends_on 's-lang'
+  depends_on "gettext"
+  depends_on "popt"
+  depends_on "s-lang"
   depends_on :python => :optional
 
   # build dylibs with -dynamiclib; version libraries
   patch :p0 do
-    url "https://trac.macports.org/export/132914/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff"
-    sha1 "f366a650ed100317344a3e7f49981a6dca1f4889"
+    url "https://svn.macports.org/repository/macports/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff", :using => :curl
+    mirror "ftp://ftp.ca.freebsd.org/MacPorts/release/ports/devel/libnewt/files/patch-Makefile.in.diff"
+    mirror "https://trac.macports.org/export/132914/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff"
+    sha256 "6672c253b42696fdacd23424ae0e07af6d86313718e06cd44e40e532a892db16"
   end
 
   def install
     args = ["--prefix=#{prefix}", "--without-tcl"]
-    args << "--without-python" if build.without? 'python'
+    args << "--without-python" if build.without? "python"
 
     inreplace "Makefile.in" do |s|
       # name libraries correctly
