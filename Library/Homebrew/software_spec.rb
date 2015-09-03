@@ -47,6 +47,8 @@ class SoftwareSpec
   def owner=(owner)
     @name = owner.name
     @full_name = owner.full_name
+    @dependency_collector.deps.each { |dep| dep.owner_tap = owner.tap }
+    @dependency_collector.requirements.each { |req| req.owner_tap = owner.tap }
     @bottle_specification.tap = owner.tap
     @owner = owner
     @resource.owner = self

@@ -72,7 +72,7 @@ class DependencyExpansionTests < Homebrew::TestCase
 
   def test_merger_preserves_env_proc
     env_proc = stub
-    dep = Dependency.new("foo", [], env_proc)
+    dep = Dependency.new("foo", [], nil, env_proc)
     dep.stubs(:to_formula).returns(stub(:deps => []))
     @deps.replace [dep]
     assert_equal env_proc, Dependency.expand(@f).first.env_proc

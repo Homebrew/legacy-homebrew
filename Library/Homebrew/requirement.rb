@@ -10,9 +10,10 @@ class Requirement
   include Dependable
 
   attr_reader :tags, :name, :cask, :download, :default_formula
+  attr_accessor :owner_tap
   alias_method :option_name, :name
 
-  def initialize(tags = [])
+  def initialize(tags = [], owner_tap = nil)
     @default_formula = self.class.default_formula
     @cask ||= self.class.cask
     @download ||= self.class.download
@@ -24,6 +25,7 @@ class Requirement
     @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
+    @owner_tap = owner_tap
   end
 
   # The message to show when the requirement is not met.
@@ -112,9 +114,9 @@ class Requirement
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
     if HOMEBREW_TAP_FORMULA_REGEX === f
-      TapDependency.new(f, tags, method(:modify_build_environment), name)
+      TapDependency.new(f, tags, @owner_tap, method(:modify_build_environment), name)
     else
-      Dependency.new(f, tags, method(:modify_build_environment), name)
+      Dependency.new(f, tags, @owner_tap, method(:modify_build_environment), name)
     end
   end
 
