@@ -1,8 +1,8 @@
 class Graphite2 < Formula
   desc "Smart font renderer for non-Roman scripts"
   homepage "https://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_home"
-  url "https://downloads.sourceforge.net/project/silgraphite/graphite2/graphite2-1.2.4.tgz"
-  sha256 "4bc3d5168029bcc0aa00eb2c973269d29407be2796ff56f9c80e10736bd8b003"
+  url "https://downloads.sourceforge.net/project/silgraphite/graphite2/graphite2-1.3.1.tgz"
+  sha256 "a599930cf5b7d78e9ab47708940af572e57a78726222eaf9aa58bcee3dad7077"
 
   bottle do
     cellar :any
