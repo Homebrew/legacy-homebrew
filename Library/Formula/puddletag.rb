@@ -29,7 +29,7 @@ class Puddletag < Formula
       end
     end
 
-    FileUtils.cp_r buildpath/"source/", buildpath 
+    cp_r buildpath/"source/", buildpath
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
