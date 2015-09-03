@@ -39,7 +39,7 @@ class Puddletag < Formula
     mkdir_p "Puddletag.app/Contents/MacOS"
     cp libexec/"bin/puddletag", "Puddletag.app/Contents/MacOS/Puddletag"
     chmod "+x", "Puddletag.app/Contents/MacOS/Puddletag"
-    prefix.install Dir[Puddletag.app]
+    prefix.install Dir["Puddletag.app"]
   end
 
   test do
