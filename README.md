@@ -22,6 +22,7 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - [Zed Worldwide](http://www.zed.com)
 - [KNIME](https://www.knime.org/)
 - [Azavea](http://azavea.com)
+- [Maana](http://maana.io/)
 
 ## Features
 
