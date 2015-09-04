@@ -1,5 +1,6 @@
 require "hardware"
 require "software_spec"
+require "rexml/document"
 
 module Homebrew
   def config
@@ -118,14 +119,13 @@ module Homebrew
   end
 
   def describe_java
-    if which("java").nil?
-      "N/A"
-    elsif !quiet_system "/usr/libexec/java_home", "--failfast"
-      "N/A"
-    else
-      java = `java -version 2>&1`.lines.first.chomp
-      java =~ /java version "(.+?)"/ ? $1 : java
+    java_xml = Utils.popen_read("/usr/libexec/java_home", "--xml", "--failfast")
+    return "N/A" unless $?.success?
+    javas = []
+    REXML::XPath.each(REXML::Document.new(java_xml), "//key[text()='JVMVersion']/following-sibling::string") do |item|
+      javas << item.text
     end
+    javas.uniq.join(", ")
   end
 
   def dump_verbose_config(f = $stdout)
