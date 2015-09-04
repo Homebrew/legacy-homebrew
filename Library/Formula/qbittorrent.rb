@@ -31,5 +31,4 @@ class Qbittorrent < Formula
   test do
     system "#{prefix}/qBittorrent.app/Contents/MacOS/qbittorrent", "-v"
   end
-
 end
