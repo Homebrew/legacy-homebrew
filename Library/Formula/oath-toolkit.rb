@@ -1,9 +1,9 @@
 class OathToolkit < Formula
   desc "Tools for one-time password authentication systems"
   homepage "http://www.nongnu.org/oath-toolkit/"
-  url "http://download.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.6.0.tar.gz"
-  mirror "https://fossies.org/linux/privat/oath-toolkit-2.6.0.tar.gz"
-  sha256 "2346cb8a2fc75ea56934cb9867463001665772308f2d9e7fe487159d38960926"
+  url "http://download.savannah.gnu.org/releases/oath-toolkit/oath-toolkit-2.6.1.tar.gz"
+  mirror "https://fossies.org/linux/privat/oath-toolkit-2.6.1.tar.gz"
+  sha256 "9c57831907bc26eadcdf90ba1827d0bd962dd1f737362e817a1dd6d6ec036f79"
 
   bottle do
     sha256 "e9631ace23f064754302813192003e0032405265d0feb30ed725cf72bd412976" => :yosemite
