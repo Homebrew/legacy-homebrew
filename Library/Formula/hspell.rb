@@ -7,7 +7,7 @@ class Hspell < Formula
   def install
     inreplace "Makefile.in", "soname", "install_name"
 
-    system "./configure", "--prefix=#{prefix}", 
+    system "./configure", "--prefix=#{prefix}",
                           "--enable-shared"
     system "make"
     system "make", "install"
