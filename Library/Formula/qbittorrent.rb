@@ -1,10 +1,10 @@
 class Qbittorrent < Formula
   desc "Qt based free and reliable P2P Bittorrent client"
-  homepage 'http://www.qbittorrent.org'
-  url 'https://github.com/qbittorrent/qBittorrent/archive/release-3.2.3.tar.gz'
+  homepage "http://www.qbittorrent.org"
+  url "https://github.com/qbittorrent/qBittorrent/archive/release-3.2.3.tar.gz"
   sha256 "816d611a0af50c469f52946c94b88c003f908ee031ee0e55a45273e4c64897c5"
-  head 'https://github.com/qbittorrent/qBittorrent.git',
-    :branch => ENV['QBT_BRANCH'] || "master"
+  head "https://github.com/qbittorrent/qBittorrent.git",
+    :branch => ENV["QBT_BRANCH"] || "master"
 
   depends_on "pkg-config" => :build
   depends_on "qt" => :build
