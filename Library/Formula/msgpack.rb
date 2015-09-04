@@ -1,21 +1,21 @@
 class Msgpack < Formula
   desc "Library for a binary-based efficient data interchange format"
   homepage "http://msgpack.org/"
-  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.1.0/msgpack-1.1.0.tar.gz"
-  sha256 "a8d400e2f0cae811a150f564d95c7ad6f30a77ad4584303de06467234b73f345"
-
-  head do
-    url "https://github.com/msgpack/msgpack-c.git"
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
-    depends_on "libtool" => :build
-  end
+  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.2.0/msgpack-1.2.0.tar.gz"
+  sha256 "a7963b22665cecd1f72d8404b70be95a9c376084e9790833a7942c6633b33ca0"
 
   bottle do
     cellar :any
     sha256 "0887c72426c2a85e8aa928c5ab0432085801b11bdf8e28c2de195c5ced614ca1" => :yosemite
     sha256 "dba28a0fba8b053aad351c7890f9ab15d3d6aef5495c4c330054e0c507799532" => :mavericks
     sha256 "b4c6bd00420aa63a3aaf4ac25ebe3755bf7f5530cfb32a4c6e2daa15b97fcc8a" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/msgpack/msgpack-c.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   fails_with :llvm do
