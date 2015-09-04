@@ -1,8 +1,8 @@
 class Fonttools < Formula
   desc "FontTools is a library for manipulating fonts"
   homepage "https://github.com/behdad/fonttools"
-  url "https://github.com/behdad/fonttools/archive/2.5.tar.gz"
-  sha256 "c89603f9f3346f48f4a24f786422e935423554e0a9172dcd3ec8ffbd556d2159"
+  url "https://github.com/behdad/fonttools/archive/3.0.tar.gz"
+  sha256 "3bc9141d608603faac3f800482feec78a550d0a94c29ff3850471dbe4ad9e941"
   head "https://github.com/behdad/fonttools.git"
 
   bottle do
