@@ -24,7 +24,7 @@ class Qbittorrent < Formula
                           "--prefix=#{prefix}",
                           "--disable-qt-dbus"
     system "make"
-    system "macdeployqt src/qBittorrent.app"
+    system "macdeployqt", "src/qBittorrent.app"
     prefix.install "src/qBittorrent.app"
   end
 
