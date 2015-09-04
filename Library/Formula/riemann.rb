@@ -13,7 +13,7 @@ class Riemann < Formula
       else
         config=$@
       fi
-      exec "#{libexec}/bin/riemann" "$config"
+      exec "#{libexec}/bin/riemann" $config
     EOS
   end
 
