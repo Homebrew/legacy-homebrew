@@ -74,13 +74,11 @@ class Checks
   def check_path_for_trailing_slashes
     bad_paths = ENV["PATH"].split(File::PATH_SEPARATOR).select { |p| p[-1..-1] == "/" }
     return if bad_paths.empty?
-    s = <<-EOS.undent
+    inject_file_list bad_paths, <<-EOS.undent
     Some directories in your path end in a slash.
     Directories in your path should not end in a slash. This can break other
     doctor checks. The following directories should be edited:
-  EOS
-    bad_paths.each { |p| s << "    #{p}" }
-    s
+    EOS
   end
 
   # Installing MacGPG2 interferes with Homebrew in a big way
@@ -242,11 +240,10 @@ class Checks
         end
       end
     end
-    unless broken_symlinks.empty? then <<-EOS.undent
+    return if broken_symlinks.empty?
+    inject_file_list broken_symlinks, <<-EOS.undent
     Broken symlinks were found. Remove them with `brew prune`:
-      #{broken_symlinks * "\n      "}
     EOS
-    end
   end
 
   def check_for_unsupported_osx
@@ -417,19 +414,14 @@ class Checks
       cant_read << d unless d.writable_real?
     end
 
-    cant_read.sort!
-    if cant_read.length > 0
-      s = <<-EOS.undent
+    return if cant_read.empty?
+    inject_file_list cant_read.sort, <<-EOS.undent
     Some directories in #{target} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
     by Homebrew. If a brew tries to add locale information to one of these
     directories, then the install will fail during the link step.
     You should probably `chown` them:
-
     EOS
-      cant_read.each { |f| s << "    #{f}\n" }
-      s
-    end
   end
 
   def check_access_share_locale
@@ -460,7 +452,7 @@ class Checks
     if world_writable && !HOMEBREW_TEMP.sticky? then <<-EOS.undent
     #{HOMEBREW_TEMP} is world-writable but does not have the sticky bit set.
     Please run "Repair Disk Permissions" in Disk Utility.
-  EOS
+    EOS
     end
   end
 
@@ -606,12 +598,13 @@ class Checks
                       select { |bn| File.exist? "/usr/bin/#{bn}" }
 
           if conflicts.size > 0
-            out = <<-EOS.undent
+            out = inject_file_list conflicts, <<-EOS.undent
             /usr/bin occurs before #{HOMEBREW_PREFIX}/bin
             This means that system-provided programs will be used instead of those
             provided by Homebrew. The following tools exist at both paths:
+            EOS
 
-                #{conflicts * "\n                "}
+            out += <<-EOS.undent
 
             Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
             occurs before /usr/bin. Here is a one-liner:
@@ -778,8 +771,8 @@ class Checks
       scripts += Dir.chdir(p) { Dir["*-config"] }.map { |c| File.join(p, c) }
     end
 
-    unless scripts.empty?
-      s = <<-EOS.undent
+    return if scripts.empty?
+    inject_file_list scripts, <<-EOS.undent
       "config" scripts exist outside your system or Homebrew directories.
       `./configure` scripts often look for *-config scripts to determine if
       software packages are installed, and what additional flags to use when
@@ -788,31 +781,25 @@ class Checks
       Having additional scripts in your path can confuse software installed via
       Homebrew if the config script overrides a system or Homebrew provided
       script of the same name. We found the following "config" scripts:
-
     EOS
-
-      s << scripts.map { |f| "  #{f}" }.join("\n")
-    end
   end
 
   def check_DYLD_vars
     found = ENV.keys.grep(/^DYLD_/)
-    unless found.empty?
-      s = <<-EOS.undent
-    Setting DYLD_* vars can break dynamic linking.
-    Set variables:
+    return if found.empty?
+    s = inject_file_list found.map { |e| "#{e}: #{ENV.fetch(e)}" }, <<-EOS.undent
+      Setting DYLD_* vars can break dynamic linking.
+      Set variables:
     EOS
-      s << found.map { |e| "    #{e}: #{ENV.fetch(e)}\n" }.join
-      if found.include? "DYLD_INSERT_LIBRARIES"
-        s += <<-EOS.undent
+    if found.include? "DYLD_INSERT_LIBRARIES"
+      s += <<-EOS.undent
 
       Setting DYLD_INSERT_LIBRARIES can cause Go builds to fail.
       Having this set is common if you use this software:
         http://asepsis.binaryage.com/
       EOS
-      end
-      s
     end
+    s
   end
 
   def check_for_symlinked_cellar
@@ -988,8 +975,8 @@ class Checks
       f.keg_only? && __check_linked_brew(f)
     end
 
-    unless linked.empty?
-      s = <<-EOS.undent
+    return if linked.empty?
+    inject_file_list linked.map(&:full_name), <<-EOS.undent
     Some keg-only formula are linked into the Cellar.
     Linking a keg-only formula, such as gettext, into the cellar with
     `brew link <formula>` will cause other formulae to detect them during
@@ -1000,11 +987,7 @@ class Checks
     with other strange results.
 
     You may wish to `brew unlink` these brews:
-
     EOS
-      linked.each { |f| s << "    #{f.full_name}\n" }
-      s
-    end
   end
 
   def check_for_other_frameworks
@@ -1165,11 +1148,8 @@ class Checks
   end
 
   def check_for_unlinked_but_not_keg_only
-    return unless HOMEBREW_CELLAR.exist?
-    unlinked = HOMEBREW_CELLAR.children.reject do |rack|
-      if !rack.directory?
-        true
-      elsif !(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
+    unlinked = Formula.racks.reject do |rack|
+      if !(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
         begin
           Formulary.from_rack(rack).keg_only?
         rescue FormulaUnavailableError, TapFormulaAmbiguityError
@@ -1180,14 +1160,12 @@ class Checks
       end
     end.map(&:basename)
 
-    unless unlinked.empty? then <<-EOS.undent
+    return if unlinked.empty?
+    inject_file_list unlinked, <<-EOS.undent
     You have unlinked kegs in your Cellar
     Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
     those kegs to fail to run properly once built. Run `brew link` on these:
-
-        #{unlinked * "\n        "}
     EOS
-    end
   end
 
   def check_xcode_license_approved
@@ -1256,10 +1234,12 @@ class Checks
     end
     cmd_map.reject! { |_cmd_name, cmd_paths| cmd_paths.size == 1 }
     return if cmd_map.empty?
-    s = "You have external commands with conflicting names."
+    s = "You have external commands with conflicting names.\n"
     cmd_map.each do |cmd_name, cmd_paths|
-      s += "\n\nFound command `#{cmd_name}` in following places:\n"
-      s += cmd_paths.map { |f| "  #{f}" }.join("\n")
+      s += inject_file_list cmd_paths, <<-EOS.undent
+
+        Found command `#{cmd_name}` in following places:
+      EOS
     end
     s
   end
