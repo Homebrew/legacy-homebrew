@@ -1,8 +1,8 @@
 class Icbirc < Formula
   desc "Proxy IRC client and ICB server"
   homepage "http://www.benzedrine.cx/icbirc.html"
-  url "http://www.benzedrine.cx/icbirc-1.8.tar.gz"
-  sha256 "ebc4c2482ac531149874ee77c188f6adcf509862ca2b600e9fe5057f555ecd92"
+  url "http://www.benzedrine.ch/icbirc-2.0.tar.gz"
+  sha256 "7607c7d80fc3939ccb913c9fcc57a63d3552af3615454e406ff0e3737c0ce6bd"
 
   depends_on "bsdmake" => :build
 
