@@ -105,6 +105,7 @@ class Influxdb < Formula
       s.gsub! "/var/opt/influxdb/data", "#{var}/influxdb/data"
       s.gsub! "/var/opt/influxdb/meta", "#{var}/influxdb/meta"
       s.gsub! "/var/opt/influxdb/hh", "#{var}/influxdb/hh"
+      s.gsub! "/var/opt/influxdb/wal", "#{var}/influxdb/wal"
     end
 
     bin.install buildpath/"bin/influxd"
@@ -114,6 +115,7 @@ class Influxdb < Formula
     (var/"influxdb/data").mkpath
     (var/"influxdb/meta").mkpath
     (var/"influxdb/hh").mkpath
+    (var/"influxdb/wal").mkpath
   end
 
   plist_options :manual => "influxd -config #{HOMEBREW_PREFIX}/etc/influxdb.conf"
