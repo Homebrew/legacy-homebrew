@@ -1,9 +1,9 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "http://www.zsh.org/"
-  url "https://downloads.sourceforge.net/project/zsh/zsh/5.0.8/zsh-5.0.8.tar.bz2"
-  mirror "http://www.zsh.org/pub/zsh-5.0.8.tar.bz2"
-  sha256 "8079cf08cb8beff22f84b56bd72bb6e6962ff4718d816f3d83a633b4c9e17d23"
+  url "https://downloads.sourceforge.net/project/zsh/zsh/5.1/zsh-5.1.tar.gz"
+  mirror "http://www.zsh.org/pub/zsh-5.1.tar.gz"
+  sha256 "e3731381810e690fb955cedfa8be51b0934bfa1ff38c709f54138960e3decd99"
 
   bottle do
     revision 1
@@ -18,11 +18,6 @@ class Zsh < Formula
 
   depends_on "gdbm"
   depends_on "pcre"
-
-  # zsh 5.0.8 broke du tab-completion for files, but this has been fixed in
-  # bug #35467. We ship our own version of the patch to avoid CHANGELOG conflict.
-  # http://sourceforge.net/p/zsh/code/ci/806f73a0b3d3959d5af12ce97e0258b4d4fe7d76/
-  patch :DATA
 
   def install
     args = %W[
@@ -65,19 +60,7 @@ class Zsh < Formula
   end
 
   test do
-    system "#{bin}/zsh", "--version"
+    assert_equal "homebrew\n",
+      shell_output("#{bin}/zsh -c 'echo homebrew'")
   end
 end
-
-__END__
-diff --git a/Completion/Unix/Command/_du b/Completion/Unix/Command/_du
-index d8871cd..4065a20 100644
---- a/Completion/Unix/Command/_du
-+++ b/Completion/Unix/Command/_du
-@@ -74,5 +74,5 @@ else
-   do
-     [[ $OSTYPE = $~pattern ]] && args+=( $arg )
-   done
--  _arguments -s -A "-*" $args
-+  _arguments -s -A "-*" $args '*:file:_files'
- fi
