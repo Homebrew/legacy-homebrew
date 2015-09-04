@@ -6,10 +6,9 @@ class Zsh < Formula
   sha256 "e3731381810e690fb955cedfa8be51b0934bfa1ff38c709f54138960e3decd99"
 
   bottle do
-    revision 1
-    sha256 "0b25363741f6511290d28d56f620ccfda25c1e7938d255f35336bef1c0355e94" => :yosemite
-    sha256 "afb1a3bc447b2ba5a8b2a4f30d33750a5195cb08412213a9dc48dc9b7bb4308a" => :mavericks
-    sha256 "c68dff49299b118989c53654f668733afe191cdb2bcd965eca849f331ddc68d6" => :mountain_lion
+    sha256 "ef2e5dd13668edd59725b6a320db7513a6635ec7d3fd30891eb4e87ace6887e8" => :yosemite
+    sha256 "313444fc801db870fce3855e3ecda1f8a63aa24e44aaa448805d2dd61e62d584" => :mavericks
+    sha256 "78563c521de6861a2278f8e9d44aa8eac86e5c699d0d75018f805ec34286c9cd" => :mountain_lion
   end
 
   option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
