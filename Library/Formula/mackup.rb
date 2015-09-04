@@ -8,9 +8,9 @@ class Mackup < Formula
 
   bottle do
     cellar :any
-    sha256 "9fd3f9f427a83fb31e87025e924398e2ffe3166a8d1a86fee1ba4fe9d3932d7d" => :yosemite
-    sha256 "6b6dc57f02ccfe1c92a6b13f1c163d04a34aeeae973952c2ddd9b5f3e8aec9d5" => :mavericks
-    sha256 "be5ac0d33abc40e6016cd0e91106d073c8ce7d52a496be3c688ec17556d0132e" => :mountain_lion
+    sha256 "ebc86d8c0fdc58def45abd2959378b4691a51460017133dd45021d220a1bd01e" => :yosemite
+    sha256 "66597cadc051443b2d1346ff3ca21b2525b51b8525072d9890d3ae72297fe0b0" => :mavericks
+    sha256 "dc88033695310bf4af0fa0a1fe586fc54722e3511d63cd050a85fc25f932e5bd" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
