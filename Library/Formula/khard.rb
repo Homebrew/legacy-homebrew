@@ -1,8 +1,8 @@
 class Khard < Formula
   desc "Console carddav client."
   homepage "https://github.com/scheibler/khard"
-  url "https://github.com/scheibler/khard/archive/v0.4.0.tar.gz"
-  sha256 "4140fb06a1da63a5eb26edc7d3e3c01b99c464276a9e590b57ee2451c4416f77"
+  url "https://pypi.python.org/packages/source/k/khard/khard-0.4.1.tar.gz"
+  sha256 "c7deb446f29eb33ac0622cffea5303288c31a2c304aaf5348dad8baf56591c5d"
 
   bottle do
     cellar :any
