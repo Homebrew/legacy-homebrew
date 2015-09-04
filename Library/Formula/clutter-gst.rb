@@ -5,9 +5,9 @@ class ClutterGst < Formula
   sha256 "2dbdbc3292e92684bbdbf1694c61f6b781f5810e4d79a415dfdee2f7ee42148c"
 
   bottle do
-    sha256 "b46a26e13145685b79f9b467402f4c46ff2ad21c373847af1fb30377c6a455a4" => :yosemite
-    sha256 "b3d26afed14c994cbe05dbb8bd10131407d2c96058e6665f903bfb9937ecac06" => :mavericks
-    sha256 "ec4aaa8435725178203543c8ddda210d65b448bac5db0f880e81a28194fb43ce" => :mountain_lion
+    sha256 "118737f49a233d0e26862e2a4d61ea9f71a57949e06eff39a8840cd0417379ee" => :yosemite
+    sha256 "861241c0eef03dd979a20dfb19f32dffd45736205b20c2457e3732a547e2b73c" => :mavericks
+    sha256 "0a67c7b33bd7fa42b13b2b3c93fde68d1cb3c1afe4c08077de833aeeebdcc81c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
