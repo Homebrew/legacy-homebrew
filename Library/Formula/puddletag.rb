@@ -37,11 +37,6 @@ class Puddletag < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-
-    mkdir_p "Puddletag.app/Contents/MacOS"
-    cp libexec/"bin/puddletag", "Puddletag.app/Contents/MacOS/Puddletag"
-    chmod "+x", "Puddletag.app/Contents/MacOS/Puddletag"
-    prefix.install Dir["Puddletag.app"]
   end
 
   test do
