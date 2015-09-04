@@ -5,8 +5,8 @@ class HaskellStack < Formula
 
   desc "The Haskell Tool Stack"
   homepage "https://www.stackage.org"
-  url "https://github.com/commercialhaskell/stack/archive/v0.1.3.1.tar.gz"
-  sha256 "3e6a575a3f5206af345912c4deba9552dfb156391357cec4eb1c2a9028ba4c51"
+  url "https://github.com/commercialhaskell/stack/archive/v0.1.4.1.tar.gz"
+  sha256 "5ffeb5e13d9df4630076f0f03abeb41d4293e594893af25fbbe5892773d1d078"
 
   head "https://github.com/commercialhaskell/stack.git"
 
@@ -18,6 +18,7 @@ class HaskellStack < Formula
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
+  depends_on "pcre"
 
   setup_ghc_compilers
 
