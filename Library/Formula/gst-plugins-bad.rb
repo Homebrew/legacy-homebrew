@@ -35,6 +35,7 @@ class GstPluginsBad < Formula
   depends_on "opus" => :optional
   depends_on "rtmpdump" => :optional
   depends_on "schroedinger" => :optional
+  depends_on "sound-touch" => :optional
 
   option "with-applemedia", "Build with applemedia support"
 
