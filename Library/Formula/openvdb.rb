@@ -4,6 +4,7 @@ class Openvdb < Formula
   url "https://github.com/dreamworksanimation/openvdb/archive/v3.1.0.tar.gz"
   sha256 "b95a32f4f0195452a64870bda978999a719006a0c036b9ac985b466532d32d4b"
   head "https://github.com/dreamworksanimation/openvdb.git"
+  revision 1
 
   bottle do
     sha256 "9b309109fcb6c763c8bb423045dc89e556a22b482e6b68b48c653452d441c8c4" => :el_capitan
