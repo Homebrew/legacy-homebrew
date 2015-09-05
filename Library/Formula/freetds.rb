@@ -1,9 +1,9 @@
 class Freetds < Formula
   desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "http://www.freetds.org/"
-  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.18.tar.gz"
-  mirror "https://fossies.org/linux/privat/freetds-0.95.18.tar.gz"
-  sha256 "4a85876ed353efe8c204b991ff1d972912f18a7a4856f56e8cc76b32d3fbd2dc"
+  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.19.tar.gz"
+  mirror "https://fossies.org/linux/privat/freetds-0.95.19.tar.gz"
+  sha256 "4c847f0c43734489ffc6ea8c5eb66e2a24e7a1ba4287acd24b2950f8b2eb7590"
 
   bottle do
     sha256 "2ff87990763c11fdfa2a59c754faa5610430796f6af80afc8166a414f179efa8" => :yosemite
@@ -16,6 +16,7 @@ class Freetds < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "gettext" => :build
     depends_on "libtool" => :build
   end
 
@@ -35,8 +36,6 @@ class Freetds < Formula
   depends_on "openssl" => :recommended
 
   def install
-    system "autoreconf", "-i" if build.head?
-
     args = %W[
       --prefix=#{prefix}
       --with-tdsver=7.1
@@ -60,7 +59,12 @@ class Freetds < Formula
     end
 
     ENV.universal_binary if build.universal?
-    system "./configure", *args
+
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
     system "make"
     ENV.j1 # Or fails to install on multi-core machines
     system "make", "install"
