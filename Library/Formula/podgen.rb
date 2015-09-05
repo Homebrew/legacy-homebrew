@@ -3,7 +3,7 @@ require "language/go"
 class Podgen < Formula
   desc "Static podcast site generator, especially for itunes podcast."
   homepage "https://github.com/tyrchen/podgen/"
-  url "https://github.com/tyrchen/podgen/archive/v0.3.2.tar.gz"
+  url "https://github.com/tyrchen/podgen/archive/v0.4.0.tar.gz"
   sha256 "c05c70ae79c437c31cafa0a8d38e7d42636d66d10d804b18480d329eb890e84b"
 
   head "https://github.com/tyrchen/podgen.git"
