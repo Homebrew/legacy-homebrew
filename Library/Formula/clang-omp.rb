@@ -27,11 +27,11 @@ class ClangOmp < Formula
     url "https://github.com/clang-omp/llvm_trunk.git"
 
     resource "compiler-rt" do
-      url "https://github.com/clang-omp/compiler-rt_trunk"
+      url "https://github.com/clang-omp/compiler-rt_trunk.git"
     end
 
     resource "clang" do
-      url "https://github.com/clang-omp/clang_trunk"
+      url "https://github.com/clang-omp/clang_trunk.git"
     end
 
     resource "libcxx" do
