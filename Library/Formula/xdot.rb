@@ -6,6 +6,13 @@ class Xdot < Formula
 
   head "https://github.com/jrfonseca/xdot.git"
 
+  bottle do
+    cellar :any
+    sha256 "9cf28bdc65d88717d0d7bac2f4aa8d2481dc1fbae3d0bb0ccd3966f27134fa2d" => :yosemite
+    sha256 "cc1909be49ac10c929613451862498c817fe691a60c49ae6bb5eeef4ee122d66" => :mavericks
+    sha256 "041b79d9ca753ec9005c7485417da74e5595ceadc4a6288dbe5c51d298e2886a" => :mountain_lion
+  end
+
   depends_on "graphviz"
   depends_on "pygtk"
   depends_on "cairo"
