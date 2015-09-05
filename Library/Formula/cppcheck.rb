@@ -3,8 +3,8 @@ class Cppcheck < Formula
   homepage "https://sourceforge.net/projects/cppcheck/"
 
   stable do
-    url "https://github.com/danmar/cppcheck/archive/1.69.tar.gz"
-    sha256 "6e54f0dc97cbcc6c742cef4ceb1ade7f20f88af713a19c7613dba1d78eed6363"
+    url "https://github.com/danmar/cppcheck/archive/1.70.tar.gz"
+    sha256 "4095de598b5cce9a06e90458a90f46e0307baeaab8a947dae73f287eda3c171f"
   end
 
   head "https://github.com/danmar/cppcheck.git"
