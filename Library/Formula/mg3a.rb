@@ -26,8 +26,7 @@ class Mg3a < Formula
     doc.install Dir["README*"]
   end
 
-  # test makes little sense
-  #test do
-  #  system "mg", "-e", "save-buffers-kill-emacs"
-  #end
+  test do
+    system "script", "-q", "/dev/null", "mg", "-e", "save-buffers-kill-emacs"
+  end
 end
