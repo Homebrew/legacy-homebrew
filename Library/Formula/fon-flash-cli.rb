@@ -9,9 +9,9 @@ class FonFlashCli < Formula
 
   bottle do
     cellar :any
-    sha256 "da43411ae884484498b86415082f8da9dc40dddfd452298819654fcbfd87850c" => :yosemite
-    sha256 "50429372e53a79b20a90d371f096be96ab3ef8d3887af9e546d50473683e26ca" => :mavericks
-    sha256 "796d8314d21033b410f2ad366bc0cbae5c1ef69b86a16bb4cf2b9e096b182f3d" => :mountain_lion
+    sha256 "81a834863603744f16c18b9aa5ea35c2a2d94cab29ec813ebbb26f036a7cbe05" => :yosemite
+    sha256 "6d9553416c6ee3357c1c160b2f77bcea950a9c326c659011c11ea039200d3384" => :mavericks
+    sha256 "0e2e7ff173495f9e9d908be176ad95589637da5f4849ce4702ee82ee410f3308" => :mountain_lion
   end
 
   def install
