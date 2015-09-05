@@ -583,7 +583,7 @@ class FormulaInstaller
       keg.remove_linked_keg_record
     end
 
-    link_overwrite_backup = {} # dict: conflict file -> backup file
+    link_overwrite_backup = {} # Hash: conflict file -> backup file
     backup_dir = HOMEBREW_CACHE/"Backup"
 
     begin
@@ -623,9 +623,9 @@ class FormulaInstaller
       @show_summary_heading = true
       ignore_interrupts do
         keg.unlink
-        link_overwrite_backup.each do |conflict_file, backup_file|
-          conflict_file.parent.mkpath
-          backup_file.rename conflict_file
+        link_overwrite_backup.each do |origin, backup|
+          origin.parent.mkpath
+          backup.rename origin
         end
       end
       Homebrew.failed = true
