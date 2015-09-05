@@ -3,13 +3,14 @@ class Mediatomb < Formula
   homepage "http://mediatomb.cc"
   url "https://downloads.sourceforge.net/mediatomb/mediatomb-0.12.1.tar.gz"
   sha256 "31163c34a7b9d1c9735181737cb31306f29f1f2a0335fb4f53ecccf8f62f11cd"
-  bottle do
-    sha1 "716145891055b842417844efb1f786344ba79f56" => :mavericks
-    sha1 "d5fd8a1389771a2bf4677dc5f008b0c4249344aa" => :mountain_lion
-    sha1 "ae3e70647489adec58c1433652d05bad3844f16a" => :lion
-  end
-
   revision 1
+
+  bottle do
+    revision 1
+    sha256 "b0f105e9a23ca52fa5e914cd640a01cc01e62017f92c2eb6909eaa70d255e1b7" => :yosemite
+    sha256 "31ed936a085dff1100865568277e684d38d81b0660adda723468979ea8529f01" => :mavericks
+    sha256 "ad6b31147acbd05b2991aa1ebd077d281060c0867f95ba5e75fe9e982e01d4a8" => :mountain_lion
+  end
 
   depends_on "libexif" => :recommended
   depends_on "libmagic" => :recommended
@@ -25,6 +26,10 @@ class Mediatomb < Formula
   depends_on "lastfmlib" => :optional
   depends_on "mysql" => :optional
 
+  fails_with :clang do
+    cause "src/timer.h:82:18: note: implicit instantiation first required here"
+  end
+
   # This is for libav 0.7 support. See:
   # https://bugs.launchpad.net/ubuntu/+source/mediatomb/+bug/784431
   # http://sourceforge.net/tracker/?func=detail&aid=3291062&group_id=129766&atid=715780
@@ -39,12 +44,12 @@ class Mediatomb < Formula
   end
 
   patch do
-    url "http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-misc/mediatomb/files/mediatomb-0.12.1-libav9.patch"
+    url "https://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-misc/mediatomb/files/mediatomb-0.12.1-libav9.patch"
     sha256 "ae07427380e22f7340af28ea8d8d4bd01ec07f1c09bd0e0e50f310b2b4e507e2"
   end
 
   patch do
-    url "http://sourceforge.net/p/mediatomb/patches/_discuss/thread/57c47fb9/8ad8/attachment/mediatomb-urifix.patch"
+    url "https://sourceforge.net/p/mediatomb/patches/_discuss/thread/57c47fb9/8ad8/attachment/mediatomb-urifix.patch"
     sha256 "537373654c1d7fa24e14f2e5a9c78228589411509d46fbd53bb38b87d5ee34fb"
   end
 
@@ -54,15 +59,22 @@ class Mediatomb < Formula
     sha256 "8823da463d22c74b0a87a0054e1594e2fb8d418eff93b86e346e5506bb5a7323"
   end
 
+  # Calling "include <new>" doesn't seem to make size_t available here.
+  # Submitted upstream: https://sourceforge.net/p/mediatomb/patches/46
+  # Seems to be related to this sort of error:
+  # https://stackoverflow.com/questions/5909636/overloading-operator-new
+  patch do
+    url "https://sourceforge.net/p/mediatomb/patches/46/attachment/object.diff"
+    sha256 "b289e77a5177aa66da45bdb50e5f04c94fb1b8d14c83faa72251ccae8680a1d3"
+  end
+
   def install
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
 
-    if build.without? "mp4v2"
-      args << "--disable-libmp4v2"
-    end
+    args << "--disable-libmp4v2" if build.without? "mp4v2"
 
     system "./configure", *args
     system "make", "install"
@@ -71,5 +83,19 @@ class Mediatomb < Formula
   def caveats; <<-EOS.undent
     Edit the config file ~/.mediatomb/config.xml before running mediatomb.
     EOS
+  end
+
+  test do
+    pid = fork do
+      exec "#{bin}/mediatomb --ip 127.0.0.1 --port 49153"
+    end
+    sleep 2
+
+    begin
+      assert_match /file is part of MediaTomb/, shell_output("curl 127.0.0.1:49153")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

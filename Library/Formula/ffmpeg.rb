@@ -4,12 +4,12 @@ class Ffmpeg < Formula
   url "https://ffmpeg.org/releases/ffmpeg-2.7.2.tar.bz2"
   sha256 "7ceb7550ad628c526fa6c9ff23fdfb687a62f54d90c4a730998d8c2b417b9ef2"
   head "https://github.com/FFmpeg/FFmpeg.git"
+  revision 1
 
   bottle do
-    revision 1
-    sha256 "046cf934f9a7be584ecb0439e1bcb87de112639e8e7a1d7298220a5591f89569" => :yosemite
-    sha256 "2fe2ca504aa45af8baf335545535d54c3689d9a183326d99d30c6ea5fe66a42b" => :mavericks
-    sha256 "2d025074ed8487a823c70f56043754fbba272d758d4b54a40b9ffe3b3a997213" => :mountain_lion
+    sha256 "060199677b66b5b745612ef01893893a688af372763621666a3e9425c1c5a144" => :yosemite
+    sha256 "ea3800f6731c92c0e0274ed1677fd4a39067f7e620b7fe9d460f4a4c3a3a0378" => :mavericks
+    sha256 "1615e14ba8159b46794fa46a83dd733df73df6699fd69036ecd3ce5e49182618" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"

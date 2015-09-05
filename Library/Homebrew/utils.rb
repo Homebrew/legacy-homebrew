@@ -5,6 +5,7 @@ require "utils/json"
 require "utils/inreplace"
 require "utils/popen"
 require "utils/fork"
+require "utils/git"
 require "open-uri"
 
 class Tty
@@ -80,6 +81,7 @@ def oh1(title)
   puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
+# Print a warning (do this rarely)
 def opoo(warning)
   $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end
@@ -147,8 +149,25 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
 
+  def self.git_short_head
+    HOMEBREW_REPOSITORY.cd { `git rev-parse --short=4 --verify -q HEAD 2>/dev/null`.chuzzle }
+  end
+
   def self.git_last_commit
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
+  end
+
+  def self.git_last_commit_date
+    HOMEBREW_REPOSITORY.cd { `git show -s --format="%cd" --date=short HEAD 2>/dev/null`.chuzzle }
+  end
+
+  def self.homebrew_version_string
+    if Utils.git_available? && (pretty_revision = git_short_head)
+      last_commit = git_last_commit_date
+      "#{HOMEBREW_VERSION} (git revision #{pretty_revision}; last commit #{last_commit})"
+    else
+      "#{HOMEBREW_VERSION} (no git repository)"
+    end
   end
 
   def self.install_gem_setup_path!(gem, version = nil, executable = gem)
@@ -244,7 +263,13 @@ end
 
 def which(cmd, path = ENV["PATH"])
   path.split(File::PATH_SEPARATOR).each do |p|
-    pcmd = File.expand_path(cmd, p)
+    begin
+      pcmd = File.expand_path(cmd, p)
+    rescue ArgumentError
+      # File.expand_path will raise an ArgumentError if the path is malformed.
+      # See https://github.com/Homebrew/homebrew/issues/32789
+      next
+    end
     return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
   nil

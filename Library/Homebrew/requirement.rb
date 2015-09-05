@@ -55,12 +55,6 @@ class Requirement
     !!result
   end
 
-  # Can overridden to optionally prevent a formula with this requirement from
-  # pouring a bottle.
-  def pour_bottle?
-    true
-  end
-
   # Overriding #fatal? is deprecated.
   # Pass a boolean to the fatal DSL method instead.
   def fatal?
@@ -117,7 +111,11 @@ class Requirement
   def to_dependency
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
-    Dependency.new(f, tags, method(:modify_build_environment), name)
+    if HOMEBREW_TAP_FORMULA_REGEX === f
+      TapDependency.new(f, tags, method(:modify_build_environment), name)
+    else
+      Dependency.new(f, tags, method(:modify_build_environment), name)
+    end
   end
 
   private

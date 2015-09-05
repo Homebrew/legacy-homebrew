@@ -80,7 +80,12 @@ class Gnuplot < Formula
       args << "--without-cairo" if build.without? "cairo"
     end
 
-    args << "--with-qt" if build.with? "qt"
+    if build.with? "qt"
+      args << "--with-qt"
+    else
+      args << "--with-qt=no"
+    end
+
     args << "--without-lua" if build.without? "lua"
     args << "--without-lisp-files" if build.without? "emacs"
     args << ((build.with? "aquaterm") ? "--with-aquaterm" : "--without-aquaterm")

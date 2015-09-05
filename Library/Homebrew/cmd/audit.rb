@@ -303,7 +303,7 @@ class FormulaAuditor
           problem <<-EOS.undent
             #{dep} dependency should be
               depends_on "#{dep}" => :build
-            Or if it is indeed a runtime denpendency
+            Or if it is indeed a runtime dependency
               depends_on "#{dep}" => :run
           EOS
         when "git"
@@ -374,7 +374,7 @@ class FormulaAuditor
       problem "Description should use \"command-line\" instead of \"#{$1}\""
     end
 
-    if desc =~ %r[^([Aa]n?)\s]
+    if desc =~ /^([Aa]n?)\s/
       problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
     end
   end
@@ -439,7 +439,8 @@ class FormulaAuditor
          %r{^http://[^/.]+\.tools\.ietf\.org},
          %r{^http://www\.gnu\.org/},
          %r{^http://code\.google\.com/},
-         %r{^http://bitbucket\.org/}
+         %r{^http://bitbucket\.org/},
+         %r{^http://(?:[^/]*\.)?archive\.org}
       problem "Please use https:// for #{homepage}"
     end
 
@@ -500,7 +501,7 @@ class FormulaAuditor
         }
       end
 
-      spec.patches.select(&:external?).each { |p| audit_patch(p) }
+      spec.patches.each { |p| audit_patch(p) if p.external? }
     end
 
     %w[Stable Devel].each do |name|
@@ -1057,11 +1058,12 @@ class ResourceAuditor
            %r{^http://code\.google\.com/},
            %r{^http://fossies\.org/},
            %r{^http://mirrors\.kernel\.org/},
-           %r{^http://([^/]*\.|)bintray\.com/},
+           %r{^http://(?:[^/]*\.)?bintray\.com/},
            %r{^http://tools\.ietf\.org/},
            %r{^http://www\.mirrorservice\.org/},
            %r{^http://launchpad\.net/},
-           %r{^http://bitbucket\.org/}
+           %r{^http://bitbucket\.org/},
+           %r{^http://(?:[^/]*\.)?archive\.org}
         problem "Please use https:// for #{p}"
       when %r{^http://search\.mcpan\.org/CPAN/(.*)}i
         problem "#{p} should be `https://cpan.metacpan.org/#{$1}`"
@@ -1133,12 +1135,14 @@ class ResourceAuditor
     end
 
     # Use new-style archive downloads
-    urls.select { |u| u =~ %r{https://.*github.*/(?:tar|zip)ball/} && u !~ /\.git$/ }.each do |u|
+    urls.each do |u|
+      next unless u =~ %r{https://.*github.*/(?:tar|zip)ball/} && u !~ /\.git$/
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
     # Don't use GitHub .zip files
-    urls.select { |u| u =~ %r{https://.*github.*/(archive|releases)/.*\.zip$} && u !~ %r{releases/download} }.each do |u|
+    urls.each do |u|
+      next unless u =~ %r{https://.*github.*/(archive|releases)/.*\.zip$} && u !~ %r{releases/download}
       problem "Use GitHub tarballs rather than zipballs (url is #{u})."
     end
   end

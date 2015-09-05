@@ -5,15 +5,16 @@ class Influxdb < Formula
   homepage "https://influxdb.com"
 
   stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.2.tar.gz"
-    sha256 "5e0f33c3d4076509118ad9b02c61f64f7db138ada141675c84a5326e77b21115"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.3.tar.gz"
+    sha256 "f49f7a007f821991984dd8716a6ddccc94a1832c5ac1abf4bb1cb88d9616c2e9"
   end
 
   bottle do
     cellar :any
-    sha256 "8c2d583d6f5d009331e0dc766eaf5ac55a9a32eaa1176c15582bdf28bb274486" => :yosemite
-    sha256 "df22c852bdef918837b443d3314a3080109b5c774fb004047a0c07091a046cb8" => :mavericks
-    sha256 "40d0e642ae9942ed4a66b2cb90f918a400a8f20daec2c5e8d16304972bcdc74e" => :mountain_lion
+    revision 1
+    sha256 "154a550327ab4122c23a5ef936467364fb875dc5fa38ea280cd49b631bcec3b6" => :yosemite
+    sha256 "7dfa97a71778ef32ff4e94948c8e72c6428c810edfa84b7ce29caa2df5ba0d6e" => :mavericks
+    sha256 "00386853dc84185b9927841da7ba12b14b2f45f3cde6d776b64a3bbf2c2befb4" => :mountain_lion
   end
 
   head do
@@ -35,15 +36,15 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/boltdb/bolt" do
-    url "https://github.com/boltdb/bolt.git", :revision => "abb4088170cfac644ed5f4648a5cdc566cdb1da2"
+    url "https://github.com/boltdb/bolt.git", :revision => "0f053fabc06119583d61937a0a06ef0ba0f1b301"
   end
 
   go_resource "github.com/gogo/protobuf" do
-    url "https://github.com/gogo/protobuf.git", :revision => "499788908625f4d83de42a204d1350fde8588e4f"
+    url "https://github.com/gogo/protobuf.git", :revision => "cabd153b69f71bab8b89fd667a2d9bb28c92ceb4"
   end
 
   go_resource "github.com/golang/protobuf" do
-    url "https://github.com/golang/protobuf.git", :revision => "34a5f244f1c01cdfee8e60324258cfbb97a42aec"
+    url "https://github.com/golang/protobuf.git", :revision => "aece6fb931241ad332956db4f62798dfbea944b3"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -51,7 +52,7 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/hashicorp/raft" do
-    url "https://github.com/hashicorp/raft.git", :revision => "379e28eb5a538707eae7a97ecc60846821217f27"
+    url "https://github.com/hashicorp/raft.git", :revision => "feb5f8bb5624ccb475c1354a2ca14a22eea7da4e"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
@@ -59,11 +60,11 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/kimor79/gollectd" do
-    url "https://github.com/kimor79/gollectd.git", :revision => "cf6dec97343244b5d8a5485463675d42f574aa2d"
+    url "https://github.com/kimor79/gollectd.git", :revision => "61d0deeb4ffcc167b2a1baa8efd72365692811bc"
   end
 
   go_resource "github.com/peterh/liner" do
-    url "https://github.com/peterh/liner.git", :revision => "1bb0d1c1a25ed393d8feb09bab039b2b1b1fbced"
+    url "https://github.com/peterh/liner.git", :revision => "c754da6f2d91ef30ddb6c975d2dbe7696eec4fbc"
   end
 
   go_resource "github.com/rakyll/statik" do
@@ -71,7 +72,7 @@ class Influxdb < Formula
   end
 
   go_resource "golang.org/x/crypto" do
-    url "https://go.googlesource.com/crypto.git", :revision => "1e856cbfdf9bc25eefca75f83f25d55e35ae72e0"
+    url "https://go.googlesource.com/crypto.git", :revision => "81bf7719a6b7ce9b665598222362b50122dfc13b"
   end
 
   go_resource "gopkg.in/fatih/pool.v2" do
@@ -79,7 +80,11 @@ class Influxdb < Formula
   end
 
   go_resource "collectd.org" do
-    url "https://github.com/collectd/go-collectd.git", :revision => "27f4f77337ae0b2de0d3267f6278d62aff8b52fb"
+    url "https://github.com/collectd/go-collectd.git", :revision => "b57a70fc3a8592302821687ba82204ba4071b0a8"
+  end
+
+  go_resource "github.com/golang/snappy" do
+    url "https://github.com/golang/snappy.git", :revision => "723cc1e459b8eea2dea4583200fd60757d40097a"
   end
 
   def install
@@ -91,9 +96,9 @@ class Influxdb < Formula
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version 0.9.3-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.4-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version 0.9.2 -X main.commit 6c0a91f775f9fc0e625d17ffa04a3fe86945ba09", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.3 -X main.commit 2094f3fec17e7f675e5cacc8e984d98b1aec662d", "./..."
       end
     end
 
@@ -101,6 +106,7 @@ class Influxdb < Formula
       s.gsub! "/var/opt/influxdb/data", "#{var}/influxdb/data"
       s.gsub! "/var/opt/influxdb/meta", "#{var}/influxdb/meta"
       s.gsub! "/var/opt/influxdb/hh", "#{var}/influxdb/hh"
+      s.gsub! "/var/opt/influxdb/wal", "#{var}/influxdb/wal"
     end
 
     bin.install buildpath/"bin/influxd"
@@ -110,6 +116,7 @@ class Influxdb < Formula
     (var/"influxdb/data").mkpath
     (var/"influxdb/meta").mkpath
     (var/"influxdb/hh").mkpath
+    (var/"influxdb/wal").mkpath
   end
 
   plist_options :manual => "influxd -config #{HOMEBREW_PREFIX}/etc/influxdb.conf"

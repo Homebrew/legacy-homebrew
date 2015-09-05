@@ -1,14 +1,14 @@
-class PltRacket < Formula
+class Racket < Formula
   desc "Modern programming language in the Lisp/Scheme family"
   homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.2/racket-minimal-6.2-src-builtpkgs.tgz"
-  sha256 "ff5d49729e79c109f5d1ea9a6faef9f5fb13861a6e19ca2e095e34a77ad8f03d"
-  version "6.2"
+  url "http://mirror.racket-lang.org/installers/6.2.1/racket-minimal-6.2.1-src-builtpkgs.tgz"
+  version "6.2.1"
+  sha256 "47eceb5f23ab66a939650fa44dd89ffcb17a6227f58c6bc80e90aa8999c86b36"
 
   bottle do
-    sha256 "e8817da253500c3b51bf818059cfb4174252a939433b1755f965fd06f381a7c2" => :yosemite
-    sha256 "e775405462072cf43df41bc70b2faad9d065f4bb095bf21acd2fbba64be78777" => :mavericks
-    sha256 "165a42022c0543bfcc05954f62315b419efdc789e29a5c6e6aec14af52ee85b2" => :mountain_lion
+    sha256 "4d985a857e7556b1665e0f2d8f4c7f9667e34794cd047788d5b2af6fa5e98a13" => :yosemite
+    sha256 "8aab33739c8818a3408f478268d310a2c6f0734ac89b9e9bd5fe1ad10ecf1eb2" => :mavericks
+    sha256 "d10ec37ab262c32ce23cbc253cd52a3b381e285a848b073048a5f593a9446b13" => :mountain_lion
   end
 
   def install

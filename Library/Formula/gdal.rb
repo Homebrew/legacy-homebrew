@@ -3,12 +3,13 @@ class Gdal < Formula
   homepage "http://www.gdal.org/"
   url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
   sha256 "66bc8192d24e314a66ed69285186d46e6999beb44fc97eeb9c76d82a117c0845"
-  revision 2
+  revision 3
 
   bottle do
-    sha256 "4f09a9aeb578a5c6039aa4d96c6d41c1640c02564f5c8ab70d5ccc5f8909936c" => :yosemite
-    sha256 "f5db3c5b5c078d5774123c58ca3a9c705809c99f0c9037056384649e55e5678a" => :mavericks
-    sha256 "cf5f2b7858b09850fd25031ca84b430392ce8cde14f44c0d9996e60b15987736" => :mountain_lion
+    revision 1
+    sha256 "4ae2dce70845b902946ab4a82895b744ad871aa7979bb86f38df5ba1250d6901" => :yosemite
+    sha256 "5d21fd019e17323fa70cb13e97592c565f57b4e4636b8760817f8ee69ea63521" => :mavericks
+    sha256 "7baac4d062d457e3a05b4a7b21978c413481a7a097e4d26d423f37c1d4cb59eb" => :mountain_lion
   end
 
   head do
@@ -75,11 +76,16 @@ class Gdal < Formula
     # Other libraries
     depends_on "xz" # get liblzma compression algorithm library from XZutils
     depends_on "poppler"
+    depends_on "podofo"
     depends_on "json-c"
   end
 
   depends_on :java => ["1.7+", :optional, :build]
-  depends_on "swig" if build.with? "swig-java"
+
+  if build.with? "swig-java"
+    depends_on "ant" => :build
+    depends_on "swig" => :build
+  end
 
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
@@ -160,7 +166,7 @@ class Gdal < Formula
       dods-root
       epsilon
       webp
-      poppler
+      podofo
     ]
     if build.with? "complete"
       supported_backends.delete "liblzma"
@@ -303,6 +309,10 @@ class Gdal < Formula
         inreplace "java.opt", "#JAVA_HOME = /usr/lib/jvm/java-6-openjdk/", "JAVA_HOME=$(shell echo $$JAVA_HOME)"
         system "make"
         system "make", "install"
+
+        # Install the jar that complements the native JNI bindings
+        system "ant"
+        lib.install "gdal.jar"
       end
     end
 

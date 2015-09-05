@@ -6,14 +6,16 @@ class Sip < Formula
 
   bottle do
     cellar :any
-    sha256 "d30742d2a5112adcf8c9a5384f86fb0fb664e41f6f2eea1fe029a03ac2e181f5" => :yosemite
-    sha256 "c734993751d086bac0e0f2ec5ec0849542712dec753defb56605b6d6c5b563f5" => :mavericks
-    sha256 "9b368ad8f6871948e41c6744a73ac1fbc9d89c86abcc7b6f7707724be37efb61" => :mountain_lion
+    revision 1
+    sha256 "a88bff5227829979cc96ccb956f73e3a39c1e8e885f02d39e30a6040faf4d2e8" => :yosemite
+    sha256 "777e09e3635c2f445146e5f4612a3f812a7c40ce2ba47309703a0df1163992f2" => :mavericks
+    sha256 "8832546d36baa62fdecd0df427ba4f3b02ab2f39fc5fcb47f114ae5020f11342" => :mountain_lion
   end
 
   head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
 
-  depends_on :python => :recommended
+  option "without-python", "Build without python2 support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
 
   if build.without?("python3") && build.without?("python")
@@ -40,10 +42,6 @@ class Sip < Formula
       system "make"
       system "make", "install"
       system "make", "clean"
-
-      if Formula[python].installed? && which(python).realpath == (Formula[python].bin/python).realpath
-        inreplace lib/"python#{version}/site-packages/sipconfig.py", Formula[python].prefix, Formula[python].opt_prefix
-      end
     end
   end
 

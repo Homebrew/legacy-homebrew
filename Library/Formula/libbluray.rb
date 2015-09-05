@@ -6,9 +6,10 @@ class Libbluray < Formula
 
   bottle do
     cellar :any
-    sha256 "33e711f8364371ebdf47183f09864321a185d8769c17a745aef4649d79deaa86" => :yosemite
-    sha256 "f161eb07eb035181aac218d9ff22323db5ff9891e432fcc101964b5bfc241b95" => :mavericks
-    sha256 "f39ea94c14fd752e203033670fbe268f59048f4a420b2f2b72688a40b975e759" => :mountain_lion
+    revision 1
+    sha256 "721af230aeca4ac6e17c6799c7dbf73b8f7f14128983e1d0c3eaa8d6a80894b5" => :yosemite
+    sha256 "ebcaf7958d95d7e6a616f8146f0034a75d4e68a65f0a1b1d192eff0a88404df4" => :mavericks
+    sha256 "cc6ec61dfab7f26ba47ddd5195c109dbc1c1f28726dc48147ed7a00e5d207f82" => :mountain_lion
   end
 
   head do
@@ -19,10 +20,12 @@ class Libbluray < Formula
     depends_on "libtool" => :build
   end
 
+  option "without-ant", "Disable Support for BD Java"
+
   depends_on "pkg-config" => :build
   depends_on "freetype" => :recommended
   depends_on "fontconfig"
-  depends_on "ant" => :build
+  depends_on "ant" => [:build, :optional]
 
   def install
     # https://mailman.videolan.org/pipermail/libbluray-devel/2014-April/001401.html
@@ -31,6 +34,7 @@ class Libbluray < Formula
 
     args = %W[--prefix=#{prefix} --disable-dependency-tracking]
     args << "--without-freetype" if build.without? "freetype"
+    args << "--disable-bdjava" if build.without? "ant"
 
     system "./bootstrap" if build.head?
     system "./configure", *args

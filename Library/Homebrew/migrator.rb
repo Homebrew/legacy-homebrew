@@ -1,9 +1,19 @@
 require "formula"
+require "formula_lock"
 require "keg"
 require "tab"
 require "tap_migrations"
 
 class Migrator
+  class MigrationNeededError < RuntimeError
+    def initialize(formula)
+      super <<-EOS.undent
+        #{formula.oldname} was renamed to #{formula.name} and needs to be migrated.
+        Please run `brew migrate #{formula.oldname}`
+      EOS
+    end
+  end
+
   class MigratorNoOldnameError < RuntimeError
     def initialize(formula)
       super "#{formula.name} doesn't replace any formula."
@@ -18,31 +28,63 @@ class Migrator
 
   class MigratorDifferentTapsError < RuntimeError
     def initialize(formula, tap)
-      if tap.nil?
-        super <<-EOS.undent
-        #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} wasn't installed from taps or core formulae
-
-        You can try `brew migrate --force #{formula.oldname}`.
-        EOS
-      else
+      msg = if tap == "Homebrew/homebrew"
+        "Please try to use #{formula.oldname} to refer the formula.\n"
+      elsif tap
         user, repo = tap.split("/")
         repo.sub!("homebrew-", "")
-        name = "fully-qualified #{user}/#{repo}/#{formula.oldname}"
-        name = formula.oldname if tap == "Homebrew/homebrew"
-        super <<-EOS.undent
-        #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} was installed from #{tap}
-
-        Please try to use #{name} to refer the formula
-        EOS
+        "Please try to use fully-qualified #{user}/#{repo}/#{formula.oldname} to refer the formula.\n"
       end
+
+      super <<-EOS.undent
+      #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} was installed from #{tap ? tap : "path or url"}.
+
+      #{msg}To force migrate use `brew migrate --force #{formula.oldname}`.
+      EOS
     end
   end
 
+  # instance of new name formula
   attr_reader :formula
-  attr_reader :oldname, :oldpath, :old_pin_record, :old_opt_record
-  attr_reader :old_linked_keg_record, :oldkeg, :old_tabs, :old_tap
-  attr_reader :newname, :newpath, :new_pin_record
+
+  # old name of the formula
+  attr_reader :oldname
+
+  # path to oldname's cellar
+  attr_reader :old_cellar
+
+  # path to oldname pin
+  attr_reader :old_pin_record
+
+  # path to oldname opt
+  attr_reader :old_opt_record
+
+  # oldname linked keg
+  attr_reader :old_linked_keg
+
+  # path to oldname's linked keg
+  attr_reader :old_linked_keg_record
+
+  # tabs from oldname kegs
+  attr_reader :old_tabs
+
+  # tap of the old name
+  attr_reader :old_tap
+
+  # resolved path to oldname pin
   attr_reader :old_pin_link_record
+
+  # new name of the formula
+  attr_reader :newname
+
+  # path to newname cellar according to new name
+  attr_reader :new_cellar
+
+  # path to newname pin
+  attr_reader :new_pin_record
+
+  # path to newname keg that will be linked if old_linked_keg isn't nil
+  attr_reader :new_linked_keg_record
 
   def initialize(formula)
     @oldname = formula.oldname
@@ -50,18 +92,22 @@ class Migrator
     raise MigratorNoOldnameError.new(formula) unless oldname
 
     @formula = formula
-    @oldpath = HOMEBREW_CELLAR/formula.oldname
-    raise MigratorNoOldpathError.new(formula) unless oldpath.exist?
+    @old_cellar = HOMEBREW_CELLAR/formula.oldname
+    raise MigratorNoOldpathError.new(formula) unless old_cellar.exist?
 
-    @old_tabs = oldpath.subdirs.each.map { |d| Tab.for_keg(Keg.new(d)) }
+    @old_tabs = old_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
     @old_tap = old_tabs.first.tap
-    raise MigratorDifferentTapsError.new(formula, old_tap) unless from_same_taps?
 
-    @newpath = HOMEBREW_CELLAR/formula.name
+    if !ARGV.force? && !from_same_taps?
+      raise MigratorDifferentTapsError.new(formula, old_tap)
+    end
 
-    if @oldkeg = get_linked_oldkeg
-      @old_linked_keg_record = oldkeg.linked_keg_record if oldkeg.linked?
-      @old_opt_record = oldkeg.opt_record if oldkeg.optlinked?
+    @new_cellar = HOMEBREW_CELLAR/formula.name
+
+    if @old_linked_keg = get_linked_old_linked_keg
+      @old_linked_keg_record = old_linked_keg.linked_keg_record if old_linked_keg.linked?
+      @old_opt_record = old_linked_keg.opt_record if old_linked_keg.optlinked?
+      @new_linked_keg_record = HOMEBREW_CELLAR/"#{newname}/#{File.basename(old_linked_keg)}"
     end
 
     @old_pin_record = HOMEBREW_LIBRARY/"PinnedKegs"/oldname
@@ -79,9 +125,7 @@ class Migrator
   end
 
   def from_same_taps?
-    if old_tap == nil && formula.core_formula? && ARGV.force?
-      true
-    elsif formula.tap == old_tap
+    if formula.tap == old_tap
       true
     # Homebrew didn't use to update tabs while performing tap-migrations,
     # so there can be INSTALL_RECEIPT's containing wrong information about
@@ -98,8 +142,8 @@ class Migrator
     end
   end
 
-  def get_linked_oldkeg
-    kegs = oldpath.subdirs.map { |d| Keg.new(d) }
+  def get_linked_old_linked_keg
+    kegs = old_cellar.subdirs.map { |d| Keg.new(d) }
     kegs.detect(&:linked?) || kegs.detect(&:optlinked?)
   end
 
@@ -107,39 +151,39 @@ class Migrator
     @pinned
   end
 
-  def oldkeg_linked?
-    !!oldkeg
-  end
-
   def migrate
-    if newpath.exist?
-      onoe "#{newpath} already exists; remove it manually and run brew migrate #{oldname}."
+    if new_cellar.exist?
+      onoe "#{new_cellar} already exists; remove it manually and run brew migrate #{oldname}."
       return
     end
 
     begin
       oh1 "Migrating #{Tty.green}#{oldname}#{Tty.white} to #{Tty.green}#{newname}#{Tty.reset}"
+      lock
       unlink_oldname
       move_to_new_directory
       repin
-      link_newname
+      link_newname unless old_linked_keg.nil?
       link_oldname_opt
       link_oldname_cellar
       update_tabs
     rescue Interrupt
       ignore_interrupts { backup_oldname }
     rescue Exception => e
-      onoe "error occured while migrating."
-      puts e if ARGV.debug?
+      onoe "Error occured while migrating."
+      puts e
+      puts e.backtrace if ARGV.debug?
       puts "Backuping..."
       ignore_interrupts { backup_oldname }
+    ensure
+      unlock
     end
   end
 
   # move everything from Cellar/oldname to Cellar/newname
   def move_to_new_directory
-    puts "Moving to: #{newpath}"
-    FileUtils.mv(oldpath, newpath)
+    puts "Moving to: #{new_cellar}"
+    FileUtils.mv(old_cellar, new_cellar)
   end
 
   def repin
@@ -163,7 +207,7 @@ class Migrator
 
   def unlink_oldname
     oh1 "Unlinking #{Tty.green}#{oldname}#{Tty.reset}"
-    oldpath.subdirs.each do |d|
+    old_cellar.subdirs.each do |d|
       keg = Keg.new(d)
       keg.unlink
     end
@@ -171,30 +215,32 @@ class Migrator
 
   def link_newname
     oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
-    keg = Keg.new(formula.installed_prefix)
+    new_keg = Keg.new(new_linked_keg_record)
 
-    if formula.keg_only?
+    # If old_keg wasn't linked then we just optlink a keg.
+    # If old keg wasn't optlinked and linked, we don't call this method at all.
+    # If formula is keg-only we also optlink it.
+    if formula.keg_only? || !old_linked_keg_record
       begin
-        keg.optlink
+        new_keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{formula.opt_prefix}"
-        puts e
         raise
       end
       return
     end
 
-    keg.remove_linked_keg_record if keg.linked?
+    new_keg.remove_linked_keg_record if new_keg.linked?
 
     begin
-      keg.link
+      new_keg.link
     rescue Keg::ConflictError => e
       onoe "Error while executing `brew link` step on #{newname}"
       puts e
       puts
       puts "Possible conflicting files are:"
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
-      keg.link(mode)
+      new_keg.link(mode)
       raise
     rescue Keg::LinkError => e
       onoe "Error while linking"
@@ -205,24 +251,24 @@ class Migrator
     rescue Exception => e
       onoe "An unexpected error occurred during linking"
       puts e
-      puts e.backtrace
-      ignore_interrupts { keg.unlink }
-      raise e
+      puts e.backtrace if ARGV.debug?
+      ignore_interrupts { new_keg.unlink }
+      raise
     end
   end
 
   # Link keg to opt if it was linked before migrating.
   def link_oldname_opt
     if old_opt_record
-      old_opt_record.delete if old_opt_record.symlink? || old_opt_record.exist?
-      old_opt_record.make_relative_symlink(formula.installed_prefix)
+      old_opt_record.delete if old_opt_record.symlink?
+      old_opt_record.make_relative_symlink(new_linked_keg_record)
     end
   end
 
   # After migtaion every INSTALL_RECEIPT.json has wrong path to the formula
   # so we must update INSTALL_RECEIPTs
   def update_tabs
-    new_tabs = newpath.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
+    new_tabs = new_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
     new_tabs.each do |tab|
       tab.source["path"] = formula.path.to_s if tab.source["path"]
       tab.write
@@ -232,24 +278,25 @@ class Migrator
   # Remove opt/oldname link if it belongs to newname.
   def unlink_oldname_opt
     return unless old_opt_record
-    if old_opt_record.symlink? && formula.installed_prefix.exist? \
-              && formula.installed_prefix.realpath == old_opt_record.realpath
+    if old_opt_record.symlink? && old_opt_record.exist? \
+        && new_linked_keg_record.exist? \
+        && new_linked_keg_record.realpath == old_opt_record.realpath
       old_opt_record.unlink
       old_opt_record.parent.rmdir_if_possible
     end
   end
 
-  # Remove oldpath if it exists
+  # Remove old_cellar if it exists
   def link_oldname_cellar
-    oldpath.delete if oldpath.symlink? || oldpath.exist?
-    oldpath.make_relative_symlink(formula.rack)
+    old_cellar.delete if old_cellar.symlink? || old_cellar.exist?
+    old_cellar.make_relative_symlink(formula.rack)
   end
 
   # Remove Cellar/oldname link if it belongs to newname.
   def unlink_oldname_cellar
-    if (oldpath.symlink? && !oldpath.exist?) || (oldpath.symlink? \
-          && formula.rack.exist? && formula.rack.realpath == oldpath.realpath)
-      oldpath.unlink
+    if (old_cellar.symlink? && !old_cellar.exist?) || (old_cellar.symlink? \
+          && formula.rack.exist? && formula.rack.realpath == old_cellar.realpath)
+      old_cellar.unlink
     end
   end
 
@@ -266,38 +313,53 @@ class Migrator
       new_pin_record.delete
     end
 
-    if newpath.exist?
-      newpath.subdirs.each do |d|
+    if new_cellar.exist?
+      new_cellar.subdirs.each do |d|
         newname_keg = Keg.new(d)
         newname_keg.unlink
         newname_keg.uninstall
       end
     end
 
-    if oldkeg_linked?
-      begin
-        # The keg used to be linked  and when we backup everything we restore
-        # Cellar/oldname, the target also gets restored, so we are able to
-        # create a keg using its old path
-        keg = Keg.new(Pathname.new(oldkeg.to_s))
-        keg.link
-      rescue Keg::LinkError
-        keg.unlink
-        raise
-      rescue Keg::AlreadyLinkedError
-        keg.unlink
-        retry
+    unless old_linked_keg.nil?
+      # The keg used to be linked and when we backup everything we restore
+      # Cellar/oldname, the target also gets restored, so we are able to
+      # create a keg using its old path
+      if old_linked_keg_record
+        begin
+          old_linked_keg.link
+        rescue Keg::LinkError
+          old_linked_keg.unlink
+          raise
+        rescue Keg::AlreadyLinkedError
+          old_linked_keg.unlink
+          retry
+        end
+      else
+        old_linked_keg.optlink
       end
     end
   end
 
   def backup_oldname_cellar
-    unless oldpath.exist?
-      FileUtils.mv(newpath, oldpath)
+    unless old_cellar.exist?
+      FileUtils.mv(new_cellar, old_cellar)
     end
   end
 
   def backup_old_tabs
     old_tabs.each(&:write)
+  end
+
+  def lock
+    @newname_lock = FormulaLock.new newname
+    @oldname_lock = FormulaLock.new oldname
+    @newname_lock.lock
+    @oldname_lock.lock
+  end
+
+  def unlock
+    @newname_lock.unlock
+    @oldname_lock.unlock
   end
 end

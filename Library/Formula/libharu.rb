@@ -19,10 +19,17 @@ class Libharu < Formula
 
   def install
     system "./buildconf.sh", "--force"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-png=#{Formula["libpng"].opt_prefix}"
+
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-png=#{Formula["libpng"].opt_prefix}
+    ]
+
+    args << "--with-zlib=#{MacOS.sdk_path}/usr" unless MacOS::CLT.installed?
+
+    system "./configure", *args
     system "make", "install"
   end
 

@@ -1,14 +1,15 @@
 class Fontforge < Formula
-  desc "Outline and bitmap font editor/converter for many formats"
+  desc "Command-line outline and bitmap font editor/converter"
   homepage "https://fontforge.github.io"
-  url "https://github.com/fontforge/fontforge/archive/20150612.tar.gz"
-  sha256 "af4997a07c96f7057f08cb5c7d71b19a0e8ac6336e0c48476471b471c0574247"
+  url "https://github.com/fontforge/fontforge/archive/20150824.tar.gz"
+  sha256 "28ab2471cb010c1fa75b8ab8191a1dded81fe1e9490aa5ff6ab4706a4c78ff27"
   head "https://github.com/fontforge/fontforge.git"
 
   bottle do
-    sha256 "318c0e6febcb410194f4bf43ebcbb798a7c4a9508e8b579448fd4629aa2dd8da" => :yosemite
-    sha256 "82fb0329ee807dd6adaa258999c5036c480d80a8e5c1c9337eef53d8f75fb5f1" => :mavericks
-    sha256 "4407ede75e6523f2f21be86af9837aead911ed5010ae59498ade768b5118d5c1" => :mountain_lion
+    revision 1
+    sha256 "f8228c12d9bcda768334b32b51251edd9c970e6a6f213896b7d74e8dfa96231d" => :yosemite
+    sha256 "b303e97388537aa75f15e4f9f16d84470b4f6fa9aaa2b2cb151a6b288903886c" => :mavericks
+    sha256 "065e2c82a000ed3d07f6ac8edc41b530b99f81b10c42442b3887daa5007223cb" => :mountain_lion
   end
 
   option "with-giflib", "Build with GIF support"
@@ -92,6 +93,10 @@ class Fontforge < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+
+    # The app here is not functional. You should install Fontforge
+    # via the Cask if you want GUI/App support.
+    (share/"fontforge/osx/FontForge.app").rmtree
 
     if build.with? "extra-tools"
       cd "contrib/fonttools" do

@@ -143,10 +143,16 @@ module Homebrew
     aliases = Formula.aliases
     results = (Formula.full_names+aliases).grep(rx).sort
 
-    # Filter out aliases when the full name was also found
-    results.reject do |name|
+    results.map do |name|
       canonical_name = Formulary.canonical_name(name)
-      aliases.include?(name) && results.include?(canonical_name)
-    end
+      # Ignore aliases from results when the full name was also found
+      if aliases.include?(name) && results.include?(canonical_name)
+        next
+      elsif (HOMEBREW_CELLAR/canonical_name).directory?
+        "#{name} (installed)"
+      else
+        name
+      end
+    end.compact
   end
 end

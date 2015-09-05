@@ -1,8 +1,8 @@
 class Artifactory < Formula
   desc "Manages binaries"
   homepage "http://www.jfrog.com/artifactory/"
-  url "https://dl.bintray.com/jfrog/artifactory/jfrog-artifactory-oss-4.0.0.zip"
-  sha256 "733b6f0f388099657cdf2429c41c7d8a91e8322346b811a97bedfb09036600dc"
+  url "https://dl.bintray.com/jfrog/artifactory/jfrog-artifactory-oss-4.0.2.zip"
+  sha256 "52a882b3681bc00eb73fddfe6abdc739156c2940be073406185be23a5f35bff2"
 
   depends_on :java => "1.8+"
 
@@ -65,7 +65,6 @@ class Artifactory < Formula
   end
 
   test do
-    output = shell_output("#{bin}/artifactory.sh check 2>&1", 1)
-    assert_match /Checking arguments to Artifactory/, output
+    assert_match /Checking arguments to Artifactory/, pipe_output("#{bin}/artifactory.sh check")
   end
 end

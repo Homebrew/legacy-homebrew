@@ -1,21 +1,20 @@
 class Kibana < Formula
   desc "Visualization tool for elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
-  url "https://github.com/elastic/kibana/archive/v4.1.0.tar.gz"
-  sha256 "df30e084faa1a7b0b2694fade5340ebb9125b20da481c40ee2ff8c7d4f31ac7c"
+  url "https://github.com/elastic/kibana/archive/v4.1.1.tar.gz"
+  sha256 "3f91e99e20e82d4e84ec141007822fea8f9454c71595551f9348ea2609c98284"
   head "https://github.com/elastic/kibana.git"
 
   bottle do
     cellar :any
-    sha256 "932177c7581bdeffceff3eca3019267cfcb334742e15ba6c0e6212d5efe100c0" => :yosemite
-    sha256 "b8b741d84dddd27df01956fbd560f7025036e15c87639947904105912396a0f8" => :mavericks
-    sha256 "a616da0b414e515cf895dcb278280e055dc7273d4cd38242dee597ec7d319100" => :mountain_lion
+    sha256 "f8768f21442e9ce85b3c9b3da58d8e73c176d7bf656b636d15ab582074f14991" => :yosemite
+    sha256 "0bcea2ae726c5a175660c6350f4d60ee07a364d1574c90a2bd691ee25123afbb" => :mavericks
+    sha256 "5d102f006b25dae70bd62c99d9787abe10111460bc2119e5e5ceb412d6335dae" => :mountain_lion
   end
 
   depends_on "node"
 
   def install
-    ENV["HOME"] = buildpath/".brew_home"
     ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
 
     system "npm", "install"

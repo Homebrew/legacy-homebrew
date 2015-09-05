@@ -1,14 +1,14 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.623/jenkins.war"
-  sha256 "49c0f43f9e18b233de9506e7a23b86e215f76ea9f2b1fc392a5775d137f13f38"
+  url "http://mirrors.jenkins-ci.org/war/1.627/jenkins.war"
+  sha256 "9fc74aea24d806fb8810e2573793cc280bdcef8c3ac6f0e76dc242290d7773ad"
 
   bottle do
     cellar :any
-    sha256 "449c298e7e578d33250bede3c858f56c4a30261d18d91ace0118d7073f01c245" => :yosemite
-    sha256 "86cea889328370bcff786929d6adee9cdd8802e50274a6c2adef4a8babe5a9c5" => :mavericks
-    sha256 "171f081796c5f4abb409fee0573ddd1e076bd8dd28269bed6c4c6683b53f3c44" => :mountain_lion
+    sha256 "f0354a8f19da016dfd346c07deef08dac90f8313fb7fa18004ffa17ab627e388" => :yosemite
+    sha256 "509e43f1b27bc95e0dcee6bd281285ccbb9fa8eaaa57d8290dbd1900043be437" => :mavericks
+    sha256 "1f717ec977faf73246a324d54f4c7c109160266078c05eb0499784d0e1ac5812" => :mountain_lion
   end
 
   head do
@@ -60,6 +60,17 @@ class Jenkins < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/jenkins --version")
+    ENV["JENKINS_HOME"] = testpath
+    pid = fork do
+      exec "#{bin}/jenkins"
+    end
+    sleep 60
+
+    begin
+      assert_match /"mode":"NORMAL"/, shell_output("curl localhost:8080/api/json")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

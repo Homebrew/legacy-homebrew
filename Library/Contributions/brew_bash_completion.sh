@@ -131,12 +131,17 @@ __brew_complete_tapped ()
     __brewcomp "$taps"
 }
 
+_brew_tap_unpin ()
+{
+    __brewcomp "$(brew tap --list-pinned)"
+}
+
 _brew_complete_tap ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--repair"
+        __brewcomp "--repair --list-official --list-pinned"
         return
         ;;
     esac
@@ -619,11 +624,12 @@ _brew ()
     switch)                     _brew_switch ;;
     tap)                        _brew_complete_tap ;;
     tap-readme)                 _brew_tap_readme ;;
+    tap-unpin)                  _brew_tap_unpin ;;
     tests)                      _brew_tests ;;
     uninstall|remove|rm)        _brew_uninstall ;;
     unpack)                     _brew_unpack ;;
     unpin)                      __brew_complete_formulae ;;
-    untap|tap-info)             __brew_complete_tapped ;;
+    untap|tap-info|tap-pin)     __brew_complete_tapped ;;
     update)                     _brew_update ;;
     upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;

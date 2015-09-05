@@ -28,9 +28,9 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.49.tar.bz2"
-    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.49.tar.bz2"
-    sha256 "c8a1589753493cb6b71b3772b730cdf90059fe0f29cbfb369fc9a2339766b789"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.51.tar.bz2"
+    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.51.tar.bz2"
+    sha256 "397fc95b463d6ae1b65ab0477d9fe5d0871e8e2a3322bc9d984e438f2c4d0f52"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -70,8 +70,8 @@ class Wine < Formula
   depends_on "libgsm" => :optional
 
   resource "gecko" do
-    url "https://downloads.sourceforge.net/wine/wine_gecko-2.36-x86.msi", :using => :nounzip
-    sha256 "afa457ce8f9885225b6e549dd6f154713ce15bf063c23e38c1327d2f869e128a"
+    url "https://downloads.sourceforge.net/wine/wine_gecko-2.40-x86.msi", :using => :nounzip
+    sha256 "1a29d17435a52b7663cea6f30a0771f74097962b07031947719bb7b46057d302"
   end
 
   resource "mono" do

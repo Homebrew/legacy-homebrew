@@ -85,6 +85,10 @@ class Pushpin < Formula
     cp prefix/"etc/pushpin/internal.conf", testpath/"internal.conf"
     cp prefix/"etc/pushpin/routes", routesfile
 
+    inreplace conffile do |s|
+      s.gsub! "rundir=#{HOMEBREW_PREFIX}/var/run/pushpin", "rundir=#{testpath}/var/run/pushpin"
+      s.gsub! "logdir=#{HOMEBREW_PREFIX}/var/log/pushpin", "logdir=#{testpath}/var/log/pushpin"
+    end
     inreplace routesfile, "localhost:80", "localhost:10080"
 
     runfile.write <<-EOS.undent

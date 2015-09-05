@@ -26,7 +26,8 @@ class Glib < Formula
   end
 
   resource "config.h.ed" do
-    url "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed"
+    url "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/config.h.ed", :using => :curl
+    mirror "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed"
     version "111532"
     sha256 "9f1e23a084bc879880e589893c17f01a2f561e20835d6a6f08fcc1dad62388f1"
   end

@@ -1,14 +1,14 @@
 class Commonmark < Formula
   desc "Strongly specified, highly compatible implementation of Markdown"
   homepage "http://commonmark.org"
-  url "https://github.com/jgm/cmark/archive/0.21.0.tar.gz"
-  sha256 "dc852412e45489b823392dee334f2db47adbd757b0ac08bc026383627fc13f6e"
+  url "https://github.com/jgm/cmark/archive/0.22.0.tar.gz"
+  sha256 "a45956e6ee491d71e9271ddeb09364599a136b8956d219f0168dd6042f6f791b"
 
   bottle do
     cellar :any
-    sha256 "4df14ae8b336a43671f6282118a484f0977b0401e178a5e6b087ed75a0d561d3" => :yosemite
-    sha256 "c834a27b2ad8dcd0fb853f1e08db8b2fa8e2b32bdc7e868b80b2688cf6a385f5" => :mavericks
-    sha256 "d5b423c3fec6ead12a244aed47f277bb5dd284939409d8d4704cd89663af30ed" => :mountain_lion
+    sha256 "dd40ba6bf439e6232c4c46347be0eefc2bf71577400993a480d8b6beee9349a4" => :yosemite
+    sha256 "810716f1e9da14265ac4d4f1c9c13270929a7291199ff80f399774d7ad94d892" => :mavericks
+    sha256 "89779b880634f3052c1d2f50298d93e00a1347d83768fb1eeae46aa39e02136f" => :mountain_lion
   end
 
   depends_on "cmake" => :build

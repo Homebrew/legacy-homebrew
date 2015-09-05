@@ -5,13 +5,13 @@ class PandocCiteproc < Formula
 
   desc "Library and executable for using citeproc with pandoc"
   homepage "https://github.com/jgm/pandoc-citeproc"
-  url "https://hackage.haskell.org/package/pandoc-citeproc-0.7.2/pandoc-citeproc-0.7.2.tar.gz"
-  sha256 "3eddf364561a8f175493cdd32eb4c7994164d2c27625c07cf13bfd491539f936"
+  url "https://hackage.haskell.org/package/pandoc-citeproc-0.7.3/pandoc-citeproc-0.7.3.tar.gz"
+  sha256 "72fc81d962812d037bb78c6d38d602ca2c6895f0436c8be94cb71600ed288e68"
 
   bottle do
-    sha256 "f11bd1023f207b5c2655e51a7494dbf8e5c065ebaebce2bca6a79fd9c5650360" => :yosemite
-    sha256 "5262e34bd21b6d3e6eb7bb4883949e17d4268fdb99892d5420a98b237b55c172" => :mavericks
-    sha256 "b5ebf2ba3ff01756661c748bccdaf8719d7dd7eb03d325bbf17522ff74ee5121" => :mountain_lion
+    sha256 "216ad46562f7ee3ae5a0e19b855b3f8c27c8d2907beedf9dd41d5634179ab9a4" => :yosemite
+    sha256 "0f5cc2caa5ba5c9f687d057a3dfe462e6e01623dc42d556148e8e6e23332622d" => :mavericks
+    sha256 "40e380d4a8c5e63a81f00358d8cffa743381e4b825a8e925a63b66d0da232154" => :mountain_lion
   end
 
   depends_on "ghc" => :build

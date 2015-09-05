@@ -11,6 +11,8 @@ class Ccrypt < Formula
     sha1 "70ed9462ae982f2939f76dab3b335d84db53479f" => :mountain_lion
   end
 
+  conflicts_with "ccat", :because => "both install `ccat` binaries"
+
   fails_with :clang do
     build 318
     cause "Tests fail when optimizations are enabled"

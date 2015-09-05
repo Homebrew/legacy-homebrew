@@ -3,9 +3,9 @@ require "base64"
 class AndroidSdk < Formula
   desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.3.3-macosx.zip"
-  version "24.3.3"
-  sha256 "2e855666ff7fd35e9849abc5f091d5e119fab353baa0c9b4fed628f7b979a538"
+  url "https://dl.google.com/android/android-sdk_r24.3.4-macosx.zip"
+  version "24.3.4"
+  sha256 "074da140b380177108b9b74869403df7a65c5b555d4f5e439fa8556f1018352b"
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
@@ -17,7 +17,7 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "22.0.1"
+    "23.0.0"
   end
 
   def install

@@ -1,18 +1,19 @@
 class Libuv < Formula
   desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.7.0.tar.gz"
-  sha256 "27a66f944c8cf1baf0fb53f5cfe11f01035cc80622d8ecc8e18bd1b2ae35ef5f"
+  url "https://github.com/libuv/libuv/archive/v1.7.3.tar.gz"
+  sha256 "db5d46318e18330c696d954747036e1be8e2346411d4f30236d7e2f499f0cfab"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
     cellar :any
-    sha256 "01a5c05e25422a4f6986822c5ba3d68c5b1f52d257b3813dd767cf15400132a9" => :yosemite
-    sha256 "8fe6f59a631b800bcf87404e055f5af25a994220e89aebdf9b5ce7f305255e15" => :mavericks
-    sha256 "d71328890a072ffd452891bd2e99b2510bd562e73ce8d20c59dbc91105ca1cee" => :mountain_lion
+    sha256 "403327579548634d950b0de35467443b1b5ce5731cbb01d748c313de43f79382" => :yosemite
+    sha256 "09212b028d3f8fb69c4ef76b69a9d3b287ecac8ed557be83e90a070ad62e11d0" => :mavericks
+    sha256 "15b2aa85932a25d2007306b2a00bb49fd003e1c31e80fbe95a153d282356ccb2" => :mountain_lion
   end
 
   option "without-docs", "Don't build and install documentation"
+  option "with-check", "Execute compile time checks (Requires internet connection)"
   option :universal
 
   depends_on "pkg-config" => :build
@@ -20,16 +21,6 @@ class Libuv < Formula
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
-
-  resource "sphinx" do
-    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
-    sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
-  end
-
-  resource "sphinx_rtd_theme" do
-    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.7.tar.gz"
-    sha256 "9a490c861f6cf96a0050c29a92d5d1e01eda02ae6f50760ad5c96a327cdf14e8"
-  end
 
   resource "alabaster" do
     url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.4.tar.gz"
@@ -76,6 +67,16 @@ class Libuv < Formula
     sha256 "a78b484d5472dd8c688f8b3eee18646a25c66ce45b2c26652850f6af9ce52b17"
   end
 
+  resource "sphinx" do
+    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
+    sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
+  end
+
+  resource "sphinx_rtd_theme" do
+    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.7.tar.gz"
+    sha256 "9a490c861f6cf96a0050c29a92d5d1e01eda02ae6f50760ad5c96a327cdf14e8"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
@@ -86,7 +87,7 @@ class Libuv < Formula
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
         end
       end
-      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
+      ENV.prepend_path "PATH", buildpath/"sphinx/bin"
       # This isn't yet handled by the make install process sadly.
       cd "docs" do
         system "make", "man"
@@ -96,13 +97,12 @@ class Libuv < Formula
       end
     end
 
-    # Don't add "make check" until this is resolved upstream:
-    # https://github.com/Homebrew/homebrew/issues/38138
-    # https://github.com/libuv/libuv/issues/30
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
+    system "make"
+    system "make", "check" if build.with? "check"
     system "make", "install"
   end
 

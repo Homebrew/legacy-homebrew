@@ -1,14 +1,14 @@
 class Khard < Formula
   desc "Console carddav client."
   homepage "https://github.com/scheibler/khard"
-  url "https://github.com/scheibler/khard/archive/v0.4.0.tar.gz"
-  sha256 "4140fb06a1da63a5eb26edc7d3e3c01b99c464276a9e590b57ee2451c4416f77"
+  url "https://pypi.python.org/packages/source/k/khard/khard-0.4.1.tar.gz"
+  sha256 "c7deb446f29eb33ac0622cffea5303288c31a2c304aaf5348dad8baf56591c5d"
 
   bottle do
     cellar :any
-    sha256 "feaf4976378a4b3a9e7ff1ee9bd9b6804dd084041bc0f1381cc9b2a64437b754" => :yosemite
-    sha256 "744c1982ee4f85d96694be11c616af0eee7fa4470419e713c287f2ba6a8e4a8e" => :mavericks
-    sha256 "67a638ab7cc7055c04d1063877e603f1c77251e655440ad86ea1c4055c7d0e61" => :mountain_lion
+    sha256 "6426f3311fd328c594b082a749cd77af5442d0694a99536169c73736281bd557" => :yosemite
+    sha256 "56450b1766631735ae82133ae47708e87abaf78b71873f34475893b581a7a1ad" => :mavericks
+    sha256 "04e2c3984ef778222aaf231ae84c9f40c6625541bc4ee1c095536f170e619301" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

@@ -1,15 +1,19 @@
 class Saltstack < Formula
   desc "Dynamic infrastructure communication bus"
   homepage "http://www.saltstack.org"
-  url "https://github.com/saltstack/salt/archive/v2015.5.3.tar.gz"
-  sha256 "1873fde1f33691bdf32d5db793a2c98fd03ed86570c40fd555408c77ab17e8e6"
+  # please use sdists published as release downloads
+  # (URLs starting with https://github.com/saltstack/salt/releases/download)
+  # github tag archives will report wrong version number
+  # https://github.com/Homebrew/homebrew/issues/43493
+  url "https://github.com/saltstack/salt/releases/download/v2015.5.5/salt-2015.5.5.tar.gz"
+  sha256 "5cd8d317616abab691a83f7fd3f8bcf9ad8aecaa95fcfdc0f6d788de87f0beeb"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "309f9ff3cec4f6c0e298d281d1d57e3b49aa5709bf3e0ea7987bfc1060766be9" => :yosemite
-    sha256 "7044ce9fa8102945e1b9881c7dd74c16e6a88b330e0902839451f67148109319" => :mavericks
-    sha256 "d18b6664565d2e0ce3f88965b9fd816fe56b317012641f4f510ab4fcc4e9d72a" => :mountain_lion
+    sha256 "26f0a6304da89a1c806b13c119a5e3d8abb5026a872789cf81e5726d6a9053c2" => :yosemite
+    sha256 "2c3fef890e391dc58b3df39aa4b3f178366f10335d7ca56c872f4abb74faa625" => :mavericks
+    sha256 "39052505d6d7f1ee2e844d12abff04bc52478b04f72ec676072f45c1fac2f64a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

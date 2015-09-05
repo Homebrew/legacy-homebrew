@@ -134,8 +134,8 @@ end
 class TapDependency < Dependency
   attr_reader :tap
 
-  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name)
-    @tap, _, option_name = option_name.rpartition "/"
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name.split("/").last)
+    @tap = name.rpartition("/").first
     super(name, tags, env_proc, option_name)
   end
 

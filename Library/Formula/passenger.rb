@@ -1,15 +1,15 @@
 class Passenger < Formula
   desc "Server for Ruby, Python, and Node.js apps via Apache/NGINX"
   homepage "https://www.phusionpassenger.com/"
-  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.15.tar.gz"
-  sha256 "5ecc4c903eb351e3a29bd01f34ae08aa5d31879af74302fefd9834fcb3670df1"
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.16.tar.gz"
+  sha256 "39799fdfa4873f67764747de1eddbe1fae759b1cd459c1c592ec71eecb462be5"
   head "https://github.com/phusion/passenger.git"
 
   bottle do
     cellar :any
-    sha256 "4877190e1306f83d8980a82321e0f3ec0d565b01b5e052f0df8518f3cd651e8f" => :yosemite
-    sha256 "06df810ebb0ada72c875b53122a08f597195249dbc8abb6b4e673c9c2cfdb92d" => :mavericks
-    sha256 "42dbb150e5e0e8130085f730f1fcb013d32046d44819e08149d2f03af931da50" => :mountain_lion
+    sha256 "1c7f5e8cf962eea9b62b8fd75e92014e440caf227cdde341cd8928aff0be2ede" => :yosemite
+    sha256 "b25f144e6edfb728d801015d98db5c220525c36ae2ca772ff1219c6cd1b0341b" => :mavericks
+    sha256 "5d98bb060f9062761f5fb485872c3eb59a018d071b8cc89d217fa68ba82360af" => :mountain_lion
   end
 
   depends_on "pcre"

@@ -1,9 +1,9 @@
 class Quantlib < Formula
   desc "Library for quantitative finance"
   homepage "http://quantlib.org/"
-  url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.6/QuantLib-1.6.tar.gz"
-  mirror "https://distfiles.macports.org/QuantLib/QuantLib-1.6.tar.gz"
-  sha256 "a135d424a59cbb00a75d7f7ac3a181d49e804abae1776b555ec0183e309f81ce"
+  url "https://downloads.sourceforge.net/project/quantlib/QuantLib/1.6.1/QuantLib-1.6.1.tar.gz"
+  mirror "https://distfiles.macports.org/QuantLib/QuantLib-1.6.1.tar.gz"
+  sha256 "4f90994671173ef20d2bfd34cefc79f753370d79eccafaec926db8c4b6c37870"
 
   head do
     url "https://github.com/lballabio/quantlib.git"
@@ -14,9 +14,9 @@ class Quantlib < Formula
 
   bottle do
     cellar :any
-    sha256 "c5055d99ba3863d104bfadd91c70eb2034f047c4c143123a279bddc98408ca16" => :yosemite
-    sha256 "0615b7ac6295b12ff38cfe19cfc0e249fd7b24d1842d9a20432763bf60154c2e" => :mavericks
-    sha256 "018a317da05e97d1764af2d849c416ca0977ed52f526ff9204d85f71bd990e04" => :mountain_lion
+    sha256 "128bb13a29b675d4d918fe846b6898c16dcff7bdc68ccb7b02b9534514085d76" => :yosemite
+    sha256 "6cfa46314ac7485a695b955caaf1f695143f4d992feedee46b7a35a6085dce9d" => :mavericks
+    sha256 "b4a92d817a27f6d3d848d3ef51db76646ade2f372a050116859ab3f6d8be6b43" => :mountain_lion
   end
 
   option :cxx11
@@ -34,7 +34,8 @@ class Quantlib < Formula
       system "./autogen.sh"
     end
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{share}/emacs/site-lisp/quantlib"
     system "make", "install"
   end
 

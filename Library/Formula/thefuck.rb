@@ -1,23 +1,23 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.6.tar.gz"
-  sha256 "eae2689c1e1acc0011f8297c38c7c85a9b17bb443b55bf9d273d5f75f63e288c"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.8.tar.gz"
+  sha256 "40ac6c27974fc749557fe37f00e29100c26f25f038f3e63034f721442ac0b489"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any
-    sha256 "eb4268205873628a8b05ae9655fd9ed49fb7475156c87eb5976c81d457a93fcc" => :yosemite
-    sha256 "67f15694072ce229001a49ffc75bf53a2d08eeb7300125a0684fe34233c3a656" => :mavericks
-    sha256 "3858b25a6c178e095451357e68321184379f2d4bd2f87578cacb7b56d5af4d2e" => :mountain_lion
+    sha256 "bfaf5babb508ca12c22c87f62784051a1b0528959df403ccf788e374332c47a8" => :yosemite
+    sha256 "a206c186fa553ce3ea1f40eb4ed4160e12df5c630103a4d1f7d644815005430d" => :mavericks
+    sha256 "fedbc94b2769e205f64ea41b52942be1f4647e30dd4148365d518933927fa7c8" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
-    sha256 "a0e9b96f1946975064724e242ac159f3260db24ffa591c3da0a355361a3a337f"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.1.1.tar.gz"
+    sha256 "d3290bd4a027fa0b3a2e2ee87728056fe49d4112640e2b8c2ea4dd94ba0cf057"
   end
 
   resource "pathlib" do
@@ -36,8 +36,8 @@ class Thefuck < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
-    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.2.tar.gz"
+    sha256 "0994a58df27ea5dc523782a601357a2198b7493dcc99a30d51827a23585b5b1d"
   end
 
   def install
@@ -59,13 +59,20 @@ class Thefuck < Formula
   def caveats; <<-EOS.undent
     Add the following to your .bash_profile, .bashrc or .zshrc:
 
-      eval "$(thefuck-alias)"
+      eval "$(thefuck --alias)"
 
     For other shells, check https://github.com/nvbn/thefuck/wiki/Shell-aliases
     EOS
   end
 
   test do
-    assert_match /echo ok/, shell_output(bin/"thefuck echho ok")
+    assert_equal "The Fuck #{version}", shell_output("#{bin}/thefuck --version 2>&1").chomp
+    assert_match /.+TF_ALIAS.+thefuck.+/, shell_output("#{bin}/thefuck --alias").chomp
+    IO.popen("#{bin}/thefuck git branchh 2>&1", "r+") do |pipe|
+      pipe.puts "\n"
+      pipe.close_write
+      assert_match /git branch.+/, pipe.gets.chomp
+      pipe.close
+    end
   end
 end

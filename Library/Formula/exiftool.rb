@@ -1,14 +1,14 @@
 class Exiftool < Formula
   desc "Perl lib for reading and writing EXIF metadata"
   homepage "http://www.sno.phy.queensu.ca/~phil/exiftool/index.html"
-  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-9.99.tar.gz"
-  sha256 "23025dbf72bc3079b81ce44803846b759e4e8d0da0a7ab5398eb08ff300c56b0"
+  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-10.00.tar.gz"
+  sha256 "7b573331eba3921b56339018e95dd5e6f5a1e4634e4fc7bad91e5778da3571f4"
 
   bottle do
     cellar :any
-    sha256 "5aae5069133da400097b78e57b28253b107a807090262be7b0576f13db3151ca" => :yosemite
-    sha256 "ed80120c9413a6894d888d95ecece0f6de01fdd2556e7998168384494ecd803b" => :mavericks
-    sha256 "5004083cd34d03a182e0a52c4f26dd55e2fdeee2fb5d4c9cd76c0dda8fa1f15e" => :mountain_lion
+    sha256 "1bb061e6f38466bbbe8b59787c9bf6e29532c12db4b7762a48d8d96923929cfb" => :yosemite
+    sha256 "84f4222a30768b0c9891a1a32912d8f62ff64b26d3285c89774a8056f8843824" => :mavericks
+    sha256 "b0d3125dcfa56ffc2417ccbe40558257f634914821fbe86ae7c2a263276a7bec" => :mountain_lion
   end
 
   def install
