@@ -14,7 +14,9 @@ class FluentBit < Formula
   end
 
   test do
-    output = shell_output("fluent-bit --version")
-    assert_match /Fluent Bit/, output
+    pid = fork { exec bin/"fluent-bit", "--input", "stdin", "--output", "stdout" }
+    sleep 2
+    Process.kill("TERM", pid)
+    Process.wait(pid)
   end
 end
