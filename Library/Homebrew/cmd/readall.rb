@@ -31,6 +31,15 @@ module Homebrew
       Homebrew.failed = failed
     end
 
+    if ARGV.delete("--aliases")
+      Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*").each do |f|
+        next unless f.symlink?
+        next if f.file?
+        onoe "Broken alias: #{f}"
+        Homebrew.failed = true
+      end
+    end
+
     formulae = []
     if ARGV.named.empty?
       formulae = Formula.files
