@@ -58,14 +58,24 @@ class WebApi(system: ActorSystem,
 
   lazy val authenticator: AuthMagnet[AuthInfo] = {
     if (config.getBoolean("shiro.authentication")) {
+      import java.util.concurrent.TimeUnit
       logger.info("Using authentication.")
-      val sManager = new IniSecurityManagerFactory(config.getString("shiro.config.path")).getInstance()
-      SecurityUtils.setSecurityManager(sManager)
-      asShiroAuthenticator
+      initSecurityManager()
+      val authTimeout = Try(config.getDuration("shiro.authentication-timeout",
+              TimeUnit.MILLISECONDS).toInt / 1000).getOrElse(10)
+      asShiroAuthenticator(authTimeout)
     } else {
       logger.info("No authentication.")
       asAllUserAuthenticator
     }
+  }
+
+  /**
+   * possibly overwritten by test
+   */
+  def initSecurityManager() {
+    val sManager = new IniSecurityManagerFactory(config.getString("shiro.config.path")).getInstance()
+    SecurityUtils.setSecurityManager(sManager)
   }
 
   def start() {

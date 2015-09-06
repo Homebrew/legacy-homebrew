@@ -17,15 +17,12 @@ import spray.testkit.ScalatestRouteTest
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ Await, ExecutionContext, Future }
 import org.slf4j.LoggerFactory
+import java.util.concurrent.TimeoutException
 
-class SJSAuthenticatorSpec extends HttpService with SJSAuthenticator with FunSpecLike
-  with ScalatestRouteTest with Matchers with BeforeAndAfter with BeforeAndAfterAll {
-
-  def actorRefFactory = system
-
-  //edit this with your real LDAP server information, just remember not to 
+object SJSAuthenticatorSpec {
+    //edit this with your real LDAP server information, just remember not to 
   // check it in....
-  private val LdapIniConfig = """
+  val LdapIniConfig = """
 # use this for basic ldap authorization, without group checking
 # activeDirectoryRealm = org.apache.shiro.realm.ldap.JndiLdapRealm
 # use this for checking group membership of users based on the 'member' attribute of the groups:
@@ -42,7 +39,7 @@ cacheManager = org.apache.shiro.cache.MemoryConstrainedCacheManager
 securityManager.cacheManager = $cacheManager
 """
 
-    private val DummyIniConfig = """
+  val DummyIniConfig = """
 # =============================================================================
 # Tutorial INI configuration
 #
@@ -70,14 +67,22 @@ schwartz = lightsaber:*
 goodguy = winnebago:drive:eagle5
 """
 
+}
+
+class SJSAuthenticatorSpec extends HttpService with SJSAuthenticator with FunSpecLike
+    with ScalatestRouteTest with Matchers with BeforeAndAfter with BeforeAndAfterAll {
+
+  def actorRefFactory = system
+
+
   //set this to true to check your real ldap server
   val isGroupChecking = false
   val ini = {
     val tmp = new Ini()
     if (isGroupChecking) {
-      tmp.load(LdapIniConfig)
+      tmp.load(SJSAuthenticatorSpec.LdapIniConfig)
     } else {
-      tmp.load(DummyIniConfig)
+      tmp.load(SJSAuthenticatorSpec.DummyIniConfig)
     }
     tmp
   }
@@ -91,16 +96,16 @@ goodguy = winnebago:drive:eagle5
   val testUserWithValidGroup = if (isGroupChecking) {
     "user"
   } else {
-    "lonestarr" 
+    "lonestarr"
   }
 
   val testUserWithValidGroupPassword = if (isGroupChecking) {
     "user"
   } else {
-    "vespa" 
+    "vespa"
   }
 
-  val testUserWithoutValidGroup = if (isGroupChecking) { 
+  val testUserWithoutValidGroup = if (isGroupChecking) {
     "other-user"
   } else {
     "presidentskroob"
@@ -113,8 +118,6 @@ goodguy = winnebago:drive:eagle5
 
   val testUserInvalid = "no-user"
   val testUserInvalidPassword = "pw"
-
-
   
   describe("SJSAuthenticator") {
     it("should allow user with valid role/group") {

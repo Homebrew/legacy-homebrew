@@ -1,4 +1,5 @@
-
+# template for LDAP authorization
+#
 # use this for basic ldap authorization, without group checking
 activeDirectoryRealm = org.apache.shiro.realm.ldap.JndiLdapRealm
 # use this for checking group membership of users based on the 'member' attribute of the groups:

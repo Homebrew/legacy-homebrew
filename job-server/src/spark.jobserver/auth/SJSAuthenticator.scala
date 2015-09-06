@@ -25,7 +25,9 @@ import org.apache.shiro.subject.Subject
  */
 trait SJSAuthenticator {
 
-  def asShiroAuthenticator()(implicit ec: ExecutionContext): AuthMagnet[AuthInfo] = {
+  import scala.concurrent.duration._
+
+  def asShiroAuthenticator(authTimeout : Int)(implicit ec: ExecutionContext): AuthMagnet[AuthInfo] = {
     val logger = LoggerFactory.getLogger(getClass)
 
     def validate(userPass: Option[UserPass]): Future[Option[AuthInfo]] = {
@@ -36,7 +38,7 @@ trait SJSAuthenticator {
     }
 
     def authenticator(userPass: Option[UserPass]): Future[Option[AuthInfo]] = Future {
-      Await.result(validate(userPass), Duration.Inf)
+      Await.result(validate(userPass), authTimeout.seconds)
     }
 
     BasicAuth(authenticator _, realm = "Shiro Private")

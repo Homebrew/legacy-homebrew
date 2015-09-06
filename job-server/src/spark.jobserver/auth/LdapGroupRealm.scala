@@ -93,10 +93,10 @@ class LdapGroupRealm extends JndiLdapRealm {
     val groupAnswer = ldapContext.search(searchBase, LdapGroupRealm.groupMemberFilter,
       groupSearchAtts, searchCtls).asScala
 
-    groupAnswer.map(sr2 => {
+    groupAnswer.map { sr2 =>
       logger.debug("Checking members of group [%s]", sr2.getName())
       sr2.getName() -> getMembers(sr2)
-    }).toMap
+    }.toMap
   }
 
   private def getMembers(sr: SearchResult): Set[String] = {
@@ -117,12 +117,12 @@ class LdapGroupRealm extends JndiLdapRealm {
 
     val members = retrieveGroups(ldapContext)
 
-    answer.map(userSearchResult => {
+    answer.map { userSearchResult =>
       val fullGroupMemberName = "%s,%s" format (userSearchResult.getName(), searchBase)
       members.filter(entry => {
         entry._2.contains(fullGroupMemberName)
       }).map(e => e._1)
-    }).flatten.toSet
+    }.flatten.toSet
   }
 
   def isInAllowedGroupOrNoCheckOnGroups(roles: Set[String]): Boolean = {
