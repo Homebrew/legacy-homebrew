@@ -3,5 +3,6 @@ FORMULA_RENAMES = {
   "google-perftools" => "gperftools",
   "libcppa" => "caf",
   "objective-caml" => "ocaml",
+  "mpich2" => "mpich",
   "plt-racket" => "racket"
 }
