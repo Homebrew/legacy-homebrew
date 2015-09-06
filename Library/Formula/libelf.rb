@@ -18,8 +18,8 @@ class Libelf < Formula
                           "--disable-compat"
     # Use separate steps; there is a race in the Makefile.
     system "make"
-    mkdir_p lib
-    mkdir_p include+name
+    lib.mkpath
+    (include/name).mkpath
     system "make", "install"
   end
 end
