@@ -4,7 +4,7 @@ class Podgen < Formula
   desc "Static podcast site generator, especially for itunes podcast."
   homepage "https://github.com/tyrchen/podgen/"
   url "https://github.com/tyrchen/podgen/archive/v0.4.0.tar.gz"
-  sha256 "c05c70ae79c437c31cafa0a8d38e7d42636d66d10d804b18480d329eb890e84b"
+  sha256 "10c2159efcacef8db0f0507b738b3938fa4a662949a53cbf1737c6d73a040a66"
 
   head "https://github.com/tyrchen/podgen.git"
 
@@ -83,4 +83,3 @@ class Podgen < Formula
     assert File.open("items.yml").read.length > 0
   end
 end
-
