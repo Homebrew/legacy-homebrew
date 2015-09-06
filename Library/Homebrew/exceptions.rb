@@ -245,7 +245,7 @@ class BuildError < RuntimeError
       end
     end
     puts
-    unless RUBY_VERSION < "1.8.7" || issues.empty?
+    if RUBY_VERSION >= "1.8.7" && issues && issues.any?
       puts "These open issues may also help:"
       puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
