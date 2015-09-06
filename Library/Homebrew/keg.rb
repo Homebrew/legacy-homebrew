@@ -186,7 +186,7 @@ class Keg
     remove_oldname_opt_record
   end
 
-  def unlink
+  def unlink(mode = OpenStruct.new)
     ObserverPathnameExtension.reset_counts!
 
     dirs = []
@@ -201,16 +201,23 @@ class Keg
 
         # check whether the file to be unlinked is from the current keg first
         if dst.symlink? && src == dst.resolved_path
+          if mode.dry_run
+            puts dst
+            next
+          end
+
           dst.uninstall_info if dst.to_s =~ INFOFILE_RX
-          dst.unlink
+          dst.unlink 
           Find.prune if src.directory?
         end
       end
     end
 
-    remove_linked_keg_record if linked?
+    unless mode.dry_run
+      remove_linked_keg_record if linked?
 
-    dirs.reverse_each(&:rmdir_if_possible)
+      dirs.reverse_each(&:rmdir_if_possible)
+    end
 
     ObserverPathnameExtension.total
   end
