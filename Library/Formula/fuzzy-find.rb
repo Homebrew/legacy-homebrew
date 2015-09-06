@@ -1,5 +1,5 @@
 class FuzzyFind < Formula
-  desc "Fuzzy filename finder that matches across directories as well as files"
+  desc "Fuzzy filename finder matching across directories as well as files"
   homepage "https://github.com/silentbicycle/ff"
   url "https://github.com/silentbicycle/ff/archive/v0.6-flag-features.tar.gz"
   version "0.6.0"
@@ -11,6 +11,7 @@ class FuzzyFind < Formula
     system "make"
     bin.install "ff"
     man1.install "ff.1"
+    (share/"emacs/site-lisp/fuzzy-find").install "fuzzy-find.el"
   end
 
   test do
