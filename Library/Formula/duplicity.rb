@@ -1,9 +1,8 @@
 class Duplicity < Formula
   desc "Bandwidth-efficient encrypted backup"
   homepage "http://www.nongnu.org/duplicity/"
-  url "https://code.launchpad.net/duplicity/0.6-series/0.6.26/+download/duplicity-0.6.26.tar.gz"
-  sha256 "8bef8a5d805b79ae177e54d42152238bce1b2aaf9ad32e03a2c3a20cbd4e074a"
-  revision 1
+  url "https://code.launchpad.net/duplicity/0.7-series/0.7.06/+download/duplicity-0.7.06.tar.gz"
+  sha256 "0075595edb894399cf00fae9154aae93a07eaadc031fede5df4cc595436c7f8c"
 
   bottle do
     revision 1
@@ -11,11 +10,6 @@ class Duplicity < Formula
     sha256 "5be2b75e7e4ca4b3f9c42c419400657b870ad53b9267ea7471eb008244d180a2" => :yosemite
     sha256 "e0ef0577b6bc13975665e0c66d9e32a41dc84765afc383271eb69eb85ee789ca" => :mavericks
     sha256 "e5f3f41cbb71d4e543c1de7a6aa7b81bef0c395e60ab459e46e35cea54b66fd7" => :mountain_lion
-  end
-
-  devel do
-    url "https://code.launchpad.net/duplicity/0.7-series/0.7.05/+download/duplicity-0.7.05.tar.gz"
-    sha256 "1e53807d5de5bacbbe6c4eea2f313a16e9a63423316ae7b8597ee0d9e697f744"
   end
 
   option :universal
@@ -29,14 +23,20 @@ class Duplicity < Formula
   # lockfile python-swiftclient python-keystoneclient; do poet -r $i >>
   # resources; done
 
+  # MacOS versions prior to Yosemite need the latest setuptools in order to compile dependencies
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-19.1.1.tar.gz"
+    sha256 "32ebb08b72aee11fefa6907ddf5db5a81e0eef9cf62c7fa6b58d8e32da249960"
+  end
+
   resource "lockfile" do
-    url "https://pypi.python.org/packages/source/l/lockfile/lockfile-0.10.2.tar.gz"
-    sha256 "9e42252f17d1dd89ee31745e0c4fbe58862c25147eb0ef5295c9cd9bcb4ea2c1"
+    url "https://pypi.python.org/packages/source/l/lockfile/lockfile-0.12.2.tar.gz"
+    sha256 "6aed02de03cba24efabcd600b30540140634fc06cfa603822d508d5361e9f799"
   end
 
   resource "boto" do
-    url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
-    sha256 "8033c6f7a7252976df0137b62536cfe38f1dbd1ef443a7a6d8bc06c063bc36bd"
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.38.0.tar.gz"
+    sha256 "d9083f91e21df850c813b38358dc83df16d7f253180a1344ecfedce24213ecf2"
   end
 
   resource "PrettyTable" do
@@ -45,23 +45,23 @@ class Duplicity < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.8.1.tar.gz"
+    sha256 "84fe8d5bf4dcdcc49002446c47a146d17ac10facf00d9086659064ac43b6c25b"
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   resource "iso8601" do
-    url "https://pypi.python.org/packages/source/i/iso8601/iso8601-0.1.10.tar.gz"
-    sha256 "e712ff3a18604833f5073e836aad795b21170b19bbef70947c441ed89d0ac0e1"
+    url "https://pypi.python.org/packages/source/i/iso8601/iso8601-0.1.11.tar.gz"
+    sha256 "e8fb52f78880ae063336c94eb5b87b181e6a0cc33a6c008511bac9a6e980ef30"
   end
 
   resource "monotonic" do
-    url "https://pypi.python.org/packages/source/m/monotonic/monotonic-0.3.tar.gz"
-    sha256 "2825ba5ded67b1a70d44529634d3f4ddfad67a5ed7fdcf026022a3ce175be07b"
+    url "https://pypi.python.org/packages/source/m/monotonic/monotonic-0.4.tar.gz"
+    sha256 "852f656adbf623ee859def6ca2f5498f4cae3256f8320d5c50570ee8a0592ab6"
   end
 
   resource "msgpack-python" do
@@ -70,28 +70,28 @@ class Duplicity < Formula
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.4.tar.bz2"
-    sha256 "a78b484d5472dd8c688f8b3eee18646a25c66ce45b2c26652850f6af9ce52b17"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.7.tar.bz2"
+    sha256 "fbd26746772c24cb93c8b97cbdad5cb9e46c86bbdb1b9d8a743ee00e2fb1fc5d"
   end
 
   resource "Babel" do
-    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.0.tar.gz"
-    sha256 "44988df191123065af9857eca68e9151526a931c12659ca29904e4f11de7ec1b"
+    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.1.1.tar.gz"
+    sha256 "7fb6d50effe88a087feb2036cb972fd7a893bf338361516f1a55a820bf7b5248"
   end
 
   resource "debtcollector" do
-    url "https://pypi.python.org/packages/source/d/debtcollector/debtcollector-0.7.0.tar.gz"
-    sha256 "03ef06604e666a9f4a1506ffcfa887068bdb9f16e33657f9211a7b4e8bc753ea"
+    url "https://pypi.python.org/packages/source/d/debtcollector/debtcollector-1.1.0.tar.gz"
+    sha256 "87da37838bffbe61b7ba4986579e0ae06bc5f8eb2e197e89ef7419322655ae9b"
   end
 
   resource "pbr" do
-    url "https://pypi.python.org/packages/source/p/pbr/pbr-1.5.0.tar.gz"
-    sha256 "bd6db6ecddf5d8ab40d7d554508c29cfe0d150a1789f07d4dd32abe896068e7e"
+    url "https://pypi.python.org/packages/source/p/pbr/pbr-1.8.1.tar.gz"
+    sha256 "e2127626a91e6c885db89668976db31020f0af2da728924b56480fc7ccf09649"
   end
 
   resource "simplejson" do
-    url "https://pypi.python.org/packages/source/s/simplejson/simplejson-3.6.5.tar.gz"
-    sha256 "2a3189f79d1c7b8a2149a0e783c0b4217fad9b30a6e7d60450f2553dc2c0e57e"
+    url "https://pypi.python.org/packages/source/s/simplejson/simplejson-3.8.1.tar.gz"
+    sha256 "428ac8f3219c78fb04ce05895d5dff9bd813c05a9a7922c53dc879cd32a12493"
   end
 
   resource "netifaces" do
@@ -100,48 +100,48 @@ class Duplicity < Formula
   end
 
   resource "netaddr" do
-    url "https://pypi.python.org/packages/source/n/netaddr/netaddr-0.7.13.tar.gz"
-    sha256 "ca42c260b49e5fd74ba9104efa6a4fca6b55316ca42714d20d2b9b8e751e0412"
+    url "https://pypi.python.org/packages/source/n/netaddr/netaddr-0.7.18.tar.gz"
+    sha256 "a1f5c9fcf75ac2579b9995c843dade33009543c04f218ff7c007b3c81695bd19"
   end
 
   resource "oslo.i18n" do
-    url "https://pypi.python.org/packages/source/o/oslo.i18n/oslo.i18n-2.4.0.tar.gz"
-    sha256 "b788a543416483196015177daf77c2d2a8ba84ea72b4372a7afa54707333308c"
+    url "https://pypi.python.org/packages/source/o/oslo.i18n/oslo.i18n-3.1.0.tar.gz"
+    sha256 "1c82d9e3acd821015990fd111750fd949a5276ed6561a16e0a39d69e7145dbd8"
   end
 
   resource "oslo.utils" do
-    url "https://pypi.python.org/packages/source/o/oslo.utils/oslo.utils-2.3.0.tar.gz"
-    sha256 "c0ee7075a04a4c432d74d7b578fdc3478a5e831c9bd26fdff13b9bcc1e745ed4"
+    url "https://pypi.python.org/packages/source/o/oslo.utils/oslo.utils-3.2.0.tar.gz"
+    sha256 "c3d73a2c4556d88acd4b3b25786dbab83ee31aaea68c4c98cd4d1bfb9965f281"
   end
 
   resource "oslo.serialization" do
-    url "https://pypi.python.org/packages/source/o/oslo.serialization/oslo.serialization-1.8.0.tar.gz"
-    sha256 "89156873f2dfa4aed0265ca9c27d7e66c9aff6cfd5b01cafd2eb4e6bd462579b"
+    url "https://pypi.python.org/packages/source/o/oslo.serialization/oslo.serialization-2.1.0.tar.gz"
+    sha256 "8f8cb079e285a878dc176189edd7dced278d2419cc4d3e262f6669650f851643"
   end
 
   resource "stevedore" do
-    url "https://pypi.python.org/packages/source/s/stevedore/stevedore-1.7.0.tar.gz"
-    sha256 "68cf8691407cfd9c11e32381ef14ff566292dca0d113aba384d3fcc100933791"
+    url "https://pypi.python.org/packages/source/s/stevedore/stevedore-1.10.0.tar.gz"
+    sha256 "f5d689ef38e0ca532d57a03d1ab95e89b17c57f97b58d10c92da94699973779f"
   end
 
   resource "wrapt" do
-    url "https://pypi.python.org/packages/source/w/wrapt/wrapt-1.10.5.tar.gz"
-    sha256 "99cbb4e3a3ea964df0cb1437261fc1198616ec872e7b501622f3f7f92fcd0833"
+    url "https://pypi.python.org/packages/source/w/wrapt/wrapt-1.10.6.tar.gz"
+    sha256 "9576869bb74a43cbb36ee39dc3584e6830b8e5c788e83edf0a397eba807734ab"
   end
 
   resource "oslo.config" do
-    url "https://pypi.python.org/packages/source/o/oslo.config/oslo.config-2.2.0.tar.gz"
-    sha256 "8ecb41d524a5c09e9a06513936177c2b8df3494d065f6999df7c533370693e3d"
+    url "https://pypi.python.org/packages/source/o/oslo.config/oslo.config-3.1.0.tar.gz"
+    sha256 "eeb79675d94963fa406d75c99ed7ac1110eef3134b1060670a3ebd67527edb2d"
   end
 
   resource "python-keystoneclient" do
-    url "https://pypi.python.org/packages/source/p/python-keystoneclient/python-keystoneclient-1.6.0.tar.gz"
-    sha256 "45ac3b13b8b63ab62cb3fbfcaf46a2241d8053dfe17961db911c45c1f23d06ff"
+    url "https://pypi.python.org/packages/source/p/python-keystoneclient/python-keystoneclient-2.0.0.tar.gz"
+    sha256 "6c8895cc15c3ee42a7aea588da297b31e68eaf7af1dfd89eae9ed4c95da17500"
   end
 
   resource "python-novaclient" do
-    url "https://pypi.python.org/packages/source/p/python-novaclient/python-novaclient-2.20.0.tar.gz"
-    sha256 "73fc8169d58e910340aae1ac5370c3b63a9943f748e2a20e4a1dfd7277525c86"
+    url "https://pypi.python.org/packages/source/p/python-novaclient/python-novaclient-2.35.0.tar.gz"
+    sha256 "370838b48f72ad00aeeb470b00fe18cc8bc359df06a915ac526c4ef0c09e2cbb"
   end
 
   resource "rackspace-auth-openstack" do
@@ -150,18 +150,18 @@ class Duplicity < Formula
   end
 
   resource "rax_default_network_flags_python_novaclient_ext" do
-    url "https://pypi.python.org/packages/source/r/rax_default_network_flags_python_novaclient_ext/rax_default_network_flags_python_novaclient_ext-0.3.1.tar.gz"
-    sha256 "336d60bdb836dd4e51b142f7977da57b078ad2104a6628eaef7135c67a627c70"
+    url "https://pypi.python.org/packages/source/r/rax_default_network_flags_python_novaclient_ext/rax_default_network_flags_python_novaclient_ext-0.3.2.tar.gz"
+    sha256 "bf18d534f6ab1ca1c82680a71d631babee285257c7d99321413a19d773790915"
   end
 
   resource "mock" do
-    url "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz"
-    sha256 "b839dd2d9c117c701430c149956918a423a9863b48b09c90e30a6013e7d2f44f"
+    url "https://pypi.python.org/packages/source/m/mock/mock-1.3.0.tar.gz"
+    sha256 "1e247dbecc6ce057299eb7ee019ad68314bb93152e81d9a6110d35f4d5eca0f6"
   end
 
   resource "keyring" do
-    url "https://pypi.python.org/packages/source/k/keyring/keyring-4.1.zip"
-    sha256 "613087be1a0ad2870181ecc145b88459a576b6f434251cd559d41fc7f007760e"
+    url "https://pypi.python.org/packages/source/k/keyring/keyring-5.7.1.tar.gz"
+    sha256 "3df352616b856a3aebd699ab2e946d4a6e3b0219e696d5416bfc4c16530eeac0"
   end
 
   resource "os_diskconfig_python_novaclient_ext" do
@@ -170,13 +170,13 @@ class Duplicity < Formula
   end
 
   resource "os_networksv2_python_novaclient_ext" do
-    url "https://pypi.python.org/packages/source/o/os_networksv2_python_novaclient_ext/os_networksv2_python_novaclient_ext-0.21.tar.gz"
-    sha256 "2598aaaf19a6897be8427a402bb10b772178ed3c8922d9d955fa411ed8ec11a8"
+    url "https://pypi.python.org/packages/source/o/os_networksv2_python_novaclient_ext/os_networksv2_python_novaclient_ext-0.25.tar.gz"
+    sha256 "35ba71b027daf4c407d7a2fd94604d0437eea0c1de4d8d5d0f8ab69100834a0f"
   end
 
   resource "os_virtual_interfacesv2_python_novaclient_ext" do
-    url "https://pypi.python.org/packages/source/o/os_virtual_interfacesv2_python_novaclient_ext/os_virtual_interfacesv2_python_novaclient_ext-0.15.tar.gz"
-    sha256 "7d6c1371750568efc0f8a02e2b8d18fa885b9289ed25228252a2a6a5f0e53480"
+    url "https://pypi.python.org/packages/source/o/os_virtual_interfacesv2_python_novaclient_ext/os_virtual_interfacesv2_python_novaclient_ext-0.19.tar.gz"
+    sha256 "5171370e5cea447019cee5da22102b7eca4d4a7fb3f12875e2d7658d98462c0a"
   end
 
   resource "rax_scheduled_images_python_novaclient_ext" do
@@ -185,23 +185,23 @@ class Duplicity < Formula
   end
 
   resource "rackspace-novaclient" do
-    url "https://pypi.python.org/packages/source/r/rackspace-novaclient/rackspace-novaclient-1.4.tar.gz"
-    sha256 "68e1f53411b635f836a53d09e6c85f6a7d5d69d39df2e25a745406140cd5c275"
+    url "https://pypi.python.org/packages/source/r/rackspace-novaclient/rackspace-novaclient-1.5.tar.gz"
+    sha256 "0fcde7e22594d9710c65e850d11898bd342fa83849dc8ef32c2a94117f7132b1"
   end
 
   resource "pyrax" do
-    url "https://pypi.python.org/packages/source/p/pyrax/pyrax-1.9.3.tar.gz"
-    sha256 "0a3026c67df7bb84720cf562eef0fb15ad67dce79b6fc5e8da46621489be26bb"
+    url "https://pypi.python.org/packages/source/p/pyrax/pyrax-1.9.5.tar.gz"
+    sha256 "59ac98ae0549beb1eb36cc1f4985d565f126adbfa596d7fa5aaccde5ef194c0e"
   end
 
   resource "urllib3" do
-    url "https://pypi.python.org/packages/source/u/urllib3/urllib3-1.10.tar.gz"
-    sha256 "25b4a7fbbd9112e0190f31f8877aa0523caeab8630872ad1bbddaba01cdd6599"
+    url "https://pypi.python.org/packages/source/u/urllib3/urllib3-1.12.tar.gz"
+    sha256 "0ea512776971fe4e76192600fe41e4e7ee96b4b9a5b15aefc1ac31d2a63872c6"
   end
 
   resource "dropbox" do
-    url "https://pypi.python.org/packages/source/d/dropbox/dropbox-2.2.0.zip"
-    sha256 "66dcc404be00b98d7a12a7cc4465f16557e11a7e0e6916358038af6316cf3219"
+    url "https://pypi.python.org/packages/source/d/dropbox/dropbox-4.0.tar.gz"
+    sha256 "95f766839247b4c8c714dc3af9bab7b2b149e9fb507c7f2ba44ee321a76a684a"
   end
 
   resource "pycrypto" do
@@ -215,13 +215,13 @@ class Duplicity < Formula
   end
 
   resource "ecdsa" do
-    url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.11.tar.gz"
-    sha256 "8e3b6c193f91dc94b2f3b0261e3eabbdc604f78ff99fdad324a56fdd0b5e958c"
+    url "https://pypi.python.org/packages/source/e/ecdsa/ecdsa-0.13.tar.gz"
+    sha256 "64cf1ee26d1cde3c73c6d7d107f835fed7c6a2904aef9eac223d57ad800c43fa"
   end
 
   resource "paramiko" do
-    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.15.2.tar.gz"
-    sha256 "4f56a671a3eecbb76e6143e6e4ca007d503a39aa79aa9e14ade667fa53fd6e55"
+    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.16.0.tar.gz"
+    sha256 "3297ebd3cd072f573772f7c7426939a443c62c458d54bb632ff30fd6ecf96892"
   end
 
   resource "futures" do
@@ -230,13 +230,13 @@ class Duplicity < Formula
   end
 
   resource "python-swiftclient" do
-    url "https://pypi.python.org/packages/source/p/python-swiftclient/python-swiftclient-2.5.0.tar.gz"
-    sha256 "6efcbff0bf60521ef682068c10c2d8959d887f70ed84ccd2def9945e8e94560e"
+    url "https://pypi.python.org/packages/source/p/python-swiftclient/python-swiftclient-2.7.0.tar.gz"
+    sha256 "013f3d8296f5b4342341e086e95c4a1fc85a24caa22a9bcc7de6716b20de2a55"
   end
 
   resource "pexpect" do
-    url "https://pypi.python.org/packages/source/p/pexpect/pexpect-2.4.tar.gz"
-    sha256 "43c788f59dcf4bed677fd0b16891787dbf747e210ffedb6e90156fbbbd4d3b7b"
+    url "https://pypi.python.org/packages/source/p/pexpect/pexpect-4.0.1.tar.gz"
+    sha256 "232795ebcaaf2e120396dbbaa3a129eda51757eeaae1911558f4ef8ee414fc6c"
   end
 
   def install
@@ -246,9 +246,7 @@ class Duplicity < Formula
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
-      r.stage do
-        system "python", *Language::Python.setup_install_args(libexec/"vendor")
-      end
+      r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
     end
 
     system "python", *Language::Python.setup_install_args(libexec)
@@ -256,6 +254,11 @@ class Duplicity < Formula
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     man1.install Dir[libexec/"share/man/man1/*"]
+
+    # OSX doesn't provide a /usr/bin/python2. Upstream has been notified but
+    # cannot fix the issue. See:
+    #   https://github.com/Homebrew/homebrew/pull/34165#discussion_r22342214
+    inreplace "#{libexec}/bin/duplicity", "python2", "python"
   end
 
   test do
