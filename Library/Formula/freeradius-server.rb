@@ -1,31 +1,18 @@
 class FreeradiusServer < Formula
   desc "High-performance and highly configurable RADIUS server"
   homepage "http://freeradius.org/"
-
-  stable do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-2.2.7.tar.bz2"
-    mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-2.2.7.tar.bz2"
-    sha256 "6b0af62ded0fda9bb24aee568c3bc9e5f0c0b736530df3c1260e2b6085f2e5f9"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  devel do
-    url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.8.tar.bz2"
-    mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-3.0.8.tar.bz2"
-    sha256 "b89721c609e5a106936112fe8122e470f02a5197bb614e202d2c386f4821d902"
-    depends_on "talloc" => :build
-  end
+  url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.9.tar.bz2"
+  mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-3.0.9.tar.bz2"
+  sha256 "030d9bfe5ef42d0fd4be94a1fe03a60af9dff35b7ee89e50b0a73ff78606f7e9"
 
   bottle do
-    sha256 "8843ce6b2cacf638f211ff039a32c7f2a30e605fddf593d79760ceff52bd6a27" => :yosemite
-    sha256 "8485f3a73083a46f0b0c44b2351727db28c2ba3da6dce72c0f7737615d1b9f45" => :mavericks
-    sha256 "bfb6f2e71540d9a7763d242463bad1197e531825f84f7b1c1b09ad7ab7cde089" => :mountain_lion
+    sha256 "2a7bd5d5c1f586759be42d466ea4b4f8eb4d6302080b3419b06f3f264e507b0f" => :yosemite
+    sha256 "321acc149270fba2040f3d248b0de7aceb07efc1abfe0a89cb44063886c9a135" => :mavericks
+    sha256 "d27bcb30a5d4ad39ab29b0faf2462163a2a177300817af8c324bab2c44593f65" => :mountain_lion
   end
 
   depends_on "openssl"
+  depends_on "talloc"
 
   def install
     ENV.deparallelize
@@ -36,22 +23,9 @@ class FreeradiusServer < Formula
       --localstatedir=#{var}
       --with-openssl-includes=#{Formula["openssl"].opt_include}
       --with-openssl-libraries=#{Formula["openssl"].opt_lib}
+      --with-talloc-lib-dir=#{Formula["talloc"].opt_lib}
+      --with-talloc-include-dir=#{Formula["talloc"].opt_include}
     ]
-
-    if build.stable?
-      # libtool is glibtool on OS X
-      inreplace "configure.in", "libtool,,", "glibtool,,"
-      inreplace "autogen.sh", "libtool", "glibtool"
-
-      args << "--with-system-libtool"
-      args << "--with-system-libltdl"
-      system "./autogen.sh"
-    end
-
-    if build.devel?
-      args << "--with-talloc-lib-dir=#{Formula["talloc"].opt_lib}"
-      args << "--with-talloc-include-dir=#{Formula["talloc"].opt_include}"
-    end
 
     system "./configure", *args
     system "make"

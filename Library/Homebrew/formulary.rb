@@ -15,20 +15,24 @@ class Formulary
     FORMULAE.fetch(path)
   end
 
-  def self.load_formula(name, path)
+  def self.load_formula(name, path, contents, namespace)
     mod = Module.new
-    const_set("FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}", mod)
-    contents = path.open("r") { |f| set_encoding(f).read }
+    const_set(namespace, mod)
     mod.module_eval(contents, path)
     class_name = class_s(name)
 
     begin
-      klass = mod.const_get(class_name)
+      mod.const_get(class_name)
     rescue NameError => e
       raise FormulaUnavailableError, name, e.backtrace
-    else
-      FORMULAE[path] = klass
     end
+  end
+
+  def self.load_formula_from_path(name, path)
+    contents = path.open("r") { |f| set_encoding(f).read }
+    namespace = "FormulaNamespace#{Digest::MD5.hexdigest(path.to_s)}"
+    klass = load_formula(name, path, contents, namespace)
+    FORMULAE[path] = klass
   end
 
   if IO.method_defined?(:set_encoding)
@@ -76,7 +80,7 @@ class Formulary
     def load_file
       STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
       raise FormulaUnavailableError.new(name) unless path.file?
-      Formulary.load_formula(name, path)
+      Formulary.load_formula_from_path(name, path)
     end
   end
 
@@ -166,6 +170,23 @@ class Formulary
     end
   end
 
+  # Load formulae directly from their contents
+  class FormulaContentsLoader < FormulaLoader
+    # The formula's contents
+    attr_reader :contents
+
+    def initialize(name, path, contents)
+      @contents = contents
+      super name, path
+    end
+
+    def klass
+      STDERR.puts "#{$0} (#{self.class.name}): loading #{path}" if ARGV.debug?
+      namespace = "FormulaNamespace#{Digest::MD5.hexdigest(contents)}"
+      Formulary.load_formula(name, path, contents, namespace)
+    end
+  end
+
   # Return a Formula instance for the given reference.
   # `ref` is string containing:
   # * a formula name
@@ -195,6 +216,11 @@ class Formulary
     end
   end
 
+  # Return a Formula instance directly from contents
+  def self.from_contents(name, path, contents, spec = :stable)
+    FormulaContentsLoader.new(name, path, contents).get_formula(spec)
+  end
+
   def self.to_rack(ref)
     # First, check whether the rack with the given name exists.
     if (rack = HOMEBREW_CELLAR/File.basename(ref, ".rb")).directory?
@@ -219,7 +245,7 @@ class Formulary
 
   def self.loader_for(ref)
     case ref
-    when %r{(https?|ftp)://}
+    when %r{(https?|ftp|file)://}
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)

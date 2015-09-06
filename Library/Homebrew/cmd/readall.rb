@@ -17,18 +17,29 @@ module Homebrew
       end
 
       failed = false
-      workers = (0...Hardware::CPU.cores).map do
-        Thread.new do
-          begin
-            while rb = ruby_files.pop(true)
-              nostdout { failed = true unless system RUBY_PATH, "-c", "-w", rb }
+      nostdout do
+        workers = (0...Hardware::CPU.cores).map do
+          Thread.new do
+            begin
+              while rb = ruby_files.pop(true)
+                failed = true unless system RUBY_PATH, "-c", "-w", rb
+              end
+            rescue ThreadError # ignore empty queue error
             end
-          rescue ThreadError # ignore empty queue error
           end
         end
+        workers.map(&:join)
       end
-      workers.map(&:join)
       Homebrew.failed = failed
+    end
+
+    if ARGV.delete("--aliases")
+      Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*").each do |f|
+        next unless f.symlink?
+        next if f.file?
+        onoe "Broken alias: #{f}"
+        Homebrew.failed = true
+      end
     end
 
     formulae = []

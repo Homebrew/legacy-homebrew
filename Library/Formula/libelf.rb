@@ -1,15 +1,14 @@
 class Libelf < Formula
   desc "ELF object file access library"
   homepage "http://www.mr511.de/software/"
-  url "http://www.mr511.de/software/libelf-0.8.13.tar.gz"
-  sha256 "591a9b4ec81c1f2042a97aa60564e0cb79d041c52faa7416acb38bc95bd2c76d"
+  url "http://www.mr511.de/software/libelf-0.8.14.tar.gz"
+  sha256 "8022ccbd568c02e0b36331e533f78eeb3d0d1fa5637adac9b8b816d1ea358ebf"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "58ec51e663fa6375026ff609c1c189f870559d0c" => :yosemite
-    sha1 "0eeb37ce876f79cc0261cfd9c6ec9cfd8bc5c28b" => :mavericks
-    sha1 "a62370107719d8a92b0226335cd9dd73686ddd4f" => :mountain_lion
+    sha256 "5b4f036ec416c1f8d49cf524baf0c3b5b1b6c08a0a11e6991a16a640bd954e1e" => :yosemite
+    sha256 "795a8e67f7c32b39dd8a05e1eb31458e41ad0cbb569baf610ee5e532e8246c68" => :mavericks
+    sha256 "08f2f5b84072b5d7ec0a2fd2ac0a4c7dd7bdb5fd17fd4015df8882a07d273ec6" => :mountain_lion
   end
 
   def install
@@ -19,6 +18,8 @@ class Libelf < Formula
                           "--disable-compat"
     # Use separate steps; there is a race in the Makefile.
     system "make"
+    lib.mkpath
+    (include/name).mkpath
     system "make", "install"
   end
 end

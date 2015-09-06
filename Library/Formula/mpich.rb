@@ -1,6 +1,4 @@
-# This should really be named Mpich now, but homebrew cannot currently handle
-# formula renames, see homebrew issue #14374.
-class Mpich2 < Formula
+class Mpich < Formula
   desc "Implementation of the MPI Message Passing Interface standard"
   homepage "https://www.mpich.org/"
   url "https://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
@@ -9,10 +7,14 @@ class Mpich2 < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "b9a72ad2144103682aa485cada4d429c4f9397ffa94e5935d3fb44a59d54f18d" => :yosemite
-    sha256 "17b5fbbc2e19645ab9b20c39c7da8c02ca44addc5df7de020cf5b17acfa5c681" => :mavericks
-    sha256 "733c9baca04fcb032a8eb0fc812b429c1f54430f9cf4534814df1f0941aa8194" => :mountain_lion
+    sha256 "52f8f331dbb01514fca1d7921c38c6cab2dd77b06ee6a0c42e608d0719041aeb" => :yosemite
+    sha256 "2d99e877646cc27a13dd4b901050d1e1f5a716f2b2c775cbeaec263886a2d12d" => :mavericks
+    sha256 "56070798b3958bced4b32c3ef3c21f21b07df5e0f14389645d4ba03119d09a78" => :mountain_lion
+  end
+
+  devel do
+    url "https://www.mpich.org/static/downloads/3.2b4/mpich-3.2b4.tar.gz"
+    sha256 "4fecce31b02095643a093aa01900fc1c6dec7690259c7459cc423f0ed10e949b"
   end
 
   head do
@@ -22,12 +24,6 @@ class Mpich2 < Formula
     depends_on "automake" => :build
     depends_on "libtool"  => :build
   end
-
-  devel do
-    url "https://www.mpich.org/static/downloads/3.2b4/mpich-3.2b4.tar.gz"
-    sha256 "4fecce31b02095643a093aa01900fc1c6dec7690259c7459cc423f0ed10e949b"
-  end
-
   deprecated_option "disable-fortran" => "without-fortran"
 
   depends_on :fortran => :recommended

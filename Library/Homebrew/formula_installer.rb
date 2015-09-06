@@ -75,7 +75,6 @@ class FormulaInstaller
     return false if build_from_source? || build_bottle? || interactive?
     return false unless options.empty?
     return true  if formula.local_bottle_path
-    return false if formula.file_modified?
     return false unless bottle && formula.pour_bottle?
 
     unless bottle.compatible_cellar?
@@ -162,7 +161,7 @@ class FormulaInstaller
 
     unless ignore_deps?
       deps = compute_dependencies
-      check_dependencies_bottled(deps) if pour_bottle?
+      check_dependencies_bottled(deps) if pour_bottle? && !MacOS.has_apple_developer_tools?
       install_dependencies(deps)
     end
 
@@ -199,12 +198,6 @@ class FormulaInstaller
     build_bottle_preinstall if build_bottle?
 
     unless @poured_bottle
-      if formula.file_modified? && !build_from_source?
-        filename = formula.path.to_s.gsub("#{HOMEBREW_PREFIX}/", "")
-        opoo "Formula file is modified!"
-        puts "Building from source because #{filename} has local changes"
-        puts "To install from a bottle instead, run with --force-bottle"
-      end
       compute_and_install_dependencies if @pour_failed && !ignore_deps?
       build
       clean
@@ -248,10 +241,7 @@ class FormulaInstaller
   # abnormally with a BuildToolsError if one or more don't.
   # Only invoked when the user has no developer tools.
   def check_dependencies_bottled(deps)
-    unbottled = deps.select do |dep, _|
-      formula = dep.to_formula
-      !formula.pour_bottle? && !MacOS.has_apple_developer_tools?
-    end
+    unbottled = deps.reject { |dep, _| dep.to_formula.pour_bottle? }
 
     raise BuildToolsError.new(unbottled) unless unbottled.empty?
   end
@@ -593,7 +583,7 @@ class FormulaInstaller
       keg.remove_linked_keg_record
     end
 
-    link_overwrite_backup = {} # dict: conflict file -> backup file
+    link_overwrite_backup = {} # Hash: conflict file -> backup file
     backup_dir = HOMEBREW_CACHE/"Backup"
 
     begin
@@ -633,9 +623,9 @@ class FormulaInstaller
       @show_summary_heading = true
       ignore_interrupts do
         keg.unlink
-        link_overwrite_backup.each do |conflict_file, backup_file|
-          conflict_file.parent.mkpath
-          backup_file.rename conflict_file
+        link_overwrite_backup.each do |origin, backup|
+          origin.parent.mkpath
+          backup.rename origin
         end
       end
       Homebrew.failed = true
