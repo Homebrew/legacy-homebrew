@@ -1,8 +1,8 @@
 class Remind < Formula
   desc "Sophisticated calendar and alarm"
   homepage "https://www.roaringpenguin.com/products/remind"
-  url "https://www.roaringpenguin.com/files/download/remind-03.01.14.tar.gz"
-  sha256 "0ad14ae796dfd844e2901c691d03ebdd173fd8a71141df0c26c1d192f29031ad"
+  url "https://www.roaringpenguin.com/files/download/remind-03.01.15.tar.gz"
+  sha256 "8adab4c0b30a556c34223094c5c74779164d5f3b8be66b8039f44b577e678ec1"
 
   bottle do
     cellar :any
