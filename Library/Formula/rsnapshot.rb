@@ -1,8 +1,8 @@
 class Rsnapshot < Formula
   desc "File system snapshot utility (based on rsync)"
   homepage "http://rsnapshot.org"
-  url "http://rsnapshot.org/downloads/rsnapshot-1.4.0.tar.gz"
-  sha256 "222574fee2f59d0e3ef5da6e6dd0f445205fecfa7ca12ef821eb8a89cf4f2ca8"
+  url "http://rsnapshot.org/downloads/rsnapshot-1.4.1.tar.gz"
+  sha256 "fb4a1129a7d3805c41749fd0494debfe2ca2341eba0f8b50e4f54985efe448e8"
 
   head "https://github.com/DrHyde/rsnapshot.git"
 
