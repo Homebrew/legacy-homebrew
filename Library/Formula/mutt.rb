@@ -1,9 +1,13 @@
 # Note: Mutt has a large number of non-upstream patches available for
 # it, some of which conflict with each other. These patches are also
 # not kept up-to-date when new versions of mutt (occasionally) come
-# out.  To reduce Homebrew's maintenance burden, new patches are not
-# being accepted for this formula. Mutt power-users are encouraged to
-# copy the formula and modify it locally, adding needed patches.
+# out.
+#
+# To reduce Homebrew's maintenance burden, new patches are not being
+# accepted for this formula. We would be very happy to see members of
+# the mutt community maintain a more comprehesive tap with better
+# support for patches.
+
 class Mutt < Formula
   desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
@@ -34,10 +38,8 @@ class Mutt < Formula
     :because => "both install mmdf.5 and mbox.5 man pages"
 
   option "with-debug", "Build with debug option enabled"
-  option "with-trash-patch", "Apply trash folder patch"
   option "with-s-lang", "Build against slang instead of ncurses"
   option "with-ignore-thread-patch", "Apply ignore-thread patch"
-  option "with-pgp-verbose-mime-patch", "Apply PGP verbose mime patch"
   option "with-confirm-attachment-patch", "Apply confirm attachment patch"
 
   depends_on "autoconf" => :build
@@ -48,27 +50,21 @@ class Mutt < Formula
   depends_on "s-lang" => :optional
   depends_on "gpgme" => :optional
 
-  patch do
-    url "ftp://ftp.openbsd.org/pub/OpenBSD/distfiles/mutt/trashfolder-1.5.22.diff0.gz"
-    sha1 "c597566c26e270b99c6f57e046512a663d2f415e"
-  end if build.with? "trash-patch"
-
   # original source for this went missing, patch sourced from Arch at
   # https://aur.archlinux.org/packages/mutt-ignore-thread/
-  patch do
-    url "https://gist.githubusercontent.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch"
-    sha1 "dbcf5de46a559bca425028a18da0a63d34f722d3"
-  end if build.with? "ignore-thread-patch"
+  if build.with? "ignore-thread-patch"
+    patch do
+      url "https://gist.githubusercontent.com/mistydemeo/5522742/raw/1439cc157ab673dc8061784829eea267cd736624/ignore-thread-1.5.21.patch"
+      sha256 "7290e2a5ac12cbf89d615efa38c1ada3b454cb642ecaf520c26e47e7a1c926be"
+    end
+  end
 
-  patch do
-    url "https://raw.githubusercontent.com/psych0tik/mutt/73c09bc56e79605cf421a31c7e36958422055a20/debian/patches/features-old/patch-1.5.4.vk.pgp_verbose_mime"
-    sha1 "a436f967aa46663cfc9b8933a6499ca165ec0a21"
-  end if build.with? "pgp-verbose-mime-patch"
-
-  patch do
-    url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
-    sha1 "94da52d50508d8951aa78ca4b073023414866be1"
-  end if build.with? "confirm-attachment-patch"
+  if build.with? "confirm-attachment-patch"
+    patch do
+      url "https://gist.githubusercontent.com/tlvince/5741641/raw/c926ca307dc97727c2bd88a84dcb0d7ac3bb4bf5/mutt-attach.patch"
+      sha256 "da2c9e54a5426019b84837faef18cc51e174108f07dc7ec15968ca732880cb14"
+    end
+  end
 
   def install
     args = ["--disable-dependency-tracking",
