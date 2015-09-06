@@ -199,7 +199,7 @@ class FormulaInstaller
     build_bottle_preinstall if build_bottle?
 
     unless @poured_bottle
-      if formula.file_modified? && !build_from_source?
+      if formula.bottle && !build_from_source? && formula.file_modified?
         filename = formula.path.to_s.gsub("#{HOMEBREW_PREFIX}/", "")
         opoo "Formula file is modified!"
         puts "Building from source because #{filename} has local changes"
