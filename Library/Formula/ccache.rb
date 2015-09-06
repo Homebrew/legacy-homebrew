@@ -1,8 +1,8 @@
 class Ccache < Formula
   desc "Object-file caching compiler wrapper"
   homepage "https://ccache.samba.org/"
-  url "https://samba.org/ftp/ccache/ccache-3.2.2.tar.bz2"
-  sha256 "440f5e15141cc72d2bfff467c977020979810eb800882e3437ad1a7153cce7b2"
+  url "https://samba.org/ftp/ccache/ccache-3.2.3.tar.bz2"
+  sha256 "b07165d4949d107d17f2f84b90b52953617bf1abbf249d5cc20636f43337c98c"
 
   bottle do
     sha256 "56dbbc62a9951890abc7d1ddaf52e615127c9464365f771929f8490aa5355c05" => :yosemite
@@ -20,7 +20,7 @@ class Ccache < Formula
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}", "--with-bundled-zlib"
     system "make"
     system "make", "install"
 
