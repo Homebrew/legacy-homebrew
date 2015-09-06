@@ -40,8 +40,8 @@ class Lsyncd < Formula
     "10.10.1"  => ["xnu-2782.1.97.tar.gz", "18fd93155c53fa66c48c2c876313311bba55cff260ea10e7b67dd7ed1f4b945c"],
     "10.10.2"  => ["xnu-2782.10.72.tar.gz", "0725dfc77ce245e37b57d226445217c17d0a7750db099d3ca69a4ad1c7f39356"],
     "10.10.3"  => ["xnu-2782.20.48.tar.gz", "75effef91dbeb7ab59da7a62936e37e30c2a2feca9ee653d3245b6a5b17ad2d7"],
-    "10.10.4"  => ["xnu-2782.1.97.tar.gz", "18fd93155c53fa66c48c2c876313311bba55cff260ea10e7b67dd7ed1f4b945c"],
-    "10.10.5"  => ["xnu-2782.1.97.tar.gz", "18fd93155c53fa66c48c2c876313311bba55cff260ea10e7b67dd7ed1f4b945c"],
+    "10.10.4"  => ["xnu-2782.20.48.tar.gz", "75effef91dbeb7ab59da7a62936e37e30c2a2feca9ee653d3245b6a5b17ad2d7"],
+    "10.10.5"  => ["xnu-2782.20.48.tar.gz", "75effef91dbeb7ab59da7a62936e37e30c2a2feca9ee653d3245b6a5b17ad2d7"],
     "10.11"  => ["xnu-2782.20.48.tar.gz", "75effef91dbeb7ab59da7a62936e37e30c2a2feca9ee653d3245b6a5b17ad2d7"],
   }
 
