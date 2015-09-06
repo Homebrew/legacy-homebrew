@@ -4,6 +4,7 @@ class Burp < Formula
   url "https://github.com/grke/burp/archive/1.4.40.tar.gz"
   sha256 "2e6a9a28453a11f3e36d0beefa185e72e7781a8718b55d3101144c9900752d6f"
   head "https://github.com/grke/burp.git"
+  revision 1
 
   bottle do
     cellar :any
