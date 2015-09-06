@@ -203,6 +203,7 @@ class Keg
         if dst.symlink? && src == dst.resolved_path
           if mode.dry_run
             puts dst
+            Find.prune if src.directory?
             next
           end
 
