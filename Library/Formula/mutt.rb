@@ -7,10 +7,9 @@
 class Mutt < Formula
   desc "Mongrel of mail user agents (part elm, pine, mush, mh, etc.)"
   homepage "http://www.mutt.org/"
-  url "https://mirrors.kernel.org/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mutt/mutt_1.5.23.orig.tar.gz"
-  sha256 "3af0701e57b9e1880ed3a0dee34498a228939e854a16cdccd24e5e502626fd37"
-  revision 2
+  url "https://bitbucket.org/mutt/mutt/downloads/mutt-1.5.24.tar.gz"
+  mirror "ftp://ftp.mutt.org/pub/mutt/mutt-1.5.24.tar.gz"
+  sha256 "a292ca765ed7b19db4ac495938a3ef808a16193b7d623d65562bb8feb2b42200"
 
   bottle do
     revision 3
