@@ -378,10 +378,13 @@ formula.</p>
 launched with access to IRB or a shell inside the temporary test directory.</p>
 
 <p>Example: <code>brew install jruby &amp;&amp; brew test jruby</code></p></li>
-<li><p><code>unlink</code> <var>formula</var>:
+<li><p><code>unlink [--dry-run]</code> <var>formula</var>:
 Remove symlinks for <var>formula</var> from the Homebrew prefix. This can be useful
 for temporarily disabling a formula:
-<code>brew unlink foo &amp;&amp; commands &amp;&amp; brew link foo</code>.</p></li>
+<code>brew unlink foo &amp;&amp; commands &amp;&amp; brew link foo</code>.</p>
+
+<p>If <code>--dry-run</code> or <code>-n</code> is passed, Homebrew will list all files which would
+be unlinked, but will not actually unlink or delete any files.</p></li>
 <li><p><code>unlinkapps [--local]</code> [<var>formulae</var>]:
 Removes links created by <code>brew linkapps</code>.</p>
 

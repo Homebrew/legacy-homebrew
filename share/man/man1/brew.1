@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "August 2015" "Homebrew" "brew"
+.TH "BREW" "1" "September 2015" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -409,7 +409,10 @@ If \fB\-\-debug\fR is passed and the test fails, an interactive debugger will be
 Example: \fBbrew install jruby && brew test jruby\fR
 .
 .IP "\(bu" 4
-\fBunlink\fR \fIformula\fR: Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+\fBunlink [\-\-dry\-run]\fR \fIformula\fR: Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+.
+.IP
+If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which would be unlinked, but will not actually unlink or delete any files\.
 .
 .IP "\(bu" 4
 \fBunlinkapps [\-\-local]\fR [\fIformulae\fR]: Removes links created by \fBbrew linkapps\fR\.

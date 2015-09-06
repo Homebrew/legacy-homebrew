@@ -429,10 +429,13 @@ Note that these flags should only appear after a command.
 
     Example: `brew install jruby && brew test jruby`
 
-  * `unlink` <formula>:
+  * `unlink [--dry-run]` <formula>:
     Remove symlinks for <formula> from the Homebrew prefix. This can be useful
     for temporarily disabling a formula:
     `brew unlink foo && commands && brew link foo`.
+
+    If `--dry-run` or `-n` is passed, Homebrew will list all files which would
+    be unlinked, but will not actually unlink or delete any files.
 
   * `unlinkapps [--local]` [<formulae>]:
     Removes links created by `brew linkapps`.
