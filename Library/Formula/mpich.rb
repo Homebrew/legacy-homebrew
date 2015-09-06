@@ -1,5 +1,3 @@
-# This should really be named Mpich now, but homebrew cannot currently handle
-# formula renames, see homebrew issue #14374.
 class Mpich < Formula
   desc "Implementation of the MPI Message Passing Interface standard"
   homepage "https://www.mpich.org/"
