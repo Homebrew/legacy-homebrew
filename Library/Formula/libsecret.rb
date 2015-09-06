@@ -1,14 +1,13 @@
 class Libsecret < Formula
   desc "Library for storing/retrieving passwords and other secrets"
   homepage "https://wiki.gnome.org/Projects/Libsecret"
-  url "https://download.gnome.org/sources/libsecret/0.18/libsecret-0.18.tar.xz"
-  sha256 "0c73aa762dbd1e38ba7b03de350e23ce818cb810b0784375e95ef61e004b02e3"
+  url "https://download.gnome.org/sources/libsecret/0.18/libsecret-0.18.3.tar.xz"
+  sha256 "f2bf1d0c5ab4640664f3e3c7ef6b086c180e50ff415720b5e22f96750dbf84c9"
 
   bottle do
-    revision 2
-    sha1 "6716e52cad2d6f84a0cf4a5211bb7cc4cd38dde8" => :yosemite
-    sha1 "05bed826d27824dc9e0588126473bba2e2e31428" => :mavericks
-    sha1 "aa373554171d40655dff546a66c4f45d372a04d7" => :mountain_lion
+    sha256 "dadf181684aa4cde7b1b63aafd4a912b29c0a60b8948e42b2bfe363d156b89ed" => :yosemite
+    sha256 "7d6cfd2b0ec29d4030174053717d1efde4908f2e652892a24886b653b46ed5fc" => :mavericks
+    sha256 "0f84396333914ef681c2b26e0ace27fce72becdf647d15a2175fb63d7c36def6" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
