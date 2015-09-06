@@ -6,9 +6,9 @@ class FreeradiusServer < Formula
   sha256 "030d9bfe5ef42d0fd4be94a1fe03a60af9dff35b7ee89e50b0a73ff78606f7e9"
 
   bottle do
-    sha256 "8843ce6b2cacf638f211ff039a32c7f2a30e605fddf593d79760ceff52bd6a27" => :yosemite
-    sha256 "8485f3a73083a46f0b0c44b2351727db28c2ba3da6dce72c0f7737615d1b9f45" => :mavericks
-    sha256 "bfb6f2e71540d9a7763d242463bad1197e531825f84f7b1c1b09ad7ab7cde089" => :mountain_lion
+    sha256 "2a7bd5d5c1f586759be42d466ea4b4f8eb4d6302080b3419b06f3f264e507b0f" => :yosemite
+    sha256 "321acc149270fba2040f3d248b0de7aceb07efc1abfe0a89cb44063886c9a135" => :mavericks
+    sha256 "d27bcb30a5d4ad39ab29b0faf2462163a2a177300817af8c324bab2c44593f65" => :mountain_lion
   end
 
   depends_on "openssl"
