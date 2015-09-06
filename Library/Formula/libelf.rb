@@ -1,8 +1,8 @@
 class Libelf < Formula
   desc "ELF object file access library"
   homepage "http://www.mr511.de/software/"
-  url "http://www.mr511.de/software/libelf-0.8.13.tar.gz"
-  sha256 "591a9b4ec81c1f2042a97aa60564e0cb79d041c52faa7416acb38bc95bd2c76d"
+  url "http://www.mr511.de/software/libelf-0.8.14.tar.gz"
+  sha256 "8022ccbd568c02e0b36331e533f78eeb3d0d1fa5637adac9b8b816d1ea358ebf"
 
   bottle do
     cellar :any
@@ -19,6 +19,8 @@ class Libelf < Formula
                           "--disable-compat"
     # Use separate steps; there is a race in the Makefile.
     system "make"
+    mkdir_p lib
+    mkdir_p include+name
     system "make", "install"
   end
 end
