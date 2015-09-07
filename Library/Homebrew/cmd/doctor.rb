@@ -247,7 +247,7 @@ class Checks
   end
 
   def check_for_unsupported_osx
-    if MacOS.version >= "10.11" then <<-EOS.undent
+    if !ARGV.homebrew_developer? && MacOS.version >= "10.11" then <<-EOS.undent
     You are using OS X #{MacOS.version}.
     We do not provide support for this pre-release version.
     You may encounter build failures or other breakage.
