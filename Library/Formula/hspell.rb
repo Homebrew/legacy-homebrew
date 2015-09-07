@@ -5,15 +5,22 @@ class Hspell < Formula
   sha256 "603c25dcbaa65d171d9065da7369cfe0dc21bda8378bade13b42eda69c8b2fe7"
 
   def install
+    ENV.deparallelize
+
     inreplace "Makefile.in", "soname", "install_name"
 
+
     system "./configure", "--prefix=#{prefix}",
-                          "--enable-shared"
-    system "make"
+                          "--enable-shared",
+                          "--enable-linginfo"
+    system "make", "dolinginfo"
     system "make", "install"
   end
 
   test do
-    system "hspell", "-v"
+    File.open("test.txt", "w:ISO8859-8") do |f|
+      f.write "שלום"
+    end
+    system "hspell", "-l", "test.txt"
   end
 end
