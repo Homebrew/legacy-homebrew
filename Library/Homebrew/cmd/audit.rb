@@ -211,11 +211,6 @@ class FormulaAuditor
   end
 
   @@aliases ||= Formula.aliases
-  @@remote_official_taps ||= if (homebrew_tapd = HOMEBREW_LIBRARY/"Taps/homebrew").directory?
-    OFFICIAL_TAPS - homebrew_tapd.subdirs.map(&:basename).map { |tap| tap.to_s.sub(/^homebrew-/, "") }
-  else
-    OFFICIAL_TAPS
-  end
 
   def audit_formula_name
     return unless @strict
@@ -246,6 +241,8 @@ class FormulaAuditor
     end
 
     if @online
+      @@remote_official_taps ||= OFFICIAL_TAPS - Tap.select(&:official?).map(&:repo)
+
       same_name_tap_formulae += @@remote_official_taps.map do |tap|
         Thread.new { Homebrew.search_tap "homebrew", tap, name }
       end.flat_map(&:value)
