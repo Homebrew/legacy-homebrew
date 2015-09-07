@@ -4,6 +4,12 @@ class Ghex < Formula
   url "https://download.gnome.org/sources/ghex/3.10/ghex-3.10.1.tar.xz"
   sha256 "34b66cb5c84410c420df72f229d25aee5979e58048a246ed719b046f0c241132"
 
+  bottle do
+    sha256 "e52e0de4433e01d625f49a5bb871b132b395fb57b8dfbcddaf01e97adc9f08e6" => :yosemite
+    sha256 "1a85bc508918b1fe7ed481082bc1c0b7f952ecfbd7a514ec9e9ac52f95cc8daa" => :mavericks
+    sha256 "7b0c21b630bc1e020362b42e5d2a52d0c04a764c52b03a041a434b4f719a09e7" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "itstool" => :build
