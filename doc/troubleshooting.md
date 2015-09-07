@@ -63,3 +63,20 @@ If you are running CDH 5.3 or older, you may have an incompatible version of Akk
 ## Akka Deadletters / Workers disconnect from Job Server
 
 Most likely a networking issue. Try using IP addresses instead of DNS.  (happens in AWS)
+
+## java.lang.ClassNotFoundException when staring spark-jobserver from sbt
+
+Symptom: 
+
+You start from SBT using `reStart`, and when try to create a HiveContext or SQLContext, e.g. using context-factory=spark.jobserver.context.HiveContextFactory and get an error like this 
+    {"status": "CONTEXT INIT ERROR",
+      "result": {
+        "message": "spark.jobserver.context.HiveContextFactory",
+        "errorClass": "java.lang.ClassNotFoundException",
+        ...
+      }
+    ...
+    
+Solution:
+
+Before typing `reStart` in sbt, type `project job-server-extras` and only then start it using `reStart` 

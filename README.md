@@ -21,6 +21,8 @@ See [Troubleshooting Tips](doc/troubleshooting.md) as well as [Yarn tips](doc/ya
 - Aruba Networks
 - [Zed Worldwide](http://www.zed.com)
 - [KNIME](https://www.knime.org/)
+- [Azavea](http://azavea.com)
+- [Maana](http://maana.io/)
 
 ## Features
 
@@ -88,7 +90,7 @@ Then go ahead and start the job server using the instructions above.
 
 Let's upload the jar:
 
-    curl --data-binary @job-server-tests/target/job-server-tests-$VER.jar localhost:8090/jars/test
+    curl --data-binary @job-server-tests/target/scala-2.10/job-server-tests-$VER.jar localhost:8090/jars/test
     OK⏎
 
 #### Ad-hoc Mode - Single, Unrelated Jobs (Transient Context)
@@ -297,11 +299,12 @@ curl -k --basic --user 'user:pw' https://localhost:8090/contexts
 
 ### Manual steps
 
-1.1 Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.  NOTE: be sure to set SPARK_VERSION if you need to compile against a different version, ie. 1.4.1 for job server 0.5.2
-1.2 Copy `config/shiro.ini.template` to `shiro.ini` and edit as appropriate. NOTE: only required when `authentication = on`
-2. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
+1. Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.  NOTE: be sure to set SPARK_VERSION if you need to compile against a different version, ie. 1.4.1 for job server 0.5.2
+2. Copy `config/shiro.ini.template` to `shiro.ini` and edit as appropriate. NOTE: only required when `authentication = on`
+3. Copy `config/local.conf.template` to `<environment>.conf` and edit as appropriate.
+4. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
    it to the remotes you have configured in `<environment>.sh`
-3. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
+5. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
 
 The `server_start.sh` script uses `spark-submit` under the hood and may be passed any of the standard extra arguments from `spark-submit`.
 
