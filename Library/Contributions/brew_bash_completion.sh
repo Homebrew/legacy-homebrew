@@ -195,7 +195,7 @@ _brew_desc ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--search"
+        __brewcomp "--search --name --description"
         return
         ;;
     esac
