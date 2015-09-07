@@ -5,15 +5,14 @@ class Golo < Formula
   sha256 "59c7324b7eac88dfe2cb9612468cf5639ae0b84e44319b2ee617e0e054eed422"
 
   devel do
-    url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation-M1-distribution.zip&r=1"
-    sha256 "fd92e70e11a7c4dccd160b1236a0981cfa3cb22d8af190d177c5c4e909e020ae"
-    version "3.0.0-incubation-M1"
+    url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation-M2.zip&r=1"
+    sha256 "d7e6aaca40a07cb8dc4574edf004199ea75543c5fa7888fe769969678fabdc58"
+    version "3.0.0-incubation-M2"
     depends_on :java => "1.8+"
   end
 
   head do
     url "https://github.com/eclipse/golo-lang.git"
-    depends_on "maven" => :build
     depends_on :java => "1.8+"
   end
 
@@ -21,8 +20,10 @@ class Golo < Formula
 
   def install
     if build.head?
-      rake "special:bootstrap"
-      libexec.install %w[target/appassembler/bin target/appassembler/lib]
+      system "./gradlew", "installDist"
+      libexec.install %w[build/install/golo/bin build/install/golo/docs build/install/golo/lib]
+    elsif build.devel?
+      libexec.install %w[bin docs lib]
     else
       libexec.install %w[bin doc lib]
     end
