@@ -4,6 +4,12 @@ class Ganglia < Formula
   url "https://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.7.1/ganglia-3.7.1.tar.gz"
   sha256 "e735a6218986a0ff77c737e5888426b103196c12dc2d679494ca9a4269ca69a3"
 
+  bottle do
+    sha256 "2fa8bdba3a209fb748b75ca2ac577dc73ceecf3119aae297ded3f8e52d8bf5c5" => :yosemite
+    sha256 "1d0c19c31b897552093cbad7e278c27eb04c0f3b624b81fa81546dfe45501a13" => :mavericks
+    sha256 "cf31c6f82ffed72b8b3b10c2783218390ead29608a3fed16d7511d406eb7859f" => :mountain_lion
+  end
+
   head do
     url "https://github.com/ganglia/monitor-core.git"
 
