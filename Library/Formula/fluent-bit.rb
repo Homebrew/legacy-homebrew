@@ -14,9 +14,10 @@ class FluentBit < Formula
   end
 
   test do
-    pid = fork { exec bin/"fluent-bit", "--input", "stdin", "--output", "stdout" }
-    sleep 2
-    Process.kill("TERM", pid)
-    Process.wait(pid)
+    io = IO.popen("#{bin}/fluent-bit --input stdin --output stdout")
+    sleep 5
+    Process.kill("SIGINT", io.pid)
+    Process.wait(io.pid)
+    io.read =~ /Fluent-Bit v#{version}/
   end
 end
