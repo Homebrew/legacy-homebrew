@@ -6,9 +6,9 @@ class GitOctopus < Formula
 
   bottle do
     cellar :any
-    sha256 "be33fe6c653675fb777b830ba7b5ba5d41986e87bcd2d79d5887240862c287a9" => :yosemite
-    sha256 "8fa36a0ea95851074f36b0375f0138293f7c3aa0fc6f819a14987e4c1dc520ee" => :mavericks
-    sha256 "7c953c0d60e50045229f63d9efecb9a9b25791f336efde09b91026067102682e" => :mountain_lion
+    sha256 "4979b6cf8a420382ea66d5afa883bdb28f76405c70f56f89a063123d9c6cafdf" => :yosemite
+    sha256 "8112153bc59267178cfc95fc1b30adbea362c3cd62bd39947de6b41aedcf0a1d" => :mavericks
+    sha256 "08dd8fe44df56b08d525310db0142bb77494ae614ab85ed08ee5fbf263a393d5" => :mountain_lion
   end
 
   def install
