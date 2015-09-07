@@ -4,13 +4,6 @@ class Puddletag < Formula
   url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
   sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
 
-  bottle do
-    cellar :any
-    sha256 "a68e0d8951475db3151e8bbd91a66028200ea2bd18363fcd37a6d9191e693633" => :yosemite
-    sha256 "64fbfbe641417db9cf8544360628c15894e633a48b81765033f0f2f404876419" => :mavericks
-    sha256 "c5ff96058a4f5262822327108318549a76beeaef4c39715944a22b30bdd19280" => :mountain_lion
-  end
-
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pyqt"
   depends_on "chromaprint" => :recommended
@@ -45,7 +38,40 @@ class Puddletag < Formula
     ENV.prepend_create_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python2.7/site-packages"
 
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", :PATH => HOMEBREW_PREFIX/"bin:$PATH", :PYTHONPATH => ENV["PYTHONPATH"])
+
+    Pathname("Info.plist").write <<-EOS.undent
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>CFBundleDevelopmentRegion</key>
+        <string>English</string>
+        <key>CFBundleExecutable</key>
+        <string>Puddletag</string>
+        <key>CFBundleIconFile</key>
+        <string>Puddletag</string>
+        <key>CFBundleIdentifier</key>
+        <string>com.github.keithgg.puddletag</string>
+        <key>CFBundleInfoDictionaryVersion</key>
+        <string>6.0</string>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>CFBundleVersion</key>
+        <string>1.0</string>
+        <key>CFBundleSignature</key>
+        <string>PUDDLE</string>
+      </dict>
+      </plist>
+    EOS
+
+    mkdir_p "Puddletag.app/Contents/MacOS"
+    mkdir_p "Puddletag.app/Contents/Resources"
+    cp buildpath/"Info.plist", "Puddletag.app/Contents"
+    system "sips", "-s", "format", "icns", buildpath/"puddletag.png", "--out", "Puddletag.app/Contents/Resources/Puddletag.icns"
+    cp prefix/"bin/puddletag", "Puddletag.app/Contents/MacOS/Puddletag"
+    chmod "+x", "Puddletag.app/Contents/MacOS/Puddletag"
+    prefix.install "Puddletag.app"
   end
 
   test do
