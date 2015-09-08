@@ -1,5 +1,5 @@
 class Miller < Formula
-  desc "Miller is like sed, awk, cut, and sort for name-indexed data such as CSV."
+  desc "Miller is like sed, awk, cut, and sort, and join for data such as CSV."
   homepage "http://johnkerl.org/miller/"
   url "https://github.com/johnkerl/miller/archive/v2.1.3.tar.gz"
   sha256 "feb246c1a199e9a18c9ec630ddc021fca4ba9f1bf55286bf03018570b81e760c"
