@@ -4,6 +4,12 @@ class GeocodeGlib < Formula
   url "https://download.gnome.org/sources/geocode-glib/3.16/geocode-glib-3.16.2.tar.xz"
   sha256 "a551ffdbd793d54a14e709c9d02e82dde3abc14eed8065abad92275a43fe2c97"
 
+  bottle do
+    sha256 "3830373806212fb96930c17c016c7e358b6109a3a4239bac3eb04c2b3c4742ca" => :yosemite
+    sha256 "157a923195ede1aa0548660e6a98b9d2123f99764d2aa591d51099eeeb2b23cb" => :mavericks
+    sha256 "7955d0be49e8ad30b5abe9c3eab9e731392df51ce2fee30a5962e2963f725f4e" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gtk+3"
   depends_on "json-glib"
