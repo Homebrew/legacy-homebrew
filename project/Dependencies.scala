@@ -56,7 +56,10 @@ object Dependencies {
     "io.spray" %% "spray-testkit" % "1.3.2" % "test"
   )
 
-
+  lazy val securityDeps = Seq(
+     "org.apache.shiro" % "shiro-core" % "1.2.4"
+  )
+		
   lazy val serverDeps = apiDeps ++ yodaDeps
   lazy val apiDeps = sparkDeps :+ typeSafeConfigDeps
 

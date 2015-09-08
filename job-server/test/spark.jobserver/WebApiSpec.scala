@@ -31,6 +31,9 @@ with ScalatestRouteTest with HttpService {
       master = "${masterConfVal}"
       jobserver.bind-address = "${bindConfVal}"
     }
+    shiro {
+      authentication = off
+    }
                                  """)
 
   val dummyPort = 9999
@@ -178,7 +181,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo", "shiro.authentication" -> "off")
         ))
       }
     }
@@ -200,7 +203,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo", "shiro.authentication" -> "off")
         ))
       }
     }
@@ -212,7 +215,7 @@ with ScalatestRouteTest with HttpService {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo")
+          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo", "shiro.authentication" -> "off")
         ))
       }
     }

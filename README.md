@@ -243,7 +243,8 @@ def validate(sc:SparkContext, config: Contig): SparkJobValidation = {
 To activate ssl communication, set these flags in your application.conf file (Section 'spray.can.server'):
 ```
   ssl-encryption = on
-  keystore = "~/sjs.jks"
+  # absolute path to keystore file
+  keystore = "/some/path/sjs.jks"
   keystorePW = "changeit"
 ```
 
@@ -252,21 +253,58 @@ You will need a keystore that contains the server certificate. The bare minimum 
  keytool -genkey -keyalg RSA -alias jobserver -keystore ~/sjs.jks -storepass changeit -validity 360 -keysize 2048
 ```
 You may place the keystore anywhere.    
-Here is an example of simple curl command that utilizes ssl:
+Here is an example of a simple curl command that utilizes ssl:
 ```
 curl -k https://localhost:8090/contexts
 ```
 The ```-k``` flag tells curl to "Allow connections to SSL sites without certs". Export your server certificate and import it into the client's truststore to fully utilize ssl security. 
+
+### Authentication
+
+Authentication uses the [Apache Shiro](http://shiro.apache.org/index.html) framework. Authentication is activated by setting this flag (Section 'shiro'): 
+```
+authentication = on
+# absolute path to shiro config file, including file name
+config.path = "/some/path/shiro.ini"
+```
+Shiro-specific configuration options should be placed into a file named 'shiro.ini' in the directory as specified by the config option 'config.path'. 
+Here is an example that configures LDAP with user group verification:
+```
+# use this for basic ldap authorization, without group checking
+# activeDirectoryRealm = org.apache.shiro.realm.ldap.JndiLdapRealm
+# use this for checking group membership of users based on the 'member' attribute of the groups:
+activeDirectoryRealm = spark.jobserver.auth.LdapGroupRealm
+# search base for ldap groups (only relevant for LdapGroupRealm):
+activeDirectoryRealm.contextFactory.environment[ldap.searchBase] = dc=xxx,dc=org
+# allowed groups (only relevant for LdapGroupRealm):
+activeDirectoryRealm.contextFactory.environment[ldap.allowedGroups] = "cn=group1,ou=groups", "cn=group2,ou=groups"
+activeDirectoryRealm.contextFactory.environment[java.naming.security.credentials] = password
+activeDirectoryRealm.contextFactory.url = ldap://localhost:389
+activeDirectoryRealm.userDnTemplate = cn={0},ou=people,dc=xxx,dc=org
+
+cacheManager = org.apache.shiro.cache.MemoryConstrainedCacheManager
+
+securityManager.cacheManager = $cacheManager
+```
+
+Make sure to edit the url, credentials, userDnTemplate, ldap.allowedGroups and ldap.searchBase settings in accordance with your local setup.
+
+Here is an example of a simple curl command that authenticates a user and uses ssl (you may want to use -H to hide the 
+credentials, this is just a simple example to get you started):
+```
+curl -k --basic --user 'user:pw' https://localhost:8090/contexts
+```
 
 ## Deployment
 
 ### Manual steps
 
 1. Copy `config/local.sh.template` to `<environment>.sh` and edit as appropriate.  NOTE: be sure to set SPARK_VERSION if you need to compile against a different version, ie. 1.4.1 for job server 0.5.2
-2. Copy `config/local.conf.template` to `<environment>.conf` and edit as appropriate.
-3. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
+2. Copy `config/shiro.ini.template` to `shiro.ini` and edit as appropriate. NOTE: only required when `authentication = on`
+3. Copy `config/local.conf.template` to `<environment>.conf` and edit as appropriate.
+4. `bin/server_deploy.sh <environment>` -- this packages the job server along with config files and pushes
    it to the remotes you have configured in `<environment>.sh`
-4. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
+5. On the remote server, start it in the deployed directory with `server_start.sh` and stop it with `server_stop.sh`
 
 The `server_start.sh` script uses `spark-submit` under the hood and may be passed any of the standard extra arguments from `spark-submit`.
 

@@ -30,7 +30,7 @@ object JobServerBuild extends Build {
   lazy val jobServer = Project(id = "job-server", base = file("job-server"),
     settings = commonSettings210 ++ revolverSettings ++ Assembly.settings ++ Seq(
       description  := "Spark as a Service: a RESTful job server for Apache Spark",
-      libraryDependencies ++= sparkDeps ++ slickDeps ++ coreTestDeps,
+      libraryDependencies ++= sparkDeps ++ slickDeps ++ securityDeps ++ coreTestDeps,
 
       // Automatically package the test jar when we run tests here
       // And always do a clean before package (package depends on clean) to clear out multiple versions
