@@ -4,6 +4,8 @@ class Puddletag < Formula
   url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
   sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
 
+  head "https://github.com/keithgg/puddletag.git"
+
   bottle do
     cellar :any
     sha256 "a68e0d8951475db3151e8bbd91a66028200ea2bd18363fcd37a6d9191e693633" => :yosemite
