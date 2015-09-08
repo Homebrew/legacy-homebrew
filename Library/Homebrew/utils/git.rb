@@ -6,7 +6,8 @@ module Utils
     return @git = false if git.nil?
     # /usr/bin/git is a popup stub when Xcode/CLT aren't installed, so bail out
     return @git = false if git == "/usr/bin/git" && !OS::Mac.has_apple_developer_tools?
-    @git = true
+    # check git is real in case it's the wrapper script of Library/ENV/scm
+    @git = quiet_system git, "--version"
   end
 
   def self.ensure_git_installed!
