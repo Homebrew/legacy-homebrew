@@ -2,10 +2,9 @@
 class Node < Formula
   desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
-  sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
-  head "https://github.com/nodejs/node.git", :branch => "v0.12"
-  revision 1
+  url "https://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+  sha256 "e110e5a066f3a6fe565ede7dd66f3727384b9b5c5fbf46f8db723d726e2f5900"
+  head "https://github.com/nodejs/node.git"
 
   bottle do
     sha256 "15689cc474a79975eaa6d791b24e6fa021494839c9b691ac307d74acefc5f834" => :yosemite
@@ -31,11 +30,6 @@ class Node < Formula
     build 2326
   end
 
-  resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.14.2.tgz"
-    sha256 "592029e3406cbbaf249135e18212fab91db1601f991f61b4b2a03580311a066e"
-  end
-
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
@@ -43,29 +37,25 @@ class Node < Formula
 
     if build.with? "openssl"
       args << "--shared-openssl"
-    else
-      args << "--without-ssl2" << "--without-ssl3"
     end
 
     system "./configure", *args
     system "make", "install"
 
     if build.with? "npm"
-      resource("npm").stage buildpath/"npm_install"
-
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
       # set log level temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
-      cd buildpath/"npm_install" do
+      cd "deps/npm" do
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
       end
 
       if build.with? "completion"
         bash_completion.install \
-          buildpath/"npm_install/lib/utils/completion.sh" => "npm"
+          "deps/npm/lib/utils/completion.sh" => "npm"
       end
     end
   end
@@ -110,6 +100,12 @@ class Node < Formula
         your NODE_PATH with the npm module folder:
           #{HOMEBREW_PREFIX}/lib/node_modules
       EOS
+    else
+      s += <<-EOS.undent
+        Node.js v4 was installed with a patched version of npm (with node-gyp v3) which
+        is required to build native modules with Node.js v4. It is not recommended to
+        upgrade npm to a version that still ships with node-gyp v2.
+      EOS
     end
 
     if build.with? "icu4c"
@@ -141,7 +137,7 @@ class Node < Formula
       assert_equal which("node"), opt_bin/"node"
       assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
       assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
-      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
+      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "bignum"
     end
   end
 end
