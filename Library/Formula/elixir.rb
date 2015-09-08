@@ -31,6 +31,7 @@ class Elixir < Formula
   head "https://github.com/elixir-lang/elixir.git"
 
   devel do
+    version "1.1.0"
     url "https://github.com/elixir-lang/elixir/archive/v1.1.0-beta.tar.gz"
     sha256 "a506907137dc2432bf40f3c6a86ca807af5bf9d7f3a3efd05fed14e5267beb79"
   end
