@@ -3,7 +3,7 @@ require 'formula'
 class Bmdtools < Formula
   homepage 'http://github.com/lu-zero/bmdtools'
   url 'https://github.com/lu-zero/bmdtools/archive/v0.1.zip'
-  sha256 'cc2a2f9c91b019dadea6dff591b07ceb7db05ce8c25ff405f715206ee81c7664'
+  sha256 'd79b4a9e4a1e6c5e4b54847015af6ff9f19ace586d50ce95068d790ebcbb79ec'
   head 'https://github.com/lu-zero/bmdtools.git'
 
   depends_on 'pkg-config' => :build
