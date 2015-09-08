@@ -1,33 +1,29 @@
 class Pixz < Formula
   desc "Parallel, indexed, xz compressor"
   homepage "https://github.com/vasi/pixz"
-  url "https://downloads.sourceforge.net/project/pixz/pixz-1.0.2.tgz"
-  sha256 "af9dac41edd6bf57953471f7fcbd4793810003bf911593ba4c84f7cccb5f74af"
+  url "https://github.com/vasi/pixz/releases/download/v1.0.3/pixz-1.0.3.tar.gz"
+  sha256 "aba567c19513ddad3379260abc749b54e672aee8c89e1083a3e03860c97b3517"
 
   head "https://github.com/vasi/pixz.git"
 
-  option "with-docs", "Build man pages using asciidoc and DocBook"
-
+  depends_on "pkg-config" => :build
   depends_on "libarchive"
   depends_on "xz"
-
-  if build.with? "docs"
-    depends_on "asciidoc" => :build
-    depends_on "docbook" => :build
-  end
+  depends_on "asciidoc" => :build
+  depends_on "docbook" => :build
 
   def install
-    system "make"
-    bin.install "pixz"
-
-    if build.with? "docs"
-      ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
-      system "a2x --doctype manpage --format manpage pixz.1.asciidoc"
-      man1.install "pixz.1"
-    end
+    ENV["PKG_CONFIG_PATH"] = "#{HOMEBREW_PREFIX}/lib/pkgconfig:#{HOMEBREW_PREFIX}/opt/libarchive/lib/pkgconfig"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
   end
 
   test do
-    system "#{bin}/pixz"
+    ENV["LC_ALL"] = "en_US.UTF-8"
+    testfile = testpath/"file.txt"
+    filecontent = "foo"
+    testfile.write filecontent
+    system "#{bin}/pixz", testfile, "#{testpath}/file.xz"
   end
 end
