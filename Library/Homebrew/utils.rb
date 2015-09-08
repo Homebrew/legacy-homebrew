@@ -133,8 +133,7 @@ def interactive_shell(f = nil)
 end
 
 module Homebrew
-  def self.system(cmd, *args)
-    puts "#{cmd} #{args*" "}" if ARGV.verbose?
+  def self._system(cmd, *args)
     pid = fork do
       yield if block_given?
       args.collect!(&:to_s)
@@ -143,6 +142,11 @@ module Homebrew
     end
     Process.wait(pid)
     $?.success?
+  end
+
+  def self.system(cmd, *args)
+    puts "#{cmd} #{args*" "}" if ARGV.verbose?
+    _system(cmd, *args)
   end
 
   def self.git_head
@@ -213,7 +217,7 @@ end
 
 # prints no output
 def quiet_system(cmd, *args)
-  Homebrew.system(cmd, *args) do
+  Homebrew._system(cmd, *args) do
     # Redirect output streams to `/dev/null` instead of closing as some programs
     # will fail to execute if they can't write to an open stream.
     $stdout.reopen("/dev/null")
