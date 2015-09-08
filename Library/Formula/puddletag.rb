@@ -70,7 +70,7 @@ class Puddletag < Formula
     cp buildpath/"Info.plist", "Puddletag.app/Contents"
     system "sips", "-s", "format", "icns", buildpath/"puddletag.png", "--out", "Puddletag.app/Contents/Resources/Puddletag.icns"
     cp prefix/"bin/puddletag", "Puddletag.app/Contents/MacOS/Puddletag"
-    chmod "+x", "Puddletag.app/Contents/MacOS/Puddletag"
+    chmod "755", "Puddletag.app/Contents/MacOS/Puddletag"
     prefix.install "Puddletag.app"
   end
 
