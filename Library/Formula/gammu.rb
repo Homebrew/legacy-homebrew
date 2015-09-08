@@ -16,9 +16,9 @@ class Gammu < Formula
   end
 
   bottle do
-    sha256 "c5e3744176b3609902070f07ced499d02570a8dc0d5aa72e02383b8e9bcce5a4" => :yosemite
-    sha256 "106312958bcfb95929178a716ca5cd458ee37ba9e6ad6ca80ba3dbb0ac8c8b40" => :mavericks
-    sha256 "d1f54aae239138586fbc5693120a28b58eb709811461478b8dc976345b3de3df" => :mountain_lion
+    sha256 "3326021179a308021ef03127af4b9d051530686d1f5dc3e84c3640b4b82542d7" => :yosemite
+    sha256 "25a1340421feced88e1bb8ae810a26dfd7f2bf4a7f30c48d148874208cd8875a" => :mavericks
+    sha256 "3509f63360d9e7417cdf692c7296c1b386e4cba78d758ad5b56ad6e0be0c450f" => :mountain_lion
   end
 
   depends_on "cmake" => :build
