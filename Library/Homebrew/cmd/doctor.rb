@@ -916,10 +916,9 @@ class Checks
   def check_git_origin
     return unless git? && (HOMEBREW_REPOSITORY/".git").exist?
 
-    HOMEBREW_REPOSITORY.cd do
-      origin = `git config --get remote.origin.url`.strip
+    origin = Homebrew.git_origin
 
-      if origin.empty? then <<-EOS.undent
+    if origin.nil? then <<-EOS.undent
       Missing git origin remote.
 
       Without a correctly configured origin, Homebrew won't update
@@ -927,7 +926,7 @@ class Checks
         cd #{HOMEBREW_REPOSITORY}
         git remote add origin https://github.com/Homebrew/homebrew.git
       EOS
-      elsif origin !~ /(mxcl|Homebrew)\/homebrew(\.git)?$/ then <<-EOS.undent
+    elsif origin !~ /(mxcl|Homebrew)\/homebrew(\.git)?$/ then <<-EOS.undent
       Suspicious git origin remote found.
 
       With a non-standard origin, Homebrew won't pull updates from
@@ -938,7 +937,6 @@ class Checks
       origin remote to point at the main repository, located at:
         https://github.com/Homebrew/homebrew.git
       EOS
-      end
     end
   end
 
