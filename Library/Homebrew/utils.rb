@@ -149,6 +149,10 @@ module Homebrew
     _system(cmd, *args)
   end
 
+  def self.git_origin
+    HOMEBREW_REPOSITORY.cd { `git config --get remote.origin.url 2>/dev/null`.chuzzle }
+  end
+
   def self.git_head
     HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
