@@ -22,6 +22,8 @@ class Golo < Formula
     if build.head?
       system "./gradlew", "installDist"
       libexec.install %w[target/appassembler/bin target/appassembler/lib]
+    else if build.devel?
+      libexec.install %w[bin docs lib]
     else
       libexec.install %w[bin doc lib]
     end
