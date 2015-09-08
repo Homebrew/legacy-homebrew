@@ -123,7 +123,7 @@ module Homebrew
   def describe_java
     if which("java").nil?
       "N/A"
-    elsif !(`/usr/libexec/java_home --failfast &>/dev/null` && $?.success?)
+    elsif !quiet_system "/usr/libexec/java_home", "--failfast"
       "N/A"
     else
       java = `java -version 2>&1`.lines.first.chomp
