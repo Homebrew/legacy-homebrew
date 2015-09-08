@@ -1,7 +1,7 @@
 class Oniguruma < Formula
   desc "Regular expressions library"
-  homepage "http://www.geocities.jp/kosako3/oniguruma/"
-  url "http://www.geocities.jp/kosako3/oniguruma/archive/onig-5.9.6.tar.gz"
+  homepage "https://github.com/kkos/oniguruma/"
+  url "https://github.com/kkos/oniguruma/releases/download/v5.9.6/onig-5.9.6.tar.gz"
   sha256 "d5642010336a6f68b7f2e34b1f1cb14be333e4d95c2ac02b38c162caf44e47a7"
 
   bottle do
@@ -14,5 +14,9 @@ class Oniguruma < Formula
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    assert_match /#{prefix}/, shell_output("#{bin}/onig-config --prefix")
   end
 end
