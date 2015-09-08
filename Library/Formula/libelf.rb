@@ -7,10 +7,9 @@ class Libelf < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "58ec51e663fa6375026ff609c1c189f870559d0c" => :yosemite
-    sha1 "0eeb37ce876f79cc0261cfd9c6ec9cfd8bc5c28b" => :mavericks
-    sha1 "a62370107719d8a92b0226335cd9dd73686ddd4f" => :mountain_lion
+    sha256 "3b4ea9ab20228d9e912f80a330b6d6d093f9bb65a712208c83cd49bdcc4fc9ea" => :yosemite
+    sha256 "eded3b774d412e533f37bc6d5dc133859141653ce953a0d4cbf4a950dda633f6" => :mavericks
+    sha256 "d803c689354640948ae3699672d8172b770fdd8a63ba1d84e93131f394822bd5" => :mountain_lion
   end
 
   def install
