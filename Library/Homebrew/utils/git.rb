@@ -21,5 +21,11 @@ module Utils
     rescue
       raise "Git is unavailable"
     end
+
+    raise "Git is unavailable" unless git_available?
+  end
+
+  def self.clear_git_available_cache
+    remove_instance_variable(:@git) if instance_variable_defined?(:@git)
   end
 end
