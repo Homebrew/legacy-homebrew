@@ -7,8 +7,8 @@ end
 class MysqlConnectorCxx < Formula
   desc "MySQL database connector for C++ applications"
   homepage "https://dev.mysql.com/downloads/connector/cpp/"
-  url "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-1.1.5.tar.gz"
-  sha256 "f3696726da29d56e0daad7046b30aa51444360a3ff112c079eb942929eb1cce8"
+  url "https://cdn.mysql.com/Downloads/Connector-C++/mysql-connector-c++-1.1.6.tar.gz"
+  sha256 "ad710b3900cae3be94656825aa70319cf7a96e1ad46bf93e07275f3606f69447"
 
   depends_on "cmake" => :build
   depends_on "boost" => :build
@@ -17,7 +17,6 @@ class MysqlConnectorCxx < Formula
 
   def install
     system "cmake", ".", *std_cmake_args
-    ENV.j1
     system "make", "install"
   end
 end
