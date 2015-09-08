@@ -1,14 +1,13 @@
 class Takt < Formula
-  desc "a text-based music programming language"
+  desc "text-based music programming language"
   homepage "http://takt.sourceforge.net"
-  url "http://sourceforge.net/projects/takt/files/takt-0.309-src.tar.gz"
-  version "0.309"
+  url "https://downloads.sourceforge.net/projects/takt/files/takt-0.309-src.tar.gz"
   sha256 "44fca667d610fba15deb441dd44e5b87dabbe5619d7fa8a13f5c8c1f054dd509"
 
   depends_on "readline"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--with-lispdir=#{share}/emacs/site-lisp/#{name}"
     system "make", "install"
   end
 
