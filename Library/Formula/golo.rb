@@ -22,7 +22,7 @@ class Golo < Formula
     if build.head?
       system "./gradlew", "installDist"
       libexec.install %w[build/install/golo/bin build/install/golo/docs build/install/golo/lib]
-    else if build.devel?
+    elsif build.devel?
       libexec.install %w[bin docs lib]
     else
       libexec.install %w[bin doc lib]
