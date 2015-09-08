@@ -4,6 +4,13 @@ class Gstreamermm < Formula
   url "https://download.gnome.org/sources/gstreamermm/1.4/gstreamermm-1.4.3.tar.xz"
   sha256 "f1c11ee1cf7537d77de7f8d486e09c5140cc4bb78882849718cd88959a55462e"
 
+  bottle do
+    cellar :any
+    sha256 "e4e614f4c4e7fda7666eea57945aa93c11e973bf55b380801049fd86ec4c9184" => :yosemite
+    sha256 "d73102b9fff62852dacbdc56133d8ea076bd0ee98178f4130429027b7cfdca27" => :mavericks
+    sha256 "effafd4f64170919212081608852d5f116338c19f8a03073457b2122d2b5a7d1" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gstreamer"
   depends_on "glibmm"
