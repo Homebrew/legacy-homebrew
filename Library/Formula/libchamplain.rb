@@ -4,6 +4,12 @@ class Libchamplain < Formula
   url "https://download.gnome.org/sources/libchamplain/0.12/libchamplain-0.12.10.tar.xz"
   sha256 "bf53ceb2405d4e23a14596a53ecc2a821b003f8c69de4a7de3a39d6e99462b05"
 
+  bottle do
+    sha256 "323d628038e62d767e553aa0473901dc7cf2e50895aa390dda5ef163a70ab15a" => :yosemite
+    sha256 "198aadbcf5f5f9bc44d82306fd75752ab4419d64337fd61cd65ef57b5cb9836b" => :mavericks
+    sha256 "7b4a9c531cadf9a8af43f9fd0e7f1b293761fa0bbf9266cff4cc0a8fa54782be" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "clutter"
   depends_on "libsoup"
