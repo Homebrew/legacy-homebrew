@@ -8,7 +8,7 @@ class Bmdtools < Formula
 
   depends_on 'pkg-config' => :build
   depends_on 'decklinksdk' => :build
-  depends_on 'libav' => :build
+  depends_on 'ffmpeg'
  
   def install
      system "make", "SDK_PATH=#{Formula["decklinksdk"].opt_include}"
