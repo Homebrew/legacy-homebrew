@@ -10,4 +10,8 @@ class CoreLocationCli < Formula
     xcodebuild "-project", "CoreLocationCLI.xcodeproj", "SYMROOT=build", "-sdk", "macosx#{MacOS.version}"
     bin.install "build/Release/CoreLocationCLI"
   end
+
+  test do
+    system "#{bin}/CoreLocationCLI", "-h"
+  end
 end
