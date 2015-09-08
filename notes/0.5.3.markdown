@@ -1,5 +1,6 @@
 #Scala #akka @ApacheSpark
 
+* LDAP Authentication support via Apache Shiro (@TimMaltGermany / KNIME)
 * HTTPS Support! (@koettert @TimMaltGermany / KNIME)
 * Load jars automatically on startup (@lossyrob / Azavea)
 * Fix server-stop.sh so it works with spark-submit (@addisonj @RussellSpitzer @jmelching)
