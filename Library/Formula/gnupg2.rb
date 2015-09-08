@@ -7,9 +7,9 @@ class Gnupg2 < Formula
   sha256 "68ed6b386ba78425b05a60e8ee22785ff0fef190bdc6f1c612f19a58819d4ac9"
 
   bottle do
-    sha256 "39a665cd01fdafc70111ff4569e2fe34050064a2ba3a45b029028bc3ae5b5fbd" => :yosemite
-    sha256 "0f546298f437d123f97f4bf585756d3fb78c83ea2625cdbce854b5ca70b90de7" => :mavericks
-    sha256 "6ea1c0699de594104bc8cc9b33056775542c3670ba782dcefb86561ca19bc845" => :mountain_lion
+    sha256 "506b7545cfd1ed03df482c3e8d8e3ad496401e92a8cdadd4c46a29954c2708ab" => :yosemite
+    sha256 "d3163fd4191af0de8431bfa0a2ff0789d86a1e55b3e5b8c6742704a3acd8bb44" => :mavericks
+    sha256 "fe5fb8a7c9f335dd674a238b0f988efae71aa1cd2fc9e1e2b12a644f3366d954" => :mountain_lion
   end
 
   depends_on "libgpg-error"
