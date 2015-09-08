@@ -1,11 +1,12 @@
 module Utils
   def self.git_available?
+    return @git if instance_variable_defined?(:@git)
     git = which("git")
     # git isn't installed by older Xcodes
-    return false if git.nil?
+    return @git = false if git.nil?
     # /usr/bin/git is a popup stub when Xcode/CLT aren't installed, so bail out
-    return false if git == "/usr/bin/git" && !OS::Mac.has_apple_developer_tools?
-    true
+    return @git = false if git == "/usr/bin/git" && !OS::Mac.has_apple_developer_tools?
+    @git = true
   end
 
   def self.ensure_git_installed!
