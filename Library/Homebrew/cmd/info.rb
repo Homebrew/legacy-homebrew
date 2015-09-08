@@ -58,23 +58,31 @@ module Homebrew
     puts Utils::JSON.dump(json)
   end
 
-  def github_fork
-    if (HOMEBREW_REPOSITORY/".git").directory?
-      if `git remote -v` =~ %r{origin\s+(https?://|git(?:@|://))github.com[:/](.+)/homebrew}
-        $2
-      end
+  def github_remote_path(remote, path)
+    if remote =~ %r{^(?:https?://|git(?:@|://))github\.com[:/](.+)/(.+?)(?:\.git)?$}
+      "https://github.com/#{$1}/#{$2}/blob/master/#{path}"
+    else
+      "#{remote}/#{path}"
     end
   end
 
   def github_info(f)
     if f.tap?
       user, repo = f.tap.split("/", 2)
-      path = f.path.relative_path_from(HOMEBREW_LIBRARY.join("Taps", f.tap))
-      "https://github.com/#{user}/#{repo}/blob/master/#{path}"
+      tap = Tap.new user, repo.gsub(/^homebrew-/, "")
+      if remote = tap.remote
+        path = f.path.relative_path_from(tap.path)
+        github_remote_path(remote, path)
+      else
+        f.path
+      end
     elsif f.core_formula?
-      user = f.path.parent.cd { github_fork }
-      path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
-      "https://github.com/#{user}/homebrew/blob/master/#{path}"
+      if remote = git_origin
+        path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
+        github_remote_path(remote, path)
+      else
+        f.path
+      end
     else
       f.path
     end
