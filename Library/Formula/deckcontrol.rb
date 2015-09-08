@@ -2,8 +2,8 @@ require 'formula'
 
 class Deckcontrol < Formula
     homepage 'https://github.com/bavc/deckcontrol'
-    url "https://github.com/bavc/deckcontrol/archive/v0.2.zip"
-    sha256 "b9e12036c164c888fe3c42dabba181cfb0e9ddac3229e735ee48eb5d96811ccc"
+    url "https://github.com/bavc/deckcontrol/archive/v0.3.zip"
+    sha256 "6d84028726abc4f68c0b122a48cfea261e6bbe8e642ca66a71285ccb500c4933"
     head 'https://github.com/bavc/deckcontrol.git'
 
     depends_on 'decklinksdk' => :build
