@@ -2,9 +2,9 @@
 class Node < Formula
   desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
-  sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
-  head "https://github.com/nodejs/node.git", :branch => "v0.12"
+  url "https://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+  sha256 "e110e5a066f3a6fe565ede7dd66f3727384b9b5c5fbf46f8db723d726e2f5900"
+  head "https://github.com/nodejs/node.git", :branch => "v4.x"
   revision 1
 
   bottle do
@@ -14,6 +14,7 @@ class Node < Formula
   end
 
   option "with-debug", "Build with debugger hooks"
+  option "with-icu4c", "Build with Intl (icu4c) support"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
 
@@ -21,7 +22,7 @@ class Node < Formula
 
   depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "pkg-config" => :build
-  depends_on "openssl" => :optional
+  depends_on "icu4c" => :optional
 
   # https://github.com/nodejs/node-v0.x-archive/issues/7919
   # https://github.com/Homebrew/homebrew/issues/36681
@@ -40,12 +41,6 @@ class Node < Formula
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
     args << "--with-intl=system-icu" if build.with? "icu4c"
-
-    if build.with? "openssl"
-      args << "--shared-openssl"
-    else
-      args << "--without-ssl2" << "--without-ssl3"
-    end
 
     system "./configure", *args
     system "make", "install"
