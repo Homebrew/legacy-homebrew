@@ -10,7 +10,7 @@ class AuroraScheduler < Formula
   sha256 "16040866f3a799226452b1541892eb80ed3c61f47c33f1ccb0687fb5cf82767c"
 
   depends_on "python" => :build
-  depends_on "gradle" => :build
+  #depends_on "gradle" => :build
 
   def install
     # TODO aurora-schduler
