@@ -1,9 +1,8 @@
 require "formula"
 require "formula_versions"
-require "csv"
 
 class Descriptions
-  CACHE_FILE = HOMEBREW_CACHE + "desc_cache"
+  CACHE_FILE = HOMEBREW_CACHE + "desc_cache.json"
 
   def self.cache
     @cache || self.load_cache
@@ -13,9 +12,7 @@ class Descriptions
   # return nil.
   def self.load_cache
     if CACHE_FILE.exist?
-      @cache = {}
-      CSV.foreach(CACHE_FILE) { |name, desc| @cache[name] = desc }
-      @cache
+      @cache = Utils::JSON.load(CACHE_FILE.read)
     end
   end
 
@@ -23,11 +20,7 @@ class Descriptions
   # directory.
   def self.save_cache
     HOMEBREW_CACHE.mkpath
-    CSV.open(CACHE_FILE, 'w') do |csv|
-      @cache.each do |name, desc|
-        csv << [name, desc]
-      end
-    end
+    CACHE_FILE.atomic_write Utils::JSON.dump(@cache)
   end
 
   # Create a hash mapping all formulae to their descriptions;
