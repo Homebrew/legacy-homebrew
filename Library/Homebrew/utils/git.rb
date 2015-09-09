@@ -1,7 +1,8 @@
 module Utils
   def self.git_available?
     return @git if instance_variable_defined?(:@git)
-    git = which("git")
+    # check git in original path in case it's the wrapper script of Library/ENV/scm
+    git = which("git", ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
     # git isn't installed by older Xcodes
     return @git = false if git.nil?
     # /usr/bin/git is a popup stub when Xcode/CLT aren't installed, so bail out
