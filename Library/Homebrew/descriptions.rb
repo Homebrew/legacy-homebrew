@@ -106,22 +106,6 @@ class Descriptions
     end
   end
 
-  # Given an array of formula names, return a {Descriptions} object mapping
-  # those names to their descriptions.
-  def self.named(names)
-    self.ensure_cache
-
-    results = {}
-    unless names.empty?
-      results = names.inject({}) do |accum, name|
-        accum[name] = @cache[name]
-        accum
-      end
-    end
-
-    new(results)
-  end
-
   # Given a regex, find all formulae whose specified fields contain a match.
   def self.search(regex, field = :either)
     self.ensure_cache
