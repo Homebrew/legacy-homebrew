@@ -1,9 +1,8 @@
 class Vim < Formula
   desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
-  # This package tracks debian-unstable: https://packages.debian.org/unstable/vim
-  url "https://mirrors.kernel.org/debian/pool/main/v/vim/vim_7.4.826.orig.tar.gz"
-  sha256 "02f07b60eff53f45d58686e43b72e83aa8f24a94acfa69b95fa84dc020671a38"
+  url "https://github.com/vim/vim/archive/v7.4.865.tar.gz"
+  sha256 "b3c92b2bc6ba7933b38fdf1879f8d7014efeb7b94aead6ef82f7c4a954fb75cf"
   head "https://github.com/vim/vim.git"
 
   # We only have special support for finding depends_on :python, but not yet for
