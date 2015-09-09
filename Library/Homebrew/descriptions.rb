@@ -1,4 +1,5 @@
 require "formula"
+require "formula_versions"
 require "csv"
 
 class Descriptions
@@ -92,7 +93,13 @@ class Descriptions
   # cache. Save the updated cache to disk, unless explicitly told not to.
   def self.cache_formulae(formula_names, options = { :save => true })
     if self.cache
-      formula_names.each { |name| @cache[name] = Formula[name].desc }
+      formula_names.each do |name|
+        begin
+          desc = Formulary.factory(name).desc
+        rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS
+        end
+        @cache[name] = desc
+      end
       self.save_cache if options[:save]
     end
   end
