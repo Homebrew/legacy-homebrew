@@ -7,34 +7,24 @@ class GitTown < Formula
   depends_on "dialog" => :recommended
 
   def install
-    # Install the source
     libexec.install Dir["src/*"]
-
-    # Symlink the executables
-    bin.install_symlink Dir["#{libexec}/git-*"]
-    bin.install_symlink "#{libexec}/helpers"
-    bin.install_symlink "#{libexec}/drivers"
-
-    # Install the man pages
+    bin.write_exec_script Dir["#{libexec}/git-*"]
     man1.install Dir["man/man1/*"]
   end
 
-  def caveats
-    <<-EOS.undent
-      To install the Fish shell autocompletions,
-      run "git town install-fish-autocompletion"
-      in the terminal.
-
-      To install the completions manually, make
-      #{libexec}/autocomplete/git.fish
-      available as ~/.config/fish/completions/git.fish.
-      In a standard setup, this looks like:
-      mkdir -p ~/.config/fish/completions
-      ln -s #{libexec}/autocomplete/git.fish ~/.config/fish/completions/git.fish
-    EOS
+  def caveats; <<-EOS.undent
+    To install the Fish shell autocompletions run:
+      `git town install-fish-autocompletion`
+    in your terminal.
+  EOS
   end
 
   test do
-    system "#{bin}/git-town", "version"
+    system "git", "init"
+    touch "testing.txt"
+    system "git", "add", "testing.txt"
+    system "git", "commit", "-m", "Testing!"
+
+    system "#{bin}/git-town", "config"
   end
 end
