@@ -1,8 +1,8 @@
 class Ncmpcpp < Formula
   desc "Ncurses-based client for the Music Player Daemon"
   homepage "http://ncmpcpp.rybczak.net/"
-  url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.5.tar.bz2"
-  sha256 "51128f6835c592c8d4367a66b08e06a9419a86c9d5c6e91d0f1dc73af56cd1fd"
+  url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.6.tar.bz2"
+  sha256 "2b7408b207c3ffd1ddd11bcb9c0a1f2434bb80db990dcf482968cf915ebc0e67"
 
   bottle do
     cellar :any
@@ -19,6 +19,14 @@ class Ncmpcpp < Formula
     depends_on "libtool" => :build
   end
 
+  deprecated_option "outputs" => "with-outputs"
+  deprecated_option "visualizer" => "with-visualizer"
+  deprecated_option "clock" => "with-clock"
+
+  option "with-outputs", "Compile with mpd outputs control"
+  option "with-visualizer", "Compile with built-in visualizer"
+  option "with-clock", "Compile with optional clock tab"
+
   depends_on "pkg-config" => :build
   depends_on "libmpdclient"
   depends_on "readline"
@@ -31,11 +39,7 @@ class Ncmpcpp < Formula
     depends_on "taglib"
   end
 
-  depends_on "fftw" if build.include? "visualizer"
-
-  option "outputs", "Compile with mpd outputs control"
-  option "visualizer", "Compile with built-in visualizer"
-  option "clock", "Compile with optional clock tab"
+  depends_on "fftw" if build.with? "visualizer"
 
   needs :cxx11
 
@@ -43,15 +47,17 @@ class Ncmpcpp < Formula
     ENV.cxx11
     ENV.append "LDFLAGS", "-liconv"
 
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--with-taglib",
-            "--with-curl",
-            "--enable-unicode"]
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--with-taglib",
+      "--with-curl",
+      "--enable-unicode",
+    ]
 
-    args << "--enable-outputs" if build.include? "outputs"
-    args << "--enable-visualizer" if build.include? "visualizer"
-    args << "--enable-clock" if build.include? "clock"
+    args << "--enable-outputs" if build.with? "outputs"
+    args << "--enable-visualizer" if build.with? "visualizer"
+    args << "--enable-clock" if build.with? "clock"
 
     if build.head?
       # Also runs configure
