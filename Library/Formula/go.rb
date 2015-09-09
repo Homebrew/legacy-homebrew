@@ -103,12 +103,13 @@ class Go < Formula
     # Run go fmt check for no errors then run the program.
     # This is a a bare minimum of go working as it uses fmt, build, and run.
     system "#{bin}/go", "fmt", "hello.go"
-    assert_equal "Hello World\n", `#{bin}/go run hello.go`
+    assert_equal "Hello World\n", shell_output("#{bin}/go run hello.go")
 
     if build.with? "godoc"
       assert File.exist?(libexec/"bin/godoc")
       assert File.executable?(libexec/"bin/godoc")
     end
+
     if build.with? "vet"
       assert File.exist?(libexec/"pkg/tool/darwin_amd64/vet")
       assert File.executable?(libexec/"pkg/tool/darwin_amd64/vet")
