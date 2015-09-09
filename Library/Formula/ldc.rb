@@ -13,6 +13,12 @@ class Ldc < Formula
     sha256 "8ea1ad6cbd93ca1b909fdce9ff136fe56ada447cd535840f2684088dcab0fea2" => :mountain_lion
   end
 
+  devel do
+    url "https://github.com/ldc-developers/ldc/releases/download/v0.16.0-alpha2/ldc-0.16.0-alpha2-src.tar.gz"
+    version "0.16.0-alpha2"
+    sha256 "197c6cfdff9444dcea82255321f0da9d1017da9a7b1808eee75bc8793c926623"
+  end
+
   needs :cxx11
 
   depends_on "cmake" => :build
