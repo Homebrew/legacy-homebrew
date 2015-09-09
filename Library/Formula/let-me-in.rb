@@ -6,11 +6,26 @@ class LetMeIn < Formula
 
   depends_on "go" => :build
 
+  ## this works
+  go_resource "github.com/aws/aws-sdk-go/aws" do
+    url "github.com/aws/aws-sdk-go/aws.git", revision: 'f096b7d61df3d7d6d97f0e701f92616d1ea5420d'
+  end
+
+  ## this works
+  go_resource "github.com/aws/aws-sdk-go/aws/awserr" do
+    url "github.com/aws/aws-sdk-go/aws.git", revision: 'f096b7d61df3d7d6d97f0e701f92616d1ea5420d'
+  end
+
+  ## this DOES NOT work
+  go_resource "github.com/aws/aws-sdk-go/service/ec2" do
+    url "github.com/aws/aws-sdk-go/aws.git", revision: 'f096b7d61df3d7d6d97f0e701f92616d1ea5420d'
+  end
+
   def install
     ENV["GOPATH"] = buildpath
-    system "go", "get", "github.com/aws/aws-sdk-go/aws"
-    system "go", "get", "github.com/aws/aws-sdk-go/aws/awserr"
-    system "go", "get", "github.com/aws/aws-sdk-go/service/ec2"
+    # system "go", "get", "github.com/aws/aws-sdk-go/aws"
+    # system "go", "get", "github.com/aws/aws-sdk-go/aws/awserr"
+    # system "go", "get", "github.com/aws/aws-sdk-go/service/ec2"
     system "go", "build", "let-me-in.go"
     bin.install "let-me-in"
   end
