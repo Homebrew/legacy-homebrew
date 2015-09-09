@@ -18,6 +18,6 @@ class FluentBit < Formula
     sleep 1
     Process.kill("SIGINT", io.pid)
     Process.wait(io.pid)
-    io.read =~ /Fluent-Bit v#{version}/
+    assert_match(/Fluent-Bit v#{version}/, io.read)
   end
 end
