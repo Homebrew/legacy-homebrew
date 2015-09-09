@@ -2,9 +2,9 @@
 class Node < Formula
   desc "Platform built on Chrome's JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
-  sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
-  head "https://github.com/nodejs/node.git", :branch => "v0.12"
+  url "https://nodejs.org/dist/v4.0.0/node-v4.0.0.tar.gz"
+  sha256 "f9f837885343a2a3f5ba2b8c510eaac395c8c865"
+  head "https://github.com/nodejs/node.git", :branch => "v4.0.0"
   revision 1
 
   bottle do
