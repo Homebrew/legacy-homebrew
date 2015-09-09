@@ -41,7 +41,9 @@ class InMemoryDAO extends JobDAO {
 
   def saveJobInfo(jobInfo: JobInfo) { jobInfos(jobInfo.jobId) = jobInfo }
 
-  def getJobInfos(): Map[String, JobInfo] = jobInfos.toMap
+  def getJobInfos(limit: Int): Seq[JobInfo] = jobInfos.values.toSeq.sortBy(_.startTime.toString()).take(limit)
+
+  def getJobInfo(jobId: String): Option[JobInfo] = jobInfos.get(jobId)
 
   val jobConfigs = mutable.HashMap.empty[String, Config]
 

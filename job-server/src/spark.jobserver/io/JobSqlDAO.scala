@@ -278,7 +278,7 @@ class JobSqlDAO(config: Config) extends JobDAO {
     }
   }
 
-  override def getJobInfos: Map[String, JobInfo] = {
+  override def getJobInfos(limit: Int): Seq[JobInfo] = {
     db withSession {
       implicit sessions =>
 
@@ -288,17 +288,43 @@ class JobSqlDAO(config: Config) extends JobDAO {
           j <- jobs if j.jarId === jar.jarId
         } yield
           (j.jobId, j.contextName, jar.appName, jar.uploadTime, j.classPath, j.startTime, j.endTime, j.error)
-
+        val sortQuery = joinQuery.sortBy(_._6.desc)
+        val limitQuery = sortQuery.take(limit)
         // Transform the each row of the table into a map of JobInfo values
+        limitQuery.list.map {
+          case (id, context, app, upload, classpath, start, end, err) =>
+            JobInfo(id,
+              context,
+              JarInfo(app, convertDateSqlToJoda(upload)),
+              classpath,
+              convertDateSqlToJoda(start),
+              end.map(convertDateSqlToJoda(_)),
+              err.map(new Throwable(_)))
+        }.toSeq
+    }
+  }
+
+  override def getJobInfo(jobId: String): Option[JobInfo] = {
+    db withSession {
+      implicit sessions =>
+
+        // Join the JARS and JOBS tables without unnecessary columns
+        val joinQuery = for {
+          jar <- jars
+          j <- jobs if j.jarId === jar.jarId && j.jobId === jobId
+        } yield
+          (j.jobId, j.contextName, jar.appName, jar.uploadTime, j.classPath, j.startTime,
+            j.endTime, j.error)
+        logger.info("Query: " + joinQuery.selectStatement)
         joinQuery.list.map { case (id, context, app, upload, classpath, start, end, err) =>
-          id -> JobInfo(id,
+          JobInfo(id,
             context,
             JarInfo(app, convertDateSqlToJoda(upload)),
             classpath,
             convertDateSqlToJoda(start),
             end.map(convertDateSqlToJoda(_)),
             err.map(new Throwable(_)))
-        }.toMap
+        }.headOption
     }
   }
 }

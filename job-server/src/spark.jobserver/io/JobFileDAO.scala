@@ -168,7 +168,10 @@ class JobFileDAO(config: Config) extends JobDAO {
     Some(new DateTime(in.readLong)),
     readError(in))
 
-  override def getJobInfos: Map[String, JobInfo] = jobs.toMap
+  override def getJobInfo(jobId: String): Option[JobInfo] = jobs.get(jobId)
+
+  override def getJobInfos(limit: Int): Seq[JobInfo] =
+    jobs.values.toSeq.sortBy(- _.startTime.getMillis).take(limit)
 
   override def saveJobConfig(jobId: String, jobConfig: Config) {
     writeJobConfig(jobConfigsOutputStream, jobId, jobConfig)
