@@ -13,8 +13,8 @@ class Dos2unix < Formula
   end
 
   devel do
-    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3-beta3.tar.gz"
-    sha256 "4b34d0aa81891795566982af901a84efd54344e1e1bcba138329eb5afe0fdc68"
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.1-beta5.tar.gz"
+    sha256 "fb0933de4ba214a15d8e258a1031ac3c7f02f801b5b5c3a393d04a4bce21b351"
   end
 
   option "with-gettext", "Build with Native Language Support"
