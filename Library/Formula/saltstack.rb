@@ -8,6 +8,7 @@ class Saltstack < Formula
   url "https://github.com/saltstack/salt/releases/download/v2015.5.5/salt-2015.5.5.tar.gz"
   sha256 "5cd8d317616abab691a83f7fd3f8bcf9ad8aecaa95fcfdc0f6d788de87f0beeb"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
+  revision 1
 
   bottle do
     cellar :any
@@ -58,8 +59,8 @@ class Saltstack < Formula
   end
 
   resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "pyzmq" do
