@@ -3,8 +3,8 @@ require "language/go"
 class Deisctl < Formula
   desc "Deis Control Utility"
   homepage "http://deis.io/"
-  url "https://github.com/deis/deis/archive/v1.9.0.tar.gz"
-  sha256 "6acca76008b1e48961eb23ddd62f8db742be053983ce34b1a516bb2d4719bf82"
+  url "https://github.com/deis/deis/archive/v1.10.0.tar.gz"
+  sha256 "afdb0ae576a9c05af2e634a3ac83df9bae99cef17cfd2f1e2c8b7713107e769b"
 
   bottle do
     cellar :any
@@ -37,7 +37,6 @@ class Deisctl < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["CGO_ENABLED"] = "0"
     ENV.prepend_create_path "PATH", buildpath/"bin"
 
     mkdir_p "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis"
