@@ -357,6 +357,16 @@ the REST API.
     DELETE /jobs/<jobId>     - Kills the specified job
     GET /jobs/<jobId>/config - Gets the job configuration
 
+### Data
+
+It is sometime necessary to programmatically upload larger files to the server. Use these paths to manage such files:
+
+    GET /data                - Lists previously uploaded files that were not yet deleted
+    POST /data/<prefix>      - Uploads a new file, the full path of the file on the server is returned, the 
+                               prefix is the prefix of the actual filename used on the server (a timestamp is 
+                               added to ensure uniqueness)							   
+    DELETE /data/<filename>  - Deletes the specified file (only if under control of the JobServer)
+
 For details on the Typesafe config format used for input (JSON also works), see the [Typesafe Config docs](https://github.com/typesafehub/config).
 
 ### Context configuration

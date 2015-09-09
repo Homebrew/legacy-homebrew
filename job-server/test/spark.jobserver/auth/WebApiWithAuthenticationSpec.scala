@@ -51,7 +51,7 @@ class WebApiWithAuthenticationSpec extends FunSpec with Matchers with BeforeAndA
   private val dummyActor = system.actorOf(Props(classOf[DummyActor], this))
 
   private def routesWithTimeout(authTimeout: String): Route = {
-    val api = new WebApi(system, config.withValue("shiro.authentication-timeout", ConfigValueFactory.fromAnyRef(authTimeout)), dummyPort, dummyActor, dummyActor, dummyActor) {
+    val api = new WebApi(system, config.withValue("shiro.authentication-timeout", ConfigValueFactory.fromAnyRef(authTimeout)), dummyPort, dummyActor, dummyActor, dummyActor, dummyActor) {
       override def initSecurityManager() {
 
         val ini = {
