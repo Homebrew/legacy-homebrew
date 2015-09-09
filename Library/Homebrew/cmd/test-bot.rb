@@ -521,7 +521,6 @@ module Homebrew
       if install_passed
         if formula.stable? && !ARGV.include?("--no-bottle")
           bottle_args = ["--verbose", "--rb", canonical_formula_name]
-          bottle_args << { :puts_output_on_success => true }
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
           if bottle_step.passed? && bottle_step.has_output?
