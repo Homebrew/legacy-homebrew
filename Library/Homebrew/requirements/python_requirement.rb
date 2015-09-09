@@ -24,7 +24,9 @@ class PythonRequirement < Requirement
       ENV.prepend_path "PATH", Formula["python"].opt_bin
     end
 
-    ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
+    if python_binary == "python"
+      ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
+    end
   end
 
   def python_short_version
@@ -59,10 +61,6 @@ class Python3Requirement < PythonRequirement
   cask "python3"
 
   satisfy(:build_env => false) { which_python }
-
-  env do
-    ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{python_short_version}/site-packages"
-  end
 
   def python_binary
     "python3"
