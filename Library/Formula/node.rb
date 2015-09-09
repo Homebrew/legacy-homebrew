@@ -22,7 +22,6 @@ class Node < Formula
 
   depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "pkg-config" => :build
-  depends_on "icu4c" => :optional
 
   # https://github.com/nodejs/node-v0.x-archive/issues/7919
   # https://github.com/Homebrew/homebrew/issues/36681
