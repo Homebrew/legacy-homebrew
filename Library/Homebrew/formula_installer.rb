@@ -451,6 +451,9 @@ class FormulaInstaller
 
     ohai "Summary" if verbose? || show_summary_heading?
     puts summary
+
+    # let's reset Utils.git_available? if we just installed git
+    Utils.clear_git_available_cache if formula.name == "git"
   ensure
     unlock
   end

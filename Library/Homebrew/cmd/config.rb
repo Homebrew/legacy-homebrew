@@ -53,10 +53,7 @@ module Homebrew
   end
 
   def origin
-    origin = HOMEBREW_REPOSITORY.cd do
-      `git config --get remote.origin.url 2>/dev/null`.chomp
-    end
-    if origin.empty? then "(none)" else origin end
+    Homebrew.git_origin || "(none)"
   end
 
   def describe_path(path)
