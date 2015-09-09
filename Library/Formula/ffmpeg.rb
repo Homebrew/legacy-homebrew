@@ -33,7 +33,6 @@ class Ffmpeg < Formula
   option "with-libsoxr", "Enable the soxr resample library"
   option "with-webp", "Enable using libwebp to encode WEBP images"
   option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
-  option "with-libbs2b", "Enable using libbs2b"
 
   depends_on "pkg-config" => :build
 
