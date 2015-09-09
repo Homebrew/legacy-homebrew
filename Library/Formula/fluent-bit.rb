@@ -15,7 +15,7 @@ class FluentBit < Formula
 
   test do
     io = IO.popen("#{bin}/fluent-bit --input stdin --output stdout")
-    sleep 5
+    sleep 1
     Process.kill("SIGINT", io.pid)
     Process.wait(io.pid)
     io.read =~ /Fluent-Bit v#{version}/
