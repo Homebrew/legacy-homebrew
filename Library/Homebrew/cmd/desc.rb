@@ -10,7 +10,10 @@ module Homebrew
 
     if search_type.empty?
       raise FormulaUnspecifiedError if ARGV.named.empty?
-      Descriptions.named(ARGV.formulae.map(&:full_name)).print
+      desc = {}
+      ARGV.formulae.each { |f| desc[f.full_name] = f.desc }
+      results = Descriptions.new(desc)
+      results.print
     elsif search_type.size > 1
       odie "Pick one, and only one, of -s/--search, -n/--name, or -d/--description."
     else
