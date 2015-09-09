@@ -5,9 +5,9 @@ class Lysp < Formula
   sha256 "436a8401f8a5cc4f32108838ac89c0d132ec727239d6023b9b67468485509641"
 
   depends_on "bdw-gc"
+  depends_on "gcc"
 
   fails_with :clang do
-    build 500
     cause "use of unknown builtin '__builtin_return'"
   end
 
@@ -15,8 +15,21 @@ class Lysp < Formula
   patch :DATA
 
   def install
-    system "make"
+    # this option is supported only for ELF object files
+    inreplace "Makefile", "-rdynamic", ""
+
+    system "make", "CC=#{ENV.cc}"
     bin.install "lysp", "gclysp"
+  end
+
+  test do
+    (testpath/"test.l").write <<-EOS.undent
+      (define println (subr (dlsym "printlnSubr")))
+      (define + (subr (dlsym "addSubr")))
+      (println (+ 40 2))
+    EOS
+
+    assert_equal "42", shell_output("#{bin}/lysp test.l").chomp
   end
 end
 
