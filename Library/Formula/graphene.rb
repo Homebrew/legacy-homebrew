@@ -5,10 +5,10 @@ class Graphene < Formula
   sha256 "987a83be0b9e634805d8bb949d11422a42e627fd40f78c68c3b1ac7b3243cda2"
 
   bottle do
-    cellar :any
-    sha256 "5c1242c087ac5940a65f5206753b2257b1e7a7527bb243f539ccdbe26df91a76" => :yosemite
-    sha256 "ba71259f21f30ffc272dae108d1cad4993b3207ccf7b48202feb07d9dedd2d0e" => :mavericks
-    sha256 "41aca31352fe31cb7efe693e897652ccef7b34b6ccb3bad9192b864a5bbc7337" => :mountain_lion
+    revision 1
+    sha256 "1dbcc5c38fdb48ace59ad4f6af0be6afedac94ae4734a551479195c79386c46f" => :yosemite
+    sha256 "80fcf20bdbfda56a510b3c24e70bc22848d1268008a9c39683ced8b358430098" => :mavericks
+    sha256 "597b9d3cf2414166089f60753131cfc24c308328bd6b4b6518d78f577b51fcb5" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
