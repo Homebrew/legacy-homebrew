@@ -12,7 +12,12 @@ class Graphene < Formula
   end
 
   depends_on "pkg-config" => :build
+  # this next line is necessary because the build system relies on sed pattern GNU extensions.
+  # should be fixed in the next release of graphene.
+  # reported upstream as https://github.com/ebassi/graphene/issues/42
+  depends_on "gnu-sed" => :build
   depends_on "glib"
+  depends_on "gobject-introspection"
 
   def install
     system "./configure", "--disable-debug",
