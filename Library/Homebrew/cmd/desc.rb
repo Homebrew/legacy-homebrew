@@ -3,38 +3,24 @@ require "cmd/search"
 
 module Homebrew
   def desc
-    if ARGV.options_only.empty?
-      if ARGV.named.empty?
-        raise FormulaUnspecifiedError
-        exit
-      end
-      results = Descriptions.named(ARGV.formulae.map(&:full_name))
+    search_type = []
+    search_type << :either if ARGV.flag? "--search"
+    search_type << :name   if ARGV.flag? "--name"
+    search_type << :desc   if ARGV.flag? "--description"
+
+    if search_type.empty?
+      raise FormulaUnspecifiedError if ARGV.named.empty?
+      Descriptions.named(ARGV.formulae.map(&:full_name)).print
+    elsif search_type.size > 1
+      odie "Pick one, and only one, of -s/--search, -n/--name, or -d/--description."
     else
-      if ARGV.options_only.count != 1
-        odie "Pick one, and only one, of -s/--search, -n/--name, or -d/--description."
-      end
-
-      search_arg = ARGV.options_only.first
-
-      search_type = case search_arg
-        when '-s', '--search'
-          :either
-        when '-n', '--name'
-          :name
-        when '-d', '--description'
-          :desc
-        else
-          odie "Unrecognized option '#{search_arg}'."
-        end
-
       if arg = ARGV.named.first
         regex = Homebrew::query_regexp(arg)
-        results = Descriptions.search(regex, search_type)
+        results = Descriptions.search(regex, search_type.first)
+        results.print
       else
         odie "You must provide a search term."
       end
     end
-
-    results.print unless results.nil?
   end
 end

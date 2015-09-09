@@ -3,7 +3,7 @@ require "blacklist"
 require "utils"
 require "thread"
 require "official_taps"
-require 'descriptions'
+require "descriptions"
 
 module Homebrew
   SEARCH_ERROR_QUEUE = Queue.new
