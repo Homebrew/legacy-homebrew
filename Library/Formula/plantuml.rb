@@ -1,8 +1,8 @@
 class Plantuml < Formula
   desc "Draw UML diagrams"
   homepage "http://plantuml.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/plantuml/plantuml.8024.jar"
-  sha256 "03aa4a1ead12aa349575e32889cac5a38cb65c658138e75d31b26191bdfd8ada"
+  url "https://downloads.sourceforge.net/project/plantuml/plantuml.8029.jar"
+  sha256 "632e57aebd6aa986fb0cf9d80d468abd10d7414f79b4d5637ef2adf0794f6106"
 
   bottle do
     cellar :any
