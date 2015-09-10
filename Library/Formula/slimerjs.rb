@@ -24,6 +24,12 @@ class Slimerjs < Formula
   sha256 "4333ae1c7898789c71b65ba5767cd1781290cdad36cb64d58ef289933482c81b"
   head "https://github.com/laurentj/slimerjs.git"
 
+  devel do
+    url "https://download.slimerjs.org/nightlies/latest-slimerjs-stable/slimerjs-0.9.7-pre-mac.tar.bz2"
+    sha256 "8817a90333154ecb52415638d418e6d90d6742fec3d80f124b739344a75da5d1"
+    version "0.9.7-pre"
+  end
+
   bottle do
     cellar :any
     sha1 "77b0703ee315c809ea9a1307b88f0a622affeedc" => :mavericks
