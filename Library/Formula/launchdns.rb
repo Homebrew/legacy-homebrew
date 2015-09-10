@@ -24,7 +24,7 @@ class Launchdns < Formula
 
   def caveats; <<-EOS.undent
       To have *.dev resolved to 127.0.0.1:
-          sudo ln -s #{HOMEBREW_PREFIX}/etc/resolver /etc/resolver
+          sudo ln -s #{HOMEBREW_PREFIX}/etc/resolver /etc
     EOS
   end
 
