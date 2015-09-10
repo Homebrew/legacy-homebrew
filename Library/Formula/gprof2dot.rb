@@ -6,6 +6,13 @@ class Gprof2dot < Formula
 
   head "https://github.com/jrfonseca/gprof2dot.git"
 
+  bottle do
+    cellar :any
+    sha256 "4fcdce24b6951b0132fdad5a698c610d14081ab0d394829b14e529ef8de43361" => :yosemite
+    sha256 "ca2c8c0f777d7becb5ed0e6531195fc7ac307f8d0230b651e881f15c0ed9d23d" => :mavericks
+    sha256 "706d128a70af48176f06c6cef54be2b733db9ff172e9e20410903c05f86a0e61" => :mountain_lion
+  end
+
   depends_on "graphviz" => :recommended
   depends_on :python if MacOS.version <= :snow_leopard
 
