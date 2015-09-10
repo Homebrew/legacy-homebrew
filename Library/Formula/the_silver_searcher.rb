@@ -1,9 +1,9 @@
 class TheSilverSearcher < Formula
   desc "Code-search similar to ack"
   homepage "https://github.com/ggreer/the_silver_searcher"
+  url "https://github.com/ggreer/the_silver_searcher/archive/0.31.0.tar.gz"
+  sha256 "61bc827f4557d8108e91cdfc9ba31632e2568b26884c92426417f58135b37da8"
   head "https://github.com/ggreer/the_silver_searcher.git"
-  url "https://github.com/ggreer/the_silver_searcher/archive/0.30.0.tar.gz"
-  sha256 "a3b61b80f96647dbe89c7e89a8fa7612545db6fa4a313c0ef8a574d01e7da5db"
 
   bottle do
     cellar :any
@@ -18,16 +18,6 @@ class TheSilverSearcher < Formula
   depends_on "pkg-config" => :build
   depends_on "pcre"
   depends_on "xz"
-
-  # Edit bash completion script to not require bash-completion
-  # The `have ag` test is redundant in any case, since the script will only
-  # be installed if Ag itself is installed. See:
-  # https://github.com/ggreer/the_silver_searcher/issues/208
-  # https://github.com/Homebrew/homebrew/issues/27418
-  patch do
-    url "https://github.com/thomasf/the_silver_searcher/commit/867dff8631bc80d760268f653265e4d3caf44f16.diff"
-    sha1 "09502c60a11658d9a08a6825e78defad96318bd9"
-  end
 
   def install
     # Stable tarball does not include pre-generated configure script
