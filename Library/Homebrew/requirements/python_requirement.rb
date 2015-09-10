@@ -24,9 +24,7 @@ class PythonRequirement < Requirement
       ENV.prepend_path "PATH", Formula["python"].opt_bin
     end
 
-    if python_binary == "python"
-      ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
-    end
+    ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
   end
 
   def python_short_version
