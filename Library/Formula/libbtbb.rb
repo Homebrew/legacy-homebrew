@@ -11,6 +11,7 @@ class Libbtbb < Formula
 
   depends_on "cmake" => :build
   depends_on "python"
+  depends_on "libpcap"
 
   def install
     args = std_cmake_args
