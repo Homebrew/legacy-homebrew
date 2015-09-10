@@ -45,7 +45,7 @@ class Dovecot < Formula
       <dict>
         <key>Label</key>
         <string>#{plist_name}</string>
-        <key>OnDemand</key>
+        <key>KeepAlive</key>
         <false/>
         <key>RunAtLoad</key>
         <true/>
@@ -54,8 +54,6 @@ class Dovecot < Formula
           <string>#{opt_sbin}/dovecot</string>
           <string>-F</string>
         </array>
-        <key>ServiceDescription</key>
-        <string>Dovecot mail server</string>
         <key>StandardErrorPath</key>
         <string>#{var}/log/dovecot/dovecot.log</string>
         <key>StandardOutPath</key>
