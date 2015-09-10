@@ -357,9 +357,11 @@ the REST API.
     DELETE /jobs/<jobId>     - Kills the specified job
     GET /jobs/<jobId>/config - Gets the job configuration
 
+For details on the Typesafe config format used for input (JSON also works), see the [Typesafe Config docs](https://github.com/typesafehub/config).
+
 ### Data
 
-It is sometime necessary to programmatically upload larger files to the server. Use these paths to manage such files:
+It is sometime necessary to programmatically upload files to the server. Use these paths to manage such files:
 
     GET /data                - Lists previously uploaded files that were not yet deleted
     POST /data/<prefix>      - Uploads a new file, the full path of the file on the server is returned, the 
@@ -367,8 +369,14 @@ It is sometime necessary to programmatically upload larger files to the server. 
                                added to ensure uniqueness)							   
     DELETE /data/<filename>  - Deletes the specified file (only if under control of the JobServer)
 
-For details on the Typesafe config format used for input (JSON also works), see the [Typesafe Config docs](https://github.com/typesafehub/config).
-
+These files are uploaded to the server and are stored in a local temporary 
+directory on the server where the JobServer runs. The POST command returns the full 
+pathname and filename of the uploaded file so that later jobs can work with this 
+just the same as with any other server-local file. A job could therefore add this file to HDFS or distribute 
+it to worker nodes via the SparkContext.addFile command.  	
+For files that are larger than a few hundred MB, it is recommended to manually upload these files to the server or 
+to directly add them to your HDFS.
+	
 ### Context configuration
 
 A number of context-specific settings can be controlled when creating a context (POST /contexts) or running an
