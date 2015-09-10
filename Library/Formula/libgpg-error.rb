@@ -18,7 +18,8 @@ class LibgpgError < Formula
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
-                          "--disable-silent-rules"
+                          "--disable-silent-rules",
+                          "--enable-static"
     system "make", "install"
   end
 
