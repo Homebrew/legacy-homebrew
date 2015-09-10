@@ -8,12 +8,13 @@ class Saltstack < Formula
   url "https://github.com/saltstack/salt/releases/download/v2015.5.5/salt-2015.5.5.tar.gz"
   sha256 "5cd8d317616abab691a83f7fd3f8bcf9ad8aecaa95fcfdc0f6d788de87f0beeb"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "26f0a6304da89a1c806b13c119a5e3d8abb5026a872789cf81e5726d6a9053c2" => :yosemite
-    sha256 "2c3fef890e391dc58b3df39aa4b3f178366f10335d7ca56c872f4abb74faa625" => :mavericks
-    sha256 "39052505d6d7f1ee2e844d12abff04bc52478b04f72ec676072f45c1fac2f64a" => :mountain_lion
+    sha256 "1354410fb9a5115d63196d4ed1e8bc37f9edd44f2e530570c5c8ef86e461c04f" => :yosemite
+    sha256 "69ae2286dd9788d9ac0eaabb6e1419540fad8a73a3363e2f664338132f7e9d6f" => :mavericks
+    sha256 "4fd57592eb583ef91dd7cab232469c536581c74a6a90be61c875553e6f96b20a" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -58,8 +59,8 @@ class Saltstack < Formula
   end
 
   resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "pyzmq" do
