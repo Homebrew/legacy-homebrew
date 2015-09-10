@@ -20,9 +20,11 @@ module Homebrew
 
   def internal_commands
     with_directory = false
-    (HOMEBREW_REPOSITORY/"Library/Homebrew/cmd").
-      children(with_directory).
-      map { |f| File.basename(f, ".rb") }
+    cmds = (HOMEBREW_LIBRARY_PATH/"cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
+    if ARGV.homebrew_developer?
+      cmds += (HOMEBREW_LIBRARY_PATH/"dev-cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
+    end
+    cmds
   end
 
   def external_commands
