@@ -27,7 +27,7 @@ class Descriptions
   # save it for future use.
   def self.generate_cache
     @cache = {}
-    Formula.map do |f|
+    Formula.each do |f|
       @cache[f.full_name] = f.desc
     end
     self.save_cache
