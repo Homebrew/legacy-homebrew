@@ -12,6 +12,6 @@ class Corelocationcli < Formula
   end
 
   test do
-    system "#{bin}/CoreLocationCLI", "-h"
+    system "(#{bin}/CoreLocationCLI -h; true)"
   end
 end
