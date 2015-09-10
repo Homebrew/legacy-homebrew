@@ -5,6 +5,7 @@ class Libassuan < Formula
   mirror "ftp://ftp.gnupg.org/gcrypt/libassuan/libassuan-2.3.0.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libassuan/libassuan-2.3.0.tar.bz2"
   sha256 "87c999f572047fa22a79ab5de4c8a1a5a91f292561b69573965cac7751320452"
+  revision 1
 
   bottle do
     cellar :any
