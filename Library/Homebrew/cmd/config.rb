@@ -87,7 +87,7 @@ module Homebrew
   def describe_ruby
     ruby = which "ruby"
     return "N/A" if ruby.nil?
-    ruby_binary = Utils.popen_read ruby, "-e", \
+    ruby_binary = Utils.popen_read ruby, "-rrbconfig", "-e", \
       'include RbConfig;print"#{CONFIG["bindir"]}/#{CONFIG["ruby_install_name"]}#{CONFIG["EXEEXT"]}"'
     ruby_binary = Pathname.new(ruby_binary).realpath
     if ruby == ruby_binary
