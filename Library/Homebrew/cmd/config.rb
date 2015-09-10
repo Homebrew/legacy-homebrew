@@ -74,26 +74,19 @@ module Homebrew
 
   def describe_python
     python = which "python"
-    return "N/A" if python.nil?
-    python_binary = Utils.popen_read python, "-c", "import sys; sys.stdout.write(sys.executable)"
-    python_binary = Pathname.new(python_binary).realpath
-    if python == python_binary
-      python
+    if %r{/shims/python$} =~ python && which("pyenv")
+      "#{python} => #{Pathname.new(`pyenv which python`.strip).realpath}" rescue describe_path(python)
     else
-      "#{python} => #{python_binary}"
+      describe_path(python)
     end
   end
 
   def describe_ruby
     ruby = which "ruby"
-    return "N/A" if ruby.nil?
-    ruby_binary = Utils.popen_read ruby, "-rrbconfig", "-e", \
-      'include RbConfig;print"#{CONFIG["bindir"]}/#{CONFIG["ruby_install_name"]}#{CONFIG["EXEEXT"]}"'
-    ruby_binary = Pathname.new(ruby_binary).realpath
-    if ruby == ruby_binary
-      ruby
+    if %r{/shims/ruby$} =~ ruby && which("rbenv")
+      "#{ruby} => #{Pathname.new(`rbenv which ruby`.strip).realpath}" rescue describe_path(ruby)
     else
-      "#{ruby} => #{ruby_binary}"
+      describe_path(ruby)
     end
   end
 
