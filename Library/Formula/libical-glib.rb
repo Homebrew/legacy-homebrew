@@ -4,6 +4,12 @@ class LibicalGlib < Formula
   url "https://download.gnome.org/sources/libical-glib/1.0/libical-glib-1.0.3.tar.xz"
   sha256 "75373fb778352656c6368ffa7b371afa2fd2e2579874b0ec653a443da7a72d36"
 
+  bottle do
+    sha256 "11888d4f8706743ac2e6413071e48685c15ca90f9dead726fdce5e7d67fcd605" => :yosemite
+    sha256 "8c59dbcf73ac3226ab09a9524566f447e16569fcccfac8750c15b71f6f34f7d7" => :mavericks
+    sha256 "891baef1405bfbdf2d10d6a43c08d4c289a6fd4d27f7e3b145538d3bd6849a88" => :mountain_lion
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libical"
   depends_on "glib"
