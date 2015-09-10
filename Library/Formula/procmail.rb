@@ -19,6 +19,14 @@ class Procmail < Formula
   end
 end
 
+# The getline() used in procmail original code is conflict with Mac OS X
+# system function, so need to replace "getline" with other name(i.e: get_line).
+# Please see the following links for more info.
+# error message:
+# https://trac.macports.org/ticket/30353
+# about getline():
+# https://developer.apple.com/library/prerelease/mac/documentation/Darwin/Reference/ManPages/man3/getline.3.html
+
 __END__
 diff -Naur procmail-3.22-getline/src/fields.c procmail-3.22/src/fields.c
 --- procmail-3.22-getline/src/fields.c	2015-06-13 14:43:11.000000000 +0900
