@@ -6,6 +6,7 @@ class Bazel < Formula
 
   head "https://github.com/bazelbuild/bazel.git"
 
+  depends_on :macos => :mavericks
   depends_on :java => "1.8+"
 
   def install
