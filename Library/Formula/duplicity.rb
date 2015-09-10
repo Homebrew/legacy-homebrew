@@ -232,6 +232,11 @@ class Duplicity < Formula
     sha256 "6efcbff0bf60521ef682068c10c2d8959d887f70ed84ccd2def9945e8e94560e"
   end
 
+  resource "pexpect" do
+    url "https://pypi.python.org/packages/source/p/pexpect/pexpect-2.4.tar.gz"
+    sha256 "43c788f59dcf4bed677fd0b16891787dbf747e210ffedb6e90156fbbbd4d3b7b"
+  end
+
   def install
     ENV["PYTHONPATH"] = libexec/"lib/python2.7/site-packages"
 
