@@ -1,8 +1,8 @@
 class Graphene < Formula
   desc "Thin layer of graphic data types"
   homepage "https://ebassi.github.io/graphene/"
-  url "https://download.gnome.org/sources/graphene/1.2/graphene-1.2.6.tar.xz"
-  sha256 "987a83be0b9e634805d8bb949d11422a42e627fd40f78c68c3b1ac7b3243cda2"
+  url "https://download.gnome.org/sources/graphene/1.2/graphene-1.2.8.tar.xz"
+  sha256 "1c36f8f7c9244e68c6f49e5b949b53e967da828f77532773ac108978c7d17486"
 
   bottle do
     revision 1
@@ -12,10 +12,6 @@ class Graphene < Formula
   end
 
   depends_on "pkg-config" => :build
-  # this next line is necessary because the build system relies on sed pattern GNU extensions.
-  # should be fixed in the next release of graphene.
-  # reported upstream as https://github.com/ebassi/graphene/issues/42
-  depends_on "gnu-sed" => :build
   depends_on "glib"
   depends_on "gobject-introspection"
 
