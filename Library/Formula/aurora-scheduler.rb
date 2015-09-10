@@ -8,17 +8,12 @@ class AuroraScheduler < Formula
 
   def install
     ENV["LC_ALL"] = "en_US.UTF-8"
-    if MacOS.version == :mountain_lion
-      system "./pants", "binary", "src/main/python/apache/aurora/client/cli:kaurora"
-      system "./pants", "binary", "src/main/python/apache/aurora/admin:kaurora_admin"
-      bin.install "dist/kaurora.pex" => "aurora"
-      bin.install "dist/kaurora_admin.pex" => "aurora_admin"
-    else
-      system "./pants", "binary", "src/main/python/apache/aurora/client/cli:aurora"
-      system "./pants", "binary", "src/main/python/apache/aurora/admin:aurora_admin"
-      bin.install "dist/aurora.pex" => "aurora"
-      bin.install "dist/aurora_admin.pex" => "aurora_admin"
-    end
+    ENV["CFLAGS"] = "-Qunused-arguments"
+    ENV["CPPFLAGS"] = "-Qunused-arguments"
+    system "./pants", "binary", "src/main/python/apache/aurora/client/cli:kaurora"
+    system "./pants", "binary", "src/main/python/apache/aurora/admin:kaurora_admin"
+    bin.install "dist/kaurora.pex" => "aurora"
+    bin.install "dist/kaurora_admin.pex" => "aurora_admin"
   end
 
   test do
