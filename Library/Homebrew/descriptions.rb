@@ -1,8 +1,8 @@
 require "formula"
-require "csv"
+require "formula_versions"
 
 class Descriptions
-  CACHE_FILE = HOMEBREW_CACHE + "desc_cache"
+  CACHE_FILE = HOMEBREW_CACHE + "desc_cache.json"
 
   def self.cache
     @cache || self.load_cache
@@ -12,9 +12,7 @@ class Descriptions
   # return nil.
   def self.load_cache
     if CACHE_FILE.exist?
-      @cache = {}
-      CSV.foreach(CACHE_FILE) { |name, desc| @cache[name] = desc }
-      @cache
+      @cache = Utils::JSON.load(CACHE_FILE.read)
     end
   end
 
@@ -22,18 +20,14 @@ class Descriptions
   # directory.
   def self.save_cache
     HOMEBREW_CACHE.mkpath
-    CSV.open(CACHE_FILE, 'w') do |csv|
-      @cache.each do |name, desc|
-        csv << [name, desc]
-      end
-    end
+    CACHE_FILE.atomic_write Utils::JSON.dump(@cache)
   end
 
   # Create a hash mapping all formulae to their descriptions;
   # save it for future use.
   def self.generate_cache
     @cache = {}
-    Formula.map do |f|
+    Formula.each do |f|
       @cache[f.full_name] = f.desc
     end
     self.save_cache
@@ -42,20 +36,26 @@ class Descriptions
   # Return true if the cache exists, and neither Homebrew nor any of the Taps
   # repos were updated more recently than it was.
   def self.cache_fresh?
-    if CACHE_FILE.exist?
-      cache_date = File.mtime(CACHE_FILE)
+    return false unless CACHE_FILE.exist?
+    cache_mtime = File.mtime(CACHE_FILE)
+    ref_master = ".git/refs/heads/master"
 
-      ref_master = ".git/refs/heads/master"
-      master = HOMEBREW_REPOSITORY/ref_master
+    master = HOMEBREW_REPOSITORY/ref_master
 
-      last_update = (master.exist? ? File.mtime(master) : Time.at(0))
-
-      Dir.glob(HOMEBREW_LIBRARY/"Taps/**"/ref_master).each do |repo|
-        repo_mtime = File.mtime(repo)
-        last_update = repo_mtime if repo_mtime > last_update
-      end
-      last_update <= cache_date
+    # If ref_master doesn't exist, it means brew update is never run.
+    # Since cache is found, we can assume it's fresh.
+    if master.exist?
+      core_mtime = File.mtime(master)
+      return false if core_mtime > cache_mtime
     end
+
+    Tap.each do |tap|
+      next unless tap.git?
+      repo_mtime = File.mtime(tap.path/ref_master)
+      return false if repo_mtime > cache_mtime
+    end
+
+    true
   end
 
   # Create the cache if it doesn't already exist.
@@ -86,7 +86,13 @@ class Descriptions
   # cache. Save the updated cache to disk, unless explicitly told not to.
   def self.cache_formulae(formula_names, options = { :save => true })
     if self.cache
-      formula_names.each { |name| @cache[name] = Formula[name].desc }
+      formula_names.each do |name|
+        begin
+          desc = Formulary.factory(name).desc
+        rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS
+        end
+        @cache[name] = desc
+      end
       self.save_cache if options[:save]
     end
   end
@@ -98,22 +104,6 @@ class Descriptions
       formula_names.each { |name| @cache.delete(name) }
       self.save_cache if options[:save]
     end
-  end
-
-  # Given an array of formula names, return a {Descriptions} object mapping
-  # those names to their descriptions.
-  def self.named(names)
-    self.ensure_cache
-
-    results = {}
-    unless names.empty?
-      results = names.inject({}) do |accum, name|
-        accum[name] = @cache[name]
-        accum
-      end
-    end
-
-    new(results)
   end
 
   # Given a regex, find all formulae whose specified fields contain a match.
