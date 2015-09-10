@@ -7,6 +7,8 @@ class Procmail < Formula
 
   depends_on "autoconf" => :build
 
+  keg_only :provided_pre_el_capitan
+
   patch :p1, :DATA
 
   def install
