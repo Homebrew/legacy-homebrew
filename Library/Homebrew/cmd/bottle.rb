@@ -130,6 +130,8 @@ module Homebrew
 
     if ARGV.include? "--no-revision"
       bottle_revision = 0
+    elsif ARGV.include? "--keep-old"
+      bottle_revision = f.bottle_specification.revision
     else
       ohai "Determining #{f.full_name} bottle revision..."
       versions = FormulaVersions.new(f)
@@ -201,6 +203,17 @@ module Homebrew
     bottle.revision bottle_revision
     bottle.sha256 bottle_path.sha256 => bottle_tag
 
+    old_spec = f.bottle_specification
+    if ARGV.include?("--keep-old") && !old_spec.checksums.empty?
+      bad = [:root_url, :prefix, :cellar, :revision].any? do |field|
+        old_spec.send(field) != bottle.send(field)
+      end
+      if bad
+        bottle_path.unlink if bottle_path.exist?
+        odie "--keep-old is passed but at least one of fields are not the same"
+      end
+    end
+
     output = bottle_output bottle
 
     puts "./#{filename}"
@@ -221,6 +234,9 @@ module Homebrew
   end
 
   def merge
+    write = ARGV.include? "--write"
+    keep_old = ARGV.include? "--keep-old"
+
     merge_hash = {}
     ARGV.named.each do |argument|
       bottle_block = IO.read(argument)
@@ -231,15 +247,32 @@ module Homebrew
 
     merge_hash.each do |formula_name, bottle_blocks|
       ohai formula_name
+      f = Formulary.factory(formula_name)
 
-      bottle = BottleSpecification.new.extend(BottleMerger)
+      bottle = if keep_old
+        f.bottle_specification.dup
+      else
+        BottleSpecification.new
+      end
+      bottle.extend(BottleMerger)
       bottle_blocks.each { |block| bottle.instance_eval(block) }
+
+      old_spec = f.bottle_specification
+      if keep_old && !old_spec.checksums.empty?
+         bad = [:root_url, :prefix, :cellar, :revision].any? do |field|
+           old_spec.send(field) != bottle.send(field)
+         end
+
+         if bad
+           ofail "--keep-old is passed but at least one of fields are not the same, skip it"
+           next
+         end
+      end
 
       output = bottle_output bottle
       puts output
 
-      if ARGV.include? "--write"
-        f = Formulary.factory(formula_name)
+      if write
         update_or_add = nil
 
         Utils::Inreplace.inreplace(f.path) do |s|
