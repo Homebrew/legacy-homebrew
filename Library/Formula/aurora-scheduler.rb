@@ -15,6 +15,6 @@ class AuroraScheduler < Formula
   end
 
   test do
-    system "echo Aurora Client : ", "$(aurora --version)"
+    system "#{bin}/aurora --version"
   end
 end
