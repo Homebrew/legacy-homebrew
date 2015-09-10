@@ -12,6 +12,6 @@ class Corelocationcli < Formula
   end
 
   test do
-    system "(#{bin}/CoreLocationCLI -h; true)"
+    shell_output("#{bin}/CoreLocationCLI -h", 1)
   end
 end
