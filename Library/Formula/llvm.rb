@@ -5,7 +5,7 @@ class CodesignRequirement < Requirement
   satisfy(:build_env => false) do
     mktemp do
       touch "llvm_check.txt"
-      quiet_system "/usr/bin/codesign", "-s", "lldb_codesign", "llvm_check.txt"
+      quiet_system "/usr/bin/codesign", "-s", "lldb_codesign", "--dryrun", "llvm_check.txt"
     end
   end
 
