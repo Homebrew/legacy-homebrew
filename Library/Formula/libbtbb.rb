@@ -11,7 +11,15 @@ class Libbtbb < Formula
 
   depends_on "cmake" => :build
   depends_on "python"
-  depends_on "libpcap"
+  depends_on "homebrew/dupes/libpcap"
+
+
+  bottle do
+    cellar :any
+    sha1 "e1870ab678e92b9524d3f1ea05862fedc3d196eb" => :yosemite
+    sha1 "52071cec084c13a10a08102e391f457d176ecd1d" => :mavericks
+    sha1 "3069f205340202284cd8e0ec902d056c4f851bba" => :mountain_lion
+  end
 
   def install
     args = std_cmake_args
