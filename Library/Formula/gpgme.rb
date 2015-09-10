@@ -1,9 +1,10 @@
 class Gpgme < Formula
   desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.5.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.5.tar.bz2"
-  sha256 "0b3d3d5107680c594777aae65882a1ff6dd1ba629a83432e719c8b82a743c207"
+  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
+  mirror "https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
+  sha256 "b09de4197ac280b102080e09eaec6211d081efff1963bf7821cf8f4f9916099d"
 
   bottle do
     cellar :any
