@@ -15,6 +15,6 @@ class AuroraScheduler < Formula
   end
 
   test do
-    system "#{bin}/aurora --version"
+    system "aurora", "--version"
   end
 end
