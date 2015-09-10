@@ -1,8 +1,8 @@
 class Libgtop < Formula
   desc "Library for portably obtaining information about processes"
   homepage "https://library.gnome.org/devel/libgtop/stable/"
-  url "https://download.gnome.org/sources/libgtop/2.28/libgtop-2.28.5.tar.xz"
-  sha256 "c812c174e44a8971a1f33265437cfd10f1e99869c7f5c05f8ee95846a70a3342"
+  url "https://download.gnome.org/sources/libgtop/2.30/libgtop-2.30.0.tar.xz"
+  sha256 "463bcbe5737b1b93f3345ee34abf601e8eb864f507c49ff1921c2737abafc1e5"
 
   bottle do
     revision 1
@@ -21,5 +21,33 @@ class Libgtop < Formula
                           "--prefix=#{prefix}",
                           "--without-x"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <glibtop/sysinfo.h>
+
+      int main(int argc, char *argv[]) {
+        const glibtop_sysinfo *info = glibtop_get_sysinfo();
+        return 0;
+      }
+    EOS
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}/libgtop-2.0
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -lglib-2.0
+      -lgtop-2.0
+      -lintl
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end
