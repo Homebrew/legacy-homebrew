@@ -45,9 +45,14 @@ class Llvm < Formula
       sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
     end
 
-    resource "clang-tools-extra" do
+    resource "extra-tools" do
       url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
       sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+    end
+
+    resource "sanitizers" do
+      url "http://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz"
+      sha256 "0f2ff37d80a64575fecd8cf0d5c50f7ac1f837ddf700d1855412bb7547431d87"
     end
   end
 
@@ -78,17 +83,23 @@ class Llvm < Formula
       url "http://llvm.org/git/lldb.git"
     end
 
-    resource "clang-tools-extra" do
+    resource "extra-tools" do
       url "http://llvm.org/git/clang-tools-extra.git"
+    end
+
+    resource "sanitizers" do
+      url "http://llvm.org/git/compiler-rt.git"
     end
   end
 
   option :universal
   option "with-clang", "Build Clang support library"
+  option "with-extra-tools", "Build extra tools for Clang"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
   option "with-python", "Build Python bindings against Homebrew Python"
+  option "with-sanitizers", "Enable Clang code sanitizers"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
@@ -115,6 +126,12 @@ class Llvm < Formula
   def install
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
+    # compiler-rt has some iOS simulator features that require i386 symbols
+    # I'm assuming the rest of clang needs support too for 32-bit compilation
+    # to work correctly, but if not, perhaps universal binaries could be
+    # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
+    # can almost be treated as an entirely different build from llvm.
+    ENV.permit_arch_flags
 
     if build.with?("lldb") && build.without?("clang")
       raise "Building LLDB needs Clang support library."
@@ -123,7 +140,8 @@ class Llvm < Formula
     if build.with? "clang"
       (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"tools/clang").install resource("clang")
-      (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
+      (buildpath/"tools/clang/tools/extra").install resource("extra-tool")
+      (buildpath/"projects/compiler-rt").install resource("sanitizers")
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
@@ -142,7 +160,6 @@ class Llvm < Formula
     end
 
     if build.universal?
-      ENV.permit_arch_flags
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
