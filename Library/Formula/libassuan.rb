@@ -18,7 +18,8 @@ class Libassuan < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--enable-static"
     system "make", "install"
   end
 
