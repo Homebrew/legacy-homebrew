@@ -5,9 +5,9 @@ class GambitScheme < Formula
   sha256 "17e4a2eebbd0f5ebd807b4ad79a98b89b2a5eef00199c318a885db4ef950f14f"
 
   bottle do
-    sha1 "4f04f85300495e2c3fad49206b57605d010ad1f7" => :mavericks
-    sha1 "57c650e3539e41e084f29adf26160e920e3a068e" => :mountain_lion
-    sha1 "f4002601e8f904d064909b5df30479a26c916f8d" => :lion
+    sha256 "d1d2cf026e85f5c62ebe7373c1eed03cd84c590ef3f588cba447fc912f9287d6" => :yosemite
+    sha256 "7de3b06bde1d0a2a8ce3288dfed388aa4161f0753692cb53eade22372eba1bd3" => :mavericks
+    sha256 "24f6d6f75f044bec4c7d0a87cc65e66234cc68e772d6a9d86ccd13495ce6aba5" => :mountain_lion
   end
 
   conflicts_with "ghostscript", :because => "both install `gsc` binaries"
