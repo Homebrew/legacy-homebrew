@@ -26,8 +26,8 @@ class Slimerjs < Formula
 
   bottle do
     cellar :any
-    sha1 "77b0703ee315c809ea9a1307b88f0a622affeedc" => :mavericks
-    sha1 "aa5654afdd8d2dc049878d2898b9fb7fa33911ab" => :mountain_lion
+    sha256 "3b9baa7f71e4e3b3472faf8e30d8e21f4a4f54e24fb894d003cb4fe539a6db1a" => :mavericks
+    sha256 "3607fb21371c48b903b5a0ed5c7211b027be3f76e7fbdccb6e44c30d5e341385" => :mountain_lion
   end
 
   # Min supported OS X version by Firefox & xulrunner is 10.6
