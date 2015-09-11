@@ -6,12 +6,11 @@ class Autoconf < Formula
   sha256 "954bd69b391edc12d6a4a51a2dd1476543da5c6bbf05a95b59dc0dd6fd4c2969"
 
   bottle do
-    cellar :any
-    revision 3
-    sha256 "d3b15c0b1aec975ab3274b99ba9202122842fc08c62a266dcfb71501083e3a84" => :el_capitan
-    sha256 "5c00e4a1c7a3fe918ef743c7ca70e772432a2cc3e40eb0737283d94e2db8f555" => :yosemite
-    sha256 "13810d9363887d21b2d7bfaaccfc52853a4ca021b0d020a9764c32eb0cda256a" => :mavericks
-    sha256 "79a026a91be5ae3927e60d01c666e71f8e78f46cc02dda95770d17c92b5b87af" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 4
+    sha256 "daf70656aa9ff8b2fb612324222aa6b5e900e2705c9f555198bcd8cd798d7dd0" => :yosemite
+    sha256 "d153b3318754731ff5e91b45b2518c75880993fa9d1f312a03696e2c1de0c9d5" => :mavericks
+    sha256 "37e77a2e7ca6d479f0a471d5f5d828efff621bd051c1884ff1363d77c5c4675e" => :mountain_lion
   end
 
   keg_only :provided_until_xcode43
