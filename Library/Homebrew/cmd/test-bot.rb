@@ -870,8 +870,8 @@ module Homebrew
       ARGV.named.each do |argument|
         test_error = false
         begin
-          test = Test.new(argument, :tap => tap, :skip_homebrew = skip_homebrew)
-          skip_homebrew ||= true
+          test = Test.new(argument, :tap => tap, :skip_homebrew => skip_homebrew)
+          skip_homebrew = true
         rescue ArgumentError => e
           test_error = true
           ofail e.message
