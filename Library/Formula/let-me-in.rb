@@ -1,3 +1,5 @@
+require "language/go"
+
 class LetMeIn < Formula
   desc "Add my IP to AWS security group(s)"
   homepage "https://github.com/rlister/let-me-in"
@@ -6,27 +8,22 @@ class LetMeIn < Formula
 
   depends_on "go" => :build
 
-  ## this works
-  go_resource "github.com/aws/aws-sdk-go/aws" do
-    url "github.com/aws/aws-sdk-go/aws.git", revision: 'f096b7d61df3d7d6d97f0e701f92616d1ea5420d'
-  end
-
-  ## this works
-  go_resource "github.com/aws/aws-sdk-go/aws/awserr" do
-    url "github.com/aws/aws-sdk-go/aws.git", revision: 'f096b7d61df3d7d6d97f0e701f92616d1ea5420d'
-  end
-
-  ## this DOES NOT work
-  go_resource "github.com/aws/aws-sdk-go/service/ec2" do
-    url "github.com/aws/aws-sdk-go/aws.git", revision: 'f096b7d61df3d7d6d97f0e701f92616d1ea5420d'
+  ## install godep, which will handle all remaining vendored dependencies
+  go_resource "github.com/tools/godep" do
+    url "https://github.com/tools/godep.git", :revision => "25d294f55e782c93ecfa0db046f095549ac5b960"
   end
 
   def install
     ENV["GOPATH"] = buildpath
-    # system "go", "get", "github.com/aws/aws-sdk-go/aws"
-    # system "go", "get", "github.com/aws/aws-sdk-go/aws/awserr"
-    # system "go", "get", "github.com/aws/aws-sdk-go/service/ec2"
-    system "go", "build", "let-me-in.go"
+    mkdir_p buildpath/"src/github.com/rlister/"
+    ln_sf buildpath, buildpath/"src/github.com/rlister/let-me-in"
+    Language::Go.stage_deps resources, buildpath/"src"
+
+    cd "src/github.com/tools/godep" do
+      system "go", "install"
+    end
+
+    system "./bin/godep", "go", "build", "-o", "let-me-in"
     bin.install "let-me-in"
   end
 
