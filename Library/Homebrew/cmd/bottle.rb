@@ -169,6 +169,8 @@ module Homebrew
       begin
         keg.relocate_install_names prefix, Keg::PREFIX_PLACEHOLDER,
           cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
+        keg.relocate_text_files prefix, Keg::PREFIX_PLACEHOLDER,
+          cellar, Keg::CELLAR_PLACEHOLDER
         keg.delete_pyc_files!
 
         cd cellar do
