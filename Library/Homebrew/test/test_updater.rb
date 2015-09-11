@@ -58,7 +58,7 @@ class UpdaterTests < Homebrew::TestCase
     FormulaVersions.stubs(:new).returns(stub(:formula_at_revision => "2.0"))
     @updater.diff = fixture(fixture_name)
     @updater.in_repo_expect("git diff --quiet", true)
-    @updater.in_repo_expect("git symbolic-ref --short HEAD", "master")
+    @updater.in_repo_expect("git symbolic-ref --short HEAD 2>/dev/null", "master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
     @updater.in_repo_expect("git config core.autocrlf false")
     @updater.in_repo_expect("git pull --ff --no-rebase --quiet origin refs/heads/master:refs/remotes/origin/master")

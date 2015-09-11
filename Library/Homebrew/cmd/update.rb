@@ -187,7 +187,13 @@ class Updater
       @stashed = true
     end
 
-    @initial_branch = `git symbolic-ref --short HEAD`.chomp
+
+    begin
+      @initial_branch = `git symbolic-ref --short HEAD 2>/dev/null`.chomp
+    rescue ErrorDuringExecution
+      @initial_branch = ""
+    end
+
     if @initial_branch != "master" && !@initial_branch.empty?
       safe_system "git", "checkout", "master", *quiet
     end
@@ -227,7 +233,7 @@ class Updater
     ignore_interrupts { yield }
   ensure
     if $?.signaled? && $?.termsig == 2 # SIGINT
-      safe_system "git", "checkout", @initial_branch
+      safe_system "git", "checkout", @initial_branch unless @initial_branch.empty?
       safe_system "git", "reset", "--hard", @initial_revision
       safe_system "git", "stash", "pop" if @stashed
     end
