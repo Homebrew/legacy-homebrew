@@ -217,7 +217,6 @@ module Homebrew
 
     bottle = BottleSpecification.new
     bottle.root_url(root_url) if root_url
-    bottle.prefix prefix
     if relocatable
       if skip_relocation
         bottle.cellar :any_skip_relocation
@@ -226,6 +225,7 @@ module Homebrew
       end
     else
       bottle.cellar cellar
+      bottle.prefix prefix
     end
     bottle.revision bottle_revision
     bottle.sha256 bottle_path.sha256 => bottle_tag
