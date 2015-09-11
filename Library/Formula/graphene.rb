@@ -1,8 +1,8 @@
 class Graphene < Formula
   desc "Thin layer of graphic data types"
   homepage "https://ebassi.github.io/graphene/"
-  url "https://download.gnome.org/sources/graphene/1.2/graphene-1.2.8.tar.xz"
-  sha256 "1c36f8f7c9244e68c6f49e5b949b53e967da828f77532773ac108978c7d17486"
+  url "https://download.gnome.org/sources/graphene/1.2/graphene-1.2.10.tar.xz"
+  sha256 "e7b58334a91ae75b776fda987c29867710008673040fc996949933f2c5f17fdb"
 
   bottle do
     sha256 "c696932d3e1fc77275461425ecc10fa033431886ece6096514ae2a5b9517e219" => :yosemite
