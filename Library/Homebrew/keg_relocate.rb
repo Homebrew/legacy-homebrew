@@ -46,7 +46,9 @@ class Keg
         end
       end
     end
+  end
 
+  def relocate_text_files(old_prefix, new_prefix, old_cellar, new_cellar)
     files = text_files | libtool_files
 
     files.group_by { |f| f.stat.ino }.each_value do |first, *rest|
