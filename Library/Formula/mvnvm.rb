@@ -16,6 +16,9 @@ class Mvnvm < Formula
   conflicts_with "maven", :because => "also installs a 'mvn' executable"
 
   test do
+    (testpath/"settings.xml").write <<-EOS.undent
+      <settings><localRepository>#{testpath}/repository</localRepository></settings>
+    EOS
     (testpath/"mvnvm.properties").write <<-EOS.undent
       mvn_version=3.2.5
     EOS
@@ -37,6 +40,6 @@ class Mvnvm < Formula
         }
       }
     EOS
-    system "#{bin}/mvn", "compile"
+    system "#{bin}/mvn", "-gs", "#{testpath}/settings.xml", "compile"
   end
 end
