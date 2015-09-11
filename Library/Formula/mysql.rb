@@ -175,7 +175,7 @@ class Mysql < Formula
 
   test do
     (prefix/"mysql-test").cd do
-      system "./mysql-test-run.pl", "status"
+      system "./mysql-test-run.pl", "status", "--vardir=#{testpath}"
     end
   end
 end
