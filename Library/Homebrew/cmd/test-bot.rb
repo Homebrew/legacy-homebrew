@@ -184,7 +184,7 @@ module Homebrew
       @steps = []
       @tap = options[:tap]
       @repository = Homebrew.homebrew_git_repo @tap
-      @skip_homebrew = ARGV.include?("--skip-homebrew") || options[:skip_homebrew]
+      @skip_homebrew = options[:skip_homebrew]
 
       url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
 
@@ -860,13 +860,13 @@ module Homebrew
 
     tests = []
     any_errors = false
+    skip_homebrew = ARGV.include?("--skip-homebrew")
     if ARGV.named.empty?
       # With no arguments just build the most recent commit.
-      head_test = Test.new("HEAD", :tap => tap)
+      head_test = Test.new("HEAD", :tap => tap, :skip_homebrew => skip_homebrew)
       any_errors = !head_test.run
       tests << head_test
     else
-      skip_homebrew = false
       ARGV.named.each do |argument|
         test_error = false
         begin
