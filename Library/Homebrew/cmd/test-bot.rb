@@ -11,6 +11,7 @@
 # --junit:         Generate a JUnit XML test results file.
 # --email:         Generate an email subject file.
 # --no-bottle:     Run brew install without --build-bottle
+# --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
 # --tap=<tap>:     Use the git repository of the given tap
@@ -521,6 +522,7 @@ module Homebrew
       if install_passed
         if formula.stable? && !ARGV.include?("--no-bottle")
           bottle_args = ["--verbose", "--rb", canonical_formula_name]
+          bottle_args << "--keep-old" if ARGV.include? "--keep-old"
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
           if bottle_step.passed? && bottle_step.has_output?
