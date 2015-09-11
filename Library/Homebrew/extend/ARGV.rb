@@ -4,11 +4,11 @@ module HomebrewArgvExtension
   end
 
   def options_only
-    select { |arg| arg.start_with?("-") }
+    @options_only ||= select { |arg| arg.start_with?("-") }
   end
 
   def flags_only
-    select { |arg| arg.start_with?("--") }
+    @flags_only ||= select { |arg| arg.start_with?("--") }
   end
 
   def formulae
@@ -93,82 +93,100 @@ module HomebrewArgvExtension
   end
 
   def force?
-    flag? "--force"
+    return @force if instance_variable_defined?(:@force)
+    @force = flag? "--force"
   end
 
   def verbose?
-    flag?("--verbose") || !ENV["VERBOSE"].nil? || !ENV["HOMEBREW_VERBOSE"].nil?
+    return @verbose if instance_variable_defined?(:@verbose)
+    @verbose = flag?("--verbose") || !ENV["VERBOSE"].nil? || !ENV["HOMEBREW_VERBOSE"].nil?
   end
 
   def debug?
-    flag?("--debug") || !ENV["HOMEBREW_DEBUG"].nil?
+    return @debug if instance_variable_defined?(:@debug)
+    @debug = flag?("--debug") || !ENV["HOMEBREW_DEBUG"].nil?
   end
 
   def quieter?
-    flag? "--quieter"
+    return @quieter if instance_variable_defined?(:@quieter)
+    @quieter = flag? "--quieter"
   end
 
   def interactive?
-    flag? "--interactive"
+    return @interactive if instance_variable_defined?(:@interactive)
+    @interactive = flag? "--interactive"
   end
 
   def one?
-    flag? "--1"
+    return @one if instance_variable_defined?(:@one)
+    @one = flag? "--1"
   end
 
   def dry_run?
-    include?("--dry-run") || switch?("n")
+    return @dry_run if instance_variable_defined?(:@dry_run)
+    @dry_run = include?("--dry-run") || switch?("n")
   end
 
   def git?
-    flag? "--git"
+    return @git if instance_variable_defined?(:@git)
+    @git = flag? "--git"
   end
 
   def homebrew_developer?
-    include?("--homebrew-developer") || !ENV["HOMEBREW_DEVELOPER"].nil?
+    return @homebrew_developer if instance_variable_defined?(:@homebrew_developer)
+    @homebrew_developer = include?("--homebrew-developer") || !ENV["HOMEBREW_DEVELOPER"].nil?
   end
 
   def sandbox?
-    include?("--sandbox") || !ENV["HOMEBREW_SANDBOX"].nil?
+    return @sandbox if instance_variable_defined?(:@sandbox)
+    @sandbox = include?("--sandbox") || !ENV["HOMEBREW_SANDBOX"].nil?
   end
 
   def ignore_deps?
-    include? "--ignore-dependencies"
+    return @ignore_deps if instance_variable_defined?(:@ignore_deps)
+    @ignore_deps = include? "--ignore-dependencies"
   end
 
   def only_deps?
-    include? "--only-dependencies"
+    return @only_deps if instance_variable_defined?(:@only_deps)
+    @only_deps = include? "--only-dependencies"
   end
 
   def json
-    value "json"
+    @json ||= value "json"
   end
 
   def build_head?
-    include? "--HEAD"
+    return @build_head if instance_variable_defined?(:@build_head)
+    @build_head = include? "--HEAD"
   end
 
   def build_devel?
-    include? "--devel"
+    return @build_devel if instance_variable_defined?(:@build_devel)
+    @build_devel = include? "--devel"
   end
 
   def build_stable?
-    !(build_head? || build_devel?)
+    return @build_stable if instance_variable_defined?(:@build_stable)
+    @build_stable = !(build_head? || build_devel?)
   end
 
   def build_universal?
-    include? "--universal"
+    return @build_universal if instance_variable_defined?(:@build_universal)
+    @build_universal = include? "--universal"
   end
 
   # Request a 32-bit only build.
   # This is needed for some use-cases though we prefer to build Universal
   # when a 32-bit version is needed.
   def build_32_bit?
-    include? "--32-bit"
+    return @build_32_bit if instance_variable_defined?(:@build_32_bit)
+    @build_32_bit = include? "--32-bit"
   end
 
   def build_bottle?
-    include?("--build-bottle") || !ENV["HOMEBREW_BUILD_BOTTLE"].nil?
+    return @build_bottle if instance_variable_defined?(:@build_bottle)
+    @build_bottle = include?("--build-bottle") || !ENV["HOMEBREW_BUILD_BOTTLE"].nil?
   end
 
   def bottle_arch
@@ -177,7 +195,8 @@ module HomebrewArgvExtension
   end
 
   def build_from_source?
-    switch?("s") || include?("--build-from-source") || !!ENV["HOMEBREW_BUILD_FROM_SOURCE"]
+    return @build_from_source if instance_variable_defined?(:@build_from_source)
+    @build_from_source = switch?("s") || include?("--build-from-source") || !!ENV["HOMEBREW_BUILD_FROM_SOURCE"]
   end
 
   def flag?(flag)
@@ -185,7 +204,8 @@ module HomebrewArgvExtension
   end
 
   def force_bottle?
-    include? "--force-bottle"
+    return @force_bottle if instance_variable_defined?(:@force_bottle)
+    @force_bottle = include? "--force-bottle"
   end
 
   # eg. `foo -ns -i --bar` has three switches, n, s and i
@@ -200,25 +220,26 @@ module HomebrewArgvExtension
   end
 
   def cc
-    value "cc"
+    @cc ||= value "cc"
   end
 
   def env
-    value "env"
+    @env ||= value "env"
   end
 
   # If the user passes any flags that trigger building over installing from
   # a bottle, they are collected here and returned as an Array for checking.
   def collect_build_flags
-    build_flags = []
+    return @build_flags if @build_flags
+    @build_flags = []
 
-    build_flags << "--HEAD" if build_head?
-    build_flags << "--universal" if build_universal?
-    build_flags << "--32-bit" if build_32_bit?
-    build_flags << "--build-bottle" if build_bottle?
-    build_flags << "--build-from-source" if build_from_source?
+    @build_flags << "--HEAD" if build_head?
+    @build_flags << "--universal" if build_universal?
+    @build_flags << "--32-bit" if build_32_bit?
+    @build_flags << "--build-bottle" if build_bottle?
+    @build_flags << "--build-from-source" if build_from_source?
 
-    build_flags
+    @build_flags
   end
 
   private
