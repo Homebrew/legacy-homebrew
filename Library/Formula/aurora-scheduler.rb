@@ -4,8 +4,6 @@ class AuroraScheduler < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=aurora/0.9.0/apache-aurora-0.9.0.tar.gz"
   sha256 "16040866f3a799226452b1541892eb80ed3c61f47c33f1ccb0687fb5cf82767c"
 
-  depends_on :python => :build
-
   def install
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["CFLAGS"] = "-Qunused-arguments"
