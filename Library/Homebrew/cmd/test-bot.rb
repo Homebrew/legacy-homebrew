@@ -175,15 +175,16 @@ module Homebrew
   class Test
     attr_reader :log_root, :category, :name, :steps
 
-    def initialize(argument, tap = nil)
+    def initialize(argument, options={})
       @hash = nil
       @url = nil
       @formulae = []
       @added_formulae = []
       @modified_formula = []
       @steps = []
-      @tap = tap
+      @tap = options[:tap]
       @repository = Homebrew.homebrew_git_repo @tap
+      @skip_homebrew = ARGV.include?("--skip-homebrew") || options[:skip_homebrew]
 
       url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
 
@@ -571,9 +572,9 @@ module Homebrew
 
     def homebrew
       @category = __method__
-      return if ARGV.include? "--skip-homebrew"
+      return if @skip_homebrew
       test "brew", "tests"
-      test "brew", "tests", "--no-compat"
+      test "brew", "tests", "--no-compat" if @tap
       readall_args = ["--aliases"]
       readall_args << "--syntax" if MacOS.version >= :mavericks
       test "brew", "readall", *readall_args
@@ -861,14 +862,16 @@ module Homebrew
     any_errors = false
     if ARGV.named.empty?
       # With no arguments just build the most recent commit.
-      head_test = Test.new("HEAD", tap)
+      head_test = Test.new("HEAD", :tap => tap)
       any_errors = !head_test.run
       tests << head_test
     else
+      skip_homebrew = false
       ARGV.named.each do |argument|
         test_error = false
         begin
-          test = Test.new(argument, tap)
+          test = Test.new(argument, :tap => tap, :skip_homebrew = skip_homebrew)
+          skip_homebrew ||= true
         rescue ArgumentError => e
           test_error = true
           ofail e.message
