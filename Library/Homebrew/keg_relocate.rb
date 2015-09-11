@@ -16,6 +16,15 @@ class Keg
         end
       end
     end
+
+    symlink_files.each do |file|
+      link = file.readlink
+      # Don't fix relative symlinks
+      next unless link.absolute?
+      if link.to_s.start_with?(HOMEBREW_CELLAR.to_s) || link.to_s.start_with?(HOMEBREW_PREFIX.to_s)
+        FileUtils.ln_sf(link.relative_path_from(file.parent), file)
+      end
+    end
   end
 
   def relocate_install_names(old_prefix, new_prefix, old_cellar, new_cellar, options = {})
@@ -183,5 +192,14 @@ class Keg
       libtool_files << pn
     end if lib.directory?
     libtool_files
+  end
+
+  def symlink_files
+    symlink_files = []
+    path.find do |pn|
+      symlink_files << pn if pn.symlink?
+    end
+
+    symlink_files
   end
 end
