@@ -16,8 +16,8 @@ class HttpParser < Formula
   depends_on "coreutils" => :build
 
   patch do
-    url "https://patch-diff.githubusercontent.com/raw/joyent/http-parser/pull/247.diff"
-    sha256 "0f081d0cbf44575b2db2889b318245e692706b756725ba64d1277f571c8b921f"
+    url "https://gist.githubusercontent.com/staticfloat/6b51c399ace589e97b14/raw/9bd86c435e2fc001030649fc2623f048329c694b/rel_symlink.diff"
+    sha256 "278e3745b0c7d419b5bde0e18bc64ceb07a7ddeea1ae12bfdcfa482b888fe957"
   end
 
   def install
