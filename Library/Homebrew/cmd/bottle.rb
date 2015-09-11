@@ -164,6 +164,7 @@ module Homebrew
 
     keg = Keg.new(f.prefix)
     relocatable = false
+    skip_relocation = false
 
     keg.lock do
       begin
@@ -171,6 +172,7 @@ module Homebrew
           cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
         keg.relocate_text_files prefix, Keg::PREFIX_PLACEHOLDER,
           cellar, Keg::CELLAR_PLACEHOLDER
+
         keg.delete_pyc_files!
 
         cd cellar do
@@ -196,6 +198,7 @@ module Homebrew
 
         relocatable = !keg_contains(prefix_check, keg, ignores)
         relocatable = !keg_contains(cellar, keg, ignores) && relocatable
+        skip_relocation = relocatable && !keg.require_install_name_tool?
         puts if !relocatable && ARGV.verbose?
       rescue Interrupt
         ignore_interrupts { bottle_path.unlink if bottle_path.exist? }
@@ -215,7 +218,15 @@ module Homebrew
     bottle = BottleSpecification.new
     bottle.root_url(root_url) if root_url
     bottle.prefix prefix
-    bottle.cellar relocatable ? :any : cellar
+    if relocatable
+      if skip_relocation
+        bottle.cellar :any_skip_relocation
+      else
+        bottle.cellar :any
+      end
+    else
+      bottle.cellar cellar
+    end
     bottle.revision bottle_revision
     bottle.sha256 bottle_path.sha256 => bottle_tag
 
