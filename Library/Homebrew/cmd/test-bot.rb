@@ -772,6 +772,7 @@ module Homebrew
       ENV["HUDSON_COOKIE"] = nil
 
       ARGV << "--verbose"
+      ARGV << "--keep-old" if ENV["UPSTREAM_BOTTLE_KEEP_OLD"]
 
       bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
       return if bottles.empty?
@@ -805,6 +806,7 @@ module Homebrew
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
       bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
       bottle_args << "--tap=#{tap}" if tap
+      bottle_args << "--keep-old" if ARGV.include? "--keep-old"
       safe_system "brew", "bottle", *bottle_args
 
       remote_repo = tap ? tap.tr("/", "-") : "homebrew"
