@@ -6,6 +6,7 @@ class Automake < Formula
   sha256 "9908c75aabd49d13661d6dcb1bc382252d22cc77bf733a2d55e87f2aa2db8636"
 
   bottle do
+    revision 1
     sha1 "493f0b3b591fd72412d0b048539df4d94127ec9c" => :yosemite
     sha1 "a50e536f4cb8b7c45d51ab44fbc0825866553268" => :mavericks
     sha1 "9430f3bca0176048b418440e57ca6b9d6773fc31" => :mountain_lion
