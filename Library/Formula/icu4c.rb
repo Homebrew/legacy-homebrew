@@ -8,6 +8,7 @@ class Icu4c < Formula
   sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
 
   bottle do
+    sha256 "11625fd5a49ecdc8d653b707db778d32eb1e7cf6cee04108822a7615289e7411" => :el_capitan
     sha256 "a27e2b3645992acec22c95cb6ff4c4893139d3710c1a0be6d54c9f22593fc148" => :yosemite
     sha256 "c68728ae3a0401fb32ddb3a85eb5ddf8c367268090421d66db2631d49f7b1ce1" => :mavericks
     sha256 "be4ecad0c4f0542df384dd48c8c57380f6d843958c5d1eddb068e52f910e2dd9" => :mountain_lion
