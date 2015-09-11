@@ -10,6 +10,7 @@ class Libtool < Formula
 
   bottle do
     cellar :any
+    sha256 "6cb942b57a00f038100af861b4e835a79dae305c13aee550be21b71c4dfc48ed" => :el_capitan
     sha1 "2d08e8a6d58d789194efcb3d6e4b822e6ad409cc" => :yosemite
     sha1 "f545d684854815e7a5a5c1d4e6372ac26a7516ff" => :mavericks
     sha1 "dd1e72102dda61ab33da205e9cfb507a269fd0b9" => :mountain_lion
