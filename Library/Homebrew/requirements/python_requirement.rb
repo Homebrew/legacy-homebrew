@@ -23,8 +23,6 @@ class PythonRequirement < Requirement
     elsif short_version != Version.new("2.7")
       ENV.prepend_path "PATH", Formula["python"].opt_bin
     end
-
-    ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
   end
 
   def python_short_version
@@ -60,9 +58,7 @@ class Python3Requirement < PythonRequirement
 
   satisfy(:build_env => false) { which_python }
 
-  env do
-    ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{python_short_version}/site-packages"
-  end
+  env {}
 
   def python_binary
     "python3"
