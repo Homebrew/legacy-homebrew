@@ -5,10 +5,10 @@ class Galen < Formula
   sha256 "cd014d28b29835d3e0ed06c585b05e1ccf8cf1a1a68ceb9a5b6584497f3bd321"
 
   bottle do
-    cellar :any
-    sha256 "733d0d600bd451e49a7dfb53d5c7be98779161024abce9b1c5ac6e3e34bbafc1" => :yosemite
-    sha256 "fd13eb41d3b84d74e99bae06f0e52cbfdcb5b3093e789d0e97044abb4abbc572" => :mavericks
-    sha256 "fb89abc54c797a6e9316a733cb4b22eeb6e47df20ae1362404ee2c6e9144e9ac" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "2f4e2026e14cb405b18ce647a3d95a4220aefb1b7bd23600a0edd6fd869772ac" => :yosemite
+    sha256 "9377554f54550709b890990693707bc18ccb35c8082e4d11efaca7f85218e758" => :mavericks
+    sha256 "d057fe2c3b46cb5f364b3ac07af5e7cc81ec116369ae269ee485b56fad010780" => :mountain_lion
   end
 
   depends_on :java => "1.6+"
