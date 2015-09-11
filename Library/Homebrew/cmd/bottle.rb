@@ -205,12 +205,12 @@ module Homebrew
 
     old_spec = f.bottle_specification
     if ARGV.include?("--keep-old") && !old_spec.checksums.empty?
-      bad = [:root_url, :prefix, :cellar, :revision].any? do |field|
+      bad_fields = [:root_url, :prefix, :cellar, :revision].select do |field|
         old_spec.send(field) != bottle.send(field)
       end
-      if bad
+      if bad_fields.any?
         bottle_path.unlink if bottle_path.exist?
-        odie "--keep-old is passed but at least one of fields are not the same"
+        odie "--keep-old is passed but there are changes in: #{bad_fields.join ", "}"
       end
     end
 
