@@ -63,7 +63,7 @@ module Homebrew
       if arg.to_i > 0
         url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
         issue = arg
-      elsif (testing_match = arg.match %r{brew.sh/job/Homebrew%20Testing/(\d+)/})
+      elsif (testing_match = arg.match %r{brew.sh/job/Homebrew.*Testing/(\d+)/})
         _, testing_job = *testing_match
         url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
         odie "Testing URLs require `--bottle`!" unless ARGV.include?("--bottle")
