@@ -1,8 +1,8 @@
 class Mg3a < Formula
   desc "Small Emacs-like editor inspired like mg with UTF8 support"
   homepage "http://www.bengtl.net/files/mg3a/"
-  url "http://www.bengtl.net/files/mg3a/mg3a.150803.tar.gz"
-  sha256 "f7480c0a70a81a846c8e3cdb7b3fc41fc7e09c210498263abd1607028b0b24c7"
+  url "http://www.bengtl.net/files/mg3a/mg3a.150908.tar.gz"
+  sha256 "b77cb689091aa0078dabdad6d87b9554f2dba8386c39a6d2531af2b391aeabcd"
 
   conflicts_with "mg", :because => "both install `mg`"
 
@@ -18,7 +18,7 @@ class Mg3a < Formula
     mg3aopts << " -DLANGMODE_PYTHON" if build.with?("python-mode") || build.with?("most")
     mg3aopts << " -DLANGMODE_CLIKE" if build.with?("clike-mode") || build.with?("most")
     mg3aopts = "-DALL" if build.with?("all")
-    mg3aopts << " -DEMACS_QUIT"
+    # mg3aopts << " -DEMACS_QUIT"
 
     system "make", "CDEFS=#{mg3aopts}", "LIBS=-lncurses", "COPT=-O3"
     bin.install "mg"
