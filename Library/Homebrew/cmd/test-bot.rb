@@ -581,6 +581,7 @@ module Homebrew
         readall_args = ["--aliases"]
         readall_args << "--syntax" if MacOS.version >= :mavericks
         test "brew", "readall", *readall_args
+        test "brew", "update-test"
       end
     end
 
