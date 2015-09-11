@@ -1,8 +1,9 @@
 class Ice < Formula
   desc "Comprehensive RPC framework"
   homepage "https://zeroc.com"
-  url "https://github.com/zeroc-ice/ice/archive/v3.6.0.tar.gz"
-  sha256 "77933580cdc7fade0ebfce517935819e9eef5fc6b9e3f4143b07404daf54e25e"
+  url "https://github.com/zeroc-ice/ice/archive/v3.6.1-el_capitan.tar.gz"
+  sha256 "4a348ba24daceb7694bc23ee91994e2653c5d869918e44b2b1f0d49a360e93fb"
+  version "3.6.1"
 
   bottle do
     revision 2
@@ -13,7 +14,7 @@ class Ice < Formula
   option "with-java", "Build Ice for Java and the IceGrid Admin app"
 
   depends_on "mcpp"
-  depends_on :java => :optional
+  depends_on :java => [ "1.7+", :optional]
   depends_on :macos => :mavericks
 
   resource "berkeley-db" do
@@ -32,7 +33,12 @@ class Ice < Formula
         --enable-cxx
       ]
 
-      args << "--enable-java" if build.with? "java"
+      if build.with? "java"
+        args << "--enable-java"
+
+        # @externl from ZeroC submitted this patch to Oracle through an internal ticket system
+        inreplace "dist/Makefile.in", "@JAVACFLAGS@",  "@JAVACFLAGS@ -source 1.7 -target 1.7"
+      end
 
       # BerkeleyDB requires you to build everything from the build_unix subdirectory
       cd "build_unix" do
@@ -55,15 +61,19 @@ class Ice < Formula
 
     args = %W[
       prefix=#{prefix}
-      embedded_runpath_prefix=#{prefix}
       USR_DIR_INSTALL=yes
       OPTIMIZE=yes
       DB_HOME=#{libexec}
+      MCPP_HOME=#{Formula["mcpp"].opt_prefix}
     ]
 
     cd "cpp" do
       system "make", "install", *args
     end
+
+    # Do not set this for C++ as we need to use various slice compilers to build ice. This will be
+    # unnecessary in the next release
+    args << "embedded_runpath_prefix=#{prefix}"
 
     cd "objective-c" do
       system "make", "install", *args
