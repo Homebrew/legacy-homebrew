@@ -221,6 +221,7 @@ module Homebrew
         raise e if retry_count >= max_retries
         sleep_seconds = 2**retry_count
         ohai "That didn't work; sleeping #{sleep_seconds} seconds and trying again..."
+        f.bottle.cached_download.delete if f.bottle.cached_download.file?
         sleep sleep_seconds
         retry
       end
