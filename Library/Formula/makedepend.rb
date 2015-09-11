@@ -6,6 +6,7 @@ class Makedepend < Formula
 
   bottle do
     cellar :any
+    sha256 "3f3535296b2232448aa2b7509eee7ef65460ccc913475daf0b30b7ab6277e0e1" => :el_capitan
     sha1 "9a35ee27a96d2916dd347b362a2f62a3eb37b252" => :yosemite
     sha1 "83db1daee01e4eb752c711934eb88850b3ee70d6" => :mavericks
     sha1 "9c55ea85af719a448a4522958bd0e57e5e7741d1" => :mountain_lion
