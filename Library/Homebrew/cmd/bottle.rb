@@ -273,12 +273,12 @@ module Homebrew
 
       old_spec = f.bottle_specification
       if keep_old && !old_spec.checksums.empty?
-         bad = [:root_url, :prefix, :cellar, :revision].any? do |field|
+         bad_fields = [:root_url, :prefix, :cellar, :revision].select do |field|
            old_spec.send(field) != bottle.send(field)
          end
 
-         if bad
-           ofail "--keep-old is passed but at least one of fields are not the same, skip it"
+         if bad_fields.any?
+           ofail "--keep-old is passed but there are changes in: #{bad_fields.join ", "}"
            next
          end
       end
