@@ -10,9 +10,9 @@ class Idris < Formula
   head "https://github.com/idris-lang/Idris-dev.git"
 
   bottle do
-    sha256 "947b6f2391432a13a2fd8cf6584568a0e20c3822f3c61f0c2283b53555d04110" => :yosemite
-    sha256 "f957240b69b7a9af70e80370f41c0bfc98daca655e2a55330d53134ea6601081" => :mavericks
-    sha256 "402a3181054aa0d9e6058f5b7c23de758dd544148d97214268c95ce9b05f5928" => :mountain_lion
+    sha256 "05c45c28de89c39f9aee8300955622dd4e88373c1f0511be754782d60be4dedc" => :yosemite
+    sha256 "2f8f3dad3067f4efaeb2a6d43370e2e67325cf3b9d66042fb5f5fff60711227b" => :mavericks
+    sha256 "ec33fd58674dd8cb7557cd2f72bf0a90a105cdc4f4f8459520ff46014a15426b" => :mountain_lion
   end
 
   depends_on "ghc" => :build
