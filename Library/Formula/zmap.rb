@@ -31,7 +31,7 @@ class Zmap < Formula
     args << "-DWITH_REDIS=ON" if build.with? "hiredis"
     args << "-DWITH_MONGO=ON" if build.with? "mongo-c"
 
-    system "cmake", *args, "."
+    system "cmake", ".", *args
     system "make"
     system "make", "install"
   end
