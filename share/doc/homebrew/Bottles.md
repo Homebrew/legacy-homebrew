@@ -9,6 +9,8 @@ Bottles will not be used if the user requests it (see above), if the formula req
 ### Local Bottle Usage
 Bottles can also be cached locally and installed by path e.g. `brew install /Library/Caches/Homebrew/qt-4.8.4.mountain_lion.bottle.1.tar.gz`.
 
+But note that if you built your bottle by referencing the formula via path or URL (e.g., `brew install --build-bottle /path/fo/foo.rb`) you will not be able to `brew install /path/to/foo-1.0-mountain_lion.bottle.tar.gz`.  This is intentionally unsupported.  If you need to do this, put the formula in a tap before creating your bottle.
+
 ## Bottle Creation
 Bottles are currently created using the [Brew Test Bot](Brew-Test-Bot.md). We will be slowly adding them to all formulae.
 
