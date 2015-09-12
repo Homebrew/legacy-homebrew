@@ -2,12 +2,20 @@ module Homebrew
   def commands
     if ARGV.include? "--quiet"
       cmds = internal_commands + external_commands
+      cmds += internal_development_commands if ARGV.homebrew_developer?
       cmds += HOMEBREW_INTERNAL_COMMAND_ALIASES.keys if ARGV.include? "--include-aliases"
       puts_columns cmds.sort
     else
       # Find commands in Homebrew/cmd
       puts "Built-in commands"
       puts_columns internal_commands
+
+      # Find commands in Homebrew/dev-cmd
+      if ARGV.homebrew_developer?
+        puts
+        puts "Built-in development commands"
+        puts_columns internal_development_commands
+      end
 
       # Find commands in the path
       unless (exts = external_commands).empty?
@@ -20,11 +28,12 @@ module Homebrew
 
   def internal_commands
     with_directory = false
-    cmds = (HOMEBREW_LIBRARY_PATH/"cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
-    if ARGV.homebrew_developer?
-      cmds += (HOMEBREW_LIBRARY_PATH/"dev-cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
-    end
-    cmds
+    (HOMEBREW_LIBRARY_PATH/"cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
+  end
+
+  def internal_development_commands
+    with_directory = false
+    (HOMEBREW_LIBRARY_PATH/"dev-cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
   end
 
   def external_commands
