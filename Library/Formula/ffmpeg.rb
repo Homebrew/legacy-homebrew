@@ -7,6 +7,7 @@ class Ffmpeg < Formula
   revision 1
 
   bottle do
+    sha256 "b810b2a23a2d2b1a8d99d77ad8d9ca943a3735c6ba75f11beee6f5a6958ee030" => :el_capitan
     sha256 "060199677b66b5b745612ef01893893a688af372763621666a3e9425c1c5a144" => :yosemite
     sha256 "ea3800f6731c92c0e0274ed1677fd4a39067f7e620b7fe9d460f4a4c3a3a0378" => :mavericks
     sha256 "1615e14ba8159b46794fa46a83dd733df73df6699fd69036ecd3ce5e49182618" => :mountain_lion
