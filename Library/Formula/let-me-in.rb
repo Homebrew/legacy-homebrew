@@ -3,9 +3,8 @@ require "language/go"
 class LetMeIn < Formula
   desc "Add my IP to AWS security group(s)"
   homepage "https://github.com/rlister/let-me-in"
-  url "https://github.com/rlister/let-me-in/archive/v0.0.4.tar.gz"
-  sha256 "b073cc8df2e4412e20f056874502d1dffc15cf01bd3bfb34f161a7157788fbc1"
-
+  url "https://github.com/rlister/let-me-in/archive/v0.0.6.tar.gz"
+  sha256 "729d22fadca6ea4467f66d728afddb4aa2b63371924a8ae34a8d2e4b163ef9f7"
   depends_on "go" => :build
 
   ## install godep, which will handle all remaining vendored dependencies
