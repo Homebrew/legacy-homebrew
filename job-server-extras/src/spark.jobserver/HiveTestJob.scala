@@ -37,7 +37,7 @@ object HiveLoaderJob extends SparkHiveJob {
       .collect()
 
     println("table created " + list.length)
-    val r = hive.sql(s"LOAD DATA LOCAL INPATH $loadPath OVERWRITE INTO TABLE `test_addresses")
+    val r = hive.sql(s"LOAD DATA LOCAL INPATH $loadPath OVERWRITE INTO TABLE test_addresses")
     print("data loaded" + r.count())
     val addrRdd = hive.sql("SELECT * FROM test_addresses")
     print(s"count: ${addrRdd.count()}")
