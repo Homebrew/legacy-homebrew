@@ -1,6 +1,7 @@
 class Radare2 < Formula
   desc "Reverse engineering framework"
   homepage "http://radare.org"
+  revision 1
 
   stable do
     url "http://radare.org/get/radare2-0.9.9.tar.xz"
@@ -13,10 +14,6 @@ class Radare2 < Formula
   end
 
   bottle do
-    sha256 "216089159f3156a4a0ca935c9e29ffb12c0b83afbc98c7ef2b1f0b380edc61a7" => :el_capitan
-    sha256 "afb41a571a92455db1a56e7a62d90e5390187bd0fb69df341c42883fad7f3ccf" => :yosemite
-    sha256 "a55fa925ab269d44243f4cb95e7251e1eb86add65532ccd7b355f51af27bd9bf" => :mavericks
-    sha256 "6445c5acd96375099ed12e47854acd5e1db4354c20e0447caa8b87bb84b147fd" => :mountain_lion
   end
 
   head do
@@ -51,11 +48,34 @@ class Radare2 < Formula
     system "make", "install"
 
     resource("bindings").stage do
+      ENV.append_path "PATH", "#{bin}"
       ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
+      # Language versions.
+      perl_version = `/usr/bin/perl -e 'printf "%vd", $^V;'`
+      lua_version = "5.1"
+
+      # Lazily bind to Python.
+      inreplace "do-swig.sh", "VALABINDFLAGS=\"\"", "VALABINDFLAGS=\"--nolibpython\""
+      make_binding_args = ["CFLAGS=-undefined dynamic_lookup"]
+
+      # Ensure that plugins and bindings are installed in the correct Cellar
+      # paths.
+      inreplace "libr/lang/p/Makefile", "R2_PLUGIN_PATH=", "#R2_PLUGIN_PATH="
+      inreplace "Makefile", "LUAPKG=", "#LUAPKG="
+      inreplace "Makefile", "$$target/r2", "$(PERLPATH)/r2"
+      inreplace "Makefile", "${DESTDIR}$$_LUADIR", "#{lib}/lua/#{lua_version}"
+      make_install_args = ["R2_PLUGIN_PATH=#{lib}/radare2/#{version}",
+                           "LUAPKG=lua-#{lua_version}",
+                           "PERLPATH=#{lib}/perl5/site_perl/#{perl_version}",
+                           "PYTHON_PKGDIR=#{lib}/python2.7/site-packages",]
+
       system "./configure", "--prefix=#{prefix}"
+      ["lua", "perl", "python"].each do |binding|
+        system "make", "-C", binding, *make_binding_args
+      end
       system "make"
-      system "make", "install", "DESTDIR=#{prefix}"
+      system "make", "install", *make_install_args
     end
   end
 end
