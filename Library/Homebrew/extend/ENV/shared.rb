@@ -248,7 +248,7 @@ module SharedEnvExtension
     gcc_version_name = "gcc#{version.delete(".")}"
 
     gcc = Formulary.factory("gcc")
-    if gcc.opt_bin.join(name).exist?
+    if gcc.version_suffix == version
       gcc
     else
       Formulary.factory(gcc_version_name)
