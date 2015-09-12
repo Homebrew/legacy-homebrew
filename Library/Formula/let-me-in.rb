@@ -26,7 +26,8 @@ class LetMeIn < Formula
     bin.install "let-me-in"
   end
 
+  ## not a great test, but better than nothing
   test do
-    ## I should write some tests
+    assert `#{bin}/let-me-in -v` =~ /let-me-in #{version}/
   end
 end
