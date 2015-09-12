@@ -33,7 +33,8 @@ object HiveLoaderJob extends SparkHiveJob {
     println("running HiveLoaderJob")
     hive.sql("DROP TABLE if exists `default.test_addresses`")
     println("table dropped")
-    val list = hive.sql(s"$tableCreate $tableArgs $tableRowFormat $tableColFormat $tableMapFormat $tableAs").collect()
+    val list = hive.sql(s"$tableCreate $tableArgs $tableRowFormat $tableColFormat $tableMapFormat $tableAs")
+      .collect()
 
     println("table created " + list.length)
     hive.sql(s"LOAD DATA LOCAL INPATH $loadPath OVERWRITE INTO TABLE `default.test_addresses`")
