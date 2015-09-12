@@ -1,8 +1,8 @@
 class Polarssl < Formula
   desc "Cryptographic & SSL/TLS library"
   homepage "https://tls.mbed.org/"
-  url "https://tls.mbed.org/download/mbedtls-2.0.0-gpl.tgz"
-  sha256 "149a06621368540b7e1cef1b203c268439c2edbf29e2e9471d8021125df34952"
+  url "https://tls.mbed.org/download/mbedtls-2.1.0-gpl.tgz"
+  sha256 "b61b5fe6aa33ed365289478ac48f1496b97eef0fb813295e534e0c2bd435dcfc"
   head "https://github.com/ARMmbed/mbedtls.git"
 
   bottle do
