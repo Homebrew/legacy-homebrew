@@ -573,10 +573,10 @@ module Homebrew
     def homebrew
       @category = __method__
       return if @skip_homebrew
+      test "brew", "tests"
       if @tap
         test "brew", "readall", @tap
       else
-        test "brew", "tests"
         test "brew", "tests", "--no-compat"
         readall_args = ["--aliases"]
         readall_args << "--syntax" if MacOS.version >= :mavericks
