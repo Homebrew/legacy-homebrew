@@ -22,7 +22,7 @@ class LetMeIn < Formula
       system "go", "install"
     end
 
-    system "./bin/godep", "go", "build", "-o", "let-me-in"
+    system "./bin/godep", "go", "build", "-ldflags", "-X main.VERSION=#{version}", "-o", "let-me-in"
     bin.install "let-me-in"
   end
 
