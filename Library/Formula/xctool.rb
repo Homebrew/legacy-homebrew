@@ -7,6 +7,7 @@ class Xctool < Formula
 
   bottle do
     cellar :any
+    sha256 "2dca63fcd23aa73dd802b70998ac22a9d2ff125ca3b96b467dfcbc6fb208aa9d" => :el_capitan
     sha256 "d7b62c48267b2b1e9c660bfe65b1164366f0ebd8ccfbebdc08f5a7cef9dca8a1" => :yosemite
     sha256 "c62eb511deb79f71a8e7a375c5ca493029738d33f890d0395ce8674a7ecb2c1f" => :mavericks
   end
