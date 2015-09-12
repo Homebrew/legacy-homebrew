@@ -26,8 +26,7 @@ class LetMeIn < Formula
     bin.install "let-me-in"
   end
 
-  ## not a great test, but better than nothing
   test do
-    assert `#{bin}/let-me-in -v` =~ /let-me-in #{version}/
+    assert_match /let-me-in #{version}/, shell_output("#{bin}/let-me-in -v")
   end
 end
