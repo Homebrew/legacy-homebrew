@@ -30,17 +30,11 @@ object HiveLoaderJob extends SparkHiveJob {
   def validate(hive: HiveContext, config: Config): SparkJobValidation = SparkJobValid
 
   def runJob(hive: HiveContext, config: Config): Any = {
-    println("running HiveLoaderJob")
     hive.sql("DROP TABLE if exists test_addresses")
-    println("table dropped")
-    val list = hive.sql(s"$tableCreate $tableArgs $tableRowFormat $tableColFormat $tableMapFormat $tableAs")
-      .collect()
+    hive.sql(s"$tableCreate $tableArgs $tableRowFormat $tableColFormat $tableMapFormat $tableAs")
 
-    println("table created " + list.length)
-    val r = hive.sql(s"LOAD DATA LOCAL INPATH $loadPath OVERWRITE INTO TABLE test_addresses")
-    print("data loaded" + r.count())
+    hive.sql(s"LOAD DATA LOCAL INPATH $loadPath OVERWRITE INTO TABLE test_addresses")
     val addrRdd = hive.sql("SELECT * FROM test_addresses")
-    print(s"count: ${addrRdd.count()}")
     addrRdd.count()
   }
 }
