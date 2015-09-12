@@ -148,7 +148,15 @@ class Formulary
       @tap = Tap.new user, repo.sub(/^homebrew-/, "")
       name = @tap.formula_renames.fetch(name, name)
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
-      path ||= @tap.path/"#{name}.rb"
+
+      unless path
+        if (possible_alias = @tap.path/"Aliases/#{name}").file?
+          path = possible_alias.resolved_path
+          name = path.basename(".rb").to_s
+        else
+          path = @tap.path/"#{name}.rb"
+        end
+      end
 
       super name, path
     end
@@ -279,7 +287,9 @@ class Formulary
     if possible_tap_formulae.size > 1
       raise TapFormulaAmbiguityError.new(ref, possible_tap_formulae)
     elsif possible_tap_formulae.size == 1
-      return FormulaLoader.new(ref, possible_tap_formulae.first)
+      path = possible_tap_formulae.first.resolved_path
+      name = path.basename(".rb").to_s
+      return FormulaLoader.new(name, path)
     end
 
     if newref = FORMULA_RENAMES[ref]
@@ -320,7 +330,8 @@ class Formulary
       Pathname.glob([
         "#{tap}Formula/#{name}.rb",
         "#{tap}HomebrewFormula/#{name}.rb",
-        "#{tap}#{name}.rb"
+        "#{tap}#{name}.rb",
+        "#{tap}Aliases/#{name}",
       ]).detect(&:file?)
     end.compact
   end
