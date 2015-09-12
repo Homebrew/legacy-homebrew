@@ -235,6 +235,7 @@ module Homebrew
       bad_fields = [:root_url, :prefix, :cellar, :revision].select do |field|
         old_spec.send(field) != bottle.send(field)
       end
+      bad_fields.delete(:cellar) if old_spec.cellar == :any && bottle.cellar == :any_skip_relocation
       if bad_fields.any?
         bottle_path.unlink if bottle_path.exist?
         odie "--keep-old is passed but there are changes in: #{bad_fields.join ", "}"
@@ -289,7 +290,7 @@ module Homebrew
          bad_fields = [:root_url, :prefix, :cellar, :revision].select do |field|
            old_spec.send(field) != bottle.send(field)
          end
-
+         bad_fields.delete(:cellar) if old_spec.cellar == :any && bottle.cellar == :any_skip_relocation
          if bad_fields.any?
            ofail "--keep-old is passed but there are changes in: #{bad_fields.join ", "}"
            next
