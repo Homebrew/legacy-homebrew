@@ -1,8 +1,8 @@
 class Bokken < Formula
   desc "GUI for the Pyew and Radare projects"
-  homepage "https://inguma.eu/projects/bokken"
-  url "https://inguma.eu/attachments/download/197/bokken-1.6.tar.gz"
-  sha256 "4770602585b3e77b2977a8a6906c91ae0d64373eae328f42688106224c8bbc12"
+  homepage "http://bokken.re/"
+  url "https://inguma.eu/attachments/download/212/bokken-1.8.tar.gz"
+  sha256 "1c73885147dfcf0a74ba4d3dd897a6aabc11a4a42f95bd1269782d0b2e1a11b9"
 
   bottle do
     cellar :any
@@ -30,6 +30,7 @@ class Bokken < Formula
 
   def install
     resource("distorm64").stage do
+      inreplace "src/pydistorm.h", "python2\.5", "python2.7"
       cd "build/mac" do
         system "make"
         mkdir_p libexec/"distorm64"
