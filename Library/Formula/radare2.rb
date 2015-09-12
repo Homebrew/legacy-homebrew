@@ -1,6 +1,7 @@
 class Radare2 < Formula
   desc "Reverse engineering framework"
   homepage "http://radare.org"
+  revision 1
 
   stable do
     url "http://radare.org/get/radare2-0.9.9.tar.xz"
@@ -20,10 +21,6 @@ class Radare2 < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "c4a3cbed5b9aaf4d6b1970aec1e7b167f64ad4f0d92139f38892fcb0d5daae6c" => :el_capitan
-    sha256 "2d812da8bb6b00e1cf74fbf475b8709d9b01c22a1e1af547ff5b4adbabf7fef4" => :yosemite
-    sha256 "d482c0080aa58f7254e93527a498122810367bceefb2eeebb88539aad6a3f407" => :mavericks
   end
 
   head do
@@ -51,11 +48,34 @@ class Radare2 < Formula
     system "make", "install"
 
     resource("bindings").stage do
+      ENV.append_path "PATH", "#{bin}"
       ENV.append_path "PKG_CONFIG_PATH", "#{lib}/pkgconfig"
 
+      # Language versions.
+      perl_version = `/usr/bin/perl -e 'printf "%vd", $^V;'`
+      lua_version = "5.1"
+
+      # Lazily bind to Python.
+      inreplace "do-swig.sh", "VALABINDFLAGS=\"\"", "VALABINDFLAGS=\"--nolibpython\""
+      make_binding_args = ["CFLAGS=-undefined dynamic_lookup"]
+
+      # Ensure that plugins and bindings are installed in the correct Cellar
+      # paths.
+      inreplace "libr/lang/p/Makefile", "R2_PLUGIN_PATH=", "#R2_PLUGIN_PATH="
+      inreplace "Makefile", "LUAPKG=", "#LUAPKG="
+      inreplace "Makefile", "$$target/r2", "$(PERLPATH)/r2"
+      inreplace "Makefile", "${DESTDIR}$$_LUADIR", "#{lib}/lua/#{lua_version}"
+      make_install_args = ["R2_PLUGIN_PATH=#{lib}/radare2/#{version}",
+                           "LUAPKG=lua-#{lua_version}",
+                           "PERLPATH=#{lib}/perl5/site_perl/#{perl_version}",
+                           "PYTHON_PKGDIR=#{lib}/python2.7/site-packages",]
+
       system "./configure", "--prefix=#{prefix}"
+      ["lua", "perl", "python"].each do |binding|
+        system "make", "-C", binding, *make_binding_args
+      end
       system "make"
-      system "make", "install", "DESTDIR=#{prefix}"
+      system "make", "install", *make_install_args
     end
   end
 end
