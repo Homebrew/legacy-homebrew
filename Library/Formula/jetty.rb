@@ -31,6 +31,8 @@ class Jetty < Formula
   end
 
   test do
+    ENV["JETTY_BASE"] = testpath
+    cp_r Dir[libexec/"*"], testpath
     pid = fork { exec bin/"jetty", "start" }
     sleep 5 # grace time for server start
     begin
