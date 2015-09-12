@@ -1,5 +1,5 @@
 class Procmail < Formula
-  desc "procmail: sort incoming mail into separate folders/files"
+  desc "Sort incoming mail into separate folders/files"
   homepage "http://www.procmail.org/"
   url "ftp://ftp.procmail.net/pub/procmail/procmail-3.22.tar.gz"
   mirror "ftp://ftp.ucsb.edu/pub/mirrors/procmail/procmail-3.22.tar.gz"
