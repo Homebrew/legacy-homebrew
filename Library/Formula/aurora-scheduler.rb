@@ -24,7 +24,6 @@ class AuroraScheduler < Formula
     system "./pants", "binary", "src/main/python/apache/aurora/client/cli:kaurora"
     system "./pants", "binary", "src/main/python/apache/aurora/admin:kaurora_admin"
 
-    #system "./pants", "binary", "src/main/python/apache/aurora/executor/bin:thermos_executor"
     system "./pants", "binary", "src/main/python/apache/aurora/tools:thermos"
     system "./pants", "binary", "src/main/python/apache/aurora/tools:thermos_observer"
     system "./pants", "binary", "src/main/python/apache/thermos/bin:thermos_runner"
@@ -131,13 +130,7 @@ class AuroraScheduler < Formula
     system "python", "-c", "import mesos.native"
     system "aurora", "--version"
     system "aurora", "--help"
-    #system "#{bin}/aurora", "config", "#{testpath}/hello_world.aurora"
-
-    #system "#{bin}/aurora", "job", "create", "devcluster/www-data/test/hello_world", "#{testpath}/hello_world.aurora", "--verbose"
-    #system "#{bin}/aurora", "job", "killall", "devcluster/www-data/test/hello_world"
-    #Timeout.timeout(15) do
-    #  system "#{bin}/aurora", "task", "run", "devcluster/www-data/test/hello_world", "hostname"
-    #end
+    system "aurora_admin", "--help"
     system "zkServer", "stop"
 
     Process.kill("TERM", master)
