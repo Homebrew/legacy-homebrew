@@ -7,6 +7,7 @@ class Python < Formula
   revision 2
 
   bottle do
+    sha256 "fd44b41159eb20d3ea1f9914f2c5bb5e2c83f81a8994d1a40eed560891469e69" => :el_capitan
     sha256 "df7af5b6865765e96acdad1922c4983439f8b058845ac5023f8fe8ec79ea3d4e" => :yosemite
     sha256 "c0fab9719d000e1f6150423538b01059471b6eb1777257f5e71a29e1457311e4" => :mavericks
     sha256 "90e0f06ef02d3852cd805776ff172e909a2d69c97536ec0fae599d3ebd00bfec" => :mountain_lion
