@@ -27,6 +27,7 @@ class Gcc < Formula
 
   bottle do
     revision 1
+    sha256 "ad5350f6197eacc3e70439c5c0dcc8118500bf909141ea49f78110f77b0d6d93" => :el_capitan
     sha256 "9cc95abd2144c8af4449c9610b0f6e22e5351b27edafe7af958d3757b7f96064" => :yosemite
     sha256 "1fe4d5663ef0ceec8faa388045cf81dbadd6970a8d45f517f4cadf9f13f96bb1" => :mavericks
     sha256 "80893dd79e0ec91e9705556dd65f46f0c0acbe45e7386d36d31f68295dcbd474" => :mountain_lion
