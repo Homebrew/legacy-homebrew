@@ -1011,9 +1011,22 @@ class Formula
     end.compact
   end
 
+  # an array of all core aliases
+  # @private
+  def self.core_aliases
+    @core_aliases ||= Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map { |f| File.basename f }.sort
+  end
+
+  # an array of all tap aliases
+  # @private
+  def self.tap_aliases
+    @tap_aliases ||= Tap.flat_map(&:aliases).sort
+  end
+
+  # an array of all aliases
   # @private
   def self.aliases
-    Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map { |f| File.basename f }.sort
+    @aliases ||= (core_aliases + tap_aliases).sort.uniq
   end
 
   def self.[](name)
