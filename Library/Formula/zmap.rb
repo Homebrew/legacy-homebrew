@@ -8,9 +8,9 @@ class Zmap < Formula
 
   bottle do
     cellar :any
-    sha1 "67ee1c3239a4109088a7b5f9d9db4884640c1920" => :mavericks
-    sha1 "3d780dc9a1125d96294d7071b1cdc359ccf4f302" => :mountain_lion
-    sha1 "b0482d7fedc3063f7218997f4ecdcb93043f898a" => :lion
+    sha256 "4bec1849985c6754abe0facfb20a0d847470bc6f66623e98104176b45932d42a" => :yosemite
+    sha256 "e543e77553615624b232d1feac4dbe20c3eb24d0403f6e679c9a704ce21da33b" => :mavericks
+    sha256 "85fff9d320b123e6637980f4777e89b5fb7957dd5c75154d2c8aa2f3505aa471" => :mountain_lion
   end
 
   depends_on "cmake" => :build
