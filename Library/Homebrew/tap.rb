@@ -105,7 +105,7 @@ class Tap
   # an array of all aliases of this {Tap}.
   # @private
   def aliases
-    alias_files.map { |f| f.basename.to_s }
+    alias_files.map { |f| "#{name}/#{f.basename}" }
   end
 
   # an array of all commands files of this {Tap}.
