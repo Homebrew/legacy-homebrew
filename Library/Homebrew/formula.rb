@@ -937,7 +937,7 @@ class Formula
   # an array of all core {Formula} names
   # @private
   def self.core_names
-    @core_names ||= Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map { |f| File.basename f, ".rb" }.sort
+    @core_names ||= core_files.map { |f| f.basename(".rb").to_s }.sort
   end
 
   # an array of all core {Formula} files
