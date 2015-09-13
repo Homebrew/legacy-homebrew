@@ -54,9 +54,11 @@ class Harfbuzz < Formula
   end
 
   test do
-    resource("ttf").stage do
-      shape = `echo 'സ്റ്റ്' | #{bin}/hb-shape 270b89df543a7e48e206a2d830c0e10e5265c630.ttf`.chomp
-      assert_equal "[glyph201=0+1183|U0D4D=0+0]", shape
+    if build.with? "glib"
+      resource("ttf").stage do
+        shape = `echo 'സ്റ്റ്' | #{bin}/hb-shape 270b89df543a7e48e206a2d830c0e10e5265c630.ttf`.chomp
+        assert_equal "[glyph201=0+1183|U0D4D=0+0]", shape
+      end
     end
   end
 end
