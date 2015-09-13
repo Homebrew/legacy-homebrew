@@ -42,6 +42,7 @@ class Pyqt5 < Formula
               "--qmake=#{Formula["qt5"].bin}/qmake",
               # Force deployment target to avoid libc++ issues
               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
+              "--qml-plugindir=#{pkgshare}/plugins",
               "--verbose"]
       args << "--debug" if build.include? "enable-debug"
 
