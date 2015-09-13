@@ -5,10 +5,11 @@ class Ponysay < Formula
   sha256 "69e98a7966353de2f232cbdaccd8ef7dbc5d0bcede9bf7280a676793e8625b0d"
 
   bottle do
-    revision 1
-    sha1 "77682c4c9a1114e8c71d27ef21483ea709ec8614" => :yosemite
-    sha1 "90083a6bd5118323ae7ea7b3117c43c6b10bdd72" => :mavericks
-    sha1 "085a01cbf4ee1ed72361e87a040578e72369799e" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "54ccb7373321f78ec9326cda0173abb43a42af9436d0a256e712a5dad6321ad2" => :yosemite
+    sha256 "4d873b271541b44186b6aba17fbb7f21f640f9eb388eadba841005b5eab0d61f" => :mavericks
+    sha256 "2aad66036605d34d2d55a264fc1afe5a616dc409208ce4e55c31aa83e85da282" => :mountain_lion
   end
 
   depends_on :python3
