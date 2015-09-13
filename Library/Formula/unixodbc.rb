@@ -8,6 +8,7 @@ class Unixodbc < Formula
 
   bottle do
     revision 1
+    sha256 "a01d926f6ec2f5012ba73a895e9df1c381b9a5d08e73940c9dfc399071f4394f" => :el_capitan
     sha1 "03dd766eb34bf59cc26c6ae55ca906f95b9e0c17" => :yosemite
     sha1 "29acdaea17aea46d72b8cfe061c84d3d58e3d594" => :mavericks
     sha1 "e9efe13f0a2eb4f162422dc3465411ab35b85aef" => :mountain_lion
