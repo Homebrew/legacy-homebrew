@@ -6,7 +6,8 @@ class Ant < Formula
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "dcd44e0ed47bce38078c82531df266644c57431f07bb5a8e88f39738f3597c1a" => :el_capitan
     sha256 "4807efd018abecb583b69b87103aaf458ee456f65860e6bd6a0e01a63cace749" => :yosemite
     sha256 "d52cff7f6feb7c2c1e8c96048fc1adc103a0656c60ddbefdbc2b1da054213793" => :mavericks
     sha256 "838ffd9059831c2d0cb49c0bae1b8cbde48312042428754a476429246071e0c8" => :mountain_lion
