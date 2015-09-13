@@ -7,12 +7,13 @@ module Homebrew
     mktemp do
       curdir = Pathname.new(Dir.pwd)
 
+      ohai "Setup test environment..."
       # copy Homebrew installation
       cp_r homebrew_repository_git, curdir/".git"
       safe_system "git", "checkout", "--force", "master"
       safe_system "git", "reset", "--hard", "origin/master"
 
-      # Set git origin
+      # set git origin
       safe_system "git", "config", "remote.origin.url", "file://#{homebrew_repository_git}"
 
       # update ENV["PATH"]
@@ -20,6 +21,7 @@ module Homebrew
       ENV.prepend_path "PATH", "#{curdir}/bin"
 
       # run brew update
+      ohai "Running brew update..."
       safe_system "brew", "update"
     end
   end
