@@ -4,7 +4,12 @@ class Surfraw < Formula
   url "https://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"
   sha256 "aa97d9ac24ca4299be39fcde562b98ed556b3bf5ee9a1ae497e0ce040bbcc4bb"
 
-  head "git://git.debian.org/surfraw/surfraw.git", :shallow => false
+  head do
+    url "git://git.debian.org/surfraw/surfraw.git", :shallow => false
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
 
   bottle do
     sha1 "6c592c99adf6c1a0bb4993a36e4392bce6e24eaa" => :yosemite
