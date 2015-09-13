@@ -6,6 +6,7 @@ class Pyenv < Formula
   sha256 "8dccb8ec89b47c6389e2bf56a1067a67cc5edd5a445effb95bfc69c43499b0ee"
 
   bottle do
+    sha256 "9797a9baeeaad1f79066912029dbe32802d793ca4b4f390c686321c9a79b0bde" => :el_capitan
     sha256 "ef92abd0b319d35dccdf4bd4b244c968f9eec395ca82269c9dd3af4f780acbc2" => :yosemite
     sha256 "3c3071db234a46e0fd035d27921fb63fd8af7d3e555c0b3c9a3db0e7414e34ca" => :mavericks
     sha256 "c0897c017c2c7323b972df3d43a6ee0df4e468a4765d2dd56f58892d5233157d" => :mountain_lion
