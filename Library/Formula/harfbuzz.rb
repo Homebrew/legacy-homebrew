@@ -23,9 +23,9 @@ class Harfbuzz < Formula
   option "with-cairo", "Build command-line utilities that depend on Cairo"
 
   depends_on "pkg-config" => :build
-  depends_on "glib"
+  depends_on "glib" => :recommended
   depends_on "freetype"
-  depends_on "gobject-introspection"
+  depends_on "gobject-introspection" => :recommended
   depends_on "icu4c" => :recommended
   depends_on "cairo" => :optional
   depends_on "graphite2" => :optional
@@ -39,14 +39,14 @@ class Harfbuzz < Formula
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --enable-introspection=yes
-      --with-gobject=yes
       --with-coretext=yes
     ]
 
     args << "--with-icu" if build.with? "icu4c"
     args << "--with-graphite2" if build.with? "graphite2"
     args << "--with-cairo" if build.with? "cairo"
+    args << (build.with?("glib") ? "--with-glib=yes --with-gobject=yes" : "--without-glib")
+    args << "--enable-introspection=yes" if build.with? "gobject-introspection"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
