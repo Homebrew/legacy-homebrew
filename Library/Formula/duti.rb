@@ -14,6 +14,14 @@ class Duti < Formula
 
   depends_on "autoconf" => :build
 
+  # Add hardcoded SDK path for El Capitan. See https://github.com/moretension/duti/pull/13
+  if MacOS.version == :el_capitan
+    patch do
+      url "https://github.com/moretension/duti/pull/13.patch"
+      sha256 "5e2d482fe73fe95aea23c25417fdc3815f14724e96e4ac60e5a329424a735388"
+    end
+  end
+
   def install
     system "autoreconf", "-vfi"
     system "./configure", "--prefix=#{prefix}"
