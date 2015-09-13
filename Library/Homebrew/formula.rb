@@ -1120,6 +1120,28 @@ class Formula
       { "option" => opt.flag, "description" => opt.description }
     end
 
+    hsh["bottle"] = {}
+    %w[stable devel].each do |spec_sym|
+      next unless spec = send(spec_sym)
+      next unless (bottle_spec = spec.bottle_specification).checksums.any?
+      bottle_info = {
+        "revision" => bottle_spec.revision,
+        "cellar" => (cellar = bottle_spec.cellar).is_a?(Symbol) ? \
+                    cellar.inspect : cellar,
+        "prefix" => bottle_spec.prefix,
+        "root_url" => bottle_spec.root_url,
+      }
+      bottle_info["files"] = {}
+      bottle_spec.collector.keys.each do |os|
+        checksum = bottle_spec.collector[os]
+        bottle_info["files"][os] = {
+          "url" => "#{bottle_spec.root_url}/#{Bottle::Filename.create(self, os, bottle_spec.revision)}",
+          checksum.hash_type.to_s => checksum.hexdigest,
+        }
+      end
+      hsh["bottle"][spec_sym] = bottle_info
+    end
+
     if rack.directory?
       rack.subdirs.each do |keg_path|
         keg = Keg.new keg_path
