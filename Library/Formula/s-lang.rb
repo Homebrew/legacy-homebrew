@@ -6,6 +6,7 @@ class SLang < Formula
   sha256 "f95224060f45e0d8212a5039b339afa5f1a94a1bb0298e796104e5b12e926129"
 
   bottle do
+    sha256 "f6836798d838e52af2536255ed91b96e05068b7378fb93b4bd0fbfd52e04a381" => :el_capitan
     sha1 "5ee9afbf50de909d6e0a74d00b5e32162dc890e3" => :yosemite
     sha1 "48400ef87e23ca59bb65dc0ee59487e573bf2df2" => :mavericks
     sha1 "f27927f44ec63a865773b2fa9e0f7830b1089ecf" => :mountain_lion
