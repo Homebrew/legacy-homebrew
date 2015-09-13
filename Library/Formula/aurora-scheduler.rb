@@ -9,8 +9,7 @@ class AuroraScheduler < Formula
 
   def install
     system "sed \"s/<=/</g\" buildSrc/build.gradle \> buildSrc/build.gradle"
-    system "gradle", "wrapper"
-    system "./gradlew", "installDist"
+    system "gradle", "installDist"
 
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["CFLAGS"] = "-Qunused-arguments"
