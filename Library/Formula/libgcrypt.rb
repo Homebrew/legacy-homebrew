@@ -41,14 +41,17 @@ class Libgcrypt < Formula
 
     # Parallel builds work, but only when run as separate steps
     system "make"
+    system "make", "install"
     # Make check currently dies on El Capitan
     # https://github.com/Homebrew/homebrew/issues/41599
     # https://bugs.gnupg.org/gnupg/issue2056
-    system "make", "check" unless MacOS.version >= :el_capitan
-    system "make", "install"
+    # This check should be above make install again when fixed.
+    system "make", "check"
   end
 
   test do
-    system bin/"libgcrypt-config", "--libs"
+    touch "testing"
+    output = shell_output("#{bin}/hmac256 \"testing\" testing")
+    assert_match /0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6/, output
   end
 end
