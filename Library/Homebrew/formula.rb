@@ -961,7 +961,7 @@ class Formula
   # an array of all {Formula} names
   # @private
   def self.names
-    @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+    @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).uniq.sort
   end
 
   # an array of all {Formula} files
@@ -1026,7 +1026,7 @@ class Formula
   # an array of all aliases
   # @private
   def self.aliases
-    @aliases ||= (core_aliases + tap_aliases).sort.uniq
+    @aliases ||= (core_aliases + tap_aliases).uniq.sort
   end
 
   def self.[](name)
