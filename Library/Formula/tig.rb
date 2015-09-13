@@ -19,6 +19,7 @@ class Tig < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "e468112c6040d14397fa6976911345f691b20564166a6d116793f89e586245cf" => :el_capitan
     sha256 "f03fc214aa0b8f286a0e015ec447b342450e967abcb2ffad81c2211a2052dfbc" => :yosemite
     sha256 "b6996765930e0d2e17a17eaebc57fe6ba747db7a875469ca11bc782f1a344863" => :mavericks
     sha256 "d8fb10c0fd9ddbad7ef40cbddf2117b0552b6c4db64d5d6b9917bff6bdec358e" => :mountain_lion
