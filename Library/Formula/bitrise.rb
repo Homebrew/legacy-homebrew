@@ -3,8 +3,8 @@ require "language/go"
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/0.9.11.tar.gz"
-  sha256 "dee1418f188480e125555a47981e2c28b0972e21181606648cf3b5d7a298e084"
+  url "https://github.com/bitrise-io/bitrise/archive/1.0.0.tar.gz"
+  sha256 "364476e0bbdb75a09c2b500b83e3049293c47679d4fb9023a53addc4a61eb9f3"
 
   bottle do
     cellar :any
@@ -16,13 +16,13 @@ class Bitrise < Formula
   depends_on "go" => :build
 
   resource "envman" do
-    url "https://github.com/bitrise-io/envman/archive/0.9.7.tar.gz"
-    sha256 "8ee00feae482768e80c86652dd99fa821353e9a1a20ca4fbad19d1635cfb013a"
+    url "https://github.com/bitrise-io/envman/archive/0.9.8.tar.gz"
+    sha256 "21a952dfe4f0e27ed9d340fe1a445942b6429cf9cc04b6ca04e72a5bb577c939"
   end
 
   resource "stepman" do
-    url "https://github.com/bitrise-io/stepman/archive/0.9.12.tar.gz"
-    sha256 "7a4f9175046f182b4bcea9f35839870f56bf7bdde32cc221ac67e6de37e1cae4"
+    url "https://github.com/bitrise-io/stepman/archive/0.9.14.tar.gz"
+    sha256 "e8153e409009d15f2a74909ccceb1cf616500da06e0e0071ac39b1b42821dff2"
   end
 
   def go_install_package(basepth, pkgname)
@@ -48,13 +48,12 @@ class Bitrise < Formula
 
   test do
     (testpath/"bitrise.yml").write <<-EOS.undent
-      format_version: 0.9.10
-      default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib
+      format_version: 1.0.0
+      default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
       workflows:
         test_wf:
           steps:
           - script:
-              title: Write a test string to a file, for compare
               inputs:
               - content: printf 'Test - OK' > brew.test.file
     EOS
