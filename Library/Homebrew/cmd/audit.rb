@@ -210,7 +210,8 @@ class FormulaAuditor
     end
   end
 
-  @@aliases ||= Formula.aliases
+  # core aliases + tap alias names + tap alias full name
+  @@aliases ||= Formula.aliases + Formula.tap_aliases
 
   def audit_formula_name
     return unless @strict
@@ -220,7 +221,7 @@ class FormulaAuditor
     name = formula.name
     full_name = formula.full_name
 
-    if @@aliases.include? name
+    if Formula.aliases.include? name
       problem "Formula name conflicts with existing aliases."
       return
     end
