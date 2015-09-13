@@ -1,12 +1,8 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
   homepage "https://sourceforge.net/projects/cppcheck/"
-
-  stable do
-    url "https://github.com/danmar/cppcheck/archive/1.70.tar.gz"
-    sha256 "4095de598b5cce9a06e90458a90f46e0307baeaab8a947dae73f287eda3c171f"
-  end
-
+  url "https://github.com/danmar/cppcheck/archive/1.70.tar.gz"
+  sha256 "4095de598b5cce9a06e90458a90f46e0307baeaab8a947dae73f287eda3c171f"
   head "https://github.com/danmar/cppcheck.git"
 
   bottle do
@@ -37,10 +33,8 @@ class Cppcheck < Formula
       system "make", "HAVE_RULES=no", "CFGDIR=#{prefix}/cfg"
     end
 
-    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
-
-    # make sure cppcheck can find its configure directory, #26194
-    prefix.install "cfg"
+    # CFGDIR is relative to the prefix for install, don't add #{prefix}.
+    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=/cfg", "install"
 
     if build.with? "gui"
       cd "gui" do
