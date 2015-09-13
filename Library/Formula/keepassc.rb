@@ -28,7 +28,7 @@ class Keepassc < Formula
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python3.4/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python3.5/site-packages"
     install_args = %W[setup.py install --prefix=#{libexec}]
 
     resource("pycrypto").stage { system "python3", *install_args }
