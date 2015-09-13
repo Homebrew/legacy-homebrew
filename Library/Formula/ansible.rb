@@ -16,6 +16,7 @@ class Ansible < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
   depends_on "openssl"
+  depends_on "libffi"
 
   #
   # ansible (core dependencies)
@@ -465,6 +466,10 @@ class Ansible < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+
+    libffi = Formula["libffi"]
+    ENV.remove "CPPFLAGS", "-I#{libffi.include}"
+    ENV.prepend "CPPFLAGS", "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
     resources.each do |r|
       r.stage do
