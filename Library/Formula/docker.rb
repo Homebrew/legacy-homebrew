@@ -6,7 +6,8 @@ class Docker < Formula
   head "https://github.com/docker/docker.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "11749ecc9059b44e13dd763533d3101f06d5d9bb14f4fdd20bac850fc0afd0ec" => :el_capitan
     sha256 "908a8ef86f628bbc53e32b701d6ab88cea1e32d52621590873fe385fa139a63f" => :yosemite
     sha256 "5fb99137428989886c168299aa553633884e2898ae17a1d1514d9875e6980417" => :mavericks
     sha256 "a78aa507edd9d8483ed66b6fc7c9ec9e4f7ed20f89c62c9401b8c65ec654c9fc" => :mountain_lion
