@@ -49,14 +49,14 @@ class Mypy < Formula
 
   def install
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python3.4/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python3.5/site-packages"
       %w[docutils pygments jinja2 markupsafe sphinx].each do |r|
         resource(r).stage do
           system "python3", *Language::Python.setup_install_args(buildpath/"sphinx")
         end
       end
 
-      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python3.4/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python3.5/site-packages"
       %w[rtd_theme].each do |r|
         resource(r).stage do
           system "python3", *Language::Python.setup_install_args(libexec/"vendor")
@@ -70,7 +70,7 @@ class Mypy < Formula
       end
     end
 
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python3.4/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python3.5/site-packages"
     system "python3", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir["#{libexec}/bin/*"]
@@ -78,7 +78,7 @@ class Mypy < Formula
   end
 
   test do
-    ENV["PYTHONPATH"] = libexec/"lib/python3.4/site-packages"
+    ENV["PYTHONPATH"] = libexec/"lib/python3.5/site-packages"
 
     (testpath/"broken.py").write <<-EOS.undent
       def p() -> None:
