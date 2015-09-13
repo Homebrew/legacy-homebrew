@@ -1026,7 +1026,13 @@ class Formula
   # an array of all aliases
   # @private
   def self.aliases
-    @aliases ||= (core_aliases + tap_aliases).uniq.sort
+    @aliases ||= (core_aliases + tap_aliases.map { |name| name.split("/")[-1] }).uniq.sort
+  end
+
+  # an array of all aliases, , which the tap formulae have the fully-qualified name
+  # @private
+  def self.alias_full_names
+    @alias_full_names ||= core_aliases + tap_aliases
   end
 
   def self.[](name)
