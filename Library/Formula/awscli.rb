@@ -1,9 +1,9 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.8.2.tar.gz"
-  mirror "https://github.com/aws/aws-cli/archive/1.8.2.tar.gz"
-  sha256 "764d5baf7e8bfe62c19630b32f8568abac644149ea23ad83d6252d9418a966dc"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.8.3.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.8.3.tar.gz"
+  sha256 "430124dce516e5466a290a8c9f6568185db18a15471f70b055b948218de50fe4"
 
   bottle do
     cellar :any_skip_relocation
@@ -51,8 +51,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.2.0.tar.gz"
-    sha256 "59f2b9109d2cef499679b1676622e653b6a74be8ce20f84104fe631eb5434972"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.2.1.tar.gz"
+    sha256 "3e3f75a52355d0d6feda98d2dd3345605227104174b45bc028507f055a90dd28"
   end
 
   resource "docutils" do
