@@ -15,7 +15,6 @@ class AuroraScheduler < Formula
   end
 
   test do
-    system "aurora", "--help"
-    system "aurora_admin", "--help"
+    system "aurora", "--version"
   end
 end
