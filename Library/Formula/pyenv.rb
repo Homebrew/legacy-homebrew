@@ -6,10 +6,9 @@ class Pyenv < Formula
   sha256 "7ccee5b7c6c18dd79cfe504f69649e1f644aa495104aa58672c93e35c1eae0a0"
 
   bottle do
-    sha256 "9797a9baeeaad1f79066912029dbe32802d793ca4b4f390c686321c9a79b0bde" => :el_capitan
-    sha256 "ef92abd0b319d35dccdf4bd4b244c968f9eec395ca82269c9dd3af4f780acbc2" => :yosemite
-    sha256 "3c3071db234a46e0fd035d27921fb63fd8af7d3e555c0b3c9a3db0e7414e34ca" => :mavericks
-    sha256 "c0897c017c2c7323b972df3d43a6ee0df4e468a4765d2dd56f58892d5233157d" => :mountain_lion
+    sha256 "e730fabf21db78a7adf1aa8d2108495084584c5bd164bc7a65b97e9626ecd01b" => :yosemite
+    sha256 "79ad45e31f8ac9f9720f849c29f8d1a3a7f0867e4f4fc9152c4327b265babd11" => :mavericks
+    sha256 "34b6a13c138dfd1b18973b42a5119418fcf1fb980b2f0f503ca869e3ae5f7779" => :mountain_lion
   end
 
   depends_on "autoconf" => [:recommended, :run]
