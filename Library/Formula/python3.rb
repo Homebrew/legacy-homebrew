@@ -14,11 +14,6 @@ class Python3 < Formula
 
   head "https://hg.python.org/cpython", :using => :hg
 
-  devel do
-    url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0rc4.tgz"
-    sha256 "d2576bcff852a8818842da2496782576413bd32ce3dd835192f86eeec4384379"
-  end
-
   option :universal
   option "with-tcl-tk", "Use Homebrew's Tk instead of OS X Tk (has optional Cocoa and threads support)"
   option "with-quicktest", "Run `make quicktest` after the build"
