@@ -7,6 +7,7 @@ class Sdl < Formula
   bottle do
     cellar :any
     revision 2
+    sha256 "c9c66beaee50897468330709dc618246b298d63854309863e958e6b46ecec06a" => :el_capitan
     sha1 "3f767029ead055192d70e143cf1e5b18a1b18a3e" => :yosemite
     sha1 "4396e988f0c34d6859f994a4fa89d50a6e4a8cf9" => :mavericks
     sha1 "1917ce67939b9b539cd33469749e881e7b611b0d" => :mountain_lion
