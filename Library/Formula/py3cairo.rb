@@ -4,7 +4,7 @@ class Py3cairo < Formula
   url "http://cairographics.org/releases/pycairo-1.10.0.tar.bz2"
   mirror "https://distfiles.macports.org/py-cairo/pycairo-1.10.0.tar.bz2"
   sha256 "9aa4078e7eb5be583aeabbe8d87172797717f95e8c4338f0d4a17b683a7253be"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "9737019a42ef35ddc90e8cbc3b369138a91b090c602cb984f9cf71f425086b0e" => :yosemite
