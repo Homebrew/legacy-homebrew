@@ -11,6 +11,8 @@ end
 
 # Patches for Qt5 must be at the very least submitted to Qt's Gerrit codereview
 # rather than their bug-report Jira. The latter is rarely reviewed by Qt.
+# It's worth also worth adding Morten Johan Sørvig as a reviewer as he handles
+# a lot of the Mac patch review.
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
