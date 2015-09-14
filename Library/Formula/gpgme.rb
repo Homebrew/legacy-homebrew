@@ -18,6 +18,9 @@ class Gpgme < Formula
   depends_on "libassuan"
   depends_on "pth"
 
+  conflicts_with "argp-standalone",
+                 :because => "gpgme picks it up during compile & fails to build"
+
   fails_with :llvm do
     build 2334
   end
