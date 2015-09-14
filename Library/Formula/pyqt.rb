@@ -5,6 +5,7 @@ class Pyqt < Formula
   sha256 "8b8bb3a2ef8b7368710e0bc59d6e94e1f513f7dbf10a3aaa3154f7b848c88b4d"
 
   bottle do
+    sha256 "e24a40b72f41b022eb759c978ae4c08b0cde1ab1cc28a948bcc972f84532a94a" => :el_capitan
     sha1 "7d0b71a8c80401f6026172f22605e5a4e9eff8a3" => :yosemite
     sha1 "455a2cc8c46f64b2d27d2248b3bd6387e345377f" => :mavericks
     sha1 "30c74d1bfad2bc16c0052fd767fdb21b461e41e6" => :mountain_lion
