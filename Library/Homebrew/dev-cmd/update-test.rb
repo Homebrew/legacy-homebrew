@@ -22,7 +22,7 @@ module Homebrew
 
       # run brew update
       ohai "Running brew update..."
-      safe_system "brew", "update"
+      safe_system "brew", "update", "--verbose"
     end
   end
 end
