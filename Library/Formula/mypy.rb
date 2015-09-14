@@ -7,10 +7,10 @@ class Mypy < Formula
   revision 1
 
   bottle do
-    cellar :any
-    sha256 "6497207e2801737ab861c432fbba890dbfb0b8d85a6b4f809dcc4e3df0699b5f" => :yosemite
-    sha256 "50267f741ceadcf49dfa4115a38e820995d0174cbeb88264b431f5ea93179dea" => :mavericks
-    sha256 "dca4b115dda17d0ea86a1904c59447664fce86b407c3d054483d4c708a5ca54e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "cc2780459f9cbb98805a0873ca7c5e6286bfad54545ba8d6898c663658867fea" => :yosemite
+    sha256 "2c5872aed4f6c1fe965bb6962f448e47d412930bc270e4fbfc50427a094b3a23" => :mavericks
+    sha256 "6a67aefdf446d5600f06aa0f7e9de8c79a7165cb73edfbd6e2dd73aba072ff73" => :mountain_lion
   end
 
   option "without-docs", "Don't build documentation"
