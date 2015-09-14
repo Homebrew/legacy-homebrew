@@ -34,6 +34,7 @@ class Algernon < Formula
     github.com/klauspost/pgzip 49eeca5953c2a6c7be4e34e8803029e6354d9bb7
     github.com/mamaar/risotto 2683127f39af835e766a70b203efc6a51dd2ebe6
     github.com/mattn/go-runewidth 5890272cd41c5103531cd7b79e428d99c9e97f76
+    github.com/mattn/go-isatty 7fcbc72f853b92b5720db4a6b8482be612daef24
     github.com/mitchellh/go-homedir 1f6da4a72e57d4e7edd4a7295a585e0a3999a2d4
     github.com/mitchellh/mapstructure 2caf8efc93669b6c43e0441cdc6aed17546c96f3
     github.com/natefinch/pie 83bfd1821ee0ba96a47d98cbed424313fb60f57a
