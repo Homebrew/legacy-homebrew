@@ -3,6 +3,7 @@ class Pastebinit < Formula
   homepage "https://launchpad.net/pastebinit"
   url "https://launchpad.net/pastebinit/trunk/1.4.1/+download/pastebinit-1.4.1.tar.gz"
   sha256 "39e3dcb98d2aa9d65f86c648c375ca75fa312fc773e568963e9aefffea0c9bf7"
+  revision 1
 
   depends_on "python3"
   depends_on "docbook2x" => :build
