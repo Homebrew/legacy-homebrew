@@ -29,9 +29,9 @@ class FormulaInstaller
   end
 
   attr_reader :formula
-  attr_accessor :options
+  attr_accessor :options, :build_bottle
   mode_attr_accessor :show_summary_heading, :show_header
-  mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
+  mode_attr_accessor :build_from_source, :force_bottle
   mode_attr_accessor :ignore_deps, :only_deps, :interactive, :git
   mode_attr_accessor :verbose, :debug, :quieter
 
@@ -69,6 +69,10 @@ class FormulaInstaller
     raise BuildFlagsError.new(build_flags) unless build_flags.empty?
   end
 
+  def build_bottle?
+    !!@build_bottle && !formula.bottle_disabled?
+  end
+
   def pour_bottle?(install_bottle_options = { :warn=>false })
     return true if Homebrew::Hooks::Bottles.formula_has_bottle?(formula)
 
@@ -78,6 +82,7 @@ class FormulaInstaller
     return true  if force_bottle? && bottle
     return false if build_from_source? || build_bottle? || interactive?
     return false unless options.empty?
+    return false if formula.bottle_disabled?
     return true  if formula.local_bottle_path
     return false unless bottle && formula.pour_bottle?
 
