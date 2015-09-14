@@ -217,6 +217,21 @@ class Formula
   end
 
   # @private
+  def bottle_unneeded?
+    active_spec.bottle_unneeded?
+  end
+
+  # @private
+  def bottle_disabled?
+    active_spec.bottle_disabled?
+  end
+
+  # @private
+  def bottle_disable_reason
+    active_spec.bottle_disable_reason
+  end
+
+  # @private
   def bottled?
     active_spec.bottled?
   end
@@ -1592,8 +1607,14 @@ class Formula
     #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :mavericks
     #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mountain_lion
     # end</pre>
-    def bottle(*, &block)
-      stable.bottle(&block)
+    #
+    # For formulae which don't require compiling, you can tag them with:
+    # <pre>bottle :unneeded</pre>
+    #
+    # To disable bottle for other reasons.
+    # <pre>bottle :disable, "reasons"</pre>
+    def bottle(*args, &block)
+      stable.bottle(*args, &block)
     end
 
     # @private
