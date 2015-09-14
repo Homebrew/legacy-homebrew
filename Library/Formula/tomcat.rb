@@ -6,7 +6,8 @@ class Tomcat < Formula
   sha256 "9f11588f0ff767adde63cd6919462c0c2742897560f4b367a0ffffdd8b1ed382"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "f596c50bc9ca7e1fc04785377feab5a1f7a89a79dc7ea7e89191e71879e2ce0d" => :el_capitan
     sha256 "0451222ba2341cba4152c5007967b536a6bf536c9cdd304ab9c2474dffe7b3b7" => :yosemite
     sha256 "9258495d4ced771aa184ac7811df80f9932db61cda28ba811e595b8c8167ccbc" => :mavericks
     sha256 "a1e6d8ed630f87bb5861f3fb0fadd97dc824d55fa3d689483779c14b3e2c7cfa" => :mountain_lion
