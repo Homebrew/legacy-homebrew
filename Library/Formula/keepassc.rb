@@ -4,6 +4,7 @@ class Keepassc < Formula
   url "https://github.com/raymontag/keepassc/archive/1.7.0.tar.gz"
   sha256 "218537f6a16f70d907d22a23d1a4dec952d7622c65fae65f03c9ee98e64938dd"
   head "https://github.com/raymontag/keepassc.git", :branch => "development"
+  revision 1
 
   bottle do
     cellar :any
