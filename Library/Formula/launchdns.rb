@@ -1,9 +1,11 @@
 class Launchdns < Formula
   desc "Mini DNS server designed soely to route queries to localhost"
   homepage "https://github.com/josh/launchdns"
-  url "https://github.com/josh/launchdns/archive/v1.0.1.tar.gz"
+  url "https://github.com/josh/launchdns/archive/v1.0.3.tar.gz"
   head "https://github.com/josh/launchdns.git"
-  sha256 "e96d1b92819a294f1e325df629ae4bf202fd137b8504cf4ddd00cda7e47f7099"
+  sha256 "c34bab9b4f5c0441d76fefb1ee16cb0279ab435e92986021c7d1d18ee408a5dd"
+
+  depends_on :macos => :yosemite
 
   bottle do
     cellar :any
@@ -15,12 +17,14 @@ class Launchdns < Formula
 
   def install
     ENV["PREFIX"] = prefix
+    system "./configure", "--with-launch-h", "--with-launch-h-activate-socket"
     system "make", "install"
 
     (prefix+"etc/resolver/dev").write("nameserver 127.0.0.1\nport 55353\n")
   end
 
   test do
+    assert_no_match /without socket activation/, shell_output("#{bin}/launchdns --version")
     system "#{bin}/launchdns", "-p0", "-t1"
   end
 
