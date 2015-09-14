@@ -188,17 +188,12 @@ module Homebrew
 
       url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
 
-      begin
-        formula = Formulary.factory(argument)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
-      end
-
       git "rev-parse", "--verify", "-q", argument
       if $?.success?
         @hash = argument
       elsif url_match
         @url = url_match[0]
-      elsif formula
+      elsif safe_formulary(argument)
         @formulae = [argument]
       else
         raise ArgumentError.new("#{argument} is not a pull request URL, commit URL or formula name.")
@@ -211,6 +206,11 @@ module Homebrew
 
     def no_args?
       @hash == "HEAD"
+    end
+
+    def safe_formulary(formula)
+      Formulary.factory formula
+    rescue FormulaUnavailableError, TapFormulaAmbiguityError
     end
 
     def git(*args)
