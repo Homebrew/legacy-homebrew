@@ -3,6 +3,7 @@ class Libtins < Formula
   homepage "https://libtins.github.io/"
   url "https://github.com/mfontanini/libtins/archive/v3.1.tar.gz"
   sha256 "20662ed75699358078aacaf36f38cbd25a9b2bd9ae2c77b7193733c917aab651"
+  revision 1
   head "https://github.com/mfontanini/libtins.git"
 
   bottle do
@@ -15,6 +16,7 @@ class Libtins < Formula
   option :cxx11
 
   depends_on "cmake" => :build
+  depends_on "openssl"
 
   def install
     ENV.cxx11 if build.cxx11?
