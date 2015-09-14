@@ -6,7 +6,6 @@ class Python3 < Formula
 
   bottle do
     revision 1
-    sha256 "13b460e8a98cf8787540365d105f06a2f470b545d34016c23c49d8d788f2295f" => :el_capitan
     sha256 "7158bbb75427978f2cdc3d7ae1c05893f580a0273f696a8cf9a570b83d1be645" => :yosemite
     sha256 "4e226359033cd31e81fc58d37e2a6ba9f9aca7f4024262688c944d9d57819564" => :mavericks
     sha256 "666dab10ddde21e0d9a845282b182f54f55047ba8ed53b5cb7e6eb33c6fe7b1c" => :mountain_lion
@@ -26,7 +25,7 @@ class Python3 < Formula
   depends_on "sqlite" => :recommended
   depends_on "gdbm" => :recommended
   depends_on "openssl"
-  depends_on "xz" => :recommended  # for the lzma module added in 3.3
+  depends_on "xz" => :recommended # for the lzma module added in 3.3
   depends_on "homebrew/dupes/tcl-tk" => :optional
   depends_on :x11 if build.with?("tcl-tk") && Tab.for_name("homebrew/dupes/tcl-tk").with?("x11")
 
