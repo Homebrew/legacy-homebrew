@@ -6,6 +6,7 @@ class Libspatialite < Formula
 
   bottle do
     cellar :any
+    sha256 "503250841e76452904503c5172330e830f901b8f0b04e4941718e9c58f71c192" => :el_capitan
     sha256 "77993169138d6bb4a185e599b8d55c73a06352ece3461d8b8358a31ed69d9e4e" => :yosemite
     sha256 "2c2374ee420d33011f2be12bfb9f09b3b2c8cffa63cd0544adf5f5a6c5b2c7b4" => :mavericks
     sha256 "761b07489fc2591e9e9788b1127253c52025e4208a3cbf78e72afcf9edc58f67" => :mountain_lion
