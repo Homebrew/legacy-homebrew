@@ -28,6 +28,27 @@ class Dmd < Formula
     sha256 "36f6979d5208fde59177239d81bde37174bc7574bff7748c4cb859cc3d755712" => :mountain_lion
   end
 
+  devel do
+    url "https://github.com/D-Programming-Language/dmd/archive/v2.068.2-b2.tar.gz"
+    version "2.068.2-b2"
+    sha256 "885a6edc40e558b556b06cf0828baa93e5b25546ec94f08bdd77657e8269c8ba"
+
+    resource "druntime" do
+      url "https://github.com/D-Programming-Language/druntime/archive/v2.068.2-b2.tar.gz"
+      sha256 "bd331b726641593c6c2408d7562f94e5fd9dabe03f48856eb1963aabc339c0fd"
+    end
+
+    resource "phobos" do
+      url "https://github.com/D-Programming-Language/phobos/archive/v2.068.2-b2.tar.gz"
+      sha256 "06a553202a0b5d51b14f735dfb68c804736d036329da6145246bd9047c6ac1d7"
+    end
+
+    resource "tools" do
+      url "https://github.com/D-Programming-Language/tools/archive/v2.068.2-b2.tar.gz"
+      sha256 "ed7503daff2542ba6dc3dcb2f9f169179168ef623e2c73774b702ea14a0bc79a"
+    end
+  end
+
   head do
     url "https://github.com/D-Programming-Language/dmd.git"
 
