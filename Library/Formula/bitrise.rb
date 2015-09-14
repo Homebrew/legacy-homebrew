@@ -62,6 +62,7 @@ class Bitrise < Formula
     system "#{bin}/bitrise", "setup", "--minimal"
     # run the defined test_wf workflow
     system "#{bin}/bitrise", "run", "test_wf"
+    #
     assert_equal "Test - OK", (testpath/"brew.test.file").read.chomp
   end
 end
