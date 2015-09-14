@@ -17,7 +17,8 @@ class Monit < Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}/monit",
-                          "--sysconfdir=#{etc}/monit"
+                          "--sysconfdir=#{etc}/monit",
+                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
     (share/"monit").install "monitrc"
   end
