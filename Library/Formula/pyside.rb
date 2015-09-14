@@ -50,7 +50,7 @@ class Pyside < Formula
 
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.
-    Language::Python.each_python(build) do |_python, version|
+    Language::Python.each_python(build) do |python, version|
       mkdir "macbuild#{version}" do
         qt = Formula["qt"].opt_prefix
         args = std_cmake_args + %W[
@@ -58,14 +58,7 @@ class Pyside < Formula
           -DALTERNATIVE_QT_INCLUDE_DIR=#{qt}/include
           -DQT_SRC_DIR=#{qt}/src
         ]
-        if version.to_s[0, 1] == "2"
-          args << "-DPYTHON_SUFFIX=-python#{version}"
-        else
-          major_version = version.to_s[0, 1]
-          minor_version = version.to_s[2, 3]
-          args << "-DPYTHON_SUFFIX=.cpython-#{major_version}#{minor_version}m"
-          args << "-DUSE_PYTHON3=1"
-        end
+        args << "-DUSE_PYTHON3=1" if python == "python3"
         args << ".."
         system "cmake", *args
         system "make"
