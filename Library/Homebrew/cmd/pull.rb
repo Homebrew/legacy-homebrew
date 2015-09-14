@@ -211,7 +211,7 @@ module Homebrew
     end
 
     bintray_fetch_formulae.each do |f|
-      max_retries = 5
+      max_retries = 8
       retry_count = 0
       begin
         success = system "brew", "fetch", "--force-bottle", f.full_name
