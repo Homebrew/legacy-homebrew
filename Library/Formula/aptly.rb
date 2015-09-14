@@ -118,6 +118,26 @@ class Aptly < Formula
     url "https://go.googlesource.com/crypto.git", :revision => "a7ead6ddf06233883deca151dffaef2effbf498f"
   end
 
+  go_resource "github.com/golang/snappy" do
+    url "https://github.com/golang/snappy.git", :revision => "723cc1e459b8eea2dea4583200fd60757d40097a"
+  end
+
+  go_resource "github.com/manucorporat/sse" do
+    url "https://github.com/manucorporat/sse.git", :revision => "fe6ea2c8e398672518ef204bf0fbd9af858d0e15"
+  end
+
+  go_resource "github.com/mattn/go-colorable" do
+    url "https://github.com/mattn/go-colorable.git", :revision => "40e4aedc8fabf8c23e040057540867186712faa5"
+  end
+
+  go_resource "golang.org/x/net" do
+    url "https://github.com/golang/net.git", :revision => "db8e4de5b2d6653f66aea53094624468caad15d2"
+  end
+
+  go_resource "gopkg.in/bluesuncorp/validator.v5" do
+    url "https://github.com/bluesuncorp/validator.git", :revision => "8324129b028239a2d26c4221165e7d4d512ea697"
+  end
+
   def install
     mkdir_p "#{buildpath}/src/github.com/smira/"
     ln_s buildpath, "#{buildpath}/src/github.com/smira/aptly"
@@ -135,9 +155,9 @@ class Aptly < Formula
   end
 
   test do
-    assert shell_output("aptly version").include?("aptly version:")
+    assert_match "aptly version:", shell_output("aptly version")
     (testpath/".aptly.conf").write("{}")
     result = shell_output("aptly -config='#{testpath}/.aptly.conf' mirror list")
-    assert result.include? "No mirrors found, create one with"
+    assert_match "No mirrors found, create one with", result
   end
 end
