@@ -6,7 +6,8 @@ class Ninja < Formula
   head "https://github.com/martine/ninja.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "facfca510094c956257dbffd94719139eb7a8f7ad8362d4064638c753268b6fe" => :el_capitan
     sha256 "827e1ce721bd8c95fea9093b74fa5c9d9b5aa0e2660241b44b5f5233833c58f0" => :yosemite
     sha256 "7a8da38c247855e12054ea7dc8ca8796be19151a2683fcaf50772780d122e90a" => :mavericks
     sha256 "3717352656bb260ac96de4a0db856ebaa6602c6b4f4d42a0d2475ba511ab834f" => :mountain_lion
