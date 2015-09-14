@@ -15,6 +15,7 @@ class Lnav < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "re2c" => :build
   end
 
   depends_on "readline"
