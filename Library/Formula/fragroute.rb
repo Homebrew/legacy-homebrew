@@ -4,6 +4,13 @@ class Fragroute < Formula
   url "http://www.monkey.org/~dugsong/fragroute/fragroute-1.2.tar.gz"
   sha256 "6899a61ecacba3bb400a65b51b3c0f76d4e591dbf976fba0389434a29efc2003"
 
+  bottle do
+    cellar :any
+    sha256 "1a1a94c1bef2b28000555c1f0db1512a682acf0d6c59bb2725c7d82fb4b9e6b0" => :yosemite
+    sha256 "027e59cefd2f7caa43556520e4a15e84071e05c9e785823a1b1001d80300e2a4" => :mavericks
+    sha256 "dcfb82802240c73cb4f224665375aa97ae43287a790e84f26d1f3b2c3b2f9e56" => :mountain_lion
+  end
+
   depends_on "libdnet"
   depends_on "libevent"
 
