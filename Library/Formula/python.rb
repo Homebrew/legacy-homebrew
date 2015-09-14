@@ -7,10 +7,11 @@ class Python < Formula
   revision 2
 
   bottle do
-    sha256 "fd44b41159eb20d3ea1f9914f2c5bb5e2c83f81a8994d1a40eed560891469e69" => :el_capitan
-    sha256 "df7af5b6865765e96acdad1922c4983439f8b058845ac5023f8fe8ec79ea3d4e" => :yosemite
-    sha256 "c0fab9719d000e1f6150423538b01059471b6eb1777257f5e71a29e1457311e4" => :mavericks
-    sha256 "90e0f06ef02d3852cd805776ff172e909a2d69c97536ec0fae599d3ebd00bfec" => :mountain_lion
+    revision 1
+    sha256 "2d3c8c00a73c02b9a04f26d0d5593345a9a6b684f63e12d6275b852ed68d289a" => :el_capitan
+    sha256 "ac383ea391d1de31b7e5a1491e1afe0c9163bdc792518fe75d14fe7392f754a0" => :yosemite
+    sha256 "5729d27d9c232386d686732c8fb89f20235abaebb9315da6d438e44e05f04c9a" => :mavericks
+    sha256 "c359a92945b76ccf6e7e3ee3711befcb92138016e44f68351cedd984e5949eeb" => :mountain_lion
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
