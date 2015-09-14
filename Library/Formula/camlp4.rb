@@ -8,7 +8,8 @@ class Camlp4 < Formula
   revision 1
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "fa3146c84b16280b2918506aceed48544c33791e739d01c36dcf48f7c52e70b7" => :el_capitan
     sha256 "c04f0052bceed26bf5432a1304f13b4a15fae8757f530776874b714c50754c7a" => :yosemite
     sha256 "586755085fa262615cbd9bbc5a869351ffec0dcf142113fbfc80c253be98eb06" => :mavericks
     sha256 "a4a1d70eb2002d3773f4a1d9ae989b613d8b3772c02baacabbbba0309463c7ff" => :mountain_lion
