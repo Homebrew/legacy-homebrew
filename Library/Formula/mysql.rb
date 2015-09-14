@@ -5,7 +5,6 @@ class Mysql < Formula
   sha256 "b44c6ce5f95172c56c73edfa8b710b39242ec7af0ab182c040208c41866e5070"
 
   bottle do
-    sha256 "5ef8654f6351ba896abb4ee46b30dfc930ca765aa1218c52d9d154dbfcf2e19c" => :el_capitan
     sha256 "fae4e0791575b643c0f7f3c0368a4fdbafb7d00c03f41431fff25dbbfa83b4cc" => :yosemite
     sha256 "954769ebb859807b570bf09268b37e470891cbf2dceebd8ef6c92d8f36baf15d" => :mavericks
     sha256 "b05421d5f0c0b160c605fa6f19986555e485b0504cec77febca74ec4ebd499e1" => :mountain_lion
@@ -175,6 +174,7 @@ class Mysql < Formula
   end
 
   test do
+    system "/bin/sh", "-n", "#{bin}/mysqld_safe"
     (prefix/"mysql-test").cd do
       system "./mysql-test-run.pl", "status", "--vardir=#{testpath}"
     end
