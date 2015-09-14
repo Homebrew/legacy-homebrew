@@ -3,10 +3,12 @@ class Pev < Formula
   homepage "http://pev.sf.net/"
   url "https://downloads.sourceforge.net/project/pev/pev-0.70/pev-0.70.tar.gz"
   sha256 "250396a06930d60a92e9bc86d7afb543d899ba12c007d1be5d09802a02908202"
+  revision 1
 
   head "https://github.com/merces/pev.git"
 
   depends_on "pcre"
+  depends_on "openssl"
 
   def install
     inreplace "src/Makefile" do |s|
