@@ -105,6 +105,7 @@ TAP_MIGRATIONS = {
   "helios" => "spotify/public",
   "hexchat" => "homebrew/x11",
   "hllib" => "homebrew/boneyard",
+  "honeyd" => "homebrew/boneyard",
   "hugs98" => "homebrew/boneyard",
   "hwloc" => "homebrew/science",
   "ifuse" => "homebrew/fuse",
