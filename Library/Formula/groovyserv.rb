@@ -21,7 +21,9 @@ class Groovyserv < Formula
   end
 
   def install
-    system "./gradlew", "clean" "executables"
+    # Sandbox fix to stop it ignoring our temporary $HOME variable.
+    ENV["GRADLE_USER_HOME"] = buildpath/".brew_home"
+    system "./gradlew", "clean", "executables"
 
     # Install executables in libexec to avoid conflicts
     libexec.install Dir["build/executables/{bin,lib}"]
