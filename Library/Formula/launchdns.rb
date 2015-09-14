@@ -1,9 +1,9 @@
 class Launchdns < Formula
   desc "Mini DNS server designed soely to route queries to localhost"
   homepage "https://github.com/josh/launchdns"
-  url "https://github.com/josh/launchdns/archive/v1.0.1.tar.gz"
+  url "https://github.com/josh/launchdns/archive/v1.0.2.tar.gz"
   head "https://github.com/josh/launchdns.git"
-  sha256 "e96d1b92819a294f1e325df629ae4bf202fd137b8504cf4ddd00cda7e47f7099"
+  sha256 "a67d54096055532af25f6dc9319c0dad6da87658d4d4a2d636ab015b393f011f"
 
   bottle do
     cellar :any
@@ -21,6 +21,7 @@ class Launchdns < Formula
   end
 
   test do
+    system "#{bin}/launchdns --version | grep -vq 'without socket activation'"
     system "#{bin}/launchdns", "-p0", "-t1"
   end
 
