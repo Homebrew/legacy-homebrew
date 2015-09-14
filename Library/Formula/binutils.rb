@@ -13,6 +13,13 @@ class Binutils < Formula
     sha256 "689d5c651fba64a18fed5f8f66ba9d156af7f3b8787e383afe8979f535432d64" => :mountain_lion
   end
 
+  # Fixes build on 10.6. Committed upstream; will be in the next release:
+  # https://sourceware.org/git/gitweb.cgi?p=binutils-gdb.git;a=commitdiff;h=31593e1b96c792abba3c5268d6423975aefa56b2
+  patch :p1 do
+    url "https://gist.githubusercontent.com/mistydemeo/f14c03c0c9ddfce97cf7/raw/2107e53002c34e41ade9b54629e670184e438d80/binutils_10.6.diff"
+    sha256 "5ff40b9d7ad174d3c24edd8381471b8f5c408703111f0c90135ad0fffba452c2"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

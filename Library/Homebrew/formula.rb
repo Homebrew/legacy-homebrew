@@ -916,22 +916,6 @@ class Formula
     "#<Formula #{name} (#{active_spec_sym}) #{path}>"
   end
 
-  # @private
-  def file_modified?
-    git = which("git")
-
-    # git isn't installed by older Xcodes
-    return false if git.nil?
-
-    # /usr/bin/git is a popup stub when Xcode/CLT aren't installed, so bail out
-    return false if git == "/usr/bin/git" && !MacOS.has_apple_developer_tools?
-
-    path.parent.cd do
-      diff = Utils.popen_read("git", "diff", "origin/master", "--", "#{path}")
-      !diff.empty? && $?.exitstatus == 0
-    end
-  end
-
   # Standard parameters for CMake builds.
   # Setting CMAKE_FIND_FRAMEWORK to "LAST" tells CMake to search for our
   # libraries before trying to utilize Frameworks, many of which will be from
@@ -953,7 +937,7 @@ class Formula
   # an array of all core {Formula} names
   # @private
   def self.core_names
-    @core_names ||= Dir["#{HOMEBREW_LIBRARY}/Formula/*.rb"].map { |f| File.basename f, ".rb" }.sort
+    @core_names ||= core_files.map { |f| f.basename(".rb").to_s }.sort
   end
 
   # an array of all core {Formula} files
@@ -977,7 +961,7 @@ class Formula
   # an array of all {Formula} names
   # @private
   def self.names
-    @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).sort.uniq
+    @names ||= (core_names + tap_names.map { |name| name.split("/")[-1] }).uniq.sort
   end
 
   # an array of all {Formula} files
@@ -1027,9 +1011,28 @@ class Formula
     end.compact
   end
 
+  # an array of all core aliases
+  # @private
+  def self.core_aliases
+    @core_aliases ||= Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map { |f| File.basename f }.sort
+  end
+
+  # an array of all tap aliases
+  # @private
+  def self.tap_aliases
+    @tap_aliases ||= Tap.flat_map(&:aliases).sort
+  end
+
+  # an array of all aliases
   # @private
   def self.aliases
-    Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map { |f| File.basename f }.sort
+    @aliases ||= (core_aliases + tap_aliases.map { |name| name.split("/")[-1] }).uniq.sort
+  end
+
+  # an array of all aliases, , which the tap formulae have the fully-qualified name
+  # @private
+  def self.alias_full_names
+    @alias_full_names ||= core_aliases + tap_aliases
   end
 
   def self.[](name)
@@ -1121,6 +1124,28 @@ class Formula
 
     hsh["options"] = options.map do |opt|
       { "option" => opt.flag, "description" => opt.description }
+    end
+
+    hsh["bottle"] = {}
+    %w[stable devel].each do |spec_sym|
+      next unless spec = send(spec_sym)
+      next unless (bottle_spec = spec.bottle_specification).checksums.any?
+      bottle_info = {
+        "revision" => bottle_spec.revision,
+        "cellar" => (cellar = bottle_spec.cellar).is_a?(Symbol) ? \
+                    cellar.inspect : cellar,
+        "prefix" => bottle_spec.prefix,
+        "root_url" => bottle_spec.root_url,
+      }
+      bottle_info["files"] = {}
+      bottle_spec.collector.keys.each do |os|
+        checksum = bottle_spec.collector[os]
+        bottle_info["files"][os] = {
+          "url" => "#{bottle_spec.root_url}/#{Bottle::Filename.create(self, os, bottle_spec.revision)}",
+          checksum.hash_type.to_s => checksum.hexdigest,
+        }
+      end
+      hsh["bottle"][spec_sym] = bottle_info
     end
 
     if rack.directory?

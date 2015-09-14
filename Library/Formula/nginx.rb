@@ -7,14 +7,15 @@ class Nginx < Formula
 
   bottle do
     revision 1
+    sha256 "e6bb9cc02def5205747dc20ffd7c24a3c0e34a7494355a9b0dade58dd8ce9dcf" => :el_capitan
     sha256 "6df7b883f9214c5c0969559f6cc9ed56f9537263a1ef4882dae77b0b7af5a1df" => :yosemite
     sha256 "68741910d6ee58f7ee1134c7b4c62dfd490ee337c9c0beb0d188edc418b0bd93" => :mavericks
     sha256 "a622d0e1bfd55d8634520d72b41319da19828b9ab11063b6243d5b5f3d77ad08" => :mountain_lion
   end
 
   devel do
-    url "http://nginx.org/download/nginx-1.9.3.tar.gz"
-    sha256 "4298c5341b2a262fdb8dbc0a1389756181af8f098c7720abfb30bd3060f673eb"
+    url "http://nginx.org/download/nginx-1.9.4.tar.gz"
+    sha256 "479b0c03747ee6b2d4a21046f89b06d178a2881ea80cfef160451325788f2ba8"
   end
 
   env :userpaths
@@ -171,6 +172,30 @@ class Nginx < Formula
   end
 
   test do
-    system "#{bin}/nginx", "-t"
+    (testpath/"nginx.conf").write <<-EOS
+      worker_processes 4;
+      error_log #{testpath}/error.log;
+      pid #{testpath}/nginx.pid;
+
+      events {
+        worker_connections 1024;
+      }
+
+      http {
+        client_body_temp_path #{testpath}/client_body_temp;
+        fastcgi_temp_path #{testpath}/fastcgi_temp;
+        proxy_temp_path #{testpath}/proxy_temp;
+        scgi_temp_path #{testpath}/scgi_temp;
+        uwsgi_temp_path #{testpath}/uwsgi_temp;
+
+        server {
+          listen 8080;
+          root #{testpath};
+          access_log #{testpath}/access.log;
+          error_log #{testpath}/error.log;
+        }
+      }
+    EOS
+    system "#{bin}/nginx", "-t", "-c", testpath/"nginx.conf"
   end
 end

@@ -17,7 +17,7 @@ class Ocamlsdl < Formula
   depends_on "sdl_image" => :recommended
   depends_on "sdl_gfx" => :recommended
   depends_on "sdl_ttf" => :recommended
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   def install
     system "./configure", "--prefix=#{prefix}",

@@ -11,7 +11,7 @@ class Orpie < Formula
   end
 
   depends_on "gsl"
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "camlp4" => :build
 
   def install

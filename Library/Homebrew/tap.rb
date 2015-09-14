@@ -96,6 +96,18 @@ class Tap
     formula_files.map { |f| "#{name}/#{f.basename(".rb")}" }
   end
 
+  # an array of all alias files of this {Tap}.
+  # @private
+  def alias_files
+    Pathname.glob("#{path}/Aliases/*").select(&:file?)
+  end
+
+  # an array of all aliases of this {Tap}.
+  # @private
+  def aliases
+    alias_files.map { |f| "#{name}/#{f.basename}" }
+  end
+
   # an array of all commands files of this {Tap}.
   def command_files
     Pathname.glob("#{path}/cmd/brew-*").select(&:executable?)

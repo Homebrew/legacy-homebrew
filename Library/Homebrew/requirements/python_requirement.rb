@@ -14,10 +14,6 @@ class PythonRequirement < Requirement
     version == Version.new("2.7")
   end
 
-  def pour_bottle?
-    build? || system_python?
-  end
-
   env do
     short_version = python_short_version
 
@@ -28,9 +24,7 @@ class PythonRequirement < Requirement
       ENV.prepend_path "PATH", Formula["python"].opt_bin
     end
 
-    if python_binary == "python"
-      ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
-    end
+    ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{short_version}/site-packages"
   end
 
   def python_short_version

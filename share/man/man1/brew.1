@@ -1,7 +1,7 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "BREW" "1" "August 2015" "Homebrew" "brew"
+.TH "BREW" "1" "September 2015" "Homebrew" "brew"
 .
 .SH "NAME"
 \fBbrew\fR \- The missing package manager for OS X
@@ -126,6 +126,12 @@ If \fB\-\-installed\fR is passed, show dependencies for all installed formulae\.
 .
 .IP
 By default, \fBdeps\fR shows dependencies for \fIformulae\fR\. To skip the \fB:build\fR type dependencies, pass \fB\-\-skip\-build\fR\. Similarly, pass \fB\-\-skip\-optional\fR to skip \fB:optional\fR dependencies\.
+.
+.IP "\(bu" 4
+\fBdesc\fR \fIformula\fR: Display \fIformula\fR\'s name and one\-line description\.
+.
+.IP "\(bu" 4
+\fBdesc [\-s|\-n|\-d] <pattern>\fR: Search both name and description (\fB\-s\fR), just the names (\fB\-n\fR), or just the descriptions (\fB\-d\fR) for \fB<pattern>\fR\. \fB<pattern>\fR is by default interpreted as a literal string; if flanked by slashes, it is instead interpreted as a regular expression\. Formula descriptions are cached; the cache is created on the first search, making that search slower than subsequent ones\.
 .
 .IP "\(bu" 4
 \fBdiy [\-\-name=<name>] [\-\-version=<version>]\fR: Automatically determine the installation prefix for non\-Homebrew software\.
@@ -409,7 +415,10 @@ If \fB\-\-debug\fR is passed and the test fails, an interactive debugger will be
 Example: \fBbrew install jruby && brew test jruby\fR
 .
 .IP "\(bu" 4
-\fBunlink\fR \fIformula\fR: Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+\fBunlink [\-\-dry\-run]\fR \fIformula\fR: Remove symlinks for \fIformula\fR from the Homebrew prefix\. This can be useful for temporarily disabling a formula: \fBbrew unlink foo && commands && brew link foo\fR\.
+.
+.IP
+If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, Homebrew will list all files which would be unlinked, but will not actually unlink or delete any files\.
 .
 .IP "\(bu" 4
 \fBunlinkapps [\-\-local]\fR [\fIformulae\fR]: Removes links created by \fBbrew linkapps\fR\.

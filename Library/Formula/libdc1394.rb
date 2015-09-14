@@ -12,6 +12,8 @@ class Libdc1394 < Formula
     sha1 "68488e8fc4d387b6dc63e95dba4c26a7509ca59d" => :mountain_lion
   end
 
+  option :universal
+
   depends_on "sdl"
 
   # fix issue due to bug in OSX Firewire stack
@@ -20,6 +22,7 @@ class Libdc1394 < Formula
   patch :DATA
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-examples",

@@ -1,4 +1,4 @@
-class GooglePerftools < Formula
+class Gperftools < Formula
   desc "Multi-threaded malloc() and performance analysis tools"
   homepage "https://code.google.com/p/gperftools/"
   url "https://googledrive.com/host/0B6NtGsLhIcf7MWxMMF9JdTN3UVk/gperftools-2.4.tar.gz"
@@ -6,9 +6,11 @@ class GooglePerftools < Formula
 
   bottle do
     cellar :any
-    sha1 "182f0141d4d35e0d674ac65e92942beddef19579" => :yosemite
-    sha1 "c07c8decd4323cfcc8bd96a6c94076a044ab9b6d" => :mavericks
-    sha1 "5511c9311f6882df6fc70433818647fb77d59188" => :mountain_lion
+    revision 1
+    sha256 "ed20c4f8ac1be86d15eb5d634a42da8e087acbdf235db4b7d103f405f1af17c2" => :el_capitan
+    sha256 "a3e20ad0d06dff8197c8b940e50e30d3e5e31ac7370b041d5f375c5865380311" => :yosemite
+    sha256 "a8129731beef1d0ec4f026b1c1da67ef8bb715c094fe2c5e384bcc139bc0e46d" => :mavericks
+    sha256 "e699b94174325abdf47246370a3169760633a180a01f50e453ad651f1125e80c" => :mountain_lion
   end
 
   fails_with :llvm do

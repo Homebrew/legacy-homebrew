@@ -9,9 +9,19 @@ class Qt < Formula
   end
 
   bottle do
+    sha256 "438c31a3729ee1b70fc3a5a68a6ad9a446354660a9bcf2b26dd8e06791e83aa5" => :el_capitan
     sha256 "540e72bee0f660e0aeebe84ce04408fd45642fd987e304c9591b2648af55672b" => :yosemite
     sha256 "27e20d9f5b17df87e49ae9d6fe15105ac83a79b2a364884cdfd17e55e02d6ea1" => :mavericks
     sha256 "c03ff74ad662f1aafb048f6d016f76bf510da328752453ae4b7e6aaa6402e9b9" => :mountain_lion
+  end
+
+  # Backport of Qt5 commit to fix the fatal build error on OS X El Capitan.
+  # http://code.qt.io/cgit/qt/qtbase.git/commit/?id=b06304e164ba47351fa292662c1e6383c081b5ca
+  if MacOS.version >= :el_capitan
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/480b7142c4e2ae07de6028f672695eb927a34875/qt/el-capitan.patch"
+      sha256 "c8a0fa819c8012a7cb70e902abb7133fc05235881ce230235d93719c47650c4e"
+    end
   end
 
   head "https://code.qt.io/qt/qt.git", :branch => "4.8"

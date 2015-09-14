@@ -1,16 +1,16 @@
 class Magit < Formula
   desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-  url "https://github.com/magit/magit/releases/download/2.2.1/magit-2.2.1.tar.gz"
-  sha256 "b0e2c8c7ecf175f223c85849b8c9f80458b3f435ab9014851cbc446408914d2e"
+  url "https://github.com/magit/magit/releases/download/2.2.2/magit-2.2.2.tar.gz"
+  sha256 "08e61898e23dbeb3a152d82e58fc9f6c769fe36d35d87617dcd1e69b2f91b3c6"
 
   head "https://github.com/magit/magit.git", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "270e2504734160b1f1693e93d203d6f42a030b679b1a010a32db63e855def1e9" => :yosemite
-    sha256 "de8082a62774c0fbd06e1d956486f0885e99cec4b44d3cef28b90f79f0932c11" => :mavericks
-    sha256 "d647ceaa8f7c2bcc0518a0bbb0662f074418d44074cad6eab8441b31b8516f47" => :mountain_lion
+    sha256 "048842721bb6f95aebd3ad00a81d5d62c87e8803252e4152e66652deeca6773f" => :yosemite
+    sha256 "37969f18c4d5fa5c485670ffa27af504f38505f369447dc778771cc771ad61cb" => :mavericks
+    sha256 "566bc0c62bf9633e7c8010877c2e884eacca730a0d3e626c2c22f0f964e09ca8" => :mountain_lion
   end
 
   depends_on :emacs => "24.4"

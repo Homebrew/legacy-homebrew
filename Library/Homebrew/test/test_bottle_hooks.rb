@@ -10,8 +10,6 @@ class BottleHookTests < Homebrew::TestCase
     def some_random_method
       true
     end
-
-    def file_modified?; end
   end
 
   def setup

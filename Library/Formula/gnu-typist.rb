@@ -6,9 +6,10 @@ class GnuTypist < Formula
   sha256 "c13af40b12479f8219ffa6c66020618c0ce305ad305590fde02d2c20eb9cf977"
 
   bottle do
-    sha256 "d06b5cfc30573a454876ce0fe0b33d1eb4ca12070875b4aae907b9c001d10645" => :yosemite
-    sha256 "0c3bc3250a2b1af0e537f0879f55d94cd803835b8621d9b59623c46b5267a472" => :mavericks
-    sha256 "81645c32689c4da3e0baf0372426f2893c355814e9a33eb8070a294990b9722d" => :mountain_lion
+    revision 1
+    sha256 "38fbd18da939021fe2ba02f505109a68df569d5e89629b97bfb52366be917dae" => :yosemite
+    sha256 "e6242d04086f6519b7d1e8150e03c28e83ade7e34162132010d1dc68abb80420" => :mavericks
+    sha256 "14030bc96288152a37b885d74c351be91ba18c03d48430ad95b9294d46ff0544" => :mountain_lion
   end
 
   depends_on "gettext"
@@ -22,7 +23,8 @@ class GnuTypist < Formula
     ENV.append "LDFLAGS", "-liconv"
 
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{share}/emacs/site-lisp/gnu-typist"
     system "make"
     system "make", "install"
   end

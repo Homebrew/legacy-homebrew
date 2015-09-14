@@ -4,12 +4,14 @@ class Node < Formula
   homepage "https://nodejs.org/"
   url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
   sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
-  head "https://github.com/joyent/node.git", :branch => "v0.12"
+  head "https://github.com/nodejs/node.git", :branch => "v0.12"
+  revision 1
 
   bottle do
-    sha256 "deae62072a5de00e77f153ffd33b943bba412310528eea0801ccc853e1b3f73f" => :yosemite
-    sha256 "39771c1b6fa382f749afde41e1fb6aeb1bd6b71e98cfa53efb349a93075ef064" => :mavericks
-    sha256 "54dd753c1a0e4e25ffbcd9afbdb7d9ccd6df62e7df4aea08ce97e6b1ffae93d8" => :mountain_lion
+    sha256 "7d58243777c4133034254d1756de907efaf5e12bcf5eb94c11119f4f0306a815" => :el_capitan
+    sha256 "15689cc474a79975eaa6d791b24e6fa021494839c9b691ac307d74acefc5f834" => :yosemite
+    sha256 "a7a7d37c6e5088ed3f58b867d4d246851715d3a4f2f3b4b3c40cc7452ff6728c" => :mavericks
+    sha256 "374f3c5b576e4173590b8413e9941df121a84f46bd48161fc758e1f7d42e0402" => :mountain_lion
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -22,7 +24,7 @@ class Node < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl" => :optional
 
-  # https://github.com/joyent/node/issues/7919
+  # https://github.com/nodejs/node-v0.x-archive/issues/7919
   # https://github.com/Homebrew/homebrew/issues/36681
   depends_on "icu4c" => :optional
 
@@ -31,8 +33,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.12.1.tgz"
-    sha256 "6b6512c6f9097da193dfe046053d6d0483b5c5658dc0a763c1ba5609b6bbc16c"
+    url "https://registry.npmjs.org/npm/-/npm-2.14.2.tgz"
+    sha256 "592029e3406cbbaf249135e18212fab91db1601f991f61b4b2a03580311a066e"
   end
 
   def install
@@ -117,7 +119,7 @@ class Node < Formula
         Please note `icu4c` is built with a newer deployment target than Node and
         this may cause issues in certain usage. Node itself is built against the
         outdated `libstdc++` target, which is the root cause. For more information see:
-          https://github.com/joyent/node/issues/7919
+          https://github.com/nodejs/node-v0.x-archive/issues/7919
 
         If this is an issue for you, do `brew install node --without-icu4c`.
       EOS

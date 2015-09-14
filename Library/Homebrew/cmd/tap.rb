@@ -1,4 +1,5 @@
 require "tap"
+require "descriptions"
 
 module Homebrew
   def tap
@@ -19,6 +20,9 @@ module Homebrew
   end
 
   def install_tap(user, repo, clone_target = nil)
+    # ensure git is installed
+    Utils.ensure_git_installed!
+
     tap = Tap.new user, repo
     return false if tap.installed?
     ohai "Tapping #{tap}"
@@ -38,6 +42,7 @@ module Homebrew
 
     formula_count = tap.formula_files.size
     puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{tap.path.abv})"
+    Descriptions.cache_formulae(tap.formula_names)
 
     if !clone_target && tap.private?
       puts <<-EOS.undent

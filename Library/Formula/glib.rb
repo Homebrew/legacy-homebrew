@@ -5,6 +5,7 @@ class Glib < Formula
   sha256 "8811deacaf8a503d0a9b701777ea079ca6a4277be10e3d730d2112735d5eca07"
 
   bottle do
+    sha256 "0f3aff4d1d2fa8145ae4acdd52128e3e723049ea85bdc1fca7702a2822ee1e84" => :el_capitan
     sha256 "b6017260ce6e82abca388e12ab536a7e0675caf17f4a5f3ae7d7876ec1f7b5d9" => :yosemite
     sha256 "ec584074182b988e2b83fcc23d6143fe463a9bb6ddca6d7f75d40d96a9282a7b" => :mavericks
     sha256 "fcac604c02b1f562c4a6823b8361f35067a2cc1cdcf2ea0dc772698b5f2a156a" => :mountain_lion
@@ -26,7 +27,8 @@ class Glib < Formula
   end
 
   resource "config.h.ed" do
-    url "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed"
+    url "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/config.h.ed", :using => :curl
+    mirror "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed"
     version "111532"
     sha256 "9f1e23a084bc879880e589893c17f01a2f561e20835d6a6f08fcc1dad62388f1"
   end

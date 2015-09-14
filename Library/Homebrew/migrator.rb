@@ -44,14 +44,47 @@ class Migrator
     end
   end
 
+  # instance of new name formula
   attr_reader :formula
-  attr_reader :oldname, :oldpath, :old_pin_record, :old_opt_record
-  attr_reader :old_linked_keg_record, :oldkeg, :old_tabs, :old_tap
-  attr_reader :newname, :newpath, :new_pin_record
+
+  # old name of the formula
+  attr_reader :oldname
+
+  # path to oldname's cellar
+  attr_reader :old_cellar
+
+  # path to oldname pin
+  attr_reader :old_pin_record
+
+  # path to oldname opt
+  attr_reader :old_opt_record
+
+  # oldname linked keg
+  attr_reader :old_linked_keg
+
+  # path to oldname's linked keg
+  attr_reader :old_linked_keg_record
+
+  # tabs from oldname kegs
+  attr_reader :old_tabs
+
+  # tap of the old name
+  attr_reader :old_tap
+
+  # resolved path to oldname pin
   attr_reader :old_pin_link_record
 
-  # Path to new linked keg
-  attr_reader :new_keg
+  # new name of the formula
+  attr_reader :newname
+
+  # path to newname cellar according to new name
+  attr_reader :new_cellar
+
+  # path to newname pin
+  attr_reader :new_pin_record
+
+  # path to newname keg that will be linked if old_linked_keg isn't nil
+  attr_reader :new_linked_keg_record
 
   def initialize(formula)
     @oldname = formula.oldname
@@ -59,22 +92,22 @@ class Migrator
     raise MigratorNoOldnameError.new(formula) unless oldname
 
     @formula = formula
-    @oldpath = HOMEBREW_CELLAR/formula.oldname
-    raise MigratorNoOldpathError.new(formula) unless oldpath.exist?
+    @old_cellar = HOMEBREW_CELLAR/formula.oldname
+    raise MigratorNoOldpathError.new(formula) unless old_cellar.exist?
 
-    @old_tabs = oldpath.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
+    @old_tabs = old_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
     @old_tap = old_tabs.first.tap
 
     if !ARGV.force? && !from_same_taps?
       raise MigratorDifferentTapsError.new(formula, old_tap)
     end
 
-    @newpath = HOMEBREW_CELLAR/formula.name
+    @new_cellar = HOMEBREW_CELLAR/formula.name
 
-    if @oldkeg = get_linked_oldkeg
-      @old_linked_keg_record = oldkeg.linked_keg_record if oldkeg.linked?
-      @old_opt_record = oldkeg.opt_record if oldkeg.optlinked?
-      @new_keg = HOMEBREW_CELLAR/"#{newname}/#{File.basename(oldkeg)}"
+    if @old_linked_keg = get_linked_old_linked_keg
+      @old_linked_keg_record = old_linked_keg.linked_keg_record if old_linked_keg.linked?
+      @old_opt_record = old_linked_keg.opt_record if old_linked_keg.optlinked?
+      @new_linked_keg_record = HOMEBREW_CELLAR/"#{newname}/#{File.basename(old_linked_keg)}"
     end
 
     @old_pin_record = HOMEBREW_LIBRARY/"PinnedKegs"/oldname
@@ -109,8 +142,8 @@ class Migrator
     end
   end
 
-  def get_linked_oldkeg
-    kegs = oldpath.subdirs.map { |d| Keg.new(d) }
+  def get_linked_old_linked_keg
+    kegs = old_cellar.subdirs.map { |d| Keg.new(d) }
     kegs.detect(&:linked?) || kegs.detect(&:optlinked?)
   end
 
@@ -118,13 +151,9 @@ class Migrator
     @pinned
   end
 
-  def oldkeg_linked?
-    !!oldkeg
-  end
-
   def migrate
-    if newpath.exist?
-      onoe "#{newpath} already exists; remove it manually and run brew migrate #{oldname}."
+    if new_cellar.exist?
+      onoe "#{new_cellar} already exists; remove it manually and run brew migrate #{oldname}."
       return
     end
 
@@ -134,7 +163,7 @@ class Migrator
       unlink_oldname
       move_to_new_directory
       repin
-      link_newname if oldkeg_linked?
+      link_newname unless old_linked_keg.nil?
       link_oldname_opt
       link_oldname_cellar
       update_tabs
@@ -153,8 +182,8 @@ class Migrator
 
   # move everything from Cellar/oldname to Cellar/newname
   def move_to_new_directory
-    puts "Moving to: #{newpath}"
-    FileUtils.mv(oldpath, newpath)
+    puts "Moving to: #{new_cellar}"
+    FileUtils.mv(old_cellar, new_cellar)
   end
 
   def repin
@@ -178,7 +207,7 @@ class Migrator
 
   def unlink_oldname
     oh1 "Unlinking #{Tty.green}#{oldname}#{Tty.reset}"
-    oldpath.subdirs.each do |d|
+    old_cellar.subdirs.each do |d|
       keg = Keg.new(d)
       keg.unlink
     end
@@ -186,14 +215,14 @@ class Migrator
 
   def link_newname
     oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
-    keg = Keg.new(new_keg)
+    new_keg = Keg.new(new_linked_keg_record)
 
     # If old_keg wasn't linked then we just optlink a keg.
     # If old keg wasn't optlinked and linked, we don't call this method at all.
     # If formula is keg-only we also optlink it.
     if formula.keg_only? || !old_linked_keg_record
       begin
-        keg.optlink
+        new_keg.optlink
       rescue Keg::LinkError => e
         onoe "Failed to create #{formula.opt_prefix}"
         raise
@@ -201,17 +230,17 @@ class Migrator
       return
     end
 
-    keg.remove_linked_keg_record if keg.linked?
+    new_keg.remove_linked_keg_record if new_keg.linked?
 
     begin
-      keg.link
+      new_keg.link
     rescue Keg::ConflictError => e
       onoe "Error while executing `brew link` step on #{newname}"
       puts e
       puts
       puts "Possible conflicting files are:"
       mode = OpenStruct.new(:dry_run => true, :overwrite => true)
-      keg.link(mode)
+      new_keg.link(mode)
       raise
     rescue Keg::LinkError => e
       onoe "Error while linking"
@@ -223,7 +252,7 @@ class Migrator
       onoe "An unexpected error occurred during linking"
       puts e
       puts e.backtrace if ARGV.debug?
-      ignore_interrupts { keg.unlink }
+      ignore_interrupts { new_keg.unlink }
       raise
     end
   end
@@ -232,14 +261,14 @@ class Migrator
   def link_oldname_opt
     if old_opt_record
       old_opt_record.delete if old_opt_record.symlink?
-      old_opt_record.make_relative_symlink(new_keg)
+      old_opt_record.make_relative_symlink(new_linked_keg_record)
     end
   end
 
   # After migtaion every INSTALL_RECEIPT.json has wrong path to the formula
   # so we must update INSTALL_RECEIPTs
   def update_tabs
-    new_tabs = newpath.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
+    new_tabs = new_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
     new_tabs.each do |tab|
       tab.source["path"] = formula.path.to_s if tab.source["path"]
       tab.write
@@ -250,24 +279,24 @@ class Migrator
   def unlink_oldname_opt
     return unless old_opt_record
     if old_opt_record.symlink? && old_opt_record.exist? \
-        && new_keg.exist? \
-        && new_keg.realpath == old_opt_record.realpath
+        && new_linked_keg_record.exist? \
+        && new_linked_keg_record.realpath == old_opt_record.realpath
       old_opt_record.unlink
       old_opt_record.parent.rmdir_if_possible
     end
   end
 
-  # Remove oldpath if it exists
+  # Remove old_cellar if it exists
   def link_oldname_cellar
-    oldpath.delete if oldpath.symlink? || oldpath.exist?
-    oldpath.make_relative_symlink(formula.rack)
+    old_cellar.delete if old_cellar.symlink? || old_cellar.exist?
+    old_cellar.make_relative_symlink(formula.rack)
   end
 
   # Remove Cellar/oldname link if it belongs to newname.
   def unlink_oldname_cellar
-    if (oldpath.symlink? && !oldpath.exist?) || (oldpath.symlink? \
-          && formula.rack.exist? && formula.rack.realpath == oldpath.realpath)
-      oldpath.unlink
+    if (old_cellar.symlink? && !old_cellar.exist?) || (old_cellar.symlink? \
+          && formula.rack.exist? && formula.rack.realpath == old_cellar.realpath)
+      old_cellar.unlink
     end
   end
 
@@ -284,37 +313,37 @@ class Migrator
       new_pin_record.delete
     end
 
-    if newpath.exist?
-      newpath.subdirs.each do |d|
+    if new_cellar.exist?
+      new_cellar.subdirs.each do |d|
         newname_keg = Keg.new(d)
         newname_keg.unlink
         newname_keg.uninstall
       end
     end
 
-    if oldkeg_linked?
+    unless old_linked_keg.nil?
       # The keg used to be linked and when we backup everything we restore
       # Cellar/oldname, the target also gets restored, so we are able to
       # create a keg using its old path
       if old_linked_keg_record
         begin
-          oldkeg.link
+          old_linked_keg.link
         rescue Keg::LinkError
-          oldkeg.unlink
+          old_linked_keg.unlink
           raise
         rescue Keg::AlreadyLinkedError
-          oldkeg.unlink
+          old_linked_keg.unlink
           retry
         end
       else
-        oldkeg.optlink
+        old_linked_keg.optlink
       end
     end
   end
 
   def backup_oldname_cellar
-    unless oldpath.exist?
-      FileUtils.mv(newpath, oldpath)
+    unless old_cellar.exist?
+      FileUtils.mv(new_cellar, old_cellar)
     end
   end
 

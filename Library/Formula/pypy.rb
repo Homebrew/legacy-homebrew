@@ -1,15 +1,14 @@
 class Pypy < Formula
   desc "Implementation of Python 2 in Python"
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.0-src.tar.bz2"
-  sha256 "9bf353f22d25e97a85a6d3766619966055edea1ea1b2218445d683a8ad0399d9"
-  revision 1
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.1-src.tar.bz2"
+  sha256 "7fddd414c9348c2f899f79ad86adc3fc2b19443855b5243f58487e1f0ac46560"
 
   bottle do
     cellar :any
-    sha256 "b87916e1eb1ec3d66107930769b41a51c0b932aaada8fbbe130a76facc8a44be" => :yosemite
-    sha256 "6b0c8b9b084a62760669dab572651c231efeb730f85547efeb930854706ef589" => :mavericks
-    sha256 "6e271c461ac4a654a9aaaf258323e3c07b6fbe7372e82cc4686e33112bb73f68" => :mountain_lion
+    sha256 "8831be56c20ce1982359509dfc5059e0caefdd313dda5350eb13d2ea5237a973" => :yosemite
+    sha256 "6ba539560bad5331eff9172b858876e04cc2793f236e865495952aa48f921bf0" => :mavericks
+    sha256 "010f42ebb6352570c5b0268490d3cd931d0cb2f559cf59d53b7e29c29212f927" => :mountain_lion
   end
 
   depends_on :arch => :x86_64

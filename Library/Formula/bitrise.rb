@@ -3,26 +3,26 @@ require "language/go"
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/0.9.10.tar.gz"
-  sha256 "4e76667c6992331f38da4e662cf54cc9375c3bf069af373b2183b7ef16ec7be7"
+  url "https://github.com/bitrise-io/bitrise/archive/1.0.0.tar.gz"
+  sha256 "364476e0bbdb75a09c2b500b83e3049293c47679d4fb9023a53addc4a61eb9f3"
 
   bottle do
-    cellar :any
-    sha256 "ae8ad372e6dfeb1ca677f99022cab800abf6c916a8a771a313a6c76e1b618933" => :yosemite
-    sha256 "31475f6587cd0ab9c5f901a34bdf99b6d9b77cc2b39e476b20fc2870e3717916" => :mavericks
-    sha256 "fe4ec3878b6ce181e1ee8fba4f24bdf0d2bac043cb9dcd8d7ec0c9b12342a63e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "49b2458062224ee1071a12e408182fc9581ca08c135cddb68b7b17217b265dd3" => :yosemite
+    sha256 "5ee243d58e16ca5b70fd65d4590da15bd876eef7b0065d9190d3d7f4c7172efd" => :mavericks
+    sha256 "8322b383e4e32e7636d8c765256e7ce0005192f4dc6eb998cb31648d2858cb24" => :mountain_lion
   end
 
   depends_on "go" => :build
 
   resource "envman" do
-    url "https://github.com/bitrise-io/envman/archive/0.9.5.tar.gz"
-    sha256 "94017e7b5840452e32264e20c9b5e3c268db074bbceb813bc2f4a50dc7fee5e0"
+    url "https://github.com/bitrise-io/envman/archive/0.9.8.tar.gz"
+    sha256 "21a952dfe4f0e27ed9d340fe1a445942b6429cf9cc04b6ca04e72a5bb577c939"
   end
 
   resource "stepman" do
-    url "https://github.com/bitrise-io/stepman/archive/0.9.10.tar.gz"
-    sha256 "1a11485dd809176baa20b7efa28debf21b9538afa8eda0cbc01f34cc1921eec1"
+    url "https://github.com/bitrise-io/stepman/archive/0.9.14.tar.gz"
+    sha256 "e8153e409009d15f2a74909ccceb1cf616500da06e0e0071ac39b1b42821dff2"
   end
 
   def go_install_package(basepth, pkgname)
@@ -48,13 +48,12 @@ class Bitrise < Formula
 
   test do
     (testpath/"bitrise.yml").write <<-EOS.undent
-      format_version: 0.9.10
-      default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib
+      format_version: 1.0.0
+      default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
       workflows:
         test_wf:
           steps:
           - script:
-              title: Write a test string to a file, for compare
               inputs:
               - content: printf 'Test - OK' > brew.test.file
     EOS

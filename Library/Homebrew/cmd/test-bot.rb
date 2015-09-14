@@ -11,6 +11,7 @@
 # --junit:         Generate a JUnit XML test results file.
 # --email:         Generate an email subject file.
 # --no-bottle:     Run brew install without --build-bottle
+# --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
 # --tap=<tap>:     Use the git repository of the given tap
@@ -174,29 +175,25 @@ module Homebrew
   class Test
     attr_reader :log_root, :category, :name, :steps
 
-    def initialize(argument, tap = nil)
+    def initialize(argument, options={})
       @hash = nil
       @url = nil
       @formulae = []
       @added_formulae = []
       @modified_formula = []
       @steps = []
-      @tap = tap
+      @tap = options[:tap]
       @repository = Homebrew.homebrew_git_repo @tap
+      @skip_homebrew = options[:skip_homebrew]
 
       url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-
-      begin
-        formula = Formulary.factory(argument)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
-      end
 
       git "rev-parse", "--verify", "-q", argument
       if $?.success?
         @hash = argument
       elsif url_match
         @url = url_match[0]
-      elsif formula
+      elsif safe_formulary(argument)
         @formulae = [argument]
       else
         raise ArgumentError.new("#{argument} is not a pull request URL, commit URL or formula name.")
@@ -209,6 +206,11 @@ module Homebrew
 
     def no_args?
       @hash == "HEAD"
+    end
+
+    def safe_formulary(formula)
+      Formulary.factory formula
+    rescue FormulaUnavailableError, TapFormulaAmbiguityError
     end
 
     def git(*args)
@@ -521,7 +523,7 @@ module Homebrew
       if install_passed
         if formula.stable? && !ARGV.include?("--no-bottle")
           bottle_args = ["--verbose", "--rb", canonical_formula_name]
-          bottle_args << { :puts_output_on_success => true }
+          bottle_args << "--keep-old" if ARGV.include? "--keep-old"
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
           if bottle_step.passed? && bottle_step.has_output?
@@ -570,12 +572,17 @@ module Homebrew
 
     def homebrew
       @category = __method__
-      return if ARGV.include? "--skip-homebrew"
+      return if @skip_homebrew
       test "brew", "tests"
-      test "brew", "tests", "--no-compat"
-      readall_args = []
-      readall_args << "--syntax" if MacOS.version >= :mavericks
-      test "brew", "readall", *readall_args
+      if @tap
+        test "brew", "readall", @tap
+      else
+        test "brew", "tests", "--no-compat"
+        readall_args = ["--aliases"]
+        readall_args << "--syntax" if MacOS.version >= :mavericks
+        test "brew", "readall", *readall_args
+        test "brew", "update-test"
+      end
     end
 
     def cleanup_before
@@ -771,6 +778,7 @@ module Homebrew
       ENV["HUDSON_COOKIE"] = nil
 
       ARGV << "--verbose"
+      ARGV << "--keep-old" if ENV["UPSTREAM_BOTTLE_KEEP_OLD"]
 
       bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
       return if bottles.empty?
@@ -804,6 +812,7 @@ module Homebrew
       ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
       bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
       bottle_args << "--tap=#{tap}" if tap
+      bottle_args << "--keep-old" if ARGV.include? "--keep-old"
       safe_system "brew", "bottle", *bottle_args
 
       remote_repo = tap ? tap.tr("/", "-") : "homebrew"
@@ -856,16 +865,18 @@ module Homebrew
 
     tests = []
     any_errors = false
+    skip_homebrew = ARGV.include?("--skip-homebrew")
     if ARGV.named.empty?
       # With no arguments just build the most recent commit.
-      head_test = Test.new("HEAD", tap)
+      head_test = Test.new("HEAD", :tap => tap, :skip_homebrew => skip_homebrew)
       any_errors = !head_test.run
       tests << head_test
     else
       ARGV.named.each do |argument|
         test_error = false
         begin
-          test = Test.new(argument, tap)
+          test = Test.new(argument, :tap => tap, :skip_homebrew => skip_homebrew)
+          skip_homebrew = true
         rescue ArgumentError => e
           test_error = true
           ofail e.message

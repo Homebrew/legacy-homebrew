@@ -26,9 +26,7 @@ class InstallBottleTests < Homebrew::TestCase
       keg.unlink
       keg.uninstall
       formula.clear_cache
-      Dir["#{HOMEBREW_CACHE}/testball_bottle*"].each { |f| File.delete(f) }
-      # there will be log files when sandbox is enable.
-      formula.logs.rmtree if formula.logs.directory?
+      formula.bottle.clear_cache
     end
 
     refute_predicate keg, :exist?

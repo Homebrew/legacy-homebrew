@@ -7,9 +7,9 @@ class Zookeeper < Formula
     url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
     sha256 "01b3938547cd620dc4c93efe07c0360411f4a66962a70500b163b59014046994"
 
-    # To resolve Yosemite build errors.
+    # To resolve >+Yosemite build errors.
     # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
-    if MacOS.version == :yosemite
+    if MacOS.version >= :yosemite
       patch :p0 do
         url "https://issues.apache.org/jira/secure/attachment/12673210/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
         sha256 "b90eda47d21e60655dffe476eb437400afed24b37bbd71e7291faa8ece35c62b"
@@ -27,9 +27,9 @@ class Zookeeper < Formula
   head do
     url "https://svn.apache.org/repos/asf/zookeeper/trunk"
 
-    # To resolve Yosemite build errors.
+    # To resolve >+Yosemite build errors.
     # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
-    if MacOS.version == :yosemite
+    if MacOS.version >= :yosemite
       patch :p0 do
         url "https://issues.apache.org/jira/secure/attachment/12673212/ZOOKEEPER-2049.noprefix.trunk.patch"
         sha256 "64b5a4279a159977cbc1a1ab8fe782644f38ed04489b5a294d53aea74c84db89"

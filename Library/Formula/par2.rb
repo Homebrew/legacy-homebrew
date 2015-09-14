@@ -4,8 +4,12 @@ class Par2 < Formula
   url "https://downloads.sourceforge.net/project/parchive/par2cmdline/0.4/par2cmdline-0.4.tar.gz"
   sha256 "9e32b7dbcf7bca8249f98824757d4868714156fe2276516504cd26f736e9f677"
 
-  conflicts_with "par2tbb",
-    :because => "par2 and par2tbb install the same binaries."
+  bottle do
+    cellar :any
+    sha256 "562c1b75782b0ce231416d4d27c7d9a8bc12b467f307db84102267bdfd355ef3" => :yosemite
+    sha256 "9423c0e84f2dbed9f4ab1df4b94551f350c6fdd98c53d13bacb799a77b2a04a5" => :mavericks
+    sha256 "367db0a915a8bdaa9de30be2abc6de9e641d8031864df71998efa7d1be7ef53f" => :mountain_lion
+  end
 
   # Clang doesn't like variable length arrays of non-POD types.
   patch :DATA

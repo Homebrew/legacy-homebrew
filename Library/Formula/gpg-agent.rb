@@ -6,6 +6,7 @@ class GpgAgent < Formula
   sha256 "ce092ee4ab58fd19b9fb34a460c07b06c348f4360dd5dd4886d041eb521a534c"
 
   bottle do
+    sha256 "8400aa29d4a700d35cb23cda2bf5b3d36fe12860d0f969a9e7e62c76bed61c56" => :el_capitan
     sha256 "9b7601f361df7a13d970795cf8b723722397aff980e1f67e8f0fed426ae71e84" => :yosemite
     sha256 "1b627ef0b3233c0701eae87841eed4968089bac434455dfe59a15f07b1fe07af" => :mavericks
     sha256 "78df29269281f0ad6103c1f223c7d1da90be398c28c76e57ce0f9385e1d2e652" => :mountain_lion

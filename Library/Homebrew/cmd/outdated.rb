@@ -24,8 +24,8 @@ module Homebrew
         end
       end
 
-      f.rack.subdirs.each do |dir|
-        keg = Keg.new dir
+      f.rack.subdirs.each do |keg_dir|
+        keg = Keg.new keg_dir
         version = keg.version
         all_versions << version
         older_version = f.pkg_version <= version

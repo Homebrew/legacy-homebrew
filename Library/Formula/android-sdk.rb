@@ -7,6 +7,13 @@ class AndroidSdk < Formula
   version "24.3.4"
   sha256 "074da140b380177108b9b74869403df7a65c5b555d4f5e439fa8556f1018352b"
 
+  bottle do
+    cellar :any
+    sha256 "7e9cfe4358bc78d50c5481c94eac4a8257253991a04c2484b2ad647d3e030d0f" => :yosemite
+    sha256 "8e2345713d8c4d45edca76daa49779bfdd5964117730c325662a01fdab74023d" => :mavericks
+    sha256 "75990555c5bc71c43afcb83bcb7ee70c580cedf8b86b2c60d82a1abb7bc588b6" => :mountain_lion
+  end
+
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
@@ -17,7 +24,7 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "23.0.0"
+    "23.0.1"
   end
 
   def install

@@ -6,9 +6,10 @@ class Dovecot < Formula
   sha256 "b6d8468cea47f1227f47b80618f7fb872e2b2e9d3302adc107a005dd083865bb"
 
   bottle do
-    sha256 "2d1e25f40b1006b08da06e87f5b363d4b9654e6c936d7388d2b85239c7e202be" => :yosemite
-    sha256 "f26ea1738aba89131294f2ae229799af0a7e2c4b704362da248563d6b94c4a95" => :mavericks
-    sha256 "5b5f8427b67da36ce686c14d0fc9230fe42884e69c116d46d8eca37f86e79c8a" => :mountain_lion
+    revision 1
+    sha256 "b0213868f3a9db6992b04d688209c8d35aa472beeb2fd03b937f112857e7f0c0" => :yosemite
+    sha256 "03c6c26881f816b9206efe6ff97df76ceb179696466f8f177ce3d625ad270e2c" => :mavericks
+    sha256 "54ed311a625d029291a644117a3a16c0d9b5ab1158c0ceffe229635ca3a62008" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -45,7 +46,7 @@ class Dovecot < Formula
       <dict>
         <key>Label</key>
         <string>#{plist_name}</string>
-        <key>OnDemand</key>
+        <key>KeepAlive</key>
         <false/>
         <key>RunAtLoad</key>
         <true/>
@@ -54,8 +55,6 @@ class Dovecot < Formula
           <string>#{opt_sbin}/dovecot</string>
           <string>-F</string>
         </array>
-        <key>ServiceDescription</key>
-        <string>Dovecot mail server</string>
         <key>StandardErrorPath</key>
         <string>#{var}/log/dovecot/dovecot.log</string>
         <key>StandardOutPath</key>

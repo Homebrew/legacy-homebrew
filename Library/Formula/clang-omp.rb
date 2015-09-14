@@ -1,9 +1,43 @@
 class ClangOmp < Formula
   desc "OpenMP C/C++ language extensions in Clang/LLVM compiler"
   homepage "https://clang-omp.github.io/"
-  url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
-  version "2015-04-01"
-  sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
+
+  stable do
+    url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
+    version "2015-04-01"
+    sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
+
+    resource "compiler-rt" do
+      url "https://github.com/clang-omp/compiler-rt/archive/2015-04-01.tar.gz"
+      sha256 "5a8d39ff6ce524e23fae32870f85b18d43f2795da2011d3cbb6b29d471bb27b7"
+    end
+
+    resource "clang" do
+      url "https://github.com/clang-omp/clang/archive/2015-04-01.tar.gz"
+      sha256 "2717115e5ba491e3b8119311f0d792420ba41be34a89733b9880eb3d3c09fbe5"
+    end
+
+    resource "libcxx" do
+      url "https://github.com/llvm-mirror/libcxx/archive/release_35.tar.gz"
+      sha256 "df23b356ae1953de671d1dc9093568330e074bbe48cd6d93d16173a793550c71"
+    end
+  end
+
+  head do
+    url "https://github.com/clang-omp/llvm_trunk.git"
+
+    resource "compiler-rt" do
+      url "https://github.com/clang-omp/compiler-rt_trunk.git"
+    end
+
+    resource "clang" do
+      url "https://github.com/clang-omp/clang_trunk.git"
+    end
+
+    resource "libcxx" do
+      url "https://github.com/llvm-mirror/libcxx.git"
+    end
+  end
 
   bottle do
     revision 2
@@ -14,21 +48,6 @@ class ClangOmp < Formula
 
   depends_on "libiomp"
   depends_on "cmake" => :build
-
-  resource "compiler-rt" do
-    url "https://github.com/clang-omp/compiler-rt/archive/2015-04-01.tar.gz"
-    sha256 "5a8d39ff6ce524e23fae32870f85b18d43f2795da2011d3cbb6b29d471bb27b7"
-  end
-
-  resource "clang" do
-    url "https://github.com/clang-omp/clang/archive/2015-04-01.tar.gz"
-    sha256 "2717115e5ba491e3b8119311f0d792420ba41be34a89733b9880eb3d3c09fbe5"
-  end
-
-  resource "libcxx" do
-    url "https://github.com/llvm-mirror/libcxx/archive/release_35.tar.gz"
-    sha256 "df23b356ae1953de671d1dc9093568330e074bbe48cd6d93d16173a793550c71"
-  end
 
   needs :cxx11
 

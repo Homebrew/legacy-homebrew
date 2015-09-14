@@ -7,6 +7,7 @@ class GitAnnex < Formula
   homepage "https://git-annex.branchable.com/"
   url "https://hackage.haskell.org/package/git-annex-5.20150824/git-annex-5.20150824.tar.gz"
   sha256 "45088dd5ff5a63ca38965e60843e42c1b8424b3437b58af68929cf61ef0819e4"
+  head "git://git-annex.branchable.com/"
 
   bottle do
     sha256 "3ee70b905cb836c18469d48b4e9b4114b07ce084867d776517b081a4676a0427" => :yosemite

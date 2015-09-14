@@ -7,6 +7,7 @@ class Subversion < Formula
 
   bottle do
     revision 1
+    sha256 "7b9eed1088e1b360cd15016c2dc201b66a23990e7c3f4507ce55c1956c8a5aa8" => :el_capitan
     sha256 "bf2389a0865234d120f5fc79735205ea77e93c549db3774131f3c5250622b68d" => :yosemite
     sha256 "95e5d20542567d39da4e964d50fddfbed74c4d8187ca55fb4a9784abb714efd5" => :mavericks
     sha256 "c11519346a1efdaf76ceec4689b88713279bdd352df0a61fd8fc11d427056f7b" => :mountain_lion
@@ -72,19 +73,6 @@ class Subversion < Formula
   end
 
   def install
-    # OS X's Python is built universally and can't link with Homebrew's deps
-    # unless Homebrew's deps are universal as well.
-    # https://github.com/Homebrew/homebrew-versions/issues/777
-    # https://github.com/Homebrew/homebrew/issues/34119
-    if build.with?("python") && (which "python").universal?
-      unless build.universal?
-        raise <<-EOS.undent
-          You must build subversion --universal unless Homebrew's
-          Python is installed, otherwise the build will fail.
-        EOS
-      end
-    end
-
     serf_prefix = libexec+"serf"
 
     resource("serf").stage do
@@ -168,6 +156,13 @@ class Subversion < Formula
       args << "RUBY=/usr/bin/ruby"
     end
 
+    # If Python is built universally, then extensions built with that Python
+    # are too. This default behaviour is not desired when building an extension
+    # for a single architecture.
+    if build.with?("python") && (which "python").universal? && !build.universal?
+      ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
+    end
+
     # The system Python is built with llvm-gcc, so we override this
     # variable to prevent failures due to incompatible CFLAGS
     ENV["ac_cv_python_compile"] = ENV.cc
@@ -232,11 +227,6 @@ class Subversion < Formula
     end
   end
 
-  test do
-    system "#{bin}/svnadmin", "create", "test"
-    system "#{bin}/svnadmin", "verify", "test"
-  end
-
   def caveats
     s = <<-EOS.undent
       svntools have been installed to:
@@ -269,6 +259,11 @@ class Subversion < Formula
     end
 
     s
+  end
+
+  test do
+    system "#{bin}/svnadmin", "create", "test"
+    system "#{bin}/svnadmin", "verify", "test"
   end
 end
 
