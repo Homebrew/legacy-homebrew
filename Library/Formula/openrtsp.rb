@@ -5,10 +5,10 @@ class Openrtsp < Formula
   sha256 "1a27410aea9723e9e0c60850c57b52a08eed32a4ecfa88942026d2b9c0ac3fdc"
 
   bottle do
-    cellar :any
-    sha256 "ff44f9812456770736ca3f338769afc02226303dc40780125da8b65f4a604292" => :yosemite
-    sha256 "b916e93c80bd88c5f7f873c956d8cf5a04a2952b76b51b41110cde02e209f9a9" => :mavericks
-    sha256 "f041f3680d6a71378d61078152bcbba8fc54c58de5f074f121397135687dc564" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "17e43299332bcb2187abcfabc33a6d3093a30e83633be182cfc14f21b6de7369" => :yosemite
+    sha256 "d55d749e11c9e500b56df98727c9bbdb43445a856757ff0a762c2fb52370f91c" => :mavericks
+    sha256 "8f051738a67319c3eaa5f990a7b8ca0ffb4b2a234872a325fdcfbb6951af3ca4" => :mountain_lion
   end
 
   option "32-bit"
