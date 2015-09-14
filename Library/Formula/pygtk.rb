@@ -7,6 +7,7 @@ class Pygtk < Formula
 
   bottle do
     revision 1
+    sha256 "63291542cf2e40ab92750275c0aeed992224d814b6a455a9d1aed39a55e8fb68" => :el_capitan
     sha256 "1342196c0429a80d128d1369b1f46bb30a37ff345416a466ee9f4cf21d6693f0" => :yosemite
     sha256 "6b0467bd8d5c2377b6d3ff59cef8658a33d5c5800b1d53b23abcdc94aa0f0286" => :mavericks
     sha256 "760447005d79b08046da88b23a9af552bf1a9d039de8a38401e22ef8ed743f49" => :mountain_lion
