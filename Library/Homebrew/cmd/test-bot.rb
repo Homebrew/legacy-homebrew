@@ -860,6 +860,7 @@ module Homebrew
 
       safe_system "git", "tag", "--force", tag
       safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
+      system "git", "update-ref", "-d", "refs/tags/#{tag}"
       return
     end
 
