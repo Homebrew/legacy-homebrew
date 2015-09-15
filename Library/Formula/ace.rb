@@ -5,9 +5,10 @@ class Ace < Formula
   sha256 "d8e5ad92eab743936fb8921301e7df09a4d331270be2b7b3dec7f47b8ba2ce5f"
 
   bottle do
-    sha1 "90cb518c4554949453de2eb406a7d1ef8fda3880" => :yosemite
-    sha1 "2a58aa9a687ed6b8d3eef8f982b0c96554d85de7" => :mavericks
-    sha1 "faa49b7abaf6661f0e4cff46715755985a4a980a" => :mountain_lion
+    cellar :any
+    sha256 "170a94d38f40f743b111270b73490d4f048c6665f78fd8c6d5cf09690ea45808" => :yosemite
+    sha256 "11a3de79f7bced79f78aaa3449dd2de513499f81d333ac96421601b02e23d90c" => :mavericks
+    sha256 "6d9e043cef8e05e73e144f41a50f616599cc26fb91d5da016f525e989d32eed8" => :mountain_lion
   end
 
   # Add config/platform support for El Capitan
