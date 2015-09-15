@@ -7,6 +7,13 @@ class Pev < Formula
 
   head "https://github.com/merces/pev.git"
 
+  bottle do
+    cellar :any
+    sha256 "e01f09a92f3af2fb454e17529bac7900978960382bc52ae62aa4fa6b751f41c0" => :yosemite
+    sha256 "f2ffcbda87b08fdd2a4621468f711c7f5542b2413833f350f93105d0825a97d9" => :mavericks
+    sha256 "08ba1dbebcb68b2c6a67a2052840764803ad3efc975563e72960da0f8b6e463d" => :mountain_lion
+  end
+
   depends_on "pcre"
   depends_on "openssl"
 
