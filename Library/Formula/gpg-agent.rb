@@ -1,7 +1,8 @@
 class GpgAgent < Formula
   desc "GPG key agent"
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  mirror "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
   sha256 "68ed6b386ba78425b05a60e8ee22785ff0fef190bdc6f1c612f19a58819d4ac9"
 
