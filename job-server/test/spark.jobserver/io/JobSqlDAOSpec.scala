@@ -166,31 +166,30 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpecLike with Matchers with Be
   }
 
   describe("Basic saveJobInfo() and getJobInfos() tests") {
-    it("should provide an empty map on getJobInfos() for an empty JOBS table") {
-      (Map.empty[String, JobInfo]) should equal (dao.getJobInfos)
+    it("should provide an empty Seq on getJobInfos() for an empty JOBS table") {
+      (Seq.empty[JobInfo]) should equal (dao.getJobInfos(1))
     }
 
     it("should save a new JobInfo and get the same JobInfo") {
       // save JobInfo
       dao.saveJobInfo(jobInfoNoEndNoErr)
 
-      // get all JobInfos
-      val jobs = dao.getJobInfos
+      // get some JobInfos
+      val jobs = dao.getJobInfos(10)
 
       // test
-      jobs.keySet should equal (Set(jobId))
-      jobs(jobId) should equal (expectedJobInfo)
+      jobs.head.jobId should equal (jobId)
+      jobs.head should equal (expectedJobInfo)
     }
 
     it("should be able to get previously saved JobInfo") {
       // jobInfo saved in prior test
 
       // get jobInfos
-      val jobs = dao.getJobInfos
+      val jobInfo = dao.getJobInfo(jobId).get
 
       // test
-      jobs.keySet should equal (Set(jobId))
-      jobs(jobId) should equal (expectedJobInfo)
+      jobInfo should equal (expectedJobInfo)
     }
 
     it("Save another new jobInfo, bring down DB, bring up DB, should JobInfos from DB") {
@@ -206,12 +205,13 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpecLike with Matchers with Be
       dao = null
       dao = new JobSqlDAO(config)
 
-      // Get all jobInfos
-      val jobs = dao.getJobInfos
+      // Get jobInfos
+      val jobs = dao.getJobInfos(2)
+      val jobIds = jobs map { _.jobId }
 
       // test
-      jobs.keySet should equal (Set(jobId, jobId2))
-      jobs.values.toSeq should equal (Seq(expectedJobInfo, expectedJobInfo2))
+      jobIds should equal (Seq(jobId, jobId2))
+      jobs should equal (Seq(expectedJobInfo, expectedJobInfo2))
     }
 
     it("saving a JobInfo with the same jobId should update the JOBS table") {
@@ -224,40 +224,40 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpecLike with Matchers with Be
       info.uploadTime should equal (jarInfo.uploadTime)
 
       // Get all jobInfos
-      val jobs: Map[String, JobInfo] = dao.getJobInfos
+      val jobs: Seq[JobInfo] = dao.getJobInfos(2)
 
       // First Test
       jobs.size should equal (2)
-      jobs(exJobId) should equal (expectedJobInfo)
+      jobs.head should equal (expectedJobInfo)
 
       // Second Test
       // Cannot compare JobInfos directly if error is a Some(Throwable) because
       // Throwable uses referential equality
       dao.saveJobInfo(jobInfoNoEndSomeErr)
-      val jobs2 = dao.getJobInfos
+      val jobs2 = dao.getJobInfos(2)
       jobs2.size should equal (2)
-      jobs2(exJobId).endTime should equal (None)
-      jobs2(exJobId).error.isDefined should equal (true)
-      intercept[Throwable] { jobs2(exJobId).error.map(throw _) }
-      jobs2(exJobId).error.get.getMessage should equal (throwable.getMessage)
+      jobs2.head.endTime should equal (None)
+      jobs2.head.error.isDefined should equal (true)
+      intercept[Throwable] { jobs2.head.error.map(throw _) }
+      jobs2.head.error.get.getMessage should equal (throwable.getMessage)
 
       // Third Test
       dao.saveJobInfo(jobInfoSomeEndNoErr)
-      val jobs3 = dao.getJobInfos
+      val jobs3 = dao.getJobInfos(2)
       jobs3.size should equal (2)
-      jobs3(exJobId).error.isDefined should equal (false)
-      jobs3(exJobId) should equal (expectedSomeEndNoErr)
+      jobs3.head.error.isDefined should equal (false)
+      jobs3.head should equal (expectedSomeEndNoErr)
 
       // Fourth Test
       // Cannot compare JobInfos directly if error is a Some(Throwable) because
       // Throwable uses referential equality
       dao.saveJobInfo(jobInfoSomeEndSomeErr)
-      val jobs4 = dao.getJobInfos
+      val jobs4 = dao.getJobInfos(2)
       jobs4.size should equal (2)
-      jobs4(exJobId).endTime should equal (expectedSomeEndSomeErr.endTime)
-      jobs4(exJobId).error.isDefined should equal (true)
-      intercept[Throwable] { jobs4(exJobId).error.map(throw _) }
-      jobs4(exJobId).error.get.getMessage should equal (throwable.getMessage)
+      jobs4.head.endTime should equal (expectedSomeEndSomeErr.endTime)
+      jobs4.head.error.isDefined should equal (true)
+      intercept[Throwable] { jobs4.head.error.map(throw _) }
+      jobs4.head.error.get.getMessage should equal (throwable.getMessage)
     }
   }
 }
