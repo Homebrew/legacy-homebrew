@@ -9,11 +9,11 @@ end
 class Jdk < Formula
   homepage "http://www.java.com/"
 
-  version "1.8.0-40"
+  version "1.8.0-60"
   if OS.linux?
-    url "http://download.oracle.com/otn-pub/java/jdk/8u40-b26/jdk-8u40-linux-x64.tar.gz",
+    url "http://download.oracle.com/otn-pub/java/jdk/8u60-b27/jdk-8u60-linux-x64.tar.gz",
       :using => JdkDownloadStrategy
-    sha256 "da1ad819ce7b7ec528264f831d88afaa5db34b7955e45422a7e380b1ead6b04d"
+    sha256 "ebe51554d2f6c617a4ae8fc9a8742276e65af01bd273e96848b262b3c05424e5"
   elsif OS.mac?
     url "jdk", :using => JdkDownloadStrategy
   else
