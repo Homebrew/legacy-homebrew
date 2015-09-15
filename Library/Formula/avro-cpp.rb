@@ -9,6 +9,11 @@ class AvroCpp < Formula
   depends_on "boost"
 
   def install
+    # Avoid deprecated macros removed in Boost 1.59.
+    # https://issues.apache.org/jira/browse/AVRO-1719
+    inreplace "test/SchemaTests.cc", "BOOST_CHECKPOINT(", "BOOST_TEST_CHECKPOINT("
+    inreplace "test/buffertest.cc", "BOOST_MESSAGE(", "BOOST_TEST_MESSAGE("
+
     system "cmake", ".", *std_cmake_args
     system "make", "install"
   end
