@@ -1,11 +1,14 @@
 class Ndjbdns < Formula
-  desc "N-DJBDNS is a brand new release of DJBDNS."
+  desc "N-DJBDNS is a brand new fork release of the DJBDNS."
   homepage "http://pjp.dgplug.org/djbdns/"
   url "http://pjp.dgplug.org/djbdns/ndjbdns-1.06.tar.gz"
   sha256 "5ce5a7c5031f220a85fc8bca903f2d3cf484ff77e4c85e7144a0e2a5922a1127"
-  
-  depends_on "autoconf"
-  depends_on "automake"
+
+  conflicts_with "djbdns",
+    :because => "both install the same set of binaries"
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
 
   # Patch while waiting upstream to fix: https://github.com/pjps/ndjbdns/issues/17
   patch :DATA
@@ -15,31 +18,27 @@ class Ndjbdns < Formula
     (prefix+"etc").mkpath
     # disable the chance of init.d ./etc setup
     inreplace "etc/Makefile.am", "SUBDIRS = ip init.d servers", "SUBDIRS = ip servers"
-    system "autoreconf -if"
-    system "./configure --prefix=#{prefix} --sysconfdir=#{etc}"
+    system "autoreconf", "-i", "-f"
+    system "./configure", "--prefix=#{prefix} ", "--sysconfdir=#{etc}"
     system "make"
-    system "make install"
+    system "make", "install"
     inreplace "#{etc}/ndjbdns/axfrdns.conf",  /^([UG]ID)=\d+/, '\1=1'
-    inreplace "#{etc}/ndjbdns/dnscache.conf", /^([UG]ID)=\d+/, '\1=1'
-    inreplace "#{etc}/ndjbdns/dnscache.conf", /IP=.+/, 'IP=0.0.0.0'
     inreplace "#{etc}/ndjbdns/rbldns.conf",   /^([UG]ID)=\d+/, '\1=1'
     inreplace "#{etc}/ndjbdns/tinydns.conf",  /^([UG]ID)=\d+/, '\1=1'
     inreplace "#{etc}/ndjbdns/walldns.conf",  /^([UG]ID)=\d+/, '\1=1'
+    inreplace "#{etc}/ndjbdns/dnscache.conf" do |s|
+      s.gsub! /^([UG]ID)=\d+/, '\1=1'
+      s.gsub! /IP=.+/, "IP=0.0.0.0"
+    end
   end
 
   test do
     # would need to run a server process in the background
-    #system "#{bin}/dnscache -P 1053"
-    system "dnsip localhost"
+    # system "#{bin}/dnscache", "-P", "1053"
+    system "#{bin}/dnsip", "localhost"
   end
-
-  conflicts_with 'djbdns',
-    :because => 'both install the same binaries'
-
 end
 
-
-# Patch while waiting upstream to fix: https://github.com/pjps/ndjbdns/issues/17
 __END__
 diff --git a/common.c b/common.c
 index 670c9bb..fbf4a1f 100644
