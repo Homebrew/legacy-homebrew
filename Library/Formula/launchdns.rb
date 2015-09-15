@@ -22,7 +22,7 @@ class Launchdns < Formula
   end
 
   test do
-    assert_not_match /without socket activation/, shell_output("#{bin}/launchdns --version")
+    assert_no_match /without socket activation/, shell_output("#{bin}/launchdns --version")
     system "#{bin}/launchdns", "-p0", "-t1"
   end
 
