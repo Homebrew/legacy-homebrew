@@ -205,12 +205,13 @@ class JobSqlDAOSpec extends TestJarFinder with FunSpecLike with Matchers with Be
       dao = null
       dao = new JobSqlDAO(config)
 
-      // Get all jobInfos
+      // Get jobInfos
       val jobs = dao.getJobInfos(2)
+      val jobIds = jobs map { _.jobId }
 
       // test
-      // jobs should equal (Seq(jobId, jobId2))
-      // jobs.values.toSeq should equal (Seq(expectedJobInfo, expectedJobInfo2))
+      jobIds should equal (Seq(jobId, jobId2))
+      jobs should equal (Seq(expectedJobInfo, expectedJobInfo2))
     }
 
     it("saving a JobInfo with the same jobId should update the JOBS table") {
