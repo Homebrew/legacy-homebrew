@@ -10,9 +10,9 @@ class Davix < Formula
 
   bottle do
     cellar :any
-    sha1 "7b0e8b98a4bea320f53e18aee117b57b0e1e78d4" => :yosemite
-    sha1 "c9f097cb09483cd1be6d18d76c04728d9dcb6622" => :mavericks
-    sha1 "ed43d4321c579740ac29d3302f39f89e8c5f0ffb" => :mountain_lion
+    sha256 "4bab71124c9638ab089f1784dd01805d814ee81e037fc6f8d7ddfd70a2ab785a" => :yosemite
+    sha256 "8cdd2495b9286226b7be91e111a72f3d6d565b0245d5741f53901eb44266be3f" => :mavericks
+    sha256 "00709d9ef997292d7154e92903c5375d5c9d572d6581814f1bd843b5319a76ab" => :mountain_lion
   end
 
   depends_on "cmake" => :build
