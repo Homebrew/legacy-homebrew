@@ -17,6 +17,7 @@
 # --tap=<tap>:     Use the git repository of the given tap
 # --dry-run:       Just print commands, don't run them.
 # --fail-fast:     Immediately exit on a failing step.
+# --verbose:       Print out all logs in realtime
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
@@ -91,13 +92,31 @@ module Homebrew
 
     def puts_command
       cmd = @command.join(" ")
-      print "#{Tty.blue}==>#{Tty.white} #{cmd}#{Tty.reset}"
+      cmd_line = "#{Tty.blue}==>#{Tty.white} #{cmd}#{Tty.reset}"
+      if ENV["TRAVIS"]
+        @travis_timer_id = rand(2**32).to_s(16)
+        puts "travis_fold:start:#{@command.join(".")}"
+        puts "travis_time:start:#{@travis_timer_id}"
+        puts cmd_line
+        return
+      end
+      print cmd_line
       tabs = (80 - "PASSED".length + 1 - cmd.length) / 8
       tabs.times { print "\t" }
       $stdout.flush
     end
 
     def puts_result
+      if ENV["TRAVIS"]
+        cmd = @command.join(" ")
+        puts "#{Tty.send status_colour}==> #{cmd}: #{status_upcase}#{Tty.reset}"
+        travis_start_time = @start_time.to_i*1000000000
+        travis_end_time = @end_time.to_i*1000000000
+        travis_duration = travis_end_time - travis_start_time
+        puts "travis_fold:end:#{@command.join(".")}"
+        puts "travis_time:end:#{@travis_timer_id},start=#{travis_start_time},finish=#{travis_end_time},duration=#{travis_duration}"
+        return
+      end
       puts " #{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
     end
 
@@ -105,19 +124,25 @@ module Homebrew
       @output && !@output.empty?
     end
 
+    def time
+      @end_time - @start_time
+    end
+
     def run
+      @start_time = Time.now
+
       puts_command
       if ARGV.include? "--dry-run"
-        puts
+        @end_time = Time.now
         @status = :passed
+        puts_result
         return
       end
 
       verbose = ARGV.verbose?
-      puts if verbose
+      puts if verbose && !ENV["TRAVIS"]
       @output = ""
       working_dir = Pathname.new(@command.first == "git" ? @repository : Dir.pwd)
-      start_time = Time.now
       read, write = IO.pipe
 
       begin
@@ -138,7 +163,7 @@ module Homebrew
       end
 
       Process.wait(pid)
-      @time = Time.now - start_time
+      @end_time = Time.now
       @status = $?.success? ? :passed : :failed
       puts_result
 
@@ -269,12 +294,17 @@ module Homebrew
       @category = __method__
       @start_branch = current_branch
 
+      travis_pr = ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
+
       # Use Jenkins environment variables if present.
       if no_args? && ENV["GIT_PREVIOUS_COMMIT"] && ENV["GIT_COMMIT"] \
          && !ENV["ghprbPullLink"]
         diff_start_sha1 = shorten_revision ENV["GIT_PREVIOUS_COMMIT"]
         diff_end_sha1 = shorten_revision ENV["GIT_COMMIT"]
         brew_update
+      elsif ENV["TRAVIS_COMMIT_RANGE"]
+        diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
+        diff_end_sha1 = ENV["TRAVIS_COMMIT"] if travis_pr
       elsif @hash
         diff_start_sha1 = current_sha1
         brew_update
@@ -286,6 +316,9 @@ module Homebrew
       # Handle Jenkins pull request builder plugin.
       if ENV["ghprbPullLink"]
         @url = ENV["ghprbPullLink"]
+        @hash = nil
+      elsif travis_pr
+        @url = "https://github.com/#{ENV["TRAVIS_REPO_SLUG"]}/pull/#{ENV["TRAVIS_PULL_REQUEST"]}"
         @hash = nil
       end
 
@@ -301,6 +334,9 @@ module Homebrew
         diff_start_sha1 = "#{@hash}^"
         diff_end_sha1 = @hash
         @name = @hash
+      elsif ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
+        @short_url = @url.gsub("https://github.com/", "")
+        @name = "#{@short_url}-#{diff_end_sha1}"
       elsif @url
         diff_start_sha1 = current_sha1
         test "git", "checkout", diff_start_sha1
@@ -323,7 +359,7 @@ module Homebrew
       FileUtils.mkdir_p @log_root
 
       return unless diff_start_sha1 != diff_end_sha1
-      return if @url && !steps.last.passed?
+      return if @url && steps.last && !steps.last.passed?
 
       if @tap
         formula_path = %w[Formula HomebrewFormula].find { |dir| (@repository/dir).directory? } || ""
@@ -369,7 +405,7 @@ module Homebrew
     def setup
       @category = __method__
       return if ARGV.include? "--skip-setup"
-      test "brew", "doctor"
+      test "brew", "doctor" unless ENV["TRAVIS"]
       test "brew", "--env"
       test "brew", "config"
     end
@@ -610,7 +646,8 @@ module Homebrew
 
       checkout_args << @start_branch
 
-      if ARGV.include?("--cleanup") || @url || @hash
+      if @start_branch && !@start_branch.empty? && \
+         (ARGV.include?("--cleanup") || @url || @hash)
         test "git", "checkout", *checkout_args
       end
 
@@ -723,9 +760,11 @@ module Homebrew
     ENV["HOMEBREW_DEVELOPER"] = "1"
     ENV["HOMEBREW_SANDBOX"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
+    ARGV << "--verbose" if ENV["TRAVIS"]
+
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
        || ARGV.include?("--ci-testing")
-      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS_COMMIT"]
+      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS"]
       ARGV << "--junit" << "--local"
     end
     if ARGV.include? "--ci-master"
@@ -933,15 +972,19 @@ module Homebrew
       end
     end
 
-    if ARGV.include? "--email"
-      failed_steps = []
-      tests.each do |test|
-        test.steps.each do |step|
-          next if step.passed?
-          failed_steps << step.command_short
-        end
+    failed_steps = []
+    tests.each do |test|
+      test.steps.each do |step|
+        next if step.passed?
+        failed_steps << step.command_short
       end
+    end
 
+    if ENV["TRAVIS"] && !failed_steps.empty?
+      puts "#{Tty.red}==> #{cmd}: FAILED: #{MacOS.version}: #{failed_steps.join ", "}#{Tty.reset}"
+    end
+
+    if ARGV.include? "--email"
       if failed_steps.empty?
         email_subject = ""
       else
