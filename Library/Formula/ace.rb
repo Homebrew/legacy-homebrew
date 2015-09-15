@@ -18,6 +18,13 @@ class Ace < Formula
     sha256 "4a9584c2eb876245ee1f8442886663a83937380ed5d2ceb70e3594b702f544bb"
   end
 
+  # Add config/platform support for El Capitan
+  # https://github.com/DOCGroup/ATCD/pull/141
+  patch :p2 do
+    url "https://github.com/DOCGroup/ATCD/pull/141.diff"
+    sha256 "4a9584c2eb876245ee1f8442886663a83937380ed5d2ceb70e3594b702f544bb"
+  end
+
   def install
     # ACE has two methods of compilation, "traditional" and ./configure.
     # The "traditional" method has consistently given better results
