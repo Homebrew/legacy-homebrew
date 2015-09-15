@@ -11,8 +11,8 @@ INSTALL_DIR=/home/spark/job-server
 LOG_DIR=/var/log/job-server
 PIDFILE=spark-jobserver.pid
 JOBSERVER_MEMORY=1G
-SPARK_VERSION=1.3.1
-SPARK_HOME=/home/spark/spark-1.3.1
+SPARK_VERSION=1.4.1
+SPARK_HOME=/home/spark/spark-1.4.1
 SPARK_CONF_DIR=$SPARK_HOME/conf
 # Only needed for Mesos deploys
 SPARK_EXECUTOR_URI=/home/spark/spark-0.8.0.tar.gz

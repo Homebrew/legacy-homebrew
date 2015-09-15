@@ -26,7 +26,7 @@ class HiveJobSpec extends ExtrasJobSpecBase(HiveJobSpec.getNewSystem) {
 
   val emptyConfig = ConfigFactory.parseString("spark.master = bar")
   val queryConfig = ConfigFactory.parseString(
-                      """sql = "SELECT firstName, lastName FROM `default.test_addresses` WHERE city = 'San Jose'" """)
+                      """sql = "SELECT firstName, lastName FROM `default`.`test_addresses` WHERE city = 'San Jose'" """)
 
   before {
     dao = new InMemoryDAO
