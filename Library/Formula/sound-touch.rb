@@ -1,8 +1,8 @@
 class SoundTouch < Formula
   desc "Audio processing library"
   homepage "http://www.surina.net/soundtouch/"
-  url "http://www.surina.net/soundtouch/soundtouch-1.8.0.tar.gz"
-  sha256 "3d4161d74ca25c5a98c69dbb8ea10fd2be409ba1a3a0bf81db407c4c261f166b"
+  url "http://www.surina.net/soundtouch/soundtouch-1.9.1.tar.gz"
+  sha256 "7d22e09e5e0a5bb8669da4f97ec1d6ee324aa3e7515db7fa2554d08f5259aecd"
 
   bottle do
     cellar :any
@@ -20,14 +20,20 @@ class SoundTouch < Formula
 
   def install
     system "/bin/sh", "bootstrap"
-    args = ["--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}"]
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+    ]
     args << "--enable-integer-samples" if build.with? "integer-samples"
 
     ENV.universal_binary if build.universal?
 
     system "./configure", *args
     system "make", "install"
+  end
+
+  test do
+    assert_match /SoundStretch v#{version} -/, shell_output("#{bin}/soundstretch 2>&1", 255)
   end
 end
