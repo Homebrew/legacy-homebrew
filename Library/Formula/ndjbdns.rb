@@ -18,8 +18,8 @@ class Ndjbdns < Formula
     (prefix+"etc").mkpath
     # disable the chance of init.d ./etc setup
     inreplace "etc/Makefile.am", "SUBDIRS = ip init.d servers", "SUBDIRS = ip servers"
-    system "autoreconf", "-i", "-f"
-    system "./configure", "--prefix=#{prefix} ", "--sysconfdir=#{etc}"
+    system "autoreconf", "-if"
+    system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
     system "make"
     system "make", "install"
     inreplace "#{etc}/ndjbdns/axfrdns.conf",  /^([UG]ID)=\d+/, '\1=1'
