@@ -21,7 +21,7 @@ class Launchdns < Formula
   end
 
   test do
-    system "#{bin}/launchdns --version | grep -vq 'without socket activation'"
+    assert_not_match /without socket activation/, shell_output("#{bin}/launchdns --version")
     system "#{bin}/launchdns", "-p0", "-t1"
   end
 
