@@ -1,10 +1,8 @@
 class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
-  url "https://github.com/facebook/watchman/archive/v3.7.0-brew.tar.gz"
-  version "3.7.0"
-  sha256 "55a3ea1ee3990a5e5c11f1a37ad5bafbb63e8002f48f449c083e598f6f332154"
-
+  url "https://github.com/facebook/watchman/archive/v3.8.0.tar.gz"
+  sha256 "10d1e134e6ff110044629a517e7c69050fb9e4a26f21079b267989119987b40d"
   head "https://github.com/facebook/watchman.git"
 
   bottle do
@@ -29,15 +27,9 @@ class Watchman < Formula
   end
 
   test do
-    # Currently fails under HOMEBREW_SANDBOX: Operation not permitted
-    # "Failed to open /path/to/LaunchAgents/plist for write"
-    system "#{bin}/watchman", "shutdown-server"
-    system "#{bin}/watchman", "watch", testpath
-
-    list = shell_output("#{bin}/watchman watch-list")
-    if list.index(testpath).nil?
-      raise "failed to watch tmpdir"
+    list = shell_output("#{bin}/watchman -v")
+    if list.index(version).nil?
+      raise "expected to see #{version} in the version output"
     end
-    system "#{bin}/watchman", "watch-del", testpath
   end
 end
