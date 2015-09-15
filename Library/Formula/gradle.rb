@@ -8,4 +8,9 @@ class Gradle < Formula
     libexec.install %w[bin lib]
     bin.install_symlink libexec+"bin/gradle"
   end
+
+  test do
+    output = shell_output("#{bin}/gradle --version")
+    assert output.include?("Gradle #{version}")
+  end
 end
