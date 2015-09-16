@@ -3,6 +3,7 @@ class Pkcs11Helper < Formula
   homepage "https://github.com/OpenSC/OpenSC/wiki/pkcs11-helper"
   url "https://github.com/OpenSC/pkcs11-helper/archive/pkcs11-helper-1.11.tar.gz"
   sha256 "4b84132efb7685e1ab4dcea953cf88f82a2e6750cbb64a9196fb5acb376c26a4"
+  revision 1
 
   head "https://github.com/OpenSC/pkcs11-helper.git"
 
@@ -10,6 +11,7 @@ class Pkcs11Helper < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   def install
     system "autoreconf", "--verbose", "--install", "--force"
