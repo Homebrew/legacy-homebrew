@@ -5,8 +5,8 @@ class Influxdb < Formula
   homepage "https://influxdb.com"
 
   stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.3.tar.gz"
-    sha256 "f49f7a007f821991984dd8716a6ddccc94a1832c5ac1abf4bb1cb88d9616c2e9"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.4.1.tar.gz"
+    sha256 "a15dcb1173ca4016111d2d8dcea75c098f10838f54d67256b384e65b1cbcf2de"
   end
 
   bottle do
@@ -36,15 +36,15 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/boltdb/bolt" do
-    url "https://github.com/boltdb/bolt.git", :revision => "0f053fabc06119583d61937a0a06ef0ba0f1b301"
+    url "https://github.com/boltdb/bolt.git", :revision => "033d4ec028192f38aef67ae47bd7b89f343145b5"
   end
 
   go_resource "github.com/gogo/protobuf" do
-    url "https://github.com/gogo/protobuf.git", :revision => "cabd153b69f71bab8b89fd667a2d9bb28c92ceb4"
+    url "https://github.com/gogo/protobuf.git", :revision => "43ab7f0ec7b6d072e0368bd537ffefe74ed30198"
   end
 
   go_resource "github.com/golang/protobuf" do
-    url "https://github.com/golang/protobuf.git", :revision => "aece6fb931241ad332956db4f62798dfbea944b3"
+    url "https://github.com/golang/protobuf.git", :revision => "535a10468679b4cf155f6a7afdf53b554633fc09"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -52,7 +52,7 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/hashicorp/raft" do
-    url "https://github.com/hashicorp/raft.git", :revision => "feb5f8bb5624ccb475c1354a2ca14a22eea7da4e"
+    url "https://github.com/hashicorp/raft.git", :revision => "9dabbbab966c04a0b6efed3cff6960299fed0642"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
@@ -96,9 +96,9 @@ class Influxdb < Formula
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version 0.9.4-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.5-HEAD -X main.branch master -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version 0.9.3 -X main.commit 2094f3fec17e7f675e5cacc8e984d98b1aec662d", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.4.1 -X main.branch 0.9.4 -X main.commit c4f85f84765e27bfb5e58630d0dea38adeacf543", "./..."
       end
     end
 
