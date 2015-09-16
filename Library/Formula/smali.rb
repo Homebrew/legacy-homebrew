@@ -1,8 +1,9 @@
 class Smali < Formula
   desc "Assembler/disassembler for Android's Java VM implementation"
-  homepage "https://code.google.com/p/smali/"
+  homepage "https://github.com/JesusFreke/smali"
   url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.6.jar"
   sha256 "fcadc564a35b121361930223a4e6431e000b24b3cc992ca63dd2e35f7b28746d"
+  revision 1
 
   bottle do
     cellar :any
@@ -18,12 +19,12 @@ class Smali < Formula
 
   resource "baksmali" do
     url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali"
-    sha256 "c2dead21e9ed0a18494077872a4190b9928bd40983136256ab33dd96e947e409"
+    sha256 "5d4b79776d401f2cbdb66c7c88e23cca773b9a939520fef4bf42e2856bbbfed4"
   end
 
   resource "smali" do
     url "https://bitbucket.org/JesusFreke/smali/downloads/smali"
-    sha256 "7d4d9095ef54f97f49c132d33035fc1331480273e886e6e3c6fe3ffe33ce9901"
+    sha256 "910297fbeefb4590e6bffd185726c878382a0960fb6a7f0733f045b6faf60a30"
   end
 
   def install
@@ -64,6 +65,6 @@ class Smali < Formula
 
     system "#{bin}/smali", "-o", "classes.dex", "input.smali"
     system "#{bin}/baksmali", "-o", pwd, "classes.dex"
-    assert File.read("HelloWorld.smali").include?("Hello World!")
+    assert_match "Hello World!", File.read("HelloWorld.smali")
   end
 end
