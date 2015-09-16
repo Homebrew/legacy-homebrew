@@ -5,7 +5,10 @@ class LetMeIn < Formula
   homepage "https://github.com/rlister/let-me-in"
   url "https://github.com/rlister/let-me-in/archive/v0.0.6.tar.gz"
   sha256 "729d22fadca6ea4467f66d728afddb4aa2b63371924a8ae34a8d2e4b163ef9f7"
+
   depends_on "go" => :build
+
+  head "https://github.com/rlister/let-me-in.git"
 
   ## install godep, which will handle all remaining vendored dependencies
   go_resource "github.com/tools/godep" do
