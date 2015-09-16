@@ -3,6 +3,9 @@ class Sdhash < Formula
   homepage "http://roussev.net/sdhash/sdhash.html"
   url "http://roussev.net/sdhash/releases/packages/sdhash-3.1.tar.gz"
   sha256 "b991d38533d02ae56e0c7aeb230f844e45a39f2867f70fab30002cfa34ba449c"
+  revision 1
+
+  depends_on "openssl"
 
   def install
     inreplace "Makefile" do |s|
