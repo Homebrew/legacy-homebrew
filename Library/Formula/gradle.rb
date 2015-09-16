@@ -11,6 +11,6 @@ class Gradle < Formula
 
   test do
     output = shell_output("#{bin}/gradle --version")
-    assert output.include?("Gradle #{version}")
+    assert_match /Gradle #{version}/, output
   end
 end
