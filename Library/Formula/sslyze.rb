@@ -21,7 +21,7 @@ class Sslyze < Formula
   end
 
   resource "openssl" do
-    url "https://www.openssl.org/source/openssl-1.0.2a.tar.gz"
+    url "https://www.openssl.org/source/old/1.0.2/openssl-1.0.2a.tar.gz"
     sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
   end
 
