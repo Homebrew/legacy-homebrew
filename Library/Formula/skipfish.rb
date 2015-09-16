@@ -3,6 +3,7 @@ class Skipfish < Formula
   homepage "https://code.google.com/p/skipfish/"
   url "https://skipfish.googlecode.com/files/skipfish-2.10b.tgz"
   sha256 "1a4fbc9d013f1f9b970946ea7228d943266127b7f4100c994ad26c82c5352a9e"
+  revision 1
 
   bottle do
     sha1 "509453d1b4e717ab4858b22c6fffe1d5f98744a2" => :mavericks
@@ -12,6 +13,7 @@ class Skipfish < Formula
 
   depends_on "libidn"
   depends_on "pcre"
+  depends_on "openssl"
 
   def install
     ENV.append "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
