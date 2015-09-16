@@ -43,10 +43,21 @@ class Tig < Formula
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--sysconfdir=#{etc}"
-    system "make", "install"
+    system "make"
+    # Ensure the configured `sysconfdir` is used during runtime by
+    # installing in a separate step.
+    system "make", "install", "sysconfdir=#{prefix/"share/tig/examples"}"
     system "make install-doc-man" if build.with? "docs"
     bash_completion.install "contrib/tig-completion.bash"
     zsh_completion.install "contrib/tig-completion.zsh" => "_tig"
     cp "#{bash_completion}/tig-completion.bash", zsh_completion
+  end
+
+  def caveats; <<-EOS.undent
+    A sample of the default configuration has been installed to:
+      #{prefix/"share/tig/examples/tigrc"}
+    to override the system-wide default configuration, copy the sample to:
+      #{etc/"tigrc"}
+    EOS
   end
 end
