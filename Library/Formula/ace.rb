@@ -1,6 +1,6 @@
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
-  homepage "http://www.cse.wustl.edu/~schmidt/ACE.html"
+  homepage "http://www.dre.vanderbilt.edu/~schmidt/ACE.html"
   url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.2.tar.bz2"
   sha256 "d8e5ad92eab743936fb8921301e7df09a4d331270be2b7b3dec7f47b8ba2ce5f"
 
@@ -19,11 +19,6 @@ class Ace < Formula
   end
 
   def install
-    # ACE has two methods of compilation, "traditional" and ./configure.
-    # The "traditional" method has consistently given better results
-    # for the last 5 years, so although awkward to use on OSX, we use
-    # it anyway.
-
     # Figure out the names of the header and makefile for this version
     # of OSX and link those files to the standard names.
     name = MacOS.cat.to_s.delete "_"
