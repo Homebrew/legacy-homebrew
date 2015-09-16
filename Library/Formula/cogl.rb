@@ -1,9 +1,8 @@
 class Cogl < Formula
   desc "Low level OpenGL abstraction library developed for Clutter"
   homepage "https://developer.gnome.org/cogl/"
-  url "https://download.gnome.org/sources/cogl/1.20/cogl-1.20.0.tar.xz"
-  sha256 "729e35495829e7d31fafa3358e47b743ba21a2b08ff9b6cd28fb74c0de91192b"
-  revision 1
+  url "https://download.gnome.org/sources/cogl/1.22/cogl-1.22.0.tar.xz"
+  sha256 "689dfb5d14fc1106e9d2ded0f7930dcf7265d0bc84fa846b4f03941633eeaa91"
 
   bottle do
     revision 1
