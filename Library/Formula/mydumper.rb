@@ -97,4 +97,19 @@ class Mydumper < Formula
   def test
     system "mydumper" "--help"
   end
+
+  patch :p0, :DATA
 end
+
+__END__
+--- cmake/modules/FindMySQL.cmake	2015-09-16 16:11:34.000000000 -0400
++++ cmake/modules/FindMySQL.cmake	2015-09-16 16:10:56.000000000 -0400
+@@ -84,7 +84,7 @@
+ )
+ 
+ set(TMP_MYSQL_LIBRARIES "")
+-set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a .lib)
++set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a .lib .dylib)
+ foreach(MY_LIB ${MYSQL_ADD_LIBRARIES})
+     find_library("MYSQL_LIBRARIES_${MY_LIB}" NAMES ${MY_LIB}
+         HINTS
