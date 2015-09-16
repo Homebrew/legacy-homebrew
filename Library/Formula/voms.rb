@@ -3,10 +3,12 @@ class Voms < Formula
   homepage "https://github.com/italiangrid/voms"
   url "https://github.com/italiangrid/voms/archive/2_0_11.tar.gz"
   sha256 "f665712f68fee445bb3247c214a64ecf00a9f858dadd585d26ff076d29e870e0"
+  revision 1
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
+  depends_on "openssl"
 
   def install
     system "./autogen.sh"
