@@ -1,9 +1,9 @@
 class SigningParty < Formula
   desc "Various OpenPGP related tools"
   homepage "https://pgp-tools.alioth.debian.org/"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/signing-party/signing-party_2.0.orig.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/s/signing-party/signing-party_2.0.orig.tar.gz"
-  sha256 "cc23e48b2f06dee7cbf7b80ee4dfbed69908cb4584d3d5fa29ed7b2f962ec16e"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/signing-party/signing-party_2.1.orig.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/s/signing-party/signing-party_2.1.orig.tar.gz"
+  sha256 "ca87849a74ea4c271e92422bfe6b1be2bfe2c2de9a723bf11aa088e4ea88965d"
 
   bottle do
     cellar :any
