@@ -33,6 +33,14 @@ class BoostPython < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    if stable?
+      # fix make_setter regression
+      # https://github.com/boostorg/python/pull/40
+      inreplace "boost/python/data_members.hpp",
+                "# if BOOST_WORKAROUND(__EDG_VERSION__, <= 238)",
+                "# if !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)"
+    end
+
     # "layout" should be synchronized with boost
     args = ["--prefix=#{prefix}",
             "--libdir=#{lib}",
