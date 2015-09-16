@@ -187,6 +187,15 @@ class Updater
       @stashed = true
     end
 
+    # The upstream repository's default branch may not be master;
+    # check refs/remotes/origin/HEAD to see what the default
+    # origin branch name is, and use that. If not set, fall back to "master".
+    begin
+      @upstream_branch = `git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null`
+      @upstream_branch = @upstream_branch.chomp.sub('refs/remotes/origin/', '')
+    rescue ErrorDuringExecution
+      @upstream_branch = "master"
+    end
 
     begin
       @initial_branch = `git symbolic-ref --short HEAD 2>/dev/null`.chomp
@@ -194,8 +203,8 @@ class Updater
       @initial_branch = ""
     end
 
-    if @initial_branch != "master" && !@initial_branch.empty?
-      safe_system "git", "checkout", "master", *quiet
+    if @initial_branch != @upstream_branch && !@initial_branch.empty?
+      safe_system "git", "checkout", @upstream_branch, *quiet
     end
 
     @initial_revision = read_current_revision
@@ -208,8 +217,8 @@ class Updater
     args << ((ARGV.include? "--rebase") ? "--rebase" : "--no-rebase")
     args += quiet
     args << "origin"
-    # the refspec ensures that 'origin/master' gets updated
-    args << "refs/heads/master:refs/remotes/origin/master"
+    # the refspec ensures that the default upstream branch gets updated
+    args << "refs/heads/#{@upstream_branch}:refs/remotes/origin/#{@upstream_branch}"
 
     reset_on_interrupt { safe_system "git", *args }
 
