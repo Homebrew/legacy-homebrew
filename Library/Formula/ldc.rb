@@ -14,9 +14,9 @@ class Ldc < Formula
   end
 
   devel do
-    url "https://github.com/ldc-developers/ldc/releases/download/v0.16.0-alpha2/ldc-0.16.0-alpha2-src.tar.gz"
-    version "0.16.0-alpha2"
-    sha256 "197c6cfdff9444dcea82255321f0da9d1017da9a7b1808eee75bc8793c926623"
+    url "https://github.com/ldc-developers/ldc/releases/download/v0.16.0-alpha4/ldc-0.16.0-alpha4-src.tar.gz"
+    version "0.16.0-alpha4"
+    sha256 "fc1e3bfa15ce8f1d451b7172b1f1df2d8a5e668880b134e6fbae2f63d4b4f81a"
   end
 
   needs :cxx11
