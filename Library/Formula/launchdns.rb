@@ -5,6 +5,8 @@ class Launchdns < Formula
   head "https://github.com/josh/launchdns.git"
   sha256 "c34bab9b4f5c0441d76fefb1ee16cb0279ab435e92986021c7d1d18ee408a5dd"
 
+  depends_on :macos => :yosemite
+
   bottle do
     cellar :any
     revision 1
