@@ -3,6 +3,9 @@ class Pincaster < Formula
   homepage "https://github.com/jedisct1/Pincaster"
   url "http://download.pureftpd.org/pincaster/releases/pincaster-0.6.tar.bz2"
   sha256 "c88be055ecf357b50b965afe70b5fc15dff295fbe2b6f0c473cf7e4a795a9f97"
+  revision 1
+
+  depends_on "openssl"
 
   def install
     system "./configure", "--prefix=#{prefix}"
