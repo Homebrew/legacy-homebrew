@@ -1,14 +1,11 @@
 class Global < Formula
   desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.5.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.5.tar.gz"
-  sha256 "4afd12db1aa600277b39113cc2d61dc59bd6c6b4ee8033da8bb6dd0c39a4c6a9"
+  url "http://ftpmirror.gnu.org/global/global-6.5.1.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.5.1.tar.gz"
+  sha256 "0e9d5227d400e8cb2ffa1732d98b8735d58d4bf8476c2845365770fdd5b264f8"
 
   bottle do
-    sha256 "6450fd297faa82a13e2505e20a5f131d742c313ef63dcb65fb56324117815368" => :yosemite
-    sha256 "e745d15ebfad496459fd55736b7e479ea7c8b276221a683609f3e0543d234e91" => :mavericks
-    sha256 "e25e53f6f2be9c36334622c45c5f00725c7cbcc513e1016c5bd7ba40f6ed192d" => :mountain_lion
   end
 
   head do
@@ -28,8 +25,8 @@ class Global < Formula
   skip_clean "lib/gtags"
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.6.tar.gz"
-    sha256 "799ed4caf77516e54440806d8d9cd82a7607dfdf4e4fb643815171a4b5c921c0"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
+    sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
   end
 
   def install
