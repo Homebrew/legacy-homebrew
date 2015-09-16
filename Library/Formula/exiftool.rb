@@ -1,8 +1,8 @@
 class Exiftool < Formula
   desc "Perl lib for reading and writing EXIF metadata"
   homepage "http://www.sno.phy.queensu.ca/~phil/exiftool/index.html"
-  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-10.00.tar.gz"
-  sha256 "7b573331eba3921b56339018e95dd5e6f5a1e4634e4fc7bad91e5778da3571f4"
+  url "http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-10.01.tar.gz"
+  sha256 "46b6418334b2ca4e3b21cd38a6cb88131f5256cd21472160b4d19ac078093ceb"
 
   bottle do
     cellar :any_skip_relocation
@@ -13,25 +13,16 @@ class Exiftool < Formula
   end
 
   def install
+    # replace the hard-coded path to the lib directory
+    inreplace "exiftool", "$exeDir/lib", "#{libexec}/lib"
+
     system "perl", "Makefile.PL"
-    system "make", "test"
 
-    # Install privately to the Cellar
-    libexec.install "exiftool", "lib"
-
-    # Link the executable script into "bin"
-    (bin + "exiftool").write <<-EOBIN
-#!/bin/bash
-
-which_exiftool=`which $0`
-dirname_exiftool=$(dirname $which_exiftool)
-readlink_exiftool=$(readlink $which_exiftool)
-dirname_unlinked_exiftool=$(dirname $dirname_exiftool/$readlink_exiftool)
-$dirname_unlinked_exiftool/../libexec/exiftool "$@"
-EOBIN
+    libexec.install "lib"
+    bin.install "exiftool"
   end
 
   test do
-    system "#{libexec}/exiftool"
+    system "#{bin}/exiftool"
   end
 end
