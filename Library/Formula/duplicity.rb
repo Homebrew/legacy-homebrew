@@ -23,6 +23,7 @@ class Duplicity < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "librsync"
   depends_on :gpg => :run
+  depends_on "par2" => :optional
 
   # generated with homebrew-pypi-poet from
   # for i in boto pyrax dropbox mega.py paramiko pycrypto
