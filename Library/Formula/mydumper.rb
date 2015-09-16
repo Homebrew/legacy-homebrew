@@ -2,7 +2,6 @@ class Mydumper < Formula
   desc "How MySQL DBA & support engineer would imagine 'mysqldump' ;-)"
   homepage "https://launchpad.net/mydumper"
   url "https://launchpad.net/mydumper/0.6/0.6.2/+download/mydumper-0.6.2.tar.gz"
-  version "0.6.2"
   sha256 "fa28563e8967752828954c5d81e26ef50aad9083d50a977bf5733833b23e3330"
 
   option "without-docs", "Don't build man pages"
