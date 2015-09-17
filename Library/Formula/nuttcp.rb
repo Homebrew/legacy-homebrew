@@ -2,8 +2,7 @@ class Nuttcp < Formula
   desc "Network performance measurement tool"
   homepage "http://www.nuttcp.net/nuttcp"
   url "http://www.nuttcp.net/nuttcp/nuttcp-6.1.2.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/n/nuttcp/nuttcp_6.1.2.orig.tar.gz"
-  sha256 "4edfa66a6d03fbd8a5c030a8aad33786945d83455b395486dba592e8a2312a87"
+  sha256 "054e96d9d68fe917df6f25fab15c7755bdd480f6420d7d48d9194a1a52378169"
 
   bottle do
     cellar :any
