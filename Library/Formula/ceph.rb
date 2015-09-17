@@ -11,6 +11,11 @@ class Ceph < Formula
   depends_on "cryptopp"
   depends_on "boost"
   depends_on "leveldb"
+
+  # Unfortunately it installs a Python script unconditionally, we depend on the
+  # Homebrew python so that when that script gets installed it gets installed
+  # into the Homebrew python site-packages rather than failing to install it in
+  # the system python site-packages.
   depends_on "python"
 
   def install
