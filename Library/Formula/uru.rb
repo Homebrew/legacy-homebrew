@@ -5,10 +5,10 @@ class Uru < Formula
   sha256 "7201ee957ad35131f6461ca35cc0fe77ca8e38d4e1603bad02871f5222413ee4"
 
   bottle do
-    cellar :any
-    sha1 "9476d70ca74e2074129067a8b820065ec7e7a86b" => :yosemite
-    sha1 "61e905c6a60df009190c87afb830536e53419cdd" => :mavericks
-    sha1 "6353400d611ed746f6f232a86c8ba8a18e89a06a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9c616c324409575a681c156bdfbbecffdb55f6d4c59a664a5a0231c7373e1489" => :el_capitan
+    sha256 "979224d18653ddbdff2922af2cff156274904a75d40f5dab1263726cd6126228" => :yosemite
+    sha256 "f68f12bb741ba6483268c6a8721368589db150d058919c76117ff7bd5ca15f26" => :mavericks
   end
 
   depends_on "go" => :build
