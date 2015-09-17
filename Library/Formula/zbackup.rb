@@ -1,8 +1,8 @@
 class Zbackup < Formula
   desc "Globally-deduplicating backup tool (based on ideas in rsync)"
   homepage "http://zbackup.org"
-  url "https://github.com/zbackup/zbackup/archive/1.4.3.tar.gz"
-  sha256 "7bb027d34b98ae2c5aa5066177ba7a1542c786e16e52d47dc3c29bb326b1cd4a"
+  url "https://github.com/zbackup/zbackup/archive/1.4.4.tar.gz"
+  sha256 "efccccd2a045da91576c591968374379da1dc4ca2e3dec4d3f8f12628fa29a85"
 
   bottle do
     cellar :any
