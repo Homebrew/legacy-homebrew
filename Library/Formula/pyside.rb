@@ -1,11 +1,11 @@
 class Pyside < Formula
   desc "Python bindings for Qt"
-  homepage "http://qt-project.org/wiki/PySide"
+  homepage "https://wiki.qt.io/PySide"
   url "https://download.qt.io/official_releases/pyside/pyside-qt4.8+1.2.2.tar.bz2"
   mirror "https://distfiles.macports.org/py-pyside/pyside-qt4.8+1.2.2.tar.bz2"
   sha256 "a1a9df746378efe52211f1a229f77571d1306fb72830bbf73f0d512ed9856ae1"
 
-  head "https://gitorious.org/pyside/pyside.git"
+  head "https://github.com/PySide/PySide.git"
 
   bottle do
     sha1 "8137d4ab768f0b621c76f3e8f51aff9594527b7a" => :yosemite
