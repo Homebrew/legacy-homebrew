@@ -32,6 +32,7 @@ class Hidapi < Formula
     system "./bootstrap"
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
+    bin.install "hidtest/.libs/hidtest"
   end
 
   test do
