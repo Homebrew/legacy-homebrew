@@ -10,11 +10,10 @@ class Influxdb < Formula
   end
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "154a550327ab4122c23a5ef936467364fb875dc5fa38ea280cd49b631bcec3b6" => :yosemite
-    sha256 "7dfa97a71778ef32ff4e94948c8e72c6428c810edfa84b7ce29caa2df5ba0d6e" => :mavericks
-    sha256 "00386853dc84185b9927841da7ba12b14b2f45f3cde6d776b64a3bbf2c2befb4" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "76d669cdbf1c2ad3619bd75c5e1d696f4a95723f52f6c4a7d07c78cbfa79c305" => :el_capitan
+    sha256 "5cafef5188c19e37b309e4bc7b296b228105ef968e3af763f591523b7acf07f4" => :yosemite
+    sha256 "fe38534f8108c8f6174cad83ff042519b1ac73690a8b97cbce97158b1851ea2c" => :mavericks
   end
 
   head do
