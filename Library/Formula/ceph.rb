@@ -18,6 +18,7 @@ class Ceph < Formula
 
     system "./configure", "--without-fuse",
                           "--without-tcmalloc",
+    ENV.append "CPPFLAGS", "-DGTEST_USE_OWN_TR1_TUPLE=1"
                           "--without-libaio",
                           "--without-libxfs",
                           "--with-rados",
