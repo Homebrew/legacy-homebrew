@@ -54,6 +54,7 @@ class Ceph < Formula
 
   test do
     system "#{bin}/rados", "--help"
-    system "#{bin}/rados-config"
+    system "#{bin}/librados-config --version"
+    system "#{bin}/librados-config --vernum"
   end
 end
