@@ -1,9 +1,9 @@
 class JbossForge < Formula
   desc "Tools to help set up and configure a project"
   homepage "http://forge.jboss.org/"
-  url "https://downloads.jboss.org/forge/releases/2.19.1.Final/forge-distribution-2.19.1.Final-offline.zip"
-  version "2.19.1.Final"
-  sha256 "3047e54edd929262e80c31aeb8adc9f835395a102109a3653d690111c522c421"
+  url "https://downloads.jboss.org/forge/releases/2.19.2.Final/forge-distribution-2.19.2.Final-offline.zip"
+  version "2.19.2.Final"
+  sha256 "be3b079ae57f3c3d9c18c6f1d8c0c71914e8fcdd09554321b93457e168572f58"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,7 +14,7 @@ class JbossForge < Formula
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[addons bin img lib logging.properties]
+    libexec.install %w[addons bin lib logging.properties]
     bin.install_symlink libexec/"bin/forge"
   end
 
