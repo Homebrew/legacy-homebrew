@@ -16,7 +16,6 @@ class Ceph < Formula
   def install
     system "./autogen.sh"
 
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     system "./configure", "--without-fuse",
                           "--without-tcmalloc",
                           "--without-libaio",
