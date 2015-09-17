@@ -1,8 +1,8 @@
 class Rethinkdb < Formula
   desc "The open-source database for the realtime web"
   homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-2.1.3.tgz"
-  sha256 "8dbfbd89e1053eda7acde7e0bb9c4ceb64c5371ceb9b3e16019e6fc60776890f"
+  url "http://download.rethinkdb.com/dist/rethinkdb-2.1.4.tgz"
+  sha256 "2553ad4a31b5f09522fc651fd2cfa98d76bccfebd6db87ef929eda54220f70b2"
 
   bottle do
     cellar :any
