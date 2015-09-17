@@ -3,6 +3,7 @@ class Nsd < Formula
   homepage "https://www.nlnetlabs.nl/projects/nsd/"
   url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.1.3.tar.gz"
   sha256 "097cb295cdd3e8a73a8afac343caf0fca11b72b2214b022689ddc423312d17e5"
+  revision 1
 
   bottle do
     sha256 "502aa5481346dec1c0d4b93ea52124b4a1048da77e6f3e35b7e5511d4160e190" => :yosemite
@@ -16,11 +17,13 @@ class Nsd < Formula
   option "with-zone-stats", "Enable per-zone statistics"
 
   depends_on "libevent"
+  depends_on "openssl"
 
   def install
     args = %W[
       --prefix=#{prefix}
       --with-libevent=#{Formula["libevent"].opt_prefix}
+      --with-ssl=#{Formula["openssl"].opt_prefix}
     ]
 
     args << "--enable-root-server" if build.with? "root-server"
