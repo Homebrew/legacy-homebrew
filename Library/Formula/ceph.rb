@@ -1,5 +1,5 @@
-class Rados < Formula
-  desc "RADOS is a library for connecting and utilizing Ceph"
+class Ceph < Formula
+  desc "Ceph is a scaleable distributed file system. Client tools/libraries only."
   homepage "http://ceph.com/"
   head "https://github.com/ceph/ceph.git"
 
