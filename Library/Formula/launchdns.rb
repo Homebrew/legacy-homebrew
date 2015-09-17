@@ -8,11 +8,9 @@ class Launchdns < Formula
   depends_on :macos => :yosemite
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "3b6276a21a4a1523d6e14d34ae7332c7f39ee2544b61bfad2b32dcb9f0761576" => :yosemite
-    sha256 "7075bad8ec1f01f4b8deb59492b406bf4915d1e249aa0ea44d2615646af25bde" => :mavericks
-    sha256 "3b7e3ac513be0817414d7930f524887da956f331a7344df555e4c4c1083a7e43" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d9434fae9c609c44264c90bef1e52b66db7f1ce2ef12cb8f2498a89d2ba4d0e0" => :el_capitan
+    sha256 "bdc3fea3f9a6c59908a2b81f1d3bb373dbe807efe62f4b6e0c00fac4dbf0d2c7" => :yosemite
   end
 
   def install
