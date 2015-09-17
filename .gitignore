@@ -1,5 +1,6 @@
 /*
 !/.gitignore
+!/.travis.yml
 !/.yardopts
 !/Library/
 !/CODEOFCONDUCT.md
