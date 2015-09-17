@@ -21,6 +21,7 @@ class Texinfo < Formula
                           "--disable-install-warnings",
                           "--prefix=#{prefix}"
     system "make", "install"
+    doc.install Dir["doc/refcard/txirefcard*"]
   end
 
   test do
