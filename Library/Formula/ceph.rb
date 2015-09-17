@@ -53,6 +53,7 @@ class Ceph < Formula
   end
 
   test do
-    system "#{bin}/rados"
+    system "#{bin}/rados", "--help"
+    system "#{bin}/rados-config"
   end
 end
