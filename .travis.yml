@@ -21,3 +21,6 @@ before_install:
 
 script:
   - brew test-bot
+
+notifications:
+  email: false
