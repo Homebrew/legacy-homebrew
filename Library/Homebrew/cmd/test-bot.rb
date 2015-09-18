@@ -281,25 +281,21 @@ module Homebrew
          && !ENV["ghprbPullLink"]
         diff_start_sha1 = shorten_revision ENV["GIT_PREVIOUS_COMMIT"]
         diff_end_sha1 = shorten_revision ENV["GIT_COMMIT"]
-        brew_update
       elsif ENV["TRAVIS_COMMIT_RANGE"]
         diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
         diff_end_sha1 = ENV["TRAVIS_COMMIT"] if travis_pr
+      elseif ENV["ghprbPullLink"]
+        # Handle Jenkins pull request builder plugin.
+        @url = ENV["ghprbPullLink"]
+        @hash = nil
+        test "git", "checkout", "origin/master"
+      elsif travis_pr
+        @url = "https://github.com/#{ENV["TRAVIS_REPO_SLUG"]}/pull/#{ENV["TRAVIS_PULL_REQUEST"]}"
+        @hash = nil
       elsif @hash
         diff_start_sha1 = current_sha1
         brew_update
         diff_end_sha1 = current_sha1
-      elsif @url
-        brew_update
-      end
-
-      # Handle Jenkins pull request builder plugin.
-      if ENV["ghprbPullLink"]
-        @url = ENV["ghprbPullLink"]
-        @hash = nil
-      elsif travis_pr
-        @url = "https://github.com/#{ENV["TRAVIS_REPO_SLUG"]}/pull/#{ENV["TRAVIS_PULL_REQUEST"]}"
-        @hash = nil
       end
 
       if no_args?
@@ -317,9 +313,9 @@ module Homebrew
       elsif ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
         @short_url = @url.gsub("https://github.com/", "")
         @name = "#{@short_url}-#{diff_end_sha1}"
+        # TODO: in future this may need to use `brew pull` to push the right commit.
       elsif @url
         diff_start_sha1 = current_sha1
-        test "git", "checkout", diff_start_sha1
         test "brew", "pull", "--clean", @url
         diff_end_sha1 = current_sha1
         @short_url = @url.gsub("https://github.com/", "")
