@@ -11,6 +11,8 @@ end
 
 # Patches for Qt5 must be at the very least submitted to Qt's Gerrit codereview
 # rather than their bug-report Jira. The latter is rarely reviewed by Qt.
+# It's worth also worth adding Morten Johan Sørvig as a reviewer as he handles
+# a lot of the Mac patch review.
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
@@ -30,13 +32,20 @@ class Qt5 < Formula
     # when this formula is updated to 5.5.1
     patch :DATA
 
-    # Upstream commit to fix the fatal build error on OS X El Capitan.
-    # https://codereview.qt-project.org/#/c/121545/
-    # Should land in the 5.5.1 release.
     if MacOS.version >= :el_capitan
+      # Upstream commit to fix the fatal build error on OS X El Capitan.
+      # https://codereview.qt-project.org/#/c/121545/
+      # Should land in the 5.5.1 release.
       patch do
         url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
         sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
+      end
+
+      # Another OS X El Capitan build fix.
+      # https://codereview.qt-project.org/#/c/122729/
+      patch do
+        url "https://raw.githubusercontent.com/Homebrew/patches/2fcc1f8ec1df1c90785f4fa6632cebac68772fa9/qt5/el-capitan-2.diff"
+        sha256 "b8f04efd047eeed7cfd15b029ece20b5fe3c0960b74f7a5cb98bd36475463227"
       end
     end
   end
