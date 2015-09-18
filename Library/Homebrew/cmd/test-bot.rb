@@ -735,9 +735,7 @@ module Homebrew
     exec "brew", "update"
   end
 
-  def test_ci_upload
-    tap = resolve_test_tap
-
+  def test_ci_upload(tap)
     jenkins = ENV["JENKINS_HOME"]
     job = ENV["UPSTREAM_JOB_NAME"]
     id = ENV["UPSTREAM_BUILD_ID"]
@@ -836,24 +834,9 @@ module Homebrew
     safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
   end
 
-  def test_bot
-    tap = resolve_test_tap
-    # Tap repository if required, this is done before everything else
-    # because Formula parsing and/or git commit hash lookup depends on it.
-    if tap && !tap.installed?
-      safe_system "brew", "tap", tap.name
-    end
-
+  def sanitize_ARGV_and_ENV
     if Pathname.pwd == HOMEBREW_PREFIX && ARGV.include?("--cleanup")
       odie "cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output."
-    end
-
-    if ARGV.include? "--email"
-      File.open EMAIL_SUBJECT_FILE, "w" do |file|
-        # The file should be written at the end but in case we don't get to that
-        # point ensure that we have something valid.
-        file.write "#{MacOS.version}: internal error."
-      end
     end
 
     ENV["HOMEBREW_DEVELOPER"] = "1"
@@ -876,10 +859,29 @@ module Homebrew
       ENV["HOMEBREW_LOGS"] = "#{Dir.pwd}/logs"
     end
 
+    if ARGV.include? "--email"
+      File.open EMAIL_SUBJECT_FILE, "w" do |file|
+        # The file should be written at the end but in case we don't get to that
+        # point ensure that we have something valid.
+        file.write "#{MacOS.version}: internal error."
+      end
+    end
+  end
+
+  def test_bot
+    sanitize_ARGV_and_ENV
+
+    tap = resolve_test_tap
+    # Tap repository if required, this is done before everything else
+    # because Formula parsing and/or git commit hash lookup depends on it.
+    if tap && !tap.installed?
+      safe_system "brew", "tap", tap.name
+    end
+
     if ARGV.include? "--ci-reset-and-update"
       return test_bot_ci_reset_and_update
     elsif ARGV.include? "--ci-upload"
-      return test_ci_upload
+      return test_ci_upload(tap)
     end
 
     tests = []
