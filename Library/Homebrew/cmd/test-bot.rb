@@ -735,9 +735,114 @@ module Homebrew
     exec "brew", "update"
   end
 
+  def test_ci_upload
+    tap = resolve_test_tap
+
+    jenkins = ENV["JENKINS_HOME"]
+    job = ENV["UPSTREAM_JOB_NAME"]
+    id = ENV["UPSTREAM_BUILD_ID"]
+    raise "Missing Jenkins variables!" if !jenkins || !job || !id
+
+    bintray_user = ENV["BINTRAY_USER"]
+    bintray_key = ENV["BINTRAY_KEY"]
+    if !bintray_user || !bintray_key
+      raise "Missing BINTRAY_USER or BINTRAY_KEY variables!"
+    end
+
+    # Don't pass keys/cookies to subprocesses..
+    ENV["BINTRAY_KEY"] = nil
+    ENV["HUDSON_SERVER_COOKIE"] = nil
+    ENV["JENKINS_SERVER_COOKIE"] = nil
+    ENV["HUDSON_COOKIE"] = nil
+
+    ARGV << "--verbose"
+    ARGV << "--keep-old" if ENV["UPSTREAM_BOTTLE_KEEP_OLD"]
+
+    bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
+    return if bottles.empty?
+    FileUtils.cp bottles, Dir.pwd, :verbose => true
+
+    ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
+    ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
+    ENV["GIT_WORK_TREE"] = Homebrew.homebrew_git_repo(tap)
+    ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
+
+    pr = ENV["UPSTREAM_PULL_REQUEST"]
+    number = ENV["UPSTREAM_BUILD_NUMBER"]
+
+    quiet_system "git", "am", "--abort"
+    quiet_system "git", "rebase", "--abort"
+    safe_system "git", "checkout", "-f", "master"
+    safe_system "git", "reset", "--hard", "origin/master"
+    safe_system "brew", "update"
+
+    if pr
+      pull_pr = if tap
+        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
+      else
+        pr
+      end
+      safe_system "brew", "pull", "--clean", pull_pr
+    end
+
+    bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
+    bottle_args << "--tap=#{tap}" if tap
+    bottle_args << "--keep-old" if ARGV.include? "--keep-old"
+    safe_system "brew", "bottle", *bottle_args
+
+    remote_repo = tap ? "homebrew-#{tap.repo}" : "homebrew"
+    remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
+    tag = pr ? "pr-#{pr}" : "testing-#{number}"
+    safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
+
+    bintray_repo = Bintray.repository(tap.name)
+    bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
+    formula_packaged = {}
+
+    Dir.glob("*.bottle*.tar.gz") do |filename|
+      formula_name, canonical_formula_name = bottle_resolve_formula_names filename
+      formula = Formulary.factory canonical_formula_name
+      version = formula.pkg_version
+      bintray_package = Bintray.package formula_name
+
+      if system "curl", "-I", "--silent", "--fail", "--output", "/dev/null",
+                "#{BottleSpecification::DEFAULT_DOMAIN}/#{bintray_repo}/#{filename}"
+        raise <<-EOS.undent
+          #{filename} is already published. Please remove it manually from
+          https://bintray.com/homebrew/#{bintray_repo}/#{bintray_package}/view#files
+        EOS
+      end
+
+      unless formula_packaged[formula_name]
+        package_url = "#{bintray_repo_url}/#{bintray_package}"
+        unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
+          curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
+               "-H", "Content-Type: application/json",
+               "-d", "{\"name\":\"#{bintray_package}\"}", bintray_repo_url
+          puts
+        end
+        formula_packaged[formula_name] = true
+      end
+
+      content_url = "https://api.bintray.com/content/homebrew"
+      content_url += "/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
+      content_url += "?override=1"
+      curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
+           "-T", filename, content_url
+      puts
+    end
+
+    safe_system "git", "tag", "--force", tag
+    safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
+  end
+
   def test_bot
     tap = resolve_test_tap
-    repository = Homebrew.homebrew_git_repo tap
+    # Tap repository if required, this is done before everything else
+    # because Formula parsing and/or git commit hash lookup depends on it.
+    if tap && !tap.installed?
+      safe_system "brew", "tap", tap.name
+    end
 
     if Pathname.pwd == HOMEBREW_PREFIX && ARGV.include?("--cleanup")
       odie "cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output."
@@ -771,114 +876,10 @@ module Homebrew
       ENV["HOMEBREW_LOGS"] = "#{Dir.pwd}/logs"
     end
 
-    test_bot_ci_reset_and_update if ARGV.include? "--ci-reset-and-update"
-
-    # Tap repository if required, this is done before everything else
-    # because Formula parsing and/or git commit hash lookup depends on it.
-    if tap && !tap.installed?
-      safe_system "brew", "tap", tap.name
-    end
-
-    if ARGV.include? "--ci-upload"
-      jenkins = ENV["JENKINS_HOME"]
-      job = ENV["UPSTREAM_JOB_NAME"]
-      id = ENV["UPSTREAM_BUILD_ID"]
-      raise "Missing Jenkins variables!" if !jenkins || !job || !id
-
-      bintray_user = ENV["BINTRAY_USER"]
-      bintray_key = ENV["BINTRAY_KEY"]
-      if !bintray_user || !bintray_key
-        raise "Missing BINTRAY_USER or BINTRAY_KEY variables!"
-      end
-
-      # Don't pass keys/cookies to subprocesses..
-      ENV["BINTRAY_KEY"] = nil
-      ENV["HUDSON_SERVER_COOKIE"] = nil
-      ENV["JENKINS_SERVER_COOKIE"] = nil
-      ENV["HUDSON_COOKIE"] = nil
-
-      ARGV << "--verbose"
-      ARGV << "--keep-old" if ENV["UPSTREAM_BOTTLE_KEEP_OLD"]
-
-      bottles = Dir["#{jenkins}/jobs/#{job}/configurations/axis-version/*/builds/#{id}/archive/*.bottle*.*"]
-      return if bottles.empty?
-      FileUtils.cp bottles, Dir.pwd, :verbose => true
-
-      ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
-      ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
-      ENV["GIT_WORK_TREE"] = repository
-      ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
-
-      pr = ENV["UPSTREAM_PULL_REQUEST"]
-      number = ENV["UPSTREAM_BUILD_NUMBER"]
-
-      system "git am --abort 2>/dev/null"
-      system "git rebase --abort 2>/dev/null"
-      safe_system "git", "checkout", "-f", "master"
-      safe_system "git", "reset", "--hard", "origin/master"
-      safe_system "brew", "update"
-
-      if pr
-        pull_pr = if tap
-          "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
-        else
-          pr
-        end
-        safe_system "brew", "pull", "--clean", pull_pr
-      end
-
-      ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"]
-      ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"]
-      bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
-      bottle_args << "--tap=#{tap}" if tap
-      bottle_args << "--keep-old" if ARGV.include? "--keep-old"
-      safe_system "brew", "bottle", *bottle_args
-
-      remote_repo = tap ? "homebrew-#{tap.repo}" : "homebrew"
-      remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
-      tag = pr ? "pr-#{pr}" : "testing-#{number}"
-      safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
-
-      bintray_repo = Bintray.repository(tap.name)
-      bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
-      formula_packaged = {}
-
-      Dir.glob("*.bottle*.tar.gz") do |filename|
-        formula_name, canonical_formula_name = bottle_resolve_formula_names filename
-        formula = Formulary.factory canonical_formula_name
-        version = formula.pkg_version
-        bintray_package = Bintray.package formula_name
-
-        if system "curl", "-I", "--silent", "--fail", "--output", "/dev/null",
-                  "#{BottleSpecification::DEFAULT_DOMAIN}/#{bintray_repo}/#{filename}"
-          raise <<-EOS.undent
-            #{filename} is already published. Please remove it manually from
-            https://bintray.com/homebrew/#{bintray_repo}/#{bintray_package}/view#files
-          EOS
-        end
-
-        unless formula_packaged[formula_name]
-          package_url = "#{bintray_repo_url}/#{bintray_package}"
-          unless system "curl", "--silent", "--fail", "--output", "/dev/null", package_url
-            curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
-                 "-H", "Content-Type: application/json",
-                 "-d", "{\"name\":\"#{bintray_package}\"}", bintray_repo_url
-            puts
-          end
-          formula_packaged[formula_name] = true
-        end
-
-        content_url = "https://api.bintray.com/content/homebrew"
-        content_url += "/#{bintray_repo}/#{bintray_package}/#{version}/#{filename}"
-        content_url += "?override=1"
-        curl "--silent", "--fail", "-u#{bintray_user}:#{bintray_key}",
-             "-T", filename, content_url
-        puts
-      end
-
-      safe_system "git", "tag", "--force", tag
-      safe_system "git", "push", "--force", remote, "refs/tags/#{tag}"
-      return
+    if ARGV.include? "--ci-reset-and-update"
+      return test_bot_ci_reset_and_update
+    elsif ARGV.include? "--ci-upload"
+      return test_ci_upload
     end
 
     tests = []
