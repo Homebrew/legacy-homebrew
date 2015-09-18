@@ -18,6 +18,6 @@ class Grails < Formula
   end
 
   test do
-    assert_match /Application created/, shell_output("#{bin}/grails create-app inplace testApp")
+    assert_match /Application created at/, shell_output("#{bin}/grails create-app inplace testApp")
   end
 end
