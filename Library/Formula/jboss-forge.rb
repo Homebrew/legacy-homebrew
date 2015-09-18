@@ -14,7 +14,7 @@ class JbossForge < Formula
 
   def install
     rm_f Dir["bin/*.bat"]
-    libexec.install %w[addons bin img lib logging.properties]
+    libexec.install %w[addons bin lib logging.properties]
     bin.install_symlink libexec/"bin/forge"
   end
 
