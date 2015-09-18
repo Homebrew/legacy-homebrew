@@ -795,7 +795,7 @@ module Homebrew
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
-    bintray_repo = if tap
+    bintray_repo = if tap.nil?
       Bintray.repository(tap)
     else
       Bintray.repository(tap.name)
