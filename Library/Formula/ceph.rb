@@ -13,13 +13,10 @@ class Ceph < Formula
   depends_on "boost"
   depends_on "leveldb"
 
-  # Unfortunately it installs a Python script unconditionally, we depend on the
-  # Homebrew python so that when that script gets installed it gets installed
-  # into the Homebrew python site-packages rather than failing to install it in
-  # the system python site-packages.
-  depends_on "python"
-
   def install
+    # Fixup install location of ceph-detect-init
+    inreplace "src/ceph-detect-init/Makefile.am", "python setup.py install $$root $$options", "python setup.py install --prefix #{lib}/python2.7/site-packages --single-version-externally-managed --record=installed.txt"
+
     system "./autogen.sh"
 
     ENV.append "CPPFLAGS", "-DGTEST_USE_OWN_TR1_TUPLE=1"
