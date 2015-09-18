@@ -701,6 +701,20 @@ module Homebrew
     end
   end
 
+  def test_bot_ci_reset_and_update
+    Tap.each do |tap|
+      next unless tap.git?
+      cd tap.path do
+        quiet_system "git", "am", "--abort"
+        quiet_system "git", "rebase", "--abort"
+        safe_system "git", "checkout", "-f", "master"
+        safe_system "git", "reset", "--hard", "origin/master"
+      end
+    end
+
+    exec "brew", "update"
+  end
+
   def test_bot
     tap = ARGV.value("tap")
 
@@ -752,18 +766,7 @@ module Homebrew
       ENV["HOMEBREW_LOGS"] = "#{Dir.pwd}/logs"
     end
 
-    if ARGV.include? "--ci-reset-and-update"
-      Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/*") do |tap_dir|
-        cd tap_dir do
-          system "git am --abort 2>/dev/null"
-          system "git rebase --abort 2>/dev/null"
-          safe_system "git", "checkout", "-f", "master"
-          safe_system "git", "reset", "--hard", "origin/master"
-        end
-      end
-      safe_system "brew", "update"
-      return
-    end
+    test_bot_ci_reset_and_update if ARGV.include? "--ci-reset-and-update"
 
     repository = Homebrew.homebrew_git_repo tap
 
