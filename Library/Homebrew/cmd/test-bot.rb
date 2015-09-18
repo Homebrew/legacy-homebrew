@@ -967,7 +967,7 @@ module Homebrew
       end
     end
 
-    safe_system "rm -rf #{HOMEBREW_CACHE}/*" if ARGV.include? "--clean-cache"
+    HOMEBREW_CACHE.children.each(&:rmtree) if ARGV.include? "--clean-cache"
 
     Homebrew.failed = any_errors
   end
