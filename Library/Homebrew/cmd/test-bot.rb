@@ -100,8 +100,10 @@ module Homebrew
 
     def puts_command
       if ENV["TRAVIS"]
+        @@travis_step_num ||= 0
+        @travis_fold_id = @command.first(2).join(".") + ".#{@@travis_step_num += 1}"
         @travis_timer_id = rand(2**32).to_s(16)
-        puts "travis_fold:start:#{@command.join(".")}"
+        puts "travis_fold:start:#{@travis_fold_id}"
         puts "travis_time:start:#{@travis_timer_id}"
       end
       puts "#{Tty.blue}==>#{Tty.white} #{@command.join(" ")}#{Tty.reset}"
@@ -114,7 +116,7 @@ module Homebrew
         travis_duration = travis_end_time - travis_start_time
         puts "#{Tty.white}==>#{Tty.green} PASSED#{Tty.reset}" if passed?
         puts "travis_time:end:#{@travis_timer_id},start=#{travis_start_time},finish=#{travis_end_time},duration=#{travis_duration}"
-        puts "travis_fold:end:#{@command.join(".")}"
+        puts "travis_fold:end:#{@travis_fold_id}"
       end
       puts "#{Tty.white}==>#{Tty.red} FAILED#{Tty.reset}" if failed?
     end
