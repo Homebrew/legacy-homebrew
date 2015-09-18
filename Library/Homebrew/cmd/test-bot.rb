@@ -37,10 +37,30 @@ module Homebrew
   EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
   BYTES_IN_1_MEGABYTE = 1024*1024
 
+  def resolve_test_tap
+    tap = ARGV.value("tap")
+    return Tap.new(*tap_args(tap)) if tap
+
+    if ENV["UPSTREAM_BOT_PARAMS"]
+      bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
+      bot_argv.extend HomebrewArgvExtension
+      tap = bot_argv.value("tap")
+      return Tap.new(*tap_args(tap)) if tap
+    end
+
+    if git_url = ENV["UPSTREAM_GIT_URL"] || ENV["GIT_URL"]
+      # Also can get tap from Jenkins GIT_URL.
+      url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
+      HOMEBREW_TAP_ARGS_REGEX =~ url_path
+      return Tap.new($1, $3) if $1 && $3 && $3 != "homebrew"
+    end
+
+    # return nil means we are testing core repo.
+  end
+
   def homebrew_git_repo(tap = nil)
     if tap
-      user, repo = tap.split "/"
-      HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
+      tap.path
     else
       HOMEBREW_REPOSITORY
     end
@@ -586,7 +606,7 @@ module Homebrew
       return if @skip_homebrew
       test "brew", "tests"
       if @tap
-        test "brew", "readall", @tap
+        test "brew", "readall", @tap.name
       else
         test "brew", "tests", "--no-compat"
         readall_args = ["--aliases"]
@@ -681,11 +701,11 @@ module Homebrew
     end
 
     def head_only_tap?(formula)
-      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "homebrew/homebrew-head-only"
+      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap.name == "homebrew/head-only"
     end
 
     def devel_only_tap?(formula)
-      formula.devel && formula.stable.nil? && formula.tap == "homebrew/homebrew-devel-only"
+      formula.devel && formula.stable.nil? && formula.tap.name == "homebrew/devel-only"
     end
 
     def run
@@ -716,23 +736,8 @@ module Homebrew
   end
 
   def test_bot
-    tap = ARGV.value("tap")
-
-    if !tap && ENV["UPSTREAM_BOT_PARAMS"]
-      bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
-      bot_argv.extend HomebrewArgvExtension
-      tap ||= bot_argv.value("tap")
-    end
-
-    tap.gsub!(/homebrew\/homebrew-/i, "Homebrew/") if tap
-
-    git_url = ENV["UPSTREAM_GIT_URL"] || ENV["GIT_URL"]
-    if !tap && git_url
-      # Also can get tap from Jenkins GIT_URL.
-      url_path = git_url.gsub(%r{^https?://github\.com/}, "").gsub(%r{/$}, "")
-      HOMEBREW_TAP_ARGS_REGEX =~ url_path
-      tap = "#{$1}/#{$3}" if $1 && $3
-    end
+    tap = resolve_test_tap
+    repository = Homebrew.homebrew_git_repo tap
 
     if Pathname.pwd == HOMEBREW_PREFIX && ARGV.include?("--cleanup")
       odie "cannot use --cleanup from HOMEBREW_PREFIX as it will delete all output."
@@ -768,12 +773,10 @@ module Homebrew
 
     test_bot_ci_reset_and_update if ARGV.include? "--ci-reset-and-update"
 
-    repository = Homebrew.homebrew_git_repo tap
-
     # Tap repository if required, this is done before everything else
     # because Formula parsing and/or git commit hash lookup depends on it.
-    if tap && !repository.directory?
-      safe_system "brew", "tap", tap
+    if tap && !tap.installed?
+      safe_system "brew", "tap", tap.name
     end
 
     if ARGV.include? "--ci-upload"
@@ -817,8 +820,7 @@ module Homebrew
 
       if pr
         pull_pr = if tap
-          user, repo = tap.split "/"
-          "https://github.com/#{user}/homebrew-#{repo}/pull/#{pr}"
+          "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
         else
           pr
         end
@@ -832,13 +834,12 @@ module Homebrew
       bottle_args << "--keep-old" if ARGV.include? "--keep-old"
       safe_system "brew", "bottle", *bottle_args
 
-      remote_repo = tap ? tap.tr("/", "-") : "homebrew"
-
+      remote_repo = tap ? "homebrew-#{tap.repo}" : "homebrew"
       remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
       tag = pr ? "pr-#{pr}" : "testing-#{number}"
       safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
-      bintray_repo = Bintray.repository(tap)
+      bintray_repo = Bintray.repository(tap.name)
       bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
       formula_packaged = {}
 
