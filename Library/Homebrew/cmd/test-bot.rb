@@ -95,7 +95,7 @@ module Homebrew
         puts "travis_fold:end:#{@command.join(".")}"
         puts "travis_time:end:#{@travis_timer_id},start=#{travis_start_time},finish=#{travis_end_time},duration=#{travis_duration}"
       end
-      if @status == :failed || true
+      if @status == :failed
         puts "#{Tty.red}==> FAILED:#{Tty.white} #{@command.join(" ")}#{Tty.reset}"
       end
     end
