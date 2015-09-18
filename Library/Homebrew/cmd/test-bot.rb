@@ -66,18 +66,6 @@ module Homebrew
       root ? root + file : file
     end
 
-    def status_colour
-      case @status
-      when :passed  then "green"
-      when :running then "orange"
-      when :failed  then "red"
-      end
-    end
-
-    def status_upcase
-      @status.to_s.upcase
-    end
-
     def command_short
       (@command - %w[brew --force --retry --verbose --build-bottle --rb]).join(" ")
     end
@@ -91,33 +79,25 @@ module Homebrew
     end
 
     def puts_command
-      cmd = @command.join(" ")
-      cmd_line = "#{Tty.blue}==>#{Tty.white} #{cmd}#{Tty.reset}"
       if ENV["TRAVIS"]
         @travis_timer_id = rand(2**32).to_s(16)
         puts "travis_fold:start:#{@command.join(".")}"
         puts "travis_time:start:#{@travis_timer_id}"
-        puts cmd_line
-        return
       end
-      print cmd_line
-      tabs = (80 - "PASSED".length + 1 - cmd.length) / 8
-      tabs.times { print "\t" }
-      $stdout.flush
+      puts "#{Tty.blue}==>#{Tty.white} #{@command.join(" ")}#{Tty.reset}"
     end
 
     def puts_result
       if ENV["TRAVIS"]
-        cmd = @command.join(" ")
-        puts "#{Tty.send status_colour}==> #{cmd}: #{status_upcase}#{Tty.reset}"
         travis_start_time = @start_time.to_i*1000000000
         travis_end_time = @end_time.to_i*1000000000
         travis_duration = travis_end_time - travis_start_time
         puts "travis_fold:end:#{@command.join(".")}"
         puts "travis_time:end:#{@travis_timer_id},start=#{travis_start_time},finish=#{travis_end_time},duration=#{travis_duration}"
-        return
       end
-      puts " #{Tty.send status_colour}#{status_upcase}#{Tty.reset}"
+      if @status == :failed || true
+        puts "#{Tty.red}==> FAILED:#{Tty.white} #{@command.join(" ")}#{Tty.reset}"
+      end
     end
 
     def has_output?
@@ -972,19 +952,15 @@ module Homebrew
       end
     end
 
-    failed_steps = []
-    tests.each do |test|
-      test.steps.each do |step|
-        next if step.passed?
-        failed_steps << step.command_short
-      end
-    end
-
-    if ENV["TRAVIS"] && !failed_steps.empty?
-      puts "#{Tty.red}==> #{cmd}: FAILED: #{MacOS.version}: #{failed_steps.join ", "}#{Tty.reset}"
-    end
-
     if ARGV.include? "--email"
+      failed_steps = []
+      tests.each do |test|
+        test.steps.each do |step|
+          next if step.passed?
+          failed_steps << step.command_short
+        end
+      end
+
       if failed_steps.empty?
         email_subject = ""
       else
