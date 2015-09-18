@@ -576,7 +576,7 @@ class Checks
   # Xcode 7 lacking the 10.10 SDK is forcing sysroot to be declared
   # nil on 10.10 & breaking compiles. CLT is workaround.
   def check_sdk_path_not_nil_yosemite
-    if MacOS.version == :yosemite && MacOS::Xcode.installed? && MacOS.sdk_path.nil?
+    if MacOS.version == :yosemite && !MacOS::CLT.installed? && MacOS::Xcode.installed? && MacOS.sdk_path.nil?
       <<-EOS.undent
       Xcode 7 lacks the 10.10 SDK which can cause some builds to fail.
       We recommend installing the Command Line Tools with:
