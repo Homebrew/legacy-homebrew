@@ -106,12 +106,12 @@ class Global < Formula
       # ctags only yields definitions
       assert_match /test\.c/, shell_output("#{bin}/global -d cfunc   # passes")
       assert_match /test\.c/, shell_output("#{bin}/global -d c2func  # passes")
-      assert_not_match /test\.c/, shell_output("#{bin}/global -r c2func  # correctly fails")
-      assert_not_match /test\.c/, shell_output("#{bin}/global -s cvar    # correctly fails")
+      assert_no_match /test\.c/, shell_output("#{bin}/global -r c2func  # correctly fails")
+      assert_no_match /test\.c/, shell_output("#{bin}/global -s cvar    # correctly fails")
       assert_match /test\.py/, shell_output("#{bin}/global -d pyfunc  # passes")
       assert_match /test\.py/, shell_output("#{bin}/global -d py2func # passes")
-      assert_not_match /test\.py/, shell_output("#{bin}/global -r py2func # correctly fails")
-      assert_not_match /test\.py/, shell_output("#{bin}/global -s pyvar   # correctly fails")
+      assert_no_match /test\.py/, shell_output("#{bin}/global -r py2func # correctly fails")
+      assert_no_match /test\.py/, shell_output("#{bin}/global -s pyvar   # correctly fails")
     end
     if build.with? "sqlite3"
       assert shell_output("#{bin}/gtags --sqlite3 --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=default .")
