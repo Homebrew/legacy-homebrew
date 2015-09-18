@@ -7,12 +7,10 @@ class Cmake < Formula
   head "http://cmake.org/cmake.git"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "008f210db8e6bbdc359b19a9f5e48bc0b64454ce2f1ebf5afcb997f8b11f9464" => :el_capitan
-    sha256 "fe55506ba09b02d36f0af20fa769e515431a722985151f38201f578ecd45dcd4" => :yosemite
-    sha256 "9a5060be50cac455398811938187148ee86b07fde2de979ff316ce470519aa86" => :mavericks
-    sha256 "56c8b25e50060f6f221038a697d6ad23bdd1824c57d62531569702919cbba8de" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "371e1136b03df5461f7458fea86abfcb0542fdaa312c330b7a7e9ea9ee53faa4" => :el_capitan
+    sha256 "fc8cfc07557b7d0d109f8a3548a21f022fb32353b53325696f3d3b2c470651d1" => :yosemite
+    sha256 "cb0c73778120fcd899df10b1a06d9fbe1a1778645f252ac498bce1d0bd3ec63c" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"
