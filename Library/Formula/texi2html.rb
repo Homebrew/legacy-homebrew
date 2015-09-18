@@ -1,8 +1,8 @@
 class Texi2html < Formula
   desc "Convert TeXinfo files to HTML"
   homepage "http://www.nongnu.org/texi2html/"
-  url "http://download.savannah.gnu.org/releases/texi2html/texi2html-1.82.tar.gz"
-  sha256 "6c7c94a2d88ffe218a33e91118c2b039336cbe3f2f8b4e3a78e4fd1502072936"
+  url "http://download.savannah.gnu.org/releases/texi2html/texi2html-5.0.tar.gz"
+  sha256 "e60edd2a9b8399ca615c6e81e06fa61946ba2f2406c76cd63eb829c91d3a3d7d"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,9 +14,12 @@ class Texi2html < Formula
 
   keg_only :provided_pre_mountain_lion
 
+  depends_on "gettext"
+
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
                           "--mandir=#{man}", "--infodir=#{info}"
+    chmod 0755, "./install-sh"
     system "make", "install"
   end
 
