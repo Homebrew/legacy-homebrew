@@ -6,6 +6,7 @@ class Python3 < Formula
 
   bottle do
     revision 1
+    sha256 "fc53a22fa6db221ce4031a593bc7a06eb40e95537b4ffb32fef956c53dfac162" => :el_capitan
     sha256 "7158bbb75427978f2cdc3d7ae1c05893f580a0273f696a8cf9a570b83d1be645" => :yosemite
     sha256 "4e226359033cd31e81fc58d37e2a6ba9f9aca7f4024262688c944d9d57819564" => :mavericks
     sha256 "666dab10ddde21e0d9a845282b182f54f55047ba8ed53b5cb7e6eb33c6fe7b1c" => :mountain_lion
