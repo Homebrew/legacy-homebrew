@@ -15,11 +15,9 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  revision 1
 
   stable do
-    # 5.5.0 has a compile-breaking pkg-config error when projects use that to find libs.
-    # https://bugreports.qt.io/browse/QTBUG-47162
-    # This is known to impact Wireshark & Poppler optional Qt5 usage in the core.
     url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
     mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
     sha256 "7ea2a16ecb8088e67db86b0835b887d5316121aeef9565d5d19be3d539a2c2af"
@@ -59,6 +57,14 @@ class Qt5 < Formula
     patch do
       url "https://gist.githubusercontent.com/swallat/6b7d10fd929a0087fea4/raw/9b201a2848f8b8e16067855f30588a7b6dc607ec/qt5.5-qnsview-tooltip-cocoa.patch"
       sha256 "5fa4511ee0c91491358d569f884dad9e4088eafa329e7dbe2b38a62afeef899d"
+    end
+
+    # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
+    # https://codereview.qt-project.org/#/c/126584/
+    # Should land in the 5.5.2 and/or 5.6 release.
+    patch do
+      url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
+      sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
     end
   end
 
