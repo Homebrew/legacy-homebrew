@@ -16,7 +16,6 @@ class Trend < Formula
 
     Dir.chdir '..'
     man1.install 'trend.1'
-  
     doc.install 'AUTHORS', 'NEWS', 'THANKS', 'COPYING', 'README', 'TODO'
 
   end
