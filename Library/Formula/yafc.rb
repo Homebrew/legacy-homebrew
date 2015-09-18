@@ -20,6 +20,12 @@ class Yafc < Formula
     sha256 "55b361e7ff87f85776a0cd4560b3c39a7f7db132a232c71265e567d734f11f25"
   end
 
+  # Upstream commit to fix the parsing of mode when using chmod on ssh
+  patch do
+    url "https://github.com/sebastinas/yafc/commit/a16c1c985f3d4e2b676231f4773358927041d8e9.diff"
+    sha256 "ca6c6f81e71dec4090bd29395599075d24374a818bc822910bb14e0f144a8cdd"
+  end
+
   def install
     readline = Formula["readline"].opt_prefix
 
