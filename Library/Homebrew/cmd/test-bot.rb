@@ -92,12 +92,11 @@ module Homebrew
         travis_start_time = @start_time.to_i*1000000000
         travis_end_time = @end_time.to_i*1000000000
         travis_duration = travis_end_time - travis_start_time
-        puts "travis_fold:end:#{@command.join(".")}"
+        puts "#{Tty.white}==>#{Tty.green} PASSED#{Tty.reset}" if passed?
         puts "travis_time:end:#{@travis_timer_id},start=#{travis_start_time},finish=#{travis_end_time},duration=#{travis_duration}"
+        puts "travis_fold:end:#{@command.join(".")}"
       end
-      if @status == :failed
-        puts "#{Tty.red}==> FAILED:#{Tty.white} #{@command.join(" ")}#{Tty.reset}"
-      end
+      puts "#{Tty.white}==>#{Tty.red} FAILED#{Tty.reset}" if failed?
     end
 
     def has_output?
