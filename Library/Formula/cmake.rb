@@ -1,9 +1,9 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.3/cmake-3.3.1.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/c/cmake/cmake_3.3.1.orig.tar.gz"
-  sha256 "cd65022c6a0707f1c7112f99e9c981677fdd5518f7ddfa0f778d4cee7113e3d6"
+  url "http://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/cmake/cmake_3.3.2.orig.tar.gz"
+  sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
   head "http://cmake.org/cmake.git"
 
   bottle do
