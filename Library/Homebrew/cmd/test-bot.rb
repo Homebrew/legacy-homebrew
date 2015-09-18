@@ -703,11 +703,11 @@ module Homebrew
     end
 
     def head_only_tap?(formula)
-      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap.name == "homebrew/head-only"
+      formula.head && formula.devel.nil? && formula.stable.nil? && formula.tap == "homebrew/homebrew-head-only"
     end
 
     def devel_only_tap?(formula)
-      formula.devel && formula.stable.nil? && formula.tap.name == "homebrew/devel-only"
+      formula.devel && formula.stable.nil? && formula.tap == "homebrew/homebrew-devel-only"
     end
 
     def run
