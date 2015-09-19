@@ -6,9 +6,9 @@ class SharedMimeInfo < Formula
 
   bottle do
     cellar :any
-    sha256 "d9319f2574b82d7d17b413233307bfbd32691604194244d8ff529aae79db52c6" => :yosemite
-    sha256 "3931c3aa4e637cfb64617f8b0a9b7ceda2520a96c08fdb45235f138268d81064" => :mavericks
-    sha256 "0d66e477d10e982d33ad14c0824419738c5e465ae767f0fcda4e8f11dd82097b" => :mountain_lion
+    sha256 "468c2855ef005f17e153c002241cc6aad2f976e0d1f1be8eb7cbe469f834da3b" => :el_capitan
+    sha256 "c2de862bae867d39c6def1f6f1bc078ff73d0ac03b78d321ad3b715de8e20ae0" => :yosemite
+    sha256 "48f55fca160358a009282ee9e5c86e74f55bd74f8e31072f0ca5339804f6035c" => :mavericks
   end
 
   head do
