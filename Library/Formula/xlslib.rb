@@ -1,10 +1,8 @@
-require "formula"
-
 class Xlslib < Formula
   desc "C++/C library to construct Excel .xls files in code"
   homepage "http://sourceforge.net/projects/xlslib"
   url "https://downloads.sourceforge.net/project/xlslib/xlslib-old/xlslib-package-2.4.0.zip"
-  sha1 "73447c5c632c0e92c1852bd2a2cada7dd25f5492"
+  sha256 "acc92e31294f91d8ac8adbbfc84f7a8917f7ad649a6c97b71c9f95c25887f840"
 
   bottle do
     cellar :any
@@ -18,6 +16,6 @@ class Xlslib < Formula
     cd "xlslib"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
