@@ -33,6 +33,8 @@ class Rkflashtool < Formula
   test do
     (testpath/"input.file").write "ABCD"
     system bin/"rkcrc", "input.file", "output.file"
-    assert_equal "ABCD\264\366\a\t", `cat output.file`
+    result = shell_output("cat output.file")
+    result.force_encoding("UTF-8") if result.respond_to?(:force_encoding)
+    assert_equal "ABCD\264\366\a\t", result
   end
 end
