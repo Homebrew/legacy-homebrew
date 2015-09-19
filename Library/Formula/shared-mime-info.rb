@@ -39,6 +39,7 @@ class SharedMimeInfo < Formula
   end
 
   test do
-    system bin/"update-mime-database", share/"mime"
+    cp_r share/"mime", testpath
+    system bin/"update-mime-database", testpath/"mime"
   end
 end
