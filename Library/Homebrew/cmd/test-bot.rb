@@ -18,6 +18,7 @@
 # --dry-run:       Just print commands, don't run them.
 # --fail-fast:     Immediately exit on a failing step.
 # --verbose:       Print out all logs in realtime
+# --no-verbose-install: Don't run `brew install` with `--verbose`.
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
@@ -531,7 +532,8 @@ module Homebrew
       formula_fetch_options << canonical_formula_name
       test "brew", "fetch", "--retry", *formula_fetch_options
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
-      install_args = %w[--verbose]
+      install_args = []
+      install_args << "--verbose" unless ARGV.include? "--no-verbose-install"
       install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
