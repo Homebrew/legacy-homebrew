@@ -6,8 +6,9 @@ class Natalie < Formula
   head "https://github.com/krzyzanowskim/Natalie.git"
 
   bottle do
-    cellar :any
-    sha256 "4524f95293b7d838886370600f7350cfec1796e06bac2e67c3199f6fc73f9bb2" => :yosemite
+    cellar :any_skip_relocation
+    sha256 "865e3241891fc71e25dd294196c3fb8a3c7a848c22009e5ba0b013197620c551" => :el_capitan
+    sha256 "ba8b1886d28a9ae547b5ba1251f6e9bfc11f9d08b328e26187e49c3339ed28b7" => :yosemite
   end
 
   depends_on :xcode => "7.0"
