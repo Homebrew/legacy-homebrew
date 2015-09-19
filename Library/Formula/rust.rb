@@ -31,8 +31,11 @@ class Rust < Formula
     sha256 "04f68ef26b4ca636b35be1d17ad2b641727bbc10cec52582a9e3a64b5784dbeb" => :mavericks
   end
 
+  option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
+
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
+  depends_on "llvm" => :optional
   depends_on "openssl"
 
   # According to the official readme, GCC 4.7+ is required
@@ -46,6 +49,7 @@ class Rust < Formula
     args = ["--prefix=#{prefix}"]
     args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
+    args << "--llvm-root=#{Formula["llvm"].opt_prefix}" if build.with? "llvm"
     if build.head?
       args << "--release-channel=nightly"
     else
