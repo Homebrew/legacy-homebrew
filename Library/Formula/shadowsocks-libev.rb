@@ -1,8 +1,8 @@
 class ShadowsocksLibev < Formula
   desc "Libev port of shadowsocks"
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
-  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.3.2.tar.gz"
-  sha256 "789b42e45efce85bdc983574282cab0092f32443630d7fedda667cfbf85e5b40"
+  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.3.3.tar.gz"
+  sha256 "c00e18a19f20b837ea7d74c98720536044338daf652db1cdad3eae5d7a2718e5"
   head "https://github.com/shadowsocks/shadowsocks-libev.git"
 
   bottle do
@@ -38,6 +38,31 @@ class ShadowsocksLibev < Formula
     inreplace Dir["man/*"], "/etc/shadowsocks-libev/config.json", "#{etc}/shadowsocks-libev.json"
     man8.install Dir["man/*.8"]
     man1.install Dir["man/*.1"]
+  end
+
+  test do
+    (testpath/"shadowsocks-libev.json").write <<-EOS.undent
+      {
+          "server":"127.0.0.1",
+          "server_port":9998,
+          "local":"127.0.0.1",
+          "local_port":9999,
+          "password":"test",
+          "timeout":600,
+          "method":"table"
+      }
+    EOS
+    server = fork { exec bin/"ss-server", "-c", testpath/"shadowsocks-libev.json" }
+    client = fork { exec bin/"ss-local", "-c", testpath/"shadowsocks-libev.json" }
+    sleep 3
+    begin
+      system "curl", "--socks5", "127.0.0.1:9999", "github.com"
+    ensure
+      Process.kill 9, server
+      Process.wait server
+      Process.kill 9, client
+      Process.wait client
+    end
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/shadowsocks-libev/bin/ss-local -c #{HOMEBREW_PREFIX}/etc/shadowsocks-libev.json"
