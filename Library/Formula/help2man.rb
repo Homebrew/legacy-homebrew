@@ -1,9 +1,9 @@
 class Help2man < Formula
   desc "Automatically generate simple man pages"
   homepage "https://www.gnu.org/software/help2man/"
-  url "http://ftpmirror.gnu.org/help2man/help2man-1.47.1.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/help2man/help2man-1.47.1.tar.xz"
-  sha256 "c59b26f60cb06e45b00e729dea721e7a17220e2c17d800eb428271a750382b06"
+  url "http://ftpmirror.gnu.org/help2man/help2man-1.47.2.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/help2man/help2man-1.47.2.tar.xz"
+  sha256 "c4c5606773e51039a06b7328ed4934913df142747a9a185d2a6ab9300d7f3f7c"
 
   bottle do
     cellar :any
