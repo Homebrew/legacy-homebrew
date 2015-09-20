@@ -6,9 +6,9 @@ class Graphite2 < Formula
 
   bottle do
     cellar :any
-    sha256 "cd0782aad0cd67f788ef25af812a06c3c1fac288b73a12b70115adcdcdce56c3" => :yosemite
-    sha256 "33fea1eb9f986f0b0eb4e3d42a410ab1e3bf34dcd5d548729ec0f9b3379515fb" => :mavericks
-    sha256 "1403e215b4edb6c1e05711e3aac14d44cf9fa3f7fbf04652bd336f47a69a9e84" => :mountain_lion
+    sha256 "aa87e2ced68634547500aa30334e3bd8168e13ec296f15852e456309c5998e47" => :el_capitan
+    sha256 "878420245b08827cceec2cb59c4763237ce60d1111d2419d142270cfd6402207" => :yosemite
+    sha256 "f1e3f1b646503b549dd04faa92a151134b37c484aa174395ebf01074b68238b2" => :mavericks
   end
 
   depends_on "cmake" => :build
