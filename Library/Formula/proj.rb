@@ -1,17 +1,17 @@
 class Proj < Formula
   desc "PROJ.4, a Cartographic Projections Library"
   homepage "http://trac.osgeo.org/proj/"
-  url "http://download.osgeo.org/proj/proj-4.9.1.tar.gz"
-  sha256 "fca0388f3f8bc5a1a803d2f6ff30017532367992b30cf144f2d39be88f36c319"
+  url "http://download.osgeo.org/proj/proj-4.9.2.tar.gz"
+  sha256 "60bf9ad1ed1c18158e652dfff97865ba6fb2b67f1511bc8dceae4b3c7e657796"
   head "http://svn.osgeo.org/metacrs/proj/trunk/proj"
-
-  option "with-vdatum", "Install vertical datum files (~380 MB)"
 
   bottle do
     sha256 "6485ac1d1b0413371b244d38553b527a81b001aa92b0ef547ee5b9f7c9672dc8" => :yosemite
     sha256 "17ccc289bc788e8823a1fa3285a4ae926feafb9a4cd1a534e56c19b343c6c2fd" => :mavericks
     sha256 "6e7a4cd42928b468bf304eb656d94fcf57a9a4647e5a28d7d9a0eb215891b128" => :mountain_lion
   end
+
+  option "with-vdatum", "Install vertical datum files (~380 MB)"
 
   # The datum grid files are required to support datum shifting
   resource "datumgrid" do
