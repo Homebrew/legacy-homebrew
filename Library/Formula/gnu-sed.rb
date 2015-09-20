@@ -8,8 +8,9 @@ class GnuSed < Formula
   conflicts_with "ssed", :because => "both install share/info/sed.info"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 2
+    sha256 "e7123ca64185d9b6e01b122a0f5a10154fd2405b5b34d765360db55beb9bafca" => :el_capitan
     sha256 "a45ed585278029792f71d8882763ee0e1605e3df7bdb06dd02c8f815e2f58c68" => :yosemite
     sha256 "b074edd2ec60b244284cd1545d83fdf48151ee5b9f8e5f0dc6a509b822d0bb37" => :mavericks
     sha256 "bc210361d787b929011afbe96bd5a78c77e35a14d953942cd278d04c640183ae" => :mountain_lion

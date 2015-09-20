@@ -18,6 +18,8 @@ class ArgpStandalone < Formula
     sha256 "5656273f622fdb7ca7cf1f98c0c9529bed461d23718bc2a6a85986e4f8ed1cb8"
   end
 
+  conflicts_with "gpgme", :because => "gpgme picks it up during compile & fails to build"
+
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"

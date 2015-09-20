@@ -7,6 +7,7 @@ class Fontforge < Formula
 
   bottle do
     revision 1
+    sha256 "2a1087da08797e0c61290551b71bbb1abe3d407af53a85700c38897fd9d7951f" => :el_capitan
     sha256 "f8228c12d9bcda768334b32b51251edd9c970e6a6f213896b7d74e8dfa96231d" => :yosemite
     sha256 "b303e97388537aa75f15e4f9f16d84470b4f6fa9aaa2b2cb151a6b288903886c" => :mavericks
     sha256 "065e2c82a000ed3d07f6ac8edc41b530b99f81b10c42442b3887daa5007223cb" => :mountain_lion

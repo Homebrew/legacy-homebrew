@@ -7,9 +7,9 @@ class ShadowsocksLibev < Formula
 
   bottle do
     cellar :any
-    sha256 "3e3cd76b4a440d90a5f2c74fa9a8cb6fb7b0b9a90fddb1ba3bc551ee8caaba23" => :yosemite
-    sha256 "ecd5f0ba20f6d3f97e614a8591aff8085778e5f53c04681864a7bed03d44b378" => :mavericks
-    sha256 "036a8a9c0333a6b0b0890c2e72c91e738a665d3b9faf2c2650f74f29c6b5ceca" => :mountain_lion
+    sha256 "3adefa985247603c32b2deb7b23055717aa467c7d123cadeda940876d9c8eab8" => :yosemite
+    sha256 "e4471fb4bafbd8db32b4a2f344e1d1f6ae1b27a17dc4261f72f142b881ae5942" => :mavericks
+    sha256 "787cd61add6520f45242cef060903bc3a53b25279181b753da32592f79e27688" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -20,8 +20,7 @@ class ShadowsocksLibev < Formula
     system "./configure", *args
     system "make"
 
-    bin.install "src/ss-local"
-    bin.install "src/ss-tunnel"
+    bin.install "src/ss-local", "src/ss-tunnel", "src/ss-server", "src/ss-manager"
 
     (buildpath/"shadowsocks-libev.json").write <<-EOS.undent
       {
@@ -35,8 +34,10 @@ class ShadowsocksLibev < Formula
     EOS
     etc.install "shadowsocks-libev.json"
 
-    inreplace "shadowsocks-libev.8", "/etc/shadowsocks-libev/config.json", "#{etc}/shadowsocks-libev.json"
-    man8.install "shadowsocks-libev.8"
+    rm "man/ss-redir.1"
+    inreplace Dir["man/*"], "/etc/shadowsocks-libev/config.json", "#{etc}/shadowsocks-libev.json"
+    man8.install Dir["man/*.8"]
+    man1.install Dir["man/*.1"]
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/shadowsocks-libev/bin/ss-local -c #{HOMEBREW_PREFIX}/etc/shadowsocks-libev.json"

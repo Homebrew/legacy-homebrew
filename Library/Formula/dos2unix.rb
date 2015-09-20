@@ -6,7 +6,8 @@ class Dos2unix < Formula
   sha256 "8175f7552a72edaaa8918fdee68ce2cbc982dc25452f33d4dc611d769f4944d1"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "e58a7e32a7b4df3b4eca6602c30d68ed453d320f0c7421db74f11fc9570a1f5d" => :el_capitan
     sha256 "e96ff5e45c973dab929268c07b40fc8d88b40cfa78cb814c0474c2640d4f9c98" => :yosemite
     sha256 "43fea7b719cf2e08d7d833bcd6ec159747db1a4c844286d6a8198a1ac2ea30f1" => :mavericks
     sha256 "d7b8e6c2296510ccf757cf17c44238bc5fac7b5b55505caf082d547069906f0b" => :mountain_lion

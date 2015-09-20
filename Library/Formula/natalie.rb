@@ -1,16 +1,17 @@
 class Natalie < Formula
   desc "Storyboard Code Generator (for Swift)"
   homepage "https://github.com/krzyzanowskim/Natalie"
-  url "https://github.com/krzyzanowskim/Natalie/archive/0.2.tar.gz"
-  sha256 "a4dd246db70e8818ecde34df68a60d8bf15c51465b365f466e606f74e41714e9"
+  url "https://github.com/krzyzanowskim/Natalie/archive/0.3.tar.gz"
+  sha256 "8fa28a53e963fb9bcee73b040fb6c6fbbe20d20472c8f42e0c3795603a2295f4"
   head "https://github.com/krzyzanowskim/Natalie.git"
 
   bottle do
-    cellar :any
-    sha256 "4524f95293b7d838886370600f7350cfec1796e06bac2e67c3199f6fc73f9bb2" => :yosemite
+    cellar :any_skip_relocation
+    sha256 "865e3241891fc71e25dd294196c3fb8a3c7a848c22009e5ba0b013197620c551" => :el_capitan
+    sha256 "ba8b1886d28a9ae547b5ba1251f6e9bfc11f9d08b328e26187e49c3339ed28b7" => :yosemite
   end
 
-  depends_on :xcode => "6.3"
+  depends_on :xcode => "7.0"
 
   def install
     mv "natalie.swift", "natalie-script.swift"

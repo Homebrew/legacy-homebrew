@@ -3,16 +3,16 @@ require "language/go"
 class Scw < Formula
   desc "Manage BareMetal Servers from Command Line (as easily as with Docker)"
   homepage "https://github.com/scaleway/scaleway-cli"
-  url "https://github.com/scaleway/scaleway-cli/archive/v1.4.0.tar.gz"
-  sha256 "ab7ee002be9557eb2b8075e3b0df340f5e379545152049f2512f1dc2b47b7b8a"
+  url "https://github.com/scaleway/scaleway-cli/archive/v1.5.0.tar.gz"
+  sha256 "00aa2de781f70614b2ac82bbeb173784c77d3f507d47fa1d0a0246073e56bd62"
 
   head "https://github.com/scaleway/scaleway-cli.git"
 
   bottle do
-    cellar :any
-    sha256 "6685d169c38c3e629edec78b900a53e24a3d0096ff90d38c7d57ac42026de4ef" => :yosemite
-    sha256 "2c3c748e2c755820bb710caa7461b53483d4f17314e17997fb33e239e3d20014" => :mavericks
-    sha256 "3be8334bace6d1bb8a7ddc69e30f87bbff362264b81a40f3f8f487310c1f9186" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9b624f888883b83a2a35bcfbe3508750263ca5b7ad9990c02b86461c9a5c62ca" => :el_capitan
+    sha256 "392070a27d07cae3415bc88a844ae2dd3440d2a43e2b300eb869d6ecab1a7528" => :yosemite
+    sha256 "0248f1f11ad819b2eeee27c269c27fede09f23ed7f46b1683453e5ef6589fc54" => :mavericks
   end
 
   depends_on "go" => :build

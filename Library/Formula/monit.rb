@@ -7,9 +7,10 @@ class Monit < Formula
 
   bottle do
     cellar :any
-    sha256 "599c29599d179cd53f4f0983d1fe535aeee91b199b3d0acfd38089ae0fde94b9" => :yosemite
-    sha256 "c48854b626a95aa3015877bf3aba9e77c7beb7cf0d86d5bb74894564c6c1d360" => :mavericks
-    sha256 "ed2484446e8bbb5c0c5f8ce9c9559e7f181e4e7db97a19200ebcc72417b2cfe2" => :mountain_lion
+    revision 1
+    sha256 "5422a56375ac88034709bd09932faa9823753ec3faaa55497db48644ea6bde2f" => :yosemite
+    sha256 "a4640c1d7b7471895e3523fe407d2f7e93364761172300f71dfcb34264de73ae" => :mavericks
+    sha256 "b46c1de20298b7fbb000cefe985dc925b63e8e013459a19a3314afb57124a873" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -17,7 +18,8 @@ class Monit < Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}/monit",
-                          "--sysconfdir=#{etc}/monit"
+                          "--sysconfdir=#{etc}/monit",
+                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
     (share/"monit").install "monitrc"
   end

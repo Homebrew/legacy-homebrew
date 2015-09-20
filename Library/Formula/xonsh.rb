@@ -4,12 +4,13 @@ class Xonsh < Formula
   url "https://github.com/scopatz/xonsh/archive/0.1.5.tar.gz"
   sha256 "ed04665d4396837191594f2dd9107403eabecb14add5dfbb8f4fb31e13fc03c2"
   head "https://github.com/scopatz/xonsh.git"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "b01e69bc7edf7d3c8bb5c0fc82a77d634b11322d87f93370f0eaf7b033a1be36" => :yosemite
-    sha256 "c207006622b9b5990f22f972f391e0aee43a95ed98b1f0204c667a3b9f3a6b86" => :mavericks
-    sha256 "f228ac9474754634cb55d4916d41f7cc647daa243e8910db1189722a3e2554d7" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0bc48de85eb1b8ca387bb6aa1a5336b4c0111110e68c76ba4806c8c9b87cc098" => :yosemite
+    sha256 "1ac713cb81b80a8fc065137b6b200337a9eeca1ebc37be7c712998074f41c35d" => :mavericks
+    sha256 "d511c4c1d3c0de59601ea85d62a4b13b4802f22f062791f3464ed4a9b247f694" => :mountain_lion
   end
 
   depends_on :python3

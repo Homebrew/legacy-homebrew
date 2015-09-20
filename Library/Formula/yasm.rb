@@ -5,8 +5,9 @@ class Yasm < Formula
   sha256 "3dce6601b495f5b3d45b59f7d2492a340ee7e84b5beca17e48f862502bd5603f"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "db84535ba0b58448cdeab19d63e93f8dfecfc4b91cb06bd9919ca8d0f9b86ca4" => :el_capitan
     sha1 "86705ca09a33d0ba81000cadef9afe46a2072a70" => :yosemite
     sha1 "670a8b4722cfa032e7b0abcc618d54d0c32631bf" => :mavericks
     sha1 "772d7dbb840d3beb794980d1386f86db1cfd5bb4" => :mountain_lion
