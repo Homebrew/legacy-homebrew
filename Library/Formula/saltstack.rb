@@ -5,10 +5,9 @@ class Saltstack < Formula
   # (URLs starting with https://github.com/saltstack/salt/releases/download)
   # github tag archives will report wrong version number
   # https://github.com/Homebrew/homebrew/issues/43493
-  url "https://github.com/saltstack/salt/releases/download/v2015.5.5/salt-2015.5.5.tar.gz"
-  sha256 "5cd8d317616abab691a83f7fd3f8bcf9ad8aecaa95fcfdc0f6d788de87f0beeb"
+  url "https://github.com/saltstack/salt/releases/download/v2015.8.0/salt-2015.8.0.tar.gz"
+  sha256 "71e1cb2eb1d4b30f3247f5590c00a2089190b8f9a90c9330dc9a65fae517ec9b"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
-  revision 1
 
   bottle do
     cellar :any
@@ -28,9 +27,9 @@ class Saltstack < Formula
   # Homebrew's swig breaks M2Crypto due to upstream's undermaintained status.
   # https://github.com/swig/swig/issues/344
   # https://github.com/martinpaljak/M2Crypto/issues/60
-  resource "swig304" do
-    url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.4/swig-3.0.4.tar.gz"
-    sha256 "410ffa80ef5535244b500933d70c1b65206333b546ca5a6c89373afb65413795"
+  resource "swig307" do
+    url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.7/swig-3.0.7.tar.gz"
+    sha256 "06dc8816a225667ce1eee545af3caf87e1bbaa379c32838d4cea53152514348d"
   end
 
   resource "m2crypto" do
@@ -75,8 +74,8 @@ class Saltstack < Formula
 
   # Required by tornado
   resource "certifi" do
-    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.04.28.tar.gz"
-    sha256 "99785e6cf715cdcde59dee05a676e99f04835a71e7ced201ca317401c322ba96"
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.9.6.2.tar.gz"
+    sha256 "dc3a2b2d9d1033dbf27586366ae61b9d7c44d8c3a6f29694ffcbb0618ea7aea6"
   end
 
   # Required by tornado
@@ -86,12 +85,12 @@ class Saltstack < Formula
   end
 
   resource "tornado" do
-    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.2.tar.gz"
-    sha256 "e8b1207da67dbdceebfb291292b4ef1b547d6171525bec1b366853f923456a5f"
+    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.2.1.tar.gz"
+    sha256 "a16fcdc4f76b184cb82f4f9eaeeacef6113b524b26a2cb331222e4a7fa6f2969"
   end
 
   def install
-    resource("swig304").stage do
+    resource("swig307").stage do
       system "./configure", "--disable-dependency-tracking", "--prefix=#{buildpath}/swig"
       system "make"
       system "make", "install"
