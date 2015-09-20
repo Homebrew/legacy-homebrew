@@ -3,6 +3,7 @@ class Libspatialite < Formula
   homepage "https://www.gaia-gis.it/fossil/libspatialite/index"
   url "https://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-4.3.0a.tar.gz"
   sha256 "88900030a4762904a7880273f292e5e8ca6b15b7c6c3fb88ffa9e67ee8a5a499"
+  revision 1
 
   bottle do
     cellar :any
