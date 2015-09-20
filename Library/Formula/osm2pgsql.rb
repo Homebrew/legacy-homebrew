@@ -3,6 +3,7 @@ class Osm2pgsql < Formula
   homepage "https://wiki.openstreetmap.org/wiki/Osm2pgsql"
   url "https://github.com/openstreetmap/osm2pgsql/archive/0.88.1.tar.gz"
   sha256 "08ec33c833768dec9856f537bbf4416ad45837ee0851eeeab0081c7bbed3449e"
+  revision 1
 
   bottle do
     sha256 "367d2eb028e4c9e90d9c9806ced4c4663088d7d9bd53779b4fbcc851d6a1628a" => :el_capitan
