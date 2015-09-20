@@ -6,7 +6,8 @@ class GitFlow < Formula
   url "https://github.com/nvie/gitflow.git", :tag => "0.4.1"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "56826b30d91ffb54829f4792f88c673b1c3e748aa662bef5806e4a6f5d0ee015" => :el_capitan
     sha1 "ab05739e882e5a930863ce03d2dcbe62ac329dc1" => :yosemite
     sha1 "a3e07853d8152891aecf98eed7943edc07e2e1ec" => :mavericks
     sha1 "0b02d71a300810649c677dd8f9b26ebc6351087f" => :mountain_lion
