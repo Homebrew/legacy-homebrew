@@ -5,9 +5,9 @@ class GeocodeGlib < Formula
   sha256 "8fb7f0d569e3e6696aaa1fdf275cb3094527ec5e9fa36fd88dd633dfec63495d"
 
   bottle do
-    sha256 "3830373806212fb96930c17c016c7e358b6109a3a4239bac3eb04c2b3c4742ca" => :yosemite
-    sha256 "157a923195ede1aa0548660e6a98b9d2123f99764d2aa591d51099eeeb2b23cb" => :mavericks
-    sha256 "7955d0be49e8ad30b5abe9c3eab9e731392df51ce2fee30a5962e2963f725f4e" => :mountain_lion
+    sha256 "f85aee0dbf1e2b66693efac35cd0a9340c277bbdb1dedcf09bb467dace95ffd1" => :el_capitan
+    sha256 "e14086597467c257fce1e2654cd35980da46f544ea548af0d5425505906dee98" => :yosemite
+    sha256 "d20e9d72630794b217e9d0c4a46e704cc7201a98d1aa2a821da737f276ba2959" => :mavericks
   end
 
   depends_on "pkg-config" => :build
