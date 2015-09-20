@@ -22,6 +22,6 @@ class Aide < Formula
   end
 
   test do
-    system "#{bin}/aide", "--verion"
+    system "#{bin}/aide", "--version"
   end
 end
