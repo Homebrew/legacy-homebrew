@@ -17,7 +17,9 @@ class Grails < Formula
     EOS
   end
 
-  test do
-    assert_match /Application created at/, shell_output("#{bin}/grails create-app inplace testApp")
-  end
+  +  test do
++    output = shell_output("#{bin}/grails --version")
++    assert_match /Grails Version: #{version}/, output
++  end
+
 end
