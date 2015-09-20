@@ -36,9 +36,11 @@ class Gpac < Formula
   depends_on "openjpeg" => :optional
 
   def install
-    args = ["--disable-wx",
+    # If pulseaudio is linked, the script detects it, but fails to link -lpulse.
+    args = ["--disable-pulseaudio",
+            "--disable-wx",
             "--prefix=#{prefix}",
-            "--mandir=#{man}"]
+            "--mandir=#{man}",]
 
     if build.with? "x11"
       # gpac build system is barely functional
