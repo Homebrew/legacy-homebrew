@@ -15,6 +15,7 @@ class Wireshark < Formula
   end
 
   bottle do
+    sha256 "05b8a6144c006ccda0866333cf10f62e23b6c28d1b615ea129eeb2baa5e73a35" => :el_capitan
     sha256 "d8979eee062badc5dd506f35ed068bf0640f0174c10918742c599459aeb785bd" => :yosemite
     sha256 "cd3011365f0ac3cdab74e840d01bd21fcaad403a323648953136c33323eab015" => :mavericks
     sha256 "f590fed6226a7e9272af33af8cd08020075976eb56a08877c646f75ffc455abf" => :mountain_lion
