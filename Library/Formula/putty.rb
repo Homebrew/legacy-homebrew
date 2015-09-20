@@ -7,11 +7,10 @@ class Putty < Formula
   sha256 "d543c1fd4944ea51d46d4abf31bfb8cde9bd1c65cb36dc6b83e51ce875660ca0"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "23ea6a1e7979ebdd4891ff1968e444a14d4cdd02ab36762df8192c654e796bca" => :yosemite
-    sha256 "0aca10188a1a172c09fff6d9d1669e08ad1afd34a0a84b8c4798e83bdb1895d4" => :mavericks
-    sha256 "0c3d48155005e602a8c278b9df98d8c2d7df3464c39207b72bbcfdcc0ac6fb83" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5e5da01a4f37e647305cc87c5575c0cc028ea11661558cd47e4563876a52b17f" => :el_capitan
+    sha256 "b076e4778143be23784e906689e7fc687073d2120fedf89fedc0a950f5ee69be" => :yosemite
+    sha256 "60d408eac949404d999cdd12fb9045516c03dce628b091e6379593ae3ecbc76c" => :mavericks
   end
 
   conflicts_with "pssh", :because => "both install `pscp` binaries"
