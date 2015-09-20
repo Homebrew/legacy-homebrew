@@ -4,6 +4,12 @@ class IscDhcp < Formula
   url "http://ftp.isc.org/isc/dhcp/4.3.3/dhcp-4.3.3.tar.gz"
   sha256 "553c4945b09b1c1b904c4780f34f72aaefa2fc8c6556715de0bc9d4e3d255ede"
 
+  bottle do
+    sha256 "a822cb1bafbf175f2c85e7089c1c5e52d2239f3d8467fc913733d193999dce28" => :el_capitan
+    sha256 "3d4c4e8254772daf4d797967690f5fd062273b581dfd05b5b062b7741dbecf17" => :yosemite
+    sha256 "6a7ef92897aa1a6f2d5ad736ee03d710c9efb3111eb6fde7705507cc29c18933" => :mavericks
+  end
+
   def install
     # use one dir under var for all runtime state.
     dhcpd_dir = var+"dhcpd"
