@@ -13,6 +13,7 @@ class Shards < Formula
   end
 
   test do
-    assert(`#{bin/"shards"} --version`.chomp == "Shards 0.4.0 (2015-09-19)")
+    assert_equal "Shards 0.4.0 (2015-09-19)",
+      shell_output("#{bin/"shards"} --version").chomp
   end
 end
