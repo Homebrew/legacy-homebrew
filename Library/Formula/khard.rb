@@ -1,8 +1,8 @@
 class Khard < Formula
   desc "Console carddav client."
   homepage "https://github.com/scheibler/khard"
-  url "https://pypi.python.org/packages/source/k/khard/khard-0.4.1.tar.gz"
-  sha256 "c7deb446f29eb33ac0622cffea5303288c31a2c304aaf5348dad8baf56591c5d"
+  url "https://pypi.python.org/packages/source/k/khard/khard-0.5.0.tar.gz"
+  sha256 "6880a639a32a2830b2d62f70d7f0155216fa2f6d599d8b8bb6b45c1df912e3bf"
 
   bottle do
     cellar :any
@@ -55,6 +55,7 @@ class Khard < Formula
       path = ~/.contacts/
       [general]
       editor = /usr/bin/vi
+      merge_editor = /usr/bin/vi
       default_country = Germany
       default_action = list
       show_nicknames = yes
