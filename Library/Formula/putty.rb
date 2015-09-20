@@ -1,10 +1,10 @@
 class Putty < Formula
   desc "Implementation of Telnet and SSH"
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/putty/"
-  url "https://the.earth.li/~sgtatham/putty/0.64/putty-0.64.tar.gz"
-  mirror "https://fossies.org/linux/misc/putty-0.64.tar.gz"
-  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.64.tar.gz"
-  sha256 "2a46c97a184144e3ec2392aca9acc64d062317a3a38b9a5f623a147eda5f3821"
+  url "https://the.earth.li/~sgtatham/putty/0.65/putty-0.65.tar.gz"
+  mirror "https://fossies.org/linux/misc/putty-0.65.tar.gz"
+  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.65.tar.gz"
+  sha256 "d543c1fd4944ea51d46d4abf31bfb8cde9bd1c65cb36dc6b83e51ce875660ca0"
 
   bottle do
     cellar :any
