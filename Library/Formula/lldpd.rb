@@ -1,8 +1,8 @@
 class Lldpd < Formula
   desc "Implementation library for LLDP"
   homepage "https://vincentbernat.github.io/lldpd/"
-  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.16.tar.gz"
-  sha256 "a0b85a5e685b8e7dad08b6f20ea79d8bec47d8dbf39daef419bd20ad7f37d63f"
+  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.17.tar.gz"
+  sha256 "6b50b8aa47d1424a93ba3df55af26da41f7d5718db8d25e99291c4a6cd09c20e"
 
   bottle do
     sha256 "437aee53ffb9e71b91c2f53316fa0df319f2927b29e0c5cc3b3ee7b3141ae7c4" => :yosemite
@@ -21,17 +21,19 @@ class Lldpd < Formula
 
   def install
     readline = Formula["readline"]
-    args = ["--prefix=#{prefix}",
-            "--sysconfdir=#{etc}",
-            "--localstatedir=#{var}",
-            "--with-xml",
-            "--with-readline",
-            "--with-privsep-chroot=/var/empty",
-            "--with-privsep-user=nobody",
-            "--with-privsep-group=nogroup",
-            "--with-launchddaemonsdir=no",
-            "CPPFLAGS=-I#{readline.include} -DRONLY=1",
-            "LDFLAGS=-L#{readline.lib}"]
+    args = [
+      "--prefix=#{prefix}",
+      "--sysconfdir=#{etc}",
+      "--localstatedir=#{var}",
+      "--with-xml",
+      "--with-readline",
+      "--with-privsep-chroot=/var/empty",
+      "--with-privsep-user=nobody",
+      "--with-privsep-group=nogroup",
+      "--with-launchddaemonsdir=no",
+      "CPPFLAGS=-I#{readline.include} -DRONLY=1",
+      "LDFLAGS=-L#{readline.lib}",
+    ]
     args << (build.with?("snmp") ? "--with-snmp" : "--without-snmp")
     args << (build.with?("json") ? "--with-json" : "--without-json")
 
