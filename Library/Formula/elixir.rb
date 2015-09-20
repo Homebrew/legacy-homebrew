@@ -37,6 +37,7 @@ class Elixir < Formula
   end
 
   bottle do
+    sha256 "2c33114b94fbe5b3034cd95968d6f0a117e82547b266e9b4d3b2f146272d5730" => :el_capitan
     sha256 "e25c7d985147de85b0e8d0adfc12f92c34af748af2c58557ad4f34aa7f96e63b" => :yosemite
     sha256 "2c5931b0eea75db2e22c6a20cb17c632c5052d03254bd355c0db5b9dbd90ba51" => :mavericks
     sha256 "05bafa8e03110933685d0f8888a5b461a8ce51427c7cf23a069995a9a9698794" => :mountain_lion
