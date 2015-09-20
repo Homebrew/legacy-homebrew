@@ -1,8 +1,8 @@
 class IscDhcp < Formula
   desc "Production-grade DHCP solution"
   homepage "http://www.isc.org/software/dhcp"
-  url "http://ftp.isc.org/isc/dhcp/4.3.0/dhcp-4.3.0.tar.gz"
-  sha256 "a7b6517d5cf32c5e49d2323a63de00efe5391df7cb0045dfa0ec8f6ee46ebe8a"
+  url "http://ftp.isc.org/isc/dhcp/4.3.3/dhcp-4.3.3.tar.gz"
+  sha256 "553c4945b09b1c1b904c4780f34f72aaefa2fc8c6556715de0bc9d4e3d255ede"
 
   def install
     # use one dir under var for all runtime state.
@@ -23,7 +23,7 @@ class IscDhcp < Formula
       "_PATH_DHCLIENT_PID"  => dhcpd_dir+"dhclient.pid",
       "_PATH_DHCLIENT6_PID" => dhcpd_dir+"dhclient6.pid",
       "_PATH_DHCRELAY_PID"  => dhcpd_dir+"dhcrelay.pid",
-      "_PATH_DHCRELAY6_PID" => dhcpd_dir+"dhcrelay6.pid"
+      "_PATH_DHCRELAY6_PID" => dhcpd_dir+"dhcrelay6.pid",
     }
 
     path_opts.each do |symbol, path|
