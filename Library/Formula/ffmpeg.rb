@@ -6,6 +6,7 @@ class Ffmpeg < Formula
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
+    sha256 "808d2aa0612035d3edce0926c70140920d9a2b7d320ca04c57a5f5ce55eb5d40" => :el_capitan
     sha256 "c5d72c52608a21be10627d750e6b83f1c820c70bf743d913411b744292348024" => :yosemite
     sha256 "dca1409b18122dac23631c6f349f9caeb8e1f92bd8055befac97327ad007f758" => :mavericks
     sha256 "59f103a1f98c5a4e4e6ef4eb60cc7f6f7698c385b252ae7acefd7d17af9423fe" => :mountain_lion
