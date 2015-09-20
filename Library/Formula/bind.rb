@@ -1,10 +1,9 @@
 class Bind < Formula
   desc "Implementation of the DNS protocols"
   homepage "https://www.isc.org/downloads/bind/"
-  url "https://ftp.isc.org/isc/bind9/9.10.2-P4/bind-9.10.2-P4.tar.gz"
-  mirror "https://fossies.org/linux/misc/dns/bind9/9.10.2-P4/bind-9.10.2-P4.tar.gz"
-  version "9.10.2-P4"
-  sha256 "c00b21ec1def212957f28efe9d10aac52d6ec515e84fbf2c42143f5d71429cb8"
+  url "https://ftp.isc.org/isc/bind9/9.10.3/bind-9.10.3.tar.gz"
+  mirror "https://fossies.org/linux/misc/dns/bind9/9.10.3/bind-9.10.3.tar.gz"
+  sha256 "9ac33bd8754ab4b6ee449b1b2aa88e09f51cda088486f4ab1585acd920b98ff0"
   head "https://source.isc.org/git/bind9.git"
 
   bottle do
