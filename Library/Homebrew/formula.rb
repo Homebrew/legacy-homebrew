@@ -1304,8 +1304,14 @@ class Formula
       $stdout.flush
 
       unless $?.success?
+        log_lines = ENV["HOMEBREW_FAIL_LOG_LINES"]
+        log_lines ||= "15"
+
         log.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        unless verbose
+          puts "Last #{log_lines} lines from #{logfn}:"
+          Kernel.system "/usr/bin/tail", "-n", log_lines, logfn
+        end
         log.puts
 
         require "cmd/config"
