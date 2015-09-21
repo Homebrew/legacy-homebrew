@@ -1,10 +1,11 @@
-package spark.jobserver
+package spark.jobserver.routes
 
 import spray.http.StatusCodes._
 import com.typesafe.config.ConfigFactory
 import java.net.URLEncoder
+import spark.jobserver.WebApiSpec
 
-class WebApiDataRoutesSpec extends WebApiSpec {
+class DataRoutesSpec extends WebApiSpec {
   import scala.collection.JavaConverters._
   import spray.httpx.SprayJsonSupport._
   import spray.json.DefaultJsonProtocol._
