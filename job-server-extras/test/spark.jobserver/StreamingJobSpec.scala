@@ -46,7 +46,7 @@ class StreamingJobSpec extends JobSpecBase(StreamingJobSpec.getNewSystem) {
         }
       }
       Thread sleep 1000
-      dao.getJobInfos.get(jobId).get match  {
+      dao.getJobInfo(jobId).get match  {
         case JobInfo(_, _, _, _, _, None, _) => {  }
         case e => fail("Unexpected JobInfo" + e)
       }

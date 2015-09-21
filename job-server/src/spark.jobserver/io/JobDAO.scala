@@ -55,11 +55,18 @@ trait JobDAO {
   def saveJobInfo(jobInfo: JobInfo)
 
   /**
+   * Return job info for a specific job id.
+   *
+   * @return
+   */
+  def getJobInfo(jobId: String): Option[JobInfo]
+
+  /**
    * Return all job ids to their job info.
    *
    * @return
    */
-  def getJobInfos: Map[String, JobInfo]
+  def getJobInfos(limit: Int): Seq[JobInfo]
 
   /**
    * Persist a job configuration along with provided jobId.

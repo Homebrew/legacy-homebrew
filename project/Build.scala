@@ -21,14 +21,14 @@ object JobServerBuild extends Build {
   import JobServerRelease._
 
   lazy val akkaApp = Project(id = "akka-app", base = file("akka-app"),
-    settings = commonSettings210 ++ Seq(
+    settings = commonSettings ++ Seq(
       description := "Common Akka application stack: metrics, tracing, logging, and more.",
       libraryDependencies ++= coreTestDeps ++ akkaDeps
     ) ++ publishSettings
   )
 
   lazy val jobServer = Project(id = "job-server", base = file("job-server"),
-    settings = commonSettings210 ++ revolverSettings ++ Assembly.settings ++ Seq(
+    settings = commonSettings ++ revolverSettings ++ Assembly.settings ++ Seq(
       description  := "Spark as a Service: a RESTful job server for Apache Spark",
       libraryDependencies ++= sparkDeps ++ slickDeps ++ securityDeps ++ coreTestDeps,
 
@@ -52,16 +52,16 @@ object JobServerBuild extends Build {
   ) dependsOn(akkaApp, jobServerApi)
 
   lazy val jobServerTestJar = Project(id = "job-server-tests", base = file("job-server-tests"),
-                                      settings = commonSettings210 ++ jobServerTestJarSettings
+                                      settings = commonSettings ++ jobServerTestJarSettings
                                      ) dependsOn(jobServerApi)
 
   lazy val jobServerApi = Project(id = "job-server-api",
                                   base = file("job-server-api"),
-                                  settings = commonSettings210 ++ publishSettings)
+                                  settings = commonSettings ++ publishSettings)
 
   lazy val jobServerExtras = Project(id = "job-server-extras",
                                      base = file("job-server-extras"),
-                                     settings = commonSettings210 ++ jobServerExtrasSettings
+                                     settings = commonSettings ++ jobServerExtrasSettings
                                     ) dependsOn(jobServerApi,
                                                 jobServer % "compile->compile; test->test")
 
@@ -70,7 +70,7 @@ object JobServerBuild extends Build {
   //
   // NOTE: if we don't define a root project, SBT does it for us, but without our settings
   lazy val root = Project(id = "root", base = file("."),
-                    settings = commonSettings210 ++ ourReleaseSettings ++ rootSettings ++ dockerSettings
+                    settings = commonSettings ++ ourReleaseSettings ++ rootSettings ++ dockerSettings
                   ).aggregate(jobServer, jobServerApi, jobServerTestJar, akkaApp, jobServerExtras).
                    dependsOn(jobServer, jobServerExtras)
 
@@ -165,7 +165,7 @@ object JobServerBuild extends Build {
   // Create a default Scala style task to run with compiles
   lazy val runScalaStyle = taskKey[Unit]("testScalaStyle")
 
-  lazy val commonSettings210 = Defaults.defaultSettings ++ dirSettings ++ implicitlySettings ++ Seq(
+  lazy val commonSettings = Defaults.defaultSettings ++ dirSettings ++ implicitlySettings ++ Seq(
     organization := "spark.jobserver",
     crossPaths   := true,
     crossScalaVersions := Seq("2.10.4","2.11.6"),
