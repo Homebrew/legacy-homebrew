@@ -89,6 +89,7 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
   option "with-python", "Build Python bindings against Homebrew Python"
+  option "with-tests", "Run regression tests after build"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
@@ -149,6 +150,7 @@ class Llvm < Formula
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
+      system "make", "check-all" if build.with?("tests")
       system "make", "install"
     end
 
