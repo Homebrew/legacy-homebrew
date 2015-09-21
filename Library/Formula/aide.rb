@@ -15,7 +15,7 @@ class Aide < Formula
     depends_on "autoconf" => :build
   end
 
-  depends_on "libgcrypt" => :build
+  depends_on "libgcrypt"
 
   def install
     system "sh", "./autogen.sh" if build.head?
@@ -30,7 +30,6 @@ class Aide < Formula
   end
 
   test do
-    ENV.append "DYLD_LIBRARY_PATH", "#{lib}"
     (testpath/"aide.conf").write <<-EOS.undent
       database=file:/var/lib/aide/aide.db
       database_out=file:/var/lib/aide/aide.db.new
