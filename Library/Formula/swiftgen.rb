@@ -5,6 +5,12 @@ class Swiftgen < Formula
   sha256 "429e50b33d1cd3e34fa81b5becff865ce5663284380e91602783bfa109c96b83"
   head "https://github.com/AliSoftware/SwiftGen.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "e6e1ba12afeccbf5e9f8a6961c8dcca93f8342f2f4d0005a0cb6d500a8d06c8f" => :el_capitan
+    sha256 "3c17c3c3352543d279044bb2263078d1be7371e94cbbb0ee69f3a837d3108ad2" => :yosemite
+  end
+
   depends_on :xcode => "7.0"
 
   def install
