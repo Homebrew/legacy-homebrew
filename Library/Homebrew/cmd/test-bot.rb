@@ -142,6 +142,9 @@ module Homebrew
       end
 
       verbose = ARGV.verbose?
+      travis = !ENV["TRAVIS"].nil?
+      @@log_length ||= 0
+
       @output = ""
       working_dir = Pathname.new(@command.first == "git" ? @repository : Dir.pwd)
       read, write = IO.pipe
@@ -156,8 +159,14 @@ module Homebrew
         end
         write.close
         while line = read.gets
-          puts line if verbose
           @output += line
+          @@log_length += line.size
+          next unless verbose
+          if travis && @@log_length > 3 * BYTES_IN_1_MEGABYTE
+            printf "."
+            next
+          end
+          puts line
         end
       ensure
         read.close
@@ -166,6 +175,7 @@ module Homebrew
       Process.wait(pid)
       @end_time = Time.now
       @status = $?.success? ? :passed : :failed
+      puts if verbose && travis && @@log_length > 3 * BYTES_IN_1_MEGABYTE
       puts_result
 
       if has_output?
