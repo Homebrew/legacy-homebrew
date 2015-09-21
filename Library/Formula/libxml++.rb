@@ -1,8 +1,8 @@
 class Libxmlxx < Formula
   desc "C++ wrapper for libxml"
   homepage "http://libxmlplusplus.sourceforge.net"
-  url "https://download.gnome.org/sources/libxml++/2.38/libxml++-2.38.1.tar.xz"
-  sha256 "882529189b03db6c69925b3f579ab1941feb4f02b5fe2612504ee7e498a4a05f"
+  url "https://download.gnome.org/sources/libxml++/2.40/libxml++-2.40.0.tar.xz"
+  sha256 "a7b9703203696972cae50436e150979ef187d9b03c95519bdd89623b4068162a"
 
   bottle do
     sha256 "aee30c6a4f6c8a73b126a3ac3b86d2a0776aa3fb28cd4ca456239cba80c58615" => :yosemite
@@ -15,7 +15,10 @@ class Libxmlxx < Formula
   # LibXML++ can't compile agains the version of LibXML shipped with Leopard
   depends_on "libxml2" if MacOS.version <= :leopard
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
@@ -61,7 +64,7 @@ class Libxmlxx < Formula
       -lxml++-2.6
       -lxml2
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
