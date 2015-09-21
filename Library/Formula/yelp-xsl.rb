@@ -1,8 +1,8 @@
 class YelpXsl < Formula
   desc "Yelp's universal stylesheets for Mallard and DocBook"
   homepage "https://github.com/GNOME/yelp-xsl"
-  url "https://download.gnome.org/sources/yelp-xsl/3.16/yelp-xsl-3.16.1.tar.xz"
-  sha256 "3295eecc4b03d2a239f7a1bdf4a1311d34c46c3055e6535c1f72bb5a49b4174a"
+  url "https://download.gnome.org/sources/yelp-xsl/3.18/yelp-xsl-3.18.0.tar.xz"
+  sha256 "893620857b72b3b43ee3b462281240b7ca4d80292f469552827f0597bf60d2b2"
 
   bottle do
     cellar :any
