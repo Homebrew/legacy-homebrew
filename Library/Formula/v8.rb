@@ -9,6 +9,7 @@ class V8 < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "70cd79b81a3b562da208d975fcf48fc2aa0824a104b53be1fe46cf24b7379997" => :el_capitan
     sha256 "090670e68b1a9dc542d826b2fe9a1d8b4a7ab9f3f52ecd72f0305e5e6eb28f60" => :yosemite
     sha256 "4e0c6b2a7bb20374b79a25f374e0f1ab419b2ffbe85e7ad79b493822b59e7041" => :mavericks
     sha256 "caea11e4fb474d68642a966008fb2e6079ead9988b1d8baba3763ec0349e8318" => :mountain_lion
