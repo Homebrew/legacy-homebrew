@@ -6,6 +6,7 @@ import akka.util.Timeout
 import spark.jobserver.DataManagerActor._
 import spray.routing.{ HttpService, Route }
 import spray.http.MediaTypes
+import spray.http.StatusCodes
 import java.net.URLDecoder
 import spray.httpx.SprayJsonSupport.sprayJsonMarshaller
 import spray.json.DefaultJsonProtocol._
@@ -42,7 +43,7 @@ trait DataRoutes extends HttpService {
           val future = dataManager ? DeleteData(URLDecoder.decode(filename, "UTF-8"))
           respondWithMediaType(MediaTypes.`application/json`) { ctx =>
             future.map {
-              case Deleted => ctx.complete(Map(StatusKey -> "OK"))
+              case Deleted => ctx.complete(StatusCodes.OK)
               case Error =>
                 badRequest(ctx, "Unable to delete data file '" + filename + "'.")
             }.recover {
@@ -59,8 +60,7 @@ trait DataRoutes extends HttpService {
             respondWithMediaType(MediaTypes.`application/json`) { ctx =>
               future.map {
                 case Stored(filename) => {
-                  ctx.complete(Map[String, Any](
-                    StatusKey -> "OK",
+                  ctx.complete(StatusCodes.OK, Map[String, Any](
                     ResultKey -> Map("filename" -> filename)))
                 }
                 case Error =>

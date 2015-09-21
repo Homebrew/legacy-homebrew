@@ -17,7 +17,6 @@ class WebApiDataRoutesSpec extends WebApiSpec {
       Post("/data/" + encodedName, Array[Byte](0, 1, 2)) ~> sealRoute(routes) ~> check {
         status should be(OK)
         responseAs[Map[String, Any]] should be (Map(
-          StatusKey -> "OK",
           ResultKey -> Map("filename" -> "/tmp/fileToRemove-time-stamp")
         ))
       }
@@ -42,8 +41,6 @@ class WebApiDataRoutesSpec extends WebApiSpec {
       val encodedName = URLEncoder.encode("/tmp/fileToRemove", "UTF-8")
       Delete("/data/" + encodedName) ~> sealRoute(routes) ~> check {
         status should be(OK)
-        responseAs[Map[String, String]] should be(Map(
-          StatusKey -> "OK"))
       }
     }
 
