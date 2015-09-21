@@ -3,7 +3,9 @@ class GitFlow < Formula
   homepage "https://github.com/nvie/gitflow"
 
   # Use the tag instead of the tarball to get submodules
-  url "https://github.com/nvie/gitflow.git", :tag => "0.4.1"
+  url "https://github.com/nvie/gitflow.git",
+    :tag => "0.4.1",
+    :revision => "1ffb6b1091f05466d3cd27f2da9c532a38586ed5"
 
   bottle do
     cellar :any_skip_relocation
