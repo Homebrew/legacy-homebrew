@@ -1,8 +1,8 @@
 class Evince < Formula
   desc "GNOME document viewer"
   homepage "https://wiki.gnome.org/Apps/Evince"
-  url "https://download.gnome.org/sources/evince/3.16/evince-3.16.1.tar.xz"
-  sha256 "06ff75065b2a30cd588c402f6bd2ea88ee3166181805e0cc00bd54f71dbf6130"
+  url "https://download.gnome.org/sources/evince/3.18/evince-3.18.0.tar.xz"
+  sha256 "96e8351f6a6fc5823bb8f51178cde1182bd66481af6fb09bf58a18b673cafa70"
 
   bottle do
     sha256 "113c827b24af3cb2b4b9c35cb080c6e85a528079a8e2283877aa337a534445ae" => :yosemite
@@ -20,6 +20,7 @@ class Evince < Formula
   depends_on "gnome-icon-theme"
   depends_on "libsecret"
   depends_on "libspectre"
+  depends_on "gobject-introspection"
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
@@ -33,6 +34,7 @@ class Evince < Formula
                           "--prefix=#{prefix}",
                           "--disable-nautilus",
                           "--disable-schemas-compile",
+                          "--enable-introspection",
                           "--disable-browser-plugin"
     ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
     system "make", "install"
