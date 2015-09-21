@@ -7,6 +7,7 @@ class Sbcl < Formula
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
+    sha256 "27aa961292bd06545ef2e9142079f05882ff25903ede329faf603a9922e6f1c2" => :el_capitan
     sha256 "5228983f4d6b79a15751d063e9c617aa8ade92a82c48be4bbdfd2623cacac0e5" => :yosemite
     sha256 "7aad0ca3821db1c8ec4878e36eb3f974db58fe5c1d9187c773cb79958da81bd9" => :mavericks
     sha256 "643757bb1c583308887d6ad0e0eb3034d346b5b8ec1532f41056e57b85666357" => :mountain_lion
