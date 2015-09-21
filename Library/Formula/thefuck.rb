@@ -7,7 +7,8 @@ class Thefuck < Formula
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "9f70d4c349bfb545e5aa4f9b3f865ada6e01b1a058368abad2843cf1b909ba5d" => :el_capitan
     sha256 "3816987a88d9d623533c6e979a00d2633aadafe1e204bcf6ac0336c0ac6129de" => :yosemite
     sha256 "7e03106ce87b5a6e7e1a401658d42d64b3361c768febc9133d74166c32790c13" => :mavericks
     sha256 "9161e6e3bd3792e0d50639657bb081d026a6c69358282238dc06e0f054586d29" => :mountain_lion
