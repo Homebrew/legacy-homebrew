@@ -5,6 +5,7 @@ class Poppler < Formula
   sha256 "e86755b1a4df6efe39d84f581c11bcb0e34976166a671a7b700c28ebaa3e2189"
 
   bottle do
+    sha256 "67d25bdcc05d0491fb91771a7dabd2a1977b1ffb0e522920220b7c7718cb0b8d" => :el_capitan
     sha256 "2ddef226bf71ff00ddf27548eadc1adf8d26c925c72da4d46dc4478570ec4912" => :yosemite
     sha256 "29dd0e5951b599037ec093b1cf32c6786777c3da8448fa5a39967e3b7da5aa7b" => :mavericks
     sha256 "ca7a9973bb34ca53097aadd1c43edaf8377a6ec25b80176e71ad7c7b7556566c" => :mountain_lion
