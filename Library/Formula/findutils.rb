@@ -7,6 +7,7 @@ class Findutils < Formula
 
   bottle do
     revision 1
+    sha256 "27dfbb29443811ccac8ed9062dd251ce565de7383449ab18d16d0e6461a951c3" => :el_capitan
     sha1 "2f98c4a6352ba11092a3e90cab5670e4e1b95e07" => :yosemite
     sha1 "93a1389d8a4124a8f36832484dd0232ac7bf99c7" => :mavericks
     sha1 "60134ccc215dd1216bfb256a1d38dd58c74525de" => :mountain_lion
