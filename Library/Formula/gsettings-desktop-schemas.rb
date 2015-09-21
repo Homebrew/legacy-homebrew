@@ -1,8 +1,8 @@
 class GsettingsDesktopSchemas < Formula
   desc "GSettings schemas for desktop components"
   homepage "https://download.gnome.org/sources/gsettings-desktop-schemas/"
-  url "https://download.gnome.org/sources/gsettings-desktop-schemas/3.16/gsettings-desktop-schemas-3.16.1.tar.xz"
-  sha256 "74fe9fdad510c8a6666febeceb7ebafc581ef990b3afcc8c1e8b5d90b24b3461"
+  url "https://download.gnome.org/sources/gsettings-desktop-schemas/3.18/gsettings-desktop-schemas-3.18.0.tar.xz"
+  sha256 "ba27337226a96d83f385c0ad192fdfe561c7e7882c61bb326c571be24e41eceb"
 
   bottle do
     sha256 "02a5ea7cdd9874437e86a908e21dd7edb7cd8972dbca153bfce94789bd805a47" => :yosemite
