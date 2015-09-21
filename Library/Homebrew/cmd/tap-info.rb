@@ -42,11 +42,14 @@ module Homebrew
         puts unless i == 0
         info = "#{tap}: "
         if tap.installed?
-          info += tap.pinned? ? "pinned, " : "unpinned, "
-          formula_count = tap.formula_files.size
-          info += "#{formula_count} formula#{plural(formula_count, "e")} " if formula_count > 0
-          command_count = tap.command_files.size
-          info += "#{command_count} command#{plural(command_count)} " if command_count > 0
+          info += tap.pinned? ? "pinned" : "unpinned"
+          if (formula_count = tap.formula_files.size) > 0
+            info += ", #{formula_count} formula#{plural(formula_count, "e")}"
+          end
+          if (command_count = tap.command_files.size) > 0
+            info += ", #{command_count} command#{plural(command_count)}"
+          end
+          info += ", no formulae/commands" if formula_count + command_count == 0
           info += "\n#{tap.path} (#{tap.path.abv})"
           info += "\nFrom: #{tap.remote.nil? ? "N/A" : tap.remote}"
         else
