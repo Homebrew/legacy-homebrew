@@ -50,6 +50,11 @@ class Llvm < Formula
       sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
     end
 
+    resource "polly" do
+      url "http://llvm.org/releases/3.6.2/polly-3.6.2.src.tar.xz"
+      sha256 "f2a956730b76212f22a1c10f35f195795e4d027ad28c226f97ddb8c0fd16bcbc"
+    end
+
     resource "sanitizers" do
       url "http://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz"
       sha256 "0f2ff37d80a64575fecd8cf0d5c50f7ac1f837ddf700d1855412bb7547431d87"
@@ -90,6 +95,10 @@ class Llvm < Formula
     resource "sanitizers" do
       url "http://llvm.org/git/compiler-rt.git"
     end
+
+    resource "polly" do
+      url "http://llvm.org/git/polly.git"
+    end
   end
 
   option :universal
@@ -98,6 +107,7 @@ class Llvm < Formula
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
+  option "with-polly", "Build with the experimental Polly optimizer"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-sanitizers", "Enable Clang code sanitizers"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
@@ -115,6 +125,10 @@ class Llvm < Formula
   if build.with? "lldb"
     depends_on "swig"
     depends_on CodesignRequirement
+  end
+
+  if build.with? "polly"
+    depends_on "isl"
   end
 
   keg_only :provided_by_osx
@@ -146,6 +160,7 @@ class Llvm < Formula
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
     (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
+    (buildpath/"tools/polly").install resource("polly") if build.with? "polly"
 
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
@@ -161,6 +176,10 @@ class Llvm < Formula
 
     if build.universal?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
+
+    if build.with?("polly")
+      args << "-DLINK_POLLY_INTO_TOOLS:Bool=ON"
     end
 
     mktemp do
