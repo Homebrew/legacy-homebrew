@@ -1,11 +1,8 @@
 class Aide < Formula
   desc "File and directory integrity checker"
   homepage "http://aide.sourceforge.net"
-
-  stable do
-    url "https://downloads.sourceforge.net/project/aide/aide/0.15.1/aide-0.15.1.tar.gz"
-    sha256 "303e5c186257df8c86e418193199f4ea2183fc37d3d4a9098a614f61346059ef"
-  end
+  url "https://downloads.sourceforge.net/project/aide/aide/0.15.1/aide-0.15.1.tar.gz"
+  sha256 "303e5c186257df8c86e418193199f4ea2183fc37d3d4a9098a614f61346059ef"
 
   devel do
     url "https://downloads.sourceforge.net/project/aide/devel/0.16a2/aide-0.16a2.tar.gz"
@@ -33,6 +30,21 @@ class Aide < Formula
   end
 
   test do
-    system "#{bin}/aide", "--version"
+    ENV.append "DYLD_LIBRARY_PATH", "#{lib}"
+    (testpath/"aide.conf").write <<-EOS.undent
+      database=file:/var/lib/aide/aide.db
+      database_out=file:/var/lib/aide/aide.db.new
+      database_new=file:/var/lib/aide/aide.db.new
+      gzip_dbout=yes
+      summarize_changes=yes
+      grouped=yes
+      verbose = 6
+      Checksums = sha256
+      database_attrs = Checksums
+      OwnerMode = p+u+g+ftype
+      Size = s+b
+      /etc p+i+u+g
+    EOS
+    system "#{bin}/aide", "--config-check", "-c", "aide.conf"
   end
 end
