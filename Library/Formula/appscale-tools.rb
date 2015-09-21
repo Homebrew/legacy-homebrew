@@ -1,8 +1,8 @@
 class AppscaleTools < Formula
   desc "Command-line tools for working with AppScale"
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.3.1.tar.gz"
-  sha256 "f24460657d46cb84d657e900999349fbd789d2bc6546a866932cfc20fe195a58"
+  url "https://github.com/AppScale/appscale-tools/archive/2.4.0.tar.gz"
+  sha256 "ed765d8ddfc88eb9a776f37f038601cb367ed0f6ab810914eb7d1fc967b4eb01"
   head "https://github.com/AppScale/appscale-tools.git"
 
   bottle do
@@ -72,11 +72,6 @@ class AppscaleTools < Formula
   resource "httplib2" do
     url "https://pypi.python.org/packages/source/h/httplib2/httplib2-0.9.1.tar.gz"
     sha256 "bc6339919a5235b9d1aaee011ca5464184098f0c47c9098001f91c97176583f5"
-  end
-
-  resource "python-gflags" do
-    url "https://pypi.python.org/packages/source/p/python-gflags/python-gflags-2.0.tar.gz"
-    sha256 "0dff6360423f3ec08cbe3bfaf37b339461a54a21d13be0dd5d9c9999ce531078"
   end
 
   def install
