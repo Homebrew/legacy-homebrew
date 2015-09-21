@@ -1,8 +1,8 @@
 class Libgtop < Formula
   desc "Library for portably obtaining information about processes"
   homepage "https://library.gnome.org/devel/libgtop/stable/"
-  url "https://download.gnome.org/sources/libgtop/2.30/libgtop-2.30.0.tar.xz"
-  sha256 "463bcbe5737b1b93f3345ee34abf601e8eb864f507c49ff1921c2737abafc1e5"
+  url "https://download.gnome.org/sources/libgtop/2.32/libgtop-2.32.0.tar.xz"
+  sha256 "8443246332f22b33e389f565825b58cd9623fb7625bf874d404354b705ad178e"
 
   bottle do
     sha256 "76b362a4cf84a8a0108e34edf471fe7c621faf008d27397c55a58a852be9c14c" => :yosemite
@@ -14,6 +14,7 @@ class Libgtop < Formula
   depends_on "intltool" => :build
   depends_on "gettext"
   depends_on "glib"
+  depends_on "gobject-introspection"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
