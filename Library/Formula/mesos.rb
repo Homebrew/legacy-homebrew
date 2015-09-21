@@ -6,6 +6,7 @@ class Mesos < Formula
   sha256 "b967355ec1f7cf9ffcef76b58939ed48dd4975ea90d1c976669b50c589bdbdec"
 
   bottle do
+
     sha256 "717f73125b020b89e545384a3e5c1fbf2c36647b365fb181423954b9ceaa7b5d" => :yosemite
     sha256 "090168dc4599d005491053e3fee6b0e932b7cf388066adec20e1e6eeb128e2b4" => :mavericks
     sha256 "5c0916e2622083f4903449576a8b751e9dcc64da88ef0434efce6d76f14ab2cf" => :mountain_lion
