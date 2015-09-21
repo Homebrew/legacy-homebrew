@@ -6,6 +6,7 @@ class Libgphoto2 < Formula
   sha256 "031a262e342fae43f724afe66787947ce1fb483277dfe5a8cf1fbe92c58e27b6"
 
   bottle do
+    sha256 "e2ab27a5a1f46f154507acf0ef0ad7f40b2e9cb09a8bc382839ac500dd7fdf2b" => :el_capitan
     sha256 "c5849c3b1611cd54458134d5ae8d94b1e2faf6c5de8ccbfa446664025678514f" => :yosemite
     sha256 "425d858334ca59eb8219b01017f799954001d86af107c5a7f48480a098ada324" => :mavericks
     sha256 "292b0ae9dfd78befb17b3d54e358cbca0d0f994f6819f888b95aa28dde407d8b" => :mountain_lion
