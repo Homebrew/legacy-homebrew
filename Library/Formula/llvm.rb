@@ -30,6 +30,11 @@ class Llvm < Formula
       sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
     end
 
+    resource "extra-tools" do
+      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
+      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+    end
+
     resource "libcxx" do
       url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
       sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
@@ -48,11 +53,6 @@ class Llvm < Formula
     resource "lldb" do
       url "http://llvm.org/releases/3.6.2/lldb-3.6.2.src.tar.xz"
       sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
-    end
-
-    resource "extra-tools" do
-      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
-      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
     end
 
     resource "polly" do
@@ -81,6 +81,10 @@ class Llvm < Formula
       url "http://llvm.org/git/clang.git"
     end
 
+    resource "extra-tools" do
+      url "http://llvm.org/git/clang-tools-extra.git"
+    end
+
     resource "libcxx" do
       url "http://llvm.org/git/libcxx.git"
     end
@@ -97,16 +101,12 @@ class Llvm < Formula
       url "http://llvm.org/git/lldb.git"
     end
 
-    resource "extra-tools" do
-      url "http://llvm.org/git/clang-tools-extra.git"
+    resource "polly" do
+      url "http://llvm.org/git/polly.git"
     end
 
     resource "sanitizers" do
       url "http://llvm.org/git/compiler-rt.git"
-    end
-
-    resource "polly" do
-      url "http://llvm.org/git/polly.git"
     end
   end
 
@@ -151,6 +151,7 @@ class Llvm < Formula
   def install
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
+
     # compiler-rt has some iOS simulator features that require i386 symbols
     # I'm assuming the rest of clang needs support too for 32-bit compilation
     # to work correctly, but if not, perhaps universal binaries could be
@@ -158,8 +159,13 @@ class Llvm < Formula
     # can almost be treated as an entirely different build from llvm.
     ENV.permit_arch_flags
 
-    if build.with?("lldb") && build.without?("clang")
-      raise "Building LLDB needs Clang support library."
+    prep = lambda do |resource_name, path, required|
+      if build.with?(resource_name) &&
+         (required.nil? || build.with?(required))
+        (buildpath/path).install resource(resource_name)
+      elsif build.with?(resource_name) && build.without?(required)
+        raise resource_name + " requires " + required + " to build."
+      end
     end
 
     prep.call("clang", "tools/clang", nil)
@@ -179,10 +185,6 @@ class Llvm < Formula
        build.without?("libcxx")
       raise "Building and running sanitizer tests requires libc++"
     end
-
-    (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
-    (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
-    (buildpath/"tools/polly").install resource("polly") if build.with? "polly"
 
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
