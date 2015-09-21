@@ -43,7 +43,7 @@ class Httpie < Formula
   end
 
   test do
-    output = shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
-    assert output.include?("PYTHONPATH")
+    assert_match "PYTHONPATH",
+      shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
   end
 end
