@@ -1,8 +1,8 @@
 class Libsoup < Formula
   desc "HTTP client/server library for GNOME"
   homepage "https://live.gnome.org/LibSoup"
-  url "https://download.gnome.org/sources/libsoup/2.50/libsoup-2.50.0.tar.xz"
-  sha256 "1e01365ac4af3817187ea847f9d3588c27eee01fc519a5a7cb212bb78b0f667b"
+  url "https://download.gnome.org/sources/libsoup/2.52/libsoup-2.52.0.tar.xz"
+  sha256 "6c6c366622a1a9d938e0cea9b557fa536f088784251d31381ccd1b115a466785"
 
   bottle do
     sha256 "d5a9537de3567e4824d88804358c5efb1f76e8c88d350f8d387c75b1babe5e18" => :el_capitan
@@ -16,7 +16,8 @@ class Libsoup < Formula
   depends_on "glib-networking"
   depends_on "gnutls"
   depends_on "sqlite"
-  depends_on "gobject-introspection" => :recommended
+  depends_on "gobject-introspection"
+  depends_on "vala"
 
   def install
     args = [
@@ -25,15 +26,11 @@ class Libsoup < Formula
       "--disable-silent-rules",
       "--prefix=#{prefix}",
       "--without-gnome",
-      "--disable-tls-check"
+      "--disable-tls-check",
     ]
 
-    if build.with? "gobject-introspection"
-      args << "--enable-introspection"
-    else
-      args << "--disable-introspection"
-    end
-
+    # ensures that the vala files remain within the keg
+    inreplace "libsoup/Makefile.in", "VAPIDIR = @VAPIDIR@", "VAPIDIR = @datadir@/vala/vapi"
     system "./configure", *args
     system "make", "install"
   end
