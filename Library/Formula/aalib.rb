@@ -5,8 +5,9 @@ class Aalib < Formula
   sha256 "fbddda9230cf6ee2a4f5706b4b11e2190ae45f5eda1f0409dc4f99b35e0a70ee"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "06bd52bb36bc45e839cc6581baa11580d8ab786f83fd878e725d1b0923497c7b" => :el_capitan
     sha1 "bad7bebd32c57b4448895d9630bd26b81d7381a9" => :yosemite
     sha1 "703020d9ca9218f85ccccb04aa8c0443d386eb13" => :mavericks
     sha1 "7df0f5feb8621497d06c64a67a4b0d0350e6ecb1" => :mountain_lion
