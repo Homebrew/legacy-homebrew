@@ -6,6 +6,7 @@ class Libplist < Formula
 
   bottle do
     cellar :any
+    sha256 "44d4da500ed4448656ce335d43ff89c8df8bfc7fd7d78515e9e111e32673e645" => :el_capitan
     sha1 "abd1c58c509b305549310367feab44bca513d647" => :yosemite
     sha1 "e7bf9fbf14a51449b6b8dd5c2f084ace824f553f" => :mavericks
     sha1 "40172d50d4c836931dbfd38700a9088842c56b6c" => :mountain_lion
