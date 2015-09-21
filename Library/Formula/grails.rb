@@ -17,9 +17,9 @@ class Grails < Formula
     EOS
   end
 
-  +  test do
-+    output = shell_output("#{bin}/grails --version")
-+    assert_match /Grails Version: #{version}/, output
-+  end
+  test do
+    output = shell_output("#{bin}/grails --version")
+    assert_match /Grails Version: #{version}/, output
+  end
 
 end
