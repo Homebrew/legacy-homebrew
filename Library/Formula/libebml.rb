@@ -14,6 +14,7 @@ class Libebml < Formula
 
   bottle do
     cellar :any
+    sha256 "4f4a4af564ec57747b83f65ea4b6e1f58ebc1bdad0be545825ddea6dcf4b9708" => :el_capitan
     sha1 "5e3f974d17bd9f6fad89d19c403e3fd720f6c509" => :yosemite
     sha1 "8bbd297bdca1e250bedf9f9a1800a8819fa97d34" => :mavericks
     sha1 "c1ea1c44a4653770dd92ecfa64561f8f449f1da2" => :mountain_lion
