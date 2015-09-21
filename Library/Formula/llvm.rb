@@ -81,6 +81,10 @@ class Llvm < Formula
     resource "clang-tools-extra" do
       url "http://llvm.org/git/clang-tools-extra.git"
     end
+
+    resource "polly" do
+      url "http://llvm.org/git/polly.git"
+    end
   end
 
   option :universal
@@ -88,6 +92,7 @@ class Llvm < Formula
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
+  option "with-polly", "Build with the experimental Polly optimizer"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
@@ -128,6 +133,7 @@ class Llvm < Formula
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
     (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
+    (buildpath/"tools/polly").install resource("polly") if build.with? "polly"
 
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
