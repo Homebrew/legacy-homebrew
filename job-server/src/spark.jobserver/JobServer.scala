@@ -7,6 +7,7 @@ import akka.pattern.ask
 import com.typesafe.config.{Config, ConfigFactory}
 import java.io.File
 import spark.jobserver.io.JobDAO
+import spark.jobserver.io.DataFileDAO
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._
@@ -57,6 +58,8 @@ object JobServer {
     try {
       val jobDAO = ctor.newInstance(config).asInstanceOf[JobDAO]
       val jarManager = system.actorOf(Props(classOf[JarManager], jobDAO), "jar-manager")
+      val dataManager = system.actorOf(Props(classOf[DataManagerActor],
+          new DataFileDAO(config)), "data-manager")
       val supervisor = system.actorOf(Props(classOf[LocalContextSupervisorActor], jobDAO),
         "context-supervisor")
       val jobInfo = system.actorOf(Props(classOf[JobInfoActor], jobDAO, supervisor), "job-info")
@@ -66,7 +69,7 @@ object JobServer {
 
       // Create initial contexts
       supervisor ! ContextSupervisor.AddContextsFromConfig
-      new WebApi(system, config, port, jarManager, supervisor, jobInfo).start()
+      new WebApi(system, config, port, jarManager, dataManager, supervisor, jobInfo).start()
     } catch {
       case e: Exception =>
         logger.error("Unable to start Spark JobServer: ", e)
