@@ -29,8 +29,8 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.14.4.tgz"
-    sha256 "c8b602de5d51f956aa8f9c34d89be38b2df3b7c25ff6588030eb8224b070db27"
+    url "https://registry.npmjs.org/npm/-/npm-3.3.3.tgz"
+    sha256 "0034a45d46ed0e592de09b48641827b9182a794e0423f7fe4d3ce91b6af7b097"
   end
 
   resource "icu4c" do
