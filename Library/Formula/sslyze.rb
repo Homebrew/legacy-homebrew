@@ -6,10 +6,11 @@ class Sslyze < Formula
   version "0.11.0"
 
   bottle do
-    cellar :any
-    sha256 "af01a93c9a4b8d8e38c4b03255fd522234fdb24165cdde6b5a910187fa9fa16b" => :yosemite
-    sha256 "63f3129057130bc335464e64ac4a408947c39f58d04b051a55360644b05bc803" => :mavericks
-    sha256 "6ef8e398d5ecd7b71e80d8fe113c23acd5be75055bf8253dbb42e2e4a0e825d8" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "473288500a16b32e0c5031fcec056c817da68a45cf8821b7ca04fb58ff87c1bc" => :el_capitan
+    sha256 "762c505503cc5582777d342786a2be10dd020b90de08a4e98cbe0625b74f5d09" => :yosemite
+    sha256 "0c2e3a2e463652fd2290e00434c4900ca10b5083aefecd2d489e3ccfceb8ac5f" => :mavericks
   end
 
   depends_on :arch => :x86_64
