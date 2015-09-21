@@ -5,6 +5,13 @@ class Vdirsyncer < Formula
   sha256 "0d2a9677b086cfbe5fe5e7cb5e55db4c1afab62cb5dc56aeaff6e95d34bf60d5"
   head "https://github.com/untitaker/vdirsyncer.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "5a075cb9ad8523b8a8689929f241c885f12d0ef7026431d0c37cb7e8eefa5bba" => :el_capitan
+    sha256 "a66186aecfba8ca661cd42c6759f01380ca79319537da47ec30346e0b6f17ccf" => :yosemite
+    sha256 "9aa878ddfc411b84f951a1bff222bd4499264b5cf80c1edb261e126a48350b9d" => :mavericks
+  end
+
   option "without-keyring", "Build without python-keyring support"
 
   depends_on :python3
