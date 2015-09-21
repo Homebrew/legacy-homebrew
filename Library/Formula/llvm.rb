@@ -49,6 +49,11 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
       sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
     end
+
+    resource "compiler-rt" do
+      url "http://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz"
+      sha256 "0f2ff37d80a64575fecd8cf0d5c50f7ac1f837ddf700d1855412bb7547431d87"
+    end
   end
 
   bottle do
@@ -81,6 +86,10 @@ class Llvm < Formula
     resource "clang-tools-extra" do
       url "http://llvm.org/git/clang-tools-extra.git"
     end
+
+    resource "compiler-rt" do
+      url "http://llvm.org/git/compiler-rt.git"
+    end
   end
 
   option :universal
@@ -112,6 +121,37 @@ class Llvm < Formula
   fails_with :gcc
   fails_with :llvm
 
+  # Disable superenv if building with additional runtime libraries (compiler-rt)
+  #
+  # Something about superenv confuses the linker when compiling the support
+  # libraries (compiler-rt). Linking fails with errors similar to:
+  #   ...
+  #   ld: building for iOS simulator, but linking against dylib built for OSX,
+  #     file '/usr/lib/libc++.dylib' for architecture x86_64
+  #   clang: error: linker command failed with exit code 1 (use -v to see invocation)
+  #   make[2]: *** [lib/clang/3.8.0/lib/darwin/
+  #     libclang_rt.ubsan_iossim_dynamic.dylib] Error 1
+  #   ...
+  #   fatal error: /Applications/Xcode-beta.app/Contents/Developer/Toolchains/
+  #     XcodeDefault.xctoolchain/usr/bin/lipo: specifed architecture type (i386)
+  #     for file (/tmp/llvm20150910-69149-1cdqr2s/./lib/clang/3.8.0/lib/darwin/
+  #     libclang_rt.builtins_i386_iossim.a) does not match its cputype
+  #     (16777223) and cpusubtype (3) (should be cputype (7) and cpusubtype (3))
+  #   make[2]: *** [projects/compiler-rt/lib/builtins/
+  #     libclang_rt.builtins_iossim.a] Error 1
+  #   <cleanup and display error>
+  # Unfortunately, the reason the linker is doing this is not known at this
+  # time (11 September 2015). This is not the only incident of its kind; see:
+  #     https://forums.developer.apple.com/thread/13795
+  # so it is possible that this can be removed if/when XCode and/or the CLT get
+  # fixed.
+  #
+  # Builds without these support libraries completed normally, which is why
+  # this change was not required earlier. In addition, the libraries are only
+  # built when clang is built
+
+  env :std if build.with? "clang"
+
   def install
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
@@ -124,6 +164,7 @@ class Llvm < Formula
       (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"tools/clang").install resource("clang")
       (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
+      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
