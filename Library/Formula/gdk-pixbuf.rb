@@ -1,8 +1,8 @@
 class GdkPixbuf < Formula
   desc "Toolkit for image loading and pixel buffer manipulation"
   homepage "http://gtk.org"
-  url "https://download.gnome.org/sources/gdk-pixbuf/2.30/gdk-pixbuf-2.30.8.tar.xz"
-  sha256 "4853830616113db4435837992c0aebd94cbb993c44dc55063cee7f72a7bef8be"
+  url "https://download.gnome.org/sources/gdk-pixbuf/2.32/gdk-pixbuf-2.32.0.tar.xz"
+  sha256 "537655ec3635740e949457bafe61ae44ce0e5642a2529a9ef7ee0bcd5e911b67"
 
   bottle do
     revision 1
