@@ -1,8 +1,8 @@
 class Libgweather < Formula
   desc "GNOME library for weather, locations and timezones"
   homepage "https://wiki.gnome.org/Projects/LibGWeather"
-  url "https://download.gnome.org/sources/libgweather/3.16/libgweather-3.16.1.tar.xz"
-  sha256 "db0955261427bb0f1a3f2747507863c591bf2f09dc477cfbf1cea0382cd34dfd"
+  url "https://download.gnome.org/sources/libgweather/3.18/libgweather-3.18.0.tar.xz"
+  sha256 "8f4fda67f48c776f2bf955d384de4cc842aacb8d9b2ad87b42d83d0dc5a1cb1f"
 
   bottle do
     sha256 "ae8ac3b9b453987d4982d639532e3984d9781aa1a65e6d384501986a23c5db5a" => :yosemite
