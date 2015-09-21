@@ -18,7 +18,6 @@
 # --dry-run:       Just print commands, don't run them.
 # --fail-fast:     Immediately exit on a failing step.
 # --verbose:       Print out all logs in realtime
-# --no-verbose-install: Don't run `brew install` with `--verbose`.
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
@@ -532,7 +531,6 @@ module Homebrew
       test "brew", "fetch", "--retry", *formula_fetch_options
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
       install_args = []
-      install_args << "--verbose" unless ARGV.include? "--no-verbose-install"
       install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
@@ -849,6 +847,7 @@ module Homebrew
     ENV["HOMEBREW_DEVELOPER"] = "1"
     ENV["HOMEBREW_SANDBOX"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
+    ENV["HOMEBREW_FAIL_LOG_LINES"] = "150"
     ARGV << "--verbose" if ENV["TRAVIS"]
 
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
