@@ -142,7 +142,6 @@ module Homebrew
       end
 
       verbose = ARGV.verbose?
-      puts if verbose && !ENV["TRAVIS"]
       @output = ""
       working_dir = Pathname.new(@command.first == "git" ? @repository : Dir.pwd)
       read, write = IO.pipe
