@@ -1,8 +1,8 @@
 class Glib < Formula
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "https://download.gnome.org/sources/glib/2.44/glib-2.44.1.tar.xz"
-  sha256 "8811deacaf8a503d0a9b701777ea079ca6a4277be10e3d730d2112735d5eca07"
+  url "https://download.gnome.org/sources/glib/2.46/glib-2.46.0.tar.xz"
+  sha256 "b1cee83469ae7d80f17c267c37f090414e93960bd62d2b254a5a96fbc5baacb4"
 
   bottle do
     sha256 "0f3aff4d1d2fa8145ae4acdd52128e3e723049ea85bdc1fca7702a2822ee1e84" => :el_capitan
@@ -45,8 +45,8 @@ class Glib < Formula
   # to unrelated issues in GCC, but improves the situation.
   # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/9835034/raw/282d36efc126272f3e73206c9865013f52d67cd8/gio.patch"
-    sha256 "d285c70cfd3434394a1c77c92a8d2bad540c954aad21e8bb83777482c26aab9a"
+    url "https://gist.githubusercontent.com/tschoonj/0977f68918e535ad6c27/raw/6b322d5cde85c53916518857c4d78a99f63c640e/gio.patch"
+    sha256 "cc3f0f6d561d663dfcdd6154b075150f68a36f5a92f94e5163c1c20529bfdf32"
   end
 
   patch do
@@ -59,6 +59,10 @@ class Glib < Formula
 
     inreplace %w[gio/gdbusprivate.c gio/xdgmime/xdgmime.c glib/gutils.c],
       "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
+
+    # renaming is necessary for patches to work
+    mv "gio/gcocoanotificationbackend.c", "gio/gcocoanotificationbackend.m"
+    mv "gio/gnextstepsettingsbackend.c", "gio/gnextstepsettingsbackend.m"
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[
