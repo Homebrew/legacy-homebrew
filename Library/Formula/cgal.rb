@@ -6,6 +6,7 @@ class Cgal < Formula
 
   bottle do
     cellar :any
+    sha256 "32eea5b3030bc61a7a5e8143694320dd478b1fc6fb8e285c38bc9ae8a3ce0bad" => :el_capitan
     sha256 "a729d74f92920f5d19850187bd026707ce435df5137968da32bfba88fb24f38e" => :yosemite
     sha256 "ab7d1c685f33fae339d11d0c9d71aacd43835f2fb61778aa86776bafdb0b4560" => :mavericks
     sha256 "83c449caa96e82718aeaf3bf7e17b62b964bb21c64109bd9368645159413db8b" => :mountain_lion
