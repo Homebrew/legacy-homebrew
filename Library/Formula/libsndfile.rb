@@ -8,6 +8,7 @@ class Libsndfile < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "55cacc1278d4f6d2d4843670b8313f1b06ffdaf9bad4c7e9498f2df5246726ee" => :el_capitan
     sha1 "6bbba8972b492d3a287e6f10d39115ca980224ec" => :yosemite
     sha1 "07d424bd9d4f051495538edd0899b191495457c5" => :mavericks
     sha1 "9ed12d6cc31e2a63d14fb175bba7b5d68145cc94" => :mountain_lion
