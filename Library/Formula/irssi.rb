@@ -16,6 +16,7 @@ class Irssi < Formula
 
   bottle do
     revision 2
+    sha256 "2446b2960e3bef1f184fbe0801490d2a15ca7b8d61b7652a5dbbf499ec351edc" => :el_capitan
     sha256 "a3f40b5a09cd11ee4fe46420b03fe8ac99c1603ac560cdd56b373745d5a07b6b" => :yosemite
     sha256 "58a876749226ac7f862bdd8ba2d8c1b3aa9f5f9e9bc69e6d7671a32899b108e8" => :mavericks
     sha256 "dbe24bf6031f96b060884f07dcfc33e00fca993001c3676ce949f6f00522ba88" => :mountain_lion
