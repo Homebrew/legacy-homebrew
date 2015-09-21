@@ -6,9 +6,9 @@ class Libpst < Formula
 
   bottle do
     cellar :any
-    sha1 "9c4d9e444577b05d8fd6fe9759840f29776639de" => :yosemite
-    sha1 "0b7150bc158799b80cdaf6b5cfdfae740214ee96" => :mavericks
-    sha1 "f604465213aae3bc5711fa8633cf25e910dd4799" => :mountain_lion
+    sha256 "aa3c7936beb062ce12570429c321a3538add1039f9f5dcf57a105f30a2e27b1a" => :el_capitan
+    sha256 "9ee327766259c9fe31b61c42a506d1c6d34463e10695e4426871ec41d7a84433" => :yosemite
+    sha256 "d7a025eb8594adefbe85bb80c4604a600a7be9f068f7e9052ae64b40199c0767" => :mavericks
   end
 
   option "with-pst2dii", "Build pst2dii using gd"
