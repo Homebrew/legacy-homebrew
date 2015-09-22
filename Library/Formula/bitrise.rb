@@ -3,8 +3,8 @@ require "language/go"
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/1.0.0.tar.gz"
-  sha256 "364476e0bbdb75a09c2b500b83e3049293c47679d4fb9023a53addc4a61eb9f3"
+  url "https://github.com/bitrise-io/bitrise/archive/1.1.2.tar.gz"
+  sha256 "95f381dce0c5bef8609f8e3af44a8e6844a5f7ac10e95d4d4ad78d7490bd60c8"
 
   bottle do
     cellar :any_skip_relocation
@@ -21,8 +21,8 @@ class Bitrise < Formula
   end
 
   resource "stepman" do
-    url "https://github.com/bitrise-io/stepman/archive/0.9.14.tar.gz"
-    sha256 "e8153e409009d15f2a74909ccceb1cf616500da06e0e0071ac39b1b42821dff2"
+    url "https://github.com/bitrise-io/stepman/archive/0.9.16.tar.gz"
+    sha256 "b2f99d31c7fbaa230759647c2aea42c88a762b32ef576951d6fc357287aaeb19"
   end
 
   def go_install_package(basepth, pkgname)
