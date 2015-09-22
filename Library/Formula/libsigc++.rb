@@ -18,6 +18,9 @@ class Libsigcxx < Formula
     ENV.cxx11
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
+    # make check currently fails
+    # reported upstream as https://bugzilla.gnome.org/show_bug.cgi?id=755393
+    # system "make", "check"
     system "make", "install"
   end
   test do
