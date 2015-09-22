@@ -5,10 +5,9 @@ class Atk < Formula
   sha256 "ce6c48d77bf951083029d5a396dd552d836fff3c1715d3a7022e917e46d0c92b"
 
   bottle do
-    sha256 "806e5aae2d6b9e2cdb30779fdde7be12615fb8c43dcc2bbfab82a4fd1cd5dd04" => :el_capitan
-    sha256 "128b040fbcf11591d3fef7bff779b958fb1fd4ce49715a14427fd5f8aba81010" => :yosemite
-    sha256 "50a58e13caac37709dd4cb9d7414393ded99aa17ca8037316d0dd0cb9018286d" => :mavericks
-    sha256 "7a7f9f7a5532e454434eeb4d33abd52cf7a568c259b407b61af1705233f0ea6c" => :mountain_lion
+    sha256 "67f3e86e1f8a7907bb87f51f2f6f16d43fac06377c2aac6815b47b1e70cbef0c" => :el_capitan
+    sha256 "b0aa68237cb50981c19a7c2b5873a17d30912cac2bd6c9aedf6a5fb297d9e4dd" => :yosemite
+    sha256 "a0b8f30dd3a0fdce58456be54b5b57793265a42644b6a2a05124bfb1809cea40" => :mavericks
   end
 
   depends_on "pkg-config" => :build
