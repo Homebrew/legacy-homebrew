@@ -8,6 +8,7 @@ class Pyside < Formula
   head "https://github.com/PySide/PySide.git"
 
   bottle do
+    sha256 "4b07af0f3df67dd693a79f381be679f311d48c7bf5d65481ac11afcc165e342c" => :el_capitan
     sha1 "8137d4ab768f0b621c76f3e8f51aff9594527b7a" => :yosemite
     sha1 "23cceb7a03918cb1aa1e897c9ed1b3224610c2d2" => :mavericks
     sha1 "370b1d0fc1099689977ba04eb3602c41b5def89c" => :mountain_lion
