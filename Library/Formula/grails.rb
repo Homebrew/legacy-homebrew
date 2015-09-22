@@ -1,8 +1,8 @@
 class Grails < Formula
   desc "Web application framework for the Groovy language"
   homepage "https://grails.org"
-  url "https://github.com/grails/grails-core/releases/download/v3.0.6/grails-3.0.6.zip"
-  sha256 "a968ba44ae8b5c8d68102ba55a3834a6723602b07dc32abd23b93449e2543183"
+  url "https://github.com/grails/grails-core/releases/download/v3.0.7/grails-3.0.7.zip"
+  sha256 "d99b11e4a8fb1f5a155f1784f482316df96e63d094d5d083a62bc37905380800"
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
