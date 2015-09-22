@@ -111,7 +111,7 @@ class Llvm < Formula
   end
 
   option :universal
-  option "with-clang", "Build Clang support library"
+  option "with-clang", "Build the Clang compiler and support libraries"
   option "with-extra-tools", "Build extra tools for Clang"
   option "with-libcxx", "Build the libc++ standard library"
   option "with-lld", "Build LLD linker"
