@@ -5,9 +5,10 @@ class Yafc < Formula
   sha256 "63a32556ed16a589634a5aca3f03134b8d488e06ecb36f9df6ef450aa3a47973"
 
   bottle do
-    revision 1
-    sha256 "b87148e473ec1eb83a41b972a019b6b21666a79c28c98e5e73b8583fc4e0d407" => :yosemite
-    sha256 "745665aeff483e13c92cfe7c7c1d33ec3b724ff91d772dd44a42216f15fc44af" => :mavericks
+    revision 2
+    sha256 "85e490aee51701da0f7602b9d88700f18b6b2077dcae1f17c5c479132dd78d2e" => :el_capitan
+    sha256 "3f5fc5f56cce04404d49d82173d4aea09b3fdfd3dec7b3699ea106b947a6df2a" => :yosemite
+    sha256 "5f178c01235c5dd28bd359eb295a4a0aa848649c63a0a0386f43516d32b66bd2" => :mavericks
   end
 
   depends_on "readline"
