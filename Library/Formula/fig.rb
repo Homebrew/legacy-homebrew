@@ -3,8 +3,8 @@ class Fig < Formula
   homepage "https://docs.docker.com/compose/"
 
   stable do
-    url "https://github.com/docker/compose/archive/1.4.0.tar.gz"
-    sha256 "96875473fdb1cce1d63c4bc21c2bc9bf620820fb3bdf8c590618965733418115"
+    url "https://github.com/docker/compose/archive/1.4.1.tar.gz"
+    sha256 "cc6121ac1ffe50509470bd2122c968ebb6614335bb5312327da190e2f22c35bc"
 
     resource "docker-py" do
       url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
