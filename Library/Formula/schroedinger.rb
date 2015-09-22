@@ -7,6 +7,7 @@ class Schroedinger < Formula
 
   bottle do
     cellar :any
+    sha256 "1b2986f82784266c17734725e126c50bf3075c47530bf7befc16778629bf3dda" => :el_capitan
     sha1 "a1e426a2099a31cbacdea032bef1b21fbc48ebe8" => :yosemite
     sha1 "ba01918d1a3b8874530b6ecc0fb04bdf67249724" => :mavericks
     sha1 "25945536569871536fe60e0fc97bdfc49d83e309" => :mountain_lion
