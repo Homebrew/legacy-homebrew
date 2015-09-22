@@ -9,7 +9,8 @@ class Pstree < Formula
   sha256 "7c9bc3b43ee6f93a9bc054eeff1e79d30a01cac13df810e2953e3fc24ad8479f"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "a26b20a75d2400d8cf334b01ed84e3b1226125ac5e100e9bf85a2a7bc3e6956e" => :el_capitan
     sha256 "e752523adfbaf41841223daecda76a7ba06bff2b16991a1a48ec578089585e8c" => :yosemite
     sha256 "96bdb89f6795d6299d4b0436726a9f99e986435e1513f4c720c8ac88d1485f06" => :mavericks
     sha256 "5a179b362495b0ab4af831307f536a97c697db6d3498eca84dc7c2437ea60058" => :mountain_lion
