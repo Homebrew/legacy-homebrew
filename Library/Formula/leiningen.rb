@@ -2,8 +2,8 @@ class Leiningen < Formula
   desc "Build tool for Clojure"
   homepage "https://github.com/technomancy/leiningen"
   head "https://github.com/technomancy/leiningen.git"
-  url "https://github.com/technomancy/leiningen/archive/2.5.2.tar.gz"
-  sha256 "50cd21d718603bfa4b6da673696c60482271d310f67b98a794d0413a79121a9d"
+  url "https://github.com/technomancy/leiningen/archive/2.5.3.tar.gz"
+  sha256 "e44db1e021937a6aa68635960aefe581bf4a4090f4a0e159f6a14904d8f9e9ca"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,8 +14,8 @@ class Leiningen < Formula
   end
 
   resource "jar" do
-    url "https://github.com/technomancy/leiningen/releases/download/2.5.2/leiningen-2.5.2-standalone.zip", :using => :nounzip
-    sha256 "64c70202dc7989de1b9d8b8b9b99e87dbb7698338e24d25722777412e37e1b62"
+    url "https://github.com/technomancy/leiningen/releases/download/2.5.3/leiningen-2.5.3-standalone.zip", :using => :nounzip
+    sha256 "4b0c1606b6a4816b803f1fbd704aeefc9d6e314e9b9a482d0bae0ab0079023dd"
   end
 
   def install
@@ -42,6 +42,7 @@ class Leiningen < Formula
   end
 
   test do
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{ENV["HOME"]}"
     (testpath/"project.clj").write <<-EOS.undent
       (defproject brew-test "1.0"
         :dependencies [[org.clojure/clojure "1.5.1"]])
