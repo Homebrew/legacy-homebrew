@@ -1,8 +1,8 @@
 class AtSpi2Atk < Formula
   desc "Accessibility Toolkit GTK+ module"
   homepage "http://a11y.org"
-  url "https://download.gnome.org/sources/at-spi2-atk/2.14/at-spi2-atk-2.14.1.tar.xz"
-  sha256 "058f34ea60edf0a5f831c9f2bdd280fe95c1bcafb76e466e44aa0fb356d17bcb"
+  url "https://download.gnome.org/sources/at-spi2-atk/2.18/at-spi2-atk-2.18.0.tar.xz"
+  sha256 "4a6db33453b6efd15fa7d84ef2a3421262a053f57f1df6e7a2536d02bacdf375"
 
   bottle do
     cellar :any
