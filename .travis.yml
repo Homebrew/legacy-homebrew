@@ -19,7 +19,7 @@ before_install:
   - export TRAVIS_BUILD_DIR="/usr/local"
   - sudo chown -R $USER /usr/local
   - cd /usr/local
-  - if [ -f ".git/shallow" ]; then git fetch --unshallow; fi
+  - if [ -f ".git/shallow" ]; then travis_retry git fetch --unshallow; fi
   - git reset --hard $TRAVIS_COMMIT
   - git clean -qxdff
 
