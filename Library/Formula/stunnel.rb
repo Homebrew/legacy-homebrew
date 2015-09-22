@@ -6,6 +6,7 @@ class Stunnel < Formula
   sha256 "0fc4a702afd2e857bae8ad1f39c51546eb282c3d0ff4f4d55d62aece7328ddea"
 
   bottle do
+    sha256 "a7c7556a6c17c2b5b131dcc8e5a66e3d7a7fdd5690bab34a009f359ffe59b9a2" => :el_capitan
     sha256 "754cd51e26be1d898e0bfe861baef5eae6ad20c735f5b32356c0c95467b90dd0" => :yosemite
     sha256 "fc4267fd40c4cae2f08283dd126a8c4daee78405b7574f196771fe0acfbcfccd" => :mavericks
     sha256 "44c0bdbc5102a1259d4f4617d5a2c8b5c1043a0d4e32c2a1fc4767b09674c5cb" => :mountain_lion
