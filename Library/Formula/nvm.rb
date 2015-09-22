@@ -6,7 +6,8 @@ class Nvm < Formula
   head "https://github.com/creationix/nvm.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "1ad6e167f0094fe5a913aa27f024154acb930a3f1d2cf6ef78c43e074a3eec96" => :el_capitan
     sha256 "bda39c68500fdefd63389e2b496e41288a7d9a087f48de546f37ad7a122ba1a9" => :yosemite
     sha256 "a28caf45d1b9f65bc73493562bf3eb7191fb8c4b54fcd75cf36692446245115f" => :mavericks
     sha256 "262c46a1496abb2b060a46c19ce05eb36043e2c06c29e77f90c77d64639b2870" => :mountain_lion
