@@ -1,8 +1,8 @@
 class Gtkmm3 < Formula
   desc "C++ interfaces for GTK+ and GNOME"
   homepage "http://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/gtkmm/3.16/gtkmm-3.16.0.tar.xz"
-  sha256 "9b8d4af5e1bb64e52b53bc8ef471ef43e1b9d11a829f16ef54c3a92985b0dd0c"
+  url "https://download.gnome.org/sources/gtkmm/3.18/gtkmm-3.18.0.tar.xz"
+  sha256 "829fa113daed74398c49c3f2b7672807f58ba85d0fa463f5bc726e1b0138b86b"
 
   bottle do
     sha256 "a07b50d5f0475e3b785400c90ab17912fb036f6c5e04a07f4c63bfb7791bef34" => :yosemite
@@ -15,7 +15,10 @@ class Gtkmm3 < Formula
   depends_on "pangomm"
   depends_on "atkmm"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
@@ -115,7 +118,7 @@ class Gtkmm3 < Formula
       -lpangomm-1.4
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
