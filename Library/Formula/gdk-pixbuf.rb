@@ -21,6 +21,9 @@ class GdkPixbuf < Formula
   depends_on "libpng"
   depends_on "gobject-introspection"
 
+  # disable the default relocatable library setting
+  patch :DATA
+
   # 'loaders.cache' must be writable by other packages
   skip_clean "lib/gdk-pixbuf-2.0"
 
@@ -67,3 +70,17 @@ class GdkPixbuf < Formula
     system bin/"gdk-pixbuf-csource", test_fixtures("test.png")
   end
 end
+
+__END__
+diff --git a/configure b/configure
+index ca603b8..2a8d073 100755
+--- a/configure
++++ b/configure
+@@ -20665,7 +20665,7 @@ esac
+
+ if test "x$enable_relocations" = "xyes"; then
+
+-$as_echo "#define GDK_PIXBUF_RELOCATABLE 1" >>confdefs.h
++$as_echo "#undef GDK_PIXBUF_RELOCATABLE" >>confdefs.h
+
+ fi
