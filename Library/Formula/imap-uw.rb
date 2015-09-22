@@ -9,6 +9,7 @@ class ImapUw < Formula
 
   bottle do
     cellar :any
+    sha256 "0675f08cd452452aa16ad7c4a779734af0959e16caced6fb44cc792b274acced" => :el_capitan
     sha1 "74c958abb4628c752632abf47cfc7b96ab034e8b" => :yosemite
     sha1 "8e635bb16b3053ff8bef24fc8261c572fa48ea91" => :mavericks
     sha1 "a68b0990595cefe59e74b8aab30928ab37cbf6f4" => :mountain_lion
