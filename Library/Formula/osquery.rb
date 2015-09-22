@@ -9,6 +9,7 @@ class Osquery < Formula
 
   bottle do
     revision 1
+    sha256 "cd0946321541201e9ee054f409bf23bfe4f42e00c6ed8dd87eb09f38c925affc" => :el_capitan
     sha256 "0f45aeb033ed4393c66bbf7b926ab9ecb9f537372fc12b4127d2d61c236e3450" => :yosemite
     sha256 "c8c818319a762e0f300cf2d01c2697b0de2348bc83075b8d6713ab5ebbe280a5" => :mavericks
   end
