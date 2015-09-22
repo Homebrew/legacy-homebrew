@@ -63,6 +63,14 @@ class Python < Formula
   # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
   patch :DATA if build.with? "tcl-tk"
 
+  # Fix extension module builds against Xcode 7 SDKs
+  # https://github.com/Homebrew/homebrew/issues/41085
+  # https://bugs.python.org/issue25136
+  patch do
+    url "https://bugs.python.org/file40479/xcode-stubs-2.7.patch"
+    sha256 "86714b750c887065952cd556f4d23246edf3124384f579356c8e377bc6ff2f83"
+  end
+
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"
   end
