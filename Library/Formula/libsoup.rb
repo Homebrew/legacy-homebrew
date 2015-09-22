@@ -5,6 +5,7 @@ class Libsoup < Formula
   sha256 "6c6c366622a1a9d938e0cea9b557fa536f088784251d31381ccd1b115a466785"
 
   bottle do
+    sha256 "d5a9537de3567e4824d88804358c5efb1f76e8c88d350f8d387c75b1babe5e18" => :el_capitan
     sha256 "ee2c2f86d70ad5773bdd8163138f30b7dc9b362753a46080309e7824d465e13a" => :yosemite
     sha256 "844f476c44c391a4d8f4fdb3e6178cc12b4d8ba5a01dce7671f0cc6d27e0983c" => :mavericks
     sha256 "7f197f9fd8a36fa97d01830e3beb6973ba5dc2a654f924ee45e226a56be80574" => :mountain_lion
@@ -25,9 +26,11 @@ class Libsoup < Formula
       "--disable-silent-rules",
       "--prefix=#{prefix}",
       "--without-gnome",
-      "--disable-tls-check"
+      "--disable-tls-check",
     ]
 
+    # ensures that the vala files remain within the keg
+    inreplace "libsoup/Makefile.in", "VAPIDIR = @VAPIDIR@", "VAPIDIR = @datadir@/vala/vapi"
     system "./configure", *args
     system "make", "install"
   end
