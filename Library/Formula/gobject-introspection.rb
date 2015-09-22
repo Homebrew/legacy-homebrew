@@ -1,8 +1,8 @@
 class GobjectIntrospection < Formula
-  desc "Generate interface introspection data for GObject libraries"
+  desc "Generate introspection data for GObject libraries"
   homepage "https://live.gnome.org/GObjectIntrospection"
-  url "https://download.gnome.org/sources/gobject-introspection/1.44/gobject-introspection-1.44.0.tar.xz"
-  sha256 "6f0c2c28aeaa37b5037acbf21558098c4f95029b666db755d3a12c2f1e1627ad"
+  url "https://download.gnome.org/sources/gobject-introspection/1.46/gobject-introspection-1.46.0.tar.xz"
+  sha256 "6658bd3c2b8813eb3e2511ee153238d09ace9d309e4574af27443d87423e4233"
 
   bottle do
     revision 2
@@ -16,6 +16,7 @@ class GobjectIntrospection < Formula
 
   depends_on "pkg-config" => :run
   depends_on "glib"
+  depends_on "cairo"
   depends_on "libffi"
 
   resource "tutorial" do
