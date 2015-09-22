@@ -6,10 +6,11 @@ class Cairomm < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "8e3d574df6640965c1801f0d70950b1f1b41031bddf82ccb109dcc11276bc78f" => :yosemite
-    sha256 "27339feb44c56a23899bbadea5c085a99129ce6541b0d956909ccba9839fd841" => :mavericks
-    sha256 "f38db939a7ff7b69742caef42ecbe5210dc4063c84dc11048430fc06f1bf186e" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "f8e2abb4ac5f045da5f0b95bb548a4b68ad6eeca301fcc46c0a8260e60d47404" => :el_capitan
+    sha256 "18ca6f729538f884fade67fee027e54265fe2bee60ccffaf6f5d19603ec87580" => :yosemite
+    sha256 "7ecc1bc6775f3286561b178012109d249935ad8d56fb5996d43071ac897ffb2b" => :mavericks
   end
 
   option :cxx11
