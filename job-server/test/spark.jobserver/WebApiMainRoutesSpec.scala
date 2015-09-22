@@ -82,13 +82,13 @@ class WebApiMainRoutesSpec extends WebApiSpec {
     }
 
     it("should merge user passed jobConfig with default jobConfig") {
-      val config2 = "foo.baz = booboo"
+      val config2 = "foo.baz = booboo, spark.master=overriden"
       Post("/jobs?appName=foo&classPath=com.abc.meme&context=one&sync=true", config2) ~>
           sealRoute(routes) ~> check {
         status should be (OK)
         responseAs[Map[String, Any]] should be (Map(
           StatusKey -> "OK",
-          ResultKey -> Map(masterConfKey->masterConfVal, bindConfKey -> bindConfVal, "foo.baz" -> "booboo", "shiro.authentication" -> "off")
+          ResultKey -> Map(masterConfKey->"overriden", bindConfKey -> bindConfVal, "foo.baz" -> "booboo", "shiro.authentication" -> "off")
         ))
       }
     }
