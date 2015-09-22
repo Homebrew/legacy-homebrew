@@ -1,8 +1,8 @@
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
-  homepage "http://www.cse.wustl.edu/~schmidt/ACE.html"
-  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.2.tar.bz2"
-  sha256 "d8e5ad92eab743936fb8921301e7df09a4d331270be2b7b3dec7f47b8ba2ce5f"
+  homepage "http://www.dre.vanderbilt.edu/~schmidt/ACE.html"
+  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.3.tar.bz2"
+  sha256 "f362e45f624db3343db529654b601d5df69b5f56fa4597cf453da35d80989888"
 
   bottle do
     cellar :any
@@ -11,19 +11,7 @@ class Ace < Formula
     sha256 "6d9e043cef8e05e73e144f41a50f616599cc26fb91d5da016f525e989d32eed8" => :mountain_lion
   end
 
-  # Add config/platform support for El Capitan
-  # https://github.com/DOCGroup/ATCD/pull/141
-  patch :p2 do
-    url "https://github.com/DOCGroup/ATCD/pull/141.diff"
-    sha256 "4a9584c2eb876245ee1f8442886663a83937380ed5d2ceb70e3594b702f544bb"
-  end
-
   def install
-    # ACE has two methods of compilation, "traditional" and ./configure.
-    # The "traditional" method has consistently given better results
-    # for the last 5 years, so although awkward to use on OSX, we use
-    # it anyway.
-
     # Figure out the names of the header and makefile for this version
     # of OSX and link those files to the standard names.
     name = MacOS.cat.to_s.delete "_"
