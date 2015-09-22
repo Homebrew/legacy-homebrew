@@ -7,6 +7,7 @@ class Ideviceinstaller < Formula
 
   bottle do
     cellar :any
+    sha256 "f4bc3065ea5965fe26c793624b4d40fd7eef863c265c311f9c3b6fcf47ff641f" => :el_capitan
     sha1 "893e9e6cb97a2073bb0b42e9ae09cd5d085f6f0f" => :yosemite
     sha1 "e484976abf87bbf958c003b5f651db9329be862b" => :mavericks
     sha1 "7a8a684bb21b714c447fa484fa6cd4a8f6027313" => :mountain_lion
