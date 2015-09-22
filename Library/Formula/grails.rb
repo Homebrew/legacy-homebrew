@@ -21,4 +21,5 @@ class Grails < Formula
     output = shell_output("#{bin}/grails --version")
     assert_match /Grails Version: #{version}/, output
   end
+
 end
