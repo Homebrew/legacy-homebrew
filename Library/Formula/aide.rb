@@ -24,6 +24,7 @@ class Aide < Formula
                           "--disable-static",
                           "--with-curl",
                           "--with-zlib",
+                          "--sysconfdir=#{etc}",
                           "--prefix=#{prefix}"
 
     system "make", "install"
@@ -31,18 +32,15 @@ class Aide < Formula
 
   test do
     (testpath/"aide.conf").write <<-EOS.undent
-      database=file:/var/lib/aide/aide.db
-      database_out=file:/var/lib/aide/aide.db.new
-      database_new=file:/var/lib/aide/aide.db.new
-      gzip_dbout=yes
-      summarize_changes=yes
-      grouped=yes
-      verbose = 6
-      Checksums = sha256
-      database_attrs = Checksums
-      OwnerMode = p+u+g+ftype
-      Size = s+b
-      /etc p+i+u+g
+      database = file:/var/lib/aide/aide.db
+      database_out = file:/var/lib/aide/aide.db.new
+      database_new = file:/var/lib/aide/aide.db.new
+      gzip_dbout = yes
+      summarize_changes = yes
+      grouped = yes
+      verbose = 7
+      database_attrs = sha256
+      /etc p+i+u+g+sha256
     EOS
     system "#{bin}/aide", "--config-check", "-c", "aide.conf"
   end
