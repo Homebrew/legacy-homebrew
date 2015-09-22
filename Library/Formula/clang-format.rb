@@ -4,7 +4,8 @@ class ClangFormat < Formula
   version "2015-07-31"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "d1ff454a7c7a070cdf0a80de14378b8f0a6571e9c19711e8290db6fe659947e6" => :el_capitan
     sha256 "23f3215f23cd4bc36d9b37ee566a3482f7b70a3baa887730a83067934a300b10" => :yosemite
     sha256 "c645415feb57129f30247ade34fc25ca17fc9e72619d52f1b93b086cca411426" => :mavericks
     sha256 "280f1a6c6c1d7823739027582c568f32bd88ca5d96d946230e6a7bfeddd46962" => :mountain_lion
