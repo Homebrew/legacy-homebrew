@@ -1,8 +1,8 @@
 class AtSpi2Core < Formula
   desc "Protocol definitions and daemon for D-Bus at-spi"
   homepage "http://a11y.org"
-  url "https://download.gnome.org/sources/at-spi2-core/2.14/at-spi2-core-2.14.1.tar.xz"
-  sha256 "eef9660b14fdf0fb1f30d1be7c72d591fa7cbb87b00ca3a444425712f46ce657"
+  url "https://download.gnome.org/sources/at-spi2-core/2.18/at-spi2-core-2.18.0.tar.xz"
+  sha256 "1aeec77db6eb8087049af39a07f55756c55319f739d2998030fe6f4ced03ca76"
 
   bottle do
     sha256 "b15229c8b3d6d349c44038d0da14817f96bbbc68e8b263c986891ca75bd575fd" => :el_capitan
@@ -17,11 +17,12 @@ class AtSpi2Core < Formula
   depends_on "glib"
   depends_on "d-bus"
   depends_on :x11
+  depends_on "gobject-introspection"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--enable-introspection=no"
+                          "--enable-introspection=yes"
     system "make", "install"
   end
 end
