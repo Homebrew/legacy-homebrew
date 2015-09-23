@@ -6,8 +6,8 @@ class Bee < Formula
 
   def install
     rm_rf Dir["bin/*.bat"]
-    libexec.install Dir["*"]
-    bin.install_symlink "#{libexec}/bin/bee" => "bee"
+    bin.install Dir["bin/*"]
+    lib.install Dir["lib/*"]
   end
 
   test do
@@ -17,7 +17,7 @@ class Bee < Formula
       test-database.user=root
       test-database.password=
     EOS
-    mkdir "#{testpath}/bee"
-    system "#{libexec}/bin/bee", "dbchange:create new-file"
+    (testpath/"bee").mkpath
+    system bin/"bee", "dbchange:create new-file"
   end
 end
