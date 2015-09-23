@@ -41,6 +41,7 @@ class Leiningen < Formula
   end
 
   test do
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{ENV["HOME"]}"
     (testpath/"project.clj").write <<-EOS.undent
       (defproject brew-test "1.0"
         :dependencies [[org.clojure/clojure "1.5.1"]])
