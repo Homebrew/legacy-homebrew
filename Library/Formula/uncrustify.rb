@@ -7,7 +7,8 @@ class Uncrustify < Formula
   head "https://github.com/bengardner/uncrustify.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "0d6c1d92a813e4a27140bf85e5f859749573b715c73c77f1efb381f95b304f47" => :el_capitan
     sha1 "82e6f950648e0a04411e84a563ff96a50b2b8efc" => :yosemite
     sha1 "9040d701020412937138be6e1521d136d44961b3" => :mavericks
     sha1 "999421447b999f73f5850e3275e5f47775e0cc27" => :mountain_lion
