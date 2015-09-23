@@ -8,7 +8,8 @@ class ThePlatinumSearcher < Formula
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "6a1d8043f8cebab8920e471f6d3e81d7616b44f9cb3c9a489d872198488eb280" => :el_capitan
     sha256 "b54f456ff639feb502bb0d2e26e56d88226df18588617c43be4701cd04a68be7" => :yosemite
     sha256 "a3d438fb5d3caf361b58b482b77d58a72534ed4d91d16194702d35c3790c182a" => :mavericks
     sha256 "66fa09e74f3cb51a3e54623e0a6b4af1fe3cc1b2b010abd62157f7c189f06aec" => :mountain_lion
