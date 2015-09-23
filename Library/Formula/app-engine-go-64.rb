@@ -8,10 +8,10 @@ class AppEngineGo64 < Formula
   conflicts_with "google-app-engine", :because => "multiple conflicting files"
 
   bottle do
-    cellar :any
-    sha256 "570879ba2f65c72dd6810f66634acaf4ab26490a1bba56abb7dc9af64b0a9246" => :yosemite
-    sha256 "4cc613d80404728a2166458e07d2973c1330206229e4149aa4580fc9c83d4882" => :mavericks
-    sha256 "532269adfd541ac1ac9c8d9828f2460af20ecb466f0993239001b782635c9940" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d91f0fe524e9c95e949d55b4527c980c1de7a63dce1bac22de56d9401e3cdacc" => :el_capitan
+    sha256 "e94cbf02fd1a1ffa759787d9d157ddd3ee9182ea4abf27e30d90e766556f69cb" => :yosemite
+    sha256 "6094c41c3c019bc0a23282b3c7bf6ad7ca3edd9fefaabeddb83f2101ec2fd5a6" => :mavericks
   end
 
   def install
