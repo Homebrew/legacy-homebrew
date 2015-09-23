@@ -5,6 +5,7 @@ class AtSpi2Core < Formula
   sha256 "eef9660b14fdf0fb1f30d1be7c72d591fa7cbb87b00ca3a444425712f46ce657"
 
   bottle do
+    sha256 "b15229c8b3d6d349c44038d0da14817f96bbbc68e8b263c986891ca75bd575fd" => :el_capitan
     sha1 "55a2b1ac3135f842dcc0b6a6549fd8759dba04d9" => :yosemite
     sha1 "b36adb7ba21229a29bd197a2c608590c3bd4fc40" => :mavericks
     sha1 "40096cac5242b87318ee81ccc07252e1a6a5331c" => :mountain_lion
