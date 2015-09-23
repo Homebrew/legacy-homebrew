@@ -3,8 +3,8 @@ class DockerCompose < Formula
   homepage "https://docs.docker.com/compose/"
 
   stable do
-    url "https://github.com/docker/compose/archive/1.4.1.tar.gz"
-    sha256 "cc6121ac1ffe50509470bd2122c968ebb6614335bb5312327da190e2f22c35bc"
+    url "https://github.com/docker/compose/archive/1.4.2.tar.gz"
+    sha256 "cc11f8281f0cf99fcb5502edb6e0d49caca26f4a11570b8ad68943bd3a97dd5c"
 
     resource "docker-py" do
       url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
