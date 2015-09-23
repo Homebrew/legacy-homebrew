@@ -1255,6 +1255,8 @@ class Formula
   # system "make", "install"</pre>
   def system(cmd, *args)
     verbose = ARGV.verbose?
+    verbose_using_dots = !ENV["HOMEBREW_VERBOSE_USING_DOTS"].nil?
+
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
@@ -1288,9 +1290,23 @@ class Formula
           end
           wr.close
 
-          while buf = rd.gets
-            log.puts buf
-            puts buf
+          if verbose_using_dots
+            last_dot = Time.at(0)
+            while buf = rd.gets
+              log.puts buf
+              # make sure dots printed with interval of at least 1 min.
+              if (Time.now - last_dot) > 60
+                print "."
+                $stdout.flush
+                last_dot = Time.now
+              end
+            end
+            puts
+          else
+            while buf = rd.gets
+              log.puts buf
+              puts buf
+            end
           end
         ensure
           rd.close

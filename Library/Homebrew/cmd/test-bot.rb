@@ -530,7 +530,7 @@ module Homebrew
       formula_fetch_options << canonical_formula_name
       test "brew", "fetch", "--retry", *formula_fetch_options
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
-      install_args = []
+      install_args = ["--verbose"]
       install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
@@ -848,7 +848,11 @@ module Homebrew
     ENV["HOMEBREW_SANDBOX"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
     ENV["HOMEBREW_FAIL_LOG_LINES"] = "150"
-    ARGV << "--verbose" if ENV["TRAVIS"]
+
+    if ENV["TRAVIS"]
+      ARGV << "--verbose"
+      ENV["HOMEBREW_VERBOSE_USING_DOTS"] = "1"
+    end
 
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
        || ARGV.include?("--ci-testing")
