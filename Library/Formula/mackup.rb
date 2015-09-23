@@ -7,7 +7,8 @@ class Mackup < Formula
   head "https://github.com/lra/mackup.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "92b749f52ce8d6c148b4265b39691c0b7597397297438884af10f7e0544d83a3" => :el_capitan
     sha256 "ebc86d8c0fdc58def45abd2959378b4691a51460017133dd45021d220a1bd01e" => :yosemite
     sha256 "66597cadc051443b2d1346ff3ca21b2525b51b8525072d9890d3ae72297fe0b0" => :mavericks
     sha256 "dc88033695310bf4af0fa0a1fe586fc54722e3511d63cd050a85fc25f932e5bd" => :mountain_lion
