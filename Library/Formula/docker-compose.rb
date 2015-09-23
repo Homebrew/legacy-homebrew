@@ -1,4 +1,4 @@
-class Fig < Formula
+class DockerCompose < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
 
