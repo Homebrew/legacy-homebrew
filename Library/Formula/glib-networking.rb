@@ -6,11 +6,9 @@ class GlibNetworking < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "d23b52c4f54c495a1d1a1698c074c938c6e01aead7681264a23e90fc59a9c3a4" => :el_capitan
-    sha256 "fd29427de98662c12afd02ef385a2a99cc6117a6e1c3f0456c7c87ff6e8d1943" => :yosemite
-    sha256 "9adb59c4b037ad2c6915c0a3b192b82ef17df89a9fb9137f132d7c2a0fb7689a" => :mavericks
-    sha256 "ece7fd3deec1bfee535d19ce7494c00ed71f24816096c484b6021e148c1ad913" => :mountain_lion
+    sha256 "3c1b629da76dcdb2f6525fe68849f63afc822e772b86170c1b9af84ad6c1df3d" => :el_capitan
+    sha256 "9912eeb2398fedbe1339ab96880af9925cefa8f9de43c6bc503fbc3e569b8d72" => :yosemite
+    sha256 "a1d967fe99e015e6463e2079a26cbe26405f531076dceebb95593f4530701c79" => :mavericks
   end
 
   depends_on "pkg-config" => :build
