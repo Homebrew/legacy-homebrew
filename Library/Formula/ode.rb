@@ -23,6 +23,7 @@ class Ode < Formula
   option "with-double-precision", "Compile ODE with double precision"
   option "with-shared", "Compile ODE with shared library support"
   option "with-libccd", "Enable all libccd colliders (except box-cylinder)"
+  option "with-drawstuff", "Include the drawstuff library and demos. Requires X11."
 
   deprecated_option "enable-double-precision" => "with-double-precision"
   deprecated_option "enable-shared" => "with-shared"
@@ -31,11 +32,11 @@ class Ode < Formula
   depends_on "pkg-config" => :build
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--disable-demos"]
+    args = ["--prefix=#{prefix}"]
     args << "--enable-double-precision" if build.with? "double-precision"
     args << "--enable-shared" if build.with? "shared"
     args << "--enable-libccd" if build.with? "libccd"
+    args << "--with-demos" if build.with? "drawstuff"
 
     if build.head?
       ENV["LIBTOOLIZE"] = "glibtoolize"
