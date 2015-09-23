@@ -8,6 +8,7 @@ class Gtkglext < Formula
   bottle do
     cellar :any
     revision 2
+    sha256 "1685253493988d61a703aa506dcc8a543da32f5b23a27b4562b4604595e54dbe" => :el_capitan
     sha256 "0b2d6bfe3dca8660885a0bdb6f34a607d61511c8608af37adbc0e4878211d521" => :yosemite
     sha256 "6b0f3ff71e5581715fcf7b0834ee1ffe79d29f26c7d1687405ffbf8fc3c25442" => :mavericks
     sha256 "3a05001b2dddf5d887600a0003948b26c5f9ed8d84c82ea4ed93ae28ef5440fb" => :mountain_lion
