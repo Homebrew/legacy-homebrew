@@ -152,13 +152,6 @@ class Llvm < Formula
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
 
-    # compiler-rt has some iOS simulator features that require i386 symbols
-    # I'm assuming the rest of clang needs support too for 32-bit compilation
-    # to work correctly, but if not, perhaps universal binaries could be
-    # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
-    # can almost be treated as an entirely different build from llvm.
-    ENV.permit_arch_flags
-
     if build.with? "clang"
       (buildpath/"tools/clang").install resource("clang")
     end
@@ -199,6 +192,16 @@ class Llvm < Formula
     if build.with? "sanitizers"
       if build.with? "clang"
         (buildpath/"projects/compiler-rt").install resource("sanitizers")
+
+        # compiler-rt has some iOS simulator features that require i386 symbols
+        # I'm assuming the rest of clang needs support too for 32-bit compilation
+        # to work correctly, but if not, perhaps universal binaries could be
+        # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
+        # can almost be treated as an entirely different build from llvm.
+        # In addition, without this the build fails at clang_rt.builtins_osx,
+        # but with it makes it past, failing later, hopefully for a different reason
+        ENV.permit_arch_flags
+
       else
         odie "sanitizers must be built along with clang"
       end
