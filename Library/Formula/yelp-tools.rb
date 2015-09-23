@@ -5,9 +5,10 @@ class YelpTools < Formula
   sha256 "c6c1d65f802397267cdc47aafd5398c4b60766e0a7ad2190426af6c0d0716932"
 
   bottle do
-    sha256 "7894b375bb21f2929d52059e03c7f2e85d3f1b01a3628713bab9f8b22046177a" => :yosemite
-    sha256 "58b3f9a45cd49310e5927fb646ce7377217def692721b1b44c8ccb83ed25baa6" => :mavericks
-    sha256 "e563248856c8bf11c35b426147884e148207065de6e4adf8920fd4cdf9353207" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8191df226586af990aaf4be1cacc3e3a5b26091c138bd7d3e0e595e1792151dd" => :el_capitan
+    sha256 "93dd1e36f80961f722bf2b1ec18b66dab947984858ba3aa084e852dcdafa92bc" => :yosemite
+    sha256 "66721baa2d6c6978cceac29f35e8112e96804b6ae0197d89175867f17caca2cd" => :mavericks
   end
 
   depends_on "itstool" => :build
