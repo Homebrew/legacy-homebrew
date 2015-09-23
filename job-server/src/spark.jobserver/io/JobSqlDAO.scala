@@ -315,7 +315,6 @@ class JobSqlDAO(config: Config) extends JobDAO {
         } yield
           (j.jobId, j.contextName, jar.appName, jar.uploadTime, j.classPath, j.startTime,
             j.endTime, j.error)
-        logger.info("Query: " + joinQuery.selectStatement)
         joinQuery.list.map { case (id, context, app, upload, classpath, start, end, err) =>
           JobInfo(id,
             context,
