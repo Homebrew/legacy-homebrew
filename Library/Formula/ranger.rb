@@ -7,7 +7,8 @@ class Ranger < Formula
   head "git://git.savannah.nongnu.org/ranger.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "b71c72d76937f8ae47761ba3c642eaef9e121a1b9fc5173d56a42b321f80e9ec" => :el_capitan
     sha256 "5f0901ba96568d3f8ba713bbb39939538cbcdd1dffa06beee98c5cce13405d20" => :yosemite
     sha256 "97bf46731d0b5cc20adbd3bd6052ca36508cb3b6deccb80c42cd5cc1ab5d83bc" => :mavericks
     sha256 "f64e5e2629bcd9bffc74b3453539ce956a293cad9d2925aef5e5f1cd532c5c09" => :mountain_lion
