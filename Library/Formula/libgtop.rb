@@ -5,9 +5,9 @@ class Libgtop < Formula
   sha256 "8443246332f22b33e389f565825b58cd9623fb7625bf874d404354b705ad178e"
 
   bottle do
-    sha256 "76b362a4cf84a8a0108e34edf471fe7c621faf008d27397c55a58a852be9c14c" => :yosemite
-    sha256 "fd8b42216d86fb0550e9099a90aaf20648e070a8aab5da8c26b78cf17345de9d" => :mavericks
-    sha256 "21ea0635fb571d1820e63d6a0873b10633db1eb679da0deb21cd974167773974" => :mountain_lion
+    sha256 "6ef8bfd87b331fd871f5e3e0b8d915a39597a3c928c3c2d7393ebf402347c620" => :el_capitan
+    sha256 "52f03bdb25fba9efeb963f1715cc5e7bd47c949d3545e5af82118a5182c77eb4" => :yosemite
+    sha256 "7ea322eee9ce082ba9ba5a6b051916b5d3590b838fa52fbc22cb15de5dbc2a52" => :mavericks
   end
 
   depends_on "pkg-config" => :build
