@@ -5,6 +5,7 @@ class Lighttpd < Formula
   sha256 "804e6f60567ca1da2b3927f92b7e9332b93aca9560f282ca135b86b7558979bd"
 
   bottle do
+    sha256 "5ccc450f4e552726c108b00955c835c8b4c82ae844eb944f588cedc590f3ea43" => :el_capitan
     sha256 "31ad0f53176a0509c51b52082868a847751be055b2d0c11f16974cdb18bdfa51" => :yosemite
     sha256 "c2900f5ea5bc9cc6ebdf7e2e86724f21b2f4fed923912f2904f5466b9a040109" => :mavericks
     sha256 "0b4fd109bba1b5ad7c2ff7299fe495fe646f8bd767ddea78e6fccefeeb095347" => :mountain_lion
