@@ -34,8 +34,7 @@ trait SparkContextFactory {
    */
   def makeContext(config: Config, contextConfig: Config, contextName: String): C = {
     val sparkConf = configToSparkConf(config, contextConfig, contextName)
-    val contextCfg = config.getConfig("spark.context-settings").withFallback(contextConfig)
-    makeContext(sparkConf, contextCfg, contextName)
+    makeContext(sparkConf, contextConfig, contextName)
   }
 }
 
