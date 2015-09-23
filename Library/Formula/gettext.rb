@@ -1,9 +1,9 @@
 class Gettext < Formula
   desc "GNU internationalization (i18n) and localization (l10n) library"
   homepage "https://www.gnu.org/software/gettext/"
-  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.5.1.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.5.1.tar.xz"
-  sha256 "66da00dc2c810d733b1f55a2a4af5cb669e2ee4259937d50a51d5614cdad323d"
+  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.6.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.6.tar.xz"
+  sha256 "9b95816620fd1168cb4eeca0e9dc0ffd86e864fc668f76f5e37cc054d6982e51"
 
   bottle do
     sha256 "5f78333849e26be8c21372175d2383d15c0c9c0986b73113c0fc65e5877118fc" => :el_capitan
@@ -29,6 +29,7 @@ class Gettext < Formula
                           "--with-included-libcroco",
                           "--with-included-libunistring",
                           "--with-emacs",
+                          "--with-lispdir=#{share}/emacs/site-lisp/gettext",
                           "--disable-java",
                           "--disable-csharp",
                           # Don't use VCS systems to create these archives
