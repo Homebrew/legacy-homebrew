@@ -26,7 +26,7 @@ class Netpbm < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    system "cp", "config.mk.in", "config.mk"
+    cp "config.mk.in", "config.mk"
 
     inreplace "config.mk" do |s|
       s.remove_make_var! "CC"
@@ -62,5 +62,11 @@ class Netpbm < Formula
     end
 
     (bin/"doc.url").unlink
+  end
+
+  test do
+    system ("#{bin}/pngtopam #{test_fixtures("test.png")} -alphapam >> test.pam")
+    system "#{bin}/pamdice", "test.pam", "-outstem", "#{testpath}/testing"
+    assert File.exist?("testing_0_0.")
   end
 end
