@@ -19,11 +19,9 @@ class Fig < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "bf5057ab07fa8c438e5059a828f5bb92d162864a541ad9bef3ea4515b4075ba7" => :el_capitan
-    sha256 "28544d75a4a06daa19ddc7d603f62205d9d80397e0388d211909801b34120d1c" => :yosemite
-    sha256 "32a613824d47edc1fcc30051707c5f4d3ca1aabae50bc129c730f4dfafcf4f82" => :mavericks
-    sha256 "353e54687dae82223766c0ef588cdd6b9c979f61fb90670e8ccede843f2a3926" => :mountain_lion
+    sha256 "0a7eccc4172c01100d2230b8ab986fd6dc63c320e6cbb77a1f2eb083a4bf7266" => :el_capitan
+    sha256 "dbab5eba6da257fd3558852081af2b24f12e0b4829ec2d1ba14f05722cedf43d" => :yosemite
+    sha256 "e33f562371eefb3f4691831b22b6445b4d9bed992beddf05b594c6b5ef557090" => :mavericks
   end
 
   head do
