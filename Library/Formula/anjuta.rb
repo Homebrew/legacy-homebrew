@@ -21,6 +21,7 @@ class Anjuta < Formula
   depends_on "vte3"
   depends_on "hicolor-icon-theme"
   depends_on "gnome-icon-theme"
+  depends_on "gnome-themes-standard" => :optional
   depends_on "shared-mime-info"
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "vala" => :recommended
@@ -39,7 +40,10 @@ class Anjuta < Formula
   def post_install
     system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
     system "#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache", "-f", "-t", "#{HOMEBREW_PREFIX}/share/icons/hicolor"
-    system "#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache", "-f", "-t", "#{HOMEBREW_PREFIX}/share/icons/HighContrast"
+    # HighContrast is provided by gnome-themes-standard
+    if File.file?("#{HOMEBREW_PREFIX}/share/icons/HighContrast/.icon-theme.cache")
+      system "#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache", "-f", "-t", "#{HOMEBREW_PREFIX}/share/icons/HighContrast"
+    end
     system "#{Formula["shared-mime-info"].opt_bin}/update-mime-database", "#{HOMEBREW_PREFIX}/share/mime"
   end
 
