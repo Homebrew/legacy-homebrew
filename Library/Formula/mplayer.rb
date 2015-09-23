@@ -15,6 +15,7 @@ class Mplayer < Formula
 
   bottle do
     revision 1
+    sha256 "d9abd74426d0b6ecb52c81a1df427f4e758b534cc511c81d18f8e92c5bb0ae3e" => :el_capitan
     sha1 "2c9bfd124fdd729bc8addd2ddfd45ed718c80e20" => :mavericks
     sha1 "ba213d5c1aadad6869cbb57f17f56971af8acffd" => :mountain_lion
     sha1 "7efc5960bc15c904a2893f23190d783b3d57d27a" => :lion
