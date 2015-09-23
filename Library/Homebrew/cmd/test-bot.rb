@@ -18,7 +18,6 @@
 # --dry-run:       Just print commands, don't run them.
 # --fail-fast:     Immediately exit on a failing step.
 # --verbose:       Print out all logs in realtime
-# --no-verbose-install: Don't run `brew install` with `--verbose`.
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
@@ -142,9 +141,11 @@ module Homebrew
       end
 
       verbose = ARGV.verbose?
+      travis = !ENV["TRAVIS"].nil?
       @output = ""
       working_dir = Pathname.new(@command.first == "git" ? @repository : Dir.pwd)
       read, write = IO.pipe
+      print_thread = nil
 
       begin
         pid = fork do
@@ -155,6 +156,14 @@ module Homebrew
           working_dir.cd { exec(*@command) }
         end
         write.close
+        if travis
+          print_thread = Thread.new do
+            while true do
+              sleep 60
+              printf "."
+            end
+          end
+        end
         while line = read.gets
           puts line if verbose
           @output += line
@@ -164,6 +173,10 @@ module Homebrew
       end
 
       Process.wait(pid)
+      if travis
+        print_thread.exit
+        puts
+      end
       @end_time = Time.now
       @status = $?.success? ? :passed : :failed
       puts_result
@@ -532,7 +545,6 @@ module Homebrew
       test "brew", "fetch", "--retry", *formula_fetch_options
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
       install_args = []
-      install_args << "--verbose" unless ARGV.include? "--no-verbose-install"
       install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
@@ -849,6 +861,7 @@ module Homebrew
     ENV["HOMEBREW_DEVELOPER"] = "1"
     ENV["HOMEBREW_SANDBOX"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
+    ENV["HOMEBREW_FAIL_LOG_LINES"] = "150"
     ARGV << "--verbose" if ENV["TRAVIS"]
 
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
