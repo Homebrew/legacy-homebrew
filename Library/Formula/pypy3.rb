@@ -7,6 +7,7 @@ class Pypy3 < Formula
   bottle do
     cellar :any
     revision 6
+    sha256 "7fb0a8af405c03fda611ca3c30c9fda4da2fa727a4c37450fde428c5cb469471" => :el_capitan
     sha1 "b9a9d4093dba9fbd89be33a1b28039f43098860d" => :yosemite
     sha1 "4b0a2a9633ebbf8749eb1c5980add2447d74ee11" => :mavericks
     sha1 "e9c63d780fb3df53fe657d656dd9d0ccbe454f20" => :mountain_lion
