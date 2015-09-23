@@ -6,7 +6,8 @@ class Cmatrix < Formula
   sha256 "1fa6e6caea254b6fe70a492efddc1b40ad7ccb950a5adfd80df75b640577064c"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "da919a1964d6ef0633eac14bd7138ab91f6676d4dfc36fd5e27f956943714d22" => :el_capitan
     sha1 "5716eb3e6438f79fde10d103cc51d44621be0851" => :yosemite
     sha1 "470186c129b19721b3504e88ecb66ae756722251" => :mavericks
     sha1 "f57962ae1d59e81ceffa6534a43c849a993b6f38" => :mountain_lion
