@@ -6,6 +6,8 @@ class Rbenv < Formula
 
   head "https://github.com/sstephenson/rbenv.git"
 
+  depends_on "ruby-build" => :recommended
+
   def install
     inreplace "libexec/rbenv", "/usr/local", HOMEBREW_PREFIX
     prefix.install Dir["*"]
