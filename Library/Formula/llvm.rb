@@ -159,31 +159,55 @@ class Llvm < Formula
     # can almost be treated as an entirely different build from llvm.
     ENV.permit_arch_flags
 
-    prep = lambda do |resource_name, path, required|
-      if build.with?(resource_name) &&
-         (required.nil? || build.with?(required))
-        (buildpath/path).install resource(resource_name)
-      elsif build.with?(resource_name) && build.without?(required)
-        raise resource_name + " requires " + required + " to build."
+    if build.with? "clang"
+      (buildpath/"tools/clang").install resource("clang")
+    end
+
+    if build.with? "extra-tools"
+      if build.with? "clang"
+        (buildpath/"tools/clang/tools/extra").install resource("extra-tools")
+      else
+        odie "clang's extra tools must be built with clang"
       end
     end
 
-    prep.call("clang", "tools/clang", nil)
-    prep.call("extra-tools", "tools/clang/tools/extra", "clang")
-    prep.call("libcxx", "projects/libcxx", nil)
-    prep.call("lld", "tools/lld", nil)
-    prep.call("lldb", "tools/lldb", "clang")
-    prep.call("polly", "tools/polly", "clang")
-    prep.call("sanitizers", "projects/compiler-rt", "clang")
-
-    if build.with?("libcxx")
+    if build.with? "libcxx"
+      (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"projects/libcxxabi").install resource("libcxxabi")
+    end
+
+    if build.with? "lld"
+      (buildpath/"tools/lld").install resource("lld")
+    end
+
+    if build.with? "lldb"
+      if build.with? "clang"
+        (buildpath/"tools/lldb").install resource("lldb")
+      else
+        odie "lldb must be built along with clang"
+      end
+    end
+
+    if build.with? "polly"
+      if build.with? "clang"
+        (buildpath/"tools/polly").install resource("polly")
+      else
+        odie "polly must be built along with clang"
+      end
+    end
+
+    if build.with? "sanitizers"
+      if build.with? "clang"
+        (buildpath/"projects/compiler-rt").install resource("sanitizers")
+      else
+        odie "sanitizers must be built along with clang"
+      end
     end
 
     if build.with?("tests") &&
        build.with?("sanitizers") &&
        build.without?("libcxx")
-      raise "Building and running sanitizer tests requires libc++"
+      odie "Building and running sanitizer tests requires libc++"
     end
 
     args = %w[
