@@ -9,6 +9,7 @@
 * Upgrade to spray-json 1.3.2 (@v-gerasimov)
 * Upgrade joda-time to 2.2 (@jwalgran)
 * Docker fixes, such as for logging (@MeiSign)
+* Fixes to context config merging (@zeitos)
 * JobSqlDAO to support username, password, DB connection pooling (@ffarozan)
 * Doc: Instructions for running job-server docker container in yarn-client (@MeiSign)
 * Doc: Various fixes to README (@noorul) and deploy instructions (@mvle) and troubleshooting (@eranation)
