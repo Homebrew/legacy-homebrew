@@ -154,9 +154,12 @@ module Homebrew
           working_dir.cd { exec(*@command) }
         end
         write.close
-        while line = read.gets
-          puts line if verbose
-          @output += line
+        while buf = read.read(1)
+          if verbose
+            print buf
+            $stdout.flush
+          end
+          @output << buf
         end
       ensure
         read.close
