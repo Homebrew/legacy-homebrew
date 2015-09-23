@@ -5,10 +5,11 @@ class Docbook < Formula
   sha256 "3dcd65e1f5d9c0c891b3be204fa2bb418ce485d32310e1ca052e81d36623208e"
 
   bottle do
-    revision 1
-    sha1 "b6666858a43379c827ba9a62df987bcbcfffc6f3" => :yosemite
-    sha1 "ac3a230baa6c7a2d9accada9d956a566f3520151" => :mavericks
-    sha1 "8cbf8d315805395f2ca483161daa2c8bc3c4e19c" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "a3ce9c187fefb20f949095c1c4ae4e3a9dc1887a17d7322c85c10633b92b3fb9" => :el_capitan
+    sha256 "d722e3791b31c9ab92a5f47d89a8f530accd628898dd10551a1185986c4eb08f" => :yosemite
+    sha256 "5d563a04a11cee14fd7c52a6b4a85d397b019bf2f5cc96005e2d17dac4ad7231" => :mavericks
   end
 
   resource "xml412" do
