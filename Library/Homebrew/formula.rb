@@ -1324,7 +1324,7 @@ class Formula
         log_lines ||= "15"
 
         log.flush
-        unless verbose
+        if !verbose || verbose_using_dots
           puts "Last #{log_lines} lines from #{logfn}:"
           Kernel.system "/usr/bin/tail", "-n", log_lines, logfn
         end
