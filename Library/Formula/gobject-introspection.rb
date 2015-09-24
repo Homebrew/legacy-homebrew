@@ -18,6 +18,7 @@ class GobjectIntrospection < Formula
   depends_on "glib"
   depends_on "cairo"
   depends_on "libffi"
+  depends_on :python
 
   resource "tutorial" do
     url "https://gist.github.com/7a0023656ccfe309337a.git",
