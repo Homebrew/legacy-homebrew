@@ -7,7 +7,8 @@ class Vegeta < Formula
   sha256 "682f3ce81fd7be2eeea22803d3be4d8176078a506f237b91f704693551f09b8b"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "f931f2e9e9b30749728d1c3753c0763afb11a0e086ce9a0616337c68685c5094" => :el_capitan
     sha256 "9a075caf5287795b6ae27a469afb5a6b0d77bcc87d856b2c3b20186f2f8b560e" => :yosemite
     sha256 "45acababb4d359610d56320443e7fe1b3f3d9ef00e2dffd6a1ebc03565205a12" => :mavericks
     sha256 "6ebf4739e99568b697ec7eabbd703b9ecf332fef4e6180d6535340f819b87a42" => :mountain_lion
