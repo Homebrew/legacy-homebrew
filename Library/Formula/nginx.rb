@@ -79,8 +79,18 @@ class Nginx < Formula
 
     args << "--with-http_dav_module" if build.with? "webdav"
     args << "--with-debug" if build.with? "debug"
-    args << "--with-http_spdy_module" if build.with? "spdy"
     args << "--with-http_gunzip_module" if build.with? "gunzip"
+
+    # This became "with-http_v2_module" in 1.9.5
+    # http://nginx.org/en/docs/http/ngx_http_spdy_module.html
+    # We handle devel/stable block variable options badly, so this installs
+    # the expected module rather than fatally bailing out of configure.
+    # The option should be deprecated to the new name when stable.
+    if build.devel? || build.head? && build.with?("spdy")
+      args << "--with-http_v2_module" if build.devel? || build.head?
+    elsif build.with?("spdy")
+      args << "--with-http_spdy_module"
+    end
 
     if build.head?
       system "./auto/configure", *args
