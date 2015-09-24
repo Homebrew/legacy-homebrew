@@ -8,8 +8,9 @@ class Valgrind < Formula
   end
 
   bottle do
-    sha1 "db2fd4ccbd7fb2d58a38480c76a312d00292f5d8" => :mavericks
-    sha1 "98f60f0a39a6c97633ed5c6ff5a675979fc92861" => :mountain_lion
+    sha256 "c747fd1c9b09ac4bc186bf5294317cd506ce1fd733b892b7df19c68e39505670" => :el_capitan
+    sha256 "d2200eebec692898c5684a837cf96832fbd877cc92ec57d1e9730e454a9e94c5" => :yosemite
+    sha256 "6bb14866f48391c2d1f44f7acd2c6fd709221f890147608b176ccfa49198a251" => :mavericks
   end
 
   head do
