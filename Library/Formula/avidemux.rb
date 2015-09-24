@@ -23,6 +23,7 @@ class Avidemux < Formula
 
   bottle do
     revision 1
+    sha256 "77861e3340026fa3e1c227bae9a1f01864d8cb0eeaa36499e2826a014c05c13a" => :el_capitan
     sha256 "fa2b13a72237291bd555a2334ca99999e6a327efbec4093a4e5ee631d31a28f9" => :yosemite
     sha256 "b7f2d3c12e1ca1b6a432a86113c5c51111714d7dca0554571ecd967011bf14c0" => :mavericks
     sha256 "d2db93800dd97059bfea0802225aa49e6daa88bbf43b8bffd2f2077d51d6b792" => :mountain_lion
