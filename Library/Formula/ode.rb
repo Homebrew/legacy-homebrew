@@ -18,6 +18,7 @@ class Ode < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on :x11 if build.with? "drawstuff"
   end
 
   option "with-double-precision", "Compile ODE with double precision"
