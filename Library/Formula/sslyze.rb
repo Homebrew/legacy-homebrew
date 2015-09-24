@@ -1,9 +1,9 @@
 class Sslyze < Formula
   desc "SSL scanner"
   homepage "https://github.com/nabla-c0d3/sslyze"
-  url "https://github.com/nabla-c0d3/sslyze/archive/release-0.11.tar.gz"
-  sha256 "d0adf9be09d5b27803a923dfabd459c84a2eddb457dac2418f1bf074153f8f93"
-  version "0.11.0"
+  url "https://github.com/nabla-c0d3/sslyze/archive/release-0.12.tar.gz"
+  version "0.12.0"
+  sha256 "5b3220d42cb66067b18d9055a2234252d849090e9fba660af52a3da18fa8a899"
 
   bottle do
     cellar :any_skip_relocation
@@ -17,13 +17,13 @@ class Sslyze < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "nassl" do
-    url "https://github.com/nabla-c0d3/nassl/archive/v0.11.tar.gz"
-    sha256 "83fe1623ad3e67ba01a3e692211e9fde15c6388f5f3d92bd5c0423d4e9e79391"
+    url "https://github.com/nabla-c0d3/nassl/archive/v0.12.tar.gz"
+    sha256 "40b3766fe98144e912ea7a8f1c34bf974e76f99ac40f128c3ce50b46b1fe315e"
   end
 
   resource "openssl" do
-    url "https://www.openssl.org/source/old/1.0.2/openssl-1.0.2a.tar.gz"
-    sha256 "15b6393c20030aab02c8e2fe0243cb1d1d18062f6c095d67bca91871dc7f324a"
+    url "https://www.openssl.org/source/openssl-1.0.2d.tar.gz"
+    sha256 "671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8"
   end
 
   resource "zlib" do
@@ -38,7 +38,7 @@ class Sslyze < Formula
     ENV.deparallelize
 
     resource("openssl").stage do
-      (buildpath/"nassl/openssl-1.0.2a").install Dir["*"]
+      (buildpath/"nassl/openssl-1.0.2d").install Dir["*"]
     end
 
     resource("zlib").stage do
@@ -59,7 +59,7 @@ class Sslyze < Formula
   end
 
   test do
-    assert_equal "0.11.0", shell_output("#{bin}/sslyze --version").strip
+    assert_equal "0.12.0", shell_output("#{bin}/sslyze --version").strip
     assert_match "SCAN COMPLETED", shell_output("#{bin}/sslyze --regular google.com")
   end
 end
