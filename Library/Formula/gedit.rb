@@ -5,6 +5,7 @@ class Gedit < Formula
   sha256 "c28df44a29ee5707441f89e94b513079d709111afec4bd4b079a1dff0242cdb2"
 
   bottle do
+    sha256 "a181e2b41c720e0022adfe06a4125fac8e02f4dc096c180d82f65de6049b4ec1" => :el_capitan
     sha256 "6893d02c163913dacba65545073d6409854d919df3f7e3ceea74caf770553a24" => :yosemite
     sha256 "4ac212b887b604a2bc90f5d8eb9211af32f5adfd181e80c78425c01718aa27b6" => :mavericks
     sha256 "7c9848922d9d98ffb0583c8389e2e4ce6ba1753c3fbebd5e15ea6cee2953e255" => :mountain_lion
