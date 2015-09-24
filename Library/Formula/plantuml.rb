@@ -5,7 +5,8 @@ class Plantuml < Formula
   sha256 "632e57aebd6aa986fb0cf9d80d468abd10d7414f79b4d5637ef2adf0794f6106"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "8263bcc34429fba6468e1d2a1983307ba5b790d9d66dbd2c4b7bfb522c7a39e8" => :el_capitan
     sha256 "07710e1822d0d984aebfee3a59583a1f593530a3e08a21b7ce3b8b60e4138aec" => :yosemite
     sha256 "60cbe90a7e1f0020db1c56f5bfd0b4a5dec946456dc7afd019a40245bfff57fc" => :mavericks
     sha256 "747e7004c64f56517e9868785497bc978755aaec15c0fae86c7cc4045ae9b8b4" => :mountain_lion
