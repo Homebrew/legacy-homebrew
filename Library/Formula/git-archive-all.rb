@@ -7,10 +7,10 @@ class GitArchiveAll < Formula
   head "https://github.com/Kentzo/git-archive-all.git"
 
   bottle do
-    cellar :any
-    sha256 "a5e6e69398c8b03afb1cd30348535a031605a948255866f235048c2b4d9bca4f" => :yosemite
-    sha256 "8b677f5b86fa1bef87aa8a0f7465bc828a47608f24e521c45eabddcf0c531a7e" => :mavericks
-    sha256 "cd81704fc6ea59b93934ec7dc76301d8b4e6e6f39ea54af3cbb133ac0acefcc9" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "e94bb64970d3c206d6fdc7d7c7cbb5fb4668c8e6e405a8fbca51a995ab370f04" => :el_capitan
+    sha256 "1f8d7abe64571e8275b03ae863b5510c2cf64bcb835f6f7f2a01ac359104fdde" => :yosemite
+    sha256 "a87a857cb7880642838119bf6e1b45fa4ed37bae74ed99bd5270f857e7d04b00" => :mavericks
   end
 
   def install
