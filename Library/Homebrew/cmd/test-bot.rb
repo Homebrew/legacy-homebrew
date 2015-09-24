@@ -862,6 +862,7 @@ module Homebrew
 
     if ENV["TRAVIS"]
       ARGV << "--verbose"
+      ARGV << "--ci-master" if ENV["TRAVIS_PULL_REQUEST"] == "false"
       ENV["HOMEBREW_VERBOSE_USING_DOTS"] = "1"
     end
 
