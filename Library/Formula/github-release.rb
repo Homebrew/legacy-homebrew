@@ -7,7 +7,8 @@ class GithubRelease < Formula
   head "https://github.com/aktau/github-release.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "1f18841cfc233675c30f20f41f5cee5a47cfcbaa5ac7888281f67308270c9eb3" => :el_capitan
     sha1 "1ad266fc6c56b6631214785c764fee4e19aaeb4e" => :yosemite
     sha1 "31c085f718e68352a2b2f22f601512a1ba9adb65" => :mavericks
     sha1 "0e120d55f94ea274ead008610a86b46d478f41b7" => :mountain_lion
