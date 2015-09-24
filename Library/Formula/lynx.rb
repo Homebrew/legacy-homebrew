@@ -8,6 +8,7 @@ class Lynx < Formula
 
   bottle do
     revision 1
+    sha256 "1b0f14f892c930a2140a853edd308edc7545b0e2baa1637e77b925209476fe96" => :el_capitan
     sha1 "5cec5cb413a991777ab1e8ede47059935feae1ca" => :mavericks
     sha1 "afd1846fe40fc0bac8a4f54d5c06ded1d4eb3725" => :mountain_lion
     sha1 "1ce39f3889f2b4e9a7f805236097f56fdbcf0fed" => :lion
