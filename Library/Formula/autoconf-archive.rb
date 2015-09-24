@@ -6,9 +6,11 @@ class AutoconfArchive < Formula
   sha256 "69715bdd078f552ca85e498a94543e11cb8bcdf0359e659b84d84d19372b0dc5"
 
   bottle do
-    sha1 "379b87f4f2a0ab895b98566a9d846e39143febb9" => :yosemite
-    sha1 "57aa4726af450fa77e509a29aeb03d6c819706cf" => :mavericks
-    sha1 "5c2d27e4a970cdc0ef102e0404a5eb13cc1f0543" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "80cb808f4363f2322d64b26b889cdb94989c76950f2d04d25e229d34129edc11" => :el_capitan
+    sha256 "e624e553fc32244c54188a9e397d03265478482f28942eb8b3af0d3c78810046" => :yosemite
+    sha256 "661fc895512c91c0b2afd4c906b9c96f8f471b4b10884be893342f396183a8db" => :mavericks
   end
 
   # autoconf-archive is useless without autoconf
