@@ -9,10 +9,9 @@ class PandocCiteproc < Formula
   sha256 "905112d8995fb6de5ee4c4bfd62cc89baa3bf1598f258aaba1704f85cf739fd2"
 
   bottle do
-    sha256 "fce1c154458a6afdc3635754867b94195eea6bc95df7ce5b5581623ccaedf59b" => :el_capitan
-    sha256 "216ad46562f7ee3ae5a0e19b855b3f8c27c8d2907beedf9dd41d5634179ab9a4" => :yosemite
-    sha256 "0f5cc2caa5ba5c9f687d057a3dfe462e6e01623dc42d556148e8e6e23332622d" => :mavericks
-    sha256 "40e380d4a8c5e63a81f00358d8cffa743381e4b825a8e925a63b66d0da232154" => :mountain_lion
+    sha256 "d2a89b600da92b8bef78fe25c4c3276f0286d74297d47078853602df0a5e9b27" => :el_capitan
+    sha256 "35fe5761b6c4d70cc155997ea053aed166ea35e02f05427302bc72c3cbe6a3f5" => :yosemite
+    sha256 "aa3afb6ca61dad0dde8325d83a23cce37311da09388baf9571c598617591a82e" => :mavericks
   end
 
   depends_on "ghc" => :build
