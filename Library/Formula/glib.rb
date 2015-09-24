@@ -36,7 +36,7 @@ class Glib < Formula
   # but needed to fix an assumption about the location of the d-bus machine
   # id file.
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/af332f42fae80c570a77/raw/7b5fd0d2e6554e9b770729fddacaa2d648327644/glib-hardcoded-paths.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/59e4d327791d4fe3423c2c871adb98e3f3f07633/glib/hardcoded-paths.diff"
     sha256 "a4cb96b5861672ec0750cb30ecebe1d417d38052cac12fbb8a77dbf04a886fcb"
   end
 
@@ -44,12 +44,12 @@ class Glib < Formula
   # to unrelated issues in GCC, but improves the situation.
   # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
   patch do
-    url "https://gist.githubusercontent.com/tschoonj/0977f68918e535ad6c27/raw/6b322d5cde85c53916518857c4d78a99f63c640e/gio.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/59e4d327791d4fe3423c2c871adb98e3f3f07633/glib/gio.patch"
     sha256 "cc3f0f6d561d663dfcdd6154b075150f68a36f5a92f94e5163c1c20529bfdf32"
   end
 
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/9726139/raw/a351ea240dea33b15e616d384be0550f5051e959/universal.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/59e4d327791d4fe3423c2c871adb98e3f3f07633/glib/universal.patch"
     sha256 "7e1ad7667c7d89fcd08950c9c32cd66eb9c8e2ee843f023d1fadf09a9ba39fee"
   end if build.universal?
 
