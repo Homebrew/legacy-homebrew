@@ -3,18 +3,8 @@ class Valgrind < Formula
   homepage "http://www.valgrind.org/"
 
   stable do
-    url "http://valgrind.org/downloads/valgrind-3.10.1.tar.bz2"
-    sha256 "fa253dc26ddb661b6269df58144eff607ea3f76a9bcfe574b0c7726e1dfcb997"
-
-    # Look for headers in the SDK on Xcode-only systems: https://bugs.kde.org/show_bug.cgi?id=295084
-    # Fix duplicate symbols error on Lion: https://bugs.kde.org/show_bug.cgi?id=307415
-    patch do
-      url "https://gist.githubusercontent.com/jacknagel/369bedc191e0a0795358/raw/a71e6c0fdcb786fdfde2fc33d71d555b18bcfe8d/valgrind-sdk-paths-Makefile-in.diff"
-      sha256 "ff8e8186af6985f9ffb8dca8fbea944e807d1caf144f320dca0f995d0417db7f"
-    end
-
-    # Revisit the below requirement with each release
-    depends_on MaximumMacOSRequirement => :mavericks
+    url "http://valgrind.org/downloads/valgrind-3.11.0.tar.bz2"
+    sha256 "6c396271a8c1ddd5a6fb9abe714ea1e8a86fce85b30ab26b4266aeb4c2413b42"
   end
 
   bottle do
@@ -28,13 +18,6 @@ class Valgrind < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-
-    # Look for headers in the SDK on Xcode-only systems: https://bugs.kde.org/show_bug.cgi?id=295084
-    # Fix duplicate symbols error on Lion: https://bugs.kde.org/show_bug.cgi?id=307415
-    patch do
-      url "https://gist.githubusercontent.com/jacknagel/cd26a902d72aabd0b51d/raw/1a61a328a87a728dccbeef0594f6fe335e9bf917/valgrind-sdk-paths-Makefile-am.diff"
-      sha1 "d004d6af97f7f74d49d09dc513b4c67488da0a45"
-    end
   end
 
   depends_on :macos => :snow_leopard
@@ -53,9 +36,6 @@ class Valgrind < Formula
     else
       args << "--enable-only32bit"
     end
-
-    ext = build.head? ? "am" : "in"
-    inreplace "coregrind/Makefile.#{ext}", "@@HOMEBREW_SDKROOT@@", MacOS.sdk_path.to_s
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
