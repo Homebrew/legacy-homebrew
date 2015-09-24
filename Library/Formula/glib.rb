@@ -53,6 +53,20 @@ class Glib < Formula
     sha256 "7e1ad7667c7d89fcd08950c9c32cd66eb9c8e2ee843f023d1fadf09a9ba39fee"
   end if build.universal?
 
+  # Reverts GNotification support on OS X.
+  # This only supports OS X 10.9, and the reverted commits removed the
+  # ability to build glib on older versions of OS X.
+  # https://bugzilla.gnome.org/show_bug.cgi?id=747146
+  # Reverts upstream commits 36e093a31a9eb12021e7780b9e322c29763ffa58
+  # and 89058e8a9b769ab223bc75739f5455dab18f7a3d, with equivalent changes
+  # also applied to configure and gio/Makefile.in
+  if MacOS.version < :mavericks
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/59e4d327791d4fe3423c2c871adb98e3f3f07633/glib/gnotification-mountain.patch"
+      sha256 "723def732304552ca55ae9f5b568ff3e8a59a14d512af72b6c1f0421f8228a68"
+    end
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
@@ -60,7 +74,7 @@ class Glib < Formula
       "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
 
     # renaming is necessary for patches to work
-    mv "gio/gcocoanotificationbackend.c", "gio/gcocoanotificationbackend.m"
+    mv "gio/gcocoanotificationbackend.c", "gio/gcocoanotificationbackend.m" unless MacOS.version < :mavericks
     mv "gio/gnextstepsettingsbackend.c", "gio/gnextstepsettingsbackend.m"
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
