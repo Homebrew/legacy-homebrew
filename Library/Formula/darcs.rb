@@ -9,6 +9,7 @@ class Darcs < Formula
   sha256 "52b3db3f7b64a4306585b96af7b5887f62ba54f6e9c3bdbed9b6a18d97f16b36"
 
   bottle do
+    sha256 "95b48710e4648e22b0eb9cff6ef7088cda52012a0c3d426273368f5b2f1c4885" => :el_capitan
     sha256 "66086e078cdb111cf517313997a29044d8f3c16e45bdcdc06ad438a37d6d0c32" => :yosemite
     sha256 "6c1161e09c005bab52e63faec61610076c3c4393e850229e2117c94a0e78f4d4" => :mavericks
     sha256 "c97c89b0b0d04e067476a807d308ef3ee24296a420d13a0be16b8822b919d8ab" => :mountain_lion
