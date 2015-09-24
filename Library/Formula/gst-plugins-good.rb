@@ -11,6 +11,7 @@ class GstPluginsGood < Formula
   end
 
   bottle do
+    sha256 "c7e0f3400bf49d94fb4ea8073725d82f0c282582b4e819942226b7f5840dc262" => :el_capitan
     sha1 "184f6be9e300566f37e7b014cca49f78018c36d4" => :yosemite
     sha1 "a05a8f0dc08ea2626623f30dcb2cc458bd973b7e" => :mavericks
     sha1 "7ce582ddab67b58d87469d112745144a0cf0edd2" => :mountain_lion
