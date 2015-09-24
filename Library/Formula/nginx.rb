@@ -87,7 +87,7 @@ class Nginx < Formula
     # the expected module rather than fatally bailing out of configure.
     # The option should be deprecated to the new name when stable.
     if build.devel? || build.head? && build.with?("spdy")
-      args << "--with-http_v2_module" if build.devel? || build.head?
+      args << "--with-http_v2_module"
     elsif build.with?("spdy")
       args << "--with-http_spdy_module"
     end
