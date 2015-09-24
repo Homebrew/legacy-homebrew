@@ -11,6 +11,7 @@ class Agda < Formula
   revision 2
 
   bottle do
+    sha256 "2dc343203159551613fa7346a93d3e2931064026dccab6c30b68a8490845643b" => :el_capitan
     sha256 "b5dfadfde1b45ca3d70f2ac812e98a6d72caf1d840d4cb9c4eee95e81d74ff0b" => :yosemite
     sha256 "4513aecea2fbf5d1a682e04e4cccfd795d48836bcf1b16f79c24fa3bd6482854" => :mavericks
     sha256 "d0e17808ee896cdedc499b010b67961dc3db3c430c501faef16c4b4482238447" => :mountain_lion
