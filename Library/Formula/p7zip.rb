@@ -10,10 +10,11 @@ class P7zip < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "6da7c418d9a2339d2f80bbe05afd086ed4c3c82018bdd0daad296acb0e5f2dfa" => :yosemite
-    sha256 "3fb6ca5b15e998d517eace9dd2f3be76ced1323e9af66eaefe1824e422c9cbf0" => :mavericks
-    sha256 "1f55e602743aaf481d8f11b85069f87c0cdb02122cb2df13966b7871c7905fe3" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "ca8c3e999af9b2dcd7ba4889c94111b0ab8971eb4234f4935a5d0d644ec755d8" => :el_capitan
+    sha256 "d92cf7a481836bfc5b2292d636d45333b1946b82835510329eb0aa17483978ed" => :yosemite
+    sha256 "c621e245f8b0912e135861756e3b3f443858f3d8291887d2438acbf3c09f4ee3" => :mavericks
   end
 
   option "32-bit"
