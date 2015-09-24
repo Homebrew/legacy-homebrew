@@ -3,6 +3,7 @@ class Gstreamermm < Formula
   homepage "http://gstreamer.freedesktop.org/bindings/cplusplus.html"
   url "https://download.gnome.org/sources/gstreamermm/1.4/gstreamermm-1.4.3.tar.xz"
   sha256 "f1c11ee1cf7537d77de7f8d486e09c5140cc4bb78882849718cd88959a55462e"
+  revision 1
 
   bottle do
     cellar :any
@@ -17,13 +18,10 @@ class Gstreamermm < Formula
   depends_on "glibmm"
   depends_on "gst-plugins-base"
 
-  # though the library does not require a C++11 compliant compiler, the examples do,
-  # causing a build-time error on Mountain Lion
-  # no need to report this upstream, since the upcoming new release has the C++11 requirement
-  # already in configure.ac
-  patch :DATA
+  needs :cxx11
 
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
@@ -93,48 +91,7 @@ class Gstreamermm < Formula
       -lintl
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
-
-__END__
-diff --git a/examples/dynamic_changing_element/main.cc b/examples/dynamic_changing_element/main.cc
-index 6192f45..e3ca128 100644
---- a/examples/dynamic_changing_element/main.cc
-+++ b/examples/dynamic_changing_element/main.cc
-@@ -20,13 +20,24 @@ RefPtr<Element> conv_before,
- conv_after,
- curr_effect;
- RefPtr<Pipeline> pipeline;
--std::vector<Glib::ustring> effects = {"identity", "exclusion",
--		"navigationtest", "agingtv", "videoflip", "vertigotv",
--		"gaussianblur", "shagadelictv", "edgetv"};
-+std::vector<Glib::ustring> effects;
- int curr_position = 0;
-
- RefPtr<Glib::MainLoop> main_loop;
-
-+void effects_init()
-+{
-+	effects.push_back("identity");
-+	effects.push_back("exclusion");
-+	effects.push_back("navigationtest");
-+	effects.push_back("agingtv");
-+	effects.push_back("videoflip");
-+	effects.push_back("vertigotv");
-+	effects.push_back("gaussianblur");
-+	effects.push_back("shagadelictv");
-+	effects.push_back("edgetv");
-+}
-+
- PadProbeReturn event_probe_cb (const RefPtr<Pad>& pad, const PadProbeInfo& info)
- {
-	RefPtr<Event> event = info.get_event();
-@@ -79,6 +90,7 @@ bool on_timeout()
-
- int main(int argc, char** argv)
- {
-+	effects_init();
-	init(argc, argv);
-	main_loop = Glib::MainLoop::create();

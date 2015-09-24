@@ -3,7 +3,7 @@ class Gtkmm < Formula
   homepage "http://www.gtkmm.org/"
   url "https://download.gnome.org/sources/gtkmm/2.24/gtkmm-2.24.4.tar.xz"
   sha256 "443a2ff3fcb42a915609f1779000390c640a6d7fd19ad8816e6161053696f5ee"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -21,7 +21,10 @@ class Gtkmm < Formula
   depends_on "atkmm"
   depends_on "cairomm"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
@@ -116,7 +119,7 @@ class Gtkmm < Formula
       -lpangomm-1.4
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
