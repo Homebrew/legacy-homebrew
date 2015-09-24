@@ -5,7 +5,8 @@ class ObjcCodegenutils < Formula
   sha256 "98b8819e77e18029f1bda56622d42c162e52ef98f3ba4c6c8fcf5d40c256e845"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "d7b945db595b07ee5677902586e01002ba555affdcae366f1fcbe919a6013772" => :el_capitan
     sha1 "6444a44bb506d0078b494d243475aa492da91b4a" => :mavericks
     sha1 "115f70a9c8b61545630a14d7503d4e20c221f6cb" => :mountain_lion
   end
