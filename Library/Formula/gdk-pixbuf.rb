@@ -13,16 +13,25 @@ class GdkPixbuf < Formula
   end
 
   option :universal
+  option "with-relocations", "Build with relocation support for bundles"
 
   depends_on "pkg-config" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "glib"
   depends_on "jpeg"
   depends_on "libtiff"
   depends_on "libpng"
   depends_on "gobject-introspection"
 
-  # disable the default relocatable library setting
-  patch :DATA
+  # disable the default relocatable library setting and
+  # turn it into an option
+  # filed ustream as: https://bugzilla.gnome.org/show_bug.cgi?id=755526
+  patch :p0 do
+    url "https://trac.macports.org/export/139798/trunk/dports/graphics/gdk-pixbuf2/files/patch-configure.ac.diff"
+    sha256 "2330af43005b6b3f98cb00566138353064ff8056d18da7f9212466456b9cb290"
+  end
 
   # 'loaders.cache' must be writable by other packages
   skip_clean "lib/gdk-pixbuf-2.0"
@@ -30,13 +39,18 @@ class GdkPixbuf < Formula
   def install
     ENV.universal_binary if build.universal?
     ENV.append_to_cflags "-DGDK_PIXBUF_LIBDIR=\\\"#{HOMEBREW_PREFIX}/lib\\\""
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-maintainer-mode",
-                          "--enable-debug=no",
-                          "--prefix=#{prefix}",
-                          "--enable-introspection=yes",
-                          "--disable-Bsymbolic",
-                          "--without-gdiplus"
+    system "autoreconf", "-f"
+    args = ["--disable-dependency-tracking",
+            "--disable-maintainer-mode",
+            "--enable-debug=no",
+            "--prefix=#{prefix}",
+            "--enable-introspection=yes",
+            "--disable-Bsymbolic",
+            "--without-gdiplus",]
+
+    args << "--enable-relocations" if build.with?("relocations")
+
+    system "./configure", *args
     system "make"
     system "make", "install"
 
@@ -54,33 +68,23 @@ class GdkPixbuf < Formula
 
   def post_install
     # Change the version directory below with any future update
-    ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+    if build.with?("relocations")
+      ENV["GDK_PIXBUF_MODULE_FILE"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
+      ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+    end
     system "#{bin}/gdk-pixbuf-query-loaders", "--update-cache"
   end
 
   def caveats; <<-EOS.undent
     Programs that require this module need to set the environment variable
       export GDK_PIXBUF_MODULEDIR="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
-    If you need to manually update the query loader cache, set GDK_PIXBUF_MODULEDIR then run
+      export GDK_PIXBUF_MODULE_FILE="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
+    If you need to manually update the query loader cache, set these variables then run
       #{bin}/gdk-pixbuf-query-loaders --update-cache
     EOS
-  end
+  end if build.with?("relocations")
 
   test do
     system bin/"gdk-pixbuf-csource", test_fixtures("test.png")
   end
 end
-
-__END__
-diff --git a/configure b/configure
-index ca603b8..2a8d073 100755
---- a/configure
-+++ b/configure
-@@ -20665,7 +20665,7 @@ esac
-
- if test "x$enable_relocations" = "xyes"; then
-
--$as_echo "#define GDK_PIXBUF_RELOCATABLE 1" >>confdefs.h
-+$as_echo "#undef GDK_PIXBUF_RELOCATABLE" >>confdefs.h
-
- fi
