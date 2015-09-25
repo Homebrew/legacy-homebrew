@@ -1,9 +1,9 @@
 class Subversion < Formula
-  desc "Version control system designed to be a better CVS"
+  desc "Enterprise-class centralized version control for the masses"
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.13.tar.bz2"
-  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.13.tar.bz2"
-  sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0.tar.bz2"
+  sha256 "fcb11db07e132cac6c72a969e222a592f849ef34dd8bd1c2f99fa1ad267a3fe6"
 
   bottle do
     revision 1
@@ -11,12 +11,6 @@ class Subversion < Formula
     sha256 "bf2389a0865234d120f5fc79735205ea77e93c549db3774131f3c5250622b68d" => :yosemite
     sha256 "95e5d20542567d39da4e964d50fddfbed74c4d8187ca55fb4a9784abb714efd5" => :mavericks
     sha256 "c11519346a1efdaf76ceec4689b88713279bdd352df0a61fd8fc11d427056f7b" => :mountain_lion
-  end
-
-  devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc3.tar.bz2"
-    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc3.tar.bz2"
-    sha256 "c49432a1a2e83fa3babd7a0602d207c8c11feb1d0660828609710f101737fa6d"
   end
 
   deprecated_option "java" => "with-java"
@@ -31,6 +25,7 @@ class Subversion < Formula
 
   resource "serf" do
     url "https://serf.googlecode.com/svn/src_releases/serf-1.3.8.tar.bz2", :using => :curl
+    mirror "https://fossies.org/linux/www/serf-1.3.8.tar.bz2"
     sha256 "e0500be065dbbce490449837bb2ab624e46d64fc0b090474d9acaa87c82b2590"
   end
 
@@ -144,6 +139,8 @@ class Subversion < Formula
     if MacOS::CLT.installed?
       args << "--with-apr=/usr"
       args << "--with-apr-util=/usr"
+      # Ignore authz API bug in system httpd (fixed in httpd 2.4.16)
+      args << "--enable-broken-httpd-auth" if MacOS.version < :el_capitan
     else
       args << "--with-apr=#{Formula["apr"].opt_prefix}"
       args << "--with-apr-util=#{Formula["apr-util"].opt_prefix}"
@@ -272,7 +269,7 @@ diff --git a/configure b/configure
 index 445251b..6ff4332 100755
 --- a/configure
 +++ b/configure
-@@ -25366,6 +25366,8 @@ fi
+@@ -26127,6 +26127,8 @@ fi
  SWIG_CPPFLAGS="$CPPFLAGS"
  
    SWIG_CPPFLAGS=`echo "$SWIG_CPPFLAGS" | $SED -e 's/-no-cpp-precomp //'`

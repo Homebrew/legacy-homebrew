@@ -4,6 +4,7 @@ class Mesos < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.23.0/mesos-0.23.0.tar.gz"
   mirror "https://archive.apache.org/dist/mesos/0.23.0/mesos-0.23.0.tar.gz"
   sha256 "b967355ec1f7cf9ffcef76b58939ed48dd4975ea90d1c976669b50c589bdbdec"
+  revision 1
 
   bottle do
     sha256 "717f73125b020b89e545384a3e5c1fbf2c36647b365fb181423954b9ceaa7b5d" => :yosemite
@@ -15,7 +16,7 @@ class Mesos < Formula
   depends_on :macos => :mountain_lion
   depends_on "maven" => :build
   depends_on :apr => :build
-  depends_on "subversion"
+  depends_on "subversion" => "with-gpg-agent"
 
   resource "boto" do
     url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
