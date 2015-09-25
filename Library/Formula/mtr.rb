@@ -1,8 +1,17 @@
 class Mtr < Formula
   desc "'traceroute' and 'ping' in a single tool"
   homepage "http://www.bitwizard.nl/mtr/"
-  url "ftp://ftp.bitwizard.nl/mtr/mtr-0.86.tar.gz"
-  sha256 "c5d948920b641cc35f8b380fc356ddfe07cce6a9c6474afe242fc58113f28c06"
+
+  stable do
+    url "ftp://ftp.bitwizard.nl/mtr/mtr-0.86.tar.gz"
+    sha256 "c5d948920b641cc35f8b380fc356ddfe07cce6a9c6474afe242fc58113f28c06"
+
+    # This patch enables mtr to use ncurses use-default-colors()
+    patch do
+      url "https://github.com/traviscross/mtr/commit/63a1f14.patch"
+      sha256 "67d682b29fca49d703f48bb2844e1c0e4b4635d0645d139a13352d9575336194"
+    end
+  end
 
   bottle do
     cellar :any_skip_relocation
@@ -14,10 +23,10 @@ class Mtr < Formula
 
   head do
     url "https://github.com/traviscross/mtr.git"
-    depends_on "automake" => :build
   end
 
   depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "pkg-config" => :build
   depends_on "gtk+" => :optional
   depends_on "glib" => :optional
