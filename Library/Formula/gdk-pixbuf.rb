@@ -52,12 +52,14 @@ class GdkPixbuf < Formula
   def post_install
     # Change the version directory below with any future update
     ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+    ENV["GDK_PIXBUF_MODULE_FILE"]="#{lib}/gdk-pixbuf-2.0/2.10.0/loaders.cache"
     system "#{bin}/gdk-pixbuf-query-loaders", "--update-cache"
   end
 
   def caveats; <<-EOS.undent
-    Programs that require this module need to set the environment variable
+    Programs that require this module need to set the environment variables:
       export GDK_PIXBUF_MODULEDIR="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+      export GDK_PIXBUF_MODULE_FILE="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
     If you need to manually update the query loader cache, set GDK_PIXBUF_MODULEDIR then run
       #{bin}/gdk-pixbuf-query-loaders --update-cache
     EOS

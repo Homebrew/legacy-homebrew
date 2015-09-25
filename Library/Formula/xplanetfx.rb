@@ -39,14 +39,16 @@ class Xplanetfx < Formula
     if build.with?("gui")
       ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages/gtk-2.0"
       ENV.prepend_create_path "GDK_PIXBUF_MODULEDIR", "#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+      ENV.prepend_create_path "GDK_PIXBUF_MODULE_FILE", "#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
     end
-    bin.env_script_all_files(libexec+"bin", :PATH => "#{path}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"])
+    bin.env_script_all_files(libexec+"bin", :PATH => "#{path}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"], :GDK_PIXBUF_MODULE_FILE => ENV["GDK_PIXBUF_MODULE_FILE"])
   end
 
   def post_install
     if build.with?("gui")
       # Change the version directory below with any future update
       ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
+      ENV["GDK_PIXBUF_MODULE_FILE"]="#{Formula["gdk-pixbuf"].lib}/gdk-pixbuf-2.0/2.10.0/loaders.cache"
       system "#{HOMEBREW_PREFIX}/bin/gdk-pixbuf-query-loaders", "--update-cache"
     end
   end
