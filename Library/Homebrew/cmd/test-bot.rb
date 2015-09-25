@@ -299,28 +299,31 @@ module Homebrew
 
       travis_pr = ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
 
-      # Use Jenkins environment variables if present.
-      if no_args? && ENV["GIT_PREVIOUS_COMMIT"] && ENV["GIT_COMMIT"] \
-         && !ENV["ghprbPullLink"]
-        diff_start_sha1 = shorten_revision ENV["GIT_PREVIOUS_COMMIT"]
-        diff_end_sha1 = shorten_revision ENV["GIT_COMMIT"]
-      elsif ENV["TRAVIS_COMMIT_RANGE"]
-        diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
-        diff_end_sha1 = ENV["TRAVIS_COMMIT"] if travis_pr
-      elsif ENV["ghprbPullLink"]
-        # Handle Jenkins pull request builder plugin.
+      # Use Jenkins GitHub Pull Request Builder plugin variables for
+      # pull request jobs.
+      if ENV["ghprbPullLink"]
         @url = ENV["ghprbPullLink"]
         @hash = nil
         test "git", "checkout", "origin/master"
+      # Use Travis CI pull-request variables for pull request jobs.
       elsif travis_pr
         @url = "https://github.com/#{ENV["TRAVIS_REPO_SLUG"]}/pull/#{ENV["TRAVIS_PULL_REQUEST"]}"
         @hash = nil
-      elsif @hash
-        diff_start_sha1 = current_sha1
-        brew_update
-        diff_end_sha1 = current_sha1
       end
 
+      # Use Jenkins Git plugin variables for master branch jobs.
+      if ENV["GIT_PREVIOUS_COMMIT"] && ENV["GIT_COMMIT"]
+        diff_start_sha1 = ENV["GIT_PREVIOUS_COMMIT"]
+        diff_end_sha1 = ENV["GIT_COMMIT"]
+      # Use Travis CI Git variables for master or branch jobs.
+      elsif ENV["TRAVIS_COMMIT_RANGE"]
+        diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
+      # Otherwise just use the current SHA-1 (which may be overriden later)
+      else
+        diff_end_sha1 = diff_start_sha1 = current_sha1
+      end
+
+      # Handle no arguments being passed on the command-line e.g. `brew test-bot`.
       if no_args?
         if diff_start_sha1 == diff_end_sha1 || \
            single_commit?(diff_start_sha1, diff_end_sha1)
@@ -328,19 +331,26 @@ module Homebrew
         else
           @name = "#{diff_start_sha1}-#{diff_end_sha1}"
         end
+      # Handle formulae arguments being passed on the command-line e.g. `brew test-bot wget fish`.
+      elsif @formulae && @formulae.any?
+        @name = "#{@formulae.first}-#{diff_end_sha1}"
+      # Handle a hash being passed on the command-line e.g. `brew test-bot 1a2b3c`.
       elsif @hash
         test "git", "checkout", @hash
         diff_start_sha1 = "#{@hash}^"
         diff_end_sha1 = @hash
         @name = @hash
-      elsif ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
-        @short_url = @url.gsub("https://github.com/", "")
-        @name = "#{@short_url}-#{diff_end_sha1}"
-        # TODO: in future this may need to use `brew pull` to push the right commit.
+      # Handle a URL being passed on the command-line or through Jenkins/Travis
+      # environment variables e.g.
+      # `brew test-bot https://github.com/Homebrew/homebrew/pull/44293`.
       elsif @url
-        diff_start_sha1 = current_sha1
-        test "brew", "pull", "--clean", @url
-        diff_end_sha1 = current_sha1
+        # TODO: in future Travis CI may need to also use `brew pull` to e.g. push
+        # the right commit to BrewTestBot.
+        unless travis_pr
+          diff_start_sha1 = current_sha1
+          test "brew", "pull", "--clean", @url
+          diff_end_sha1 = current_sha1
+        end
         @short_url = @url.gsub("https://github.com/", "")
         if @short_url.include? "/commit/"
           # 7 characters should be enough for a commit (not 40).
@@ -350,8 +360,7 @@ module Homebrew
           @name = "#{@short_url}-#{diff_end_sha1}"
         end
       else
-        diff_start_sha1 = diff_end_sha1 = current_sha1
-        @name = "#{@formulae.first}-#{diff_end_sha1}"
+        raise "Cannot set @name: invalid command-line arguments!"
       end
 
       if ENV["TRAVIS"]
