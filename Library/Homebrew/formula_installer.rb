@@ -189,7 +189,12 @@ class FormulaInstaller
       begin
         install_relocation_tools unless formula.bottle_specification.skip_relocation?
         pour
-      rescue => e
+      rescue Exception => e
+        # any exceptions must leave us with nothing installed
+        ignore_interrupts do
+          formula.prefix.rmtree if formula.prefix.directory?
+          formula.rack.rmdir_if_possible
+        end
         raise if ARGV.homebrew_developer?
         @pour_failed = true
         onoe e.message
