@@ -14,8 +14,8 @@ class Duplicity < Formula
   end
 
   devel do
-    url "https://code.launchpad.net/duplicity/0.7-series/0.7.04/+download/duplicity-0.7.04.tar.gz"
-    sha256 "b49fb7bbdf0a457adf67e9c9127c107695437cef135aca69bca90d495a97dd7a"
+    url "https://code.launchpad.net/duplicity/0.7-series/0.7.05/+download/duplicity-0.7.05.tar.gz"
+    sha256 "1e53807d5de5bacbbe6c4eea2f313a16e9a63423316ae7b8597ee0d9e697f744"
   end
 
   option :universal
