@@ -190,6 +190,7 @@ class FormulaInstaller
         @pour_failed = true
         onoe e.message
         opoo "Bottle installation failed: building from source."
+        raise BuildToolsError.new([formula]) unless MacOS.has_apple_developer_tools?
       else
         @poured_bottle = true
       end
