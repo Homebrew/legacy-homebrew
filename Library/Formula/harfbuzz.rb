@@ -41,8 +41,8 @@ class Harfbuzz < Formula
       --prefix=#{prefix}
       --enable-introspection=yes
       --with-gobject=yes
-      --with-coretext=yes
     ]
+    args << "--with-coretext=yes" if OS.mac?
 
     args << "--with-icu" if build.with? "icu4c"
     args << "--with-graphite2" if build.with? "graphite2"
