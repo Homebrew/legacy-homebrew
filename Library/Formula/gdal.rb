@@ -87,6 +87,10 @@ class Gdal < Formula
     depends_on "swig" => :build
   end
 
+  option "without-python", "Build without python2 support"
+  depends_on :python => :optional if MacOS.version <= :snow_leopard
+  depends_on :python3 => :optional
+
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
   # including prefix lib dir added by Homebrew:
@@ -290,9 +294,11 @@ class Gdal < Formula
     system "make"
     system "make", "install"
 
-    cd "swig/python" do
-      system "python", *Language::Python.setup_install_args(prefix)
-      bin.install Dir["scripts/*"]
+    Language::Python.each_python(build) do |python, python_version|
+      cd "swig/python" do
+        system python, *Language::Python.setup_install_args(prefix)
+        bin.install Dir["scripts/*"] if python == "python"
+      end
     end
 
     if build.with? "swig-java"
