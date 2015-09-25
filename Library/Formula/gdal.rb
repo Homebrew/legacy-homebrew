@@ -291,16 +291,8 @@ class Gdal < Formula
     system "make"
     system "make", "install"
 
-    # `python-config` may try to talk us into building bindings for more
-    # architectures than we really should.
-    if MacOS.prefer_64_bit?
-      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_64_bit}"
-    else
-      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_32_bit}"
-    end
-
     cd "swig/python" do
-      system "python", "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
+      system "python", *Language::Python.setup_install_args(prefix)
       bin.install Dir["scripts/*"]
     end
 
