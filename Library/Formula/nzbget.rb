@@ -3,6 +3,7 @@ class Nzbget < Formula
   homepage "http://nzbget.net/"
   url "https://github.com/nzbget/nzbget/releases/download/v15.0/nzbget-15.0-src.tar.gz"
   sha256 "3ef13f3e5917e4cda19c4fc0cd37e79967a19b4e3448c239ff24e37712a6cc0a"
+  revision 1
 
   head "https://github.com/nzbget/nzbget.git"
 
@@ -15,6 +16,8 @@ class Nzbget < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl"
   depends_on "libsigc++"
+
+  needs :cxx11
 
   fails_with :clang do
     build 500
@@ -30,6 +33,7 @@ class Nzbget < Formula
   end
 
   def install
+    ENV.cxx11
     resource("libpar2").stage do
       system "./configure", "--disable-dependency-tracking",
                             "--prefix=#{libexec}/lp2"

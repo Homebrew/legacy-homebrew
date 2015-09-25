@@ -3,6 +3,7 @@ class Synfig < Formula
   homepage "http://synfig.org"
   url "https://downloads.sourceforge.net/project/synfig/releases/1.0/source/synfig-1.0.tar.gz"
   sha256 "1f2f9b209d49dff838049e9817b0458ac6987e912a56c061aa2f9c2faeb40720"
+  revision 1
 
   head "git://synfig.git.sourceforge.net/gitroot/synfig/synfig"
 
@@ -28,7 +29,10 @@ class Synfig < Formula
   depends_on "mlt"
   depends_on "libtool" => :run
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     boost = Formula["boost"]
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
@@ -111,7 +115,7 @@ class Synfig < Formula
       -lxml++-2.6
       -lxml2
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
