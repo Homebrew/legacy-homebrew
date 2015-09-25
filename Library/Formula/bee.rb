@@ -6,8 +6,8 @@ class Bee < Formula
 
   def install
     rm_rf Dir["bin/*.bat"]
-    bin.install Dir["bin/*"]
-    lib.install Dir["lib/*"]
+    libexec.install Dir["*"]
+    bin.install_symlink "#{libexec}/bin/bee"
   end
 
   test do
