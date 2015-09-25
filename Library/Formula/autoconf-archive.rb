@@ -8,7 +8,6 @@ class AutoconfArchive < Formula
   bottle do
     cellar :any_skip_relocation
     revision 1
-    sha256 "80cb808f4363f2322d64b26b889cdb94989c76950f2d04d25e229d34129edc11" => :el_capitan
     sha256 "e624e553fc32244c54188a9e397d03265478482f28942eb8b3af0d3c78810046" => :yosemite
     sha256 "661fc895512c91c0b2afd4c906b9c96f8f471b4b10884be893342f396183a8db" => :mavericks
   end
