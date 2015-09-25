@@ -7,6 +7,7 @@ class Brotli < Formula
   head "https://github.com/google/brotli.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
+  conflicts_with "bro", :because => "Both install a `bro` binary"
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
