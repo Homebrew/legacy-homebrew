@@ -3,6 +3,7 @@ class Unar < Formula
   homepage "http://unarchiver.c3.cx/commandline"
   url "http://unarchiver.c3.cx/downloads/unar1.9.1_src.zip"
   sha256 "28045fb688563c002b7c2807e80575d3f9af8eb024739f9ab836f681bb8e822c"
+  version "1.9.1"
 
   head "https://bitbucket.org/WAHa_06x36/theunarchiver", :using => :hg
 
