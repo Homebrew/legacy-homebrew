@@ -31,11 +31,6 @@ class Gdal < Formula
   deprecated_option "enable-mdb" => "with-mdb"
   deprecated_option "complete" => "with-complete"
 
-  depends_on :python => :optional
-  if build.with? "python"
-    depends_on :fortran => :build
-  end
-
   depends_on "libpng"
   depends_on "jpeg"
   depends_on "giflib"
@@ -90,6 +85,7 @@ class Gdal < Formula
   option "without-python", "Build without python2 support"
   depends_on :python => :optional if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
+  depends_on :fortran => :build if build.with?("python") || build.with?("python3")
 
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
@@ -103,8 +99,8 @@ class Gdal < Formula
   end
 
   resource "numpy" do
-    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz"
-    sha256 "3d722fc3ac922a34c50183683e828052cd9bb7e9134a95098441297d7ea1c7a9"
+    url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.3.tar.gz"
+    sha256 "c3b74d3b9da4ceb11f66abd21e117da8cf584b63a0efbd01a9b7e91b693fbbd6"
   end
 
   resource "libkml" do
@@ -246,13 +242,6 @@ class Gdal < Formula
   end
 
   def install
-    if build.with? "python"
-      ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-      numpy_args = ["build", "--fcompiler=gnu95",
-                    "install", "--prefix=#{libexec}"]
-      resource("numpy").stage { system "python", "setup.py", *numpy_args }
-    end
-
     if build.with? "libkml"
       resource("libkml").stage do
         # See main `libkml` formula for info on patches
@@ -294,7 +283,14 @@ class Gdal < Formula
     system "make"
     system "make", "install"
 
+    inreplace "swig/python/setup.cfg", /#(.*_dirs)/, "\\1"
     Language::Python.each_python(build) do |python, python_version|
+      numpy_site_packages = buildpath/"homebrew-numpy/lib/python#{python_version}/site-packages"
+      numpy_site_packages.mkpath
+      ENV["PYTHONPATH"] = numpy_site_packages
+      resource("numpy").stage do
+        system python, *Language::Python.setup_install_args(buildpath/"homebrew-numpy")
+      end
       cd "swig/python" do
         system python, *Language::Python.setup_install_args(prefix)
         bin.install Dir["scripts/*"] if python == "python"
