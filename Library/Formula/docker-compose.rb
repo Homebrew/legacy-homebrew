@@ -112,7 +112,6 @@ class DockerCompose < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-    ln_s bin/"docker-compose", bin/"fig"
   end
 
   test do
