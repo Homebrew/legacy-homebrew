@@ -1,8 +1,8 @@
 class Languagetool < Formula
   desc "Style and grammar checker"
   homepage "http://www.languagetool.org/"
-  url "https://www.languagetool.org/download/LanguageTool-2.8.zip"
-  sha256 "2d4d38dc6aeab828654fbb6bd805253c22c1c463c2adcfd2379879c9dfa026f3"
+  url "https://www.languagetool.org/download/LanguageTool-3.0.zip"
+  sha256 "52f7b27a7c040db3e824bf115302ea0737a5f0b4573b0c012c2a26a96680fc3d"
 
   def server_script(server_jar); <<-EOS.undent
     #!/bin/bash
