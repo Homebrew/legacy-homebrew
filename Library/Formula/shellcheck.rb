@@ -34,6 +34,6 @@ class Shellcheck < Formula
         echo "$f"
       done
     EOS
-    assert `shellcheck -f gcc #{sh}`.include? "[SC2045]"
+    assert_match "[SC2045]", shell_output("shellcheck -f gcc #{sh}", 1)
   end
 end
