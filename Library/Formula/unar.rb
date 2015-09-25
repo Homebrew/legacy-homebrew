@@ -20,22 +20,22 @@ class Unar < Formula
 
   def install
     # Files in unar1.9.1_src.zip have 'The Unarchiver' path prefix, but HEAD checkout does not.
-    cd build.head? ? "." : "./The Unarchiver" do
-      # Build XADMaster.framework, unar and lsar
-      xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "XADMaster", "SYMROOT=../", "-configuration", "Release"
-      xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "unar", "SYMROOT=../", "-configuration", "Release"
-      xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "lsar", "SYMROOT=../", "-configuration", "Release"
+    cd "./The Unarchiver" unless build.head?
 
-      bin.install "./Release/unar", "./Release/lsar"
+    # Build XADMaster.framework, unar and lsar
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "XADMaster", "SYMROOT=../", "-configuration", "Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "unar", "SYMROOT=../", "-configuration", "Release"
+    xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "lsar", "SYMROOT=../", "-configuration", "Release"
 
-      lib.install "./Release/libXADMaster.a"
-      frameworks.install "./Release/XADMaster.framework"
-      (include/"libXADMaster").install_symlink Dir["#{frameworks}/XADMaster.framework/Headers/*"]
+    bin.install "./Release/unar", "./Release/lsar"
 
-      cd "./Extra" do
-        man1.install "lsar.1", "unar.1"
-        bash_completion.install "unar.bash_completion", "lsar.bash_completion"
-      end
+    lib.install "./Release/libXADMaster.a"
+    frameworks.install "./Release/XADMaster.framework"
+    (include/"libXADMaster").install_symlink Dir["#{frameworks}/XADMaster.framework/Headers/*"]
+
+    cd "./Extra" do
+      man1.install "lsar.1", "unar.1"
+      bash_completion.install "unar.bash_completion", "lsar.bash_completion"
     end
   end
 
