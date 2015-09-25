@@ -7,9 +7,10 @@ class Python < Formula
   revision 2
 
   bottle do
-    sha256 "df7af5b6865765e96acdad1922c4983439f8b058845ac5023f8fe8ec79ea3d4e" => :yosemite
-    sha256 "c0fab9719d000e1f6150423538b01059471b6eb1777257f5e71a29e1457311e4" => :mavericks
-    sha256 "90e0f06ef02d3852cd805776ff172e909a2d69c97536ec0fae599d3ebd00bfec" => :mountain_lion
+    revision 2
+    sha256 "da5b8d05839a11fb45be090b62b33e623606219192aa9247308f8b130bd7906b" => :el_capitan
+    sha256 "68fa4e84805d502b50da296799a40bd5330f341c43abfeb2c3ba2749a647aee8" => :yosemite
+    sha256 "f6a63cc310b6b69ccf58108471910c84fc68b71f3fb645583e9744c44f046471" => :mavericks
   end
 
   # Homebrew doesn't accept a wide/ucs4 option because narrow build is the de facto standard
@@ -37,13 +38,13 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
-    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.3.1.tar.gz"
+    sha256 "2fa230727104b07e522deec17929e84e041c9047e392c055347a02b0d5ca874d"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.0.tar.gz"
-    sha256 "d5275ba3221182a5dd1b6bcfbfc5ec277fb399dd23226d6fa018048f7e0f10f2"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
+    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
   resource "wheel" do
@@ -62,6 +63,14 @@ class Python < Formula
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
   # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
   patch :DATA if build.with? "tcl-tk"
+
+  # Fix extension module builds against Xcode 7 SDKs
+  # https://github.com/Homebrew/homebrew/issues/41085
+  # https://bugs.python.org/issue25136
+  patch do
+    url "https://bugs.python.org/file40479/xcode-stubs-2.7.patch"
+    sha256 "86714b750c887065952cd556f4d23246edf3124384f579356c8e377bc6ff2f83"
+  end
 
   def lib_cellar
     prefix / (OS.mac? ? "Frameworks/Python.framework/Versions/2.7" : "") /

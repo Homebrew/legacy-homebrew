@@ -276,7 +276,8 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
         ohai "Downloading from #{urls.last}"
         if !ENV["HOMEBREW_NO_INSECURE_REDIRECT"].nil? && @url.start_with?("https://") &&
            urls.any? { |u| !u.start_with? "https://" }
-          raise "HTTPS to HTTP redirect detected & HOMEBREW_NO_INSECURE_REDIRECT is set."
+          puts "HTTPS to HTTP redirect detected & HOMEBREW_NO_INSECURE_REDIRECT is set."
+          raise CurlDownloadStrategyError.new(@url)
         end
         @url = urls.last
       end
@@ -358,6 +359,7 @@ class CurlApacheMirrorDownloadStrategy < CurlDownloadStrategy
     buf = ""
 
     pid = fork do
+      ENV.delete "HOMEBREW_CURL_VERBOSE"
       rd.close
       $stdout.reopen(wr)
       $stderr.reopen(wr)
@@ -835,7 +837,7 @@ class DownloadStrategyDetector
     case url
     when %r{^https?://.+\.git$}, %r{^git://}
       GitDownloadStrategy
-    when %r{^https?://www\.apache\.org/dyn/closer\.cgi}
+    when %r{^https?://www\.apache\.org/dyn/closer\.cgi}, %r{^https?://www\.apache\.org/dyn/closer\.lua}
       CurlApacheMirrorDownloadStrategy
     when %r{^https?://(.+?\.)?googlecode\.com/svn}, %r{^https?://svn\.}, %r{^svn://}, %r{^https?://(.+?\.)?sourceforge\.net/svnroot/}
       SubversionDownloadStrategy

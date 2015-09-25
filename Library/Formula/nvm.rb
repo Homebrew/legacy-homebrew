@@ -1,21 +1,22 @@
 class Nvm < Formula
   desc "Manage multiple Node.js versions"
   homepage "https://github.com/creationix/nvm"
-  url "https://github.com/creationix/nvm/archive/v0.26.0.tar.gz"
-  sha256 "2838e8d54e9c748b20bc9915a23714fb8d75d1539b2b76f0ff11493222011d79"
+  url "https://github.com/creationix/nvm/archive/v0.26.1.tar.gz"
+  sha256 "6add56210bd3a60517fea64eef11de01f5abfd5a23ca62c68ade9f115475b864"
   head "https://github.com/creationix/nvm.git"
 
   bottle do
-    cellar :any
-    sha256 "ab9996b2ceb66f35a545e922403ab64a5010d647521d4bdbf743b3583dbd15ec" => :yosemite
-    sha256 "db4e26b82f10a0585b62d35fa3ef7c55d0e9b4ecd48e8a8b4f625f993e6036b5" => :mavericks
-    sha256 "7b1de04a747bfd4bcd6403a70b5907be8d782ebb11c9bdcaaab9a952c2eb8289" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "1ad6e167f0094fe5a913aa27f024154acb930a3f1d2cf6ef78c43e074a3eec96" => :el_capitan
+    sha256 "bda39c68500fdefd63389e2b496e41288a7d9a087f48de546f37ad7a122ba1a9" => :yosemite
+    sha256 "a28caf45d1b9f65bc73493562bf3eb7191fb8c4b54fcd75cf36692446245115f" => :mavericks
+    sha256 "262c46a1496abb2b060a46c19ce05eb36043e2c06c29e77f90c77d64639b2870" => :mountain_lion
   end
 
   resource "nvm-exec" do
-    url "https://raw.githubusercontent.com/creationix/nvm/v0.26.0/nvm-exec"
+    url "https://raw.githubusercontent.com/creationix/nvm/v0.26.1/nvm-exec"
     sha256 "a0581795f10114b9759992a82a43496daf4b4a52ad381a3072d8eee9866a28c5"
-    version "0.26.0"
+    version "0.26.1"
   end
 
   def install

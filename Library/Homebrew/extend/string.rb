@@ -1,6 +1,6 @@
 class String
   def undent
-    gsub(/^.{#{(slice(/^ +/) || '').length}}/, "")
+    gsub(/^[ \t]{#{(slice(/^[ \t]+/) || '').length}}/, "")
   end
 
   # eg:

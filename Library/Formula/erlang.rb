@@ -7,27 +7,27 @@ class Erlang < Formula
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-18.0.2.tar.gz"
-    sha256 "b8c4af95376cd8a67b1f3cfb54ce4cbc7a548cac2293e9a0e865f2c058402a8e"
+    url "https://github.com/erlang/otp/archive/OTP-18.1.tar.gz"
+    sha256 "1bb9afabbaf11d929f1ca9593db8b443e51388cdc78bd01267217438de7aed20"
   end
 
   head "https://github.com/erlang/otp.git"
 
   bottle do
     cellar :any
-    sha256 "3c064591b32e9010cdef1a51455cd0ac23c2b8a016a117924a67b236c12a988e" => :yosemite
-    sha256 "3b0b4285955dc187a8dca66b8b9e7f077b5a49c43bd1d3e59366d282590e4d47" => :mavericks
-    sha256 "0ed053371d9b3e80b5c9a6ed3a3023945b13f2564039822749f692bbd284025b" => :mountain_lion
+    sha256 "bf18573b48e421395e4df1b25b6b211b21f3b90319b7098d527884d7292d6cb9" => :el_capitan
+    sha256 "6da625cb19236ae2c0627ae8e1b295e923ada1d54e4ba258c4754680a813a04a" => :yosemite
+    sha256 "79eca633a2d6694827f59360fed2079cec900ed70ba03843288ea734a4e138fb" => :mavericks
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_18.0.tar.gz"
-    sha256 "e44f0ec36ee0683867bc2aa9cc7fbb020d9dfd57338f37b98dcd0771f5b95673"
+    url "http://www.erlang.org/download/otp_doc_man_18.1.tar.gz"
+    sha256 "e080e656820b26dd45d806b632e12eec7d1de34f38e5de19a7aebc9fd6e5c9b6"
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_18.0.tar.gz"
-    sha256 "e5a766f68406f5025f921ec32e8959937189ed1245e24b03a74156a8898b03b2"
+    url "http://www.erlang.org/download/otp_doc_html_18.1.tar.gz"
+    sha256 "fe7d035f84492bbf86f8d53891bf31fa327a81ed7dde15c050e9c32615dceb3c"
   end
 
   option "without-hipe", "Disable building hipe; fails on various OS X systems"

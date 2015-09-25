@@ -81,7 +81,7 @@ Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/b
 
 And then [Git](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
 
-A more complete example-formula [cheat-sheet](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/example-formula.rb) shows almost all the stuff you can use in a Formula.
+Refer to the [Formula class API documentation](http://www.rubydoc.info/github/Homebrew/homebrew/master/frames) which shows all the stuff you can use in a Formula.
 
 ## Grab the URL
 
@@ -343,7 +343,9 @@ Add aliases by creating symlinks in `Library/Aliases`.
 
 ## Audit the formula
 
-You can run `brew audit` to test formulae for adherence to Homebrew house style. This includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+You can run `brew audit` to test formulae for adherence to Homebrew house style. The audit command includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+
+New formulae being submitted to Homebrew should run `brew audit <formula name> --strict --online`. This command is performed by the Brew Test Bot on new submissions as part of the automated build and test process, and highlights more potential issues than the standard audit.
 
 Use `brew info` and check if the version guessed by Homebrew from the URL is
 correct. Add an explicit `version` if not.

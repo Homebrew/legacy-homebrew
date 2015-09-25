@@ -5,9 +5,10 @@ class Supersonic < Formula
   sha256 "1592dfd2dc73f0b97298e0d25e51528dc9a94e9e7f4ab525569f63db0442d769"
 
   bottle do
-    sha256 "bce00a06edf6ace2603372f7abe643acdfd620028864a63475d4897e7d5c272a" => :yosemite
-    sha256 "2e436da2c2b5dd0272558e0acd187f22549fddb0a4f7c7fe9209bc174674ae9f" => :mavericks
-    sha256 "6f2d68e3bba1872a5af673be5f4612c879b0ebe5cb47f9df22539f8cca6be4bd" => :mountain_lion
+    revision 1
+    sha256 "75c8903d7d637aa495c83eb3a3569b627fbdf9799e907a7d0fff536cf3ddb155" => :yosemite
+    sha256 "c72cb21c7f1efc5a790be376e55dcc4a1edc76cda6686c2ba7d3d7f8c2937321" => :mavericks
+    sha256 "2869dba7bb685f7f6e4df504b87e01a7dda685afc3f27fa1c6010c150982317f" => :mountain_lion
   end
 
   if MacOS.version < :mavericks
@@ -17,15 +18,20 @@ class Supersonic < Formula
     depends_on "protobuf"
     depends_on "boost"
   end
-  depends_on "glog"
+
   depends_on "pkg-config" => :build
+  depends_on "glog"
+
   needs :cxx11
 
   def install
     ENV.cxx11
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
+
+    # gflags no longer supply .pc files; supersonic's compile expects them.
+    ENV["GFLAGS_CFLAGS"] = "-I#{Formula["gflags"].opt_include}"
+    ENV["GFLAGS_LIBS"] = "-L#{Formula["gflags"].opt_lib} -lgflags"
+
+    system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-re2"
     system "make", "clean"

@@ -6,6 +6,7 @@ class SaneBackends < Formula
   sha256 "27c7085a54f1505d8b551e6f1e69d30e1ee57328b18429bb2225dabf4c45462d"
   bottle do
     revision 1
+    sha256 "e8cd147368ca911b15da016a09cb3d0b58843b5169291a75fe2a42fed7c9c887" => :el_capitan
     sha1 "36cbd09583ba8282b149467de09e963d8c2c2a6f" => :yosemite
     sha1 "d12ff8d69dae245177c554c82dbe0acc9c31fd3d" => :mavericks
     sha1 "343224849f6824dba073499bcb0521abd76e9e23" => :mountain_lion

@@ -6,6 +6,7 @@ class Bsdmake < Formula
 
   bottle do
     revision 1
+    sha256 "b4052277ac6cf79ed579107fb73da96954c350d7bf29a124c55d87a0df8940b0" => :el_capitan
     sha1 "af9a7d65b92a9c5fae42bd3653d4b79c249e8c18" => :yosemite
     sha1 "e7530cee7765619355ad4ff07ff3a9635c5f843c" => :mavericks
     sha1 "cbb0f8c89812af75e3f4ba99951d8b440db5660e" => :mountain_lion

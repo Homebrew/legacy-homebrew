@@ -5,8 +5,9 @@ class DocbookXsl < Formula
   sha256 "c98f7296ab5c8ccd2e0bc07634976a37f50847df2d8a59bdb1e157664700b467"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "6d7607d66c0299b68914780d9e108634a250da29e1da20b7dc717eb4f0e25053" => :el_capitan
     sha1 "2d71a5e24820de3f498f632b47ecaf7af7875312" => :yosemite
     sha1 "236f05f3d22a6972eca770fcaf19063c6b0ec3aa" => :mavericks
     sha1 "435ee69f4fc431bff00a973a70c5f24235f5392d" => :mountain_lion

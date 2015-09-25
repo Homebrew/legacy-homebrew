@@ -114,15 +114,6 @@ Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 ## License
 Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt).
 
-## Donations
-We accept tips through Gratipay.
-
-### Shaun Jackman for Linuxbrew
-[![Gratipay](https://img.shields.io/gratipay/sjackman.svg?style=flat)](https://gratipay.com/sjackman/)
-
-### Homebrew
-[![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://gratipay.com/Homebrew/)
-
 ## Sponsors
 Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).
 

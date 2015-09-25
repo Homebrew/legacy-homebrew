@@ -59,14 +59,6 @@ class Checks
   def inject_file_list(list, str)
     list.inject(str) { |s, f| s << "    #{f}\n" }
   end
-
-  # Git will always be on PATH because of the wrapper script in
-  # Library/ENV/scm, so we check if there is a *real*
-  # git here to avoid multiple warnings.
-  def git?
-    return @git if instance_variable_defined?(:@git)
-    @git = system "git --version >/dev/null 2>&1"
-  end
   ############# END HELPERS
 
   # Sorry for the lack of an indent here, the diff would have been unreadable.
@@ -74,13 +66,11 @@ class Checks
   def check_path_for_trailing_slashes
     bad_paths = ENV["PATH"].split(File::PATH_SEPARATOR).select { |p| p[-1..-1] == "/" }
     return if bad_paths.empty?
-    s = <<-EOS.undent
+    inject_file_list bad_paths, <<-EOS.undent
     Some directories in your path end in a slash.
     Directories in your path should not end in a slash. This can break other
     doctor checks. The following directories should be edited:
-  EOS
-    bad_paths.each { |p| s << "    #{p}" }
-    s
+    EOS
   end
 
   # Installing MacGPG2 interferes with Homebrew in a big way
@@ -242,15 +232,14 @@ class Checks
         end
       end
     end
-    unless broken_symlinks.empty? then <<-EOS.undent
+    return if broken_symlinks.empty?
+    inject_file_list broken_symlinks, <<-EOS.undent
     Broken symlinks were found. Remove them with `brew prune`:
-      #{broken_symlinks * "\n      "}
     EOS
-    end
   end
 
   def check_for_unsupported_osx
-    if MacOS.version >= "10.11" then <<-EOS.undent
+    if !ARGV.homebrew_developer? && MacOS.version >= "10.11" then <<-EOS.undent
     You are using OS X #{MacOS.version}.
     We do not provide support for this pre-release version.
     You may encounter build failures or other breakage.
@@ -258,6 +247,7 @@ class Checks
     end
   end
 
+  # TODO: distill down into single method definition a la BuildToolsError
   if MacOS.version >= "10.9"
     def check_for_installed_developer_tools
       unless MacOS::Xcode.installed? || MacOS::CLT.installed? then <<-EOS.undent
@@ -417,19 +407,14 @@ class Checks
       cant_read << d unless d.writable_real?
     end
 
-    cant_read.sort!
-    if cant_read.length > 0
-      s = <<-EOS.undent
+    return if cant_read.empty?
+    inject_file_list cant_read.sort, <<-EOS.undent
     Some directories in #{target} aren't writable.
     This can happen if you "sudo make install" software that isn't managed
     by Homebrew. If a brew tries to add locale information to one of these
     directories, then the install will fail during the link step.
     You should probably `chown` them:
-
     EOS
-      cant_read.each { |f| s << "    #{f}\n" }
-      s
-    end
   end
 
   def check_access_share_locale
@@ -461,7 +446,7 @@ class Checks
     #{HOMEBREW_TEMP} is world-writable but does not have the sticky bit set.
     Please run `sudo chmod +t #{HOMEBREW_TEMP}` in your shell
     or on a Mac run "Repair Disk Permissions" in Disk Utility.
-  EOS
+    EOS
     end
   end
 
@@ -593,6 +578,19 @@ class Checks
     end
   end
 
+  # Xcode 7 lacking the 10.10 SDK is forcing sysroot to be declared
+  # nil on 10.10 & breaking compiles. CLT is workaround.
+  def check_sdk_path_not_nil_yosemite
+    if MacOS.version == :yosemite && !MacOS::CLT.installed? && MacOS::Xcode.installed? && MacOS.sdk_path.nil?
+      <<-EOS.undent
+      Xcode 7 lacks the 10.10 SDK which can cause some builds to fail.
+      We recommend installing the Command Line Tools with:
+        xcode-select --install
+      to resolve this issue.
+     EOS
+    end
+  end
+
   def check_user_path_1
     $seen_prefix_bin = false
     $seen_prefix_sbin = false
@@ -610,12 +608,13 @@ class Checks
                       select { |bn| File.exist? "/usr/bin/#{bn}" }
 
           if conflicts.size > 0
-            out = <<-EOS.undent
+            out = inject_file_list conflicts, <<-EOS.undent
             /usr/bin occurs before #{HOMEBREW_PREFIX}/bin
             This means that system-provided programs will be used instead of those
             provided by Homebrew. The following tools exist at both paths:
+            EOS
 
-                #{conflicts * "\n                "}
+            out += <<-EOS.undent
 
             Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
             occurs before /usr/bin. Here is a one-liner:
@@ -657,14 +656,35 @@ class Checks
     end
   end
 
+  def check_for_bad_curl
+    if MacOS.version <= "10.6" && !Formula["curl"].installed? then <<-EOS.undent
+      The system curl on 10.6 and below is often incapable of supporting
+      modern secure connections & will fail on fetching formulae.
+      We recommend you:
+        brew install curl
+      EOS
+    end
+  end
+
   def check_user_curlrc
     if %w[CURL_HOME HOME].any? { |key| ENV[key] && File.exist?("#{ENV[key]}/.curlrc") } then <<-EOS.undent
     You have a curlrc file
     If you have trouble downloading packages with Homebrew, then maybe this
     is the problem? If the following command doesn't work, then try removing
     your curlrc:
-      curl http://github.com
+      curl https://github.com
     EOS
+    end
+  end
+
+  def check_for_unsupported_curl_vars
+    # Support for SSL_CERT_DIR seemed to be removed in the 10.10.5 update.
+    if MacOS.version >= :yosemite && !ENV["SSL_CERT_DIR"].nil? then <<-EOS.undent
+      SSL_CERT_DIR support was removed from Apple's curl.
+      If fetching formulae fails you should:
+        unset SSL_CERT_DIR
+      and remove it from #{shell_profile} if present.
+      EOS
     end
   end
 
@@ -764,8 +784,8 @@ class Checks
       scripts += Dir.chdir(p) { Dir["*-config"] }.map { |c| File.join(p, c) }
     end
 
-    unless scripts.empty?
-      s = <<-EOS.undent
+    return if scripts.empty?
+    inject_file_list scripts, <<-EOS.undent
       "config" scripts exist outside your system or Homebrew directories.
       `./configure` scripts often look for *-config scripts to determine if
       software packages are installed, and what additional flags to use when
@@ -774,31 +794,25 @@ class Checks
       Having additional scripts in your path can confuse software installed via
       Homebrew if the config script overrides a system or Homebrew provided
       script of the same name. We found the following "config" scripts:
-
     EOS
-
-      s << scripts.map { |f| "  #{f}" }.join("\n")
-    end
   end
 
   def check_DYLD_vars
     found = ENV.keys.grep(/^DYLD_/)
-    unless found.empty?
-      s = <<-EOS.undent
-    Setting DYLD_* vars can break dynamic linking.
-    Set variables:
+    return if found.empty?
+    s = inject_file_list found.map { |e| "#{e}: #{ENV.fetch(e)}" }, <<-EOS.undent
+      Setting DYLD_* vars can break dynamic linking.
+      Set variables:
     EOS
-      s << found.map { |e| "    #{e}: #{ENV.fetch(e)}\n" }.join
-      if found.include? "DYLD_INSERT_LIBRARIES"
-        s += <<-EOS.undent
+    if found.include? "DYLD_INSERT_LIBRARIES"
+      s += <<-EOS.undent
 
       Setting DYLD_INSERT_LIBRARIES can cause Go builds to fail.
       Having this set is common if you use this software:
         http://asepsis.binaryage.com/
       EOS
-      end
-      s
     end
+    s
   end
 
   def check_for_symlinked_cellar
@@ -873,7 +887,7 @@ class Checks
     # https://help.github.com/articles/https-cloning-errors
     `git --version`.chomp =~ /git version ((?:\d+\.?)+)/
 
-    if $1 && Version.new($1) < Version.new("1.7.10") then
+    if $1 && Version.new($1) < Version.new("1.7.10")
       git_upgrade_cmd = Formula["git"].any_version_installed? ? "upgrade" : "install"
 
       <<-EOS.undent
@@ -885,7 +899,7 @@ class Checks
   end
 
   def check_for_git
-    if git?
+    if Utils.git_available?
       __check_git_version
     else <<-EOS.undent
     Git could not be found in your PATH.
@@ -897,7 +911,7 @@ class Checks
   end
 
   def check_git_newline_settings
-    return unless git?
+    return unless Utils.git_available?
 
     autocrlf = `git config --get core.autocrlf`.chomp
 
@@ -915,12 +929,11 @@ class Checks
   end
 
   def check_git_origin
-    return unless git? && (HOMEBREW_REPOSITORY/".git").exist?
+    return if !Utils.git_available? || !(HOMEBREW_REPOSITORY/".git").exist?
 
-    HOMEBREW_REPOSITORY.cd do
-      origin = `git config --get remote.origin.url`.strip
+    origin = Homebrew.git_origin
 
-      if origin.empty? then <<-EOS.undent
+    if origin.nil? then <<-EOS.undent
       Missing git origin remote.
 
       Without a correctly configured origin, Homebrew won't update
@@ -928,7 +941,7 @@ class Checks
         cd #{HOMEBREW_REPOSITORY}
         git remote add origin https://github.com/Homebrew/#{OS::GITHUB_REPOSITORY}.git
       EOS
-      elsif origin !~ /(mxcl|Homebrew)\/#{OS::GITHUB_REPOSITORY}(\.git)?$/ then <<-EOS.undent
+    elsif origin !~ /(mxcl|Homebrew)\/#{OS::GITHUB_REPOSITORY}(\.git)?$/ then <<-EOS.undent
       Suspicious git origin remote found.
 
       With a non-standard origin, Homebrew won't pull updates from
@@ -939,7 +952,6 @@ class Checks
       origin remote to point at the main repository, located at:
         https://github.com/Homebrew/#{OS::GITHUB_REPOSITORY}.git
       EOS
-      end
     end
   end
 
@@ -976,8 +988,8 @@ class Checks
       f.keg_only? && __check_linked_brew(f)
     end
 
-    unless linked.empty?
-      s = <<-EOS.undent
+    return if linked.empty?
+    inject_file_list linked.map(&:full_name), <<-EOS.undent
     Some keg-only formula are linked into the Cellar.
     Linking a keg-only formula, such as gettext, into the cellar with
     `brew link <formula>` will cause other formulae to detect them during
@@ -988,11 +1000,7 @@ class Checks
     with other strange results.
 
     You may wish to `brew unlink` these brews:
-
     EOS
-      linked.each { |f| s << "    #{f.full_name}\n" }
-      s
-    end
   end
 
   def check_for_other_frameworks
@@ -1051,7 +1059,7 @@ class Checks
   end
 
   def check_git_status
-    return unless git?
+    return unless Utils.git_available?
     HOMEBREW_REPOSITORY.cd do
       unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
         <<-EOS.undent_________________________________________________________72
@@ -1146,7 +1154,7 @@ class Checks
   end
 
   def check_for_outdated_homebrew
-    return unless git?
+    return unless Utils.git_available?
     HOMEBREW_REPOSITORY.cd do
       if File.directory? ".git"
         local = `git rev-parse -q --verify refs/remotes/origin/master`.chomp
@@ -1172,11 +1180,8 @@ class Checks
   end
 
   def check_for_unlinked_but_not_keg_only
-    return unless HOMEBREW_CELLAR.exist?
-    unlinked = HOMEBREW_CELLAR.children.reject do |rack|
-      if !rack.directory?
-        true
-      elsif !(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
+    unlinked = Formula.racks.reject do |rack|
+      if !(HOMEBREW_REPOSITORY/"Library/LinkedKegs"/rack.basename).directory?
         begin
           Formulary.from_rack(rack).keg_only?
         rescue FormulaUnavailableError, TapFormulaAmbiguityError
@@ -1187,14 +1192,12 @@ class Checks
       end
     end.map(&:basename)
 
-    unless unlinked.empty? then <<-EOS.undent
+    return if unlinked.empty?
+    inject_file_list unlinked, <<-EOS.undent
     You have unlinked kegs in your Cellar
     Leaving kegs unlinked can lead to build-trouble and cause brews that depend on
     those kegs to fail to run properly once built. Run `brew link` on these:
-
-        #{unlinked * "\n        "}
     EOS
-    end
   end
 
   def check_xcode_license_approved
@@ -1263,10 +1266,12 @@ class Checks
     end
     cmd_map.reject! { |_cmd_name, cmd_paths| cmd_paths.size == 1 }
     return if cmd_map.empty?
-    s = "You have external commands with conflicting names."
+    s = "You have external commands with conflicting names.\n"
     cmd_map.each do |cmd_name, cmd_paths|
-      s += "\n\nFound command `#{cmd_name}` in following places:\n"
-      s += cmd_paths.map { |f| "  #{f}" }.join("\n")
+      s += inject_file_list cmd_paths, <<-EOS.undent
+
+        Found command `#{cmd_name}` in following places:
+      EOS
     end
     s
   end

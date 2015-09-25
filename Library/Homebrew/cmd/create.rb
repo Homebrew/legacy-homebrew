@@ -118,7 +118,7 @@ class FormulaCreator
 
   def template; <<-EOS.undent
     # Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-    #                #{HOMEBREW_CONTRIB}/example-formula.rb
+    #                http://www.rubydoc.info/github/Homebrew/homebrew/master/frames
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formulary.class_s(name)} < Formula

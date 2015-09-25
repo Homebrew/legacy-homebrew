@@ -133,7 +133,7 @@ module Homebrew
     workers.map(&:join)
   end
 
-  def prune?(path, options={})
+  def prune?(path, options = {})
     @time ||= Time.now
 
     path_modified_time = path.mtime

@@ -5,7 +5,7 @@ class CodesignRequirement < Requirement
   satisfy(:build_env => false) do
     mktemp do
       touch "llvm_check.txt"
-      quiet_system "/usr/bin/codesign", "-s", "lldb_codesign", "llvm_check.txt"
+      quiet_system "/usr/bin/codesign", "-s", "lldb_codesign", "--dryrun", "llvm_check.txt"
     end
   end
 
@@ -53,6 +53,7 @@ class Llvm < Formula
 
   bottle do
     cellar :any
+    sha256 "fa04afc62800a236e32880efe30e1dbb61eace1e7e9ec20d2d53393ef9d68636" => :el_capitan
     sha256 "a0ec4b17ae8c1c61071e603d0dcf3e1c39a5aae63c3f8237b4363a06701a3319" => :yosemite
     sha256 "17a62c19d119c88972fa3dce920cfbc6150af8892ba8e29ce551ae7e2e84f42e" => :mavericks
     sha256 "6d780faae2647ebce704b2f0a246b52d4037ebf4a2f796644814607e7751af93" => :mountain_lion

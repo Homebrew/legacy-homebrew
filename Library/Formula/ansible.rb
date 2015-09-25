@@ -1,16 +1,16 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
   homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.9.2.tar.gz"
-  sha256 "c25ef4738b08fdfb3094247c012f3fd1b29972acbd37f988070b2a85f5fbee00"
+  url "http://releases.ansible.com/ansible/ansible-1.9.3.tar.gz"
+  sha256 "2594f642fd800056a427c1026410dc6ed8dfa7c0033f5c3d187abdb2b0d4eeed"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 2
-    sha256 "f7556845bc1ef41bab0cf257c4e81a5dc934114c597df38ee60a31d335ff3f47" => :yosemite
-    sha256 "d3216454aacc4d592a49ccd2b2bd93fa158d77f24c64e7a527ec0017abfa347d" => :mavericks
-    sha256 "51d17eb2a112240dfd1e25e8544e89adda3ab37c68d32210f10287ede128fe6e" => :mountain_lion
+    sha256 "3a84121aa26fe4f6d9bc2af11c4a3fc212c832c8696a2817f6b71b6207c4b69a" => :el_capitan
+    sha256 "e9513e2972a1d11ceebdc20be52995a41ed219587a5cae25ef28892c4098d963" => :yosemite
+    sha256 "3cca5dd439c1e1bae4cf7575a17bba52e423a8df0df563b87fa1d09594e53c0e" => :mavericks
+    sha256 "f4f08f04623570a93bf05f067033e175adf0069f9f426b152980c17437b2473d" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -483,6 +483,14 @@ class Ansible < Formula
     man1.install Dir["docs/man/man1/*.1"]
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+  end
+
+  def caveats; <<-EOS.undent
+    Homebrew writes wrapper scripts that set PYTHONPATH in ansible's
+    execution environment, which is inherited by Python scripts invoked
+    by ansible. If this causes problems, you can modify your playbooks
+    to invoke python with -E, which causes python to ignore PYTHONPATH.
+    EOS
   end
 
   test do

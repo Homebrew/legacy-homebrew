@@ -1,15 +1,16 @@
 class TheSilverSearcher < Formula
   desc "Code-search similar to ack"
   homepage "https://github.com/ggreer/the_silver_searcher"
+  url "https://github.com/ggreer/the_silver_searcher/archive/0.31.0.tar.gz"
+  sha256 "61bc827f4557d8108e91cdfc9ba31632e2568b26884c92426417f58135b37da8"
   head "https://github.com/ggreer/the_silver_searcher.git"
-  url "https://github.com/ggreer/the_silver_searcher/archive/0.30.0.tar.gz"
-  sha256 "a3b61b80f96647dbe89c7e89a8fa7612545db6fa4a313c0ef8a574d01e7da5db"
 
   bottle do
     cellar :any
-    sha256 "2083010fedc92dddfe1806bd505b37f67de334780a3351aa0f336f0a45f037c7" => :yosemite
-    sha256 "7ec1a769eea33db96c16614beebcb184d775d682803870d0ec894a3dddb86db3" => :mavericks
-    sha256 "2c771c3cd0f3189b4943ca0a57a1d96a082e3d418cfaaf8390d6f4a7fe8d781e" => :mountain_lion
+    sha256 "0967f4da9270f64c0dc389044976fa57a5ca77e8ae4b133db774b9b64f86a3f1" => :el_capitan
+    sha256 "90ffccb93ee6a8f4df645b8ac65b2aaf909f17af235fa625e9cad91091f84176" => :yosemite
+    sha256 "647d83eeb4b8372ef42c5565beaeb1282ac2c7e75330768aac642bbdc36cd68d" => :mavericks
+    sha256 "023a995816ae0fe7e04321d7773bbedfe71dbdc52889b96f9867c6c71850c16c" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -18,16 +19,6 @@ class TheSilverSearcher < Formula
   depends_on "pkg-config" => :build
   depends_on "pcre"
   depends_on "xz"
-
-  # Edit bash completion script to not require bash-completion
-  # The `have ag` test is redundant in any case, since the script will only
-  # be installed if Ag itself is installed. See:
-  # https://github.com/ggreer/the_silver_searcher/issues/208
-  # https://github.com/Homebrew/homebrew/issues/27418
-  patch do
-    url "https://github.com/thomasf/the_silver_searcher/commit/867dff8631bc80d760268f653265e4d3caf44f16.diff"
-    sha1 "09502c60a11658d9a08a6825e78defad96318bd9"
-  end
 
   def install
     # Stable tarball does not include pre-generated configure script

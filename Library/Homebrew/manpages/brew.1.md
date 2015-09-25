@@ -92,7 +92,7 @@ Note that these flags should only appear after a command.
     and version, but if it fails, you'll have to make your own template. The wget
     formula serves as a simple example. For a complete cheat-sheet, have a look at
 
-    `$(brew --repository)/Library/Contributions/example-formula.rb`
+    <http://www.rubydoc.info/github/Homebrew/homebrew/master/frames>
 
     If `--autotools` is passed, create a basic template for an Autotools-style build.
     If `--cmake` is passed, create a basic template for a CMake-style build.
@@ -125,6 +125,16 @@ Note that these flags should only appear after a command.
     By default, `deps` shows dependencies for <formulae>. To skip the `:build`
     type dependencies, pass `--skip-build`. Similarly, pass `--skip-optional`
     to skip `:optional` dependencies.
+
+  * `desc` <formula>:
+    Display <formula>'s name and one-line description.
+
+  * `desc [-s|-n|-d] <pattern>`:
+    Search both name and description (`-s`), just the names (`-n`), or just  the
+    descriptions (`-d`) for `<pattern>`. `<pattern>` is by default interpreted
+    as a literal string; if flanked by slashes, it is instead interpreted as a
+    regular expression. Formula descriptions are cached; the cache is created on
+    the first search, making that search slower than subsequent ones.
 
   * `diy [--name=<name>] [--version=<version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
@@ -302,8 +312,8 @@ Note that these flags should only appear after a command.
     Migrate renamed packages to new name, where <formulae> are old names of
     packages.
 
-    If `--force` is passed and installed <formulae> have nil tap, then treat
-    them like packages installed from core.
+    If `--force` is passed, then treat installed <formulae> and passed <formulae>
+    like if they are from same taps and migrate them anyway.
 
   * `options [--compact] [--all] [--installed]` <formula>:
     Display install options specific to <formula>.
@@ -390,6 +400,12 @@ Note that these flags should only appear after a command.
   * `tap --repair`:
     Migrate tapped formulae from symlink-based to directory-based structure.
 
+  * `tap --list-official`:
+    List all official taps.
+
+  * `tap --list-pinned`:
+    List all pinned taps.
+
   * `tap-info` <tap>:
     Display information about <tap>.
 
@@ -423,10 +439,13 @@ Note that these flags should only appear after a command.
 
     Example: `brew install jruby && brew test jruby`
 
-  * `unlink` <formula>:
+  * `unlink [--dry-run]` <formula>:
     Remove symlinks for <formula> from the Homebrew prefix. This can be useful
     for temporarily disabling a formula:
     `brew unlink foo && commands && brew link foo`.
+
+    If `--dry-run` or `-n` is passed, Homebrew will list all files which would
+    be unlinked, but will not actually unlink or delete any files.
 
   * `unlinkapps [--local]` [<formulae>]:
     Removes links created by `brew linkapps`.

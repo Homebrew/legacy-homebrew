@@ -1,16 +1,17 @@
 class Mogenerator < Formula
   desc "Generate Objective-C code for Core Data custom classes"
   homepage "https://rentzsch.github.io/mogenerator/"
-  url "https://github.com/rentzsch/mogenerator/archive/1.28.tar.gz"
-  sha256 "5b3c8a907cc77709524a225f51b2fd8d2187f131c6338cbaf50fe4b2adfbeec7"
+  url "https://github.com/rentzsch/mogenerator/archive/1.29.tar.gz"
+  sha256 "586bb71d647c64db62180e29ba6c5020b103418103ae2fed9481534e2bfec434"
 
   head "https://github.com/rentzsch/mogenerator.git"
 
   bottle do
-    cellar :any
-    sha1 "6a0c63e99ecae49d70b569b5b4507b8352ada961" => :mavericks
-    sha1 "abc1bcf2e7d1ebbb3258023f57e082052061a19c" => :mountain_lion
-    sha1 "fc60b8470f7e5441a599496aa637fd21da83934a" => :lion
+    cellar :any_skip_relocation
+    sha256 "081b98695c9a9bd13b9a680fe8f5b2504c5970ccff61298aeb124e4dc7c8c646" => :el_capitan
+    sha256 "38f8ab9f1e845067b3f4a30b2330b537f2596b84e17b9a6f332da1367310fa03" => :yosemite
+    sha256 "074479af3d6c596d02d843d3ceebd1af782cd3ff268695033ebc0ae325e74673" => :mavericks
+    sha256 "d7ca816e9513ddd029c1edc602e7123d321fed043b49bcaae1a196617725db62" => :mountain_lion
   end
 
   depends_on :xcode => :build

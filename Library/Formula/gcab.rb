@@ -1,7 +1,7 @@
 class Gcab < Formula
   desc "Windows installer (.MSI) tool"
   homepage "https://wiki.gnome.org/msitools"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gcab/0.4/gcab-0.4.tar.xz"
+  url "https://download.gnome.org/sources/gcab/0.4/gcab-0.4.tar.xz"
   sha256 "f907b16f1246fbde9397363d9c4ad2291f2a8a53dcd4f5979d3912bb856991b8"
 
   depends_on "intltool" => :build

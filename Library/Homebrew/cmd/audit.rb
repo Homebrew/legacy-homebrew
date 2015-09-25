@@ -210,12 +210,8 @@ class FormulaAuditor
     end
   end
 
-  @@aliases ||= Formula.aliases
-  @@remote_official_taps ||= if (homebrew_tapd = HOMEBREW_LIBRARY/"Taps/homebrew").directory?
-    OFFICIAL_TAPS - homebrew_tapd.subdirs.map(&:basename).map { |tap| tap.to_s.sub(/^homebrew-/, "") }
-  else
-    OFFICIAL_TAPS
-  end
+  # core aliases + tap alias names + tap alias full name
+  @@aliases ||= Formula.aliases + Formula.tap_aliases
 
   def audit_formula_name
     return unless @strict
@@ -225,7 +221,7 @@ class FormulaAuditor
     name = formula.name
     full_name = formula.full_name
 
-    if @@aliases.include? name
+    if Formula.aliases.include? name
       problem "Formula name conflicts with existing aliases."
       return
     end
@@ -240,12 +236,19 @@ class FormulaAuditor
       return
     end
 
-    same_name_tap_formulae = Formula.tap_names.select do |tap_formula_name|
-      user_name, _, formula_name = tap_formula_name.split("/", 3)
-      user_name == "homebrew" && formula_name == name
-    end
+    @@local_official_taps_name_map ||= Tap.select(&:official?).flat_map(&:formula_names).
+      reduce(Hash.new) do |name_map, tap_formula_full_name|
+        tap_formula_name = tap_formula_full_name.split("/").last
+        name_map[tap_formula_name] ||= []
+        name_map[tap_formula_name] << tap_formula_full_name
+        name_map
+      end
+
+    same_name_tap_formulae = @@local_official_taps_name_map[name] || []
 
     if @online
+      @@remote_official_taps ||= OFFICIAL_TAPS - Tap.select(&:official?).map(&:repo)
+
       same_name_tap_formulae += @@remote_official_taps.map do |tap|
         Thread.new { Homebrew.search_tap "homebrew", tap, name }
       end.flat_map(&:value)
@@ -303,7 +306,7 @@ class FormulaAuditor
           problem <<-EOS.undent
             #{dep} dependency should be
               depends_on "#{dep}" => :build
-            Or if it is indeed a runtime denpendency
+            Or if it is indeed a runtime dependency
               depends_on "#{dep}" => :run
           EOS
         when "git"
@@ -314,7 +317,7 @@ class FormulaAuditor
           problem "Don't use ruby as a dependency. We allow non-Homebrew ruby installations."
         when "gfortran"
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
-        when "open-mpi", "mpich2"
+        when "open-mpi", "mpich"
           problem <<-EOS.undent
             There are multiple conflicting ways to install MPI. Use an MPIRequirement:
               depends_on :mpi => [<lang list>]
@@ -374,7 +377,7 @@ class FormulaAuditor
       problem "Description should use \"command-line\" instead of \"#{$1}\""
     end
 
-    if desc =~ %r[^([Aa]n?)\s]
+    if desc =~ /^([Aa]n?)\s/
       problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
     end
   end

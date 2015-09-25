@@ -7,6 +7,7 @@ class Sqlite < Formula
 
   bottle do
     cellar :any
+    sha256 "93a06d141f495401a9b105ebdeb7c5c7181d400040b6609425b5e876972a20c0" => :el_capitan
     sha256 "c5b59f1ab72148a427fb370a30c2781d107bfeb8e8f8debc156b294a17a2ad58" => :yosemite
     sha256 "20c43ba5d46667802293aebe80a6a86edb76d224c8f2e570a3141ff4d2117f24" => :mavericks
     sha256 "965ee8d800a2ef8222fdb47c4cb0e787286bcc9d7ee44d2aeb9cce4f4cfa5ea0" => :mountain_lion

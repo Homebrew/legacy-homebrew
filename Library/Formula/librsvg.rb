@@ -5,6 +5,7 @@ class Librsvg < Formula
   sha256 "965c807438ce90b204e930ff80c92eba1606a2f6fd5ccfd09335c99896dd3479"
 
   bottle do
+    sha256 "05e36f46fa553bef32ce12fac9b2aedb29ef0ada303a76417da3d7be42615d46" => :el_capitan
     sha256 "495fdec2d415a6fa0dac91da29f1904930aeeb443b4e4d95203b9bd561a8434d" => :yosemite
     sha256 "ef929b546cbc696f7559dfb2c56549964833bf6c05dbe956f2de50c8e65ec49f" => :mavericks
     sha256 "b666f888ff8721181e5c4b97b1e9bc0b6113b1d8616c1a5052af47f1049c64b2" => :mountain_lion

@@ -22,15 +22,16 @@ class Wine < Formula
   end
 
   bottle do
+    sha256 "545e28e3c8442d8be08dbb5ec193bbc9fbf82d1c196030e07f4758161af42924" => :el_capitan
     sha1 "348f15e19880888d19d04d2fe4bad42048fe6828" => :yosemite
     sha1 "69f05602ecde44875cf26297871186aaa0b26cd7" => :mavericks
     sha1 "a89371854006687b74f4446a52ddb1f68cfafa7e" => :mountain_lion
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.49.tar.bz2"
-    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.49.tar.bz2"
-    sha256 "c8a1589753493cb6b71b3772b730cdf90059fe0f29cbfb369fc9a2339766b789"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.51.tar.bz2"
+    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.51.tar.bz2"
+    sha256 "397fc95b463d6ae1b65ab0477d9fe5d0871e8e2a3322bc9d984e438f2c4d0f52"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -70,8 +71,8 @@ class Wine < Formula
   depends_on "libgsm" => :optional
 
   resource "gecko" do
-    url "https://downloads.sourceforge.net/wine/wine_gecko-2.36-x86.msi", :using => :nounzip
-    sha256 "afa457ce8f9885225b6e549dd6f154713ce15bf063c23e38c1327d2f869e128a"
+    url "https://downloads.sourceforge.net/wine/wine_gecko-2.40-x86.msi", :using => :nounzip
+    sha256 "1a29d17435a52b7663cea6f30a0771f74097962b07031947719bb7b46057d302"
   end
 
   resource "mono" do

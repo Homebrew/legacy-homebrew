@@ -1,15 +1,15 @@
 class Polarssl < Formula
   desc "Cryptographic & SSL/TLS library"
   homepage "https://tls.mbed.org/"
-  url "https://tls.mbed.org/download/mbedtls-2.0.0-gpl.tgz"
-  sha256 "149a06621368540b7e1cef1b203c268439c2edbf29e2e9471d8021125df34952"
+  url "https://tls.mbed.org/download/mbedtls-2.1.0-gpl.tgz"
+  sha256 "b61b5fe6aa33ed365289478ac48f1496b97eef0fb813295e534e0c2bd435dcfc"
   head "https://github.com/ARMmbed/mbedtls.git"
 
   bottle do
-    cellar :any
-    sha256 "cb5cfc1e0a888aa765b2daf5221f0dbf3be84756104256fe583ad64097dfb5d4" => :yosemite
-    sha256 "2382d6afa0fbe0b16c8ee9cdfa3040a429bca50450f9a5449775b741461109f5" => :mavericks
-    sha256 "748679c378c9a2d98d880b66ac3bfb507fe79804bb00073084a532bd4d5cb020" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5e0c1b86cd38c7c59f0da2e9a7ffbbc775aef79f11d183f3a3315f912b247521" => :yosemite
+    sha256 "9733d55faba83d4b18c0ed5760cfe03824577545a9215d098d33f43e70d93d1d" => :mavericks
+    sha256 "77c87bc196863df7628258afdb8b0103f71254af9b3d27e3725b31aca0217205" => :mountain_lion
   end
 
   depends_on "cmake" => :build

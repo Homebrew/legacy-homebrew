@@ -5,8 +5,9 @@ class Asciidoc < Formula
   sha256 "78db9d0567c8ab6570a6eff7ffdf84eadd91f2dfc0a92a2d0105d323cab4e1f0"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "345affbf8e5c86ecb679580c5a0e5f8e97fc732557cb75e7b2ba94d8ecfc2a70" => :el_capitan
     sha1 "14ff65fa337658acf5011b24a728a2f6f413fd3c" => :yosemite
     sha1 "84793575a498025283f81295feeee74103386b70" => :mavericks
     sha1 "7c932bea7c4d3e56072a7adb5cd4914cd5972414" => :mountain_lion

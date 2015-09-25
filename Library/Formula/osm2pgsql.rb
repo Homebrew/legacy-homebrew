@@ -1,13 +1,14 @@
 class Osm2pgsql < Formula
   desc "OpenStreetMap data to PostgreSQL converter"
   homepage "https://wiki.openstreetmap.org/wiki/Osm2pgsql"
-  url "https://github.com/openstreetmap/osm2pgsql/archive/0.88.0.tar.gz"
-  sha256 "45a6768e680a50c416fdae72cf4b26091644947a7ead44c8b7484f2276b2f119"
+  url "https://github.com/openstreetmap/osm2pgsql/archive/0.88.1.tar.gz"
+  sha256 "08ec33c833768dec9856f537bbf4416ad45837ee0851eeeab0081c7bbed3449e"
 
   bottle do
-    sha256 "ca63b113b0b300a3bb6c0f8b1426185906806a6ba44ef13a68b01642824f6c0b" => :yosemite
-    sha256 "063f2103411bcd38fe106296e844fd650d1f23dd889adbf919f5ffc290e3e6a5" => :mavericks
-    sha256 "e4cd15756f097fa326e4887027931788a47070a9bc6e574b62eb05085c4dd7e0" => :mountain_lion
+    sha256 "367d2eb028e4c9e90d9c9806ced4c4663088d7d9bd53779b4fbcc851d6a1628a" => :el_capitan
+    sha256 "007bc7c7cb4a662ada92f7654209be84c95ee3b0f6636e41b1a3bd9e5c2461af" => :yosemite
+    sha256 "57b8e4e8440802ea6de3ae4cdb1a687c2c4bfcf8b20b31300a9a1854a6b13ad7" => :mavericks
+    sha256 "0bc4e07736a3ec197e82934ae570e87d22b78564589182aafa33b3a30af3d1df" => :mountain_lion
   end
 
   depends_on :postgresql
@@ -19,13 +20,6 @@ class Osm2pgsql < Formula
   depends_on "proj"
   depends_on "protobuf-c" => :recommended
   depends_on "lua" => :recommended
-
-  # Apply a fix from the 0.88.x branch.
-  # This will be in 0.88.1, so won't be needed when that's tagged
-  patch do
-    url "https://github.com/openstreetmap/osm2pgsql/commit/cb449abc73e5ef076f1f8b6535b7d9641a1237f7.diff"
-    sha256 "e0175a3b1de82b67d45adbd50b8194c16673e147401f25dcc22c1c0c8d44aec6"
-  end
 
   def install
     args = [
@@ -41,8 +35,8 @@ class Osm2pgsql < Formula
       args << "--with-protobuf-c=#{Formula["protobuf-c"].opt_prefix}"
     end
     # Mountain Lion has some problems with C++11.
-    # This is probably going to be a fatal issue for 0.89 and 0.90 on it, but
-    # for now it can be worked around
+    # This is probably going to be a fatal issue for 0.89 and 0.90, but
+    # for now it can be worked around.
     args << "--without-cxx11" if MacOS.version < :mavericks
     system "./autogen.sh"
     system "./configure", *args

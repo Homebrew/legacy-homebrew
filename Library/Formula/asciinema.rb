@@ -9,7 +9,8 @@ class Asciinema < Formula
   head "https://github.com/asciinema/asciinema.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "75f9832f791aa7557047e9e9a664c60597db4edd695b87fed226b06259cf9091" => :el_capitan
     sha256 "40c3f1466904bacee94c34775a53084ea559cf26dc25cfc66966809e56a45d3e" => :yosemite
     sha256 "6b9e943dd78548982c372fac5306462309d140bd8252cdb710e36a807fda3cde" => :mavericks
     sha256 "a9d488607f8c9abcfdc2c00fdde8c9833b2a6733e4a923565dd218723d7989a8" => :mountain_lion

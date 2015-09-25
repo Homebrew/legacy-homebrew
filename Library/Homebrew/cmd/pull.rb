@@ -57,11 +57,13 @@ module Homebrew
       odie "You meant `git pull --rebase`."
     end
 
+    bintray_fetch_formulae =[]
+
     ARGV.named.each do |arg|
       if arg.to_i > 0
         url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
         issue = arg
-      elsif (testing_match = arg.match %r{brew.sh/job/Homebrew%20Testing/(\d+)/})
+      elsif (testing_match = arg.match %r{brew.sh/job/Homebrew.*Testing/(\d+)/})
         _, testing_job = *testing_match
         url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
         odie "Testing URLs require `--bottle`!" unless ARGV.include?("--bottle")
@@ -189,13 +191,7 @@ module Homebrew
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "-d", '{"publish_wait_for_secs": -1}',
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
-            sleep 5
-            success = system "brew", "fetch", "--retry", "--force-bottle", f.full_name
-            unless success
-              ohai "That didn't work; sleeping another 10 and trying again..."
-              sleep 10
-              system "brew", "fetch", "--retry", "--force-bottle", f.full_name
-            end
+            bintray_fetch_formulae << f
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
@@ -211,6 +207,22 @@ module Homebrew
           install = f.installed? ? "upgrade" : "install"
           safe_system "brew", install, "--debug", f.full_name
         end
+      end
+    end
+
+    bintray_fetch_formulae.each do |f|
+      max_retries = 8
+      retry_count = 0
+      begin
+        success = system "brew", "fetch", "--force-bottle", f.full_name
+        raise "Failed to download #{f} bottle!" unless success
+      rescue RuntimeError => e
+        retry_count += 1
+        raise e if retry_count >= max_retries
+        sleep_seconds = 2**retry_count
+        ohai "That didn't work; sleeping #{sleep_seconds} seconds and trying again..."
+        sleep sleep_seconds
+        retry
       end
     end
   end

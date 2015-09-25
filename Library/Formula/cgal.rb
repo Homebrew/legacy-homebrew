@@ -1,14 +1,15 @@
 class Cgal < Formula
   desc "CGAL: Computational Geometry Algorithm Library"
   homepage "http://www.cgal.org/"
-  url "https://gforge.inria.fr/frs/download.php/file/34898/CGAL-4.6.1.tar.gz"
-  sha256 "451b582064eededb6672ddd880e38949130187512f26bd91ec90157e2eb151a5"
+  url "https://gforge.inria.fr/frs/download.php/file/35009/CGAL-4.6.2.tar.gz"
+  sha256 "9dc88cd6a2d0f77120ca1f0a88cf83408b7763eaec9948de1fee228ea0ed31d7"
 
   bottle do
     cellar :any
-    sha256 "4a82c2f4f0b0028fc2a4c2e9720faee8fe3c9fdf11f02019373f28d694f1d868" => :yosemite
-    sha256 "9b7218a479baae5fbedfc2f4fbde2a2977b34c437d821ec0ffc40358e0edf8f6" => :mavericks
-    sha256 "52ad50438026a183bef4a723f4886a5f65db8cd172975f338aa18f56adbe9702" => :mountain_lion
+    sha256 "32eea5b3030bc61a7a5e8143694320dd478b1fc6fb8e285c38bc9ae8a3ce0bad" => :el_capitan
+    sha256 "a729d74f92920f5d19850187bd026707ce435df5137968da32bfba88fb24f38e" => :yosemite
+    sha256 "ab7d1c685f33fae339d11d0c9d71aacd43835f2fb61778aa86776bafdb0b4560" => :mavericks
+    sha256 "83c449caa96e82718aeaf3bf7e17b62b964bb21c64109bd9368645159413db8b" => :mountain_lion
   end
 
   option :cxx11

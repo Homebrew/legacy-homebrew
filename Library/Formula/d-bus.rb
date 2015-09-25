@@ -1,22 +1,19 @@
 class DBus < Formula
-  # releases: even (1.8.x) = stable, odd (1.9.x) = development
+  # releases: even (1.10.x) = stable, odd (1.11.x) = development
   desc "Message bus system, providing inter-application communication"
   homepage "https://wiki.freedesktop.org/www/Software/dbus"
-  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.14.tar.gz"
-  sha256 "83425250a6a4c93b9ab4a349771a7700e8ddff2d73a5a088222ca47ae9ce1f1a"
 
-  bottle do
-    sha1 "22806b6107833bea3b69099848c6f12add3625cc" => :yosemite
-    sha1 "d9271e1f6906883e42c9782b4ce43ce288ad8f8e" => :mavericks
-    sha1 "4162df1d33f03d55472155728bd2911653702798" => :mountain_lion
+  stable do
+    url "http://dbus.freedesktop.org/releases/dbus/dbus-1.10.0.tar.gz"
+    mirror "https://mirrors.kernel.org/debian/pool/main/d/dbus/dbus_1.10.0.orig.tar.gz"
+    sha256 "1dfb9745fb992f1ccd43c920490de8caddf6726a6222e8b803be6098293f924b"
   end
 
-  # Upstream fix for O_CLOEXEC portability
-  # http://cgit.freedesktop.org/dbus/dbus/commit/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472
-  # This is fixed in 1.9.x but won't be fixed upstream for 1.8.x
-  patch do
-    url "http://cgit.freedesktop.org/dbus/dbus/patch/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472"
-    sha256 "35a021c54da36b22d720acc23f5f133a609cb268e7cb16e36a772552e9cf3e69"
+  bottle do
+    sha256 "68500e3670555c2bf5eaeae7541111f9052e92c4a7b28410a0ded25fd7cac544" => :el_capitan
+    sha256 "5a49bcf55334b90e3cd6725b7cc6f0383bcf0160ca7a8d12611107ac7f6a022a" => :yosemite
+    sha256 "a2b9e6c8e84a6e199dcd22d748b3c617285a1eba4ec0b042fa16e9171e96bd91" => :mavericks
+    sha256 "8f571788a6bd6209e27b4e4cbdd4e1d2179b7f3bbdb35262c3159ff28336b76a" => :mountain_lion
   end
 
   def install

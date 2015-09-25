@@ -3,13 +3,21 @@ require "base64"
 class AndroidSdk < Formula
   desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  version "24.3.3"
+
+  version "24.3.4"
   if OS.mac?
-    url "https://dl.google.com/android/android-sdk_r24.3.3-macosx.zip"
-    sha256 "2e855666ff7fd35e9849abc5f091d5e119fab353baa0c9b4fed628f7b979a538"
+    url "https://dl.google.com/android/android-sdk_r24.3.4-macosx.zip"
+    sha256 "074da140b380177108b9b74869403df7a65c5b555d4f5e439fa8556f1018352b"
   elsif OS.linux?
     url "https://dl.google.com/android/android-sdk_r#{version}-linux.tgz"
-    sha256 "a05023aaf149d40a0a848ad49d5c6b43ec730443efb89d1dfa584a132a642bdf"
+    sha256 "886412375d8fe6e49a1583e57a8a36a47943666da681701ba9ad1ab7236e83ea"
+  end
+
+  bottle do
+    cellar :any
+    sha256 "7e9cfe4358bc78d50c5481c94eac4a8257253991a04c2484b2ad647d3e030d0f" => :yosemite
+    sha256 "8e2345713d8c4d45edca76daa49779bfdd5964117730c325662a01fdab74023d" => :mavericks
+    sha256 "75990555c5bc71c43afcb83bcb7ee70c580cedf8b86b2c60d82a1abb7bc588b6" => :mountain_lion
   end
 
   conflicts_with "android-platform-tools",
@@ -22,7 +30,7 @@ class AndroidSdk < Formula
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "22.0.1"
+    "23.0.1"
   end
 
   def install

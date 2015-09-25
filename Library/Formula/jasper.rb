@@ -8,6 +8,7 @@ class Jasper < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "c70ac7c5c48f01d60d8ef07f8d951cc6ffc4da507bc2218950fed542a2fd5902" => :el_capitan
     sha1 "7fd9acebd672cdb1bda21c709d3e59a7ff350a4f" => :yosemite
     sha1 "4ea4b6abe67ccd2727b33b545de6537d196f8253" => :mavericks
     sha1 "34fb2f4888da21b43ecb7fd8e190e4b66e42a3a1" => :mountain_lion

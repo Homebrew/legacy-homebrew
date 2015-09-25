@@ -9,6 +9,7 @@ class BdwGc < Formula
 
   bottle do
     revision 2
+    sha256 "ba0257546369cd1879d66d3f1302194ae39767ccb5b012a20d16fdf5595b4326" => :el_capitan
     sha256 "bb654d5b6952c8b22ce74d0081f900f3fd8628bb79105ba1b1ddc672fea6b067" => :yosemite
     sha256 "ebbedf4fe84fbc6ccf621c7da954623443f1bc7596ca8c95efe72d4cba353d25" => :mavericks
     sha256 "e5725f4c6b23ce7dc75e3e8fff51cd1f9f90858bad20d1ce00cf33499edf8f6b" => :mountain_lion

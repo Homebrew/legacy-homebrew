@@ -1,19 +1,22 @@
 class Gtksourceview3 < Formula
   desc "Text view with syntax, undo/redo, and text marks"
   homepage "https://projects.gnome.org/gtksourceview/"
-  url "https://download.gnome.org/sources/gtksourceview/3.16/gtksourceview-3.16.1.tar.xz"
-  sha256 "669e9846ca744ec4d04ce61377e85df7ca909ad476329922a6abf4da423f1b0c"
+  url "https://download.gnome.org/sources/gtksourceview/3.18/gtksourceview-3.18.0.tar.xz"
+  sha256 "54b111264e6985e26a878dec88ff94fd0a9ae0dc4cfcdf08f4a6b5f655d4b693"
 
   bottle do
-    sha256 "2f37a146c37984a5fc902f083fe8663afc8bf139ffdcf34bd4e9bcc2917aeb5f" => :yosemite
-    sha256 "ab8a8a7326ade753e2c4194cfcbe1050217a6a2060e878334439e05259ed4b5a" => :mavericks
-    sha256 "e2bfa573980e5c9c4a661817482727facce47bce31160e6b6fea068a8040de5f" => :mountain_lion
+    sha256 "809a9a7c643c4740bd2c1c746496bce955b2611c2ec593df2f3b8856bd4099d7" => :el_capitan
+    sha256 "1691cfa374f3bfe0d443cc5fddb038d5d11446f9b8d63b89e90043d253a57940" => :yosemite
+    sha256 "0d103d508a33ca16ce22f13faa6c5c8648a7c714f6b1eba5a4d16a9a58168dd8" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "gettext"
   depends_on "gtk+3"
+
+  # reported upstream as https://bugzilla.gnome.org/show_bug.cgi?id=755308
+  patch :DATA
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -87,3 +90,86 @@ class Gtksourceview3 < Formula
     system "./test"
   end
 end
+
+__END__
+diff --git a/configure b/configure
+index ad97334..9faade8 100755
+--- a/configure
++++ b/configure
+@@ -12636,76 +12636,6 @@ fi
+
+
+
+-for flag in          -Wl,--no-as-needed              ; do
+-  as_CACHEVAR=`$as_echo "ax_cv_check_cflags_$ax_compiler_flags_test_$flag" | $as_tr_sh`
+-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether C compiler accepts $flag" >&5
+-$as_echo_n "checking whether C compiler accepts $flag... " >&6; }
+-if eval \${$as_CACHEVAR+:} false; then :
+-  $as_echo_n "(cached) " >&6
+-else
+-
+-  ax_check_save_flags=$CFLAGS
+-  CFLAGS="$CFLAGS $ax_compiler_flags_test $flag"
+-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+-/* end confdefs.h.  */
+-
+-int
+-main ()
+-{
+-
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-if ac_fn_c_try_compile "$LINENO"; then :
+-  eval "$as_CACHEVAR=yes"
+-else
+-  eval "$as_CACHEVAR=no"
+-fi
+-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+-  CFLAGS=$ax_check_save_flags
+-fi
+-eval ac_res=\$$as_CACHEVAR
+-	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
+-$as_echo "$ac_res" >&6; }
+-if eval test \"x\$"$as_CACHEVAR"\" = x"yes"; then :
+-
+-if ${WARN_LDFLAGS+:} false; then :
+-
+-  case " $WARN_LDFLAGS " in #(
+-  *" $flag "*) :
+-    { { $as_echo "$as_me:${as_lineno-$LINENO}: : WARN_LDFLAGS already contains \$flag"; } >&5
+-  (: WARN_LDFLAGS already contains $flag) 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; } ;; #(
+-  *) :
+-
+-     as_fn_append WARN_LDFLAGS " $flag"
+-     { { $as_echo "$as_me:${as_lineno-$LINENO}: : WARN_LDFLAGS=\"\$WARN_LDFLAGS\""; } >&5
+-  (: WARN_LDFLAGS="$WARN_LDFLAGS") 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }
+-     ;;
+-esac
+-
+-else
+-
+-  WARN_LDFLAGS=$flag
+-  { { $as_echo "$as_me:${as_lineno-$LINENO}: : WARN_LDFLAGS=\"\$WARN_LDFLAGS\""; } >&5
+-  (: WARN_LDFLAGS="$WARN_LDFLAGS") 2>&5
+-  ac_status=$?
+-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+-  test $ac_status = 0; }
+-
+-fi
+-
+-else
+-  :
+-fi
+-
+-done
+
+
+     if test "$ax_enable_compile_warnings" != "no"; then :

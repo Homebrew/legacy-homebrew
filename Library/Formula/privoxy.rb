@@ -5,9 +5,11 @@ class Privoxy < Formula
   sha256 "80b1a172d0518a9f95cde83d18dc62b9c7f117b9ada77bdcd3d310107f28f964"
 
   bottle do
-    sha1 "019e61d3280bc129ef7f83415b7c65785bc66727" => :yosemite
-    sha1 "4dabda6301f4430c5f80024f8c2695582d99754c" => :mavericks
-    sha1 "343462262756a0933cad7d04fc5ea9667c533881" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "e4e52b0fb31ad33bfdc9a1e158a482272fb4c02e2c0062a28cf19fa7b0df7c8d" => :el_capitan
+    sha256 "247b9897907a8cd13bc0af980a7a4251695632b359ec61ec95bf6f153bd4eab3" => :yosemite
+    sha256 "5722d1d6f520f2b86f98010d1c70c9cd5da15ecd5700d0482570d0a1c15143b8" => :mavericks
   end
 
   depends_on "autoconf" => :build

@@ -38,6 +38,10 @@ module Homebrew
         end
       end
 
+      # if the user's flags will prevent bottle only-installations when no
+      # developer tools are available, we need to stop them early on
+      FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
+
       ARGV.formulae.each do |f|
         # head-only without --HEAD is an error
         if !ARGV.build_head? && f.stable.nil? && f.devel.nil?
@@ -71,14 +75,15 @@ module Homebrew
 
         if f.installed?
           msg = "#{f.full_name}-#{f.installed_version} already installed"
-          unless f.linked_keg.symlink?
-            if f.oldname && (HOMEBREW_CELLAR/f.oldname).exist?
-              msg << ", it's just not migrated"
-            elsif !f.keg_only?
-              msg << ", it's just not linked"
-            end
-          end
+          msg << ", it's just not linked" unless f.linked_keg.symlink? || f.keg_only?
           opoo msg
+        elsif f.oldname && (dir = HOMEBREW_CELLAR/f.oldname).exist? && !dir.subdirs.empty? \
+            && f.tap == Tab.for_keg(dir.subdirs.first).tap && !ARGV.force?
+          # Check if the formula we try to install is the same as installed
+          # but not migrated one. If --force passed then install anyway.
+          opoo "#{f.oldname} already installed, it's just not migrated"
+          puts "You can migrate formula with `brew migrate #{f}`"
+          puts "Or you can force install it with `brew install #{f} --force`"
         else
           formulae << f
         end
@@ -131,10 +136,10 @@ module Homebrew
     checks = Checks.new
     %w[
       check_for_unsupported_osx
+      check_for_bad_install_name_tool
       check_for_installed_developer_tools
       check_xcode_license_approved
       check_for_osx_gcc_installer
-      check_for_bad_install_name_tool
     ].each do |check|
       out = checks.send(check)
       opoo out unless out.nil?
@@ -161,7 +166,7 @@ module Homebrew
   def perform_preinstall_checks
     check_ppc
     check_writable_install_location
-    check_xcode
+    check_xcode if MacOS.has_apple_developer_tools?
     check_cellar
   end
 

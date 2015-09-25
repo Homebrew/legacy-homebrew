@@ -5,7 +5,8 @@ class Scons < Formula
   sha256 "98adaa351d8f4e4068a5bf1894bdd7f85b390c8c3f80d437cf8bb266012404df"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "b7b4dd6cdbcbcfe5dae60def38088939eb2bd8bcb528fa9b45ef7bba65b25582" => :el_capitan
     sha256 "800a91209a67e94c6d6c9d54fcc9a99e844bbbbd4a34cf6049a47f24e7ccaa95" => :yosemite
     sha256 "3db46c468cdee0d79d57634e9ab7f883f57f62b242d03baa3ff2906f846751f7" => :mavericks
     sha256 "602cda55fa1699afa81d1aa479a50d3e11a4f11c2871556c13998362c4bf9391" => :mountain_lion

@@ -8,6 +8,7 @@ class CAres < Formula
 
   bottle do
     cellar :any
+    sha256 "68d6374d5665448f947c8cfb2090171c0c865e239a786139f108979138d03a68" => :el_capitan
     sha1 "aa711a345bac4780f2e7737c212c1fb5f7862de8" => :yosemite
     sha1 "c6851c662552524fa92e341869a23ea72dbc4375" => :mavericks
     sha1 "27494a19ac612daedeb55356e911328771f94b19" => :mountain_lion

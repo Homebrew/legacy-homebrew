@@ -1,18 +1,20 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.3/cmake-3.3.1.tar.gz"
-  sha256 "cd65022c6a0707f1c7112f99e9c981677fdd5518f7ddfa0f778d4cee7113e3d6"
+  url "http://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/cmake/cmake_3.3.2.orig.tar.gz"
+  sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
   head "http://cmake.org/cmake.git"
 
   bottle do
-    cellar :any
-    sha256 "c984d1229888a40971555f6c17ef73021a3700559a53fbd22b9a7aae7d918946" => :yosemite
-    sha256 "704e62fa49c5b4058b1d83a0f273f093a0ec0b357dfa94cdaa12eb0cad5e7d82" => :mavericks
-    sha256 "ab0ed8429528642df49422bae978df61e93f90d308256a03f71d0496e85fb97e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "371e1136b03df5461f7458fea86abfcb0542fdaa312c330b7a7e9ea9ee53faa4" => :el_capitan
+    sha256 "fc8cfc07557b7d0d109f8a3548a21f022fb32353b53325696f3d3b2c470651d1" => :yosemite
+    sha256 "cb0c73778120fcd899df10b1a06d9fbe1a1778645f252ac498bce1d0bd3ec63c" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"
+  option "with-completion", "Install Bash completion (Has potential problems with system bash)"
 
   depends_on :python => :build if OS.mac? && MacOS.version <= :snow_leopard && build.with?("docs")
   depends_on "curl" unless OS.mac?
@@ -110,8 +112,10 @@ class Cmake < Formula
     system "make"
     system "make", "install"
 
-    cd "Auxiliary/bash-completion/" do
-      bash_completion.install "ctest", "cmake", "cpack"
+    if build.with? "completion"
+      cd "Auxiliary/bash-completion/" do
+        bash_completion.install "ctest", "cmake", "cpack"
+      end
     end
 
     (share/"emacs/site-lisp/cmake").install "Auxiliary/cmake-mode.el"

@@ -1,8 +1,14 @@
 class Msitools < Formula
   desc "Windows installer (.MSI) tool"
   homepage "https://wiki.gnome.org/msitools"
-  url "http://ftp.gnome.org/pub/GNOME/sources/msitools/0.93/msitools-0.93.tar.xz"
-  sha256 "a2d25f05437047749a068946ed019839b88350928511cc7c021ea390413b9dc5"
+  url "https://download.gnome.org/sources/msitools/0.94/msitools-0.94.tar.xz"
+  sha256 "152eb4149cb44f178af93d17bbe0921b5312f30fb4780e5be113b35747b5cd2e"
+
+  bottle do
+    sha256 "cdca1a71f773df3e0f9b011c96d0bc7f111802ef59fc23911cb311fcb1c5bbfc" => :yosemite
+    sha256 "49b08369397ee127391c04899faec0cfe667c655e31578f7b1138c08eb016982" => :mavericks
+    sha256 "ce0f1a31f98f3565b739bd11ed4b7b64a97a81bded5ff22bd82987ac0813d63b" => :mountain_lion
+  end
 
   depends_on "intltool" => :build
   depends_on "pkg-config" => :build
@@ -14,8 +20,7 @@ class Msitools < Formula
   depends_on "vala"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
@@ -23,7 +28,7 @@ class Msitools < Formula
 
   test do
     # wixl-heat: make an xml fragment
-    assert pipe_output("#{bin}/wixl-heat --prefix test").include?("<Fragment>")
+    assert_match /<Fragment>/, pipe_output("#{bin}/wixl-heat --prefix test")
 
     # wixl: build two installers
     1.upto(2) do |i|
@@ -52,7 +57,7 @@ class Msitools < Formula
            </Product>
         </Wix>
       EOS
-      system "#{bin}/wixl -o installer#{i}.msi installer#{i}.wxs"
+      system "#{bin}/wixl", "-o", "installer#{i}.msi", "installer#{i}.wxs"
       assert File.exist?("installer#{i}.msi")
     end
 
@@ -65,20 +70,20 @@ class Msitools < Formula
     # msiinfo: show info for an installer
     out = `#{bin}/msiinfo suminfo installer1.msi`
     assert_equal 0, $?.exitstatus
-    assert out.include?("Author: BigCo")
+    assert_match /Author: BigCo/, out
 
     # msiextract: extract files from an installer
     mkdir "files"
-    system "#{bin}/msiextract --directory files installer1.msi"
+    system "#{bin}/msiextract", "--directory", "files", "installer1.msi"
     assert_equal (testpath/"test1.txt").read,
                  (testpath/"files/Program Files/test/test1.txt").read
 
     # msidump: dump tables from an installer
     mkdir "idt"
-    system "#{bin}/msidump --directory idt installer1.msi"
+    system "#{bin}/msidump", "--directory", "idt", "installer1.msi"
     assert File.exist?("idt/File.idt")
 
     # msibuild: replace a table in an installer
-    system "#{bin}/msibuild installer1.msi -i idt/File.idt"
+    system "#{bin}/msibuild", "installer1.msi", "-i", "idt/File.idt"
   end
 end

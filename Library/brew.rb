@@ -15,10 +15,10 @@ $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require "global"
 
 if ARGV.first == "--version"
-  puts HOMEBREW_VERSION
+  puts Homebrew.homebrew_version_string
   exit 0
 elsif ARGV.first == "-v"
-  puts "Homebrew #{HOMEBREW_VERSION}"
+  puts "Homebrew #{Homebrew.homebrew_version_string}"
   # Shift the -v to the end of the parameter list
   ARGV << ARGV.shift
   # If no other arguments, just quit here.
@@ -106,7 +106,13 @@ begin
   # Add SCM wrappers.
   ENV["PATH"] += "#{File::PATH_SEPARATOR}#{HOMEBREW_LIBRARY}/ENV/scm"
 
-  internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd) if cmd
+  if cmd
+    internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
+
+    if !internal_cmd && ARGV.homebrew_developer?
+      internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("dev-cmd", cmd)
+    end
+  end
 
   # Usage instructions should be displayed if and only if one of:
   # - a help flag is passed AND an internal command is matched
