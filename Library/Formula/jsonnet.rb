@@ -41,7 +41,6 @@ class Jsonnet < Formula
     EOS
 
     output = shell_output("#{bin}/jsonnet #{testpath}/example.jsonnet")
-
     assert_equal JSON.parse(expected_output), JSON.parse(output)
   end
 end
