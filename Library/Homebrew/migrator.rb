@@ -163,9 +163,9 @@ class Migrator
       unlink_oldname
       move_to_new_directory
       repin
-      link_newname unless old_linked_keg.nil?
-      link_oldname_opt
       link_oldname_cellar
+      link_oldname_opt
+      link_newname unless old_linked_keg.nil?
       update_tabs
     rescue Interrupt
       ignore_interrupts { backup_oldname }
