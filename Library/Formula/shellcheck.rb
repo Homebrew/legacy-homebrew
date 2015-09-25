@@ -9,10 +9,9 @@ class Shellcheck < Formula
   sha256 "47518d9024cbd0a15796bc2da3894047b648c9d30605a4e16f3514784e72ec24"
 
   bottle do
-    sha256 "b684bc00716f9d9afc54245043ea4cb69c5ddc3fff7e84b1ad9534fe77c46915" => :el_capitan
-    sha256 "a957e04c6bb4a108173124a332986b0a2f6c196cec2e2d58313259465f460289" => :yosemite
-    sha256 "eac7dd062afbf499c2c80f069c1fdf6c88ca1b6edc8b80cf491072bdc1a9a603" => :mavericks
-    sha256 "a525ca3b03619fc1a4faeed9d92cb52d470ff0cf638fc6acb349c204fb6e461c" => :mountain_lion
+    sha256 "14e1a8a2f36ddc39337d311d808be42714d61b13321d2eebf3a56652b47e92c7" => :el_capitan
+    sha256 "ac1178a4fb95b1f9ce7e0306cae1092c42fc6bd790e4687ebc23b52ffab9a008" => :yosemite
+    sha256 "08df00a8b3af043ffdba9b21ac77904958cb3d32d945b9a57cdda6293adbe181" => :mavericks
   end
 
   depends_on "ghc" => :build
