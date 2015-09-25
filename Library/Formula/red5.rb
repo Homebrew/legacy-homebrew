@@ -27,7 +27,11 @@ class Red5 < Formula
 
     inreplace "#{libexec}/red5.sh" do |s|
       # Configure RED5_HOME
-      s.gsub!(%r{export RED5_HOME=`pwd`}, "export RED5_HOME=#{libexec}")
+      s.sub!("export RED5_HOME=`pwd`", "export RED5_HOME=#{libexec}")
     end
+  end
+
+  test do
+    # system "#{bin}/red5"
   end
 end
