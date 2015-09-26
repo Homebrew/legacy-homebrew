@@ -1,9 +1,8 @@
 class GstPluginsBase < Formula
   desc "GStreamer plugins (well-supported, basic set)"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.4.5.tar.xz"
-  sha256 "77bd8199e7a312d3d71de9b7ddf761a3b78560a2c2a80829d0815ca39cbd551d"
+  url "https://download.gnome.org/sources/gst-plugins-base/1.6/gst-plugins-base-1.6.0.tar.xz"
+  sha256 "314fd1b707f65caf8eb6164d9422fc51e2b220a890ccd2de6ec03a2883d77231"
 
   bottle do
     sha256 "e4299d056a51ab06dbda85620d66751908b21f736f0f4afba144e5c3d32706d3" => :el_capitan
