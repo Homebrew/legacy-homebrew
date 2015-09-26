@@ -8,10 +8,13 @@ class Consul < Formula
 
   bottle do
     cellar :any
-    sha256 "a77fef3fc07e7b00f17f93a30361edfdb1351b411506538dad8697cffc5f59f4" => :yosemite
-    sha256 "eb6ae6959dfaac6250bf78d2e7c0658c165e4098e80ec8142edba27920d6d8f9" => :mavericks
-    sha256 "67052157266d536598ba7eb5af31a10fd3e609ca812be6d50869d0fe80a583f9" => :mountain_lion
+    revision 1
+    sha256 "202a4b756ed7e56a67505e1ea924ee83c7fc12969f1b27f1af16d2cf0dbfe997" => :yosemite
+    sha256 "6378dbdd6bf1e16b2a7b21b12f9e5f2ea2656229d1a376e69653f290736566a1" => :mavericks
+    sha256 "3e4c6a01071652f3012ce25744925ab773231a5762f6f574e4100728736b5817" => :mountain_lion
   end
+
+  option "with-web-ui", "Installs the consul web ui"
 
   depends_on "go" => :build
 
@@ -150,6 +153,11 @@ class Consul < Formula
       :revision => "f6a608df624ae17d57958a8a294c66da81730577"
   end
 
+  resource "web-ui" do
+    url "https://dl.bintray.com/mitchellh/consul/0.5.2_web_ui.zip"
+    sha256 "ad883aa52e1c0136ab1492bbcedad1210235f26d59719fb6de3ef6464f1ff3b1"
+  end
+
   def install
     ENV["GOPATH"] = buildpath
 
@@ -166,6 +174,15 @@ class Consul < Formula
       system "make"
       bin.install "bin/consul"
     end
+
+    # install web-ui to package share folder.
+    (pkgshare/"web-ui").install resource("web-ui") if build.with? "web-ui"
+  end
+
+  def caveats; <<-EOS.undent
+    If consul was built with --with-web-ui, you can activate the UI by running
+    consul with `-ui-dir #{pkgshare}/web-ui`.
+    EOS
   end
 
   test do

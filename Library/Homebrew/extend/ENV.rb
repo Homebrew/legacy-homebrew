@@ -1,7 +1,7 @@
-require 'hardware'
-require 'extend/ENV/shared'
-require 'extend/ENV/std'
-require 'extend/ENV/super'
+require "hardware"
+require "extend/ENV/shared"
+require "extend/ENV/std"
+require "extend/ENV/super"
 
 def superenv?
   Superenv.bin && ARGV.env != "std"

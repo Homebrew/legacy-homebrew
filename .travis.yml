@@ -1,0 +1,34 @@
+# Force OS X.
+language: objective-c
+matrix:
+  include:
+    - env: OSX=10.11
+      os: osx
+      osx_image: osx10.11
+      rvm: system
+    - env: OSX=10.10
+      os: osx
+      osx_image: xcode7
+      rvm: system
+    - env: OSX=10.9
+      os: osx
+      osx_image: beta-xcode6.2
+      rvm: system
+
+before_install:
+  - sudo rm -rf /usr/local/.git/refs /usr/local/.git/packed-refs
+  - sudo rsync -az "$TRAVIS_BUILD_DIR/" /usr/local/
+  - export TRAVIS_BUILD_DIR="/usr/local"
+  - sudo chown -R $USER /usr/local
+  - cd /usr/local
+  - env | grep TRAVIS_
+  - if [ -f ".git/shallow" ]; then travis_retry git fetch --unshallow; fi
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then git reset --hard $TRAVIS_COMMIT || travis_retry git fetch origin +refs/pull/$TRAVIS_PULL_REQUEST/merge:; fi
+  - git reset --hard $TRAVIS_COMMIT
+  - git clean -qxdff
+
+script:
+  - brew test-bot
+
+notifications:
+  email: false

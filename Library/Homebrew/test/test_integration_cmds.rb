@@ -1,11 +1,11 @@
 require "testing_env"
 
 class IntegrationCommandTests < Homebrew::TestCase
-  def cmd_output *args
+  def cmd_output(*args)
     cmd_args = %W[
-     -W0
-     -I#{HOMEBREW_LIBRARY_PATH}/test/lib
-     -rconfig
+      -W0
+      -I#{HOMEBREW_LIBRARY_PATH}/test/lib
+      -rconfig
     ]
     cmd_args << "-rsimplecov" if ENV["HOMEBREW_TESTS_COVERAGE"]
     cmd_args << (HOMEBREW_LIBRARY_PATH/"../brew.rb").resolved_path.to_s
@@ -18,13 +18,13 @@ class IntegrationCommandTests < Homebrew::TestCase
     end
   end
 
-  def cmd *args
+  def cmd(*args)
     output = cmd_output(*args)
     assert_equal 0, $?.exitstatus
     output
   end
 
-  def cmd_fail *args
+  def cmd_fail(*args)
     output = cmd_output(*args)
     assert_equal 1, $?.exitstatus
     output
@@ -40,7 +40,7 @@ class IntegrationCommandTests < Homebrew::TestCase
   end
 
   def test_version
-    assert_equal HOMEBREW_VERSION.to_s,
+    assert_match HOMEBREW_VERSION.to_s,
                  cmd("--version")
   end
 
@@ -65,7 +65,7 @@ class IntegrationCommandTests < Homebrew::TestCase
   end
 
   def test_env
-    assert_match "CMAKE_PREFIX_PATH=\"#{HOMEBREW_PREFIX}\"",
+    assert_match %r{CMAKE_PREFIX_PATH="#{HOMEBREW_PREFIX}[:"]},
                  cmd("--env")
   end
 

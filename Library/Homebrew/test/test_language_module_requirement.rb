@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'requirements/language_module_requirement'
+require "testing_env"
+require "requirements/language_module_requirement"
 
 class LanguageModuleRequirementTests < Homebrew::TestCase
   parallelize_me!

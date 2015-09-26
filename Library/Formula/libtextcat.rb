@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libtextcat < Formula
   desc "N-gram-based text categorization library"
-  homepage 'http://software.wise-guys.nl/libtextcat/'
-  url 'http://software.wise-guys.nl/download/libtextcat-2.2.tar.gz'
-  sha1 'e98d7149d6a20fdbb58cc0b79cb5e3f95ae304e4'
+  homepage "http://software.wise-guys.nl/libtextcat/"
+  url "http://software.wise-guys.nl/download/libtextcat-2.2.tar.gz"
+  sha256 "5677badffc48a8d332e345ea4fe225e3577f53fc95deeec8306000b256829655"
 
   bottle do
     cellar :any
@@ -20,7 +18,7 @@ class Libtextcat < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
-    (include/'libtextcat/').install Dir["src/*.h"]
+    (include/"libtextcat/").install Dir["src/*.h"]
     share.install "langclass/LM", "langclass/ShortTexts", "langclass/conf.txt"
   end
 

@@ -1,4 +1,4 @@
-require 'requirement'
+require "requirement"
 
 class MinimumMacOSRequirement < Requirement
   fatal true

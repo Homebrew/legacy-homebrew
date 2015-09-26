@@ -4,7 +4,6 @@ require "sandbox"
 require "timeout"
 
 module Homebrew
-
   def test
     raise FormulaUnspecifiedError if ARGV.named.empty?
 
@@ -35,8 +34,12 @@ module Homebrew
           #{f.path}
         ].concat(ARGV.options_only)
 
-        if Sandbox.available? && ARGV.sandbox? && Sandbox.auto_disable?
-          Sandbox.print_autodisable_warning
+        if Sandbox.available? && ARGV.sandbox?
+          if Sandbox.auto_disable?
+            Sandbox.print_autodisable_warning
+          else
+            Sandbox.print_sandbox_message
+          end
         end
 
         Utils.safe_fork do
@@ -46,6 +49,7 @@ module Homebrew
             sandbox.record_log(f.logs/"sandbox.test.log")
             sandbox.allow_write_temp_and_cache
             sandbox.allow_write_log(f)
+            sandbox.allow_write_xcode
             sandbox.exec(*args)
           else
             exec(*args)

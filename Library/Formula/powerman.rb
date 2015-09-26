@@ -1,5 +1,3 @@
-require "formula"
-
 class Powerman < Formula
   desc "Control (remotely and in parallel) switched power distribution units"
   homepage "https://code.google.com/p/powerman/"

@@ -3,14 +3,14 @@ class Pdf2htmlex < Formula
   homepage "https://coolwanglu.github.io/pdf2htmlEX/"
   url "https://github.com/coolwanglu/pdf2htmlEX/archive/v0.13.6.tar.gz"
   sha256 "fc133a5791bfd76a4425af16c6a6a2460f672501b490cbda558213cb2b03d5d7"
-  revision 1
+  revision 3
 
   head "https://github.com/coolwanglu/pdf2htmlEX.git"
 
   bottle do
-    sha256 "2a12b4452b799111e540ca552677cac96f2cb763bd46879cf49869516bc377c2" => :yosemite
-    sha256 "1e8664adeae53eff487ef7e617c29e0e4748d9d75e360db3df8ee139ca2bdbc2" => :mavericks
-    sha256 "faf1e7ed618c2d80cce574dae891569260b7ba2329d6830d6bc12257ac75ca69" => :mountain_lion
+    sha256 "11a4583c47f559b362693610991d292b68413898d635be42a1fd157b4e537b2f" => :el_capitan
+    sha256 "ad75b68dd45816aeee6730953f9d3aa9df6a2ebdec450ce33cd902f727c2d673" => :yosemite
+    sha256 "da5c6edc1d82b834bcb6f01f2bb0dc8bfd47cbc051b12ecedc9b5b026381e4ec" => :mavericks
   end
 
   # Pdf2htmlex use an outdated, customised Fontforge installation.
@@ -56,7 +56,7 @@ class Pdf2htmlex < Formula
         "--without-x",
         "--without-iconv",
         "--disable-python-scripting",
-        "--disable-python-extension",
+        "--disable-python-extension"
       ]
 
       # Fix linker error; see: http://trac.macports.org/ticket/25012

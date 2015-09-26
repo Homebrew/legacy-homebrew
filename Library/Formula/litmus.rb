@@ -1,10 +1,8 @@
-require 'formula'
-
 class Litmus < Formula
   desc "WebDAV server protocol compliance test suite"
-  homepage 'http://www.webdav.org/neon/litmus/'
-  url 'http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz'
-  sha1 '42ad603035d15798facb3be79b1c51376820cb19'
+  homepage "http://www.webdav.org/neon/litmus/"
+  url "http://www.webdav.org/neon/litmus/litmus-0.13.tar.gz"
+  sha256 "09d615958121706444db67e09c40df5f753ccf1fa14846fdeb439298aa9ac3ff"
 
   def install
     # Note that initially this formula also had the --disable-debug option
@@ -15,6 +13,6 @@ class Litmus < Formula
     #
     # See: https://github.com/Homebrew/homebrew/pull/29608
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

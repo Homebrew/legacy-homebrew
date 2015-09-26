@@ -20,7 +20,7 @@ It is also incredibly difficult to debug a build failure if you make changes to 
 
 If you’ve linked something and there’s no problems at all? Awesome, feel free to ignore the `brew doctor` error. But *please* don’t try to go around it. It’s really hard to help you out if we don’t know the full picture, and we *want* to be able to help you if you get stuck.
 
-### Alright. Stop complaining at me, I get it - but how do I use those tools outside of Homework?
+### Alright. Stop complaining at me, I get it - but how do I use those tools outside of Homebrew?
 
 Useful, reliable alternatives exist should you desire to use `keg_only` tools outside of Homebrew’s build processes:
 

@@ -1,15 +1,14 @@
-require 'formula'
-
 class Libqglviewer < Formula
   desc "C++ Qt library to create OpenGL 3D viewers"
-  homepage 'http://www.libqglviewer.com/'
-  url 'http://www.libqglviewer.com/src/libQGLViewer-2.6.1.tar.gz'
-  sha1 '9220b3f2b8629df36bf91cc8de397e65b2cab476'
+  homepage "http://www.libqglviewer.com/"
+  url "http://www.libqglviewer.com/src/libQGLViewer-2.6.1.tar.gz"
+  sha256 "9312c1a3d7fcf60ffc0bb1c8588b223034b06dab8f7e203f1a7e4ebc9b846c16"
 
-  head 'https://github.com/GillesDebunne/libQGLViewer.git'
+  head "https://github.com/GillesDebunne/libQGLViewer.git"
 
   bottle do
     cellar :any
+    sha256 "4e10d8f4fc3dd26fdecf2ea84eb7f9d4ce31de6ed0bf32827c5f2c2c3467e3f0" => :el_capitan
     sha1 "874e8facfb89023da5b52fb380d0de0db83f0585" => :yosemite
     sha1 "8cd9c48486c8d244e5b8cffc113a825fb1dd0aa5" => :mavericks
     sha1 "f47da1b16cbbb6a5405e065a539daa356609f57d" => :mountain_lion
@@ -17,7 +16,7 @@ class Libqglviewer < Formula
 
   option :universal
 
-  depends_on 'qt'
+  depends_on "qt"
 
   # This patches makes the package install QGLViewer.framework under
   # #{lib}, where it will be picked by homebrew.
@@ -29,7 +28,7 @@ class Libqglviewer < Formula
     args = ["PREFIX=#{prefix}"]
     args << "CONFIG += x86 x86_64" if build.universal?
 
-    cd 'QGLViewer' do
+    cd "QGLViewer" do
       system "qmake", *args
       system "make"
     end

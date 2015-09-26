@@ -1,17 +1,15 @@
-require 'formula'
-
 class Naturaldocs < Formula
   desc "Extensible, multi-language documentation generator"
-  homepage 'http://www.naturaldocs.org/'
-  url 'https://downloads.sourceforge.net/project/naturaldocs/Stable%20Releases/1.52/NaturalDocs-1.52.zip'
-  sha1 '0457bdd60beb2275a1fad414e6ba0a56798a7993'
+  homepage "http://www.naturaldocs.org/"
+  url "https://downloads.sourceforge.net/project/naturaldocs/Stable%20Releases/1.52/NaturalDocs-1.52.zip"
+  sha256 "3f13c99e15778afe6c5555084a083f856e93567b31b08acd1fd81afb10082681"
 
   def install
     # Remove Windows files
-    rm_rf Dir['*.bat']
+    rm_rf Dir["*.bat"]
 
-    libexec.install Dir['*']
-    chmod 0755, libexec+'NaturalDocs'
-    bin.install_symlink libexec+'NaturalDocs'
+    libexec.install Dir["*"]
+    chmod 0755, libexec+"NaturalDocs"
+    bin.install_symlink libexec+"NaturalDocs"
   end
 end

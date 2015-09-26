@@ -4,14 +4,15 @@ class Ipfs < Formula
   desc "IPFS is The Permanent Web - A new peer-to-peer hypermedia protocol"
   homepage "http://ipfs.io/"
   url "https://github.com/ipfs/go-ipfs.git",
-    :tag => "v0.3.5",
-    :revision => "952dc9c60fdff27902749222fdc30164e7eea1ee"
+    :tag => "v0.3.7",
+    :revision => "ec51450d071e50464c03a84ef1c3fe3ca902d0e1"
+  head "https://github.com/ipfs/go-ipfs.git"
 
   bottle do
     cellar :any
-    sha256 "99d7c8ec259245c955fd8445ad12876e63664aa7f3511590159ec45450190b0a" => :yosemite
-    sha256 "8744b3b05caf0de3c3d3a147a5af0abd856868e95058e1b25f8c79fd75ff89f4" => :mavericks
-    sha256 "2b0ca89668c906ed6f3af15e098bf04009695cbc346ef02b363b53acfcc48257" => :mountain_lion
+    sha256 "7fa2048c60b4de4326ebc0e1086ee302f255b9b25c29e16bc596308440f56757" => :yosemite
+    sha256 "d12b1c31921d09444bcb0d9781e2c60df69eb1abbe5da5b05ede28ceeb54604c" => :mavericks
+    sha256 "02903326215f9ca5d0abfb52d6507b0900baee270d7d78fe6f98c8bd7c7065b2" => :mountain_lion
   end
 
   depends_on "go" => :build

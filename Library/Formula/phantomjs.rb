@@ -1,5 +1,3 @@
-require "formula"
-
 class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://www.phantomjs.org/"
@@ -12,8 +10,8 @@ class Phantomjs < Formula
     # https://qt.gitorious.org/qt/qtbase/commit/70e442
     # https://github.com/ariya/phantomjs/pull/12934
     patch do
-      url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
-      sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
+      url "https://raw.githubusercontent.com/Homebrew/patches/480b7142c4e2ae07de6028f672695eb927a34875/phantomjs/yosemite.patch"
+      sha256 "f54bd1592185f031552d3ad5c8809ff27e8f3be4f1c05c81b59bf7dbc4a59de1"
     end
   end
 
@@ -25,6 +23,8 @@ class Phantomjs < Formula
   end
 
   head "https://github.com/ariya/phantomjs.git"
+
+  depends_on MaximumMacOSRequirement => :yosemite
 
   def install
     system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,

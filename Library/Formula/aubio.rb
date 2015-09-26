@@ -1,18 +1,16 @@
-require 'formula'
-
 class Aubio < Formula
   desc "Extract annotations from audio signals"
-  homepage 'http://aubio.org/'
-  url 'http://aubio.org/pub/aubio-0.4.1.tar.bz2'
-  sha1 '338ec9f633e82c371a370b9727d6f0b86b0ba376'
+  homepage "https://aubio.org/"
+  url "https://aubio.org/pub/aubio-0.4.2.tar.bz2"
+  sha256 "1cc58e0fed2b9468305b198ad06b889f228b797a082c2ede716dc30fcb4f8f1f"
 
-  head 'https://github.com/piem/aubio.git', :branch => 'develop'
+  head "https://github.com/piem/aubio.git", :branch => "develop"
 
   bottle do
     cellar :any
-    sha1 "959a1e4eb7bf72573f565af2ebe2c51eb7a6eef4" => :mavericks
-    sha1 "d530d90d8e39ed5888bd492a3e3a888e21de2dc3" => :mountain_lion
-    sha1 "5dc7cb95da354f22e32f8b754093e82d729cbe9f" => :lion
+    sha256 "4b9b7780d8523f46b4de9da1da42de9a81af06bbe87b1c36125860b8eb014533" => :yosemite
+    sha256 "f23c2aeef3734dadeaa2369da75e20a50269650ab18e9a1a5639df9de8eb43d2" => :mavericks
+    sha256 "770f58a1601edce01bcdd4fffcb6bc7a75c81c3119eab6592cd51c911fe0bc24" => :mountain_lion
   end
 
   option :universal
@@ -20,17 +18,17 @@ class Aubio < Formula
   depends_on :macos => :lion
 
   depends_on :python => :optional
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on "libtool" => :build
 
-  depends_on 'libav' => :optional
-  depends_on 'libsndfile' => :optional
-  depends_on 'libsamplerate' => :optional
-  depends_on 'fftw' => :optional
-  depends_on 'jack' => :optional
+  depends_on "libav" => :optional
+  depends_on "libsndfile" => :optional
+  depends_on "libsamplerate" => :optional
+  depends_on "fftw" => :optional
+  depends_on "jack" => :optional
 
-  if build.with? 'python'
-    depends_on 'numpy' => :python
+  if build.with? "python"
+    depends_on "numpy" => :python
   end
 
   def install
@@ -43,17 +41,17 @@ class Aubio < Formula
     system "./waf", "build"
     system "./waf", "install"
 
-    if build.with? 'python'
-      cd 'python' do
+    if build.with? "python"
+      cd "python" do
         system "python", "./setup.py", "build"
         system "python", "./setup.py", "install", "--prefix", prefix
-        bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+        bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
       end
     end
   end
 
   test do
-    if build.with? 'python'
+    if build.with? "python"
       system "#{bin}/aubiocut", "--verbose", "/System/Library/Sounds/Glass.aiff"
     end
     system "#{bin}/aubioonset", "--verbose", "/System/Library/Sounds/Glass.aiff"

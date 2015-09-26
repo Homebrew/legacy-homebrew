@@ -1,10 +1,8 @@
-require "formula"
-
 class Rmate < Formula
   desc "Edit files from an SSH session in TextMate"
   homepage "https://github.com/textmate/rmate"
   url "https://github.com/textmate/rmate/archive/v1.5.7.tar.gz"
-  sha1 "2f139c88c128b89626da56a00441602e7121be62"
+  sha256 "a84105e2c986ef39def5147fa83b8607bab41502177040f4324f5f94946a8e50"
   head "https://github.com/textmate/rmate.git"
 
   def install

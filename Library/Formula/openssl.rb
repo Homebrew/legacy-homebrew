@@ -2,12 +2,13 @@ class Openssl < Formula
   desc "OpenSSL SSL/TLS cryptography library"
   homepage "https://openssl.org/"
   url "https://www.openssl.org/source/openssl-1.0.2d.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/OpenSSL/openssl-1.0.2d.tar.gz"
+  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2d.tar.gz"
   mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2d.tar.gz"
   sha256 "671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8"
   revision 1
 
   bottle do
+    sha256 "b0d8d2082ec30add6327f50ade554a9d45c09ef04b9086a4b779bb7d5816794b" => :el_capitan
     sha256 "65de00409343fb371a065ae514da7a6cbf4f575dee9e0016bd22baccd5b644fa" => :yosemite
     sha256 "ec0a2591aca21c855790464f691db864d5180cb8ae97c68429ca31560fd5fd29" => :mavericks
     sha256 "cc001abc92c0991bef7817cd88c078f8110354d1529a194a4b2e16e5e09cbeca" => :mountain_lion
@@ -24,7 +25,7 @@ class Openssl < Formula
   def arch_args
     {
       :x86_64 => %w[darwin64-x86_64-cc enable-ec_nistp_64_gcc_128],
-      :i386   => %w[darwin-i386-cc],
+      :i386   => %w[darwin-i386-cc]
     }
   end
 

@@ -1,10 +1,8 @@
-require "formula"
-
 class Io < Formula
   desc "Small prototype-based programming language"
   homepage "http://iolanguage.com/"
   url "https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz"
-  sha1 "47d9a3e7a8e14c9fbe3b376e4967bb55f6c68aed"
+  sha256 "e31e8aded25069d945b55732960b3553ba69851a61bd8698b68dfca27b6724cd"
 
   head "https://github.com/stevedekorte/io.git"
 
@@ -44,23 +42,23 @@ class Io < Formula
   # committed upstream, will be in the next release.
   patch do
     url "https://github.com/stevedekorte/io/commit/f21a10ca0e8959e2a0774962c36392cf166be6a6.diff"
-    sha1 "f8756e85268211e93dfd06a0eeade63bfb9bcc9c"
+    sha256 "7dbea1f027de4a4b12decba13a3e58c3352cd599fae14054d7a3af5eb2c454bb"
   end
 
   def install
     ENV.j1
 
     # FSF GCC needs this to build the ObjC bridge
-    ENV.append_to_cflags '-fobjc-exceptions'
+    ENV.append_to_cflags "-fobjc-exceptions"
 
     if build.without? "addons"
       # Turn off all add-ons in main cmake file
       inreplace "CMakeLists.txt", "add_subdirectory(addons)",
-                                  '#add_subdirectory(addons)'
+                                  "#add_subdirectory(addons)"
     else
       inreplace "addons/CMakeLists.txt" do |s|
         if build.without? "python"
-          s.gsub! "add_subdirectory(Python)", '#add_subdirectory(Python)'
+          s.gsub! "add_subdirectory(Python)", "#add_subdirectory(Python)"
         end
 
         # Turn off specific add-ons that are not currently working
@@ -75,13 +73,13 @@ class Io < Formula
     mkdir "buildroot" do
       system "cmake", "..", *std_cmake_args
       system "make"
-      output = %x[./_build/binaries/io ../libs/iovm/tests/correctness/run.io]
+      output = `./_build/binaries/io ../libs/iovm/tests/correctness/run.io`
       if $?.exitstatus != 0
         opoo "Test suite not 100% successful:\n#{output}"
       else
         ohai "Test suite ran successfully:\n#{output}"
       end
-      system "make install"
+      system "make", "install"
     end
   end
 end

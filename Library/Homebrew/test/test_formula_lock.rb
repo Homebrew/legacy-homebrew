@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'formula_lock'
+require "testing_env"
+require "formula_lock"
 
 class FormulaLockTests < Homebrew::TestCase
   def setup

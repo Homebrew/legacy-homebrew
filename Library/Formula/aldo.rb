@@ -1,12 +1,10 @@
-require 'formula'
-
 class Aldo < Formula
   desc "Morse code learning tool released under GPL"
-  homepage 'http://www.nongnu.org/aldo/'
-  url 'http://savannah.nongnu.org/download/aldo/aldo-0.7.7.tar.bz2'
-  sha1 'c37589f8cb0855d33814b7462b3e5ded21caa8ea'
+  homepage "http://www.nongnu.org/aldo/"
+  url "http://savannah.nongnu.org/download/aldo/aldo-0.7.7.tar.bz2"
+  sha256 "f1b8849d09267fff3c1f5122097d90fec261291f51b1e075f37fad8f1b7d9f92"
 
-  depends_on 'libao'
+  depends_on "libao"
 
   # Reported upstream:
   # http://savannah.nongnu.org/bugs/index.php?42127
@@ -14,7 +12,7 @@ class Aldo < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

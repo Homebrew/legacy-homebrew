@@ -1,8 +1,8 @@
 class XmlCoreutils < Formula
-  desc "A powerful interactive system for text processing"
+  desc "Powerful interactive system for text processing"
   homepage "http://www.lbreyer.com/xml-coreutils.html"
   url "http://www.lbreyer.com/gpl/xml-coreutils-0.8.1.tar.gz"
-  sha1 "fd73b2a087ea1c630571070b1ab4ea3b40138a46"
+  sha256 "7fb26d57bb17fa770452ccd33caf288deee1d757a0e0a484b90c109610d1b7df"
 
   bottle do
     sha1 "00c4b58c3d0f45bf14519baea85a0ed0045c0bda" => :yosemite

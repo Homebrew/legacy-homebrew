@@ -20,10 +20,10 @@ class BottleFilenameTests < Homebrew::TestCase
   end
 
   def test_create
-    f = formula {
+    f = formula do
       url "https://example.com/foo.tar.gz"
       version "1.0"
-    }
+    end
 
     expected = "formula_name-1.0.tag.bottle.tar.gz"
     assert_equal expected, Bottle::Filename.create(f, :tag, 0).to_s

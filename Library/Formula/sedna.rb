@@ -1,17 +1,15 @@
-require 'formula'
-
 class Sedna < Formula
-  desc "An XML database"
-  homepage 'http://www.sedna.org/index.html'
-  url 'http://www.modis.ispras.ru/FTPContent/sedna/current/sedna-3.5.161-src-darwin.tar.gz'
-  sha1 '8a30104b5c2027c6915bd9cfa44d72ef24b025ce'
+  desc "XML database"
+  homepage "http://www.sedna.org/index.html"
+  url "http://www.modis.ispras.ru/FTPContent/sedna/current/sedna-3.5.161-src-darwin.tar.gz"
+  sha256 "f59fc991fc9daa8d1e6f15ac699f59b5fb9168c54c288738113b90df89f543d4"
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   def install
-    mkdir 'bld' do
+    mkdir "bld" do
       system "cmake", "..", *std_cmake_args
-      system "make install"
+      system "make", "install"
     end
   end
 

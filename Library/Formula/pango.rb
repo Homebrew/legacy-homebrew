@@ -1,25 +1,16 @@
 class Pango < Formula
   desc "Framework for layout and rendering of i18n text"
   homepage "http://www.pango.org/"
-  revision 2
 
   stable do
-    url "https://download.gnome.org/sources/pango/1.36/pango-1.36.8.tar.xz"
-    sha256 "18dbb51b8ae12bae0ab7a958e7cf3317c9acfc8a1e1103ec2f147164a0fc2d07"
-
-    # [coretext] NULL check in ct_font_descriptor_get_weight()
-    # This fixes crashes when displaying certain Unicode characters.
-    # See: https://bugzilla.gnome.org/show_bug.cgi?id=736697
-    patch do
-      url "https://bug736697.bugzilla-attachments.gnome.org/attachment.cgi?id=286234"
-      sha256 "08d803ddedfa98d99b1897c22a61b908cff05bd0e43982f3063f0d77e05ddb17"
-    end
+    url "https://download.gnome.org/sources/pango/1.38/pango-1.38.0.tar.xz"
+    sha256 "1d4e75974bad853ee9ac5fc5caee5e7ab235abbd945d51d01f3806e04e7c226c"
   end
 
   bottle do
-    sha256 "176d23a9bcb5d74f8a170385313d148374d1ff3579c664bd5e8aa0dd9d6c0996" => :yosemite
-    sha256 "f700167bd71a7f4f8c3ee195c973a355a8dbc70f098b9c12807fcf02087950d8" => :mavericks
-    sha256 "fae52c828225d2d01a6840d20ce0300a98935b4dd4452ea904d96c0ea54047e7" => :mountain_lion
+    sha256 "35609b5fd72070c55965ff9ed2a2221e885c0c9901aa37005a92b223cc96d3b6" => :el_capitan
+    sha256 "4c45bd9bda3be814c8b89673360bc90ab444741023c980e8744fe218d94562ba" => :yosemite
+    sha256 "61049900a101f9dc393bb825a3a00378f57e925f55b904abcd5537f3c8c130f0" => :mavericks
   end
 
   head do
@@ -65,7 +56,7 @@ class Pango < Formula
   end
 
   test do
-    system "#{bin}/pango-querymodules", "--version"
+    system "#{bin}/pango-view", "--version"
     (testpath/"test.c").write <<-EOS.undent
       #include <pango/pangocairo.h>
 

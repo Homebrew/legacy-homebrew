@@ -1,5 +1,3 @@
-require "formula"
-
 class Groovysdk < Formula
   desc "SDK for Groovy: a Java-based scripting language"
   homepage "http://www.groovy-lang.org"
@@ -14,7 +12,7 @@ class Groovysdk < Formula
 
     prefix.install_metafiles
     bin.install Dir["bin/*"]
-    libexec.install %w(conf lib embeddable src doc)
+    libexec.install %w[conf lib embeddable src doc]
     bin.env_script_all_files(libexec+"bin", :GROOVY_HOME => ENV["GROOVY_HOME"])
   end
 

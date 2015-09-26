@@ -1,22 +1,34 @@
 class Harfbuzz < Formula
   desc "OpenType text shaping engine"
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
-  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.0.1.tar.bz2"
-  sha256 "32a1a7ad584a2f2cfba5c1d234d046c0521e86e7a21d403e15e89aa509ef0ea8"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.0.3.tar.bz2"
+  sha256 "ebdc875ea06d010722dec13d92bc40002ab6a77071d62e71aad564ff76a63df7"
+
+  head do
+    url "https://github.com/behdad/harfbuzz.git"
+
+    depends_on "ragel" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
-    sha256 "89ef0eac9a10ee07293bc769663c55368eef6af6e0cd4faa9798b72bd5dd336d" => :yosemite
-    sha256 "9bf6b6d48271957398aa2db68ec0df65e55fc488ce55c64ad811c68595ba53ca" => :mavericks
-    sha256 "42a8ee7134fe0bd07b0c2aad7bde033e7be721dee43970a414764868f6754a15" => :mountain_lion
+    sha256 "563f1399cd8c173da413af69882220bfc92c4792d8f10886dd23170a069caddd" => :el_capitan
+    sha256 "da999851aa3c3ab9360dcc6a0bf3c9eadc706aa64872dcb7a3bbfcbee6d4c5d2" => :yosemite
+    sha256 "402f4d9eedf463f18c5212ddcca2ce97bf5a2b6c1f43309bcb7e16229dffadba" => :mavericks
+    sha256 "df929ddd154ea8a05c066bd727dcb2fc3fc8fd209c5a82dbfa24a10ceee4828a" => :mountain_lion
   end
+
+  option "with-cairo", "Build command-line utilities that depend on Cairo"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "cairo"
-  depends_on "icu4c" => :recommended
-  depends_on "graphite2" => :optional
   depends_on "freetype"
   depends_on "gobject-introspection"
+  depends_on "icu4c" => :recommended
+  depends_on "cairo" => :optional
+  depends_on "graphite2" => :optional
 
   resource "ttf" do
     url "https://github.com/behdad/harfbuzz/raw/fc0daafab0336b847ac14682e581a8838f36a0bf/test/shaping/fonts/sha1sum/270b89df543a7e48e206a2d830c0e10e5265c630.ttf"
@@ -29,10 +41,14 @@ class Harfbuzz < Formula
       --prefix=#{prefix}
       --enable-introspection=yes
       --with-gobject=yes
+      --with-coretext=yes
     ]
 
     args << "--with-icu" if build.with? "icu4c"
     args << "--with-graphite2" if build.with? "graphite2"
+    args << "--with-cairo" if build.with? "cairo"
+
+    system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make", "install"
   end

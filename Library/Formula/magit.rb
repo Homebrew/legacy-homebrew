@@ -1,16 +1,16 @@
 class Magit < Formula
   desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-  url "https://github.com/magit/magit/releases/download/2.1.0/magit-2.1.0.tar.gz"
-  sha256 "835ba1cc461583b012671aea8271b8faf372324f0156706d5801cc1b0e533fc8"
+  url "https://github.com/magit/magit/releases/download/2.2.2/magit-2.2.2.tar.gz"
+  sha256 "08e61898e23dbeb3a152d82e58fc9f6c769fe36d35d87617dcd1e69b2f91b3c6"
 
   head "https://github.com/magit/magit.git", :shallow => false
 
   bottle do
     cellar :any
-    sha256 "b8a6d761f1417cc1dd28907508f820491c0e0c3687b8a97b5ec5a81d67721719" => :yosemite
-    sha256 "317e4c59fd1f3616ebb1dbc34beab2dbad9ccd4900b5d38dbf0e1378c3fc0de9" => :mavericks
-    sha256 "5b9ae10a1253e28ccbf196e3cba3b6433e9253156dae8510344c94900bd0eb7a" => :mountain_lion
+    sha256 "048842721bb6f95aebd3ad00a81d5d62c87e8803252e4152e66652deeca6773f" => :yosemite
+    sha256 "37969f18c4d5fa5c485670ffa27af504f38505f369447dc778771cc771ad61cb" => :mavericks
+    sha256 "566bc0c62bf9633e7c8010877c2e884eacca730a0d3e626c2c22f0f964e09ca8" => :mountain_lion
   end
 
   depends_on :emacs => "24.4"
@@ -20,39 +20,34 @@ class Magit < Formula
     sha256 "d888d34b9b86337c5740250f202e7f2efc3bf059b08a817a978bf54923673cde"
   end
 
+  resource "async" do
+    url "https://github.com/jwiegley/emacs-async/archive/v1.4.tar.gz"
+    sha256 "295d6d5dd759709ef714a7d05c54aa2934f2ffb4bb2e90e4434415f75f05473b"
+  end
+
   def install
-    resource("dash").stage do
-      (share/"emacs/site-lisp").install "dash.el"
-    end
+    resource("dash").stage { (share/"emacs/site-lisp/magit").install "dash.el" }
+    resource("async").stage { (share/"emacs/site-lisp/magit").install Dir["*.el"] }
 
     (buildpath/"config.mk").write <<-EOS
-      LOAD_PATH = -L #{buildpath}/lisp -L #{share}/emacs/site-lisp
+      LOAD_PATH = -L #{buildpath}/lisp -L #{share}/emacs/site-lisp/magit
     EOS
 
     args = %W[
       PREFIX=#{prefix}
-      lispdir=#{share}/emacs/site-lisp
       docdir=#{doc}
+      VERSION=#{version}
     ]
-    # Can't run `make install` alone without ENV.j1:
-    # https://github.com/magit/magit/issues/1670
-    system "make"
     system "make", "install", *args
-  end
-
-  def caveats; <<-EOS.undent
-    Add the following to your Emacs init file to allow loading of packages installed by Homebrew:
-
-    (add-to-list 'load-path "#{HOMEBREW_PREFIX}/share/emacs/site-lisp")
-  EOS
   end
 
   test do
     (testpath/"test.el").write <<-EOS.undent
-      (add-to-list 'load-path "#{share}/emacs/site-lisp")
-      (require 'magit)
-      (print (minibuffer-prompt-width))
+      (add-to-list 'load-path "#{share}/emacs/site-lisp/magit")
+      (load "magit")
+      (magit-run-git "init")
     EOS
-    assert_equal "0", shell_output("emacs -batch -l #{testpath}/test.el").strip
+    system "emacs", "--batch", "-Q", "-l", "#{testpath}/test.el"
+    File.exist? ".git"
   end
 end

@@ -2,7 +2,7 @@ class Tinysvm < Formula
   desc "Support vector machine library for pattern recognition"
   homepage "http://chasen.org/~taku/software/TinySVM/"
   url "http://chasen.org/~taku/software/TinySVM/src/TinySVM-0.09.tar.gz"
-  sha1 "9c3c36454c475180ef6646d059376f35549cad08"
+  sha256 "e377f7ede3e022247da31774a4f75f3595ce768bc1afe3de9fc8e962242c7ab8"
 
   bottle do
     cellar :any
@@ -14,7 +14,7 @@ class Tinysvm < Formula
   # Use correct compilation flag
   patch :p0 do
     url "https://trac.macports.org/export/94156/trunk/dports/math/TinySVM/files/patch-configure.diff"
-    sha1 "9f59314fa743e98d8fe3e887b58a85f25e4df571"
+    sha256 "b4cd84063fd56cdcb0212528c6d424788528a9d6b8b0a17aa01294773c62e8a7"
   end
 
   def install

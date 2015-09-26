@@ -1,5 +1,3 @@
-require "formula"
-
 class Sassc < Formula
   desc "Wrapper around libsass that helps to create command-line apps"
   homepage "https://github.com/sass/sassc"
@@ -8,6 +6,7 @@ class Sassc < Formula
 
   bottle do
     cellar :any
+    sha256 "0ea400766fbfe5f4d9c96fe01dc6925a2dcd522f3b8d087b5cd6f748a1537e30" => :el_capitan
     sha256 "1ad01ed7c28efd12f067f2cc6a743ec291218231462f17419b32be0d09538901" => :yosemite
     sha256 "ce98149a0cf434fda2ce3e9803f92a77c4581df9ca7b9f8f13478b56670c956c" => :mavericks
     sha256 "16150a5116dd01b150f1b48696e0dfc256cb38d5b4f5aff9f4edb18bd5d9c54c" => :mountain_lion
@@ -35,7 +34,7 @@ class Sassc < Formula
       }
     EOS
 
-   assert_equal "div img{border:0px}",
-   shell_output("#{bin}/sassc --style compressed input.scss").strip
+    assert_equal "div img{border:0px}",
+    shell_output("#{bin}/sassc --style compressed input.scss").strip
   end
 end

@@ -1,13 +1,11 @@
-require 'formula'
-
 class JsonSpirit < Formula
   desc "C++ JSON parser/generator"
-  homepage 'http://www.codeproject.com/KB/recipes/JSON_Spirit.aspx'
-  url 'https://github.com/png85/json_spirit/archive/json_spirit-4.07.tar.gz'
-  sha1 'b29272c59f8f840c255f75a0949ba839b7cec13b'
+  homepage "http://www.codeproject.com/KB/recipes/JSON_Spirit.aspx"
+  url "https://github.com/png85/json_spirit/archive/json_spirit-4.07.tar.gz"
+  sha256 "3d53fac906261de1cf48db362436ca32b96547806ab6cce5ac195460ad732320"
 
-  depends_on 'boost'
-  depends_on 'cmake' => :build
+  depends_on "boost"
+  depends_on "cmake" => :build
 
   def install
     args = std_cmake_args
@@ -19,6 +17,6 @@ class JsonSpirit < Formula
     args = std_cmake_args
     args << "-DBUILD_STATIC_LIBRARIES=OFF"
     system "cmake", *args
-    system "make install"
+    system "make", "install"
   end
 end

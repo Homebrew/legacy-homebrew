@@ -1,5 +1,3 @@
-require "formula"
-
 class Akka < Formula
   desc "Toolkit for building concurrent, distributed, and fault tolerant apps"
   homepage "http://akka.io/"

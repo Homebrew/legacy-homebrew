@@ -1,10 +1,8 @@
-require "formula"
-
 class Ucommon < Formula
   desc "GNU C++ runtime library for threads, sockets, and parsing"
   homepage "https://www.gnu.org/software/commoncpp/"
   url "http://ftpmirror.gnu.org/commonc++/ucommon-6.2.2.tar.gz"
-  sha1 "867e06988de3dea1d04a71155bf77063df6fcd8f"
+  sha256 "1ddcef26dc5c930225de6ab9adc3c389cb3f585eba0b0f164206f89d2dafea66"
 
   bottle do
     sha1 "4fc88a216680dde8e5aa696a8839beaa0fb37231" => :yosemite

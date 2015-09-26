@@ -2,7 +2,7 @@ class Fsw < Formula
   desc "File change monitor with multiple backends"
   homepage "https://emcrisostomo.github.io/fsw/"
   url "https://github.com/emcrisostomo/fsw/releases/download/1.3.9/fsw-1.3.9.tar.gz"
-  sha1 "bd2b230dc800946941d89512ce9ae8669365d21a"
+  sha256 "9222f76f99ef9841dc937a8f23b529f635ad70b0f004b9dd4afb35c1b0d8f0ff"
 
   bottle do
     sha1 "37e0d950a4c82a603788007b9a40aadb6ebf9373" => :yosemite

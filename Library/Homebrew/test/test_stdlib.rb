@@ -1,6 +1,6 @@
-require 'testing_env'
-require 'formula'
-require 'cxxstdlib'
+require "testing_env"
+require "formula"
+require "cxxstdlib"
 
 class CxxStdlibTests < Homebrew::TestCase
   def setup
@@ -8,8 +8,8 @@ class CxxStdlibTests < Homebrew::TestCase
     @gcc   = CxxStdlib.create(:libstdcxx, :gcc)
     @llvm  = CxxStdlib.create(:libstdcxx, :llvm)
     @gcc4  = CxxStdlib.create(:libstdcxx, :gcc_4_0)
-    @gcc48 = CxxStdlib.create(:libstdcxx, 'gcc-4.8')
-    @gcc49 = CxxStdlib.create(:libstdcxx, 'gcc-4.9')
+    @gcc48 = CxxStdlib.create(:libstdcxx, "gcc-4.8")
+    @gcc49 = CxxStdlib.create(:libstdcxx, "gcc-4.9")
     @lcxx  = CxxStdlib.create(:libcxx, :clang)
     @purec = CxxStdlib.create(nil, :clang)
   end

@@ -1,11 +1,9 @@
-require "formula"
-
 class Ffts < Formula
   desc "C library that computes the discrete Fourier transform"
   homepage "http://anthonix.com/ffts/"
   head "https://github.com/anthonix/ffts.git"
   url "http://anthonix.com/ffts/releases/ffts-0.7.tar.gz"
-  sha1 "8318dc460413d952d2468c8bc9aa2e484bb72d98"
+  sha256 "6362e498e5aa241661cfe9060153076b78e300a5d3c365997ba6ac2f637df3ff"
 
   bottle do
     cellar :any

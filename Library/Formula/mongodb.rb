@@ -5,35 +5,38 @@ class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
   stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.4.tar.gz"
-    sha256 "6de7aa8b12ad892ee3852ac949069fda8cb87b3ee606a88226817505e2864360"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.6.tar.gz"
+    sha256 "609f6bd416ed11898b49406332b8ff301de239ba72df0bdbf1603233229c822d"
 
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.0.4",
-        :revision => "efe71bf185cdcfe9632f1fc2e42ca4e895f93269"
-    end
-  end
-
-  devel do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.6.tar.gz"
-    sha256 "de8591025f38bfdf5c8540e70a09a426d7e0b45a41b625d959598efd57dc20fb"
-
-    go_resource "github.com/mongodb/mongo-tools" do
-      url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.1.6",
-        :revision => "ec79a8183b012d3c55fc22fde298dd3032444b0b"
+        :tag => "r3.0.6",
+        :revision => "7588eb887549bd5d2fc7bbc08f7c62d4b29b9d75"
     end
   end
 
   bottle do
     cellar :any
-    sha256 "cb796f8f0aaa0f457660d6cfca16325d4a708ffe21e66cba7caabb7e58932f7d" => :yosemite
-    sha256 "5a5ad8cb4399a08bcc4dd05297d29bfaf225676d58df3f4c7d85c0e4b223df81" => :mavericks
-    sha256 "e0bfd72074a21e1090632018d4f91ea3f89d2694a8189bc6d1af7e2dfb7f608e" => :mountain_lion
+    sha256 "1a351bddefae96c4e17b6e679fa30f551ca8f7690898ab52911bbd61b8398e2d" => :el_capitan
+    sha256 "9194f749a0f400d687e93ca41be83d0419c4d59a95d738ae0f99618aa91076ca" => :yosemite
+    sha256 "7cf4a87166774c9276eb0e20b15219f05da236f21c2378823625a65c9983d1f1" => :mavericks
+    sha256 "aef1a270e9946d298b076804161510f1acbcbc33fd35ff4558a4c06ce1206a13" => :mountain_lion
+  end
+
+  devel do
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.8.tar.gz"
+    sha256 "03ea50dbc243e56e093ed8efacd618437f3fe464d9c8b7680f22aef02570c28c"
+
+    go_resource "github.com/mongodb/mongo-tools" do
+      url "https://github.com/mongodb/mongo-tools.git",
+        :tag => "r3.1.8",
+        :revision => "bafe40f13b8fb547cfdf1a216230d9b69735f8e9"
+    end
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+
+  needs :cxx11
 
   depends_on "boost" => :optional
   depends_on "go" => :build
@@ -42,6 +45,7 @@ class Mongodb < Formula
   depends_on "openssl" => :optional
 
   def install
+    ENV.cxx11 if MacOS.version < :mavericks
     ENV.libcxx if build.devel?
 
     # New Go tools have their own build script but the server scons "install" target is still

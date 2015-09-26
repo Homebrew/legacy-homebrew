@@ -1,8 +1,8 @@
 class Keybase < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/node-client/archive/v0.8.12.tar.gz"
-  sha256 "fa6a8eb6f857d98d4d0f5c97862ba99480b0dd2c85fccd631180c0ab8f3ca97f"
+  url "https://github.com/keybase/node-client/archive/v0.8.19.tar.gz"
+  sha256 "a760368cd8a0d02d0228335f82f7700e7bb3cfdd4bbedd63608f2d9c631eb75e"
   head "https://github.com/keybase/node-client.git"
 
   depends_on "node"

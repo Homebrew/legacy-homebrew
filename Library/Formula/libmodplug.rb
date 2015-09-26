@@ -1,10 +1,8 @@
-require "formula"
-
 class Libmodplug < Formula
   desc "Library from the Modplug-XMMS project"
   homepage "http://modplug-xmms.sourceforge.net/"
   url "https://downloads.sourceforge.net/modplug-xmms/libmodplug/0.8.8.5/libmodplug-0.8.8.5.tar.gz"
-  sha1 "771ee75bb8bfcfe95eae434ed1f3b2c5b63b2cb3"
+  sha256 "77462d12ee99476c8645cb5511363e3906b88b33a6b54362b4dbc0f39aa2daad"
 
   bottle do
     cellar :any
@@ -27,13 +25,13 @@ class Libmodplug < Formula
     # Most favourited song on modarchive:
     # http://modarchive.org/index.php?request=view_by_moduleid&query=60395
     url "http://api.modarchive.org/downloads.php?moduleid=60395#2ND_PM.S3M"
-    sha1 "db0d80984abca47d5442bc4de467f9ccd300f186"
+    sha256 "f80735b77123cc7e02c4dad6ce8197bfefcb8748b164a66ffecd206cc4b63d97"
   end
 
   test do
     # First a basic test just that we can link on the library
     # and call an initialization method.
-    (testpath/'test_null.cpp').write <<-EOS.undent
+    (testpath/"test_null.cpp").write <<-EOS.undent
       #include "libmodplug/modplug.h"
       int main() {
         ModPlugFile* f = ModPlug_Load((void*)0, 0);
@@ -51,7 +49,7 @@ class Libmodplug < Formula
     # Second, acquire an actual music file from a popular internet
     # source and attempt to parse it.
     resource("testmod").stage testpath
-    (testpath/'test_mod.cpp').write <<-EOS.undent
+    (testpath/"test_mod.cpp").write <<-EOS.undent
       #include "libmodplug/modplug.h"
       #include <fstream>
       #include <sstream>

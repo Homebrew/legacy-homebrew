@@ -1,7 +1,7 @@
 require "formula"
 
 class Newlisp < Formula
-  desc "A Lisp-like, general-purpose scripting language"
+  desc "Lisp-like, general-purpose scripting language"
   homepage "http://www.newlisp.org/"
   url "http://www.newlisp.org/downloads/newlisp-10.6.2.tgz"
   sha1 "8ea722f2ed415548a0904ef15bafd259d8b07e01"

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Aggregate < Formula
   desc "Optimizes lists of prefixes to reduce list lengths"
-  homepage 'http://freecode.com/projects/aggregate/'
-  url 'ftp://ftp.isc.org/isc/aggregate/aggregate-1.6.tar.gz'
-  sha1 '13420baf4f3f93dbed3c380ab6cca175609c5d7d'
+  homepage "http://freecode.com/projects/aggregate/"
+  url "ftp://ftp.isc.org/isc/aggregate/aggregate-1.6.tar.gz"
+  sha256 "166503005cd8722c730e530cc90652ddfa198a25624914c65dffc3eb87ba5482"
 
   bottle do
     cellar :any
@@ -15,7 +13,7 @@ class Aggregate < Formula
 
   # Note - Freecode is no longer being updated & an alternative homepage should be found if possible.
 
-  conflicts_with 'crush-tools', :because => 'both install an `aggregate` binary'
+  conflicts_with "crush-tools", :because => "both install an `aggregate` binary"
 
   def install
     bin.mkpath

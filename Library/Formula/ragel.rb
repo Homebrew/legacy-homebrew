@@ -1,10 +1,8 @@
-require "formula"
-
 class Ragel < Formula
-  desc "A state machine compiler"
+  desc "State machine compiler"
   homepage "http://www.colm.net/ragel/"
   url "http://www.colm.net/files/ragel/ragel-6.9.tar.gz"
-  sha1 "70a7fe77aee8423be610fa14c3fa1f96b3119e1d"
+  sha256 "6e07be0fab5ca1d9c2d9e177718a018fc666141f594a5d6e7025658620cf660a"
 
   bottle do
     cellar :any
@@ -15,7 +13,7 @@ class Ragel < Formula
 
   resource "pdf" do
     url "http://www.colm.net/files/ragel/ragel-guide-6.9.pdf"
-    sha1 "a8a83fe879d72acc2376f72fad172ac6b098e794"
+    sha256 "3f9406b0471facaf775c4d868fb545640d08f4df7ad9578db1e36ddef0afd608"
   end
 
   def install

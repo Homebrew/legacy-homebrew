@@ -6,9 +6,12 @@ class Automake < Formula
   sha256 "9908c75aabd49d13661d6dcb1bc382252d22cc77bf733a2d55e87f2aa2db8636"
 
   bottle do
-    sha1 "493f0b3b591fd72412d0b048539df4d94127ec9c" => :yosemite
-    sha1 "a50e536f4cb8b7c45d51ab44fbc0825866553268" => :mavericks
-    sha1 "9430f3bca0176048b418440e57ca6b9d6773fc31" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "70a763221d2bb9baaf630f2170224c915ca96a9966fbb1d86781c8743740bb7b" => :el_capitan
+    sha256 "d8e4773130e25ff576a0c7d18b4d010b1e03eba90b0074e1ac749fdf3bc13e26" => :yosemite
+    sha256 "69c1635672fa682a40949572e64fe3495055e97ad2c105dd46fb2e447d0d65a8" => :mavericks
+    sha256 "6e6fdaa7fb7ddaaeb103341d1ca351e0669874f86eb21eb6623cb345dd1f5b6f" => :mountain_lion
   end
 
   depends_on "autoconf" => :run

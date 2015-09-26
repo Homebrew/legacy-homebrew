@@ -1,10 +1,8 @@
-require "formula"
-
 class Mmix < Formula
   desc "64-bit RISC architecture designed by Donald Knuth"
   homepage "http://mmix.cs.hm.edu/"
   url "http://mmix.cs.hm.edu/src/mmix-20131017.tgz"
-  sha1 "75dba738c72fb163302160e745096846a7b8672a"
+  sha256 "aa64c4b9dc3cf51f07b330791f8ce542b0ae8a1132e098fa95a19b31350050b4"
 
   bottle do
     cellar :any

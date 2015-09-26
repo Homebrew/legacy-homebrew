@@ -5,7 +5,8 @@ class Xmlto < Formula
   sha256 "efb49b2fb3bc27c1a1e24fe34abf19b6bf6cbb40844e6fd58034cdf21c54b5ec"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "07ed7c132ab25310937ac0bf68d8a2b523a35c74a7c7c8ba2666bfe1e2b0574b" => :el_capitan
     sha1 "1135350e4d76f2a2b6c86fc8554aa9bb7d2ca7d7" => :yosemite
     sha1 "62c44bc17acaf2be24d10ada48b87d0d41fab60c" => :mavericks
     sha1 "752ba9e2f015a8da4b4ab4e082493d010d49db86" => :mountain_lion

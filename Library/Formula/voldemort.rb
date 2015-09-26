@@ -2,7 +2,7 @@ class Voldemort < Formula
   desc "Distributed key-value storage system"
   homepage "http://www.project-voldemort.com/"
   url "https://github.com/voldemort/voldemort/archive/release-1.9.5-cutoff.tar.gz"
-  sha1 "ac4db71aa4670054dadc80bbe09544192ddd0a6a"
+  sha256 "d521943873665d863a207c93557dc322c091e22a4293df4e3b86eb298ebbda7c"
 
   depends_on :ant => :build
   depends_on :java => "1.7+"

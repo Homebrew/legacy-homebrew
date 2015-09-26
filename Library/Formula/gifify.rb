@@ -1,11 +1,9 @@
-require "formula"
-
 class Gifify < Formula
   desc "Turn movies into GIFs"
   homepage "https://github.com/jclem/gifify"
   head "https://github.com/jclem/gifify.git"
   url "https://github.com/jclem/gifify/archive/v3.0.tar.gz"
-  sha1 "cd374bfad80e024af2b6cce6558474bdffef3f17"
+  sha256 "1fc7c77672b1f93b009b39b44beba44d0ea0573cf21f7c906c3ec97d663168e5"
 
   depends_on "ffmpeg"
   depends_on "imagemagick"

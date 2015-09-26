@@ -1,10 +1,10 @@
-require 'formula'
+require "formula"
 
 class Glassfish < Formula
   desc "Java EE application server"
-  homepage 'https://glassfish.java.net'
-  url 'http://dlc.sun.com.edgesuite.net/glassfish/4.1/release/glassfish-4.1.zip'
-  sha1 '704a90899ec5e3b5007d310b13a6001575827293'
+  homepage "https://glassfish.java.net"
+  url "http://download.java.net/glassfish/4.1/release/glassfish-4.1.zip"
+  sha256 "3edc5fc72b8be241a53eae83c22f274479d70e15bdfba7ba2302da5260f23e9d"
 
   def install
     rm_rf Dir["bin/*.bat"]

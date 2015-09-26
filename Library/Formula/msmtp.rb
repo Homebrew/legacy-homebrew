@@ -5,6 +5,7 @@ class Msmtp < Formula
   sha256 "2f6ecd7cbfadf548fd55205bd24cb63b84bcbb1185efed917dd7800595a48789"
 
   bottle do
+    sha256 "1dac8b26b392b483a33df2e037d56d873e7c79d382a141f5cb6389c6ddb4529a" => :el_capitan
     sha256 "a74b5acfc2208061662c9dced09f6704b06f252317250d9d726cb309b85154e9" => :yosemite
     sha256 "4d31815b2eb044d87a7198bdd1c1188a6644ec37171714b663bd0c037cada714" => :mavericks
     sha256 "6e0b109c6d290ce71bc24302b0e4fd0a45a1f1b9db025afde8273e87e99777de" => :mountain_lion

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Aterm < Formula
   desc "AfterStep terminal emulator"
-  homepage 'http://strategoxt.org/Tools/ATermFormat'
-  url 'http://www.meta-environment.org/releases/aterm-2.8.tar.gz'
-  sha1 'c9a69db0d0ac58970568f6b46ce96af457d84bcc'
+  homepage "http://strategoxt.org/Tools/ATermFormat"
+  url "http://www.meta-environment.org/releases/aterm-2.8.tar.gz"
+  sha256 "bab69c10507a16f61b96182a06cdac2f45ecc33ff7d1b9ce4e7670ceeac504ef"
 
   bottle do
     cellar :any
@@ -18,6 +16,6 @@ class Aterm < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     ENV.j1 # Parallel builds don't work
-    system "make install"
+    system "make", "install"
   end
 end

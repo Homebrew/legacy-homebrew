@@ -8,7 +8,8 @@ class S3cmd < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "217c0f03b3dd545263d42718265052ef8190290cc1b8409fbb2ca4627c09c9dd" => :el_capitan
     sha256 "df3c1380d6bd0171bb002f897f360acced8157fc235cb34252f6ecadd72d0668" => :yosemite
     sha256 "f76281f2955f9dfd9b13bec7d785c6339e9e23f975d9b54f5c8454fa902dc0be" => :mavericks
     sha256 "892bc105c9018d47837669afd9a8ff460741631112d6c0e57fc2451558ca7996" => :mountain_lion

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Clockywock < Formula
   desc "Ncurses analog clock"
-  homepage 'http://soomka.com/'
-  url 'http://soomka.com/clockywock-0.3.1a.tar.gz'
-  sha1 '6df4c4e6bc2c7f2f8bd3534b46da59b8a80b4e04'
+  homepage "http://soomka.com/"
+  url "http://soomka.com/clockywock-0.3.1a.tar.gz"
+  sha256 "278c01e0adf650b21878e593b84b3594b21b296d601ee0f73330126715a4cce4"
 
   def install
     system "make"

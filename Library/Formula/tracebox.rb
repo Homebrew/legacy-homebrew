@@ -2,7 +2,7 @@ class Tracebox < Formula
   desc "Middlebox detection tool"
   homepage "http://www.tracebox.org/"
   url "https://github.com/tracebox/tracebox.git", :tag => "v0.3.1",
-      :revision => "aec062dcf7198c8b8f3b90ee4216e929ebf0ffcb"
+                                                  :revision => "aec062dcf7198c8b8f3b90ee4216e929ebf0ffcb"
 
   bottle do
     cellar :any

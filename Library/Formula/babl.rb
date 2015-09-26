@@ -6,6 +6,7 @@ class Babl < Formula
   sha256 "2f802b7f1a17b72c10bf0fe1e69b7a888cf7ce62b7cf1537b030f7f88d55a407"
 
   bottle do
+    sha256 "b839dc910c873b14e2c86466f3d3894c4349b8755a4231cad78e60ed85f7b4dd" => :el_capitan
     sha256 "db81183522e6d338475e43c2bed097b0ab5706eb24cc68c1889a673ca529e743" => :yosemite
     sha256 "8782f771f5efa9cbc5dcf09815b4cb078647477f56b2110e5c67517adeb5c8e3" => :mavericks
     sha256 "6e4ba55b1698c2edb1a006fbaa1bcaa72a8fc65007d86e21e022116a42a1bcae" => :mountain_lion

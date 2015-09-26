@@ -27,7 +27,7 @@ class Gupnp < Formula
   depends_on "libsoup"
   depends_on "gssdp"
 
-  # review if patch was applied in the next release
+  # REVIEW: if patch was applied in the next release
   # https://github.com/GNOME/gupnp/pull/1
   patch :p0 do
     url "https://trac.macports.org/export/136642/users/devans/GNOME-3/stable/dports/net/gupnp/files/patch-osx-uuid.diff"

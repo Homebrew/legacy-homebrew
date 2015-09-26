@@ -1,14 +1,14 @@
 class H2o < Formula
   desc "HTTP server with support for HTTP/1.x and HTTP/2"
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.4.1.tar.gz"
-  sha256 "b5695b08c90a22b5f164a632bae68b4e8c4ecf4f231a3d336c7f94562591e4e9"
+  url "https://github.com/h2o/h2o/archive/v1.4.5.tar.gz"
+  sha256 "0f60e8d35afad61afc284a7abfa9c9a3b976e8f9faed3f0966fb34056e2e138d"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
-    sha256 "89ed080ae9c1c2ecac37572e8eb9ce2de4133f022b30abfa9a9d24d1988a0f06" => :yosemite
-    sha256 "37edd0ebba6c74f1aebe37cd6f67a8fe3b514d8578b92fa68b1f1fed96f8d91e" => :mavericks
-    sha256 "709002e3527ed44e086898e3436a48128fcbaab5a48a1b464ea6581f1d12aaa1" => :mountain_lion
+    sha256 "26304a99a5e5de284ed0add8b82ac246eb04db16a69475fc659b01a321bac23c" => :el_capitan
+    sha256 "86cd4fa53c69df797b485501f0d741f007bd67c3c8053f124bdc63f4010f8c51" => :yosemite
+    sha256 "eab6c76b9121a1611b237cef408f336a8e531b309353c2f5997965bac17d4f18" => :mavericks
   end
 
   option "with-libuv", "Build the H2O library in addition to the executable"

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Abnfgen < Formula
   desc "Quickly generate random documents that match an ABFN grammar"
-  homepage 'http://www.quut.com/abnfgen/'
-  url 'http://www.quut.com/abnfgen/abnfgen-0.16.tar.gz'
-  sha1 '0ed2d09fc1601bb22bcd452000c2e4fd9b2bff81'
+  homepage "http://www.quut.com/abnfgen/"
+  url "http://www.quut.com/abnfgen/abnfgen-0.16.tar.gz"
+  sha256 "c256712a97415c86e1aa1847e2eac00019ca724d56b8ee921d21b258090d333a"
 
   bottle do
     cellar :any
@@ -17,7 +15,7 @@ class Abnfgen < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

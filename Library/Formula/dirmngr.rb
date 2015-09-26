@@ -2,12 +2,13 @@ class Dirmngr < Formula
   desc "Server for managing certificate revocation lists"
   homepage "https://www.gnupg.org"
   url "ftp://ftp.gnupg.org/gcrypt/dirmngr/dirmngr-1.1.1.tar.bz2"
-  mirror "http://ftp.debian.org/debian/pool/main/d/dirmngr/dirmngr_1.1.1.orig.tar.bz2"
-  sha1 "e708d4aa5ce852f4de3f4b58f4e4f221f5e5c690"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dirmngr/dirmngr_1.1.1.orig.tar.bz2"
+  sha256 "d2280b8c314db80cdaf101211a47826734443436f5c3545cc1b614c50eaae6ff"
   revision 1
 
   bottle do
     revision 2
+    sha256 "a07f99c0a38b6bb454d2c596562717d651779a1f189ab15809e21c3047079e79" => :el_capitan
     sha256 "ca8d166e23d655deb6fba0f22b675482791bcfe1008ec07bdef8bfdc5f7240ec" => :yosemite
     sha256 "ce5b93c43cf4d15a6510782663583683a1fa0582f4f2a270230c91b081ae2ba8" => :mavericks
     sha256 "5b4f0faf48899220e39b649aed3d3a772393bfa02f066dcfb8b6d47cc832165d" => :mountain_lion

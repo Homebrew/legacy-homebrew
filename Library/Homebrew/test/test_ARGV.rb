@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'extend/ARGV'
+require "testing_env"
+require "extend/ARGV"
 
 class ArgvExtensionTests < Homebrew::TestCase
   def setup
@@ -7,19 +7,19 @@ class ArgvExtensionTests < Homebrew::TestCase
   end
 
   def test_argv_formulae
-    @argv.unshift 'mxcl'
+    @argv.unshift "mxcl"
     assert_raises(FormulaUnavailableError) { @argv.formulae }
   end
 
   def test_argv_casks
-    @argv.unshift 'mxcl'
+    @argv.unshift "mxcl"
     assert_equal [], @argv.casks
   end
 
   def test_argv_kegs
     keg = HOMEBREW_CELLAR + "mxcl/10.0"
     keg.mkpath
-    @argv << 'mxcl'
+    @argv << "mxcl"
     assert_equal 1, @argv.kegs.length
   ensure
     keg.parent.rmtree
@@ -49,8 +49,8 @@ class ArgvExtensionTests < Homebrew::TestCase
 
   def test_switch?
     @argv << "-ns" << "-i" << "--bar"
-    %w{n s i}.each { |s| assert @argv.switch?(s) }
-    %w{b ns bar --bar -n}.each { |s| assert !@argv.switch?(s) }
+    %w[n s i].each { |s| assert @argv.switch?(s) }
+    %w[b ns bar --bar -n].each { |s| assert !@argv.switch?(s) }
   end
 
   def test_flag?

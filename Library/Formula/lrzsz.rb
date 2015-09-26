@@ -1,10 +1,8 @@
-require 'formula'
-
 class Lrzsz < Formula
   desc "Tools for zmodem/xmodem/ymodem file transfer"
-  homepage 'http://www.ohse.de/uwe/software/lrzsz.html'
-  url 'http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz'
-  sha1 '451e6a1813dfb71a412c973acd1b88b9ee3f28c4'
+  homepage "http://www.ohse.de/uwe/software/lrzsz.html"
+  url "http://www.ohse.de/uwe/releases/lrzsz-0.12.20.tar.gz"
+  sha256 "c28b36b14bddb014d9e9c97c52459852f97bd405f89113f30bee45ed92728ff1"
 
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
@@ -14,7 +12,7 @@ class Lrzsz < Formula
     # must install the binaries manually first
     bin.install "src/lrz", "src/lsz"
 
-    system "make install"
+    system "make", "install"
 
     bin.install_symlink "lrz" => "rz", "lsz" => "sz"
   end

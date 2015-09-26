@@ -1,19 +1,20 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.3/cmake-3.3.0.tar.gz"
-  sha256 "857c2f755fe0794d038d6fa462a173d05b210ac2c07ff82f0af853acef231a34"
+  url "http://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/cmake/cmake_3.3.2.orig.tar.gz"
+  sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
   head "http://cmake.org/cmake.git"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "708bfb6256158640f31536f01754426328a0427be6c3b62290f4486dbbadd348" => :yosemite
-    sha256 "affc7935271206da83ed31a0c229a048b9f84de198b4655986d890550604e6c9" => :mavericks
-    sha256 "cec857d70e616e2f5a82c9db9a156f7a54ff16b991804f3fdee47c677f10c6c4" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "371e1136b03df5461f7458fea86abfcb0542fdaa312c330b7a7e9ea9ee53faa4" => :el_capitan
+    sha256 "fc8cfc07557b7d0d109f8a3548a21f022fb32353b53325696f3d3b2c470651d1" => :yosemite
+    sha256 "cb0c73778120fcd899df10b1a06d9fbe1a1778645f252ac498bce1d0bd3ec63c" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"
+  option "with-completion", "Install Bash completion (Has potential problems with system bash)"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
 
@@ -52,8 +53,8 @@ class Cmake < Formula
   end
 
   resource "babel" do
-    url "https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz"
-    sha256 "9f02d0357184de1f093c10012b52e7454a1008be6a5c185ab7a3307aceb1d12e"
+    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.0.tar.gz"
+    sha256 "44988df191123065af9857eca68e9151526a931c12659ca29904e4f11de7ec1b"
   end
 
   resource "markupsafe" do
@@ -62,8 +63,8 @@ class Cmake < Formula
   end
 
   resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "alabaster" do
@@ -110,9 +111,13 @@ class Cmake < Formula
     system "make"
     system "make", "install"
 
-    cd "Auxiliary/bash-completion/" do
-      bash_completion.install "ctest", "cmake", "cpack"
+    if build.with? "completion"
+      cd "Auxiliary/bash-completion/" do
+        bash_completion.install "ctest", "cmake", "cpack"
+      end
     end
+
+    (share/"emacs/site-lisp/cmake").install "Auxiliary/cmake-mode.el"
   end
 
   test do

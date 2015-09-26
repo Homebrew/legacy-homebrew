@@ -3,9 +3,8 @@ require "formula"
 
 module Homebrew
   def list
-
     # Use of exec means we don't explicitly exit
-    list_unbrewed if ARGV.flag? '--unbrewed'
+    list_unbrewed if ARGV.flag? "--unbrewed"
 
     # Unbrewed uses the PREFIX, which will exist
     # Things below use the CELLAR, which doesn't until the first formula is installed.
@@ -14,7 +13,7 @@ module Homebrew
       return
     end
 
-    if ARGV.include? '--pinned' or ARGV.include? '--versions'
+    if ARGV.include?("--pinned") || ARGV.include?("--versions")
       filtered_list
     elsif ARGV.named.empty?
       if ARGV.include? "--full-name"
@@ -29,13 +28,13 @@ module Homebrew
         end
         puts_columns full_names
       else
-        ENV['CLICOLOR'] = nil
-        exec 'ls', *ARGV.options_only << HOMEBREW_CELLAR
+        ENV["CLICOLOR"] = nil
+        exec "ls", *ARGV.options_only << HOMEBREW_CELLAR
       end
-    elsif ARGV.verbose? or not $stdout.tty?
+    elsif ARGV.verbose? || !$stdout.tty?
       exec "find", *ARGV.kegs.map(&:to_s) + %w[-not -type d -print]
     else
-      ARGV.kegs.each{ |keg| PrettyListing.new keg }
+      ARGV.kegs.each { |keg| PrettyListing.new keg }
     end
   end
 
@@ -65,55 +64,55 @@ module Homebrew
     # Exclude the repository and cache, if they are located under the prefix
     dirs.delete HOMEBREW_CACHE.relative_path_from(HOMEBREW_PREFIX).to_s
     dirs.delete HOMEBREW_REPOSITORY.relative_path_from(HOMEBREW_PREFIX).to_s
-    dirs.delete 'etc'
-    dirs.delete 'var'
+    dirs.delete "etc"
+    dirs.delete "var"
 
     args = dirs + %w[-type f (]
-    args.concat UNBREWED_EXCLUDE_FILES.map { |f| %W[! -name #{f}] }.flatten
-    args.concat UNBREWED_EXCLUDE_PATHS.map { |d| %W[! -path #{d}] }.flatten
+    args.concat UNBREWED_EXCLUDE_FILES.flat_map { |f| %W[! -name #{f}] }
+    args.concat UNBREWED_EXCLUDE_PATHS.flat_map { |d| %W[! -path #{d}] }
     args.concat %w[)]
 
     cd HOMEBREW_PREFIX
-    exec 'find', *args
+    exec "find", *args
   end
 
   def filtered_list
     names = if ARGV.named.empty?
-      HOMEBREW_CELLAR.subdirs
+      Formula.racks
     else
-      ARGV.named.map{ |n| HOMEBREW_CELLAR+n }.select{ |pn| pn.exist? }
+      ARGV.named.map { |n| HOMEBREW_CELLAR+n }.select(&:exist?)
     end
-    if ARGV.include? '--pinned'
+    if ARGV.include? "--pinned"
       pinned_versions = {}
       names.each do |d|
         keg_pin = (HOMEBREW_LIBRARY/"PinnedKegs"/d.basename.to_s)
-        if keg_pin.exist? or keg_pin.symlink?
+        if keg_pin.exist? || keg_pin.symlink?
           pinned_versions[d] = keg_pin.readlink.basename.to_s
         end
       end
       pinned_versions.each do |d, version|
-        puts "#{d.basename}".concat(ARGV.include?('--versions') ? " #{version}" : '')
+        puts "#{d.basename}".concat(ARGV.include?("--versions") ? " #{version}" : "")
       end
     else # --versions without --pinned
       names.each do |d|
         versions = d.subdirs.map { |pn| pn.basename.to_s }
-        next if ARGV.include?('--multiple') && versions.count < 2
-        puts "#{d.basename} #{versions*' '}"
+        next if ARGV.include?("--multiple") && versions.count < 2
+        puts "#{d.basename} #{versions*" "}"
       end
     end
   end
 end
 
 class PrettyListing
-  def initialize path
+  def initialize(path)
     Pathname.new(path).children.sort_by { |p| p.to_s.downcase }.each do |pn|
       case pn.basename.to_s
-      when 'bin', 'sbin'
+      when "bin", "sbin"
         pn.find { |pnn| puts pnn unless pnn.directory? }
-      when 'lib'
+      when "lib"
         print_dir pn do |pnn|
           # dylibs have multiple symlinks and we don't care about them
-          (pnn.extname == '.dylib' or pnn.extname == '.pc') and not pnn.symlink?
+          (pnn.extname == ".dylib" || pnn.extname == ".pc") && !pnn.symlink?
         end
       else
         if pn.directory?
@@ -129,19 +128,19 @@ class PrettyListing
     end
   end
 
-  def print_dir root
+  def print_dir(root)
     dirs = []
     remaining_root_files = []
-    other = ''
+    other = ""
 
     root.children.sort.each do |pn|
       if pn.directory?
         dirs << pn
-      elsif block_given? and yield pn
+      elsif block_given? && yield(pn)
         puts pn
-        other = 'other '
+        other = "other "
       else
-        remaining_root_files << pn unless pn.basename.to_s == '.DS_Store'
+        remaining_root_files << pn unless pn.basename.to_s == ".DS_Store"
       end
     end
 
@@ -154,7 +153,7 @@ class PrettyListing
     print_remaining_files remaining_root_files, root, other
   end
 
-  def print_remaining_files files, root, other = ''
+  def print_remaining_files(files, root, other = "")
     case files.length
     when 0
       # noop

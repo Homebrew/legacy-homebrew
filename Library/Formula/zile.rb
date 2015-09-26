@@ -1,11 +1,9 @@
-require "formula"
-
 class Zile < Formula
   desc "Zile Is Lossy Emacs (ZILE)"
   homepage "https://www.gnu.org/software/zile/"
   url "http://ftpmirror.gnu.org/zile/zile-2.4.11.tar.gz"
   mirror "https://ftp.gnu.org/gnu/zile/zile-2.4.11.tar.gz"
-  sha1 "ad2efb80031c3a406f8f83ac5d400a38bc297434"
+  sha256 "1fd27bbddc61491b1fbb29a345d0d344734aa9e80cfa07b02892eedf831fa9cc"
 
   bottle do
     sha1 "6112330f840500f201c9903a67003f22c484e458" => :mavericks
@@ -32,6 +30,6 @@ class Zile < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

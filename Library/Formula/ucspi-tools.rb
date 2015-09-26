@@ -3,13 +3,13 @@ class UcspiTools < Formula
   homepage "https://github.com/younix/ucspi/blob/master/README.md"
   url "https://github.com/younix/ucspi/archive/v1.2.tar.gz"
   sha256 "38cd0ae9113324602a600a6234d60ec9c3a8c13c8591e9b730f91ffb77e5412a"
-  revision 3
+  revision 5
 
   bottle do
     cellar :any
-    sha256 "2bc0e4a92ba633a9c50891d65d6c1662bfe57244582e04a6f9af6ce2260d6415" => :yosemite
-    sha256 "534be7f4ff272e290d2421f1624ed07cc12e1be18247128a10cd8d34ad3bd4d3" => :mavericks
-    sha256 "63af55f1d06a7185a6f228e2a5519d2815e0a31a184a0cba0b287641b7551778" => :mountain_lion
+    sha256 "e413adb989fe36d8aecbd7a96e6c1e1be52c893131939ea0017eb6f8245010f6" => :yosemite
+    sha256 "a938db3d8694bbe60872b3aa2258aaa46598fe81c9074872c58460a94d88c18c" => :mavericks
+    sha256 "15ddc0ec88d2d6cda8406e93cc24ff1b33f563e685cf3e0f3c03523baaeec763" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

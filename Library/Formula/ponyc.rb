@@ -3,6 +3,7 @@ class Ponyc < Formula
   homepage "http://www.ponylang.org"
   url "http://releases.ponylang.org/source/ponyc-0.1.7.tar.bz2"
   sha256 "fc6f783f65cd6708a80bdea71f414cada801528143ea22d9bb13957cb7061eb6"
+  head "https://github.com/CausalityLtd/ponyc.git"
 
   bottle do
     sha256 "ccee2ae558144cd1bda30376b3fe922e7eb6224ab9e69247deb066f663a4c9ae" => :yosemite

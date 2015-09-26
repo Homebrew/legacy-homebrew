@@ -1,11 +1,9 @@
-require "formula"
-
 class Termrec < Formula
   desc "Record \"videos\" of terminal output"
   homepage "http://angband.pl/termrec.html"
   head "http://angband.pl/git/termrec/", :using => :git
   url "https://github.com/kilobyte/termrec/archive/0.17.tar.gz"
-  sha1 "45df1b35b7f236fafd1e4db9c45543501dfde359"
+  sha256 "e3496dcb520b63036423cc72f3eaf66f690e869ef4ae508f027923062c34d84f"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

@@ -1,16 +1,14 @@
-require 'formula'
-
 class Tenyr < Formula
   desc "32-bit computing environment"
-  homepage 'http://tenyr.info/'
-  url 'https://github.com/kulp/tenyr/archive/v0.6.0.tar.gz'
-  sha1 '93f5215f5d788d5ef3e04a1720dcb0685d33ec18'
+  homepage "http://tenyr.info/"
+  url "https://github.com/kulp/tenyr/archive/v0.6.0.tar.gz"
+  sha256 "fc9ed9f6f46c79470163ed5e9f2f820aab74c7bd972315862d3cca547988684c"
 
-  head 'https://github.com/kulp/tenyr.git'
+  head "https://github.com/kulp/tenyr.git"
 
-  depends_on 'bison' => :build # tenyr requires bison >= 2.5
-  depends_on 'sdl2'
-  depends_on 'sdl2_image'
+  depends_on "bison" => :build # tenyr requires bison >= 2.5
+  depends_on "sdl2"
+  depends_on "sdl2_image"
 
   patch :DATA
 
@@ -22,7 +20,7 @@ class Tenyr < Formula
     end
 
     system "make"
-    bin.install 'tsim', 'tas', 'tld'
+    bin.install "tsim", "tas", "tld"
   end
 end
 

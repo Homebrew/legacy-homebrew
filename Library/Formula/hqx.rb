@@ -1,17 +1,15 @@
-require 'formula'
-
 class Hqx < Formula
   desc "Magnification filter designed for pixel art"
-  homepage 'http://code.google.com/p/hqx/'
-  url 'https://hqx.googlecode.com/files/hqx-1.1.tar.gz'
-  sha1 'bf08ae10db6cce4d29c84524ec13a3101d31db6b'
+  homepage "https://code.google.com/p/hqx/"
+  url "https://hqx.googlecode.com/files/hqx-1.1.tar.gz"
+  sha256 "cc18f571fb4bc325317892e39ecd5711c4901831926bc93296de9ebb7b2f317b"
 
-  depends_on 'devil'
+  depends_on "devil"
 
   def install
     ENV.deparallelize
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

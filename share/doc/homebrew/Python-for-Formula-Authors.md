@@ -77,7 +77,7 @@ The first line copies all of the executables to bin. The second line writes stub
 
 All Python dependencies of applications that are not packaged by Homebrew (and those dependencies' Python dependencies, recursively) **should** be unconditionally downloaded as `Resource`s and installed into the application keg's `libexec/"vendor"` path. This prevents the state of the system Python packages from being affected by installing an app with Homebrew and guarantees that apps use versions of their dependencies that are known to work together. `libexec/"vendor"` is preferred to `libexec` so that formulæ don't accidentally install executables belonging to their dependencies, which can cause linking conflicts.
 
-Each dependency **should** be explicitly installed; please do not rely on setup.py or pip to perform automatic dependency resolution, for the [reasons described here](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Acceptable-Formulae.md#we-dont-like-install-scripts-that-download-things).
+Each dependency **should** be explicitly installed; please do not rely on setup.py or pip to perform automatic dependency resolution, for the [reasons described here](Acceptable-Formulae.md#we-dont-like-install-scripts-that-download-things).
 
 You can use [homebrew-pypi-poet](https://pypi.python.org/pypi/homebrew-pypi-poet) to help you write resource stanzas. To use it, set up a virtualenv and install your package and all its dependencies. Then, `pip install homebrew-pypi-poet` into the same virtualenv. `poet -f foo` will draft a complete formula for you, or `poet foo` will just generate the resource stanzas.
 

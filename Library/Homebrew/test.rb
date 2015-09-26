@@ -24,7 +24,7 @@ begin
   formula.extend(Debrew::Formula) if ARGV.debug?
 
   # tests can also return false to indicate failure
-  Timeout::timeout TEST_TIMEOUT_SECONDS do
+  Timeout.timeout TEST_TIMEOUT_SECONDS do
     raise "test returned false" if formula.run_test == false
   end
 rescue Exception => e

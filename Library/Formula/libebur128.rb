@@ -1,10 +1,8 @@
-require "formula"
-
 class Libebur128 < Formula
-  desc "A library implementing the EBU R128 loudness standard"
+  desc "Library implementing the EBU R128 loudness standard"
   homepage "https://github.com/jiixyj/libebur128"
   url "https://github.com/jiixyj/libebur128/archive/v1.0.2.tar.gz"
-  sha1 "b1e2949e6598053edb8aeaf71614a26efcb38bd0"
+  sha256 "9b334d31a26b47ba6740bb7bbee7a24461d535f426b1ed42368c187e27c08323"
 
   bottle do
     cellar :any

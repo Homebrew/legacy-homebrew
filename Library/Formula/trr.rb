@@ -4,11 +4,12 @@ class Trr < Formula
   url "https://trr22.googlecode.com/files/trr22_0.99-5.tar.gz"
   version "22.0.99.5"
   sha256 "6bac2f947839cebde626cdaab0c0879de8f6f6e40bfd7a14ccdfe1a035a3bcc6"
+  revision 1
 
   bottle do
-    sha256 "9db1d6af43f8797b99e098261a16288b34da8f137135b218b1ceb156544c283b" => :yosemite
-    sha256 "64140988ac10d12d10db976cc6e598b7aef23cb81eceed5007536023adf0af72" => :mavericks
-    sha256 "0b48f5995fb731eca7ecf381f27d6d3f83e2995508b026c8336bb7d583323a03" => :mountain_lion
+    sha256 "b965ca412e2a97b20bda8afb03fb042fe05f162c6391ea5460e05473c9260ced" => :yosemite
+    sha256 "1b24783f3b7060b6c1ac0a9edac5a990fc2bcefcccef9746897a627c912a931f" => :mavericks
+    sha256 "2373aaab80559228b2d5510494ba23f22fa6527d6e906ce4c7c6dbc6ff8a9ce4" => :mountain_lion
   end
 
   depends_on "apel"
@@ -16,7 +17,7 @@ class Trr < Formula
 
   def install
     system "make", "clean"
-    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/*"], buildpath
+    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/apel/**/*.el"], buildpath
 
     # The file "CONTENTS" is firstly encoded to EUC-JP.
     # This encodes it to UTF-8 to avoid garbled characters.
@@ -26,42 +27,32 @@ class Trr < Formula
     inreplace "#{buildpath}/CONTENTS", "EmacsLisp", "Elisp_programs"
 
     system "make", "clean"
-    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/*.elc"], buildpath
+    cp Dir["#{Formula["apel"].share}/emacs/site-lisp/apel/**/*.elc"], buildpath
 
     # texts for playing trr
     texts = "The_Constitution_Of_JAPAN Constitution_of_the_USA Iccad_90 C_programs Elisp_programs Java_programs Ocaml_programs Python_programs"
 
     inreplace "#{buildpath}/Makefile", "japanese = t", "japanese = nil"
-    system "make", "all", "LISPDIR=#{share}/emacs/site-lisp",
-                          "TRRDIR=#{prefix}",
-                          "INFODIR=#{info}",
-                          "BINDIR=#{bin}",
-                          "TEXTS=#{texts}"
-    system "make", "install", "LISPDIR=#{share}/emacs/site-lisp",
-                              "TRRDIR=#{prefix}",
-                              "INFODIR=#{info}",
-                              "BINDIR=#{bin}",
-                              "TEXTS=#{texts}"
-    cp Dir["record/*"], "#{prefix}/record/"
-  end
 
-  def caveats; <<-EOF.undent
-    Please add below lines to your emacs configuration file. (ex. ~/emacs.d/init.el)
-    (add-to-list 'load-path "#{Formula["apel"].share}/emacs/site-lisp")
-    (add-to-list 'load-path "#{share}/emacs/site-lisp")
-    (autoload 'trr "#{share}/emacs/site-lisp/trr" nil t)
-    EOF
+    system "make", "install",
+                   "CC=#{ENV.cc}",
+                   "TRRDIR=#{prefix}",
+                   "INFODIR=#{info}",
+                   "BINDIR=#{bin}",
+                   "TEXTS=#{texts}",
+                   "LISPDIR=#{share}/emacs/site-lisp/trr"
+    (prefix/"record").install Dir["record/*"]
   end
 
   test do
     program = testpath/"test-trr.el"
     program.write <<-EOS.undent
-      (add-to-list 'load-path "#{Formula["apel"].share}/emacs/site-lisp")
-      (add-to-list 'load-path "#{share}/emacs/site-lisp")
+      (add-to-list 'load-path "#{HOMEBREW_PREFIX}/share/emacs/site-lisp/apel/emu")
+      (add-to-list 'load-path "#{share}/emacs/site-lisp/trr")
       (require 'trr)
       (print (TRR:trainer-menu-buffer))
     EOS
 
-    assert_equal "\"Type & Menu\"", shell_output("emacs -batch -l #{program}").strip
+    assert_equal "\"Type & Menu\"", shell_output("emacs -Q --batch -l #{program}").strip
   end
 end

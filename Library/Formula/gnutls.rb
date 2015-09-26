@@ -4,15 +4,16 @@
 class Gnutls < Formula
   desc "GNU Transport Layer Security (TLS) Library"
   homepage "http://gnutls.org"
-  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.16.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.16.tar.xz"
-  sha256 "80a471c723572a43ddbe75d7825a3275f640650cc99eae42963ab39b9d0b7552"
+  url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.18.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.18.tar.xz"
+  sha256 "7a87e7f486d1ada10007356917a412cde6c6114dac018e3569e3aa09e9f29395"
 
   bottle do
     cellar :any
-    sha256 "1db40fa0e32565f1a6a011d07d6b92d419a68774e6a8c0bedf09963cdfe8c8e2" => :yosemite
-    sha256 "efb4c7fb97b93626a337c870e58d706b89ac88a43b7a1a0e809d51448351404d" => :mavericks
-    sha256 "c000bb190b30f877e54aa8615557ff77afcc27c689734550f5613ff22c333413" => :mountain_lion
+    sha256 "1db97f157e90bf1f15c7c0aa5320326dd4cf291d3fa9af9d2b3eac5e7f709f66" => :el_capitan
+    sha256 "4554845d703670e1090803134943ac5bd0bb0ca4a4f92368d013092e44884c7a" => :yosemite
+    sha256 "7c24af896d97de3b9c38660199dc64bbff5352dd2de00c178e407ac0e9184658" => :mavericks
+    sha256 "57cafffefdee4d3f113a969e36349b8a5d56d4798656c900abb4efb8b4af22a3" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

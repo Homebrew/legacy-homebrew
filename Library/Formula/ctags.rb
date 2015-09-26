@@ -2,11 +2,12 @@ class Ctags < Formula
   desc "Reimplementation of ctags(1)"
   homepage "http://ctags.sourceforge.net/"
   url "https://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz"
-  sha1 "482da1ecd182ab39bbdc09f2f02c9fba8cd20030"
+  sha256 "0e44b45dcabe969e0bbbb11e30c246f81abe5d32012db37395eb57d66e9e99c7"
   revision 1
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "e1582f148434de71bfa2516f6fad0598b41115f21164ad59c847e3282d550586" => :el_capitan
     sha256 "1ba38746fe55be78781dcf313977b60f242ed42d412bbaf96627daf24d9fd168" => :yosemite
     sha256 "9904dcc6f32a8f52d900339ff11ba4c9cb3e67374e558bb2abcc777fe56d49b5" => :mavericks
     sha256 "b3619b0231eb952ee7c768dbb82e2301ece1060f8c713e781767cc700f02b2f2" => :mountain_lion

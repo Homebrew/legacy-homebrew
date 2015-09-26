@@ -24,12 +24,15 @@ module Homebrew
       tap_count = 0
       formula_count = 0
       command_count = 0
+      pinned_count = 0
       Tap.each do |tap|
         tap_count += 1
         formula_count += tap.formula_files.size
         command_count += tap.command_files.size
+        pinned_count += 1 if tap.pinned?
       end
       info = "#{tap_count} tap#{plural(tap_count)}"
+      info += ", #{pinned_count} pinned"
       info += ", #{formula_count} formula#{plural(formula_count, "e")}"
       info += ", #{command_count} command#{plural(command_count)}"
       info += ", #{Tap::TAP_DIRECTORY.abv}" if Tap::TAP_DIRECTORY.directory?
@@ -39,16 +42,17 @@ module Homebrew
         puts unless i == 0
         info = "#{tap}: "
         if tap.installed?
+          info += tap.pinned? ? "pinned, " : "unpinned, "
           formula_count = tap.formula_files.size
           info += "#{formula_count} formula#{plural(formula_count, "e")} " if formula_count > 0
           command_count = tap.command_files.size
           info += "#{command_count} command#{plural(command_count)} " if command_count > 0
           info += "\n#{tap.path} (#{tap.path.abv})"
+          info += "\nFrom: #{tap.remote.nil? ? "N/A" : tap.remote}"
         else
           info += "Not installed"
         end
         puts info
-        puts "From: #{tap.remote.nil? ? "N/A" : tap.remote}"
       end
     end
   end

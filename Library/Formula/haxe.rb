@@ -1,5 +1,3 @@
-require "formula"
-
 class Haxe < Formula
   desc "Multi-platform programming language"
   homepage "http://haxe.org"
@@ -10,23 +8,26 @@ class Haxe < Formula
 
   bottle do
     cellar :any
-    sha256 "49e090c6d7dd5afb7518ac7c3e70de9abcc42eb6a16c858a02faaa4cc6eb25e2" => :yosemite
-    sha256 "a6bcceefac96a3db26d39999940c833daed45e5d93140a6d245428e3a2218a2f" => :mavericks
-    sha256 "040bda6d708295debe5ec8753ca700260b284d18a9b81829653904fa131163bd" => :mountain_lion
+    revision 1
+    sha256 "faa387523fb8dce6d02a542c1898bc561de08ca48637e95118bf2ac7e072bc95" => :yosemite
+    sha256 "64ef064b685f74552860b4d83715b8ddc8d5d0c08ac007d7ca246a4cc9b01ab2" => :mavericks
+    sha256 "366600c304bc1a3f2d09a629926e65bde16878cb5b0eb28e5b880773bd595c23" => :mountain_lion
   end
 
   head do
     url "https://github.com/HaxeFoundation/haxe.git", :branch => "development"
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
   depends_on "camlp4" => :build
   depends_on "neko" => :optional
 
   def install
     # Build requires targets to be built in specific order
     ENV.deparallelize
-    system "make", "OCAMLOPT=ocamlopt.opt"
+    args = ["OCAMLOPT=ocamlopt.opt"]
+    args << "ADD_REVISION=1" if build.head?
+    system "make", *args
     bin.mkpath
     system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
 

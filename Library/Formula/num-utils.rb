@@ -13,6 +13,7 @@ class NumUtils < Formula
   end
 
   conflicts_with "normalize", :because => "both install `normalize` binaries"
+  conflicts_with "crush-tools", :because => "both install an `range` binary"
 
   def install
     %w[average bound interval normalize numgrep numprocess numsum random range round].each do |p|

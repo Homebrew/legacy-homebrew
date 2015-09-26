@@ -13,6 +13,7 @@ class Djvulibre < Formula
   end
 
   bottle do
+    sha256 "e68742330649c92707eef3711cc966e6f9de984572f13f5acd8694574dcdcfb4" => :el_capitan
     sha256 "6bcc53ce6acccef4ab6bdf3150887a054165fe7d6984917bf1a65af5ba9ab228" => :yosemite
     sha256 "ed02ea82754109ea5d3e6767d80d49133a6552696aa5405b30a93569886f6ce4" => :mavericks
     sha256 "a1fc4dd16370cb5949ce1df38105dbc94b7934f876b7e35c6e904927563d7f93" => :mountain_lion

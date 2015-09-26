@@ -11,7 +11,8 @@ class Entr < Formula
   end
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "c00d2bdeb3e76cbf3c529160461872aa31468d1c1332b2804546915804135d9c" => :el_capitan
     sha256 "abf6264e4dd04966320b6e2ed371e5c101a3c73e71102f988f5f30ab3aa26b9f" => :yosemite
     sha256 "f2b9660db9526f88691d093b62fcd6c7361c582319fd8609dbd2786f3e1624c0" => :mavericks
     sha256 "896090571a723c7f513e342967a7623bcf3cc0d70af5eabc473f8425c4037ef3" => :mountain_lion

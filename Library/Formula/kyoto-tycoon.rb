@@ -1,10 +1,8 @@
-require "formula"
-
 class KyotoTycoon < Formula
   desc "Database server with interface to Kyoto Cabinet"
   homepage "http://fallabs.com/kyototycoon/"
   url "http://fallabs.com/kyototycoon/pkg/kyototycoon-0.9.56.tar.gz"
-  sha1 "e5433833e681f8755ff6b9f7209029ec23914ce6"
+  sha256 "553e4ea83237d9153cc5e17881092cefe0b224687f7ebcc406b061b2f31c75c6"
   revision 1
 
   depends_on "lua" => :recommended
@@ -26,7 +24,7 @@ class KyotoTycoon < Formula
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
 

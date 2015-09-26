@@ -1,5 +1,3 @@
-require "formula"
-
 class Picolisp < Formula
   desc "Minimal Lisp with integrated database"
   homepage "http://picolisp.com/wiki/?home"

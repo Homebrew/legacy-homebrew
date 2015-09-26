@@ -1,10 +1,8 @@
-require "formula"
-
 class Dict < Formula
   desc "Dictionary Server Protocol (RFC2229) client"
   homepage "http://www.dict.org/"
   url "https://downloads.sourceforge.net/project/dict/dictd/dictd-1.12.1/dictd-1.12.1.tar.gz"
-  sha1 "5870cc0f727f89091d0ae8a054b37e891f4cf145"
+  sha256 "a237f6ecdc854ab10de5145ed42eaa2d9b6d51ffdc495f7daee59b05cc363656"
 
   depends_on "libtool" => :build
   depends_on "libmaa"

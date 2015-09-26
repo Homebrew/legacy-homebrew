@@ -2,7 +2,7 @@ class RbenvDefaultGems < Formula
   desc "Auto-installs gems for Ruby installs"
   homepage "https://github.com/sstephenson/rbenv-default-gems"
   url "https://github.com/sstephenson/rbenv-default-gems/archive/v1.0.0.tar.gz"
-  sha1 "e79c7073909e24e866df49cf9eb3f18aa8872842"
+  sha256 "8271d58168ab10f0ace285dc4c394e2de8f2d1ccc24032e6ed5924f38dc24822"
 
   head "https://github.com/sstephenson/rbenv-default-gems.git"
 
@@ -12,7 +12,7 @@ class RbenvDefaultGems < Formula
   # Upstream patch: https://github.com/sstephenson/rbenv-default-gems/pull/3
   patch do
     url "https://github.com/sstephenson/rbenv-default-gems/commit/ead67889c91c53ad967f85f5a89d986fdb98f6fb.diff"
-    sha1 "9d1c5e635752caa7dcee8fb43e2d0e20c1d494ed"
+    sha256 "14cab3c3a0baa8b138bdb4d898f6a1cf3b42c70927cd2e8139005e401a17d807"
   end
 
   def install

@@ -1,18 +1,16 @@
-require 'formula'
-
 class Opendetex < Formula
   desc "Tool to strip TeX or LaTeX commands from documents"
-  homepage 'https://code.google.com/p/opendetex/'
-  url 'https://opendetex.googlecode.com/files/opendetex-2.8.1.tar.bz2'
-  sha1 'a811635519dc6573735ca9d406f7032eccacd7e0'
+  homepage "https://code.google.com/p/opendetex/"
+  url "https://opendetex.googlecode.com/files/opendetex-2.8.1.tar.bz2"
+  sha256 "8a47e4c7052672dfe5e0a4214dd5db42ac4322eb382efe6fd1fb271b409d051e"
 
   patch :DATA
 
   def install
-    system 'make'
-    bin.install 'detex'
-    bin.install 'delatex'
-    man1.install 'detex.1l' => 'detex.1'
+    system "make"
+    bin.install "detex"
+    bin.install "delatex"
+    man1.install "detex.1l" => "detex.1"
   end
 end
 

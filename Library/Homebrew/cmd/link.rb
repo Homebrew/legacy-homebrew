@@ -1,4 +1,4 @@
-require 'ostruct'
+require "ostruct"
 
 module Homebrew
   def link
@@ -6,7 +6,7 @@ module Homebrew
 
     mode = OpenStruct.new
 
-    mode.overwrite = true if ARGV.include? '--overwrite'
+    mode.overwrite = true if ARGV.include? "--overwrite"
     mode.dry_run = true if ARGV.dry_run?
 
     ARGV.kegs.each do |keg|

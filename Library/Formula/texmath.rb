@@ -3,7 +3,7 @@ require "language/haskell"
 class Texmath < Formula
   include Language::Haskell::Cabal
 
-  desc "A Haskell library for converting LaTeX math to MathML"
+  desc "Haskell library for converting LaTeX math to MathML"
   homepage "http://johnmacfarlane.net/texmath.html"
   url "https://hackage.haskell.org/package/texmath-0.8.0.2/texmath-0.8.0.2.tar.gz"
   sha256 "47b9c3fdceed63c5d63987db7e511a38ea8ddf8591786ef56efea734a3c31f86"

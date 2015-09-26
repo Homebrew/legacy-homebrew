@@ -4,11 +4,12 @@ class Ffmbc < Formula
   url "https://drive.google.com/uc?export=download&id=0B0jxxycBojSwTEgtbjRZMXBJREU"
   version "0.7.2"
   sha256 "caaae2570c747077142db34ce33262af0b6d0a505ffbed5c4bdebce685d72e42"
+  revision 1
 
   bottle do
-    sha256 "46519725eff4d6b78e67fa9a9ddd268c6f11951aac75d334878fa09fb46d884f" => :yosemite
-    sha256 "dc107a71f2865144699f9b610cf31925be313529673d23d8f4b3ed12d886a33e" => :mavericks
-    sha256 "450afcd5675ffa2f530ecb52294478a9eed65a3c35356dae57a79559651b5bac" => :mountain_lion
+    sha256 "188e80876076aeea82cb2dd54ad2fc1d7c3d5dda2947e989db7ec20c8d5db9ee" => :yosemite
+    sha256 "602bb27fa7948e53617c70a4a6b191dfdaa92605b7e3294c7f10b13318d779ab" => :mavericks
+    sha256 "39a073d35d6c527bef026e4ff7643d3e6e613c01ee556e0f52133ce8e8836bef" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"

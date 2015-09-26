@@ -2,7 +2,7 @@ class RbenvWhatis < Formula
   desc "Resolves abbreviations and aliases to Ruby versions"
   homepage "https://github.com/rkh/rbenv-whatis"
   url "https://github.com/rkh/rbenv-whatis/archive/v1.0.0.tar.gz"
-  sha1 "8c802d8e2bba66d0c87c62c9d0b887beb52b1de4"
+  sha256 "1a09f824d1dcbca360565930fa66e93a9a2840c1bb45935e2ee989ce57d1f6e6"
 
   depends_on "rbenv"
 

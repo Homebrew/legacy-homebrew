@@ -1,17 +1,14 @@
-require "formula"
-
 class NanopbGenerator < Formula
   desc "ANSI C library for encoding and decoding Protocol Buffer messages"
   homepage "http://koti.kapsi.fi/jpa/nanopb/docs/index.html"
-  url "http://koti.kapsi.fi/~jpa/nanopb/download/nanopb-0.2.7.tar.gz"
-  sha1 "7dce0b9e1f9e5d0614697a8ea1678cee76f14858"
-  revision 1
+  url "http://koti.kapsi.fi/~jpa/nanopb/download/nanopb-0.3.3.tar.gz"
+  sha256 "e8288dcef555c7e06e5e9102a523ece35a79c12e73043f4fe34c05ef73cc3bd2"
 
   bottle do
     cellar :any
-    sha1 "2552d564120cc40eec05204779c4e2725fa0bacd" => :mavericks
-    sha1 "f40866f5be494fcd0ecbacc1eccabedfea449084" => :mountain_lion
-    sha1 "697c2bcc74f4eb368cdbeb2c512a1555ea0ed14f" => :lion
+    sha256 "e97541bfa7964b7972f029e56f9689b8309cf0c7382b9a365c918b6742000ea8" => :yosemite
+    sha256 "bb06e0a18296e67ebc45670971775357d4fe10478bc6e3e9439fb24615caa23c" => :mavericks
+    sha256 "5baf3a8d6152b1d878933b2e2199cfbe0873adcc17496f75a99b116e3d8fc6b2" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -19,7 +16,7 @@ class NanopbGenerator < Formula
 
   resource "protobuf-python" do
     url "https://pypi.python.org/packages/source/p/protobuf/protobuf-2.6.0.tar.gz"
-    sha1 "2e630252c75d9deb14843b11418a302383b745ba"
+    sha256 "b1556c5e9cca9069143b41312fd45d0d4785ca0cab682b2624195a6bc4ec296f"
   end
 
   def install

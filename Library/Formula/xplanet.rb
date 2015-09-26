@@ -1,5 +1,3 @@
-require "formula"
-
 class Xplanet < Formula
   desc "Create HQ wallpapers of planet Earth"
   homepage "http://xplanet.sourceforge.net/"

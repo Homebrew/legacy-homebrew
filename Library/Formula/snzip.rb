@@ -1,10 +1,8 @@
-require 'formula'
-
 class Snzip < Formula
   desc "Compression/decompression tool based on snappy"
-  homepage 'https://github.com/kubo/snzip'
-  url 'https://bintray.com/artifact/download/kubo/generic/snzip-1.0.2.tar.gz'
-  sha1 '6efa5f6e097a9bed10b526cfbf4062e2f547be56'
+  homepage "https://github.com/kubo/snzip"
+  url "https://bintray.com/artifact/download/kubo/generic/snzip-1.0.2.tar.gz"
+  sha256 "b4e4175b9ee74da6c7ee4681d7c8c1b92d7c4aaa4eb79559a2300ab9b2e8eb1b"
 
   bottle do
     cellar :any
@@ -13,7 +11,7 @@ class Snzip < Formula
     sha1 "a5718543e78e7654a3ad8273c2af94b8c8a4855d" => :mountain_lion
   end
 
-  depends_on 'snappy'
+  depends_on "snappy"
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -21,7 +19,7 @@ class Snzip < Formula
   end
 
   test do
-    (testpath/'test.out').write "test"
+    (testpath/"test.out").write "test"
     system "#{bin}/snzip", "test.out"
     system "#{bin}/snzip", "-d", "test.out.sz"
   end

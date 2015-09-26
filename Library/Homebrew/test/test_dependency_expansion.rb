@@ -1,8 +1,8 @@
-require 'testing_env'
-require 'dependency'
+require "testing_env"
+require "dependency"
 
 class DependencyExpansionTests < Homebrew::TestCase
-  def build_dep(name, tags=[], deps=[])
+  def build_dep(name, tags = [], deps = [])
     dep = Dependency.new(name.to_s, tags)
     dep.stubs(:to_formula).returns(stub(:deps => deps, :name => name))
     dep
@@ -36,7 +36,7 @@ class DependencyExpansionTests < Homebrew::TestCase
 
   def test_expand_selective_pruning
     deps = Dependency.expand(@f) do |_, dep|
-      Dependency.prune if dep.name == 'foo'
+      Dependency.prune if dep.name == "foo"
     end
 
     assert_equal [@bar, @baz, @qux], deps
@@ -60,8 +60,8 @@ class DependencyExpansionTests < Homebrew::TestCase
   end
 
   def test_merges_repeated_deps_with_differing_options
-    @foo2 = build_dep(:foo, ['option'])
-    @baz2 = build_dep(:baz, ['option'])
+    @foo2 = build_dep(:foo, ["option"])
+    @baz2 = build_dep(:baz, ["option"])
     @deps << @foo2 << @baz2
     deps = [@foo2, @bar, @baz2, @qux]
     deps.zip(Dependency.expand(@f)) do |expected, actual|
@@ -79,21 +79,21 @@ class DependencyExpansionTests < Homebrew::TestCase
   end
 
   def test_merged_tags_no_dupes
-    @foo2 = build_dep(:foo, ['option'])
-    @foo3 = build_dep(:foo, ['option'])
+    @foo2 = build_dep(:foo, ["option"])
+    @foo3 = build_dep(:foo, ["option"])
     @deps << @foo2 << @foo3
 
-    assert_equal %w{option}, Dependency.expand(@f).first.tags
+    assert_equal %w[option], Dependency.expand(@f).first.tags
   end
 
   def test_skip_skips_parent_but_yields_children
     f = stub(:name => "f", :deps => [
       build_dep(:foo, [], [@bar, @baz]),
-      build_dep(:foo, [], [@baz]),
+      build_dep(:foo, [], [@baz])
     ])
 
-    deps = Dependency.expand(f) do |dependent, dep|
-      Dependency.skip if %w{foo qux}.include? dep.name
+    deps = Dependency.expand(f) do |_dependent, dep|
+      Dependency.skip if %w[foo qux].include? dep.name
     end
 
     assert_equal [@bar, @baz], deps
@@ -104,7 +104,7 @@ class DependencyExpansionTests < Homebrew::TestCase
     baz = build_dep(:baz, [:build])
     f = stub(:name => "f", :deps => [foo, baz])
 
-    deps = Dependency.expand(f) do |dependent, dep|
+    deps = Dependency.expand(f) do |_dependent, dep|
       Dependency.keep_but_prune_recursive_deps if dep.build?
     end
 

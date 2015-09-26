@@ -2,7 +2,7 @@ class SstpClient < Formula
   desc "SSTP (Microsofts Remote Access Solution for PPP over SSL) client"
   homepage "http://sstp-client.sourceforge.net"
   url "https://downloads.sourceforge.net/project/sstp-client/sstp-client/1.0.9/sstp-client-1.0.9.tar.gz"
-  sha1 "b56c60fc6ecd8b1686d6c319a8adb3f988bcabbd"
+  sha256 "d3d8a26485b2cf0b24e148301b94b3ab9cdb17700ecd7c408b8fd6ad16f7fc4e"
   revision 1
 
   bottle do

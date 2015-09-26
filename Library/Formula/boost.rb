@@ -8,6 +8,7 @@ class Boost < Formula
 
   bottle do
     cellar :any
+    sha256 "fef665dae65c88027bdfe2c4a554a5d157aa60404acead1a7453f7ea634e804f" => :el_capitan
     sha256 "9a3929bec0e9e9db36e005f57193433ac6b5ff9ff86b2ed3262b975d58488c19" => :yosemite
     sha256 "c5ad1f8591ed91c551658fd198ce31cf9f6a8026fcbfd5970a39cb479e64faa2" => :mavericks
     sha256 "7b154bf42d72bbb90c3017bb94b24fdd2e0605ceab8717283f5c9f456ac5c03d" => :mountain_lion
@@ -119,6 +120,7 @@ class Boost < Formula
     end
 
     system "./bootstrap.sh", *bootstrap_args
+    system "./b2", "headers"
     system "./b2", *args
   end
 

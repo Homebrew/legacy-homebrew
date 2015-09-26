@@ -1,5 +1,6 @@
 /*
 !/.gitignore
+!/.travis.yml
 !/.yardopts
 !/Library/
 !/CODEOFCONDUCT.md
@@ -22,3 +23,4 @@
 /Library/LinkedKegs
 /Library/PinnedKegs
 /Library/Taps
+/Library/PinnedTaps

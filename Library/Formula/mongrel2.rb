@@ -1,22 +1,21 @@
-require 'formula'
+require "formula"
 
 class Mongrel2 < Formula
   desc "Application, language, and network architecture agnostic web server"
-  homepage 'http://mongrel2.org/'
-  url 'https://github.com/zedshaw/mongrel2/releases/download/1.9.2/mongrel2-v1.9.2.tar.bz2'
-  sha1 '1b44d8028bba7f427cfda3fc7bf6c4350d810a75'
-  revision 1
+  homepage "http://mongrel2.org/"
+  url "https://github.com/mongrel2/mongrel2/releases/download/v1.9.3/mongrel2-v1.9.3.tar.bz2"
+  sha256 "40ee0e804053f812cc36906464289ea656a4fc53b4a82d49796cafbe37f97425"
 
-  head 'https://github.com/zedshaw/mongrel2.git'
+  head "https://github.com/mongrel2/mongrel2.git"
 
   bottle do
     cellar :any
-    sha256 "7179e51d48d93b723cb7b047ab541a43ade6f2e55f603be55e44a7f342af4f05" => :yosemite
-    sha256 "508cea44a7cb7705a2b03f804ef4a23d55ad96e2ff0987a36aaca3582200adf7" => :mavericks
-    sha256 "8c61454fa2ff553a83faae91b0085b4b613175fe41f3574f81ebd7d4ae2ec93c" => :mountain_lion
+    sha256 "7ec33fab8c9e95f1d83fdd72b3209773d76dd7ef08134214a7e51f1b20969f03" => :yosemite
+    sha256 "f8b15e5f50d29e955763111079b6715c6cbd8531ef6b9aa13f514a9c774e5f43" => :mavericks
+    sha256 "2bdf0a2207bc8aac4c02638cad6febadcef6f473bc324f15d2f31c013b3b7707" => :mountain_lion
   end
 
-  depends_on 'zeromq'
+  depends_on "zeromq"
 
   def install
     # Build in serial. See:
@@ -24,8 +23,8 @@ class Mongrel2 < Formula
     ENV.j1
 
     # Mongrel2 pulls from these ENV vars instead
-    ENV['OPTFLAGS'] = "#{ENV.cflags} #{ENV.cppflags}"
-    ENV['OPTLIBS'] = "#{ENV.ldflags} -undefined dynamic_lookup"
+    ENV["OPTFLAGS"] = "#{ENV.cflags} #{ENV.cppflags}"
+    ENV["OPTLIBS"] = "#{ENV.ldflags} -undefined dynamic_lookup"
 
     system "make all"
     system "make", "install", "PREFIX=#{prefix}"

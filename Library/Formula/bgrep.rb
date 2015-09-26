@@ -1,10 +1,8 @@
-require 'formula'
-
 class Bgrep < Formula
   desc "Like grep but for binary strings"
-  homepage 'https://github.com/tmbinc/bgrep'
-  url 'https://github.com/tmbinc/bgrep/archive/bgrep-0.2.tar.gz'
-  sha1 '37f29f95397730dcd8760a0bac33ba167ac7d998'
+  homepage "https://github.com/tmbinc/bgrep"
+  url "https://github.com/tmbinc/bgrep/archive/bgrep-0.2.tar.gz"
+  sha256 "24c02393fb436d7a2eb02c6042ec140f9502667500b13a59795388c1af91f9ba"
 
   def install
     system "#{ENV.cc} #{ENV.cflags} -o bgrep bgrep.c"

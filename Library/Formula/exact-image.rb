@@ -15,7 +15,7 @@ class ExactImage < Formula
   depends_on "freetype" => :optional
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--without-libungif"
     system "make", "install"
   end
 

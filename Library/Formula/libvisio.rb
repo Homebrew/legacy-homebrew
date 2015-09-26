@@ -2,7 +2,7 @@ class Libvisio < Formula
   desc "Interpret and import Visio diagrams"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
   url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.1.tar.xz"
-  sha1 "2284866af215a56683bfe4d49a921a053eff4cf9"
+  sha256 "4b510168d1465516fdf6e57c01e2f9eae1fc0ae232c74e44e70693bbc49227f1"
   revision 1
 
   bottle do

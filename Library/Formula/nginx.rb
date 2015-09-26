@@ -6,14 +6,16 @@ class Nginx < Formula
   head "http://hg.nginx.org/nginx/", :using => :hg
 
   bottle do
-    sha256 "9fe0f648fe67dd7c55e46754d72561b2d7a31a09126167088fbe278a65f9c45d" => :yosemite
-    sha256 "63f5785c7f7dca36a1b7180a82f1433fde9a3fbccf36af541770541b4d8f4093" => :mavericks
-    sha256 "7a17bfbc2d2a325d8c665a0d2bb3c00f70178bc4c065817ec247fcf2ce28d5ae" => :mountain_lion
+    revision 1
+    sha256 "e6bb9cc02def5205747dc20ffd7c24a3c0e34a7494355a9b0dade58dd8ce9dcf" => :el_capitan
+    sha256 "6df7b883f9214c5c0969559f6cc9ed56f9537263a1ef4882dae77b0b7af5a1df" => :yosemite
+    sha256 "68741910d6ee58f7ee1134c7b4c62dfd490ee337c9c0beb0d188edc418b0bd93" => :mavericks
+    sha256 "a622d0e1bfd55d8634520d72b41319da19828b9ab11063b6243d5b5f3d77ad08" => :mountain_lion
   end
 
   devel do
-    url "http://nginx.org/download/nginx-1.9.3.tar.gz"
-    sha256 "4298c5341b2a262fdb8dbc0a1389756181af8f098c7720abfb30bd3060f673eb"
+    url "http://nginx.org/download/nginx-1.9.5.tar.gz"
+    sha256 "48e2787a6b245277e37cb7c5a31b1549a0bbacf288aa4731baacf9eaacdb481b"
   end
 
   env :userpaths
@@ -35,7 +37,7 @@ class Nginx < Formula
   def install
     # Changes default port to 8080
     inreplace "conf/nginx.conf", "listen       80;", "listen       8080;"
-    open("conf/nginx.conf", "a") { |f| f.puts "include servers/*;" }
+    inreplace "conf/nginx.conf", "    #}\n\n}", "    #}\n    include servers/*;\n}"
 
     pcre = Formula["pcre"]
     openssl = Formula["openssl"]
@@ -77,8 +79,18 @@ class Nginx < Formula
 
     args << "--with-http_dav_module" if build.with? "webdav"
     args << "--with-debug" if build.with? "debug"
-    args << "--with-http_spdy_module" if build.with? "spdy"
     args << "--with-http_gunzip_module" if build.with? "gunzip"
+
+    # This became "with-http_v2_module" in 1.9.5
+    # http://nginx.org/en/docs/http/ngx_http_spdy_module.html
+    # We handle devel/stable block variable options badly, so this installs
+    # the expected module rather than fatally bailing out of configure.
+    # The option should be deprecated to the new name when stable.
+    if build.devel? || build.head? && build.with?("spdy")
+      args << "--with-http_v2_module"
+    elsif build.with?("spdy")
+      args << "--with-http_spdy_module"
+    end
 
     if build.head?
       system "./auto/configure", *args
@@ -86,9 +98,12 @@ class Nginx < Formula
       system "./configure", *args
     end
 
-    system "make"
     system "make", "install"
-    man8.install "objs/nginx.8"
+    if build.head?
+      man8.install "docs/man/nginx.8"
+    else
+      man8.install "man/nginx.8"
+    end
 
     (etc/"nginx/servers").mkpath
     (var/"run/nginx").mkpath
@@ -121,7 +136,6 @@ class Nginx < Formula
   end
 
   def passenger_caveats; <<-EOS.undent
-
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
       passenger_root #{Formula["passenger"].opt_libexec}/lib/phusion_passenger/locations.ini;
       passenger_ruby /usr/bin/ruby;
@@ -137,7 +151,7 @@ class Nginx < Formula
 
     nginx will load all files in #{etc}/nginx/servers/.
     EOS
-    s << passenger_caveats if build.with? "passenger"
+    s << "\n" << passenger_caveats if build.with? "passenger"
     s
   end
 
@@ -168,6 +182,30 @@ class Nginx < Formula
   end
 
   test do
-    system "#{bin}/nginx", "-t"
+    (testpath/"nginx.conf").write <<-EOS
+      worker_processes 4;
+      error_log #{testpath}/error.log;
+      pid #{testpath}/nginx.pid;
+
+      events {
+        worker_connections 1024;
+      }
+
+      http {
+        client_body_temp_path #{testpath}/client_body_temp;
+        fastcgi_temp_path #{testpath}/fastcgi_temp;
+        proxy_temp_path #{testpath}/proxy_temp;
+        scgi_temp_path #{testpath}/scgi_temp;
+        uwsgi_temp_path #{testpath}/uwsgi_temp;
+
+        server {
+          listen 8080;
+          root #{testpath};
+          access_log #{testpath}/access.log;
+          error_log #{testpath}/error.log;
+        }
+      }
+    EOS
+    system "#{bin}/nginx", "-t", "-c", testpath/"nginx.conf"
   end
 end

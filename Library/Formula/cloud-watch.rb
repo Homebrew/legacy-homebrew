@@ -3,7 +3,7 @@ class CloudWatch < Formula
   homepage "https://aws.amazon.com/developertools/2534"
   url "https://ec2-downloads.s3.amazonaws.com/CloudWatch-2010-08-01.zip"
   version "1.0.20.0"
-  sha1 "c3f5b856b3ff8e1ae06d0ad5db5dd27c214c4881"
+  sha256 "7b241dc6b49ea2aafdeb66f859be9d30128fb0ab5833074f6596762c9bd84417"
 
   depends_on :java
 

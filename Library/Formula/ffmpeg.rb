@@ -1,14 +1,15 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.7.2.tar.bz2"
-  sha256 "7ceb7550ad628c526fa6c9ff23fdfb687a62f54d90c4a730998d8c2b417b9ef2"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.tar.bz2"
+  sha256 "9565236404d3515aab754283c687c0a001019003148bf7f708e643608c0690b8"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "6fb5e99bf57daaae6d0633a5bd516aaa29f91b061d73b584a23c9ab67312a683" => :yosemite
-    sha256 "72a661e15d4f97243dd5c446bd4a71c3b04f99486108ad32a7a686cb6c2f36a0" => :mavericks
-    sha256 "d8cc79630b241e6d46c1e51c66e20cd57655c3b1a091c03a7ad653c0f04777ed" => :mountain_lion
+    sha256 "808d2aa0612035d3edce0926c70140920d9a2b7d320ca04c57a5f5ce55eb5d40" => :el_capitan
+    sha256 "c5d72c52608a21be10627d750e6b83f1c820c70bf743d913411b744292348024" => :yosemite
+    sha256 "dca1409b18122dac23631c6f349f9caeb8e1f92bd8055befac97327ad007f758" => :mavericks
+    sha256 "59f103a1f98c5a4e4e6ef4eb60cc7f6f7698c385b252ae7acefd7d17af9423fe" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -70,6 +71,7 @@ class Ffmpeg < Formula
   depends_on "libssh" => :optional
   depends_on "webp" => :optional
   depends_on "zeromq" => :optional
+  depends_on "libbs2b" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -81,8 +83,10 @@ class Ffmpeg < Formula
             "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
-            "--host-ldflags=#{ENV.ldflags}",
+            "--host-ldflags=#{ENV.ldflags}"
            ]
+
+    args << "--enable-opencl" if MacOS.version > :lion
 
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libmp3lame" if build.with? "lame"
@@ -113,6 +117,7 @@ class Ffmpeg < Formula
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
     args << "--enable-libzmq" if build.with? "zeromq"
+    args << "--enable-libbs2b" if build.with? "libbs2b"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"

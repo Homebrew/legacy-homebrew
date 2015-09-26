@@ -1,14 +1,14 @@
 class Scriptcs < Formula
   desc "Tools to write and execute C#"
   homepage "https://github.com/scriptcs/scriptcs"
-  url "https://github.com/scriptcs/scriptcs/archive/v0.14.1.tar.gz"
-  sha256 "7c56ed317befe902b196f14fe74a5d2c35ca6f58944a4134aaa64e8a1b022132"
+  url "https://github.com/scriptcs/scriptcs/archive/v0.15.0.tar.gz"
+  sha256 "658d4ef2c23253ba1d2717c947d2985cb506ce69425280ee8e62cc50d15d6803"
 
   bottle do
     cellar :any
-    sha256 "037322cb22364e6f5f04dc0bbe44e61d70563c1a11b4720e008fc9c75a38c0c1" => :yosemite
-    sha256 "a0fa33747394a09593296c2a8b79d2c91e969e513e3b51134064ee764b178526" => :mavericks
-    sha256 "618d93786fe7db150874329ff1339cb383c5b423779dae289bb4ce12db7de8dc" => :mountain_lion
+    sha256 "dfead67e3f9fbdb499b480eb2b29d651010b1815ef5fe0425affd4ce07295739" => :yosemite
+    sha256 "eec5baf497fc37444fc37adf7c7c761011bb50059f21ccaf10620f0887e759f6" => :mavericks
+    sha256 "206b8fd283ab15e49c91941c2dad77950adb5a9642bb8563a530f4a79d2ccaf3" => :mountain_lion
   end
 
   depends_on "mono" => :recommended

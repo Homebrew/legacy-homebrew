@@ -1,8 +1,8 @@
 class Pdns < Formula
   desc "Authoritative nameserver"
   homepage "https://www.powerdns.com"
-  url "https://downloads.powerdns.com/releases/pdns-3.4.5.tar.bz2"
-  sha256 "f3e1441532b0af05a6b5efe5346f02d0c55f252fbed62d5b4f2e4a80997c507d"
+  url "https://downloads.powerdns.com/releases/pdns-3.4.6.tar.bz2"
+  sha256 "80a6a43cabd14db844bce84482ba56d03d46ebfbf96c88689fb3e2185ac286d8"
 
   head do
     url "https://github.com/powerdns/pdns.git"
@@ -14,18 +14,20 @@ class Pdns < Formula
   end
 
   bottle do
-    sha256 "bd0f7efe36c7dd209cb25f176e53c83267257c85d905e2c0f2c0d5ba8b143036" => :yosemite
-    sha256 "2208e81d5fa958a76369a9a272bdcf68f036b2215373802f7eb2b4b63e494c69" => :mavericks
-    sha256 "17337c21a75dc9fd791cbfd9d3d7653d366c400d34aa261d836a93fd53fdb73f" => :mountain_lion
+    sha256 "aff809d5d325a08d0f15df934561f76357eb08568919143ccdc93d1a3cba545e" => :yosemite
+    sha256 "92f2c51e1c07bc971871c7c495dc85b354efbf511f4bfd1c8b4a66536c8dba25" => :mavericks
+    sha256 "723e2b4f9b9e92e657a6ef37f4fb3e9b6d7823d933517e92b569314300934322" => :mountain_lion
   end
 
-  option "pgsql", "Enable the PostgreSQL backend"
+  option "with-pgsql", "Enable the PostgreSQL backend"
+
+  deprecated_option "pgsql" => "with-pgsql"
 
   depends_on "pkg-config" => :build
   depends_on "boost"
   depends_on "lua"
   depends_on "sqlite"
-  depends_on :postgresql if build.include? "pgsql"
+  depends_on :postgresql if build.with? "pgsql"
 
   def install
     # https://github.com/Homebrew/homebrew/pull/33739
@@ -36,7 +38,7 @@ class Pdns < Formula
             "--with-sqlite3"]
 
     # Include the PostgreSQL backend if requested
-    if build.include? "pgsql"
+    if build.with? "pgsql"
       args << "--with-modules=gsqlite3 gpgsql"
     else
       # SQLite3 backend only is the default

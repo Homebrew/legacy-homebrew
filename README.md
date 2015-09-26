@@ -25,17 +25,12 @@ This is our PGP key which is valid until June 17, 2016.
 * Full key: https://keybase.io/homebrew/key.asc
 
 ## Who Are You?
-Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4) and [Tim Smith](https://github.com/tdsmith).
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4), [Tim Smith](https://github.com/tdsmith) and [Alex Dunn](https://github.com/dunn).
 
 Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
 ## License
 Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt).
-
-## Donations
-We accept tips through [Gratipay](https://gratipay.com/Homebrew/).
-
-[![Gratipay](https://img.shields.io/gratipay/Homebrew.svg?style=flat)](https://gratipay.com/Homebrew/)
 
 ## Sponsors
 Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).

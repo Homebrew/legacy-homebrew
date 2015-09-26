@@ -1,23 +1,23 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.20/source/mariadb-10.0.20.tar.gz"
-  sha256 "3a4f6963c794977af5d5fd9ec06a337a2ad556b3a287196fddbd2243c1388b7b"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.21/source/mariadb-10.0.21.tar.gz"
+  sha256 "4b9a32e15ceadefdb1057a02eb3e0addf702b75aef631a3c9194b832ecfa3545"
 
   bottle do
-    sha256 "66f51ca674ca5e82f1d813507382f9b448f4a96e2de472b9be3297d090780348" => :yosemite
-    sha256 "848299d2e682d2cc353be6119e90ba2670a03361cdbe868f89c6143a838b422e" => :mavericks
-    sha256 "3f760e604dbee14a52e854ab8c85dcb3e68c53652750917eaa90d8e463d8958f" => :mountain_lion
+    revision 1
+    sha256 "56c8d14b15028b642705bf07d52be067b899c1431a71c67c4329d40a89ac4f31" => :el_capitan
+    sha256 "4e762c7031ed3d1b2379933a000da2d28f6fdb25bcfa502c4b63a57cd9af3827" => :yosemite
+    sha256 "e5e7570fd78781c7f77c73db91d8246091bc6e9e074cd52df59d7a42c8d6db43" => :mavericks
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.5/source/mariadb-10.1.5.tar.gz"
-    sha256 "af8788bfbb842338882e505612f86ef53a25968663a1519185ecf3de3b1efe83"
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.7/source/mariadb-10.1.7.tar.gz"
+    sha256 "5bd3b80cf0f312751271a3446c12579c7081f93406e59a0cdfda8e133423c88f"
+    # fix compilation failure with clang in mroonga storage engine
+    # https://mariadb.atlassian.net/projects/MDEV/issues/MDEV-8551
+    patch :DATA
   end
-
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
-  depends_on "openssl"
 
   option :universal
   option "with-tests", "Keep test when installing"
@@ -29,6 +29,10 @@ class Mariadb < Formula
   option "with-local-infile", "Build with local infile loading support"
 
   deprecated_option "enable-local-infile" => "with-local-infile"
+
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   conflicts_with "mysql", "mysql-cluster", "percona-server",
     :because => "mariadb, mysql, and percona install the same binaries."
@@ -218,3 +222,19 @@ class Mariadb < Formula
     end
   end
 end
+__END__
+diff --git a/storage/mroonga/vendor/groonga/CMakeLists.txt b/storage/mroonga/vendor/groonga/CMakeLists.txt
+index ebe7f6b..609f77d 100644
+--- a/storage/mroonga/vendor/groonga/CMakeLists.txt
++++ b/storage/mroonga/vendor/groonga/CMakeLists.txt
+@@ -192,6 +192,10 @@ if(CMAKE_COMPILER_IS_GNUCXX)
+   check_build_flag("-Wno-clobbered")
+ endif()
+
++if(CMAKE_COMPILER_IS_CLANGCXX)
++  MY_CHECK_AND_SET_COMPILER_FLAG("-fexceptions")
++endif()
++
+ if(NOT DEFINED CMAKE_C_COMPILE_OPTIONS_PIC)
+   # For old CMake
+   if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGCXX)

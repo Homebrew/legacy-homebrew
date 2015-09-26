@@ -52,8 +52,8 @@ class Nut < Formula
             "--with-macosx_ups",
             "--with-openssl",
             "--without-nss",
-            "--without-wrap",
-    ]
+            "--without-wrap"
+           ]
     args << (build.with?("serial") ? "--with-serial" : "--without-serial")
     args << (build.with?("libusb") ? "--with-usb" : "--without-usb")
     args << (build.with?("dev") ? "--with-dev" : "--without-dev")
