@@ -1,8 +1,8 @@
 class Libsigcxx < Formula
   desc "Callback framework for C++"
   homepage "http://libsigc.sourceforge.net"
-  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.0.tar.xz"
-  sha256 "67c07771bf6313022883055efb0fad7cc9875168a4c0d01879d1846747e4ce3d"
+  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.1.tar.xz"
+  sha256 "186f2167c1b3d90529ce8e715246bf160bc67ec1ec19f4e45d76c0ae54dfbe1b"
 
   bottle do
     cellar :any
@@ -18,9 +18,7 @@ class Libsigcxx < Formula
     ENV.cxx11
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
-    # make check currently fails
-    # reported upstream as https://bugzilla.gnome.org/show_bug.cgi?id=755393
-    # system "make", "check"
+    system "make", "check"
     system "make", "install"
   end
   test do
