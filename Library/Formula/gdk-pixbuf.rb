@@ -1,8 +1,8 @@
 class GdkPixbuf < Formula
   desc "Toolkit for image loading and pixel buffer manipulation"
   homepage "http://gtk.org"
-  url "https://download.gnome.org/sources/gdk-pixbuf/2.32/gdk-pixbuf-2.32.0.tar.xz"
-  sha256 "537655ec3635740e949457bafe61ae44ce0e5642a2529a9ef7ee0bcd5e911b67"
+  url "https://download.gnome.org/sources/gdk-pixbuf/2.32/gdk-pixbuf-2.32.1.tar.xz"
+  sha256 "4432b74f25538c7d6bcb3ca51adabdd666168955f25812a2568dc9637697f3bc"
 
   bottle do
     sha256 "af3d095d25b3fb7becfe7f1b3a26a240dd06d5a02492d29a26250e66e3569c94" => :el_capitan
@@ -14,22 +14,11 @@ class GdkPixbuf < Formula
   option "with-relocations", "Build with relocation support for bundles"
 
   depends_on "pkg-config" => :build
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
   depends_on "glib"
   depends_on "jpeg"
   depends_on "libtiff"
   depends_on "libpng"
   depends_on "gobject-introspection"
-
-  # disable the default relocatable library setting and
-  # turn it into an option
-  # filed ustream as: https://bugzilla.gnome.org/show_bug.cgi?id=755526
-  patch :p0 do
-    url "https://trac.macports.org/export/139798/trunk/dports/graphics/gdk-pixbuf2/files/patch-configure.ac.diff"
-    sha256 "2330af43005b6b3f98cb00566138353064ff8056d18da7f9212466456b9cb290"
-  end
 
   # 'loaders.cache' must be writable by other packages
   skip_clean "lib/gdk-pixbuf-2.0"
@@ -37,7 +26,6 @@ class GdkPixbuf < Formula
   def install
     ENV.universal_binary if build.universal?
     ENV.append_to_cflags "-DGDK_PIXBUF_LIBDIR=\\\"#{HOMEBREW_PREFIX}/lib\\\""
-    system "autoreconf", "-f"
     args = ["--disable-dependency-tracking",
             "--disable-maintainer-mode",
             "--enable-debug=no",
@@ -67,7 +55,7 @@ class GdkPixbuf < Formula
   def post_install
     # Change the version directory below with any future update
     if build.with?("relocations")
-      ENV["GDK_PIXBUF_MODULE_FILE"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
+      ENV["GDK_PIXBUF_MODULE_FILE"]="#{lib}/gdk-pixbuf-2.0/2.10.0/loaders.cache"
       ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
     end
     system "#{bin}/gdk-pixbuf-query-loaders", "--update-cache"
@@ -75,8 +63,8 @@ class GdkPixbuf < Formula
 
   def caveats; <<-EOS.undent
     Programs that require this module need to set the environment variable
+      export GDK_PIXBUF_MODULE_FILE="#{lib}/gdk-pixbuf-2.0/2.10.0/loaders.cache"
       export GDK_PIXBUF_MODULEDIR="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
-      export GDK_PIXBUF_MODULE_FILE="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
     If you need to manually update the query loader cache, set these variables then run
       #{bin}/gdk-pixbuf-query-loaders --update-cache
     EOS
