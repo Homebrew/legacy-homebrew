@@ -16,6 +16,7 @@ class Weechat < Formula
   option "with-perl", "Build the perl module"
   option "with-ruby", "Build the ruby module"
   option "with-curl", "Build with brewed curl"
+  option "with-debug", "Build with debug information"
 
   depends_on "cmake" => :build
   depends_on "gnutls"
@@ -29,6 +30,10 @@ class Weechat < Formula
 
   def install
     args = std_cmake_args
+    if build.with? "debug"
+      args -= %w[-DCMAKE_BUILD_TYPE=Release]
+      args << "-DCMAKE_BUILD_TYPE=Debug"
+    end
 
     args << "-DENABLE_LUA=OFF" if build.without? "lua"
     args << "-DENABLE_PERL=OFF" if build.without? "perl"
