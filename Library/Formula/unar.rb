@@ -19,11 +19,13 @@ class Unar < Formula
   end
 
   def install
-    # Files in unar1.9.1_src.zip have 'The Unarchiver' path prefix, but HEAD checkout does not.
+    # Files in unar1.9.1_src.zip have "The Unarchiver" path prefix, but HEAD checkout does not.
+    # Build on some versions of Xcode will fail if there's whitespace in path, so workaround
+    # by moving things out of "The Unarchiver" folder.
     unless build.head?
-      # Build on some versions of Xcode will fail when there's whitespace in path, so workaround it with a symlink.
-      ln_s "./The Unarchiver", "./The-Unarchiver"
-      cd "./The-Unarchiver"
+      mv "./The Unarchiver/Extra", "."
+      mv "./The Unarchiver/UniversalDetector", "."
+      mv "./The Unarchiver/XADMaster", "."
     end
 
     # Build XADMaster.framework, unar and lsar
