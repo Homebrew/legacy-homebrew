@@ -12,15 +12,20 @@ class Blackbox < Formula
     bin.install "bin/_stack_lib.sh"
     bin.install "bin/blackbox_addadmin"
     bin.install "bin/blackbox_cat"
+    bin.install "bin/blackbox_decrypt_all_files"
+    bin.install "bin/blackbox_deregister_file"
+    bin.install "bin/blackbox_diff"
     bin.install "bin/blackbox_edit"
     bin.install "bin/blackbox_edit_end"
     bin.install "bin/blackbox_edit_start"
     bin.install "bin/blackbox_initialize"
+    bin.install "bin/blackbox_list_files"
     bin.install "bin/blackbox_postdeploy"
     bin.install "bin/blackbox_register_new_file"
     bin.install "bin/blackbox_removeadmin"
     bin.install "bin/blackbox_shred_all_files"
     bin.install "bin/blackbox_update_all_files"
+    bin.install "bin/blackbox_whatsnew"
   end
 
 # Unfortunately we can't run the tests "as is" if we have a ~/.gnupg directory.
