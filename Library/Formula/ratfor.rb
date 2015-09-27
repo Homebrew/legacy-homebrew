@@ -40,11 +40,11 @@ class Ratfor < Formula
       603 format('x = ',i2)
       604 format('x = ',i2)
       end
-  EOS
+    EOS
 
-  system "#{bin}/ratfor", "-o", "test.f", testpath/"test.r"
-  ENV.fortran
-  system ENV.fc, "test.f", "-o", "test"
-  system "./test"
+    system "#{bin}/ratfor", "-o", "test.f", testpath/"test.r"
+    ENV.fortran
+    system ENV.fc, "test.f", "-o", "test"
+    system "./test"
   end
 end
