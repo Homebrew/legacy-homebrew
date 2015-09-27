@@ -31,6 +31,7 @@ class Qt < Formula
   option "with-docs", "Build documentation"
   option "with-developer", "Build and link with developer options"
 
+  depends_on "openssl"
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
   depends_on "postgresql" => :optional
@@ -57,6 +58,10 @@ class Qt < Formula
         args << "unsupported/macx-clang"
       end
     end
+
+    args << "-openssl-linked"
+    args << "-I" << Formula["openssl"].opt_include
+    args << "-L" << Formula["openssl"].opt_lib
 
     args << "-plugin-sql-mysql" if build.with? "mysql"
     args << "-plugin-sql-psql" if build.with? "postgresql"
