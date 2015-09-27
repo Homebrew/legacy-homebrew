@@ -12,6 +12,8 @@ class Docbook < Formula
     sha256 "5d563a04a11cee14fd7c52a6b4a85d397b019bf2f5cc96005e2d17dac4ad7231" => :mavericks
   end
 
+  depends_on "libxml2"
+
   resource "xml412" do
     url "http://www.docbook.org/xml/4.1.2/docbkx412.zip"
     sha256 "30f0644064e0ea71751438251940b1431f46acada814a062870f486c772e7772"
@@ -45,7 +47,14 @@ class Docbook < Formula
 
   def install
     (etc/"xml").mkpath
-    system "xmlcatalog", "--noout", "--create", "#{etc}/xml/catalog"
+
+    # only create catalog file if it doesn't exist already to avoid content added
+    # by other formulas to be removed
+    unless File.file?("#{etc}/xml/catalog")
+      ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+      system "#{Formula["libxml2"].opt_bin}/xmlcatalog", "--noout", "--create", "catalog"
+      (etc/"xml").install "catalog"
+    end
 
     %w[42 412 43 44 45 50].each do |version|
       resource("xml#{version}").stage do |r|
@@ -60,14 +69,19 @@ class Docbook < Formula
 
         rm_rf "docs"
         (prefix/"docbook/xml"/r.version).install Dir["*"]
-
-        catalog = prefix/"docbook/xml/#{r.version}/catalog.xml"
-
-        system "xmlcatalog", "--noout", "--del",
-                             "file://#{catalog}", "#{etc}/xml/catalog"
-        system "xmlcatalog", "--noout", "--add", "nextCatalog",
-                             "", "file://#{catalog}", "#{etc}/xml/catalog"
       end
+    end
+  end
+
+  def post_install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+    %w[4.2 4.1.2 4.3 4.4 4.5 5.0].each do |version|
+      catalog = prefix/"docbook/xml/#{version}/catalog.xml"
+
+      system "#{Formula["libxml2"].opt_bin}/xmlcatalog", "--noout", "--del",
+             "file://#{catalog}", "#{etc}/xml/catalog"
+      system "#{Formula["libxml2"].opt_bin}/xmlcatalog", "--noout", "--add", "nextCatalog",
+             "", "file://#{catalog}", "#{etc}/xml/catalog"
     end
   end
 
