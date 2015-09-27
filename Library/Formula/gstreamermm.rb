@@ -56,6 +56,7 @@ class Gstreamermm < Formula
       -I#{glibmm.opt_lib}/glibmm-2.4/include
       -I#{gst_plugins_base.opt_include}/gstreamer-1.0
       -I#{gstreamer.opt_include}/gstreamer-1.0
+      -I#{gstreamer.opt_lib}/gstreamer-1.0/include
       -I#{include}/gstreamermm-1.0
       -I#{libsigcxx.opt_include}/sigc++-2.0
       -I#{libsigcxx.opt_lib}/sigc++-2.0/include
