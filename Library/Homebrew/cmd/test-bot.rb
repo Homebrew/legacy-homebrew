@@ -318,6 +318,7 @@ module Homebrew
       # Use Travis CI Git variables for master or branch jobs.
       elsif ENV["TRAVIS_COMMIT_RANGE"]
         diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
+        diff_start_sha1 = git("merge-base", diff_start_sha1, diff_end_sha1).strip
       # Otherwise just use the current SHA-1 (which may be overriden later)
       else
         diff_end_sha1 = diff_start_sha1 = current_sha1
