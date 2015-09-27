@@ -1,10 +1,8 @@
 class NordugridArc < Formula
   desc "Grid computing middleware"
   homepage "http://www.nordugrid.org"
-  url "http://download.nordugrid.org/packages/nordugrid-arc/releases/5.0.0/src/nordugrid-arc_5.0.0.orig.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/n/nordugrid-arc/nordugrid-arc_5.0.0.orig.tar.gz"
-  sha256 "59132ce88f0d88d9a08a56eb879fe9bd07b2eedfce1506508e71457b7f4add1b"
-  revision 1
+  url "http://download.nordugrid.org/packages/nordugrid-arc/releases/5.0.2/src/nordugrid-arc-5.0.2.tar.gz"
+  sha256 "d7306d91b544eeba571ede341e43760997c46d4ccdacc8b785c64f594780a9d1"
 
   bottle do
     sha256 "db44e56921dda90426b9bb78ac996bcc261e6e169584636bae3ed7acd31aa229" => :yosemite
@@ -20,6 +18,12 @@ class NordugridArc < Formula
   depends_on "globus-toolkit"
 
   needs :cxx11
+
+  # bug filed upstream at http://bugzilla.nordugrid.org/show_bug.cgi?id=3514
+  patch do
+    url "https://gist.githubusercontent.com/tschoonj/065dabc33be5ec636058/raw/beee466cdf5fe56f93af0b07022532b1945e9d2e/nordugrid-arc.diff"
+    sha256 "5561ea013ddd03ee4f72437f2e01f22b2c0cac2806bf837402724be281ac2b6d"
+  end
 
   fails_with :clang do
     build 500
