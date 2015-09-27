@@ -30,7 +30,7 @@ class JoshuaV < Formula
 
     system "ant"   
     
-    system "ant javadoc"
+    system "ant, javadoc"
     
     if build.with? "language-packs"
       resource("es-en-phrase-pack").stage { mv "language-pack-es-en-phrase-2015-03-06", share/"joshualanguagepacks" }
@@ -43,6 +43,6 @@ class JoshuaV < Formula
   end
 
   test do    
-    system "ant test"
+    system "ant, test"
   end
 end
