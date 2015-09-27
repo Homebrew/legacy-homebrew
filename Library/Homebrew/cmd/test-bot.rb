@@ -39,20 +39,20 @@ module Homebrew
 
   def resolve_test_tap
     tap = ARGV.value("tap")
-    return Tap.new(*tap_args(tap)) if tap
+    return Tap.fetch(*tap_args(tap)) if tap
 
     if ENV["UPSTREAM_BOT_PARAMS"]
       bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
       bot_argv.extend HomebrewArgvExtension
       tap = bot_argv.value("tap")
-      return Tap.new(*tap_args(tap)) if tap
+      return Tap.fetch(*tap_args(tap)) if tap
     end
 
     if git_url = ENV["UPSTREAM_GIT_URL"] || ENV["GIT_URL"]
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
       HOMEBREW_TAP_ARGS_REGEX =~ url_path
-      return Tap.new($1, $3) if $1 && $3 && $3 != "homebrew"
+      return Tap.fetch($1, $3) if $1 && $3 && $3 != "homebrew"
     end
 
     # return nil means we are testing core repo.
