@@ -5,10 +5,10 @@ class NanopbGenerator < Formula
   sha256 "300e3025ed64cc8e557341c92cd613ef56567f87bb63d75b3718b5899c00f69c"
 
   bottle do
-    cellar :any
-    sha256 "e97541bfa7964b7972f029e56f9689b8309cf0c7382b9a365c918b6742000ea8" => :yosemite
-    sha256 "bb06e0a18296e67ebc45670971775357d4fe10478bc6e3e9439fb24615caa23c" => :mavericks
-    sha256 "5baf3a8d6152b1d878933b2e2199cfbe0873adcc17496f75a99b116e3d8fc6b2" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "037dba88b75b1e7aee033d7ba2458cbf09894ad8f25b97992b8f7a14acc9a64a" => :el_capitan
+    sha256 "312ea6f80babf9d9ee7a06687a97cf40389d718b80a580d07e59d57602a3c66d" => :yosemite
+    sha256 "3bb238213b8d28fb4730e0eee3032f0ac25bc8ba16186aa689c28553a90053e5" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
