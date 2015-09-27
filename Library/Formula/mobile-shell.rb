@@ -12,7 +12,7 @@ class MobileShell < Formula
   end
 
   head do
-    url "https://github.com/keithw/mosh.git", :shallow => false
+    url "https://github.com/mobile-shell/mosh.git", :shallow => false
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
