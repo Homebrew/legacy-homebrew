@@ -1,9 +1,8 @@
 class GstPluginsBad < Formula
   desc "GStreamer plugins (less supported, missing docs, not fully tested)"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.5.tar.xz"
-  sha256 "152fad7250683d72f9deb36c5685428338365fe4a4c87ffe15e38783b14f983c"
+  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.6.0.tar.xz"
+  sha256 "d8ff26128d4ecd2ffeb28e14843808d2d971b09056b7cee6f08afcae01fc0f49"
 
   bottle do
     revision 1
@@ -19,12 +18,14 @@ class GstPluginsBad < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on "openssl"
   end
+
+  option "with-applemedia", "Build with applemedia support"
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gst-plugins-base"
+  depends_on "openssl"
 
   depends_on "dirac" => :optional
   depends_on "faac" => :optional
@@ -39,8 +40,6 @@ class GstPluginsBad < Formula
   depends_on "schroedinger" => :optional
   depends_on "sound-touch" => :optional
   depends_on "srtp" => :optional
-
-  option "with-applemedia", "Build with applemedia support"
 
   def install
     args = %W[
