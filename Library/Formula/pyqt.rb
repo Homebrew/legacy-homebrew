@@ -3,6 +3,7 @@ class Pyqt < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.3/PyQt-mac-gpl-4.11.3.tar.gz"
   sha256 "8b8bb3a2ef8b7368710e0bc59d6e94e1f513f7dbf10a3aaa3154f7b848c88b4d"
+  revision 1
 
   bottle do
     sha256 "e24a40b72f41b022eb759c978ae4c08b0cde1ab1cc28a948bcc972f84532a94a" => :el_capitan
@@ -58,6 +59,7 @@ class Pyqt < Formula
         cp_r(Dir.glob("*"), dir)
         cd dir do
           system python, "configure.py", *args
+          inreplace "pyqtconfig.py", Formula["qt"].prefix, Formula["qt"].opt_prefix
           (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
         end
       ensure
