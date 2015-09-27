@@ -23,7 +23,7 @@ module Homebrew
     # ensure git is installed
     Utils.ensure_git_installed!
 
-    tap = Tap.new user, repo
+    tap = Tap.fetch user, repo
     return false if tap.installed?
     ohai "Tapping #{tap}"
     remote = clone_target || "https://github.com/#{tap.user}/homebrew-#{tap.repo}"

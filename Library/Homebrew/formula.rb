@@ -273,7 +273,7 @@ class Formula
       end
     elsif tap?
       user, repo = tap.split("/")
-      formula_renames = Tap.new(user, repo.sub("homebrew-", "")).formula_renames
+      formula_renames = Tap.fetch(user, repo.sub("homebrew-", "")).formula_renames
       if formula_renames.value?(name)
         formula_renames.to_a.rassoc(name).first
       end

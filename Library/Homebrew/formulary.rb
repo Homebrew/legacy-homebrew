@@ -145,7 +145,7 @@ class Formulary
 
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
-      @tap = Tap.new user, repo.sub(/^homebrew-/, "")
+      @tap = Tap.fetch user, repo.sub(/^homebrew-/, "")
       name = @tap.formula_renames.fetch(name, name)
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
 

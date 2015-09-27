@@ -63,6 +63,8 @@ module Homebrew
       end
     end
 
+    Tap.clear_cache
+
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
       next unless (dir = HOMEBREW_CELLAR/f).exist?
@@ -372,7 +374,7 @@ class Report
         user = $1
         repo = $2.sub("homebrew-", "")
         oldname = path.basename(".rb").to_s
-        next unless newname = Tap.new(user, repo).formula_renames[oldname]
+        next unless newname = Tap.fetch(user, repo).formula_renames[oldname]
       else
         oldname = path.basename(".rb").to_s
         next unless newname = FORMULA_RENAMES[oldname]
