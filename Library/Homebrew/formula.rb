@@ -1022,10 +1022,16 @@ class Formula
     end.compact
   end
 
+  # an array of all alias files of core {Formula}
+  # @private
+  def self.core_alias_files
+    @core_alias_files ||= Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*")
+  end
+
   # an array of all core aliases
   # @private
   def self.core_aliases
-    @core_aliases ||= Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map { |f| File.basename f }.sort
+    @core_aliases ||= core_alias_files.map { |f| f.basename.to_s }.sort
   end
 
   # an array of all tap aliases
