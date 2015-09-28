@@ -9,10 +9,10 @@ class Nsq < Formula
   head "https://github.com/nsqio/nsq.git"
 
   bottle do
-    cellar :any
-    sha256 "eb9dd459eec6603dd720b58b8fcee5ccfc122999aed51845ff2c98e0bb3fabfe" => :yosemite
-    sha256 "b17656e4e8b93abf9d6b0b65b614ffa7fecc2b0920a8d0329aa6abda2e5a2f7e" => :mavericks
-    sha256 "dd00b16b6708fd69764ec0276568f88b4d3c8729c6be45859b3450b313a0f3b6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a4c1a6724b3e91d6564b9188b1d099639a26999a36ae71ecb0ca7413703c106c" => :el_capitan
+    sha256 "3fe3404d2439cb43e16d38ecd5ec384ef95f9660bd789a06959b17a8ff077968" => :yosemite
+    sha256 "44452e103eb6e5dce242311497c30c905fe9fbf775bec20880fe7277cef5a288" => :mavericks
   end
 
   depends_on "go" => :build
