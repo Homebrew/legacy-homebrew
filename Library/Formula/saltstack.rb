@@ -27,9 +27,9 @@ class Saltstack < Formula
   # Homebrew's swig breaks M2Crypto due to upstream's undermaintained status.
   # https://github.com/swig/swig/issues/344
   # https://github.com/martinpaljak/M2Crypto/issues/60
-  resource "swig304" do
-    url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.4/swig-3.0.4.tar.gz"
-    sha256 "410ffa80ef5535244b500933d70c1b65206333b546ca5a6c89373afb65413795"
+  resource "swig307" do
+    url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.7/swig-3.0.7.tar.gz"
+    sha256 "06dc8816a225667ce1eee545af3caf87e1bbaa379c32838d4cea53152514348d"
   end
 
   resource "m2crypto" do
@@ -95,7 +95,7 @@ class Saltstack < Formula
   end
 
   def install
-    resource("swig304").stage do
+    resource("swig307").stage do
       system "./configure", "--disable-dependency-tracking", "--prefix=#{buildpath}/swig"
       system "make"
       system "make", "install"
