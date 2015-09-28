@@ -14,7 +14,7 @@ class Libgraphqlparser < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make"
-    bin.install "dump_json_ast"
+    libexec.install "dump_json_ast"
     lib.install "libgraphqlparser.dylib"
   end
 
@@ -199,7 +199,7 @@ class Libgraphqlparser < Formula
     EOS
 
     json_ast = JSON.parse(sample_ast)
-    query_json = JSON.parse(pipe_output("#{bin}/dump_json_ast", sample_query))
+    query_json = JSON.parse(pipe_output("#{libexec}/dump_json_ast", sample_query))
 
     assert_equal json_ast, query_json
   end
