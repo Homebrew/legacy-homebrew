@@ -5,6 +5,12 @@ class Libagar < Formula
   sha256 "b0e62b754f134c3c0dd070a4fa62fa552654356eebab3d55e32d5d9b151a275e"
   head "http://dev.csoft.net/agar/trunk", :using => :svn
 
+  bottle do
+    sha256 "c237ad40ea2a61e9ec2daa9a0d1ee93beada00028fbc80011032a9a09b412870" => :el_capitan
+    sha256 "64f28fdb61884ce1b4f997471bd1ddbdc4c843af0e051ec2a89d9485184e2986" => :yosemite
+    sha256 "bcb76fc406916d52e4edfece35d6b3429ecf7d6ab77ccc1363bebac0bb83d910" => :mavericks
+  end
+
   depends_on "sdl"
   depends_on "freetype"
   depends_on "jpeg"
