@@ -40,11 +40,7 @@ class Guile < Formula
   end
 
   def install
-    if build.head?
-      inreplace "autogen.sh", "libtoolize", "glibtoolize"
-      system "./autogen.sh"
-    end
-
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-libreadline-prefix=#{Formula["readline"].opt_prefix}",
