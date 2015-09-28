@@ -18,7 +18,7 @@ class GobjectIntrospection < Formula
   depends_on "glib"
   depends_on "cairo"
   depends_on "libffi"
-  depends_on "python" => :build if MacOS.version == :mavericks
+  depends_on "python" if MacOS.version == :mavericks
 
   resource "tutorial" do
     url "https://gist.github.com/7a0023656ccfe309337a.git",
