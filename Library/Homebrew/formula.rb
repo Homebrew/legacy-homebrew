@@ -805,13 +805,24 @@ class Formula
   def link_overwrite?(path)
     # Don't overwrite files not created by Homebrew.
     return false unless path.stat.uid == File.stat(HOMEBREW_BREW_FILE).uid
-    # Don't overwrite files belong to other keg.
+    # Don't overwrite files belong to other keg except when that
+    # keg's formula is deleted.
     begin
-      Keg.for(path)
+      keg = Keg.for(path)
     rescue NotAKegError, Errno::ENOENT
       # file doesn't belong to any keg.
     else
-      return false
+      tap = Tab.for_keg(keg).tap
+      return false if tap.nil? # this keg doesn't below to any core/tap formula, most likely coming from a DIY install.
+      begin
+        Formulary.factory(keg.name)
+      rescue FormulaUnavailableError
+        # formula for this keg is deleted, so defer to whitelist
+      rescue TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
+        return false # this keg belongs to another formula
+      else
+        return false # this keg belongs to another formula
+      end
     end
     to_check = path.relative_path_from(HOMEBREW_PREFIX).to_s
     self.class.link_overwrite_paths.any? do |p|
