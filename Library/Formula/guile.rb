@@ -41,7 +41,6 @@ class Guile < Formula
 
   def install
     if build.head?
-      inreplace "autogen.sh", "libtoolize", "glibtoolize"
       system "./autogen.sh"
     end
 
