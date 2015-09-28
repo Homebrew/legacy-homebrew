@@ -4,8 +4,8 @@ require "json"
 class Libgraphqlparser < Formula
   desc "GraphQL query parser in C++ with C and C++ APIs"
   homepage "https://github.com/graphql/libgraphqlparser"
-  url "https://github.com/graphql/libgraphqlparser/archive/v0.1.0.tar.gz"
-  sha256 "e4a12bba2f6c2db1b0528db5a0a3283fc5380ac5cadb8036793054cb7c9dd3ad"
+  url "https://github.com/graphql/libgraphqlparser/archive/v0.2.0.tar.gz"
+  sha256 "5064f63024c20cdc2c41970a6e9a5c7b053565db22f5f8dfb946923cb077f9de"
 
   depends_on "cmake" => :build
   depends_on "bison" => :recommended
@@ -14,8 +14,8 @@ class Libgraphqlparser < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make"
+    system "make", "install"
     libexec.install "dump_json_ast"
-    lib.install "libgraphqlparser.dylib"
   end
 
   test do
@@ -31,159 +31,158 @@ class Libgraphqlparser < Formula
       }
     EOS
 
-    sample_ast = <<-EOS
-    {
-      "kind": "Document",
-      "loc": {
-        "start": 1,
-        "end": 2
+    sample_ast = {
+      "kind" => "Document",
+      "loc" => {
+        "start" => 1,
+        "end" => 2
       },
-      "definitions": [
+      "definitions" => [
         {
-          "kind": "OperationDefinition",
-          "loc": {
-            "start": 1,
-            "end": 2
+          "kind" => "OperationDefinition",
+          "loc" => {
+            "start" => 1,
+            "end" => 2
           },
-          "operation": "query",
-          "name": null,
-          "variableDefinitions": null,
-          "directives": null,
-          "selectionSet": {
-            "kind": "SelectionSet",
-            "loc": {
-              "start": 1,
-              "end": 2
+          "operation" => "query",
+          "name" => nil,
+          "variableDefinitions" => nil,
+          "directives" => nil,
+          "selectionSet" => {
+            "kind" => "SelectionSet",
+            "loc" => {
+              "start" => 1,
+              "end" => 2
             },
-            "selections": [
+            "selections" => [
               {
-                "kind": "Field",
-                "loc": {
-                  "start": 3,
-                  "end": 4
+                "kind" => "Field",
+                "loc" => {
+                  "start" => 3,
+                  "end" => 4
                 },
-                "alias": null,
-                "name": {
-                  "kind": "Name",
-                  "loc": {
-                    "start": 3,
-                    "end": 7
+                "alias" => nil,
+                "name" => {
+                  "kind" => "Name",
+                  "loc" => {
+                    "start" => 3,
+                    "end" => 7
                   },
-                  "value": "user"
+                  "value" => "user"
                 },
-                "arguments": [
+                "arguments" => [
                   {
-                    "kind": "Argument",
-                    "loc": {
-                      "start": 8,
-                      "end": 13
+                    "kind" => "Argument",
+                    "loc" => {
+                      "start" => 8,
+                      "end" => 13
                     },
-                    "name": {
-                      "kind": "Name",
-                      "loc": {
-                        "start": 8,
-                        "end": 10
+                    "name" => {
+                      "kind" => "Name",
+                      "loc" => {
+                        "start" => 8,
+                        "end" => 10
                       },
-                      "value": "id"
+                      "value" => "id"
                     },
-                    "value": {
-                      "kind": "IntValue",
-                      "loc": {
-                        "start": 12,
-                        "end": 13
+                    "value" => {
+                      "kind" => "IntValue",
+                      "loc" => {
+                        "start" => 12,
+                        "end" => 13
                       },
-                      "value": "1"
+                      "value" => "1"
                     }
                   }
                 ],
-                "directives": null,
-                "selectionSet": {
-                  "kind": "SelectionSet",
-                  "loc": {
-                    "start": 15,
-                    "end": 4
+                "directives" => nil,
+                "selectionSet" => {
+                  "kind" => "SelectionSet",
+                  "loc" => {
+                    "start" => 15,
+                    "end" => 4
                   },
-                  "selections": [
+                  "selections" => [
                     {
-                      "kind": "Field",
-                      "loc": {
-                        "start": 5,
-                        "end": 9
+                      "kind" => "Field",
+                      "loc" => {
+                        "start" => 5,
+                        "end" => 9
                       },
-                      "alias": null,
-                      "name": {
-                        "kind": "Name",
-                        "loc": {
-                          "start": 5,
-                          "end": 9
+                      "alias" => nil,
+                      "name" => {
+                        "kind" => "Name",
+                        "loc" => {
+                          "start" => 5,
+                          "end" => 9
                         },
-                        "value": "name"
+                        "value" => "name"
                       },
-                      "arguments": null,
-                      "directives": null,
-                      "selectionSet": null
+                      "arguments" => nil,
+                      "directives" => nil,
+                      "selectionSet" => nil
                     },
                     {
-                      "kind": "Field",
-                      "loc": {
-                        "start": 5,
-                        "end": 8
+                      "kind" => "Field",
+                      "loc" => {
+                        "start" => 5,
+                        "end" => 8
                       },
-                      "alias": null,
-                      "name": {
-                        "kind": "Name",
-                        "loc": {
-                          "start": 5,
-                          "end": 8
+                      "alias" => nil,
+                      "name" => {
+                        "kind" => "Name",
+                        "loc" => {
+                          "start" => 5,
+                          "end" => 8
                         },
-                        "value": "age"
+                        "value" => "age"
                       },
-                      "arguments": null,
-                      "directives": null,
-                      "selectionSet": null
+                      "arguments" => nil,
+                      "directives" => nil,
+                      "selectionSet" => nil
                     },
                     {
-                      "kind": "Field",
-                      "loc": {
-                        "start": 5,
-                        "end": 6
+                      "kind" => "Field",
+                      "loc" => {
+                        "start" => 5,
+                        "end" => 6
                       },
-                      "alias": null,
-                      "name": {
-                        "kind": "Name",
-                        "loc": {
-                          "start": 5,
-                          "end": 12
+                      "alias" => nil,
+                      "name" => {
+                        "kind" => "Name",
+                        "loc" => {
+                          "start" => 5,
+                          "end" => 12
                         },
-                        "value": "friends"
+                        "value" => "friends"
                       },
-                      "arguments": null,
-                      "directives": null,
-                      "selectionSet": {
-                        "kind": "SelectionSet",
-                        "loc": {
-                          "start": 13,
-                          "end": 6
+                      "arguments" => nil,
+                      "directives" => nil,
+                      "selectionSet" => {
+                        "kind" => "SelectionSet",
+                        "loc" => {
+                          "start" => 13,
+                          "end" => 6
                         },
-                        "selections": [
+                        "selections" => [
                           {
-                            "kind": "Field",
-                            "loc": {
-                              "start": 7,
-                              "end": 11
+                            "kind" => "Field",
+                            "loc" => {
+                              "start" => 7,
+                              "end" => 11
                             },
-                            "alias": null,
-                            "name": {
-                              "kind": "Name",
-                              "loc": {
-                                "start": 7,
-                                "end": 11
+                            "alias" => nil,
+                            "name" => {
+                              "kind" => "Name",
+                              "loc" => {
+                                "start" => 7,
+                                "end" => 11
                               },
-                              "value": "name"
+                              "value" => "name"
                             },
-                            "arguments": null,
-                            "directives": null,
-                            "selectionSet": null
+                            "arguments" => nil,
+                            "directives" => nil,
+                            "selectionSet" => nil
                           }
                         ]
                       }
@@ -196,11 +195,9 @@ class Libgraphqlparser < Formula
         }
       ]
     }
-    EOS
 
-    json_ast = JSON.parse(sample_ast)
-    query_json = JSON.parse(pipe_output("#{libexec}/dump_json_ast", sample_query))
+    test_ast = JSON.parse(pipe_output("#{libexec}/dump_json_ast", sample_query))
 
-    assert_equal json_ast, query_json
+    assert_equal sample_ast, test_ast
   end
 end
