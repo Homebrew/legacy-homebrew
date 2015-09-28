@@ -15,10 +15,18 @@ class BdwGc < Formula
     sha256 "e5725f4c6b23ce7dc75e3e8fff51cd1f9f90858bad20d1ce00cf33499edf8f6b" => :mountain_lion
   end
 
+  head do
+    url "https://github.com/ivmai/bdwgc.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool"  => :build
+  end
+
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
