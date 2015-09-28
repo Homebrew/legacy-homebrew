@@ -7,10 +7,10 @@ class Deisctl < Formula
   sha256 "afdb0ae576a9c05af2e634a3ac83df9bae99cef17cfd2f1e2c8b7713107e769b"
 
   bottle do
-    cellar :any
-    sha256 "e5fe216c7f63394410837ac23e46f9fd3ddf85ebf5d39ff58265eb993f6da95c" => :yosemite
-    sha256 "b001eec00c2ea9fdd4d6e12113990e3e7c9addf7b22a9c506541ff0236a17d75" => :mavericks
-    sha256 "3c909d77ab06101b9b9c63a7b02de500545cef50f0d98757a62587b251576cde" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "938d5e24e4d5d930f30c79eb3917e20562aaaeee99eae65c96060ab132155a49" => :el_capitan
+    sha256 "abe80f8373fb24b67bd926ded9c8fba9878db64e0edc23553a172c81f9c21704" => :yosemite
+    sha256 "78708383d85baaf985463a1f3bd3fe44a4b4667149df58e38896ddce724e964c" => :mavericks
   end
 
   depends_on "go" => :build
