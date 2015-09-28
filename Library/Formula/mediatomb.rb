@@ -26,10 +26,6 @@ class Mediatomb < Formula
   depends_on "lastfmlib" => :optional
   depends_on "mysql" => :optional
 
-  fails_with :clang do
-    cause "src/timer.h:82:18: note: implicit instantiation first required here"
-  end
-
   # This is for libav 0.7 support. See:
   # https://bugs.launchpad.net/ubuntu/+source/mediatomb/+bug/784431
   # http://sourceforge.net/tracker/?func=detail&aid=3291062&group_id=129766&atid=715780
@@ -66,6 +62,14 @@ class Mediatomb < Formula
   patch do
     url "https://sourceforge.net/p/mediatomb/patches/46/attachment/object.diff"
     sha256 "b289e77a5177aa66da45bdb50e5f04c94fb1b8d14c83faa72251ccae8680a1d3"
+  end
+
+  # FreeBSD patch to fix Clang compile.
+  # https://svnweb.freebsd.org/ports/head/net/mediatomb/files/patch-timer.cc?revision=397755&view=markup
+  # Noted here with the GCC patch: https://sourceforge.net/p/mediatomb/patches/46/#54bc
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/patches/d316eac2/mediatomb/timercc.diff"
+    sha256 "e1ea57ca4b855b78c70de1e5041ecfa46521a19bd95d2594efe7e6f69014baca"
   end
 
   def install
