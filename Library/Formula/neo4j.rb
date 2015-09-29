@@ -6,9 +6,9 @@ class Neo4j < Formula
   sha256 "7fadc119f465a3d6adceb610401363fb158a5ed25081f9893d4f56ac4989a998"
 
   devel do
-    url "http://dist.neo4j.org/neo4j-community-2.3.0-M02-unix.tar.gz"
-    sha256 "54047565659e1230c7a196ff696765e042da5679cf287966efad9e36a8f07046"
-    version "2.3.0-M02"
+    url "http://dist.neo4j.org/neo4j-community-2.3.0-M03-unix.tar.gz"
+    sha256 "cd47ae541a0c5da0d82212c30c1c2fb19ea91ddb1b174346c120e596e04b5dfc"
+    version "2.3.0-M03"
   end
 
   option "with-neo4j-shell-tools", "Add neo4j-shell-tools to the standard neo4j-shell"
