@@ -5,9 +5,9 @@ class Rrdtool < Formula
   sha256 "3feea3da87c02128a27083f1c7b2cb797ef673e946564c0ce008c1c25a5c3f99"
 
   bottle do
-    sha256 "dfa037b903c0fd8206c6f3e99ed05ca2d2543419895f7f0e081fabece5b6616f" => :yosemite
-    sha256 "1d7526bbb9a963d0f7c146b7fc538c4289998fe8f047713bcac2aaed6e906551" => :mavericks
-    sha256 "2ec6be27efb28a6a493f4dda63291c9f464976161627e8135c5a80c89ac8aed9" => :mountain_lion
+    sha256 "e434a767377fb30f603947e2a5d934de6b533068c457b8c1e84488942ec0eac1" => :el_capitan
+    sha256 "e73f246edc6c23bc4be3185e4f25036e9fbac7bc2cfe4e47caf5edcd46d92c1d" => :yosemite
+    sha256 "0ab32d64d87aedad34d331aa4ec8fe02431ce051d6de361de6fd5a0877f00960" => :mavericks
   end
 
   head do
