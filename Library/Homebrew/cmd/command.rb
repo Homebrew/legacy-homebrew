@@ -1,5 +1,6 @@
 module Homebrew
   def command
+    abort "This command requires a command argument" if ARGV.empty?
     cmd = ARGV.first
     cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
 
