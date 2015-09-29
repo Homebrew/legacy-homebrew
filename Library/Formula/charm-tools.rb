@@ -1,8 +1,8 @@
 class CharmTools < Formula
-  desc "Tools for authoring and maintaining juju"
+  desc "Tools for authoring and maintaining juju charms"
   homepage "https://launchpad.net/charm-tools"
-  url "https://launchpad.net/charm-tools/1.5/1.5.1/+download/charm-tools-1.5.1.tar.gz"
-  sha256 "295365eaa520ae48bd3e64f078cf97f0c43551d9173d3b4491f036417c0eca39"
+  url "https://launchpad.net/charm-tools/1.7/1.7.0/+download/charm-tools-1.7.0.tar.gz"
+  sha256 "6bc12d24460b366e12176538692d5b29c3697f5c8a98b525a05fa5ec7b04e042"
 
   bottle do
     cellar :any
