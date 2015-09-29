@@ -7,10 +7,9 @@ class Osquery < Formula
       :revision => "2a71162b0cfb040a3606538857f512ea8894b9e7"
 
   bottle do
-    revision 1
-    sha256 "cd0946321541201e9ee054f409bf23bfe4f42e00c6ed8dd87eb09f38c925affc" => :el_capitan
-    sha256 "0f45aeb033ed4393c66bbf7b926ab9ecb9f537372fc12b4127d2d61c236e3450" => :yosemite
-    sha256 "c8c818319a762e0f300cf2d01c2697b0de2348bc83075b8d6713ab5ebbe280a5" => :mavericks
+    sha256 "c913585251111789e84a6051edc728f909989ae0bb2396760d043acfc5a42f28" => :el_capitan
+    sha256 "6bdf465ca5fce44b523f0e75ef951a43bddad9a433f7815704e53a4ea19f1e4a" => :yosemite
+    sha256 "07260cbd5a1d7c7c9f3796f7ccac951b2aa2cd32a5e1ba7b9cfd40bbf3b1cb7c" => :mavericks
   end
 
   # osquery only supports OS X 10.9 and above. Do not remove this.
