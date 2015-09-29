@@ -46,14 +46,6 @@ class Docbook < Formula
   def install
     (etc/"xml").mkpath
 
-    # only create catalog file if it doesn't exist already to avoid content added
-    # by other formulas to be removed
-    unless File.file?("#{etc}/xml/catalog")
-      ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
-      system "xmlcatalog", "--noout", "--create", "catalog"
-      (etc/"xml").install "catalog"
-    end
-
     %w[42 412 43 44 45 50].each do |version|
       resource("xml#{version}").stage do |r|
         if version == "412"
@@ -73,6 +65,13 @@ class Docbook < Formula
 
   def post_install
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+
+    # only create catalog file if it doesn't exist already to avoid content added
+    # by other formulas to be removed
+    unless File.file?("#{etc}/xml/catalog")
+      system "xmlcatalog", "--noout", "--create", "#{etc}/xml/catalog"
+    end
+
     %w[4.2 4.1.2 4.3 4.4 4.5 5.0].each do |version|
       catalog = prefix/"docbook/xml/#{version}/catalog.xml"
 
