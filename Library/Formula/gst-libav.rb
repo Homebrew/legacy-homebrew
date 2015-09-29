@@ -23,6 +23,7 @@ class GstLibav < Formula
   depends_on "pkg-config" => :build
   depends_on "yasm" => :build
   depends_on "gst-plugins-base"
+  depends_on "xz" # For LZMA
 
   def install
     args = %W[
