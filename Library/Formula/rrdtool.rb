@@ -1,8 +1,8 @@
 class Rrdtool < Formula
   desc "Round Robin Database"
   homepage "https://oss.oetiker.ch/rrdtool/index.en.html"
-  url "https://oss.oetiker.ch/rrdtool/pub/rrdtool-1.5.3.tar.gz"
-  sha256 "79e7b2f5cf74843e89fe4d08925f955268fd21736cbea03e54ae83320fc6129f"
+  url "https://github.com/oetiker/rrdtool-1.x/releases/download/v1.5.4/rrdtool-1.5.4.tar.gz"
+  sha256 "3feea3da87c02128a27083f1c7b2cb797ef673e946564c0ce008c1c25a5c3f99"
 
   bottle do
     sha256 "dfa037b903c0fd8206c6f3e99ed05ca2d2543419895f7f0e081fabece5b6616f" => :yosemite
