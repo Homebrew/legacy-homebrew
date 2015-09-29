@@ -3,9 +3,8 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-      :tag => "1.5.2",
-      :revision => "225a14660abeb1071fff58e73cc753d54037c6ae"
-  revision 1
+      :tag => "1.5.3",
+      :revision => "2a71162b0cfb040a3606538857f512ea8894b9e7"
 
   bottle do
     revision 1
@@ -26,6 +25,8 @@ class Osquery < Formula
   depends_on "libressl"
   depends_on "gflags"
   depends_on "glog"
+  depends_on "libmagic"
+  depends_on "cpp-netlib"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
@@ -35,6 +36,11 @@ class Osquery < Formula
   resource "jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
     sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+  end
+
+  resource "psutil" do
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
+    sha256 "a0e9b96f1946975064724e242ac159f3260db24ffa591c3da0a355361a3a337f"
   end
 
   def install
