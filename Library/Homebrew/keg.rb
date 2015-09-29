@@ -72,7 +72,7 @@ class Keg
   # These paths relative to the keg's share directory should always be real
   # directories in the prefix, never symlinks.
   SHARE_PATHS = %w[
-    aclocal doc info locale man
+    aclocal doc info java locale man
     man/man1 man/man2 man/man3 man/man4
     man/man5 man/man6 man/man7 man/man8
     man/cat1 man/cat2 man/cat3 man/cat4
