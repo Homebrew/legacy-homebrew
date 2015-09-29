@@ -1,8 +1,8 @@
 class Fpp < Formula
   desc "CLI program that accepts piped input and presents files for selection"
   homepage "https://facebook.github.io/PathPicker/"
-  url "https://github.com/facebook/PathPicker/releases/download/0.6.1/fpp.0.6.1.tar.gz"
-  sha256 "800a6dcf0cfe55fae9b901b2827f2706ef85812cc4d7d6676dde359c62235428"
+  url "https://github.com/facebook/PathPicker/releases/download/0.6.2/fpp.0.6.2.tar.gz"
+  sha256 "a437e8d779053cac28f582e8b9f8621bc872af9cd7a0afdce5cdd0912f974513"
   head "https://github.com/facebook/pathpicker.git"
 
   bottle do
