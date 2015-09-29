@@ -120,6 +120,8 @@ def interactive_shell(f = nil)
     FileUtils.touch "#{ENV["HOME"]}/.zshrc"
   end
 
+  ENV["PATH"] = ENV["PATH"].split(File::PATH_SEPARATOR).insert(1, "#{HOMEBREW_PREFIX}/bin").join(File::PATH_SEPARATOR)
+
   Process.wait fork { exec ENV["SHELL"] }
 
   if $?.success?
