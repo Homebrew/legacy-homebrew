@@ -1,4 +1,5 @@
 require "cmd/tap"
+require "cmd/doctor"
 require "formula_versions"
 require "migrator"
 require "formulary"
@@ -11,6 +12,16 @@ module Homebrew
         This command updates brew itself, and does not take formula names.
         Use `brew upgrade <formula>`.
       EOS
+    end
+
+    # check permissions
+    checks = Checks.new
+    %w[
+      check_access_usr_local
+      check_access_homebrew_repository
+    ].each do |check|
+      out = checks.send(check)
+      odie out unless out.nil?
     end
 
     # ensure git is installed
