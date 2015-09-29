@@ -35,14 +35,14 @@ class Libgraphqlparser < Formula
       "kind" => "Document",
       "loc" => {
         "start" => 1,
-        "end" => 2
+        "end" => 2,
       },
       "definitions" => [
         {
           "kind" => "OperationDefinition",
           "loc" => {
             "start" => 1,
-            "end" => 2
+            "end" => 2,
           },
           "operation" => "query",
           "name" => nil,
@@ -52,47 +52,47 @@ class Libgraphqlparser < Formula
             "kind" => "SelectionSet",
             "loc" => {
               "start" => 1,
-              "end" => 2
+              "end" => 2,
             },
             "selections" => [
               {
                 "kind" => "Field",
                 "loc" => {
                   "start" => 3,
-                  "end" => 4
+                  "end" => 4,
                 },
                 "alias" => nil,
                 "name" => {
                   "kind" => "Name",
                   "loc" => {
                     "start" => 3,
-                    "end" => 7
+                    "end" => 7,
                   },
-                  "value" => "user"
+                  "value" => "user",
                 },
                 "arguments" => [
                   {
                     "kind" => "Argument",
                     "loc" => {
                       "start" => 8,
-                      "end" => 13
+                      "end" => 13,
                     },
                     "name" => {
                       "kind" => "Name",
                       "loc" => {
                         "start" => 8,
-                        "end" => 10
+                        "end" => 10,
                       },
-                      "value" => "id"
+                      "value" => "id",
                     },
                     "value" => {
                       "kind" => "IntValue",
                       "loc" => {
                         "start" => 12,
-                        "end" => 13
+                        "end" => 13,
                       },
-                      "value" => "1"
-                    }
+                      "value" => "1",
+                    },
                   }
                 ],
                 "directives" => nil,
@@ -100,61 +100,61 @@ class Libgraphqlparser < Formula
                   "kind" => "SelectionSet",
                   "loc" => {
                     "start" => 15,
-                    "end" => 4
+                    "end" => 4,
                   },
                   "selections" => [
                     {
                       "kind" => "Field",
                       "loc" => {
                         "start" => 5,
-                        "end" => 9
+                        "end" => 9,
                       },
                       "alias" => nil,
                       "name" => {
                         "kind" => "Name",
                         "loc" => {
                           "start" => 5,
-                          "end" => 9
+                          "end" => 9,
                         },
-                        "value" => "name"
+                        "value" => "name",
                       },
                       "arguments" => nil,
                       "directives" => nil,
-                      "selectionSet" => nil
+                      "selectionSet" => nil,
                     },
                     {
                       "kind" => "Field",
                       "loc" => {
                         "start" => 5,
-                        "end" => 8
+                        "end" => 8,
                       },
                       "alias" => nil,
                       "name" => {
                         "kind" => "Name",
                         "loc" => {
                           "start" => 5,
-                          "end" => 8
+                          "end" => 8,
                         },
-                        "value" => "age"
+                        "value" => "age",
                       },
                       "arguments" => nil,
                       "directives" => nil,
-                      "selectionSet" => nil
+                      "selectionSet" => nil,
                     },
                     {
                       "kind" => "Field",
                       "loc" => {
                         "start" => 5,
-                        "end" => 6
+                        "end" => 6,
                       },
                       "alias" => nil,
                       "name" => {
                         "kind" => "Name",
                         "loc" => {
                           "start" => 5,
-                          "end" => 12
+                          "end" => 12,
                         },
-                        "value" => "friends"
+                        "value" => "friends",
                       },
                       "arguments" => nil,
                       "directives" => nil,
@@ -162,38 +162,38 @@ class Libgraphqlparser < Formula
                         "kind" => "SelectionSet",
                         "loc" => {
                           "start" => 13,
-                          "end" => 6
+                          "end" => 6,
                         },
                         "selections" => [
                           {
                             "kind" => "Field",
                             "loc" => {
                               "start" => 7,
-                              "end" => 11
+                              "end" => 11,
                             },
                             "alias" => nil,
                             "name" => {
                               "kind" => "Name",
                               "loc" => {
                                 "start" => 7,
-                                "end" => 11
+                                "end" => 11,
                               },
-                              "value" => "name"
+                              "value" => "name",
                             },
                             "arguments" => nil,
                             "directives" => nil,
-                            "selectionSet" => nil
+                            "selectionSet" => nil,
                           }
-                        ]
-                      }
-                    }
-                  ]
-                }
+                        ],
+                      },
+                    },
+                  ],
+                },
               }
-            ]
-          }
+            ],
+          },
         }
-      ]
+      ],
     }
 
     test_ast = JSON.parse(pipe_output("#{libexec}/dump_json_ast", sample_query))
