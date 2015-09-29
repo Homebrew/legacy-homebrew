@@ -7,9 +7,9 @@ class ShadowsocksLibev < Formula
 
   bottle do
     cellar :any
-    sha256 "31b22b39c5a8dd12435a5267f3804849516b6e13341a0a7154ee25c2f3373e2a" => :el_capitan
-    sha256 "30792d0d594888993e0a06e86471be7ce37213bcb30272ac09358f5068a3163a" => :yosemite
-    sha256 "ad2d76f3934d876c4243425e261e675734c178efc06bd648c0644058b830644a" => :mavericks
+    sha256 "1443f6eef1c4984f458907168beef526c1172fa4f3df54c8880748e44aefa005" => :el_capitan
+    sha256 "cd1dde0eaec1c872c098b33dc540902693803fc85e2242d41720b3578f97fa3c" => :yosemite
+    sha256 "f87760e9d3e366bc4f81d0e129db617c13378b9f1fb4fca6a674956362eb158d" => :mavericks
   end
 
   depends_on "openssl"
