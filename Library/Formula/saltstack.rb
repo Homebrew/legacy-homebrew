@@ -8,6 +8,7 @@ class Saltstack < Formula
   url "https://github.com/saltstack/salt/releases/download/v2015.8.0/salt-2015.8.0.tar.gz"
   sha256 "71e1cb2eb1d4b30f3247f5590c00a2089190b8f9a90c9330dc9a65fae517ec9b"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
+  revision 1
 
   bottle do
     cellar :any
@@ -119,20 +120,28 @@ class Saltstack < Formula
     end
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-    system "python", *Language::Python.setup_install_args(libexec)
+    # Salt's setup.py doesn't use '--prefix' to configure its default dirs, so we set the root dir explicitly
+    # to allow sudo-less running from the Homebrew prefix
+    system "python", *Language::Python.setup_install_args(libexec), "--salt-root-dir=#{HOMEBREW_PREFIX}"
     man1.install Dir["doc/man/*.1"]
     man7.install Dir["doc/man/*.7"]
 
-    # Install sample configuration files
-    (etc/"saltstack").install Dir["conf/*"]
+    # Install default configuration
+    (etc/"salt").install Dir["conf/*"]
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
+  def post_install
+    # Salt's setup.py doesn't create these directories, but Salt complains if they don't already exist
+    (var/"cache/salt").mkpath
+    (var/"log/salt").mkpath
+    (var/"run/salt").mkpath
+  end
+
   def caveats; <<-EOS.undent
-    Sample configuration files have been placed in #{etc}/saltstack.
-    Saltstack will not use these by default.
+    Root dir set to #{HOMEBREW_PREFIX}. Sample configuration files placed in #{etc}/salt.
     EOS
   end
 
@@ -141,5 +150,22 @@ class Saltstack < Formula
     system "python", "-c", "import M2Crypto"
 
     system "#{bin}/salt", "--version"
+
+    # Requires write access to not be blocked by '--sandbox'
+    # https://github.com/Homebrew/homebrew/pull/44458
+    # assert_no_match /ERROR/, shell_output("#{bin}/salt-call --local grains.ls 2>&1")
+
+    assertDirectory etc/"salt"
+    assertDirectory var/"cache/salt"
+    assertDirectory var/"log/salt"
+    assertDirectory var/"run/salt"
   end
+
+  def assertDirectory(directory)
+
+    assert directory.exist?, "#{directory} must exist"
+    assert directory.directory?, "#{directory} must be a directory"
+    assert directory.writable?, "#{directory} must be writable"
+  end
+
 end
