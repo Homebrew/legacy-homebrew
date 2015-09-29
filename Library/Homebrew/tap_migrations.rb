@@ -189,6 +189,7 @@ TAP_MIGRATIONS = {
   "salt" => "homebrew/science",
   "scantailor" => "homebrew/x11",
   "sdelta3" => "homebrew/boneyard",
+  "sedna" => "homebrew/boneyard",
   "shark" => "homebrew/boneyard",
   "shell.fm" => "homebrew/boneyard",
   "simple-mtpfs" => "homebrew/fuse",
