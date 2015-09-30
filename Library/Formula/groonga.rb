@@ -12,17 +12,16 @@ class Groonga < Formula
 
   option "with-benchmark", "With benchmark program for developer use"
 
+  deprecated_option "enable-benchmark" => "with-benchmark"
+
   depends_on "pkg-config" => :build
   depends_on "pcre"
   depends_on "msgpack"
   depends_on "mecab" => :optional
-  depends_on "mecab-ipadic" if build.with? "mecab"
   depends_on "lz4" => :optional
   depends_on "openssl"
-
+  depends_on "mecab-ipadic" if build.with? "mecab"
   depends_on "glib" if build.with? "benchmark"
-
-  deprecated_option "enable-benchmark" => "with-benchmark"
 
   def install
     args = %W[
@@ -33,7 +32,7 @@ class Groonga < Formula
       --without-libstemmer
     ]
 
-    args << "--enable-benchmark" if build.include? "enable-benchmark"
+    args << "--enable-benchmark" if build.with? "benchmark"
     args << "--with-mecab" if build.with? "mecab"
     args << "--with-lz4" if build.with? "lz4"
 
