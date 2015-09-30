@@ -11,6 +11,6 @@ class Tortle < Formula
   end
 
   test do
-    system "false"
+    system "tortle"
   end
 end
