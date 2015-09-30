@@ -9,9 +9,9 @@ class AndroidSdk < Formula
 
   bottle do
     cellar :any
-    sha256 "7e9cfe4358bc78d50c5481c94eac4a8257253991a04c2484b2ad647d3e030d0f" => :yosemite
-    sha256 "8e2345713d8c4d45edca76daa49779bfdd5964117730c325662a01fdab74023d" => :mavericks
-    sha256 "75990555c5bc71c43afcb83bcb7ee70c580cedf8b86b2c60d82a1abb7bc588b6" => :mountain_lion
+    sha256 "6813bb19eb0127850832a32cddd55cfd0106a8d079726c3a9e8e18855efe0165" => :el_capitan
+    sha256 "7210e0118c1bbba916add540c9a1b7dc9b14b0c2cfbdbea9a1e0ca0e6b0143ec" => :yosemite
+    sha256 "e148339aa960c019ae70e967b3cadcd57fe93838067453b21264a8e330818a42" => :mavericks
   end
 
   conflicts_with "android-platform-tools",
