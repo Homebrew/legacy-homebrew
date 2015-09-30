@@ -15,7 +15,7 @@ class Neo4j < Formula
 
   resource "neo4j-shell-tools" do
     url "http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.2.zip"
-    sha256 "a84bd306754701c1748a26dcf207c136c9859f60cdd60e003771f0df0a83fb00"
+    sha256 "e295f724b6c5e35db5d471eefc976bd5adcd002763722c726885455e3f38f2ca"
   end
 
   def install
