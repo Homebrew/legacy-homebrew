@@ -21,6 +21,6 @@ class Geographiclib < Formula
   end
 
   test do
-    system "GeoConvert", "-p", "-3", "-m", "--input-string", "33.3 44.4"
+    system bin/"GeoConvert", "-p", "-3", "-m", "--input-string", "33.3 44.4"
   end
 end
