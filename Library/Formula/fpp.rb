@@ -7,10 +7,9 @@ class Fpp < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c3fe9eeb5cb245bbb9bcc960d953d0fab29d443bfcd518ae9fc346efcb30b4bf" => :el_capitan
-    sha256 "81c66eb233cf29c15a198b5adcc7cfda6b306d9c2d38d37401c50a2494795358" => :yosemite
-    sha256 "7e86a6be38372bec214594ee10cf19eb2afaad9464a4ee23afde33ed5ae5c430" => :mavericks
-    sha256 "eb3e955121c0cab6f567b4b3ba942899be74452be5a56c3f766ea9904bf39d09" => :mountain_lion
+    sha256 "dc11342cec78684be0e6f43b8276026fe1f23d6c7e201b0f629ba9a3fd1e1592" => :el_capitan
+    sha256 "c79b5dcb7b79fee7b8562d64936894fec85b9b1ac6ae69a313e22e595263691a" => :yosemite
+    sha256 "14e13d31f2fee2c5e59cdd7c68e16caffa8b0a51455ac6c2c4282f1221d5383a" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
