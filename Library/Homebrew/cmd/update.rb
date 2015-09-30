@@ -38,7 +38,19 @@ module Homebrew
 
     report = Report.new
     master_updater = Updater.new(HOMEBREW_REPOSITORY)
-    master_updater.pull!
+    begin
+      master_updater.pull!
+    rescue ErrorDuringExecution
+      unless HOMEBREW_REPOSITORY.writable_real?
+        onoe "Can't write to #{HOMEBREW_REPOSITORY}"
+        $stderr.puts <<-EOS.undent
+          You may be able to fix this error by running
+            sudo chown -R #{`whoami`.strip} #{HOMEBREW_REPOSITORY}
+          to reset ownership to your current user account.
+        EOS
+      end
+      raise
+    end
     report.update(master_updater.report)
 
     # rename Taps directories
