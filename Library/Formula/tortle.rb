@@ -9,4 +9,8 @@ class Tortle < Formula
   def install
     bin.install "tortle"
   end
+
+  test do
+    system "false"
+  end
 end
