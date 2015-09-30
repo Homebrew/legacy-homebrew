@@ -99,13 +99,13 @@ class Foo < Formula
   url ...
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.8.0.tar.gz"
-    sha1 "aa3b0659cbc85c6c7a91efc51f2d1007040070cd"
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
-   resource "parsedatetime" do
+  resource "parsedatetime" do
     url "https://pypi.python.org/packages/source/p/parsedatetime/parsedatetime-1.4.tar.gz"
-    sha1 "4b9189d38f819cc8144f30d91779716a696d97f8"
+    sha256 "09bfcd8f3c239c75e77b3ff05d782ab2c1aed0892f250ce2adf948d4308fe9dc"
   end
 
   def install

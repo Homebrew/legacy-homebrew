@@ -1,7 +1,7 @@
 class Lynx < Formula
   desc "Text-based web browser"
   homepage "http://lynx.isc.org/release/"
-  url "http://lynx.isc.org/current/lynx2.8.8rel.2.tar.bz2"
+  url "http://invisible-mirror.net/archives/lynx/tarballs/lynx2.8.8rel.2.tar.bz2"
   version "2.8.8rel.2"
   sha256 "6980e75cf0d677fd52c116e2e0dfd3884e360970c88c8356a114338500d5bee7"
   revision 1

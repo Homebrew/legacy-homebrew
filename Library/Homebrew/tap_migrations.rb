@@ -111,6 +111,7 @@ TAP_MIGRATIONS = {
   "ifuse" => "homebrew/fuse",
   "imake" => "homebrew/x11",
   "inkscape" => "homebrew/x11",
+  "iojs" => "homebrew/versions",
   "ipopt" => "homebrew/science",
   "iptux" => "homebrew/x11",
   "itsol" => "homebrew/science",

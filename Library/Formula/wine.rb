@@ -166,13 +166,18 @@ class Wine < Formula
     s = <<-EOS.undent
       You may want to get winetricks:
         brew install winetricks
-
-      The current version of Wine contains a partial implementation of dwrite.dll
-      which may cause text rendering issues in applications such as Steam.
-      We recommend that you run winecfg, add an override for dwrite in the
-      Libraries tab, and edit the override mode to "disable". See:
-        https://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
+
+    if build.stable?
+      s += <<-EOS.undent
+
+        The current version of Wine contains a partial implementation of dwrite.dll
+        which may cause text rendering issues in applications such as Steam.
+        We recommend that you run winecfg, add an override for dwrite in the
+        Libraries tab, and edit the override mode to "disable". See:
+          https://bugs.winehq.org/show_bug.cgi?id=31374
+      EOS
+    end
 
     if build.with? "x11"
       s += <<-EOS.undent

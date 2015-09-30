@@ -5,17 +5,15 @@ class Saltstack < Formula
   # (URLs starting with https://github.com/saltstack/salt/releases/download)
   # github tag archives will report wrong version number
   # https://github.com/Homebrew/homebrew/issues/43493
-  url "https://github.com/saltstack/salt/releases/download/v2015.5.5/salt-2015.5.5.tar.gz"
-  sha256 "5cd8d317616abab691a83f7fd3f8bcf9ad8aecaa95fcfdc0f6d788de87f0beeb"
+  url "https://github.com/saltstack/salt/releases/download/v2015.8.0/salt-2015.8.0.tar.gz"
+  sha256 "71e1cb2eb1d4b30f3247f5590c00a2089190b8f9a90c9330dc9a65fae517ec9b"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
-  revision 1
 
   bottle do
     cellar :any
-    sha256 "4143035624b8a715058abb807394a3802283fbe4af4b4dd1aabab0263bafd35d" => :el_capitan
-    sha256 "1354410fb9a5115d63196d4ed1e8bc37f9edd44f2e530570c5c8ef86e461c04f" => :yosemite
-    sha256 "69ae2286dd9788d9ac0eaabb6e1419540fad8a73a3363e2f664338132f7e9d6f" => :mavericks
-    sha256 "4fd57592eb583ef91dd7cab232469c536581c74a6a90be61c875553e6f96b20a" => :mountain_lion
+    sha256 "77ee45a43b886a6f9e4744fabb03ec60ab4b3dfc9fcc99d1738894ea3d63158b" => :el_capitan
+    sha256 "eca29cf538c0fba986d2160f72f195f5bfce221ef5601f9bf584085107385d4a" => :yosemite
+    sha256 "c28dc5586b07390c04125d55547ef9f46516ac080fc66a5527440c111bab9cf6" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -42,6 +40,11 @@ class Saltstack < Formula
   resource "requests" do
     url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
     sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+  end
+
+  resource "futures" do
+    url "https://pypi.python.org/packages/source/f/futures/futures-3.0.3.tar.gz"
+    sha256 "2fe2342bb4fe8b8e217f0d21b5921cbe5408bf966d9f92025e707e881b198bed"
   end
 
   resource "pycrypto" do
@@ -76,8 +79,8 @@ class Saltstack < Formula
 
   # Required by tornado
   resource "certifi" do
-    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.04.28.tar.gz"
-    sha256 "99785e6cf715cdcde59dee05a676e99f04835a71e7ced201ca317401c322ba96"
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.9.6.2.tar.gz"
+    sha256 "dc3a2b2d9d1033dbf27586366ae61b9d7c44d8c3a6f29694ffcbb0618ea7aea6"
   end
 
   # Required by tornado
@@ -87,8 +90,8 @@ class Saltstack < Formula
   end
 
   resource "tornado" do
-    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.2.tar.gz"
-    sha256 "e8b1207da67dbdceebfb291292b4ef1b547d6171525bec1b366853f923456a5f"
+    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.2.1.tar.gz"
+    sha256 "a16fcdc4f76b184cb82f4f9eaeeacef6113b524b26a2cb331222e4a7fa6f2969"
   end
 
   def install
@@ -101,8 +104,8 @@ class Saltstack < Formula
     ENV.prepend_path "PATH", buildpath/"swig/bin"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    rs = %w[requests pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python]
-    rs += %w[certifi backports.ssl_match_hostname tornado] if build.head?
+    rs = %w[requests futures pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python]
+    rs += %w[certifi backports.ssl_match_hostname tornado]
     rs.each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
@@ -134,6 +137,9 @@ class Saltstack < Formula
   end
 
   test do
+    ENV.prepend_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    system "python", "-c", "import M2Crypto"
+
     system "#{bin}/salt", "--version"
   end
 end
