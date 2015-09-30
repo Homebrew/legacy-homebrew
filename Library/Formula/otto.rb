@@ -76,6 +76,6 @@ class Otto < Formula
   end
 
   test do
-    system "#{bin}/otto", "status"
+    system "#{bin}/otto", "--version"
   end
 end
