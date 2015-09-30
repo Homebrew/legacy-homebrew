@@ -1291,14 +1291,14 @@ module Homebrew
       end
       unless out.nil? || out.empty?
         if first_warning
-          puts <<-EOS.undent
+          $stderr.puts <<-EOS.undent
             #{Tty.white}Please note that these warnings are just used to help the Homebrew maintainers
             with debugging if you file an issue. If everything you use Homebrew for is
             working fine: please don't worry and just ignore them. Thanks!#{Tty.reset}
           EOS
         end
 
-        puts
+        $stderr.puts
         opoo out
         Homebrew.failed = true
         first_warning = false
