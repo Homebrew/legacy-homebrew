@@ -1,5 +1,5 @@
 class Tortle < Formula
-  desc "Tortle is a tiny utility for easily enabling or disabling Tor"
+  desc "Tiny utility for easily enabling or disabling Tor"
   homepage "https://thrifus.github.io/Tortle"
   url "https://github.com/thrifus/Tortle/archive/1.0.2.tar.gz"
   version "1.0.2"
