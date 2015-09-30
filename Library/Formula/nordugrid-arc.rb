@@ -19,6 +19,11 @@ class NordugridArc < Formula
 
   needs :cxx11
 
+  # build fails on Mavericks due to a clang compiler bug
+  # and bottling also fails if gcc is being used due to conflicts between
+  # libc++ and libstdc++
+  depends_on MinimumMacOSRequirement => :yosemite
+
   # bug filed upstream at http://bugzilla.nordugrid.org/show_bug.cgi?id=3514
   patch do
     url "https://gist.githubusercontent.com/tschoonj/065dabc33be5ec636058/raw/beee466cdf5fe56f93af0b07022532b1945e9d2e/nordugrid-arc.diff"
