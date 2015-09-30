@@ -9,7 +9,8 @@ class Peco < Formula
   head "https://github.com/peco/peco.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "0041828f4e6581f5d381a2b3c9b35bbfde65b16f12b5b3072e91db008918808f" => :el_capitan
     sha256 "f2132e8e5383140a49f9a6cadfa57b5736230cfbbec5a924a0edcc9a80f9ddfe" => :yosemite
     sha256 "62ff8a3489cbfb5bea9257c56b924bd77c61c272131090b5edf2edffd1d66042" => :mavericks
     sha256 "284f41c4f38f65f580c8c0d43704fdf672e22c56a22895664bb0e08ea6c5204f" => :mountain_lion

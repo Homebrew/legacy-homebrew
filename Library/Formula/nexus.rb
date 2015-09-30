@@ -1,15 +1,15 @@
 class Nexus < Formula
   desc "Repository manager for binary software components"
   homepage "http://www.sonatype.org/"
-  url "https://download.sonatype.com/nexus/oss/nexus-2.11.3-01-bundle.tar.gz"
-  version "2.11.3-01"
-  sha256 "a155a056a5ffe8b129200cbe83721f083ccb220fddffd19c737690804bc791c7"
+  url "https://sonatype-download.global.ssl.fastly.net/nexus/oss/nexus-2.11.4-01-bundle.tar.gz"
+  version "2.11.4-01"
+  sha256 "2901d00c7a5c287d0ab51980b0ea8ad6a3db936e6a9bc7aea573ec4e2b516719"
 
   bottle do
-    cellar :any
-    sha256 "9faceac9f3b0eac6c78c6d400e6fe2c0f5f9eb38e5ee5f7507c93f60163c6cc6" => :yosemite
-    sha256 "003848e3c5bda97a0f2983165b14ed5c81d93190e3585685b6d36e43413aae9e" => :mavericks
-    sha256 "f33d6de510d225b97461465d360f741b11391b7c69d43200730c5d02959f789a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "7b681196601ce846b1ecc47c1bbb9bb7dbd8374bc58e08c82ab9b2d9f75e8f34" => :el_capitan
+    sha256 "d4d4491805a55babac9c576952c31d2d2c398a44f9553ea28126c424fce67872" => :yosemite
+    sha256 "bf9690d1cd468fd6e0cb1ef8e471bfe91e5d9ea4eb369f3f028665b19e2d0fe9" => :mavericks
   end
 
   def install

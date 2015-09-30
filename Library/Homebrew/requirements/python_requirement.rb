@@ -60,10 +60,6 @@ class Python3Requirement < PythonRequirement
 
   satisfy(:build_env => false) { which_python }
 
-  env do
-    ENV["PYTHONPATH"] = "#{HOMEBREW_PREFIX}/lib/python#{python_short_version}/site-packages"
-  end
-
   def python_binary
     "python3"
   end

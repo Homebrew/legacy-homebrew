@@ -17,19 +17,20 @@ class Mongodb < Formula
 
   bottle do
     cellar :any
+    sha256 "1a351bddefae96c4e17b6e679fa30f551ca8f7690898ab52911bbd61b8398e2d" => :el_capitan
     sha256 "9194f749a0f400d687e93ca41be83d0419c4d59a95d738ae0f99618aa91076ca" => :yosemite
     sha256 "7cf4a87166774c9276eb0e20b15219f05da236f21c2378823625a65c9983d1f1" => :mavericks
     sha256 "aef1a270e9946d298b076804161510f1acbcbc33fd35ff4558a4c06ce1206a13" => :mountain_lion
   end
 
   devel do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.7.tar.gz"
-    sha256 "2a9275acdcd3a45c024fbc4a5f378e836c0cd571969bef50fbad450fd7bff5dc"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.8.tar.gz"
+    sha256 "03ea50dbc243e56e093ed8efacd618437f3fe464d9c8b7680f22aef02570c28c"
 
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.1.7",
-        :revision => "7858a56c0ff4909b678faf4225f4c30404b80176"
+        :tag => "r3.1.8",
+        :revision => "bafe40f13b8fb547cfdf1a216230d9b69735f8e9"
     end
   end
 

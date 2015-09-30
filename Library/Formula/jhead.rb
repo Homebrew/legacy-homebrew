@@ -5,7 +5,8 @@ class Jhead < Formula
   sha256 "88cc01da018e242fe2e05db73f91b6288106858dd70f27506c4989a575d2895e"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "2df303bdee1a1ee76b6f8a450d762ee2e3ea5868198c2ed9991f5407c6a1267a" => :el_capitan
     sha1 "185afa273417b275ff636c040ddcaef805bbf73f" => :yosemite
     sha1 "00babbf26b32bc6b51b1e029209ad998cb579dd1" => :mavericks
     sha1 "af148787c63b3fc3c4dc107f98ca72e54dececa0" => :mountain_lion

@@ -126,6 +126,16 @@ Note that these flags should only appear after a command.
     type dependencies, pass `--skip-build`. Similarly, pass `--skip-optional`
     to skip `:optional` dependencies.
 
+  * `desc` <formula>:
+    Display <formula>'s name and one-line description.
+
+  * `desc [-s|-n|-d] <pattern>`:
+    Search both name and description (`-s`), just the names (`-n`), or just  the
+    descriptions (`-d`) for `<pattern>`. `<pattern>` is by default interpreted
+    as a literal string; if flanked by slashes, it is instead interpreted as a
+    regular expression. Formula descriptions are cached; the cache is created on
+    the first search, making that search slower than subsequent ones.
+
   * `diy [--name=<name>] [--version=<version>]`:
     Automatically determine the installation prefix for non-Homebrew software.
 

@@ -1,51 +1,55 @@
-# Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
-  desc "Platform built on Chrome's JavaScript runtime to build network applications"
+  desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
-  sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
-  head "https://github.com/nodejs/node.git", :branch => "v0.12"
-  revision 1
+  url "https://nodejs.org/dist/v4.1.1/node-v4.1.1.tar.gz"
+  sha256 "6a610935ff52de713cf2af6a26002322e24fd7933a444436f0817a2b84e15a58"
+  head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "15689cc474a79975eaa6d791b24e6fa021494839c9b691ac307d74acefc5f834" => :yosemite
-    sha256 "a7a7d37c6e5088ed3f58b867d4d246851715d3a4f2f3b4b3c40cc7452ff6728c" => :mavericks
-    sha256 "374f3c5b576e4173590b8413e9941df121a84f46bd48161fc758e1f7d42e0402" => :mountain_lion
+    sha256 "ceb4a1721a9d312e9b3853d0cb4165dfa8b3a1d08e01620e56ac841092108c5c" => :el_capitan
+    sha256 "4c6b805490069a6e6b9956c85c0713e5fc666878f7e87d76b69279b61cff64ac" => :yosemite
+    sha256 "e082904a9b900ff07d3bb633a125542e2cedc4de854def6ec7683e7d2d976d51" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
+  option "with-full-icu", "Build with full-icu (all locales) instead of small-icu (English only)"
 
   deprecated_option "enable-debug" => "with-debug"
+  deprecated_option "with-icu4c" => "with-full-icu"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "pkg-config" => :build
   depends_on "openssl" => :optional
-
-  # https://github.com/nodejs/node-v0.x-archive/issues/7919
-  # https://github.com/Homebrew/homebrew/issues/36681
-  depends_on "icu4c" => :optional
 
   fails_with :llvm do
     build 2326
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.14.2.tgz"
-    sha256 "592029e3406cbbaf249135e18212fab91db1601f991f61b4b2a03580311a066e"
+    url "https://registry.npmjs.org/npm/-/npm-2.14.4.tgz"
+    sha256 "c8b602de5d51f956aa8f9c34d89be38b2df3b7c25ff6588030eb8224b070db27"
+  end
+
+  resource "icu4c" do
+    url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
+    mirror "https://fossies.org/linux/misc/icu4c-55_1-src.tgz"
+    version "55.1"
+    sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
   end
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-    args << "--with-intl=system-icu" if build.with? "icu4c"
-
-    if build.with? "openssl"
-      args << "--shared-openssl"
+    args << "--shared-openssl" if build.with? "openssl"
+    if build.with? "full-icu"
+      args << "--with-intl=full-icu"
     else
-      args << "--without-ssl2" << "--without-ssl3"
+      args << "--with-intl=small-icu"
     end
+
+    resource("icu4c").stage buildpath/"deps/icu"
 
     system "./configure", *args
     system "make", "install"
@@ -112,18 +116,6 @@ class Node < Formula
       EOS
     end
 
-    if build.with? "icu4c"
-      s += <<-EOS.undent
-
-        Please note `icu4c` is built with a newer deployment target than Node and
-        this may cause issues in certain usage. Node itself is built against the
-        outdated `libstdc++` target, which is the root cause. For more information see:
-          https://github.com/nodejs/node-v0.x-archive/issues/7919
-
-        If this is an issue for you, do `brew install node --without-icu4c`.
-      EOS
-    end
-
     s
   end
 
@@ -134,6 +126,9 @@ class Node < Formula
     output = `#{bin}/node #{path}`.strip
     assert_equal "hello", output
     assert_equal 0, $?.exitstatus
+    output = `#{bin}/node -e "console.log(new Date('2015-09-15').toLocaleDateString('en'))"`.strip
+    assert_match %r{^9/1[45]/2015$}, output # depends on system timezone
+    assert_equal 0, $?.exitstatus
 
     if build.with? "npm"
       # make sure npm can find node
@@ -142,6 +137,7 @@ class Node < Formula
       assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
       assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
       system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
+      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "bignum"
     end
   end
 end

@@ -7,7 +7,8 @@ class Mogenerator < Formula
   head "https://github.com/rentzsch/mogenerator.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "081b98695c9a9bd13b9a680fe8f5b2504c5970ccff61298aeb124e4dc7c8c646" => :el_capitan
     sha256 "38f8ab9f1e845067b3f4a30b2330b537f2596b84e17b9a6f332da1367310fa03" => :yosemite
     sha256 "074479af3d6c596d02d843d3ceebd1af782cd3ff268695033ebc0ae325e74673" => :mavericks
     sha256 "d7ca816e9513ddd029c1edc602e7123d321fed043b49bcaae1a196617725db62" => :mountain_lion

@@ -22,6 +22,7 @@ class Wine < Formula
   end
 
   bottle do
+    sha256 "545e28e3c8442d8be08dbb5ec193bbc9fbf82d1c196030e07f4758161af42924" => :el_capitan
     sha1 "348f15e19880888d19d04d2fe4bad42048fe6828" => :yosemite
     sha1 "69f05602ecde44875cf26297871186aaa0b26cd7" => :mavericks
     sha1 "a89371854006687b74f4446a52ddb1f68cfafa7e" => :mountain_lion
@@ -165,13 +166,18 @@ class Wine < Formula
     s = <<-EOS.undent
       You may want to get winetricks:
         brew install winetricks
-
-      The current version of Wine contains a partial implementation of dwrite.dll
-      which may cause text rendering issues in applications such as Steam.
-      We recommend that you run winecfg, add an override for dwrite in the
-      Libraries tab, and edit the override mode to "disable". See:
-        https://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
+
+    if build.stable?
+      s += <<-EOS.undent
+
+        The current version of Wine contains a partial implementation of dwrite.dll
+        which may cause text rendering issues in applications such as Steam.
+        We recommend that you run winecfg, add an override for dwrite in the
+        Libraries tab, and edit the override mode to "disable". See:
+          https://bugs.winehq.org/show_bug.cgi?id=31374
+      EOS
+    end
 
     if build.with? "x11"
       s += <<-EOS.undent

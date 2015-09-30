@@ -1,23 +1,24 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.8.tar.gz"
-  sha256 "40ac6c27974fc749557fe37f00e29100c26f25f038f3e63034f721442ac0b489"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.0.tar.gz"
+  sha256 "7ff80b3ecaf063c6ea742117bcab111d3d6136887bfa06586ae0f303cbc85381"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
-    cellar :any
-    sha256 "bfaf5babb508ca12c22c87f62784051a1b0528959df403ccf788e374332c47a8" => :yosemite
-    sha256 "a206c186fa553ce3ea1f40eb4ed4160e12df5c630103a4d1f7d644815005430d" => :mavericks
-    sha256 "fedbc94b2769e205f64ea41b52942be1f4647e30dd4148365d518933927fa7c8" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9f70d4c349bfb545e5aa4f9b3f865ada6e01b1a058368abad2843cf1b909ba5d" => :el_capitan
+    sha256 "3816987a88d9d623533c6e979a00d2633aadafe1e204bcf6ac0336c0ac6129de" => :yosemite
+    sha256 "7e03106ce87b5a6e7e1a401658d42d64b3361c768febc9133d74166c32790c13" => :mavericks
+    sha256 "9161e6e3bd3792e0d50639657bb081d026a6c69358282238dc06e0f054586d29" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.1.1.tar.gz"
-    sha256 "d3290bd4a027fa0b3a2e2ee87728056fe49d4112640e2b8c2ea4dd94ba0cf057"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.2.1.tar.gz"
+    sha256 "7f6bea8bfe2e5cfffd0f411aa316e837daadced1893b44254bb9a38a654340f7"
   end
 
   resource "pathlib" do
@@ -40,10 +41,15 @@ class Thefuck < Formula
     sha256 "0994a58df27ea5dc523782a601357a2198b7493dcc99a30d51827a23585b5b1d"
   end
 
+  resource "decorator" do
+    url "https://pypi.python.org/packages/source/d/decorator/decorator-4.0.2.tar.gz"
+    sha256 "1a089279d5de2471c47624d4463f2e5b3fc6a2cf65045c39bf714fc461a25206"
+  end
+
   def install
     xy = Language::Python.major_minor_version "python"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
-    %w[setuptools pathlib psutil colorama six].each do |r|
+    %w[setuptools pathlib psutil colorama six decorator].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -66,13 +72,10 @@ class Thefuck < Formula
   end
 
   test do
-    assert_equal "The Fuck #{version}", shell_output("#{bin}/thefuck --version 2>&1").chomp
+    ENV["THEFUCK_REQUIRE_CONFIRMATION"] = "false"
+    assert_equal "thefuck #{version}", shell_output("#{bin}/thefuck --version 2>&1").chomp
     assert_match /.+TF_ALIAS.+thefuck.+/, shell_output("#{bin}/thefuck --alias").chomp
-    IO.popen("#{bin}/thefuck git branchh 2>&1", "r+") do |pipe|
-      pipe.puts "\n"
-      pipe.close_write
-      assert_match /git branch.+/, pipe.gets.chomp
-      pipe.close
-    end
+    assert_match /git branch/, shell_output("#{bin}/thefuck git branchh").chomp
+    assert_match /echo ok/, shell_output("#{bin}/thefuck echho ok").chomp
   end
 end

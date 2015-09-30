@@ -5,6 +5,7 @@ class JsonGlib < Formula
   sha256 "80f3593cb6bd13f1465828e46a9f740e2e9bd3cd2257889442b3e62bd6de05cd"
 
   bottle do
+    sha256 "08cf8e09c827d20869eb11b6a5422caf49a291142dc3c403cc4392b15d03d1fb" => :el_capitan
     sha256 "6892a414c3e09d955ddf5ae6b757d5b49c46fc4adb230afda9262a821a5da3af" => :yosemite
     sha256 "d45ce5b7d2a3077b61a36565792b626e15ffc2b3f3cdc1011b349ee770b6019b" => :mavericks
     sha256 "ef7772e0fc8f65c2b6b795de8b6743cefad78b309eeccf12e92c23705bd6f4a2" => :mountain_lion

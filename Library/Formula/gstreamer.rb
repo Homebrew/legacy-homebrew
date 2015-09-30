@@ -7,6 +7,7 @@ class Gstreamer < Formula
 
   bottle do
     revision 2
+    sha256 "ef286655192a6ee7283fbb536465062e55d8f7627993adcc67152c1d3ec8ee85" => :el_capitan
     sha256 "ac4e49623736041c7d8fdc981c155b7c40e12c17c0f7e04d2f32d2f0ee1b5ffb" => :yosemite
     sha256 "2a91498326318c4de55ddb5eae47b3540bbda7ac44166899886e5cc1c2ad7fb2" => :mavericks
     sha256 "b943636f153cc792c2d63e7ce68c4084d1ffff2987606e8ec95f1ef0a77cea82" => :mountain_lion

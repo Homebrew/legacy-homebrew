@@ -1,16 +1,14 @@
 class Watchman < Formula
   desc "Watch files and take action when they change"
   homepage "https://github.com/facebook/watchman"
-  url "https://github.com/facebook/watchman/archive/v3.7.0-brew.tar.gz"
-  version "3.7.0"
-  sha256 "55a3ea1ee3990a5e5c11f1a37ad5bafbb63e8002f48f449c083e598f6f332154"
-
+  url "https://github.com/facebook/watchman/archive/v3.8.0.tar.gz"
+  sha256 "10d1e134e6ff110044629a517e7c69050fb9e4a26f21079b267989119987b40d"
   head "https://github.com/facebook/watchman.git"
 
   bottle do
-    sha256 "988bc7562fe67087f281935d2b064c172161b036a22539c50ec04b215235749c" => :yosemite
-    sha256 "ae7410503f560b5ad62277e468a477c6cf7457986834ca7e2d13871661d7a131" => :mavericks
-    sha256 "cc77325547e91585adbdf7341808abbced3c352ff73742365592b1654184f2dd" => :mountain_lion
+    sha256 "ddb382dd43017beb04ad421d3b9c31b47e85206875ee01ed1f148b01949a7834" => :el_capitan
+    sha256 "b8a0bd731de9802add0de92f8cf148ae816378e32df51398d688348c72458742" => :yosemite
+    sha256 "31cab2af477fd9b3a326d8bf620ddb87aafb1bc6654db130e5ca22f16ac7f27a" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -28,15 +26,9 @@ class Watchman < Formula
   end
 
   test do
-    # Currently fails under HOMEBREW_SANDBOX: Operation not permitted
-    # "Failed to open /path/to/LaunchAgents/plist for write"
-    system "#{bin}/watchman", "shutdown-server"
-    system "#{bin}/watchman", "watch", testpath
-
-    list = shell_output("#{bin}/watchman watch-list")
-    if list.index(testpath).nil?
-      raise "failed to watch tmpdir"
+    list = shell_output("#{bin}/watchman -v")
+    if list.index(version).nil?
+      raise "expected to see #{version} in the version output"
     end
-    system "#{bin}/watchman", "watch-del", testpath
   end
 end

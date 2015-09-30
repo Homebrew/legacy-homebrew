@@ -1,8 +1,8 @@
 class Liquibase < Formula
   desc "Library for database change tracking"
   homepage "http://liquibase.org"
-  url "https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.4.0/liquibase-3.4.0-bin.tar.gz"
-  sha256 "c3c6869b3f36433f3a1f9c49890047100594b57ed54183f686e7421a43567f03"
+  url "https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.4.1/liquibase-3.4.1-bin.tar.gz"
+  sha256 "693919918e217e7a88c5140e82f279f31f636233a62cd2108abdafa4f3ed0a02"
 
   def install
     rm_f Dir["*.bat"]

@@ -1,70 +1,53 @@
+require "language/go"
+
 class Deis < Formula
   desc "Deploy and manage applications on your own servers"
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.5.1.tar.gz"
-  sha256 "9158f1678dfe6c3071c492007167800c23b6e3df988cea230babebb5406189f6"
+  url "https://github.com/deis/deis/archive/v1.10.0.tar.gz"
+  sha256 "afdb0ae576a9c05af2e634a3ac83df9bae99cef17cfd2f1e2c8b7713107e769b"
 
   bottle do
-    cellar :any
-    sha256 "fec83c5afc3261b56fccb415ae89588b1cde6828a007af0495b22f7cfbc93195" => :yosemite
-    sha256 "eb491d5b606955a10c0dfd916d61964e1a7b2447556b86b2928f977ba7036a0f" => :mavericks
-    sha256 "e357da38990b1e9cfd4ee3ad9577b8fa2c0e029752b0705d0bcaf6b9a14d899a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "6ffe060536ad4fa9288dd7284459c3b66cc797aa3d2252297507519807351400" => :yosemite
+    sha256 "71d9f986f653560edccdbfe9fb2acec05d79ad74a10d2ded77376fe7a728755f" => :mavericks
+    sha256 "c9439461be649060ded9092649da8d3e3268c4bb29492d25cfc624bcce371b2c" => :mountain_lion
   end
 
-  depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "libyaml"
+  depends_on "go" => :build
 
-  resource "docopt" do
-    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
-    sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
+  go_resource "github.com/tools/godep" do
+    url "https://github.com/tools/godep.git", :revision => "dd8d14d5985f95e87948edfe1038f0b752bacbef"
   end
 
-  resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.post1.tar.gz"
-    sha256 "aa9bdbd60c395db90204609f1fb5aeb3797870f65c09f04f243476d22f8f4615"
+  go_resource "github.com/docopt/docopt-go" do
+    url "https://github.com/docopt/docopt-go.git", :revision => "854c423c810880e30b9fecdabb12d54f4a92f9bb"
   end
 
-  resource "PyYAML" do
-    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
-    sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git", :revision => "aedad9a179ec1ea11b7064c57cbc6dc30d7724ec"
   end
 
-  resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha256 "7b7735efd3b1e2323dc9fcef060b380d05f5f18bd0f247f5e9e74a628279de66"
-  end
-
-  resource "termcolor" do
-    url "https://pypi.python.org/packages/source/t/termcolor/termcolor-1.1.0.tar.gz"
-    sha256 "1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"
-  end
-
-  resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
-  end
-
-  resource "tabulate" do
-    url "https://pypi.python.org/packages/source/t/tabulate/tabulate-0.7.4.tar.gz"
-    sha256 "6bcd5e47372cca82088f87dfe2f365f79965b2be7837e3bac5a75adf4e0b0ba8"
+  go_resource "gopkg.in/yaml.v2" do
+    url "https://github.com/go-yaml/yaml.git", :revision => "7ad95dd0798a40da1ccdff6dff35fd177b5edf40"
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    ENV["GOPATH"] = buildpath
+    ENV.prepend_create_path "PATH", buildpath/"bin"
 
-    resources.each do |r|
-      r.stage do
-        system "python", *Language::Python.setup_install_args(libexec/"vendor")
-      end
+    mkdir_p "#{buildpath}/client/Godeps/_workspace/src/github.com/deis"
+    ln_s buildpath, "#{buildpath}/client/Godeps/_workspace/src/github.com/deis/deis"
+
+    Language::Go.stage_deps resources, buildpath/"src"
+
+    cd "src/github.com/tools/godep" do
+      system "go", "install"
     end
 
     cd "client" do
-      ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-      system "python", *Language::Python.setup_install_args(libexec)
+      system "godep", "go", "build", "-a", "-ldflags", "-s", "-o", "dist/deis"
+      bin.install "dist/deis"
     end
-
-    bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

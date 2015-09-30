@@ -15,6 +15,7 @@ class Ttfautohint < Formula
 
   bottle do
     cellar :any
+    sha256 "b4631261b1dd8fd7d30a849db5be19775cc8c21e706433ba1d929a3f74c24296" => :el_capitan
     sha1 "06db9ad73083d1a47515711fa5de47cb1b12fe4e" => :yosemite
     sha1 "dd81a451044381a3f87a8ad9d9da464744b98b80" => :mavericks
     sha1 "af5485546cb4fc3b6a663920ba9599f727e5fb11" => :mountain_lion

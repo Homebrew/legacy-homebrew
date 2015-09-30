@@ -123,3 +123,7 @@ Style/PerlBackrefs:
 # this is required for Ruby 1.8
 Style/DotPosition:
   EnforcedStyle: trailing
+
+# makes diffs nicer
+Style/TrailingComma:
+  EnforcedStyleForMultiline: consistent_comma

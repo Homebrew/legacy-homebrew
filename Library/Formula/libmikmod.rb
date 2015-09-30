@@ -7,6 +7,7 @@ class Libmikmod < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "e67080feaae93927e28c2bf9858e0fc1fb46c255cfa83b63a5f1502dcb1c06f7" => :el_capitan
     sha1 "7c2b02e0af8bd35ef16963234062f386a6afbaac" => :yosemite
     sha1 "d3257de6616b399d3009f709cfb25e4f0b872025" => :mavericks
     sha1 "9384df42ef0e74aa4f077d8a85fc028f4ec9092a" => :mountain_lion

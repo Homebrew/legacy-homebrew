@@ -4,11 +4,12 @@ class Lensfun < Formula
   url "https://downloads.sourceforge.net/project/lensfun/0.3.1/lensfun-0.3.1.tar.gz"
   sha256 "216c23754212e051c8b834437e46af3812533bd770c09714e8c06c9d91cdb535"
   head "http://git.code.sf.net/p/lensfun/code"
+  revision 1
 
   bottle do
-    sha256 "a5b1e00b997a38d1ae19985b301e5eca97c084ca23f83ced3c25c6f3167568e8" => :yosemite
-    sha256 "4ac0a93f45140195c8d73d3f886c021ed1bf022a602a39d29f10e7b96ae5e6ae" => :mavericks
-    sha256 "7ab064b444b3bf7e8c08d0b57c32b1d71565ec644b9652657aab5a9d79542633" => :mountain_lion
+    sha256 "d267b6318b37f43153033958ed487732b14ef0362576673334baa9d0bce596b2" => :yosemite
+    sha256 "f5e5e2e1af79de22e5b08ef98e8d66335de6b30e4a6d0391d1ae00ccf8ee3868" => :mavericks
+    sha256 "c50bcbf69c3839a44d0bb988ea016dcabb259be866ae10dd9b3a04d3de87a487" => :mountain_lion
   end
 
   depends_on :python3

@@ -12,6 +12,7 @@ class Unar < Formula
   bottle do
     cellar :any
     revision 2
+    sha256 "3b6c6c9b3daad466a48d2212990303afee2e7b4d7104bea8300d67bd9a1b801d" => :el_capitan
     sha1 "cb7c91f0aab580a0d4edb2db4934b7879cb468e3" => :mavericks
     sha1 "35f2b3655adfed8daed2eee14f757c0ada553c00" => :mountain_lion
     sha1 "a6254624528195ab69b6adf3b649571814b4d638" => :lion

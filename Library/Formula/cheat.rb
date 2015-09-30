@@ -6,7 +6,8 @@ class Cheat < Formula
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "dae7006c405ca260e83b93ef28b513000ad85af3db2e09336d8b8a5e85213f39" => :el_capitan
     sha256 "d0d8b1cf16aadf7ec1cf437a86f2b96dfba9fec807a126543b49e5763a0dc9a3" => :yosemite
     sha256 "b3438bcbb57c323e5a77e6a66a8f17f0c86294dfb2c094b378be66fc0f2e9331" => :mavericks
     sha256 "435e050b5ce4f69516b29d8c38fb803922ab9b1b2178bd3ac10955a4206bd719" => :mountain_lion

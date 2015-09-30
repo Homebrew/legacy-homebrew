@@ -1,11 +1,13 @@
 module Utils
   def self.git_available?
-    git = which("git")
+    return @git if instance_variable_defined?(:@git)
+    # check git in original path in case it's the wrapper script of Library/ENV/scm
+    git = which("git", ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
     # git isn't installed by older Xcodes
-    return false if git.nil?
+    return @git = false if git.nil?
     # /usr/bin/git is a popup stub when Xcode/CLT aren't installed, so bail out
-    return false if git == "/usr/bin/git" && !OS::Mac.has_apple_developer_tools?
-    true
+    return @git = false if git == "/usr/bin/git" && !OS::Mac.has_apple_developer_tools?
+    @git = true
   end
 
   def self.ensure_git_installed!
@@ -19,5 +21,11 @@ module Utils
     rescue
       raise "Git is unavailable"
     end
+
+    raise "Git is unavailable" unless git_available?
+  end
+
+  def self.clear_git_available_cache
+    remove_instance_variable(:@git) if instance_variable_defined?(:@git)
   end
 end

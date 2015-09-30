@@ -14,6 +14,9 @@ class Fltk < Formula
   depends_on "libpng"
   depends_on "jpeg"
 
+  # Fltk 1.3.4 include support for El Capitan. Remove on update.
+  depends_on MaximumMacOSRequirement => :yosemite
+
   fails_with :clang do
     build 318
     cause "http://llvm.org/bugs/show_bug.cgi?id=10338"

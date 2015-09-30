@@ -8,6 +8,7 @@ class Hydra < Formula
 
   bottle do
     cellar :any
+    sha256 "351f9f45c6350f4fb41c223e2c802b5169889176cf9d5418ce2d3fdda5090d1f" => :el_capitan
     sha1 "1e4448de82ef48e4dd8290b0ebec5fc84690437e" => :yosemite
     sha1 "df94e14ed8bf4553590545da8a9ac1cdcb72fd8d" => :mavericks
     sha1 "16c8738d0cdf625c6144c2c2939d3922e2f3b697" => :mountain_lion

@@ -12,3 +12,4 @@ Rather than merging in brews for either of these cases at this time, we're listi
 * [MSP430 development](https://github.com/Homebrew/homebrew/issues/issue/2336)
 * [OS161 development](https://github.com/maxpow4h/homebrew-os161) Your university probably uses a different version, replacing the URLs with your university's URLs will probably work.
 * [ARM-EABI](https://github.com/paxswill/homebrew-paxswill) provides an arm-none-eabi toolchain formula.
+* [RISC-V](https://github.com/riscv/homebrew-riscv) provides the RISC-V toolchain including binutils and gcc.

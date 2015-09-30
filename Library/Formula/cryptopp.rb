@@ -7,8 +7,9 @@ class Cryptopp < Formula
   version "5.6.2"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "4ee84c3bcc29d8f7eef4115b22caefde9d9ac7386aa8c7483adf6e8d51a24857" => :el_capitan
     sha256 "a136d3cf1d63f9b22d5bde0a0bb6df00ff2b39dc265de0382ac1220518aad1e0" => :yosemite
     sha256 "27fd4366af9bd34c6008d8e7508f3d95f119b8a1f55a33b2c78215933f30bbb4" => :mavericks
     sha256 "650e6e1ca3b24ed922b67d842ff702bb0574cac20fa054812558787cfcfba9e1" => :mountain_lion

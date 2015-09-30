@@ -3,11 +3,12 @@ class Pyqt5 < Formula
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
   url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5/PyQt-gpl-5.5.tar.gz"
   sha256 "cdd1bb55b431acdb50e9210af135428a13fb32d7b1ab86e972ac7101f6acd814"
+  revision 1
 
   bottle do
-    sha256 "031c5f439bb11d97d2262edce4b50151bd94272cea8889dee710c6eadfd8c3db" => :yosemite
-    sha256 "02276afa07267aa91f61e98a411172e59de31dbfceb253581d184c1a0fed096d" => :mavericks
-    sha256 "d514535d8c758b7a978c99d38d2275adab714846dd33885e72c98d3a73a84ca5" => :mountain_lion
+    sha256 "ce5dbd7dbf9d8377500226050ee1205d979679340443c18612d5d66f3ffb3ee2" => :yosemite
+    sha256 "d40d3b90566540600d830931ff7f493ecaac3baf9f723a444116a945d7203660" => :mavericks
+    sha256 "9f07294fb874a412a62f93f90382d22a1177f29c589c2b7bf331974b7656d952" => :mountain_lion
   end
 
   option "enable-debug", "Build with debug symbols"
@@ -42,6 +43,7 @@ class Pyqt5 < Formula
               "--qmake=#{Formula["qt5"].bin}/qmake",
               # Force deployment target to avoid libc++ issues
               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
+              "--qml-plugindir=#{pkgshare}/plugins",
               "--verbose"]
       args << "--debug" if build.include? "enable-debug"
 

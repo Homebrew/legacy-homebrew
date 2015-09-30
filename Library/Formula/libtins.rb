@@ -3,18 +3,20 @@ class Libtins < Formula
   homepage "https://libtins.github.io/"
   url "https://github.com/mfontanini/libtins/archive/v3.1.tar.gz"
   sha256 "20662ed75699358078aacaf36f38cbd25a9b2bd9ae2c77b7193733c917aab651"
+  revision 1
   head "https://github.com/mfontanini/libtins.git"
 
   bottle do
-    revision 1
-    sha1 "3f7a5a404ce751fe953100f8a282490dec1eed2a" => :yosemite
-    sha1 "316b0d0b1255f9aa25b257a29f1900c49ec09046" => :mavericks
-    sha1 "85fb8ad451c673cb5cc918294e563525a95824ae" => :mountain_lion
+    cellar :any
+    sha256 "b3ac13ab31ddea15e2301d06ffd574fa60c50dadad0280a16f2205da60996de0" => :yosemite
+    sha256 "1bb3d6c1054cb1220dc1391cb24ae5f6945a43ecfe23f9a83591070ccdff3d0a" => :mavericks
+    sha256 "47c40947daec2e61f06e18d763803377cbed148fb4b32a93ee3a052e6b0d62ef" => :mountain_lion
   end
 
   option :cxx11
 
   depends_on "cmake" => :build
+  depends_on "openssl"
 
   def install
     ENV.cxx11 if build.cxx11?

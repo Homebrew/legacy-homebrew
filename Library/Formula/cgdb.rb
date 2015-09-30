@@ -5,6 +5,7 @@ class Cgdb < Formula
   sha256 "be203e29be295097439ab67efe3dc8261f742c55ff3647718d67d52891f4cf41"
 
   bottle do
+    sha256 "8d47a315bc04053f84802069723edf9ea920c7361464992c1a657f41db52f901" => :el_capitan
     sha1 "ad041a0d959f9c78acbaf9e702028418f4fbaced" => :yosemite
     sha1 "49b22ef93ad50cc3189eab87c887aac4bf7d5be6" => :mavericks
     sha1 "4401a042175f6071740d1d87bb5993ebb3b76d2a" => :mountain_lion

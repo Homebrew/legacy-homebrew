@@ -6,6 +6,7 @@ class Aspell < Formula
   sha256 "f52583a83a63633701c5f71db3dc40aab87b7f76b29723aeb27941eff42df6e1"
 
   bottle do
+    sha256 "ccc60cb56f23d7ad911ae2b564c1257ba0e5136e069b9cff6372a12bd720ce64" => :el_capitan
     sha1 "2dc302f844040241b90625896d90f8167a7fed2e" => :yosemite
     sha1 "1bbcc135fd6b28bd3c604805b1e24aee42d4b194" => :mavericks
     sha1 "8408ca154004072598e294aad2d17d4665d5b313" => :mountain_lion

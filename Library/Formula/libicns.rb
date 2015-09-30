@@ -9,6 +9,7 @@ class Libicns < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "0a4ca09b65f56649ee13e247026b76d558c6f4530f74871149f50b42221f645e" => :el_capitan
     sha1 "8be08eb118ca3412bc4dc770e86c4086d3052a6c" => :yosemite
     sha1 "4eba2a27ee02d7747ffe339eccb086069bbfdc7e" => :mavericks
     sha1 "94076c2e477fbe0b38100aea7e5c6a6760678416" => :mountain_lion

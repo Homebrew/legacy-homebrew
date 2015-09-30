@@ -1,14 +1,16 @@
 class Libelf < Formula
   desc "ELF object file access library"
   homepage "http://www.mr511.de/software/"
-  url "http://www.mr511.de/software/libelf-0.8.14.tar.gz"
-  sha256 "8022ccbd568c02e0b36331e533f78eeb3d0d1fa5637adac9b8b816d1ea358ebf"
+  url "http://www.mr511.de/software/libelf-0.8.13.tar.gz"
+  sha256 "591a9b4ec81c1f2042a97aa60564e0cb79d041c52faa7416acb38bc95bd2c76d"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "5b4f036ec416c1f8d49cf524baf0c3b5b1b6c08a0a11e6991a16a640bd954e1e" => :yosemite
-    sha256 "795a8e67f7c32b39dd8a05e1eb31458e41ad0cbb569baf610ee5e532e8246c68" => :mavericks
-    sha256 "08f2f5b84072b5d7ec0a2fd2ac0a4c7dd7bdb5fd17fd4015df8882a07d273ec6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a06b058c7e401942f442f573b63aa2cdd548b45d38b02b7af92393c67093f56e" => :el_capitan
+    sha256 "3b4ea9ab20228d9e912f80a330b6d6d093f9bb65a712208c83cd49bdcc4fc9ea" => :yosemite
+    sha256 "eded3b774d412e533f37bc6d5dc133859141653ce953a0d4cbf4a950dda633f6" => :mavericks
+    sha256 "d803c689354640948ae3699672d8172b770fdd8a63ba1d84e93131f394822bd5" => :mountain_lion
   end
 
   def install
@@ -18,8 +20,6 @@ class Libelf < Formula
                           "--disable-compat"
     # Use separate steps; there is a race in the Makefile.
     system "make"
-    lib.mkpath
-    (include/name).mkpath
     system "make", "install"
   end
 end

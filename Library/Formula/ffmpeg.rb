@@ -1,15 +1,15 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.7.2.tar.bz2"
-  sha256 "7ceb7550ad628c526fa6c9ff23fdfb687a62f54d90c4a730998d8c2b417b9ef2"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.tar.bz2"
+  sha256 "9565236404d3515aab754283c687c0a001019003148bf7f708e643608c0690b8"
   head "https://github.com/FFmpeg/FFmpeg.git"
-  revision 1
 
   bottle do
-    sha256 "060199677b66b5b745612ef01893893a688af372763621666a3e9425c1c5a144" => :yosemite
-    sha256 "ea3800f6731c92c0e0274ed1677fd4a39067f7e620b7fe9d460f4a4c3a3a0378" => :mavericks
-    sha256 "1615e14ba8159b46794fa46a83dd733df73df6699fd69036ecd3ce5e49182618" => :mountain_lion
+    sha256 "808d2aa0612035d3edce0926c70140920d9a2b7d320ca04c57a5f5ce55eb5d40" => :el_capitan
+    sha256 "c5d72c52608a21be10627d750e6b83f1c820c70bf743d913411b744292348024" => :yosemite
+    sha256 "dca1409b18122dac23631c6f349f9caeb8e1f92bd8055befac97327ad007f758" => :mavericks
+    sha256 "59f103a1f98c5a4e4e6ef4eb60cc7f6f7698c385b252ae7acefd7d17af9423fe" => :mountain_lion
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -71,6 +71,7 @@ class Ffmpeg < Formula
   depends_on "libssh" => :optional
   depends_on "webp" => :optional
   depends_on "zeromq" => :optional
+  depends_on "libbs2b" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -116,6 +117,7 @@ class Ffmpeg < Formula
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
     args << "--enable-libzmq" if build.with? "zeromq"
+    args << "--enable-libbs2b" if build.with? "libbs2b"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"

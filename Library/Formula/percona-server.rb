@@ -6,6 +6,7 @@ class PerconaServer < Formula
   sha256 "5a0d88465e4bb081e621b06bc943fafadb4c67a2cca50839b44fcd94ae793b50"
 
   bottle do
+    sha256 "6cb0507097b26b45397a762a473614635fd354817cc906a02d28ec1ea97ac150" => :el_capitan
     sha256 "f1ecbe431098b4618e448634dba41a75f8ed0fada773344b469e9c9e3db653df" => :yosemite
     sha256 "5f2e8564ea19bdca58b522fb0ca2c24835fd27a3d1b0c5aaf64641f69c62c474" => :mavericks
     sha256 "8bb2a50aedda323875f2955bd7cafe75e5e63b24596dfb8b090e88814b85befa" => :mountain_lion

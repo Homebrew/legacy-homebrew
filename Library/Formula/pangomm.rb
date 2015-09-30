@@ -5,10 +5,11 @@ class Pangomm < Formula
   sha256 "a8d96952c708d7726bed260d693cece554f8f00e48b97cccfbf4f5690b6821f0"
 
   bottle do
-    revision 2
-    sha256 "a4afe1689018acaaf90188aacfc58bc693d452435eac454862119f7c65ad57d7" => :yosemite
-    sha256 "5cba5979e9baccba789485d6836143a506fed4fa9b7b6e1ebeaead0702e6b0c0" => :mavericks
-    sha256 "a3cb0498a296caf02bcff369c7b81c2145d0e7efd140ed4d604f9a6d159c9bf2" => :mountain_lion
+    cellar :any
+    revision 3
+    sha256 "9b8d8c0163bc79d5cd94081a92697bb2c9056306e2c51191b920185a5ad7891f" => :el_capitan
+    sha256 "0c1411636ad8fe0c565ee82425ffbb2b7fe754902e8469f8536f8398b1bc9f7f" => :yosemite
+    sha256 "e5c380347a09e75b6faa6fcda7883a5240cff4251b4221624e3767a6b93a959c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

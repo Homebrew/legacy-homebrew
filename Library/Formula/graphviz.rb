@@ -14,6 +14,7 @@ class Graphviz < Formula
 
   bottle do
     revision 1
+    sha256 "cf69eac548a5c02aacc966706fc4a922176059414fbe453680aae4552fc019dc" => :el_capitan
     sha1 "a3461628baba501e16c63ceaa0414027f7e26c7f" => :yosemite
     sha1 "dc7f915d199931a49fb2a8eb623b329fed6c619c" => :mavericks
     sha1 "ec730f7cdd3e9549610960ecab86dac349e2f8ea" => :mountain_lion

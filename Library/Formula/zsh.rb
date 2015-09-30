@@ -1,14 +1,14 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "http://www.zsh.org/"
-  url "https://downloads.sourceforge.net/project/zsh/zsh/5.1/zsh-5.1.tar.gz"
-  mirror "http://www.zsh.org/pub/zsh-5.1.tar.gz"
-  sha256 "e3731381810e690fb955cedfa8be51b0934bfa1ff38c709f54138960e3decd99"
+  url "https://downloads.sourceforge.net/project/zsh/zsh/5.1.1/zsh-5.1.1.tar.gz"
+  mirror "http://www.zsh.org/pub/zsh-5.1.1.tar.gz"
+  sha256 "94ed5b412023761bc8d2f03c173f13d625e06e5d6f0dff2c7a6e140c3fa55087"
 
   bottle do
-    sha256 "ef2e5dd13668edd59725b6a320db7513a6635ec7d3fd30891eb4e87ace6887e8" => :yosemite
-    sha256 "313444fc801db870fce3855e3ecda1f8a63aa24e44aaa448805d2dd61e62d584" => :mavericks
-    sha256 "78563c521de6861a2278f8e9d44aa8eac86e5c699d0d75018f805ec34286c9cd" => :mountain_lion
+    sha256 "079cc9661532edf75b4602fffcf900d3d23a1f143f35ca3cce93a37c0fbc6ae8" => :el_capitan
+    sha256 "385e57d2ef3e6ef24925a64cbaaf85d1776d8d466ef366223d7b599583fbaddf" => :yosemite
+    sha256 "932fe97487753363d3ddd683918210367ec29104e700001bbf5cd18c2f4d59fa" => :mavericks
   end
 
   option "without-etcdir", "Disable the reading of Zsh rc files in /etc"

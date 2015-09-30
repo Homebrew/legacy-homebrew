@@ -8,7 +8,8 @@ class Moreutils < Formula
   head "git://git.kitenet.net/moreutils"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "5475ea829217bd88b5a9bd1a0b71615dccd092aeaddec2b499fc725c58b48074" => :el_capitan
     sha256 "abbe3897f14ef314900fb165e76de97bd7a948cded5b26f3c2471f50adfd2f11" => :yosemite
     sha256 "ec107c6a7c081c5e990c9b79eb3fde8cb6c9ac4e8e0c52de8f751b624927861a" => :mavericks
     sha256 "d506ebb771c12c334e5597bb57b751c3ad738ca38aaf5cb00f88b7b25f6a776c" => :mountain_lion

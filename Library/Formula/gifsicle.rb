@@ -5,7 +5,8 @@ class Gifsicle < Formula
   sha256 "4585d2e683d7f68eb8fcb15504732d71d7ede48ab5963e61915201f9e68305be"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "8dda519ad02d5d287a17ceb84fc36e8746e1a15b35ff0a5c24f138ab280247b7" => :el_capitan
     sha256 "7946dca4fc1327add6a1693902ee9eeccb2a370a8ec87ec59f9a466aad8f7947" => :yosemite
     sha256 "59f5c2fa014c0a1e4c362f136bf01dcf7fb8c3bfaf6bb0839d0a370a18517985" => :mavericks
     sha256 "9f00374d5fe18ffb90ea2c96df43d440dd41cbb05aa820cb23398e9f4471d56b" => :mountain_lion

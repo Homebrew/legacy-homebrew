@@ -1,9 +1,8 @@
 class Glm < Formula
   desc "C++ mathematics library for graphics software"
   homepage "http://glm.g-truc.net/"
-  url "https://mirrors.kernel.org/debian/pool/main/g/glm/glm_0.9.6.3.orig.tar.xz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/g/glm/glm_0.9.6.3.orig.tar.xz"
-  sha256 "f9ab688bd6af1e0c454d887e1f5506518f2530d195ce057d96be1a769d42dfbb"
+  url "https://github.com/g-truc/glm/releases/download/0.9.7.1/glm-0.9.7.1.zip"
+  sha256 "aa1a504e991bbe33a32f394de8d39d43cc800cbb3d99c2fa75b4a473eba606db"
 
   head "https://github.com/g-truc/glm.git"
 

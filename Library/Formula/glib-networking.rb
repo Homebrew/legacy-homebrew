@@ -1,16 +1,14 @@
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://launchpad.net/glib-networking"
-  url "https://download.gnome.org/sources/glib-networking/2.44/glib-networking-2.44.0.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/g/glib-networking/glib-networking_2.44.0.orig.tar.xz"
-  sha256 "8f8a340d3ba99bfdef38b653da929652ea6640e27969d29f7ac51fbbe11a4346"
+  url "https://download.gnome.org/sources/glib-networking/2.46/glib-networking-2.46.0.tar.xz"
+  sha256 "3655526d6dbfc697c22cd9b279e14599f8449f5802b12d84485bdc52d96482f0"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "fd29427de98662c12afd02ef385a2a99cc6117a6e1c3f0456c7c87ff6e8d1943" => :yosemite
-    sha256 "9adb59c4b037ad2c6915c0a3b192b82ef17df89a9fb9137f132d7c2a0fb7689a" => :mavericks
-    sha256 "ece7fd3deec1bfee535d19ce7494c00ed71f24816096c484b6021e148c1ad913" => :mountain_lion
+    sha256 "3c1b629da76dcdb2f6525fe68849f63afc822e772b86170c1b9af84ad6c1df3d" => :el_capitan
+    sha256 "9912eeb2398fedbe1339ab96880af9925cefa8f9de43c6bc503fbc3e569b8d72" => :yosemite
+    sha256 "a1d967fe99e015e6463e2079a26cbe26405f531076dceebb95593f4530701c79" => :mavericks
   end
 
   depends_on "pkg-config" => :build

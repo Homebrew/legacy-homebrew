@@ -116,6 +116,13 @@ class FormularyTapFactoryTest < Homebrew::TestCase
     assert_kind_of Formula, Formulary.factory("#{@name}")
   end
 
+  def test_factory_tap_alias
+    alias_dir = @tap.path/"Aliases"
+    alias_dir.mkpath
+    FileUtils.ln_s @path, alias_dir/"bar"
+    assert_kind_of Formula, Formulary.factory("bar")
+  end
+
   def test_tap_formula_unavailable_error
     assert_raises(TapFormulaUnavailableError) { Formulary.factory("#{@tap}/not_existed_formula") }
   end

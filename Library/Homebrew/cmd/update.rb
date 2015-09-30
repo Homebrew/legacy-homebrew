@@ -1,7 +1,9 @@
 require "cmd/tap"
+require "cmd/doctor"
 require "formula_versions"
 require "migrator"
 require "formulary"
+require "descriptions"
 
 module Homebrew
   def update
@@ -10,6 +12,16 @@ module Homebrew
         This command updates brew itself, and does not take formula names.
         Use `brew upgrade <formula>`.
       EOS
+    end
+
+    # check permissions
+    checks = Checks.new
+    %w[
+      check_access_usr_local
+      check_access_homebrew_repository
+    ].each do |check|
+      out = checks.send(check)
+      odie out unless out.nil?
     end
 
     # ensure git is installed
@@ -50,6 +62,8 @@ module Homebrew
         end
       end
     end
+
+    Tap.clear_cache
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
@@ -100,6 +114,7 @@ module Homebrew
       puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} to #{master_updater.current_revision[0, 8]}."
       report.dump
     end
+    Descriptions.update_cache(report)
   end
 
   private
@@ -185,9 +200,24 @@ class Updater
       @stashed = true
     end
 
-    @initial_branch = `git symbolic-ref --short HEAD`.chomp
-    if @initial_branch != "master" && !@initial_branch.empty?
-      safe_system "git", "checkout", "master", *quiet
+    # The upstream repository's default branch may not be master;
+    # check refs/remotes/origin/HEAD to see what the default
+    # origin branch name is, and use that. If not set, fall back to "master".
+    begin
+      @upstream_branch = `git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null`
+      @upstream_branch = @upstream_branch.chomp.sub('refs/remotes/origin/', '')
+    rescue ErrorDuringExecution
+      @upstream_branch = "master"
+    end
+
+    begin
+      @initial_branch = `git symbolic-ref --short HEAD 2>/dev/null`.chomp
+    rescue ErrorDuringExecution
+      @initial_branch = ""
+    end
+
+    if @initial_branch != @upstream_branch && !@initial_branch.empty?
+      safe_system "git", "checkout", @upstream_branch, *quiet
     end
 
     @initial_revision = read_current_revision
@@ -200,8 +230,8 @@ class Updater
     args << ((ARGV.include? "--rebase") ? "--rebase" : "--no-rebase")
     args += quiet
     args << "origin"
-    # the refspec ensures that 'origin/master' gets updated
-    args << "refs/heads/master:refs/remotes/origin/master"
+    # the refspec ensures that the default upstream branch gets updated
+    args << "refs/heads/#{@upstream_branch}:refs/remotes/origin/#{@upstream_branch}"
 
     reset_on_interrupt { safe_system "git", *args }
 
@@ -225,7 +255,7 @@ class Updater
     ignore_interrupts { yield }
   ensure
     if $?.signaled? && $?.termsig == 2 # SIGINT
-      safe_system "git", "checkout", @initial_branch
+      safe_system "git", "checkout", @initial_branch unless @initial_branch.empty?
       safe_system "git", "reset", "--hard", @initial_revision
       safe_system "git", "stash", "pop" if @stashed
     end
@@ -344,7 +374,7 @@ class Report
         user = $1
         repo = $2.sub("homebrew-", "")
         oldname = path.basename(".rb").to_s
-        next unless newname = Tap.new(user, repo).formula_renames[oldname]
+        next unless newname = Tap.fetch(user, repo).formula_renames[oldname]
       else
         oldname = path.basename(".rb").to_s
         next unless newname = FORMULA_RENAMES[oldname]

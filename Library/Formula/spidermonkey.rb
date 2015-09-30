@@ -9,9 +9,11 @@ class Spidermonkey < Formula
   head "https://hg.mozilla.org/tracemonkey/archive/tip.tar.gz"
 
   bottle do
-    sha256 "7ab660cad3aac11fbf4befa3fbbf65a7ee64d858539ad81298271389b2957375" => :yosemite
-    sha256 "cda0b81bd974640690fe067691efca6bc7d1583117cd5db28cca43ab8e2f884c" => :mavericks
-    sha256 "769035a4fa0ed09b71aa9747c2834a51285903e51d9bc478f865c037a8666370" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "7a5c888484415d2de3d0b1e980a0895578f1d5df816863dc553ef499b488c203" => :el_capitan
+    sha256 "3770ceced1be2ef3de507894ed98548c72ecd469e49176f6cf1f8e7c890a8d84" => :yosemite
+    sha256 "a48533ba8f2e0edbb635d5b7270740c8f86c3800e71489ed02cbf9869c874748" => :mavericks
   end
 
   conflicts_with "narwhal", :because => "both install a js binary"

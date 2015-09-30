@@ -1,9 +1,9 @@
 class DependencyCheck < Formula
   desc "OWASP Dependency Check"
   homepage "https://www.owasp.org/index.php/OWASP_Dependency_Check"
-  url "https://dl.bintray.com/jeremy-long/owasp/dependency-check-1.3.0-release.zip"
-  version "1.3.0"
-  sha256 "075f48aca75000a51c1741a612f3732517c1bb4c779103656f6a403c82a93b71"
+  url "https://dl.bintray.com/jeremy-long/owasp/dependency-check-1.3.1-release.zip"
+  version "1.3.1"
+  sha256 "0f36689b6a8ade5db1d626aa9d067c6f6c083677ca04bcbae16b1d819d9af1d5"
 
   depends_on :java
 
@@ -40,7 +40,7 @@ class DependencyCheck < Formula
     props.close
 
     system "#{bin}/dependency-check", "-P", "temp-props.properties", \
-      "-f", "XML", "-a", "dc", "-s", libexec, "-d", testpath, "-o", testpath
+      "-f", "XML", "--project", "dc", "-s", libexec, "-d", testpath, "-o", testpath
     assert(File.exist?(testpath/"dependency-check-report.xml"))
   end
 end
