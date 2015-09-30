@@ -9,6 +9,7 @@ class Uberftp < Formula
   def install
     globus = Formula["globus-toolkit"].opt_prefix
 
+    #patches needed since location changed with globus-toolkit versions >= 6.0, patch to upstream not yet merged https://github.com/JasonAlt/UberFTP/pull/8
     inreplace "configure", "globus_location/include/globus/gcc64dbg", "globus_location/libexec/include"
     inreplace "configure", "globus_location/lib64", "globus_location/libexec/lib"
 
