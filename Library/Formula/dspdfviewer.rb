@@ -24,6 +24,6 @@ class Dspdfviewer < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("dspdfviewer --version", 1)
+    assert_match /#{version}/, shell_output("#{bin}/dspdfviewer --version", 1)
   end
 end
