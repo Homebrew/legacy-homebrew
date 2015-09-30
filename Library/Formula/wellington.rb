@@ -22,6 +22,12 @@ class Wellington < Formula
     version "1.0.0-beta1"
   end
 
+  devel do
+    url "https://github.com/wellington/wellington/archive/v1.0.0-beta1.tar.gz"
+    sha256 "6ea2a260ba7146a6bd87f42ab22082dfd84eb5aa52adae0629cbe71395cf56de"
+    version "1.0.0-beta1"
+  end
+
   needs :cxx11
 
   head do
