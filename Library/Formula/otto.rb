@@ -58,7 +58,7 @@ class Otto < Formula
     end
 
     cd gopath/"src/github.com/jteeuwen/go-bindata/go-bindata" do
-       system "go", "install"
+      system "go", "install"
     end
 
     cd gopath/"src/golang.org/x/tools/cmd/stringer" do
