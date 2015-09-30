@@ -17,16 +17,17 @@ class Swiftgen < Formula
     ENV["SWIFTGEN_VERSION"] = "#{version} (via Homebrew)"
     rake "install[#{bin},/]"
 
-    pkgshare.install(
-      "Tests/Assets/fixtures/Images.xcassets",
-      "Tests/Colors/fixtures/colors.txt",
-      "Tests/L10n/fixtures/Localizable.strings",
-      "Tests/Storyboard/fixtures/Message.storyboard",
-      "Tests/Assets/expected/FileDefaults.swift.out" => "assets.swift",
-      "Tests/Colors/expected/FileDefaults.swift.out" => "colors.swift",
-      "Tests/L10n/expected/FileWithDefaults.swift.out" => "l10n.swift",
-      "Tests/Storyboard/expected/MessageWithDefaults.swift.out" => "storyboard.swift",
-    )
+    fixtures = %w[
+      Tests/Assets/fixtures/Images.xcassets
+      Tests/Colors/fixtures/colors.txt
+      Tests/L10n/fixtures/Localizable.strings
+      Tests/Storyboard/fixtures/Message.storyboard
+    ]
+    pkgshare.install fixtures
+    pkgshare.install "Tests/Assets/expected/FileDefaults.swift.out" => "assets.swift"
+    pkgshare.install "Tests/Colors/expected/FileDefaults.swift.out" => "colors.swift"
+    pkgshare.install "Tests/L10n/expected/FileWithDefaults.swift.out" => "l10n.swift"
+    pkgshare.install "Tests/Storyboard/expected/MessageWithDefaults.swift.out" => "storyboard.swift"
   end
 
   test do
