@@ -443,7 +443,7 @@ class Checks
 
     You should probably change the ownership and permissions of /usr/local
     back to your user account.
-      sudo chown $(whoami):admin /usr/local
+      sudo chown -R $(whoami):admin /usr/local
     EOS
     end
   end
