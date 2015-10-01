@@ -258,8 +258,8 @@ class Checks
       end
     end
 
-    # TODO: remove when 10.11 is released
-    if MacOS.version >= "10.11"
+    # TODO: bump version when new OS is released
+    if MacOS.version >= "10.12"
       def check_xcode_up_to_date
         if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
           <<-EOS.undent
