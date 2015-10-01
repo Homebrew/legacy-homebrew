@@ -1,8 +1,8 @@
 class CharmTools < Formula
   desc "Tools for authoring and maintaining juju charms"
   homepage "https://launchpad.net/charm-tools"
-  url "https://launchpad.net/charm-tools/1.7/1.7.0/+download/charm-tools-1.7.0.tar.gz"
-  sha256 "6bc12d24460b366e12176538692d5b29c3697f5c8a98b525a05fa5ec7b04e042"
+  url "https://launchpad.net/charm-tools/1.7/1.7.1/+download/charm-tools-1.7.1.tar.gz"
+  sha256 "0463f46eb9e4a2a9d2308d79845d9837bce031db668f9012319c714e8ddadbac"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,7 +14,19 @@ class CharmTools < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
+    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
+  end
+
   def install
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    %w[pip].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     system "python", "setup.py", "install", "--prefix=#{libexec}"
 
