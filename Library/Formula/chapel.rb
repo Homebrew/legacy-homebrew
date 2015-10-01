@@ -22,7 +22,6 @@ class Chapel < Formula
     cd libexec do
       system "make"
       system "make", "chpldoc"
-      system "make", "chplvis"
     end
 
     prefix.install_metafiles
