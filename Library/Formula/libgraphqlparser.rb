@@ -23,27 +23,27 @@ class Libgraphqlparser < Formula
       { user }
     EOS
 
-    sample_ast = {"kind"=>"Document",
-      "loc"=>{"start"=>1, "end"=>9},
-      "definitions"=>
-        [{"kind"=>"OperationDefinition",
-          "loc"=>{"start"=>1, "end"=>9},
-          "operation"=>"query",
-          "name"=>nil,
-          "variableDefinitions"=>nil,
-          "directives"=>nil,
-          "selectionSet"=>
-           {"kind"=>"SelectionSet",
-            "loc"=>{"start"=>1, "end"=>9},
-            "selections"=>
-             [{"kind"=>"Field",
-               "loc"=>{"start"=>3, "end"=>7},
-               "alias"=>nil,
-               "name"=>
-                {"kind"=>"Name", "loc"=>{"start"=>3, "end"=>7}, "value"=>"user"},
-               "arguments"=>nil,
-               "directives"=>nil,
-               "selectionSet"=>nil}]}}]}
+    sample_ast = { "kind"=>"Document",
+                   "loc"=>{ "start"=>1, "end"=>9 },
+                   "definitions"=>
+        [{ "kind"=>"OperationDefinition",
+           "loc"=>{ "start"=>1, "end"=>9 },
+           "operation"=>"query",
+           "name"=>nil,
+           "variableDefinitions"=>nil,
+           "directives"=>nil,
+           "selectionSet"=>
+           { "kind"=>"SelectionSet",
+             "loc"=>{ "start"=>1, "end"=>9 },
+             "selections"=>
+             [{ "kind"=>"Field",
+                "loc"=>{ "start"=>3, "end"=>7 },
+                "alias"=>nil,
+                "name"=>
+                { "kind"=>"Name", "loc"=>{ "start"=>3, "end"=>7 }, "value"=>"user" },
+                "arguments"=>nil,
+                "directives"=>nil,
+                "selectionSet"=>nil, }], }, }], }
 
     test_ast = JSON.parse(pipe_output("#{libexec}/dump_json_ast", sample_query))
     assert_equal sample_ast, test_ast
