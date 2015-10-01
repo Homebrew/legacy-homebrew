@@ -33,6 +33,7 @@ class Chapel < Formula
   end
 
   test do
+    ENV["CHPL_HOME"] = libexec
     system "bash #{libexec}/util/test/checkChplInstall"
   end
 end
