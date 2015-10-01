@@ -6,9 +6,9 @@ class CharmTools < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3501cda00eebfa84b6de87d2a3816740cb4756d8682ffb4cc2dd41ecd11f2110" => :el_capitan
-    sha256 "cae0728f61d14a01e9adf2246bdba70ca114b1b4b768c5d7e3a434b50c73d474" => :yosemite
-    sha256 "f959e49c90a21203f16452ff1ea65e88d40de992fca8551d2c7fb2b3be24a693" => :mavericks
+    sha256 "ed4f2472ec3404d4f0fc8472eee0128a472132b194c3f4c8d2509e8ab33e4207" => :el_capitan
+    sha256 "b9d70fa7b1a6375988cada16f1fb60944093e7697cc35a48b5e250164acd0734" => :yosemite
+    sha256 "8b4cf466fd90d6ee807d315d277fa61579ca187961ed48674476e62e38b92224" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
