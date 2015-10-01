@@ -1,12 +1,10 @@
-require "formula"
-
 class Mongrel2 < Formula
   desc "Application, language, and network architecture agnostic web server"
   homepage "http://mongrel2.org/"
   url "https://github.com/mongrel2/mongrel2/releases/download/v1.9.3/mongrel2-v1.9.3.tar.bz2"
   sha256 "40ee0e804053f812cc36906464289ea656a4fc53b4a82d49796cafbe37f97425"
 
-  head "https://github.com/mongrel2/mongrel2.git"
+  head "https://github.com/mongrel2/mongrel2.git", :branch => "develop"
 
   bottle do
     cellar :any
@@ -26,7 +24,11 @@ class Mongrel2 < Formula
     ENV["OPTFLAGS"] = "#{ENV.cflags} #{ENV.cppflags}"
     ENV["OPTLIBS"] = "#{ENV.ldflags} -undefined dynamic_lookup"
 
-    system "make all"
+    system "make", "all"
     system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  test do
+    system "m2sh", "help"
   end
 end
