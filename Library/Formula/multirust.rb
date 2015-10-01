@@ -4,8 +4,8 @@ class Multirust < Formula
 
   # Use the tag instead of the tarball to get submodules
   url "https://github.com/brson/multirust.git",
-    :tag => "0.0.6",
-    :revision => "6b18101d0b878669bdba94b9e37c31308dc12d34"
+    :tag => "0.7.0",
+    :revision => "b222fcd277898c7e364cbe7dfa0cf7edb5d922d5"
 
   head "https://github.com/brson/multirust.git"
 
