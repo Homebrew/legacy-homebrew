@@ -28,6 +28,6 @@ class Hbase < Formula
   end
 
   test do
-    system "hbase", "version"
+    assert_match /#{version}/, shell_output("#{bin}/hbase mapredcp")
   end
 end
