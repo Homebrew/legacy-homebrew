@@ -1,8 +1,8 @@
 class Honggfuzz < Formula
-  desc     "A general-purpose, easy-to-use fuzzer with interesting analysis options."
+  desc "General-purpose, easy-to-use fuzzer with analysis options"
   homepage "https://google.github.io/honggfuzz/"
-  url      "https://github.com/google/honggfuzz/archive/0.6.tar.gz"
-  sha256   "c95600c83b5b7836f3fdb1641565fbb07ccbf485446861c7dcb82db4172a0aa1"
+  url "https://github.com/google/honggfuzz/archive/0.6.tar.gz"
+  sha256 "c95600c83b5b7836f3fdb1641565fbb07ccbf485446861c7dcb82db4172a0aa1"
 
   def install
     system      "make"
