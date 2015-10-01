@@ -1,8 +1,8 @@
 class Chapel < Formula
   desc "Emerging programming language designed for parallel computing"
   homepage "http://chapel.cray.com/"
-  url "https://github.com/chapel-lang/chapel/releases/download/1.11.0/chapel-1.11.0.tar.gz"
-  sha256 "307b156d9cf0968bad90a2f7225366d90f6a5d948eb42be1d33f0efc6979949b"
+  url "https://github.com/chapel-lang/chapel/releases/download/1.12.0/chapel-1.12.0.tar.gz"
+  sha256 "d5ae943497566a5d87c4f56196d77e6051d0fdcea599fd86ab69732ed62456ae"
   head "https://github.com/chapel-lang/chapel.git"
 
   bottle do
@@ -22,6 +22,7 @@ class Chapel < Formula
     cd libexec do
       system "make"
       system "make", "chpldoc"
+      system "make", "chplvis"
     end
 
     prefix.install_metafiles
@@ -33,8 +34,6 @@ class Chapel < Formula
   end
 
   test do
-    (testpath/"hello.chpl").write "writeln('Hello, world!');"
-    system "#{bin}/chpl", "-o", "hello", "hello.chpl"
-    assert_equal "Hello, world!", shell_output("./hello").strip
+    system "bash #{libexec}/util/test/checkChplInstall"
   end
 end
