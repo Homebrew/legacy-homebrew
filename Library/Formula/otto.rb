@@ -44,7 +44,7 @@ class Otto < Formula
   end
 
   def install
-    contents = Dir["{*,.git,.gitignore,.travis.yml}"]
+    contents = Dir["{*,.git,.gitignore}"]
     gopath = buildpath/"gopath"
     (gopath/"src/github.com/hashicorp/otto").install contents
 
