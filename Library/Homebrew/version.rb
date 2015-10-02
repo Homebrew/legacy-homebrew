@@ -328,6 +328,13 @@ class Version
     m = /-(\d+\.\d+(?:\.\d+)?)-w(?:in)?(?:32|64)$/.match(stem)
     return m.captures.first unless m.nil?
 
+    # Opam packages
+    # e.g. https://opam.ocaml.org/archives/sha.1.9+opam.tar.gz
+    # e.g. https://opam.ocaml.org/archives/lablgtk.2.18.3+opam.tar.gz
+    # e.g. https://opam.ocaml.org/archives/easy-format.1.0.2+opam.tar.gz
+    m = /\.(\d+\.\d+(?:\.\d+)?)\+opam$/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm
     # e.g. http://ftpmirror.gnu.org/autogen/autogen-5.5.7-5.i386.rpm
     # e.g. http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip
