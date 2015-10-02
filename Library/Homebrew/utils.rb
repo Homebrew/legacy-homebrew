@@ -42,6 +42,10 @@ class Tty
       bold 30
     end
 
+    def highlight
+      bold 43
+    end
+
     def width
       `/usr/bin/tput cols`.strip.to_i
     end
@@ -253,12 +257,8 @@ def curl(*args)
   safe_system curl, *args
 end
 
-def puts_columns(items, star_items = [])
+def puts_columns(items, highlight = [])
   return if items.empty?
-
-  if star_items && star_items.any?
-    items = items.map { |item| star_items.include?(item) ? "#{item}*" : item }
-  end
 
   unless $stdout.tty?
     puts items
@@ -276,9 +276,18 @@ def puts_columns(items, star_items = [])
   rows = (items.size + cols - 1) / cols
   cols = (items.size + rows - 1) / rows # avoid empty trailing columns
 
+  plain_item_lengths = items.map(&:length) if cols >= 2
+  if highlight && highlight.any?
+    items = items.map do |item|
+      highlight.include?(item) ? "#{Tty.highlight}#{item}#{Tty.reset}" : item
+    end
+  end
+
   if cols >= 2
     col_width = (console_width + col_gap) / cols - col_gap
-    items = items.map { |item| item.ljust(col_width) }
+    items = items.each_with_index.map do |item, index|
+      item + "".ljust(col_width - plain_item_lengths[index])
+    end
   end
 
   if cols == 1
