@@ -5,9 +5,10 @@ class Atkmm < Formula
   sha256 "26c41d8da37d04eef9f219c6ce87d94852e1cacaad823050e520e1c08a36ed23"
 
   bottle do
-    sha1 "6c47047d111b4b950e1cb15425365b13b11f6a1b" => :mavericks
-    sha1 "2262b36b562f9f2ea1c024923e738a08145e97df" => :mountain_lion
-    sha1 "eb053cdcba6fc56e0bddde08ac356a18d9bf53b0" => :lion
+    cellar :any
+    sha256 "38abbc871f0e8bab30364ba10133e8f01d4c0df9bf13154b1526ec4737098a0d" => :el_capitan
+    sha256 "34ffe201cbc5279b4fae9aca48473bd0bd22c3c4119121217e1fb2ef8ab5084f" => :yosemite
+    sha256 "b381482617551d2afe3ab2f5f6c7c2158d79802e046073ed87fb743b58ec583d" => :mavericks
   end
 
   depends_on "pkg-config" => :build
