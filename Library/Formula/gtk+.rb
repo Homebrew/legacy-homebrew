@@ -3,7 +3,7 @@ class Gtkx < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
   sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
-  revision 2
+  revision 3
 
   bottle do
     sha256 "afac113e6701cf013e0235e0fd91fcfc6659bc75220ca03e408a7a0f38671bb9" => :yosemite
@@ -33,6 +33,13 @@ class Gtkx < Formula
   patch do
     url "https://bug557780.bugzilla-attachments.gnome.org/attachment.cgi?id=306776"
     sha256 "4d7a1fe8d55174dc7f0be0016814668098d38bbec233b05a6c46180e96a159fc"
+  end
+
+  # Fix crash on OS X 10.11
+  # See: https://bugzilla.gnome.org/show_bug.cgi?id=753992
+  patch do
+    url "https://bug753992.bugzilla-attachments.gnome.org/attachment.cgi?id=312565"
+    sha256 "e2e8d5c236d4de7d5b5fd79a2e90861b281746132a3f96aca6ab0cb780926876"
   end
 
   def install
