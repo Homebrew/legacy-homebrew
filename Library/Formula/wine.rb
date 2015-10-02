@@ -38,10 +38,10 @@ class Wine < Formula
 
     # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
     # https://bugs.winehq.org/show_bug.cgi?id=34166
-    patch do
-      url "https://bugs.winehq.org/attachment.cgi?id=47639"
-      sha256 "3054467e0b1ef9efce3e1b24497bd26e00c4727e8bd7b1e990d1352bb1819de0"
-    end
+    #patch do
+    #  url "https://bugs.winehq.org/attachment.cgi?id=47639"
+    #  sha256 "3054467e0b1ef9efce3e1b24497bd26e00c4727e8bd7b1e990d1352bb1819de0"
+    #end
   end
 
   head do
