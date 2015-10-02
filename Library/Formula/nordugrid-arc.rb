@@ -5,9 +5,8 @@ class NordugridArc < Formula
   sha256 "d7306d91b544eeba571ede341e43760997c46d4ccdacc8b785c64f594780a9d1"
 
   bottle do
-    sha256 "db44e56921dda90426b9bb78ac996bcc261e6e169584636bae3ed7acd31aa229" => :yosemite
-    sha256 "bb1cd1b9729a5520e550a99c23d0d511e85daa5ead36f490940fff9e7ab073df" => :mavericks
-    sha256 "2436284cbe98cb7fb0598ebed79a0ce4e82902316513d3e0bfce6fe749311174" => :mountain_lion
+    sha256 "c78502aa7927d0376c4f3fed72d7fa258f19d26faaaf302ca5c2cbb17a36cdf2" => :el_capitan
+    sha256 "121eb7d254c13ae76dada8ba27922dc1dc0b160b2f9fd2c45755c02d6ed67610" => :yosemite
   end
 
   depends_on "pkg-config" => :build
