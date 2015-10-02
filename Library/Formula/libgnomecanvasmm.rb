@@ -3,7 +3,7 @@ class Libgnomecanvasmm < Formula
   homepage "https://launchpad.net/libgnomecanvasmm"
   url "https://download.gnome.org/sources/libgnomecanvasmm/2.26/libgnomecanvasmm-2.26.0.tar.bz2"
   sha256 "996577f97f459a574919e15ba7fee6af8cda38a87a98289e9a4f54752d83e918"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -16,7 +16,10 @@ class Libgnomecanvasmm < Formula
   depends_on "libgnomecanvas"
   depends_on "gtkmm"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
@@ -127,7 +130,7 @@ class Libgnomecanvasmm < Formula
       -lpangomm-1.4
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

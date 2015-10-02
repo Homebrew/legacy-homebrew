@@ -1,8 +1,8 @@
 class Libpeas < Formula
   desc "GObject plugin library"
   homepage "https://developer.gnome.org/libpeas/stable/"
-  url "https://download.gnome.org/sources/libpeas/1.14/libpeas-1.14.0.tar.xz"
-  sha256 "5e4b3a8968b71497ab26a7a528c414c4c640c5724328fa3507854f04788e2d76"
+  url "https://download.gnome.org/sources/libpeas/1.16/libpeas-1.16.0.tar.xz"
+  sha256 "b093008ecd65f7d55c80517589509698ff15ad41f664b11a3eb88ff461b1454e"
 
   bottle do
     sha256 "6959622982b81ce241a372f6911563987b3b5169c27afb46539e18460b4591fd" => :el_capitan
@@ -28,8 +28,7 @@ class Libpeas < Formula
 
   def install
     system "autoreconf", "-i"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--enable-gtk"

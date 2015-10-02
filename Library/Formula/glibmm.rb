@@ -1,8 +1,8 @@
 class Glibmm < Formula
   desc "C++ interface to glib"
   homepage "http://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/glibmm/2.44/glibmm-2.44.0.tar.xz"
-  sha256 "1b0ac0425d24895507c0e0e8088a464c7ae2d289c47afa1c11f63278fc672ea8"
+  url "https://download.gnome.org/sources/glibmm/2.46/glibmm-2.46.1.tar.xz"
+  sha256 "9647e596c1081d2ea202bd3da2824ec2ea359498fa86eb59a55b1b307dd8c4aa"
 
   bottle do
     cellar :any
@@ -16,7 +16,10 @@ class Glibmm < Formula
   depends_on "libsigc++"
   depends_on "glib"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
@@ -53,7 +56,7 @@ class Glibmm < Formula
       -lintl
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end
