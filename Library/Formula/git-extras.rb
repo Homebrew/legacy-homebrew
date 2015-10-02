@@ -8,10 +8,9 @@ class GitExtras < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "518782b4a797275a9ea54a01956f15fa166bdd68398c26d5a890948f4306dc98" => :el_capitan
-    sha256 "3eabd97b6e574274665ed178b72076648ed03da53c7dd29425835331592c3378" => :yosemite
-    sha256 "14471fe41a1162813ed803fe9edc91aca493d7529340e8f15e2cea9aa269d586" => :mavericks
-    sha256 "7655c7e7f926d58b28a8ef503b406ff2c0f6fb2102a2915cb7d05b36b26f9d9b" => :mountain_lion
+    sha256 "ee2ab2e65bf576c2f63132cac7e1e81d764fd48e71897c37b62b7767d7bf4a05" => :el_capitan
+    sha256 "d8991a2ec84f64b6add9a4f369b31becc02d32e6b80d48909825339dabafd812" => :yosemite
+    sha256 "2a168cd564773f8bb5e936082715df4e624fb1caaf94a9b5a96ca37882c5708c" => :mavericks
   end
 
   # Disable "git extras update", which will produce a broken install under Homebrew
