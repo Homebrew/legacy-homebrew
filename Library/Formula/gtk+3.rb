@@ -25,7 +25,10 @@ class Gtkx3 < Formula
   depends_on "hicolor-icon-theme"
 
   # filed upstream in https://bugzilla.gnome.org/show_bug.cgi?id=755401
-  patch :DATA
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/patches/1206484dc/gtk%2B3/gtkx3_notify.diff"
+    sha256 "d18242f80d68fd04cf2264bec3a95ec5d698e65767ee82b4a3430c03bdfd836c"
+  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -118,58 +121,3 @@ class Gtkx3 < Formula
     system "./test"
   end
 end
-
-__END__
-diff --git a/testsuite/gtk/Makefile.in b/testsuite/gtk/Makefile.in
-index 87cffd6..7de122b 100644
---- a/testsuite/gtk/Makefile.in
-+++ b/testsuite/gtk/Makefile.in
-@@ -118,7 +118,7 @@ am__EXEEXT_2 = accel$(EXEEXT) accessible$(EXEEXT) action$(EXEEXT) \
-	firefox-stylecontext$(EXEEXT) floating$(EXEEXT) focus$(EXEEXT) \
-	gestures$(EXEEXT) grid$(EXEEXT) gtkmenu$(EXEEXT) \
-	icontheme$(EXEEXT) keyhash$(EXEEXT) listbox$(EXEEXT) \
--	notify$(EXEEXT) no-gtk-init$(EXEEXT) object$(EXEEXT) \
-+	no-gtk-init$(EXEEXT) object$(EXEEXT) \
-	objects-finalize$(EXEEXT) papersize$(EXEEXT) rbtree$(EXEEXT) \
-	recentmanager$(EXEEXT) regression-tests$(EXEEXT) \
-	spinbutton$(EXEEXT) stylecontext$(EXEEXT) templates$(EXEEXT) \
-@@ -264,11 +264,6 @@ no_gtk_init_OBJECTS = no-gtk-init.$(OBJEXT)
- no_gtk_init_LDADD = $(LDADD)
- no_gtk_init_DEPENDENCIES = $(top_builddir)/gtk/libgtk-3.la \
-	$(top_builddir)/gdk/libgdk-3.la $(am__DEPENDENCIES_1)
--notify_SOURCES = notify.c
--notify_OBJECTS = notify.$(OBJEXT)
--notify_LDADD = $(LDADD)
--notify_DEPENDENCIES = $(top_builddir)/gtk/libgtk-3.la \
--	$(top_builddir)/gdk/libgdk-3.la $(am__DEPENDENCIES_1)
- object_SOURCES = object.c
- object_OBJECTS = object.$(OBJEXT)
- object_LDADD = $(LDADD)
-@@ -738,7 +733,7 @@ EXTRA_DIST = file-chooser-test-dir/empty \
- TEST_PROGS = accel accessible action adjustment bitmask builder \
-	builderparser cellarea check-icon-names clipboard defaultvalue \
-	entry expander firefox-stylecontext floating focus gestures \
--	grid gtkmenu icontheme keyhash listbox notify no-gtk-init \
-+	grid gtkmenu icontheme keyhash listbox no-gtk-init \
-	object objects-finalize papersize rbtree recentmanager \
-	regression-tests spinbutton stylecontext templates textbuffer \
-	textiter treemodel treepath treeview typename window \
-@@ -1145,10 +1140,6 @@ no-gtk-init$(EXEEXT): $(no_gtk_init_OBJECTS) $(no_gtk_init_DEPENDENCIES) $(EXTRA
-	@rm -f no-gtk-init$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(no_gtk_init_OBJECTS) $(no_gtk_init_LDADD) $(LIBS)
-
--notify$(EXEEXT): $(notify_OBJECTS) $(notify_DEPENDENCIES) $(EXTRA_notify_DEPENDENCIES)
--	@rm -f notify$(EXEEXT)
--	$(AM_V_CCLD)$(LINK) $(notify_OBJECTS) $(notify_LDADD) $(LIBS)
--
- object$(EXEEXT): $(object_OBJECTS) $(object_DEPENDENCIES) $(EXTRA_object_DEPENDENCIES)
-	@rm -f object$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(object_OBJECTS) $(object_LDADD) $(LIBS)
-@@ -1251,7 +1242,6 @@ distclean-compile:
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/liststore.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modelrefcount.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/no-gtk-init.Po@am__quote@
--@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/notify.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/object.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/objects-finalize.Po@am__quote@
- @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/papersize.Po@am__quote@
