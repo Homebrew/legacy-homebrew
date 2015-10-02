@@ -1,10 +1,9 @@
 class Virtuoso < Formula
   desc "High-performance object-relational SQL database"
   homepage "http://virtuoso.openlinksw.com/wiki/main/"
-  url "https://github.com/openlink/virtuoso-opensource/releases/download/v7.2.0.1/virtuoso-opensource-7.2.0_p1.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/virtuoso/virtuoso/7.2.0/virtuoso-opensource-7.2.0_p1.tar.gz"
-  sha256 "fe0fc64c169fc59322142d4e4a90d1328f7063a07f9d9035aaf5adc9dde28302"
-  version "7.2.0-1"
+  url "https://github.com/openlink/virtuoso-opensource/releases/download/v7.2.1/virtuoso-opensource-7.2.1.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/virtuoso/virtuoso/7.2.1/virtuoso-opensource-7.2.1.tar.gz"
+  sha256 "8e680173f975266046cdc33b0949c6c3320b82630288aed778524657a32ee094"
 
   bottle do
     sha256 "21d31984d4134baf0d2061ca3f3d41a4c150077e5de87b48fa1e5d4abd81bee6" => :yosemite
