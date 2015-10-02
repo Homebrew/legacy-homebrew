@@ -260,17 +260,34 @@ def puts_columns(items, star_items = [])
     items = items.map { |item| star_items.include?(item) ? "#{item}*" : item }
   end
 
-  if $stdout.tty?
-    # determine the best width to display for different console sizes
-    console_width = `/bin/stty size`.chomp.split(" ").last.to_i
-    console_width = 80 if console_width <= 0
-    max_len = items.reduce(0) { |max, item| l = item.length ; l > max ? l : max }
-    optimal_col_width = (console_width.to_f / (max_len + 2).to_f).floor
-    cols = optimal_col_width > 1 ? optimal_col_width : 1
-
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w") { |io| io.puts(items) }
-  else
+  unless $stdout.tty?
     puts items
+    return
+  end
+
+  # TTY case: If possible, output using multiple columns.
+  console_width = Tty.width
+  console_width = 80 if console_width <= 0
+  max_len = items.max_by(&:length).length
+  col_gap = 2 # number of spaces between columns
+  gap_str = " " * col_gap
+  cols = (console_width + col_gap) / (max_len + col_gap)
+  cols = 1 if cols < 1
+  rows = (items.size + cols - 1) / cols
+  cols = (items.size + rows - 1) / rows # avoid empty trailing columns
+
+  if cols >= 2
+    col_width = (console_width + col_gap) / cols - col_gap
+    items = items.map { |item| item.ljust(col_width) }
+  end
+
+  if cols == 1
+    puts items
+  else
+    rows.times do |row_index|
+      item_indices_for_row = row_index.step(items.size - 1, rows).to_a
+      puts items.values_at(*item_indices_for_row).join(gap_str)
+    end
   end
 end
 
