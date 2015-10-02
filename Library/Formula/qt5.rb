@@ -99,12 +99,17 @@ class Qt5 < Formula
   depends_on OracleHomeVarRequirement if build.with? "oci"
 
   def install
-    args = ["-prefix", prefix,
-            "-system-zlib", "-securetransport",
-            "-qt-libpng", "-qt-libjpeg",
-            "-no-rpath", "-no-openssl",
-            "-confirm-license", "-opensource",
-            "-nomake", "tests", "-release"]
+    args = %W[
+      -prefix #{prefix}
+      -release
+      -opensource -confirm-license
+      -system-zlib
+      -qt-libpng
+      -qt-libjpeg
+      -no-openssl -securetransport
+      -nomake tests
+      -no-rpath
+    ]
 
     args << "-nomake" << "examples" if build.without? "examples"
 
