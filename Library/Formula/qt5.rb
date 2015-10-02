@@ -77,7 +77,6 @@ class Qt5 < Formula
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
-  option :universal
   option "with-docs", "Build documentation"
   option "with-examples", "Build examples"
   option "with-developer", "Build and link with developer options"
@@ -97,8 +96,6 @@ class Qt5 < Formula
   depends_on OracleHomeVarRequirement if build.with? "oci"
 
   def install
-    ENV.universal_binary if build.universal?
-
     args = ["-prefix", prefix,
             "-system-zlib", "-securetransport",
             "-qt-libpng", "-qt-libjpeg",
@@ -117,14 +114,6 @@ class Qt5 < Formula
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
       args << "-dbus-linked"
-    end
-
-    if MacOS.prefer_64_bit? || build.universal?
-      args << "-arch" << "x86_64"
-    end
-
-    if !MacOS.prefer_64_bit? || build.universal?
-      args << "-arch" << "x86"
     end
 
     if build.with? "oci"
