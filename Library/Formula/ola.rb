@@ -19,6 +19,7 @@ class Ola < Formula
   end
 
   option :universal
+  option "with-ftdi", "Install FTDI USB plugin for OLA."
 
   depends_on "pkg-config" => :build
   depends_on "cppunit"
@@ -29,6 +30,10 @@ class Ola < Formula
   depends_on "ossp-uuid"
   depends_on :python => :optional
   depends_on "doxygen" => :optional
+  if build.with? "ftdi"
+    depends_on "libftdi"
+    depends_on "libftdi0"
+  end
 
   def install
     ENV.universal_binary if build.universal?
