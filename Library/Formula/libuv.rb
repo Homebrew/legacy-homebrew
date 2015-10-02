@@ -1,8 +1,8 @@
 class Libuv < Formula
   desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.7.4.tar.gz"
-  sha256 "5f9625845f509029e44974a67c7e599d11ff9333f8c48a301a098e740cf9ba6c"
+  url "https://github.com/libuv/libuv/archive/v1.7.5.tar.gz"
+  sha256 "11d10f12d68fa655fff18c6021e8e45bc610e7baee006f17247b1830ee316093"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
@@ -14,7 +14,7 @@ class Libuv < Formula
   end
 
   option "without-docs", "Don't build and install documentation"
-  option "with-check", "Execute compile time checks (Requires internet connection)"
+  option "with-check", "Execute compile time checks (Requires Internet connection)"
   option :universal
 
   depends_on "pkg-config" => :build
