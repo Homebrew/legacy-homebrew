@@ -6,9 +6,10 @@ class Virtuoso < Formula
   sha256 "8e680173f975266046cdc33b0949c6c3320b82630288aed778524657a32ee094"
 
   bottle do
-    sha256 "21d31984d4134baf0d2061ca3f3d41a4c150077e5de87b48fa1e5d4abd81bee6" => :yosemite
-    sha256 "866524f118b51e320accf5fa9c67ef33ccd5cc8631093ab6bce9c3a927cfef72" => :mavericks
-    sha256 "be2bebd5c58be3c6f947c801d4f68eefc51ceff1cd4959c279da98e6c12cccf6" => :mountain_lion
+    cellar :any
+    sha256 "cf68911a2cf5d7a585cc62d00ffc5821cb53b527785c81fc949c92a1ceb91e1f" => :el_capitan
+    sha256 "f3e13eaf6ad4c143d49a14475d82884f24c3dcb5ddf93d5ffb7e6657d4db4917" => :yosemite
+    sha256 "c43ed7906276ca762e87b2dee10581db96d41317a6e8027db6987b905f3ca78c" => :mavericks
   end
 
   head do
