@@ -6,10 +6,9 @@ class Synfigstudio < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "33b91aef1e6a80c880f0638984f4135340e6207472681775e06984556016aa0d" => :yosemite
-    sha256 "47cdfcbf5c6ce66ddde2810dd8df18e2dc7590633ba36ba89f697876ab19a890" => :mavericks
-    sha256 "281f88e6f2b4de77a86406c2360a458222f830345f410f1856c3a295e0166c89" => :mountain_lion
+    sha256 "717c3907097dc0762480df7f24ea6fabce61a5d5603affd6968602b3883f64e1" => :el_capitan
+    sha256 "9bfe7fc0f5f2bfe5ade07806c73f7fb291d2db8a5227d3e36828995b045e2176" => :yosemite
+    sha256 "209427cef22922f8171aaca395989e76098031a26ecda430b12837ced714d532" => :mavericks
   end
 
   depends_on "pkg-config" => :build
