@@ -1,5 +1,7 @@
+# allows tap names to start with https://www.github.com/, which is then stripped off
+HOMEBREW_TAP_GITHUB_URL_PREFIX = %r{(?:(?:(?:https?://)?(?:www\.)?)?github\.com/)?}
 # match expressions when taps are given as ARGS, e.g. someuser/sometap
-HOMEBREW_TAP_ARGS_REGEX = %r{^([\w-]+)/(homebrew-)?([\w-]+)$}
+HOMEBREW_TAP_ARGS_REGEX = %r{^#{HOMEBREW_TAP_GITHUB_URL_PREFIX}([\w-]+)/(homebrew-)?([\w-]+)$}
 # match taps' formulae, e.g. someuser/sometap/someformula
 HOMEBREW_TAP_FORMULA_REGEX = %r{^([\w-]+)/([\w-]+)/([\w+-.]+)$}
 # match core's formulae, e.g. homebrew/homebrew/someformula
