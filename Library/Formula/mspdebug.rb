@@ -1,8 +1,8 @@
 class Mspdebug < Formula
   desc "Debugger for use with MSP430 MCUs"
-  homepage "http://mspdebug.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/mspdebug/mspdebug-0.22.tar.gz"
-  sha256 "9a0550f3c7911bcc4e3231fff652c8f14763eb6a945609ce715db7164bf76c55"
+  homepage "http://dlbeer.co.nz/mspdebug/"
+  url "https://github.com/dlbeer/mspdebug/archive/v0.23.tar.gz"
+  sha256 "e4db9ac519d5989aa48e43e92f04a6821a5dc7dff8c8b3795508a77ec4edde84"
 
   depends_on "libusb-compat"
 
