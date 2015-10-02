@@ -5,10 +5,11 @@ class GoogleSparsehash < Formula
   sha256 "2ed639a7155607c097c2029af5f4287296595080b2e5dd2e2ebd9bbb7450b87c"
 
   bottle do
-    cellar :any
-    sha1 "b69142883864c3a93e55670fbf0e04ae87d9aaf1" => :yosemite
-    sha1 "3847a9017f9962b3df7ccfbb89ebf38d1c853e24" => :mavericks
-    sha1 "a9a03d28f355310965005ab055e02f1df411b93e" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "dabf4fbfd790e1c5f359de981d34fb303619f20c5ed68fb7089713931c2c1940" => :el_capitan
+    sha256 "538219894b3a02997643a82e35ebbf135e7ccb8c0846038e6e4b0c3baf0c33d3" => :yosemite
+    sha256 "30c4265ee1c88a01a2821655ff648a3ccb476cb6f29e2594a042ec76d0f8f52e" => :mavericks
   end
 
   option :cxx11
