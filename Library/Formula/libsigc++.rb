@@ -6,10 +6,9 @@ class Libsigcxx < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "2432f8ce2c0da7ad738da40914362be21c354d139a35865404aa3a4afe6d5443" => :el_capitan
-    sha256 "c359344a9687379f811feef287e38eb344a18042e16194f26e40521fdf625f6b" => :yosemite
-    sha256 "258748c43eb3d2d530b382cbee57b42ad6f1cea7eab162791f113bd30f07ebd0" => :mavericks
+    sha256 "7cb0428fce126cba9275b8212eedc7f56544829c52aec30096c7bc64a51e8d8a" => :el_capitan
+    sha256 "68673c2a78a593dafb0c980e00b87057c449c0a751fca4ee10a678d57f00a958" => :yosemite
+    sha256 "3bc196123da746ebdbab0902faf5bd9b2043e51530085c651bdad1f36292b011" => :mavericks
   end
 
   needs :cxx11
