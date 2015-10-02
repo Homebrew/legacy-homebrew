@@ -82,6 +82,9 @@ class Qt5 < Formula
   option "with-developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
 
+  option "without-webengine", "Build without QtWebEngine module"
+  option "without-webkit", "Build without QtWebKit module"
+
   deprecated_option "developer" => "with-developer"
   deprecated_option "qtdbus" => "with-d-bus"
 
@@ -121,6 +124,9 @@ class Qt5 < Formula
       args << "-L#{ENV["ORACLE_HOME"]}"
       args << "-plugin-sql-oci"
     end
+
+    args << "-skip" << "qtwebengine" if build.without? "webengine"
+    args << "-skip" << "qtwebkit" if build.without? "webkit"
 
     args << "-developer-build" if build.with? "developer"
 
