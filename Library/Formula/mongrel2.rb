@@ -8,9 +8,10 @@ class Mongrel2 < Formula
 
   bottle do
     cellar :any
-    sha256 "7ec33fab8c9e95f1d83fdd72b3209773d76dd7ef08134214a7e51f1b20969f03" => :yosemite
-    sha256 "f8b15e5f50d29e955763111079b6715c6cbd8531ef6b9aa13f514a9c774e5f43" => :mavericks
-    sha256 "2bdf0a2207bc8aac4c02638cad6febadcef6f473bc324f15d2f31c013b3b7707" => :mountain_lion
+    revision 1
+    sha256 "90e7c30a269edc9ac6308b3dadb24565a4cd12a73b8b5f1a6e7c700b67c94cfa" => :el_capitan
+    sha256 "d8e720c2b15edef337a4b064d5525bd9d82b55e8dccb9cd69152c9b4d3505517" => :yosemite
+    sha256 "0412a19e55674114c6e2efb09d09cf8998a21b2aad03bfeed67bf9e7a946b694" => :mavericks
   end
 
   depends_on "zeromq"
