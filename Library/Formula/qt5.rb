@@ -91,7 +91,6 @@ class Qt5 < Formula
   # Snow Leopard is untested and support has been removed in 5.4
   # https://qt.gitorious.org/qt/qtbase/commit/5be81925d7be19dd0f1022c3cfaa9c88624b1f08
   depends_on :macos => :lion
-  depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on :mysql => :optional
   depends_on :xcode => :build
