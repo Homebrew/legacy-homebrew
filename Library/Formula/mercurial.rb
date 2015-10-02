@@ -7,11 +7,10 @@ class Mercurial < Formula
   sha256 "23fdc038503911b21dc9e556118803f7b1d4150eb14933d2ea3d0ff0dc60ab5d"
 
   bottle do
-    cellar :any
-    sha256 "8e22f11ff1c147a368581a424c0ec1f1b11959440f881597e84fcc031743ade0" => :el_capitan
-    sha256 "c63ca0b939da4959f2623cac739876f3285683e92366f48a63371483254a6407" => :yosemite
-    sha256 "f1c4e9ebbb056b50a584b760569de5cacdafbd728dd821e00297380ee5095904" => :mavericks
-    sha256 "d39399222a31f040a5e22ef5853a9f99a476c1d76da85935710fdd80980d9ed5" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8b3fd965bb4e294dab494ef4c719a634da9abf5743e962ec0ec6c50e97ae8eb6" => :el_capitan
+    sha256 "a03e7ae949bb72374fed97d8c5516ef79d1e9b894df33253cfea34e38e0b656c" => :yosemite
+    sha256 "75b4b9e659e3c9ef4822d77036991c3d7cba035c340eb4d8a56b93cd27ec84fc" => :mavericks
   end
 
   def install
