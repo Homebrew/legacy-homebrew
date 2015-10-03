@@ -5,9 +5,9 @@ class Libchamplain < Formula
   sha256 "851e24888d967c10acb8fd878df1292a84b8180eb4c48fc5bfbf1a48896d4aa5"
 
   bottle do
-    sha256 "323d628038e62d767e553aa0473901dc7cf2e50895aa390dda5ef163a70ab15a" => :yosemite
-    sha256 "198aadbcf5f5f9bc44d82306fd75752ab4419d64337fd61cd65ef57b5cb9836b" => :mavericks
-    sha256 "7b4a9c531cadf9a8af43f9fd0e7f1b293761fa0bbf9266cff4cc0a8fa54782be" => :mountain_lion
+    sha256 "114f9e269864e0630e819b9fb6fe63efd74fead47839c467e54fdd72d1a09371" => :el_capitan
+    sha256 "bf7b290cda0264cad8b48cb7dc8b84708918f309bd4e7717d8b4ac5f7d08db8a" => :yosemite
+    sha256 "13685ac78041573fa061ea39edf8d1ae827a071374e56290a5567594f42b41b4" => :mavericks
   end
 
   depends_on "pkg-config" => :build
