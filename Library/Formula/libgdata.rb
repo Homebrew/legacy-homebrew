@@ -4,6 +4,12 @@ class Libgdata < Formula
   url "https://download.gnome.org/sources/libgdata/0.16/libgdata-0.16.1.tar.xz"
   sha256 "8740e071ecb2ae0d2a4b9f180d2ae5fdf9dc4c41e7ff9dc7e057f62442800827"
 
+  bottle do
+    sha256 "51394eee6a100a80d94e271fc65f40450e7dfde73ced8043b053e7acdf64f379" => :el_capitan
+    sha256 "9e57590b09a1daf62ecc2aae202cb1fd2640183a14e82abf8a07ca7ae3de702a" => :yosemite
+    sha256 "1902582821eb789e05f8727f86ddea95c79181b1576c544fc83b595d3872fc8c" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "libsoup"
