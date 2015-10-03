@@ -7,12 +7,13 @@ class Pmd < Formula
   depends_on "maven" => :build
 
   def install
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{ENV["HOME"]}"
     system "mvn", "clean", "package"
 
     doc.install "LICENSE", "NOTICE", "README.md"
 
     # The mvn package target produces a .zip with all the jars needed for PMD
-    safe_system "tar", "-xf", buildpath/"pmd-dist/target/pmd-bin-#{version}.zip"
+    safe_system "unzip", buildpath/"pmd-dist/target/pmd-bin-#{version}.zip"
     libexec.install "pmd-bin-#{version}/bin", "pmd-bin-#{version}/lib"
 
     bin.install_symlink "#{libexec}/bin/run.sh" => "pmd"
