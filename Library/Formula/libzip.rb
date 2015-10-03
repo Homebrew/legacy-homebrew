@@ -2,11 +2,12 @@ class Libzip < Formula
   desc "C library for reading, creating, and modifying zip archives"
   homepage "http://www.nih.at/libzip/"
   url "http://www.nih.at/libzip/libzip-0.11.2.tar.gz"
-  sha1 "eeb3b5567fcf3532fa4bcb6440a87c7ad8507d2d"
+  sha256 "83db1fb43a961ff7d1d1b50e1c6bea09c67e6af867686d1fc92ecb7dc6cf98d5"
 
   bottle do
     cellar :any
     revision 2
+    sha256 "45d2813d47e8a0989651d844cd597abdb06d411549bb6db9c3fa8541debfc809" => :el_capitan
     sha1 "714257f1e187a42f11c50c8f777d79d8beba28c6" => :yosemite
     sha1 "65b31e70e363879aad9f8d1845e17bf7f2dcaeb3" => :mavericks
     sha1 "f1571198224aa96ea539e282c24097ee4d9096d6" => :mountain_lion

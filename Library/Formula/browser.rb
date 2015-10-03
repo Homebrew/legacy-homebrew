@@ -3,7 +3,7 @@ class Browser < Formula
     :using => :nounzip
   desc "Pipe HTML to a browser"
   homepage "https://gist.github.com/318247/"
-  sha1 "beaf6c40851628d188eccc9cc013d44dcb037521"
+  sha256 "273343d6cf9ed543ccea47b85a2ad2ef2afe7b7a2b956f2e7a24ce0175326dcc"
   # This the gist revision number
   version "7"
 

@@ -2,23 +2,23 @@
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
-HOMEBREW_BREW_FILE = ENV['HOMEBREW_BREW_FILE']
+HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
 
-if ARGV == %w{--prefix}
+if ARGV == %w[--prefix]
   puts File.dirname(File.dirname(HOMEBREW_BREW_FILE))
   exit 0
 end
 
-require 'pathname'
+require "pathname"
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
-require 'global'
+require "global"
 
-if ARGV.first == '--version'
-  puts HOMEBREW_VERSION
+if ARGV.first == "--version"
+  puts Homebrew.homebrew_version_string
   exit 0
-elsif ARGV.first == '-v'
-  puts "Homebrew #{HOMEBREW_VERSION}"
+elsif ARGV.first == "-v"
+  puts "Homebrew #{Homebrew.homebrew_version_string}"
   # Shift the -v to the end of the parameter list
   ARGV << ARGV.shift
   # If no other arguments, just quit here.
@@ -39,10 +39,12 @@ if OS.mac? && MacOS.version < :mavericks && MacOS.active_developer_dir == "/"
   EOS
 end
 
-case HOMEBREW_PREFIX.to_s when '/', '/usr'
+case HOMEBREW_PREFIX.to_s
+when "/", "/usr"
   # it may work, but I only see pain this route and don't want to support it
   abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
+
 if OS.mac? and MacOS.version < "10.6"
   abort <<-EOABORT.undent
     Homebrew requires Snow Leopard or higher. For Tiger and Leopard support, see:
@@ -54,10 +56,10 @@ end
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
 
-def require? path
+def require?(path)
   require path
 rescue LoadError => e
-  # HACK :( because we should raise on syntax errors but
+  # HACK: ( because we should raise on syntax errors but
   # not if the file doesn't exist. TODO make robust!
   raise unless e.to_s.include? path
 end
@@ -68,6 +70,7 @@ begin
   empty_argv = ARGV.empty?
   help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
   help_flag = false
+  internal_cmd = true
   cmd = nil
 
   ARGV.dup.each_with_index do |arg, i|
@@ -103,7 +106,13 @@ begin
   # Add SCM wrappers.
   ENV["PATH"] += "#{File::PATH_SEPARATOR}#{HOMEBREW_LIBRARY}/ENV/scm"
 
-  internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd) if cmd
+  if cmd
+    internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("cmd", cmd)
+
+    if !internal_cmd && ARGV.homebrew_developer?
+      internal_cmd = require? HOMEBREW_LIBRARY_PATH.join("dev-cmd", cmd)
+    end
+  end
 
   # Usage instructions should be displayed if and only if one of:
   # - a help flag is passed AND an internal command is matched
@@ -114,14 +123,14 @@ begin
   # arguments themselves.
 
   if empty_argv || (help_flag && (cmd.nil? || internal_cmd))
-    # TODO - `brew help cmd` should display subcommand help
-    require 'cmd/help'
+    # TODO: - `brew help cmd` should display subcommand help
+    require "cmd/help"
     puts ARGV.usage
     exit ARGV.any? ? 0 : 1
   end
 
   if internal_cmd
-    Homebrew.send cmd.to_s.gsub('-', '_').downcase
+    Homebrew.send cmd.to_s.gsub("-", "_").downcase
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
@@ -157,8 +166,10 @@ rescue RuntimeError, SystemCallError => e
   exit 1
 rescue Exception => e
   onoe e
-  puts "#{Tty.white}Please report this bug:"
-  puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
+  if internal_cmd
+    puts "#{Tty.white}Please report this bug:"
+    puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
+  end
   puts e.backtrace
   exit 1
 else

@@ -3,7 +3,7 @@ class GlobusToolkit < Formula
   homepage "http://www.globus.org/toolkit/"
   # Note: Stable distributions have an even minor version number (e.g. 5.0.3)
   url "http://toolkit.globus.org/ftppub/gt6/installers/src/globus_toolkit-6.0.tar.gz"
-  sha1 "cb688858f96b26a92d72efedc1153a8cbf2516b8"
+  sha256 "c38473a0477bc7a941868d78dd8d8a3d5dd99d0fc3d127580c629663202e8c7d"
 
   bottle do
     sha1 "ad1c40f3be3184206addd9c8f5c091b6eac1023c" => :yosemite

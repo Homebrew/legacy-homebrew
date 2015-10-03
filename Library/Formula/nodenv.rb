@@ -1,11 +1,9 @@
-require "formula"
-
 class Nodenv < Formula
   desc "NodeJS version management"
   homepage "https://github.com/wfarr/nodenv"
   head "https://github.com/wfarr/nodenv.git"
-  url "https://github.com/wfarr/nodenv/archive/v0.3.3.tar.gz"
-  sha1 "20f0cf2b698925c950de4be1899c615fc509d4b3"
+  url "https://github.com/wfarr/nodenv/archive/v0.3.4.tar.gz"
+  sha256 "6d3946960beed4e69596a5f0519ad4ca7606db4e4ab1b85a3bf4add06d64290b"
 
   def install
     prefix.install "bin", "libexec"

@@ -1,38 +1,37 @@
 class Moreutils < Formula
   desc "Collection of tools that nobody wrote when UNIX was young"
-  homepage "http://joeyh.name/code/moreutils/"
-  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
-  mirror "http://ftp.us.debian.org/debian/pool/main/m/moreutils/moreutils_0.55.orig.tar.gz"
-  sha1 "050c73067d2b5373f2652b91e75699dd79a44590"
+  homepage "https://joeyh.name/code/moreutils/"
+  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  sha256 "3a7d54b0634e5eda8c3c43490d47cea189156700892dea6d876867cef9bc0d1d"
+
+  head "git://git.kitenet.net/moreutils"
 
   bottle do
-    sha1 "a7d3974c453e9b68d0254505f5bb4ed9fa9ba3a3" => :yosemite
-    sha1 "314304205f3f69f2a885524ea327ddb887be43d9" => :mavericks
-    sha1 "47ac9f9d22e0890e9df62e602ecf7a70a378826f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5475ea829217bd88b5a9bd1a0b71615dccd092aeaddec2b499fc725c58b48074" => :el_capitan
+    sha256 "abbe3897f14ef314900fb165e76de97bd7a948cded5b26f3c2471f50adfd2f11" => :yosemite
+    sha256 "ec107c6a7c081c5e990c9b79eb3fde8cb6c9ac4e8e0c52de8f751b624927861a" => :mavericks
+    sha256 "d506ebb771c12c334e5597bb57b751c3ad738ca38aaf5cb00f88b7b25f6a776c" => :mountain_lion
   end
+
+  option "without-parallel", "Build without the 'parallel' tool."
 
   depends_on "docbook-xsl" => :build
 
-  option "without-parallel", "Omit the 'parallel' tool. Allows installation of GNU parallel from 'parallel' formula."
-
-  if build.with? "parallel"
-    conflicts_with "parallel",
-      :because => "both install a 'parallel' executable. See the '--without-parallel' option"
-  end
-
-  conflicts_with "task-spooler",
-    :because => "both install a 'ts' executable."
+  conflicts_with "parallel", :because => "Both install a 'parallel' executable."
+  conflicts_with "task-spooler", :because => "Both install a 'ts' executable."
 
   resource "Time::Duration" do
     url "http://search.cpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
-    sha1 "5acc5013d8b4ab52416555e1f08546a8d8a3fb41"
+    mirror "https://cpan.metacpan.org/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
+    sha256 "a69c419c4892f21eba10002e2ab8c55b657b6691cf6873544ef99ef5fd188f4e"
   end
 
   resource "IPC::Run" do
     url "http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
-    sha1 "87e0c796722a85e0908bb0224326af1436d35809"
+    mirror "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
+    sha256 "e186b46ddf1577d24f11eec1ba42285963c3f71ec7ecb1ce51d6e88c729d46d2"
   end
 
   def install

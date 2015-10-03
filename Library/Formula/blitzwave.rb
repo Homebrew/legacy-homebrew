@@ -1,10 +1,8 @@
-require 'formula'
-
 class Blitzwave < Formula
   desc "C++ wavelet library"
-  homepage 'http://oschulz.github.io/blitzwave'
-  url 'https://github.com/oschulz/blitzwave/archive/v0.8.0.tar.gz'
-  sha1 '16d96f28ba295659301ab6485782715786fd496e'
+  homepage "https://oschulz.github.io/blitzwave"
+  url "https://github.com/oschulz/blitzwave/archive/v0.8.0.tar.gz"
+  sha256 "edb0b708a0587e77b8e0aa3387b44f4e838855c17e896a8277bb80fbe79b9a63"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

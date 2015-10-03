@@ -1,10 +1,8 @@
-require "formula"
-
 class Transcrypt < Formula
   desc "Configure transparent encryption of files in a Git repo"
   homepage "https://github.com/elasticdog/transcrypt#readme"
   url "https://github.com/elasticdog/transcrypt/archive/v0.9.7.tar.gz"
-  sha1 "af986db13069df0a9ce16e1bde1eaf6edc9a0317"
+  sha256 "b061b9579cec7d76b05ac898c2da19168de9b0c173d2f3f986fcb0c6c971f95d"
   head "https://github.com/elasticdog/transcrypt.git"
 
   def install

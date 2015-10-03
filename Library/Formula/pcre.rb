@@ -5,10 +5,17 @@ class Pcre < Formula
   mirror "https://www.mirrorservice.org/sites/downloads.sourceforge.net/p/pc/pcre/pcre/8.37/pcre-8.37.tar.bz2"
   sha256 "51679ea8006ce31379fb0860e46dd86665d864b5020fc9cd19e71260eef4789d"
 
-  head "svn://vcs.exim.org/pcre/code/trunk"
+  head do
+    url "svn://vcs.exim.org/pcre/code/trunk"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
+    sha256 "b6c90f2a9860e43fbaa890ea447765ebcf6eea31654e03a5f1b407da032042db" => :el_capitan
     sha256 "83191880a6cc02a258928bf69f6bc0545b019f90ecccc5b2d08787180504327c" => :yosemite
     sha256 "88485e49b169f4123f29c086e8e59d835a16b1e7d39c4ecaca01412b88d16281" => :mavericks
     sha256 "78ecdc1a81fe8da426fd5fe0d9d04fb03bb92bd3763d876fcb3d48d45b76876f" => :mountain_lion
@@ -24,6 +31,7 @@ class Pcre < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-utf8",

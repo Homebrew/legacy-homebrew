@@ -1,14 +1,13 @@
 class Osxfuse < Formula
   desc "FUSE for OS X: extend native file handling via 3rd-party file systems"
   homepage "https://osxfuse.github.io/"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.6",
-                                                :revision => "6ba1962e153e7a76f43bc2f80b0ba0ef2da2cef9"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.8.0",
+                                                :revision => "6a1e7793079d446950f6aaa250e4762710ad326e"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
   bottle do
-    sha256 "ea6deeb6e94eaf5eeaf4dd6c9e66cf631ca3c97628991f060c7e5bf9eefc4228" => :mavericks
-    sha256 "5254872690d09b78408530f85b52dd5c93ddc9db11cb6042019e89aca0dabd10" => :mountain_lion
+    sha256 "6eee4b8e976b528d5007d92b3fe267e256380164d9be9446541428da0715b626" => :mavericks
   end
 
   depends_on :macos => :snow_leopard

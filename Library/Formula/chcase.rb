@@ -3,7 +3,7 @@ class Chcase < Formula
   homepage "http://www.primaledge.ca/chcase.html"
   url "http://www.primaledge.ca/chcase"
   version "2.0"
-  sha1 "ec81ad76d85cf9162d422e801092ddc5e0841e39"
+  sha256 "386e6f294157957adbd433a10591d9d78cd54d13e1347fb15a19e70f03319ed3"
 
   # add a shebang so that brew properly sets it executable
   patch :DATA

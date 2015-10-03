@@ -1,5 +1,3 @@
-require "formula"
-
 class SyncGateway < Formula
   desc "Make Couchbase Server a replication endpoint for Couchbase Lite"
   homepage "http://docs.couchbase.com/sync-gateway"

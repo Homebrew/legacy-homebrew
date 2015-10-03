@@ -1,18 +1,18 @@
-require "formula"
-
 class Libfreenect < Formula
   desc "Drivers and libraries for the Xbox Kinect device"
   homepage "http://openkinect.org"
   url "https://github.com/OpenKinect/libfreenect/archive/v0.5.1.tar.gz"
-  sha1 "1f7296e50c27c07e2f57ee906c195cabf97c1438"
+  sha256 "97e5dd11a0f292b6a3014d1a31c7af16a21cd6574a63057ed7a364064a7614d0"
 
   head "https://github.com/OpenKinect/libfreenect.git"
 
   bottle do
     cellar :any
-    sha1 "431e5bc789920cdc34e2a786fd44eb4485dd7e3d" => :yosemite
-    sha1 "98c11049dd822039eaa7325fa9dc2131c4a4b3dd" => :mavericks
-    sha1 "1e5ec1cc7a91d583f3de9c5f12d5eac8321970e4" => :mountain_lion
+    revision 1
+    sha256 "b1a6522fbcfad660703f1f86bafded7cbe4050ecd95a53481e5ccaa5bae7b86f" => :el_capitan
+    sha256 "3747228221eaf4e35b18f07fb2f57dfb85cd1787d5b8534e7174d16820534cbf" => :yosemite
+    sha256 "0923504aaedced53b34a1a1d5a7b32a4b2573926ba462b4b44e9ba0cac85d61a" => :mavericks
+    sha256 "f1a1590a8ae0ad8baa18b82e95a2bd24fb5be9bae152f816780114c236ba85e6" => :mountain_lion
   end
 
   option :universal
@@ -22,6 +22,7 @@ class Libfreenect < Formula
 
   def install
     args = std_cmake_args
+    args << "-DBUILD_OPENNI2_DRIVER=ON"
 
     if build.universal?
       ENV.universal_binary
@@ -30,7 +31,7 @@ class Libfreenect < Formula
 
     mkdir "build" do
       system "cmake", "..", *args
-      system "make install"
+      system "make", "install"
     end
   end
 end

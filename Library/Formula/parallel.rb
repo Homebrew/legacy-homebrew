@@ -1,20 +1,20 @@
 class Parallel < Formula
   desc "GNU parallel shell command"
   homepage "https://savannah.gnu.org/projects/parallel/"
-  url "http://ftpmirror.gnu.org/parallel/parallel-20150622.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150622.tar.bz2"
-  sha256 "963a9c962ac8f4a53535f779ab7a46336dc6e12234d75dc796248bf9117aef48"
+  url "http://ftpmirror.gnu.org/parallel/parallel-20150822.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/parallel/parallel-20150822.tar.bz2"
+  sha256 "ad9007530d87687160fd8def58721acdac244c151b6c007f35068909bb5c47c6"
   head "http://git.savannah.gnu.org/r/parallel.git"
 
   bottle do
-    cellar :any
-    sha256 "6f9215219c74156007b216b8fd68115ff4570fb598f1cbeee33ddb717ef585f4" => :yosemite
-    sha256 "1450c6fba3aa0f6f2a337a201d07f3d2b3bb5c83c50fe8f10228eb7e06e950e3" => :mavericks
-    sha256 "0dfdf16c6ee7dcbaf1c0c56f269cf42184826b4bae627136aa1f4c552d52d47f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "420e4f174531d23a4ee759bd553966dac737b3d7f013eb172734c6315739df7b" => :el_capitan
+    sha256 "c6dd1794c15b00c77e9a5556bfe0edac97d422f408d34cbb00992e69ce2614a2" => :yosemite
+    sha256 "5eb6f10c81f5fb608d476ad075fd9c922f6144be1bfdc39c1f41303e4dacd8df" => :mavericks
+    sha256 "8ce7a360d18600da0dd69dd87ecadc82282dfb7b876ab76817ef3b25e06f2520" => :mountain_lion
   end
 
-  conflicts_with "moreutils",
-    :because => "both install a 'parallel' executable. See the --without-parallel option for 'moreutils'"
+  conflicts_with "moreutils", :because => "both install a 'parallel' executable."
 
   def install
     system "./configure", "--prefix=#{prefix}"

@@ -1,11 +1,9 @@
-require "formula"
-
 class Sickbeard < Formula
   desc "PVR application to search and manage TV shows"
   homepage "http://www.sickbeard.com/"
   head "https://github.com/midgetspy/Sick-Beard.git"
   url "https://github.com/midgetspy/Sick-Beard/archive/build-507.tar.gz"
-  sha1 "c7939a58f38d55e1db6a732047c37eb31588cc7d"
+  sha256 "eaf95ac78e065f6dd8128098158b38674479b721d95d937fe7adb892932e9101"
 
   bottle do
     sha1 "d144a55f9a667036255b373f7fcf294455d447e2" => :yosemite
@@ -15,22 +13,22 @@ class Sickbeard < Formula
 
   resource "Markdown" do
     url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.1.tar.gz"
-    sha1 "2c9cedad000e9ecdf0b220bd1ad46bc4592d067e"
+    sha256 "812ec5249f45edc31330b7fb06e52aaf6ab2d83aa27047df7cb6837ef2d269b6"
   end
 
   resource "Cheetah" do
     url "https://pypi.python.org/packages/source/C/Cheetah/Cheetah-2.4.4.tar.gz"
-    sha1 "c218f5d8bc97b39497680f6be9b7bd093f696e89"
+    sha256 "be308229f0c1e5e5af4f27d7ee06d90bb19e6af3059794e5fd536a6f29a9b550"
   end
 
   def install
-    # TODO - strip down to the minimal install
+    # TODO: - strip down to the minimal install
     prefix.install_metafiles
     libexec.install Dir["*"]
 
     ENV["CHEETAH_INSTALL_WITHOUT_SETUPTOOLS"] = "1"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-    install_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
+    install_args = ["setup.py", "install", "--prefix=#{libexec}"]
 
     resource("Markdown").stage { system "python", *install_args }
     resource("Cheetah").stage { system "python", *install_args }

@@ -1,9 +1,17 @@
 class Pango < Formula
   desc "Framework for layout and rendering of i18n text"
   homepage "http://www.pango.org/"
-  url "https://download.gnome.org/sources/pango/1.36/pango-1.36.8.tar.xz"
-  sha256 "18dbb51b8ae12bae0ab7a958e7cf3317c9acfc8a1e1103ec2f147164a0fc2d07"
-  revision 1
+
+  stable do
+    url "https://download.gnome.org/sources/pango/1.38/pango-1.38.0.tar.xz"
+    sha256 "1d4e75974bad853ee9ac5fc5caee5e7ab235abbd945d51d01f3806e04e7c226c"
+  end
+
+  bottle do
+    sha256 "35609b5fd72070c55965ff9ed2a2221e885c0c9901aa37005a92b223cc96d3b6" => :el_capitan
+    sha256 "4c45bd9bda3be814c8b89673360bc90ab444741023c980e8744fe218d94562ba" => :yosemite
+    sha256 "61049900a101f9dc393bb825a3a00378f57e925f55b904abcd5537f3c8c130f0" => :mavericks
+  end
 
   head do
     url "https://git.gnome.org/browse/pango.git"
@@ -48,7 +56,7 @@ class Pango < Formula
   end
 
   test do
-    system "#{bin}/pango-querymodules", "--version"
+    system "#{bin}/pango-view", "--version"
     (testpath/"test.c").write <<-EOS.undent
       #include <pango/pangocairo.h>
 

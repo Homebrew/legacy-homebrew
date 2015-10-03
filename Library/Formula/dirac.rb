@@ -2,7 +2,7 @@ class Dirac < Formula
   desc "General-purpose video codec aimed at a range of resolutions"
   homepage "http://diracvideo.org/"
   url "http://diracvideo.org/download/dirac-research/dirac-1.0.2.tar.gz"
-  sha1 "895aaad832a54b754e58f77c87d38c0c37752b0b"
+  sha256 "816b16f18d235ff8ccd40d95fc5b4fad61ae47583e86607932929d70bf1f00fd"
 
   bottle do
     cellar :any
@@ -27,7 +27,7 @@ class Dirac < Formula
     sha256 "52c40f2c8aec9174eba2345e6ba9689ced1b8f865c7ced23e7f7ee5fdd6502c3"
   end
 
-  # hack the configure script, which assumes any compiler that
+  # HACK: the configure script, which assumes any compiler that
   # starts with "cl" is a Microsoft compiler
   patch :DATA
 
@@ -37,7 +37,7 @@ class Dirac < Formula
 
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

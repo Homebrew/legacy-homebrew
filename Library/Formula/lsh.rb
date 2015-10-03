@@ -3,7 +3,7 @@ class Lsh < Formula
   homepage "https://www.lysator.liu.se/~nisse/lsh/"
   url "http://ftpmirror.gnu.org/lsh/lsh-2.1.tar.gz"
   mirror "https://ftp.gnu.org/gnu/lsh/lsh-2.1.tar.gz"
-  sha1 "ddc9895a6f7d3725dd3080db8740832eb3147a85"
+  sha256 "8bbf94b1aa77a02cac1a10350aac599b7aedda61881db16606debeef7ef212e3"
 
   bottle do
     sha1 "72d573729a1ab019f2b1f5f7f53a2dd6b9096044" => :yosemite
@@ -17,7 +17,7 @@ class Lsh < Formula
 
   resource "liboop" do
     url "https://mirrors.kernel.org/debian/pool/main/libo/liboop/liboop_1.0.orig.tar.gz"
-    sha1 "94357a83968cd10ef1c66941db5c3d0d3dbec8e7"
+    sha256 "34d83c6e0f09ee15cb2bc3131e219747c3b612bb57cf7d25318ab90da9a2d97c"
   end
 
   def install

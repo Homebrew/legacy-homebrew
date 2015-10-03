@@ -1,28 +1,27 @@
 class Groonga < Formula
   desc "Fulltext search engine and column store"
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.0.5.tar.gz"
-  sha256 "ca62d15374117f4007a7b406ac2072683edda7ed7607d1b1fbcf3a30920f5b56"
+  url "http://packages.groonga.org/source/groonga/groonga-5.0.8.tar.gz"
+  sha256 "9bc8aca52842a90cbeeb816a2a8ad9c89b226c14fca4c18661039e54587a5a29"
 
   bottle do
-    sha256 "0e4834e388e1e485527c0fd89cde6a61de679fc5873f05cd0d21be93baf9a17c" => :yosemite
-    sha256 "e387a4528bc4ae8069570e08d4ab7e7171e410f314972ce1574f585e4552b957" => :mavericks
-    sha256 "2c431bda2806787342854e84fdb284d7e20f3ca04d28d72f7875f640cd8f5564" => :mountain_lion
+    sha256 "696fa3bede74506be0a48cb3922c4b8b892bb2ef7422ffb23674658f5a42f51b" => :el_capitan
+    sha256 "ccca48f11abdb8fc0179c4fd551b5dd09f985c2c2124fbaeef265c806fc11c19" => :yosemite
+    sha256 "97f66a1f7d66d8d53396af2bb918afef2f4706da4d091d4b4db479c9ee7daf3d" => :mavericks
   end
 
   option "with-benchmark", "With benchmark program for developer use"
+
+  deprecated_option "enable-benchmark" => "with-benchmark"
 
   depends_on "pkg-config" => :build
   depends_on "pcre"
   depends_on "msgpack"
   depends_on "mecab" => :optional
-  depends_on "mecab-ipadic" if build.with? "mecab"
   depends_on "lz4" => :optional
   depends_on "openssl"
-
+  depends_on "mecab-ipadic" if build.with? "mecab"
   depends_on "glib" if build.with? "benchmark"
-
-  deprecated_option "enable-benchmark" => "with-benchmark"
 
   def install
     args = %W[
@@ -33,7 +32,7 @@ class Groonga < Formula
       --without-libstemmer
     ]
 
-    args << "--enable-benchmark" if build.include? "enable-benchmark"
+    args << "--enable-benchmark" if build.with? "benchmark"
     args << "--with-mecab" if build.with? "mecab"
     args << "--with-lz4" if build.with? "lz4"
 

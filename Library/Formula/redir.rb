@@ -3,7 +3,7 @@ class Redir < Formula
   homepage "http://sammy.net/~sammy/hacks/"
   url "https://github.com/TracyWebTech/redir/archive/2.2.1-9.tar.gz"
   version "2.2.1-9"
-  sha1 "84ae75104d79432bbc15f67e4dc2980e0912b2b6"
+  sha256 "7e6612a0eee1626a0e7d9888de49b9c0fa4b7f75c5c4caca7804bf73d73f01fe"
 
   bottle do
     cellar :any

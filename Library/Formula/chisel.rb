@@ -1,10 +1,8 @@
-require "formula"
-
 class Chisel < Formula
   desc "Collection of LLDB commands to assist debugging iOS apps"
   homepage "https://github.com/facebook/chisel"
   url "https://github.com/facebook/chisel/archive/1.2.0.tar.gz"
-  sha1 "c4c2bf25035cc15f10a10290023a6f8ce23ba1da"
+  sha256 "af22dde2c5b4f0832f25ac0d3831c43a227f148f97ca7e6bab71e10b2b3225b5"
 
   def install
     libexec.install Dir["*.py", "commands"]

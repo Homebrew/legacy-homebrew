@@ -1,12 +1,12 @@
 require "fileutils"
 require "tmpdir"
 
-# We enhance FileUtils to make our Formula code more readable.
+# Homebrew extends Ruby's `FileUtils` to make our code more readable.
+# @see http://ruby-doc.org/stdlib-1.8.7/libdoc/fileutils/rdoc/FileUtils.html Ruby's FileUtils API
 module FileUtils
-
   # Create a temporary directory then yield. When the block returns,
   # recursively delete the temporary directory.
-  def mktemp(prefix=name)
+  def mktemp(prefix = name)
     prev = pwd
     tmp  = Dir.mktmpdir(prefix, HOMEBREW_TEMP)
 
@@ -24,9 +24,11 @@ module FileUtils
   end
   module_function :mktemp
 
-  # A version of mkdir that also changes to that folder in a block.
+  # @private
   alias_method :old_mkdir, :mkdir
-  def mkdir name, &block
+
+  # A version of mkdir that also changes to that folder in a block.
+  def mkdir(name, &_block)
     old_mkdir(name)
     if block_given?
       chdir name do
@@ -43,11 +45,12 @@ module FileUtils
   # never backported into the 1.9.3 branch. Fixed in 2.0.0.
   # The monkey-patched method here is copied directly from upstream fix.
   if RUBY_VERSION < "2.0.0"
+    # @private
     class Entry_
       alias_method :old_copy_metadata, :copy_metadata
       def copy_metadata(path)
-        st = lstat()
-        if !st.symlink?
+        st = lstat
+        unless st.symlink?
           File.utime st.atime, st.mtime, path
         end
         begin
@@ -83,24 +86,28 @@ module FileUtils
     end
   end
 
-  private
-
-  # Run scons using a Homebrew-installed version, instead of whatever
-  # is in the user's PATH
-  def scons *args
+  # Run `scons` using a Homebrew-installed version rather than whatever is in the `PATH`.
+  def scons(*args)
     system Formulary.factory("scons").opt_bin/"scons", *args
   end
 
-  def rake *args
-    system RUBY_BIN/'rake', *args
+  # Run the `rake` from the `ruby` Homebrew is using rather than whatever is in the `PATH`.
+  def rake(*args)
+    system RUBY_BIN/"rake", *args
   end
 
-  alias_method :old_ruby, :ruby if method_defined?(:ruby)
-  def ruby *args
+  if method_defined?(:ruby)
+    # @private
+    alias_method :old_ruby, :ruby
+  end
+
+  # Run the `ruby` Homebrew is using rather than whatever is in the `PATH`.
+  def ruby(*args)
     system RUBY_PATH, *args
   end
 
-  def xcodebuild *args
+  # Run `xcodebuild` without Homebrew's compiler environment variables set.
+  def xcodebuild(*args)
     removed = ENV.remove_cc_etc
     system "xcodebuild", *args
   ensure

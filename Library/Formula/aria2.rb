@@ -1,14 +1,14 @@
 class Aria2 < Formula
   desc "Download with resuming and segmented downloading"
   homepage "http://aria2.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/aria2/stable/aria2-1.18.9/aria2-1.18.9.tar.bz2"
-  sha1 "31ac90d9ffcdba4cdf936ddfbc3d8f08416360e6"
+  url "https://github.com/tatsuhiro-t/aria2/releases/download/release-1.19.1/aria2-1.19.1.tar.xz"
+  sha256 "f731f64940ccfc78e8777190de354ba833fe248851b935d5d8885a7917fc101f"
 
   bottle do
-    cellar :any
-    sha1 "a82e7baf0bf64cd3beb6ee2c5d16c10534138852" => :yosemite
-    sha1 "f0ab29fdeebb96b6f9594a7119b9210b820b28f4" => :mavericks
-    sha1 "b931e5c286c97a5cc5d5ef2e21336dfc9fe62ea6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "e114d3a0ff7905e5c43dd19b1b129ecb7c2854b20e829fa2c761dff6b5cb1e2f" => :el_capitan
+    sha256 "42aa898093486f7a0978de60ec1d43bfee2d33996638a181340f7f9c9d275a70" => :yosemite
+    sha256 "7735fb484cb3345f10c7ef44538aef12ba60cfc65de4940a419320e9360aba70" => :mavericks
   end
 
   depends_on "pkg-config" => :build

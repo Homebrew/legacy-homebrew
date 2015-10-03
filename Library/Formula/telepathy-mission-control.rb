@@ -1,10 +1,8 @@
-require "formula"
-
 class TelepathyMissionControl < Formula
   desc "Telepathy account manager and channel dispatcher"
   homepage "http://telepathy.freedesktop.org/wiki/Mission_Control/"
   url "http://telepathy.freedesktop.org/releases/telepathy-mission-control/telepathy-mission-control-5.16.2.tar.gz"
-  sha1 "4c15d20b5f06f083a60bcd9b08141e99092863a3"
+  sha256 "3dcbf8d26cd19e77ef9296c9ae501f8af6cd59aeb058f0a3d5eb75e5647268ea"
 
   bottle do
     sha1 "8235075abe8ce8cb5e9dd93d4d5744c1e6ea631a" => :mavericks
@@ -27,6 +25,6 @@ class TelepathyMissionControl < Formula
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

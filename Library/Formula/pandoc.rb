@@ -5,15 +5,16 @@ class Pandoc < Formula
 
   desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.15.0.4/pandoc-1.15.0.4.tar.gz"
-  sha256 "5660c534f78f6baeb54a041108efe664452d6fc7da0b4181062a1ed559db07d7"
+  url "https://hackage.haskell.org/package/pandoc-1.15.0.6/pandoc-1.15.0.6.tar.gz"
+  sha256 "d950968142526d5a765af7dfb26b47c3f60d4f883aa9d9eab668614179f1ed46"
 
   head "https://github.com/jgm/pandoc.git"
 
   bottle do
-    sha256 "a5a85c50479a45b4f239df1ae74d18c3deb77fb8dc580e1a39687af595ac9f56" => :yosemite
-    sha256 "6c3dbb79f141f082bbffae47d835ab620711912a6b3c51130db055e3c3acd9c3" => :mavericks
-    sha256 "4d336eb06cc8750974997b433be4262874aadbb170824021e1791eb226762e5e" => :mountain_lion
+    sha256 "6ce6666dc7f0436f011d8e3a8b15e92ae96c17c93156c560ba7e914c5c2e63dd" => :el_capitan
+    sha256 "c0937b35c02d975d9c42d547eae6eef22f44c3f800b4369000b153265294458f" => :yosemite
+    sha256 "45de8f7c956c415b9b94b46dec624f8c28d52fc46079721186bff9dd5bfc56e7" => :mavericks
+    sha256 "129ba9b0fd78c82474f9d4b146efe5bac923a78700111e3a0b26398db5a30a54" => :mountain_lion
   end
 
   depends_on "ghc" => :build
@@ -31,7 +32,15 @@ class Pandoc < Formula
   end
 
   test do
-    system "pandoc", "-o", testpath/"output.html", prefix/"README"
-    assert (testpath/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
+    input_markdown = <<-EOS.undent
+      # Homebrew
+
+      A package manager for humans. Cats should take a look at Tigerbrew.
+    EOS
+    expected_html = <<-EOS.undent
+      <h1 id="homebrew">Homebrew</h1>
+      <p>A package manager for humans. Cats should take a look at Tigerbrew.</p>
+    EOS
+    assert_equal expected_html, pipe_output("#{bin}/pandoc -f markdown -t html5", input_markdown)
   end
 end

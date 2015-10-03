@@ -1,16 +1,23 @@
-require "formula"
-
 class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "http://wiki.dlang.org/LDC"
   url "https://github.com/ldc-developers/ldc/releases/download/v0.15.2-beta2/ldc-0.15.2-beta2-src.tar.gz"
-  sha1 "8e2913de136facfe0a3a8065a78b319690c85830"
   version "0.15.2-beta2"
+  sha256 "b421acbca0cdeef42c5af2bd53060253822dea6d78d216f973ee5e2b362723e2"
+
+  head "https://github.com/ldc-developers/ldc.git", :shallow => false
 
   bottle do
-    sha256 "42429da7c6b69babb33d17797492179faf584cee6a55980f5beba8c79d951c5a" => :yosemite
-    sha256 "0b9aaf9f9f5b8dc05a4a0989ce1d54bd81fe857e36d84d54dee0ba3cad008c09" => :mavericks
-    sha256 "8ea1ad6cbd93ca1b909fdce9ff136fe56ada447cd535840f2684088dcab0fea2" => :mountain_lion
+    revision 1
+    sha256 "fa6b927c78ab8c9e3654681896aa52dfb9429dc4c4eb159cc36104a8c195d440" => :el_capitan
+    sha256 "d881f7491f5e27659f4e6f1b12c363b99d02e73073b8003d6e648bebc1a53204" => :yosemite
+    sha256 "f5f1741065b18bdcd4051f29f4df5a93b85cee1e8c5e8a3598477c10d123be8e" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/ldc-developers/ldc/releases/download/v0.16.0-beta1/ldc-0.16.0-beta1-src.tar.gz"
+    version "0.16.0-beta1"
+    sha256 "35fac8a724cee8dc280c926d659c39b4209a0e9739be55943e4fd687b6d18049"
   end
 
   needs :cxx11
@@ -38,9 +45,9 @@ class Ldc < Formula
       }
     EOS
 
-    system "#{bin}/ldc2", 'test.d'
+    system "#{bin}/ldc2", "test.d"
     system "./test"
-    system "#{bin}/ldmd2", 'test.d'
+    system "#{bin}/ldmd2", "test.d"
     system "./test"
   end
 end

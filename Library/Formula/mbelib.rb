@@ -1,11 +1,9 @@
-require 'formula'
-
 class Mbelib < Formula
   desc "P25 Phase 1 and ProVoice vocoder"
-  homepage 'https://github.com/szechyjs/mbelib'
-  url  'https://github.com/szechyjs/mbelib/archive/v1.2.5.tar.gz'
-  sha1 'ee970823d95f008941132edc6142a1a0282655a8'
-  head 'https://github.com/szechyjs/mbelib.git'
+  homepage "https://github.com/szechyjs/mbelib"
+  url "https://github.com/szechyjs/mbelib/archive/v1.2.5.tar.gz"
+  sha256 "59d5e821b976a57f1eae84dd57ba84fd980d068369de0bc6a75c92f0b286c504"
+  head "https://github.com/szechyjs/mbelib.git"
 
   bottle do
     cellar :any
@@ -15,13 +13,13 @@ class Mbelib < Formula
     sha1 "979a2c63f3e44231ddf6e7b8829721a0e0a3c2bc" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   def install
-    mkdir 'build' do
+    mkdir "build" do
       system "cmake", "..", *std_cmake_args
       system "make"
-      system "make install"
+      system "make", "install"
     end
   end
 end

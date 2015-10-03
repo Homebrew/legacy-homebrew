@@ -1,10 +1,8 @@
-require 'formula'
-
 class Bonniexx < Formula
   desc "Benchmark suite for file systems and hard drives"
-  homepage 'http://www.coker.com.au/bonnie++/'
-  url 'http://www.coker.com.au/bonnie++/experimental/bonnie++-1.97.tgz'
-  sha1 '7b0ed205725a6526d34894412edb7e29bb9df7b4'
+  homepage "http://www.coker.com.au/bonnie++/"
+  url "http://www.coker.com.au/bonnie++/experimental/bonnie++-1.97.tgz"
+  sha256 "44f5a05937648a6526ba99354555d7d15f2dd392e55d3436f6746da6f6c35982"
 
   bottle do
     cellar :any
@@ -20,7 +18,7 @@ class Bonniexx < Formula
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 

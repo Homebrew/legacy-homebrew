@@ -2,7 +2,7 @@ class Vavrdiasm < Formula
   desc "8-bit Atmel AVR disassembler"
   homepage "https://github.com/vsergeev/vAVRdisasm"
   url "https://github.com/vsergeev/vavrdisasm/archive/v3.1.tar.gz"
-  sha1 "8ac78c7ec26760ac76e25a1ff399cfc255b2bc52"
+  sha256 "4fe5edde40346cb08c280bd6d0399de7a8d2afdf20fb54bf41a8abb126636360"
 
   bottle do
     cellar :any

@@ -1,10 +1,8 @@
-require "formula"
-
 class Qwtpolar < Formula
   desc "Library for displaying values on a polar coordinate system"
   homepage "http://qwtpolar.sourceforge.net/"
   url "https://downloads.sf.net/project/qwtpolar/qwtpolar/1.1.0/qwtpolar-1.1.0.tar.bz2"
-  sha1 "94d5f897e75e37f32c910e3bdf2a1ffbaaf76621"
+  sha256 "e45a1019b481f52a63483c536c5ef3225f1cced04abf45d7d0ff8e06d30e2355"
 
   option "with-examples", "Install source code for example apps"
   option "without-plugin", "Skip building the Qt Designer plugin"
@@ -36,7 +34,7 @@ class Qwtpolar < Formula
 
     args = %W[-config release -spec]
     # On Mavericks we want to target libc++, this requires a unsupported/macx-clang-libc++ flag
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
       args << "unsupported/macx-clang-libc++"
     else
       args << "macx-g++"
@@ -51,7 +49,6 @@ class Qwtpolar < Formula
     ln_sf prefix/"plugins/designer/libqwt_polar_designer_plugin.dylib",
           Formula["qt"].opt_prefix/"plugins/designer/" if build.with? "plugin"
   end
-
 end
 
 __END__

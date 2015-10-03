@@ -1,14 +1,13 @@
 class Ipe < Formula
   desc "Drawing editor for creating figures in PDF or PS formats"
-  homepage "http://ipe7.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/ipe7/ipe/7.1/ipe-7.1.7-src.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/Ipe/ipe-7.1.7-src.tar.gz"
-  sha256 "ec670cd7f0fa521271fc54bf9b663570d82280bdbe405be6de59535fec7c00d2"
+  homepage "http://ipe.otfried.org/"
+  url "https://github.com/otfried/ipe/raw/master/releases/7.1/ipe-7.1.8-src.tar.gz"
+  sha256 "6a7b8dfb0a012ef9e96b62c317974d910ab6904bef29ae7636d5ac1cb26fa6ff"
 
   bottle do
-    sha256 "f694eff81d650fb2777380b6a4038edca3db023dce2682a5a4f7a332aa5023ef" => :yosemite
-    sha256 "321e713cf94d63297574e0bf9c20a331e11a35573e1e5c489d3516395a70e694" => :mavericks
-    sha256 "7c9b0165eedc50fa04c7ab017ddeabbf43177c1b0098a212857b29412724a271" => :mountain_lion
+    sha256 "67068ec329e946fd27356eafbbecd9448f5ac0781912a46a4e7baa939fa682dd" => :yosemite
+    sha256 "fae4394322876c9610076164a48d37cc4bc15d7f7f369312241a86c3c3f2e28b" => :mavericks
+    sha256 "6e786c07223ddfe324ea3e5581740f4b02d31b79ccf5c3e1340ab09e69e27a99" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -33,18 +32,13 @@ class Ipe < Formula
     ENV.deparallelize
 
     cd "src" do
-      # Ipe also build shared objects instead of dylibs. Boo.
-      # https://sourceforge.net/p/ipe7/tickets/20
-      # Will be fixed in next release, allegedly.
-      inreplace "common.mak" do |s|
-        s.gsub! ".so.$(IPEVERS)", ".$(IPEVERS).dylib"
-        s.gsub! "lib$1.so", "lib$1.dylib"
-        s.gsub! "ipelets/$1.so", "ipelets/$1.dylib"
-      end
-
       # Comment this out so we can make use of pkg-config.
       # Upstream have said they will *never* support OS X, so we have free reign.
-      inreplace "config.mak", "ifndef MACOS", "ifdef MACOS"
+      inreplace "config.mak" do |s|
+        s.gsub! "ifndef MACOS", "ifdef MACOS"
+        s.gsub! "moc-qt4", "moc"
+      end
+
       system "make", "IPEPREFIX=#{HOMEBREW_PREFIX}"
       system "make", "IPEPREFIX=#{prefix}", "install"
     end

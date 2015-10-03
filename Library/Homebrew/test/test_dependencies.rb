@@ -1,7 +1,7 @@
-require 'testing_env'
-require 'dependencies'
-require 'dependency'
-require 'requirements'
+require "testing_env"
+require "dependencies"
+require "dependency"
+require "requirements"
 
 class DependenciesTests < Homebrew::TestCase
   def setup
@@ -25,7 +25,7 @@ class DependenciesTests < Homebrew::TestCase
   def test_repetition
     @deps << Dependency.new("foo")
     @deps << Dependency.new("bar")
-    assert_equal %q{foo, bar}, @deps*', '
+    assert_equal "foo, bar", @deps*", "
   end
 
   def test_to_a
@@ -71,6 +71,20 @@ class DependenciesTests < Homebrew::TestCase
     refute_equal a, b
     refute_eql a, b
   end
+
+  def test_empty
+    a = Dependencies.new
+    assert a.empty?
+    a << Dependency.new("foo")
+    refute a.empty?
+  end
+
+  def test_inspect
+    a = Dependencies.new
+    assert_equal "#<Dependencies: []>", a.inspect
+    a << Dependency.new("foo")
+    assert_equal "#<Dependencies: [#<Dependency: \"foo\" []>]>", a.inspect
+  end
 end
 
 class RequirementsTests < Homebrew::TestCase
@@ -95,7 +109,7 @@ class RequirementsTests < Homebrew::TestCase
   end
 
   def test_comparison_does_not_merge_smaller
-    @reqs << X11Requirement.new("x11", %w{2.6}) << X11Requirement.new
+    @reqs << X11Requirement.new("x11", %w[2.6]) << X11Requirement.new
     assert_equal [X11Requirement.new("x11", %w[2.6])], @reqs.to_a
   end
 end

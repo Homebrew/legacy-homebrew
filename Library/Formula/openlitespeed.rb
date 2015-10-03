@@ -2,7 +2,7 @@ class Openlitespeed < Formula
   desc "High-performance, lightweight HTTP server"
   homepage "http://open.litespeedtech.com/mediawiki/"
   url "http://open.litespeedtech.com/packages/openlitespeed-1.3.10.tgz"
-  sha1 "4a409b65cacc3ee5e2855ab213a5f3e9858a8003"
+  sha256 "703ff1093eae270bb0c380d097e92e39dd102b31f9632ff420b4b0ed423c4159"
   head "https://github.com/litespeedtech/openlitespeed.git"
 
   option "with-debug", "Compile with support for debug log"

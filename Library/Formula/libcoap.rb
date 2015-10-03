@@ -1,10 +1,8 @@
-require "formula"
-
 class Libcoap < Formula
   desc "Lightweight application-protocol for resource-constrained devices"
   homepage "http://libcoap.sourceforge.net"
   url "https://downloads.sourceforge.net/project/libcoap/coap-18/libcoap-4.1.1.tar.gz"
-  sha1 "137c0bfe25c735b4a85dde65fdded13e8ef0f48f"
+  sha256 "20cd0f58434480aa7e97e93a66ffef4076921de9687b14bd29fbbf18621bd394"
 
   bottle do
     cellar :any

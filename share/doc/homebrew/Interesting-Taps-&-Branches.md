@@ -57,8 +57,8 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 
 ## Other Interesting Taps
 
-*   [larsimmisch/avr](https://github.com/larsimmisch/homebrew-avr)
-    - GNU AVR toolchain (avr-gcc etc. for Arduino hackers).
+*   [osx-cross/avr](https://github.com/osx-cross/homebrew-avr)
+    - GNU AVR toolchain (Libc, compilers and other tools for Atmel MCUs, useful for Arduino hackers and AVR programmers).
 
 *   [titanous/gnuradio](https://github.com/titanous/homebrew-gnuradio)
     -  GNU Radio and friends running on OS X.
@@ -68,9 +68,6 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 
 *   [petere/postgresql](https://github.com/petere/homebrew-postgresql)
     - Allows installing multiple PostgreSQL versions in parallel.
-
-*   [iMichka/MacVTKITKPythonBottles](https://github.com/iMichka/homebrew-MacVTKITKPythonBottles)
-    - VTK and ITK binaries with Python wrapping.
 
 *   [edavis/emacs](https://github.com/edavis/homebrew-emacs)
     - A tap for Emacs packages.

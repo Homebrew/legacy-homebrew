@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libquicktime < Formula
   desc "Library for reading and writing quicktime files"
-  homepage 'http://libquicktime.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz'
-  sha1 '7008b2dc27b9b40965bd2df42d39ff4cb8b6305e'
+  homepage "http://libquicktime.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/libquicktime/libquicktime/1.2.4/libquicktime-1.2.4.tar.gz"
+  sha256 "1c53359c33b31347b4d7b00d3611463fe5e942cae3ec0fefe0d2fd413fd47368"
   revision 1
 
   bottle do
@@ -14,19 +12,19 @@ class Libquicktime < Formula
     sha1 "97260df51e133923c94c88aeee5d84a216617490" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'jpeg' => :optional
-  depends_on 'lame' => :optional
-  depends_on 'schroedinger' => :optional
-  depends_on 'ffmpeg' => :optional
-  depends_on 'libvorbis' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "jpeg" => :optional
+  depends_on "lame" => :optional
+  depends_on "schroedinger" => :optional
+  depends_on "ffmpeg" => :optional
+  depends_on "libvorbis" => :optional
 
   # Fixes compilation with ffmpeg 2.x; applied upstream
   # http://sourceforge.net/p/libquicktime/mailman/message/30792767/
   patch :p0 do
     url "http://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
-    sha1 "58c19548a7ae71fb20ee94ef41fd0c3a967c96c0"
+    sha256 "ae9773d11db5e60824d4cd8863daa6931e980b7385c595eabc37c7bb8319f225"
   end
   patch :DATA
 
@@ -39,7 +37,7 @@ class Libquicktime < Formula
                           "--without-x",
                           "--without-gtk"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
 

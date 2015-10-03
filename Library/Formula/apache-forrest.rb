@@ -1,21 +1,19 @@
-require 'formula'
-
 class ApacheForrest < Formula
   desc "Publishing framework providing multiple output formats"
-  homepage 'http://forrest.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-sources.tar.gz'
-  sha1 '8c7b49a7dff4b3f60a52c7696684168b6d454a47'
+  homepage "https://forrest.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-sources.tar.gz"
+  sha256 "c6ac758db2eb0d4d91bd1733bbbc2dec4fdb33603895c464bcb47a34490fb64d"
 
-  resource 'deps' do
-    url 'http://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-dependencies.tar.gz'
-    sha1 '10a4442d46baeadd3ba3377ed29ed694c86ece25'
+  resource "deps" do
+    url "https://www.apache.org/dyn/closer.cgi?path=forrest/apache-forrest-0.9-dependencies.tar.gz"
+    sha256 "33146b4e64933691d3b779421b35da08062a704618518d561281d3b43917ccf1"
   end
 
   def install
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink "#{libexec}/bin/forrest"
 
-    resource('deps').stage do
+    resource("deps").stage do
       # To avoid conflicts with directory names already installed from the
       # main tarball, surgically install contents of dependency tarball
       deps_to_install = [

@@ -1,15 +1,17 @@
 class GitCola < Formula
   desc "Highly caffeinated git GUI"
-  homepage "http://git-cola.github.io/"
-  url "https://github.com/git-cola/git-cola/archive/v2.1.0.tar.gz"
-  sha1 "c93e74b021e6e5df92a46a3d05ac8a6377571fa8"
+  homepage "https://git-cola.github.io/"
+  url "https://github.com/git-cola/git-cola/archive/v2.3.tar.gz"
+  sha256 "3319810c16f6864deb5f94f533c7cfd17f30961595454da7c3c75879f56511b3"
 
   head "https://github.com/git-cola/git-cola.git"
 
   bottle do
-    sha1 "fc7b0c0eeed41bb42764a25b8b229f39b3dc4fb3" => :yosemite
-    sha1 "1f7e728856585487951f48b9e612cf628e112ac8" => :mavericks
-    sha1 "864bafa798ff86c6213238a6c9922549aee94a95" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "844c8eebab249212800e996ae3130049823238ffecd28545b37020bb06f0c5b9" => :el_capitan
+    sha256 "fa89698f2a4b30a95ea75d9ceff7075b908dce9180f08d4612dd4265b77b91ab" => :yosemite
+    sha256 "fbb533d16e29f44da27ad628043c483e575ab022ac27fed2730d56cc3bbfffe3" => :mavericks
   end
 
   option "with-docs", "Build man pages using asciidoc and xmlto"

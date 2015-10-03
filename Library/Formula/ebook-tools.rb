@@ -1,10 +1,8 @@
-require "formula"
-
 class EbookTools < Formula
   desc "Access and convert several ebook formats"
   homepage "http://sourceforge.net/projects/ebook-tools"
   url "https://downloads.sourceforge.net/project/ebook-tools/ebook-tools/0.2.2/ebook-tools-0.2.2.tar.gz"
-  sha1 "1f10bef62c9125cf804366134e486a58308f07ff"
+  sha256 "cbc35996e911144fa62925366ad6a6212d6af2588f1e39075954973bbee627ae"
 
   bottle do
     cellar :any

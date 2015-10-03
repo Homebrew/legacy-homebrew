@@ -3,7 +3,7 @@ class Gssh < Formula
   homepage "https://github.com/int128/groovy-ssh"
   url "https://github.com/int128/groovy-ssh/releases/download/v1.1.5/gssh.jar"
   version "1.1.5"
-  sha1 "c050c74b5d491e836d8210758369466162abf946"
+  sha256 "c4f2bf2ea71f4aaae12afa7edf484746ffb63c32e8a582f54f1a0a061b33f28c"
 
   head "https://github.com/int128/groovy-ssh.git"
 

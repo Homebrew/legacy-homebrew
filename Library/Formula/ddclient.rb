@@ -1,16 +1,14 @@
-require 'formula'
-
 class Ddclient < Formula
   desc "Update dynamic DNS entries"
-  homepage 'http://sourceforge.net/p/ddclient/wiki/Home'
-  url 'https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.2/ddclient-3.8.2.tar.bz2'
-  sha1 '8c887c06a580773c48a1eaced82a08c3077e1325'
+  homepage "http://sourceforge.net/p/ddclient/wiki/Home"
+  url "https://downloads.sourceforge.net/project/ddclient/ddclient/ddclient-3.8.3/ddclient-3.8.3.tar.bz2"
+  sha256 "d40e2f1fd3f4bff386d27bbdf4b8645199b1995d27605a886b8c71e44d819591"
 
-  head 'https://github.com/wimpunk/ddclient.git'
+  head "https://github.com/wimpunk/ddclient.git"
 
   def install
     # Adjust default paths in script
-    inreplace 'ddclient' do |s|
+    inreplace "ddclient" do |s|
       s.gsub! "/etc/ddclient", "#{etc}/ddclient"
       s.gsub! "/var/cache/ddclient", "#{var}/run/ddclient"
     end
@@ -18,24 +16,24 @@ class Ddclient < Formula
     sbin.install "ddclient"
 
     # Install sample files
-    inreplace 'sample-ddclient-wrapper.sh',
+    inreplace "sample-ddclient-wrapper.sh",
       "/etc/ddclient", "#{etc}/ddclient"
 
-    inreplace 'sample-etc_cron.d_ddclient',
+    inreplace "sample-etc_cron.d_ddclient",
       "/usr/sbin/ddclient", "#{sbin}/ddclient"
 
-    inreplace 'sample-etc_ddclient.conf',
+    inreplace "sample-etc_ddclient.conf",
       "/var/run/ddclient.pid", "#{var}/run/ddclient/pid"
 
-    doc.install %w(
+    doc.install %w[
       sample-ddclient-wrapper.sh
       sample-etc_cron.d_ddclient
       sample-etc_ddclient.conf
-    )
+    ]
 
     # Create etc & var paths
-    (etc+'ddclient').mkpath
-    (var+'run/ddclient').mkpath
+    (etc+"ddclient").mkpath
+    (var+"run/ddclient").mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -82,5 +80,18 @@ class Ddclient < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    begin
+      pid = fork do
+        exec sbin/"ddclient", "-file", doc/"sample-etc_ddclient.conf", "-debug", "-verbose", "-noquiet"
+      end
+      sleep 1
+    ensure
+      Process.kill "TERM", pid
+      Process.wait
+    end
+    $?.success?
   end
 end

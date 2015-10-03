@@ -1,10 +1,8 @@
-require "formula"
-
 class Seexpr < Formula
   desc "Embeddable expression evaluation engine"
   homepage "http://www.disneyanimation.com/technology/seexpr.html"
   url "https://github.com/wdas/SeExpr/archive/rel-1.0.1.tar.gz"
-  sha1 "80890cedd684a93b012b0964dc3b59910aaf5a10"
+  sha256 "971ee8fff7eb195785031dedd7c06cb3fa8649fba8aa45c6ace746a23b8093a9"
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build

@@ -1,14 +1,13 @@
 class GstPython < Formula
   desc "GStreamer Python overrides for gobject-introspection-based pygst bindings"
   homepage "http://gstreamer.freedesktop.org/modules/gst-python.html"
-  url "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.4.0.tar.xz"
-  sha256 "b1e40c29ceb41b03f08d38aca6056054f0341d0706276326dceeec6ac8d53d3e"
+  url "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.6.0.tar.xz"
+  sha256 "60dbc7f5ac2b6655ed4a7ed2cee63ee5a525d37cb16eaa6b9df7d7dfe4e9605f"
 
   bottle do
-    revision 1
-    sha256 "6e21cb7f62dc2d6ef248cd001053e365c8a4e337fd53daad66b9a701ced1e10a" => :yosemite
-    sha256 "7360fc4d530557e1984398a521f928e1d0ecdd321a15608161ceede201a85b35" => :mavericks
-    sha256 "2683cfdbd77a6537048890a08a907d476f470a6b7178434a6831495e712082de" => :mountain_lion
+    sha256 "2493558defcd65f0b0f486344e679f594feef4b550fd15f4f6946dbaaeab2ef9" => :el_capitan
+    sha256 "2f874fe16da1680cf209939e708b8806a54cfa5336deaf6f9e2097e257277eaf" => :yosemite
+    sha256 "94059057636ee841d5cd0474c7f62bb9400b2a7236ca1da09c5593d866d3d81f" => :mavericks
   end
 
   depends_on "gst-plugins-base"

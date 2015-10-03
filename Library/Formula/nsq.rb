@@ -3,16 +3,16 @@ require "language/go"
 class Nsq < Formula
   desc "Realtime distributed messaging platform"
   homepage "http://nsq.io"
-  url "https://github.com/bitly/nsq/archive/v0.3.5.tar.gz"
-  sha256 "4120ad24e3700be1e65549b9a55eab5d4e744cd114d9b39779a47b6dedda0b35"
+  url "https://github.com/nsqio/nsq/archive/v0.3.6.tar.gz"
+  sha256 "2cf00ddfd63508ab98d052cb36ac7ec5b591abe1896b92d158c04964e2c6cb97"
 
-  head "https://github.com/bitly/nsq.git"
+  head "https://github.com/nsqio/nsq.git"
 
   bottle do
-    cellar :any
-    sha256 "eb9dd459eec6603dd720b58b8fcee5ccfc122999aed51845ff2c98e0bb3fabfe" => :yosemite
-    sha256 "b17656e4e8b93abf9d6b0b65b614ffa7fecc2b0920a8d0329aa6abda2e5a2f7e" => :mavericks
-    sha256 "dd00b16b6708fd69764ec0276568f88b4d3c8729c6be45859b3450b313a0f3b6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a4c1a6724b3e91d6564b9188b1d099639a26999a36ae71ecb0ca7413703c106c" => :el_capitan
+    sha256 "3fe3404d2439cb43e16d38ecd5ec384ef95f9660bd789a06959b17a8ff077968" => :yosemite
+    sha256 "44452e103eb6e5dce242311497c30c905fe9fbf775bec20880fe7277cef5a288" => :mavericks
   end
 
   depends_on "go" => :build
@@ -27,9 +27,9 @@ class Nsq < Formula
       :revision => "58b95b10d6ca26723a7f46017b348653b825a8d6"
   end
 
-  go_resource "github.com/bitly/go-nsq" do
-    url "https://github.com/bitly/go-nsq.git",
-      :revision => "22a8bd48c443ec23bb559675b6df8284bbbdab29"
+  go_resource "github.com/nsqio/go-nsq" do
+    url "https://github.com/nsqio/go-nsq.git",
+      :revision => "cef6982c1150617a77539847950ca63774f0e48c"
   end
 
   go_resource "github.com/bitly/go-simplejson" do
@@ -62,33 +62,40 @@ class Nsq < Formula
       :revision => "9bf7bff48b0388cb75991e58c6df7d13e982f1f2"
   end
 
+  go_resource "github.com/julienschmidt/httprouter" do
+    url "https://github.com/julienschmidt/httprouter.git",
+      :revision => "6aacfd5ab513e34f7e64ea9627ab9670371b34e7"
+  end
+
   def install
     # build a proper GOPATH tree for local dependencies
-    (buildpath + "src/github.com/bitly/nsq").install "internal", "nsqlookupd", "nsqd", "nsqadmin"
+    (buildpath + "src/github.com/nsqio/nsq").install "Makefile", "apps", "internal", "nsqlookupd", "nsqd", "nsqadmin"
 
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "make"
-    system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
+    cd buildpath/"src/github.com/nsqio/nsq" do
+      system "make"
+      system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
+    end
   end
 
   test do
     begin
       lookupd = fork do
-        system bin/"nsqlookupd"
+        exec bin/"nsqlookupd"
       end
       sleep 2
       d = fork do
-        system bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
+        exec bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
       end
       sleep 2
       admin = fork do
-        system bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
+        exec bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
       end
       sleep 2
       to_file = fork do
-        system bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
+        exec bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
                "--lookupd-http-address=127.0.0.1:4161"
       end
       sleep 2

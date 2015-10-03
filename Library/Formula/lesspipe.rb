@@ -2,7 +2,7 @@ class Lesspipe < Formula
   desc "Input filter for the pager less"
   homepage "https://www-zeuthen.desy.de/~friebel/unix/lesspipe.html"
   url "https://downloads.sourceforge.net/project/lesspipe/lesspipe/1.82/lesspipe-1.82.tar.gz"
-  sha1 "61a7657b20b910ed8219c6b77467e601f9a89894"
+  sha256 "3fd345b15d46cc8fb0fb1d625bf8d881b0637abc34d15df45243fd4e5a8f4241"
 
   bottle do
     cellar :any
@@ -17,7 +17,7 @@ class Lesspipe < Formula
 
   def install
     if build.with? "syntax-highlighting"
-      inreplace "configure", %q{$ifsyntax = "\L$ifsyntax";}, %q{$ifsyntax = "\Ly";}
+      inreplace "configure", %q($ifsyntax = "\L$ifsyntax";), %q($ifsyntax = "\Ly";)
     end
 
     system "./configure", "--prefix=#{prefix}", "--yes"

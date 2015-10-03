@@ -1,4 +1,4 @@
-require 'requirement'
+require "requirement"
 
 class MaximumMacOSRequirement < Requirement
   fatal true

@@ -1,13 +1,14 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.6.tar.bz2"
-  sha256 "b9fe3bdfb86bd42cc53448e17f11278531b989b05ff9513bc88ba1a523f14e87"
+  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.0.tar.bz2"
+  sha256 "26b432ce8dcbad250a9787402f2c999ecb6c25695b00c9c6ee05a306c78b6490"
 
   bottle do
-    sha256 "7e2e8fa7bea94e1ac4ff3eb8c4912c71b2854355f9a0eff42e52a068a24290ac" => :yosemite
-    sha256 "5d8130410f17a814bf40f6e6bd89da01f1f10ac7803341f15a8f9e6da6722d2e" => :mavericks
-    sha256 "299f483c52a86264f31617c086b49c1ab451910211e8e5bfb778fc16396460bb" => :mountain_lion
+    sha256 "0db613a1d46fee336d4ff73fea321a258831898c75ed21fb9b7a04428488a864" => :el_capitan
+    sha256 "27b7652c76a14b6cc2587963a7b90384844cbc52e947569f24bee71697447b37" => :yosemite
+    sha256 "8db6160f29874dac3705f5c18a3cb9e62e0b36c8beaed70b72dc4aeda642d1c8" => :mavericks
+    sha256 "823851cf8e01825899d97dc1766dc1c44eb11f5cc1a3a25b60b5c087c35ec81d" => :mountain_lion
   end
 
   head do
@@ -23,7 +24,7 @@ class OpenMpi < Formula
   option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
   option :cxx11
 
-  conflicts_with "mpich2", :because => "both install mpi__ compiler wrappers"
+  conflicts_with "mpich", :because => "both install mpi__ compiler wrappers"
   conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
 
   depends_on :java => :build

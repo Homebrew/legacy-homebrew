@@ -1,17 +1,15 @@
-require 'formula'
-
 class Uim < Formula
   desc "Multilingual input method library"
-  homepage 'http://code.google.com/p/uim/'
-  url 'https://uim.googlecode.com/files/uim-1.6.0.tar.bz2'
-  sha1 'd27f2ca8136da0702c82f0522911d06b2b8f8ea7'
+  homepage "https://code.google.com/p/uim/"
+  url "https://uim.googlecode.com/files/uim-1.6.0.tar.bz2"
+  sha256 "2a34dca2091eb6d61f05dabd8512c6658d8cefa8db14b7a684fbb10caea4a3aa"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

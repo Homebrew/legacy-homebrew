@@ -1,12 +1,10 @@
-require 'formula'
-
 class Uberftp < Formula
   desc "Interactive GridFTP client"
-  homepage 'http://dims.ncsa.illinois.edu/set/uberftp/'
-  url 'https://github.com/JasonAlt/UberFTP/archive/Version_2_7.tar.gz'
-  sha1 'f185e2ed567eca3484ca230e44a6ffdb4ec69792'
+  homepage "http://dims.ncsa.illinois.edu/set/uberftp/"
+  url "https://github.com/JasonAlt/UberFTP/archive/Version_2_7.tar.gz"
+  sha256 "29a111a86fa70dbbc529a5d3e5a6befc1681e64e32dc019a1a6a98cd43ffb204"
 
-  depends_on 'globus-toolkit'
+  depends_on "globus-toolkit"
 
   def install
     # get the flavor
@@ -14,15 +12,15 @@ class Uberftp < Formula
 
     core = `"#{globus}/sbin/gpt-query" globus_core`
     flavor = case core
-      when /gcc64dbg/ then "gcc64dbg"
-      when /gcc32dbg/ then "gcc32dbg"
+    when /gcc64dbg/ then "gcc64dbg"
+    when /gcc32dbg/ then "gcc32dbg"
     end
 
     system "./configure", "--prefix=#{prefix}",
                           "--with-globus-flavor=#{flavor}",
                           "--with-globus=#{globus}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

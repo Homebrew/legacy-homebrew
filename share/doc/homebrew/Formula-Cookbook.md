@@ -81,7 +81,7 @@ Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/b
 
 And then [Git](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
 
-A more complete example-formula [cheat-sheet](https://github.com/Homebrew/homebrew/blob/master/Library/Contributions/example-formula.rb) shows almost all the stuff you can use in a Formula.
+Refer to the [Formula class API documentation](http://www.rubydoc.info/github/Homebrew/homebrew/master/frames) which shows all the stuff you can use in a Formula.
 
 ## Grab the URL
 
@@ -204,11 +204,12 @@ A Hash specifies a formula dependency with some additional information. Given a 
 
 Sometimes there’s hard conflict between formulae, and it can’t be avoided or circumvented with `keg_only`.
 
-PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L36-L37) formula for minor conflict.
+PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb) formula for minor conflict.
 
-PolarSSL ship GNU’s Hello, and compiles a `hello` binary. This is obviously non-essential to PolarSSL’s functionality, and conflict with the `hello` formula would be overkill, so we just remove it.
+PolarSSL ship and compile a "Hello World" executable. This is obviously non-essential to PolarSSL’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
 
-However, also in the PolarSSL formulae is a [firm conflict](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb#L19) with `md5sha1sum`, because both `md5sha1sum` and `polarssl` compile identically-named binaries that *are* important for core functionality.
+[pdftohtml](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/pdftohtml.rb) provides an example of a serious
+conflict, where both formula ship a identically-named binary that is essential to functionality, so a `conflicts_with` is preferable.
 
 As a general rule, `conflicts_with` should be a last-resort option. It’s a fairly blunt instrument.
 
@@ -342,7 +343,9 @@ Add aliases by creating symlinks in `Library/Aliases`.
 
 ## Audit the formula
 
-You can run `brew audit` to test formulae for adherence to Homebrew house style. This includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+You can run `brew audit` to test formulae for adherence to Homebrew house style. The audit command includes warnings for trailing whitespace, preferred URLs for certain source hosts, and a lot of other style issues. Fixing these warnings before committing will make the process a lot smoother for us.
+
+New formulae being submitted to Homebrew should run `brew audit <formula name> --strict --online`. This command is performed by the Brew Test Bot on new submissions as part of the automated build and test process, and highlights more potential issues than the standard audit.
 
 Use `brew info` and check if the version guessed by Homebrew from the URL is
 correct. Add an explicit `version` if not.
@@ -791,6 +794,11 @@ Generally we'd rather you were specific about what files or directories need to 
       <td><code>/usr/local/Cellar/foo/0.1/share</code></td>
     </tr>
     <tr>
+      <th><code>pkgshare</code></th>
+      <td><code>#{prefix}/share/foo</code></td>
+      <td><code>/usr/local/Cellar/foo/0.1/share/foo</code></td>
+    </tr>
+    <tr>
       <th><code>etc</code></th>
       <td><code>#{HOMEBREW_PREFIX}/etc</code></td>
       <td><code>/usr/local/etc</code></td>
@@ -846,6 +854,7 @@ class Yourformula < Formula
   ...
   option "with-ham", "Description of the option"
   option "without-spam", "Another description"
+
   depends_on "foo" => :optional  # will automatically add a with-foo option
   ...
 ```
@@ -860,17 +869,11 @@ end
 if build.without? "ham"
   # works as you'd expect. True if `--without-ham` was given.
 end
-
-if build.include? "enable-ham"
-  # the deprecated style, only useful for options other than `with`/`without` style
-end
 ```
 
-Option names should be prefixed with one of the words `with`, `without`, `no`, or a verb in the imperative tense describing the action to be taken. For example, an option to run a test suite should be named `--with-test` or `--with-check` rather than `--test`, and an option to enable a shared library should be named `--enable-shared` rather than `--shared`.
+Option names should be prefixed with the words `with` or `without`. For example, an option to run a test suite should be named `--with-test` or `--with-check` rather than `--test`, and an option to enable a shared library `--with-shared` rather than `--shared` or `--enable-shared`.
 
 Note that options that aren’t ` build.with? ` or ` build.without? ` should be actively deprecated where possible. See [wget](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/wget.rb#L27-L31) for an example.
-
-See the [graphviz](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/graphviz.rb) formula for an example.
 
 
 ## File level operations

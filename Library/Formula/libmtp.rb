@@ -1,6 +1,6 @@
 class Libmtp < Formula
   desc "Implementation of Microsoft's Media Transfer Protocol (MTP)"
-  homepage 'http://libmtp.sourceforge.net/'
+  homepage "http://libmtp.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.9/libmtp-1.1.9.tar.gz"
   sha256 "23f1d3c0b54107388bf2824d56415e9e087c980c86e5d179865652c022b6b189"
 
@@ -18,6 +18,6 @@ class Libmtp < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-mtpz"
-    system "make install"
+    system "make", "install"
   end
 end

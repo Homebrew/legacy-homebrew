@@ -1,10 +1,8 @@
-require 'formula'
-
 class DvdxrwTools < Formula
   desc "DVD+-RW/R tools"
-  homepage 'http://fy.chalmers.se/~appro/linux/DVD+RW/'
-  url 'http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-7.1.tar.gz'
-  sha1 '6400e013934ff589b4b224eced03fd9f42ed719b'
+  homepage "http://fy.chalmers.se/~appro/linux/DVD+RW/"
+  url "http://fy.chalmers.se/~appro/linux/DVD+RW/tools/dvd+rw-tools-7.1.tar.gz"
+  sha256 "f8d60f822e914128bcbc5f64fbe3ed131cbff9045dca7e12c5b77b26edde72ca"
 
   # Respect $PREFIX
   patch :DATA

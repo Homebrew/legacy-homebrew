@@ -2,7 +2,7 @@ class Ttfautohint < Formula
   desc "Automated hinting process for web fonts"
   homepage "http://www.freetype.org/ttfautohint"
   url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.3/ttfautohint-1.3.tar.gz"
-  sha1 "5de45f0b5e3f87ad0a6b4153e5382765f17974ed"
+  sha256 "c39fa03790b2dfe711f66137cf0f0324eb19872932cef91da9c0bddf9e4ce104"
 
   head do
     url "http://repo.or.cz/ttfautohint.git"
@@ -15,6 +15,7 @@ class Ttfautohint < Formula
 
   bottle do
     cellar :any
+    sha256 "b4631261b1dd8fd7d30a849db5be19775cc8c21e706433ba1d929a3f74c24296" => :el_capitan
     sha1 "06db9ad73083d1a47515711fa5de47cb1b12fe4e" => :yosemite
     sha1 "dd81a451044381a3f87a8ad9d9da464744b98b80" => :mavericks
     sha1 "af5485546cb4fc3b6a663920ba9599f727e5fb11" => :mountain_lion
@@ -40,7 +41,7 @@ class Ttfautohint < Formula
 
     system "./bootstrap" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

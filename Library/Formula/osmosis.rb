@@ -1,17 +1,15 @@
-require 'formula'
-
 class Osmosis < Formula
   desc "Command-line OpenStreetMap data processor"
-  homepage 'http://wiki.openstreetmap.org/wiki/Osmosis'
-  url 'http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.43-RELEASE.zip'
-  sha256 'c891fe095b7f960f575cb39d9794c67cc7df9f4c665d2dda88dfb57b770f0bbe'
+  homepage "http://wiki.openstreetmap.org/wiki/Osmosis"
+  url "http://bretth.dev.openstreetmap.org/osmosis-build/osmosis-0.43-RELEASE.zip"
+  sha256 "c891fe095b7f960f575cb39d9794c67cc7df9f4c665d2dda88dfb57b770f0bbe"
 
   # need to adjust home dir for a clean install
   patch :DATA
 
   def install
-    bin.install 'bin/osmosis'
-    libexec.install %w(lib config script)
+    bin.install "bin/osmosis"
+    libexec.install %w[lib config script]
   end
 end
 

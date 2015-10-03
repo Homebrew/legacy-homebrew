@@ -1,10 +1,8 @@
-require 'formula'
-
 class Htmlcompressor < Formula
   desc "Minify HTML or XML"
-  homepage 'http://code.google.com/p/htmlcompressor/'
-  url 'https://htmlcompressor.googlecode.com/files/htmlcompressor-1.5.3.jar'
-  sha1 '57db73b92499e018b2f2978f1c7aa7b1238c7a39'
+  homepage "https://code.google.com/p/htmlcompressor/"
+  url "https://htmlcompressor.googlecode.com/files/htmlcompressor-1.5.3.jar"
+  sha256 "88894e330cdb0e418e805136d424f4c262236b1aa3683e51037cdb66310cb0f9"
 
   option "with-yuicompressor", "Use YUICompressor for JS/CSS compression"
   option "with-closure-compiler", "Use Closure Compiler for JS optimization"

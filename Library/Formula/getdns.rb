@@ -1,18 +1,16 @@
-require "formula"
-
 class Getdns < Formula
   desc "Modern asynchronous DNS API"
   homepage "https://getdnsapi.net"
-  url "https://getdnsapi.net/dist/getdns-0.2.0.tar.gz"
-  sha1 "6843984f7ed8109302bda3b37f5247fd49827f90"
+  url "https://getdnsapi.net/dist/getdns-0.3.1.tar.gz"
+  sha256 "58fd791187d5fd158ba7db1b5f29d4b0274583447f405577c758c7c7751e8883"
 
   head "https://github.com/getdnsapi/getdns.git"
 
   bottle do
     cellar :any
-    sha256 "1c2614856050708b3877bb6b53e6160800d70e9c297f3951359027e5943d8bb7" => :yosemite
-    sha256 "5311f4983c92edc9e7a87c5e7838bfd72c73350b8ed2ae1d44ff595aae6a0b72" => :mavericks
-    sha256 "c84509d556c02cdcec5189d4f4cc2304e7c45ddde2ea80edda9703af502e9340" => :mountain_lion
+    sha256 "66be49d1fe111e14d181aa1054041fa14b87a5cddabb0333bbb6cdc29e4c580f" => :yosemite
+    sha256 "5910d400f5e2f83b49ccc01379691e7a2b2300af815bc517d079811f7968fcf9" => :mavericks
+    sha256 "b3eb2d9b1db54455204c1bdb0e40ea5b44cc1fe9b4ef6de13085e9553c1f0366" => :mountain_lion
   end
 
   depends_on "openssl"

@@ -1,16 +1,21 @@
-require "formula"
-
 class Netcat6 < Formula
   desc "Rewrite of netcat that supports IPv6, plus other improvements"
   homepage "http://www.deepspace6.net/projects/netcat6.html"
-  url "http://ftp.debian.org/debian/pool/main/n/nc6/nc6_1.0.orig.tar.gz"
-  sha1 "50b1a3f7bfa610a2016727e5741791ad3a88bd07"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/n/nc6/nc6_1.0.orig.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/n/nc6/nc6_1.0.orig.tar.gz"
+  sha256 "db7462839dd135ff1215911157b666df8512df6f7343a075b2f9a2ef46fe5412"
 
-  option "silence-patch", "Use silence patch from Debian"
-
-  if build.include? "silence-patch"
-    patch :p0, :DATA
+  bottle do
+    sha256 "7020abcd43b4b1714a43e42f468895c6c02ad2a8a214bc36761b6b5f615cd127" => :yosemite
+    sha256 "7b1d4a701e8fadedea4e5cc89d7cbcb5bf476476557975a71a681850c50bf872" => :mavericks
+    sha256 "361c72d301addec6d417b52535da84dd924fdcdf9794889dc5ac0f240bb31b02" => :mountain_lion
   end
+
+  option "with-silence-patch", "Use silence patch from Debian"
+
+  deprecated_option "silence-patch" => "with-silence-patch"
+
+  patch :p0, :DATA if build.with? "silence-patch"
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -20,9 +25,7 @@ class Netcat6 < Formula
   end
 
   test do
-    lines = `#{bin}/nc6 --version`.split("\n")
-    assert_equal "nc6 version #{version}", lines[0]
-    assert_equal 0, $?.exitstatus
+    assert_match "HTTP/1.0", pipe_output("#{bin}/nc6 www.google.com 80", "GET / HTTP/1.0\r\n\r\n")
   end
 end
 

@@ -1,23 +1,24 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-1.46.tar.gz"
-  sha256 "d34dbadea0b399229a4f2b19c848d3281c7bd9a1dacd26ee44484a26bba4056d"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.0.tar.gz"
+  sha256 "7ff80b3ecaf063c6ea742117bcab111d3d6136887bfa06586ae0f303cbc85381"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
-    cellar :any
-    sha256 "b6d36f2b8327a36a9c25fa6b9a15ad9c4a29cda9be0a64d14fdb8abe68b952c9" => :yosemite
-    sha256 "5b1e61f3a009c8fa0bd31c12cc353b603880f5052eca7f346d1e3e5020d8f454" => :mavericks
-    sha256 "18cbb13454a6472ea01d0e3d512afc0667ac5a833562d0b0f9919bfcb1b649d3" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9f70d4c349bfb545e5aa4f9b3f865ada6e01b1a058368abad2843cf1b909ba5d" => :el_capitan
+    sha256 "3816987a88d9d623533c6e979a00d2633aadafe1e204bcf6ac0336c0ac6129de" => :yosemite
+    sha256 "7e03106ce87b5a6e7e1a401658d42d64b3361c768febc9133d74166c32790c13" => :mavericks
+    sha256 "9161e6e3bd3792e0d50639657bb081d026a6c69358282238dc06e0f054586d29" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
-    sha256 "a0e9b96f1946975064724e242ac159f3260db24ffa591c3da0a355361a3a337f"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.2.1.tar.gz"
+    sha256 "7f6bea8bfe2e5cfffd0f411aa316e837daadced1893b44254bb9a38a654340f7"
   end
 
   resource "pathlib" do
@@ -35,30 +36,46 @@ class Thefuck < Formula
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
-  def install
-    ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.2.tar.gz"
+    sha256 "0994a58df27ea5dc523782a601357a2198b7493dcc99a30d51827a23585b5b1d"
+  end
 
-    resources.each do |r|
-      r.stage { system "python", *Language::Python.setup_install_args(libexec/"vendor") }
+  resource "decorator" do
+    url "https://pypi.python.org/packages/source/d/decorator/decorator-4.0.2.tar.gz"
+    sha256 "1a089279d5de2471c47624d4463f2e5b3fc6a2cf65045c39bf714fc461a25206"
+  end
+
+  def install
+    xy = Language::Python.major_minor_version "python"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
+    %w[setuptools pathlib psutil colorama six decorator].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
     end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{xy}/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  test do
-    output = shell_output(bin/"thefuck echho")
-    assert output.include? "echo"
+  def caveats; <<-EOS.undent
+    Add the following to your .bash_profile, .bashrc or .zshrc:
+
+      eval "$(thefuck --alias)"
+
+    For other shells, check https://github.com/nvbn/thefuck/wiki/Shell-aliases
+    EOS
   end
 
-  def caveats; <<-EOS.undent
-    Add the following to your .bash_profile or .zshrc:
-      bash: alias fuck='eval $(thefuck $(fc -ln -1)); history -r'
-      zsh: alias fuck='eval $(thefuck $(fc -ln -1 | tail -n 1)); fc -R'
-
-      Other shells: https://github.com/nvbn/thefuck/wiki/Shell-aliases
-    EOS
+  test do
+    ENV["THEFUCK_REQUIRE_CONFIRMATION"] = "false"
+    assert_equal "thefuck #{version}", shell_output("#{bin}/thefuck --version 2>&1").chomp
+    assert_match /.+TF_ALIAS.+thefuck.+/, shell_output("#{bin}/thefuck --alias").chomp
+    assert_match /git branch/, shell_output("#{bin}/thefuck git branchh").chomp
+    assert_match /echo ok/, shell_output("#{bin}/thefuck echho ok").chomp
   end
 end

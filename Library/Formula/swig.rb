@@ -1,13 +1,14 @@
 class Swig < Formula
   desc "Generate scripting interfaces to C/C++ code"
   homepage "http://www.swig.org/"
-  url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.5/swig-3.0.5.tar.gz"
-  sha1 "271813b317e4836853d2249fc8ce2df34c2a062a"
+  url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.7/swig-3.0.7.tar.gz"
+  sha256 "06dc8816a225667ce1eee545af3caf87e1bbaa379c32838d4cea53152514348d"
 
   bottle do
-    sha1 "2f6a236c9c1d2bb97107c5d7f49584b0ed0f3a3a" => :yosemite
-    sha1 "c13fa26b8eab283489571d2be8ed6e2974e3b359" => :mavericks
-    sha1 "de9eaea18c94fffba837d14b9254af46621b4960" => :mountain_lion
+    sha256 "1290314a7e3c7447a17e16dcc7dbdbc2a090293b4b1c6170f2a4893ccf4fdb43" => :el_capitan
+    sha256 "0dd343668d19966199600282904d3ba799234355f35e0bea56a5e2b278d1ab25" => :yosemite
+    sha256 "c2b2635904546125d52fd7ab452fafb522567d12bd1c98f045d6499dabb8d38d" => :mavericks
+    sha256 "4e4f96d939d6624dbe25902c139fbe29424f7e1a71d06a15f04fefd0a1348f9f" => :mountain_lion
   end
 
   option :universal

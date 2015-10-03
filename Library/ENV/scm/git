@@ -5,7 +5,7 @@
 F = File.basename(__FILE__).freeze
 D = File.expand_path(File.dirname(__FILE__)).freeze
 
-def exec *args
+def exec(*args)
   # prevent fork-bombs
   arg0 = args.first
   return if arg0 =~ /^#{F}/i || File.expand_path(arg0) == File.expand_path(__FILE__)
@@ -13,11 +13,11 @@ def exec *args
 end
 
 case F.downcase
-  when 'git' then %W{HOMEBREW_GIT GIT}
-  when 'svn' then %W{HOMEBREW_SVN}
-  else []
+when "git" then %W[HOMEBREW_GIT GIT]
+when "svn" then %W[HOMEBREW_SVN]
+else []
 end.each do |key|
-  exec ENV[key], *ARGV if ENV[key] and File.executable? ENV[key]
+  exec ENV[key], *ARGV if ENV[key] && File.executable?(ENV[key])
 end
 
 brew_version = File.expand_path("#{D}/../../../bin/#{F}")

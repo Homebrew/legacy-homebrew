@@ -23,6 +23,8 @@ class InstallTests < Homebrew::TestCase
       keg.unlink
       keg.uninstall
       formula.clear_cache
+      # there will be log files when sandbox is enable.
+      formula.logs.rmtree if formula.logs.directory?
     end
 
     refute_predicate keg, :exist?
@@ -38,7 +40,7 @@ class InstallTests < Homebrew::TestCase
       assert_predicate f.libexec, :directory?
       assert_equal 1, f.libexec.children.length
 
-      refute_predicate f.prefix+'main.c', :exist?
+      refute_predicate f.prefix+"main.c", :exist?
 
       # Test that things make it into the Cellar
       keg = Keg.new f.prefix
@@ -47,24 +49,6 @@ class InstallTests < Homebrew::TestCase
       bin = HOMEBREW_PREFIX+"bin"
       assert_predicate bin, :directory?
       assert_equal 3, bin.children.length
-    end
-  end
-
-  def test_script_install
-    mktmpdir do |dir|
-      name = "test_script_formula"
-      path = Pathname.new(dir)+"#{name}.rb"
-
-      path.write <<-EOS.undent
-        class #{Formulary.class_s(name)} < ScriptFileFormula
-          url "file://#{File.expand_path(__FILE__)}"
-          version "1"
-        end
-        EOS
-
-      f = Formulary.factory(path.to_s)
-
-      temporary_install(f) { assert_equal 1, f.bin.children.length }
     end
   end
 end

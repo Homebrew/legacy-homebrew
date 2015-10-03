@@ -1,14 +1,14 @@
 class Verilator < Formula
   desc "Verilog simulator"
   homepage "http://www.veripool.org/wiki/verilator"
-  url "http://www.veripool.org/ftp/verilator-3.872.tgz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/v/verilator/verilator_3.872.orig.tar.gz"
-  sha256 "d00b7a4838bea9cf2d80d9693729f225c2369ab679f8f8fc4f5153e3f7517084"
+  url "http://www.veripool.org/ftp/verilator-3.874.tgz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/v/verilator/verilator_3.874.orig.tar.gz"
+  sha256 "d20086626fdf6346d309e435881600c2d8bc8da8b3106e22d4ca4a70b98d0b1c"
 
   bottle do
-    sha256 "a161f22b400f96c8d01a77a17fc16c70884f4a866933a7d261cbc5097d10cc31" => :yosemite
-    sha256 "9765a1ac7fc8b9064ca558f0bfa99c6058ef772ee9c3105ab5e474a55ac9488b" => :mavericks
-    sha256 "05e9e4cbb0d860356425f251616db680fe827679bb6dd3b2acd6e6118336984c" => :mountain_lion
+    sha256 "d2259dedaf99925c3290121c41344534af65ff1ba525796f132f43afdef02d4b" => :yosemite
+    sha256 "f2fd51fae45919a7e0ef8fe4da8eb1b8672eb422cf36e0107023d899a5747c83" => :mavericks
+    sha256 "8e0f765e2a17c33bcb84232bbb1eef736bb453f40e41dc34f337a840c3118d5c" => :mountain_lion
   end
 
   head do

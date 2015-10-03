@@ -2,7 +2,7 @@ class Ktoblzcheck < Formula
   desc "Library for German banks"
   homepage "http://ktoblzcheck.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ktoblzcheck/ktoblzcheck-1.48.tar.gz"
-  sha1 "80d1a586e2d581dce62094fed61b9292f2c72c6b"
+  sha256 "0f4e66d3a880355b1afc88870d224755e078dfaf192242d9c6acb8853f5bcf58"
 
   bottle do
     sha1 "9575535aa28c130cd738edce67a6cc95789dcf10" => :yosemite

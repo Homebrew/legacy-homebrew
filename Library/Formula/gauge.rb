@@ -3,14 +3,14 @@ require "language/go"
 class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "http://getgauge.io"
-  url "https://github.com/getgauge/gauge/archive/v0.1.5.tar.gz"
-  sha256 "0379ccca32bdba663120e7204f5a403a9f96fdd7d3c140a99e3c4010db8ce323"
+  url "https://github.com/getgauge/gauge/archive/v0.1.8.tar.gz"
+  sha256 "d554a3909dec284992b3d067e8cfe86c8fa8fa330db81864c78c69d6e0570df4"
 
   bottle do
-    cellar :any
-    sha256 "60e7613befdf759c84a0546505b68d4bd0c9daa4db10879bb78c96502389c869" => :yosemite
-    sha256 "9f2615f4893a0b7ecfd8350d3160e4144d166ada15ae31996c705a77b4f74f38" => :mavericks
-    sha256 "2ebb0c77e3d0c75d7ce5e8f7e8c33ef8d52a7448ec374dd8c083a490a6c59328" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5cbd4d2d03347dcb576919b22b92e55e76463821412ce2210a72895825e15cff" => :el_capitan
+    sha256 "c638364b069a4a6cefa6cd4b10ba16a2f4525a26976c215d2607df5465a231c7" => :yosemite
+    sha256 "e78697736e3b633b162ac309c8c6de1c59c0d4419b1856a23e75bc5e837aa198" => :mavericks
   end
 
   depends_on "go" => :build
@@ -77,6 +77,6 @@ class Gauge < Formula
   end
 
   test do
-    system "gauge", "--init", "java"
+    system "gauge", "-v"
   end
 end

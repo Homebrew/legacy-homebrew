@@ -1,14 +1,15 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.7.37.tar.gz"
-  sha256 "e8b7ffbb5d46c33c021e22d571b6abbaa1ba0659c08591f598c279a86f3ad061"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.8.9.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.8.9.tar.gz"
+  sha256 "7aa2edfe8bd259d02b87e63914ae7494ce851befa37828c91b321f9941b2455c"
 
   bottle do
-    cellar :any
-    sha256 "577da22c9d688934c89795972423158a5ab2f5f4f32a51fa632be6332768886f" => :yosemite
-    sha256 "f3a6dae921a16e106308b2084422f77c8f2430f420b1377399b54caf9415f56b" => :mavericks
-    sha256 "484e8512422736b01b00c2b6b5ed98a3f3f418391b50edb21286ce39bdd906c4" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "cfc4ac4f0fc04deed0371c8de3afd4e950d04ee9b18b020985b053b8f6780248" => :el_capitan
+    sha256 "41786f42bb1320cbf06cbbb5debc916ba5df041439332477db98e3e41d1dc788" => :yosemite
+    sha256 "e3f54cb4f93477e99fe06d125d231a89a7cc44dd3bf721c6e95e757c994e2046" => :mavericks
   end
 
   head do
@@ -49,8 +50,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.1.0.tar.gz"
-    sha256 "f62eb8adaee709a0e01d15f21ca5795ce2a6787dad94a54f0db5d84177bcd5aa"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.2.6.tar.gz"
+    sha256 "e0f71ce5c74e9251f5fb49cfe6b74d4612545824d5ebc0a37269315d23f81da3"
   end
 
   resource "docutils" do
@@ -89,7 +90,7 @@ class Awscli < Formula
     zsh_completion.install "bin/aws_zsh_completer.sh" => "_aws"
 
     # Install the examples
-    (share+"awscli").install "awscli/examples"
+    pkgshare.install "awscli/examples"
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
@@ -110,7 +111,7 @@ class Awscli < Formula
       aws configure
 
     More information:
-      http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
+      https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html
     EOS
   end
 

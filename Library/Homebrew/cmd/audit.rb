@@ -6,6 +6,7 @@ require "official_taps"
 require "tap_migrations"
 require "cmd/search"
 require "date"
+require "formula_renames"
 
 module Homebrew
   def audit
@@ -41,7 +42,7 @@ module Homebrew
       end
 
       $times = {}
-      at_exit { puts $times.sort_by{ |k, v| v }.map{ |k, v| "#{k}: #{v}" } }
+      at_exit { puts $times.sort_by { |_k, v| v }.map { |k, v| "#{k}: #{v}" } }
     end
 
     ff = if ARGV.named.empty?
@@ -78,7 +79,7 @@ module Homebrew
 end
 
 class FormulaText
-  def initialize path
+  def initialize(path)
     @text = path.open("rb", &:read)
     @lines = @text.lines.to_a
   end
@@ -99,11 +100,11 @@ class FormulaText
     /\Z\n/ =~ @text
   end
 
-  def =~ regex
+  def =~(regex)
     regex =~ @text
   end
 
-  def line_number regex
+  def line_number(regex)
     index = @lines.index { |line| line =~ regex }
     index ? index + 1 : nil
   end
@@ -131,13 +132,13 @@ class FormulaAuditor
 
   FILEUTILS_METHODS = FileUtils.singleton_methods(false).join "|"
 
-  def initialize(formula, options={})
+  def initialize(formula, options = {})
     @formula = formula
     @strict = !!options[:strict]
     @online = !!options[:online]
     @problems = []
     @text = FormulaText.new(formula.path)
-    @specs = %w{stable devel head}.map { |s| formula.send(s) }.compact
+    @specs = %w[stable devel head].map { |s| formula.send(s) }.compact
   end
 
   def audit_file
@@ -145,11 +146,11 @@ class FormulaAuditor
       problem "Incorrect file permissions: chmod 644 #{formula.path}"
     end
 
-    if text.has_DATA? and not text.has_END?
+    if text.has_DATA? && !text.has_END?
       problem "'DATA' was found, but no '__END__'"
     end
 
-    if text.has_END? and not text.has_DATA?
+    if text.has_END? && !text.has_DATA?
       problem "'__END__' was found, but 'DATA' is not used"
     end
 
@@ -160,22 +161,22 @@ class FormulaAuditor
     return unless @strict
 
     component_list = [
-      [/^  desc ["'][\S\ ]+["']/,          "desc"          ],
-      [/^  homepage ["'][\S\ ]+["']/,      "homepage"      ],
-      [/^  url ["'][\S\ ]+["']/,           "url"           ],
-      [/^  mirror ["'][\S\ ]+["']/,        "mirror"        ],
-      [/^  version ["'][\S\ ]+["']/,       "version"       ],
-      [/^  (sha1|sha256) ["'][\S\ ]+["']/, "checksum"      ],
-      [/^  head ["'][\S\ ]+["']/,          "head"          ],
-      [/^  stable do/,                     "stable block"  ],
-      [/^  bottle do/,                     "bottle block"  ],
-      [/^  devel do/,                      "devel block"   ],
-      [/^  head do/,                       "head block"    ],
-      [/^  option/,                        "option"        ],
-      [/^  depends_on/,                    "depends_on"    ],
+      [/^  desc ["'][\S\ ]+["']/,          "desc"],
+      [/^  homepage ["'][\S\ ]+["']/,      "homepage"],
+      [/^  url ["'][\S\ ]+["']/,           "url"],
+      [/^  mirror ["'][\S\ ]+["']/,        "mirror"],
+      [/^  version ["'][\S\ ]+["']/,       "version"],
+      [/^  (sha1|sha256) ["'][\S\ ]+["']/, "checksum"],
+      [/^  head ["'][\S\ ]+["']/,          "head"],
+      [/^  stable do/,                     "stable block"],
+      [/^  bottle do/,                     "bottle block"],
+      [/^  devel do/,                      "devel block"],
+      [/^  head do/,                       "head block"],
+      [/^  option/,                        "option"],
+      [/^  depends_on/,                    "depends_on"],
       [/^  def install/,                   "install method"],
       [/^  def caveats/,                   "caveats method"],
-      [/^  test do/,                       "test block"    ],
+      [/^  test do/,                       "test block"]
     ]
 
     component_list.map do |regex, name|
@@ -184,7 +185,7 @@ class FormulaAuditor
       [lineno, name]
     end.compact.each_cons(2) do |c1, c2|
       unless c1[0] < c2[0]
-        problem "`#{c1[1]}`(line #{c1[0]}) should be put before `#{c2[1]}`(line #{c2[0]})"
+        problem "`#{c1[1]}` (line #{c1[0]}) should be put before `#{c2[1]}` (line #{c2[0]})"
       end
     end
   end
@@ -209,12 +210,8 @@ class FormulaAuditor
     end
   end
 
-  @@aliases ||= Formula.aliases
-  @@remote_official_taps ||= if (homebrew_tapd = HOMEBREW_LIBRARY/"Taps/homebrew").directory?
-    OFFICIAL_TAPS - homebrew_tapd.subdirs.map(&:basename).map { |tap| tap.to_s.sub(/^homebrew-/, "") }
-  else
-    OFFICIAL_TAPS
-  end
+  # core aliases + tap alias names + tap alias full name
+  @@aliases ||= Formula.aliases + Formula.tap_aliases
 
   def audit_formula_name
     return unless @strict
@@ -224,8 +221,13 @@ class FormulaAuditor
     name = formula.name
     full_name = formula.full_name
 
-    if @@aliases.include? name
+    if Formula.aliases.include? name
       problem "Formula name conflicts with existing aliases."
+      return
+    end
+
+    if FORMULA_RENAMES.key? name
+      problem "'#{name}' is reserved as the old name of #{FORMULA_RENAMES[name]}"
       return
     end
 
@@ -234,15 +236,22 @@ class FormulaAuditor
       return
     end
 
-    same_name_tap_formulae = Formula.tap_names.select do |tap_formula_name|
-      user_name, _, formula_name = tap_formula_name.split("/", 3)
-      user_name == "homebrew" && formula_name == name
-    end
+    @@local_official_taps_name_map ||= Tap.select(&:official?).flat_map(&:formula_names).
+      reduce(Hash.new) do |name_map, tap_formula_full_name|
+        tap_formula_name = tap_formula_full_name.split("/").last
+        name_map[tap_formula_name] ||= []
+        name_map[tap_formula_name] << tap_formula_full_name
+        name_map
+      end
+
+    same_name_tap_formulae = @@local_official_taps_name_map[name] || []
 
     if @online
+      @@remote_official_taps ||= OFFICIAL_TAPS - Tap.select(&:official?).map(&:repo)
+
       same_name_tap_formulae += @@remote_official_taps.map do |tap|
         Thread.new { Homebrew.search_tap "homebrew", tap, name }
-      end.map(&:value).flatten
+      end.flat_map(&:value)
     end
 
     same_name_tap_formulae.delete(full_name)
@@ -270,6 +279,10 @@ class FormulaAuditor
           next
         end
 
+        if FORMULA_RENAMES[dep.name] == dep_f.name
+          problem "Dependency '#{dep.name}' was renamed; use newname '#{dep_f.name}'."
+        end
+
         if @@aliases.include?(dep.name)
           problem "Dependency '#{dep.name}' is an alias; use the canonical name '#{dep.to_formula.full_name}'."
         end
@@ -289,11 +302,11 @@ class FormulaAuditor
 
         case dep.name
         when *BUILD_TIME_DEPS
-          next if dep.build? or dep.run?
+          next if dep.build? || dep.run?
           problem <<-EOS.undent
             #{dep} dependency should be
               depends_on "#{dep}" => :build
-            Or if it is indeed a runtime denpendency
+            Or if it is indeed a runtime dependency
               depends_on "#{dep}" => :run
           EOS
         when "git"
@@ -304,7 +317,7 @@ class FormulaAuditor
           problem "Don't use ruby as a dependency. We allow non-Homebrew ruby installations."
         when "gfortran"
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
-        when "open-mpi", "mpich2"
+        when "open-mpi", "mpich"
           problem <<-EOS.undent
             There are multiple conflicting ways to install MPI. Use an MPIRequirement:
               depends_on :mpi => [<lang list>]
@@ -346,7 +359,7 @@ class FormulaAuditor
 
     desc = formula.desc
 
-    unless desc and desc.length > 0
+    unless desc && desc.length > 0
       problem "Formula should have a desc (Description)."
       return
     end
@@ -354,34 +367,37 @@ class FormulaAuditor
     # Make sure the formula name plus description is no longer than 80 characters
     linelength = formula.full_name.length + ": ".length + desc.length
     if linelength > 80
-      problem "Description is too long. \"name: desc\" should be less than 80 characters (currently #{linelength})."
+      problem <<-EOS.undent
+        Description is too long. \"name: desc\" should be less than 80 characters.
+        Length is calculated as #{formula.full_name} + desc. (currently #{linelength})
+      EOS
     end
 
-    if desc =~ %r[[Cc]ommandline]
-      problem "It should be \"command-line\", not \"commandline\"."
+    if desc =~ /([Cc]ommand ?line)/
+      problem "Description should use \"command-line\" instead of \"#{$1}\""
     end
 
-    if desc =~ %r[[Cc]ommand line]
-      problem "It should be \"command-line\", not \"command line\"."
+    if desc =~ /^([Aa]n?)\s/
+      problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
     end
   end
 
   def audit_homepage
     homepage = formula.homepage
 
-    unless homepage =~ %r[^https?://]
+    unless homepage =~ %r{^https?://}
       problem "The homepage should start with http or https (URL is #{homepage})."
     end
 
     # Check for http:// GitHub homepage urls, https:// is preferred.
     # Note: only check homepages that are repo pages, not *.github.com hosts
-    if homepage =~ %r[^http://github\.com/]
+    if homepage =~ %r{^http://github\.com/}
       problem "Please use https:// for #{homepage}"
     end
 
     # Savannah has full SSL/TLS support but no auto-redirect.
     # Doesn't apply to the download URLs, only the homepage.
-    if homepage =~ %r[^http://savannah\.nongnu\.org/]
+    if homepage =~ %r{^http://savannah\.nongnu\.org/}
       problem "Please use https:// for #{homepage}"
     end
 
@@ -389,7 +405,7 @@ class FormulaAuditor
     # To enable https Freedesktop change the URL from http://project.freedesktop.org/wiki to
     # https://wiki.freedesktop.org/project_name.
     # "Software" is redirected to https://wiki.freedesktop.org/www/Software/project_name
-    if homepage =~ %r[^http://((?:www|nice|libopenraw|liboil|telepathy|xorg)\.)?freedesktop\.org/(?:wiki/)?]
+    if homepage =~ %r{^http://((?:www|nice|libopenraw|liboil|telepathy|xorg)\.)?freedesktop\.org/(?:wiki/)?}
       if homepage =~ /Software/
         problem "#{homepage} should be styled `https://wiki.freedesktop.org/www/Software/project_name`"
       else
@@ -398,35 +414,44 @@ class FormulaAuditor
     end
 
     # Google Code homepages should end in a slash
-    if homepage =~ %r[^https?://code\.google\.com/p/[^/]+[^/]$]
+    if homepage =~ %r{^https?://code\.google\.com/p/[^/]+[^/]$}
       problem "#{homepage} should end with a slash"
     end
 
     # People will run into mixed content sometimes, but we should enforce and then add
     # exemptions as they are discovered. Treat mixed content on homepages as a bug.
     # Justify each exemptions with a code comment so we can keep track here.
-    if homepage =~ %r[^http://[^/]*github\.io/]
+    if homepage =~ %r{^http://[^/]*github\.io/}
       problem "Please use https:// for #{homepage}"
     end
 
     # There's an auto-redirect here, but this mistake is incredibly common too.
     # Only applies to the homepage and subdomains for now, not the FTP URLs.
-    if homepage =~ %r[^http://((?:build|cloud|developer|download|extensions|git|glade|help|library|live|nagios|news|people|projects|rt|static|wiki|www)\.)?gnome\.org]
+    if homepage =~ %r{^http://((?:build|cloud|developer|download|extensions|git|glade|help|library|live|nagios|news|people|projects|rt|static|wiki|www)\.)?gnome\.org}
       problem "Please use https:// for #{homepage}"
     end
 
     # Compact the above into this list as we're able to remove detailed notations, etc over time.
     case homepage
-    when %r[^http://[^/]*\.apache\.org],
-         %r[^http://packages\.debian\.org],
-         %r[^http://wiki\.freedesktop\.org/],
-         %r[^http://((?:www)\.)?gnupg.org/],
-         %r[^http://ietf\.org],
-         %r[^http://[^/.]+\.ietf\.org],
-         %r[^http://[^/.]+\.tools\.ietf\.org],
-         %r[^http://www\.gnu\.org/],
-         %r[^http://code\.google\.com/]
+    when %r{^http://[^/]*\.apache\.org},
+         %r{^http://packages\.debian\.org},
+         %r{^http://wiki\.freedesktop\.org/},
+         %r{^http://((?:www)\.)?gnupg.org/},
+         %r{^http://ietf\.org},
+         %r{^http://[^/.]+\.ietf\.org},
+         %r{^http://[^/.]+\.tools\.ietf\.org},
+         %r{^http://www\.gnu\.org/},
+         %r{^http://code\.google\.com/},
+         %r{^http://bitbucket\.org/},
+         %r{^http://(?:[^/]*\.)?archive\.org}
       problem "Please use https:// for #{homepage}"
+    end
+
+    return unless @online
+    begin
+      nostdout { curl "--connect-timeout", "15", "-o", "/dev/null", homepage }
+    rescue ErrorDuringExecution
+      problem "The homepage is not reachable (curl exit code #{$?.exitstatus})"
     end
   end
 
@@ -452,17 +477,17 @@ class FormulaAuditor
       problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
     end
 
-    if (Date.parse(metadata["created_at"]) > (Date.today - 30))
+    if Date.parse(metadata["created_at"]) > (Date.today - 30)
       problem "GitHub repository too new (<30 days old)"
     end
   end
 
   def audit_specs
-    if head_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-head-only"
+    if head_only?(formula) && formula.tap.to_s.downcase !~ /-head-only$/
       problem "Head-only (no stable download)"
     end
 
-    if devel_only?(formula) && formula.tap.to_s.downcase != "homebrew/homebrew-devel-only"
+    if devel_only?(formula) && formula.tap.to_s.downcase !~ /-devel-only$/
       problem "Devel-only (no stable download)"
     end
 
@@ -479,7 +504,7 @@ class FormulaAuditor
         }
       end
 
-      spec.patches.select(&:external?).each { |p| audit_patch(p) }
+      spec.patches.each { |p| audit_patch(p) if p.external? }
     end
 
     %w[Stable Devel].each do |name|
@@ -509,7 +534,8 @@ class FormulaAuditor
     end
   end
 
-  def audit_patches
+  def audit_legacy_patches
+    return unless formula.respond_to?(:patches)
     legacy_patches = Patch.normalize_legacy_patches(formula.patches).grep(LegacyPatch)
     if legacy_patches.any?
       problem "Use the patch DSL instead of defining a 'patches' method"
@@ -519,16 +545,16 @@ class FormulaAuditor
 
   def audit_patch(patch)
     case patch.url
-    when %r[raw\.github\.com], %r[gist\.github\.com/raw], %r[gist\.github\.com/.+/raw],
-      %r[gist\.githubusercontent\.com/.+/raw]
+    when /raw\.github\.com/, %r{gist\.github\.com/raw}, %r{gist\.github\.com/.+/raw},
+      %r{gist\.githubusercontent\.com/.+/raw}
       unless patch.url =~ /[a-fA-F0-9]{40}/
         problem "GitHub/Gist patches should specify a revision:\n#{patch.url}"
       end
-    when %r[macports/trunk]
+    when %r{macports/trunk}
       problem "MacPorts patches should specify a revision instead of trunk:\n#{patch.url}"
-    when %r[^http://trac\.macports\.org]
+    when %r{^http://trac\.macports\.org}
       problem "Patches from MacPorts Trac should be https://, not http:\n#{patch.url}"
-    when %r[^http://bugs\.debian\.org]
+    when %r{^http://bugs\.debian\.org}
       problem "Patches from Debian should be https://, not http:\n#{patch.url}"
     end
   end
@@ -539,11 +565,11 @@ class FormulaAuditor
     end
 
     if text =~ /system\s+['"]xcodebuild/
-      problem %{use "xcodebuild *args" instead of "system 'xcodebuild', *args"}
+      problem %(use "xcodebuild *args" instead of "system 'xcodebuild', *args")
     end
 
     if text =~ /xcodebuild[ (]["'*]/ && text !~ /SYMROOT=/
-      problem %{xcodebuild should be passed an explicit "SYMROOT"}
+      problem %(xcodebuild should be passed an explicit "SYMROOT")
     end
 
     if text =~ /Formula\.factory\(/
@@ -555,10 +581,6 @@ class FormulaAuditor
       problem <<-EOS.undent
        Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
       EOS
-    end
-
-    if text =~ /system "npm", "install"/ && text !~ /"HOME"/
-      problem "Please add ENV[\"HOME\"] = buildpath/\".brew_home\" to def install"
     end
   end
 
@@ -624,7 +646,7 @@ class FormulaAuditor
       problem "\"(#{$1}...#{$2})\" should be \"(#{$3.downcase}+...)\""
     end
 
-    if line =~ %r[((man)\s*\+\s*(['"])(man[1-8])(['"]))]
+    if line =~ /((man)\s*\+\s*(['"])(man[1-8])(['"]))/
       problem "\"#{$1}\" should be \"#{$4}\""
     end
 
@@ -645,7 +667,7 @@ class FormulaAuditor
       problem "\"#{$1}\" should be \"\#{#{$2}}\""
     end
 
-    if line =~ %r[depends_on :(automake|autoconf|libtool)]
+    if line =~ /depends_on :(automake|autoconf|libtool)/
       problem ":#{$1} is deprecated. Usage should be \"#{$1}\""
     end
 
@@ -740,13 +762,13 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    cats = %w{leopard snow_leopard lion mountain_lion}.join("|")
+    cats = %w[leopard snow_leopard lion mountain_lion].join("|")
     if line =~ /MacOS\.(?:#{cats})\?/
       problem "\"#{$&}\" is deprecated, use a comparison to MacOS.version instead"
     end
 
     if line =~ /skip_clean\s+:all/
-      problem "`skip_clean :all` is deprecated; brew no longer strips symbols\n" +
+      problem "`skip_clean :all` is deprecated; brew no longer strips symbols\n" \
               "\tPass explicit paths to prevent Homebrew from removing empty folders."
     end
 
@@ -784,6 +806,10 @@ class FormulaAuditor
       problem "Use the `#{method}` Ruby method instead of `system #{system}`"
     end
 
+    if line =~ /assert [^!]+\.include?/
+      problem "Use `assert_match` instead of `assert ...include?`"
+    end
+
     if @strict
       if line =~ /system (["'][^"' ]*(?:\s[^"' ]*)+["'])/
         bad_system = $1
@@ -812,7 +838,7 @@ class FormulaAuditor
     return unless @strict
     return unless formula.core_formula?
 
-    if TAP_MIGRATIONS.has_key?(formula.name)
+    if TAP_MIGRATIONS.key?(formula.name)
       problem <<-EOS.undent
        #{formula.name} seems to be listed in tap_migrations.rb!
        Please remove #{formula.name} from present tap & tap_migrations.rb
@@ -845,9 +871,9 @@ class FormulaAuditor
 
     case condition
     when /if build\.include\? ['"]with-#{dep}['"]$/, /if build\.with\? ['"]#{dep}['"]$/
-      problem %{Replace #{line.inspect} with "depends_on #{quoted_dep} => :optional"}
+      problem %(Replace #{line.inspect} with "depends_on #{quoted_dep} => :optional")
     when /unless build\.include\? ['"]without-#{dep}['"]$/, /unless build\.without\? ['"]#{dep}['"]$/
-      problem %{Replace #{line.inspect} with "depends_on #{quoted_dep} => :recommended"}
+      problem %(Replace #{line.inspect} with "depends_on #{quoted_dep} => :recommended")
     end
   end
 
@@ -870,7 +896,7 @@ class FormulaAuditor
     audit_deps
     audit_conflicts
     audit_options
-    audit_patches
+    audit_legacy_patches
     audit_text
     audit_caveats
     text.without_patch.split("\n").each_with_index { |line, lineno| audit_line(line, lineno+1) }
@@ -881,7 +907,7 @@ class FormulaAuditor
 
   private
 
-  def problem p
+  def problem(p)
     @problems << p
   end
 
@@ -922,7 +948,7 @@ class ResourceAuditor
       problem "missing version"
     elsif version.to_s.empty?
       problem "version is set to an empty string"
-    elsif not version.detected_from_url?
+    elsif !version.detected_from_url?
       version_text = version
       version_url = Version.detect(url, specs)
       if version_url.to_s == version_text.to_s && version.instance_of?(Version)
@@ -962,7 +988,7 @@ class ResourceAuditor
   end
 
   def audit_download_strategy
-    if url =~ %r[^(cvs|bzr|hg|fossil)://] || url =~ %r[^(svn)\+http://]
+    if url =~ %r{^(cvs|bzr|hg|fossil)://} || url =~ %r{^(svn)\+http://}
       problem "Use of the #{$&} scheme is deprecated, pass `:using => :#{$1}` instead"
     end
 
@@ -976,9 +1002,11 @@ class ResourceAuditor
 
     return unless using
 
-    if using == :ssl3 || using == CurlSSL3DownloadStrategy
+    if using == :ssl3 || \
+       (Object.const_defined?("CurlSSL3DownloadStrategy") && using == CurlSSL3DownloadStrategy)
       problem "The SSL3 download strategy is deprecated, please choose a different URL"
-    elsif using == CurlUnsafeDownloadStrategy || using == UnsafeSubversionDownloadStrategy
+    elsif (Object.const_defined?("CurlUnsafeDownloadStrategy") && using == CurlUnsafeDownloadStrategy) || \
+          (Object.const_defined?("UnsafeSubversionDownloadStrategy") && using == UnsafeSubversionDownloadStrategy)
       problem "#{using.name} is deprecated, please choose a different URL"
     end
 
@@ -989,7 +1017,7 @@ class ResourceAuditor
         problem "Redundant :module value in URL"
       end
 
-      if url =~ %r[:[^/]+$]
+      if url =~ %r{:[^/]+$}
         mod = url.split(":").last
 
         if mod == name
@@ -1000,7 +1028,7 @@ class ResourceAuditor
       end
     end
 
-    using_strategy = DownloadStrategyDetector.detect('', using)
+    using_strategy = DownloadStrategyDetector.detect("", using)
 
     if url_strategy == using_strategy
       problem "Redundant :using value in URL"
@@ -1009,12 +1037,12 @@ class ResourceAuditor
 
   def audit_urls
     # Check GNU urls; doesn't apply to mirrors
-    if url =~ %r[^(?:https?|ftp)://(?!alpha).+/gnu/]
+    if url =~ %r{^(?:https?|ftp)://(?!alpha).+/gnu/}
       problem "Please use \"http://ftpmirror.gnu.org\" instead of #{url}."
     end
 
     # GNU's ftpmirror does NOT support SSL/TLS.
-    if url =~ %r[^https://ftpmirror\.gnu\.org/]
+    if url =~ %r{^https://ftpmirror\.gnu\.org/}
       problem "Please use http:// for #{url}"
     end
 
@@ -1028,17 +1056,21 @@ class ResourceAuditor
     # or are overly common errors that need to be reduced & fixed over time.
     urls.each do |p|
       case p
-      when %r[^http://ftp\.gnu\.org/],
-           %r[^http://[^/]*\.apache\.org/],
-           %r[^http://code\.google\.com/],
-           %r[^http://fossies\.org/],
-           %r[^http://mirrors\.kernel\.org/],
-           %r[^http://([^/]*\.|)bintray\.com/],
-           %r[^http://tools\.ietf\.org/]
+      when %r{^http://ftp\.gnu\.org/},
+           %r{^http://[^/]*\.apache\.org/},
+           %r{^http://code\.google\.com/},
+           %r{^http://fossies\.org/},
+           %r{^http://mirrors\.kernel\.org/},
+           %r{^http://(?:[^/]*\.)?bintray\.com/},
+           %r{^http://tools\.ietf\.org/},
+           %r{^http://www\.mirrorservice\.org/},
+           %r{^http://launchpad\.net/},
+           %r{^http://bitbucket\.org/},
+           %r{^http://(?:[^/]*\.)?archive\.org}
         problem "Please use https:// for #{p}"
-      when %r[^http://search\.mcpan\.org/CPAN/(.*)]i
+      when %r{^http://search\.mcpan\.org/CPAN/(.*)}i
         problem "#{p} should be `https://cpan.metacpan.org/#{$1}`"
-      when %r[^(http|ftp)://ftp\.gnome\.org/pub/gnome/(.*)]i
+      when %r{^(http|ftp)://ftp\.gnome\.org/pub/gnome/(.*)}i
         problem "#{p} should be `https://download.gnome.org/#{$2}`"
       end
     end
@@ -1046,11 +1078,11 @@ class ResourceAuditor
     # Check SourceForge urls
     urls.each do |p|
       # Skip if the URL looks like a SVN repo
-      next if p =~ %r[/svnroot/]
-      next if p =~ %r[svn\.sourceforge]
+      next if p =~ %r{/svnroot/}
+      next if p =~ /svn\.sourceforge/
 
       # Is it a sourceforge http(s) URL?
-      next unless p =~ %r[^https?://.*\b(sourceforge|sf)\.(com|net)]
+      next unless p =~ %r{^https?://.*\b(sourceforge|sf)\.(com|net)}
 
       if p =~ /(\?|&)use_mirror=/
         problem "Don't use #{$1}use_mirror in SourceForge urls (url is #{p})."
@@ -1060,16 +1092,16 @@ class ResourceAuditor
         problem "Don't use /download in SourceForge urls (url is #{p})."
       end
 
-      if p =~ %r[^https?://sourceforge\.]
+      if p =~ %r{^https?://sourceforge\.}
         problem "Use https://downloads.sourceforge.net to get geolocation (url is #{p})."
       end
 
-      if p =~ %r[^https?://prdownloads\.]
-        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" +
+      if p =~ %r{^https?://prdownloads\.}
+        problem "Don't use prdownloads in SourceForge urls (url is #{p}).\n" \
                 "\tSee: http://librelist.com/browser/homebrew/2011/1/12/prdownloads-is-bad/"
       end
 
-      if p =~ %r[^http://\w+\.dl\.]
+      if p =~ %r{^http://\w+\.dl\.}
         problem "Don't use specific dl mirrors in SourceForge urls (url is #{p})."
       end
 
@@ -1081,42 +1113,44 @@ class ResourceAuditor
     # Check for Google Code download urls, https:// is preferred
     # Intentionally not extending this to SVN repositories due to certificate
     # issues.
-    urls.grep(%r[^http://.*\.googlecode\.com/files.*]) do |u|
+    urls.grep(%r{^http://.*\.googlecode\.com/files.*}) do |u|
       problem "Please use https:// for #{u}"
     end
 
     # Check for new-url Google Code download urls, https:// is preferred
-    urls.grep(%r[^http://code\.google\.com/]) do |u|
+    urls.grep(%r{^http://code\.google\.com/}) do |u|
       problem "Please use https:// for #{u}"
     end
 
     # Check for git:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^git://[^/]*github\.com/]) do |u|
+    urls.grep(%r{^git://[^/]*github\.com/}) do |u|
       problem "Please use https:// for #{u}"
     end
 
     # Check for git:// Gitorious repo urls, https:// is preferred.
-    urls.grep(%r[^git://[^/]*gitorious\.org/]) do |u|
+    urls.grep(%r{^git://[^/]*gitorious\.org/}) do |u|
       problem "Please use https:// for #{u}"
     end
 
     # Check for http:// GitHub repo urls, https:// is preferred.
-    urls.grep(%r[^http://github\.com/.*\.git$]) do |u|
+    urls.grep(%r{^http://github\.com/.*\.git$}) do |u|
       problem "Please use https:// for #{u}"
     end
 
     # Use new-style archive downloads
-    urls.select { |u| u =~ %r[https://.*github.*/(?:tar|zip)ball/] && u !~ %r[\.git$] }.each do |u|
+    urls.each do |u|
+      next unless u =~ %r{https://.*github.*/(?:tar|zip)ball/} && u !~ /\.git$/
       problem "Use /archive/ URLs for GitHub tarballs (url is #{u})."
     end
 
     # Don't use GitHub .zip files
-    urls.select { |u| u =~ %r[https://.*github.*/(archive|releases)/.*\.zip$] && u !~ %r[releases/download] }.each do |u|
+    urls.each do |u|
+      next unless u =~ %r{https://.*github.*/(archive|releases)/.*\.zip$} && u !~ %r{releases/download}
       problem "Use GitHub tarballs rather than zipballs (url is #{u})."
     end
   end
 
-  def problem text
+  def problem(text)
     @problems << text
   end
 end

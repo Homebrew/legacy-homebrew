@@ -1,14 +1,14 @@
 class SharedMimeInfo < Formula
   desc "Database of common MIME types"
   homepage "https://wiki.freedesktop.org/www/Software/shared-mime-info"
-  url "http://freedesktop.org/~hadess/shared-mime-info-1.4.tar.xz"
-  sha256 "bbc0bd023f497dfd75e1ca73441cbbb5a63617d9e14f2790b868361cc055b5b1"
+  url "http://freedesktop.org/~hadess/shared-mime-info-1.5.tar.xz"
+  sha256 "d6412840eb265bf36e61fd7b6fc6bea21b0f58cb22bed16f2ccccdd54bea4180"
 
   bottle do
     cellar :any
-    sha256 "d9319f2574b82d7d17b413233307bfbd32691604194244d8ff529aae79db52c6" => :yosemite
-    sha256 "3931c3aa4e637cfb64617f8b0a9b7ceda2520a96c08fdb45235f138268d81064" => :mavericks
-    sha256 "0d66e477d10e982d33ad14c0824419738c5e465ae767f0fcda4e8f11dd82097b" => :mountain_lion
+    sha256 "468c2855ef005f17e153c002241cc6aad2f976e0d1f1be8eb7cbe469f834da3b" => :el_capitan
+    sha256 "c2de862bae867d39c6def1f6f1bc078ff73d0ac03b78d321ad3b715de8e20ae0" => :yosemite
+    sha256 "48f55fca160358a009282ee9e5c86e74f55bd74f8e31072f0ca5339804f6035c" => :mavericks
   end
 
   head do
@@ -39,6 +39,7 @@ class SharedMimeInfo < Formula
   end
 
   test do
-    system bin/"update-mime-database", share/"mime"
+    cp_r share/"mime", testpath
+    system bin/"update-mime-database", testpath/"mime"
   end
 end

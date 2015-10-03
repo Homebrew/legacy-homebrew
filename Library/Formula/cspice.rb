@@ -1,5 +1,3 @@
-require "formula"
-
 class Cspice < Formula
   desc "Observation geometry system for robotic space science missions"
   homepage "http://naif.jpl.nasa.gov/naif/index.html"

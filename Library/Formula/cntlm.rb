@@ -1,10 +1,8 @@
-require 'formula'
-
 class Cntlm < Formula
   desc "NTLM authentication proxy with tunneling"
-  homepage 'http://cntlm.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/cntlm/cntlm/cntlm%200.92.3/cntlm-0.92.3.tar.bz2'
-  sha1 '9b68a687218dd202c04b678ba8c559edba6f6f7b'
+  homepage "http://cntlm.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/cntlm/cntlm/cntlm%200.92.3/cntlm-0.92.3.tar.bz2"
+  sha256 "7b603d6200ab0b26034e9e200fab949cc0a8e5fdd4df2c80b8fc5b1c37e7b930"
 
   def install
     system "./configure"

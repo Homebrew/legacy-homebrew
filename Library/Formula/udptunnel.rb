@@ -1,10 +1,8 @@
-require "formula"
-
 class Udptunnel < Formula
   desc "Tunnel UDP packets over a TCP connection"
   homepage "http://www.cs.columbia.edu/~lennox/udptunnel"
   url "http://www.cs.columbia.edu/~lennox/udptunnel/udptunnel-1.1.tar.gz"
-  sha1 "c768097d9bca23d6be35931b010b75a451f34eb8"
+  sha256 "45c0e12045735bc55734076ebbdc7622c746d1fe4e6f7267fa122e2421754670"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

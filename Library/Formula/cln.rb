@@ -1,10 +1,8 @@
-require "formula"
-
 class Cln < Formula
   desc "CLN: Class Library for Numbers"
   homepage "http://www.ginac.de/CLN/"
   url "http://www.ginac.de/CLN/cln-1.3.4.tar.bz2"
-  sha1 "76f73071236ead72ba5c9ee892f29ca24e557b8c"
+  sha256 "2d99d7c433fb60db1e28299298a98354339bdc120d31bb9a862cafc5210ab748"
 
   bottle do
     cellar :any
@@ -18,6 +16,6 @@ class Cln < Formula
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 end

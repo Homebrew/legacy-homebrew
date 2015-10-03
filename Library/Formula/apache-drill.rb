@@ -1,8 +1,9 @@
 class ApacheDrill < Formula
   desc "Schema-free SQL query engine for Hadoop and NoSQL"
   homepage "https://drill.apache.org/download/"
-  url "https://www.apache.org/dyn/closer.cgi?path=drill/drill-1.0.0/apache-drill-1.0.0.tar.gz"
-  sha256 "59f293aeb61ff55e3ab280dc3fbc9648dd6c1aefa2282a5a772be11d4f5a2682"
+  url "https://www.apache.org/dyn/closer.cgi?path=drill/drill-1.1.0/apache-drill-1.1.0.tar.gz"
+  mirror "http://getdrill.org/drill/download/apache-drill-1.1.0.tar.gz"
+  sha256 "04b6b21eb526f0491050a432f7d2bbea77d0bf231ac404843840c604310a41d2"
 
   def install
     libexec.install Dir["*"]

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Ipmiutil < Formula
   desc "IPMI server management utility"
-  homepage 'http://ipmiutil.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-2.9.5.tar.gz'
-  sha1 '265f022c876da373b2ecb4be2bc0f98e65f70977'
+  homepage "http://ipmiutil.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/ipmiutil/ipmiutil-2.9.5.tar.gz"
+  sha256 "eb00f0582ee75e1f8d371e398d546ddd7639595b9a0a1f27a84cc6ecb038dbe6"
 
   bottle do
     cellar :any
@@ -26,7 +24,7 @@ class Ipmiutil < Formula
                           "--enable-sha256",
                           "--enable-gpl"
 
-    system "make", "TMPDIR=#{ENV['TMPDIR']}"
+    system "make", "TMPDIR=#{ENV["TMPDIR"]}"
     # DESTDIR is needed to make everything go where we want it.
     system "make", "prefix=/",
                    "DESTDIR=#{prefix}",

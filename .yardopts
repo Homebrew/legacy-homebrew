@@ -4,9 +4,10 @@
 --no-private
 --exclude Library/Homebrew/test/
 --exclude Library/Homebrew/vendor/
+--exclude Library/Homebrew/compat/
 Library/Homebrew/**/*.rb
 -
+share/doc/homebrew/*.html
 Library/Homebrew/*.md
-Library/Homebrew/manpages/*.md
 share/doc/homebrew/*.md
 *.md
