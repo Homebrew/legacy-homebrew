@@ -6,10 +6,10 @@ class Planck < Formula
   sha256 "11f5017519c3a10267465c73ef9da7c1f3c228cebed056b0ce7a8335e141aefc"
 
   bottle do
-    cellar :any
-    sha256 "403a8300b584bd78ddf2db45da9c50dda359f08d1b8d84962ff43f0712bae76a" => :yosemite
-    sha256 "7c6aaed8b00064196c1a78d313c9c52fdded7b4eb118733fd94d396d3bac818e" => :mavericks
-    sha256 "afe3b52af788df04ac564d5d315d442433ce7c360d14c72aaddfc2364cca4b78" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "aded391f9335078e65849e09f052fa4d3684913f7b1d16813d4a663ea6572bef" => :el_capitan
+    sha256 "2d4781eff1bbd87bf1f5c2f636fdb14eba573f16fb22f8bc81a9a2d4bc7f8505" => :yosemite
+    sha256 "26a41703f91e22d7dd4954e4011f3da493dec0bb821c67fcb227df48da105753" => :mavericks
   end
 
   depends_on "leiningen" => :build
