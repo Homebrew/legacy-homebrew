@@ -35,10 +35,15 @@ class Qemu < Formula
       --prefix=#{prefix}
       --cc=#{ENV.cc}
       --host-cc=#{ENV.cc}
-      --enable-cocoa
       --disable-bsd-user
       --disable-guest-agent
     ]
+
+    if build.with?("sdl") && build.head?
+      args << "--disable-cocoa"
+    else
+      args << "--enable-cocoa"
+    end
 
     args << (build.with?("sdl") ? "--enable-sdl" : "--disable-sdl")
     args << (build.with?("vde") ? "--enable-vde" : "--disable-vde")
