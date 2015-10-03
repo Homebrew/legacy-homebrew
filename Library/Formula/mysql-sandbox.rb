@@ -6,9 +6,10 @@ class MysqlSandbox < Formula
   head "https://github.com/datacharmer/mysql-sandbox.git"
 
   bottle do
-    sha256 "1ad86e367e36e62fe32b15fc93129f0f8ef5ab43f0e2ab171df22361fc3b48ff" => :yosemite
-    sha256 "3bd2fb88ca6d0aa370396962233e3a925c5f67cd205a1a46279a6a7cdb2c8f87" => :mavericks
-    sha256 "08da8aa5ab71e34f9f87838ff3b5f17c53a021683c569df000d27940890b7d7b" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "fda093673b17f173d861f451f47590abeb140d0add10999e324a6b320722b192" => :el_capitan
+    sha256 "f9676cd687585bef7b34939884e592411581ac0835a601da04188681aa34d031" => :yosemite
+    sha256 "615972d1ddbdff6654f7ba4cd140b0787342604a0313b96dd9817e0b834e5477" => :mavericks
   end
 
   def install
