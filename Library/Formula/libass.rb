@@ -6,10 +6,9 @@ class Libass < Formula
 
   bottle do
     cellar :any
-    sha256 "66953583bba73a4432c773e4a40bf8155e73ba05e14c7d78e07480e99df2ddbf" => :el_capitan
-    sha256 "5790f99bd0c16069163657ab46601c25ccb1e3586326f0914305797fbf49f1a1" => :yosemite
-    sha256 "0e41667064f0c89ccec2f3e01c67bb6e5fd319bb279921a33da4c4a23eb5a541" => :mavericks
-    sha256 "bf8e4ad18cc7c245db6607cd4ccdae7addebd2a267d8473c1da1b6db508c5bbf" => :mountain_lion
+    sha256 "cf1af3bd7ddb8138afe2d404897d48a4c78d5b2518ffef7d8785fcaa09144113" => :el_capitan
+    sha256 "cf0373b3f9d85cd4db27f37ea1cdc34a18033b5f5ce966d391165a1dcffc9e48" => :yosemite
+    sha256 "7303bf3c119bc80d850f8e16ac1212e70224c83df3f8a3c0bf2adb0d378a6e80" => :mavericks
   end
 
   depends_on "pkg-config" => :build
