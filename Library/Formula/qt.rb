@@ -39,6 +39,11 @@ class Qt < Formula
   deprecated_option "qtdbus" => "with-d-bus"
   deprecated_option "developer" => "with-developer"
 
+  resource "test-project" do
+    url "https://gist.github.com/tdsmith/f55e7e69ae174b5b5a03.git",
+        :revision => "6f565390395a0259fa85fdd3a4f1968ebcd1cc7d"
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
@@ -118,7 +123,10 @@ class Qt < Formula
   end
 
   test do
-    system "#{bin}/qmake", "-project"
+    resource("test-project").stage testpath
+    system "qmake"
+    system "make"
+    assert_match /GitHub/, pipe_output(testpath/"qtnetwork-test 2>&1", nil, 0)
   end
 
   def caveats; <<-EOS.undent
