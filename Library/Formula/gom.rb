@@ -4,6 +4,12 @@ class Gom < Formula
   url "https://download.gnome.org/sources/gom/0.3/gom-0.3.1.tar.xz"
   sha256 "7951eb46ee784cbdbee6e3f2da084ffbf776c11ca1c904404b05feafe37e38f5"
 
+  bottle do
+    sha256 "e99534f832cc2723f415daac071d5749aaf0b7922c2e8b4a02d80afb470c944c" => :el_capitan
+    sha256 "8d0529743d173c12105e8c7b48e83539bfaabfc33a06d74a9bf2e25f86ce42ec" => :yosemite
+    sha256 "cc678372f2a0e1f8a876872183532e81b2aa94b3d17a6d85d93b6a8468b942a7" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
 
