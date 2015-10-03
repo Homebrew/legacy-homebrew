@@ -13,9 +13,6 @@ class MysqlSandbox < Formula
   end
 
   def install
-    # Theoretically, we could reinsert a patch here submitted upstream previously
-    # but the check for PERL_LIB remains in place and incompatible with Homebrew.
-    # Using an env and scripting is a solution less likely to break over time.
     # Both variables need to be set. One is compile-time, the other run-time.
     ENV["PERL_LIBDIR"] = libexec/"lib/perl5"
     ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
