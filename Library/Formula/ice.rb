@@ -6,9 +6,9 @@ class Ice < Formula
   version "3.6.1"
 
   bottle do
-    revision 2
-    sha256 "afee4ec276259a24243ce08c848c10c930fecbc3bbd086ca1eec2b9e7863384f" => :yosemite
-    sha256 "0fd42d37aaac81da90b098a6138eac4ade95ddfc6adc5709d0e42f8e91e67c70" => :mavericks
+    sha256 "d6de8a22389eda0100589d1abfe1ed341b3cd2b768a5372adc9035cd2ca3ba21" => :el_capitan
+    sha256 "5becc3d56ac408859947ce7485087370dede96019f0d951960f60a65fd076311" => :yosemite
+    sha256 "65537de34ac6fe8e5691e24c758b1511be8c2a6087acc0df3b8e85ad18a99fcb" => :mavericks
   end
 
   option "with-java", "Build Ice for Java and the IceGrid Admin app"
