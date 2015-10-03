@@ -2,8 +2,8 @@ class Planck < Formula
   desc "A command-line ClojureScript REPL for OS X."
   homepage "http://planck.fikesfarm.com/"
   head "https://github.com/mfikes/planck.git"
-  url "https://github.com/mfikes/planck/archive/1.6.tar.gz"
-  sha256 "e734a5ccbed1b63273c06555cf61acb6f95a3b18433ba0e8ffdeadba176ccbe6"
+  url "https://github.com/mfikes/planck/archive/1.7.tar.gz"
+  sha256 "11f5017519c3a10267465c73ef9da7c1f3c228cebed056b0ce7a8335e141aefc"
 
   bottle do
     cellar :any
@@ -15,7 +15,7 @@ class Planck < Formula
   depends_on "leiningen" => :build
 
   depends_on :xcode => :build
-  depends_on :macos => :mountain_lion
+  depends_on :macos => :lion
 
   def install
     system "./script/build-sandbox"
