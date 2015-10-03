@@ -5,6 +5,7 @@
 class Wine < Formula
   desc "Wine Is Not an Emulator"
   homepage "https://www.winehq.org/"
+  revision 1
 
   stable do
     url "https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2"
@@ -35,6 +36,13 @@ class Wine < Formula
 
     depends_on "samba" => :optional
     depends_on "gnutls"
+
+    # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
+    # https://bugs.winehq.org/show_bug.cgi?id=34166
+    patch do
+      url "https://bugs.winehq.org/attachment.cgi?id=52485"
+      sha256 "59f1831a1b49c1b7a4c6e6af7e3f89f0bc60bec0bead645a615b251d37d232ac"
+    end
   end
 
   head do
