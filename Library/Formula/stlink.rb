@@ -4,6 +4,8 @@ class Stlink < Formula
   url "https://github.com/texane/stlink/archive/1.1.0.tar.gz"
   sha256 "3ac4dfcf1da0da40a1b71a8789ff0f1e7d978ea0222158bebd2de916c550682c"
 
+  head "https://github.com/texane/stlink.git"
+
   bottle do
     cellar :any
     sha256 "915897898e90e285a22526f3a0f34f39e21e089c01bb1b36d462620b50852a59" => :yosemite
