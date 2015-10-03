@@ -5,6 +5,13 @@ class Sickrage < Formula
   sha256 "37e74190b1393c4cd2fafc72581ced6f9188e5c90ad3af9192706e2173e1db6f"
   head "https://github.com/SiCKRAGETV/SickRage.git"
 
+  bottle do
+    cellar :any
+    sha256 "2c6ce172da9c55c3f7baf1b93581c4ead89713346e21a437038dbe1ad35dc1ac" => :el_capitan
+    sha256 "81ef3934e67213f5836beb673da263bd278a22d66750cabe1157bc5b8f49ddf1" => :yosemite
+    sha256 "8d41c66dfcc471a110857c8a33578df9416e12ba93d7f42b519d7df4043af769" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "openssl"
 
