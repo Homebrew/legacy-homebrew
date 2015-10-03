@@ -5,8 +5,6 @@ class Libgraphqlparser < Formula
   sha256 "5064f63024c20cdc2c41970a6e9a5c7b053565db22f5f8dfb946923cb077f9de"
 
   depends_on "cmake" => :build
-  depends_on "bison" => :recommended
-  depends_on "flex" => :recommended
 
   def install
     system "cmake", ".", *std_cmake_args
@@ -16,7 +14,6 @@ class Libgraphqlparser < Formula
   end
 
   test do
-    require "open3"
     require "json"
 
     sample_query = <<-EOS.undent
