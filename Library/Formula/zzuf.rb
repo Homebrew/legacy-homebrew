@@ -14,6 +14,12 @@ class Zzuf < Formula
     # libasan so just disable it https://github.com/samhocevar/zzuf/issues/5
     patch :DATA
   end
+  bottle do
+    sha256 "a713556c18e8b3415bd4b8ee19e501f7764c15a7fc7c907eefeb09afc582ba5b" => :el_capitan
+    sha256 "1a392bd97e6aaf5688d675d45f998d2b49a123c38e0bd4a5bee1f274644fc106" => :yosemite
+    sha256 "a624ccb43655ab0ae5a78721f08a05fb8ffe0d6cecbfae3e07e088cd6a5b8315" => :mavericks
+  end
+
 
   head do
     url "https://github.com/samhocevar/zzuf.git"
