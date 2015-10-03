@@ -1,8 +1,8 @@
 class Libass < Formula
   desc "Subtitle renderer for the ASS/SSA subtitle format"
   homepage "https://github.com/libass/libass"
-  url "https://github.com/libass/libass/releases/download/0.12.3/libass-0.12.3.tar.gz"
-  sha256 "5aa6b02b00de7aa2d795e8afa77def47485fcc68a190f4326b6e4d40aee30560"
+  url "https://github.com/libass/libass/releases/download/0.13.0/libass-0.13.0.tar.gz"
+  sha256 "67692ef2a56e0423d22b142edb072c04949fe88c37be1d19cf22669c44f935f3"
 
   bottle do
     cellar :any
@@ -17,8 +17,7 @@ class Libass < Formula
 
   depends_on "freetype"
   depends_on "fribidi"
-  depends_on "fontconfig"
-  depends_on "harfbuzz" => :optional
+  depends_on "harfbuzz" => :recommended
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
