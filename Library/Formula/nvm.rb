@@ -11,22 +11,26 @@ class Nvm < Formula
   end
 
   def caveats; <<-EOS.undent
-      You should create NVM's working directory if it doesn't exist:
+    Please note that upstream has asked us to make explicit managing
+    nvm via Homebrew is unsupported by them and you should check any
+    problems against the standard nvm install method prior to reporting.
 
-        mkdir ~/.nvm
+    You should create NVM's working directory if it doesn't exist:
 
-      Add the following to #{shell_profile} or your desired shell
-      configuration file:
+      mkdir ~/.nvm
 
-        export NVM_DIR=~/.nvm
-        source $(brew --prefix nvm)/nvm.sh
+    Add the following to #{shell_profile} or your desired shell
+    configuration file:
 
-      You can set $NVM_DIR to any location, but leaving it unchanged from
-      #{prefix} will destroy any nvm-installed Node installations
-      upon upgrade/reinstall.
+      export NVM_DIR=~/.nvm
+      source $(brew --prefix nvm)/nvm.sh
 
-      Type `nvm help` for further information.
-    EOS
+    You can set $NVM_DIR to any location, but leaving it unchanged from
+    #{prefix} will destroy any nvm-installed Node installations
+    upon upgrade/reinstall.
+
+    Type `nvm help` for further information.
+  EOS
   end
 
   test do
