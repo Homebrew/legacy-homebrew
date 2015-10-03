@@ -1,8 +1,8 @@
 class Sysdig < Formula
   desc "System-level exploration and troubleshooting tool"
   homepage "http://www.sysdig.org/"
-  url "https://github.com/draios/sysdig/archive/0.1.102.tar.gz"
-  sha256 "e0bac2262f075ec75cc2c01a002b6d47bb5ee5c80b47925b44152db639093f57"
+  url "https://github.com/draios/sysdig/archive/0.2.0.tar.gz"
+  sha256 "efade09f94f9e98f177149cde080b5436bb8a3da4e1a664699f2780ba22921ea"
 
   bottle do
     sha256 "bd8c033af63831163b2d073bf7f6b8736d81334fa499ca409faba5e468d7fe7e" => :el_capitan
@@ -33,11 +33,11 @@ class Sysdig < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
+
+    (share/"demos").install resource("sample_file").files("sample.scap")
   end
 
   test do
-    (share/"demos").install resource("sample_file").files("sample.scap")
-
     # tests if it can load chisels
     `#{bin}/sysdig -cl`
     assert_equal 0, $?.exitstatus
