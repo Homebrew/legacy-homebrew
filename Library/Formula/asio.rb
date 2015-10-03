@@ -5,6 +5,12 @@ class Asio < Formula
   sha256 "e0d71c40a7b1f6c1334008fb279e7361b32a063e020efd21e40d9d8ff037195e"
   head "https://github.com/chriskohlhoff/asio.git"
 
+  bottle do
+    sha256 "fc6d65ff0bf8fe7c29bd02f2835640ff056346dd6133cceeacd81eec3b9fab75" => :el_capitan
+    sha256 "ae6bda66bc2f4412ec3d1b32ba2b0ce02e238aa1b6219d8a9ccbf45523635800" => :yosemite
+    sha256 "dd3067c8c0dfb9361f3f479686203506fb1d93586bf4ce16e91f782a01f8a371" => :mavericks
+  end
+
   devel do
     url "https://downloads.sourceforge.net/project/asio/asio/1.11.0%20%28Development%29/asio-1.11.0.tar.bz2"
     sha256 "4f7e13260eea67412202638ec111cb5014f44bdebe96103279c60236874daa50"
