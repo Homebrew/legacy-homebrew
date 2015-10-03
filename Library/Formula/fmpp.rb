@@ -14,7 +14,7 @@ class Fmpp < Formula
 
   test do
     (testpath/"input").write '<#assign foo="bar"/>${foo}'
-    system "fmpp", "input", "-o", "output"
+    system bin/"fmpp", "input", "-o", "output"
     assert File.exist? "output"
     assert_equal("bar", File.read("output"))
   end
