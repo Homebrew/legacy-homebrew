@@ -33,11 +33,11 @@ class Sysdig < Formula
       system "cmake", "..", *args
       system "make", "install"
     end
+
+    (share/"demos").install resource("sample_file").files("sample.scap")
   end
 
   test do
-    (share/"demos").install resource("sample_file").files("sample.scap")
-
     # tests if it can load chisels
     `#{bin}/sysdig -cl`
     assert_equal 0, $?.exitstatus
