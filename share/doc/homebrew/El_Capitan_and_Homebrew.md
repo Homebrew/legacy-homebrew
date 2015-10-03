@@ -15,7 +15,7 @@ This is how to fix Homebrew on El Capitan if you see permission issues:
 ## If `/usr/local` exists already:
 
 ```bash
-sudo chown $(whoami):admin /usr/local && sudo chown -R $(whoami):admin /usr/local
+sudo chown -R $(whoami):admin /usr/local
 ```
 
 ## If `/usr/local` does not exist:
@@ -27,7 +27,7 @@ sudo chown $(whoami):admin /usr/local && sudo chown -R $(whoami):admin /usr/loca
 * Open your Terminal application and execute:
 
 ```bash
-  sudo mkdir /usr/local && sudo chflags norestricted /usr/local && sudo chown $(whoami):admin /usr/local && sudo chown -R $(whoami):admin /usr/local
+  sudo mkdir /usr/local && sudo chflags norestricted /usr/local && sudo chown -R $(whoami):admin /usr/local
 ```
 
 * Reboot back into Recovery Mode & access the Terminal again.
