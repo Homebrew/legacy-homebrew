@@ -657,6 +657,7 @@ class Checks
   end
 
   def check_for_bad_curl
+    return unless OS.mac?
     if MacOS.version <= "10.6" && !Formula["curl"].installed? then <<-EOS.undent
       The system curl on 10.6 and below is often incapable of supporting
       modern secure connections & will fail on fetching formulae.
