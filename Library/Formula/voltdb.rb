@@ -2,15 +2,15 @@ class Voltdb < Formula
   desc "Horizontally-scalable, in-memory SQL RDBMS"
   homepage "https://github.com/VoltDB/voltdb"
   head "https://github.com/VoltDB/voltdb.git"
-  url "https://github.com/VoltDB/voltdb/archive/voltdb-3.7.tar.gz"
-  sha256 "c66d838551e7f4689ec0e4314723951a6450d994079d8564b3af16c193036d30"
+  url "https://github.com/VoltDB/voltdb/archive/voltdb-5.6.tar.gz"
+  sha256 "9ea24d8cacdf2e19ba60487f3e9dfefa83c18cb3987571abc44b858ce0db7c3e"
 
   depends_on :ant => :build
 
   def install
     system "ant"
 
-    inreplace Dir["bin/*"] - ["bin/voltadmin"],
+    inreplace Dir["bin/*"] - ["bin/voltadmin","bin/voltdb","bin/rabbitmqloader"],
       /VOLTDB_LIB=\$VOLTDB_HOME\/lib/, "VOLTDB_LIB=$VOLTDB_HOME/lib/voltdb"
 
     (lib/"voltdb").install Dir["lib/*"]
