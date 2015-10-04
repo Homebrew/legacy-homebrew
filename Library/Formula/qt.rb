@@ -124,6 +124,7 @@ class Qt < Formula
   end
 
   test do
+    Encoding.default_external = "UTF-8" unless RUBY_VERSION.start_with? "1."
     resource("test-project").stage testpath
     system "qmake"
     system "make"
