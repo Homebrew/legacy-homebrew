@@ -44,6 +44,6 @@ class Solr < Formula
   end
 
   test do
-    system "solr"
+    system bin/"solr"
   end
 end
