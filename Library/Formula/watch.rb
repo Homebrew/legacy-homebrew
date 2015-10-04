@@ -1,8 +1,11 @@
 class Watch < Formula
   desc "Executes a program periodically, showing output fullscreen"
-  homepage "http://sourceforge.net/projects/procps-ng/"
-  url "http://download.sourceforge.net/project/procps-ng/Production/procps-ng-3.3.10.tar.xz"
-  sha256 "a02e6f98974dfceab79884df902ca3df30b0e9bad6d76aee0fb5dce17f267f04"
+  homepage "https://gitlab.com/procps-ng/procps"
+  url "https://gitlab.com/procps-ng/procps/repository/archive.tar.gz?ref=v3.3.11"
+  version "3.3.11"
+  sha256 "69e421cb07d5dfd38100b4b68714e9cb05d4fe58a7c5145c7b672d1ff08ca58b"
+
+  head "https://gitlab.com/procps-ng/procps.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -12,15 +15,26 @@ class Watch < Formula
     sha1 "a7c559378bc74cd30d00f962e63d6ee5c705aea1" => :mountain_lion
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "gettext" => :build
+  depends_on "pkg-config" => :build
+  depends_on "homebrew/dupes/ncurses" => :optional
+
+
   conflicts_with "visionmedia-watch"
 
   def install
+    inreplace "autogen.sh", /libtool/, "glibtool"
+
+    system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
 
-    # AM_LDFLAGS contains a non-existing library './proc/libprocps.la' that
-    # breaks the linking process. Upstream developers have been informed (see
-    # https://github.com/Homebrew/homebrew/pull/34852/files#r21796727).
-    system "make", "watch", "AM_LDFLAGS="
+    # libtool breaks build if libintl isn't included strictly
+    system "make", "watch", "LDADD=", "LIBS=-lintl"
+
+    bin.mkpath
     bin.install "watch"
     man1.install "watch.1"
   end
