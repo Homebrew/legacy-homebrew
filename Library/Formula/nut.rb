@@ -55,7 +55,7 @@ class Nut < Formula
             "--without-wrap"
            ]
     args << (build.with?("serial") ? "--with-serial" : "--without-serial")
-    args << (build.with?("libusb") ? "--with-usb" : "--without-usb")
+    args << (build.with?("libusb-compat") ? "--with-usb" : "--without-usb")
     args << (build.with?("dev") ? "--with-dev" : "--without-dev")
     args << (build.with?("net-snmp") ? "--with-snmp" : "--without-snmp")
     args << (build.with?("neon") ? "--with-neon" : "--without-neon")
