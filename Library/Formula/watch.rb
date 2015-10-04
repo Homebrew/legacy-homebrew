@@ -22,7 +22,6 @@ class Watch < Formula
   depends_on "pkg-config" => :build
   depends_on "homebrew/dupes/ncurses" => :optional
 
-
   conflicts_with "visionmedia-watch"
 
   def install
