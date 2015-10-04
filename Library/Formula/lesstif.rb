@@ -3,6 +3,7 @@ class Lesstif < Formula
   homepage "http://lesstif.sourceforge.net"
   url "https://downloads.sourceforge.net/project/lesstif/lesstif/0.95.2/lesstif-0.95.2.tar.bz2"
   sha256 "eb4aa38858c29a4a3bcf605cfe7d91ca41f4522d78d770f69721e6e3a4ecf7e3"
+  revision 1
 
   bottle do
     revision 1

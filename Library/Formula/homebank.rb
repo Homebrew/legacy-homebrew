@@ -3,6 +3,7 @@ class Homebank < Formula
   homepage "http://homebank.free.fr"
   url "http://homebank.free.fr/public/homebank-5.0.5.tar.gz"
   sha256 "67c47709517d325fc8d601bb8552e3c8a1ad3b820a2c0a403ed20f00c795903c"
+  revision 1
 
   bottle do
     sha256 "85940b9ae4c53bb2c8e695fe08f37d62c452f787f325b99c001d554d4a386ade" => :el_capitan

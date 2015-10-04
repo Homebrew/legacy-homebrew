@@ -3,6 +3,7 @@ class Evas < Formula
   homepage "https://docs.enlightenment.org/auto/eet/evas_main.html"
   url "https://download.enlightenment.org/releases/evas-1.7.10.tar.gz"
   sha256 "9c6c8679608ab0f2aa78e83f2ac1f9133d5bb615dabd5491bbbd30fcec4fc82b"
+  revision 1
 
   bottle do
     sha1 "2d46e4ae7cbd297b1937c6a0776cc0008f6c35f6" => :yosemite

@@ -3,6 +3,7 @@ class Sile < Formula
   homepage "http://www.sile-typesetter.org/"
   url "https://github.com/simoncozens/sile/releases/download/v0.9.2/sile-0.9.2.tar.bz2"
   sha256 "2223582818df06daa4609cee40a81e8787085ad1795d4b2ce5edbe0663b74e18"
+  revision 1
 
   head do
     url "https://github.com/simoncozens/sile.git"

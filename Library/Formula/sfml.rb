@@ -4,7 +4,7 @@ class Sfml < Formula
   homepage "http://www.sfml-dev.org/"
   url "http://www.sfml-dev.org/files/SFML-2.3-sources.zip"
   sha256 "a1dc8b00958000628c5394bc8438ba1aa5971fbeeef91a2cf3fa3fff443de7c1"
-  revision 1
+  revision 2
 
   head "https://github.com/SFML/SFML.git"
 

@@ -3,7 +3,7 @@ class Logstalgia < Formula
   homepage "https://code.google.com/p/logstalgia/"
   url "https://github.com/acaudwell/Logstalgia/releases/download/logstalgia-1.0.6/logstalgia-1.0.6.tar.gz"
   sha256 "a81b94742cce64b0b2d1b1683f2f7ac6d06456056f353896153b1b8181855f34"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "20b927dd78f1928df830897968d6da6a0daf066130a8ef1c557d24543831595d" => :yosemite

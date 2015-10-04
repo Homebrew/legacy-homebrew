@@ -1,7 +1,7 @@
 class Avidemux < Formula
   desc "Multiformat video editor that cuts, filters, and encodes"
   homepage "http://fixounet.free.fr/avidemux/"
-  revision 1
+  revision 2
 
   stable do
     url "https://downloads.sourceforge.net/avidemux/avidemux_2.6.8.tar.gz"

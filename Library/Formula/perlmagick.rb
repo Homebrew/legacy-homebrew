@@ -3,7 +3,7 @@ class Perlmagick < Formula
   homepage "http://www.imagemagick.org/script/perl-magick.php"
   url "http://www.imagemagick.org/download/perl/PerlMagick-6.89.tar.gz"
   sha256 "c8f81869a4f007be63e67fddf724b23256f6209f16aa95e14d0eaef283772a59"
-  revision 1
+  revision 2
 
   bottle do
     sha1 "ce1cf658507f5269ea3167a9d6f83ff4e38b9749" => :mavericks

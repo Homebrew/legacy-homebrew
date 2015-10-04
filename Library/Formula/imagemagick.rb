@@ -4,6 +4,7 @@ class Imagemagick < Formula
   url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-3.tar.xz"
   mirror "http://ftp.nluug.nl/ImageMagick/ImageMagick-6.9.2-3.tar.xz"
   sha256 "e251574136e4a82128b3860b97c72b289df0a2030ce72900c91b67685a3298e4"
+  revision 1
 
   head "http://git.imagemagick.org/repos/ImageMagick.git"
 

@@ -9,6 +9,8 @@ class Ghostscript < Formula
     patch :DATA # Uncomment OS X-specific make vars
   end
 
+  revision 1
+
   bottle do
     sha256 "3939157eb2567f35ee11a3e0bdc5f36658788c25f9e846b1c674b28603a40d4b" => :el_capitan
     sha256 "5bc3b9c563a5f1b35dff4089c426baeb913ec32c2d76f913e214b1a138ec97e4" => :yosemite
