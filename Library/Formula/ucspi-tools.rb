@@ -36,6 +36,12 @@ class UcspiTools < Formula
     depends_on "libressl"
   end
 
+  head do
+    url "https://github.com/younix/ucspi.git"
+
+    depends_on "libressl"
+  end
+
   depends_on "pkg-config" => :build
   depends_on "ucspi-tcp"
 
