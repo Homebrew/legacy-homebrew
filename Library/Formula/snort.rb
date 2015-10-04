@@ -1,8 +1,8 @@
 class Snort < Formula
   desc "Flexible Network Intrusion Detection System"
   homepage "https://www.snort.org"
-  url "https://www.snort.org/downloads/snort/snort-2.9.7.3.tar.gz"
-  sha256 "8cc3613b888fc54947a2beec773c76d9a20368f2659b31d45a9f0b11e66cc229"
+  url "https://www.snort.org/downloads/snort/snort-2.9.7.6.tar.gz"
+  sha256 "842e8575e26d919a9e74b9ad0c10d1098f7b5ff2189a8422eb51a9a5b6ebbf63"
 
   bottle do
     cellar :any
@@ -11,16 +11,16 @@ class Snort < Formula
     sha256 "2b4871dcf9ac94c842458fcf190ee35390ecc49be2c077cce1c074b3ebc306fb" => :mountain_lion
   end
 
+  option "with-debug", "Compile Snort with debug options enabled"
+
+  deprecated_option "enable-debug" => "with-debug"
+
   depends_on "pkg-config" => :build
   depends_on "luajit"
   depends_on "daq"
   depends_on "libdnet"
   depends_on "pcre"
   depends_on "openssl"
-
-  option "with-debug", "Compile Snort with debug options enabled"
-
-  deprecated_option "enable-debug" => "with-debug"
 
   def install
     openssl = Formula["openssl"]
@@ -54,7 +54,7 @@ class Snort < Formula
     system "make", "install"
 
     rm Dir[buildpath/"etc/Makefile*"]
-    (etc+"snort").install Dir[buildpath/"etc/*"]
+    (etc/"snort").install Dir[buildpath/"etc/*"]
   end
 
   def caveats; <<-EOS.undent
