@@ -1,8 +1,8 @@
 class Gtkx3 < Formula
   desc "Toolkit for creating graphical user interfaces"
   homepage "http://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/3.18/gtk+-3.18.0.tar.xz"
-  sha256 "7fb8ae257403317d3852bad28d064d35f67e978b1fed8b71d5997e87204271b9"
+  url "https://download.gnome.org/sources/gtk+/3.18/gtk+-3.18.1.tar.xz"
+  sha256 "bd279cbb19f3fda074c89cf0edf9e7d95eee8b889b6889d16c2f7f0f6bdeba92"
 
   bottle do
     sha256 "c5830114ed1037b5ea020ef964409c48aa6129cfeb7188616c947a76c0ceefbb" => :el_capitan
@@ -23,12 +23,6 @@ class Gtkx3 < Formula
   depends_on "pango"
   depends_on "glib"
   depends_on "hicolor-icon-theme"
-
-  # filed upstream in https://bugzilla.gnome.org/show_bug.cgi?id=755401
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/patches/1206484dc/gtk%2B3/gtkx3_notify.diff"
-    sha256 "d18242f80d68fd04cf2264bec3a95ec5d698e65767ee82b4a3430c03bdfd836c"
-  end
 
   def install
     ENV.universal_binary if build.universal?
