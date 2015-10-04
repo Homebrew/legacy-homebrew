@@ -28,6 +28,6 @@ class Stlink < Formula
   end
 
   test do
-    system "st-util", "-h"
+    system bin/"st-util", "-h"
   end
 end
