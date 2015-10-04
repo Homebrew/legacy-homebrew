@@ -4,6 +4,13 @@ class Libgraphqlparser < Formula
   url "https://github.com/graphql/libgraphqlparser/archive/v0.2.0.tar.gz"
   sha256 "5064f63024c20cdc2c41970a6e9a5c7b053565db22f5f8dfb946923cb077f9de"
 
+  bottle do
+    cellar :any
+    sha256 "a3159b88fa2731edc6e8b36f903f999717fcc0eae25cd943166d4ca8818cd82f" => :el_capitan
+    sha256 "bcd9fa1158621ff40007ab047acd90cd20f60827c7f584b1e1d81065ae1a9efc" => :yosemite
+    sha256 "9d39dfd27728ff7904dc09a02c854bc4c85f43a34c9e6a9d17506df2e883cd66" => :mavericks
+  end
+
   depends_on "cmake" => :build
 
   def install
