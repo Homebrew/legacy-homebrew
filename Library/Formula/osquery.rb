@@ -5,6 +5,7 @@ class Osquery < Formula
   url "https://github.com/facebook/osquery.git",
       :tag => "1.5.3",
       :revision => "2a71162b0cfb040a3606538857f512ea8894b9e7"
+  revision 1
 
   bottle do
     sha256 "c913585251111789e84a6051edc728f909989ae0bb2396760d043acfc5a42f28" => :el_capitan
