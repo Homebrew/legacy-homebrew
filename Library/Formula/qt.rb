@@ -10,10 +10,9 @@ class Qt < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "70379b1c0bbf570c97d20260352e8088aeddfb52132d8a57a5cb940a71614722" => :el_capitan
-    sha256 "698853771b7162e1d9ee5d5ec5c36007e781a0216f080a38554a456cf8dff96b" => :yosemite
-    sha256 "1c4e36d66889177779e013862c1e7fff484d7f1a0451d4d7746e5127fc144efc" => :mavericks
+    sha256 "48e2e4d7f4659409c74e6acb9b59fdf9ab5d8e4b7f9b438a73e3d0ca03635e93" => :el_capitan
+    sha256 "8e041b0a48c8a0785022c8a77e8c40efeb9d57cd701b635cc0a7ce46692c0c5f" => :yosemite
+    sha256 "fe687f9a9b657d33b7c11ad4ccd7208deddd8e96d2104df2df98de13b0c5d5d7" => :mavericks
   end
 
   # Backport of Qt5 commit to fix the fatal build error on OS X El Capitan.
