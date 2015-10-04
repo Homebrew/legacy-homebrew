@@ -1,8 +1,8 @@
 class Cookiecutter < Formula
   desc "Utility that creates projects from templates"
   homepage "https://github.com/audreyr/cookiecutter"
-  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-1.0.0.tar.gz"
-  sha256 "ebe8bc662dce0a26effc2a0fb344e5006832aef4cedb9c6a950a1e0e3f3f41fb"
+  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-1.1.0.tar.gz"
+  sha256 "8a503098ae97825b51499b973849daecc34d4a2223a30b73bed0b7543a9f63dc"
   head "https://github.com/audreyr/cookiecutter.git"
 
   bottle do
