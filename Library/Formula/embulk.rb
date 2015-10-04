@@ -5,10 +5,10 @@ class Embulk < Formula
   sha256 "9ddfdd8e32f92e2c1ed3115be110edf5cafcc535c343c256abfd72a2c88ab310"
 
   bottle do
-    cellar :any
-    sha256 "46efb139c4365e9dbeeb861393b51656fac30d75fab4695a9c52f61f0bed212c" => :yosemite
-    sha256 "09b54755a268b755869b6217785dede4d5a88a2ad2ce03560c9fe47b92e758e9" => :mavericks
-    sha256 "39e1dbf2a4911c44af8e661fd034dba3455e17ccdbc940c2452719c9b95f5ba8" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5afbaac71962edc119c7ca6a5e1cfabf449171b79cd9b11604b4c83e9f348c9b" => :el_capitan
+    sha256 "c66de40c2ab32dd382f7ee2977b797057942e16b87687b4339aa887b5d73b400" => :yosemite
+    sha256 "a690038d489061b42c381d081ce1376da3e41f381926feb3628d7b0deecfd233" => :mavericks
   end
 
   depends_on :java
