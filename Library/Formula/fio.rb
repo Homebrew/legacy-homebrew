@@ -6,10 +6,10 @@ class Fio < Formula
   head "git://git.kernel.dk/fio.git"
 
   bottle do
-    cellar :any
-    sha256 "afacb2020505d8b1476c2822c13cd9793662c7c88ce445e2a735d4fbb2cd1cc0" => :yosemite
-    sha256 "bab17199f99db3192d81d05adc61c35f39098b343bd4876434beb0125b44652b" => :mavericks
-    sha256 "6614227f2226a9989de3441ca3be6dc061cbaad3cdabd72e68e9329f061b0e04" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "6448ccce823cf08fdde3faec01d13ec9d887728c12715bd53e229e2a4d4e095e" => :el_capitan
+    sha256 "2ce16b27e45a0816402e3e255327e900c85f5b1004ab5927903cef9a20de1186" => :yosemite
+    sha256 "6e59bf79cec9bb83b2a8cf2587a4da94bfde9ab10596f3f08143049ae6a2c094" => :mavericks
   end
 
   def install
