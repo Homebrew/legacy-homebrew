@@ -19,6 +19,7 @@ class AndroidSdk < Formula
 
   resource "completion" do
     url "https://android.googlesource.com/platform/sdk/+/7859e2e738542baf96c15e6c8b50bbdb410131b0/bash_completion/adb.bash?format=TEXT"
+    mirror "https://raw.githubusercontent.com/Homebrew/patches/c3b801f/android-sdk/adb.bash"
     sha256 "44b3e20ed9cb8fff01dc6907a57bd8648cd0d1bcc7b129ec952a190983ab5e1a"
   end
 
