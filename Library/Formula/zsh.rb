@@ -11,6 +11,11 @@ class Zsh < Formula
     sha256 "932fe97487753363d3ddd683918210367ec29104e700001bbf5cd18c2f4d59fa" => :mavericks
   end
 
+  head do
+    url "git://git.code.sf.net/p/zsh/code"
+    depends_on "autoconf" => :build
+  end
+
   option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
 
   deprecated_option "disable-etcdir" => "without-etcdir"
@@ -19,6 +24,8 @@ class Zsh < Formula
   depends_on "pcre"
 
   def install
+    system "Util/preconfig" if build.head?
+
     args = %W[
       --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
@@ -46,8 +53,14 @@ class Zsh < Formula
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
-    system "make", "install"
-    system "make", "install.info"
+    if build.head?
+      # disable target install.man, because the required yodl comes neither with OS X nor Homebrew
+      # also disable install.runhelp and install.info because they would also fail or have no effect
+      system "make", "install.bin", "install.modules", "install.fns"
+    else
+      system "make", "install"
+      system "make", "install.info"
+    end
   end
 
   def caveats; <<-EOS.undent
