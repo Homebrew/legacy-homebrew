@@ -1,13 +1,14 @@
-require "formula"
-
 class Calc < Formula
+  desc "Arbitrary precision calculator"
   homepage "http://www.isthe.com/chongo/tech/comp/calc/"
-  url "http://www.isthe.com/chongo/src/calc/calc-2.12.4.8.tar.bz2"
-  sha1 "c92740e891b88561e8884bfa2238a7591be914ae"
+  url "http://www.isthe.com/chongo/src/calc/calc-2.12.5.0.tar.bz2"
+  sha256 "a0e7b47af38330f188970998c8e5039134dadf6f2e3f2c00d7efdae272a4338d"
 
-  devel do
-    url "http://www.isthe.com/chongo/src/calc/calc-2.12.4.13.tar.bz2"
-    sha1 "4d48fb78c903f10e9bcd05c42105498637dea834"
+  bottle do
+    sha256 "f68eb0e031534c68f3fb1c2c1d53a90c343f281b81f998cf4bfc9745a0b8d306" => :el_capitan
+    sha1 "9d99ec472782f23cd5cd05a215cb3b8418b28032" => :yosemite
+    sha1 "23393e359956ed3b1c2717de019e5c803702273c" => :mavericks
+    sha1 "2eefd32770ca966b3c604f795af45a9717d15a13" => :mountain_lion
   end
 
   depends_on "readline"
@@ -29,12 +30,6 @@ class Calc < Formula
       s.change_make_var! "USE_READLINE", "-DUSE_READLINE"
       s.change_make_var! "READLINE_LIB", "-L#{readline.lib} -lreadline"
       s.change_make_var! "READLINE_EXTRAS", "-lhistory -lncurses"
-      s.change_make_var! "LIBCALC_SHLIB",
-        "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcalc${LIB_EXT_VERSION}"
-      s.change_make_var! "LIBCUSTCALC_SHLIB",
-        "-single_module -undefined dynamic_lookup -dynamiclib -install_name ${LIBDIR}/libcustcalc${LIB_EXT_VERSION}"
-      s.change_make_var! "LCC", "MACOSX_DEPLOYMENT_TARGET=${MACOSX_DEPLOYMENT_TARGET} #{ENV.cc}"
-      s.change_make_var! "MACOSX_DEPLOYMENT_TARGET", MacOS.version
     end
 
     system "make"

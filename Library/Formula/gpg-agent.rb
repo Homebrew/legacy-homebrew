@@ -1,15 +1,16 @@
-require "formula"
-
 class GpgAgent < Formula
+  desc "GPG key agent"
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.26.tar.bz2"
-  sha1 "3ff5b38152c919724fd09cf2f17df704272ba192"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  mirror "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  sha256 "68ed6b386ba78425b05a60e8ee22785ff0fef190bdc6f1c612f19a58819d4ac9"
 
   bottle do
-    sha1 "e2519e73af7277fbc0946227208ae7f75f7292ed" => :mavericks
-    sha1 "59b3713d207a9e699be2f201f7d3b53fbe77f1d1" => :mountain_lion
-    sha1 "487da82c42d2ceb4bbcd5cde4101f8a86a37886c" => :lion
+    sha256 "9bebbc754c440be3ac5eada58600a2843d7922aed2a3c68a3329b5a94fbf6871" => :el_capitan
+    sha256 "adf4ef470b329e18679ebd06efdb918b9e0220c7f5ab53937b476b48e11b37cd" => :yosemite
+    sha256 "e9ada5047c3138066c28722dc281ea525bc78c3b368adf719541862c27192026" => :mavericks
+    sha256 "65647148cf2989c7869f13d91f07441549e38cb4c13187df14134ce2fdbaf7b4" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -32,7 +33,17 @@ class GpgAgent < Formula
                           "--enable-agent-only",
                           "--with-pinentry-pgm=#{Formula["pinentry"].opt_bin}/pinentry",
                           "--with-scdaemon-pgm=#{Formula["gnupg2"].opt_libexec}/scdaemon"
-    system "make install"
+    system "make", "install"
+  end
+
+  def caveats; <<-EOS.undent
+      Remember to add "use-standard-socket" to your ~/.gnupg/gpg-agent.conf
+      file.
+    EOS
+  end
+
+  test do
+    system "#{bin}/gpg-agent", "--help"
   end
 end
 
@@ -43,12 +54,12 @@ index c022805..96ea7ed 100755
 +++ b/configure
 @@ -578,8 +578,8 @@ MFLAGS=
  MAKEFLAGS=
- 
+
  # Identity of this package.
 -PACKAGE_NAME='gnupg'
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.26'
- PACKAGE_STRING='gnupg 2.0.26'
+ PACKAGE_VERSION='2.0.29'
+ PACKAGE_STRING='gnupg 2.0.29'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

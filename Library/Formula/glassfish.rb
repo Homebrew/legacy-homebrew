@@ -1,17 +1,14 @@
-require 'formula'
+require "formula"
 
 class Glassfish < Formula
-  homepage 'https://glassfish.java.net'
-  url 'http://download.java.net/glassfish/4.0/release/glassfish-4.0.zip'
-  sha1 'daca9808d80df35b26cd9545a84e8324ed34fe7e'
-
-  # To keep empty folders around
-  skip_clean 'libexec'
+  desc "Java EE application server"
+  homepage "https://glassfish.java.net"
+  url "http://download.java.net/glassfish/4.1/release/glassfish-4.1.zip"
+  sha256 "3edc5fc72b8be241a53eae83c22f274479d70e15bdfba7ba2302da5260f23e9d"
 
   def install
-    rm_rf Dir['bin/*.bat']
-    libexec.install Dir["*"]
-    libexec.install Dir[".org.opensolaris,pkg"]
+    rm_rf Dir["bin/*.bat"]
+    libexec.install Dir["*", ".org.opensolaris,pkg"]
   end
 
   def caveats; <<-EOS.undent

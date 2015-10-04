@@ -1,20 +1,21 @@
-require 'formula'
-
 class Libsamplerate < Formula
-  homepage 'http://www.mega-nerd.com/SRC'
-  url 'http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz'
-  sha1 'e5fe82c4786be2fa33ca6bd4897db4868347fe70'
+  desc "Library for sample rate conversion of audio data"
+  homepage "http://www.mega-nerd.com/SRC"
+  url "http://www.mega-nerd.com/SRC/libsamplerate-0.1.8.tar.gz"
+  sha256 "93b54bdf46d5e6d2354b7034395fe329c222a966790de34520702bb9642f1c06"
 
   bottle do
     cellar :any
-    sha1 "d235c9d703076fc7021d7663a09ca2ffa496a190" => :mavericks
-    sha1 "3a59f5ae0cbcfdd5501d98e7bd418b3564cd46c3" => :mountain_lion
-    sha1 "a25e2123024d74546dce54994b1adf3e81ec6dd3" => :lion
+    revision 1
+    sha256 "d44b893117eb6f1f2e02c862997eb96f2f5855846370152bd56aab88fa8bea81" => :el_capitan
+    sha1 "7bdee60fa49e368546369cafdbff37a772970492" => :yosemite
+    sha1 "a60d3e18f126fe69826cd8e4ab9944574e1ac9b6" => :mavericks
+    sha1 "64fd25bc4134aa6f3d3d463892c662e0e73bc333" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libsndfile' => :optional
-  depends_on 'fftw' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "libsndfile" => :optional
+  depends_on "fftw" => :optional
 
   # configure adds `/Developer/Headers/FlatCarbon` to the include, but this is
   # very deprecated. Correct the use of Carbon.h to the non-flat location.
@@ -24,7 +25,7 @@ class Libsamplerate < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

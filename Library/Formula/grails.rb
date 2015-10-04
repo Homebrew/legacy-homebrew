@@ -1,14 +1,13 @@
-require 'formula'
-
 class Grails < Formula
-  homepage 'http://grails.org'
-  url 'http://dist.springframework.org.s3.amazonaws.com/release/GRAILS/grails-2.4.3.zip'
-  sha1 '729cc9f2493960c3a644f29208d3b8a8f31275be'
+  desc "Web application framework for the Groovy language"
+  homepage "https://grails.org"
+  url "https://github.com/grails/grails-core/releases/download/v3.0.7/grails-3.0.7.zip"
+  sha256 "d99b11e4a8fb1f5a155f1784f482316df96e63d094d5d083a62bc37905380800"
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 
@@ -16,5 +15,10 @@ class Grails < Formula
     The GRAILS_HOME directory is:
       #{opt_libexec}
     EOS
+  end
+
+  test do
+    output = shell_output("#{bin}/grails --version")
+    assert_match /Grails Version: #{version}/, output
   end
 end

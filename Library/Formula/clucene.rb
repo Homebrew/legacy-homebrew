@@ -1,57 +1,38 @@
-require 'formula'
-
 class Clucene < Formula
-  homepage 'http://clucene.sourceforge.net'
-
-  stable do
-    url "https://downloads.sourceforge.net/project/clucene/clucene-core-stable/0.9.21b/clucene-core-0.9.21b.tar.bz2"
-    sha1 "8bc505b64f82723c2dc901036cb0607500870973"
-
-    # Fix libpthread dependencies in OS X 10.9 & 10.10
-    # Based on MacPorts patches: http://trac.macports.org/ticket/40899
-    # Reported upstream: http://sourceforge.net/p/clucene/bugs/219/
-    if MacOS.version >= :mavericks
-      patch :p0 do
-        url "https://gist.githubusercontent.com/tlvince/7934499/raw/d0859996dbda8f4cf643d091ae6b491f0a64da59/CLucene-LuceneThreads.h.diff"
-        sha1 "59e672e70d053d79d5b19c422945299ba66f2562"
-      end
-
-      patch :p0 do
-        url "https://gist.githubusercontent.com/tlvince/7935339/raw/fd78b1ada278eaf1904e1437efa0f2a1265041a9/CLucene-config-repl_tchar.h.diff"
-        sha1 "e6aee206577fc3b751652db6774d32e923b50b0b"
-      end
-    end
-  end
+  desc "C++ port of Lucene: high-performance, full-featured text search engine"
+  homepage "http://clucene.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/clucene/clucene-core-unstable/2.3/clucene-core-2.3.3.4.tar.gz"
+  sha256 "ddfdc433dd8ad31b5c5819cc4404a8d2127472a3b720d3e744e8c51d79732eab"
+  head "git://clucene.git.sourceforge.net/gitroot/clucene/clucene"
 
   bottle do
     cellar :any
-    sha1 "841fa0c1c9db0878423f658e59d90a98b290a24c" => :mavericks
-    sha1 "96833aa75e8730eff1b0bb5fe4ca04c77642be4c" => :mountain_lion
-    sha1 "88786dc87fca239143277d634d9c0c979cd10f18" => :lion
+    revision 1
+    sha256 "182db4f73e058e9d28b77cbbd642c40ecc403fbf1d9dc8357387b2c54dba8d1e" => :yosemite
+    sha256 "f85cdb67e53bc6eb380ae1bd8e087b42faca7c65f665f9719209adfa8aaa7b31" => :mavericks
+    sha256 "97f955d2b9fa3ab41f65d9871f82a357cad400237cbaf553d585bae62207d51f" => :mountain_lion
   end
 
-  head do
-    url "git://clucene.git.sourceforge.net/gitroot/clucene/clucene"
+  depends_on "cmake" => :build
 
-    depends_on "cmake" => :build
+  # Portability fixes for 10.9+
+  # Upstream ticket: http://sourceforge.net/p/clucene/bugs/219/
+  patch do
+    url "https://raw.githubusercontent.com/DomT4/scripts/46d9672f7/Homebrew_Resources/MacPorts_Import/clucene/r126047/patch-src-shared-CLucene-LuceneThreads.h.diff"
+    mirror "https://trac.macports.org/export/126047/trunk/dports/devel/clucene/files/patch-src-shared-CLucene-LuceneThreads.h.diff"
+    sha256 "42cb23fa6bd66ca8ea1d83a57a650f71e0ad3d827f5d74837b70f7f72b03b490"
+  end
 
-    patch do
-      url "https://gist.githubusercontent.com/lfranchi/7954811/raw/828176c01a8f2c1c11eff43bf6773242955dabab/CLucene-HEAD-mavericks.patch"
-      sha1 "43f89924e85f9df50bf32032f05de153237162f3"
-    end if MacOS.version == :mavericks
+  patch do
+    url "https://raw.githubusercontent.com/DomT4/scripts/46d9672f7/Homebrew_Resources/MacPorts_Import/clucene/r126047/patch-src-shared-CLucene-config-repl_tchar.h.diff"
+    mirror "https://trac.macports.org/export/126047/trunk/dports/devel/clucene/files/patch-src-shared-CLucene-config-repl_tchar.h.diff"
+    sha256 "b7dc735f431df409aac63dcfda9737726999eed4fdae494e9cbc1d3309e196ad"
   end
 
   def install
-    if build.head?
-      system "cmake", ".", *std_cmake_args
-    else
-      system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                            "--prefix=#{prefix}"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "install"
     end
-
-    # Serialize the install step. See:
-    # https://github.com/Homebrew/homebrew/issues/8712
-    ENV.j1
-    system "make install"
   end
 end

@@ -1,35 +1,30 @@
-require 'formula'
-
 class Libgphoto2 < Formula
-  homepage 'http://www.gphoto.org/proj/libgphoto2/'
-  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.5/libgphoto2-2.5.5.tar.bz2"
-  sha1 "9660c1ac44584badbf83511feeb808fb4519adc2"
+  desc "Gphoto2 digital camera library"
+  homepage "http://www.gphoto.org/proj/libgphoto2/"
+  # Sourceforge URL is still down
+  url "https://fossies.org/linux/privat/libgphoto2-2.5.8.tar.bz2"
+  sha256 "031a262e342fae43f724afe66787947ce1fb483277dfe5a8cf1fbe92c58e27b6"
 
   bottle do
-    sha1 "45c15442854953c835979399360e112146f58a8a" => :mavericks
-    sha1 "00b4ebc61eb6737db77dc129031cd17ea73ef6f7" => :mountain_lion
-    sha1 "9b1526c2b00a0f33fe07354bd47142b4caa614ac" => :lion
+    sha256 "e2ab27a5a1f46f154507acf0ef0ad7f40b2e9cb09a8bc382839ac500dd7fdf2b" => :el_capitan
+    sha256 "c5849c3b1611cd54458134d5ae8d94b1e2faf6c5de8ccbfa446664025678514f" => :yosemite
+    sha256 "425d858334ca59eb8219b01017f799954001d86af107c5a7f48480a098ada324" => :mavericks
+    sha256 "292b0ae9dfd78befb17b3d54e358cbca0d0f994f6819f888b95aa28dde407d8b" => :mountain_lion
   end
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libtool' => :run
-  depends_on 'libusb-compat'
-  depends_on 'gd'
-  depends_on 'libexif' => :optional
-
-  # Fixes build issues when using clang (bug #987).
-  #  * http://sourceforge.net/p/gphoto/bugs/987/
-  patch :p0 do
-    url "http://sourceforge.net/p/gphoto/bugs/_discuss/thread/e52254c4/a5b3/attachment/xx.pat"
-    sha1 "da1cd2e0fcc49a0fe374739ee15b448e9c04428c"
-  end
+  depends_on "pkg-config" => :build
+  depends_on "libtool" => :run
+  depends_on "libusb-compat"
+  depends_on "gd"
+  depends_on "libexif" => :optional
 
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "CFLAGS=-D_DARWIN_C_SOURCE"
-    system "make install"
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
+    system "make", "install"
   end
 end

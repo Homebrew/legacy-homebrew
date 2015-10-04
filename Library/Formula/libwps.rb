@@ -1,21 +1,20 @@
-require "formula"
-
 class Libwps < Formula
-  homepage 'http://libwps.sourceforge.net'
-  url 'http://dev-www.libreoffice.org/src/libwps-0.3.0.tar.bz2'
-  sha1 '526323bd59b5f59f8533882fb455e5886bf1f6dc'
+  desc "Library to import files in MS Works format"
+  homepage "http://libwps.sourceforge.net"
+  url "http://dev-www.libreoffice.org/src/libwps-0.3.0.tar.bz2"
+  sha256 "243d1dfc9bb53ac9d05405379a119e9b7d999714de3a3d56f4d3c505cedad43a"
 
   bottle do
     cellar :any
-    sha1 "8c76c7efb60f8c268f7d6e7b8a1428fdcf2e9fc4" => :mavericks
-    sha1 "699410ea39b599ba65faf6741e6e8a9636dc58e3" => :mountain_lion
-    sha1 "2dcfb58aee6a117f78aae21596b683abda9d399d" => :lion
+    revision 1
+    sha1 "6da56fae08558950c9134a762f6e7491fabbb7b8" => :yosemite
+    sha1 "a1785cc9c07420d3e88a7000e7b42bb96091baea" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'boost' => :build
-  depends_on 'libwpd'
-  depends_on 'librevenge'
+  depends_on "pkg-config" => :build
+  depends_on "boost" => :build
+  depends_on "libwpd"
+  depends_on "librevenge"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",

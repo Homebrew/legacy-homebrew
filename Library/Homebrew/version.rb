@@ -17,15 +17,21 @@ class Version
     def to_s
       value.to_s
     end
+
+    def numeric?
+      false
+    end
   end
 
   class NullToken < Token
-    def initialize(value=nil)
+    def initialize(value = nil)
       super
     end
 
     def <=>(other)
       case other
+      when NullToken
+        0
       when NumericToken
         other.value == 0 ? 0 : -1
       when AlphaToken, BetaToken, RCToken
@@ -76,11 +82,15 @@ class Version
         -Integer(other <=> self)
       end
     end
+
+    def numeric?
+      true
+    end
   end
 
   class CompositeToken < StringToken
     def rev
-      value[/([0-9]+)/, 1] || "0"
+      value[/[0-9]+/].to_i
     end
   end
 
@@ -155,74 +165,97 @@ class Version
     StringToken::PATTERN
   )
 
-  def self.detect(url, specs={})
-    if specs.has_key?(:tag)
-      new(specs[:tag][/((?:\d+\.)*\d+)/, 1], true)
-    else
-      parse(url)
+  class FromURL < Version
+    def detected_from_url?
+      true
     end
   end
 
-  def initialize(val, detected=false)
+  def self.detect(url, specs)
+    if specs.key?(:tag)
+      FromURL.new(specs[:tag][/((?:\d+\.)*\d+)/, 1])
+    else
+      FromURL.parse(url)
+    end
+  end
+
+  def initialize(val)
     if val.respond_to?(:to_str)
       @version = val.to_str
     else
       raise TypeError, "Version value must be a string"
     end
-
-    @detected_from_url = detected
   end
 
   def detected_from_url?
-    @detected_from_url
+    false
   end
 
   def head?
-    @version == 'HEAD'
+    version == "HEAD"
   end
 
   def <=>(other)
     return unless Version === other
-    return 0 if head? && other.head?
+    return 0 if version == other.version
     return 1 if head? && !other.head?
     return -1 if !head? && other.head?
 
-    max = [tokens.length, other.tokens.length].max
-    pad_to(max) <=> other.pad_to(max)
+    ltokens = tokens
+    rtokens = other.tokens
+    max = max(ltokens.length, rtokens.length)
+    l = r = 0
+
+    while l < max
+      a = ltokens[l] || NULL_TOKEN
+      b = rtokens[r] || NULL_TOKEN
+
+      if a == b
+        l += 1
+        r += 1
+        next
+      elsif a.numeric? && b.numeric?
+        return a <=> b
+      elsif a.numeric?
+        return 1 if a > NULL_TOKEN
+        l += 1
+      elsif b.numeric?
+        return -1 if b > NULL_TOKEN
+        r += 1
+      else
+        return a <=> b
+      end
+    end
+
+    0
   end
   alias_method :eql?, :==
 
   def hash
-    @version.hash
+    version.hash
   end
 
   def to_s
-    @version.dup
+    version.dup
   end
   alias_method :to_str, :to_s
 
   protected
 
-  def begins_with_numeric?
-    NumericToken === tokens.first
-  end
-
-  def pad_to(length)
-    if begins_with_numeric?
-      nums, rest = tokens.partition { |t| NumericToken === t }
-      nums.fill(NULL_TOKEN, nums.length, length - tokens.length)
-      nums.concat(rest)
-    else
-      tokens.dup.fill(NULL_TOKEN, tokens.length, length - tokens.length)
-    end
-  end
+  attr_reader :version
 
   def tokens
     @tokens ||= tokenize
   end
 
+  private
+
+  def max(a, b)
+    a > b ? a : b
+  end
+
   def tokenize
-    @version.scan(SCAN_PATTERN).map! do |token|
+    version.scan(SCAN_PATTERN).map! do |token|
       case token
       when /\A#{AlphaToken::PATTERN}\z/o   then AlphaToken
       when /\A#{BetaToken::PATTERN}\z/o    then BetaToken
@@ -234,19 +267,19 @@ class Version
     end
   end
 
-  def self.parse spec
+  def self.parse(spec)
     version = _parse(spec)
-    Version.new(version, true) unless version.nil?
+    new(version) unless version.nil?
   end
 
-  def self._parse spec
+  def self._parse(spec)
     spec = Pathname.new(spec) unless spec.is_a? Pathname
 
     spec_s = spec.to_s
 
     stem = if spec.directory?
       spec.basename.to_s
-    elsif %r[((?:sourceforge.net|sf.net)/.*)/download$].match(spec_s)
+    elsif %r{((?:sourceforge.net|sf.net)/.*)/download$}.match(spec_s)
       Pathname.new(spec.dirname).stem
     else
       spec.stem
@@ -257,7 +290,7 @@ class Version
     # e.g. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
     # e.g. https://github.com/isaacs/npm/tarball/v0.2.5-1
     # e.g. https://github.com/petdance/ack/tarball/1.93_02
-    m = %r[github.com/.+/(?:zip|tar)ball/(?:v|\w+-)?((?:\d+[-._])+\d*)$].match(spec_s)
+    m = %r{github.com/.+/(?:zip|tar)ball/(?:v|\w+-)?((?:\d+[-._])+\d*)$}.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
@@ -266,11 +299,12 @@ class Version
 
     # e.g. boost_1_39_0
     m = /((?:\d+_)+\d+)$/.match(stem)
-    return m.captures.first.gsub('_', '.') unless m.nil?
+    return m.captures.first.tr("_", ".") unless m.nil?
 
     # e.g. foobar-4.5.1-1
+    # e.g. unrtf_0.20.4-1
     # e.g. ruby-1.9.1-p243
-    m = /-((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
+    m = /[-_]((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. lame-398-1
@@ -289,6 +323,19 @@ class Version
     m = /-((?:\d+\.)*\d+-beta\d*)$/.match(stem)
     return m.captures.first unless m.nil?
 
+    # e.g. http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip
+    # e.g. http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip
+    m = /-(\d+\.\d+(?:\.\d+)?)-w(?:in)?(?:32|64)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # e.g. http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm
+    # e.g. http://ftpmirror.gnu.org/autogen/autogen-5.5.7-5.i386.rpm
+    # e.g. http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x86.zip
+    # e.g. http://ftpmirror.gnu.org/libtasn1/libtasn1-2.8-x64.zip
+    # e.g. http://ftpmirror.gnu.org/mtools/mtools_4.0.18_i386.deb
+    m = /[-_](\d+\.\d+(?:\.\d+)?(?:-\d+)?)[-_.](?:i[36]86|x86|x64(?:[-_](?:32|64))?)$/.match(stem)
+    return m.captures.first unless m.nil?
+
     # e.g. foobar4.5.1
     m = /((?:\d+\.)*\d+)$/.match(stem)
     return m.captures.first unless m.nil?
@@ -301,7 +348,7 @@ class Version
     m = /_((?:\d+\.)+\d+[abc]?)[.]orig$/.match(stem)
     return m.captures.first unless m.nil?
 
-    # e.g. http://www.openssl.org/source/openssl-0.9.8s.tar.gz
+    # e.g. https://www.openssl.org/source/openssl-0.9.8s.tar.gz
     m = /-v?([^-]+)/.match(stem)
     return m.captures.first unless m.nil?
 

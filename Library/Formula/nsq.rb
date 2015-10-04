@@ -1,23 +1,21 @@
-require "formula"
 require "language/go"
 
 class Nsq < Formula
-  homepage "http://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.2.31.tar.gz"
-  sha1 "614e66746c6b785cffb48a6412e44dd5e0c7b0bd"
+  desc "Realtime distributed messaging platform"
+  homepage "http://nsq.io"
+  url "https://github.com/nsqio/nsq/archive/v0.3.6.tar.gz"
+  sha256 "2cf00ddfd63508ab98d052cb36ac7ec5b591abe1896b92d158c04964e2c6cb97"
+
+  head "https://github.com/nsqio/nsq.git"
 
   bottle do
-    sha1 "3aceae6d99df6b3fca37a80d4392ea289cf6d39f" => :mavericks
-    sha1 "177831494751c7c171132209cb7f2f0c8ec0cc46" => :mountain_lion
-    sha1 "14d245c6b2112e5d75ad6d7cf06395ad2447538c" => :lion
+    cellar :any_skip_relocation
+    sha256 "a4c1a6724b3e91d6564b9188b1d099639a26999a36ae71ecb0ca7413703c106c" => :el_capitan
+    sha256 "3fe3404d2439cb43e16d38ecd5ec384ef95f9660bd789a06959b17a8ff077968" => :yosemite
+    sha256 "44452e103eb6e5dce242311497c30c905fe9fbf775bec20880fe7277cef5a288" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "code.google.com/p/snappy-go" do
-    url "https://code.google.com/p/snappy-go/", :using => :hg,
-      :revision => "12e4b4183793ac4b061921e7980845e750679fd0"
-  end
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
@@ -29,9 +27,9 @@ class Nsq < Formula
       :revision => "58b95b10d6ca26723a7f46017b348653b825a8d6"
   end
 
-  go_resource "github.com/bitly/go-nsq" do
-    url "https://github.com/bitly/go-nsq.git",
-      :revision => "ac221df5bdb6d5bfc624a297b5b00b59d7065be2"
+  go_resource "github.com/nsqio/go-nsq" do
+    url "https://github.com/nsqio/go-nsq.git",
+      :revision => "cef6982c1150617a77539847950ca63774f0e48c"
   end
 
   go_resource "github.com/bitly/go-simplejson" do
@@ -46,27 +44,75 @@ class Nsq < Formula
 
   go_resource "github.com/mreiferson/go-options" do
     url "https://github.com/mreiferson/go-options.git",
-      :revision => "896a539cd709f4f39d787562d1583c016ce7517e"
+      :revision => "2cf7eb1fdd83e2bb3375fef6fdadb04c3ad564da"
   end
 
   go_resource "github.com/mreiferson/go-snappystream" do
     url "https://github.com/mreiferson/go-snappystream.git",
-      :revision => "307a466b220aaf34bcee2d19c605ed9e96b4bcdb"
+      :revision => "028eae7ab5c4c9e2d1cb4c4ca1e53259bbe7e504"
+  end
+
+  go_resource "github.com/bitly/timer_metrics" do
+    url "https://github.com/bitly/timer_metrics.git",
+      :revision => "afad1794bb13e2a094720aeb27c088aa64564895"
+  end
+
+  go_resource "github.com/blang/semver" do
+    url "https://github.com/blang/semver.git",
+      :revision => "9bf7bff48b0388cb75991e58c6df7d13e982f1f2"
+  end
+
+  go_resource "github.com/julienschmidt/httprouter" do
+    url "https://github.com/julienschmidt/httprouter.git",
+      :revision => "6aacfd5ab513e34f7e64ea9627ab9670371b34e7"
   end
 
   def install
     # build a proper GOPATH tree for local dependencies
-    (buildpath + "src/github.com/bitly/nsq").install "util", "nsqlookupd", "nsqd"
-    (buildpath + "src/github.com/bitly/nsq/nsqadmin").install "nsqadmin/templates" => "templates"
+    (buildpath + "src/github.com/nsqio/nsq").install "Makefile", "apps", "internal", "nsqlookupd", "nsqd", "nsqadmin"
 
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "make"
-    system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
+    cd buildpath/"src/github.com/nsqio/nsq" do
+      system "make"
+      system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
+    end
   end
 
   test do
-    system "#{bin}/nsqd", "--version"
+    begin
+      lookupd = fork do
+        exec bin/"nsqlookupd"
+      end
+      sleep 2
+      d = fork do
+        exec bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
+      end
+      sleep 2
+      admin = fork do
+        exec bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      to_file = fork do
+        exec bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
+               "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      system "curl", "-d", "hello", "http://127.0.0.1:4151/put?topic=test"
+
+      dat = File.read(Dir["*.dat"].first)
+      assert_match "test", dat
+      assert_match version.to_s, dat
+    ensure
+      Process.kill(9, lookupd)
+      Process.kill(9, d)
+      Process.kill(9, admin)
+      Process.kill(9, to_file)
+      Process.wait lookupd
+      Process.wait d
+      Process.wait admin
+      Process.wait to_file
+    end
   end
 end

@@ -1,24 +1,27 @@
-require 'formula'
-
 class Sshguard < Formula
-  homepage 'http://www.sshguard.net/'
-  url 'https://downloads.sourceforge.net/project/sshguard/sshguard/sshguard-1.5/sshguard-1.5.tar.bz2'
-  sha1 'f8f713bfb3f5c9877b34f6821426a22a7eec8df3'
+  desc "Protect from brute force attacks against SSH"
+  homepage "http://www.sshguard.net/"
+  url "https://downloads.sourceforge.net/project/sshguard/sshguard/1.6.1/sshguard-1.6.1.tar.xz"
+  mirror "https://dl.bintray.com/homebrew/mirror/sshguard-1.6.1.tar.xz"
+  sha256 "f431899c20fa2f41fa293605af96ff97d44823b84db41c914ee60da44f1ff6c8"
 
-  # Fix blacklist flag (-b) so that it doesn't abort on first usage.
-  # Upstream bug report:
-  # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
-  patch do
-    url "https://sourceforge.net/tracker/download.php?group_id=188282&atid=924685&file_id=405677&aid=3252151"
-    sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
+  bottle do
+    cellar :any
+    sha256 "d1939f763079959ce9bd3c49db2b56b0cb2dac3206c33c6c69ff14d07407790b" => :yosemite
+    sha256 "0ab30d0a677d360f02ead6c98f510bd86ddbd9a693c63f87e6a5e7c79e830474" => :mavericks
+    sha256 "2c115efec5b401a9c3463b830031db885db06b6bb432d29c81db4a0596de28bd" => :mountain_lion
   end
+
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
 
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-firewall=#{firewall}"
-    system "make install"
+    system "make", "install"
   end
 
   def firewall
@@ -64,5 +67,9 @@ class Sshguard < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{sbin}/sshguard -v 2>&1", 1)
   end
 end

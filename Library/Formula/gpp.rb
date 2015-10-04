@@ -1,22 +1,23 @@
-require 'formula'
-
 class Gpp < Formula
-  homepage 'http://en.nothingisreal.com/wiki/GPP'
-  url 'http://files.nothingisreal.com/software/gpp/gpp-2.24.tar.bz2'
-  sha1 '4d79bc151bd16f45494b3719d401d670c4e9d0a4'
+  desc "General-purpose preprocessor with customizable syntax"
+  homepage "http://en.nothingisreal.com/wiki/GPP"
+  url "http://files.nothingisreal.com/software/gpp/gpp-2.24.tar.bz2"
+  sha256 "9bc2db874ab315ddd1c03daba6687f5046c70fb2207abdcbd55d0e9ad7d0f6bc"
 
   bottle do
-    cellar :any
-    sha1 "94fbc6d6c17cc299e9b583d72000bde67e931d49" => :mavericks
-    sha1 "0391db6ff96c79077aec04cd3ea6dbbfedbcc977" => :mountain_lion
-    sha1 "706df4f172e242d6a69ecafb14bb27bd97113077" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "6925eb92be766ed9fe61a9a98dc7bc3c22793079abf63f462cb7001017cac28c" => :el_capitan
+    sha1 "481357229fc529fbc72fd129e5fce856db2920c1" => :yosemite
+    sha1 "61bc9c993cdb79a20b81351e77c6d0b92827910e" => :mavericks
+    sha1 "6cce4a597e3c424471172be048a556e03a1afafc" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 end

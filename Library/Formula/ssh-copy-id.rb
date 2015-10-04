@@ -1,21 +1,25 @@
-require 'formula'
-
 class SshCopyId < Formula
-  homepage 'http://www.openssh.com/'
-  url 'http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.6p1.tar.gz'
-  mirror 'http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.6p1.tar.gz'
-  version '6.6p1'
-  sha1 'b850fd1af704942d9b3c2eff7ef6b3a59b6a6b6e'
+  desc "Add a public key to a remote machine's authorized_keys file"
+  homepage "http://www.openssh.com/"
+  url "http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
+  mirror "http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
+  version "6.8p1"
+  sha256 "3ff64ce73ee124480b5bf767b9830d7d3c03bbcb6abe716b78f0192c37ce160e"
 
   bottle do
-    cellar :any
-    sha1 "c62e6863235b9cb0dc9c78c04971b8692332f935" => :mavericks
-    sha1 "76b719c4c3391344d5aa2d22ded2fcc0db45f2c9" => :mountain_lion
-    sha1 "4b679aea29d2ec0e9fd2292cc7ea6b3955747096" => :lion
+    cellar :any_skip_relocation
+    sha256 "2f25914290d93c4981c3ece66f15896c71752e5601e5424b2a8bff6c15e46121" => :el_capitan
+    sha256 "4c89eddf0780ce6d65d9b2c8a5c1c3ddb536953daf4758524c369f6b40fcf593" => :yosemite
+    sha256 "36d4f00ce8ea2a61b89b3af35252cfc269010d10b4e6ddfc09d1b74189070184" => :mavericks
+    sha256 "5e57c77e0eae4650040b81824063e9672936d80aff16dbc77986e00d38a79e8a" => :mountain_lion
   end
 
   def install
-    bin.install 'contrib/ssh-copy-id'
-    man1.install 'contrib/ssh-copy-id.1'
+    bin.install "contrib/ssh-copy-id"
+    man1.install "contrib/ssh-copy-id.1"
+  end
+
+  test do
+    shell_output bin/"ssh-copy-id -h", 1
   end
 end

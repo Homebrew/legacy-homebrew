@@ -1,23 +1,30 @@
-require 'formula'
-
 class Nspr < Formula
+  desc "Platform-neutral API for system-level and libc-like functions"
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
-  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.6/src/nspr-4.10.6.tar.gz"
-  sha1 "9f3f278f7f31574b2cdbb99d9703c58e51cd3e1c"
+  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.9/src/nspr-4.10.9.tar.gz"
+  sha256 "4112ff6ad91d32696ca0c6c3d4abef6367b5dc0127fa172fcb3c3ab81bb2d881"
 
   bottle do
     cellar :any
-    sha1 "defd1ff9cccc8b64599c22734757648d031dd2ec" => :mavericks
-    sha1 "f72fbe6a2e2d45bc493faf9798060df4cc588a5e" => :mountain_lion
-    sha1 "a09af6bd5def1c714bb68dc95909a2fd9019e861" => :lion
+    sha256 "909b3aea2adbbef6dbe7a21d2ac84ab4b2419c28b85e78bc5da9a711cb81ce70" => :el_capitan
+    sha256 "4939603f5cf28e16c2eb64497d922a0260a811877575d75cc46a6ce3112fe407" => :yosemite
+    sha256 "d17ad30b56c570b565aa8ffd5c090a5cfd2be43ff1f0e904ee8e9884df2f1f05" => :mavericks
+    sha256 "a466c094be05c84d60a5e03b8b98358a6ccd6e1381a69a870c056dd39d59a2f1" => :mountain_lion
   end
+
+  keg_only <<-EOS.undent
+    Having this library symlinked makes Firefox pick it up instead of built-in,
+    so it then randomly crashes without meaningful explanation.
+
+    Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
+  EOS
 
   def install
     ENV.deparallelize
     cd "nspr" do
       # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
-      target_frameworks = (Hardware.is_32_bit? or MacOS.version <= :leopard) ? "-framework Carbon" : ""
+      target_frameworks = (Hardware.is_32_bit? || MacOS.version <= :leopard) ? "-framework Carbon" : ""
       inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", target_frameworks
 
       args = %W[
@@ -34,7 +41,7 @@ class Nspr < Formula
       inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", "-install_name #{lib}/$@ "
 
       system "make"
-      system "make install"
+      system "make", "install"
 
       (bin/"compile-et.pl").unlink
       (bin/"prerr.properties").unlink

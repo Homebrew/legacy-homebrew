@@ -1,15 +1,15 @@
-require "formula"
-
 class Lzip < Formula
+  desc "LZMA-based compression program similar to gzip or bzip2"
   homepage "http://www.nongnu.org/lzip/lzip.html"
-  url "http://download.savannah.gnu.org/releases/lzip/lzip-1.16.tar.gz"
-  sha1 "5bcefbb788305db7be9748d3c0478156518f1025"
+  url "http://download.savannah.gnu.org/releases/lzip/lzip-1.17.tar.gz"
+  sha256 "9443855e0a33131233b22cdb6c62c9313a483f16cc7415efe88d4a494cea0352"
 
   bottle do
-    cellar :any
-    sha1 "1d027a061ab2107a18bf2819d29d40318eaf106a" => :mavericks
-    sha1 "8a3a453e1cc7d79d3cb6417a93e156edb44f7f9b" => :mountain_lion
-    sha1 "3dbd0d6992d923a23ec3c25c04cb141a7bf3792a" => :lion
+    cellar :any_skip_relocation
+    sha256 "7914d124a70223bfa59bfcc4973810a26e6b05e99326a33efabe69b05b68df26" => :el_capitan
+    sha256 "220396d58834507c1a82d6baa6713c754fd0b1363e40c6db76d6d659a6bb452a" => :yosemite
+    sha256 "1a2749597e4dfee9ddc74451d932fc3d6c335ab00c1d0ca15b3b5643b696e3c6" => :mavericks
+    sha256 "2932b6bfc8e63d336b58f373d46012ee379143d6e06bb9b99398149ce13edd86" => :mountain_lion
   end
 
   def install

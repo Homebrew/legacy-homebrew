@@ -1,23 +1,19 @@
-require "formula"
-
 class Hevea < Formula
+  desc "LaTeX-to-HTML translator"
   homepage "http://hevea.inria.fr/"
-  url "http://hevea.inria.fr/distri/hevea-2.18.tar.gz"
-  sha1 "1fc764a6fc946069b4ca91b29fa1e71c405265d9"
+  url "http://hevea.inria.fr/old/hevea-2.23.tar.gz"
+  sha256 "db8ec1459cace8f008387dbcf745ba56917d44ff62c7bdba843da250109137b9"
 
   bottle do
-    revision 1
-    sha1 "c621f678b16b718d8bbc24470ca207d0fe4c0308" => :mavericks
-    sha1 "44b2489966166404d8fd2db1037481a56fa183e3" => :mountain_lion
-    sha1 "3e788ceb7a493edfd1c0fc2911e58fe39a55d6de" => :lion
+    sha256 "d6f5a5ce7cd70c14fe1f9355ac8e7af264b093304c4f8488e5df190f5b6e434d" => :yosemite
+    sha256 "53300a1adc2db5cc8b80fbc3395564e8c65d35fdce8c7e20dcac42563962efdf" => :mavericks
+    sha256 "1777a109ad7bf3693bd3cb0c09ec99846fbb73611e705eba4a7a48cf195c7ce4" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "ghostscript" => :optional
 
   def install
-    # Emailed Luc.Maranget@inria.fr to ask for this change to be made.
-    inreplace "Makefile", "PREFIX=/usr/local", "PREFIX?=/usr/local"
     ENV["PREFIX"] = prefix
     system "make"
     system "make", "install"

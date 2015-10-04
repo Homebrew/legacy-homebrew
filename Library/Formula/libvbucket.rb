@@ -1,15 +1,15 @@
-require 'formula'
-
 class Libvbucket < Formula
-  homepage 'http://couchbase.com/develop/c/current'
-  url 'http://packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz'
-  sha1 '4f24a85d251c0fca69e7705681a2170dd794492a'
+  desc "Utility library providing mapping to virtual buckets"
+  homepage "https://couchbase.com/develop/c/current"
+  url "https://s3.amazonaws.com/packages.couchbase.com/clients/c/libvbucket-1.8.0.4.tar.gz"
+  sha256 "398ba491d434fc109fd64f38678916e1aa19c522abc8c090dbe4e74a2a2ea38d"
 
   bottle do
     cellar :any
-    sha1 "b11b9b98c5ba3399ad4650e165f52f28447944c9" => :mavericks
-    sha1 "5c0987cd64e45d2b4fd95d833a6344d98130df76" => :mountain_lion
-    sha1 "71399bbf3403fc8cddf3a1f379ad234efee34a61" => :lion
+    revision 1
+    sha1 "49e1c03cd079d33ce4d2d8e02a7478b9a27ba208" => :yosemite
+    sha1 "1d90ee40664832cab081daac8ed557cff3074bd6" => :mavericks
+    sha1 "4de710a362522b6e87a19f7d1d57146b5a9712ce" => :mountain_lion
   end
 
   def install
@@ -17,18 +17,16 @@ class Libvbucket < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--without-docs"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    require 'utils/json'
+    require "utils/json"
     json = Utils::JSON.dump(
-      {
-        "hashAlgorithm" => "CRC",
-        "numReplicas" => 2,
-        "serverList" => ["server1:11211","server2:11210","server3:11211"],
-        "vBucketMap" => [[0,1,2],[1,2,0],[2,1,-1],[1,2,0]],
-      }
+      "hashAlgorithm" => "CRC",
+      "numReplicas" => 2,
+      "serverList" => ["server1:11211", "server2:11210", "server3:11211"],
+      "vBucketMap" => [[0, 1, 2], [1, 2, 0], [2, 1, -1], [1, 2, 0]]
     )
 
     expected = <<-EOS.undent

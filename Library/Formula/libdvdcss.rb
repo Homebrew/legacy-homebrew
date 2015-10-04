@@ -1,22 +1,27 @@
-require "formula"
-
 class Libdvdcss < Formula
-  homepage "http://www.videolan.org/developers/libdvdcss.html"
-  url "http://download.videolan.org/pub/libdvdcss/1.3.0/libdvdcss-1.3.0.tar.bz2"
-  sha1 "b3ccd70a510aa04d644f32b398489a3122a7e11a"
+  desc "Access DVDs as block devices without the decryption"
+  homepage "https://www.videolan.org/developers/libdvdcss.html"
+  url "https://download.videolan.org/pub/videolan/libdvdcss/1.3.99/libdvdcss-1.3.99.tar.bz2"
+  sha256 "08b0fab9171b338cbbe07b3a4ea227d991d5f1665717780df5030abbbd9b5c5d"
 
-  head "svn://svn.videolan.org/libdvdcss/trunk"
+  head do
+    url "git://git.videolan.org/libdvdcss"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
-    sha1 "fe98ffcbc81bc60bf24598bedd91de4bfc99ba09" => :mavericks
-    sha1 "bfc883c82af35d57661916d6456ed1a2983f7b73" => :mountain_lion
-    sha1 "6169cae9c293189f2e2d2dbe10680af48f76f7db" => :lion
+    sha256 "b46bbb4c0171ba189a991e8b6c6248e8f5d2b84ccb9ba10a7e36659281383514" => :el_capitan
+    sha1 "21e2c0560bfa1f83f08b2e7a8fc614e2b0226e8e" => :yosemite
+    sha1 "ed34b81016c034c1f713848a1e787984890e59d2" => :mavericks
+    sha1 "3f9e50d90d73539176075d5ce71d1329437745ed" => :mountain_lion
   end
 
   def install
-    system "./bootstrap" if build.head?
+    system "autoreconf", "-if" if build.head?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 end

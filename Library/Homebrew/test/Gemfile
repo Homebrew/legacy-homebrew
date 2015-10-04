@@ -3,3 +3,4 @@ source "https://rubygems.org"
 gem "mocha", "~> 1.1"
 gem "minitest", "~> 5.3"
 gem "rake", "~> 10.3"
+gem "simplecov", "~> 0.10.0", :require => false

@@ -1,15 +1,13 @@
-require "formula"
-
 class Libsecret < Formula
+  desc "Library for storing/retrieving passwords and other secrets"
   homepage "https://wiki.gnome.org/Projects/Libsecret"
-  url "http://ftp.gnome.org/pub/gnome/sources/libsecret/0.18/libsecret-0.18.tar.xz"
-  sha1 "af62de3958bbe0ccf59a02101a6704e036378a6f"
+  url "https://download.gnome.org/sources/libsecret/0.18/libsecret-0.18.3.tar.xz"
+  sha256 "f2bf1d0c5ab4640664f3e3c7ef6b086c180e50ff415720b5e22f96750dbf84c9"
 
   bottle do
-    revision 1
-    sha1 "d66a78d9886a1c3264efc8837f76be38b5f537a5" => :mavericks
-    sha1 "413b3bc851bc3c9cdc1e9a8f0d325ad974f97fcc" => :mountain_lion
-    sha1 "d2118e640acacfc9028e9d4e9b4f90149d560e10" => :lion
+    sha256 "dadf181684aa4cde7b1b63aafd4a912b29c0a60b8948e42b2bfe363d156b89ed" => :yosemite
+    sha256 "7d6cfd2b0ec29d4030174053717d1efde4908f2e652892a24886b653b46ed5fc" => :mavericks
+    sha256 "0f84396333914ef681c2b26e0ace27fce72becdf647d15a2175fb63d7c36def6" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -23,10 +21,10 @@ class Libsecret < Formula
 
   def install
     args = %W[
-        --disable-debug
-        --disable-dependency-tracking
-        --disable-silent-rules
-        --prefix=#{prefix}
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
     ]
 
     args << "--enable-gobject-introspection" if build.with? "gobject-introspection"

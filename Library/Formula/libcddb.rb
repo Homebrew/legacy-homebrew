@@ -1,23 +1,23 @@
-require 'formula'
-
 class Libcddb < Formula
-  homepage 'http://libcddb.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/libcddb/libcddb-1.3.2.tar.bz2'
-  sha1 '2a7855918689692ff5ca3316d078a859d51959ce'
+  desc "CDDB server access library"
+  homepage "http://libcddb.sourceforge.net/"
+  url "https://downloads.sourceforge.net/libcddb/libcddb-1.3.2.tar.bz2"
+  sha256 "35ce0ee1741ea38def304ddfe84a958901413aa829698357f0bee5bb8f0a223b"
 
   bottle do
     cellar :any
-    sha1 "e663db6e8362f7e4f6953e7f02d9e3751f64a836" => :mavericks
-    sha1 "9c9de1cf8eb40cadbdac48dd65520f6614dbf5e4" => :mountain_lion
-    sha1 "82190e9f5174f6850e5e94ead820281e1e8ced08" => :lion
+    revision 1
+    sha1 "253045ed49df247223574bae9888b3119ebd995b" => :yosemite
+    sha1 "5589c76a2a1abe8e11aedb05ec3b6510b47f7394" => :mavericks
+    sha1 "a23458d0ab82864cb515dfd7c84f5e363de9e7a5" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libcdio'
+  depends_on "pkg-config" => :build
+  depends_on "libcdio"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,46 +1,58 @@
-require "formula"
-
 class Ledger < Formula
+  desc "Command-line, double-entry accounting tool"
   homepage "http://ledger-cli.org"
-
-  stable do
-    url "https://github.com/ledger/ledger/archive/v3.0.3.tar.gz"
-    sha1 "b65c2dc78f366fc3c2db9e2b7900b727b91f4656"
-
-    # boost 1.56 compatibility
-    # https://groups.google.com/forum/#!topic/ledger-cli/9HwEJcD0My4
-    patch do
-      url "https://github.com/ledger/ledger/commit/d5592ea1e325131d4a7abf5e98f67fcb5cf22287.diff"
-      sha1 "1225b4586f74ef71df8a575b1a868dd2a46a4cf7"
-    end
-
-    resource "utfcpp" do
-      url "http://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
-      sha1 "638910adb69e4336f5a69c338abeeea88e9211ca"
-    end
-  end
+  url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
+  sha256 "eeb5d260729834923fc94822bcc54ca3080c434f81466a3f5dc4274b357ce694"
+  head "https://github.com/ledger/ledger.git"
+  revision 1
 
   bottle do
-    revision 1
-    sha1 "a3c72e2038d910c22c87899b8b02072ac5300919" => :mavericks
-    sha1 "102be1e9b363890262e44634a0c26c8d3fd7bd0d" => :mountain_lion
+    sha256 "c4ba63c2f50664ce2d32028e02a11c88ee9e087597368c1fd7f17ef8b49003b7" => :el_capitan
+    sha256 "a9caafb67ee6b9bef882d7dff8e24747f3997a84bacb82b456b96c5c6448e899" => :yosemite
+    sha256 "7c396585b474187340429297f151435a545c0ab0509f094461599f338eb8d045" => :mavericks
+    sha256 "a47cc33ddd2ef9df9921d1ad333eac68e791e32dad86b497c9abbe8bc707a5b2" => :mountain_lion
   end
 
-  head "https://github.com/ledger/ledger.git", :branch => "master"
+  resource "utfcpp" do
+    url "https://downloads.sourceforge.net/project/utfcpp/utf8cpp_2x/Release%202.3.4/utf8_v2_3_4.zip"
+    sha256 "3373cebb25d88c662a2b960c4d585daf9ae7b396031ecd786e7bb31b15d010ef"
+  end
 
-  option "debug", "Build with debugging symbols enabled"
+  deprecated_option "debug" => "with-debug"
+
+  option "with-debug", "Build with debugging symbols enabled"
   option "with-docs", "Build HTML documentation"
+  option "without-python", "Build without python support"
 
   depends_on "cmake" => :build
-  depends_on "ninja" => :build
-  depends_on "mpfr"
   depends_on "gmp"
-  depends_on :python => :optional
+  depends_on "mpfr"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
 
   boost_opts = []
-  boost_opts << "with-python" if build.with? "python"
   boost_opts << "c++11" if MacOS.version < "10.9"
   depends_on "boost" => boost_opts
+  depends_on "boost-python" => boost_opts if build.with? "python"
+
+  stable do
+    # library shouldn't explicitly link a python framework
+    # https://github.com/ledger/ledger/pull/415
+    patch do
+      url "https://github.com/ledger/ledger/commit/5f08e27.diff"
+      sha256 "064b0e64d211224455511cd7b82736bb26e444c3af3b64936bec1501ed14c547"
+    end
+
+    # but the executable should
+    # https://github.com/ledger/ledger/pull/416
+    patch :DATA
+
+    # boost 1.58 compatibility
+    # https://github.com/ledger/ledger/pull/417
+    patch do
+      url "https://github.com/ledger/ledger/commit/2e02e0.diff"
+      sha256 "c1438cbf989995dd0b4bfa426578a8763544f28788ae76f9ff5d23f1b8b17add"
+    end
+  end
 
   needs :cxx11
 
@@ -48,34 +60,23 @@ class Ledger < Formula
     ENV.cxx11
 
     (buildpath/"lib/utfcpp").install resource("utfcpp") unless build.head?
+    resource("utfcpp").stage { include.install Dir["source/*"] }
 
-    flavor = build.include?("debug") ? "debug" : "opt"
+    flavor = (build.with? "debug") ? "debug" : "opt"
 
-    opts = %W[-- -DBUILD_DOCS=1]
     args = %W[
-      --ninja --jobs=#{ENV.make_jobs}
+      --jobs=#{ENV.make_jobs}
       --output=build
       --prefix=#{prefix}
       --boost=#{Formula["boost"].opt_prefix}
     ]
 
-    if build.with? "docs"
-      opts << "-DBUILD_WEB_DOCS=1"
-    end
+    args << "--python" if build.with? "python"
 
-    if build.with? "python"
-      # Per #25118, CMake does a poor job of detecting a brewed Python.
-      # We need to tell CMake explicitly where our default python lives.
-      # Inspired by
-      # https://github.com/Homebrew/homebrew/blob/51d054c/Library/Formula/opencv.rb
-      args << "--python"
-      python_prefix = `python-config --prefix`.strip
-      opts << "-DPYTHON_LIBRARY=#{python_prefix}/Python"
-      opts << "-DPYTHON_INCLUDE_DIR=#{python_prefix}/Headers"
-    end
+    args += %w[-- -DBUILD_DOCS=1]
+    args << "-DBUILD_WEB_DOCS=1" if build.with? "docs"
 
-    args += opts
-
+    system "./acprep", flavor, "make", *args
     system "./acprep", flavor, "make", "doc", *args
     system "./acprep", flavor, "make", "install", *args
     (share+"ledger/examples").install Dir["test/input/*.dat"]
@@ -99,3 +100,18 @@ class Ledger < Formula
     end
   end
 end
+__END__
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index a368d37..570a659 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -273,6 +273,9 @@ if (BUILD_LIBRARY)
+
+   add_executable(ledger main.cc global.cc)
+   target_link_libraries(ledger libledger)
++  if (APPLE AND HAVE_BOOST_PYTHON)
++    target_link_libraries(ledger ${PYTHON_LIBRARIES})
++  endif()
+
+   install(TARGETS libledger DESTINATION ${CMAKE_INSTALL_LIBDIR})
+   install(FILES ${LEDGER_INCLUDES}

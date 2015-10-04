@@ -1,19 +1,17 @@
-require 'formula'
-
 class Ansifilter < Formula
-  homepage 'http://www.andre-simon.de/doku/ansifilter/ansifilter.html'
-  url 'http://www.andre-simon.de/zip/ansifilter-1.8.tar.gz'
-  sha1 '805bc0227c5972a971a82d3db749fb2431c107c1'
+  desc "Strip or convert ANSI codes into HTML, (La)Tex, RTF, or BBCode"
+  homepage "http://www.andre-simon.de/doku/ansifilter/ansifilter.html"
+  url "http://www.andre-simon.de/zip/ansifilter-1.12.tar.bz2"
+  sha256 "05f64cbc8440b44e8cfe26ae679074531997d14ecbbf595a9e03c0b489bf1cd1"
 
   bottle do
     cellar :any
-    sha1 "e28d7cd8ef0c42040b216d9eb6087ddc90cba855" => :mavericks
-    sha1 "6110cc501ebfe6a7d402b778880651314310ce3b" => :mountain_lion
-    sha1 "2ab9271e360293e599926909da601e511c270152" => :lion
+    sha256 "aecd1dae1603aea0897c68e35a571d94c1ce9b8e7dff9060f92c0119402f98b6" => :yosemite
+    sha256 "487e3176c213604d6583e5e7771ee2374780a01fa6e2b806b0a67097ebc819f9" => :mavericks
+    sha256 "6b277efe50b28030bf71de5370f7d314130680260ab6e9cb72ce49ca60e799fa" => :mountain_lion
   end
 
   def install
-    # both steps required and with PREFIX, last checked v1.7
     system "make", "PREFIX=#{prefix}"
     system "make", "PREFIX=#{prefix}", "install"
   end

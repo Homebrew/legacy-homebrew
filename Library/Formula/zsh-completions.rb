@@ -1,9 +1,8 @@
-require "formula"
-
 class ZshCompletions < Formula
+  desc "Additional completion definitions for zsh"
   homepage "https://github.com/zsh-users/zsh-completions"
-  url "https://github.com/zsh-users/zsh-completions/archive/0.11.0.tar.gz"
-  sha1 "d6b28c9d617e821cdd27f7e20c3ee9e97c7a958b"
+  url "https://github.com/zsh-users/zsh-completions/archive/0.12.0.tar.gz"
+  sha256 "770d92749b11b22192595b207208508f8bfa319d5d03210a71bc44c8b9cfa0d5"
 
   head "https://github.com/zsh-users/zsh-completions.git"
 
@@ -26,5 +25,14 @@ class ZshCompletions < Formula
 
       chmod go-w /usr/local/share
     EOS
+  end
+
+  test do
+    (testpath/".zshrc").write <<-EOS.undent
+      fpath=(#{HOMEBREW_PREFIX}/share/zsh-completions $fpath)
+      autoload -U compinit
+      compinit
+    EOS
+    system "/bin/zsh", "--login", "-i", "-c", "which _ack"
   end
 end

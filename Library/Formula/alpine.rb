@@ -1,48 +1,28 @@
-require 'formula'
-
 class Alpine < Formula
-  homepage 'http://www.washington.edu/alpine/'
-  url 'ftp://ftp.cac.washington.edu/alpine/alpine-2.00.tar.gz'
-  sha1 '363b3aa5d3eb1319e168639fbbc42b033b16f15b'
+  desc "News and email agent"
+  homepage "http://patches.freeiz.com/alpine/"
+  url "http://patches.freeiz.com/alpine/release/src/alpine-2.20.tar.xz"
+  sha256 "ed639b6e5bb97e6b0645c85262ca6a784316195d461ce8d8411999bf80449227"
 
-  # Upstream builds are broken on Snow Leopard due to a hack put in for prior
-  # versions of OS X. See: http://trac.macports.org/ticket/20971
-  patch do
-    url "https://trac.macports.org/export/89747/trunk/dports/mail/alpine/files/alpine-osx-10.6.patch"
-    sha1 "8cc6b95b6aba844ceef8454868b8f2c205de9792"
+  bottle do
+    sha256 "730553f37f597097bbba910de04dd5b9327d5b5a920c26f29406eca2d31f540d" => :el_capitan
+    sha256 "cd774d63bf4327c4109a6b97fd7189f9618d53bd608bb314101f4880368f7662" => :yosemite
+    sha256 "b35c3667a183c86dfa769e1d9e53669524930fda371422ab1c8519d3d807b8d5" => :mavericks
+    sha256 "8f52d4ebe9e445ec975cabdd74c4a48cef80eebb21f18c33644e99de1a6d2173" => :mountain_lion
   end
 
-  # Fails to build against Tcl 8.6; reported upstream:
-  # http://mailman2.u.washington.edu/pipermail/alpine-info/2013-September/005291.html
-  patch :DATA
+  depends_on "openssl"
 
   def install
     ENV.j1
     system "./configure", "--disable-debug",
-                          "--prefix=#{prefix}",
-                          "--with-ssl-include-dir=/usr/include/openssl"
-    system "make install"
+                          "--with-ssl-dir=#{Formula["openssl"].opt_prefix}",
+                          "--with-ssl-certs-dir=#{etc}/openssl",
+                          "--prefix=#{prefix}"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/alpine", "-supported"
   end
 end
-
-__END__
-diff --git a/web/src/alpined.d/alpined.c b/web/src/alpined.d/alpined.c
-index 98c5a63..d2c63b5 100644
---- a/web/src/alpined.d/alpined.c
-+++ b/web/src/alpined.d/alpined.c
-@@ -751,10 +751,10 @@ main(int argc, char *argv[])
- 				}
- 
- 				switch(Tcl_Eval(interp, &buf[co])){
--				  case TCL_OK	  : peReturn(cs, "OK", interp->result); break;
--				  case TCL_ERROR  : peReturn(cs, "ERROR", interp->result); break;
--				  case TCL_BREAK  : peReturn(cs, "BREAK", interp->result); break;
--				  case TCL_RETURN : peReturn(cs, "RETURN", interp->result); break;
-+				  case TCL_OK	  : peReturn(cs, "OK",  Tcl_GetStringResult(interp)); break;
-+				  case TCL_ERROR  : peReturn(cs, "ERROR", Tcl_GetStringResult(interp)); break;
-+				  case TCL_BREAK  : peReturn(cs, "BREAK", Tcl_GetStringResult(interp)); break;
-+				  case TCL_RETURN : peReturn(cs, "RETURN", Tcl_GetStringResult(interp)); break;
- 				  default	  : peReturn(cs, "BOGUS", "eval returned unexpected value"); break;
- 				}
- 			    }
-

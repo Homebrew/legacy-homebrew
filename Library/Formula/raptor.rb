@@ -1,21 +1,20 @@
-require 'formula'
-
 class Raptor < Formula
-  homepage 'http://librdf.org/raptor/'
-  url 'http://download.librdf.org/source/raptor2-2.0.14.tar.gz'
-  sha1 'f0dc155ee616aac0e5397dd659519c9d0a262f21'
+  desc "RDF parser toolkit"
+  homepage "http://librdf.org/raptor/"
+  url "http://download.librdf.org/source/raptor2-2.0.15.tar.gz"
+  sha256 "ada7f0ba54787b33485d090d3d2680533520cd4426d2f7fb4782dd4a6a1480ed"
 
   bottle do
     cellar :any
-    sha1 "b22317b19b16764738fdd3bffeb80b86379d293a" => :mavericks
-    sha1 "b2e832498b362a0a2da1935c9901445496bdf33e" => :mountain_lion
-    sha1 "64dffefd3d044632e10a9a3c768f670d62ec1c8b" => :lion
+    sha1 "0aa5969d1b87b50fb3ace6db690873b58fc9a70e" => :yosemite
+    sha1 "d451c9971128bd9e5cf7cb0ec598aaa1904e5816" => :mavericks
+    sha1 "9deebc5b7818d181673c409da57b18aa8d154d29" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

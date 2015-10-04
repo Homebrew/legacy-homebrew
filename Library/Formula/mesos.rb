@@ -1,28 +1,138 @@
-require "formula"
-
 class Mesos < Formula
-  homepage "http://mesos.apache.org"
-  url "http://mirror.cogentco.com/pub/apache/mesos/0.20.0/mesos-0.20.0.tar.gz"
-  sha1 "1e0c2299ad9846f109de4bfc47ae9bbb136e6ffc"
+  desc "Apache cluster manager"
+  homepage "https://mesos.apache.org"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.24.0/mesos-0.24.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.24.0/mesos-0.24.0.tar.gz"
+  sha256 "6b8cfd723760d336f2aae543b0cfcea230c0d0247fed44876665578c06f983c4"
 
   bottle do
-    sha1 "d51f509321860fd7322eae16ca33a76dcf7313f7" => :mavericks
-    sha1 "478a96a214091a143c88f9889f212bdacc566912" => :mountain_lion
+    sha256 "47817c85e80035707b79e80d802f38b4406c266ef7b60244b55d5616d583298e" => :el_capitan
+    sha256 "3a17d5dadf30ae6924b71a32075e96d22e3aa49b91da036fb5df39fa93adcb32" => :yosemite
+    sha256 "3f022db01d63c23591f7b21ac8a8e040664f509e2373da1605a5c2fd5eecf01e" => :mavericks
   end
 
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
-
   depends_on "maven" => :build
+  depends_on :apr => :build
+  depends_on "subversion"
+
+  resource "boto" do
+    url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
+    sha256 "8033c6f7a7252976df0137b62536cfe38f1dbd1ef443a7a6d8bc06c063bc36bd"
+  end
+
+  resource "protobuf" do
+    url "https://pypi.python.org/packages/source/p/protobuf/protobuf-2.6.1.tar.gz"
+    sha256 "8faca1fb462ee1be58d00f5efb4ca4f64bde92187fe61fde32615bbee7b3e745"
+  end
+
+  # build dependencies for protobuf
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+  end
+
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
+    sha256 "439df33ce47ef1478a4f4765f3390eab0ed3ec4ae10be32f2930000c8d19f417"
+  end
+
+  resource "pytz" do
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2014.10.tar.bz2"
+    sha256 "387f968fde793b142865802916561839f5591d8b4b14c941125eb0fca7e4e58d"
+  end
+
+  resource "python-gflags" do
+    url "https://pypi.python.org/packages/source/p/python-gflags/python-gflags-2.0.tar.gz"
+    sha256 "0dff6360423f3ec08cbe3bfaf37b339461a54a21d13be0dd5d9c9999ce531078"
+  end
+
+  resource "google-apputils" do
+    url "https://pypi.python.org/packages/source/g/google-apputils/google-apputils-0.4.2.tar.gz"
+    sha256 "47959d0651c32102c10ad919b8a0ffe0ae85f44b8457ddcf2bdc0358fb03dc29"
+  end
+
+  needs :cxx11
 
   def install
-    system "./configure", "--disable-debug",
-                           "--disable-dependency-tracking",
-                           "--disable-silent-rules",
-                           "--prefix=#{prefix}"
+    # Set _JAVA_OPTIONS to make mesos java plugins compile success in Homebrew sandbox.
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home"
 
+    boto_path = libexec/"boto/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", boto_path
+    resource("boto").stage do
+      system "python", *Language::Python.setup_install_args(libexec/"boto")
+    end
+    (lib/"python2.7/site-packages").mkpath
+    (lib/"python2.7/site-packages/homebrew-mesos-boto.pth").write "#{boto_path}\n"
+
+    # work around distutils abusing CC instead of using CXX
+    # https://issues.apache.org/jira/browse/MESOS-799
+    # https://github.com/Homebrew/homebrew/pull/37087
+    native_patch = <<-EOS.undent
+      import os
+      os.environ["CC"] = os.environ["CXX"]
+      os.environ["LDFLAGS"] = "@LIBS@"
+      \\0
+    EOS
+    inreplace "src/python/native/setup.py.in",
+              "import ext_modules",
+              native_patch
+
+    # skip build javadoc because Homebrew sandbox set _JAVA_OPTIONS would
+    # trigger maven-javadoc-plugin bug.
+    # https://issues.apache.org/jira/browse/MESOS-3482
+    maven_javadoc_patch = <<-EOS.undent
+      <properties>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+      \\0
+    EOS
+    inreplace "src/java/mesos.pom.in",
+              "<url>http://mesos.apache.org</url>",
+              maven_javadoc_patch
+
+    args = ["--prefix=#{prefix}",
+            "--disable-debug",
+            "--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--with-svn=#{Formula["subversion"].opt_prefix}"
+           ]
+
+    unless MacOS::CLT.installed?
+      args << "--with-apr=#{Formula["apr"].opt_prefix}/libexec"
+    end
+
+    ENV.cxx11
+
+    system "./configure", "--disable-python", *args
     system "make"
     system "make", "install"
+
+    system "./configure", "--enable-python", *args
+    ["native", "interface", "cli", ""].each do |p|
+      cd "src/python/#{p}" do
+        system "python", *Language::Python.setup_install_args(prefix)
+      end
+    end
+
+    # stage protobuf build dependencies
+    ENV.prepend_create_path "PYTHONPATH", buildpath/"protobuf/lib/python2.7/site-packages"
+    %w[six python-dateutil pytz python-gflags google-apputils].each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(buildpath/"protobuf")
+      end
+    end
+
+    protobuf_path = libexec/"protobuf/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", protobuf_path
+    resource("protobuf").stage do
+      ln_s buildpath/"protobuf/lib/python2.7/site-packages/google/apputils", "google/apputils"
+      system "python", *Language::Python.setup_install_args(libexec/"protobuf")
+    end
+    pth_contents = "import site; site.addsitedir('#{protobuf_path}')\n"
+    (lib/"python2.7/site-packages/homebrew-mesos-protobuf.pth").write pth_contents
   end
 
   test do
@@ -36,7 +146,7 @@ class Mesos < Formula
       exec "#{sbin}/mesos-slave", "--master=127.0.0.1:5050",
                                   "--work_dir=#{testpath}"
     end
-    Timeout::timeout(15) do
+    Timeout.timeout(15) do
       system "#{bin}/mesos", "execute",
                              "--master=127.0.0.1:5050",
                              "--name=execute-touch",
@@ -44,6 +154,7 @@ class Mesos < Formula
     end
     Process.kill("TERM", master)
     Process.kill("TERM", slave)
-    system "[ -e #{testpath}/executed ]"
+    assert File.exist?("#{testpath}/executed")
+    system "python", "-c", "import mesos.native"
   end
 end

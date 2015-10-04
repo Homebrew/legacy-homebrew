@@ -1,15 +1,14 @@
-require "formula"
-
 class RakudoStar < Formula
+  desc "Perl 6 compiler"
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2014.04.tar.gz"
-  sha256 "f4fc1e3193db0fa876978527011034a711fdf20a87ee10edbb2dc62958cfed6a"
-  revision 1
+  url "http://rakudo.org/downloads/star/rakudo-star-2015.07.tar.gz"
+  sha256 "84d7812a735eedc39d7c0898d4fd15ecd82563971744b2bc6ff0a1c581c82910"
 
   bottle do
-    sha1 "a13b3d5e0c93679c3265b24909ce9d85760a5fc3" => :mavericks
-    sha1 "7e3b83ca5ce5b048eef4e0801bc1bd6e07b13e85" => :mountain_lion
-    sha1 "599f3cd59973219932ac4cf0fac51ca9cc567815" => :lion
+    sha256 "a9062bc75fdc50d09522957ed32fca13426f03ffbce38d70bdce696b5a0e595d" => :el_capitan
+    sha256 "82e75716f260d56213902d41ea0c3f4f31c9c38202cc605887eba97c1fd9c762" => :yosemite
+    sha256 "5ef37f2b8a655614ae64c488ec29bc758e336df52216405a47eda09283e261d2" => :mavericks
+    sha256 "21eeb7930847526b283fe411c0e9c733fd915f31ff66127985a0b4aebb9c80a0" => :mountain_lion
   end
 
   option "with-jvm", "Build also for jvm as an alternate backend."
@@ -27,15 +26,22 @@ class RakudoStar < Formula
     ENV.prepend "CPPFLAGS", "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
     ENV.j1  # An intermittent race condition causes random build failures.
-    if build.with? "jvm"
-      system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot,jvm", "--gen-parrot"
-    else
-      system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=parrot", "--gen-parrot"
-    end
+
+    backends = ["moar"]
+    generate = ["--gen-moar"]
+
+    backends << "jvm" if build.with? "jvm"
+
+    system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=" + backends.join(","), *generate
     system "make"
-    system "make install"
-    # move the man pages out of the top level into share.
-    mv "#{prefix}/man", share
+    system "make", "install"
+
+    # Move the man pages out of the top level into share.
+    # Not all backends seem to generate man pages at this point (moar does not, parrot does),
+    # so we need to check if the directory exists first.
+    if File.directory?("#{prefix}/man")
+      mv "#{prefix}/man", share
+    end
   end
 
   test do

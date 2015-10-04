@@ -1,9 +1,7 @@
-require "formula"
-
-class TransitionalMode < Requirement
+class Camlp5TransitionalModeRequirement < Requirement
   fatal true
 
-  satisfy { !Tab.for_name("camlp5").include?("strict") }
+  satisfy(:build_env => false) { !Tab.for_name("camlp5").include?("strict") }
 
   def message; <<-EOS.undent
     camlp5 must be compiled in transitional mode (instead of --strict mode):
@@ -13,23 +11,32 @@ class TransitionalMode < Requirement
 end
 
 class Coq < Formula
-  homepage "http://coq.inria.fr/"
-  url "http://coq.inria.fr/distrib/V8.4pl4/files/coq-8.4pl4.tar.gz"
-  version "8.4pl4"
-  sha1 "4dfc3a1ae65f5c480ddc4387d21549a526183e00"
+  desc "Proof assistant for higher-order logic"
+  homepage "https://coq.inria.fr/"
+  url "https://coq.inria.fr/distrib/V8.4pl6/files/coq-8.4pl6.tar.gz"
+  version "8.4pl6"
+  sha256 "a540a231a9970a49353ca039f3544616ff86a208966ab1c593779ae13c91ebd6"
+  revision 1
 
-  head "git://scm.gforge.inria.fr/coq/coq.git"
+  head "git://scm.gforge.inria.fr/coq/coq.git", :branch => "trunk"
 
-  depends_on TransitionalMode
-  depends_on "objective-caml"
+  bottle do
+    sha256 "9728bdc74a1c30f57c4c25a4a2e0c996de9ef728486b2220b3c5e93f18594313" => :el_capitan
+    sha256 "59f6e0b26fbb0be09c8ea9959ea25b60cd4ce9f424e126d58478500cc2965a9b" => :yosemite
+    sha256 "dcf2a61af6f3ea17d25a4201d32ffea2b0b7644d134d4f4517822946f0138e4e" => :mavericks
+    sha256 "dd082d214e2540429c6f757a41e4df23307e339d50ae68cd108dbd569c6b9ed1" => :mountain_lion
+  end
+
+  depends_on Camlp5TransitionalModeRequirement
   depends_on "camlp5"
+  depends_on "ocaml"
 
   def install
     camlp5_lib = Formula["camlp5"].opt_lib+"ocaml/camlp5"
     system "./configure", "-prefix", prefix,
                           "-mandir", man,
                           "-camlp5dir", camlp5_lib,
-                          "-emacslib", "#{lib}/emacs/site-lisp",
+                          "-emacslib", "#{share}/emacs/site-lisp/coq",
                           "-coqdocdir", "#{share}/coq/latex",
                           "-coqide", "no",
                           "-with-doc", "no"
@@ -39,11 +46,7 @@ class Coq < Formula
   end
 
   def caveats; <<-EOS.undent
-    Coq's Emacs mode is installed into
-      #{opt_lib}/emacs/site-lisp
-
-    To use the Coq Emacs mode, you need to put the following lines in
-    your .emacs file:
+    To use the Coq Emacs mode, add the the following to your init file:
       (setq auto-mode-alist (cons '("\\\\.v$" . coq-mode) auto-mode-alist))
       (autoload 'coq-mode "coq" "Major mode for editing Coq vernacular." t)
     EOS

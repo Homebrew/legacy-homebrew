@@ -1,29 +1,48 @@
-require 'formula'
-
 class Fossil < Formula
-  homepage 'http://www.fossil-scm.org/'
-  head 'fossil://http://www.fossil-scm.org/'
-  url 'http://www.fossil-scm.org/download/fossil-src-20140127173344.tar.gz'
-  sha1 '9e547a27d2447f12df951e86670da12c7cfbd26a'
-  version '1.28'
+  desc "Distributed software configuration management"
+  homepage "https://www.fossil-scm.org/"
+  url "https://www.fossil-scm.org/download/fossil-src-1.33.tar.gz"
+  sha256 "6295c48289456f09e86099988058a12148dbe0051b72d413b4dff7216d6a7f3e"
+
+  head "https://www.fossil-scm.org/", :using => :fossil
 
   bottle do
     cellar :any
-    sha1 "c4f7800f7a88aee0f5c27dc8ee90e7d67dc90570" => :mavericks
-    sha1 "2b8fa6a214c937ea56e50841614cbcc68375153d" => :mountain_lion
-    sha1 "ad5e8b7cc41ae2a81f5b0ed84110d6e34b56622b" => :lion
+    revision 1
+    sha256 "b7ef31ca95673d3c2056c4a8f7e8fd117f362a4d402ab2573ddccb46edcfe45d" => :el_capitan
+    sha256 "39418c8caef8df38e4366e25fb5be3fe26220e379235e68961fb727fca8d0ca9" => :yosemite
+    sha256 "1cb30f778d37395a1128af80aa961e8c7759f15e70a202411cb8c67dfca60668" => :mavericks
+    sha256 "e64bead6791751dcd19625189f491e494f2a574247b9e581cabdfca6f5a02225" => :mountain_lion
   end
 
-  option 'without-json', 'Build without "json" command support.'
-  option 'without-tcl', "Build without the tcl-th1 command bridge."
+  option "without-json", "Build without 'json' command support"
+  option "without-tcl", "Build without the tcl-th1 command bridge"
+
+  depends_on "openssl"
+  depends_on :osxfuse => :optional
 
   def install
     args = []
-    args << "--json" if build.with? 'json'
-    args << "--with-tcl" if build.with? 'tcl'
+    args << "--json" if build.with? "json"
+
+    if MacOS::CLT.installed? && build.with?("tcl")
+      args << "--with-tcl"
+    else
+      args << "--with-tcl-stubs"
+    end
+
+    if build.with? "osxfuse"
+      ENV.prepend "CFLAGS", "-I#{HOMEBREW_PREFIX}/include/osxfuse"
+    else
+      args << "--disable-fusefs"
+    end
 
     system "./configure", *args
     system "make"
-    bin.install 'fossil'
+    bin.install "fossil"
+  end
+
+  test do
+    system "#{bin}/fossil", "init", "test"
   end
 end

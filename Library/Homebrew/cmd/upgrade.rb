@@ -1,23 +1,24 @@
-require 'cmd/install'
-require 'cmd/outdated'
+require "cmd/install"
+require "cmd/outdated"
 
 module Homebrew
   def upgrade
+    FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
+
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      outdated = Homebrew.outdated_brews
+      outdated = Homebrew.outdated_brews(Formula.installed)
       exit 0 if outdated.empty?
-    else
-      outdated = ARGV.formulae.select do |f|
-        if f.installed?
-          onoe "#{f.name}-#{f.installed_version} already installed"
-          false
-        elsif not f.rack.directory? or f.rack.subdirs.empty?
-          onoe "#{f.name} not installed"
-          false
+    elsif ARGV.named.any?
+      outdated = Homebrew.outdated_brews(ARGV.resolved_formulae)
+
+      (ARGV.resolved_formulae - outdated).each do |f|
+        if f.rack.directory?
+          version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
+          onoe "#{f.full_name} #{version} already installed"
         else
-          true
+          onoe "#{f.full_name} not installed"
         end
       end
       exit 1 if outdated.empty?
@@ -30,38 +31,37 @@ module Homebrew
 
     unless outdated.empty?
       oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts outdated.map { |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
-      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts pinned.map { |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     end
 
     outdated.each { |f| upgrade_formula(f) }
   end
 
   def upgrade_pinned?
-    not ARGV.named.empty?
+    !ARGV.named.empty?
   end
 
-  def upgrade_formula f
+  def upgrade_formula(f)
     outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
     tab = Tab.for_formula(f)
 
     fi = FormulaInstaller.new(f)
     fi.options             = tab.used_options
-    fi.build_bottle        = ARGV.build_bottle?
-    fi.build_bottle      ||= tab.built_as_bottle && !tab.poured_from_bottle
+    fi.build_bottle        = ARGV.build_bottle? || (!f.bottled? && tab.build_bottle?)
     fi.build_from_source   = ARGV.build_from_source?
     fi.verbose             = ARGV.verbose?
-    fi.verbose           &&= :quieter if ARGV.quieter?
+    fi.quieter             = ARGV.quieter?
     fi.debug               = ARGV.debug?
     fi.prelude
 
-    oh1 "Upgrading #{f.name}"
+    oh1 "Upgrading #{f.full_name}"
 
     # first we unlink the currently active keg for this formula otherwise it is
     # possible for the existing build to interfere with the build we are about to
@@ -69,7 +69,6 @@ module Homebrew
     outdated_keg.unlink if outdated_keg
 
     fi.install
-    fi.caveats
     fi.finish
 
     # If the formula was pinned, and we were force-upgrading it, unpin and
@@ -91,7 +90,6 @@ module Homebrew
     ofail e
   ensure
     # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not f.installed? rescue nil
+    outdated_keg.link if outdated_keg && !f.installed? rescue nil
   end
-
 end

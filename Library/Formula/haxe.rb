@@ -1,25 +1,33 @@
-require 'formula'
-
 class Haxe < Formula
-  homepage 'http://haxe.org'
-  url 'https://github.com/HaxeFoundation/haxe.git', :tag => '3.1.3'
+  desc "Multi-platform programming language"
+  homepage "http://haxe.org"
 
-  head 'https://github.com/HaxeFoundation/haxe.git', :branch => 'development'
+  stable do
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.2.0", :revision => "77d171b15c94932d265e2a03d476bafc9b3a1894"
+  end
 
   bottle do
     cellar :any
-    sha1 "83fe01c0ca2997328e88ef7763181ff40cc5082a" => :mavericks
-    sha1 "46c5911f3505c7e102c71dde16ed4ab2bdcc4cbc" => :mountain_lion
-    sha1 "408dbaf0110cb38ee52900bd4910c56913681bab" => :lion
+    revision 1
+    sha256 "faa387523fb8dce6d02a542c1898bc561de08ca48637e95118bf2ac7e072bc95" => :yosemite
+    sha256 "64ef064b685f74552860b4d83715b8ddc8d5d0c08ac007d7ca246a4cc9b01ab2" => :mavericks
+    sha256 "366600c304bc1a3f2d09a629926e65bde16878cb5b0eb28e5b880773bd595c23" => :mountain_lion
   end
 
-  depends_on 'neko'
-  depends_on 'objective-caml'
+  head do
+    url "https://github.com/HaxeFoundation/haxe.git", :branch => "development"
+  end
+
+  depends_on "ocaml" => :build
+  depends_on "camlp4" => :build
+  depends_on "neko" => :optional
 
   def install
     # Build requires targets to be built in specific order
     ENV.deparallelize
-    system "make"
+    args = ["OCAMLOPT=ocamlopt.opt"]
+    args << "ADD_REVISION=1" if build.head?
+    system "make", *args
     bin.mkpath
     system "make", "install", "INSTALL_BIN_DIR=#{bin}", "INSTALL_LIB_DIR=#{lib}/haxe"
 

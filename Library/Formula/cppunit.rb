@@ -1,27 +1,23 @@
-require 'formula'
-
 class Cppunit < Formula
-  homepage 'http://sourceforge.net/apps/mediawiki/cppunit/'
-  url 'https://downloads.sourceforge.net/project/cppunit/cppunit/1.12.1/cppunit-1.12.1.tar.gz'
-  sha1 'f1ab8986af7a1ffa6760f4bacf5622924639bf4a'
+  desc "Unit testing framework for C++"
+  homepage "https://wiki.freedesktop.org/www/Software/cppunit/"
+  url "http://dev-www.libreoffice.org/src/cppunit-1.13.2.tar.gz"
+  sha256 "3f47d246e3346f2ba4d7c9e882db3ad9ebd3fcbd2e8b732f946e0e3eeb9f429f"
 
   bottle do
     cellar :any
-    sha1 "2454890509b3b673e6a2bc7f53d755df7d5abb8f" => :mavericks
-    sha1 "07ace28a30f222a55adc2cd351524e5c8d8783a1" => :mountain_lion
-    sha1 "fcc7a7f99e35235a8cee728a3165d0db4da5dd5c" => :lion
+    revision 1
+    sha256 "27730fdd237f61dd3698e422edab55246d657f15fcbb73999d8b35087e3cb3c8" => :el_capitan
+    sha1 "18dfd9a7ceb08906e112c192af525908bcc42663" => :yosemite
+    sha1 "e27e6f4f3faac5c2f280b088a48d7c83e7faf491" => :mavericks
+    sha1 "06f8e404202b942139a979911b94c725ed83795a" => :mountain_lion
   end
 
   option :universal
 
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
-  depends_on "libtool" => :build
-
   def install
     ENV.universal_binary if build.universal?
-    system "autoreconf", "-fvi"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

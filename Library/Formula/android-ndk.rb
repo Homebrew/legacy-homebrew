@@ -1,38 +1,23 @@
-require "formula"
-
 class AndroidNdk < Formula
-  homepage "http://developer.android.com/sdk/ndk/index.html"
+  desc "Android native-code language toolset"
+  homepage "https://developer.android.com/sdk/ndk/index.html"
+  url "https://dl.google.com/android/ndk/android-ndk-r10e-darwin-x86_64.bin"
+  sha256 "728c309e606f63101f1258c9d3d579b80ac74fe74c511ebb71f460ce5c5d084e"
 
-  if MacOS.prefer_64_bit?
-    url "https://dl.google.com/android/ndk/android-ndk32-r10b-darwin-x86_64.tar.bz2"
-    sha1 "6888a670c9d9007ffba7e314e38c367b6ea67f7c"
+  version "r10e"
 
-    resource "64bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk64-r10b-darwin-x86_64.tar.bz2"
-      sha1 "b8354a4547cedb2901acc3dc35fd29104f6cc1bf"
-    end
-  else
-    url "https://dl.google.com/android/ndk/android-ndk32-r10b-darwin-x86.tar.bz2"
-    sha1 "ee763b15cded16d313feded1e7244ce094825574"
-
-    resource "64bit_target" do
-      url "https://dl.google.com/android/ndk/android-ndk64-r10b-darwin-x86.tar.bz2"
-      sha1 "e55fecfa0189a0f94725d3208a4a1c1d4235a3ab"
-    end
-  end
-
+  # As of r10e, only a 64-bit version is provided
+  depends_on :arch => :x86_64
   depends_on "android-sdk" => :recommended
 
   def install
     bin.mkpath
 
-    # Unpack 64-bit target into current directory
-    target = resource("64bit_target")
-    target.verify_download_integrity(target.fetch)
-    system "tar", "xf", target.cached_download, "-C", buildpath.dirname
+    chmod 0755, "./android-ndk-#{version}-darwin-x86_64.bin"
+    system "./android-ndk-#{version}-darwin-x86_64.bin"
 
     # Now we can install both 64-bit and 32-bit targeting toolchains
-    prefix.install Dir["*"]
+    prefix.install Dir["android-ndk-#{version}/*"]
 
     # Create a dummy script to launch the ndk apps
     ndk_exec = prefix+"ndk-exec.sh"
@@ -51,10 +36,10 @@ class AndroidNdk < Formula
     If this is unacceptable you should uninstall.
 
     License information at:
-    http://developer.android.com/sdk/terms.html
+    https://developer.android.com/sdk/terms.html
 
     Software and System requirements at:
-    http://developer.android.com/sdk/ndk/index.html#requirements
+    https://developer.android.com/sdk/ndk/index.html#requirements
 
     For more documentation on Android NDK, please check:
       #{prefix}/docs

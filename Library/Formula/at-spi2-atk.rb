@@ -1,15 +1,14 @@
-require "formula"
-
 class AtSpi2Atk < Formula
+  desc "Accessibility Toolkit GTK+ module"
   homepage "http://a11y.org"
-  url "http://ftp.gnome.org/pub/gnome/sources/at-spi2-atk/2.14/at-spi2-atk-2.14.0.tar.xz"
-  sha256 "56b40ef16d9f1b1630d32addb0cc941372a1e97d8ddafd369f912c7d125688e7"
+  url "https://download.gnome.org/sources/at-spi2-atk/2.18/at-spi2-atk-2.18.0.tar.xz"
+  sha256 "4a6db33453b6efd15fa7d84ef2a3421262a053f57f1df6e7a2536d02bacdf375"
 
   bottle do
     cellar :any
-    sha1 "f11701fff9c808d0be86ab0245b7b166e95cf371" => :mavericks
-    sha1 "a2cb17226b9d03779b67f52c42c5668ff3d4e6b2" => :mountain_lion
-    sha1 "690f4136be39fb82537dab0dcb090c87ddd7177d" => :lion
+    sha256 "6450a0feacc584653cffd568de196344757c5c0c186a666304b54913b415e3df" => :el_capitan
+    sha256 "dfde79b25b559649c16c2a5734a10c21a88ec557cfa3a8cf5c87014258793c4a" => :yosemite
+    sha256 "429671113826d9f00ae043a52a7f3be80d886d25ef0ef0fa8b50b33a5c6f7c94" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -18,6 +17,6 @@ class AtSpi2Atk < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

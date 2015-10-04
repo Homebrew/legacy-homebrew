@@ -1,34 +1,32 @@
-require "formula"
-
 class Phantomjs < Formula
+  desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://www.phantomjs.org/"
-  revision 1
+  head "https://github.com/ariya/phantomjs.git"
 
   stable do
-    url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-source.zip"
-    sha256 "0f6c50ff24c1c4a8ccd7fedef62feef5e45195c7ba5ef6c84434448544877ff3"
+    url "https://github.com/ariya/phantomjs/archive/2.0.0.tar.gz"
+    sha256 "0a1338464ca37314037d139b3e0f7368325f5d8810628d9d9f2df9f9f535d407"
 
+    # https://github.com/Homebrew/homebrew/issues/42249
+    depends_on MaximumMacOSRequirement => :yosemite
+
+    # Qt Yosemite build fix. Upstream commit/PR:
+    # https://qt.gitorious.org/qt/qtbase/commit/70e442
+    # https://github.com/ariya/phantomjs/pull/12934
     patch do
-      url "https://github.com/ariya/phantomjs/commit/fe6a96.diff"
-      sha1 "d3efd38e0f3f0da08530d0bf603ea72ebdf06b78"
+      url "https://raw.githubusercontent.com/Homebrew/patches/480b7142c4e2ae07de6028f672695eb927a34875/phantomjs/yosemite.patch"
+      sha256 "f54bd1592185f031552d3ad5c8809ff27e8f3be4f1c05c81b59bf7dbc4a59de1"
     end
   end
 
   bottle do
     cellar :any
-    sha1 "05b3572c88d11a7263d7b97b628793b7d45e3757" => :mavericks
-    sha1 "a53f4d6c08beea6d3c2dbc709994ab33f1b4fe20" => :mountain_lion
-    sha1 "24b6dbefe4186a2ebbaeef0d6cd217aecda1ff59" => :lion
+    sha1 "f9dd71edb662479e0f832379368d4cd4878f940e" => :yosemite
+    sha1 "817ab92d4bfcd5496cf1c59173d48976610e5f70" => :mavericks
+    sha1 "887a96e55f67a3d350bc40f910926286c6cea240" => :mountain_lion
   end
 
-  head "https://github.com/ariya/phantomjs.git"
-
-  depends_on 'openssl'
-
   def install
-    if build.stable? && MacOS.prefer_64_bit?
-      inreplace "src/qt/preconfig.sh", "-arch x86", "-arch x86_64"
-    end
     system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
       "--qt-config", "-openssl-linked"
     bin.install "bin/phantomjs"

@@ -1,15 +1,14 @@
-require 'formula'
-
 class Libmtp < Formula
-  homepage 'http://libmtp.sourceforge.net/'
-  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.8/libmtp-1.1.8.tar.gz"
-  sha1 "6528da141b9f8a04fc97c0b01cf4f3a6142ff64f"
+  desc "Implementation of Microsoft's Media Transfer Protocol (MTP)"
+  homepage "http://libmtp.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.9/libmtp-1.1.9.tar.gz"
+  sha256 "23f1d3c0b54107388bf2824d56415e9e087c980c86e5d179865652c022b6b189"
 
   bottle do
     cellar :any
-    sha1 "e3194ce6f1692562c24ce59b4ba81079e1515817" => :mavericks
-    sha1 "7a8fd87ec676a4d38fb66e038d62c4313a73a71f" => :mountain_lion
-    sha1 "0bd337f0f7d78d65e90c1c385e6d795e847bed96" => :lion
+    sha256 "be5a361ac01b6aaa620c48525bff8de6a2f8e46c11b190c6b307de57dd02c03e" => :yosemite
+    sha256 "620dd6cbd96f7e5287c9c6c2e651a69b303e100f0ebab309267fd4686fdd7d7a" => :mavericks
+    sha256 "7f92dfe69e7732ea5e1e583aae5a259b11302020cfb519372d2d5488662bff1f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -19,6 +18,6 @@ class Libmtp < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-mtpz"
-    system "make install"
+    system "make", "install"
   end
 end

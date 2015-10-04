@@ -1,24 +1,23 @@
-require 'formula'
-
 class Pgbouncer < Formula
-  homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  url 'http://pgfoundry.org/frs/download.php/3393/pgbouncer-1.5.4.tar.gz'
-  sha1 '87c3dd7fc70cbbae93ce8865953891f0aabffd2d'
+  desc "Lightweight connection pooler for PostgreSQL"
+  homepage "http://wiki.postgresql.org/wiki/PgBouncer"
+  url "https://pgbouncer.github.io/downloads/pgbouncer-1.5.5.tar.gz"
+  sha256 "d65a192d1e2e69bf445d536f10211857959fc38e0247d1974e8008253080e234"
 
-  depends_on 'asciidoc' => :build
-  depends_on 'xmlto' => :build
-  depends_on 'libevent'
+  depends_on "asciidoc" => :build
+  depends_on "xmlto" => :build
+  depends_on "libevent"
 
   def install
-    ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
     system "./configure", "--disable-debug",
                           "--with-libevent=#{HOMEBREW_PREFIX}",
                           "--prefix=#{prefix}"
     ln_s "../install-sh", "doc/install-sh"
-    system "make install"
+    system "make", "install"
     bin.install "etc/mkauth.py"
-    etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
+    etc.install %w[etc/pgbouncer.ini etc/userlist.txt]
   end
 
   def caveats; <<-EOS.undent
@@ -56,5 +55,9 @@ class Pgbouncer < Formula
       </dict>
       </plist>
     EOS
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/pgbouncer -V")
   end
 end

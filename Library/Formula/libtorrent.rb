@@ -1,18 +1,21 @@
-require "formula"
-
 class Libtorrent < Formula
-  homepage "http://libtorrent.rakshasa.no/"
-  url "http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.4.tar.gz"
-  sha1 "3a3ca87054d020bc376abe2c1ea15bbbaef31131"
+  desc "BitTorrent library"
+  homepage "https://github.com/rakshasa/libtorrent"
+  url "http://rtorrent.net/downloads/libtorrent-0.13.6.tar.gz"
+  sha256 "2838a08c96edfd936aff8fbf99ecbb930c2bfca3337dd1482eb5fccdb80d5a04"
 
-  bottle do
-    cellar :any
-    sha1 "e64f87dc56f811ed638e21d6010efd671c461d1e" => :mavericks
-    sha1 "328d903212207eea0a9117eee3edbfb707612438" => :mountain_lion
-    sha1 "0061da39b678f0c0859de0ebbae14f5ad70d104a" => :lion
+  def pour_bottle?
+    # https://github.com/Homebrew/homebrew/commit/5eb5e4499c9
+    false
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on "cppunit" => :build
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   # https://github.com/Homebrew/homebrew/issues/24132
   fails_with :clang do
@@ -21,16 +24,17 @@ class Libtorrent < Formula
 
   def install
     # Currently can't build against libc++; see:
-    # https://github.com/mxcl/homebrew/issues/23483
+    # https://github.com/homebrew/homebrew/issues/23483
     # https://github.com/rakshasa/libtorrent/issues/47
     ENV.libstdcxx if ENV.compiler == :clang
 
+    system "sh", "autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-kqueue",
                           "--enable-ipv6"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

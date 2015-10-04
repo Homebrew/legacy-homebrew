@@ -1,20 +1,21 @@
-require 'formula'
-
 # Based on:
-# Apple Open Source: http://www.opensource.apple.com/source/cvs/cvs-45/
+# Apple Open Source: https://opensource.apple.com/source/cvs/cvs-45/
 # MacPorts: https://trac.macports.org/browser/trunk/dports/devel/cvs/Portfile
 # Creating a useful testcase: http://mrsrl.stanford.edu/~brian/cvstutorial/
 
 class Cvs < Formula
-  homepage 'http://cvs.nongnu.org/'
-  url 'http://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2'
-  sha1 '93a8dacc6ff0e723a130835713235863f1f5ada9'
+  desc "Version control system"
+  homepage "http://cvs.nongnu.org/"
+  url "https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2"
+  sha256 "78853613b9a6873a30e1cc2417f738c330e75f887afdaf7b3d0800cb19ca515e"
 
   bottle do
-    cellar :any
-    sha1 "473cd957aca17950993e24ded8cb4b5f39aa94ac" => :mavericks
-    sha1 "a6685b66caee1dc7230409db6043c984ba8ccbd3" => :mountain_lion
-    sha1 "14effa6cf4ffdbff110ce9134537a0984f3fbb21" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "c454f576c58dbabc3d3ce4af4974dfdcf47c4232af3de9275f171a93dbdf264a" => :el_capitan
+    sha1 "054097e7fccf4a8ba60b9d1c364c411a6cd5de3c" => :yosemite
+    sha1 "8e84ffd198414118da1ffb18f9d18a885e68d60f" => :mavericks
+    sha1 "dea18dfba299690f2d8ed5dfc2205323207bc856" => :mountain_lion
   end
 
   keg_only :provided_until_xcode5
@@ -31,10 +32,10 @@ class Cvs < Formula
     "remove-info"       => "7c0c9c406ae8e3d1c81eec5b4ca9e1abe6a8b660",
     "remove-libcrypto"  => "6c83063cb625cd124dcac75527dbaaa2d52d55b6",
     "tag"               => "44374b8601dc7e48cf0f3a558565d28b2d0066ab",
-    "zlib"              => "7781dc997c895df8cfa991ab7a04add245169ea4",
+    "zlib"              => "7781dc997c895df8cfa991ab7a04add245169ea4"
   }.each do |name, sha|
     patch :p0 do
-      url "http://www.opensource.apple.com/source/cvs/cvs-45/patches/#{name}.diff?txt"
+      url "https://opensource.apple.com/source/cvs/cvs-45/patches/#{name}.diff?txt"
       sha1 sha
     end
   end

@@ -1,23 +1,29 @@
-require 'formula'
-
 class Taglib < Formula
-  homepage 'http://taglib.github.io/'
-  url 'https://github.com/taglib/taglib/archive/v1.9.1.tar.gz'
-  sha1 '44165eda04d49214a0c4de121a4d99ae18b9670b'
+  desc "Audio metadata library"
+  homepage "https://taglib.github.io/"
+  url "https://github.com/taglib/taglib/archive/v1.9.1.tar.gz"
+  sha256 "d4da9aaaddf590ff15273b9b2c4622b6ce8377de0f40bab40155d471ede9c585"
+
+  head "https://github.com/taglib/taglib.git"
 
   bottle do
     cellar :any
-    sha1 "ffb7b35a5c94069ff5d9891f1f94aa5c555e7abc" => :mavericks
-    sha1 "c6487d4a603c82d912a6ae5925050f27a656f658" => :mountain_lion
-    sha1 "c28943778af7de98937e3bb3c96d408d334ee619" => :lion
+    revision 1
+    sha256 "1fce4606850daa8617ea9ed41970f0ec60c7348a0f7ad0f7363523a5798585c6" => :el_capitan
+    sha1 "431580f12a7811288b6e3b187ca75bf5e321fd7c" => :yosemite
+    sha1 "7b9a9466fcbfb5952b7c97e739fa38a94e110f16" => :mavericks
+    sha1 "9f12bf0949b250e67cb606cf389a99d7d2bc49ca" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
+
+  option :cxx11
 
   def install
-    ENV.append 'CXXFLAGS', "-DNDEBUG=1"
+    ENV.cxx11 if build.cxx11?
+    ENV.append "CXXFLAGS", "-DNDEBUG=1"
     system "cmake", "-DWITH_MP4=ON", "-DWITH_ASF=ON", *std_cmake_args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

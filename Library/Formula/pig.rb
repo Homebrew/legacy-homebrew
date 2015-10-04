@@ -1,42 +1,30 @@
-require 'formula'
-
 class Pig < Formula
-  homepage 'http://pig.apache.org/'
-  url 'http://www.apache.org/dyn/closer.cgi?path=pig/pig-0.12.0/pig-0.12.0.tar.gz'
-  sha1 'b641a932d45003d2e6350007558d63e69a1bf7c6'
+  desc "Platform for analyzing large data sets"
+  homepage "https://pig.apache.org/"
+  url "https://www.apache.org/dyn/closer.cgi?path=pig/pig-0.15.0/pig-0.15.0.tar.gz"
+  mirror "https://archive.apache.org/dist/pig/pig-0.15.0/pig-0.15.0.tar.gz"
+  sha256 "c52112ca618daaca298cf068e6451449fe946e8dccd812d56f8f537aa275234b"
 
-  patch :DATA
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "42445b9440e6ce97fa9d4f3fa30b228629035782a76b2419415355683beadd62" => :el_capitan
+    sha256 "c937d3472443b64d1f7cbbd1e98caf1bee32787b02be552d0b82f3e1d44225e2" => :yosemite
+    sha256 "1a6a720a36bf3b9812caee860828b028b253190f9cfcc73078afcf6e251176f2" => :mavericks
+    sha256 "ce4626cd10cb18e6c1ef25fee0e6a10a47be587d2913b48fdee0f4ede1a9dc25" => :mountain_lion
+  end
+
+  depends_on :java
 
   def install
-    bin.install 'bin/pig'
-    prefix.install ["pig-#{version}.jar", "pig-#{version}-withouthadoop.jar"]
+    (libexec/"bin").install "bin/pig"
+    libexec.install ["pig-#{version}-core-h1.jar", "pig-#{version}-core-h2.jar", "lib"]
+    (bin/"pig").write_env_script libexec/"bin/pig", Language::Java.java_home_env.merge(:PIG_HOME => libexec)
   end
 
-  def caveats; <<-EOS.undent
-    You may need to set JAVA_HOME:
-      export JAVA_HOME="$(/usr/libexec/java_home)"
+  test do
+    (testpath/"test.pig").write <<-EOS.undent
+      sh echo "Hello World"
     EOS
+    assert_match /Hello World/, shell_output("#{bin}/pig -x local test.pig")
   end
 end
-
-# There's something weird with Pig's launch script, it doesn't find the correct
-# path. This patch finds PIG_HOME from the pig binary path's symlink.
-__END__
-diff -u a/bin/pig b/bin/pig
---- a/bin/pig 2011-09-30 08:55:58.000000000 +1000
-+++ b/bin/pig 2011-11-28 11:18:36.000000000 +1100
-@@ -55,11 +55,8 @@
-
- # resolve links - $0 may be a softlink
- this="${BASH_SOURCE-$0}"
--
--# convert relative path to absolute path
--bin=$(cd -P -- "$(dirname -- "$this")">/dev/null && pwd -P)
--script="$(basename -- "$this")"
--this="$bin/$script"
-+here=$(dirname $this)
-+this="$here"/$(readlink $this)
-
- # the root of the Pig installation
- export PIG_HOME=`dirname "$this"`/..
-

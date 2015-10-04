@@ -1,27 +1,31 @@
-require 'formula'
-
 class Opensc < Formula
-  homepage 'https://github.com/OpenSC/OpenSC/wiki'
-  url 'https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.14.0/opensc-0.14.0.tar.gz'
-  sha1 '4a898e351b0a6d2a5d81576daa7ebed45baf9138'
+  desc "Tools and libraries for smart cards"
+  homepage "https://github.com/OpenSC/OpenSC/wiki"
+  url "https://downloads.sourceforge.net/project/opensc/OpenSC/opensc-0.15.0/opensc-0.15.0.tar.gz"
+  sha256 "399b2107a69e3f67e4e76dc2dbd951dbced8e534b1e0f919e176aea9b85970d7"
+  head "https://github.com/OpenSC/OpenSC.git"
 
   bottle do
-    sha1 "58e3ad4248bc4a10258560a6dd186ec1c86467a4" => :mavericks
-    sha1 "d7b65a4e3c7997340dc102ff3196b594731b2977" => :mountain_lion
-    sha1 "cf7e11fe49ca6910d9374211f6421980f7e0f94f" => :lion
+    sha256 "46276adb22e13910a2a9718dfe22ff498b5db4c9bebc2670f7a90d985aedabc3" => :yosemite
+    sha256 "1d3b371fa3644bb199f6fa8bf9728188a877ad76eac92e89d565ec50c059022c" => :mavericks
+    sha256 "55b76e1388a8c9941adebe1ec1f9c7b86e7f0f636d5cc0aff64c88e419942b57" => :mountain_lion
   end
 
-  head do
-    url 'https://github.com/OpenSC/OpenSC.git'
-
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+  stable do
+    patch :p1 do
+      url "https://github.com/carlhoerberg/OpenSC/commit/e5ae77cae32fdcc7a23d6bd0013c2fd115a43591.diff"
+      sha256 "18bd9b6220bfc03768c6a7f5324e7f3981eff0bc8b8f7eb0f5159508b43d6863"
+    end
   end
 
-  option 'with-man-pages', 'Build manual pages'
+  option "with-man-pages", "Build manual pages"
 
-  depends_on 'docbook-xsl' if build.with? "man-pages"
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "docbook-xsl" if build.with? "man-pages"
+  depends_on "openssl"
 
   def install
     args = []
@@ -30,7 +34,7 @@ class Opensc < Formula
       args << "--with-xsl-stylesheetsdir=#{Formula["docbook-xsl"].opt_prefix}/docbook-xsl"
     end
 
-    system "./bootstrap" if build.head?
+    system "./bootstrap"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-sm",
@@ -38,6 +42,10 @@ class Opensc < Formula
                           "--enable-pcsc",
                           *args
 
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/opensc-tool", "-i"
   end
 end

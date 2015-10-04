@@ -1,23 +1,24 @@
-require 'formula'
-
 class Libspiro < Formula
-  homepage 'https://github.com/fontforge/libspiro'
-  url 'https://downloads.sourceforge.net/project/libspiro/libspiro/20071029/libspiro_src-20071029.tar.bz2'
-  sha1 'd8b407b835b35289af2914877a4c6000b4fdd382'
+  desc "Library to simplify the drawing of curves"
+  homepage "https://github.com/fontforge/libspiro"
+  url "https://downloads.sourceforge.net/project/libspiro/libspiro/20071029/libspiro_src-20071029.tar.bz2"
+  sha256 "1efeb1527bd48f8787281e8be1d0e8ff2e584d4c1994a0bc2f6859be2ffad4cf"
 
   bottle do
     cellar :any
-    sha1 "4ebd6f91e64df94b0179cbf03c9501fc3b0529b4" => :mavericks
-    sha1 "0688c000586452e80912483a796cfca22603f861" => :mountain_lion
-    sha1 "9dd35b944eec51af1b795708fe5c4a8f53c92251" => :lion
+    revision 1
+    sha256 "b74aa7a260b965d0910c86eff34bb29268efe56d2050063ad21e5261b7767697" => :el_capitan
+    sha1 "ef44221e7e675704a36b0e0e8a78b350c22f67bf" => :yosemite
+    sha1 "a1beaa7f9e7d1733fd0ab905c4445c30352e876d" => :mavericks
+    sha1 "46e386cb03763d3de5b584afd77315ee044bcd2b" => :mountain_lion
   end
 
   head do
-    url 'https://github.com/fontforge/libspiro.git'
+    url "https://github.com/fontforge/libspiro.git"
 
-    depends_on :automake
-    depends_on :autoconf
-    depends_on :libtool
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   def install
@@ -27,6 +28,6 @@ class Libspiro < Formula
     end
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

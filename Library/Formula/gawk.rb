@@ -1,15 +1,15 @@
-require "formula"
-
 class Gawk < Formula
-  homepage "http://www.gnu.org/software/gawk/"
-  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.1.tar.xz"
-  mirror "http://ftp.gnu.org/gnu/gawk/gawk-4.1.1.tar.xz"
-  sha1 "547feb48d20e923aff58daccee97c94e047fdc18"
+  desc "GNU awk utility"
+  homepage "https://www.gnu.org/software/gawk/"
+  url "http://ftpmirror.gnu.org/gawk/gawk-4.1.3.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gawk/gawk-4.1.3.tar.xz"
+  sha256 "e3cf55e91e31ea2845f8338bedd91e40671fc30e4d82ea147d220e687abda625"
 
   bottle do
-    sha1 "8fa017184dc02cdc122d5681b6824fd12be01def" => :mavericks
-    sha1 "141a930482411bf368444dc214b87bd97a44360a" => :mountain_lion
-    sha1 "a01d86d2749c9757c4e45e48154844f8fa5edce3" => :lion
+    sha256 "ed2c5f0b20e4b4af151177a750b1287435aad66bb0c8c4b60daf753f3955332c" => :el_capitan
+    sha256 "c6fd269bedf83b9016fb8e09186de1c88ce18f51b1ad471f4b5ad4262066dda2" => :yosemite
+    sha256 "30486a1665295a3fee02e22465869cec9297aec262554a470bbc7f127d1766e5" => :mavericks
+    sha256 "d9edeb691699655ff990e2227abf67568916640eeffbbca959dbf3b2779c371e" => :mountain_lion
   end
 
   fails_with :llvm do
@@ -25,12 +25,12 @@ class Gawk < Formula
                           "--without-mpfr",
                           "--without-libsigsegv-prefix"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 
   test do
     output = pipe_output("#{bin}/gawk '{ gsub(/Macro/, \"Home\"); print }' -", "Macrobrew")
-    assert_equal 'Homebrew', output.strip
+    assert_equal "Homebrew", output.strip
   end
 end

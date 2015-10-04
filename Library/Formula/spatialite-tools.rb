@@ -1,29 +1,28 @@
-require 'formula'
-
 class SpatialiteTools < Formula
-  homepage 'https://www.gaia-gis.it/fossil/spatialite-tools/index'
-  url "http://www.gaia-gis.it/gaia-sins/spatialite-tools-4.2.0.tar.gz"
-  sha1 "de07042afa734b17c840318fa8772466f53f1831"
+  desc "CLI tools supporting SpatiaLite"
+  homepage "https://www.gaia-gis.it/fossil/spatialite-tools/index"
+  url "https://www.gaia-gis.it/gaia-sins/spatialite-tools-sources/spatialite-tools-4.3.0.tar.gz"
+  sha256 "f739859bc04f38735591be2f75009b98a2359033675ae310dffc3114a17ccf89"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "88327209bbaa7771ab7229776e212e25b6c903d9" => :mavericks
-    sha1 "a5080c103bcc55bb670bbfbd3f0f6a3503f1bc4d" => :mountain_lion
-    sha1 "bd3ea917dfdeee795af8119303baf318a395a411" => :lion
+    sha256 "dd0b769d4ff1929b0788a80dfcad842fdc92be212efc39d4eb7e20f9251d1f86" => :el_capitan
+    sha256 "727464d0362152f24aa75ffb6ad60e7454394a75fbb2a07ba9e1436a6d7ac8dc" => :yosemite
+    sha256 "a6bd943c2d1bfed507c8b53aa1d2d8e00ea129ab3da6095b90eebf64c6e3b381" => :mavericks
+    sha256 "6dc0983b61eabf074d24acd3bcdc7df675a1abd7caf5069eb4598a81881049d4" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libspatialite'
-  depends_on 'readosm'
+  depends_on "pkg-config" => :build
+  depends_on "libspatialite"
+  depends_on "readosm"
 
   def install
     # See: https://github.com/Homebrew/homebrew/issues/3328
-    ENV.append 'LDFLAGS', '-liconv'
+    ENV.append "LDFLAGS", "-liconv"
     # Ensure Homebrew SQLite is found before system SQLite.
     sqlite = Formula["sqlite"]
-    ENV.append 'LDFLAGS', "-L#{sqlite.opt_lib}"
-    ENV.append 'CFLAGS', "-I#{sqlite.opt_include}"
+    ENV.append "LDFLAGS", "-L#{sqlite.opt_lib}"
+    ENV.append "CFLAGS", "-I#{sqlite.opt_include}"
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
@@ -31,6 +30,6 @@ class SpatialiteTools < Formula
   end
 
   test do
-    system "#{bin}/spatialite --version"
+    system bin/"spatialite", "--version"
   end
 end

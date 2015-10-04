@@ -1,15 +1,14 @@
-require 'formula'
-
 class Zxcc < Formula
-  homepage 'http://www.seasip.info/Unix/Zxcc/'
-  url 'http://www.seasip.info/Unix/Zxcc/zxcc-0.5.7.tar.gz'
-  sha1 'cc088ef24b2a62fc2673a593982dd62c16136f18'
+  desc "CP/M 2/3 emulator for cross-compiling and CP/M tools under UNIX"
+  homepage "http://www.seasip.info/Unix/Zxcc/"
+  url "http://www.seasip.info/Unix/Zxcc/zxcc-0.5.7.tar.gz"
+  sha256 "6095119a31a610de84ff8f049d17421dd912c6fd2df18373e5f0a3bc796eb4bf"
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 
   test do

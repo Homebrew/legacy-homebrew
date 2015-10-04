@@ -1,22 +1,22 @@
-require 'formula'
-
 class Sproxy < Formula
-  homepage 'http://www.joedog.org/index/sproxy-home'
-  url 'http://www.joedog.org/pub/sproxy/sproxy-1.02.tar.gz'
-  sha1 'afda6727f7a65445556cd849161c0c752c47a7f6'
+  desc "HTTP proxy server collecting URLs in a 'siege-friendly' manner"
+  homepage "http://www.joedog.org/sproxy-home/"
+  url "http://download.joedog.org/sproxy/sproxy-1.02.tar.gz"
+  sha256 "29b84ba66112382c948dc8c498a441e5e6d07d2cd5ed3077e388da3525526b72"
 
   bottle do
-    sha1 "704405b86b25ab918c032f1acd1406c6d3cd9303" => :mavericks
-    sha1 "406908571ae5c9ff66df74b06c28ae4b9ca46d8b" => :mountain_lion
-    sha1 "0fcd7718cc091d48d74e72093a40acc9a650a208" => :lion
+    revision 1
+    sha1 "76ec93a0851c1d0b7f55f585550079a2273648e1" => :yosemite
+    sha1 "cd11be8dd8662f94005f4c787b399cab0eea5f88" => :mavericks
+    sha1 "9574960690dd1700496515f35456570fcefaef8a" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
     # Makefile doesn't honor mandir, so move manpages post-install
-    share.install prefix+'man'
+    share.install prefix+"man"
   end
 end

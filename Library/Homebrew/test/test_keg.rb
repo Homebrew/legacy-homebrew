@@ -1,6 +1,6 @@
-require 'testing_env'
-require 'keg'
-require 'stringio'
+require "testing_env"
+require "keg"
+require "stringio"
 
 class LinkTests < Homebrew::TestCase
   include FileUtils
@@ -9,7 +9,7 @@ class LinkTests < Homebrew::TestCase
     keg = HOMEBREW_CELLAR.join("foo", "1.0")
     keg.join("bin").mkpath
 
-    %w{hiworld helloworld goodbye_cruel_world}.each do |file|
+    %w[hiworld helloworld goodbye_cruel_world].each do |file|
       touch keg.join("bin", file)
     end
 
@@ -48,13 +48,43 @@ class LinkTests < Homebrew::TestCase
     refute_predicate @dst, :symlink?
   end
 
+  def test_oldname_opt_record
+    assert_nil @keg.oldname_opt_record
+    oldname_opt_record = HOMEBREW_PREFIX/"opt/oldfoo"
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/1.0")
+    assert_equal oldname_opt_record, @keg.oldname_opt_record
+  end
+
+  def test_optlink_relink
+    oldname_opt_record = HOMEBREW_PREFIX/"opt/oldfoo"
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/1.0")
+    keg_record = HOMEBREW_CELLAR.join("foo", "2.0")
+    keg_record.join("bin").mkpath
+    keg = Keg.new(keg_record)
+    keg.optlink
+    assert_equal keg_record, oldname_opt_record.resolved_path
+    keg.uninstall
+    refute_predicate oldname_opt_record, :symlink?
+  end
+
+  def test_remove_oldname_opt_record
+    oldname_opt_record = HOMEBREW_PREFIX/"opt/oldfoo"
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/2.0")
+    @keg.remove_oldname_opt_record
+    assert_predicate oldname_opt_record, :symlink?
+    oldname_opt_record.unlink
+    oldname_opt_record.make_relative_symlink(HOMEBREW_CELLAR/"foo/1.0")
+    @keg.remove_oldname_opt_record
+    refute_predicate oldname_opt_record, :symlink?
+  end
+
   def test_link_dry_run
     @mode.dry_run = true
 
     assert_equal 0, @keg.link(@mode)
     refute_predicate @keg, :linked?
 
-    ['hiworld', 'helloworld', 'goodbye_cruel_world'].each do |file|
+    ["hiworld", "helloworld", "goodbye_cruel_world"].each do |file|
       assert_match "#{HOMEBREW_PREFIX}/bin/#{file}", $stdout.string
     end
     assert_equal 3, $stdout.string.lines.count
@@ -207,6 +237,13 @@ class LinkTests < Homebrew::TestCase
     assert_predicate link.lstat, :directory?
   end
 
+  def test_cmake_is_mkpathed
+    link = HOMEBREW_PREFIX.join("lib", "cmake")
+    @keg.join("lib", "cmake").mkpath
+    @keg.link
+    assert_predicate link.lstat, :directory?
+  end
+
   def test_symlinks_are_linked_directly
     link = HOMEBREW_PREFIX.join("lib", "pkgconfig")
 
@@ -226,11 +263,33 @@ class LinkTests < Homebrew::TestCase
     a.join("lib", "example2").make_symlink "example"
     b.join("lib", "example2").mkpath
 
-    Keg.new(a).link
+    a = Keg.new(a)
+    b = Keg.new(b)
+    a.link
 
     lib = HOMEBREW_PREFIX.join("lib")
     assert_equal 2, lib.children.length
-    assert_raises(Keg::ConflictError) { Keg.new(b).link }
+    assert_raises(Keg::ConflictError) { b.link }
     assert_equal 2, lib.children.length
+  ensure
+    a.unlink
+    a.uninstall
+    b.uninstall
+  end
+
+  def test_removes_broken_symlinks_that_conflict_with_directories
+    a = HOMEBREW_CELLAR.join("a", "1.0")
+    a.join("lib", "foo").mkpath
+
+    keg = Keg.new(a)
+
+    link = HOMEBREW_PREFIX.join("lib", "foo")
+    link.parent.mkpath
+    link.make_symlink(@nonexistent)
+
+    keg.link
+  ensure
+    keg.unlink
+    keg.uninstall
   end
 end

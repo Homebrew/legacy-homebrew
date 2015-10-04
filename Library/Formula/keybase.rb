@@ -1,36 +1,31 @@
-require "formula"
-
-class GPGDependency < Requirement
-  fatal true
-  default_formula "gpg"
-  satisfy { which("gpg") || which("gpg2") }
-end
-
 class Keybase < Formula
+  desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/node-client/archive/v0.6.2.tar.gz"
-  sha1 "709d40cc076578081715c243e1ca5d70d310aeea"
+  url "https://github.com/keybase/node-client/archive/v0.8.19.tar.gz"
+  sha256 "a760368cd8a0d02d0228335f82f7700e7bb3cfdd4bbedd63608f2d9c631eb75e"
   head "https://github.com/keybase/node-client.git"
 
   depends_on "node"
-  depends_on GPGDependency
+  depends_on :gpg
 
   def install
+    # remove self-update command
+    # https://github.com/keybase/keybase-issues/issues/1477
+    rm "lib/command/update.js"
+    inreplace "lib/command/all.js", '"update", ', ""
+    inreplace "lib/req.js", "keybase-installer", "brew update && brew upgrade keybase"
+
     libexec.install Dir["*"]
     (bin/"keybase").write <<-EOS.undent
       #!/bin/sh
       export KEYBASE_BIN="#{bin}/keybase"
-      exec "#{HOMEBREW_PREFIX}/opt/node/bin/node" "#{libexec}/bin/main.js" "$@"
-    EOS
-  end
-
-  def caveats;<<-EOS.undent if which("gpg2") && !which("gpg")
-      Run below command if you use gpg2 as keybase's backend
-        keybase config gpg gpg2
+      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/main.js" "$@"
     EOS
   end
 
   test do
-    system "#{bin}/keybase", "id", "maria"
+    # Keybase requires a valid GPG keychain to be set up. Fetch Homebrew's pubkey.
+    system "gpg", "--keyserver", "pgp.mit.edu", "--recv-keys", "0xE33A3D3CCE59E297"
+    system "#{bin}/keybase", "id", "homebrew"
   end
 end

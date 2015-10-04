@@ -1,9 +1,9 @@
-require 'set'
+require "set"
 
 class Option
   attr_reader :name, :description, :flag
 
-  def initialize(name, description="")
+  def initialize(name, description = "")
     @name = name
     @flag = "--#{name}"
     @description = description
@@ -32,11 +32,33 @@ class Option
   end
 end
 
+class DeprecatedOption
+  attr_reader :old, :current
+
+  def initialize(old, current)
+    @old = old
+    @current = current
+  end
+
+  def old_flag
+    "--#{old}"
+  end
+
+  def current_flag
+    "--#{current}"
+  end
+
+  def ==(other)
+    instance_of?(other.class) && old == other.old && current == other.current
+  end
+  alias_method :eql?, :==
+end
+
 class Options
   include Enumerable
 
   def self.create(array)
-    new array.map { |e| Option.new(e[/^--(.+)$/, 1] || e) }
+    new array.map { |e| Option.new(e[/^--([^=]+=?)(.+)?$/, 1] || e) }
   end
 
   def initialize(*args)

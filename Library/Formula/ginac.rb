@@ -1,23 +1,48 @@
-require 'formula'
-
 class Ginac < Formula
-  homepage 'http://www.ginac.de/'
-  url 'http://www.ginac.de/ginac-1.6.2.tar.bz2'
-  sha1 'c93913c4c543874b2ade4f0390030641be7e0c41'
+  desc "GiNaC is Not a Computer algebra system"
+  homepage "http://www.ginac.de/"
+  url "http://www.ginac.de/ginac-1.6.4.tar.bz2"
+  sha256 "6241158216b4f68c625ce7d843d5b6b070304f87e7fc8f4075b76501ca0f3c60"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cln'
-  depends_on 'readline'
-
-  # Fixes compilation with libc++; already applied upstream
-  patch do
-    url "http://www.ginac.de/ginac.git?p=ginac.git;a=commitdiff_plain;h=5bf87cea66bb2071222c2910ed68c2649a98906c"
-    sha1 "415dad5f0f233268ad743e5beacf99c03bb339ae"
+  bottle do
+    cellar :any
+    sha256 "c10a38a7217934a63a76da2c29986c4093c3e5c0ff419cb8363f576c0aea5ef7" => :yosemite
+    sha256 "526b8c7b60c708d6a8768c1fcc31b463ea86622af598d7aa2a76ba49185d4ff7" => :mavericks
+    sha256 "fed7446f2fe22e0ac04796d363edb159f5882501b7c354efb08636d5e88f21af" => :mountain_lion
   end
+
+  depends_on "pkg-config" => :build
+  depends_on "cln"
+  depends_on "readline"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+    #include <iostream>
+    #include <ginac/ginac.h>
+    using namespace std;
+    using namespace GiNaC;
+
+    int main() {
+      symbol x("x"), y("y");
+      ex poly;
+
+      for (int i=0; i<3; ++i) {
+        poly += factorial(i+16)*pow(x,i)*pow(y,2-i);
+      }
+
+      cout << poly << endl;
+      return 0;
+    }
+    EOS
+    system ENV.cxx, "test.cpp", "-L#{lib}",
+                                "-L#{Formula["cln"].lib}",
+                                "-lcln", "-lginac", "-o", "test"
+    system "./test"
   end
 end

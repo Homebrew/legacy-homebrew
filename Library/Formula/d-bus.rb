@@ -1,21 +1,19 @@
-require "formula"
-
 class DBus < Formula
-  homepage "http://www.freedesktop.org/wiki/Software/dbus"
-  url "http://dbus.freedesktop.org/releases/dbus/dbus-1.8.8.tar.gz"
-  sha1 "e0d10e8b4494383c7e366ac80a942ba45a705a96"
+  # releases: even (1.10.x) = stable, odd (1.11.x) = development
+  desc "Message bus system, providing inter-application communication"
+  homepage "https://wiki.freedesktop.org/www/Software/dbus"
 
-  bottle do
-    sha1 "52ccc0020b2509ceb76f091d9d9b218da69bef9c" => :mavericks
-    sha1 "3c9477e550084961fa7f5112b791ff4a2d012e2e" => :mountain_lion
-    sha1 "a14cb84cdb5e6ea7da0b808c336bed7fe2068038" => :lion
+  stable do
+    url "http://dbus.freedesktop.org/releases/dbus/dbus-1.10.0.tar.gz"
+    mirror "https://mirrors.kernel.org/debian/pool/main/d/dbus/dbus_1.10.0.orig.tar.gz"
+    sha256 "1dfb9745fb992f1ccd43c920490de8caddf6726a6222e8b803be6098293f924b"
   end
 
-  # Upstream fix for O_CLOEXEC portability
-  # http://cgit.freedesktop.org/dbus/dbus/commit/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472
-  patch do
-    url "http://cgit.freedesktop.org/dbus/dbus/patch/?id=5d91f615d18629eaac074fbde2ee7e17b82e5472"
-    sha1 "ebb383abb86eeafbe048dbb8b77d83bdf0b7c9bb"
+  bottle do
+    sha256 "68500e3670555c2bf5eaeae7541111f9052e92c4a7b28410a0ded25fd7cac544" => :el_capitan
+    sha256 "5a49bcf55334b90e3cd6725b7cc6f0383bcf0160ca7a8d12611107ac7f6a022a" => :yosemite
+    sha256 "a2b9e6c8e84a6e199dcd22d748b3c617285a1eba4ec0b042fa16e9171e96bd91" => :mavericks
+    sha256 "8f571788a6bd6209e27b4e4cbdd4e1d2179b7f3bbdb35262c3159ff28336b76a" => :mountain_lion
   end
 
   def install
@@ -34,7 +32,7 @@ class DBus < Formula
                           "--disable-tests"
     system "make"
     ENV.deparallelize
-    system "make install"
+    system "make", "install"
 
     (prefix+"org.freedesktop.dbus-session.plist").chmod 0644
   end
@@ -44,16 +42,7 @@ class DBus < Formula
     system "#{bin}/dbus-uuidgen", "--ensure=#{var}/lib/dbus/machine-id"
   end
 
-  def caveats; <<-EOS.undent
-    If this is your first install, automatically load on login with:
-        mkdir -p ~/Library/LaunchAgents
-        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-
-    If this is an upgrade and you already have the org.freedesktop.dbus-session.plist loaded:
-        launchctl unload -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-        cp #{prefix}/org.freedesktop.dbus-session.plist ~/Library/LaunchAgents/
-        launchctl load -w ~/Library/LaunchAgents/org.freedesktop.dbus-session.plist
-    EOS
+  test do
+    system "#{bin}/dbus-daemon", "--version"
   end
 end

@@ -1,7 +1,18 @@
-require 'formula'
+class Browser < Formula
+  url "https://gist.github.com/defunkt/318247/raw/7720fc969d58a9bfdc74d71deaa15c1eb7582fc1/browser",
+    :using => :nounzip
+  desc "Pipe HTML to a browser"
+  homepage "https://gist.github.com/318247/"
+  sha256 "273343d6cf9ed543ccea47b85a2ad2ef2afe7b7a2b956f2e7a24ce0175326dcc"
+  # This the gist revision number
+  version "7"
 
-class Browser < GithubGistFormula
-  url 'https://gist.githubusercontent.com/defunkt/318247/raw/bcbcf6c5fb730b4f508c633cce56ba17828825c8/browser'
-  homepage 'https://gist.github.com/318247/'
-  sha1 '3474d81ef6eaaf13554fd6aa03e5227c4c72f1bb'
+  def install
+    bin.install "browser"
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    system "#{bin}/browser"
+  end
 end

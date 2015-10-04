@@ -1,22 +1,20 @@
-require "formula"
-
 class Liquibase < Formula
+  desc "Library for database change tracking"
   homepage "http://liquibase.org"
-  url "https://downloads.sourceforge.net/project/liquibase/Liquibase%20Core/liquibase-3.2.2-bin.tar.gz"
-  sha1 "7d35f3414253e0e2f81fc5a9d1db8ed9c0673f88"
+  url "https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.4.1/liquibase-3.4.1-bin.tar.gz"
+  sha256 "693919918e217e7a88c5140e82f279f31f636233a62cd2108abdafa4f3ed0a02"
 
   def install
     rm_f Dir["*.bat"]
     chmod 0755, "liquibase"
     prefix.install_metafiles
     libexec.install Dir["*"]
-    bin.install_symlink libexec+"liquibase"
+    bin.install_symlink libexec/"liquibase"
   end
 
-  def caveats
-    <<-EOS.undent
-      You should set the environment variable LIQUIBASE_HOME to
-        #{libexec}
+  def caveats; <<-EOS.undent
+    You should set the environment variable LIQUIBASE_HOME to
+      #{libexec}
     EOS
   end
 

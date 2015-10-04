@@ -1,23 +1,21 @@
-require 'formula'
-
 class AircrackNg < Formula
-  homepage 'http://aircrack-ng.org/'
-  url 'http://download.aircrack-ng.org/aircrack-ng-1.1.tar.gz'
-  sha1 '16eed1a8cf06eb8274ae382150b56589b23adf77'
+  desc "Next-generation aircrack with lots of new features"
+  homepage "http://aircrack-ng.org/"
+  # We can't update this due to linux-only dependencies in >1.1.
+  # See https://github.com/Homebrew/homebrew/issues/29450
+  url "http://download.aircrack-ng.org/aircrack-ng-1.1.tar.gz"
+  sha256 "b136b549b7d2a2751c21793100075ea43b28de9af4c1969508bb95bcc92224ad"
+  revision 1
+
+  depends_on "pkg-config" => :build
+  depends_on "sqlite"
+  depends_on "openssl"
 
   # Remove root requirement from OUI update script. See:
   # https://github.com/Homebrew/homebrew/pull/12755
   patch :DATA
 
   def install
-    # Force i386, otherwise you get errors:
-    #  sha1-sse2.S:190:32-bit absolute addressing is not supported for x86-64
-    #  sha1-sse2.S:190:cannot do signed 4 byte relocation
-    %w{ CFLAGS CXXFLAGS LDFLAGS OBJCFLAGS OBJCXXFLAGS }.each do |compiler_flag|
-      ENV.remove compiler_flag, "-arch #{Hardware::CPU.arch_64_bit}"
-      ENV.append compiler_flag, "-arch #{Hardware::CPU.arch_32_bit}"
-    end
-
     # Fix incorrect OUI url
     inreplace "scripts/airodump-ng-oui-update",
       "http://standards.ieee.org/regauth/oui/oui.txt",

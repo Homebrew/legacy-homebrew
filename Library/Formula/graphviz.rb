@@ -1,14 +1,23 @@
-require "formula"
-
 class Graphviz < Formula
+  desc "Graph visualization software from AT&T and Bell Labs"
   homepage "http://graphviz.org/"
   url "http://graphviz.org/pub/graphviz/stable/SOURCES/graphviz-2.38.0.tar.gz"
-  sha1 "053c771278909160916ca5464a0a98ebf034c6ef"
+  sha256 "81aa238d9d4a010afa73a9d2a704fc3221c731e1e06577c2ab3496bdef67859e"
+
+  head do
+    url "https://github.com/ellson/graphviz.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
-    sha1 "112471c5d0e25a953ae64c09db48f434e744f558" => :mavericks
-    sha1 "7dcc9f76ce2b8978a77d114354471c7c931a4b54" => :mountain_lion
-    sha1 "9effcb470b301098a54566f6d335f2eee6491d71" => :lion
+    revision 1
+    sha256 "cf69eac548a5c02aacc966706fc4a922176059414fbe453680aae4552fc019dc" => :el_capitan
+    sha1 "a3461628baba501e16c63ceaa0414027f7e26c7f" => :yosemite
+    sha1 "dc7f915d199931a49fb2a8eb623b329fed6c619c" => :mavericks
+    sha1 "ec730f7cdd3e9549610960ecab86dac349e2f8ea" => :mountain_lion
   end
 
   # To find Ruby and Co.
@@ -16,30 +25,36 @@ class Graphviz < Formula
 
   option :universal
   option "with-bindings", "Build Perl/Python/Ruby/etc. bindings"
-  option "with-pangocairo", "Build with Pango/Cairo for alternate PDF output"
-  option "with-x", "Build with X11 support"
+  option "with-pango", "Build with Pango/Cairo for alternate PDF output"
   option "with-app", "Build GraphViz.app (requires full XCode install)"
   option "with-gts", "Build with GNU GTS support (required by prism)"
 
-  depends_on "libpng"
+  deprecated_option "with-x" => "with-x11"
+  deprecated_option "with-pangocairo" => "with-pango"
 
   depends_on "pkg-config" => :build
-  depends_on "pango" if build.with? "pangocairo"
-  depends_on "swig" if build.with? "bindings"
-  depends_on :python if build.with? "bindings"
+  depends_on :xcode => :build if build.with? "app"
+  depends_on "pango" => :optional
   depends_on "gts" => :optional
   depends_on "librsvg" => :optional
   depends_on "freetype" => :optional
-  depends_on :x11 if build.with? "x"
-  depends_on :xcode => :build if build.with? "app"
+  depends_on :x11 => :optional
+  depends_on "libpng"
+
+  if build.with? "bindings"
+    depends_on "swig" => :build
+    depends_on :python
+    depends_on :java
+  end
 
   fails_with :clang do
     build 318
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff"
-    sha1 "b242fb8fa81489dd16830e5df6bbf5448a3874d5"
+    url "https://raw.githubusercontent.com/DomT4/scripts/46364470b/Homebrew_Resources/MacPorts_Import/graphviz/r103168/patch-project.pbxproj.diff"
+    mirror "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff"
+    sha256 "7c8d5c2fd475f07de4ca3a4340d722f472362615a369dd3f8524021306605684"
   end
 
   def install
@@ -51,9 +66,9 @@ class Graphviz < Formula
             "--with-quartz"]
     args << "--with-gts" if build.with? "gts"
     args << "--disable-swig" if build.without? "bindings"
-    args << "--without-pangocairo" if build.without? "pangocairo"
+    args << "--without-pangocairo" if build.without? "pango"
     args << "--without-freetype2" if build.without? "freetype"
-    args << "--without-x" if build.without? "x"
+    args << "--without-x" if build.without? "x11"
     args << "--without-rsvg" if build.without? "librsvg"
 
     if build.with? "bindings"
@@ -62,7 +77,11 @@ class Graphviz < Formula
                              'PYTHON_LIBS="-L$PYTHON_PREFIX/lib -lpython$PYTHON_VERSION_SHORT"'
     end
 
-    system "./configure", *args
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
     system "make", "install"
 
     if build.with? "app"

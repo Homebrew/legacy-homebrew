@@ -1,26 +1,28 @@
-require "formula"
-
 class Osxfuse < Formula
-  homepage "http://osxfuse.github.io"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.7.1"
+  desc "FUSE for OS X: extend native file handling via 3rd-party file systems"
+  homepage "https://osxfuse.github.io/"
+  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.8.0",
+                                                :revision => "6a1e7793079d446950f6aaa250e4762710ad326e"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
   bottle do
-    sha1 "4bd80122d662bf283fb400f3ea6cfe5369f9af7f" => :mavericks
-    sha1 "f9b3687629cdd8fa92e2805e1e4b4b63521bcaf5" => :mountain_lion
-    sha1 "81de3186770d7c93dfa6cd8626016c78bf0b1ee2" => :lion
+    sha256 "6eee4b8e976b528d5007d92b3fe267e256380164d9be9446541428da0715b626" => :mavericks
   end
 
   depends_on :macos => :snow_leopard
   depends_on :xcode => :build
-  depends_on ConflictsWithBinaryOsxfuse
+
+  # A fairly heinous hack to workaround our dependency resolution getting upset
+  # See https://github.com/Homebrew/homebrew/issues/35073
+  depends_on NonBinaryOsxfuseRequirement => :build
+  depends_on UnsignedKextRequirement => [:cask => "osxfuse",
+                                         :download => "http://sourceforge.net/projects/osxfuse/files/"]
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "gettext" => :build
-
-  conflicts_with "fuse4x", :because => "both install `fuse.pc`"
 
   def install
     # Do not override Xcode build settings

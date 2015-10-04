@@ -1,13 +1,15 @@
-require "formula"
-
 class RexsterConsole < Formula
+  desc "Graph server exposing Blueprints graph via REST"
   homepage "https://github.com/tinkerpop/rexster/wiki"
-  url "http://tinkerpop.com/downloads/rexster/rexster-console-2.5.0.zip"
-  sha1 "0243908c0ab65baea4b8092bb2b818c597622187"
+  url "http://tinkerpop.com/downloads/rexster/rexster-console-2.6.0.zip"
+  sha256 "5f3af7bfc95847e8efa28610b23e2c175c6d92c14e5f3a468b9476cb1f2dfe1e"
 
-  # Upstream in next release:
-  # https://github.com/tinkerpop/rexster/commit/ac1d51c37b0bd7ccebd96e5605969b74a4ca1288
-  patch :DATA
+  bottle do
+    cellar :any
+    sha256 "affe578e75691159a7a850c8b144eaaabc58d8375d7172852069b951ddc88239" => :yosemite
+    sha256 "17254b31620dc42f4ee9c49a7bba38a1506312939dcf8d2a54a16f1a6cafd2e6" => :mavericks
+    sha256 "a9dd91d430d35af266e9298d3bae82445f6cbf0521cb615f5cbc854974b89308" => :mountain_lion
+  end
 
   def install
     libexec.install %w[lib doc]
@@ -20,32 +22,3 @@ class RexsterConsole < Formula
     system "#{bin}/rexster-console", "-h"
   end
 end
-
-__END__
-diff --git a/bin/rexster-console.sh b/bin/rexster-console.sh
-index 3fb2022..29554a5 100755
---- a/bin/rexster-console.sh
-+++ b/bin/rexster-console.sh
-@@ -1,8 +1,19 @@
- #!/bin/bash
-
--CP=$( echo `dirname $0`/../lib/*.jar . | sed 's/ /:/g')
--CP=$CP:$( echo `dirname $0`/../ext/*.jar . | sed 's/ /:/g')
--#echo $CP
-+# From: http://stackoverflow.com/a/246128
-+#   - To resolve finding the directory after symlinks
-+SOURCE="${BASH_SOURCE[0]}"
-+# resolve $SOURCE until the file is no longer a symlink
-+while [ -h "$SOURCE" ]; do
-+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-+  SOURCE="$(readlink "$SOURCE")"
-+  # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
-+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
-+done
-+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-+
-+CP=$( echo $DIR/../lib/*.jar . | sed 's/ /:/g')
-+CP=$CP:$( echo $DIR/../ext/*.jar . | sed 's/ /:/g')
-
- # Find Java
- if [ "$JAVA_HOME" = "" ] ; then

@@ -1,18 +1,24 @@
-require "formula"
-
 class Pyqt < Formula
+  desc "Python bindings for Qt"
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
-  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.1/PyQt-mac-gpl-4.11.1.tar.gz"
-  sha1 "9d7478758957c60ac5007144a0dc7f157f4a5836"
+  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.3/PyQt-mac-gpl-4.11.3.tar.gz"
+  sha256 "8b8bb3a2ef8b7368710e0bc59d6e94e1f513f7dbf10a3aaa3154f7b848c88b4d"
+  revision 1
 
-  depends_on :python => :recommended
+  bottle do
+    sha256 "45a0bd946b7eca2af72aa3e56bda87ad90ef54bda91f0aea05c0ea2d50d6e8c4" => :el_capitan
+    sha256 "6a5726eb3dff684c7052ea52db633f8c5333a947f97bdfab887e204b846abd7c" => :yosemite
+    sha256 "c0edd4c00b302e8e5baaa87b2c9d0e2037e93b42b0aec007dd24b80b4fbed847" => :mavericks
+  end
+
+  option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
 
   if build.without?("python3") && build.without?("python")
     odie "pyqt: --with-python3 must be specified when using --without-python"
   end
 
-  depends_on 'qt'  # From their site: PyQt currently supports Qt v4 and will build against Qt v5
+  depends_on "qt"
 
   if build.with? "python3"
     depends_on "sip" => "with-python3"
@@ -22,17 +28,17 @@ class Pyqt < Formula
 
   def install
     # On Mavericks we want to target libc++, this requires a non default qt makespec
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
       ENV.append "QMAKESPEC", "unsupported/macx-clang-libc++"
     end
 
     Language::Python.each_python(build) do |python, version|
-      ENV.append_path "PYTHONPATH", HOMEBREW_PREFIX/"opt/sip/lib/python#{version}/site-packages"
+      ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
 
       args = ["--confirm-license",
               "--bindir=#{bin}",
               "--destdir=#{lib}/python#{version}/site-packages",
-              "--sipdir=#{HOMEBREW_PREFIX}/share/sip"]
+              "--sipdir=#{share}/sip"]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by QGIS, PyQWT (and many other PyQt interoperable
@@ -49,9 +55,10 @@ class Pyqt < Formula
       require "tmpdir"
       dir = Dir.mktmpdir
       begin
-        cp_r(Dir.glob('*'), dir)
+        cp_r(Dir.glob("*"), dir)
         cd dir do
           system python, "configure.py", *args
+          inreplace "pyqtconfig.py", Formula["qt"].prefix, Formula["qt"].opt_prefix
           (lib/"python#{version}/site-packages/PyQt4").install "pyqtconfig.py"
         end
       ensure
@@ -59,7 +66,7 @@ class Pyqt < Formula
       end
 
       # On Mavericks we want to target libc++, this requires a non default qt makespec
-      if ENV.compiler == :clang and MacOS.version >= :mavericks
+      if ENV.compiler == :clang && MacOS.version >= :mavericks
         args << "--spec" << "unsupported/macx-clang-libc++"
       end
 
@@ -76,25 +83,11 @@ class Pyqt < Formula
 
   test do
     Pathname("test.py").write <<-EOS.undent
-      import sys
-      from PyQt4 import QtGui, QtCore
-
-      class Test(QtGui.QWidget):
-          def __init__(self, parent=None):
-              QtGui.QWidget.__init__(self, parent)
-              self.setGeometry(300, 300, 400, 150)
-              self.setWindowTitle('Homebrew')
-              QtGui.QLabel("Python " + "{0}.{1}.{2}".format(*sys.version_info[0:3]) +
-                           " working with PyQt4. Quitting now...", self).move(50, 50)
-              QtCore.QTimer.singleShot(1500, QtGui.qApp, QtCore.SLOT("quit()"))
-
-      app = QtGui.QApplication([])
-      window = Test()
-      window.show()
-      sys.exit(app.exec_())
+      from PyQt4 import QtNetwork
+      QtNetwork.QNetworkAccessManager().networkAccessible()
     EOS
 
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       system python, "test.py"
     end
   end

@@ -1,16 +1,16 @@
-require "formula"
-
 class Tbb < Formula
-  homepage "http://www.threadingbuildingblocks.org/"
-  url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20140724oss_src.tgz"
-  sha1 "4cb73cd0ac61b790318358ae4782f80255715278"
-  version "4.3-20140724"
+  desc "Rich and complete approach to parallelism in C++"
+  homepage "https://www.threadingbuildingblocks.org/"
+  url "https://www.threadingbuildingblocks.org/sites/default/files/software_releases/source/tbb43_20150611oss_src.tgz"
+  sha256 "221f85fe64e11c9638e43b3c57d5750c26683905fc90827c0bcfefdb286e79c9"
+  version "4.3-20150611"
 
   bottle do
     cellar :any
-    sha1 "500a19e3b12c7ecd04d09c558403b03dabaef465" => :mavericks
-    sha1 "17194db68fe3dc0a932094f04776bc5c7eee756d" => :mountain_lion
-    sha1 "2bb200abaf9f8182bfb948e4dee513b9afca2198" => :lion
+    sha256 "95f3aba5609c56a089346546e807b7c62979f913cb04a2edbc4a155948e471fa" => :el_capitan
+    sha256 "b9dc9ced92b25c87cf44fe5e9280364cd715ef48f7ae0f43877bfe51dc84a672" => :yosemite
+    sha256 "bb73a51ac2d3438d2138244f6b69298749eb12e2a36895119755d2a1873f6125" => :mavericks
+    sha256 "03a178526e7a878080bae4e730e14853afdf8cc6709c0e58d294ac916b6498d1" => :mountain_lion
   end
 
   # requires malloc features first introduced in Lion
@@ -25,19 +25,6 @@ class Tbb < Formula
 
     args = %W[tbb_build_prefix=BUILDPREFIX]
 
-    case ENV.compiler
-    when :clang
-      args << "compiler=clang"
-    else
-      args << "compiler=gcc"
-    end
-
-    if MacOS.prefer_64_bit?
-      args << "arch=intel64"
-    else
-      args << "arch=ia32"
-    end
-
     if build.cxx11?
       ENV.cxx11
       args << "cpp0x=1" << "stdlib=libc++"
@@ -46,5 +33,20 @@ class Tbb < Formula
     system "make", *args
     lib.install Dir["build/BUILDPREFIX_release/*.dylib"]
     include.install "include/tbb"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <tbb/task_scheduler_init.h>
+      #include <iostream>
+
+      int main()
+      {
+        std::cout << tbb::task_scheduler_init::default_num_threads();
+        return 0;
+      }
+    EOS
+    system ENV.cxx, "test.cpp", "-ltbb", "-o", "test"
+    system "./test"
   end
 end

@@ -1,23 +1,39 @@
-require "formula"
-
 class Libsigcxx < Formula
+  desc "Callback framework for C++"
   homepage "http://libsigc.sourceforge.net"
-  url "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.4/libsigc++-2.4.0.tar.xz"
-  sha256 "7593d5fa9187bbad7c6868dce375ce3079a805f3f1e74236143bceb15a37cd30"
+  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.1.tar.xz"
+  sha256 "186f2167c1b3d90529ce8e715246bf160bc67ec1ec19f4e45d76c0ae54dfbe1b"
 
   bottle do
-    sha1 "c15edf433a6e99ef66188cf07007e4d64ac50b29" => :mavericks
-    sha1 "b72366f4144c29d1c3cf2a0870d40a172fdfc185" => :mountain_lion
-    sha1 "5acbd886f2a303837d0ab0013c4de766281925ef" => :lion
+    cellar :any
+    sha256 "7cb0428fce126cba9275b8212eedc7f56544829c52aec30096c7bc64a51e8d8a" => :el_capitan
+    sha256 "68673c2a78a593dafb0c980e00b87057c449c0a751fca4ee10a678d57f00a958" => :yosemite
+    sha256 "3bc196123da746ebdbab0902faf5bd9b2043e51530085c651bdad1f36292b011" => :mavericks
   end
 
-  option :cxx11
+  needs :cxx11
 
   def install
-    ENV.cxx11 if build.cxx11?
+    ENV.cxx11
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     system "make", "check"
     system "make", "install"
+  end
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <sigc++/sigc++.h>
+
+      void somefunction(int arg) {}
+
+      int main(int argc, char *argv[])
+      {
+         sigc::slot<void, int> sl = sigc::ptr_fun(&somefunction);
+         return 0;
+      }
+    EOS
+    system ENV.cxx, "-std=c++11", "test.cpp",
+                   "-L#{lib}", "-lsigc-2.0", "-I#{include}/sigc++-2.0", "-I#{lib}/sigc++-2.0/include", "-o", "test"
+    system "./test"
   end
 end

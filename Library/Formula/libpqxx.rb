@@ -1,18 +1,19 @@
-require 'formula'
-
 class Libpqxx < Formula
-  homepage 'http://pqxx.org/development/libpqxx/'
-  url 'http://pqxx.org/download/software/libpqxx/libpqxx-4.0.1.tar.gz'
-  sha1 '4748835bd1a90fb34e6e577788006a416c2acb60'
+  desc "C++ connector for PostgreSQL"
+  homepage "http://pqxx.org/development/libpqxx/"
+  url "http://pqxx.org/download/software/libpqxx/libpqxx-4.0.1.tar.gz"
+  sha256 "097ceda2797761ce517faa5bee186c883df1c407cb2aada613a16773afeedc38"
 
   bottle do
     cellar :any
-    sha1 "5d81bd92d2249273b5a5eb05d25f24dd4f50c63c" => :mavericks
-    sha1 "b113518319dc1ea6de5b450c55b8faa87daa36cb" => :mountain_lion
-    sha1 "7123ca135b7a02e0618ab36ce982aef00f5fc73d" => :lion
+    revision 1
+    sha256 "5bda2a641ddb2774efa2355612181d6cbdaae5dd665eeac656ff4d42b90cfbdb" => :el_capitan
+    sha1 "dfd78c4be99cf1b24cd99fa01a8dcb97afb18557" => :yosemite
+    sha1 "730d222c2c3329f894edc25df8052d0e6ad8f460" => :mavericks
+    sha1 "3061cee2fd2c387febcbf02a08820d56b8abbda7" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on :postgresql
 
   # Patches borrowed from MacPorts. See:
@@ -29,7 +30,7 @@ class Libpqxx < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--enable-shared"
-    system "make install"
+    system "make", "install"
   end
 end
 

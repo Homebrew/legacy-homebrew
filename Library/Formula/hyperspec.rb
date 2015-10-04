@@ -1,13 +1,12 @@
-require 'formula'
-
 class Hyperspec < Formula
-  homepage 'http://www.lispworks.com/documentation/common-lisp.html'
-  url 'ftp://ftp.lispworks.com/pub/software_tools/reference/HyperSpec-7-0.tar.gz'
-  version '7.0'
-  sha1 '7c89db8a930b7bd1fd204a458a5dd05d7d46ab81'
+  desc "Common Lisp ANSI-standard Hyperspec"
+  homepage "http://www.lispworks.com/documentation/common-lisp.html"
+  url "ftp://ftp.lispworks.com/pub/software_tools/reference/HyperSpec-7-0.tar.gz"
+  version "7.0"
+  sha256 "1ac1666a9dc697dbd8881262cad4371bcd2e9843108b643e2ea93472ba85d7c3"
 
   def install
-    doc.install Dir['*']
+    doc.install Dir["*"]
   end
 
   def caveats; <<-EOS.undent
@@ -24,5 +23,9 @@ class Hyperspec < Formula
                (concat common-lisp-hyperspec-root "Data/Map_IssX.txt"))))
 
     EOS
+  end
+
+  test do
+    assert (doc/"HyperSpec-README.text").exist?
   end
 end

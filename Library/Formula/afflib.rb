@@ -1,15 +1,16 @@
-require 'formula'
-
 class Afflib < Formula
-  homepage 'https://github.com/simsong/AFFLIBv3'
-  url 'https://github.com/simsong/AFFLIBv3/archive/v3.7.4.tar.gz'
-  sha1 '589dae6f8439e97ab080026701cd0caa0636ac22'
+  desc "Advanced Forensic Format"
+  homepage "https://github.com/sshock/AFFLIBv3"
+  url "https://github.com/sshock/AFFLIBv3/archive/v3.7.6.tar.gz"
+  sha256 "494b040f2d53448390d4fa1ad3b9236b0bb8f7d3be39e6287806034647e97a06"
 
   bottle do
     cellar :any
-    sha1 "c72b3fd14e5d7d5095c4d46c6c77619315112a20" => :mavericks
-    sha1 "28b07c6caae8ef85348b51ce80561fe10392ad8b" => :mountain_lion
-    sha1 "3af09ce1f21443b5a072979d97f7cc41035c3643" => :lion
+    revision 1
+    sha256 "21d20fcfdbd03d0a933f931794fc95c7c7153ca6318b5ad29b5469918fdea538" => :el_capitan
+    sha1 "ffa18bea26fe2bd43b75c4260e9daee1c295d7bd" => :yosemite
+    sha1 "21a44d9b557104bc4d15418e96e75d2e296d46e5" => :mavericks
+    sha1 "1f80ffa8d2b263ed7e2116613dfd2af50d000b82" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -17,6 +18,7 @@ class Afflib < Formula
   depends_on "libtool" => :build
   depends_on "expat" => :optional
   depends_on :osxfuse => :optional
+  depends_on "openssl"
 
   # This patch fixes a bug reported upstream over there
   # https://github.com/simsong/AFFLIBv3/issues/4
@@ -28,12 +30,16 @@ class Afflib < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
 
     if build.with? "osxfuse"
-      ENV['CPPFLAGS'] = "-I#{Formula["osxfuse"].include}/osxfuse"
+      ENV["CPPFLAGS"] = "-I#{Formula["osxfuse"].include}/osxfuse"
       args << "--enable-fuse"
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/affcat", "-v"
   end
 end
 
@@ -52,10 +58,10 @@ index 3a7af59..7510933 100755
  aclocal
  LIBTOOLIZE=glibtoolize
 diff --git a/configure.ac b/configure.ac
-index 47a3e4c..845235b 100644
+index 940353b..c530f2e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -244,10 +244,6 @@ AC_ARG_ENABLE(fuse,
+@@ -241,10 +241,6 @@ AC_ARG_ENABLE(fuse,
  if test "x${enable_fuse}" = "xyes" ; then
    AC_MSG_NOTICE([FUSE requested])
    CPPFLAGS="-D_FILE_OFFSET_BITS=64 -DFUSE_USE_VERSION=26 $CPPFLAGS"
@@ -66,7 +72,7 @@ index 47a3e4c..845235b 100644
    AC_CHECK_HEADER([fuse.h],,
      AC_MSG_NOTICE([fuse.h not found; Disabling FUSE support.])
      enable_fuse=no)
-@@ -258,7 +254,7 @@ AFFUSE_BIN=
+@@ -255,7 +251,7 @@ AFFUSE_BIN=
  if test "${enable_fuse}" = "yes"; then
    AC_DEFINE([USE_FUSE],1,[Use FUSE to mount AFF images])
    AFFUSE_BIN='affuse$(EXEEXT)'

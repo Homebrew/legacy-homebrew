@@ -1,28 +1,18 @@
-require 'formula'
-
 class Libvoikko < Formula
-  homepage 'http://voikko.puimula.org/'
-  url 'http://www.puimula.org/voikko-sources/libvoikko/libvoikko-3.7.tar.gz'
-  sha1 '27ad3f72316d3878a0ed7b94a9e855bff66cb81b'
+  desc "Linguistic software for Finnish"
+  homepage "http://voikko.puimula.org/"
+  url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-3.8.tar.gz"
+  sha256 "1df2f4a47217d1de5978e1586c1bbf61a1454cef6aadadbda6aec45738e69cff"
 
   bottle do
     cellar :any
-    sha1 "db25afc7130491bbf3e5097c04a0eca8d7a2915d" => :mavericks
-    sha1 "0663d391a2962d6245a89e17afd2a45b7c4a5460" => :mountain_lion
-    sha1 "2fa799be5ce26948edc2c5c4c7e74c181aee9dc6" => :lion
+    sha256 "c4488efa1bc718a9c56e3b3a98f3606810c70c999942dbaf8f7ab06005bd152e" => :yosemite
+    sha256 "c8ad1b1671f4689dd0758a77a65e5a6e208fe77392d971695bab8d7ed0e27313" => :mavericks
+    sha256 "e86477889e8ff1ffe9b1f60de5506e911cb584be674b6adaf5dffc58cc1c50d5" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'suomi-malaga-voikko'
-
-  # Fixes compilation issues on OS X 10.9. Both merged upstream:
-  # https://github.com/voikko/corevoikko/pull/5
-  # https://github.com/voikko/corevoikko/pull/6
-  # Note that the upstream commits don't apply cleanly to stable
-  patch do
-    url "https://gist.githubusercontent.com/osimola/7724611/raw/2dcfddaf4bf7c7e9d940edb1b982d5b5e39bc378/libvoikko-3.7-mavericks.patch"
-    sha1 "532d0a3097569c966b2632a5b876d9082b4a2c49"
-  end
+  depends_on "pkg-config" => :build
+  depends_on "suomi-malaga-voikko"
 
   def install
     system "./configure", "--disable-debug",

@@ -1,23 +1,10 @@
-require 'formula'
-
-class VcodexDownloadStrategy < CurlDownloadStrategy
-  # downloading from AT&T requires using the following credentials
-  def credentials
-    'I accept www.opensource.org/licenses/eclipse:.'
-  end
-
-  def curl(*args)
-    args << '--user' << credentials
-    super
-  end
-end
-
 class Vcodex < Formula
-  homepage 'http://www2.research.att.com/~astopen/download/ref/vcodex/vcodex.html'
-  url 'http://www2.research.att.com/~astopen/download/tgz/vcodex.2013-05-31.tgz',
-      :using => VcodexDownloadStrategy
-  sha1 '0423ee95b13069dd617c5f7625484a92d5068ea0'
-  version '2013-05-31'
+  desc "Standalone vczip command and vcodex library"
+  homepage "http://www2.research.att.com/~astopen/download/ref/vcodex/vcodex.html"
+  url "http://www2.research.att.com/~astopen/download/tgz/vcodex.2013-05-31.tgz",
+    :user => "I accept www.opensource.org/licenses/eclipse:."
+  sha256 "3d690a5596d4b1a3f1f99a3511fd8cc9d65fc2b63ce0178a8d23677e72c2f83d"
+  version "2013-05-31"
 
   def install
     # Vcodex makefiles do not work in parallel mode
@@ -25,11 +12,11 @@ class Vcodex < Formula
     # make all Vcodex stuff
     system "/bin/sh ./Runmake"
     # install manually
-    bin.install Dir['bin/vc*']
+    bin.install Dir["bin/vc*"]
     # put all includes into a directory of their own
-    (include + "vcodex").install Dir['include/*.h']
-    lib.install Dir['lib/*.a']
-    man.install 'man/man3'
+    (include + "vcodex").install Dir["include/*.h"]
+    lib.install Dir["lib/*.a"]
+    man.install "man/man3"
   end
 
   def caveats; <<-EOS.undent

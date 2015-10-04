@@ -1,15 +1,15 @@
-require 'formula'
-
 class Ssdb < Formula
-  homepage "http://ssdb.io/?lang=en"
-  url "https://github.com/ideawu/ssdb/archive/1.6.8.8.tar.gz"
-  sha1 "2d63cb0ba176bf6c463a70e7a3b39f8cc326d5d7"
-  head "https://github.com/ideawu/ssdb.git", :branch => "master"
+  desc "NoSQL database supporting many data structures: Redis alternative"
+  homepage "http://ssdb.io/"
+  url "https://github.com/ideawu/ssdb/archive/1.8.2.tar.gz"
+  sha256 "2fe10689a0e1e9e9ca67acbe9e0fa3607810dca90dcc9f0813b2661cc6d4e826"
+  head "https://github.com/ideawu/ssdb.git"
 
   bottle do
-    sha1 "2838529376cd00f1cecb57fbf2c0391abc4ef724" => :mavericks
-    sha1 "6b2fee94e88f70247ef70b1b514656063cbaee3e" => :mountain_lion
-    sha1 "df1e6924434c5d28c7b0df02f68f411b99292538" => :lion
+    cellar :any
+    sha256 "1970e505fd1e8f6166010a892e66a718a39cbab1bcdd515bd6fdd4ec7c185600" => :yosemite
+    sha256 "61430871ab15a312f8a6b0caf68003d379fc8e52199702747b84f86f3887d911" => :mavericks
+    sha256 "16b3c20d79519328e01139ccf8fc71832f90d5df1c55c9ba32ab150a0cddf77e" => :mountain_lion
   end
 
   def install
@@ -76,7 +76,10 @@ class Ssdb < Formula
 
   test do
     pid = fork do
-      Signal.trap("TERM") { system("#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf"); exit }
+      Signal.trap("TERM") do
+        system("#{bin}/ssdb-server -d #{HOMEBREW_PREFIX}/etc/ssdb.conf")
+        exit
+      end
     end
     sleep(3)
     Process.kill("TERM", pid)

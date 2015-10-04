@@ -1,15 +1,15 @@
-require 'formula'
-
 class Lzo < Formula
-  homepage 'http://www.oberhumer.com/opensource/lzo/'
-  url 'http://www.oberhumer.com/opensource/lzo/download/lzo-2.06.tar.gz'
-  sha256 'ff79e6f836d62d3f86ef6ce893ed65d07e638ef4d3cb952963471b4234d43e73'
+  desc "Real-time data compression library"
+  homepage "http://www.oberhumer.com/opensource/lzo/"
+  url "http://www.oberhumer.com/opensource/lzo/download/lzo-2.09.tar.gz"
+  sha256 "f294a7ced313063c057c504257f437c8335c41bfeed23531ee4e6a2b87bcb34c"
 
   bottle do
     cellar :any
-    sha1 "39b3bddecc7646bac80d1b12931148932b9ff6b1" => :mavericks
-    sha1 "0a752df8103e1020b2d8d7fa9fa0a8ce59f9cddc" => :mountain_lion
-    sha1 "d88d2c7a55df8acf9cdfe7b3438e04c07e284adc" => :lion
+    sha256 "b5838b31508dea737a64b8e01be586004c5d51cece7c89808014855d23a7a48a" => :el_capitan
+    sha256 "27ec3d9e9303bab8aedb74eb617b147f92e34251c0a3da2fba9004f3d76ea96f" => :yosemite
+    sha256 "af6941abe4f2a8db33e5a8296352b4cf0ef4df73152e8f968efa59b7213a5969" => :mavericks
+    sha256 "d9ccb8e665598254f96907a1716760af99736771f41be2f31ab47c6409017251" => :mountain_lion
   end
 
   def install
@@ -17,7 +17,7 @@ class Lzo < Formula
                           "--prefix=#{prefix}",
                           "--enable-shared"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 end

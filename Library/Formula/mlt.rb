@@ -1,13 +1,17 @@
-require "formula"
-
 class Mlt < Formula
+  desc "Author, manage, and run multitrack audio/video compositions"
   homepage "http://www.mltframework.org/"
-  url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.2.tar.gz"
-  sha1 "eb1cdb8a1d9e69512716431054e5da7eb3bedb6d"
+  url "https://downloads.sourceforge.net/mlt/mlt/mlt-0.9.6.tar.gz"
+  sha256 "ab999992828a03dadbf62f6a131aada776cfd7afe63a94d994877fdba31a3000"
+
+  bottle do
+    sha256 "46779015d1ce48aa85d887da98e0144cd7b9a43b8166dc587c2b91aad89b52d0" => :yosemite
+    sha256 "54f23f9e8dcfc8ad7f357cd25f0c9855fb6a8ee3a92e6db7a0e390733f79022f" => :mavericks
+    sha256 "3d7bed128cd7a5e98d014e2afaf69ad7f4232d961293cf3cc57e4c0040a8ff80" => :mountain_lion
+  end
 
   depends_on "pkg-config" => :build
 
-  depends_on "atk"
   depends_on "ffmpeg"
   depends_on "frei0r"
   depends_on "libdv"
@@ -16,24 +20,19 @@ class Mlt < Formula
   depends_on "sdl"
   depends_on "sox"
 
-  depends_on "gtk+" => :optional
-
-  if build.with? "gtk"
-    depends_on "pango"
-    depends_on "gdk-pixbuf"
-  end
-
   def install
-
     args = ["--prefix=#{prefix}",
             "--disable-jackrack",
-            "--disable-swfdec"]
-
-    args << "--disable-gtk" if build.without? "gtk"
+            "--disable-swfdec",
+            "--disable-gtk"]
 
     system "./configure", *args
 
     system "make"
     system "make", "install"
+  end
+
+  test do
+    system "#{bin}/melt", "-version"
   end
 end

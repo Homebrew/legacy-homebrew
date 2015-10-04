@@ -1,12 +1,12 @@
-require 'testing_env'
-require 'test/testball'
-require 'cmd/cleanup'
+require "testing_env"
+require "testball"
+require "cmd/cleanup"
 
 class CleanupTests < Homebrew::TestCase
   def test_cleanup
-    f1 = Class.new(TestBall) { version '0.1' }.new
-    f2 = Class.new(TestBall) { version '0.2' }.new
-    f3 = Class.new(TestBall) { version '0.3' }.new
+    f1 = Class.new(Testball) { version "0.1" }.new
+    f2 = Class.new(Testball) { version "0.2" }.new
+    f3 = Class.new(Testball) { version "0.3" }.new
 
     shutup do
       f1.brew { f1.install }

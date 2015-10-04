@@ -1,32 +1,15 @@
-require "formula"
-
-class Ruby19 < Requirement
-  fatal true
-  default_formula "ruby"
-
-  satisfy :build_env => false do
-    next unless which "ruby"
-    version = /\d\.\d/.match `ruby --version 2>&1`
-    next unless version
-    Version.new(version.to_s) >= Version.new("1.9")
-  end
-
-  def modify_build_environment
-    ruby = which "ruby"
-    return unless ruby
-    ENV.prepend_path "PATH", ruby.dirname
-  end
-
-  def message; <<-EOS.undent
-    The mkvtoolnix buildsystem needs Ruby >=1.9
-    EOS
-  end
-end
-
 class Mkvtoolnix < Formula
+  desc "Matroska media files manipulation tools"
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-7.2.0.tar.xz"
-  sha1 "b8e688c274d0946faea390d626147c357583e8bc"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.3.0.tar.xz"
+  sha256 "87bd82222995d35c310a426ed43e0b27cbfefa0caadcbcca8296787314affc37"
+
+  bottle do
+    sha256 "aecb8a6f69196bba6652471de7a8622bbe60c51ec4faa300d1db1fcc05cfdc1b" => :el_capitan
+    sha256 "b6b99fa602b0b97c381a1f81196d549b47d23877c18a818e97dc8b061f06f88e" => :yosemite
+    sha256 "86e1a1d7e19ce84581f1c2cccac4416f0fbbd6542457337f9f080d9071cd56f0" => :mavericks
+    sha256 "e77f4ffed2854bf9c2d5c7c2eb2352e3f6062833ec872888929c9901539a05be" => :mountain_lion
+  end
 
   head do
     url "https://github.com/mbunkus/mkvtoolnix.git"
@@ -35,16 +18,20 @@ class Mkvtoolnix < Formula
     depends_on "libtool" => :build
   end
 
+  option "with-wxmac", "Build with wxWidgets GUI"
+  option "with-qt5", "Build with QT GUI"
+
   depends_on "pkg-config" => :build
-  depends_on Ruby19
+  depends_on :ruby => ["1.9", :build]
   depends_on "libogg"
   depends_on "libvorbis"
-  depends_on "flac" => :optional
+  depends_on "flac" => :recommended
+  depends_on "libmagic" => :recommended
   depends_on "lzo" => :optional
-  depends_on "expat"
-  depends_on "gettext"
-  depends_on "pcre"
   depends_on "wxmac" => :optional
+  depends_on "qt5" => :optional
+  depends_on "gettext" => :optional
+
   # On Mavericks, the bottle (without c++11) can be used
   # because mkvtoolnix is linked against libc++ by default
   if MacOS.version >= "10.9"
@@ -62,9 +49,6 @@ class Mkvtoolnix < Formula
   def install
     ENV.cxx11
 
-    ENV["ZLIB_CFLAGS"] = "-I/usr/include"
-    ENV["ZLIB_LIBS"] = "-L/usr/lib -lz"
-
     boost = Formula["boost"]
     ogg = Formula["libogg"]
     vorbis = Formula["libvorbis"]
@@ -78,16 +62,25 @@ class Mkvtoolnix < Formula
 
     if build.with? "wxmac"
       wxmac = Formula["wxmac"]
-
       args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}"
       args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{wxmac.opt_lib}"
-      args << "--enable-gui"
       args << "--enable-wxwidgets"
     else
       args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}"
       args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
-      args << "--disable-gui"
       args << "--disable-wxwidgets"
+    end
+
+    if build.with?("qt5")
+      qt5 = Formula["qt5"]
+
+      args << "--with-moc=#{qt5.opt_bin}/moc"
+      args << "--with-uic=#{qt5.opt_bin}/uic"
+      args << "--with-rcc=#{qt5.opt_bin}/rcc"
+      args << "--with-mkvtoolnix-gui"
+      args << "--enable-qt"
+    else
+      args << "--disable-qt"
     end
 
     system "./autogen.sh" if build.head?
@@ -95,7 +88,7 @@ class Mkvtoolnix < Formula
     system "./configure", *args
 
     system "./drake", "-j#{ENV.make_jobs}"
-    system "./drake install"
+    system "./drake", "install"
   end
 
   test do

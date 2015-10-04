@@ -1,15 +1,16 @@
-require 'formula'
-
 class Libpcl < Formula
-  homepage 'http://xmailserver.org/libpcl.html'
-  url 'http://xmailserver.org/pcl-1.12.tar.gz'
-  sha1 'a206c8fb5a96e65005f414ac46aeccd4b3603c8d'
+  desc "C library and API for coroutines"
+  homepage "http://xmailserver.org/libpcl.html"
+  url "http://xmailserver.org/pcl-1.12.tar.gz"
+  sha256 "e7b30546765011575d54ae6b44f9d52f138f5809221270c815d2478273319e1a"
 
   bottle do
     cellar :any
-    sha1 "5f5fa67315aa53eec8456101bf79d14d1b80f9ff" => :mavericks
-    sha1 "3e68ab4a81fec5b4bc482cebe07a1d682d3e2b69" => :mountain_lion
-    sha1 "06c814a3a004cd671996f4fbc15a395bd8046795" => :lion
+    revision 1
+    sha256 "1975baf018352fd1f1ca88bd39fc02db384e2f6be4017976184dda3365c60608" => :el_capitan
+    sha1 "f765f414f926e08424a150ef9d6ed0c781c747a5" => :yosemite
+    sha1 "659570156b38f819a880f0cb4e8650129b4c6d29" => :mavericks
+    sha1 "144245dc5c42c66e42144a7ccfa648fc96550752" => :mountain_lion
   end
 
   def install

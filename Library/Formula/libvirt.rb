@@ -1,22 +1,22 @@
-require 'formula'
-
 class Libvirt < Formula
-  homepage 'http://www.libvirt.org'
-  url 'http://libvirt.org/sources/libvirt-1.2.8.tar.gz'
-  sha1 '76dd3376abff73d297e183257eef4a71b9e5d5c8'
+  desc "C virtualization API"
+  homepage "https://www.libvirt.org"
+  url "https://libvirt.org/sources/libvirt-1.2.19.tar.gz"
+  sha256 "282c141f03331d640020c15f81464b27400e0ee307ef4c5190393b021caedd6e"
 
   bottle do
-    sha1 "9267bfcd188156c3fa4f930402172f4d09c2918a" => :mavericks
-    sha1 "b86dba9579614da3a1be053c5cae5a7bb2a90936" => :mountain_lion
-    sha1 "604f6d23dcb081068373cb6567f2ad2ad0fc4c63" => :lion
+    sha256 "2d6d0c6bb7819fc701f94810765986121abd2122779aa299b94d0e9959844912" => :el_capitan
+    sha256 "38f538af231f2e0bd8d35aa2549aaec97956c7c9a42fb7e2a74b0f35f0ade66a" => :yosemite
+    sha256 "bdc4dc38dbcab9d158f1643a904c02e66e97cb231904b8d4b7068d61f0f77097" => :mavericks
+    sha256 "5d29c5088c2a50dfda788421ffe46b63c4ba0a7e4fd4f4bdf4f5e20909ef4492" => :mountain_lion
   end
 
-  option 'without-libvirtd', 'Build only the virsh client and development libraries'
+  option "without-libvirtd", "Build only the virsh client and development libraries"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
-  depends_on 'yajl'
+  depends_on "pkg-config" => :build
+  depends_on "gnutls"
+  depends_on "libgcrypt"
+  depends_on "yajl"
 
   if MacOS.version <= :leopard
     # Definitely needed on Leopard, but not on Snow Leopard.
@@ -43,13 +43,13 @@ class Libvirt < Formula
             "--with-yajl",
             "--without-qemu"]
 
-    args << "--without-libvirtd" if build.without? 'libvirtd'
+    args << "--without-libvirtd" if build.without? "libvirtd"
 
     system "./configure", *args
 
     # Compilation of docs doesn't get done if we jump straight to "make install"
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Update the SASL config file with the Homebrew prefix
     inreplace "#{etc}/sasl2/libvirt.conf" do |s|

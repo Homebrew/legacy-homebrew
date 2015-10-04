@@ -1,22 +1,22 @@
-require 'formula'
-
 class Libev < Formula
-  homepage 'http://software.schmorp.de/pkg/libev.html'
-  url 'http://dist.schmorp.de/libev/Attic/libev-4.15.tar.gz'
-  sha1 '88655b1e2c0b328c9f90a6df7e72361a97fa8dc3'
+  desc "Asynchronous event library"
+  homepage "http://software.schmorp.de/pkg/libev.html"
+  url "http://dist.schmorp.de/libev/Attic/libev-4.20.tar.gz"
+  sha256 "f870334c7fa961e7f31087c7d76abf849f596e3048f8ed2a0aaa983cd73d449e"
 
   bottle do
     cellar :any
-    sha1 "fa05ffc6bb36aaccd04d233d2771217abb06613c" => :mavericks
-    sha1 "6b0a5a532691c1b32856db15966077f6f533f8ae" => :mountain_lion
-    sha1 "4d3015c11e6a90e0463978823d8fdba5b3a170af" => :lion
+    sha256 "bec6df59eadc35b73d3c1a8a65a2edec0319e042c1afdaf96313df86190bf64f" => :el_capitan
+    sha256 "7943ef71a65a1a7118d314c0c428eb467e10131be82e0b3ffc3a2b179d779c3e" => :yosemite
+    sha256 "21c5b5060434406af0ace8361084845422a2d28625c2388278d44eeeeecf21aa" => :mavericks
+    sha256 "70631a7212920732b2dacd6155b5cdfd404c4304586203f83649c427d453a460" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
 
     # Remove compatibility header to prevent conflict with libevent
     (include/"event.h").unlink

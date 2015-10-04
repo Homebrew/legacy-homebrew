@@ -13,14 +13,15 @@ module OS
         when "10.6"  then "3.2.6"
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
-        when "10.9"  then "6.0.1"
-        when "10.10" then "6.1"
+        when "10.9"  then "6.2"
+        when "10.10" then "7.0.1"
+        when "10.11" then "7.0.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
-          if MacOS.version > "10.10"
-            "6.1"
+          if MacOS.version > "10.11"
+            "7.0.1"
           else
-            raise "Mac OS X '#{MacOS.version}' is invalid"
+            raise "OS X '#{MacOS.version}' is invalid"
           end
         end
       end
@@ -53,13 +54,13 @@ module OS
 
       # Ask Spotlight where Xcode is. If the user didn't install the
       # helper tools and installed Xcode in a non-conventional place, this
-      # is our only option. See: http://superuser.com/questions/390757
+      # is our only option. See: https://superuser.com/questions/390757
       def bundle_path
         MacOS.app_with_bundle_id(V4_BUNDLE_ID, V3_BUNDLE_ID)
       end
 
       def installed?
-        not prefix.nil?
+        !prefix.nil?
       end
 
       def version
@@ -75,9 +76,11 @@ module OS
 
         return "0" unless OS.mac?
 
+        return nil if !MacOS::Xcode.installed? && !MacOS::CLT.installed?
+
         %W[#{prefix}/usr/bin/xcodebuild #{which("xcodebuild")}].uniq.each do |path|
           if File.file? path
-            `#{path} -version 2>/dev/null` =~ /Xcode (\d(\.\d)*)/
+            Utils.popen_read(path, "-version") =~ /Xcode (\d(\.\d)*)/
             return $1 if $1
           end
         end
@@ -99,7 +102,7 @@ module OS
         when 2327..2333 then "3.2.5"
         when 2335
           # this build number applies to 3.2.6, 4.0 and 4.1
-          # https://github.com/Homebrew/homebrew/wiki/Xcode
+          # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Xcode.md
           "4.0"
         else
           case (MacOS.clang_version.to_f * 10).to_i
@@ -117,7 +120,9 @@ module OS
           when 50      then "5.0"
           when 51      then "5.1"
           when 60      then "6.0"
-          else "6.0"
+          when 61      then "6.1"
+          when 70      then "7.0"
+          else "7.0"
           end
         end
       end
@@ -149,8 +154,7 @@ module OS
       STANDALONE_PKG_ID = "com.apple.pkg.DeveloperToolsCLILeo"
       FROM_XCODE_PKG_ID = "com.apple.pkg.DeveloperToolsCLI"
       MAVERICKS_PKG_ID = "com.apple.pkg.CLTools_Executables"
-      # Used for Yosemite and Mavericks CLT since June 2014.
-      MAVERICKS_NEW_PKG_ID = "com.apple.pkg.CLTools_Base"
+      MAVERICKS_NEW_PKG_ID = "com.apple.pkg.CLTools_Base" # obsolete
       MAVERICKS_PKG_PATH = "/Library/Developer/CommandLineTools"
 
       # Returns true even if outdated tools are installed, e.g.
@@ -161,8 +165,9 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.10" then "600.0.54"
-        when "10.9"  then "600.0.51"
+        when "10.11" then "700.0.72"
+        when "10.10" then "700.0.72"
+        when "10.9"  then "600.0.57"
         when "10.8"  then "503.0.40"
         else
           "425.0.28"
@@ -175,7 +180,7 @@ module OS
         else
           version = `/usr/bin/clang --version`
         end
-        version = version[%r{clang-(\d+\.\d+\.\d+)}, 1] || "0"
+        version = version[/clang-(\d+\.\d+\.\d+(\.\d+)?)/, 1] || "0"
         version < latest_version
       end
 
@@ -187,7 +192,10 @@ module OS
       end
 
       def detect_version
-        [MAVERICKS_NEW_PKG_ID, MAVERICKS_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+        [MAVERICKS_PKG_ID, MAVERICKS_NEW_PKG_ID, STANDALONE_PKG_ID, FROM_XCODE_PKG_ID].find do |id|
+          if MacOS.version >= :mavericks
+            next unless File.exist?("#{MAVERICKS_PKG_PATH}/usr/bin/clang")
+          end
           version = MacOS.pkgutil_info(id)[/version: (.+)$/, 1]
           return version if version
         end

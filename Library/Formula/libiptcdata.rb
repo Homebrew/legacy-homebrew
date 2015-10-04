@@ -1,21 +1,21 @@
-require 'formula'
-
 class Libiptcdata < Formula
-  homepage 'http://libiptcdata.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/libiptcdata/libiptcdata/1.0.4/libiptcdata-1.0.4.tar.gz'
-  sha1 '2e967be3aee9ae5393f208a3df2b52e08dcd98c8'
+  desc "Virtual package provided by libiptcdata0"
+  homepage "http://libiptcdata.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/libiptcdata/libiptcdata/1.0.4/libiptcdata-1.0.4.tar.gz"
+  sha256 "79f63b8ce71ee45cefd34efbb66e39a22101443f4060809b8fc29c5eebdcee0e"
 
   bottle do
-    sha1 "d75dcfef6d607236366189345799326acaffc3e2" => :mavericks
-    sha1 "3f132d3a1e5348c1e5f41e53eb819960c92079e5" => :mountain_lion
-    sha1 "7e1c231bfa5cd74f58ca568073244f20791937b8" => :lion
+    revision 1
+    sha1 "bae5cce39a9a013a532265d911295085afc909f4" => :yosemite
+    sha1 "cc888c096c24e6215292dabaeaa25378429e8232" => :mavericks
+    sha1 "8794ce897c84182173496a3aed8577be0f2ec609" => :mountain_lion
   end
 
-  depends_on 'gettext'
+  depends_on "gettext"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

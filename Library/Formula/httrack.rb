@@ -1,23 +1,24 @@
-require "formula"
-
 class Httrack < Formula
-  homepage "http://www.httrack.com/"
+  desc "Website copier/offline browser"
+  homepage "https://www.httrack.com/"
   # Always use mirror.httrack.com when you link to a new version of HTTrack, as
   # link to download.httrack.com will break on next HTTrack update.
-  url "http://mirror.httrack.com/historical/httrack-3.48.19.tar.gz"
-  sha1 "7df386a248444c599948dbc77ed705b101151ed4"
+  url "https://mirror.httrack.com/historical/httrack-3.48.21.tar.gz"
+  sha256 "871b60a1e22d7ac217e4e14ad4d562fbad5df7c370e845f1ecf5c0e4917be482"
 
-  # Fix building on systems without strnlen; fixed upstream, will be in next release
-  # https://code.google.com/p/httrack/issues/detail?id=54
-  patch :p0 do
-    url "https://gist.githubusercontent.com/mistydemeo/5c50bba4be6c4f53d50c/raw/9465c915719106dbe234380f769c45ae3e118edb/httrack-strnlen.diff"
-    sha1 "206b0c3f00a8274eb01b04fb7f11b0339423332b"
+  bottle do
+    sha256 "b1087aa6b2d33562c4e230b3d55bbd4a525fd2bb5fd1f2b0d2d3bcc12a6eb534" => :el_capitan
+    sha256 "f74a06fd065898048d3e27aebdf11e5d9bb186586e82264250bcf06a6f6ec37b" => :yosemite
+    sha256 "e309068ddd030d866028c6c383d2093fd2a6a62f00817853876f339fb69cc10c" => :mavericks
+    sha256 "2097533c4e53afdc801075cef34c5a15819e51c4e0de4f9717bb958d9eace283" => :mountain_lion
   end
+
+  depends_on "openssl"
 
   def install
     ENV.deparallelize
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
     # Don't need Gnome integration
     rm_rf Dir["#{share}/{applications,pixmaps}"]
   end

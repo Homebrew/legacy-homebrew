@@ -1,55 +1,46 @@
-require 'formula'
-
 class Weechat < Formula
-  homepage 'http://www.weechat.org'
-  url 'http://weechat.org/files/src/weechat-1.0.tar.bz2'
-  sha1 'd3070ffde05cb706d615144e71f933153871894d'
-  revision 1
+  desc "Extensible IRC client"
+  homepage "https://www.weechat.org"
+  url "https://weechat.org/files/src/weechat-1.3.tar.gz"
+  sha256 "5c6c8f21f4835034c78c9f86f70c8df76afa73897481e84261e1583db46b678d"
 
-  head 'https://github.com/weechat/weechat.git'
+  head "https://github.com/weechat/weechat.git"
 
   bottle do
-    sha1 "19360d0fe50646b592b78bb36353547dd1f43317" => :mavericks
-    sha1 "2d4fb76df048df84fb2ec878a2964573a36f74ee" => :mountain_lion
-    sha1 "add1d9b1eb865db66cae4c534c200a790e133677" => :lion
+    sha256 "446877e86103bbadb12ba04760ef015adc4be1cafc1c0969b0b193682d9023b1" => :el_capitan
+    sha256 "9fc15ea386d67e7e25948c3808b59feb3b93e6cd8d38b0c9cf07129aaaec05e7" => :yosemite
+    sha256 "a98f706a26238b79fa5d4c86bc126bb299623a01a7a7de507fbb217e2f45b4c3" => :mavericks
+    sha256 "88145b0f3689ab894957952d8c89c02ecd17b14b2f936bac2711744f2a9d2c99" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
-  depends_on 'guile' => :optional
-  depends_on 'aspell' => :optional
-  depends_on 'lua' => :optional
-  depends_on :python => :optional
+  option "with-perl", "Build the perl module"
+  option "with-ruby", "Build the ruby module"
+  option "with-curl", "Build with brewed curl"
 
-  option 'with-perl', 'Build the perl module'
-  option 'with-ruby', 'Build the ruby module'
+  depends_on "cmake" => :build
+  depends_on "gnutls"
+  depends_on "libgcrypt"
+  depends_on "gettext"
+  depends_on "guile" => :optional
+  depends_on "aspell" => :optional
+  depends_on "lua" => :optional
+  depends_on :python => :optional
+  depends_on "curl" => :optional
 
   def install
-    # this will fix error:
-    #    no such file or directory: 'Python.framework/Versions/2.7/Python'
-    inreplace 'src/plugins/python/CMakeLists.txt',
-      '${PYTHON_LFLAGS}', '-u _PyMac_Error'
+    args = std_cmake_args
 
-    args = std_cmake_args + %W[
-      -DPREFIX=#{prefix}
-      -DENABLE_GTK=OFF
-    ]
-    args << '-DENABLE_LUA=OFF'    if build.without? 'lua'
-    args << '-DENABLE_PERL=OFF'   if build.without? 'perl'
-    args << '-DENABLE_RUBY=OFF'   if build.without? 'ruby'
-    args << '-DENABLE_ASPELL=OFF' if build.without? 'aspell'
-    args << '-DENABLE_GUILE=OFF'  if build.without? 'guile'
-    args << '-DENABLE_PYTHON=OFF' if build.without? 'python'
+    args << "-DENABLE_LUA=OFF" if build.without? "lua"
+    args << "-DENABLE_PERL=OFF" if build.without? "perl"
+    args << "-DENABLE_RUBY=OFF" if build.without? "ruby"
+    args << "-DENABLE_ASPELL=OFF" if build.without? "aspell"
+    args << "-DENABLE_GUILE=OFF" if build.without? "guile"
+    args << "-DENABLE_PYTHON=OFF" if build.without? "python"
+    args << "-DENABLE_JAVASCRIPT=OFF"
 
-    # NLS/gettext support disabled for now since it doesn't work in stdenv
-    # see https://github.com/Homebrew/homebrew/issues/18722
-    args << "-DENABLE_NLS=OFF"
-    args << '..'
-
-    mkdir 'build' do
-      system 'cmake', *args
-      system 'make install'
+    mkdir "build" do
+      system "cmake", "..", *args
+      system "make", "install"
     end
   end
 
@@ -59,5 +50,10 @@ class Weechat < Formula
       you can choose the dictionaries you want.  If Aspell was installed
       automatically as part of weechat, there won't be any dictionaries.
     EOS
+  end
+
+  test do
+    ENV["TERM"] = "xterm"
+    system "weechat", "-r", "/quit"
   end
 end

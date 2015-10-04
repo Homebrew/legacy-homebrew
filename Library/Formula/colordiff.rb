@@ -1,15 +1,15 @@
-require 'formula'
-
 class Colordiff < Formula
-  homepage 'http://www.colordiff.org/'
-  url 'http://www.colordiff.org/colordiff-1.0.13.tar.gz'
-  sha1 '64e369aed2230f3aa5f1510b231fcac270793c09'
+  desc "Color-highlighted diff(1) output"
+  homepage "http://www.colordiff.org/"
+  url "http://www.colordiff.org/colordiff-1.0.15.tar.gz"
+  sha256 "595ee4e9796ba02fad0b181e21df3ee34ae71d1611e301e146c0bf00c5269d45"
 
   bottle do
     cellar :any
-    sha1 "724512050ef11d4b0f99eb46b2fa98a44520e5a6" => :mavericks
-    sha1 "7cf723ad9a524e8b7159c57e7a7d97687c3df067" => :mountain_lion
-    sha1 "37447591b2cea0958f2f695ad9a56012cc4cba9b" => :lion
+    sha256 "ec28e4b2776cb039710428718fd0df6a246968aea0db6391c9222272cad9d601" => :el_capitan
+    sha256 "c5ed797abdaedc5a5f163bafce625307249408afd87bd1a2d31b086af29e02d6" => :yosemite
+    sha256 "a316bce78fc4bfd7fead8f6a6ce87161e9bd862e61882c72be60bcc42d248db1" => :mavericks
+    sha256 "45232a4a2de9ccf1848b28593d2a870efaf38017b465fdb8f04e261f7ccad8e7" => :mountain_lion
   end
 
   patch :DATA
@@ -23,9 +23,9 @@ class Colordiff < Formula
   end
 
   test do
-    cp HOMEBREW_PREFIX+'bin/brew', 'brew1'
-    cp HOMEBREW_PREFIX+'bin/brew', 'brew2'
-    system "#{bin}/colordiff", 'brew1', 'brew2'
+    cp HOMEBREW_PREFIX+"bin/brew", "brew1"
+    cp HOMEBREW_PREFIX+"bin/brew", "brew2"
+    system "#{bin}/colordiff", "brew1", "brew2"
   end
 end
 
@@ -34,14 +34,6 @@ diff --git a/Makefile b/Makefile
 index 6ccbfc7..e5d64e7 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -8,6 +8,7 @@ DIST_FILES=COPYING INSTALL Makefile README \
- TMPDIR=colordiff-${VERSION}
- TARBALL=${TMPDIR}.tar.gz
- 
-+.PHONY: install
- 
- doc: colordiff.xml cdiff.xml
- 	xmlto -vv man colordiff.xml
 @@ -28,8 +29,8 @@ install:
  	if [ ! -f ${DESTDIR}${INSTALL_DIR}/cdiff ] ; then \
  	  install cdiff.sh ${DESTDIR}${INSTALL_DIR}/cdiff; \
@@ -59,5 +51,5 @@ index 6ccbfc7..e5d64e7 100644
  	cp colordiffrc ${DESTDIR}${ETC_DIR}/colordiffrc
 -	-chown root.root ${DESTDIR}${ETC_DIR}/colordiffrc
  	chmod 644 ${DESTDIR}${ETC_DIR}/colordiffrc
- 
+
  uninstall:

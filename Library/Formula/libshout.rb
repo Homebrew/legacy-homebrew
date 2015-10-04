@@ -1,25 +1,26 @@
-require 'formula'
-
 class Libshout < Formula
-  homepage 'http://www.icecast.org/'
-  url 'http://downloads.xiph.org/releases/libshout/libshout-2.3.1.tar.gz'
-  sha1 '147c5670939727420d0e2ad6a20468e2c2db1e20'
+  desc "Data and connectivity library for the icecast server"
+  homepage "http://www.icecast.org/"
+  url "http://downloads.xiph.org/releases/libshout/libshout-2.3.1.tar.gz"
+  sha256 "cf3c5f6b4a5e3fcfbe09fb7024aa88ad4099a9945f7cb037ec06bcee7a23926e"
 
   bottle do
     cellar :any
-    sha1 "c8539d5b6f27a42d5c481d5de7f71370f7d29d8a" => :mavericks
-    sha1 "eb9c3d98cd68e15eab1661cb54252c71d4dc667a" => :mountain_lion
-    sha1 "c40f3d65386a7de3845ea5751e25c0e377debccc" => :lion
+    revision 1
+    sha256 "d698606ddbd579700df1525f9fd7987b0aa6c9e8228e2a9a7346e606bee68f6e" => :el_capitan
+    sha1 "2930b7d9284829191c5ebbcbda184654b215a12b" => :yosemite
+    sha1 "6e72e6169d9e0b332135e4b123b0989cea80ee7a" => :mavericks
+    sha1 "946c3352ba99927dcb798c44b77928128fffd653" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libogg'
-  depends_on 'libvorbis'
-  depends_on 'theora'
-  depends_on 'speex'
+  depends_on "pkg-config" => :build
+  depends_on "libogg"
+  depends_on "libvorbis"
+  depends_on "theora"
+  depends_on "speex"
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

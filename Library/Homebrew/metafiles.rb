@@ -1,5 +1,9 @@
 class Metafiles
-  EXTENSIONS = %w[.md .html .rtf .txt]
+  # https://github.com/github/markup#markups
+  EXTENSIONS = %w[
+    .adoc .asc .asciidoc .creole .html .markdown .md .mdown .mediawiki .mkdn
+    .org .pod .rdoc .rst .rtf .textile .txt .wiki
+  ]
   BASENAMES = %w[
     about authors changelog changes copying copyright history license licence
     news notes notice readme todo

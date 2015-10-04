@@ -1,22 +1,23 @@
-require 'formula'
-
 class Mad < Formula
-  homepage 'http://www.underbit.com/products/mad/'
-  url 'https://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz'
-  sha1 'cac19cd00e1a907f3150cc040ccc077783496d76'
+  desc "MPEG audio decoder"
+  homepage "http://www.underbit.com/products/mad/"
+  url "https://downloads.sourceforge.net/project/mad/libmad/0.15.1b/libmad-0.15.1b.tar.gz"
+  sha256 "bbfac3ed6bfbc2823d3775ebb931087371e142bb0e9bb1bee51a76a6e0078690"
 
   bottle do
     cellar :any
-    sha1 "553ab873bc524e334ccc3adeb5d643cf2fac8892" => :mavericks
-    sha1 "3b7653b4ccd90ad69faa8deb82eb7b9881797443" => :mountain_lion
-    sha1 "f20398331482b492ab879597794624ce1ab351d7" => :lion
+    revision 1
+    sha256 "a8a162813aad00169410a8f14a39927028969c914929fafb0685f0eb80075546" => :el_capitan
+    sha1 "ec696978cd2bbd43ed11b6b1d3b78156d2b97c71" => :yosemite
+    sha1 "b8ea86acc3a5aab051e7df3d6e1b00ac1acac346" => :mavericks
+    sha1 "7164d878d4467cda6bbed49fd46129a4ae3169ec" => :mountain_lion
   end
 
   def install
-    fpm = MacOS.prefer_64_bit? ? '64bit': 'intel'
+    fpm = MacOS.prefer_64_bit? ? "64bit": "intel"
     system "./configure", "--disable-debugging", "--enable-fpm=#{fpm}", "--prefix=#{prefix}"
     system "make", "CFLAGS=#{ENV.cflags}", "LDFLAGS=#{ENV.ldflags}", "install"
-    (lib+'pkgconfig/mad.pc').write pc_file
+    (lib+"pkgconfig/mad.pc").write pc_file
   end
 
   def pc_file; <<-EOS.undent

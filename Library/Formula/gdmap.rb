@@ -1,32 +1,32 @@
-require 'formula'
-
 class Gdmap < Formula
-  homepage 'http://sourceforge.net/projects/gdmap/'
-  url 'https://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz'
-  sha1 'd97cc7c107dbaf9f3f3ed22ee6cef6172c115295'
+  desc "Tool to inspect the used space of folders"
+  homepage "https://sourceforge.net/projects/gdmap/"
+  url "https://downloads.sourceforge.net/project/gdmap/gdmap/0.8.1/gdmap-0.8.1.tar.gz"
+  sha256 "a200c98004b349443f853bf611e49941403fce46f2335850913f85c710a2285b"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'gtk+'
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "gtk+"
 
-  #The code depends on some GTK macros that are flagged as deprecated in the brew version of GTK.
-  #I assume they're not deprecated in normal GTK, because the config file disables deprecated GDK calls.
-  #The first patch turns off this disablement, making the code work fine as intended
-  #The second patch is to remove an unused system header import on one of the files.
-  #This header file doesn't exist in OSX and the program compiles and runs fine without it.
+  # The code depends on some GTK macros that are flagged as deprecated in the brew version of GTK.
+  # I assume they're not deprecated in normal GTK, because the config file disables deprecated GDK calls.
+  # The first patch turns off this disablement, making the code work fine as intended
+  # The second patch is to remove an unused system header import on one of the files.
+  # This header file doesn't exist in OSX and the program compiles and runs fine without it.
+  # Filed bug upstream as https://sourceforge.net/p/gdmap/bugs/19/
   patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
 
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    system "#{bin}/gdmap"
+    system "#{bin}/gdmap", "--help"
   end
 end
 

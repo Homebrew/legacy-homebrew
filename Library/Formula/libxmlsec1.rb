@@ -1,32 +1,39 @@
-require 'formula'
-
 class Libxmlsec1 < Formula
-  homepage 'http://www.aleksey.com/xmlsec/'
-  url 'http://www.aleksey.com/xmlsec/download/xmlsec1-1.2.19.tar.gz'
-  sha1 '9f24f84bf6f4a61fc55637f016b56c0f44c048ba'
-  revision 1
+  desc "XML security library"
+  homepage "https://www.aleksey.com/xmlsec/"
+  url "https://www.aleksey.com/xmlsec/download/xmlsec1-1.2.20.tar.gz"
+  sha256 "3221593ca50f362b546a0888a1431ad24be1470f96b2469c0e0df5e1c55e7305"
 
   bottle do
-    sha1 "dacd6e67c5a65acd187faff789086d1c787925a5" => :mavericks
-    sha1 "e9b9669f1b1364eaea9c320880ef13be944f52db" => :mountain_lion
-    sha1 "63b1cb774d0778366c13815e6971e2e51094a627" => :lion
+    cellar :any
+    revision 1
+    sha256 "b98f9b1317679104e80fda88cc0a5da4ec0686f08386839999c29dc1608ebc1f" => :el_capitan
+    sha256 "7381ad6025f574148ed52eb26ddde32d4a033b298e0ec8fe7fc13eba6953fb6d" => :yosemite
+    sha256 "0b3751ff6f6ca7b4e2899d5d0f29c2b1c17b980805da5748c3abbb060d4e630d" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libxml2' # Version on 10.6/10.7 is too old
-  depends_on 'gnutls' => :recommended
-  depends_on 'libgcrypt' if build.with? 'gnutls'
+  depends_on "pkg-config" => :build
+  depends_on "libxml2" if MacOS.version <= :lion
+  # Yes, it wants both ssl/tls variations.
+  depends_on "openssl" => :recommended
+  depends_on "gnutls" => :recommended
+  depends_on "libgcrypt" if build.with? "gnutls"
 
   # Add HOMEBREW_PREFIX/lib to dl load path
   patch :DATA
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-libxml=#{Formula["libxml2"].opt_prefix}",
-                          "--disable-crypto-dl",
-                          "--disable-apps-crypto-dl"
-    system "make install"
+    args = ["--disable-dependency-tracking",
+            "--prefix=#{prefix}",
+            "--disable-crypto-dl",
+            "--disable-apps-crypto-dl"
+           ]
+
+    args << "--with-openssl=#{Formula["openssl"].opt_prefix}" if build.with? "openssl"
+    args << "--with-libxml=#{Formula["libxml2"].opt_prefix}" if build.with? "libxml2"
+
+    system "./configure", *args
+    system "make", "install"
   end
 end
 

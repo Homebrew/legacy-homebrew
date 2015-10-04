@@ -1,9 +1,8 @@
-require "formula"
-
 class Htmlcleaner < Formula
+  desc "HTML parser written in Java"
   homepage "http://htmlcleaner.sourceforge.net/index.php"
-  url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.9/htmlcleaner-2.9.zip"
-  sha1 "62444799192574d47d3264a48518237685e05667"
+  url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.10/htmlcleaner-2.10.zip"
+  sha256 "904b6d11b97c3363de9ab0eeb966fa015c2afe2733786e671d9d79a34078ad32"
 
   def install
     libexec.install "htmlcleaner-#{version}.jar"

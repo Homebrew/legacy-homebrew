@@ -1,25 +1,41 @@
-require 'formula'
-
 class Libechonest < Formula
-  homepage 'https://projects.kde.org/projects/playground/libs/libechonest'
-  url 'http://files.lfranchi.com/libechonest-2.2.0.tar.bz2'
-  sha1 'fec281d9288c2a4fabd2dd275f1a508dd6d1bc5c'
+  desc "Qt library for communicating with The Echo Nest"
+  homepage "https://projects.kde.org/projects/playground/libs/libechonest"
+  url "http://files.lfranchi.com/libechonest-2.3.1.tar.bz2"
+  sha256 "56756545fd1cb3d9067479f52215b6157c1ced2bc82b895e72fdcd9bebb47889"
 
   bottle do
     cellar :any
-    sha1 "78c787069afab61d3b364886cbb9a777c2d1558c" => :mavericks
-    sha1 "14e726d2267171af68e4548662284d443072a4d9" => :mountain_lion
-    sha1 "d983fbabb1c3e5a68111dd325c41dc9eb3999c42" => :lion
+    sha256 "155a7921bd0e807a5702d9cf2f85b0fa2636713c57ee2c355cf27b70bd567c79" => :yosemite
+    sha256 "0e774fa6901a1d8c7244e8fcbbaefdd2a1b4f1d69d9ab3061c9dd67d468ac57b" => :mavericks
+    sha256 "093d7b8f68f0ef72da44b8118d96a0e103f37788e91294006fb1fd09fbe04d82" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'qt'
-  depends_on 'qjson'
+  depends_on "cmake" => :build
+  depends_on "qt"
+  depends_on "qjson"
 
-  conflicts_with 'doxygen', :because => "cmake fails to configure build."
+  conflicts_with "doxygen", :because => "cmake fails to configure build."
 
   def install
     system "cmake", ".", *std_cmake_args
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <echonest/Genre.h>
+      #include <echonest/Artist.h>
+      int main() {
+        Echonest::Genre test;
+        test.setName(QLatin1String("ambient trance"));
+        return 0;
+      }
+    EOS
+    qt = Formula["qt"]
+    system ENV.cxx, "test.cpp", "-L#{lib}", "-lechonest", "-F#{qt.opt_lib}",
+      "-framework", "QtCore", "-I#{qt.opt_include}/QtCore",
+      "-I#{qt.opt_include}/QtNetwork", "-o", "test"
+    system "./test"
   end
 end

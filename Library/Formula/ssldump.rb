@@ -1,9 +1,17 @@
-require 'formula'
-
 class Ssldump < Formula
-  homepage 'http://www.rtfm.com/ssldump/'
-  url 'http://www.rtfm.com/ssldump/ssldump-0.9b3.tar.gz'
-  sha1 'a633a9a811a138eac5ed440d583473b644135ef5'
+  desc "SSLv3/TLS network protocol analyzer"
+  homepage "http://ssldump.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/ssldump/ssldump/0.9b3/ssldump-0.9b3.tar.gz"
+  sha256 "6422c16718d27c270bbcfcc1272c4f9bd3c0799c351f1d6dd54fdc162afdab1e"
+
+  bottle do
+    cellar :any
+    sha1 "2f2991ea0ade04d87d4fd96a597a1819dca4b401" => :yosemite
+    sha1 "4380b5a93a10d8bef570daa785aee6f41545b20f" => :mavericks
+    sha1 "e2bf36216f202d48c694435c61be43c94f562eb6" => :mountain_lion
+  end
+
+  depends_on "openssl"
 
   # reorder include files
   # http://sourceforge.net/tracker/index.php?func=detail&aid=1622854&group_id=68993&atid=523055
@@ -20,10 +28,15 @@ class Ssldump < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--mandir=#{man}",
                           "osx"
     system "make"
-    bin.install "ssldump"
-    man1.install "ssldump.1"
+    # force install as make got confused by install target and INSTALL file.
+    system "make", "install", "-B"
+  end
+
+  test do
+    system "#{sbin}/ssldump", "-v"
   end
 end
 

@@ -1,22 +1,21 @@
-require 'formula'
-
 class Grc < Formula
-  homepage 'http://korpus.juls.savba.sk/~garabik/software/grc.html'
-  url 'http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.5.tar.gz'
-  sha1 'bcbe45992d2c4cb1d33e76aac6aa79b448124ce2'
+  desc "Colorize logfiles and command output"
+  homepage "http://korpus.juls.savba.sk/~garabik/software/grc.html"
+  url "http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.9.orig.tar.gz"
+  sha256 "41626e571ca255e1a9fe0816f3c0dfd1a30d9564d0decaf4b7365e28e3c54f5b"
 
-  conflicts_with 'cc65', :because => 'both install `grc` binaries'
+  conflicts_with "cc65", :because => "both install `grc` binaries"
 
   def install
-    inreplace ['grc', 'grc.1'], '/etc', etc
-    inreplace ['grcat', 'grcat.1'], '/usr/local', prefix
+    inreplace ["grc", "grc.1"], "/etc", etc
+    inreplace ["grcat", "grcat.1"], "/usr/local", prefix
 
-    etc.install 'grc.conf'
+    etc.install "grc.conf"
     bin.install %w[grc grcat]
-    (share+'grc').install Dir['conf.*']
+    (share+"grc").install Dir["conf.*"]
     man1.install %w[grc.1 grcat.1]
 
-    (prefix+'etc/grc.bashrc').write rc_script
+    (prefix+"etc/grc.bashrc").write rc_script
   end
 
   def rc_script; <<-EOS.undent
@@ -35,6 +34,13 @@ class Grc < Formula
         alias netstat='colourify netstat'
         alias ping='colourify ping'
         alias traceroute='colourify /usr/sbin/traceroute'
+        alias head='colourify head'
+        alias tail='colourify tail'
+        alias dig='colourify dig'
+        alias mount='colourify mount'
+        alias ps='colourify ps'
+        alias mtr='colourify mtr'
+        alias df='colourify df'
     fi
     EOS
   end

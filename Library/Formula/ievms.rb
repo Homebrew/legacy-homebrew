@@ -1,9 +1,8 @@
-require "formula"
-
 class Ievms < Formula
-  homepage "http://xdissent.github.io/ievms/"
-  url "https://github.com/xdissent/ievms/archive/v0.2.1.tar.gz"
-  sha1 "2379b323f3c5986a4a7a519ad2a158a0aa62a271"
+  desc "Automated installation of Microsoft IE AppCompat virtual machines"
+  homepage "https://xdissent.github.io/ievms/"
+  url "https://github.com/xdissent/ievms/archive/v0.3.1.tar.gz"
+  sha256 "4db0b334fa9471f1116e56b472ffd24f92c4d8a2d6e016cd9d4060c6059664bb"
 
   depends_on "unar"
 

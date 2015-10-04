@@ -1,21 +1,21 @@
-require 'formula'
-
 class Libnatpmp < Formula
-  homepage 'http://miniupnp.free.fr/libnatpmp.html'
-  url 'http://miniupnp.free.fr/files/download.php?file=libnatpmp-20130911.tar.gz'
-  sha1 'f2ec1ed22ae9f07b2cacf702d291858f13ae8781'
+  desc "NAT port mapping protocol library"
+  homepage "http://miniupnp.free.fr/libnatpmp.html"
+  url "http://miniupnp.free.fr/files/download.php?file=libnatpmp-20130911.tar.gz"
+  sha256 "a30d83b9175585cc0f5bff753ce7eb5d83aaecb6222ccac670ed759fea595d7d"
 
   bottle do
     cellar :any
-    sha1 "e6d42daee6bdd2d0854a2402cde606a880c54bbf" => :mavericks
-    sha1 "380a32ba2f2b7383784693a4fc41968e94aa2356" => :mountain_lion
-    sha1 "b106068d2535580dc36de4943aef2ed48014c2e9" => :lion
+    revision 1
+    sha1 "75db0fd068b01482b95c315751bb316d16cb69b0" => :yosemite
+    sha1 "afe8b7fe9baabfa890989697566d20eaa1542c86" => :mavericks
+    sha1 "0f1274f31f8a718d640e72327ecc814af16edef7" => :mountain_lion
   end
 
   def install
     # Reported upstream:
     # http://miniupnp.tuxfamily.org/forum/viewtopic.php?t=978
-    inreplace 'Makefile', "-Wl,-install_name,$(SONAME)", "-Wl,-install_name,$(INSTALLDIRLIB)/$(SONAME)"
+    inreplace "Makefile", "-Wl,-install_name,$(SONAME)", "-Wl,-install_name,$(INSTALLDIRLIB)/$(SONAME)"
     system "make", "INSTALLPREFIX=#{prefix}", "install"
   end
 end

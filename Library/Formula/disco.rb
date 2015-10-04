@@ -1,15 +1,14 @@
-require "formula"
-
 class Disco < Formula
+  desc "Distributed computing framework based on the MapReduce paradigm"
   homepage "http://discoproject.org/"
-  url "https://github.com/discoproject/disco/archive/0.5.3.tar.gz"
-  sha1 "78e1f38d54460f472d2e862988eb8af3b30afb1f"
+  url "https://github.com/discoproject/disco/archive/0.5.4.tar.gz"
+  sha256 "a1872b91fd549cea6e709041deb0c174e18d0e1ea36a61395be37e50d9df1f8f"
 
   bottle do
     cellar :any
-    sha1 "851d946ce9d8e0858819c3547ffe60b8a59f2bc8" => :mavericks
-    sha1 "c99a5204936a046a0f3eff9a0c9e48a4ae058817" => :mountain_lion
-    sha1 "66bd8a4206896bf74270275514756a779d20d3b2" => :lion
+    sha1 "f1a4e9775053971dac6ab3b183ebb13d6928c050" => :yosemite
+    sha1 "286325ec178e1bd06a78127333c835a1bf5a2763" => :mavericks
+    sha1 "da6e23c51a8ca6c353e83724746f0e11dba37a99" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -34,7 +33,7 @@ class Disco < Formula
     system "git init && git add master/rebar && git commit -a -m 'dummy commit'"
 
     system "make"
-    system "make install"
+    system "make", "install"
     prefix.install %w[contrib doc examples]
 
     # Fix the config file to point at the linked files, not in to cellar

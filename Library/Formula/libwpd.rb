@@ -1,15 +1,16 @@
-require "formula"
-
 class Libwpd < Formula
+  desc "General purpose library for reading WordPerfect files"
   homepage "http://libwpd.sourceforge.net/"
   url "http://dev-www.libreoffice.org/src/libwpd-0.10.0.tar.bz2"
-  sha1 "bbcc6e528a69492fb2b4bbb9a56d385a29efc4c4"
+  sha256 "f2bf5d65156a351ce404550dd822c8db8ab8740b393f61dba828d1b2cb33fe91"
 
   bottle do
     cellar :any
-    sha1 "246a697a20f14159c48ae0fe7f43ca3e0d5dfa8b" => :mavericks
-    sha1 "3816530feb78b6c426229dc6a1ab4df632338b11" => :mountain_lion
-    sha1 "a546503b0ae01f120b4832ce6da08327d98dc3f5" => :lion
+    revision 1
+    sha256 "05355b386219f540bd2e8072ff05d89bb8b0026ccc4ee19b57acbf00d1aba0ea" => :el_capitan
+    sha1 "5ee8b064986e9a93d7160000fed86631ec67ac5b" => :yosemite
+    sha1 "76609ba2ba73cf1fbb60e6de22c3eb7b73f61483" => :mavericks
+    sha1 "dfb25198b4294801aa9d5e8b5bca484291f7e19d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

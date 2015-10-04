@@ -1,24 +1,21 @@
-require 'formula'
-
 class BerkeleyDb < Formula
-  homepage 'http://www.oracle.com/technology/products/berkeley-db/index.html'
-  url 'http://download.oracle.com/berkeley-db/db-5.3.28.tar.gz'
-  sha1 'fa3f8a41ad5101f43d08bc0efb6241c9b6fc1ae9'
+  desc "High performance key/value database"
+  homepage "https://www.oracle.com/technology/products/berkeley-db/index.html"
+  url "http://download.oracle.com/berkeley-db/db-6.1.26.tar.gz"
+  sha256 "dd1417af5443f326ee3998e40986c3c60e2a7cfb5bfa25177ef7cadb2afb13a6"
 
   bottle do
     cellar :any
-    sha1 "82b52acb094e7f5cfb8f807f4501b47653744285" => :mavericks
-    sha1 "32db77b55f8f864af939d842a85bed64347912e8" => :mountain_lion
-    sha1 "6846c61e17ff5dcfe25f5aaf2e7e88b71758ea09" => :lion
+    sha256 "70f4c1cea6a4c2f9454680988b73bb9fdc107307dafeec47e21a4539dce57b36" => :el_capitan
+    sha256 "3e4324500931e32e3a187f9790b4465efd4d249dc9ec03ff46b4209ed061e935" => :yosemite
+    sha256 "b2ba3aff83ee27a52115f47abc3c1767d124841ad342e63e433dfa36af064b36" => :mavericks
+    sha256 "8f5a87bc3336e01f8528ae8aaae24c83e8fa10e8f01ee65e8cac4af7d0786bf1" => :mountain_lion
   end
 
-  option 'with-java', 'Compile with Java support.'
-  option 'enable-sql', 'Compile with SQL support.'
+  option "with-java", "Compile with Java support."
+  option "with-sql", "Compile with SQL support."
 
-  # Fix build under Xcode 4.6
-  # Double-underscore names are reserved, and __atomic_compare_exchange is now
-  # a built-in, so rename this to something non-conflicting.
-  patch :DATA
+  deprecated_option "enable-sql" => "with-sql"
 
   def install
     # BerkeleyDB dislikes parallel builds
@@ -33,40 +30,16 @@ class BerkeleyDb < Formula
       --enable-compat185
     ]
     args << "--enable-java" if build.with? "java"
-    args << "--enable-sql" if build.include? "enable-sql"
+    args << "--enable-sql" if build.with? "sql"
 
     # BerkeleyDB requires you to build everything from the build_unix subdirectory
-    cd 'build_unix' do
+    cd "build_unix" do
       system "../dist/configure", *args
-      system "make install"
+      system "make", "install"
 
       # use the standard docs location
       doc.parent.mkpath
-      mv prefix/'docs', doc
+      mv prefix/"docs", doc
     end
   end
 end
-
-__END__
-diff --git a/src/dbinc/atomic.h b/src/dbinc/atomic.h
-index 096176a..561037a 100644
---- a/src/dbinc/atomic.h
-+++ b/src/dbinc/atomic.h
-@@ -144,7 +144,7 @@ typedef LONG volatile *interlocked_val;
- #define	atomic_inc(env, p)	__atomic_inc(p)
- #define	atomic_dec(env, p)	__atomic_dec(p)
- #define	atomic_compare_exchange(env, p, o, n)	\
--	__atomic_compare_exchange((p), (o), (n))
-+	__atomic_compare_exchange_db((p), (o), (n))
- static inline int __atomic_inc(db_atomic_t *p)
- {
- 	int	temp;
-@@ -176,7 +176,7 @@ static inline int __atomic_dec(db_atomic_t *p)
-  * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
-  * which configure could be changed to use.
-  */
--static inline int __atomic_compare_exchange(
-+static inline int __atomic_compare_exchange_db(
- 	db_atomic_t *p, atomic_value_t oldval, atomic_value_t newval)
- {
- 	atomic_value_t was;

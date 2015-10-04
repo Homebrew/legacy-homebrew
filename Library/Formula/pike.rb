@@ -1,38 +1,43 @@
-require 'formula'
-
 class Pike < Formula
-  homepage 'http://pike.lysator.liu.se'
-  url 'http://pike.lysator.liu.se/pub/pike/all/7.8.866/Pike-v7.8.866.tar.gz'
-  sha1 'f3d6cc21e302576c3ac4bb5a525705dbeee2d060'
+  desc "Dynamic programming language"
+  homepage "http://pike.lysator.liu.se"
+  url "http://pike.lysator.liu.se/pub/pike/all/7.8.866/Pike-v7.8.866.tar.gz"
+  sha256 "0b12e1a99bd8bdd9c8a2daa46e623ac718bc0737290236a0c8474091359b594e"
   revision 1
+
+  bottle do
+    sha256 "e1c276b7fdf4ce90cb6f512d6c93f494a56432e878567d05a63f63657cbba7d6" => :yosemite
+    sha256 "baad545207c59dbd86f57ed20155f4c0ef0aaa1f3b3291adc1eb304c4d66e987" => :mavericks
+    sha256 "3240c7771fad0948975677e1553bf5cc4b48ec7541efe42ca838576f90a66113" => :mountain_lion
+  end
 
   depends_on "nettle"
   depends_on "gmp"
   depends_on "pcre"
-  depends_on :x11 => :recommended
-  depends_on 'libtiff' => :recommended
+  depends_on :x11 => :optional
+  depends_on "libtiff" => :recommended
 
   # optional dependencies
-  depends_on 'gettext'       if build.with? "gettext" or build.with? "all"
-  depends_on 'gdbm'          if build.with? "gdbm"    or build.with? "all"
-  depends_on 'gtk+'          if build.with? "gtk2"    or build.with? "all"
-  depends_on 'mysql'         if build.with? "mysql"   or build.with? "all"
-  depends_on 'sdl'           if build.with? "sdl"     or build.with? "all"
-  depends_on 'sane-backends' if build.with? "sane"    or build.with? "all"
-  depends_on 'pdflib-lite'   if build.with? "pdf"     or build.with? "all"
-  depends_on 'mesalib-glw'   if build.with? "gl"      or build.with? "all"
+  depends_on "gettext"       if build.with?("gettext") || build.with?("all")
+  depends_on "gdbm"          if build.with?("gdbm")    || build.with?("all")
+  depends_on "gtk+"          if build.with?("gtk2")    || build.with?("all")
+  depends_on "mysql"         if build.with?("mysql")   || build.with?("all")
+  depends_on "sdl"           if build.with?("sdl")     || build.with?("all")
+  depends_on "sane-backends" if build.with?("sane")    || build.with?("all")
+  depends_on "pdflib-lite"   if build.with?("pdf")     || build.with?("all")
+  depends_on "mesalib-glw"   if build.with?("gl")      || build.with?("all")
 
-  option 'with-gettext', 'Include Gettext support'
-  option 'with-gdbm', 'Include Gdbm support'
-  option 'with-gtk2', 'Include GTK2 support'
-  option 'with-mysql', 'Include Mysql support'
-  option 'with-pcre', 'Include Regexp.PCRE support'
-  option 'with-sdl', 'Include SDL support'
-  option 'with-sane', 'Include Sane support'
-  option 'with-pdf', 'Include PDF support'
-  option 'with-gl', 'Include GL support'
-  option 'with-all', 'Include all features'
-  option 'with-machine-code', 'Enables machine code'
+  option "with-gettext", "Include Gettext support"
+  option "with-gdbm", "Include Gdbm support"
+  option "with-gtk2", "Include GTK2 support"
+  option "with-mysql", "Include Mysql support"
+  option "with-pcre", "Include Regexp.PCRE support"
+  option "with-sdl", "Include SDL support"
+  option "with-sane", "Include Sane support"
+  option "with-pdf", "Include PDF support"
+  option "with-gl", "Include GL support"
+  option "with-all", "Include all features"
+  option "with-machine-code", "Enables machine code"
 
   fails_with :llvm do
     build 2335
@@ -42,11 +47,11 @@ class Pike < Formula
   def install
     args = ["--prefix=#{prefix}", "--without-bundles"]
 
-    if MacOS.prefer_64_bit? and not build.build_32_bit?
-      ENV.append 'CFLAGS', '-m64'
+    if MacOS.prefer_64_bit? && !build.build_32_bit?
+      ENV.append "CFLAGS", "-m64"
       args << "--with-abi=64"
     else
-      ENV.append 'CFLAGS', '-m32'
+      ENV.append "CFLAGS", "-m32"
       args << "--with-abi=32"
     end
 
@@ -56,7 +61,7 @@ class Pike < Formula
 
     ENV.j1
 
-    system "make", "CONFIGUREARGS='" + args.join(' ') + "'"
+    system "make", "CONFIGUREARGS='" + args.join(" ") + "'"
 
     # installation is complicated by some of brew's standard patterns.
     # hopefully these notes explain the reasons for diverging from

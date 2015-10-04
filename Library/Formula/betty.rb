@@ -1,25 +1,10 @@
-require "formula"
-
-class Ruby19Dependency < Requirement
-  fatal true
-  default_formula "ruby"
-
-  satisfy do
-    `ruby --version` =~ /ruby (\d\.\d).\d/
-    $1.to_f >= 1.9
-  end
-
-  def message
-    "Betty requires Ruby 1.9 or better."
-  end
-end
-
 class Betty < Formula
+  desc "English-like interface for the command-line"
   homepage "https://github.com/pickhardt/betty"
-  url "https://github.com/pickhardt/betty/archive/v0.1.6.tar.gz"
-  sha1 "bd838caa8d596598f406209609f39a7bd5087ac1"
+  url "https://github.com/pickhardt/betty/archive/v0.1.7.tar.gz"
+  sha256 "ed71e88a659725e0c475888df044c9de3ab1474ff483f0a3bb432949035e62d3"
 
-  depends_on Ruby19Dependency
+  depends_on :ruby => "1.9"
 
   def install
     libexec.install "lib", "main.rb" => "betty"
@@ -27,9 +12,7 @@ class Betty < Formula
   end
 
   test do
-    system bin/"betty", "speech on"
     system bin/"betty", "what is your name"
     system bin/"betty", "version"
-    system bin/"betty", "speech off"
   end
 end

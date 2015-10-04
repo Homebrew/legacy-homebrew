@@ -1,16 +1,16 @@
-require 'formula'
-
 class Libcello < Formula
-  homepage 'http://libcello.org/'
-  head 'https://github.com/orangeduck/libCello.git'
-  url 'http://libcello.org/static/libCello-1.1.7.tar.gz'
-  sha1 'e00e92ccdaf16c3443e0c75421b6cc73b1f727b1'
+  desc "Higher-level programming in C"
+  homepage "http://libcello.org/"
+  head "https://github.com/orangeduck/libCello.git"
+  url "http://libcello.org/static/libCello-1.1.7.tar.gz"
+  sha256 "2273fe8257109c2dd19054beecd83ddcc780ec565a1ad02721e24efa74082908"
 
   bottle do
     cellar :any
-    sha1 "8d856cc8f5c920f4e230953d4001f7be293c3edc" => :mavericks
-    sha1 "642659eb3b985edc99b8a83e28fa61fb7502424a" => :mountain_lion
-    sha1 "70c8a20fd03ea6208948e8dc75df56eca383dfc5" => :lion
+    revision 1
+    sha1 "d208cfa93fcd658a225dd46b0eba986f9a30e474" => :yosemite
+    sha1 "f95afa9fb94b09e9c2102932792288fc2352d091" => :mavericks
+    sha1 "507985cc79584569e6c04dfb9b9772a97573b2a9" => :mountain_lion
   end
 
   def install

@@ -1,19 +1,19 @@
-require 'formula'
-
 class HgFlow < Formula
-  homepage 'https://bitbucket.org/yujiewu/hgflow'
-  url 'https://bitbucket.org/yujiewu/hgflow/downloads/hgflow-v0.9.6.tar.bz2'
-  sha1 'f4f71daee139dcee882b9ab199f14b7214167498'
+  desc "Development model for mercurial inspired by git-flow"
+  homepage "https://bitbucket.org/yujiewu/hgflow"
+  url "https://bitbucket.org/yujiewu/hgflow/downloads/hgflow-v0.9.8.tar.bz2"
+  sha256 "0078d5a562f7a0e1eaf2b1018de10540c56756d91f5f1c3b1b40b753cbccab95"
 
-  head "http://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => 'develop'
+  head "https://bitbucket.org/yujiewu/hgflow", :using => :hg, :branch => "develop"
 
   depends_on :python if MacOS.version <= :snow_leopard
+  depends_on :hg
 
   def install
     if build.head?
-      (lib/'python2.7/site-packages').install 'src/hgflow.py' => 'hgflow.py'
+      libexec.install "src/hgflow.py" => "hgflow.py"
     else
-      (lib/'python2.7/site-packages').install 'hgflow.py' => 'hgflow.py'
+      libexec.install "hgflow.py"
     end
   end
 
@@ -23,8 +23,21 @@ class HgFlow < Formula
     3. For more information go to http://bitbucket.org/yinwm/hgflow
 
         [extensions]
-        hgflow=
+        flow = #{opt_prefix}/libexec/hgflow.py
+        [flow]
+        autoshelve = true
 
     EOS
+  end
+
+  test do
+    (testpath/".hgrc").write <<-EOS.undent
+      [extensions]
+      flow = #{opt_prefix}/libexec/hgflow.py
+      [flow]
+      autoshelve = true
+    EOS
+    system "hg", "init"
+    system "hg", "flow", "init", "-d"
   end
 end

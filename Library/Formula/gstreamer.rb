@@ -1,23 +1,21 @@
-require "formula"
-
 class Gstreamer < Formula
+  desc "GStreamer is a development framework for multimedia applications"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.1.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.1.tar.xz"
-  sha256 "5638f75003282135815c0077d491da11e9a884ad91d4ba6ab3cc78bae0fb452e"
+  url "https://download.gnome.org/sources/gstreamer/1.6/gstreamer-1.6.0.tar.xz"
+  sha256 "52ef885647afef11c8b7645a9afefe04aa09e8971c4b932e7717872ab8a30fcc"
 
   bottle do
-    sha1 "f961f4aa1092ac485dea482920b90b01c5531b58" => :mavericks
-    sha1 "8fe3563b0dbee45882dcba3fc23f2065c3e6fe46" => :mountain_lion
-    sha1 "40d0350da6bb5988d7e42db4a870ff738a252c69" => :lion
+    sha256 "6b75e4ba010fd85957d99abf356da19e4bb991031a5938bcd0c84e0e8ed25b8b" => :el_capitan
+    sha256 "370ba64ff63f4d80c445b317a0380afb91c92fd60b45dde385f9ff888975df87" => :yosemite
+    sha256 "32f9f7ee8a26494bac8ee4805b8a23569bbb2ab4cfd9779703d0be3ff772e0ae" => :mavericks
   end
 
   head do
     url "git://anongit.freedesktop.org/gstreamer/gstreamer"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   depends_on "pkg-config" => :build
@@ -38,6 +36,10 @@ class Gstreamer < Formula
     if build.head?
       ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
+
+      # Ban trying to chown to root.
+      # https://bugzilla.gnome.org/show_bug.cgi?id=750367
+      args << "--with-ptp-helper-permissions=none"
     end
 
     # Look for plugins in HOMEBREW_PREFIX/lib/gstreamer-1.0 instead of
@@ -50,5 +52,9 @@ class Gstreamer < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
+
+  test do
+    system bin/"gst-inspect-1.0"
   end
 end

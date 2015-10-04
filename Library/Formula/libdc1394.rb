@@ -1,16 +1,18 @@
-require "formula"
-
 class Libdc1394 < Formula
+  desc "Provides API for IEEE 1394 cameras"
   homepage "http://damien.douxchamps.net/ieee1394/libdc1394/"
   url "https://downloads.sourceforge.net/project/libdc1394/libdc1394-2/2.2.2/libdc1394-2.2.2.tar.gz"
-  sha1 "13958c3cd0709565b5e4a9012dcf2a9b710264e2"
+  sha256 "ff8744a92ab67a276cfaf23fa504047c20a1ff63262aef69b4f5dbaa56a45059"
 
   bottle do
     cellar :any
-    sha1 "063e3babff63f462de1b7d053690ae3f0e250bcb" => :mavericks
-    sha1 "52d23eb6514dfc5c9aa554bade7dac92deefec70" => :mountain_lion
-    sha1 "9f703002e33433885f3f2cb9e4a4006585282a01" => :lion
+    revision 1
+    sha1 "289ebcfa4d7aea0740a54c5de50df23018f9d742" => :yosemite
+    sha1 "747ac444ec23e13c57ae476d2e1181a2d6c728f0" => :mavericks
+    sha1 "68488e8fc4d387b6dc63e95dba4c26a7509ca59d" => :mountain_lion
   end
+
+  option :universal
 
   depends_on "sdl"
 
@@ -20,11 +22,12 @@ class Libdc1394 < Formula
   patch :DATA
 
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-examples",
                           "--disable-sdltest"
-    system "make install"
+    system "make", "install"
   end
 end
 

@@ -1,27 +1,27 @@
-require 'formula'
-
 class Libmpd < Formula
-  homepage 'http://gmpc.wikia.com/wiki/Gnome_Music_Player_Client'
-  url 'http://www.musicpd.org/download/libmpd/11.8.17/libmpd-11.8.17.tar.gz'
-  sha1 'df129f15061662a6fec1b2ce19f9dbc8b7a7d1ba'
+  desc "Higher level access to MPD functions"
+  homepage "https://gmpc.wikia.com/wiki/Gnome_Music_Player_Client"
+  url "http://www.musicpd.org/download/libmpd/11.8.17/libmpd-11.8.17.tar.gz"
+  sha256 "fe20326b0d10641f71c4673fae637bf9222a96e1712f71f170fca2fc34bf7a83"
 
   bottle do
     cellar :any
-    sha1 "b2979c3de6d08c60df8a7853bbb881a90c3113c5" => :mavericks
-    sha1 "8b48310c6ebcf5890cc2894f9daee0e855bdcdcf" => :mountain_lion
-    sha1 "47557e56e225e31a32fa03a562b9190d4c7d9b2e" => :lion
+    revision 1
+    sha1 "5a352271b7ae233617fe2ce48c0fc269e3f51cbc" => :yosemite
+    sha1 "6ebf0308d867a69916c532ada5633172c120e49e" => :mavericks
+    sha1 "1acdd0b195f4bb35f8d35098c54c5007396b7df8" => :mountain_lion
   end
 
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "glib"
 
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

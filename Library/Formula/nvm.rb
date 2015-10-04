@@ -1,28 +1,42 @@
-require "formula"
-
 class Nvm < Formula
+  desc "Manage multiple Node.js versions"
   homepage "https://github.com/creationix/nvm"
+  url "https://github.com/creationix/nvm/archive/v0.27.1.tar.gz"
+  sha256 "74f843bf743017c086ea0c2549999afb0c81d8f5fa8bd2fdc92da37617e5b279"
   head "https://github.com/creationix/nvm.git"
-  url "https://github.com/creationix/nvm/archive/v0.16.1.tar.gz"
-  sha1 "3bd8ce291b52886feeaa31e60e6489aeda350ad1"
 
   def install
-    prefix.install "nvm.sh"
+    prefix.install "nvm.sh", "nvm-exec"
     bash_completion.install "bash_completion" => "nvm"
   end
 
   def caveats; <<-EOS.undent
-      Add the following to $HOME/.bashrc, $HOME/.zshrc, or your shell's
-      equivalent configuration file:
+    Please note that upstream has asked us to make explicit managing
+    nvm via Homebrew is unsupported by them and you should check any
+    problems against the standard nvm install method prior to reporting.
 
-        source $(brew --prefix nvm)/nvm.sh
+    You should create NVM's working directory if it doesn't exist:
 
-      Node installs will be lost upon upgrading nvm. Add the following above
-      the source line to move install location and prevent this:
+      mkdir ~/.nvm
 
-        export NVM_DIR=~/.nvm
+    Add the following to #{shell_profile} or your desired shell
+    configuration file:
 
-      Type `nvm help` for further information.
-    EOS
+      export NVM_DIR=~/.nvm
+      source $(brew --prefix nvm)/nvm.sh
+
+    You can set $NVM_DIR to any location, but leaving it unchanged from
+    #{prefix} will destroy any nvm-installed Node installations
+    upon upgrade/reinstall.
+
+    Type `nvm help` for further information.
+  EOS
+  end
+
+  test do
+    output = pipe_output("#{prefix}/nvm-exec 2>&1")
+    assert_no_match /No such file or directory/, output
+    assert_no_match /nvm: command not found/, output
+    assert_match /Node Version Manager/, output
   end
 end

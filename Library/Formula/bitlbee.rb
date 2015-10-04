@@ -1,25 +1,29 @@
-require 'formula'
-
 class Bitlbee < Formula
-  homepage 'http://www.bitlbee.org/'
-  url 'http://get.bitlbee.org/src/bitlbee-3.2.2.tar.gz'
-  sha1 '7e3cfe2b6bf4e8e603c74e7587307a6f5d267e9c'
+  desc "IRC to other chat networks gateway"
+  homepage "http://www.bitlbee.org/"
+  url "http://get.bitlbee.org/src/bitlbee-3.4.1.tar.gz"
+  sha256 "500a0b19943040d67458eb3beb0a63d004abb2aa54a777addeb2a895d4f5c0e1"
+
+  head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
-    sha1 "4a639d88aa819d23d6020a36602097474f66357d" => :mavericks
-    sha1 "5312823fead39bba80b712bcedca4f9a7fc9211d" => :mountain_lion
-    sha1 "c21d19af516d959eb2a0b4b5ff534a66678d419d" => :lion
+    sha256 "e2b7170cdb020aa0f6f5ea9ee83c0748f3a7f81063686c10eac86290c28f998a" => :el_capitan
+    sha256 "7dc007cc8b1261638f7befb9eb2d13da8b591f8bbd43638cc7135e6b7ccf303d" => :yosemite
+    sha256 "6831944fd930a47850629ded938ab8147e9d931c6f0ae2734d72839dc45be95d" => :mavericks
+    sha256 "6524553e7d8e8f9b1dec0e4f8002dbe20134905b970b05c16266f8d6cbd3d14a" => :mountain_lion
   end
 
-  option 'with-finch', "Use finch/libpurple for all communication with instant messaging networks"
-  option 'with-libotr', "Build with otr (off the record) support"
+  option "with-pidgin", "Use finch/libpurple for all communication with instant messaging networks"
+  option "with-libotr", "Build with otr (off the record) support"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
-  depends_on 'finch' => :optional
-  depends_on 'libotr' => :optional
+  deprecated_option "with-finch" => "with-pidgin"
+
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "gnutls"
+  depends_on "libgcrypt"
+  depends_on "pidgin" => :optional
+  depends_on "libotr" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -29,18 +33,18 @@ class Bitlbee < Formula
             "--config=#{var}/bitlbee/lib/",
             "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
 
-    args << "--purple=1" if build.with? "finch"
+    args << "--purple=1" if build.with? "pidgin"
     args << "--otr=1" if build.with? "libotr"
 
     system "./configure", *args
 
     # This build depends on make running first.
     system "make"
-    system "make install"
+    system "make", "install"
     # Install the dev headers too
-    system "make install-dev"
+    system "make", "install-dev"
     # This build has an extra step.
-    system "make install-etc"
+    system "make", "install-etc"
 
     (var+"bitlbee/run").mkpath
     (var+"bitlbee/lib").mkpath
@@ -71,6 +75,8 @@ class Bitlbee < Formula
           <string>IPv4</string>
           <key>SockProtocol</key>
           <string>TCP</string>
+          <key>SockNodeName</key>
+          <string>127.0.0.1</string>
           <key>SockServiceName</key>
           <string>6667</string>
           <key>SockType</key>
@@ -85,5 +91,9 @@ class Bitlbee < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    shell_output("#{sbin}/bitlbee -V", 1)
   end
 end

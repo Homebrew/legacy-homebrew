@@ -1,19 +1,18 @@
-require 'formula'
-
 class Align < Formula
-  homepage 'http://www.cs.indiana.edu/~kinzler/align/'
-  url 'http://www.cs.indiana.edu/~kinzler/align/align-1.7.3.tgz'
-  sha1 'fca5e53a7a3a95e740e7d12941f4edbee78ca084'
+  desc "Text column alignment filter"
+  homepage "http://www.cs.indiana.edu/~kinzler/align/"
+  url "http://www.cs.indiana.edu/~kinzler/align/align-1.7.4.tgz"
+  sha256 "4775cc92bd7d5d991b32ff360ab74cfdede06c211def2227d092a5a0108c1f03"
 
   bottle do
     cellar :any
-    sha1 "6883eab5710385e8890fb52a8a6ac248f6bb29b7" => :mavericks
-    sha1 "12b51ccae39d06623f7475e289fd6eb6dbb89d7f" => :mountain_lion
-    sha1 "58e739c1df5c04ef37303c822fd4c859bf9e89eb" => :lion
+    sha1 "b9db933cf1129d4d29245e527feddefeb7e81ada" => :yosemite
+    sha1 "524a70b185b3c206d729e13cb2be5b36b50e575b" => :mavericks
+    sha1 "ac8557b4df591a67b47fa5d3206f553b8e0393d7" => :mountain_lion
   end
 
   def install
-    system 'make', 'install', "BINDIR=#{bin}"
+    system "make", "install", "BINDIR=#{bin}"
   end
 
   test do

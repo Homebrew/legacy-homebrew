@@ -1,23 +1,32 @@
-require "formula"
-
 class Wireshark < Formula
-  homepage "http://www.wireshark.org"
-  revision 1
+  desc "Graphical network analyzer and capture tool"
+  homepage "https://www.wireshark.org"
 
   stable do
-    url "http://wiresharkdownloads.riverbed.com/wireshark/src/all-versions/wireshark-1.12.0.tar.bz2"
-    mirror "http://www.wireshark.org/download/src/all-versions/wireshark-1.12.0.tar.bz2"
-    sha1 "c7a94a9ec90c1ff9be2a7d7b813276e433509df9"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.7.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.7.tar.bz2"
+    sha256 "c74a1c14e72ce0f198a93d832e71742c7f312cbbe719e5def9ecef176860f92c"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
     patch :DATA
+
+    depends_on "homebrew/dupes/libpcap" => :optional
   end
 
   bottle do
-    sha1 "c358f63d065e79c1bc95d9743686a0ba2ffb56d2" => :mavericks
-    sha1 "3beac5fc1a4ad062a29a105bd2f30fb7761cf698" => :mountain_lion
-    sha1 "e7b9eb2d8fefaf9c88fa23edf232a836794bfb11" => :lion
+    sha256 "05b8a6144c006ccda0866333cf10f62e23b6c28d1b615ea129eeb2baa5e73a35" => :el_capitan
+    sha256 "d8979eee062badc5dd506f35ed068bf0640f0174c10918742c599459aeb785bd" => :yosemite
+    sha256 "cd3011365f0ac3cdab74e840d01bd21fcaad403a323648953136c33323eab015" => :mavericks
+    sha256 "f590fed6226a7e9272af33af8cd08020075976eb56a08877c646f75ffc455abf" => :mountain_lion
+  end
+
+  devel do
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.9.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.9.tar.bz2"
+    sha256 "be7ac8f8eb2c08e0e3d62da9f781db0dc5322a9cbcb024d3f86a66a06185e182"
+
+    depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
   end
 
   head do
@@ -28,36 +37,45 @@ class Wireshark < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-qt", "Use QT for GUI instead of GTK+3"
-  option "with-headers", "Install Wireshark library headers for plug-in developemnt"
+  option "with-gtk+3", "Build the wireshark command with gtk+3"
+  option "with-gtk+", "Build the wireshark command with gtk+"
+  option "with-qt", "Build the wireshark-qt command (can be used with or without either GTK option)"
+  option "with-qt5", "Build the wireshark-qt command with qt5 (can be used with or without either GTK option)"
+  option "with-headers", "Install Wireshark library headers for plug-in development"
 
   depends_on "pkg-config" => :build
 
   depends_on "glib"
   depends_on "gnutls"
   depends_on "libgcrypt"
+  depends_on "d-bus"
 
   depends_on "geoip" => :recommended
+  depends_on "c-ares" => :recommended
 
-  depends_on "c-ares" => :optional
+  depends_on "libsmi" => :optional
   depends_on "lua" => :optional
-  depends_on "pcre" => :optional
   depends_on "portaudio" => :optional
+  depends_on "qt5" => :optional
   depends_on "qt" => :optional
   depends_on "gtk+3" => :optional
   depends_on "gtk+" => :optional
+  depends_on "gnome-icon-theme" if build.with? "gtk+3"
 
   def install
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--with-gnutls",
-            "--with-ssl"]
+    no_gui = build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+") && build.without?("qt5")
 
-    args << "--disable-wireshark" if build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+")
+    args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--prefix=#{prefix}",
+            "--with-gnutls"]
+
+    args << "--disable-wireshark" if no_gui
     args << "--disable-gtktest" if build.without?("gtk+3") && build.without?("gtk+")
-    args << "--with-qt" if build.with? "qt"
+    args << "--with-qt" if build.with?("qt") || build.with?("qt5")
     args << "--with-gtk3" if build.with? "gtk+3"
     args << "--with-gtk2" if build.with? "gtk+"
+    args << "--with-libcap=#{Formula["libpcap"].opt_prefix}" if build.with? "libpcap"
 
     if build.head?
       args << "--disable-warnings-as-errors"
@@ -67,7 +85,7 @@ class Wireshark < Formula
     system "./configure", *args
     system "make"
     ENV.deparallelize # parallel install fails
-    system "make install"
+    system "make", "install"
 
     if build.with? "headers"
       (include/"wireshark").install Dir["*.h"]
@@ -101,7 +119,7 @@ class Wireshark < Formula
   end
 
   test do
-    system "#{bin}/randpkt", "-b", "100", "-c", "2", "capture.pcap"
+    system bin/"randpkt", "-b", "100", "-c", "2", "capture.pcap"
     output = shell_output("#{bin}/capinfos -Tmc capture.pcap")
     assert_equal "File name,Number of packets\ncapture.pcap,2\n", output
   end

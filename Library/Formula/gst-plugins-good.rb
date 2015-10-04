@@ -1,55 +1,54 @@
-require 'formula'
-
 class GstPluginsGood < Formula
-  homepage 'http://gstreamer.freedesktop.org/'
+  desc "GStreamer plugins (well-supported, under the LGPL)"
+  homepage "http://gstreamer.freedesktop.org/"
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.1.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.1.tar.xz'
-    sha256 '8559d4270065b30ed5c49b826e1b7a3a2bd5ee9a340ae745a2ae3f9718e4c637'
+    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.0.tar.xz"
+    sha256 "a0915639595305e48884656e22b16fda7c6892aa02cdb3eb43e23dab6e6b81fa"
 
-    depends_on 'check' => :optional
+    depends_on "check" => :optional
   end
 
   bottle do
-    sha1 "f4cb3beb3f15fca813b1ccba5e8d5eab46c93aee" => :mavericks
-    sha1 "2b0dabefd15dd806b73ae9c8aa7b90f83f5f7b17" => :mountain_lion
-    sha1 "1fe10793229e9199a3c994341b7cecc609452c62" => :lion
+    sha256 "f0b959674f1bf2135378c640853971899df115830e047d0a33784671c35d17d4" => :el_capitan
+    sha256 "1a3009aa7e6dc2cd2cffd598a0c9e1f3183a268460aa15ebd1f750153a4d0f9d" => :yosemite
+    sha256 "cd42820977c3cdb2ca5315f7c86c1e041b523960fac07e767175958c873ff683" => :mavericks
   end
 
   head do
-    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-good'
+    url "git://anongit.freedesktop.org/gstreamer/gst-plugins-good"
 
-    depends_on :autoconf
-    depends_on :automake
-    depends_on :libtool
-    depends_on 'check'
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "check"
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'gst-plugins-base'
-  depends_on 'libsoup'
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "gst-plugins-base"
+  depends_on "libsoup"
 
   depends_on :x11 => :optional
 
   # The set of optional dependencies is based on the intersection of
   # gst-plugins-good-0.10.30/REQUIREMENTS and Homebrew formulae
-  depends_on 'orc' => :optional
-  depends_on 'gtk+' => :optional
-  depends_on 'aalib' => :optional
-  depends_on 'libcdio' => :optional
-  depends_on 'esound' => :optional
-  depends_on 'flac' => [:optional, 'with-libogg']
-  depends_on 'jpeg' => :optional
-  depends_on 'libcaca' => :optional
-  depends_on 'libdv' => :optional
-  depends_on 'libshout' => :optional
-  depends_on 'speex' => :optional
-  depends_on 'taglib' => :optional
-  depends_on 'libpng' => :optional
+  depends_on "orc" => :optional
+  depends_on "gtk+" => :optional
+  depends_on "aalib" => :optional
+  depends_on "libcdio" => :optional
+  depends_on "esound" => :optional
+  depends_on "flac" => [:optional, "with-libogg"]
+  depends_on "jpeg" => :optional
+  depends_on "libcaca" => :optional
+  depends_on "libdv" => :optional
+  depends_on "libshout" => :optional
+  depends_on "speex" => :optional
+  depends_on "taglib" => :optional
+  depends_on "libpng" => :optional
+  depends_on "libvpx" => :optional
 
-  depends_on 'libogg' if build.with? 'flac'
+  depends_on "libogg" if build.with? "flac"
 
   def install
     args = %W[

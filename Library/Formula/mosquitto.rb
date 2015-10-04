@@ -1,28 +1,30 @@
-require "formula"
-
 class Mosquitto < Formula
+  desc "Message broker implementing MQ telemetry transport protocol"
   homepage "http://mosquitto.org/"
-  url "http://mosquitto.org/files/source/mosquitto-1.3.4.tar.gz"
-  sha1 "b818672cc0db723995d7c3201ef6962931dd891a"
-  revision 1
+  url "http://mosquitto.org/files/source/mosquitto-1.4.2.tar.gz"
+  sha256 "5ebc3800a0018bfbec62dcc3748fb29f628df068acd39c62c4ef651d9276647e"
 
   bottle do
-    revision 1
-    sha1 "5e8dfe80e2ea2af1af0e8ce3b79f59727b9ca82f" => :mavericks
-    sha1 "1b11a70a2c1fe7d9edabc1e3c7419669afafbd6b" => :mountain_lion
-    sha1 "1a36f985225e210c06d1e8d72ddaa7ab13c20337" => :lion
+    sha256 "b562825f6e1df8ecae423c52414a0be3a7c53ecb2085bca81b22d7df069ee804" => :el_capitan
+    sha256 "5ddaaa8d6a3b1243e56a401352a30c98baac64912d727db4f1d863c91cde49d5" => :yosemite
+    sha256 "ebf06abb4e01eb008cc77ae09ae3ab2d593d4150398ebe5d25e0a08b0c80f4e5" => :mavericks
+    sha256 "120219f9750c23bc66635222c9f79a4434188fbdb046a5a43b8d1d350eb62bde" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "cmake" => :build
   depends_on "c-ares"
+  depends_on "libwebsockets" => :recommended
 
   # mosquitto requires OpenSSL >=1.0 for TLS support
   depends_on "openssl"
 
   def install
-    system "cmake", ".", *std_cmake_args
-    system "make install"
+    args = std_cmake_args
+    args << "-DWITH_WEBSOCKETS=ON" if build.with? "libwebsockets"
+
+    system "cmake", ".", *args
+    system "make", "install"
 
     # Create the working directory
     (var/"mosquitto").mkpath
@@ -37,11 +39,6 @@ class Mosquitto < Formula
     mosquitto has been installed with a default configuration file.
     You can make changes to the configuration by editing:
         #{etc}/mosquitto/mosquitto.conf
-
-    Python client bindings can be installed from the Python Package Index:
-        pip install mosquitto
-
-    Javascript client has been removed, see Eclipse Paho for an alternative.
     EOD
   end
 

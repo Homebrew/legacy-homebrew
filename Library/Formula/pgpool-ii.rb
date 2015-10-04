@@ -1,21 +1,23 @@
-require "formula"
-
 class PgpoolIi < Formula
+  desc "PostgreSQL connection pool server"
   homepage "http://www.pgpool.net/mediawiki/index.php/Main_Page"
-  url "http://www.pgpool.net/download.php?f=pgpool-II-3.2.8.tar.gz"
-  sha1 "77ae7f3472294e33837670a45579c72b12e2f50b"
+  url "http://www.pgpool.net/download.php?f=pgpool-II-3.4.2.tar.gz"
+  sha256 "d031fea1313eaf84116f16bc6d0053c9432b04da160e5544ab6445c1f876c351"
+
+  bottle do
+    sha256 "8d439ca3292ce18c4af1f6d7e1b67d6c4be269f753244923348138ee87ded8b0" => :yosemite
+    sha256 "d7d92779769bdf201a4233451bc4d88da1137ecadfa53e1b71f66ca9c6dfab35" => :mavericks
+    sha256 "5aba63321d6c9c294adb20d1a0043283a09e94b1c43b2f19c1d730823407d231" => :mountain_lion
+  end
 
   depends_on :postgresql
-
-  # Fix strlcpy conflict. Patch adapted from upstream commit:
-  # http://git.postgresql.org/gitweb/?p=pgpool2.git;a=commit;h=95a874ce94abc2859f53ecbd005d3332db423b48
-  patch do
-    url "https://gist.githubusercontent.com/jacknagel/10cef3c878cda8788b47/raw/e635efc28b63393aaea0aca896b898136849da07/pgpool.diff"
-    sha1 "b653936ba47a0cea88a8bb45cc462d628498a370"
-  end
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    system bin/"pg_md5", "--md5auth", "pool_passwd", "--config-file", etc/"pgpool.conf.sample"
   end
 end

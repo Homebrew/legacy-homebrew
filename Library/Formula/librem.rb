@@ -1,15 +1,15 @@
-require "formula"
-
 class Librem < Formula
+  desc "Toolkit library for real-time audio and video processing"
   homepage "http://www.creytiv.com"
   url "http://www.creytiv.com/pub/rem-0.4.6.tar.gz"
-  sha1 "9698b48aee5e720e56440f4c660d8bd4dbb7f8fa"
+  sha256 "7ce86f1eb8a3ba8cb14c490b80abe4d2389de306f385bfbb8c601c8b6ff2f865"
 
   bottle do
     cellar :any
-    sha1 "e1089e53d13bd264d8a6b95cce0401c7ae5b6aed" => :mavericks
-    sha1 "8da4a993fa287e444b649b045fdfb48718b733d5" => :mountain_lion
-    sha1 "cb6ace233af76a21ef463f005d13121686ffebeb" => :lion
+    revision 1
+    sha1 "d9e53e65a746d38c30e749ed06bde416d5c4b83d" => :yosemite
+    sha1 "658296136774b5bad7b94a84d24b290ed412e1f6" => :mavericks
+    sha1 "ca0405f5fd90ebbaf16dd49205c1416a823f41f7" => :mountain_lion
   end
 
   depends_on "libre"
@@ -23,7 +23,7 @@ class Librem < Formula
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <re/re.h>
       #include <rem/rem.h>
       int main() {

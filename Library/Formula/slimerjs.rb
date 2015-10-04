@@ -1,51 +1,82 @@
-require 'formula'
+class FirefoxRequirement < Requirement
+  fatal true
+  default_formula "xulrunner" if MacOS.version < :yosemite
+
+  def self.firefox_installation
+    paths = ["~/Applications/FirefoxNightly.app", "~/Applications/Firefox.app",
+             "/Applications/FirefoxNightly.app", "/Applications/Firefox.app",
+             "~/Applications/FirefoxDeveloperEdition.app",
+             "/Applications/FirefoxDeveloperEdition.app"]
+    paths.find { |p| File.exist? File.expand_path(p) }
+  end
+
+  satisfy(:build_env => false) { Formula["xulrunner"].installed? || FirefoxRequirement.firefox_installation }
+
+  def message
+    "Firefox or xulrunner must be available."
+  end
+end
 
 class Slimerjs < Formula
-  homepage 'http://www.slimerjs.org'
-  url "http://download.slimerjs.org/v0.9/0.9.1/slimerjs-0.9.1.zip"
-  sha1 "15eed855c462c5b7ff2502d028702dcebae797cd"
-
-  head 'https://github.com/laurentj/slimerjs.git'
+  desc "Scriptable browser for Web developers"
+  homepage "https://slimerjs.org/"
+  url "https://download.slimerjs.org/releases/0.9.6/slimerjs-0.9.6-mac.tar.bz2"
+  sha256 "5c3ba9a83328a54b1fc6a6106abdd6d6b2117768f36ad43b9b0230a3ad7113cd"
+  head "https://github.com/laurentj/slimerjs.git"
 
   bottle do
     cellar :any
-    sha1 "f777909179024c69332199893897d30eb7c104d5" => :mavericks
-    sha1 "00ffe91192f50232cde4169d2a80d5e950edeef5" => :mountain_lion
-    sha1 "a05a67c5a7366bf6b1ef6de7dc74fb4f35c4d9cb" => :lion
+    sha256 "3b9baa7f71e4e3b3472faf8e30d8e21f4a4f54e24fb894d003cb4fe539a6db1a" => :mavericks
+    sha256 "3607fb21371c48b903b5a0ed5c7211b027be3f76e7fbdccb6e44c30d5e341385" => :mountain_lion
   end
 
-  if MacOS.version > :snow_leopard
-    option "without-xulrunner", "Build without xulrunner (requires a installed Firefox)"
-    depends_on "xulrunner" => :recommended
+  devel do
+    url "https://download.slimerjs.org/nightlies/latest-slimerjs-stable/slimerjs-0.9.7-pre-mac.tar.bz2"
+    sha256 "8817a90333154ecb52415638d418e6d90d6742fec3d80f124b739344a75da5d1"
+    version "0.9.7-pre"
   end
+
+  # Min supported OS X version by Firefox & xulrunner is 10.6
+  depends_on :macos => :leopard
+  depends_on FirefoxRequirement
 
   def install
-    unless build.stable?
-      cd "src"
-      system "zip", "-r", "omni.ja", "chrome/", "components/", "modules/",
-                    "defaults/", "chrome.manifest", "-x@package_exclude.lst"
+    if build.head?
+      cd "src" do
+        system "zip", "-r", "omni.ja", "chrome/", "components/", "modules/",
+                      "defaults/", "chrome.manifest", "-x@package_exclude.lst"
+        libexec.install %w[application.ini omni.ja slimerjs slimerjs.py]
+      end
+    else
+      libexec.install %w[application.ini omni.ja slimerjs slimerjs.py]
     end
-    libexec.install ["application.ini", "omni.ja", "slimerjs", "slimerjs.py"]
     bin.install_symlink libexec/"slimerjs"
   end
 
-  def caveats; <<-EOS.undent
-    You can set the environment variable SLIMERJSLAUNCHER to a installation of
-    Mozilla Firefox (or Mozilla XULRunner) to use this version with SlimerJS instead
-    of the one installed by Homebrew (this is required if build without xulrunner).
-    For a standard Mozilla Firefox installation this would be:
+  def caveats
+    s = ""
 
-      export SLIMERJSLAUNCHER=/Applications/Firefox.app/Contents/MacOS/firefox
+    if (firefox_installation = FirefoxRequirement.firefox_installation)
+      s += <<-EOS.undent
+        You MUST provide an installation of Mozilla Firefox and set
+        the environment variable SLIMERJSLAUNCHER pointing to it, e.g.:
 
-    Note: If you use SlimerJS with an unstable version of Mozilla Firefox/XULRunner
-    (>29.*) you may have to change the [Gecko]MaxVersion in:
-      #{libexec}/application.ini
+        export SLIMERJSLAUNCHER=#{firefox_installation}/Contents/MacOS/firefox
+        EOS
+    end
+    s += <<-EOS.undent
+
+      Note: If you use SlimerJS with an unstable version of Mozilla Firefox/XULRunner (>38.*)
+      you may have to change the [Gecko]MaxVersion in #{libexec}/application.ini
     EOS
+
+    s
   end
 
   test do
-    system "#{bin}/slimerjs", "-v"
-    curl "-O", "https://raw.githubusercontent.com/laurentj/slimerjs/ec1e53a/examples/phantomjs/loadspeed.js"
-    system "#{bin}/slimerjs", "loadspeed.js", "https://www.google.com"
+    if build.with?("xulrunner")
+      system "#{bin}/slimerjs", "-v"
+      system "#{bin}/slimerjs", "loadspeed.js", "https://www.google.com"
+    end
   end
 end

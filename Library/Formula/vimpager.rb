@@ -1,22 +1,32 @@
-require "formula"
-
 class Vimpager < Formula
+  desc "Use ViM as PAGER"
   homepage "https://github.com/rkitover/vimpager"
-  url "https://github.com/rkitover/vimpager/archive/1.8.9.tar.gz"
-  sha1 "332a84fec5bd2a4c2dae518d52b310dcaa49f417"
+  url "https://github.com/rkitover/vimpager/archive/2.06.tar.gz"
+  sha256 "cc616d0840a6f2501704eea70de222ab662421f34b2da307e11fb62aa70bda5d"
   head "https://github.com/rkitover/vimpager.git"
 
-  def install
-    inreplace "vimpager.1", "~/bin/", ""
+  option "with-pandoc", "Use pandoc to build and install man pages"
+  depends_on "pandoc" => [:build, :optional]
 
+  def install
+    system "make", "docs" if build.with? "pandoc"
     bin.install "vimcat"
     bin.install "vimpager"
-    man1.install gzip("vimpager.1")
+    doc.install "README.md", "vimcat.md", "vimpager.md"
+    man1.install "vimcat.1", "vimpager.1" if build.with? "pandoc"
   end
 
   def caveats; <<-EOS.undent
     To use vimpager as your default pager, add `export PAGER=vimpager` to your
     shell configuration.
     EOS
+  end
+
+  test do
+    (testpath/"test.txt").write <<-EOS.undent
+      This is test
+    EOS
+
+    assert_match(/This is test/, shell_output("#{bin}/vimcat test.txt"))
   end
 end

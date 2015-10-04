@@ -1,16 +1,16 @@
-require "formula"
-
 class Sqlite < Formula
-  homepage "http://sqlite.org/"
-  url "http://sqlite.org/2014/sqlite-autoconf-3080600.tar.gz"
-  version "3.8.6"
-  sha1 "c4b2911bc4a6e1dc2b411aa21d8c4f524113eb64"
+  desc "Command-line interface for SQLite"
+  homepage "https://sqlite.org/"
+  url "https://sqlite.org/2015/sqlite-autoconf-3081101.tar.gz"
+  sha256 "fb99b0ac038c4a7e48b44b61836cb41d4eeba36b4d0ee757beeab59031a1d3b6"
+  version "3.8.11.1"
 
   bottle do
     cellar :any
-    sha1 "69df469595af0cda3be25b4f7a5ecab55c5c4779" => :mavericks
-    sha1 "34514fc4ff5002b51beb3f4075cf048d7d60c804" => :mountain_lion
-    sha1 "67bac5a23611b5cd630a3d52b7b82ac27600c836" => :lion
+    sha256 "93a06d141f495401a9b105ebdeb7c5c7181d400040b6609425b5e876972a20c0" => :el_capitan
+    sha256 "c5b59f1ab72148a427fb370a30c2781d107bfeb8e8f8debc156b294a17a2ad58" => :yosemite
+    sha256 "20c43ba5d46667802293aebe80a6a86edb76d224c8f2e570a3141ff4d2117f24" => :mavericks
+    sha256 "965ee8d800a2ef8222fdb47c4cb0e787286bcc9d7ee44d2aeb9cce4f4cfa5ea0" => :mountain_lion
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -19,42 +19,48 @@ class Sqlite < Formula
   option "with-docs", "Install HTML documentation"
   option "without-rtree", "Disable the R*Tree index module"
   option "with-fts", "Enable the FTS module"
+  option "with-secure-delete", "Defaults secure_delete to on"
+  option "with-unlock-notify", "Enable the unlock notification feature"
   option "with-icu4c", "Enable the ICU module"
   option "with-functions", "Enable more math and string functions for SQL queries"
+  option "with-dbstat", "Enable the 'dbstat' virtual table"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
 
   resource "functions" do
-    url "http://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
+    url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
     version "2010-01-06"
-    sha1 "c68fa706d6d9ff98608044c00212473f9c14892f"
+    sha256 "991b40fe8b2799edc215f7260b890f14a833512c9d9896aa080891330ffe4052"
   end
 
   resource "docs" do
-    url "http://sqlite.org/2014/sqlite-doc-3080600.zip"
-    version "3.8.6"
-    sha1 "8c3d3a9f97b10fb43d6fce61079ed1ab93472913"
+    url "https://sqlite.org/2015/sqlite-doc-3081101.zip"
+    version "3.8.11.1"
+    sha256 "89e3fc4bce7463885da3b03602b4260fe07240f9ea674ba4ac7ce2ee4987357f"
   end
 
   def install
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE" if build.with? "rtree"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
     ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA"
+    ENV.append "CPPFLAGS", "-DSQLITE_SECURE_DELETE" if build.with? "secure-delete"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_UNLOCK_NOTIFY" if build.with? "unlock-notify"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_DBSTAT_VTAB" if build.with? "dbstat"
 
     if build.with? "icu4c"
-      icu4c = Formula['icu4c']
+      icu4c = Formula["icu4c"]
       icu4cldflags = `#{icu4c.opt_bin}/icu-config --ldflags`.tr("\n", " ")
       icu4ccppflags = `#{icu4c.opt_bin}/icu-config --cppflags`.tr("\n", " ")
       ENV.append "LDFLAGS", icu4cldflags
       ENV.append "CPPFLAGS", icu4ccppflags
-      ENV.append 'CPPFLAGS', "-DSQLITE_ENABLE_ICU"
+      ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_ICU"
     end
 
     ENV.universal_binary if build.universal?
 
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
-    system "make install"
+    system "make", "install"
 
     if build.with? "functions"
       buildpath.install resource("functions")
@@ -75,7 +81,7 @@ class Sqlite < Formula
         In your application, call sqlite3_enable_load_extension(db,1) to
         allow loading external libraries.  Then load the library libsqlitefunctions
         using sqlite3_load_extension; the third argument should be 0.
-        See http://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
+        See https://www.sqlite.org/loadext.html.
         Select statements may now use these functions, as in
         SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
 

@@ -1,4 +1,4 @@
-require 'dependable'
+require "dependable"
 
 # A dependency on another Homebrew formula.
 class Dependency
@@ -8,7 +8,7 @@ class Dependency
 
   DEFAULT_ENV_PROC = proc {}
 
-  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name)
     @name = name
     @tags = tags
     @env_proc = env_proc
@@ -20,12 +20,12 @@ class Dependency
   end
 
   def ==(other)
-    instance_of?(other.class) && name == other.name
+    instance_of?(other.class) && name == other.name && tags == other.tags
   end
   alias_method :eql?, :==
 
   def hash
-    name.hash
+    name.hash ^ tags.hash
   end
 
   def to_formula
@@ -70,11 +70,11 @@ class Dependency
     # the list.
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
-    def expand(dependent, deps=dependent.deps, &block)
+    def expand(dependent, deps = dependent.deps, &block)
       expanded_deps = []
 
       deps.each do |dep|
-        # FIXME don't hide cyclic dependencies
+        # FIXME: don't hide cyclic dependencies
         next if dependent.name == dep.name
 
         case action(dependent, dep, &block)
@@ -93,7 +93,7 @@ class Dependency
       merge_repeats(expanded_deps)
     end
 
-    def action(dependent, dep, &block)
+    def action(dependent, dep, &_block)
       catch(:action) do
         if block_given?
           yield dependent, dep
@@ -118,20 +118,25 @@ class Dependency
       throw(:action, :keep_but_prune_recursive_deps)
     end
 
-    def merge_repeats(deps)
-      grouped = deps.group_by(&:name)
+    def merge_repeats(all)
+      grouped = all.group_by(&:name)
 
-      deps.uniq.map do |dep|
-        tags = grouped.fetch(dep.name).map(&:tags).flatten.uniq
-        dep.class.new(dep.name, tags, dep.env_proc)
+      all.map(&:name).uniq.map do |name|
+        deps = grouped.fetch(name)
+        dep  = deps.first
+        tags = deps.flat_map(&:tags).uniq
+        dep.class.new(name, tags, dep.env_proc)
       end
     end
   end
 end
 
 class TapDependency < Dependency
-  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
-    super(name, tags, env_proc, name.split("/").last)
+  attr_reader :tap
+
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name.split("/").last)
+    @tap = name.rpartition("/").first
+    super(name, tags, env_proc, option_name)
   end
 
   def installed?

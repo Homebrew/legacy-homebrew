@@ -1,16 +1,24 @@
-require 'formula'
-
 class Pcre < Formula
-  homepage 'http://www.pcre.org/'
-  url 'https://downloads.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.bz2'
-  mirror 'ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.35.tar.bz2'
-  sha256 'a961c1c78befef263cc130756eeca7b674b4e73a81533293df44e4265236865b'
+  desc "Perl compatible regular expressions library"
+  homepage "http://www.pcre.org/"
+  url "https://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.37.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/downloads.sourceforge.net/p/pc/pcre/pcre/8.37/pcre-8.37.tar.bz2"
+  sha256 "51679ea8006ce31379fb0860e46dd86665d864b5020fc9cd19e71260eef4789d"
+
+  head do
+    url "svn://vcs.exim.org/pcre/code/trunk"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
-    sha1 "be65f007b73eeede8b965c0d7fc1c3d1a4bce087" => :mavericks
-    sha1 "a0358dc5793923703258bd6a4fb9e5a5e44a358e" => :mountain_lion
-    sha1 "6f7043ff5e9ad854dfe98e0399045d0f62209402" => :lion
+    sha256 "b6c90f2a9860e43fbaa890ea447765ebcf6eea31654e03a5f1b407da032042db" => :el_capitan
+    sha256 "83191880a6cc02a258928bf69f6bc0545b019f90ecccc5b2d08787180504327c" => :yosemite
+    sha256 "88485e49b169f4123f29c086e8e59d835a16b1e7d39c4ecaca01412b88d16281" => :mavericks
+    sha256 "78ecdc1a81fe8da426fd5fe0d9d04fb03bb92bd3763d876fcb3d48d45b76876f" => :mountain_lion
   end
 
   option :universal
@@ -23,6 +31,7 @@ class Pcre < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-utf8",
@@ -35,7 +44,11 @@ class Pcre < Formula
                           "--enable-jit"
     system "make"
     ENV.deparallelize
-    system "make test"
-    system "make install"
+    system "make", "test"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/pcregrep", "regular expression", "#{prefix}/README"
   end
 end

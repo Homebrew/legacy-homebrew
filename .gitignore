@@ -1,5 +1,7 @@
 /*
 !/.gitignore
+!/.travis.yml
+!/.yardopts
 !/Library/
 !/CODEOFCONDUCT.md
 !/CONTRIBUTING.md
@@ -9,9 +11,16 @@
 !/bin
 /bin/*
 !/bin/brew
+!/share/doc/homebrew
 !/share/man/man1/brew.1
 .DS_Store
+/Library/Homebrew/doc
+/Library/Homebrew/test/.bundle
+/Library/Homebrew/test/bin
+/Library/Homebrew/test/vendor
+/Library/Homebrew/test/coverage
+/Library/Homebrew/test/fs_leak_log
 /Library/LinkedKegs
 /Library/PinnedKegs
 /Library/Taps
-/Library/Formula/.gitignore
+/Library/PinnedTaps

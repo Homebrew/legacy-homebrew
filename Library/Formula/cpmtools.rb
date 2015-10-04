@@ -1,9 +1,14 @@
-require 'formula'
-
 class Cpmtools < Formula
-  homepage 'http://www.moria.de/~michael/cpmtools/'
-  url 'http://www.moria.de/~michael/cpmtools/files/cpmtools-2.19.tar.gz'
-  sha1 '7c66bd04ecc05c05e99232a55a427f7b29a2f4cf'
+  desc "Tools to access CP/M file systems"
+  homepage "http://www.moria.de/~michael/cpmtools/"
+  url "http://www.moria.de/~michael/cpmtools/files/cpmtools-2.20.tar.gz"
+  sha256 "d8c7e78a9750994124f3aab6e461da8fa0021acc7dbad76eafbac8b0ed8279d3"
+
+  bottle do
+    sha1 "a437721156fa15a612e823e4f1ee0fdbfe2d0ed7" => :yosemite
+    sha1 "43ea7f0a371628133d4c46e249c32f0a619ad45f" => :mavericks
+    sha1 "537d26d243827c8d1506305fce70e9eab7604eaa" => :mountain_lion
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -12,7 +17,7 @@ class Cpmtools < Formula
     man1.mkpath
     man5.mkpath
 
-    system "make install"
+    system "make", "install"
   end
 
   test do

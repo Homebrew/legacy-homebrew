@@ -1,5 +1,5 @@
-require 'resource'
-require 'erb'
+require "resource"
+require "erb"
 
 module Patch
   def self.create(strip, src, &block)
@@ -61,12 +61,12 @@ class EmbeddedPatch
   end
 
   def contents
-    raise NotImplementedError
   end
 
   def apply
     data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
-    cmd, args = "/usr/bin/patch", %W[-g 0 -f -#{strip}]
+    cmd = "/usr/bin/patch"
+    args = %W[-g 0 -f -#{strip}]
     IO.popen("#{cmd} #{args.join(" ")}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution.new(cmd, args) unless $?.success?
   end
@@ -119,7 +119,7 @@ class ExternalPatch
     true
   end
 
-  def owner= owner
+  def owner=(owner)
     resource.owner   = owner
     resource.version = resource.checksum || ERB::Util.url_encode(resource.url)
   end
@@ -129,7 +129,7 @@ class ExternalPatch
     resource.unpack do
       # Assumption: the only file in the staging directory is the patch
       patchfile = Pathname.pwd.children.first
-      safe_system "/usr/bin/patch", "-g", "0", "-f", "-d", dir, "-#{strip}", "-i", patchfile
+      dir.cd { safe_system "/usr/bin/patch", "-g", "0", "-f", "-#{strip}", "-i", patchfile }
     end
   end
 
@@ -162,7 +162,7 @@ end
 class LegacyPatch < ExternalPatch
   def initialize(strip, url)
     super(strip)
-    resource.url = url
+    resource.url(url)
     resource.download_strategy = CurlDownloadStrategy
   end
 
@@ -171,7 +171,7 @@ class LegacyPatch < ExternalPatch
     super
   end
 
-  def verify_download_integrity(fn)
+  def verify_download_integrity(_fn)
     # no-op
   end
 

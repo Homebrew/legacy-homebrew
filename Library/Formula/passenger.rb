@@ -1,32 +1,39 @@
-require 'formula'
-
 class Passenger < Formula
-  homepage 'https://www.phusionpassenger.com/'
-  url 'http://s3.amazonaws.com/phusion-passenger/releases/passenger-4.0.50.tar.gz'
-  sha1 'f85204d0f21147e8ca2e2313b5bddaebd6ca0b21'
-  head 'https://github.com/phusion/passenger.git'
+  desc "Server for Ruby, Python, and Node.js apps via Apache/NGINX"
+  homepage "https://www.phusionpassenger.com/"
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.20.tar.gz"
+  sha256 "a5b35780beb7ecd39d18375acab3e4fa1a2e104b7a324f41a1f89c99e7b8b04c"
+  head "https://github.com/phusion/passenger.git"
 
   bottle do
-    revision 1
-    sha1 "a240e698b7d1c90609067c83e4bfccdfb71e5b19" => :mavericks
-    sha1 "71e8e1133342801c65eecdc427446a4794ea7f04" => :mountain_lion
-    sha1 "150e49250a9c026eef71addcdf75ac3c0f0c4b09" => :lion
+    cellar :any
+    sha256 "8a3559b46c71a6c998d81ac89b62baec7cabefbb39b21550ba0c4e4ae4bf174b" => :el_capitan
+    sha256 "503be746c0521813e11ab0533932a50c8ac6812b57b1206d959907904360d8b3" => :yosemite
+    sha256 "86d41ece182c24a5466afd481fd9a3234ecd6d4c3c90faaf38b959ebf0e807d7" => :mavericks
   end
 
-  depends_on 'pcre'
+  depends_on "pcre"
+  depends_on "openssl"
   depends_on :macos => :lion
 
-  option 'without-apache2-module', 'Disable Apache2 module'
+  option "without-apache2-module", "Disable Apache2 module"
 
   def install
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
     rake "webhelper"
 
+    (libexec/"download_cache").mkpath
+
+    # Fixes https://github.com/phusion/passenger/issues/1288
+    rm_rf "buildout/libev"
+    rm_rf "buildout/libuv"
+    rm_rf "buildout/cache"
+
     necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
-      "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
-      "helper-scripts", "ext", "resources", "buildout"]
+      "passenger.gemspec", "build", "bin", "doc", "man", "dev", "src",
+      "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 
@@ -35,15 +42,22 @@ class Passenger < Formula
 
     # Ensure that the Phusion Passenger commands can always find their library
     # files.
+
     locations_ini = `/usr/bin/ruby ./bin/passenger-config --make-locations-ini --for-native-packaging-method=homebrew`
     locations_ini.gsub!(/=#{Regexp.escape Dir.pwd}/, "=#{libexec}")
-    (libexec/"lib/phusion_passenger/locations.ini").write(locations_ini)
-    system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
-      "--ruby", libexec/"lib", *Dir[libexec/"bin/*"]
-    system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
-      "--nginx-module-config", libexec/"bin", libexec/"ext/nginx/config"
+    (libexec/"src/ruby_supportlib/phusion_passenger/locations.ini").write(locations_ini)
 
-    mv libexec/'man', share
+    ruby_libdir = `/usr/bin/ruby ./bin/passenger-config about ruby-libdir`.strip
+    ruby_libdir.gsub!(/^#{Regexp.escape Dir.pwd}/, libexec)
+    system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
+      "--ruby", ruby_libdir, *Dir[libexec/"bin/*"]
+
+    nginx_addon_dir = `/usr/bin/ruby ./bin/passenger-config about nginx-addon-dir`.strip
+    nginx_addon_dir.gsub!(/^#{Regexp.escape Dir.pwd}/, libexec)
+    system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
+      "--nginx-module-config", libexec/"bin", "#{nginx_addon_dir}/config"
+
+    mv libexec/"man", share
   end
 
   def caveats
@@ -65,8 +79,6 @@ class Passenger < Formula
 
   test do
     ruby_libdir = `#{HOMEBREW_PREFIX}/bin/passenger-config --ruby-libdir`.strip
-    if ruby_libdir != (libexec/"lib").to_s
-      raise "Invalid installation"
-    end
+    assert_equal "#{libexec}/src/ruby_supportlib", ruby_libdir
   end
 end

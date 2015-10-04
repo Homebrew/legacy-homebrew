@@ -1,16 +1,18 @@
-require 'formula'
-
 class Lmdb < Formula
-  homepage 'http://symas.com/mdb/'
-  url "https://gitorious.org/mdb/mdb.git", :tag => "LMDB_0.9.13"
+  desc "Lightning memory-mapped database: key-value data store"
+  homepage "http://symas.com/mdb/"
+  url "https://github.com/LMDB/lmdb/archive/LMDB_0.9.14.tar.gz"
+  sha256 "6447d7677a991e922e3e811141869421a2b67952586aa68a26e018ea8ee3989c"
 
-  head 'git://git.openldap.org/openldap.git', :branch => 'mdb.master'
+  head "git://git.openldap.org/openldap.git", :branch => "mdb.master"
 
   bottle do
     cellar :any
-    sha1 "55a9e7543df012aa3e9431805c8e55d00597f6f5" => :mavericks
-    sha1 "fbfc5f6cbe2ec4799cfa153672217a028374bcb2" => :mountain_lion
-    sha1 "61d3a5414a97a5e69b91aea6fbf108c192cde088" => :lion
+    revision 1
+    sha256 "1ff98cfc65fcea5c494d9bd097500b7977d57a8760da8475c7f053c85f8cb8da" => :el_capitan
+    sha256 "49b620b1ddb51161db870b239de4cf699a7d2b97de1e13901e5fdc8d3358394e" => :yosemite
+    sha256 "fec09772155dae25a6aec9422e07927e60ad5ef0f3d95b1aca12ba464ed347f6" => :mavericks
+    sha256 "3ad74588a349fb8e4bacb63017c52928001d2adf1a41adde0282ba2bb35f3165" => :mountain_lion
   end
 
   def install
@@ -25,5 +27,9 @@ class Lmdb < Formula
     include.mkpath
 
     system "make", "-C", "libraries/liblmdb", "install", "prefix=#{prefix}"
+  end
+
+  test do
+    system "#{bin}/mdb_dump", "-V"
   end
 end

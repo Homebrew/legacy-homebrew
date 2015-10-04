@@ -1,24 +1,27 @@
-require 'formula'
-
 class Libzzip < Formula
-  homepage 'http://sourceforge.net/projects/zziplib/'
-  url 'https://downloads.sourceforge.net/project/zziplib/zziplib13/0.13.62/zziplib-0.13.62.tar.bz2'
-  sha1 'cf8b642abd9db618324a1b98cc71492a007cd687'
+  desc "Library providing read access on ZIP-archives"
+  homepage "http://sourceforge.net/projects/zziplib/"
+  url "https://downloads.sourceforge.net/project/zziplib/zziplib13/0.13.62/zziplib-0.13.62.tar.bz2"
+  sha256 "a1b8033f1a1fd6385f4820b01ee32d8eca818409235d22caf5119e0078c7525b"
 
   bottle do
     cellar :any
-    sha1 "0054168728b77dcd9e1a73fdb1af945ad1ba9dd9" => :mavericks
-    sha1 "d745e568d441b66c4bc9ccc920c22d0a1ce4e904" => :mountain_lion
-    sha1 "a2191d35352eddb133bc838f587bf98764f32378" => :lion
+    revision 1
+    sha256 "57530305f80482d4212cc72940d03aeb791a96dc95012f90096b802312320ba7" => :el_capitan
+    sha1 "5a1b7004e05d64c363169b7437df6df13dcf442a" => :yosemite
+    sha1 "9ba90a192f579f08425969b07abf9da33cf06b96" => :mavericks
+    sha1 "986d13aa3974d0b7c2621a8447f1aad640f11d92" => :mountain_lion
   end
 
-  option 'sdl', 'Enable SDL usage and create SDL_rwops_zzip.pc'
+  option "with-sdl", "Enable SDL usage and create SDL_rwops_zzip.pc"
   option :universal
 
-  depends_on 'pkg-config' => :build
-  depends_on 'sdl' if build.include? 'sdl'
+  deprecated_option "sdl" => "with-sdl"
 
-  conflicts_with 'zzuf', :because => 'both install `zzcat` binaries'
+  depends_on "pkg-config" => :build
+  depends_on "sdl" => :optional
+
+  conflicts_with "zzuf", :because => "both install `zzcat` binaries"
 
   def install
     if build.universal?
@@ -32,10 +35,16 @@ class Libzzip < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
     ]
-    args << '--enable-sdl' if build.include? 'sdl'
-    system './configure', *args
-    system 'make install'
+    args << "--enable-sdl" if build.with? "sdl"
+    system "./configure", *args
+    system "make", "install"
     ENV.deparallelize   # fails without this when a compressed file isn't ready
-    system 'make check' # runing this after install bypasses DYLD issues
+    system "make", "check" # runing this after install bypasses DYLD issues
+  end
+
+  test do
+    (testpath/"README.txt").write("Hello World!")
+    system "zip", "test.zip", "README.txt"
+    assert_equal "Hello World!", shell_output("#{bin}/zzcat test/README.txt")
   end
 end

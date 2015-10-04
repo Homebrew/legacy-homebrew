@@ -3,28 +3,59 @@
 # when making significant changes to formula.rb,
 # or to determine if any current formulae have Ruby issues
 
-require 'formula'
-require 'cmd/tap'
+require "formula"
+require "cmd/tap"
+require "thread"
 
 module Homebrew
   def readall
-    formulae = []
-    if ARGV.empty?
-      formulae = Formula.names
-    else
-      user, repo = tap_args
-      user.downcase!
-      repo.downcase!
-      tap = HOMEBREW_LIBRARY/"Taps/#{user}/homebrew-#{repo}"
-      raise "#{tap} does not exist!" unless tap.directory?
-      tap.find_formula { |f| formulae << f }
+    if ARGV.delete("--syntax")
+      ruby_files = Queue.new
+      Dir.glob("#{HOMEBREW_LIBRARY}/Homebrew/**/*.rb").each do |rb|
+        next if rb.include?("/vendor/")
+        ruby_files << rb
+      end
+
+      failed = false
+      nostdout do
+        workers = (0...Hardware::CPU.cores).map do
+          Thread.new do
+            begin
+              while rb = ruby_files.pop(true)
+                failed = true unless system RUBY_PATH, "-c", "-w", rb
+              end
+            rescue ThreadError # ignore empty queue error
+            end
+          end
+        end
+        workers.map(&:join)
+      end
+      Homebrew.failed = failed
     end
 
-    formulae.sort.each do |n|
+    if ARGV.delete("--aliases")
+      Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*").each do |f|
+        next unless f.symlink?
+        next if f.file?
+        onoe "Broken alias: #{f}"
+        Homebrew.failed = true
+      end
+    end
+
+    formulae = []
+    if ARGV.named.empty?
+      formulae = Formula.files
+    else
+      tap = Tap.fetch(*tap_args)
+      raise TapUnavailableError, tap.name unless tap.installed?
+      formulae = tap.formula_files
+    end
+
+    formulae.each do |file|
       begin
-        Formulary.factory(n)
+        Formulary.factory(file)
       rescue Exception => e
-        onoe "problem in #{Formula.path(n)}"
+        onoe "problem in #{file}"
         puts e
         Homebrew.failed = true
       end

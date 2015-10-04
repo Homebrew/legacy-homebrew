@@ -1,26 +1,32 @@
-require 'formula'
-
 class Libcroco < Formula
-  homepage 'http://www.linuxfromscratch.org/blfs/view/svn/general/libcroco.html'
-  url 'http://ftp.gnome.org/pub/GNOME/sources/libcroco/0.6/libcroco-0.6.5.tar.xz'
-  sha256 '2c6959c3644e889264a61c35ddf17401c86943681d4fe3c1682ecd9acabda7e3'
+  desc "CSS parsing and manipulation toolkit for GNOME"
+  homepage "http://www.linuxfromscratch.org/blfs/view/svn/general/libcroco.html"
+  url "https://download.gnome.org/sources/libcroco/0.6/libcroco-0.6.8.tar.xz"
+  sha256 "ea6e1b858c55219cefd7109756bff5bc1a774ba7a55f7d3ccd734d6b871b8570"
 
   bottle do
     cellar :any
-    sha1 "fa9e84447cda19feb8897ee6ac98c13f505ebe71" => :mavericks
-    sha1 "5c8bfd41955f6a14dd12c3307047c6d865ef390c" => :mountain_lion
-    sha1 "70c653cf465e239f2f928e4adc5ad10a4a48e5a7" => :lion
+    sha256 "b088109aef1501e32cb4bedf65807ebe0f4d14492b310308d10d3af98c867b48" => :el_capitan
+    sha256 "a7068d12230f2efc87159f09c369b18ea80c6a21273f5fc79677236301aeaef9" => :yosemite
+    sha256 "0941b2151777aec8e20df74979185a5fb2aa0794d009a24aa83011e12946e490" => :mavericks
+    sha256 "13ee66e3ce36c2728c3120984db89cae4268d9bcfa48446a75bb026ebedde513" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "glib"
 
   def install
     ENV.libxml2
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-Bsymbolic"
-    system 'make install'
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.css").write ".brew-pr { color: green }"
+    assert_equal ".brew-pr {\n  color : green\n}",
+      shell_output("#{bin}/csslint-0.6 test.css").chomp
   end
 end

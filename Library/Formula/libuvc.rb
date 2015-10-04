@@ -1,16 +1,16 @@
-require "formula"
-
 class Libuvc < Formula
+  desc "Cross-platform library for USB video devices"
   homepage "https://github.com/ktossell/libuvc"
   url "https://github.com/ktossell/libuvc/archive/v0.0.5.tar.gz"
-  sha1 "ab2e06d014af6aa72238113666f57405f45d1d18"
+  sha256 "62652a4dd024e366f41042c281e5a3359a09f33760eb1af660f950ab9e70f1f7"
 
   head "https://github.com/ktossell/libuvc.git"
 
   bottle do
-    sha1 "592b2190a35ab15f07c25d39f3e34a0baae971e2" => :mavericks
-    sha1 "c13fafbeab7ebc19565be18423bb34248c9557a6" => :mountain_lion
-    sha1 "82645fb85228750be0aba5d2fd2b10bbc9ed888c" => :lion
+    revision 1
+    sha1 "600fa35a693bccc80b44f731acc9cd945c35181d" => :yosemite
+    sha1 "b292f190f52e1e659aa3c2e51c19f15b421fb01e" => :mavericks
+    sha1 "6216c3b15fc83f9612b8573999d0dc537381a20b" => :mountain_lion
   end
 
   depends_on "cmake" => :build

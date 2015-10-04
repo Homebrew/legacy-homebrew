@@ -1,4 +1,5 @@
 require "mutex_m"
+require "debrew/irb"
 
 module Debrew
   extend Mutex_m
@@ -21,21 +22,12 @@ module Debrew
       Debrew.debrew { super }
     end
 
-    def test
+    def patch
       Debrew.debrew { super }
     end
-  end
 
-  module Resource
-    def unpack(target=nil)
-      return super if target
-      super do
-        begin
-          yield self
-        rescue Exception => e
-          Debrew.debug(e)
-        end
-      end
+    def test
+      Debrew.debrew { super }
     end
   end
 
@@ -61,7 +53,7 @@ module Debrew
         menu.entries.each_with_index { |e, i| puts "#{i+1}. #{e.name}" }
         print menu.prompt unless menu.prompt.nil?
 
-        input = $stdin.gets or exit
+        input = $stdin.gets || exit
         input.chomp!
 
         i = input.to_i
@@ -93,8 +85,8 @@ module Debrew
     @active
   end
 
-  def self.debugged_exceptions
-    @debugged_exceptions
+  class << self
+    attr_reader :debugged_exceptions
   end
 
   def self.debrew
@@ -129,21 +121,17 @@ module Debrew
           menu.choice(:ignore) { return :ignore } if Ignorable === e
           menu.choice(:backtrace) { puts e.backtrace }
 
-          unless ENV["HOMEBREW_NO_READLINE"]
-            require "debrew/irb"
+          menu.choice(:irb) do
+            puts "When you exit this IRB session, execution will continue."
+            set_trace_func proc { |event, _, _, id, binding, klass|
+              if klass == Raise && id == :raise && event == "return"
+                set_trace_func(nil)
+                synchronize { IRB.start_within(binding) }
+              end
+            }
 
-            menu.choice(:irb) do
-              puts "When you exit this IRB session, execution will continue."
-              set_trace_func proc { |event, _, _, id, binding, klass|
-                if klass == Raise && id == :raise && event == "return"
-                  set_trace_func(nil)
-                  synchronize { IRB.start_within(binding) }
-                end
-              }
-
-              return :ignore
-            end if Ignorable === e
-          end
+            return :ignore
+          end if Ignorable === e
 
           menu.choice(:shell) do
             puts "When you exit this shell, you will return to the menu."

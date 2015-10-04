@@ -1,13 +1,19 @@
-require 'formula'
-
 class Argus < Formula
-  homepage 'http://qosient.com/argus/'
-  url 'http://qosient.com/argus/src/argus-3.0.6.1.tar.gz'
-  sha1 '0da193957510fbe1b72875d4ea205453cb7821be'
+  desc "Audit Record Generation and Utilization System server"
+  homepage "http://qosient.com/argus/"
+  url "http://qosient.com/argus/src/argus-3.0.8.1.tar.gz"
+  sha256 "1fb921104c8bd843fb9f5a1c32b57b20bfe8cd8a103b3f1d9bb686b9e6c490a4"
+
+  bottle do
+    cellar :any
+    sha256 "7e369883e4ef8eda6efd19eb31ba83f619fc13b758e40ade9f199c696e9e37b5" => :yosemite
+    sha256 "6f6b81839f5f6a23b3a0be14bea615dab821bbe8be7dbfae886871ad41590191" => :mavericks
+    sha256 "10f68e1435d342133a0d0fbcfc878b9f01fd95fa2d83f0e3adff7fdfaa1f3185" => :mountain_lion
+  end
 
   def install
     system "./configure", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

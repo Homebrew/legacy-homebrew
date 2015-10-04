@@ -1,27 +1,26 @@
-# encoding: UTF-8
-require "formula"
-
 class Yaz < Formula
+  desc "Toolkit for Z39.50/SRW/SRU clients/servers"
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.4.2.tar.gz"
-  sha1 "2d64a212481ffaa1afbb15b9fbdc7cc7c9068ca7"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.14.4.tar.gz"
+  sha256 "0238e2fd09a5060880c3447528c68adeb56c4444d67078033c0f3e3cdeda573b"
 
   bottle do
     cellar :any
-    sha1 "0d4921722468b8b87d2d13af1d240861affcb45f" => :mavericks
-    sha1 "610de58b0121cbfa88ef44ca61ef4236c059d42f" => :mountain_lion
-    sha1 "94cb13782dbfeceda17ac213a9e5d5c5de723edf" => :lion
+    sha256 "d873eec6aae920b48c3f6c86ffb0e6bb1b8b24f23241107cfc194deef76f5fe7" => :yosemite
+    sha256 "4c5e7d13920ea1ce514f8ff2920936dff9aab883fe962056a204086d09f9c7aa" => :mavericks
+    sha256 "cff5a0ffe4c60545203c6b4f7b7642a58c787552ef35baced12cdf73d5fa6df6" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
   depends_on "icu4c" => :recommended
   depends_on "gnutls" => :optional
+  depends_on "libgcrypt" if build.with? "gnutls"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-xml2"
-    system "make install"
+    system "make", "install"
   end
 
   test do

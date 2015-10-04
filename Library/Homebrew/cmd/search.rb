@@ -1,27 +1,32 @@
-require 'formula'
-require 'blacklist'
-require 'utils'
-require 'thread'
+require "formula"
+require "blacklist"
+require "utils"
+require "thread"
+require "official_taps"
+require "descriptions"
 
 module Homebrew
-
   SEARCH_ERROR_QUEUE = Queue.new
 
   def search
-    if ARGV.include? '--macports'
-      exec_browser "http://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
-    elsif ARGV.include? '--fink'
+    if ARGV.include? "--macports"
+      exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
+    elsif ARGV.include? "--fink"
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
-    elsif ARGV.include? '--debian'
-      exec_browser "http://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
-    elsif ARGV.include? '--opensuse'
-      exec_browser "http://software.opensuse.org/search?q=#{ARGV.next}"
-    elsif ARGV.include? '--fedora'
-      exec_browser "https://admin.fedoraproject.org/pkgdb/acls/list/*#{ARGV.next}*"
-    elsif ARGV.include? '--ubuntu'
+    elsif ARGV.include? "--debian"
+      exec_browser "https://packages.debian.org/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+    elsif ARGV.include? "--opensuse"
+      exec_browser "https://software.opensuse.org/search?q=#{ARGV.next}"
+    elsif ARGV.include? "--fedora"
+      exec_browser "https://admin.fedoraproject.org/pkgdb/packages/%2A#{ARGV.next}%2A/"
+    elsif ARGV.include? "--ubuntu"
       exec_browser "http://packages.ubuntu.com/search?keywords=#{ARGV.next}&searchon=names&suite=all&section=all"
+    elsif ARGV.include? "--desc"
+      query = ARGV.next
+      rx = query_regexp(query)
+      Descriptions.search(rx, :desc).print
     elsif ARGV.empty?
-      puts_columns Formula.names
+      puts_columns Formula.full_names
     elsif ARGV.first =~ HOMEBREW_TAP_FORMULA_REGEX
       query = ARGV.first
       user, repo, name = query.split("/", 3)
@@ -39,7 +44,7 @@ module Homebrew
       local_results = search_formulae(rx)
       puts_columns(local_results)
 
-      if not query.empty? and $stdout.tty? and msg = blacklisted?(query)
+      if !query.empty? && $stdout.tty? && msg = blacklisted?(query)
         unless local_results.empty?
           puts
           puts "If you meant #{query.inspect} precisely:"
@@ -52,7 +57,7 @@ module Homebrew
       puts_columns(tap_results)
       count = local_results.length + tap_results.length
 
-      if count == 0 and not blacklisted? query
+      if count == 0 && !blacklisted?(query)
         puts "No formula found for #{query.inspect}."
         begin
           GitHub.print_pull_requests_matching(query)
@@ -61,21 +66,21 @@ module Homebrew
         end
       end
     end
-
+    metacharacters = %w[\\ | ( ) [ ] { } ^ $ * + ? .]
+    bad_regex = metacharacters.any? do |char|
+      ARGV.any? do |arg|
+        arg.include?(char) && !arg.start_with?("/")
+      end
+    end
+    if ARGV.any? && bad_regex
+      ohai "Did you mean to perform a regular expression search?"
+      ohai "Surround your query with /slashes/ to search by regex."
+    end
     raise SEARCH_ERROR_QUEUE.pop unless SEARCH_ERROR_QUEUE.empty?
   end
 
-  SEARCHABLE_TAPS = [
-    %w{Homebrew nginx},
-    %w{Homebrew apache},
-    %w{Homebrew versions},
-    %w{Homebrew dupes},
-    %w{Homebrew games},
-    %w{Homebrew science},
-    %w{Homebrew completions},
-    %w{Homebrew binary},
-    %w{Homebrew python},
-    %w{Homebrew php},
+  SEARCHABLE_TAPS = OFFICIAL_TAPS.map { |tap| ["Homebrew", tap] } + [
+    %w[Caskroom cask]
   ]
 
   def query_regexp(query)
@@ -93,49 +98,60 @@ module Homebrew
     end
   end
 
-  def search_tap user, repo, rx
-    return [] if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory?
+  def search_tap(user, repo, rx)
+    if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory? && \
+       "#{user}/#{repo}" != "Caskroom/cask"
+      return []
+    end
 
-    results = []
-    tree = {}
+    @@remote_tap_formulae ||= Hash.new do |cache, key|
+      user, repo = key.split("/", 2)
+      tree = {}
 
-    GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
-      user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
-      json["tree"].each do |object|
-        next unless object["type"] == "blob"
+      GitHub.open "https://api.github.com/repos/#{user}/homebrew-#{repo}/git/trees/HEAD?recursive=1" do |json|
+        json["tree"].each do |object|
+          next unless object["type"] == "blob"
 
-        subtree, file = File.split(object["path"])
+          subtree, file = File.split(object["path"])
 
-        if File.extname(file) == ".rb"
-          tree[subtree] ||= []
-          tree[subtree] << file
+          if File.extname(file) == ".rb"
+            tree[subtree] ||= []
+            tree[subtree] << file
+          end
         end
       end
+
+      paths = tree["Formula"] || tree["HomebrewFormula"] || tree["Casks"] || tree["."] || []
+      cache[key] = paths.map { |path| File.basename(path, ".rb") }
     end
 
-    paths = tree["Formula"] || tree["HomebrewFormula"] || tree["."] || []
-    paths.each do |path|
-      name = File.basename(path, ".rb")
-      results << "#{user}/#{repo}/#{name}" if rx === name
-    end
+    names = @@remote_tap_formulae["#{user}/#{repo}"]
+    user = user.downcase if user == "Homebrew" # special handling for the Homebrew organization
+    names.select { |name| rx === name }.map { |name| "#{user}/#{repo}/#{name}" }
   rescue GitHub::HTTPNotFoundError => e
     opoo "Failed to search tap: #{user}/#{repo}. Please run `brew update`"
     []
   rescue GitHub::Error => e
     SEARCH_ERROR_QUEUE << e
     []
-  else
-    results
   end
 
-  def search_formulae rx
-    aliases = Formula.aliases
-    results = (Formula.names+aliases).grep(rx).sort
+  def search_formulae(rx)
+    aliases = Formula.alias_full_names
+    results = (Formula.full_names+aliases).grep(rx).sort
 
-    # Filter out aliases when the full name was also found
-    results.reject do |name|
-      canonical_name = Formulary.canonical_name(name)
-      aliases.include?(name) && results.include?(canonical_name)
-    end
+    results.map do |name|
+      formula = Formulary.factory(name)
+      canonical_name = formula.name
+      canonical_full_name = formula.full_name
+      # Ignore aliases from results when the full name was also found
+      if aliases.include?(name) && results.include?(canonical_full_name)
+        next
+      elsif (HOMEBREW_CELLAR/canonical_name).directory?
+        "#{name} (installed)"
+      else
+        name
+      end
+    end.compact
   end
 end

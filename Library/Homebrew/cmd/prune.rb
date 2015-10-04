@@ -1,5 +1,5 @@
-require 'keg'
-require 'cmd/tap'
+require "keg"
+require "cmd/tap"
 
 module Homebrew
   def prune
@@ -7,7 +7,8 @@ module Homebrew
 
     dirs = []
 
-    Keg::PRUNEABLE_DIRECTORIES.select(&:directory?).each do |dir|
+    Keg::PRUNEABLE_DIRECTORIES.each do |dir|
+      next unless dir.directory?
       dir.find do |path|
         path.extend(ObserverPathnameExtension)
         if path.symlink?
@@ -36,7 +37,7 @@ module Homebrew
       end
     end
 
-    repair_taps unless ARGV.dry_run?
+    migrate_taps :force => true unless ARGV.dry_run?
 
     if ObserverPathnameExtension.total.zero?
       puts "Nothing pruned" if ARGV.verbose?
@@ -44,7 +45,7 @@ module Homebrew
       n, d = ObserverPathnameExtension.counts
       print "Pruned #{n} symbolic links "
       print "and #{d} directories " if d > 0
-      puts  "from #{HOMEBREW_PREFIX}"
+      puts "from #{HOMEBREW_PREFIX}"
     end unless ARGV.dry_run?
   end
 end

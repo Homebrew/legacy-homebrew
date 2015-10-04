@@ -1,21 +1,21 @@
-require 'formula'
-
 class Libosip < Formula
-  homepage 'http://www.gnu.org/software/osip/'
-  url 'http://ftpmirror.gnu.org/osip/libosip2-4.1.0.tar.gz'
-  mirror 'http://ftp.gnu.org/gnu/osip/libosip2-4.1.0.tar.gz'
-  sha1 '61459c9052ca2f5e77a6936c9b369e2b0602c080'
+  desc "Implementation of the eXosip2 stack"
+  homepage "https://www.gnu.org/software/osip/"
+  url "http://ftpmirror.gnu.org/osip/libosip2-4.1.0.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/osip/libosip2-4.1.0.tar.gz"
+  sha256 "996aa0363316a871915b6f12562af53853a9962bb93f6abe1ae69f8de7008504"
 
   bottle do
     cellar :any
-    sha1 "1fab34da8951a2d767a3478553e74fd6beb46bf5" => :mavericks
-    sha1 "a5b3fed5a8715d68b28712ed76ea0f0dbdb7f963" => :mountain_lion
-    sha1 "c269374768df59fbe962d05322a341abaf418b0b" => :lion
+    revision 2
+    sha256 "87803e02c0c3b65c8f028864200425f90b5a708bb6204a410f6c76a9e35545ee" => :yosemite
+    sha256 "531e7d5fb51ec0ccdc05b3e3346710770f756fa8b3eb7eb2cbbbe5b2cb1c8d59" => :mavericks
+    sha256 "c9424adf4a5eae16c98276e958650cadb419b54b0c3b420a7d81006d423ea2f7" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

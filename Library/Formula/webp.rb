@@ -1,40 +1,46 @@
-require 'formula'
-
 class Webp < Formula
-  homepage 'http://code.google.com/speed/webp/'
-  url 'https://webp.googlecode.com/files/libwebp-0.4.0.tar.gz'
-  sha1 '326c4b6787a01e5e32a9b30bae76442d18d2d1b6'
-  head 'https://chromium.googlesource.com/webm/libwebp', :branch => 'master'
+  desc "Image format providing lossless and lossy compression for web images"
+  homepage "https://developers.google.com/speed/webp/"
+  url "http://downloads.webmproject.org/releases/webp/libwebp-0.4.3.tar.gz"
+  sha256 "efbe0d58fda936f2ed99d0b837ed7087d064d6838931f282c4618d2a3f7390c4"
 
   bottle do
     cellar :any
-    sha1 "917f008789d42387a236bf2f91c7c32e35ac8726" => :mavericks
-    sha1 "8585b90461bfee0e0a79a82a0ea939ad5aa9e64d" => :mountain_lion
-    sha1 "3faef81ac165696eaf3631a8ce27c5a5f5ceb83b" => :lion
+    sha256 "80b70138639a6f7e0826da6b8f757ca7b5ea08f34aa2f700879ab6a6f13fc805" => :el_capitan
+    sha256 "5aaf06ba6c36b7877b19629f704918708d32d2a5a9b3e100b7fc2f033223e0cb" => :yosemite
+    sha256 "3a44d990fd058d594b46a5d24b579e0f5da10c1a2779e992a980c6bd946be41f" => :mavericks
+    sha256 "a96249caa1541d335ab594fdd0af221109be00baa94d82429048deb56ed88008" => :mountain_lion
   end
 
-  revision 1
+  head do
+    url "https://chromium.googlesource.com/webm/libwebp.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   option :universal
 
-  depends_on 'libpng'
-  depends_on 'jpeg' => :recommended
-  depends_on 'libtiff' => :optional
-  depends_on 'giflib' => :optional
+  depends_on "libpng"
+  depends_on "jpeg" => :recommended
+  depends_on "libtiff" => :optional
+  depends_on "giflib" => :optional
 
   def install
+    system "./autogen.sh" if build.head?
+
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--enable-libwebpmux",
                           "--enable-libwebpdemux",
                           "--enable-libwebpdecoder",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    test_png = HOMEBREW_LIBRARY/"Homebrew/test/fixtures/test.png"
-    system "#{bin}/cwebp", test_png, "-o", "webp_test.png"
+    system "#{bin}/cwebp", test_fixtures("test.png"), "-o", "webp_test.png"
     system "#{bin}/dwebp", "webp_test.png", "-o", "webp_test.webp"
+    assert File.exist?("webp_test.webp")
   end
 end

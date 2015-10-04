@@ -1,15 +1,14 @@
-require 'formula'
-
 class Log4c < Formula
-  homepage 'http://log4c.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/log4c/log4c/1.2.4/log4c-1.2.4.tar.gz'
-  sha1 'a2795d7fcbdf5e43e1cc644893adfa725046abe8'
+  desc "Logging Framework for C"
+  homepage "http://log4c.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/log4c/log4c/1.2.4/log4c-1.2.4.tar.gz"
+  sha256 "5991020192f52cc40fa852fbf6bbf5bd5db5d5d00aa9905c67f6f0eadeed48ea"
 
-  head 'cvs://:pserver:anonymous:@log4c.cvs.sourceforge.net:/cvsroot/log4c:log4c'
+  head ":pserver:anonymous:@log4c.cvs.sourceforge.net:/cvsroot/log4c", :using => :cvs
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

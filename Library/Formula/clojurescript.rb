@@ -1,24 +1,22 @@
-require "formula"
-
 class Clojurescript < Formula
+  desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
+  url "https://github.com/clojure/clojurescript/releases/download/r1.7.48/cljs.jar"
+  version "1.7.48"
+  sha256 "91d56866aa0d91b09673598b37f6cc59682b11f79e25cef4b6d058df87cd54b3"
   head "https://github.com/clojure/clojurescript.git"
-  url "https://github.com/clojure/clojurescript/archive/r2311.tar.gz"
-  sha1 "dfce06b02f8e89ab60cd87d02d7092c30ec1f362"
 
   bottle do
-    cellar :any
-    sha1 "4dc103c7f1e1216affa15c1ccc73eca82731df6c" => :mavericks
-    sha1 "9796fa561d4b13830a7a7384a24599c0a0219bb1" => :mountain_lion
-    sha1 "58c0a3d966e36819c85593b19c338886d71dd3cc" => :lion
+    cellar :any_skip_relocation
+    sha256 "64c9c91fd9f3081f4d939976e26cf3bc7914dc172144892c353640578299a9a2" => :el_capitan
+    sha256 "25a06ff74ef9c2429519df725d5b6f85d8e785fe4667f74151ff015f47d7e620" => :yosemite
+    sha256 "8309cca75c4f58246c87272d6bd0b5a0bb74aefcc76742984caabc00f6b0ced2" => :mavericks
+    sha256 "bf9d97d201956ccef5a5edede53db97ea2a57a5772fed255ad4cdd50ceea530b" => :mountain_lion
   end
 
   def install
-    system "./script/bootstrap"
-    inreplace %w(bin/cljsc script/repl script/repljs script/browser-repl),
-      "#!/bin/sh", "#!/bin/sh\nCLOJURESCRIPT_HOME=#{libexec}"
-    libexec.install Dir["*"]
-    bin.write_exec_script libexec/"bin/cljsc"
+    libexec.install "cljs.jar"
+    bin.write_jar_script libexec/"cljs.jar", "cljsc"
   end
 
   def caveats; <<-EOS.undent
@@ -28,6 +26,12 @@ class Clojurescript < Formula
   end
 
   test do
-    system "#{bin}/cljsc"
+    (testpath/"t.cljs").write <<-EOF.undent
+    (ns hello)
+    (defn ^:export greet [n]
+      (str "Hello " n))
+    EOF
+
+    system "#{bin}/cljsc", testpath/"t.cljs"
   end
 end

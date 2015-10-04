@@ -1,14 +1,13 @@
-require "formula"
-
 class Atk < Formula
-  homepage "http://library.gnome.org/devel/atk/"
-  url "http://ftp.gnome.org/pub/gnome/sources/atk/2.14/atk-2.14.0.tar.xz"
-  sha256 "2875cc0b32bfb173c066c22a337f79793e0c99d2cc5e81c4dac0d5a523b8fbad"
+  desc "GNOME accessibility toolkit"
+  homepage "https://library.gnome.org/devel/atk/"
+  url "https://download.gnome.org/sources/atk/2.18/atk-2.18.0.tar.xz"
+  sha256 "ce6c48d77bf951083029d5a396dd552d836fff3c1715d3a7022e917e46d0c92b"
 
   bottle do
-    sha1 "b2ca7320d38039694c3258b9d11acaf47f5a3753" => :mavericks
-    sha1 "c04320419d8bac71188e0f01d7a5914fce0cf296" => :mountain_lion
-    sha1 "913adb577075b21f48f23770361f005f21259b57" => :lion
+    sha256 "67f3e86e1f8a7907bb87f51f2f6f16d43fac06377c2aac6815b47b1e70cbef0c" => :el_capitan
+    sha256 "b0aa68237cb50981c19a7c2b5873a17d30912cac2bd6c9aedf6a5fb297d9e4dd" => :yosemite
+    sha256 "a0b8f30dd3a0fdce58456be54b5b57793265a42644b6a2a05124bfb1809cea40" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -23,6 +22,35 @@ class Atk < Formula
                           "--prefix=#{prefix}",
                           "--enable-introspection=yes"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <atk/atk.h>
+
+      int main(int argc, char *argv[]) {
+        const gchar *version = atk_get_version();
+        return 0;
+      }
+    EOS
+    gettext = Formula["gettext"]
+    glib = Formula["glib"]
+    flags = (ENV.cflags || "").split + (ENV.cppflags || "").split + (ENV.ldflags || "").split
+    flags += %W[
+      -I#{gettext.opt_include}
+      -I#{glib.opt_include}/glib-2.0
+      -I#{glib.opt_lib}/glib-2.0/include
+      -I#{include}/atk-1.0
+      -L#{gettext.opt_lib}
+      -L#{glib.opt_lib}
+      -L#{lib}
+      -latk-1.0
+      -lglib-2.0
+      -lgobject-2.0
+      -lintl
+    ]
+    system ENV.cc, "test.c", "-o", "test", *flags
+    system "./test"
   end
 end

@@ -1,11 +1,11 @@
-require 'formula'
-
 class Hbase < Formula
-  homepage 'http://hbase.apache.org'
-  url 'http://www.apache.org/dyn/closer.cgi?path=hbase/hbase-0.98.6.1/hbase-0.98.6.1-hadoop2-bin.tar.gz'
-  sha1 '3ee9913f87f035e23cb20e5d69e652b19932a8d4'
+  desc "Hadoop database: a distributed, scalable, big data store"
+  homepage "https://hbase.apache.org"
+  url "https://www.apache.org/dyn/closer.cgi?path=hbase/1.1.2/hbase-1.1.2-bin.tar.gz"
+  sha256 "8ca5bf0203cef86b4a0acbba89afcd5977488ebc73eec097e93c592b16f8bede"
 
-  depends_on 'hadoop'
+  depends_on :java => "1.6+"
+  depends_on "hadoop"
 
   def install
     rm_f Dir["bin/*.cmd", "conf/*.cmd"]
@@ -18,14 +18,16 @@ class Hbase < Formula
   end
 
   def caveats; <<-EOS.undent
-    Requires Java 1.6.0 or greater.
-
-    You must also edit the configs in:
+    You must edit the configs in:
       #{libexec}/conf
     to reflect your environment.
 
     For more details:
       http://wiki.apache.org/hadoop/Hbase
     EOS
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/hbase mapredcp")
   end
 end

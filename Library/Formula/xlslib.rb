@@ -1,21 +1,22 @@
-require 'formula'
-
 class Xlslib < Formula
-  homepage 'http://sourceforge.net/projects/xlslib'
-  url 'https://downloads.sourceforge.net/project/xlslib/xlslib-package-2.4.0.zip'
-  sha1 '73447c5c632c0e92c1852bd2a2cada7dd25f5492'
+  desc "C++/C library to construct Excel .xls files in code"
+  homepage "https://sourceforge.net/projects/xlslib"
+  url "https://downloads.sourceforge.net/project/xlslib/xlslib-old/xlslib-package-2.4.0.zip"
+  mirror "https://dl.bintray.com/homebrew/mirror/xlslib-package-2.4.0.zip"
+  sha256 "acc92e31294f91d8ac8adbbfc84f7a8917f7ad649a6c97b71c9f95c25887f840"
 
   bottle do
     cellar :any
-    sha1 "3c59ef7c51a220426327497d48aab6188aa80d3a" => :mavericks
-    sha1 "69812c1e71bd582d61f1693bd00edc07a426360b" => :mountain_lion
-    sha1 "d9fc2ec1a71a7845fd48b41e2e63641bfb5d75f9" => :lion
+    revision 2
+    sha256 "4eec9d433ab0e89aedf4fa6ccaf7d9be555519c574a4c0cd1cd2cd80a57eab77" => :el_capitan
+    sha256 "41398d8c2e6c8349ea752eb0d2d9cdbc560ec43cb91e0622b786a2b28d6341de" => :yosemite
+    sha256 "a984b3016532ffaeee04cffb60b19e61aa44ab70ad4fcf91a6f8daa87319e744" => :mavericks
   end
 
   def install
-    cd 'xlslib'
+    cd "xlslib"
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

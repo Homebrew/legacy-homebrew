@@ -1,50 +1,50 @@
-require "formula"
 require "language/go"
 
 class ThePlatinumSearcher < Formula
+  desc "Multi-platform code-search similar to ack and ag"
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.1.tar.gz"
-  sha1 "5e2d704e0c0d8380c82e55a30b7d0fc749ab0c55"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.8.tar.gz"
+  sha256 "965f33c1b30d76d083fc425160ec2562acf64fb087dd62ebce510424bee787b8"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
-  go_resource "github.com/jessevdk/go-flags" do
-    url "https://github.com/jessevdk/go-flags.git",
-      :revision => "7047cf7a8dc6f41e53365420ab62d415055232c6"
-  end
-
-  go_resource "github.com/monochromegane/terminal" do
-    url "https://github.com/monochromegane/terminal.git",
-      :revision => "6d255869fb99937f1f287bd1fe3a034c6c4f68f6"
-  end
-
-  go_resource "github.com/shiena/ansicolor" do
-    url "https://github.com/shiena/ansicolor.git",
-      :revision => "6046e7d18a7698e98846e5d25842e9cf15aecf2c"
-  end
-
-  go_resource "code.google.com/p/go.text" do
-    url "https://code.google.com/p/go.text", :using => :hg,
-      :revision => "46250cb715a27b42c736a5ff2a4e6fa0b2118952"
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "6a1d8043f8cebab8920e471f6d3e81d7616b44f9cb3c9a489d872198488eb280" => :el_capitan
+    sha256 "b54f456ff639feb502bb0d2e26e56d88226df18588617c43be4701cd04a68be7" => :yosemite
+    sha256 "a3d438fb5d3caf361b58b482b77d58a72534ed4d91d16194702d35c3790c182a" => :mavericks
+    sha256 "66fa09e74f3cb51a3e54623e0a6b4af1fe3cc1b2b010abd62157f7c189f06aec" => :mountain_lion
   end
 
   depends_on "go" => :build
 
-  bottle do
-    sha1 "511db4d641eda8dc72afbba8e0310a0a18f55462" => :mavericks
-    sha1 "7ee22e93f06a692ba6c3095b892b877d29135c08" => :mountain_lion
-    sha1 "1ae1fadd1e0955c0d913a9bbf0b28e3b04c11040" => :lion
+  go_resource "github.com/jessevdk/go-flags" do
+    url "https://github.com/jessevdk/go-flags.git",
+        :revision => "1b89bf73cd2c3a911d7b2a279ab085c4a18cf539"
+  end
+
+  go_resource "github.com/monochromegane/terminal" do
+    url "https://github.com/monochromegane/terminal.git",
+        :revision => "6d255869fb99937f1f287bd1fe3a034c6c4f68f6"
+  end
+
+  go_resource "github.com/shiena/ansicolor" do
+    url "https://github.com/shiena/ansicolor.git",
+        :revision => "a5e2b567a4dd6cc74545b8a4f27c9d63b9e7735b"
+  end
+
+  go_resource "golang.org/x/text" do
+    url "https://github.com/golang/text.git",
+        :revision => "3eb7007b740b66a77f3c85f2660a0240b284115a"
   end
 
   def install
-    # configure buildpath for local dependencies
     mkdir_p buildpath/"src/github.com/monochromegane"
     ln_s buildpath, buildpath/"src/github.com/monochromegane/the_platinum_searcher"
 
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "pt", "cmd/pt/main.go"
-    bin.install "pt"
+    system "go", "build", "-o", bin/"pt", "cmd/pt/main.go"
   end
 
   test do

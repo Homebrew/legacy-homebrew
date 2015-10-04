@@ -1,21 +1,23 @@
-require "formula"
-
 class Davix < Formula
-  homepage "http://dmc.web.cern.ch/projects/davix/home"
-  url "https://git.cern.ch/pub/davix.git", :tag => "R_0_3_4"
-  version "0.3.4"
+  desc "Library and tools for advanced file I/O with HTTP-based protocols"
+  homepage "https://dmc.web.cern.ch/projects/davix/home"
+  url "https://github.com/cern-it-sdc-id/davix.git",
+    :revision => "c53eb1472537da1694a5adc4c8fef5611eae7ab8",
+    :tag => "R_0_5_0"
+  version "0.5.0"
 
-  head "https://git.cern.ch/pub/davix.git"
+  head "https://github.com/cern-it-sdc-id/davix.git"
 
   bottle do
     cellar :any
-    sha1 "26b49cc9cc80dfcd4afe3e7cc2ee2621a18e1270" => :mavericks
-    sha1 "ecbe105f2e286df23107daf69aa2e1d2ad58b5dd" => :mountain_lion
-    sha1 "3b374d8e9dd79c8dbe59d94d8226ef93778e5325" => :lion
+    sha256 "4bab71124c9638ab089f1784dd01805d814ee81e037fc6f8d7ddfd70a2ab785a" => :yosemite
+    sha256 "8cdd2495b9286226b7be91e111a72f3d6d565b0245d5741f53901eb44266be3f" => :mavericks
+    sha256 "00709d9ef997292d7154e92903c5375d5c9d572d6581814f1bd843b5319a76ab" => :mountain_lion
   end
 
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
+  depends_on "openssl"
 
   def install
     ENV.libcxx

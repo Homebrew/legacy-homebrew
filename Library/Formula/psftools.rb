@@ -1,21 +1,20 @@
-require 'formula'
-
 class Psftools < Formula
-  homepage 'http://www.seasip.demon.co.uk/Unix/PSF/'
-  url 'http://www.seasip.info/Unix/PSF/psftools-1.0.7.tar.gz'
-  sha1 '4e8b2e7686532a25c18cacaeb90a8f0ed57a30c6'
+  desc "Tools for fixed-width bitmap fonts"
+  homepage "http://www.seasip.info/Unix/PSF/index.html"
+  url "http://www.seasip.info/Unix/PSF/psftools-1.0.7.tar.gz"
+  sha256 "d6f83e76efddaff86d69392656a5623b54e79cfe7aa74b75684ae3fef1093baf"
 
   depends_on "autoconf" => :build
 
   resource "pc8x8font" do
-    url 'http://www.zone38.net/font/pc8x8.zip'
-    sha1 '4dbd149bb97b5b4f3464fcbda2387a479b09acb7'
+    url "http://www.zone38.net/font/pc8x8.zip"
+    sha256 "13a17d57276e9ef5d9617b2d97aa0246cec9b2d4716e31b77d0708d54e5b978f"
   end
 
   def install
     system "autoconf"
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

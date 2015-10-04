@@ -1,29 +1,28 @@
-require "formula"
-
 class Mpfr < Formula
+  desc "C library for multiple-precision floating-point computations"
   homepage "http://www.mpfr.org/"
-  # Upstream is down a lot, so use the GNU mirror + Gist for patches
-  url "http://ftpmirror.gnu.org/mpfr/mpfr-3.1.2.tar.bz2"
-  mirror "http://ftp.gnu.org/gnu/mpfr/mpfr-3.1.2.tar.bz2"
-  sha1 "46d5a11a59a4e31f74f73dd70c5d57a59de2d0b4"
-  version "3.1.2-p8"
+  # Upstream is down a lot, so use mirrors
+  url "https://mirrors.kernel.org/debian/pool/main/m/mpfr4/mpfr4_3.1.3.orig.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/mpfr/mpfr-3.1.3.tar.xz"
+  sha256 "6835a08bd992c8257641791e9a6a2b35b02336c8de26d0a8577953747e514a16"
 
   bottle do
     cellar :any
-    sha1 "ae9062f1736202e1e6324dbb74f6074d672708e8" => :mavericks
-    sha1 "6f4e0967728cb9ff5fad9de53dc38eb1648eee8e" => :mountain_lion
-    sha1 "63efa4c854ede1a352d73756d242514e042c8e2e" => :lion
+    sha256 "a5028a476fb01f6f5ee89d635e2cf926c233d6620f036fcfeda2fd963cac369a" => :el_capitan
+    sha256 "5047806085670ca9f39de8e9afdec2ab82eddb7d1d3154208262f844b43b4dcd" => :yosemite
+    sha256 "f1c281e854533cf7fab36396591516d48a61626096f152ea828eaae9f7c09238" => :mavericks
+    sha256 "5a98a6a8dd768c845602cabb31db527a0efecdbae3eaa1148db8010ae5420a97" => :mountain_lion
   end
 
   # http://www.mpfr.org/mpfr-current/allpatches
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/7f276cd60149a1ffc9a7/raw/0f2c24423ceda0dae996e2333f395c7115db33ec/mpfr-3.1.2-8.diff"
-    sha1 "047c96dcfb86f010972dedae088a3e67eaaecb8a"
+    url "https://gist.github.com/anonymous/3a7d24cf2c68f21eb940/raw/471e928fcdbfb5c2fa7428cfb496496e6ee469aa/mpfr-3.1.3.diff"
+    sha256 "1ca002acc121413b9ce39e9f12bb6efe4bed4ec45cf3f3ffcff122b94f6694de"
   end
 
-  depends_on "gmp"
-
   option "32-bit"
+
+  depends_on "gmp"
 
   fails_with :clang do
     build 421
@@ -37,7 +36,24 @@ class Mpfr < Formula
     ENV.m32 if build.build_32_bit?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gmp.h>
+      #include <mpfr.h>
+
+      int main()
+      {
+        mpfr_t x;
+        mpfr_init(x);
+        mpfr_clear(x);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lgmp", "-lmpfr", "-o", "test"
+    system "./test"
   end
 end

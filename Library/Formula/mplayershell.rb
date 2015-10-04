@@ -1,27 +1,26 @@
-require 'formula'
-
-class MPlayerPresented < Requirement
+class MPlayerRequirement < Requirement
   fatal true
-  default_formula 'mplayer'
+  default_formula "mplayer"
 
-  satisfy { which('mplayer') || which('mplayer2') }
+  satisfy { which("mplayer") || which("mplayer2") }
 end
 
 class Mplayershell < Formula
-  homepage 'https://github.com/donmelton/MPlayerShell'
-  url 'https://github.com/donmelton/MPlayerShell/archive/0.9.2.tar.gz'
-  sha1 '613d29e66e27e748c29b20df54888a8915e39490'
+  desc "Improved visual experience for MPlayer on OS X"
+  homepage "https://github.com/donmelton/MPlayerShell"
+  url "https://github.com/donmelton/MPlayerShell/archive/0.9.3.tar.gz"
+  sha256 "a1751207de9d79d7f6caa563a3ccbf9ea9b3c15a42478ff24f5d1e9ff7d7226a"
 
-  head 'https://github.com/donmelton/MPlayerShell.git'
+  head "https://github.com/donmelton/MPlayerShell.git"
 
   bottle do
     cellar :any
-    sha1 "fc5c7c41b3537b8fd77b063cb926813e01be21e5" => :mavericks
-    sha1 "07d4cdafc128653a5268fa9e699041c5438366a6" => :mountain_lion
-    sha1 "d48c7897bbaf5b962fca94b1af24fccd932bd72e" => :lion
+    sha1 "5b280e20e9f690914906c41da02671b6c4667657" => :yosemite
+    sha1 "e12cbcf444c89071bdc4a0d8cea731d222444817" => :mavericks
+    sha1 "4993ca2b08d334843db0c31a35003424a4342a66" => :mountain_lion
   end
 
-  depends_on MPlayerPresented
+  depends_on MPlayerRequirement
   depends_on :macos => :lion
   depends_on :xcode => :build
 

@@ -1,22 +1,25 @@
-require 'formula'
-
 class Dnsmasq < Formula
-  homepage 'http://www.thekelleys.org.uk/dnsmasq/doc.html'
-  url 'http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.71.tar.gz'
-  sha1 'b0a39f66557c966629a0ed9282cd87df8f409004'
+  desc "Lightweight DNS forwarder and DHCP server"
+  homepage "http://www.thekelleys.org.uk/dnsmasq/doc.html"
+  url "http://www.thekelleys.org.uk/dnsmasq/dnsmasq-2.75.tar.gz"
+  sha256 "f8252c0a0ba162c2cd45f81140c7c17cc40a5fca2b869d1a420835b74acad294"
 
   bottle do
-    sha1 "96d2784aa36024ce06c727c323c211b0f278950f" => :mavericks
-    sha1 "ede61cf944079d566a059bd4638c75df22bc7057" => :mountain_lion
-    sha1 "a65ee0871fb0dd2d037d1742ca51d38f56005bb4" => :lion
+    cellar :any_skip_relocation
+    sha256 "80f9f8382c98cc0922883d6a23a6b6de05232bc75baa4b2fe088c57654bf1c4e" => :el_capitan
+    sha256 "f245adcc7718bd0c8167fa0518f286f261755aa7c54b029c1d6e8e26625b7193" => :yosemite
+    sha256 "c3aad8472b1d51d81c14ecfecec69cfa94a43adb07a445c11880ad0c0c9ffc1e" => :mavericks
+    sha256 "08084970fe50a3d7a325ca40c3b7ead00bcf3a67be5415e97c1557857c211323" => :mountain_lion
   end
 
-  option 'with-idn', 'Compile with IDN support'
-  option 'with-dnssec', 'Compile with DNSSEC support'
+  option "with-libidn", "Compile with IDN support"
+  option "with-dnssec", "Compile with DNSSEC support"
 
-  depends_on "libidn" if build.with? "idn"
+  deprecated_option "with-idn" => "with-libidn"
+
+  depends_on "pkg-config" => :build
+  depends_on "libidn" => :optional
   depends_on "nettle" if build.with? "dnssec"
-  depends_on 'pkg-config' => :build
 
   def install
     ENV.deparallelize
@@ -25,7 +28,7 @@ class Dnsmasq < Formula
     inreplace "src/config.h", "/etc/dnsmasq.conf", "#{etc}/dnsmasq.conf"
 
     # Optional IDN support
-    if build.with? "idn"
+    if build.with? "libidn"
       inreplace "src/config.h", "/* #define HAVE_IDN */", "#define HAVE_IDN"
     end
 
@@ -66,6 +69,8 @@ class Dnsmasq < Formula
         <array>
           <string>#{opt_sbin}/dnsmasq</string>
           <string>--keep-in-foreground</string>
+          <string>-C</string>
+          <string>#{etc}/dnsmasq.conf</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
@@ -74,5 +79,9 @@ class Dnsmasq < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "#{sbin}/dnsmasq", "--test"
   end
 end

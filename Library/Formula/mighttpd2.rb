@@ -1,29 +1,26 @@
-require "formula"
 require "language/haskell"
 
 class Mighttpd2 < Formula
   include Language::Haskell::Cabal
 
-  homepage "http://mew.org/~kazu/proj/mighttpd/en/"
-  url "http://hackage.haskell.org/package/mighttpd2-3.2.0/mighttpd2-3.2.0.tar.gz"
-  sha1 "878a9e03ad3a62221dab22cb6412ae446368e1bd"
+  desc "HTTP server"
+  homepage "http://www.mew.org/~kazu/proj/mighttpd/en/"
+  url "https://hackage.haskell.org/package/mighttpd2-3.2.7/mighttpd2-3.2.7.tar.gz"
+  sha256 "57974d96b4dc5d8414ae61bcc45df4a0f07a855764a3baa57bdd39d0173c2dd0"
 
   bottle do
-    sha1 "3bcfd785e9a7d222a12902e962862813593364c5" => :mavericks
-    sha1 "cdf75e3f624eb5434e481cd1687adee204fcd8d4" => :mountain_lion
-    sha1 "7ed2f8494dd3acc179b63572d2a9df104ee915f8" => :lion
+    sha256 "8afb5d8f59f110843312dda179e3d22117a35cf3655344b6cfd8110323ac9449" => :yosemite
+    sha256 "3ea1d214807ca01c3ef08a70f94baef725b7a57daa0bbe750a5adb7535808b97" => :mavericks
+    sha256 "e208bc09450183896e38217bf2a8bdc01634d8169454efacc5a03dac57476e77" => :mountain_lion
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "gmp"
+
+  setup_ghc_compilers
 
   def install
-    cabal_sandbox do
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-    end
-    cabal_clean_lib
+    install_cabal_package
   end
 
   test do

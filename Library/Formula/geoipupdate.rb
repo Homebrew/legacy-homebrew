@@ -1,14 +1,14 @@
-require "formula"
-
 class Geoipupdate < Formula
+  desc "Automatic updates of GeoIP2 and GeoIP Legacy databases"
   homepage "https://github.com/maxmind/geoipupdate"
-  url "https://github.com/maxmind/geoipupdate/releases/download/v2.0.2/geoipupdate-2.0.2.tar.gz"
-  sha1 "14274698cacb5468475a008b8db61e162ff1ce73"
+  url "https://github.com/maxmind/geoipupdate/releases/download/v2.2.1/geoipupdate-2.2.1.tar.gz"
+  sha256 "9547c42cc8620b2c3040fd8df95e8ee45c8b6ebcca7737d641f9526104d5f446"
 
   bottle do
-    sha1 "583c8a6af265daf2ff07abeb0e2d77ac028814e8" => :mavericks
-    sha1 "67dee561ce6c78297fe1206e67fe661c8b61a213" => :mountain_lion
-    sha1 "b653b2c88c8a4316de87b66147c00180a4b7a6f4" => :lion
+    sha256 "a3313c0df356e2fbc6eea2a46862c34efb88206931d2452ca45b1bba471a284b" => :el_capitan
+    sha256 "bf6ff091c8e3ad9529d0cbd39f7380e1cd2379137684b508c8e70799a0e1feb2" => :yosemite
+    sha256 "175eaccb4fad21fcd9bb64f9fc1997d450c8c66b4146544d27180b57e2eaace8" => :mavericks
+    sha256 "d24c71e19f810f252619df4a183da690e8b0fb97943adcae5b35405b11595c43" => :mountain_lion
   end
 
   head do
@@ -27,7 +27,7 @@ class Geoipupdate < Formula
     # See https://github.com/maxmind/geoip-api-c#150
     inreplace "conf/GeoIP.conf.default", "YOUR_USER_ID_HERE", "999999"
     inreplace "conf/GeoIP.conf.default", "YOUR_LICENSE_KEY_HERE", "000000000000"
-    inreplace "conf/GeoIP.conf.default", /^ProductIds .*$/, "ProductIds 506 533"
+    inreplace "conf/GeoIP.conf.default", /^ProductIds .*$/, "ProductIds 506 533 GeoLite2-City GeoLite2-Country"
 
     system "./bootstrap" if build.head?
 

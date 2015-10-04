@@ -1,9 +1,9 @@
-require 'dependency'
-require 'dependencies'
-require 'requirement'
-require 'requirements'
-require 'requirements/ld64_dependency'
-require 'set'
+require "dependency"
+require "dependencies"
+require "ld64_dependency"
+require "requirement"
+require "requirements"
+require "set"
 
 ## A dependency is a formula that another formula needs to install.
 ## A requirement is something other than a formula that another formula
@@ -18,7 +18,7 @@ require 'set'
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = Set[
-    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :rbx, :ruby
+    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :python3, :rbx, :ruby
   ].freeze
 
   CACHE = {}
@@ -57,19 +57,11 @@ class DependencyCollector
   end
 
   def build(spec)
-    spec, tags = case spec
-                 when Hash then destructure_spec_hash(spec)
-                 else spec
-                 end
-
+    spec, tags = Hash === spec ? spec.first : spec
     parse_spec(spec, Array(tags))
   end
 
   private
-
-  def destructure_spec_hash(spec)
-    spec.each { |o| return o }
-  end
 
   def parse_spec(spec, tags)
     case spec
@@ -89,12 +81,12 @@ class DependencyCollector
   end
 
   def parse_string_spec(spec, tags)
-    if tags.empty?
+    if HOMEBREW_TAP_FORMULA_REGEX === spec
+      TapDependency.new(spec, tags)
+    elsif tags.empty?
       Dependency.new(spec, tags)
     elsif (tag = tags.first) && LANGUAGE_MODULES.include?(tag)
-      LanguageModuleDependency.new(tag, spec, tags[1])
-    elsif HOMEBREW_TAP_FORMULA_REGEX === spec
-      TapDependency.new(spec, tags)
+      LanguageModuleRequirement.new(tag, spec, tags[1])
     else
       Dependency.new(spec, tags)
     end
@@ -102,33 +94,38 @@ class DependencyCollector
 
   def parse_symbol_spec(spec, tags)
     case spec
-    when :autoconf, :automake, :bsdmake, :libtool
-      # Xcode no longer provides autotools or some other build tools
-      autotools_dep(spec, tags)
-    when :x11        then X11Dependency.new(spec.to_s, tags)
-    when :xcode      then XcodeDependency.new(tags)
+    when :x11        then X11Requirement.new(spec.to_s, tags)
+    when :xcode      then XcodeRequirement.new(tags)
     when :macos      then MinimumMacOSRequirement.new(tags)
-    when :mysql      then MysqlDependency.new(tags)
-    when :postgresql then PostgresqlDependency.new(tags)
-    when :fortran    then FortranDependency.new(tags)
-    when :mpi        then MPIDependency.new(*tags)
-    when :tex        then TeXDependency.new(tags)
+    when :mysql      then MysqlRequirement.new(tags)
+    when :postgresql then PostgresqlRequirement.new(tags)
+    when :gpg        then GPGRequirement.new(tags)
+    when :fortran    then FortranRequirement.new(tags)
+    when :mpi        then MPIRequirement.new(*tags)
+    when :tex        then TeXRequirement.new(tags)
     when :arch       then ArchRequirement.new(tags)
-    when :hg         then MercurialDependency.new(tags)
-    # python2 is deprecated
-    when :python, :python2 then PythonDependency.new(tags)
-    when :python3    then Python3Dependency.new(tags)
-    when :java       then JavaDependency.new(tags)
-    when :osxfuse    then OsxfuseDependency.new(tags)
+    when :hg         then MercurialRequirement.new(tags)
+    when :python     then PythonRequirement.new(tags)
+    when :python3    then Python3Requirement.new(tags)
+    when :java       then JavaRequirement.new(tags)
+    when :ruby       then RubyRequirement.new(tags)
+    when :osxfuse    then OsxfuseRequirement.new(tags)
+    when :tuntap     then TuntapRequirement.new(tags)
+    when :ant        then ant_dep(spec, tags)
+    when :apr        then AprRequirement.new(tags)
+    when :emacs      then EmacsRequirement.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
-    when :ant        then ant_dep(spec, tags)
     when :clt # deprecated
+    when :autoconf, :automake, :bsdmake, :libtool # deprecated
+      autotools_dep(spec, tags)
     when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
       Dependency.new(spec.to_s, tags)
     when :libltdl # deprecated
       tags << :run
       Dependency.new("libtool", tags)
+    when :python2
+      PythonRequirement.new(tags)
     else
       raise ArgumentError, "Unsupported special dependency #{spec.inspect}"
     end
@@ -161,9 +158,9 @@ class DependencyCollector
     when strategy <= CurlDownloadStrategy
       parse_url_spec(spec.url, tags)
     when strategy <= GitDownloadStrategy
-      GitDependency.new(tags)
+      GitRequirement.new(tags)
     when strategy <= MercurialDownloadStrategy
-      MercurialDependency.new(tags)
+      MercurialRequirement.new(tags)
     when strategy <= FossilDownloadStrategy
       Dependency.new("fossil", tags)
     when strategy <= BazaarDownloadStrategy
@@ -180,10 +177,10 @@ class DependencyCollector
 
   def parse_url_spec(url, tags)
     case File.extname(url)
-    when '.xz'  then Dependency.new('xz', tags)
-    when '.lz'  then Dependency.new('lzip', tags)
-    when '.rar' then Dependency.new('unrar', tags)
-    when '.7z'  then Dependency.new('p7zip', tags)
+    when ".xz"  then Dependency.new("xz", tags)
+    when ".lz"  then Dependency.new("lzip", tags)
+    when ".rar" then Dependency.new("unrar", tags)
+    when ".7z"  then Dependency.new("p7zip", tags)
     end
   end
 end

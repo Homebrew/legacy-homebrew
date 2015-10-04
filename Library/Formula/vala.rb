@@ -1,23 +1,22 @@
-require "formula"
-
 class Vala < Formula
-  homepage "http://live.gnome.org/Vala"
-  head "git://git.gnome.org/vala"
-  url "http://ftp.acc.umu.se/pub/gnome/sources/vala/0.24/vala-0.24.0.tar.xz"
-  sha1 "33a71a21e12e80cf1f4e0aa3b6a6523ff38e92c8"
+  desc "Compiler for the GObject type system"
+  homepage "https://live.gnome.org/Vala"
+  url "https://download.gnome.org/sources/vala/0.30/vala-0.30.0.tar.xz"
+  sha256 "61f0337b000f7ed6ef8c1fea87e0047d9bd7c0f91dd9c5b4eb70fd3fb883dedf"
 
   bottle do
-    sha1 "96f56ca5ec48b7e0822a6693818d38ca21499014" => :mavericks
-    sha1 "1562fe59048fe478e05914c4ae7f239c8e29bb4b" => :mountain_lion
-    sha1 "2aa1c2c25eda470464541c6d5d76d4d0cabb92e4" => :lion
+    sha256 "a912dde437bfe0acc89c7fcbd6a57882d4c2ca624ab8272d1facd74d72cb09e8" => :el_capitan
+    sha256 "31431a28f845bac0b72bfe9fca125a7d72b1d58feb36036932717037b25f64ee" => :yosemite
+    sha256 "5d7336e4fb80fcb70c446d427034b579f02cd172bd933da8bc546558447fac90" => :mavericks
   end
 
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
   depends_on "gettext"
   depends_on "glib"
 
   def install
     system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make" # Fails to compile as a single step
     system "make", "install"
@@ -31,14 +30,14 @@ class Vala < Formula
         print ("#{test_string}");
       }
     EOS
-    valac_args = [# Build with debugging symbols.
-                  "-g",
-                  # Use Homebrew's default C compiler.
-                  "--cc=#{ENV.cc}",
-                  # Save generated C source code.
-                  "--save-temps",
-                  # Vala source code path.
-                  "#{path}"]
+    valac_args = [ # Build with debugging symbols.
+      "-g",
+      # Use Homebrew's default C compiler.
+      "--cc=#{ENV.cc}",
+      # Save generated C source code.
+      "--save-temps",
+      # Vala source code path.
+      "#{path}",]
     system "#{bin}/valac", *valac_args
     assert File.exist?(testpath/"hello.c")
 

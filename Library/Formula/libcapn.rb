@@ -1,29 +1,30 @@
-require 'formula'
-
 class Libcapn < Formula
-  homepage 'http://libcapn.org/'
-  url 'http://libcapn.org/download/libcapn-1.0.0b3-src.tar.gz'
-  sha1 'a53f7b382e683249ff55214b1effbae5f82c4ef2'
-  head 'https://github.com/adobkin/libcapn.git'
+  desc "C library to send push notifications to Apple devices"
+  homepage "http://libcapn.org/"
+  url "http://libcapn.org/download/libcapn-1.0.0-src.tar.gz"
+  sha256 "2c80b3adedf8e2250c6e4d3047998903b8efc7af018032ed04b712158ea02983"
+  head "https://github.com/adobkin/libcapn.git"
 
   bottle do
     cellar :any
-    sha1 "afde01eeff054cb43b1b6f07aac57fd7d64d7ff3" => :mavericks
-    sha1 "36dd5a2dca57ccf642a34b7e5da55425005e2575" => :mountain_lion
-    sha1 "3d4a2895efd4054d73152b7f5b193ef1773d1eaf" => :lion
+    sha1 "7e72854c13412bf987b6c8a81908de2667939cd9" => :yosemite
+    sha1 "7108c97b5710b7a5c90b30051f9a55c6399dd48f" => :mavericks
+    sha1 "0ec5a47c3fb17267eb8d714746195ab9205f057f" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'pkg-config' => :build
+  depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   def install
-    inreplace 'CMakeLists.txt', /usr\/lib\/pkgconfig/, "#{lib}/pkgconfig" unless build.head?
-    system "cmake", ".", *std_cmake_args
+    cmake_args = std_cmake_args
+    cmake_args << "-DOPENSSL_ROOT_DIR=#{Formula["openssl"].opt_prefix}"
+    system "cmake", ".", *cmake_args
     system "make", "install"
   end
 
   test do
-    (testpath/'test_install.c').write <<-TEST_SCRIPT.undent
+    (testpath/"test_install.c").write <<-TEST_SCRIPT.undent
     #include <apn.h>
     int main() {
         apn_ctx_ref ctx = NULL;

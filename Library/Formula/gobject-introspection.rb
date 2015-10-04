@@ -1,31 +1,27 @@
-require "formula"
-
 class GobjectIntrospection < Formula
-  homepage "http://live.gnome.org/GObjectIntrospection"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.42/gobject-introspection-1.42.0.tar.xz"
-  sha256 "3ba2edfad4f71d4f0de16960b5d5f2511335fa646b2c49bbb93ce5942b3f95f7"
+  desc "Generate introspection data for GObject libraries"
+  homepage "https://live.gnome.org/GObjectIntrospection"
+  url "https://download.gnome.org/sources/gobject-introspection/1.46/gobject-introspection-1.46.0.tar.xz"
+  sha256 "6658bd3c2b8813eb3e2511ee153238d09ace9d309e4574af27443d87423e4233"
 
   bottle do
-    sha1 "675917cf868574682507524e9637cf2963f12606" => :mavericks
-    sha1 "32151f4f625439eb9093e12cf7d8292d3ac00f30" => :mountain_lion
-    sha1 "bad5bd33ae07ad61ad9e05ac1c597c1f5cb7cdf6" => :lion
+    sha256 "8cc016da6173e849904b707d9183f77078770bcda5db26838c28808b18b93dc0" => :el_capitan
+    sha256 "55644f76743a7d0ff9536876272ad3de9c40fe13e411fb34ccec0f4d4536c96f" => :yosemite
+    sha256 "1a7789dd8f4f693c5f494cace1a9b557bc8e440c1a562325b8d2242020fe63fb" => :mavericks
   end
 
   option :universal
-  option "with-tests", "Run tests in addition to the build (requires cairo)"
 
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
   depends_on "glib"
+  depends_on "cairo"
   depends_on "libffi"
-  # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
-  depends_on :python
-  depends_on "cairo" => :build if build.with? "tests"
+  depends_on "python" if MacOS.version == :mavericks
 
-  # Allow tests to execute on OS X (.so => .dylib)
-  patch do
-    url "https://gist.githubusercontent.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
-    sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
-  end if build.with? "tests"
+  resource "tutorial" do
+    url "https://gist.github.com/7a0023656ccfe309337a.git",
+        :revision => "499ac89f8a9ad17d250e907f74912159ea216416"
+  end
 
   def install
     ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
@@ -35,12 +31,15 @@ class GobjectIntrospection < Formula
       s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
     end
 
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
-    args << "--with-cairo" if build.with? "tests"
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make", "check" if build.with? "tests"
     system "make", "install"
+  end
+
+  test do
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["libffi"].opt_lib/"pkgconfig"
+    resource("tutorial").stage testpath
+    system "make"
+    assert (testpath/"Tut-0.1.typelib").exist?
   end
 end

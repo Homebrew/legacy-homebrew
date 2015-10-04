@@ -1,31 +1,33 @@
-require "formula"
-
 class Fwknop < Formula
-  homepage "http://www.cipherdyne.org/fwknop/"
+  desc "Single Packet Authorization and Port Knocking"
+  homepage "https://www.cipherdyne.org/fwknop/"
+  url "https://github.com/mrash/fwknop/archive/2.6.7.tar.gz"
+  sha256 "e96c13f725a4c3829c842743b14aedf591d30570df5c06556862a900b64def86"
   head "https://github.com/mrash/fwknop.git"
-  url "https://github.com/mrash/fwknop/archive/2.6.3.tar.gz"
-  sha1 "ea83821d082e640bc70438f00578d3c049d4de8a"
 
   bottle do
-    sha1 "a8f0c47a80109c15bbdbee4c6b768a5970d87786" => :mavericks
-    sha1 "28c45793806d7cdd6bdce5001a44645ce3c258b8" => :mountain_lion
-    sha1 "c963e977da7c1171b56b9e5dce523b7ddbc42b35" => :lion
+    sha256 "d00d233db7cb2cb04c50ee792756d76cfda37f2c6bc210e313375dca01d8f4d1" => :yosemite
+    sha256 "a69bbd4435378eb2b6b5a8046d3562aef0f22152b50521c106700aa53f221724" => :mavericks
+    sha256 "c003419be9572eab4fa791bb43b4faa63235caadac15f3cb1d1f38b555b927ef" => :mountain_lion
   end
 
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "libtool" => :build
+  depends_on "wget" => :optional
   depends_on "gpgme"
 
   def install
     system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-gpgme"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--disable-silent-rules",
+                          "--prefix=#{prefix}", "--with-gpgme", "--sysconfdir=#{etc}",
+                          "--with-gpg=#{Formula["gnupg2"].opt_prefix}/bin/gpg2"
+    system "make", "install"
   end
 
   test do
+    touch testpath/".fwknoprc"
+    chmod 0600, testpath/".fwknoprc"
     system "#{bin}/fwknop", "--version"
   end
 end

@@ -1,15 +1,16 @@
-require "formula"
-
 class Clib < Formula
+  desc "Package manager for C programming"
   homepage "https://github.com/clibs/clib"
-  url "https://github.com/clibs/clib/archive/1.2.2.tar.gz"
-  sha1 "e103638102f33cb38308d6f108feea9f0daff08a"
+  url "https://github.com/clibs/clib/archive/1.4.2.tar.gz"
+  sha256 "c1f3d98a10955a4ce6c2c100b1ffd341d5e99dcf6e642793d3bfa4ff4a431e13"
+
+  head "https://github.com/clibs/clib.git"
 
   bottle do
     cellar :any
-    sha1 "078a75c4851fd7baef7dc1b44b2573c873d61ef4" => :mavericks
-    sha1 "3b694a2c43b542317795383df940404edf91ada9" => :mountain_lion
-    sha1 "2551a74714e88fe36b44132ab9b9f55554c12cd8" => :lion
+    sha1 "f9d8fc54ec746beb253186b1cb8c30eee5f945d6" => :yosemite
+    sha1 "82d7f283b9c85566f3e1a7337ec998cc11406c66" => :mavericks
+    sha1 "602d091a1490a683a0e07e71df7c26ecf430e353" => :mountain_lion
   end
 
   def install

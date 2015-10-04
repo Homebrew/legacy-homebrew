@@ -1,45 +1,20 @@
-require "formula"
-
-class MaximumMacOSRequirement < Requirement
-  fatal true
-
-  def initialize(tags)
-    @version = MacOS::Version.from_symbol(tags.first)
-    super
-  end
-
-  satisfy { MacOS.version <= @version }
-
-  def message
-    <<-EOS.undent
-      OS X #{@version.pretty_name} or older is required for stable.
-      Use `brew install --devel` on newer versions.
-    EOS
-  end
-end
-
 class NetSnmp < Formula
+  desc "Implements SNMP v1, v2c, and v3, using IPv4 and IPv6"
   homepage "http://www.net-snmp.org/"
-
-  stable do
-    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.2.1/net-snmp-5.7.2.1.tar.gz"
-    sha1 "815d4e5520a1ed96a27def33e7534b4190599f0f"
-
-    depends_on MaximumMacOSRequirement => :mountain_lion
-  end
+  url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3/net-snmp-5.7.3.tar.gz"
+  sha256 "12ef89613c7707dc96d13335f153c1921efc9d61d3708ef09f3fc4a7014fb4f0"
 
   bottle do
-    sha1 "6f1ff81bde5defe92b4a2062fba099c8310f9662" => :mountain_lion
-    sha1 "cfeb129e4130ed17656443efd728ae0812a78720" => :lion
+    revision 2
+    sha256 "92956eecd7dcaa9743527af24d68d52c772555c3f512f10d773aa6083a1e3290" => :yosemite
+    sha256 "3c045453d9c666ec873b90477b1efe10d5c8583994b65666e3d445eb2e5670c8" => :mavericks
+    sha256 "f2c4102f61ee8d6ad151bdbe6da97a5fc5127e84e7939f5e1672f81414a28873" => :mountain_lion
   end
 
-  devel do
-    url "https://downloads.sourceforge.net/project/net-snmp/net-snmp/5.7.3-pre-releases/net-snmp-5.7.3.pre3.tar.gz"
-    version "5.7.3.pre3"
-    sha1 "5e46232a2508a3cb6543f0438569090f78e4a20e"
-  end
-
+  depends_on "openssl"
   depends_on :python => :optional
+
+  keg_only :provided_by_osx
 
   def install
     args = [
@@ -53,13 +28,17 @@ class NetSnmp < Formula
       "--without-rpm",
       "--without-kmem-usage",
       "--disable-embedded-perl",
-      "--without-perl-modules",
+      "--without-perl-modules"
     ]
 
     if build.with? "python"
       args << "--with-python-modules"
       ENV["PYTHONPROG"] = `which python`
     end
+
+    # https://sourceforge.net/p/net-snmp/bugs/2504/
+    ln_s "darwin13.h", "include/net-snmp/system/darwin14.h"
+    ln_s "darwin13.h", "include/net-snmp/system/darwin15.h"
 
     system "./configure", *args
     system "make"

@@ -1,28 +1,27 @@
-require 'formula'
-
 class Juise < Formula
-  homepage 'https://github.com/Juniper/juise/wiki'
-  url 'https://github.com/Juniper/juise/releases/download/0.6.0/juise-0.6.0.tar.gz'
-  sha1 'ff2f1914619c9b216b28fdd7a82a5554ae9e1ec4'
+  desc "JUNOS user interface scripting environment"
+  homepage "https://github.com/Juniper/juise/wiki"
+  url "https://github.com/Juniper/juise/releases/download/0.6.1/juise-0.6.1.tar.gz"
+  sha256 "5985f2b19d017a52de2a77b0246afed86d2b9227acd277113468407db11cd146"
 
   bottle do
-    sha1 "18a4e440aed3d01fc859072e15e99782e7480395" => :mavericks
-    sha1 "7878b653f90eec8d1d5f12f5337840bdfe44bcff" => :mountain_lion
-    sha1 "7702d03a4a8fba60eb6f878bbf5c9ea34239d119" => :lion
+    sha1 "a8acedc9b48bc87a2daa4da9e81f17693d08fc32" => :mavericks
+    sha1 "eaf3ecb17214b7319a96409fe1180de8ca2134ac" => :mountain_lion
+    sha1 "e99ad8fe4f05ecd24773633cef6cd25109df936e" => :lion
   end
 
   head do
-    url 'https://github.com/Juniper/juise.git'
+    url "https://github.com/Juniper/juise.git"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
-  depends_on 'libtool' => :build
-  depends_on 'libslax'
-  depends_on 'libssh2'
-  depends_on 'pcre'
-  depends_on 'sqlite'
+  depends_on "libtool" => :build
+  depends_on "libslax"
+  depends_on "libssh2"
+  depends_on "pcre"
+  depends_on "sqlite"
 
   def install
     system "sh ./bin/setup.sh" if build.head?
@@ -31,6 +30,6 @@ class Juise < Formula
                           "--with-libssh2-prefix=#{HOMEBREW_PREFIX}",
                           "--with-sqlite3-prefix=#{Formula["sqlite"].opt_prefix}",
                           "--enable-libedit"
-    system "make install"
+    system "make", "install"
   end
 end

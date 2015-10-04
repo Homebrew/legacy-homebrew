@@ -1,18 +1,18 @@
-require 'formula'
-
 class Lastfmlib < Formula
-  homepage 'http://code.google.com/p/lastfmlib/'
-  url 'https://lastfmlib.googlecode.com/files/lastfmlib-0.4.0.tar.gz'
-  sha1 'b9e15e4eb42a9ccd9b3c5373054b0bd51a406fdd'
+  desc "Implements Last.fm v1.2 submissions protocol for scrobbling"
+  homepage "https://code.google.com/p/lastfmlib/"
+  url "https://lastfmlib.googlecode.com/files/lastfmlib-0.4.0.tar.gz"
+  sha256 "28ecaffe2efecd5ac6ac00ba8e0a07b08e7fb35b45dfe384d88392ad6428309a"
 
   bottle do
     cellar :any
-    sha1 "eebec974f31e94d6987e108127e1ab1af606f176" => :mavericks
-    sha1 "4807c28f6d74217022fd9230adee4d3ad0ca858a" => :mountain_lion
-    sha1 "981967e12bb1511b82b145d17e5ac68f3aef1f5f" => :lion
+    revision 1
+    sha1 "764db4a4f10b803d6fccf6552a47427634e70c18" => :yosemite
+    sha1 "dcb26b1acf66e30f694543ad32f3b4433745667d" => :mavericks
+    sha1 "61c0b04548eefedd3c546e3bbf392987d667c2b9" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   fails_with :clang do
     cause <<-EOS.undent
@@ -25,6 +25,6 @@ class Lastfmlib < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

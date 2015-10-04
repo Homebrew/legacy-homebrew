@@ -1,22 +1,29 @@
-require 'formula'
-
 class Gsasl < Formula
-  homepage 'http://www.gnu.org/software/gsasl/'
-  url 'http://ftpmirror.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
+  desc "SASL library command-line interface"
+  homepage "https://www.gnu.org/software/gsasl/"
+  url "http://ftpmirror.gnu.org/gsasl/gsasl-1.8.0.tar.gz"
+  mirror "https://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz"
+  sha256 "310262d1ded082d1ceefc52d6dad265c1decae8d84e12b5947d9b1dd193191e5"
+
+  depends_on "libntlm" => :optional
+
   bottle do
     cellar :any
-    sha1 "c8969703477919ee6a2b5167cdf7b01f8d66f141" => :mavericks
-    sha1 "94392f71f7dee64eb0ddcbb453d7b4b4ecbc9ffc" => :mountain_lion
-    sha1 "48f65101534df57a8d1a6cd611f800fecc9e5875" => :lion
+    revision 2
+    sha256 "8dbca0c2938ab3b5077fe7ed572437a0f724e479a7f102d9c40f959b1483f09d" => :el_capitan
+    sha256 "afc44c1161ffa2ae09bee4a82c25e626562d950ae092356fba204789e4b4752e" => :yosemite
+    sha256 "df498ac7247b3f54bdc9720249fa4a1cee72bf8c5011d06889d8ecdebaff1aaa" => :mavericks
+    sha256 "5585b8bddf849b2b4b3f67da253c97556bfa526b8345006595cdefddf3385dd5" => :mountain_lion
   end
-
-  mirror 'http://ftp.gnu.org/gsasl/gsasl-1.8.0.tar.gz'
-  sha1 '343fd97ae924dc406986c02fb9b889f4114239ae'
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--with-gssapi-impl=mit",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    assert_match /#{version}/, shell_output("#{bin}/gsasl")
   end
 end

@@ -1,19 +1,20 @@
-require "formula"
-
 class Icu4c < Formula
+  desc "C/C++ and Java libraries for Unicode and globalization"
   homepage "http://site.icu-project.org/"
-  head "http://source.icu-project.org/repos/icu/icu/trunk/", :using => :svn
-  url "http://download.icu-project.org/files/icu4c/53.1/icu4c-53_1-src.tgz"
-  version "53.1"
-  sha1 "7eca017fdd101e676d425caaf28ef862d3655e0f"
+  head "https://ssl.icu-project.org/repos/icu/icu/trunk/", :using => :svn
+  url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
+  mirror "https://fossies.org/linux/misc/icu4c-55_1-src.tgz"
+  version "55.1"
+  sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
 
   bottle do
-    sha1 "1199e740fbc35f09eaa3774ada8c805c885ca170" => :mavericks
-    sha1 "72a163ec611ab7ee984d823fca4202d254627372" => :mountain_lion
-    sha1 "69037c3eacbf544ab6191e4290c1bc4a6dbdcda0" => :lion
+    sha256 "11625fd5a49ecdc8d653b707db778d32eb1e7cf6cee04108822a7615289e7411" => :el_capitan
+    sha256 "a27e2b3645992acec22c95cb6ff4c4893139d3710c1a0be6d54c9f22593fc148" => :yosemite
+    sha256 "c68728ae3a0401fb32ddb3a85eb5ddf8c367268090421d66db2631d49f7b1ce1" => :mavericks
+    sha256 "be4ecad0c4f0542df384dd48c8c57380f6d843958c5d1eddb068e52f910e2dd9" => :mountain_lion
   end
 
-  keg_only "Conflicts; see: https://github.com/Homebrew/homebrew/issues/issue/167"
+  keg_only :provided_by_osx, "OS X provides libicucore.dylib (but nothing else)."
 
   option :universal
   option :cxx11
@@ -29,5 +30,9 @@ class Icu4c < Formula
       system "make"
       system "make", "install"
     end
+  end
+
+  test do
+    system "#{bin}/gendict", "--uchars", "/usr/share/dict/words", "dict"
   end
 end

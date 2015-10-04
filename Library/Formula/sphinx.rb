@@ -1,30 +1,43 @@
-require 'formula'
-
 class Sphinx < Formula
-  homepage 'http://www.sphinxsearch.com'
-  url 'http://sphinxsearch.com/files/sphinx-2.2.4-release.tar.gz'
-  sha1 'd89f2188f7d47cd8468708b15cc55f5d457009e0'
+  desc "Sphinx is a full-text search engine"
+  homepage "http://www.sphinxsearch.com"
+  revision 1
 
-  head 'http://sphinxsearch.googlecode.com/svn/trunk/'
-
-  bottle do
-    sha1 "2d58704fcd15ec7d9c8ac7f4bb4391b9105ea35f" => :mavericks
-    sha1 "5e3447a20996bd752d1b1793efef72b6dbf8421f" => :mountain_lion
-    sha1 "cd9566b61321cb1ae618c0937c5133219183b478" => :lion
+  stable do
+    url "http://sphinxsearch.com/files/sphinx-2.2.9-release.tar.gz"
+    sha256 "79bcb9fca069ba630fd71fb40fba05bb16e19b475906fb6ae026334d50a6bf3a"
   end
 
-  option 'mysql', 'Force compiling against MySQL'
-  option 'pgsql', 'Force compiling against PostgreSQL'
-  option 'id64',  'Force compiling with 64-bit ID support'
+  devel do
+    url "http://sphinxsearch.com/files/sphinx-2.3.1-beta.tar.gz"
+    sha256 "0e5ebee66fe5b83dd8cbdebffd236dcd7cd33a7633c2e30b23330c65c61ee0e3"
+  end
+
+  head "http://sphinxsearch.googlecode.com/svn/trunk/"
+
+  bottle do
+    sha256 "cea5528dedeb1e66509271e8e1dab5d613ac6b203e16605830f68d57fa83f5b6" => :el_capitan
+    sha256 "c9cdc77ed228f264c3f93293215cdb621129f52b90c49e157ac69ecf85027b16" => :yosemite
+    sha256 "b46915db19659083d4a6428a704dac03a4c4d4a2b0d88ad32902c5c739715714" => :mavericks
+    sha256 "419d876d846d9ad280be6f8ffdde5962cc6cb5accb32688e8af44f8c4e50989d" => :mountain_lion
+  end
+
+  option "with-mysql",      "Force compiling against MySQL"
+  option "with-postgresql", "Force compiling against PostgreSQL"
+  option "with-id64",       "Force compiling with 64-bit ID support"
+
+  deprecated_option "mysql" => "with-mysql"
+  deprecated_option "pgsql" => "with-postgresql"
+  deprecated_option "id64"  => "with-id64"
 
   depends_on "re2" => :optional
-  depends_on :mysql if build.include? 'mysql'
-  depends_on :postgresql if build.include? 'pgsql'
+  depends_on :mysql => :optional
+  depends_on :postgresql => :optional
+  depends_on "openssl" if build.with?("mysql")
 
-  # http://snowball.tartarus.org/
-  resource 'stemmer' do
-    url 'http://snowball.tartarus.org/dist/libstemmer_c.tgz'
-    sha1 '9b0f120a68a3c688b2f5a8d0f681620465c29d38'
+  resource "stemmer" do
+    url "https://github.com/snowballstem/snowball.git",
+      :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
   end
 
   fails_with :llvm do
@@ -38,29 +51,39 @@ class Sphinx < Formula
   end
 
   def install
-    (buildpath/'libstemmer_c').install resource('stemmer')
+    resource("stemmer").stage do
+      system "make", "dist_libstemmer_c"
+      system "tar", "xzf", "dist/libstemmer_c.tgz", "-C", buildpath
+    end
 
     args = %W[--prefix=#{prefix}
               --disable-dependency-tracking
               --localstatedir=#{var}
               --with-libstemmer]
 
-    args << "--enable-id64" if build.include? 'id64'
-    args << "--with-re2" if build.with? 're2'
+    args << "--enable-id64" if build.with? "id64"
+    args << "--with-re2" if build.with? "re2"
 
-    %w{mysql pgsql}.each do |db|
-      if build.include? db
-        args << "--with-#{db}"
-      else
-        args << "--without-#{db}"
-      end
+    if build.with? "mysql"
+      args << "--with-mysql"
+    else
+      args << "--without-mysql"
+    end
+
+    if build.with? "postgresql"
+      args << "--with-pgsql"
+    else
+      args << "--without-pgsql"
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
+    This is not sphinx - the Python Documentation Generator.
+    To install sphinx-python: use pip or easy_install,
+
     Sphinx has been compiled with libstemmer support.
 
     Sphinx depends on either MySQL or PostreSQL as a datasource.

@@ -1,38 +1,48 @@
-require 'formula'
-
 class Qt < Formula
-  homepage "http://qt-project.org/"
+  desc "Cross-platform application and UI framework"
+  homepage "https://www.qt.io/"
 
   stable do
-    # Mirror rather than source set as primary because source is very slow.
-    url "http://qtmirror.ics.com/pub/qtproject/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-    mirror "http://download.qt-project.org/official_releases/qt/4.8/4.8.6/qt-everywhere-opensource-src-4.8.6.tar.gz"
-    sha1 "ddf9c20ca8309a116e0466c42984238009525da6"
-
-    # This patch should be able to be removed with the next stable Qt4 release.
-    patch do
-      url "https://raw.githubusercontent.com/DomT4/scripts/440e3cafde5bf6ec6f50cd28fa5bf89c280f1b53/Homebrew_Resources/Qt/qt4patch.diff"
-      sha1 "57246a33460246118a1fab7460c79f2077d3a929"
-    end
+    url "https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
+    sha256 "e2882295097e47fe089f8ac741a95fef47e0a73a3f3cdf21b56990638f626ea0"
   end
 
   bottle do
-    revision 5
-    sha1 "34d66e17aaed4d2067297d4a64482d56f2382339" => :mavericks
-    sha1 "9ab96caa65e8b707deeb27caaff9ad8b1e906b2c" => :mountain_lion
-    sha1 "18b1d1a4aa89f92c4b9a9f202a95cc0896e03a9d" => :lion
+    revision 1
+    sha256 "70379b1c0bbf570c97d20260352e8088aeddfb52132d8a57a5cb940a71614722" => :el_capitan
+    sha256 "698853771b7162e1d9ee5d5ec5c36007e781a0216f080a38554a456cf8dff96b" => :yosemite
+    sha256 "1c4e36d66889177779e013862c1e7fff484d7f1a0451d4d7746e5127fc144efc" => :mavericks
   end
 
-  head "git://gitorious.org/qt/qt.git", :branch => '4.8'
+  # Backport of Qt5 commit to fix the fatal build error on OS X El Capitan.
+  # http://code.qt.io/cgit/qt/qtbase.git/commit/?id=b06304e164ba47351fa292662c1e6383c081b5ca
+  if MacOS.version >= :el_capitan
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/480b7142c4e2ae07de6028f672695eb927a34875/qt/el-capitan.patch"
+      sha256 "c8a0fa819c8012a7cb70e902abb7133fc05235881ce230235d93719c47650c4e"
+    end
+  end
+
+  head "https://code.qt.io/qt/qt.git", :branch => "4.8"
 
   option :universal
-  option 'with-qt3support', 'Build with deprecated Qt3Support module support'
-  option 'with-docs', 'Build documentation'
-  option 'developer', 'Build and link with developer options'
+  option "with-qt3support", "Build with deprecated Qt3Support module support"
+  option "with-docs", "Build documentation"
+  option "with-developer", "Build and link with developer options"
 
+  depends_on "openssl"
   depends_on "d-bus" => :optional
   depends_on "mysql" => :optional
   depends_on "postgresql" => :optional
+
+  deprecated_option "qtdbus" => "with-d-bus"
+  deprecated_option "developer" => "with-developer"
+
+  resource "test-project" do
+    url "https://gist.github.com/tdsmith/f55e7e69ae174b5b5a03.git",
+        :revision => "6f565390395a0259fa85fdd3a4f1968ebcd1cc7d"
+  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -45,19 +55,23 @@ class Qt < Formula
             "-cocoa", "-fast", "-release"]
 
     if ENV.compiler == :clang
-        args << "-platform"
+      args << "-platform"
 
-        if MacOS.version >= :mavericks
-          args << "unsupported/macx-clang-libc++"
-        else
-          args << "unsupported/macx-clang"
-        end
+      if MacOS.version >= :mavericks
+        args << "unsupported/macx-clang-libc++"
+      else
+        args << "unsupported/macx-clang"
+      end
     end
 
-    args << "-plugin-sql-mysql" if build.with? 'mysql'
-    args << "-plugin-sql-psql" if build.with? 'postgresql'
+    args << "-openssl-linked"
+    args << "-I" << Formula["openssl"].opt_include
+    args << "-L" << Formula["openssl"].opt_lib
 
-    if build.with? 'd-bus'
+    args << "-plugin-sql-mysql" if build.with? "mysql"
+    args << "-plugin-sql-psql" if build.with? "postgresql"
+
+    if build.with? "d-bus"
       dbus_opt = Formula["d-bus"].opt_prefix
       args << "-I#{dbus_opt}/lib/dbus-1.0/include"
       args << "-I#{dbus_opt}/include/dbus-1.0"
@@ -66,34 +80,34 @@ class Qt < Formula
       args << "-dbus-linked"
     end
 
-    if build.with? 'qt3support'
+    if build.with? "qt3support"
       args << "-qt3support"
     else
       args << "-no-qt3support"
     end
 
-    args << "-nomake" << "docs" if build.without? 'docs'
+    args << "-nomake" << "docs" if build.without? "docs"
 
-    if MacOS.prefer_64_bit? or build.universal?
-      args << '-arch' << 'x86_64'
+    if MacOS.prefer_64_bit? || build.universal?
+      args << "-arch" << "x86_64"
     end
 
-    if !MacOS.prefer_64_bit? or build.universal?
-      args << '-arch' << 'x86'
+    if !MacOS.prefer_64_bit? || build.universal?
+      args << "-arch" << "x86"
     end
 
-    args << '-developer-build' if build.include? 'developer'
+    args << "-developer-build" if build.with? "developer"
 
     system "./configure", *args
     system "make"
     ENV.j1
-    system "make install"
+    system "make", "install"
 
     # what are these anyway?
-    (bin+'pixeltool.app').rmtree
-    (bin+'qhelpconverter.app').rmtree
+    (bin+"pixeltool.app").rmtree
+    (bin+"qhelpconverter.app").rmtree
     # remove porting file for non-humans
-    (prefix+'q3porting.xml').unlink if build.without? 'qt3support'
+    (prefix+"q3porting.xml").unlink if build.without? "qt3support"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.install_symlink Dir["#{lib}/*.framework"]
@@ -109,7 +123,10 @@ class Qt < Formula
   end
 
   test do
-    system "#{bin}/qmake", '-project'
+    resource("test-project").stage testpath
+    system "qmake"
+    system "make"
+    assert_match /GitHub/, pipe_output(testpath/"qtnetwork-test 2>&1", nil, 0)
   end
 
   def caveats; <<-EOS.undent

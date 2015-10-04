@@ -1,20 +1,26 @@
-require 'formula'
-
 class Faac < Formula
-  homepage 'http://www.audiocoding.com/faac.html'
-  url 'https://downloads.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.gz'
-  sha1 'd00b023a3642f81bb1fb13d962a65079121396ee'
+  desc "ISO AAC audio encoder"
+  homepage "http://www.audiocoding.com/faac.html"
+  url "https://downloads.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.gz"
+  sha256 "c5141199f4cfb17d749c36ba8cfe4b25f838da67c22f0fec40228b6b9c3d19df"
 
   bottle do
     cellar :any
-    sha1 "923f62ca1292dcf930a4def01da662d5facf3b87" => :mavericks
-    sha1 "aab2425c764152a2f4ea7eb99072153d1eed1654" => :mountain_lion
-    sha1 "88bd2a82586156372015b7a884809a2d14d127cb" => :lion
+    revision 1
+    sha256 "4607ea16f33aec6dabefe6ace66c41cb7ee487b03fff8c7b2d050cbc6340422f" => :el_capitan
+    sha1 "46a8facbfd103d787d198e6fb802d6f0948222e0" => :yosemite
+    sha1 "2a1e8a1decd52fcdf6498edd7f8437536d05d453" => :mavericks
+    sha1 "9ea199f750c83887bb9e3d66759a60872672865f" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"faac", test_fixtures("test.mp3"), "-P", "-o", "test.m4a"
+    assert File.exist?("test.m4a")
   end
 end

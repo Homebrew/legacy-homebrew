@@ -1,48 +1,38 @@
-require "formula"
-
 class Rethinkdb < Formula
-  homepage "http://www.rethinkdb.com/"
-  url "http://download.rethinkdb.com/dist/rethinkdb-1.14.1.tgz"
-  sha1 "9e2973f263bedec1cf3b9dd9eed173967ea34062"
+  desc "The open-source database for the realtime web"
+  homepage "https://www.rethinkdb.com/"
+  url "https://download.rethinkdb.com/dist/rethinkdb-2.1.4.tgz"
+  sha256 "2553ad4a31b5f09522fc651fd2cfa98d76bccfebd6db87ef929eda54220f70b2"
 
   bottle do
-    revision 1
-    sha1 "2f7a19030733af47f51268050ee0924a93596edb" => :mavericks
-    sha1 "29ee2faced25c53ebc6b2091d8a35283fb0d5866" => :mountain_lion
-    sha1 "9b4f1a04d9694115f02216cd73ec89ef072430e8" => :lion
+    cellar :any
+    sha256 "d41b18a64b0acb843bd441d999cf5c63bb9495ad3e0630f7287c70d0d16d6e17" => :el_capitan
+    sha256 "7461fd60287dea32a95416b47521d341ff082729f2a390da5408bf06e36016c2" => :yosemite
+    sha256 "82c8c2d42fa1e0d428704e86c7a64a8cb59c2247289c96fd113cd597a8939914" => :mavericks
   end
 
   depends_on :macos => :lion
   depends_on "boost" => :build
+  depends_on "openssl"
+  depends_on "icu4c"
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
     cause "RethinkDB uses C++0x"
   end
 
-  # boost 1.56 compatibility
-  # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55478774
-  patch :DATA
-
   def install
     args = ["--prefix=#{prefix}"]
-
-    # brew's v8 is too recent. rethinkdb uses an older v8 API
-    args += ["--fetch", "v8"]
 
     # rethinkdb requires that protobuf be linked against libc++
     # but brew's protobuf is sometimes linked against libstdc++
     args += ["--fetch", "protobuf"]
 
-    # support gcc with boost 1.56
-    # https://github.com/rethinkdb/rethinkdb/issues/3044#issuecomment-55471981
-    args << "CXXFLAGS=-DBOOST_VARIANT_DO_NOT_USE_VARIADIC_TEMPLATES"
-
     system "./configure", *args
     system "make"
     system "make", "install-osx"
 
-    mkdir_p "#{var}/log/rethinkdb"
+    (var/"log/rethinkdb").mkpath
   end
 
   def plist; <<-EOS.undent
@@ -72,18 +62,9 @@ class Rethinkdb < Formula
     </plist>
     EOS
   end
+
+  test do
+    shell_output("#{bin}/rethinkdb create -d test")
+    assert File.read("test/metadata").start_with?("RethinkDB")
+  end
 end
-__END__
-diff --git a/src/clustering/reactor/reactor_be_primary.cc b/src/clustering/reactor/reactor_be_primary.cc
-index 3f583fc..945f78b 100644
---- a/src/clustering/reactor/reactor_be_primary.cc
-+++ b/src/clustering/reactor/reactor_be_primary.cc
-@@ -290,7 +290,7 @@ void do_backfill(
-
- bool check_that_we_see_our_broadcaster(const boost::optional<boost::optional<broadcaster_business_card_t> > &maybe_a_
-     guarantee(maybe_a_business_card, "Not connected to ourselves\n");
--    return maybe_a_business_card.get();
-+    return static_cast<bool>(maybe_a_business_card.get());
- }
-
- bool reactor_t::attempt_backfill_from_peers(directory_entry_t *directory_entry,

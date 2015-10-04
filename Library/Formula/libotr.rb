@@ -1,15 +1,15 @@
-require 'formula'
-
 class Libotr < Formula
-  homepage 'http://www.cypherpunks.ca/otr/'
-  url 'http://www.cypherpunks.ca/otr/libotr-4.0.0.tar.gz'
-  sha1 '8865e9011b8674290837afcf7caf90c492ae09cc'
+  desc "Off-The-Record (OTR) messaging library"
+  homepage "https://otr.cypherpunks.ca/"
+  url "https://otr.cypherpunks.ca/libotr-4.1.0.tar.gz"
+  sha256 "4fdb891940ec89d300190a98f69a9138248dcb8c8d337633fb981b8d0a9cd930"
 
   bottle do
     cellar :any
-    sha1 "f49e2b138533aa7777b12cb5fdf5d86f5f5db72b" => :mavericks
-    sha1 "e36eb2e9cb4a32c07d0c78d60ef5d1d7031c1706" => :mountain_lion
-    sha1 "5f80d7daeb377eb938a0166b6c21901fad271eab" => :lion
+    sha256 "6a800d4cc2c2239954d45769ee424431f72896a1f1cb41e58dbf84d3273545b8" => :el_capitan
+    sha1 "e3a4f4ed938279c649562da5f47589cd260876af" => :yosemite
+    sha1 "2fddebe58059fe7dcc3bfebd862051c8c7b8f417" => :mavericks
+    sha1 "bbd9c6938ade7c5208c472aba7b65581eb9a210b" => :mountain_lion
   end
 
   depends_on "libgcrypt"
@@ -18,6 +18,6 @@ class Libotr < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
