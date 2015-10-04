@@ -30,6 +30,7 @@ class Qt < Formula
   option "with-qt3support", "Build with deprecated Qt3Support module support"
   option "with-docs", "Build documentation"
   option "with-developer", "Build and link with developer options"
+  option "without-webkit", "Build without QtWebKit module"
 
   depends_on "openssl"
   depends_on "d-bus" => :optional
@@ -97,6 +98,7 @@ class Qt < Formula
     end
 
     args << "-developer-build" if build.with? "developer"
+    args << "-no-webkit" if build.without? "webkit"
 
     system "./configure", *args
     system "make"
