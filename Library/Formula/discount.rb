@@ -28,6 +28,6 @@ class Discount < Formula
     bin.mkpath
     lib.mkpath
     include.mkpath
-    system "make install.everything"
+    system "make", "install.everything"
   end
 end
