@@ -22,7 +22,7 @@ class Cowsay < Formula
 
   test do
     output = shell_output("#{bin}/cowsay moo")
-    assert output.include?("moo")  # bubble
-    assert output.include?("^__^") # cow
+    assert_match "moo", output  # bubble
+    assert_match "^__^", output # cow
   end
 end
