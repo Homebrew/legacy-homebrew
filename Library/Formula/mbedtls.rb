@@ -1,4 +1,4 @@
-class Polarssl < Formula
+class Mbedtls < Formula
   desc "Cryptographic & SSL/TLS library"
   homepage "https://tls.mbed.org/"
   url "https://tls.mbed.org/download/mbedtls-2.1.0-gpl.tgz"
@@ -20,11 +20,11 @@ class Polarssl < Formula
       s.gsub! "#define MBEDTLS_SSL_PROTO_SSL3", "//#define MBEDTLS_SSL_PROTO_SSL3"
     end
 
-    system "cmake", *std_cmake_args
+    system "cmake", *std_cmake_argss
     system "make"
     system "make", "install"
 
-    # Why does PolarSSL ship with a "Hello World" executable. Let's remove that.
+    # Why does Mbedtls ship with a "Hello World" executable. Let's remove that.
     rm_f "#{bin}/hello"
     # Rename benchmark & selftest, which are awfully generic names.
     mv bin/"benchmark", bin/"mbedtls-benchmark"

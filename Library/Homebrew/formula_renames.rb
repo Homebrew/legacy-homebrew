@@ -10,4 +10,5 @@ FORMULA_RENAMES = {
   "mpich2" => "mpich",
   "plt-racket" => "racket",
   "fig" => "docker-compose",
+  "polarssl" => "mbedtls",
 }
