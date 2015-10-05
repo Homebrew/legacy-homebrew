@@ -2,8 +2,8 @@ class Ack < Formula
   desc "Search tool like grep, but optimized for programmers"
   homepage "http://beyondgrep.com/"
   url "http://beyondgrep.com/ack-2.14-single-file"
-  sha256 "1d203cfbc52ce8f49e3992be1cd3e4d7d5dfb7daa3739e8628aa9858ccc5b9df"
   version "2.14"
+  sha256 "1d203cfbc52ce8f49e3992be1cd3e4d7d5dfb7daa3739e8628aa9858ccc5b9df"
 
   head "https://github.com/petdance/ack2.git", :branch => "dev"
 
@@ -45,6 +45,6 @@ class Ack < Formula
 
   test do
     assert_equal "foo bar\n", pipe_output("#{bin}/ack --noenv --nocolor bar -",
-                                          "foo\nfoo bar\nbaz")
+                                          "foo\nfoo bar\nbaz",)
   end
 end
