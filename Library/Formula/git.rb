@@ -1,26 +1,25 @@
 class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  url "https://www.kernel.org/pub/software/scm/git/git-2.5.2.tar.xz"
-  sha256 "4b4760a90ede51accee703bd6815f1f79afef68670acdcf3ea31dcc846a40c9b"
+  url "https://www.kernel.org/pub/software/scm/git/git-2.6.0.tar.xz"
+  sha256 "211beb96ff41a83727e39704431ac388ecb1cebb5219cda067999bce4e1e15a6"
 
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "3c6ee6b0c85223b00f8a2f71758a2e9fd91bd5767e98899a9d982d08c4c6a155" => :el_capitan
-    sha256 "57bbb4d67791cdf02aba7886aea0ed07ce99be355032389078f112fa270d779f" => :yosemite
-    sha256 "bf90cfa5736daf846b52b4ab9e4c3573026f2a775185dee7b6b559a378cb71ca" => :mavericks
-    sha256 "ee3c4c88a9ed65076bef156184d21aa91d94b0ef00c8acc3842b8993af0dd131" => :mountain_lion
+    sha256 "900687efb1b0060ac9fa2a151729f6ac1b739d0a2076f710599f85f7bddf4596" => :el_capitan
+    sha256 "5ac30ab7ea981beaeaf5a5003b4414c0c7be569968046bbcd09c15fd7b85298b" => :yosemite
+    sha256 "b9a2790d65b7969995d2ee18faab95777a5f0a7d378fff238c5066d03323d435" => :mavericks
   end
 
   resource "man" do
-    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.5.2.tar.xz"
-    sha256 "76512caa7044710f9954079828218cd94ab17da34effd3bdd9db2434d18720c2"
+    url "https://www.kernel.org/pub/software/scm/git/git-manpages-2.6.0.tar.xz"
+    sha256 "94c45cf2353f8e1bbb6b56b6f54289203319db4cc38d94f53fcfb8dc3b669615"
   end
 
   resource "html" do
-    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.5.2.tar.xz"
-    sha256 "87e416455a293552c2bab46fb3ec75424e2143e6f98f5ce7bcb6d4e50c4020eb"
+    url "https://www.kernel.org/pub/software/scm/git/git-htmldocs-2.6.0.tar.xz"
+    sha256 "0ba5d5d630e3235b74bcfb4ea2e9bbda8a3e619aaaf9e1f56e12dec5d8dc1d87"
   end
 
   option "with-blk-sha1", "Compile with the block-optimized SHA1 implementation"

@@ -5,6 +5,7 @@
 class Wine < Formula
   desc "Wine Is Not an Emulator"
   homepage "https://www.winehq.org/"
+  revision 1
 
   stable do
     url "https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2"
@@ -22,15 +23,15 @@ class Wine < Formula
   end
 
   bottle do
-    sha1 "348f15e19880888d19d04d2fe4bad42048fe6828" => :yosemite
-    sha1 "69f05602ecde44875cf26297871186aaa0b26cd7" => :mavericks
-    sha1 "a89371854006687b74f4446a52ddb1f68cfafa7e" => :mountain_lion
+    sha256 "1e3492bc9865f293112516f0e7ab1cc15668888818d759090d2c808867da0992" => :el_capitan
+    sha256 "a94a320c8f5a82b6c040d2ff1e0c3891274b0c6af49847784944dd755aca8122" => :yosemite
+    sha256 "341bb3bbe9e29dc1835eece6822df46b3d2df6761742b10ded6247a81db721f3" => :mavericks
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.51.tar.bz2"
-    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.51.tar.bz2"
-    sha256 "397fc95b463d6ae1b65ab0477d9fe5d0871e8e2a3322bc9d984e438f2c4d0f52"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.52.tar.bz2"
+    mirror "http://mirrors.ibiblio.org/wine/source/1.7/wine-1.7.52.tar.bz2"
+    sha256 "0773b32a0c358323db4c383ceb1e9e28d5d4ed4ea37570af2bcb41fecf0d554b"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -38,8 +39,8 @@ class Wine < Formula
     # Patch to fix screen-flickering issues. Still relevant on 1.7.23.
     # https://bugs.winehq.org/show_bug.cgi?id=34166
     patch do
-      url "https://bugs.winehq.org/attachment.cgi?id=47639"
-      sha256 "3054467e0b1ef9efce3e1b24497bd26e00c4727e8bd7b1e990d1352bb1819de0"
+      url "https://bugs.winehq.org/attachment.cgi?id=52485"
+      sha256 "59f1831a1b49c1b7a4c6e6af7e3f89f0bc60bec0bead645a615b251d37d232ac"
     end
   end
 
@@ -165,13 +166,18 @@ class Wine < Formula
     s = <<-EOS.undent
       You may want to get winetricks:
         brew install winetricks
-
-      The current version of Wine contains a partial implementation of dwrite.dll
-      which may cause text rendering issues in applications such as Steam.
-      We recommend that you run winecfg, add an override for dwrite in the
-      Libraries tab, and edit the override mode to "disable". See:
-        https://bugs.winehq.org/show_bug.cgi?id=31374
     EOS
+
+    if build.stable?
+      s += <<-EOS.undent
+
+        The current version of Wine contains a partial implementation of dwrite.dll
+        which may cause text rendering issues in applications such as Steam.
+        We recommend that you run winecfg, add an override for dwrite in the
+        Libraries tab, and edit the override mode to "disable". See:
+          https://bugs.winehq.org/show_bug.cgi?id=31374
+      EOS
+    end
 
     if build.with? "x11"
       s += <<-EOS.undent

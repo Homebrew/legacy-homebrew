@@ -116,6 +116,7 @@ class Checks
       "libntfs-3g.*.dylib", # NTFS-3G
       "libntfs.*.dylib", # NTFS-3G
       "libublio.*.dylib", # NTFS-3G
+      "libUFSDNTFS.dylib", # Paragon NTFS
     ]
 
     __check_stray_files "/usr/local/lib", "*.dylib", white_list, <<-EOS.undent
@@ -239,10 +240,10 @@ class Checks
   end
 
   def check_for_unsupported_osx
-    if !ARGV.homebrew_developer? && MacOS.version >= "10.11" then <<-EOS.undent
+    if !ARGV.homebrew_developer? && MacOS.version >= "10.12" then <<-EOS.undent
     You are using OS X #{MacOS.version}.
     We do not provide support for this pre-release version.
-    You may encounter build failures or other breakage.
+    You may encounter build failures or other breakages.
     EOS
     end
   end
@@ -258,8 +259,8 @@ class Checks
       end
     end
 
-    # TODO: remove when 10.11 is released
-    if MacOS.version >= "10.11"
+    # TODO: bump version when new OS is released
+    if MacOS.version >= "10.12"
       def check_xcode_up_to_date
         if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
           <<-EOS.undent
@@ -424,10 +425,18 @@ class Checks
     __check_subdir_access "share/man"
   end
 
+  def check_access_homebrew_repository
+    unless HOMEBREW_REPOSITORY.writable_real? then <<-EOS.undent
+      The #{HOMEBREW_REPOSITORY} is not writable.
+      You should probably `chown` #{HOMEBREW_REPOSITORY}
+    EOS
+    end
+  end
+
   def check_access_usr_local
     return unless HOMEBREW_PREFIX.to_s == "/usr/local"
 
-    unless File.writable_real?("/usr/local") then <<-EOS.undent
+    unless HOMEBREW_PREFIX.writable_real? then <<-EOS.undent
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
@@ -435,6 +444,7 @@ class Checks
 
     You should probably change the ownership and permissions of /usr/local
     back to your user account.
+      sudo chown -R $(whoami):admin /usr/local
     EOS
     end
   end
@@ -570,6 +580,19 @@ class Checks
       You should change it to the correct path:
         sudo xcode-select -switch #{path}
     EOS
+    end
+  end
+
+  # Xcode 7 lacking the 10.10 SDK is forcing sysroot to be declared
+  # nil on 10.10 & breaking compiles. CLT is workaround.
+  def check_sdk_path_not_nil_yosemite
+    if MacOS.version == :yosemite && !MacOS::CLT.installed? && MacOS::Xcode.installed? && MacOS.sdk_path.nil?
+      <<-EOS.undent
+      Xcode 7 lacks the 10.10 SDK which can cause some builds to fail.
+      We recommend installing the Command Line Tools with:
+        xcode-select --install
+      to resolve this issue.
+     EOS
     end
   end
 
@@ -1269,14 +1292,14 @@ module Homebrew
       end
       unless out.nil? || out.empty?
         if first_warning
-          puts <<-EOS.undent
+          $stderr.puts <<-EOS.undent
             #{Tty.white}Please note that these warnings are just used to help the Homebrew maintainers
             with debugging if you file an issue. If everything you use Homebrew for is
             working fine: please don't worry and just ignore them. Thanks!#{Tty.reset}
           EOS
         end
 
-        puts
+        $stderr.puts
         opoo out
         Homebrew.failed = true
         first_warning = false

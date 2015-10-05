@@ -1,17 +1,25 @@
 class Asn1c < Formula
   desc "Compile ASN.1 specifications into C source code"
   homepage "http://lionet.info/asn1c/blog/"
-  url "http://lionet.info/soft/asn1c-0.9.26.tar.gz"
-  sha256 "6ee33727d6fb81be5cec20acdb73e87ce387a53a3e689124855be888672eb833"
+  url "https://github.com/vlm/asn1c/releases/download/v0.9.27/asn1c-0.9.27.tar.gz"
+  mirror "http://lionet.info/soft/asn1c-0.9.27.tar.gz"
+  sha256 "025f64e1c27211b36e181350b52fde34ad23f4330fff96b2563ed3fda7b0db9e"
 
   bottle do
-    revision 2
-    sha1 "13d1abf02f41bda023a710543c39cb4c49c1f8c8" => :yosemite
-    sha1 "b0cacad03fb2176aa56521f634785af7062020cb" => :mavericks
-    sha1 "705befca80634eaa5a1aa4cebe18a75a0d618b99" => :mountain_lion
+    sha256 "d3ea138d06691c9aa0589efb8d55bb908d79b65d3b6775e02f21cbabddee284c" => :yosemite
+    sha256 "8be35afe4531688fb5bfbe4212e989151c75523882404cb0f4362c0c558ba033" => :mavericks
+    sha256 "ea5675912a725aeef51f51c6a0754f174a1254aeaa581ffa491cc2c50df71310" => :mountain_lion
+  end
+
+  head do
+    url "https://github.com/vlm/asn1c.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   def install
+    system "autoreconf", "-iv" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"

@@ -1,13 +1,13 @@
 class Lldpd < Formula
   desc "Implementation library for LLDP"
   homepage "https://vincentbernat.github.io/lldpd/"
-  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.16.tar.gz"
-  sha256 "a0b85a5e685b8e7dad08b6f20ea79d8bec47d8dbf39daef419bd20ad7f37d63f"
+  url "http://media.luffy.cx/files/lldpd/lldpd-0.7.17.tar.gz"
+  sha256 "6b50b8aa47d1424a93ba3df55af26da41f7d5718db8d25e99291c4a6cd09c20e"
 
   bottle do
-    sha256 "437aee53ffb9e71b91c2f53316fa0df319f2927b29e0c5cc3b3ee7b3141ae7c4" => :yosemite
-    sha256 "8425d6857f0d9161f61d3c31e55d9c7c761c4a72bb37da8d94fd6ee518fda865" => :mavericks
-    sha256 "b77527b4056776a1218ce5f4e97ee611a748112912b5c50a989853eabd4410b9" => :mountain_lion
+    sha256 "16b4fdd519466b561ff5034ba379d6be062a2a6dd1487576d58f677150812543" => :el_capitan
+    sha256 "e96a160dc5279dd7a04081e6579641d0c767b74b49b5dafc1651f693082c484e" => :yosemite
+    sha256 "fc242d9b594d05c26e55fb64f3468273a50a0ed64b13530948667a68f01f5879" => :mavericks
   end
 
   option "with-snmp", "Build SNMP subagent support"
@@ -21,17 +21,19 @@ class Lldpd < Formula
 
   def install
     readline = Formula["readline"]
-    args = ["--prefix=#{prefix}",
-            "--sysconfdir=#{etc}",
-            "--localstatedir=#{var}",
-            "--with-xml",
-            "--with-readline",
-            "--with-privsep-chroot=/var/empty",
-            "--with-privsep-user=nobody",
-            "--with-privsep-group=nogroup",
-            "--with-launchddaemonsdir=no",
-            "CPPFLAGS=-I#{readline.include} -DRONLY=1",
-            "LDFLAGS=-L#{readline.lib}"]
+    args = [
+      "--prefix=#{prefix}",
+      "--sysconfdir=#{etc}",
+      "--localstatedir=#{var}",
+      "--with-xml",
+      "--with-readline",
+      "--with-privsep-chroot=/var/empty",
+      "--with-privsep-user=nobody",
+      "--with-privsep-group=nogroup",
+      "--with-launchddaemonsdir=no",
+      "CPPFLAGS=-I#{readline.include} -DRONLY=1",
+      "LDFLAGS=-L#{readline.lib}",
+    ]
     args << (build.with?("snmp") ? "--with-snmp" : "--without-snmp")
     args << (build.with?("json") ? "--with-json" : "--without-json")
 

@@ -1,14 +1,14 @@
 class GnomeThemesStandard < Formula
   desc "Default themes for the GNOME desktop environment"
   homepage "https://git.gnome.org/browse/gnome-themes-standard/"
-  url "https://download.gnome.org/sources/gnome-themes-standard/3.16/gnome-themes-standard-3.16.2.tar.xz"
-  sha256 "59eb79a59d44b5cd8daa8de1e7559fb5186503dcd78e47d0b72cb896d8654b9f"
+  url "https://download.gnome.org/sources/gnome-themes-standard/3.18/gnome-themes-standard-3.18.0.tar.xz"
+  sha256 "e646eb04c225282b7df7fff65741adaad4cf9ed2c12616b7310e7edd27d2bacb"
 
   bottle do
     cellar :any
-    sha256 "7336f11f7ae9aaba343fa59a6be45c75b52faae6c4345c124d853a5cfd37e3b3" => :yosemite
-    sha256 "6f229fa6ef6e3b30dc5073adecd94dc3ad9974b784685e82d8506f9546ddd074" => :mavericks
-    sha256 "ebcafeb59a4889d36e3828c7cb803fdee586f5912f779b6b9c74ee1289e9bdb7" => :mountain_lion
+    sha256 "fdd2ceb4074c51b300a9777d54d5eb6b2d37e1dc0b7f4bc70c8215bf042bfa0b" => :el_capitan
+    sha256 "594a1b8339120e31d0575234b0e9071daec6457a28c7d0d87ec8548311a0d64d" => :yosemite
+    sha256 "adcb641a47869ea2f41c6d5fd277c39496c8203256efa92fc1d8810802a693ed" => :mavericks
   end
 
   depends_on "pkg-config" => :build

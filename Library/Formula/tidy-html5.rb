@@ -6,6 +6,7 @@ class TidyHtml5 < Formula
 
   bottle do
     cellar :any
+    sha256 "ab111e194ae6477d4beb073df1a24db04121e2ffcc71333d9063f8b9d1846de8" => :el_capitan
     sha256 "d09a8455b378befb6ea26ab7bb1589c05d515b8a80351c6d588e321cc67fef4e" => :yosemite
     sha256 "38fe8f84a44ecd2631072d8bc0827d16538db5e3b6afcd927cca8de8c7f9e3c0" => :mavericks
     sha256 "aa6f64206e01fb23a0c4a2b99161df18d36339090a43b547dbd8c3ce86a5dfda" => :mountain_lion

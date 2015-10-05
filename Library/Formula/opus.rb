@@ -6,6 +6,7 @@ class Opus < Formula
 
   bottle do
     cellar :any
+    sha256 "c6bd7005b94ea672d5f78ea295ea53e8a2c46d1dfb10b7c3ae4a396ea34939f6" => :el_capitan
     sha1 "5fb89890cfc8c254a6f13f9657a66da385887b2b" => :yosemite
     sha1 "8ac2e93276b0df2f69c01d0b727fbff57a637e9e" => :mavericks
     sha1 "a7e6ed2455861c41e021fec280b6fa28462341a2" => :mountain_lion

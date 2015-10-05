@@ -1,14 +1,14 @@
 class Zbackup < Formula
   desc "Globally-deduplicating backup tool (based on ideas in rsync)"
   homepage "http://zbackup.org"
-  url "https://github.com/zbackup/zbackup/archive/1.4.3.tar.gz"
-  sha256 "7bb027d34b98ae2c5aa5066177ba7a1542c786e16e52d47dc3c29bb326b1cd4a"
+  url "https://github.com/zbackup/zbackup/archive/1.4.4.tar.gz"
+  sha256 "efccccd2a045da91576c591968374379da1dc4ca2e3dec4d3f8f12628fa29a85"
 
   bottle do
     cellar :any
-    sha256 "53372b721ff3c84c47265572a9f41eb46c3a348e5a4351e1bf7c694a1d730430" => :yosemite
-    sha256 "b011984aba098690937256105294b867baa2ee13f431be6340c26b56fd796565" => :mavericks
-    sha256 "e71b3082ef5f7ebd00e7571d07de8624945124794074cb6d5335ce9de8b7c8c4" => :mountain_lion
+    sha256 "890f726ccbbf70315eefc7274e427e4c86a0fa1816611a906403dab27863c2c2" => :el_capitan
+    sha256 "31810ae9ab799eaa715815973d64229f29f6847e9f7608d475c1c1c63f4988e4" => :yosemite
+    sha256 "5f98bc19b226d88e2cd3e68edc9286779fa082251d0a587d5d5ffb6210b43133" => :mavericks
   end
 
   depends_on "cmake" => :build

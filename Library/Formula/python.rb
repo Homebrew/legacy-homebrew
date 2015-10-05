@@ -7,11 +7,10 @@ class Python < Formula
   revision 2
 
   bottle do
-    revision 1
-    sha256 "2d3c8c00a73c02b9a04f26d0d5593345a9a6b684f63e12d6275b852ed68d289a" => :el_capitan
-    sha256 "ac383ea391d1de31b7e5a1491e1afe0c9163bdc792518fe75d14fe7392f754a0" => :yosemite
-    sha256 "5729d27d9c232386d686732c8fb89f20235abaebb9315da6d438e44e05f04c9a" => :mavericks
-    sha256 "c359a92945b76ccf6e7e3ee3711befcb92138016e44f68351cedd984e5949eeb" => :mountain_lion
+    revision 3
+    sha256 "16b0c9e4b255e90f022a1dcf8cf7247bb52667d4240dd25d82787d594e4860b4" => :el_capitan
+    sha256 "b406c0ee81765195a8bc44ceb88ae155390cc388680a0518c597f1a9278520c9" => :yosemite
+    sha256 "2e717460179c72b61ab70f4df401fa5bc7e34a21403754f3397d0e34215ddc01" => :mavericks
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -47,8 +46,8 @@ class Python < Formula
   end
 
   resource "wheel" do
-    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.24.0.tar.gz"
-    sha256 "ef832abfedea7ed86b6eae7400128f88053a1da81a37c00613b1279544d585aa"
+    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.26.0.tar.gz"
+    sha256 "eaad353805c180a47545a256e6508835b65a8e830ba1093ed8162f19a50a530c"
   end
 
   # Patch for pyport.h macro issue
@@ -62,6 +61,14 @@ class Python < Formula
   # Patch to disable the search for Tk.framework, since Homebrew's Tk is
   # a plain unix build. Remove `-lX11`, too because our Tk is "AquaTk".
   patch :DATA if build.with? "tcl-tk"
+
+  # Fix extension module builds against Xcode 7 SDKs
+  # https://github.com/Homebrew/homebrew/issues/41085
+  # https://bugs.python.org/issue25136
+  patch do
+    url "https://bugs.python.org/file40479/xcode-stubs-2.7.patch"
+    sha256 "86714b750c887065952cd556f4d23246edf3124384f579356c8e377bc6ff2f83"
+  end
 
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/2.7/lib/python2.7"

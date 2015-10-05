@@ -5,6 +5,7 @@ class Calc < Formula
   sha256 "a0e7b47af38330f188970998c8e5039134dadf6f2e3f2c00d7efdae272a4338d"
 
   bottle do
+    sha256 "f68eb0e031534c68f3fb1c2c1d53a90c343f281b81f998cf4bfc9745a0b8d306" => :el_capitan
     sha1 "9d99ec472782f23cd5cd05a215cb3b8418b28032" => :yosemite
     sha1 "23393e359956ed3b1c2717de019e5c803702273c" => :mavericks
     sha1 "2eefd32770ca966b3c604f795af45a9717d15a13" => :mountain_lion

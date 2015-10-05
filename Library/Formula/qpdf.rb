@@ -5,9 +5,11 @@ class Qpdf < Formula
   sha256 "d5164bdad3afc381568dbe8e1509a4a6a911d4d077f1fc20b9866ef8fad901d3"
 
   bottle do
-    sha256 "28e4e0e21d2de2e45dfb38afb53968f840b01480459590b2026c1c63803d5226" => :yosemite
-    sha256 "6439a662091505b0ba31e0f5c95a676ce934c758ea00284006b092b954a3955b" => :mavericks
-    sha256 "424d315f98dd4276884b66b3135fc04ee394a3235ae17cf65d4c596aa61f2506" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "639b932db33ce4c284c3f3af0dd2d6d8c71a1715308bfe5a0ba47ea2cca92760" => :el_capitan
+    sha256 "607067e2cc684611fe344a1d1bfb29f5d30aed55c8462968e98591fe19e02f78" => :yosemite
+    sha256 "927c353822d0ae21b0d822931121c4ff36a2a0e2905dd04075c60de4d0b023bf" => :mavericks
   end
 
   depends_on "pcre"

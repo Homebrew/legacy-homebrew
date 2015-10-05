@@ -1,25 +1,24 @@
 class Tomcat < Formula
   desc "Implementation of Java Servlet and JavaServer Pages"
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz"
-  sha256 "9f11588f0ff767adde63cd6919462c0c2742897560f4b367a0ffffdd8b1ed382"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.27/bin/apache-tomcat-8.0.27.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.27/bin/apache-tomcat-8.0.27.tar.gz"
+  sha256 "8ae7885596feb61d9f8944f928bcd6af7c799de33034fb7435c9991b34aa729a"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f596c50bc9ca7e1fc04785377feab5a1f7a89a79dc7ea7e89191e71879e2ce0d" => :el_capitan
-    sha256 "0451222ba2341cba4152c5007967b536a6bf536c9cdd304ab9c2474dffe7b3b7" => :yosemite
-    sha256 "9258495d4ced771aa184ac7811df80f9932db61cda28ba811e595b8c8167ccbc" => :mavericks
-    sha256 "a1e6d8ed630f87bb5861f3fb0fadd97dc824d55fa3d689483779c14b3e2c7cfa" => :mountain_lion
+    sha256 "9527e81cd1c5dce42630c37a7e2288631ae51da5b92f217267a9e45071631725" => :el_capitan
+    sha256 "b4609e5691ffb81883f1150db5ea422779bd6dc6eeb597b3a7b0e6c18742cce8" => :yosemite
+    sha256 "401df2c611200e8f2d2d15775676f2a8f187a5c9b5d441d5bf4a9125773acbd0" => :mavericks
   end
 
   option "with-fulldocs", "Install full documentation locally"
 
   resource "fulldocs" do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26-fulldocs.tar.gz"
-    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26-fulldocs.tar.gz"
-    version "8.0.26"
-    sha256 "813513d61e6def5ccf01adc95bf9d28594fce71ff32f5e23dc1482c7ec2f129b"
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.27/bin/apache-tomcat-8.0.27-fulldocs.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.27/bin/apache-tomcat-8.0.27-fulldocs.tar.gz"
+    version "8.0.27"
+    sha256 "4707b2c2f8c5b241001f8909bb52791d77aee1a481abd4c0065283477d75bee9"
   end
 
   def install

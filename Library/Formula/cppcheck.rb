@@ -7,6 +7,7 @@ class Cppcheck < Formula
 
   bottle do
     revision 1
+    sha256 "7fa6bf8c61c9ff88a5cdf259693287427aa0885a1f1e30ce5d85cf52eef6ec47" => :el_capitan
     sha256 "6c4b24741d60c941f2969afd39c1a5e1290263f7178ad78055a2dbbb307cb100" => :yosemite
     sha256 "460d77d134fb009c9ac20ab9ce521251fd57c80a1ca7b77b76cab06109b89dad" => :mavericks
     sha256 "595d3c1689fb381be84f16a41555eade205aee84e05e340ccfd18bcbc96cf4ef" => :mountain_lion

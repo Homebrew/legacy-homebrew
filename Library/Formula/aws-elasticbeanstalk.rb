@@ -1,14 +1,14 @@
 class AwsElasticbeanstalk < Formula
   desc "Client for Amazon Elastic Beanstalk web service"
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.5.2.tar.gz"
-  sha256 "a753dbff9a9888b50ba13b221e6e8126e4697a1d61ba871e37c4ac782686da5f"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.5.4.tar.gz"
+  sha256 "9f5c7ff42b58b3d470851e9494051c1788e5b891ef9296c13c29a91d1c468aa2"
 
   bottle do
-    cellar :any
-    sha256 "ec44af8ab9fc51446473ce3fa5edcbd5716499f9289835e4e1cc5d2641dd4dbf" => :yosemite
-    sha256 "f84bf6bf4eb725d9cf9e426ff911d4104452ad27b822108876f731e5bed976d1" => :mavericks
-    sha256 "2446bac9c61c10df947cef2ff570742517518adde5a96c31ca8652136b651c3d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3802c65fbc652bf9811e4d36871e07e85f6b16163bed7b124b6aa229a52160d1" => :el_capitan
+    sha256 "df2e583d8821756afc58c28741e51dfbd4da8278c01c36d64b82c5ea3e02867b" => :yosemite
+    sha256 "36333247b196e12527bfaced1f45b18d30e2ad7582f95f4e16c5070ea42284c6" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -49,8 +49,8 @@ class AwsElasticbeanstalk < Formula
   end
 
   resource "websocket-client" do
-    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.30.0.tar.gz"
-    sha256 "fab17bc3eb450a28c6edb7a23442a01353712f29240ea76cc9409571e58ed3e5"
+    url "https://pypi.python.org/packages/source/w/websocket-client/websocket_client-0.32.0.tar.gz"
+    sha256 "cb3ab95617ed2098d24723e3ad04ed06c4fde661400b96daa1859af965bfe040"
   end
 
   resource "docker-py" do
@@ -59,8 +59,8 @@ class AwsElasticbeanstalk < Formula
   end
 
   resource "dockerpty" do
-    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.3.tar.gz"
-    sha256 "5b9bd23e4a5f0ad28ea702adeebc1bb8b153c4a19526f230792b0af57f7eb3be"
+    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.4.tar.gz"
+    sha256 "a51044cc49089a2408fdf6769a63eebe0b16d91f34716ecee681984446ce467d"
   end
 
   resource "python-dateutil" do
@@ -89,13 +89,13 @@ class AwsElasticbeanstalk < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.1.8.tar.gz"
-    sha256 "636d6d64537d5e2f3345587366533a1cc503b50a7d295998bffc89ecc3555f63"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.2.4.tar.gz"
+    sha256 "6330dec53831e4f961e2503a4d9bfe9e790e1e7ac716f8edc07f1b37ff2765da"
   end
 
   resource "wcwidth" do
-    url "https://pypi.python.org/packages/source/w/wcwidth/wcwidth-0.1.4.tar.gz"
-    sha256 "906d3123045d77027b49fe912458e1a1e1d6ca1a51558a4bd9168d143b129d2b"
+    url "https://pypi.python.org/packages/source/w/wcwidth/wcwidth-0.1.5.tar.gz"
+    sha256 "66c7ce3199c87833aaaa1fe1241b63261ce53c1062597c189a16a54713e0919d"
   end
 
   resource "docutils" do

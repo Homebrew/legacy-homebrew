@@ -5,10 +5,11 @@ class Libftdi < Formula
   sha256 "c0b1af1a13e2c6682a1d8041e5b164a1e0d90267cd378bb51e059bd62f821e21"
 
   bottle do
-    revision 1
-    sha1 "23a46b49c327ff94e990f6677f343513f86cce45" => :yosemite
-    sha1 "f79c80ca34c4108a8d8b95e0814ee2316110ba1d" => :mavericks
-    sha1 "c0f8000f19d4910525fec572944115823e21bdfc" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "bd138350b6b994aad13e24eb73a90d436a43760484e84b859a517b7dac022e91" => :el_capitan
+    sha256 "706627fb6c9e6a48b891b1bb8fd37aaa8182ea6c711567fca57c552e201e2c20" => :yosemite
+    sha256 "937b569282e624dedab4a56792313cdaf1747844c04a6ad24191d7ff4b5f30d9" => :mavericks
   end
 
   depends_on "cmake" => :build

@@ -1,14 +1,14 @@
 class Chapel < Formula
   desc "Emerging programming language designed for parallel computing"
   homepage "http://chapel.cray.com/"
-  url "https://github.com/chapel-lang/chapel/releases/download/1.11.0/chapel-1.11.0.tar.gz"
-  sha256 "307b156d9cf0968bad90a2f7225366d90f6a5d948eb42be1d33f0efc6979949b"
+  url "https://github.com/chapel-lang/chapel/releases/download/1.12.0/chapel-1.12.0.tar.gz"
+  sha256 "d5ae943497566a5d87c4f56196d77e6051d0fdcea599fd86ab69732ed62456ae"
   head "https://github.com/chapel-lang/chapel.git"
 
   bottle do
-    sha256 "364aabb29b63231fb16fd528232a60685fc6ee49358d0f8623eaccd6356d666e" => :yosemite
-    sha256 "7b600c3db7fb0fcccaed605cf112bf6331930d9a1fb29cf9b522723b8db0e46c" => :mavericks
-    sha256 "dd6605f94bad0dfbc342657d2dc43e037a482c2237c7f1c6aad3a1fa74df4236" => :mountain_lion
+    sha256 "d82ab96b382315f8797b79afaf689c54a4deae00493005b5b72effb5f7f977e6" => :el_capitan
+    sha256 "050dafe7ce76513843f42a77ac2b3c3d0cb1f650fbb1539129f3581474fcac00" => :yosemite
+    sha256 "7544469b3aa7bd1435e206e9c7a84e47def08a1ca970eaee628b193a875fea37" => :mavericks
   end
 
   def install

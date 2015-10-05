@@ -6,6 +6,7 @@ class Gearman < Formula
 
   bottle do
     revision 1
+    sha256 "8dfadc6df40598f71f14b315f8c49cb1152490bc95ce6199042ec0c829356216" => :el_capitan
     sha256 "a3eaa2cb9241381c6679fe9f9547c0477ba0f1b860f97a405b4f4d8d8b0d7c81" => :yosemite
     sha256 "a843fcbaf51130d36e86362fd832444de1815c1e546b3590b257eada0e6c6597" => :mavericks
     sha256 "0637f412fcb5d0c324c9d63120bd8ea4809d826e729d1c357438c690f95ae954" => :mountain_lion

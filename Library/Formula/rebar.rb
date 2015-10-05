@@ -7,7 +7,8 @@ class Rebar < Formula
   head "https://github.com/rebar/rebar.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "6ba6e7a3c79e02256012e28e6504ddf1eb8acccbb0b7d411ff4d9b9846486a2c" => :el_capitan
     sha256 "e2839ba7bfd37e0fdb4f91ed07990f058252b04c403758852c5ab9269ba7b452" => :yosemite
     sha256 "c6fce9414e95e7264570cbf5c1962d7b7a6c5d8d0342732ab83108ca9921cab0" => :mavericks
     sha256 "4cdc93fcbd623ecd607b6eb7cbccbe74512768d869b66360e54cf028b866dfa0" => :mountain_lion

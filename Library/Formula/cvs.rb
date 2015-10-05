@@ -10,8 +10,9 @@ class Cvs < Formula
   sha256 "78853613b9a6873a30e1cc2417f738c330e75f887afdaf7b3d0800cb19ca515e"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "c454f576c58dbabc3d3ce4af4974dfdcf47c4232af3de9275f171a93dbdf264a" => :el_capitan
     sha1 "054097e7fccf4a8ba60b9d1c364c411a6cd5de3c" => :yosemite
     sha1 "8e84ffd198414118da1ffb18f9d18a885e68d60f" => :mavericks
     sha1 "dea18dfba299690f2d8ed5dfc2205323207bc856" => :mountain_lion

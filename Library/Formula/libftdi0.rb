@@ -7,6 +7,7 @@ class Libftdi0 < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "a533682f1a6c494e40f2e4695c3b075a613ade927dcd486859646619fe799c8f" => :el_capitan
     sha1 "48a4609d612c41a79a57ceee49b24a119173559f" => :yosemite
     sha1 "92073c13614ddbed4f3d5223105e2d25abe115d9" => :mavericks
     sha1 "39d3653f05b71220ed1977abf6bdb37c0e00fed5" => :mountain_lion

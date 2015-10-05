@@ -9,6 +9,7 @@ class Newsbeuter < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "15f454fa5f0c5cb2ee6b3c54fd312de8a1dbb7e38c5c90bbcf27bffd2536afaa" => :el_capitan
     sha1 "6c509202d95792b56d6c14c335cf230a297ac6d0" => :yosemite
     sha1 "8521be744f61fa39d95480625562ed12ba295656" => :mavericks
     sha1 "973c64d2807a77163ee48c72da89748c75b0e880" => :mountain_lion

@@ -11,6 +11,7 @@ class Netpbm < Formula
   bottle do
     cellar :any
     revision 2
+    sha256 "ad369fbec6067be0355b02aa02f5b542224cbf9835974de7d0d36ea2a1966e2f" => :el_capitan
     sha1 "1f842e7b6c2632a80401751a5975f3379af6a10e" => :yosemite
     sha1 "b2ee77e9829b27ef530c7ebc50043e4d5bc23b8e" => :mavericks
     sha1 "a036886a7d91d2658ac1dd76ed6bc9cc246e3ec6" => :mountain_lion
@@ -25,7 +26,7 @@ class Netpbm < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    system "cp", "config.mk.in", "config.mk"
+    cp "config.mk.in", "config.mk"
 
     inreplace "config.mk" do |s|
       s.remove_make_var! "CC"
@@ -61,5 +62,11 @@ class Netpbm < Formula
     end
 
     (bin/"doc.url").unlink
+  end
+
+  test do
+    system ("#{bin}/pngtopam #{test_fixtures("test.png")} -alphapam >> test.pam")
+    system "#{bin}/pamdice", "test.pam", "-outstem", "#{testpath}/testing"
+    assert File.exist?("testing_0_0.")
   end
 end

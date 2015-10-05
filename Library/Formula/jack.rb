@@ -13,6 +13,7 @@ class Jack < Formula
 
   bottle do
     revision 2
+    sha256 "b4c1720c1e79b3d9a71cc79906175b90f6e30a8c2704c94e3c941d288b5453cc" => :el_capitan
     sha1 "d81b70761532c0ab23e4ad05d1637a097a54013d" => :yosemite
     sha1 "76ccc2252a0fd976c6e90e3473c1e3013646e7b3" => :mavericks
     sha1 "31a06a65e0b68251172b1816df8c37bfdde7f5bd" => :mountain_lion

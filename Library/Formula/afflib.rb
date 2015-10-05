@@ -7,6 +7,7 @@ class Afflib < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "21d20fcfdbd03d0a933f931794fc95c7c7153ca6318b5ad29b5469918fdea538" => :el_capitan
     sha1 "ffa18bea26fe2bd43b75c4260e9daee1c295d7bd" => :yosemite
     sha1 "21a44d9b557104bc4d15418e96e75d2e296d46e5" => :mavericks
     sha1 "1f80ffa8d2b263ed7e2116613dfd2af50d000b82" => :mountain_lion

@@ -3,12 +3,12 @@ class Gtkx < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
   sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
-  revision 2
+  revision 3
 
   bottle do
-    sha256 "afac113e6701cf013e0235e0fd91fcfc6659bc75220ca03e408a7a0f38671bb9" => :yosemite
-    sha256 "e7daa89de1184b1edc71242fd65b9b608885ebe6c92f5f793af8a46ef5912b28" => :mavericks
-    sha256 "17dcc4df1082000447b968c831f657b5f1aa863f32b8397900a38feaa7147db0" => :mountain_lion
+    sha256 "c50b23ea76ad0379e43a44ac2520e2243c5b2f2aded21c7e82c36c20e6a90e1a" => :el_capitan
+    sha256 "72a95671b8b9ba6aaf3e8900f4af6bd9b0b0fcdd6621a200838d3e2622bc7a26" => :yosemite
+    sha256 "0754d744caed63c14ce80b5c3895679d1b93dad9832ca6105488eefa809bb7c1" => :mavericks
   end
 
   option "with-quartz-relocation", "Build with quartz relocation support"
@@ -33,6 +33,13 @@ class Gtkx < Formula
   patch do
     url "https://bug557780.bugzilla-attachments.gnome.org/attachment.cgi?id=306776"
     sha256 "4d7a1fe8d55174dc7f0be0016814668098d38bbec233b05a6c46180e96a159fc"
+  end
+
+  # Fix crash on OS X 10.11
+  # See: https://bugzilla.gnome.org/show_bug.cgi?id=753992
+  patch do
+    url "https://bug753992.bugzilla-attachments.gnome.org/attachment.cgi?id=312565"
+    sha256 "e2e8d5c236d4de7d5b5fd79a2e90861b281746132a3f96aca6ab0cb780926876"
   end
 
   def install

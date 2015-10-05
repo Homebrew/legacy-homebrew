@@ -6,7 +6,7 @@ module Homebrew
       taps = Tap
     else
       taps = ARGV.named.map do |name|
-        Tap.new(*tap_args(name))
+        Tap.fetch(*tap_args(name))
       end
     end
 

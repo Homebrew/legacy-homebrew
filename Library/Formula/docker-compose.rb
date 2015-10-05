@@ -1,16 +1,57 @@
-class Fig < Formula
+class DockerCompose < Formula
   desc "Isolated development environments using Docker"
   homepage "https://docs.docker.com/compose/"
-  url "https://github.com/docker/compose/archive/1.4.0.tar.gz"
-  sha256 "96875473fdb1cce1d63c4bc21c2bc9bf620820fb3bdf8c590618965733418115"
+
+  stable do
+    url "https://github.com/docker/compose/archive/1.4.2.tar.gz"
+    sha256 "cc11f8281f0cf99fcb5502edb6e0d49caca26f4a11570b8ad68943bd3a97dd5c"
+
+    resource "docker-py" do
+      url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
+      sha256 "743f3fc78f6159d14ac603def6470cf1b4edefc04de8b1ad8c349b380b503f50"
+    end
+
+    resource "requests" do
+      url "https://pypi.python.org/packages/source/r/requests/requests-2.6.1.tar.gz"
+      sha256 "490b111c824d64b84797a899a4c22618bbc45323ac24a0a0bb4b73a8758e943c"
+    end
+  end
 
   bottle do
     cellar :any
     revision 1
-    sha256 "bf5057ab07fa8c438e5059a828f5bb92d162864a541ad9bef3ea4515b4075ba7" => :el_capitan
-    sha256 "28544d75a4a06daa19ddc7d603f62205d9d80397e0388d211909801b34120d1c" => :yosemite
-    sha256 "32a613824d47edc1fcc30051707c5f4d3ca1aabae50bc129c730f4dfafcf4f82" => :mavericks
-    sha256 "353e54687dae82223766c0ef588cdd6b9c979f61fb90670e8ccede843f2a3926" => :mountain_lion
+    sha256 "4d7c22ead5c3f11ab69b6b11f2592730c93e46d758a314c37a414591edce9271" => :el_capitan
+    sha256 "d191a2c85ee7856fd43ca76b42dea22d3365e07aafc9d72eb7147dc0d5a94a41" => :yosemite
+    sha256 "281f74269ab30d37c7fcbabce41a07b49c370f2db4a778c8d06249c19aac1499" => :mavericks
+  end
+
+  head do
+    url "https://github.com/docker/compose.git"
+
+    resource "docker-py" do
+      url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.4.0.tar.gz"
+      sha256 "933bd55ec332adfe69b2825d81e7d238f51d970d5b16f63a14199789cd04c7b8"
+    end
+
+    resource "requests" do
+      url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
+      sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    end
+
+    resource "enum34" do
+      url "https://pypi.python.org/packages/source/e/enum34/enum34-1.0.4.tar.gz"
+      sha256 "d3c19f26a6a34629c18c775f59dfc5dd595764c722b57a2da56ebfb69b94e447"
+    end
+
+    resource "jsonschema" do
+      url "https://pypi.python.org/packages/source/j/jsonschema/jsonschema-2.5.1.tar.gz"
+      sha256 "36673ac378feed3daa5956276a829699056523d7961027911f064b52255ead41"
+    end
+
+    resource "functools32" do
+      url "https://pypi.python.org/packages/source/f/functools32/functools32-3.2.3-2.tar.gz"
+      sha256 "f6253dfbe0538ad2e387bd8fdfd9293c925d63553f5813c4e587745416501e6d"
+    end
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -20,11 +61,6 @@ class Fig < Formula
   # for example, they want to compile Docker manually
   depends_on "docker" => :recommended
   depends_on "docker-machine" => :recommended
-
-  resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
-    sha256 "743f3fc78f6159d14ac603def6470cf1b4edefc04de8b1ad8c349b380b503f50"
-  end
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
@@ -49,11 +85,6 @@ class Fig < Formula
   resource "docopt" do
     url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
     sha256 "49b3a825280bd66b3aa83585ef59c4a8c82f2c8a522dbe754a8bc8d08c85c491"
-  end
-
-  resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.1.tar.gz"
-    sha256 "490b111c824d64b84797a899a4c22618bbc45323ac24a0a0bb4b73a8758e943c"
   end
 
   resource "websocket-client" do
@@ -82,7 +113,6 @@ class Fig < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-    ln_s bin/"docker-compose", bin/"fig"
   end
 
   test do
