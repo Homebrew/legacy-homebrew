@@ -3,6 +3,7 @@ class Eigen < Formula
   homepage "http://eigen.tuxfamily.org/"
   url "https://bitbucket.org/eigen/eigen/get/3.2.6.tar.bz2"
   sha256 "8a3352f9a5361fe90e451a7305fb1896fc7f771dc16cc0edd8e6b157f52c343e"
+  head "https://bitbucket.org/eigen/eigen", :using => :hg
 
   bottle do
     cellar :any_skip_relocation
@@ -11,11 +12,9 @@ class Eigen < Formula
     sha256 "964552d6a1463744bbdf26de9be97836f84b4f6fcf007559f0cfd913c0873847" => :mavericks
   end
 
-  head "https://bitbucket.org/eigen/eigen", :using => :hg
+  option :universal
 
   depends_on "cmake" => :build
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?
