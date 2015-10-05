@@ -14,6 +14,10 @@ class Uwsgi < Formula
     sha256 "82e388d191e58db251720c9b54cafc7f8d09de8924d400971cb5cb2652a18e33" => :mountain_lion
   end
 
+  option "with-java", "Compile with Java support"
+  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
+  option "with-ruby", "Compile with Ruby support"
+
   depends_on "pkg-config" => :build
   depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
@@ -43,10 +47,6 @@ class Uwsgi < Formula
   depends_on "v8" => :optional
   depends_on "zeromq" => :optional
 
-  option "with-java", "Compile with Java support"
-  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
-  option "with-ruby", "Compile with Ruby support"
-
   def install
     ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
 
@@ -62,7 +62,7 @@ class Uwsgi < Formula
       embedded_plugins = null
     EOS
 
-    system "python", "uwsgiconfig.py", "--build", "brew"
+    system "python", "uwsgiconfig.py", "--verbose", "--build", "brew"
 
     plugins = ["airbrake", "alarm_curl", "alarm_speech", "asyncio", "cache",
                "carbon", "cgi", "cheaper_backlog2", "cheaper_busyness",
@@ -79,7 +79,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper", "ugreen", "webdav", "zergpool"]
+               "transformation_toupper", "ugreen", "webdav", "zergpool",]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"
