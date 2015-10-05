@@ -23,19 +23,19 @@ class Cpmtools < Formula
   test do
     # make a disk image
     image = testpath/"disk.cpm"
-    system "#{bin}/mkfs.cpm -f ibm-3740 #{image}"
+    system "#{bin}/mkfs.cpm", "-f", "ibm-3740", image
 
     # copy a file into the disk image
     src = testpath/"foo"
     src.write "a" * 128
-    system "#{bin}/cpmcp -f ibm-3740 #{image} #{src} 0:foo"
+    system "#{bin}/cpmcp", "-f", "ibm-3740", image, src, "0:foo"
 
     # check for the file in the cp/m directory
-    assert shell_output("#{bin}/cpmls -f ibm-3740 #{image}").include?("foo")
+    assert_match "foo", shell_output("#{bin}/cpmls -f ibm-3740 #{image}")
 
     # copy the file back out of the image
     dest = testpath/"bar"
-    system "#{bin}/cpmcp -f ibm-3740 #{image} 0:foo #{dest}"
+    system "#{bin}/cpmcp", "-f", "ibm-3740", image, "0:foo", dest
     assert_equal src.read, dest.read
   end
 end

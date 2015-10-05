@@ -1,5 +1,3 @@
-require "formula"
-
 class Cronolog < Formula
   desc "Web log rotation"
   homepage "https://web.archive.org/web/20140209202032/http://cronolog.org/"
@@ -18,6 +16,6 @@ class Cronolog < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--infodir=#{info}"
-    system "make install"
+    system "make", "install"
   end
 end
