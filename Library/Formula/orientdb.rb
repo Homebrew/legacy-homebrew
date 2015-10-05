@@ -1,7 +1,7 @@
 class Orientdb < Formula
   desc "Graph database"
-  homepage "http://orientdb.com"
-  url "http://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.1.2.tar.gz&os=mac"
+  homepage "https://orientdb.com"
+  url "https://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.1.2.tar.gz&os=mac"
   version "2.1.2"
   sha256 "d5e5f64f0d83bac9bc98b03aa93ae776b34b7696a4554550748e2559385a222c"
 
