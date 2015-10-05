@@ -34,7 +34,7 @@ class Darcs < Formula
     end
     system "darcs", "get", "my_repo", "my_repo_clone"
     Dir.chdir "my_repo_clone" do
-      assert (Pathname.pwd/"foo").read.include? "hello homebrew!"
+      assert_match "hello homebrew!", (Pathname.pwd/"foo").read
     end
   end
 end
