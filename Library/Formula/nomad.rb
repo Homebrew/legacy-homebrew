@@ -9,6 +9,13 @@ class Nomad < Formula
 
   head "https://github.com/hashicorp/nomad.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "59e7bc4a26dde1329cfa4a9f6402cda6581ebecf7df3ac272a3a8f0a7feafcf7" => :el_capitan
+    sha256 "82038862d6930db7cfebd3caddfc49d4d212670dc6e6f4bd9e3503ba17e86bc7" => :yosemite
+    sha256 "b7337b785c022cb651cd85d5cecdc16398a0bd2e8cc87edf42d5dc61ad6dbb63" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/shirou/gopsutil" do
