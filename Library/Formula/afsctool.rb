@@ -7,7 +7,8 @@ class Afsctool < Formula
 
   def install
     cd "afsctool_34" do
-      system "#{ENV.cc} #{ENV.cflags} -lz -framework CoreServices -o afsctool afsctool.c"
+      system ENV.cc, ENV.cflags, "-lz",
+         "-framework", "CoreServices", "-o", "afsctool", "afsctool.c"
       bin.install "afsctool"
     end
   end
