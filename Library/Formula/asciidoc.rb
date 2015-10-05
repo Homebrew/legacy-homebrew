@@ -18,9 +18,9 @@ class Asciidoc < Formula
     depends_on "autoconf" => :build
   end
 
-  depends_on "docbook"
-
   option "with-docbook-xsl", "Install DTDs to generate manpages"
+
+  depends_on "docbook"
   depends_on "docbook-xsl" => :optional
 
   def install
@@ -49,6 +49,6 @@ class Asciidoc < Formula
   test do
     (testpath/"test.txt").write("== Hello World!")
     system "#{bin}/asciidoc", "-b", "html5", "-o", "test.html", "test.txt"
-    assert_match /\<h2 id="_hello_world"\>Hello World!\<\/h2\>/, File.read("test.html")
+    assert_match %r{\<h2 id="_hello_world"\>Hello World!\</h2\>}, File.read("test.html")
   end
 end

@@ -25,6 +25,6 @@ class Ascii < Formula
   end
 
   test do
-    assert shell_output(bin/"ascii 0x0a").include?("Official name: Line Feed")
+    assert_match "Official name: Line Feed", shell_output(bin/"ascii 0x0a")
   end
 end
