@@ -11,9 +11,9 @@ class Yafc < Formula
     sha256 "5f178c01235c5dd28bd359eb295a4a0aa848649c63a0a0386f43516d32b66bd2" => :mavericks
   end
 
+  depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "libssh" => :recommended
-  depends_on "pkg-config" => :build
 
   # Upstream commit to fix the sed flags for OSX in the bash-completion script
   patch do
@@ -28,10 +28,10 @@ class Yafc < Formula
   end
 
   def install
-    readline = Formula["readline"].opt_prefix
-
-    args = ["--prefix=#{prefix}",
-            "--with-readline=#{readline}",]
+    args = %W[
+      --prefix=#{prefix}
+      --with-readline=#{Formula["readline"].opt_prefix}
+    ]
     args << "--without-ssh" if build.without? "libssh"
 
     system "./configure", *args
