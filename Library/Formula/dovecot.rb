@@ -13,10 +13,10 @@ class Dovecot < Formula
     sha256 "54ed311a625d029291a644117a3a16c0d9b5ab1158c0ceffe229635ca3a62008" => :mountain_lion
   end
 
+  option "with-pam", "Build with PAM support"
+
   depends_on "openssl"
   depends_on "clucene" => :optional
-
-  option "with-pam", "Build with PAM support"
 
   def install
     args = %W[
@@ -34,7 +34,7 @@ class Dovecot < Formula
     args << "--with-lucene" if build.with? "clucene"
     args << "--with-pam" if build.with? "pam"
 
-    system "./configure",  *args
+    system "./configure", *args
     system "make", "install"
   end
 
