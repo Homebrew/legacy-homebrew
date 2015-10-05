@@ -1,9 +1,9 @@
 class Aqbanking < Formula
   desc "Generic online banking interface"
   homepage "http://www.aqbanking.de/"
-  head "http://devel.aqbanking.de/svn/aqbanking/trunk"
   url "http://www2.aquamaniac.de/sites/download/download.php?package=03&release=118&file=01&dummy=aqbanking-5.5.1.tar.gz"
   sha256 "238f17d27d86e0cef239479c4be152cb98f5be9d6b87fca38741d32e762faddf"
+  head "http://devel.aqbanking.de/svn/aqbanking/trunk"
 
   bottle do
     sha1 "285f830f8112289906fac106fc0e489aa13494f0" => :yosemite

@@ -5,8 +5,11 @@ class Apollo < Formula
   version "1.7.1"
   sha256 "74577339a1843995a5128d14c68b21fb8f229d80d8ce1341dd3134f250ab689d"
 
-  option "no-bdb", "Install without bdb store support"
-  option "no-mqtt", "Install without MQTT protocol support"
+  deprecated_option "no-bdb" => "without-bdb"
+  deprecated_option "no-mqtt" => "without-mqtt"
+
+  option "without-bdb", "Install without bdb store support"
+  option "without-mqtt", "Install without MQTT protocol support"
 
   # http://www.oracle.com/technetwork/database/berkeleydb/overview/index-093405.html
   resource "bdb-je" do
@@ -26,8 +29,8 @@ class Apollo < Formula
     prefix.install %w[docs examples]
     libexec.install Dir["*"]
 
-    (libexec/"lib").install resource("bdb-je") unless build.include? "no-bdb"
-    (libexec/"lib").install resource("mqtt") unless build.include? "no-mqtt"
+    (libexec/"lib").install resource("bdb-je") if build.with? "bdb"
+    (libexec/"lib").install resource("mqtt") if build.with? "mqtt"
 
     bin.write_exec_script libexec/"bin/apollo"
   end
