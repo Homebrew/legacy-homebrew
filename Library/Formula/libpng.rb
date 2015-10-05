@@ -28,6 +28,7 @@ class Libpng < Formula
 
   def install
     ENV.universal_binary if build.universal?
+    system "autoreconf", "--force", "--install" if head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
