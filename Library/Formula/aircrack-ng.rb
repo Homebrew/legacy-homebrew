@@ -25,7 +25,7 @@ class AircrackNg < Formula
     system "make", "prefix=#{prefix}", "mandir=#{man1}", "install"
   end
 
-  def caveats;  <<-EOS.undent
+  def caveats; <<-EOS.undent
     Run `airodump-ng-oui-update` install or update the Airodump-ng OUI file.
     EOS
   end
