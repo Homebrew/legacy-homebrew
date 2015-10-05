@@ -1,9 +1,9 @@
 class Blockhash < Formula
   desc "Perceptual image hash calculation tool"
   homepage "http://blockhash.io/"
-  head "https://github.com/commonsmachinery/blockhash.git"
   url "https://github.com/commonsmachinery/blockhash/archive/0.1.tar.gz"
   sha256 "aef300f39be2cbc1b508af15d7ddb5b851b671b27680d8b7ab1d043cc0369893"
+  head "https://github.com/commonsmachinery/blockhash.git"
 
   bottle do
     cellar :any
@@ -33,6 +33,6 @@ class Blockhash < Formula
     # for now
     # https://github.com/commonsmachinery/blockhash/pull/9
     result = pipe_output("#{bin}/blockhash #{testpath}/clipper_ship.jpg", nil, nil)
-    assert result.include? hash
+    assert_match hash, result
   end
 end
