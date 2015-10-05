@@ -111,7 +111,6 @@ class Llvm < Formula
   option "with-polly", "Build with the experimental Polly optimizer"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-sanitizers", "Enable Clang code sanitizers"
-  option "with-tests", "Run the basic regression test suite after the build"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
@@ -226,8 +225,6 @@ class Llvm < Formula
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
-      system "make", "check-all" if build.with?("tests") && build.with?("clang")
-      system "make", "test" if build.with?("tests") && build.with?("clang")
       system "make", "install"
     end
 
