@@ -23,7 +23,7 @@ class Flow < Formula
   end
 
   test do
-    system "#{bin}/flow init #{testpath}"
+    system "#{bin}/flow", "init", testpath
     (testpath/"test.js").write <<-EOS.undent
       /* @flow */
       var x: string = 123;
