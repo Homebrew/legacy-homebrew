@@ -42,6 +42,17 @@ class Mysql < Formula
     var/"mysql"
   end
 
+  if build.with? "memcached"
+    patch do
+      url "https://gist.githubusercontent.com/aw1621107/e96ca51d693f67ad1ec1/raw/0e0b6d9a61155cd5d5aa59671d3670166a9882bf/patch-innodb_memcached-daemon_memcached-include-memcached-util.h.diff"
+      sha256 "6d7d644621eabc49721d546887a7f6c9cc67f04785e86e608028913a2ca4a90a"
+    end
+    patch do
+      url "https://gist.githubusercontent.com/aw1621107/e96ca51d693f67ad1ec1/raw/0e0b6d9a61155cd5d5aa59671d3670166a9882bf/patch-configure.cmake.diff"
+      sha256 "07ceb1bd1ea199a643a1f97a217f1852b686b96f441cb8a2b508b2303f135e6a"
+    end
+  end
+
   def install
     # Don't hard-code the libtool path. See:
     # https://github.com/Homebrew/homebrew/issues/20185
