@@ -10,7 +10,7 @@ class Cdlabelgen < Formula
   end
 
   test do
-    system "#{bin}/cdlabelgen -c TestTitle --output-file testout.eps"
+    system "#{bin}/cdlabelgen", "-c", "TestTitle", "--output-file", "testout.eps"
     File.file?("testout.eps")
   end
 end

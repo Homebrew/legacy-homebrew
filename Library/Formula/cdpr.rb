@@ -6,7 +6,7 @@ class Cdpr < Formula
 
   def install
     # Makefile hardcodes gcc and other atrocities
-    system "#{ENV.cc} #{ENV.cflags} cdpr.c cdprs.c conffile.c #{ENV.ldflags} -lpcap -o cdpr"
+    system ENV.cc, ENV.cflags, "cdpr.c", "cdprs.c", "conffile.c", ENV.ldflags, "-lpcap", "-o", "cdpr"
     bin.install "cdpr"
   end
 

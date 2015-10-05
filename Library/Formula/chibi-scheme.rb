@@ -1,13 +1,12 @@
 class ChibiScheme < Formula
   desc "Small footprint Scheme for use as a C Extension Language"
   homepage "http://synthcode.com/wiki/chibi-scheme"
+  head "https://github.com/ashinn/chibi-scheme.git"
 
   stable do
     url "http://synthcode.com/scheme/chibi/chibi-scheme-0.7.3.tgz"
     sha256 "21a0cf669d42a670a11c08f50dc5aedb7b438fae892260900da58f0ed545fc7d"
   end
-
-  head "https://github.com/ashinn/chibi-scheme.git"
 
   bottle do
     cellar :any
@@ -30,4 +29,3 @@ class ChibiScheme < Formula
     assert_equal 0, $?.exitstatus
   end
 end
-
