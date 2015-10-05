@@ -7,6 +7,13 @@ class Ack < Formula
 
   head "https://github.com/petdance/ack2.git", :branch => "dev"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "9c984a18f5f246eb272a22ebb6beb3b4f6e322256fa074c31bac82b82b6206c3" => :el_capitan
+    sha256 "beca35139bf928783289a405a7a0771c42c750d126f8de28adca432cfdda8587" => :yosemite
+    sha256 "25c7b686063d3089fc7249861d4f81312522cb04a8b9aac5ce8a47b44cbb8830" => :mavericks
+  end
+
   devel do
     url "https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/ack-2.15_01.tar.gz"
     sha256 "dfd1df3def5d3b16af8a7c585fc8954362d4f2b097891919490c89fdb484fd83"
