@@ -1,5 +1,3 @@
-require "formula"
-
 class Burp < Formula
   desc "Network backup and restore"
   homepage "http://burp.grke.org/"
@@ -27,6 +25,12 @@ class Burp < Formula
                           "--sbindir=#{bin}",
                           "--localstatedir=#{var}/burp"
     system "make", "install"
+  end
+
+  def caveats; <<-EOS.undent
+    Before installing the launchd entry you should configure your burp client in
+    #{etc}/burp/burp.conf
+    EOS
   end
 
   test do
@@ -58,12 +62,6 @@ class Burp < Formula
       <string>#{HOMEBREW_PREFIX}</string>
     </dict>
     </plist>
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-    Before installing the launchd entry you should configure your burp client in
-    #{etc}/burp/burp.conf
     EOS
   end
 end
