@@ -5,6 +5,13 @@ class Apollo < Formula
   version "1.7.1"
   sha256 "74577339a1843995a5128d14c68b21fb8f229d80d8ce1341dd3134f250ab689d"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "146dd562ab5633b9c0ad828454ab286c14401c12aa0be8cc43ccf3a9a384f356" => :el_capitan
+    sha256 "b8a694359a6d00622a1c09b760974bad45a6d800426f74c1bd5e727cac8a6f0a" => :yosemite
+    sha256 "bed6c5eee098ede0d6ad87fb12a4076dfa06149ceceb607a7633e00b3b9e2cec" => :mavericks
+  end
+
   deprecated_option "no-bdb" => "without-bdb"
   deprecated_option "no-mqtt" => "without-mqtt"
 
