@@ -1,8 +1,8 @@
 class AppEngineJava < Formula
   desc "Google App Engine for Java"
   homepage "https://cloud.google.com/appengine/docs/java/gettingstarted/introduction"
-  url "https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.23.zip"
-  sha256 "05e667036e9ef4f999b829fc08f8e5395b33a5a3c30afa9919213088db2b2e89"
+  url "https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.27.zip"
+  sha256 "069fc498bd292af01577f941f1f7d950e0bfe427f83099a1e381f7382500f0b6"
 
   def install
     rm Dir["bin/*.cmd"]
