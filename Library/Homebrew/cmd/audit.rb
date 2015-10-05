@@ -179,14 +179,19 @@ class FormulaAuditor
       [/^  test do/,                       "test block"]
     ]
 
-    component_list.map do |regex, name|
+    present = component_list.map do |regex, name|
       lineno = text.line_number regex
       next unless lineno
       [lineno, name]
-    end.compact.each_cons(2) do |c1, c2|
+    end.compact
+    present.each_cons(2) do |c1, c2|
       unless c1[0] < c2[0]
         problem "`#{c1[1]}` (line #{c1[0]}) should be put before `#{c2[1]}` (line #{c2[0]})"
       end
+    end
+    present.map!(&:last)
+    if present.include?("head") && present.include?("head block")
+      problem "Should not have both `head` and `head do`"
     end
   end
 
