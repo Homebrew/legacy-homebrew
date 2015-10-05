@@ -35,7 +35,7 @@ class Clamav < Formula
       "--disable-zlib-vcheck",
       "--with-zlib=#{MacOS.sdk_path}/usr",
       "--with-openssl=#{Formula["openssl"].opt_prefix}",
-      "--enable-llvm=no"
+      "--enable-llvm=no",
     ]
 
     args << "--with-libjson=#{Formula["json-c"].opt_prefix}" if build.with? "json-c"
