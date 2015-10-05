@@ -2,8 +2,8 @@ class Assimp < Formula
   desc "Portable library for importing many well-known 3D model formats"
   homepage "http://assimp.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip"
-  sha256 "da9827876f10a8b447270368753392cfd502e70a2e9d1361554e5dfcb1fede9e"
   version "3.1.1"
+  sha256 "da9827876f10a8b447270368753392cfd502e70a2e9d1361554e5dfcb1fede9e"
 
   head "https://github.com/assimp/assimp.git"
 

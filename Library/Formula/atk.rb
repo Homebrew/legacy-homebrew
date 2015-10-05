@@ -10,11 +10,11 @@ class Atk < Formula
     sha256 "a0b8f30dd3a0fdce58456be54b5b57793265a42644b6a2a05124bfb1809cea40" => :mavericks
   end
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gobject-introspection"
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?
