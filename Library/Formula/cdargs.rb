@@ -16,7 +16,7 @@ class Cdargs < Formula
   def install
     system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
-    system "make install-strip"
+    system "make", "install-strip"
 
     rm Dir["contrib/Makefile*"]
     prefix.install "contrib"

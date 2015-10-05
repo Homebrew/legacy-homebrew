@@ -83,7 +83,7 @@ class Cassandra < Formula
 
     share.install [libexec+"bin/cassandra.in.sh", libexec+"bin/stop-server"]
     inreplace Dir["#{libexec}/bin/cassandra*", "#{libexec}/bin/debug-cql", "#{libexec}/bin/nodetool", "#{libexec}/bin/sstable*"],
-              /`dirname "?\$0"?`\/cassandra.in.sh/,
+              %r{`dirname "?\$0"?`/cassandra.in.sh},
               "#{share}/cassandra.in.sh"
 
     bin.write_exec_script Dir["#{libexec}/bin/*"]
