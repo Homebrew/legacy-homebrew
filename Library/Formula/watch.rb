@@ -17,7 +17,7 @@ class Watch < Formula
     sha1 "a7c559378bc74cd30d00f962e63d6ee5c705aea1" => :mountain_lion
   end
 
-  depends_on "gettext" => :run
+  depends_on "gettext"
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
