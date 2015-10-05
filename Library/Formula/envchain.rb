@@ -1,9 +1,9 @@
 class Envchain < Formula
   desc "Secure your credentials in environment variables"
   homepage "https://github.com/sorah/envchain"
-  head "https://github.com/sorah/envchain.git"
   url "https://github.com/sorah/envchain/archive/v0.2.0.tar.gz"
   sha256 "2a863688d1e0bdc47ba8339f57c8b5e22f5002fd3ab58928766e45f23c6ca267"
+  head "https://github.com/sorah/envchain.git"
 
   bottle do
     cellar :any
