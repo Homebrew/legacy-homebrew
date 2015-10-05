@@ -4,9 +4,10 @@ class Blahtexml < Formula
   url "http://gva.noekeon.org/blahtexml/blahtexml-0.9-src.tar.gz"
   sha256 "c5145b02bdf03cd95b7b136de63286819e696639824961d7408bec4591bc3737"
 
-  option "blahtex-only", "Build only blahtex, not blahtexml"
+  deprecated_option "blahtex-only" => "without-blahtexml"
+  option "without-blahtexml", "Build only blahtex, not blahtexml"
 
-  depends_on "xerces-c" unless build.include? "blahtex-only"
+  depends_on "xerces-c" if build.with? "blahtexml"
 
   # Add missing unistd.h includes, taken from MacPorts
   patch :p0 do
@@ -20,10 +21,10 @@ class Blahtexml < Formula
   end
 
   def install
-    system "make blahtex-mac"
+    system "make", "blahtex-mac"
     bin.install "blahtex"
-    unless build.include? "blahtex-only"
-      system "make blahtexml-mac"
+    if build.with? "blahtexml"
+      system "make", "blahtexml-mac"
       bin.install "blahtexml"
     end
   end
