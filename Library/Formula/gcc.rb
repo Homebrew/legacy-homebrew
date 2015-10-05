@@ -69,7 +69,7 @@ class Gcc < Formula
     version.to_s.slice(/\d/)
   end
 
-  # Fix for libgccjit.so linkage on Darwin
+  # Fix for libgccjit.so linkage on Darwin.
   # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64089
   patch :DATA
 
