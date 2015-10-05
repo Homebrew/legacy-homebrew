@@ -11,15 +11,21 @@ class Libass < Formula
     sha256 "7303bf3c119bc80d850f8e16ac1212e70224c83df3f8a3c0bf2adb0d378a6e80" => :mavericks
   end
 
+  option "with-fontconfig", "Disable CoreText backend in favor of the more traditional fontconfig"
+
   depends_on "pkg-config" => :build
   depends_on "yasm" => :build
 
   depends_on "freetype"
   depends_on "fribidi"
   depends_on "harfbuzz" => :recommended
+  depends_on "fontconfig" => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--disable-coretext" if build.with? "fontconfig"
+
+    system "./configure", *args
     system "make", "install"
   end
 end
