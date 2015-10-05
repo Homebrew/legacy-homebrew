@@ -4,6 +4,7 @@ class Csup < Formula
   url "https://bitbucket.org/mux/csup/get/REL_20120305.tar.gz"
   sha256 "6b9a8fa2d2e70d89b2780cbc3f93375915571497f59c77230d4233a27eef77ef"
   revision 1
+  head "https://bitbucket.org/mux/csup", :using => :hg
 
   bottle do
     cellar :any
@@ -11,8 +12,6 @@ class Csup < Formula
     sha256 "ffa3d1bbc8fa67cf894b80094f2fa726772ddd602a77e32b403f0ceb8fb43c08" => :mavericks
     sha256 "83f4c2dda45961e164a267b9a20f64a2d5d60ddbf1f52305a6af6da1e49798fb" => :mountain_lion
   end
-
-  head "https://bitbucket.org/mux/csup", :using => :hg
 
   depends_on "openssl"
 
