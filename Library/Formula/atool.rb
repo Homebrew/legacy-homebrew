@@ -24,7 +24,7 @@ class Atool < Formula
       system bin/"apack", "test.tar.gz", "example.txt", "example2.txt"
     end
     output = shell_output("#{bin}/als #{testpath}/apple_juice/test.tar.gz")
-    assert output.include? "example.txt"
-    assert output.include? "example2.txt"
+    assert_match "example.txt", output
+    assert_match "example2.txt", output
   end
 end
