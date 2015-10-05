@@ -31,7 +31,7 @@ class Yafc < Formula
     readline = Formula["readline"].opt_prefix
 
     args = ["--prefix=#{prefix}",
-            "--with-readline=#{readline}"]
+            "--with-readline=#{readline}",]
     args << "--without-ssh" if build.without? "libssh"
 
     system "./configure", *args
