@@ -18,7 +18,8 @@ class Dex < Formula
   def install
     args = ["prefix=#{prefix}",
             "CC=#{ENV.cc}",
-            "HOST_CC=#{ENV.cc}"]
+            "HOST_CC=#{ENV.cc}",
+           ]
 
     args << "VERSION=#{version}" if build.head?
 
