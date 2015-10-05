@@ -6,10 +6,11 @@ class Atomicparsley < Formula
   head "https://bitbucket.org/wez/atomicparsley", :using => :hg
 
   bottle do
-    cellar :any
-    sha256 "5399733312c1c3731707421c8a0bb831a7885a0f077dc8bca87304221d748c0b" => :yosemite
-    sha256 "8cc6e77f10ebf9e171354fe0a222fa205a26a1cb52b490fddd4a32aa554746f5" => :mavericks
-    sha256 "faf6a14d51e5f5eb9908d038891cedb7658ccb2b1cc3af3e390c6ee10916355b" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "b43ba5577c7e8b2dd9b4852a5d6652e1600a460584096646f38b69b7d103cee9" => :el_capitan
+    sha256 "b1825326c53079bd37a098cf100ae29d2b2763c985be0f2592ba89f10b914eb3" => :yosemite
+    sha256 "8797e94e5a1083d41fd9843a94362a714a48430918ed95fa9d7f37b31e0ba1e9" => :mavericks
   end
 
   depends_on "autoconf" => :build
