@@ -3,6 +3,7 @@ class Editorconfig < Formula
   homepage "http://editorconfig.org"
   url "https://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.12.0/source/editorconfig-core-c-0.12.0.tar.gz"
   sha256 "98c581d1dce24158160c9235190ce93eeae121f978aa84a89c7de258b5122e01"
+  head "https://github.com/editorconfig/editorconfig-core-c.git"
 
   bottle do
     cellar :any
@@ -12,8 +13,6 @@ class Editorconfig < Formula
   end
 
   option :universal
-
-  head "https://github.com/editorconfig/editorconfig-core-c.git"
 
   depends_on "cmake" => :build
   depends_on "pcre"
