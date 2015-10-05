@@ -6,10 +6,10 @@ class Cookiecutter < Formula
   head "https://github.com/audreyr/cookiecutter.git"
 
   bottle do
-    cellar :any
-    sha256 "501bfc26db09d2997cc175aad4b87c1113f9648d036d52d442b130d323f373ec" => :yosemite
-    sha256 "1636f003e6ca16a387fbe16b1c73aaaed1f7d817bb3302170a77652f0d895c06" => :mavericks
-    sha256 "8463ae544df9c9dd5eb1b1daba476fbeaffe678c961b1149b42426e654d82002" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "14d0f7285d61dd830f75b49dc014c2de0ecf9d4d45d7fa6fed8f769c97dd2fac" => :el_capitan
+    sha256 "5cb2ed59a110c818146d767064a9bbc5c4eba222e55f433a50d9f7f2fe48e07a" => :yosemite
+    sha256 "25cf7a6487354a2a6c7d0a95d40992d4f8f187f1df3fbd93db43aec48a5f1888" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
