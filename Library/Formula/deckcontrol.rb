@@ -1,5 +1,3 @@
-require 'formula'
-
 class Deckcontrol < Formula
     homepage 'https://github.com/bavc/deckcontrol'
     url "https://github.com/bavc/deckcontrol/archive/v0.3.zip"

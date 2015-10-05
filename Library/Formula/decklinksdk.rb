@@ -1,5 +1,3 @@
-require 'formula'
-
 class Decklinksdk < Formula
   homepage 'http://www.blackmagicdesign.com/support/sdks/'
   url 'http://software.blackmagicdesign.com/SDK/Blackmagic_DeckLink_SDK_10.1.4.zip'

@@ -1,5 +1,3 @@
-require 'formula'
- 
 class Bmdtools < Formula
   homepage 'http://github.com/lu-zero/bmdtools'
   url 'https://github.com/lu-zero/bmdtools/archive/v0.1.zip'
