@@ -1,8 +1,8 @@
 class Mbedtls < Formula
   desc "Cryptographic & SSL/TLS library"
   homepage "https://tls.mbed.org/"
-  url "https://tls.mbed.org/download/mbedtls-2.1.0-gpl.tgz"
-  sha256 "b61b5fe6aa33ed365289478ac48f1496b97eef0fb813295e534e0c2bd435dcfc"
+  url "https://tls.mbed.org/download/mbedtls-2.1.1-apache.tgz"
+  sha256 "8f25b6f156ae5081e91bcc58b02455926d9324035fe5f7028a6bb5bc0139a757"
   head "https://github.com/ARMmbed/mbedtls.git"
 
   bottle do
@@ -20,7 +20,7 @@ class Mbedtls < Formula
       s.gsub! "#define MBEDTLS_SSL_PROTO_SSL3", "//#define MBEDTLS_SSL_PROTO_SSL3"
     end
 
-    system "cmake", *std_cmake_argss
+    system "cmake", *std_cmake_args
     system "make"
     system "make", "install"
 
