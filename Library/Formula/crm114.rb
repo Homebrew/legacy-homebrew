@@ -13,4 +13,3 @@ class Crm114 < Formula
     system "make", "prefix=#{prefix}", "install"
   end
 end
-

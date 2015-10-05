@@ -37,7 +37,8 @@ class CrosstoolNg < Formula
             "--with-libtoolize=glibtoolize",
             "--with-install=ginstall",
             "--with-sed=gsed",
-            "--with-awk=gawk"]
+            "--with-awk=gawk",
+           ]
 
     args << "--with-grep=ggrep" if build.with? "grep"
 
@@ -49,7 +50,7 @@ class CrosstoolNg < Formula
 
     # Must be done in two steps
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -61,4 +62,3 @@ class CrosstoolNg < Formula
     system "#{bin}/ct-ng", "version"
   end
 end
-
