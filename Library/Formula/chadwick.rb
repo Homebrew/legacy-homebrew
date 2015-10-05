@@ -25,7 +25,7 @@ class Chadwick < Formula
   test do
     resource("event_files").stage testpath
     output = shell_output("#{bin}/cwbox -i ATL201404080 -y 2014 2014ATL.EVN")
-    assert output.include?("Game of 4/8/2014 -- New York at Atlanta")
+    assert_match "Game of 4/8/2014 -- New York at Atlanta", output
     assert_equal 0, $?.exitstatus
   end
 end
