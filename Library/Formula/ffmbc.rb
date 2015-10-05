@@ -26,7 +26,7 @@ class Ffmbc < Formula
   depends_on "xvid" => :recommended
 
   depends_on "freetype" => :optional
-  depends_on "theora"  => :optional
+  depends_on "theora" => :optional
   depends_on "libvorbis" => :optional
   depends_on "libogg" => :optional
   depends_on "libvpx" => :optional
@@ -39,7 +39,8 @@ class Ffmbc < Formula
             "--disable-shared",
             "--enable-gpl",
             "--enable-nonfree",
-            "--cc=#{ENV.cc}"]
+            "--cc=#{ENV.cc}",
+           ]
 
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libfaac" if build.with? "faac"
