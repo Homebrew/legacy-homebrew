@@ -26,6 +26,6 @@ class Ent < Formula
     system "#{bin}/ent -ft #{prefix}/entitle.gif >> entest.bak"
     system "#{bin}/ent -bt #{prefix}/entitle.gif >> entest.bak"
     system "#{bin}/ent -bct #{prefix}/entitle.gif >> entest.bak"
-    system "diff entest.bak #{prefix}/entest.mas"
+    system "diff", "entest.bak", "#{prefix}/entest.mas"
   end
 end
