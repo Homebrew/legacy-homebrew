@@ -7,9 +7,9 @@ class EbookTools < Formula
 
   bottle do
     cellar :any
-    sha1 "5bccca25c0dc3fd0034de38a034f7bb632c7f370" => :yosemite
-    sha1 "aca4f5f51bcf5254ada57236d204cdcfabb712a9" => :mavericks
-    sha1 "7df61c7aa09c89a59c3ed7fc3fbd302ee8768e81" => :mountain_lion
+    sha256 "2f88f3ae90a7ba51931938bfb72bc5ab15d3f25cf288f8842325cb15fa7eb391" => :el_capitan
+    sha256 "d7a3d58d4626049940515bde5a33ef9dfce2e4adcfa34237fd0f66e1e9e260cf" => :yosemite
+    sha256 "9bf576c168575ccbf8b9c3abce0374ace176669ae0f84d33d2ff10f81d1a2cdb" => :mavericks
   end
 
   depends_on "libzip"
