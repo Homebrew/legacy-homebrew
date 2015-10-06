@@ -11,14 +11,14 @@ class Alure < Formula
     sha256 "8c388226c9c1544308895f9b8e6b5ff882e64431bfac00b342d13e045bb6e51a" => :mavericks
   end
 
-  depends_on "pkg-config"  => :build
-  depends_on "cmake"       => :build
-  depends_on "flac"        => :optional
+  depends_on "pkg-config" => :build
+  depends_on "cmake" => :build
+  depends_on "flac" => :optional
   depends_on "fluid-synth" => :optional
-  depends_on "libogg"      => :optional
-  depends_on "libsndfile"  => :optional
-  depends_on "libvorbis"   => :optional
-  depends_on "mpg123"      => :optional
+  depends_on "libogg" => :optional
+  depends_on "libsndfile" => :optional
+  depends_on "libvorbis" => :optional
+  depends_on "mpg123" => :optional
 
   def install
     # fix a broken include flags line, which fixes a build error.
