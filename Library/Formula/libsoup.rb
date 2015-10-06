@@ -17,6 +17,7 @@ class Libsoup < Formula
   depends_on "sqlite"
   depends_on "gobject-introspection"
   depends_on "vala"
+  depends_on "libxml2" unless OS.mac?
 
   def install
     args = [
