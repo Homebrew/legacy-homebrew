@@ -1,10 +1,8 @@
-require "formula"
-
 class Amap < Formula
   desc "Perform application protocol detection"
   homepage "https://www.thc.org/thc-amap/"
   url "https://www.thc.org/releases/amap-5.4.tar.gz"
-  sha1 "79056f29a3b9e0a21062116aec3e966b1a46d7d3"
+  sha256 "a75ea58de75034de6b10b0de0065ec88e32f9e9af11c7d69edbffc4da9a5b059"
   revision 1
 
   bottle do
