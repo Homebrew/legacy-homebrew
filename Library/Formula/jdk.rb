@@ -7,7 +7,7 @@ class JdkDownloadStrategy < CurlDownloadStrategy
 end
 
 class Jdk < Formula
-  homepage "http://www.java.com/"
+  homepage "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
 
   version "1.8.0-60"
   if OS.linux?
