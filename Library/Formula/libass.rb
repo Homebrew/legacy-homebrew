@@ -4,6 +4,14 @@ class Libass < Formula
   url "https://github.com/libass/libass/releases/download/0.13.0/libass-0.13.0.tar.gz"
   sha256 "67692ef2a56e0423d22b142edb072c04949fe88c37be1d19cf22669c44f935f3"
 
+  head do
+    url "https://github.com/libass/libass.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   bottle do
     cellar :any
     sha256 "cf1af3bd7ddb8138afe2d404897d48a4c78d5b2518ffef7d8785fcaa09144113" => :el_capitan
@@ -25,6 +33,7 @@ class Libass < Formula
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--disable-coretext" if build.with? "fontconfig"
 
+    system "autoreconf", "-i" if build.head?
     system "./configure", *args
     system "make", "install"
   end
