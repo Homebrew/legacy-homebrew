@@ -1,7 +1,8 @@
 class Jove < Formula
   desc "Emacs-style editor with vi-like memory, CPU, and size requirements"
   homepage "http://directory.fsf.org/wiki/Jove"
-  url "ftp://ftp.cs.toronto.edu/cs/ftp/pub/hugh/jove-dev/jove4.16.0.73.tgz"
+  url "http://ftp.cs.toronto.edu/cs/ftp/pub/hugh/jove-dev/jove4.16.0.73.tgz"
+  mirror "ftp://ftp.cs.toronto.edu/cs/ftp/pub/hugh/jove-dev/jove4.16.0.73.tgz"
   sha256 "9c9e202607f5972c382098d10b63c815ac01e578f432626c982e6aa65000c630"
 
   # Per MacPorts, avoid clash with libc getline
