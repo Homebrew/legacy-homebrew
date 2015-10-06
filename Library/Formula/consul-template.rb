@@ -9,6 +9,13 @@ class ConsulTemplate < Formula
 
   head "https://github.com/hashicorp/consul-template.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "4a98696528c75498232b4d62efdd2570e1eeb175a0ef0e2786deb29893562492" => :el_capitan
+    sha256 "43da443b77fc0568cb24d5861707429e4235c2e5d09f407a254562f31cb50e83" => :yosemite
+    sha256 "4aff7ce95f70b5018852852e1043c87c6f8dbe8da491b1bc9942d7047f9eb756" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/armon/go-metrics" do
