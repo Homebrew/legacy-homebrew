@@ -13,6 +13,8 @@ class Mplayer < Formula
     end
   end
 
+  revision 1
+
   bottle do
     revision 1
     sha256 "d9abd74426d0b6ecb52c81a1df427f4e758b534cc511c81d18f8e92c5bb0ae3e" => :el_capitan

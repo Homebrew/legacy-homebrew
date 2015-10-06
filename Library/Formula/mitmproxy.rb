@@ -4,6 +4,7 @@ class Mitmproxy < Formula
   url "https://mitmproxy.org/download/mitmproxy-0.13.tar.gz"
   sha256 "f35b90d836693dbb02a589ddee056bb4fdb7b679a1dfe230b0492216a8e3dcfa"
   head "https://github.com/mitmproxy/mitmproxy.git"
+  revision 1
 
   bottle do
     cellar :any

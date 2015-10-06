@@ -3,6 +3,7 @@ class Ttfautohint < Formula
   homepage "http://www.freetype.org/ttfautohint"
   url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.3/ttfautohint-1.3.tar.gz"
   sha256 "c39fa03790b2dfe711f66137cf0f0324eb19872932cef91da9c0bddf9e4ce104"
+  revision 1
 
   head do
     url "http://repo.or.cz/ttfautohint.git"

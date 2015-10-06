@@ -3,7 +3,7 @@ class Swfmill < Formula
   homepage "http://swfmill.org"
   url "http://swfmill.org/releases/swfmill-0.3.3.tar.gz"
   sha256 "f9e8529eed84962abf88c6457b59cbc6d230db068d1fdd977e7b234228beac96"
-  revision 1
+  revision 2
 
   depends_on "pkg-config" => :build
   depends_on "freetype"

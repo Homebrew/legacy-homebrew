@@ -6,6 +6,9 @@ class Allegro < Formula
     url "https://downloads.sourceforge.net/project/alleg/allegro/5.0.11/allegro-5.0.11.tar.gz"
     sha256 "49fe14c9571463ba08db4ff778d1fbb15e49f9c33bdada3ac8599e04330ea531"
   end
+
+  revision 1
+
   bottle do
     cellar :any
     revision 1

@@ -4,6 +4,7 @@ class Graphicsmagick < Formula
   url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.21/GraphicsMagick-1.3.21.tar.bz2"
   sha256 "a0ce08f2710c158e39faa083463441f6eeeecce07dbd59510498ffa4e0b053d1"
   head "http://hg.code.sf.net/p/graphicsmagick/code", :using => :hg
+  revision 1
 
   bottle do
     sha256 "db06edd23e591e48e7dce6fbac2f2ac2bca663407ffe818bea7f0e2a5d481dcb" => :el_capitan

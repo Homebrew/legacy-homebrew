@@ -4,7 +4,7 @@ class Cairo < Formula
   url "http://cairographics.org/releases/cairo-1.14.2.tar.xz"
   mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.2.tar.xz"
   sha256 "c919d999ddb1bbbecd4bbe65299ca2abd2079c7e13d224577895afa7005ecceb"
-  revision 1
+  revision 2
 
   bottle do
     revision 3

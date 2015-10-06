@@ -3,6 +3,7 @@ class Ftgl < Formula
   homepage "http://sourceforge.net/projects/ftgl/"
   url "https://downloads.sourceforge.net/project/ftgl/FTGL%20Source/2.1.3~rc5/ftgl-2.1.3-rc5.tar.gz"
   sha256 "5458d62122454869572d39f8aa85745fc05d5518001bcefa63bd6cbb8d26565b"
+  revision 1
 
   depends_on "freetype"
 
