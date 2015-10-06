@@ -30,4 +30,8 @@ class Groovy < Formula
         export GROOVY_HOME=#{opt_libexec}
     EOS
   end
+
+  test do
+    system "#{bin}/grape", "install", "org.activiti", "activiti-engine", "5.16.4"
+  end
 end
