@@ -16,7 +16,6 @@ class Dcmtk < Formula
   end
 
   option "with-docs", "Install development libraries/headers and HTML docs"
-  option "with-openssl", "Configure DCMTK with support for OpenSSL"
   option "with-libiconv", "Build with brewed libiconv. Dcmtk and system libiconv can have problems with utf8."
 
   depends_on "cmake" => :build
@@ -30,8 +29,8 @@ class Dcmtk < Formula
     ENV.m64 if MacOS.prefer_64_bit?
 
     args = std_cmake_args
+    args << "-DDCMTK_WITH_OPENSSL=YES"
     args << "-DDCMTK_WITH_DOXYGEN=YES" if build.with? "docs"
-    args << "-DDCMTK_WITH_OPENSSL=YES" if build.with? "openssl"
     args << "-DDCMTK_WITH_ICONV=YES -DLIBICONV_DIR=#{Formula["libiconv"].opt_prefix}" if build.with? "libiconv"
     args << ".."
 
