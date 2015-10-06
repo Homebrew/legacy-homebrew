@@ -1,8 +1,8 @@
 class Ttfautohint < Formula
-  desc "Automated hinting process for web fonts"
+  desc "Auto-hinter for TrueType fonts"
   homepage "http://www.freetype.org/ttfautohint"
-  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.3/ttfautohint-1.3.tar.gz"
-  sha256 "c39fa03790b2dfe711f66137cf0f0324eb19872932cef91da9c0bddf9e4ce104"
+  url "https://downloads.sourceforge.net/project/freetype/ttfautohint/1.4/ttfautohint-1.4.tar.gz"
+  sha256 "7c518f56192235a091e533305b21edc0149f5a8e32c18b2a9ddf0c2746d7c14d"
 
   head do
     url "http://repo.or.cz/ttfautohint.git"
