@@ -2,7 +2,7 @@ class JoshuaV < Formula
   desc "Joshua is an open-source statistical machine translation decoder."
   homepage "http://joshua-decoder.org/"
   url "http://cs.jhu.edu/~post/files/joshua-v6.0.4.tgz"
-  sha256 "0cf6674dc73f30e49a22179e90182492f8e8eea46710b505edb9acfb4d953d9a"
+  sha256 "0e3b08c80303106599aa404bbba5c801cc5542779bef828d35ff80288190c273"
   head "https://github.com/joshua-decoder/joshua.git"
 
   option "with-language-packs", "Build with all available community language packs (es-->en and ar-->en)"
