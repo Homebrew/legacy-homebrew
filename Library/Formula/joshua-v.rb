@@ -2,12 +2,12 @@ class JoshuaV < Formula
   desc "Joshua is an open-source statistical machine translation decoder."
   homepage "http://joshua-decoder.org/"
   url "http://cs.jhu.edu/~post/files/joshua-v6.0.4.tgz"
-  sha256 "0cf6674dc73f30e49a22179e90182492f8e8eea46710b505edb9acfb4d953d9a" 
+  sha256 "0cf6674dc73f30e49a22179e90182492f8e8eea46710b505edb9acfb4d953d9a"
   head "https://github.com/joshua-decoder/joshua.git"
 
   option "with-language-packs", "Build with all available community language packs (es-->en and ar-->en)"
   option "with-es-en-phrase-pack", "Build with Spanish–English phrase-based model [1.9 GB]."
-  option "with-ar-en-phrase-pack", "Build with Arabic–English phrase-based model [2.4 GB]." 
+  option "with-ar-en-phrase-pack", "Build with Arabic–English phrase-based model [2.4 GB]."
 
   depends_on "ant" => :build
   depends_on "boost" => :build
@@ -16,7 +16,7 @@ class JoshuaV < Formula
 
   resource "es-en-phrase-pack" do
     url "http://cs.jhu.edu/~post/language-packs/language-pack-es-en-phrase-2015-03-06.tgz"
-    sha256 "213e05bbdcfbfa05b31e263c31f10a0315695fee26C2f37b0a78fb918bad9b5d"
+    sha256 "213e05bbdcfbfa05b31e263c31f10a0315695fee26c2f37b0a78fb918bad9b5d"
   end
 
   resource "ar-en-phrase-pack" do
@@ -30,7 +30,7 @@ class JoshuaV < Formula
   end
 
   def install
-    system "ant"   
+    system "ant"
     if build.with? "language-packs"
       resource("es-en-phrase-pack").stage { share.install "language-pack-es-en-phrase-2015-03-06", share/"joshualanguagepacks" }
       resource("ar-en-phrase-pack").stage { share.install "language-pack-ar-en-phrase-2015-03-18", share/"joshualanguagepacks" }
@@ -42,9 +42,9 @@ class JoshuaV < Formula
     prefix.install Dir["*"]
   end
 
-  test do    
+  test do
     resource("indian-parallel-corpora").stage { share.install "indian-parallel-corpora-1.0", share/"corpora" }
-    system "ln -s joshua-decoder-indian-parallel-corpora-* input"
+    ln "-s joshua-decoder-indian-parallel-corpora-* input"
     system "$JOSHUA/bin/pipeline.pl --source bn --target en \
     --no-prepare --aligner berkeley \
     --type hiero \
