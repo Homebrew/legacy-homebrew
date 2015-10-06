@@ -52,6 +52,6 @@ class Ack < Formula
 
   test do
     assert_equal "foo bar\n", pipe_output("#{bin}/ack --noenv --nocolor bar -",
-                                          "foo\nfoo bar\nbaz",)
+                                          "foo\nfoo bar\nbaz")
   end
 end
