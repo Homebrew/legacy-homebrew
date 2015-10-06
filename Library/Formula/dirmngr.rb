@@ -19,6 +19,7 @@ class Dirmngr < Formula
   depends_on "libgcrypt"
   depends_on "libksba"
   depends_on "pth"
+  depends_on "homebrew/dupes/openldap" unless OS.mac?
 
   patch :p0 do
     # patch by upstream developer to fix an API incompatibility with libgcrypt >=1.6.0
