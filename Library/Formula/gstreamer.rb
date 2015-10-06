@@ -24,6 +24,11 @@ class Gstreamer < Formula
   depends_on "glib"
   depends_on "bison"
 
+  # Fix header file issue (exact OS versions affected unknown; first noticed on
+  # Snow Leopard)
+  # https://bugzilla.gnome.org/show_bug.cgi?id=756136
+  patch :DATA if MacOS.version <= :snow_leopard
+
   def install
     args = %W[
       --prefix=#{prefix}
@@ -58,3 +63,16 @@ class Gstreamer < Formula
     system bin/"gst-inspect-1.0"
   end
 end
+__END__
+diff --git a/libs/gst/helpers/gst-ptp-helper.c b/libs/gst/helpers/gst-ptp-helper.c
+index 6c753df..5642741 100644
+--- a/libs/gst/helpers/gst-ptp-helper.c
++++ b/libs/gst/helpers/gst-ptp-helper.c
+@@ -37,6 +37,7 @@
+ #include <sys/types.h>
+ #include <errno.h>
+ #include <sys/ioctl.h>
++#include <sys/socket.h>
+ #include <net/if.h>
+ #include <netinet/in.h>
+ #include <string.h>
