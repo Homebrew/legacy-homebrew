@@ -9,6 +9,6 @@ class Dockutil < Formula
   end
 
   test do
-    system bin/"dockutil", "list"
+    assert_match version.to_s, shell_output("#{bin}/dockutil --version")
   end
 end
