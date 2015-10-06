@@ -1,7 +1,7 @@
 class Confuse < Formula
   desc "Configuration file parser library written in C"
   homepage "http://www.nongnu.org/confuse/"
-  url "http://savannah.nongnu.org/download/confuse/confuse-2.7.tar.gz"
+  url "http://download.savannah.nongnu.org/releases/confuse/confuse-2.7.tar.gz"
   sha256 "e32574fd837e950778dac7ade40787dd2259ef8e28acd6ede6847ca895c88778"
 
   bottle do
