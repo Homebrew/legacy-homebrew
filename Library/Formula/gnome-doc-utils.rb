@@ -17,6 +17,7 @@ class GnomeDocUtils < Formula
   depends_on "docbook"
   depends_on "gettext"
   depends_on "libxml2" => "with-python"
+  depends_on "libxslt" unless OS.mac?
 
   fails_with :llvm do
     build 2326
