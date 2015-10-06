@@ -1,18 +1,19 @@
 class AircrackNg < Formula
   desc "Next-generation aircrack with lots of new features"
   homepage "http://aircrack-ng.org/"
-  bottle do
-    cellar :any
-    sha256 "8d0e46c29daf895780427bfe252adef6c31faca245496fcef8f9449ce0321f34" => :el_capitan
-    sha256 "11da54c7c70a4faf089e7b71669f11fb13772563bebe89dafb2210146c8c23ef" => :yosemite
-    sha256 "b856ae4d438d05367b7e5c762ef90c5a06bebd39491d41edee8ba47dd517e6b5" => :mavericks
-  end
 
   # We can't update this due to linux-only dependencies in >1.1.
   # See https://github.com/Homebrew/homebrew/issues/29450
   url "http://download.aircrack-ng.org/aircrack-ng-1.1.tar.gz"
   sha256 "b136b549b7d2a2751c21793100075ea43b28de9af4c1969508bb95bcc92224ad"
   revision 1
+
+  bottle do
+    cellar :any
+    sha256 "8d0e46c29daf895780427bfe252adef6c31faca245496fcef8f9449ce0321f34" => :el_capitan
+    sha256 "11da54c7c70a4faf089e7b71669f11fb13772563bebe89dafb2210146c8c23ef" => :yosemite
+    sha256 "b856ae4d438d05367b7e5c762ef90c5a06bebd39491d41edee8ba47dd517e6b5" => :mavericks
+  end
 
   depends_on "pkg-config" => :build
   depends_on "sqlite"
