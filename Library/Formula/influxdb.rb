@@ -5,8 +5,8 @@ class Influxdb < Formula
   homepage "https://influxdb.com"
 
   stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.4.1.tar.gz"
-    sha256 "a15dcb1173ca4016111d2d8dcea75c098f10838f54d67256b384e65b1cbcf2de"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.4.2.tar.gz"
+    sha256 "aaea27228d7f242fe37d436506592189081beda0e7d2fba3f82c6b233fd913bc"
   end
 
   bottle do
