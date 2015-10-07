@@ -9,10 +9,10 @@ class Mono < Formula
   skip_clean "lib/mono"
 
   bottle do
-    sha256 "a3f48223279dd8b2b468511542319e25ca6c29bc266ae1affd5e06114f32640e" => :el_capitan
-    sha256 "0c18edef9deeb162ff119527a3113ee1d98b308f70d266f6f5d66619ecd12d12" => :yosemite
-    sha256 "8b70a9ae0465cbb4648ef3d7042ed8d7aab7d2eca25ae1b8f686696b37ac28aa" => :mavericks
-    sha256 "d3d9b118a27e3af2455925e83de0c44d4464660886c07fe5d21695f21471377a" => :mountain_lion
+    revision 1
+    sha256 "669ec10cf1b9d92a856b8dee4618eca09c7a285618fcc3214668a9bebd4e96cf" => :el_capitan
+    sha256 "425161e9d95b72978d220ed8542c8c22c39bae1db3ace377d4f4e98693d65370" => :yosemite
+    sha256 "71477844200f6760048cd3e804faa4ea19810a8129af9d4b5776dfefc21a9296" => :mavericks
   end
 
   option "without-fsharp", "Build without support for the F# language."
