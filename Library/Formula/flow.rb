@@ -1,8 +1,8 @@
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "http://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.16.0.tar.gz"
-  sha256 "1a79eca9d5134bf3e62132aa59643f15aa03a993d4eaba7f0bd0627ba69566f7"
+  url "https://github.com/facebook/flow/archive/v0.17.0.tar.gz"
+  sha256 "282ead8e8a344e44b825b2f8727520fb420e79f76ed1c26fa3a137c8a0172b35"
   head "https://github.com/facebook/flow.git"
 
   bottle do
@@ -29,6 +29,6 @@ class Flow < Formula
       var x: string = 123;
     EOS
     expected = /number\nThis type is incompatible with\n.*string\n\nFound 1 error/
-    assert_match expected, shell_output("#{bin}/flow check #{testpath}", 2)
+    assert_match expected, shell_output("#{bin}/flow check --old-output-format #{testpath}", 2)
   end
 end
