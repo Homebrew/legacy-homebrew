@@ -6,6 +6,13 @@ class Glm < Formula
 
   head "https://github.com/g-truc/glm.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "202a4610ad4af2c69ec14e44ab2c0fd705e244c3dcaa158543c9a2424b2d4ea2" => :el_capitan
+    sha256 "ea8662efa99bb907b691998db85c33aaf15581d4ae6149a8f77edc8f734e5450" => :yosemite
+    sha256 "fa835fb96b3cf595f071894864c8c6c01cb1a4e2d7739e517bce6a3ada4b65bd" => :mavericks
+  end
+
   option "with-doxygen", "Build documentation"
   depends_on "doxygen" => [:build, :optional]
   depends_on "cmake" => :build
