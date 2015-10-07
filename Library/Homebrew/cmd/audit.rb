@@ -282,9 +282,12 @@ class FormulaAuditor
         rescue TapFormulaAmbiguityError
           problem "Ambiguous dependency #{dep.name.inspect}."
           next
+        rescue TapFormulaWithOldnameAmbiguityError
+          problem "Ambiguous oldname dependency #{dep.name.inspect}."
+          next
         end
 
-        if FORMULA_RENAMES[dep.name] == dep_f.name
+        if dep_f.oldname && dep.name.split("/").last == dep_f.oldname
           problem "Dependency '#{dep.name}' was renamed; use newname '#{dep_f.name}'."
         end
 
@@ -343,7 +346,7 @@ class FormulaAuditor
         next
       rescue FormulaUnavailableError
         problem "Can't find conflicting formula #{c.name.inspect}."
-      rescue TapFormulaAmbiguityError
+      rescue TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
         problem "Ambiguous conflicting formula #{c.name.inspect}."
       end
     end

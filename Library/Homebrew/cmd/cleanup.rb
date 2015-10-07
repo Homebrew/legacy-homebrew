@@ -85,7 +85,7 @@ module Homebrew
 
       begin
         f = Formulary.from_rack(HOMEBREW_CELLAR/name)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
         next
       end
 

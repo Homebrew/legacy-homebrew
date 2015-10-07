@@ -1017,7 +1017,7 @@ class Formula
     @installed ||= racks.map do |rack|
       begin
         Formulary.from_rack(rack)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
       end
     end.compact
   end

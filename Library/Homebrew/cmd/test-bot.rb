@@ -238,7 +238,7 @@ module Homebrew
 
     def safe_formulary(formula)
       Formulary.factory formula
-    rescue FormulaUnavailableError, TapFormulaAmbiguityError
+    rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
     end
 
     def git(*args)
