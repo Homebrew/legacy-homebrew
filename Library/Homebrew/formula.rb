@@ -280,6 +280,18 @@ class Formula
     end
   end
 
+  # All of aliases for the formula
+  def aliases
+    @aliases ||= if core_formula?
+      Formula.core_alias_reverse_table[name] || []
+    elsif tap?
+      user, repo = tap.split("/")
+      Tap.fetch(user, repo.sub("homebrew-", "")).alias_reverse_table[full_name] || []
+    else
+      []
+    end
+  end
+
   # The {Resource}s for the currently active {SoftwareSpec}.
   def resources
     active_spec.resources.values
@@ -1138,6 +1150,7 @@ class Formula
       "desc" => desc,
       "homepage" => homepage,
       "oldname" => oldname,
+      "aliases" => aliases,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
         "bottle" => bottle ? true : false,
