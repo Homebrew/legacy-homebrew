@@ -10,14 +10,13 @@ class Ogmtools < Formula
 
   # Borrow patch from MacPorts
   patch :p0 do
-    url "https://trac.macports.org/export/87593/trunk/dports/multimedia/ogmtools/files/common.h.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/e4957439/ogmtools/common.h.diff"
     sha256 "2dd18dea6de0d2820221bde8dfea163101d0037196cb2e94cd910808d10119c0"
   end
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+                          "--prefix=#{prefix}", "--mandir=#{man}"
     system "make", "install"
   end
 
