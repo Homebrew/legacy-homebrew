@@ -1,8 +1,8 @@
 class Rethinkdb < Formula
   desc "The open-source database for the realtime web"
   homepage "https://www.rethinkdb.com/"
-  url "https://download.rethinkdb.com/dist/rethinkdb-2.1.4.tgz"
-  sha256 "2553ad4a31b5f09522fc651fd2cfa98d76bccfebd6db87ef929eda54220f70b2"
+  url "https://download.rethinkdb.com/dist/rethinkdb-2.1.5-2.tgz"
+  sha256 "7953b486aef0fec076c3adf198fb24c969e344f2247647743f9f1b7c6cb46e23"
 
   bottle do
     cellar :any
@@ -14,7 +14,6 @@ class Rethinkdb < Formula
   depends_on :macos => :lion
   depends_on "boost" => :build
   depends_on "openssl"
-  depends_on "icu4c"
 
   fails_with :gcc do
     build 5666 # GCC 4.2.1
