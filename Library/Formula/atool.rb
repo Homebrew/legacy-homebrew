@@ -5,10 +5,11 @@ class Atool < Formula
   sha256 "aaf60095884abb872e25f8e919a8a63d0dabaeca46faeba87d12812d6efc703b"
 
   bottle do
-    cellar :any
-    sha1 "5bae1ea5b44d870cf9181ed061fe9ff2bb96351e" => :yosemite
-    sha1 "886601266294c7e337f0f75f3b04c09a60590807" => :mavericks
-    sha1 "22b2f19cfa180dd72929e5fb43d1444a206e660a" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "e7f2a05c1ace127074412298599ca5a195f523e116adcf1235bb1002b9f1c43f" => :el_capitan
+    sha256 "edc0be06f8072965a398708ffa59319d7663f5f4cb3bfd7585ffd5b8239231a5" => :yosemite
+    sha256 "f027ccef0bdaa3f6754810aa8ada837ef136be2bf118eae9815c056f5f5bcc4d" => :mavericks
   end
 
   def install
