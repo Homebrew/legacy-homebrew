@@ -4,7 +4,6 @@ class CAres < Formula
   url "http://c-ares.haxx.se/download/c-ares-1.10.0.tar.gz"
   mirror "https://github.com/bagder/c-ares/archive/cares-1_10_0.tar.gz"
   sha256 "3d701674615d1158e56a59aaede7891f2dde3da0f46a6d3c684e0ae70f52d3db"
-  head "https://github.com/bagder/c-ares.git"
 
   bottle do
     cellar :any
@@ -14,7 +13,16 @@ class CAres < Formula
     sha1 "27494a19ac612daedeb55356e911328771f94b19" => :mountain_lion
   end
 
+  head do
+    url "https://github.com/bagder/c-ares.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
   def install
+    system "./buildconf" if build.head?
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--disable-debug"
