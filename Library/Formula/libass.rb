@@ -33,7 +33,7 @@ class Libass < Formula
     args = %W[--disable-dependency-tracking --prefix=#{prefix}]
     args << "--disable-coretext" if build.with? "fontconfig"
 
-    system "autoreconf -i" if build.head?
+    system "autoreconf", "-i" if build.head?
     system "./configure", *args
     system "make", "install"
   end
