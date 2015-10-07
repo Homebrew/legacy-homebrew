@@ -6,6 +6,12 @@ class Bigloo < Formula
   sha256 "5db2e7cdb7aa4bb380f35a2a476d282842df72febdb934545b475e0932fad927"
   revision 1
 
+  bottle do
+    sha256 "042dcc5db6526cfa2854bbb82e326c123cc855e6ecf8bee0558016d0ea03522e" => :el_capitan
+    sha256 "e6eccc6930e392a68ad4119faf02ebcd1441224e2c1e31bd7f854be284097c89" => :yosemite
+    sha256 "859d76572635457a644aa0224e9dba1014046b52a0d6ad05cba2d35c904410c1" => :mavericks
+  end
+
   option "with-jvm", "Enable JVM support"
 
   depends_on "openssl"
