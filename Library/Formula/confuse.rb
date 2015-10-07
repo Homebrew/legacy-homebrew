@@ -5,10 +5,11 @@ class Confuse < Formula
   sha256 "e32574fd837e950778dac7ade40787dd2259ef8e28acd6ede6847ca895c88778"
 
   bottle do
-    cellar :any
-    sha1 "1364f86a7dfa199fee07f273f6e3b4945b9db02a" => :yosemite
-    sha1 "d1edb26d0b30a9d85453cf811a5acf582dba3d56" => :mavericks
-    sha1 "9ede76f809eb464d96a8f703fb74c1678fc0c48d" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "0df403420102e0215a8c2c98d091c1dc8f88d4b384a29cb9b4933c4a24448a31" => :el_capitan
+    sha256 "2d474d4e4e735c0b359424164f6458e07101b6ce051bd018b88e2bfb1f8571d1" => :yosemite
+    sha256 "d365907b21e36075ce3980b8ab8f5131da731f6f992869b41227be34256f15b1" => :mavericks
   end
 
   depends_on "pkg-config" => :build
