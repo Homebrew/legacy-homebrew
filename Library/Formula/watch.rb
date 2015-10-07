@@ -8,6 +8,7 @@ class Watch < Formula
   head "https://gitlab.com/procps-ng/procps.git"
 
   option "with-watch8bit", "Enable watch to be 8bit clean (requires ncurses)"
+  option "with-nls", "Enable Native Language Support"
 
   bottle do
     cellar :any_skip_relocation
@@ -17,7 +18,7 @@ class Watch < Formula
     sha1 "a7c559378bc74cd30d00f962e63d6ee5c705aea1" => :mountain_lion
   end
 
-  depends_on "gettext"
+  depends_on "gettext" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
@@ -30,8 +31,18 @@ class Watch < Formula
     args = ["--prefix=#{prefix}",
             "--disable-dependency-tracking"]
 
-    ENV.append "LDFLAGS", "-L#{Formula["gettext"].opt_lib}"
-    ENV.append "CPPFLAGS", "-L#{Formula["gettext"].opt_include}"
+    make_args = ["LDADD="]
+
+    if build.with? "nls"
+      ENV.append "LDFLAGS", "-L#{Formula["gettext"].opt_lib}"
+      ENV.append "CPPFLAGS", "-L#{Formula["gettext"].opt_include}"
+
+      # libtool breaks build if libintl isn't included strictly
+      make_args << "LIBS=-lintl"
+    else
+      # disabling Native Language Support removes libintl usage
+      args << "--disable-nls"
+    end
 
     if build.with? "ncurses"
       ENV.append "LDFLAGS", "-L#{Formula["ncurses"].opt_lib}"
@@ -45,9 +56,7 @@ class Watch < Formula
 
     system "./autogen.sh"
     system "./configure", *args
-
-    # libtool breaks build if libintl isn't included strictly
-    system "make", "watch", "LDADD=", "LIBS=-lintl"
+    system "make", "watch", *make_args
 
     bin.mkpath
     bin.install "watch"
