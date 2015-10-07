@@ -4,10 +4,12 @@ class Bigloo < Formula
   url "ftp://ftp-sop.inria.fr/indes/fp/Bigloo/bigloo4.1a-2.tar.gz"
   version "4.1a-2"
   sha256 "5db2e7cdb7aa4bb380f35a2a476d282842df72febdb934545b475e0932fad927"
-
-  depends_on "gmp" => :recommended
+  revision 1
 
   option "with-jvm", "Enable JVM support"
+
+  depends_on "openssl"
+  depends_on "gmp" => :recommended
 
   fails_with :clang do
     build 500
@@ -28,7 +30,8 @@ class Bigloo < Formula
             "--native=yes",
             "--disable-alsa",
             "--disable-mpg123",
-            "--disable-flac"]
+            "--disable-flac",
+           ]
 
     args << "--jvm=yes" if build.with? "jvm"
     args << "--no-gmp" if build.without? "gmp"
@@ -44,5 +47,9 @@ class Bigloo < Formula
     # Install the other manpages too
     manpages = %w[bgldepend bglmake bglpp bgltags bglafile bgljfile bglmco bglprof]
     manpages.each { |m| man1.install "manuals/#{m}.man" => "#{m}.1" }
+  end
+
+  test do
+    assert_match "Bigloo (4", shell_output("bigloo --help")
   end
 end
