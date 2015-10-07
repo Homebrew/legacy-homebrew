@@ -1,9 +1,8 @@
 class Pyqt < Formula
   desc "Python bindings for Qt"
   homepage "http://www.riverbankcomputing.co.uk/software/pyqt"
-  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.3/PyQt-mac-gpl-4.11.3.tar.gz"
-  sha256 "8b8bb3a2ef8b7368710e0bc59d6e94e1f513f7dbf10a3aaa3154f7b848c88b4d"
-  revision 1
+  url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.4/PyQt-mac-gpl-4.11.4.tar.gz"
+  sha256 "f178ba12a814191df8e9f87fb95c11084a0addc827604f1a18a82944225ed918"
 
   bottle do
     sha256 "45a0bd946b7eca2af72aa3e56bda87ad90ef54bda91f0aea05c0ea2d50d6e8c4" => :el_capitan
