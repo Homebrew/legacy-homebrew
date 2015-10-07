@@ -8,8 +8,8 @@ class Ddar < Formula
   head "https://github.com/basak/ddar.git"
 
   depends_on "xmltoman" => :build
-  depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "protobuf" => "with-python"
+  depends_on :python
+  depends_on "protobuf"
 
   def install
     system "make", "-f", "Makefile.prep", "pydist"
@@ -20,5 +20,9 @@ class Ddar < Formula
 
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     man1.install Dir["*.1"]
+  end
+
+  test do
+    assert_match "ddar: store multiple files efficiently", shell_output("#{bin}/ddar --help")
   end
 end
