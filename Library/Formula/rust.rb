@@ -66,7 +66,7 @@ class Rust < Formula
         end
       end
 
-      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}"
+      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}", "--enable-optimize"
       system "make"
       system "make", "install"
     end
