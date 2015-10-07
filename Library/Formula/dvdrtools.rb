@@ -4,6 +4,13 @@ class Dvdrtools < Formula
   url "http://download.savannah.gnu.org/releases/dvdrtools/dvdrtools-0.2.1.tar.gz"
   sha256 "053d0f277f69b183f9c8e8c8b09b94d5bb4a1de6d9b122c0e6c00cc6593dfb46"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "8d29698226d26f42559f4913a13920632b85cafc389122697fa2c5c4d0cd2d8b" => :el_capitan
+    sha256 "4feb2b0e87b7402706c5a382c8e35b66279aa1b73c37c7ded7a6cc14de3a8a62" => :yosemite
+    sha256 "45fbfc8f888ca87b81aa7dff0f30d8cb69c36a4ce1933d76faecbd023c4ab3ad" => :mavericks
+  end
+
   conflicts_with "cdrtools",
     :because => "both cdrtools and dvdrtools install binaries by the same name"
 
