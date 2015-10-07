@@ -8,9 +8,13 @@ class Glm < Formula
 
   option "with-doxygen", "Build documentation"
   depends_on "doxygen" => [:build, :optional]
+  depends_on "cmake" => :build
 
   def install
-    include.install "glm"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "install"
+    end
 
     if build.with? "doxygen"
       cd "doc" do
