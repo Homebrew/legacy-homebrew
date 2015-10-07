@@ -5,6 +5,12 @@ class Jove < Formula
   mirror "ftp://ftp.cs.toronto.edu/cs/ftp/pub/hugh/jove-dev/jove4.16.0.73.tgz"
   sha256 "9c9e202607f5972c382098d10b63c815ac01e578f432626c982e6aa65000c630"
 
+  bottle do
+    sha256 "c083761f33516e9d18718b6f78f6468b9aa72c0c80bb625987c60c05cc4f1895" => :el_capitan
+    sha256 "4e741042364faa5ef07f7957d9e811c204561ecad03ebbcd98f82761211ec78c" => :yosemite
+    sha256 "260e22d1b9cabcc9b8cacd415d8e5cf840c6970e302a2840cb4076f3583a591d" => :mavericks
+  end
+
   # Per MacPorts, avoid clash with libc getline
   patch :p0 do
     url "https://trac.macports.org/export/120116/trunk/dports/editors/jove/files/patch-getline.diff"
