@@ -1,12 +1,9 @@
 class Uwsgi < Formula
   desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  url "http://projects.unbit.it/downloads/uwsgi-2.0.11.2.tar.gz"
+  sha256 "0b889b0b4d2dd3f6625df28cb0b86ec44a68d074ede2d0dfad0b91e88914885c"
   head "https://github.com/unbit/uwsgi.git"
-
-  stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.11.1.tar.gz"
-    sha256 "75a7d3138cfa9cd81a760c2f8a43f3d80961edc8e4f27043dc1412206c926287"
-  end
 
   bottle do
     sha256 "436efd8be3e0436ba29c8bf0d78481509f3e5f0385822dbe39f4990b22695ff9" => :yosemite
@@ -49,6 +46,9 @@ class Uwsgi < Formula
 
   def install
     ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
+    openssl = Formula["openssl"]
+    ENV.prepend "CFLAGS", "-I#{openssl.opt_include}"
+    ENV.prepend "LDFLAGS", "-L#{openssl.opt_lib}"
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
