@@ -1052,6 +1052,29 @@ class Formula
     @alias_full_names ||= core_aliases + tap_aliases
   end
 
+  # a table mapping core alias to formula name
+  # @private
+  def self.core_alias_table
+    return @core_alias_table if @core_alias_table
+    @core_alias_table = Hash.new
+    core_alias_files.each do |alias_file|
+      @core_alias_table[alias_file.basename.to_s] = alias_file.resolved_path.basename(".rb").to_s
+    end
+    @core_alias_table
+  end
+
+  # a table mapping core formula name to aliases
+  # @private
+  def self.core_alias_reverse_table
+    return @core_alias_reverse_table if @core_alias_reverse_table
+    @core_alias_reverse_table = Hash.new
+    core_alias_table.each do |alias_name, formula_name|
+      @core_alias_reverse_table[formula_name] ||= []
+      @core_alias_reverse_table[formula_name] << alias_name
+    end
+    @core_alias_reverse_table
+  end
+
   def self.[](name)
     Formulary.factory(name)
   end
