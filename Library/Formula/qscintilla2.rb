@@ -1,8 +1,8 @@
 class Qscintilla2 < Formula
   desc "Port to Qt of the Scintilla editing component"
   homepage "http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
-  url "https://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8.4/QScintilla-gpl-2.8.4.tar.gz"
-  sha256 "9b7b2d7440cc39736bbe937b853506b3bd218af3b79095d4f710cccb0fabe80f"
+  url "https://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.9/QScintilla-gpl-2.9.tar.gz"
+  sha256 "d7c32e32582f93779de861006d87467b38b9ebc06e3d0b32e981cb24369fa417"
 
   bottle do
     sha256 "57dffa7ac659217580352a4da1d323457bad735a7761237b923c0fda5363c33c" => :yosemite
@@ -10,10 +10,10 @@ class Qscintilla2 < Formula
     sha256 "d487010da4ab0eee416ae7dcd1f22e2be2ed60984dda8da1b579094351e173f4" => :mountain_lion
   end
 
+  option "without-plugin", "Skip building the Qt Designer plugin"
+
   depends_on :python => :recommended
   depends_on :python3 => :optional
-
-  option "without-plugin", "Skip building the Qt Designer plugin"
 
   if build.with? "python3"
     depends_on "pyqt" => "with-python3"
