@@ -65,7 +65,7 @@ class Avidemux < Formula
     ENV["REV"] = version.to_s
 
     # For 32-bit compilation under gcc 4.2, see:
-    # http://trac.macports.org/ticket/20938#comment:22
+    # https://trac.macports.org/ticket/20938#comment:22
     if MacOS.version <= :leopard || (Hardware.is_32_bit? && Hardware::CPU.intel? && ENV.compiler == :clang)
       inreplace "cmake/admFFmpegBuild.cmake",
         "${CMAKE_INSTALL_PREFIX})",

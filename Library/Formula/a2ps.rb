@@ -12,17 +12,16 @@ class A2ps < Formula
     sha256 "465f3dca5424aea3d042f759809f59efc6e9605d6fd9dec3e880d0924713574a" => :mountain_lion
   end
 
-  # Software was last updated in 2007, so take MacPorts patches to get
-  # it working on 10.6. See:
+  # Software was last updated in 2007.
   # https://svn.macports.org/ticket/20867
   # https://trac.macports.org/ticket/18255
   patch :p0 do
-    url "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-contrib_sample_Makefile.in"
+    url "https://raw.githubusercontent.com/Homebrew/patches/0ae366e6/a2ps/patch-contrib_sample_Makefile.in"
     sha256 "5a34c101feb00cf52199a28b1ea1bca83608cf0a1cb123e6af2d3d8992c6011f"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/56498/trunk/dports/print/a2ps/files/patch-lib__xstrrpl.c"
+    url "https://raw.githubusercontent.com/Homebrew/patches/0ae366e6/a2ps/patch-lib__xstrrpl.c"
     sha256 "89fa3c95c329ec326e2e76493471a7a974c673792725059ef121e6f9efb05bf4"
   end
 

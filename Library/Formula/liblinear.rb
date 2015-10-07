@@ -16,7 +16,7 @@ class Liblinear < Formula
 
   # Fix sonames
   patch :p0 do
-    url "https://trac.macports.org/export/94156/trunk/dports/math/liblinear/files/patch-Makefile.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/941ec0ad/liblinear/patch-Makefile.diff"
     sha256 "ffb5206f0a6c15832574ec77863cda12eb2012e0f052bacebfe1ad722d31ea22"
   end
 

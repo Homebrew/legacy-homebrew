@@ -13,7 +13,7 @@ class Jove < Formula
 
   # Per MacPorts, avoid clash with libc getline
   patch :p0 do
-    url "https://trac.macports.org/export/120116/trunk/dports/editors/jove/files/patch-getline.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/3cada68f/jove/patch-getline.diff"
     sha256 "96e557370d6e8924cc73bda8dbe65e54f4cc902785ffcf0056d8925bb4e77bf6"
   end
 
@@ -26,6 +26,6 @@ class Jove < Formula
   end
 
   test do
-    assert_match /There's nothing to recover./, `#{lib}/jove/recover`
+    assert_match /There's nothing to recover./, shell_output("#{lib}/jove/recover")
   end
 end

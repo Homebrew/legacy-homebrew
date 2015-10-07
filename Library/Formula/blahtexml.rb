@@ -11,12 +11,12 @@ class Blahtexml < Formula
 
   # Add missing unistd.h includes, taken from MacPorts
   patch :p0 do
-    url "https://trac.macports.org/export/119768/trunk/dports/tex/blahtexml/files/patch-mainPng.cpp.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/0632225f/blahtexml/patch-mainPng.cpp.diff"
     sha256 "7d4bce5630881099b71beedbbc09b64c61849513b4ac00197b349aab2eba1687"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/119768/trunk/dports/tex/blahtexml/files/patch-main.cpp.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/0632225f/blahtexml/patch-main.cpp.diff"
     sha256 "d696d10931f2c2ded1cef50842b78887dba36679fbb2e0abc373e7b6405b8468"
   end
 
