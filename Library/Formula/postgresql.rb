@@ -23,6 +23,7 @@ class Postgresql < Formula
   option "without-perl", "Build without Perl support"
   option "without-tcl", "Build without Tcl support"
   option "with-dtrace", "Build with DTrace support"
+  option "with-pgroonga", "Build with the PGroonga postgresql extension"
 
   deprecated_option "no-perl" => "without-perl"
   deprecated_option "no-tcl" => "without-tcl"
@@ -32,6 +33,16 @@ class Postgresql < Formula
   depends_on "readline"
   depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
+
+  if build.with? "pgroonga"
+    depends_on "groonga" => :build
+    depends_on "pkg-config" => :build
+  end
+
+  resource "pgroonga" do
+    url "http://packages.groonga.org/source/pgroonga/pgroonga-0.9.0.tar.gz"
+    sha256 "846b89d20c847bf54103978e5234fab0fbf95eafdcfffb35eac5273a26357f51"
+  end
 
   conflicts_with "postgres-xc",
     :because => "postgresql and postgres-xc install the same binaries."
@@ -84,6 +95,14 @@ class Postgresql < Formula
 
     system "./configure", *args
     system "make", "install-world"
+
+    if build.with? "pgroonga"
+      resource("pgroonga").stage do
+        ENV.append_path "PATH", bin
+        system "make"
+        system "make", "install"
+      end
+    end
   end
 
   def post_install
