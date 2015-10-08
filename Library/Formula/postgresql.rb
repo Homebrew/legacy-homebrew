@@ -39,7 +39,6 @@ class Postgresql < Formula
   depends_on "readline"
   depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
-  depends_on "openssl"
   if build.with? "pgroonga"
     depends_on "groonga" => :build
     depends_on "pkg-config" => :build
@@ -65,7 +64,7 @@ class Postgresql < Formula
       --with-bonjour
       --with-gssapi
       --with-ldap
-      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-openssl
       --with-pam
       --with-libxml
       --with-libxslt
