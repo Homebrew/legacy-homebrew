@@ -1,9 +1,8 @@
 class Bitlbee < Formula
   desc "IRC to other chat networks gateway"
-  homepage "http://www.bitlbee.org/"
+  homepage "https://www.bitlbee.org/"
   url "http://get.bitlbee.org/src/bitlbee-3.4.1.tar.gz"
   sha256 "500a0b19943040d67458eb3beb0a63d004abb2aa54a777addeb2a895d4f5c0e1"
-
   head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
@@ -19,6 +18,7 @@ class Bitlbee < Formula
   deprecated_option "with-finch" => "with-pidgin"
 
   depends_on "pkg-config" => :build
+  depends_on "gettext"
   depends_on "glib"
   depends_on "gnutls"
   depends_on "libgcrypt"
@@ -26,12 +26,14 @@ class Bitlbee < Formula
   depends_on "libotr" => :optional
 
   def install
-    args = ["--prefix=#{prefix}",
-            "--debug=0",
-            "--ssl=gnutls",
-            "--pidfile=#{var}/bitlbee/run/bitlbee.pid",
-            "--config=#{var}/bitlbee/lib/",
-            "--ipsocket=#{var}/bitlbee/run/bitlbee.sock"]
+    args = %W[
+      --prefix=#{prefix}
+      --debug=0
+      --ssl=gnutls
+      --pidfile=#{var}/bitlbee/run/bitlbee.pid
+      --config=#{var}/bitlbee/lib/
+      --ipsocket=#{var}/bitlbee/run/bitlbee.sock
+    ]
 
     args << "--purple=1" if build.with? "pidgin"
     args << "--otr=1" if build.with? "libotr"
@@ -46,8 +48,8 @@ class Bitlbee < Formula
     # This build has an extra step.
     system "make", "install-etc"
 
-    (var+"bitlbee/run").mkpath
-    (var+"bitlbee/lib").mkpath
+    (var/"bitlbee/run").mkpath
+    (var/"bitlbee/lib").mkpath
   end
 
   plist_options :manual => "bitlbee -D"
