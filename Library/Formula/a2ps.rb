@@ -6,10 +6,11 @@ class A2ps < Formula
   sha256 "f3ae8d3d4564a41b6e2a21f237d2f2b104f48108591e8b83497500182a3ab3a4"
 
   bottle do
-    revision 1
-    sha256 "6129f040daef1e8b85903cf7d8441381229223070832ed914faf11fc5f819a11" => :yosemite
-    sha256 "51c3ad31ff624b50d71e146cef6da8266dbc73a771c2773016b1199211f71b72" => :mavericks
-    sha256 "465f3dca5424aea3d042f759809f59efc6e9605d6fd9dec3e880d0924713574a" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "95e6cd96cc753d9d632ac8aa1b9d5099d5507c5fb8fc085544803fd85a4bd7c8" => :el_capitan
+    sha256 "c89521bb6b3df6a8277564f264006bde650b7d214b288f4805da856a76ec3b69" => :yosemite
+    sha256 "d10db3452567e6d4a6be65f15728c40b4a62bcc374e04ff7f5d3608c294c74f4" => :mavericks
   end
 
   # Software was last updated in 2007.
