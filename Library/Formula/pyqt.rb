@@ -4,12 +4,6 @@ class Pyqt < Formula
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.4/PyQt-mac-gpl-4.11.4.tar.gz"
   sha256 "f178ba12a814191df8e9f87fb95c11084a0addc827604f1a18a82944225ed918"
 
-  bottle do
-    sha256 "81c21341066bd60ee8f0b3f88ca55aee9f5adc55f4b6310ac136f45a79501fca" => :el_capitan
-    sha256 "f91b5ad39c673c6ef5b814121a762de24f8256028e2332d8f3f1c19bf0fc85de" => :yosemite
-    sha256 "b6358ecfa032b2a174f75e82fddfefc7aeec94ea92c36e82de3cb4e4a5ff0e89" => :mavericks
-  end
-
   option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
 
@@ -43,7 +37,7 @@ class Pyqt < Formula
       # is needed by QGIS, PyQWT (and many other PyQt interoperable
       # implementations such as the ROS GUI libs). This file is currently needed
       # for generating build files appropriate for the qmake spec that was used
-      # to build Qt.  The alternatives provided by configure-ng.py is not
+      # to build Qt. The alternatives provided by configure-ng.py is not
       # sufficient to replace pyqtconfig.py yet (see
       # https://github.com/qgis/QGIS/pull/1508). Using configure.py is
       # deprecated and will be removed with SIP v5, so we do the actual compile
