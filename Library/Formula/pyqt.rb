@@ -4,6 +4,13 @@ class Pyqt < Formula
   url "https://downloads.sf.net/project/pyqt/PyQt4/PyQt-4.11.4/PyQt-mac-gpl-4.11.4.tar.gz"
   sha256 "f178ba12a814191df8e9f87fb95c11084a0addc827604f1a18a82944225ed918"
 
+  bottle do
+    revision 1
+    sha256 "6b388201f123ab3c390e08f4ff1c97e6c3ae7e4c8644fb86a2775a82bc812c19" => :el_capitan
+    sha256 "3e2e252c58bcf2692d948cfee0273f8aaf052c4d1084acbbad7ba44a43619aee" => :yosemite
+    sha256 "7fa85daa46dc9639ad1a5ce930cac1d06c722528b3caad466044b22221b2253d" => :mavericks
+  end
+
   option "without-python", "Build without python 2 support"
   depends_on :python3 => :optional
 
