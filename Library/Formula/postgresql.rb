@@ -39,8 +39,10 @@ class Postgresql < Formula
   depends_on "readline"
   depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
-  depends_on "groonga" => :build if build.with? "pgroonga"
-  depends_on "pkg-config" => :build if build.with? "pgroonga"
+  if build.with? "pgroonga"
+    depends_on "groonga" => :build
+    depends_on "pkg-config" => :build
+  end
 
   conflicts_with "postgres-xc",
     :because => "postgresql and postgres-xc install the same binaries."
