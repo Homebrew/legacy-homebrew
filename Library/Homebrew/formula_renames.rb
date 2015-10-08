@@ -11,4 +11,5 @@ FORMULA_RENAMES = {
   "plt-racket" => "racket",
   "fig" => "docker-compose",
   "polarssl" => "mbedtls",
+  "crystal" => "autocode",
 }
