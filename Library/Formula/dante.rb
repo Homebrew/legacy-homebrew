@@ -7,9 +7,10 @@ class Dante < Formula
 
   bottle do
     cellar :any
-    sha1 "2d75acdb4024c23ea3834eb2f5e95813f93c8b94" => :yosemite
-    sha1 "7f078e852cc57c0265ce8b334b2aa1111397fd76" => :mavericks
-    sha1 "d09ccfb1ad49ec06acd1200f43716eb79d71618d" => :mountain_lion
+    revision 1
+    sha256 "317f720310f59b8c3c8b12e5b971829e7c2f8513832bc1782ec01c8d598e529d" => :el_capitan
+    sha256 "610a391e6e28955b31a4f7a288ad446103e745a938c3d68f3082ff5fe1863574" => :yosemite
+    sha256 "66d48707c1e9d1fd7a891a145c4848812f5563c38357434d8dccb195b5bd7b8a" => :mavericks
   end
 
   depends_on "miniupnpc" => :optional
