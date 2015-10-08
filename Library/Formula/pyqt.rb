@@ -5,9 +5,9 @@ class Pyqt < Formula
   sha256 "f178ba12a814191df8e9f87fb95c11084a0addc827604f1a18a82944225ed918"
 
   bottle do
-    sha256 "45a0bd946b7eca2af72aa3e56bda87ad90ef54bda91f0aea05c0ea2d50d6e8c4" => :el_capitan
-    sha256 "6a5726eb3dff684c7052ea52db633f8c5333a947f97bdfab887e204b846abd7c" => :yosemite
-    sha256 "c0edd4c00b302e8e5baaa87b2c9d0e2037e93b42b0aec007dd24b80b4fbed847" => :mavericks
+    sha256 "81c21341066bd60ee8f0b3f88ca55aee9f5adc55f4b6310ac136f45a79501fca" => :el_capitan
+    sha256 "f91b5ad39c673c6ef5b814121a762de24f8256028e2332d8f3f1c19bf0fc85de" => :yosemite
+    sha256 "b6358ecfa032b2a174f75e82fddfefc7aeec94ea92c36e82de3cb4e4a5ff0e89" => :mavericks
   end
 
   option "without-python", "Build without python 2 support"
