@@ -1,9 +1,8 @@
 class Postgis < Formula
   desc "Adds support for geographic objects to PostgreSQL"
   homepage "http://postgis.net"
-  url "http://download.osgeo.org/postgis/source/postgis-2.1.7.tar.gz"
-  sha256 "00ab79a3f609d7ea458f6fc358032ad059cb720baf88285243d6436a597a7ec2"
-  revision 1
+  url "http://download.osgeo.org/postgis/source/postgis-2.1.8.tar.gz"
+  sha256 "7c2380b895fe7bda34c2e70deab3fcf4c12b13ab40d7501cdaa6fa36f1a6c662"
 
   def pour_bottle?
     # Postgres extensions must live in the Postgres prefix, which precludes
