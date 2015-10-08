@@ -3,6 +3,7 @@ class Cassandra < Formula
   homepage "https://cassandra.apache.org"
   url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.2.2/apache-cassandra-2.2.2-bin.tar.gz"
   mirror "https://archive.apache.org/dist/cassandra/2.2.2/apache-cassandra-2.2.2-bin.tar.gz"
+  sha1 "1d7e3777d09974386270347bb2d186fa5f89f0b0"
   sha256 "72faa82f1dadd40984e732918d069a55b79adf5e4ccd23d2651cbd20b0a34e80"
 
   bottle do
