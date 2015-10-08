@@ -175,6 +175,21 @@ class Llvm < Formula
   end
 
   test do
-    system "#{bin}/llvm-config", "--version"
+    assert_equal prefix.to_s, shell_output("#{bin}/llvm-config --prefix").chomp
+
+    if build.with? "clang"
+      (testpath/"test.cpp").write <<-EOS.undent
+        #include <iostream>
+        using namespace std;
+
+        int main()
+        {
+          cout << "Hello World!" << endl;
+          return 0;
+        }
+      EOS
+      system "#{bin}/clang++", "test.cpp", "-o", "test"
+      system "./test"
+    end
   end
 end
