@@ -96,7 +96,7 @@ class Postgresql < Formula
     # Now build and install pgroonga as optional resource
     if build.with? "pgroonga"
       resource("pgroonga").stage do
-        ENV.append_path "PATH", "#{Formula["postgresql"].bin}"
+        ENV.append_path "PATH", Formula["postgresql"].bin
         system "make"
         system "make", "install"
       end
