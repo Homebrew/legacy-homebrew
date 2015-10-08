@@ -28,6 +28,31 @@ class Dmd < Formula
     sha256 "102dda28a672c1c8cb99d0fefa1e0a749bfaf9ee72bc8368aa472debf8fbc70b" => :mavericks
   end
 
+  devel do
+    url "https://github.com/D-Programming-Language/dmd/archive/v2.069.0-b1.tar.gz"
+    sha256 "edd9bb128d183e9a2aad973cbb6ad106b29bcdf5b92d989282a5b6125926699d"
+    version "2.069.0-b1"
+
+    resource "druntime" do
+      url "https://github.com/D-Programming-Language/druntime/archive/v2.069.0-b1.tar.gz"
+      sha256 "786a8c5da2a9184f7a7dac27a81be2e709b4015da87eec8e86206442f6293028"
+    end
+
+    resource "phobos" do
+      url "https://github.com/D-Programming-Language/phobos/archive/v2.069.0-b1.tar.gz"
+      sha256 "47cf2a92a473a9a6e974b9f2b8a03ed5afd396d471770163a7bd64435a478268"
+    end
+
+    resource "tools" do
+      url "https://github.com/D-Programming-Language/tools/archive/v2.069.0-b1.tar.gz"
+      sha256 "d33a4807701908428315896383751b0f5371fdde4401445aeca5f5b5435be165"
+    end
+
+    # echo -n doesn't work from makefiles in OS X, because sh on OS X doesn't support it,
+    # so we use printf instead. See https://github.com/D-Programming-Language/dmd/pull/5179
+    patch :DATA
+  end
+
   head do
     url "https://github.com/D-Programming-Language/dmd.git"
 
@@ -110,3 +135,16 @@ class Dmd < Formula
     system "./hello"
   end
 end
+__END__
+diff --git a/src/posix.mak b/src/posix.mak
+index 9310f32..d84787d 100644
+--- a/src/posix.mak
++++ b/src/posix.mak
+@@ -370,7 +370,7 @@ endif
+ $(shell test \"$(VERSION)\" != "`cat verstr.h 2> /dev/null`" \
+		&& printf \"$(VERSION)\" > verstr.h )
+ $(shell test $(SYSCONFDIR) != "`cat SYSCONFDIR.imp 2> /dev/null`" \
+-		&& echo -n '$(SYSCONFDIR)' > SYSCONFDIR.imp )
++		&& printf '$(SYSCONFDIR)' > SYSCONFDIR.imp )
+
+ #########
