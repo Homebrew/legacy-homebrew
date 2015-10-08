@@ -11,27 +11,39 @@ class Red5 < Formula
     # Remove Windows scripts
     rm Dir["*.bat"]
 
-    # Install files
-    libexec.install Dir["*"]
-
     (bin/"red5").write_env_script libexec/"red5.sh", Language::Java.java_home_env("1.7+")
 
     # Move config files into etc
     (etc/"red5").install Dir["conf/*"]
-    (libexec/"conf").rmtree
-    prefix.install_symlink "#{etc}/red5" => "#{libexec}/conf"
+    libexec.install_symlink "#{etc}/red5" => "conf"
+    rm_rf Dir["conf"]
 
-    (var/"red5/webapps").install Dir["webapps/*"] unless (var/"red5/webapps").exist?
-    (libexec/"webapps").rmtree
-    prefix.install_symlink "#{var}/red5/webapps" => "#{libexec}/webapps"
+    # Move webapps into var
+    (var/"red5/webapps").install Dir["webapps/*"]
+    libexec.install_symlink "#{var}/red5/webapps" => "webapps"
+    rm_rf Dir["webapps"]
+
+    # Install others files
+    libexec.install Dir["*"]
 
     inreplace "#{libexec}/red5.sh" do |s|
       # Configure RED5_HOME
       s.sub!("export RED5_HOME=`pwd`", "export RED5_HOME=#{libexec}")
+      s.sub!("# start Red5", "# start Red5\ncd `dirname $0`")
     end
   end
 
   test do
-    # system "#{bin}/red5"
+    pid = fork do
+      exec "#{bin}/red5"
+    end
+    sleep 15
+
+    begin
+      assert_match /Red5 - The open source media server/, shell_output("curl localhost:5080")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
