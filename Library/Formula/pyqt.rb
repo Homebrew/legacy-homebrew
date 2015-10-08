@@ -28,10 +28,12 @@ class Pyqt < Formula
     Language::Python.each_python(build) do |python, version|
       ENV.append_path "PYTHONPATH", "#{Formula["sip"].opt_lib}/python#{version}/site-packages"
 
-      args = ["--confirm-license",
-              "--bindir=#{bin}",
-              "--destdir=#{lib}/python#{version}/site-packages",
-              "--sipdir=#{share}/sip"]
+      args = %W[
+        --confirm-license
+        --bindir=#{bin}
+        --destdir=#{lib}/python#{version}/site-packages
+        --sipdir=#{share}/sip
+      ]
 
       # We need to run "configure.py" so that pyqtconfig.py is generated, which
       # is needed by QGIS, PyQWT (and many other PyQt interoperable
@@ -66,7 +68,7 @@ class Pyqt < Formula
       system python, "configure-ng.py", *args
       system "make"
       system "make", "install"
-      system "make", "clean"  # for when building against multiple Pythons
+      system "make", "clean" # for when building against multiple Pythons
     end
   end
 
