@@ -17,6 +17,7 @@ class Fourstore < Formula
   depends_on "pcre"
 
   def install
+    (var/"fourstore").mkpath
     system "./configure", "--prefix=#{prefix}",
                           "--with-storage-path=#{var}/fourstore",
                           "--sysconfdir=#{etc}/fourstore"
@@ -41,6 +42,6 @@ class Fourstore < Formula
   end
 
   test do
-    system "#{bin}/4s-backend-setup", "demo"
+    assert_match version.to_s, shell_output("#{bin}/4s-admin --version")
   end
 end
