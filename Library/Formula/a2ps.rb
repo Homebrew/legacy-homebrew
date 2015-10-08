@@ -27,7 +27,8 @@ class A2ps < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}", "--sysconfdir=#{etc}",
+                          "--with-lispdir=#{share}/emacs/site-lisp/#{name}"
     system "make", "install"
   end
 
