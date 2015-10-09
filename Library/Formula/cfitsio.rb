@@ -1,7 +1,7 @@
 class Cfitsio < Formula
   desc "C access to FITS data files with optional Fortran wrappers"
-  homepage "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
-  url "http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio3370.tar.gz"
+  homepage "https://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
+  url "https://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio3370.tar.gz"
   mirror "ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3370.tar.gz"
   version "3.370"
   sha256 "092897c6dae4dfe42d91d35a738e45e8236aa3d8f9b3ffc7f0e6545b8319c63a"
@@ -16,7 +16,7 @@ class Cfitsio < Formula
   option "with-examples", "Compile and install example programs"
 
   resource "examples" do
-    url "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/cexamples.zip"
+    url "https://heasarc.gsfc.nasa.gov/docs/software/fitsio/cexamples/cexamples.zip"
     version "2014.01.23"
     sha256 "85b2deecbd40dc2d4311124758784b1ff11db1dd93ac8e7a29f3d6cda5f8aa3d"
   end
