@@ -7,9 +7,10 @@ class Dsd < Formula
 
   bottle do
     cellar :any
-    sha1 "078526fcb83180832b34282f717a9811f54d6d85" => :yosemite
-    sha1 "a86e78c5668c89567b9c0c3a46c630268901f4d7" => :mavericks
-    sha1 "7c835fae91c450e912811b7c5d3c173564283623" => :mountain_lion
+    revision 1
+    sha256 "b4dd0514fb32269f4c92d02e8057b8d6d6cd583c82cfd8509a29cb7b770a9b30" => :el_capitan
+    sha256 "545b456a92ba6da6054dc4dc54d456373d5be7b6429a015ccf8cd8278f65ee2e" => :yosemite
+    sha256 "02f0f0e3d5cbd791145706ea1019bda93c1062210df9c80aa0c532d21f1e584e" => :mavericks
   end
 
   patch do
