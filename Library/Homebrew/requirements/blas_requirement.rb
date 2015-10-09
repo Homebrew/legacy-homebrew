@@ -10,14 +10,29 @@ class BlasRequirement < Requirement
   # On Linux we can always fallback to openblas
   default_formula "openblas"   unless OS.mac?
 
+  def initialize(tags = [])
+    # if we are on OSX and need fortran and veclibfort is installed
+    # by default try it. Otherwise do standard "blas;lapack"
+    if tags.include?(:fortran) && OS.mac? && Formula["veclibfort"].installed?
+      @default_names = "veclibfort"
+      @default_lib   = "#{Formula["veclibfort"].opt_lib}"
+      @default_inc   = "#{Formula["veclibfort"].opt_include}"
+    else
+      @default_names = "blas;lapack"
+      @default_lib   = ""
+      @default_inc   = ""
+    end
+    super(tags)
+  end
+
   # This ensures that HOMEBREW_BLASLAPACK_NAMES, HOMEBREW_BLASLAPACK_LIB 
   # and HOMEBREW_BLASLAPACK_INC are always set. It does _not_ add them to 
   # CFLAGS or LDFLAGS; that should happen inside the formula.
   env do
     if @satisfied_result
-      ENV["HOMEBREW_BLASLAPACK_NAMES"] ||= "blas;lapack"
-      ENV["HOMEBREW_BLASLAPACK_LIB"]   ||= ""
-      ENV["HOMEBREW_BLASLAPACK_INC"]   ||= ""
+      ENV["HOMEBREW_BLASLAPACK_NAMES"] ||= @default_names
+      ENV["HOMEBREW_BLASLAPACK_LIB"]   ||= @default_lib
+      ENV["HOMEBREW_BLASLAPACK_INC"]   ||= @default_inc
     else
       ENV["HOMEBREW_BLASLAPACK_NAMES"]   = "#{self.class.default_formula}"
       ENV["HOMEBREW_BLASLAPACK_LIB"]     = "#{Formula[self.class.default_formula].opt_lib}"
@@ -42,9 +57,9 @@ class BlasRequirement < Requirement
   end
 
   satisfy :build_env => true do
-    blas_names = ENV["HOMEBREW_BLASLAPACK_NAMES"] || "blas;lapack"
-    blas_lib   = ENV["HOMEBREW_BLASLAPACK_LIB"]   || ""
-    blas_inc   = ENV["HOMEBREW_BLASLAPACK_INC"]   || ""
+    blas_names = ENV["HOMEBREW_BLASLAPACK_NAMES"] || @default_names
+    blas_lib   = ENV["HOMEBREW_BLASLAPACK_LIB"]   || @default_lib
+    blas_inc   = ENV["HOMEBREW_BLASLAPACK_INC"]   || @default_inc
     cflags     = BlasRequirement.cflags(blas_inc)
     ldflags    = BlasRequirement.ldflags(blas_lib,blas_names)
     # MKL BLAS may want to link against libpthread (e.g. pthread_mutex_trylock)
