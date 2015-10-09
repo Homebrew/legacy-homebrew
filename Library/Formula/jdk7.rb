@@ -1,10 +1,8 @@
 require "formula"
 
 class JdkDownloadStrategy < CurlDownloadStrategy
-  def _fetch
-    raise "On Mac OS try instead `brew cask install java`" if OS.mac?
-    curl @url, "-C", downloaded_size, "-o", temporary_path,
-      "--cookie", "oraclelicense=accept-securebackup-cookie"
+  def _curl_opts
+    super << "--cookie" << "oraclelicense=accept-securebackup-cookie"
   end
 end
 
