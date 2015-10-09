@@ -34,6 +34,12 @@ module Homebrew
           #{f.path}
         ].concat(ARGV.options_only)
 
+        if f.head?
+          args << "--HEAD"
+        elsif f.devel?
+          args << "--devel"
+        end
+
         if Sandbox.available? && ARGV.sandbox?
           if Sandbox.auto_disable?
             Sandbox.print_autodisable_warning
