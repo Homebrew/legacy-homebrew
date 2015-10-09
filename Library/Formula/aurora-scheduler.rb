@@ -10,9 +10,9 @@ class AuroraScheduler < Formula
   depends_on :java => "1.8+"
 
   def install
-    system "sed \"s/<=/</g\" buildSrc/build.gradle \> buildSrc/build.gradle"
+    remove_file("buildSrc/build.gradle", true)
+    touch("buildSrc/build.gradle")
     system "gradle", "installDist"
-
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["CFLAGS"] = "-Qunused-arguments"
     ENV["CPPFLAGS"] = "-Qunused-arguments"
@@ -21,8 +21,9 @@ class AuroraScheduler < Formula
     system "./pants", "binary", "src/main/python/apache/aurora/tools:thermos"
     system "./pants", "binary", "src/main/python/apache/aurora/tools:thermos_observer"
     system "./pants", "binary", "src/main/python/apache/thermos/bin:thermos_runner"
-    system "build-support/embed_runner_in_executor.py"
-    prefix.install Dir["dist/install/aurora-scheduler/*"]
+    system "./build-support/release/make-python-sdists"
+    system "./build-support/embed_runner_in_executor.py"
+    libexec.install Dir["dist/install/aurora-scheduler/*"]
     bin.install "dist/kaurora.pex" => "aurora"
     bin.install "dist/kaurora_admin.pex" => "aurora_admin"
     bin.install "dist/thermos_executor.pex" => "thermos_executor"
@@ -31,6 +32,10 @@ class AuroraScheduler < Formula
   end
 
   test do
-    system "gradle", "check"
+    mkdir_p("~/.aurora/")
+    touch("~/.aurora/clusters.json")
+    assert File.exist?("~/.aurora/clusters.json")
+    system "#{bin}/aurora_admin", "get_cluster_config", "devcluster"
   end
 end
+
