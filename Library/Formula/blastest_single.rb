@@ -9,13 +9,9 @@ class BlastestSingle < Formula
   depends_on :blas => :fortran
 
   def install
-    blas_names = ENV["HOMEBREW_BLASLAPACK_NAMES"]
-    blas_lib   = ENV["HOMEBREW_BLASLAPACK_LIB"]
-    blas_inc   = ENV["HOMEBREW_BLASLAPACK_INC"]
-    ldflags    = blas_lib != "" ? "-L#{blas_lib} " : ""
-    ldflags   += blas_names.split(";").map { |word| "-l#{word}" }.join(" ")
+    ldflags    = BlasRequirement.ldflags(ENV["HOMEBREW_BLASLAPACK_LIB"],ENV["HOMEBREW_BLASLAPACK_NAMES"])
     ldflags   += " -pthread -lm"
-    cflags     = blas_inc != "" ? "-I#{blas_inc}"  : ""
+    cflags     = BlasRequirement.cflags(ENV["HOMEBREW_BLASLAPACK_INC"])
     system "#{ENV.fc} blas.f90 #{cflags} -o blastest_single #{ldflags}"
     bin.install "blastest_single"
   end
