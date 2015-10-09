@@ -31,6 +31,8 @@ class AuroraScheduler < Formula
   end
 
   test do
+    mkdir_p("~/.aurora/")
+    touch("~/.aurora/clusters.json")
     system "#{bin}/aurora_admin", "get_cluster_config", "devcluster"
   end
 end
