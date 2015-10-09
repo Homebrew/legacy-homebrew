@@ -1,8 +1,9 @@
 class Pius < Formula
   desc "PGP individual UID signer"
   homepage "https://www.phildev.net/pius/"
-  url "https://github.com/jaymzh/pius/archive/v2.1.1.tar.gz"
-  sha256 "9c33bf14361fafc39ba0fed072ef211251dd315e530e39ea4014957819c492ea"
+  url "https://github.com/jaymzh/pius/archive/v2.2.1.tar.gz"
+  sha256 "6fe25dccc12045a81d1120935b936ab276ff976ed676676429d75a3df7ccfc33"
+  head "https://github.com/jaymzh/pius.git"
 
   depends_on :gpg
 
@@ -10,7 +11,7 @@ class Pius < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     # Replace hardcoded gpg path (WONTFIX):
     # https://sourceforge.net/p/pgpius/bugs/12/
-    inreplace "libpius/constants.py", "/usr/bin/gpg", "#{HOMEBREW_PREFIX}/bin/gpg"
+    inreplace "libpius/constants.py", /\/usr\/bin\/gpg2?/, "#{HOMEBREW_PREFIX}/bin/gpg"
     system "python", *Language::Python.setup_install_args(libexec)
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
