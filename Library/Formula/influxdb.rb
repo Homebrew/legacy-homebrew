@@ -18,6 +18,18 @@ class Influxdb < Formula
 
   head do
     url "https://github.com/influxdb/influxdb.git"
+
+    go_resource "github.com/dgryski/go-bitstream" do
+      url "https://github.com/dgryski/go-bitstream.git", :revision => "8c62433445abdcf8c50094b3d67a15f728d8292b"
+    end
+
+    go_resource "github.com/dgryski/go-bits" do
+      url "https://github.com/dgryski/go-bits.git", :revision => "2c7641e7dfe3945a0fe755f58c85ab306624956d"
+    end
+
+    go_resource "github.com/jwilder/encoding" do
+      url "https://github.com/jwilder/encoding.git", :revision => "07d88d4f35eec497617bee0c7bfe651a796dae13"
+    end
   end
 
   depends_on "go" => :build
@@ -27,7 +39,7 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/armon/go-metrics" do
-    url "https://github.com/armon/go-metrics.git", :revision => "b2d95e5291cdbc26997d1301a5e467ecbb240e25"
+    url "https://github.com/armon/go-metrics.git", :revision => "6c5fa0d8f48f4661c9ba8709799c88d425ad20f0"
   end
 
   go_resource "github.com/bmizerany/pat" do
@@ -35,15 +47,15 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/boltdb/bolt" do
-    url "https://github.com/boltdb/bolt.git", :revision => "033d4ec028192f38aef67ae47bd7b89f343145b5"
+    url "https://github.com/boltdb/bolt.git", :revision => "51f99c862475898df9773747d3accd05a7ca33c1"
   end
 
   go_resource "github.com/gogo/protobuf" do
-    url "https://github.com/gogo/protobuf.git", :revision => "43ab7f0ec7b6d072e0368bd537ffefe74ed30198"
+    url "https://github.com/gogo/protobuf.git", :revision => "200875106f3bf0eb01eb297dae30b250a25ffc84"
   end
 
   go_resource "github.com/golang/protobuf" do
-    url "https://github.com/golang/protobuf.git", :revision => "535a10468679b4cf155f6a7afdf53b554633fc09"
+    url "https://github.com/golang/protobuf.git", :revision => "3d2510a4dd961caffa2ae781669c628d82db700a"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -63,7 +75,7 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/peterh/liner" do
-    url "https://github.com/peterh/liner.git", :revision => "c754da6f2d91ef30ddb6c975d2dbe7696eec4fbc"
+    url "https://github.com/peterh/liner.git", :revision => "b850cf8c6d0ee52309aad09ac610508c6c75e819"
   end
 
   go_resource "github.com/rakyll/statik" do
@@ -71,7 +83,7 @@ class Influxdb < Formula
   end
 
   go_resource "golang.org/x/crypto" do
-    url "https://go.googlesource.com/crypto.git", :revision => "81bf7719a6b7ce9b665598222362b50122dfc13b"
+    url "https://go.googlesource.com/crypto.git", :revision => "c8b9e6388ef638d5a8a9d865c634befdc46a6784"
   end
 
   go_resource "gopkg.in/fatih/pool.v2" do
@@ -79,7 +91,7 @@ class Influxdb < Formula
   end
 
   go_resource "collectd.org" do
-    url "https://github.com/collectd/go-collectd.git", :revision => "b57a70fc3a8592302821687ba82204ba4071b0a8"
+    url "https://github.com/collectd/go-collectd.git", :revision => "9fc824c70f713ea0f058a07b49a4c563ef2a3b98"
   end
 
   go_resource "github.com/golang/snappy" do
