@@ -4,6 +4,13 @@ class Pmd < Formula
   url "https://github.com/pmd/pmd/releases/download/pmd_releases/5.3.3/pmd-src-5.3.3.zip"
   sha256 "38004ea3274d2f71701f438606a4c4095b7a86110e8d7f2a8940170c9bd5ddbb"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "200b328de630494f9af715dea361f58a33cbe63f05f92655e24fa303718081ec" => :el_capitan
+    sha256 "e77b25de6a13bb512d2962eab1d643d76ac7411f18bf38f049774d193ccfd43c" => :yosemite
+    sha256 "e5ed61e35b5c980b0e1bcf616bc2615f1c5310ad66ce8f4901ca225764e7e78c" => :mavericks
+  end
+
   depends_on "maven" => :build
 
   def install
