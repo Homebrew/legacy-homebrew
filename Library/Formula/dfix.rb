@@ -7,9 +7,10 @@ class Dfix < Formula
   head "https://github.com/Hackerpilot/dfix.git", :shallow => false
 
   bottle do
-    sha256 "8aa48fd6d6cfa91d379c46b6dee96d67845d127e123e0d227452a61c8933bd4a" => :yosemite
-    sha256 "1f7b5aa8773e5bece8cbd9cf7c2d2f6fe4feae19e5fd1c1951c5424dc5c35881" => :mavericks
-    sha256 "3d5160b13731c4645a467e05336bf12a9b0d89c9bfa188f11075abb007bebc63" => :mountain_lion
+    revision 1
+    sha256 "2709dd421a14b25ccfa1b2df8b099f4dee19828dab05e5890f44aaadf28de396" => :el_capitan
+    sha256 "b342cb7a7e474f1c860161bd4ccba2c7a7614fec883c6206f8b29a7c63e0ef5c" => :yosemite
+    sha256 "21833c2f187417a1c559f376f07eac40d62b289319eb8a78f433d5f7ff23030b" => :mavericks
   end
 
   depends_on "dmd" => :build
