@@ -28,6 +28,7 @@ Dependencies
 
 * **Ruby** 1.8.6 or newer
 + **GCC** 4.2 or newer
+* **Git** 1.7.12.4 or newer
 + 64-bit x86 platform
 
 Paste at a Terminal prompt:
