@@ -18,6 +18,18 @@ class Influxdb < Formula
 
   head do
     url "https://github.com/influxdb/influxdb.git"
+  
+    go_resource "github.com/dgryski/go-bitstream" do
+      url "https://github.com/dgryski/go-bitstream.git", :revision => "8c62433445abdcf8c50094b3d67a15f728d8292b"
+    end
+
+    go_resource "github.com/dgryski/go-bits" do
+      url "https://github.com/dgryski/go-bits.git", :revision => "2c7641e7dfe3945a0fe755f58c85ab306624956d"
+    end
+
+    go_resource "github.com/jwilder/encoding" do
+      url "https://github.com/jwilder/encoding.git", :revision => "07d88d4f35eec497617bee0c7bfe651a796dae13"
+    end
   end
 
   depends_on "go" => :build
