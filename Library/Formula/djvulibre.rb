@@ -6,10 +6,10 @@ class Djvulibre < Formula
   sha256 "e69668252565603875fb88500cde02bf93d12d48a3884e472696c896e81f505f"
 
   bottle do
-    sha256 "e68742330649c92707eef3711cc966e6f9de984572f13f5acd8694574dcdcfb4" => :el_capitan
-    sha256 "6bcc53ce6acccef4ab6bdf3150887a054165fe7d6984917bf1a65af5ba9ab228" => :yosemite
-    sha256 "ed02ea82754109ea5d3e6767d80d49133a6552696aa5405b30a93569886f6ce4" => :mavericks
-    sha256 "a1fc4dd16370cb5949ce1df38105dbc94b7934f876b7e35c6e904927563d7f93" => :mountain_lion
+    revision 1
+    sha256 "eac32524be9ba27942b248fb6b330dcbb1e905b5e50a3957b9b0ed389e10f797" => :el_capitan
+    sha256 "8b23e45b77fd05646e3b81012eccdae2ecc67fe668b6974acf2ff744b1585402" => :yosemite
+    sha256 "b62d17ef5e5adf9da600eff7aa68b60f9eb7e7c067c6143749e0f74664c2618a" => :mavericks
   end
 
   head do
