@@ -11,7 +11,7 @@ class Pius < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     # Replace hardcoded gpg path (WONTFIX):
     # https://sourceforge.net/p/pgpius/bugs/12/
-    inreplace "libpius/constants.py", /\/usr\/bin\/gpg2?/, "#{HOMEBREW_PREFIX}/bin/gpg"
+    inreplace "libpius/constants.py", %r{/usr/bin/gpg2?}, "#{HOMEBREW_PREFIX}/bin/gpg"
     system "python", *Language::Python.setup_install_args(libexec)
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
