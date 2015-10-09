@@ -4,7 +4,7 @@ brew(1) -- The missing package manager for OS X
 ## SYNOPSIS
 
 `brew` `--version`<br>
-`brew` <command> [`--verbose`|`-v`] [<options>] [<formula>] ...
+`brew` <command> [`--verbose`|`-v`] [`--debug`|`-d`] [<options>] [<formula>] ...
 
 ## DESCRIPTION
 
@@ -15,7 +15,10 @@ didn't include with OS X.
 
 For the full command list, see the [COMMANDS][] section.
 
-With `--verbose` or `-v`, many commands print extra debugging information. Note that these flags should only appear after a command.
+With `--verbose` or `-v`, many commands print extra debugging information. 
+With `--debug` or `-d`, additional debugging output and behaviors are enabled.
+Details are documented under the individual commands below.
+Note that these flags should only appear after a command.
 
   * `install` <formula>:
     Install <formula>.
