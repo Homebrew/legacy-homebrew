@@ -26,7 +26,7 @@ class AuroraScheduler < Formula
     libexec.install Dir["dist/install/aurora-scheduler/*"]
     bin.install "dist/kaurora.pex" => "aurora"
     bin.install "dist/kaurora_admin.pex" => "aurora_admin"
-    bin.install "dist/thermos_executor.pex" => "thermos_executor"
+    libexec.install "dist/thermos_executor.pex" => "bin/thermos_executor"
     bin.install "dist/thermos_runner.pex" => "thermos_runner"
     bin.install "dist/thermos_observer.pex" => "thermos_observer"
   end
@@ -38,4 +38,3 @@ class AuroraScheduler < Formula
     system "#{bin}/aurora_admin", "get_cluster_config", "devcluster"
   end
 end
-
