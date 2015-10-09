@@ -7,8 +7,13 @@ class Caveats
 
   def caveats
     caveats = []
-    s = f.caveats.to_s
-    caveats << s.chomp + "\n" if s.length > 0
+    begin
+      build, f.build = f.build, Tab.for_formula(f)
+      s = f.caveats.to_s
+      caveats << s.chomp + "\n" if s.length > 0
+    ensure
+      f.build = build
+    end
     caveats << keg_only_text
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats

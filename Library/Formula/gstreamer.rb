@@ -1,16 +1,13 @@
 class Gstreamer < Formula
   desc "GStreamer is a development framework for multimedia applications"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.5.tar.xz"
-  sha256 "40801aa7f979024526258a0e94707ba42b8ab6f7d2206e56adbc4433155cb0ae"
+  url "https://download.gnome.org/sources/gstreamer/1.6/gstreamer-1.6.0.tar.xz"
+  sha256 "52ef885647afef11c8b7645a9afefe04aa09e8971c4b932e7717872ab8a30fcc"
 
   bottle do
-    revision 2
-    sha256 "ef286655192a6ee7283fbb536465062e55d8f7627993adcc67152c1d3ec8ee85" => :el_capitan
-    sha256 "ac4e49623736041c7d8fdc981c155b7c40e12c17c0f7e04d2f32d2f0ee1b5ffb" => :yosemite
-    sha256 "2a91498326318c4de55ddb5eae47b3540bbda7ac44166899886e5cc1c2ad7fb2" => :mavericks
-    sha256 "b943636f153cc792c2d63e7ce68c4084d1ffff2987606e8ec95f1ef0a77cea82" => :mountain_lion
+    sha256 "6b75e4ba010fd85957d99abf356da19e4bb991031a5938bcd0c84e0e8ed25b8b" => :el_capitan
+    sha256 "370ba64ff63f4d80c445b317a0380afb91c92fd60b45dde385f9ff888975df87" => :yosemite
+    sha256 "32f9f7ee8a26494bac8ee4805b8a23569bbb2ab4cfd9779703d0be3ff772e0ae" => :mavericks
   end
 
   head do

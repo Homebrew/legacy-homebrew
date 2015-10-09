@@ -1,9 +1,18 @@
 class Yara < Formula
   desc "Malware identification and classification tool"
   homepage "https://github.com/plusvic/yara/"
-  url "https://github.com/plusvic/yara/archive/v3.4.0.tar.gz"
-  sha256 "528571ff721364229f34f6d1ff0eedc3cd5a2a75bb94727dc6578c6efe3d618b"
   head "https://github.com/plusvic/yara.git"
+
+  stable do
+    url "https://github.com/plusvic/yara/archive/v3.4.0.tar.gz"
+    sha256 "528571ff721364229f34f6d1ff0eedc3cd5a2a75bb94727dc6578c6efe3d618b"
+
+    # fixes a variable redefinition error with clang (fixed in HEAD)
+    patch do
+      url "https://github.com/plusvic/yara/pull/261.diff"
+      sha256 "6b5c135b577a71ca1c1a5f0a15e512f5157b13dfbd08710f9679fb4cd0b47dba"
+    end
+  end
 
   bottle do
     cellar :any
@@ -19,12 +28,6 @@ class Yara < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "pcre"
   depends_on "openssl"
-
-  # fixes a variable redefinition error with clang
-  patch do
-    url "https://github.com/plusvic/yara/pull/261.diff"
-    sha256 "6b5c135b577a71ca1c1a5f0a15e512f5157b13dfbd08710f9679fb4cd0b47dba"
-  end
 
   def install
     # Use of "inline" requires gnu89 semantics

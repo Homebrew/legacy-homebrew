@@ -141,9 +141,13 @@ module Homebrew
     results = (Formula.full_names+aliases).grep(rx).sort
 
     results.map do |name|
-      formula = Formulary.factory(name)
-      canonical_name = formula.name
-      canonical_full_name = formula.full_name
+      begin
+        formula = Formulary.factory(name)
+        canonical_name = formula.name
+        canonical_full_name = formula.full_name
+      rescue
+        canonical_name = canonical_full_name = name
+      end
       # Ignore aliases from results when the full name was also found
       if aliases.include?(name) && results.include?(canonical_full_name)
         next

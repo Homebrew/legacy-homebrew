@@ -33,6 +33,25 @@ class Automake < Formula
   end
 
   test do
-    system "#{bin}/automake", "--version"
+    (testpath/"test.c").write <<-EOS.undent
+      int main() { return 0; }
+    EOS
+    (testpath/"configure.ac").write <<-EOS.undent
+      AC_INIT(test, 1.0)
+      AM_INIT_AUTOMAKE
+      AC_PROG_CC
+      AC_CONFIG_FILES(Makefile)
+      AC_OUTPUT
+    EOS
+    (testpath/"Makefile.am").write <<-EOS.undent
+      bin_PROGRAMS = test
+      test_SOURCES = test.c
+    EOS
+    system bin/"aclocal"
+    system bin/"automake", "--add-missing", "--foreign"
+    system "autoconf"
+    system "./configure"
+    system "make"
+    system "./test"
   end
 end

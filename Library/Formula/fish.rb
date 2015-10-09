@@ -16,6 +16,7 @@ class Fish < Formula
 
     depends_on "autoconf" => :build
     depends_on "doxygen" => :build
+    depends_on "pcre2"
   end
 
   def install

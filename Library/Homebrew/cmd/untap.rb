@@ -6,7 +6,7 @@ module Homebrew
     raise "Usage is `brew untap <tap-name>`" if ARGV.empty?
 
     ARGV.named.each do |tapname|
-      tap = Tap.new(*tap_args(tapname))
+      tap = Tap.fetch(*tap_args(tapname))
 
       raise TapUnavailableError, tap.name unless tap.installed?
       puts "Untapping #{tap}... (#{tap.path.abv})"

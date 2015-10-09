@@ -1,8 +1,8 @@
 class Redpen < Formula
   desc "Proofreading tool to help writers of technical documentation"
   homepage "http://redpen.cc/"
-  url "https://github.com/recruit-tech/redpen/releases/download/v1.3.0/redpen-1.3.0.tar.gz"
-  sha256 "3e3aa98fb83acb6c4db96dcc5c44e02fee211dc3edf0fad9cecf1eb374df3e8b"
+  url "https://github.com/recruit-tech/redpen/releases/download/v1.4.0/redpen-1.4.0.tar.gz"
+  sha256 "ad8d81e6dc67990055f4eacb0cb069bf7a17e50a6d45f471c655231f931554f3"
 
   depends_on :java => "1.8"
 

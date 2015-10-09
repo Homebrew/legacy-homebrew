@@ -1,21 +1,20 @@
 class Libsigcxx < Formula
   desc "Callback framework for C++"
   homepage "http://libsigc.sourceforge.net"
-  url "https://download.gnome.org/sources/libsigc++/2.4/libsigc++-2.4.1.tar.xz"
-  sha256 "540443492a68e77e30db8d425f3c0b1299c825bf974d9bfc31ae7efafedc19ec"
+  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.1.tar.xz"
+  sha256 "186f2167c1b3d90529ce8e715246bf160bc67ec1ec19f4e45d76c0ae54dfbe1b"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "2432f8ce2c0da7ad738da40914362be21c354d139a35865404aa3a4afe6d5443" => :el_capitan
-    sha256 "c359344a9687379f811feef287e38eb344a18042e16194f26e40521fdf625f6b" => :yosemite
-    sha256 "258748c43eb3d2d530b382cbee57b42ad6f1cea7eab162791f113bd30f07ebd0" => :mavericks
+    sha256 "7cb0428fce126cba9275b8212eedc7f56544829c52aec30096c7bc64a51e8d8a" => :el_capitan
+    sha256 "68673c2a78a593dafb0c980e00b87057c449c0a751fca4ee10a678d57f00a958" => :yosemite
+    sha256 "3bc196123da746ebdbab0902faf5bd9b2043e51530085c651bdad1f36292b011" => :mavericks
   end
 
-  option :cxx11
+  needs :cxx11
 
   def install
-    ENV.cxx11 if build.cxx11?
+    ENV.cxx11
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
     system "make"
     system "make", "check"
@@ -33,7 +32,7 @@ class Libsigcxx < Formula
          return 0;
       }
     EOS
-    system ENV.cxx, "test.cpp",
+    system ENV.cxx, "-std=c++11", "test.cpp",
                    "-L#{lib}", "-lsigc-2.0", "-I#{include}/sigc++-2.0", "-I#{lib}/sigc++-2.0/include", "-o", "test"
     system "./test"
   end

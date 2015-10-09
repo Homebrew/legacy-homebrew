@@ -1,10 +1,14 @@
 class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://www.phantomjs.org/"
+  head "https://github.com/ariya/phantomjs.git"
 
   stable do
     url "https://github.com/ariya/phantomjs/archive/2.0.0.tar.gz"
     sha256 "0a1338464ca37314037d139b3e0f7368325f5d8810628d9d9f2df9f9f535d407"
+
+    # https://github.com/Homebrew/homebrew/issues/42249
+    depends_on MaximumMacOSRequirement => :yosemite
 
     # Qt Yosemite build fix. Upstream commit/PR:
     # https://qt.gitorious.org/qt/qtbase/commit/70e442
@@ -21,10 +25,6 @@ class Phantomjs < Formula
     sha1 "817ab92d4bfcd5496cf1c59173d48976610e5f70" => :mavericks
     sha1 "887a96e55f67a3d350bc40f910926286c6cea240" => :mountain_lion
   end
-
-  head "https://github.com/ariya/phantomjs.git"
-
-  depends_on MaximumMacOSRequirement => :yosemite
 
   def install
     system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
