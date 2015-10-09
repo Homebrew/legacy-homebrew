@@ -2,7 +2,13 @@ require "requirement"
 
 class BlasRequirement < Requirement
   fatal true
-  default_formula "openblas"
+  # on OSX -lblas and -llapack should work OOB.
+  # the only case when test should fail is when we
+  # need BLAS with single precision or complex with Fortran =>
+  # use veclibfort
+  default_formula "veclibfort" if OS.mac?
+  # On Linux we can always fallback to openblas
+  default_formula "openblas"   unless OS.mac?
 
   # This ensures that HOMEBREW_BLASLAPACK_NAMES, HOMEBREW_BLASLAPACK_LIB 
   # and HOMEBREW_BLASLAPACK_INC are always set. It does _not_ add them to 
@@ -13,9 +19,9 @@ class BlasRequirement < Requirement
       ENV["HOMEBREW_BLASLAPACK_LIB"]   ||= ""
       ENV["HOMEBREW_BLASLAPACK_INC"]   ||= ""
     else
-      ENV["HOMEBREW_BLASLAPACK_NAMES"]   = "openblas"
-      ENV["HOMEBREW_BLASLAPACK_LIB"]     = "#{Formula["openblas"].opt_lib}"
-      ENV["HOMEBREW_BLASLAPACK_INC"]     = "#{Formula["openblas"].opt_include}"
+      ENV["HOMEBREW_BLASLAPACK_NAMES"]   = "#{self.class.default_formula}"
+      ENV["HOMEBREW_BLASLAPACK_LIB"]     = "#{Formula[self.class.default_formula].opt_lib}"
+      ENV["HOMEBREW_BLASLAPACK_INC"]     = "#{Formula[self.class.default_formula].opt_include}"
     end
   end
 
@@ -43,6 +49,35 @@ class BlasRequirement < Requirement
       EOS
       success = system "#{ENV["CC"]} #{cflags} #{tmpdir}/blastest.c -o #{tmpdir}/blastest #{ldflags}",
                 :err => "/dev/null"
+      # test fortran to invoke libveclibfort on OS-X
+      if @tags.include?(:fortran)
+        (tmpdir/"blastest.f90").write <<-EOS.undent
+          program test
+          implicit none
+          integer, parameter :: dp = kind(1.0d0)
+          real(dp), external :: ddot
+          real, external :: sdot
+          real, dimension(3) :: a,b
+          real(dp), dimension(3) :: d,e
+          integer :: i
+          do i = 1,3
+            a(i) = 1.0*i
+            b(i) = 3.5*i
+            d(i) = 1.0d0*i
+            e(i) = 3.5d0*i
+          end do
+          if (ABS(ddot(3,d,1,e,1)-sdot(3,a,1,b,1))>1E-10) then
+            call exit(1)
+          endif
+          end program test
+        EOS
+        fortran = which(ENV["FC"] || "gfortran")
+        success2 = system "#{fortran} #{cflags} #{tmpdir}/blastest.f90 -o #{tmpdir}/blastest #{ldflags}",
+               :err => "/dev/null"
+        success3 = system "#{tmpdir}/blastest",
+               :err => "/dev/null"
+        success = ( success && success2 ) && success3
+      end 
     end
     if !success
       opoo "BLAS not configured"
