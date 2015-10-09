@@ -13,7 +13,9 @@ class Cgal < Formula
 
   option :cxx11
 
-  option "imaging", "Build ImageIO and QT compoments of CGAL"
+  deprecated_option "imaging" => "with-imaging"
+
+  option "with-imaging", "Build ImageIO and QT compoments of CGAL"
   option "with-eigen3", "Build with Eigen3 support"
   option "with-lapack", "Build with LAPACK support"
 
@@ -27,7 +29,7 @@ class Cgal < Formula
   end
   depends_on "mpfr"
 
-  depends_on "qt" if build.include? "imaging"
+  depends_on "qt" if build.with? "imaging"
   depends_on "eigen" if build.with? "eigen3"
 
   # Allows to compile with clang 425: http://goo.gl/y9Dg2y
@@ -38,8 +40,9 @@ class Cgal < Formula
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DCMAKE_BUILD_TYPE=Release",
             "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
-            "-DCMAKE_INSTALL_NAME_DIR=#{HOMEBREW_PREFIX}/lib"]
-    unless build.include? "imaging"
+            "-DCMAKE_INSTALL_NAME_DIR=#{HOMEBREW_PREFIX}/lib",
+           ]
+    if build.without? "imaging"
       args << "-DWITH_CGAL_Qt3=OFF" << "-DWITH_CGAL_Qt4=OFF" << "-DWITH_CGAL_ImageIO=OFF"
     end
     if build.with? "eigen3"

@@ -19,6 +19,6 @@ class Chisel < Formula
     xcode_path = `xcode-select --print-path`.strip
     lldb_rel_path = "Contents/SharedFrameworks/LLDB.framework/Resources/Python"
     ENV["PYTHONPATH"] = "#{xcode_path}/../../#{lldb_rel_path}"
-    system "python #{libexec}/fblldb.py"
+    system "python", "#{libexec}/fblldb.py"
   end
 end

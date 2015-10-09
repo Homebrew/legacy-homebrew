@@ -3,8 +3,8 @@ class Cfitsio < Formula
   homepage "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
   url "http://heasarc.gsfc.nasa.gov/FTP/software/fitsio/c/cfitsio3370.tar.gz"
   mirror "ftp://heasarc.gsfc.nasa.gov/software/fitsio/c/cfitsio3370.tar.gz"
-  sha256 "092897c6dae4dfe42d91d35a738e45e8236aa3d8f9b3ffc7f0e6545b8319c63a"
   version "3.370"
+  sha256 "092897c6dae4dfe42d91d35a738e45e8236aa3d8f9b3ffc7f0e6545b8319c63a"
 
   option "with-examples", "Compile and install example programs"
 
@@ -20,7 +20,7 @@ class Cfitsio < Formula
     system "make", "install"
 
     if build.with? "examples"
-      system "make fpack funpack"
+      system "make", "fpack", "funpack"
       bin.install "fpack", "funpack"
 
       resource("examples").stage do
