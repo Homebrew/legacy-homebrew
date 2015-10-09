@@ -11,6 +11,7 @@ class Blastest < Formula
     ldflags    = BlasRequirement.ldflags(ENV["HOMEBREW_BLASLAPACK_LIB"],ENV["HOMEBREW_BLASLAPACK_NAMES"])
     ldflags   += " -pthread -lm"
     cflags     = BlasRequirement.cflags(ENV["HOMEBREW_BLASLAPACK_INC"])
+    ohai "Full path: " + BlasRequirement.full_path(ENV["HOMEBREW_BLASLAPACK_LIB"],ENV["HOMEBREW_BLASLAPACK_NAMES"],";")
     system "#{ENV.cc} blastest.c #{cflags} -o blastest #{ldflags}"
     bin.install "blastest"
   end

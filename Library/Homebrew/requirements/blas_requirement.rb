@@ -37,7 +37,8 @@ class BlasRequirement < Requirement
 
   def self.full_path(blas_lib,blas_names,separator)
     exten = (OS.mac?) ? "dylib" : "so"
-    return blas_names.split(";").map { |word| "#{blas_lib}/lib#{word}.#{exten}" }.join(separator)
+    tmp = blas_lib.chomp("/")
+    return blas_names.split(";").map { |word| "#{tmp}/lib#{word}.#{exten}" }.join(separator)
   end
 
   satisfy :build_env => true do
