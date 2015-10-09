@@ -1,9 +1,9 @@
 class AptCacherNg < Formula
   desc "Caching proxy"
   homepage "https://www.unix-ag.uni-kl.de/~bloch/acng/"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.5.orig.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.5.orig.tar.xz"
-  sha256 "f4e80adb02ad68a5f79a23335f1cc1e6b8a610b2c70749d9a1ce44171766775c"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.6.orig.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.6.orig.tar.xz"
+  sha256 "255b742d3551fcbfa71b6df4d8892038934812425222a15d085436a4a76b8400"
 
   bottle do
     cellar :any
@@ -24,24 +24,25 @@ class AptCacherNg < Formula
     ENV.cxx11
 
     # https://alioth.debian.org/tracker/index.php?func=detail&aid=315130&group_id=100566&atid=413111
-    # Clang expects a semicolon after expression usage.
-    inreplace "source/lockable.cc",
-              "r=pthread_cond_timedwait(&m_obj_cond, &m_obj_mutex, &timeout)",
-              "r=pthread_cond_timedwait(&m_obj_cond, &m_obj_mutex, &timeout);"
-    # --as-needed is unrecognised by LD on OS X and breaks compile.
-    inreplace "CMakeLists.txt", "--as-needed", ""
-
-    inreplace "conf/acng.conf" do |s|
-      s.gsub! /^CacheDir: .*/, "CacheDir: #{var}/spool/apt-cacher-ng"
-      s.gsub! /^LogDir: .*/, "LogDir: #{var}/log"
-    end
+    # All of these cause breakage during compile. Have added a comment to original bug report.
+    inreplace "CMakeLists.txt",
+      "linkarg -Wl,--as-needed -Wl,-O1 -Wl,--discard-all -Wl,--no-undefined -Wl,--build-id=sha1",
+      "linkarg -Wl"
 
     (var/"spool/apt-cacher-ng").mkpath
     (var/"log").mkpath
 
-    system "make", "apt-cacher-ng"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "apt-cacher-ng"
+    end
 
-    etc.install "conf" => "apt-cacher-ng" unless File.exist?(etc/"apt-cacher-ng")
+    inreplace "build/conf/acng.conf" do |s|
+      s.gsub! /^CacheDir: .*/, "CacheDir: #{var}/spool/apt-cacher-ng"
+      s.gsub! /^LogDir: .*/, "LogDir: #{var}/log"
+    end
+
+    etc.install "build/conf" => "apt-cacher-ng" unless File.exist?(etc/"apt-cacher-ng")
     sbin.install "build/apt-cacher-ng"
     man8.install "doc/man/apt-cacher-ng.8"
   end
@@ -85,7 +86,7 @@ class AptCacherNg < Formula
     sleep 2
 
     begin
-      assert_match /Debian Apt-Cacher-NG/, shell_output("curl localhost:3142")
+      assert_match /Information about APT configuration/, shell_output("curl localhost:3142")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)
