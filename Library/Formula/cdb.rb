@@ -22,7 +22,6 @@ class Cdb < Formula
     pipe_output("#{bin}/cdbmake db dbtmp", record, 0)
     assert File.exist? "db"
     assert_equal(record,
-                 pipe_output("#{bin}/cdbdump", (testpath/"db").binread, 0),
-                )
+                 pipe_output("#{bin}/cdbdump", (testpath/"db").binread, 0))
   end
 end
