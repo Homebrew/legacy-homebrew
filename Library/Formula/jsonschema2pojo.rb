@@ -12,9 +12,6 @@ class Jsonschema2pojo < Formula
   end
 
   test do
-    require "tmpdir"
-    require "tempfile"
-
     json = <<-EOS.undent.chomp
     {
       "type":"object",
@@ -32,14 +29,8 @@ class Jsonschema2pojo < Formula
     }
     EOS
 
-    Dir.mktmpdir do |outdir|
-      Dir.mktmpdir do |srcdir|
-        f = File.open("#{srcdir}/jsonschema.json", "w")
-        f.write json
-        f.close
-        system "#{bin}/jsonschema2pojo", "-s", f.path, "-t", outdir
-        File.exist? "#{outdir}/Jsonschema.java"
-      end
-    end
+    (testpath/"src/jsonschema.json").write json
+    system "#{bin}/jsonschema2pojo", "-s", testpath/"src", "-t", testpath/"out"
+    assert (testpath/"out/Jsonschema.java").exist?
   end
 end
