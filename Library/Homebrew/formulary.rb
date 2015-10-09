@@ -217,10 +217,15 @@ class Formulary
     tap = tab.tap
     spec ||= tab.spec
 
-    if tap.nil? || tap == "Homebrew/homebrew"
+    if tap.nil?
       factory(rack.basename.to_s, spec)
     else
-      factory("#{tap.sub("homebrew-", "")}/#{rack.basename}", spec)
+      begin
+        factory("#{tap}/#{rack.basename}", spec)
+      rescue FormulaUnavailableError
+        # formula may be migrated to different tap. Try to search in core and all taps.
+        factory(rack.basename.to_s, spec)
+      end
     end
   end
 
