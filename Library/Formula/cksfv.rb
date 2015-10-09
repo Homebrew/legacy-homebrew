@@ -13,6 +13,6 @@ class Cksfv < Formula
     path = testpath/"foo"
     path.write "abcd"
 
-    assert shell_output("#{bin}/cksfv #{path}").include?("#{path} ED82CD11")
+    assert_match "#{path} ED82CD11", shell_output("#{bin}/cksfv #{path}")
   end
 end
