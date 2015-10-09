@@ -1,5 +1,3 @@
-require "formula"
-
 class JdkDownloadStrategy < CurlDownloadStrategy
   def _curl_opts
     super << "--cookie" << "oraclelicense=accept-securebackup-cookie"
