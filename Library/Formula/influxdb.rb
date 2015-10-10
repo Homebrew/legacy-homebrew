@@ -18,7 +18,6 @@ class Influxdb < Formula
 
   head do
     url "https://github.com/influxdb/influxdb.git"
-  
     go_resource "github.com/dgryski/go-bitstream" do
       url "https://github.com/dgryski/go-bitstream.git", :revision => "8c62433445abdcf8c50094b3d67a15f728d8292b"
     end
