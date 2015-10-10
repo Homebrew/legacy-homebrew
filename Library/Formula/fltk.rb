@@ -10,24 +10,24 @@ class Fltk < Formula
   option :universal
 
   stable do
-    # Fltk 1.3.4 include support for El Capitan. Remove on update.
-    depends_on MaximumMacOSRequirement => :yosemite
     url "https://fossies.org/linux/misc/fltk-1.3.3-source.tar.gz"
     sha256 "f8398d98d7221d40e77bc7b19e761adaf2f1ef8bb0c30eceb7beb4f2273d0d97"
     
     # Fixes issue with -lpng not found.
     # Based on: https://trac.macports.org/browser/trunk/dports/aqua/fltk/files/patch-src-Makefile.diff
     patch :DATA
+    
+    # Fltk 1.3.4 include support for El Capitan. Remove on update.
+    depends_on MaximumMacOSRequirement => :yosemite
   end
 
-  # Fltk 1.3.4 include support for OS X El Capitan
   head do
     url "http://seriss.com/public/fltk/fltk/branches/branch-1.3/", :using => :svn
+    depends_on "cmake" => :build
   end
 
   depends_on "libpng"
   depends_on "jpeg"
-  depends_on "cmake" => :build
 
   fails_with :clang do
     build 318
