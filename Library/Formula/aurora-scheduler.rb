@@ -15,8 +15,8 @@ class AuroraScheduler < Formula
   def install
     remove_file("buildSrc/build.gradle", true)
     touch("buildSrc/build.gradle")
-    system "gradle"
-    system "gradle", "installDist"
+    system "gradle", "wrapper"
+    system "./gradlew", "installDist"
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["CFLAGS"] = "-Qunused-arguments"
     ENV["CPPFLAGS"] = "-Qunused-arguments"
