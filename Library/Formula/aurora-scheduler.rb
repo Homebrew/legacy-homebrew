@@ -35,7 +35,7 @@ class AuroraScheduler < Formula
   test do
     mkdir_p("~/.aurora/")
     touch("~/.aurora/clusters.json")
-    File.open("~/.aurora/clusters.json", 'w') {|f| f.write("[{ \"name\": \"devcluster\", \"slave_root\": \"/tmp/mesos/\", \"zk\": \"127.0.0.1\", \"scheduler_zk_path\": \"/aurora/scheduler\", \"auth_mechanism\": \"UNAUTHENTICATED\" }]") }
+    File.open("~/.aurora/clusters.json", "w") { f.write("[{ \"name\": \"devcluster\", \"slave_root\": \"/tmp/mesos/\", \"zk\": \"127.0.0.1\", \"scheduler_zk_path\": \"/aurora/scheduler\", \"auth_mechanism\": \"UNAUTHENTICATED\" }]") }
     system "#{bin}/aurora_admin", "get_cluster_config", "devcluster"
   end
 end
