@@ -15,12 +15,12 @@ class Xaric < Formula
 
   def install
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "withval=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 
   test do
-    assert_match(/Xaric #{version}/,
-                 shell_output("script -q /dev/null xaric -v"))
+    assert_match(/Xaric #{version}/, shell_output("script -q /dev/null xaric -v"))
   end
 end
