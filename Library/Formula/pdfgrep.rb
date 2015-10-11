@@ -1,8 +1,8 @@
 class Pdfgrep < Formula
   desc "Search PDFs for strings matching a regular expression"
   homepage "https://pdfgrep.org/"
-  url "https://pdfgrep.org/download/pdfgrep-1.3.2.tar.gz"
-  sha256 "386b167434443dd299d389a0ef292d708123255cbab0e179e11b65ba51d9b386"
+  url "https://pdfgrep.org/download/pdfgrep-1.4.1.tar.gz"
+  sha256 "db04a210e6bb7b77cd6c54b17f0f6fed0d123a85f97a541b270736a5d3840f2c"
 
   head do
     url "https://gitlab.com/pdfgrep/pdfgrep.git"
@@ -21,10 +21,15 @@ class Pdfgrep < Formula
 
   depends_on "pkg-config" => :build
   depends_on "poppler"
+  depends_on "pcre" => :optional
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--without-libpcre" if build.without? "pcre"
+    system "./configure", *args
+
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     system "make", "install"
   end
