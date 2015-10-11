@@ -82,7 +82,7 @@ class Sphinx < Formula
 
   def caveats; <<-EOS.undent
     This is not sphinx - the Python Documentation Generator.
-    To install sphinx-python: use pip or easy_install,
+    To install sphinx-python use pip.
 
     Sphinx has been compiled with libstemmer support.
 
