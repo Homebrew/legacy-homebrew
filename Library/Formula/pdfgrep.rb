@@ -13,10 +13,9 @@ class Pdfgrep < Formula
 
   bottle do
     cellar :any
-    sha256 "b50c6e71def4b4fdae303a083fa7813fa2734805f7779e5a519f588f532e92bd" => :el_capitan
-    sha256 "a53218bf50749df4b6f4c8a935e71c4dbca43c873f7194866043241d78f61478" => :yosemite
-    sha256 "47140f3965dc224850b58a09d1c9b6aac2092671cc86977d16b643c1ee765c1d" => :mavericks
-    sha256 "e1a02806c1024b3f3a1cf745617d2e4118687db1d0130ef369c0f171ce52fc8a" => :mountain_lion
+    sha256 "aa01210c18cae84398d94524d8578dfb738ff524eea05c9f77323a669667f52b" => :el_capitan
+    sha256 "79115ba8d82cea98bef279cf755a452e76f28c687b97fc01ee0e3be7228bd559" => :yosemite
+    sha256 "9f2b75a9d7e0910f4801794c108b451988c952f3d0690f15c0486b3c80ff12e7" => :mavericks
   end
 
   depends_on "pkg-config" => :build
