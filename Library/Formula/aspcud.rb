@@ -12,7 +12,7 @@ class Aspcud < Formula
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
-  depends_on "re2c"  => :build
+  depends_on "re2c" => :build
   depends_on "gringo"
   depends_on "clasp"
 
