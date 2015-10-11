@@ -17,15 +17,36 @@ class AuroraScheduler < Formula
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["CFLAGS"] = "-Qunused-arguments"
     ENV["CPPFLAGS"] = "-Qunused-arguments"
+    File.write(".pantsversion", File.open(".pantsversion", &:read).gsub(/0\.0\.32/, "0.0.53"))
+    tools = <<-EOS.undent
+      # common rev for all org.scala-lang%* artifacts
+      SCALA_REV = '2.10.4'
+
+      jar_library(name = 'scala-compiler',
+                  jars = [
+                    jar(org = 'org.scala-lang', name = 'scala-compiler', rev = SCALA_REV),
+                  ])
+
+      jar_library(name = 'scala-library',
+                  jars = [
+                    jar(org = 'org.scala-lang', name = 'scala-library', rev = SCALA_REV),
+                  ])
+
+      jar_library(name = 'scala-repl',
+                  jars = [
+                    jar(org = 'org.scala-lang', name = 'jline', rev = SCALA_REV, intransitive = True),
+                  ],
+                  dependencies = [
+                    ':scala-compiler',
+                    ':scala-library',
+                  ])
+    EOS
+    File.open("BUILD.tools", "a+") { |f| f.puts(tools) }
+    system "./build-support/python/update-pants-requirements"
     system "./pants", "binary", "src/main/python/apache/aurora/client/cli:kaurora"
     system "./pants", "binary", "src/main/python/apache/aurora/admin:kaurora_admin"
-    system "./pants", "binary", "src/main/python/apache/aurora/tools:thermos"
-    system "./pants", "binary", "src/main/python/apache/aurora/tools:thermos_observer"
-    system "./pants", "binary", "src/main/python/apache/thermos/bin:thermos_runner"
     bin.install "dist/kaurora.pex" => "aurora"
     bin.install "dist/kaurora_admin.pex" => "aurora_admin"
-    bin.install "dist/thermos_runner.pex" => "thermos_runner"
-    bin.install "dist/thermos_observer.pex" => "thermos_observer"
   end
 
   test do
