@@ -1,7 +1,7 @@
 class Fltk < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "http://www.fltk.org/"
-  
+
   bottle do
     sha1 "33c75cce41deadbfe54bdcc22ae91d17d3ecc782" => :mavericks
     sha1 "3674769086a1a667379c94aa50aa59b5f66f75d3" => :mountain_lion
@@ -12,11 +12,11 @@ class Fltk < Formula
   stable do
     url "https://fossies.org/linux/misc/fltk-1.3.3-source.tar.gz"
     sha256 "f8398d98d7221d40e77bc7b19e761adaf2f1ef8bb0c30eceb7beb4f2273d0d97"
-    
+
     # Fixes issue with -lpng not found.
     # Based on: https://trac.macports.org/browser/trunk/dports/aqua/fltk/files/patch-src-Makefile.diff
     patch :DATA
-    
+
     # Fltk 1.3.4 include support for El Capitan. Remove on update.
     depends_on MaximumMacOSRequirement => :yosemite
   end
