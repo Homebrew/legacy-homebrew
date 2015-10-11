@@ -5,6 +5,13 @@ class Pgbouncer < Formula
   mirror "https://github.com/pgbouncer/pgbouncer/archive/pgbouncer_1_6_1.tar.gz"
   sha256 "40ff5cd84399b4da3ba864ad654fe155a0ed085261e68f3e31b1117812b17056"
 
+  bottle do
+    cellar :any
+    sha256 "f4002665b424ad1a17fbeb6823b9ebc5dcb7ba1e46b508275de9ffdea9bf05f1" => :el_capitan
+    sha256 "d74eb1920c6b93d10f9143e89170a57850a1e07b95988dc84216951d8ebf70dd" => :yosemite
+    sha256 "041022098c72050bbeea9b3af992287e24453e590b549bb81c396cfff2b7f5c7" => :mavericks
+  end
+
   depends_on "asciidoc" => :build
   depends_on "xmlto" => :build
   depends_on "libevent"
