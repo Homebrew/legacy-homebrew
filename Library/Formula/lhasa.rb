@@ -25,9 +25,14 @@ class Lhasa < Formula
   end
 
   test do
-    str = "MQAtbGgwLQQAAAAEAAAA9ZQTUyACg2JVBQAA" \
-          "hloGAAFmb28FAFCkgQcAURQA9QEAAGZvbwoA"
-    system "echo #{str} | /usr/bin/base64 -D | #{bin}/lha x -"
-    assert_equal "foo\n", `cat foo`
+    data = [
+      %w[
+        31002d6c68302d0400000004000000f59413532002836255050000865a060001666f6f0
+        50050a4810700511400f5010000666f6f0a00
+      ].join
+    ].pack("H*")
+
+    pipe_output("#{bin}/lha x -", data)
+    assert_equal "foo\n", (testpath/"foo").read
   end
 end

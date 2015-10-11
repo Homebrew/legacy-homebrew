@@ -1,13 +1,13 @@
 class Gtkx3 < Formula
   desc "Toolkit for creating graphical user interfaces"
   homepage "http://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/3.18/gtk+-3.18.0.tar.xz"
-  sha256 "7fb8ae257403317d3852bad28d064d35f67e978b1fed8b71d5997e87204271b9"
+  url "https://download.gnome.org/sources/gtk+/3.18/gtk+-3.18.1.tar.xz"
+  sha256 "bd279cbb19f3fda074c89cf0edf9e7d95eee8b889b6889d16c2f7f0f6bdeba92"
 
   bottle do
-    sha256 "c5830114ed1037b5ea020ef964409c48aa6129cfeb7188616c947a76c0ceefbb" => :el_capitan
-    sha256 "151cef27d960ee647ab94765b3339c638f3b76cb96897cd5916f60b0d12c56b7" => :yosemite
-    sha256 "0c0c590558ec7501eacd33ea6f0bbe54c5980864b4fd1e23bebaca48e2f53936" => :mavericks
+    sha256 "61053b37213071d20002ad242090ab4d3f654c0c7d0747d0b75aedbf3f257526" => :el_capitan
+    sha256 "17d463cdaba4bc1ec587b7f05a0ec003f2d0fb809b73508f74831b3ff124362e" => :yosemite
+    sha256 "04300b5a6be784901fa31691237b2a4c7f307416ce620ab974559398a0411937" => :mavericks
   end
 
   option :universal
@@ -23,12 +23,6 @@ class Gtkx3 < Formula
   depends_on "pango"
   depends_on "glib"
   depends_on "hicolor-icon-theme"
-
-  # filed upstream in https://bugzilla.gnome.org/show_bug.cgi?id=755401
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/patches/1206484dc/gtk%2B3/gtkx3_notify.diff"
-    sha256 "d18242f80d68fd04cf2264bec3a95ec5d698e65767ee82b4a3430c03bdfd836c"
-  end
 
   def install
     ENV.universal_binary if build.universal?

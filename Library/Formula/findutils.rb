@@ -29,6 +29,10 @@ class Findutils < Formula
   end
 
   test do
-    system "#{bin}/gfind", "--version"
+    if build.with? "default-names"
+      system "#{bin}/find", "."
+    else
+      system "#{bin}/gfind", "."
+    end
   end
 end

@@ -27,28 +27,35 @@ class GnuSed < Formula
     system "./configure", *args
     system "make", "install"
 
-    (libexec/"gnubin").install_symlink bin/"gsed" =>"sed"
-    (libexec/"gnuman/man1").install_symlink man1/"gsed.1" => "sed.1"
+    if build.without? "default-names"
+      (libexec/"gnubin").install_symlink bin/"gsed" =>"sed"
+      (libexec/"gnuman/man1").install_symlink man1/"gsed.1" => "sed.1"
+    end
   end
 
-  def caveats; <<-EOS.undent
-    The command has been installed with the prefix "g".
-    If you do not want the prefix, install using the "with-default-names" option.
+  def caveats
+    if build.without? "default-names" then <<-EOS.undent
+      The command has been installed with the prefix "g".
+      If you do not want the prefix, install using the "with-default-names" option.
 
-    If you need to use these commands with their normal names, you
-    can add a "gnubin" directory to your PATH from your bashrc like:
-
+      If you need to use these commands with their normal names, you
+      can add a "gnubin" directory to your PATH from your bashrc like:
         PATH="#{opt_libexec}/gnubin:$PATH"
 
-    Additionally, you can access their man pages with normal names if you add
-    the "gnuman" directory to your MANPATH from your bashrc as well:
-
+      Additionally, you can access their man pages with normal names if you add
+      the "gnuman" directory to your MANPATH from your bashrc as well:
         MANPATH="#{opt_libexec}/gnuman:$MANPATH"
-
-    EOS
+      EOS
+    end
   end
 
   test do
-    system "#{bin}/gsed", "--version"
+    (testpath/"test.txt").write "Hello world!"
+    if build.with? "default-names"
+      system "#{bin}/sed", "-i", "s/world/World/g", "test.txt"
+    else
+      system "#{bin}/gsed", "-i", "s/world/World/g", "test.txt"
+    end
+    assert_match /Hello World!/, File.read("test.txt")
   end
 end

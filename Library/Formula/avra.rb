@@ -29,8 +29,8 @@ class Avra < Formula
   test do
     (testpath/"test.asm").write " .device attiny10\n ldi r16,0x42\n"
     output = shell_output("#{bin}/avra -l test.lst test.asm")
-    assert output.include?("Assembly complete with no errors.")
+    assert_match "Assembly complete with no errors.", output
     assert File.exist?("test.hex")
-    assert File.read("test.lst").include?("ldi r16,0x42")
+    assert_match "ldi r16,0x42", File.read("test.lst")
   end
 end

@@ -1,13 +1,20 @@
 class Aldo < Formula
   desc "Morse code learning tool released under GPL"
   homepage "http://www.nongnu.org/aldo/"
-  url "http://savannah.nongnu.org/download/aldo/aldo-0.7.7.tar.bz2"
+  url "http://download.savannah.nongnu.org/releases/aldo/aldo-0.7.7.tar.bz2"
   sha256 "f1b8849d09267fff3c1f5122097d90fec261291f51b1e075f37fad8f1b7d9f92"
+
+  bottle do
+    cellar :any
+    sha256 "dbe8d5416db24547081eb1428342d6bcf213f186daa6b1bdeff88fc59e44c54a" => :el_capitan
+    sha256 "6d76ffaca85b04c3c24005b34d88f19b949b856db2007bc0e35d0fb241142734" => :yosemite
+    sha256 "103b5ae277885d3f2fb8b33fe71eb667b73c1d12614c95a1c184d454f7cf66bb" => :mavericks
+  end
 
   depends_on "libao"
 
   # Reported upstream:
-  # http://savannah.nongnu.org/bugs/index.php?42127
+  # https://savannah.nongnu.org/bugs/index.php?42127
   patch :DATA
 
   def install

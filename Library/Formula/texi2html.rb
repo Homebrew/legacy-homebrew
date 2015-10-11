@@ -21,6 +21,14 @@ class Texi2html < Formula
   end
 
   test do
-    system "#{bin}/texi2html", "--help"
+    (testpath/"test.texinfo").write <<-EOS.undent
+      @ifnottex
+      @node Top
+      @top Hello World!
+      @end ifnottex
+      @bye
+    EOS
+    system "#{bin}/texi2html", "test.texinfo"
+    assert_match /Hello World!/, File.read("test.html")
   end
 end

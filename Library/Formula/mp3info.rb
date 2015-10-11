@@ -12,7 +12,7 @@ class Mp3info < Formula
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/34602/trunk/dports/audio/mp3info/files/patch-mp3tech.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/bedf6f8/mp3info/patch-mp3tech.c.diff"
     sha256 "846d6f85a3fa22908c6104436e774fc109547f7c6e9788c15dd9e602228b7892"
   end
 

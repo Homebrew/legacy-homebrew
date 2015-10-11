@@ -34,6 +34,12 @@ module Homebrew
           #{f.path}
         ].concat(ARGV.options_only)
 
+        if f.head?
+          args << "--HEAD"
+        elsif f.devel?
+          args << "--devel"
+        end
+
         if Sandbox.available? && ARGV.sandbox?
           if Sandbox.auto_disable?
             Sandbox.print_autodisable_warning
@@ -50,6 +56,9 @@ module Homebrew
             sandbox.allow_write_temp_and_cache
             sandbox.allow_write_log(f)
             sandbox.allow_write_xcode
+            sandbox.allow_write_path(HOMEBREW_PREFIX/"var/cache")
+            sandbox.allow_write_path(HOMEBREW_PREFIX/"var/log")
+            sandbox.allow_write_path(HOMEBREW_PREFIX/"var/run")
             sandbox.exec(*args)
           else
             exec(*args)

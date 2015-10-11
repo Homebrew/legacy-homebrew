@@ -7,8 +7,9 @@ class Gpsd < Formula
   depends_on "scons" => :build
   depends_on "libusb" => :optional
 
+  # Patch via MacPorts
   patch :p0 do
-    url "https://trac.macports.org/export/113474/trunk/dports/net/gpsd/files/string.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/f1d5d5b7/gpsd/string.patch"
     sha256 "b3c4627cd75fd5869ab692e443bbcd0e8406e6d38f732ad43f1d9ed9952cf3c1"
   end
 

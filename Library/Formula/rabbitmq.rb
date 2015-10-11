@@ -1,8 +1,8 @@
 class Rabbitmq < Formula
   desc "Messaging broker"
   homepage "https://www.rabbitmq.com"
-  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.4/rabbitmq-server-mac-standalone-3.5.4.tar.gz"
-  sha256 "5a3cbf4a27ef7d81f64f511faa89a45c371713c459218ad893407d31d525d711"
+  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.6/rabbitmq-server-mac-standalone-3.5.6.tar.gz"
+  sha256 "da35427cc9b153dc2158ca0b4b9f8ca334164a246943dad0cbe94e4de776dff4"
 
   depends_on "simplejson" => :python if MacOS.version <= :leopard
 
