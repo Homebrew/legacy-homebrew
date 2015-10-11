@@ -7,6 +7,13 @@ class Doctl < Formula
   sha256 "4f4805f36fd0d437331c25a183471419d10a680721f7f5a890b4109319d605ed"
   head "https://github.com/digitalocean/doctl.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "f8cb3382b89b2b5250211462d3d25682cfcf78118a6bcb4a71be7178ef0d7603" => :el_capitan
+    sha256 "732cfe89d343767b7323cbd3066e3cacc279bb0e264b3ad819fefda946c8ce87" => :yosemite
+    sha256 "c8a02718eb9e460414a4dee18ec328f3d439000c7e86885768734f00819883d1" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/tools/godep" do
