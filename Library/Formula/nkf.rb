@@ -15,6 +15,7 @@ class Nkf < Formula
   def install
     inreplace "Makefile", "$(prefix)/man", "$(prefix)/share/man"
     system "make", "CC=#{ENV.cc}"
+
     # Have to specify mkdir -p here since the intermediate directories
     # don't exist in an empty prefix
     system "make", "install", "prefix=#{prefix}", "MKDIR=mkdir -p"
