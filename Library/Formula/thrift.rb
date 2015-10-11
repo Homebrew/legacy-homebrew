@@ -44,11 +44,11 @@ class Thrift < Formula
   option "with-php", "Install PHP binding"
   option "with-libevent", "Install nonblocking server libraries"
 
+  depends_on "bison" => :build
   depends_on "boost"
   depends_on "openssl"
   depends_on "libevent" => :optional
   depends_on :python => :optional
-  depends_on "bison" => :build
 
   def install
     system "./bootstrap.sh" unless build.stable?
@@ -77,13 +77,12 @@ class Thrift < Formula
     system "make", "install"
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     To install Ruby binding:
       gem install thrift
 
     To install PHP extension for e.g. PHP 5.5:
       brew install homebrew/php/php55-thrift
-    EOS
+  EOS
   end
 end
