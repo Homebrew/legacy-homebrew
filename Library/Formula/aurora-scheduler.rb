@@ -17,7 +17,6 @@ class AuroraScheduler < Formula
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["CFLAGS"] = "-Qunused-arguments"
     ENV["CPPFLAGS"] = "-Qunused-arguments"
-    system "./build-support/release/make-python-sdists"
     system "./pants", "binary", "src/main/python/apache/aurora/client/cli:kaurora"
     system "./pants", "binary", "src/main/python/apache/aurora/admin:kaurora_admin"
     system "./pants", "binary", "src/main/python/apache/aurora/tools:thermos"
