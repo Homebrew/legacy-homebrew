@@ -22,9 +22,8 @@ class Pstree < Formula
   end
 
   test do
-    lines = `#{bin}/pstree #{Process.pid}`.strip.split("\n")
-    assert lines[0].include?($0)
-    assert lines[1].include?("#{bin}/pstree")
-    assert_equal 0, $?.exitstatus
+    lines = shell_output("#{bin}/pstree #{Process.pid}").strip.split("\n")
+    assert_match $0, lines[0]
+    assert_match "#{bin}/pstree", lines[1]
   end
 end
