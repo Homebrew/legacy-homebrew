@@ -1,8 +1,8 @@
 class PgpoolIi < Formula
   desc "PostgreSQL connection pool server"
   homepage "http://www.pgpool.net/mediawiki/index.php/Main_Page"
-  url "http://www.pgpool.net/download.php?f=pgpool-II-3.4.2.tar.gz"
-  sha256 "d031fea1313eaf84116f16bc6d0053c9432b04da160e5544ab6445c1f876c351"
+  url "http://www.pgpool.net/download.php?f=pgpool-II-3.4.3.tar.gz"
+  sha256 "b030d1a0dfb919dabb90987f429b03a67b22ecdbeb0ec1bd969ebebe690006e4"
 
   bottle do
     sha256 "8d439ca3292ce18c4af1f6d7e1b67d6c4be269f753244923348138ee87ded8b0" => :yosemite
@@ -13,11 +13,13 @@ class PgpoolIi < Formula
   depends_on :postgresql
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
     system "make", "install"
   end
 
   test do
-    system bin/"pg_md5", "--md5auth", "pool_passwd", "--config-file", etc/"pgpool.conf.sample"
+    cp etc/"pgpool.conf.sample", testpath/"pgpool.conf"
+    system bin/"pg_md5", "--md5auth", "pool_passwd", "--config-file", "pgpool.conf"
   end
 end
