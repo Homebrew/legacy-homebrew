@@ -1,0 +1,20 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:rvmRubyMetrics="/hudson/plugins/rvmRubyMetrics/tags">
+    <l:layout css="/plugin/rvmRubyMetrics/css/style.css">
+
+	    <st:include it="${it.owner}" page="sidepanel.jelly" />
+
+	    <l:main-panel>
+        <h1><%= @real_name %> report</h1>
+
+        <!-- hudson replaces this image with the graph -->
+        <j:if test="${it.previousResult != null}">
+          <img src="graph" width="500px" height="200px"/>
+        </j:if>
+
+        <!-- put here the code of your report view -->
+
+      </l:main-panel>
+    </l:layout>
+</j:jelly>
+

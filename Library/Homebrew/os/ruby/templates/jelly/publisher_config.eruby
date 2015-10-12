@@ -1,0 +1,44 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+    <f:entry title="<%= @config_title %>" description="<%= @config_description %>">
+    <f:textbox name="<%= @tool_name %>.configReport" value="${instance.<%= @html_report ? "reportDir" : "configReport" %>}" />   
+    </f:entry>
+
+    <% if @health_report -%>
+    <!-- add here your threshold fields -->
+
+    <!-- this is an example from rcov support -->
+    <!--table>
+        <tbody>
+          <j:forEach var="inst" items="${descriptor.getTargets(instance)}">   				
+            <input type="hidden" name="rcov.target.metric" value="${inst.metric}"/>
+            <tr>
+              <th>${inst.metric.name}</th>
+              <th>
+                <img src="${rootURL}/images/16x16/health-80plus.gif" alt="100%"
+                  title="Report health as 100% when coverage is greater than"/>
+              </th>
+              <td>
+                <f:textbox name="rcov.target.healthy" value="${inst.healthy}"/>
+              </td>
+              <th>
+                <img src="${rootURL}/images/16x16/health-00to19.gif" alt="0%"
+                  title="Report health as 0% when coverage is less than"/>
+              </th>
+              <td>
+                <f:textbox name="rcov.target.unhealthy" value="${inst.unhealthy}"/>
+              </td>
+              <th>
+                <img src="${rootURL}/images/16x16/yellow.gif" alt="0%"
+                  title="Mark the build as unstable when coverage is less than"/>
+              </th>
+              <td>
+                <f:textbox name="rcov.target.unstable" value="${inst.unstable}"/>
+              </td>
+            </tr>
+          </j:forEach>
+        </tbody>
+      </table-->
+    <% end -%>
+</j:jelly>
