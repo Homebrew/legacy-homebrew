@@ -15,7 +15,7 @@ class Flink < Formula
 
   test do
     system "#{bin}/start-local.sh"
-    system "#{bin}/flink list"
+    system "#{bin}/flink" "list"
     system "#{bin}/stop-local.sh"
   end
 end
