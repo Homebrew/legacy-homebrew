@@ -1,7 +1,7 @@
 class Genstats < Formula
   desc "Generate statistics about stdin or textfiles"
   homepage "http://www.vanheusden.com/genstats/"
-  url "http://www.vanheusden.com/genstats/genstats-1.2.tgz"
+  url "https://www.vanheusden.com/genstats/genstats-1.2.tgz"
   sha256 "f0fb9f29750cdaa85dba648709110c0bc80988dd6a98dd18a53169473aaa6ad3"
 
   depends_on :macos => :lion # uses strndup
