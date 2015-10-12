@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v4.1.2/node-v4.1.2.tar.gz"
-  sha256 "febec3703a3fea9b64c46100a7b6a4408250027aa8259a2a815fd2275d502c49"
+  url "https://nodejs.org/dist/v4.2.0/node-v4.2.0.tar.gz"
+  sha256 "94ea40efeb598fed6e1a78990b698da73275c49876ec551dc36e11513c99fb6b"
   head "https://github.com/nodejs/node.git"
 
   bottle do
@@ -29,15 +29,14 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.14.6.tgz"
-    sha256 "bbe04a9d4f475c46541ac4a99c73db7afa63c2c60060781d0e737586243a0051"
+    url "https://registry.npmjs.org/npm/-/npm-2.14.7.tgz"
+    sha256 "54f3a5195a1e6b52fc954749e81f8abf1f7c8ca912b90ecf2b33581800d0f6a5"
   end
 
   resource "icu4c" do
-    url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
-    mirror "https://fossies.org/linux/misc/icu4c-55_1-src.tgz"
-    version "55.1"
-    sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
+    url "https://ssl.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz"
+    version "56.1"
+    sha256 "3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314816"
   end
 
   def install
