@@ -35,11 +35,7 @@ class Racer < Formula
   end
 
   test do
-    if build.with?("src")
-      ENV["RUST_SRC_PATH"] = "#{opt_prefix}/rust-src"
-      assert_match /^MATCH BufReader/, shell_output("#{bin}/racer complete std::io::B")
-    else
-      assert_match /^RUST_SRC_PATH/, shell_output("#{bin}/racer complete std::io::B", 1)
-    end
+    ENV["RUST_SRC_PATH"] = "#{opt_prefix}/rust-src"
+    assert_match /^MATCH BufReader/, shell_output("#{bin}/racer complete std::io::B")
   end
 end
