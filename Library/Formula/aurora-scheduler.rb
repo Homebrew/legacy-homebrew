@@ -15,7 +15,7 @@ class AuroraScheduler < Formula
     ENV["LC_ALL"] = "en_US.UTF-8"
     ENV["CFLAGS"] = "-Qunused-arguments"
     ENV["CPPFLAGS"] = "-Qunused-arguments"
-    File.write(".pantsversion", File.open(".pantsversion", &:read).gsub(/0\.0\.32/, "0.0.53"))
+    inreplace ".pantsversion", "0.0.32", "0.0.53"
     tools = <<-EOS.undent
       # common rev for all org.scala-lang%* artifacts
       SCALA_REV = '2.10.4'
