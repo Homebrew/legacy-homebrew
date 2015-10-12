@@ -16,12 +16,12 @@ class Red5 < Formula
     # Move config files into etc
     (etc/"red5").install Dir["conf/*"]
     libexec.install_symlink "#{etc}/red5" => "conf"
-    rm_rf Dir["conf"]
+    rm_rf "conf"
 
     # Move webapps into var
     (var/"red5/webapps").install Dir["webapps/*"]
     libexec.install_symlink "#{var}/red5/webapps" => "webapps"
-    rm_rf Dir["webapps"]
+    rm_rf "webapps"
 
     # Install others files
     libexec.install Dir["*"]
