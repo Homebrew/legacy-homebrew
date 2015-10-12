@@ -5,6 +5,12 @@ class Airspy < Formula
   sha256 "58a80db62a178c04f52172e25921f2e1b67f1efaf36e4c808e5b5eeb8f6dbfd9"
   head "https://github.com/airspy/host.git"
 
+  bottle do
+    sha256 "f427d4d9c4d5f18803b1b7d42380bd78cd9634beab26f9f7846b0058248e3bd6" => :el_capitan
+    sha256 "cce06c58409d0c8c425eed8c85c670320a88b0d645034ae717bbc651b7bfbd26" => :yosemite
+    sha256 "d21d562a1f78c354bda2a90451c73db9526a40f5b9a54c2b9733b2221732c2cf" => :mavericks
+  end
+
   option :universal
 
   depends_on "pkg-config" => :build
