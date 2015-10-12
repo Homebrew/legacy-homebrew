@@ -12,6 +12,9 @@ class Cspice < Formula
     sha1 "c9c33e2601e87f6608c4b58ba51b549b6e04a0c9" => :lion
   end
 
+  conflicts_with "openhmd", :because => "both install `simple` binaries"
+  conflicts_with "libftdi0", :because => "both install `simple` binaries"
+
   def install
     rm_f Dir["lib/*"]
     rm_f Dir["exe/*"]
