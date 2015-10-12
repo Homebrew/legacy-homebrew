@@ -1,8 +1,8 @@
 class Lcov < Formula
   desc "Graphical front-end for GCC's coverage testing tool (gcov)"
   homepage "http://ltp.sourceforge.net/coverage/lcov.php"
-  url "https://downloads.sourceforge.net/ltp/lcov-1.11.tar.gz"
-  sha256 "c282de8d678ecbfda32ce4b5c85fc02f77c2a39a062f068bd8e774d29ddc9bf8"
+  url "https://downloads.sourceforge.net/ltp/lcov-1.12.tar.gz"
+  sha256 "b474e49c6c962754063b3be97a757a2ba9e7a455f0aea612863bf67e9b8b8ea7"
 
   head "https://github.com/linux-test-project/lcov.git"
 
@@ -19,14 +19,14 @@ class Lcov < Formula
   def install
     inreplace %w[bin/genhtml bin/geninfo bin/lcov],
       "/etc/lcovrc", "#{prefix}/etc/lcovrc"
-    system "make", "PREFIX=#{prefix}", "install"
+    system "make", "PREFIX=#{prefix}", "BIN_DIR=#{bin}", "MAN_DIR=#{man}", "install"
   end
 end
 
 __END__
---- lcov-1.8/bin/install.sh~	2010-01-29 19:14:46.000000000 +0900
-+++ lcov-1.8/bin/install.sh	2010-04-16 21:40:57.000000000 +0900
-@@ -34,7 +34,8 @@
+--- lcov-1.12/bin/install.sh
++++ lcov-1.12/bin/install.sh
+@@ -34,7 +34,8 @@ do_install()
    local TARGET=$2
    local PARAMS=$3
  
@@ -34,18 +34,3 @@ __END__
 +  mkdir -p `dirname $TARGET`
 +  install -p $PARAMS $SOURCE $TARGET
  }
- 
- 
---- lcov-1.8/Makefile~	2010-01-29 19:14:46.000000000 +0900
-+++ lcov-1.8/Makefile	2010-04-16 21:42:26.000000000 +0900
-@@ -15,8 +15,8 @@
- RELEASE := 1
- 
- CFG_DIR := $(PREFIX)/etc
--BIN_DIR := $(PREFIX)/usr/bin
--MAN_DIR := $(PREFIX)/usr/share/man
-+BIN_DIR := $(PREFIX)/bin
-+MAN_DIR := $(PREFIX)/share/man
- TMP_DIR := /tmp/lcov-tmp.$(shell echo $$$$)
- FILES   := $(wildcard bin/*) $(wildcard man/*) README CHANGES Makefile \
- 	   $(wildcard rpm/*) lcovrc
