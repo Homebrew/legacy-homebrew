@@ -41,6 +41,9 @@ class Puddletag < Formula
     end
 
     cp_r buildpath/"source/.", buildpath
+    inreplace buildpath/"puddlestuff/puddleobjects.py" do |s|
+      s.gsub! /QPalette.Window/, "pal.window()"
+    end
     inreplace buildpath/"puddlestuff/tagmodel.py" do |s|
       s.gsub! /amarok -p/, "open -a iTunes"
     end
