@@ -15,6 +15,8 @@ class FluentBit < Formula
 
   depends_on "cmake" => :build
 
+  conflicts_with "mbedtls", :because => "fluent-bit includes mbedtls libraries."
+
   def install
     system "cmake", ".", "-DWITH_IN_MEM=OFF", *std_cmake_args
     system "make", "install"
