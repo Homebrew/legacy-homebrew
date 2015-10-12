@@ -5,6 +5,13 @@ class Pius < Formula
   sha256 "6fe25dccc12045a81d1120935b936ab276ff976ed676676429d75a3df7ccfc33"
   head "https://github.com/jaymzh/pius.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "2b54ff0c3c8890df19a1782133b63f2a87965490e02304af3fad004739b04eef" => :el_capitan
+    sha256 "f0738360ddf359ddb05760c458f7c1404a7de52ce8a74ae28b95faf9ab95f5dc" => :yosemite
+    sha256 "9daed43891662fb808e521e5e20f8db46c8f93f49ec6aabb87892148258a2bcf" => :mavericks
+  end
+
   depends_on :gpg
 
   def install
