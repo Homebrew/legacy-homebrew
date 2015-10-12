@@ -2,7 +2,7 @@ class Procmail < Formula
   desc "Autonomous mail processor"
   homepage "http://www.procmail.org"
   # Note the use of the patched version from Apple
-  url "http://www.opensource.apple.com/tarballs/procmail/procmail-14.tar.gz"
+  url "https://opensource.apple.com/tarballs/procmail/procmail-14.tar.gz"
   sha256 "f3bd815d82bb70625f2ae135df65769c31dd94b320377f0067cd3c2eab968e81"
 
   bottle do
