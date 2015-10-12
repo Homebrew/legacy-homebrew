@@ -3,6 +3,7 @@ class Puddletag < Formula
   homepage "http://puddletag.sf.net"
   url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
   sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
+  revision 1
 
   head "https://github.com/keithgg/puddletag.git"
 
@@ -30,6 +31,12 @@ class Puddletag < Formula
   resource "configobj" do
     url "https://pypi.python.org/packages/source/c/configobj/configobj-5.0.5.tar.gz"
     sha256 "766eff273f2cbb007a3ea8aa69429ee9b1553aa96fe282c6ace3769b9ac47b08"
+  end
+
+  # Upstream commit to fix an issue with PyQT 4.11.4. Remove on next version.
+  patch do
+    url "https://github.com/keithgg/puddletag/commit/489acd2ee62eb5fbff95f8220dc8958c14871931.patch"
+    sha256 "fce0cfce4d4477cde4827a0a4d3ef74fbabf630ada2d0cf035cf155a17c37a68"
   end
 
   def install
