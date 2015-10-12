@@ -1,15 +1,15 @@
 class Libtasn1 < Formula
   desc "ASN.1 structure parser library"
   homepage "https://www.gnu.org/software/libtasn1/"
-  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.5.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.5.tar.gz"
-  sha256 "89b3b5dce119273431544ecb305081f3530911001bb12e5d76588907edb71bda"
+  url "http://ftpmirror.gnu.org/libtasn1/libtasn1-4.7.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.7.tar.gz"
+  sha256 "a40780dc93fc6d819170240e8ece25352058a85fd1d2347ce0f143667d8f11c9"
 
   bottle do
     cellar :any
-    sha256 "71e0467545847cc6b5703125dd5ac6aa6c87146db3eb4f20b08cab8f406f68f6" => :yosemite
-    sha256 "566331c00d7d067582142cc884b47f8a65ac3de2a7d1d6e7303a812d36119411" => :mavericks
-    sha256 "982a2ea23e32996706eaf28b01106839a846233502ccf3053da3ded026f5d1ec" => :mountain_lion
+    sha256 "6fcbe420735451f51ca99468ce6bdfe198f8434b038735f1240d82c0f6360da7" => :el_capitan
+    sha256 "9925ef918b0027184e7847cda512ed5d4dbd0aa6000f4a3cb2b80a014cb484ac" => :yosemite
+    sha256 "ed3aa2c8f4dd549596bb00bc1041fc54f8926dc366476df0123b33cce3d0e85b" => :mavericks
   end
 
   option :universal

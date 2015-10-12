@@ -18,14 +18,13 @@ module Homebrew
       all_versions = []
       older_or_same_tap_versions = []
 
-      if f.oldname && !f.rack.exist? && (dir = HOMEBREW_CELLAR/f.oldname).exist?
-        if f.tap == Tab.for_keg(dir.subdirs.first).tap
-          raise Migrator::MigrationNeededError.new(f)
-        end
+      if f.oldname && !f.rack.exist? && (dir = HOMEBREW_CELLAR/f.oldname).directory? &&
+        !dir.subdirs.empty? && f.tap == Tab.for_keg(dir.subdirs.first).tap
+        raise Migrator::MigrationNeededError.new(f)
       end
 
-      f.rack.subdirs.each do |dir|
-        keg = Keg.new dir
+      f.rack.subdirs.each do |keg_dir|
+        keg = Keg.new keg_dir
         version = keg.version
         all_versions << version
         older_version = f.pkg_version <= version

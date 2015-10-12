@@ -6,7 +6,8 @@ class IosSim < Formula
   head "https://github.com/phonegap/ios-sim.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "c0bf22dbfe7f9078ea8afca0a71d5a3e5edfca5c69cbcf31f45c6d25660f760a" => :el_capitan
     sha1 "4b4c830f96af400e593fe1457f8162774589f67d" => :yosemite
     sha1 "84de583b7e287ddab20e8ef10e03a97ad2a4d5af" => :mavericks
     sha1 "f559ce57478e9aaebb8eabb6366fa12629e8cf3a" => :mountain_lion

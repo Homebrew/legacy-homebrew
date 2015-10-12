@@ -33,13 +33,6 @@ module Homebrew
     return true if ARGV.force_bottle? && f.bottle
     return false unless f.bottle && f.pour_bottle?
     return false if ARGV.build_from_source? || ARGV.build_bottle?
-    if f.file_modified?
-      filename = f.path.to_s.gsub("#{HOMEBREW_PREFIX}/", "")
-      opoo "Formula file is modified!"
-      puts "Fetching source because #{filename} has local changes"
-      puts "To fetch the bottle instead, run with --force-bottle"
-      return false
-    end
     return false unless f.bottle.compatible_cellar?
     true
   end

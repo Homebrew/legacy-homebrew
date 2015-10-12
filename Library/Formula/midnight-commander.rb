@@ -9,6 +9,7 @@ class MidnightCommander < Formula
 
   bottle do
     revision 1
+    sha256 "e9f5109f2fd2927096b9b6cab05c5509695b313b072126c6f352d7ba3891f748" => :el_capitan
     sha256 "9e25d3d107929070400bcf8f928e5adc3f77c6f4942544cbf7b26822ecc425d6" => :yosemite
     sha256 "faa3115190a66947d3141619d285c55fac451cd154be9a6ea053b37239ecd085" => :mavericks
     sha256 "e75f3aed5a28a381a1bce9461108d21e76abb094d98ad8cfe580720ad390d7e8" => :mountain_lion

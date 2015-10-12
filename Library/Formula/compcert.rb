@@ -11,7 +11,7 @@ class Compcert < Formula
     sha256 "7ce52bcd1e488829d71481741f49abd3489b9b86e2f400825de439a730d3ba2b" => :mountain_lion
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
   depends_on "coq" => :build
   depends_on "menhir" => :build
 

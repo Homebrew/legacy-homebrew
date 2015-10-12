@@ -1,15 +1,16 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
   homepage "https://www.eclipse.org/jetty/"
-  url "http://download.eclipse.org/jetty/9.3.2.v20150730/dist/jetty-distribution-9.3.2.v20150730.tar.gz"
-  version "9.3.2.v20150730"
-  sha256 "c9d51e6e09c710cd084adb694149acfa93b90ba6a979cbaccc41e191bc4c14da"
+  url "http://download.eclipse.org/jetty/9.3.3.v20150827/dist/jetty-distribution-9.3.3.v20150827.tar.gz"
+  version "9.3.3.v20150827"
+  sha256 "decd6788232646f9a2980c15aa076ecbd919e61867913d056ddb3251ac31415c"
 
   bottle do
     cellar :any
-    sha256 "b85569259442f3ba6e4cceab1ad1ae51ef3e2a43253b02251ec3e0a584e1dfd6" => :yosemite
-    sha256 "bb5f2e2d895543f7d79b3ffec46804d7316822cf2107c61671c39e1b51a54aac" => :mavericks
-    sha256 "0226ed8ffb51ad60afb85752a0ec0347df9f9a8d2387510e03f276dac579344f" => :mountain_lion
+    sha256 "4f66cc3ed3fac42f14c0a965d40dae6d6f775101dae0be0bf82e4716536f9c82" => :el_capitan
+    sha256 "97e4698a2591db0b78f8bb053306c657c93fee5397c2ccc2ea001eaca706ac96" => :yosemite
+    sha256 "a66366f2f8f81478ec0cb411882b3981e9a17b7dbf9c33913ebe2e367c97499f" => :mavericks
+    sha256 "7ca2c2b16e01a3d480785cef44cfabe6b5611e2ede5a2935389b4ecd4c03dee1" => :mountain_lion
   end
 
   depends_on :java => "1.8+"
@@ -31,6 +32,8 @@ class Jetty < Formula
   end
 
   test do
+    ENV["JETTY_BASE"] = testpath
+    cp_r Dir[libexec/"*"], testpath
     pid = fork { exec bin/"jetty", "start" }
     sleep 5 # grace time for server start
     begin

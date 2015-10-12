@@ -5,9 +5,12 @@ class HttpParser < Formula
   sha256 "e3b4ba58f4e6ee5fbec781df020e5cb74c3a799a07f059e1e125127a0b801481"
 
   bottle do
-    sha256 "41cf106f3766a8fd48604e1c53f4cdd20a34e5605eec8bd41674858a82755fde" => :yosemite
-    sha256 "7b047f85124a7820932a39147df2abda08a909f53ec8c00c763ee04c9f441ebc" => :mavericks
-    sha256 "27aa668522772cee01605a5ab047930dc17dba77b299e91304ab973ae66af920" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "d58b73f7cdbd774611695502185c93075fe52742d81069631f95e8c3540210ea" => :el_capitan
+    sha256 "51cc550432f06a5ffa4f5566492621fc9c6243d62dd0155f94ec62e333d4692d" => :yosemite
+    sha256 "438a453e858e97f4b4bafb766ad2a85cab54f4fecfcae00e12dc6905e872e357" => :mavericks
+    sha256 "e3c153213c8f2df6340e1e945920097d52ad3b5f1a2ca882c18ff6c7f6c3d2a5" => :mountain_lion
   end
 
   depends_on "coreutils" => :build

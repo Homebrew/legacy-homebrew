@@ -24,6 +24,7 @@ Thank you!
 * If you’re installing something Java-related, maybe you need the [Java Developer Update][] or [JDK 7][]?
 * Check that **Command Line Tools for Xcode (CLT)** and/or **Xcode** are up to date.
 * If things fail with permissions errors, check the permissions in `/usr/local`. If you’re unsure what to do, you can `sudo chown -R $(whoami) /usr/local`.
+* If you see permission errors after upgrading to El Capitan please see the [El Capitan and Homebrew](El_Capitan_and_Homebrew.md) document.
 
 #### Listen to Dr. Brew
 

@@ -1,13 +1,13 @@
 class Libpeas < Formula
   desc "GObject plugin library"
   homepage "https://developer.gnome.org/libpeas/stable/"
-  url "https://download.gnome.org/sources/libpeas/1.14/libpeas-1.14.0.tar.xz"
-  sha256 "5e4b3a8968b71497ab26a7a528c414c4c640c5724328fa3507854f04788e2d76"
+  url "https://download.gnome.org/sources/libpeas/1.16/libpeas-1.16.0.tar.xz"
+  sha256 "b093008ecd65f7d55c80517589509698ff15ad41f664b11a3eb88ff461b1454e"
 
   bottle do
-    sha256 "3d96adbac4014c293339b23d96447ef56246c9986ec7d6c198aef3b0394fef08" => :yosemite
-    sha256 "6cf87185dd7d908ff8207d4ca77227cdbc3f40183c3aedcd6722f6f36f868dcb" => :mavericks
-    sha256 "2fac61c95a159f52ecb1e3ec07d8765612a45ed743647dd35c529fd87b82eae7" => :mountain_lion
+    sha256 "fc930781e9c52420acfb590e634551230a2cb0682c904a1466844d0fc0e04673" => :el_capitan
+    sha256 "4a84a5bf78382418f6e33e3976672d09bc52684b1f5967b53e1c9c8b417a70fd" => :yosemite
+    sha256 "9d1f424a977d02dfa9d2dc72ca22bbcf755ec7f14d12306af26be2b17d563477" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -27,8 +27,7 @@ class Libpeas < Formula
 
   def install
     system "autoreconf", "-i"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--enable-gtk"

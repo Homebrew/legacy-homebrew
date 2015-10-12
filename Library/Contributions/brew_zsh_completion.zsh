@@ -40,6 +40,7 @@ _1st_arguments=(
   'config:show homebrew and system configuration'
   'create:create a new formula'
   'deps:list dependencies and dependants of a formula'
+  'desc:display a description of a formula'
   'doctor:audits your installation for common issues'
   'edit:edit a formula'
   'fetch:download formula resources to the cache'
@@ -95,7 +96,7 @@ if (( CURRENT == 1 )); then
 fi
 
 case "$words[1]" in
-  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|edit|options|switch)
+  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|desc|edit|options|switch)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
   list|ls)

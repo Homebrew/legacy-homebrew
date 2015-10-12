@@ -14,9 +14,9 @@ module Homebrew
     problem_count = 0
 
     strict = ARGV.include? "--strict"
-    if strict && ARGV.formulae.any? && MacOS.version >= :mavericks
+    if strict && ARGV.resolved_formulae.any? && MacOS.version >= :mavericks
       require "cmd/style"
-      ohai "brew style #{ARGV.formulae.join " "}"
+      ohai "brew style #{ARGV.resolved_formulae.join " "}"
       style
     end
 
@@ -48,7 +48,7 @@ module Homebrew
     ff = if ARGV.named.empty?
       Formula
     else
-      ARGV.formulae
+      ARGV.resolved_formulae
     end
 
     output_header = !strict
@@ -179,14 +179,19 @@ class FormulaAuditor
       [/^  test do/,                       "test block"]
     ]
 
-    component_list.map do |regex, name|
+    present = component_list.map do |regex, name|
       lineno = text.line_number regex
       next unless lineno
       [lineno, name]
-    end.compact.each_cons(2) do |c1, c2|
+    end.compact
+    present.each_cons(2) do |c1, c2|
       unless c1[0] < c2[0]
         problem "`#{c1[1]}` (line #{c1[0]}) should be put before `#{c2[1]}` (line #{c2[0]})"
       end
+    end
+    present.map!(&:last)
+    if present.include?("head") && present.include?("head block")
+      problem "Should not have both `head` and `head do`"
     end
   end
 
@@ -210,12 +215,8 @@ class FormulaAuditor
     end
   end
 
-  @@aliases ||= Formula.aliases
-  @@remote_official_taps ||= if (homebrew_tapd = HOMEBREW_LIBRARY/"Taps/homebrew").directory?
-    OFFICIAL_TAPS - homebrew_tapd.subdirs.map(&:basename).map { |tap| tap.to_s.sub(/^homebrew-/, "") }
-  else
-    OFFICIAL_TAPS
-  end
+  # core aliases + tap alias names + tap alias full name
+  @@aliases ||= Formula.aliases + Formula.tap_aliases
 
   def audit_formula_name
     return unless @strict
@@ -225,7 +226,7 @@ class FormulaAuditor
     name = formula.name
     full_name = formula.full_name
 
-    if @@aliases.include? name
+    if Formula.aliases.include? name
       problem "Formula name conflicts with existing aliases."
       return
     end
@@ -240,12 +241,19 @@ class FormulaAuditor
       return
     end
 
-    same_name_tap_formulae = Formula.tap_names.select do |tap_formula_name|
-      user_name, _, formula_name = tap_formula_name.split("/", 3)
-      user_name == "homebrew" && formula_name == name
-    end
+    @@local_official_taps_name_map ||= Tap.select(&:official?).flat_map(&:formula_names).
+      reduce(Hash.new) do |name_map, tap_formula_full_name|
+        tap_formula_name = tap_formula_full_name.split("/").last
+        name_map[tap_formula_name] ||= []
+        name_map[tap_formula_name] << tap_formula_full_name
+        name_map
+      end
+
+    same_name_tap_formulae = @@local_official_taps_name_map[name] || []
 
     if @online
+      @@remote_official_taps ||= OFFICIAL_TAPS - Tap.select(&:official?).map(&:repo)
+
       same_name_tap_formulae += @@remote_official_taps.map do |tap|
         Thread.new { Homebrew.search_tap "homebrew", tap, name }
       end.flat_map(&:value)
@@ -274,9 +282,12 @@ class FormulaAuditor
         rescue TapFormulaAmbiguityError
           problem "Ambiguous dependency #{dep.name.inspect}."
           next
+        rescue TapFormulaWithOldnameAmbiguityError
+          problem "Ambiguous oldname dependency #{dep.name.inspect}."
+          next
         end
 
-        if FORMULA_RENAMES[dep.name] == dep_f.name
+        if dep_f.oldname && dep.name.split("/").last == dep_f.oldname
           problem "Dependency '#{dep.name}' was renamed; use newname '#{dep_f.name}'."
         end
 
@@ -314,7 +325,7 @@ class FormulaAuditor
           problem "Don't use ruby as a dependency. We allow non-Homebrew ruby installations."
         when "gfortran"
           problem "Use `depends_on :fortran` instead of `depends_on 'gfortran'`"
-        when "open-mpi", "mpich2"
+        when "open-mpi", "mpich"
           problem <<-EOS.undent
             There are multiple conflicting ways to install MPI. Use an MPIRequirement:
               depends_on :mpi => [<lang list>]
@@ -335,7 +346,7 @@ class FormulaAuditor
         next
       rescue FormulaUnavailableError
         problem "Can't find conflicting formula #{c.name.inspect}."
-      rescue TapFormulaAmbiguityError
+      rescue TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
         problem "Ambiguous conflicting formula #{c.name.inspect}."
       end
     end
@@ -469,7 +480,7 @@ class FormulaAuditor
     end
 
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
-    if (metadata["forks_count"] < 10) && (metadata["watchers_count"] < 10) &&
+    if (metadata["forks_count"] < 10) && (metadata["subscribers_count"] < 10) &&
        (metadata["stargazers_count"] < 20)
       problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
     end

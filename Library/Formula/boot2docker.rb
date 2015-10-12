@@ -8,7 +8,8 @@ class Boot2docker < Formula
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "8ba0d66cbf6945d807389d122f8e9978a268aabee3893fed98efab09251d4fb7" => :el_capitan
     sha256 "087e79bf9afee354f5a7ef8034ecb683b5645c82706a9fcbd34bf0bb5b71bfc7" => :yosemite
     sha256 "ca6772a87763b4690dd9e513d685a282bedeee689034f45828d66ffd19f79c37" => :mavericks
     sha256 "18ec9445c6c39777c0b390fa1ddf409817d62b3e17312778b77c29640f54a40e" => :mountain_lion

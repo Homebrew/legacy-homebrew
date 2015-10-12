@@ -3,18 +3,18 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.2.0-src.tar.gz"
-    sha256 "ea6eb983daf2a073df57186a58f0d4ce0e85c711bec13c627a8c85d51b6a6d78"
+    url "https://static.rust-lang.org/dist/rustc-1.3.0-src.tar.gz"
+    sha256 "ea02d7bc9e7de5b8be3fe6b37ea9b2bd823f9a532c8e4c47d02f37f24ffa3126"
 
     resource "cargo" do
       # git required because of submodules
-      url "https://github.com/rust-lang/cargo.git", :tag => "0.4.0", :revision => "553b363bcfcf444c5bd4713e30382a6ffa2a52dd"
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.5.0", :revision => "8d21fd21a6b20056e9b5745e4e3f3b4279dc7fe4"
     end
 
     # name includes date to satisfy cache
-    resource "cargo-nightly-2015-08-12" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-08-12/cargo-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "3d0ea9e20215e6450e2ae3977bbe20b9fb2bbf51ce145017ab198ea3409ffda2"
+    resource "cargo-nightly-2015-09-17" do
+      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-09-17/cargo-nightly-x86_64-apple-darwin.tar.gz"
+      sha256 "02ba744f8d29bad84c5e698c0f316f9e428962b974877f7f582cd198fdd807a8"
     end
   end
 
@@ -26,9 +26,10 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "c9bb07ae7830548c875f6d65bbc09ecde943a2c87b5564a8e63dac5e08ca276d" => :yosemite
-    sha256 "74a4271c86bc8a5ed0bfaac0cdd9d793b8f2c23e845f1107c1709d8bfca0d6f6" => :mavericks
-    sha256 "bfa7e32786aef2065c14fc8ca1464bc59301f4479462adefba99b491a9dc74be" => :mountain_lion
+    revision 1
+    sha256 "a7e378d6122dbebc8ce8eec2241274c1b907d0dd680b365667f357a02bc98ebc" => :el_capitan
+    sha256 "655e683440bf88930c3bbab1885047949c260809c71e9c75cd36944b35165839" => :yosemite
+    sha256 "7a0b98815c97e953e98323a42b4b532f4ec6ec83589d83042e541fcc06b60098" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -59,21 +60,14 @@ class Rust < Formula
       cargo_stage_path = pwd
 
       if build.stable?
-        resource("cargo-nightly-2015-08-12").stage do
+        resource("cargo-nightly-2015-09-17").stage do
           system "./install.sh", "--prefix=#{cargo_stage_path}/target/snapshot/cargo"
           # satisfy make target to skip download
           touch "#{cargo_stage_path}/target/snapshot/cargo/bin/cargo"
         end
       end
 
-      # Fix for El Capitan DYLD_LIBRARY_PATH behavior
-      # https://github.com/rust-lang/cargo/issues/1816
-      inreplace "Makefile.in" do |s|
-        s.gsub! '"$$(CFG_RUSTC)"', '$$(CFG_RUSTC)'
-        s.gsub! '"$$(CARGO)"', '$$(CARGO)'
-      end
-
-      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}"
+      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}", "--enable-optimize"
       system "make"
       system "make", "install"
     end

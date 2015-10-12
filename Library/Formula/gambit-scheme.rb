@@ -1,22 +1,24 @@
 class GambitScheme < Formula
   desc "Complete, portable implementation of Scheme"
   homepage "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page"
-  url "http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_3.tgz"
-  sha256 "59c4c62f2cfaf698b54a862e7af9c1b3e4cc27e46d386f31c66e00fed4701777"
+  url "http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_9.tgz"
+  sha256 "17e4a2eebbd0f5ebd807b4ad79a98b89b2a5eef00199c318a885db4ef950f14f"
 
   bottle do
-    sha1 "4f04f85300495e2c3fad49206b57605d010ad1f7" => :mavericks
-    sha1 "57c650e3539e41e084f29adf26160e920e3a068e" => :mountain_lion
-    sha1 "f4002601e8f904d064909b5df30479a26c916f8d" => :lion
+    sha256 "d1d2cf026e85f5c62ebe7373c1eed03cd84c590ef3f588cba447fc912f9287d6" => :yosemite
+    sha256 "7de3b06bde1d0a2a8ce3288dfed388aa4161f0753692cb53eade22372eba1bd3" => :mavericks
+    sha256 "24f6d6f75f044bec4c7d0a87cc65e66234cc68e772d6a9d86ccd13495ce6aba5" => :mountain_lion
   end
 
   conflicts_with "ghostscript", :because => "both install `gsc` binaries"
   conflicts_with "scheme48", :because => "both install `scheme-r5rs` binaries"
 
+  deprecated_option "enable-shared" => "with-shared"
   option "with-check", 'Execute "make check" before installing'
-  option "enable-shared", "Build Gambit Scheme runtime as shared library"
+  option "with-shared", "Build Gambit Scheme runtime as shared library"
 
   fails_with :llvm
+  fails_with :clang
 
   def install
     args = %W[
@@ -25,30 +27,16 @@ class GambitScheme < Formula
       --libdir=#{lib}/gambit-c
       --infodir=#{info}
       --docdir=#{doc}
+      --enable-single-host
     ]
 
-    # Recommended to improve the execution speed and compactness
-    # of the generated executables. Increases compilation times.
-    # Don't enable this when using clang, per configure warning.
-    args << "--enable-single-host" unless ENV.compiler == :clang
-
-    args << "--enable-shared" if build.include? "enable-shared"
-
-    if ENV.compiler == :clang
-      opoo <<-EOS.undent
-        Gambit will build with Clang, however the build may take longer and
-        produce substandard binaries. If you have GCC, you can get a faster
-        build and faster execution with:
-          brew install gambit-scheme --cc=gcc-4.2 # or 4.7, 4.8, etc.
-      EOS
-    end
+    args << "--enable-shared" if build.with? "shared"
 
     system "./configure", *args
-    system "make check" if build.with? "check"
+    system "make", "check" if build.with? "check"
 
-    ENV.j1
     system "make"
-    system "make", "install"
+    system "make", "install", "emacsdir=#{share}/emacs/site-lisp/#{name}"
   end
 
   test do

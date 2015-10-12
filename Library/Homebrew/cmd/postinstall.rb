@@ -15,6 +15,12 @@ module Homebrew
       #{formula.path}
     ].concat(ARGV.options_only)
 
+    if formula.head?
+      args << "--HEAD"
+    elsif formula.devel?
+      args << "--devel"
+    end
+
     if Sandbox.available? && ARGV.sandbox?
       if Sandbox.auto_disable?
         Sandbox.print_autodisable_warning

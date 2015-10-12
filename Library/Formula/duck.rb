@@ -1,15 +1,17 @@
 class Duck < Formula
   desc "Command-line interface for Cyberduck (a multi-protocol file transfer tool)"
   homepage "https://duck.sh/"
-  url "https://dist.duck.sh/duck-src-4.8.18026.tar.gz"
-  sha256 "ff75b2b0a4df30aef4f6cd2ba20fb3fa1198760fb7d8216abc62e032df4aa1e4"
+  # check the changelog for the latest stable version: https://cyberduck.io/changelog/
+  url "https://dist.duck.sh/duck-src-4.7.2.18007.tar.gz"
+  sha256 "2b30071ef58aed42805724f318b1e3f013749cc534e54265ee305dfc2ec86d69"
   head "https://svn.cyberduck.io/trunk/"
 
   bottle do
     cellar :any
-    sha256 "b14924b6c4dac4b231f66cc7884bddf038d37f40be590c8862971c861b625375" => :yosemite
-    sha256 "64101f8ba099696c0fce07e14fe7986ffe7d31a91c58bae50abe402af490b1a1" => :mavericks
-    sha256 "84feb0fe67c6efc85b4afb7ad029989623046f4b5dab717098af371900d0b887" => :mountain_lion
+    sha256 "7158c51d7841954199a5cb1ee5cec88a99ab99b3a50943546a63634e52073610" => :el_capitan
+    sha256 "1cf4fd37421f57153d17789025ad2b95909e009e8507226d3e33457474f47121" => :yosemite
+    sha256 "0be31b18470ab4fe70bedbaa730ca1de5204355c2ddd3d114ad4763afdf611f0" => :mavericks
+    sha256 "b2a3135eee96ba4ab7d66b049f16467e61c6cb69a6bbfd98b32c46ef570be9f0" => :mountain_lion
   end
 
   depends_on :java => ["1.7+", :build]

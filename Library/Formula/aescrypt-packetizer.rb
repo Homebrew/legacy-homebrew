@@ -5,10 +5,11 @@ class AescryptPacketizer < Formula
   sha256 "153da7971cc3084610943dba44e0284848af72c06d019a3c913656f8c0ad48f1"
 
   bottle do
-    cellar :any
-    sha256 "21d60280f0f3f7878b3014cf9073aa67864a6211769ef6eff9995eeb241f7e48" => :yosemite
-    sha256 "9d4487b8ef937395e99477e199b8ecc6f961b03d45bcf1d8abcb8b73eb70e5c1" => :mavericks
-    sha256 "2b4523df88634d5b65d95dc3e5f7448d67b53c847517c9c8ed0be5d04f4189dc" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "05a0796ee03ed56290803d95fb9454f684135e0131f1bbe88fc598d0475c4fee" => :el_capitan
+    sha256 "8b0d92ccb6e13b80fda4ebdde82fd92bb7cdf9d2b1b990e0b39fe072fbe83d62" => :yosemite
+    sha256 "c6beb469c3cc5b9b6ce40036430a4e41538409457483d86f3dd3b8ce1e5032b9" => :mavericks
   end
 
   head do
@@ -19,9 +20,9 @@ class AescryptPacketizer < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on :xcode => :build
-
   option "with-default-names", "Build with the binaries named as expected upstream"
+
+  depends_on :xcode => :build
 
   def install
     if build.head?

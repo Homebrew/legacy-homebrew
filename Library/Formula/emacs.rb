@@ -7,6 +7,7 @@ class Emacs < Formula
 
   bottle do
     revision 1
+    sha256 "a799ddefe9768259397652a2b9d40e0b0a8907f658e288dc2096a3f4777a421b" => :el_capitan
     sha256 "ff8230366edd23657a2b2ddcd7fcfc49b3f8ff78a5b2be620908651dd7d2ea94" => :yosemite
     sha256 "3af5f90d7177e8185db5e288f7ead4210156c896b652450117fa8fc3e232bc39" => :mavericks
     sha256 "79b8a1ad560779dc60b8abf4f178684a240c47905324181642d56a6e5cabe7a8" => :mountain_lion

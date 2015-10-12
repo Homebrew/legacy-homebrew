@@ -7,6 +7,7 @@ class Faad2 < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "ded931642921a5e0d236237ce046f883aa96a0e5bfe67f5d437ee31f10b5f3d1" => :el_capitan
     sha1 "39cc3707e90db859db8cb135ccd7080f9c304459" => :yosemite
     sha1 "04c2c277cfd485ccf2741e0655d80f5e15cf8cd3" => :mavericks
     sha1 "08c8bc69ca372e20e233da8deabd5367ea0f345d" => :mountain_lion

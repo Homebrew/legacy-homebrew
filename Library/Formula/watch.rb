@@ -5,7 +5,8 @@ class Watch < Formula
   sha256 "a02e6f98974dfceab79884df902ca3df30b0e9bad6d76aee0fb5dce17f267f04"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "c0d123fb9d979422d41d6c63dcea1b87732d354276b7bdecb4dc5a89c7390ca6" => :el_capitan
     sha1 "02dd29b9894a881d150ae369a0bd7e6c38517158" => :yosemite
     sha1 "4c879fbcd46a9867ec7a322ddbb466cb0a376825" => :mavericks
     sha1 "a7c559378bc74cd30d00f962e63d6ee5c705aea1" => :mountain_lion

@@ -7,13 +7,14 @@ class Opam < Formula
   revision 1
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "4cb1ac41bc07fe1f1386e8ccd6078fd200397100a8a6aaf5bfa37ff6a506f023" => :el_capitan
     sha256 "0f2d33bd48a28f2427e58bdddb6057b39674de3547a150eaf88f12028c819e55" => :yosemite
     sha256 "c09cf278e8d576955808468ec494238205e00bd9bfd52fb94c02a3ac2153cc9d" => :mavericks
     sha256 "fab436947193e2e0b402320e520daa2826af8c80d0ddb4f9cf37d11ebd009ddf" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "camlp4" => :recommended
 
   # aspcud has a fairly large buildtime dep tree, and uses gringo,

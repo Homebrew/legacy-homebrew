@@ -1,21 +1,26 @@
 class Gpgme < Formula
   desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.5.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.5.5.tar.bz2"
-  sha256 "0b3d3d5107680c594777aae65882a1ff6dd1ba629a83432e719c8b82a743c207"
+  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
+  mirror "https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
+  sha256 "b09de4197ac280b102080e09eaec6211d081efff1963bf7821cf8f4f9916099d"
 
   bottle do
     cellar :any
-    sha256 "7129bc6a4a05b84bdc20474262bd3b932aee25f38fca761977e1d24c3ad45e64" => :yosemite
-    sha256 "474f70e432795e77e9d8b28b4bade8582ee6e603bf5f246afa96c3f227dde0c6" => :mavericks
-    sha256 "0a4f65a8a21f945e5130dafedeca9e792af7dbf17167bfea030d357027c506ec" => :mountain_lion
+    sha256 "81b2d72d94b9eaceeefb68939fa9f390fea9f1253cb81af5201e3ced06232a22" => :el_capitan
+    sha256 "73a8ec1c22d57bec7f1bb129f32b1597831f67a9b1a1763588f938f9a65e3fde" => :yosemite
+    sha256 "9541c704ace2a3ca7abdcf4325a28377bff3845998fa4fd61c464f642e88e3e4" => :mavericks
+    sha256 "6a28a7847a908c2ca93e88255acab792007bb7dbb4387ff897498d74f43650d5" => :mountain_lion
   end
 
   depends_on "gnupg2"
   depends_on "libgpg-error"
   depends_on "libassuan"
   depends_on "pth"
+
+  conflicts_with "argp-standalone",
+                 :because => "gpgme picks it up during compile & fails to build"
 
   fails_with :llvm do
     build 2334

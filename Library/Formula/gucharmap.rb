@@ -1,13 +1,13 @@
 class Gucharmap < Formula
   desc "GNOME Character Map, based on the Unicode Character Database"
   homepage "https://live.gnome.org/Gucharmap"
-  url "https://download.gnome.org/sources/gucharmap/3.16/gucharmap-3.16.2.tar.xz"
-  sha256 "0a3fa996ae271c8f4812a7d8dc573ece0c000d63185b4865fa99387455e1b13d"
+  url "https://download.gnome.org/sources/gucharmap/3.18/gucharmap-3.18.0.tar.xz"
+  sha256 "121d2652f59a26c9426c96e7c6ca73295c45b675dd4ef0ccdb1b50bc0b4f3830"
 
   bottle do
-    sha256 "6e08b565a355742462cfe5babc444708d1c9f6a42faa07e3179106bb1e966843" => :yosemite
-    sha256 "6a6522fbee8e9bc39dee9cb4fb9458022299991670c85a88bfffc2637ad3da50" => :mavericks
-    sha256 "14ac6d6474a7d2aef39c7fe23d959b89fc862b77a94ce5b353ac72a94d6b8238" => :mountain_lion
+    sha256 "95ce4bd070880a587377c8ce44e640e261cebe62ac52e99efba74e1dfa6aaf83" => :el_capitan
+    sha256 "4e668344c5234763f9faf44cf1205c835cf0826034c20de4d97aec0d5ac2bece" => :yosemite
+    sha256 "ba6aecfbea1860e734b6eaaf0f52823fb9611af8458652bbabb994564101b3ec" => :mavericks
   end
 
   depends_on "pkg-config" => :build

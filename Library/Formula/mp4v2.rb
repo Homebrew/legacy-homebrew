@@ -7,6 +7,7 @@ class Mp4v2 < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "52d299e61126db288d73a3e6e8b40c3eff25af1c7498c4a74787dce2dda02e9a" => :el_capitan
     sha1 "7cdf66572d30457b9ccde22e5adb254f8423372a" => :yosemite
     sha1 "423dc3e6a70da565233d7093a82089aa725d021e" => :mavericks
     sha1 "7adca200e0baf9cd0ba94acec0417d6a5dc74ad9" => :mountain_lion

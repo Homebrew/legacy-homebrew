@@ -8,6 +8,7 @@ class Readline < Formula
 
   bottle do
     cellar :any
+    sha256 "9d38481c935cef21ead25c294285b78a9e8fa556fd15ede9126926c055c40d37" => :el_capitan
     sha1 "d8bec6237197bfff8535cd3ac10c18f2e4458a2a" => :yosemite
     sha1 "d530f4e966bb9c654a86f5cc0e65b20b1017aef2" => :mavericks
     sha1 "7473587d992d8c3eb37afe6c3e0adc3587c977f1" => :mountain_lion

@@ -7,6 +7,7 @@ class Libaacs < Formula
 
   bottle do
     cellar :any
+    sha256 "f1cea0863d8e5898f26ea50c0e9d459861c7a07549583ae113e57d7bd5c826c8" => :el_capitan
     sha256 "7400d1add43105cc37e0f0901b8ec697e9173289f5551929a63939c16147e11e" => :yosemite
     sha256 "023017918e674900f04616fbd4a312627b632236f7aa290e9b05ba0b03c90288" => :mavericks
     sha256 "294596adf06da1cf609775be4cd03b4abc150208dddb62f6bfb893169dc8ed15" => :mountain_lion

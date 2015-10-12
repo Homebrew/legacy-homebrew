@@ -1,13 +1,14 @@
 class Ooniprobe < Formula
   desc "Network interference detection tool"
   homepage "https://ooni.torproject.org/"
-  url "https://pypi.python.org/packages/source/o/ooniprobe/ooniprobe-1.3.0.tar.gz"
-  sha256 "ff9c7974937d3d3d5f03fe04d561c5ef31cd4757c4112641fc88308f80cc16a7"
+  url "https://pypi.python.org/packages/source/o/ooniprobe/ooniprobe-1.3.1.tar.gz"
+  sha256 "0d90b85f74c9dd98f8f111c058a2a734aa5e0aea927b2653f7a0387c93e090b2"
 
   bottle do
-    sha256 "ab26339b18c45f9c84a66329d193f34b78b13c08202cd19dc93a532bf360ef89" => :yosemite
-    sha256 "556a2537cb40d931c6ba9cdfcade62f83c3ef14f28a422d0ffbc21c89cc73f3e" => :mavericks
-    sha256 "32aeeb7019ac404890ee3827c8f5a3e82ebe7a940bb587482984e7a08eb570e8" => :mountain_lion
+    cellar :any
+    sha256 "07723f65b43ed2262115f2d3e854e68ddd19c3656fa26dabaa4774ef7067e894" => :el_capitan
+    sha256 "4afd88781ca598afe301f838eea08e511bf032591d51a21006298a75c435ac69" => :yosemite
+    sha256 "900d2bee5c9769e72ef89f6f20d7a8ee46811810e42fb2a645dceceffdcb1a01" => :mavericks
   end
 
   depends_on "geoip"
@@ -20,8 +21,8 @@ class Ooniprobe < Formula
   # these 4 need to come first or else cryptography will let setuptools
   # easy_install them (which is bad)
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-0.9.2.tar.gz"
-    sha256 "1988ce7ff9c64ecd5077776175e90fd8f0a8c827cb241a23647175ce08126bb2"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.2.1.tar.gz"
+    sha256 "eab571deb0a152e2f53c404c08a94870a131526896cad08cd43bf86ce3771e3d"
   end
 
   resource "enum34" do
@@ -30,13 +31,13 @@ class Ooniprobe < Formula
   end
 
   resource "pyasn1" do
-    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.7.tar.gz"
-    sha256 "e4f81d53c533f6bd9526b047f047f7b101c24ab17339c1a7ad8f98b25c101eab"
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.8.tar.gz"
+    sha256 "5d33be7ca0ec5997d76d29ea4c33b65c00c0231407fff975199d7f40530b8347"
   end
 
   resource "pycparser" do
-    url "https://pypi.python.org/packages/source/p/pycparser/pycparser-2.10.tar.gz"
-    sha256 "957d98b661c0b64b580ab6f94b125e09b6714154ee51de40bca16d3f0076b86c"
+    url "https://pypi.python.org/packages/source/p/pycparser/pycparser-2.14.tar.gz"
+    sha256 "7959b4a74abdc27b312fed1c21e6caf9309ce0b29ea86b591fd2e99ecdf27f73"
   end
   # end "these 4"
 
@@ -46,13 +47,23 @@ class Ooniprobe < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-0.8.1.tar.gz"
-    sha256 "f4e041bc83c1be94d87116a7aa201c378b7c6581be4d83994b2da0a84499f73b"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.0.1.tar.gz"
+    sha256 "cfe3092a6a929bc3a97c3b752044b79d09c9b210860c7b4eb5061aea29dcbfd3"
   end
 
   resource "GeoIP" do
     url "https://pypi.python.org/packages/source/G/GeoIP/GeoIP-1.3.2.tar.gz"
     sha256 "a890da6a21574050692198f14b07aa4268a01371278dfc24f71cd9bc87ebf0e6"
+  end
+
+  resource "idna" do
+    url "https://pypi.python.org/packages/source/i/idna/idna-2.0.tar.gz"
+    sha256 "16199aad938b290f5be1057c0e1efc6546229391c23cea61ca940c115f7d3d3b"
+  end
+
+  resource "ipaddress" do
+    url "https://pypi.python.org/packages/source/i/ipaddress/ipaddress-1.0.14.tar.gz"
+    sha256 "226f4be44c6cb64055e23060848266f51f329813baae28b53dc50e93488b3b3e"
   end
 
   resource "ipaddr" do
@@ -66,13 +77,13 @@ class Ooniprobe < Formula
   end
 
   resource "pyasn1-modules" do
-    url "https://pypi.python.org/packages/source/p/pyasn1-modules/pyasn1-modules-0.0.5.tar.gz"
-    sha256 "be65f00ed28e30756f1ef39377cb382480a2368699179d646a84d79fe9349941"
+    url "https://pypi.python.org/packages/source/p/pyasn1-modules/pyasn1-modules-0.0.7.tar.gz"
+    sha256 "794dbcef4b7124b8271f12eb7eea0d37b466012f11ce023f91e2e2082df11c7e"
   end
 
   resource "pyOpenSSL" do
-    url "https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.14.tar.gz"
-    sha256 "a99db8e59c120138ad8a72eecedcc24b4510d2eed3ce48213b7e32f22cc4ee6e"
+    url "https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-0.15.1.tar.gz"
+    sha256 "f0a26070d6db0881de8bcc7846934b7c3c930d8f9c79d45883ee48984bc0d672"
   end
 
   resource "pypcap" do
@@ -101,18 +112,18 @@ class Ooniprobe < Formula
   end
 
   resource "Twisted" do
-    url "https://pypi.python.org/packages/source/T/Twisted/Twisted-15.0.0.tar.bz2"
-    sha256 "ac609262253057cf2aeb9dc049ba7877d646f31b4caef06a50189a023df46b51"
+    url "https://pypi.python.org/packages/source/T/Twisted/Twisted-15.4.0.tar.bz2"
+    sha256 "78862662fa9ae29654bc2b9d349c3f1d887e6b2ed978512c4442d53ea861f05c"
   end
 
   resource "txsocksx" do
-    url "https://pypi.python.org/packages/source/t/txsocksx/txsocksx-1.13.0.3.tar.gz"
-    sha256 "df1a9e7062c7e3693c39953705b75e0feb7b8746a05135ffb2b8cd98708c9c43"
+    url "https://pypi.python.org/packages/source/t/txsocksx/txsocksx-1.15.0.2.tar.gz"
+    sha256 "4f79b5225ce29709bfcee45e6f726e65b70fd6f1399d1898e54303dbd6f8065f"
   end
 
   resource "txtorcon" do
-    url "https://pypi.python.org/packages/source/t/txtorcon/txtorcon-0.12.0.tar.gz"
-    sha256 "206b1bd8a840119c12d9b85d638ab9defec5b376436fa36be9139ab1ebc8cd78"
+    url "https://pypi.python.org/packages/source/t/txtorcon/txtorcon-0.13.0.tar.gz"
+    sha256 "3218d0fa0c22f49eee9324a5862b2d53ef77d5cb8e555e2bcffc24070aaeca7d"
   end
 
   resource "zope.interface" do

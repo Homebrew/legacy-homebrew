@@ -1,14 +1,26 @@
 class Legit < Formula
   desc "Command-line interface for Git, optimized for workflow simplicity"
   homepage "http://www.git-legit.org/"
-  url "https://github.com/kennethreitz/legit/archive/v0.2.0.tar.gz"
-  sha256 "dce86a16d9c95e2a7d93be75f1fc17c67d3cd2a137819fa498e179bf21daf39e"
+  head "https://github.com/kennethreitz/legit.git", :branch => "develop"
+  revision 1
+
+  stable do
+    url "https://github.com/kennethreitz/legit/archive/v0.2.0.tar.gz"
+    sha256 "dce86a16d9c95e2a7d93be75f1fc17c67d3cd2a137819fa498e179bf21daf39e"
+
+    # Merged in HEAD; remove in next stable release
+    patch do
+      url "https://github.com/kennethreitz/legit/commit/610faf46b7b340e5233187c75cd83f7c1bf1999e.diff"
+      sha256 "7958433a5d594b8a982825ef4af1050f6f00b8bfb79fbed7e099be844403a3cd"
+    end
+  end
 
   bottle do
     cellar :any
-    sha256 "a364ee4a7feb49a5ecf93917491263c2fb6fffc4c1c334b1c9c5d4733c37fc6d" => :yosemite
-    sha256 "df56cdd01ef13867246cebbe56d4d4e5ebfd5caa15e15a91274274a1b6a5ebcc" => :mavericks
-    sha256 "d29fa263a85b3e37bd16d865eb19e0ae24d6caf9ddf411be4d9ea39c62dc6301" => :mountain_lion
+    revision 1
+    sha256 "1730b03f14976f54108a63fdd880c916ff3d0ce0624c594dba1d886ae63e200a" => :yosemite
+    sha256 "ed1637ede4f8e5b5a4abc3d77c159b036501aa94ea0f560582ec77e312135556" => :mavericks
+    sha256 "72416a4f9d0ebbb0b61bd2573269dd0662a72b00d377e3642ce2ad82e6c8272e" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -54,6 +66,10 @@ class Legit < Formula
 
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
+    bash_completion.install "extra/bash-completion/legit"
+    zsh_completion.install "extra/zsh-completion/_legit"
+    man1.install "extra/man/legit.1"
   end
 
   test do

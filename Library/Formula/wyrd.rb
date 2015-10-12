@@ -11,7 +11,7 @@ class Wyrd < Formula
   end
 
   depends_on "remind"
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
   depends_on "camlp4" => :build
 
   def install

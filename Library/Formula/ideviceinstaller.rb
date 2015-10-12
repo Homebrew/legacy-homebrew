@@ -3,13 +3,13 @@ class Ideviceinstaller < Formula
   homepage "http://www.libimobiledevice.org/"
   url "http://www.libimobiledevice.org/downloads/ideviceinstaller-1.1.0.tar.bz2"
   sha256 "0821b8d3ca6153d9bf82ceba2706f7bd0e3f07b90a138d79c2448e42362e2f53"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha1 "893e9e6cb97a2073bb0b42e9ae09cd5d085f6f0f" => :yosemite
-    sha1 "e484976abf87bbf958c003b5f651db9329be862b" => :mavericks
-    sha1 "7a8a684bb21b714c447fa484fa6cd4a8f6027313" => :mountain_lion
+    sha256 "b7eeb31bbff843e910d528adbcae9c2351f4ac6323fa21afd9d4ae65677dad64" => :el_capitan
+    sha256 "87ae074f7e75366be0d3a5ead0e7da2763eb78ad98fd4bc10b37c353dc738ea2" => :yosemite
+    sha256 "b25013280c201c86157f124841d71140570f7fe47896657b8e2a3e6e22530e92" => :mavericks
   end
 
   head do

@@ -14,6 +14,7 @@ class Graphviz < Formula
 
   bottle do
     revision 1
+    sha256 "cf69eac548a5c02aacc966706fc4a922176059414fbe453680aae4552fc019dc" => :el_capitan
     sha1 "a3461628baba501e16c63ceaa0414027f7e26c7f" => :yosemite
     sha1 "dc7f915d199931a49fb2a8eb623b329fed6c619c" => :mavericks
     sha1 "ec730f7cdd3e9549610960ecab86dac349e2f8ea" => :mountain_lion
@@ -51,17 +52,19 @@ class Graphviz < Formula
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/ec8d133/graphviz/patch-project.pbxproj.diff"
     sha256 "7c8d5c2fd475f07de4ca3a4340d722f472362615a369dd3f8524021306605684"
   end
 
   def install
     ENV.universal_binary if build.universal?
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--without-qt",
-            "--with-quartz"]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --without-qt
+      --with-quartz
+    ]
     args << "--with-gts" if build.with? "gts"
     args << "--disable-swig" if build.without? "bindings"
     args << "--without-pangocairo" if build.without? "pango"

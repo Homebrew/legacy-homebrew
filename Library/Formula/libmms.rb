@@ -7,6 +7,7 @@ class Libmms < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "91e62cb832cfb39c8a7ed406fcc7ddd1b7cbc0cb5282394d553b43d54f394863" => :el_capitan
     sha1 "775dd094b8e1d7ac7a8466321241341f8f05be2e" => :yosemite
     sha1 "ccc9dc73c3512d932d529853398199fc3995a84f" => :mavericks
     sha1 "38786ae43d15c27862bd003e1fc779c24e2f1863" => :mountain_lion
@@ -16,10 +17,12 @@ class Libmms < Formula
   depends_on "glib"
 
   # https://trac.macports.org/ticket/27988
-  patch :p0 do
-    url "https://trac.macports.org/export/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch"
-    sha1 "57b526dc9de76cfde236d3331e18eb7ae92f999f"
-  end if MacOS.version <= :leopard
+  if MacOS.version <= :leopard
+    patch :p0 do
+      url "https://raw.githubusercontent.com/Homebrew/patches/1fac7062/libmms/src_mms-common.h.patch"
+      sha256 "773193b878b7c061f05fe76f0ea5d331b8ab3e7b348608fae8cb144139e94798"
+    end
+  end
 
   def install
     ENV.append "LDFLAGS", "-liconv"

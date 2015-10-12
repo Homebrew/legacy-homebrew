@@ -6,11 +6,15 @@ class Cspice < Formula
   version "65"
 
   bottle do
-    cellar :any
-    sha1 "095c1b894921f82dcfe230dc5519fa5b0d69e586" => :mavericks
-    sha1 "24d4dbac215fa337c642f1b5f962c83fb73ad774" => :mountain_lion
-    sha1 "c9c33e2601e87f6608c4b58ba51b549b6e04a0c9" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "d2370941fdaf3fee3ba6c18d8d44d5eb3e3fd7e2425e0c27e98c93085d410948" => :el_capitan
+    sha256 "dfe2f5aa94948cb07125027c5a45938abc74dd9505a198176b2c6b2817988baa" => :yosemite
+    sha256 "9f458788f92e48ab7a22a55b9b8bf94ac180f8f59ce7fc5910f049c734a845b5" => :mavericks
   end
+
+  conflicts_with "openhmd", :because => "both install `simple` binaries"
+  conflicts_with "libftdi0", :because => "both install `simple` binaries"
 
   def install
     rm_f Dir["lib/*"]

@@ -9,6 +9,7 @@ class Shiboken < Formula
 
   bottle do
     revision 2
+    sha256 "70c2218fd33120644707710aca6cb12a68272b85afdc694a4a3fe28eb5135f8f" => :el_capitan
     sha1 "779be49a555b110c4156232528afe6e9cdd5d670" => :yosemite
     sha1 "e67d83ea94b343541df1b21cd793057fee325780" => :mavericks
     sha1 "81ea5e997e9910a54cf35e4b5827ab7b502836b3" => :mountain_lion

@@ -1,14 +1,15 @@
 class Freetds < Formula
   desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "http://www.freetds.org/"
-  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.18.tar.gz"
-  mirror "https://fossies.org/linux/privat/freetds-0.95.18.tar.gz"
-  sha256 "4a85876ed353efe8c204b991ff1d972912f18a7a4856f56e8cc76b32d3fbd2dc"
+  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.19.tar.gz"
+  mirror "https://fossies.org/linux/privat/freetds-0.95.19.tar.gz"
+  sha256 "4c847f0c43734489ffc6ea8c5eb66e2a24e7a1ba4287acd24b2950f8b2eb7590"
 
   bottle do
-    sha256 "2ff87990763c11fdfa2a59c754faa5610430796f6af80afc8166a414f179efa8" => :yosemite
-    sha256 "67af4da49ced9863022329c98ab448a93444550115c3779ed13a48953309394f" => :mavericks
-    sha256 "4b19c0fd08a6efbaa982a6eaa564f4bd44c26a3b0ef9021862840c5bfe6e795c" => :mountain_lion
+    sha256 "00fb9daeb14892d7de89ee1fbf0612f49da34d8047315ff6a11725c785aaf34e" => :el_capitan
+    sha256 "46c8bd1ddb9ba17f2245ddb138e8bf73bcb48c38e650d79d4838a52d027b5cd0" => :yosemite
+    sha256 "0705eee494de88ffd20a3df3510d67251189119e2dc8a42ba11a2a1768252803" => :mavericks
+    sha256 "1612e4ecf101341ce1ea78d195ab7b94641e04b20fedf376e854aef163526a6b" => :mountain_lion
   end
 
   head do
@@ -16,6 +17,7 @@ class Freetds < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "gettext" => :build
     depends_on "libtool" => :build
   end
 
@@ -35,8 +37,6 @@ class Freetds < Formula
   depends_on "openssl" => :recommended
 
   def install
-    system "autoreconf", "-i" if build.head?
-
     args = %W[
       --prefix=#{prefix}
       --with-tdsver=7.1
@@ -60,7 +60,12 @@ class Freetds < Formula
     end
 
     ENV.universal_binary if build.universal?
-    system "./configure", *args
+
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
     system "make"
     ENV.j1 # Or fails to install on multi-core machines
     system "make", "install"

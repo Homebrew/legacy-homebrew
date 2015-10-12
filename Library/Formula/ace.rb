@@ -1,21 +1,17 @@
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
-  homepage "http://www.cse.wustl.edu/~schmidt/ACE.html"
-  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.0.tar.bz2"
-  sha256 "e22b6adb1fdd0af45e1c78087d8fd24555b7dcbf0cd6a22b4b131a737602b561"
+  homepage "http://www.dre.vanderbilt.edu/~schmidt/ACE.html"
+  url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.3.tar.bz2"
+  sha256 "f362e45f624db3343db529654b601d5df69b5f56fa4597cf453da35d80989888"
 
   bottle do
-    sha1 "90cb518c4554949453de2eb406a7d1ef8fda3880" => :yosemite
-    sha1 "2a58aa9a687ed6b8d3eef8f982b0c96554d85de7" => :mavericks
-    sha1 "faa49b7abaf6661f0e4cff46715755985a4a980a" => :mountain_lion
+    cellar :any
+    sha256 "4cab5cd3539a5c1d9c622a01b4739374c6a84a1b14312fbba1043a0aeb69d012" => :el_capitan
+    sha256 "e8a145050c666048031f8ebd2404eaccf2b6bd52fbd6eba75ee98ba780480e90" => :yosemite
+    sha256 "4e2fdfc92d15c28413102c1fbabe9f9953f0b0892c951123bc50b7ce166d4a68" => :mavericks
   end
 
   def install
-    # ACE has two methods of compilation, "traditional" and ./configure.
-    # The "traditional" method has consistently given better results
-    # for the last 5 years, so although awkward to use on OSX, we use
-    # it anyway.
-
     # Figure out the names of the header and makefile for this version
     # of OSX and link those files to the standard names.
     name = MacOS.cat.to_s.delete "_"

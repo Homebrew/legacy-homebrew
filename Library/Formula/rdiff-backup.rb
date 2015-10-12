@@ -1,8 +1,21 @@
 class RdiffBackup < Formula
   desc "Backs up one directory to another--also works over networks"
   homepage "http://rdiff-backup.nongnu.org/"
-  url "http://savannah.nongnu.org/download/rdiff-backup/rdiff-backup-1.2.8.tar.gz"
+  url "http://download.savannah.nongnu.org/releases/rdiff-backup/rdiff-backup-1.2.8.tar.gz"
   sha256 "0d91a85b40949116fa8aaf15da165c34a2d15449b3cbe01c8026391310ac95db"
+
+  bottle do
+    cellar :any
+    revision 1
+    sha256 "b225a08ee7acb4d78411a4a2ca44c2511ac51eb967fc3c8e8e757723080faef9" => :el_capitan
+    sha256 "4572a21d264f12bce6b4a1f4e632b37f3414d449f71200ce5fa1f21374742abb" => :yosemite
+    sha256 "b23e00088fff7503b82b6bc6d56c097e8f291d98afc7d6c2605bd99e769cd844" => :mavericks
+  end
+
+  devel do
+    url "http://download.savannah.nongnu.org/releases/rdiff-backup/rdiff-backup-1.3.3.tar.gz"
+    sha256 "ee030ce638df0eb1047cf72578e0de15d9a3ee9ab24da2dc0023e2978be30c06"
+  end
 
   depends_on "librsync"
 

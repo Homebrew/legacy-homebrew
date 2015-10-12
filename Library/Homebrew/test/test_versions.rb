@@ -350,4 +350,15 @@ class VersionParsingTests < Homebrew::TestCase
     assert_version_detected "4.0.18",
       "http://ftpmirror.gnu.org/mtools/mtools_4.0.18_i386.deb"
   end
+
+  def test_opam_version
+    assert_version_detected "2.18.3",
+      "https://opam.ocaml.org/archives/lablgtk.2.18.3+opam.tar.gz"
+    assert_version_detected "1.9",
+      "https://opam.ocaml.org/archives/sha.1.9+opam.tar.gz"
+    assert_version_detected "0.99.2",
+      "https://opam.ocaml.org/archives/ppx_tools.0.99.2+opam.tar.gz"
+    assert_version_detected "1.0.2",
+      "https://opam.ocaml.org/archives/easy-format.1.0.2+opam.tar.gz"
+  end
 end

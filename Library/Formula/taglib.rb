@@ -9,6 +9,7 @@ class Taglib < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "1fce4606850daa8617ea9ed41970f0ec60c7348a0f7ad0f7363523a5798585c6" => :el_capitan
     sha1 "431580f12a7811288b6e3b187ca75bf5e321fd7c" => :yosemite
     sha1 "7b9a9466fcbfb5952b7c97e739fa38a94e110f16" => :mavericks
     sha1 "9f12bf0949b250e67cb606cf389a99d7d2bc49ca" => :mountain_lion

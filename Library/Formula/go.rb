@@ -1,17 +1,18 @@
 class Go < Formula
   desc "Go programming environment"
   homepage "https://golang.org"
-  url "https://storage.googleapis.com/golang/go1.5.src.tar.gz"
-  mirror "https://fossies.org/linux/misc/go1.5.src.tar.gz"
-  version "1.5"
-  sha256 "be81abec996d5126c05f2d36facc8e58a94d9183a56f026fc9441401d80062db"
+  url "https://storage.googleapis.com/golang/go1.5.1.src.tar.gz"
+  mirror "https://fossies.org/linux/misc/go1.5.1.src.tar.gz"
+  version "1.5.1"
+  sha256 "a889873e98d9a72ae396a9b7dd597c29dcd709cafa9097d9c4ba04cff0ec436b"
 
   head "https://github.com/golang/go.git"
 
   bottle do
-    sha256 "5733b061936b485265f8e2a3f34eda693ae15c3e1326b6fba65b421af2ebccaf" => :yosemite
-    sha256 "6eff306a07221d06bc5fb374561eab5df9074da55c1862c415f699b5189d3387" => :mavericks
-    sha256 "f4dc40f7a48a5dde33dc02ff601e9a02c0f516204b2bd57a46184bdd07a63f53" => :mountain_lion
+    sha256 "aaebe29b5cf2bb1f57f7d81c7552be8a31e5f1fd570a74cc5b02b2a1c70d6b78" => :el_capitan
+    sha256 "416903e6db83af6e6cd894b255f4dcab2a3c3cc00e96df2fec7ec0ef3316b4fa" => :yosemite
+    sha256 "3dcba89c51ad223cc854d85a3354e2222de6925d6d8a161b68e84d1cfae3b54f" => :mavericks
+    sha256 "6dcf1ea79a81501016369c342e2f3610e6148b1d0a9831f2896fc5380ab21654" => :mountain_lion
   end
 
   option "without-cgo", "Build without cgo"
@@ -103,12 +104,13 @@ class Go < Formula
     # Run go fmt check for no errors then run the program.
     # This is a a bare minimum of go working as it uses fmt, build, and run.
     system "#{bin}/go", "fmt", "hello.go"
-    assert_equal "Hello World\n", `#{bin}/go run hello.go`
+    assert_equal "Hello World\n", shell_output("#{bin}/go run hello.go")
 
     if build.with? "godoc"
       assert File.exist?(libexec/"bin/godoc")
       assert File.executable?(libexec/"bin/godoc")
     end
+
     if build.with? "vet"
       assert File.exist?(libexec/"pkg/tool/darwin_amd64/vet")
       assert File.executable?(libexec/"pkg/tool/darwin_amd64/vet")

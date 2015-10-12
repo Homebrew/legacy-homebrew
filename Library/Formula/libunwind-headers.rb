@@ -5,8 +5,9 @@ class LibunwindHeaders < Formula
   sha256 "d88ecd5c37f0c0c4d18feb9be52e7b2363ef2709cd2eb36e2e205f3226110de1"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
+    sha256 "1808a41cead20a776ed07529489c823ba6f1856782ffa920e9ad8f4e7f567d1e" => :el_capitan
     sha1 "48f3fb9243e6a5cd3255a9bc43755aedde545a5d" => :yosemite
     sha1 "022d85a3a7e2368bd9a3cbc679d69f074534f50f" => :mavericks
     sha1 "260e0407173d01261b9a2cb79ccc73ca92866437" => :mountain_lion

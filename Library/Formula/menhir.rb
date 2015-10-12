@@ -10,7 +10,7 @@ class Menhir < Formula
     sha1 "7ab625d14199153fac46742c684e623e68590469" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   def install
     ENV.deparallelize

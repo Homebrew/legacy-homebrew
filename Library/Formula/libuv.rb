@@ -1,19 +1,19 @@
 class Libuv < Formula
   desc "Multi-platform support library with a focus on asynchronous I/O"
   homepage "https://github.com/libuv/libuv"
-  url "https://github.com/libuv/libuv/archive/v1.7.3.tar.gz"
-  sha256 "db5d46318e18330c696d954747036e1be8e2346411d4f30236d7e2f499f0cfab"
+  url "https://github.com/libuv/libuv/archive/v1.7.5.tar.gz"
+  sha256 "11d10f12d68fa655fff18c6021e8e45bc610e7baee006f17247b1830ee316093"
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
     cellar :any
-    sha256 "403327579548634d950b0de35467443b1b5ce5731cbb01d748c313de43f79382" => :yosemite
-    sha256 "09212b028d3f8fb69c4ef76b69a9d3b287ecac8ed557be83e90a070ad62e11d0" => :mavericks
-    sha256 "15b2aa85932a25d2007306b2a00bb49fd003e1c31e80fbe95a153d282356ccb2" => :mountain_lion
+    sha256 "3192e11c214e89a96d3c1f440ba5d9a1b347fcaaf5a03382a5d620fe721bd216" => :el_capitan
+    sha256 "3546c7c8bdfb99cffa13d89b32d34e7c0b722eb10e168fcc9444850f8119e2a8" => :yosemite
+    sha256 "90ed6423f092071cbd454797caf5992c6ea8e0db8f04707073702ea69039cb30" => :mavericks
   end
 
   option "without-docs", "Don't build and install documentation"
-  option "with-check", "Execute compile time checks (Requires internet connection)"
+  option "with-check", "Execute compile time checks (Requires Internet connection)"
   option :universal
 
   depends_on "pkg-config" => :build

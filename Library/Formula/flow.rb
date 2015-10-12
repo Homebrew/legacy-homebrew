@@ -1,31 +1,34 @@
 class Flow < Formula
   desc "Static type checker for JavaScript"
   homepage "http://flowtype.org/"
-  url "https://github.com/facebook/flow/archive/v0.14.0.tar.gz"
-  sha256 "1dab6ca03966e9ddc0a22220b56df55997e9ec26bdc795ca4ba7db9b1c76a376"
+  url "https://github.com/facebook/flow/archive/v0.17.0.tar.gz"
+  sha256 "282ead8e8a344e44b825b2f8727520fb420e79f76ed1c26fa3a137c8a0172b35"
   head "https://github.com/facebook/flow.git"
 
   bottle do
-    cellar :any
-    sha256 "7bbc30b5d85436e3526be96ca00cbb61b8156ffda3016775da3a288134c1f4fa" => :yosemite
-    sha256 "8e0117aeee3d0b670a7dc93aa60ccc09004eacb4d09b8aa4cc2e05e4ae091dc8" => :mavericks
-    sha256 "5cf57fcca47de49144872145c9bb8b004c649f0ff12b1927573ddf821710275a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "84d9a7e6d96717ec1b690db3fdaf0a4e9eeca55c69c1dce9fb42ae36847fba21" => :el_capitan
+    sha256 "4b48d4f2c96d32981a0b3c6166577c933753a101b2bd66e4360fdb20a03cf788" => :yosemite
+    sha256 "0c9400ae1453ae86e47169f25a58dd892ed28e412d70d4859be8cfc91ae573da" => :mavericks
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
 
   def install
     system "make"
     bin.install "bin/flow"
-    (share/"flow").install "bin/examples"
 
     bash_completion.install "resources/shell/bash-completion" => "flow-completion.bash"
     zsh_completion.install_symlink bash_completion/"flow-completion.bash" => "_flow"
   end
 
   test do
-    output = `#{bin}/flow single #{share}/flow/examples/01_HelloWorld`
-    assert_match(/This type is incompatible with/, output)
-    assert_match(/Found 1 error/, output)
+    system "#{bin}/flow init #{testpath}"
+    (testpath/"test.js").write <<-EOS.undent
+      /* @flow */
+      var x: string = 123;
+    EOS
+    expected = /number\nThis type is incompatible with\n.*string\n\nFound 1 error/
+    assert_match expected, shell_output("#{bin}/flow check --old-output-format #{testpath}", 2)
   end
 end

@@ -7,6 +7,7 @@ class Libvpx < Formula
   head "https://chromium.googlesource.com/webm/libvpx", :using => :git
 
   bottle do
+    sha256 "2becb83097f9f8a49bae7ad31007aad8f81d82fd934ca88e740d980b062ddc03" => :el_capitan
     sha256 "bbc6f2c5c306d6b33107d21f14d3526871f291c631c8d61ce4e5ad33376aa7ee" => :yosemite
     sha256 "ec9422796d4695e471a94bb2809f78375bbc9a111fa8f5ef10a382b5500e9c5b" => :mavericks
     sha256 "6aed92389466e1a0cf62b8320262d33c2e5e0c2802b40e2cbd267f270621e77f" => :mountain_lion

@@ -7,8 +7,13 @@ class Caveats
 
   def caveats
     caveats = []
-    s = f.caveats.to_s
-    caveats << s.chomp + "\n" if s.length > 0
+    begin
+      build, f.build = f.build, Tab.for_formula(f)
+      s = f.caveats.to_s
+      caveats << s.chomp + "\n" if s.length > 0
+    ensure
+      f.build = build
+    end
     caveats << keg_only_text
     caveats << bash_completion_caveats
     caveats << zsh_completion_caveats
@@ -140,7 +145,8 @@ class Caveats
         Emacs Lisp files have been installed to:
         #{HOMEBREW_PREFIX}/share/emacs/site-lisp/
 
-        Add the following to your init file to have packages installed by Homebrew added to your load-path:
+        Add the following to your init file to have packages installed by
+        Homebrew added to your load-path:
         (let ((default-directory "#{HOMEBREW_PREFIX}/share/emacs/site-lisp/"))
           (normal-top-level-add-subdirs-to-load-path))
       EOS

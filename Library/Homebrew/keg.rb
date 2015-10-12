@@ -72,7 +72,7 @@ class Keg
   # These paths relative to the keg's share directory should always be real
   # directories in the prefix, never symlinks.
   SHARE_PATHS = %w[
-    aclocal doc info locale man
+    aclocal doc info java locale man
     man/man1 man/man2 man/man3 man/man4
     man/man5 man/man6 man/man7 man/man8
     man/cat1 man/cat2 man/cat3 man/cat4
@@ -186,7 +186,7 @@ class Keg
     remove_oldname_opt_record
   end
 
-  def unlink
+  def unlink(mode = OpenStruct.new)
     ObserverPathnameExtension.reset_counts!
 
     dirs = []
@@ -201,6 +201,12 @@ class Keg
 
         # check whether the file to be unlinked is from the current keg first
         if dst.symlink? && src == dst.resolved_path
+          if mode.dry_run
+            puts dst
+            Find.prune if src.directory?
+            next
+          end
+
           dst.uninstall_info if dst.to_s =~ INFOFILE_RX
           dst.unlink
           Find.prune if src.directory?
@@ -208,9 +214,10 @@ class Keg
       end
     end
 
-    remove_linked_keg_record if linked?
-
-    dirs.reverse_each(&:rmdir_if_possible)
+    unless mode.dry_run
+      remove_linked_keg_record if linked?
+      dirs.reverse_each(&:rmdir_if_possible)
+    end
 
     ObserverPathnameExtension.total
   end

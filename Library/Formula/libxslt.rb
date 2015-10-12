@@ -7,6 +7,7 @@ class Libxslt < Formula
   revision 1
 
   bottle do
+    sha256 "491daabbc8d2ebbe0184bdd6c6ebe7c99f72899cfabe259c7f7ebcc37947b20b" => :el_capitan
     sha256 "6d183c0aec7ca84802c54256289d401d05b2ae153956e118df357f70f388fed9" => :yosemite
     sha256 "3f674b2296134366637b6ab6f8880c124926b768d4ce5230564d4a1265a8797d" => :mavericks
     sha256 "2530cd13170900d9f6e5cc4c9d57312cffcb0f16a20d12cc4e82ac8e5f4455d9" => :mountain_lion

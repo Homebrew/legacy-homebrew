@@ -15,11 +15,9 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  revision 1
 
   stable do
-    # 5.5.0 has a compile-breaking pkg-config error when projects use that to find libs.
-    # https://bugreports.qt.io/browse/QTBUG-47162
-    # This is known to impact Wireshark & Poppler optional Qt5 usage in the core.
     url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
     mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
     sha256 "7ea2a16ecb8088e67db86b0835b887d5316121aeef9565d5d19be3d539a2c2af"
@@ -30,21 +28,51 @@ class Qt5 < Formula
     # when this formula is updated to 5.5.1
     patch :DATA
 
-    # Upstream commit to fix the fatal build error on OS X El Capitan.
+    # Build error: Fix build with clang 3.7.
     # https://codereview.qt-project.org/#/c/121545/
     # Should land in the 5.5.1 release.
-    if MacOS.version >= :el_capitan
-      patch do
-        url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
-        sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
-      end
+    patch do
+      url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
+      sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
+    end
+
+    # Build error: Fix library paths with Xcode 7 for QtWebEngine.
+    # https://codereview.qt-project.org/#/c/122729/
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/2fcc1f8ec1df1c90785f4fa6632cebac68772fa9/qt5/el-capitan-2.diff"
+      sha256 "b8f04efd047eeed7cfd15b029ece20b5fe3c0960b74f7a5cb98bd36475463227"
+    end
+
+    # Build error: Fix CGEventCreateMouseEvent use with 10.11 SDK.
+    # https://codereview.qt-project.org/#/c/115138/
+    # Should land in the 5.5.1 release.
+    patch do
+      url "https://gist.githubusercontent.com/UniqMartin/baf089e326f572150971/raw/1de52d53929bc3472cc7f345c16f068c37c75263/qtbug-47641.patch"
+      sha256 "c74c73b2d540788f0be2f1f137d0844feca8f5022a044851366380bf2972ead0"
+    end
+
+    # Runtime error: Make tooltips transparent for mouse events.
+    # https://codereview.qt-project.org/#/c/124274/
+    # Should land in the 5.5.1 release.
+    patch do
+      url "https://gist.githubusercontent.com/swallat/6b7d10fd929a0087fea4/raw/9b201a2848f8b8e16067855f30588a7b6dc607ec/qt5.5-qnsview-tooltip-cocoa.patch"
+      sha256 "5fa4511ee0c91491358d569f884dad9e4088eafa329e7dbe2b38a62afeef899d"
+    end
+
+    # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
+    # https://codereview.qt-project.org/#/c/126584/
+    # Should land in the 5.5.2 and/or 5.6 release.
+    patch do
+      url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
+      sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
     end
   end
 
   bottle do
-    sha256 "3f334cdb65ea7ab4255abfd254f08cf095b3ba2c9f1e403afe6236975a88b160" => :yosemite
-    sha256 "9bef8bea9a731fc5b26434f817858931442783c8a4a62bf4dc95fa6944550ed8" => :mavericks
-    sha256 "946991e0aa83dfb119e9ed306a61645b9648537212758477db7772179f7503e4" => :mountain_lion
+    revision 1
+    sha256 "587d272ec5ebb3265e43f51a71f57ad36b3a0809775370b80e9c6f69c7fc8733" => :el_capitan
+    sha256 "c195539679685c0349e2a31b9be19561b44dde97490a361e5dd3b3c129a81370" => :yosemite
+    sha256 "c2d85c78b20b0bc60b3118b112a997890e9dba1aa76e38fb0755e2ec93fc252d" => :mavericks
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."

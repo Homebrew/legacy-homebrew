@@ -1,13 +1,13 @@
 class Mysql < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.6/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.26.tar.gz"
-  sha256 "b44c6ce5f95172c56c73edfa8b710b39242ec7af0ab182c040208c41866e5070"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.27.tar.gz"
+  sha256 "8356bba23f3f6c0c2d4806110c41d1c4d6a4b9c50825e11c5be4bbee2b20b71d"
 
   bottle do
-    sha256 "fae4e0791575b643c0f7f3c0368a4fdbafb7d00c03f41431fff25dbbfa83b4cc" => :yosemite
-    sha256 "954769ebb859807b570bf09268b37e470891cbf2dceebd8ef6c92d8f36baf15d" => :mavericks
-    sha256 "b05421d5f0c0b160c605fa6f19986555e485b0504cec77febca74ec4ebd499e1" => :mountain_lion
+    sha256 "ce2f5697236b85c82cea6f727b0ef99aa47bf1b9e3c9f86f46e29e19eb48fe03" => :el_capitan
+    sha256 "d367874bcebaf3d551a1101d42a3d023bcf13ea249deff65b7bb39409b7b94f0" => :yosemite
+    sha256 "b715084d9d16c12506cdee1453d99b825379c3aa75d70e0883e68993baa08e08" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -174,8 +174,9 @@ class Mysql < Formula
   end
 
   test do
+    system "/bin/sh", "-n", "#{bin}/mysqld_safe"
     (prefix/"mysql-test").cd do
-      system "./mysql-test-run.pl", "status"
+      system "./mysql-test-run.pl", "status", "--vardir=#{testpath}"
     end
   end
 end

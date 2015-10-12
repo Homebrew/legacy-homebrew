@@ -7,6 +7,7 @@ class Gnupg < Formula
   sha256 "7f09319d044b0f6ee71fe3587bb873be701723ac0952cff5069046a78de8fd86"
 
   bottle do
+    sha256 "eba128a335d51a62017be92586669cacbf80ed88c77fe61ba2b85bce855ae6f1" => :el_capitan
     sha1 "22482f6bceecb726ad428b06308d918308bf06e3" => :yosemite
     sha1 "589cd445bdfaf05cb5f18021b7b7207037e05250" => :mavericks
     sha1 "842a4c03eac710030e6257d00d7133b7a1c046cd" => :mountain_lion
