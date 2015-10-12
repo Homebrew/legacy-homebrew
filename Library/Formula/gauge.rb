@@ -77,6 +77,6 @@ class Gauge < Formula
   end
 
   test do
-    system "gauge", "-v"
+    system bin/"gauge", "-v"
   end
 end
