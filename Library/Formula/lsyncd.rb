@@ -51,7 +51,7 @@ class Lsyncd < Formula
   if xnu_headers.key? MACOS_FULL_VERSION
     tarball, checksum = xnu_headers.fetch(MACOS_FULL_VERSION)
     resource "xnu" do
-      url "http://www.opensource.apple.com/tarballs/xnu/#{tarball}"
+      url "https://opensource.apple.com/tarballs/xnu/#{tarball}"
       sha256 checksum
     end
   end
