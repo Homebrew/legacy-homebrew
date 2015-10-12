@@ -1,7 +1,7 @@
 class Teapot < Formula
   desc "Table editor and planner"
   homepage "http://www.syntax-k.de/projekte/teapot/"
-  url "http://www.syntax-k.de/projekte/teapot/teapot-2.3.0.tar.gz"
+  url "https://www.syntax-k.de/projekte/teapot/teapot-2.3.0.tar.gz"
   sha256 "580e0cb416ae3fb3df87bc6e92e43bf72929d47b65ea2b50bc09acea3bff0b65"
 
   bottle do
