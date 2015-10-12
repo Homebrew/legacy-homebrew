@@ -13,6 +13,9 @@ class Libftdi0 < Formula
     sha1 "39d3653f05b71220ed1977abf6bdb37c0e00fed5" => :mountain_lion
   end
 
+  conflicts_with "cspice", :because => "both install `simple` binaries"
+  conflicts_with "openhmd", :because => "both install `simple` binaries"
+
   depends_on "libusb-compat"
 
   def install
