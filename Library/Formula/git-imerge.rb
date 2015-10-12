@@ -16,6 +16,10 @@ class GitImerge < Formula
   def install
     bin.mkpath
     system "make", "install", "PREFIX=#{prefix}"
+    # completion hasn't been released in a tagged stable version yet
+    if build.head?
+      bash_completion.install "git-imerge.bashcomplete"
+    end
   end
 
   test do
