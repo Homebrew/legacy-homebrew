@@ -1,10 +1,9 @@
-require 'formula'
-
 class Veclibfort < Formula
-  homepage 'https://github.com/mcg1969/vecLibFort'
-  url 'https://github.com/mcg1969/vecLibFort/archive/0.4.2.tar.gz'
-  sha1 'fee75b043a05f1dc7ec6649cbab73e23a71a9471'
-  head 'https://github.com/mcg1969/vecLibFort.git'
+  desc "Gnu Fortran interface to Accelerate/vecLib"
+  homepage "https://github.com/mcg1969/vecLibFort"
+  url "https://github.com/mcg1969/vecLibFort/archive/0.4.2.tar.gz"
+  sha256 "c61316632bffa1c76e3c7f92b11c9def4b6f41973ecf9e124d68de6ae37fbc85"
+  head "https://github.com/mcg1969/vecLibFort.git"
   revision 2
 
   bottle do
@@ -26,7 +25,7 @@ class Veclibfort < Formula
   end
 
   def caveats
-    caveats = <<-EOS.undent
+    <<-EOS.undent
       Installs the following files:
         * libvecLibFort.a: static library; link with -framework vecLib
         * libvecLibFort.dylib: dynamic library; *replaces* -framework vecLib
