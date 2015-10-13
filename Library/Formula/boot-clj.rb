@@ -10,7 +10,6 @@ class BootClj < Formula
   end
 
   def post_install
-
     # Work correctly in sandboxes.
     # (Q.v. <https://github.com/Homebrew/homebrew/pull/44254>)
     ENV["_JAVA_OPTIONS"] = "-Duser.home=#{ENV["HOME"]}"
