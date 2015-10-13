@@ -1,6 +1,6 @@
 class Pktanon < Formula
   desc "Packet trace anonymization"
-  homepage "http://www.tm.uka.de/software/pktanon/index.html"
+  homepage "https://www.tm.uka.de/software/pktanon/index.html"
   url "https://www.tm.uka.de/software/pktanon/download/pktanon-1.4.0-dev.tar.gz"
   sha256 "db3f437bcb8ddb40323ddef7a9de25a465c5f6b4cce078202060f661d4b97ba3"
 

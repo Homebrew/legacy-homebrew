@@ -1,6 +1,6 @@
 class Vit < Formula
   desc "Front-end for Task Warrior"
-  homepage "http://taskwarrior.org/news/news.20140406.html"
+  homepage "https://taskwarrior.org/news/news.20140406.html"
   head "https://git.tasktools.org/scm/ex/vit.git"
   url "https://taskwarrior.org/download/vit-1.2.tar.gz"
   sha256 "a78dee573130c8d6bc92cf60fafac0abc78dd2109acfba587cb0ae202ea5bbd0"
@@ -9,7 +9,7 @@ class Vit < Formula
   depends_on "task"
 
   resource "Curses" do
-    url "http://cpan.metacpan.org/authors/id/G/GI/GIRAFFED/Curses-1.31.tgz"
+    url "https://cpan.metacpan.org/authors/id/G/GI/GIRAFFED/Curses-1.31.tgz"
     sha256 "7bb4623ac97125c85e25f9fbf980103da7ca51c029f704f0aa129b7a2e50a27a"
   end
 
