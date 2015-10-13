@@ -1257,6 +1257,15 @@ class Checks
     s
   end
 
+  # define custom checks provided by installed formulas
+  Formula.installed.each do |f|
+    if f.respond_to?(:doctor)
+      define_method "check_#{f.name}" do
+        f.doctor
+      end
+    end
+  end
+
   def all
     methods.map(&:to_s).grep(/^check_/)
   end
