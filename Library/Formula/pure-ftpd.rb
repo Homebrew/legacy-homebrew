@@ -1,6 +1,6 @@
 class PureFtpd < Formula
   desc "Secure and efficient FTP server"
-  homepage "http://www.pureftpd.org/"
+  homepage "https://www.pureftpd.org/"
   url "https://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.41.tar.gz"
   mirror "ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.41.tar.gz"
   sha256 "a877c689ae1b982c968a767631740a84f164ac2ae6312a4a2f9f93ba79a348e8"
