@@ -4,12 +4,6 @@ class AuroraScheduler < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=aurora/0.9.0/apache-aurora-0.9.0.tar.gz"
   sha256 "16040866f3a799226452b1541892eb80ed3c61f47c33f1ccb0687fb5cf82767c"
 
-  depends_on :java => "1.8+"
-
-  def pour_bottle?
-    quiet_system("/usr/libexec/java_home --version 1.8 --failfast")
-  end
-
   def install
     # https://issues.apache.org/jira/browse/AURORA-1508
     inreplace ".pantsversion", "0.0.32", "0.0.53"
