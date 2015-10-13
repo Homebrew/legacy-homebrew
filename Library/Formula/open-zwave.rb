@@ -42,9 +42,9 @@ index 24df4f5..b064029 100644
 --- a/cpp/build/Makefile
 +++ b/cpp/build/Makefile
 @@ -23,16 +23,24 @@ top_srcdir := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../)
- 
+
  include $(top_srcdir)/cpp/build/support.mk
- 
+
 +#Mac prefers a dylib, not a so
 +ifeq ($(UNAME),Darwin)
 +SHARED_LIB_NAME=libopenzwave-$(VERSION).dylib
@@ -53,7 +53,7 @@ index 24df4f5..b064029 100644
 +SHARED_LIB_NAME=libopenzwave.so.$(VERSION)
 +SHARED_LIB_UNVERSIONED=libopenzwave.so
 +endif
- 
+
  #if we are on a Mac, add these flags and libs to the compile and link phases 
  ifeq ($(UNAME),Darwin)
  CFLAGS	+= -c -DDARWIN -arch i386 -arch x86_64
@@ -67,24 +67,24 @@ index 24df4f5..b064029 100644
 +LDFLAGS += -shared -Wl,-soname,$(SHARED_LIB_NAME)
  LIBS 	+= -ludev
  endif
- 
+
 @@ -74,10 +82,10 @@ indep := $(notdir $(filter-out $(top_srcdir)/cpp/src/vers.cpp, $(wildcard $(top_
  aes := $(notdir $(wildcard $(top_srcdir)/cpp/src/aes/*.c))
- 
- 
+
+
 -default: $(LIBDIR)/libopenzwave.a $(LIBDIR)/libopenzwave.so.$(VERSION)
 +default: $(LIBDIR)/libopenzwave.a $(LIBDIR)/$(SHARED_LIB_NAME)
- 
+
  clean:
 -	@rm -rf $(DEPDIR) $(OBJDIR) $(LIBDIR)/libopenzwave.so* $(LIBDIR)/libopenzwave.a $(top_builddir)/libopenzwave.pc $(top_builddir)/docs/api $(top_builddir)/Doxyfile
 +	@rm -rf $(DEPDIR) $(OBJDIR) $(LIBDIR)/libopenzwave.so* $(LIBDIR)/libopenzwave-*.dylib $(LIBDIR)/libopenzwave.a $(top_builddir)/libopenzwave.pc $(top_builddir)/docs/api $(top_builddir)/Doxyfile
- 
- 
+
+
  -include $(patsubst %.cpp,$(DEPDIR)/%.d,$(tinyxml))
 @@ -110,7 +118,7 @@ $(LIBDIR)/libopenzwave.a:	$(patsubst %.cpp,$(OBJDIR)/%.o,$(tinyxml)) \
  	@$(AR) $@ $+
  	@$(RANLIB) $@
- 
+
 -$(LIBDIR)/libopenzwave.so.$(VERSION):	$(patsubst %.cpp,$(OBJDIR)/%.o,$(tinyxml)) \
 +$(LIBDIR)/$(SHARED_LIB_NAME):	$(patsubst %.cpp,$(OBJDIR)/%.o,$(tinyxml)) \
  			$(patsubst %.c,$(OBJDIR)/%.o,$(hidapi)) \
@@ -97,13 +97,13 @@ index 24df4f5..b064029 100644
 -	@ln -sf libopenzwave.so.$(VERSION) $(LIBDIR)/libopenzwave.so
 +	@$(LD) $(LDFLAGS) -o $@ $+ $(LIBS)
 +	@ln -sf $(SHARED_LIB_NAME) $(LIBDIR)/$(SHARED_LIB_UNVERSIONED)
- 
+
  ifeq ($(PKGCONFIG),)
  $(top_builddir)/libopenzwave.pc: $(top_srcdir)/cpp/build/libopenzwave.pc.in
 @@ -155,10 +163,10 @@ doc: $(top_builddir)/Doxyfile
  	@cd $(top_builddir); $(DOXYGEN)
  endif
- 
+
 -install: $(LIBDIR)/libopenzwave.so.$(VERSION) doc $(top_builddir)/libopenzwave.pc 
 +install: $(LIBDIR)/$(SHARED_LIB_NAME) doc $(top_builddir)/libopenzwave.pc 
  	install -d $(DESTDIR)/$(instlibdir)/
@@ -119,8 +119,8 @@ index 0f1fd50..3805a39 100644
 --- a/cpp/examples/MinOZW/Makefile
 +++ b/cpp/examples/MinOZW/Makefile
 @@ -19,7 +19,7 @@ top_srcdir := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../../)
- 
- 
+
+
  INCLUDES	:= -I $(top_srcdir)/cpp/src -I $(top_srcdir)/cpp/tinyxml/ -I $(top_srcdir)/cpp/hidapi/hidapi/
 -LIBS =  $(wildcard $(LIBDIR)/*.so $(top_builddir)/*.so $(top_builddir)/cpp/build/*.so )
 +LIBS =  $(wildcard $(LIBDIR)/*.so $(LIBDIR)/*.dylib $(top_builddir)/*.so $(top_builddir)/*.dylib $(top_builddir)/cpp/build/*.so $(top_builddir)/cpp/build/*.dylib )

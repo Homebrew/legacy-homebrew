@@ -75,7 +75,7 @@ __END__
 +#define HAVE_GETLINE   1
 +#define NEW_TUN        1
  #endif
- 
+
  /***************************************************************************/
 diff -u vpnc.patched/vpnc-script vpnc/vpnc-script
 --- vpnc.patched/vpnc-script	2013-11-01 13:17:21.000000000 -0700

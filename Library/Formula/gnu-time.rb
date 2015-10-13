@@ -46,7 +46,7 @@ index 9d5cf2c..97611f5 100644
 @@ -628,7 +628,7 @@ run_command (cmd, resp)
    signal (SIGQUIT, quit_signal);
  }
- 
+
 -void
 +int
  main (argc, argv)

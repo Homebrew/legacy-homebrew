@@ -29,18 +29,18 @@ __END__
 @@ -34,7 +34,8 @@
    local TARGET=$2
    local PARAMS=$3
- 
+
 -  install -p -D $PARAMS $SOURCE $TARGET
 +  mkdir -p `dirname $TARGET`
 +  install -p $PARAMS $SOURCE $TARGET
  }
- 
- 
+
+
 --- lcov-1.8/Makefile~	2010-01-29 19:14:46.000000000 +0900
 +++ lcov-1.8/Makefile	2010-04-16 21:42:26.000000000 +0900
 @@ -15,8 +15,8 @@
  RELEASE := 1
- 
+
  CFG_DIR := $(PREFIX)/etc
 -BIN_DIR := $(PREFIX)/usr/bin
 -MAN_DIR := $(PREFIX)/usr/share/man

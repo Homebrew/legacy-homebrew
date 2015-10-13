@@ -30,7 +30,7 @@ index f150167..e517675 100644
 @@ -66,7 +66,7 @@ Usage:  $PROG [ -no ] [ command ]
  			otherwise stdin is used;
  "
- 
+
 -: ${TMPDIR:="/usr/tmp"}		# where temp. files go
 +: ${TMPDIR:="/var/tmp"}		# where temp. files go
  TEMP_FILE="$TMPDIR/$PROG.$$"	# temp. file to hold data to edit
@@ -45,5 +45,5 @@ index f150167..e517675 100644
 +	AWK=awk
 +	;;
    esac
- 
+
  #

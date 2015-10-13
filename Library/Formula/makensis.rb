@@ -38,15 +38,15 @@ index a344456..37c575b 100755
 +import os
 +
  Import('defenv')
- 
+
  ### Configuration options
 @@ -440,6 +442,9 @@ Help(cfg.GenerateHelpText(defenv))
  env = Environment()
  cfg.Update(env)
- 
+
 +defenv['CC'] = os.environ['CC']
 +defenv['CXX'] = os.environ['CXX']
 +
  def AddValuedDefine(define):
    defenv.Append(NSIS_CPPDEFINES = [(define, env[define])])
- 
+

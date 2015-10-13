@@ -61,5 +61,5 @@ index fb566f4..d1c1fb2 100644
 +        }
 +    }
  }
- 
+
  void term_source (j_decompress_ptr cinfo)

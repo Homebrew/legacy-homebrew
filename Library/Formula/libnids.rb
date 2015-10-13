@@ -46,7 +46,7 @@ __END__
  LIBSTATIC      = libnids.a
 -LIBSHARED      = libnids.so.1.24
 +LIBSHARED      = libnids.1.24.dylib
- 
+
  CC		= @CC@
  CFLAGS		= @CFLAGS@ -DLIBNET_VER=@LIBNET_VER@ -DHAVE_ICMPHDR=@ICMPHEADER@ -DHAVE_TCP_STATES=@TCPSTATES@ -DHAVE_BSD_UDPHDR=@HAVE_BSD_UDPHDR@
 @@ -65,7 +65,7 @@
@@ -55,7 +55,7 @@ __END__
  $(LIBSHARED): $(OBJS_SHARED)
 -	$(CC) -shared -Wl,-soname,$(LIBSHARED) -o $(LIBSHARED) $(OBJS_SHARED) $(LIBS) $(LNETLIB) $(PCAPLIB)
 +	$(CC) -dynamiclib -Wl,-dylib -Wl,-install_name,$(LIBSHARED) -Wl,-headerpad_max_install_names -o $(LIBSHARED) $(OBJS_SHARED) $(LIBS) $(LNETLIB) $(PCAPLIB)
- 
+
  _install install: $(LIBSTATIC)
  	../mkinstalldirs $(install_prefix)$(libdir)
 @@ -76,7 +76,7 @@
@@ -64,6 +64,6 @@ __END__
  	$(INSTALL) -c -m 755 $(LIBSHARED) $(install_prefix)$(libdir)
 -	ln -s -f $(LIBSHARED) $(install_prefix)$(libdir)/libnids.so
 +	ln -s -f $(LIBSHARED) $(install_prefix)$(libdir)/libnids.dylib
-  
+
  clean:
  	rm -f *.o *~ $(LIBSTATIC) $(LIBSHARED)

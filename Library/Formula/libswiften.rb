@@ -79,9 +79,9 @@ __END__
 +++ b/Swiften/EventLoop/EventLoop.cpp
 @@ -12,6 +12,7 @@
  #include <cassert>
- 
+
  #include <Swiften/Base/Log.h>
 +#include <boost/thread/locks.hpp>
- 
- 
+
+
  namespace Swift {

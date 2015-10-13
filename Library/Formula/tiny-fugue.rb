@@ -30,7 +30,7 @@ __END__
 @@ -7,6 +7,7 @@
   ************************************************************************/
  static const char RCSid[] = "$Id: malloc.c,v 35004.22 2007/01/13 23:12:39 kkeys Exp $";
- 
+
 +#include "sys/types.h"
  #include "tfconfig.h"
  #include "port.h"
@@ -63,9 +63,9 @@ __END__
 @@ -10,7 +10,7 @@
  #ifndef PATTERN_H
  #define PATTERN_H
- 
+
 -#include "pcre-2.08/pcre.h"
 +#include <pcre.h>
- 
+
  typedef struct RegInfo {
      pcre *re;

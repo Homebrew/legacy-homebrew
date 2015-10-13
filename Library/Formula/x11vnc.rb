@@ -49,7 +49,7 @@ index d6b0bda..0b2cfa9 100644
 --- a/x11vnc/solid.c
 +++ b/x11vnc/solid.c
 @@ -177,7 +177,7 @@ unsigned long get_pixel(char *color) {
- 
+
  XImage *solid_root(char *color) {
  #if NO_X11
 -	RAWFB_RET_VOID

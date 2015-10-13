@@ -55,10 +55,10 @@ __END__
 +++ b/py_ext/setup.py.in	2012-09-04 13:39:52.000000000 -0700
 @@ -19,7 +19,7 @@
  	mylibs.append('png')
- 
+
  if "@GIFLIB@":
 -	mylibs.append("ungif")
 +	mylibs.append("gif")
- 
- 
+
+
  setup(name = "mingc", version = "@MING_VERSION@",

@@ -98,12 +98,12 @@ index 397ddd7..d128083 100644
  DECLARE_WXCOCOA_OBJC_CLASS(NSSet);
  DECLARE_WXCOCOA_OBJC_CLASS(EAGLContext);
 +DECLARE_WXCOCOA_OBJC_CLASS(UIWebView);
- 
+
  typedef WX_UIWindow WXWindow;
  typedef WX_UIView WXWidget;
  typedef WX_EAGLContext WXGLContext;
  typedef WX_NSString* WXGLPixelFormat;
- 
+
 +typedef WX_UIWebView OSXWebViewPtr;
 +
 +#endif
@@ -112,7 +112,7 @@ index 397ddd7..d128083 100644
 +DECLARE_WXCOCOA_OBJC_CLASS(WebView);
 +typedef WX_WebView OSXWebViewPtr;
  #endif
- 
+
  #endif /* __WXMAC__ */
 diff --git a/include/wx/html/webkit.h b/include/wx/html/webkit.h
 index 8700367..f805099 100644
@@ -120,19 +120,19 @@ index 8700367..f805099 100644
 +++ b/include/wx/html/webkit.h
 @@ -18,7 +18,6 @@
  #endif
- 
+
  #include "wx/control.h"
 -DECLARE_WXCOCOA_OBJC_CLASS(WebView); 
- 
+
  // ----------------------------------------------------------------------------
  // Web Kit Control
 @@ -107,7 +106,7 @@ private:
      wxString m_currentURL;
      wxString m_pageTitle;
- 
+
 -    WX_WebView m_webView;
 +    OSXWebViewPtr m_webView;
- 
+
      // we may use this later to setup our own mouse events,
      // so leave it in for now.
 diff --git a/include/wx/osx/webview_webkit.h b/include/wx/osx/webview_webkit.h
@@ -142,9 +142,9 @@ index 803f8b0..438e532 100644
 @@ -158,7 +158,7 @@ private:
      wxWindowID m_windowID;
      wxString m_pageTitle;
- 
+
 -    wxObjCID m_webView;
 +    OSXWebViewPtr m_webView;
- 
+
      // we may use this later to setup our own mouse events,
      // so leave it in for now.

@@ -31,8 +31,8 @@ index 73fc6bf..444b0ad
 +exec wish CELLAR/bin/xspin -- $*
 +
 + cd	;# enable to cd to home directory by default
- 
+
 -# cd	;# enable to cd to home directory by default
- 
+
  # on PCs:
  # adjust the first argument to wish above with the name and

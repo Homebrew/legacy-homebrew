@@ -42,7 +42,7 @@ index 7c47ab6..53bdb9f 100644
 +++ b/database.c
 @@ -762,7 +762,7 @@ item_duplicate(list_item dest, list_item src)
   */
- 
+
  /* quick lookup by "standard" field number */
 -inline int
 +int

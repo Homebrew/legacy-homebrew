@@ -47,9 +47,9 @@ diff -Naur winexe-1.00-orig/source4/winexe/winexe.h winexe-1.00/source4/winexe/w
 @@ -63,7 +63,7 @@
  int async_write(struct async_context *c, const void *buf, int len);
  int async_close(struct async_context *c);
- 
+
 -struct tevent_context *ev_ctx;
 +extern struct tevent_context *ev_ctx;
- 
+
  /* winexesvc32_exe.c */
  extern unsigned int winexesvc32_exe_len;

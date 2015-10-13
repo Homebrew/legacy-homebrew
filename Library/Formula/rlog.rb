@@ -18,7 +18,7 @@ __END__
 --- orig/rlog/common.h.in	2008-06-14 20:10:13.000000000 -0700
 +++ new/rlog/common.h.in	2009-05-18 16:05:04.000000000 -0700
 @@ -52,7 +52,12 @@
- 
+
  # define PRINTF(FMT,X) __attribute__ (( __format__ ( __printf__, FMT, X)))
  # define HAVE_PRINTF_ATTR 1
 +
@@ -27,6 +27,6 @@ __END__
 +#else
  # define RLOG_SECTION __attribute__ (( section("RLOG_DATA") ))
 +#endif
- 
+
  #if __GNUC__ >= 3
  # define expect(foo, bar) __builtin_expect((foo),bar)

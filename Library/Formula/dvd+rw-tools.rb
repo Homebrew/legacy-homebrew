@@ -28,5 +28,5 @@ index a6a100b..bf7c041 100644
 +	install -m $(BIN_MODE) $(CHAIN) $(PREFIX)/bin
 +	install -m 0644 growisofs.1 $(PREFIX)/share/man/man1
  ])
- 
+
  ifelse(OS,MINGW32,[

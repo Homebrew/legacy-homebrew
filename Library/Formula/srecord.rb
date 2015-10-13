@@ -23,13 +23,13 @@ index b669f1a..b03c002 100644
 --- a/Makefile.in
 +++ b/Makefile.in
 @@ -151,7 +151,7 @@ the-default-target: all
- 
+
  etc/BUILDING.pdf: etc/BUILDING.man
  	$(GROFF) -Tps -s -I. -t -man etc/BUILDING.man > etc/BUILDING.ps
 -	ps2pdf etc/BUILDING.ps $@
 +	pstopdf etc/BUILDING.ps $@
  	rm etc/BUILDING.ps
- 
+
  $(datarootdir)/doc/srecord/BUILDING.pdf: .mkdir.__datarootdir__doc_srecord \
 @@ -181,7 +181,7 @@ etc/README.pdf: etc/README.man etc/new.1.1.so etc/new.1.10.so etc/new.1.11.so \
  		etc/new.1.60.so etc/new.1.61.so etc/new.1.62.so \
@@ -38,7 +38,7 @@ index b669f1a..b03c002 100644
 -	ps2pdf etc/README.ps $@
 +	pstopdf etc/README.ps $@
  	rm etc/README.ps
- 
+
  $(datarootdir)/doc/srecord/README.pdf: .mkdir.__datarootdir__doc_srecord \
 @@ -209,7 +209,7 @@ etc/change_log.pdf: etc/change_log.man etc/new.1.1.so etc/new.1.10.so \
  		etc/new.1.62.so etc/new.1.63.so etc/new.1.7.so etc/new.1.8.so \
@@ -47,7 +47,7 @@ index b669f1a..b03c002 100644
 -	ps2pdf etc/change_log.ps $@
 +	pstopdf etc/change_log.ps $@
  	rm etc/change_log.ps
- 
+
  $(datarootdir)/doc/srecord/change_log.pdf: .mkdir.__datarootdir__doc_srecord \
 @@ -283,7 +283,7 @@ etc/reference.pdf: etc/BUILDING.man etc/README.man etc/coding-style.so \
  		man/man5/srec_ti_txt.5 man/man5/srec_trs80.5 \
@@ -56,5 +56,5 @@ index b669f1a..b03c002 100644
 -	ps2pdf etc/reference.ps $@
 +	pstopdf etc/reference.ps $@
  	rm etc/reference.ps
- 
+
  $(datarootdir)/doc/srecord/reference.pdf: .mkdir.__datarootdir__doc_srecord \

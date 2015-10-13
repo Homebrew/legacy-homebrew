@@ -28,7 +28,7 @@ __END__
 @@ -42,6 +42,11 @@
  SOLIBV = lib$(NAME).so.$(SOVER)
  SOLIBFL= -L. -l$(NAME)_s
- 
+
 +DYLIB   = lib$(NAME).dylib
 +DYLIBV = lib$(NAME).$(SOVER).dylib
 +
@@ -40,7 +40,7 @@ __END__
 @@ -71,6 +76,14 @@
  .c.o:
  	$(CC) $(CFLAGS) $(CDEFS) -c $<
- 
+
 +dylib: $(DYLIB)
 +
 +$(DYLIBV): $(SOBJS)

@@ -37,7 +37,7 @@ index c7c71f2..8959535 100644
 --- a/dc1394/macosx/capture.c
 +++ b/dc1394/macosx/capture.c
 @@ -150,7 +150,7 @@ callback (buffer_info * buffer, NuDCLRef dcl)
- 
+
      for (i = 0; i < buffer->num_dcls; i++) {
          int packet_size = capture->frames[buffer->i].packet_size;
 -        if ((buffer->pkts[i].status & 0x1F) != 0x11) {

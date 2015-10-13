@@ -52,7 +52,7 @@ index 5320b4a..6cb7090 100644
 @@ -20,6 +20,9 @@
  extern "C" {
  #endif
- 
+
 +// Fixes u_long missing error
 +#include <sys/types.h>
 +

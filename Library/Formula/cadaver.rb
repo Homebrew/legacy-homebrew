@@ -45,7 +45,7 @@ __END__
            esac
 @@ -10975,8 +10975,8 @@
      fi
- 
+
  else
 -    { $as_echo "$as_me:$LINENO: incompatible neon library version $ne_libver: wanted 0.27 28 29" >&5
 -$as_echo "$as_me: incompatible neon library version $ne_libver: wanted 0.27 28 29" >&6;}
@@ -53,4 +53,4 @@ __END__
 +$as_echo "$as_me: incompatible neon library version $ne_libver: wanted 0.27 28 29 30" >&6;}
      neon_got_library=no
  fi
- 
+

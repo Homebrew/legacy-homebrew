@@ -70,10 +70,10 @@ __END__
 +++ config/os/macosx/pThreadUtilities.h
 @@ -66,7 +66,7 @@
  #define __PTHREADUTILITIES_H__
- 
+
  #import "pthread.h"
 -#import <CoreServices/../Frameworks/CarbonCore.framework/Headers/MacTypes.h>
 +#import <MacTypes.h>
- 
+
  #define THREAD_SET_PRIORITY      0
  #define THREAD_SCHEDULED_PRIORITY    1

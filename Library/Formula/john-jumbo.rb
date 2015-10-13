@@ -83,7 +83,7 @@ __END__
 -#define JOHN_SYSTEMWIDE			0
 +#define JOHN_SYSTEMWIDE			1
  #endif
- 
+
  #if JOHN_SYSTEMWIDE
  #ifndef JOHN_SYSTEMWIDE_EXEC /* please refer to the notes above */
 -#define JOHN_SYSTEMWIDE_EXEC		"/usr/libexec/john"

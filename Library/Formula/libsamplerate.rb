@@ -33,11 +33,11 @@ __END__
 --- a/examples/audio_out.c	2011-07-12 16:57:31.000000000 -0700
 +++ b/examples/audio_out.c	2012-03-11 20:48:57.000000000 -0700
 @@ -168,7 +168,7 @@
- 
+
  #if (defined (__MACH__) && defined (__APPLE__)) /* MacOSX */
- 
+
 -#include <Carbon.h>
 +#include <Carbon/Carbon.h>
  #include <CoreAudio/AudioHardware.h>
- 
+
  #define	MACOSX_MAGIC	MAKE_MAGIC ('M', 'a', 'c', ' ', 'O', 'S', ' ', 'X')

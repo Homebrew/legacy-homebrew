@@ -44,13 +44,13 @@ __END__
      int i, len;
 -    static char buf[128];
 +    static char buf[1024];
- 
+
      // This function should not be called if the command issues
      // doesn't actually require a device.
 @@ -1270,7 +1270,7 @@
  	    if (req == NEED_CDRW_W && !rww)
  	      continue;
- 
+
 -	    strncpy(buf, sdata[i].dev.c_str(), 128);
 +	    strncpy(buf, sdata[i].dev.c_str(), 1024);
  	    delete[] sdata;

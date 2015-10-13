@@ -39,7 +39,7 @@ __END__
 @@ -447,8 +447,8 @@
      	int sig;
      	char signame[SIG2STR_MAX];
- 
+
 -      	if ((sig = TEMP_FAILURE_RETRY(sigwaitinfo(&signalset, NULL))) < 0)
 -    	    die(_("sigwaitinfo failed - %s\n"), errstr);
 +      	if (TEMP_FAILURE_RETRY(sigwait(&signalset, &sig)) < 0)

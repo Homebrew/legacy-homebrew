@@ -46,16 +46,16 @@ index 8bd0dbf..71545ea 100644
 @@ -39,7 +39,7 @@ int main(int argc, char *argv[])
  {
    options_parse(argc, argv);
- 
+
 -  if (opt_servers == false)
 +  if (opt_servers == NULL)
    {
      char *temp;
- 
+
 @@ -48,7 +48,7 @@ int main(int argc, char *argv[])
        opt_servers= strdup(temp);
      }
- 
+
 -    if (opt_servers == false)
 +    if (opt_servers == NULL)
      {

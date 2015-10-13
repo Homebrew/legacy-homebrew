@@ -70,7 +70,7 @@ index d4d1158..1dfe294 100644
 @@ -19,7 +19,8 @@ BUNDLE_SIGNATURE = ????
  BUNDLE_PACKAGETYPE = KEXT
  BUNDLE_VERSION = $(TAP_KEXT_VERSION)
- 
+
 -INCLUDE = -I.. -I/System/Library/Frameworks/Kernel.framework/Headers
 +SDKROOT = $(shell xcodebuild -version -sdk macosx Path 2>/dev/null)
 +INCLUDE = -I.. -I$(SDKROOT)/System/Library/Frameworks/Kernel.framework/Headers
@@ -84,7 +84,7 @@ index 9ca6794..c530f10 100644
 @@ -20,7 +20,8 @@ BUNDLE_SIGNATURE = ????
  BUNDLE_PACKAGETYPE = KEXT
  BUNDLE_VERSION = $(TUN_KEXT_VERSION)
- 
+
 -INCLUDE = -I.. -I/System/Library/Frameworks/Kernel.framework/Headers
 +SDKROOT = $(shell xcodebuild -version -sdk macosx Path 2>/dev/null)
 +INCLUDE = -I.. -I$(SDKROOT)/System/Library/Frameworks/Kernel.framework/Headers

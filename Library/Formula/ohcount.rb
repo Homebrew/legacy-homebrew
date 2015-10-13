@@ -45,10 +45,10 @@ __END__
    SHARED_NAME=libohcount.dylib
 @@ -38,7 +38,7 @@ else
  fi
- 
+
  # C compiler and flags
 -cc="gcc -fPIC -g $CFLAGS $WARN -I$INC_DIR -L$LIB_DIR"
 +cc="$CC $CFLAGS -O0 $WARN $CPPFLAGS $LDFLAGS"
- 
+
  # Ohcount source files
  files="src/sourcefile.c \

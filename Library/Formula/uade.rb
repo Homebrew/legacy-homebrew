@@ -39,14 +39,14 @@ index 05bfa9b..a73608e 100755
 @@ -399,13 +399,13 @@ if test -n "$sharedir"; then
      uadedatadir="$sharedir"
  fi
- 
+
 -$NATIVECC -v 2>/dev/null >/dev/null
 +$NATIVECC --version 2>/dev/null >/dev/null
  if test "$?" != "0"; then
      echo Native CC "$NATIVECC" not found, please install a C compiler
      exit 1
  fi
- 
+
 -$TARGETCC -v 2>/dev/null >/dev/null
 +$TARGETCC --version 2>/dev/null >/dev/null
  if test "$?" != "0"; then

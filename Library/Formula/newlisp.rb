@@ -55,7 +55,7 @@ __END__
 @@ -1,4 +1,4 @@
 -#!/usr/bin/newlisp
 +#!/usr/bin/env newlisp
- 
+
  ; newlisp-edit.lsp - multiple tab LISP editor and support for running code from the editor
  ; needs 9.9.2 version minimum to run
 @@ -157,7 +157,7 @@
@@ -75,4 +75,4 @@ __END__
 +			(string "/usr/local/bin/newlisp") (string currentExtension " -C -w " $HOME))
  	)
  )
- 
+

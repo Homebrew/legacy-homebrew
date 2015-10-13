@@ -22,5 +22,5 @@ __END__
  MYAPP_HOME=`cd "$MYAPP_HOME" && pwd`
 +MYAPP_HOME="$MYAPP_HOME/libexec"
  cd "$saveddir"
- 
+
  # Build up the classpath of required jar files via classworlds launcher.

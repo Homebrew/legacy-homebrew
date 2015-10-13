@@ -28,7 +28,7 @@ index 0a75b24..8c1b9bb 100644
 @@ -21,7 +21,7 @@ int openfitsfile(char *fitsfilename)
    return 0;
  }
- 
+
 -closefitsfile()
 +void closefitsfile()
  { 

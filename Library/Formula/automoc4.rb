@@ -37,7 +37,7 @@ __END__
 +            frameworkPaths << framework.path();
 +        }
      }
- 
+
 -    // on the Mac, add -F always, otherwise headers in the frameworks won't be found
 -    // is it necessary to do this only optionally ? Alex
 -#ifdef Q_OS_MAC
@@ -46,6 +46,6 @@ __END__
 +    foreach (const QString &path, frameworkPaths) {
 +        mocIncludes << "-F" << path;
 +    }
- 
+
      line = dotFiles.readLine();
      dotFilesCheck(line == "CMAKE_INCLUDE_DIRECTORIES_PROJECT_BEFORE:\n");

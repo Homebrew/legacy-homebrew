@@ -27,7 +27,7 @@ index d5ac501..47fb320 100644
 -  int count, size;
 +  int count;
 +  size_t size;
-   
+
    size = sizeof(count);
    if (sysctl(ifcount, sizeof(ifcount) / sizeof(int), &count, &size, NULL, 0) < 0) {
 @@ -607,7 +608,7 @@ static int get_ifdata(int index, struct ifmibdata * ifmd) {
@@ -36,7 +36,7 @@ index d5ac501..47fb320 100644
    };
 -  int size = sizeof(*ifmd);
 +  size_t size = sizeof(*ifmd);
- 
+
    if (sysctl(ifinfo, sizeof(ifinfo) / sizeof(int), ifmd, &size, NULL, 0) < 0)
      return 0;
 
