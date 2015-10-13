@@ -1,7 +1,7 @@
 require "language/go"
 
 class Mailhog < Formula
-  desc "A tool for Web and API based SMTP testing"
+  desc "Web and API based SMTP testing tool"
   homepage "https://github.com/mailhog/MailHog"
   url "https://github.com/mailhog/MailHog/archive/0.1.8.tar.gz"
   sha256 "849d60fb6cd0ae38437477ae3dff665430fc73676f53038f6c7ebf4dc0e8d60e"
@@ -130,12 +130,9 @@ class Mailhog < Formula
     Language::Go.stage_deps resources, buildpath/"src"
     system "go", "build", "-o", "MailHog"
     bin.install "MailHog"
-  end
-
-  def caveats; <<-EOS.undent
-    To use MailHog as a sendmail replacement for PHP, add the
-    following line to php.ini file:
-
+    
+    puts <<-EOS.undent
+    To use MailHog as a sendmail replacement for PHP, add the following line to php.ini file:
       sendmail_path = #{HOMEBREW_PREFIX}/bin/MailHog sendmail test@test
     EOS
   end
@@ -165,7 +162,10 @@ class Mailhog < Formula
   end
 
   test do
-    output = shell_output("#{bin}/MailHog -h 2>&1 | head -n 1")
-    assert_match %r{Usage of #{bin}/MailHog}, output
+    # Test for following default MailHog ouput:
+    # 1970/01/01 00:00:01 Using in-memory storage
+    # 1970/01/01 00:00:01 [SMTP] Binding to address: 0.0.0.0:1025
+    output = shell_output("#{bin}/MailHog 2>&1 | head -n 2")
+    assert_match %r{Binding to address:}, output
   end
 end
