@@ -6,9 +6,7 @@ class BlasRequirement < Requirement
   # the only case when test should fail is when we
   # need BLAS with single precision or complex with Fortran =>
   # use veclibfort
-  default_formula "veclibfort" if OS.mac?
-  # On Linux we can always fallback to openblas
-  default_formula "openblas"   unless OS.mac?
+  default_formula "veclibfort"
 
   def initialize(tags = [])
     # if we are on OSX and need fortran and veclibfort is installed
