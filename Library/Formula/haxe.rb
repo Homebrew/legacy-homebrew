@@ -3,7 +3,7 @@ class Haxe < Formula
   homepage "http://haxe.org"
 
   stable do
-    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.2.0", :revision => "77d171b15c94932d265e2a03d476bafc9b3a1894"
+    url "https://github.com/HaxeFoundation/haxe.git", :tag => "3.2.1", :revision => "deab4424399b520750671e51e5f5c2684e942c17"
   end
 
   bottle do
@@ -20,7 +20,7 @@ class Haxe < Formula
 
   depends_on "ocaml" => :build
   depends_on "camlp4" => :build
-  depends_on "neko" => :optional
+  depends_on "neko"
 
   def install
     # Build requires targets to be built in specific order
