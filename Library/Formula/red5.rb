@@ -1,5 +1,5 @@
 class Red5 < Formula
-  desc "Red5 is an Open Source Flash Server written in Java"
+  desc "Open Source Flash Server written in Java"
   homepage "https://github.com/Red5/red5-server"
   url "https://github.com/Red5/red5-server/releases/download/v1.0.6-RELEASE/red5-server-1.0.6-RELEASE-server.tar.gz"
   version "1.0.6"
@@ -8,7 +8,6 @@ class Red5 < Formula
   depends_on :java => "1.7+"
 
   def install
-    # Remove Windows scripts
     rm Dir["*.bat"]
 
     (bin/"red5").write_env_script libexec/"red5.sh", Language::Java.java_home_env("1.7+")
