@@ -48,7 +48,7 @@ sudo yum groupinstall 'Development Tools' && sudo yum install curl git irb m4 ru
 
 ### 32-bit x86 platforms
 
-Linuxbrew does not currently support 32-bit x86 platforms nor platforms other than x86. It would be possible for Linuxbrew to work on 32-bit x86 platforms with some effort. Pull requests would be welcome if someone were to volunteer to maintain the 32-bit x86 support.
+Linuxbrew does not currently support 32-bit x86 platforms. It would be possible for Linuxbrew to work on 32-bit x86 platforms with some effort. Pull requests would be welcome if someone were to volunteer to maintain the 32-bit x86 support.
 
 Installation
 ------------
