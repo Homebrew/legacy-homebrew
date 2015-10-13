@@ -1,6 +1,6 @@
 class Rzip < Formula
   desc "File compression tool (like gzip or bzip2)"
-  homepage "http://rzip.samba.org/"
+  homepage "https://rzip.samba.org/"
   url "https://rzip.samba.org/ftp/rzip/rzip-2.1.tar.gz"
   sha256 "4bb96f4d58ccf16749ed3f836957ce97dbcff3e3ee5fd50266229a48f89815b7"
 
