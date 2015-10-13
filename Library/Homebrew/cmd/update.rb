@@ -216,6 +216,20 @@ class Updater
       @initial_branch = ""
     end
 
+    # Used for testing purposes, e.g., for testing formula migration after
+    # renaming it in the currently checked-out branch. To test run
+    # "brew update --simulate-from-current-branch"
+    if ARGV.include?("--simulate-from-current-branch")
+      @initial_revision = `git rev-parse -q --verify #{@upstream_branch}`.chomp
+      @current_revision = read_current_revision
+      begin
+        safe_system "git", "merge-base", "--is-ancestor", @initial_revision, @current_revision
+      rescue ErrorDuringExecution
+        odie "Your HEAD is not a descendant of '#{@upstream_branch}'."
+      end
+      return
+    end
+
     if @initial_branch != @upstream_branch && !@initial_branch.empty?
       safe_system "git", "checkout", @upstream_branch, *quiet
     end
