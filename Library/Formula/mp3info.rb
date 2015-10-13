@@ -1,6 +1,6 @@
 class Mp3info < Formula
   desc "MP3 technical info viewer and ID3 1.x tag editor"
-  homepage "http://www.ibiblio.org/mp3info/"
+  homepage "https://www.ibiblio.org/mp3info/"
   url "https://www.ibiblio.org/pub/linux/apps/sound/mp3-utils/mp3info/mp3info-0.8.5a.tgz"
   sha256 "0438ac68e9f04947fb14ca5573d27c62454cb9db3a93b7f1d2c226cd3e0b4e10"
 
