@@ -12,7 +12,8 @@ class BlastestSingle < Formula
     ldflags    = BlasRequirement.ldflags(ENV["HOMEBREW_BLASLAPACK_LIB"], ENV["HOMEBREW_BLASLAPACK_NAMES"])
     ldflags   += " -pthread -lm"
     cflags     = BlasRequirement.cflags(ENV["HOMEBREW_BLASLAPACK_INC"])
-    system "#{ENV.fc} blas.f90 #{cflags} -o blastest_single #{ldflags}"
+    to_run = "#{ENV.fc} blas.f90 #{cflags} -o blastest_single #{ldflags}"
+    system to_run
     bin.install "blastest_single"
   end
 
