@@ -5,10 +5,11 @@ class Owamp < Formula
   sha256 "059f0ab99b2b3d4addde91a68e6e3641c85ce3ae43b85fe9435841d950ee2fb3"
 
   bottle do
-    cellar :any
-    sha1 "e1746058ddd62ec75ec1b62be837e22c3527c37a" => :yosemite
-    sha1 "45429f2d582a54caa0979b9aa533f6dff1c74ec1" => :mavericks
-    sha1 "1020642e1ca36fd067828ed344799023aca8ff09" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "6f86a33c176ba1394560b7707466c088930f13db102b7adc159e80e889fdc5cf" => :el_capitan
+    sha256 "fce4cc5bf0a9b5355779fb45637651f6a78bb8d3dd93bdc3ff2826b7866617fd" => :yosemite
+    sha256 "6c6b6f1f143b929b892c6556db3b06299835326a72c5180c482b2630e62dc543" => :mavericks
   end
 
   depends_on "i2util"
