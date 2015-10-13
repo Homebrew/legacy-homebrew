@@ -128,6 +128,9 @@ class Mysql < Formula
     libexec.install bin/"mysqlaccess.conf"
   end
 
+  # memcached support (https://bugs.mysql.com/bug.php?id=7340)
+  patch :DATA
+
   def post_install
     # Make sure the datadir exists
     datadir.mkpath
@@ -180,9 +183,6 @@ class Mysql < Formula
     end
   end
   
-  # memcached support (https://bugs.mysql.com/bug.php?id=73405)
-  patch :DATA
-
 end
 __END__
 --- a/configure.cmake	2014-05-06 05:45:57.000000000 -0500
