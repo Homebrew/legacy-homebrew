@@ -20,7 +20,7 @@ class Haxe < Formula
 
   depends_on "ocaml" => :build
   depends_on "camlp4" => :build
-  depends_on "neko" => :optional
+  depends_on "neko"
 
   def install
     # Build requires targets to be built in specific order
