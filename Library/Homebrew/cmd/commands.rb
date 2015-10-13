@@ -39,6 +39,7 @@ module Homebrew
   def external_commands
     paths.flat_map { |p| Dir["#{p}/brew-*"] }.
       map { |f| File.basename(f, ".rb")[5..-1] }.
-      reject { |f| f =~ /\./ }
+      reject { |f| f =~ /\./ }.
+      sort
   end
 end

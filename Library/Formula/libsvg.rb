@@ -8,6 +8,7 @@ class Libsvg < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "4e7903c15847c2d07a2bdf16d6ddad5a0191ef452cf7733624703fd1b5fd7859" => :el_capitan
     sha1 "f81bd41636efb5f9bca9668e0d1eba49f2df5668" => :yosemite
     sha1 "7666fa071f1f53c8b680be546b8801cb3067f5a2" => :mavericks
     sha1 "a6644f62ac2844f1b73ad26febb49958a413a54f" => :mountain_lion

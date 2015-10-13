@@ -3,50 +3,54 @@ class Dmd < Formula
   homepage "http://dlang.org"
 
   stable do
-    url "https://github.com/D-Programming-Language/dmd/archive/v2.068.1.tar.gz"
-    sha256 "8f2865d480392aa821b5a028956d92a52400dc73d17b23c12d06d136100324ad"
+    url "https://github.com/D-Programming-Language/dmd/archive/v2.068.2.tar.gz"
+    sha256 "787115a406d06b303be819da7e1ec978399373838f473d6b8446be400152c8fc"
 
     resource "druntime" do
-      url "https://github.com/D-Programming-Language/druntime/archive/v2.068.1.tar.gz"
-      sha256 "3730b763717e3eb08c19c207bc23162b8b9fe7368d70a3bb8498a26e0377eb18"
+      url "https://github.com/D-Programming-Language/druntime/archive/v2.068.2.tar.gz"
+      sha256 "da9f514078015b218e81e77c54c0da967f6ed4dddc3ecbc1db98ac9aa7f79e98"
     end
 
     resource "phobos" do
-      url "https://github.com/D-Programming-Language/phobos/archive/v2.068.1.tar.gz"
-      sha256 "5326f509e42193ad56cb5fdbde26ec403fd1f1eac559fbc56f957a7f9bd14c8a"
+      url "https://github.com/D-Programming-Language/phobos/archive/v2.068.2.tar.gz"
+      sha256 "1135038ea4e927d5aeb0436057064ade808799d6e5180578b520c4fbc9e0914e"
     end
 
     resource "tools" do
-      url "https://github.com/D-Programming-Language/tools/archive/v2.068.1.tar.gz"
-      sha256 "a0b4362291949f1e88e32d89280860c08dfd00f34a235ebe276c8555b9862f4c"
+      url "https://github.com/D-Programming-Language/tools/archive/v2.068.2.tar.gz"
+      sha256 "9abe5b0ba60aae3341131533e99e6cdcf085040aabb596382f4ada1a018b6608"
     end
   end
 
   bottle do
-    sha256 "299e743830a1bf9f3ce699bf1197015037ed733451134f8aff692a5962e4c53b" => :yosemite
-    sha256 "0edba178cdcb6221807b4729f21118fec804910d8ac297d7785cf3303ee2ab50" => :mavericks
-    sha256 "36f6979d5208fde59177239d81bde37174bc7574bff7748c4cb859cc3d755712" => :mountain_lion
+    sha256 "0343dbafda40120f0dfa32ae90ba7fd4e62bfa11ae05a1c198f4a3f2e7800da1" => :el_capitan
+    sha256 "74407c8ac7930500354eff8eee812b08d532be8a1b2906614c20ef2771a5026f" => :yosemite
+    sha256 "102dda28a672c1c8cb99d0fefa1e0a749bfaf9ee72bc8368aa472debf8fbc70b" => :mavericks
   end
 
   devel do
-    url "https://github.com/D-Programming-Language/dmd/archive/v2.068.2-b2.tar.gz"
-    version "2.068.2-b2"
-    sha256 "885a6edc40e558b556b06cf0828baa93e5b25546ec94f08bdd77657e8269c8ba"
+    url "https://github.com/D-Programming-Language/dmd/archive/v2.069.0-b1.tar.gz"
+    sha256 "edd9bb128d183e9a2aad973cbb6ad106b29bcdf5b92d989282a5b6125926699d"
+    version "2.069.0-b1"
 
     resource "druntime" do
-      url "https://github.com/D-Programming-Language/druntime/archive/v2.068.2-b2.tar.gz"
-      sha256 "bd331b726641593c6c2408d7562f94e5fd9dabe03f48856eb1963aabc339c0fd"
+      url "https://github.com/D-Programming-Language/druntime/archive/v2.069.0-b1.tar.gz"
+      sha256 "786a8c5da2a9184f7a7dac27a81be2e709b4015da87eec8e86206442f6293028"
     end
 
     resource "phobos" do
-      url "https://github.com/D-Programming-Language/phobos/archive/v2.068.2-b2.tar.gz"
-      sha256 "06a553202a0b5d51b14f735dfb68c804736d036329da6145246bd9047c6ac1d7"
+      url "https://github.com/D-Programming-Language/phobos/archive/v2.069.0-b1.tar.gz"
+      sha256 "47cf2a92a473a9a6e974b9f2b8a03ed5afd396d471770163a7bd64435a478268"
     end
 
     resource "tools" do
-      url "https://github.com/D-Programming-Language/tools/archive/v2.068.2-b2.tar.gz"
-      sha256 "ed7503daff2542ba6dc3dcb2f9f169179168ef623e2c73774b702ea14a0bc79a"
+      url "https://github.com/D-Programming-Language/tools/archive/v2.069.0-b1.tar.gz"
+      sha256 "d33a4807701908428315896383751b0f5371fdde4401445aeca5f5b5435be165"
     end
+
+    # echo -n doesn't work from makefiles in OS X, because sh on OS X doesn't support it,
+    # so we use printf instead. See https://github.com/D-Programming-Language/dmd/pull/5179
+    patch :DATA
   end
 
   head do
@@ -131,3 +135,16 @@ class Dmd < Formula
     system "./hello"
   end
 end
+__END__
+diff --git a/src/posix.mak b/src/posix.mak
+index 9310f32..d84787d 100644
+--- a/src/posix.mak
++++ b/src/posix.mak
+@@ -370,7 +370,7 @@ endif
+ $(shell test \"$(VERSION)\" != "`cat verstr.h 2> /dev/null`" \
+		&& printf \"$(VERSION)\" > verstr.h )
+ $(shell test $(SYSCONFDIR) != "`cat SYSCONFDIR.imp 2> /dev/null`" \
+-		&& echo -n '$(SYSCONFDIR)' > SYSCONFDIR.imp )
++		&& printf '$(SYSCONFDIR)' > SYSCONFDIR.imp )
+
+ #########

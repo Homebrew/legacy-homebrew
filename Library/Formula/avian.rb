@@ -1,15 +1,16 @@
 class Avian < Formula
   desc "Lightweight VM and class library for a subset of Java features"
   homepage "http://oss.readytalk.com/avian/"
-  head "https://github.com/ReadyTalk/avian.git"
   url "https://github.com/ReadyTalk/avian/archive/v1.2.0.tar.gz"
   sha256 "e3639282962239ce09e4f79f327c679506d165810f08c92ce23e53e86e1d621c"
+  head "https://github.com/ReadyTalk/avian.git"
 
   bottle do
     cellar :any
-    sha256 "cb1db13d2ff4de8fad414bf80da2e3ccae05823f88c45322f3cdcd64da29807c" => :yosemite
-    sha256 "9aadb173228eb335bd55f91bb10b1f1eed8c2722ce16fab2030c911c8fd5949f" => :mavericks
-    sha256 "9810eacfe200cf6e4a85cd06d915b70363514666c7b1e24f047288be56f5c362" => :mountain_lion
+    revision 1
+    sha256 "d2719509725f4c1fad3a53c32de18aff5d45685fb35ae352f1d51fc61e566f4a" => :el_capitan
+    sha256 "d002876c03742fc7ec4157fff598e7c11ed1e62f97ce1b217f8b089db87e43ed" => :yosemite
+    sha256 "20dd7125d138e05021b473d026190d8f4652e807afcfe057614e5c2e66ce0ed1" => :mavericks
   end
 
   depends_on :macos => :lion

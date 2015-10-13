@@ -1,8 +1,8 @@
 class Archey < Formula
   desc "Archey script for OS X"
   homepage "https://obihann.github.io/archey-osx/"
-  url "https://github.com/obihann/archey-osx/archive/1.4.tar.gz"
-  sha256 "323081e9f2ddb287b9199851479272ed5aedb5330a74a984dfc387fc0ceafbf6"
+  url "https://github.com/obihann/archey-osx/archive/v1.5.tar.gz"
+  sha256 "e2206c6e46f8f1e54c865360fecc1aa71b04ef92d115f2e4cffc0a80f49fd784"
   head "https://github.com/obihann/archey-osx.git"
 
   def install

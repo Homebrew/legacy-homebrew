@@ -8,6 +8,7 @@ class Libcaca < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "ba475a145203197f637059f20dfcb5d8cfb34615ce30bfe342fbe7887ebcad41" => :el_capitan
     sha1 "d377e78210582b24626f9f2d7bbb1d1442c1131d" => :yosemite
     sha1 "5dd773ce055c6cb9a754c3d691c30c05bf7dbc18" => :mavericks
   end

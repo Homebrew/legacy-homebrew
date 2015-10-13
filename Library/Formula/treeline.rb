@@ -5,13 +5,6 @@ class Treeline < Formula
   sha256 "71af995fca9e0eaf4e6205d72eb4ee6a979a45ea2a1f6600ed8a39bb1861d118"
   revision 1
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "292a2f76368f62cac0e30698e4817763c962e112bf28f799ea4a62f67f2c8a11" => :yosemite
-    sha256 "ccbdeb9e8281c23fd1bf0f3d6797e683b2d7e57434dff5b8deaca0f54cb2779f" => :mavericks
-    sha256 "ce5b00951f652fcc4e992e7b4509b83995203a2a66f6fe6b3a7df503620bfff2" => :mountain_lion
-  end
-
   depends_on :python3
   depends_on "sip" => "with-python3"
   depends_on "pyqt" => "with-python3"

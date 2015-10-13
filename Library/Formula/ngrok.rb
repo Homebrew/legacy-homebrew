@@ -6,7 +6,8 @@ class Ngrok < Formula
   sha256 "ffb1ad90d5aa3c8b3a9bfd8109a71027645a78d5e61fccedd0873fee060da665"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "17bafe69834679e699086c4193d14f2ecfd09b67faa7689e313599d11f837860" => :el_capitan
     sha256 "d626cc4d60628236e13c4a7e4e9f66f73b9a9d865178006fc16327c29ead2bbf" => :yosemite
     sha256 "a4c522524765cdb27fe6b531c0694cad70bdf21bf42f4ded4a95e8822f2a482c" => :mavericks
     sha256 "ede711ae53e7a26d249657461101a1cfb9c5cd7c3dc602e3091a2579a87b59aa" => :mountain_lion

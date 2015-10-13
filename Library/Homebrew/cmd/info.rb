@@ -69,7 +69,7 @@ module Homebrew
   def github_info(f)
     if f.tap?
       user, repo = f.tap.split("/", 2)
-      tap = Tap.new user, repo.gsub(/^homebrew-/, "")
+      tap = Tap.fetch user, repo.gsub(/^homebrew-/, "")
       if remote = tap.remote
         path = f.path.relative_path_from(tap.path)
         github_remote_path(remote, path)

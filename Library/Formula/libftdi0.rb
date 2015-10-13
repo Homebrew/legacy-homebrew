@@ -1,16 +1,20 @@
 class Libftdi0 < Formula
   desc "Library to talk to FTDI chips"
   homepage "http://www.intra2net.com/en/developer/libftdi"
-  url "http://www.intra2net.com/en/developer/libftdi/download/libftdi-0.20.tar.gz"
+  url "https://www.intra2net.com/en/developer/libftdi/download/libftdi-0.20.tar.gz"
   sha256 "3176d5b5986438f33f5208e690a8bfe90941be501cc0a72118ce3d338d4b838e"
 
   bottle do
     cellar :any
     revision 1
+    sha256 "a533682f1a6c494e40f2e4695c3b075a613ade927dcd486859646619fe799c8f" => :el_capitan
     sha1 "48a4609d612c41a79a57ceee49b24a119173559f" => :yosemite
     sha1 "92073c13614ddbed4f3d5223105e2d25abe115d9" => :mavericks
     sha1 "39d3653f05b71220ed1977abf6bdb37c0e00fed5" => :mountain_lion
   end
+
+  conflicts_with "cspice", :because => "both install `simple` binaries"
+  conflicts_with "openhmd", :because => "both install `simple` binaries"
 
   depends_on "libusb-compat"
 

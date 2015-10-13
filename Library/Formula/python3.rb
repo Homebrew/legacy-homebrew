@@ -5,11 +5,10 @@ class Python3 < Formula
   sha256 "d6d7aa1634a5eeeca6ed4fca266982a04f84bd8f3945a9179e20b24ad2e2be91"
 
   bottle do
-    revision 1
-    sha256 "fc53a22fa6db221ce4031a593bc7a06eb40e95537b4ffb32fef956c53dfac162" => :el_capitan
-    sha256 "7158bbb75427978f2cdc3d7ae1c05893f580a0273f696a8cf9a570b83d1be645" => :yosemite
-    sha256 "4e226359033cd31e81fc58d37e2a6ba9f9aca7f4024262688c944d9d57819564" => :mavericks
-    sha256 "666dab10ddde21e0d9a845282b182f54f55047ba8ed53b5cb7e6eb33c6fe7b1c" => :mountain_lion
+    revision 3
+    sha256 "5a955a6800431f4b38f7dcc4910deaf3c9e3a47f68b5a4b2117527c57290c4dd" => :el_capitan
+    sha256 "956b2bfe8289da7584089768e6143f852b9586ffd552d9b1e4c5e116f7c52587" => :yosemite
+    sha256 "98e2f771b7bc6e33f5eae068788b9197619eb037f043a292790482aa82577528" => :mavericks
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -44,14 +43,22 @@ class Python3 < Formula
   end
 
   resource "wheel" do
-    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.24.0.tar.gz"
-    sha256 "ef832abfedea7ed86b6eae7400128f88053a1da81a37c00613b1279544d585aa"
+    url "https://pypi.python.org/packages/source/w/wheel/wheel-0.26.0.tar.gz"
+    sha256 "eaad353805c180a47545a256e6508835b65a8e830ba1093ed8162f19a50a530c"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
   # so we have to stop python from searching for frameworks and linking against
   # X11.
   patch :DATA if build.with? "tcl-tk"
+
+  # Fix extension module builds against Xcode 7 SDKs
+  # https://github.com/Homebrew/homebrew/issues/41085
+  # https://bugs.python.org/issue25136
+  patch do
+    url "https://bugs.python.org/file40478/xcode-stubs.diff"
+    sha256 "029cc0dc72b1bcf4ddc5f913cc4a3fd970378073c6355921891f041aca2f8b12"
+  end
 
   def lib_cellar
     prefix/"Frameworks/Python.framework/Versions/#{xy}/lib/python#{xy}"

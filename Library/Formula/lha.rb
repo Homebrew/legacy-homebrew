@@ -12,6 +12,8 @@ class Lha < Formula
     sha256 "3def5e7035ef758428c7e158b93ad5459d6d221ba4698608cc1d14526cbfd5f8" => :mountain_lion
   end
 
+  conflicts_with "lhasa", :because => "both install a `lha` binary"
+
   head do
     url "http://scm.osdn.jp/gitroot/lha/lha.git"
     depends_on "autoconf" => :build
@@ -20,7 +22,8 @@ class Lha < Formula
 
   def install
     system "autoreconf", "-is" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    system "./configure", "--disable-debug",
+                          "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make", "install"
@@ -29,6 +32,7 @@ class Lha < Formula
   test do
     (testpath/"foo").write "test"
     system "#{bin}/lha", "c", "foo.lzh", "foo"
-    assert_equal "::::::::\nfoo\n::::::::\ntest", shell_output("#{bin}/lha p foo.lzh")
+    assert_equal "::::::::\nfoo\n::::::::\ntest",
+      shell_output("#{bin}/lha p foo.lzh")
   end
 end

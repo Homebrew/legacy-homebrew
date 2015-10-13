@@ -7,7 +7,8 @@ class Doxygen < Formula
   head "https://github.com/doxygen/doxygen.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "596e37283353ff3364c229429eeb33e15bd61cce9dd251d977fcfcdb32d68fbb" => :el_capitan
     sha256 "664da46bf3ba19ef12a03e78ea71cbdf7934c42968dfe4696e14efb9a6cc56fc" => :yosemite
     sha256 "a125ae2932468010f0472b57ec52c7d4d336490a4fbf5521cd18f0ad246b214f" => :mavericks
     sha256 "e449b59679f8113de1d24860654c2fb4ed56631ef9cc493b759451685585be0e" => :mountain_lion

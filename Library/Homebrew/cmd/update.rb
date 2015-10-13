@@ -1,4 +1,5 @@
 require "cmd/tap"
+require "cmd/doctor"
 require "formula_versions"
 require "migrator"
 require "formulary"
@@ -11,6 +12,16 @@ module Homebrew
         This command updates brew itself, and does not take formula names.
         Use `brew upgrade <formula>`.
       EOS
+    end
+
+    # check permissions
+    checks = Checks.new
+    %w[
+      check_access_usr_local
+      check_access_homebrew_repository
+    ].each do |check|
+      out = checks.send(check)
+      odie out unless out.nil?
     end
 
     # ensure git is installed
@@ -51,6 +62,8 @@ module Homebrew
         end
       end
     end
+
+    Tap.clear_cache
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
@@ -361,7 +374,7 @@ class Report
         user = $1
         repo = $2.sub("homebrew-", "")
         oldname = path.basename(".rb").to_s
-        next unless newname = Tap.new(user, repo).formula_renames[oldname]
+        next unless newname = Tap.fetch(user, repo).formula_renames[oldname]
       else
         oldname = path.basename(".rb").to_s
         next unless newname = FORMULA_RENAMES[oldname]

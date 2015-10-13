@@ -8,9 +8,11 @@ class BashCompletion < Formula
   sha256 "8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec"
 
   bottle do
-    sha256 "f522c40d199aff2cdfb71f5b3b17f8e4719e78bed48b13dab1714d3457e93b23" => :yosemite
-    sha256 "2f321fe1b85c9df65b1a3a2b4f1aa66189b59fca4d4a2193f35abd697f9fe40b" => :mavericks
-    sha256 "1b5bae29dc78c12ac39563380c5bfb84d76094b2661a6c12e19704510981f4e4" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "5f7f9f96ebf1a31d08a8bf429f47c83a8a44ac2b98f6556888e9e1f5b2f1bb35" => :el_capitan
+    sha256 "a31fe5655a5f0298e69da7b858be6af05a47faeabb635e445ea3d481b48e5a6c" => :yosemite
+    sha256 "5b5d5c9d802c4d77b5eb7db2179ed595ab464a387639b0829cd65e282509b9aa" => :mavericks
   end
 
   # Backports the following upstream patch from 2.x:

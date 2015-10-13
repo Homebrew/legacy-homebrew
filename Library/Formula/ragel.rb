@@ -1,7 +1,7 @@
 class Ragel < Formula
   desc "State machine compiler"
   homepage "http://www.colm.net/ragel/"
-  url "http://www.colm.net/files/ragel/ragel-6.9.tar.gz"
+  url "https://www.colm.net/files/ragel/ragel-6.9.tar.gz"
   sha256 "6e07be0fab5ca1d9c2d9e177718a018fc666141f594a5d6e7025658620cf660a"
 
   bottle do

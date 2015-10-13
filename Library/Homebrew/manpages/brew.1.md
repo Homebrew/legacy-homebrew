@@ -476,10 +476,12 @@ Note that these flags should only appear after a command.
 
     If `--rebase` is specified then `git pull --rebase` is used.
 
-  * `upgrade [install-options]` [<formulae>]:
+  * `upgrade [install-options] [--cleanup]` [<formulae>]:
     Upgrade outdated, unpinned brews.
 
     Options for the `install` command are also valid here.
+
+    If `--cleanup` is specified then remove previously installed <formula> version(s).
 
     If <formulae> are given, upgrade only the specified brews (but do so even
     if they are pinned; see `pin`, `unpin`).

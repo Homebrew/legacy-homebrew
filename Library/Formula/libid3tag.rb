@@ -7,6 +7,7 @@ class Libid3tag < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "75e446174dd2a9dc17326c998757c4218a89cddb734f3000d0b0506de801732a" => :el_capitan
     sha1 "6af55775934ba5609bcc80b8f1127ae4037b4f58" => :yosemite
     sha1 "c41d494aae79cc8b2f9fda797e3bbb6847f58535" => :mavericks
     sha1 "b3ed68decc9453e3c72ab76898aa9237c7e5f350" => :mountain_lion

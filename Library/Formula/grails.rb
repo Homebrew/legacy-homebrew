@@ -1,8 +1,8 @@
 class Grails < Formula
   desc "Web application framework for the Groovy language"
   homepage "https://grails.org"
-  url "https://github.com/grails/grails-core/releases/download/v3.0.4/grails-3.0.4.zip"
-  sha256 "7fa8581a200e532c4701e1d56fc12305872369d520d3a7e624608f4dae87a4e4"
+  url "https://github.com/grails/grails-core/releases/download/v3.0.7/grails-3.0.7.zip"
+  sha256 "d99b11e4a8fb1f5a155f1784f482316df96e63d094d5d083a62bc37905380800"
 
   def install
     rm_f Dir["bin/*.bat", "bin/cygrails", "*.bat"]
@@ -18,6 +18,7 @@ class Grails < Formula
   end
 
   test do
-    assert_match /Application created/, shell_output("#{bin}/grails create-app testApp")
+    output = shell_output("#{bin}/grails --version")
+    assert_match /Grails Version: #{version}/, output
   end
 end

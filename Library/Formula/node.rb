@@ -1,44 +1,54 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v4.1.0/node-v4.1.0.tar.gz"
-  sha256 "453005f64ee529f7dcf1237eb27ee2fa2415c49f5c9e7463e8b71fba61c5b408"
+  url "https://nodejs.org/dist/v4.2.0/node-v4.2.0.tar.gz"
+  sha256 "94ea40efeb598fed6e1a78990b698da73275c49876ec551dc36e11513c99fb6b"
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "d30bb690f2853791bd332fc5dc622f1c13297d8db818be2b2b8b8b2f3deef3b3" => :el_capitan
-    sha256 "dc21ed0dfce50badbbfe0663c7370b7faf81fe3145b71fc06c072ac8fe0843b1" => :yosemite
-    sha256 "d8238ecbf389b642b484991bcad54815feae8686c8b42d49dbd696aed49a522b" => :mavericks
+    sha256 "9fec4bb90c3b8f609d517e1984e1c4b4e677c4359eaf14209c6abf9f95778d96" => :el_capitan
+    sha256 "ae8ab4692cf9bf6ba36fd04569db7ef8c3466659e8c79fc8da7deb7896ebfd86" => :yosemite
+    sha256 "9f08067c620ea751fa14c0fb6ac698f6c9d655a44173f0b11b538e6a20b2b588" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
+  option "with-full-icu", "Build with full-icu (all locales) instead of small-icu (English only)"
 
   deprecated_option "enable-debug" => "with-debug"
+  deprecated_option "with-icu4c" => "with-full-icu"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "pkg-config" => :build
   depends_on "openssl" => :optional
-
-  # https://github.com/nodejs/node-v0.x-archive/issues/7919
-  # https://github.com/Homebrew/homebrew/issues/36681
-  depends_on "icu4c" => :optional
 
   fails_with :llvm do
     build 2326
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.14.4.tgz"
-    sha256 "c8b602de5d51f956aa8f9c34d89be38b2df3b7c25ff6588030eb8224b070db27"
+    url "https://registry.npmjs.org/npm/-/npm-2.14.7.tgz"
+    sha256 "54f3a5195a1e6b52fc954749e81f8abf1f7c8ca912b90ecf2b33581800d0f6a5"
+  end
+
+  resource "icu4c" do
+    url "https://ssl.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz"
+    version "56.1"
+    sha256 "3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314816"
   end
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-    args << "--with-intl=system-icu" if build.with? "icu4c"
     args << "--shared-openssl" if build.with? "openssl"
+    if build.with? "full-icu"
+      args << "--with-intl=full-icu"
+    else
+      args << "--with-intl=small-icu"
+    end
+
+    resource("icu4c").stage buildpath/"deps/icu"
 
     system "./configure", *args
     system "make", "install"
@@ -105,18 +115,6 @@ class Node < Formula
       EOS
     end
 
-    if build.with? "icu4c"
-      s += <<-EOS.undent
-
-        Please note `icu4c` is built with a newer deployment target than Node and
-        this may cause issues in certain usage. Node itself is built against the
-        outdated `libstdc++` target, which is the root cause. For more information see:
-          https://github.com/nodejs/node-v0.x-archive/issues/7919
-
-        If this is an issue for you, do `brew install node --without-icu4c`.
-      EOS
-    end
-
     s
   end
 
@@ -126,6 +124,9 @@ class Node < Formula
 
     output = `#{bin}/node #{path}`.strip
     assert_equal "hello", output
+    assert_equal 0, $?.exitstatus
+    output = `#{bin}/node -e "console.log(new Date('2015-09-15').toLocaleDateString('en'))"`.strip
+    assert_match %r{^9/1[45]/2015$}, output # depends on system timezone
     assert_equal 0, $?.exitstatus
 
     if build.with? "npm"

@@ -8,6 +8,7 @@ class PdflibLite < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "21bf908f2da229ffce18c4a62a3d950de735983cf49893bb6bba13e5e3dff1ae" => :el_capitan
     sha1 "a3312478c0af40820fc1970a79b85677a64cdf78" => :yosemite
     sha1 "1681c61b3679e8a96dc42266d4a49d092f2798b4" => :mavericks
   end

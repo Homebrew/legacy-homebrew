@@ -5,6 +5,7 @@ class GnomeDocUtils < Formula
   sha256 "cb0639ffa9550b6ddf3b62f3b1add92fb92ab4690d351f2353cffe668be8c4a6"
 
   bottle do
+    sha256 "af3e3f95408f13b01e72264323368a9556dc345dbb2b306d736f9b895358b2e9" => :el_capitan
     sha1 "69761908e69091906e06afc171259c31a89a78ee" => :yosemite
     sha1 "aa1fc2fdb8a0a272acb8f5c7df1e74e0c16c116c" => :mavericks
     sha1 "dca33426a404f9f47f9a57f926f9519628fa0d2f" => :mountain_lion

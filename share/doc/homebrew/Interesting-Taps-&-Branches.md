@@ -69,9 +69,6 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 *   [petere/postgresql](https://github.com/petere/homebrew-postgresql)
     - Allows installing multiple PostgreSQL versions in parallel.
 
-*   [iMichka/MacVTKITKPythonBottles](https://github.com/iMichka/homebrew-MacVTKITKPythonBottles)
-    - VTK and ITK binaries with Python wrapping.
-
 *   [edavis/emacs](https://github.com/edavis/homebrew-emacs)
     - A tap for Emacs packages.
 

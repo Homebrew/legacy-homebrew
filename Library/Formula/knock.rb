@@ -5,7 +5,8 @@ class Knock < Formula
   sha256 "9938479c321066424f74c61f6bee46dfd355a828263dc89561a1ece3f56578a4"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "030dc0a7c3ea623eb3d8e11374f744ad79f8aee8b7b75210f1a183b4d6d978de" => :el_capitan
     sha1 "e81973835ea940928a166c0edc2c405fe8a6cac5" => :yosemite
     sha1 "df0459ca7e7f8b18cd719e333c7a016f130c2e88" => :mavericks
     sha1 "ab688df7694977ee058159505c2b3f674df31fc4" => :mountain_lion

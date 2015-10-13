@@ -273,7 +273,7 @@ class Formula
       end
     elsif tap?
       user, repo = tap.split("/")
-      formula_renames = Tap.new(user, repo.sub("homebrew-", "")).formula_renames
+      formula_renames = Tap.fetch(user, repo.sub("homebrew-", "")).formula_renames
       if formula_renames.value?(name)
         formula_renames.to_a.rassoc(name).first
       end
@@ -805,13 +805,24 @@ class Formula
   def link_overwrite?(path)
     # Don't overwrite files not created by Homebrew.
     return false unless path.stat.uid == File.stat(HOMEBREW_BREW_FILE).uid
-    # Don't overwrite files belong to other keg.
+    # Don't overwrite files belong to other keg except when that
+    # keg's formula is deleted.
     begin
-      Keg.for(path)
+      keg = Keg.for(path)
     rescue NotAKegError, Errno::ENOENT
       # file doesn't belong to any keg.
     else
-      return false
+      tap = Tab.for_keg(keg).tap
+      return false if tap.nil? # this keg doesn't below to any core/tap formula, most likely coming from a DIY install.
+      begin
+        Formulary.factory(keg.name)
+      rescue FormulaUnavailableError
+        # formula for this keg is deleted, so defer to whitelist
+      rescue TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
+        return false # this keg belongs to another formula
+      else
+        return false # this keg belongs to another formula
+      end
     end
     to_check = path.relative_path_from(HOMEBREW_PREFIX).to_s
     self.class.link_overwrite_paths.any? do |p|
@@ -1006,7 +1017,7 @@ class Formula
     @installed ||= racks.map do |rack|
       begin
         Formulary.from_rack(rack)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
       end
     end.compact
   end
@@ -1255,6 +1266,8 @@ class Formula
   # system "make", "install"</pre>
   def system(cmd, *args)
     verbose = ARGV.verbose?
+    verbose_using_dots = !ENV["HOMEBREW_VERBOSE_USING_DOTS"].nil?
+
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
@@ -1288,9 +1301,23 @@ class Formula
           end
           wr.close
 
-          while buf = rd.gets
-            log.puts buf
-            puts buf
+          if verbose_using_dots
+            last_dot = Time.at(0)
+            while buf = rd.gets
+              log.puts buf
+              # make sure dots printed with interval of at least 1 min.
+              if (Time.now - last_dot) > 60
+                print "."
+                $stdout.flush
+                last_dot = Time.now
+              end
+            end
+            puts
+          else
+            while buf = rd.gets
+              log.puts buf
+              puts buf
+            end
           end
         ensure
           rd.close
@@ -1304,8 +1331,14 @@ class Formula
       $stdout.flush
 
       unless $?.success?
+        log_lines = ENV["HOMEBREW_FAIL_LOG_LINES"]
+        log_lines ||= "15"
+
         log.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        if !verbose || verbose_using_dots
+          puts "Last #{log_lines} lines from #{logfn}:"
+          Kernel.system "/usr/bin/tail", "-n", log_lines, logfn
+        end
         log.puts
 
         require "cmd/config"

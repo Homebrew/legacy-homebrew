@@ -16,6 +16,7 @@ class Sphinx < Formula
   head "http://sphinxsearch.googlecode.com/svn/trunk/"
 
   bottle do
+    sha256 "cea5528dedeb1e66509271e8e1dab5d613ac6b203e16605830f68d57fa83f5b6" => :el_capitan
     sha256 "c9cdc77ed228f264c3f93293215cdb621129f52b90c49e157ac69ecf85027b16" => :yosemite
     sha256 "b46915db19659083d4a6428a704dac03a4c4d4a2b0d88ad32902c5c739715714" => :mavericks
     sha256 "419d876d846d9ad280be6f8ffdde5962cc6cb5accb32688e8af44f8c4e50989d" => :mountain_lion

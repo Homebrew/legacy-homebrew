@@ -3,15 +3,14 @@
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.5.103.29.tar.gz"
-  sha256 "5ebcab22d168f59a91319b7e99859f36b8affc3872bf33ad7a1f400750b83040"
+  url "https://github.com/v8/v8-git-mirror/archive/4.5.103.35.tar.gz"
+  sha256 "93de92efb1185384e0b3a046aae8816138b3ccb6f5bc148ad59d94a9a2869aaa"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "090670e68b1a9dc542d826b2fe9a1d8b4a7ab9f3f52ecd72f0305e5e6eb28f60" => :yosemite
-    sha256 "4e0c6b2a7bb20374b79a25f374e0f1ab419b2ffbe85e7ad79b493822b59e7041" => :mavericks
-    sha256 "caea11e4fb474d68642a966008fb2e6079ead9988b1d8baba3763ec0349e8318" => :mountain_lion
+    sha256 "6647353a6717a0028e7e627e85fe1e943cf68869f95d2250a662b167ddc50c29" => :el_capitan
+    sha256 "0f577159738f985afbc85fa47c52b32c0551922cadbf1ad24895a8737d70cecc" => :yosemite
+    sha256 "affd5c033afa20e071b60f05f5de78d00eaedd67df7f1f305645c8dcfb41774d" => :mavericks
   end
 
   option "with-readline", "Use readline instead of libedit"

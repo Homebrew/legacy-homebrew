@@ -18,7 +18,6 @@
 # --dry-run:       Just print commands, don't run them.
 # --fail-fast:     Immediately exit on a failing step.
 # --verbose:       Print out all logs in realtime
-# --no-verbose-install: Don't run `brew install` with `--verbose`.
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
@@ -40,20 +39,20 @@ module Homebrew
 
   def resolve_test_tap
     tap = ARGV.value("tap")
-    return Tap.new(*tap_args(tap)) if tap
+    return Tap.fetch(*tap_args(tap)) if tap
 
     if ENV["UPSTREAM_BOT_PARAMS"]
       bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
       bot_argv.extend HomebrewArgvExtension
       tap = bot_argv.value("tap")
-      return Tap.new(*tap_args(tap)) if tap
+      return Tap.fetch(*tap_args(tap)) if tap
     end
 
     if git_url = ENV["UPSTREAM_GIT_URL"] || ENV["GIT_URL"]
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
       HOMEBREW_TAP_ARGS_REGEX =~ url_path
-      return Tap.new($1, $3) if $1 && $3 && $3 != "homebrew"
+      return Tap.fetch($1, $3) if $1 && $3 && $3 != "homebrew"
     end
 
     # return nil means we are testing core repo.
@@ -142,7 +141,6 @@ module Homebrew
       end
 
       verbose = ARGV.verbose?
-      puts if verbose && !ENV["TRAVIS"]
       @output = ""
       working_dir = Pathname.new(@command.first == "git" ? @repository : Dir.pwd)
       read, write = IO.pipe
@@ -156,9 +154,12 @@ module Homebrew
           working_dir.cd { exec(*@command) }
         end
         write.close
-        while line = read.gets
-          puts line if verbose
-          @output += line
+        while buf = read.read(1)
+          if verbose
+            print buf
+            $stdout.flush
+          end
+          @output << buf
         end
       ensure
         read.close
@@ -237,7 +238,7 @@ module Homebrew
 
     def safe_formulary(formula)
       Formulary.factory formula
-    rescue FormulaUnavailableError, TapFormulaAmbiguityError
+    rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
     end
 
     def git(*args)
@@ -298,28 +299,32 @@ module Homebrew
 
       travis_pr = ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
 
-      # Use Jenkins environment variables if present.
-      if no_args? && ENV["GIT_PREVIOUS_COMMIT"] && ENV["GIT_COMMIT"] \
-         && !ENV["ghprbPullLink"]
-        diff_start_sha1 = shorten_revision ENV["GIT_PREVIOUS_COMMIT"]
-        diff_end_sha1 = shorten_revision ENV["GIT_COMMIT"]
-      elsif ENV["TRAVIS_COMMIT_RANGE"]
-        diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
-        diff_end_sha1 = ENV["TRAVIS_COMMIT"] if travis_pr
-      elsif ENV["ghprbPullLink"]
-        # Handle Jenkins pull request builder plugin.
+      # Use Jenkins GitHub Pull Request Builder plugin variables for
+      # pull request jobs.
+      if ENV["ghprbPullLink"]
         @url = ENV["ghprbPullLink"]
         @hash = nil
         test "git", "checkout", "origin/master"
+      # Use Travis CI pull-request variables for pull request jobs.
       elsif travis_pr
         @url = "https://github.com/#{ENV["TRAVIS_REPO_SLUG"]}/pull/#{ENV["TRAVIS_PULL_REQUEST"]}"
         @hash = nil
-      elsif @hash
-        diff_start_sha1 = current_sha1
-        brew_update
-        diff_end_sha1 = current_sha1
       end
 
+      # Use Jenkins Git plugin variables for master branch jobs.
+      if ENV["GIT_PREVIOUS_COMMIT"] && ENV["GIT_COMMIT"]
+        diff_start_sha1 = ENV["GIT_PREVIOUS_COMMIT"]
+        diff_end_sha1 = ENV["GIT_COMMIT"]
+      # Use Travis CI Git variables for master or branch jobs.
+      elsif ENV["TRAVIS_COMMIT_RANGE"]
+        diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
+        diff_start_sha1 = git("merge-base", diff_start_sha1, diff_end_sha1).strip
+      # Otherwise just use the current SHA-1 (which may be overriden later)
+      else
+        diff_end_sha1 = diff_start_sha1 = current_sha1
+      end
+
+      # Handle no arguments being passed on the command-line e.g. `brew test-bot`.
       if no_args?
         if diff_start_sha1 == diff_end_sha1 || \
            single_commit?(diff_start_sha1, diff_end_sha1)
@@ -327,19 +332,26 @@ module Homebrew
         else
           @name = "#{diff_start_sha1}-#{diff_end_sha1}"
         end
+      # Handle formulae arguments being passed on the command-line e.g. `brew test-bot wget fish`.
+      elsif @formulae && @formulae.any?
+        @name = "#{@formulae.first}-#{diff_end_sha1}"
+      # Handle a hash being passed on the command-line e.g. `brew test-bot 1a2b3c`.
       elsif @hash
         test "git", "checkout", @hash
         diff_start_sha1 = "#{@hash}^"
         diff_end_sha1 = @hash
         @name = @hash
-      elsif ENV["TRAVIS_PULL_REQUEST"] && ENV["TRAVIS_PULL_REQUEST"] != "false"
-        @short_url = @url.gsub("https://github.com/", "")
-        @name = "#{@short_url}-#{diff_end_sha1}"
-        # TODO: in future this may need to use `brew pull` to push the right commit.
+      # Handle a URL being passed on the command-line or through Jenkins/Travis
+      # environment variables e.g.
+      # `brew test-bot https://github.com/Homebrew/homebrew/pull/44293`.
       elsif @url
-        diff_start_sha1 = current_sha1
-        test "brew", "pull", "--clean", @url
-        diff_end_sha1 = current_sha1
+        # TODO: in future Travis CI may need to also use `brew pull` to e.g. push
+        # the right commit to BrewTestBot.
+        unless travis_pr
+          diff_start_sha1 = current_sha1
+          test "brew", "pull", "--clean", @url
+          diff_end_sha1 = current_sha1
+        end
         @short_url = @url.gsub("https://github.com/", "")
         if @short_url.include? "/commit/"
           # 7 characters should be enough for a commit (not 40).
@@ -349,8 +361,15 @@ module Homebrew
           @name = "#{@short_url}-#{diff_end_sha1}"
         end
       else
-        diff_start_sha1 = diff_end_sha1 = current_sha1
-        @name = "#{@formulae.first}-#{diff_end_sha1}"
+        raise "Cannot set @name: invalid command-line arguments!"
+      end
+
+      if ENV["TRAVIS"]
+        puts "name: #{@name}"
+        puts "url: #{@url}"
+        puts "hash: #{@hash}"
+        puts "diff_start_sha1: #{diff_start_sha1}"
+        puts "diff_end_sha1: #{diff_end_sha1}"
       end
 
       @log_root = @brewbot_root + @name
@@ -532,8 +551,7 @@ module Homebrew
       formula_fetch_options << canonical_formula_name
       test "brew", "fetch", "--retry", *formula_fetch_options
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
-      install_args = []
-      install_args << "--verbose" unless ARGV.include? "--no-verbose-install"
+      install_args = ["--verbose"]
       install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
@@ -790,7 +808,7 @@ module Homebrew
     bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
     bottle_args << "--tap=#{tap}" if tap
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
-    safe_system "brew", "bottle", *bottle_args
+    system "brew", "bottle", *bottle_args
 
     remote_repo = tap ? "homebrew-#{tap.repo}" : "homebrew"
     remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
@@ -850,7 +868,13 @@ module Homebrew
     ENV["HOMEBREW_DEVELOPER"] = "1"
     ENV["HOMEBREW_SANDBOX"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
-    ARGV << "--verbose" if ENV["TRAVIS"]
+    ENV["HOMEBREW_FAIL_LOG_LINES"] = "150"
+
+    if ENV["TRAVIS"]
+      ARGV << "--verbose"
+      ARGV << "--ci-master" if ENV["TRAVIS_PULL_REQUEST"] == "false"
+      ENV["HOMEBREW_VERBOSE_USING_DOTS"] = "1"
+    end
 
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
        || ARGV.include?("--ci-testing")

@@ -7,6 +7,7 @@ class Npth < Formula
 
   bottle do
     cellar :any
+    sha256 "e0383072b47031a5ca5b129447fe7b0d90a161c78c0dcd91f3d398067262d469" => :el_capitan
     sha256 "ed46e1fed9a33a4961b32fe2de844d8bbeff8f44d4863a3f2da364bb292ffa59" => :yosemite
     sha256 "cc6148b47d88580a4d18efc4140ea423189333c564e11c61b8a4764a182ac766" => :mavericks
     sha256 "277c3d694bda25fa805241d6c6799aaede32bf56393e7f0912a0e1e05940a4e5" => :mountain_lion

@@ -14,7 +14,7 @@ class ArgpStandalone < Formula
 
   # This patch fixes compilation with Clang.
   patch :p0 do
-    url "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h"
+    url "https://raw.githubusercontent.com/Homebrew/patches/b5f0ad3/argp-standalone/patch-argp-fmtstream.h"
     sha256 "5656273f622fdb7ca7cf1f98c0c9529bed461d23718bc2a6a85986e4f8ed1cb8"
   end
 

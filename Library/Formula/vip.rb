@@ -1,12 +1,12 @@
 class Vip < Formula
   desc "Program that provides for interactive editing in a pipeline"
   homepage "http://www.cs.duke.edu/~des/vip.html"
-  url "http://www.cs.duke.edu/~des/scripts/vip"
+  url "https://www.cs.duke.edu/~des/scripts/vip"
   version "19971113"
   sha256 "171278e8bd43abdbd3a4c35addda27a0d3c74fc784dbe60e4783d317ac249d11"
 
   resource "man" do
-    url "http://www.cs.duke.edu/~des/scripts/vip.man"
+    url "https://www.cs.duke.edu/~des/scripts/vip.man"
     sha256 "37b2753f7c7b39c81f97b10ea3f8e2dd5ea92ea8d130144fa99ed54306565f6f"
   end
 

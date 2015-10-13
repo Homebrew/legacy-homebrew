@@ -14,8 +14,8 @@ class Nginx < Formula
   end
 
   devel do
-    url "http://nginx.org/download/nginx-1.9.4.tar.gz"
-    sha256 "479b0c03747ee6b2d4a21046f89b06d178a2881ea80cfef160451325788f2ba8"
+    url "http://nginx.org/download/nginx-1.9.5.tar.gz"
+    sha256 "48e2787a6b245277e37cb7c5a31b1549a0bbacf288aa4731baacf9eaacdb481b"
   end
 
   env :userpaths
@@ -79,8 +79,18 @@ class Nginx < Formula
 
     args << "--with-http_dav_module" if build.with? "webdav"
     args << "--with-debug" if build.with? "debug"
-    args << "--with-http_spdy_module" if build.with? "spdy"
     args << "--with-http_gunzip_module" if build.with? "gunzip"
+
+    # This became "with-http_v2_module" in 1.9.5
+    # http://nginx.org/en/docs/http/ngx_http_spdy_module.html
+    # We handle devel/stable block variable options badly, so this installs
+    # the expected module rather than fatally bailing out of configure.
+    # The option should be deprecated to the new name when stable.
+    if build.devel? || build.head? && build.with?("spdy")
+      args << "--with-http_v2_module"
+    elsif build.with?("spdy")
+      args << "--with-http_spdy_module"
+    end
 
     if build.head?
       system "./auto/configure", *args
@@ -127,7 +137,7 @@ class Nginx < Formula
 
   def passenger_caveats; <<-EOS.undent
     To activate Phusion Passenger, add this to #{etc}/nginx/nginx.conf, inside the 'http' context:
-      passenger_root #{Formula["passenger"].opt_libexec}/lib/phusion_passenger/locations.ini;
+      passenger_root #{Formula["passenger"].opt_libexec}/src/ruby_supportlib/phusion_passenger/locations.ini;
       passenger_ruby /usr/bin/ruby;
     EOS
   end

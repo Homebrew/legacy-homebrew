@@ -1,15 +1,15 @@
 class ShadowsocksLibev < Formula
   desc "Libev port of shadowsocks"
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
-  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.3.2.tar.gz"
-  sha256 "789b42e45efce85bdc983574282cab0092f32443630d7fedda667cfbf85e5b40"
+  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.4.0.tar.gz"
+  sha256 "80e55840e4e3fb61f9ec13b2cad75acb1f5a39212a5141ff5751c6a147a3218b"
   head "https://github.com/shadowsocks/shadowsocks-libev.git"
 
   bottle do
     cellar :any
-    sha256 "3adefa985247603c32b2deb7b23055717aa467c7d123cadeda940876d9c8eab8" => :yosemite
-    sha256 "e4471fb4bafbd8db32b4a2f344e1d1f6ae1b27a17dc4261f72f142b881ae5942" => :mavericks
-    sha256 "787cd61add6520f45242cef060903bc3a53b25279181b753da32592f79e27688" => :mountain_lion
+    sha256 "1443f6eef1c4984f458907168beef526c1172fa4f3df54c8880748e44aefa005" => :el_capitan
+    sha256 "cd1dde0eaec1c872c098b33dc540902693803fc85e2242d41720b3578f97fa3c" => :yosemite
+    sha256 "f87760e9d3e366bc4f81d0e129db617c13378b9f1fb4fca6a674956362eb158d" => :mavericks
   end
 
   depends_on "openssl"
@@ -38,6 +38,31 @@ class ShadowsocksLibev < Formula
     inreplace Dir["man/*"], "/etc/shadowsocks-libev/config.json", "#{etc}/shadowsocks-libev.json"
     man8.install Dir["man/*.8"]
     man1.install Dir["man/*.1"]
+  end
+
+  test do
+    (testpath/"shadowsocks-libev.json").write <<-EOS.undent
+      {
+          "server":"127.0.0.1",
+          "server_port":9998,
+          "local":"127.0.0.1",
+          "local_port":9999,
+          "password":"test",
+          "timeout":600,
+          "method":"table"
+      }
+    EOS
+    server = fork { exec bin/"ss-server", "-c", testpath/"shadowsocks-libev.json" }
+    client = fork { exec bin/"ss-local", "-c", testpath/"shadowsocks-libev.json" }
+    sleep 3
+    begin
+      system "curl", "--socks5", "127.0.0.1:9999", "github.com"
+    ensure
+      Process.kill 9, server
+      Process.wait server
+      Process.kill 9, client
+      Process.wait client
+    end
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/shadowsocks-libev/bin/ss-local -c #{HOMEBREW_PREFIX}/etc/shadowsocks-libev.json"
