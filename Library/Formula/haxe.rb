@@ -7,11 +7,10 @@ class Haxe < Formula
   end
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "faa387523fb8dce6d02a542c1898bc561de08ca48637e95118bf2ac7e072bc95" => :yosemite
-    sha256 "64ef064b685f74552860b4d83715b8ddc8d5d0c08ac007d7ca246a4cc9b01ab2" => :mavericks
-    sha256 "366600c304bc1a3f2d09a629926e65bde16878cb5b0eb28e5b880773bd595c23" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "131893375697db4a6f747ebec788f9d0d7304b742a3c007f27ea877f561e1e9f" => :el_capitan
+    sha256 "104c2a1e9cc5c0d3ca3ee794a4872e8b25107139106f904c2471162ce278474e" => :yosemite
+    sha256 "1e4c88518c6747bf86345ac67b2e3e2da5d9f3cea3c3917e8837ac4db2083412" => :mavericks
   end
 
   head do
