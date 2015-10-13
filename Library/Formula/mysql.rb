@@ -182,7 +182,7 @@ class Mysql < Formula
       system "./mysql-test-run.pl", "status", "--vardir=#{testpath}"
     end
   end
-  
+
 end
 __END__
 --- a/configure.cmake	2014-05-06 05:45:57.000000000 -0500
@@ -193,7 +193,7 @@ __END__
  CHECK_FUNCTION_EXISTS (nl_langinfo HAVE_NL_LANGINFO)
 -CHECK_FUNCTION_EXISTS (ntohll HAVE_HTONLL)
 +CHECK_SYMBOL_EXISTS (ntohll arpa/inet.h HAVE_HTONLL)
- 
+
  CHECK_FUNCTION_EXISTS (clock_gettime DNS_USE_CPU_CLOCK_FOR_ID)
  CHECK_FUNCTION_EXISTS (epoll_create HAVE_EPOLL)
 --- a/plugin/innodb_memcached/daemon_memcached/include/memcached/util.h	2014-05-06 05:45:59.000000000 -0500
@@ -203,7 +203,7 @@ __END__
  #include <memcached/visibility.h>
  #include <memcached/types.h>
 +#include "config.h"
- 
+
  #ifdef __cplusplus
  extern "C" {
 
