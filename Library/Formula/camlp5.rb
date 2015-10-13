@@ -11,12 +11,13 @@ class Camlp5 < Formula
     sha256 "60312c75054d1db597c8afaf2d0563d41e192480531b74b2ad40908e36bbfb8b" => :mountain_lion
   end
 
+  deprecated_option "strict" => "with-strict"
+  option "with-strict", "Compile in strict mode"
+
   depends_on "ocaml"
 
-  option "strict", "Compile in strict mode"
-
   def install
-    if build.include? "strict"
+    if build.with? "strict"
       strictness = "-strict"
     else
       strictness = "-transitional"
