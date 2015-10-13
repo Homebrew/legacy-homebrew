@@ -11,10 +11,7 @@ class AuroraScheduler < Formula
   end
 
   def install
-    ENV["PIP_DEFAULT_TIMEOUT"] = "60"
-    ENV["LC_ALL"] = "en_US.UTF-8"
-    ENV["CFLAGS"] = "-Qunused-arguments"
-    ENV["CPPFLAGS"] = "-Qunused-arguments"
+    # https://issues.apache.org/jira/browse/AURORA-1508
     inreplace ".pantsversion", "0.0.32", "0.0.53"
     tools = <<-EOS.undent
       # common rev for all org.scala-lang%* artifacts
