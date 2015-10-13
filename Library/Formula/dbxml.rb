@@ -25,15 +25,26 @@ class Dbxml < Formula
   end
 
   test do
-    system "curl", "-o", (testpath/"simple.xml"), "http://www.w3schools.com/xml/simple.xml"
-    script = testpath/"dbxml.script"
-    script.write <<-EOS.undent
+    (testpath/"simple.xml").write <<-EOS.undent
+      <breakfast_menu>
+        <food>
+          <name>Belgian Waffles</name>
+          <calories>650</calories>
+        </food>
+        <food>
+          <name>Homestyle Breakfast</name>
+          <calories>950</calories>
+        </food>
+      </breakfast_menu>
+    EOS
+
+    (testpath/"dbxml.script").write <<-EOS.undent
       createContainer ""
       putDocument simple "simple.xml" f
       cquery 'sum(//food/calories)'
       print
       quit
     EOS
-    assert_equal "4000", shell_output("#{bin}/dbxml -s #{testpath}/dbxml.script").chomp
+    assert_equal "1600", shell_output("#{bin}/dbxml -s #{testpath}/dbxml.script").chomp
   end
 end
