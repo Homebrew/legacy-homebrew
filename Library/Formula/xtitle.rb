@@ -1,6 +1,6 @@
 class Xtitle < Formula
   desc "Set window title and icon for your X terminal"
-  homepage "http://www.cs.indiana.edu/~kinzler/xtitle/"
+  homepage "https://www.cs.indiana.edu/~kinzler/xtitle/"
   url "https://www.cs.indiana.edu/~kinzler/xtitle/xtitle-1.0.4.tgz"
   sha256 "cadddef1389ba1c5e1dc7dd861545a5fe11cb397a3f692cd63881671340fcc15"
 
