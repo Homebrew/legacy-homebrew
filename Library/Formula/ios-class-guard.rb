@@ -2,8 +2,7 @@ class IosClassGuard < Formula
   desc "Objective-C obfuscator for Mach-O executables"
   homepage "https://github.com/Polidea/ios-class-guard/"
   head "https://github.com/Polidea/ios-class-guard.git"
-  url "https://github.com/Polidea/ios-class-guard/archive/0.6.tar.gz"
-  sha256 "0f4ce249a0690dce8fe762603611c0d26d0273929c736bf6c62b308c44fc4a4d"
+  url "https://github.com/Polidea/ios-class-guard/archive/0.8.tar.gz"
 
   bottle do
     cellar :any
