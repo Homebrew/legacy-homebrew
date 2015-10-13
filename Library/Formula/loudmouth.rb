@@ -1,6 +1,6 @@
 class Loudmouth < Formula
   desc "Lightweight C library for the Jabber protocol"
-  homepage "http://mcabber.com"
+  homepage "https://mcabber.com"
   url "https://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2"
   version "1.5.0.20121201"
   sha256 "d8ff057dc98c99ab19a68c3890c7f5ab47870e45d67bb65891f01a78c77dfcf9"
