@@ -1,8 +1,8 @@
 class S3cmd < Formula
   desc "Command-line tool for the Amazon S3 service"
   homepage "http://s3tools.org/s3cmd"
-  url "https://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.2/s3cmd-1.5.2.tar.gz"
-  sha256 "ff8a6764e8bdd7ed48a93e51b08222bea33469d248a90b8d25315b023717b42d"
+  url "https://downloads.sourceforge.net/project/s3tools/s3cmd/1.6.0/s3cmd-1.6.0.tar.gz"
+  sha256 "04279ee26c661d4b740449460ed93a74ffec91616f685474beea97e930fdfa5c"
   head "https://github.com/s3tools/s3cmd.git"
 
   depends_on :python if MacOS.version <= :snow_leopard
