@@ -1,6 +1,6 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
-  homepage "http://www.ansible.com/home"
+  homepage "https://www.ansible.com/home"
   url "https://releases.ansible.com/ansible/ansible-1.9.4.tar.gz"
   sha256 "972c2face49f1577bd0ff7989440bfe2820e66fb10d7579915cc536bccfa6fe3"
 
@@ -55,7 +55,7 @@ class Ansible < Formula
 
   #
   # Required by the 'uri' core module
-  # See http://docs.ansible.com/uri_module.html#requirements)
+  # See https://docs.ansible.com/uri_module.html#requirements)
   #
   resource "httplib2" do
     url "https://pypi.python.org/packages/source/h/httplib2/httplib2-0.9.1.tar.gz"
