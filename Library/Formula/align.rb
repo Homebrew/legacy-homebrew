@@ -1,7 +1,7 @@
 class Align < Formula
   desc "Text column alignment filter"
   homepage "http://www.cs.indiana.edu/~kinzler/align/"
-  url "http://www.cs.indiana.edu/~kinzler/align/align-1.7.4.tgz"
+  url "https://www.cs.indiana.edu/~kinzler/align/align-1.7.4.tgz"
   sha256 "4775cc92bd7d5d991b32ff360ab74cfdede06c211def2227d092a5a0108c1f03"
 
   bottle do

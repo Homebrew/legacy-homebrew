@@ -1,7 +1,7 @@
 class HtmlXmlUtils < Formula
   desc "Tools for manipulating HTML and XML files"
   homepage "http://www.w3.org/Tools/HTML-XML-utils/"
-  url "http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz"
+  url "https://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz"
   sha256 "92af4886fcada0e2fc35308def4d02baedd9889d2e4c957b07b77a60fbdacd99"
 
   bottle do

@@ -1,14 +1,14 @@
 class AtSpi2Atk < Formula
   desc "Accessibility Toolkit GTK+ module"
   homepage "http://a11y.org"
-  url "https://download.gnome.org/sources/at-spi2-atk/2.18/at-spi2-atk-2.18.0.tar.xz"
-  sha256 "4a6db33453b6efd15fa7d84ef2a3421262a053f57f1df6e7a2536d02bacdf375"
+  url "https://download.gnome.org/sources/at-spi2-atk/2.18/at-spi2-atk-2.18.1.tar.xz"
+  sha256 "c4b15f9386d34d464ddad5f6cc85669742c016df87141ceee93513245979c12d"
 
   bottle do
     cellar :any
-    sha256 "6450a0feacc584653cffd568de196344757c5c0c186a666304b54913b415e3df" => :el_capitan
-    sha256 "dfde79b25b559649c16c2a5734a10c21a88ec557cfa3a8cf5c87014258793c4a" => :yosemite
-    sha256 "429671113826d9f00ae043a52a7f3be80d886d25ef0ef0fa8b50b33a5c6f7c94" => :mavericks
+    sha256 "a88de6d29ff859aa289347be7451348642dcd41b986362a1eb65c323443146fd" => :el_capitan
+    sha256 "622fb5001ed08bddb08e92a00b45f0ca2a9f0f555eb8605bfe3cb1525bb5239f" => :yosemite
+    sha256 "345365f5404530d5b28710325bb412338af39671b967a39b1afff91d63f9e315" => :mavericks
   end
 
   depends_on "pkg-config" => :build

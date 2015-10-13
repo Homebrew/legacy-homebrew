@@ -4,7 +4,7 @@ class Ffmpeg2theora < Formula
   revision 1
 
   stable do
-    url "http://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.29.tar.bz2"
+    url "https://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.29.tar.bz2"
     sha256 "214110e2a5afdd8ff8e0be18152e893dbff5dabc1ae1d1124e64d9f93eae946d"
 
     # Fixes build with ffmpeg 2.x by removing use of deprecated constant

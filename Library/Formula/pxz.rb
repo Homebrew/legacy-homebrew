@@ -1,7 +1,7 @@
 class Pxz < Formula
   desc "Compression utility"
   homepage "http://jnovy.fedorapeople.org/pxz/"
-  url "http://jnovy.fedorapeople.org/pxz/pxz-4.999.9beta.20091201git.tar.xz"
+  url "https://jnovy.fedorapeople.org/pxz/pxz-4.999.9beta.20091201git.tar.xz"
   version "4.999.9"
   sha256 "df69f91103db6c20f0b523bb7f026d86ee662c49fe714647ed63f918cd39767a"
 
