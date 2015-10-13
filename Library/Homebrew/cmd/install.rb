@@ -98,10 +98,27 @@ module Homebrew
       else
         ofail e.message
         query = query_regexp(e.name)
-        ohai "Searching formulae..."
-        puts_columns(search_formulae(query))
+
+        ohai "Searching for similarly named formulae..."
+        formulae_search_results = search_formulae(query)
+
+        if !formulae_search_results.any?
+          ofail 'No similarly named formulae found.'
+        else
+          puts 'These similarly named formulae were found:'
+          puts_columns(formulae_search_results)
+          puts "If you meant to install one of them, run `brew install <formula>`"
+        end
+
         ohai "Searching taps..."
-        puts_columns(search_taps(query))
+        taps_search_results = search_taps(query)
+        if !taps_search_results.any?
+          ofail 'No formulae found in taps.'
+        else
+          puts 'These formulae were found in taps:'
+          puts_columns(taps_search_results)
+          puts "If you meant to install one of them, run `brew install <formula>`"
+        end
 
         # If they haven't updated in 48 hours (172800 seconds), that
         # might explain the error
