@@ -14,7 +14,7 @@ class Dbxml < Formula
       s.gsub! "lib/libdb-*.la", "lib/libdb-*.a"
     end
 
-    Dir.chdir "dbxml" do
+    cd "dbxml" do
       system "./configure", "--disable-debug", "--disable-dependency-tracking",
                             "--prefix=#{prefix}",
                             "--with-xqilla=#{HOMEBREW_PREFIX}",
