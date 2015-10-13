@@ -1,9 +1,8 @@
 class Nzbget < Formula
   desc "Binary newsgrabber for nzb files"
   homepage "http://nzbget.net/"
-  url "https://github.com/nzbget/nzbget/releases/download/v15.0/nzbget-15.0-src.tar.gz"
-  sha256 "3ef13f3e5917e4cda19c4fc0cd37e79967a19b4e3448c239ff24e37712a6cc0a"
-  revision 1
+  url "https://github.com/nzbget/nzbget/releases/download/v16.0/nzbget-16.0-src.tar.gz"
+  sha256 "95bf4d1b888c631da06ef2699219c855a8d5433a3907791aee0d075c413ccdd0"
 
   head "https://github.com/nzbget/nzbget.git"
 
@@ -15,7 +14,6 @@ class Nzbget < Formula
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
-  depends_on "libsigc++"
 
   needs :cxx11
 
@@ -27,28 +25,17 @@ class Nzbget < Formula
       EOS
   end
 
-  resource "libpar2" do
-    url "https://launchpad.net/libpar2/trunk/0.4/+download/libpar2-0.4.tar.gz"
-    sha256 "316d6f0eb31eb896f5546171c2e86801aeffe5ae5e2decffc17f0018346796d4"
-  end
-
   def install
     ENV.cxx11
-    resource("libpar2").stage do
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{libexec}/lp2"
-      system "make", "install"
-    end
 
-    # Tell configure where libpar2 is, and tell it to use OpenSSL
+    # Tell configure to use OpenSSL
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libpar2-includes=#{libexec}/lp2/include",
-                          "--with-libpar2-libraries=#{libexec}/lp2/lib",
                           "--with-tlslib=OpenSSL"
     system "make"
     ENV.j1
     system "make", "install"
+    pkgshare.install_symlink "nzbget.conf" => "webui/nzbget.conf"
     etc.install "nzbget.conf"
   end
 
