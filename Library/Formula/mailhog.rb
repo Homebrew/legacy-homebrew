@@ -130,11 +130,6 @@ class Mailhog < Formula
     Language::Go.stage_deps resources, buildpath/"src"
     system "go", "build", "-o", "MailHog"
     bin.install "MailHog"
-
-    puts <<-EOS.undent
-    To use MailHog as a sendmail replacement for PHP, add the following line to php.ini file:
-      sendmail_path = #{HOMEBREW_PREFIX}/bin/MailHog sendmail test@test
-    EOS
   end
 
   def plist; <<-EOS.undent
@@ -165,7 +160,9 @@ class Mailhog < Formula
     # Test for following default MailHog ouput:
     # 1970/01/01 00:00:01 Using in-memory storage
     # 1970/01/01 00:00:01 [SMTP] Binding to address: 0.0.0.0:1025
-    output = shell_output("#{bin}/MailHog 2>&1 > /dev/null | head -n 2")
+    # MailHog starts process, which needs to be terminated to avoid
+    # indefinite runtime.
+    output = shell_output("#{bin}/MailHog 2>&1 > /dev/null & sleep 3; kill $! | head -n 2")
     assert_match /Binding to address/, output
   end
 end
