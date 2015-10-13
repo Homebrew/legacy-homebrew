@@ -1,6 +1,6 @@
 class Bibtex2html < Formula
   desc "BibTeX to HTML converter"
-  homepage "http://www.lri.fr/~filliatr/bibtex2html/"
+  homepage "https://www.lri.fr/~filliatr/bibtex2html/"
   url "https://www.lri.fr/~filliatr/ftp/bibtex2html/bibtex2html-1.98.tar.gz"
   sha256 "e925a0b97bf87a14bcbda95cac269835cd5ae0173504261f2c60e3c46a8706d6"
 
