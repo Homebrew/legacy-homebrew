@@ -34,8 +34,7 @@ class Hping < Formula
   end
 
   def install
-    # Compile fails with tcl support; TCL on OS X is 32-bit only
-    system "./configure", "--no-tcl"
+    system "./configure"
 
     # Target folders need to exist before installing
     sbin.mkpath
@@ -62,3 +61,29 @@ index 3d0ea58..a8a9699 100644
  char *get_hostname(char* addr)
  {
  	static char answer[1024];
+diff -c -r a/main.c b/main.c
+*** a/main.c	2004-06-18 05:53:11.000000000 -0400
+--- b/main.c	2014-11-04 19:36:12.000000000 -0500
+***************
+*** 26,31 ****
+--- 26,32 ----
+  #include <time.h>
+  #include <sys/time.h>
+  #include <sys/types.h>
++ #define PCAP_DONT_INCLUDE_PCAP_BPF_H 1
+  #include <pcap.h>
+  
+  #include "hping2.h"
+diff -c -r a/script.c b/script.c
+*** a/script.c	2004-05-29 02:48:13.000000000 -0400
+--- b/script.c	2014-11-04 19:38:05.000000000 -0500
+***************
+*** 23,28 ****
+--- 23,29 ----
+  #include <sched.h>
+  
+  #include <sys/ioctl.h>
++ #define PCAP_DONT_INCLUDE_PCAP_BPF_H 1
+  #include <pcap.h>
+  #include <net/bpf.h>
+  
