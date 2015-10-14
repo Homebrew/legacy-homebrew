@@ -6,10 +6,9 @@ class Graphicsmagick < Formula
   head "http://hg.code.sf.net/p/graphicsmagick/code", :using => :hg
 
   bottle do
-    sha256 "db06edd23e591e48e7dce6fbac2f2ac2bca663407ffe818bea7f0e2a5d481dcb" => :el_capitan
-    sha1 "73175a47211a0e05b55b15cfbcefcb1fc34b93ca" => :yosemite
-    sha1 "d20dd246c9ae4f9bed6cd11a9de877490e5113ce" => :mavericks
-    sha1 "b9265254c6c11f0ff0e44960d514ef7087a89eeb" => :mountain_lion
+    sha256 "a994a85aca353b21e1bdcf3035cad0c0bc37b797089a548b43ef6adb252d6765" => :el_capitan
+    sha256 "e64a686ab3f63d525fd951c7f0ea7136941c7a0b8c6f4670b1aef19f8a0fec0e" => :yosemite
+    sha256 "11ab4790286b1c42acf500fba823500f42d2582d9a6d0392947b57a65406994e" => :mavericks
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
