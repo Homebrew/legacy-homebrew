@@ -143,7 +143,7 @@ class Mailhog < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{HOMEBREW_PREFIX}/bin/MailHog</string>
+        <string>#{opt_bin}/MailHog</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
