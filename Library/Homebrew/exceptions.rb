@@ -23,11 +23,12 @@ class NoSuchKegError < RuntimeError
 end
 
 class FormulaValidationError < StandardError
-  attr_reader :attr
+  attr_reader :attr, :formula
 
-  def initialize(attr, value)
+  def initialize(formula, attr, value)
     @attr = attr
-    super "invalid attribute: #{attr} (#{value.inspect})"
+    @formula = formula
+    super "invalid attribute for formula '#{formula}': #{attr} (#{value.inspect})"
   end
 end
 

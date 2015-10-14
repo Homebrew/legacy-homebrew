@@ -182,17 +182,17 @@ class Formula
 
   def validate_attributes!
     if name.nil? || name.empty? || name =~ /\s/
-      raise FormulaValidationError.new(:name, name)
+      raise FormulaValidationError.new(full_name, :name, name)
     end
 
     url = active_spec.url
     if url.nil? || url.empty? || url =~ /\s/
-      raise FormulaValidationError.new(:url, url)
+      raise FormulaValidationError.new(full_name, :url, url)
     end
 
     val = version.respond_to?(:to_str) ? version.to_str : version
     if val.nil? || val.empty? || val =~ /\s/
-      raise FormulaValidationError.new(:version, val)
+      raise FormulaValidationError.new(full_name, :version, val)
     end
   end
 
