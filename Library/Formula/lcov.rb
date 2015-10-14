@@ -8,10 +8,9 @@ class Lcov < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "922c6785490b66abc36ca3189c7a8d3f1c28b7aa952936ae327ca1f99b2ac606" => :el_capitan
-    sha1 "edad7ab819deb6032734442ea88c343e6779f60c" => :mavericks
-    sha1 "61cb990e2928ad0a1b29e131790790994b5a95d6" => :mountain_lion
-    sha1 "b417a6801535d439dc26200213e63a4536989d11" => :lion
+    sha256 "60a39cebc7d60df4b3f5db3dc83b74327bb472b4ee874626efc36709b5670377" => :el_capitan
+    sha256 "5e2d2a144846f0b04986507f0e0b2b20cee0e9db888a748cb50a6d89c8309826" => :yosemite
+    sha256 "6e2ffa607ebeec0b4c58cabeb8831ed1fa2f410bdb9032030209ab50afb8082a" => :mavericks
   end
 
   patch :DATA
