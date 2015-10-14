@@ -157,7 +157,7 @@ class Mailhog < Formula
   end
 
   test do
-    # Test for following default MailHog ouput:
+    # Test for following default MailHog output:
     # 1970/01/01 00:00:01 Using in-memory storage
     # 1970/01/01 00:00:01 [SMTP] Binding to address: 0.0.0.0:1025
     # MailHog starts process, which needs to be terminated to avoid
