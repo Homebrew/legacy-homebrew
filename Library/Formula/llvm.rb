@@ -187,8 +187,6 @@ class Llvm < Formula
         # to work correctly, but if not, perhaps universal binaries could be
         # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
         # can almost be treated as an entirely different build from llvm.
-        # In addition, without this the build fails at clang_rt.builtins_osx,
-        # but with it makes it past, failing later, hopefully for a different reason
         ENV.permit_arch_flags
 
       else
