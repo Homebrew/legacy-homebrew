@@ -1,8 +1,8 @@
 class Fltk < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "http://www.fltk.org/"
-  url "https://fossies.org/linux/misc/fltk-1.3.3-source.tar.gz"
-  sha256 "f8398d98d7221d40e77bc7b19e761adaf2f1ef8bb0c30eceb7beb4f2273d0d97"
+  url "http://fltk.org/pub/fltk/1.3.3/fltk-1.3.3-source.tar.gz"
+  md5 "9ccdb0d19dc104b87179bd9fd10822e3"
 
   bottle do
     sha1 "33c75cce41deadbfe54bdcc22ae91d17d3ecc782" => :mavericks
@@ -13,9 +13,6 @@ class Fltk < Formula
 
   depends_on "libpng"
   depends_on "jpeg"
-
-  # Fltk 1.3.4 include support for El Capitan. Remove on update.
-  depends_on MaximumMacOSRequirement => :yosemite
 
   fails_with :clang do
     build 318
