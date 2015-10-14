@@ -6,10 +6,9 @@ class GoogleSparsehash < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "dabf4fbfd790e1c5f359de981d34fb303619f20c5ed68fb7089713931c2c1940" => :el_capitan
-    sha256 "538219894b3a02997643a82e35ebbf135e7ccb8c0846038e6e4b0c3baf0c33d3" => :yosemite
-    sha256 "30c4265ee1c88a01a2821655ff648a3ccb476cb6f29e2594a042ec76d0f8f52e" => :mavericks
+    sha256 "8655e0c3b4f4c69e46d8823eef0d8ae2b1397cd2aa01bda3340eb3a84d647b89" => :el_capitan
+    sha256 "b8e55b96aa3016ed2ab5a8d53a4bb39b44773885355ec75e80c9d9ef57c3e8b1" => :yosemite
+    sha256 "570c4d250a4fe18d99f11167653a501a1d8a82ff74d2413336a85bc7fa8cbb81" => :mavericks
   end
 
   option :cxx11
