@@ -568,13 +568,12 @@ module Homebrew
 
       install_args << canonical_formula_name
       # Don't care about e.g. bottle failures for dependencies.
+      install_passed = false
       run_as_not_developer do
         if !ARGV.include?("--fast") || formula_bottled
           test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
           test "brew", "install", *install_args
           install_passed = steps.last.passed?
-        else
-          install_passed = false
         end
       end
       audit_args = [canonical_formula_name]
