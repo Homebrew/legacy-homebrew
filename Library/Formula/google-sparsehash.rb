@@ -1,8 +1,8 @@
 class GoogleSparsehash < Formula
   desc "Extremely memory-efficient hash_map implementation"
-  homepage "https://code.google.com/p/google-sparsehash/"
-  url "https://sparsehash.googlecode.com/files/sparsehash-2.0.2.tar.gz"
-  sha256 "2ed639a7155607c097c2029af5f4287296595080b2e5dd2e2ebd9bbb7450b87c"
+  homepage "https://github.com/sparsehash/sparsehash"
+  url "https://github.com/sparsehash/sparsehash/archive/sparsehash-2.0.3.tar.gz"
+  sha256 "05e986a5c7327796dad742182b2d10805a8d4f511ad090da0490f146c1ff7a8c"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,19 +14,6 @@ class GoogleSparsehash < Formula
 
   option :cxx11
   option "without-check", "Skip build-time tests (not recommended)"
-
-  # Patch from upstream issue: https://code.google.com/p/sparsehash/issues/detail?id=99
-  patch do
-    url "https://gist.githubusercontent.com/jacknagel/3314c8cc67032a912f8b/raw/387b44a3b46e7b68876dbcb3c6595d700fa08a3c/sparsehash.diff"
-    sha256 "c12f68278bce1ebf893ffa791e43df7f09e5452db3fbd13bd30fcf91cbf6ad36"
-  end
-
-  # see discussion in #41087
-  # patch taken from upstream
-  patch do
-    url "https://github.com/sparsehash/sparsehash/commit/7f6351fb06241b96fdb39ae3aff53c2acb1cd7a4.diff"
-    sha256 "3a0b3facdf2b5e61274239b754f4f8ef1c1da185a14e1549f27855d4aa5973ea"
-  end
 
   def install
     ENV.cxx11 if build.cxx11?
