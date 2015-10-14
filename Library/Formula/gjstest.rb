@@ -1,8 +1,8 @@
 class Gjstest < Formula
   desc "Fast javascript unit testing framework that runs on the V8 engine."
   homepage "https://github.com/google/gjstest"
-  url "https://github.com/google/gjstest/archive/v1.0.1.tar.gz"
-  sha256 "c64d1b8d153b9afaa17ce521d9a7d07acbf13838dab7b2e57822f0bf046f80e5"
+  url "https://github.com/google/gjstest/archive/v1.0.2.tar.gz"
+  sha256 "7bf0de1c4b880b771a733c9a5ce07c71b93f073e6acda09bec7e400c91c2057c"
   head "https://github.com/google/gjstest.git"
 
   bottle do
