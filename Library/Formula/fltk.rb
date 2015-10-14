@@ -2,7 +2,7 @@ class Fltk < Formula
   desc "Cross-platform C++ GUI toolkit"
   homepage "http://www.fltk.org/"
   url "http://fltk.org/pub/fltk/1.3.3/fltk-1.3.3-source.tar.gz"
-  md5 "9ccdb0d19dc104b87179bd9fd10822e3"
+  sha256 "f8398d98d7221d40e77bc7b19e761adaf2f1ef8bb0c30eceb7beb4f2273d0d97"
 
   bottle do
     sha1 "33c75cce41deadbfe54bdcc22ae91d17d3ecc782" => :mavericks
