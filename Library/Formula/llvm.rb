@@ -165,6 +165,16 @@ class Llvm < Formula
     if build.with? "lldb"
       if build.with? "clang"
         (buildpath/"tools/lldb").install resource("lldb")
+
+        # Building lldb requires a code signing certificate.
+        # The instructions provided by llvm creates this certificate in the
+        # user's login keychain. Unfortunately, the login keychain is not in
+        # the search path in a superenv build. The following three lines add
+        # the login keychain to ~/Library/Preferences/com.apple.security.plist,
+        # which adds it to the superenv keychain search path.
+        mkdir_p "#{ENV["HOME"]}/Library/Preferences"
+        username = `whoami`.strip! # Has ending newline otherwise
+        system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
       else
         odie "lldb must be built along with clang"
       end
