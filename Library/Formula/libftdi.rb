@@ -6,10 +6,10 @@ class Libftdi < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "bd138350b6b994aad13e24eb73a90d436a43760484e84b859a517b7dac022e91" => :el_capitan
-    sha256 "706627fb6c9e6a48b891b1bb8fd37aaa8182ea6c711567fca57c552e201e2c20" => :yosemite
-    sha256 "937b569282e624dedab4a56792313cdaf1747844c04a6ad24191d7ff4b5f30d9" => :mavericks
+    revision 3
+    sha256 "b28b36691a275c37eab79408d1ee26fd3f74a11949ba88e5325950d9c32207cc" => :el_capitan
+    sha256 "2d0e66492ec3e14195a33471c44c134a0e871f51b41cf0378a1b310ac0c43210" => :yosemite
+    sha256 "812990757cde2fdc96d97fcdb9e4e82ee13113c88f036c52c42f37466b352550" => :mavericks
   end
 
   depends_on "cmake" => :build
