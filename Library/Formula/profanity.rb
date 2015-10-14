@@ -1,8 +1,8 @@
 class Profanity < Formula
   desc "Console based XMPP client"
   homepage "http://www.profanity.im/"
-  url "http://www.profanity.im/profanity-0.4.6.tar.gz"
-  sha256 "9672667e419958dd75d40cc0f253087ba1ae7df0c3c855eaa780831ad8282a9f"
+  url "http://www.profanity.im/profanity-0.4.7.tar.gz"
+  sha256 "b02c4e029fe84941050ccab6c8cdf5f15df23de5d1384b4d1ec66da6faee11dd"
   head "https://github.com/boothj5/profanity.git"
 
   bottle do
@@ -15,7 +15,9 @@ class Profanity < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
+  depends_on "ossp-uuid"
   depends_on "libstrophe"
+  depends_on "readline"
   depends_on "glib"
   depends_on "openssl"
   depends_on "gnutls"
