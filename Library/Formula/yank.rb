@@ -5,9 +5,7 @@ class Yank < Formula
   sha256 "1adf1b07f7cb9401daeed7a05bad492db8ed77ead4728d9b45f541d56bc2e8c5"
 
   def install
-    ENV["PREFIX"] = prefix
-    ENV["YANKCMD"] = "pbcopy"
-    system "make", "install"
+    system "make", "install", "PREFIX=#{prefix}", "YANKCMD=pbcopy"
   end
 
   test do
