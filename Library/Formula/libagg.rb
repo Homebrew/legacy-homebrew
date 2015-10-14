@@ -50,6 +50,6 @@ index ce25a2e..9a12d35 100644
          const line_profile_aa& profile() const { return *m_profile; }
 -        line_profile_aa& profile() { return *m_profile; }
 +        const line_profile_aa& profile() { return *m_profile; }
- 
+
          //---------------------------------------------------------------------
          int subpixel_width() const { return m_profile->subpixel_width(); }

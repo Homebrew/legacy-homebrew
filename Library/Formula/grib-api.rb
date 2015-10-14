@@ -45,7 +45,7 @@ index 0a88b28..9dafe46 100755
 -      lt_prog_compiler_pic='-fno-common'
 +      #lt_prog_compiler_pic='-fno-common'
        ;;
- 
+
      hpux*)
 @@ -12186,7 +12186,7 @@ $as_echo_n "checking for $compiler option to produce PIC... " >&6; }
      darwin* | rhapsody*)
@@ -54,7 +54,7 @@ index 0a88b28..9dafe46 100755
 -      lt_prog_compiler_pic_F77='-fno-common'
 +      #lt_prog_compiler_pic_F77='-fno-common'
        ;;
- 
+
      hpux*)
 @@ -15214,7 +15214,7 @@ $as_echo_n "checking for $compiler option to produce PIC... " >&6; }
      darwin* | rhapsody*)
@@ -63,5 +63,5 @@ index 0a88b28..9dafe46 100755
 -      lt_prog_compiler_pic_FC='-fno-common'
 +      #lt_prog_compiler_pic_FC='-fno-common'
        ;;
- 
+
      hpux*)

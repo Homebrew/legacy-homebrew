@@ -22,7 +22,7 @@ index 61ed462..e461469 100644
 @@ -4,16 +4,7 @@
  #include <cctype>
  #include <string>
- 
+
 -#if __GNUC__ >= 3
 -#include <bits/char_traits.h>
  struct ci_char_traits : public std::char_traits<char>
@@ -33,6 +33,6 @@ index 61ed462..e461469 100644
 -//Hope string already include it
 -struct ci_char_traits : public std::char_traits<char>
 -#endif
- 
+
  // just inherit all the other functions
  //  that we don't need to override

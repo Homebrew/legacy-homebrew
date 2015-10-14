@@ -21,14 +21,14 @@ __END__
 --- a/corec/tools/coremake/gcc_osx_x64.build	2011-09-25 02:25:46.000000000 -0700
 +++ b/corec/tools/coremake/gcc_osx_x64.build	2012-03-15 16:27:46.000000000 -0700
 @@ -4,9 +4,9 @@
- 
+
  PLATFORMLIB = osx_x86
  SVNDIR = osx_x86
 -SDK = /Developer/SDKs/MacOSX10.6.sdk
- 
+
 -CCFLAGS=%(CCFLAGS) -arch x86_64 -mdynamic-no-pic -mmacosx-version-min=10.6
 +
 +CCFLAGS=%(CCFLAGS) -arch x86_64 -mdynamic-no-pic
  ASMFLAGS = -f macho64 -D_MACHO
- 
+
  #include "gcc_osx.inc"

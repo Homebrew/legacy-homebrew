@@ -40,6 +40,6 @@ index 8fb87e4..9dedb97 100644
  #include <vector>
  #include <climits>
 +#include <cstdlib>
- 
+
  #if __GNUC__ > 2
  #include <ext/hash_map>

@@ -37,6 +37,6 @@ index 411f892..b66a25c 100644
  #include <cstdlib> // MAX_PATH
  #include <climits> // PATH_MAX
 +#include <unistd.h>
- 
- 
+
+
  #if defined(__WIN32__) || defined(WIN32)

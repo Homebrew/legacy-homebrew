@@ -49,18 +49,18 @@ index bc8d750..b185587 100644
 @@ -515,7 +515,7 @@ static int decode_chunk_vbr(quicktime_t * file, int track)
    if(!chunk_packets)
      return 0;
- 
+
 -  new_samples = num_samples + AVCODEC_MAX_AUDIO_FRAME_SIZE / (2 * track_map->channels);
 +  new_samples = num_samples + 192000 / (2 * track_map->channels);
-   
+
    if(codec->sample_buffer_alloc <
       codec->sample_buffer_end - codec->sample_buffer_start + new_samples)
 @@ -671,7 +671,7 @@ static int decode_chunk(quicktime_t * file, int track)
     */
- 
+
    num_samples += 8192;
 -  new_samples = num_samples + AVCODEC_MAX_AUDIO_FRAME_SIZE / (2 * track_map->channels);
 +  new_samples = num_samples + 192000 / (2 * track_map->channels);
-   
+
    /* Reallocate sample buffer */
-   
+

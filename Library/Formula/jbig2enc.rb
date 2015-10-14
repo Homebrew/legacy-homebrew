@@ -40,7 +40,7 @@ index fe37c22..753a607 100644
  			])
 +AC_CHECK_FUNCS(expandBinaryPower2Low,,)
  # test for function - it should detect leptonica dependecies
- 
+
  # Check for possible dependancies of leptonica.
 diff --git a/src/jbig2.cc b/src/jbig2.cc
 index e10f042..515c1ef 100644
@@ -64,6 +64,6 @@ index e10f042..515c1ef 100644
 +    pixd = pixExpandBinaryPower2(pixd4, 4);
 +#endif
 +  if (verbose) pixInfo(pixd, "mask image: ");
- 
+
    pixDestroy(&pixd4);
    pixDestroy(&pixsf4);

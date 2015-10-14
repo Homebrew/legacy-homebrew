@@ -54,7 +54,7 @@ index 99e0e9f..bf3b6b4 100644
 --- a/fc-cache/fc-cache.c
 +++ b/fc-cache/fc-cache.c
 @@ -187,13 +187,8 @@ scanDirs (FcStrList *list, FcConfig *config, FcBool force, FcBool really_force,
- 	
+
  	if (!cache)
  	{
 -	    if (!recursive)
@@ -74,7 +74,7 @@ index 99e0e9f..bf3b6b4 100644
  	FcStrListDone (list);
      }
 -    FcStrSetDestroy (updateDirs);
- 
+
      /*
       * Try to create CACHEDIR.TAG anyway.
 diff --git a/fontconfig/fontconfig.h b/fontconfig/fontconfig.h
@@ -82,13 +82,13 @@ index 2258251..d0b4e9e 100644
 --- a/fontconfig/fontconfig.h
 +++ b/fontconfig/fontconfig.h
 @@ -541,9 +541,6 @@ FcDirSave (FcFontSet *set, FcStrSet *dirs, const FcChar8 *dir);
- 
+
  FcPublic FcCache *
  FcDirCacheLoad (const FcChar8 *dir, FcConfig *config, FcChar8 **cache_file);
 -
 -FcPublic FcCache *
 -FcDirCacheRescan (const FcChar8 *dir, FcConfig *config);
-     
+
  FcPublic FcCache *
  FcDirCacheRead (const FcChar8 *dir, FcBool force, FcConfig *config);
 diff --git a/src/fccache.c b/src/fccache.c
@@ -98,7 +98,7 @@ index 5173e0b..10eacff 100644
 @@ -828,19 +828,6 @@ bail1:
      return NULL;
  }
- 
+
 -FcCache *
 -FcDirCacheRebuild (FcCache *cache, struct stat *dir_stat, FcStrSet *dirs)
 -{
@@ -131,12 +131,12 @@ index 3bcd0b8..b040a28 100644
 -    }
 +	return FcFileScanFontConfig (set, blanks, file, config);
  }
- 
+
  FcBool
 @@ -311,45 +306,6 @@ FcDirCacheScan (const FcChar8 *dir, FcConfig *config)
      return cache;
  }
- 
+
 -FcCache *
 -FcDirCacheRescan (const FcChar8 *dir, FcConfig *config)
 -{
@@ -184,7 +184,7 @@ index 21c6c7c..941abba 100644
 --- a/src/fcfs.c
 +++ b/src/fcfs.c
 @@ -122,28 +122,6 @@ FcFontSetSerialize (FcSerialize *serialize, const FcFontSet * s)
- 
+
      return s_serialize;
  }
 -
@@ -219,17 +219,17 @@ index cdf2dab..362ea6f 100644
 @@ -567,9 +567,6 @@ FcDirCacheScan (const FcChar8 *dir, FcConfig *config);
  FcPrivate FcCache *
  FcDirCacheBuild (FcFontSet *set, const FcChar8 *dir, struct stat *dir_stat, FcStrSet *dirs);
- 
+
 -FcPrivate FcCache *
 -FcDirCacheRebuild (FcCache *cache, struct stat *dir_stat, FcStrSet *dirs);
 -
  FcPrivate FcBool
  FcDirCacheWrite (FcCache *cache, FcConfig *config);
- 
+
 @@ -841,9 +838,6 @@ FcFontSetSerializeAlloc (FcSerialize *serialize, const FcFontSet *s);
  FcPrivate FcFontSet *
  FcFontSetSerialize (FcSerialize *serialize, const FcFontSet * s);
- 
+
 -FcPrivate FcFontSet *
 -FcFontSetDeserialize (const FcFontSet *set);
 -

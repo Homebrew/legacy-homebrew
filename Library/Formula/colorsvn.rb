@@ -46,7 +46,7 @@ index 84a3d97..54c2f74 100644
 @@ -13,8 +13,6 @@ srcdir=@srcdir@
  mandir=@mandir@
  sysconfdir=@sysconfdir@
- 
+
 -confdir=/etc
 -
  CP=@CP@
@@ -68,7 +68,7 @@ index 84a3d97..54c2f74 100644
  	    $(INSTALL) -d $(DESTDIR)$(mandir)/man1/ ; \
  	    $(INSTALL) -m 644 $(srcdir)/colorsvn.1 $(DESTDIR)$(mandir)/man1/ ; \
 @@ -54,6 +52,6 @@ clean:
- 
+
  uninstall:
  	$(RM) $(DESTDIR)$(bindir)/$(PACKAGE) && \
 -	$(RM) $(DESTDIR)/$(confdir)/$(CONFIGFILE)  && \

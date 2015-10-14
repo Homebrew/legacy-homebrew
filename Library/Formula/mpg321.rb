@@ -35,7 +35,7 @@ __END__
 @@ -290,7 +290,7 @@
  /* Shared total decoded frames */
  decoded_frames *Decoded_Frames;
- 
+
 -#if defined(__GNU_LIBRARY__) && !defined(_SEM_SEMUN_UNDEFINED)
 +#if defined(__GNU_LIBRARY__) && !defined(_SEM_SEMUN_UNDEFINED) || defined(__APPLE__)
  /* */
@@ -44,9 +44,9 @@ __END__
 --- a/network.c	2012-03-25 05:27:49.000000000 -0700
 +++ b/network.c	2012-11-15 20:58:02.000000000 -0800
 @@ -50,6 +50,13 @@
- 
+
  #define IFVERB if(options.opt & MPG321_VERBOSE_PLAY)
- 
+
 +/* The following defines are needed to emulate the Linux interface on
 + * BSD-based systems like FreeBSD and OS X */
 +#if !defined(IPV6_ADD_MEMBERSHIP) && defined(IPV6_JOIN_GROUP)

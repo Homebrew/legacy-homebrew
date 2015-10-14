@@ -55,7 +55,7 @@ index 0eeadd3..5e85821 100755
 @@ -8,7 +8,7 @@ THEDIR=`pwd`
  cd $srcdir
  DIE=0
- 
+
 -(autoconf --version) < /dev/null > /dev/null 2>&1 || {
 +(autoreconf --version) < /dev/null > /dev/null 2>&1 || {
  	echo
@@ -64,7 +64,7 @@ index 0eeadd3..5e85821 100755
 @@ -16,22 +16,6 @@ DIE=0
  	DIE=1
  }
- 
+
 -(libtoolize --version) < /dev/null > /dev/null 2>&1 || {
 -	echo
 -	echo "You must have libtool installed to compile libxslt."
@@ -87,7 +87,7 @@ index 0eeadd3..5e85821 100755
 @@ -46,14 +30,7 @@ if test -z "$NOCONFIGURE" -a -z "$*"; then
  	echo "to pass any to it, please specify them on the $0 command line."
  fi
- 
+
 -echo "Running libtoolize..."
 -libtoolize --copy --force
 -echo "Running aclocal..."
@@ -97,6 +97,6 @@ index 0eeadd3..5e85821 100755
 -echo "Running autoconf..."
 -autoconf --warnings=all
 +autoreconf -v --force --install -Wall
- 
+
  cd $THEDIR
- 
+

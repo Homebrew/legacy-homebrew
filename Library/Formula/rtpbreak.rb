@@ -34,7 +34,7 @@ __END__
 --- src/main.c  2012-06-30 12:22:29.000000000 +0200
 +++ src/main.c  2012-06-30 12:19:11.000000000 +0200
 @@ -25,6 +25,7 @@
- 
+
  #include <time.h>
  #include <sys/stat.h>
 +#include <netinet/udp.h>

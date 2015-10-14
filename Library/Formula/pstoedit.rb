@@ -62,13 +62,13 @@ index 763a87e..1bc0b0e 100644
  .de Vb
  .ft CW
 @@ -10,7 +10,7 @@
- 
+
  .fi
  ..
 -.TH "PSTOEDIT" "1" "01 January 2015" "Conversion Tools " "Conversion Tools "
 +.TH "PSTOEDIT" "1" "13 March 2015" "Conversion Tools " "Conversion Tools "
  .SH NAME
- 
+
  pstoedit
 @@ -367,7 +367,7 @@ MS Windows: The same directory where the pstoedit executable is located
  .B *
@@ -102,7 +102,7 @@ index 2a2c500..e1ca481 100644
 @@ -561,7 +561,7 @@ in the installation directory and uses that file as a default fontmap file if av
  </li>
  <li>Unix:<br>
-  
+
 -&lt;<em>The directory where the pstoedit executable is located</em>&gt;
 +The default installation directory. If it fails, then &lt;<em>The directory where the pstoedit executable is located</em>&gt;
  <tt>/../lib/</tt> 
@@ -114,25 +114,25 @@ index a3d5494..7f590ea 100644
 +++ b/doc/pstoedit.tex
 @@ -352,7 +352,7 @@ If  the \Opt{-fontmap} option is not specified, \Prog{pstoedit} automatically lo
    \item MS Windows: The same directory where the \Prog{pstoedit} executable is located
- 
+
    \item Unix:\\
 -  $<$\emph{The directory where the pstoedit executable is located}$>$\verb+/../lib/+
 +  The default installation directory. If it fails, then $<$\emph{The directory where the pstoedit executable is located}$>$\verb+/../lib/+
- 
+
  \end{itemize}
- 
+
 diff --git a/src/pstoedit.cpp b/src/pstoedit.cpp
 index 7f66d23..a16f57d 100644
 --- a/src/pstoedit.cpp
 +++ b/src/pstoedit.cpp
 @@ -30,6 +30,7 @@
  #include I_string_h
- 
+
  #include <assert.h>
 +#include <sys/stat.h>
- 
+
  #include "pstoeditoptions.h"
- 
+
 @@ -261,33 +262,33 @@ static void loadpstoeditplugins(const char *progname, ostream & errstream, bool
  		loadPlugInDrivers(plugindir.c_str(), errstream, verbose);	// load the driver plugins
  		pluginsloaded = true;
@@ -185,6 +185,6 @@ index 7f66d23..a16f57d 100644
 +	  loadPlugInDrivers(szExePath, errstream,verbose);
 +	  }
 +	}
- 
+
  	// delete[]plugindir;
  }

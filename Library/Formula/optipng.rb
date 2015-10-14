@@ -29,9 +29,9 @@ index d816ef7..610250b 100644
 @@ -518,7 +518,7 @@ osys_copy_attr(const char *src_path, const char *dest_path)
      if (chmod(dest_path, sbuf.st_mode) != 0)
          result = -1;
- 
+
 -#ifdef AT_FDCWD
 +#if defined(AT_FDCWD) && !defined(__APPLE__) && !defined(__SVR4) && !defined(__sun)
      {
          struct timespec times[2];
- 
+

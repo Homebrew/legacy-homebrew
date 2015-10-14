@@ -92,7 +92,7 @@ __END__
 +++ b/configure
 @@ -1532,8 +1532,6 @@
  fi
- 
+
  if test "$ffmpeg_a" != "no" && ! test -e ffmpeg ; then
 -    echo "No FFmpeg checkout, press enter to download one with git or CTRL+C to abort"
 -    read tmp

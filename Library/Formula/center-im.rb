@@ -50,8 +50,8 @@ index b7509c0..024774f 100644
 @@ -82,6 +82,7 @@
  #ifndef SIGSLOT_H__
  #define SIGSLOT_H__
- 
+
 +#include <cstdlib>
  #include <set>
  #include <list>
- 
+

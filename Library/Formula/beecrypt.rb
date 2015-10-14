@@ -68,7 +68,7 @@ __END__
 @@ -56,7 +56,7 @@
  					if (c->size() != size())
  						return false;
- 
+
 -					return containsAll(*c);
 +					return this->containsAll(*c);
  				}

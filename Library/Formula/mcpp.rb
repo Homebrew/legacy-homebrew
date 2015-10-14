@@ -29,12 +29,12 @@ index 5e1c19f..39aff8c 100644
 +extern FILEINFO * sh_file;
 +extern int      sh_line;
          /* Temporary buffer for directive line and macro expansion  */
- 
+
  /* main.c   */
 @@ -557,6 +559,6 @@ extern void     init_system( void);
  #endif
  #endif
- 
+
 -#if HOST_HAVE_STPCPY
 +#if HOST_HAVE_STPCPY && !defined(stpcpy)
  extern char *   stpcpy( char * dest, const char * src);
@@ -50,7 +50,7 @@ index a438894..8da4b58 100644
 +    sh_file = NULL;
 +    sh_line = 0;
  }
- 
+
  int     mcpp_lib_main
 diff --git a/src/support.c b/src/support.c
 index c57eaef..348ede0 100644
@@ -63,7 +63,7 @@ index c57eaef..348ede0 100644
 -    if (mem_buf_p->bytes_avail < length) {  /* Need to allocate more memory */
 +    if (mem_buf_p->bytes_avail < length + 1) {  /* Need to allocate more memory */
          size_t size = MAX( BUF_INCR_SIZE, length);
- 
+
          if (mem_buf_p->buffer == NULL) {            /* 1st append   */
 @@ -1722,6 +1722,8 @@ com_start:
                      sp -= 2;
@@ -108,13 +108,13 @@ index 4759469..4e008fa 100644
 +            }
 +        }
 +    }
- 
+
      filename = set_fname( filename);    /* Search or append to fnamelist[]  */
      fullname = set_fname( fullname);    /* Search or append to fnamelist[]  */
 @@ -3858,6 +3884,9 @@ static int  chk_dirp(
  }
  #endif
- 
+
 +FILEINFO*       sh_file;
 +int             sh_line;
 +
@@ -129,4 +129,4 @@ index 4759469..4e008fa 100644
 -    static int  sh_line;
      FILEINFO *  file;
      int         line;
- 
+

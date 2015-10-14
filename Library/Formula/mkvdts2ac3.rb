@@ -36,7 +36,7 @@ index 270f768..156d60d 100755
 @@ -355,8 +355,18 @@ if [ $EXECUTE = 1 ]; then
  	checkdep perl
  fi
- 
+
 +# Make some adjustments based on the version of mkvtoolnix
 +MKVTOOLNIXVERSION=$(mkvmerge -V | cut -d " " -f 2 | sed s/\[\^0-9\]//g)
 +if [ ${MKVTOOLNIXVERSION} -lt 670 ]; then
@@ -64,7 +64,7 @@ index 270f768..156d60d 100755
  	if [ $EXECUTE = 1 ]; then
 -		DTSTRACK=$(mkvmerge -i "$MKVFILE" | grep -m 1 "audio (A_DTS)" | cut -d ":" -f 1 | cut -d " " -f 3)
 +		DTSTRACK=$(mkvmerge -i "$MKVFILE" | grep -m 1 "${AUDIOTRACKPREFIX}DTS)" | cut -d ":" -f 1 | cut -d " " -f 3)
- 
+
  		# Check to make sure there is a DTS track in the MVK
  		if [ -z $DTSTRACK ]; then
 @@ -405,10 +415,10 @@ if [ -z $DTSTRACK ]; then
@@ -77,7 +77,7 @@ index 270f768..156d60d 100755
  	if [ $EXECUTE = 1 ]; then
 -		VALID=$(mkvmerge -i "$MKVFILE" | grep "Track ID $DTSTRACK: audio (A_DTS)")
 +		VALID=$(mkvmerge -i "$MKVFILE" | grep "Track ID $DTSTRACK: ${AUDIOTRACKPREFIX}DTS)")
- 
+
  		if [ -z "$VALID" ]; then
  			error $"Track ID '$DTSTRACK' is not a DTS track and/or does not exist."
 @@ -555,14 +565,14 @@ else
@@ -86,7 +86,7 @@ index 270f768..156d60d 100755
  		# Count the number of audio tracks in the file
 -		AUDIOTRACKS=$(mkvmerge -i "$MKVFILE" | grep "audio (A_" | wc -l)
 +		AUDIOTRACKS=$(mkvmerge -i "$MKVFILE" | grep "$AUDIOTRACKPREFIX" | wc -l)
- 
+
  		if [ $AUDIOTRACKS -eq 1 ]; then
  			# If there is only the DTS audio track then drop all audio tracks
  			CMD="$CMD -A"
@@ -96,13 +96,13 @@ index 270f768..156d60d 100755
 +			SAVETRACKS=$(mkvmerge -i "$MKVFILE" | grep "$AUDIOTRACKPREFIX" | cut -d ":" -f 1 | grep -vx "Track ID $DTSTRACK" | cut -d " " -f 3 | awk '{ if (T == "") T=$1; else T=T","$1 } END { print T }')
  			# And copy only those
  			CMD="$CMD -a \"$SAVETRACKS\""
- 
+
 @@ -576,7 +586,7 @@ else
  	fi
- 
+
  	# Get track ID of video track
 -	VIDEOTRACK=$(mkvmerge -i "$MKVFILE" | grep -m 1 "video (V_" | cut -d ":" -f 1 | cut -d " " -f 3)
 +	VIDEOTRACK=$(mkvmerge -i "$MKVFILE" | grep -m 1 "$VIDEOTRACKPREFIX" | cut -d ":" -f 1 | cut -d " " -f 3)
  	# Add original MKV file, set header compression scheme
  	CMD="$CMD --compression $VIDEOTRACK:$COMP \"$MKVFILE\""
- 
+

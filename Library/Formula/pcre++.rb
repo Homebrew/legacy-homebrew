@@ -47,11 +47,11 @@ index d80b387..21869fc 100644
  #include <stdexcept>
  #include <iostream>
 +#include <clocale>
- 
- 
+
+
  extern "C" {
    #include <pcre.h>
 -  #include <locale.h>
  }
- 
+
  namespace pcrepp {

@@ -88,7 +88,7 @@ __END__
 --- a/source3/lib/system.c	2012-02-22 22:46:14.000000000 -0200
 +++ b/source3/lib/system.c	2012-02-22 22:47:51.000000000 -0200
 @@ -1161,7 +1161,14 @@
- 
+
  int groups_max(void)
  {
 -#if defined(SYSCONF_SC_NGROUPS_MAX)

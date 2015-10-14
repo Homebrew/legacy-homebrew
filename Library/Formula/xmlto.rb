@@ -40,10 +40,10 @@ __END__
 +++ xmlto-0.0.25/xmlto.in
 @@ -209,7 +209,7 @@
  export VERBOSE
- 
+
  # Disable network entities
 -XSLTOPTS="$XSLTOPTS --nonet"
 +#XSLTOPTS="$XSLTOPTS --nonet"
- 
+
  # The names parameter for the XSLT stylesheet
  XSLTPARAMS=""

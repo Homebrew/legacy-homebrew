@@ -76,6 +76,6 @@ index 561ce50..796ca84 100644
  #include <string>
  #include <cstddef>
 +#include <unistd.h>
- 
+
  #include "OpenColorABI.h"
  #include "OpenColorTypes.h"

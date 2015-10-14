@@ -60,14 +60,14 @@ diff -rupN ldapvi-1.7-orig/ldapvi.c ldapvi-1.7-new/ldapvi.c
 -	bo->sasl_mech = getline("SASL mechanism", bo->sasl_mech);
 +	bo->sasl_mech = ldapvi_getline("SASL mechanism", bo->sasl_mech);
  }
- 
+
  static int
 diff -rupN ldapvi-1.7-orig/misc.c ldapvi-1.7-new/misc.c
 --- ldapvi-1.7-orig/misc.c	2007-05-05 12:17:26.000000000 +0200
 +++ ldapvi-1.7-new/misc.c	2011-09-02 21:41:45.000000000 +0200
 @@ -315,7 +315,7 @@ write_ldapvi_history()
  }
- 
+
  char *
 -getline(char *prompt, char *value)
 +ldapvi_getline(char *prompt, char *value)
@@ -79,9 +79,9 @@ diff -rupN ldapvi-1.7-orig/misc.c ldapvi-1.7-new/misc.c
 @@ -1465,7 +1465,7 @@
  	int line = 0;
  	int c;
- 
+
 -	if (lstat(sasl, &st) == -1) return;
 +	if (lstat(sasl, &st) == -1) return 0;
  	if ( !(in = fopen(sasl, "r"))) syserr();
- 
+
  	if (st.st_size > 0) {

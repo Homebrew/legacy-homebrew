@@ -44,9 +44,9 @@ __END__
 --- a/base/pcap-snoop.c	2010-03-18 22:59:13.000000000 -0700
 +++ b/base/pcap-snoop.c	2010-03-18 22:59:30.000000000 -0700
 @@ -46,10 +46,9 @@
- 
+
  static char *RCSSTRING="$Id: pcap-snoop.c,v 1.14 2002/09/09 21:02:58 ekr Exp $";
- 
+
 -
 +#include <net/bpf.h>
  #include <pcap.h>

@@ -48,7 +48,7 @@ index 09534d2..2ea52f9 100644
  #include "aalib.h"
  #include "aaint.h"
  static void aa_editdisplay(struct aa_edit *e)
- 
+
 diff --git a/src/aakbdreg.c b/src/aakbdreg.c
 index def65fe..f4f8efb 100644
 --- a/src/aakbdreg.c
@@ -70,7 +70,7 @@ index 11fecc8..e3063b4 100644
 +#include <stdlib.h>
  #include "aalib.h"
  #include "aaint.h"
- 
+
 diff --git a/src/aamoureg.c b/src/aamoureg.c
 index 0380828..bb55fe3 100644
 --- a/src/aamoureg.c

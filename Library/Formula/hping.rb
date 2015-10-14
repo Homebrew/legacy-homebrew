@@ -56,7 +56,7 @@ index 3d0ea58..a8a9699 100644
 @@ -18,8 +18,6 @@
  #include <arpa/inet.h>
  #include <string.h>
- 
+
 -size_t strlcpy(char *dst, const char *src, size_t siz);
 -
  char *get_hostname(char* addr)

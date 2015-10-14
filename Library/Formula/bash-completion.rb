@@ -55,7 +55,7 @@ index 6601937..5184767 100644
 --- a/bash_completion
 +++ b/bash_completion
 @@ -1334,7 +1334,7 @@ _known_hosts_real()
- 
+
      # append any available aliases from config files
      if [[ ${#config[@]} -gt 0 && -n "$aliases" ]]; then
 -        local hosts=$( sed -ne 's/^[ \t]*[Hh][Oo][Ss][Tt]\([Nn][Aa][Mm][Ee]\)\{0,1\}['"$'\t '"']\{1,\}\([^#*?]*\)\(#.*\)\{0,1\}$/\2/p' "${config[@]}" )

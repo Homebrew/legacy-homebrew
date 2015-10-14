@@ -40,5 +40,4 @@ __END__
 +	Resolver(void);
 +	~Resolver(void);
  	int add_request(char *request, enum resolver_action act);
- 
- 
+

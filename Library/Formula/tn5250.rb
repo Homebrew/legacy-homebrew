@@ -37,18 +37,18 @@ index bf20f05..b9c394c 100644
 +#ifdef __APPLE__
 +#include <term.h>
 +#endif
- 
+
  #ifdef USE_CURSES
- 
+
 diff --git a/curses/tn5250.c b/curses/tn5250.c
 index 30a1627..67392b1 100644
 --- a/curses/tn5250.c
 +++ b/curses/tn5250.c
 @@ -19,6 +19,7 @@
   */
- 
+
  #include "tn5250-private.h"
 +#include "cursesterm.h"
- 
+
  Tn5250Session *sess = NULL;
  Tn5250Stream *stream = NULL;

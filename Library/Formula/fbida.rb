@@ -35,11 +35,11 @@ index 2d18ab4..5b409fb 100644
 --- a/GNUmakefile
 +++ b/GNUmakefile
 @@ -30,7 +30,7 @@ include $(srcdir)/mk/Autoconf.mk
- 
+
  ac_jpeg_ver = $(shell \
  	$(call ac_init,for libjpeg version);\
 -	$(call ac_s_cmd,echo JPEG_LIB_VERSION \
 +	$(call ac_s_cmd,printf JPEG_LIB_VERSION \
 		| cpp -include jpeglib.h | tail -n 1);\
  	$(call ac_fini))
- 
+

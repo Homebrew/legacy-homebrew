@@ -32,7 +32,7 @@ index 87ecc88..4df8dc3 100644
 --- a/configure.in
 +++ b/configure.in
 @@ -38,7 +38,7 @@ case $host_os in
- 
+
          AC_CHECK_FUNCS([memset])
          ;;
 -    *bsd*)

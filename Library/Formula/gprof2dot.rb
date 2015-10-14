@@ -65,7 +65,7 @@ class Gprof2dot < Formula
              the function in the gprof listing. If the index is
              in parenthesis it shows where it would appear in
              the gprof listing if it were to be printed.
-
+
                    Call graph (explanation follows)
 
 
@@ -175,7 +175,7 @@ class Gprof2dot < Formula
        for that member, how many times it was called from other members of
        the cycle.
 
-      
+
       Index by function name
 
          [1] manager                 [5] project2                [3] worker2

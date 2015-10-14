@@ -34,7 +34,7 @@ index b54f3fc..3e7e86a 100644
 @@ -259,7 +259,7 @@ int main( int argc, char **argv ) {
  			exit(EXIT_FAILURE);
  		}
- 		
+
 -		m = mmap(NULL, s.st_size, PROT_READ, MAP_SHARED|MAP_POPULATE, fileno(f), 0);
 +		m = mmap(NULL, s.st_size, PROT_READ, MAP_SHARED, fileno(f), 0);
  		if (m == MAP_FAILED) {

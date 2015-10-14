@@ -73,7 +73,7 @@ index 5a42fb6..e53f4f7 100644
 @@ -86,6 +86,22 @@ ifneq ($(POPT_DIR),)
      LOADLIBES += -L$(POPT_DIR)
  endif
- 
+
 +ifneq ($(COMPRESS_COMMAND),)
 +    CFLAGS += -DCOMPRESS_COMMAND=\"$(COMPRESS_COMMAND)\"
 +endif
@@ -100,11 +100,11 @@ index 56e9103..c61a33a 100644
 @@ -14,22 +14,7 @@ dateext
  # uncomment this if you want your log files compressed
  #compress
- 
+
 -# RPM packages drop log rotation information into this directory
 +# Homebrew packages drop log rotation information into this directory
  include /etc/logrotate.d
- 
+
 -# no packages own wtmp and btmp -- we'll rotate them here
 -/var/log/wtmp {
 -    monthly

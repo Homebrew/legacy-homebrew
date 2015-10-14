@@ -50,7 +50,7 @@ __END__
      else
 -        command = "cp";
 +        command = "gcp";
- 
+
      child = fork();
      if (child < 0) {
 --- a/src/icmd.c
@@ -58,7 +58,7 @@ __END__
 @@ -45,8 +45,8 @@
  #include "common/string-utils.h"
  #include "common/common.h"
- 
+
 -#define MV_COMMAND "mv"
 -#define CP_COMMAND "cp"
 +#define MV_COMMAND "gmv"
@@ -70,18 +70,18 @@ __END__
 +++ b/src/qcmd.c	2012-06-28 15:51:48.000000000 -0700
 @@ -239,7 +239,7 @@
      editor_program = xstrdup(editor_program);
- 
+
      if (ls_program == NULL)
 -        ls_program = xstrdup("ls");
 +        ls_program = xstrdup("gls");
- 
+
      /* Parse format options */
      if (format_options != NULL && !format->parse_options(format_options))
 --- a/src/Makefile.in	2012-04-23 04:24:10.000000000 -0700
 +++ b/src/Makefile.in	2012-06-29 00:42:45.000000000 -0700
 @@ -1577,7 +1577,7 @@
  	@[ -f icp ] || (echo $(LN_S) icmd icp ; $(LN_S) icmd icp)
- 
+
  install-exec-local:
 -	$(mkdir_p) $(DESTDIR)($bindir)
 +	$(mkdir_p) $(DESTDIR)$(bindir)

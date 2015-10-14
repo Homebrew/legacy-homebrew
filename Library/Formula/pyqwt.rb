@@ -48,7 +48,7 @@ __END__
      installs.append(
 -        [sip_files, os.path.join(configuration.pyqt_sip_dir, 'Qwt5')])
 +        [sip_files, os.path.join(options.sip_install_path, 'Qwt5')])
- 
+
      # designer
      if configuration.qt_version > 0x03ffff:
          plugin_source_path = os.path.join(
@@ -72,7 +72,7 @@ __END__
 +        help= 'specify the install directory for the uic plugins [lib/python/PyQt4]'
 +        )
      parser.add_option_group(install_options)
- 
+
      options, args =  parser.parse_args()
 @@ -1084,6 +1092,10 @@
      if not options.module_install_path:
@@ -82,6 +82,6 @@ __END__
 +        options.sip_install_path = configuration.pyqt_sip_dir
 +    if not options.uic_install_path:
 +        options.uic_install_path = configuration.pyqt_mod_dir
- 
+
      print
      print 'Extended command line options:'

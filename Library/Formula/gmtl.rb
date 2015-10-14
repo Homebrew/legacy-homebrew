@@ -41,18 +41,18 @@ index 8326a89..2eb7ff0 100644
 --- a/SConstruct
 +++ b/SConstruct
 @@ -126,7 +126,9 @@ def BuildDarwinEnvironment():
- 
+
     exp = re.compile('^(.*)\/Python\.framework.*$')
     m = exp.search(distutils.sysconfig.get_config_var('prefix'))
 -   framework_opt = '-F' + m.group(1)
 +   framework_opt = None
 +   if m:
 +      framework_opt = '-F' + m.group(1)
- 
+
     CXX = os.environ.get("CXX", WhereIs('g++'))
- 
+
 @@ -138,7 +140,10 @@ def BuildDarwinEnvironment():
- 
+
     LINK = CXX
     CXXFLAGS = ['-ftemplate-depth-256', '-DBOOST_PYTHON_DYNAMIC_LIB',
 -               '-Wall', framework_opt, '-pipe']
@@ -60,12 +60,12 @@ index 8326a89..2eb7ff0 100644
 +
 +   if framework_opt is not None:
 +      CXXFLAGS.append(framework_opt)
- 
+
     compiler_ver       = match_obj.group(1)
     compiler_major_ver = int(match_obj.group(2))
 @@ -152,7 +157,10 @@ def BuildDarwinEnvironment():
           CXXFLAGS += ['-Wno-long-double', '-no-cpp-precomp']
- 
+
     SHLIBSUFFIX = distutils.sysconfig.get_config_var('SO')
 -   SHLINKFLAGS = ['-bundle', framework_opt, '-framework', 'Python']
 +   SHLINKFLAGS = ['-bundle']
@@ -73,5 +73,5 @@ index 8326a89..2eb7ff0 100644
 +   if framework_opt is not None:
 +      SHLINKFLAGS.extend([framework_opt, '-framework', 'Python'])
     LINKFLAGS = []
- 
+
     # Enable profiling?

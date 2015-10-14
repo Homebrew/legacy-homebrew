@@ -28,7 +28,7 @@ index 232b838..9780e61 100644
 -#include <malloc.h>
 +#include <stdlib.h>
  #include "config.h"
- 
+
  int imgwidth, imgheight;
 diff --git a/ui.c b/ui.c
 index d316f7a..134a4ca 100644

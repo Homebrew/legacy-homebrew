@@ -58,7 +58,7 @@ index 8c5a43a..8a4b3dc 100644
    void set_file_chunk_size(int size)
 -    { delete m_buf; m_buf = new char[__max(size, m_io_chunk_size)]; m_file_chunk_size = size; }
 +    { delete m_buf; m_buf = new char[max(size, m_io_chunk_size)]; m_file_chunk_size = size; }
- 
+
    // Return the page-aligned version of the local buffer
    char *buf() { return m_buf_pa; }
 @@ -138,7 +138,7 @@ CGlobalItems::CGlobalItems(bool *exitFlag)
@@ -69,7 +69,7 @@ index 8c5a43a..8a4b3dc 100644
 +  pa_new(max(m_io_chunk_size, m_file_chunk_size), m_buf, m_buf_pa);
    SetName(".");
  }
- 
+
 @@ -294,11 +294,7 @@ int main(int argc, char *argv[])
        {
          char *sbuf = _strdup(optarg);
@@ -99,7 +99,7 @@ index 8c5a43a..8a4b3dc 100644
 -  globals.byte_io_size = __max(0, globals.byte_io_size);
 +  globals.byte_io_size = min(file_size, globals.byte_io_size);
 +  globals.byte_io_size = max(0, globals.byte_io_size);
- 
+
    if(machine == NULL)
    {
 @@ -465,14 +452,6 @@ int main(int argc, char *argv[])
@@ -129,14 +129,14 @@ index efa3fd3..f943155 100644
 +  m_max = max(m_max, ret);
    return ret;
  }
- 
+
 diff --git i/port.h w/port.h
 index 8d53622..2e1f112 100644
 --- i/port.h
 +++ w/port.h
 @@ -49,8 +49,6 @@ typedef struct timeval TIMEVAL_TYPE;
  #endif
- 
+
  typedef int FILE_TYPE;
 -#define __min min
 -#define __max max
@@ -149,7 +149,7 @@ index 69c8f24..8359d72 100644
 +++ w/port.h.in
 @@ -49,8 +49,6 @@ typedef struct timeval TIMEVAL_TYPE;
  #endif
- 
+
  typedef int FILE_TYPE;
 -#define __min min
 -#define __max max

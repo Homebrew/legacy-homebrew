@@ -53,7 +53,7 @@ __END__
 --- a/configure	2012-04-08 10:25:35.000000000 -0700
 +++ b/configure	2012-04-09 17:42:10.000000000 -0700
 @@ -6243,7 +6243,7 @@
- 
+
      int main()
      {
 -	char*data = fftw_malloc(sizeof(fftwf_complex)*600*800);
