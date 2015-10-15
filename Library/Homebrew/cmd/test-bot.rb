@@ -746,13 +746,16 @@ module Homebrew
 
     def run
       cleanup_before
-      download
-      setup
-      homebrew
-      formulae.each do |f|
-        formula(f)
+      begin
+        download
+        setup
+        homebrew
+        formulae.each do |f|
+          formula(f)
+        end
+      ensure
+        cleanup_after
       end
-      cleanup_after
       check_results
     end
   end
@@ -1019,9 +1022,8 @@ module Homebrew
         file.write email_subject
       end
     end
-
+  ensure
     HOMEBREW_CACHE.children.each(&:rmtree) if ARGV.include? "--clean-cache"
-
     Homebrew.failed = any_errors
   end
 end
