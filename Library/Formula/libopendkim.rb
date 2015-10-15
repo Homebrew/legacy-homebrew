@@ -20,7 +20,8 @@ class Libopendkim < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-filter",
-                          "--with-unbound=#{Formula["unbound"].opt_prefix}"
+                          "--with-unbound=#{Formula["unbound"].opt_prefix}",
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 
