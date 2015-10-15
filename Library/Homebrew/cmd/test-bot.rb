@@ -592,7 +592,6 @@ module Homebrew
               bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
             bottle_rb_filename = bottle_filename.gsub(/\.(\d+\.)?tar\.gz$/, ".rb")
             bottle_merge_args = ["--merge", "--write", "--no-commit", bottle_rb_filename]
-            bottle_merge_args << "--tap=#{@tap}" if @tap
             bottle_merge_args << "--keep-old" if ARGV.include? "--keep-old"
             test "brew", "bottle", *bottle_merge_args
             test "brew", "uninstall", "--force", canonical_formula_name
@@ -823,7 +822,6 @@ module Homebrew
     end
 
     bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
-    bottle_args << "--tap=#{tap}" if tap
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
