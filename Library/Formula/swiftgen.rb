@@ -6,9 +6,9 @@ class Swiftgen < Formula
   head "https://github.com/AliSoftware/SwiftGen.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "e6e1ba12afeccbf5e9f8a6961c8dcca93f8342f2f4d0005a0cb6d500a8d06c8f" => :el_capitan
-    sha256 "3c17c3c3352543d279044bb2263078d1be7371e94cbbb0ee69f3a837d3108ad2" => :yosemite
+    cellar :any
+    sha256 "29391f183e1606e50008ad148b3665d240c28ab5cbd42a293d1ca99b29aa3793" => :el_capitan
+    sha256 "c150775bf2f6b8e77a821eae7bd89233a134eb22ce5eed88de9eaf2822dd79ee" => :yosemite
   end
 
   depends_on :xcode => "7.0"
