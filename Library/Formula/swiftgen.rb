@@ -4,11 +4,18 @@ class Swiftgen < Formula
   url "https://github.com/AliSoftware/SwiftGen/archive/0.5.0.tar.gz"
   sha256 "555f190f2ffef940eebd80a926eeb05d3d0de573412028c5bd2184e2b9542929"
   head "https://github.com/AliSoftware/SwiftGen.git"
+  revision 1
 
   bottle do
     cellar :any
     sha256 "29391f183e1606e50008ad148b3665d240c28ab5cbd42a293d1ca99b29aa3793" => :el_capitan
     sha256 "c150775bf2f6b8e77a821eae7bd89233a134eb22ce5eed88de9eaf2822dd79ee" => :yosemite
+  end
+
+  def pour_bottle?
+    # The binary's @rpath points to Xcode.app internal dylibs, so using a bottle won't work if the user doesn't
+    # have an Xcode installed in /Applications/Xcode.app (= the path used when BrewBot built the bottle)
+    Pathname.new("/Applications/Xcode.app").exist?
   end
 
   depends_on :xcode => "7.0"
@@ -30,7 +37,7 @@ class Swiftgen < Formula
   end
 
   test do
-    system "#{bin}/swiftgen --version"
+    system bin/"swiftgen", "--version"
 
     output = shell_output("#{bin}/swiftgen images #{pkgshare}/Images.xcassets").strip
     assert_equal output, (pkgshare/"Images-File-Defaults.swift.out").read.strip, "swiftgen images failed"
