@@ -5,9 +5,10 @@ class Cpmtools < Formula
   sha256 "d8c7e78a9750994124f3aab6e461da8fa0021acc7dbad76eafbac8b0ed8279d3"
 
   bottle do
-    sha1 "a437721156fa15a612e823e4f1ee0fdbfe2d0ed7" => :yosemite
-    sha1 "43ea7f0a371628133d4c46e249c32f0a619ad45f" => :mavericks
-    sha1 "537d26d243827c8d1506305fce70e9eab7604eaa" => :mountain_lion
+    revision 1
+    sha256 "a659a233dc338bb7ec669185e22f0c19d03d9697bbe3521473cb7ff791fd010a" => :el_capitan
+    sha256 "a127034e7197c21acbcc172b86d476988754ed56bb44b0d9b447f362017fc8bd" => :yosemite
+    sha256 "b810122c220af6b36ab9316deec811adca68313d4371f8a0121239c40b94a015" => :mavericks
   end
 
   def install
