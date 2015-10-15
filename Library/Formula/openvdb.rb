@@ -1,8 +1,8 @@
 class Openvdb < Formula
   desc "Sparse volume processing toolkit"
   homepage "http://www.openvdb.org/"
-  url "https://github.com/dreamworksanimation/openvdb/archive/v3.0.0.tar.gz"
-  sha256 "6c90cfda032c54876b321031717c13ea56a6b7b15c911d3edfbb2ad7af49700e"
+  url "https://github.com/dreamworksanimation/openvdb/archive/v3.1.0.tar.gz"
+  sha256 "b95a32f4f0195452a64870bda978999a719006a0c036b9ac985b466532d32d4b"
   head "https://github.com/dreamworksanimation/openvdb.git"
 
   bottle do
@@ -95,6 +95,10 @@ class Openvdb < Formula
 
     cd "openvdb" do
       system "make", "install", *args
+      if build.with? "tests"
+        system "make", "vdb_test", *args
+        bin.install "vdb_test"
+      end
     end
   end
 
