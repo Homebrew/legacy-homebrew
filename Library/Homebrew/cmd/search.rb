@@ -42,7 +42,8 @@ module Homebrew
       query = ARGV.first
       rx = query_regexp(query)
       local_results = search_formulae(rx)
-      puts_columns(local_results)
+      local_results_installed = local_results.select { |f| f.end_with? "(installed)" }
+      puts_columns(local_results, local_results_installed)
 
       if !query.empty? && $stdout.tty? && msg = blacklisted?(query)
         unless local_results.empty?
