@@ -1,14 +1,15 @@
 class HtmlXmlUtils < Formula
   desc "Tools for manipulating HTML and XML files"
-  homepage "http://www.w3.org/Tools/HTML-XML-utils/"
-  url "http://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz"
+  homepage "https://www.w3.org/Tools/HTML-XML-utils/"
+  url "https://www.w3.org/Tools/HTML-XML-utils/html-xml-utils-6.7.tar.gz"
   sha256 "92af4886fcada0e2fc35308def4d02baedd9889d2e4c957b07b77a60fbdacd99"
 
   bottle do
-    cellar :any
-    sha1 "9d295d33bf99032e8015fb58588bf5f45b5582cf" => :yosemite
-    sha1 "6a9e42c19cb2f478dfa74d6a07f139f6240107e7" => :mavericks
-    sha1 "990b44746624e41b00dce32d1e0a7325c37a1195" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "83dcf04d283a09d63461d627bc2eefd7cff16d57c1bd49b9ba720cc1bb43cbd7" => :el_capitan
+    sha256 "034fcbe6bd13af8e75410b92de0790079774c4637e60101d891ef23707b2815d" => :yosemite
+    sha256 "7fd7060429335aa64bc30d5795d6db680292db7f3d40c18fdbe9c3db8010d73e" => :mavericks
   end
 
   def install

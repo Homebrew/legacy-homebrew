@@ -10,7 +10,6 @@
 # --skip-homebrew: Don't check Homebrew's files and tests are all valid.
 # --junit:         Generate a JUnit XML test results file.
 # --email:         Generate an email subject file.
-# --no-bottle:     Run brew install without --build-bottle
 # --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
@@ -18,6 +17,7 @@
 # --dry-run:       Just print commands, don't run them.
 # --fail-fast:     Immediately exit on a failing step.
 # --verbose:       Print out all logs in realtime
+# --fast:          Don't install any packages but run e.g. audit anyway.
 #
 # --ci-master:           Shortcut for Homebrew master branch CI options.
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
@@ -318,11 +318,12 @@ module Homebrew
       # Use Travis CI Git variables for master or branch jobs.
       elsif ENV["TRAVIS_COMMIT_RANGE"]
         diff_start_sha1, diff_end_sha1 = ENV["TRAVIS_COMMIT_RANGE"].split "..."
-        diff_start_sha1 = git("merge-base", diff_start_sha1, diff_end_sha1).strip
       # Otherwise just use the current SHA-1 (which may be overriden later)
       else
         diff_end_sha1 = diff_start_sha1 = current_sha1
       end
+
+      diff_start_sha1 = git("merge-base", diff_start_sha1, diff_end_sha1).strip
 
       # Handle no arguments being passed on the command-line e.g. `brew test-bot`.
       if no_args?
@@ -546,35 +547,42 @@ module Homebrew
         test "brew", "postinstall", *changed_dependences
       end
       formula_fetch_options = []
-      formula_fetch_options << "--build-bottle" unless ARGV.include? "--no-bottle"
+      formula_fetch_options << "--build-bottle" unless ARGV.include? "--fast"
       formula_fetch_options << "--force" if ARGV.include? "--cleanup"
       formula_fetch_options << canonical_formula_name
       test "brew", "fetch", "--retry", *formula_fetch_options
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
       install_args = ["--verbose"]
-      install_args << "--build-bottle" unless ARGV.include? "--no-bottle"
+      install_args << "--build-bottle" unless ARGV.include? "--fast"
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
       # Pass --devel or --HEAD to install in the event formulae lack stable. Supports devel-only/head-only.
       # head-only should not have devel, but devel-only can have head. Stable can have all three.
       if devel_only_tap? formula
         install_args << "--devel"
+        formula_bottled = false
       elsif head_only_tap? formula
         install_args << "--HEAD"
+        formula_bottled = false
+      else
+        formula_bottled = formula.bottled?
       end
 
       install_args << canonical_formula_name
       # Don't care about e.g. bottle failures for dependencies.
+      install_passed = false
       run_as_not_developer do
-        test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
-        test "brew", "install", *install_args
+        if !ARGV.include?("--fast") || formula_bottled
+          test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
+          test "brew", "install", *install_args
+          install_passed = steps.last.passed?
+        end
       end
-      install_passed = steps.last.passed?
       audit_args = [canonical_formula_name]
       audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
-        if formula.stable? && !ARGV.include?("--no-bottle")
+        if formula.stable? && !ARGV.include?("--fast")
           bottle_args = ["--verbose", "--rb", canonical_formula_name]
           bottle_args << "--keep-old" if ARGV.include? "--keep-old"
           test "brew", "bottle", *bottle_args
@@ -582,6 +590,10 @@ module Homebrew
           if bottle_step.passed? && bottle_step.has_output?
             bottle_filename =
               bottle_step.output.gsub(/.*(\.\/\S+#{bottle_native_regex}).*/m, '\1')
+            bottle_rb_filename = bottle_filename.gsub(/\.(\d+\.)?tar\.gz$/, ".rb")
+            bottle_merge_args = ["--merge", "--write", "--no-commit", bottle_rb_filename]
+            bottle_merge_args << "--keep-old" if ARGV.include? "--keep-old"
+            test "brew", "bottle", *bottle_merge_args
             test "brew", "uninstall", "--force", canonical_formula_name
             if unchanged_build_dependencies.any?
               test "brew", "uninstall", "--force", *unchanged_build_dependencies
@@ -609,7 +621,8 @@ module Homebrew
         test "brew", "uninstall", "--force", canonical_formula_name
       end
 
-      if formula.devel && formula.stable? && !ARGV.include?("--HEAD") \
+      if formula.devel && formula.stable? \
+         && !ARGV.include?("--HEAD") && !ARGV.include?("--fast") \
          && satisfied_requirements?(formula, :devel)
         test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
         run_as_not_developer { test "brew", "install", "--devel", "--verbose", canonical_formula_name }
@@ -732,13 +745,16 @@ module Homebrew
 
     def run
       cleanup_before
-      download
-      setup
-      homebrew
-      formulae.each do |f|
-        formula(f)
+      begin
+        download
+        setup
+        homebrew
+        formulae.each do |f|
+          formula(f)
+        end
+      ensure
+        cleanup_after
       end
-      cleanup_after
       check_results
     end
   end
@@ -806,7 +822,6 @@ module Homebrew
     end
 
     bottle_args = ["--merge", "--write", *Dir["*.bottle.rb"]]
-    bottle_args << "--tap=#{tap}" if tap
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
@@ -882,7 +897,7 @@ module Homebrew
       ARGV << "--junit" << "--local"
     end
     if ARGV.include? "--ci-master"
-      ARGV << "--no-bottle" << "--email"
+      ARGV << "--email" << "--fast"
     end
 
     if ARGV.include? "--local"
@@ -1005,9 +1020,8 @@ module Homebrew
         file.write email_subject
       end
     end
-
+  ensure
     HOMEBREW_CACHE.children.each(&:rmtree) if ARGV.include? "--clean-cache"
-
     Homebrew.failed = any_errors
   end
 end

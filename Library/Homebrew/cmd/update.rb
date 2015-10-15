@@ -216,6 +216,20 @@ class Updater
       @initial_branch = ""
     end
 
+    # Used for testing purposes, e.g., for testing formula migration after
+    # renaming it in the currently checked-out branch. To test run
+    # "brew update --simulate-from-current-branch"
+    if ARGV.include?("--simulate-from-current-branch")
+      @initial_revision = `git rev-parse -q --verify #{@upstream_branch}`.chomp
+      @current_revision = read_current_revision
+      begin
+        safe_system "git", "merge-base", "--is-ancestor", @initial_revision, @current_revision
+      rescue ErrorDuringExecution
+        odie "Your HEAD is not a descendant of '#{@upstream_branch}'."
+      end
+      return
+    end
+
     if @initial_branch != @upstream_branch && !@initial_branch.empty?
       safe_system "git", "checkout", @upstream_branch, *quiet
     end
@@ -411,10 +425,33 @@ class Report
 
   def dump_formula_report(key, title)
     formula = select_formula(key)
-    formula.map! { |oldname, newname| "#{oldname} -> #{newname}" } if key == :R
     unless formula.empty?
+      # Determine list item indices of installed formulae.
+      formula_installed_index = formula.each_index.select do |index|
+        name, newname = formula[index]
+        installed?(name) || (newname && installed?(newname))
+      end
+
+      # Format list items of renamed formulae.
+      if key == :R
+        formula.map! { |oldname, newname| "#{oldname} -> #{newname}" }
+      end
+
+      # Append suffix '(installed)' to list items of installed formulae.
+      formula_installed_index.each do |index|
+        formula[index] += " (installed)"
+      end
+
+      # Fetch list items of installed formulae for highlighting.
+      formula_installed = formula.values_at(*formula_installed_index)
+
+      # Dump formula list.
       ohai title
-      puts_columns formula
+      puts_columns(formula, formula_installed)
     end
+  end
+
+  def installed?(formula)
+    (HOMEBREW_CELLAR/formula.split("/").last).directory?
   end
 end

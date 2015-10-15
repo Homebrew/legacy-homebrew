@@ -615,7 +615,7 @@ These lovely people supported our Kickstarter by giving us £5 or more:
 * Jon Austin
 * Joey Stanford
 * Giovanni Angoli
-* fukuball
+* Fukuball Lin
 * orip
 * Christian Maughan Tegnér
 * ChristianGeek
