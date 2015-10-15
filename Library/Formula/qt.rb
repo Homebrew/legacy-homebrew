@@ -3,6 +3,8 @@ class Qt < Formula
   homepage "https://www.qt.io/"
   revision 1
 
+  head "https://code.qt.io/qt/qt.git", :branch => "4.8"
+
   stable do
     url "https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
     mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
@@ -23,8 +25,6 @@ class Qt < Formula
       sha256 "c8a0fa819c8012a7cb70e902abb7133fc05235881ce230235d93719c47650c4e"
     end
   end
-
-  head "https://code.qt.io/qt/qt.git", :branch => "4.8"
 
   option :universal
   option "with-qt3support", "Build with deprecated Qt3Support module support"
@@ -48,12 +48,20 @@ class Qt < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    args = ["-prefix", prefix,
-            "-system-zlib",
-            "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
-            "-confirm-license", "-opensource",
-            "-nomake", "demos", "-nomake", "examples",
-            "-cocoa", "-fast", "-release"]
+    args = %W[
+      -prefix #{prefix}
+      -release
+      -opensource
+      -confirm-license
+      -fast
+      -system-zlib
+      -qt-libtiff
+      -qt-libpng
+      -qt-libjpeg
+      -nomake demos
+      -nomake examples
+      -cocoa
+    ]
 
     if ENV.compiler == :clang
       args << "-platform"
@@ -124,17 +132,17 @@ class Qt < Formula
     Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
+  def caveats; <<-EOS.undent
+    We agreed to the Qt opensource license for you.
+    If this is unacceptable you should uninstall.
+    EOS
+  end
+
   test do
     Encoding.default_external = "UTF-8" unless RUBY_VERSION.start_with? "1."
     resource("test-project").stage testpath
     system bin/"qmake"
     system "make"
     assert_match /GitHub/, pipe_output(testpath/"qtnetwork-test 2>&1", nil, 0)
-  end
-
-  def caveats; <<-EOS.undent
-    We agreed to the Qt opensource license for you.
-    If this is unacceptable you should uninstall.
-    EOS
   end
 end
