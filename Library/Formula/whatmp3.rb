@@ -20,7 +20,13 @@ class Whatmp3 < Formula
   end
 
   test do
-    output = shell_output("#{bin}/whatmp3 --version")
-    assert_match /whatmp3 3.6/, output
+    # Create dummy FLAC
+    Dir.mkdir("flac")
+    raw_data = "pseudo audio data that stays the same \x00\xff\xda"
+    (testpath/"file.raw").write raw_data
+    system "flac", "--endian=little", "--sign=signed", "--channels=1", "--bps=8", "--sample-rate=8000", "--output-name=flac/file.flac", "file.raw"
+    # Decode with Whatmp3
+    system "#{bin}/whatmp3", "--notorrent", "--V0", "flac"
+    assert (testpath/"V0/file.mp3").exist?
   end
 end
