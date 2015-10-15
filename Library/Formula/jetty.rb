@@ -7,10 +7,9 @@ class Jetty < Formula
 
   bottle do
     cellar :any
-    sha256 "4f66cc3ed3fac42f14c0a965d40dae6d6f775101dae0be0bf82e4716536f9c82" => :el_capitan
-    sha256 "97e4698a2591db0b78f8bb053306c657c93fee5397c2ccc2ea001eaca706ac96" => :yosemite
-    sha256 "a66366f2f8f81478ec0cb411882b3981e9a17b7dbf9c33913ebe2e367c97499f" => :mavericks
-    sha256 "7ca2c2b16e01a3d480785cef44cfabe6b5611e2ede5a2935389b4ecd4c03dee1" => :mountain_lion
+    sha256 "c83bfa38c5a87e0f394d09be3b25ac9d0ec98eef4e4215cc7927965bcc3fe168" => :el_capitan
+    sha256 "91f0318109ad2ddcc81ea2379177644f5b481bc2b195a0b28f026fd5770cd0c0" => :yosemite
+    sha256 "90c4dfedf93efaabef6e169d9349248e95ca130a97761d6748880edd6dcde9c4" => :mavericks
   end
 
   depends_on :java => "1.8+"
