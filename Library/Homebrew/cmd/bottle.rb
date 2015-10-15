@@ -343,10 +343,12 @@ module Homebrew
           end
         end
 
-        HOMEBREW_REPOSITORY.cd do
-          safe_system "git", "commit", "--no-edit", "--verbose",
-            "--message=#{f.name}: #{update_or_add} #{f.pkg_version} bottle.",
-            "--", f.path
+        unless ARGV.include? "--no-commit"
+          f.path.parent.cd do
+            safe_system "git", "commit", "--no-edit", "--verbose",
+              "--message=#{f.name}: #{update_or_add} #{f.pkg_version} bottle.",
+              "--", f.path
+          end
         end
       end
     end
