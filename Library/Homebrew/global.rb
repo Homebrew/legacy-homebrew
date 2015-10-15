@@ -26,12 +26,12 @@ else
 end
 RUBY_BIN = RUBY_PATH.dirname
 
+MACOS_FULL_VERSION = MacOS.full_version
+MACOS_VERSION = MacOS.version
+
 if RUBY_PLATFORM =~ /darwin/
-  MACOS_FULL_VERSION = `/usr/bin/sw_vers -productVersion`.chomp
-  MACOS_VERSION = MACOS_FULL_VERSION[/10\.\d+/]
   OS_VERSION = "OS X #{MACOS_FULL_VERSION}"
 else
-  MACOS_FULL_VERSION = MACOS_VERSION = "0"
   OS_VERSION = RUBY_PLATFORM
 end
 
