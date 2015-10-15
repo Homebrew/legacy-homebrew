@@ -97,7 +97,7 @@ class Openvdb < Formula
       system "make", "install", *args
       if build.with? "tests"
         system "make", "vdb_test", *args
-        cp "#{buildpath}/openvdb/vdb_test", "#{bin}"
+        bin.install "vdb_test"
       end
     end
   end
