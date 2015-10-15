@@ -9,6 +9,6 @@ class Docutils < Formula
   end
 
   test do
-    system "#{bin}/rst2man.py", "#{prefix}/HISTORY.txtx"
+    system "#{bin}/rst2man.py", "#{prefix}/HISTORY.txt"
   end
 end
