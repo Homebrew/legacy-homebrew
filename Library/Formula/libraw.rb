@@ -1,8 +1,8 @@
 class Libraw < Formula
   desc "Library for reading RAW files from digital photo cameras"
   homepage "http://www.libraw.org/"
-  url "http://www.libraw.org/data/LibRaw-0.16.0.tar.gz"
-  sha256 "71f43871ec2535345c5c9b748f07813e49915170f9510b721a2be6478426cf96"
+  url "http://www.libraw.org/data/LibRaw-0.17.0.tar.gz"
+  sha256 "e643c20945d548aac1eaa1f5573bf74050e0f49ec6a53a6843dc2a2cfb647310"
 
   bottle do
     cellar :any
@@ -22,13 +22,13 @@ class Libraw < Formula
   end
 
   resource "gpl2" do
-    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.16.0.tar.gz"
-    sha256 "749d49694ce729166ec7a1faf7580780687ef190c756931bb075455ee8ed6697"
+    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.17.0.tar.gz"
+    sha256 "3c5982772f55f0b70c3c7604bc73e8b55f1de7b040e8f144cb220ee88e8bc346"
   end
 
   resource "gpl3" do
-    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.16.0.tar.gz"
-    sha256 "f2e904f9baa7d173b5ade163c795f26e110255a758e31bd213086a5a61500b5c"
+    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.17.0.tar.gz"
+    sha256 "deca57ed524ab4f9915060360d74c5748e6fe8065fd60ca5e969fe9f578a8a0a"
   end
 
   def install
