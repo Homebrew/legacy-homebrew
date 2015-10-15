@@ -5,7 +5,7 @@ class Docutils < Formula
   sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
 
   def install
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
+    system "python", *Language::Python.setup_install_args(prefix)
   end
 
   test do
