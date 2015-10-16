@@ -2,6 +2,7 @@ require "hardware"
 require "os/mac/version"
 require "os/mac/xcode"
 require "os/mac/xquartz"
+require "os/mac/pathname"
 
 module OS
   module Mac
