@@ -18,6 +18,12 @@ class Swiftgen < Formula
     Pathname.new("/Applications/Xcode.app").exist?
   end
 
+  def pour_bottle?
+    # The binary's @rpath points to Xcode.app internal dylibs, so using a bottle won't work if the user doesn't
+    # have an Xcode installed in /Applications/Xcode.app (= the path used when BrewBot built the bottle)
+    Pathname.new("/Applications/Xcode.app").exist?
+  end
+
   depends_on :xcode => "7.0"
 
   def install
