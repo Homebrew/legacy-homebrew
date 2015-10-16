@@ -2,8 +2,8 @@ class Cspice < Formula
   desc "Observation geometry system for robotic space science missions"
   homepage "https://naif.jpl.nasa.gov/naif/index.html"
   url "https://naif.jpl.nasa.gov/pub/naif/toolkit/C/MacIntel_OSX_AppleC_64bit/packages/cspice.tar.Z"
-  sha256 "c009981340de17fb1d9b55e1746f32336e1a7a3ae0b4b8d68f899ecb6e96dd5d"
   version "65"
+  sha256 "c009981340de17fb1d9b55e1746f32336e1a7a3ae0b4b8d68f899ecb6e96dd5d"
 
   bottle do
     cellar :any_skip_relocation
@@ -15,6 +15,7 @@ class Cspice < Formula
 
   conflicts_with "openhmd", :because => "both install `simple` binaries"
   conflicts_with "libftdi0", :because => "both install `simple` binaries"
+  conflicts_with "enscript", :because => "both install `states` binaries"
 
   def install
     rm_f Dir["lib/*"]
