@@ -1,9 +1,19 @@
 class Mtr < Formula
   desc "'traceroute' and 'ping' in a single tool"
   homepage "https://www.bitwizard.nl/mtr/"
-  url "https://github.com/traviscross/mtr/archive/v0.86.tar.gz"
-  sha256 "7912f049f9506748913e2866068b7f95b11a4e0a855322120b456c46ac9eb763"
   head "https://github.com/traviscross/mtr.git"
+
+  stable do
+    url "https://github.com/traviscross/mtr/archive/v0.86.tar.gz"
+    sha256 "7912f049f9506748913e2866068b7f95b11a4e0a855322120b456c46ac9eb763"
+
+    # Fix an issue where default shell colors were overridden by mtr.
+    # https://github.com/Homebrew/homebrew/issues/43862
+    patch do
+      url "https://github.com/traviscross/mtr/commit/63a1f1493bfbaf7e55eb7e20b3791fc8b14cf92d.patch"
+      sha256 "67d682b29fca49d703f48bb2844e1c0e4b4635d0645d139a13352d9575336194"
+    end
+  end
 
   bottle do
     cellar :any_skip_relocation
