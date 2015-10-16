@@ -35,7 +35,7 @@ class Mediatomb < Formula
   end
 
   patch do
-    url "http://ftp.heanet.ie/mirrors/fink/finkinfo/10.7/stable/main/finkinfo/net/mediatomb.patch"
+    url "https://ftp.heanet.ie/mirrors/fink/finkinfo/10.7/stable/main/finkinfo/net/mediatomb.patch"
     sha256 "7e8ef3e1bec9a045549b468a3441f9d3d7bb42a7e77564a5fedea2d6024303ea"
   end
 
