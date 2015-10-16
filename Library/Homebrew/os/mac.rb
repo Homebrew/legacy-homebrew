@@ -12,7 +12,19 @@ module OS
     # This can be compared to numerics, strings, or symbols
     # using the standard Ruby Comparable methods.
     def version
-      @version ||= Version.new(MACOS_VERSION)
+      @version ||= Version.new(full_version.to_s[/10\.\d+/])
+    end
+
+    # This can be compared to numerics, strings, or symbols
+    # using the standard Ruby Comparable methods.
+    def full_version
+      @full_version ||= Version.new(
+        if RUBY_PLATFORM =~ /darwin/
+          `/usr/bin/sw_vers -productVersion`.chomp
+        else
+          "0"
+        end
+      )
     end
 
     def cat
