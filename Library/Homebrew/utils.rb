@@ -43,7 +43,7 @@ class Tty
     end
 
     def highlight
-      bold 43
+      bold 39
     end
 
     def width
