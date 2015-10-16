@@ -15,10 +15,9 @@ class X264 < Formula
 
   bottle do
     cellar :any
-    sha256 "9e54452d398d03432d1a1c6d8c65becf72f0806e6b866e40ea2f93b38cbe3caf" => :el_capitan
-    sha256 "59a15f331aa60995fca0fc9d27ad687064a8459aa7b8e10dd068b5b5e7948bed" => :yosemite
-    sha256 "0b0fba0bd52fa74352bada52c5dda7d76327c79e81e84a84d636cac21580275b" => :mavericks
-    sha256 "141c28c2226424f82968f7ecb92e23a3ce9af6ae5e78beeb31f9e321b88bc8d4" => :mountain_lion
+    sha256 "010cb2be57c48fb617749e583ad2fbeb148cc522b47d59b407dfb9f10f1f3a2b" => :el_capitan
+    sha256 "e093adfd1af594a592ace82f77bd59748e3040d263e507acd3d8ad2275292e16" => :yosemite
+    sha256 "977c077c5d38c1a5842bda75aec11831f4980ae258556b9bd9ba2184deb11faa" => :mavericks
   end
 
   depends_on "yasm" => :build
