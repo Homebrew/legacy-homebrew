@@ -34,6 +34,6 @@ class Mytop < Formula
   end
 
   test do
-    shell_output("(mysql.server status || mysql.server start --log-error=#{prefix}/mysqld.log) && #{bin}/mytop -b", 0)
+    shell_output("(mysql.server status || mysql.server start --syslog) && #{bin}/mytop -b", 0)
   end
 end
