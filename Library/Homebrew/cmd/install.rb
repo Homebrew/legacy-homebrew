@@ -101,23 +101,32 @@ module Homebrew
 
         ohai "Searching for similarly named formulae..."
         formulae_search_results = search_formulae(query)
-
-        if !formulae_search_results.any?
-          ofail 'No similarly named formulae found.'
-        else
-          puts 'These similarly named formulae were found:'
+        case formulae_search_results.length
+        when 0
+          ofail "No similarly named formulae found."
+        when 1
+          puts "This similarly named formula was found:"
           puts_columns(formulae_search_results)
-          puts "If you meant to install one of them, run `brew install <formula>`"
+          puts "If you meant to install it, run `brew install #{formulae_search_results.first}`"
+        else
+          puts "These similarly named formulae were found:"
+          puts_columns(formulae_search_results)
+          puts "If you meant to install one of them, run (for example) `brew install #{formulae_search_results.first}`"
         end
 
         ohai "Searching taps..."
         taps_search_results = search_taps(query)
-        if !taps_search_results.any?
-          ofail 'No formulae found in taps.'
-        else
-          puts 'These formulae were found in taps:'
+        case taps_search_results.length
+        when 0
+          ofail "No formulae found in taps."
+        when 1
+          puts "This formula was found in a tap:"
           puts_columns(taps_search_results)
-          puts "If you meant to install one of them, run `brew install <formula>`"
+          puts "If you meant to install it, run `brew install #{taps_search_results.first}`"
+        else
+          puts "These formulae were found in taps:"
+          puts_columns(taps_search_results)
+          puts "If you meant to install one of them, run (for example) `brew install #{taps_search_results.first}`"
         end
 
         # If they haven't updated in 48 hours (172800 seconds), that
