@@ -500,7 +500,7 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     args << url unless target.directory?
     args << target
     if revision
-      ohai "Checking out #{ref}"
+      ohai "Checking out #{@ref}"
       args << "-r" << revision
     end
     args << "--ignore-externals" if ignore_externals
