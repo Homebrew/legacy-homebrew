@@ -49,14 +49,14 @@ class Gnuradio < Formula
   depends_on "portaudio" => :recommended
 
   resource "numpy" do
-    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.10.0b1/numpy-1.10.0b1.tar.gz"
-    sha256 "855695405092686264dc8ce7b3f5c939a6cf1a5639833e841a5bb6fb799cd6a8"
+    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.10.1/numpy-1.10.1.tar.gz"
+    sha256 "8b9f453f29ce96a14e625100d3dcf8926301d36c5f622623bf8820e748510858"
   end
 
   # cheetah starts here
   resource "Markdown" do
-    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.4.tar.gz"
-    sha256 "b8370fce4fbcd6b68b6b36c0fb0f4ec24d6ba37ea22988740f4701536611f1ae"
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.2.tar.gz"
+    sha256 "ee17d0d7dc091e645dd48302a2e21301cc68f188505c2069d8635f94554170bf"
   end
 
   resource "Cheetah" do
@@ -66,8 +66,8 @@ class Gnuradio < Formula
   # cheetah ends here
 
   resource "lxml" do
-    url "https://pypi.python.org/packages/source/l/lxml/lxml-2.0.tar.gz"
-    sha256 "062e6dbebcbe738eaa6e6298fe38b1ddf355dbe67a9f76c67a79fcef67468c5b"
+    url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.4.tar.gz"
+    sha256 "b3d362bac471172747cda3513238f115cbd6c5f8b8e6319bf6a97a7892724099"
   end
 
   # sphinx starts here
@@ -82,23 +82,23 @@ class Gnuradio < Formula
   end
 
   resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
-  resource "markupsafe" do
+  resource "MarkupSafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
     sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
   resource "alabaster" do
-    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.3.tar.gz"
-    sha256 "0703c1ea5a6af0bb6d0cec24708301334949d56ebc7f95c64028d9c66f9d8d5d"
+    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.6.tar.gz"
+    sha256 "309d33e0282c8209f792f3527f41ec04e508ff837c61fc1906dde988a256deeb"
   end
 
-  resource "babel" do
-    url "https://pypi.python.org/packages/source/B/Babel/Babel-1.3.tar.gz"
-    sha256 "9f02d0357184de1f093c10012b52e7454a1008be6a5c185ab7a3307aceb1d12e"
+  resource "Babel" do
+    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.1.1.tar.gz"
+    sha256 "7fb6d50effe88a087feb2036cb972fd7a893bf338361516f1a55a820bf7b5248"
   end
 
   resource "snowballstemmer" do
@@ -107,29 +107,29 @@ class Gnuradio < Formula
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.2.tar.bz2"
-    sha256 "3e15b416c9a2039c1a51208b2cd3bb4ffd796cd19e601b1d2657afcb77c3dc90"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.6.tar.bz2"
+    sha256 "01eed1b2226dc386d8e467a2ff8c4f1aa08c65d5d7e7c43aa094bd45d5bd68ba"
   end
 
   resource "sphinx_rtd_theme" do
-    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.7.tar.gz"
-    sha256 "9a490c861f6cf96a0050c29a92d5d1e01eda02ae6f50760ad5c96a327cdf14e8"
+    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.9.tar.gz"
+    sha256 "273846f8aacac32bf9542365a593b495b68d8035c2e382c9ccedcac387c9a0a1"
   end
 
-  resource "sphinx" do
+  resource "Sphinx" do
     url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
     sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
   end
   # sphinx ends here
 
   resource "cppzmq" do
-    url "https://github.com/zeromq/cppzmq/raw/34c8e4395c94d34a89bbeaaf2b8f9c94a8293c84/zmq.hpp"
-    sha256 "6cdd9d920f4a0f9f3a3257541321bef8369d9735c88b84ba8ae0e461f53e476c"
+    url "https://github.com/zeromq/cppzmq/raw/fa2f2c67a79c31d73bfef6862cc8ce12a98dd022/zmq.hpp"
+    sha256 "bf1c5b38911ca10bfd0826574710eb0c68fbd89b6eaa5e137c34dfbf824c080a"
   end
 
   def install
@@ -138,8 +138,8 @@ class Gnuradio < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
     res = %w[Markdown Cheetah lxml numpy]
-    res << %w[sphinx sphinx_rtd_theme alabaster babel docutils pygments
-              jinja2 markupsafe snowballstemmer six pytz] if build.with? "documentation"
+    res += %w[sphinx_rtd_theme alabaster Babel docutils pygments
+              jinja2 MarkupSafe snowballstemmer six pytz Sphinx] if build.with? "documentation"
     res.each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
