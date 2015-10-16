@@ -8,7 +8,7 @@ class Mimms < Formula
   depends_on "libmms"
 
   # Switch shared library loading to Mach-O naming convention (.dylib)
-  # Matching upstream bug report: http://savannah.nongnu.org/bugs/?29684
+  # Matching upstream bug report: https://savannah.nongnu.org/bugs/?29684
   patch :DATA
 
   def install
