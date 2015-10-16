@@ -4,6 +4,7 @@ class Ffmpeg < Formula
   url "https://ffmpeg.org/releases/ffmpeg-2.8.1.tar.bz2"
   sha256 "e2ed5ab28dee1af94336739173eb0019afc21a54e38a96f4e3208e94a07866e2"
   head "https://github.com/FFmpeg/FFmpeg.git"
+  revision 1
 
   bottle do
     sha256 "88afcfe4fd2e9c4fcca2e5d6873ee0ebbd937f69c843423a5bd1c34e9286392e" => :el_capitan
