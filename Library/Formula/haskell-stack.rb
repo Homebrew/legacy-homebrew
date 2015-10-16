@@ -5,8 +5,8 @@ class HaskellStack < Formula
 
   desc "The Haskell Tool Stack"
   homepage "https://www.stackage.org"
-  url "https://github.com/commercialhaskell/stack/archive/v0.1.5.0.tar.gz"
-  sha256 "2e32a0ac6a7e2a602eb039298925097141d00149119b2aa490a083b02a2002e2"
+  url "https://github.com/commercialhaskell/stack/archive/v0.1.6.0.tar.gz"
+  sha256 "71014893d9a01f33c8e7400357813f610cc264a011d5e6af3ca8f9b598940d36"
 
   head "https://github.com/commercialhaskell/stack.git"
 
