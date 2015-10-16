@@ -6,6 +6,13 @@ class Sift < Formula
   url "https://github.com/svent/sift/archive/v0.3.4.tar.gz"
   sha256 "88eefbfd02bea5183cedfaab9bfeef397c622a15970b0540ddb4a3e3ea62d775"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "f25b2fd2cf78435feaec70c86d35534cf1d478349c4dbfcf26c8a195c68cce2c" => :el_capitan
+    sha256 "1e3d2c6e561ea99fa05aaded5e17638d48bab4461eb53a52ac8e8876b539c9c5" => :yosemite
+    sha256 "c4b04f5414ba2d0fb9d9c1d5b67d58c1b4a02a45af9f3dd5064e7a244f4f8234" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/svent/go-flags" do
