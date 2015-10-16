@@ -4,7 +4,7 @@ class Ffmbc < Formula
   url "https://drive.google.com/uc?export=download&id=0B0jxxycBojSwTEgtbjRZMXBJREU"
   version "0.7.2"
   sha256 "caaae2570c747077142db34ce33262af0b6d0a505ffbed5c4bdebce685d72e42"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "188e80876076aeea82cb2dd54ad2fc1d7c3d5dda2947e989db7ec20c8d5db9ee" => :yosemite
