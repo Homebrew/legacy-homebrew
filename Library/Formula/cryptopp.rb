@@ -1,8 +1,8 @@
 class Cryptopp < Formula
   desc "Free C++ class library of cryptographic schemes"
-  homepage "http://www.cryptopp.com/"
+  homepage "https://www.cryptopp.com/"
   url "https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.2/cryptopp562.zip"
-  mirror "http://www.cryptopp.com/cryptopp562.zip"
+  mirror "https://www.cryptopp.com/cryptopp562.zip"
   version "5.6.2"
   sha256 "5cbfd2fcb4a6b3aab35902e2e0f3b59d9171fee12b3fc2b363e1801dfec53574"
 
