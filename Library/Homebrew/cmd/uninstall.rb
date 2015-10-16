@@ -47,9 +47,9 @@ module Homebrew
     # If we delete Cellar/newname, then Cellar/oldname symlink
     # can become broken and we have to remove it.
     if HOMEBREW_CELLAR.directory?
-    HOMEBREW_CELLAR.children.each do |rack|
-      rack.unlink if rack.symlink? && !rack.resolved_path_exists?
-    end
+      HOMEBREW_CELLAR.children.each do |rack|
+        rack.unlink if rack.symlink? && !rack.resolved_path_exists?
+      end
     end
   end
 
