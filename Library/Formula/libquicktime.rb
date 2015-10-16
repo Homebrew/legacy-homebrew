@@ -23,7 +23,7 @@ class Libquicktime < Formula
   # Fixes compilation with ffmpeg 2.x; applied upstream
   # http://sourceforge.net/p/libquicktime/mailman/message/30792767/
   patch :p0 do
-    url "http://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
+    url "https://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
     sha256 "ae9773d11db5e60824d4cd8863daa6931e980b7385c595eabc37c7bb8319f225"
   end
   patch :DATA
