@@ -8,8 +8,8 @@ class Swiftgen < Formula
 
   bottle do
     cellar :any
-    sha256 "29391f183e1606e50008ad148b3665d240c28ab5cbd42a293d1ca99b29aa3793" => :el_capitan
-    sha256 "c150775bf2f6b8e77a821eae7bd89233a134eb22ce5eed88de9eaf2822dd79ee" => :yosemite
+    sha256 "2720dec00532d078ac959fd65f05ddf3cc2a0837f383e5e32d1d0a423527f4ae" => :el_capitan
+    sha256 "ebedd73315bbe82499e3add958fbabbf6da70861d034793b416761f187460912" => :yosemite
   end
 
   def pour_bottle?
