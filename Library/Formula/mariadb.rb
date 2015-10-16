@@ -12,8 +12,8 @@ class Mariadb < Formula
   end
 
   devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.7/source/mariadb-10.1.7.tar.gz"
-    sha256 "5bd3b80cf0f312751271a3446c12579c7081f93406e59a0cdfda8e133423c88f"
+    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.8/source/mariadb-10.1.8.tar.gz"
+    sha256 "7cbf6a4649aa6dc9cd1dc24424ade7b994de78582ce4d47ca0f4cd1c4c003bfa"
     # fix compilation failure with clang in mroonga storage engine
     # https://mariadb.atlassian.net/projects/MDEV/issues/MDEV-8551
     patch :DATA
