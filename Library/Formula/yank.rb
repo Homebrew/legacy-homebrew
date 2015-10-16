@@ -11,5 +11,23 @@ class Yank < Formula
   test do
     system "#{bin}/yank", "-v"
     system "man", "yank"
+    (testpath/"test").write <<-EOS.undent
+      #!/usr/bin/expect -f
+      spawn sh
+      send "echo key=value | yank -d = | cat"
+      send "\r"
+      send "\016"
+      send "\r"
+      expect -exact "value"
+      send "echo key=value | yank -d = | cat"
+      send "\r"
+      send "\016"
+      send "\020"
+      send "\r"
+      expect -exact "key"
+      send "exit\r"
+    EOS
+    (testpath/"test").chmod 0755
+    system "./test"
   end
 end
