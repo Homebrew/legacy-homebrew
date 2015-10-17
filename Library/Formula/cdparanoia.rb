@@ -1,6 +1,6 @@
 class Cdparanoia < Formula
   desc "Audio extraction tool for sampling CDs"
-  homepage "http://www.xiph.org/paranoia/"
+  homepage "https://www.xiph.org/paranoia/"
   url "http://downloads.xiph.org/releases/cdparanoia/cdparanoia-III-10.2.src.tgz"
   sha256 "005db45ef4ee017f5c32ec124f913a0546e77014266c6a1c50df902a55fe64df"
 
