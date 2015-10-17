@@ -19,7 +19,7 @@ class Ldid < Formula
       int main(int argc, char **argv) { return 0; }
       EOS
 
-    system "#{ENV.cc}", "test.c", "-o", "test"
+    system ENV.cc, "test.c", "-o", "test"
     system bin/"ldid", "-S", "test"
   end
 end
