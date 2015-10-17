@@ -14,6 +14,12 @@ class Fltk < Formula
     patch :DATA
   end
 
+  bottle do
+    revision 1
+    sha256 "69949c963a94d37d0bee674b9ae4ac5a5ee830da810c5f55ddfbcf48eba26228" => :yosemite
+    sha256 "62854e23f7cd706b433c9a6c383b99bcfb4b7116c1337778aecd1691737f8cb9" => :mavericks
+  end
+
   devel do
     url "http://fltk.org/pub/fltk/snapshots/fltk-1.3.x-r10866.tar.gz"
     sha256 "4fd4911a1da99c2fa1e6cc0c985b3b8645a7e954802230338fb513ae880ff2cc"
@@ -21,12 +27,6 @@ class Fltk < Formula
 
     depends_on "autoconf" => :build
     depends_on "autogen" => :build
-  end
-
-  bottle do
-    revision 1
-    sha256 "69949c963a94d37d0bee674b9ae4ac5a5ee830da810c5f55ddfbcf48eba26228" => :yosemite
-    sha256 "62854e23f7cd706b433c9a6c383b99bcfb4b7116c1337778aecd1691737f8cb9" => :mavericks
   end
 
   option :universal
