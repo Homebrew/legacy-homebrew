@@ -78,7 +78,7 @@ class Lua < Formula
     bin.install_symlink "lua" => "lua-5.2"
     bin.install_symlink "luac" => "luac5.2"
     bin.install_symlink "luac" => "luac-5.2"
-    include.install_symlink include => "#{include}/lua5.2"
+    (include/"lua5.2").install_symlink include.children
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
 
