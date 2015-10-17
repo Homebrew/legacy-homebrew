@@ -36,7 +36,7 @@ class Fltk < Formula
 
   fails_with :clang do
     build 318
-    cause "http://llvm.org/bugs/show_bug.cgi?id=10338"
+    cause "https://llvm.org/bugs/show_bug.cgi?id=10338"
   end
 
   def install
