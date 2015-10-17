@@ -14,17 +14,17 @@ class HachoirMetadata < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "hachoir-core" do
-    url "http://cheeseshop.python.org/packages/source/h/hachoir-core/hachoir-core-1.3.3.tar.gz"
+    url "https://cheeseshop.python.org/packages/source/h/hachoir-core/hachoir-core-1.3.3.tar.gz"
     sha256 "ecf5d16eccc76b22071d6062e54edb67595f70d827644d3a6dff04289b4058df"
   end
 
   resource "hachoir-parser" do
-    url "http://cheeseshop.python.org/packages/source/h/hachoir-parser/hachoir-parser-1.3.4.tar.gz"
+    url "https://cheeseshop.python.org/packages/source/h/hachoir-parser/hachoir-parser-1.3.4.tar.gz"
     sha256 "775be5e10d72c6122b1ba3202dfce153c09ebcb60080d8edbd51aa89aa4e6b3f"
   end
 
   resource "hachoir-regex" do
-    url "http://cheeseshop.python.org/packages/source/h/hachoir-regex/hachoir-regex-1.0.5.tar.gz"
+    url "https://cheeseshop.python.org/packages/source/h/hachoir-regex/hachoir-regex-1.0.5.tar.gz"
     sha256 "a35b2bb0ff11418230fffbb97605adba012bf65d2aba3e5e7d8295774d5ba986"
   end
 
