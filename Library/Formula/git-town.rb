@@ -4,13 +4,6 @@ class GitTown < Formula
   url "https://github.com/Originate/git-town/archive/v0.9.0.tar.gz"
   sha256 "107ab8ed6fa3b4eb9da0f5694e33fca4c727194cf42058829fda9ef20eadf2db"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "eb8b67b088be0c4dfe09a04c8fe31abf1c58f2feb8aecf08f2ca30b20ec1fe20" => :el_capitan
-    sha256 "bc10898bc3927ea639d2b83fc3eddaeb9a152178ff66e3bab5d4263494dd11c5" => :yosemite
-    sha256 "1a3544b8ba20c80726f857911959f9cc2f430fcf1d202fcc341fcbbdd8109c95" => :mavericks
-  end
-
   def install
     libexec.install Dir["src/*"]
     bin.write_exec_script Dir["#{libexec}/git-*"]
