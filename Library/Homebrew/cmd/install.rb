@@ -107,11 +107,11 @@ module Homebrew
         when 1
           puts "This similarly named formula was found:"
           puts_columns(formulae_search_results)
-          puts "If you meant to install it, run `brew install #{formulae_search_results.first}`"
+          puts "To install it, run `brew install #{formulae_search_results.first}`"
         else
           puts "These similarly named formulae were found:"
           puts_columns(formulae_search_results)
-          puts "If you meant to install one of them, run (for example) `brew install #{formulae_search_results.first}`"
+          puts "To install one of them, run (for example) `brew install #{formulae_search_results.first}`"
         end
 
         ohai "Searching taps..."
@@ -122,11 +122,11 @@ module Homebrew
         when 1
           puts "This formula was found in a tap:"
           puts_columns(taps_search_results)
-          puts "If you meant to install it, run `brew install #{taps_search_results.first}`"
+          puts "To install it, run `brew install #{taps_search_results.first}`"
         else
           puts "These formulae were found in taps:"
           puts_columns(taps_search_results)
-          puts "If you meant to install one of them, run (for example) `brew install #{taps_search_results.first}`"
+          puts "To install one of them, run (for example) `brew install #{taps_search_results.first}`"
         end
 
         # If they haven't updated in 48 hours (172800 seconds), that
