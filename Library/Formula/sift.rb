@@ -3,8 +3,8 @@ require "language/go"
 class Sift < Formula
   desc "Fast and powerful open source alternative to grep"
   homepage "https://sift-tool.org"
-  url "https://github.com/svent/sift/archive/v0.3.4.tar.gz"
-  sha256 "88eefbfd02bea5183cedfaab9bfeef397c622a15970b0540ddb4a3e3ea62d775"
+  url "https://github.com/svent/sift/archive/v0.4.0.tar.gz"
+  sha256 "6682b3eb08ae45eca8c6a09ef7811a79f6a9f244cdd06b76cd65eed956375b31"
 
   bottle do
     cellar :any_skip_relocation
