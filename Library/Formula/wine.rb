@@ -5,7 +5,6 @@
 class Wine < Formula
   desc "Wine Is Not an Emulator"
   homepage "https://www.winehq.org/"
-  revision 1
 
   stable do
     url "https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2"
