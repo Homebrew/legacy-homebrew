@@ -1,7 +1,7 @@
 class Cmake < Formula
   desc "Cross-platform make"
-  homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
+  homepage "https://www.cmake.org/"
+  url "https://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/c/cmake/cmake_3.3.2.orig.tar.gz"
   sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
   head "http://cmake.org/cmake.git"
