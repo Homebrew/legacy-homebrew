@@ -554,6 +554,7 @@ _brew_upgrade ()
         __brewcomp "
             --all
             --build-from-source --build-bottle --force-bottle
+            --cleanup
             --debug
             --verbose
             "
