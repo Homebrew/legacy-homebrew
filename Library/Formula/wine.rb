@@ -42,7 +42,7 @@ class Wine < Formula
       url "https://bugs.winehq.org/attachment.cgi?id=52485"
       sha256 "59f1831a1b49c1b7a4c6e6af7e3f89f0bc60bec0bead645a615b251d37d232ac"
     end
-    
+
     # Patch to fix texture compression issues. Still relevant on 1.7.53.
     # https://bugs.winehq.org/show_bug.cgi?id=14939
     patch do
