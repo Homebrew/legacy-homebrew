@@ -55,8 +55,8 @@ class Binwalk < Formula
   end
 
   resource "numpy" do
-    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.2/numpy-1.9.2.tar.gz"
-    sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
+    url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.1.tar.gz"
+    sha256 "8b9f453f29ce96a14e625100d3dcf8926301d36c5f622623bf8820e748510858"
   end
 
   resource "scipy" do
