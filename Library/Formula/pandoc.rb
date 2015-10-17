@@ -5,8 +5,8 @@ class Pandoc < Formula
 
   desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.15.0.6/pandoc-1.15.0.6.tar.gz"
-  sha256 "d950968142526d5a765af7dfb26b47c3f60d4f883aa9d9eab668614179f1ed46"
+  url "https://hackage.haskell.org/package/pandoc-1.15.1/pandoc-1.15.1.tar.gz"
+  sha256 "77503f8981cfcbe7df841ed1c71de9164d0eaf17b8b9c51e6d966e4fd333b733"
 
   head "https://github.com/jgm/pandoc.git"
 
@@ -29,6 +29,13 @@ class Pandoc < Formula
       cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib
+  end
+
+  def caveats; <<-EOS.undent
+    To enable bash completion, add to ~/.bashrc or equivalent:
+
+      eval "$(pandoc --bash-completion)"
+    EOS
   end
 
   test do
