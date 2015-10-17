@@ -5,6 +5,12 @@ class CrystalLang < Formula
   sha256 "986a000bb2eded22e446fd55c543062770ec4000e28791f0b07f63fcee37b245"
   head "https://github.com/manastech/crystal.git"
 
+  bottle do
+    sha256 "457680d9bba78a1e1ac45c4227147b42dcdb6f80586b88a05ce9e54f2b2f1b13" => :el_capitan
+    sha256 "1317895eddd2bd210264ce6d9557c3e03e4549aae44c9fcb2300ce1c99b6bb3e" => :yosemite
+    sha256 "6a2345f6dd96484e62fa5c1a04d20f0b8faba2df75a66c6547a43a26785ab1e0" => :mavericks
+  end
+
   resource "boot" do
     url "https://github.com/manastech/crystal/releases/download/0.8.0/crystal-0.8.0-1-darwin-x86_64.tar.gz"
     sha256 "5a16826145a846da3548e875cf104bdfc04c35cd6628cf66487de1bfbe9c5faf"
