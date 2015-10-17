@@ -14,10 +14,9 @@ class Libchamplain < Formula
   depends_on "clutter"
   depends_on "libsoup"
   depends_on "gobject-introspection"
-  depends_on "gtk+3" => :recommended
+  depends_on "gtk+3"
+  depends_on "clutter-gtk"
   depends_on "vala" => :optional
-
-  depends_on "clutter-gtk" if build.with? "gtk+3"
 
   def install
     system "./configure", "--disable-debug",
@@ -47,6 +46,7 @@ class Libchamplain < Formula
     gettext = Formula["gettext"]
     glib = Formula["glib"]
     gtkx3 = Formula["gtk+3"]
+    harfbuzz = Formula["harfbuzz"]
     json_glib = Formula["json-glib"]
     libepoxy = Formula["libepoxy"]
     libpng = Formula["libpng"]
@@ -67,6 +67,7 @@ class Libchamplain < Formula
       -I#{glib.opt_include}/glib-2.0
       -I#{glib.opt_lib}/glib-2.0/include
       -I#{gtkx3.opt_include}/gtk-3.0
+      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/libchamplain-0.12
       -I#{json_glib.opt_include}/json-glib-1.0
       -I#{libepoxy.opt_include}
