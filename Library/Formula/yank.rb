@@ -14,18 +14,15 @@ class Yank < Formula
     (testpath/"test").write <<-EOS.undent
       #!/usr/bin/expect -f
       spawn sh
+      set timeout 1
       send "echo key=value | yank -d = | cat"
       send "\r"
       send "\016"
       send "\r"
-      expect -exact "value"
-      send "echo key=value | yank -d = | cat"
-      send "\r"
-      send "\016"
-      send "\020"
-      send "\r"
-      expect -exact "key"
-      send "exit\r"
+      expect {
+            "value" { send "exit\r"; exit 0 }
+            timeout { send "exit\r"; exit 1 }
+      }
     EOS
     (testpath/"test").chmod 0755
     system "./test"
