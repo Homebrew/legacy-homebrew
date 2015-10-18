@@ -1,8 +1,8 @@
 class Doitlive < Formula
   desc "Replay stored shell commands for live presentations"
   homepage "https://doitlive.readthedocs.org/en/latest/"
-  url "https://pypi.python.org/packages/source/d/doitlive/doitlive-2.3.1.tar.gz"
-  sha256 "ab1e5965910be74bd56beb71d533ea1f4ae84b807271ca1605607834163b6e24"
+  url "https://pypi.python.org/packages/source/d/doitlive/doitlive-2.4.0.tar.gz"
+  sha256 "68c9a337dc24f31359ed516d94b662b6467939a20096d76ed75ebed8a2b1a34c"
 
   bottle do
     cellar :any
