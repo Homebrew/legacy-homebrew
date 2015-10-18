@@ -9,8 +9,6 @@ class Yank < Formula
   end
 
   test do
-    system "#{bin}/yank", "-v"
-    system "man", "yank"
     (testpath/"test").write <<-EOS.undent
       #!/usr/bin/expect -f
       spawn sh
