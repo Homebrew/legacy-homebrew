@@ -6,10 +6,10 @@ class Ssdb < Formula
   head "https://github.com/ideawu/ssdb.git"
 
   bottle do
-    cellar :any
-    sha256 "1970e505fd1e8f6166010a892e66a718a39cbab1bcdd515bd6fdd4ec7c185600" => :yosemite
-    sha256 "61430871ab15a312f8a6b0caf68003d379fc8e52199702747b84f86f3887d911" => :mavericks
-    sha256 "16b3c20d79519328e01139ccf8fc71832f90d5df1c55c9ba32ab150a0cddf77e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8155bfa1e0c35747998a505072afec2427e66535844a41053463612ca2fb487a" => :el_capitan
+    sha256 "a933b076c4db3cf375f4a56c4c92e7e56ac608384d24b538563e1ee2707cdc3a" => :yosemite
+    sha256 "d997f3f17d79e1485389eb4f6c86ba6a5dd60f0d690852dfd689d292877bc8f0" => :mavericks
   end
 
   def install
