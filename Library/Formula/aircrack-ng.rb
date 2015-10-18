@@ -10,9 +10,9 @@ class AircrackNg < Formula
 
   bottle do
     cellar :any
-    sha256 "8d0e46c29daf895780427bfe252adef6c31faca245496fcef8f9449ce0321f34" => :el_capitan
-    sha256 "11da54c7c70a4faf089e7b71669f11fb13772563bebe89dafb2210146c8c23ef" => :yosemite
-    sha256 "b856ae4d438d05367b7e5c762ef90c5a06bebd39491d41edee8ba47dd517e6b5" => :mavericks
+    sha256 "cb70cfa6efceada012445e9bf0300050207dc59572edc5e58795c9035e14dc43" => :el_capitan
+    sha256 "97fd0debe4e17e143facd4fa4483d7813c3edc328acd366a72d3fda29d7a6c7b" => :yosemite
+    sha256 "02efed81e48c8f70bbd1d3051e84b25815fcceb7166cb79d472f9552a4708ae2" => :mavericks
   end
 
   depends_on "pkg-config" => :build
