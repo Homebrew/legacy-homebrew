@@ -1,7 +1,7 @@
 class UcspiTools < Formula
   desc "Various tools to handle UCSPI connections"
   homepage "https://github.com/younix/ucspi/blob/master/README.md"
-  revision 6
+  revision 7
 
   stable do
     url "https://github.com/younix/ucspi/archive/v1.2.tar.gz"
@@ -11,8 +11,8 @@ class UcspiTools < Formula
     # moves *much* quicker than the ucspi project. Since ucspi-tools breaks
     # every LibreSSL update vendoring for stable makes life easier for everyone.
     resource "libressl" do
-      url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.3.tar.gz"
-      sha256 "a1ccc21adf91d60e99246031b99c930c9af5e1b1b5a61b1bec87beef6f16d882"
+      url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.4.tar.gz"
+      sha256 "6b409859be8654afc3862549494e097017e64c8d167f12584383586306ef9a7e"
     end
 
     # LibreSSL renamed a function between the 2.1.3 and 2.1.4 release which ucspi uses.
