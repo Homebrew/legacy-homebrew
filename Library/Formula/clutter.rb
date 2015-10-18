@@ -1,8 +1,8 @@
 class Clutter < Formula
   desc "Generic high-level canvas library"
   homepage "https://wiki.gnome.org/Projects/Clutter"
-  url "https://download.gnome.org/sources/clutter/1.24/clutter-1.24.0.tar.xz"
-  sha256 "85c87d5745b97af7633776419a47421aae7cea66c1b870f88cc5e06a4c5626e6"
+  url "https://download.gnome.org/sources/clutter/1.24/clutter-1.24.2.tar.xz"
+  sha256 "9631c98cb4bcbfec15e1bbe9eaa6eef0f127201552fce40d7d28f2133803cd63"
 
   bottle do
     sha256 "ed5bd7a2b8dd5ee04ddc871299c39a8b9483fd325d93b033d1e58ea933f65209" => :el_capitan
