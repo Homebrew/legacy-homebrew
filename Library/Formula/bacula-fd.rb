@@ -36,4 +36,27 @@ class BaculaFd < Formula
     # Create the working directory:
     (var + "lib/bacula").mkpath
   end
+
+  plist_options :startup => true, :manual => "bacula-fd"
+
+  def plist; <<-EOS.undent
+    <?xml version="0.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/bacula-fd</string>
+          <string>-f</string>
+        </array>
+        <key>UserName</key>
+        <string>root</string>
+      </dict>
+    </plist>
+  EOS
+  end
 end
