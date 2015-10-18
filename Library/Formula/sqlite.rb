@@ -5,13 +5,6 @@ class Sqlite < Formula
   version "3.9.1"
   sha256 "d89d0e1d93deafebd0aa067d20d9029d9914ccde244920d9dd09ea51944e1c6c"
 
-  bottle do
-    cellar :any
-    sha256 "b1a367f7c129722e291f6c7f3cb7f37b2c7b83306f437c403215632b435ad7b9" => :el_capitan
-    sha256 "3bb4281aead311b9e388ccbcdee57534726c3686f7b60d023a65de6be5e505c7" => :yosemite
-    sha256 "266511d246dcc930f9c3ded033ed0dbd4d78d6649129bd6a566fd71d26096224" => :mavericks
-  end
-
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
 
   option :universal
