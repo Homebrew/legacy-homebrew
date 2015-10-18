@@ -17,10 +17,10 @@ class Mtr < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "06b43ecc7ac538e43a3835998317e9cd7673ff6015f1a2436c985540c454af95" => :el_capitan
-    sha1 "8c08e6d32997d6a82ee755de600ba5d63cc50a4e" => :yosemite
-    sha1 "8cc2160f36567c5a0e913c0e0a9f60b9e835ba28" => :mavericks
-    sha1 "be91d5c1ad604d190ef1e1d56842592b816197bf" => :mountain_lion
+    revision 1
+    sha256 "fba272c1219a2386b034110dc129fa484597e7865b544d979386e0bfa0bc7f2e" => :el_capitan
+    sha256 "96c3b22edc936bb9b7053a1920f34a524fdc3a6d99d32f5c6313a903d6b3ff1f" => :yosemite
+    sha256 "3fb9172a95469e6ee38faeee2e67682f75dd79a6e222426674751846fee5f0a9" => :mavericks
   end
 
   depends_on "automake" => :build
