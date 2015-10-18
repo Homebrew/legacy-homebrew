@@ -18,4 +18,18 @@ class Mg < Formula
     doc.install "tutorial"
     man1.install "mg.1"
   end
+
+  test do
+    (testpath/"command.sh").write <<-EOS.undent
+      #!/usr/bin/expect -f
+      set timeout -1
+      spawn #{bin}/mg
+      match_max 100000
+      send -- "\u0018\u0003"
+      expect eof
+    EOS
+    chmod 0755, testpath/"command.sh"
+
+    system testpath/"command.sh"
+  end
 end

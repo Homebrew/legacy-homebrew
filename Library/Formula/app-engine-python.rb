@@ -1,8 +1,8 @@
 class AppEnginePython < Formula
   desc "Google App Engine"
   homepage "https://cloud.google.com/appengine/docs"
-  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.23.zip"
-  sha256 "6d4e442d4814dea6a49b39fde8b0a82e228f962c8dcac883fe9ae8fffa6d1c2a"
+  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.27.zip"
+  sha256 "6192f295969dabf8659ce9a698450154f7c8c35b89c6e3cb52908c8f50d7c1f4"
 
   conflicts_with "go-app-engine-32", :because => "multiple conflicting files"
   conflicts_with "go-app-engine-64", :because => "multiple conflicting files"
