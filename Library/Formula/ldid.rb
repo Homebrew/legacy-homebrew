@@ -1,7 +1,7 @@
 class Ldid < Formula
   desc "Lets you manipulate the signature block in a Mach-O binary"
   homepage "https://cydia.saurik.com/info/ldid/"
-  url "https://git.saurik.com/ldid.git",
+  url "git://git.saurik.com/ldid.git",
     :tag => "v1.1.2",
     :revision => "604cc486bdefb246c984a21dbb30cdaf8b0a7f4d"
 
