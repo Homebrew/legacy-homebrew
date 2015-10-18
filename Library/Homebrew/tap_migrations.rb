@@ -158,6 +158,7 @@ TAP_MIGRATIONS = {
   "opengrm-ngram" => "homebrew/science",
   "ori" => "homebrew/fuse",
   "pan" => "homebrew/boneyard",
+  "paq8px" => "homebrew/boneyard",
   "par2tbb" => "homebrew/boneyard",
   "pari" => "homebrew/x11",
   "pathfinder" => "homebrew/boneyard",
