@@ -1,8 +1,8 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/manastech/crystal/archive/0.8.0.tar.gz"
-  sha256 "986a000bb2eded22e446fd55c543062770ec4000e28791f0b07f63fcee37b245"
+  url "https://github.com/manastech/crystal/archive/0.9.0.tar.gz"
+  sha256 "b125e58ab88ca7a6cb654c40143b6e9f8c4fb284cbe5e4da20ae372ed9b31ba0"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
@@ -17,8 +17,8 @@ class CrystalLang < Formula
   end
 
   resource "shards" do
-    url "https://github.com/ysbaddaden/shards/archive/v0.5.1.tar.gz"
-    sha256 "95916792766e42e3b005b144190c3f88d5cb8bcbaaddeb8fa8ced8bac1ef424d"
+    url "https://github.com/manastech/shards/archive/v0.5.1-crystal.0.9.0.tar.gz"
+    sha256 "5dd06933a24064b40a2056015184da77273be6903690ccc4702d77ad898d7d27"
   end
 
   option "without-release", "Do not build the compiler in release mode"
