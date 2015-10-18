@@ -1,12 +1,10 @@
-require 'formula'
-
 class Luciddb < Formula
   desc "DBMS optimized for business intelligence"
-  homepage 'http://www.luciddb.org/'
-  url 'https://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2'
-  sha1 'b0a7b9dbe997a1754d48856c866ffedf4d276eae'
+  homepage "http://www.luciddb.org/"
+  url "https://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2"
+  sha256 "fe6caa93d63a97e412e2bc478e1a1bd99c2aa736b1dcfea665cbab94b8da8593"
 
-  def shim_script target
+  def shim_script(target)
     <<-EOS.undent
       #!/bin/bash
       export JAVA_HOME=`/usr/libexec/java_home`
@@ -15,15 +13,15 @@ class Luciddb < Formula
   end
 
   def install
-    libexec.install Dir['*']
-    cd libexec/'install' do
+    libexec.install Dir["*"]
+    cd libexec/"install" do
       # install.sh just sets Java classpaths and writes them to bin/classpath.gen.
       # This is why we run it /after/ copying all the files to #{libexec}.
-      ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp
+      ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
       system "./install.sh"
     end
     Dir.glob("#{libexec}/bin/*") do |b|
-      next if b =~ /classpath.gen/ or b =~ /defineFarragoRuntime/
+      next if b =~ /classpath.gen/ || b =~ /defineFarragoRuntime/
       n = File.basename(b)
       (bin+n).write shim_script(n)
     end

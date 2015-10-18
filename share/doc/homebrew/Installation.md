@@ -3,7 +3,7 @@ The suggested and easiest way to install Homebrew is on the
 [homepage](http://brew.sh).
 
 The standard script installs Homebrew to `/usr/local` so that
-[you don’t need sudo](FAQ.md#wiki-sudo) when you `brew install`. It is a
+[you don’t need sudo](FAQ.md#why-does-homebrew-say-sudo-is-bad-) when you `brew install`. It is a
 careful script, it can be run even if you have stuff installed to
 `/usr/local` already. It tells you exactly what it will do before it
 does it too. And you have to confirm everything it will do before it

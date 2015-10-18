@@ -1,14 +1,14 @@
 class Yaz < Formula
   desc "Toolkit for Z39.50/SRW/SRU clients/servers"
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.14.3.tar.gz"
-  sha256 "b7a444deb013ab01d051c3e42c07b083a046d0882286a2162dc83b9519b56a49"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.14.11.tar.gz"
+  sha256 "216bc0e76e3deb655017bb639e87f2175facfdc060138a550e290c383da2cf7a"
 
   bottle do
     cellar :any
-    sha256 "8ea0ce100e9a38496bef54d610a4b8b8d37dc544112dc441e03a0b914f94511d" => :yosemite
-    sha256 "4aca9f0698012ffd241dc518c6a381af6d540ae6bef08955b374578144338cd8" => :mavericks
-    sha256 "521854c11c2e306ee287d4d9e96b51fce8857f6e2a801d612e93808b460b3cd0" => :mountain_lion
+    sha256 "80a529237a94aed9cb637f1f61252e3fae20ad3d3b9156d1367da96df661cc81" => :el_capitan
+    sha256 "73db4d4cacc02c83d1cd2d97381c1f72474a05cc4e2a860cdbc9a8b7c95149e3" => :yosemite
+    sha256 "c433e6828a9c6b630eb771be906d5db298d9f6e51e504e0a7acca27882f7e9ea" => :mavericks
   end
 
   depends_on "pkg-config" => :build

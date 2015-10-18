@@ -3,30 +3,21 @@ class Cdrtools < Formula
   homepage "http://cdrecord.org/"
 
   stable do
-    url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.00.tar.bz2"
-    sha256 "7f9cb64820055573b880f77b2f16662a512518336ba95ab49228a1617973423d"
-
-    patch :p0 do
-      url "https://trac.macports.org/export/104091/trunk/dports/sysutils/cdrtools/files/patch-include_schily_sha2.h"
-      sha256 "59a62420138c54fbea6eaa10a11f69488bb3fecf4f954fda47a3b1e424671d61"
-    end
+    url "https://downloads.sourceforge.net/project/cdrtools/cdrtools-3.01.tar.bz2"
+    sha256 "ed282eb6276c4154ce6a0b5dee0bdb81940d0cbbfc7d03f769c4735ef5f5860f"
   end
 
   bottle do
-    sha1 "497614205a68d26bcbefce88c37cbebd9e573202" => :yosemite
-    sha1 "d5041283713c290cad78f426a277d376a9e90c49" => :mavericks
-    sha1 "434f1296db4fb7c082bed1ba25600322c8f31c78" => :mountain_lion
+    sha256 "db5a7311eb178ae4b0f99596d0475cd99af0a843b1eb4a988b6708517d585cdf" => :el_capitan
+    sha256 "bc99e1777e2723361b2c410ac8665eac163e0269815b04c4d1e0f28fa036193d" => :yosemite
+    sha256 "825662b7641aa454f1d1aee4bcc4968e9d74887988af5d793e33aa2a92e420d8" => :mavericks
+    sha256 "8f4e80ac5e512312227029504b52d39085c80b5f7d1f06d0911aaf0eaca1b6a5" => :mountain_lion
   end
 
-  devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.01a30.tar.bz2"
-    sha256 "5b9a2f98771c9d0097a1e7640727655ece2864eea95f38e5611af2b2f6e6d9cd"
-  end
+  depends_on "smake" => :build
 
-  depends_on 'smake' => :build
-
-  conflicts_with 'dvdrtools',
-    :because => 'both dvdrtools and cdrtools install binaries by the same name'
+  conflicts_with "dvdrtools",
+    :because => "both dvdrtools and cdrtools install binaries by the same name"
 
   def install
     system "smake", "INS_BASE=#{prefix}", "INS_RBASE=#{prefix}", "install"
@@ -43,7 +34,8 @@ class Cdrtools < Formula
   test do
     system "#{bin}/cdrecord", "-version"
     system "#{bin}/cdda2wav", "-version"
-    (testpath/"testfile.txt").write("testing mkisofs")
+    date = shell_output("date")
+    (testpath/"testfile.txt").write(date)
     system "#{bin}/mkisofs", "-r", "-o", "test.iso", "testfile.txt"
     assert (testpath/"test.iso").exist?
   end

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Htmlcxx < Formula
   desc "Non-validating CSS1 and HTML parser for C++"
-  homepage 'http://htmlcxx.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/htmlcxx/htmlcxx/0.85/htmlcxx-0.85.tar.gz'
-  sha1 'e56fef830db51041fd297d269d24379b2dccb928'
+  homepage "http://htmlcxx.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/htmlcxx/htmlcxx/0.85/htmlcxx-0.85.tar.gz"
+  sha256 "ab02a0c4addc82f82d564f7d163fe0cc726179d9045381c288f5b8295996bae5"
 
   # Don't try to use internal GCC headers; rely on standards-compliant header
   # Reported upstream: https://sourceforge.net/p/htmlcxx/bugs/18/
@@ -12,7 +10,7 @@ class Htmlcxx < Formula
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

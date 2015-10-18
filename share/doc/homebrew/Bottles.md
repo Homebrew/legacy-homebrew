@@ -32,7 +32,7 @@ end
 A full example:
 ```ruby
 bottle do
-  root_url "http://mikemcquaid.com"
+  root_url "https://example.com"
   prefix "/opt/homebrew"
   cellar "/opt/homebrew/Cellar"
   revision 4

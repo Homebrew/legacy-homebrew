@@ -3,35 +3,19 @@ require "language/go"
 class Scw < Formula
   desc "Manage BareMetal Servers from Command Line (as easily as with Docker)"
   homepage "https://github.com/scaleway/scaleway-cli"
-  url "https://github.com/scaleway/scaleway-cli/archive/v1.2.1.tar.gz"
-  sha256 "e3ae09558a5f451935831381177f1ee3ce50aec438a1e11269dfc380e0e196c9"
+  url "https://github.com/scaleway/scaleway-cli/archive/v1.5.0.tar.gz"
+  sha256 "00aa2de781f70614b2ac82bbeb173784c77d3f507d47fa1d0a0246073e56bd62"
 
   head "https://github.com/scaleway/scaleway-cli.git"
 
   bottle do
-    cellar :any
-    sha256 "cf1bc6ff8c7e6f2b2d6d261b4a814b0be2c39c78391a1c0aef0dcc921290a0e3" => :yosemite
-    sha256 "9348df3ab4714c633f3f968ae49a69d730c8c472fa8688063c2442c1535b59de" => :mavericks
-    sha256 "6daa7b39dbbbab7f520760285e3ea6a052bb5828e567fa2387b2fd2cd4e60880" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9b624f888883b83a2a35bcfbe3508750263ca5b7ad9990c02b86461c9a5c62ca" => :el_capitan
+    sha256 "392070a27d07cae3415bc88a844ae2dd3440d2a43e2b300eb869d6ecab1a7528" => :yosemite
+    sha256 "0248f1f11ad819b2eeee27c269c27fede09f23ed7f46b1683453e5ef6589fc54" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
-  end
-
-  go_resource "github.com/kr/fs" do
-    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
-  end
-
-  go_resource "golang.org/x/tools" do
-    url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
-  end
-
-  go_resource "golang.org/x/crypto" do
-    url "https://github.com/golang/crypto.git", :revision => "8b27f58b78dbd60e9a26b60b0d908ea642974b6d"
-  end
 
   def install
     ENV["GOPATH"] = buildpath
@@ -42,11 +26,11 @@ class Scw < Formula
     ln_s buildpath, buildpath/"src/github.com/scaleway/scaleway-cli"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
+    inreplace "pkg/scwversion/placeholder.go" do |s|
+      s.gsub! /VERSION = "master"/, "VERSION = \"v#{version}\""
+      s.gsub! /GITCOMMIT = "master"/, "GITCOMMIT = \"v#{version}\""
     end
-
-    system "./bin/godep", "go", "build", "-o", "scw"
+    system "go", "build", "-o", "scw", "./cmd/scw"
     bin.install "scw"
 
     bash_completion.install "contrib/completion/bash/scw"
@@ -55,6 +39,6 @@ class Scw < Formula
 
   test do
     output = shell_output(bin/"scw version")
-    assert output.include? "OS/Arch (client): darwin/amd64"
+    assert_match "OS/Arch (client): darwin/amd64", output
   end
 end

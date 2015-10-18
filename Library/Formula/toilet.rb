@@ -1,18 +1,16 @@
-require 'formula'
-
 class Toilet < Formula
   desc "Color-based alternative to figlet (uses libcaca)"
-  homepage 'http://caca.zoy.org/wiki/toilet'
-  url 'http://caca.zoy.org/raw-attachment/wiki/toilet/toilet-0.3.tar.gz'
-  sha1 '73ea7aa2b0470ac0fecc103d7eeed0048684a505'
+  homepage "http://caca.zoy.org/wiki/toilet"
+  url "http://caca.zoy.org/raw-attachment/wiki/toilet/toilet-0.3.tar.gz"
+  sha256 "89d4b530c394313cc3f3a4e07a7394fa82a6091f44df44dfcd0ebcb3300a81de"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libcaca'
+  depends_on "pkg-config" => :build
+  depends_on "libcaca"
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

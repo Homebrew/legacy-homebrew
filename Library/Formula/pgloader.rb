@@ -321,7 +321,7 @@ class Pgloader < Formula
     postgres_command = [
       "postgres",
       "--listen_addresses=",
-      "--unix_socket_directories=#{socket_dir}",
+      "--unix_socket_directories=#{socket_dir}"
     ]
 
     IO.popen(postgres_command * " ") do |postgres|

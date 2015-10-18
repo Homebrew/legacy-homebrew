@@ -1,8 +1,8 @@
 class Pdfgrep < Formula
   desc "Search PDFs for strings matching a regular expression"
-  homepage "http://pdfgrep.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/pdfgrep/1.3.1/pdfgrep-1.3.1.tar.gz"
-  sha1 "8d15760af0803ccea32760d5f68abe4224169639"
+  homepage "https://pdfgrep.org/"
+  url "https://pdfgrep.org/download/pdfgrep-1.4.1.tar.gz"
+  sha256 "db04a210e6bb7b77cd6c54b17f0f6fed0d123a85f97a541b270736a5d3840f2c"
 
   head do
     url "https://gitlab.com/pdfgrep/pdfgrep.git"
@@ -13,18 +13,22 @@ class Pdfgrep < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "8eccc779061c814c3896626af4e8c86a7b7913895507c832a9cb14336bfc9b9e" => :yosemite
-    sha256 "00c6ee95a9f1bd34190dbf778ec86c3eb3392aeea112b2937df6ac68572d323d" => :mavericks
-    sha256 "c2ce6b73ef12b9a2cb2b561aa7d3e54579f070aff4233af74581f29eef0c7efe" => :mountain_lion
+    sha256 "aa01210c18cae84398d94524d8578dfb738ff524eea05c9f77323a669667f52b" => :el_capitan
+    sha256 "79115ba8d82cea98bef279cf755a452e76f28c687b97fc01ee0e3be7228bd559" => :yosemite
+    sha256 "9f2b75a9d7e0910f4801794c108b451988c952f3d0690f15c0486b3c80ff12e7" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "poppler"
+  depends_on "pcre" => :optional
 
   def install
     system "./autogen.sh" if build.head?
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--without-libpcre" if build.without? "pcre"
+    system "./configure", *args
+
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
     system "make", "install"
   end

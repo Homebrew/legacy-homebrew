@@ -5,19 +5,20 @@ class Liblwgeom < Formula
 
   stable do
     url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
-    sha1 "5ac24b95495be258a7430c08b3407d7beca1832a"
+    sha256 "0d0e27f72f12b8dba456fbde25ed0f6913f42baf57332a7f1b9bbc6f29fddbf4"
     # Strip all the PostgreSQL functions from PostGIS configure.ac, to allow
     # building liblwgeom.dylib without needing PostgreSQL
     # NOTE: this will need to be maintained per postgis version
     # Somehow, this still works for 2.1.5, which is awesome!
     patch do
       url "https://gist.githubusercontent.com/dakcarto/7458788/raw/8df39204eef5a1e5671828ded7f377ad0f61d4e1/postgis-config_strip-pgsql.diff"
-      sha1 "3d93c9ede79439f1c683a604f9d906f5c788c690"
+      sha256 "0bccd1a9b42d8ef537a3851392e378ee252f813464a91ab8fe21ff7f7cae20c1"
     end
   end
 
   bottle do
     cellar :any
+    sha256 "56f4559b91056053630d8ba33518dc72a481db18d8ef6f785242515687986e5e" => :el_capitan
     sha256 "48aa3296e32ff2a72c2c559649a37e7ad1ce3c8fe825d9a0f3e320683c97041e" => :yosemite
     sha256 "c2a7148e99fe6b03f368a12bf89e69262795e97c1d8b1578f250607bf8833136" => :mavericks
     sha256 "11a77a99a93daed092be094195bc1afce3f2c2d91adc9412106bf5c89e4f5755" => :mountain_lion

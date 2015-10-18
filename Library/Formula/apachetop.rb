@@ -1,16 +1,16 @@
-require 'formula'
-
 class Apachetop < Formula
   desc "Top-like display of Apache log"
-  homepage 'http://freecode.com/projects/apachetop'
-  url 'http://ftp.debian.org/debian/pool/main/a/apachetop/apachetop_0.12.6.orig.tar.gz'
-  sha1 '005c9479800a418ee7febe5027478ca8cbf3c51b'
+  homepage "http://freecode.com/projects/apachetop"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apachetop/apachetop_0.12.6.orig.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/a/apachetop/apachetop_0.12.6.orig.tar.gz"
+  sha256 "850062414517055eab2440b788b503d45ebe9b290d4b2e027a5f887ad70f3f29"
 
   bottle do
     cellar :any
-    sha1 "5d9cac60ff10e36bcf346a7cd333c2d16eed3ecf" => :mavericks
-    sha1 "a70bbfb92d902f89032f83fb1072deb0787836a4" => :mountain_lion
-    sha1 "7743bd957fb2e9da0337f9674ff2d281bd4c3ff5" => :lion
+    revision 1
+    sha256 "1cfb399a8548e1ac48d7cb61374e23273aa1eb289e49ba452aa2c55641fe5bae" => :yosemite
+    sha256 "78aa56c9141cfc658120edfb27e795cf178067d54f66c79fc752536d8e0335ea" => :mavericks
+    sha256 "d2383e14241b9af39c197462339393463ae6f8161dae508f49b0753dff846287" => :mountain_lion
   end
 
   # Freecode is officially static from this point forwards. Do not rely on it for up-to-date package information.
@@ -23,7 +23,7 @@ class Apachetop < Formula
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-logfile=/var/log/apache2/access_log"
-    system "make install"
+    system "make", "install"
   end
 end
 

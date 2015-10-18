@@ -2,22 +2,24 @@ class Privoxy < Formula
   desc "Advanced filtering web proxy"
   homepage "http://www.privoxy.org"
   url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.23%20%28stable%29/privoxy-3.0.23-stable-src.tar.gz"
-  sha1 "72b6756cf532fdb85520640f0a1d4cb06bba1b7f"
+  sha256 "80b1a172d0518a9f95cde83d18dc62b9c7f117b9ada77bdcd3d310107f28f964"
 
   bottle do
-    sha1 "019e61d3280bc129ef7f83415b7c65785bc66727" => :yosemite
-    sha1 "4dabda6301f4430c5f80024f8c2695582d99754c" => :mavericks
-    sha1 "343462262756a0933cad7d04fc5ea9667c533881" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "e4e52b0fb31ad33bfdc9a1e158a482272fb4c02e2c0062a28cf19fa7b0df7c8d" => :el_capitan
+    sha256 "247b9897907a8cd13bc0af980a7a4251695632b359ec61ec95bf6f153bd4eab3" => :yosemite
+    sha256 "5722d1d6f520f2b86f98010d1c70c9cd5da15ecd5700d0482570d0a1c15143b8" => :mavericks
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on 'pcre'
+  depends_on "pcre"
 
   def install
     # Find Homebrew's libpcre
-    ENV.append 'LDFLAGS', "-L#{HOMEBREW_PREFIX}/lib"
+    ENV.append "LDFLAGS", "-L#{HOMEBREW_PREFIX}/lib"
 
     # No configure script is shipped with the source
     system "autoreconf", "-i"
@@ -28,7 +30,7 @@ class Privoxy < Formula
                           "--sysconfdir=#{etc}/privoxy",
                           "--localstatedir=#{var}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   plist_options :manual => "privoxy #{HOMEBREW_PREFIX}/etc/privoxy/config"

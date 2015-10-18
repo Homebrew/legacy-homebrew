@@ -1,10 +1,8 @@
-require 'formula'
-
 class Wput < Formula
   desc "Tiny, wget-like FTP client for uploading files"
-  homepage 'http://wput.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/wput/wput/0.6.2/wput-0.6.2.tgz'
-  sha1 'c058f76395672d1fbbb839c958d6537e82fc88b7'
+  homepage "http://wput.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/wput/wput/0.6.2/wput-0.6.2.tgz"
+  sha256 "229d8bb7d045ca1f54d68de23f1bc8016690dc0027a16586712594fbc7fad8c7"
 
   # The patch is to skip inclusion of malloc.h only on OSX. Upstream:
   # https://sourceforge.net/tracker/?func=detail&aid=3481469&group_id=141519&atid=749615
@@ -15,7 +13,7 @@ class Wput < Formula
                           "--prefix=#{prefix}"
     system "make"
     ENV.deparallelize
-    system "make install"
+    system "make", "install"
   end
 
   test do

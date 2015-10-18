@@ -1,17 +1,15 @@
-require 'formula'
-
 class Rhino < Formula
   desc "JavaScript engine"
-  homepage 'https://www.mozilla.org/rhino/'
-  url 'https://github.com/mozilla/rhino/releases/download/Rhino1_7_6_RELEASE/rhino1.7.6.zip'
-  sha1 '7d86ccb422bc82569b334bad68cee385c3a4540c'
+  homepage "https://www.mozilla.org/rhino/"
+  url "https://github.com/mozilla/rhino/releases/download/Rhino1_7_6_RELEASE/rhino1.7.6.zip"
+  sha256 "45f4431699887a72a7f383ef927ef1b2e79d1fe597260af8df11ea93255b10f5"
 
   def install
-    libexec.install 'js.jar'
-    bin.write_jar_script libexec/'js.jar', 'rhino'
+    libexec.install "js.jar"
+    bin.write_jar_script libexec/"js.jar", "rhino"
   end
 
   test do
-    system "#{bin}/rhino", '-e', 'print(42);'
+    system "#{bin}/rhino", "-e", "print(42);"
   end
 end

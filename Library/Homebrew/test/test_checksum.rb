@@ -1,9 +1,9 @@
-require 'testing_env'
-require 'checksum'
+require "testing_env"
+require "checksum"
 
 class ChecksumTests < Homebrew::TestCase
   def test_empty?
-    assert_empty Checksum.new(:sha1, '')
+    assert_empty Checksum.new(:sha1, "")
   end
 
   def test_equality

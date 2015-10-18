@@ -1,17 +1,20 @@
 class CppNetlib < Formula
   desc "C++ libraries for high level network programming"
   homepage "http://cpp-netlib.org"
-  url "https://storage.googleapis.com/cpp-netlib-downloads/0.11.1/cpp-netlib-0.11.1-final.tar.bz2"
-  sha256 "8f5a0bb7e5940490b4e409f9c805b752ee4b598e06d740d04adfc76eb5c8e23e"
-  version "0.11.1"
+  url "http://downloads.cpp-netlib.org/0.11.2/cpp-netlib-0.11.2-final.tar.gz"
+  version "0.11.2"
+  sha256 "71953379c5a6fab618cbda9ac6639d87b35cab0600a4450a7392bc08c930f2b1"
 
   bottle do
-    sha256 "c6d9909b1d7a4402782ed86d80c97c612f24e8893e266a7064362dc0a6323324" => :yosemite
-    sha256 "8cd73fdc6597e1223f1cf12a0908c1d4c469f1a0dddf7f88d6f5d522f59129c3" => :mavericks
-    sha256 "1409987a309cdf2a03d8161c6357770626d265d622101bf246011290126de2f9" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5669a528afe56b310179af07d0191b96491f90a2365b5b9e7f1d26daa011b463" => :el_capitan
+    sha256 "2ddb407f33dd6a8c8ec1e3a8afd67a3afb1666f843794e72632f203fb5b42ecb" => :yosemite
+    sha256 "0913efd07660f359ee7d043f06a25ccb9fc3010f42b15f4dbd43b558f2161bb1" => :mavericks
+    sha256 "093cc615abf08eeb6d698d85e9d4bb8003e536548f925246d86baa7f1ec45506" => :mountain_lion
   end
 
   depends_on "cmake" => :build
+  depends_on "openssl"
 
   if MacOS.version < :mavericks
     depends_on "boost" => "c++11"
@@ -23,20 +26,21 @@ class CppNetlib < Formula
 
   def install
     ENV.cxx11
-    system "cmake", ".", *std_cmake_args
+
+    system "cmake", *std_cmake_args
     system "make"
     system "make", "install"
   end
 
   test do
     (testpath/"test.cpp").write <<-EOS.undent
-        #include <boost/network/protocol/http/client.hpp>
-        int main(int argc, char *argv[]) {
-            using namespace boost::network;
-            http::client client;
-            http::client::request request("");
-            return 0;
-        }
+      #include <boost/network/protocol/http/client.hpp>
+      int main(int argc, char *argv[]) {
+        using namespace boost::network;
+        http::client client;
+        http::client::request request("");
+        return 0;
+      }
     EOS
     flags = ["-stdlib=libc++", "-I#{include}", "-I#{Formula["boost"].include}", "-L#{lib}", "-L#{Formula["boost"].lib}", "-lboost_thread-mt", "-lboost_system-mt", "-lssl", "-lcrypto", "-lcppnetlib-client-connections", "-lcppnetlib-server-parsers", "-lcppnetlib-uri"] + ENV.cflags.to_s.split
     system ENV.cxx, "-o", "test", "test.cpp", *flags

@@ -1,10 +1,8 @@
-require "formula"
-
 class Mikmod < Formula
   desc "Portable tracked music player"
   homepage "http://mikmod.raphnet.net/"
   url "https://downloads.sourceforge.net/project/mikmod/mikmod/3.2.6/mikmod-3.2.6.tar.gz"
-  sha1 "55677382ab3e6d5ed35c520669e2cedd395a8ebb"
+  sha256 "04544e0edb36a19fab61233dff97430969cff378a98f5989a1378320550e2673"
 
   bottle do
     sha1 "81085407e9a27cf49e46cee5ec0d7b6c613cccc1" => :mavericks
@@ -18,7 +16,7 @@ class Mikmod < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

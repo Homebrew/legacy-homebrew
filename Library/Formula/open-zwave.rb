@@ -1,10 +1,8 @@
-require "formula"
-
 class OpenZwave < Formula
   desc "Library for selected Z-Wave PC controllers"
   homepage "http://www.openzwave.com"
   url "http://old.openzwave.com/downloads/openzwave-1.2.919.tar.gz"
-  sha1 "514fa8a9e8468d264a6e4fffc377f2e18368ef41"
+  sha256 "473229f3dd3d6b260e6584b17e5c5f2e09e61805f89763f486a9f7aa2b4181ba"
 
   bottle do
     sha1 "0aea65c0a849243fd77171b8331670bec815c296" => :yosemite

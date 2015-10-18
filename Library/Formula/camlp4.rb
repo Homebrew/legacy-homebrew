@@ -2,18 +2,20 @@ class Camlp4 < Formula
   desc "Tool to write extensible parsers in OCaml"
   homepage "https://github.com/ocaml/camlp4"
   url "https://github.com/ocaml/camlp4/archive/4.02+6.tar.gz"
-  sha1 "6dd7e591dfde94c44576dba9b847279ffb92c889"
   version "4.02.2+6"
-  head "https://github.com/ocaml/camlp4.git"
+  sha256 "820c35b69fdff3225bda6045fabffe5d7c54dda00fb157444ac8bda5e1778d45"
+  head "https://github.com/ocaml/camlp4.git", :branch => "trunk"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "f02f03f8833600db52b476fe8af881496d3dac597cd2c027026e4e77fcde465b" => :yosemite
-    sha256 "2e9a8659e9ddd0b94f57696d46d4abab56576b4a5f54cd94de381586ffdaf168" => :mavericks
-    sha256 "c8a26afba24e74c42f667e2c561a61a0348748ce7506574dffaa070a3912e0e3" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2fbb2011ee0a44abdc5ce6cbdea7b1f271a00b903bd14dab9ecf3f5318571204" => :el_capitan
+    sha256 "3a3bcb70dad5b897a8d1db8bf28fe15794de5f14249d00b88ce5a8411e5e4a9d" => :yosemite
+    sha256 "08ca2278024819f625b4a0ca52b2cb931279c9d7ec1d9a55c9e9748c5f55cb15" => :mavericks
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   def install
     # this build fails if jobs are parallelized

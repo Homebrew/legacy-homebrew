@@ -5,8 +5,18 @@ class BoostPython < Formula
   sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
   head "https://github.com/boostorg/boost.git"
 
+  stable do
+    # don't explicitly link a Python framework
+    # https://github.com/boostorg/build/pull/78
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/9026da299ac1bfd3f419/raw/b73a919c38af08941487ca37d46e711864104c4d/boost-python.diff"
+      sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
+    end
+  end
+
   bottle do
     cellar :any
+    sha256 "aa56ab952ef93ad52672b86cc8b8371fe79cb907d6eed88a316ed2808a264cd2" => :el_capitan
     sha256 "7f627fb1887ecaaea4b6b363d300a21c5274a1607c7dc64f2114d3794b5fec11" => :yosemite
     sha256 "6239719b00615abb9ce2bd40c680b14182325c2e1844c1bea410c002b42ce1db" => :mavericks
     sha256 "24acf2ddde1edfabe04239856dec6ce85e8652f3c0d5d8cf357b219c2bf3272a" => :mountain_lion
@@ -27,15 +37,6 @@ class BoostPython < Formula
   fails_with :llvm do
     build 2335
     cause "Dropped arguments to functions when linking with boost"
-  end
-
-  stable do
-    # don't explicitly link a Python framework
-    # https://github.com/boostorg/build/pull/78
-    patch do
-      url "https://gist.githubusercontent.com/tdsmith/9026da299ac1bfd3f419/raw/b73a919c38af08941487ca37d46e711864104c4d/boost-python.diff"
-      sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
-    end
   end
 
   def install
@@ -110,7 +111,7 @@ class BoostPython < Formula
                  `#{python}-config --ldflags`.strip).split(" ")
       system ENV.cxx, "-shared", "hello.cpp", "-lboost_#{python}", "-o", "hello.so", *pyflags
       output = `#{python} -c "from __future__ import print_function; import hello; print(hello.greet())"`
-      assert output.include?("Hello, world!")
+      assert_match "Hello, world!", output
     end
   end
 end

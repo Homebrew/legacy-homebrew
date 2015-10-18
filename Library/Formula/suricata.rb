@@ -5,9 +5,9 @@ class Suricata < Formula
   sha256 "7af6394cb81e464f5c1ac88a1444030e30940caab6e53688a6d9eb652226d1be"
 
   devel do
-    url 'http://www.openinfosecfoundation.org/download/suricata-2.1beta4.tar.gz'
-    sha256 '12b3c98a7464ef6fb631884aa648b53a9cbb04279f754009fdc9ae2a6b605b95'
-    version '2.1beta4'
+    url "http://www.openinfosecfoundation.org/download/suricata-2.1beta4.tar.gz"
+    sha256 "12b3c98a7464ef6fb631884aa648b53a9cbb04279f754009fdc9ae2a6b605b95"
+    version "2.1beta4"
   end
 
   bottle do
@@ -75,7 +75,7 @@ class Suricata < Formula
     end
 
     if build.with? "jansson"
-      jansson = Formula['jansson']
+      jansson = Formula["jansson"]
       args << "--with-libjansson-includes=#{jansson.opt_include}"
       args << "--with-libjansson-libraries=#{jansson.opt_lib}"
     end

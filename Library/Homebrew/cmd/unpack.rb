@@ -25,12 +25,12 @@ module Homebrew
 
       oh1 "Unpacking #{f.full_name} to: #{stage_dir}"
 
-      ENV['VERBOSE'] = '1' # show messages about tar
+      ENV["VERBOSE"] = "1" # show messages about tar
       f.brew do
         f.patch if ARGV.flag?("--patch")
         cp_r getwd, stage_dir
       end
-      ENV['VERBOSE'] = nil
+      ENV["VERBOSE"] = nil
 
       if ARGV.git?
         ohai "Setting up git repository"

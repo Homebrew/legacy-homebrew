@@ -1,5 +1,3 @@
-require "formula"
-
 class Logtalk < Formula
   desc "Object-oriented logic programming language"
   homepage "http://logtalk.org"

@@ -6,7 +6,7 @@ own!
 
 ### We try hard to avoid dupes in Homebrew/homebrew
 Stuff that comes with OS X or libraries that are provided by
-[RubyGems, CPAN or PyPi](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Gems,-Eggs-and-Perl-Modules.md)
+[RubyGems, CPAN or PyPi](Gems,-Eggs-and-Perl-Modules.md)
 should not be duplicated. There are good reasons for this:
 
 * Duplicate libraries regularly break builds

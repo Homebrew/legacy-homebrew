@@ -1,14 +1,13 @@
-require 'formula'
-
 class Libexif < Formula
   desc "EXIF parsing library"
-  homepage 'http://libexif.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/libexif/libexif/0.6.21/libexif-0.6.21.tar.gz'
-  sha1 '4106f02eb5f075da4594769b04c87f59e9f3b931'
+  homepage "http://libexif.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/libexif/libexif/0.6.21/libexif-0.6.21.tar.gz"
+  sha256 "edb7eb13664cf950a6edd132b75e99afe61c5effe2f16494e6d27bc404b287bf"
 
   bottle do
     cellar :any
     revision 1
+    sha256 "5990278735f835e2ab004ceac83616a3a71f6ae96c6f5eb0c0f1aa2af0452fb6" => :el_capitan
     sha1 "7fd580b7289a4d3ace04575ed44e8005feb63691" => :yosemite
     sha1 "170009ee38c18d24a06a6ab0bf2c957cf8b378c2" => :mavericks
     sha1 "4af9a9537c52e59594d313b8decbffc0b12fbf7a" => :mountain_lion
@@ -21,6 +20,6 @@ class Libexif < Formula
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 end

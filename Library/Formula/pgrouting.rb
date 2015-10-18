@@ -1,10 +1,8 @@
-require 'formula'
-
 class Pgrouting < Formula
   desc "Provides geospatial routing for PostGIS/PostgreSQL database"
-  homepage 'http://www.pgrouting.org'
+  homepage "http://www.pgrouting.org"
   url "https://github.com/pgRouting/pgrouting/archive/v2.0.0.tar.gz"
-  sha1 "cd2f60dc49df7bc8c789c8e73ecb9759194fab96"
+  sha256 "606309e8ece04abec062522374b48179c16bddb30dd4c5080b89a4298e8d163b"
 
   def pour_bottle?
     # Postgres extensions must live in the Postgres prefix, which precludes
@@ -17,14 +15,14 @@ class Pgrouting < Formula
   # https://github.com/pgRouting/pgrouting/issues/274
   patch :DATA
 
-  depends_on 'cmake' => :build
-  depends_on 'boost'
-  depends_on 'cgal'
-  depends_on 'postgis'
-  depends_on 'postgresql'
+  depends_on "cmake" => :build
+  depends_on "boost"
+  depends_on "cgal"
+  depends_on "postgis"
+  depends_on "postgresql"
 
   def install
-    mkdir 'build' do
+    mkdir "build" do
       system "cmake", "-DWITH_DD=ON", "..", *std_cmake_args
       system "make", "install"
     end

@@ -1,10 +1,8 @@
-require "formula"
-
 class R3 < Formula
   desc "High-performance URL router library"
   homepage "https://github.com/c9s/r3"
   url "https://github.com/c9s/r3/archive/1.3.3.tar.gz"
-  sha1 "2626e78e5d5afb64561b6c468e357db14597aef6"
+  sha256 "347faa8011df9e8194b3ccf9bbf529882b1e331421d98aa78c788cb47db3df92"
 
   bottle do
     cellar :any
@@ -31,18 +29,18 @@ class R3 < Formula
 
     system "./autogen.sh"
 
-    args = %W{
+    args = %W[
       --disable-debug
       --disable-dependency-tracking
       --disable-silent-rules
       --prefix=#{prefix}
-    }
+    ]
 
     args << "--enable-graphviz" if build.with? "graphviz"
     args << "--with-malloc=jemalloc" if build.with? "jemalloc"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

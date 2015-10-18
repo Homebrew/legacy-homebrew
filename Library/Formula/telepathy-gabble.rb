@@ -1,10 +1,8 @@
-require "formula"
-
 class TelepathyGabble < Formula
   desc "Telepathy Jabber/XMPP connection manager"
   homepage "http://telepathy.freedesktop.org/wiki/Components/"
   url "http://telepathy.freedesktop.org/releases/telepathy-gabble/telepathy-gabble-0.18.3.tar.gz"
-  sha1 "1c71c5acf2c506788aa4b1604390f38979d88887"
+  sha256 "8ec714607e9bcb8d5a3f44adf871e7b07d5db8e326e47536e74e09cba59989c2"
   revision 1
 
   bottle do
@@ -33,6 +31,6 @@ class TelepathyGabble < Formula
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

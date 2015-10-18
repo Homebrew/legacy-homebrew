@@ -2,7 +2,7 @@ class Iozone < Formula
   desc "File system benchmark tool"
   homepage "http://www.iozone.org/"
   url "http://www.iozone.org/src/current/iozone3_430.tar"
-  sha1 "de02b10fcde6bd60e0c805e3abfc0aed15e85ac1"
+  sha256 "e8388238326dc29359e5cb9f790d193f1e1bdadfbf260e010c50fa682387faed"
 
   bottle do
     cellar :any

@@ -1,11 +1,10 @@
-require "formula"
 require "language/go"
 
 class Mpdviz < Formula
   desc "Standalone console MPD visualizer"
   homepage "https://github.com/lucy/mpdviz"
-  url "http://github.com/lucy/mpdviz/archive/0.4.6.tar.gz"
-  sha1 "9b819f1e1a54ef86872d9ece167e7d1f0a337899"
+  url "https://github.com/lucy/mpdviz/archive/0.4.6.tar.gz"
+  sha256 "c34243ec3f3d91adbc36d608d5ba7082ff78870f2fd76a6650d5fb3218cc2ba3"
 
   go_resource "github.com/lucy/go-fftw" do
     url "https://github.com/lucy/go-fftw.git",

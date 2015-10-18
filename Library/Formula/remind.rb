@@ -1,14 +1,14 @@
 class Remind < Formula
   desc "Sophisticated calendar and alarm"
   homepage "https://www.roaringpenguin.com/products/remind"
-  url "https://www.roaringpenguin.com/files/download/remind-03.01.14.tar.gz"
-  sha256 "0ad14ae796dfd844e2901c691d03ebdd173fd8a71141df0c26c1d192f29031ad"
+  url "https://www.roaringpenguin.com/files/download/remind-03.01.15.tar.gz"
+  sha256 "8adab4c0b30a556c34223094c5c74779164d5f3b8be66b8039f44b577e678ec1"
 
   bottle do
     cellar :any
-    sha256 "439072984afe4ffdc59fdde49ab72bd5ae22f502594ca6ca1eff005c5978eb35" => :yosemite
-    sha256 "7f91415d27d3bce89c6ecae727d310b0f951c494c1aabad7e2f0e99d8c9bcb15" => :mavericks
-    sha256 "aade269584726a4050a48d1ad1483e1b9de1e485a4216ef2817b1c7ca381745d" => :mountain_lion
+    sha256 "b72ffda6998a1c203686b82b8e07c3132bc380fb9126a2ca22254608d3c418c8" => :yosemite
+    sha256 "958eafdd458799e788457837d01ef387c5368ffee6f9a6b1ce363678a9cbc8a5" => :mavericks
+    sha256 "fb78fa7e3df893822473b56d79d64d48ff5827c7df3ce6d518985262c99d3056" => :mountain_lion
   end
 
   def install

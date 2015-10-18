@@ -1,14 +1,12 @@
-require 'formula'
-
 class Montage < Formula
   desc "Toolkit for assembling FITS images into custom mosaics"
-  homepage 'http://montage.ipac.caltech.edu'
-  url 'http://montage.ipac.caltech.edu/download/Montage_v3.3.tar.gz'
-  sha1 'c8db5b9018c96e19b584d45758819e892b453d6d'
+  homepage "http://montage.ipac.caltech.edu"
+  url "http://montage.ipac.caltech.edu/download/Montage_v3.3.tar.gz"
+  sha256 "5403921ec18e29c2a70c1d42fc45b5a982b8a11fe5aa3cd3aa9fc814fcc16a11"
 
   def install
     system "make"
-    bin.install Dir['bin/m*']
+    bin.install Dir["bin/m*"]
   end
 
   # fix function not being declared void

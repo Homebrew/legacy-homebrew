@@ -1,10 +1,8 @@
-require 'formula'
-
 class Liboauth < Formula
   desc "C library for the OAuth Core RFC 5849 standard"
-  homepage 'http://liboauth.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/liboauth/liboauth-1.0.3.tar.gz'
-  sha1 '791dbb4166b5d2c843c8ff48ac17284cc0884af2'
+  homepage "http://liboauth.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/liboauth/liboauth-1.0.3.tar.gz"
+  sha256 "0df60157b052f0e774ade8a8bac59d6e8d4b464058cc55f9208d72e41156811f"
   revision 1
 
   bottle do
@@ -20,6 +18,6 @@ class Liboauth < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-curl"
-    system "make install"
+    system "make", "install"
   end
 end

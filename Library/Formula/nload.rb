@@ -1,10 +1,8 @@
-require 'formula'
-
 class Nload < Formula
   desc "Realtime console network usage monitor"
-  homepage 'http://www.roland-riegel.de/nload/'
-  url 'http://www.roland-riegel.de/nload/nload-0.7.4.tar.gz'
-  sha1 'bb0a168c93c588ad4fd5e3a653b3620b79ada1e8'
+  homepage "http://www.roland-riegel.de/nload/"
+  url "http://www.roland-riegel.de/nload/nload-0.7.4.tar.gz"
+  sha256 "c1c051e7155e26243d569be5d99c744d8620e65fa8a7e05efcf84d01d9d469e5"
 
   fails_with :llvm do
     build 2334

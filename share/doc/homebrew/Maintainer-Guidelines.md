@@ -16,7 +16,7 @@ This is all that really matters:
 - Ensure it is not a library that can be installed with
   [gem](https://en.wikipedia.org/wiki/RubyGems),
   [cpan](https://en.wikipedia.org/wiki/Cpan) or
-  [pip](https://pip.pypa.io/en/latest).
+  [pip](https://pip.pypa.io/en/stable/).
 - Ensure that any dependencies are accurate and minimal. We don't need to
   support every possible optional feature for the software.
 - Use `brew pull` when possible to add messages to auto-close pull requests (which may take ~5m, be patient) and pull bottles built by BrewTestBot.

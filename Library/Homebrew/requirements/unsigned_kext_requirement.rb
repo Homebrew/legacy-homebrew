@@ -1,4 +1,4 @@
-require 'requirement'
+require "requirement"
 
 class UnsignedKextRequirement < Requirement
   fatal true

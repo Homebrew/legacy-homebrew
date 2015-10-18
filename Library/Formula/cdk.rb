@@ -3,7 +3,7 @@ class Cdk < Formula
   homepage "http://invisible-island.net/cdk/"
   url "ftp://invisible-island.net/cdk/cdk-5.0-20141106.tgz"
   version "5.0.20141106"
-  sha1 "81d1804412dbcdc399a91e08e024e30890c1a291"
+  sha256 "d7ce8d9698b4998fa49a63b6e19309d3eb61cc3a019bfc95101d845ef03c4803"
 
   bottle do
     cellar :any

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libxdiff < Formula
   desc "Implements diff functions for binary and text files"
-  homepage 'http://www.xmailserver.org/xdiff-lib.html'
-  url 'http://www.xmailserver.org/libxdiff-0.23.tar.gz'
-  sha1 'f92eff48eeb49d5145ddafcb72dcfb18f5d07303'
+  homepage "http://www.xmailserver.org/xdiff-lib.html"
+  url "http://www.xmailserver.org/libxdiff-0.23.tar.gz"
+  sha256 "e9af96174e83c02b13d452a4827bdf47cb579eafd580953a8cd2c98900309124"
 
   bottle do
     cellar :any
@@ -19,6 +17,6 @@ class Libxdiff < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end

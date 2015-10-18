@@ -1,10 +1,8 @@
-require 'formula'
-
 class Editorconfig < Formula
   desc "Maintain consistent coding style between multiple editors"
-  homepage 'http://editorconfig.org'
-  url 'https://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.12.0/source/editorconfig-core-c-0.12.0.tar.gz'
-  sha1 'dfa96da823133fd925e7384f19d7f2acf44f50ba'
+  homepage "http://editorconfig.org"
+  url "https://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.12.0/source/editorconfig-core-c-0.12.0.tar.gz"
+  sha256 "98c581d1dce24158160c9235190ce93eeae121f978aa84a89c7de258b5122e01"
 
   bottle do
     cellar :any
@@ -15,16 +13,16 @@ class Editorconfig < Formula
 
   option :universal
 
-  head 'https://github.com/editorconfig/editorconfig-core-c.git'
+  head "https://github.com/editorconfig/editorconfig-core-c.git"
 
-  depends_on 'cmake' => :build
-  depends_on 'pcre'
+  depends_on "cmake" => :build
+  depends_on "pcre"
 
   def install
     ENV.universal_binary if build.universal?
 
     system "cmake", ".", "-DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

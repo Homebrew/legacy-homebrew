@@ -1,13 +1,11 @@
-require 'formula'
-
 class Blitz < Formula
   desc "C++ class library for scientific computing"
-  homepage 'http://blitz.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/blitz/blitz/Blitz++%200.10/blitz-0.10.tar.gz'
-  sha1 '7e157ec22ed2d261e896b7de4e8e8d3bf7d780e2'
+  homepage "http://blitz.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/blitz/blitz/Blitz++%200.10/blitz-0.10.tar.gz"
+  sha256 "804ef0e6911d43642a2ea1894e47c6007e4c185c866a7d68bad1e4c8ac4e6f94"
 
   head do
-    url 'http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz', :using => :hg
+    url "http://blitz.hg.sourceforge.net:8000/hgroot/blitz/blitz", :using => :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -24,6 +22,6 @@ class Blitz < Formula
                           "--disable-doxygen",
                           "--disable-dot",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

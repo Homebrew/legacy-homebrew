@@ -1,10 +1,8 @@
-require "formula"
-
 class GameMusicEmu < Formula
   desc "Videogame music file emulator collection"
   homepage "https://code.google.com/p/game-music-emu/"
   url "https://game-music-emu.googlecode.com/files/game-music-emu-0.6.0.tar.bz2"
-  sha1 "53f9af30dc1c8110135207c9ca35c1fa6716ddcf"
+  sha256 "506e81d0c61e1a26d503fbf5351503e0b31f9fbb374cb1f09979758b46a24987"
 
   head "http://game-music-emu.googlecode.com/svn/trunk/"
 

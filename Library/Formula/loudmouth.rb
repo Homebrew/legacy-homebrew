@@ -1,18 +1,17 @@
-require "formula"
-
 class Loudmouth < Formula
   desc "Lightweight C library for the Jabber protocol"
-  homepage "http://mcabber.com"
-  url "http://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2"
+  homepage "https://mcabber.com"
+  url "https://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2"
   version "1.5.0.20121201"
-  sha1 "502963c3068f7033bb21d788918c1e5cd14f386e"
+  sha256 "d8ff057dc98c99ab19a68c3890c7f5ab47870e45d67bb65891f01a78c77dfcf9"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "036bfd7eb2c9b064596bdbbf241bcd91247fbdb5" => :yosemite
-    sha1 "ea2c830197162a650c5b24b6e86b78f1ef9e878f" => :mavericks
-    sha1 "0b77821cecfa2ea9e3cd9789c21b2e8857f43be0" => :mountain_lion
+    revision 1
+    sha256 "94b43d775245f39b1b5e8e3042a3a9a6b5bda283eb9388f6ba7584e768440ed2" => :el_capitan
+    sha256 "de555085936f17c58982b18b54ce5e033255453db378f7475d1aaed86402f58b" => :yosemite
+    sha256 "0f790d8960e14b3d1df6de783acf19faaf3dedf95aea8a65cd99490ff115f71b" => :mavericks
   end
 
   head "https://github.com/mcabber/loudmouth.git"
@@ -42,7 +41,7 @@ class Loudmouth < Formula
   stable do
     patch do
       url "https://github.com/mcabber/loudmouth/commit/369844a0fc.diff"
-      sha1 "e52ee2e24a06ebea52b90866a347daf1f1d28382"
+      sha256 "35fa20c2b91dc470a76db41b67b2f589763aaed7da8537c58a5002a8f896eb09"
     end
   end
 

@@ -1,14 +1,14 @@
 class Zurl < Formula
   desc "HTTP and WebSocket client worker with ZeroMQ interface"
   homepage "https://github.com/fanout/zurl"
-  url "https://dl.bintray.com/fanout/source/zurl-1.4.7.tar.bz2"
-  sha256 "ffe8bb1268c62241050e8d57472a0877e1374db31e6777c5498693685770a90e"
+  url "https://dl.bintray.com/fanout/source/zurl-1.4.10.tar.bz2"
+  sha256 "4e430166171edff18c2557b26365e97ca7f4f56447afb3580e044919016ff788"
 
   bottle do
     cellar :any
-    sha256 "87d3d44429695a671cfbcc7e43cf6a12bde243df79ddd2f8bd595005b7a473fb" => :yosemite
-    sha256 "365190727ac5dd5901fb2a02a37635a7b6a4e82a536845a4511c55d78b28ff21" => :mavericks
-    sha256 "e1bbc70ee4a8aa687dd6c61e7b9fba5d6da2dc9092572eb03b314c8b4aafc448" => :mountain_lion
+    sha256 "9661548ae2d9f4a54416d95c57e1b3b6b090caa047cc932d551ba26cbffec17e" => :el_capitan
+    sha256 "33b3c72805f2e85a5d7681b56e14f96c999ca77ed11396e2c4cd8e3f27a19949" => :yosemite
+    sha256 "a5c4d4b61aebbdb5e209240ef090a5d33971966af1ac7d3ef0f5726aacc73f51" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -41,7 +41,7 @@ class Zurl < Formula
       defpolicy=allow
       timeout=10
       EOS
-      )
+                  )
 
     runfile.write(<<-EOS.undent
       import json
@@ -85,7 +85,7 @@ class Zurl < Formula
       assert('type' not in resp)
       assert(resp['body'] == 'test response\\n')
       EOS
-      )
+                 )
 
     pid = fork do
       exec "#{bin}/zurl", "--config=#{conffile}"

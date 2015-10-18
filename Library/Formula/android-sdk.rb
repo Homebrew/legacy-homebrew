@@ -3,21 +3,29 @@ require "base64"
 class AndroidSdk < Formula
   desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.3.3-macosx.zip"
-  version "24.3.3"
-  sha256 "2e855666ff7fd35e9849abc5f091d5e119fab353baa0c9b4fed628f7b979a538"
+  url "https://dl.google.com/android/android-sdk_r24.4-macosx.zip"
+  version "24.4"
+  sha256 "a1cb0c9b2036d597e18986de1bd43918b6113373ff3bf6fdb81b6cce4ec3efd7"
+
+  bottle do
+    cellar :any
+    sha256 "6813bb19eb0127850832a32cddd55cfd0106a8d079726c3a9e8e18855efe0165" => :el_capitan
+    sha256 "7210e0118c1bbba916add540c9a1b7dc9b14b0c2cfbdbea9a1e0ca0e6b0143ec" => :yosemite
+    sha256 "e148339aa960c019ae70e967b3cadcd57fe93838067453b21264a8e330818a42" => :mavericks
+  end
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
   resource "completion" do
     url "https://android.googlesource.com/platform/sdk/+/7859e2e738542baf96c15e6c8b50bbdb410131b0/bash_completion/adb.bash?format=TEXT"
+    mirror "https://raw.githubusercontent.com/Homebrew/patches/c3b801f/android-sdk/adb.bash"
     sha256 "44b3e20ed9cb8fff01dc6907a57bd8648cd0d1bcc7b129ec952a190983ab5e1a"
   end
 
   # Version of the android-build-tools the wrapper scripts reference.
   def build_tools_version
-    "22.0.1"
+    "23.0.1"
   end
 
   def install

@@ -1,16 +1,14 @@
-require 'formula'
-
 # Note: pull from git tag to get submodules
 class Hubflow < Formula
   desc "GitFlow for GitHub"
-  homepage 'http://datasift.github.io/gitflow/'
-  url 'https://github.com/datasift/gitflow.git', :tag => '1.5.2'
-  head 'https://github.com/datasift/gitflow.git'
+  homepage "https://datasift.github.io/gitflow/"
+  url "https://github.com/datasift/gitflow.git", :tag => "1.5.2"
+  head "https://github.com/datasift/gitflow.git"
 
   def install
-    ENV['INSTALL_INTO'] = libexec
+    ENV["INSTALL_INTO"] = libexec
     system "./install.sh", "install"
-    bin.write_exec_script libexec/'git-hf'
+    bin.write_exec_script libexec/"git-hf"
   end
 
   test do

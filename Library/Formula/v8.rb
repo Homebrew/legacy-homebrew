@@ -1,18 +1,16 @@
 # Track Chrome stable.
-# https://github.com/v8/v8-git-mirror/commits/901b67916
 # https://omahaproxy.appspot.com/
-
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.1.0.27.tar.gz"
-  sha256 "88bafa0bf80154f8f00e9808acd90a9233c0589c5da46ac4ebe3489ce914b87a"
+  url "https://github.com/v8/v8-git-mirror/archive/4.5.103.35.tar.gz"
+  sha256 "bc01af3f5624beef3bb9d62cd3cbec1517b4ff4513d1ec4d46e59d0e5a5850d7"
 
   bottle do
     cellar :any
-    sha256 "e089d591be39c02780383607dfa75786baff911c8691129792ad2761202aabf9" => :yosemite
-    sha256 "b4727655d6f46b416571d7c522db41f770cc0c74d87ca8e560b6d673aaef8687" => :mavericks
-    sha256 "043d0048611cbbbc3cfc4c6a95a92ebcc6c70e9b9510a1bce1091110788e6d62" => :mountain_lion
+    sha256 "6647353a6717a0028e7e627e85fe1e943cf68869f95d2250a662b167ddc50c29" => :el_capitan
+    sha256 "0f577159738f985afbc85fa47c52b32c0551922cadbf1ad24895a8737d70cecc" => :yosemite
+    sha256 "affd5c033afa20e071b60f05f5de78d00eaedd67df7f1f305645c8dcfb41774d" => :mavericks
   end
 
   option "with-readline", "Use readline instead of libedit"
@@ -24,24 +22,44 @@ class V8 < Formula
   depends_on :python => :build # gyp doesn't run under 2.6 or lower
   depends_on "readline" => :optional
 
+  needs :cxx11
+
   # Update from "DEPS" file in tarball.
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "fe00999dfaee449d3465a9316778434884da4fa7"
-    version "2010"
+        :revision => "5122240c5e5c4d8da12c543d82b03d6089eb77c5"
+  end
+
+  resource "icu" do
+    url "https://chromium.googlesource.com/chromium/deps/icu.git",
+        :revision => "c81a1a3989c3b66fa323e9a6ee7418d7c08297af"
+  end
+
+  resource "buildtools" do
+    url "https://chromium.googlesource.com/chromium/buildtools.git",
+        :revision => "ecc8e253abac3b6186a97573871a084f4c0ca3ae"
+  end
+
+  resource "clang" do
+    url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
+        :revision => "73ec8804ed395b0886d6edf82a9f33583f4a7902"
   end
 
   resource "gmock" do
-    url "http://googlemock.googlecode.com/svn/trunk", :revision => 501
-    version "501"
+    url "https://chromium.googlesource.com/external/googlemock.git",
+        :revision => "29763965ab52f24565299976b936d1265cb6a271"
   end
 
   resource "gtest" do
-    url "http://googletest.googlecode.com/svn/trunk", :revision => 700
-    version "700"
+    url "https://chromium.googlesource.com/external/googletest.git",
+        :revision => "23574bf2333f834ff665f894c97bef8a5b33a0a9"
   end
 
   def install
+    # Bully GYP into correctly linking with c++11
+    ENV.cxx11
+    ENV["GYP_DEFINES"] = "clang=1 mac_deployment_target=#{MacOS.version}"
+
     # fix up libv8.dylib install_name
     # https://github.com/Homebrew/homebrew/issues/36571
     # https://code.google.com/p/v8/issues/detail?id=3871
@@ -49,15 +67,18 @@ class V8 < Formula
               "'OTHER_LDFLAGS': ['-dynamiclib', '-all_load']",
               "\\0, 'DYLIB_INSTALL_NAME_BASE': '#{opt_lib}'"
 
-    # Download gyp ourselves because running "make dependencies" pulls in ICU.
+    (buildpath/"buildtools").install resource("buildtools")
     (buildpath/"build/gyp").install resource("gyp")
+    (buildpath/"third_party/icu").install resource("icu")
     (buildpath/"testing/gmock").install resource("gmock")
     (buildpath/"testing/gtest").install resource("gtest")
+    (buildpath/"tools/clang").install resource("clang")
 
     system "make", "native", "library=shared", "snapshot=on",
-                   "console=readline", "i18nsupport=off"
+                   "console=readline", "i18nsupport=off",
+                   "strictaliasing=off"
 
-    prefix.install "include"
+    include.install Dir["include/*"]
 
     cd "out/native" do
       rm ["libgmock.a", "libgtest.a"]

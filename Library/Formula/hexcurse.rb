@@ -1,10 +1,8 @@
-require 'formula'
-
 class Hexcurse < Formula
   desc "Ncurses-based console hex editor"
-  homepage 'https://github.com/LonnyGomes/hexcurse'
-  url 'https://github.com/LonnyGomes/hexcurse/archive/hexcurse-1.58.tar.gz'
-  sha1 '6a07324a4782007dcea800b8b545f9f07e8eae8f'
+  homepage "https://github.com/LonnyGomes/hexcurse"
+  url "https://github.com/LonnyGomes/hexcurse/archive/hexcurse-1.58.tar.gz"
+  sha256 "90470384628e5e31c56c188aa9765ef6939648093f951d6cad8cbbe11fb6bc13"
 
   def install
     system "./configure", "--disable-dependency-tracking",
@@ -14,6 +12,6 @@ class Hexcurse < Formula
   end
 
   test do
-      system "#{bin}/hexcurse", "-help"
+    system "#{bin}/hexcurse", "-help"
   end
 end

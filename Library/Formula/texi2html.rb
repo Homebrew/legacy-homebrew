@@ -1,16 +1,15 @@
-require 'formula'
-
 class Texi2html < Formula
   desc "Convert TeXinfo files to HTML"
-  homepage 'http://www.nongnu.org/texi2html/'
-  url 'http://download.savannah.gnu.org/releases/texi2html/texi2html-1.82.tar.gz'
-  sha1 'e7bbe1197147566250abd5c456b94c8e37e0a81f'
+  homepage "http://www.nongnu.org/texi2html/"
+  url "http://download.savannah.gnu.org/releases/texi2html/texi2html-1.82.tar.gz"
+  sha256 "6c7c94a2d88ffe218a33e91118c2b039336cbe3f2f8b4e3a78e4fd1502072936"
 
   bottle do
-    revision 1
-    sha1 "8a7d68b823f65d99cc3946b54f5cb58daeda2674" => :yosemite
-    sha1 "0131f620ee0369d1bfb0beb9cf98ff42b43bee61" => :mavericks
-    sha1 "2eefa2d9e010b7e6e9d67e2e847fa6d5ae9c9983" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "2505d8132d26d63d6e78c6d00d521bd7f4389b9ce2e497f9fbcc9227f1712efc" => :el_capitan
+    sha256 "8af085412d76b324f4abd5fc48b2e32c0cbd3f24844e3dcffe41395866fbb58a" => :yosemite
+    sha256 "5c3f4c8aa21f944f7a45844bcdecfab5ca0840d2bf7968b553fc9974fca7c0bf" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion
@@ -18,10 +17,18 @@ class Texi2html < Formula
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
                           "--mandir=#{man}", "--infodir=#{info}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    system "#{bin}/texi2html", "--help"
+    (testpath/"test.texinfo").write <<-EOS.undent
+      @ifnottex
+      @node Top
+      @top Hello World!
+      @end ifnottex
+      @bye
+    EOS
+    system "#{bin}/texi2html", "test.texinfo"
+    assert_match /Hello World!/, File.read("test.html")
   end
 end

@@ -22,7 +22,7 @@ class EchoprintCodegen < Formula
   # Removes unnecessary -framework vecLib; can be removed in the next release
   patch do
     url "https://github.com/echonest/echoprint-codegen/commit/5ac72c40ae920f507f3f4da8b8875533bccf5e02.diff"
-    sha1 "d8c2cb81abb5a406795353dbe10e50a2b34986e2"
+    sha256 "0ab8e1ffafeeb44195246a78923d0d943d583279442b404c0af65ac1c5cbe74c"
   end
 
   def install

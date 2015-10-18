@@ -3,7 +3,7 @@ class Lcab < Formula
   homepage "http://ohnopub.net/~ohnobinki/lcab/"
   url "ftp://mirror.ohnopub.net/mirror/lcab-1.0b12.tar.gz"
   mirror "https://launchpad.net/ubuntu/intrepid/+source/lcab/1.0b12-3/+files/lcab_1.0b12.orig.tar.gz"
-  sha1 "3e5a1f23f0ea1c991e80322592e3ede9f38ecd94"
+  sha256 "065f2c1793b65f28471c0f71b7cf120a7064f28d1c44b07cabf49ec0e97f1fc8"
 
   bottle do
     cellar :any

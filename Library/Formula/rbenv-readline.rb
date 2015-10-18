@@ -2,7 +2,7 @@ class RbenvReadline < Formula
   desc "Automatically link Ruby installs to readline"
   homepage "https://github.com/tpope/rbenv-readline"
   url "https://github.com/tpope/rbenv-readline/archive/v1.0.0.tar.gz"
-  sha1 "2b9484548bb9ea6a72757a0ff750e48b74b9e1f7"
+  sha256 "8ce024f47ebcdf7a657412a69f1bc4355769ef1bdede96d88785c5bb69483b77"
 
   head "https://github.com/tpope/rbenv-readline.git"
 

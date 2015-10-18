@@ -1,10 +1,8 @@
-require 'formula'
-
 class Mkclean < Formula
   desc "Optimizes Matroska and WebM files"
-  homepage 'http://www.matroska.org/downloads/mkclean.html'
-  url 'https://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.7.tar.bz2'
-  sha1 '21d9dd829086fe13771815481b6c7beeb83aca88'
+  homepage "http://www.matroska.org/downloads/mkclean.html"
+  url "https://downloads.sourceforge.net/project/matroska/mkclean/mkclean-0.8.7.tar.bz2"
+  sha256 "88713065a172d1ab7fd34c8854a42f6bf8d0e794957265340328a2f692ad46d9"
 
   # Fixes compile error with XCode-4.3+, a hardcoded /Developer.  Reported as:
   # https://sourceforge.net/tracker/?func=detail&aid=3505611&group_id=68739&atid=522228

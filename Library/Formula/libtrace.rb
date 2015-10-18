@@ -1,5 +1,3 @@
-require "formula"
-
 class Libtrace < Formula
   desc "Library for trace processing supporting multiple inputs"
   homepage "http://research.wand.net.nz/software/libtrace.php"
@@ -15,6 +13,6 @@ class Libtrace < Formula
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

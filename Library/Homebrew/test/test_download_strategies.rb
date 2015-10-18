@@ -1,10 +1,10 @@
-require 'testing_env'
-require 'download_strategy'
+require "testing_env"
+require "download_strategy"
 
 class ResourceDouble
   attr_reader :url, :specs, :version
 
-  def initialize(url="http://example.com/foo.tar.gz", specs={})
+  def initialize(url = "http://example.com/foo.tar.gz", specs = {})
     @url = url
     @specs = specs
   end
@@ -15,23 +15,23 @@ class AbstractDownloadStrategyTests < Homebrew::TestCase
     @name = "foo"
     @resource = ResourceDouble.new
     @strategy = AbstractDownloadStrategy.new(@name, @resource)
-    @args = %w{foo bar baz}
+    @args = %w[foo bar baz]
   end
 
   def test_expand_safe_system_args_with_explicit_quiet_flag
-    @args << { :quiet_flag => '--flag' }
+    @args << { :quiet_flag => "--flag" }
     expanded_args = @strategy.expand_safe_system_args(@args)
-    assert_equal %w{foo bar baz --flag}, expanded_args
+    assert_equal %w[foo bar baz --flag], expanded_args
   end
 
   def test_expand_safe_system_args_with_implicit_quiet_flag
     expanded_args = @strategy.expand_safe_system_args(@args)
-    assert_equal %w{foo bar -q baz}, expanded_args
+    assert_equal %w[foo bar -q baz], expanded_args
   end
 
   def test_expand_safe_system_args_does_not_mutate_argument
     result = @strategy.expand_safe_system_args(@args)
-    assert_equal %w{foo bar baz}, @args
+    assert_equal %w[foo bar baz], @args
     refute_same @args, result
   end
 end
@@ -39,7 +39,11 @@ end
 class VCSDownloadStrategyTests < Homebrew::TestCase
   def test_cache_filename
     resource = ResourceDouble.new("http://example.com/bar")
-    strategy = Class.new(VCSDownloadStrategy) { def cache_tag; "foo"; end }
+    strategy = Class.new(VCSDownloadStrategy) do
+      def cache_tag
+        "foo"
+      end
+    end
     downloader = strategy.new("baz", resource)
     assert_equal HOMEBREW_CACHE.join("baz--foo"), downloader.cached_location
   end

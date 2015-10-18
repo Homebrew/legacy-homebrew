@@ -2,14 +2,14 @@ class RbenvGemRehash < Formula
   desc "Automatically runs `rbenv rehash`"
   homepage "https://github.com/sstephenson/rbenv-gem-rehash"
   url "https://github.com/sstephenson/rbenv-gem-rehash/archive/v1.0.0.tar.gz"
-  sha1 "40962ef5cda77ff46c0d0a3f262076b58088dd57"
+  sha256 "93bdefa3e1376f0bea5a9ab7d24a26ae7d7f15ae3cd55cd0b6b03548ada7eed3"
 
   depends_on "rbenv"
 
   # Fixes issues with Homebrew-managed git-etc alpha.
   patch do
     url "https://github.com/sstephenson/rbenv-gem-rehash/commit/0756890cfd9c7bbbdde38560fe81626a0c5769bd.diff"
-    sha1 "17877b728eda6eaddc199bcd5935fcea757a1c63"
+    sha256 "2fb4aba3e485fb01b0e51c510effb04dbddbf9ce3f29b41a20d4647d30b64cfa"
   end
 
   def install

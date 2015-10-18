@@ -7,13 +7,17 @@ class KitchenSync < Formula
 
   bottle do
     cellar :any
-    sha256 "87baca397a75557cfc5b26d7cea5509fd8573556bd34fa7d694ed5489e8eff8f" => :yosemite
-    sha256 "9cd7a04c50df5367e63e4b00a18e941148fc2752d9e6d5f1c908933c17f16e04" => :mavericks
-    sha256 "6af2c2e5747318f0c26fbf636d4e35c22d87a9953d7b69b7dd38e7bdeeca41c7" => :mountain_lion
+    revision 1
+    sha256 "befcbf5f5903fa90db560e530d7bdb295878e70fe9b4e434bf8ee39f36bcf249" => :yosemite
+    sha256 "b0ba6ae728a6b1685dc2aa615616eefc19306ce6826eb82243ae5f1edbb11846" => :mavericks
+    sha256 "540b909f42b32a3eaccb393ed4671f5ef0044b800f2c256c7f2437d70f35dcc8" => :mountain_lion
   end
 
   depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "boost"
+  depends_on "yaml-cpp" => (MacOS.version <= :mountain_lion ? "c++11" : [])
+
   depends_on :mysql => :recommended
   depends_on :postgresql => :optional
 
@@ -26,8 +30,6 @@ class KitchenSync < Formula
   end
 
   test do
-    assert File.exist?("#{bin}/ks")
-    assert File.exist?("#{bin}/ks_mysql") if build.with? "mysql"
-    assert File.exist?("#{bin}/ks_postgresql") if build.with? "postgresql"
+    shell_output "#{bin}/ks 2>&1", 1
   end
 end

@@ -1,13 +1,13 @@
 class Gtksourceview3 < Formula
   desc "Text view with syntax, undo/redo, and text marks"
   homepage "https://projects.gnome.org/gtksourceview/"
-  url "https://download.gnome.org/sources/gtksourceview/3.16/gtksourceview-3.16.1.tar.xz"
-  sha256 "669e9846ca744ec4d04ce61377e85df7ca909ad476329922a6abf4da423f1b0c"
+  url "https://download.gnome.org/sources/gtksourceview/3.18/gtksourceview-3.18.1.tar.xz"
+  sha256 "7be95faf068b9f0ac7540cc1e8d607baa98a482850ef11a6471b53c9327aede6"
 
   bottle do
-    sha256 "2f37a146c37984a5fc902f083fe8663afc8bf139ffdcf34bd4e9bcc2917aeb5f" => :yosemite
-    sha256 "ab8a8a7326ade753e2c4194cfcbe1050217a6a2060e878334439e05259ed4b5a" => :mavericks
-    sha256 "e2bfa573980e5c9c4a661817482727facce47bce31160e6b6fea068a8040de5f" => :mountain_lion
+    sha256 "73e1f70b1759d6751ce9eb0c0028a873aa82c0d497babdb8824969a81738a1d1" => :el_capitan
+    sha256 "c5ad5da8d112678e5b2089d4f3a366adc05f25e6936eaf1ede150f0c98ddc169" => :yosemite
+    sha256 "b99ab5abc922c889a41d113a8257d7244346c605382952ad484fa290b0edb83c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

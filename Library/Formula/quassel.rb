@@ -19,7 +19,6 @@ class Quassel < Formula
     sha256 "fc50ef842a23cfcf35ac45a4050030b93ab2cb1652b584750ced1014d9d48c9f" => :mountain_lion
   end
 
-
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
 

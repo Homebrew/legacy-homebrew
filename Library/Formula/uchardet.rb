@@ -1,18 +1,16 @@
-require 'formula'
-
 class Uchardet < Formula
   desc "Encoding detector library"
-  homepage 'http://code.google.com/p/uchardet/'
-  url 'https://uchardet.googlecode.com/files/uchardet-0.0.1.tar.gz'
-  sha1 'c81264cca67f3e7c46e284288f8cab7a34b3f386'
+  homepage "https://code.google.com/p/uchardet/"
+  url "https://uchardet.googlecode.com/files/uchardet-0.0.1.tar.gz"
+  sha256 "e238c212350e07ebbe1961f8f128faaa40f71b70d37b63ffa2fe12c664269ee6"
 
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   def install
     args = std_cmake_args
     args << "-DCMAKE_INSTALL_NAME_DIR=#{lib}"
-    system "cmake", '.', *args
-    system "make install"
+    system "cmake", ".", *args
+    system "make", "install"
   end
 
   test do

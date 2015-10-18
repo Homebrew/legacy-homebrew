@@ -59,14 +59,14 @@ class CxxStdlib
       next if dep.build?
 
       dep_stdlib = Tab.for_formula(dep.to_formula).cxxstdlib
-      if !compatible_with? dep_stdlib
+      unless compatible_with? dep_stdlib
         raise CompatibilityError.new(formula, dep, dep_stdlib)
       end
     end
   end
 
   def type_string
-    type.to_s.gsub(/cxx$/, 'c++')
+    type.to_s.gsub(/cxx$/, "c++")
   end
 
   def inspect

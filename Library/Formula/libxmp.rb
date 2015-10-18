@@ -26,7 +26,7 @@ class Libxmp < Formula
   def install
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
 
     (share/"libxmp").install resource("demo_mods")
   end

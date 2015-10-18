@@ -1,10 +1,8 @@
-require "formula"
-
 class Pbc < Formula
   desc "Pairing-based cryptography"
   homepage "https://crypto.stanford.edu/pbc/"
   url "https://crypto.stanford.edu/pbc/files/pbc-0.5.14.tar.gz"
-  sha1 "8947f1a5a32d5c2d1f5113ccbb1e0d25ca5ce1c9"
+  sha256 "772527404117587560080241cedaf441e5cac3269009cdde4c588a1dce4c23d2"
   head "http://repo.or.cz/r/pbc.git"
 
   bottle do

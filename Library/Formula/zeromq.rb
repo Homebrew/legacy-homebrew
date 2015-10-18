@@ -1,13 +1,15 @@
 class Zeromq < Formula
   desc "High-performance, asynchronous messaging library"
   homepage "http://www.zeromq.org/"
+  url "http://download.zeromq.org/zeromq-4.1.3.tar.gz"
+  sha256 "61b31c830db377777e417235a24d3660a4bcc3f40d303ee58df082fcd68bf411"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "52bdc9f995f14e3e8cc83cfd3de52f8375278a5d7a1e4e208a7981a946fdf9e1" => :yosemite
-    sha256 "f42f60ac5ac0258b37496628af97b502f801b7332d859857f13e0ee90413caec" => :mavericks
-    sha256 "99fe88c9a673ec6c26c1c3df65747b0de9c811de0c9a9b15f641f6e60d937edb" => :mountain_lion
+    sha256 "211b240bd27b667ca448ab39fed796051245dc31598395b591e499bcd3324428" => :el_capitan
+    sha256 "d106684f5d747593e8d9e5291111d7927500a0635bbe6597820ace95f5909dd1" => :yosemite
+    sha256 "e223757f0d42f9ccaa332f4d4610b79dd98e0690d17793ed810010ba16c8e503" => :mavericks
+    sha256 "dcc14260a68e6a117500cfe9208b764f8f488aa81280f628cf3e31e4f0b8502f" => :mountain_lion
   end
 
   head do
@@ -16,11 +18,6 @@ class Zeromq < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  stable do
-    url "http://download.zeromq.org/zeromq-4.1.2.tar.gz"
-    sha1 "86c17096f7f4bf46cbcd2ad242cf8fec8a7cfb7b"
   end
 
   option :universal
@@ -40,8 +37,8 @@ class Zeromq < Formula
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
     if build.with? "libpgm"
       # Use HB libpgm-5.2 because their internal 5.1 is b0rked.
-      ENV['pgm_CFLAGS'] = %x[pkg-config --cflags openpgm-5.2].chomp
-      ENV['pgm_LIBS'] = %x[pkg-config --libs openpgm-5.2].chomp
+      ENV["pgm_CFLAGS"] = `pkg-config --cflags openpgm-5.2`.chomp
+      ENV["pgm_LIBS"] = `pkg-config --libs openpgm-5.2`.chomp
       args << "--with-pgm"
     end
 

@@ -19,7 +19,6 @@ class Sslh < Formula
     sha256 "2a712be56b116244717fb4e414846b6b9373bf2b0482b764b2142096cffbac18" => :mountain_lion
   end
 
-
   head "https://github.com/yrutschle/sslh.git"
 
   depends_on "libconfig"

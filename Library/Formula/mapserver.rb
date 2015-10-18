@@ -1,8 +1,8 @@
 class Mapserver < Formula
   desc "Publish spatial data and interactive mapping apps to the web"
-  homepage 'http://mapserver.org/'
-  url 'http://download.osgeo.org/mapserver/mapserver-6.2.2.tar.gz'
-  sha256 '79b81286dde030704f59a668a19e5b01af27bb35d05b3daf91cefe06ca29ffd9'
+  homepage "http://mapserver.org/"
+  url "http://download.osgeo.org/mapserver/mapserver-6.2.2.tar.gz"
+  sha256 "79b81286dde030704f59a668a19e5b01af27bb35d05b3daf91cefe06ca29ffd9"
 
   bottle do
     cellar :any
@@ -18,17 +18,17 @@ class Mapserver < Formula
 
   env :userpaths
 
-  depends_on 'freetype'
-  depends_on 'libpng'
-  depends_on 'swig' => :build
-  depends_on 'giflib'
-  depends_on 'gd'
-  depends_on 'proj'
-  depends_on 'gdal'
-  depends_on 'geos' => :optional
-  depends_on 'postgresql' => :optional unless MacOS.version >= :lion
-  depends_on 'fcgi' if build.with? "fastcgi"
-  depends_on 'cairo' => :optional
+  depends_on "freetype"
+  depends_on "libpng"
+  depends_on "swig" => :build
+  depends_on "giflib"
+  depends_on "gd"
+  depends_on "proj"
+  depends_on "gdal"
+  depends_on "geos" => :optional
+  depends_on "postgresql" => :optional unless MacOS.version >= :lion
+  depends_on "fcgi" if build.with? "fastcgi"
+  depends_on "cairo" => :optional
 
   # This patch can be removed when this is merged https://github.com/mapserver/mapserver/pull/5113
   patch :DATA
@@ -39,14 +39,14 @@ class Mapserver < Formula
       "--with-proj",
       "--with-gdal",
       "--with-ogr",
-      "--with-wfs",
+      "--with-wfs"
     ]
 
-    args << "--with-geos" if build.with? 'geos'
+    args << "--with-geos" if build.with? "geos"
     args << "--with-php=/usr/bin/php-config" if build.with? "php"
-    args << "--with-cairo" if build.with? 'cairo'
+    args << "--with-cairo" if build.with? "cairo"
 
-    if build.with? 'postgresql'
+    if build.with? "postgresql"
       if MacOS.version >= :lion # Lion ships with PostgreSQL libs
         args << "--with-postgis"
       else
@@ -57,7 +57,7 @@ class Mapserver < Formula
     args << "--with-fastcgi=#{HOMEBREW_PREFIX}" if build.with? "fastcgi"
 
     unless MacOS::CLT.installed?
-      inreplace 'configure', "_JTOPDIR=`echo \"$_ACJNI_FOLLOWED\" | sed -e 's://*:/:g' -e 's:/[^/]*$::'`",
+      inreplace "configure", "_JTOPDIR=`echo \"$_ACJNI_FOLLOWED\" | sed -e 's://*:/:g' -e 's:/[^/]*$::'`",
                              "_JTOPDIR='#{MacOS.sdk_path}/System/Library/Frameworks/JavaVM.framework/Headers'"
     end
 
@@ -68,7 +68,7 @@ class Mapserver < Formula
     install_args << "PHP_EXT_DIR=#{prefix}" if build.with? "php"
     system "make", "install", *install_args
 
-    cd 'mapscript/python' do
+    cd "mapscript/python" do
       system "python", *Language::Python.setup_install_args(prefix)
     end
   end

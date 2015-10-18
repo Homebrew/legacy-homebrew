@@ -1,15 +1,16 @@
 class Pushpin < Formula
   desc "Reverse proxy for realtime web services"
   homepage "http://pushpin.org"
-  url "https://dl.bintray.com/fanout/source/pushpin-1.3.3.tar.bz2"
-  sha256 "b48092b48436166c015be074efd614b82f4f9637cc9dcdf29e801998fbcf64f4"
+  url "https://dl.bintray.com/fanout/source/pushpin-1.6.0.tar.bz2"
+  sha256 "ae9bec6e7a76a3c3415d59e251876741dbda1a14422d406d640c0ed5f1a75335"
 
   head "https://github.com/fanout/pushpin.git"
 
   bottle do
-    sha256 "d834969733aa9031b6df88cb29b0a5baaae96409895d4909527258cea8d7755d" => :yosemite
-    sha256 "5af5a5285af75ec9202b4ea21562ae1d75ca27d7dc30dc22c6ee62b8451a6fa5" => :mavericks
-    sha256 "af8d7adb00736cb2e5f8741845e63c0b72d8c5dfe8d9b2a18a8ae668c26d9c59" => :mountain_lion
+    cellar :any
+    sha256 "208105973ce4552465262a249d873b659566e4bbe82ef535003b99f661205624" => :el_capitan
+    sha256 "901ed062de4fb8df3bda948f3dbdc2c56d50a09d4d023e0c27f454bfa95190af" => :yosemite
+    sha256 "00f77b4a4e0aebdad241d80c66eeb8fec90eaaa7a6a3a6abdf4aadef48645031" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -51,16 +52,16 @@ class Pushpin < Formula
     sha256 "55715a5d758214034db179005def47ed842da36c4c48e9e7ae59bcaffed7ca9b"
   end
 
-  resource "blist" do
-    url "https://pypi.python.org/packages/source/b/blist/blist-1.3.6.tar.gz"
-    sha256 "3a12c450b001bdf895b30ae818d4d6d3f1552096b8c995f0fe0c74bef04d1fc3"
+  resource "sortedcontainers" do
+    url "https://pypi.python.org/packages/source/s/sortedcontainers/sortedcontainers-0.9.6.tar.gz"
+    sha256 "bacaeb1c3e59c3083eec4d1198ba5625246c012e0342aafa46291632e8458dd3"
   end
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    %w[setuptools MarkupSafe Jinja2 pyzmq setproctitle tnetstring blist].each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
@@ -84,6 +85,10 @@ class Pushpin < Formula
     cp prefix/"etc/pushpin/internal.conf", testpath/"internal.conf"
     cp prefix/"etc/pushpin/routes", routesfile
 
+    inreplace conffile do |s|
+      s.gsub! "rundir=#{HOMEBREW_PREFIX}/var/run/pushpin", "rundir=#{testpath}/var/run/pushpin"
+      s.gsub! "logdir=#{HOMEBREW_PREFIX}/var/log/pushpin", "logdir=#{testpath}/var/log/pushpin"
+    end
     inreplace routesfile, "localhost:80", "localhost:10080"
 
     runfile.write <<-EOS.undent

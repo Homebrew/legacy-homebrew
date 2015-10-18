@@ -1,10 +1,8 @@
-require 'formula'
-
 class Minuit2 < Formula
   desc "Physics analysis tool for function minimization"
-  homepage 'http://lcgapp.cern.ch/project/cls/work-packages/mathlibs/minuit/index.html'
-  url 'https://www.cern.ch/mathlibs/sw/5_34_14/Minuit2/Minuit2-5.34.14.tar.gz'
-  sha1 '6dc1d604f6b3adea1af72f9180d627a64ba3bc8a'
+  homepage "http://lcgapp.cern.ch/project/cls/work-packages/mathlibs/minuit/index.html"
+  url "https://www.cern.ch/mathlibs/sw/5_34_14/Minuit2/Minuit2-5.34.14.tar.gz"
+  sha256 "2ca9a283bbc315064c0a322bc4cb74c7e8fd51f9494f7856e5159d0a0aa8c356"
 
   bottle do
     cellar :any
@@ -18,6 +16,6 @@ class Minuit2 < Formula
                           "--with-pic",
                           "--disable-openmp",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

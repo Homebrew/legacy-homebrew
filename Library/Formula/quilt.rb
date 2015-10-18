@@ -7,9 +7,10 @@ class Quilt < Formula
   head "http://git.savannah.gnu.org/r/quilt.git"
 
   bottle do
-    sha256 "3348a942b8d359521bc238fd0bfacce702fa4b1eb244eae7c431d716056e8992" => :yosemite
-    sha256 "b4460abfc441043b55961c20583d5c309ce11f50e1e9bfc5de6d0f1d01410107" => :mavericks
-    sha256 "feb310eca4228414e672e482369ee281e4bba9187cf373a6b27bd7db697da436" => :mountain_lion
+    revision 1
+    sha256 "8f4e75281279df9d503c160a83dda1611483bada421115ec2c5af82ec0a3b9b2" => :yosemite
+    sha256 "1d69453caf8f13e9ecd5a3310e872b3fdd562bd89b6b6335ce9874f613b59ff2" => :mavericks
+    sha256 "452546bfd83c8ace6c95764a19c86d6d2eecdddcd3a289135a5a50648ecd494d" => :mountain_lion
   end
 
   depends_on "gnu-sed"
@@ -20,8 +21,7 @@ class Quilt < Formula
                           "--with-sed=#{HOMEBREW_PREFIX}/bin/gsed",
                           "--without-getopt"
     system "make"
-    system "make", "install"
-    (share/"emacs/site-lisp").install "lib/quilt.el"
+    system "make", "install", "emacsdir=#{share}/emacs/site-lisp/quilt"
   end
 
   test do

@@ -1,15 +1,15 @@
-require 'testing_env'
-require 'requirement'
+require "testing_env"
+require "requirement"
 
 class RequirementTests < Homebrew::TestCase
   def test_accepts_single_tag
-    dep = Requirement.new(%w{bar})
-    assert_equal %w{bar}, dep.tags
+    dep = Requirement.new(%w[bar])
+    assert_equal %w[bar], dep.tags
   end
 
   def test_accepts_multiple_tags
-    dep = Requirement.new(%w{bar baz})
-    assert_equal %w{bar baz}.sort, dep.tags.sort
+    dep = Requirement.new(%w[bar baz])
+    assert_equal %w[bar baz].sort, dep.tags.sort
   end
 
   def test_preserves_symbol_tags
@@ -100,20 +100,20 @@ class RequirementTests < Homebrew::TestCase
   end
 
   def test_dsl_default_formula
-    req = Class.new(Requirement) { default_formula 'foo' }.new
+    req = Class.new(Requirement) { default_formula "foo" }.new
     assert_predicate req, :default_formula?
   end
 
   def test_to_dependency
-    req = Class.new(Requirement) { default_formula 'foo' }.new
-    assert_equal Dependency.new('foo'), req.to_dependency
+    req = Class.new(Requirement) { default_formula "foo" }.new
+    assert_equal Dependency.new("foo"), req.to_dependency
   end
 
   def test_to_dependency_calls_requirement_modify_build_environment
     error = Class.new(StandardError)
 
     req = Class.new(Requirement) do
-      default_formula 'foo'
+      default_formula "foo"
       satisfy { true }
       env { raise error }
     end.new
@@ -128,14 +128,16 @@ class RequirementTests < Homebrew::TestCase
   end
 
   def test_eql
-    a, b = Requirement.new, Requirement.new
+    a = Requirement.new
+    b = Requirement.new
     assert_equal a, b
     assert_eql a, b
     assert_equal a.hash, b.hash
   end
 
   def test_not_eql
-    a, b = Requirement.new([:optional]), Requirement.new
+    a = Requirement.new([:optional])
+    b = Requirement.new
     refute_equal a, b
     refute_eql a, b
     refute_equal a.hash, b.hash

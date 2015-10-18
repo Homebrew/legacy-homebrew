@@ -2,7 +2,7 @@ class Tinc < Formula
   desc "Virtual Private Network (VPN) tool"
   homepage "http://www.tinc-vpn.org"
   url "http://tinc-vpn.org/packages/tinc-1.0.25.tar.gz"
-  sha1 "b728e1ed02862aab04b2a53a62c2f67edd0c3949"
+  sha256 "c5c1c554e594d77365b63222ef15f4460c0c202f9163a89a087333a779f4f133"
 
   bottle do
     sha1 "359656333342ffc8fa80ca09a89390833816b163" => :yosemite
@@ -12,7 +12,7 @@ class Tinc < Formula
 
   devel do
     url "http://www.tinc-vpn.org/packages/tinc-1.1pre11.tar.gz"
-    sha1 "ee6920d87b377c39da71d7ad5807a37f55e4e3be"
+    sha256 "942594563d3aef926a2d04e9ece90c16daf1c700e99e3b91ff749e8377fbf757"
   end
 
   depends_on "lzo"

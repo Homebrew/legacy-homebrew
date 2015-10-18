@@ -1,17 +1,15 @@
-require "formula"
-
 class Innotop < Formula
   desc "Top clone for MySQL"
-  homepage "http://code.google.com/p/innotop/"
+  homepage "https://code.google.com/p/innotop/"
   url "https://innotop.googlecode.com/files/innotop-1.9.1.tar.gz"
-  sha1 "6b0b5f492e7188152727f6c157043be180ba516a"
+  sha256 "117e5af58a83af79b6cf99877b25b1479197597be5a7d51b245a0ad9c69f4d3d"
 
   depends_on :mysql
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
     mirror "http://search.mcpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
-    sha1 "3bf1edd6f0b4f6144b2aaa715c80df3fb1cd2119"
+    sha256 "2e00f1eb5822aa097b310203ff611dd635f9d000db9df7ce1e8b0493c082be41"
   end
 
   def install
@@ -24,7 +22,7 @@ class Innotop < Formula
     end
 
     system "perl", "Makefile.PL", "PREFIX=#{prefix}"
-    system "make install"
+    system "make", "install"
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 end

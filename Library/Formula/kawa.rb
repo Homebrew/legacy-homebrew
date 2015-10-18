@@ -1,17 +1,17 @@
-require 'formula'
-
 class Kawa < Formula
   desc "Programming language for Java (implementation of Scheme)"
-  homepage 'http://www.gnu.org/software/kawa/'
-  url 'http://ftpmirror.gnu.org/kawa/kawa-2.0.jar'
-  mirror 'http://ftp.gnu.org/gnu/kawa/kawa-2.0.jar'
-  sha1 '150dacc0b1dbf55c5493da022a590d9d8549b3b6'
+  homepage "https://www.gnu.org/software/kawa/"
+  url "http://ftpmirror.gnu.org/kawa/kawa-2.0.jar"
+  mirror "https://ftp.gnu.org/gnu/kawa/kawa-2.0.jar"
+  sha256 "dc5605950c9ab197a95337dbd241c369e8341a4f101072995f791d5fd2bf0400"
+
+  depends_on :java
 
   def install
-    prefix.install "kawa-#{version}.jar"
-    (bin+'kawa').write <<-EOS.undent
+    libexec.install "kawa-#{version}.jar"
+    (bin/"kawa").write <<-EOS.undent
       #!/bin/sh
-      KAWA_HOME="#{prefix}"
+      KAWA_HOME="#{libexec}"
       java -jar "$KAWA_HOME/kawa-#{version}.jar"
     EOS
   end

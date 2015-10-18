@@ -2,7 +2,7 @@ class LibreadlineJava < Formula
   desc "Port of GNU readline for Java"
   homepage "http://java-readline.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/java-readline/java-readline/0.8.0/libreadline-java-0.8.0-src.tar.gz"
-  sha1 "1f5574f9345afc039e9c7a09ae4979129891d52a"
+  sha256 "cdcfd9910bfe2dca4cd08b2462ec05efee7395e9b9c3efcb51e85fa70548c890"
 
   bottle do
     cellar :any

@@ -32,7 +32,7 @@ class CompilerFailureTests < Homebrew::TestCase
   end
 
   def test_create_with_block_without_build
-    failure = create(:clang) { }
+    failure = create(:clang) {}
     assert_fails_with compiler(:clang, 425), failure
   end
 

@@ -1,6 +1,6 @@
-require 'testing_env'
-require 'testball'
-require 'cmd/cleanup'
+require "testing_env"
+require "testball"
+require "cmd/cleanup"
 
 class CleanupTests < Homebrew::TestCase
   def test_cleanup

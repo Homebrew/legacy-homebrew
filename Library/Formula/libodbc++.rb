@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libodbcxx < Formula
   desc "C++ development environment for SQL database access"
-  homepage 'http://libodbcxx.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/libodbcxx/libodbc++/0.2.5/libodbc++-0.2.5.tar.gz'
-  sha1 'e59842266b981caab24a6fae1f7d48b6799420f8'
+  homepage "http://libodbcxx.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/libodbcxx/libodbc++/0.2.5/libodbc++-0.2.5.tar.gz"
+  sha256 "0731a475b4693514e6a99121441a40305df3fe1dce3756df20c7b6758aa53b57"
 
   bottle do
     cellar :any
@@ -21,7 +19,7 @@ class Libodbcxx < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

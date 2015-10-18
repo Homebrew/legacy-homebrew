@@ -2,7 +2,7 @@ class Csmith < Formula
   desc "Generates random C programs conforming to the C99 standard"
   homepage "https://embed.cs.utah.edu/csmith/"
   url "https://embed.cs.utah.edu/csmith/csmith-2.2.0.tar.gz"
-  sha1 "3435ce22e645977e03cf6418da076ff3f7a1d4f0"
+  sha256 "62fd96d3a5228241d4f3159511ad3ff5b8c4cedb9e9a82adc935830b421c8e37"
 
   bottle do
     cellar :any

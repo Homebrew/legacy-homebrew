@@ -1,25 +1,23 @@
-require 'formula'
-
 class Html2text < Formula
   desc "Advanced HTML-to-text converter"
-  homepage 'http://www.mbayer.de/html2text/'
-  url 'http://www.mbayer.de/html2text/downloads/html2text-1.3.2a.tar.gz'
-  sha1 '91d46e3218d05b0783bebee96a14f0df0eb9773e'
+  homepage "http://www.mbayer.de/html2text/"
+  url "http://www.mbayer.de/html2text/downloads/html2text-1.3.2a.tar.gz"
+  sha256 "000b39d5d910b867ff7e087177b470a1e26e2819920dcffd5991c33f6d480392"
 
   # Patch provided by author. See:
   # http://www.mbayer.de/html2text/faq.shtml#sect6
   patch do
     url "http://www.mbayer.de/html2text/downloads/patch-utf8-html2text-1.3.2a.diff"
-    sha1 "3e928c75495aa6d8f071bcf61d2ceba0eb748811"
+    sha256 "be4e90094d2854059924cb2c59ca31a5e9e0e22d2245fa5dc0c03f604798c5d1"
   end
 
   def install
-    inreplace 'configure',
+    inreplace "configure",
               'for i in "CC" "g++" "cc" "$CC"; do',
               'for i in "g++"; do'
 
     system "./configure"
-    system "make all"
+    system "make", "all"
 
     bin.install "html2text"
     man1.install "html2text.1.gz"

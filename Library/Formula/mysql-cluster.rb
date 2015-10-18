@@ -2,7 +2,7 @@ class MysqlCluster < Formula
   desc "Shared-nothing clustering and auto-sharding for MySQL"
   homepage "https://www.mysql.com/products/cluster/"
   url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.8.tar.gz"
-  sha1 "f70ac7955343765146c556576c8b13dbedf9c593"
+  sha256 "eddcc2954ff7fbbc72b1266bd64a9548e9b9d7a4115d42b54c13257c226248ca"
 
   bottle do
     sha1 "0f03e0282102b1635d3c1567f2046c0b67bd4b1a" => :mavericks

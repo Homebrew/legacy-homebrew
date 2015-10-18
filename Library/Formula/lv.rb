@@ -1,11 +1,9 @@
-require "formula"
-
 class Lv < Formula
   desc "Powerful multi-lingual file viewer/grep"
   homepage "http://www.ff.iij4u.or.jp/~nrt/lv/"
   url "http://www.ff.iij4u.or.jp/~nrt/freeware/lv451.tar.gz"
   version "4.51"
-  sha1 "1a70299c27aa317a436976a557853858db4dcb5f"
+  sha256 "e1cd2e27109fbdbc6d435f2c3a99c8a6ef2898941f5d2f7bacf0c1ad70158bcf"
 
   bottle do
     sha1 "077f8feee1b78425a38f1775cfa0bba5b5334569" => :mavericks

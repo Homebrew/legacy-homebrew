@@ -1,4 +1,4 @@
-require 'testing_env'
+require "testing_env"
 
 class MachOPathnameTests < Homebrew::TestCase
   def dylib_path(name)
@@ -173,7 +173,7 @@ class TextExecutableTests < Homebrew::TestCase
   end
 
   def test_simple_shebang
-    pn.write '#!/bin/sh'
+    pn.write "#!/bin/sh"
     refute_predicate pn, :universal?
     refute_predicate pn, :i386?
     refute_predicate pn, :x86_64?
@@ -187,7 +187,7 @@ class TextExecutableTests < Homebrew::TestCase
   end
 
   def test_shebang_with_options
-    pn.write '#! /usr/bin/perl -w'
+    pn.write "#! /usr/bin/perl -w"
     refute_predicate pn, :universal?
     refute_predicate pn, :i386?
     refute_predicate pn, :x86_64?
@@ -201,7 +201,7 @@ class TextExecutableTests < Homebrew::TestCase
   end
 
   def test_malformed_shebang
-    pn.write ' #!'
+    pn.write " #!"
     refute_predicate pn, :universal?
     refute_predicate pn, :i386?
     refute_predicate pn, :x86_64?

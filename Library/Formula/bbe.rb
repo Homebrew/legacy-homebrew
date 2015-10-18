@@ -1,10 +1,8 @@
-require 'formula'
-
 class Bbe < Formula
   desc "Sed-like editor for binary files"
-  homepage 'http://bbe-.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/bbe-/bbe/0.2.2/bbe-0.2.2.tar.gz'
-  sha1 '42d5b47d607a9633fb49e7d39e2aebfb7bb89c05'
+  homepage "http://bbe-.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/bbe-/bbe/0.2.2/bbe-0.2.2.tar.gz"
+  sha256 "baaeaf5775a6d9bceb594ea100c8f45a677a0a7d07529fa573ba0842226edddb"
 
   def install
     system "./configure", "--disable-debug",

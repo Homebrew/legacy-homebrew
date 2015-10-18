@@ -1,14 +1,14 @@
 class Gettext < Formula
   desc "GNU internationalization (i18n) and localization (l10n) library"
   homepage "https://www.gnu.org/software/gettext/"
-  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.4.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.4.tar.xz"
-  sha256 "719adadb8bf3e36bac52c243a01c0add18d23506a3a40437e6f5899ceab18d20"
+  url "http://ftpmirror.gnu.org/gettext/gettext-0.19.6.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.19.6.tar.xz"
+  sha256 "9b95816620fd1168cb4eeca0e9dc0ffd86e864fc668f76f5e37cc054d6982e51"
 
   bottle do
-    sha1 "b1536310f96a0dfff5442b370dda06169cef92ab" => :yosemite
-    sha1 "1720f95c4392d4f26d60f39c5722f99e91b09330" => :mavericks
-    sha1 "0a94590e0d9a6546644b4b00015a5d8444cdf384" => :mountain_lion
+    sha256 "8df50085d6a552958805922ce4b25ec2d57e6f0799b4a5549778bce2b1ba0b49" => :el_capitan
+    sha256 "b28fcdcc79bfd01f3750ef564064feac7b4f8d7d19ed1b92176684293c5016a9" => :yosemite
+    sha256 "cc788fa52512f86ee271cdba9591aef6ff3905f5343b3b970359f15d16461043" => :mavericks
   end
 
   keg_only :shadowed_by_osx, "OS X provides the BSD gettext library and some software gets confused if both are in the library path."
@@ -28,6 +28,7 @@ class Gettext < Formula
                           "--with-included-libcroco",
                           "--with-included-libunistring",
                           "--with-emacs",
+                          "--with-lispdir=#{share}/emacs/site-lisp/gettext",
                           "--disable-java",
                           "--disable-csharp",
                           # Don't use VCS systems to create these archives

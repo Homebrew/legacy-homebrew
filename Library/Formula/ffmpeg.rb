@@ -1,14 +1,15 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.7.1.tar.bz2"
-  sha256 "7e07b97d2415feeae9c9b5595e35e7b7aab33207e81bf9f8c0d1eece43f7f720"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.1.tar.bz2"
+  sha256 "e2ed5ab28dee1af94336739173eb0019afc21a54e38a96f4e3208e94a07866e2"
   head "https://github.com/FFmpeg/FFmpeg.git"
+  revision 1
 
   bottle do
-    sha256 "326c2a662c90fe4e90432b8a6df473cecaede433602241da26c52c68a0402f9f" => :yosemite
-    sha256 "423dc107257192f4aec70fb2b1e83fcafa3247b70590c00edd2b37f388a887dc" => :mavericks
-    sha256 "576c3361d064f2472f9a232322c72a05acf1c62137a36395c8de5d0e5a02d173" => :mountain_lion
+    sha256 "fe69432c8563a2c78b89945bcbe4506e5302f87e815301a18cca6ee8f9f40649" => :el_capitan
+    sha256 "43e57ca5b0d601ce7e9a97003e9635981dd45756dc2884b803e16ca60bc9b0ca" => :yosemite
+    sha256 "872b4d468edae3f16cdd2b1cccb6771a60a6a518f2c5273da228c8fd72cc24bb" => :mavericks
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -70,6 +71,7 @@ class Ffmpeg < Formula
   depends_on "libssh" => :optional
   depends_on "webp" => :optional
   depends_on "zeromq" => :optional
+  depends_on "libbs2b" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -81,8 +83,10 @@ class Ffmpeg < Formula
             "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
-            "--host-ldflags=#{ENV.ldflags}",
+            "--host-ldflags=#{ENV.ldflags}"
            ]
+
+    args << "--enable-opencl" if MacOS.version > :lion
 
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libmp3lame" if build.with? "lame"
@@ -113,6 +117,7 @@ class Ffmpeg < Formula
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
     args << "--enable-libzmq" if build.with? "zeromq"
+    args << "--enable-libbs2b" if build.with? "libbs2b"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"

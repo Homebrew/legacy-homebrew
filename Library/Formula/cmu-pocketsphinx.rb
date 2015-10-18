@@ -1,10 +1,8 @@
-require 'formula'
-
 class CmuPocketsphinx < Formula
   desc "Lightweight speech recognition engine for mobile devices"
-  homepage 'http://cmusphinx.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/0.8/pocketsphinx-0.8.tar.gz'
-  sha1 'd9efdd0baddd2e47c2ba559caaca62ffa0c0eede'
+  homepage "http://cmusphinx.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/cmusphinx/pocketsphinx/0.8/pocketsphinx-0.8.tar.gz"
+  sha256 "874c4c083d91c8ff26a2aec250b689e537912ff728923c141c4dac48662cce7a"
 
   head do
     url "https://github.com/cmusphinx/pocketsphinx.git"
@@ -15,8 +13,8 @@ class CmuPocketsphinx < Formula
     depends_on "swig" => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cmu-sphinxbase'
+  depends_on "pkg-config" => :build
+  depends_on "cmu-sphinxbase"
 
   def install
     if build.head?
@@ -25,6 +23,6 @@ class CmuPocketsphinx < Formula
     end
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

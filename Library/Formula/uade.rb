@@ -1,21 +1,19 @@
-require 'formula'
-
 class Uade < Formula
   desc "Play Amiga tunes through UAE emulation"
-  homepage 'http://zakalwe.fi/uade/'
+  homepage "http://zakalwe.fi/uade/"
 
   stable do
     url "http://zakalwe.fi/uade/uade2/uade-2.13.tar.bz2"
-    sha1 "61c5ce9dfecc37addf233de06be196c9b15a91d8"
+    sha256 "3b194e5aebbfa99d3708d5a0b5e6bd7dc5d1caaecf4ae9b52f8ff87e222dd612"
 
     # Upstream patch to fix compiler detection under superenv
     patch :DATA
   end
 
-  head 'git://zakalwe.fi/uade'
+  head "git://zakalwe.fi/uade"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libao'
+  depends_on "pkg-config" => :build
+  depends_on "libao"
 
   resource "bencode-tools" do
     url "https://github.com/heikkiorsila/bencode-tools.git"
@@ -25,11 +23,11 @@ class Uade < Formula
     resource("bencode-tools").stage do
       system "./configure", "--prefix=#{prefix}", "--without-python"
       system "make"
-      system "make install"
+      system "make", "install"
     end if build.head?
 
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

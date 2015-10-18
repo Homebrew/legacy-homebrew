@@ -7,6 +7,7 @@ class PkgConfig < Formula
 
   bottle do
     revision 2
+    sha256 "094a16229d94915e12e4277946c3b7a8fac9484e4e40d970cc0457ef5f060acd" => :el_capitan
     sha1 "e9bcac1cfab9343a9e0c6d10a70b2797310d7706" => :yosemite
     sha1 "809937fdb5faaa3170f0abfc810ff244207d8975" => :mavericks
     sha1 "a0cbbdbe64aa3ffe665f674d68db8fb6fb84f7df" => :mountain_lion

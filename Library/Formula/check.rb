@@ -1,16 +1,15 @@
-require "formula"
-
 class Check < Formula
   desc "C unit testing framework"
   homepage "http://check.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/check/check/0.9.14/check-0.9.14.tar.gz"
-  sha1 "4b79e2d485d014ddb438e322b64235347d57b0ff"
+  url "https://downloads.sourceforge.net/project/check/check/0.10.0/check-0.10.0.tar.gz"
+  sha256 "f5f50766aa6f8fe5a2df752666ca01a950add45079aa06416b83765b1cf71052"
 
   bottle do
     cellar :any
-    sha1 "5f7d4c82f1c2bdb365718e97299efd47ec9c7272" => :mavericks
-    sha1 "2390f4c06a316a18cd4a9164fcd510c1ffb9a276" => :mountain_lion
-    sha1 "99d8dfd79c4498071ac91dcc782b5b27f2182614" => :lion
+    sha256 "2e37bca055ae0bf490b713d90c95a9d81518cae9b884a7e495f521c80b4f062f" => :el_capitan
+    sha256 "bb824d8cb8a74ebbc1eb9d22b8ea15327dfe3ce91151b37c7f41c80939609f52" => :yosemite
+    sha256 "022667ec28a8af0bf6e19f3afbaa144542f1754ebaff5710229484fa8071084e" => :mavericks
+    sha256 "b223c76b5519c5aa3300488b230c5b5b2cbd32d896f2fab0f1a0700a24e1f975" => :mountain_lion
   end
 
   option :universal
@@ -19,6 +18,6 @@ class Check < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

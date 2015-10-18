@@ -136,7 +136,7 @@ class Postgis < Formula
     man1.install Dir["doc/**/*.1"]
   end
 
-  def caveats;
+  def caveats
     pg = Formula["postgresql"].opt_prefix
     <<-EOS.undent
       To create a spatially-enabled database, see the documentation:

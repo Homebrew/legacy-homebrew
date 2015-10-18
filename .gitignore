@@ -1,5 +1,6 @@
 /*
 !/.gitignore
+!/.travis.yml
 !/.yardopts
 !/Library/
 !/CODEOFCONDUCT.md
@@ -17,6 +18,9 @@
 /Library/Homebrew/test/.bundle
 /Library/Homebrew/test/bin
 /Library/Homebrew/test/vendor
+/Library/Homebrew/test/coverage
+/Library/Homebrew/test/fs_leak_log
 /Library/LinkedKegs
 /Library/PinnedKegs
 /Library/Taps
+/Library/PinnedTaps

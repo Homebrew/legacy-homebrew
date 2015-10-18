@@ -3,7 +3,7 @@ class GnuIndent < Formula
   homepage "https://www.gnu.org/software/indent/"
   url "http://ftpmirror.gnu.org/indent/indent-2.2.10.tar.gz"
   mirror "https://ftp.gnu.org/gnu/indent/indent-2.2.10.tar.gz"
-  sha1 "20fa8a7a4af6670c3254c8b87020291c3db37ed1"
+  sha256 "8a9b41be5bfcab5d8c1be74204b10ae78789fc3deabea0775fdced8677292639"
 
   depends_on "gettext"
 
@@ -20,7 +20,7 @@ class GnuIndent < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --mandir=#{man}
-      ]
+    ]
 
     args << "--program-prefix=g" if build.without? "default-names"
 

@@ -22,7 +22,7 @@ module OS
         "2.7.53" => "2.7.5_rc4",
         "2.7.54" => "2.7.5",
         "2.7.61" => "2.7.6",
-        "2.7.73" => "2.7.7",
+        "2.7.73" => "2.7.7"
       }.freeze
 
       # This returns the version number of XQuartz, not of the upstream X.org.
@@ -69,10 +69,10 @@ module OS
       # educated guess as to what version is installed.
       def guess_system_version
         case MacOS.version
-        when '10.5' then '2.1.6'
-        when '10.6' then '2.3.6'
-        when '10.7' then '2.6.3'
-        else 'dunno'
+        when "10.5" then "2.1.6"
+        when "10.6" then "2.3.6"
+        when "10.7" then "2.6.3"
+        else "dunno"
         end
       end
 
@@ -93,10 +93,10 @@ module OS
       # remain public. New code should use MacOS::X11.bin, MacOS::X11.lib and
       # MacOS::X11.include instead, as that accounts for Xcode-only systems.
       def prefix
-        @prefix ||= if Pathname.new('/opt/X11/lib/libpng.dylib').exist?
-          Pathname.new('/opt/X11')
-        elsif Pathname.new('/usr/X11/lib/libpng.dylib').exist?
-          Pathname.new('/usr/X11')
+        @prefix ||= if Pathname.new("/opt/X11/lib/libpng.dylib").exist?
+          Pathname.new("/opt/X11")
+        elsif Pathname.new("/usr/X11/lib/libpng.dylib").exist?
+          Pathname.new("/usr/X11")
         end
       end
 

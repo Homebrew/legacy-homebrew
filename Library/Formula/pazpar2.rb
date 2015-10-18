@@ -1,17 +1,14 @@
-require "formula"
-
 class Pazpar2 < Formula
   desc "Metasearching middleware webservice"
-  homepage "http://www.indexdata.com/pazpar2"
-  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.8.7.tar.gz"
-  sha1 "e4e5c1c7cdeea7f06c0242c1b85c32b35c52ee69"
-  revision 1
+  homepage "https://www.indexdata.com/pazpar2"
+  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.12.4.tar.gz"
+  sha256 "e8a14138a564ec4aad79ff4ce063088356f7015796c757a0911e3b13c60180b5"
 
   bottle do
     cellar :any
-    sha256 "1ba5b525a809477edb5cbafd2fbcefd9fba29d224ccad06064abbdbcb3d9d1e3" => :yosemite
-    sha256 "e7b386c553cd3e1d8b123b88abf9df7288371d4423982bfa333456ba3ef40646" => :mavericks
-    sha256 "53d1ad3c4eccfd37b51788d10ad7609541aad20537faec0de168c2272857fe2f" => :mountain_lion
+    sha256 "de5d27dc70e119bdd17f15e8f4560e8c3d594f7b0760e8f4fb3a24711bc795c6" => :el_capitan
+    sha256 "35c90b490b18799b7507621e80c54110f69800af0d515fd033e34dbf09b64540" => :yosemite
+    sha256 "20f1cbb43647b86823942c78ac7661d01558c217e1d002818940257048fd5407" => :mavericks
   end
 
   depends_on "pkg-config" => :build

@@ -1,10 +1,8 @@
-require "formula"
-
 class Daemonize < Formula
   desc "Run a command as a UNIX daemon"
   homepage "http://software.clapper.org/daemonize/"
   url "https://github.com/bmc/daemonize/archive/release-1.7.6.tar.gz"
-  sha1 "5fec633880ef0a81fe0ca9d9eaeeeefd969f5dbd"
+  sha256 "8d5717ae5e5bbd4cd6687abe1310f4d817468c67b851ce95dda73038ab40db1f"
 
   bottle do
     cellar :any
@@ -17,6 +15,6 @@ class Daemonize < Formula
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

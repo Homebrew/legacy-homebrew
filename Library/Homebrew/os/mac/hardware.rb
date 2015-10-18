@@ -1,16 +1,18 @@
-require 'mach'
+require "mach"
 
 module MacCPUs
   OPTIMIZATION_FLAGS = {
-    :penryn => '-march=core2 -msse4.1',
-    :core2 => '-march=core2',
-    :core => '-march=prescott',
-    :g3 => '-mcpu=750',
-    :g4 => '-mcpu=7400',
-    :g4e => '-mcpu=7450',
-    :g5 => '-mcpu=970'
+    :penryn => "-march=core2 -msse4.1",
+    :core2 => "-march=core2",
+    :core => "-march=prescott",
+    :g3 => "-mcpu=750",
+    :g4 => "-mcpu=7400",
+    :g4e => "-mcpu=7450",
+    :g5 => "-mcpu=970"
   }.freeze
-  def optimization_flags; OPTIMIZATION_FLAGS; end
+  def optimization_flags
+    OPTIMIZATION_FLAGS
+  end
 
   # These methods use info spewed out by sysctl.
   # Look in <mach/machine.h> for decoding info.
@@ -60,7 +62,7 @@ module MacCPUs
       when 100
         # This is the only 64-bit PPC CPU type, so it's useful
         # to distinguish in `brew config` output and in bottle tags
-        MacOS.prefer_64_bit? ? :g5_64 : :g5  # PowerPC 970
+        MacOS.prefer_64_bit? ? :g5_64 : :g5 # PowerPC 970
       else
         :dunno
       end
@@ -92,7 +94,7 @@ module MacCPUs
   def universal_archs
     # Building 64-bit is a no-go on Tiger, and pretty hit or miss on Leopard.
     # Don't even try unless Tigerbrew's experimental 64-bit Leopard support is enabled.
-    if MacOS.version <= :leopard and !MacOS.prefer_64_bit?
+    if MacOS.version <= :leopard && !MacOS.prefer_64_bit?
       [arch_32_bit].extend ArchitectureListExtension
     else
       [arch_32_bit, arch_64_bit].extend ArchitectureListExtension
@@ -108,35 +110,35 @@ module MacCPUs
   end
 
   def aes?
-    sysctl_bool('hw.optional.aes')
+    sysctl_bool("hw.optional.aes")
   end
 
   def altivec?
-    sysctl_bool('hw.optional.altivec')
+    sysctl_bool("hw.optional.altivec")
   end
 
   def avx?
-    sysctl_bool('hw.optional.avx1_0')
+    sysctl_bool("hw.optional.avx1_0")
   end
 
   def avx2?
-    sysctl_bool('hw.optional.avx2_0')
+    sysctl_bool("hw.optional.avx2_0")
   end
 
   def sse3?
-    sysctl_bool('hw.optional.sse3')
+    sysctl_bool("hw.optional.sse3")
   end
 
   def ssse3?
-    sysctl_bool('hw.optional.supplementalsse3')
+    sysctl_bool("hw.optional.supplementalsse3")
   end
 
   def sse4?
-    sysctl_bool('hw.optional.sse4_1')
+    sysctl_bool("hw.optional.sse4_1")
   end
 
   def sse4_2?
-    sysctl_bool('hw.optional.sse4_2')
+    sysctl_bool("hw.optional.sse4_2")
   end
 
   private

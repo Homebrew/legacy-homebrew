@@ -2,7 +2,7 @@ class Ocamlsdl < Formula
   desc "OCaml interface with the SDL C library"
   homepage "http://ocamlsdl.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ocamlsdl/OCamlSDL/ocamlsdl-0.9.1/ocamlsdl-0.9.1.tar.gz"
-  sha1 "2e54f8984b06cede493c3ad29006dde17077a79a"
+  sha256 "abfb295b263dc11e97fffdd88ea1a28b46df8cc2b196777093e4fe7f509e4f8f"
   revision 1
 
   bottle do
@@ -17,7 +17,7 @@ class Ocamlsdl < Formula
   depends_on "sdl_image" => :recommended
   depends_on "sdl_gfx" => :recommended
   depends_on "sdl_ttf" => :recommended
-  depends_on "objective-caml"
+  depends_on "ocaml"
 
   def install
     system "./configure", "--prefix=#{prefix}",
@@ -27,7 +27,7 @@ class Ocamlsdl < Formula
   end
 
   test do
-    (testpath/'test.ml').write <<-EOS.undent
+    (testpath/"test.ml").write <<-EOS.undent
       let main () =
         Sdl.init [`VIDEO];
         Sdl.quit ()

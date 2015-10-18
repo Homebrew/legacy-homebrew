@@ -1,5 +1,3 @@
-require "formula"
-
 class Parrot < Formula
   desc "Open source virtual machine (for Perl6, et al.)"
   homepage "http://www.parrot.org/"
@@ -28,7 +26,7 @@ class Parrot < Formula
                                    "--cc=#{ENV.cc}"
 
     system "make"
-    system "make install"
+    system "make", "install"
     # Don't install this file in HOMEBREW_PREFIX/lib
     rm_rf lib/"VERSION"
   end

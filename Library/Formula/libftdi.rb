@@ -1,27 +1,26 @@
-require 'formula'
-
 class Libftdi < Formula
   desc "Library to talk to FTDI chips"
-  homepage 'http://www.intra2net.com/en/developer/libftdi'
-  url 'http://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.1.tar.bz2'
-  sha1 'f05ade5614aa31e64f91a30ce3782f7ca3704d18'
+  homepage "https://www.intra2net.com/en/developer/libftdi"
+  url "https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.1.tar.bz2"
+  sha256 "c0b1af1a13e2c6682a1d8041e5b164a1e0d90267cd378bb51e059bd62f821e21"
 
   bottle do
-    revision 1
-    sha1 "23a46b49c327ff94e990f6677f343513f86cce45" => :yosemite
-    sha1 "f79c80ca34c4108a8d8b95e0814ee2316110ba1d" => :mavericks
-    sha1 "c0f8000f19d4910525fec572944115823e21bdfc" => :mountain_lion
+    cellar :any
+    revision 3
+    sha256 "b28b36691a275c37eab79408d1ee26fd3f74a11949ba88e5325950d9c32207cc" => :el_capitan
+    sha256 "2d0e66492ec3e14195a33471c44c134a0e871f51b41cf0378a1b310ac0c43210" => :yosemite
+    sha256 "812990757cde2fdc96d97fcdb9e4e82ee13113c88f036c52c42f37466b352550" => :mavericks
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'pkg-config' => :build
-  depends_on 'libusb'
-  depends_on 'boost' => :optional
+  depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "libusb"
+  depends_on "boost" => :optional
 
   def install
-    mkdir 'libftdi-build' do
+    mkdir "libftdi-build" do
       system "cmake", "..", *std_cmake_args
-      system "make install"
+      system "make", "install"
     end
   end
 end

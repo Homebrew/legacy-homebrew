@@ -1,10 +1,8 @@
-require "formula"
-
 class Pow < Formula
   desc "Zero-config Rack server for local apps on OS X"
   homepage "http://pow.cx/"
   url "http://get.pow.cx/versions/0.5.0.tar.gz"
-  sha1 "ef44f886a444340b91fb28e2fab3ce5471837a08"
+  sha256 "2e5f74d7c2f44004eb722eddf37356cd09b5563fde987b4c222fa6947ce388b7"
 
   depends_on "node"
 
@@ -17,7 +15,7 @@ class Pow < Formula
     EOS
   end
 
-  def caveats;
+  def caveats
     <<-EOS.undent
       Create the required host directories:
         mkdir -p ~/Library/Application\\ Support/Pow/Hosts

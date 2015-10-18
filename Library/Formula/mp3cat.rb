@@ -2,7 +2,7 @@ class Mp3cat < Formula
   desc "Reads and writes mp3 files"
   homepage "http://tomclegg.net/mp3cat"
   url "http://tomclegg.net/software/mp3cat-0.4.tar.gz"
-  sha1 "442d2b2b546fec4535c2aa892a8fc61db21eb917"
+  sha256 "fd2b0d58018f5117bd1e22298c899bef5e6af61a0c540186d16d2bf516d6849a"
 
   bottle do
     cellar :any
@@ -13,7 +13,7 @@ class Mp3cat < Formula
 
   def install
     system "make"
-    bin.install %w(mp3cat mp3log mp3log-conf mp3dirclean mp3http mp3stream-conf)
+    bin.install %w[mp3cat mp3log mp3log-conf mp3dirclean mp3http mp3stream-conf]
   end
 
   test do

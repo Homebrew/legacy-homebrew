@@ -1,16 +1,16 @@
-require "formula"
-
 class Burp < Formula
   desc "Network backup and restore"
   homepage "http://burp.grke.org/"
-  url "https://downloads.sourceforge.net/project/burp/burp-1.4.28/burp-1.4.28.tar.bz2"
-  sha1 "ddd5340db6aac1fa2e58c1e66c89730d8fd9bfb5"
+  url "http://burp.grke.org/downloads/burp-1.4.28/burp-1.4.28.tar.bz2"
+  sha256 "01c41c07805ebe8c882d7cb9f294e779b6decbe2eb2c81fd65d8fb2b174e18f0"
   head "https://github.com/grke/burp.git"
 
   bottle do
-    sha1 "d27f35a6552777084aac22adadb989d3bd6fab90" => :yosemite
-    sha1 "48e9795082e84df84155bd0d23f4613aecd5b278" => :mavericks
-    sha1 "9ef6db0acae148b70d4fc266db84b7174904aa52" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "bb6cf41c1f0dbbfd0a443fe3a01d5ab76ba3197625761d7fbd3c1ea1ec8a0102" => :el_capitan
+    sha256 "e6a66d5a6253fd41f93e8396f9ef0b569dfa71260e23a5a021ecc775b28898ac" => :yosemite
+    sha256 "c65c1af00781bd8f8b2cd2f4dbe04998b2397437c53c3a7135e3f3f2ad9f1489" => :mavericks
   end
 
   depends_on "librsync"
@@ -25,6 +25,12 @@ class Burp < Formula
                           "--sbindir=#{bin}",
                           "--localstatedir=#{var}/burp"
     system "make", "install"
+  end
+
+  def caveats; <<-EOS.undent
+    Before installing the launchd entry you should configure your burp client in
+    #{etc}/burp/burp.conf
+    EOS
   end
 
   test do
@@ -58,13 +64,6 @@ class Burp < Formula
     </plist>
     EOS
   end
-
-  def caveats; <<-EOS.undent
-    Before installing the launchd entry you should configure your burp client in
-    #{etc}/burp/burp.conf
-    EOS
-  end
-
 end
 
 __END__

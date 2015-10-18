@@ -1,5 +1,3 @@
-require "formula"
-
 class Pidcat < Formula
   desc "Colored logcat script to show entries only for specified app"
   homepage "https://github.com/JakeWharton/pidcat"

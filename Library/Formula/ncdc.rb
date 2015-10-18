@@ -31,12 +31,12 @@ class Ncdc < Formula
 
     args = [
       "--disable-dependency-tracking",
-      "--prefix=#{prefix}",
+      "--prefix=#{prefix}"
     ]
     args << "--with-geoip" if build.with? "geoip"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 
   test do

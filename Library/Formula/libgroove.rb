@@ -1,10 +1,8 @@
-require "formula"
-
 class Libgroove < Formula
   desc "Streaming audio processing library"
   homepage "https://github.com/andrewrk/libgroove"
   url "https://github.com/andrewrk/libgroove/archive/4.3.0.tar.gz"
-  sha1 "3d64b6bb5ba14043ae1924b8e8f96bb0716f469d"
+  sha256 "76f68896f078a9613d420339ef887ca8293884ad2cd0fbc031d89a6af2993636"
 
   bottle do
     cellar :any

@@ -1,10 +1,8 @@
-require "formula"
-
 class Dnstop < Formula
   desc "Console tool to analyze DNS traffic"
   homepage "http://dns.measurement-factory.com/tools/dnstop/index.html"
   url "http://dns.measurement-factory.com/tools/dnstop/src/dnstop-20140915.tar.gz"
-  sha1 "af1567d6b53e8be697b884508a2a3a0edbea5e01"
+  sha256 "b4b03d02005b16e98d923fa79957ea947e3aa6638bb267403102d12290d0c57a"
 
   bottle do
     cellar :any
@@ -19,5 +17,4 @@ class Dnstop < Formula
     bin.install "dnstop"
     man8.install "dnstop.8"
   end
-
 end

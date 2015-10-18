@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libopennet < Formula
   desc "open_net(), similar to open()"
-  homepage 'http://www.rkeene.org/oss/libopennet'
-  url 'http://www.rkeene.org/files/oss/libopennet/libopennet-0.9.9.tar.gz'
-  sha1 'd15c698498401ec6036646eaf19914117d6f5c56'
+  homepage "http://www.rkeene.org/oss/libopennet"
+  url "http://www.rkeene.org/files/oss/libopennet/libopennet-0.9.9.tar.gz"
+  sha256 "d1350abe17ac507ffb50d360c5bf8290e97c6843f569a1d740f9c1d369200096"
 
   bottle do
     cellar :any
@@ -18,6 +16,6 @@ class Libopennet < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

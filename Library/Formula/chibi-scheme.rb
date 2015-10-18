@@ -1,21 +1,19 @@
-require "formula"
-
 class ChibiScheme < Formula
   desc "Small footprint Scheme for use as a C Extension Language"
   homepage "http://synthcode.com/wiki/chibi-scheme"
+  head "https://github.com/ashinn/chibi-scheme.git"
 
   stable do
     url "http://synthcode.com/scheme/chibi/chibi-scheme-0.7.3.tgz"
-    sha1 "752cf11a507f3deeedc49cb51f40dfe0c9bda18a"
+    sha256 "21a0cf669d42a670a11c08f50dc5aedb7b438fae892260900da58f0ed545fc7d"
   end
-
-  head "https://github.com/ashinn/chibi-scheme.git"
 
   bottle do
     cellar :any
-    sha256 "9fab20beb2d9afdd48d97434ca022f327f7b1eb3bec7d0a4d2ed6d44a091946a" => :yosemite
-    sha256 "bcd1046b43b40256705c162d6f92f71665811120143f7857d0ba7938f20cc433" => :mavericks
-    sha256 "98b0bb6559ce5b8225b481e56024dc44fcb6e4c71ece3a54a3bcbe8395d8e463" => :mountain_lion
+    revision 1
+    sha256 "b3f470a3d3000eb8d1d8ff2f94a68f03678f78e852db513df7aa446cacf5f2a2" => :el_capitan
+    sha256 "6d03409ae6925139c07eb58b7cf310e98cca5465cb0d41dfb41300ed24b584ee" => :yosemite
+    sha256 "eccb3f2e0229c542edb4f15d985b6ce231bb6ae223d6b117e085f3217dc8652c" => :mavericks
   end
 
   def install
@@ -32,4 +30,3 @@ class ChibiScheme < Formula
     assert_equal 0, $?.exitstatus
   end
 end
-

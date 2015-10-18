@@ -1,26 +1,26 @@
 class Moreutils < Formula
   desc "Collection of tools that nobody wrote when UNIX was young"
   homepage "https://joeyh.name/code/moreutils/"
-  url "https://distfiles.macports.org/moreutils/moreutils_0.55.orig.tar.gz"
-  sha256 "da9d5cd145ceea967a65dd50031d168d66199c3eb41b9390b57f35d4a5808ab5"
+  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  sha256 "3a7d54b0634e5eda8c3c43490d47cea189156700892dea6d876867cef9bc0d1d"
+
+  head "git://git.kitenet.net/moreutils"
 
   bottle do
-    sha1 "a7d3974c453e9b68d0254505f5bb4ed9fa9ba3a3" => :yosemite
-    sha1 "314304205f3f69f2a885524ea327ddb887be43d9" => :mavericks
-    sha1 "47ac9f9d22e0890e9df62e602ecf7a70a378826f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5475ea829217bd88b5a9bd1a0b71615dccd092aeaddec2b499fc725c58b48074" => :el_capitan
+    sha256 "abbe3897f14ef314900fb165e76de97bd7a948cded5b26f3c2471f50adfd2f11" => :yosemite
+    sha256 "ec107c6a7c081c5e990c9b79eb3fde8cb6c9ac4e8e0c52de8f751b624927861a" => :mavericks
+    sha256 "d506ebb771c12c334e5597bb57b751c3ad738ca38aaf5cb00f88b7b25f6a776c" => :mountain_lion
   end
+
+  option "without-parallel", "Build without the 'parallel' tool."
 
   depends_on "docbook-xsl" => :build
 
-  option "without-parallel", "Omit the 'parallel' tool. Allows installation of GNU parallel from 'parallel' formula."
-
-  if build.with? "parallel"
-    conflicts_with "parallel",
-      :because => "both install a 'parallel' executable. See the '--without-parallel' option"
-  end
-
-  conflicts_with "task-spooler",
-    :because => "both install a 'ts' executable."
+  conflicts_with "parallel", :because => "Both install a 'parallel' executable."
+  conflicts_with "task-spooler", :because => "Both install a 'ts' executable."
 
   resource "Time::Duration" do
     url "http://search.cpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"

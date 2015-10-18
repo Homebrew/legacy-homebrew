@@ -10,6 +10,7 @@ class Libarchive < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "a73405a0d1395f88af0999215bb0cc342b09113f6270375c7b9fe0bbad870c57" => :el_capitan
     sha1 "4457352669eb58cd60610f5f4b2429808facdff8" => :yosemite
     sha1 "708da02bb7015579b48d06174f776f781befc052" => :mavericks
     sha1 "886851569f64d0d90970af31ed526c2e387dd3d3" => :mountain_lion

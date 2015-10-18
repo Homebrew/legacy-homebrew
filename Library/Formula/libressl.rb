@@ -1,19 +1,18 @@
 class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "http://www.libressl.org/"
-  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.2.1.tar.gz"
-  mirror "https://raw.githubusercontent.com/DomT4/LibreMirror/master/LibreSSL/libressl-2.2.1.tar.gz"
-  sha256 "4f331750abfc3b605b02eeca1e8994fa0d2629985bc3f62924378197fbfe572d"
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.3.0.tar.gz"
+  sha256 "0451498d999ccff475226f5cfae07a3754a7b28c507c6bda007e316fc90d92a0"
 
   bottle do
-    cellar :any
-    sha256 "a63cccf5f58e5650a343113db88cdb4944cecca13a9ce3b99bf95ccc8142e102" => :yosemite
-    sha256 "fd66ef44264b2ee11f94e490c349a006a25146ff3d03c9db18f742c5ac296194" => :mavericks
-    sha256 "20cde578b278ea0e6ec6a757c19af8d109830ce6a852150ec93eaea994ba776c" => :mountain_lion
+    sha256 "272ab831a43a9dbfcc7d2d57d14bcbd070e90a07f49797c34e8640771c30aa02" => :el_capitan
+    sha256 "6cc1b9981035b974aba85acf5ad513ac446db2b1554514a184215ce682e88d79" => :yosemite
+    sha256 "a608b2b9f7308833ca4cedec71a500fcb1bdd0b1ff1a794a809f98f6e487d890" => :mavericks
   end
 
   head do
     url "https://github.com/libressl-portable/portable.git"
+
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "libtool" => :build
@@ -28,7 +27,6 @@ class Libressl < Formula
       --prefix=#{prefix}
       --with-openssldir=#{etc}/libressl
       --sysconfdir=#{etc}/libressl
-      --with-enginesdir=#{lib}/engines
     ]
 
     system "./autogen.sh" if build.head?
@@ -36,10 +34,6 @@ class Libressl < Formula
     system "make"
     system "make", "check"
     system "make", "install"
-
-    # Install the dummy openssl.cnf file to stop runtime warnings.
-    (etc/"libressl/certs").mkpath
-    (etc/"libressl").install "apps/openssl.cnf"
   end
 
   def post_install
@@ -62,6 +56,8 @@ class Libressl < Formula
       $?.success?
     end
 
+    # LibreSSL install a default pem - We prefer to use OS X for consistency.
+    rm_f etc/"libressl/cert.pem"
     (etc/"libressl/cert.pem").atomic_write(valid_certs.join("\n"))
   end
 
@@ -76,9 +72,14 @@ class Libressl < Formula
   end
 
   test do
+    # Make sure the necessary .cnf file exists, otherwise LibreSSL gets moody.
+    assert (HOMEBREW_PREFIX/"etc/libressl/openssl.cnf").exist?,
+            "LibreSSL requires the .cnf file for some functionality"
+
+    # Check LibreSSL itself functions as expected.
     (testpath/"testfile.txt").write("This is a test file")
-    expected_checksum = "91b7b0b1e27bfbf7bc646946f35fa972c47c2d32"
-    system bin/"openssl", "dgst", "-sha1", "-out", "checksum.txt", "testfile.txt"
+    expected_checksum = "e2d0fe1585a63ec6009c8016ff8dda8b17719a637405a4e23c0ff81339148249"
+    system "#{bin}/openssl", "dgst", "-sha256", "-out", "checksum.txt", "testfile.txt"
     open("checksum.txt") do |f|
       checksum = f.read(100).split("=").last.strip
       assert_equal checksum, expected_checksum

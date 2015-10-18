@@ -1,11 +1,9 @@
-require 'formula'
-
 class ClassDump < Formula
   desc "Utility for examining the Objective-C segment of Mach-O files"
-  homepage 'http://stevenygard.com/projects/class-dump/'
-  head 'https://github.com/nygard/class-dump.git'
-  url 'https://github.com/nygard/class-dump/archive/3.5.tar.gz'
-  sha1 'c343bec63878161b02c956f49c9c1c8d989b4b5a'
+  homepage "http://stevenygard.com/projects/class-dump/"
+  head "https://github.com/nygard/class-dump.git"
+  url "https://github.com/nygard/class-dump/archive/3.5.tar.gz"
+  sha256 "94f5286c657dca02dbed4514b2dbd791b42ecef5122e3945a855caf8d1f65e64"
 
   bottle do
     cellar :any

@@ -1,5 +1,5 @@
-require 'resource'
-require 'erb'
+require "resource"
+require "erb"
 
 module Patch
   def self.create(strip, src, &block)
@@ -65,7 +65,8 @@ class EmbeddedPatch
 
   def apply
     data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
-    cmd, args = "/usr/bin/patch", %W[-g 0 -f -#{strip}]
+    cmd = "/usr/bin/patch"
+    args = %W[-g 0 -f -#{strip}]
     IO.popen("#{cmd} #{args.join(" ")}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution.new(cmd, args) unless $?.success?
   end
@@ -118,7 +119,7 @@ class ExternalPatch
     true
   end
 
-  def owner= owner
+  def owner=(owner)
     resource.owner   = owner
     resource.version = resource.checksum || ERB::Util.url_encode(resource.url)
   end
@@ -170,7 +171,7 @@ class LegacyPatch < ExternalPatch
     super
   end
 
-  def verify_download_integrity(fn)
+  def verify_download_integrity(_fn)
     # no-op
   end
 

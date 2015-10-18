@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'bottles'
+require "testing_env"
+require "bottles"
 
 class BottleTagTests < Homebrew::TestCase
   def test_tag_tiger_ppc

@@ -2,7 +2,7 @@ class Cpptest < Formula
   desc "Unit testing framework handling automated tests in C++"
   homepage "http://cpptest.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cpptest/cpptest/cpptest-1.1.2/cpptest-1.1.2.tar.gz"
-  sha1 "c8e69ca98f9b39016c94f1f78659f412ee825049"
+  sha256 "9e4fdf156b709397308536eb6b921e3aea1f463c6613f9a0c1dfec9614386027"
 
   bottle do
     cellar :any
