@@ -6,7 +6,7 @@ class AircrackNg < Formula
   # See https://github.com/Homebrew/homebrew/issues/29450
   url "http://download.aircrack-ng.org/aircrack-ng-1.1.tar.gz"
   sha256 "b136b549b7d2a2751c21793100075ea43b28de9af4c1969508bb95bcc92224ad"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -27,7 +27,7 @@ class AircrackNg < Formula
     # Fix incorrect OUI url
     inreplace "scripts/airodump-ng-oui-update",
       "http://standards.ieee.org/regauth/oui/oui.txt",
-      "http://standards.ieee.org/develop/regauth/oui/oui.txt"
+      "http://standards-oui.ieee.org/oui.txt"
 
     system "make", "CC=#{ENV.cc}"
     system "make", "prefix=#{prefix}", "mandir=#{man1}", "install"
