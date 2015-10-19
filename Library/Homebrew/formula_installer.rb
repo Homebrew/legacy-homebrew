@@ -164,7 +164,7 @@ class FormulaInstaller
 
     check_conflicts
 
-    if !pour_bottle? && !MacOS.has_apple_developer_tools?
+    if !pour_bottle? && !formula.bottle_unneeded? && !MacOS.has_apple_developer_tools?
       raise BuildToolsError.new([formula])
     end
 
@@ -256,7 +256,10 @@ class FormulaInstaller
   # abnormally with a BuildToolsError if one or more don't.
   # Only invoked when the user has no developer tools.
   def check_dependencies_bottled(deps)
-    unbottled = deps.reject { |dep, _| dep.to_formula.pour_bottle? }
+    unbottled = deps.reject do |dep, _|
+      dep_f = dep.to_formula
+      dep_f.pour_bottle? || dep_f.bottle_unneeded?
+    end
 
     raise BuildToolsError.new(unbottled) unless unbottled.empty?
   end
