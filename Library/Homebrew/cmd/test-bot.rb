@@ -582,7 +582,7 @@ module Homebrew
       audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
-        if formula.stable? && !ARGV.include?("--fast")
+        if formula.stable? && !ARGV.include?("--fast") && !formula.bottle_disabled?
           bottle_args = ["--verbose", "--rb", canonical_formula_name]
           bottle_args << "--keep-old" if ARGV.include? "--keep-old"
           test "brew", "bottle", *bottle_args
