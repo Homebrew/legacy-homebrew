@@ -3,8 +3,8 @@ require "language/go"
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/1.2.2.tar.gz"
-  sha256 "728b6f7b3762d0dc38c8a6b6616e97934bfff1b218c63542bf67752994c8d40e"
+  url "https://github.com/bitrise-io/bitrise/archive/1.2.3.tar.gz"
+  sha256 "f884a0066503e8f344f99e59a57e3015476fa09ae898cd53cd664a045fbfc7cd"
 
   bottle do
     cellar :any_skip_relocation
