@@ -172,11 +172,12 @@ class FormulaAuditor
       [/^  bottle do/,                     "bottle block"],
       [/^  devel do/,                      "devel block"],
       [/^  head do/,                       "head block"],
+      [/^  bottle (:unneeded|:disable)/,   "bottle modifier"],
       [/^  option/,                        "option"],
       [/^  depends_on/,                    "depends_on"],
       [/^  def install/,                   "install method"],
       [/^  def caveats/,                   "caveats method"],
-      [/^  test do/,                       "test block"]
+      [/^  test do/,                       "test block"],
     ]
 
     present = component_list.map do |regex, name|
@@ -192,6 +193,9 @@ class FormulaAuditor
     present.map!(&:last)
     if present.include?("head") && present.include?("head block")
       problem "Should not have both `head` and `head do`"
+    end
+    if present.include?("bottle modifier") && present.include?("bottle block")
+      problem "Should not have `bottle :unneeded/:disable` and `bottle do`"
     end
   end
 
