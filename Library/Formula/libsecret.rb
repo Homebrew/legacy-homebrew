@@ -14,12 +14,15 @@ class Libsecret < Formula
   depends_on "gnu-sed" => :build
   depends_on "intltool" => :build
   depends_on "gettext" => :build
+  depends_on "docbook-xsl" => :build
   depends_on "vala" => :optional
   depends_on "gobject-introspection" => :recommended
   depends_on "glib"
   depends_on "libgcrypt"
 
   def install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking
@@ -35,8 +38,6 @@ class Libsecret < Formula
     # https://bugzilla.gnome.org/show_bug.cgi?id=734630
     inreplace "Makefile", "sed", "gsed"
 
-    # https://bugzilla.gnome.org/show_bug.cgi?id=734631
-    inreplace "Makefile", "--nonet", ""
     system "make", "install"
   end
 
@@ -70,7 +71,7 @@ class Libsecret < Formula
     flags = [
       "-I#{include}/libsecret-1",
       "-I#{HOMEBREW_PREFIX}/include/glib-2.0",
-      "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include"
+      "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include",
     ]
 
     system ENV.cc, "test.c", "-o", "test", *flags
