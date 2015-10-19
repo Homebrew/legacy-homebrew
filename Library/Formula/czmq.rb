@@ -19,13 +19,6 @@ class Czmq < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-
-    # Patch to fix zdir_test fail on `make check`
-    # https://github.com/Homebrew/homebrew/issues/44210
-    patch do
-      url "https://patch-diff.githubusercontent.com/raw/zeromq/czmq/pull/1127.patch"
-      sha256 "3a0672bf6e12ca7b400f70df36a93ecc31fbdc86bb977a94a5963754a4fc29b8"
-    end
   end
 
   option :universal
