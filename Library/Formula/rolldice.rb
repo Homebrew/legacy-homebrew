@@ -18,8 +18,6 @@ class Rolldice < Formula
   end
 
   test do
-    output = `#{bin}/rolldice -s 1x2d6`
-    assert_equal true, output.include?("Roll #1")
-    assert_equal 0, $?.exitstatus
+    assert_match "Roll #1", shell_output("#{bin}/rolldice -s 1x2d6")
   end
 end
