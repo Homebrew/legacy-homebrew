@@ -21,7 +21,8 @@ class Passenger < Formula
   def install
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
-    rake "webhelper"
+
+    system("/usr/bin/ruby ./bin/passenger-config compile-nginx-engine")
 
     (libexec/"download_cache").mkpath
 
