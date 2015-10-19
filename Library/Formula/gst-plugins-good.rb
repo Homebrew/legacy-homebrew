@@ -7,6 +7,16 @@ class GstPluginsGood < Formula
     sha256 "a0915639595305e48884656e22b16fda7c6892aa02cdb3eb43e23dab6e6b81fa"
 
     depends_on "check" => :optional
+
+    if MacOS.version < :lion
+      # Snow Leopard and below don't have strnlen()
+      # https://bugzilla.gnome.org/show_bug.cgi?id=756154
+      # http://cgit.freedesktop.org/gstreamer/gst-plugins-good/commit/?id=fc203a4bd7eb1cecc0e17bcb7ec67e0672806867
+      patch do
+        url "https://bugzilla.gnome.org/attachment.cgi?id=313403&action=diff&context=patch&collapsed=&headers=1&format=raw"
+        sha256 "63a2f18683c967d321f42fcfca0c1d8e070b489ce8f8b08f3340c30c6903250d"
+      end
+    end
   end
 
   bottle do
