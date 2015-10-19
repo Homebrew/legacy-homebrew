@@ -5,10 +5,10 @@ class Doitlive < Formula
   sha256 "68c9a337dc24f31359ed516d94b662b6467939a20096d76ed75ebed8a2b1a34c"
 
   bottle do
-    cellar :any
-    sha1 "8bdb41603a087ccb0b3f50e56e37a60eacdd46c7" => :yosemite
-    sha1 "1b976835aa074897a4aa5b3e8828813aaf3bb718" => :mavericks
-    sha1 "89faad888461a236a24a6964a0df58bb05c5496d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "f7b5d58667924cc89c35ea5678ce0703d7447e91e15dd198e57ea661de465664" => :el_capitan
+    sha256 "ed831e592b1c96ae6d430ba8a11a709cae7057750af88b76b93e7a84f93ce192" => :yosemite
+    sha256 "da8dea711c86b98bfca352014d7f7b7285e95406dc8e991d0fd288f7140320f9" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
