@@ -8,8 +8,8 @@ class Whatmp3 < Formula
   depends_on "python"
   depends_on "flac"
   depends_on "mktorrent" => :recommended
+  depends_on "lame" => :recommended
   depends_on "vorbis-tools" => :optional
-  depends_on "lame" => :optional
   depends_on "mp3gain" => :optional
   depends_on "aacgain" => :optional
   depends_on "vorbisgain" => :optional
