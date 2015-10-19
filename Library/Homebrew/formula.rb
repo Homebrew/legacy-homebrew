@@ -1592,26 +1592,34 @@ class Formula
     # @!attribute [w] bottle
     # Adds a {.bottle} {SoftwareSpec}.
     # This provides a pre-built binary package built by the Homebrew maintainers for you.
-    # It will be installed automatically if there is a binary package for your platform and you haven't passed or previously used any options on this formula.
+    # It will be installed automatically if there is a binary package for your platform
+    # and you haven't passed or previously used any options on this formula.
+    #
     # If you maintain your own repository, you can add your own bottle links.
     # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Bottles.md
     # You can ignore this block entirely if submitting to Homebrew/Homebrew, It'll be
     # handled for you by the Brew Test Bot.
     #
     # <pre>bottle do
-    #   root_url "http://mikemcquaid.com" # Optional root to calculate bottle URLs
+    #   root_url "https://example.com" # Optional root to calculate bottle URLs
     #   prefix "/opt/homebrew" # Optional HOMEBREW_PREFIX in which the bottles were built.
     #   cellar "/opt/homebrew/Cellar" # Optional HOMEBREW_CELLAR in which the bottles were built.
     #   revision 1 # Making the old bottle outdated without bumping the version/revision of the formula.
-    #   sha256 "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865" => :yosemite
-    #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :mavericks
-    #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mountain_lion
+    #   sha256 "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865" => :el_capitan
+    #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :yosemite
+    #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mavericks
     # end</pre>
     #
-    # For formulae which don't require compiling, you can tag them with:
+    # Only formulae where the upstream URL breaks or moves frequently, require compile
+    # or have a reasonable amount of patches/resources should be bottled.
+    # Formulae which do not meet the above requirements should not be bottled.
+    #
+    # Formulae which should not be bottled & can be installed without any compile
+    # required should be tagged with:
     # <pre>bottle :unneeded</pre>
     #
-    # To disable bottle for other reasons.
+    # Otherwise formulae which do not meet the above requirements and should not
+    # be bottled should be tagged with:
     # <pre>bottle :disable, "reasons"</pre>
     def bottle(*args, &block)
       stable.bottle(*args, &block)
