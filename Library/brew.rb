@@ -97,7 +97,8 @@ begin
 
   cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
 
-  sudo_check = %w[ install reinstall postinstall link pin unpin upgrade ]
+  sudo_check = %w[ install reinstall postinstall link pin unpin
+                   update upgrade create migrate tap switch ]
 
   if sudo_check.include? cmd
     if Process.uid.zero? && !File.stat(HOMEBREW_BREW_FILE).uid.zero?
