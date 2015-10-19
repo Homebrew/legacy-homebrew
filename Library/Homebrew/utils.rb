@@ -419,10 +419,10 @@ module GitHub
     def initialize(reset, error)
       super <<-EOS.undent
         GitHub #{error}
-        Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
-          https://github.com/settings/tokens
+        Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
+          https://github.com/settings/tokens/new?scopes=&description=Homebrew
         and then set the token as: HOMEBREW_GITHUB_API_TOKEN
-                    EOS
+      EOS
     end
 
     def pretty_ratelimit_reset(reset)

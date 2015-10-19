@@ -636,6 +636,8 @@ can take several different forms:
     <https://developer.github.com/v3/#rate-limiting> for more information.
     Homebrew uses the GitHub API for features such as `brew search`.
 
+    *NOTE*: Homebrew doesn't require permissions for any of the scopes.
+
   * HOMEBREW\_LOGS:
     If set, Homebrew will use the given directory to store log files.
 
