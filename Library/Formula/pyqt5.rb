@@ -11,9 +11,9 @@ class Pyqt5 < Formula
   patch :DATA
 
   bottle do
-    sha256 "ce5dbd7dbf9d8377500226050ee1205d979679340443c18612d5d66f3ffb3ee2" => :yosemite
-    sha256 "d40d3b90566540600d830931ff7f493ecaac3baf9f723a444116a945d7203660" => :mavericks
-    sha256 "9f07294fb874a412a62f93f90382d22a1177f29c589c2b7bf331974b7656d952" => :mountain_lion
+    sha256 "038a01d845b448b1ab2f0a0a1fa1e2fc6c26c7c4a89414f5323b13c137cb6338" => :el_capitan
+    sha256 "e8dfc2ce94a18936550b1af0abaa8fed898c14b7fac06c6e6822da3eff7541d2" => :yosemite
+    sha256 "b116d5b4060d488f77a1d3536a3442cf8b15f5fe9a350186269e2ecc9e688fe3" => :mavericks
   end
 
   option "enable-debug", "Build with debug symbols"
