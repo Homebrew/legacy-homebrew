@@ -173,7 +173,7 @@ class Llvm < Formula
         # the login keychain to ~/Library/Preferences/com.apple.security.plist,
         # which adds it to the superenv keychain search path.
         mkdir_p "#{ENV["HOME"]}/Library/Preferences"
-        username = `whoami`.strip! # Has ending newline otherwise
+        username = ENV["USER"]
         system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
       else
         odie "lldb must be built along with clang"
