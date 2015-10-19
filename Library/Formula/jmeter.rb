@@ -4,6 +4,13 @@ class Jmeter < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=jmeter/binaries/apache-jmeter-2.13.tgz"
   sha256 "9fe33d3d6e381103d3ced2962cdef5c164a06fc58c55e247eadf5a5dbcd4d8fe"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "d3399e640d2c7951271a5bedb4e0741cc1286b33c61c068518233d56709b94b7" => :el_capitan
+    sha256 "ba692230f928b309d7460c043ac6e58f6ee8a65c4125d2682e30886c8c885434" => :yosemite
+    sha256 "b1f29631e5920214ae3e881d49d384ae26650a8f4543e635c319a783305daf38" => :mavericks
+  end
+
   resource "jmeterplugins-standard" do
     url "http://jmeter-plugins.org/downloads/file/JMeterPlugins-Standard-1.3.1.zip"
     sha256 "33ed06ce794819a50d57eda8624f41a97b9901c17c7bb5aec89bc4a7959edffe"
