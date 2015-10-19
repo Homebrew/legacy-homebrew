@@ -12,6 +12,8 @@ class Cowpatty < Formula
   end
 
   def install
+    # May fail on parallel builds with a race condition, see #45150
+    ENV.deparallelize
     system "make", "BINDIR=#{bin}", "install"
   end
 
