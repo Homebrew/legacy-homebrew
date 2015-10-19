@@ -6,6 +6,13 @@ class Libuecc < Formula
 
   head "git://git.universe-factory.net/libuecc"
 
+  bottle do
+    cellar :any
+    sha256 "704ce2e0e2d517c66d797d4ece988a998a86941e61d1842dd94b0f340a822260" => :el_capitan
+    sha256 "a50e505adc4a10c45014aae1252a88fb79121687aa7ccc338c66a169837838a9" => :yosemite
+    sha256 "f98e022b1d1c5cf68170eb3958322d34aa736f49a2bfbdacaac8fe277206e27f" => :mavericks
+  end
+
   depends_on "cmake" => :build
 
   def install
