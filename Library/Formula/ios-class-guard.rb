@@ -3,7 +3,8 @@ class IosClassGuard < Formula
   homepage "https://github.com/Polidea/ios-class-guard/"
   head "https://github.com/Polidea/ios-class-guard.git"
   url "https://github.com/Polidea/ios-class-guard/archive/0.8.tar.gz"
-
+  sha256 "4446993378f1e84ce1d1b3cbace0375661e3fe2fa1a63b9bf2c5e9370a6058ff"
+  
   bottle do
     cellar :any
     sha1 "e83dde7f68747d6b2d6c14beddbb737911632fad" => :mavericks
