@@ -1,8 +1,8 @@
 class Yank < Formula
   desc "Yank terminal output to clipboard"
   homepage "https://github.com/mptre/yank"
-  url "https://github.com/mptre/yank/archive/v0.4.0.tar.gz"
-  sha256 "1adf1b07f7cb9401daeed7a05bad492db8ed77ead4728d9b45f541d56bc2e8c5"
+  url "https://github.com/mptre/yank/archive/v0.4.1.tar.gz"
+  sha256 "cbd6b3c9d580fa619f3cba2c53b18d26674d587333976fe75b402f76ea01c4e5"
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "YANKCMD=pbcopy"
