@@ -17,6 +17,8 @@ class Freeswitch < Formula
   option "without-sounds-en", "Do not install English (Callie) sounds"
   option "with-sounds-fr", "Install French (June) sounds"
   option "with-sounds-ru", "Install Russian (Elena) sounds"
+  option "with-directory", "Install directory module"
+  option "with-flite", "Install text-to-speech module"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -148,6 +150,14 @@ class Freeswitch < Formula
                           "--enable-static",
                           "--prefix=#{prefix}",
                           "--exec_prefix=#{prefix}"
+
+    if build.with?("flite")
+      inreplace "modules.conf", "#asr_tts/mod_flite", "asr_tts/mod_flite"
+    end
+
+    if build.with?("directory")
+      inreplace "modules.conf", "#applications/mod_directory", "applications/mod_directory"
+    end
 
     system "make"
     system "make", "install", "all"
