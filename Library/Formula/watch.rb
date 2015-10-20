@@ -1,7 +1,7 @@
 class Watch < Formula
   desc "Executes a program periodically, showing output fullscreen"
   homepage "http://sourceforge.net/projects/procps-ng/"
-  url "http://download.sourceforge.net/project/procps-ng/Production/procps-ng-3.3.10.tar.xz"
+  url "https://download.sourceforge.net/project/procps-ng/Production/procps-ng-3.3.10.tar.xz"
   sha256 "a02e6f98974dfceab79884df902ca3df30b0e9bad6d76aee0fb5dce17f267f04"
 
   bottle do

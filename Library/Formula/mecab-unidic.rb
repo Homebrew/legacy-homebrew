@@ -1,14 +1,15 @@
 class MecabUnidic < Formula
   desc "Morphological analyzer for MeCab"
-  homepage "http://sourceforge.jp/projects/unidic/"
-  url "http://sourceforge.jp/frs/redir.php?m=iij&f=%2Funidic%2F58338%2Funidic-mecab-2.1.2_src.zip"
+  homepage "https://osdn.jp/projects/unidic/"
+  url "http://dl.osdn.jp/unidic/58338/unidic-mecab-2.1.2_src.zip"
   sha256 "6cce98269214ce7de6159f61a25ffc5b436375c098cc86d6aa98c0605cbf90d4"
 
   bottle do
-    cellar :any
-    sha256 "6c41c6ebd2ebe27af0b92beae18b1eb8abb0d0a4830b78f16b8a3feb1f42c8fe" => :yosemite
-    sha256 "de02ba717c7f724d305b337ef944983d310e78fb6c58169abd1aea62f0a197e4" => :mavericks
-    sha256 "9bb2a59eb6345f1a0d3da5042c0b586cad2b8227512fcb907c0c2b83bc100c29" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "9ece990d89f8949c82003296bd256ebafddaf5d9caf03a63ea692f2009d52783" => :el_capitan
+    sha256 "f81fd4ff64eb6b7731fd4b818b17398b1eaea3d12d533a7340b9b12aa2331c0d" => :yosemite
+    sha256 "0f5b5d2d705004d502da930f1b8671a5ac34ad8d35ba7547846fa16577b43c87" => :mavericks
   end
 
   depends_on "mecab"

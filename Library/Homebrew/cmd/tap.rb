@@ -15,7 +15,7 @@ module Homebrew
     else
       user, repo = tap_args
       clone_target = ARGV.named[1]
-      opoo "Already tapped!" unless install_tap(user, repo, clone_target)
+      opoo "#{user}/#{repo} already tapped!" unless install_tap(user, repo, clone_target)
     end
   end
 

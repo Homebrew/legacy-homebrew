@@ -3,14 +3,15 @@ class Puddletag < Formula
   homepage "http://puddletag.sf.net"
   url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
   sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
+  revision 1
 
   head "https://github.com/keithgg/puddletag.git"
 
   bottle do
-    cellar :any
-    sha256 "a68e0d8951475db3151e8bbd91a66028200ea2bd18363fcd37a6d9191e693633" => :yosemite
-    sha256 "64fbfbe641417db9cf8544360628c15894e633a48b81765033f0f2f404876419" => :mavericks
-    sha256 "c5ff96058a4f5262822327108318549a76beeaef4c39715944a22b30bdd19280" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3ae286958269cf2bdc8e529226489910a05a64f1f8cfe6bc3d4884cd53d9b65e" => :el_capitan
+    sha256 "6f54a307e0b0bf717b622c6f33cb4b7b82fa7f3ce9b8e90f1065500c360783cd" => :yosemite
+    sha256 "402eb5c665befc57cf7eb2566d53ce99e0b16dcae0321c6b70bec3aad3032667" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -30,6 +31,12 @@ class Puddletag < Formula
   resource "configobj" do
     url "https://pypi.python.org/packages/source/c/configobj/configobj-5.0.5.tar.gz"
     sha256 "766eff273f2cbb007a3ea8aa69429ee9b1553aa96fe282c6ace3769b9ac47b08"
+  end
+
+  # Upstream commit to fix an issue with PyQT 4.11.4. Remove on next version.
+  patch do
+    url "https://github.com/keithgg/puddletag/commit/489acd2ee62eb5fbff95f8220dc8958c14871931.patch"
+    sha256 "fce0cfce4d4477cde4827a0a4d3ef74fbabf630ada2d0cf035cf155a17c37a68"
   end
 
   def install

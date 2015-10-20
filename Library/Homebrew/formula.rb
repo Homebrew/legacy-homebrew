@@ -182,17 +182,17 @@ class Formula
 
   def validate_attributes!
     if name.nil? || name.empty? || name =~ /\s/
-      raise FormulaValidationError.new(:name, name)
+      raise FormulaValidationError.new(full_name, :name, name)
     end
 
     url = active_spec.url
     if url.nil? || url.empty? || url =~ /\s/
-      raise FormulaValidationError.new(:url, url)
+      raise FormulaValidationError.new(full_name, :url, url)
     end
 
     val = version.respond_to?(:to_str) ? version.to_str : version
     if val.nil? || val.empty? || val =~ /\s/
-      raise FormulaValidationError.new(:version, val)
+      raise FormulaValidationError.new(full_name, :version, val)
     end
   end
 
@@ -214,6 +214,21 @@ class Formula
   # @private
   def head?
     active_spec == head
+  end
+
+  # @private
+  def bottle_unneeded?
+    active_spec.bottle_unneeded?
+  end
+
+  # @private
+  def bottle_disabled?
+    active_spec.bottle_disabled?
+  end
+
+  # @private
+  def bottle_disable_reason
+    active_spec.bottle_disable_reason
   end
 
   # @private
@@ -277,6 +292,18 @@ class Formula
       if formula_renames.value?(name)
         formula_renames.to_a.rassoc(name).first
       end
+    end
+  end
+
+  # All of aliases for the formula
+  def aliases
+    @aliases ||= if core_formula?
+      Formula.core_alias_reverse_table[name] || []
+    elsif tap?
+      user, repo = tap.split("/")
+      Tap.fetch(user, repo.sub("homebrew-", "")).alias_reverse_table[full_name] || []
+    else
+      []
     end
   end
 
@@ -1022,10 +1049,16 @@ class Formula
     end.compact
   end
 
+  # an array of all alias files of core {Formula}
+  # @private
+  def self.core_alias_files
+    @core_alias_files ||= Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*")
+  end
+
   # an array of all core aliases
   # @private
   def self.core_aliases
-    @core_aliases ||= Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map { |f| File.basename f }.sort
+    @core_aliases ||= core_alias_files.map { |f| f.basename.to_s }.sort
   end
 
   # an array of all tap aliases
@@ -1044,6 +1077,29 @@ class Formula
   # @private
   def self.alias_full_names
     @alias_full_names ||= core_aliases + tap_aliases
+  end
+
+  # a table mapping core alias to formula name
+  # @private
+  def self.core_alias_table
+    return @core_alias_table if @core_alias_table
+    @core_alias_table = Hash.new
+    core_alias_files.each do |alias_file|
+      @core_alias_table[alias_file.basename.to_s] = alias_file.resolved_path.basename(".rb").to_s
+    end
+    @core_alias_table
+  end
+
+  # a table mapping core formula name to aliases
+  # @private
+  def self.core_alias_reverse_table
+    return @core_alias_reverse_table if @core_alias_reverse_table
+    @core_alias_reverse_table = Hash.new
+    core_alias_table.each do |alias_name, formula_name|
+      @core_alias_reverse_table[formula_name] ||= []
+      @core_alias_reverse_table[formula_name] << alias_name
+    end
+    @core_alias_reverse_table
   end
 
   def self.[](name)
@@ -1109,6 +1165,7 @@ class Formula
       "desc" => desc,
       "homepage" => homepage,
       "oldname" => oldname,
+      "aliases" => aliases,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
         "bottle" => bottle ? true : false,
@@ -1550,8 +1607,14 @@ class Formula
     #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :mavericks
     #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mountain_lion
     # end</pre>
-    def bottle(*, &block)
-      stable.bottle(&block)
+    #
+    # For formulae which don't require compiling, you can tag them with:
+    # <pre>bottle :unneeded</pre>
+    #
+    # To disable bottle for other reasons.
+    # <pre>bottle :disable, "reasons"</pre>
+    def bottle(*args, &block)
+      stable.bottle(*args, &block)
     end
 
     # @private

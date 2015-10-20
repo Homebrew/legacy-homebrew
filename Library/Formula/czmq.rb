@@ -7,10 +7,10 @@ class Czmq < Formula
 
   bottle do
     cellar :any
-    sha256 "936bd015196746bccb8cf3282564333f1d2bec0b42c509415b56c7ee89104506" => :el_capitan
-    sha256 "cb5e7a40b945b014c92597ce275b76f5a39541e0f96e6ea541cb0d6e706bcfaa" => :yosemite
-    sha256 "42f0561a90ba0d17d17477282a2c2cc3f36ed72eb37209114626f51565852948" => :mavericks
-    sha256 "1b6ecec3b74fb846b025c6da0ae28820569e542eee55c80658c2074a8d2ada87" => :mountain_lion
+    revision 1
+    sha256 "d3e5623f2c031374d0aecacfa4fff264f290edb1c40a0fa4474daf0098c4b649" => :el_capitan
+    sha256 "f0c78d4d93ddcd16f18b6277c39e08b7eb8754c802d2a63c652852613305e4c4" => :yosemite
+    sha256 "c9f2bcf72a59b931946945e9661d8f6b43d2ce0f0a18ef8d15db60e830489caf" => :mavericks
   end
 
   head do
@@ -19,15 +19,22 @@ class Czmq < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+
+    # Patch to fix zdir_test fail on `make check`
+    # https://github.com/Homebrew/homebrew/issues/44210
+    patch do
+      url "https://patch-diff.githubusercontent.com/raw/zeromq/czmq/pull/1127.patch"
+      sha256 "3a0672bf6e12ca7b400f70df36a93ecc31fbdc86bb977a94a5963754a4fc29b8"
+    end
   end
 
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "libsodium" => :optional
+  depends_on "libsodium" => :recommended
 
-  if build.with? "libsodium"
-    depends_on "zeromq" => "with-libsodium"
+  if build.without? "libsodium"
+    depends_on "zeromq" => "without-libsodium"
   else
     depends_on "zeromq"
   end
@@ -44,8 +51,5 @@ class Czmq < Formula
     system "make", "check"
     system "make", "install"
     rm Dir["#{bin}/*.gsl"]
-
-    # makecert clashes with Mono. Rename it less generically.
-    mv bin/"makecert", bin/"czmq-makecert"
   end
 end

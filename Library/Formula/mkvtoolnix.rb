@@ -5,10 +5,10 @@ class Mkvtoolnix < Formula
   sha256 "87bd82222995d35c310a426ed43e0b27cbfefa0caadcbcca8296787314affc37"
 
   bottle do
-    sha256 "aecb8a6f69196bba6652471de7a8622bbe60c51ec4faa300d1db1fcc05cfdc1b" => :el_capitan
-    sha256 "b6b99fa602b0b97c381a1f81196d549b47d23877c18a818e97dc8b061f06f88e" => :yosemite
-    sha256 "86e1a1d7e19ce84581f1c2cccac4416f0fbbd6542457337f9f080d9071cd56f0" => :mavericks
-    sha256 "e77f4ffed2854bf9c2d5c7c2eb2352e3f6062833ec872888929c9901539a05be" => :mountain_lion
+    revision 1
+    sha256 "0b2c650157f435bef60aff54c3baf6c298c4615596b6d7727c58697f701e19c9" => :el_capitan
+    sha256 "6f755b7c35555342befe1815c6e5720962c198031c4a61f78f616d0d41c34fdd" => :yosemite
+    sha256 "8956370c9f194fc8dd132fd4608485088c47e7c026dd264703b040a662b8625d" => :mavericks
   end
 
   head do
@@ -52,6 +52,8 @@ class Mkvtoolnix < Formula
     boost = Formula["boost"]
     ogg = Formula["libogg"]
     vorbis = Formula["libvorbis"]
+    ebml = Formula["libebml"]
+    matroska = Formula["libmatroska"]
 
     args = %W[
       --disable-debug
@@ -62,12 +64,12 @@ class Mkvtoolnix < Formula
 
     if build.with? "wxmac"
       wxmac = Formula["wxmac"]
-      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{wxmac.opt_include}"
-      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{wxmac.opt_lib}"
+      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{ebml.opt_include};#{matroska.opt_include};#{wxmac.opt_include}"
+      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{ebml.opt_lib};#{matroska.opt_lib};#{wxmac.opt_lib}"
       args << "--enable-wxwidgets"
     else
-      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include}"
-      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib}"
+      args << "--with-extra-includes=#{ogg.opt_include};#{vorbis.opt_include};#{ebml.opt_include};#{matroska.opt_include}"
+      args << "--with-extra-libs=#{ogg.opt_lib};#{vorbis.opt_lib};#{ebml.opt_lib};#{matroska.opt_lib}"
       args << "--disable-wxwidgets"
     end
 

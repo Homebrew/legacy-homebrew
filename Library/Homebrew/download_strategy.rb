@@ -135,10 +135,6 @@ class VCSDownloadStrategy < AbstractDownloadStrategy
     end
   end
 
-  def stage
-    ohai "Checking out #{@ref_type} #{@ref}" if @ref_type && @ref
-  end
-
   def cached_location
     @clone
   end
@@ -503,7 +499,10 @@ class SubversionDownloadStrategy < VCSDownloadStrategy
     args = ["svn", svncommand]
     args << url unless target.directory?
     args << target
-    args << "-r" << revision if revision
+    if revision
+      ohai "Checking out #{@ref}"
+      args << "-r" << revision
+    end
     args << "--ignore-externals" if ignore_externals
     quiet_safe_system(*args)
   end
@@ -645,11 +644,13 @@ class GitDownloadStrategy < VCSDownloadStrategy
     safe_system "git", *clone_args
     cached_location.cd do
       safe_system "git", "config", "homebrew.cacheversion", cache_version
+      checkout
       update_submodules if submodules?
     end
   end
 
   def checkout
+    ohai "Checking out #{@ref_type} #{@ref}" if @ref_type && @ref
     quiet_safe_system "git", "checkout", "-f", @ref, "--"
   end
 
@@ -732,6 +733,7 @@ class MercurialDownloadStrategy < VCSDownloadStrategy
     dst = Dir.getwd
     cached_location.cd do
       if @ref_type && @ref
+        ohai "Checking out #{@ref_type} #{@ref}" if @ref_type && @ref
         safe_system hgpath, "archive", "--subrepos", "-y", "-r", @ref, "-t", "files", dst
       else
         safe_system hgpath, "archive", "--subrepos", "-y", "-t", "files", dst

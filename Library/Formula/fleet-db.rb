@@ -1,7 +1,7 @@
 class FleetDb < Formula
   desc "Schema-free database optimized for agile development"
   homepage "http://fleetdb.org"
-  url "http://fleetdb.s3.amazonaws.com/fleetdb-standalone-0.2.0.jar"
+  url "https://fleetdb.s3.amazonaws.com/fleetdb-standalone-0.2.0.jar"
   sha256 "240df0ee690eedf5eed1fd791eca34f18d36852a88a38a521ce9d03748de07a8"
 
   def install

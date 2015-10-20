@@ -145,7 +145,7 @@ module Homebrew
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
     f.puts "HOMEBREW_BOTTLE_DOMAIN: #{BottleSpecification::DEFAULT_DOMAIN}"
     f.puts hardware
-    f.puts "OS X: #{MACOS_FULL_VERSION}-#{kernel}"
+    f.puts "OS X: #{MacOS.full_version}-#{kernel}"
     f.puts "Xcode: #{xcode ? xcode : "N/A"}"
     f.puts "CLT: #{clt ? clt : "N/A"}"
     f.puts "GCC-4.0: build #{gcc_40}" if gcc_40
