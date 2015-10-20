@@ -1,8 +1,8 @@
 class GsettingsDesktopSchemas < Formula
   desc "GSettings schemas for desktop components"
   homepage "https://download.gnome.org/sources/gsettings-desktop-schemas/"
-  url "https://download.gnome.org/sources/gsettings-desktop-schemas/3.18/gsettings-desktop-schemas-3.18.0.tar.xz"
-  sha256 "ba27337226a96d83f385c0ad192fdfe561c7e7882c61bb326c571be24e41eceb"
+  url "https://download.gnome.org/sources/gsettings-desktop-schemas/3.18/gsettings-desktop-schemas-3.18.1.tar.xz"
+  sha256 "258713b2a3dc6b6590971bcfc81f98d78ea9827d60e2f55ffbe40d9cd0f99a1a"
 
   bottle do
     cellar :any_skip_relocation
