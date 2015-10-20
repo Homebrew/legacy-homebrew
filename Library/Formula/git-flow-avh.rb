@@ -1,8 +1,8 @@
 class GitFlowAvh < Formula
   desc "AVH edition of git-flow"
   homepage "https://github.com/petervanderdoes/gitflow-avh"
-  url "https://github.com/petervanderdoes/gitflow-avh/archive/1.8.0.tar.gz"
-  sha256 "350665a9de7a9fe58ab82df5ef70c4e6c4f95bf844e30c23e2f3486396727511"
+  url "https://github.com/petervanderdoes/gitflow-avh/archive/1.9.1.tar.gz"
+  sha256 "7692c77744663c5243cdd390bef0a621caee92dde228b50ef97149fc1b54780d"
 
   head do
     url "https://github.com/petervanderdoes/gitflow-avh.git", :branch => "develop"
