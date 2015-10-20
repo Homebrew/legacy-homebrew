@@ -572,7 +572,7 @@ module Homebrew
       # Don't care about e.g. bottle failures for dependencies.
       install_passed = false
       run_as_not_developer do
-        if !ARGV.include?("--fast") || formula_bottled
+        if !ARGV.include?("--fast") || formula_bottled || formula.bottle_unneeded?
           test "brew", "install", "--only-dependencies", *install_args unless dependencies.empty?
           test "brew", "install", *install_args
           install_passed = steps.last.passed?
