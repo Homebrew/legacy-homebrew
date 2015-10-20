@@ -121,7 +121,7 @@ class Mailhog < Formula
   end
 
   def install
-    mkdir_p "#{buildpath}/src/github.com/mailhog/"
+    (buildpath/"src/github.com/mailhog/").mkpath
     ln_s buildpath, "#{buildpath}/src/github.com/mailhog/MailHog"
 
     ENV["GOPATH"] = buildpath
