@@ -17,7 +17,7 @@ class Par < Formula
   # A patch by Jérôme Pouiller that adds support for multibyte
   # charsets (like UTF-8), plus Debian packaging.
   patch do
-    url "http://sysmic.org/dl/par/par_1.52-i18n.4.patch"
+    url "http://sysmic.org/dl/par/par-1.52-i18n.4.patch"
     sha256 "2ab2d6039529aa3e7aff4920c1630003b8c97c722c8adc6d7762aa34e795861e"
   end
 
