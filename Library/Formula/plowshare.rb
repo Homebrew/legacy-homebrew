@@ -1,8 +1,8 @@
 class Plowshare < Formula
   desc "Download/upload tool for popular file sharing websites"
   homepage "https://github.com/mcrapet/plowshare"
-  url "https://github.com/mcrapet/plowshare/archive/v2.1.1.tar.gz"
-  sha256 "96b3acd1dba1b14f3009334520969af4c00c8f4b7f5d924a26decc4b4a817e53"
+  url "https://github.com/mcrapet/plowshare/archive/v2.1.2.tar.gz"
+  sha256 "d9b9f2aa464d7d2966f49704234c79139d1162705a0a553a3059c68fbf4be21a"
 
   bottle do
     sha256 "f8337922b92d53f801a91b71b28c6cf0160c9acdf92ee8a95009606d0a4f9109" => :yosemite
@@ -45,4 +45,3 @@ __END__
  #
  # Common set of functions used by modules
  # Copyright (c) 2010 - 2011 Plowshare team
-
