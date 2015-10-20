@@ -3,7 +3,7 @@ class Sphinx < Formula
   homepage "http://www.sphinxsearch.com"
 
   stable do
-    url 'http://sphinxsearch.com/files/sphinx-2.2.10-release.tar.gz'
+    url "http://sphinxsearch.com/files/sphinx-2.2.10-release.tar.gz"
     sha256 '054cb86e64bd48997d89386e1224d4405063d9857b2d7c33dc6cc1b9ef6df440'
   end
 
