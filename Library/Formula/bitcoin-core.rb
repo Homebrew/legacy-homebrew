@@ -1,20 +1,9 @@
 class BitcoinCore < Formula
   desc "Headless bitcoin client"
   homepage "https://github.com/bitcoin/bitcoin"
-
+  url "https://github.com/bitcoin/bitcoin/archive/v0.11.1.tar.gz"
+  sha256 "6b238ab46bb10c7a83237dfd69b09c95f08043bbe0b478f9c256b9536186b8d2"
   head "https://github.com/bitcoin/bitcoin.git"
-
-  stable do
-    url "https://github.com/bitcoin/bitcoin/archive/v0.11.1.tar.gz"
-    version "0.11.1"
-    sha256 "6b238ab46bb10c7a83237dfd69b09c95f08043bbe0b478f9c256b9536186b8d2"
-  end
-
-  devel do
-    url "https://github.com/bitcoin/bitcoin/archive/v0.11.1rc2.tar.gz"
-    version "0.11.1rc2"
-    sha256 "cfc9b09d95d891e2476c78a107f109f06bcbe6eb60aa208d0e9788c882ce7fa2"
-  end
 
   option "without-gui", "Build without Qt5 GUI"
   option "without-wallet", "Build without wallet support"
@@ -71,17 +60,17 @@ class BitcoinCore < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+    You should create RPC configuration file by running this command:
+    echo -e "rpcuser=bitcoinrpc\\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
+  EOS
+  end
+
   test do
     system bin/"test_bitcoin", "-i"
 
     if build.with? "gui"
       system bin/"test_bitcoin-qt"
     end
-  end
-
-  def caveats; <<-EOS.undent
-    You should create RPC configuration file by running this command:
-    echo -e "rpcuser=bitcoinrpc\\nrpcpassword=$(xxd -l 16 -p /dev/urandom)" > "/Users/${USER}/Library/Application Support/Bitcoin/bitcoin.conf"
-  EOS
   end
 end
