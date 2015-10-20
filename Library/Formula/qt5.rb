@@ -35,6 +35,13 @@ class Qt5 < Formula
       url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
       sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
     end
+
+    # Build issue: Fix install names with `-no-rpath` to be absolute paths.
+    # https://codereview.qt-project.org/#/c/138349
+    patch do
+      url "https://raw.githubusercontent.com/UniqMartin/patches/77d138fa/qt5/osx-no-rpath.patch"
+      sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
+    end
   end
 
   bottle do
