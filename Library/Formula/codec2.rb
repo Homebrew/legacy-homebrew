@@ -15,7 +15,7 @@ class Codec2 < Formula
 
   test do
     # 8 bytes of raw audio data (silence).
-    (testpath/"test.raw").write([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00].pack('C*'))
-    system "#{bin}/c2enc", "2400",  "test.raw",  "test.c2"
+    (testpath/"test.raw").write([0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00].pack("C*"))
+    system "#{bin}/c2enc", "2400", "test.raw", "test.c2"
   end
 end
