@@ -5,9 +5,10 @@ class Plowshare < Formula
   sha256 "d9b9f2aa464d7d2966f49704234c79139d1162705a0a553a3059c68fbf4be21a"
 
   bottle do
-    sha256 "f8337922b92d53f801a91b71b28c6cf0160c9acdf92ee8a95009606d0a4f9109" => :yosemite
-    sha256 "1fc4fd994f341d73c252b6f9bb7918f307bb245e6ee4d63d8247d81143262eb2" => :mavericks
-    sha256 "76caa88591b4d4832bf0b4e8674816672850f88baec7293290cb7eca1d19db17" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "bf51f7730cba1c919599fd682cf39ef5ee3f4583da7b54c7e454681d48f686af" => :el_capitan
+    sha256 "5fdbb23c6c90d72d9e362ab4a8ed3b65bf3b9c9a5a82e233d73f66863098e945" => :yosemite
+    sha256 "fd04155ae4e86884f63731834f4a5b4b4746d534d376d091bc7df76065734646" => :mavericks
   end
 
   depends_on "aview"
