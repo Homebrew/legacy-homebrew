@@ -420,7 +420,7 @@ module GitHub
       super <<-EOS.undent
         GitHub #{error}
         Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
-          https://github.com/settings/tokens/new?scopes=&description=Homebrew
+          #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
         and then set the token as: HOMEBREW_GITHUB_API_TOKEN
       EOS
     end
@@ -439,8 +439,8 @@ module GitHub
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/tokens
-                    EOS
+          #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
+      EOS
     end
   end
 
