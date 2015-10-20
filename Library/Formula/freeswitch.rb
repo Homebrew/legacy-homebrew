@@ -140,6 +140,7 @@ class Freeswitch < Formula
   #------------------------ End sound file resources --------------------------
 
   def install
+    ENV.deparallelize
     system "./bootstrap.sh", "-j"
 
     # tiff will fail to find OpenGL unless told not to use X
