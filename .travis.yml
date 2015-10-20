@@ -31,4 +31,9 @@ script:
   - brew test-bot
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - brew-test-bot@googlegroups.com
+    on_success: never
+    on_failure: always
+  slack: mikemcquaid:h0G8MHFwtn0ajrepWuBRUaGV
