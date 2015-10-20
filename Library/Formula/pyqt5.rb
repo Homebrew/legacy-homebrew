@@ -1,6 +1,6 @@
 class Pyqt5 < Formula
   desc "Python bindings for v5 of Qt"
-  homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
+  homepage "https://www.riverbankcomputing.com/software/pyqt/download5"
   url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5/PyQt-gpl-5.5.tar.gz"
   sha256 "cdd1bb55b431acdb50e9210af135428a13fb32d7b1ab86e972ac7101f6acd814"
   revision 2
