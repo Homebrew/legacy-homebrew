@@ -4,6 +4,13 @@ class Mg3a < Formula
   url "http://www.bengtl.net/files/mg3a/mg3a.150908.tar.gz"
   sha256 "b77cb689091aa0078dabdad6d87b9554f2dba8386c39a6d2531af2b391aeabcd"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "a565856bbc5c9c37641b9069cc1a766d1a641a476f5fb53530ca0ba20814bd3e" => :el_capitan
+    sha256 "214d6d919b8ae75c69a65c33d518ffa058ed25c7bd3037974ebd629bec53e5d9" => :yosemite
+    sha256 "63c3b2c84e1443708e4e5ddbc44007e9d59668ee85991bb79f80f99e9cdba0dd" => :mavericks
+  end
+
   conflicts_with "mg", :because => "both install `mg`"
 
   option "with-c-mode", "Include the original C mode"
