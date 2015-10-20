@@ -1,11 +1,10 @@
 class Sphinx < Formula
   desc "Sphinx is a full-text search engine"
   homepage "http://www.sphinxsearch.com"
-  revision 1
 
   stable do
-    url "http://sphinxsearch.com/files/sphinx-2.2.9-release.tar.gz"
-    sha256 "79bcb9fca069ba630fd71fb40fba05bb16e19b475906fb6ae026334d50a6bf3a"
+    url 'http://sphinxsearch.com/files/sphinx-2.2.10-release.tar.gz'
+    sha256 '054cb86e64bd48997d89386e1224d4405063d9857b2d7c33dc6cc1b9ef6df440'
   end
 
   devel do
