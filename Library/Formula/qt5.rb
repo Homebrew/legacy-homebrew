@@ -21,11 +21,11 @@ class Qt5 < Formula
     mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
     sha256 "6f028e63d4992be2b4a5526f2ef3bfa2fe28c5c757554b11d9e8d86189652518"
 
-    # Build error: Fix library paths with Xcode 7 for QtWebEngine.
-    # https://codereview.qt-project.org/#/c/122729/
+    # Build error: Fix library detection for QtWebEngine with Xcode 7.
+    # https://codereview.qt-project.org/#/c/127759/
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/patches/2fcc1f8ec1df1c90785f4fa6632cebac68772fa9/qt5/el-capitan-2.diff"
-      sha256 "b8f04efd047eeed7cfd15b029ece20b5fe3c0960b74f7a5cb98bd36475463227"
+      url "https://raw.githubusercontent.com/UniqMartin/patches/557a8bd4/qt5/webengine-xcode7.patch"
+      sha256 "7bd46f8729fa2c20bc486ddc5586213ccf2fb9d307b3d4e82daa78a2553f59bc"
     end
 
     # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
