@@ -18,7 +18,6 @@ class BitcoinCore < Formula
 
   option "without-gui", "Build without Qt5 GUI"
   option "without-wallet", "Build without wallet support"
-
   option "without-utils", "Build without bitcoin CLI utils"
 
   depends_on "autoconf" => :build
@@ -76,7 +75,7 @@ class BitcoinCore < Formula
     system bin/"test_bitcoin", "-i"
 
     if build.with? "gui"
-        system bin/"test_bitcoin-qt"
+      system bin/"test_bitcoin-qt"
     end
   end
 
