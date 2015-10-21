@@ -1,15 +1,14 @@
 class Sassc < Formula
   desc "Wrapper around libsass that helps to create command-line apps"
   homepage "https://github.com/sass/sassc"
-  url "https://github.com/sass/sassc.git", :tag => "3.2.4", :revision => "a88dd098143a1297d68a509f6dd99be25487197a"
+  url "https://github.com/sass/sassc.git", :tag => "3.2.5", :revision => "5d43e94f43f305dd6cc3381463976832b9ef6d98"
   head "https://github.com/sass/sassc.git"
 
   bottle do
     cellar :any
-    sha256 "0ea400766fbfe5f4d9c96fe01dc6925a2dcd522f3b8d087b5cd6f748a1537e30" => :el_capitan
-    sha256 "1ad01ed7c28efd12f067f2cc6a743ec291218231462f17419b32be0d09538901" => :yosemite
-    sha256 "ce98149a0cf434fda2ce3e9803f92a77c4581df9ca7b9f8f13478b56670c956c" => :mavericks
-    sha256 "16150a5116dd01b150f1b48696e0dfc256cb38d5b4f5aff9f4edb18bd5d9c54c" => :mountain_lion
+    sha256 "44d23e1c74824b8f2f3f399411f3806f82f8405d6dbaf2fb4f028d8f064280b4" => :el_capitan
+    sha256 "ddeb5ad5fb637692cf56527a0b2e695c70875891294702cfe4f822faf89987f6" => :yosemite
+    sha256 "0675d030c8b99ce8a19e834fcc02e5ddfb0c0cfe9340c96778a16ee074563279" => :mavericks
   end
 
   depends_on "autoconf" => :build

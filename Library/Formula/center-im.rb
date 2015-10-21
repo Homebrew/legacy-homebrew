@@ -22,7 +22,7 @@ class CenterIm < Formula
   patch :DATA
 
   patch :p0 do
-    url "https://trac.macports.org/export/113135/trunk/dports/net/centerim/files/patch-libjabber_jconn.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/677cb38/center-im/patch-libjabber_jconn.c.diff"
     sha256 "ed8d10075c23c7dec2a782214cb53be05b11c04e617350f6f559f3c3bf803cfe"
   end
 

@@ -7,18 +7,19 @@ class Proctools < Formula
 
   depends_on "bsdmake" => :build
 
+  # Patches via MacPorts
   {
-    "pfind-Makefile"        => "7929b43b3eb63589c49ff37d09ec627659317327",
-    "pfind-pfind.c"         => "1a35efd089de6d97739b359560c3682767998768",
-    "pgrep-Makefile"        => "ba002ff7ebc323e464f91b8c0c2011744ec5e689",
-    "pkill-Makefile"        => "a7fc4835d573963ea0c36e3fb9d5615cd5e1971a",
-    "proctools-fmt.c"       => "e87e7e62aaba4f4830dbd732e3f1a84f6689943c",
-    "proctools-proctools.c" => "c16a2ffc6a633d65c268c74bd73e1907b8e3ff6a",
-    "proctools-proctools.h" => "967bd616cb199787dd851a4fab66a2f950e70d54"
+    "pfind-Makefile"        => "d3ee204bbc708ee650b7310f58e45681c5ca0b3c3c5aa82fa4b402f7f5868b11",
+    "pfind-pfind.c"         => "88f1bc60e3cf269ad012799dc6ddce27c2470eeafb7745bc5d14b78a2bdfbe96",
+    "pgrep-Makefile"        => "f7f2bc21cab6ef02a89ee9e9f975d6a533d012b23720c3c22e66b746beb493fb",
+    "pkill-Makefile"        => "bac12837958bc214234d47abe204ee6ad0da2d69440cf38b1e39ab986cc39d29",
+    "proctools-fmt.c"       => "1a95516de3b6573a96f4ec4be933137e152631ad495f1364c1dd5ce3a9c79bc8",
+    "proctools-proctools.c" => "1d08e570cc32ff08f8073308da187e918a89a783837b1ea20735ea25ae18bfdb",
+    "proctools-proctools.h" => "7c2ee6ac3dc7b26fb6738496fbabb1d1d065302a39207ae3fbacb1bc3a64371a",
   }.each do |name, sha|
     patch :p0 do
-      url "https://trac.macports.org/export/89276/trunk/dports/sysutils/proctools/files/patch-#{name}.diff"
-      sha1 sha
+      url "https://raw.githubusercontent.com/Homebrew/patches/f411d167/proctools/patch-#{name}.diff"
+      sha256 sha
     end
   end
 

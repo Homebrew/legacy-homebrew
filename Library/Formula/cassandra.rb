@@ -1,15 +1,15 @@
 class Cassandra < Formula
   desc "Eventually consistent, distributed key-value store"
   homepage "https://cassandra.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.2.0/apache-cassandra-2.2.0-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/cassandra/2.2.0/apache-cassandra-2.2.0-bin.tar.gz"
-  sha256 "6405eb063e7c8a44a485ac12b305c00ad62c526cc021bcce145c29423ae7b0a2"
+  url "https://www.apache.org/dyn/closer.cgi?path=/cassandra/2.2.2/apache-cassandra-2.2.2-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/cassandra/2.2.2/apache-cassandra-2.2.2-bin.tar.gz"
+  sha256 "72faa82f1dadd40984e732918d069a55b79adf5e4ccd23d2651cbd20b0a34e80"
 
   bottle do
-    sha256 "b7cf6148e90f218c441609ffd00bc04355d48a19e8e77c4389e7486683ab5bc7" => :el_capitan
-    sha256 "c8d7b9ed7d9e63822db5d5a2a4d808df678a8fcda3c72a46f5ddd0c6d20754c9" => :yosemite
-    sha256 "b7756603f8e8edd9c9ec4579c3a5e92c1abedc04260b0057fbb008a5b3843721" => :mavericks
-    sha256 "8cd40421528e1cbd4a128b265750e0c678dd09144a5a1da367c8740ba29612e5" => :mountain_lion
+    revision 1
+    sha256 "d6119d0ed97cf13a669bd9320e02457b210529d3738597254a8e56756b1e7484" => :el_capitan
+    sha256 "13b5bea82ee66a4ab14ca0c9a74acc6573171c724bff52c0606ffe0e4d04bca6" => :yosemite
+    sha256 "67fbda0d172bfc35da1da4d50cf633f14ad39f1c2ad5d56b7d68145d271d6ac5" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -84,7 +84,7 @@ class Cassandra < Formula
 
     share.install [libexec+"bin/cassandra.in.sh", libexec+"bin/stop-server"]
     inreplace Dir["#{libexec}/bin/cassandra*", "#{libexec}/bin/debug-cql", "#{libexec}/bin/nodetool", "#{libexec}/bin/sstable*"],
-              /`dirname "?\$0"?`\/cassandra.in.sh/,
+              %r{`dirname "?\$0"?`/cassandra.in.sh},
               "#{share}/cassandra.in.sh"
 
     bin.write_exec_script Dir["#{libexec}/bin/*"]

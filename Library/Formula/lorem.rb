@@ -1,7 +1,7 @@
 class Lorem < Formula
   desc "Lorem Ipsum generator"
   homepage "https://code.google.com/p/lorem/"
-  url "http://lorem.googlecode.com/svn-history/r4/trunk/lorem", :using => :curl
+  url "https://lorem.googlecode.com/svn-history/r4/trunk/lorem", :using => :curl
   version "0.6.1"
   sha256 "fa2db7c3db356d76ed6dd5244a76d9b6e0d261d89d5efa646c8fe2924be5abcf"
 

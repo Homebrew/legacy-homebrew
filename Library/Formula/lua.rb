@@ -13,6 +13,12 @@ class Lua < Formula
     sha256 "519abb38296981baf49dd00ac80a2ac742f8e278b0b616d88d7fab8702ad430d" => :mountain_lion
   end
 
+  def pour_bottle?
+    # DomT4: I'm pretty sure this can be fixed, so don't leave this in place forever.
+    # https://github.com/Homebrew/homebrew/issues/44619
+    HOMEBREW_PREFIX.to_s == "/usr/local"
+  end
+
   fails_with :llvm do
     build 2326
     cause "Lua itself compiles with LLVM, but may fail when other software tries to link."

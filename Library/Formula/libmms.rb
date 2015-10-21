@@ -17,10 +17,12 @@ class Libmms < Formula
   depends_on "glib"
 
   # https://trac.macports.org/ticket/27988
-  patch :p0 do
-    url "https://trac.macports.org/export/87883/trunk/dports/multimedia/libmms/files/src_mms-common.h.patch"
-    sha1 "57b526dc9de76cfde236d3331e18eb7ae92f999f"
-  end if MacOS.version <= :leopard
+  if MacOS.version <= :leopard
+    patch :p0 do
+      url "https://raw.githubusercontent.com/Homebrew/patches/1fac7062/libmms/src_mms-common.h.patch"
+      sha256 "773193b878b7c061f05fe76f0ea5d331b8ab3e7b348608fae8cb144139e94798"
+    end
+  end
 
   def install
     ENV.append "LDFLAGS", "-liconv"

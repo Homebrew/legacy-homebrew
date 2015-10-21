@@ -5,10 +5,11 @@ class Cdb < Formula
   sha256 "1919577799a50c080a8a05a1cbfa5fa7e7abc823d8d7df2eeb181e624b7952c5"
 
   bottle do
-    cellar :any
-    sha256 "1e10737fdb2b905ca823a5304a1570906f262c3e4d9b4f6fa35f3d24ad084001" => :yosemite
-    sha256 "b99e71ef152cfc4744face7938bea54a1da6ca0b51b9e53c708b0472b1485e9c" => :mavericks
-    sha256 "700350e94a89862ea16075d66f8529ee58ba97b3ead1f2419992f6a3024b40f8" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "48bbaace024d61f6e464c0251cebaae18aaea57f8874ec0e4df41dd15ab81cf4" => :el_capitan
+    sha256 "d37679fe36ab396b9b195ee65da4271320f56afba844cf9167f5b50b0bb1ee11" => :yosemite
+    sha256 "8d79537ee9db01074b1766082626913dee4e1b01b1de1b11975f57e64ca1b0bd" => :mavericks
   end
 
   def install

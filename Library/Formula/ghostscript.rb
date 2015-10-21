@@ -30,7 +30,7 @@ class Ghostscript < Formula
 
     # Uncomment OS X-specific make vars
     patch do
-      url "https://gist.githubusercontent.com/jacknagel/9559501/raw/9709b3234cc888d29f717838650d29e7062da917/gs.patch"
+      url "https://raw.githubusercontent.com/Homebrew/patches/b8863c4/ghostscript/gs.patch"
       sha256 "b3c8903c00428f1a065ceda04e3377c3a110ec21bc149547615bc2166cde6163"
     end
   end

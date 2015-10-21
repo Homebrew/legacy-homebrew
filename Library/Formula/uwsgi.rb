@@ -1,18 +1,19 @@
 class Uwsgi < Formula
   desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  url "https://projects.unbit.it/downloads/uwsgi-2.0.11.2.tar.gz"
+  sha256 "0b889b0b4d2dd3f6625df28cb0b86ec44a68d074ede2d0dfad0b91e88914885c"
   head "https://github.com/unbit/uwsgi.git"
 
-  stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.11.1.tar.gz"
-    sha256 "75a7d3138cfa9cd81a760c2f8a43f3d80961edc8e4f27043dc1412206c926287"
+  bottle do
+    sha256 "b761923ea5a00c55509b14770714b9bc728463e8b985dd131731b50da8bb1c20" => :el_capitan
+    sha256 "fca347e8b730b652fd2d98b89d65f17f146c89393f3264d706e247e9fca89723" => :yosemite
+    sha256 "d4132453a8c210a32452a1b49cdb5d032e38da6b2027f09df38f17200735a455" => :mavericks
   end
 
-  bottle do
-    sha256 "436efd8be3e0436ba29c8bf0d78481509f3e5f0385822dbe39f4990b22695ff9" => :yosemite
-    sha256 "3c2cd79b3dca8a375b4948dcd1ba7639b0485bc16e970b1e280d69eef7d99837" => :mavericks
-    sha256 "82e388d191e58db251720c9b54cafc7f8d09de8924d400971cb5cb2652a18e33" => :mountain_lion
-  end
+  option "with-java", "Compile with Java support"
+  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
+  option "with-ruby", "Compile with Ruby support"
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
@@ -43,12 +44,11 @@ class Uwsgi < Formula
   depends_on "v8" => :optional
   depends_on "zeromq" => :optional
 
-  option "with-java", "Compile with Java support"
-  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
-  option "with-ruby", "Compile with Ruby support"
-
   def install
     ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
+    openssl = Formula["openssl"]
+    ENV.prepend "CFLAGS", "-I#{openssl.opt_include}"
+    ENV.prepend "LDFLAGS", "-L#{openssl.opt_lib}"
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
@@ -62,7 +62,7 @@ class Uwsgi < Formula
       embedded_plugins = null
     EOS
 
-    system "python", "uwsgiconfig.py", "--build", "brew"
+    system "python", "uwsgiconfig.py", "--verbose", "--build", "brew"
 
     plugins = ["airbrake", "alarm_curl", "alarm_speech", "asyncio", "cache",
                "carbon", "cgi", "cheaper_backlog2", "cheaper_busyness",
@@ -79,7 +79,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper", "ugreen", "webdav", "zergpool"]
+               "transformation_toupper", "ugreen", "webdav", "zergpool",]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"

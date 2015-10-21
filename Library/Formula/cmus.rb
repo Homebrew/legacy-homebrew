@@ -23,6 +23,7 @@ class Cmus < Formula
   depends_on "libcue"
   depends_on "ffmpeg" => :optional
   depends_on "opusfile" => :optional
+  depends_on "jack" => :optional
 
   def install
     system "./configure", "prefix=#{prefix}", "mandir=#{man}"

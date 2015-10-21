@@ -40,6 +40,23 @@ class Jbig2dec < Formula
   end
 
   test do
-    system "#{bin}/jbig2dec", "--version"
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdint.h>
+      #include <stdlib.h>
+      #include <jbig2.h>
+
+      int main()
+      {
+        Jbig2Ctx *ctx;
+        Jbig2Image *image;
+        ctx = jbig2_ctx_new(NULL, 0, NULL, NULL, NULL);
+        image = jbig2_image_new(ctx, 10, 10);
+        jbig2_image_release(ctx, image);
+        jbig2_ctx_free(ctx);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-DJBIG_NO_MEMENTO", "-L#{lib}", "-ljbig2dec", "-o", "test"
+    system "./test"
   end
 end

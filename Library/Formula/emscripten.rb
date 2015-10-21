@@ -3,25 +3,24 @@ class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
 
   stable do
-    url "https://github.com/kripken/emscripten/archive/1.34.6.tar.gz"
-    sha256 "630722efebbfd4840ece7dfb8c0bccd714ad9257eab9ac2777db372e4ecf4bb5"
+    url "https://github.com/kripken/emscripten/archive/1.35.0.tar.gz"
+    sha256 "d9e84330ad97be018e5015e9cc6ecf3423d438f6a1a73f7ad359d4d1e8afa4b3"
 
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.34.6.tar.gz"
-      sha256 "06a619890de5f40cb4e7ba078c5f053d0df4f58eed30d9afe14f782884088160"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.35.0.tar.gz"
+      sha256 "e70aec0e821f2c0a00cb59219f48e279d85f38b1f749ba479d0d2edd6bb066c5"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.34.6.tar.gz"
-      sha256 "72eb853cb532daf339a81fbcb86874d3dc29e837acb2c5362044da2b74a4f6df"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.35.0.tar.gz"
+      sha256 "dc9b33f88124806b95648dec8b0b60b1520c7b52779471559e06e12630c8eb32"
     end
   end
 
   bottle do
-    sha256 "fd4d9efb734935996a761128dfaf8a1389d2745ec2bd01d54fab03c2e582bacd" => :el_capitan
-    sha256 "99abf785baf4616d5c1a92ffc8540b07faa03a291e4213a960780b4829d4e118" => :yosemite
-    sha256 "46794913b20d07af986f34b27e435a26209b426094f5eb596e44052aeefee997" => :mavericks
-    sha256 "ff99dde33e1becbb604f6aa3b251b37c494c4da2fecb94916d25e50a6975f8d2" => :mountain_lion
+    sha256 "979016f3e884da501400132f924bfc39b35b19a84be3efe57ff2fdd896bd74fa" => :el_capitan
+    sha256 "0731e03a5c1d4b77fe2e41703cfc5a363fd6baa1f494c8118a5db0a6ff4ee662" => :yosemite
+    sha256 "a6ccaaa8a885dd97d395091a3a6b9258b2d61a6a975fc42a7c195282b01f3b76" => :mavericks
   end
 
   head do
@@ -65,7 +64,7 @@ class Emscripten < Formula
       "--enable-optimized",
       "--enable-targets=host,js",
       "--disable-assertions",
-      "--disable-bindings"
+      "--disable-bindings",
     ]
 
     cd "fastcomp" do

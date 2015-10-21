@@ -50,16 +50,16 @@ class Pdf2htmlex < Formula
 
   def install
     resource("fontforge").stage do
-      args = [
-        "--prefix=#{prefix}/fontforge",
-        "--without-libzmq",
-        "--without-x",
-        "--without-iconv",
-        "--disable-python-scripting",
-        "--disable-python-extension"
+      args = %W[
+        --prefix=#{prefix}/fontforge
+        --without-libzmq
+        --without-x
+        --without-iconv
+        --disable-python-scripting
+        --disable-python-extension
       ]
 
-      # Fix linker error; see: http://trac.macports.org/ticket/25012
+      # Fix linker error; see: https://trac.macports.org/ticket/25012
       ENV.append "LDFLAGS", "-lintl"
 
       # Reset ARCHFLAGS to match how we build

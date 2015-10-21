@@ -19,55 +19,55 @@ class Gtkglext < Formula
   depends_on "gtk+"
   depends_on "pangox-compat"
 
-  # all these MacPorts patches have already been included upstream. A new release of gtkglext
-  # for gtk+2.0 remains uncertain though.
+  # All these MacPorts patches have already been included upstream. A new release
+  # of gtkglext for gtk+2.0 remains uncertain though.
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-configure.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-configure.diff"
     sha256 "aca35cd6ae28613b375301068715f82b59bd066a32b2f4d046177478950ab026"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-examples-pixmap-mixed.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-examples-pixmap-mixed.c.diff"
     sha256 "d2fe00bfcf96b3c78dd4b01aa119a7860a34ca6080c57f0ccc7a8e2fc4a3c92b"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-examples-pixmap.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-examples-pixmap.c.diff"
     sha256 "d955b18784d3e83c1f698e63875d98de5bad9eae1e84b66549dfe25d9ff94d51"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-gdk-gdkglglext.h.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-gdk-gdkglglext.h.diff"
     sha256 "a1b6a97016013d5cda73760bbf2a970bae318153c2810291b81bd49ed67de80b"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-gdk-gdkglquery.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-gdk-gdkglquery.c.diff"
     sha256 "a419b8d523f123d1ab59e4de1105cdfc72bf5a450db8031809dcbc84932b539f"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-gdk-gdkglshapes.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-gdk-gdkglshapes.c.diff"
     sha256 "bc01fccec833f7ede39ee06ecc2a2ad5d2b30cf703dc66d2a40a912104c6e1f5"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-gdk-makefile.in.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-gdk-makefile.in.diff"
     sha256 "d0bc857f258640bf4f423a79e8475e8cf86e24f9994c0a85475ce87f41bcded6"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-gtk-gtkglwidget.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-gtk-gtkglwidget.c.diff"
     sha256 "7f7918d5a83c8f36186026a92587117a94014e7b21203fe9eb96a1c751c3c317"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-gtk-makefile.in.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-gtk-makefile.in.diff"
     sha256 "49f58421a12c2badd84ae6677752ba9cc23c249dac81987edf94abaf0d088ff6"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/132848/trunk/dports/devel/gtkglext/files/patch-makefile.in.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/21e7e01/gtkglext/patch-makefile.in.diff"
     sha256 "0d112b417d6c51022e31701037aa49ea50f270d3a34c263599ac0ef64c2f6743"
   end
 

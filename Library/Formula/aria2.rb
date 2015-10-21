@@ -1,14 +1,14 @@
 class Aria2 < Formula
   desc "Download with resuming and segmented downloading"
   homepage "http://aria2.sourceforge.net/"
-  url "https://github.com/tatsuhiro-t/aria2/releases/download/release-1.19.1/aria2-1.19.1.tar.xz"
-  sha256 "f731f64940ccfc78e8777190de354ba833fe248851b935d5d8885a7917fc101f"
+  url "https://github.com/tatsuhiro-t/aria2/releases/download/release-1.19.2/aria2-1.19.2.tar.xz"
+  sha256 "3605486dd495cd8c2f672b7d0b763397989d831396862f15730697ebcf0ad53e"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e114d3a0ff7905e5c43dd19b1b129ecb7c2854b20e829fa2c761dff6b5cb1e2f" => :el_capitan
-    sha256 "42aa898093486f7a0978de60ec1d43bfee2d33996638a181340f7f9c9d275a70" => :yosemite
-    sha256 "7735fb484cb3345f10c7ef44538aef12ba60cfc65de4940a419320e9360aba70" => :mavericks
+    sha256 "4f86ad9fe0a36da39d9b92bfd13328f4be449f3b2ee8481a3ae1aa4563b478f4" => :el_capitan
+    sha256 "150f486de66ff284ab7491e22d9cc1b4b841904052d65b20a0b36af9833d7b45" => :yosemite
+    sha256 "40ce69ef73400de2cb5c2005b98bec28d4bcb64241eef3dbb548cef53b5ae20c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

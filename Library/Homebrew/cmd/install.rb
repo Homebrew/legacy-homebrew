@@ -77,7 +77,7 @@ module Homebrew
           msg = "#{f.full_name}-#{f.installed_version} already installed"
           msg << ", it's just not linked" unless f.linked_keg.symlink? || f.keg_only?
           opoo msg
-        elsif f.oldname && (dir = HOMEBREW_CELLAR/f.oldname).exist? && !dir.subdirs.empty? \
+        elsif f.oldname && (dir = HOMEBREW_CELLAR/f.oldname).directory? && !dir.subdirs.empty? \
             && f.tap == Tab.for_keg(dir.subdirs.first).tap && !ARGV.force?
           # Check if the formula we try to install is the same as installed
           # but not migrated one. If --force passed then install anyway.
@@ -98,10 +98,36 @@ module Homebrew
       else
         ofail e.message
         query = query_regexp(e.name)
-        ohai "Searching formulae..."
-        puts_columns(search_formulae(query))
+
+        ohai "Searching for similarly named formulae..."
+        formulae_search_results = search_formulae(query)
+        case formulae_search_results.length
+        when 0
+          ofail "No similarly named formulae found."
+        when 1
+          puts "This similarly named formula was found:"
+          puts_columns(formulae_search_results)
+          puts "To install it, run:\n  brew install #{formulae_search_results.first}"
+        else
+          puts "These similarly named formulae were found:"
+          puts_columns(formulae_search_results)
+          puts "To install one of them, run (for example):\n  brew install #{formulae_search_results.first}"
+        end
+
         ohai "Searching taps..."
-        puts_columns(search_taps(query))
+        taps_search_results = search_taps(query)
+        case taps_search_results.length
+        when 0
+          ofail "No formulae found in taps."
+        when 1
+          puts "This formula was found in a tap:"
+          puts_columns(taps_search_results)
+          puts "To install it, run:\n  brew install #{taps_search_results.first}"
+        else
+          puts "These formulae were found in taps:"
+          puts_columns(taps_search_results)
+          puts "To install one of them, run (for example):\n  brew install #{taps_search_results.first}"
+        end
 
         # If they haven't updated in 48 hours (172800 seconds), that
         # might explain the error

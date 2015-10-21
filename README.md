@@ -31,6 +31,7 @@ Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
 ## License
 Code is under the [BSD 2 Clause (NetBSD) license](https://github.com/Homebrew/homebrew/tree/master/LICENSE.txt).
+Documentation is under the [Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/).
 
 ## Sponsors
 Our CI infrastructure was paid for by [our Kickstarter supporters](https://github.com/Homebrew/homebrew/blob/master/SUPPORTERS.md).

@@ -1,15 +1,14 @@
 class Apktool < Formula
   desc "Tool for reverse engineering 3rd party, closed, binary Android apps"
   homepage "https://github.com/iBotPeaches/Apktool"
-  url "https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.0.1.jar", :using => :nounzip
-  sha256 "b1e840798b674ec59df870145ad91d866c6be7a17b5aef4fc2717f71a58224c4"
+  url "https://bitbucket.org/iBotPeaches/apktool/downloads/apktool_2.0.2.jar", :using => :nounzip
+  sha256 "c15cf1b87486d83dbc9e5ce64a03178a64eeeecf62cf08637193ba759f61419b"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c6bfbb8f0ce1bc8097c09c8f12a82cb504670162ad1ee77e7c9038db96116ff2" => :el_capitan
-    sha256 "e462eef4d9966d2a94a88505f8f663ae99f131d12cb133add4546dfd77f77055" => :yosemite
-    sha256 "5eebe14f27945596c8359da9ae00bfe854c0258d91562e510e9f990b15dacc49" => :mavericks
-    sha256 "2b8d737da9079807cd1ec03417506e204b2451cced096c26c1b2126ac2caec06" => :mountain_lion
+    sha256 "c90dd13af012a5921977bf100bd53f68cc1b29ca6a5eac25af731bc0a47a6b89" => :el_capitan
+    sha256 "ffc20fe7e42429a059198a34aa267b03901c416b4a8c5729a565d35637111d12" => :yosemite
+    sha256 "17733334df7798014a01a6b59cc484544fd42bce63bd242f26561831619286d1" => :mavericks
   end
 
   resource "sample.apk" do

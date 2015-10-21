@@ -1,7 +1,7 @@
 class Ren < Formula
   desc "Rename multiple files in a directory"
   homepage "http://pdb.finkproject.org/pdb/package.php/ren"
-  url "http://www.ibiblio.org/pub/Linux/utils/file/ren-1.0.tar.gz"
+  url "https://www.ibiblio.org/pub/Linux/utils/file/ren-1.0.tar.gz"
   sha256 "6ccf51b473f07b2f463430015f2e956b63b1d9e1d8493a51f4ebd70f8a8136c9"
 
   bottle do

@@ -23,8 +23,11 @@ class Pulseaudio < Formula
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "intltool" => :build if build.with? "nls"
-  depends_on "gettext" => :build if build.with? "nls"
+
+  if build.with? "nls"
+    depends_on "intltool" => :build
+    depends_on "gettext" => :build
+  end
 
   depends_on "libtool" => :run
   depends_on "json-c"
@@ -41,7 +44,7 @@ class Pulseaudio < Formula
 
   # i386 patch per MacPorts
   patch :p0 do
-    url "https://trac.macports.org/export/135547/trunk/dports/audio/pulseaudio/files/i386.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/15fa4f03/pulseaudio/i386.patch"
     sha256 "d3a2180600a4fbea538949b6c4e9e70fe7997495663334e50db96d18bfb1da5f"
   end
 

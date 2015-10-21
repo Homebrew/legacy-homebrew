@@ -23,7 +23,7 @@ class Ffms2 < Formula
   depends_on "ffmpeg"
 
   resource "videosample" do
-    url "http://samples.mplayerhq.hu/V-codecs/lm20.avi"
+    url "https://samples.mplayerhq.hu/V-codecs/lm20.avi"
     sha256 "a0ab512c66d276fd3932aacdd6073f9734c7e246c8747c48bf5d9dd34ac8b392"
   end
 

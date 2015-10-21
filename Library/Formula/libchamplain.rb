@@ -5,19 +5,19 @@ class Libchamplain < Formula
   sha256 "851e24888d967c10acb8fd878df1292a84b8180eb4c48fc5bfbf1a48896d4aa5"
 
   bottle do
-    sha256 "114f9e269864e0630e819b9fb6fe63efd74fead47839c467e54fdd72d1a09371" => :el_capitan
-    sha256 "bf7b290cda0264cad8b48cb7dc8b84708918f309bd4e7717d8b4ac5f7d08db8a" => :yosemite
-    sha256 "13685ac78041573fa061ea39edf8d1ae827a071374e56290a5567594f42b41b4" => :mavericks
+    revision 1
+    sha256 "b47d4c49d9f7d6bfc8e51de2ccd1912c49acbe5f4a7468a0cb2983350a38709d" => :el_capitan
+    sha256 "511afec4f201270a963900311dfae5e0cbf4d25bc1742501225f2ddd1ad5c952" => :yosemite
+    sha256 "d9ecb9dbb31ca73260f7fe08887f21c15ffd87b835df66bd1b1759bf6ba9dd30" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "clutter"
   depends_on "libsoup"
   depends_on "gobject-introspection"
-  depends_on "gtk+3" => :recommended
+  depends_on "gtk+3"
+  depends_on "clutter-gtk"
   depends_on "vala" => :optional
-
-  depends_on "clutter-gtk" if build.with? "gtk+3"
 
   def install
     system "./configure", "--disable-debug",
@@ -47,6 +47,7 @@ class Libchamplain < Formula
     gettext = Formula["gettext"]
     glib = Formula["glib"]
     gtkx3 = Formula["gtk+3"]
+    harfbuzz = Formula["harfbuzz"]
     json_glib = Formula["json-glib"]
     libepoxy = Formula["libepoxy"]
     libpng = Formula["libpng"]
@@ -67,6 +68,7 @@ class Libchamplain < Formula
       -I#{glib.opt_include}/glib-2.0
       -I#{glib.opt_lib}/glib-2.0/include
       -I#{gtkx3.opt_include}/gtk-3.0
+      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/libchamplain-0.12
       -I#{json_glib.opt_include}/json-glib-1.0
       -I#{libepoxy.opt_include}

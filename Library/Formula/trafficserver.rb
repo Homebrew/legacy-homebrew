@@ -1,15 +1,14 @@
 class Trafficserver < Formula
   desc "HTTP/1.1 compliant caching proxy server"
   homepage "https://trafficserver.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.3.1.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.3.1.tar.bz2"
-  sha256 "e6c33c7cfb629406a320a61217e08db3123cfe4b77c2eaef0eaa520065dbeb43"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-6.0.0.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-6.0.0.tar.bz2"
+  sha256 "1ef6a9ed1d53532bbe2c294d86d4103a0140e3f23a27970936366f1bc8feb3d1"
 
   bottle do
-    sha256 "adf4707016dadcae715e667fce18c743c5fb93be11c3c8d8faba2d4fabde83ec" => :yosemite
-    sha256 "ec2b11799c68cf87c2a9b141ccabb9f65ffabc562499b6b258666f8ac44b294d" => :mavericks
-    sha256 "af9c959c4f8960240a4c990f651c76c9d61554da9a93fdb7d3838f4f6c7cd021" => :mountain_lion
+    sha256 "67a45246d9cfef8301555f98bccf98584e28a6bb32ae7016e3f6eae6410ef0da" => :el_capitan
+    sha256 "ae22dcdcefaa6341a501f3391ace5ca45b7e8df067018e080ada299231b266e5" => :yosemite
+    sha256 "a75ef91b7c51be895f40064f6b313b99475e99197d0c82e384cddabcdc848dba" => :mavericks
   end
 
   head do
@@ -37,6 +36,9 @@ class Trafficserver < Formula
     ENV.enable_warnings
     # Needed for OpenSSL headers on Lion.
     ENV.append_to_cflags "-Wno-deprecated-declarations"
+    # Fix lib/perl/Makefile.pl failing with:
+    # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
+    ENV.delete "PERL_MM_OPT"
     system "autoreconf", "-fvi" if build.head?
     args = [
       "--prefix=#{prefix}",

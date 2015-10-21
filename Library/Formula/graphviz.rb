@@ -52,18 +52,19 @@ class Graphviz < Formula
   end
 
   patch :p0 do
-    url "https://raw.githubusercontent.com/DomT4/scripts/46364470b/Homebrew_Resources/MacPorts_Import/graphviz/r103168/patch-project.pbxproj.diff"
-    mirror "https://trac.macports.org/export/103168/trunk/dports/graphics/graphviz/files/patch-project.pbxproj.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/ec8d133/graphviz/patch-project.pbxproj.diff"
     sha256 "7c8d5c2fd475f07de4ca3a4340d722f472362615a369dd3f8524021306605684"
   end
 
   def install
     ENV.universal_binary if build.universal?
-    args = ["--disable-debug",
-            "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--without-qt",
-            "--with-quartz"]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --without-qt
+      --with-quartz
+    ]
     args << "--with-gts" if build.with? "gts"
     args << "--disable-swig" if build.without? "bindings"
     args << "--without-pangocairo" if build.without? "pango"

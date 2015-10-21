@@ -1,14 +1,14 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v4.1.1/node-v4.1.1.tar.gz"
-  sha256 "6a610935ff52de713cf2af6a26002322e24fd7933a444436f0817a2b84e15a58"
+  url "https://nodejs.org/dist/v4.2.1/node-v4.2.1.tar.gz"
+  sha256 "8861b9f4c3b4db380fcda19a710c0430c3d62d03ee176c64db63eef95a672663"
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "ceb4a1721a9d312e9b3853d0cb4165dfa8b3a1d08e01620e56ac841092108c5c" => :el_capitan
-    sha256 "4c6b805490069a6e6b9956c85c0713e5fc666878f7e87d76b69279b61cff64ac" => :yosemite
-    sha256 "e082904a9b900ff07d3bb633a125542e2cedc4de854def6ec7683e7d2d976d51" => :mavericks
+    sha256 "8592bb96777b29c45293da698de092da39547130e9eced251060cd032ffd0326" => :el_capitan
+    sha256 "474d4f7c08fd5c3ede9155e0f44704abbe84db0ccaba4346d923079a74a59105" => :yosemite
+    sha256 "006d46e8db90432c8dc1140b32f5ac1ea041a0ce3a84c70db3276fecca1243a5" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -28,15 +28,14 @@ class Node < Formula
   end
 
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.14.4.tgz"
-    sha256 "c8b602de5d51f956aa8f9c34d89be38b2df3b7c25ff6588030eb8224b070db27"
+    url "https://registry.npmjs.org/npm/-/npm-2.14.7.tgz"
+    sha256 "54f3a5195a1e6b52fc954749e81f8abf1f7c8ca912b90ecf2b33581800d0f6a5"
   end
 
   resource "icu4c" do
-    url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
-    mirror "https://fossies.org/linux/misc/icu4c-55_1-src.tgz"
-    version "55.1"
-    sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
+    url "https://ssl.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz"
+    version "56.1"
+    sha256 "3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314816"
   end
 
   def install

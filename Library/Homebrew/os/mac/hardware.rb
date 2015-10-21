@@ -1,4 +1,4 @@
-require "mach"
+require "os/mac/mach"
 
 module MacCPUs
   OPTIMIZATION_FLAGS = {

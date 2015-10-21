@@ -1,6 +1,6 @@
 class Ent < Formula
   desc "Pseudorandom number sequence test program"
-  homepage "http://www.fourmilab.ch/random/"
+  homepage "https://www.fourmilab.ch/random/"
   # This tarball is versioned and smaller, though non-official
   url "https://github.com/psm14/ent/archive/1.0.tar.gz"
   sha256 "6316b9956f2e0cc39f2b934f3c53019eafe2715316c260fd5c1e5ef4523ae520"

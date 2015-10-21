@@ -24,7 +24,6 @@ class Sbcl < Formula
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
 
   # Current binary versions are listed at http://sbcl.sourceforge.net/platform-table.html
-
   resource "bootstrap64" do
     url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2"
     sha256 "729054dc27d6b53bd734eac4dffeaa9e231e97bdbe4927d7a68c8f0210cad700"
@@ -36,22 +35,22 @@ class Sbcl < Formula
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-base-target-features.diff"
     sha256 "e101d7dc015ea71c15a58a5c54777283c89070bf7801a13cd3b3a1969a6d8b75"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-make-doc.diff"
     sha256 "7c21c89fd6ec022d4f17670c3253bd33a4ac2784744e4c899c32fbe27203d87e"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-posix-tests.diff"
     sha256 "06908aaa94ba82447d64cf15eb8e011ac4c2ae4c3050b19b36316f64992ee21d"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-use-mach-exception-handler.diff"
     sha256 "089b8fdc576a9a32da0b2cdf2b7b2d8bfebf3d542ac567f1cb06f19c03eaf57d"
   end
 

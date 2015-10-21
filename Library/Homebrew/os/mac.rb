@@ -2,6 +2,7 @@ require "hardware"
 require "os/mac/version"
 require "os/mac/xcode"
 require "os/mac/xquartz"
+require "os/mac/pathname"
 
 module OS
   module Mac
@@ -12,7 +13,13 @@ module OS
     # This can be compared to numerics, strings, or symbols
     # using the standard Ruby Comparable methods.
     def version
-      @version ||= Version.new(MACOS_VERSION)
+      @version ||= Version.new(full_version.to_s[/10\.\d+/])
+    end
+
+    # This can be compared to numerics, strings, or symbols
+    # using the standard Ruby Comparable methods.
+    def full_version
+      @full_version ||= Version.new(`/usr/bin/sw_vers -productVersion`.chomp)
     end
 
     def cat

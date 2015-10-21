@@ -259,6 +259,6 @@ class Duplicity < Formula
   end
 
   test do
-    system bin/"duplicity", "--dry-run", "--no-encryption",  testpath, "file:///#{testpath}/test"
+    system bin/"duplicity", "--dry-run", "--no-encryption", testpath, "file:///#{testpath}/test"
   end
 end

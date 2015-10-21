@@ -16,7 +16,7 @@ class Putty < Formula
   conflicts_with "pssh", :because => "both install `pscp` binaries"
 
   head do
-    url "svn://svn.tartarus.org/sgt/putty"
+    url "git://git.tartarus.org/simon/putty.git"
     depends_on "halibut" => :build
     depends_on "autoconf" => :build
     depends_on "automake" => :build

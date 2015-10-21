@@ -1,6 +1,6 @@
 class Wordnet < Formula
   desc "Lexical database for the English language"
-  homepage "http://wordnet.princeton.edu/"
+  homepage "https://wordnet.princeton.edu/"
   url "http://wordnetcode.princeton.edu/3.0/WordNet-3.0.tar.bz2"
   # Version 3.1 is version 3.0 with the 3.1 dictionary.
   version "3.1"

@@ -1,6 +1,5 @@
 require "pathname"
 require "exceptions"
-require "os/mac"
 require "utils/json"
 require "utils/inreplace"
 require "utils/popen"
@@ -40,6 +39,10 @@ class Tty
 
     def gray
       bold 30
+    end
+
+    def highlight
+      bold 39
     end
 
     def width
@@ -253,24 +256,46 @@ def curl(*args)
   safe_system curl, *args
 end
 
-def puts_columns(items, star_items = [])
+def puts_columns(items, highlight = [])
   return if items.empty?
 
-  if star_items && star_items.any?
-    items = items.map { |item| star_items.include?(item) ? "#{item}*" : item }
+  unless $stdout.tty?
+    puts items
+    return
   end
 
-  if $stdout.tty?
-    # determine the best width to display for different console sizes
-    console_width = `/bin/stty size`.chomp.split(" ").last.to_i
-    console_width = 80 if console_width <= 0
-    max_len = items.reduce(0) { |max, item| l = item.length ; l > max ? l : max }
-    optimal_col_width = (console_width.to_f / (max_len + 2).to_f).floor
-    cols = optimal_col_width > 1 ? optimal_col_width : 1
+  # TTY case: If possible, output using multiple columns.
+  console_width = Tty.width
+  console_width = 80 if console_width <= 0
+  max_len = items.max_by(&:length).length
+  col_gap = 2 # number of spaces between columns
+  gap_str = " " * col_gap
+  cols = (console_width + col_gap) / (max_len + col_gap)
+  cols = 1 if cols < 1
+  rows = (items.size + cols - 1) / cols
+  cols = (items.size + rows - 1) / rows # avoid empty trailing columns
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w") { |io| io.puts(items) }
-  else
+  plain_item_lengths = items.map(&:length) if cols >= 2
+  if highlight && highlight.any?
+    items = items.map do |item|
+      highlight.include?(item) ? "#{Tty.highlight}#{item}#{Tty.reset}" : item
+    end
+  end
+
+  if cols >= 2
+    col_width = (console_width + col_gap) / cols - col_gap
+    items = items.each_with_index.map do |item, index|
+      item + "".ljust(col_width - plain_item_lengths[index])
+    end
+  end
+
+  if cols == 1
     puts items
+  else
+    rows.times do |row_index|
+      item_indices_for_row = row_index.step(items.size - 1, rows).to_a
+      puts items.values_at(*item_indices_for_row).join(gap_str)
+    end
   end
 end
 
@@ -394,10 +419,10 @@ module GitHub
     def initialize(reset, error)
       super <<-EOS.undent
         GitHub #{error}
-        Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
-          https://github.com/settings/tokens
+        Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
+          #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
         and then set the token as: HOMEBREW_GITHUB_API_TOKEN
-                    EOS
+      EOS
     end
 
     def pretty_ratelimit_reset(reset)
@@ -414,8 +439,8 @@ module GitHub
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/tokens
-                    EOS
+          #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
+      EOS
     end
   end
 

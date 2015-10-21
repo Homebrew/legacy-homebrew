@@ -1,18 +1,10 @@
 class Clojurescript < Formula
   desc "Clojure to JS compiler"
   homepage "https://github.com/clojure/clojurescript"
-  url "https://github.com/clojure/clojurescript/releases/download/r1.7.48/cljs.jar"
-  version "1.7.48"
-  sha256 "91d56866aa0d91b09673598b37f6cc59682b11f79e25cef4b6d058df87cd54b3"
+  url "https://github.com/clojure/clojurescript/releases/download/r1.7.145/cljs.jar"
+  version "1.7.145"
+  sha256 "67e33f4e68459d4772f912a658230df5b3d78996d072b34bb9080c337da7bcbb"
   head "https://github.com/clojure/clojurescript.git"
-
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "64c9c91fd9f3081f4d939976e26cf3bc7914dc172144892c353640578299a9a2" => :el_capitan
-    sha256 "25a06ff74ef9c2429519df725d5b6f85d8e785fe4667f74151ff015f47d7e620" => :yosemite
-    sha256 "8309cca75c4f58246c87272d6bd0b5a0bb74aefcc76742984caabc00f6b0ced2" => :mavericks
-    sha256 "bf9d97d201956ccef5a5edede53db97ea2a57a5772fed255ad4cdd50ceea530b" => :mountain_lion
-  end
 
   def install
     libexec.install "cljs.jar"
