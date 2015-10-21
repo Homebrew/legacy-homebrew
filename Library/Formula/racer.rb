@@ -2,14 +2,9 @@ class Racer < Formula
   desc "Rust Code Completion utility"
   homepage "https://github.com/phildawes/racer"
 
-  stable do
-    url "https://github.com/phildawes/racer/archive/v1.0.0.tar.gz"
-    sha256 "78895296ed688eeccbaf7745235f0fc503407bfa718f53583a4dcc9e1246b7f5"
-  end
-
-  head do
-    url "https://github.com/phildawes/racer.git"
-  end
+  url "https://github.com/phildawes/racer/archive/v1.0.0.tar.gz"
+  sha256 "78895296ed688eeccbaf7745235f0fc503407bfa718f53583a4dcc9e1246b7f5"
+  head "https://github.com/phildawes/racer.git"
 
   option "without-src", "Do not get rust source for racer from www.rust-lang.org"
 
@@ -23,13 +18,8 @@ class Racer < Formula
   def install
     if build.with?("src")
       resource("rustsrc").stage do
-        Dir.glob(["src/llvm/*", "src/test/*"]) do |f|
-          if File.directory?(f)
-            rm_r(f)
-          else
-            File.delete(f)
-          end
-        end
+        rm_rf "src/llvm"
+        rm_rf "src/test"
         (share/"rustsrc").install Dir["./src/*"]
       end
     end
@@ -39,10 +29,10 @@ class Racer < Formula
   end
 
   def caveats; <<-EOS.undent
-    racer in installed at #{opt_prefix}/libexec/racer, set it to path if needed.
+    racer in installed at #{opt_prefix}/libexec/racer, set it to your editor if needed.
     Rust source is installed at #{opt_prefix}/share/rustsrc by default.
     You should export RUST_SRC_PATH=#{opt_prefix}/share/rustsrc or set
-    rust source path in your special editor which use racer
+    rust source path in your special editor which use racer.
     EOS
   end
 
