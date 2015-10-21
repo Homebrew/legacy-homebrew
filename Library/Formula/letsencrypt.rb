@@ -1,9 +1,9 @@
 class Letsencrypt < Formula
   desc "Tool to automatically receive and install X.509 certificates"
   homepage "https://letsencrypt.org/"
+  url "https://github.com/letsencrypt/letsencrypt.git", :tag => "v0.0.0.dev20151020", :revision => "eefa106ff45fd3c20c18c5585b6552bea6f58087"
+  version "0.0.0.dev20151020"
   head "https://github.com/letsencrypt/letsencrypt.git"
-  url "https://github.com/letsencrypt/letsencrypt.git", :tag => "v0.0.0.dev20151017"
-  version "0.0.0.dev20151017"
 
   resource "virtualenv" do
     url "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-13.1.2.tar.gz"
@@ -33,5 +33,16 @@ class Letsencrypt < Formula
            "letsencrypt-nginx/"
 
     bin.install_symlink prefix/"venv/bin/letsencrypt"
+  end
+
+  test do
+    require 'open3'
+
+    cmd = "#{bin}/letsencrypt --version"
+
+    Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+      installed_version = stderr.read
+      assert_equal("letsencrypt 0.0.0.dev20151020\n", installed_version)
+    end
   end
 end
