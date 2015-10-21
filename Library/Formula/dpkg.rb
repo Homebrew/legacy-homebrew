@@ -1,9 +1,9 @@
 class Dpkg < Formula
   desc "Debian package management system"
   homepage "https://wiki.debian.org/Teams/Dpkg"
-  url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.18.2.tar.xz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dpkg/dpkg_1.18.2.tar.xz"
-  sha256 "11484f2a73d027d696e720a60380db71978bb5c06cd88fe30c291e069ac457a4"
+  url "https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_1.18.3.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dpkg/dpkg_1.18.3.tar.xz"
+  sha256 "a40ffe38d7f36d858a752189a306433cfc52c7d15d7b98f61d9f9dd49e0e4807"
 
   bottle do
     sha256 "467a5d686281876289c33a5d7c297c425c39a6cd67155c40bc2c2e72fa1f6c09" => :yosemite
