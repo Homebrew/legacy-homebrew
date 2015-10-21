@@ -17,7 +17,7 @@ class Mdbtools < Formula
   def install
     ENV.deparallelize
 
-    args = ["--prefix=#{prefix}"]
+    args = ["--prefix=#{prefix}","--with-unixodbc=/usr/local"]
     args << "--disable-man" if build.without? "man-pages"
 
     if MacOS.version == :snow_leopard
