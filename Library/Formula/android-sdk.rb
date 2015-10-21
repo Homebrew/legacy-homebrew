@@ -3,9 +3,9 @@ require "base64"
 class AndroidSdk < Formula
   desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.4-macosx.zip"
-  version "24.4"
-  sha256 "a1cb0c9b2036d597e18986de1bd43918b6113373ff3bf6fdb81b6cce4ec3efd7"
+  url "https://dl.google.com/android/android-sdk_r24.4.1-macosx.zip"
+  version "24.4.1"
+  sha256 "ce1638cb48526a0e55857fc46b57eda4349e6512006244ad13dd6c1361c74104"
 
   bottle do
     cellar :any
