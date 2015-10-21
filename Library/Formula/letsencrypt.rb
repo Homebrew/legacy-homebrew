@@ -36,11 +36,11 @@ class Letsencrypt < Formula
   end
 
   test do
-    require 'open3'
+    require "open3"
 
     cmd = "#{bin}/letsencrypt --version"
 
-    Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+    Open3.popen3(cmd) do |_stdin, _stdout, stderr|
       installed_version = stderr.read
       assert_equal("letsencrypt 0.0.0.dev20151020\n", installed_version)
     end
