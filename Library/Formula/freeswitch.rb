@@ -149,8 +149,19 @@ class Freeswitch < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--enable-shared",
                           "--enable-static",
-                          "--prefix=#{prefix}",
-                          "--exec_prefix=#{prefix}"
+                          "--prefix=#{etc}/freeswitch",
+                          "--exec_prefix=#{prefix}",
+                          "--with-htdocsdir=#{doc}/htdocs",
+                          "--includedir=#{include}",
+                          "--with-modinstdir=#{prefix}/mod",
+                          "--with-logfiledir=#{var}/log/#{name}",
+                          "--localstatedir=#{var}/#{name}",
+                          "--with-rundir=#{var}/run/#{name}",
+                          "--with-dbdir=#{var}/#{name}/db",
+                          "--with-soundsdir=#{var}/#{name}/sounds",
+                          "--with-recordingsdir=#{var}/#{name}/recordings",
+                          "--with-storagedir=#{var}/#{name}/storage",
+                          "--with-cachedir=#{var}/#{name}/cache"
 
     if build.with?("flite")
       inreplace "modules.conf", "#asr_tts/mod_flite", "asr_tts/mod_flite"
@@ -168,7 +179,7 @@ class Freeswitch < Formula
       mkdir_p prefix/"sounds/music"
       [8, 16, 32, 48].each do |n|
         resource("sounds-music-#{n}000").stage do
-          cp_r ".", prefix/"sounds/music"
+          cp_r ".", var/"#{name}/sounds/music"
         end
       end
     end
@@ -178,7 +189,7 @@ class Freeswitch < Formula
       mkdir_p prefix/"sounds/en"
       [8, 16, 32, 48].each do |n|
         resource("sounds-en-us-callie-#{n}000").stage do
-          cp_r ".", prefix/"sounds/en"
+          cp_r ".", var/"#{name}/sounds/en"
         end
       end
     end
@@ -188,7 +199,7 @@ class Freeswitch < Formula
       mkdir_p prefix/"sounds/fr"
       [8, 16, 32, 48].each do |n|
         resource("sounds-fr-ca-june-#{n}000").stage do
-          cp_r ".", prefix/"sounds/fr"
+          cp_r ".", var/"#{name}/sounds/fr"
         end
       end
     end
@@ -198,7 +209,7 @@ class Freeswitch < Formula
       mkdir_p prefix/"sounds/ru"
       [8, 16, 32, 48].each do |n|
         resource("sounds-ru-RU-elena-#{n}000").stage do
-          cp_r ".", prefix/"sounds/ru"
+          cp_r ".", var/"#{name}/sounds/ru"
         end
       end
     end
