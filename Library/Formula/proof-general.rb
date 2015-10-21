@@ -5,9 +5,9 @@ class ProofGeneral < Formula
   sha256 "3567b68077798396ccd55c501b7ea7bd2c4d6300e4c74ff609dc19837d050b27"
 
   devel do
-    url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.3pre150313.tgz"
-    version "4.3pre150313"
-    sha256 "6e7095fe76f9d750fff3ee1de2415ed1014d4bacdd4f62192eb99330e7f405cb"
+    url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.3pre150930.tgz"
+    version "4.3pre150930"
+    sha256 "5f3f943cc6c7c5f5ff344a01b25054a62877f090f382b1c84917906cfea367bc"
   end
 
   depends_on :emacs => "22.3"
