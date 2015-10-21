@@ -1,10 +1,9 @@
 class Letsencrypt < Formula
-  desc "The Let's Encrypt Client is a tool to automatically receive and install X.509 certificates"
+  desc "Tool to automatically receive and install X.509 certificates"
   homepage "https://letsencrypt.org/"
-  head "https://github.com/letsencrypt/letsencrypt.git", :using => :git
-  url "https://github.com/letsencrypt/letsencrypt.git", :revision => "d55c3e", :using => :git
-  version "0.1"
-  sha256 "e93d298cc6364f833ac77bb85f349b35cb7c01febdf4be4a17198f4eb744d24e"
+  head "https://github.com/letsencrypt/letsencrypt.git"
+  url "https://github.com/letsencrypt/letsencrypt.git", :tag => "v0.0.0.dev20151017"
+  version "0.0.0.dev20151017"
 
   resource "virtualenv" do
     url "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-13.1.2.tar.gz"
@@ -13,6 +12,7 @@ class Letsencrypt < Formula
 
   depends_on "augeas"
   depends_on "dialog"
+  depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
