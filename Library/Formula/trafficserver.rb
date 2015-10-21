@@ -23,6 +23,7 @@ class Trafficserver < Formula
 
   depends_on "openssl"
   depends_on "pcre"
+
   if build.with? "spdy"
     depends_on "spdylay"
     depends_on "pkg-config" => :build
@@ -39,17 +40,26 @@ class Trafficserver < Formula
     # Fix lib/perl/Makefile.pl failing with:
     # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
     ENV.delete "PERL_MM_OPT"
-    system "autoreconf", "-fvi" if build.head?
-    args = [
-      "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      "--with-openssl=#{Formula["openssl"].opt_prefix}",
-      "--with-user=#{ENV["USER"]}",
-      "--with-group=admin"
+
+    (var/"log/trafficserver").mkpath
+    (var/"trafficserver").mkpath
+
+    args = %W[
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --localstatedir=#{var}
+      --sysconfdir=#{etc}
+      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-user=#{ENV["USER"]}
+      --with-group=admin
+      --disable-silent-rules
     ]
     args << "--enable-spdy" if build.with? "spdy"
     args << "--enable-experimental-plugins" if build.with? "experimental-plugins"
+
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
+
     # Fix wrong username in the generated startup script for bottles.
     inreplace "rc/trafficserver.in", "@pkgsysuser@", "$USER"
     if build.with? "experimental-plugins"
@@ -57,6 +67,7 @@ class Trafficserver < Formula
       # https://issues.apache.org/jira/browse/TS-3490
       inreplace "plugins/experimental/Makefile", " mysql_remap", ""
     end
+
     system "make" if build.head?
     system "make", "install"
   end
