@@ -1,8 +1,8 @@
 class Miniupnpc < Formula
-  desc "UpnP IGD client library and daemon"
+  desc "UPnP IGD client library and daemon"
   homepage "http://miniupnp.tuxfamily.org"
-  url "http://miniupnp.tuxfamily.org/files/download.php?file=miniupnpc-1.9.20150609.tar.gz"
-  sha256 "86e6ccec5b660ba6889893d1f3fca21db087c6466b1a90f495a1f87ab1cd1c36"
+  url "http://miniupnp.tuxfamily.org/files/download.php?file=miniupnpc-1.9.20151008.tar.gz"
+  sha256 "e444ac3b587ce82709c4d0cfca1fe71f44f9fc433e9f946b12b9e1bfe667a633"
 
   bottle do
     cellar :any
