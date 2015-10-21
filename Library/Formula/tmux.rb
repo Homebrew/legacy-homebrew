@@ -23,7 +23,7 @@ class Tmux < Formula
   depends_on "libevent"
 
   # This fixes the Tmux 2.1 update that broke the ability to use select-pane [-LDUR]
-  # to switch panes when in a maximized pane
+  # to switch panes when in a maximized pane https://github.com/tmux/tmux/issues/150#issuecomment-149466158
   patch :DATA
 
   def install
