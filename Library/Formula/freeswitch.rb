@@ -17,8 +17,8 @@ class Freeswitch < Formula
   option "without-sounds-en", "Do not install English (Callie) sounds"
   option "with-sounds-fr", "Install French (June) sounds"
   option "with-sounds-ru", "Install Russian (Elena) sounds"
-  option "without-directory", "Install directory module"
-  option "without-flite", "Install text-to-speech module"
+  option "with-directory", "Install directory module"
+  option "with-flite", "Install text-to-speech module"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
