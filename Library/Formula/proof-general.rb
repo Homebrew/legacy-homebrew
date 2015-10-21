@@ -4,6 +4,13 @@ class ProofGeneral < Formula
   url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.2.tgz"
   sha256 "3567b68077798396ccd55c501b7ea7bd2c4d6300e4c74ff609dc19837d050b27"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "e8e7f8c095e6f4bcbd437d0f6bceddda36ad6c5a7264bb00890b84b2ce7ffd50" => :el_capitan
+    sha256 "ccd66b68283dfd3e8c648cf5e8f980e906640f284514866926d56db2a51d9e42" => :yosemite
+    sha256 "68322027aa1049620ce494deab095e5cf7cb4710f3f71b3ab1a03ebd06752a0f" => :mavericks
+  end
+
   devel do
     url "http://proofgeneral.inf.ed.ac.uk/releases/ProofGeneral-4.3pre150930.tgz"
     version "4.3pre150930"
