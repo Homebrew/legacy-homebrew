@@ -1,9 +1,8 @@
 class Libvisio < Formula
   desc "Interpret and import Visio diagrams"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
-  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.1.tar.xz"
-  sha256 "4b510168d1465516fdf6e57c01e2f9eae1fc0ae232c74e44e70693bbc49227f1"
-  revision 2
+  url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.3.tar.xz"
+  sha256 "943e03b1e6c969af4c2133a6671c9630adf3aaf8d460156744a28f58c9f47cd8"
 
   bottle do
     cellar :any
@@ -15,10 +14,11 @@ class Libvisio < Formula
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
   depends_on "cppunit" => :build
-  depends_on "libwpd"
-  depends_on "libwpg"
-  depends_on "icu4c"
   depends_on "librevenge"
+  depends_on "icu4c"
+  depends_on "libxml2"
+  depends_on "homebrew/dupes/gperf"
+  depends_on "homebrew/dupes/zlib"
 
   def install
     # Needed for Boost 1.59.0 compatibility.
