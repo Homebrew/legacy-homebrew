@@ -6,10 +6,10 @@ class Stormssh < Formula
   head "https://github.com/emre/storm.git"
 
   bottle do
-    cellar :any
-    sha1 "9eea265af64ced78ae0b8019a7ee351ebe8740cf" => :yosemite
-    sha1 "e1f25f89dabc1bdc52bced707b1199e7abd50696" => :mavericks
-    sha1 "258a35abfd77d8e2f69230db4aca27dd3fc8a586" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "da73534dd5e915049415874196ed8edeb92f49c6f78eb8f0257a916c1a97bbe2" => :el_capitan
+    sha256 "c624c01a1d18fa70ad1da3d7de1efc9942ee18c5f64c29373150f9faad534056" => :yosemite
+    sha256 "297400513bf1d37eaeb1ed90c764bf2ee0d6a21fd3afcfad846eaceeed057b11" => :mavericks
   end
 
   conflicts_with "storm", :because => "both install 'storm' binary"
