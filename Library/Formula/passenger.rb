@@ -7,10 +7,9 @@ class Passenger < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "575346312a33a83eaf5f8a6af39f7b48e81a319f680b7698c2cb058d2937ff95" => :el_capitan
-    sha256 "13352bf7e81bd1b1032536704cec4359796aaa52cfa85db412b3bc3e4cc933d8" => :yosemite
-    sha256 "c7c76f1c1268cdc3378acdd8f8d83860ad02b934ec3f7e5fd9dca7c16cc1c7db" => :mavericks
+    sha256 "cb5507ed69bc04ffbfd8c2d3e96aa54ec691011355a19742e65a1a03c624d34a" => :el_capitan
+    sha256 "5cdb12cdecf76c235e1eb3e76d489b009d60649e62b1a9813a7c10fc6f776ed0" => :yosemite
+    sha256 "5031408741dbab7d8a89ed13ef56d737940c3700c6b82e570836741297d4913d" => :mavericks
   end
 
   depends_on "pcre"
