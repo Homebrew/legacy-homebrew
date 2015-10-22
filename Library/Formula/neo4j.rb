@@ -5,6 +5,8 @@ class Neo4j < Formula
   version "2.3.0"
   sha256 "88fee93884700dae6a1f870dd84b3da9d094db33d57db1c88904954ef2cb4830"
 
+  bottle :unneeded
+
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
