@@ -5,10 +5,9 @@ class Mosquitto < Formula
   sha256 "c643c7123708aadcd29287dda7b5ce7c910f75b02956a8fc4fe65ad2ea767a5f"
 
   bottle do
-    sha256 "b562825f6e1df8ecae423c52414a0be3a7c53ecb2085bca81b22d7df069ee804" => :el_capitan
-    sha256 "5ddaaa8d6a3b1243e56a401352a30c98baac64912d727db4f1d863c91cde49d5" => :yosemite
-    sha256 "ebf06abb4e01eb008cc77ae09ae3ab2d593d4150398ebe5d25e0a08b0c80f4e5" => :mavericks
-    sha256 "120219f9750c23bc66635222c9f79a4434188fbdb046a5a43b8d1d350eb62bde" => :mountain_lion
+    sha256 "ee66a7033cad1d89c556b2a1d6923371613cc6ba70d7fba1ee61bb2bc32bc402" => :el_capitan
+    sha256 "3a8c7180105e94d9fc579a272b5d0fffea7a33c19f39a844cf30d9b443fa19d3" => :yosemite
+    sha256 "c2f1e914cd3bcff22f2d23fd2f381e0ece7f352f579f4f0c045976c84b829cdc" => :mavericks
   end
 
   depends_on "pkg-config" => :build
