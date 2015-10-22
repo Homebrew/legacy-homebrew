@@ -1,9 +1,9 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.24.0/mesos-0.24.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.24.0/mesos-0.24.0.tar.gz"
-  sha256 "6b8cfd723760d336f2aae543b0cfcea230c0d0247fed44876665578c06f983c4"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.25.0/mesos-0.25.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz"
+  sha256 "81ee9e722b66f52d8f3270a76eecea60fdcab48d6f7dba51ecce592293124b75"
 
   bottle do
     sha256 "47817c85e80035707b79e80d802f38b4406c266ef7b60244b55d5616d583298e" => :el_capitan
