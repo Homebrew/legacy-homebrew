@@ -37,6 +37,6 @@ class Ragel < Formula
       %% write init;
       %% write exec;
     EOS
-    system "ragel", "-Rs", testfile
+    system bin/"ragel", "-Rs", testfile
   end
 end
