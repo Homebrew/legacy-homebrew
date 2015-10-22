@@ -4,6 +4,8 @@ class GitTown < Formula
   url "https://github.com/Originate/git-town/archive/v0.9.0.tar.gz"
   sha256 "107ab8ed6fa3b4eb9da0f5694e33fca4c727194cf42058829fda9ef20eadf2db"
 
+  bottle :unneeded
+
   def install
     libexec.install Dir["src/*"]
     bin.write_exec_script Dir["#{libexec}/git-*"]
