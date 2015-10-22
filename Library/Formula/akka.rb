@@ -13,6 +13,8 @@ class Akka < Formula
     version "2.4-M2"
   end
 
+  bottle :unneeded
+
   def install
     # Remove Windows files
     rm "bin/akka.bat"
