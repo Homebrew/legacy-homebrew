@@ -18,7 +18,7 @@ module OS
         when "10.11" then "7.0.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
-          if MacOS.version > "10.11"
+          if OS::Mac.prerelease?
             "7.0.1"
           else
             raise "OS X '#{MacOS.version}' is invalid"
