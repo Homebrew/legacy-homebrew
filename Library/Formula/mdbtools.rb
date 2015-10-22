@@ -12,7 +12,6 @@ class Mdbtools < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
-  depends_on "libiodbc" => :build
   depends_on "txt2man" => :build if build.with? "man-pages"
   depends_on "libiodbc" => :optional if build.with? "iodbc"
   depends_on "unixodbc" => :optional if build.with? "unixodbc"
