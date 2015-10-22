@@ -1,5 +1,5 @@
 class Whatmp3 < Formula
-  desc "whatmp3 is a small script to create mp3 torrents out of FLACs."
+  desc "Small script to create mp3 torrents out of FLACs"
   homepage "https://github.com/RecursiveForest/whatmp3"
   url "https://github.com/RecursiveForest/whatmp3/archive/v3.6.tar.gz"
   sha256 "a1f5ef28e2511aa47f4658f71a8a3afe3dda96e7dd6a1cf9d124daead0fed5fa"
