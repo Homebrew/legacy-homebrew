@@ -5,12 +5,7 @@ class Basex < Formula
   version "8.3"
   sha256 "0523f6904831687479b63642217933d971b8a9faf7e48ca6ed49fb89e7136a99"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "589af13889dfaf5b5bd24c2008e0d6519024a9b9554b97271b2becde82266e94" => :el_capitan
-    sha256 "53bfb47999e96d7b0588508842c04554458a021fcf54d6f4c06c21d974293aa5" => :yosemite
-    sha256 "b5d6cc9b0ef86193a04759c832478d26267b39338896a92446d258bf7d99f473" => :mavericks
-  end
+  bottle :unneeded
 
   def install
     rm Dir["bin/*.bat"]
