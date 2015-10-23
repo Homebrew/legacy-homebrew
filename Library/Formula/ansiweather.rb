@@ -14,9 +14,6 @@ class Ansiweather < Formula
   end
 
   test do
-    ENV["LC_ALL"] = "en_US.UTF-8"
-    output = shell_output("#{bin}/ansiweather -l Ithaca,NY -s false -a false")
-    output.force_encoding("UTF-8") if output.respond_to?(:force_encoding)
-    assert_match /Current weather in Ithaca/, output
+    system bin/"ansiweather", "-h"
   end
 end
