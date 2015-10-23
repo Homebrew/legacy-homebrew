@@ -21,6 +21,9 @@ class Fish < Formula
 
   def install
     system "autoconf" if build.head?
+    inreplace "fish.pc.in" do |s|
+      s.gsub! /^completionsdir=.*$/, "completionsdir=#{HOMEBREW_PREFIX}/share/fish/vendor_completions.d"
+    end
     # In Homebrew's 'superenv' sed's path will be incompatible, so
     # the correct path is passed into configure here.
     system "./configure", "--prefix=#{prefix}", "SED=/usr/bin/sed"
