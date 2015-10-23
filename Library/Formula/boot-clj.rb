@@ -5,6 +5,8 @@ class BootClj < Formula
       :using => :nounzip
   sha256 "2e7d9c501ba3e59ae9f23ce21a8a9f8d24177a346238ee3710f7dd0adbddea33"
 
+  bottle :unneeded
+
   def install
     bin.install "boot.sh" => "boot"
   end
