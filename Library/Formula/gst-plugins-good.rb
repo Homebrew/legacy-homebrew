@@ -77,6 +77,14 @@ class GstPluginsGood < Formula
       args << "--disable-x"
     end
 
+    if MacOS.version == :snow_leopard
+      # This plugin causes hangs on Snow Leopard (and possibly other versions?)
+      # Upstream says it hasn't "been actively tested in a long time";
+      # successor is glimagesink (in gst-plugins-bad).
+      # https://bugzilla.gnome.org/show_bug.cgi?id=756918
+      args << "--disable-osx_video"
+    end
+
     if build.head?
       ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
