@@ -54,6 +54,7 @@ class Kettle < Formula
   end
 
   test do
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
     system "#{bin}/pdikitchen", "-file=#{libexec}/samples/jobs/Slowly\ Changing\ Dimension/create\ -\ populate\ -\ update\ slowly\ changing\ dimension.kjb", "-level=RowLevel"
     system "#{bin}/pdipan", "-file=#{libexec}/samples/transformations/Encrypt\ Password.ktr", "-level=RowLevel"
   end
