@@ -14,13 +14,13 @@ class Duck < Formula
     sha256 "b2a3135eee96ba4ab7d66b049f16467e61c6cb69a6bbfd98b32c46ef570be9f0" => :mountain_lion
   end
 
-  depends_on :java => ["1.7+", :build]
+  depends_on :java => ["1.8+", :build]
   depends_on :xcode => :build
   depends_on "ant" => :build
 
   def install
     revision = version.to_s.rpartition(".").last
-    system "ant", "-Dbuild.compile.target=1.7", "-Drevision=#{revision}", "cli"
+    system "ant", "-Dbuild.compile.target=1.8", "-Drevision=#{revision}", "cli"
     libexec.install Dir["build/duck.bundle/*"]
     bin.install_symlink "#{libexec}/Contents/MacOS/duck" => "duck"
   end
