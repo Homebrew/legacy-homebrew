@@ -4,6 +4,8 @@ class Redpen < Formula
   url "https://github.com/recruit-tech/redpen/releases/download/v1.4.0/redpen-1.4.0.tar.gz"
   sha256 "ad8d81e6dc67990055f4eacb0cb069bf7a17e50a6d45f471c655231f931554f3"
 
+  bottle :unneeded
+
   depends_on :java => "1.8"
 
   def install
