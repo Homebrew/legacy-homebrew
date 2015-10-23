@@ -5,6 +5,8 @@ class Bigdata < Formula
   version "1.5.1"
   sha256 "092ecfb1293de27ef40c02795a34ac410e30d175623a342b27271952f01c1f1a"
 
+  bottle :unneeded
+
   depends_on :java => "1.7+"
 
   def install
