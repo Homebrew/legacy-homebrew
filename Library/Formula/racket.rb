@@ -11,12 +11,23 @@ class Racket < Formula
     sha256 "d10ec37ab262c32ce23cbc253cd52a3b381e285a848b073048a5f593a9446b13" => :mountain_lion
   end
 
+  # Upstream patch to resolve 10.11 build errors to handle `availability` declarations.
+  # Remove on next release.
+  patch :p2 do
+    url "https://github.com/racket/racket/commit/1ddaad8d58.diff"
+    sha256 "136993d40613a0f657c73b1b3694ab79ef74e411ee0698ca70fd94800bb9e7d1"
+  end
+
   def install
     cd "src" do
-      args = ["--disable-debug", "--disable-dependency-tracking",
-              "--enable-macprefix",
-              "--prefix=#{prefix}",
-              "--man=#{man}"]
+      args = %W[
+        --disable-debug
+        --disable-dependency-tracking
+        --enable-macprefix
+        --prefix=#{prefix}
+        --man=#{man}
+        --sysconfdir=#{etc}
+      ]
 
       args << "--disable-mac64" unless MacOS.prefer_64_bit?
 
@@ -34,8 +45,7 @@ class Racket < Formula
   end
 
   test do
-    output = `'#{bin}/racket' -e '(displayln "Hello Homebrew")'`
-    assert $?.success?
+    output = shell_output("#{bin}/racket -e '(displayln \"Hello Homebrew\")'")
     assert_match /Hello Homebrew/, output
   end
 end
