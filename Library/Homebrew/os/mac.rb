@@ -252,6 +252,7 @@ module OS
       "6.4"   => { :clang => "6.1", :clang_build => 602 },
       "7.0"   => { :clang => "7.0", :clang_build => 700 },
       "7.0.1" => { :clang => "7.0", :clang_build => 700 },
+      "7.1"   => { :clang => "7.0", :clang_build => 700 },
     }
 
     def compilers_standard?
