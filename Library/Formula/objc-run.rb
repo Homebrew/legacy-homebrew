@@ -9,10 +9,11 @@ class ObjcRun < Formula
 
   def install
     bin.install "objc-run"
-    (share+"objc-run").install "examples", "test.bash"
+    pkgshare.install "examples", "test.bash"
   end
 
   test do
-    system "#{share}/objc-run/test.bash"
+    cp_r pkgshare, testpath
+    system "./objc-run/test.bash"
   end
 end
