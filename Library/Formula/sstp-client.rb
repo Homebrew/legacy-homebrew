@@ -1,9 +1,8 @@
 class SstpClient < Formula
   desc "SSTP (Microsofts Remote Access Solution for PPP over SSL) client"
   homepage "http://sstp-client.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/sstp-client/sstp-client/1.0.9/sstp-client-1.0.9.tar.gz"
-  sha256 "d3d8a26485b2cf0b24e148301b94b3ab9cdb17700ecd7c408b8fd6ad16f7fc4e"
-  revision 1
+  url "https://downloads.sourceforge.net/project/sstp-client/sstp-client/1.0.10/sstp-client-1.0.10.tar.gz"
+  sha256 "5f9084d8544c42c806724a4e70d039d8cb7b0ea06be8ea9cc5120684d4e0d424"
 
   bottle do
     cellar :any
@@ -12,6 +11,7 @@ class SstpClient < Formula
     sha1 "0984d3b9beed2cf92a47218bfb43bf4ff3b606b1" => :mountain_lion
   end
 
+  depends_on "pkg-config" => :build
   depends_on "libevent"
   depends_on "openssl"
 
@@ -21,11 +21,10 @@ class SstpClient < Formula
                           "--disable-ppp-plugin",
                           "--prefix=#{prefix}",
                           "--with-runtime-dir=#{var}/run/sstpc"
-
     system "make", "install"
 
     # Create a directory needed by sstpc for privilege separation
-    mkdir_p var/"run/sstpc"
+    (var/"run/sstpc").mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -37,8 +36,6 @@ class SstpClient < Formula
   end
 
   test do
-    # I know it's a bad test, but I have no idea how to test a VPN client
-    # more thoroughly without trying to connect to an actual VPN server
     system "#{sbin}/sstpc", "--version"
   end
 end
