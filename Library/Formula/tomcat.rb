@@ -5,12 +5,7 @@ class Tomcat < Formula
   mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.28/bin/apache-tomcat-8.0.28.tar.gz"
   sha256 "a7a6c092b79fc5a8cffe5916d0e5554254eddcb3c1911ed90696c153b4f13d10"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "d838813261b38243b1a4b6d3ccc1093061ad2b7731f461cbb67cf1ec02e53d0b" => :el_capitan
-    sha256 "6a9b0dc7d2215969fc7c1ca905d872724639dda739bdbd4b2e7a6bc74049c066" => :yosemite
-    sha256 "9e61553c732fb0009f48db1351921d457ea66c1d2d133e2e7ac9a4eacf656954" => :mavericks
-  end
+  bottle :unneeded
 
   option "with-fulldocs", "Install full documentation locally"
 
