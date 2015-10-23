@@ -4,6 +4,8 @@ class Bar < Formula
   url "http://www.theiling.de/downloads/bar-1.4-src.tar.bz2"
   sha256 "8034c405b6aa0d474c75ef9356cde1672b8b81834edc7bd94fc91e8ae097033e"
 
+  bottle :unneeded
+
   def install
     bin.install "bar"
   end
