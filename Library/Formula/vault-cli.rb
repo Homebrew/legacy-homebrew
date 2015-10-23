@@ -6,12 +6,15 @@ class VaultCli < Formula
 
   bottle :unneeded
 
+  depends_on :java
+
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
     libexec.install Dir["*"]
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env)
   end
 
   test do
