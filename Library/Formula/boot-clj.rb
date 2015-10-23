@@ -7,11 +7,14 @@ class BootClj < Formula
 
   bottle :unneeded
 
+  depends_on :java
+
   def install
     bin.install "boot.sh" => "boot"
   end
 
   test do
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
     system "#{bin}/boot", "repl", "-e", "(System/exit 0)"
   end
 end
