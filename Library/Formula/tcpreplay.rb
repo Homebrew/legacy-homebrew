@@ -14,6 +14,11 @@ class Tcpreplay < Formula
   depends_on "libdnet" => :recommended
 
   def install
+    # Recognise .tbd files inside Xcode 7 as valid.
+    # https://github.com/appneta/tcpreplay/pull/202
+    # Merged but into configure.ac, so inreplace here to avoid needing autotools.
+    inreplace "configure", "for ext in .dylib .so", "for ext in .dylib .so .tbd"
+
     system "./configure", "--disable-dependency-tracking",
                           "--disable-debug",
                           "--prefix=#{prefix}",
