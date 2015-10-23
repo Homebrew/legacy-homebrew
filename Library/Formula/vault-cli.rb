@@ -4,6 +4,8 @@ class VaultCli < Formula
   url "https://search.maven.org/remotecontent?filepath=org/apache/jackrabbit/vault/vault-cli/3.1.6/vault-cli-3.1.6-bin.tar.gz"
   sha256 "639ccdc5c70eb75c2423b6ae62e0560a2056d2cea34cc82ed99504a097bfce88"
 
+  bottle :unneeded
+
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
