@@ -34,4 +34,3 @@ class Blackbox < Formula
     system "#{bin}/blackbox_initialize", "yes"
   end
 end
-
