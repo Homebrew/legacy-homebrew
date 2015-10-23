@@ -4,6 +4,8 @@ class Jsonschema2pojo < Formula
   url "https://github.com/joelittlejohn/jsonschema2pojo/releases/download/jsonschema2pojo-0.4.13/jsonschema2pojo-0.4.13.tar.gz"
   sha256 "b7002d929645dbadd6367ff2ac8a69bb0978538d4ad4f46a195d645b5d341d21"
 
+  bottle :unneeded
+
   depends_on :java => "1.6+"
 
   def install
