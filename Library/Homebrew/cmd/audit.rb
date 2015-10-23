@@ -463,6 +463,12 @@ class FormulaAuditor
     end
   end
 
+  def audit_bottle_spec
+    if formula.bottle_disabled? && !formula.bottle_disable_reason.valid?
+      problem "Unrecognized bottle modifier"
+    end
+  end
+
   def audit_github_repository
     return unless @online
 
@@ -904,6 +910,7 @@ class FormulaAuditor
     audit_specs
     audit_desc
     audit_homepage
+    audit_bottle_spec
     audit_github_repository
     audit_deps
     audit_conflicts
