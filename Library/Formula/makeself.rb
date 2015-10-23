@@ -5,6 +5,8 @@ class Makeself < Formula
   sha256 "9c9d003e097d9c198433a05926e64d9b7cd330c7f10cb4e6048877d0a87de341"
   head "https://github.com/megastep/makeself.git"
 
+  bottle :unneeded
+
   def install
     libexec.install "makeself-header.sh"
     # install makeself-header.sh to libexec so change its location in makeself.sh
