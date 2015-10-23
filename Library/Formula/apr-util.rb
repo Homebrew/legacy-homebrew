@@ -42,8 +42,8 @@ class AprUtil < Formula
 
     if build.with? "openldap"
       args << "--with-ldap"
-      args << "--with-ldap-lib=#{Formula["openldap"].opt_prefix}/lib"
-      args << "--with-ldap-include=#{Formula["openldap"].opt_prefix}/include"
+      args << "--with-ldap-lib=#{Formula["openldap"].opt_lib}"
+      args << "--with-ldap-include=#{Formula["openldap"].opt_include}"
     end
 
     system "./configure", *args
