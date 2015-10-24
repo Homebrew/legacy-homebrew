@@ -11,6 +11,8 @@ class Eet < Formula
     sha256 "461aa471fb79395d1a9288eb923f6ab5039230291c605203dd86455c66c13a14" => :mountain_lion
   end
 
+  conflicts_with "efl", :because => "efl aggregates formerly distinct libs, one of which is eet"
+
   head do
     url "https://git.enlightenment.org/legacy/eet.git/"
 
@@ -33,5 +35,19 @@ class Eet < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    cp "#{pkgshare}/examples/eet-basic.c", testpath
+    eina = Formula["eina"]
+    flags = %W[
+      -I#{include}/eet-1
+      -I#{eina.include}/eina-1
+      -I#{eina.include}/eina-1/eina
+      -L#{lib}
+      -leet
+    ]
+    system ENV.cc, "-o", "eet-basic", "eet-basic.c", *flags
+    system "./eet-basic"
   end
 end
