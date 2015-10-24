@@ -155,12 +155,17 @@ class Mailhog < Formula
   end
 
   test do
-    # Test for following default MailHog output:
-    # 1970/01/01 00:00:01 Using in-memory storage
-    # 1970/01/01 00:00:01 [SMTP] Binding to address: 0.0.0.0:1025
-    # MailHog starts process, which needs to be terminated to avoid
-    # indefinite runtime.
-    output = shell_output("#{bin}/MailHog 2>&1 > /dev/null & sleep 3; kill $! | head -n 2")
-    assert_match /Binding to address/, output
+    pid = fork do
+      exec "#{bin}/MailHog"
+    end
+    sleep 2
+
+    begin
+      output = shell_output("curl -s http://localhost:8025")
+      assert_match /<title>MailHog<\/title>/, output
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
