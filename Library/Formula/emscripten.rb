@@ -3,17 +3,17 @@ class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
 
   stable do
-    url "https://github.com/kripken/emscripten/archive/1.35.0.tar.gz"
-    sha256 "d9e84330ad97be018e5015e9cc6ecf3423d438f6a1a73f7ad359d4d1e8afa4b3"
+    url "https://github.com/kripken/emscripten/archive/1.35.2.tar.gz"
+    sha256 "56feaa3037ec72e2d5299b0a92d7e3b9e1da164db32338c1fe02fe3ca68d8adb"
 
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.35.0.tar.gz"
-      sha256 "e70aec0e821f2c0a00cb59219f48e279d85f38b1f749ba479d0d2edd6bb066c5"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.35.2.tar.gz"
+      sha256 "3bbc7990138381b0cbdac39f83afee76fa143efe81dba4939c1f514dccc307a3"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.35.0.tar.gz"
-      sha256 "dc9b33f88124806b95648dec8b0b60b1520c7b52779471559e06e12630c8eb32"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.35.2.tar.gz"
+      sha256 "5f7090fe66b9462e172cb7a889d9044aa301ffc946072293dd2b269973f358ce"
     end
   end
 
@@ -67,8 +67,8 @@ class Emscripten < Formula
       "--disable-bindings",
     ]
 
-    cd "fastcomp" do
-      system "./configure", *args
+    mkdir "fastcomp/build" do
+      system "../configure", *args
       system "make"
       system "make", "install"
     end
