@@ -162,7 +162,7 @@ class Mailhog < Formula
 
     begin
       output = shell_output("curl -s http://localhost:8025")
-      assert_match /<title>MailHog<\/title>/, output
+      assert_match %r{<title>MailHog</title>}, output
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)
