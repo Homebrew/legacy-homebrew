@@ -16,6 +16,7 @@ class Cspice < Formula
   conflicts_with "openhmd", :because => "both install `simple` binaries"
   conflicts_with "libftdi0", :because => "both install `simple` binaries"
   conflicts_with "enscript", :because => "both install `states` binaries"
+  conflicts_with "fondu", :because => "both install `tobin` binaries"
 
   def install
     rm_f Dir["lib/*"]
