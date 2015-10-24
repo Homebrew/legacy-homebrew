@@ -8,6 +8,13 @@ class Mailhog < Formula
 
   head "https://github.com/mailhog/MailHog.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "603d0fc9467467f9c3744a22bae4a16dbab4afe1b4d1bc13a5db8fc780acb2e7" => :el_capitan
+    sha256 "6faeae3d0c3ebbf936f33bcd21f93d9c7dc83ed3ff3ac35e52e1983c42491612" => :yosemite
+    sha256 "2ced3231c6816d0a46c77fa932d2df6e19a7a4c5cb53cac8513d95eb3bae0b2b" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/gorilla/context" do
