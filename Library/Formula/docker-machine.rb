@@ -41,6 +41,18 @@ class DockerMachine < Formula
     url "https://github.com/pmezard/go-difflib.git", :revision => "f78a839676152fd9f4863704f5d516195c18fc14"
   end
 
+  # The latest release of VirtualBox requires Mountain Lion, but VirtualBox is
+  # still maintaining a 4.3 line which supports pre-Mountain Lion. However, the
+  # absence of a particular flag at VM creation time results, in 4.3, in a VM
+  # that can't boot. Upstream doesn't want to add this because they only
+  # officially support the latest VirtualBox release and this flag causes
+  # problems (I think?) in that line. But if you're on Lion or below, you can't
+  # possibly be running the VirtualBox that upstream wants you to run, so your
+  # choices are this patch or no Docker on VirtualBox.
+  #
+  # Upstream: https://github.com/docker/machine/issues/2071
+  patch :DATA if MacOS.version <= :lion
+
   def install
     ENV["GOPATH"] = buildpath
     mkdir_p buildpath/"src/github.com/docker/"
@@ -59,3 +71,14 @@ class DockerMachine < Formula
     system bin/"docker-machine", "ls"
   end
 end
+__END__
+--- a/drivers/virtualbox/virtualbox.go
++++ b/drivers/virtualbox/virtualbox.go
+@@ -242,6 +242,7 @@ func (d *Driver) Create() error {
+ 		"--natdnsproxy1", "off",
+ 		"--cpuhotplug", "off",
+ 		"--pae", "on",
++		"--longmode", "on",
+ 		"--hpet", "on",
+ 		"--hwvirtex", "on",
+ 		"--nestedpaging", "on",
