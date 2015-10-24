@@ -1931,6 +1931,10 @@ class Formula
       define_method(:test, &block)
     end
 
+    def doctor(&block)
+      define_method(:doctor, &block)
+    end
+
     # @private
     def link_overwrite(*paths)
       paths.flatten!
