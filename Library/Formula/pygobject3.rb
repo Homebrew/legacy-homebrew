@@ -1,8 +1,8 @@
 class Pygobject3 < Formula
   desc "GLib/GObject/GIO Python bindings for Python 3"
   homepage "https://live.gnome.org/PyGObject"
-  url "https://download.gnome.org/sources/pygobject/3.18/pygobject-3.18.0.tar.xz"
-  sha256 "1c3ba1112d3713cd5c86260312bfeb0de1f84f18808e51072c50b29d46156dc9"
+  url "https://download.gnome.org/sources/pygobject/3.18/pygobject-3.18.2.tar.xz"
+  sha256 "2a3cad1517916b74e131e6002c3824361aee0671ffb0d55ded119477fc1c2c5f"
 
   bottle do
     sha256 "62d07f2c2358f218b550529be214120c27d8aa17110ee432007306505650bd45" => :el_capitan
