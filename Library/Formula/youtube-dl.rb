@@ -7,12 +7,7 @@ class YoutubeDl < Formula
   url "https://yt-dl.org/downloads/2015.10.24/youtube-dl-2015.10.24.tar.gz"
   sha256 "fa151e925b51f6b5ee154f25089d287832a9387e59561810fd5eac8d00ce3ae1"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "7f0ed13b293f600c587d47a8ffe46744b67bd037c29d9fd2f71d60ce5ee43dfb" => :el_capitan
-    sha256 "d81a5cd55923ef7ce029d4a94322c752e2f74c52a97a18facbebd4a35e3f3bf0" => :yosemite
-    sha256 "f7c04e7fa8c585b89771b21b491fa8bc810d3d74a10457714130acd3eefc7196" => :mavericks
-  end
+  bottle :unneeded
 
   head do
     url "https://github.com/rg3/youtube-dl.git"
