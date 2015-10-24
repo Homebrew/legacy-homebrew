@@ -6,8 +6,14 @@ class Storm < Formula
 
   bottle :unneeded
 
+  conflicts_with "stormssh", :because => "both install 'storm' binary"
+
   def install
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/storm"
+  end
+
+  test do
+    system bin/"storm", "version"
   end
 end
