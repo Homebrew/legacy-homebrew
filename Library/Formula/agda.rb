@@ -5,10 +5,8 @@ class Agda < Formula
 
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  url "https://hackage.haskell.org/package/Agda-2.4.2.3/Agda-2.4.2.3.tar.gz"
-  mirror "https://github.com/agda/agda/archive/2.4.2.3.tar.gz"
-  sha256 "bc6def45e32498f51863d67acfbe048c039d630c6a36761ed27e99a5f68d7b27"
-  revision 2
+  url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
+  sha256 "0147f8a1395a69bee1e7a452682094e45c83126233f9864544b8a14f956ce8c3"
 
   bottle do
     sha256 "2dc343203159551613fa7346a93d3e2931064026dccab6c30b68a8490845643b" => :el_capitan
