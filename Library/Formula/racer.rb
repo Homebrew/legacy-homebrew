@@ -6,20 +6,43 @@ class Racer < Formula
   sha256 "78895296ed688eeccbaf7745235f0fc503407bfa718f53583a4dcc9e1246b7f5"
   head "https://github.com/phildawes/racer.git"
 
-  option "without-src", "Do not get rust source for racer from www.rust-lang.org"
+  option "with-1.3", "Get 1.3 version of rust source"
+  option "with-1.2", "Get 1.2 version of rust source"
+  option "without-rust", "Disable any version of rust source"
+
   depends_on "rust" => :build
 
-  resource "rustsrc" do
+  resource "rust-1.2" do
+    url "https://static.rust-lang.org/dist/rustc-1.2.0-src.tar.gz"
+    sha256 "ea6eb983daf2a073df57186a58f0d4ce0e85c711bec13c627a8c85d51b6a6d78"
+  end
+
+  resource "rust-1.3" do
     url "https://static.rust-lang.org/dist/rustc-1.3.0-src.tar.gz"
     sha256 "ea02d7bc9e7de5b8be3fe6b37ea9b2bd823f9a532c8e4c47d02f37f24ffa3126"
   end
 
   def install
-    if build.with?("src")
-      resource("rustsrc").stage do
+    rustsources = []
+    latestresource = resource("rust-1.3")
+    if build.with?("1.3")
+      rustsources.push(resource("rust-1.3"))
+    end
+    if build.with?("1.2")
+      rustsources.push(resource("rust-1.2"))
+    end
+    if rustsources.size == 0
+      rustsources.push(latestresource)
+    end
+    if build.without?("rust")
+      rustsources.clear
+    end
+
+    rustsources.each do |rustsource|
+      rustsource.stage do
         rm_rf "src/llvm"
         rm_rf "src/test"
-        (share/"rust-#{resource("rustsrc").version}").install Dir["./src/*"]
+        (share/"rust-#{rustsource.version}").install Dir["./src/*"]
       end
     end
 
@@ -28,10 +51,10 @@ class Racer < Formula
   end
 
   def caveats
-    if build.with?("src")
+    if build.with?("rust")
       <<-EOS.undent
       racer in installed at #{opt_prefix}/libexec/racer.
-      Rust source (version:#{resource("rustsrc").version}) is installed at #{opt_prefix}/share/rust-#{resource("rustsrc").version}
+      Rust source is installed at #{opt_prefix}/share/rust-{version}.
       EOS
     else
       <<-EOS.undent
@@ -41,7 +64,7 @@ class Racer < Formula
   end
 
   test do
-    ENV["RUST_SRC_PATH"] = "#{opt_prefix}/share/rust-#{resource("rustsrc").version}"
-    assert_match /^MATCH BufReader/, shell_output("#{libexec}/racer complete std::io::B")
+    ENV["RUST_SRC_PATH"] = nil
+    assert_match /^RUST_SRC_PATH/, shell_output("#{libexec}/racer complete std::io::B", 1)
   end
 end
