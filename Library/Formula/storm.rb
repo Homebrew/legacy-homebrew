@@ -14,6 +14,6 @@ class Storm < Formula
   end
 
   test do
-    system "storm", "version"
+    system bin/"storm", "version"
   end
 end
