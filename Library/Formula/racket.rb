@@ -19,6 +19,13 @@ class Racket < Formula
     sha256 "136993d40613a0f657c73b1b3694ab79ef74e411ee0698ca70fd94800bb9e7d1"
   end
 
+  # Upstream patch to resolve 10.11 build errors to handle `availability` declarations.
+  # Remove on next release.
+  patch :p2 do
+    url "https://github.com/racket/racket/commit/1ddaad8d58.diff"
+    sha256 "136993d40613a0f657c73b1b3694ab79ef74e411ee0698ca70fd94800bb9e7d1"
+  end
+
   def install
     cd "src" do
       args = %W[
