@@ -6,9 +6,9 @@ class SstpClient < Formula
 
   bottle do
     cellar :any
-    sha1 "844e03c512067d1f378acd6af678654915882edd" => :yosemite
-    sha1 "d8f68257b54af08c4942a60892c36616a8f03a05" => :mavericks
-    sha1 "0984d3b9beed2cf92a47218bfb43bf4ff3b606b1" => :mountain_lion
+    sha256 "d70a56f837f32f2ceab2050fc32855428f6c1df368da447491107dd3c80c030b" => :el_capitan
+    sha256 "8c4a3b20b2b92a4dfca222ecb3ccf46a1c20c8cdbcdab60fe6907e81f039927b" => :yosemite
+    sha256 "5a07e517c449759938b41c886203fed7294667ba3bc185924e26b7d94267a92f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
