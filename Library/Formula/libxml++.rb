@@ -1,8 +1,8 @@
 class Libxmlxx < Formula
   desc "C++ wrapper for libxml"
   homepage "http://libxmlplusplus.sourceforge.net"
-  url "https://download.gnome.org/sources/libxml++/2.40/libxml++-2.40.0.tar.xz"
-  sha256 "a7b9703203696972cae50436e150979ef187d9b03c95519bdd89623b4068162a"
+  url "http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.91/libxml++-2.91.1.tar.xz"
+  sha256 "32589788bf5dc42ae5b72d27bb04f3136ec878bb8564c0970eeb1917ef9a636b"
 
   bottle do
     cellar :any
