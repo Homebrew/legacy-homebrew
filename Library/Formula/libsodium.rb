@@ -1,8 +1,8 @@
 class Libsodium < Formula
   desc "NaCl networking and cryptography library"
   homepage "https://github.com/jedisct1/libsodium/"
-  url "https://github.com/jedisct1/libsodium/releases/download/1.0.4/libsodium-1.0.4.tar.gz"
-  sha256 "e4f75d4b2bd860068e0401163207415c9d41048d7601409897ff2951839fd310"
+  url "https://github.com/jedisct1/libsodium/releases/download/1.0.5/libsodium-1.0.5.tar.gz"
+  sha256 "bfcafc678c7dac87866c50f9b99aa821750762edcf8e56fc6d13ba0ffbef8bab"
 
   bottle do
     cellar :any
@@ -23,8 +23,8 @@ class Libsodium < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./autogen.sh" if build.head?
 
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "check"
