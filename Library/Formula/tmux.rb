@@ -24,7 +24,15 @@ class Tmux < Formula
 
   # This fixes the Tmux 2.1 update that broke the ability to use select-pane [-LDUR]
   # to switch panes when in a maximized pane https://github.com/tmux/tmux/issues/150#issuecomment-149466158
-  patch :DATA
+  stable do
+    url "https://github.com/tmux/tmux/releases/download/2.1/tmux-2.1.tar.gz"
+    sha256 "31564e7bf4bcef2defb3cb34b9e596bd43a3937cad9e5438701a81a5a9af6176"
+
+    patch do
+      url "https://github.com/tmux/tmux/commit/a05c27a7e1c4d43709817d6746a510f16c960b4b.diff"
+      sha256 "👻"
+    end
+  end
 
   def install
     system "sh", "autogen.sh" if build.head?
@@ -50,33 +58,3 @@ class Tmux < Formula
     system "#{bin}/tmux", "-V"
   end
 end
-
-__END__
-diff --git a/cmd-select-pane.c b/cmd-select-pane.c
-index e76587c..7986e98 100644
---- a/cmd-select-pane.c
-+++ b/cmd-select-pane.c
-@@ -120,14 +120,19 @@ cmd_select_pane_exec(struct cmd *self, struct cmd_q *cmdq)
- 		return (CMD_RETURN_NORMAL);
- 	}
-
--	if (args_has(self->args, 'L'))
-+	if (args_has(self->args, 'L')) {
-+		server_unzoom_window(wp->window);
- 		wp = window_pane_find_left(wp);
--	else if (args_has(self->args, 'R'))
-+	} else if (args_has(self->args, 'R')) {
-+		server_unzoom_window(wp->window);
- 		wp = window_pane_find_right(wp);
--	else if (args_has(self->args, 'U'))
-+	} else if (args_has(self->args, 'U')) {
-+		server_unzoom_window(wp->window);
- 		wp = window_pane_find_up(wp);
--	else if (args_has(self->args, 'D'))
-+	} else if (args_has(self->args, 'D')) {
-+		server_unzoom_window(wp->window);
- 		wp = window_pane_find_down(wp);
-+	}
- 	if (wp == NULL)
- 		return (CMD_RETURN_NORMAL);
-
