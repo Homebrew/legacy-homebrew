@@ -30,7 +30,7 @@ class Tmux < Formula
 
     patch do
       url "https://github.com/tmux/tmux/commit/a05c27a7e1c4d43709817d6746a510f16c960b4b.diff"
-      sha256 "👻"
+      sha256 "2a60a63f0477f2e3056d9f76207d4ed905de8a9ce0645de6c29cf3f445bace12"
     end
   end
 
