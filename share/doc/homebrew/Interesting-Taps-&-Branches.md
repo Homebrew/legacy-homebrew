@@ -18,6 +18,8 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
 
 *   [homebrew/dupes](https://github.com/Homebrew/homebrew-dupes): Need GDB or a newer Tk? System duplicates go here.
 
+*   [homebrew/emacs](https://github.com/Homebrew/homebrew-emacs): A tap for Emacs packages.
+
 *   [homebrew/games](https://github.com/Homebrew/homebrew-games): Game or gaming-emulation related formulae.
 
 *   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only): A tap for brews that only have unstable, unreleased versions.
@@ -45,8 +47,6 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 *   [besport/ocaml](https://github.com/besport/homebrew-ocaml): A tap for Ocaml libraries, though with caveats, it requires you install its customized ocaml formula. Perhaps a template for more work.
 
 *   [osx-cross/avr](https://github.com/osx-cross/homebrew-avr): GNU AVR toolchain (Libc, compilers and other tools for Atmel MCUs, useful for Arduino hackers and AVR programmers).
-
-*   [edavis/emacs](https://github.com/edavis/homebrew-emacs): A tap for Emacs packages.
 
 *   [petere/postgresql](https://github.com/petere/homebrew-postgresql): Allows installing multiple PostgreSQL versions in parallel.
 
