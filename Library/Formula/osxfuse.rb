@@ -8,7 +8,7 @@ class Osxfuse < Formula
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
   bottle do
-    sha256 "6eee4b8e976b528d5007d92b3fe267e256380164d9be9446541428da0715b626" => :mavericks
+    sha256 "aec1cc54836192f91da92619797dcced1283064c09d265c6104fbefbb3cd2286" => :mavericks
   end
 
   depends_on :macos => :snow_leopard
