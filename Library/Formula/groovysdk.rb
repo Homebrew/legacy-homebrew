@@ -4,6 +4,8 @@ class Groovysdk < Formula
   url "https://dl.bintray.com/groovy/maven/apache-groovy-sdk-2.4.5.zip"
   sha256 "48d9f7f1165c12f7eed2b9a762820a7ffe176b666b1605c9b1411ab3b3f45a1d"
 
+  bottle :unneeded
+
   def install
     ENV["GROOVY_HOME"] = libexec
 

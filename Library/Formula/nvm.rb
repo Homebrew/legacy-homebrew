@@ -5,6 +5,8 @@ class Nvm < Formula
   sha256 "04f6f2710bc3b3820cde1055e735a6cd8fa71a3c9c2881c49c8653e982e0d86a"
   head "https://github.com/creationix/nvm.git"
 
+  bottle :unneeded
+
   def install
     prefix.install "nvm.sh", "nvm-exec"
     bash_completion.install "bash_completion" => "nvm"

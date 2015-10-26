@@ -1,6 +1,6 @@
 class Mpdscribble < Formula
   desc "Last.fm reporting client for mpd"
-  homepage "http://mpd.wikia.com/wiki/Client:Mpdscribble"
+  homepage "https://mpd.wikia.com/wiki/Client:Mpdscribble"
   url "http://www.musicpd.org/download/mpdscribble/0.22/mpdscribble-0.22.tar.gz"
   sha256 "ff882d02bd830bdcbccfe3c3c9b0d32f4f98d9becdb68dc3135f7480465f1e38"
 

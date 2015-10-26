@@ -1,14 +1,15 @@
 class T1utils < Formula
   desc "Command-line tools for dealing with Type 1 fonts"
-  homepage "http://www.lcdf.org/type/"
-  url "http://www.lcdf.org/type/t1utils-1.39.tar.gz"
+  homepage "https://www.lcdf.org/type/"
+  url "https://www.lcdf.org/type/t1utils-1.39.tar.gz"
   sha256 "0faef3e5c4927b38b05ac99ee177b7d7cddbbf5b4452f98b244f684b52b0d4c4"
 
   bottle do
-    cellar :any
-    sha256 "1c1db2e4e722c180bde2dfdfc8e180134ee86a3fe8f99f063077f6b9485e8cdf" => :yosemite
-    sha256 "c353a67edc6d5ecb0675c9843b21224347fa4eb4035cb298c5d815c02dde5018" => :mavericks
-    sha256 "1b83bfc6ed504e2c9ab50e83eace1cfadae785d003ec7aa6c084699e59e38643" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "3bf7bfa976b8d32a652ca5ee32165ab93b02b83189cc8d63698cadad9ebe67d0" => :el_capitan
+    sha256 "3966b75f9da837ff1c06c07e7304cadf45f3f0d47a81db00f519fe1c7afbe05d" => :yosemite
+    sha256 "dcfef3d4b31408531519e121f0abc243740c73a8ce52e09defdf86a6b73ae3f3" => :mavericks
   end
 
   head do

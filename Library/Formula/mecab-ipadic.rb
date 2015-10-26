@@ -1,6 +1,6 @@
 class MecabIpadic < Formula
   desc "IPA dictionary compiled for MeCab"
-  homepage "http://mecab.googlecode.com/svn/trunk/mecab/doc/index.html"
+  homepage "https://mecab.googlecode.com/svn/trunk/mecab/doc/index.html"
   url "https://downloads.sourceforge.net/project/mecab/mecab-ipadic/2.7.0-20070801/mecab-ipadic-2.7.0-20070801.tar.gz"
   sha256 "b62f527d881c504576baed9c6ef6561554658b175ce6ae0096a60307e49e3523"
 

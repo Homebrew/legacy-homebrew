@@ -1,9 +1,11 @@
 class GitPlus < Formula
   desc "Three git utilities: git multi, git relation, git old-branches"
   homepage "https://github.com/tkrajina/git-plus"
-  head "https://github.com/tkrajina/git-plus.git"
   url "https://github.com/tkrajina/git-plus/archive/v0.1.0.tar.gz"
   sha256 "d7076ed3fd8e6e4bc2b93b9880adf58bea59b0f6fe95e05053f00247ae8cb609"
+  head "https://github.com/tkrajina/git-plus.git"
+
+  bottle :unneeded
 
   depends_on :python if MacOS.version <= :snow_leopard
 

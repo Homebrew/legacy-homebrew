@@ -5,6 +5,8 @@ class Fuseki < Formula
   version "1.1.2"
   sha256 "78bd92b4e32f9e918d89946d11aed9789416f4058b127af60b251b4a8636b5f0"
 
+  bottle :unneeded
+
   def install
     # Remove windows files
     rm_f "fuseki-server.bat"

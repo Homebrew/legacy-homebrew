@@ -27,7 +27,7 @@ class Gstreamer < Formula
   # Fix header file issue (exact OS versions affected unknown; first noticed on
   # Snow Leopard)
   # https://bugzilla.gnome.org/show_bug.cgi?id=756136
-  patch :DATA if MacOS.version <= :snow_leopard
+  patch :DATA if MacOS.version <= :mountain_lion
 
   def install
     args = %W[

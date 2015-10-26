@@ -4,6 +4,8 @@ class Riemann < Formula
   url "https://aphyr.com/riemann/riemann-0.2.10.tar.bz2"
   sha256 "ec697519e80781dc478983de04204760f2790da1715acfd233b35da071be5455"
 
+  bottle :unneeded
+
   def shim_script
     <<-EOS.undent
       #!/bin/bash

@@ -1,7 +1,7 @@
 class GambitScheme < Formula
   desc "Complete, portable implementation of Scheme"
   homepage "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page"
-  url "http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_9.tgz"
+  url "https://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_9.tgz"
   sha256 "17e4a2eebbd0f5ebd807b4ad79a98b89b2a5eef00199c318a885db4ef950f14f"
 
   bottle do

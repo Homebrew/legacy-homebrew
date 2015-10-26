@@ -1,15 +1,17 @@
 class Jsdoc3 < Formula
   desc "Inline API documentation processor for JavaScript"
   homepage "http://usejsdoc.org/"
-  head "https://github.com/jsdoc3/jsdoc.git"
   url "https://github.com/jsdoc3/jsdoc/archive/v3.2.2.tar.gz"
   sha256 "c101896d2cf08be636332a5eaaf38fe318ae7f639c37735abd1643b1b973254b"
+  head "https://github.com/jsdoc3/jsdoc.git"
 
   devel do
     url "https://github.com/jsdoc3/jsdoc/archive/3.3.0-beta3.tar.gz"
     sha256 "de32d538a5eb1835fdafbb686cdab7ea80ad64b3651a0b85904766c2f5e94b44"
     version "3.3.0-alpha13"
   end
+
+  bottle :unneeded
 
   conflicts_with "jsdoc-toolkit", :because => "both install jsdoc"
 

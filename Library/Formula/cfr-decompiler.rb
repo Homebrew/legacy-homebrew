@@ -4,6 +4,8 @@ class CfrDecompiler < Formula
   url "http://www.benf.org/other/cfr/cfr_0_102.jar"
   sha256 "b8bf5b3071b7754fb0117f321b600f0d7f548cd6fe25319dd993d4d9845d4578"
 
+  bottle :unneeded
+
   depends_on :java => "1.6+"
 
   def install

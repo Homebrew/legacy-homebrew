@@ -2,9 +2,10 @@ class AndroidNdk < Formula
   desc "Android native-code language toolset"
   homepage "https://developer.android.com/sdk/ndk/index.html"
   url "https://dl.google.com/android/ndk/android-ndk-r10e-darwin-x86_64.bin"
+  version "r10e"
   sha256 "728c309e606f63101f1258c9d3d579b80ac74fe74c511ebb71f460ce5c5d084e"
 
-  version "r10e"
+  bottle :unneeded
 
   # As of r10e, only a 64-bit version is provided
   depends_on :arch => :x86_64

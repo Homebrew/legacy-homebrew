@@ -5,6 +5,8 @@ class Rmate < Formula
   sha256 "a84105e2c986ef39def5147fa83b8607bab41502177040f4324f5f94946a8e50"
   head "https://github.com/textmate/rmate.git"
 
+  bottle :unneeded
+
   def install
     bin.install "bin/rmate"
   end

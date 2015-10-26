@@ -4,6 +4,8 @@ class Funcoeszz < Formula
   url "http://funcoeszz.net/download/funcoeszz-15.5.sh"
   sha256 "13e6347018b43c54f5032d4700d45255f7e26e1e8f1eacb25e324d4fbe07e15d"
 
+  bottle :unneeded
+
   depends_on "bash"
 
   def install

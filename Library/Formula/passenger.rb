@@ -1,15 +1,15 @@
 class Passenger < Formula
   desc "Server for Ruby, Python, and Node.js apps via Apache/NGINX"
   homepage "https://www.phusionpassenger.com/"
-  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.20.tar.gz"
-  sha256 "a5b35780beb7ecd39d18375acab3e4fa1a2e104b7a324f41a1f89c99e7b8b04c"
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.21.tar.gz"
+  sha256 "66bc55a43f08d77b7a5e42928bf19d7cab2297866996ebcaa4db01a2d78cc60c"
   head "https://github.com/phusion/passenger.git"
 
   bottle do
     cellar :any
-    sha256 "8a3559b46c71a6c998d81ac89b62baec7cabefbb39b21550ba0c4e4ae4bf174b" => :el_capitan
-    sha256 "503be746c0521813e11ab0533932a50c8ac6812b57b1206d959907904360d8b3" => :yosemite
-    sha256 "86d41ece182c24a5466afd481fd9a3234ecd6d4c3c90faaf38b959ebf0e807d7" => :mavericks
+    sha256 "cb5507ed69bc04ffbfd8c2d3e96aa54ec691011355a19742e65a1a03c624d34a" => :el_capitan
+    sha256 "5cdb12cdecf76c235e1eb3e76d489b009d60649e62b1a9813a7c10fc6f776ed0" => :yosemite
+    sha256 "5031408741dbab7d8a89ed13ef56d737940c3700c6b82e570836741297d4913d" => :mavericks
   end
 
   depends_on "pcre"
@@ -21,7 +21,8 @@ class Passenger < Formula
   def install
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
-    rake "webhelper"
+
+    system("/usr/bin/ruby ./bin/passenger-config compile-nginx-engine")
 
     (libexec/"download_cache").mkpath
 
@@ -70,7 +71,7 @@ class Passenger < Formula
     s += <<-EOS.undent if build.with? "apache2-module"
       To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
         LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
-        PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
+        PassengerRoot #{opt_libexec}/src/ruby_supportlib/phusion_passenger/locations.ini
         PassengerDefaultRuby /usr/bin/ruby
 
       EOS

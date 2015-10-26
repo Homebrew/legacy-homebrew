@@ -1,15 +1,14 @@
 class Pgcli < Formula
   desc "CLI for Postgres with auto-completion and syntax highlighting"
   homepage "http://pgcli.com/"
-  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.19.1.tar.gz"
-  sha256 "0d383203279be0b7fff469b55de88a4ed540290fd6b1292d64aa1f0923b76217"
+  url "https://pypi.python.org/packages/source/p/pgcli/pgcli-0.19.2.tar.gz"
+  sha256 "a6bb96ca849c4e5e99330910581a339dd9f0a17c0e4153ad3ab6b74ca282df36"
 
   bottle do
     cellar :any
-    sha256 "60898118f2ece21d8dfd5fb2c68c081db4e5b81ed72cb63708dabb9d79988a1a" => :el_capitan
-    sha256 "cfb848bc7c8c55209b8610047d67b2fa21125ff68fc37b2a9cdb30ed70522ce6" => :yosemite
-    sha256 "e8cfd69a6839f114d0b25823d4484a311af1e840c859d63ba5642fcb85bad9ca" => :mavericks
-    sha256 "8a0be06ff9e0194ebd04458ac9c30de1d3b39c103e75ba33050fa06774c38d71" => :mountain_lion
+    sha256 "974bc9a5212c2e415489e26f87aaf95ed13e31caa3fdd372a64d0f5386fde171" => :el_capitan
+    sha256 "6d7c52411fc16755da2533be62f3de5bddb55faa5ab8190b5e56324dd9786ec9" => :yosemite
+    sha256 "8d81cbcf5afc182493429632b497781b67f444524467de740c3fa59075d9f0e9" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -27,8 +26,8 @@ class Pgcli < Formula
   end
 
   resource "prompt_toolkit" do
-    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.45.tar.gz"
-    sha256 "553fd2b9169674adacf227ede2e056c2bbd7181a4a3ca614960467c0720997a6"
+    url "https://pypi.python.org/packages/source/p/prompt_toolkit/prompt_toolkit-0.46.tar.gz"
+    sha256 "1aa25cb9772e1e27d12f7920b5a514421ab763231067119bbd2f8b1574b409fb"
   end
 
   resource "psycopg2" do
@@ -47,8 +46,8 @@ class Pgcli < Formula
   end
 
   resource "sqlparse" do
-    url "https://pypi.python.org/packages/source/s/sqlparse/sqlparse-0.1.14.tar.gz"
-    sha256 "e561e31853ab9f3634a1a2bd53035f9e47dfb203d56b33cc6569047ba087daf0"
+    url "https://pypi.python.org/packages/source/s/sqlparse/sqlparse-0.1.16.tar.gz"
+    sha256 "678c6c36ca4b01405177da8b84eecf92ec92c9f6c762396c965bb5d305f20f81"
   end
 
   resource "wcwidth" do

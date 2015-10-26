@@ -5,6 +5,8 @@ class Archey < Formula
   sha256 "e2206c6e46f8f1e54c865360fecc1aa71b04ef92d115f2e4cffc0a80f49fd784"
   head "https://github.com/obihann/archey-osx.git"
 
+  bottle :unneeded
+
   def install
     bin.install "bin/archey"
   end

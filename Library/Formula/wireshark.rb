@@ -3,9 +3,9 @@ class Wireshark < Formula
   homepage "https://www.wireshark.org"
 
   stable do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.7.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.7.tar.bz2"
-    sha256 "c74a1c14e72ce0f198a93d832e71742c7f312cbbe719e5def9ecef176860f92c"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.8.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.8.tar.bz2"
+    sha256 "357e0a4e49525d80cdc740bb16539fcdb526ad38cc2ed6cabedafc9bdee5c7e7"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -15,16 +15,15 @@ class Wireshark < Formula
   end
 
   bottle do
-    sha256 "05b8a6144c006ccda0866333cf10f62e23b6c28d1b615ea129eeb2baa5e73a35" => :el_capitan
-    sha256 "d8979eee062badc5dd506f35ed068bf0640f0174c10918742c599459aeb785bd" => :yosemite
-    sha256 "cd3011365f0ac3cdab74e840d01bd21fcaad403a323648953136c33323eab015" => :mavericks
-    sha256 "f590fed6226a7e9272af33af8cd08020075976eb56a08877c646f75ffc455abf" => :mountain_lion
+    sha256 "011b9c1f55fdb42223af49b7bec04f387d5dd89d5b8a600faecca2011b776f08" => :el_capitan
+    sha256 "2db41f691c2700bcb8bd20141671b279298cf65049966601f7d6ee96b4496482" => :yosemite
+    sha256 "7980680d82cb4c3bf01c6b8c1f3970767773d9a09d5573e3ba418fe08f224bb4" => :mavericks
   end
 
   devel do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.99.9.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.99.9.tar.bz2"
-    sha256 "be7ac8f8eb2c08e0e3d62da9f781db0dc5322a9cbcb024d3f86a66a06185e182"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0rc1.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0rc1.tar.bz2"
+    sha256 "a201938913f770cb1f022165574d312b66b97efaa6ad7a9c90daf325f7806582"
 
     depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
   end

@@ -6,14 +6,7 @@ class Cask < Formula
   head "https://github.com/cask/cask.git"
   revision 1
 
-  bottle do
-    cellar :any_skip_relocation
-    revision 1
-    sha256 "32e91615a10deee8354fabd4c71a44bebde3520c16fe1ed10d437b126b0453e2" => :el_capitan
-    sha256 "0aa6408deec257c837b2e82b6971a3a0d0ab2c839e7a918c1d72c951e307f223" => :yosemite
-    sha256 "01a2665ec170894ae6c52cfea441743e5c61c2f62272852814bf2e932c2c11a2" => :mavericks
-    sha256 "587bed663534d0bec5ea0af10cc5a0bd5b9bda9a1178ea03706260849b089a32" => :mountain_lion
-  end
+  bottle :unneeded
 
   depends_on :emacs => ["24", :run]
 

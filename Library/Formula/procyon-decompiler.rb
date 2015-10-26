@@ -4,6 +4,8 @@ class ProcyonDecompiler < Formula
   url "https://bitbucket.org/mstrobel/procyon/downloads/procyon-decompiler-0.5.30.jar"
   sha256 "cd9a2177f72f490842b0b84909f58b5548614a78ecd135ce28b833f93429e5a0"
 
+  bottle :unneeded
+
   depends_on :java => "1.7+"
 
   def install

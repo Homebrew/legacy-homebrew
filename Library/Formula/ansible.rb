@@ -1,16 +1,16 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
-  homepage "http://www.ansible.com/home"
-  url "http://releases.ansible.com/ansible/ansible-1.9.3.tar.gz"
-  sha256 "2594f642fd800056a427c1026410dc6ed8dfa7c0033f5c3d187abdb2b0d4eeed"
+  homepage "https://www.ansible.com/home"
+  url "https://releases.ansible.com/ansible/ansible-1.9.4.tar.gz"
+  sha256 "972c2face49f1577bd0ff7989440bfe2820e66fb10d7579915cc536bccfa6fe3"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    sha256 "3a84121aa26fe4f6d9bc2af11c4a3fc212c832c8696a2817f6b71b6207c4b69a" => :el_capitan
-    sha256 "e9513e2972a1d11ceebdc20be52995a41ed219587a5cae25ef28892c4098d963" => :yosemite
-    sha256 "3cca5dd439c1e1bae4cf7575a17bba52e423a8df0df563b87fa1d09594e53c0e" => :mavericks
-    sha256 "f4f08f04623570a93bf05f067033e175adf0069f9f426b152980c17437b2473d" => :mountain_lion
+    revision 1
+    sha256 "99c8c244c342a354a7671ed8691fb33f06da0bb809bf9e6a5281e44d1d3ba569" => :el_capitan
+    sha256 "36b945f2e553bf5a34a284e38b0ca05cfb5d3ef75b5b54c41fa2374cd1e9af25" => :yosemite
+    sha256 "329169754d3a651eb21c364b00cf6b3a305377b0b0b4906f22801b8cb7b114be" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -56,7 +56,7 @@ class Ansible < Formula
 
   #
   # Required by the 'uri' core module
-  # See http://docs.ansible.com/uri_module.html#requirements)
+  # See https://docs.ansible.com/uri_module.html#requirements)
   #
   resource "httplib2" do
     url "https://pypi.python.org/packages/source/h/httplib2/httplib2-0.9.1.tar.gz"

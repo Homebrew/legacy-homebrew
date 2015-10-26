@@ -4,6 +4,8 @@ class Trace2html < Formula
   url "https://github.com/google/trace-viewer/archive/2015-06-23.tar.gz"
   sha256 "97ad0ca9c07a50c53a3d881b69b6b6f7424d6b0f4d9e9fb531c2d9273e413f19"
 
+  bottle :unneeded
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install

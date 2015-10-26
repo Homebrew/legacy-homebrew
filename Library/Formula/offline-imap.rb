@@ -3,8 +3,9 @@ class OfflineImap < Formula
   homepage "http://offlineimap.org/"
   url "https://github.com/OfflineIMAP/offlineimap/archive/v6.5.7.tar.gz"
   sha256 "b7de52c7d8995e0657bb55da13531c8d6f96d828217159477c685ae408e390a3"
-
   head "https://github.com/OfflineIMAP/offlineimap.git"
+
+  bottle :unneeded
 
   def install
     etc.install "offlineimap.conf", "offlineimap.conf.minimal"

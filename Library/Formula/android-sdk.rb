@@ -3,16 +3,11 @@ require "base64"
 class AndroidSdk < Formula
   desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.4-macosx.zip"
-  version "24.4"
-  sha256 "a1cb0c9b2036d597e18986de1bd43918b6113373ff3bf6fdb81b6cce4ec3efd7"
+  url "https://dl.google.com/android/android-sdk_r24.4.1-macosx.zip"
+  version "24.4.1"
+  sha256 "ce1638cb48526a0e55857fc46b57eda4349e6512006244ad13dd6c1361c74104"
 
-  bottle do
-    cellar :any
-    sha256 "6813bb19eb0127850832a32cddd55cfd0106a8d079726c3a9e8e18855efe0165" => :el_capitan
-    sha256 "7210e0118c1bbba916add540c9a1b7dc9b14b0c2cfbdbea9a1e0ca0e6b0143ec" => :yosemite
-    sha256 "e148339aa960c019ae70e967b3cadcd57fe93838067453b21264a8e330818a42" => :mavericks
-  end
+  bottle :unneeded
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."

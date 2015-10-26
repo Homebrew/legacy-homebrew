@@ -65,6 +65,7 @@ Before contributing, make sure your package:
 *   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew/issues))
 *   is still supported by upstream
 *   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release and head-only versions belong.
+*   passes all `brew audit --strict --online $FORMULA` tests.
 
 Make sure you search thoroughly (all aliases!). We don’t want you to waste your time.
 
@@ -114,6 +115,9 @@ end
 **Note:**  If `brew` said `Warning: Version cannot be determined from URL` when doing the `create` step, you’ll need to explicitly add the correct version to the formula with `version "foo"` **and then save the formula**. `brew install` should then proceed without any trouble.
 
 **Note:** If `brew` said `No formula found for "php54-timezonedb". Searching open pull requests...` and you are writing a Tap, you should run `brew tap --repair`.
+
+**Note:** Homebrew will try to guess the formula’s name from its URL. If it
+fails to do so you can use `brew create <url> --set-name <name>`.
 
 ## Fill in the Homepage
 

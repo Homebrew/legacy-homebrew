@@ -5,12 +5,7 @@ class Mockserver < Formula
   version "3.9.17"
   sha256 "7d7166b752aabeb65a13a66e0f70653d8fd880a72f1c8d80192d771dc63a9eb9"
 
-  bottle do
-    cellar :any
-    sha256 "e6052bfc501a81f6330b0c8f5a09f62cc01836400f66a5601f0a99240c958654" => :yosemite
-    sha256 "d25f6ae8de8574c8cc3fa5d4443e4728d1cb7850c713b78dc26acc46d0292a4f" => :mavericks
-    sha256 "99e4bdd7c210ab41bcf4e1af3e1078832cb0b23f4912235aa4127f3c76c37099" => :mountain_lion
-  end
+  bottle :unneeded
 
   depends_on :java => "1.6+"
 

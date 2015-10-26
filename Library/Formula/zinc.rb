@@ -4,6 +4,8 @@ class Zinc < Formula
   url "http://downloads.typesafe.com/zinc/0.3.7/zinc-0.3.7.tgz"
   sha256 "8775465c624bfb2180cb03734e6ad682849663b3a70fa73bb962af496df89a3d"
 
+  bottle :unneeded
+
   def install
     rm_f Dir["bin/ng/{linux,win}*"]
     libexec.install Dir["*"]

@@ -121,6 +121,29 @@ class Tap
     @aliases ||= alias_files.map { |f| "#{name}/#{f.basename}" }
   end
 
+  # a table mapping alias to formula name
+  # @private
+  def alias_table
+    return @alias_table if @alias_table
+    @alias_table = Hash.new
+    alias_files.each do |alias_file|
+      @alias_table["#{name}/#{alias_file.basename}"] = "#{name}/#{alias_file.resolved_path.basename(".rb")}"
+    end
+    @alias_table
+  end
+
+  # a table mapping formula name to aliases
+  # @private
+  def alias_reverse_table
+    return @alias_reverse_table if @alias_reverse_table
+    @alias_reverse_table = Hash.new
+    alias_table.each do |alias_name, formula_name|
+      @alias_reverse_table[formula_name] ||= []
+      @alias_reverse_table[formula_name] << alias_name
+    end
+    @alias_reverse_table
+  end
+
   # an array of all commands files of this {Tap}.
   def command_files
     @command_files ||= Pathname.glob("#{path}/cmd/brew-*").select(&:executable?)

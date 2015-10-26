@@ -4,6 +4,8 @@ class RdsCommandLineTools < Formula
   url "https://s3.amazonaws.com/rds-downloads/RDSCli-1.19.004.zip"
   sha256 "298c15ccd04bd91f1be457645d233455364992e7dd27e09c48230fbc20b5950c"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

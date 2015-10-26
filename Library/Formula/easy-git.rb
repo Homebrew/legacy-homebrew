@@ -5,6 +5,8 @@ class EasyGit < Formula
   version "1.7.5.2"
   sha256 "59bb4f8b267261ab3d48c66b957af851d1a61126589173ebcc20ba9f43c382fb"
 
+  bottle :unneeded
+
   def install
     bin.install "eg"
   end

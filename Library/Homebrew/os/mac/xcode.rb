@@ -14,12 +14,12 @@ module OS
         when "10.7"  then "4.6.3"
         when "10.8"  then "5.1.1"
         when "10.9"  then "6.2"
-        when "10.10" then "7.0.1"
-        when "10.11" then "7.0.1"
+        when "10.10" then "7.1"
+        when "10.11" then "7.1"
         else
           # Default to newest known version of Xcode for unreleased OSX versions.
-          if MacOS.version > "10.11"
-            "7.0.1"
+          if OS::Mac.prerelease?
+            "7.1"
           else
             raise "OS X '#{MacOS.version}' is invalid"
           end
@@ -165,8 +165,8 @@ module OS
 
       def latest_version
         case MacOS.version
-        when "10.11" then "700.0.72"
-        when "10.10" then "700.0.72"
+        when "10.11" then "700.1.76"
+        when "10.10" then "700.1.76"
         when "10.9"  then "600.0.57"
         when "10.8"  then "503.0.40"
         else

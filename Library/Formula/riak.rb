@@ -5,6 +5,8 @@ class Riak < Formula
   version "2.1.1"
   sha256 "ee06193b5fc4bb56746f8f648794b732b96879369835a94f22235e0561d652d7"
 
+  bottle :unneeded
+
   depends_on :macos => :mountain_lion
   depends_on :arch => :x86_64
 
