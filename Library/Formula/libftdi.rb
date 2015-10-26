@@ -1,8 +1,8 @@
 class Libftdi < Formula
   desc "Library to talk to FTDI chips"
   homepage "https://www.intra2net.com/en/developer/libftdi"
-  url "https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.1.tar.bz2"
-  sha256 "c0b1af1a13e2c6682a1d8041e5b164a1e0d90267cd378bb51e059bd62f821e21"
+  url "https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.2.tar.bz2"
+  sha256 "a6ea795c829219015eb372b03008351cee3fb39f684bff3bf8a4620b558488d6"
 
   bottle do
     cellar :any
