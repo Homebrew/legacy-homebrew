@@ -3,8 +3,8 @@ require "language/go"
 class Snag < Formula
   desc "Automatic build tool for all your needs"
   homepage "https://github.com/Tonkpils/snag"
-  url "https://github.com/Tonkpils/snag/archive/v1.0.0.tar.gz"
-  sha256 "3b9df4e2409e37c8f74ab16e4d276544bac81acd66caabdab62b07f321adc0a1"
+  url "https://github.com/Tonkpils/snag/archive/v1.1.0.tar.gz"
+  sha256 "30197526352284067ebc7f8c066da37e1e92f535dcf7a185584bdc4d8ef37233"
   head "https://github.com/Tonkpils/snag.git"
 
   bottle do
