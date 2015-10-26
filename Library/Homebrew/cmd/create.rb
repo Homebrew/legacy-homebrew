@@ -78,10 +78,16 @@ class FormulaCreator
     @url = url
     path = Pathname.new(url)
     if @name.nil?
-      %r{github.com/\S+/(\S+)/archive/}.match url
-      @name ||= $1
-      /(.*?)[-_.]?#{path.version}/.match path.basename
-      @name ||= $1
+      case url
+      when %r{github\.com/\S+/(\S+)\.git}
+        @name = $1
+        @head = true
+      when %r{github\.com/\S+/(\S+)/archive/}
+        @name = $1
+      else
+        /(.*?)[-_.]?#{path.version}/.match path.basename
+        @name = $1
+      end
       @path = Formulary.path @name unless @name.nil?
     else
       @path = Formulary.path name
@@ -94,7 +100,11 @@ class FormulaCreator
   end
 
   def fetch?
-    !ARGV.include?("--no-fetch")
+    !head? && !ARGV.include?("--no-fetch")
+  end
+
+  def head?
+    @head || ARGV.build_head?
   end
 
   def generate!
@@ -124,11 +134,15 @@ class FormulaCreator
     class #{Formulary.class_s(name)} < Formula
       desc ""
       homepage ""
+    <% if head? %>
+      head "#{url}"
+    <% else %>
       url "#{url}"
     <% unless version.nil? or version.detected_from_url? %>
       version "#{version}"
     <% end %>
       sha256 "#{sha256}"
+    <% end %>
 
     <% if mode == :cmake %>
       depends_on "cmake" => :build
