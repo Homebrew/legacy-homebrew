@@ -1,8 +1,8 @@
 class Libuecc < Formula
   desc "Very small Elliptic Curve Cryptography library"
   homepage "http://git.universe-factory.net/libuecc/"
-  url "http://git.universe-factory.net/libuecc/snapshot/libuecc-5.tar"
-  sha256 "5f4104e70e48f077f92395e6652d9a139e3fdbcc4dc51113ddc955bf2a82542a"
+  url "http://git.universe-factory.net/libuecc/snapshot/libuecc-6.tar"
+  sha256 "fe61715b7cd8458616840f71ab8c0c7e5f49480a9cfb2c1965fbb9d713f071b6"
 
   head "git://git.universe-factory.net/libuecc"
 
