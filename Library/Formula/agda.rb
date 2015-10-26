@@ -58,14 +58,14 @@ class Agda < Formula
     if build.with? "stdlib"
       resource("stdlib").stage prefix/"agda-stdlib"
 
-      # install the standard library's helper tools
+      # generate the standard library's bytecode
       cd prefix/"agda-stdlib" do
         cabal_sandbox do
           cabal_install "--only-dependencies"
-          cabal_install "--prefix=#{prefix/"agda-stdlib"}"
-          system prefix/"agda-stdlib"/"bin"/"GenerateEverything"
+          cabal_install
+          system "GenerateEverything"
         end
-        cabal_clean_lib
+        rm_rf [".cabal", "dist"]
       end
 
       # install the standard library's FFI bindings for the MAlonzo backend
