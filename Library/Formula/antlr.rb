@@ -8,8 +8,13 @@ class Antlr < Formula
 
   def install
     prefix.install "antlr-#{version}-complete.jar"
-    bin.write_jar_script prefix/"antlr-#{version}-complete.jar", "antlr4"
-    (bin+"grun").write <<-EOS.undent
+
+    (bin/"antlr4").write <<-EOS.undent
+      #!/bin/bash
+      CLASSPATH="#{prefix}/antlr-#{version}-complete.jar:." exec java -jar /usr/local/Cellar/antlr/4.5.1/antlr-4.5.1-complete.jar "$@"
+    EOS
+
+    (bin/"grun").write <<-EOS.undent
       #!/bin/bash
       java -classpath #{prefix}/antlr-#{version}-complete.jar:. org.antlr.v4.runtime.misc.TestRig "$@"
     EOS
