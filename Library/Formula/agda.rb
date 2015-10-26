@@ -18,8 +18,6 @@ class Agda < Formula
   head "https://github.com/agda/agda.git", :branch => "master"
 
   option "without-stdlib", "Don't install the Agda standard library"
-  option "with-malonzo-ffi",
-    "Include the MAlonzo backend's FFI (depends on the standard library)"
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
@@ -66,10 +64,18 @@ class Agda < Formula
       end
 
       # install the standard library's FFI bindings for the MAlonzo backend
-      if build.with? "malonzo-ffi"
-        cd prefix/"agda-stdlib"/"ffi" do
-          cabal_install "--user"
+      # in a dedicated GHC package database
+      db_path = prefix/"agda-stdlib"/"ffi"/"package.conf.d"
+
+      mkdir db_path
+      system "ghc-pkg", "--package-db=#{db_path}", "recache"
+
+      cd prefix/"agda-stdlib"/"ffi" do
+        cabal_sandbox do
+          system "cabal", "--ignore-sandbox", "install", "--package-db=#{db_path}",
+            "--prefix=#{prefix/"agda-stdlib"/"ffi"}"
         end
+        rm_rf [".cabal", "dist"]
       end
 
       # generate the standard library's documentation and vim highlighting files
@@ -82,6 +88,22 @@ class Agda < Formula
     if build.with? "emacs"
       system bin/"agda-mode", "compile"
     end
+  end
+
+  def caveats
+    s = ""
+
+    if build.with? "stdlib"
+      s += <<-EOS.undent
+      To use the Agda standard library, point Agda to the following include dir:
+        #{prefix/"agda-stdlib"/"src"}
+
+      To use the FFI bindings for the MAlonzo backend, give Agda the following option:
+        --ghc-flag=-package-db=#{prefix/"agda-stdlib"/"ffi"/"package.conf.d"}
+      EOS
+    end
+
+    s
   end
 
   test do
@@ -106,7 +128,7 @@ class Agda < Formula
     system bin/"agda", "--js", "--safe", test_file_path
 
     # typecheck, compile, and run a program that uses the standard library
-    if build.with?("stdlib") && build.with?("malonzo-ffi")
+    if build.with?("stdlib")
       test_file_path = testpath/"stdlib-test.agda"
       test_file_path.write <<-EOS.undent
         module stdlib-test where
@@ -117,6 +139,7 @@ class Agda < Formula
         main = run $ putStr "Hello, world!"
       EOS
       system bin/"agda", "-i", testpath, "-i", prefix/"agda-stdlib"/"src",
+        "--ghc-flag=-package-db=#{prefix/"agda-stdlib"/"ffi"/"package.conf.d"}",
         "-c", test_file_path
       assert_equal `testpath/"stdlib-test"`, "Hello, world!"
     end
