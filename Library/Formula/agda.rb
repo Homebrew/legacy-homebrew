@@ -25,7 +25,7 @@ class Agda < Formula
   depends_on "cabal-install" => :build
 
   depends_on "gmp"
-  depends_on "emacs" => :optional
+  depends_on "emacs" => :recommended
 
   setup_ghc_compilers
 
@@ -38,6 +38,10 @@ class Agda < Formula
   resource "stdlib" do
     url "https://github.com/agda/agda-stdlib.git", :branch => "2.4.2.4"
   end
+
+  # fix compilation of the included Emacs mode
+  # to be removed once https://github.com/agda/agda/pull/1700 is merged
+  patch :DATA
 
   def install
     # install Agda core
@@ -74,9 +78,8 @@ class Agda < Formula
       end
     end
 
-    # byte-compile and install Agda's included emacs mode
+    # compile the included Emacs mode
     if build.with? "emacs"
-      system bin/"agda-mode", "setup"
       system bin/"agda-mode", "compile"
     end
   end
@@ -119,3 +122,17 @@ class Agda < Formula
     end
   end
 end
+
+__END__
+diff --git a/src/data/emacs-mode/agda2-mode.el b/src/data/emacs-mode/agda2-mode.el
+index 04604ee..f6b3122 100644
+--- a/src/data/emacs-mode/agda2-mode.el
++++ b/src/data/emacs-mode/agda2-mode.el
+@@ -20,6 +20,7 @@ Note that the same version of the Agda executable must be used.")
+ (require 'time-date)
+ (require 'eri)
+ (require 'annotation)
++(require 'fontset)
+ (require 'agda-input)
+ (require 'agda2)
+ (require 'agda2-highlight)
