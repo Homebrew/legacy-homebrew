@@ -6,6 +6,7 @@ class Qtpass < Formula
   head "https://github.com/IJHack/qtpass.git"
 
   depends_on "qt" => :build
+  depends_on :xcode => :build
   depends_on "pass" => :optional
   depends_on "gnupg"
 
