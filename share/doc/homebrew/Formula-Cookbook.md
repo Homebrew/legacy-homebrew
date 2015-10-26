@@ -116,6 +116,9 @@ end
 
 **Note:** If `brew` said `No formula found for "php54-timezonedb". Searching open pull requests...` and you are writing a Tap, you should run `brew tap --repair`.
 
+**Note:** Homebrew will try to guess the formula’s name from its URL. If it
+fails to do so you can use `brew create <url> --set-name <name>`.
+
 ## Fill in the Homepage
 
 **We don’t accept formulae without homepages!**
