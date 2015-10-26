@@ -7,12 +7,7 @@ class AppEngineGo64 < Formula
   conflicts_with "go-app-engine-32", :because => "multiple conflicting files"
   conflicts_with "google-app-engine", :because => "multiple conflicting files"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "d91f0fe524e9c95e949d55b4527c980c1de7a63dce1bac22de56d9401e3cdacc" => :el_capitan
-    sha256 "e94cbf02fd1a1ffa759787d9d157ddd3ee9182ea4abf27e30d90e766556f69cb" => :yosemite
-    sha256 "6094c41c3c019bc0a23282b3c7bf6ad7ca3edd9fefaabeddb83f2101ec2fd5a6" => :mavericks
-  end
+  bottle :unneeded
 
   def install
     cd ".."
