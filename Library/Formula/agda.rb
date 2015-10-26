@@ -15,7 +15,16 @@ class Agda < Formula
     sha256 "d0e17808ee896cdedc499b010b67961dc3db3c430c501faef16c4b4482238447" => :mountain_lion
   end
 
-  head "https://github.com/agda/agda.git", :branch => "master"
+  head do
+    url "https://github.com/agda/agda.git", :branch => "master"
+    resource "stdlib" do
+      url "https://github.com/agda/agda-stdlib.git", :branch => "master"
+    end
+  end
+
+  resource "stdlib" do
+    url "https://github.com/agda/agda-stdlib.git", :branch => "2.4.2.4"
+  end
 
   option "without-stdlib", "Don't install the Agda standard library"
   option "without-malonzo", "Disable the MAlonzo backend"
@@ -31,16 +40,6 @@ class Agda < Formula
   depends_on "emacs" => :recommended
 
   setup_ghc_compilers
-
-  head do
-    resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib.git", :branch => "master"
-    end
-  end
-
-  resource "stdlib" do
-    url "https://github.com/agda/agda-stdlib.git", :branch => "2.4.2.4"
-  end
 
   # fix compilation of the included Emacs mode
   # to be removed once https://github.com/agda/agda/pull/1700 is merged
