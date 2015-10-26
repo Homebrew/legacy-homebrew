@@ -3,7 +3,7 @@ class Inspircd < Formula
   homepage "http://www.inspircd.org"
   url "https://github.com/inspircd/inspircd/archive/v2.0.20.tar.gz"
   sha256 "5156e2da5da4cfa377705ecd633aee41cdcd785d12627497d55cab5f70dd686f"
-  head "https://github.com/inspircd/inspircd.git"
+  head "https://github.com/inspircd/inspircd.git", :branch => "insp20"
 
   bottle do
     revision 1
