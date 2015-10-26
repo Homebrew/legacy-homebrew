@@ -1,8 +1,9 @@
 class Osxfuse < Formula
   desc "FUSE for OS X: extend native file handling via 3rd-party file systems"
   homepage "https://osxfuse.github.io/"
-  url "https://github.com/osxfuse/osxfuse.git", :tag => "osxfuse-2.8.0",
-                                                :revision => "6a1e7793079d446950f6aaa250e4762710ad326e"
+  url "https://github.com/osxfuse/osxfuse.git",
+       :tag => "osxfuse-2.8.2",
+       :revision => "bf71481dedce22ce465de72afdd595337f5a03df"
 
   head "https://github.com/osxfuse/osxfuse.git", :branch => "osxfuse-2"
 
