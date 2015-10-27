@@ -156,6 +156,10 @@ module HomebrewArgvExtension
     !(build_head? || build_devel?)
   end
 
+  def build_auto?
+    include? "--auto"
+  end
+
   def build_universal?
     include? "--universal"
   end

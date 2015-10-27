@@ -43,23 +43,23 @@ module Homebrew
       FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
 
       ARGV.formulae.each do |f|
-        # head-only without --HEAD is an error
-        if !ARGV.build_head? && f.stable.nil? && f.devel.nil?
+        # head-only without --HEAD nor --auto is an error
+        if !ARGV.build_auto? && !ARGV.build_head? && f.stable.nil? && f.devel.nil?
           raise <<-EOS.undent
           #{f.full_name} is a head-only formula
           Install with `brew install --HEAD #{f.full_name}`
           EOS
         end
 
-        # devel-only without --devel is an error
-        if !ARGV.build_devel? && f.stable.nil? && f.head.nil?
+        # devel-only without --devel nor --auto is an error
+        if !ARGV.build_auto? && !ARGV.build_devel? && f.stable.nil? && f.head.nil?
           raise <<-EOS.undent
           #{f.full_name} is a devel-only formula
           Install with `brew install --devel #{f.full_name}`
           EOS
         end
 
-        if ARGV.build_stable? && f.stable.nil?
+        if !ARGV.build_auto? && ARGV.build_stable? && f.stable.nil?
           raise "#{f.full_name} has no stable download, please choose --devel or --HEAD"
         end
 
