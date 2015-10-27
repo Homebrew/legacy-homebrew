@@ -27,6 +27,10 @@ class Node < Formula
     build 2326
   end
 
+  fails_with :gcc do
+    cause "unrecognized command line option '-std=gnu++0x'"
+  end
+
   resource "npm" do
     url "https://registry.npmjs.org/npm/-/npm-2.14.7.tgz"
     sha256 "54f3a5195a1e6b52fc954749e81f8abf1f7c8ca912b90ecf2b33581800d0f6a5"
