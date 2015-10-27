@@ -9,7 +9,14 @@ class Leafnode < Formula
   depends_on "pcre"
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    (var/"spool/news/leafnode").mkpath
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--with-user=#{ENV["USER"]}", "--with-group=admin",
+                          "--sysconfdir=#{etc}/leafnode", "--with-spooldir=#{var}/spool/news/leafnode"
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/leafnode-version")
   end
 end
