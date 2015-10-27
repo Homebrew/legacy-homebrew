@@ -64,21 +64,24 @@ class Wireshark < Formula
   def install
     no_gui = build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+") && build.without?("qt5")
 
-    args = ["--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}",
-            "--with-gnutls"]
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --with-gnutls
+    ]
 
     args << "--disable-wireshark" if no_gui
     args << "--disable-gtktest" if build.without?("gtk+3") && build.without?("gtk+")
+    args << "--with-gtk3" if build.with? "gtk+3"
+    args << "--with-gtk2" if build.with? "gtk+"
+    args << "--with-libcap=#{Formula["libpcap"].opt_prefix}" if build.with? "libpcap"
+
     if build.with?("qt") || build.with?("qt5")
       args << "--with-qt"
     else
       args << "--with-qt=no"
     end
-    args << "--with-gtk3" if build.with? "gtk+3"
-    args << "--with-gtk2" if build.with? "gtk+"
-    args << "--with-libcap=#{Formula["libpcap"].opt_prefix}" if build.with? "libpcap"
 
     if build.head?
       args << "--disable-warnings-as-errors"
