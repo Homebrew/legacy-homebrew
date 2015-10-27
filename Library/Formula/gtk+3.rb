@@ -29,7 +29,7 @@ class Gtkx3 < Formula
   if MacOS.version <= :snow_leopard
     patch do
       url "https://bugzilla.gnome.org/attachment.cgi?id=313599&format=raw"
-      sha256 "57c4221bef21dcb48e29c25adc2c621fc42602263398d7f85412c51a5359d0fd"
+      sha256 "a090b19d3c15364914917d9893be292225e8b8a016f2833a5b8354f079475a73"
     end
   end
 
