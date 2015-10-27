@@ -24,6 +24,15 @@ class Gtkx3 < Formula
   depends_on "glib"
   depends_on "hicolor-icon-theme"
 
+  # Replace a keyword not supported by Snow Leopard's Objective-C compiler.
+  # https://bugzilla.gnome.org/show_bug.cgi?id=756770
+  if MacOS.version <= :snow_leopard
+    patch do
+      url "https://bugzilla.gnome.org/attachment.cgi?id=313599&format=raw"
+      sha256 "57c4221bef21dcb48e29c25adc2c621fc42602263398d7f85412c51a5359d0fd"
+    end
+  end
+
   def install
     ENV.universal_binary if build.universal?
 
