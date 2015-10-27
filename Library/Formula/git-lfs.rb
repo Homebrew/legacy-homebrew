@@ -1,8 +1,8 @@
 class GitLfs < Formula
   desc "Git extension for versioning large files"
   homepage "https://github.com/github/git-lfs"
-  url "https://github.com/github/git-lfs/archive/v1.0.0.tar.gz"
-  sha256 "bd9d0d597b36421babf282680d34d66b626facea63f68fc64399ac9fe70d2dd3"
+  url "https://github.com/github/git-lfs/archive/v1.0.1.tar.gz"
+  sha256 "3ffa64fd302bed82e6a01a4a4a43495e59117836e44b1a1031fe9c2d0246f688"
 
   bottle do
     cellar :any_skip_relocation
