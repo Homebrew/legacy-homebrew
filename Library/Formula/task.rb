@@ -3,8 +3,8 @@ class Task < Formula
   homepage "https://taskwarrior.org/"
 
   stable do
-    url "https://taskwarrior.org/download/task-2.4.4.tar.gz"
-    sha256 "7ff406414e0be480f91981831507ac255297aab33d8246f98dbfd2b1b2df8e3b"
+    url "https://taskwarrior.org/download/task-2.5.0.tar.gz"
+    sha256 "4d8e67415a6993108c11b8eeef99b76a991af11b22874adbb7ae367e09334636"
 
     depends_on "gnutls" => :optional
   end
