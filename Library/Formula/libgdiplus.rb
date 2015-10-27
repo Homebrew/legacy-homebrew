@@ -1,13 +1,12 @@
 class Libgdiplus < Formula
   desc "C-based implementation of the GDI+ API for Mono"
   homepage "http://www.mono-project.com/docs/gui/libgdiplus/"
-  url "https://github.com/mono/libgdiplus/tarball/79ae6cdb90163ba5eb601f8691ea9b7558d25371"
-  head "https://github.com/mono/libgdiplus.git", using: :git, tag: "master"
-  sha256 "0b84f8dd36e4e6df0877d66c816e7ef19892b52a552b1eed18e039bfb52d4de1"
+  url "https://github.com/mono/libgdiplus/tarball/3b284ab28cb8737f9d14dabfedc6903655c66a7f"
+  head "https://github.com/mono/libgdiplus.git"
+  sha256 "c7b6e68f4f4ef62e1f7551769c7f0b87e7debd52311123a0264d23cf7ac9aee8"
   version "3.12" # latest tag = 3.12, plus two patches.
 
   # it depends on mono to link to System.Drawing
-  depends_on "mono"
   depends_on "libexif"
   depends_on "glib"
   depends_on "cairo"
@@ -16,6 +15,8 @@ class Libgdiplus < Formula
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
+  # And it depends on mono to build, but this formula is specified as a resource
+  # in that recipe.
 
   def install
     system "CPPFLAGS=-I/opt/X11/include ./autogen.sh"
