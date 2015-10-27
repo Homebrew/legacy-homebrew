@@ -8,9 +8,9 @@ class Telegraf < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6769b07add42cd6635f5a3e99dfc5bb750db5aacd69234a69a9f4f827eed4789" => :el_capitan
-    sha256 "be0c12d61f4fce374a0780ac7aae033c9a8ca8ef0ab97dd2737d712d91b91c65" => :yosemite
-    sha256 "44e0ab0a34ce70c2cf6443c487d8fea4c999860177459a1b2f5765074d575d5d" => :mavericks
+    sha256 "2b156c8e49a49550ec3a57a05c556d247f0edfd3043964e82c304dd0ee3dec7c" => :el_capitan
+    sha256 "4123089ead5c46a19d6caeb4ca725719fa8244d9d00dbba66e1ae2abc5b23fb4" => :yosemite
+    sha256 "2f56b0a38a64ab1bf0deef8d13d111fa939973e1497c9e9b838e0ea3cf5ce9b3" => :mavericks
   end
 
   depends_on "go" => :build
