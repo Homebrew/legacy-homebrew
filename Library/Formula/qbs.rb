@@ -1,8 +1,9 @@
 class Qbs < Formula
   desc "Qt Build Suite"
   homepage "https://wiki.qt.io/Qt_Build_Suite"
-  url "https://download.qt.io/official_releases/qbs/1.4.2/qbs-src-1.4.2.tar.gz"
-  sha256 "b9d36118c3ae0f7d4df6bf7239a0a0163c0340b701d00191fa5f832cef341ce5"
+  head "https://code.qt.io/qt-labs/qbs.git"
+  url "https://download.qt.io/official_releases/qbs/1.4.3/qbs-src-1.4.3.tar.gz"
+  sha256 "0c47291ac578c1fc8f2bd6ab20fbeeb58630c4c6ddc085f6081ae570f825f787"
 
   bottle do
     cellar :any
