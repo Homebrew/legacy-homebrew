@@ -1,9 +1,9 @@
 class BootClj < Formula
   desc "Build tooling for Clojure"
   homepage "http://boot-clj.com"
-  url "https://github.com/boot-clj/boot/releases/download/2.3.0/boot.sh",
+  url "https://github.com/boot-clj/boot/releases/download/2.4.0/boot.sh",
       :using => :nounzip
-  sha256 "005c3926f9d05e0a824b6dc69e17f1b03ec3cbd47eca072122ec14f5d9fb4fb5"
+  sha256 "42056007935cf76fcb326fbfa59436d0598464b13ff444404db4718afdfe6d01"
 
   bottle :unneeded
 
