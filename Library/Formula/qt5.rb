@@ -47,13 +47,11 @@ class Qt5 < Formula
 
   option "with-docs", "Build documentation"
   option "with-examples", "Build examples"
-  option "with-developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
 
   option "without-webengine", "Build without QtWebEngine module"
   option "without-webkit", "Build without QtWebKit module"
 
-  deprecated_option "developer" => "with-developer"
   deprecated_option "qtdbus" => "with-d-bus"
 
   # Snow Leopard is untested and support has been removed in 5.4
@@ -101,8 +99,6 @@ class Qt5 < Formula
 
     args << "-skip" << "qtwebengine" if build.without? "webengine"
     args << "-skip" << "qtwebkit" if build.without? "webkit"
-
-    args << "-developer-build" if build.with? "developer"
 
     system "./configure", *args
     system "make"
