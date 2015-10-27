@@ -5,9 +5,9 @@ class Pyqt5 < Formula
   sha256 "0a70ef94fbffcf674b0dde024aae2a2a7a3f5a8c42806109ff7df2c941bd8386"
 
   bottle do
-    sha256 "038a01d845b448b1ab2f0a0a1fa1e2fc6c26c7c4a89414f5323b13c137cb6338" => :el_capitan
-    sha256 "e8dfc2ce94a18936550b1af0abaa8fed898c14b7fac06c6e6822da3eff7541d2" => :yosemite
-    sha256 "b116d5b4060d488f77a1d3536a3442cf8b15f5fe9a350186269e2ecc9e688fe3" => :mavericks
+    sha256 "b9e313a98af2b16a6ab3df8e0c2d7d153b80f49211741a565945049a18765c51" => :el_capitan
+    sha256 "c298d8b38ca10572c1026c5489dc879b64de97ae083847c78f547d388b8b2e26" => :yosemite
+    sha256 "33f2dfb85349db6826d9653512e608bde4f99f6297957c0c7c4ee8457d09ef9f" => :mavericks
   end
 
   option "with-debug", "Build with debug symbols"
