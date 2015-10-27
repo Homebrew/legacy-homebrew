@@ -9,6 +9,8 @@ class GitTf < Formula
     depends_on "maven" => :build
   end
 
+  bottle :unneeded
+
   def install
     if build.stable?
       install_prefix = ""
