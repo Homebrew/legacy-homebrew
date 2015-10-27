@@ -6,12 +6,7 @@ class Tika < Formula
 
   depends_on :java => "1.7+"
 
-  bottle do
-    cellar :any
-    sha256 "149bb5712c16304d1f71fa3047dd58ed9fa1b013679309ad2b2e03ea98d8d047" => :yosemite
-    sha256 "b42c447ae4519b9663c94dbb64087e812a2123221778e4b60be34727a708994b" => :mavericks
-    sha256 "f0295de87032c10300884c875427872c6b12368c19126342930c3770b3f95e77" => :mountain_lion
-  end
+  bottle :unneeded
 
   resource "server" do
     url "https://repo1.maven.org/maven2/org/apache/tika/tika-server/1.11/tika-server-1.11.jar"
