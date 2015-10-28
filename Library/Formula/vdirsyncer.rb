@@ -7,9 +7,9 @@ class Vdirsyncer < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5a075cb9ad8523b8a8689929f241c885f12d0ef7026431d0c37cb7e8eefa5bba" => :el_capitan
-    sha256 "a66186aecfba8ca661cd42c6759f01380ca79319537da47ec30346e0b6f17ccf" => :yosemite
-    sha256 "9aa878ddfc411b84f951a1bff222bd4499264b5cf80c1edb261e126a48350b9d" => :mavericks
+    sha256 "79670a5825750bb39ac697f4be3af12b562c2312ca3e09355a8b3847f53bf384" => :el_capitan
+    sha256 "3db1814d421893cba4d45b295da7273285d0d698e6017e7e665331d026ada34c" => :yosemite
+    sha256 "03eed71a1cbb9604b99e8d450a1b167984bf89468093c2b0b00b1cc871dd1883" => :mavericks
   end
 
   option "without-keyring", "Build without python-keyring support"
