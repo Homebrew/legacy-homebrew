@@ -29,7 +29,6 @@ class Qt < Formula
   option :universal
   option "with-qt3support", "Build with deprecated Qt3Support module support"
   option "with-docs", "Build documentation"
-  option "with-developer", "Build and link with developer options"
   option "without-webkit", "Build without QtWebKit module"
 
   depends_on "openssl"
@@ -38,7 +37,6 @@ class Qt < Formula
   depends_on "postgresql" => :optional
 
   deprecated_option "qtdbus" => "with-d-bus"
-  deprecated_option "developer" => "with-developer"
 
   resource "test-project" do
     url "https://gist.github.com/tdsmith/f55e7e69ae174b5b5a03.git",
@@ -105,7 +103,6 @@ class Qt < Formula
       args << "-arch" << "x86"
     end
 
-    args << "-developer-build" if build.with? "developer"
     args << "-no-webkit" if build.without? "webkit"
 
     system "./configure", *args
