@@ -1,8 +1,10 @@
 class GitMultipush < Formula
   desc "Push a branch to multiple remotes in one command"
-  homepage "https://code.google.com/p/git-multipush/"
-  url "https://git-multipush.googlecode.com/files/git-multipush-2.3.tar.bz2"
-  sha256 "1f3b51e84310673045c3240048b44dd415a8a70568f365b6b48e7970afdafb67"
+  homepage "https://github.com/gavinbeatty/git-multipush"
+  url "https://github.com/gavinbeatty/git-multipush/archive/git-multipush-v2.3.tar.gz"
+  sha256 "883e4e88787a71c84ed94f6c3175fab587f0b15980fd0d74b839474295638081"
+
+  head "https://github.com/gavinbeatty/git-multipush.git"
 
   devel do
     url "https://github.com/gavinbeatty/git-multipush/archive/git-multipush-v2.4.rc2.tar.gz"
@@ -10,12 +12,21 @@ class GitMultipush < Formula
     version "2.4-rc2"
   end
 
-  head "https://github.com/gavinbeatty/git-multipush.git"
-
   depends_on "asciidoc" => :build
 
   def install
+    unless build.head?
+      # This is inferred with git-describe but we only have a tarball here
+      ENV["VERSION"] = version.to_s
+      ENV["PROJECT_VERSION_VAR"] = "VERSION"
+    end
+
     system "make" if build.head?
     system "make", "prefix=#{prefix}", "install"
+  end
+
+  test do
+    system "git", "init"
+    assert_equal "git push", shell_output("git multipush -n 2>&1").chomp
   end
 end
