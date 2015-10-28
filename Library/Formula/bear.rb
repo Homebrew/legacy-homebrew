@@ -1,9 +1,9 @@
 class Bear < Formula
   desc "Generate compilation database for clang tooling"
   homepage "https://github.com/rizsotto/Bear"
-  url "https://github.com/rizsotto/Bear/archive/2.0.4.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/b/bear/bear_2.0.4.orig.tar.gz"
-  sha256 "33ea117b09068aa2cd59c0f0f7535ad82c5ee473133779f1cc20f6f99793a63e"
+  url "https://github.com/rizsotto/Bear/archive/2.1.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/b/bear/bear_2.1.2.orig.tar.gz"
+  sha256 "e321df1e8ff8d0b1203613e0bc5642736b4f1b1a71fd95d96b11b1e38bdbfcfc"
   head "https://github.com/rizsotto/Bear.git"
 
   bottle do
