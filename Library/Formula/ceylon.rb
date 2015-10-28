@@ -20,6 +20,7 @@ class Ceylon < Formula
   end
 
   test do
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
     cd "#{libexec}/samples/helloworld" do
       system "#{bin}/ceylon", "compile", "--encoding", "UTF-8", "com.example.helloworld"
       system "#{bin}/ceylon", "doc", "--encoding", "UTF-8", "--non-shared", "com.example.helloworld"
