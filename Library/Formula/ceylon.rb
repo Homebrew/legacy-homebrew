@@ -6,7 +6,7 @@ class Ceylon < Formula
 
   bottle :unneeded
 
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -20,10 +20,11 @@ class Ceylon < Formula
   end
 
   test do
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
     cd "#{libexec}/samples/helloworld" do
-      system "#{bin}/ceylon", "compile", "--encoding", "UTF-8", "com.example.helloworld"
-      system "#{bin}/ceylon", "doc", "--encoding", "UTF-8", "--non-shared", "com.example.helloworld"
-      system "#{bin}/ceylon", "run", "com.example.helloworld/1.1.0", "John"
+      system "#{bin}/ceylon", "compile", "--out", "#{testpath}/modules", "--encoding", "UTF-8", "com.example.helloworld"
+      system "#{bin}/ceylon", "doc", "--out", "#{testpath}/modules", "--encoding", "UTF-8", "--non-shared", "com.example.helloworld"
+      system "#{bin}/ceylon", "run", "--rep", "#{testpath}/modules", "com.example.helloworld/1.1.0", "John"
     end
   end
 end
