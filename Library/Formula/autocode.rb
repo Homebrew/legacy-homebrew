@@ -1,8 +1,8 @@
 class Autocode < Formula
   desc "Code automation for every language, library and framework"
-  homepage "https://crystal.sh/autocode"
-  url "https://github.com/crystal/autocode/archive/v0.20.3.tar.gz"
-  sha256 "f82f0fa7a2573d5f939a4821769756719ff98a98b0f1903001ee1e3981b30a23"
+  homepage "https://autocode.run"
+  url "https://github.com/crystal/autocode/archive/v0.21.2.tar.gz"
+  sha256 "64eccf7cfcfb361919f2eced326e5dd1fc3545dc6d56465e41e878e029130308"
 
   bottle do
     cellar :any_skip_relocation
