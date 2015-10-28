@@ -18,6 +18,8 @@ class Rtmpdump < Formula
     sha256 "90f87f1c3e8c68385576812bdfadc39152d3bd9166cafb982761d1a6cc915710" => :mountain_lion
   end
 
+  conflicts_with "flvstreamer", :because => "both install 'rtmpsrv', 'rtmpsuck' and 'streams' binary"
+
   depends_on "openssl"
 
   fails_with :llvm do
