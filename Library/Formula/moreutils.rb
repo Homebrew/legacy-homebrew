@@ -19,7 +19,9 @@ class Moreutils < Formula
 
   depends_on "docbook-xsl" => :build
 
-  conflicts_with "parallel", :because => "Both install a 'parallel' executable."
+  if build.with? "parallel"
+    conflicts_with "parallel", :because => "Both install a 'parallel' executable."
+  end
   conflicts_with "task-spooler", :because => "Both install a 'ts' executable."
 
   resource "Time::Duration" do
