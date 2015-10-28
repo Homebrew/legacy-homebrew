@@ -315,6 +315,9 @@ class FormulaInstaller
       end
     end
 
+    # Merge the repeated dependencies, which may have different tags.
+    deps = Dependency.merge_repeats(deps)
+
     [unsatisfied_reqs, deps]
   end
 
