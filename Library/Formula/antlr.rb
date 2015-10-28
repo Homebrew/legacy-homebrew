@@ -12,7 +12,7 @@ class Antlr < Formula
 
     (bin/"antlr4").write <<-EOS.undent
       #!/bin/bash
-      CLASSPATH="#{prefix}/antlr-#{version}-complete.jar:." exec java -jar /usr/local/Cellar/antlr/4.5.1/antlr-4.5.1-complete.jar "$@"
+      CLASSPATH="#{prefix}/antlr-#{version}-complete.jar:." exec java -jar #{prefix}/antlr-#{version}-complete.jar "$@"
     EOS
 
     (bin/"grun").write <<-EOS.undent
