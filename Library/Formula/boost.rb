@@ -1,8 +1,8 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
-  sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
+  sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
 
   head "https://github.com/boostorg/boost.git"
 
@@ -31,6 +31,17 @@ class Boost < Formula
   else
     depends_on "icu4c" => :optional
     depends_on :mpi => [:cc, :cxx, :optional]
+  end
+
+  stable do
+    # Fixed compilation of operator<< into a record ostream, when
+    # the operator right hand argument is not directly supported by
+    # formatting_ostream. Fixed https://svn.boost.org/trac/boost/ticket/11549
+    # from https://github.com/boostorg/log/commit/7da193f.patch
+    patch do
+      url "https://gist.githubusercontent.com/tdsmith/bc76ddea1e2bdb2a3a18/raw/03d125b12a4b03c28ee011a2d6d42a8137061a3b/boost-log.patch"
+      sha256 "a49fd7461d9f3b478d2bddac19adca93fe0fabab71ee67e8f140cbd7d42d6870"
+    end
   end
 
   fails_with :llvm do
