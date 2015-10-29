@@ -1045,7 +1045,7 @@ class Checks
       unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
         <<-EOS.undent_________________________________________________________72
       You have uncommitted modifications to Homebrew
-      If this a surprise to you, then you should stash these modifications.
+      If this is a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
           cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f
