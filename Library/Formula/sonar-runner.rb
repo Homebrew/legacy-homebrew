@@ -3,8 +3,9 @@ class SonarRunner < Formula
   homepage "http://docs.sonarqube.org/display/SONAR/Installing+and+Configuring+SonarQube+Runner"
   url "https://repo1.maven.org/maven2/org/codehaus/sonar/runner/sonar-runner-dist/2.4/sonar-runner-dist-2.4.zip"
   sha256 "f794545e23092c8b56d64d58ff571b2599480150b3fc41173b3761d634a16d48"
-
   head "https://github.com/SonarSource/sonar-runner.git"
+
+  bottle :unneeded
 
   def install
     # Remove windows files

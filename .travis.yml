@@ -31,9 +31,8 @@ script:
   - brew test-bot
 
 notifications:
+  slack:
+    secure: Y5ZL6OcprSzAYQ3yVpvrhiQn1UQGd7reKNz3o7+7Bcy2k7DMr66xKBadTv1gK1Qrg9LugsmZ4CqOqKBwy7t5smktan/wsUo5y5HX3WUOG1nk0jQ4HOOZNT8bhUZc/Eu7ilH5UMqvIVsjrX9BjEZMeT4TxTIUD8zj5xUwgiAsD5k=
   email:
-    recipients:
-      - brew-test-bot@googlegroups.com
     on_success: never
     on_failure: always
-  slack: mikemcquaid:h0G8MHFwtn0ajrepWuBRUaGV

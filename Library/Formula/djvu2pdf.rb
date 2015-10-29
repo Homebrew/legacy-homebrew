@@ -4,6 +4,8 @@ class Djvu2pdf < Formula
   url "http://0x2a.at/site/projects/djvu2pdf/djvu2pdf-0.9.2.tar.gz"
   sha256 "afe86237bf4412934d828dfb5d20fe9b584d584ef65b012a893ec853c1e84a6c"
 
+  bottle :unneeded
+
   depends_on "djvulibre"
   depends_on "ghostscript"
 

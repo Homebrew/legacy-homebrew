@@ -251,10 +251,9 @@ class BuildError < RuntimeError
       puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
 
-    if MacOS.version >= "10.11"
-      require "cmd/doctor"
-      opoo Checks.new.check_for_unsupported_osx
-    end
+    require "cmd/doctor"
+    unsupported_osx = Checks.new.check_for_unsupported_osx
+    opoo unsupported_osx if unsupported_osx
   end
 end
 

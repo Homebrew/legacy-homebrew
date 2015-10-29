@@ -1,14 +1,14 @@
 class Autocode < Formula
   desc "Code automation for every language, library and framework"
-  homepage "https://crystal.sh/autocode"
-  url "https://github.com/crystal/autocode/archive/v0.20.3.tar.gz"
-  sha256 "f82f0fa7a2573d5f939a4821769756719ff98a98b0f1903001ee1e3981b30a23"
+  homepage "https://autocode.run"
+  url "https://github.com/crystal/autocode/archive/v0.21.2.tar.gz"
+  sha256 "64eccf7cfcfb361919f2eced326e5dd1fc3545dc6d56465e41e878e029130308"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5aac71c4a2e4f3e084568de4757822c5f1aaa733db7b36a0b187151516499bac" => :el_capitan
-    sha256 "686a3de9b0eba6088f4fe2d130e76c75edb4233960db2daa615a8f5b5b99e590" => :yosemite
-    sha256 "e613bae16cfbe747f3e7ae43c4e1d34a9cbe736610641063737adfe788897dab" => :mavericks
+    sha256 "2e6b1f8e8d8253fe64b765f4a013865dc0c1af9078f2a508aef38ed02c568d25" => :el_capitan
+    sha256 "59aa8cb817d505efcd4e5301e07a7cac10bf93bc6a21e212088791d3ab4d7815" => :yosemite
+    sha256 "9f6432067e34a866daee23079f2a5be6f5bbb6f917792f65027feb8d58ea92f0" => :mavericks
   end
 
   depends_on "node"

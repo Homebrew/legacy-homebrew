@@ -5,6 +5,8 @@ class TomeePlume < Formula
   version "1.7.2"
   sha256 "7e6c67a19c6f0cc352e6a107fdf7ee1908eda6e4bfbdcc6d43dcf984de360508"
 
+  bottle :unneeded
+
   def install
     # Remove Windows scripts
     rm_rf Dir["bin/*.bat"]

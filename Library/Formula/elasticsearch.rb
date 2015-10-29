@@ -4,6 +4,8 @@ class Elasticsearch < Formula
   url "https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.3.tar.gz"
   sha256 "af517611493374cfb2daa8897ae17e63e2efea4d0377d316baa351c1776a2bca"
 
+  bottle :unneeded
+
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
     depends_on "maven" => :build

@@ -6,6 +6,8 @@ class Clojurescript < Formula
   sha256 "67e33f4e68459d4772f912a658230df5b3d78996d072b34bb9080c337da7bcbb"
   head "https://github.com/clojure/clojurescript.git"
 
+  bottle :unneeded
+
   def install
     libexec.install "cljs.jar"
     bin.write_jar_script libexec/"cljs.jar", "cljsc"

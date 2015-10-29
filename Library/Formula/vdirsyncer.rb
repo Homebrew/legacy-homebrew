@@ -1,15 +1,15 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.6.0.tar.gz"
-  sha256 "0d2a9677b086cfbe5fe5e7cb5e55db4c1afab62cb5dc56aeaff6e95d34bf60d5"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.0.tar.gz"
+  sha256 "ddf9e20b085f97c7bae97ed4cd5e8a78f472ee0b1cae3be537809ae98589172a"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5a075cb9ad8523b8a8689929f241c885f12d0ef7026431d0c37cb7e8eefa5bba" => :el_capitan
-    sha256 "a66186aecfba8ca661cd42c6759f01380ca79319537da47ec30346e0b6f17ccf" => :yosemite
-    sha256 "9aa878ddfc411b84f951a1bff222bd4499264b5cf80c1edb261e126a48350b9d" => :mavericks
+    sha256 "79670a5825750bb39ac697f4be3af12b562c2312ca3e09355a8b3847f53bf384" => :el_capitan
+    sha256 "3db1814d421893cba4d45b295da7273285d0d698e6017e7e665331d026ada34c" => :yosemite
+    sha256 "03eed71a1cbb9604b99e8d450a1b167984bf89468093c2b0b00b1cc871dd1883" => :mavericks
   end
 
   option "without-keyring", "Build without python-keyring support"
@@ -24,6 +24,16 @@ class Vdirsyncer < Formula
   resource "click" do
     url "https://pypi.python.org/packages/source/c/click/click-5.1.tar.gz"
     sha256 "678c98275431fad324275dec63791e4a17558b40e5a110e20a82866139a85a5a"
+  end
+
+  resource "click_threading" do
+    url "https://pypi.python.org/packages/source/c/click-threading/click-threading-0.1.2.tar.gz"
+    sha256 "85045457e02f16fba3110dc6b16e980bf3e65433808da2b550dd513206d9b94a"
+  end
+
+  resource "click_log" do
+    url "https://pypi.python.org/packages/source/c/click-log/click-log-0.1.1.tar.gz"
+    sha256 "0bc7e69311007adc4b5304d47933761999a43a18a87b9b7f2aa12b5e256f72fc"
   end
 
   resource "requests" do
@@ -49,7 +59,7 @@ class Vdirsyncer < Formula
   def install
     version = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{version}/site-packages"
-    rs = %w[click requests lxml requests-toolbelt atomicwrites]
+    rs = %w[click click_threading click_log requests lxml requests-toolbelt atomicwrites]
     rs << "keyring" if build.with? "keyring"
     rs.each do |r|
       resource(r).stage do

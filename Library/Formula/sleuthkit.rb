@@ -12,6 +12,7 @@ class Sleuthkit < Formula
       sha256 "f9419d6665a89df5625487dd50c16c12d1680477797917f8ec9182db55df4f7f"
     end
   end
+
   bottle do
     cellar :any
     sha256 "25eed50da3aee6f63efa5adaf5d8915fe5ca33301fd415d47ed73ddbe6ab398a" => :yosemite
@@ -40,6 +41,7 @@ class Sleuthkit < Formula
     :because => "both install a 'ffind' executable."
 
   def install
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home"
     system "./bootstrap" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"

@@ -4,6 +4,8 @@ class Logstash < Formula
   url "https://download.elastic.co/logstash/logstash/logstash-1.5.4.tar.gz"
   sha256 "f03075ee534ce6e7667679447f56543ce05cebbdb7b65a9396a5e538bf3e9fa8"
 
+  bottle :unneeded
+
   depends_on :java => "1.7+"
 
   def install

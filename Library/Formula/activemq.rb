@@ -4,6 +4,8 @@ class Activemq < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=/activemq/5.11.2/apache-activemq-5.11.2-bin.tar.gz"
   sha256 "db475dffe3004a619f437347258ff07a60bce60c38dc05edca8d03ede5a64418"
 
+  bottle :unneeded
+
   depends_on :java => "1.6+"
 
   def install

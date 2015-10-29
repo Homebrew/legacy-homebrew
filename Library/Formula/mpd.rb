@@ -1,19 +1,23 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "http://www.musicpd.org/"
-  revision 1
 
   stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.10.tar.xz"
-    sha256 "c386eb3d22f98dc993b5ae3c272f969aa7763713483c6800040ebf1791b15851"
+    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.11.tar.xz"
+    sha256 "7a5c66aa5af97a5b7af3dc49e3d2594071dafd62a14e2e9f7c9a5a86342836c6"
+
+    # Fixes build because of missing patch on 0.19 branch
+    patch :p1 do
+      url "http://git.musicpd.org/cgit/master/mpd.git/patch/?id=eae9cb4afe0e311a65dc566a0655a54656c8d807"
+      sha256 "0f60cfe354e1f81904cbdc469d49c65508d1f9c219f3d20332fbabdb17a17318"
+    end
   end
 
   bottle do
     cellar :any
-    sha256 "a09a3244adb04b5b1c9b0ed147df1af65a67ca0e1b3a902de1f6fa71b8c6bfa7" => :el_capitan
-    sha256 "a6615df5ecee11a47d2e89492ba1d0eceb51bc832947fa819bab7b047ce09769" => :yosemite
-    sha256 "e42806034935a83e74af7be956dd1bb2c01dacad3243713f0af806a16ac4068f" => :mavericks
-    sha256 "6b2bd4efd0e48f603327446c40229fc67fc697b0011859cdefb3cb0fa3ef8059" => :mountain_lion
+    sha256 "5b2a900c9f20da37df7a73799282edb00d2e956f22033f178ca566c41f651028" => :el_capitan
+    sha256 "1f193a8fee458079c112e88e24772cd59689cc0aef483703daad80df3218bff6" => :yosemite
+    sha256 "f0e478b9cf8f18943af84d3d521c1ba7c126ad68dec22225528d63e00e9ef320" => :mavericks
   end
 
   head do

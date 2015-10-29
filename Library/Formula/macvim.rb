@@ -50,6 +50,11 @@ class Macvim < Formula
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
 
+    # Building under Xcode 7.1 on Yosemite produces an app that is El
+    # Capitan-only. See https://github.com/macvim-dev/macvim/issues/98.  Remove
+    # this when upstream settles on a fix.
+    ENV["MACOSX_DEPLOYMENT_TARGET"] = "10.10" if MacOS.version == :yosemite
+
     args = %W[
       --with-features=huge
       --enable-multibyte

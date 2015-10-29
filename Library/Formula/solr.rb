@@ -5,6 +5,8 @@ class Solr < Formula
   mirror "https://archive.apache.org/dist/lucene/solr/5.3.1/solr-5.3.1.tgz"
   sha256 "34ddcac071226acd6974a392af7671f687990aa1f9eb4b181d533ca6dca6f42d"
 
+  bottle :unneeded
+
   depends_on :java
 
   skip_clean "example/logs"

@@ -5,6 +5,8 @@ class Hornetq < Formula
   version "2.4.0"
   sha256 "a774083f6b56b368624eafd85002f7b9d15472690daf6dc6ca04c7561e66b013"
 
+  bottle :unneeded
+
   def wrapper_script(target)
     <<-EOS.undent
       #!/bin/bash

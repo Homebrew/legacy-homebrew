@@ -4,9 +4,7 @@ Part of the OS X 10.11/El Capitan changes is something called [System Integrity 
 
 SIP prevents you from writing to many system directories such as `/usr`, `/System` & `/bin`, regardless of whether or not you are root. The Apple keynote is [here](https://developer.apple.com/videos/wwdc/2015/?id=706) if you'd like to learn more.
 
-One of the implications of SIP is that you cannot simply create `/usr/local` if it is removed or doesn't exist for another reason. However, as noted in the keynote, Apple is leaving `/usr/local` open for developers to use, so Homebrew can still be used as expected.
-
-Apple documentation *hints* that `/usr/local` will be returned to `root:wheel restricted` permissions on [every OS X update](https://developer.apple.com/library/mac/releasenotes/General/rn-osx-10.11/index.html). There is a `brew doctor` check in place to advise if permissions have slipped for whatever reason.
+One of the implications of SIP is that you cannot simply create `/usr/local` if you have removed it. However, as noted in the keynote, Apple is leaving `/usr/local` open for developers to use, so Homebrew can still be used as expected.
 
 **If you haven't installed Homebrew in `/usr/local` or another system-protected directory, this document does not apply to you.**
 

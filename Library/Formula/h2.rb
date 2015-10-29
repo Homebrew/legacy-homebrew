@@ -5,6 +5,8 @@ class H2 < Formula
   version "1.4.190"
   sha256 "7881f308debe6d587219db3610b699af21d5e4b50ccb6fccac563382772a09c8"
 
+  bottle :unneeded
+
   def script; <<-EOS.undent
     #!/bin/sh
     cd #{libexec} && bin/h2.sh "$@"

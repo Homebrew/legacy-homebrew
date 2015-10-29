@@ -7,6 +7,8 @@ class AndroidPlatformTools < Formula
   version "23.0.1"
   sha256 "d2439f5de236c3831c048b678653c5955487351be8e196c65923b4eca5c47692"
 
+  bottle :unneeded
+
   conflicts_with "android-sdk",
     :because => "the Android Platform-tools are part of the Android SDK"
 

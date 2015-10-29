@@ -240,7 +240,7 @@ class Checks
   end
 
   def check_for_unsupported_osx
-    if !ARGV.homebrew_developer? && MacOS.version >= "10.12" then <<-EOS.undent
+    if !ARGV.homebrew_developer? && OS::Mac.prerelease? then <<-EOS.undent
     You are using OS X #{MacOS.version}.
     We do not provide support for this pre-release version.
     You may encounter build failures or other breakages.
@@ -259,8 +259,7 @@ class Checks
       end
     end
 
-    # TODO: bump version when new OS is released
-    if MacOS.version >= "10.12"
+    if OS::Mac.prerelease?
       def check_xcode_up_to_date
         if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
           <<-EOS.undent
@@ -1046,7 +1045,7 @@ class Checks
       unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
         <<-EOS.undent_________________________________________________________72
       You have uncommitted modifications to Homebrew
-      If this a surprise to you, then you should stash these modifications.
+      If this is a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
           cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f

@@ -6,6 +6,8 @@ class Repo < Formula
       :revision => "745b4ad660f8050045b521c4e15b7d3ac0b3d70e"
   version "1.22"
 
+  bottle :unneeded
+
   def install
     bin.install "repo"
   end
