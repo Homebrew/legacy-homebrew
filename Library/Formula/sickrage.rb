@@ -7,9 +7,9 @@ class Sickrage < Formula
 
   bottle do
     cellar :any
-    sha256 "2c6ce172da9c55c3f7baf1b93581c4ead89713346e21a437038dbe1ad35dc1ac" => :el_capitan
-    sha256 "81ef3934e67213f5836beb673da263bd278a22d66750cabe1157bc5b8f49ddf1" => :yosemite
-    sha256 "8d41c66dfcc471a110857c8a33578df9416e12ba93d7f42b519d7df4043af769" => :mavericks
+    sha256 "94f6add1a3f4517b36f2f3861847922851cbb7657c89275d6aea53ab95fa0b70" => :el_capitan
+    sha256 "0cb4b2f6e2d290a125737ba670267da20f3851a21677a39895038f18e14df051" => :yosemite
+    sha256 "f3463916bf2cac143dbff400394f347f960d552cfbba36d5731677539245b71d" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
