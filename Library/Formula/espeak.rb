@@ -5,6 +5,7 @@ class Espeak < Formula
   sha256 "bf9a17673adffcc28ff7ea18764f06136547e97bbd9edf2ec612f09b207f0659"
 
   bottle do
+    sha256 "f174e6d33f96be4924ecb4b33c764cffdbc2444ea87a626f150dd80a3d2f6765" => :el_capitan
     sha1 "1b9b6c5acb2b98aa068f4b54b91ac463c07081d1" => :mavericks
     sha1 "83f5b1428558b5de444b44f53aa1f8b52dab9460" => :mountain_lion
     sha1 "a86e2086deea0f1bee08eef53ef739bd633ce2c9" => :lion

@@ -1,15 +1,15 @@
 class Progress < Formula
-  desc "Coreutils Viewer: Show progress for coreutils"
+  desc "Progress: Coreutils Progress Viewer"
   homepage "https://github.com/Xfennec/progress"
-  url "https://github.com/Xfennec/progress/archive/v0.8.tar.gz"
-  sha256 "52ad6d805eb9826de297ba495cfde3df1deb6288f97ff67e7f93431efa006d34"
+  url "https://github.com/Xfennec/progress/archive/v0.9.tar.gz"
+  sha256 "63e1834ec114ccc1de3d11722131b5975e475bfd72711d457e21ddd7fd16b6bd"
   head "https://github.com/Xfennec/progress.git"
 
   bottle do
-    cellar :any
-    sha256 "6efdb41f6ff0b3e50ba4804ffd1fdb686bdbda67eea25bec556c78f7fb3c1641" => :yosemite
-    sha256 "b1075fc37c520c1167582ab54d8f7d3a688b19ca34695d07caff731dd9129884" => :mavericks
-    sha256 "f26dc6c88b6417492e8d4dfeccf4559452cd409f7a25d047084a61e888c07e59" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "966124c6d66ed029895b1f2f3a9548e9d100287676cc31630e7179eec0009728" => :el_capitan
+    sha256 "003f1a3ba9356bfd68149d9ae6f57e4e81bb0d7def7dc9d4419338275f2e6af1" => :yosemite
+    sha256 "9bb9bb6343e1d886f98e9ab94f2dc9391c800151bae49b27f87397319c69d730" => :mavericks
   end
 
   def install

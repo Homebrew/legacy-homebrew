@@ -1,9 +1,9 @@
 class Mplayer < Formula
   desc "UNIX movie player"
-  homepage "http://www.mplayerhq.hu/"
+  homepage "https://www.mplayerhq.hu/"
 
   stable do
-    url "http://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz"
+    url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz"
     sha256 "ce8fc7c3179e6a57eb3a58cb7d1604388756b8a61764cc93e095e7aff3798c76"
 
     # Fix compilation on 10.9, adapted from upstream revision r36500
@@ -15,6 +15,7 @@ class Mplayer < Formula
 
   bottle do
     revision 1
+    sha256 "d9abd74426d0b6ecb52c81a1df427f4e758b534cc511c81d18f8e92c5bb0ae3e" => :el_capitan
     sha1 "2c9bfd124fdd729bc8addd2ddfd45ed718c80e20" => :mavericks
     sha1 "ba213d5c1aadad6869cbb57f17f56971af8acffd" => :mountain_lion
     sha1 "7efc5960bc15c904a2893f23190d783b3d57d27a" => :lion

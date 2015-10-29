@@ -1,31 +1,26 @@
 class Cairomm < Formula
   desc "Vector graphics library with cross-device output support"
   homepage "http://cairographics.org/cairomm/"
-  url "http://cairographics.org/releases/cairomm-1.11.2.tar.gz"
-  sha256 "ccf677098c1e08e189add0bd146f78498109f202575491a82f1815b6bc28008d"
-  revision 1
+  url "https://download.gnome.org/sources/cairomm/1.12/cairomm-1.12.0.tar.xz"
+  sha256 "a54ada8394a86182525c0762e6f50db6b9212a2109280d13ec6a0b29bfd1afe6"
 
   bottle do
-    revision 1
-    sha256 "8e3d574df6640965c1801f0d70950b1f1b41031bddf82ccb109dcc11276bc78f" => :yosemite
-    sha256 "27339feb44c56a23899bbadea5c085a99129ce6541b0d956909ccba9839fd841" => :mavericks
-    sha256 "f38db939a7ff7b69742caef42ecbe5210dc4063c84dc11048430fc06f1bf186e" => :mountain_lion
+    cellar :any
+    sha256 "b05ec638711634ad01ab1aec44eb9397e7a67278eaa5fefd16403b240a5261b0" => :el_capitan
+    sha256 "98648d8f66c07f55192908271f80233a78dfe65af96c6d8f06af209e30b3d980" => :yosemite
+    sha256 "960d0180b4e5137d56d8d2051e21fdcbcf23ebd18ff94fa03f0d39a20853b70d" => :mavericks
   end
 
-  option :cxx11
+  needs :cxx11
 
   depends_on "pkg-config" => :build
-  if build.cxx11?
-    depends_on "libsigc++" => "c++11"
-  else
-    depends_on "libsigc++"
-  end
+  depends_on "libsigc++"
 
   depends_on "libpng"
   depends_on "cairo"
 
   def install
-    ENV.cxx11 if build.cxx11?
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
@@ -71,7 +66,7 @@ class Cairomm < Formula
       -lcairomm-1.0
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

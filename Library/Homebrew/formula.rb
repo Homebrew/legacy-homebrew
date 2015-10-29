@@ -182,17 +182,17 @@ class Formula
 
   def validate_attributes!
     if name.nil? || name.empty? || name =~ /\s/
-      raise FormulaValidationError.new(:name, name)
+      raise FormulaValidationError.new(full_name, :name, name)
     end
 
     url = active_spec.url
     if url.nil? || url.empty? || url =~ /\s/
-      raise FormulaValidationError.new(:url, url)
+      raise FormulaValidationError.new(full_name, :url, url)
     end
 
     val = version.respond_to?(:to_str) ? version.to_str : version
     if val.nil? || val.empty? || val =~ /\s/
-      raise FormulaValidationError.new(:version, val)
+      raise FormulaValidationError.new(full_name, :version, val)
     end
   end
 
@@ -214,6 +214,21 @@ class Formula
   # @private
   def head?
     active_spec == head
+  end
+
+  # @private
+  def bottle_unneeded?
+    active_spec.bottle_unneeded?
+  end
+
+  # @private
+  def bottle_disabled?
+    active_spec.bottle_disabled?
+  end
+
+  # @private
+  def bottle_disable_reason
+    active_spec.bottle_disable_reason
   end
 
   # @private
@@ -273,10 +288,22 @@ class Formula
       end
     elsif tap?
       user, repo = tap.split("/")
-      formula_renames = Tap.new(user, repo.sub("homebrew-", "")).formula_renames
+      formula_renames = Tap.fetch(user, repo.sub("homebrew-", "")).formula_renames
       if formula_renames.value?(name)
         formula_renames.to_a.rassoc(name).first
       end
+    end
+  end
+
+  # All of aliases for the formula
+  def aliases
+    @aliases ||= if core_formula?
+      Formula.core_alias_reverse_table[name] || []
+    elsif tap?
+      user, repo = tap.split("/")
+      Tap.fetch(user, repo.sub("homebrew-", "")).alias_reverse_table[full_name] || []
+    else
+      []
     end
   end
 
@@ -805,13 +832,24 @@ class Formula
   def link_overwrite?(path)
     # Don't overwrite files not created by Homebrew.
     return false unless path.stat.uid == File.stat(HOMEBREW_BREW_FILE).uid
-    # Don't overwrite files belong to other keg.
+    # Don't overwrite files belong to other keg except when that
+    # keg's formula is deleted.
     begin
-      Keg.for(path)
+      keg = Keg.for(path)
     rescue NotAKegError, Errno::ENOENT
       # file doesn't belong to any keg.
     else
-      return false
+      tap = Tab.for_keg(keg).tap
+      return false if tap.nil? # this keg doesn't below to any core/tap formula, most likely coming from a DIY install.
+      begin
+        Formulary.factory(keg.name)
+      rescue FormulaUnavailableError
+        # formula for this keg is deleted, so defer to whitelist
+      rescue TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
+        return false # this keg belongs to another formula
+      else
+        return false # this keg belongs to another formula
+      end
     end
     to_check = path.relative_path_from(HOMEBREW_PREFIX).to_s
     self.class.link_overwrite_paths.any? do |p|
@@ -1006,15 +1044,21 @@ class Formula
     @installed ||= racks.map do |rack|
       begin
         Formulary.from_rack(rack)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
       end
     end.compact
+  end
+
+  # an array of all alias files of core {Formula}
+  # @private
+  def self.core_alias_files
+    @core_alias_files ||= Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*")
   end
 
   # an array of all core aliases
   # @private
   def self.core_aliases
-    @core_aliases ||= Dir["#{HOMEBREW_LIBRARY}/Aliases/*"].map { |f| File.basename f }.sort
+    @core_aliases ||= core_alias_files.map { |f| f.basename.to_s }.sort
   end
 
   # an array of all tap aliases
@@ -1033,6 +1077,29 @@ class Formula
   # @private
   def self.alias_full_names
     @alias_full_names ||= core_aliases + tap_aliases
+  end
+
+  # a table mapping core alias to formula name
+  # @private
+  def self.core_alias_table
+    return @core_alias_table if @core_alias_table
+    @core_alias_table = Hash.new
+    core_alias_files.each do |alias_file|
+      @core_alias_table[alias_file.basename.to_s] = alias_file.resolved_path.basename(".rb").to_s
+    end
+    @core_alias_table
+  end
+
+  # a table mapping core formula name to aliases
+  # @private
+  def self.core_alias_reverse_table
+    return @core_alias_reverse_table if @core_alias_reverse_table
+    @core_alias_reverse_table = Hash.new
+    core_alias_table.each do |alias_name, formula_name|
+      @core_alias_reverse_table[formula_name] ||= []
+      @core_alias_reverse_table[formula_name] << alias_name
+    end
+    @core_alias_reverse_table
   end
 
   def self.[](name)
@@ -1098,6 +1165,7 @@ class Formula
       "desc" => desc,
       "homepage" => homepage,
       "oldname" => oldname,
+      "aliases" => aliases,
       "versions" => {
         "stable" => (stable.version.to_s if stable),
         "bottle" => bottle ? true : false,
@@ -1255,6 +1323,8 @@ class Formula
   # system "make", "install"</pre>
   def system(cmd, *args)
     verbose = ARGV.verbose?
+    verbose_using_dots = !ENV["HOMEBREW_VERBOSE_USING_DOTS"].nil?
+
     # remove "boring" arguments so that the important ones are more likely to
     # be shown considering that we trim long ohai lines to the terminal width
     pretty_args = args.dup
@@ -1288,9 +1358,23 @@ class Formula
           end
           wr.close
 
-          while buf = rd.gets
-            log.puts buf
-            puts buf
+          if verbose_using_dots
+            last_dot = Time.at(0)
+            while buf = rd.gets
+              log.puts buf
+              # make sure dots printed with interval of at least 1 min.
+              if (Time.now - last_dot) > 60
+                print "."
+                $stdout.flush
+                last_dot = Time.now
+              end
+            end
+            puts
+          else
+            while buf = rd.gets
+              log.puts buf
+              puts buf
+            end
           end
         ensure
           rd.close
@@ -1304,8 +1388,14 @@ class Formula
       $stdout.flush
 
       unless $?.success?
+        log_lines = ENV["HOMEBREW_FAIL_LOG_LINES"]
+        log_lines ||= "15"
+
         log.flush
-        Kernel.system "/usr/bin/tail", "-n", "5", logfn unless verbose
+        if !verbose || verbose_using_dots
+          puts "Last #{log_lines} lines from #{logfn}:"
+          Kernel.system "/usr/bin/tail", "-n", log_lines, logfn
+        end
         log.puts
 
         require "cmd/config"
@@ -1502,23 +1592,37 @@ class Formula
     # @!attribute [w] bottle
     # Adds a {.bottle} {SoftwareSpec}.
     # This provides a pre-built binary package built by the Homebrew maintainers for you.
-    # It will be installed automatically if there is a binary package for your platform and you haven't passed or previously used any options on this formula.
+    # It will be installed automatically if there is a binary package for your platform
+    # and you haven't passed or previously used any options on this formula.
+    #
     # If you maintain your own repository, you can add your own bottle links.
     # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Bottles.md
     # You can ignore this block entirely if submitting to Homebrew/Homebrew, It'll be
     # handled for you by the Brew Test Bot.
     #
     # <pre>bottle do
-    #   root_url "http://mikemcquaid.com" # Optional root to calculate bottle URLs
+    #   root_url "https://example.com" # Optional root to calculate bottle URLs
     #   prefix "/opt/homebrew" # Optional HOMEBREW_PREFIX in which the bottles were built.
     #   cellar "/opt/homebrew/Cellar" # Optional HOMEBREW_CELLAR in which the bottles were built.
     #   revision 1 # Making the old bottle outdated without bumping the version/revision of the formula.
-    #   sha256 "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865" => :yosemite
-    #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :mavericks
-    #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mountain_lion
+    #   sha256 "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865" => :el_capitan
+    #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :yosemite
+    #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mavericks
     # end</pre>
-    def bottle(*, &block)
-      stable.bottle(&block)
+    #
+    # Only formulae where the upstream URL breaks or moves frequently, require compile
+    # or have a reasonable amount of patches/resources should be bottled.
+    # Formulae which do not meet the above requirements should not be bottled.
+    #
+    # Formulae which should not be bottled & can be installed without any compile
+    # required should be tagged with:
+    # <pre>bottle :unneeded</pre>
+    #
+    # Otherwise formulae which do not meet the above requirements and should not
+    # be bottled should be tagged with:
+    # <pre>bottle :disable, "reasons"</pre>
+    def bottle(*args, &block)
+      stable.bottle(*args, &block)
     end
 
     # @private

@@ -5,15 +5,21 @@ class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
 
   stable do
-    url "https://github.com/wellington/wellington/archive/v0.9.2.tar.gz"
-    sha256 "9b2fe9794ee5ed73f5be42f98edd1c1415c6af1e2e7215073fe3b9e386546993"
+    url "https://github.com/wellington/wellington/archive/v0.9.3.tar.gz"
+    sha256 "108e5626dad9494a1de7d6241a2f96c6fa5bd774133a00c301d42abd1089f3e2"
   end
 
   bottle do
-    cellar :any
-    sha256 "4cf9b38e9ddea53da0c84671e3ae112c352bd479eb0f1f515eb8bfb60731c6f7" => :yosemite
-    sha256 "fe60502273e949f22da018ef229a0e06d1c1172ca340ffcfa2bafd870c6b1bda" => :mavericks
-    sha256 "93a0a03f57da81fc3eed96bd15841cd81af54b215faf6347c890933097a67384" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "1d2aed7822f39cd64bc6dc789f78b6f23e85fff0eedefc0b5950e41a5d567db6" => :el_capitan
+    sha256 "9d3f392f5df514a09ee92652974b91d14f94f2e83aec0536a4abff61f4a3aa97" => :yosemite
+    sha256 "44a40c37b072ddaed80efa4bcd4752ce85d8d73c70fdb8bb674997172d74cbf3" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/wellington/wellington/archive/v1.0.0-beta1.tar.gz"
+    sha256 "6ea2a260ba7146a6bd87f42ab22082dfd84eb5aa52adae0629cbe71395cf56de"
+    version "1.0.0-beta1"
   end
 
   needs :cxx11
@@ -71,7 +77,7 @@ class Wellington < Formula
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
 
-    system "go", "build", "-ldflags", "-X main.version #{version}", "-o", "dist/wt", "wt/main.go"
+    system "go", "build", "-ldflags", "-X github.com/wellington/wellington/version.Version #{version}", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
   end
 

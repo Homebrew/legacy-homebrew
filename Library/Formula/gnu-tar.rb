@@ -9,6 +9,7 @@ class GnuTar < Formula
 
   bottle do
     revision 2
+    sha256 "ec164a19cec89dd5fcec0fd1cc25f78d33b73bdf6d149bae586fa398d89fa2e9" => :el_capitan
     sha1 "bc61f3210e6f8adaade8abe7e8bed4542ead62e2" => :yosemite
     sha1 "01e82dddbbadb8a40af90f1f844cce3684a19399" => :mavericks
     sha1 "63268147e47588ccbb33be80e3484611bfacc2f4" => :mountain_lion

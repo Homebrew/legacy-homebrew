@@ -29,9 +29,9 @@ class FormulaInstaller
   end
 
   attr_reader :formula
-  attr_accessor :options
+  attr_accessor :options, :build_bottle
   mode_attr_accessor :show_summary_heading, :show_header
-  mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
+  mode_attr_accessor :build_from_source, :force_bottle
   mode_attr_accessor :ignore_deps, :only_deps, :interactive, :git
   mode_attr_accessor :verbose, :debug, :quieter
 
@@ -56,6 +56,10 @@ class FormulaInstaller
     @pour_failed   = false
   end
 
+  def skip_deps_check?
+    ignore_deps?
+  end
+
   # When no build tools are available and build flags are passed through ARGV,
   # it's necessary to interrupt the user before any sort of installation
   # can proceed. Only invoked when the user has no developer tools.
@@ -63,6 +67,10 @@ class FormulaInstaller
     build_flags = ARGV.collect_build_flags
 
     raise BuildFlagsError.new(build_flags) unless build_flags.empty?
+  end
+
+  def build_bottle?
+    !!@build_bottle && !formula.bottle_disabled?
   end
 
   def pour_bottle?(install_bottle_options = { :warn=>false })
@@ -74,6 +82,7 @@ class FormulaInstaller
     return true  if force_bottle? && bottle
     return false if build_from_source? || build_bottle? || interactive?
     return false unless options.empty?
+    return false if formula.bottle_disabled?
     return true  if formula.local_bottle_path
     return false unless bottle && formula.pour_bottle?
 
@@ -97,7 +106,7 @@ class FormulaInstaller
   end
 
   def prelude
-    verify_deps_exist unless ignore_deps?
+    verify_deps_exist unless skip_deps_check?
     lock
     check_install_sanity
   end
@@ -120,7 +129,7 @@ class FormulaInstaller
   def check_install_sanity
     raise FormulaInstallationAlreadyAttemptedError, formula if @@attempted.include?(formula)
 
-    unless ignore_deps?
+    unless skip_deps_check?
       unlinked_deps = formula.recursive_dependencies.map(&:to_formula).select do |dep|
         dep.installed? && !dep.keg_only? && !dep.linked_keg.directory?
       end
@@ -155,11 +164,11 @@ class FormulaInstaller
 
     check_conflicts
 
-    if !pour_bottle? && !MacOS.has_apple_developer_tools?
+    if !pour_bottle? && !formula.bottle_unneeded? && !MacOS.has_apple_developer_tools?
       raise BuildToolsError.new([formula])
     end
 
-    unless ignore_deps?
+    unless skip_deps_check?
       deps = compute_dependencies
       check_dependencies_bottled(deps) if pour_bottle? && !MacOS.has_apple_developer_tools?
       install_dependencies(deps)
@@ -185,11 +194,17 @@ class FormulaInstaller
       begin
         install_relocation_tools unless formula.bottle_specification.skip_relocation?
         pour
-      rescue => e
+      rescue Exception => e
+        # any exceptions must leave us with nothing installed
+        ignore_interrupts do
+          formula.prefix.rmtree if formula.prefix.directory?
+          formula.rack.rmdir_if_possible
+        end
         raise if ARGV.homebrew_developer?
         @pour_failed = true
         onoe e.message
         opoo "Bottle installation failed: building from source."
+        raise BuildToolsError.new([formula]) unless MacOS.has_apple_developer_tools?
       else
         @poured_bottle = true
       end
@@ -241,7 +256,10 @@ class FormulaInstaller
   # abnormally with a BuildToolsError if one or more don't.
   # Only invoked when the user has no developer tools.
   def check_dependencies_bottled(deps)
-    unbottled = deps.reject { |dep, _| dep.to_formula.pour_bottle? }
+    unbottled = deps.reject do |dep, _|
+      dep_f = dep.to_formula
+      dep_f.pour_bottle? || dep_f.bottle_unneeded?
+    end
 
     raise BuildToolsError.new(unbottled) unless unbottled.empty?
   end
@@ -296,6 +314,9 @@ class FormulaInstaller
         end
       end
     end
+
+    # Merge the repeated dependencies, which may have different tags.
+    deps = Dependency.merge_repeats(deps)
 
     [unsatisfied_reqs, deps]
   end
@@ -363,15 +384,8 @@ class FormulaInstaller
   end
 
   class DependencyInstaller < FormulaInstaller
-    def initialize(*)
-      super
-      @ignore_deps = true
-    end
-
-    def sanitized_ARGV_options
-      args = super
-      args.delete "--ignore-dependencies"
-      args
+    def skip_deps_check?
+      true
     end
   end
 

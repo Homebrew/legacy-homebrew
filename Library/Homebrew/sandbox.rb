@@ -152,6 +152,10 @@ class Sandbox
           (regex #"^/dev/ttys?[0-9]*$")
           )
       (deny file-write*) ; deny non-whitelist file write operations
+      (allow process-exec
+          (literal "/bin/ps")
+          (with no-sandbox)
+          ) ; allow certain processes running without sandbox
       (allow default) ; allow everything else
     EOS
 

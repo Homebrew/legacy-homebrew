@@ -1,13 +1,10 @@
 require "pathname"
-require "mach"
 require "resource"
 require "metafiles"
 
 # Homebrew extends Ruby's `Pathname` to make our code more readable.
 # @see http://ruby-doc.org/stdlib-1.8.7/libdoc/pathname/rdoc/Pathname.html  Ruby's Pathname API
 class Pathname
-  include MachO
-
   # @private
   BOTTLE_EXTNAME_RX = /(\.[a-z0-9_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
@@ -473,6 +470,7 @@ module ObserverPathnameExtension
 
     def reset_counts!
       @n = @d = 0
+      @put_verbose_trimmed_warning = false
     end
 
     def total
@@ -482,33 +480,50 @@ module ObserverPathnameExtension
     def counts
       [n, d]
     end
+
+    MAXIMUM_VERBOSE_OUTPUT = 100
+
+    def verbose?
+      return ARGV.verbose? unless ENV["TRAVIS"]
+      return false unless ARGV.verbose?
+
+      if total < MAXIMUM_VERBOSE_OUTPUT
+        true
+      else
+        unless @put_verbose_trimmed_warning
+          puts "Only the first #{MAXIMUM_VERBOSE_OUTPUT} operations were output."
+          @put_verbose_trimmed_warning = true
+        end
+        false
+      end
+    end
   end
 
   def unlink
     super
-    puts "rm #{self}" if ARGV.verbose?
+    puts "rm #{self}" if ObserverPathnameExtension.verbose?
     ObserverPathnameExtension.n += 1
   end
 
   def rmdir
     super
-    puts "rmdir #{self}" if ARGV.verbose?
+    puts "rmdir #{self}" if ObserverPathnameExtension.verbose?
     ObserverPathnameExtension.d += 1
   end
 
   def make_relative_symlink(src)
     super
-    puts "ln -s #{src.relative_path_from(dirname)} #{basename}" if ARGV.verbose?
+    puts "ln -s #{src.relative_path_from(dirname)} #{basename}" if ObserverPathnameExtension.verbose?
     ObserverPathnameExtension.n += 1
   end
 
   def install_info
     super
-    puts "info #{self}" if ARGV.verbose?
+    puts "info #{self}" if ObserverPathnameExtension.verbose?
   end
 
   def uninstall_info
     super
-    puts "uninfo #{self}" if ARGV.verbose?
+    puts "uninfo #{self}" if ObserverPathnameExtension.verbose?
   end
 end

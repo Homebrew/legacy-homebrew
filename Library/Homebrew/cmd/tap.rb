@@ -15,7 +15,7 @@ module Homebrew
     else
       user, repo = tap_args
       clone_target = ARGV.named[1]
-      opoo "Already tapped!" unless install_tap(user, repo, clone_target)
+      opoo "#{user}/#{repo} already tapped!" unless install_tap(user, repo, clone_target)
     end
   end
 
@@ -23,7 +23,7 @@ module Homebrew
     # ensure git is installed
     Utils.ensure_git_installed!
 
-    tap = Tap.new user, repo
+    tap = Tap.fetch user, repo
     return false if tap.installed?
     ohai "Tapping #{tap}"
     remote = clone_target || "https://github.com/#{tap.user}/homebrew-#{tap.repo}"

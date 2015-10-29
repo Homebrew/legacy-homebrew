@@ -160,8 +160,9 @@ class Cmd
     when "-undefineddynamic_lookup"
       args << "-Wl,-undefined,dynamic_lookup"
     when /^-isysroot/, /^--sysroot/
-      # We set the sysroot
-      enum.next
+      sdk = enum.next
+      # We set the sysroot for OS X SDKs
+      args << "-isysroot" << sdk unless sdk.downcase.include? "osx"
     when "-dylib"
       args << "-Wl,#{arg}"
     when /^-I(.+)?/

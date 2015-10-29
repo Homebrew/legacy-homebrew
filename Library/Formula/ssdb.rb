@@ -1,29 +1,37 @@
 class Ssdb < Formula
   desc "NoSQL database supporting many data structures: Redis alternative"
   homepage "http://ssdb.io/"
-  url "https://github.com/ideawu/ssdb/archive/1.8.2.tar.gz"
-  sha256 "2fe10689a0e1e9e9ca67acbe9e0fa3607810dca90dcc9f0813b2661cc6d4e826"
+  url "https://github.com/ideawu/ssdb/archive/1.9.2.tar.gz"
+  sha256 "9387ebeaf24f4e3355967ba2459b59be683f75d6423f408ce4cefed2596b4736"
   head "https://github.com/ideawu/ssdb.git"
 
   bottle do
-    cellar :any
-    sha256 "1970e505fd1e8f6166010a892e66a718a39cbab1bcdd515bd6fdd4ec7c185600" => :yosemite
-    sha256 "61430871ab15a312f8a6b0caf68003d379fc8e52199702747b84f86f3887d911" => :mavericks
-    sha256 "16b3c20d79519328e01139ccf8fc71832f90d5df1c55c9ba32ab150a0cddf77e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8155bfa1e0c35747998a505072afec2427e66535844a41053463612ca2fb487a" => :el_capitan
+    sha256 "a933b076c4db3cf375f4a56c4c92e7e56ac608384d24b538563e1ee2707cdc3a" => :yosemite
+    sha256 "d997f3f17d79e1485389eb4f6c86ba6a5dd60f0d690852dfd689d292877bc8f0" => :mavericks
   end
 
   def install
-    inreplace "Makefile", "PREFIX=/usr/local/ssdb", "PREFIX=#{prefix}"
+    inreplace "tools/ssdb-cli", "DIR=`dirname $0`", "DIR=#{prefix}"
 
-    system "make", "prefix=#{prefix} CC=#{ENV.cc} CXX=#{ENV.cxx}"
-    system "make", "install"
+    system "make", "CC=#{ENV.cc}", "CXX=#{ENV.cxx}"
+    system "make", "install", "PREFIX=#{prefix}"
 
-    ["bench", "dump", "ins.sh", "repair", "server"].each do |suffix|
+    inreplace "#{prefix}/ssdb-ins.sh" do |s|
+      # Fix path to ssdb-server.
+      s.gsub! "/usr/local/ssdb", bin
+      # Fix handling of absolute pid path in config.
+      s.gsub! "dir=`dirname $config`\n", ""
+      s.gsub! %r{\$dir/`(.*?) \| sed -n 's/\^\\.\\///p'`}, '`\1`'
+    end
+
+    ["bench", "cli", "dump", "ins.sh", "repair", "server"].each do |suffix|
       bin.install "#{prefix}/ssdb-#{suffix}"
     end
 
-    ["run", "db/ssdb", "log"].each do |dir|
-      (var+dir).mkpath
+    ["run", "db/ssdb", "db/ssdb_slave", "log"].each do |dir|
+      (var/dir).mkpath
     end
 
     inreplace "ssdb.conf" do |s|
@@ -33,7 +41,7 @@ class Ssdb < Formula
     end
 
     inreplace "ssdb_slave.conf" do |s|
-      s.gsub! "work_dir = ./var_slave", "work_dir = #{var}/db/ssdb/"
+      s.gsub! "work_dir = ./var_slave", "work_dir = #{var}/db/ssdb_slave/"
       s.gsub! "pidfile = ./var_slave/ssdb.pid", "pidfile = #{var}/run/ssdb_slave.pid"
       s.gsub! "\toutput: log_slave.txt", "\toutput: #{var}/log/ssdb_slave.log"
     end

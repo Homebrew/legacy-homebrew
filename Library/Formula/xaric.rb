@@ -6,21 +6,23 @@ class Xaric < Formula
   revision 1
 
   bottle do
-    sha256 "9fa48c2e441b64c3ad5a40df0fe6713620d8cda8f8cecbe91af971cdaa4f4954" => :yosemite
-    sha256 "964f0da5518e9da5c1a2b712df4757864e8d4d4be9139ac0fa1b59fd1f38f82c" => :mavericks
-    sha256 "76c6b01fd4c5b9151eeef849755c2c47eb63b02dfa979bdba7d8e75d17e1f500" => :mountain_lion
+    revision 1
+    sha256 "cf732bf5a8c56555687ac99752f06e7ad2cdf5948943c3edaf9d758c0b713d33" => :el_capitan
+    sha256 "bc164f72419c5185fde2a73f75ea48724f0c5ccccf892241001e9df3cae4b86b" => :yosemite
+    sha256 "f999829820363af7324ed2934f1447ef2fb068ec9935be41687e2249d7fca328" => :mavericks
   end
 
   depends_on "openssl"
 
   def install
+    # Re OpenSSL: https://github.com/laeos/xaric/issues/2
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "withval=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 
   test do
-    assert_match(/Xaric #{version}/,
-                 shell_output("script -q /dev/null xaric -v"))
+    assert_match(/Xaric #{version}/, shell_output("script -q /dev/null xaric -v"))
   end
 end

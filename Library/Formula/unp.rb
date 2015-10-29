@@ -3,8 +3,8 @@ class Unp < Formula
   homepage "https://packages.debian.org/source/stable/unp"
   url "https://mirrors.kernel.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz"
   mirror "https://ftp.us.debian.org/debian/pool/main/u/unp/unp_2.0~pre4.tar.gz"
-  sha256 "25ecea61a68408f69618502132bf8edb350355fc8ef72ae5b20456d7850331bf"
   version "2.0-pre4"
+  sha256 "25ecea61a68408f69618502132bf8edb350355fc8ef72ae5b20456d7850331bf"
 
   devel do
     url "https://mirrors.kernel.org/debian/pool/main/u/unp/unp_2.0~pre7+nmu1.tar.bz2"
@@ -12,6 +12,8 @@ class Unp < Formula
     sha256 "7c2d6f2835a5a59ee2588b66d8015d97accd62e71e38ba90ebd4d71d8fd78227"
     version "2.0-pre7-nmu1"
   end
+
+  bottle :unneeded
 
   depends_on "p7zip"
 

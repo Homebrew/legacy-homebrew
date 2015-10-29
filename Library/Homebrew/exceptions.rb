@@ -23,11 +23,12 @@ class NoSuchKegError < RuntimeError
 end
 
 class FormulaValidationError < StandardError
-  attr_reader :attr
+  attr_reader :attr, :formula
 
-  def initialize(attr, value)
+  def initialize(formula, attr, value)
     @attr = attr
-    super "invalid attribute: #{attr} (#{value.inspect})"
+    @formula = formula
+    super "invalid attribute for formula '#{formula}': #{attr} (#{value.inspect})"
   end
 end
 
@@ -46,7 +47,7 @@ class FormulaUnavailableError < RuntimeError
   end
 
   def to_s
-    "No available formula for #{name} #{dependent_s}"
+    "No available formula with the name \"#{name}\" #{dependent_s}"
   end
 end
 
@@ -250,10 +251,9 @@ class BuildError < RuntimeError
       puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
 
-    if MacOS.version >= "10.11"
-      require "cmd/doctor"
-      opoo Checks.new.check_for_unsupported_osx
-    end
+    require "cmd/doctor"
+    unsupported_osx = Checks.new.check_for_unsupported_osx
+    opoo unsupported_osx if unsupported_osx
   end
 end
 

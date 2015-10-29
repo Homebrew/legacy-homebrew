@@ -1,17 +1,17 @@
 class Cryptopp < Formula
   desc "Free C++ class library of cryptographic schemes"
-  homepage "http://www.cryptopp.com/"
+  homepage "https://www.cryptopp.com/"
   url "https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.2/cryptopp562.zip"
-  mirror "http://www.cryptopp.com/cryptopp562.zip"
-  sha256 "5cbfd2fcb4a6b3aab35902e2e0f3b59d9171fee12b3fc2b363e1801dfec53574"
+  mirror "https://www.cryptopp.com/cryptopp562.zip"
   version "5.6.2"
+  sha256 "5cbfd2fcb4a6b3aab35902e2e0f3b59d9171fee12b3fc2b363e1801dfec53574"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "a136d3cf1d63f9b22d5bde0a0bb6df00ff2b39dc265de0382ac1220518aad1e0" => :yosemite
-    sha256 "27fd4366af9bd34c6008d8e7508f3d95f119b8a1f55a33b2c78215933f30bbb4" => :mavericks
-    sha256 "650e6e1ca3b24ed922b67d842ff702bb0574cac20fa054812558787cfcfba9e1" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "cb169ef2c25cf280f9c980694af6e566c947031d9667e8aac08edf11052794cd" => :el_capitan
+    sha256 "319e5e4bb18076bbc367ea240f931c81f037059add9122c1157f3a3a6c9dc442" => :yosemite
+    sha256 "732f74da193f079d6c44200f6592e1b170f4a7a1cdfd3fde3cdd77fa59d59838" => :mavericks
   end
 
   option :cxx11

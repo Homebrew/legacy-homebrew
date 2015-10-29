@@ -7,6 +7,7 @@ class Librsync < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "12560a233362faa837f9ade76bc4e0018b02fe872cb7f7b3b45351c24a09ec10" => :el_capitan
     sha1 "754e34fcd1236debb7152e61204364deaa108855" => :yosemite
     sha1 "3e79aad6623c2332eaa5c650bc9b28e4caf56b9e" => :mavericks
     sha1 "a0a54b67a85e2e626a4eb9e11b9222afe44351a0" => :mountain_lion

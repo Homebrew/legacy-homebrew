@@ -5,7 +5,8 @@ class Cloc < Formula
   sha256 "79edea7ea1f442b1632001e23418193ae4571810e60de8bd25e491036d60eb3d"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "7f595f12194d2f586ceb478638e8c5e3a8286cd602d1edf3e5e4ebceafe5ecc7" => :el_capitan
     sha256 "fd5ed31f8080c52f4db1f997e02173cc20f83adf671adcdac1cb42cc2c0e48fe" => :yosemite
     sha256 "56fc9b2baf7a18d1232640b0b6bdf2c0e63db11a27281504e13ce47684d253b3" => :mavericks
     sha256 "a4c159ceb7f5f67d7925864a8e4f31e2c43fe2dee356afdf931ebc1000ca11a3" => :mountain_lion

@@ -5,11 +5,14 @@ class Fondu < Formula
   sha256 "22bb535d670ebc1766b602d804bebe7e84f907c219734e6a955fcbd414ce5794"
 
   bottle do
-    cellar :any
-    sha256 "509d451aa0ccd0d1c2ee24627d61545bbd40bde5bb86d22d5071f0c773a1b829" => :yosemite
-    sha256 "cd0be5e8461204a313cda11a243451d94f196f14bc7969ddeaa257ca672c0345" => :mavericks
-    sha256 "0f31a728e0e74b6cefb369fa804572a2e6cb00756074183a931fe51e44edfc23" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "c4fadd6744370dc946b7dde1ec8329335146257ad60b829f9f4024912859d7db" => :el_capitan
+    sha256 "dfeddb29a48dcf4db6aaf8170b54137fb329e216a4f83f47ddf262a984ab469e" => :yosemite
+    sha256 "cc8bb3c5213b0b792929fa1658077da60717993f0dbdaa56c0fe6004930309f4" => :mavericks
   end
+
+  conflicts_with "cspice", :because => "both install `tobin` binaries"
 
   resource "cminch.ttf" do
     url "http://mirrors.ctan.org/fonts/cm/ps-type1/bakoma/ttf/cminch.ttf"

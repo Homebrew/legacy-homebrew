@@ -1,13 +1,13 @@
 class Evince < Formula
   desc "GNOME document viewer"
   homepage "https://wiki.gnome.org/Apps/Evince"
-  url "https://download.gnome.org/sources/evince/3.16/evince-3.16.1.tar.xz"
-  sha256 "06ff75065b2a30cd588c402f6bd2ea88ee3166181805e0cc00bd54f71dbf6130"
+  url "https://download.gnome.org/sources/evince/3.18/evince-3.18.1.tar.xz"
+  sha256 "7b5023765e6d6fb98da582fe3adc4f268f87b2f35110634e12cdac40f7aa8c31"
 
   bottle do
-    sha256 "113c827b24af3cb2b4b9c35cb080c6e85a528079a8e2283877aa337a534445ae" => :yosemite
-    sha256 "f4449f5159a41abd5f843bfe3dfd5fe7e5a8e182756fdbd676ef197283ebba2b" => :mavericks
-    sha256 "4e834b66d05b7dff90f814e3a47bfc9273577199ece5ea9414e3f433a7e5316a" => :mountain_lion
+    sha256 "bbae61bbc051edb9de7ea0fbda7cab5ce248624e60b30e5c2096ebe8a0690ed9" => :el_capitan
+    sha256 "894c0ca235f13d23a4cf1caaac18d49ca3b5fff6b9fe4b3e318223380c69cf0e" => :yosemite
+    sha256 "dcdb2c7d01bf0548612a9684605714a063090736a7ed42545429a0b03b23f9b8" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -20,6 +20,7 @@ class Evince < Formula
   depends_on "gnome-icon-theme"
   depends_on "libsecret"
   depends_on "libspectre"
+  depends_on "gobject-introspection"
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
@@ -33,6 +34,7 @@ class Evince < Formula
                           "--prefix=#{prefix}",
                           "--disable-nautilus",
                           "--disable-schemas-compile",
+                          "--enable-introspection",
                           "--disable-browser-plugin"
     ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
     system "make", "install"

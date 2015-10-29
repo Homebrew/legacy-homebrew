@@ -5,21 +5,25 @@ class Libsecret < Formula
   sha256 "f2bf1d0c5ab4640664f3e3c7ef6b086c180e50ff415720b5e22f96750dbf84c9"
 
   bottle do
-    sha256 "dadf181684aa4cde7b1b63aafd4a912b29c0a60b8948e42b2bfe363d156b89ed" => :yosemite
-    sha256 "7d6cfd2b0ec29d4030174053717d1efde4908f2e652892a24886b653b46ed5fc" => :mavericks
-    sha256 "0f84396333914ef681c2b26e0ace27fce72becdf647d15a2175fb63d7c36def6" => :mountain_lion
+    revision 1
+    sha256 "2d2521a8f0e7140e29fab70a32018e0d6232b1d3ed6df780a07afc11038e4591" => :el_capitan
+    sha256 "b10c996994f24dc95865a9d7d603b9ced6831f5db00458657eb411258a160d30" => :yosemite
+    sha256 "5acf286a422831b5fed6f2aef86497f9ff3f8ea048b5635d0c21ce7523e6e0ac" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "gnu-sed" => :build
   depends_on "intltool" => :build
   depends_on "gettext" => :build
+  depends_on "docbook-xsl" => :build
   depends_on "vala" => :optional
   depends_on "gobject-introspection" => :recommended
   depends_on "glib"
   depends_on "libgcrypt"
 
   def install
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
+
     args = %W[
       --disable-debug
       --disable-dependency-tracking
@@ -35,8 +39,6 @@ class Libsecret < Formula
     # https://bugzilla.gnome.org/show_bug.cgi?id=734630
     inreplace "Makefile", "sed", "gsed"
 
-    # https://bugzilla.gnome.org/show_bug.cgi?id=734631
-    inreplace "Makefile", "--nonet", ""
     system "make", "install"
   end
 
@@ -70,7 +72,7 @@ class Libsecret < Formula
     flags = [
       "-I#{include}/libsecret-1",
       "-I#{HOMEBREW_PREFIX}/include/glib-2.0",
-      "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include"
+      "-I#{HOMEBREW_PREFIX}/lib/glib-2.0/include",
     ]
 
     system ENV.cc, "test.c", "-o", "test", *flags

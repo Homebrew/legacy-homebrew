@@ -25,7 +25,8 @@ module Homebrew
     else
       all_deps = deps_for_formulae(ARGV.formulae, !ARGV.one?, &(mode.union? ? :| : :&))
       all_deps = all_deps.select(&:installed?) if mode.installed?
-      all_deps = all_deps.sort_by(&:name) unless mode.topo_order?
+      all_deps = all_deps.map(&:name).uniq
+      all_deps.sort! unless mode.topo_order?
       puts all_deps
     end
   end

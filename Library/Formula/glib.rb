@@ -1,14 +1,13 @@
 class Glib < Formula
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "https://download.gnome.org/sources/glib/2.44/glib-2.44.1.tar.xz"
-  sha256 "8811deacaf8a503d0a9b701777ea079ca6a4277be10e3d730d2112735d5eca07"
+  url "https://download.gnome.org/sources/glib/2.46/glib-2.46.1.tar.xz"
+  sha256 "5a1f03b952ebc3a7e9f612b8724f70898183e31503db329b4f15d07163c8fdfb"
 
   bottle do
-    sha256 "0f3aff4d1d2fa8145ae4acdd52128e3e723049ea85bdc1fca7702a2822ee1e84" => :el_capitan
-    sha256 "b6017260ce6e82abca388e12ab536a7e0675caf17f4a5f3ae7d7876ec1f7b5d9" => :yosemite
-    sha256 "ec584074182b988e2b83fcc23d6143fe463a9bb6ddca6d7f75d40d96a9282a7b" => :mavericks
-    sha256 "fcac604c02b1f562c4a6823b8361f35067a2cc1cdcf2ea0dc772698b5f2a156a" => :mountain_lion
+    sha256 "d9a33e02f6765853ccaa85b1a221773256d61057f0755677b50634270c0c8b30" => :el_capitan
+    sha256 "53ad4b0c5d6e4849202db3aef088da6ef204a43f9db75ca3455624f3eb42c0fc" => :yosemite
+    sha256 "db8695d039e14aa95c86adcb347e08aa4dbbf9823b809278cdc80dcfe7eef4d0" => :mavericks
   end
 
   option :universal
@@ -27,8 +26,7 @@ class Glib < Formula
   end
 
   resource "config.h.ed" do
-    url "https://svn.macports.org/repository/macports/trunk/dports/devel/glib2/files/config.h.ed", :using => :curl
-    mirror "https://trac.macports.org/export/111532/trunk/dports/devel/glib2/files/config.h.ed"
+    url "https://raw.githubusercontent.com/Homebrew/patches/eb51d82/glib/config.h.ed"
     version "111532"
     sha256 "9f1e23a084bc879880e589893c17f01a2f561e20835d6a6f08fcc1dad62388f1"
   end
@@ -37,7 +35,7 @@ class Glib < Formula
   # but needed to fix an assumption about the location of the d-bus machine
   # id file.
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/af332f42fae80c570a77/raw/7b5fd0d2e6554e9b770729fddacaa2d648327644/glib-hardcoded-paths.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/59e4d32/glib/hardcoded-paths.diff"
     sha256 "a4cb96b5861672ec0750cb30ecebe1d417d38052cac12fbb8a77dbf04a886fcb"
   end
 
@@ -45,20 +43,40 @@ class Glib < Formula
   # to unrelated issues in GCC, but improves the situation.
   # Patch submitted upstream: https://bugzilla.gnome.org/show_bug.cgi?id=672777
   patch do
-    url "https://gist.githubusercontent.com/jacknagel/9835034/raw/282d36efc126272f3e73206c9865013f52d67cd8/gio.patch"
-    sha256 "d285c70cfd3434394a1c77c92a8d2bad540c954aad21e8bb83777482c26aab9a"
+    url "https://raw.githubusercontent.com/Homebrew/patches/59e4d32/glib/gio.patch"
+    sha256 "cc3f0f6d561d663dfcdd6154b075150f68a36f5a92f94e5163c1c20529bfdf32"
   end
 
-  patch do
-    url "https://gist.githubusercontent.com/jacknagel/9726139/raw/a351ea240dea33b15e616d384be0550f5051e959/universal.patch"
-    sha256 "7e1ad7667c7d89fcd08950c9c32cd66eb9c8e2ee843f023d1fadf09a9ba39fee"
-  end if build.universal?
+  if build.universal?
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/59e4d32/glib/universal.patch"
+      sha256 "7e1ad7667c7d89fcd08950c9c32cd66eb9c8e2ee843f023d1fadf09a9ba39fee"
+    end
+  end
+
+  # Reverts GNotification support on OS X.
+  # This only supports OS X 10.9, and the reverted commits removed the
+  # ability to build glib on older versions of OS X.
+  # https://bugzilla.gnome.org/show_bug.cgi?id=747146
+  # Reverts upstream commits 36e093a31a9eb12021e7780b9e322c29763ffa58
+  # and 89058e8a9b769ab223bc75739f5455dab18f7a3d, with equivalent changes
+  # also applied to configure and gio/Makefile.in
+  if MacOS.version < :mavericks
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/59e4d32/glib/gnotification-mountain.patch"
+      sha256 "723def732304552ca55ae9f5b568ff3e8a59a14d512af72b6c1f0421f8228a68"
+    end
+  end
 
   def install
     ENV.universal_binary if build.universal?
 
     inreplace %w[gio/gdbusprivate.c gio/xdgmime/xdgmime.c glib/gutils.c],
       "@@HOMEBREW_PREFIX@@", HOMEBREW_PREFIX
+
+    # renaming is necessary for patches to work
+    mv "gio/gcocoanotificationbackend.c", "gio/gcocoanotificationbackend.m" unless MacOS.version < :mavericks
+    mv "gio/gnextstepsettingsbackend.c", "gio/gnextstepsettingsbackend.m"
 
     # Disable dtrace; see https://trac.macports.org/ticket/30413
     args = %W[

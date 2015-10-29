@@ -1,16 +1,11 @@
 class Basex < Formula
   desc "Light-weight XML database and XPath/XQuery processor"
   homepage "http://basex.org"
-  url "http://files.basex.org/releases/8.2.3/BaseX823.zip"
-  version "8.2.3"
-  sha256 "69167fc8bbac97fd140404c1c37572016b23488bec7fc85fa19fdb391f33f3b8"
+  url "http://files.basex.org/releases/8.3/BaseX83.zip"
+  version "8.3"
+  sha256 "0523f6904831687479b63642217933d971b8a9faf7e48ca6ed49fb89e7136a99"
 
-  bottle do
-    cellar :any
-    sha256 "3a60d9d8bfb00f2defe4cdedaa802594d1ec7d64ccc47d50b0a4c7c87e4a3a7c" => :yosemite
-    sha256 "b0148c05d4b7158a74e487d9768b3c40b1482fd316cc638dc8494cb4e98c1a3d" => :mavericks
-    sha256 "ebaa68271b2801062ca47d876a6ef3c81990cdb9cb7289f68d4245c0e752d4b1" => :mountain_lion
-  end
+  bottle :unneeded
 
   def install
     rm Dir["bin/*.bat"]

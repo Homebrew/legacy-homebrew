@@ -5,6 +5,7 @@ class Imlib2 < Formula
   sha256 "35d733ce23ad7d338cff009095d37e656cb8a7a53717d53793a38320f9924701"
 
   bottle do
+    sha256 "475449cfe212bc0b7d567cab499993f2d04dc47c7c70939a49bc6310414ca744" => :el_capitan
     sha256 "4b20ff58bc429b7a553e36b665d0d3d8b918eb9af8cd67fef34ca561a70ff543" => :yosemite
     sha256 "5675decb0b01e4ca1738ad722fcedc7d19c5c736b58e3b28b807ebe3f1e39c34" => :mavericks
     sha256 "edd83e83ed8c0a0b57a330aba23bf3b60ba7bd946e78386e8066276af3e5781a" => :mountain_lion

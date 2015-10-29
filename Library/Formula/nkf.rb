@@ -5,10 +5,11 @@ class Nkf < Formula
   sha256 "8cb430ae69a1ad58b522eb4927b337b5b420bbaeb69df255919019dc64b72fc2"
 
   bottle do
-    cellar :any
-    sha1 "ebad3eb906da012ffc5c1167fdc9d75221471394" => :yosemite
-    sha1 "779ab5fa155cba57c42cd877beafa980c2ebccff" => :mavericks
-    sha1 "760761c7977133b623449c75631019a23186ad3d" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "8ff7763563ac384a0401d5719fd0948c1aaab1a92a1833e37f0fcf5328797f8a" => :el_capitan
+    sha256 "4604f107d1afb7b60216961fae82771bfc79b82c35c1013468b185b96b2691c9" => :yosemite
+    sha256 "be101e0c95328993f661b8d81a23b141cc3f8b863908cc9b7d650eab1b82daa6" => :mavericks
   end
 
   def install

@@ -5,20 +5,32 @@ class Influxdb < Formula
   homepage "https://influxdb.com"
 
   stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.3.tar.gz"
-    sha256 "f49f7a007f821991984dd8716a6ddccc94a1832c5ac1abf4bb1cb88d9616c2e9"
+    url "https://github.com/influxdb/influxdb/archive/v0.9.4.2.tar.gz"
+    sha256 "aaea27228d7f242fe37d436506592189081beda0e7d2fba3f82c6b233fd913bc"
   end
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
-    sha256 "154a550327ab4122c23a5ef936467364fb875dc5fa38ea280cd49b631bcec3b6" => :yosemite
-    sha256 "7dfa97a71778ef32ff4e94948c8e72c6428c810edfa84b7ce29caa2df5ba0d6e" => :mavericks
-    sha256 "00386853dc84185b9927841da7ba12b14b2f45f3cde6d776b64a3bbf2c2befb4" => :mountain_lion
+    sha256 "955863732e1586c3fb288d56e7808ebc53346f790e03d345dae77688a89c69d8" => :el_capitan
+    sha256 "50c8251182586ec99de1b19a764195fa0031c2deccd6db22c9710c342ea703a3" => :yosemite
+    sha256 "34c8890075df5936db6aaf3e27431bb7ba6117d8e72d8a3bea7bc618c7cc8e96" => :mavericks
   end
 
   head do
     url "https://github.com/influxdb/influxdb.git"
+
+    go_resource "github.com/dgryski/go-bitstream" do
+      url "https://github.com/dgryski/go-bitstream.git", :revision => "8c62433445abdcf8c50094b3d67a15f728d8292b"
+    end
+
+    go_resource "github.com/dgryski/go-bits" do
+      url "https://github.com/dgryski/go-bits.git", :revision => "2c7641e7dfe3945a0fe755f58c85ab306624956d"
+    end
+
+    go_resource "github.com/jwilder/encoding" do
+      url "https://github.com/jwilder/encoding.git", :revision => "07d88d4f35eec497617bee0c7bfe651a796dae13"
+    end
   end
 
   depends_on "go" => :build
@@ -28,7 +40,7 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/armon/go-metrics" do
-    url "https://github.com/armon/go-metrics.git", :revision => "b2d95e5291cdbc26997d1301a5e467ecbb240e25"
+    url "https://github.com/armon/go-metrics.git", :revision => "6c5fa0d8f48f4661c9ba8709799c88d425ad20f0"
   end
 
   go_resource "github.com/bmizerany/pat" do
@@ -36,15 +48,15 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/boltdb/bolt" do
-    url "https://github.com/boltdb/bolt.git", :revision => "0f053fabc06119583d61937a0a06ef0ba0f1b301"
+    url "https://github.com/boltdb/bolt.git", :revision => "51f99c862475898df9773747d3accd05a7ca33c1"
   end
 
   go_resource "github.com/gogo/protobuf" do
-    url "https://github.com/gogo/protobuf.git", :revision => "cabd153b69f71bab8b89fd667a2d9bb28c92ceb4"
+    url "https://github.com/gogo/protobuf.git", :revision => "200875106f3bf0eb01eb297dae30b250a25ffc84"
   end
 
   go_resource "github.com/golang/protobuf" do
-    url "https://github.com/golang/protobuf.git", :revision => "aece6fb931241ad332956db4f62798dfbea944b3"
+    url "https://github.com/golang/protobuf.git", :revision => "3d2510a4dd961caffa2ae781669c628d82db700a"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -52,7 +64,7 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/hashicorp/raft" do
-    url "https://github.com/hashicorp/raft.git", :revision => "feb5f8bb5624ccb475c1354a2ca14a22eea7da4e"
+    url "https://github.com/hashicorp/raft.git", :revision => "9dabbbab966c04a0b6efed3cff6960299fed0642"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
@@ -64,7 +76,7 @@ class Influxdb < Formula
   end
 
   go_resource "github.com/peterh/liner" do
-    url "https://github.com/peterh/liner.git", :revision => "c754da6f2d91ef30ddb6c975d2dbe7696eec4fbc"
+    url "https://github.com/peterh/liner.git", :revision => "b850cf8c6d0ee52309aad09ac610508c6c75e819"
   end
 
   go_resource "github.com/rakyll/statik" do
@@ -72,7 +84,7 @@ class Influxdb < Formula
   end
 
   go_resource "golang.org/x/crypto" do
-    url "https://go.googlesource.com/crypto.git", :revision => "81bf7719a6b7ce9b665598222362b50122dfc13b"
+    url "https://go.googlesource.com/crypto.git", :revision => "c8b9e6388ef638d5a8a9d865c634befdc46a6784"
   end
 
   go_resource "gopkg.in/fatih/pool.v2" do
@@ -80,7 +92,7 @@ class Influxdb < Formula
   end
 
   go_resource "collectd.org" do
-    url "https://github.com/collectd/go-collectd.git", :revision => "b57a70fc3a8592302821687ba82204ba4071b0a8"
+    url "https://github.com/collectd/go-collectd.git", :revision => "9fc824c70f713ea0f058a07b49a4c563ef2a3b98"
   end
 
   go_resource "github.com/golang/snappy" do
@@ -96,9 +108,9 @@ class Influxdb < Formula
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version 0.9.4-HEAD -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.5-HEAD -X main.branch master -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version 0.9.3 -X main.commit 2094f3fec17e7f675e5cacc8e984d98b1aec662d", "./..."
+        system "go", "install", "-ldflags", "-X main.version 0.9.4.1 -X main.branch 0.9.4 -X main.commit c4f85f84765e27bfb5e58630d0dea38adeacf543", "./..."
       end
     end
 

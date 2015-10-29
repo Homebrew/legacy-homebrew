@@ -5,6 +5,7 @@ class Varnish < Formula
   sha256 "94b9a174097f47db2286acd2c35f235e49a2b7a9ddfdbd6eb7aa4da9ae8f8206"
 
   bottle do
+    sha256 "eb358ce5e37348ffced8e06ac0c2fc171b4a3d8c15a68f9763d88b23c901ce61" => :el_capitan
     sha256 "050160fe3c7780d56f0ff3a68e26c200c72ffb785451d351cb2b1410d7b86588" => :yosemite
     sha256 "204524142865d6ea5fc9d1dec5c877402726ec44133bcc0d1e0aeb31e39730c7" => :mavericks
     sha256 "31c5ee79f9bc61d9951dac9a6f56687b8c2724ff934c90ecfb171687707fd4d3" => :mountain_lion

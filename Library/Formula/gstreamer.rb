@@ -1,15 +1,13 @@
 class Gstreamer < Formula
   desc "GStreamer is a development framework for multimedia applications"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.5.tar.xz"
-  sha256 "40801aa7f979024526258a0e94707ba42b8ab6f7d2206e56adbc4433155cb0ae"
+  url "https://download.gnome.org/sources/gstreamer/1.6/gstreamer-1.6.0.tar.xz"
+  sha256 "52ef885647afef11c8b7645a9afefe04aa09e8971c4b932e7717872ab8a30fcc"
 
   bottle do
-    revision 2
-    sha256 "ac4e49623736041c7d8fdc981c155b7c40e12c17c0f7e04d2f32d2f0ee1b5ffb" => :yosemite
-    sha256 "2a91498326318c4de55ddb5eae47b3540bbda7ac44166899886e5cc1c2ad7fb2" => :mavericks
-    sha256 "b943636f153cc792c2d63e7ce68c4084d1ffff2987606e8ec95f1ef0a77cea82" => :mountain_lion
+    sha256 "6b75e4ba010fd85957d99abf356da19e4bb991031a5938bcd0c84e0e8ed25b8b" => :el_capitan
+    sha256 "370ba64ff63f4d80c445b317a0380afb91c92fd60b45dde385f9ff888975df87" => :yosemite
+    sha256 "32f9f7ee8a26494bac8ee4805b8a23569bbb2ab4cfd9779703d0be3ff772e0ae" => :mavericks
   end
 
   head do
@@ -25,6 +23,11 @@ class Gstreamer < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "bison"
+
+  # Fix header file issue (exact OS versions affected unknown; first noticed on
+  # Snow Leopard)
+  # https://bugzilla.gnome.org/show_bug.cgi?id=756136
+  patch :DATA if MacOS.version <= :mountain_lion
 
   def install
     args = %W[
@@ -60,3 +63,16 @@ class Gstreamer < Formula
     system bin/"gst-inspect-1.0"
   end
 end
+__END__
+diff --git a/libs/gst/helpers/gst-ptp-helper.c b/libs/gst/helpers/gst-ptp-helper.c
+index 6c753df..5642741 100644
+--- a/libs/gst/helpers/gst-ptp-helper.c
++++ b/libs/gst/helpers/gst-ptp-helper.c
+@@ -37,6 +37,7 @@
+ #include <sys/types.h>
+ #include <errno.h>
+ #include <sys/ioctl.h>
++#include <sys/socket.h>
+ #include <net/if.h>
+ #include <netinet/in.h>
+ #include <string.h>

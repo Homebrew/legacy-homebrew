@@ -57,6 +57,10 @@ module Homebrew
   def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.each do |path|
+      if path.to_s.end_with? ".incomplete"
+        cleanup_path(path) { path.unlink }
+        next
+      end
       if prune?(path)
         if path.file?
           cleanup_path(path) { path.unlink }
@@ -81,7 +85,7 @@ module Homebrew
 
       begin
         f = Formulary.from_rack(HOMEBREW_CELLAR/name)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
         next
       end
 

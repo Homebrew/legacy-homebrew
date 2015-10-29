@@ -1,18 +1,19 @@
 class Pyqt5 < Formula
   desc "Python bindings for v5 of Qt"
-  homepage "http://www.riverbankcomputing.co.uk/software/pyqt/download5"
-  url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5/PyQt-gpl-5.5.tar.gz"
-  sha256 "cdd1bb55b431acdb50e9210af135428a13fb32d7b1ab86e972ac7101f6acd814"
-  revision 1
+  homepage "https://www.riverbankcomputing.com/software/pyqt/download5"
+  url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz"
+  sha256 "0a70ef94fbffcf674b0dde024aae2a2a7a3f5a8c42806109ff7df2c941bd8386"
 
   bottle do
-    sha256 "ce5dbd7dbf9d8377500226050ee1205d979679340443c18612d5d66f3ffb3ee2" => :yosemite
-    sha256 "d40d3b90566540600d830931ff7f493ecaac3baf9f723a444116a945d7203660" => :mavericks
-    sha256 "9f07294fb874a412a62f93f90382d22a1177f29c589c2b7bf331974b7656d952" => :mountain_lion
+    sha256 "b9e313a98af2b16a6ab3df8e0c2d7d153b80f49211741a565945049a18765c51" => :el_capitan
+    sha256 "c298d8b38ca10572c1026c5489dc879b64de97ae083847c78f547d388b8b2e26" => :yosemite
+    sha256 "33f2dfb85349db6826d9653512e608bde4f99f6297957c0c7c4ee8457d09ef9f" => :mavericks
   end
 
-  option "enable-debug", "Build with debug symbols"
+  option "with-debug", "Build with debug symbols"
   option "with-docs", "Install HTML documentation and python examples"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   depends_on :python3 => :recommended
   depends_on :python => :optional
@@ -45,7 +46,7 @@ class Pyqt5 < Formula
               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
               "--qml-plugindir=#{pkgshare}/plugins",
               "--verbose"]
-      args << "--debug" if build.include? "enable-debug"
+      args << "--debug" if build.with? "debug"
 
       system python, "configure.py", *args
       system "make"
@@ -60,6 +61,17 @@ class Pyqt5 < Formula
     system "pylupdate5", "-version"
     Language::Python.each_python(build) do |python, _version|
       system python, "-c", "import PyQt5"
+      %w[
+        Gui
+        Location
+        Multimedia
+        Network
+        Quick
+        Svg
+        WebKit
+        Widgets
+        Xml
+      ].each { |mod| system python, "-c", "import PyQt5.Qt#{mod}" }
     end
   end
 end

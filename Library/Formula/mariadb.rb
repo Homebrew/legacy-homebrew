@@ -1,23 +1,18 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.21/source/mariadb-10.0.21.tar.gz"
-  sha256 "4b9a32e15ceadefdb1057a02eb3e0addf702b75aef631a3c9194b832ecfa3545"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.8/source/mariadb-10.1.8.tar.gz"
+  sha256 "7cbf6a4649aa6dc9cd1dc24424ade7b994de78582ce4d47ca0f4cd1c4c003bfa"
 
   bottle do
-    sha256 "0e6f1eec4b6008c2df59cdbe611f0ce2c0f6a97e3ca8e0da1842787961b83c9b" => :el_capitan
-    sha256 "882f16e1470538aea11ac21f6ab354b83215f35c15bda104af90cc3c5c746107" => :yosemite
-    sha256 "5f5935d262db325ddbf217c6dbaa36c50a362bba6f84c52e65c16c4038c01f02" => :mavericks
-    sha256 "628ea0cd2b057cfad5fbb02d7caabe50c18860b71f6dd082dee9e8d477e88e92" => :mountain_lion
+    sha256 "a369229d2063de79b1e1f55a69b4777b28160f66ddc276c8e94641e88a389780" => :el_capitan
+    sha256 "6a89f3dc372591100980b9999dd9b405f97c7da5b0a5c36a371a03cbd73d91d7" => :yosemite
+    sha256 "0dbf52e1cd9ff451957f102964fd52723127b01ebca656463f6e6d2fe6073647" => :mavericks
   end
 
-  devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.7/source/mariadb-10.1.7.tar.gz"
-    sha256 "5bd3b80cf0f312751271a3446c12579c7081f93406e59a0cdfda8e133423c88f"
-    # fix compilation failure with clang in mroonga storage engine
-    # https://mariadb.atlassian.net/projects/MDEV/issues/MDEV-8551
-    patch :DATA
-  end
+  # fix compilation failure with clang in mroonga storage engine
+  # https://mariadb.atlassian.net/projects/MDEV/issues/MDEV-8551
+  patch :DATA
 
   option :universal
   option "with-tests", "Keep test when installing"
@@ -78,11 +73,7 @@ class Mariadb < Formula
     ]
 
     # disable TokuDB, which is currently not supported on Mac OS X
-    if build.stable?
-      args << "-DWITHOUT_TOKUDB=1"
-    else
-      args << "-DPLUGIN_TOKUDB=NO"
-    end
+    args << "-DPLUGIN_TOKUDB=NO"
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? "tests"
 
@@ -93,22 +84,10 @@ class Mariadb < Formula
     args << "-DWITH_READLINE=yes" if build.without? "libedit"
 
     # Compile with ARCHIVE engine enabled if chosen
-    if build.with? "archive-storage-engine"
-      if build.stable?
-        args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1"
-      else
-        args << "-DPLUGIN_ARCHIVE=YES"
-      end
-    end
+    args << "-DPLUGIN_ARCHIVE=YES" if build.with? "archive-storage-engine"
 
     # Compile with BLACKHOLE engine enabled if chosen
-    if build.with? "blackhole-storage-engine"
-      if build.stable?
-        args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1"
-      else
-        args << "-DPLUGIN_BLACKHOLE=YES"
-      end
-    end
+    args << "-DPLUGIN_BLACKHOLE=YES" if build.with? "blackhole-storage-engine"
 
     # Make universal for binding to universal applications
     if build.universal?
@@ -149,20 +128,18 @@ class Mariadb < Formula
 
     bin.install_symlink prefix/"support-files/mysql.server"
 
-    if build.devel?
-      # Move sourced non-executable out of bin into libexec
-      libexec.mkpath
-      libexec.install "#{bin}/wsrep_sst_common"
-      # Fix up references to wsrep_sst_common
-      %W[
-        wsrep_sst_mysqldump
-        wsrep_sst_rsync
-        wsrep_sst_xtrabackup
-        wsrep_sst_xtrabackup-v2
-      ].each do |f|
-        inreplace "#{bin}/#{f}" do |s|
-          s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
-        end
+    # Move sourced non-executable out of bin into libexec
+    libexec.mkpath
+    libexec.install "#{bin}/wsrep_sst_common"
+    # Fix up references to wsrep_sst_common
+    %W[
+      wsrep_sst_mysqldump
+      wsrep_sst_rsync
+      wsrep_sst_xtrabackup
+      wsrep_sst_xtrabackup-v2
+    ].each do |f|
+      inreplace "#{bin}/#{f}" do |s|
+        s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
       end
     end
   end

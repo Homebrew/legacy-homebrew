@@ -8,5 +8,8 @@ FORMULA_RENAMES = {
   "libcppa" => "caf",
   "objective-caml" => "ocaml",
   "mpich2" => "mpich",
-  "plt-racket" => "racket"
+  "plt-racket" => "racket",
+  "fig" => "docker-compose",
+  "polarssl" => "mbedtls",
+  "crystal" => "autocode",
 }

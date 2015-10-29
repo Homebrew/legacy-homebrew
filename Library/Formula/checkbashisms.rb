@@ -6,12 +6,7 @@ class Checkbashisms < Formula
 
   head "lp:ubuntu/devscripts", :using => :bzr
 
-  bottle do
-    cellar :any
-    sha256 "b4a455ac40a27e2478900bebece0c6538271bc4b6c033f24fefec9ab50e5208d" => :yosemite
-    sha256 "ea49cbf4cb6af2f8a8dfd82be51639f1836016b934cdf392457faf17c90b45c3" => :mavericks
-    sha256 "86d58dda562653996957b8d3fdf454890f36258a2b1e290a237259473cdcd09a" => :mountain_lion
-  end
+  bottle :unneeded
 
   def install
     inreplace "scripts/checkbashisms.pl", "###VERSION###", "#{version}ubuntu1"

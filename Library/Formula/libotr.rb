@@ -6,6 +6,7 @@ class Libotr < Formula
 
   bottle do
     cellar :any
+    sha256 "6a800d4cc2c2239954d45769ee424431f72896a1f1cb41e58dbf84d3273545b8" => :el_capitan
     sha1 "e3a4f4ed938279c649562da5f47589cd260876af" => :yosemite
     sha1 "2fddebe58059fe7dcc3bfebd862051c8c7b8f417" => :mavericks
     sha1 "bbd9c6938ade7c5208c472aba7b65581eb9a210b" => :mountain_lion

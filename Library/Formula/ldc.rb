@@ -1,22 +1,15 @@
 class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "http://wiki.dlang.org/LDC"
-  url "https://github.com/ldc-developers/ldc/releases/download/v0.15.2-beta2/ldc-0.15.2-beta2-src.tar.gz"
-  version "0.15.2-beta2"
-  sha256 "b421acbca0cdeef42c5af2bd53060253822dea6d78d216f973ee5e2b362723e2"
+  url "https://github.com/ldc-developers/ldc/releases/download/v0.16.1/ldc-0.16.1-src.tar.gz"
+  sha256 "e66cea99f0b1406bbd265ad5fe6aa1412bae31ac86d8a678eb6751f304b6f95b"
 
   head "https://github.com/ldc-developers/ldc.git", :shallow => false
 
   bottle do
-    sha256 "42429da7c6b69babb33d17797492179faf584cee6a55980f5beba8c79d951c5a" => :yosemite
-    sha256 "0b9aaf9f9f5b8dc05a4a0989ce1d54bd81fe857e36d84d54dee0ba3cad008c09" => :mavericks
-    sha256 "8ea1ad6cbd93ca1b909fdce9ff136fe56ada447cd535840f2684088dcab0fea2" => :mountain_lion
-  end
-
-  devel do
-    url "https://github.com/ldc-developers/ldc/releases/download/v0.16.0-alpha2/ldc-0.16.0-alpha2-src.tar.gz"
-    version "0.16.0-alpha2"
-    sha256 "197c6cfdff9444dcea82255321f0da9d1017da9a7b1808eee75bc8793c926623"
+    sha256 "d358950e5bc80c8c51303b033f20f68496c65c15cdb74a06c8ad7b386ca9907b" => :el_capitan
+    sha256 "0ed16e8ad04729ce88eef3ee436fbe14acf99941fffbcffa40b94724c105176a" => :yosemite
+    sha256 "0d1f8e211e525e8eb106aa1ec6553240d8813e82dfec8bca0adc3cda590fc9a8" => :mavericks
   end
 
   needs :cxx11

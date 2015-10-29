@@ -1,20 +1,22 @@
 class Nzbget < Formula
   desc "Binary newsgrabber for nzb files"
   homepage "http://nzbget.net/"
-  url "https://github.com/nzbget/nzbget/releases/download/v15.0/nzbget-15.0-src.tar.gz"
-  sha256 "3ef13f3e5917e4cda19c4fc0cd37e79967a19b4e3448c239ff24e37712a6cc0a"
+  url "https://github.com/nzbget/nzbget/releases/download/v16.0/nzbget-16.0-src.tar.gz"
+  sha256 "95bf4d1b888c631da06ef2699219c855a8d5433a3907791aee0d075c413ccdd0"
 
   head "https://github.com/nzbget/nzbget.git"
 
   bottle do
-    sha256 "575aa6f2c1e7a0782a0d01a735641b398819eebeedb45fc79893a0d8d8a99e1a" => :yosemite
-    sha256 "4d9ba1a2d89d3f9cd2abccef3e3f3223c2e9d7a68582c1ea11eb20b0bcea37c0" => :mavericks
-    sha256 "34f2fa74cd448347f0161e7adfdcfec754b3991e5058aad826df565f55e9776d" => :mountain_lion
+    cellar :any
+    sha256 "beed81c6b0c08725384b27285a13672b1c264228f025028ce81b9c6cf0c710b9" => :el_capitan
+    sha256 "b8f8f1cf8c569dc0b7cb7ed186b506dae589468e7631afa0fc9e0ba1f12064ec" => :yosemite
+    sha256 "d67d69333f76517db3b121d1926543c3d6d2bf538f12738fd8757cb2c01fcbf1" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
-  depends_on "libsigc++"
+
+  needs :cxx11
 
   fails_with :clang do
     build 500
@@ -24,27 +26,17 @@ class Nzbget < Formula
       EOS
   end
 
-  resource "libpar2" do
-    url "https://launchpad.net/libpar2/trunk/0.4/+download/libpar2-0.4.tar.gz"
-    sha256 "316d6f0eb31eb896f5546171c2e86801aeffe5ae5e2decffc17f0018346796d4"
-  end
-
   def install
-    resource("libpar2").stage do
-      system "./configure", "--disable-dependency-tracking",
-                            "--prefix=#{libexec}/lp2"
-      system "make", "install"
-    end
+    ENV.cxx11
 
-    # Tell configure where libpar2 is, and tell it to use OpenSSL
+    # Tell configure to use OpenSSL
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-libpar2-includes=#{libexec}/lp2/include",
-                          "--with-libpar2-libraries=#{libexec}/lp2/lib",
                           "--with-tlslib=OpenSSL"
     system "make"
     ENV.j1
     system "make", "install"
+    pkgshare.install_symlink "nzbget.conf" => "webui/nzbget.conf"
     etc.install "nzbget.conf"
   end
 

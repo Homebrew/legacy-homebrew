@@ -32,6 +32,8 @@ BOTTLE_ERB = <<-EOS
   end
 EOS
 
+MAXIMUM_STRING_MATCHES = 100
+
 module Homebrew
   def keg_contains(string, keg, ignores)
     @put_string_exists_header, @put_filenames = nil
@@ -72,6 +74,8 @@ module Homebrew
         end
       end
 
+      text_matches = []
+
       # Use strings to search through the file for each string
       Utils.popen_read("strings", "-t", "x", "-", file.to_s) do |io|
         until io.eof?
@@ -82,11 +86,18 @@ module Homebrew
           next if linked_libraries.include? match # Don't bother reporting a string if it was found by otool
 
           result = true
+          text_matches << [match, offset]
+        end
+      end
 
-          if ARGV.verbose?
-            print_filename string, file
-            puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
-          end
+      if ARGV.verbose? && text_matches.any?
+        print_filename string, file
+        text_matches.first(MAXIMUM_STRING_MATCHES).each do |match, offset|
+          puts " #{Tty.gray}-->#{Tty.reset} match '#{match}' at offset #{Tty.em}0x#{offset}#{Tty.reset}"
+        end
+
+        if text_matches.size > MAXIMUM_STRING_MATCHES
+          puts "Only the first #{MAXIMUM_STRING_MATCHES} matches were output"
         end
       end
     end
@@ -132,6 +143,12 @@ module Homebrew
   def bottle_formula(f)
     unless f.installed?
       return ofail "Formula not installed or up-to-date: #{f.full_name}"
+    end
+
+    if f.bottle_disabled?
+      ofail "Formula has disabled bottle: #{f.full_name}"
+      puts f.bottle_disable_reason
+      return
     end
 
     unless built_as_bottle? f
@@ -277,6 +294,12 @@ module Homebrew
       ohai formula_name
       f = Formulary.factory(formula_name)
 
+      if f.bottle_disabled?
+        ofail "Formula #{f.full_name} has disabled bottle"
+        puts f.bottle_disable_reason
+        next
+      end
+
       bottle = if keep_old
         f.bottle_specification.dup
       else
@@ -332,10 +355,12 @@ module Homebrew
           end
         end
 
-        HOMEBREW_REPOSITORY.cd do
-          safe_system "git", "commit", "--no-edit", "--verbose",
-            "--message=#{f.name}: #{update_or_add} #{f.pkg_version} bottle.",
-            "--", f.path
+        unless ARGV.include? "--no-commit"
+          f.path.parent.cd do
+            safe_system "git", "commit", "--no-edit", "--verbose",
+              "--message=#{f.name}: #{update_or_add} #{f.pkg_version} bottle.",
+              "--", f.path
+          end
         end
       end
     end

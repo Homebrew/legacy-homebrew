@@ -1,18 +1,27 @@
 class Task < Formula
   desc "Feature-rich console based todo list manager"
-  homepage "http://www.taskwarrior.org/"
-  url "http://taskwarrior.org/download/task-2.4.4.tar.gz"
-  sha256 "7ff406414e0be480f91981831507ac255297aab33d8246f98dbfd2b1b2df8e3b"
-  head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.4.5", :shallow => false
+  homepage "https://taskwarrior.org/"
+
+  stable do
+    url "https://taskwarrior.org/download/task-2.5.0.tar.gz"
+    sha256 "4d8e67415a6993108c11b8eeef99b76a991af11b22874adbb7ae367e09334636"
+
+    depends_on "gnutls"
+  end
 
   bottle do
-    sha256 "d88850d6183ecb96ce63d1a0601591262eb5675dfa786eba2d244f857dffa55e" => :yosemite
-    sha256 "f160b9ff4cd55935c35a636257f8745acde5e8a45d9ece951173330ad98b4def" => :mavericks
-    sha256 "aeae5194ecd2e3324d9bc925e5b9b8968063978a03a78d5c977da0fdba77d81c" => :mountain_lion
+    sha256 "a2f68eb1bd6ff5f0992603c64faff6788e862ed943b5a0b7104a1969a4dc9c1a" => :el_capitan
+    sha256 "bbf344c831fe72587ba3673c41b49433c8078bf93054dbed1ce9fac6edce5146" => :yosemite
+    sha256 "598d16065ecdd17a628764e47e93bb0309dcbc41ff6f689c046519c5a7e5c0f8" => :mavericks
+  end
+
+  head do
+    url "https://git.tasktools.org/scm/tm/task.git", :branch => "2.5.1", :shallow => false
+
+    depends_on "gnutls"
   end
 
   depends_on "cmake" => :build
-  depends_on "gnutls" => :optional
 
   def install
     system "cmake", ".", *std_cmake_args
@@ -23,6 +32,8 @@ class Task < Formula
   end
 
   test do
-    system "#{bin}/task", "--version"
+    touch testpath/".taskrc"
+    system "#{bin}/task", "add", "Write", "a", "test"
+    assert_match "Write a test", shell_output("#{bin}/task list")
   end
 end

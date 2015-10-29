@@ -1,8 +1,10 @@
 class Gws < Formula
-  homepage "https://streakycobra.github.io/gws/"
   desc "Manage workspaces composed of git repositories"
+  homepage "https://streakycobra.github.io/gws/"
   url "https://github.com/StreakyCobra/gws/archive/0.1.7.tar.gz"
   sha256 "36c25392f5cb93a39441a1973842249a62b605a2a7e369a040c78450683697d0"
+
+  bottle :unneeded
 
   depends_on "bash"
 
@@ -20,4 +22,3 @@ class Gws < Formula
     assert_equal "project:\n                              Clean [Local only repository]\n", output
   end
 end
-

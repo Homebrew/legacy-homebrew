@@ -1,16 +1,16 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3081101.tar.gz"
-  sha256 "fb99b0ac038c4a7e48b44b61836cb41d4eeba36b4d0ee757beeab59031a1d3b6"
-  version "3.8.11.1"
+  url "https://sqlite.org/2015/sqlite-autoconf-3090100.tar.gz"
+  version "3.9.1"
+  sha256 "d89d0e1d93deafebd0aa067d20d9029d9914ccde244920d9dd09ea51944e1c6c"
 
   bottle do
     cellar :any
-    sha256 "93a06d141f495401a9b105ebdeb7c5c7181d400040b6609425b5e876972a20c0" => :el_capitan
-    sha256 "c5b59f1ab72148a427fb370a30c2781d107bfeb8e8f8debc156b294a17a2ad58" => :yosemite
-    sha256 "20c43ba5d46667802293aebe80a6a86edb76d224c8f2e570a3141ff4d2117f24" => :mavericks
-    sha256 "965ee8d800a2ef8222fdb47c4cb0e787286bcc9d7ee44d2aeb9cce4f4cfa5ea0" => :mountain_lion
+    revision 1
+    sha256 "ea201bb5ea138b9a16aa83f7e7c363a3c3b5da1a9669d533c55c8cd4e31e6948" => :el_capitan
+    sha256 "d60ca2af241cfad3c9d8941addaee0bde304d165faf4dfe4d4be0e8762b8db41" => :yosemite
+    sha256 "c77750244a12409e81d96911ff278251eec87539c2ac5233018c93a9e67561b2" => :mavericks
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -18,35 +18,39 @@ class Sqlite < Formula
   option :universal
   option "with-docs", "Install HTML documentation"
   option "without-rtree", "Disable the R*Tree index module"
-  option "with-fts", "Enable the FTS module"
+  option "with-fts", "Enable the FTS3 module"
+  option "with-fts5", "Enable the FTS5 module (experimental)"
   option "with-secure-delete", "Defaults secure_delete to on"
   option "with-unlock-notify", "Enable the unlock notification feature"
   option "with-icu4c", "Enable the ICU module"
   option "with-functions", "Enable more math and string functions for SQL queries"
   option "with-dbstat", "Enable the 'dbstat' virtual table"
+  option "with-json1", "Enable the JSON1 extension"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
 
   resource "functions" do
-    url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
+    url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using => :nounzip
     version "2010-01-06"
     sha256 "991b40fe8b2799edc215f7260b890f14a833512c9d9896aa080891330ffe4052"
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3081101.zip"
-    version "3.8.11.1"
-    sha256 "89e3fc4bce7463885da3b03602b4260fe07240f9ea674ba4ac7ce2ee4987357f"
+    url "https://sqlite.org/2015/sqlite-doc-3090100.zip"
+    version "3.9.1"
+    sha256 "c8549a4261f74395496d1ebc4b7d36a51b2b3e57f36520d3c71052190a80ccb9"
   end
 
   def install
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE" if build.with? "rtree"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA"
-    ENV.append "CPPFLAGS", "-DSQLITE_SECURE_DELETE" if build.with? "secure-delete"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_UNLOCK_NOTIFY" if build.with? "unlock-notify"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_DBSTAT_VTAB" if build.with? "dbstat"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE=1" if build.with? "rtree"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1" if build.with? "fts"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS5=1" if build.with? "fts5"
+    ENV.append "CPPFLAGS", "-DSQLITE_SECURE_DELETE=1" if build.with? "secure-delete"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_UNLOCK_NOTIFY=1" if build.with? "unlock-notify"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_DBSTAT_VTAB=1" if build.with? "dbstat"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_JSON1=1" if build.with? "json1"
 
     if build.with? "icu4c"
       icu4c = Formula["icu4c"]
@@ -54,7 +58,7 @@ class Sqlite < Formula
       icu4ccppflags = `#{icu4c.opt_bin}/icu-config --cppflags`.tr("\n", " ")
       ENV.append "LDFLAGS", icu4cldflags
       ENV.append "CPPFLAGS", icu4ccppflags
-      ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_ICU"
+      ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_ICU=1"
     end
 
     ENV.universal_binary if build.universal?

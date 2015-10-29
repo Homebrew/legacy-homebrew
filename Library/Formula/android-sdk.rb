@@ -3,22 +3,18 @@ require "base64"
 class AndroidSdk < Formula
   desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.3.4-macosx.zip"
-  version "24.3.4"
-  sha256 "074da140b380177108b9b74869403df7a65c5b555d4f5e439fa8556f1018352b"
+  url "https://dl.google.com/android/android-sdk_r24.4.1-macosx.zip"
+  version "24.4.1"
+  sha256 "ce1638cb48526a0e55857fc46b57eda4349e6512006244ad13dd6c1361c74104"
 
-  bottle do
-    cellar :any
-    sha256 "7e9cfe4358bc78d50c5481c94eac4a8257253991a04c2484b2ad647d3e030d0f" => :yosemite
-    sha256 "8e2345713d8c4d45edca76daa49779bfdd5964117730c325662a01fdab74023d" => :mavericks
-    sha256 "75990555c5bc71c43afcb83bcb7ee70c580cedf8b86b2c60d82a1abb7bc588b6" => :mountain_lion
-  end
+  bottle :unneeded
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
   resource "completion" do
     url "https://android.googlesource.com/platform/sdk/+/7859e2e738542baf96c15e6c8b50bbdb410131b0/bash_completion/adb.bash?format=TEXT"
+    mirror "https://raw.githubusercontent.com/Homebrew/patches/c3b801f/android-sdk/adb.bash"
     sha256 "44b3e20ed9cb8fff01dc6907a57bd8648cd0d1bcc7b129ec952a190983ab5e1a"
   end
 

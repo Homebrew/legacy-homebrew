@@ -6,6 +6,7 @@ class Libofx < Formula
 
   bottle do
     revision 1
+    sha256 "cb45299c0a279d0cf67a3f0de1875b78f6944cf899ae9844ba6cfc8f39689599" => :el_capitan
     sha1 "29eeb5e7ddc45ea4c3a5a3f47304082a44046413" => :yosemite
     sha1 "f1c1939e7ea13ba07997f563c8d275195dae9679" => :mavericks
     sha1 "ac76937c8a7dded8bb89f1ece1ea9ede2f8e41a4" => :mountain_lion

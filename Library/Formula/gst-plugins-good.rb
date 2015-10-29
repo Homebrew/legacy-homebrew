@@ -3,17 +3,26 @@ class GstPluginsGood < Formula
   homepage "http://gstreamer.freedesktop.org/"
 
   stable do
-    url "http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.5.tar.xz"
-    mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.5.tar.xz"
-    sha256 "79b1b5f3f7bcaa8a615202eb5e176121eeb8336960f70687e536ad78dbc7e641"
+    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.0.tar.xz"
+    sha256 "a0915639595305e48884656e22b16fda7c6892aa02cdb3eb43e23dab6e6b81fa"
 
     depends_on "check" => :optional
+
+    if MacOS.version < :lion
+      # Snow Leopard and below don't have strnlen()
+      # https://bugzilla.gnome.org/show_bug.cgi?id=756154
+      # http://cgit.freedesktop.org/gstreamer/gst-plugins-good/commit/?id=fc203a4bd7eb1cecc0e17bcb7ec67e0672806867
+      patch do
+        url "https://bugzilla.gnome.org/attachment.cgi?id=313403&action=diff&context=patch&collapsed=&headers=1&format=raw"
+        sha256 "63a2f18683c967d321f42fcfca0c1d8e070b489ce8f8b08f3340c30c6903250d"
+      end
+    end
   end
 
   bottle do
-    sha1 "184f6be9e300566f37e7b014cca49f78018c36d4" => :yosemite
-    sha1 "a05a8f0dc08ea2626623f30dcb2cc458bd973b7e" => :mavericks
-    sha1 "7ce582ddab67b58d87469d112745144a0cf0edd2" => :mountain_lion
+    sha256 "f0b959674f1bf2135378c640853971899df115830e047d0a33784671c35d17d4" => :el_capitan
+    sha256 "1a3009aa7e6dc2cd2cffd598a0c9e1f3183a268460aa15ebd1f750153a4d0f9d" => :yosemite
+    sha256 "cd42820977c3cdb2ca5315f7c86c1e041b523960fac07e767175958c873ff683" => :mavericks
   end
 
   head do
@@ -67,6 +76,12 @@ class GstPluginsGood < Formula
     else
       args << "--disable-x"
     end
+
+    # This plugin causes hangs on Snow Leopard (and possibly other versions?)
+    # Upstream says it hasn't "been actively tested in a long time";
+    # successor is glimagesink (in gst-plugins-bad).
+    # https://bugzilla.gnome.org/show_bug.cgi?id=756918
+    args << "--disable-osx_video" if MacOS.version == :snow_leopard
 
     if build.head?
       ENV["NOCONFIGURE"] = "yes"

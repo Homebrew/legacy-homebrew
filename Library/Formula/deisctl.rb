@@ -3,14 +3,14 @@ require "language/go"
 class Deisctl < Formula
   desc "Deis Control Utility"
   homepage "http://deis.io/"
-  url "https://github.com/deis/deis/archive/v1.9.0.tar.gz"
-  sha256 "6acca76008b1e48961eb23ddd62f8db742be053983ce34b1a516bb2d4719bf82"
+  url "https://github.com/deis/deis/archive/v1.11.1.tar.gz"
+  sha256 "0d5434dbcfcbeaf07e071898ee1d2592cde21422c551a6c87e169474123f6d74"
 
   bottle do
-    cellar :any
-    sha256 "e5fe216c7f63394410837ac23e46f9fd3ddf85ebf5d39ff58265eb993f6da95c" => :yosemite
-    sha256 "b001eec00c2ea9fdd4d6e12113990e3e7c9addf7b22a9c506541ff0236a17d75" => :mavericks
-    sha256 "3c909d77ab06101b9b9c63a7b02de500545cef50f0d98757a62587b251576cde" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "501e7c2a937f32a6b870ef7874dca2aecfd27d1b8642231fd5cf0d7d92e74685" => :el_capitan
+    sha256 "780662542e7b73eb2548bb4f614016e47c0dcd63b55991ab7a3c5e3ca2e491f4" => :yosemite
+    sha256 "bbbdc491ac6d70aee22d3a64dc97c48decf949adf001af0964ded630d2733533" => :mavericks
   end
 
   depends_on "go" => :build
@@ -37,7 +37,6 @@ class Deisctl < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["CGO_ENABLED"] = "0"
     ENV.prepend_create_path "PATH", buildpath/"bin"
 
     mkdir_p "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis"

@@ -3,6 +3,9 @@ Making a formula is easy. Just `brew create URL` and then `brew install $FORMULA
 
 We want your formula to be awesome, and the cookbook will tell you how.
 
+## API documentation
+Some people find it easier to jump straight into API documentation rather than a walkthrough. If you're one of these check out the [Formula API](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula) which shows all the stuff you can use in a Homebrew Formula.
+
 ## Terminology - Homebrew speak
 
 <table>
@@ -65,6 +68,7 @@ Before contributing, make sure your package:
 *   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew/issues))
 *   is still supported by upstream
 *   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release and head-only versions belong.
+*   passes all `brew audit --strict --online $FORMULA` tests.
 
 Make sure you search thoroughly (all aliases!). We don’t want you to waste your time.
 
@@ -80,8 +84,6 @@ Probably. But we have rules to keep the quality and goals of Homebrew intact: Pl
 Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/etl.rb) is as simple as it gets.
 
 And then [Git](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
-
-Refer to the [Formula class API documentation](http://www.rubydoc.info/github/Homebrew/homebrew/master/frames) which shows all the stuff you can use in a Formula.
 
 ## Grab the URL
 
@@ -114,6 +116,9 @@ end
 **Note:**  If `brew` said `Warning: Version cannot be determined from URL` when doing the `create` step, you’ll need to explicitly add the correct version to the formula with `version "foo"` **and then save the formula**. `brew install` should then proceed without any trouble.
 
 **Note:** If `brew` said `No formula found for "php54-timezonedb". Searching open pull requests...` and you are writing a Tap, you should run `brew tap --repair`.
+
+**Note:** Homebrew will try to guess the formula’s name from its URL. If it
+fails to do so you can use `brew create <url> --set-name <name>`.
 
 ## Fill in the Homepage
 

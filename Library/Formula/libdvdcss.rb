@@ -13,6 +13,7 @@ class Libdvdcss < Formula
 
   bottle do
     cellar :any
+    sha256 "b46bbb4c0171ba189a991e8b6c6248e8f5d2b84ccb9ba10a7e36659281383514" => :el_capitan
     sha1 "21e2c0560bfa1f83f08b2e7a8fc614e2b0226e8e" => :yosemite
     sha1 "ed34b81016c034c1f713848a1e787984890e59d2" => :mavericks
     sha1 "3f9e50d90d73539176075d5ce71d1329437745ed" => :mountain_lion

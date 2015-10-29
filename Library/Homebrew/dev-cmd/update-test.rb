@@ -2,18 +2,20 @@ require "extend/ENV"
 
 module Homebrew
   def update_test
+    cd HOMEBREW_REPOSITORY
+    start_sha1 = Utils.popen_read("git", "rev-parse", "origin/master").chomp
+    end_sha1 = Utils.popen_read("git", "rev-parse", "HEAD").chomp
+
     mktemp do
       curdir = Pathname.new(Dir.pwd)
 
       oh1 "Setup test environment..."
       # copy Homebrew installation
-      cp_r HOMEBREW_REPOSITORY/".git", curdir/".git"
-      start_sha1 = Utils.popen_read("git", "rev-parse", "origin/master").chomp
-      end_sha1 = Utils.popen_read("git", "rev-parse", "HEAD").chomp
+      safe_system "git", "clone", "--local", "#{HOMEBREW_REPOSITORY}/.git", "."
 
       # set git origin to another copy
-      cp_r HOMEBREW_REPOSITORY/".git", curdir/"remote.git"
-      safe_system "git", "config", "remote.origin.url", "file://#{curdir}/remote.git"
+      safe_system "git", "clone", "--local", "--bare", "#{HOMEBREW_REPOSITORY}/.git", "remote.git"
+      safe_system "git", "config", "remote.origin.url", "#{curdir}/remote.git"
 
       # force push origin to end_sha1
       safe_system "git", "checkout", "--force", "master"

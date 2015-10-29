@@ -5,15 +5,15 @@ class HaskellStack < Formula
 
   desc "The Haskell Tool Stack"
   homepage "https://www.stackage.org"
-  url "https://github.com/commercialhaskell/stack/archive/v0.1.4.1.tar.gz"
-  sha256 "5ffeb5e13d9df4630076f0f03abeb41d4293e594893af25fbbe5892773d1d078"
+  url "https://hackage.haskell.org/package/stack-0.1.6.0/stack-0.1.6.0.tar.gz"
+  sha256 "a47ffc204b9caef8281d1e5daebc21bc9d4d2414ed695dc10d32fcca4d81978d"
 
   head "https://github.com/commercialhaskell/stack.git"
 
   bottle do
-    sha256 "0cbdf240354fd818d3a87d29433d8e6dc079d2a0d21d0b63c43e2c97532da994" => :yosemite
-    sha256 "32fa5d0097021a06ebee64974307490501b67714d26c4ca518fa921a92974668" => :mavericks
-    sha256 "6ff08a813b8c756f447c606ea059697827ba29160546343e72b0ad87102e208c" => :mountain_lion
+    sha256 "fdc76cef3456f5c68422153ed9fe07a3c685d09ded030af960ac9799cbe38219" => :el_capitan
+    sha256 "b54a27624a1bf02b457e8b6daf650a227cdb3131dcd4b1762a14bcbd1f7bbcf2" => :yosemite
+    sha256 "ea091e3806234f3d4d1c0769db788d0063affe2545023d630c3c329639d221e6" => :mavericks
   end
 
   depends_on "ghc" => :build
