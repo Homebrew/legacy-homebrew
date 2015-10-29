@@ -5,10 +5,10 @@ class PreCommit < Formula
   sha256 "e659d79d7703442250e0a1795309f42578ac887e92bf33f69ff19da4cc00bb51"
 
   bottle do
-    cellar :any
-    sha256 "03cb591bd311bfeb69f51dac23f67883723cd11c424ac9450307364bb47cee2d" => :yosemite
-    sha256 "ee8d6ba1b28bf12d5f1b2e7033685a2598a4b0bfc605803e532fdbf1e87c148b" => :mavericks
-    sha256 "cf901c3773156e2de5bb08852d3ca94527b83088003c0ed369e3ab94067e6b90" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9c9b2f2f1c6fd451f007268dee19054f398887a77aebf6d91118b0bf4a371372" => :el_capitan
+    sha256 "ddcd423efc7da2b205a018fdc19e9a3b4a977396eb9ef011a7920f88488f631b" => :yosemite
+    sha256 "a32865409a696ce9f78982eec1eec97d19ec0ed6f35eea4c63fbdda163b7858e" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
