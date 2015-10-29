@@ -14,6 +14,7 @@ class Kicad < Formula
   depends_on "cmake" => :build
   depends_on "cairo"
   depends_on "pcre"
+  depends_on "openssl"
   depends_on "glew"
   depends_on "boost"
   depends_on :python => :recommended
@@ -131,8 +132,8 @@ class Kicad < Formula
         args << "-DKICAD_SCRIPTING_MODULES=OFF"
         args << "-DKICAD_SCRIPTING_WXPYTHON=OFF"
       end
-        args << "-DCMAKE_C_COMPILER=#{ENV.cc}"
-        args << "-DCMAKE_CXX_COMPILER=#{ENV.cxx}"
+      args << "-DCMAKE_C_COMPILER=#{ENV.cc}"
+      args << "-DCMAKE_CXX_COMPILER=#{ENV.cxx}"
 
       if build.with? "menu-icons"
         args << "-DUSE_IMAGES_IN_MENUS=ON"
