@@ -3,12 +3,12 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.3.0-src.tar.gz"
-    sha256 "ea02d7bc9e7de5b8be3fe6b37ea9b2bd823f9a532c8e4c47d02f37f24ffa3126"
+    url "https://static.rust-lang.org/dist/rustc-1.4.0-src.tar.gz"
+    sha256 "1c0dfdce5c85d8098fcebb9adf1493847ab40c1dfaa8cc997af09b2ef0aa8211"
 
     resource "cargo" do
       # git required because of submodules
-      url "https://github.com/rust-lang/cargo.git", :tag => "0.5.0", :revision => "8d21fd21a6b20056e9b5745e4e3f3b4279dc7fe4"
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.6.0", :revision => "e1ed9956e079a563796fb380871f4b67619f58ee"
     end
 
     # name includes date to satisfy cache
@@ -38,6 +38,7 @@ class Rust < Formula
   depends_on "pkg-config" => :build
   depends_on "llvm" => :optional
   depends_on "openssl"
+  depends_on "libssh2"
 
   conflicts_with "multirust", :because => "both install rustc, rustdoc, cargo, rust-lldb, rust-gdb"
 
