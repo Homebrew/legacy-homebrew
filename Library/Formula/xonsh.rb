@@ -1,10 +1,9 @@
 class Xonsh < Formula
   desc "Python-ish, BASHwards-compatible shell language and command prompt"
   homepage "http://xonsh.org"
-  url "https://github.com/scopatz/xonsh/archive/0.1.5.tar.gz"
-  sha256 "ed04665d4396837191594f2dd9107403eabecb14add5dfbb8f4fb31e13fc03c2"
+  url "https://github.com/scopatz/xonsh/archive/0.2.2.tar.gz"
+  sha256 "cd37fafb53ca18474132929117df02cfbf53526345183027f773db5b45bb7759"
   head "https://github.com/scopatz/xonsh.git"
-  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -16,8 +15,8 @@ class Xonsh < Formula
   depends_on :python3
 
   resource "ply" do
-    url "https://pypi.python.org/packages/source/p/ply/ply-3.6.tar.gz"
-    sha256 "61367b9eb2f4b819f69ea116750305270f1df8859992c9e356d6a851f25a4b47"
+    url "https://pypi.python.org/packages/source/p/ply/ply-3.8.tar.gz"
+    sha256 "e7d1bdff026beb159c9942f7a17e102c375638d9478a7ecd4cc0c76afd8de0b8"
   end
 
   def install
@@ -35,6 +34,6 @@ class Xonsh < Formula
   end
 
   test do
-    assert_match /4/, shell_output("#{bin}/xonsh -c 2+2")
+    assert_match "4", shell_output("#{bin}/xonsh -c 2+2")
   end
 end
