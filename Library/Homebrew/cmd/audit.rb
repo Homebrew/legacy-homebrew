@@ -392,6 +392,10 @@ class FormulaAuditor
     if desc =~ /^([Aa]n?)\s/
       problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
     end
+
+    if desc =~ /^#{formula.name} is\s/i
+      problem "Description shouldn't include the formula name"
+    end
   end
 
   def audit_homepage
