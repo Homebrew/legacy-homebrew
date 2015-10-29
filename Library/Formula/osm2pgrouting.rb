@@ -1,8 +1,8 @@
 class Osm2pgrouting < Formula
   desc "Import OSM data into pgRouting database"
   homepage "http://pgrouting.org/docs/tools/osm2pgrouting.html"
-  url "https://github.com/pgRouting/osm2pgrouting/archive/v2.0.0.tar.gz"
-  sha256 "0438624f02b58b14388962d6b538187f16993a5e1e9766acf8099dc0255dfb34"
+  url "https://github.com/pgRouting/osm2pgrouting/archive/osm2pgrouting-2.0.0.tar.gz"
+  sha256 "607e67b85664a40a495bfa37fdc236b617c3c6b41c3aa4fd68f780ba6a629469"
   head "https://github.com/pgRouting/osm2pgrouting.git"
 
   depends_on "cmake" => :build
@@ -21,5 +21,9 @@ class Osm2pgrouting < Formula
     system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
+  end
+
+  test do
+    shell_output("#{bin}/osm2pgrouting", 1)
   end
 end
