@@ -8,10 +8,10 @@ class Gor < Formula
   head "https://github.com/buger/gor.git"
 
   bottle do
-    cellar :any
-    sha256 "0ce768fad5dc8294e36a401d8135b02586e75525d402c8cd71818a1ac1e1b40a" => :yosemite
-    sha256 "a6d61251f498b304a65c2e295af2c464f16d4647a8ed9559f6caa69e58f6d1fa" => :mavericks
-    sha256 "97de5a69f364547fe8823e07c01be2d574cd10bb114fadf7268307218c6bb93b" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8f552482322a1f17d656f4079509cfe4e2ed44a02d0270bc842fb7d71c1140ed" => :el_capitan
+    sha256 "33c2c144336309b25f877c18d5daa69b7948ad20c505da4832135d77629ee880" => :yosemite
+    sha256 "06d1905b52b0d9b6ea0ee983e4d1981a9070ffe06b80b2488ef1fe4e2f654522" => :mavericks
   end
 
   depends_on "go" => :build
