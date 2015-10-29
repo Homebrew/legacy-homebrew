@@ -7,10 +7,10 @@ class Magit < Formula
   head "https://github.com/magit/magit.git", :shallow => false
 
   bottle do
-    cellar :any
-    sha256 "048842721bb6f95aebd3ad00a81d5d62c87e8803252e4152e66652deeca6773f" => :yosemite
-    sha256 "37969f18c4d5fa5c485670ffa27af504f38505f369447dc778771cc771ad61cb" => :mavericks
-    sha256 "566bc0c62bf9633e7c8010877c2e884eacca730a0d3e626c2c22f0f964e09ca8" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0773f335dd0306ecb269fbefb6f243065602217d032000b90c19da4380f5b584" => :el_capitan
+    sha256 "fb8f610c5afd46576c60d332faafcdf50afa2b65526303e2dbccd64bd1b0b8e0" => :yosemite
+    sha256 "138a269361bca3d5a909e1da5c99a67f48e25fac59836e1ac489633ccc473f2b" => :mavericks
   end
 
   depends_on :emacs => "24.4"
