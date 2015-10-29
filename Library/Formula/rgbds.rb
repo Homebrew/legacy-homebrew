@@ -7,10 +7,10 @@ class Rgbds < Formula
   head "https://github.com/bentley/rgbds.git"
 
   bottle do
-    cellar :any
-    sha256 "b38aeefaffb931fece069ba16e57cf1c033c4cf6df6d60811520940be424470a" => :yosemite
-    sha256 "d9d7ac1db608efe738507b248d1881a84aa3b71c839165628f98449459d17919" => :mavericks
-    sha256 "858232f6f636e4fe3f3061d51c56fcf7c3de74fa9a17cbfeaae3e52ab3b73a16" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "46c4d64f4ac330933afec620fb70e469461157d28bd52ddc726ab25de412a3b4" => :el_capitan
+    sha256 "2cb8697c3899037e909218ad5b1786116ba1becbe735a68a0efc909e0c0a3478" => :yosemite
+    sha256 "c08b856ecf4cb57390ec99241d0bc87ba623536ab7e3e11d5cc23334230ff1cd" => :mavericks
   end
 
   def install
