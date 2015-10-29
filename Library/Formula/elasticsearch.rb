@@ -52,7 +52,6 @@ class Elasticsearch < Formula
       # 2. Configure paths
       s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/elasticsearch/")
       s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/elasticsearch/")
-      s.sub!(%r{#\s*path\.plugins: /path/to.+$}, "path.plugins: #{var}/lib/elasticsearch/plugins")
 
       # 3. Bind to loopback IP for laptops roaming different networks
       s.gsub!(/#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1")
