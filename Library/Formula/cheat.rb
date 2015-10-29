@@ -1,8 +1,8 @@
 class Cheat < Formula
   desc "Create and view interactive cheat sheets for *nix commands"
   homepage "https://github.com/chrisallenlane/cheat"
-  url "https://github.com/chrisallenlane/cheat/archive/2.1.14.tar.gz"
-  sha256 "cf869df86cf2d3feb0c0f4bd48a4538f517e194a9fd4d4cd22724841d2b3d9ec"
+  url "https://github.com/chrisallenlane/cheat/archive/2.1.18.tar.gz"
+  sha256 "9a1d9843df87aca7ae34f1e1a3b22a87e48532925092ba932d67f42c28b2a3d8"
   head "https://github.com/chrisallenlane/cheat.git"
 
   bottle do
