@@ -5,8 +5,6 @@ class Task < Formula
   stable do
     url "https://taskwarrior.org/download/task-2.5.0.tar.gz"
     sha256 "4d8e67415a6993108c11b8eeef99b76a991af11b22874adbb7ae367e09334636"
-
-    depends_on "gnutls"
   end
 
   bottle do
@@ -17,14 +15,17 @@ class Task < Formula
 
   head do
     url "https://git.tasktools.org/scm/tm/task.git", :branch => "2.5.1", :shallow => false
-
-    depends_on "gnutls"
   end
 
+  option "without-gnutls", "Don't use gnutls; disables sync support"
+
   depends_on "cmake" => :build
+  depends_on "gnutls" => :recommended
 
   def install
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    args << "-DENABLE_SYNC=OFF" if build.without? "gnutls"
+    system "cmake", ".", *args
     system "make", "install"
     bash_completion.install "scripts/bash/task.sh"
     zsh_completion.install "scripts/zsh/_task"
