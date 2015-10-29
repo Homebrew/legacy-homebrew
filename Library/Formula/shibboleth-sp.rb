@@ -4,26 +4,56 @@ class ShibbolethSp < Formula
   url "http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz"
   sha256 "30da36e0bba2ce4606a9effc37c05cd110dafdd6d3141468c4aa0f57ce4d96ce"
 
+  option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
+  option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
+
+  depends_on "curl" => "with-openssl"
   depends_on "opensaml"
-  depends_on "xml-tooling-c"
+  depends_on "xml-tooling-c" => "with-openssl"
   depends_on "xerces-c"
   depends_on "xml-security-c"
   depends_on "log4shib"
   depends_on "boost"
+  depends_on "httpd22" if build.with? "homebrew-httpd22"
+  depends_on "httpd24" if build.with? "homebrew-httpd24"
+
+  skip_clean "var/run/shibboleth"
+  skip_clean "var/cache/shibboleth"
+
+  def apache_configdir
+    if build.with? "homebrew-httpd22"
+      "#{etc}/apache2/2.2"
+    elsif build.with? "homebrew-httpd24"
+      "#{etc}/apache2/2.4"
+    else
+       "/etc/apache2"
+    end
+  end
 
   def install
     ENV.O2
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--with-xmltooling=/usr/local/Cellar/xml-tooling-c/1.5.3",
-                          "--with-saml=/usr/local/Cellar/opensaml/2.5.3",
-                          "--with-boost=/usr/local/Cellar/boost/1.58.0",
-                          "--with-xerces=/usr/local/Cellar/xerces-c/3.1.2",
-                          "--with-xmlsec=/usr/local/Cellar/xml-security-c/1.7.3"
+    args = []
+    args << "--disable-debug"
+    args << "--disable-dependency-tracking"
+    args << "--disable-silent-rules"
+    args << "--prefix=#{prefix}"
+    args << "--with-xmltooling=#{Formula["xml-tooling-c"].opt_prefix}"
+    args << "--with-saml=#{Formula["opensaml"].opt_prefix}"
+    args << "--with-boost=#{Formula["boost"].opt_prefix}"
+    args << "--with-xerces=#{Formula["xerces-c"].opt_prefix}"
+    args << "--with-xmlsec=#{Formula["xml-security-c"].opt_prefix}"
+    args << "LDFLAGS=-L#{Formula["curl"].opt_prefix}/curl/lib"
+    args << "CPPFLAGS=-I#{Formula["curl"].opt_prefix}/curl/include"
+    args << "DYLD_LIBRARY_PATH=#{prefix}/lib"
+    if build.with? "homebrew-httpd22"
+      args << "--enable-apache-22"
+    elsif build.with? "homebrew-httpd24"
+      args << "--enable-apache-24"
+    end
+    system "./configure", *args
     system "make", "install"
-    (var/"shibboleth/run").mkpath
+    (prefix/"var/run/shibboleth/").mkpath
+    (prefix/"var/cache/shibboleth").mkpath
   end
 
   def plist; <<-EOS.undent
@@ -33,8 +63,6 @@ class ShibbolethSp < Formula
     <dict>
       <key>Label</key>
       <string>#{plist_name}</string>
-      <key>ServiceDescription</key>
-      <string>Shibboleth 2 Service Provider daemon</string>
       <key>ProgramArguments</key>
       <array>
         <string>#{opt_prefix}/sbin/shibd</string>
@@ -45,8 +73,33 @@ class ShibbolethSp < Formula
       </array>
       <key>RunAtLoad</key>
       <true/>
+      <key>KeepAlive</key>
+      <true/>
     </dict>
     </plist>
     EOS
+  end
+
+  def caveats
+    s = ""
+    s += <<-EOS.undent
+    You must manually edit #{apache_configdir}/httpd.conf to include
+    EOS
+    mod = "mod_shib_24.so"
+    if build.with? "homebrew-httpd22"
+      mod = "mod_shib_22.so"
+    end
+
+    s += <<-EOS.undent
+      LoadModule mod_shib #{lib}/shibboleth/#{mod}
+    EOS
+
+    s+= <<-EOS.undent
+    You must also manually configure
+      #{opt_prefix}/shibboleth-sp/etc/shibboleth/shibboleth2.xml
+    as per your own requirements. For more information please see
+      https://wiki.shibboleth.net/confluence/display/EDS10/3.1+Configuring+the+Service+Provider
+    EOS
+    s
   end
 end
