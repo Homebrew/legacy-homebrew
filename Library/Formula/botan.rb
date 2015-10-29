@@ -17,8 +17,8 @@ class Botan < Formula
   end
 
   devel do
-    url "http://botan.randombit.net/releases/Botan-1.11.19.tgz"
-    sha256 "4b0f3be4262bdc71629ea4a38e2ed85ff53e573054ad84ba37d65fc1477b3028"
+    url "http://botan.randombit.net/releases/Botan-1.11.23.tgz"
+    sha256 "04b02b54419d5ec9c97363123abd41b6f5537d20e9f9932068c362c807bc8f08"
   end
 
   option "with-debug", "Enable debug build of Botan"
