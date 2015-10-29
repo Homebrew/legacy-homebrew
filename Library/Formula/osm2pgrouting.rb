@@ -5,6 +5,13 @@ class Osm2pgrouting < Formula
   sha256 "607e67b85664a40a495bfa37fdc236b617c3c6b41c3aa4fd68f780ba6a629469"
   head "https://github.com/pgRouting/osm2pgrouting.git"
 
+  bottle do
+    cellar :any
+    sha256 "e2eeea2392b2febb64ad5beb1e974ba10f9b38012b6d41edb9111b6cc3e19911" => :el_capitan
+    sha256 "24a7fbe3a7079145f76b8e9f70c3f1fd02bd82e4324ef782950d3f98678530c8" => :yosemite
+    sha256 "6fced08cc54a523a0923a7091b735c45becc63d51ca16775b381fd455150a124" => :mavericks
+  end
+
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on :postgresql
