@@ -1,5 +1,5 @@
 class Librest < Formula
-  desc "librest is a library access web services that claim to be RESTful"
+  desc "Library to access RESTful web services"
   homepage "https://wiki.gnome.org/Projects/Librest"
   url "https://download.gnome.org/sources/rest/0.7/rest-0.7.93.tar.xz"
   sha256 "c710644455340a44ddc005c645c466f05c0d779993138ea21a62c6082108b216"
