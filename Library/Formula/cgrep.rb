@@ -5,11 +5,9 @@ class Cgrep < Formula
 
   desc "Context-aware grep for source code"
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
-  sha256 "a38d7957854b9b6f55ed8610d88b0ba3d5061d7194e3ec13e608d7a4515371f5"
+  url "https://github.com/awgn/cgrep/archive/v6.5.3.tar.gz"
+  sha256 "8660a9459533d890504a416c2dfc06af672f90c0807745192f7daab8bdba3c82"
   head "https://github.com/awgn/cgrep.git"
-
-  revision 1
 
   bottle do
     sha256 "677084bcc353b3bfc75629c6b974027c34c7330b2ecabe8489462585fbd10159" => :yosemite
@@ -23,23 +21,17 @@ class Cgrep < Formula
   setup_ghc_compilers
 
   def install
-    # The "--allow-newer" is a hack for GHC 7.10.1, remove when possible.
-    install_cabal_package "--allow-newer"
+    install_cabal_package
   end
 
   test do
     test_string = "String in"
-    path = testpath/"test.rb"
-    path.write <<-EOS.undent
+    (testpath/"test.rb").write <<-EOS.undent
       # puts #{test_string} comment.
       puts "#{test_string} literal."
     EOS
 
-    comment = `cgrep --comment "#{test_string}" #{path}`
-    assert_equal 1, comment.lines.count
-    literal = `cgrep --literal "#{test_string}" #{path}`
-    assert_equal 1, literal.lines.count
-    code = `cgrep --code puts #{path}`
-    assert_equal 1, code.lines.count
+    assert_equal 1, shell_output("#{bin}/cgrep --literal \"#{test_string}\" #{testpath}/test.rb").lines.count
+    assert_equal 1, shell_output("#{bin}/cgrep --code puts #{testpath}/test.rb").lines.count
   end
 end
