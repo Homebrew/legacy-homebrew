@@ -7,10 +7,10 @@ class YleDl < Formula
   head "https://github.com/aajanki/yle-dl.git"
 
   bottle do
-    cellar :any
-    sha256 "2792ad1b8a6a2aa7bc9ba5821037ac5a691f9b650ebc18551cb3955ec53f7d84" => :yosemite
-    sha256 "0af5fb9456cc26b7c92f7a03462189597d27b9229a74800a2094edac79125a09" => :mavericks
-    sha256 "cb4a209ac0e68d168df8424813d6436501493850fef66ec710e5cdb41415cc44" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "99a7718771e118ff5ceeb828ac1ea7ac4b8355431f6e7392a28b75d7b0d91195" => :el_capitan
+    sha256 "5b8e85cfaddc9b9e979da27e76f45ca98eb6e8004103809bfcdfb5f9bf9c4bc9" => :yosemite
+    sha256 "23e024faacf5f9ce1d951aa99db09da3c90674ea5c7cffcebe29790dba7597ba" => :mavericks
   end
 
   depends_on "rtmpdump"
