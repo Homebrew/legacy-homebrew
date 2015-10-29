@@ -17,10 +17,9 @@ class Libmatroska < Formula
 
   bottle do
     cellar :any
-    sha256 "a4526f7956bd9d6672fce68bfa466fee82fe3e7d09c8e4a90646d01a5dde9507" => :el_capitan
-    sha1 "d053e9fa24d4cf44df2fed66135229c93730fadc" => :yosemite
-    sha1 "9e6ed0b827540637402c1486392caab57a643724" => :mavericks
-    sha1 "b364a51830e23a3ab15fc65ecaa04e40853073b3" => :mountain_lion
+    sha256 "23417984246dabfd997d11054364071df85b88e5a6c81cbaa21dae32c106cbb4" => :el_capitan
+    sha256 "4b0fbe4e06821b9d62a5c56813769cee0705e2b646d5c623a582558a05cce5f0" => :yosemite
+    sha256 "5816f0ccf1d6ef2fe4225d5750d303a7cdb059291d15bbae0f73f915d855d82d" => :mavericks
   end
 
   option :cxx11
