@@ -3,6 +3,7 @@ class Glib < Formula
   homepage "https://developer.gnome.org/glib/"
   url "https://download.gnome.org/sources/glib/2.46/glib-2.46.1.tar.xz"
   sha256 "5a1f03b952ebc3a7e9f612b8724f70898183e31503db329b4f15d07163c8fdfb"
+  revision 1
 
   bottle do
     sha256 "d9a33e02f6765853ccaa85b1a221773256d61057f0755677b50634270c0c8b30" => :el_capitan
@@ -12,7 +13,6 @@ class Glib < Formula
 
   option :universal
   option "with-test", "Build a debug build and run tests. NOTE: Not all tests succeed yet"
-  option "with-static", "Build glib with a static archive."
 
   deprecated_option "test" => "with-test"
 
@@ -85,12 +85,11 @@ class Glib < Formula
       --disable-silent-rules
       --disable-dtrace
       --disable-libelf
+      --enable-static
       --prefix=#{prefix}
       --localstatedir=#{var}
       --with-gio-module-dir=#{HOMEBREW_PREFIX}/lib/gio/modules
     ]
-
-    args << "--enable-static" if build.with? "static"
 
     system "./configure", *args
 
