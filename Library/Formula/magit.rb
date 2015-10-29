@@ -1,8 +1,8 @@
 class Magit < Formula
   desc "Emacs interface for Git"
   homepage "https://github.com/magit/magit"
-  url "https://github.com/magit/magit/releases/download/2.2.2/magit-2.2.2.tar.gz"
-  sha256 "08e61898e23dbeb3a152d82e58fc9f6c769fe36d35d87617dcd1e69b2f91b3c6"
+  url "https://github.com/magit/magit/releases/download/2.3.0/magit-2.3.0.tar.gz"
+  sha256 "a5cbf76635a801aa8cd75e5ec2171051328f23407dc46837004e00942ede202e"
 
   head "https://github.com/magit/magit.git", :shallow => false
 
@@ -16,13 +16,13 @@ class Magit < Formula
   depends_on :emacs => "24.4"
 
   resource "dash" do
-    url "https://github.com/magnars/dash.el/archive/2.11.0.tar.gz"
-    sha256 "d888d34b9b86337c5740250f202e7f2efc3bf059b08a817a978bf54923673cde"
+    url "https://github.com/magnars/dash.el/archive/2.12.0.tar.gz"
+    sha256 "272b337f31edb95c5aadc8e953d522bd307dc522588f246cc9157edee10b1a76"
   end
 
   resource "async" do
-    url "https://github.com/jwiegley/emacs-async/archive/v1.4.tar.gz"
-    sha256 "295d6d5dd759709ef714a7d05c54aa2934f2ffb4bb2e90e4434415f75f05473b"
+    url "https://github.com/jwiegley/emacs-async/archive/v1.5.tar.gz"
+    sha256 "3126a6960796aa1bebe8a169ea5430df6ae5e18a34816c01b578f7c37c4bc216"
   end
 
   def install
