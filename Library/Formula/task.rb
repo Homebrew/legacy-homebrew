@@ -8,9 +8,10 @@ class Task < Formula
   end
 
   bottle do
-    sha256 "a2f68eb1bd6ff5f0992603c64faff6788e862ed943b5a0b7104a1969a4dc9c1a" => :el_capitan
-    sha256 "bbf344c831fe72587ba3673c41b49433c8078bf93054dbed1ce9fac6edce5146" => :yosemite
-    sha256 "598d16065ecdd17a628764e47e93bb0309dcbc41ff6f689c046519c5a7e5c0f8" => :mavericks
+    revision 1
+    sha256 "b5215c6498e14ce80811d34ffcdeb0097e5ffe699f4bd93bc845e12cf9df3aa4" => :el_capitan
+    sha256 "026ac81ac65d3c34e7345e72d80c756521cfda7e19bb5148a7608bdab274d0ef" => :yosemite
+    sha256 "8651183eacf5d5c23a84d3593a67fb24a0dae92c03b6664d03ee0952b5eb6ae4" => :mavericks
   end
 
   head do
