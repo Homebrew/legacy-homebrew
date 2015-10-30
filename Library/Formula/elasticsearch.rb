@@ -127,6 +127,6 @@ class Elasticsearch < Formula
   end
 
   test do
-    system "#{bin}/plugin", "--list"
+    system "#{bin}/plugin", "list"
   end
 end
