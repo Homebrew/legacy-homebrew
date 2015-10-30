@@ -7,11 +7,11 @@ class Moose < Formula
 
   depends_on "cmake" => :build
   depends_on "gsl" 
-  depends_on "hdf5" 
-  depends_on "libsbml" 
-  depends_on "python"
+  depends_on "homebrew/science/hdf5" 
+  depends_on "homebrew/science/libsbml" 
   depends_on "homebrew/python/matplotlib"
   depends_on "homebrew/python/numpy"
+  depends_on "python"
   depends_on "pyqt"
 
   resource "gui" do
