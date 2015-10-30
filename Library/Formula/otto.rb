@@ -9,6 +9,13 @@ class Otto < Formula
 
   head "https://github.com/hashicorp/otto.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "d5cd70b1a6a9c90e6a71169d09ddd9889ee67a9f1b6ee087dc4f8aa43bef3997" => :el_capitan
+    sha256 "e4b30c4da6a208a435ee3c423832582660a41f12faefdc2c90bda6f554b96293" => :yosemite
+    sha256 "c0833235419c696f236157fa9540f8056ca2d64aa7e59db715535aec13108c03" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/jteeuwen/go-bindata" do
