@@ -393,7 +393,7 @@ class FormulaAuditor
       problem "Description shouldn't start with an indefinite article (#{$1})"
     end
 
-    if desc =~ /^#{formula.name} is\s/i
+    if desc =~ /^#{formula.name}\s/i
       problem "Description shouldn't include the formula name"
     end
   end
