@@ -2,8 +2,8 @@ class Moose < Formula
   desc "MOOSE"
   version "3.0.2"
   homepage "http://moose.ncbs.res.in"
-  url "https://github.com/BhallaLab/moose-core/archive/master.zip"
-  sha256 ""
+  url "https://github.com/BhallaLab/moose-core/archive/ghevar-3.0.2-alpha.zip"
+  sha256 "febc7fc41a2513aeb2b6998731f61c7e7f2a6b5169a77e1612c189779fb0d1f1"
 
   depends_on "cmake" => :build
   depends_on "gsl" 
