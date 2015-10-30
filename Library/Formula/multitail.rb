@@ -1,8 +1,8 @@
 class Multitail < Formula
   desc "Tail multiple files in one terminal simultaneously"
   homepage "http://vanheusden.com/multitail/"
-  url "http://www.vanheusden.com/multitail/multitail-6.4.1.tgz"
-  sha256 "8a6baecf3537c791f70645f3613bfea0c91a22040f2531bfe03b6d0cdd112134"
+  url "https://www.vanheusden.com/multitail/multitail-6.4.2.tgz"
+  sha256 "af1d5458a78ad3b747c5eeb135b19bdca281ce414cefdc6ea0cff6d913caa1fd"
 
   bottle do
     cellar :any_skip_relocation
@@ -11,13 +11,6 @@ class Multitail < Formula
     sha256 "21a9ed45a00fdbfe451007372f0f378fbc4fb240cee028aab33cb073bdf20d79" => :yosemite
     sha256 "0fb95a986bd90832788140c5e6e03124fffa91cac05e2422e3d28e141a414b72" => :mavericks
     sha256 "e7cec6d4f503c7332274c27613ab5f1667a2077abc604bfd09cb80849e43f90b" => :mountain_lion
-  end
-
-  # Upstream pull request to fix compilation issues on OS X
-  # https://github.com/flok99/multitail/pull/13
-  patch do
-    url "https://github.com/flok99/multitail/pull/13.diff"
-    sha256 "056036fb76a56eb388ef9d32bfd4e1c7aca161b3f3c60f4c542ff1134f57d71f"
   end
 
   def install
