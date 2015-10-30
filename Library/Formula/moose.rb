@@ -49,6 +49,12 @@ class Moose < Formula
       chmod 0755, bin/"moosegui"
 
       bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-
   end
+
+  def test 
+      Dir.chdir("tests/python") {
+          system "bash", "./test_all.sh"
+      }
+  end
+
 end
