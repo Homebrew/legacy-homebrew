@@ -16,6 +16,7 @@ class EmacsRequirement < Requirement
 
   env do
     ENV.prepend_path "PATH", which("emacs").dirname
+    ENV["EMACS"] = "emacs"
   end
 
   def message
