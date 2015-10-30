@@ -3,14 +3,8 @@ class Mplayer < Formula
   homepage "https://www.mplayerhq.hu/"
 
   stable do
-    url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.1.1.tar.xz"
-    sha256 "ce8fc7c3179e6a57eb3a58cb7d1604388756b8a61764cc93e095e7aff3798c76"
-
-    # Fix compilation on 10.9, adapted from upstream revision r36500
-    patch do
-      url "https://gist.githubusercontent.com/jacknagel/7441175/raw/37657c264a6a3bb4d30dee14538c367f7ffccba9/vo_corevideo.h.patch"
-      sha256 "19296cbfa2d3b9af4f12d3fc8a4fdbf5b095bc85fc31b3328ab20bfbadb12b3d"
-    end
+    url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.tar.xz"
+    sha256 "ffe7f6f10adf2920707e8d6c04f0d3ed34c307efc6cd90ac46593ee8fba2e2b6"
   end
 
   bottle do
@@ -61,15 +55,11 @@ class Mplayer < Formula
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
     # and mplayer doesn't expect the hacks we apply. So it chokes.
     # Specify our compiler to stop ffmpeg from defaulting to gcc.
-    # Disable openjpeg because it defines int main(), which hides mplayer's main().
-    # This issue was reported upstream against openjpeg 1.5.0:
-    # http://code.google.com/p/openjpeg/issues/detail?id=152
     args = %W[
       --prefix=#{prefix}
       --cc=#{ENV.cc}
       --host-cc=#{ENV.cc}
       --disable-cdparanoia
-      --disable-libopenjpeg
     ]
 
     args << "--enable-menu" if build.with? "osd"
