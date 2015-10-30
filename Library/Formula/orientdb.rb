@@ -3,7 +3,7 @@ class Orientdb < Formula
   homepage "https://orientdb.com"
   url "http://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.1.5.tar.gz&os=mac"
   version "2.1.5"
-  sha256 "9e70ba029363025dd25d1f618787647fd88e961"
+  sha256 "3bec2b7a1baf60bd6cf5dd1b7b6f1a9ac47b71515aefbcbf560a2736b36015be"
 
   bottle do
     cellar :any_skip_relocation
