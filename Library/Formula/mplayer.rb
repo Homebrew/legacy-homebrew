@@ -8,11 +8,9 @@ class Mplayer < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "d9abd74426d0b6ecb52c81a1df427f4e758b534cc511c81d18f8e92c5bb0ae3e" => :el_capitan
-    sha1 "2c9bfd124fdd729bc8addd2ddfd45ed718c80e20" => :mavericks
-    sha1 "ba213d5c1aadad6869cbb57f17f56971af8acffd" => :mountain_lion
-    sha1 "7efc5960bc15c904a2893f23190d783b3d57d27a" => :lion
+    sha256 "5504434dce05f51d0d6336426f64af559740203193f6f34d1ef250ebfe955d8f" => :el_capitan
+    sha256 "6d6ccf0b963bc4a0edd48bc7d1e1008db888dc38b91fe85c6c58c5d6dded4f48" => :yosemite
+    sha256 "d90208d62889b8c74d06917ba926f91fddb039ab15b27c825e4356b75b9d105b" => :mavericks
   end
 
   head do
