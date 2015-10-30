@@ -1,9 +1,9 @@
 class Osxutils < Formula
-  desc "CLI access of Mac-specific information, settings, and metadata"
-  homepage "https://github.com/vasi/osxutils"
-  url "https://github.com/vasi/osxutils/archive/v1.8.1.tar.gz"
-  sha256 "26c49f00435d2b58a3768f0712d25afc09139e91994ba2bdaa21915004214186"
-  head "https://github.com/vasi/osxutils.git"
+  desc "Suite of Mac OS command line utilities"
+  homepage "https://github.com/specious/osxutils"
+  url "https://github.com/specious/osxutils/archive/v1.8.2.tar.gz"
+  sha256 "83714582cce83faceee6d539cf962e587557236d0f9b5963bd70e3bc7fbceceb"
+  head "https://github.com/specious/osxutils.git"
 
   bottle do
     cellar :any
