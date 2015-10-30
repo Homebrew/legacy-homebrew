@@ -6,10 +6,9 @@ class Pypy < Formula
 
   bottle do
     cellar :any
-    sha256 "b4fba7ced042fb191f7d36b54ea6e474f53b0ca30b5dfc2c971faab0dba952a9" => :el_capitan
-    sha256 "8831be56c20ce1982359509dfc5059e0caefdd313dda5350eb13d2ea5237a973" => :yosemite
-    sha256 "6ba539560bad5331eff9172b858876e04cc2793f236e865495952aa48f921bf0" => :mavericks
-    sha256 "010f42ebb6352570c5b0268490d3cd931d0cb2f559cf59d53b7e29c29212f927" => :mountain_lion
+    sha256 "dc76aa84fb53dfa27e99d4e7b6203c88baa05728855db2d2ccbe5c1451daa65b" => :el_capitan
+    sha256 "ba316ef2f1f7471df101dc8ae86a30249931beb8c8e84ae561eb0b2f14db1d37" => :yosemite
+    sha256 "2ee52ddf499073d9591d48ab20b18ed578733415d34a5007a5fe4805ccbe9bff" => :mavericks
   end
 
   depends_on :arch => :x86_64
