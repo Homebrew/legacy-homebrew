@@ -49,12 +49,12 @@ class Trafficserver < Formula
       --prefix=#{prefix}
       --mandir=#{man}
       --localstatedir=#{var}
-      --sysconfdir=#{etc}
+      --sysconfdir=#{etc}/trafficserver
       --with-openssl=#{Formula["openssl"].opt_prefix}
-      --with-user=#{ENV["USER"]}
       --with-group=admin
       --disable-silent-rules
     ]
+
     args << "--enable-spdy" if build.with? "spdy"
     args << "--enable-experimental-plugins" if build.with? "experimental-plugins"
 
@@ -71,6 +71,14 @@ class Trafficserver < Formula
 
     system "make" if build.head?
     system "make", "install"
+  end
+
+  def post_install
+    return unless File.exist?(etc/"trafficserver/records.config")
+
+    File.open("#{etc}/trafficserver/records.config", "a") do |f|
+      f.puts "CONFIG proxy.config.admin.user_id STRING #{ENV["USER"]}"
+    end
   end
 
   test do
