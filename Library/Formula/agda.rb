@@ -23,7 +23,9 @@ class Agda < Formula
   end
 
   resource "stdlib" do
-    url "https://github.com/agda/agda-stdlib.git", :branch => "2.4.2.4"
+    url "https://github.com/agda/agda-stdlib.git",
+        :tag => "v0.11",
+        :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
   end
 
   option "without-stdlib", "Don't install the Agda standard library"
