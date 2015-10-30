@@ -50,11 +50,14 @@ class Elasticsearch < Formula
       s.gsub!(/#\s*cluster\.name\: my-application/, "cluster.name: #{cluster_name}")
 
       # 2. Configure paths
-      s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/elasticsearch/")
-      s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/elasticsearch/")
+      s.sub!(%r{#\s*path\.data: /path/to.+$}, "path.data: #{var}/elasticsearch")
+      s.sub!(%r{#\s*path\.logs: /path/to.+$}, "path.logs: #{var}/log/elasticsearch")
 
       # 3. Bind to loopback IP for laptops roaming different networks
       s.gsub!(/#\s*network\.host\: [^\n]+/, "network.host: 127.0.0.1")
+
+      # 4. Add config options not included in the example config file
+      s << "\npath.plugins: #{var}/lib/elasticsearch/plugins"
     end
 
     inreplace "#{bin}/elasticsearch.in.sh" do |s|
