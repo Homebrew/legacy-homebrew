@@ -390,7 +390,11 @@ class FormulaAuditor
     end
 
     if desc =~ /^([Aa]n?)\s/
-      problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
+      problem "Description shouldn't start with an indefinite article (#{$1})"
+    end
+
+    if desc =~ /^#{formula.name} is\s/i
+      problem "Description shouldn't include the formula name"
     end
   end
 

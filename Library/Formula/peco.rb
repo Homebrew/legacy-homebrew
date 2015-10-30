@@ -3,38 +3,38 @@ require "language/go"
 class Peco < Formula
   desc "Simplistic interactive filtering tool"
   homepage "https://github.com/peco/peco"
-  url "https://github.com/peco/peco/archive/v0.3.4.tar.gz"
-  sha256 "48a864ea92dd12356411ac477b3991d48070528f05d5ca5dfff0ad88e874d470"
+  url "https://github.com/peco/peco/archive/v0.3.5.tar.gz"
+  sha256 "416d2547b639b11563d0bd910fa043e532f25fcc40de3ec0d7bec4943747fff1"
 
   head "https://github.com/peco/peco.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d78befdc344dedcfbf20fdae220bf95b191cde92542550612335055002eb90bb" => :el_capitan
-    sha256 "e3d3da83f741ee644c1f65788e592820237f41b3ff22c1205ea6377539dd6d42" => :yosemite
-    sha256 "61ac23a2cd5348da97dab231a9645c32505d36ff9194d79aa87f58d11de8dde5" => :mavericks
+    sha256 "3f42983ae2cdb2f8f4c583becbad5c708b95a9e9fbf474d80ee2abf813e16cd7" => :el_capitan
+    sha256 "f327e9d88ef8f10a405b6296868b5782743d047b4b8df7b25647ad0b92c07062" => :yosemite
+    sha256 "f341d17b7831b69486f632ed0b762610d47de56d364d4cf31e69ef49c67cc9ca" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/google/btree" do
     url "https://github.com/google/btree.git",
-      :revision => "0c05920fc3d98100a5e3f7fd339865a6e2aaa671"
+      :revision => "cc6329d4279e3f025a53a83c397d2339b5705c45"
   end
 
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
-      :revision => "8ec9564882e7923e632f012761c81c46dcf5bec1"
+      :revision => "fc93116606d0a71d7e9de0ad5734fdb4b8eae834"
   end
 
   go_resource "github.com/mattn/go-runewidth" do
     url "https://github.com/mattn/go-runewidth.git",
-      :revision => "58a0da4ed7b321c9b5dfeffb7e03ee188fae1c60"
+      :revision => "12e0ff74603c9a3209d8bf84f8ab349fe1ad9477"
   end
 
   go_resource "github.com/nsf/termbox-go" do
     url "https://github.com/nsf/termbox-go.git",
-      :revision => "10f14d7408b64a659b7c694a771f5006952d336c"
+      :revision => "62033d80b58736ea31beaf43348f5147913af30e"
   end
 
   def install
