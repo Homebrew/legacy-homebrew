@@ -1,9 +1,9 @@
 class Libebml < Formula
   desc "Sort of a sbinary version of XML"
   homepage "http://www.matroska.org/"
-  url "http://dl.matroska.org/downloads/libebml/libebml-1.3.1.tar.bz2"
-  mirror "https://www.bunkus.org/videotools/mkvtoolnix/sources/libebml-1.3.1.tar.bz2"
-  sha256 "195894b31aaca55657c9bc157d744f23b0c25597606b97cfa5a9039c4b684295"
+  url "http://dl.matroska.org/downloads/libebml/libebml-1.3.3.tar.bz2"
+  mirror "https://www.bunkus.org/videotools/mkvtoolnix/sources/libebml-1.3.3.tar.bz2"
+  sha256 "35fb44daa41961f94a0ac1b8f06801e88cc9bf2ad6f562ced8ab7c1f1a875499"
 
   head do
     url "https://github.com/Matroska-Org/libebml.git"
@@ -14,10 +14,9 @@ class Libebml < Formula
 
   bottle do
     cellar :any
-    sha256 "4f4a4af564ec57747b83f65ea4b6e1f58ebc1bdad0be545825ddea6dcf4b9708" => :el_capitan
-    sha1 "5e3f974d17bd9f6fad89d19c403e3fd720f6c509" => :yosemite
-    sha1 "8bbd297bdca1e250bedf9f9a1800a8819fa97d34" => :mavericks
-    sha1 "c1ea1c44a4653770dd92ecfa64561f8f449f1da2" => :mountain_lion
+    sha256 "67c3beaaf7861310131d3951ec5c65426caa683f535f2f58dcb42580b624e81e" => :el_capitan
+    sha256 "9ecbc5db4abae34d45784d0a18ab099516b0723429e5c90d75e3d0dcb2fafda2" => :yosemite
+    sha256 "3bd2e124724170da22bfbc67c102c545487d9e6af5c514865078747de1c37dbe" => :mavericks
   end
 
   option :cxx11

@@ -11,14 +11,15 @@ class Botan < Formula
 
   bottle do
     cellar :any
-    sha256 "8a78b816e7523d9a333bb27f9065af459fe42b1df09095e7bcca49724aedf6ad" => :yosemite
-    sha256 "8f59de29b4f33d1fc7eb17101e6832a8441267e5af4b510bf3ffe253e0e79b99" => :mavericks
-    sha256 "021e96762fd63d37cf932422248e44b0a7fad4fc4928e24c82f075b9e770955a" => :mountain_lion
+    revision 1
+    sha256 "3d9ac88803bf21b0b05873d7ed3a9bec621f2d3f2a173df627c9f1cf9ea1c34c" => :el_capitan
+    sha256 "7773f8464a8a9f07f3f8f0e7038a0ef9d5b991d96d5664db950f3c3f6f307c3b" => :yosemite
+    sha256 "635c7292d3c14242563d0cb6cd585a5de91fb0b23af8737121d9131778740c0e" => :mavericks
   end
 
   devel do
-    url "http://botan.randombit.net/releases/Botan-1.11.19.tgz"
-    sha256 "4b0f3be4262bdc71629ea4a38e2ed85ff53e573054ad84ba37d65fc1477b3028"
+    url "http://botan.randombit.net/releases/Botan-1.11.23.tgz"
+    sha256 "04b02b54419d5ec9c97363123abd41b6f5537d20e9f9932068c362c807bc8f08"
   end
 
   option "with-debug", "Enable debug build of Botan"
