@@ -17,14 +17,14 @@ class Task < Formula
     url "https://git.tasktools.org/scm/tm/task.git", :branch => "2.5.1", :shallow => false
   end
 
-  option "without-sync", "Disable sync support"
+  option "without-gnutls", "Don't use gnutls; disables sync support"
 
   depends_on "cmake" => :build
-  depends_on "gnutls" if !build.without? "sync"
+  depends_on "gnutls" => :recommended
 
   def install
     args = std_cmake_args
-    args << "-DENABLE_SYNC=OFF" if build.without? "sync"
+    args << "-DENABLE_SYNC=OFF" if build.without? "gnutls"
     system "cmake", ".", *args
     system "make", "install"
     bash_completion.install "scripts/bash/task.sh"
