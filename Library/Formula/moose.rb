@@ -1,5 +1,5 @@
 class Moose < Formula
-  desc "MOOSE"
+  desc "MOOSE is a Multiscale Object Oriented Simulation Environment for simulating multiscale neural systems."
   version "3.0.2"
   homepage "http://moose.ncbs.res.in"
   url "https://github.com/BhallaLab/moose-core/archive/ghevar-3.0.2-alpha.zip"
