@@ -18,7 +18,9 @@ class Mdds < Formula
         mdds::flat_segment_tree<unsigned, unsigned> fst(0, 4, 8);
       }
     EOS
-    system ENV.cxx, "test.cpp", "-o", "test"
+    system ENV.cxx, "test.cpp", "-o", "test", 
+                    "-std=c++11",
+                    "-I#{include}/mdds-1.0"
     system "./test"
   end
 end
