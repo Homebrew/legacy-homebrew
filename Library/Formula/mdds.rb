@@ -5,6 +5,7 @@ class Mdds < Formula
   sha256 "ef8abc1236b54c7ca16ae1ee38abfb9cdbc5d1e6a2427c65b92b8c1003e3bf56"
 
   depends_on "boost"
+  needs :cxx11
 
   def install
     system "./configure", "--prefix=#{prefix}"
@@ -18,7 +19,7 @@ class Mdds < Formula
         mdds::flat_segment_tree<unsigned, unsigned> fst(0, 4, 8);
       }
     EOS
-    system ENV.cxx, "test.cpp", "-o", "test", 
+    system ENV.cxx, "test.cpp", "-o", "test",
                     "-std=c++11",
                     "-I#{include}/mdds-1.0"
     system "./test"
