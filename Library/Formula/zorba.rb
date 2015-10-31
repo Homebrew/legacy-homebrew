@@ -6,8 +6,10 @@ class Zorba < Formula
   revision 1
 
   bottle do
-    sha256 "de910581ab17813af055afa2aa25617141c35a01844075703b0f56c3a2266a31" => :yosemite
-    sha256 "817415ea7f4d9e3011aa7c2492a2e8c5c7e064c938d5fb7a7b0e322d93eb99b1" => :mavericks
+    revision 1
+    sha256 "c0ee1204ff3304c4f94d312ba58a24ae343f2d5da5bfb35bead0415e88bfc525" => :el_capitan
+    sha256 "35a06380c4e9a24c3e1418582115d09ff64c55992af7db7f66a23350e2d5408b" => :yosemite
+    sha256 "84ff60b021ec3944f24c351bde93b40f8f8c377f7d0258ba4c8fd0f8c7f23e9a" => :mavericks
   end
 
   option "with-big-integer", "Use 64 bit precision instead of arbitrary precision for performance"
@@ -15,7 +17,7 @@ class Zorba < Formula
 
   depends_on :macos => :mavericks
   depends_on "cmake" => :build
-  depends_on "swig" => :build
+  depends_on "swig" => [:build, :recommended]
   depends_on "flex"
   depends_on "icu4c"
   depends_on "xerces-c"
@@ -25,12 +27,17 @@ class Zorba < Formula
   def install
     ENV.cxx11
 
-    cmake_args = std_cmake_args
-    cmake_args << "-DZORBA_VERIFY_PEER_SSL_CERTIFICATE=ON" if build.with? "ssl-verification"
-    cmake_args << "-DZORBA_WITH_BIG_INTEGER=ON" if build.with? "big-integer"
+    args = std_cmake_args
+    args << "-DZORBA_VERIFY_PEER_SSL_CERTIFICATE=ON" if build.with? "ssl-verification"
+    args << "-DZORBA_WITH_BIG_INTEGER=ON" if build.with? "big-integer"
+
+    # https://github.com/Homebrew/homebrew/issues/42372
+    # Seems to be an assumption `/usr/include/php` will exist without an obvious
+    # override to that logic.
+    args << "-DZORBA_SUPPRESS_SWIG=ON" if !MacOS::CLT.installed? || build.without?("swig")
 
     mkdir "build" do
-      system "cmake", "..", *cmake_args
+      system "cmake", "..", *args
       system "make", "install"
     end
   end

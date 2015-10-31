@@ -74,9 +74,11 @@ class Trafficserver < Formula
   end
 
   def post_install
-    return unless File.exist?(etc/"trafficserver/records.config")
+    config = etc/"trafficserver/records.config"
+    return unless File.exist?(config)
+    return if File.read(config).include?("proxy.config.admin.user_id STRING #{ENV["USER"]}")
 
-    File.open("#{etc}/trafficserver/records.config", "a") do |f|
+    File.open("#{config}", "a") do |f|
       f.puts "CONFIG proxy.config.admin.user_id STRING #{ENV["USER"]}"
     end
   end
