@@ -1,8 +1,8 @@
 class Ponyc < Formula
   desc "Object-oriented, actor-model, capabilities-secure programming language"
   homepage "http://www.ponylang.org"
-  url "http://releases.ponylang.org/source/ponyc-0.1.7.tar.bz2"
-  sha256 "fc6f783f65cd6708a80bdea71f414cada801528143ea22d9bb13957cb7061eb6"
+  url "https://github.com/CausalityLtd/ponyc/archive/0.2.1.tar.gz"
+  sha256 "cb8d6830565ab6b47ecef07dc1243029cef962df7ff926140022abb69d1e554e"
   head "https://github.com/CausalityLtd/ponyc.git"
 
   bottle do
@@ -20,6 +20,6 @@ class Ponyc < Formula
   end
 
   test do
-    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/builtin"
+    system "#{bin}/ponyc", "-rexpr", "#{prefix}/packages/stdlib"
   end
 end
