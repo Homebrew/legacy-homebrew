@@ -48,8 +48,10 @@ class Mutt < Formula
 
   depends_on "openssl"
   depends_on "tokyo-cabinet"
-  depends_on "s-lang" => :optional
+  depends_on "gettext" => :optional
   depends_on "gpgme" => :optional
+  depends_on "libidn" => :optional
+  depends_on "s-lang" => :optional
 
   # original source for this went missing, patch sourced from Arch at
   # https://aur.archlinux.org/packages/mutt-ignore-thread/
@@ -89,8 +91,9 @@ class Mutt < Formula
     # we're running as an unprivileged user)
     args << "--with-homespool=.mbox" unless user_admin
 
-    args << "--with-slang" if build.with? "s-lang"
+    args << "--disable-nls" if build.without? "gettext"
     args << "--enable-gpgme" if build.with? "gpgme"
+    args << "--with-slang" if build.with? "s-lang"
 
     if build.with? "debug"
       args << "--enable-debug"
