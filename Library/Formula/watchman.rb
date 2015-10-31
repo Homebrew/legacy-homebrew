@@ -29,9 +29,9 @@ class Watchman < Formula
 
     # Homebrew specific python application installation
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-    Dir.chdir "python"
-    system "python", *Language::Python.setup_install_args(libexec)
-    Dir.chdir ".."
+    cd "python" do
+      system "python", *Language::Python.setup_install_args(libexec)
+    end
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
