@@ -4,6 +4,13 @@ class XalanC < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=xalan/xalan-c/sources/xalan_c-1.11-src.tar.gz"
   sha256 "4f5e7f75733d72e30a2165f9fdb9371831cf6ff0d1997b1fb64cdd5dc2126a28"
 
+  bottle do
+    cellar :any
+    sha256 "8de91a28a9e22941818185380825eacd950d1420b850e82879204c4a3a1d3152" => :el_capitan
+    sha256 "9af9e5d0c49ca9307ec41f229cb3fb2b53e7f13cc10b0c033750e7512f3dcf1a" => :yosemite
+    sha256 "fcfe6027b7d366f6a2bff783e0ab1e9abfc7c38c1a6fd31fa4a2fb9d325a2819" => :mavericks
+  end
+
   option :universal
 
   depends_on "xerces-c"
