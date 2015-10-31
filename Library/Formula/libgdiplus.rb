@@ -20,8 +20,7 @@ class Libgdiplus < Formula
 
   def install
     system "CPPFLAGS=-I/opt/X11/include ./autogen.sh"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make", "install"

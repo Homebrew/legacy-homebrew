@@ -27,6 +27,11 @@ class Mono < Formula
         :revision => "c5e345b194eaddad7f06d47cd944b098f3dbe325"
   end
 
+  resource "libgdiplus" do
+    url "https://github.com/mono/libgdiplus/tarball/3b284ab28cb8737f9d14dabfedc6903655c66a7f"
+    sha256 "c7b6e68f4f4ef62e1f7551769c7f0b87e7debd52311123a0264d23cf7ac9aee8"
+  end
+
   depends_on "automake" => :build
   depends_on "autoconf" => :build
   depends_on "pkg-config" => :build
@@ -66,6 +71,16 @@ class Mono < Formula
         ENV.prepend_path "PKG_CONFIG_PATH", lib/"pkgconfig"
         system "./autogen.sh", "--prefix=#{prefix}"
         system "make"
+        system "make", "install"
+      end
+    end
+
+    if build.with? "libgdiplus"
+      resource("libgdiplus").stage do
+        system "CPPFLAGS=-I/opt/X11/include ./autogen.sh"
+        system "./configure", "--disable-dependency-tracking",
+                              "--disable-silent-rules",
+                              "--prefix=#{prefix}"
         system "make", "install"
       end
     end
