@@ -1,7 +1,7 @@
 class Moose < Formula
   desc "Multiscale Object Oriented Simulation Environment for  multiscale neural systems."
   homepage "http://moose.ncbs.res.in"
-  url "https://github.com/BhallaLab/moose-core/archive/ghevar-3.0.2-alpha.zip"
+  url "https://github.com/BhallaLab/moose-core/archive/ghevar-3.0.2-alpha.tar.gz"
   sha256 "febc7fc41a2513aeb2b6998731f61c7e7f2a6b5169a77e1612c189779fb0d1f1"
 
   depends_on "cmake" => :build
@@ -14,12 +14,12 @@ class Moose < Formula
   depends_on "pyqt"
 
   resource "gui" do
-    url "https://github.com/BhallaLab/moose-gui/archive/0.9.0.zip"
+    url "https://github.com/BhallaLab/moose-gui/archive/0.9.0.tar.gz"
     sha256 "febc7fc41a2513aeb2b6998731f61c7e7f2a6b5169a77e1612c189779fb0d1f1"
   end
 
   resource "examples" do
-    url "https://github.com/BhallaLab/moose-examples/archive/0.9.0.zip"
+    url "https://github.com/BhallaLab/moose-examples/archive/0.9.0.tar.gz"
     sha256 "6330fb610368537e61327f9fa4667caedea0d590c490e2b1c4816d9a0d5adf35"
   end
 
