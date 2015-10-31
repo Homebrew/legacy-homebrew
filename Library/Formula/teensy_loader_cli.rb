@@ -20,6 +20,7 @@ class TeensyLoaderCli < Formula
   end
 
   test do
-    assert `#{bin}/teensy_loader_cli 2>&1`.include?("<MCU> = atmega32u4 | at90usb162 | at90usb646 | at90usb1286")
+    output = shell_output("#{bin}/teensy_loader_cli 2>&1", 1)
+    assert_match /<MCU> = atmega32u4 | at90usb162 | at90usb646 | at90usb1286/, output
   end
 end
