@@ -15,7 +15,7 @@ class Zorba < Formula
 
   depends_on :macos => :mavericks
   depends_on "cmake" => :build
-  depends_on "swig" => :build
+  depends_on "swig" => [:build, :recommended]
   depends_on "flex"
   depends_on "icu4c"
   depends_on "xerces-c"
@@ -25,12 +25,17 @@ class Zorba < Formula
   def install
     ENV.cxx11
 
-    cmake_args = std_cmake_args
-    cmake_args << "-DZORBA_VERIFY_PEER_SSL_CERTIFICATE=ON" if build.with? "ssl-verification"
-    cmake_args << "-DZORBA_WITH_BIG_INTEGER=ON" if build.with? "big-integer"
+    args = std_cmake_args
+    args << "-DZORBA_VERIFY_PEER_SSL_CERTIFICATE=ON" if build.with? "ssl-verification"
+    args << "-DZORBA_WITH_BIG_INTEGER=ON" if build.with? "big-integer"
+
+    # https://github.com/Homebrew/homebrew/issues/42372
+    # Seems to be an assumption `/usr/include/php` will exist without an obvious
+    # override to that logic.
+    args << "-DZORBA_SUPPRESS_SWIG=ON" if !MacOS::CLT.installed? || build.without?("swig")
 
     mkdir "build" do
-      system "cmake", "..", *cmake_args
+      system "cmake", "..", *args
       system "make", "install"
     end
   end
