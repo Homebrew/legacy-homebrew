@@ -1,6 +1,7 @@
 class TeensyLoaderCli < Formula
   desc "Command-line integration for Teensy USB development boards"
   homepage "https://www.pjrc.com/teensy/loader_cli.html"
+  head "https://github.com/PaulStoffregen/teensy_loader_cli.git"
   url "https://www.pjrc.com/teensy/teensy_loader_cli.2.1.zip"
   sha256 "dafd040d6748b52e0d4a01846d4136f3354ca27ddc36a55ed00d0a0af0902d46"
   head "https://github.com/PaulStoffregen/teensy_loader_cli.git"
