@@ -21,7 +21,7 @@ class Ykneomgr < Formula
 
   option :universal
 
-  depends_on "help2man" => :build  # <- not supposed to, but it does
+  depends_on "help2man" => :build
   depends_on "pkg-config" => :build
   depends_on "libzip"
 
