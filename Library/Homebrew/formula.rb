@@ -231,6 +231,13 @@ class Formula
     active_spec.bottle_disable_reason
   end
 
+  # Does the currently active {SoftwareSpec} has any bottle?
+  # @private
+  def bottle_defined?
+    active_spec.bottle_defined?
+  end
+
+  # Does the currently active {SoftwareSpec} has an installable bottle?
   # @private
   def bottled?
     active_spec.bottled?
@@ -1197,7 +1204,8 @@ class Formula
     hsh["bottle"] = {}
     %w[stable devel].each do |spec_sym|
       next unless spec = send(spec_sym)
-      next unless (bottle_spec = spec.bottle_specification).checksums.any?
+      next unless spec.bottle_defined?
+      bottle_spec = spec.bottle_specification
       bottle_info = {
         "revision" => bottle_spec.revision,
         "cellar" => (cellar = bottle_spec.cellar).is_a?(Symbol) ? \
