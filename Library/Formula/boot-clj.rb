@@ -13,6 +13,16 @@ class BootClj < Formula
     bin.install "boot.sh" => "boot"
   end
 
+  def caveats; <<-EOS.undent
+    Note that only the Boot wrapper was updated! To get the updated
+    Boot *library* (i.e., “the real Boot”), you must run:
+
+        boot -u
+
+    For more information, see <https://github.com/boot-clj/boot/blob/master/README.md#install>.
+    EOS
+  end
+
   test do
     ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
     system "#{bin}/boot", "repl", "-e", "(System/exit 0)"
