@@ -21,7 +21,7 @@ class Macvim < Formula
 
   head "https://github.com/macvim-dev/macvim.git"
 
-  bottle :disabled, "To use the user's Python."
+  bottle :disable, "To use the user's Python."
 
   option "with-custom-icons", "Try to generate custom document icons"
   option "with-override-system-vim", "Override system vim"
