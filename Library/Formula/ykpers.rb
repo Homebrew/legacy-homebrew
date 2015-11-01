@@ -1,8 +1,8 @@
 class Ykpers < Formula
   desc "YubiKey personalization library and tool"
-  homepage "https://yubico.github.io/yubikey-personalization/"
-  url "https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.17.1.tar.gz"
-  sha256 "556baec2bbc94bae01293e64dc3873d68f880119ea5c3772737e4f3dc44f69c4"
+  homepage "https://developers.yubico.com/yubikey-personalization/"
+  url "https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.17.2.tar.gz"
+  sha256 "704a12410da22f37d69fd337511e74b61f876f841d52f13e87971c0adb5ddefc"
 
   bottle do
     cellar :any
@@ -31,6 +31,6 @@ class Ykpers < Formula
   end
 
   test do
-    system "#{bin}/ykinfo", "-V"
+    assert_match "1.17.2", shell_output("#{bin}/ykinfo -V 2>&1")
   end
 end
