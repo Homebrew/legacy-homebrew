@@ -6,9 +6,9 @@ class Gtkx3 < Formula
   revision 1
 
   bottle do
-    sha256 "e9c3c4b941da618f48feedded0be5c4d381df4b4c2a6f576895e961931a3d30c" => :el_capitan
-    sha256 "4904bd1646a5a9adb54034adf1434d74e1d9dcc1ffa7c89c9c66300c58ae9cb3" => :yosemite
-    sha256 "3c6800041cc367442007367c30bc90da172337153f8a8d2b711e1ac7c37ac3c3" => :mavericks
+    sha256 "370eb08409ab77004563720b9b0e335f93668c0808e1657a580a28ca834676a1" => :el_capitan
+    sha256 "0847dc9db2a2ef3fb9ba31906b9d460670cbfc7912625c5581854a3704c76880" => :yosemite
+    sha256 "16ae87b38fb0fce3cbde4082fda9ac2ec2efc29eee82c805f7c9265b0faa23a9" => :mavericks
   end
 
   option :universal
