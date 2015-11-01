@@ -4,6 +4,7 @@ class Innoextract < Formula
   url "https://constexpr.org/innoextract/files/innoextract-1.5.tar.gz"
   sha256 "f2594e992ccf2859455475794803b29a67393fadb69d4df1eec34c451ffa48cf"
   head "https://github.com/dscharrer/innoextract.git"
+  revision 1
 
   bottle do
     cellar :any
