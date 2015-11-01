@@ -1,8 +1,8 @@
 class Liblockfile < Formula
   desc "Library providing functions to lock standard mailboxes"
-  homepage "https://packages.qa.debian.org/libl/liblockfile.html"
-  url "https://mirrors.kernel.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
-  mirror "http://ftp.us.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
+  homepage "https://tracker.debian.org/pkg/liblockfile"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/libl/liblockfile/liblockfile_1.09.orig.tar.gz"
   sha256 "16979eba05396365e1d6af7100431ae9d32f9bc063930d1de66298a0695f1b7f"
 
   bottle do
@@ -26,5 +26,12 @@ class Liblockfile < Formula
     man3.mkpath
     system "make"
     system "make", "install"
+  end
+
+  test do
+    system bin/"dotlockfile", "-l", "locked"
+    assert File.exist?("locked")
+    system bin/"dotlockfile", "-u", "locked"
+    assert !File.exist?("locked")
   end
 end
