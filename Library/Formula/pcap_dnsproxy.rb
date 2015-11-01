@@ -4,6 +4,7 @@ class PcapDnsproxy < Formula
   url "https://github.com/chengr28/Pcap_DNSProxy/archive/v0.4.4.tar.gz"
   sha256 "4412e5f6b8bd1cf985f69132a1a38fcf3bf81ba83e9439920ae3237cf059816b"
   head "https://github.com/chengr28/Pcap_DNSProxy.git"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -25,23 +26,6 @@ class PcapDnsproxy < Formula
     bin.install "Source/build/Release/KeyPairGenerator"
     bin.install "Source/build/Release/Pcap_DNSProxy"
     (etc/"pcap_DNSproxy").install Dir["Source/ExampleConfig/*.{ini,txt}"]
-  end
-
-  test do
-    mkdir testpath/"pcap_dnsproxy"
-    cp Dir[etc/"pcap_dnsproxy/*"], testpath/"pcap_dnsproxy/"
-    inreplace testpath/"pcap_dnsproxy/Config.ini" do |s|
-      s.gsub! /^Direct Request.*/, "Direct Request = IPv4 + IPv6"
-      s.gsub! /^Operation Mode.*/, "Operation Mode = Proxy"
-      s.gsub! /^Listen Port.*/, "Listen Port = 9999"
-    end
-    pid = fork { exec bin/"Pcap_DNSProxy", "-c", testpath/"pcap_dnsproxy/" }
-    begin
-      system "dig", "google.com", "@127.0.0.1", "-p", "9999", "+short"
-    ensure
-      Process.kill 9, pid
-      Process.wait pid
-    end
   end
 
   plist_options :startup => true, :manual => "sudo #{HOMEBREW_PREFIX}/opt/pcap_dnsproxy/bin/Pcap_DNSProxy -c #{HOMEBREW_PREFIX}/etc/pcap_dnsproxy/"
@@ -69,5 +53,24 @@ class PcapDnsproxy < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (testpath/"pcap_dnsproxy").mkpath
+    cp Dir[etc/"pcap_dnsproxy/*"], testpath/"pcap_dnsproxy/"
+
+    inreplace testpath/"pcap_dnsproxy/Config.ini" do |s|
+      s.gsub! /^Direct Request.*/, "Direct Request = IPv4 + IPv6"
+      s.gsub! /^Operation Mode.*/, "Operation Mode = Proxy"
+      s.gsub! /^Listen Port.*/, "Listen Port = 9999"
+    end
+
+    pid = fork { exec bin/"Pcap_DNSProxy", "-c", testpath/"pcap_dnsproxy/" }
+    begin
+      system "dig", "google.com", "@127.0.0.1", "-p", "9999", "+short"
+    ensure
+      Process.kill 9, pid
+      Process.wait pid
+    end
   end
 end
