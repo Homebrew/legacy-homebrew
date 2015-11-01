@@ -9,10 +9,10 @@ class Analog < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "499ddf1e97314126055e0f695f2af7e4a5325839" => :yosemite
-    sha1 "0b74be8dfd6706d330c65a9407d99470ac5c9ccf" => :mavericks
-    sha1 "4c9f29b3324e2229ec4c7dc8be46b638507d23ee" => :mountain_lion
+    revision 2
+    sha256 "097f11e7f53078e6b248e38fc326cded49b08cdbe75ab61e20ab7b2a6e770256" => :el_capitan
+    sha256 "f2f29ea2dcbb9e0576c72f009d8814b0c7f84efd49d6f005085c876c85fd29b9" => :yosemite
+    sha256 "c9ca1f30d5b71b7653ecbbdb4ad8d9e81e41b2e33a9dc2c8e0a92af7cd48007d" => :mavericks
   end
 
   depends_on "gd"
