@@ -8,6 +8,7 @@ class Narwhal < Formula
   bottle :unneeded
 
   conflicts_with "spidermonkey", :because => "both install a js binary"
+  conflicts_with "elixir-build", :because => "both install `json` binaries"
 
   def install
     rm Dir["bin/*.cmd"]
