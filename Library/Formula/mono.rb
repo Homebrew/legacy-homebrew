@@ -15,6 +15,8 @@ class Mono < Formula
     sha256 "71477844200f6760048cd3e804faa4ea19810a8129af9d4b5776dfefc21a9296" => :mavericks
   end
 
+  conflicts_with "czmq", :because => "both install `makecert` binaries"
+
   option "without-fsharp", "Build without support for the F# language."
 
   resource "monolite" do
