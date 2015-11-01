@@ -21,6 +21,37 @@ class Minisign < Formula
   end
 
   test do
-    system "minisign", "-v"
+    (testpath/"homebrew.txt").write "Hello World!"
+    (testpath/"keygen.sh").write <<-EOS.undent
+      #!/usr/bin/expect -f
+      set timeout -1
+      spawn #{bin}/minisign -G
+      expect -exact "Please enter a password to protect the secret key."
+      expect -exact "\n"
+      expect -exact "Password: "
+      send -- "Homebrew\n"
+      expect -exact "\r
+      Password (one more time): "
+      send -- "Homebrew\n"
+      expect eof
+    EOS
+    chmod 0755, testpath/"keygen.sh"
+
+    system "./keygen.sh"
+    assert File.exist?("minisign.pub")
+    assert File.exist?("minisign.key")
+
+    (testpath/"signing.sh").write <<-EOS.undent
+      #!/usr/bin/expect -f
+      set timeout -1
+      spawn #{bin}/minisign -Sm homebrew.txt
+      expect -exact "Password: "
+      send -- "Homebrew\n"
+      expect eof
+    EOS
+    chmod 0755, testpath/"signing.sh"
+
+    system "./signing.sh"
+    assert File.exist?("homebrew.txt.minisig")
   end
 end
