@@ -140,7 +140,7 @@ class Freeswitch < Formula
   #------------------------ End sound file resources --------------------------
 
   def install
-    ENV.deparallelize
+    ENV.deparallelize # makefile probably has a race condition, reported at: https://freeswitch.org/jira/browse/FS-8367
     system "./bootstrap.sh", "-j"
 
     # tiff will fail to find OpenGL unless told not to use X
