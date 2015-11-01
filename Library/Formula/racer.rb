@@ -6,6 +6,7 @@ class Racer < Formula
   sha256 "78895296ed688eeccbaf7745235f0fc503407bfa718f53583a4dcc9e1246b7f5"
   head "https://github.com/phildawes/racer.git"
 
+  option "with-1.4", "Get 1.4 version of rust source"
   option "with-1.3", "Get 1.3 version of rust source"
   option "with-1.2", "Get 1.2 version of rust source"
   option "without-rust", "Disable any version of rust source"
@@ -22,9 +23,17 @@ class Racer < Formula
     sha256 "ea02d7bc9e7de5b8be3fe6b37ea9b2bd823f9a532c8e4c47d02f37f24ffa3126"
   end
 
+  resource "rust-1.4" do
+    url "https://static.rust-lang.org/dist/rustc-1.4.0-src.tar.gz"
+    sha256 "1c0dfdce5c85d8098fcebb9adf1493847ab40c1dfaa8cc997af09b2ef0aa8211"
+  end
+
   def install
     rustsources = []
-    latestresource = resource("rust-1.3")
+    latestresource = resource("rust-1.4")
+    if build.with?("1.4")
+      rustsources.push(resource("rust-1.4"))
+    end
     if build.with?("1.3")
       rustsources.push(resource("rust-1.3"))
     end
@@ -46,7 +55,7 @@ class Racer < Formula
       end
     end
 
-    system "cargo", "build", "--release"
+    system "cargo", "build", "--release", "--verbose"
     libexec.install "target/release/racer"
   end
 
