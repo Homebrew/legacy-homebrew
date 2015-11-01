@@ -3,6 +3,7 @@ class Varnish < Formula
   homepage "https://www.varnish-cache.org/"
   url "https://repo.varnish-cache.org/source/varnish-4.0.3.tar.gz"
   sha256 "94b9a174097f47db2286acd2c35f235e49a2b7a9ddfdbd6eb7aa4da9ae8f8206"
+  revision 1
 
   bottle do
     sha256 "eb358ce5e37348ffced8e06ac0c2fc171b4a3d8c15a68f9763d88b23c901ce61" => :el_capitan
@@ -31,12 +32,15 @@ class Varnish < Formula
                           "--with-rst2man=#{buildpath}/bin/rst2man.py",
                           "--with-rst2html=#{buildpath}/bin/rst2html.py"
     system "make", "install"
+    (etc+"varnish").install "etc/example.vcl" => "default.vcl"
     (var+"varnish").mkpath
   end
 
   test do
     system "#{opt_sbin}/varnishd", "-V"
   end
+
+  plist_options :manual => "#{HOMEBREW_PREFIX}/sbin/varnishd -n #{HOMEBREW_PREFIX}/var/varnish -f #{HOMEBREW_PREFIX}/etc/varnish/default.vcl -s malloc,1G -T 127.0.0.1:2000 -a 0.0.0.0:8080"
 
   def plist; <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
@@ -57,7 +61,7 @@ class Varnish < Formula
           <string>-T</string>
           <string>127.0.0.1:2000</string>
           <string>-a</string>
-          <string>0.0.0.0:80</string>
+          <string>0.0.0.0:8080</string>
         </array>
         <key>KeepAlive</key>
         <true/>
