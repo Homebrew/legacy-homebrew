@@ -224,6 +224,7 @@ TAP_MIGRATIONS = {
   "viewglob" => "homebrew/boneyard",
   "vobcopy" => "homebrew/boneyard",
   "wdfs" => "homebrew/fuse",
+  "whereami" => "homebrew/boneyard",
   "wkhtmltopdf" => "homebrew/boneyard",
   "wmctrl" => "homebrew/x11",
   "wopr" => "homebrew/science",
@@ -243,5 +244,5 @@ TAP_MIGRATIONS = {
   "xspringies" => "homebrew/x11",
   "yarp" => "homebrew/x11",
   "ydict" => "homebrew/boneyard",
-  "zenity" => "homebrew/x11"
+  "zenity" => "homebrew/x11",
 }
