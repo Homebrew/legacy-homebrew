@@ -6,10 +6,9 @@ class Varnish < Formula
   revision 1
 
   bottle do
-    sha256 "eb358ce5e37348ffced8e06ac0c2fc171b4a3d8c15a68f9763d88b23c901ce61" => :el_capitan
-    sha256 "050160fe3c7780d56f0ff3a68e26c200c72ffb785451d351cb2b1410d7b86588" => :yosemite
-    sha256 "204524142865d6ea5fc9d1dec5c877402726ec44133bcc0d1e0aeb31e39730c7" => :mavericks
-    sha256 "31c5ee79f9bc61d9951dac9a6f56687b8c2724ff934c90ecfb171687707fd4d3" => :mountain_lion
+    sha256 "d33eaf2a6dfa517b4ee61c0dee4af786d28ab07068d5afdfc3ff731e4177d06f" => :el_capitan
+    sha256 "76969be042dd6cd03024eb8f85f0e4c5a48fa45fc6d616430154665d6fddd25a" => :yosemite
+    sha256 "e96d457b8e7641f696a38c4301f1739874b65a181bcaabba2ad5cb07c3744b69" => :mavericks
   end
 
   depends_on "pkg-config" => :build
