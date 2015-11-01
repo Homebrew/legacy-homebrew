@@ -2,11 +2,17 @@ require "language/haskell"
 
 class Agda < Formula
   include Language::Haskell::Cabal
-
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
-  sha256 "0147f8a1395a69bee1e7a452682094e45c83126233f9864544b8a14f956ce8c3"
+  revision 1
+
+  stable do
+    url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
+    sha256 "0147f8a1395a69bee1e7a452682094e45c83126233f9864544b8a14f956ce8c3"
+    # fix compilation of the included Emacs mode
+    # merged upstream in https://github.com/agda/agda/pull/1700
+    patch :DATA
+  end
 
   bottle do
     sha256 "683799128a30c5f22c1122c9b12a68b5efb69c441960cdc6087a15fcd6ec592c" => :el_capitan
@@ -38,13 +44,9 @@ class Agda < Formula
   depends_on "cabal-install" => :build
 
   depends_on "gmp"
-  depends_on "emacs" => :recommended
+  depends_on :emacs => :recommended
 
   setup_ghc_compilers
-
-  # fix compilation of the included Emacs mode
-  # to be removed once https://github.com/agda/agda/pull/1700 is merged
-  patch :DATA
 
   def install
     # install Agda core
@@ -94,6 +96,7 @@ class Agda < Formula
     # compile the included Emacs mode
     if build.with? "emacs"
       system bin/"agda-mode", "compile"
+      elisp.install Dir["#{share}/*/Agda-#{version}/emacs-mode/*"]
     end
   end
 
