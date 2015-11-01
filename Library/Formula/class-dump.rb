@@ -15,8 +15,9 @@ class ClassDump < Formula
   end
 
   bottle do
-    cellar :any
-    sha1 "f87501bf78ff05444c12347d874a81d9b87445dc" => :mavericks
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "dd2ca9159871a0ecc7aedfab5dd0cdbec4a43ea321988c8eb1d1ba4a9c4bae19" => :mavericks
   end
 
   head do
