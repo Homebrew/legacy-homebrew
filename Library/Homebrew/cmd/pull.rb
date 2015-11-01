@@ -131,12 +131,12 @@ module Homebrew
       fetch_bottles = false
       changed_formulae.each do |f|
         if ARGV.include? "--bottle"
-          if f.bottle_defined?
-            fetch_bottles = true
-          elsif f.bottle_unneeded?
+          if f.bottle_unneeded?
             ohai "#{f}: skipping unneeded bottle."
           elsif f.bottle_disabled?
             ohai "#{f}: skipping disabled bottle: #{f.bottle_disable_reason}"
+          else
+            fetch_bottles = true
           end
         else
           next unless f.bottle_defined?
