@@ -19,9 +19,9 @@ class Libressl < Formula
   end
 
   bottle do
-    sha256 "272ab831a43a9dbfcc7d2d57d14bcbd070e90a07f49797c34e8640771c30aa02" => :el_capitan
-    sha256 "6cc1b9981035b974aba85acf5ad513ac446db2b1554514a184215ce682e88d79" => :yosemite
-    sha256 "a608b2b9f7308833ca4cedec71a500fcb1bdd0b1ff1a794a809f98f6e487d890" => :mavericks
+    sha256 "05243a223120c6b93ce30fb319ee4d4aa3fa21a8d31ec4d26d3c1e7263ced9d2" => :el_capitan
+    sha256 "51160a75a5b4d88d6f4c2de46a9618b5617ff890ac6bd107ab54ad9f5a10fa76" => :yosemite
+    sha256 "73c679e7e48fe3234b368621ede186dc23a16657edf1b8957f95d66c750788d7" => :mavericks
   end
 
   head do
