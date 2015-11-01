@@ -7,10 +7,11 @@ class Lcrack < Formula
   sha256 "63fe93dfeae92677007f1e1022841d25086b92d29ad66435ab3a80a0705776fe"
 
   bottle do
-    cellar :any
-    sha256 "98aef6c2f9b52baa89393d0f6c092402cc7328357e144b693df426cce05e78ef" => :yosemite
-    sha256 "22ac6857bf9cf57c12ab8fda16a6584b366b77e6a70cb85222ceb93247cc5357" => :mavericks
-    sha256 "01bd0cd842ca0f6387251f109a040c60c9f9edd924eca8452bc7346dbf70eac8" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2bd1de3426e4bd4ebfc6fb6026dc9a9fd046a5d9345459700a2361b7fe53f49c" => :el_capitan
+    sha256 "443e64bdb0307e12f4ef990abea7941239784cb7c9798929880a7973f86cf5bc" => :yosemite
+    sha256 "7ce0dcf84e40ecf7bffc05b068f8c5109d055e654fba8a8c918cbfada447e19e" => :mavericks
   end
 
   def install
