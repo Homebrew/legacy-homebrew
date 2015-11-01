@@ -1,9 +1,9 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "http://www.imagemagick.org"
-  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-4.tar.xz"
-  mirror "http://ftp.nluug.nl/ImageMagick/ImageMagick-6.9.2-4.tar.xz"
-  sha256 "05b1c499415048099a1464ebd03f0cfaae8d0994c681bcf7e0319b26e5e8d848"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-5.tar.xz"
+  mirror "http://ftp.nluug.nl/ImageMagick/ImageMagick-6.9.2-5.tar.xz"
+  sha256 "19fb341725a13c01458cfce23d0a260fd032432a5daeebdd4f06c92d716ded40"
 
   head "http://git.imagemagick.org/repos/ImageMagick.git"
 
