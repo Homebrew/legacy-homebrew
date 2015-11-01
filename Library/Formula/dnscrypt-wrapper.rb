@@ -4,6 +4,7 @@ class DnscryptWrapper < Formula
   url "https://github.com/Cofyc/dnscrypt-wrapper/releases/download/v0.2/dnscrypt-wrapper-v0.2.tar.bz2"
   sha256 "d26f9d6329653b71bed5978885385b45f16596021f219f46e49da60d5813054e"
   head "https://github.com/Cofyc/dnscrypt-wrapper.git"
+  revision 1
 
   bottle do
     cellar :any
@@ -13,7 +14,6 @@ class DnscryptWrapper < Formula
   end
 
   depends_on "autoconf" => :build
-
   depends_on "libsodium"
   depends_on "libevent"
 
