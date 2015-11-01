@@ -133,10 +133,10 @@ module Homebrew
         if ARGV.include? "--bottle"
           if f.bottle
             fetch_bottles = true
-          elsif f.bottle_disabled?
-            ohai "#{f}: skipping disabled bottle: #{f.bottle_disable_reason}"
           elsif f.bottle_unneeded?
             ohai "#{f}: skipping unneeded bottle."
+          elsif f.bottle_disabled?
+            ohai "#{f}: skipping disabled bottle: #{f.bottle_disable_reason}"
           end
         else
           next unless f.bottle
