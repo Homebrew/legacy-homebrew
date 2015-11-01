@@ -1,7 +1,8 @@
 class Bip < Formula
   desc "IRC proxy"
   homepage "https://bip.milkypond.org" # Self-signed cert.
-  url "https://mirrors.kernel.org/debian/pool/main/b/bip/bip_0.8.9.orig.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/b/bip/bip_0.8.9.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/b/bip/bip_0.8.9.orig.tar.gz"
   sha256 "3c950f71ef91c8b686e6835f9b722aa7ccb88d3da4ec1af19617354fd3132461"
   revision 1
 
@@ -22,7 +23,7 @@ class Bip < Formula
                           "--sysconfdir=#{etc}/bip"
 
     system "make", "install"
-    (etc+"bip").install "samples/bip.conf"
+    (etc/"bip").install "samples/bip.conf"
   end
 
   def caveats; <<-EOS.undent
