@@ -1,8 +1,8 @@
 class Getdns < Formula
   desc "Modern asynchronous DNS API"
   homepage "https://getdnsapi.net"
-  url "https://getdnsapi.net/dist/getdns-0.3.1.tar.gz"
-  sha256 "58fd791187d5fd158ba7db1b5f29d4b0274583447f405577c758c7c7751e8883"
+  url "https://getdnsapi.net/dist/getdns-0.5.0.tar.gz"
+  sha256 "b0680170249ba9987b8af4c7f2bc64833fe6396ecd66565c991b33775f78ccdb"
 
   head "https://github.com/getdnsapi/getdns.git"
 
@@ -14,7 +14,6 @@ class Getdns < Formula
   end
 
   depends_on "openssl"
-  depends_on "ldns"
   depends_on "unbound"
   depends_on "libidn"
   depends_on "libevent" => :optional
@@ -24,7 +23,7 @@ class Getdns < Formula
   def install
     args = [
       "--with-ssl=#{Formula["openssl"].opt_prefix}",
-      "--with-trust-anchor=#{etc}/getdns-root.key"
+      "--with-trust-anchor=#{etc}/getdns-root.key",
     ]
     args << "--with-libevent" if build.with? "libevent"
     args << "--with-libev" if build.with? "libev"
@@ -61,7 +60,7 @@ class Getdns < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-I#{include}", "-o", "test", "test.c", "-lgetdns"
+    system ENV.cc, "-I#{include}", "-o", "test", "test.c", "-L#{lib}", "-lgetdns"
     system "./test"
   end
 end
