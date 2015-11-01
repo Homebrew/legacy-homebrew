@@ -15,7 +15,7 @@ class XalanC < Formula
 
   depends_on "xerces-c"
 
-  # Fix segfault.  See https://issues.apache.org/jira/browse/XALANC-751
+  # Fix segfault. See https://issues.apache.org/jira/browse/XALANC-751
   patch :DATA
 
   def install
@@ -25,7 +25,7 @@ class XalanC < Formula
     ENV["XALAN_LOCALE_SYSTEM"] = "inmem"
     ENV["XALAN_LOCALE"] = "en_US"
 
-    Dir.chdir("c") do
+    cd "c" do
       system "./configure", "--disable-dependency-tracking",
                             "--disable-silent-rules",
                             "--prefix=#{prefix}"
