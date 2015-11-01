@@ -131,7 +131,7 @@ module Homebrew
       fetch_bottles = false
       changed_formulae.each do |f|
         if ARGV.include? "--bottle"
-          if f.bottle
+          if f.bottle_defined?
             fetch_bottles = true
           elsif f.bottle_unneeded?
             ohai "#{f}: skipping unneeded bottle."
@@ -139,7 +139,7 @@ module Homebrew
             ohai "#{f}: skipping disabled bottle: #{f.bottle_disable_reason}"
           end
         else
-          next unless f.bottle
+          next unless f.bottle_defined?
           opoo "#{f.full_name} has a bottle: do you need to update it with --bottle?"
         end
       end
