@@ -16,6 +16,9 @@ class CrystaxNdk < Formula
 
   depends_on "android-sdk" => :recommended
 
+  conflicts_with "android-ndk",
+    :because => "both install `ndk-build`, `ndk-gdb` and `ndk-stack` binaries"
+
   def install
     bin.mkpath
 
