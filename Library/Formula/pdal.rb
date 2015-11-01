@@ -3,8 +3,8 @@ class Pdal < Formula
   homepage "http://www.pdal.io/"
   url "https://github.com/PDAL/PDAL/archive/0.9.9.tar.gz"
   sha256 "d4f91478ca55b6b775980c5c2e4c23f43b6bb4e1908ae739b1605a30b57b8a83"
-
   head "https://github.com/PDAL/PDAL.git"
+  revision 1
 
   bottle do
     sha256 "415bd8c342d4a50803245555cafa1d3fd854135fcf7c585ce0b511e292416179" => :yosemite
