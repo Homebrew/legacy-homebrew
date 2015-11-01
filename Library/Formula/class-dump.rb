@@ -30,6 +30,16 @@ class ClassDump < Formula
     end
   end
 
+  head do
+    url "https://github.com/nygard/class-dump.git"
+
+    # Removes the last references to libcrypto.
+    patch do
+      url "https://patch-diff.githubusercontent.com/raw/nygard/class-dump/pull/58.diff"
+      sha256 "50c9af3c534f0803133e1f69ed820b5094b0b3adf0861c95a3488f8399974640"
+    end
+  end
+
   depends_on :macos => :mavericks
   depends_on :xcode => :build
 
