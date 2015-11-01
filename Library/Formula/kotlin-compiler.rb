@@ -1,8 +1,15 @@
 class KotlinCompiler < Formula
   desc "Statically typed programming language for the JVM"
   homepage "https://kotlinlang.org/"
-  url "https://github.com/JetBrains/kotlin/releases/download/build-0.14.449/kotlin-compiler-0.14.449.zip"
-  sha256 "bbb55c84669b6d920dc89beab811b26dfbdbeb95d71e1d6d3384fbfbcd48ec70"
+  stable do
+    url "https://github.com/JetBrains/kotlin/releases/download/build-0.14.449/kotlin-compiler-0.14.449.zip"
+    sha256 "bbb55c84669b6d920dc89beab811b26dfbdbeb95d71e1d6d3384fbfbcd48ec70"
+  end
+
+  devel do
+    url "https://github.com/JetBrains/kotlin/releases/download/build-1.0.0-beta-1038/kotlin-compiler-1.0.0-beta-1038.zip"
+    sha256 "53e1516eb95274ac58b5445d1d8a82d265166d7c5038a878395589604f35275c"
+  end
 
   devel do
     url "https://github.com/JetBrains/kotlin/releases/download/build-1.0.0-beta-1038/kotlin-compiler-1.0.0-beta-1038.zip"
