@@ -8,9 +8,9 @@ class Getdns < Formula
 
   bottle do
     cellar :any
-    sha256 "66be49d1fe111e14d181aa1054041fa14b87a5cddabb0333bbb6cdc29e4c580f" => :yosemite
-    sha256 "5910d400f5e2f83b49ccc01379691e7a2b2300af815bc517d079811f7968fcf9" => :mavericks
-    sha256 "b3eb2d9b1db54455204c1bdb0e40ea5b44cc1fe9b4ef6de13085e9553c1f0366" => :mountain_lion
+    sha256 "3cd3d254095f1e763cceb1ee1aa143392f545e6db695e2f42e01e4d6d03f3603" => :el_capitan
+    sha256 "944dfc0254806c44beb2f731caa5a670b273c8363c2cfe19db17ca895afbf333" => :yosemite
+    sha256 "aef42eabcbcfcbcf9c7d416c9d607da580e6447a08b61088d6bd5a9ffc7c9fbe" => :mavericks
   end
 
   depends_on "openssl"
