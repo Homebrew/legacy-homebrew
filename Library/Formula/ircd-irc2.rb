@@ -26,6 +26,8 @@ class IrcdIrc2 < Formula
     EOS
   end
 
+  conflicts_with "ircd-hybrid", :because => "both install an `ircd` binary"
+
   def install
     system "./configure", "--prefix=#{prefix}",
                           "--localstatedir=#{var}",
@@ -45,7 +47,8 @@ class IrcdIrc2 < Formula
     # The directory is something like `i686-apple-darwin13.0.2'
     system "make", "install", "-C", build_dir
 
-    (etc/"ircd.conf").write default_ircd_conf
+    File.write("ircd.conf", default_ircd_conf)
+    etc.install("ircd.conf")
   end
 
   plist_options :manual => "ircd"
