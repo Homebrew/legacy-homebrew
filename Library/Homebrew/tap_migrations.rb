@@ -5,7 +5,6 @@ TAP_MIGRATIONS = {
   "aimage" => "homebrew/boneyard",
   "aplus" => "homebrew/boneyard",
   "apple-gcc42" => "homebrew/dupes",
-  "appledoc" => "homebrew/boneyard",
   "appswitch" => "homebrew/binary",
   "archivemount" => "homebrew/fuse",
   "atari++" => "homebrew/x11",
