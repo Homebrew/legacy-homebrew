@@ -18,6 +18,8 @@ class Freeling < Formula
   depends_on "boost" => "with-icu4c"
   depends_on "icu4c"
 
+  conflicts_with "hunspell", :because => "both install 'analyze' binary"
+
   def install
     icu4c = Formula["icu4c"]
     libtool = Formula["libtool"]
