@@ -8,6 +8,10 @@ class Htmldoc < Formula
   depends_on "libpng"
   depends_on "jpeg"
 
+  # El Cap Security Framework changes silently break the `htmldoc` compile.
+  # https://github.com/Homebrew/homebrew/issues/45334
+  depends_on MaximumMacOSRequirement => :yosemite
+
   def install
     system "./configure", "--disable-debug",
                           "--prefix=#{prefix}",
