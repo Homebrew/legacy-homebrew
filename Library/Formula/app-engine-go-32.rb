@@ -6,8 +6,10 @@ class AppEngineGo32 < Formula
 
   bottle :unneeded
 
-  conflicts_with "go-app-engine-64", :because => "multiple conflicting files"
-  conflicts_with "google-app-engine", :because => "multiple conflicting files"
+  conflicts_with "app-engine-go-64",
+    :because => "both install the same binaries"
+  conflicts_with "app-engine-python",
+    :because => "both install the same binaries"
 
   def install
     cd ".."
