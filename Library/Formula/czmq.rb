@@ -13,6 +13,8 @@ class Czmq < Formula
     sha256 "c9f2bcf72a59b931946945e9661d8f6b43d2ce0f0a18ef8d15db60e830489caf" => :mavericks
   end
 
+  conflicts_with "mono", :because => "both install `makecert` binaries"
+
   head do
     url "https://github.com/zeromq/czmq.git"
 
