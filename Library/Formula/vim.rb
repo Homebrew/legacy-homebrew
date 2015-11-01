@@ -6,6 +6,8 @@ class Vim < Formula
   sha256 "ae34137a48fd1ee58a596f18c9975d7d5927bf96fd0f746c2051ca29d21ea24e"
   head "https://github.com/vim/vim.git"
 
+  bottle :disabled, "To use the user's Python."
+
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
   # PATH as the user has set it right now.
