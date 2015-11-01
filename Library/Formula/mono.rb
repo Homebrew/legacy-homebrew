@@ -40,6 +40,9 @@ class Mono < Formula
   link_overwrite "lib/mono"
   link_overwrite "lib/cli"
 
+  conflicts_with "disco", :because => "both install `disco` binaries"
+  conflicts_with "xsd", :because => "both install `xsd` binaries"
+
   def install
     # a working mono is required for the the build - monolite is enough
     # for the job
