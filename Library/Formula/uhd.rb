@@ -4,6 +4,7 @@ class Uhd < Formula
   url "https://github.com/EttusResearch/uhd/archive/release_003_009_001.tar.gz"
   sha256 "e2059c34bea2aaca31eb8d3501ce7b535b559775d3050ed5c30946c34146a92e"
   head "https://github.com/EttusResearch/uhd.git"
+  revision 1
 
   bottle do
     sha256 "e013a49457a34e404dc6a286b32eeca286f7f28eb68e3c052f5913472099a77d" => :el_capitan
