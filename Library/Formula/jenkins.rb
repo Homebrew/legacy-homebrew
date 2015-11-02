@@ -9,6 +9,8 @@ class Jenkins < Formula
     depends_on "maven" => :build
   end
 
+  bottle :unneeded
+
   depends_on :java => "1.6+"
 
   def install
