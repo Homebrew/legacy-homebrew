@@ -11,6 +11,9 @@ class Gwenhywfar < Formula
     sha256 "e81cb75004757c9bb4823c8fa5c126f291eabe10bd238af62de5660c50cdcc3a" => :mountain_lion
   end
 
+  option "without-cocoa", "Build without cocoa support"
+  option "with-check", "Run build-time check"
+
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gnutls"
@@ -18,9 +21,6 @@ class Gwenhywfar < Formula
   depends_on "libgcrypt"
   depends_on "gtk+" => :optional
   depends_on "qt" => :optional
-
-  option "without-cocoa", "Build without cocoa support"
-  option "with-check", "Run build-time check"
 
   def install
     guis = []
@@ -34,5 +34,19 @@ class Gwenhywfar < Formula
                           "--with-guis=#{guis.join(" ")}"
     system "make", "check" if build.with? "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gwenhywfar/gwenhywfar.h>
+
+      int main()
+      {
+        GWEN_Init();
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-I#{include}/gwenhywfar4", "-L#{lib}", "-lgwenhywfar", "-o", "test"
+    system "./test"
   end
 end
