@@ -17,6 +17,6 @@ class NodeBuild < Formula
   end
 
   test do
-    system "#{bin}/node-build", "4.0.0", "#{testpath}/4.0.0"
+    system "#{bin}/node-build", "--definitions"
   end
 end
