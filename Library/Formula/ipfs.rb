@@ -9,10 +9,10 @@ class Ipfs < Formula
   head "https://github.com/ipfs/go-ipfs.git"
 
   bottle do
-    cellar :any
-    sha256 "7fa2048c60b4de4326ebc0e1086ee302f255b9b25c29e16bc596308440f56757" => :yosemite
-    sha256 "d12b1c31921d09444bcb0d9781e2c60df69eb1abbe5da5b05ede28ceeb54604c" => :mavericks
-    sha256 "02903326215f9ca5d0abfb52d6507b0900baee270d7d78fe6f98c8bd7c7065b2" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9d3d463079b2d32ab5c70c8a314e2aadd3cbe8c72071eb12fbe47f6302b1df57" => :el_capitan
+    sha256 "d29aa282f4beda50735bf40e42ce715e5776fd904bd908001ee93999fa3b3c11" => :yosemite
+    sha256 "133a939cf59e7114e2be8934bda3601a4697d24abb1b2e6cc864afa8cb7579f3" => :mavericks
   end
 
   depends_on "go" => :build
