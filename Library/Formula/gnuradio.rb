@@ -1,8 +1,8 @@
 class Gnuradio < Formula
   desc "SDK providing the signal processing runtime and processing blocks"
   homepage "http://gnuradio.squarespace.com/"
-  url "http://gnuradio.org/releases/gnuradio/gnuradio-3.7.8.tar.gz"
-  sha256 "fe19cb54b5d77fb76dde61d5cf184c6dee7066779b45c51676bae6e6d0cd4172"
+  url "http://gnuradio.org/releases/gnuradio/gnuradio-3.7.8.1.tar.gz"
+  sha256 "8406f49d085fdc2ef5d8ea90f3e19ad8782d2a2f5154bbe4f076591ddf7ae5aa"
 
   bottle do
     sha256 "5968cb5c61c7f44cb3b8c66c6ca418949d34c633f181ddcea78c5e1656b5a34a" => :yosemite
@@ -123,22 +123,22 @@ class Gnuradio < Formula
 
   resource "sphinx" do
     url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
-    sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
+    sha256 "f042d4d66e2a58bd951a3eaf108303e862fad2975693bebf493931df9cd251a5"
   end
   # sphinx ends here
 
   resource "cppzmq" do
-    url "https://github.com/zeromq/cppzmq/raw/34c8e4395c94d34a89bbeaaf2b8f9c94a8293c84/zmq.hpp"
-    sha256 "6cdd9d920f4a0f9f3a3257541321bef8369d9735c88b84ba8ae0e461f53e476c"
+    url "https://github.com/zeromq/cppzmq/raw/a4459abdd1d70fd980f9c166d73da71fe9762e0b/zmq.hpp"
+    sha256 "f042d4d66e2a58bd951a3eaf108303e862fad2975693bebf493931df9cd251a5"
   end
 
   def install
     ENV["CHEETAH_INSTALL_WITHOUT_SETUPTOOLS"] = "1"
-    ENV.prepend_path "PATH", libexec/"vendor/bin" if build.with? "documentation"
+    ENV.prepend_path "PATH", libexec/"vendor/bin"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
     res = %w[Markdown Cheetah lxml numpy]
-    res << %w[sphinx sphinx_rtd_theme alabaster babel docutils pygments
+    res += %w[sphinx sphinx_rtd_theme alabaster babel docutils pygments
               jinja2 markupsafe snowballstemmer six pytz] if build.with? "documentation"
     res.each do |r|
       resource(r).stage do
