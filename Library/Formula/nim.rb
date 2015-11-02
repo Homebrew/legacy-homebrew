@@ -1,8 +1,8 @@
-class Nimrod < Formula
+class Nim < Formula
   desc "Statically typed, imperative programming language"
   homepage "http://nim-lang.org/"
-  url "http://nim-lang.org/download/nim-0.11.2.tar.xz"
-  sha256 "5640e364d8bacec830f016daf3d4427911c48cebf962724ec903fea5d5a7a419"
+  url "http://nim-lang.org/download/nim-0.12.0.tar.xz"
+  sha256 "0fb860137f0888f6b1a593d9b115fd7057983b7355f4f9922bb82a49ac875235"
   head "https://github.com/Araq/Nim.git", :branch => "devel"
 
   bottle do
