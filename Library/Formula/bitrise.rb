@@ -3,8 +3,8 @@ require "language/go"
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/1.2.3.tar.gz"
-  sha256 "f884a0066503e8f344f99e59a57e3015476fa09ae898cd53cd664a045fbfc7cd"
+  url "https://github.com/bitrise-io/bitrise/archive/1.2.4.tar.gz"
+  sha256 "7cf365dca04ac2adadea1fbe286a117336460daa2488b0e62dc080b8ac868a09"
 
   bottle do
     cellar :any_skip_relocation
@@ -16,8 +16,8 @@ class Bitrise < Formula
   depends_on "go" => :build
 
   resource "envman" do
-    url "https://github.com/bitrise-io/envman/archive/0.9.10.tar.gz"
-    sha256 "ca1912d53c495d1a5492c81df25591baae86126e6d9cf556f8d35f22a46ea95c"
+    url "https://github.com/bitrise-io/envman/archive/1.0.0.tar.gz"
+    sha256 "439d6c1732c3f2dbe121750ba1951df126576e393ce1028426a70dcaafcffe3a"
   end
 
   resource "stepman" do
