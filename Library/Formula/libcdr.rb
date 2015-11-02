@@ -20,6 +20,8 @@ class Libcdr < Formula
 
   def install
     ENV.cxx11
+    # Needed for Boost 1.59.0 compatibility.
+    ENV["LDFLAGS"] = "-lboost_system-mt"
     system "./configure", "--disable-werror",
                           "--without-docs",
                           "--prefix=#{prefix}"
