@@ -23,6 +23,6 @@ class Nodenv < Formula
   end
 
   test do
-    shell_output("eval \"$(#{bin}/nodenv init -)\" && nodenv versions")
+    shell_output("eval \"$(#{bin}/nodenv init -)\" && nodenv --version")
   end
 end
