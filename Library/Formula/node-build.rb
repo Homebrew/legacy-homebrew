@@ -17,6 +17,6 @@ class NodeBuild < Formula
   end
 
   test do
-    system "#{bin}/node-build", "--version"
+    system "MAKE_OPTS=--dry-run", "MAKE_INSTALL_OPTS=--dry-run", "#{bin}/node-build", "--compile", "4.0.0", "#{testpath}/4.0.0"
   end
 end
