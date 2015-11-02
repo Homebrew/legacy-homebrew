@@ -1,8 +1,8 @@
 class Confuse < Formula
   desc "Configuration file parser library written in C"
-  homepage "http://www.nongnu.org/confuse/"
-  url "http://download.savannah.nongnu.org/releases/confuse/confuse-2.7.tar.gz"
-  sha256 "e32574fd837e950778dac7ade40787dd2259ef8e28acd6ede6847ca895c88778"
+  homepage "https://github.com/martinh/libconfuse"
+  url "https://github.com/martinh/libconfuse/releases/download/v2.8/confuse-2.8.tar.xz"
+  sha256 "2a8102bfa3ccc846c14d94a81b0abfb4f5e855809f89ff3722aca1a9f314ea0d"
 
   bottle do
     cellar :any_skip_relocation
@@ -17,6 +17,31 @@ class Confuse < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make", "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <confuse.h>
+      #include <stdio.h>
+
+      cfg_opt_t opts[] =
+      {
+        CFG_STR("hello", NULL, CFGF_NONE),
+        CFG_END()
+      };
+
+      int main(void)
+      {
+        cfg_t *cfg = cfg_init(opts, CFGF_NONE);
+        if (cfg_parse_buf(cfg, "hello=world") == CFG_SUCCESS)
+          printf("%s\\n", cfg_getstr(cfg, "hello"));
+        cfg_free(cfg);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lconfuse", "-o", "test"
+    assert_match /world/, shell_output("./test")
   end
 end
