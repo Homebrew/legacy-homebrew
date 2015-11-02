@@ -1,8 +1,8 @@
 class Walkmod < Formula
   desc "Java-based project to apply and share code conventions"
   homepage "http://www.walkmod.com"
-  url "https://bitbucket.org/rpau/walkmod/downloads/walkmod-1.3.0-installer.zip"
-  sha256 "01ea47c99f7d7bffeb0cd0d960fdab4f09a7d51a1e0979c6b4ff71d0aeb049fd"
+  url "https://bitbucket.org/rpau/walkmod/downloads/walkmod-2.0-installer.zip"
+  sha256 "176eb51a2ea0b9215b21ea2749c393f2d6f574a549f53e19ff64b436d43d07f9"
   depends_on :java
 
   def install
@@ -15,6 +15,8 @@ class Walkmod < Formula
   end
 
   test do
-    system bin/"walkmod", "--version"
+    system "git", "clone", "https://github.com/rpau/walkmod-core.git"
+    cd "walkmod-core"
+    system bin/"walkmod", "check"
   end
 end
