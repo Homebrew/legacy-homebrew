@@ -25,6 +25,6 @@ class Tinc < Formula
   end
 
   test do
-    assert_match /^tinc version [-0-9a-z.]/, `#{sbin}/tincd --version`
+    assert_match version.to_s, shell_output("#{sbin}/tincd --version")
   end
 end
