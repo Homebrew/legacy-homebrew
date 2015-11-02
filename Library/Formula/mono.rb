@@ -77,9 +77,10 @@ class Mono < Formula
 
     if build.with? "libgdiplus"
       resource("libgdiplus").stage do
-        system "CPPFLAGS=-I/opt/X11/include ./autogen.sh"
+        system "./autogen.sh"
         system "./configure", "--disable-dependency-tracking",
                               "--disable-silent-rules",
+                              "--disable-tests",
                               "--prefix=#{prefix}"
         system "make", "install"
       end
