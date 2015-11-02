@@ -1,10 +1,13 @@
-require "formula"
-
 class Newlisp < Formula
   desc "Lisp-like, general-purpose scripting language"
   homepage "http://www.newlisp.org/"
   url "http://www.newlisp.org/downloads/newlisp-10.6.2.tgz"
-  sha1 "8ea722f2ed415548a0904ef15bafd259d8b07e01"
+  sha256 "ae3ab77987cb2cfef4e986104be5be5ac9469317e9d74884c3ea89c2e4bb4040"
+
+  stable do
+    # fix the prefix in a source file
+    patch :DATA
+  end
 
   bottle do
     sha1 "3201cfe276549f314eb8bd429d849277fd43293b" => :yosemite
@@ -13,13 +16,11 @@ class Newlisp < Formula
   end
 
   devel do
-    url "http://www.newlisp.org/downloads/development/inprogress/newlisp-10.6.3.tgz"
-    sha1 "15fff9bff3eb4bb2118b1941ffd34255b9a9a5b5"
+    url "http://www.newlisp.org/downloads/development/newlisp-10.6.4.tgz"
+    sha256 "1b769d8026241a02ac7e6fc326c5d9b99b976482a40a0c8d5c828df72275aa18"
   end
 
   depends_on "readline"
-
-  patch :DATA
 
   def install
     # Required to use our configuration
@@ -27,8 +28,8 @@ class Newlisp < Formula
 
     system "./configure-alt", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -51,7 +52,7 @@ end
 __END__
 
 --- a/guiserver/newlisp-edit.lsp
-+++ b/Users/gordy/tmp/newlisp-edit
++++ b/guiserver/newlisp-edit.lsp
 @@ -1,4 +1,4 @@
 -#!/usr/bin/newlisp
 +#!/usr/bin/env newlisp
@@ -63,7 +64,7 @@ __END__
  		(if (= ostype "Win32")
  			(catch (exec (string {newlisp.exe "} currentScriptFile {" } file " > " (string file "out"))) 'result)
 -			(catch (exec (string "/usr/bin/newlisp " currentScriptFile " " file)) 'result)
-+			(catch (exec (string "/usr/local/bin/newlisp " currentScriptFile " " file)) 'result)
++			(catch (exec (string "HOMEBREW_PREFIX/bin/newlisp " currentScriptFile " " file)) 'result)
  		)
  		(if (list? result)
  			(begin
@@ -72,7 +73,7 @@ __END__
  			(string newlispDir "/newlisp.exe") (string currentExtension " -C -w \"" $HOME "\""))
  		(gs:run-shell 'OutputArea 
 -			(string "/usr/bin/newlisp") (string currentExtension " -C -w " $HOME))
-+			(string "/usr/local/bin/newlisp") (string currentExtension " -C -w " $HOME))
++			(string "HOMEBREW_PREFIX/bin/newlisp") (string currentExtension " -C -w " $HOME))
  	)
  )
  
