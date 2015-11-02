@@ -10,9 +10,10 @@ class Newlisp < Formula
   end
 
   bottle do
-    sha1 "3201cfe276549f314eb8bd429d849277fd43293b" => :yosemite
-    sha1 "6a5503849e0d9ad6a28af27e75396f22fb472ed0" => :mavericks
-    sha1 "bb63e424cc5b4c2caa0c9f414178705c557c32d7" => :mountain_lion
+    revision 1
+    sha256 "1cf0154b6a3728dc66321cafd346edbf068401de9ab132fedcaa25175633ec71" => :el_capitan
+    sha256 "f90c42e44fa55f29339f0136006abbf8357720d3a0983ffcde9c73f04ad03e77" => :yosemite
+    sha256 "1f99334ef4a7f02f046a6f748b763b266a742a838cf4079d89ed3caf5801af7d" => :mavericks
   end
 
   devel do
