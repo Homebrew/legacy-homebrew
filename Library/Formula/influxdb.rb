@@ -3,11 +3,9 @@ require "language/go"
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdb.com"
-
-  stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.4.2.tar.gz"
-    sha256 "aaea27228d7f242fe37d436506592189081beda0e7d2fba3f82c6b233fd913bc"
-  end
+  url "https://github.com/influxdb/influxdb/archive/v0.9.4.2.tar.gz"
+  sha256 "aaea27228d7f242fe37d436506592189081beda0e7d2fba3f82c6b233fd913bc"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -159,6 +157,11 @@ class Influxdb < Formula
         <string>#{var}/log/influxdb.log</string>
         <key>StandardOutPath</key>
         <string>#{var}/log/influxdb.log</string>
+        <key>SoftResourceLimits</key>
+        <dict>
+          <key>NumberOfFiles</key>
+          <integer>10240</integer>
+        </dict>
       </dict>
     </plist>
     EOS
