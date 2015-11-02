@@ -12,4 +12,5 @@ FORMULA_RENAMES = {
   "fig" => "docker-compose",
   "polarssl" => "mbedtls",
   "crystal" => "autocode",
+  "nimrod" => "nim"
 }
