@@ -21,6 +21,8 @@ class Libvisio < Formula
   depends_on "librevenge"
 
   def install
+    # Needed for Boost 1.59.0 compatibility.
+    ENV["LDFLAGS"] = "-lboost_system-mt"
     system "./configure", "--without-docs",
                           "-disable-dependency-tracking",
                           "--enable-static=no",
