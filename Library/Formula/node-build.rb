@@ -17,8 +17,6 @@ class NodeBuild < Formula
   end
 
   test do
-    ENV["MAKE_OPTS"] = "--dry-run"
-    ENV["MAKE_INSTALL_OPTS"] = "--dry-run"
-    system "#{bin}/node-build", "--compile", "4.0.0", "#{testpath}/4.0.0"
+    system "#{bin}/node-build", "4.0.0", "#{testpath}/4.0.0"
   end
 end
