@@ -40,4 +40,49 @@ class Unicorn < Formula
     end
     system "make", "install"
   end
+
+  test do
+    source = "test1.c"
+    executable = "test1"
+    (testpath/source).write <<-EOS
+      /* Adapted from http://www.unicorn-engine.org/docs/tutorial.html
+       * shamelessly and without permission. This almost certainly needs
+       * replacement, but for now it should be an OK placeholder assertion
+       * that the libraries are intact and available. Expect it to fail if
+       * built without x86 support... :D
+       */
+
+      #include <stdio.h>
+
+      #include <unicorn/unicorn.h>
+
+      #define X86_CODE32 "\x41\x4a"
+      #define ADDRESS 0x1000000
+
+      int main(int argc, char *argv[]) {
+        uc_engine *uc;
+        uc_err err;
+        int r_ecx = 0x1234;
+        int r_edx = 0x7890;
+
+        err = uc_open(UC_ARCH_X86, UC_MODE_32, &uc);
+        if (err != UC_ERR_OK)
+          return -1;
+        uc_mem_map(uc, ADDRESS, 2 * 1024 * 1024, UC_PROT_ALL);
+        if (uc_mem_write(uc, ADDRESS, X86_CODE32, sizeof(X86_CODE32) - 1))
+          return -1;
+        uc_reg_write(uc, UC_X86_REG_ECX, &r_ecx);
+        uc_reg_write(uc, UC_X86_REG_EDX, &r_edx);
+        err = uc_emu_start(uc, ADDRESS, ADDRESS + sizeof(X86_CODE32) - 1, 0, 0);
+        if (err)
+          return -1;
+        uc_close(uc);
+        puts("Emulation complete.");
+        return 0;
+      }
+    EOS
+    system "cc", *(`pkg-config --libs glib-2.0`.split), "-o", \
+      testpath/executable, testpath/source, "-lpthread", "-lm", "-lunicorn"
+    system testpath/executable
+  end
 end
