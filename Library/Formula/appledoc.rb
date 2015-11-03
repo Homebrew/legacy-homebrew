@@ -6,7 +6,7 @@ class Appledoc < Formula
 
   head "https://github.com/tomaz/appledoc.git"
 
-  depends_on :xcode
+  depends_on :xcode => :build
   depends_on :macos => :lion
 
   def install
