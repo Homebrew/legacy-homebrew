@@ -30,7 +30,7 @@ class Blackbox < Formula
   end
 
   test do
-    system "#{bin}/git", "init"
+    system "/usr/local/Cellar/yourformula/version/bin/git", "init"
     system "#{bin}/blackbox_initialize", "yes"
   end
 end
