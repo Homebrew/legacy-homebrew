@@ -25,10 +25,7 @@ class Unicorn < Formula
 
   def install
     archs = []
-    %w[x86 x86_64].each do |arch|
-      archs << arch if build.with? arch
-    end
-    %w[arm aarch64 m64k mips ppc sparc].each do |arch|
+    %w[x86 x86_64 arm aarch64 m64k mips ppc sparc].each do |arch|
       if build.with?("all") || build.with?(arch)
         archs << arch
       end
@@ -47,9 +44,10 @@ class Unicorn < Formula
     source.write <<-EOS
       /* Adapted from http://www.unicorn-engine.org/docs/tutorial.html
        * shamelessly and without permission. This almost certainly needs
-       * replacement, but for now it should be an OK placeholder assertion
-       * that the libraries are intact and available. Expect it to fail if
-       * built without x86 support... :D
+       * replacement, but for now it should be an OK placeholder
+       * assertion that the libraries are intact and available.
+       *
+       * !!! HEADS UP !!! This will fail if you build --without-x86.
        */
 
       #include <stdio.h>
@@ -66,16 +64,23 @@ class Unicorn < Formula
         int r_edx = 0x7890;
 
         err = uc_open(UC_ARCH_X86, UC_MODE_32, &uc);
-        if (err != UC_ERR_OK)
+        if (err != UC_ERR_OK) {
+          fprintf(stderr, "Failed on uc_open() with error %u.\\n", err);
           return -1;
+        }
         uc_mem_map(uc, ADDRESS, 2 * 1024 * 1024, UC_PROT_ALL);
-        if (uc_mem_write(uc, ADDRESS, X86_CODE32, sizeof(X86_CODE32) - 1))
+        if (uc_mem_write(uc, ADDRESS, X86_CODE32, sizeof(X86_CODE32) - 1)) {
+          fputs("Failed to write emulation code to memory.\\n", stderr);
           return -1;
+        }
         uc_reg_write(uc, UC_X86_REG_ECX, &r_ecx);
         uc_reg_write(uc, UC_X86_REG_EDX, &r_edx);
         err = uc_emu_start(uc, ADDRESS, ADDRESS + sizeof(X86_CODE32) - 1, 0, 0);
-        if (err)
+        if (err) {
+          fprintf(stderr, "Failed on uc_emu_start with error %u (%s).\\n",
+            err, uc_strerror(err));
           return -1;
+        }
         uc_close(uc);
         puts("Emulation complete.");
         return 0;
