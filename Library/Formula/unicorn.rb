@@ -25,26 +25,26 @@ class Unicorn < Formula
 
   def install
     archs = []
-    ["x86", "x86_64"].each do |arch|
+    %w[x86 x86_64].each do |arch|
       archs << arch if build.with? arch
     end
-    ["arm", "aarch64", "m64k", "mips", "ppc", "sparc"].each do |arch|
-      if (build.with? "all") || (build.with? arch)
+    %w[arm aarch64 m64k mips ppc sparc].each do |arch|
+      if build.with?("all") || build.with?(arch)
         archs << arch
       end
     end
     ENV["PREFIX"] = prefix
     ENV["UNICORN_ARCHS"] = archs.join " "
-    ["static", "shared", "debug"].each do |condition|
+    %w[static shared debug].each do |condition|
       ENV["UNICORN_#{condition.upcase}"] = build.with?(condition) ? "yes" : "no"
     end
     system "make", "install"
   end
 
   test do
-    source = "test1.c"
-    executable = "test1"
-    (testpath/source).write <<-EOS
+    source = testpath/"test1.c"
+    executable = testpath/"test1"
+    source.write <<-EOS
       /* Adapted from http://www.unicorn-engine.org/docs/tutorial.html
        * shamelessly and without permission. This almost certainly needs
        * replacement, but for now it should be an OK placeholder assertion
@@ -81,8 +81,8 @@ class Unicorn < Formula
         return 0;
       }
     EOS
-    system "cc", *(`pkg-config --libs glib-2.0`.split), "-o", \
-      testpath/executable, testpath/source, "-lpthread", "-lm", "-lunicorn"
-    system testpath/executable
+    system ENV.cc, "-o", executable, source, "-lglib-2.0", "-lpthread", \
+      "-lm", "-lunicorn"
+    system executable
   end
 end
