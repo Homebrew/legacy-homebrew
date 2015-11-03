@@ -8,7 +8,7 @@ class Phantomjs < Formula
     sha256 "0a1338464ca37314037d139b3e0f7368325f5d8810628d9d9f2df9f9f535d407"
 
     # https://github.com/Homebrew/homebrew/issues/42249
-    depends_on MaximumMacOSRequirement => :yosemite
+    depends_on MinimumMacOSRequirement => :mountain_lion
 
     # Qt Yosemite build fix. Upstream commit/PR:
     # https://qt.gitorious.org/qt/qtbase/commit/70e442
