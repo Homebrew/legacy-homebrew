@@ -6,9 +6,9 @@ class Mu < Formula
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    sha256 "45184fd8369994f4112191818b7a801e9c599fe4baf7b14fcc59f805fa04b8bf" => :el_capitan
-    sha256 "36ee1adf0588fa049373a4cd6f2e818038289c4e2d754225711a1d094ef50ee2" => :yosemite
-    sha256 "317f76b6a49b560b999caf7a3e31b72bced89c0b756a173a5d6abcd10735bcc7" => :mavericks
+    sha256 "58843a9fa75b7ab59618b99b98cb5106393b81c377f88541fee23b341d987702" => :el_capitan
+    sha256 "2f85daec392f24260d7d87ba4c67ecb9223c89751665b60762cbb46ac21b2a7a" => :yosemite
+    sha256 "1e355cb0ce355ba7b78debbaec8830d083c0c7332448189945acd62b0a0f2b43" => :mavericks
   end
 
   depends_on "autoconf" => :build
