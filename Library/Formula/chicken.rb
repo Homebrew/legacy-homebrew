@@ -23,6 +23,10 @@ class Chicken < Formula
       POSTINSTALL_PROGRAM=install_name_tool
     ]
 
+    # Sometimes chicken detects a 32-bit environment by mistake, causing errors,
+    # see https://github.com/Homebrew/homebrew/issues/45648
+    args << "ARCH=x86-64" if MacOS.prefer_64_bit?
+
     system "make", *args
     system "make", "install", *args
   end
