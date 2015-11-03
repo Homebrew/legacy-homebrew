@@ -12,6 +12,7 @@ class Sfcgal < Formula
   end
 
   depends_on "cmake" => :build
+  depends_on "boost"
   depends_on "cgal"
   depends_on "gmp"
   depends_on "mpfr"
