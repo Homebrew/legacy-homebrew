@@ -1,8 +1,8 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.1.tar.gz"
-  sha256 "a19d560689c0c5195aadb49e52326ed317cce7cd16e3ba7c7e367dfd6d287a4a"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.2.tar.gz"
+  sha256 "14fc211beff811b4bbc481e0653b5c2a65be21ced116c1faeda57414d30777ac"
 
   head "https://github.com/nvbn/thefuck.git"
 
@@ -76,5 +76,6 @@ class Thefuck < Formula
     assert_match /.+TF_ALIAS.+thefuck.+/, shell_output("#{bin}/thefuck --alias").chomp
     assert_match /git branch/, shell_output("#{bin}/thefuck git branchh").chomp
     assert_match /echo ok/, shell_output("#{bin}/thefuck echho ok").chomp
+    assert_match /^Seems like .+fuck.+ alias isn't configured.+/, shell_output("#{bin}/fuck").chomp
   end
 end
