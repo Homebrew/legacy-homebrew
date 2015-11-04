@@ -5,6 +5,13 @@ class Unicorn < Formula
   sha256 "1ca03b1c8f6360335567b528210713461e839d47c4eb7c676ba3aa4f72b8cf10"
   head "https://github.com/unicorn-engine/unicorn.git"
 
+  bottle do
+    cellar :any
+    sha256 "760cd9e01aef293fa1046ba71e608fc66c9689759061d5aef8f6a9f45e69a5cb" => :el_capitan
+    sha256 "c908ef47188f1a21412e6dd808aab7f7d234e7374b37393d4601efbfd7ded8fb" => :yosemite
+    sha256 "8f5ff05290b73e5ceee5af78ea8f46a7167a64e71282f1c5917bbf2612d7e8ee" => :mavericks
+  end
+
   option "with-all", "Build with support for ARM64, Motorola 64k, PowerPC and "\
     "SPARC"
   option "with-debug", "Create a debug build"
