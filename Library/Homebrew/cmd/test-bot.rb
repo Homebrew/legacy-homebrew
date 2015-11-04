@@ -1018,7 +1018,14 @@ module Homebrew
       end
     end
   ensure
-    HOMEBREW_CACHE.children.each(&:rmtree) if ARGV.include? "--clean-cache"
+    if ARGV.include? "--clean-cache"
+      HOMEBREW_CACHE.children.each(&:rmtree)
+    else
+      Dir.glob("*.bottle*.tar.gz") do |bottle_file|
+        FileUtils.rm_f HOMEBREW_CACHE/bottle_file
+      end
+    end
+
     Homebrew.failed = any_errors
   end
 end
