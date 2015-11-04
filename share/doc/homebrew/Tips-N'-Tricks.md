@@ -31,7 +31,7 @@ And of course, you can simply `brew link $FORMULA` again afterwards!
 
 ```sh
 brew info $FORMULA
-brew swtich $FORMULA $VERSION
+brew switch $FORMULA $VERSION
 ```
 
 Use `brew info $FORMULA` to check what versions are installed but not currently activated, then `brew switch $FORMULA $VERSION` to activate the desired version. This can be useful if you would like to switch between versions of a formula.
