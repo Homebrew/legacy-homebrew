@@ -1,8 +1,8 @@
 class Nss < Formula
   desc "Libraries for security-enabled client and server applications"
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://archive.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_20_RTM/src/nss-3.20.tar.gz"
-  sha256 "5e38d4b9837ca338af966b97fc91c07f67ad647fb38dc4af3cfd0d84e477d15c"
+  url "https://archive.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_20_1_RTM/src/nss-3.20.1.tar.gz"
+  sha256 "ad3c8f11dfd9570c2d04a6140d5ef7c2bdd0fe30d6c9e5548721a4251a5e8c97"
 
   bottle do
     cellar :any
@@ -98,7 +98,7 @@ class Nss < Formula
     Name: NSS
     Description: Mozilla Network Security Services
     Version: #{version}
-    Requires: nspr >= 4.10.8
+    Requires: nspr >= 4.10.10
     Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
     Cflags: -I${includedir}
     EOS
