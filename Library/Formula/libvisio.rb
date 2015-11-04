@@ -16,9 +16,7 @@ class Libvisio < Formula
   depends_on "cppunit" => :build
   depends_on "librevenge"
   depends_on "icu4c"
-  depends_on "libxml2"
-  depends_on "homebrew/dupes/gperf"
-  depends_on "homebrew/dupes/zlib"
+
 
   def install
     # Needed for Boost 1.59.0 compatibility.
