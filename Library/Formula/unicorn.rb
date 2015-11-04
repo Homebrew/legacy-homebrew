@@ -5,34 +5,21 @@ class Unicorn < Formula
   sha256 "1ca03b1c8f6360335567b528210713461e839d47c4eb7c676ba3aa4f72b8cf10"
   head "https://github.com/unicorn-engine/unicorn.git"
 
+  option "with-all", "Build with support for ARM64, Motorola 64k, PowerPC and "\
+    "SPARC"
   option "with-debug", "Create a debug build"
-  option "without-x86", "Build without x86 support"
-  option "without-x86_64", "Build without x86_64 support"
-  option "without-static", "Don't build static libraries"
-  option "with-all", "Build with complete architectural support"
-  option "with-arm", "Build with ARM support"
-  option "with-aarch64", "Build with ARM64 support"
-  option "with-m68k", "Build with Motorola 68000 support"
-  option "with-mips", "Build with MIPS support"
-  option "with-ppc", "Build with PowerPC support"
-  option "with-shared", "Build with shared library support"
-  option "with-sparc", "Build with SPARC support"
+  option "with-shared", "Build shared libraries"
 
   depends_on "capstone"
   depends_on "glib"
   depends_on "pkg-config" => :build
-  depends_on "python"
 
   def install
-    archs = []
-    %w[x86 x86_64 arm aarch64 m64k mips ppc sparc].each do |arch|
-      if build.with?("all") || build.with?(arch)
-        archs << arch
-      end
-    end
+    archs  = %w[x86 x86_64 arm mips]
+    archs += %w[aarch64 m64k ppc sparc] if build.with?("all")
     ENV["PREFIX"] = prefix
     ENV["UNICORN_ARCHS"] = archs.join " "
-    %w[static shared debug].each do |condition|
+    %w[shared debug].each do |condition|
       ENV["UNICORN_#{condition.upcase}"] = build.with?(condition) ? "yes" : "no"
     end
     system "make", "install"
