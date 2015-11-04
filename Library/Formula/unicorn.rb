@@ -8,7 +8,6 @@ class Unicorn < Formula
   option "with-all", "Build with support for ARM64, Motorola 64k, PowerPC and "\
     "SPARC"
   option "with-debug", "Create a debug build"
-  option "with-shared", "Build shared libraries"
 
   depends_on "capstone"
   depends_on "glib"
@@ -19,22 +18,21 @@ class Unicorn < Formula
     archs += %w[aarch64 m64k ppc sparc] if build.with?("all")
     ENV["PREFIX"] = prefix
     ENV["UNICORN_ARCHS"] = archs.join " "
-    %w[shared debug].each do |condition|
-      ENV["UNICORN_#{condition.upcase}"] = build.with?(condition) ? "yes" : "no"
+    ENV["UNICORN_SHARED"] = "yes"
+    if build.with?("debug")
+      ENV["UNICORN_DEBUG"] = "yes"
+    else
+      ENV["UNICORN_DEBUG"] = "no"
     end
     system "make", "install"
   end
 
   test do
-    source = testpath/"test1.c"
-    executable = testpath/"test1"
-    source.write <<-EOS
+    (testpath/"test1.c").write <<-EOS
       /* Adapted from http://www.unicorn-engine.org/docs/tutorial.html
        * shamelessly and without permission. This almost certainly needs
        * replacement, but for now it should be an OK placeholder
        * assertion that the libraries are intact and available.
-       *
-       * !!! HEADS UP !!! This will fail if you build --without-x86.
        */
 
       #include <stdio.h>
@@ -73,8 +71,8 @@ class Unicorn < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "-o", executable, source, "-lglib-2.0", "-lpthread", \
-      "-lm", "-lunicorn"
-    system executable
+    system ENV.cc, "-o", testpath/"test1", testpath/"test1.c", "-lglib-2.0",
+      "-lpthread", "-lm", "-lunicorn"
+    system testpath/"test1"
   end
 end
