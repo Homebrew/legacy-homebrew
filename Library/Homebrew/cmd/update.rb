@@ -108,7 +108,8 @@ module Homebrew
 
       begin
         f = Formulary.factory("#{user}/#{repo}/#{newname}")
-      rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS
+      # short term fix to prevent situation like https://github.com/Homebrew/homebrew/issues/45616
+      rescue Exception
       end
 
       next unless f
@@ -314,7 +315,8 @@ class Updater
             end
             old_version = FormulaVersions.new(formula).formula_at_revision(@initial_revision, &:pkg_version)
             next if new_version == old_version
-          rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS => e
+          # short term fix to prevent situation like https://github.com/Homebrew/homebrew/issues/45616
+          rescue Exception => e
             onoe e if ARGV.homebrew_developer?
           end
           map[:M] << file
