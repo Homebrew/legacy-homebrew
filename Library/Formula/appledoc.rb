@@ -23,6 +23,32 @@ class Appledoc < Formula
   end
 
   test do
-    system "#{bin}/appledoc", "--version"
+    (testpath/"test.h").write <<-EOS.undent
+      /**
+       * This is a test class. It does stuff.
+       *
+       * Here **is** some `markdown`.
+       */
+
+      @interface X : Y
+
+      /**
+       * Does a thing.
+       *
+       * @returns An instance of X.
+       * @param thing The thing to copy.
+       */
+      + (X *)thingWithThing:(X *)thing;
+
+      @end
+    EOS
+
+    system bin/"appledoc", "--project-name", "Test",
+                           "--project-company", "Homebrew",
+                           "--create-html",
+                           "--no-install-docset",
+                           "--keep-intermediate-files",
+                           "--output", testpath,
+                           testpath/"test.h"
   end
 end
