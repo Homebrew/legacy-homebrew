@@ -10,10 +10,6 @@ class Mysql < Formula
     sha256 "b715084d9d16c12506cdee1453d99b825379c3aa75d70e0883e68993baa08e08" => :mavericks
   end
 
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
-  depends_on "openssl"
-
   option :universal
   option "with-tests", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
@@ -26,6 +22,11 @@ class Mysql < Formula
   deprecated_option "enable-local-infile" => "with-local-infile"
   deprecated_option "enable-memcached" => "with-memcached"
   deprecated_option "enable-debug" => "with-debug"
+
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
+  depends_on "boost"
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
