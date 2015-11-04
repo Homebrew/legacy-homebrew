@@ -3,7 +3,7 @@ class Walkmod < Formula
   homepage "http://www.walkmod.com"
   url "https://bitbucket.org/rpau/walkmod/downloads/walkmod-2.0-installer.zip"
   sha256 "06f11d9c4acfe3e3e0d20316a49ad613cbd526368308c68670ce749b472fc35f"
-  depends_on :java
+  depends_on :java => "1.7+"
 
   def install
     # Remove windows files
