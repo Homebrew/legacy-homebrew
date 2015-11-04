@@ -1,9 +1,9 @@
 class Entr < Formula
   desc "Run arbitrary commands when files change"
   homepage "http://entrproject.org/"
-  url "http://entrproject.org/code/entr-3.2.tar.gz"
-  mirror "https://bitbucket.org/eradman/entr/get/entr-3.2.tar.gz"
-  sha256 "b1eee00afbeccf03010c1c557436854be6aaf0ef9b72ab8d44b94affdd7d7146"
+  url "http://entrproject.org/code/entr-3.3.tar.gz"
+  mirror "https://bitbucket.org/eradman/entr/get/entr-3.3.tar.gz"
+  sha256 "701cb7b0a72b6c9ba794ad7cc15b6ebcc2e0c978bb6906c8ae407567a044461f"
 
   head do
     url "https://bitbucket.org/eradman/entr", :using => :hg
