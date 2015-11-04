@@ -4,10 +4,14 @@ class Swatchbooker < Formula
   url "https://launchpad.net/swatchbooker/trunk/0.7.3/+download/SwatchBooker-0.7.3.tar.gz"
   sha256 "c0c8bf038156337f1eebdf6f7c99f5b7a8e8f9a332cd625c57269ddc8ba18eb7"
 
+  resource "Pillow" do
+    url "https://pypi.python.org/packages/source/P/Pillow/Pillow-2.9.0.zip"
+    sha256 "d1db8dfed77547076037d589b598e04f2cbc1a7835d3d3f137bf20c8994854d5"
+  end
+
   depends_on :python
   depends_on "little-cms" => "with-python"
   depends_on "pyqt"
-  depends_on "homebrew/python/pillow"
 
   patch :DATA
 
@@ -18,14 +22,15 @@ class Swatchbooker < Formula
     end
 
     ENV["PYTHONPATH"] = libexec/"vendor/lib/python2.7/site-packages"
-    
-    system "python", *Language::Python.setup_install_args(libexec/"vendor")
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages/PIL"
 
-    system "python", "setup.py", "install", "--prefix=#{prefix}"
-    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
-    chmod 0755, libexec/"bin/swatchbooker"
-  end
+    resource("Pillow").stage
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages/PIL"
+
+      system "python", "setup.py", "install", "--prefix=#{prefix}"
+      bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+      chmod 0755, libexec/"bin/swatchbooker"
+    end
 
   test do
     system "#{bin}/swatchbooker"
