@@ -88,7 +88,7 @@ class Llvm < Formula
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
-  option "with-llvm-dylib", "Build shared library (libLLVM.dylib)" 
+  option "with-llvm-dylib", "Build shared library (libLLVM.dylib)"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
