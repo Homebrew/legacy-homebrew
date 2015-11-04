@@ -39,4 +39,8 @@ class Hydra < Formula
     system "make", "all", "install"
     share.install prefix/"man" # Put man pages in correct place
   end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/hydra", 255)
+  end
 end
