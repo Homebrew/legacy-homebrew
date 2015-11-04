@@ -1,22 +1,8 @@
 class Libressl < Formula
   desc "Version of the SSL/TLS protocol forked from OpenSSL"
   homepage "http://www.libressl.org/"
-  revision 1
-
-  stable do
-    url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.3.0.tar.gz"
-    sha256 "0451498d999ccff475226f5cfae07a3754a7b28c507c6bda007e316fc90d92a0"
-
-    # Fixes buffer overrun and memory leak. Combination of:
-    # https://github.com/libressl-portable/openbsd/commit/ea13bdff130
-    # https://github.com/libressl-portable/openbsd/commit/67bf52a96ba
-    # https://github.com/libressl-portable/openbsd/commit/f292734cabf
-    # Fixed in 2.2.4 but no 2.3.1 release yet.
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/patches/4d256375/libressl/libressl-2.3.0-qualys-vun-fix.diff"
-      sha256 "a8d8f2b763ee363d87bb06aa2f8da66b484a23907217265cc7faef85355b561f"
-    end
-  end
+  url "http://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-2.3.1.tar.gz"
+  sha256 "410b58db4ebbcab43c3357612e591094f64fb9339269caa2e68728e36f8d589e"
 
   bottle do
     sha256 "05243a223120c6b93ce30fb319ee4d4aa3fa21a8d31ec4d26d3c1e7263ced9d2" => :el_capitan
