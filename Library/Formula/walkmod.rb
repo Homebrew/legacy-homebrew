@@ -1,8 +1,8 @@
 class Walkmod < Formula
   desc "Java-based project to apply and share code conventions"
   homepage "http://www.walkmod.com"
-  url "https://bitbucket.org/rpau/walkmod/downloads/walkmod-2.0-installer.zip"
-  sha256 "06f11d9c4acfe3e3e0d20316a49ad613cbd526368308c68670ce749b472fc35f"
+  url "https://bitbucket.org/rpau/walkmod/downloads/walkmod-2.0.1-installer.zip"
+  sha256 "8790d3a8772db865d8653aff273a680ace8ea918d2afafaafa32f024077d8a93"
 
   depends_on :java => "1.7+"
 
