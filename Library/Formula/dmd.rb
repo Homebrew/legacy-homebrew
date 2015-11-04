@@ -22,6 +22,12 @@ class Dmd < Formula
     end
   end
 
+  bottle do
+    sha256 "578203e347dffa72549d9edd2651f15bfa64de8d555a59f89cc83fb1d6bc51b6" => :el_capitan
+    sha256 "ad2908bb8822c1b3145009b158a95b825705f60da3a828c8bb221ca8a25538a9" => :yosemite
+    sha256 "9dbc01cf2450007bc85d965c43f795fd0504a8d195c13fa9789d567e4cd84cf3" => :mavericks
+  end
+
   head do
     url "https://github.com/D-Programming-Language/dmd.git"
 
