@@ -1,8 +1,8 @@
-class Cyassl < Formula
+class Wolfssl < Formula
   desc "Embedded SSL Library written in C"
   homepage "https://www.wolfssl.com/wolfSSL/Home.html"
-  url "https://github.com/wolfSSL/wolfssl/archive/v3.4.8.tar.gz"
-  sha256 "50243fa7124a1af611acb916ec11d98a2a91ac5079b7a6a51562e8970cbd942e"
+  url "https://github.com/wolfSSL/wolfssl/archive/v3.7.0.tar.gz"
+  sha256 "66bde9fd9ae0eb557d2603117017cb04c12cbecb34296bb7949d509577e42ae4"
   head "https://github.com/wolfSSL/wolfssl.git"
 
   bottle do
@@ -34,6 +34,7 @@ class Cyassl < Formula
       --disable-webserver
       --enable-aesccm
       --enable-aesgcm
+      --enable-alpn
       --enable-blake2
       --enable-camellia
       --enable-certgen
@@ -46,10 +47,12 @@ class Cyassl < Formula
       --enable-ecc
       --enable-eccencrypt
       --enable-ecc25519
+      --enable-ed25519
       --enable-filesystem
       --enable-hc128
       --enable-hkdf
       --enable-inline
+      --enable-ipv6
       --enable-keygen
       --enable-ocsp
       --enable-opensslextra
@@ -74,7 +77,7 @@ class Cyassl < Formula
     args << "--enable-aesni" if Hardware::CPU.aes? && !build.bottle?
 
     # Extra flag is stated as a needed for the Mac platform.
-    # http://yassl.com/yaSSL/Docs-cyassl-manual-2-building-cyassl.html
+    # https://wolfssl.com/wolfSSL/Docs-wolfssl-manual-2-building-wolfssl.html
     # Also, only applies if fastmath is enabled.
     ENV.append_to_cflags "-mdynamic-no-pic" if MacOS.prefer_64_bit?
 
