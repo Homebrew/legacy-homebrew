@@ -44,7 +44,7 @@ class Agda < Formula
   depends_on "cabal-install" => :build
 
   depends_on "gmp"
-  depends_on :emacs => :recommended
+  depends_on :emacs => ["21.1", :recommended]
 
   setup_ghc_compilers
 
