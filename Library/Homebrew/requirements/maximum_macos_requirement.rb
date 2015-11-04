@@ -12,7 +12,11 @@ class MaximumMacOSRequirement < Requirement
 
   def message
     <<-EOS.undent
-      OS X #{@version.pretty_name} or older is required.
+      This formula either does not compile or function as expected on newer
+      OS X versions than #{@version.pretty_name} due to an upstream incompatibility.
+
+      You can try to install the formula with `--HEAD` but one may not be
+      defined or the issue may still be present upstream.
     EOS
   end
 end
