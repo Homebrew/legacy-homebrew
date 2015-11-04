@@ -123,9 +123,6 @@ class Mysql < Formula
     end
 
     bin.install_symlink prefix/"support-files/mysql.server"
-
-    libexec.install bin/"mysqlaccess"
-    libexec.install bin/"mysqlaccess.conf"
   end
 
   def post_install
