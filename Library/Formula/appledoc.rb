@@ -48,6 +48,7 @@ class Appledoc < Formula
                            "--create-html",
                            "--no-install-docset",
                            "--keep-intermediate-files",
+                           "--docset-install-path", testpath,
                            "--output", testpath,
                            testpath/"test.h"
   end
