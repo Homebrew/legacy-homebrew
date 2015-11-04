@@ -3,8 +3,8 @@ require "language/go"
 class Jvgrep < Formula
   desc "Grep for Japanese users of Vim"
   homepage "https://github.com/mattn/jvgrep"
-  url "https://github.com/mattn/jvgrep/archive/v4.4.tar.gz"
-  sha256 "c0db7fb232d49a747101649a5519274b19850a62c039d1ac87eb0872f20ed4a7"
+  url "https://github.com/mattn/jvgrep/archive/v4.5.tar.gz"
+  sha256 "dc64a24547c0108fb23cf1cf4654a889e4537d09c8012cd342c8718bb858d59b"
 
   head "https://github.com/mattn/jvgrep.git"
 
@@ -30,11 +30,11 @@ class Jvgrep < Formula
   end
 
   go_resource "golang.org/x/net" do
-    url "https://go.googlesource.com/net.git", :revision => "2cba614e8ff920c60240d2677bc019af32ee04e5"
+    url "https://go.googlesource.com/net.git", :revision => "b4e17d61b15679caf2335da776c614169a1b4643"
   end
 
   go_resource "golang.org/x/text" do
-    url "https://go.googlesource.com/text.git", :revision => "0fe7e6856182a6ebfcf1e6a7aa90bead9a8e1bc0"
+    url "https://go.googlesource.com/text.git", :revision => "cc8a7ec430472eaf28b179c420464d7a9fc741c5"
   end
 
   def install
