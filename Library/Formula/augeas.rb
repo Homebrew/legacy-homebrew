@@ -32,11 +32,6 @@ class Augeas < Formula
       system "./configure", *args
     end
 
-    # libfa example program doesn't compile cleanly on OSX, so skip it
-    inreplace "Makefile" do |s|
-      s.change_make_var! "SUBDIRS", "gnulib/lib src gnulib/tests tests man doc"
-    end
-
     system "make", "install"
   end
 
