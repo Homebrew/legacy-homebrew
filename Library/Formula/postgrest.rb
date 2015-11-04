@@ -9,6 +9,12 @@ class Postgrest < Formula
   url "https://github.com/begriffs/postgrest/archive/v0.2.12.0.tar.gz"
   sha256 "9f7277720b947b06eb53ac0a54686eb437253d417695bc756220e703532a725a"
 
+  bottle do
+    sha256 "fc88d2190b524fde39a99855c134e5b5ed68499b5533566c097dd495f9fcfa47" => :el_capitan
+    sha256 "4be5727902c6f9266aa9d885c21334db4178ba0aed72a6e227a168a3b10e8441" => :yosemite
+    sha256 "aff43d1b48e1795015c03bac5467e11538e7d67ede70caa1044f2bef02245f4f" => :mavericks
+  end
+
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "postgresql"
