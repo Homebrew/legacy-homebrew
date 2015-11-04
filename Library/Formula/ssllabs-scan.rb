@@ -13,6 +13,6 @@ class SsllabsScan < Formula
   end
 
   test do
-    system "#{bin}/ssllabs-scan", "-version"
+    system "#{bin}/ssllabs-scan", "-grade", "-quiet", "-usecache", "ssllabs.com"
   end
 end
