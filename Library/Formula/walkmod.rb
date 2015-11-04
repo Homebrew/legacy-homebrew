@@ -16,7 +16,7 @@ class Walkmod < Formula
   end
 
   test do
-    system "git", "clone", "https://github.com/rpau/walkmod-core.git"
+    system "git", "clone", "--depth", "1", ""https://github.com/rpau/walkmod-core.git"
     cd "walkmod-core"
     system bin/"walkmod", "check"
   end
