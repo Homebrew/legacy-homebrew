@@ -12,10 +12,6 @@ class Chicken < Formula
     sha256 "1f46226c58b1b7cd92f4d0c68cc0583e2c5ec4c2cce60b53193afca9a5d8be19" => :mountain_lion
   end
 
-  # Sometimes chicken detects a 32-bit environment by mistake, causing errors,
-  # see https://github.com/Homebrew/homebrew/issues/45648
-  option "with-force-64-bit", "Build with forced 64-bit build environment"
-
   def install
     ENV.deparallelize
 
@@ -27,7 +23,9 @@ class Chicken < Formula
       POSTINSTALL_PROGRAM=install_name_tool
     ]
 
-    args << "ARCH=x86-64" if build.with? "force-64-bit"
+    # Sometimes chicken detects a 32-bit environment by mistake, causing errors,
+    # see https://github.com/Homebrew/homebrew/issues/45648
+    args << "ARCH=x86-64" if MacOS.prefer_64_bit?
 
     system "make", *args
     system "make", "install", *args
