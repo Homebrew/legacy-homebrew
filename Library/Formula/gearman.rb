@@ -29,7 +29,7 @@ class Gearman < Formula
   depends_on "hiredis" => :optional
   depends_on "libmemcached" => :optional
   depends_on "openssl" => :optional
-  depends_on "cyassl" => :optional
+  depends_on "wolfssl" => :optional
   depends_on "tokyo-cabinet" => :optional
 
   def install
