@@ -45,5 +45,15 @@ class Cvc4 < Formula
     EOS
     result = shell_output "#{bin}/cvc4 #{(testpath/"simple.cvc")}"
     assert_match /valid/, result
+    (testpath/"simple.smt").write <<-EOS.undent
+      (set-option :produce-models true)
+      (set-logic QF_BV)
+      (define-fun s_2 () Bool false)
+      (define-fun s_1 () Bool true)
+      (assert (not s_1))
+      (check-sat)
+    EOS
+    result = shell_output "#{bin}/cvc4 --lang smt #{(testpath/"simple.smt")}"
+    assert_match /unsat/, result
   end
 end
