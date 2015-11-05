@@ -100,7 +100,8 @@ module Homebrew
         query = query_regexp(e.name)
 
         ohai "Searching for similarly named formulae..."
-        formulae_search_results = search_formulae(query)
+        formulae_search_results = search_formulae(query, :installed => false)
+
         case formulae_search_results.length
         when 0
           ofail "No similarly named formulae found."
