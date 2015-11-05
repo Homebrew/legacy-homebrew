@@ -2,9 +2,9 @@ class Kafka < Formula
   desc "Publish-subscribe messaging rethought as a distributed commit log"
   homepage "https://kafka.apache.org"
   head "https://git-wip-us.apache.org/repos/asf/kafka.git"
-  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  mirror "https://archive.apache.org/dist/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  sha256 "a043655be6f3b6ec3f7eea25cc6525fd582da825972d3589b24912af71493a21"
+  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.2/kafka-0.8.2.2-src.tgz"
+  mirror "https://archive.apache.org/dist/kafka/0.8.2.2/kafka-0.8.2.2-src.tgz"
+  sha256 "77e9ed27c25650c07d00f380bd7c04d6345cbb984d70ddc52bbb4cb512d8b03c"
 
   bottle do
     cellar :any
@@ -26,6 +26,8 @@ class Kafka < Formula
   end
 
   def install
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}"
+
     system "gradle"
     system "gradle", "jar"
 
