@@ -3,9 +3,8 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-      :tag => "1.5.3",
-      :revision => "2a71162b0cfb040a3606538857f512ea8894b9e7"
-  revision 2
+    :revision => "005c7d82e18e51117463fe92e47a4663ae21f2c5"
+  version "1.6.0-7"
 
   bottle do
     sha256 "e126a3c8df2915f900480e1ea06329bd480000cc3a39c7a179e06ee45badcf99" => :el_capitan
