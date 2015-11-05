@@ -106,23 +106,23 @@ may have been built with a different arch (e.g. Apple's python is still not a
 pure 64-bit build). Other things can go wrong, too. Welcome to the dirty
 underworld of C.
 
-To solve this, you should remove the problematic formula with those python
-bindings and all of its dependencies.
+To solve this first remove the problematic formula with those python
+bindings and all of its dependencies. `brew rm <problematic formula>` may be sufficient.
+If not:
 
   - `brew rm $(brew deps --installed <problematic_formula>)`
   - `brew rm <problematic_formula>`
   - Also check the `$(brew --prefix)/lib/python2.7/site-packages` directory and
     delete all remains of the corresponding python modules if they were not
     cleanly removed by the previous steps.
-  - Check that `which python` points to the python you want. Perhaps now is the
-    time to `brew install python`.
-  - Then reinstall `brew install <problematic_formula>`
-  - Now start `python` and try to `import` the module installed by the
-    \<problematic_formula\>
 
-You can basically use any Python (2.x) for the bindings homebrew provides, but
-you can't mix.  Homebrew formulae use a brewed Python if available or, if not
-so, they use whatever `python` is in your `PATH`.
+Then reinstall with the correct python. By default Homebrew uses 
+--env:[super](Formula-Cookbook.md#superenv-notes), which ignores your `PATH` and
+finds /usr/bin/python. This is probably not what you want.
+  - Check that `which python` points to the python you want (edit your `PATH` if
+    not).
+  - `brew install --env:std <problematic_formula>`
+
 
 ### Python: `Fatal Python error: PyThreadState_Get: no current thread`
 
