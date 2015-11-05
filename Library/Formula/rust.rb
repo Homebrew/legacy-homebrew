@@ -3,12 +3,12 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.3.0-src.tar.gz"
-    sha256 "ea02d7bc9e7de5b8be3fe6b37ea9b2bd823f9a532c8e4c47d02f37f24ffa3126"
+    url "https://static.rust-lang.org/dist/rustc-1.4.0-src.tar.gz"
+    sha256 "1c0dfdce5c85d8098fcebb9adf1493847ab40c1dfaa8cc997af09b2ef0aa8211"
 
     resource "cargo" do
       # git required because of submodules
-      url "https://github.com/rust-lang/cargo.git", :tag => "0.5.0", :revision => "8d21fd21a6b20056e9b5745e4e3f3b4279dc7fe4"
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.6.0", :revision => "e1ed9956e079a563796fb380871f4b67619f58ee"
     end
 
     # name includes date to satisfy cache
@@ -26,10 +26,9 @@ class Rust < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "a7e378d6122dbebc8ce8eec2241274c1b907d0dd680b365667f357a02bc98ebc" => :el_capitan
-    sha256 "655e683440bf88930c3bbab1885047949c260809c71e9c75cd36944b35165839" => :yosemite
-    sha256 "7a0b98815c97e953e98323a42b4b532f4ec6ec83589d83042e541fcc06b60098" => :mavericks
+    sha256 "4b085815987a83b4d436a7250ba749d320c016d07232c4846a014bf1fa8ad828" => :el_capitan
+    sha256 "5752099e65266112c01422b211cd5a398e260782cf958eed2e6f37c8e813bd8c" => :yosemite
+    sha256 "312a9da9a0180e729e972bebf1de59875fe9e8b5da3debb25beab92d65429543" => :mavericks
   end
 
   option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
@@ -38,6 +37,9 @@ class Rust < Formula
   depends_on "pkg-config" => :build
   depends_on "llvm" => :optional
   depends_on "openssl"
+  depends_on "libssh2"
+
+  conflicts_with "multirust", :because => "both install rustc, rustdoc, cargo, rust-lldb, rust-gdb"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0

@@ -2,7 +2,7 @@ class Abcde < Formula
   desc "Better CD Encoder"
   homepage "http://abcde.einval.com"
   url "http://abcde.einval.com/download/abcde-2.7.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/a/abcde/abcde_2.7.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/abcde/abcde_2.7.orig.tar.gz"
   sha256 "0148698a09fedcbae37ee9da295afe411a1190cf8ae224b7814d31b5bf737746"
   head "http://git.einval.com/git/abcde.git"
 

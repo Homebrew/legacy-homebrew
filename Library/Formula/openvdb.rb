@@ -4,11 +4,12 @@ class Openvdb < Formula
   url "https://github.com/dreamworksanimation/openvdb/archive/v3.1.0.tar.gz"
   sha256 "b95a32f4f0195452a64870bda978999a719006a0c036b9ac985b466532d32d4b"
   head "https://github.com/dreamworksanimation/openvdb.git"
+  revision 1
 
   bottle do
-    sha256 "9b309109fcb6c763c8bb423045dc89e556a22b482e6b68b48c653452d441c8c4" => :el_capitan
-    sha256 "3169dc8e3cc95e5b1f6c5049ee92bb73e5b5b88c89a97c9490db4010ad4691d1" => :yosemite
-    sha256 "6973ed7a0e226e5730101dea713a9e9e227e247c21f45a61d1906794a64a9f72" => :mavericks
+    sha256 "d60e3a904697fd6d4722a888ee929ffa42ca44da0fc3d82d2935bc81c6612283" => :el_capitan
+    sha256 "67dbc7e057b55d08585a3f0f86933d23d5fa8d66d42b791adbf63b6428a3ad75" => :yosemite
+    sha256 "a280aa60b2f6d752b488b88694dd30074149ef5a909edf5154be0980023f0f64" => :mavericks
   end
 
   option "with-viewer", "Installs the command-line tool to view OpenVDB files"

@@ -18,6 +18,8 @@ class Multirust < Formula
 
   depends_on :gpg => [:recommended, :run]
 
+  conflicts_with "rust", :because => "both install rustc, rustdoc, cargo, rust-lldb, rust-gdb"
+
   def install
     system "./build.sh"
     system "./install.sh", "--prefix=#{prefix}"

@@ -37,7 +37,7 @@ class Sdl < Formula
     # Fix build against recent libX11; requires regenerating configure script
     patch do
       url "https://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
-      sha1 "1b35949d9ac360a7e39aac76d1f0a6ad5381b0f4"
+      sha256 "04fa6aaf1ae1043e82d85f367fdb3bea5532e60aa944ce17357030ee93bb856c"
     end
   end
 

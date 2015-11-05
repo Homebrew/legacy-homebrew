@@ -231,6 +231,13 @@ class Formula
     active_spec.bottle_disable_reason
   end
 
+  # Does the currently active {SoftwareSpec} has any bottle?
+  # @private
+  def bottle_defined?
+    active_spec.bottle_defined?
+  end
+
+  # Does the currently active {SoftwareSpec} has an installable bottle?
   # @private
   def bottled?
     active_spec.bottled?
@@ -593,6 +600,15 @@ class Formula
     prefix+"share"+name
   end
 
+  # The directory where Emacs Lisp files should be installed, with the
+  # formula name appended to avoid linking conflicts.
+  #
+  # Install an Emacs mode included with a software package:
+  # <pre>elisp.install "contrib/emacs/example-mode.el"</pre>
+  def elisp
+    prefix+"share/emacs/site-lisp"+name
+  end
+
   # The directory where the formula's Frameworks should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.
@@ -750,6 +766,10 @@ class Formula
 
   def opt_pkgshare
     opt_prefix+"share"+name
+  end
+
+  def opt_elisp
+    opt_prefix+"share/emacs/site-lisp"+name
   end
 
   def opt_frameworks
@@ -1197,7 +1217,8 @@ class Formula
     hsh["bottle"] = {}
     %w[stable devel].each do |spec_sym|
       next unless spec = send(spec_sym)
-      next unless (bottle_spec = spec.bottle_specification).checksums.any?
+      next unless spec.bottle_defined?
+      bottle_spec = spec.bottle_specification
       bottle_info = {
         "revision" => bottle_spec.revision,
         "cellar" => (cellar = bottle_spec.cellar).is_a?(Symbol) ? \

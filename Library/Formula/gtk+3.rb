@@ -3,11 +3,12 @@ class Gtkx3 < Formula
   homepage "http://gtk.org/"
   url "https://download.gnome.org/sources/gtk+/3.18/gtk+-3.18.2.tar.xz"
   sha256 "5dbec561c4a00070073bf9cf4cfdd61fab4a14c8ff5b15d700bd378f8185e152"
+  revision 1
 
   bottle do
-    sha256 "e9c3c4b941da618f48feedded0be5c4d381df4b4c2a6f576895e961931a3d30c" => :el_capitan
-    sha256 "4904bd1646a5a9adb54034adf1434d74e1d9dcc1ffa7c89c9c66300c58ae9cb3" => :yosemite
-    sha256 "3c6800041cc367442007367c30bc90da172337153f8a8d2b711e1ac7c37ac3c3" => :mavericks
+    sha256 "370eb08409ab77004563720b9b0e335f93668c0808e1657a580a28ca834676a1" => :el_capitan
+    sha256 "0847dc9db2a2ef3fb9ba31906b9d460670cbfc7912625c5581854a3704c76880" => :yosemite
+    sha256 "16ae87b38fb0fce3cbde4082fda9ac2ec2efc29eee82c805f7c9265b0faa23a9" => :mavericks
   end
 
   option :universal
@@ -31,6 +32,13 @@ class Gtkx3 < Formula
       url "https://bugzilla.gnome.org/attachment.cgi?id=313599&format=raw"
       sha256 "a090b19d3c15364914917d9893be292225e8b8a016f2833a5b8354f079475a73"
     end
+  end
+
+  # Fixes input module bug on El Capitan
+  # see https://bugzilla.gnome.org/show_bug.cgi?id=753992
+  patch do
+    url "https://github.com/GNOME/gtk/commit/571704824f78de9d8b262793397a4e4ea6cedf7d.patch"
+    sha256 "99d9d7bb46e129e264bc324c9b736050bd9be3a04da8e143d05785a0bafdb3c1"
   end
 
   def install

@@ -1,15 +1,15 @@
 class Orientdb < Formula
   desc "Graph database"
   homepage "https://orientdb.com"
-  url "https://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.1.2.tar.gz&os=mac"
-  version "2.1.2"
-  sha256 "d5e5f64f0d83bac9bc98b03aa93ae776b34b7696a4554550748e2559385a222c"
+  url "https://orientdb.com/download.php?email=unknown@unknown.com&file=orientdb-community-2.1.5.tar.gz&os=mac"
+  version "2.1.5"
+  sha256 "3bec2b7a1baf60bd6cf5dd1b7b6f1a9ac47b71515aefbcbf560a2736b36015be"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "13abae90929a9ff0fe05bd945e2bbe3a41bf6b7932ef4c7d645bea544e86e3c4" => :el_capitan
-    sha256 "029e586d434a21283d1df62e8c71fbb3c68909ca4badec94474f47c186ab3797" => :yosemite
-    sha256 "7262cfafb36ffcefa7b1ca714e19ad8397f0af0a366cd2f16029f5e12cc55558" => :mavericks
+    sha256 "df6ce1cd1be77322e0d4614e3251fca8d20e5020d540208d500458166ac9d438" => :el_capitan
+    sha256 "9b1b5ef6ea1cfeb24e866c37c9eaf65f615e8d20f68b114888dfef6a42360eee" => :yosemite
+    sha256 "b3223c59235cfb7729400b8824bbc239ecd00146ed37f54fdee826bf777d7beb" => :mavericks
   end
 
   # Fixing OrientDB init scripts

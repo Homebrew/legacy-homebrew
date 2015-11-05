@@ -3,18 +3,15 @@ require "language/go"
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
   homepage "https://influxdb.com"
-
-  stable do
-    url "https://github.com/influxdb/influxdb/archive/v0.9.4.2.tar.gz"
-    sha256 "aaea27228d7f242fe37d436506592189081beda0e7d2fba3f82c6b233fd913bc"
-  end
+  url "https://github.com/influxdb/influxdb/archive/v0.9.4.2.tar.gz"
+  sha256 "aaea27228d7f242fe37d436506592189081beda0e7d2fba3f82c6b233fd913bc"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "955863732e1586c3fb288d56e7808ebc53346f790e03d345dae77688a89c69d8" => :el_capitan
-    sha256 "50c8251182586ec99de1b19a764195fa0031c2deccd6db22c9710c342ea703a3" => :yosemite
-    sha256 "34c8890075df5936db6aaf3e27431bb7ba6117d8e72d8a3bea7bc618c7cc8e96" => :mavericks
+    sha256 "baafea68d99c6b061a82dd61d6844354c6c2b2c6eb125570ddde18c402040819" => :el_capitan
+    sha256 "008abd90ff91ad469a83e967dbddfa0cb94a98e602341c8edb813a9ba03ef59c" => :yosemite
+    sha256 "61fa32294aab823c4f53245d3a5e2d8022923b75c5bd391668b98ee66476ec9c" => :mavericks
   end
 
   head do
@@ -159,6 +156,11 @@ class Influxdb < Formula
         <string>#{var}/log/influxdb.log</string>
         <key>StandardOutPath</key>
         <string>#{var}/log/influxdb.log</string>
+        <key>SoftResourceLimits</key>
+        <dict>
+          <key>NumberOfFiles</key>
+          <integer>10240</integer>
+        </dict>
       </dict>
     </plist>
     EOS

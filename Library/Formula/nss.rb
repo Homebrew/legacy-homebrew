@@ -1,15 +1,14 @@
 class Nss < Formula
   desc "Libraries for security-enabled client and server applications"
   homepage "https://developer.mozilla.org/docs/NSS"
-  url "https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_20_RTM/src/nss-3.20.tar.gz"
-  sha256 "5e38d4b9837ca338af966b97fc91c07f67ad647fb38dc4af3cfd0d84e477d15c"
+  url "https://archive.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_20_1_RTM/src/nss-3.20.1.tar.gz"
+  sha256 "ad3c8f11dfd9570c2d04a6140d5ef7c2bdd0fe30d6c9e5548721a4251a5e8c97"
 
   bottle do
     cellar :any
-    sha256 "0b39958e96bb5927f08e384bf842234dd21e22ee3992e5ccfffb62481047b9a5" => :el_capitan
-    sha256 "4b842d663c32aa085beac9772c4096ce58eea2021571047c23505af65cc8fce2" => :yosemite
-    sha256 "3e009d150efb75c599c284e5a7091574f0434a60880c51ebb0e555118a8c51ba" => :mavericks
-    sha256 "6a1a9f3d2dd62e811a88691ac989756cfcb1eed646ded1ce709740b3575a3978" => :mountain_lion
+    sha256 "bce5caa3a0cf836a67b21570e1890c58cba188b6119522a4d455399e01c89620" => :el_capitan
+    sha256 "8d1d946335844f94f242eebef9b1d315414cab1296156803637dc1584fcfcaf7" => :yosemite
+    sha256 "af66e34283ee6d07dd7c4b8bcf8d987a3af2ee2dd75b816bd7935de31379af21" => :mavericks
   end
 
   keg_only <<-EOS.undent
@@ -18,17 +17,18 @@ class Nss < Formula
 
     Please see https://bugzilla.mozilla.org/show_bug.cgi?id=1142646 for details.
   EOS
+
   depends_on "nspr"
 
   def install
     ENV.deparallelize
     cd "nss"
 
-    args = [
-      "BUILD_OPT=1",
-      "NSS_USE_SYSTEM_SQLITE=1",
-      "NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr",
-      "NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}"
+    args = %W[
+      BUILD_OPT=1
+      NSS_USE_SYSTEM_SQLITE=1
+      NSPR_INCLUDE_DIR=#{Formula["nspr"].opt_include}/nspr
+      NSPR_LIB_DIR=#{Formula["nspr"].opt_lib}
     ]
     args << "USE_64=1" if MacOS.prefer_64_bit?
 
@@ -63,8 +63,8 @@ class Nss < Formula
     # resolves conflict with openssl, see #28258
     rm lib/"libssl.a"
 
-    (bin+"nss-config").write config_file
-    (lib+"pkgconfig/nss.pc").write pc_file
+    (bin/"nss-config").write config_file
+    (lib/"pkgconfig/nss.pc").write pc_file
   end
 
   test do
@@ -97,7 +97,7 @@ class Nss < Formula
     Name: NSS
     Description: Mozilla Network Security Services
     Version: #{version}
-    Requires: nspr >= 4.10.8
+    Requires: nspr >= 4.10.10
     Libs: -L${libdir} -lnss3 -lnssutil3 -lsmime3 -lssl3
     Cflags: -I${includedir}
     EOS

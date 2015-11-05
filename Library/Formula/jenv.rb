@@ -13,11 +13,11 @@ class Jenv < Formula
    end
 
   def caveats; <<-EOS.undent
-     To enable shims and autocompletion add to your profile:
-       if which jenv > /dev/null; then eval "$(jenv init -)"; fi
-
      To use Homebrew's directories rather than ~/.jenv add to your profile:
        export JENV_ROOT=#{var}/jenv
+
+     To enable shims and autocompletion add to your profile:
+       if which jenv > /dev/null; then eval "$(jenv init -)"; fi
      EOS
   end
 

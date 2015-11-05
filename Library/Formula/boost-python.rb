@@ -1,25 +1,15 @@
 class BoostPython < Formula
   desc "C++ library for C++/Python interoperability"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
-  sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
+  sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
   head "https://github.com/boostorg/boost.git"
-
-  stable do
-    # don't explicitly link a Python framework
-    # https://github.com/boostorg/build/pull/78
-    patch do
-      url "https://gist.githubusercontent.com/tdsmith/9026da299ac1bfd3f419/raw/b73a919c38af08941487ca37d46e711864104c4d/boost-python.diff"
-      sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
-    end
-  end
 
   bottle do
     cellar :any
-    sha256 "aa56ab952ef93ad52672b86cc8b8371fe79cb907d6eed88a316ed2808a264cd2" => :el_capitan
-    sha256 "7f627fb1887ecaaea4b6b363d300a21c5274a1607c7dc64f2114d3794b5fec11" => :yosemite
-    sha256 "6239719b00615abb9ce2bd40c680b14182325c2e1844c1bea410c002b42ce1db" => :mavericks
-    sha256 "24acf2ddde1edfabe04239856dec6ce85e8652f3c0d5d8cf357b219c2bf3272a" => :mountain_lion
+    sha256 "0fb4d1d29f5c8631cfbba2fdfa9a9d6bc35ade9523af9bef6d31270dd95963c9" => :el_capitan
+    sha256 "42f052877490d79eb5e9b97332f6707a195f4ad74de74e6b403384e882015955" => :yosemite
+    sha256 "0aa4f4f96ec466b37c0d2dec54fa3acfe825a840f36bce3fd3d853ab6a41682f" => :mavericks
   end
 
   option :universal
@@ -41,6 +31,14 @@ class BoostPython < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    if stable?
+      # fix make_setter regression
+      # https://github.com/boostorg/python/pull/40
+      inreplace "boost/python/data_members.hpp",
+                "# if BOOST_WORKAROUND(__EDG_VERSION__, <= 238)",
+                "# if !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)"
+    end
 
     # "layout" should be synchronized with boost
     args = ["--prefix=#{prefix}",

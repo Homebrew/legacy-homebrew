@@ -16,6 +16,8 @@ class ArgyllCms < Formula
   depends_on "jpeg"
   depends_on "libtiff"
 
+  conflicts_with "num-utils", :because => "both install `average` binaries"
+
   def install
     system "sh", "makeall.sh"
     system "./makeinstall.sh"

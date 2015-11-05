@@ -3,16 +3,16 @@ require "language/go"
 class Jvgrep < Formula
   desc "Grep for Japanese users of Vim"
   homepage "https://github.com/mattn/jvgrep"
-  url "https://github.com/mattn/jvgrep/archive/v4.4.tar.gz"
-  sha256 "c0db7fb232d49a747101649a5519274b19850a62c039d1ac87eb0872f20ed4a7"
+  url "https://github.com/mattn/jvgrep/archive/v4.5.tar.gz"
+  sha256 "dc64a24547c0108fb23cf1cf4654a889e4537d09c8012cd342c8718bb858d59b"
 
   head "https://github.com/mattn/jvgrep.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4d0c00d693fa7ca52f2e8adb1332a46f2422b0ed76e4ab077e407444af4e4d68" => :el_capitan
-    sha256 "db3315c6a7fb876242693979164e373d08413c76c1f3d5ac362201cc5b17ea63" => :yosemite
-    sha256 "37ac2473aadf8778e7c20396817468e07185a74e3521f6d0e40c788802ca5080" => :mavericks
+    sha256 "5dca19f06936474289d24b0085df10d6a9eb1485a5734a7b63b6736f947d5f03" => :el_capitan
+    sha256 "1b600cc9c3e97a1f7a8de50ac12c480e6389f3b8a258bcf2aa4befecb6cca97e" => :yosemite
+    sha256 "7e2961192bffd7005571dd3e1bb80108aa540ad0fa0134f62733a4c6133c12b7" => :mavericks
   end
 
   depends_on "go" => :build
@@ -30,11 +30,11 @@ class Jvgrep < Formula
   end
 
   go_resource "golang.org/x/net" do
-    url "https://go.googlesource.com/net.git", :revision => "2cba614e8ff920c60240d2677bc019af32ee04e5"
+    url "https://go.googlesource.com/net.git", :revision => "b4e17d61b15679caf2335da776c614169a1b4643"
   end
 
   go_resource "golang.org/x/text" do
-    url "https://go.googlesource.com/text.git", :revision => "0fe7e6856182a6ebfcf1e6a7aa90bead9a8e1bc0"
+    url "https://go.googlesource.com/text.git", :revision => "cc8a7ec430472eaf28b179c420464d7a9fc741c5"
   end
 
   def install

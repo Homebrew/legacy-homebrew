@@ -1,16 +1,15 @@
-class Nimrod < Formula
+class Nim < Formula
   desc "Statically typed, imperative programming language"
   homepage "http://nim-lang.org/"
-  url "http://nim-lang.org/download/nim-0.11.2.tar.xz"
-  sha256 "5640e364d8bacec830f016daf3d4427911c48cebf962724ec903fea5d5a7a419"
+  url "http://nim-lang.org/download/nim-0.12.0.tar.xz"
+  sha256 "0fb860137f0888f6b1a593d9b115fd7057983b7355f4f9922bb82a49ac875235"
   head "https://github.com/Araq/Nim.git", :branch => "devel"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3c9a33e6dd9e7caddd9a0daf8290a4cbf7eb5f483b9fdd5f42a78e8ca6f95396" => :el_capitan
-    sha256 "11c12362d33127b9625020f76026fd5c4d98816b0fab9e2954243183b4b8e7b1" => :yosemite
-    sha256 "99f5155891465502cb7643fe98a02756c25a3b46352c69145f10fe4875bb707f" => :mavericks
-    sha256 "c2765cefc4bec4f25620347e0448cdbfa64e223203f1e3f44590326009172712" => :mountain_lion
+    sha256 "7eaf8f68a6f25158beaf059250f0b8a153ce06777463e692bed1b41efbc5acd4" => :el_capitan
+    sha256 "9e3dc6f110d2e73ba02e256a12f76e2c085a9ea1ea764eaf858793a3e2d842b6" => :yosemite
+    sha256 "c45bc468881f14d368a10049704be18cae380d7b6556318d28a009f5c18198cc" => :mavericks
   end
 
   def install

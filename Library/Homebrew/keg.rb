@@ -263,7 +263,8 @@ class Keg
   end
 
   def elisp_installed?
-    Dir["#{path}/share/emacs/site-lisp/**/*.el"].any?
+    return false unless (path/"share/emacs/site-lisp"/name).exist?
+    (path/"share/emacs/site-lisp"/name).children.any? { |f| %w[.el .elc].include? f.extname }
   end
 
   def version

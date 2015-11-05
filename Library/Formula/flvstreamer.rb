@@ -5,11 +5,14 @@ class Flvstreamer < Formula
   sha256 "e90e24e13a48c57b1be01e41c9a7ec41f59953cdb862b50cf3e667429394d1ee"
 
   bottle do
-    cellar :any
-    sha256 "c482f23b62201380a31020f313090e9c31503857bbf5c4aa29ee3b8841bfaa06" => :yosemite
-    sha256 "0b2cbacc0699791328dc9a8c6d2b2755b467b01495432889eaf2e2ab4f589a11" => :mavericks
-    sha256 "cc023cb31d4813460d8acb63cfd8f23dfe881b4d4b5bd5d7c84d4aae15369c28" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "5a4b649ce0f2c32bca4091f4867a37cca0e8ae2a292d4ef29aa2949530bdd651" => :el_capitan
+    sha256 "243e6ce44b77212ff84e3a739bf2b203c687bdcdd36b17ba24daa5335bf0a151" => :yosemite
+    sha256 "26ba92a604070dd27301456d120121618865108b33089191cd7ddcee78fbc465" => :mavericks
   end
+
+  conflicts_with "rtmpdump", :because => "both install 'rtmpsrv', 'rtmpsuck' and 'streams' binary"
 
   def install
     system "make", "posix"
