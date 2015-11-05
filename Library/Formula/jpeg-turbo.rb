@@ -6,11 +6,9 @@ class JpegTurbo < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "218868e1fb9626b17f31b1e3f5141b7c41b31b5a0ff2259b2945ac1a0ed9433c" => :el_capitan
-    sha256 "cabd0a3e26c9d80b38ca1128867722824a89cc6ea7275038a5f08a36256d57a7" => :yosemite
-    sha256 "3f952c0dc994d39dec8f0bffa7ad4092d235154c4044fc8ebf0afcc14a624535" => :mavericks
-    sha256 "1bc6d039b8ec75bb9c740b054e0a1f397c265a7c89fad3695f90dc467cd484dd" => :mountain_lion
+    sha256 "2a3e9656a87bd0e31bac5c5cd94fa9e09523afa506b7240d082b7d1072aac89a" => :el_capitan
+    sha256 "fc478fdd8d2c25e1fd1c077c782315c5ea147073baede28f7e9ee6eb95bf9b40" => :yosemite
+    sha256 "9f2996c10e583b034d16860e9c70eb56084d5502a6ef60275661fa30e5ccbc53" => :mavericks
   end
 
   option "without-test", "Skip build-time checks (Not Recommended)"
