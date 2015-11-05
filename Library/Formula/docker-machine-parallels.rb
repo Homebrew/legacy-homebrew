@@ -7,6 +7,13 @@ class DockerMachineParallels < Formula
   sha256 "2598ced93c8dec6eaccacca1b0c72275c423a2afbf34d88bdc4173475bdcc5cf"
   head "https://github.com/Parallels/docker-machine-parallels.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "cf512918306a8ce4f3b2f9686d040b871b2981353579713fff52d108de8c87e8" => :el_capitan
+    sha256 "1caf0c6146c574295442efd1cddd23c4a9bab5aade7f3c1233408c79413bd852" => :yosemite
+    sha256 "1be969fb8f690f804eb4dbc11e1a7a70a7be794763f351f5b9a800a20ea08903" => :mavericks
+  end
+
   depends_on "go" => :build
   depends_on "docker-machine"
 
