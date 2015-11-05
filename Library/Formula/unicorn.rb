@@ -16,7 +16,6 @@ class Unicorn < Formula
     "SPARC"
   option "with-debug", "Create a debug build"
 
-  depends_on "capstone"
   depends_on "glib"
   depends_on "pkg-config" => :build
 
