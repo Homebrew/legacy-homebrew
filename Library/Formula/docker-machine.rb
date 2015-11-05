@@ -24,6 +24,8 @@ class DockerMachine < Formula
 
     system "make", "build"
     bin.install Dir["bin/*"]
+
+    bash_completion.install Dir["contrib/completion/bash/*.bash"]
   end
 
   test do
