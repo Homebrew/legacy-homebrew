@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 class Premake5 < Formula
+=======
+class Premake < Formula
+>>>>>>> abeb20dd82af9ce398885da7d6d346fdb8487910
   desc "Write once, build anywhere Lua-based build system"
   homepage "https://premake.github.io/"
   url "https://github.com/premake/premake-core/releases/download/v5.0.0-alpha6/premake-5.0.0-alpha6-src.zip"
