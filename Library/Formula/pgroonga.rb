@@ -4,6 +4,13 @@ class Pgroonga < Formula
   url "http://packages.groonga.org/source/pgroonga/pgroonga-1.0.0.tar.gz"
   sha256 "854d66bdc79e7cfceb29ae8706556a3ad1c8b32ac4535939d296966e3b19fd3e"
 
+  bottle do
+    cellar :any
+    sha256 "3eae015ffbe8d681a70f595a446d63fdeb50b5543f5369c4ea86775f7ba50c13" => :el_capitan
+    sha256 "b661da8c05cca030e7012265352e0fccbe48986482ce54d2eb6d23dc137def3b" => :yosemite
+    sha256 "dca08865c4a238366ddf12f782ebf7b6224a6837553074d28d6beb99703b388e" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "groonga"
   depends_on "postgresql"
