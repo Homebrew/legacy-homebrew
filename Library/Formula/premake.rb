@@ -11,17 +11,8 @@ class Premake < Formula
     sha1 "271358004f8cd52160bfd45d9e58a59bc3fcb75d" => :lion
   end
 
-  devel do
-    url "https://github.com/premake/premake-core/releases/download/v5.0.0-alpha6/premake-5.0.0-alpha6-src.zip"
-    sha256 "9c13372699d25824cba1c16a0483507a6a28903e2556ffb148b288c189403aee"
-  end
-
   def install
     system "make -C build/gmake.macosx"
-    if build.devel?
-      bin.install "bin/release/premake5"
-    else
-      bin.install "bin/release/premake4"
-    end
+    bin.install "bin/release/premake4"
   end
 end
