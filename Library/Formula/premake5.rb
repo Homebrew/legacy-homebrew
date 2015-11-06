@@ -1,8 +1,8 @@
-class Premake < Formula
+class Premake5 < Formula
   desc "Write once, build anywhere Lua-based build system"
   homepage "https://premake.github.io/"
-  url "https://downloads.sourceforge.net/project/premake/Premake/4.4/premake-4.4-beta5-src.zip"
-  sha256 "0fa1ed02c5229d931e87995123cdb11d44fcc8bd99bba8e8bb1bbc0aaa798161"
+  url "https://github.com/premake/premake-core/releases/download/v5.0.0-alpha6/premake-5.0.0-alpha6-src.zip"
+  sha256 "9c13372699d25824cba1c16a0483507a6a28903e2556ffb148b288c189403aee"
 
   bottle do
     cellar :any
@@ -13,6 +13,6 @@ class Premake < Formula
 
   def install
     system "make -C build/gmake.macosx"
-    bin.install "bin/release/premake4"
+    bin.install "bin/release/premake5"
   end
 end
