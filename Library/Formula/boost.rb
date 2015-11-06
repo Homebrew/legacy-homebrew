@@ -41,6 +41,13 @@ class Boost < Formula
       url "https://gist.githubusercontent.com/tdsmith/bc76ddea1e2bdb2a3a18/raw/03d125b12a4b03c28ee011a2d6d42a8137061a3b/boost-log.patch"
       sha256 "a49fd7461d9f3b478d2bddac19adca93fe0fabab71ee67e8f140cbd7d42d6870"
     end
+
+    # Fixed missing symbols in libboost_log_setup (on mac/clang)
+    # from https://github.com/boostorg/log/commit/870284ed31792708a6139925d00a0aadf46bf09f
+    patch do
+      url "https://gist.githubusercontent.com/autosquid/a4974e112b754e03aad7/raw/985358f8909033eb7ad9aae8fbf60881ef70a275/boost-log_setup.patch"
+      sha256 "2c3a3bae1691df5f8fce8fbd4e5727d57bd4dd813748b70d7471c855c4f19d1c"
+    end
   end
 
   fails_with :llvm do
