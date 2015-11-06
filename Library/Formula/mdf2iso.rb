@@ -1,8 +1,8 @@
 class Mdf2iso < Formula
   desc "Tool to convert MDF (Alcohol 120% images) images to ISO images"
   homepage "https://packages.debian.org/sid/mdf2iso"
-  url "https://mirrors.kernel.org/debian/pool/main/m/mdf2iso/mdf2iso_0.3.1.orig.tar.gz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mdf2iso/mdf2iso_0.3.1.orig.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mdf2iso/mdf2iso_0.3.1.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/m/mdf2iso/mdf2iso_0.3.1.orig.tar.gz"
   sha256 "906f0583cb3d36c4d862da23837eebaaaa74033c6b0b6961f2475b946a71feb7"
 
   bottle do
@@ -19,6 +19,6 @@ class Mdf2iso < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/mdf2iso --help")
+    assert_match version.to_s, shell_output("#{bin}/mdf2iso --help")
   end
 end
