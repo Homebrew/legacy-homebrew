@@ -18,7 +18,6 @@ class Premake < Formula
 
   def install
     system "make -C build/gmake.macosx"
-    
     if build.devel?
       bin.install "bin/release/premake5"
     else
