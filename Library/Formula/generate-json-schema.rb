@@ -6,6 +6,13 @@ class GenerateJsonSchema < Formula
 
   head "https://github.com/Nijikokun/generate-schema.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "04ed1478348610996f3def3a546d6a99b844100bb85f9b74d246f85f2f424b4c" => :el_capitan
+    sha256 "54ddac9d0e01ef646f541ecbd5c8adfd734aec0f2e623ed97b504c79fa228fea" => :yosemite
+    sha256 "de5e23cd917d04cdd74642c905b67a65515b846138e48bb34e7a6b7eb8774a79" => :mavericks
+  end
+
   depends_on "node"
 
   def install
