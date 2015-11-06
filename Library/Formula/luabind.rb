@@ -3,6 +3,8 @@ class Luabind < Formula
   homepage "http://www.rasterbar.com/products/luabind.html"
   url "https://downloads.sourceforge.net/project/luabind/luabind/0.9.1/luabind-0.9.1.tar.gz"
   sha256 "80de5e04918678dd8e6dac3b22a34b3247f74bf744c719bae21faaa49649aaae"
+  revision 1
+
   bottle do
     cellar :any
     revision 1
@@ -11,11 +13,9 @@ class Luabind < Formula
     sha256 "bdb3e0380687c7943c13986b054bce3ae7c53db72394b5f4bec3e40a649f08b8" => :mavericks
   end
 
-  revision 1
-
+  depends_on "boost-build" => :build
   depends_on "lua51"
   depends_on "boost"
-  depends_on "boost-build" => :build
 
   # boost 1.57 compatibility
   # https://github.com/Homebrew/homebrew/pull/33890#issuecomment-67723688
@@ -39,17 +39,17 @@ class Luabind < Formula
 
   # include C header that is not pulled in automatically on OS X 10.9 anymore
   # submitted https://github.com/luabind/luabind/pull/20
-  patch do
-    url "https://gist.githubusercontent.com/DennisOSRM/a246514bf7d01631dda8/raw/0e83503dbf862ebfb6ac063338a6d7bca793f94d/object_rep.diff"
-    sha256 "2fef524ac5e319d7092fbb28f6d4e3d3eccd6a570e7789a9b5b0c9a25e714523"
-  end if MacOS.version >= :mavericks
+  if MacOS.version >= :mavericks
+    patch do
+      url "https://gist.githubusercontent.com/DennisOSRM/a246514bf7d01631dda8/raw/0e83503dbf862ebfb6ac063338a6d7bca793f94d/object_rep.diff"
+      sha256 "2fef524ac5e319d7092fbb28f6d4e3d3eccd6a570e7789a9b5b0c9a25e714523"
+    end
+  end
 
   def install
     ENV["LUA_PATH"] = Formula["lua51"].opt_prefix
-    args = [
-      "release",
-      "install"
-    ]
+
+    args = %W[release install]
     if ENV.compiler == :clang
       args << "--toolset=clang"
     elsif ENV.compiler == :llvm
