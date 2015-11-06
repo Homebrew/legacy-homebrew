@@ -12,9 +12,9 @@ class Freeling < Formula
     sha256 "5be5df5bf27f0d6425430d7a4b342aec04efa2adb448ff7e92bd7417021f8186" => :mavericks
   end
 
+  depends_on "libtool" => :build
   depends_on "boost" => "with-icu4c"
   depends_on "icu4c"
-  depends_on "libtool" => :build
 
   def install
     icu4c = Formula["icu4c"]
@@ -25,7 +25,6 @@ class Freeling < Formula
     ENV.append "CPPFLAGS", "-I#{icu4c.include}"
 
     system "./configure", "--prefix=#{prefix}", "--enable-boost-locale"
-
     system "make", "install"
 
     libexec.install "#{bin}/fl_initialize"
