@@ -4,6 +4,13 @@ class Postgis < Formula
   url "http://download.osgeo.org/postgis/source/postgis-2.2.0.tar.gz"
   sha256 "66f0f8480d535959b8bb9abb5ee5d602d1001413ca770df120baf3de627f9e91"
 
+  bottle do
+    cellar :any
+    sha256 "121d6cbcbbf7d7653846f13f63adca1f9b01752c1d477dac6bfb36251c8a0551" => :el_capitan
+    sha256 "aab5c63fcb2bc4af2a43fae5706bcd84dc9c3b2d2a77f8890a0b61934b83ba2f" => :yosemite
+    sha256 "56d60773f2110a91511c893829d467e311fc629f7dacf3f9d528c4d0f21d641b" => :mavericks
+  end
+
   head do
     url "http://svn.osgeo.org/postgis/trunk/"
 
