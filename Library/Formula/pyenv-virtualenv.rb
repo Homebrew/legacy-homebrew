@@ -3,8 +3,9 @@ class PyenvVirtualenv < Formula
   homepage "https://github.com/yyuu/pyenv-virtualenv"
   url "https://github.com/yyuu/pyenv-virtualenv/archive/v20151103.tar.gz"
   sha256 "3463000aab0a400bf3d722dbb06a235714c2f0e7fbdf1e3bff17c74555d03e08"
-
   head "https://github.com/yyuu/pyenv-virtualenv.git"
+
+  bottle :unneeded
 
   depends_on "pyenv"
 
