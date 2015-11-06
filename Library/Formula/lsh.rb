@@ -16,7 +16,8 @@ class Lsh < Formula
   depends_on "gmp"
 
   resource "liboop" do
-    url "https://mirrors.kernel.org/debian/pool/main/libo/liboop/liboop_1.0.orig.tar.gz"
+    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/libo/liboop/liboop_1.0.orig.tar.gz"
+    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/libo/liboop/liboop_1.0.orig.tar.gz"
     sha256 "34d83c6e0f09ee15cb2bc3131e219747c3b612bb57cf7d25318ab90da9a2d97c"
   end
 
@@ -41,7 +42,7 @@ class Lsh < Formula
 
     # Find the sandboxed liboop.
     ENV.append "LDFLAGS", "-L#{libexec}/liboop/lib"
-    # Compile lsh without the 89 flag? Ha, Nope!
+    # Compile fails without passing gnu89.
     ENV.append_to_cflags "-I#{libexec}/liboop/include -std=gnu89"
 
     system "./configure", *args
