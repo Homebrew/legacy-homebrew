@@ -5,10 +5,10 @@ class JujuQuickstart < Formula
   sha256 "07eb4c53b9091a75fcef94eb243d42cd6b8c289f2763b0dbde462a2b602094c3"
 
   bottle do
-    cellar :any
-    sha256 "eb14552c0e67007efc2b46d4150e6c85dc149915d573fefcc67c183e5b837a34" => :yosemite
-    sha256 "70deb77d00ece41d3f70d580e56356e333267a9e690b7d5f6854dc94cf372d53" => :mavericks
-    sha256 "f6274e17584f6fee0995d3fcae372c6f63af8fc9c615533eb3d50da1b580548d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "c3a7ebf7e43b506b3f80af3be55dcb48a695e173b142a87281e621ec83c52484" => :el_capitan
+    sha256 "d96836ff4ff4adf6d474a75f5407d7d93681ff06ffab5af0f215c12f5d19ea3c" => :yosemite
+    sha256 "70b1633e51e76021c59dcf5f5af3b877b0f418271e8ffd24967f5351a9f1176e" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
