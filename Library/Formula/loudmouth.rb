@@ -1,20 +1,8 @@
 class Loudmouth < Formula
   desc "Lightweight C library for the Jabber protocol"
   homepage "https://mcabber.com"
-  url "https://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2"
-  version "1.5.0.20121201"
-  sha256 "d8ff057dc98c99ab19a68c3890c7f5ab47870e45d67bb65891f01a78c77dfcf9"
-  revision 1
-
-  # Fix compilation on 10.9. Sent upstream:
-  # https://github.com/mcabber/loudmouth/pull/9
-  # Has been merged and will be in next release, if there is one.
-  stable do
-    patch do
-      url "https://github.com/mcabber/loudmouth/commit/369844a0fc.diff"
-      sha256 "35fa20c2b91dc470a76db41b67b2f589763aaed7da8537c58a5002a8f896eb09"
-    end
-  end
+  url "https://mcabber.com/files/loudmouth/loudmouth-1.5.1.tar.bz2"
+  sha256 "ffb493b085c1d40176ecbe1c478f05932f265e0e5ba93444b87d3cd076267939"
 
   bottle do
     cellar :any
@@ -30,14 +18,6 @@ class Loudmouth < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-
-    # Fixes configure.ac subdir-objects for recent autoconf version
-    # Remove this once the following pull request has been applied to master
-    # https://github.com/mcabber/loudmouth/pull/11
-    patch do
-      url "https://github.com/languitar/loudmouth/commit/f22dd6.diff"
-      sha256 "61d341d68fdd867aa40c2130be709809e4ac783a1ff6a2821ed2851243dc6ba3"
-    end
   end
 
   depends_on "pkg-config" => :build
