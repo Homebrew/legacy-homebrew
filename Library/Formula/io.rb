@@ -21,6 +21,12 @@ class Io < Formula
       sha256 "7dbea1f027de4a4b12decba13a3e58c3352cd599fae14054d7a3af5eb2c454bb"
     end
   end
+  bottle do
+    sha256 "a7d1dfa5a71c8416e649ede0489db258ad768303f42572df04472b4bb67fea93" => :el_capitan
+    sha256 "2a399520d3969a2712f10a70527242df50353b413c0b911a59bdfb6bb1022059" => :yosemite
+    sha256 "8d9af751dad080d7d58a36cc8eaa05922457d39baaefb288ada4b9653890d4b5" => :mavericks
+  end
+
 
   option "without-addons", "Build without addons"
 
