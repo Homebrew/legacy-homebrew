@@ -1,7 +1,7 @@
 class Liblwgeom < Formula
   desc "Allows SpatiaLite to support ST_MakeValid() like PostGIS"
   homepage "http://postgis.net"
-  revision 1
+  revision 2
 
   stable do
     url "http://download.osgeo.org/postgis/source/postgis-2.1.5.tar.gz"
