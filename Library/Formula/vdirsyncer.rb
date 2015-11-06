@@ -1,8 +1,8 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.0.tar.gz"
-  sha256 "ddf9e20b085f97c7bae97ed4cd5e8a78f472ee0b1cae3be537809ae98589172a"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.3.tar.gz"
+  sha256 "3e87df25f7f5af172f2063e39deccac7c5477a2be3c7ff16183b6b8e9f2d112a"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
