@@ -142,7 +142,7 @@ class Postgis < Formula
       To create a spatially-enabled database, see the documentation:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#create_new_db_extensions
       If you are currently using PostGIS 2.0+, you can go the soft upgrade path:
-        ALTER EXTENSION postgis UPDATE TO "2.1.5";
+        ALTER EXTENSION postgis UPDATE TO "2.1.7";
       Users of 1.5 and below will need to go the hard-upgrade path, see here:
         http://postgis.net/docs/manual-2.1/postgis_installation.html#upgrading
 
