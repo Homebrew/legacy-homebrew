@@ -30,4 +30,13 @@ class Urlview < Formula
                           "--sysconfdir=#{etc}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"urls").write "https://github.com/Homebrew/homebrew"
+    io = IO.popen("#{bin}/urlview urls")
+    sleep 1
+    Process.kill("SIGINT", io.pid)
+    Process.wait(io.pid)
+    assert_match %r{https://github.com/Homebrew/homebrew}, io.read
+  end
 end
