@@ -1,9 +1,8 @@
 class Openwsman < Formula
   desc "Implementation of WS-Management, enabling in-band resource management"
   homepage "https://openwsman.github.io"
-  url "https://github.com/Openwsman/openwsman/archive/v2.6.0.tar.gz"
-  sha256 "449b4972dc7700918f8f674047f0a1a9c19eeee3f4ce82f47890dddfa56e823f"
-  revision 1
+  url "https://github.com/Openwsman/openwsman/archive/v2.6.2.tar.gz"
+  sha256 "9c28e613bf3fd3b9b9b1cd484099d339c713a997a322b069a80b3be1465dd3a1"
 
   bottle do
     sha256 "e6e5675c6163c2e58811571e82f2e016563718aeabeca7abc30dcc055be0396e" => :yosemite
