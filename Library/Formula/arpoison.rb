@@ -16,5 +16,6 @@ class Arpoison < Formula
   def install
     system "make"
     bin.install "arpoison"
+    man8.install "arpoison.8"
   end
 end

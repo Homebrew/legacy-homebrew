@@ -18,4 +18,18 @@ class Aterm < Formula
     ENV.j1 # Parallel builds don't work
     system "make", "install"
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <aterm1.h>
+
+      int main(int argc, char *argv[]) {
+        ATerm bottomOfStack;
+        ATinit(argc, argv, &bottomOfStack);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-lATerm", "-o", "test"
+    system "./test"
+  end
 end
