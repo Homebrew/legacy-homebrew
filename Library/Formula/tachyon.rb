@@ -1,5 +1,5 @@
 class Tachyon < Formula
-  desc "A memory-centric distributed storage system enabling reliable data sharing at memory-speed across cluster frameworks"
+  desc "A memory-centric storage system for data sharing across cluster frameworks"
   homepage "http://tachyon-project.org/"
   url "http://tachyon-project.org/downloads/files/0.8.1/tachyon-0.8.1-bin.tar.gz"
   sha256 "82c289b49fdd29a8969c404203d20ac29f7136a3af72597f25537a9263cf0c74"
