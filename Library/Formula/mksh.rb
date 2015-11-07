@@ -1,6 +1,6 @@
 class Mksh < Formula
   desc "MirBSD Korn Shell"
-  homepage "https://mirbsd.org/mksh.htm"
+  homepage "https://www.mirbsd.org/mksh.htm"
   url "https://www.mirbsd.org/MirOS/dist/mir/mksh/mksh-R50f.tgz"
   mirror "http://pub.allbsd.org/MirOS/dist/mir/mksh/mksh-R50f.tgz"
   sha256 "74e051ce92ece9555d91505b956572f64668fc88c5ccabee742099e7f29a2bcb"
