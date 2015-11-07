@@ -1,4 +1,5 @@
 require "utils/json"
+require "descriptions"
 
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
@@ -87,6 +88,59 @@ class Tap
   # True if this {Tap} has been installed.
   def installed?
     @path.directory?
+  end
+
+  # install this {Tap}.
+  #
+  # @param [Hash] options
+  # @option options [String]  :clone_targe If passed, it will be used as the clone remote.
+  # @option options [Boolean] :full_clone If set as true, full clone will be used.
+  def install(options = {})
+    raise TapAlreadyTappedError, name if installed?
+
+    # ensure git is installed
+    Utils.ensure_git_installed!
+    ohai "Tapping #{name}"
+    remote = options[:clone_target] || "https://github.com/#{@user}/homebrew-#{@repo}"
+    args = %W[clone #{remote} #{@path}]
+    args << "--depth=1" unless options.fetch(:full_clone, false)
+
+    begin
+      safe_system "git", *args
+    rescue Interrupt, ErrorDuringExecution
+      ignore_interrupts do
+        sleep 0.1 # wait for git to cleanup the top directory when interrupt happens.
+        @path.parent.rmdir_if_possible
+      end
+      raise
+    end
+
+    formula_count = formula_files.size
+    puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{@path.abv})"
+    Descriptions.cache_formulae(formula_names)
+
+    if !options[:clone_target] && private?
+      puts <<-EOS.undent
+        It looks like you tapped a private repository. To avoid entering your
+        credentials each time you update, you can use git HTTP credential
+        caching or issue the following command:
+          cd #{@path}
+          git remote set-url origin git@github.com:#{@user}/homebrew-#{@repo}.git
+      EOS
+    end
+  end
+
+  # uninstall this {Tap}.
+  def uninstall
+    raise TapUnavailableError, name unless installed?
+
+    puts "Untapping #{name}... (#{@path.abv})"
+    unpin if pinned?
+    formula_count = formula_files.size
+    Descriptions.uncache_formulae(formula_names)
+    @path.rmtree
+    @path.dirname.rmdir_if_possible
+    puts "Untapped #{formula_count} formula#{plural(formula_count, "e")}"
   end
 
   # True if the {#remote} of {Tap} is customized.
