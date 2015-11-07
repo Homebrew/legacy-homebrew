@@ -149,15 +149,19 @@ class Tap
     @command_files ||= Pathname.glob("#{path}/cmd/brew-*").select(&:executable?)
   end
 
+  # path to the pin record for this {Tap}.
+  # @private
   def pinned_symlink_path
     HOMEBREW_LIBRARY/"PinnedTaps/#{@name}"
   end
 
+  # True if this {Tap} has been pinned.
   def pinned?
     return @pinned if instance_variable_defined?(:@pinned)
     @pinned = pinned_symlink_path.directory?
   end
 
+  # pin this {Tap}.
   def pin
     raise TapUnavailableError, name unless installed?
     raise TapPinStatusError.new(name, true) if pinned?
@@ -165,6 +169,7 @@ class Tap
     @pinned = true
   end
 
+  # unpin this {Tap}.
   def unpin
     raise TapUnavailableError, name unless installed?
     raise TapPinStatusError.new(name, false) unless pinned?
