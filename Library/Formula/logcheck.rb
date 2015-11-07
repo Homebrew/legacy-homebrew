@@ -6,11 +6,11 @@ class Logcheck < Formula
   sha256 "c2d3fc323e8c6555e91d956385dbfd0f67b55872ed0f6a7ad8ad2526a9faf03a"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "cd8a2d7c4a28b13047fb89624bfcbc5dad359545c1cc80cd1b9e79018f368372" => :yosemite
-    sha256 "4757698c916095d0f9a29c0e42e55b6c5c24a3a972a569ea2eae2e795f0a59ba" => :mavericks
-    sha256 "1a005750f43b2bc64f8031233470f827c10fb567845140d5b1e91e668cc249af" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "b919397f55dcbab89df41e9ad83d6b5ff09f6f5d91e366b0eeaa627b3b8cfa9a" => :el_capitan
+    sha256 "a72f565e1014a37e90498c52b6c67c0608c867e78ec2f0411803e57e2650ed88" => :yosemite
+    sha256 "fe1817125f5fde6b259dfdfd70597e16f8189775ae78b9fd8f6821c4e1ea22b6" => :mavericks
   end
 
   def install
