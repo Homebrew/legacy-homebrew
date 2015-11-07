@@ -16,4 +16,9 @@ class Cgvg < Formula
                           "--mandir=#{man}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test").write "Homebrew"
+    assert_match /1 Homebrew/, shell_output("#{bin}/cg Homebrew '#{testpath}/test'")
+  end
 end
