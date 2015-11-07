@@ -12,7 +12,12 @@ class Lft < Formula
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/lft -v 2>&1")
   end
 end
