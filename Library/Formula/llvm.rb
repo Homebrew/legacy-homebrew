@@ -135,6 +135,15 @@ class Llvm < Formula
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
 
+    if build.with? "python"
+      # LLVM links against `/usr/bin/python`, instead check `python-config` for
+      # the user's preferred python installation.
+      # Ref: https://llvm.org/bugs/show_bug.cgi?id=25446
+      python_prefix = `python-config --exec-prefix`.strip
+      args << "-DPYTHON_INCLUDE_DIR='" + python_prefix + "/include/python2.7'"
+      args << "-DPYTHON_LIBRARY='" + python_prefix + "/lib/libpython2.7.dylib'"
+    end
+
     if build.with? "assertions"
       args << "-DLLVM_ENABLE_ASSERTIONS=On"
     else
