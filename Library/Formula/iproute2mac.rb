@@ -11,8 +11,8 @@ class Iproute2mac < Formula
   end
 
   test do
-    system("#{bin}/ip", "route")
-    system("#{bin}/ip", "address")
-    system("#{bin}/ip", "neigh")
+    system "#{bin}/ip", "route"
+    system "#{bin}/ip", "address"
+    system "#{bin}/ip", "neigh"
   end
 end
