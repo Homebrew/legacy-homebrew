@@ -16,6 +16,10 @@ This is how to fix Homebrew on El Capitan if you see permission issues:
 sudo chown -R $(whoami):admin /usr/local
 ```
 
+### If you MySQL installed from mysql.com, do not chown with -R, only the directory.
+
+sudo chown $(whoami):admin /usr/local
+
 ## If `/usr/local` does not exist:
 First, try to create `/usr/local` the normal way:
 
