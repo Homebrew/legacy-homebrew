@@ -11,11 +11,8 @@ class Iproute2mac < Formula
   end
 
   test do
-    pipe_output("#{bin}/ip route")
-    assert $?.success?, "Calling route failed"
-    pipe_output("#{bin}/ip address")
-    assert $?.success?, "Calling ifconfig failed"
-    pipe_output("#{bin}/ip neigh")
-    assert $?.success?, "Calling arp failed"
+    system("#{bin}/ip", "route")
+    system("#{bin}/ip", "address")
+    system("#{bin}/ip", "neigh")
   end
 end
