@@ -2,10 +2,6 @@ class Keg
   PREFIX_PLACEHOLDER = "@@HOMEBREW_PREFIX@@".freeze
   CELLAR_PLACEHOLDER = "@@HOMEBREW_CELLAR@@".freeze
 
-  # Matches framework references like `XXX.framework/Versions/YYY/XXX` and
-  # `XXX.framework/XXX`, both with or without a slash-delimited prefix.
-  FRAMEWORK_RX = %r{(?:^|/)(?<suffix>(?<name>[^/]+)\.framework/(?:Versions/[^/]+/)?\k<name>)$}.freeze
-
   def fix_install_names(options = {})
     mach_o_files.each do |file|
       file.ensure_writable do
@@ -134,7 +130,7 @@ class Keg
       "@loader_path/#{bad_name}"
     elsif file.mach_o_executable? && (lib + bad_name).exist?
       "#{lib}/#{bad_name}"
-    elsif (abs_name = find_dylib(bad_name)) && abs_name.exist?
+    elsif (abs_name = find_dylib(Pathname.new(bad_name).basename)) && abs_name.exist?
       abs_name.to_s
     else
       opoo "Could not fix #{bad_name} in #{file}"
@@ -160,18 +156,8 @@ class Keg
     opt_record.join(relative_dirname, basename).to_s
   end
 
-  def find_dylib_suffix_from(bad_name)
-    if (framework = bad_name.match(FRAMEWORK_RX))
-      framework["suffix"]
-    else
-      File.basename(bad_name)
-    end
-  end
-
-  def find_dylib(bad_name)
-    return unless lib.directory?
-    suffix = "/#{find_dylib_suffix_from(bad_name)}"
-    lib.find { |pn| break pn if pn.to_s.end_with?(suffix) }
+  def find_dylib(name)
+    lib.find { |pn| break pn if pn.basename == name } if lib.directory?
   end
 
   def mach_o_files
