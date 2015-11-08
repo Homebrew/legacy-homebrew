@@ -1,9 +1,9 @@
 class Tailor < Formula
   desc "Static analyzer for Swift"
-  homepage "http://tailor.sh"
-  url "https://github.com/sleekbyte/tailor/releases/download/v0.2.1/tailor.tar"
-  version "0.2.1"
-  sha256 "9b6cb6f88aafcf5f6b4dfbc88c51f6af73d07c070eafe2d05409db84918cf17b"
+  homepage "https://tailor.sh"
+  url "https://github.com/sleekbyte/tailor/releases/download/v0.2.2/tailor.tar"
+  version "0.2.2"
+  sha256 "84d12cddd06ed1592933e52991c1e5d4a9b529e31fc41ea4e03f11fd25a2af77"
 
   bottle :unneeded
 
