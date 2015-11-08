@@ -1,6 +1,6 @@
 class Libwbxml < Formula
   desc "Library and tools to parse and encode WBXML documents"
-  homepage "https://libwbxml.opensync.org/"
+  homepage "http://sourceforge.net/projects/libwbxml/"
   url "https://downloads.sourceforge.net/project/libwbxml/libwbxml/0.11.2/libwbxml-0.11.2.tar.bz2"
   sha256 "5f642027ece0225d80ef21979a57cf59b1027d46cb8dbd5ff4b87662eec2557d"
 
