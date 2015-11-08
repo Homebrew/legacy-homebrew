@@ -19,6 +19,7 @@ class AppEnginePython < Formula
       _php_runtime.py
       api_server.py
       appcfg.py
+      backends_conversion.py
       bulkload_client.py
       bulkloader.py
       dev_appserver.py
@@ -26,7 +27,10 @@ class AppEnginePython < Formula
       endpointscfg.py
       gen_protorpc.py
       google_sql.py
+      php_cli.py
       remote_api_shell.py
+      run_tests.py
+      wrapper_util.py
     ].each do |fn|
       bin.install_symlink share/name/fn
     end
