@@ -39,12 +39,14 @@ class Groonga < Formula
       --without-libstemmer
     ]
 
-    args << "--with-ruby" if build.head?
     args << "--enable-benchmark" if build.with? "benchmark"
     args << "--with-mecab" if build.with? "mecab"
     args << "--with-lz4" if build.with? "lz4"
 
-    system "./autogen.sh" if build.head?
+    if build.head?
+      args << "--with-ruby"
+      system "./autogen.sh"
+    end
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
     system "make", "install"
