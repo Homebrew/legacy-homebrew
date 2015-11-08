@@ -1,10 +1,10 @@
 class Putty < Formula
   desc "Implementation of Telnet and SSH"
   homepage "http://www.chiark.greenend.org.uk/~sgtatham/putty/"
-  url "https://the.earth.li/~sgtatham/putty/0.65/putty-0.65.tar.gz"
-  mirror "https://fossies.org/linux/misc/putty-0.65.tar.gz"
-  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.65.tar.gz"
-  sha256 "d543c1fd4944ea51d46d4abf31bfb8cde9bd1c65cb36dc6b83e51ce875660ca0"
+  url "https://the.earth.li/~sgtatham/putty/0.66/putty-0.66.tar.gz"
+  mirror "https://fossies.org/linux/misc/putty-0.66.tar.gz"
+  mirror "ftp://ftp.chiark.greenend.org.uk/users/sgtatham/putty-latest/putty-0.66.tar.gz"
+  sha256 "fe7312f66c54865868b362f4b79bd1fbe7ce9e8b1fd504b04034182db1f32993"
 
   bottle do
     cellar :any_skip_relocation
@@ -17,9 +17,11 @@ class Putty < Formula
 
   head do
     url "git://git.tartarus.org/simon/putty.git"
+
     depends_on "halibut" => :build
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "gtk+3" => :optional
   end
 
   depends_on "pkg-config" => :build
@@ -36,8 +38,13 @@ class Putty < Formula
       --disable-silent-rules
       --disable-dependency-tracking
       --disable-gtktest
-      --without-gtk
     ]
+
+    if build.head? && build.with?("gtk+3")
+      args << "--with-gtk=3" << "--with-quartz"
+    else
+      args << "--without-gtk"
+    end
 
     system "./configure", *args
 
@@ -45,14 +52,16 @@ class Putty < Formula
     system "make", "VER=-DRELEASE=#{build_version}"
 
     bin.install %w[plink pscp psftp puttygen]
+    bin.install %w[putty puttytel pterm] if build.head? && build.with?("gtk+3")
 
     cd "doc" do
       man1.install %w[plink.1 pscp.1 psftp.1 puttygen.1]
+      man1.install %w[putty.1 puttytel.1 pterm.1] if build.head? && build.with?("gtk+3")
     end
   end
 
   test do
-    (testpath/"testing/command.sh").write <<-EOS.undent
+    (testpath/"command.sh").write <<-EOS.undent
       #!/usr/bin/expect -f
       set timeout -1
       spawn #{bin}/puttygen -t rsa -b 4096 -q -o test.key
@@ -63,11 +72,9 @@ class Putty < Formula
       send -- "Homebrew\n"
       expect eof
     EOS
-    chmod 0755, testpath/"testing/command.sh"
+    chmod 0755, testpath/"command.sh"
 
-    cd "testing" do
-      system "./command.sh"
-      assert File.exist?("test.key")
-    end
+    system "./command.sh"
+    assert File.exist?("test.key")
   end
 end
