@@ -1,8 +1,8 @@
 class Primesieve < Formula
-  desc "Optimized sieve of Eratosthenes implementation"
+  desc "Fast C/C++ prime number generator"
   homepage "http://primesieve.org/"
-  url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.2.tar.gz"
-  sha256 "73abf4ff118e8d41ffaf687cf902b0b53a8bbc357bf4efa1798477d346f85cc8"
+  url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.5.0.tar.gz"
+  sha256 "f0f818902967ce7c911c330c578a52ec62dbbd9b12a68b8d3a3bc79b601e52b0"
 
   bottle do
     cellar :any
