@@ -2,7 +2,6 @@ class Primesieve < Formula
   desc "Fast C/C++ prime number generator"
   homepage "http://primesieve.org/"
   url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.5.0.tar.gz"
-  version "5.5.0"
   sha256 "f0f818902967ce7c911c330c578a52ec62dbbd9b12a68b8d3a3bc79b601e52b0"
 
   bottle do
