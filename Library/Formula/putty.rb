@@ -8,9 +8,9 @@ class Putty < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5e5da01a4f37e647305cc87c5575c0cc028ea11661558cd47e4563876a52b17f" => :el_capitan
-    sha256 "b076e4778143be23784e906689e7fc687073d2120fedf89fedc0a950f5ee69be" => :yosemite
-    sha256 "60d408eac949404d999cdd12fb9045516c03dce628b091e6379593ae3ecbc76c" => :mavericks
+    sha256 "02b14c65a6041b6fec2cb042e7d110d34fd13ca55553605f1baacb4d4a514452" => :el_capitan
+    sha256 "b1e686cd941a087a6bb5f56e9954bc5550533d8689c1024d7507c0e5a41b44fe" => :yosemite
+    sha256 "98b118bc2f5642194b3be582d3d3e1b8e75a1ffeb4a27924a732a6daa0f65345" => :mavericks
   end
 
   conflicts_with "pssh", :because => "both install `pscp` binaries"
