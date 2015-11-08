@@ -4,6 +4,8 @@ class Luciddb < Formula
   url "https://downloads.sourceforge.net/project/luciddb/luciddb/luciddb-0.9.4/luciddb-bin-macos32-0.9.4.tar.bz2"
   sha256 "fe6caa93d63a97e412e2bc478e1a1bd99c2aa736b1dcfea665cbab94b8da8593"
 
+  bottle :unneeded
+
   def shim_script(target)
     <<-EOS.undent
       #!/bin/bash
@@ -45,12 +47,12 @@ class Luciddb < Formula
       </dict>
       <key>ProgramArguments</key>
       <array>
-        <string>#{libexec}/bin/lucidDbServer</string>
+        <string>#{opt_libexec}/bin/lucidDbServer</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
       <key>WorkingDirectory</key>
-      <string>#{libexec}</string>
+      <string>#{opt_libexec}</string>
       <key>StandardOutPath</key>
       <string>/dev/null</string>
     </dict>
