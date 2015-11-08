@@ -1470,12 +1470,15 @@ class Formula
       mkdir_p env_home
 
       old_home, ENV["HOME"] = ENV["HOME"], env_home
+      old_java_options = ENV["_JAVA_OPTIONS"]
+      ENV.append "_JAVA_OPTIONS", "-Duser.home=#{env_home}"
 
       begin
         yield
       ensure
         @buildpath = nil
         ENV["HOME"] = old_home
+        ENV["_JAVA_OPTIONS"] = old_java_options
       end
     end
   end
