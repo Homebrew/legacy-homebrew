@@ -1,6 +1,6 @@
 class Iat < Formula
   desc "Converts many CD-ROM image formats to ISO9660"
-  homepage "http://sourceforge.net/projects/iat.berlios/"
+  homepage "https://sourceforge.net/projects/iat.berlios/"
   url "https://downloads.sourceforge.net/project/iat.berlios/iat-0.1.7.tar.bz2"
   sha256 "fb72c42f4be18107ec1bff8448bd6fac2a3926a574d4950a4d5120f0012d62ca"
 
