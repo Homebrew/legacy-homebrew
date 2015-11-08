@@ -15,6 +15,7 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  revision 1
 
   stable do
     url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
@@ -132,7 +133,15 @@ class Qt5 < Formula
     inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
     inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
 
-    Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
+    # Move `*.app` bundles into `libexec` to expose them to `brew linkapps` and
+    # because we don't like having them in `bin`. Also add a `-qt5` suffix to
+    # avoid conflict with the `*.app` bundles provided by the `qt` formula.
+    # (Note: This move/rename breaks invocation of Assistant via the Help menu
+    # of both Designer and Linguist as that relies on Assistant being in `bin`.)
+    libexec.mkpath
+    Pathname.glob("#{bin}/*.app") do |app|
+      mv app, libexec/"#{app.basename(".app")}-qt5.app"
+    end
   end
 
   def caveats; <<-EOS.undent
