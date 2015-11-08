@@ -1,7 +1,7 @@
 class SpringRoo < Formula
   desc "Rapid application development tool for Java developers"
   homepage "http://www.springsource.org/spring-roo"
-  url "http://spring-roo-repository.springsource.org.s3.amazonaws.com/release/ROO/spring-roo-1.3.2.RELEASE.zip"
+  url "https://s3.amazonaws.com/spring-roo-repository.springsource.org/release/ROO/spring-roo-1.3.2.RELEASE.zip"
   version "1.3.2"
   sha256 "535fb618fe2b9534f0a8bf7003750bb3835ec93ef8a48b05a3511e2adc8ffe9c"
 
