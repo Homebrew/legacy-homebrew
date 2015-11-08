@@ -671,7 +671,7 @@ class FormulaInstaller
   end
 
   def fix_install_names(keg)
-    keg.fix_install_names(:keg_only => formula.keg_only?)
+    keg.fix_install_names
   rescue Exception => e
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"
@@ -720,7 +720,7 @@ class FormulaInstaller
     keg = Keg.new(formula.prefix)
     unless formula.bottle_specification.skip_relocation?
       keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
-        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
+        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s
     end
     keg.relocate_text_files Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
       Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s
