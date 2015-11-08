@@ -6,9 +6,9 @@ class Primesieve < Formula
 
   bottle do
     cellar :any
-    sha256 "db994cff1eea28e828e3c0df8d1a4bc82be16ff377ab7088224f9afdb609978d" => :yosemite
-    sha256 "48e0da06374d96fc4e5ded73c5093b947a9dd254fb257cf14405c27a076fa77e" => :mavericks
-    sha256 "1fd0410a04f8cc14b90577d714223517712bde14aaefbd1250787c41a3065e23" => :mountain_lion
+    sha256 "106a0dcebe252a20d211014b5059456cb480a2ea62b53e07fcac2777156d2be2" => :el_capitan
+    sha256 "670f49877fa80e647e5a62a827e1df12618b62c8df7b4a09f7957f92ca9ef3bc" => :yosemite
+    sha256 "2497d368a7ee2601ea83dba4c513ae55cc05864f1bf5974a6ba7d6f9d1cf15cf" => :mavericks
   end
 
   def install
