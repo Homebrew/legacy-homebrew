@@ -12,7 +12,7 @@ class CodeshipJet < Formula
   end
 
   test do
-    system "jet", "version"
-    system "jet", "help"
+    system "#{bin}/jet", "version"
+    system "#{bin}/jet", "help"
   end
 end
