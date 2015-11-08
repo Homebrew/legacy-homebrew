@@ -6,26 +6,19 @@ class Luciddb < Formula
 
   bottle :unneeded
 
-  def shim_script(target)
-    <<-EOS.undent
-      #!/bin/bash
-      export JAVA_HOME=`/usr/libexec/java_home`
-      exec "#{libexec}/bin/#{target}" "$@"
-    EOS
-  end
+  depends_on :java
 
   def install
     libexec.install Dir["*"]
     cd libexec/"install" do
       # install.sh just sets Java classpaths and writes them to bin/classpath.gen.
       # This is why we run it /after/ copying all the files to #{libexec}.
-      ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
       system "./install.sh"
     end
     Dir.glob("#{libexec}/bin/*") do |b|
       next if b =~ /classpath.gen/ || b =~ /defineFarragoRuntime/
       n = File.basename(b)
-      (bin+n).write shim_script(n)
+      (bin+n).write_env_script b, Language::Java.java_home_env
     end
   end
 
