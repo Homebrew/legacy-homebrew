@@ -5,6 +5,8 @@ class Nodebrew < Formula
   sha256 "ebd9df28fd9a65bec3cbab6e115300f63a012cba80a27cc8d34ab8ccf9c1d7c1"
   head "https://github.com/hokaccha/nodebrew.git"
 
+  bottle :unneeded
+
   def install
     bin.install "nodebrew"
     system "#{bin}/nodebrew", "setup_dirs"
