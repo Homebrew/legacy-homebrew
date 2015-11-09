@@ -41,7 +41,7 @@ class Postgrest < Formula
       system "#{pg_bin}/createdb", "-w", "-p", pg_port, "-U", pg_user, test_db
       pid = Process.spawn("postgrest -d #{test_db} -P #{pg_port} " \
                           "-U #{pg_user} -a #{pg_user} -p 55560",
-                          :out => "/dev/null", :err => "/dev/null",)
+                          :out => "/dev/null", :err => "/dev/null")
       sleep(5) # Wait for the server to start
       response = Net::HTTP.get(URI("http://localhost:55560"))
       assert_equal "[]", response
