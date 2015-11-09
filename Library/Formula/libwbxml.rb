@@ -1,8 +1,9 @@
 class Libwbxml < Formula
   desc "Library and tools to parse and encode WBXML documents"
   homepage "https://sourceforge.net/projects/libwbxml/"
-  url "https://downloads.sourceforge.net/project/libwbxml/libwbxml/0.11.2/libwbxml-0.11.2.tar.bz2"
-  sha256 "5f642027ece0225d80ef21979a57cf59b1027d46cb8dbd5ff4b87662eec2557d"
+  url "https://downloads.sourceforge.net/project/libwbxml/libwbxml/0.11.4/libwbxml-0.11.4.tar.bz2"
+  sha256 "8057998042b8a724328346a50c326010ba011a40e18e2df7043e87498a679c28"
+  head "https://github.com/libwbxml/libwbxml.git"
 
   bottle do
     cellar :any
@@ -24,10 +25,14 @@ class Libwbxml < Formula
   end
 
   def install
+    # Sandbox fix:
+    # Install in Cellar & then automatically symlink into top-level Module path.
+    inreplace "cmake/CMakeLists.txt", "${CMAKE_ROOT}/Modules/", "#{share}/cmake/Modules"
+
     mkdir "build" do
-      args = std_cmake_args + %w[..]
+      args = std_cmake_args
       args << "-DBUILD_DOCUMENTATION=ON" if build.with? "docs"
-      system "cmake", *args
+      system "cmake", "..", *args
       system "make", "install"
     end
   end
