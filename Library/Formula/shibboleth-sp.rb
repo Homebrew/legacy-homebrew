@@ -102,4 +102,8 @@ class ShibbolethSp < Formula
     EOS
     s
   end
+
+  test do
+    system "#{opt_prefix}/sbin/shibd", "-t"
+  end
 end
