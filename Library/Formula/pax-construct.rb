@@ -6,10 +6,20 @@ class PaxConstruct < Formula
 
   bottle :unneeded
 
+  # Needed at runtime! pax-clone: line 47: exec: mvn: not found
+  depends_on "maven"
+
   def install
     rm_rf Dir["bin/*.bat"]
     prefix.install_metafiles "bin" # Don't put these in bin!
     libexec.install Dir["*"]
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.write_exec_script Dir["#{libexec}/bin/*"].select { |f| File.executable? f }
+  end
+
+  test do
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
+    system bin/"pax-create-project", "-g", "Homebrew", "-a", "testing",
+               "-v", "alpha-1"
+    assert File.exist?("testing/pom.xml")
   end
 end
