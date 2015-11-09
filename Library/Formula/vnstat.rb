@@ -46,7 +46,7 @@ class Vnstat < Formula
     (var/"db/vnstat").mkpath
 
     system "make", "all", "-C", "src", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"
-    (etc/"vnstat").install "cfg/vnstat.conf"
+    etc.install "cfg/vnstat.conf"
     bin.install "src/vnstat", "src/vnstatd", "src/vnstati"
     man1.install "man/vnstat.1", "man/vnstatd.1", "man/vnstati.1"
     man5.install "man/vnstat.conf.5"
@@ -95,8 +95,12 @@ class Vnstat < Formula
   end
 
   test do
+    cp etc/"vnstat.conf", testpath
+    inreplace "vnstat.conf", "/usr/local/var", testpath/"var"
+    (testpath/"var/db/vnstat").mkpath
+
     begin
-      stat = IO.popen("#{bin}/vnstatd --nodaemon --config #{etc}/vnstat.conf")
+      stat = IO.popen("#{bin}/vnstatd --nodaemon --config vnstat.conf")
       sleep 1
     ensure
       Process.kill "SIGINT", stat.pid
