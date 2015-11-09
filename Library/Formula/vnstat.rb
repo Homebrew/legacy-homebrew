@@ -3,7 +3,6 @@ class Vnstat < Formula
   homepage "http://humdi.net/vnstat/"
   url "http://humdi.net/vnstat/vnstat-1.14.tar.gz"
   sha256 "f8462a47d85d0890493dc9eaeafbc725ae631aa5b103fb7f8af4ddb2314e8386"
-
   head "https://github.com/vergoh/vnstat.git"
 
   bottle do
@@ -44,10 +43,10 @@ class Vnstat < Formula
       c.gsub! 'PidFile "/var/run/vnstat/vnstat.pid"', %(PidFile "#{var}/run/vnstat/vnstat.pid")
     end
 
-    (var+"db/vnstat").mkpath
+    (var/"db/vnstat").mkpath
 
     system "make", "all", "-C", "src", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"
-    (prefix+"etc").install "cfg/vnstat.conf"
+    (etc/"vnstat").install "cfg/vnstat.conf"
     bin.install "src/vnstat", "src/vnstatd", "src/vnstati"
     man1.install "man/vnstat.1", "man/vnstatd.1", "man/vnstati.1"
     man5.install "man/vnstat.conf.5"
@@ -74,7 +73,7 @@ class Vnstat < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
+        <string>$USER</string>
         <key>GroupName</key>
         <string>staff</string>
         <key>WorkingDirectory</key>
@@ -84,6 +83,10 @@ class Vnstat < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  def post_install
+    inreplace prefix/"homebrew.mxcl.vnstat.plist", "$USER", ENV["USER"]
   end
 
   def caveats; <<-EOS.undent
