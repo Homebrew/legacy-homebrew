@@ -83,7 +83,8 @@ module Homebrew
       migration = TAP_MIGRATIONS[f]
       next unless migration
       tap = Tap.fetch(*migration.split("/"))
-      tap.install
+      tap.install unless tap.installed?
+
       # update tap for each Tab
       tabs = dir.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
       next if tabs.first.source["tap"] != "Homebrew/homebrew"
