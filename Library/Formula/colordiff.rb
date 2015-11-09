@@ -5,11 +5,10 @@ class Colordiff < Formula
   sha256 "eaf1cfe17dd0e820d38a0b24b0a402eba68b32e9bf9e7791ca2d1831029f138b"
 
   bottle do
-    cellar :any
-    sha256 "ec28e4b2776cb039710428718fd0df6a246968aea0db6391c9222272cad9d601" => :el_capitan
-    sha256 "c5ed797abdaedc5a5f163bafce625307249408afd87bd1a2d31b086af29e02d6" => :yosemite
-    sha256 "a316bce78fc4bfd7fead8f6a6ce87161e9bd862e61882c72be60bcc42d248db1" => :mavericks
-    sha256 "45232a4a2de9ccf1848b28593d2a870efaf38017b465fdb8f04e261f7ccad8e7" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "164196a68ad856b48ddff2de74f63eea098e90a9c211a4ab441b84861bc49136" => :el_capitan
+    sha256 "c31580d91f2bc3c2988957a391c8d30844b6680808811b6fe35e042d6151c68e" => :yosemite
+    sha256 "386b872c9ce130d237efcf4874c4e06582e56bc243fe89c7cd355e72f6d0f048" => :mavericks
   end
 
   patch :DATA
