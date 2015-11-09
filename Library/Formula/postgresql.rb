@@ -1,23 +1,23 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  revision 1
+  revision 2
 
   stable do
     url "https://ftp.postgresql.org/pub/source/v9.4.5/postgresql-9.4.5.tar.bz2"
     sha256 "b87c50c66b6ea42a9712b5f6284794fabad0616e6ae420cf0f10523be6d94a39"
   end
 
-  devel do
-    url "https://ftp.postgresql.org/pub/source/v9.5beta1/postgresql-9.5beta1.tar.bz2"
-    sha256 "b53199e2667982de2039ad7e30467f67c5d7af678e69d6211de8ba1cac75c9f0"
-    version "9.5beta1"
-  end
-
   bottle do
     sha256 "4a843d7918d3f6a2526b93d1bf4222e64bfa127ac81648db9a0df21bacd36df8" => :el_capitan
     sha256 "9a796f9f9d129af45ca1d2d8e54a17c7116164d226c0282a14005afa2b2a09be" => :yosemite
     sha256 "0b764882f8dbb339b3023736091a94abbad797c2a95118953031ba08567c177b" => :mavericks
+  end
+
+  devel do
+    url "https://ftp.postgresql.org/pub/source/v9.5beta1/postgresql-9.5beta1.tar.bz2"
+    sha256 "b53199e2667982de2039ad7e30467f67c5d7af678e69d6211de8ba1cac75c9f0"
+    version "9.5beta1"
   end
 
   option "32-bit"
@@ -45,8 +45,8 @@ class Postgresql < Formula
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
 
-    ENV.prepend "LDFLAGS", "-L#{Formula["openssl"].opt_lib}"
-    ENV.prepend "CPPLAGS", "-I#{Formula["openssl"].opt_include}"
+    ENV.prepend "LDFLAGS", "-L#{Formula["openssl"].opt_lib} -L#{Formula["readline"].opt_lib}"
+    ENV.prepend "CPPLAGS", "-I#{Formula["openssl"].opt_include} -I#{Formula["readline"].opt_include}"
 
     args = %W[
       --disable-debug
