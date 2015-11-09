@@ -19,7 +19,7 @@ module Homebrew
         user = $1
         repo = $2.sub(/^homebrew-/, "")
         tap = Tap.fetch(user, repo)
-        tap.install
+        tap.install unless tap.installed?
       end
     end unless ARGV.force?
 
