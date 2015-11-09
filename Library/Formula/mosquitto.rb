@@ -1,8 +1,8 @@
 class Mosquitto < Formula
   desc "Message broker implementing MQ telemetry transport protocol"
   homepage "http://mosquitto.org/"
-  url "http://mosquitto.org/files/source/mosquitto-1.4.4.tar.gz"
-  sha256 "c643c7123708aadcd29287dda7b5ce7c910f75b02956a8fc4fe65ad2ea767a5f"
+  url "http://mosquitto.org/files/source/mosquitto-1.4.5.tar.gz"
+  sha256 "b432e19fee0c549f4a0fb0e866d1b6a897b38dbf1ddfda92bb43e2a24f01df66"
 
   bottle do
     sha256 "ee66a7033cad1d89c556b2a1d6923371613cc6ba70d7fba1ee61bb2bc32bc402" => :el_capitan
