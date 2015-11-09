@@ -7,9 +7,10 @@ class Vnstat < Formula
 
   bottle do
     cellar :any
-    sha256 "e35e04ae895a0abdd11198ea4e313f4103c52b7f8e4356eb2b9d7dae8cebc254" => :yosemite
-    sha256 "995fa5a0cba75a852526b9bfe5dde9ab1d5ff168e6298175e607d7bd6dc9f47e" => :mavericks
-    sha256 "e1ad44a67cc8a6cb7cf5bb716473a42285226e0dca4f719f9e4d2be66f7f1e2b" => :mountain_lion
+    revision 1
+    sha256 "649f48180888b9dc1cb3fd60fac3d1dcdf56ff5a0f2b57a831c08fcad201b0ab" => :el_capitan
+    sha256 "ef27ae97c7a698631fef3f78cbe334d7347d40e06e697f012ab9fa925b7daf93" => :yosemite
+    sha256 "80d5c778de2d86d77761abf2a2eaa53707989287ce157085f11cad350d7ef0e1" => :mavericks
   end
 
   depends_on "gd"
