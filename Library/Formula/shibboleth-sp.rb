@@ -14,8 +14,8 @@ class ShibbolethSp < Formula
   depends_on "xml-security-c"
   depends_on "log4shib"
   depends_on "boost"
-  depends_on "httpd22" if build.with? "homebrew-httpd22"
-  depends_on "httpd24" if build.with? "homebrew-httpd24"
+  depends_on "homebrew/apache/httpd22" if build.with? "homebrew-httpd22"
+  depends_on "homebrew/apache/httpd24" if build.with? "homebrew-httpd24"
 
   skip_clean "var/run/shibboleth"
   skip_clean "var/cache/shibboleth"
