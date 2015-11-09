@@ -25,7 +25,8 @@ class Woof < Formula
     sleep 2
 
     begin
-      assert_equal (bin/"woof").read, shell_output("curl localhost:#{port}/woof")
+      read = (bin/"woof").read
+      assert_equal read, shell_output("curl localhost:#{port}/woof")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)
