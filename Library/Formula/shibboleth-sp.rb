@@ -30,7 +30,7 @@ class ShibbolethSp < Formula
       "--disable-debug",
       "--disable-dependency-tracking",
       "--disable-silent-rules",
-      "--prefix=#{prefix}"
+      "--prefix=#{prefix}",
     ]
     args << "--with-xmltooling=#{Formula["xml-tooling-c"].opt_prefix}"
     args << "--with-saml=#{Formula["opensaml"].opt_prefix}"
@@ -96,7 +96,7 @@ class ShibbolethSp < Formula
     unless File.exist? "#{prefix}/var/run/shibboleth"
       (prefix/"var/run/shibboleth/").mkpath
     end
-    unless File.exists? "#{prefix}/var/cache/shibboleth"
+    unless File.exist? "#{prefix}/var/cache/shibboleth"
       (prefix/"var/cache/shibboleth").mkpath
     end
   end
