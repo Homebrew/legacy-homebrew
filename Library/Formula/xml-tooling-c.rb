@@ -19,10 +19,6 @@ class XmlToolingC < Formula
     args << "--disable-debug"
     args << "--disable-dependency-tracking"
     args << "--prefix=#{prefix}"
-    if build.with? "openssl"
-      args << "CPPFLAGS=-I#{Formula["curl"].opt_prefix}/curl/include"
-      args << "LDFLAGS=-L#{Formula["curl"].opt_prefix}/curl/lib"
-    end
     system "./configure", *args
     system "make", "install"
   end
