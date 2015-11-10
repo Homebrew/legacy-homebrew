@@ -26,6 +26,6 @@ class GitlabRunner < Formula
   end
 
   test do
-    assert_match /gitlab-runner version #{version} (.*)/, shell_output("gitlab-runner --version")
+    assert_match /gitlab-runner version #{version}/, shell_output("gitlab-runner --version")
   end
 end
