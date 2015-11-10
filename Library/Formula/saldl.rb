@@ -12,17 +12,17 @@ class Saldl < Formula
 
   depends_on "pkg-config" => :build
   depends_on "asciidoc" => :build
-  depends_on "curl"
   depends_on "libevent"
+
+  # curl >= 7.42 is required
+  depends_on "curl" if MacOS.version <= :mavericks
 
   def install
     # a2x/asciidoc needs this to build the man page successfully
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
     args = [
-      "--libcurl-cflags=-I#{HOMEBREW_PREFIX}/opt/curl/include",
-      "--libcurl-libs=-L#{HOMEBREW_PREFIX}/opt/curl/lib -lcurl",
-      "--prefix=#{prefix}",
+      "--prefix=#{prefix}"
     ]
 
     # head uses git describe to acquire a version
@@ -34,6 +34,7 @@ class Saldl < Formula
   end
 
   test do
-    system "saldl", "--version"
+    system "#{bin}/saldl", "http://brew.sh/index.html"
+    assert File.exist? "index.html"
   end
 end
