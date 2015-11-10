@@ -21,6 +21,8 @@ class Embryo < Formula
   depends_on "pkg-config" => :build
   depends_on "eina"
 
+  conflicts_with "efl", :because => "both install `embryo_cc` binaries"
+
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",

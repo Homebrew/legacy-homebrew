@@ -11,6 +11,8 @@ class SpeechTools < Formula
     sha1 "2fe64f901cd995effbcb26edf0ebce2b0a1141fd" => :mountain_lion
   end
 
+  conflicts_with "align", :because => "both install `align` binaries"
+
   def install
     ENV.deparallelize
     system "./configure"

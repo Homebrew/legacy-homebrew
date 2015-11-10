@@ -14,6 +14,9 @@ class Jena < Formula
     EOS
   end
 
+  conflicts_with "samba",
+    :because => "both install `tdbbackup` and `tdbdump` binaries"
+
   def install
     rm_rf "bat" # Remove Windows scripts
 

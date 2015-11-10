@@ -1,14 +1,13 @@
 class Openwsman < Formula
   desc "Implementation of WS-Management, enabling in-band resource management"
   homepage "https://openwsman.github.io"
-  url "https://github.com/Openwsman/openwsman/archive/v2.6.0.tar.gz"
-  sha256 "449b4972dc7700918f8f674047f0a1a9c19eeee3f4ce82f47890dddfa56e823f"
-  revision 1
+  url "https://github.com/Openwsman/openwsman/archive/v2.6.2.tar.gz"
+  sha256 "9c28e613bf3fd3b9b9b1cd484099d339c713a997a322b069a80b3be1465dd3a1"
 
   bottle do
-    sha256 "e6e5675c6163c2e58811571e82f2e016563718aeabeca7abc30dcc055be0396e" => :yosemite
-    sha256 "134ab348c9a14fde95d021b77fcf265edc19e6697e3f4b336bf47e4b3d7822d0" => :mavericks
-    sha256 "4626e6f4c61e3c01a442d19c0246eb149ba5e280f66b1b046e0cb9362ef5c322" => :mountain_lion
+    sha256 "32dfb7f453e6473e17dbc641ed6ed2b97be424b1b1bc6e3bbb458a8d483969b3" => :el_capitan
+    sha256 "4876db5b282be5be45512e19eb0a3c9a23450fd88dfe7ba0fcdddfe8bfe01c1d" => :yosemite
+    sha256 "dd98edf8d15ddaeab16c779cbc2d9ecb6a6c5c246d143789b8e79b03bbbb37e0" => :mavericks
   end
 
   depends_on "automake" => :build

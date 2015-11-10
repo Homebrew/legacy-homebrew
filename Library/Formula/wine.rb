@@ -29,9 +29,9 @@ class Wine < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.53.tar.bz2"
-    mirror "https://ftp.winehq.org/pub/wine/source/1.7/wine-1.7.53.tar.bz2"
-    sha256 "efba70b106cde683a50a4b1f42df3d900f8ffc291a3689cb897afcc12cc2c6a3"
+    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.7.54.tar.bz2"
+    mirror "https://ftp.winehq.org/pub/wine/source/1.7/wine-1.7.54.tar.bz2"
+    sha256 "e0f311f392815468df774b33312cde80bf1ff3a894c9c2b462825fd49619bb27"
 
     depends_on "samba" => :optional
     depends_on "gnutls"
@@ -164,9 +164,6 @@ class Wine < Formula
     # and name our startup script wine
     mv bin/"wine", bin/"wine.bin"
     (bin/"wine").write(wine_wrapper)
-
-    # Don't need Gnome desktop support
-    (share/"applications").rmtree
   end
 
   def caveats

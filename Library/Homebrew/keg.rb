@@ -78,7 +78,7 @@ class Keg
     man/cat1 man/cat2 man/cat3 man/cat4
     man/cat5 man/cat6 man/cat7 man/cat8
     applications gnome gnome/help icons
-    mime-info pixmaps sounds
+    mime-info pixmaps sounds postgresql
   ]
 
   # if path is a file in a keg then this will return the containing Keg object
@@ -263,7 +263,8 @@ class Keg
   end
 
   def elisp_installed?
-    Dir["#{path}/share/emacs/site-lisp/**/*.el"].any?
+    return false unless (path/"share/emacs/site-lisp"/name).exist?
+    (path/"share/emacs/site-lisp"/name).children.any? { |f| %w[.el .elc].include? f.extname }
   end
 
   def version

@@ -82,12 +82,13 @@ module Homebrew
       next unless (dir = HOMEBREW_CELLAR/f).exist?
       migration = TAP_MIGRATIONS[f]
       next unless migration
-      tap_user, tap_repo = migration.split "/"
-      install_tap tap_user, tap_repo
+      tap = Tap.fetch(*migration.split("/"))
+      tap.install unless tap.installed?
+
       # update tap for each Tab
       tabs = dir.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
       next if tabs.first.source["tap"] != "Homebrew/homebrew"
-      tabs.each { |tab| tab.source["tap"] = "#{tap_user}/homebrew-#{tap_repo}" }
+      tabs.each { |tab| tab.source["tap"] = "#{tap.user}/homebrew-#{tap.repo}" }
       tabs.each(&:write)
     end if load_tap_migrations
 
@@ -108,7 +109,8 @@ module Homebrew
 
       begin
         f = Formulary.factory("#{user}/#{repo}/#{newname}")
-      rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS
+      # short term fix to prevent situation like https://github.com/Homebrew/homebrew/issues/45616
+      rescue Exception
       end
 
       next unless f
@@ -314,7 +316,8 @@ class Updater
             end
             old_version = FormulaVersions.new(formula).formula_at_revision(@initial_revision, &:pkg_version)
             next if new_version == old_version
-          rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS => e
+          # short term fix to prevent situation like https://github.com/Homebrew/homebrew/issues/45616
+          rescue Exception => e
             onoe e if ARGV.homebrew_developer?
           end
           map[:M] << file

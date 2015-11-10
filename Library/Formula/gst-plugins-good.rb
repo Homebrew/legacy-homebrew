@@ -3,8 +3,8 @@ class GstPluginsGood < Formula
   homepage "http://gstreamer.freedesktop.org/"
 
   stable do
-    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.0.tar.xz"
-    sha256 "a0915639595305e48884656e22b16fda7c6892aa02cdb3eb43e23dab6e6b81fa"
+    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.1.tar.xz"
+    sha256 "86d4b814099f7b7b16be19d4b94fa41002ac01fdf1525b07c5764d54c0605935"
 
     depends_on "check" => :optional
 
@@ -20,9 +20,9 @@ class GstPluginsGood < Formula
   end
 
   bottle do
-    sha256 "f0b959674f1bf2135378c640853971899df115830e047d0a33784671c35d17d4" => :el_capitan
-    sha256 "1a3009aa7e6dc2cd2cffd598a0c9e1f3183a268460aa15ebd1f750153a4d0f9d" => :yosemite
-    sha256 "cd42820977c3cdb2ca5315f7c86c1e041b523960fac07e767175958c873ff683" => :mavericks
+    sha256 "54f3c1f03ce857d1aac43f15f018b18c83a4b2e6d83f8b449bb84f605f2353e7" => :el_capitan
+    sha256 "41049fe7ea566e09abf1962242227801dddb29745784bd2664edca053fc7d76a" => :yosemite
+    sha256 "300051ff8d0dfe6a08238c6d7f13b234d04a259abc43e8a0a564e5d6099ec1fd" => :mavericks
   end
 
   head do

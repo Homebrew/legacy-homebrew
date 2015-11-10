@@ -1,15 +1,14 @@
 class Confuse < Formula
   desc "Configuration file parser library written in C"
-  homepage "http://www.nongnu.org/confuse/"
-  url "http://download.savannah.nongnu.org/releases/confuse/confuse-2.7.tar.gz"
-  sha256 "e32574fd837e950778dac7ade40787dd2259ef8e28acd6ede6847ca895c88778"
+  homepage "https://github.com/martinh/libconfuse"
+  url "https://github.com/martinh/libconfuse/releases/download/v2.8/confuse-2.8.tar.xz"
+  sha256 "2a8102bfa3ccc846c14d94a81b0abfb4f5e855809f89ff3722aca1a9f314ea0d"
 
   bottle do
-    cellar :any_skip_relocation
-    revision 1
-    sha256 "0df403420102e0215a8c2c98d091c1dc8f88d4b384a29cb9b4933c4a24448a31" => :el_capitan
-    sha256 "2d474d4e4e735c0b359424164f6458e07101b6ce051bd018b88e2bfb1f8571d1" => :yosemite
-    sha256 "d365907b21e36075ce3980b8ab8f5131da731f6f992869b41227be34256f15b1" => :mavericks
+    cellar :any
+    sha256 "dac00feeb2cd3cb2897afab338d01e84e8132a89e2bbe5d23cf5169f6c92b3b0" => :el_capitan
+    sha256 "0998a46243bfb613e3cc0c7a7d2534e88dc0a89a69b820c0dea20da7f54ccee8" => :yosemite
+    sha256 "321babd2b297a0892906647860d8443487420b2ed36b62339cf2ae1bb5c9921f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -17,6 +16,31 @@ class Confuse < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
+    system "make", "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <confuse.h>
+      #include <stdio.h>
+
+      cfg_opt_t opts[] =
+      {
+        CFG_STR("hello", NULL, CFGF_NONE),
+        CFG_END()
+      };
+
+      int main(void)
+      {
+        cfg_t *cfg = cfg_init(opts, CFGF_NONE);
+        if (cfg_parse_buf(cfg, "hello=world") == CFG_SUCCESS)
+          printf("%s\\n", cfg_getstr(cfg, "hello"));
+        cfg_free(cfg);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-lconfuse", "-o", "test"
+    assert_match /world/, shell_output("./test")
   end
 end

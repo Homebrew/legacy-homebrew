@@ -390,7 +390,11 @@ class FormulaAuditor
     end
 
     if desc =~ /^([Aa]n?)\s/
-      problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
+      problem "Description shouldn't start with an indefinite article (#{$1})"
+    end
+
+    if desc =~ /^#{formula.name}\s/i
+      problem "Description shouldn't include the formula name"
     end
   end
 
@@ -544,10 +548,12 @@ class FormulaAuditor
     stable = formula.stable
     case stable && stable.url
     when %r{download\.gnome\.org/sources}, %r{ftp\.gnome\.org/pub/GNOME/sources}i
-      minor_version = Version.parse(stable.url).to_s.split(".", 3)[1].to_i
-
-      if minor_version.odd?
-        problem "#{stable.version} is a development release"
+      version = Version.parse(stable.url)
+      if version >= Version.new("1.0")
+        minor_version = version.to_s.split(".", 3)[1].to_i
+        if minor_version.odd?
+          problem "#{stable.version} is a development release"
+        end
       end
     end
   end

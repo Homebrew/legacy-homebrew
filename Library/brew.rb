@@ -152,6 +152,28 @@ begin
   elsif (path = which("brew-#{cmd}.rb")) && require?(path)
     exit Homebrew.failed? ? 1 : 0
   else
+    require "tap"
+    possible_tap = case cmd
+    when *%w[brewdle brewdler bundle bundler]
+      Tap.fetch("Homebrew", "bundle")
+    when "cask"
+      Tap.fetch("caskroom", "cask")
+    when "services"
+      Tap.fetch("Homebrew", "services")
+    end
+
+    if possible_tap && !possible_tap.installed?
+      possible_tap.install
+
+      if cmd == "cask"
+        require "cmd/install"
+        brew_cask = Formulary.factory("brew-cask")
+        Homebrew.install_formula(brew_cask)
+      end
+
+      exec HOMEBREW_BREW_FILE, cmd, *ARGV
+    end
+
     onoe "Unknown command: #{cmd}"
     exit 1
   end

@@ -8,8 +8,10 @@ module Homebrew
   def create
     # Allow searching MacPorts or Fink.
     if ARGV.include? "--macports"
+      opoo "`brew create --macports` is deprecated; use `brew search --macports` instead"
       exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
     elsif ARGV.include? "--fink"
+      opoo "`brew create --fink` is deprecated; use `brew search --fink` instead"
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     end
 

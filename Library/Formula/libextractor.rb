@@ -17,6 +17,8 @@ class Libextractor < Formula
   depends_on "libtool" => :run
   depends_on "iso-codes" => :optional
 
+  conflicts_with "pkcrack", :because => "both install `extract` binaries"
+
   def install
     ENV.deparallelize
 

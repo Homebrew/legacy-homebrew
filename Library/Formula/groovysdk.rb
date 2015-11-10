@@ -6,6 +6,8 @@ class Groovysdk < Formula
 
   bottle :unneeded
 
+  conflicts_with "groovy", :because => "both install the same binaries"
+
   def install
     ENV["GROOVY_HOME"] = libexec
 

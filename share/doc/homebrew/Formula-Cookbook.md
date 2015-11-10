@@ -209,9 +209,9 @@ A Hash specifies a formula dependency with some additional information. Given a 
 
 Sometimes there’s hard conflict between formulae, and it can’t be avoided or circumvented with `keg_only`.
 
-PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb) formula for minor conflict.
+`mbedtls` is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/mbedtls.rb) formula for minor conflict.
 
-PolarSSL ship and compile a "Hello World" executable. This is obviously non-essential to PolarSSL’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
+`mbedtls` ships and compiles a "Hello World" executable. This is obviously non-essential to `mbedtls`’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
 
 [pdftohtml](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/pdftohtml.rb) provides an example of a serious
 conflict, where both formula ship a identically-named binary that is essential to functionality, so a `conflicts_with` is preferable.

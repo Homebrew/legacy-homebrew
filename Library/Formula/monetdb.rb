@@ -16,13 +16,13 @@ end
 class Monetdb < Formula
   desc "Column-store database"
   homepage "https://www.monetdb.org/"
-  url "https://dev.monetdb.org/downloads/sources/Jul2015/MonetDB-11.21.5.zip"
-  sha256 "ed9f40a68a8a9af0723cde6380492cae28082c900eae06cc4d3266c15fe540ea"
+  url "https://www.monetdb.org/downloads/sources/Jul2015-SP1/MonetDB-11.21.11.zip"
+  sha256 "9ca39c4943f1667b62337d6816b100af5f02551f999c22dfd5d71a7c2773eafb"
 
   bottle do
-    sha256 "39d2fd657f2d58f3340fa2cd512cfa5cb857650ebd5209e7208a6cb7c59cec01" => :yosemite
-    sha256 "f0b1a35b03593d29a67ca788bd646a50149d4c60ab86d5622a44ff879a60f4a2" => :mavericks
-    sha256 "c5d2f28101e1d4e06b35bd56af9450b3fa76a39854e9b33572046465ed59cbcd" => :mountain_lion
+    sha256 "694824bd2c7e7a199bbff0ec2b4d8afd827339f9bcd22c17d9508dbd8e3e4c34" => :el_capitan
+    sha256 "f1cb35fa9fdd74aeeaf64fca8404ae8979496417b8ee3028b1e33e3762f0c3e0" => :yosemite
+    sha256 "735b0a0099edb416895cc5c7ba2bc265628db23a7ccd3bf44342f90a6f3cf97b" => :mavericks
   end
 
   head do

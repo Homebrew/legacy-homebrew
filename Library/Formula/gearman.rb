@@ -5,11 +5,10 @@ class Gearman < Formula
   sha256 "973d7a3523141a84c7b757c6f243febbc89a3631e919b532c056c814d8738acb"
 
   bottle do
-    revision 1
-    sha256 "8dfadc6df40598f71f14b315f8c49cb1152490bc95ce6199042ec0c829356216" => :el_capitan
-    sha256 "a3eaa2cb9241381c6679fe9f9547c0477ba0f1b860f97a405b4f4d8d8b0d7c81" => :yosemite
-    sha256 "a843fcbaf51130d36e86362fd832444de1815c1e546b3590b257eada0e6c6597" => :mavericks
-    sha256 "0637f412fcb5d0c324c9d63120bd8ea4809d826e729d1c357438c690f95ae954" => :mountain_lion
+    revision 2
+    sha256 "4977f65c0c52786302c488161a924c489974b477c53f9bd5232382aa9fce753d" => :el_capitan
+    sha256 "2e9369c68765bf5db8350a0e985ee97489c7a6920f34e85011b20a12ac8c1d49" => :yosemite
+    sha256 "3d5297489058f3817c9ac02d57dd6325db751240c030dc7ffffa4dda22af4841" => :mavericks
   end
 
   option "with-mysql", "Compile with MySQL persistent queue enabled"
@@ -29,7 +28,7 @@ class Gearman < Formula
   depends_on "hiredis" => :optional
   depends_on "libmemcached" => :optional
   depends_on "openssl" => :optional
-  depends_on "cyassl" => :optional
+  depends_on "wolfssl" => :optional
   depends_on "tokyo-cabinet" => :optional
 
   def install

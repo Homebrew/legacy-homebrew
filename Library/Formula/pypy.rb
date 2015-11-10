@@ -1,15 +1,14 @@
 class Pypy < Formula
   desc "Implementation of Python 2 in Python"
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.1-src.tar.bz2"
-  sha256 "7fddd414c9348c2f899f79ad86adc3fc2b19443855b5243f58487e1f0ac46560"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-4.0.0-src.tar.bz2"
+  sha256 "acff480e44ce92acd057f2e786775af36dc3c2cd12e9efc60a1ac6a562ad7b4d"
 
   bottle do
     cellar :any
-    sha256 "b4fba7ced042fb191f7d36b54ea6e474f53b0ca30b5dfc2c971faab0dba952a9" => :el_capitan
-    sha256 "8831be56c20ce1982359509dfc5059e0caefdd313dda5350eb13d2ea5237a973" => :yosemite
-    sha256 "6ba539560bad5331eff9172b858876e04cc2793f236e865495952aa48f921bf0" => :mavericks
-    sha256 "010f42ebb6352570c5b0268490d3cd931d0cb2f559cf59d53b7e29c29212f927" => :mountain_lion
+    sha256 "dc76aa84fb53dfa27e99d4e7b6203c88baa05728855db2d2ccbe5c1451daa65b" => :el_capitan
+    sha256 "ba316ef2f1f7471df101dc8ae86a30249931beb8c8e84ae561eb0b2f14db1d37" => :yosemite
+    sha256 "2ee52ddf499073d9591d48ab20b18ed578733415d34a5007a5fe4805ccbe9bff" => :mavericks
   end
 
   depends_on :arch => :x86_64
@@ -29,13 +28,13 @@ class Pypy < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
-    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.4.tar.gz"
+    sha256 "cdea5098e60b4ad83453d58723a61dc481ca8e2df251fe4ccbea9afa5a7d111f"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.1.tar.gz"
-    sha256 "cfec177552fdd0b2d12b72651c8e874f955b4c62c1c2c9f2588cbdc1c0d0d416"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
+    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391

@@ -4,7 +4,7 @@
 
 The preferred and supported method of installing specific versions of
 formulae is to use the
-[Homebrew-versions](https://github.com/Homebrew/homebrew-versions)
+[homebrew/versions](https://github.com/Homebrew/homebrew-versions)
 tap.  If the version you’re looking for isn’t available, consider [opening a
 pull request](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged).md)!
 
@@ -26,6 +26,15 @@ brew unlink $FORMULA
 This can be useful if a package can't build against the version of something you have linked into `/usr/local`.
 
 And of course, you can simply `brew link $FORMULA` again afterwards!
+
+## Activate a previously installed version of a formula
+
+```sh
+brew info $FORMULA
+brew switch $FORMULA $VERSION
+```
+
+Use `brew info $FORMULA` to check what versions are installed but not currently activated, then `brew switch $FORMULA $VERSION` to activate the desired version. This can be useful if you would like to switch between versions of a formula.
 
 ## Install into Homebrew without formulas
 

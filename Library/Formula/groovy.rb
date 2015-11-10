@@ -10,6 +10,8 @@ class Groovy < Formula
 
   deprecated_option "invokedynamic" => "with-invokedynamic"
 
+  conflicts_with "groovysdk", :because => "both install the same binaries"
+
   def install
     # Don't need Windows files.
     rm_f Dir["bin/*.bat"]

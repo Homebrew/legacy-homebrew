@@ -12,7 +12,10 @@ class Ilmbase < Formula
     sha256 "004459343b047ccf6e8474c37df3f20fa01d6093d68edf11aa56b11c80a4e617" => :mountain_lion
   end
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"

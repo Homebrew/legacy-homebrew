@@ -7,9 +7,10 @@ class Libcdr < Formula
 
   bottle do
     cellar :any
-    sha256 "b452336a6390e8cbfd7e87804b0420a2e9240d170e82f186c9aa826df3a301e0" => :yosemite
-    sha256 "6a86890eaf44898483b2e2bbd4e3b1fdafb8cc50ae690065593131453d6d4800" => :mavericks
-    sha256 "7152daedf07953bdd29fae52358e5259ac88e565931eb9e70edf5c924de65043" => :mountain_lion
+    revision 1
+    sha256 "ae25bf920b37198c7968453ecdf8bab7749e1498f61d25b0de6987b1c9959330" => :el_capitan
+    sha256 "4143fa583f4d466d3e7f07fd5c51f553e410dad2739a7fed6af52a82e23fdb69" => :yosemite
+    sha256 "5a4366e25d4a084f3d2a5b87f21e93fe78bf026ca6785da30cdc12435a401456" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -20,6 +21,8 @@ class Libcdr < Formula
 
   def install
     ENV.cxx11
+    # Needed for Boost 1.59.0 compatibility.
+    ENV["LDFLAGS"] = "-lboost_system-mt"
     system "./configure", "--disable-werror",
                           "--without-docs",
                           "--prefix=#{prefix}"
