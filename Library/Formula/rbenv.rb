@@ -3,8 +3,9 @@ class Rbenv < Formula
   homepage "https://github.com/sstephenson/rbenv"
   url "https://github.com/sstephenson/rbenv/archive/v0.4.0.tar.gz"
   sha256 "d40fe637cc799b828498fc5793548fab70d9e2431efc6a3d3f4a671d670fa9ff"
-
   head "https://github.com/sstephenson/rbenv.git"
+
+  bottle :unneeded
 
   depends_on "ruby-build" => :recommended
 

@@ -1,14 +1,14 @@
 class Openvdb < Formula
   desc "Sparse volume processing toolkit"
   homepage "http://www.openvdb.org/"
-  url "https://github.com/dreamworksanimation/openvdb/archive/v3.0.0.tar.gz"
-  sha256 "6c90cfda032c54876b321031717c13ea56a6b7b15c911d3edfbb2ad7af49700e"
+  url "https://github.com/dreamworksanimation/openvdb/archive/v3.1.0.tar.gz"
+  sha256 "b95a32f4f0195452a64870bda978999a719006a0c036b9ac985b466532d32d4b"
   head "https://github.com/dreamworksanimation/openvdb.git"
 
   bottle do
-    sha256 "9001f9f2bf882a7186ff6dd0e676c1947bdcfdfe0f10cd1ff21b114bcef47722" => :yosemite
-    sha256 "572cc54af2939f50de34174540d26947037b7e055e38c21d31794186f2663a3a" => :mavericks
-    sha256 "70a2321ed4e82b098b9a9befd4cc513529583881496793815089d463ee5744fd" => :mountain_lion
+    sha256 "9b309109fcb6c763c8bb423045dc89e556a22b482e6b68b48c653452d441c8c4" => :el_capitan
+    sha256 "3169dc8e3cc95e5b1f6c5049ee92bb73e5b5b88c89a97c9490db4010ad4691d1" => :yosemite
+    sha256 "6973ed7a0e226e5730101dea713a9e9e227e247c21f45a61d1906794a64a9f72" => :mavericks
   end
 
   option "with-viewer", "Installs the command-line tool to view OpenVDB files"
@@ -95,6 +95,10 @@ class Openvdb < Formula
 
     cd "openvdb" do
       system "make", "install", *args
+      if build.with? "tests"
+        system "make", "vdb_test", *args
+        bin.install "vdb_test"
+      end
     end
   end
 

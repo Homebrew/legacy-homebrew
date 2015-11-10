@@ -63,13 +63,29 @@ class SoftwareSpec
     dependency_collector.add(@resource)
   end
 
+  def bottle_unneeded?
+    !!@bottle_disable_reason && @bottle_disable_reason.unneeded?
+  end
+
+  def bottle_disabled?
+    !!@bottle_disable_reason
+  end
+
+  def bottle_disable_reason
+    @bottle_disable_reason
+  end
+
   def bottled?
     bottle_specification.tag?(bottle_tag) && \
       (bottle_specification.compatible_cellar? || ARGV.force_bottle?)
   end
 
-  def bottle(&block)
-    bottle_specification.instance_eval(&block)
+  def bottle(disable_type = nil, disable_reason = nil,  &block)
+    if disable_type
+      @bottle_disable_reason = BottleDisableReason.new(disable_type, disable_reason)
+    else
+      bottle_specification.instance_eval(&block)
+    end
   end
 
   def resource_defined?(name)

@@ -34,7 +34,7 @@ module Homebrew
         auth = :AUTH_BASIC
       end
 
-      url = new_issue(f.tap, "#{f.name} failed to build on #{MACOS_FULL_VERSION}", url, auth)
+      url = new_issue(f.tap, "#{f.name} failed to build on #{MacOS.full_version}", url, auth)
     end
 
     puts url if url

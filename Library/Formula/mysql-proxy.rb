@@ -1,6 +1,6 @@
 class MysqlProxy < Formula
   desc "Proxy for MySQL-Server"
-  homepage "http://dev.mysql.com/doc/refman/5.6/en/mysql-proxy.html"
+  homepage "https://dev.mysql.com/doc/refman/5.6/en/mysql-proxy.html"
   url "https://cdn.mysql.com/Downloads/MySQL-Proxy/mysql-proxy-0.8.5.tar.gz"
   sha256 "e5bac3df8bca2eed41cdbf09439264b34c77339cfe1eda506b0d76eaa2d2b2d5"
 

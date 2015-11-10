@@ -253,8 +253,13 @@ class Keg
     Dir["#{path}/lib/python2.7/site-packages/*.pth"].any?
   end
 
+  def apps
+    app_prefix = optlinked? ? opt_record : path
+    Pathname.glob("#{app_prefix}/{,libexec/}*.app")
+  end
+
   def app_installed?
-    Dir["#{path}/{,libexec/}*.app"].any?
+    !apps.empty?
   end
 
   def elisp_installed?

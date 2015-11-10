@@ -7,9 +7,10 @@ class Passenger < Formula
 
   bottle do
     cellar :any
-    sha256 "8a3559b46c71a6c998d81ac89b62baec7cabefbb39b21550ba0c4e4ae4bf174b" => :el_capitan
-    sha256 "503be746c0521813e11ab0533932a50c8ac6812b57b1206d959907904360d8b3" => :yosemite
-    sha256 "86d41ece182c24a5466afd481fd9a3234ecd6d4c3c90faaf38b959ebf0e807d7" => :mavericks
+    revision 1
+    sha256 "575346312a33a83eaf5f8a6af39f7b48e81a319f680b7698c2cb058d2937ff95" => :el_capitan
+    sha256 "13352bf7e81bd1b1032536704cec4359796aaa52cfa85db412b3bc3e4cc933d8" => :yosemite
+    sha256 "c7c76f1c1268cdc3378acdd8f8d83860ad02b934ec3f7e5fd9dca7c16cc1c7db" => :mavericks
   end
 
   depends_on "pcre"
@@ -21,7 +22,8 @@ class Passenger < Formula
   def install
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
-    rake "webhelper"
+
+    system("/usr/bin/ruby ./bin/passenger-config compile-nginx-engine")
 
     (libexec/"download_cache").mkpath
 

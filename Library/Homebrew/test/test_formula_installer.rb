@@ -51,4 +51,20 @@ class InstallTests < Homebrew::TestCase
       assert_equal 3, bin.children.length
     end
   end
+
+  def test_bottle_unneeded_formula_install
+    MacOS.stubs(:has_apple_developer_tools?).returns(false)
+
+    formula = Testball.new
+    formula.stubs(:bottle_unneeded?).returns(true)
+    formula.stubs(:bottle_disabled?).returns(true)
+
+    refute_predicate formula, :bottled?
+    assert_predicate formula, :bottle_unneeded?
+    assert_predicate formula, :bottle_disabled?
+
+    temporary_install(formula) do |f|
+      assert_predicate f, :installed?
+    end
+  end
 end

@@ -97,7 +97,8 @@ begin
 
   cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
 
-  sudo_check = %w[ install link pin unpin upgrade ]
+  sudo_check = %w[ install reinstall postinstall link pin unpin
+                   update upgrade create migrate tap switch ]
 
   if sudo_check.include? cmd
     if Process.uid.zero? && !File.stat(HOMEBREW_BREW_FILE).uid.zero?
@@ -106,7 +107,7 @@ begin
         You can use brew with sudo, but only if the brew executable is owned by root.
         However, this is both not recommended and completely unsupported so do so at
         your own risk.
-        EOS
+      EOS
     end
   end
 

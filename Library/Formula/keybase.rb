@@ -5,6 +5,8 @@ class Keybase < Formula
   sha256 "4290251ddf7d1f124211731aa8d0dd47f43ba9e1eb9b0b0f326d7986a3f87cb7"
   head "https://github.com/keybase/node-client.git"
 
+  bottle :unneeded
+
   depends_on "node"
   depends_on :gpg
 

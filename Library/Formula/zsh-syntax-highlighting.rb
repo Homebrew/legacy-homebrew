@@ -3,8 +3,9 @@ class ZshSyntaxHighlighting < Formula
   homepage "https://github.com/zsh-users/zsh-syntax-highlighting"
   url "https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.2.1.tar.gz"
   sha256 "3cdf47ee613ff748230e9666c0122eca22dc05352f266fe640019c982f3ef6db"
-
   head "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+
+  bottle :unneeded
 
   def install
     (share/"zsh-syntax-highlighting").install Dir["*"]

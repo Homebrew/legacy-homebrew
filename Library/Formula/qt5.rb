@@ -15,48 +15,17 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
-  revision 1
 
   stable do
-    url "https://download.qt.io/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
-    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.0/single/qt-everywhere-opensource-src-5.5.0.tar.xz"
-    sha256 "7ea2a16ecb8088e67db86b0835b887d5316121aeef9565d5d19be3d539a2c2af"
-
-    # Apple's 3.6.0svn based clang doesn't support -Winconsistent-missing-override
-    # https://bugreports.qt.io/browse/QTBUG-46833
-    # This is fixed in 5.5 branch and below patch should be removed
-    # when this formula is updated to 5.5.1
-    patch :DATA
-
-    # Build error: Fix build with clang 3.7.
-    # https://codereview.qt-project.org/#/c/121545/
-    # Should land in the 5.5.1 release.
-    patch do
-      url "https://raw.githubusercontent.com/DomT4/scripts/2107043e8/Homebrew_Resources/Qt5/qt5_el_capitan.diff"
-      sha256 "bd8fd054247ec730f60778e210d58cba613265e5df04ec93f4110421fb03b14a"
-    end
+    url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
+    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
+    sha256 "6f028e63d4992be2b4a5526f2ef3bfa2fe28c5c757554b11d9e8d86189652518"
 
     # Build error: Fix library paths with Xcode 7 for QtWebEngine.
     # https://codereview.qt-project.org/#/c/122729/
     patch do
       url "https://raw.githubusercontent.com/Homebrew/patches/2fcc1f8ec1df1c90785f4fa6632cebac68772fa9/qt5/el-capitan-2.diff"
       sha256 "b8f04efd047eeed7cfd15b029ece20b5fe3c0960b74f7a5cb98bd36475463227"
-    end
-
-    # Build error: Fix CGEventCreateMouseEvent use with 10.11 SDK.
-    # https://codereview.qt-project.org/#/c/115138/
-    # Should land in the 5.5.1 release.
-    patch do
-      url "https://gist.githubusercontent.com/UniqMartin/baf089e326f572150971/raw/1de52d53929bc3472cc7f345c16f068c37c75263/qtbug-47641.patch"
-      sha256 "c74c73b2d540788f0be2f1f137d0844feca8f5022a044851366380bf2972ead0"
-    end
-
-    # Runtime error: Make tooltips transparent for mouse events.
-    # https://codereview.qt-project.org/#/c/124274/
-    # Should land in the 5.5.1 release.
-    patch do
-      url "https://gist.githubusercontent.com/swallat/6b7d10fd929a0087fea4/raw/9b201a2848f8b8e16067855f30588a7b6dc607ec/qt5.5-qnsview-tooltip-cocoa.patch"
-      sha256 "5fa4511ee0c91491358d569f884dad9e4088eafa329e7dbe2b38a62afeef899d"
     end
 
     # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
@@ -69,19 +38,20 @@ class Qt5 < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "587d272ec5ebb3265e43f51a71f57ad36b3a0809775370b80e9c6f69c7fc8733" => :el_capitan
-    sha256 "c195539679685c0349e2a31b9be19561b44dde97490a361e5dd3b3c129a81370" => :yosemite
-    sha256 "c2d85c78b20b0bc60b3118b112a997890e9dba1aa76e38fb0755e2ec93fc252d" => :mavericks
+    sha256 "ea7a6528da501b0d51b50f1ca246d9054727d31dcc2875b1b1ab651ffd5034c3" => :el_capitan
+    sha256 "22488cddd5e6c0ba017b3d4809c44a94e8fb0956876c6a391edb368f4137abe1" => :yosemite
+    sha256 "d5a45faaf3a7b6e40bf202d9ab796ca57008964dbbf78ea2bb9d5dea9f0f6fa8" => :mavericks
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
-  option :universal
   option "with-docs", "Build documentation"
   option "with-examples", "Build examples"
   option "with-developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
+
+  option "without-webengine", "Build without QtWebEngine module"
+  option "without-webkit", "Build without QtWebKit module"
 
   deprecated_option "developer" => "with-developer"
   deprecated_option "qtdbus" => "with-d-bus"
@@ -89,7 +59,6 @@ class Qt5 < Formula
   # Snow Leopard is untested and support has been removed in 5.4
   # https://qt.gitorious.org/qt/qtbase/commit/5be81925d7be19dd0f1022c3cfaa9c88624b1f08
   depends_on :macos => :lion
-  depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on :mysql => :optional
   depends_on :xcode => :build
@@ -97,14 +66,17 @@ class Qt5 < Formula
   depends_on OracleHomeVarRequirement if build.with? "oci"
 
   def install
-    ENV.universal_binary if build.universal?
-
-    args = ["-prefix", prefix,
-            "-system-zlib", "-securetransport",
-            "-qt-libpng", "-qt-libjpeg",
-            "-no-rpath", "-no-openssl",
-            "-confirm-license", "-opensource",
-            "-nomake", "tests", "-release"]
+    args = %W[
+      -prefix #{prefix}
+      -release
+      -opensource -confirm-license
+      -system-zlib
+      -qt-libpng
+      -qt-libjpeg
+      -no-openssl -securetransport
+      -nomake tests
+      -no-rpath
+    ]
 
     args << "-nomake" << "examples" if build.without? "examples"
 
@@ -117,14 +89,8 @@ class Qt5 < Formula
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
       args << "-dbus-linked"
-    end
-
-    if MacOS.prefer_64_bit? || build.universal?
-      args << "-arch" << "x86_64"
-    end
-
-    if !MacOS.prefer_64_bit? || build.universal?
-      args << "-arch" << "x86"
+    else
+      args << "-no-dbus"
     end
 
     if build.with? "oci"
@@ -132,6 +98,9 @@ class Qt5 < Formula
       args << "-L#{ENV["ORACLE_HOME"]}"
       args << "-plugin-sql-oci"
     end
+
+    args << "-skip" << "qtwebengine" if build.without? "webengine"
+    args << "-skip" << "qtwebkit" if build.without? "webkit"
 
     args << "-developer-build" if build.with? "developer"
 
@@ -199,18 +168,3 @@ class Qt5 < Formula
     system "./hello"
   end
 end
-
-__END__
-diff --git a/qtbase/src/corelib/global/qcompilerdetection.h b/qtbase/src/corelib/global/qcompilerdetection.h
-index 7ff1b67..060af29 100644
---- a/qtbase/src/corelib/global/qcompilerdetection.h
-+++ b/qtbase/src/corelib/global/qcompilerdetection.h
-@@ -155,7 +155,7 @@
- /* Clang also masquerades as GCC */
- #    if defined(__apple_build_version__)
- #      /* http://en.wikipedia.org/wiki/Xcode#Toolchain_Versions */
--#      if __apple_build_version__ >= 6020049
-+#      if __apple_build_version__ >= 7000053
- #        define Q_CC_CLANG 306
- #      elif __apple_build_version__ >= 6000051
- #        define Q_CC_CLANG 305

@@ -1,6 +1,6 @@
 class Opus < Formula
   desc "Audio codec"
-  homepage "http://www.opus-codec.org"
+  homepage "https://www.opus-codec.org"
   url "http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz"
   sha256 "b9727015a58affcf3db527322bf8c4d2fcf39f5f6b8f15dbceca20206cbe1d95"
 

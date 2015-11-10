@@ -5,9 +5,9 @@ class Golo < Formula
   sha256 "59c7324b7eac88dfe2cb9612468cf5639ae0b84e44319b2ee617e0e054eed422"
 
   devel do
-    url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation-M2.zip&r=1"
-    sha256 "d7e6aaca40a07cb8dc4574edf004199ea75543c5fa7888fe769969678fabdc58"
-    version "3.0.0-incubation-M2"
+    url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation-M3.zip&r=1"
+    sha256 "70a1dbb24901e30b3a75f312be25afc1c4cfe8d69ca9e251153e93491adbd880"
+    version "3.0.0-incubation-M3"
     depends_on :java => "1.8+"
   end
 

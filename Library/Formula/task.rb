@@ -1,9 +1,18 @@
 class Task < Formula
   desc "Feature-rich console based todo list manager"
   homepage "https://www.taskwarrior.org/"
-  url "https://taskwarrior.org/download/task-2.4.4.tar.gz"
-  sha256 "7ff406414e0be480f91981831507ac255297aab33d8246f98dbfd2b1b2df8e3b"
-  head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.4.5", :shallow => false
+  stable do
+    url "https://taskwarrior.org/download/task-2.4.4.tar.gz"
+    sha256 "7ff406414e0be480f91981831507ac255297aab33d8246f98dbfd2b1b2df8e3b"
+
+    depends_on "gnutls" => :optional
+  end
+
+  head do
+    url "https://git.tasktools.org/scm/tm/task.git", :branch => "2.5.0", :shallow => false
+
+    depends_on "gnutls"
+  end
 
   bottle do
     revision 1

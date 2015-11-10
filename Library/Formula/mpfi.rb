@@ -1,6 +1,6 @@
 class Mpfi < Formula
   desc "Multiple precision interval arithmetic library"
-  homepage "http://perso.ens-lyon.fr/nathalie.revol/software.html"
+  homepage "https://perso.ens-lyon.fr/nathalie.revol/software.html"
   url "https://gforge.inria.fr/frs/download.php/30130/mpfi-1.5.1.tar.gz"
   sha256 "ea2725c6f38ddd8f3677c9b0ce8da8f52fe69e34aa85c01fb98074dc4e3458bc"
 

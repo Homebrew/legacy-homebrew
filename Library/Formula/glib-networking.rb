@@ -1,14 +1,14 @@
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://launchpad.net/glib-networking"
-  url "https://download.gnome.org/sources/glib-networking/2.46/glib-networking-2.46.0.tar.xz"
-  sha256 "3655526d6dbfc697c22cd9b279e14599f8449f5802b12d84485bdc52d96482f0"
+  url "https://download.gnome.org/sources/glib-networking/2.46/glib-networking-2.46.1.tar.xz"
+  sha256 "d5034214217f705891b6c9e719cc2c583c870bfcfdc454ebbb5e5e8940ac90b1"
 
   bottle do
     cellar :any
-    sha256 "3c1b629da76dcdb2f6525fe68849f63afc822e772b86170c1b9af84ad6c1df3d" => :el_capitan
-    sha256 "9912eeb2398fedbe1339ab96880af9925cefa8f9de43c6bc503fbc3e569b8d72" => :yosemite
-    sha256 "a1d967fe99e015e6463e2079a26cbe26405f531076dceebb95593f4530701c79" => :mavericks
+    sha256 "019a74e4cf9d8479d2379ac3d2833150bca7d30fdc662df0046c05ca739c0503" => :el_capitan
+    sha256 "35da1bacbc373d4430dccf0cba27cc84eebc69b6710b36efc63f236c61e09481" => :yosemite
+    sha256 "ab88b21eb30c66be5ba5c7ae77e991849e5370e395f85d2bd0824e78704efede" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -61,7 +61,7 @@ class GlibNetworking < Formula
       "-I#{HOMEBREW_PREFIX}/opt/gettext/include",
       "-L#{HOMEBREW_PREFIX}/lib",
       "-L#{HOMEBREW_PREFIX}/opt/gettext/lib",
-      "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl"
+      "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl",
     ]
 
     system ENV.cc, "gtls-test.c", "-o", "gtls-test", *flags

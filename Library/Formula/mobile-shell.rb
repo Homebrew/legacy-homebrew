@@ -1,8 +1,15 @@
 class MobileShell < Formula
   desc "Remote terminal application"
   homepage "https://mosh.mit.edu/"
-  url "https://mosh.mit.edu/mosh-1.2.5.tar.gz"
-  sha256 "1af809e5d747c333a852fbf7acdbf4d354dc4bbc2839e3afe5cf798190074be3"
+
+  stable do
+    url "https://mosh.mit.edu/mosh-1.2.5.tar.gz"
+    sha256 "1af809e5d747c333a852fbf7acdbf4d354dc4bbc2839e3afe5cf798190074be3"
+
+    # Upstream switched to defaulting to CommonCrypto as of
+    # https://github.com/mobile-shell/mosh/commit/0eb614809a7ea
+    depends_on "openssl"
+  end
 
   bottle do
     sha256 "046b0c48cd1c573d57500e683122e3152a00556ad960938c6caa962b0c2ef460" => :el_capitan
@@ -21,7 +28,6 @@ class MobileShell < Formula
   option "without-check", "Run build-time tests"
 
   depends_on "pkg-config" => :build
-  depends_on "openssl"
   depends_on "protobuf"
 
   def install

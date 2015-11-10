@@ -1,5 +1,3 @@
-require "formula"
-
 class Cronolog < Formula
   desc "Web log rotation"
   homepage "https://web.archive.org/web/20140209202032/http://cronolog.org/"
@@ -7,10 +5,11 @@ class Cronolog < Formula
   sha256 "65e91607643e5aa5b336f17636fa474eb6669acc89288e72feb2f54a27edb88e"
 
   bottle do
-    cellar :any
-    sha256 "0a229d22fc4a3904d379178bc48ed1c1ab1a7ddc2668bb829be35d37ed145871" => :yosemite
-    sha256 "36e3687b4a057e474f8fe9f03741e41757ed4c7e5e59f65bb547abaf8b4c77eb" => :mavericks
-    sha256 "298aa5f354a548972161038371eba48204d6785e67ea16d301f5214ba67c3d5f" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "964df15660a5c0ec25bedec56aeb128ae93794a8ad721c1c600e377df9be1c2d" => :el_capitan
+    sha256 "f3f485105f7466422a507bafef3acfd741f18b8ab26438c267d10dbf4701282e" => :yosemite
+    sha256 "288bcd1671de08659b7d2f67141aa5178d797870597837c569dccfaae460afd8" => :mavericks
   end
 
   def install
@@ -18,6 +17,6 @@ class Cronolog < Formula
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--infodir=#{info}"
-    system "make install"
+    system "make", "install"
   end
 end

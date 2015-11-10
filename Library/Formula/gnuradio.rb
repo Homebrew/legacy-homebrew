@@ -49,8 +49,8 @@ class Gnuradio < Formula
   depends_on "portaudio" => :recommended
 
   resource "numpy" do
-    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.10.0b1/numpy-1.10.0b1.tar.gz"
-    sha256 "855695405092686264dc8ce7b3f5c939a6cf1a5639833e841a5bb6fb799cd6a8"
+    url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.1.tar.gz"
+    sha256 "8b9f453f29ce96a14e625100d3dcf8926301d36c5f622623bf8820e748510858"
   end
 
   # cheetah starts here

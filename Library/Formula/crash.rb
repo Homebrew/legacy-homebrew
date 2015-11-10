@@ -1,7 +1,7 @@
 class Crash < Formula
   desc "Kernel debugging shell for Java that allows gdb-like syntax"
   homepage "http://www.crashub.org/"
-  url "http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.1/crash.distrib-1.3.1.tar.gz"
+  url "https://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.1/crash.distrib-1.3.1.tar.gz"
   sha256 "d79f1cda660c0086c353b7a11bccf98c4c6c4f2026d80916dd896fd914b177e4"
 
   resource "docs" do

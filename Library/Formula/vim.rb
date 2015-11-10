@@ -2,8 +2,8 @@ class Vim < Formula
   desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
   # *** Vim should be updated no more than once every 7 days ***
-  url "https://github.com/vim/vim/archive/v7.4.891.tar.gz"
-  sha256 "d9c0689cd3efb10ffc00b7f6b05304ee54be6bbbae85d882e0bce69b11aec523"
+  url "https://github.com/vim/vim/archive/v7.4.898.tar.gz"
+  sha256 "ae34137a48fd1ee58a596f18c9975d7d5927bf96fd0f746c2051ca29d21ea24e"
   head "https://github.com/vim/vim.git"
 
   # We only have special support for finding depends_on :python, but not yet for

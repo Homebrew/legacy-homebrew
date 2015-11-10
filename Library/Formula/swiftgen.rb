@@ -1,14 +1,14 @@
 class Swiftgen < Formula
   desc "Collection of Swift tools to generate Swift code"
   homepage "https://github.com/AliSoftware/SwiftGen"
-  url "https://github.com/AliSoftware/SwiftGen/archive/0.5.0.tar.gz"
-  sha256 "555f190f2ffef940eebd80a926eeb05d3d0de573412028c5bd2184e2b9542929"
+  url "https://github.com/AliSoftware/SwiftGen/archive/0.5.1.tar.gz"
+  sha256 "629b455724ec47cb7d1277a20bf7dcac997e04b3b2db30213ed17aecce647fed"
   head "https://github.com/AliSoftware/SwiftGen.git"
 
   bottle do
     cellar :any
-    sha256 "29391f183e1606e50008ad148b3665d240c28ab5cbd42a293d1ca99b29aa3793" => :el_capitan
-    sha256 "c150775bf2f6b8e77a821eae7bd89233a134eb22ce5eed88de9eaf2822dd79ee" => :yosemite
+    sha256 "a31e202bac1abae4e8a4b756be92eb106df9061263c22babad469825f4bb388c" => :el_capitan
+    sha256 "b045bb9aedb8affb1be853b484c48e1aa47be99e2accb8a65006b15ea96208d1" => :yosemite
   end
 
   depends_on :xcode => "7.0"
@@ -30,7 +30,7 @@ class Swiftgen < Formula
   end
 
   test do
-    system "#{bin}/swiftgen --version"
+    system bin/"swiftgen", "--version"
 
     output = shell_output("#{bin}/swiftgen images #{pkgshare}/Images.xcassets").strip
     assert_equal output, (pkgshare/"Images-File-Defaults.swift.out").read.strip, "swiftgen images failed"
