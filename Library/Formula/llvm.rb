@@ -1,3 +1,4 @@
+#test version to install llvm 3.7
 class CodesignRequirement < Requirement
   include FileUtils
   fatal true
@@ -17,37 +18,37 @@ class CodesignRequirement < Requirement
   end
 end
 
-class Llvm < Formula
+class Llvm37 < Formula
   desc "llvm (Low Level Virtual Machine): a next-gen compiler infrastructure"
   homepage "http://llvm.org/"
 
   stable do
-    url "http://llvm.org/releases/3.6.2/llvm-3.6.2.src.tar.xz"
-    sha256 "f60dc158bfda6822de167e87275848969f0558b3134892ff54fced87e4667b94"
+    url "http://llvm.org/releases/3.7.0/llvm-3.7.0.src.tar.xz"
+    sha256 "ab45895f9dcdad1e140a3a79fd709f64b05ad7364e308c0e582c5b02e9cc3153"
 
     resource "clang" do
-      url "http://llvm.org/releases/3.6.2/cfe-3.6.2.src.tar.xz"
-      sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
+      url "http://llvm.org/releases/3.7.0/cfe-3.7.0.src.tar.xz"
+      sha256 "4ed740c5a91df1c90a4118c5154851d6a475f39a91346bdf268c1c29c13aa1cc"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.7.0/libcxx-3.7.0.src.tar.xz"
+      sha256 "c18f3c8333cd7e678c1424a57fe5e25efe740ca7caf62ac67152b4723f3ad08e"
     end
 
     resource "lld" do
-      url "http://llvm.org/releases/3.6.2/lld-3.6.2.src.tar.xz"
-      sha256 "43f553c115563600577764262f1f2fac3740f0c639750f81e125963c90030b33"
+      url "http://llvm.org/releases/3.7.0/lld-3.7.0.src.tar.xz"
+      sha256 "ddb658b789c501efbe4f54ff8ced2c07cd9ff686c92445d8a1ab2cd5dbd837ed"
     end
 
     resource "lldb" do
-      url "http://llvm.org/releases/3.6.2/lldb-3.6.2.src.tar.xz"
-      sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
+      url "http://llvm.org/releases/3.7.0/lldb-3.7.0.src.tar.xz"
+      sha256 "f4d7505bc111044eaa4033af012221e492938405b62522b8e3e354c20c4b71e9"
     end
 
     resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
-      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+      url "http://llvm.org/releases/3.7.0/clang-tools-extra-3.7.0.src.tar.xz"
+      sha256 "8ae8a0a3a96b7a700412d67df0af172cb2fc1326beec575fcc0f71d2e72709cd"
     end
   end
 
