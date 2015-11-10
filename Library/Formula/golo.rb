@@ -8,6 +8,8 @@ class Golo < Formula
     url "https://github.com/eclipse/golo-lang.git"
   end
 
+  bottle :unneeded
+
   depends_on :java => "1.8+"
 
   def install
