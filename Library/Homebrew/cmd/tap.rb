@@ -14,9 +14,11 @@ module Homebrew
     else
       user, repo = tap_args
       tap = Tap.fetch(user, repo)
-      unless tap.installed?
+      begin
         tap.install(:clone_target => ARGV.named[1],
                     :full_clone   => ARGV.include?("--full"))
+      rescue TapAlreadyTappedError => e
+        opoo e
       end
     end
   end
