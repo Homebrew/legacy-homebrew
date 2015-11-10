@@ -4,14 +4,14 @@ class KubernetesCli < Formula
   head "https://github.com/kubernetes/kubernetes.git"
 
   stable do
-    url "https://github.com/kubernetes/kubernetes/archive/v1.0.7.tar.gz"
-    sha256 "4136d0ddbde0de77cbdee265ce1f73e22eff1ec31dde62a5093f9944230eb861"
+    url "https://github.com/kubernetes/kubernetes/archive/v1.1.1.tar.gz"
+    sha256 "9b293a37a4782b1906f3f6e0412a064e15a0d55113c6c20ee035edd06e5579fb"
   end
 
   devel do
-    url "https://github.com/kubernetes/kubernetes/archive/v1.1.1-beta.1.tar.gz"
-    sha256 "014cc51218bffba0d58be208e206fcdf2bcf391dd418d572d476f44a89f5ef5f"
-    version "1.1.1-beta.1"
+    url "https://github.com/kubernetes/kubernetes/archive/v1.2.0-alpha.3.tar.gz"
+    sha256 "57dae812e9ab46e4bca6fa42b563461b69580247cad142b47a33bf57da44e803"
+    version "1.2.0-alpha.3"
   end
 
   bottle do
