@@ -18,7 +18,7 @@ class CodesignRequirement < Requirement
   end
 end
 
-class Llvm37 < Formula
+class Llvm < Formula
   desc "llvm (Low Level Virtual Machine): a next-gen compiler infrastructure"
   homepage "http://llvm.org/"
 
