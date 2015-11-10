@@ -17,6 +17,20 @@ fi
 
 BREW_LIBRARY_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
 
+# Debian style /etc/default management
+# This allows to have configuration variables such as
+# HOMEBREW_GITHUB_API_TOKEN not exposed to other processes
+if [ -n "$BREW_SYMLINK" ]
+then
+    BREW_DEFAULT_CONFIG=$BREW_FILE_DIRECTORY/../etc/default/${BREW_SYMLINK##*/}
+else
+    BREW_DEFAULT_CONFIG=$BREW_FILE_DIRECTORY/../etc/default/${0##*/}
+fi
+if [ -f $BREW_DEFAULT_CONFIG ]
+then
+    source $BREW_DEFAULT_CONFIG
+fi
+
 # Users may have these set, pointing the system Ruby
 # at non-system gem paths
 unset GEM_HOME
