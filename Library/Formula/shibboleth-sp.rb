@@ -40,11 +40,6 @@ class ShibbolethSp < Formula
     ]
     args << "--with-xmltooling=#{Formula["xml-tooling-c"].opt_prefix}"
     args << "--with-saml=#{Formula["opensaml"].opt_prefix}"
-    args << "--with-boost=#{Formula["boost"].opt_prefix}"
-    args << "--with-xerces=#{Formula["xerces-c"].opt_prefix}"
-    args << "--with-xmlsec=#{Formula["xml-security-c"].opt_prefix}"
-    args << "LDFLAGS=-L#{Formula["curl"].opt_prefix}/curl/lib"
-    args << "CPPFLAGS=-I#{Formula["curl"].opt_prefix}/curl/include"
     args << "DYLD_LIBRARY_PATH=#{lib}"
     if build.with? "homebrew-httpd22"
       args << "--enable-apache-22"
