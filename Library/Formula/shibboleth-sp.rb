@@ -35,9 +35,9 @@ class ShibbolethSp < Formula
     args << "--with-xmltooling=#{Formula["xml-tooling-c"].opt_prefix}"
     args << "--with-saml=#{Formula["opensaml"].opt_prefix}"
     args << "DYLD_LIBRARY_PATH=#{lib}"
-    if build.with? "homebrew-httpd22"
+    if build.with? "httpd22"
       args << "--enable-apache-22"
-    elsif build.with? "homebrew-httpd24"
+    elsif build.with? "httpd24"
       args << "--enable-apache-24"
     end
     system "./configure", *args
@@ -73,7 +73,7 @@ class ShibbolethSp < Formula
     s += <<-EOS.undent
       You must manually edit #{apache_configdir}/httpd.conf to include
     EOS
-    if build.with? "homebrew-httpd22"
+    if build.with? "httpd22"
       mod = "mod_shib_22.so"
     else
       mod = "mod_shib_24.so"
