@@ -8,9 +8,10 @@ class Boost < Formula
 
   bottle do
     cellar :any
-    sha256 "3de506a451ec8dcd4db992ac20f49575458dba2f8b4934389257e925f2eeefae" => :el_capitan
-    sha256 "edf46e1ab66ad2ad9862099d69f445f63d623d91a3de27cc5c21732c56bc17b6" => :yosemite
-    sha256 "01e10a3b17cf7302773be3baf4477ca7570c1530c8924d9203d63815bd257a40" => :mavericks
+    revision 1
+    sha256 "1e664fbdfe84de7bdc91154972073587856b47c12433106e9987fa3772534b3a" => :el_capitan
+    sha256 "b828f7f58d21ba4850507e4d5b7d44dae89649c3b8e0af758b746e8b3f17d8c1" => :yosemite
+    sha256 "a404a68cdd9a107b38b0467226e4077aa14d1b858b4931e9fa6a4c100092ea73" => :mavericks
   end
 
   env :userpaths
@@ -40,6 +41,13 @@ class Boost < Formula
     patch do
       url "https://gist.githubusercontent.com/tdsmith/bc76ddea1e2bdb2a3a18/raw/03d125b12a4b03c28ee011a2d6d42a8137061a3b/boost-log.patch"
       sha256 "a49fd7461d9f3b478d2bddac19adca93fe0fabab71ee67e8f140cbd7d42d6870"
+    end
+
+    # Fixed missing symbols in libboost_log_setup (on mac/clang)
+    # from https://github.com/boostorg/log/commit/870284ed31792708a6139925d00a0aadf46bf09f
+    patch do
+      url "https://gist.githubusercontent.com/autosquid/a4974e112b754e03aad7/raw/985358f8909033eb7ad9aae8fbf60881ef70a275/boost-log_setup.patch"
+      sha256 "2c3a3bae1691df5f8fce8fbd4e5727d57bd4dd813748b70d7471c855c4f19d1c"
     end
   end
 

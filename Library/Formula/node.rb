@@ -23,12 +23,13 @@ class Node < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl" => :optional
 
-  fails_with :llvm do
-    build 2326
-  end
-
-  fails_with :gcc do
-    cause "unrecognized command line option '-std=gnu++0x'"
+  # Per upstream - "Need g++ 4.8 or clang++ 3.4".
+  fails_with :clang if MacOS.version <= :snow_leopard
+  fails_with :llvm
+  fails_with :gcc_4_0
+  fails_with :gcc
+  ("4.3".."4.7").each do |n|
+    fails_with :gcc => n
   end
 
   resource "npm" do

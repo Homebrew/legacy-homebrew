@@ -3,14 +3,14 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.7.0.tar.gz"
-  sha256 "d7b3ef52ffb44aa2430e32dc9abe9c90af7001a51176a3ff909ad0e5fdc1195b"
+  url "https://github.com/Masterminds/glide/archive/0.7.1.tar.gz"
+  sha256 "a02bb93793b86e6d31d955b4fb1adf0f3a6192d854abca87dc1816055121040f"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c445743b3969efa941c08e46e2d74f69b74a29e8fac3ee79d232a43bdbe0c7fd" => :el_capitan
-    sha256 "b7ce69bdcdd4ba73c7569bc67b39ebdc856f1aaaa06324896f4cc6e356269301" => :yosemite
-    sha256 "5f28acc5f8aba8d90d17e4b71cf8305362c1c647abf89bffbe37d4079b62eff2" => :mavericks
+    sha256 "e3f860f015af9d9316996115bab0dbd50b9c9296f115081c4c22efd944030a73" => :el_capitan
+    sha256 "c31de6ad1a850608f6928f6ccfc5a5e945665e4d6c8a496ce9640e9b9a32ce7e" => :yosemite
+    sha256 "c20c9fad8e994909ff3ea2b40767d1f8680b18d08b6ea648b56d4886b93340e6" => :mavericks
   end
 
   depends_on "go" => :build
@@ -22,12 +22,12 @@ class Glide < Formula
 
   go_resource "github.com/Masterminds/cookoo" do
     url "https://github.com/Masterminds/cookoo.git",
-      :revision => "043bf3d5fe7ee75f4831986ce3e2108d24fbeda4"
+      :revision => "78aa11ce75e257c51be7ea945edb84cf19c4a6de"
   end
 
   go_resource "github.com/Masterminds/vcs" do
     url "https://github.com/Masterminds/vcs.git",
-      :revision => "2cb908fb4479bec8ed4fb8b6e719207fcf11d97e"
+      :revision => "eaee272c8fa4514e1572e182faecff5be20e792a"
   end
 
   go_resource "github.com/codegangsta/cli" do
@@ -46,12 +46,12 @@ class Glide < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.7.0", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.7.1", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
     bin.install "glide"
   end
 
   test do
     version = pipe_output("#{bin}/glide --version")
-    assert_match /0.7.0/, version
+    assert_match /0.7.1/, version
   end
 end

@@ -119,6 +119,18 @@ class TapUnavailableError < RuntimeError
   end
 end
 
+class TapAlreadyTappedError < RuntimeError
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+
+    super <<-EOS.undent
+      Tap #{name} already tapped.
+    EOS
+  end
+end
+
 class TapPinStatusError < RuntimeError
   attr_reader :name, :pinned
 

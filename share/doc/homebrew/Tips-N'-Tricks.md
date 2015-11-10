@@ -27,6 +27,15 @@ This can be useful if a package can't build against the version of something you
 
 And of course, you can simply `brew link $FORMULA` again afterwards!
 
+## Activate a previously installed version of a formula
+
+```sh
+brew info $FORMULA
+brew switch $FORMULA $VERSION
+```
+
+Use `brew info $FORMULA` to check what versions are installed but not currently activated, then `brew switch $FORMULA $VERSION` to activate the desired version. This can be useful if you would like to switch between versions of a formula.
+
 ## Install into Homebrew without formulas
 
 ```sh

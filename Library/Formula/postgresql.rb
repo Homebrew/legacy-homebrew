@@ -1,10 +1,17 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
+  revision 2
 
   stable do
     url "https://ftp.postgresql.org/pub/source/v9.4.5/postgresql-9.4.5.tar.bz2"
     sha256 "b87c50c66b6ea42a9712b5f6284794fabad0616e6ae420cf0f10523be6d94a39"
+  end
+
+  bottle do
+    sha256 "b57a3b65cd90917273d754f2625a83e69eac78aeff5b79573f8ac9811bdf643c" => :el_capitan
+    sha256 "6b26ad24a228620e16d7f81b4f3bd183a80e1c2f02b8505a1a6b71356eec53a4" => :yosemite
+    sha256 "a6a49e234543bb7c4fb33b64dd14b48da5b8373fb2110d62e82d7129997f4926" => :mavericks
   end
 
   devel do
@@ -13,17 +20,10 @@ class Postgresql < Formula
     version "9.5beta1"
   end
 
-  bottle do
-    sha256 "57294da21442db822bf719143880000c9a90656188dcf580fafcb6b4e4350f9e" => :el_capitan
-    sha256 "02a136458ee09cc7fdb731c023948359dafa5665b56179744985864492adacd4" => :yosemite
-    sha256 "13f6fec00aa8b4938a2858bdcda390460d21bb71d16fc0827bf8446071c60f47" => :mavericks
-  end
-
   option "32-bit"
   option "without-perl", "Build without Perl support"
   option "without-tcl", "Build without Tcl support"
   option "with-dtrace", "Build with DTrace support"
-  option "with-pgroonga", "Build with the PGroonga postgresql extension"
 
   deprecated_option "no-perl" => "without-perl"
   deprecated_option "no-tcl" => "without-tcl"
@@ -33,16 +33,6 @@ class Postgresql < Formula
   depends_on "readline"
   depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on :python => :optional
-
-  if build.with? "pgroonga"
-    depends_on "groonga" => :build
-    depends_on "pkg-config" => :build
-  end
-
-  resource "pgroonga" do
-    url "http://packages.groonga.org/source/pgroonga/pgroonga-1.0.0.tar.gz"
-    sha256 "854d66bdc79e7cfceb29ae8706556a3ad1c8b32ac4535939d296966e3b19fd3e"
-  end
 
   conflicts_with "postgres-xc",
     :because => "postgresql and postgres-xc install the same binaries."
@@ -55,13 +45,15 @@ class Postgresql < Formula
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
 
-    ENV.prepend "LDFLAGS", "-L#{Formula["openssl"].opt_lib}"
-    ENV.prepend "CPPLAGS", "-I#{Formula["openssl"].opt_include}"
+    ENV.prepend "LDFLAGS", "-L#{Formula["openssl"].opt_lib} -L#{Formula["readline"].opt_lib}"
+    ENV.prepend "CPPLAGS", "-I#{Formula["openssl"].opt_include} -I#{Formula["readline"].opt_include}"
 
     args = %W[
       --disable-debug
       --prefix=#{prefix}
-      --datadir=#{share}/#{name}
+      --datadir=#{HOMEBREW_PREFIX}/share/postgresql
+      --libdir=#{HOMEBREW_PREFIX}/lib
+      --sysconfdir=#{etc}
       --docdir=#{doc}
       --enable-thread-safety
       --with-bonjour
@@ -94,15 +86,10 @@ class Postgresql < Formula
     end
 
     system "./configure", *args
-    system "make", "install-world"
-
-    if build.with? "pgroonga"
-      resource("pgroonga").stage do
-        ENV.append_path "PATH", bin
-        system "make"
-        system "make", "install"
-      end
-    end
+    system "make"
+    system "make", "install-world", "datadir=#{pkgshare}",
+                                    "libdir=#{lib}",
+                                    "pkglibdir=#{lib}/postgresql"
   end
 
   def post_install
@@ -153,5 +140,8 @@ class Postgresql < Formula
 
   test do
     system "#{bin}/initdb", testpath/"test"
+    assert_equal "#{HOMEBREW_PREFIX}/share/postgresql", shell_output("#{bin}/pg_config --sharedir").chomp
+    assert_equal "#{HOMEBREW_PREFIX}/lib", shell_output("#{bin}/pg_config --libdir").chomp
+    assert_equal "#{HOMEBREW_PREFIX}/lib/postgresql", shell_output("#{bin}/pg_config --pkglibdir").chomp
   end
 end

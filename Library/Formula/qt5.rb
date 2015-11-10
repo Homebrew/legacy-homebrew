@@ -15,17 +15,18 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  revision 1
 
   stable do
     url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
     mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
     sha256 "6f028e63d4992be2b4a5526f2ef3bfa2fe28c5c757554b11d9e8d86189652518"
 
-    # Build error: Fix library paths with Xcode 7 for QtWebEngine.
-    # https://codereview.qt-project.org/#/c/122729/
+    # Build error: Fix library detection for QtWebEngine with Xcode 7.
+    # https://codereview.qt-project.org/#/c/127759/
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/patches/2fcc1f8ec1df1c90785f4fa6632cebac68772fa9/qt5/el-capitan-2.diff"
-      sha256 "b8f04efd047eeed7cfd15b029ece20b5fe3c0960b74f7a5cb98bd36475463227"
+      url "https://raw.githubusercontent.com/UniqMartin/patches/557a8bd4/qt5/webengine-xcode7.patch"
+      sha256 "7bd46f8729fa2c20bc486ddc5586213ccf2fb9d307b3d4e82daa78a2553f59bc"
     end
 
     # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
@@ -35,25 +36,30 @@ class Qt5 < Formula
       url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
       sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
     end
+
+    # Build issue: Fix install names with `-no-rpath` to be absolute paths.
+    # https://codereview.qt-project.org/#/c/138349
+    patch do
+      url "https://raw.githubusercontent.com/UniqMartin/patches/77d138fa/qt5/osx-no-rpath.patch"
+      sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
+    end
   end
 
   bottle do
-    sha256 "ea7a6528da501b0d51b50f1ca246d9054727d31dcc2875b1b1ab651ffd5034c3" => :el_capitan
-    sha256 "22488cddd5e6c0ba017b3d4809c44a94e8fb0956876c6a391edb368f4137abe1" => :yosemite
-    sha256 "d5a45faaf3a7b6e40bf202d9ab796ca57008964dbbf78ea2bb9d5dea9f0f6fa8" => :mavericks
+    sha256 "9286d3a2402f77d5f645801b66dff78d5adf8e96654991340b4412c6b35e5dd1" => :el_capitan
+    sha256 "c4041f1f6271963cb87cd2b04fe3949051aa4862d4345e21873868d27f573582" => :yosemite
+    sha256 "67b6f7fe340b838dfcaf9d20a38d36ee9079f8c1728d50e5a3a4f3cff2f412f8" => :mavericks
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
   option "with-docs", "Build documentation"
   option "with-examples", "Build examples"
-  option "with-developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
 
   option "without-webengine", "Build without QtWebEngine module"
   option "without-webkit", "Build without QtWebKit module"
 
-  deprecated_option "developer" => "with-developer"
   deprecated_option "qtdbus" => "with-d-bus"
 
   # Snow Leopard is untested and support has been removed in 5.4
@@ -102,8 +108,6 @@ class Qt5 < Formula
     args << "-skip" << "qtwebengine" if build.without? "webengine"
     args << "-skip" << "qtwebkit" if build.without? "webkit"
 
-    args << "-developer-build" if build.with? "developer"
-
     system "./configure", *args
     system "make"
     ENV.j1
@@ -129,7 +133,15 @@ class Qt5 < Formula
     inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
     inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
 
-    Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
+    # Move `*.app` bundles into `libexec` to expose them to `brew linkapps` and
+    # because we don't like having them in `bin`. Also add a `-qt5` suffix to
+    # avoid conflict with the `*.app` bundles provided by the `qt` formula.
+    # (Note: This move/rename breaks invocation of Assistant via the Help menu
+    # of both Designer and Linguist as that relies on Assistant being in `bin`.)
+    libexec.mkpath
+    Pathname.glob("#{bin}/*.app") do |app|
+      mv app, libexec/"#{app.basename(".app")}-qt5.app"
+    end
   end
 
   def caveats; <<-EOS.undent

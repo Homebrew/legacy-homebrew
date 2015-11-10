@@ -10,6 +10,13 @@ class Groonga < Formula
     sha256 "089a97b55ad3733005d3ae5a7f8a9501dfefb0620c1e484e9021ee2bfb438424" => :mavericks
   end
 
+  head do
+    url "https://github.com/groonga/groonga.git"
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   option "with-benchmark", "With benchmark program for developer use"
 
   deprecated_option "enable-benchmark" => "with-benchmark"
@@ -36,6 +43,10 @@ class Groonga < Formula
     args << "--with-mecab" if build.with? "mecab"
     args << "--with-lz4" if build.with? "lz4"
 
+    if build.head?
+      args << "--with-ruby"
+      system "./autogen.sh"
+    end
     # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
     system "./configure", *args
     system "make", "install"
