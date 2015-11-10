@@ -79,7 +79,7 @@ class ShibbolethSp < Formula
   def caveats
     s = ""
     s += <<-EOS.undent
-    You must manually edit #{apache_configdir}/httpd.conf to include
+      You must manually edit #{apache_configdir}/httpd.conf to include
     EOS
     if build.with? "homebrew-httpd22"
       mod = "mod_shib_22.so"
