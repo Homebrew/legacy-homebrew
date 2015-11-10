@@ -26,17 +26,18 @@ class ShibbolethSp < Formula
     elsif build.with? "homebrew-httpd24"
       "#{etc}/apache2/2.4"
     else
-       "/etc/apache2"
+      "/etc/apache2"
     end
   end
 
   def install
     ENV.O2
-    args = []
-    args << "--disable-debug"
-    args << "--disable-dependency-tracking"
-    args << "--disable-silent-rules"
-    args << "--prefix=#{prefix}"
+    args = [
+      "--disable-debug",
+      "--disable-dependency-tracking",
+      "--disable-silent-rules",
+      "--prefix=#{prefix}"
+    ]
     args << "--with-xmltooling=#{Formula["xml-tooling-c"].opt_prefix}"
     args << "--with-saml=#{Formula["opensaml"].opt_prefix}"
     args << "--with-boost=#{Formula["boost"].opt_prefix}"
@@ -44,7 +45,7 @@ class ShibbolethSp < Formula
     args << "--with-xmlsec=#{Formula["xml-security-c"].opt_prefix}"
     args << "LDFLAGS=-L#{Formula["curl"].opt_prefix}/curl/lib"
     args << "CPPFLAGS=-I#{Formula["curl"].opt_prefix}/curl/include"
-    args << "DYLD_LIBRARY_PATH=#{prefix}/lib"
+    args << "DYLD_LIBRARY_PATH=#{lib}"
     if build.with? "homebrew-httpd22"
       args << "--enable-apache-22"
     elsif build.with? "homebrew-httpd24"
@@ -85,9 +86,10 @@ class ShibbolethSp < Formula
     s += <<-EOS.undent
     You must manually edit #{apache_configdir}/httpd.conf to include
     EOS
-    mod = "mod_shib_24.so"
     if build.with? "homebrew-httpd22"
       mod = "mod_shib_22.so"
+    else
+      mod = "mod_shib_24.so"
     end
 
     s += <<-EOS.undent
@@ -95,10 +97,10 @@ class ShibbolethSp < Formula
     EOS
 
     s+= <<-EOS.undent
-    You must also manually configure
-      #{opt_prefix}/shibboleth-sp/etc/shibboleth/shibboleth2.xml
-    as per your own requirements. For more information please see
-      https://wiki.shibboleth.net/confluence/display/EDS10/3.1+Configuring+the+Service+Provider
+      You must also manually configure
+        #{opt_prefix}/shibboleth-sp/etc/shibboleth/shibboleth2.xml
+      as per your own requirements. For more information please see
+        https://wiki.shibboleth.net/confluence/display/EDS10/3.1+Configuring+the+Service+Provider
     EOS
     s
   end
