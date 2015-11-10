@@ -6,9 +6,9 @@ class DuoUnix < Formula
 
   bottle do
     cellar :any
-    sha256 "3d2c111c427dbe2cdd824216b20e25831b5e5fa89fb583cb5376d55928f9995e" => :el_capitan
-    sha256 "5d8ce90613f03d5b6e4ac71450dffc35213f6aeaec36484e18db915514544300" => :yosemite
-    sha256 "10c5899dfe1493b604545c52c2bfb4d90deaa3007a753b7469701a4f8d0357ae" => :mavericks
+    sha256 "49ce5dcbf9d025796dfe9cd5d7c1b8123c4418cdafab8bb3b910c5218b939e4f" => :el_capitan
+    sha256 "055e5643825f5b581a6f57eb5f8a1b7cfcbf450f0e19201cf82a68c5545bfb04" => :yosemite
+    sha256 "acbe2c050efc8127721e50879d00b56aa0ff2050f22facced4803d3671df11e7" => :mavericks
   end
 
   depends_on "openssl"
