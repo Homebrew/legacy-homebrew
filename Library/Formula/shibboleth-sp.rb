@@ -4,9 +4,6 @@ class ShibbolethSp < Formula
   url "http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz"
   sha256 "30da36e0bba2ce4606a9effc37c05cd110dafdd6d3141468c4aa0f57ce4d96ce"
 
-  option "with-homebrew-httpd22", "Use Homebrew Apache httpd 2.2"
-  option "with-homebrew-httpd24", "Use Homebrew Apache httpd 2.4"
-
   depends_on "curl" => "with-openssl"
   depends_on "opensaml"
   depends_on "xml-tooling-c" => "with-openssl"
@@ -14,16 +11,13 @@ class ShibbolethSp < Formula
   depends_on "xml-security-c"
   depends_on "log4shib"
   depends_on "boost"
-  depends_on "homebrew/apache/httpd22" if build.with? "homebrew-httpd22"
-  depends_on "homebrew/apache/httpd24" if build.with? "homebrew-httpd24"
-
-  skip_clean "var/run/shibboleth"
-  skip_clean "var/cache/shibboleth"
+  depends_on "homebrew/apache/httpd22" => :optional
+  depends_on "homebrew/apache/httpd24" => :optional
 
   def apache_configdir
-    if build.with? "homebrew-httpd22"
+    if build.with? "httpd22"
       "#{etc}/apache2/2.2"
-    elsif build.with? "homebrew-httpd24"
+    elsif build.with? "httpd24"
       "#{etc}/apache2/2.4"
     else
       "/etc/apache2"
@@ -48,8 +42,6 @@ class ShibbolethSp < Formula
     end
     system "./configure", *args
     system "make", "install"
-    (prefix/"var/run/shibboleth/").mkpath
-    (prefix/"var/cache/shibboleth").mkpath
   end
 
   def plist; <<-EOS.undent
@@ -98,6 +90,15 @@ class ShibbolethSp < Formula
         https://wiki.shibboleth.net/confluence/display/EDS10/3.1+Configuring+the+Service+Provider
     EOS
     s
+  end
+
+  def post_install
+    unless File.exist? "#{prefix}/var/run/shibboleth"
+      (prefix/"var/run/shibboleth/").mkpath
+    end
+    unless File.exists? "#{prefix}/var/cache/shibboleth"
+      (prefix/"var/cache/shibboleth").mkpath
+    end
   end
 
   test do
