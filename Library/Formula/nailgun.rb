@@ -7,7 +7,7 @@ class Nailgun < Formula
     sha256 "c487735b07f3d65e4c4d9bfa9aaef86d0d78128e4c055c6c24da818a4a47b2ab"
 
     resource "nailgun-jar" do
-      url "http://central.maven.org/maven2/com/martiansoftware/nailgun-server/0.9.1/nailgun-server-0.9.1.jar"
+      url "https://search.maven.org/remotecontent?filepath=com/martiansoftware/nailgun-server/0.9.1/nailgun-server-0.9.1.jar"
       sha256 "4518faa6bf4bd26fccdc4d85e1625dc679381a08d56872d8ad12151dda9cef25"
     end
 
