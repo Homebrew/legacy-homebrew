@@ -30,19 +30,14 @@ class AptCacherNg < Formula
     (var/"spool/apt-cacher-ng").mkpath
     (var/"log").mkpath
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "apt-cacher-ng"
+    inreplace "conf/acng.conf.in" do |s|
+      s.gsub!(/^CacheDir: .*/, "CacheDir: #{var}/spool/apt-cacher-ng")
+      s.gsub!(/^LogDir: .*/, "LogDir: #{var}/log")
     end
 
-    inreplace "build/conf/acng.conf" do |s|
-      s.gsub! /^CacheDir: .*/, "CacheDir: #{var}/spool/apt-cacher-ng"
-      s.gsub! /^LogDir: .*/, "LogDir: #{var}/log"
-    end
-
-    etc.install "build/conf" => "apt-cacher-ng" unless File.exist?(etc/"apt-cacher-ng")
-    sbin.install "build/apt-cacher-ng"
-    man8.install "doc/man/apt-cacher-ng.8"
+    system "cmake", ".", *std_cmake_args
+    system "make", "apt-cacher-ng"
+    system "make", "install"
   end
 
   plist_options :startup => true
@@ -84,7 +79,7 @@ class AptCacherNg < Formula
     sleep 2
 
     begin
-      assert_match /Information about APT configuration/, shell_output("curl localhost:3142")
+      assert_match(/Not Found or APT Reconfiguration required/, shell_output("curl localhost:3142"))
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)
