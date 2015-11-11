@@ -24,7 +24,7 @@ class Ant < Formula
   end
 
   resource "bcel" do
-    url "http://central.maven.org/maven2/org/apache/bcel/bcel/5.2/bcel-5.2.jar"
+    url "https://search.maven.org/remotecontent?filepath=org/apache/bcel/bcel/5.2/bcel-5.2.jar"
     sha256 "7b87e2fd9ac3205a6e5ba9ef5e58a8f0ab8d1a0e0d00cb2a761951fa298cc733"
   end
 
