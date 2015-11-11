@@ -10,11 +10,12 @@ class Mysql < Formula
     sha256 "b715084d9d16c12506cdee1453d99b825379c3aa75d70e0883e68993baa08e08" => :mavericks
   end
 
+  option :universal
+
   depends_on "cmake" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion
   depends_on "openssl"
 
-  option :universal
   option "with-tests", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
   option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
@@ -40,6 +41,9 @@ class Mysql < Formula
   def datadir
     var/"mysql"
   end
+
+  # memcached support (https://bugs.mysql.com/bug.php?id=73405)
+  patch :DATA
 
   def install
     # Don't hard-code the libtool path. See:
@@ -180,3 +184,25 @@ class Mysql < Formula
     end
   end
 end
+__END__
+--- a/configure.cmake	2014-05-06 05:45:57.000000000 -0500
++++ b/configure.cmake	2014-07-26 13:48:44.000000000 -0500
+@@ -542,7 +542,7 @@
+ CHECK_FUNCTION_EXISTS (memalign HAVE_MEMALIGN)
+ CHECK_FUNCTION_EXISTS (chown HAVE_CHOWN)
+ CHECK_FUNCTION_EXISTS (nl_langinfo HAVE_NL_LANGINFO)
+-CHECK_FUNCTION_EXISTS (ntohll HAVE_HTONLL)
++CHECK_SYMBOL_EXISTS (ntohll arpa/inet.h HAVE_HTONLL)
+
+ CHECK_FUNCTION_EXISTS (clock_gettime DNS_USE_CPU_CLOCK_FOR_ID)
+ CHECK_FUNCTION_EXISTS (epoll_create HAVE_EPOLL)
+--- a/plugin/innodb_memcached/daemon_memcached/include/memcached/util.h	2014-05-06 05:45:59.000000000 -0500
++++ b/plugin/innodb_memcached/daemon_memcached/include/memcached/util.h	2014-07-26 14:20:44.000000000 -0500
+@@ -11,6 +11,7 @@
+  */
+ #include <memcached/visibility.h>
+ #include <memcached/types.h>
++#include "config.h"
+
+ #ifdef __cplusplus
+ extern "C" {

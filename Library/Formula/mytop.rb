@@ -16,7 +16,7 @@ class Mytop < Formula
 
   resource "DBD::mysql" do
     url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
+    mirror "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
     sha256 "2e00f1eb5822aa097b310203ff611dd635f9d000db9df7ce1e8b0493c082be41"
   end
 
@@ -36,6 +36,6 @@ class Mytop < Formula
   end
 
   test do
-    shell_output("#{bin}/mytop", 1)
+    shell_output("(mysql.server status || mysql.server start --syslog) && #{bin}/mytop -b", 0)
   end
 end
