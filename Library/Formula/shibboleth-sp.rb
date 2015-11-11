@@ -4,6 +4,8 @@ class ShibbolethSp < Formula
   url "http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz"
   sha256 "30da36e0bba2ce4606a9effc37c05cd110dafdd6d3141468c4aa0f57ce4d96ce"
 
+  option "enable-apache-22"
+
   depends_on "curl" => "with-openssl"
   depends_on "opensaml"
   depends_on "xml-tooling-c" => "with-openssl"
@@ -11,38 +13,29 @@ class ShibbolethSp < Formula
   depends_on "xml-security-c"
   depends_on "log4shib"
   depends_on "boost"
-  depends_on "homebrew/apache/httpd22" => :optional
-  depends_on "homebrew/apache/httpd24" => :optional
-
-  def apache_configdir
-    if build.with? "httpd22"
-      "#{etc}/apache2/2.2"
-    elsif build.with? "httpd24"
-      "#{etc}/apache2/2.4"
-    else
-      "/etc/apache2"
-    end
-  end
 
   def install
-    ENV.O2
+    ENV.O2 # Os breaks the build
     args = [
       "--disable-debug",
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}",
+      "--sysconfdir=#{etc}",
     ]
     args << "--with-xmltooling=#{Formula["xml-tooling-c"].opt_prefix}"
     args << "--with-saml=#{Formula["opensaml"].opt_prefix}"
     args << "DYLD_LIBRARY_PATH=#{lib}"
-    if build.with? "httpd22"
+    if build.with? "enable-apache-22"
       args << "--enable-apache-22"
-    elsif build.with? "httpd24"
+    else
       args << "--enable-apache-24"
     end
     system "./configure", *args
     system "make", "install"
   end
+
+  plist_options :startup => true
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -71,9 +64,9 @@ class ShibbolethSp < Formula
   def caveats
     s = ""
     s += <<-EOS.undent
-      You must manually edit #{apache_configdir}/httpd.conf to include
+      You must manually edit httpd.conf to include
     EOS
-    if build.with? "httpd22"
+    if build.with? "enable-apache-22"
       mod = "mod_shib_22.so"
     else
       mod = "mod_shib_24.so"
@@ -85,7 +78,7 @@ class ShibbolethSp < Formula
 
     s+= <<-EOS.undent
       You must also manually configure
-        #{opt_prefix}/shibboleth-sp/etc/shibboleth/shibboleth2.xml
+        #{etc}/shibboleth/shibboleth2.xml
       as per your own requirements. For more information please see
         https://wiki.shibboleth.net/confluence/display/EDS10/3.1+Configuring+the+Service+Provider
     EOS
@@ -93,12 +86,8 @@ class ShibbolethSp < Formula
   end
 
   def post_install
-    unless File.exist? "#{prefix}/var/run/shibboleth"
-      (prefix/"var/run/shibboleth/").mkpath
-    end
-    unless File.exist? "#{prefix}/var/cache/shibboleth"
-      (prefix/"var/cache/shibboleth").mkpath
-    end
+    (prefix/"var/run/shibboleth/").mkpath
+    (prefix/"var/cache/shibboleth").mkpath
   end
 
   test do
