@@ -1,8 +1,8 @@
 class BaculaFd < Formula
   desc "Network backup solution"
   homepage "http://www.bacula.org/"
-  url "https://downloads.sourceforge.net/project/bacula/bacula/7.0.5/bacula-7.0.5.tar.gz"
-  sha256 "1457849eb33011b43371801b62ffa13d29bebe51be8d5a36da563b87bb094a49"
+  url "https://downloads.sourceforge.net/project/bacula/bacula/7.2.0/bacula-7.2.0.tar.gz"
+  sha256 "818606fe69c50c3ca21b91e609d4ac6ca08e4189419b89d3ec2e81c8c0389e1c"
 
   bottle do
     sha1 "aa312ee016437c22b7e4955c67defa51c7703540" => :yosemite
@@ -14,6 +14,7 @@ class BaculaFd < Formula
   depends_on "openssl"
 
   def install
+    inreplace "./src/filed/acl.c", "STREAM_ACL_DARWIN_ACCESS_ACL", "STREAM_ACL_DARWIN_ACCESS"
     # * sets --disable-conio in order to force the use of readline
     #   (conio support not tested)
     # * working directory in /var/lib/bacula, reasonable place that
