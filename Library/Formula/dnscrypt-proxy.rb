@@ -4,7 +4,7 @@ class DnscryptProxy < Formula
   url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.6.0/dnscrypt-proxy-1.6.0.tar.bz2"
   mirror "https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.6.0.tar.bz2"
   sha256 "e0cce91dc6ab4ed76478579a899b2abb888b1d7ed133cb55294c2f9ce24edc7d"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "79f10a11a46ccb906dc3faa94d452ebf8a2fab8de430504b0cd0fae4cab9a45f" => :el_capitan
@@ -26,6 +26,10 @@ class DnscryptProxy < Formula
 
   depends_on "libsodium"
 
+  resource "resolvers" do
+    url "https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/dnscrypt-resolvers.csv"
+  end
+
   def install
     system "autoreconf", "-if" if build.head?
 
@@ -39,6 +43,9 @@ class DnscryptProxy < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    pkgshare.install resource("resolvers")
+    print "To verify resolver signature: https://github.com/jedisct1/dnscrypt-proxy/#dnscrypt-enabled-resolvers "
   end
 
   def caveats; <<-EOS.undent
