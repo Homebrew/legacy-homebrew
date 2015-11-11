@@ -17,7 +17,7 @@ class Libbtbb < Formula
   option :universal
 
   depends_on "cmake" => :build
-  depends_on "python"
+  depends_on :python if MacOS.version <= :snow_leopard
 
   def install
     args = std_cmake_args
