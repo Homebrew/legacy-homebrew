@@ -26,30 +26,6 @@ class Libsass < Formula
   end
 
   test do
-    # This will need to be updated when devel = stable due to API changes.
-    (testpath/"test.c").write <<-EOS.undent
-      #include <sass_context.h>
-      #include <string.h>
-
-      int main()
-      {
-        const char* source_string = "a { color:blue; &:hover { color:red; } }";
-        struct Sass_Data_Context* data_ctx = sass_make_data_context(strdup(source_string));
-        struct Sass_Options* options = sass_data_context_get_options(data_ctx);
-        sass_option_set_precision(options, 1);
-        sass_option_set_source_comments(options, false);
-        sass_data_context_set_options(data_ctx, options);
-        sass_compile_data_context(data_ctx);
-        struct Sass_Context* ctx = sass_data_context_get_context(data_ctx);
-        int err = sass_context_get_error_status(ctx);
-        if(err != 0) {
-          return 1;
-        } else {
-          return strcmp(sass_context_get_output_string(ctx), "a {\\n  color: blue; }\\n  a:hover {\\n    color: red; }\\n") != 0;
-        }
-      }
-    EOS
-    system ENV.cc, "-o", "test", "test.c", "-lsass"
-    system "./test"
+    system "./script/spec"
   end
 end
