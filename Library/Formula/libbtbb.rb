@@ -1,11 +1,18 @@
 class Libbtbb < Formula
   desc "Bluetooth baseband decoding library"
   homepage "https://github.com/greatscottgadgets/libbtbb"
-  url "https://github.com/greatscottgadgets/libbtbb/archive/2014-02-R4.tar.gz"
-  sha256 "6e79a2d8530596e34ad13fcce43dcf8b30b165d4629d5bf9c3eb7f8817980524"
-  version "2014-02-R4"
+  url "https://github.com/greatscottgadgets/libbtbb/archive/2015-09-R2.tar.gz"
+  sha256 "35ce44636649163f0d9a4de5905f686470f54c79b408959760db8c8182853161"
+  version "2015-09-R2"
 
   head "https://github.com/greatscottgadgets/libbtbb.git"
+
+  option :universal
+
+  depends_on "cmake" => :build
+  depends_on "python"
+  depends_on "homebrew/dupes/libpcap"
+
 
   bottle do
     cellar :any
@@ -13,11 +20,6 @@ class Libbtbb < Formula
     sha1 "52071cec084c13a10a08102e391f457d176ecd1d" => :mavericks
     sha1 "3069f205340202284cd8e0ec902d056c4f851bba" => :mountain_lion
   end
-
-  option :universal
-
-  depends_on "cmake" => :build
-  depends_on "python"
 
   def install
     args = std_cmake_args
