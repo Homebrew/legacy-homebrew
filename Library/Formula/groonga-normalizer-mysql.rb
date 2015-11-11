@@ -15,7 +15,12 @@ class GroongaNormalizerMysql < Formula
   depends_on "groonga"
 
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make", "install"
+    system "./configure"
+    system "make"
+
+    mkdir "stage"
+    system "make", "install", "DESTDIR=#{buildpath}/stage"
+    lib.install Dir["stage/**/lib/*"]
+    (share/"doc/groonga-normalizer-mysql").install Dir["stage/**/share/doc/groonga-normalizer-mysql/*"]
   end
 end
