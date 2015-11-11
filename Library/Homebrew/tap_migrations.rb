@@ -165,6 +165,7 @@ TAP_MIGRATIONS = {
   "pari" => "homebrew/x11",
   "pathfinder" => "homebrew/boneyard",
   "pcb" => "homebrew/x11",
+  "pdf-tools" => "homebrew/emacs",
   "pdf2image" => "homebrew/x11",
   "pdfjam" => "homebrew/tex",
   "pdftoipe" => "homebrew/head-only",
