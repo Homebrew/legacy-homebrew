@@ -1,8 +1,8 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.7.tar.xz"
-  sha256 "ec6f861bddee007b1dd320667a26ddc9ff76847bbe4cbb59c0134588e65c8699"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.9.tar.xz"
+  sha256 "9e9a3dc16e6f97258f2c3589dc6163bec20fb9369aec1fe03612dbca76d185d3"
 
   bottle do
     sha256 "86efd34595ad766563daca8e7138af030b7c3f5dab158813b5d31726fdce7d01" => :el_capitan
@@ -15,7 +15,7 @@ class Squid < Formula
 
   def install
     # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
-    ENV.append "LDFLAGS",  "-lresolv"
+    ENV.append "LDFLAGS", "-lresolv"
 
     # For --disable-eui, see:
     # http://squid-web-proxy-cache.1019090.n4.nabble.com/ERROR-ARP-MAC-EUI-operations-not-supported-on-this-operating-system-td4659335.html
