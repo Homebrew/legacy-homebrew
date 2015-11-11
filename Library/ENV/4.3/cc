@@ -1,4 +1,4 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0 --disable-rubyopt
 
 $:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require "pathname"
