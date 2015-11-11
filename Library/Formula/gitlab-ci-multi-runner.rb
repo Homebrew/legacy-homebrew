@@ -1,4 +1,4 @@
-class GitlabRunner < Formula
+class GitlabCiMultiRunner < Formula
   desc "The official GitLab CI runner written in Go"
   homepage "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner"
   url "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git",
@@ -22,12 +22,12 @@ class GitlabRunner < Formula
       commit_sha = `git rev-parse --short HEAD`
 
       # Copy from Makefile
-      system "go", "build", "-o", "gitlab-runner", "-ldflags", "-X main.NAME=gitlab-runner -X main.VERSION=#{version} -X main.REVISION=#{commit_sha}"
-      bin.install "gitlab-runner"
+      system "go", "build", "-o", "gitlab-ci-multi-runner", "-ldflags", "-X main.NAME=gitlab-ci-multi-runner -X main.VERSION=#{version} -X main.REVISION=#{commit_sha}"
+      bin.install "gitlab-ci-multi-runner"
     end
   end
 
   test do
-    assert_match /gitlab-runner version #{version}/, shell_output("gitlab-runner --version")
+    assert_match /gitlab-ci-multi-runner version #{version}/, shell_output("gitlab-ci-multi-runner --version")
   end
 end
