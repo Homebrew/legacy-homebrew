@@ -4,6 +4,13 @@ class GetFlashVideos < Formula
   url "https://github.com/monsieurvideo/get-flash-videos/archive/1.25.90.tar.gz"
   sha256 "b6c3b3db558c5b373ef4e8162b2c0ac2ebf6696f8c1d4e261406671856610c57"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "fca39d2474946ab2e10a9e361762c07524516ed2907e0cb9942fabca46ccca53" => :el_capitan
+    sha256 "d60a64e719c7097b7caa0be8d7424d7019df4cd8bc4e09e8173ba0dfbf84758a" => :yosemite
+    sha256 "13d00aa46643c8e2cd3e8b6fe10d39a999a20d740d4529c4316e4b0a639af6ab" => :mavericks
+  end
+
   depends_on "rtmpdump"
 
   resource "Crypt::Blowfish_PP" do
