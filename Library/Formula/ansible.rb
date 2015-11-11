@@ -13,10 +13,10 @@ class Ansible < Formula
   end
 
   bottle do
-    revision 1
-    sha256 "99c8c244c342a354a7671ed8691fb33f06da0bb809bf9e6a5281e44d1d3ba569" => :el_capitan
-    sha256 "36b945f2e553bf5a34a284e38b0ca05cfb5d3ef75b5b54c41fa2374cd1e9af25" => :yosemite
-    sha256 "329169754d3a651eb21c364b00cf6b3a305377b0b0b4906f22801b8cb7b114be" => :mavericks
+    revision 2
+    sha256 "4614671ee60aa2e7ed48c8d96fad9d6b9155005bc018081abae22e6c0b0e21c8" => :el_capitan
+    sha256 "f818de1dd92984742f30d0d6905f2682015b105ebf8a4fe2e473adef05529ce1" => :yosemite
+    sha256 "aac323e05e19295b7d493821af63d54a3dd13368ad7b8198fd8b515afa4f1a6b" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
