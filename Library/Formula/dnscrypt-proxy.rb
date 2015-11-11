@@ -4,7 +4,7 @@ class DnscryptProxy < Formula
   url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.6.0/dnscrypt-proxy-1.6.0.tar.bz2"
   mirror "https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.6.0.tar.bz2"
   sha256 "e0cce91dc6ab4ed76478579a899b2abb888b1d7ed133cb55294c2f9ce24edc7d"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "79f10a11a46ccb906dc3faa94d452ebf8a2fab8de430504b0cd0fae4cab9a45f" => :el_capitan
@@ -25,6 +25,7 @@ class DnscryptProxy < Formula
   deprecated_option "plugins" => "with-plugins"
 
   depends_on "libsodium"
+  depends_on "minisign" => :recommended
 
   def install
     system "autoreconf", "-if" if build.head?
@@ -39,9 +40,37 @@ class DnscryptProxy < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    if build.with? "minisign"
+      (bin/"dnscrypt-update-resolvers").write <<-EOS.undent
+          #!/bin/sh
+          RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
+          RESOLVERS_LIST_BASE_DIR=#{pkgshare}
+          RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
+
+          curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+            "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
+            "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
+          curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+            "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
+            "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
+          minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+            -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
+            -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
+          mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+            ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
+        EOS
+        chmod 0775, bin/"dnscrypt-update-resolvers"
+    end
   end
 
-  def caveats; <<-EOS.undent
+  def post_install
+    if build.with? "minisign"
+      system bin/"dnscrypt-update-resolvers"
+    end
+  end
+
+  def caveats; s = <<-EOS.undent
     After starting dnscrypt-proxy, you will need to point your
     local DNS server to 127.0.0.1. You can do this by going to
     System Preferences > "Network" and clicking the "Advanced..."
@@ -52,16 +81,26 @@ class DnscryptProxy < Formula
     and under the "nobody" user using the dnscrypt.eu-dk DNSCrypt-enabled
     resolver. If you would like to change these settings, you will have to edit
     the plist file (e.g., --resolver-address, --provider-name, --provider-key, etc.)
-
-    To check that dnscrypt-proxy is working correctly, open Terminal and enter the
-    following command. Replace en1 with whatever network interface you're using:
-
-        sudo tcpdump -i en1 -vvv 'port 443'
-
-    You should see a line in the result that looks like this:
-
-        resolver2.dnscrypt.eu.https
     EOS
+    if build.with? "minisign"
+      s += <<-EOS.undent
+
+        If at some point the resolver file gets outdated, it can be updated to the
+        latest version by running: #{opt_bin}/dnscrypt-update-resolvers
+      EOS
+    end
+    s += <<-EOS.undent
+
+      To check that dnscrypt-proxy is working correctly, open Terminal and enter the
+      following command. Replace en1 with whatever network interface you're using:
+
+          sudo tcpdump -i en1 -vvv 'port 443'
+
+      You should see a line in the result that looks like this:
+
+          resolver2.dnscrypt.eu.https
+    EOS
+    s
   end
 
   plist_options :startup => true
