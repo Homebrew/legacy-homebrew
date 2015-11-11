@@ -6,7 +6,8 @@ class AptCacherNg < Formula
   sha256 "255b742d3551fcbfa71b6df4d8892038934812425222a15d085436a4a76b8400"
 
   bottle do
-    sha256 "ea6c5378a9fc50868236ed64b530e75818b9f5b330580d7ec1c30da4b7a4948a" => :mavericks
+    revision 1
+    sha256 "5775ba1cb6fc3db07e1b83d5c31cc6631d1eb7c9d457a9f41f5a65b64f39d75b" => :mavericks
   end
 
   depends_on "pkg-config" => :build
