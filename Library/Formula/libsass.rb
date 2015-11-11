@@ -26,6 +26,15 @@ class Libsass < Formula
   end
 
   test do
-    system "./script/spec"
+    (testpath/"input.scss").write <<-EOS.undent
+      div {
+        img {
+          border: 0px;
+        }
+      }
+    EOS
+
+    assert_equal "div img{border:0px}",
+    shell_output("#{bin}/sassc/bin/sassc --style compressed input.scss").strip
   end
 end
