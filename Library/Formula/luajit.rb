@@ -3,12 +3,9 @@ class Luajit < Formula
   homepage "http://luajit.org/luajit.html"
   url "http://luajit.org/download/LuaJIT-2.0.4.tar.gz"
   sha256 "620fa4eb12375021bef6e4f237cbd2dd5d49e56beb414bee052c746beef1807d"
-  head "http://luajit.org/git/luajit-2.0.git"
+  revision 1
 
-  devel do
-    url "http://luajit.org/git/luajit-2.0.git", :branch => "v2.1"
-    version "2.1"
-  end
+  head "http://luajit.org/git/luajit-2.0.git"
 
   bottle do
     sha256 "452b239bdc87951418652164677e96a816c3fcdd9b4548ea887f260d96fa33fa" => :el_capitan
@@ -17,7 +14,10 @@ class Luajit < Formula
     sha256 "0d50380c98eef0fcc4be1d91d11d0cd1a6afefa600833f1cfce502336228e36c" => :mountain_lion
   end
 
-  skip_clean "lib/lua/5.1", "share/lua/5.1"
+  devel do
+    url "http://luajit.org/git/luajit-2.0.git", :branch => "v2.1"
+    version "2.1"
+  end
 
   deprecated_option "enable-debug" => "with-debug"
 
@@ -47,9 +47,15 @@ class Luajit < Formula
 
     system "make", "amalg", *args
     system "make", "install", *args
-    # Having an empty Lua dir in Lib can screw with the new Lua setup.
-    rm_rf prefix/"lib/lua"
-    rm_rf prefix/"share/lua"
+
+    # LuaJIT doesn't automatically symlink unversioned libraries:
+    # https://github.com/Homebrew/homebrew/issues/45854.
+    lib.install_symlink lib/"libluajit-5.1.2.0.4.dylib" => "libluajit.dylib"
+    lib.install_symlink lib/"libluajit-5.1.a" => "libluajit.a"
+
+    # Having an empty Lua dir in Lib/share can screw with other Homebrew Luas.
+    rm_rf lib/"lua"
+    rm_rf share/"lua"
   end
 
   test do
