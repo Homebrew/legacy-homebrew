@@ -25,11 +25,11 @@ class Nailgun < Formula
   end
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "cd4f229ed4fc1127b099d0d12792204367e5e1b125c1386930cd683e4cd38d01" => :yosemite
-    sha256 "20de8814db40e64d3116e2f9022bb3c235266f58631955755eeea7b2e0981677" => :mavericks
-    sha256 "08cff0bc8c601f0d7f5e6ad64e7a57f6635f2130a619e5dceaec33486319e29a" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "02cf71ea505409aedd24b227d67b91a24dc1c2db040185424081ecfdb07f3382" => :el_capitan
+    sha256 "958b5a30b72b237139cfd7723025f5d9f50f6b6a318fad22c3297f84a48c34eb" => :yosemite
+    sha256 "395c49abe28e79d6171f616b2f0cacc317a95aa09123bdee3eae4df4f3249cff" => :mavericks
   end
 
   head do
