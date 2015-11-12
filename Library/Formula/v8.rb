@@ -3,8 +3,8 @@
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.5.103.35.tar.gz"
-  sha256 "bc01af3f5624beef3bb9d62cd3cbec1517b4ff4513d1ec4d46e59d0e5a5850d7"
+  url "https://github.com/v8/v8-git-mirror/archive/4.6.85.31.tar.gz"
+  sha256 "6034b20794bcdc3190db8fe1614c458daee7ac36449131dd29444200bb7bbc6d"
 
   bottle do
     cellar :any
@@ -27,38 +27,40 @@ class V8 < Formula
   # Update from "DEPS" file in tarball.
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "5122240c5e5c4d8da12c543d82b03d6089eb77c5"
+        :revision => "6ee91ad8659871916f9aa840d42e1513befdf638"
   end
 
   resource "icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        :revision => "c81a1a3989c3b66fa323e9a6ee7418d7c08297af"
+        :revision => "89dcdec16381883782b9cc9cff38e00f047a0f46"
   end
 
   resource "buildtools" do
     url "https://chromium.googlesource.com/chromium/buildtools.git",
-        :revision => "ecc8e253abac3b6186a97573871a084f4c0ca3ae"
+        :revision => "565d04e8741429fb1b4f26d102f2c6c3b849edeb"
   end
 
   resource "clang" do
     url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
-        :revision => "73ec8804ed395b0886d6edf82a9f33583f4a7902"
+        :revision => "5b12e334ec0e571a8e1f68d028dc5427b58c17ec"
   end
 
   resource "gmock" do
     url "https://chromium.googlesource.com/external/googlemock.git",
-        :revision => "29763965ab52f24565299976b936d1265cb6a271"
+        :revision => "0421b6f358139f02e102c9c332ce19a33faf75be"
   end
 
   resource "gtest" do
     url "https://chromium.googlesource.com/external/googletest.git",
-        :revision => "23574bf2333f834ff665f894c97bef8a5b33a0a9"
+        :revision => "9855a87157778d39b95eccfb201a9dc90f6d61c6"
   end
 
   def install
     # Bully GYP into correctly linking with c++11
     ENV.cxx11
     ENV["GYP_DEFINES"] = "clang=1 mac_deployment_target=#{MacOS.version}"
+    # https://code.google.com/p/v8/issues/detail?id=4511#c3
+    ENV.append "GYP_DEFINES", "v8_use_external_startup_data=0"
 
     # fix up libv8.dylib install_name
     # https://github.com/Homebrew/homebrew/issues/36571
