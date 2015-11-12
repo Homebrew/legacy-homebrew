@@ -1,8 +1,8 @@
 class Mitmproxy < Formula
   desc "Intercept, modify, replay, save HTTP/S traffic"
   homepage "https://mitmproxy.org"
-  url "https://mitmproxy.org/download/mitmproxy-0.13.tar.gz"
-  sha256 "f35b90d836693dbb02a589ddee056bb4fdb7b679a1dfe230b0492216a8e3dcfa"
+  url "https://mitmproxy.org/download/mitmproxy-0.14.0.tar.gz"
+  sha256 "cefcdc514b46b29c73a10a9e5b967c7716cb98e2d2abbfa74ebba8d4511d6d55"
   head "https://github.com/mitmproxy/mitmproxy.git"
 
   bottle do
@@ -81,8 +81,8 @@ class Mitmproxy < Formula
   end
 
   resource "netlib" do
-    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.13.1.tar.gz"
-    sha256 "f2b986ed2fa0125a88975d3f904a111c95b2925c3f553f7b1fc991f25bf4915b"
+    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.14.0.tar.gz"
+    sha256 "cf12b0a71a493eee46fb2da284122ac363179fe0a0bc71c5c8920374aa978e75"
   end
 
   resource "passlib" do
@@ -135,6 +135,16 @@ class Mitmproxy < Formula
     sha256 "29f04fad3bf0a79c5491f7ebec2d50fa086e9d16359896c9204c6a92bc07aba2"
   end
 
+  resource "construct" do
+    url "https://pypi.python.org/packages/source/c/construct/construct-2.5.2.tar.gz"
+    sha256 "665b6271eeadf15219c726b180c8d7a641d026784d72ca3dad90a20aae009020"
+  end
+
+  resource "click" do
+    url "https://pypi.python.org/packages/source/c/click/click-5.1.tar.gz"
+    sha256 "678c98275431fad324275dec63791e4a17558b40e5a110e20a82866139a85a5a"
+  end
+
   # Optional resources
   resource "pyamf" do
     url "https://pypi.python.org/packages/source/P/PyAMF/PyAMF-0.7.2.tar.gz"
@@ -157,7 +167,8 @@ class Mitmproxy < Formula
 
     res = %w[backports.ssl_match_hostname blinker certifi cffi ConfigArgParse
              cryptography enum34 hpack html2text idna ipaddress lxml netlib passlib
-             pyasn1 pycparser pyOpenSSL pyparsing pyperclip six tornado urwid]
+             pyasn1 pycparser pyOpenSSL pyparsing pyperclip six tornado urwid
+             construct click]
 
     res << "pyamf" if build.with? "pyamf"
     res << "cssutils" if build.with? "cssutils"
