@@ -7,9 +7,9 @@ class Io < Formula
   head "https://github.com/stevedekorte/io.git"
 
   bottle do
-    sha256 "a7d1dfa5a71c8416e649ede0489db258ad768303f42572df04472b4bb67fea93" => :el_capitan
-    sha256 "2a399520d3969a2712f10a70527242df50353b413c0b911a59bdfb6bb1022059" => :yosemite
-    sha256 "8d9af751dad080d7d58a36cc8eaa05922457d39baaefb288ada4b9653890d4b5" => :mavericks
+    sha256 "741314b5c2629688c17eabca50e0a623a9318a44d94568d4d0cf53e86560c2b2" => :el_capitan
+    sha256 "e34facca9debca217eaab84e55c036fe1bbd30a34a18bac927dc4a435947604b" => :yosemite
+    sha256 "6c0b0d22dd8184f20c60b9d35437645314c7149b0a2e34d8c406546faf44e570" => :mavericks
   end
 
   option "without-addons", "Build without addons"
