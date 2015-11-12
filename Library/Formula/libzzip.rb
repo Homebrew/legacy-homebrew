@@ -1,6 +1,6 @@
 class Libzzip < Formula
   desc "Library providing read access on ZIP-archives"
-  homepage "http://sourceforge.net/projects/zziplib/"
+  homepage "https://sourceforge.net/projects/zziplib/"
   url "https://downloads.sourceforge.net/project/zziplib/zziplib13/0.13.62/zziplib-0.13.62.tar.bz2"
   sha256 "a1b8033f1a1fd6385f4820b01ee32d8eca818409235d22caf5119e0078c7525b"
 
@@ -26,7 +26,7 @@ class Libzzip < Formula
   def install
     if build.universal?
       ENV.universal_binary
-      # See: https://sourceforge.net/tracker/?func=detail&aid=3511669&group_id=6389&atid=356389
+      # See: https://sourceforge.net/p/zziplib/feature-requests/5/
       ENV["ac_cv_sizeof_long"] = "(LONG_BIT/8)"
     end
 
