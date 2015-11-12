@@ -46,9 +46,9 @@ class Namazu < Formula
     data_file = testpath/"data.txt"
     data_file.write "This is a Namazu test case for Homebrew."
     mkpath "idx"
+
     system bin/"mknmz", "-O", "idx", data_file
-    search_result = `#{bin}/namazu -a Homebrew idx`
-    assert search_result.include?(data_file)
-    assert_equal 0, $?.exitstatus
+    search_result = shell_output("#{bin}/namazu -a Homebrew idx")
+    assert_match /#{data_file}/, search_result
   end
 end
