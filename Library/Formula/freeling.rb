@@ -20,6 +20,8 @@ class Freeling < Formula
 
   conflicts_with "hunspell", :because => "both install 'analyze' binary"
 
+  conflicts_with "hunspell", :because => "both install 'analyze' binary"
+
   def install
     icu4c = Formula["icu4c"]
     libtool = Formula["libtool"]
