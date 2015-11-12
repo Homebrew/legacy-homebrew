@@ -192,6 +192,7 @@ module Homebrew
         if bintray_user && bintray_key
           repo = Bintray.repository(tap_name)
           changed_formulae.each do |f|
+            next unless f.bottle_defined?
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
             version = f.pkg_version
