@@ -19,14 +19,14 @@ class PerconaToolkit < Formula
   depends_on "openssl"
 
   resource "DBD::mysql" do
-    url "http://www.cpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
-    mirror "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
+    mirror "http://www.cpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
     sha256 "76756b24eed46553f9dad22d0682a82b50ca2c8500ea4ede0a414acab48c9e77"
   end
 
   resource "JSON" do
-    url "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
-    mirror "https://cpan.metacpan.org/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
     sha256 "4ddbb3cb985a79f69a34e7c26cde1c81120d03487e87366f9a119f90f7bdfe88"
   end
 
