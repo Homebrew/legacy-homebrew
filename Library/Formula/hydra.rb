@@ -3,8 +3,8 @@ class Hydra < Formula
   homepage "https://www.thc.org/thc-hydra/"
   url "https://www.thc.org/releases/hydra-8.1.tar.gz"
   sha256 "e4bc2fd11f97a8d985a38a31785c86d38cc60383e47a8f4a5c436351e5135f19"
-
   head "https://github.com/vanhauser-thc/thc-hydra.git"
+  revision 1
 
   bottle do
     cellar :any
@@ -24,11 +24,23 @@ class Hydra < Formula
   depends_on "gtk+" => :optional
 
   def install
+    # Dirty hack to permit linking against our OpenSSL.
+    # https://github.com/vanhauser-thc/thc-hydra/issues/80
+    inreplace "configure" do |s|
+      s.gsub! "/opt/local/lib", Formula["openssl"].opt_lib
+      s.gsub! "/opt/local/*ssl", Formula["openssl"].opt_lib
+      s.gsub! "/opt/*ssl/include", Formula["openssl"].opt_include
+    end
+
     # Having our gcc in the PATH first can cause issues. Monitor this.
     # https://github.com/vanhauser-thc/thc-hydra/issues/22
     system "./configure", "--prefix=#{prefix}"
     bin.mkpath
     system "make", "all", "install"
     share.install prefix/"man" # Put man pages in correct place
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/hydra", 255)
   end
 end
