@@ -7,9 +7,11 @@ class Imapsync < Formula
   head "https://git.fedorahosted.org/git/imapsync.git"
 
   bottle do
-    sha1 "3e0967b9f61fd147242089ab6e93fd573fef7c31" => :yosemite
-    sha1 "667c9e72e7b361147fa419e3b61fe8e021662d85" => :mavericks
-    sha1 "a15bf0b97404cc06c9ca6b366e0fcce9cf4f554d" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "ef18c1b33c627036d96e7b9e6bfc4922d151ce6ec8fd2837bc4f527343d4468b" => :el_capitan
+    sha256 "9d1b2b6e4ebe04cffdc14c0e9b9156dd4d987ef0e4167ca6a81ff87c4cff0828" => :yosemite
+    sha256 "f8b5eee4fedbd6371e71160879ee5c3d24949a69586af1002bfdfe99ec4b271a" => :mavericks
   end
 
   resource "Unicode::String" do
