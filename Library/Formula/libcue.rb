@@ -1,8 +1,8 @@
 class Libcue < Formula
   desc "Cue sheet parser library for C"
-  homepage "http://sourceforge.net/projects/libcue/"
-  url "https://downloads.sourceforge.net/project/libcue/libcue/1.4.0/libcue-1.4.0.tar.bz2"
-  sha256 "8b7276ec2a2b3918cbc59a3cc03c68dc0775965cc20e4b88757b852ff369729e"
+  homepage "https://github.com/lipnitsk/libcue"
+  url "https://github.com/lipnitsk/libcue/archive/v1.4.0.tar.gz"
+  sha256 "c3c46d58cebf15b3fe07e6f649014694d338ddd880e941bfb1fd3cedae66c62f"
 
   bottle do
     cellar :any
@@ -13,7 +13,13 @@ class Libcue < Formula
     sha1 "baa3227a1734763ba21355a6e403b81a205919d2" => :mountain_lion
   end
 
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
+
   def install
+    inreplace "autogen.sh", "libtoolize", "glibtoolize"
+    system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
