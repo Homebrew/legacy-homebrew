@@ -9,9 +9,10 @@ class Mytop < Formula
   revision 1
 
   bottle do
-    sha256 "4793de7b30f9e23febec3d1e4c324667ee456a9951b9e4e48b6fa2224e1abc3e" => :yosemite
-    sha256 "ad477677188f97f67000057d3b8de142175659c38e72bcad59ce0dd8e984ba15" => :mavericks
-    sha256 "a2ea7a6dbc5526a2227e21aa3ca7a28b79272762c4d77d5245445ca5629c27c9" => :mountain_lion
+    cellar :any
+    sha256 "1208f12adb4cee930f856bf985a8091dee5d1b6cfd319bf3ddb9a7304c9e8d76" => :el_capitan
+    sha256 "3d50646b72aec1b32204e77fba3183dd9a44e2d73aa8a15bbff64f0d0eaae425" => :yosemite
+    sha256 "28144af40340021ac1fb1449a918a5bfe5f15f2b3856be5486e298d5f58ed721" => :mavericks
   end
 
   depends_on :mysql
