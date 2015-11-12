@@ -1,6 +1,6 @@
 class Shivavg < Formula
   desc "OpenGL based ANSI C implementation of the OpenVG standard"
-  homepage "http://sourceforge.net/projects/shivavg/"
+  homepage "https://sourceforge.net/projects/shivavg/"
   url "https://downloads.sourceforge.net/project/shivavg/ShivaVG/0.2.1/ShivaVG-0.2.1.zip"
   sha256 "9735079392829f7aaf79e02ed84dd74f5c443c39c02ff461cfdd19cfc4ae89c4"
 
