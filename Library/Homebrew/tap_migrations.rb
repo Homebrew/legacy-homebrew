@@ -148,6 +148,7 @@ TAP_MIGRATIONS = {
   "msgpack-rpc" => "homebrew/boneyard",
   "mupdf" => "homebrew/x11",
   "mydumper" => "homebrew/boneyard",
+  "mysql-connector-odbc" => "homebrew/boneyard",
   "mysqlreport" => "homebrew/boneyard",
   "newick-utils" => "homebrew/science",
   "nlopt" => "homebrew/science",
