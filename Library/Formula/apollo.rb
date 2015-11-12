@@ -18,7 +18,7 @@ class Apollo < Formula
   option "without-bdb", "Install without bdb store support"
   option "without-mqtt", "Install without MQTT protocol support"
 
-  # http://www.oracle.com/technetwork/database/berkeleydb/overview/index-093405.html
+  # https://www.oracle.com/technetwork/database/berkeleydb/overview/index-093405.html
   resource "bdb-je" do
     url "http://download.oracle.com/maven/com/sleepycat/je/5.0.34/je-5.0.34.jar"
     sha256 "025afa4954ed4e6f926af6e9015aa109528b0f947fcb3790b7bace639fe558fa"
@@ -26,8 +26,7 @@ class Apollo < Formula
 
   # https://github.com/fusesource/fuse-extra/tree/master/fusemq-apollo/fusemq-apollo-mqtt
   resource "mqtt" do
-    url "http://repo.fusesource.com/nexus/content/repositories/public/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.3/fusemq-apollo-mqtt-1.3-uber.jar"
-    mirror "http://repo1.maven.org/maven2/org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.3/fusemq-apollo-mqtt-1.3-uber.jar"
+    url "https://search.maven.org/remotecontent?filepath=org/fusesource/fuse-extra/fusemq-apollo-mqtt/1.3/fusemq-apollo-mqtt-1.3-uber.jar"
     sha256 "2795caacbc6086c7de46b588d11a78edbf8272acb7d9da3fb329cb34fcb8783f"
   end
 

@@ -1,15 +1,15 @@
 class Mitmproxy < Formula
   desc "Intercept, modify, replay, save HTTP/S traffic"
   homepage "https://mitmproxy.org"
-  url "https://mitmproxy.org/download/mitmproxy-0.13.tar.gz"
-  sha256 "f35b90d836693dbb02a589ddee056bb4fdb7b679a1dfe230b0492216a8e3dcfa"
+  url "https://mitmproxy.org/download/mitmproxy-0.14.0.tar.gz"
+  sha256 "cefcdc514b46b29c73a10a9e5b967c7716cb98e2d2abbfa74ebba8d4511d6d55"
   head "https://github.com/mitmproxy/mitmproxy.git"
 
   bottle do
     cellar :any
-    sha256 "b6f1e94bb7c2b6f78903c7223781d1956a27e841ac5b2602b7753be4093fd74c" => :el_capitan
-    sha256 "6c98cac287bf19f150bdab659c532af1f9a45152eeb749650be51a95914cf2d1" => :yosemite
-    sha256 "e9547ab49fa877da7e5e559cc4a4940a54a87cdd24f34694dbb12c266f2c4431" => :mavericks
+    sha256 "2f547f6de557f1bd9401236841d0660370e31cc5b4fc22aa04982f6aa577f31a" => :el_capitan
+    sha256 "9a7116abeb2ef10f48bc1f7b8394d3662db8390b691c12487679b1a46b93cfe5" => :yosemite
+    sha256 "faf33e7f3987f7339a4d2fd374870ebb9715100e2949cc84fa4b9862a9af8064" => :mavericks
   end
 
   option "with-pyamf", "Enable action message format (AMF) support for python"
@@ -81,8 +81,8 @@ class Mitmproxy < Formula
   end
 
   resource "netlib" do
-    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.13.1.tar.gz"
-    sha256 "f2b986ed2fa0125a88975d3f904a111c95b2925c3f553f7b1fc991f25bf4915b"
+    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.14.0.tar.gz"
+    sha256 "cf12b0a71a493eee46fb2da284122ac363179fe0a0bc71c5c8920374aa978e75"
   end
 
   resource "passlib" do
@@ -135,6 +135,16 @@ class Mitmproxy < Formula
     sha256 "29f04fad3bf0a79c5491f7ebec2d50fa086e9d16359896c9204c6a92bc07aba2"
   end
 
+  resource "construct" do
+    url "https://pypi.python.org/packages/source/c/construct/construct-2.5.2.tar.gz"
+    sha256 "665b6271eeadf15219c726b180c8d7a641d026784d72ca3dad90a20aae009020"
+  end
+
+  resource "click" do
+    url "https://pypi.python.org/packages/source/c/click/click-5.1.tar.gz"
+    sha256 "678c98275431fad324275dec63791e4a17558b40e5a110e20a82866139a85a5a"
+  end
+
   # Optional resources
   resource "pyamf" do
     url "https://pypi.python.org/packages/source/P/PyAMF/PyAMF-0.7.2.tar.gz"
@@ -157,7 +167,8 @@ class Mitmproxy < Formula
 
     res = %w[backports.ssl_match_hostname blinker certifi cffi ConfigArgParse
              cryptography enum34 hpack html2text idna ipaddress lxml netlib passlib
-             pyasn1 pycparser pyOpenSSL pyparsing pyperclip six tornado urwid]
+             pyasn1 pycparser pyOpenSSL pyparsing pyperclip six tornado urwid
+             construct click]
 
     res << "pyamf" if build.with? "pyamf"
     res << "cssutils" if build.with? "cssutils"

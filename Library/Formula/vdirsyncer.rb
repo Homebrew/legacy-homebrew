@@ -1,15 +1,15 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.0.tar.gz"
-  sha256 "ddf9e20b085f97c7bae97ed4cd5e8a78f472ee0b1cae3be537809ae98589172a"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.3.tar.gz"
+  sha256 "3e87df25f7f5af172f2063e39deccac7c5477a2be3c7ff16183b6b8e9f2d112a"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "79670a5825750bb39ac697f4be3af12b562c2312ca3e09355a8b3847f53bf384" => :el_capitan
-    sha256 "3db1814d421893cba4d45b295da7273285d0d698e6017e7e665331d026ada34c" => :yosemite
-    sha256 "03eed71a1cbb9604b99e8d450a1b167984bf89468093c2b0b00b1cc871dd1883" => :mavericks
+    sha256 "074aadb17cfe961bb81842fc7391db12e3d2e4bd44690479d7535d3bc2c1cbbc" => :el_capitan
+    sha256 "1068d4515c5b9fa951dac43c9fb10fc7b7a33ab1252ef2d1547de2504da6b1bb" => :yosemite
+    sha256 "6c5d879d6a338b6fb05cc3800cff22aa8e91c402dc1d0288e6ce6f94606474a7" => :mavericks
   end
 
   option "without-keyring", "Build without python-keyring support"

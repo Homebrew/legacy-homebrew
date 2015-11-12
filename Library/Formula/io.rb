@@ -1,10 +1,16 @@
 class Io < Formula
   desc "Small prototype-based programming language"
   homepage "http://iolanguage.com/"
-  url "https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz"
-  sha256 "e31e8aded25069d945b55732960b3553ba69851a61bd8698b68dfca27b6724cd"
+  url "https://github.com/stevedekorte/io/archive/2015.11.11.tar.gz"
+  sha256 "00d7be0b69ad04891dd5f6c77604049229b08164d0c3f5877bfab130475403d3"
 
   head "https://github.com/stevedekorte/io.git"
+
+  bottle do
+    sha256 "741314b5c2629688c17eabca50e0a623a9318a44d94568d4d0cf53e86560c2b2" => :el_capitan
+    sha256 "e34facca9debca217eaab84e55c036fe1bbd30a34a18bac927dc4a435947604b" => :yosemite
+    sha256 "6c0b0d22dd8184f20c60b9d35437645314c7149b0a2e34d8c406546faf44e570" => :mavericks
+  end
 
   option "without-addons", "Build without addons"
 
@@ -30,21 +36,6 @@ class Io < Formula
     depends_on :python => :optional
   end
 
-  fails_with :clang do
-    build 421
-    cause <<-EOS.undent
-      make never completes. see:
-      https://github.com/stevedekorte/io/issues/223
-    EOS
-  end
-
-  # Fixes build on GCC with recursive inline functions;
-  # committed upstream, will be in the next release.
-  patch do
-    url "https://github.com/stevedekorte/io/commit/f21a10ca0e8959e2a0774962c36392cf166be6a6.diff"
-    sha256 "7dbea1f027de4a4b12decba13a3e58c3352cd599fae14054d7a3af5eb2c454bb"
-  end
-
   def install
     ENV.j1
 
@@ -64,9 +55,9 @@ class Io < Formula
         # Turn off specific add-ons that are not currently working
 
         # Looks for deprecated Freetype header
-        s.gsub! /(add_subdirectory\(Font\))/, '#\1'
+        s.gsub!(/(add_subdirectory\(Font\))/, '#\1')
         # Builds against older version of memcached library
-        s.gsub! /(add_subdirectory\(Memcached\))/, '#\1'
+        s.gsub!(/(add_subdirectory\(Memcached\))/, '#\1')
       end
     end
 
@@ -81,5 +72,13 @@ class Io < Formula
       end
       system "make", "install"
     end
+  end
+
+  test do
+    (testpath/"test.io").write <<-EOS.undent
+      "it works!" println
+    EOS
+
+    assert_equal "it works!\n", shell_output("#{bin}/io test.io")
   end
 end
