@@ -1,6 +1,6 @@
 class Vncsnapshot < Formula
   desc "Command-line utility for taking VNC snapshots"
-  homepage "http://sourceforge.net/projects/vncsnapshot/"
+  homepage "https://sourceforge.net/projects/vncsnapshot/"
   url "https://downloads.sourceforge.net/project/vncsnapshot/vncsnapshot/1.2a/vncsnapshot-1.2a-src.tar.gz"
   sha256 "20f5bdf6939a0454bc3b41e87e41a5f247d7efd1445f4fac360e271ddbea14ee"
 
