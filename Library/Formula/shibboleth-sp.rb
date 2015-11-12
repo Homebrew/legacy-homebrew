@@ -4,7 +4,7 @@ class ShibbolethSp < Formula
   url "http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz"
   sha256 "30da36e0bba2ce4606a9effc37c05cd110dafdd6d3141468c4aa0f57ce4d96ce"
 
-  option "enable-apache-22"
+  option "with-apache-22"
 
   depends_on "curl" => "with-openssl"
   depends_on "opensaml"
@@ -26,7 +26,7 @@ class ShibbolethSp < Formula
     args << "--with-xmltooling=#{Formula["xml-tooling-c"].opt_prefix}"
     args << "--with-saml=#{Formula["opensaml"].opt_prefix}"
     args << "DYLD_LIBRARY_PATH=#{lib}"
-    if build.with? "enable-apache-22"
+    if build.with? "apache-22"
       args << "--enable-apache-22"
     else
       args << "--enable-apache-24"
@@ -66,7 +66,7 @@ class ShibbolethSp < Formula
     s += <<-EOS.undent
       You must manually edit httpd.conf to include
     EOS
-    if build.with? "enable-apache-22"
+    if build.with? "apache-22"
       mod = "mod_shib_22.so"
     else
       mod = "mod_shib_24.so"
