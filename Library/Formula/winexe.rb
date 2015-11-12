@@ -1,6 +1,6 @@
 class Winexe < Formula
   desc "Remote Windows-command executor"
-  homepage "http://sourceforge.net/projects/winexe/"
+  homepage "https://sourceforge.net/projects/winexe/"
   url "https://downloads.sourceforge.net/project/winexe/winexe-1.00.tar.gz"
   sha256 "99238bd3e1c0637041c737c86a05bd73a9375abc9794dca71d2765e22d87537e"
 
@@ -16,8 +16,8 @@ class Winexe < Formula
   # This Winexe uses "getopts.pl" that is no longer supplied with newer
   # versions of Perl
   resource "Perl4::CoreLibs" do
-    url "http://search.cpan.org/CPAN/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-0.003.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-0.003.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-0.003.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/Z/ZE/ZEFRAM/Perl4-CoreLibs-0.003.tar.gz"
     sha256 "55c9b2b032944406dbaa2fd97aa3692a1ebce558effc457b4e800dabfaad9ade"
   end
 
