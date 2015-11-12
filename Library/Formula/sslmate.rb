@@ -6,9 +6,10 @@ class Sslmate < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6f54f953b408f8e7b8bed0f90e999da84291d96a506053a9c0c59c30d3141611" => :el_capitan
-    sha256 "e60172537a652a4f4e1075c84a0a5663089f1f00ae469e222122588865038fa4" => :yosemite
-    sha256 "ae11a4cf8d04e4ecf85440ea0c006ab2db9394f52825082bcb021d05496e1ce7" => :mavericks
+    revision 1
+    sha256 "1e2a6b7dc2d1af9d02b659b08c18af42d3bdd1568c7cc56c539140996b1c42ad" => :el_capitan
+    sha256 "2c9d8f4decd35035d7c574e3755d3fb6466ac78440dbadf239f85315698fc687" => :yosemite
+    sha256 "c03aa55a8218846950612d7f1a41aa356ec7d66bcaf9e74c3c3e2f38d7c6f672" => :mavericks
   end
 
   option "without-route53", "Disable support for Route 53 DNS approval"
