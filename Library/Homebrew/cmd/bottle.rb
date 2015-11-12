@@ -186,7 +186,7 @@ module Homebrew
     keg.lock do
       begin
         keg.relocate_install_names prefix, Keg::PREFIX_PLACEHOLDER,
-          cellar, Keg::CELLAR_PLACEHOLDER, :keg_only => f.keg_only?
+          cellar, Keg::CELLAR_PLACEHOLDER
         keg.relocate_text_files prefix, Keg::PREFIX_PLACEHOLDER,
           cellar, Keg::CELLAR_PLACEHOLDER
 
@@ -223,7 +223,7 @@ module Homebrew
       ensure
         ignore_interrupts do
           keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
-            Keg::CELLAR_PLACEHOLDER, cellar, :keg_only => f.keg_only?
+            Keg::CELLAR_PLACEHOLDER, cellar
         end
       end
     end

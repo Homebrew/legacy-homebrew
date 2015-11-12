@@ -184,7 +184,7 @@ class MigratorTests < Homebrew::TestCase
 
     assert_predicate @new_keg_record, :exist?
     assert_predicate @old_keg_record.parent, :symlink?
-    refute_predicate (HOMEBREW_LIBRARY/"LinkedKegs/oldname"), :exist?
+    refute_predicate HOMEBREW_LIBRARY/"LinkedKegs/oldname", :exist?
     assert_equal @new_keg_record.realpath, (HOMEBREW_LIBRARY/"LinkedKegs/newname").realpath
     assert_equal @new_keg_record.realpath, @old_keg_record.realpath
     assert_equal @new_keg_record.realpath, (HOMEBREW_PREFIX/"opt/oldname").realpath

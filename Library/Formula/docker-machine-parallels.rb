@@ -3,15 +3,15 @@ require "language/go"
 class DockerMachineParallels < Formula
   desc "Docker Machine Parallels Driver"
   homepage "https://github.com/Parallels/docker-machine-parallels"
-  url "https://github.com/Parallels/docker-machine-parallels/archive/v1.0.0.tar.gz"
-  sha256 "2598ced93c8dec6eaccacca1b0c72275c423a2afbf34d88bdc4173475bdcc5cf"
+  url "https://github.com/Parallels/docker-machine-parallels/archive/v1.0.1.tar.gz"
+  sha256 "9a5abc454748aeb83c74c45efd3a73359a47e408e215318fbcc6446026581652"
   head "https://github.com/Parallels/docker-machine-parallels.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "cf512918306a8ce4f3b2f9686d040b871b2981353579713fff52d108de8c87e8" => :el_capitan
-    sha256 "1caf0c6146c574295442efd1cddd23c4a9bab5aade7f3c1233408c79413bd852" => :yosemite
-    sha256 "1be969fb8f690f804eb4dbc11e1a7a70a7be794763f351f5b9a800a20ea08903" => :mavericks
+    sha256 "44650aa4e70e2c7d53c3480150cd4733cdde9959c836f520517a7ff3a9335544" => :el_capitan
+    sha256 "b3b09d60c173542970dbaa0257bbdaf54520b229df2135284f534f952d121b39" => :yosemite
+    sha256 "575cd941ec602f32cdb0b66910009ecf6d20212a327df2c0143ef051c7db7b74" => :mavericks
   end
 
   depends_on "go" => :build

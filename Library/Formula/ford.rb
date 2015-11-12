@@ -7,10 +7,11 @@ class Ford < Formula
   head "https://github.com/cmacmackin/ford.git"
 
   bottle do
-    cellar :any
-    sha256 "1f69c2ad783b780f5f98d4ffb6f9f9e4bf9421c1fe409ab4c4e8d41aa1472d6e" => :yosemite
-    sha256 "ef663ce6c97e57e3d3aac8a4944a9efe90c850749bfab219bb4ac3a26c9a5544" => :mavericks
-    sha256 "ce4bc86826ecbd61f9bf7a344dcf1cd623f5449b0e9282b551c8c486a44791ab" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "1568c6f29b3ce8cabd14e742c64899fee7106419012eca0c159f7588d35c4fee" => :el_capitan
+    sha256 "64f2a52e3d3a0c1d74acb8225aa568be508ce50c848fd7bd47d08af2e4f1ad2d" => :yosemite
+    sha256 "04e4235f11b40e7b9ae76680da94bee4ff64565089f50837773cf950365c56dc" => :mavericks
   end
 
   depends_on "graphviz"
@@ -76,12 +77,12 @@ class Ford < Formula
       project_dir: ./src
       output_dir: ./doc
       project_github: https://github.com/cmacmackin/futility
-      project_website: http://github.com
+      project_website: https://github.com
       summary: Some Fortran program which I wrote.
       author: John Doe
       author_description: I program stuff in Fortran.
       github: https://github.com/cmacmackin
-      email: john.doe@address.com
+      email: john.doe@example.com
       predocmark: >
       docmark_alt: #
       predocmark_alt: <
