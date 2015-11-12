@@ -6,9 +6,9 @@ class Minisign < Formula
 
   bottle do
     cellar :any
-    sha256 "65b7a36e3090ccc3bf36cf6e9db6d0f4bafddc02367a9708f8d8dd7ec3dca785" => :el_capitan
-    sha256 "71e0499e55343f41e3a7761fb90085b8b7c72fcf3928c0685a3c7d69f7faa0d0" => :yosemite
-    sha256 "ce86a3055695f8b760440702c240edd5166539caf99ebc8cf6b8d3f5ea17d487" => :mavericks
+    sha256 "8ba8bd4efa18b1bb418fbfe0f734e36b497f50fdcdd7c90ba33c054ed03f8cf5" => :el_capitan
+    sha256 "51078510d83f37e6df87bd601d6f593e88798500249a05c5b431f756bd41ae62" => :yosemite
+    sha256 "0327b84d602a990be9046a3fead0e219a4cfd0f5f66e0128842b7c2e0898bc79" => :mavericks
   end
 
   depends_on "libsodium"
