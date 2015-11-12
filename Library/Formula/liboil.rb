@@ -1,14 +1,13 @@
-require 'formula'
-
 class Liboil < Formula
   desc "C library of simple functions optimized for various CPUs"
-  homepage 'http://liboil.freedesktop.org/'
-  url 'http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz'
-  sha1 'f9d7103a3a4a4089f56197f81871ae9129d229ed'
+  homepage "http://liboil.freedesktop.org/"
+  url "http://liboil.freedesktop.org/download/liboil-0.3.17.tar.gz"
+  sha256 "105f02079b0b50034c759db34b473ecb5704ffa20a5486b60a8b7698128bfc69"
 
   bottle do
     cellar :any
     revision 1
+    sha256 "7d76b7a220caeb8dbaef27b879f4f3ac0ad5b236b563961abd9484e8bc9e0160" => :el_capitan
     sha1 "1d7f799090d7ccfe52341971822d3af1269ea68f" => :yosemite
     sha1 "14d746548dc6e18f900e4fe67d1f1958fda68016" => :mavericks
     sha1 "41590a673b637d2307b1ce287ec692e4d47b3191" => :mountain_lion

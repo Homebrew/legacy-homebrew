@@ -1,13 +1,12 @@
-require "formula"
-
 class HardlinkOsx < Formula
   desc "Command-line utility that implements hardlinks on OS X"
   homepage "https://github.com/selkhateeb/hardlink"
   url "https://github.com/selkhateeb/hardlink/archive/v0.1.1.tar.gz"
-  sha1 "ce89e04b7c6b31a06b497449f2d383a7dab513fb"
+  sha256 "5876554e6dafb6627a94670ac33e750a7efeb3a5fbde5ede3e145cdb5131d1ba"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "edf85db2b0586c410dd96f8ab50cf4cc0f34d1494b3b91a5ef0b00ae16fed3c0" => :el_capitan
     sha1 "b8e5b31796d36c818c302bddbd45f227dc943a13" => :yosemite
     sha1 "d61a54cff4e7ff52a0fc3131188d6adecf5ad35a" => :mavericks
     sha1 "15910f042ea3aac09d8a2e94c783ec30e47e1f3a" => :mountain_lion

@@ -1,40 +1,40 @@
-require 'testing_env'
-require 'resource'
+require "testing_env"
+require "resource"
 
 class ResourceTests < Homebrew::TestCase
   def setup
-    @resource = Resource.new('test')
+    @resource = Resource.new("test")
   end
 
   def test_url
-    @resource.url('foo')
-    assert_equal 'foo', @resource.url
+    @resource.url("foo")
+    assert_equal "foo", @resource.url
   end
 
   def test_url_with_specs
-    @resource.url('foo', :branch => 'master')
-    assert_equal 'foo', @resource.url
-    assert_equal({ :branch => 'master' }, @resource.specs)
+    @resource.url("foo", :branch => "master")
+    assert_equal "foo", @resource.url
+    assert_equal({ :branch => "master" }, @resource.specs)
   end
 
   def test_url_with_custom_download_strategy_class
     strategy = Class.new(AbstractDownloadStrategy)
-    @resource.url('foo', :using => strategy)
-    assert_equal 'foo', @resource.url
+    @resource.url("foo", :using => strategy)
+    assert_equal "foo", @resource.url
     assert_equal strategy, @resource.download_strategy
   end
 
   def test_url_with_specs_and_download_strategy
     strategy = Class.new(AbstractDownloadStrategy)
-    @resource.url('foo', :using => strategy, :branch => 'master')
-    assert_equal 'foo', @resource.url
-    assert_equal({ :branch => 'master' }, @resource.specs)
+    @resource.url("foo", :using => strategy, :branch => "master")
+    assert_equal "foo", @resource.url
+    assert_equal({ :branch => "master" }, @resource.specs)
     assert_equal strategy, @resource.download_strategy
   end
 
   def test_url_with_custom_download_strategy_symbol
-    @resource.url('foo', :using => :git)
-    assert_equal 'foo', @resource.url
+    @resource.url("foo", :using => :git)
+    assert_equal "foo", @resource.url
     assert_equal GitDownloadStrategy, @resource.download_strategy
   end
 
@@ -43,35 +43,35 @@ class ResourceTests < Homebrew::TestCase
   end
 
   def test_does_not_mutate_specs_hash
-    specs = { :using => :git, :branch => 'master' }
-    @resource.url('foo', specs)
-    assert_equal({ :branch => 'master' }, @resource.specs)
+    specs = { :using => :git, :branch => "master" }
+    @resource.url("foo", specs)
+    assert_equal({ :branch => "master" }, @resource.specs)
     assert_equal(:git, @resource.using)
-    assert_equal({ :using => :git, :branch => 'master' }, specs)
+    assert_equal({ :using => :git, :branch => "master" }, specs)
   end
 
   def test_version
-    @resource.version('1.0')
-    assert_version_equal '1.0', @resource.version
+    @resource.version("1.0")
+    assert_version_equal "1.0", @resource.version
     refute_predicate @resource.version, :detected_from_url?
   end
 
   def test_version_from_url
-    @resource.url('http://example.com/foo-1.0.tar.gz')
-    assert_version_equal '1.0', @resource.version
+    @resource.url("http://example.com/foo-1.0.tar.gz")
+    assert_version_equal "1.0", @resource.version
     assert_predicate @resource.version, :detected_from_url?
   end
 
   def test_version_with_scheme
     klass = Class.new(Version)
     @resource.version klass.new("1.0")
-    assert_version_equal '1.0', @resource.version
+    assert_version_equal "1.0", @resource.version
     assert_instance_of klass, @resource.version
   end
 
   def test_version_from_tag
-    @resource.url('http://example.com/foo-1.0.tar.gz', :tag => 'v1.0.2')
-    assert_version_equal '1.0.2', @resource.version
+    @resource.url("http://example.com/foo-1.0.tar.gz", :tag => "v1.0.2")
+    assert_version_equal "1.0.2", @resource.version
     assert_predicate @resource.version, :detected_from_url?
   end
 
@@ -87,9 +87,9 @@ class ResourceTests < Homebrew::TestCase
 
   def test_mirrors
     assert_empty @resource.mirrors
-    @resource.mirror('foo')
-    @resource.mirror('bar')
-    assert_equal %w{foo bar}, @resource.mirrors
+    @resource.mirror("foo")
+    @resource.mirror("bar")
+    assert_equal %w[foo bar], @resource.mirrors
   end
 
   def test_checksum_setters
@@ -109,7 +109,7 @@ class ResourceTests < Homebrew::TestCase
   end
 
   def test_verify_download_integrity_missing
-    fn = Pathname.new('test')
+    fn = Pathname.new("test")
 
     fn.stubs(:file? => true)
     fn.expects(:verify_checksum).raises(ChecksumMissingError)

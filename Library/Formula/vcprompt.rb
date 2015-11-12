@@ -1,10 +1,8 @@
-require 'formula'
-
 class Vcprompt < Formula
   desc "Provide version control info in shell prompts"
-  homepage 'https://bitbucket.org/gward/vcprompt'
-  url 'https://bitbucket.org/gward/vcprompt/downloads/vcprompt-1.2.1.tar.gz'
-  sha1 'fb623e6183b8e5ccbbe5cf7d135a04e727c9b402'
+  homepage "https://bitbucket.org/gward/vcprompt"
+  url "https://bitbucket.org/gward/vcprompt/downloads/vcprompt-1.2.1.tar.gz"
+  sha256 "98c2dca278a34c5cdbdf4a5ff01747084141fbf4c50ba88710c5a13c3cf9af09"
 
   bottle do
     cellar :any
@@ -14,11 +12,11 @@ class Vcprompt < Formula
   end
 
   head do
-    url 'https://bitbucket.org/gward/vcprompt', :using => :hg
+    url "https://bitbucket.org/gward/vcprompt", :using => :hg
     depends_on "autoconf" => :build
   end
 
-  depends_on 'sqlite'
+  depends_on "sqlite"
 
   def install
     system "autoconf" if build.head?

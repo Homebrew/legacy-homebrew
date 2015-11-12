@@ -8,23 +8,25 @@ class PerconaToolkit < Formula
   head "lp:percona-toolkit", :using => :bzr
 
   bottle do
-    sha256 "e2a37d9f74765fb4d8d22dd6d4e1f2bf781eb2c284f09fcbe3c1dd556dfdeb29" => :yosemite
-    sha256 "c3db7076de6000795742e8fbe6ae55fa1048dd7b2d2b0eb7c12991cb1718bc95" => :mavericks
-    sha256 "95fec4e6b45806a11c940c48f6e811101e7bf711aba758783762b2133229b08f" => :mountain_lion
+    cellar :any
+    revision 2
+    sha256 "bd302d01739a5f1c1dda4445dd50287d9d5c66b714b595f5f181de3eb5ed32cd" => :el_capitan
+    sha256 "2fafd98c8ea4e1994b1da9f0c7b33db87f783cc993f68fa7cb7856f03363e171" => :yosemite
+    sha256 "73db80b5764c024ec09faec733c390d3b2b68cc565f53e3fe885d85c1641fb5c" => :mavericks
   end
 
   depends_on :mysql
   depends_on "openssl"
 
   resource "DBD::mysql" do
-    url "http://www.cpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
-    mirror "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
     sha256 "76756b24eed46553f9dad22d0682a82b50ca2c8500ea4ede0a414acab48c9e77"
   end
 
   resource "JSON" do
-    url "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
-    mirror "https://cpan.metacpan.org/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
     sha256 "4ddbb3cb985a79f69a34e7c26cde1c81120d03487e87366f9a119f90f7bdfe88"
   end
 

@@ -7,7 +7,8 @@ class GitFtp < Formula
   head "https://github.com/git-ftp/git-ftp.git", :branch => "develop"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "9da54b0aebec317e6a9697e3902ad740270ec479d799be32c8b7e8a0b7f88e4e" => :el_capitan
     sha256 "28f1121cf94519c15eca06c48851c5385c8093bbd501162157a7adc0ed9eae57" => :yosemite
     sha256 "777c74d53098f88ca5a4b4202a7645e11361b567cace63b365b159660d5513de" => :mavericks
     sha256 "5a0ae43f9f07ce414c01a84862bc0b3eb9c508062c40b12a268d4fab2823d07a" => :mountain_lion

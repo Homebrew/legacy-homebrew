@@ -1,21 +1,21 @@
-require "formula"
-
 class Qbs < Formula
   desc "Qt Build Suite"
   homepage "https://wiki.qt.io/Qt_Build_Suite"
-  url "https://download.qt.io/official_releases/qbs/1.4.0/qbs-1.4.0.src.tar.gz"
-  sha1 "4c70247155281b9536a6fab6672cd5f53610cfa1"
+  url "https://download.qt.io/official_releases/qbs/1.4.3/qbs-src-1.4.3.tar.gz"
+  sha256 "0c47291ac578c1fc8f2bd6ab20fbeeb58630c4c6ddc085f6081ae570f825f787"
+  head "https://code.qt.io/qt-labs/qbs.git"
 
   bottle do
-    sha256 "fa881458fc8700b9160bde642842e0baf75a4e221909a890c7ed6c1f191c4e32" => :yosemite
-    sha256 "e211c32a20804c5d8386d825bb3846a6bb2b5bc360f2abdab577d5dc7288402f" => :mavericks
-    sha256 "fbf2045061fdb7c148ec4c32843e29078810282ae28eb13c1289904953a3209d" => :mountain_lion
+    cellar :any
+    sha256 "5d94dc85f7d7f3215d9930cbabcf9a2ceb7ab3899468f78bbd628fe60f3216ff" => :el_capitan
+    sha256 "f2179c4003a7d2fff052844872218b4c94a8548ce3c6aa29359eba66c1ef3b0f" => :yosemite
+    sha256 "4cfecaa5d4dd45d6be7aa6a2ab6b3192f24dbed3b3839699cec3896dc86030a2" => :mavericks
   end
 
   depends_on "qt5"
 
   def install
-    system "qmake", "qbs.pro", "-r"
+    system "qmake", "qbs.pro", "-r", "QBS_INSTALL_PREFIX=/"
     system "make", "install", "INSTALL_ROOT=#{prefix}"
   end
 

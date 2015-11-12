@@ -1,11 +1,9 @@
-require 'formula'
-
 class Twemcache < Formula
   desc "Twitter fork of memcached"
-  homepage 'https://github.com/twitter/twemcache'
-  head 'https://github.com/twitter/twemcache.git'
+  homepage "https://github.com/twitter/twemcache"
+  head "https://github.com/twitter/twemcache.git"
   url "https://github.com/twitter/twemcache/archive/v2.6.0.tar.gz"
-  sha256 '6e0e9361bda46bdaa577c7eed6cd829aeca442b2c3b4f84b250039c86027ce05'
+  sha256 "6e0e9361bda46bdaa577c7eed6cd829aeca442b2c3b4f84b250039c86027ce05"
 
   option "enable-debug", "Debug mode with assertion panics enabled"
 
@@ -28,6 +26,6 @@ class Twemcache < Formula
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

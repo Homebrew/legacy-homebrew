@@ -1,20 +1,21 @@
 class Atk < Formula
   desc "GNOME accessibility toolkit"
   homepage "https://library.gnome.org/devel/atk/"
-  url "https://download.gnome.org/sources/atk/2.16/atk-2.16.0.tar.xz"
-  sha256 "095f986060a6a0b22eb15eef84ae9f14a1cf8082488faa6886d94c37438ae562"
+  url "https://download.gnome.org/sources/atk/2.18/atk-2.18.0.tar.xz"
+  sha256 "ce6c48d77bf951083029d5a396dd552d836fff3c1715d3a7022e917e46d0c92b"
 
   bottle do
-    sha256 "128b040fbcf11591d3fef7bff779b958fb1fd4ce49715a14427fd5f8aba81010" => :yosemite
-    sha256 "50a58e13caac37709dd4cb9d7414393ded99aa17ca8037316d0dd0cb9018286d" => :mavericks
-    sha256 "7a7f9f7a5532e454434eeb4d33abd52cf7a568c259b407b61af1705233f0ea6c" => :mountain_lion
+    revision 1
+    sha256 "35c6f979fd70a1d6795be0eb39af47ce2dc107ee37916463779edd4432005d7e" => :el_capitan
+    sha256 "86f832cb5899fd42461aa8622bc29e5a63789426e928e20f092bb9268565d00c" => :yosemite
+    sha256 "cb32c119e17261370f0aa7271686a3736b5d1f4bdda19f5bac7fde3f00532401" => :mavericks
   end
+
+  option :universal
 
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gobject-introspection"
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?

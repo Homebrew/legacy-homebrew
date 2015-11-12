@@ -1,12 +1,10 @@
-require 'formula'
-
 class Fdclone < Formula
   desc "Console-based file manager"
-  homepage 'http://hp.vector.co.jp/authors/VA012337/soft/fd/'
-  url 'http://hp.vector.co.jp/authors/VA012337/soft/fd/FD-3.01b.tar.gz'
-  sha1 '01a0174d0409a246c2caf34e901a1d51f9e45519'
+  homepage "http://hp.vector.co.jp/authors/VA012337/soft/fd/"
+  url "http://hp.vector.co.jp/authors/VA012337/soft/fd/FD-3.01b.tar.gz"
+  sha256 "d66d902cac9d4f64a91d42ceb487a138d544c9fd9cb2961730889cc8830303d4"
 
-  depends_on 'nkf' => :build
+  depends_on "nkf" => :build
 
   patch :DATA
 
@@ -15,7 +13,7 @@ class Fdclone < Formula
     system "make", "PREFIX=#{prefix}", "all"
     system "make", "MANTOP=#{man}", "install"
 
-    %w(README FAQ HISTORY LICENSES TECHKNOW ToAdmin).each do |file|
+    %w[README FAQ HISTORY LICENSES TECHKNOW ToAdmin].each do |file|
       system "nkf", "-w", "--overwrite", file
       prefix.install "#{file}.eng" => file
       prefix.install file => "#{file}.ja"

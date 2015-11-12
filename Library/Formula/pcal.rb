@@ -1,10 +1,8 @@
-require "formula"
-
 class Pcal < Formula
   desc "Generate Postscript calendars without X"
   homepage "http://pcal.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/pcal/pcal/pcal-4.11.0/pcal-4.11.0.tgz"
-  sha1 "214bcb4c4b7bc986ae495c96f2ab169233a7f973"
+  sha256 "8406190e7912082719262b71b63ee31a98face49aa52297db96cc0c970f8d207"
 
   def install
     ENV.deparallelize

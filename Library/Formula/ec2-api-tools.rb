@@ -4,6 +4,8 @@ class Ec2ApiTools < Formula
   url "https://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.7.4.0.zip"
   sha256 "4808c712944c8e7b806cd3b4812508036ae3de565edec35964a9e88bb42ab728"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

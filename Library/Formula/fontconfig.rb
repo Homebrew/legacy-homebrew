@@ -2,16 +2,16 @@ class Fontconfig < Formula
   desc "XML-based font configuration API for X Windows"
   homepage "http://fontconfig.org/"
   url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
-  sha1 "08565feea5a4e6375f9d8a7435dac04e52620ff2"
+  sha256 "dc62447533bca844463a3c3fd4083b57c90f18a70506e7a9f4936b5a1e516a99"
 
   # The bottle tooling is too lenient and thinks fontconfig
   # is relocatable, but it has hardcoded paths in the executables.
   bottle do
     cellar :any
-    revision 3
-    sha1 "aa8cd844a4740cb6458a4c4bd74746de6e75a02b" => :yosemite
-    sha1 "5d273ae804ff4c3f2ad735d77e9d25b2cb1ce910" => :mavericks
-    sha1 "17c0696a6e075db8d6822bdde341616d36cb0c0d" => :mountain_lion
+    revision 4
+    sha256 "ebf34b370ba91f92df903e7b080135f3cc6e0492156002ee3fdd899128f60aa8" => :el_capitan
+    sha256 "5b27c11fd4dc7ccc4c37484775efa581f5c6cb3b447ea744a8d14573800ae516" => :yosemite
+    sha256 "bd0b9ce3d85d4767ac326d1ec58eb99825a6218e20d32ca20508f399867be700" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion
@@ -31,6 +31,7 @@ class Fontconfig < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
+                          "--enable-static",
                           "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",

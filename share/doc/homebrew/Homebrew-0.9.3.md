@@ -17,8 +17,8 @@ Because we are working with a practically virgin environment, we are essentially
 
 So:
 
-* We no longer worry about MacPorts/Fink being installed<sup>[†](#_†)</sup>
-* We no longer worry about system duplicates<sup>[†](#_†)</sup>
+* We no longer worry about MacPorts/Fink being installed<sup>[0](#_0)</sup>
+* We no longer worry about system duplicates<sup>[0](#_0)</sup>
 * We override common tools and fix them—we no longer have to do so with workarounds in affected formula, waiting for a fix from Apple.
 * Builds are forcibly optimized how we want, and debug info forcibly removed.
 
@@ -27,7 +27,7 @@ So:
 ## Footnotes
 <div style="color: #555; font-size: 85%">
   <ul>
-    <li><a id="_†"><sup>†</sup></a>: Nearly as much, anyway.</li>
+    <li><a id="_0"><sup>0</sup></a>: Nearly as much, anyway.</li>
     <li><a id="_1"><sup>1</sup></a>: Formula can opt-into re-adding the user’s <code>PATH</code> again. Some formulae need this.</li>
     <li><a id="_2"><sup>2</sup></a>: Indeed; this is selected based on Xcode version.</li>
   </ul>

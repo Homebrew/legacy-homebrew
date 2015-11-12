@@ -1,10 +1,8 @@
-require "formula"
-
 class Libmarisa < Formula
   desc "Static and space-efficient trie data structure"
   homepage "https://code.google.com/p/marisa-trie/"
   url "https://marisa-trie.googlecode.com/files/marisa-0.2.4.tar.gz"
-  sha1 "fb0ed7d993e84dff32ec456a79bd36a00022629d"
+  sha256 "67a7a4f70d3cc7b0a85eb08f10bc3eaf6763419f0c031f278c1f919121729fb3"
 
   bottle do
     cellar :any
@@ -21,7 +19,7 @@ class Libmarisa < Formula
   end
 
   test do
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <marisa.h>
       int main() {
         marisa::Keyset keyset;

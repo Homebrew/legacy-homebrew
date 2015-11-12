@@ -1,10 +1,8 @@
-require 'formula'
-
 class Shellinabox < Formula
   desc "Export command-line tools to web based terminal emulator"
-  homepage 'https://code.google.com/p/shellinabox/'
-  url 'https://shellinabox.googlecode.com/files/shellinabox-2.14.tar.gz'
-  sha1 '9e01f58c68cb53211b83d0f02e676e0d50deb781'
+  homepage "https://code.google.com/p/shellinabox/"
+  url "https://shellinabox.googlecode.com/files/shellinabox-2.14.tar.gz"
+  sha256 "4126eb7070869787c161102cc2781d24d1d50c8aef4e5a3e1b5446e65d691071"
 
   def install
     system "./configure", "--disable-dependency-tracking",

@@ -10,7 +10,7 @@ class X11Requirement < Requirement
 
   env { ENV.x11 }
 
-  def initialize(name="x11", tags=[])
+  def initialize(name = "x11", tags = [])
     @name = name
     if /(\d\.)+\d/ === tags.first
       @min_version = Version.new(tags.shift)
@@ -32,7 +32,7 @@ class X11Requirement < Requirement
     s
   end
 
-  def <=> other
+  def <=>(other)
     return unless X11Requirement === other
     min_version <=> other.min_version
   end

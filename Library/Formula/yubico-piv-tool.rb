@@ -1,14 +1,19 @@
 class YubicoPivTool < Formula
   desc "Command-line tool for the YubiKey NEO PIV applet"
   homepage "https://developers.yubico.com/yubico-piv-tool/"
+<<<<<<< HEAD
   url "https://developers.yubico.com/yubico-piv-tool/releases/yubico-piv-tool-1.0.0.tar.gz"
   sha256 "303f576eb17af65234f8a3feddcab6add13c6c2dc82de875e165b6bfc2b9bab7"
+=======
+  url "https://developers.yubico.com/yubico-piv-tool/releases/yubico-piv-tool-1.1.0.tar.gz"
+  sha256 "457407e462d8d11c80788641516d65b92cc327b120b4e5bbf43f0d0679db1c39"
+>>>>>>> Homebrew/master
 
   bottle do
     cellar :any
-    sha256 "8ce8bf57c35522df2368f4700060f872a9af329f8c49aaee59f159c937869cca" => :yosemite
-    sha256 "7be9804e613191d9f50fa489313dbacfcc6c41e5e2d7417cb7f031a137709909" => :mavericks
-    sha256 "f772eff93aff2c34503d4f50fbbe3679877f594acb32351a4054f3d203e591aa" => :mountain_lion
+    sha256 "2b1543c1fd96d93dd31556cdf65dbed72566d4a101e7b830ef7cd090d9630bf6" => :el_capitan
+    sha256 "a51317cc84545d6488edf2e705979fc7c1e8f67523d8735be50fcc93bbd4ba07" => :yosemite
+    sha256 "1eaf3988ee584e3a2ebd734207d6dc777fabd337bcc1167eb87ad891f99076b0" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -22,6 +27,6 @@ class YubicoPivTool < Formula
   end
 
   test do
-    system "#{bin}/yubico-piv-tool", "--version"
+    assert_match "yubico-piv-tool 1.1.0", shell_output("#{bin}/yubico-piv-tool --version")
   end
 end

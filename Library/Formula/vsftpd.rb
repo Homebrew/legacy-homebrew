@@ -1,21 +1,18 @@
-require 'formula'
-
 class Vsftpd < Formula
   desc "Secure FTP server for UNIX"
-  homepage 'https://security.appspot.com/vsftpd.html'
-  url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
-  sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'
-  revision 1
+  homepage "https://security.appspot.com/vsftpd.html"
+  url "https://security.appspot.com/downloads/vsftpd-3.0.3.tar.gz"
+  mirror "https://fossies.org/linux/misc/vsftpd-3.0.3.tar.gz"
+  sha256 "9d4d2bf6e6e2884852ba4e69e157a2cecd68c5a7635d66a3a8cf8d898c955ef7"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "1a64152c081dfafa1d02e5736931d7ccdd0f9aa0" => :mavericks
-    sha1 "58c43be3dce1228728894eb1767235a50e63589e" => :mountain_lion
-    sha1 "cfd7597d2a41a4704488c5754a3bb2d03e8cde5e" => :lion
+    sha256 "1b89166674f7558a158bab938d9f96211d5e81410a47488980498bf4a45b8cb1" => :yosemite
+    sha256 "acdbf0783edeb56df1e85eec01bf4bb41495023f38fb45236ba05a092c61962b" => :mavericks
+    sha256 "2f375a416262bf9a71446ea1088dc1ade8b8264eed5dc2a232dea5159a1842b9" => :mountain_lion
   end
 
-  depends_on 'openssl' => :optional
+  depends_on "openssl" => :optional
 
   # Patch to remove UTMPX dependency, locate OS X's PAM library, and
   #   remove incompatible LDFLAGS. (reported to developer via email)
@@ -33,7 +30,7 @@ class Vsftpd < Formula
 
     # make install has all the paths hardcoded; this is easier:
     sbin.install "vsftpd"
-    etc.install  "vsftpd.conf"
+    etc.install "vsftpd.conf"
     man5.install "vsftpd.conf.5"
     man8.install "vsftpd.8"
   end

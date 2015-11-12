@@ -1,11 +1,9 @@
-require 'formula'
-
 class Msdl < Formula
   desc "Downloader for various streaming protocols"
-  homepage 'http://msdl.sourceforge.net'
-  url 'https://downloads.sourceforge.net/msdl/msdl-1.2.7-r2.tar.gz'
-  version '1.2.7-r2'
-  sha1 'd30a637fc8be4ea80ddd373e428542bef15297fb'
+  homepage "http://msdl.sourceforge.net"
+  url "https://downloads.sourceforge.net/msdl/msdl-1.2.7-r2.tar.gz"
+  version "1.2.7-r2"
+  sha256 "0297e87bafcab885491b44f71476f5d5bfc648557e7d4ef36961d44dd430a3a1"
 
   # Fixes linker error under clang; apparently reported upstream:
   # https://github.com/Homebrew/homebrew/pull/13907
@@ -14,7 +12,7 @@ class Msdl < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

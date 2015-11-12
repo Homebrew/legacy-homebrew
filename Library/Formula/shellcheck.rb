@@ -5,15 +5,13 @@ class Shellcheck < Formula
 
   desc "Static analysis and lint tool, for (ba)sh scripts"
   homepage "http://www.shellcheck.net"
-  url "https://github.com/koalaman/shellcheck/archive/v0.3.7.tar.gz"
-  sha256 "9f421052bc07047b65854544bfe32c5503cdad09f00d7a63a2f28b09b03a08f6"
-
-  revision 1
+  url "https://github.com/koalaman/shellcheck/archive/v0.4.1.tar.gz"
+  sha256 "47518d9024cbd0a15796bc2da3894047b648c9d30605a4e16f3514784e72ec24"
 
   bottle do
-    sha256 "99ba5b372a0b930e6cc37cbf5e859ce4343dae74761b7d889b05de7ac4c10cf5" => :yosemite
-    sha256 "20ef0d5fbc32fb438b20bbb1a3a4e4b29caaecda90e99243c1b21c52dc50e9e5" => :mavericks
-    sha256 "99a272616351b3dff4855d7257819222fa2179dd7735ce485115987c5f7a968b" => :mountain_lion
+    sha256 "14e1a8a2f36ddc39337d311d808be42714d61b13321d2eebf3a56652b47e92c7" => :el_capitan
+    sha256 "ac1178a4fb95b1f9ce7e0306cae1092c42fc6bd790e4687ebc23b52ffab9a008" => :yosemite
+    sha256 "08df00a8b3af043ffdba9b21ac77904958cb3d32d945b9a57cdda6293adbe181" => :mavericks
   end
 
   depends_on "ghc" => :build
@@ -36,6 +34,6 @@ class Shellcheck < Formula
         echo "$f"
       done
     EOS
-    assert `shellcheck -f gcc #{sh}`.include? "[SC2045]"
+    assert_match "[SC2045]", shell_output("shellcheck -f gcc #{sh}", 1)
   end
 end

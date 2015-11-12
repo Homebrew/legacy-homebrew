@@ -1,4 +1,4 @@
-require 'irb'
+require "irb"
 
 module IRB
   @setup_done = false

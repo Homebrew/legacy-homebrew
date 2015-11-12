@@ -2,14 +2,14 @@ class Osh < Formula
   desc "Two ports of /bin/sh from V6 UNIX (circa 1975)"
   homepage "http://v6shell.org"
   url "http://v6shell.org/src/osh-20150115.tar.gz"
-  sha1 "1876e56b82ebad814aa74c62a2fb8a93947e2a65"
+  sha256 "711151f222a7f3e7cb9500d11ded7bb19a66f94641f352e0ccb316dd9665aa1d"
   head "https://github.com/JNeitzel/v6shell.git"
 
   option "with-examples", "Build with shell examples"
 
   resource "examples" do
     url "http://v6shell.org/v6scripts/v6scripts-20150201.tar.gz"
-    sha1 "43da6a1d0f6810f2311786e04870c3896b6904c9"
+    sha256 "411184449da48c59c9f341de748b1b6ea2a1c898848bf3bbf2b523e33ef62518"
   end
 
   bottle do

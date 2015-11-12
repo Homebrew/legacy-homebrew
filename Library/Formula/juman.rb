@@ -2,7 +2,7 @@ class Juman < Formula
   desc "Japanese morphological analysis system"
   homepage "http://nlp.ist.i.kyoto-u.ac.jp/index.php?JUMAN"
   url "http://nlp.ist.i.kyoto-u.ac.jp/nl-resource/juman/juman-7.01.tar.bz2"
-  sha1 "e22eb113f40216b8a04d811484a94f93f834ae9a"
+  sha256 "64bee311de19e6d9577d007bb55281e44299972637bd8a2a8bc2efbad2f917c6"
 
   bottle do
     sha1 "124c6163b63a4ae87269419329ebb65c810f30b2" => :yosemite

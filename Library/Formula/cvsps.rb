@@ -1,10 +1,8 @@
-require "formula"
-
 class Cvsps < Formula
   desc "Create patchset information from CVS"
   homepage "http://www.catb.org/~esr/cvsps/"
   url "http://www.catb.org/~esr/cvsps/cvsps-3.13.tar.gz"
-  sha1 "29d814f9083e3c51bba1b1fadf6c94ed9c2caa1e"
+  sha256 "5f078a6e02c394f663893751f128caf643fe00a30b559e87db6f45190c623799"
 
   depends_on "asciidoc"
   depends_on "docbook"

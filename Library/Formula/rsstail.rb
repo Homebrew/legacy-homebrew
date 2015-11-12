@@ -1,16 +1,17 @@
 class Rsstail < Formula
   desc "Monitors an RSS feed and emits new entries when detected"
-  homepage "http://www.vanheusden.com/rsstail/"
-  url "http://www.vanheusden.com/rsstail/rsstail-1.8.tgz"
-  sha256 "19284f3eca4bfa649f53848e19e6ee134bce17ccf2a22919cc8c600684877801"
+  homepage "https://www.vanheusden.com/rsstail/"
+  url "https://www.vanheusden.com/rsstail/rsstail-2.0.tgz"
+  sha256 "647537197fb9fb72b08e04710d462ad9314a6335c0a66fb779fe9d822c19ee2a"
 
   head "https://github.com/flok99/rsstail.git"
 
   bottle do
     cellar :any
-    sha256 "0d18005ca03757ba45acb78737587eeb9abbe31e5346b0a0738dbc63951a3311" => :yosemite
-    sha256 "1ec19466e92bbeae9ed3b9e4f9ea9af18eabfd7c8c86e74eda409271028d1b3e" => :mavericks
-    sha256 "b17a2996711143d24d0a85ecfe26592b4ad9927e2f42e22af7289abe4e5bc4f5" => :mountain_lion
+    revision 1
+    sha256 "e19aec49f4d56c6f9c062f3a107c2e55c470de49ee760c8087d9b432aaea796f" => :el_capitan
+    sha256 "e118045780d62ac16ef413fe826be97afadd48390d6bba5b0d1ad221291507bb" => :yosemite
+    sha256 "98f3b9fee8f7dc9e48a141bc9347c4a23eeca1ede249f5763a73835539c485db" => :mavericks
   end
 
   depends_on "libmrss"
@@ -22,9 +23,7 @@ class Rsstail < Formula
   end
 
   test do
-    actual = shell_output(
-      "#{bin}/rsstail -1u http://feed.nashownotes.com/rss.xml"
-    )
-    assert_match /^Title: NA-\d\d\d-\d\d\d\d-\d\d-\d\d$/, actual
+    assert_match(/^Title: NA-\d\d\d-\d\d\d\d-\d\d-\d\d$/,
+                 shell_output("#{bin}/rsstail -1u http://feed.nashownotes.com/rss.xml"))
   end
 end

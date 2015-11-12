@@ -1,5 +1,3 @@
-require "formula"
-
 class Perlmagick < Formula
   desc "Objected-oriented Perl interface to ImageMagick"
   homepage "http://www.imagemagick.org/script/perl-magick.php"

@@ -1,15 +1,10 @@
 class Sonar < Formula
   desc "Manage code quality"
   homepage "http://www.sonarqube.org/"
-  url "http://dist.sonar.codehaus.org/sonarqube-5.1.1.zip"
-  sha256 "8626ff7b4eaf8aba92856b27ed0cdcea432d5596bd1ac167ec27cce70ad0557f"
+  url "https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-5.2.zip"
+  sha256 "b305630690e6021ae6f3f682b8f1224e2c2b037ebd40b12c1194befe1c8e227e"
 
-  bottle do
-    cellar :any
-    sha256 "5f9746f44899ba83bb3f3fd519b52a0ed6016270e6c0e1b19a1c1c5b8e349fdd" => :yosemite
-    sha256 "3b6dab1eee1a304a01ed3032b712d9425bf424c94bfcda4aef68f7a4e75483af" => :mavericks
-    sha256 "564ac67dc416a49ee68473d820fb02712b011e24e2f125bf6304db56308f6814" => :mountain_lion
-  end
+  bottle :unneeded
 
   def install
     # Delete native bin directories for other systems

@@ -1,12 +1,17 @@
-require "formula"
-
 class Mackup < Formula
   desc "Keep your Mac's application settings in sync"
   homepage "https://github.com/lra/mackup"
-  url "https://pypi.python.org/packages/source/m/mackup/mackup-0.8.5.tar.gz"
-  sha256 "5c74d7ded75304863b2be8b13ca58319f92f22f58dd778800326fb7618a8a7e6"
+  url "https://github.com/lra/mackup/archive/0.8.12.tar.gz"
+  sha256 "f1ec65a4ec98b21e5b9fa6120e3f6e14c6d89cc6bf90123ac05e2befeb81ec25"
 
   head "https://github.com/lra/mackup.git"
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "58816b626024486aa055e1d3598858229022583d09c50070bbd9c95fd2dd3de5" => :el_capitan
+    sha256 "8666f8995a523cbcc7013eba0cc6ceeb9c8f631f176b5fdbbcb465a92592d853" => :yosemite
+    sha256 "16941699954c705b391787b1d9906b0953d946d7598137e400d0f5267f6067c5" => :mavericks
+  end
 
   depends_on :python if MacOS.version <= :snow_leopard
 

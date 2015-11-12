@@ -2,14 +2,15 @@ class JohnJumbo < Formula
   desc "Enhanced version of john, a UNIX password cracker"
   homepage "http://www.openwall.com/john/"
   url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
-  sha1 "38196f21d2c9c4b539529d0820eb242d5373241f"
+  sha256 "bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923"
   version "1.8.0"
 
   bottle do
-    revision 3
-    sha256 "b5d13ea393e16a474bcd69d0d7fd14038effac04d423b6041d9dbb76dd6325ae" => :yosemite
-    sha256 "d8303c4412f7354e2778ef58ed8eb366d9d474491b255ad5f32d27946df174e6" => :mavericks
-    sha256 "c3a9c980f5725ec08854cdce75b91af58bb4f61c8a30e2d700de45e0a5b9ff3c" => :mountain_lion
+    cellar :any
+    revision 4
+    sha256 "04f9b2b3b714abd6e9e0cf8778e10b8fe901260b4e5816e7277e9d5a6465c228" => :el_capitan
+    sha256 "6e3a37dad1ed67b9a87003e869934c7d2b8786ff18f59465ea6c0201b9e605b1" => :yosemite
+    sha256 "0e7e105617faa98f4d636b05c780844e0c9f9d65c4a92b8b9b605bacd58e954b" => :mavericks
   end
 
   conflicts_with "john", :because => "both install the same binaries"
@@ -65,10 +66,9 @@ class JohnJumbo < Formula
 
   test do
     touch "john2.pot"
-    system "echo dave:`printf secret | openssl md5` > test"
-    output = shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test")
-    assert output.include? "secret"
-    assert (testpath/"john2.pot").read.include?("secret")
+    system "echo dave:`printf secret | /usr/bin/openssl md5` > test"
+    assert_match(/secret/, shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test"))
+    assert_match(/secret/, (testpath/"john2.pot").read)
   end
 end
 

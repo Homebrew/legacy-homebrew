@@ -1,14 +1,14 @@
-require 'formula'
-
 class Archey < Formula
   desc "Archey script for OS X"
-  homepage 'http://obihann.github.io/archey-osx/'
-  url 'https://github.com/obihann/archey-osx/archive/1.4.tar.gz'
-  sha1 '545896848444cd77b0c2cad50d5477f824ecf72f'
-  head 'https://github.com/obihann/archey-osx.git'
+  homepage "https://obihann.github.io/archey-osx/"
+  url "https://github.com/obihann/archey-osx/archive/1.5.1.tar.gz"
+  sha256 "eb8d6cf9c2ab59d12825a2179a97914b764e9a718ca5a678e1610ad7a80ad5b5"
+  head "https://github.com/obihann/archey-osx.git"
+
+  bottle :unneeded
 
   def install
-    bin.install 'bin/archey'
+    bin.install "bin/archey"
   end
 
   test do

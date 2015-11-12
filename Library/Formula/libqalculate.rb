@@ -1,23 +1,21 @@
-require 'formula'
-
 class Libqalculate < Formula
   desc "Library for Qalculate! program"
-  homepage 'http://qalculate.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/qalculate/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz'
-  sha1 'c15f7f3a97995decf62cc964956fc1e374ecd78c'
+  homepage "http://qalculate.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/qalculate/libqalculate/libqalculate-0.9.7/libqalculate-0.9.7.tar.gz"
+  sha256 "9a6d97ce3339d104358294242c3ecd5e312446721e93499ff70acc1604607955"
 
   bottle do
     sha1 "334b9bbf28268f858997dda432dd1ee6c48ca168" => :mavericks
     sha1 "b25b47d582d12a3017eb57fe42463f2ddfd859c7" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'cln'
-  depends_on 'glib'
-  depends_on 'gnuplot'
-  depends_on 'gettext'
-  depends_on 'readline'
-  depends_on 'wget'
+  depends_on "pkg-config" => :build
+  depends_on "cln"
+  depends_on "glib"
+  depends_on "gnuplot"
+  depends_on "gettext"
+  depends_on "readline"
+  depends_on "wget"
 
   # Patches against version 0.9.7, should not be needed in the future
   patch :DATA
@@ -25,7 +23,7 @@ class Libqalculate < Formula
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

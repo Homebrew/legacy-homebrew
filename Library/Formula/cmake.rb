@@ -1,18 +1,20 @@
 class Cmake < Formula
   desc "Cross-platform make"
-  homepage "http://www.cmake.org/"
-  url "http://www.cmake.org/files/v3.2/cmake-3.2.3.tar.gz"
-  sha256 "a1ebcaf6d288eb4c966714ea457e3b9677cdfde78820d0f088712d7320850297"
-  head "http://cmake.org/cmake.git"
+  homepage "https://www.cmake.org/"
+  url "https://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/cmake/cmake_3.3.2.orig.tar.gz"
+  sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
+  head "https://cmake.org/cmake.git"
 
   bottle do
-    cellar :any
-    sha256 "52d5da6e275c0c7780d21964a8f7e7350a1978f3370b48fe4776bea0c8ab05af" => :yosemite
-    sha256 "d580f7a24217854258bc73c41519579abefe8432176cef3ba4ebf5e71ad48701" => :mavericks
-    sha256 "127d5cf21c33d2dc3f7b74d54dd40d3e048ddacbd28370027fb2221ac2d2bdba" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "371e1136b03df5461f7458fea86abfcb0542fdaa312c330b7a7e9ea9ee53faa4" => :el_capitan
+    sha256 "fc8cfc07557b7d0d109f8a3548a21f022fb32353b53325696f3d3b2c470651d1" => :yosemite
+    sha256 "cb0c73778120fcd899df10b1a06d9fbe1a1778645f252ac498bce1d0bd3ec63c" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"
+  option "with-completion", "Install Bash completion (Has potential problems with system bash)"
 
   depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
 
@@ -20,14 +22,19 @@ class Cmake < Formula
   # CMake is built with Qt support and Qt is built with MySQL support as MySQL uses CMake.
   # For the GUI application please instead use brew install caskroom/cask/cmake.
 
-  resource "sphinx" do
-    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
-    sha256 "94933b64e2fe0807da0612c574a021c0dac28c7bd3c4a23723ae5a39ea8f3d04"
+  resource "sphinx_rtd_theme" do
+    url "https://pypi.python.org/packages/source/s/sphinx_rtd_theme/sphinx_rtd_theme-0.1.8.tar.gz"
+    sha256 "74f633ed3a61da1d1d59c3185483c81a9d7346bf0e7b5f29ad0764a6f159b68a"
   end
 
-  resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
-    sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
+  resource "snowballstemmer" do
+    url "https://pypi.python.org/packages/source/s/snowballstemmer/snowballstemmer-1.2.0.tar.gz"
+    sha256 "6d54f350e7a0e48903a4e3b6b2cabd1b43e23765fbc975065402893692954191"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "pygments" do
@@ -35,9 +42,19 @@ class Cmake < Formula
     sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
   end
 
-  resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+  resource "docutils" do
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
+  end
+
+  resource "pytz" do
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.4.tar.bz2"
+    sha256 "a78b484d5472dd8c688f8b3eee18646a25c66ce45b2c26652850f6af9ce52b17"
+  end
+
+  resource "babel" do
+    url "https://pypi.python.org/packages/source/B/Babel/Babel-2.0.tar.gz"
+    sha256 "44988df191123065af9857eca68e9151526a931c12659ca29904e4f11de7ec1b"
   end
 
   resource "markupsafe" do
@@ -45,16 +62,24 @@ class Cmake < Formula
     sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
-  patch do
-    # fix for older bash-completion versions
-    # Use Github because upstream git changes sha and breaks from-source download.
-    url "https://github.com/Kitware/CMake/commit/2ecf168f1909.diff"
-    sha256 "d3f8cd71d0b6ce23a22c55145114012da916f2e42af71cbbad35090d0aeb4f68"
+  resource "jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
+  end
+
+  resource "alabaster" do
+    url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.6.tar.gz"
+    sha256 "309d33e0282c8209f792f3527f41ec04e508ff837c61fc1906dde988a256deeb"
+  end
+
+  resource "sphinx" do
+    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
+    sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
   end
 
   def install
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python2.7/site-packages"
       resources.each do |r|
         r.stage do
           system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
@@ -62,7 +87,7 @@ class Cmake < Formula
       end
 
       # There is an existing issue around OS X & Python locale setting
-      # See http://bugs.python.org/issue18378#msg215215 for explanation
+      # See https://bugs.python.org/issue18378#msg215215 for explanation
       ENV["LC_ALL"] = "en_US.UTF-8"
     end
 
@@ -86,9 +111,13 @@ class Cmake < Formula
     system "make"
     system "make", "install"
 
-    cd "Auxiliary/bash-completion/" do
-      bash_completion.install "ctest", "cmake", "cpack"
+    if build.with? "completion"
+      cd "Auxiliary/bash-completion/" do
+        bash_completion.install "ctest", "cmake", "cpack"
+      end
     end
+
+    (share/"emacs/site-lisp/cmake").install "Auxiliary/cmake-mode.el"
   end
 
   test do

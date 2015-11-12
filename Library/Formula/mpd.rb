@@ -3,15 +3,21 @@ class Mpd < Formula
   homepage "http://www.musicpd.org/"
 
   stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.10.tar.xz"
-    sha256 "c386eb3d22f98dc993b5ae3c272f969aa7763713483c6800040ebf1791b15851"
+    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.11.tar.xz"
+    sha256 "7a5c66aa5af97a5b7af3dc49e3d2594071dafd62a14e2e9f7c9a5a86342836c6"
+
+    # Fixes build because of missing patch on 0.19 branch
+    patch :p1 do
+      url "http://git.musicpd.org/cgit/master/mpd.git/patch/?id=eae9cb4afe0e311a65dc566a0655a54656c8d807"
+      sha256 "0f60cfe354e1f81904cbdc469d49c65508d1f9c219f3d20332fbabdb17a17318"
+    end
   end
 
   bottle do
     cellar :any
-    sha256 "ff1cf09030cbe325abba92ef816680085fd52e0e0dd231b6285def296c5a3a2b" => :yosemite
-    sha256 "2cd9d5bc2962855fc9efae15ba64592b0241b90a38593a8453bf3bb8c1570d8b" => :mavericks
-    sha256 "b5ad2a8cb702115811dc58edf4e69cd528c50606a24f893cae86d6daefb37669" => :mountain_lion
+    sha256 "5b2a900c9f20da37df7a73799282edb00d2e956f22033f178ca566c41f651028" => :el_capitan
+    sha256 "1f193a8fee458079c112e88e24772cd59689cc0aef483703daad80df3218bff6" => :yosemite
+    sha256 "f0e478b9cf8f18943af84d3d521c1ba7c126ad68dec22225528d63e00e9ef320" => :mavericks
   end
 
   head do
@@ -59,6 +65,7 @@ class Mpd < Formula
   depends_on "opus" => :optional        # Opus support
   depends_on "libvorbis" => :optional
   depends_on "libnfs" => :optional
+  depends_on "mad" => :optional
 
   def install
     # mpd specifies -std=gnu++0x, but clang appears to try to build
@@ -80,7 +87,7 @@ class Mpd < Formula
       --disable-libwrap
     ]
 
-    args << "--disable-mad"
+    args << "--disable-mad" if build.without? "mad"
     args << "--disable-curl" if MacOS.version <= :leopard
 
     args << "--enable-zzip" if build.with? "libzzip"

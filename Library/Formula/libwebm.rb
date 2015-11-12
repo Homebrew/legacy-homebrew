@@ -1,6 +1,6 @@
 class Libwebm < Formula
   desc "WebM container"
-  homepage "http://www.webmproject.org/code/"
+  homepage "https://www.webmproject.org/code/"
   url "https://github.com/webmproject/libwebm/archive/libwebm-1.0.0.26.tar.gz"
   sha256 "1e4034e03836ac974bb078b11383a10306d63879b350a34fdd575ab44b132222"
 

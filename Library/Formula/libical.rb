@@ -1,10 +1,8 @@
-require "formula"
-
 class Libical < Formula
   desc "Implementation of iCalendar protocols and data formats"
   homepage "http://www.citadel.org/doku.php/documentation:featured_projects:libical"
   url "https://github.com/libical/libical/releases/download/v1.0.1/libical-1.0.1.tar.gz"
-  sha1 "904b2c2b5c2b30f0a508f9d56eaf316dd42fc923"
+  sha256 "089ce3c42d97fbd7a5d4b3c70adbdd82115dd306349c1f5c46a8fb3f8c949592"
 
   bottle do
     sha1 "c10d1810840c8f53ba3d8e2bbcb2256eeb1d0f5c" => :yosemite

@@ -1,17 +1,14 @@
-require 'formula'
-
 class Nspr < Formula
   desc "Platform-neutral API for system-level and libc-like functions"
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
-  url "https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.8/src/nspr-4.10.8.tar.gz"
-  sha256 "507ea57c525c0c524dae4857a642b4ef5c9d795518754c7f83422d22fe544a15"
-  revision 1
+  url "https://archive.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.10/src/nspr-4.10.10.tar.gz"
+  sha256 "343614971c30520d0fa55f4af0a72578e2d8674bb71caf7187490c3379523107"
 
   bottle do
     cellar :any
-    sha256 "9860a936f88a0f57f05240e94daf678ddb8e014c0240e269da78f9207ef41b24" => :yosemite
-    sha256 "e8ad4221a5a0a1769547f2c8bc6b45f57ae2591896ffde08e6d6ec2a6018fcf7" => :mavericks
-    sha256 "ad1fb6a460c2f053cd9f6dce964a94354133b546caf7d9def37512c10f833a33" => :mountain_lion
+    sha256 "4a7a5cc541a308d7621f4da9da1cfafe46fcd0aa997d391d66dd54e2555eea30" => :el_capitan
+    sha256 "121e9afb075e94538f0c231cf72cf9daa122633b4395e56cd4aa11346a659d20" => :yosemite
+    sha256 "6b3b2ae585784346e27963d52aa438b4b1909f8cf329463d9483350c7504771c" => :mavericks
   end
 
   keg_only <<-EOS.undent
@@ -26,7 +23,7 @@ class Nspr < Formula
     cd "nspr" do
       # Fixes a bug with linking against CoreFoundation, needed to work with SpiderMonkey
       # See: http://openradar.appspot.com/7209349
-      target_frameworks = (Hardware.is_32_bit? or MacOS.version <= :leopard) ? "-framework Carbon" : ""
+      target_frameworks = (Hardware.is_32_bit? || MacOS.version <= :leopard) ? "-framework Carbon" : ""
       inreplace "pr/src/Makefile.in", "-framework CoreServices -framework CoreFoundation", target_frameworks
 
       args = %W[
@@ -43,7 +40,7 @@ class Nspr < Formula
       inreplace "config/autoconf.mk", "-install_name @executable_path/$@ ", "-install_name #{lib}/$@ "
 
       system "make"
-      system "make install"
+      system "make", "install"
 
       (bin/"compile-et.pl").unlink
       (bin/"prerr.properties").unlink

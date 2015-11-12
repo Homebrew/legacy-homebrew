@@ -1,14 +1,25 @@
 class Botan < Formula
   desc "Cryptographic algorithms and formats library in C++"
   homepage "http://botan.randombit.net/"
-  url "http://botan.randombit.net/releases/Botan-1.10.9.tgz"
-  sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
+
+  stable do
+    url "http://botan.randombit.net/releases/Botan-1.10.10.tgz"
+    sha256 "6b67b14746410461fe4a8ce6a625e7eef789243454fe30eab7329d5984be4163"
+    # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
+    patch :DATA
+  end
 
   bottle do
+    cellar :any
     revision 1
-    sha256 "21928e32477150b767937ecfbf8be519c279474eb7273c38475ee39501084977" => :yosemite
-    sha256 "a89a03f87751e838d0e7265fff8f92f19782048b2b17bd0bcadbcef186f4f29f" => :mavericks
-    sha256 "c8899f3e0b379e27e37fd7e3e83bbec52803cce45800c7bf88c509f09a7e520b" => :mountain_lion
+    sha256 "3d9ac88803bf21b0b05873d7ed3a9bec621f2d3f2a173df627c9f1cf9ea1c34c" => :el_capitan
+    sha256 "7773f8464a8a9f07f3f8f0e7038a0ef9d5b991d96d5664db950f3c3f6f307c3b" => :yosemite
+    sha256 "635c7292d3c14242563d0cb6cd585a5de91fb0b23af8737121d9131778740c0e" => :mavericks
+  end
+
+  devel do
+    url "http://botan.randombit.net/releases/Botan-1.11.24.tgz"
+    sha256 "9e01b170c4ad46f2765aa58ccc67bcb1417ec489f4e420a909be87972c1577dd"
   end
 
   option "with-debug", "Enable debug build of Botan"
@@ -18,10 +29,11 @@ class Botan < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
-  # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
-  patch :DATA
+  needs :cxx11 if build.devel?
 
   def install
+    ENV.cxx11 if build.devel?
+
     args = %W[
       --prefix=#{prefix}
       --docdir=share/doc
@@ -42,7 +54,14 @@ class Botan < Formula
   end
 
   test do
-    assert_match /lcrypto/, shell_output("#{bin}/botan-config-1.10 --libs")
+    # stable version doesn't have `botan` executable
+    if !File.exist? bin/"botan"
+      assert_match "lcrypto", shell_output("#{bin}/botan-config-1.10 --libs")
+    else
+      system bin/"botan", "keygen"
+      File.exist? "public.pem"
+      File.exist? "private.pem"
+    end
   end
 end
 

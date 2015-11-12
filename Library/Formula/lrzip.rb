@@ -1,10 +1,8 @@
-require "formula"
-
 class Lrzip < Formula
   desc "Compression program with a very high compression ratio"
   homepage "http://lrzip.kolivas.org"
   url "http://ck.kolivas.org/apps/lrzip/lrzip-0.621.tar.bz2"
-  sha1 "9c33f6458d39443dbf71b5c66820d4d653daf3c0"
+  sha256 "31c26fbee8b9b0bd413ca214862dbc0d9e6d3477f23e9839774936bf140ceb6b"
 
   bottle do
     cellar :any

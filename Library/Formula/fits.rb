@@ -1,6 +1,6 @@
 class Fits < Formula
   desc "File Information Tool Set"
-  homepage "http://projects.iq.harvard.edu/fits"
+  homepage "https://projects.iq.harvard.edu/fits"
   url "https://projects.iq.harvard.edu/files/fits/files/fits-0.8.6_1.zip"
   version "0.8.6-1"
   sha256 "d45f67a2606aaa0fdcbbade576f70f1590916b043fec28dcfdef1a8242fd4040"

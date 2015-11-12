@@ -3,54 +3,56 @@ require "language/go"
 class Wellington < Formula
   desc "Adds file awareness to SASS"
   homepage "https://github.com/wellington/wellington"
-  url "https://github.com/wellington/wellington/archive/v0.8.1.tar.gz"
-  sha256 "77b41ee1b3e0095dd54a8575c6b05fdef7bf7bc059b46e534b3d06f84ab2422c"
-  head "https://github.com/wellington/wellington.git"
+
+  stable do
+    url "https://github.com/wellington/wellington/archive/v0.9.3.tar.gz"
+    sha256 "108e5626dad9494a1de7d6241a2f96c6fa5bd774133a00c301d42abd1089f3e2"
+  end
 
   bottle do
-    cellar :any
-    sha256 "c997930e1d617e3bc0f09136c3d102c592634cec1d9ef8c9e26c1592af58619f" => :yosemite
-    sha256 "fed8ce27ec30e8d648fd148dc83d7ad937456b04a7b1d5eb435ed0db4fae6698" => :mavericks
-    sha256 "e3fa0c5f9dea85b93b43f4cc4681c8e67dcfbf4dae34a51d0a59f81c6fed063a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "1d2aed7822f39cd64bc6dc789f78b6f23e85fff0eedefc0b5950e41a5d567db6" => :el_capitan
+    sha256 "9d3f392f5df514a09ee92652974b91d14f94f2e83aec0536a4abff61f4a3aa97" => :yosemite
+    sha256 "44a40c37b072ddaed80efa4bcd4752ce85d8d73c70fdb8bb674997172d74cbf3" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/wellington/wellington/archive/v1.0.0-beta1.tar.gz"
+    sha256 "6ea2a260ba7146a6bd87f42ab22082dfd84eb5aa52adae0629cbe71395cf56de"
+    version "1.0.0-beta1"
   end
 
   needs :cxx11
 
+  head do
+    url "https://github.com/wellington/wellington.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   depends_on "go" => :build
   depends_on "pkg-config" => :build
 
-  stable do
-    depends_on "libsass"
-  end
-
-  devel do
-    url "https://github.com/wellington/wellington/archive/c574754c39806e8c52682f15f49c8ff819d0f962.tar.gz"
-    sha256 "92c5d4bdd6260f96aed0e20fa06c6200b1c57281dbd32dbd00b1c06636ef6e10"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  head do
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
+    url "https://github.com/tools/godep.git",
+      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
   end
 
   go_resource "github.com/kr/fs" do
-    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+    url "https://github.com/kr/fs.git",
+      :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
   end
 
   go_resource "golang.org/x/tools" do
-    url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
+    url "https://github.com/golang/tools.git",
+      :revision => "ea5101579e09ace53571c8a5bae6ebb896f8d5e4"
   end
 
   def install
+    ENV.cxx11 if MacOS.version < :mavericks
+
     version = File.read("version.txt").chomp
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
@@ -60,8 +62,8 @@ class Wellington < Formula
     end
     system "bin/godep", "restore"
 
-    # Build libsass from source for devel build
-    unless stable?
+    # Build libsass from source for head build
+    if build.head?
       ENV.cxx11
       ENV["PKG_CONFIG_PATH"] = buildpath/"src/github.com/wellington/go-libsass/lib/pkgconfig"
 
@@ -75,7 +77,7 @@ class Wellington < Formula
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
 
-    system "go", "build", "-ldflags", "-X main.version #{version}", "-o", "dist/wt", "wt/main.go"
+    system "go", "build", "-ldflags", "-X github.com/wellington/wellington/version.Version #{version}", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
   end
 
@@ -87,7 +89,6 @@ class Wellington < Formula
       div p {
         color: red; }
     EOS
-    output = `echo '#{s}' | #{bin}/wt`
-    assert_equal(expected, output)
+    assert_equal expected, pipe_output("#{bin}/wt", s, 0)
   end
 end

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Splint < Formula
   desc "Secure Programming Lint"
-  homepage 'http://www.splint.org/'
-  url 'http://www.splint.org/downloads/splint-3.1.2.src.tgz'
-  sha1 '0df489cb228dcfffb149b38c57614c2c3e200501'
+  homepage "http://www.splint.org/"
+  url "http://www.splint.org/downloads/splint-3.1.2.src.tgz"
+  sha256 "c78db643df663313e3fa9d565118391825dd937617819c6efc7966cdf444fb0a"
 
   # fix compiling error of osd.c
   patch :DATA
@@ -16,7 +14,7 @@ class Splint < Formula
                           "--infodir=#{info}",
                           "--mandir=#{man}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

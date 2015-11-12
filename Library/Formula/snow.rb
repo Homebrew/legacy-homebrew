@@ -1,10 +1,8 @@
-require "formula"
-
 class Snow < Formula
   desc "Whitespace steganography: coded messages using whitespace"
   homepage "http://www.darkside.com.au/snow/"
   url "http://www.darkside.com.au/snow/snow-20130616.tar.gz"
-  sha1 "b7cc0214d24cef44f50cd9069a0052f8dcd54176"
+  sha256 "c0b71aa74ed628d121f81b1cd4ae07c2842c41cfbdf639b50291fc527c213865"
 
   bottle do
     cellar :any

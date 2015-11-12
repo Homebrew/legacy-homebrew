@@ -1,21 +1,21 @@
-require "formula"
-
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.6/ircd-hybrid-8.2.6.tgz"
-  sha256 "c712988ef43081e6d2218e4fe2523fdadf22df2959cf4c878f0625d16da5b79d"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.9/ircd-hybrid-8.2.9.tgz"
+  sha256 "10594036c8f1502d61f68f8feb9216aaed8d611df36145e34746d93039a830a7"
 
   bottle do
-    sha256 "b0c505ad232ad94432d513595558dd5e92cb73c0f7fdda3a1ead22ea0ca1f84a" => :yosemite
-    sha256 "41f6f18ae7b788d87bf0bc65e286547c082ce6189c145c39b08bfb478c8b8249" => :mavericks
-    sha256 "681aa8d8494ed80b13f147d2134acb1d7d3b5daca02d9ebe8fee1e051c09ca6e" => :mountain_lion
+    sha256 "01479a3ad06cb6dc0bad08bbd516ba9e870ab3d3745374c656adefa43705b236" => :el_capitan
+    sha256 "5e370515a3c039cde596171d07ae4a854410288591e128b55579b97ef0d8ad5d" => :yosemite
+    sha256 "8def15837e5e34f1dcbc4899289f887db1ede97358d1bb97310ab4ab3b2037cc" => :mavericks
   end
 
   # ircd-hybrid needs the .la files
   skip_clean :la
 
   depends_on "openssl"
+
+  conflicts_with "ircd-irc2", :because => "both install an `ircd` binary"
 
   def install
     ENV.j1 # build system trips over itself

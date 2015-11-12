@@ -1,27 +1,38 @@
-require "formula"
-
 class Makepkg < Formula
   desc "Compile and build packages suitable for installation with pacman"
   homepage "https://wiki.archlinux.org/index.php/makepkg"
-  url "ftp://ftp.archlinux.org/other/pacman/pacman-4.1.2.tar.gz"
-  sha1 "ed9a40a9b532bc43e48680826d57518134132538"
+  url "https://projects.archlinux.org/git/pacman.git",
+      :tag => "v4.2.1",
+      :revision => "068f8cec42057751f528b19cece37db13ae92541"
+  revision 1
+
+  head "https://projects.archlinux.org/git/pacman.git"
 
   bottle do
-    revision 1
-    sha1 "302edf1a558cd607e1747a7b25e5011678cde67e" => :mavericks
-    sha1 "1044a51bec7287423cad12ad2816c0534a7788f0" => :mountain_lion
-    sha1 "4908957c636158ed40fbdde85f6630df36469699" => :lion
+    sha256 "d2230e87184cdf11947f22aa9beaf588e4682fccfd964d2449b20213630fa129" => :yosemite
+    sha256 "3a5020efac5c5f9b7d4a74d950b8bcc5054a50f89b5049e711ec3aaee2c3bfe9" => :mavericks
+    sha256 "17dcf87394cd744c514133ddeff9de701082bb2563b70aa4f8820f6116f7938e" => :mountain_lion
   end
 
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "asciidoc" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
   depends_on "libarchive" => :build
   depends_on "bash"
   depends_on "fakeroot"
+  depends_on "gettext"
+  depends_on "openssl"
+  depends_on "gpgme" => :optional
 
   def install
+    system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--sysconfdir=#{etc}"
+                          "--sysconfdir=#{etc}",
+                          "--localstatedir=#{var}"
+
     system "make", "install"
   end
 

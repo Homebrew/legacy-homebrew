@@ -1,14 +1,15 @@
 class Cxxtest < Formula
   desc "CxxTest Unit Testing Framework"
   homepage "http://cxxtest.com"
-  url "https://github.com/CxxTest/cxxtest/archive/4.3.tar.gz"
-  sha256 "356d0f4810e8eb5c344147a0cca50fc0d84122c286e7644b61cb365c2ee22083"
+  url "https://github.com/CxxTest/cxxtest/releases/download/4.4/cxxtest-4.4.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/c/cxxtest/cxxtest_4.4.orig.tar.gz"
+  sha256 "1c154fef91c65dbf1cd4519af7ade70a61d85a923b6e0c0b007dc7f4895cf7d8"
 
   bottle do
     cellar :any
-    sha256 "adf5f38f015e2446c0b73afe5e0d4782a172f42d9cad5a6415f0714775fb7501" => :yosemite
-    sha256 "64309902d052b985325fd1372f76802f52434a005966bd0388241c2af6da83ff" => :mavericks
-    sha256 "e894f5ede73f1b13545c4db334c8e9ac1408fd43ca1316a48b38fc1d727d6cfb" => :mountain_lion
+    sha256 "a69d95d4c027024e6c14a999c679106cf6259e22bb748205d93dbc5d0596a8e3" => :yosemite
+    sha256 "2e8e487aac953d698f38f89ae9946572f8d072ec35b91683aa66bc147cec2fa4" => :mavericks
+    sha256 "de1e98e94198507c65ecb17ae240b995ae8f03dadeafbde27bb704df2e10737c" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

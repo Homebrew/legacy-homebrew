@@ -1,10 +1,8 @@
-require 'formula'
-
 class Libdmtx < Formula
   desc "Data Matrix library"
-  homepage 'http://www.libdmtx.org'
-  url 'https://downloads.sourceforge.net/project/libdmtx/libdmtx/0.7.4/libdmtx-0.7.4.tar.bz2'
-  sha1 '016282df12c4046338b9ff73f3d8b39f023bae16'
+  homepage "http://www.libdmtx.org"
+  url "https://downloads.sourceforge.net/project/libdmtx/libdmtx/0.7.4/libdmtx-0.7.4.tar.bz2"
+  sha256 "b62c586ac4fad393024dadcc48da8081b4f7d317aa392f9245c5335f0ee8dd76"
 
   bottle do
     cellar :any
@@ -14,11 +12,11 @@ class Libdmtx < Formula
     sha1 "4abe90743ec104a81eb13348cd7d4dfccb78f33c" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   def install
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

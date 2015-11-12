@@ -2,7 +2,7 @@ class Renameutils < Formula
   desc "Tools for file renaming"
   homepage "http://www.nongnu.org/renameutils/"
   url "http://download.savannah.gnu.org/releases/renameutils/renameutils-0.12.0.tar.gz"
-  sha1 "8c6edae4ee374330a01a95257fd552b5cb7540bc"
+  sha256 "cbd2f002027ccf5a923135c3f529c6d17fabbca7d85506a394ca37694a9eb4a3"
 
   bottle do
     cellar :any
@@ -21,6 +21,9 @@ class Renameutils < Formula
   # make install to fail.  Reported upstream via email and fixed in HEAD.
   # Remove patch #4 at version > 0.12.0.  The first three should persist.
   patch :DATA
+
+  conflicts_with "ipmiutil", :because => "both install `icmd` binaries"
+  conflicts_with "irods", :because => "both install `icp` and `imv` binaries"
 
   def install
     system "./configure", "--disable-dependency-tracking",

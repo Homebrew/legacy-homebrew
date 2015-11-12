@@ -4,12 +4,7 @@ class Jasmin < Formula
   url "https://downloads.sourceforge.net/project/jasmin/jasmin/jasmin-2.4/jasmin-2.4.zip"
   sha256 "eaa10c68cec68206fd102e9ec7113739eccd790108a1b95a6e8c3e93f20e449d"
 
-  bottle do
-    cellar :any
-    sha256 "1b95f20f08b143acb20e1aad630445c2bd231b6173a311b09641c0771f8c9d55" => :yosemite
-    sha256 "b8c830842737eed6d3cd4b6004fe23696a4c71a6675204c8804b15cbed5993e2" => :mavericks
-    sha256 "1b7590a56ca3e21819d03925cf57699b24518bc993af1a90e9efe4eede48cc78" => :mountain_lion
-  end
+  bottle :unneeded
 
   depends_on :java
 

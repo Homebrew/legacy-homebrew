@@ -2,7 +2,7 @@ class Bitchx < Formula
   desc "BitchX IRC client"
   homepage "http://bitchx.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/bitchx/ircii-pana/bitchx-1.2.1/bitchx-1.2.1.tar.gz"
-  sha1 "48ca956d43d6d62e32040bddfae49e88c1188927"
+  sha256 "2d270500dd42b5e2b191980d584f6587ca8a0dbda26b35ce7fadb519f53c83e2"
 
   bottle do
     sha1 "8ad5407a90b61e1d20f59486c2ca750383bcc595" => :yosemite

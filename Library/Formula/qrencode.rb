@@ -1,13 +1,12 @@
-require "formula"
-
 class Qrencode < Formula
   desc "QR Code generation"
   homepage "https://fukuchi.org/works/qrencode/index.html.en"
   url "https://fukuchi.org/works/qrencode/qrencode-3.4.4.tar.gz"
-  sha1 "644054a76c8b593acb66a8c8b7dcf1b987c3d0b2"
+  sha256 "e794e26a96019013c0e3665cb06b18992668f352c5553d0a553f5d144f7f2a72"
 
   bottle do
     cellar :any
+    sha256 "199fe87d536ffab8075f49d0fc95ddb1a3c45db8cdc26cfc6c2aa3a4b1379c0a" => :el_capitan
     sha1 "2a79a4f7f5dce4490e31cab8277f3a492e77aa4a" => :yosemite
     sha1 "26e2a0641f7556fe3e7d44da7b05644c25b1ae04" => :mavericks
     sha1 "f0797c8fd3b500f79300868248c07d3144712a96" => :mountain_lion

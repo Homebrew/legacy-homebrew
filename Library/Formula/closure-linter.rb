@@ -1,18 +1,16 @@
 class ClosureLinter < Formula
   desc "Check JavaScript files for style and documentation"
   homepage "https://developers.google.com/closure/utilities/"
-  url "https://closure-linter.googlecode.com/files/closure_linter-2.3.13.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/c/closure-linter/closure-linter_2.3.13.orig.tar.gz"
-  sha256 "7a1131389855a26be3449ba483ec3af59572859786b06b5ef8b9396440658f5a"
+  url "https://github.com/google/closure-linter/archive/v2.3.19.tar.gz"
+  sha256 "cd472f560be5af80afccbe94c9d9b534f7c30085510961ad408f8a314ea5c4c2"
 
   head "https://github.com/google/closure-linter.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "8837ec50f7ee279c11ac0ccda42b6d639f2f28dea02413aa2204c85b59e6bcb7" => :yosemite
-    sha256 "6a35357544d7f95a278d1b5c93ea781bfbe536a84947ff2242dc0ecad60a4102" => :mavericks
-    sha256 "460363bdae3f7b93dcccf223e5fb5d530eb69ccace31e69aa68bbdb1a84c95b2" => :mountain_lion
+    sha256 "1fba2b6ce208cc1944ecb7aaf1e4998f439f248234f51854523b04be96babb8d" => :yosemite
+    sha256 "a5f04eab15b5496bc5309b420552a2f13392606bab465beaf0cce27119557b61" => :mavericks
+    sha256 "beaed6105607c8d7096707904aa6b1d51dfe3f119d709ddb6d0dba93691323bb" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -37,7 +35,7 @@ class ClosureLinter < Formula
 
   test do
     (testpath/"test.js").write("var test = 1;\n")
-    system "#{bin}/gjslint", "test.js"
+    assert_equal "1 files checked, no errors found.", shell_output("#{bin}/gjslint test.js").chomp
     system "#{bin}/fixjsstyle", "test.js"
   end
 end

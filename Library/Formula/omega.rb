@@ -1,10 +1,8 @@
-require "formula"
-
 class Omega < Formula
   desc "Packaged search engine for websites, built on top of Xapian"
   homepage "http://xapian.org"
   url "http://oligarchy.co.uk/xapian/1.2.18/xapian-omega-1.2.18.tar.xz"
-  sha1 "9b0060c639ebb53e9b2dd6928019e06d0fd24ced"
+  sha256 "528feb8021a52ab06c7833cb9ebacefdb782f036e99e7ed5342046c3a82380c2"
 
   bottle do
     sha1 "afdc13cb8c4a768df40606f12943ef56a314e3d3" => :mavericks

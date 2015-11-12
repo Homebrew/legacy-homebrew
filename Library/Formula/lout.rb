@@ -2,7 +2,7 @@ class Lout < Formula
   desc "Text formatting like TeX, but simpler"
   homepage "https://savannah.nongnu.org/projects/lout"
   url "http://download.savannah.gnu.org/releases/lout/lout-3.40.tar.gz"
-  sha1 "adb7f632202319a370eaada162fa52cf334f40b3"
+  sha256 "3d16f1ce3373ed96419ba57399c2e4d94f88613c2cb4968cb0331ecac3da68bd"
 
   bottle do
     sha1 "104638e651e1978c63efe05e4fc7a862c508bc04" => :yosemite

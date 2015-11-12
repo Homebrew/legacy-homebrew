@@ -9,56 +9,80 @@ class OracleHomeVarRequirement < Requirement
   end
 end
 
+# Patches for Qt5 must be at the very least submitted to Qt's Gerrit codereview
+# rather than their bug-report Jira. The latter is rarely reviewed by Qt.
 class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.4/5.4.2/single/qt-everywhere-opensource-src-5.4.2.tar.xz"
-  sha256 "8c6d070613b721452f8cffdea6bddc82ce4f32f96703e3af02abb91a59f1ea25"
+  head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
+  revision 1
 
-  bottle do
-    sha256 "1d3aee1664b44e912ddd307fc7f1eff25e835452ce44705acaa4162f79006ef7" => :yosemite
-    sha256 "f32d4dde1b09d619e5046b9e5717ab48d7dc6b066b09bbde8d44f74b2ef040fb" => :mavericks
-    sha256 "855e075b522199c52876f44fe2d2a63e4c4b4f9bfd5c6edb0e3dc850fd02ef34" => :mountain_lion
+  stable do
+    url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
+    mirror "https://www.mirrorservice.org/sites/download.qt-project.org/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
+    sha256 "6f028e63d4992be2b4a5526f2ef3bfa2fe28c5c757554b11d9e8d86189652518"
+
+    # Build error: Fix library detection for QtWebEngine with Xcode 7.
+    # https://codereview.qt-project.org/#/c/127759/
+    patch do
+      url "https://raw.githubusercontent.com/UniqMartin/patches/557a8bd4/qt5/webengine-xcode7.patch"
+      sha256 "7bd46f8729fa2c20bc486ddc5586213ccf2fb9d307b3d4e82daa78a2553f59bc"
+    end
+
+    # Fix for qmake producing broken pkg-config files, affecting Poppler et al.
+    # https://codereview.qt-project.org/#/c/126584/
+    # Should land in the 5.5.2 and/or 5.6 release.
+    patch do
+      url "https://gist.githubusercontent.com/UniqMartin/a54542d666be1983dc83/raw/f235dfb418c3d0d086c3baae520d538bae0b1c70/qtbug-47162.patch"
+      sha256 "e31df5d0c5f8a9e738823299cb6ed5f5951314a28d4a4f9f021f423963038432"
+    end
+
+    # Build issue: Fix install names with `-no-rpath` to be absolute paths.
+    # https://codereview.qt-project.org/#/c/138349
+    patch do
+      url "https://raw.githubusercontent.com/UniqMartin/patches/77d138fa/qt5/osx-no-rpath.patch"
+      sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
+    end
   end
 
-  head "https://code.qt.io/qt/qt5.git", :branch => "5.4", :shallow => false
+  bottle do
+    sha256 "9286d3a2402f77d5f645801b66dff78d5adf8e96654991340b4412c6b35e5dd1" => :el_capitan
+    sha256 "c4041f1f6271963cb87cd2b04fe3949051aa4862d4345e21873868d27f573582" => :yosemite
+    sha256 "67b6f7fe340b838dfcaf9d20a38d36ee9079f8c1728d50e5a3a4f3cff2f412f8" => :mavericks
+  end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."
 
-  option :universal
   option "with-docs", "Build documentation"
   option "with-examples", "Build examples"
-  option "with-developer", "Build and link with developer options"
   option "with-oci", "Build with Oracle OCI plugin"
 
-  deprecated_option "developer" => "with-developer"
+  option "without-webengine", "Build without QtWebEngine module"
+  option "without-webkit", "Build without QtWebKit module"
+
   deprecated_option "qtdbus" => "with-d-bus"
 
   # Snow Leopard is untested and support has been removed in 5.4
   # https://qt.gitorious.org/qt/qtbase/commit/5be81925d7be19dd0f1022c3cfaa9c88624b1f08
   depends_on :macos => :lion
-  depends_on "pkg-config" => :build
   depends_on "d-bus" => :optional
   depends_on :mysql => :optional
   depends_on :xcode => :build
 
-  # There needs to be an OpenSSL dep here ideally, but qt keeps ignoring it.
-  # Keep nagging upstream for a fix to this problem, and revision when possible.
-  # https://github.com/Homebrew/homebrew/pull/34929
-  # https://bugreports.qt.io/browse/QTBUG-42161
-  # https://bugreports.qt.io/browse/QTBUG-43456
-
   depends_on OracleHomeVarRequirement if build.with? "oci"
 
   def install
-    ENV.universal_binary if build.universal?
-
-    args = ["-prefix", prefix,
-            "-system-zlib",
-            "-qt-libpng", "-qt-libjpeg",
-            "-confirm-license", "-opensource",
-            "-nomake", "tests", "-release"]
+    args = %W[
+      -prefix #{prefix}
+      -release
+      -opensource -confirm-license
+      -system-zlib
+      -qt-libpng
+      -qt-libjpeg
+      -no-openssl -securetransport
+      -nomake tests
+      -no-rpath
+    ]
 
     args << "-nomake" << "examples" if build.without? "examples"
 
@@ -71,14 +95,8 @@ class Qt5 < Formula
       args << "-L#{dbus_opt}/lib"
       args << "-ldbus-1"
       args << "-dbus-linked"
-    end
-
-    if MacOS.prefer_64_bit? || build.universal?
-      args << "-arch" << "x86_64"
-    end
-
-    if !MacOS.prefer_64_bit? || build.universal?
-      args << "-arch" << "x86"
+    else
+      args << "-no-dbus"
     end
 
     if build.with? "oci"
@@ -87,7 +105,8 @@ class Qt5 < Formula
       args << "-plugin-sql-oci"
     end
 
-    args << "-developer-build" if build.with? "developer"
+    args << "-skip" << "qtwebengine" if build.without? "webengine"
+    args << "-skip" << "qtwebkit" if build.without? "webkit"
 
     system "./configure", *args
     system "make"
@@ -114,16 +133,50 @@ class Qt5 < Formula
     inreplace prefix/"mkspecs/qconfig.pri", /\n\n# pkgconfig/, ""
     inreplace prefix/"mkspecs/qconfig.pri", /\nPKG_CONFIG_.*=.*$/, ""
 
-    Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
-  end
-
-  test do
-    system "#{bin}/qmake", "-project"
+    # Move `*.app` bundles into `libexec` to expose them to `brew linkapps` and
+    # because we don't like having them in `bin`. Also add a `-qt5` suffix to
+    # avoid conflict with the `*.app` bundles provided by the `qt` formula.
+    # (Note: This move/rename breaks invocation of Assistant via the Help menu
+    # of both Designer and Linguist as that relies on Assistant being in `bin`.)
+    libexec.mkpath
+    Pathname.glob("#{bin}/*.app") do |app|
+      mv app, libexec/"#{app.basename(".app")}-qt5.app"
+    end
   end
 
   def caveats; <<-EOS.undent
     We agreed to the Qt opensource license for you.
     If this is unacceptable you should uninstall.
     EOS
+  end
+
+  test do
+    (testpath/"hello.pro").write <<-EOS.undent
+      QT       += core
+      QT       -= gui
+      TARGET = hello
+      CONFIG   += console
+      CONFIG   -= app_bundle
+      TEMPLATE = app
+      SOURCES += main.cpp
+    EOS
+
+    (testpath/"main.cpp").write <<-EOS.undent
+      #include <QCoreApplication>
+      #include <QDebug>
+
+      int main(int argc, char *argv[])
+      {
+        QCoreApplication a(argc, argv);
+        qDebug() << "Hello World!";
+        return 0;
+      }
+    EOS
+
+    system bin/"qmake", testpath/"hello.pro"
+    system "make"
+    assert File.exist?("hello")
+    assert File.exist?("main.o")
+    system "./hello"
   end
 end

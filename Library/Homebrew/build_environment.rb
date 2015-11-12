@@ -1,4 +1,4 @@
-require 'set'
+require "set"
 
 class BuildEnvironment
   def initialize(*settings)

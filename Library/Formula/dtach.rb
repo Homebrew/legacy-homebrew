@@ -1,10 +1,8 @@
-require 'formula'
-
 class Dtach < Formula
   desc "Emulates the detach feature of screen"
-  homepage 'http://dtach.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/dtach/dtach/0.8/dtach-0.8.tar.gz'
-  sha1 'fb7279e719463aa284676a78cdf96788f4f2706b'
+  homepage "http://dtach.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/dtach/dtach/0.8/dtach-0.8.tar.gz"
+  sha256 "16614ebddf8ab2811d3dc0e7f329c7de88929ac6a9632d4cb4aef7fe11b8f2a9"
 
   def install
     # Includes <config.h> instead of "config.h", so "." needs to be in the include path.

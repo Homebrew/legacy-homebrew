@@ -1,17 +1,15 @@
-require 'formula'
-
 class Sc68 < Formula
   desc "Play music originally designed for Atari ST and Amiga computers"
-  homepage 'http://sc68.atari.org/project.html'
-  url 'https://downloads.sourceforge.net/project/sc68/sc68/2.2.1/sc68-2.2.1.tar.gz'
-  sha1 '503e8b027b1b8f98925344bc591248ab5f19f59d'
+  homepage "http://sc68.atari.org/project.html"
+  url "https://downloads.sourceforge.net/project/sc68/sc68/2.2.1/sc68-2.2.1.tar.gz"
+  sha256 "d7371f0f406dc925debf50f64df1f0700e1d29a8502bb170883fc41cc733265f"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}",
                           "--infodir=#{info}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

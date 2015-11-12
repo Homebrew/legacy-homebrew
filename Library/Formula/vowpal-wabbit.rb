@@ -1,17 +1,16 @@
-require "formula"
-
 class VowpalWabbit < Formula
   desc "Online learning algorithm"
   homepage "https://github.com/JohnLangford/vowpal_wabbit"
+  url "https://github.com/JohnLangford/vowpal_wabbit/archive/8.0.tar.gz"
+  sha256 "ebf7fea91eead6da3d9fd479b901a320d5ab3ed20b2b134b5ce86aec771b0a60"
   head "https://github.com/JohnLangford/vowpal_wabbit.git"
-  url "https://github.com/JohnLangford/vowpal_wabbit/archive/7.10.tar.gz"
-  sha1 "66f476926c760d5b604057796f7e19c52d7702a8"
+  revision 1
 
   bottle do
     cellar :any
-    sha1 "a7bd0836491357e0b148389126eabb520707360a" => :yosemite
-    sha1 "97d1725e7bdc7aa2518ce32aee164255244ee032" => :mavericks
-    sha1 "ad337507a088dadaa29ae839c09cbfd09a0eed6a" => :mountain_lion
+    sha256 "158cb297f18c9ace81658cf29218b830f7ff861692f1cea2ff8d77bcf3957d42" => :el_capitan
+    sha256 "f80d7f6b1a2fc2178110132e733d27b5dec66b79d6664b830dee6e89114874f1" => :yosemite
+    sha256 "2c07a0f02f3b7f7c1af5b6a1aefd5a1edb0098d9f2437218f638bb967c527901" => :mavericks
   end
 
   if MacOS.version < :mavericks
@@ -29,7 +28,7 @@ class VowpalWabbit < Formula
     ENV.cxx11
     ENV["AC_PATH"] = "#{HOMEBREW_PREFIX}/share"
     system "./autogen.sh", "--prefix=#{prefix}",
-                           "--with-boost=#{Formula['boost'].opt_prefix}"
+                           "--with-boost=#{Formula["boost"].opt_prefix}"
     system "make"
     system "make", "install"
   end
@@ -40,8 +39,8 @@ class VowpalWabbit < Formula
       1 2 'second_house | price:.18 sqft:.15 age:.35 1976
       0 1 0.5 'third_house | price:.53 sqft:.32 age:.87 1924
     EOS
-    system bin/"vw", "house_dataset",  "-l", "10",  "-c",  "--passes", "25",  "--holdout_off",  "--audit",  "-f" ,"house.model", "--nn", "5"
-    system bin/"vw", "-t", "-i", "house.model", "-d", "house_dataset", "-p" ,"house.predict"
+    system bin/"vw", "house_dataset", "-l", "10", "-c", "--passes", "25", "--holdout_off", "--audit", "-f", "house.model", "--nn", "5"
+    system bin/"vw", "-t", "-i", "house.model", "-d", "house_dataset", "-p", "house.predict"
 
     (testpath/"csoaa.dat").write <<-EOS.undent
       1:1.0 a1_expect_1| a
@@ -78,6 +77,5 @@ class VowpalWabbit < Formula
     EOS
     system bin/"vw", "-d", "train.dat", "--cb", "4", "-f", "cb.model"
     system bin/"vw", "-t", "-i", "cb.model", "-d", "test.dat", "-p", "cb.predict"
-
   end
 end

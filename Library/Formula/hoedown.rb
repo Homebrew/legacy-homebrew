@@ -2,7 +2,7 @@ class Hoedown < Formula
   desc "Secure Markdown processing (a revived fork of Sundown)"
   homepage "https://github.com/hoedown/hoedown"
   url "https://github.com/hoedown/hoedown/archive/3.0.1.tar.gz"
-  sha1 "4a2e8bd7c22f13644b234e17c2541c8ffc935c34"
+  sha256 "388e1658fa1538c58b22efe67a64104922cba81afa0387c58118e239e3ca01b4"
 
   def install
     system "make", "hoedown"

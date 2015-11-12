@@ -20,6 +20,8 @@ class Mytop < Formula
     sha256 "2e00f1eb5822aa097b310203ff611dd635f9d000db9df7ce1e8b0493c082be41"
   end
 
+  conflicts_with "mariadb", :because => "both install `mytop` binaries"
+
   def install
     ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
 

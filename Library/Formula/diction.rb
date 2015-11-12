@@ -3,7 +3,7 @@ class Diction < Formula
   homepage "https://www.gnu.org/software/diction/"
   url "http://ftpmirror.gnu.org/diction/diction-1.11.tar.gz"
   mirror "https://ftp.gnu.org/gnu/diction/diction-1.11.tar.gz"
-  sha1 "30c7c778959120d30fa67be9261d41de894f498b"
+  sha256 "35c2f1bf8ddf0d5fa9f737ffc8e55230736e5d850ff40b57fdf5ef1d7aa024f6"
 
   bottle do
     sha1 "5a3520b96c45b01b39c14eb55537780fdbaeb830" => :yosemite

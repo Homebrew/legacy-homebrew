@@ -21,7 +21,6 @@ class Gpac < Formula
     sha256 "b6291bcf89fc7ea7232e060ddebc3b5c561009a0923ad54b40ab991875c2fa57" => :mountain_lion
   end
 
-
   depends_on "openssl"
   depends_on "pkg-config" => :build
   depends_on :x11 => :optional

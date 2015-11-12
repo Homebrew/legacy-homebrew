@@ -1,5 +1,3 @@
-require "formula"
-
 class SignifyOsx < Formula
   desc "Cryptographically sign and verify files"
   homepage "http://www.openbsd.org/cgi-bin/man.cgi/OpenBSD-current/man1/signify.1"

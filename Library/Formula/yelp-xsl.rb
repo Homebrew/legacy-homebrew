@@ -1,14 +1,14 @@
 class YelpXsl < Formula
   desc "Yelp's universal stylesheets for Mallard and DocBook"
   homepage "https://github.com/GNOME/yelp-xsl"
-  url "https://download.gnome.org/sources/yelp-xsl/3.16/yelp-xsl-3.16.1.tar.xz"
-  sha256 "3295eecc4b03d2a239f7a1bdf4a1311d34c46c3055e6535c1f72bb5a49b4174a"
+  url "https://download.gnome.org/sources/yelp-xsl/3.18/yelp-xsl-3.18.1.tar.xz"
+  sha256 "00870fbe59a1bc7797b385fce16386917e2987c404e9b5a7adcf0036f1c1ba62"
 
   bottle do
-    cellar :any
-    sha256 "7517192fb0c5b6bc6d5133486cb460fc25cb9e12327752401c34f38045030518" => :yosemite
-    sha256 "e8cba6dd4211955a183b926eeb6aa2ba1aafe7571d129029eb8d8b5492adea0d" => :mavericks
-    sha256 "ce9aa0d02239264b3a651cfe5d13f1675bb276325a079de5efca83a1940f29cb" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "1c6aebcb7310ad6451c2410da48bdd43bd0b595ad6608ced1a787ad7307add57" => :el_capitan
+    sha256 "2a596d1ffc199375109a990a397a289a28530c1d6af7b79db443208f6b9f6c23" => :yosemite
+    sha256 "155670c085ed84002b69978bd679ff128a8be811fc686b8b0936cbae9634ad20" => :mavericks
   end
 
   depends_on "libxslt"

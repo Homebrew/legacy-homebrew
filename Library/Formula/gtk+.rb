@@ -1,15 +1,33 @@
 class Gtkx < Formula
   desc "GUI toolkit"
   homepage "http://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
-  sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
-  revision 1
+  revision 3
+
+  stable do
+    url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
+    sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
+
+    # Fix crash on OS X 10.11
+    # See: https://bugzilla.gnome.org/show_bug.cgi?id=753992
+    patch do
+      url "https://bug753992.bugzilla-attachments.gnome.org/attachment.cgi?id=312565"
+      sha256 "e2e8d5c236d4de7d5b5fd79a2e90861b281746132a3f96aca6ab0cb780926876"
+    end
+  end
 
   bottle do
-    revision 2
-    sha256 "c3c38a7e3ce5c11f4febb7136342aff6156e86bc7264d1b755141e27e1bcd1b7" => :yosemite
-    sha256 "89b216bb20a360a6002a1259e9ab84cb89961f3cc03e9829e48532b5d95c8f1d" => :mavericks
-    sha256 "3f3948ce65bd2c199e2603a8bebc39f6de14e3c7f408226b1d6a0c8b52a51f29" => :mountain_lion
+    sha256 "c50b23ea76ad0379e43a44ac2520e2243c5b2f2aded21c7e82c36c20e6a90e1a" => :el_capitan
+    sha256 "72a95671b8b9ba6aaf3e8900f4af6bd9b0b0fcdd6621a200838d3e2622bc7a26" => :yosemite
+    sha256 "0754d744caed63c14ce80b5c3895679d1b93dad9832ca6105488eefa809bb7c1" => :mavericks
+  end
+
+  head do
+    url "https://git.gnome.org/browse/gtk+.git", :branch => "gtk-2-24"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+    depends_on "gtk-doc" => :build
   end
 
   option "with-quartz-relocation", "Build with quartz relocation support"
@@ -27,6 +45,15 @@ class Gtkx < Formula
     cause "Undefined symbols when linking"
   end
 
+  # Patch to allow Freeciv's gtk2 client to run.
+  # See:
+  # - https://bugzilla.gnome.org/show_bug.cgi?id=557780
+  # - Homebrew/homebrew-games#278
+  patch do
+    url "https://bug557780.bugzilla-attachments.gnome.org/attachment.cgi?id=306776"
+    sha256 "4d7a1fe8d55174dc7f0be0016814668098d38bbec233b05a6c46180e96a159fc"
+  end
+
   def install
     args = ["--disable-dependency-tracking",
             "--disable-silent-rules",
@@ -34,10 +61,15 @@ class Gtkx < Formula
             "--disable-glibtest",
             "--enable-introspection=yes",
             "--with-gdktarget=quartz",
-            "--disable-visibility"]
+            "--disable-visibility",]
 
     args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
 
+    if build.head?
+      inreplace "autogen.sh", "libtoolize", "glibtoolize"
+      ENV["NOCONFIGURE"] = "yes"
+      system "./autogen.sh"
+    end
     system "./configure", *args
     system "make", "install"
   end

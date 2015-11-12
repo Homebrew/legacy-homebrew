@@ -2,7 +2,7 @@ class Adplug < Formula
   desc "Free, hardware independent AdLib sound player library"
   homepage "http://adplug.sf.net"
   url "https://downloads.sourceforge.net/project/adplug/AdPlug%20core%20library/2.2.1/adplug-2.2.1.tar.bz2"
-  sha1 "5023282ff44f183c9b6d7da9f57f51595742a5f7"
+  sha256 "f95a015268a0dfe9ff5782f3ea7b2a69e09b8d36ccd19ebf4d979d767b6e53ef"
 
   bottle do
     sha1 "9554ef2e879f3f9c50d151c1fc721bb9528ad772" => :yosemite
@@ -15,7 +15,7 @@ class Adplug < Formula
 
   resource "ksms" do
     url "http://advsys.net/ken/ksmsongs.zip"
-    sha1 "7643cf95ae17233898b2b092ea9c8a69ec52532b"
+    sha256 "2af9bfc390f545bc7f51b834e46eb0b989833b11058e812200d485a5591c5877"
   end
 
   def install

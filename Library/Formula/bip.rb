@@ -1,15 +1,17 @@
 class Bip < Formula
   desc "IRC proxy"
   homepage "https://bip.milkypond.org" # Self-signed cert.
-  url "https://mirrors.kernel.org/debian/pool/main/b/bip/bip_0.8.9.orig.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/b/bip/bip_0.8.9.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/b/bip/bip_0.8.9.orig.tar.gz"
   sha256 "3c950f71ef91c8b686e6835f9b722aa7ccb88d3da4ec1af19617354fd3132461"
   revision 1
 
   bottle do
     cellar :any
-    sha256 "73a885e1f2655a3c6d8ff108559e00171a78767dbb57ce79cfbfd77e68362d8c" => :yosemite
-    sha256 "a979c86cee1ea3c7cbe99039eda5ae1b8888547a74339b0f8d20a170b331c169" => :mavericks
-    sha256 "fb8255c8de05e2cd287352e7a0088cc10b83c2f8a30e2e92af30237c2390d35d" => :mountain_lion
+    revision 1
+    sha256 "6668137d523c526718e63487b073d1460be5aad406e0b1e97d03ecf4c151c644" => :el_capitan
+    sha256 "7c7f8f20b05207af532ef998b6d967fe09096f91c2d43705538bfe15d56af3bf" => :yosemite
+    sha256 "38aa273de07d7ef1057bd253993b19fe359d235a1985230d079cafd549301445" => :mavericks
   end
 
   depends_on "openssl"
@@ -22,7 +24,7 @@ class Bip < Formula
                           "--sysconfdir=#{etc}/bip"
 
     system "make", "install"
-    (etc+"bip").install "samples/bip.conf"
+    (etc/"bip").install "samples/bip.conf"
   end
 
   def caveats; <<-EOS.undent

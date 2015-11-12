@@ -1,19 +1,22 @@
 class Camlistore < Formula
   desc "Content-addressable multi-layer indexed storage"
-  homepage 'http://camlistore.org'
-  head 'https://camlistore.googlesource.com/camlistore', :using => :git
-  url 'https://github.com/bradfitz/camlistore/archive/0.8.tar.gz'
-  sha1 '076db79303fe1c62323b9dc0713ef1bfceb286b2'
+  homepage "https://camlistore.org"
+  url "https://github.com/camlistore/camlistore/archive/0.8.tar.gz"
+  sha256 "61b75708ae25ac4dc1c5c31c1cf8f806ccaafaaacf618caf1aa9d31489fec50f"
+  head "https://camlistore.googlesource.com/camlistore", :using => :git
 
   bottle do
-    sha1 "0e23421d8dcd222bdaebbd9cdd4027f570e9c76d" => :mavericks
-    sha1 "2833a6aadcb6b11fe31fc7b8adef4a104dd06023" => :mountain_lion
-    sha1 "f72efd9e3c4654a0520b1ecf9991e2a23ea4cdad" => :lion
+    revision 1
+    sha256 "c2b76a901e3b55b59665099acb35d72ed7e4710add538238fa6fef149e536d4a" => :yosemite
+    sha256 "ed1b23e31324d8c3d6b50f080c37e9357acfb4fd52517057c29b9a75cf2de179" => :mavericks
+    sha256 "b180cf6c719435db63e82ba60483c443b002e9f2cbb93fa812d57ce5d9176bf8" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'go' => :build
-  depends_on 'sqlite'
+  conflicts_with "hello", :because => "both install `hello` binaries"
+
+  depends_on "pkg-config" => :build
+  depends_on "go" => :build
+  depends_on "sqlite"
 
   def install
     system "go", "run", "make.go"

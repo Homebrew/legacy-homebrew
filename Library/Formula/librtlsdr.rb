@@ -1,11 +1,9 @@
-require "formula"
-
 class Librtlsdr < Formula
   desc "Use Realtek DVT-T dongles as a cheap SDR"
   homepage "http://sdr.osmocom.org/trac/wiki/rtl-sdr"
   head "git://git.osmocom.org/rtl-sdr.git", :shallow => false
   url "https://github.com/steve-m/librtlsdr/archive/v0.5.3.tar.gz"
-  sha1 "f6f20f7b0562a6d3f7b9ff7bff38a15bff175982"
+  sha256 "98fb5c34ac94d6f2235a0bb41a08f8bed7949e1d1b91ea57a7c1110191ea58de"
 
   bottle do
     cellar :any
@@ -31,7 +29,7 @@ class Librtlsdr < Formula
 
     mkdir "build" do
       system "cmake", "..", *args
-      system "make install"
+      system "make", "install"
     end
   end
 end

@@ -1,14 +1,15 @@
 class Txt2man < Formula
   desc "Convert flat ASCII text to man page format"
-  homepage "http://mvertes.free.fr/"
-  url "http://mvertes.free.fr/download/txt2man-1.5.6.tar.gz"
-  sha1 "ef1392785333ea88f7e01f4f4c519ecfbdd498bd"
+  homepage "https://github.com/mvertes/txt2man"
+  url "https://github.com/mvertes/txt2man/archive/txt2man-1.5.6.tar.gz"
+  sha256 "df9d972c6930576328b779e64aed6d3e0106118e5a4069172f06db290f32586a"
+  head "https://github.com/mvertes/txt2man.git"
 
   depends_on "gawk"
 
   def install
-    man1.install %w[bookman.1 src2man.1 txt2man.1]
-    bin.install %w[bookman src2man txt2man]
+    inreplace "Makefile", "$(prefix)/man/man1", man1
+    system "make", "install", "prefix=#{prefix}"
   end
 
   test do

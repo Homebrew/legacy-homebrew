@@ -1,20 +1,22 @@
 class GstPython < Formula
   desc "GStreamer Python overrides for gobject-introspection-based pygst bindings"
   homepage "http://gstreamer.freedesktop.org/modules/gst-python.html"
-  url "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.4.0.tar.xz"
-  sha256 "b1e40c29ceb41b03f08d38aca6056054f0341d0706276326dceeec6ac8d53d3e"
+  url "http://gstreamer.freedesktop.org/src/gst-python/gst-python-1.6.1.tar.xz"
+  sha256 "3cbe332e18fd2eaf23ddeee96c414f79ac1edc2f7d990582fa0ec5f977bd04f1"
 
   bottle do
-    revision 1
-    sha256 "6e21cb7f62dc2d6ef248cd001053e365c8a4e337fd53daad66b9a701ced1e10a" => :yosemite
-    sha256 "7360fc4d530557e1984398a521f928e1d0ecdd321a15608161ceede201a85b35" => :mavericks
-    sha256 "2683cfdbd77a6537048890a08a907d476f470a6b7178434a6831495e712082de" => :mountain_lion
+    sha256 "4e4e6c99a7300ec2905e0f2fb8fb64ab5e3beec4365dd6c200240133e24cdb88" => :el_capitan
+    sha256 "94c32194e05e6522a6d8cd3deba62ed1eb1a59a06a67e611f19cc10398fe8ba3" => :yosemite
+    sha256 "c660e3c9b4f476bf63a84ff4e942ed2903a84fedb62015914e9629585c4db419" => :mavericks
   end
 
   depends_on "gst-plugins-base"
   depends_on "pygobject3"
 
   def install
+    # ensure files are kept inside the keg
+    # this patch is necessary as long as gobject-introspection requires :python on older OS X releases
+    inreplace "gi/overrides/Makefile.in", "$(PYGI_OVERRIDES_DIR)", "@libdir@/python2.7/site-packages/gi/overrides" if MacOS.version <= :mavericks
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",

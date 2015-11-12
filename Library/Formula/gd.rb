@@ -1,6 +1,6 @@
 class Gd < Formula
   desc "Graphics library to dynamically manipulate images"
-  homepage "https://libgd.bitbucket.org/"
+  homepage "https://libgd.github.io/"
   url "https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.1.tar.xz"
   sha256 "9ada1ed45594abc998ebc942cef12b032fbad672e73efc22bc9ff54f5df2b285"
 
@@ -14,6 +14,7 @@ class Gd < Formula
 
   bottle do
     cellar :any
+    sha256 "f6552db857ec0214c18a072b7269b57dae232c2c71b2577c426f45967f5e5986" => :el_capitan
     sha256 "e6e53b5dd2ca074873a026facb27c7f9a32d47f4a6b2e713ab06361396b55aa1" => :yosemite
     sha256 "be7bfc63bb53cc7a23c898dd0f11f721566f139ef21eedffa29e488d5a34c697" => :mavericks
     sha256 "c37e8f0cbf6bbbcdc715b4f11a846f42a502d3bd92b395dfae396c483c6032bd" => :mountain_lion

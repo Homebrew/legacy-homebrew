@@ -1,17 +1,17 @@
 class Sfcgal < Formula
   desc "C++ wrapper library around CGAL"
   homepage "http://sfcgal.org/"
-  url "https://github.com/Oslandia/SFCGAL/archive/v1.0.5.tar.gz"
-  sha256 "a9cdaf7334bf28dc71c6338d090c1d1402041c5e320b6c2e3669f7758946a01c"
-  revision 2
+  url "https://github.com/Oslandia/SFCGAL/archive/v1.2.0.tar.gz"
+  sha256 "aeab3ddd7b4eff2b9b6b365ca1731de693d7a788914d4190f444ef59dead5a47"
 
   bottle do
-    sha256 "5a6a90bbd1b78cd81d7b9d72b9ee5b360883c9c4acbbad25c63544443883c2e0" => :yosemite
-    sha256 "d765a95d58a672eee6ef1330a5f97c062789229e49698ee2be029771f7967764" => :mavericks
-    sha256 "c32d2cbf1c530d11470683c9e4d8ae5004325b93474b840359627c0bd543f214" => :mountain_lion
+    sha256 "3b0c29e4702a59acb4443d494b7c8f216afac1efc028045f725ed0f0851ca8fd" => :el_capitan
+    sha256 "7f8f7058a80e1cb15b0e518f662686dc149b95169f44a1370f042e758d4953bf" => :yosemite
+    sha256 "9ef9f97f69537662765306beb5f8387e79f3426b3f405791a2f56b3cf94e8468" => :mavericks
   end
 
   depends_on "cmake" => :build
+  depends_on "boost"
   depends_on "cgal"
   depends_on "gmp"
   depends_on "mpfr"

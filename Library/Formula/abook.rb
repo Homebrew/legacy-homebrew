@@ -2,7 +2,7 @@ class Abook < Formula
   desc "Address book with mutt support"
   homepage "http://abook.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/abook/abook/0.5.6/abook-0.5.6.tar.gz"
-  sha1 "79f04f2264c8bd81bbc952b6560c86d69b21615d"
+  sha256 "0646f6311a94ad3341812a4de12a5a940a7a44d5cb6e9da5b0930aae9f44756e"
   head "git://git.code.sf.net/p/abook/git"
 
   bottle do
@@ -13,7 +13,7 @@ class Abook < Formula
 
   devel do
     url "http://abook.sourceforge.net/devel/abook-0.6.0pre2.tar.gz"
-    sha1 "42a939fba43e51aa011fa185113c12ec4bc1e1ec"
+    sha256 "59d444504109dd96816e003b3023175981ae179af479349c34fa70bc12f6d385"
     version "0.6.0pre2"
 
     # Remove `inline` from function implementation for clang compatibility

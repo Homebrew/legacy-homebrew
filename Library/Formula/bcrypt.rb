@@ -2,7 +2,7 @@ class Bcrypt < Formula
   desc "Cross platform file encryption utility using blowfish"
   homepage "http://bcrypt.sourceforge.net"
   url "http://bcrypt.sourceforge.net/bcrypt-1.1.tar.gz"
-  sha1 "fd4c7c83fdc560f143bb0e0a8c9fb7aa57e69698"
+  sha256 "b9c1a7c0996a305465135b90123b0c63adbb5fa7c47a24b3f347deb2696d417d"
 
   bottle do
     cellar :any

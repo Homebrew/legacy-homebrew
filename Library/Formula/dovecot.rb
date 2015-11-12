@@ -6,15 +6,16 @@ class Dovecot < Formula
   sha256 "b6d8468cea47f1227f47b80618f7fb872e2b2e9d3302adc107a005dd083865bb"
 
   bottle do
-    sha256 "2d1e25f40b1006b08da06e87f5b363d4b9654e6c936d7388d2b85239c7e202be" => :yosemite
-    sha256 "f26ea1738aba89131294f2ae229799af0a7e2c4b704362da248563d6b94c4a95" => :mavericks
-    sha256 "5b5f8427b67da36ce686c14d0fc9230fe42884e69c116d46d8eca37f86e79c8a" => :mountain_lion
+    revision 2
+    sha256 "7cd19bd919795c966252e4fe1208e82a45479b02dd2bc7af083a5076b4256b7f" => :el_capitan
+    sha256 "086923e8cbcda311630328f76df479b7362c2966d349f7e05b855404f6610d3f" => :yosemite
+    sha256 "23d888317ae30125f810ad24a2110af0f79be47e0104abecb5dd78a972803309" => :mavericks
   end
+
+  option "with-pam", "Build with PAM support"
 
   depends_on "openssl"
   depends_on "clucene" => :optional
-
-  option "with-pam", "Build with PAM support"
 
   def install
     args = %W[
@@ -32,7 +33,7 @@ class Dovecot < Formula
     args << "--with-lucene" if build.with? "clucene"
     args << "--with-pam" if build.with? "pam"
 
-    system "./configure",  *args
+    system "./configure", *args
     system "make", "install"
   end
 
@@ -45,7 +46,7 @@ class Dovecot < Formula
       <dict>
         <key>Label</key>
         <string>#{plist_name}</string>
-        <key>OnDemand</key>
+        <key>KeepAlive</key>
         <false/>
         <key>RunAtLoad</key>
         <true/>
@@ -54,8 +55,6 @@ class Dovecot < Formula
           <string>#{opt_sbin}/dovecot</string>
           <string>-F</string>
         </array>
-        <key>ServiceDescription</key>
-        <string>Dovecot mail server</string>
         <key>StandardErrorPath</key>
         <string>#{var}/log/dovecot/dovecot.log</string>
         <key>StandardOutPath</key>

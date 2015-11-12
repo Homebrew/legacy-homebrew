@@ -1,15 +1,22 @@
 class Surfraw < Formula
   desc "Shell Users' Revolutionary Front Rage Against the Web"
-  homepage "http://surfraw.alioth.debian.org/"
-  url "http://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"
-  sha1 "70bbba44ffc3b1bf7c7c4e0e9f0bdd656698a1c0"
+  homepage "https://surfraw.alioth.debian.org/"
+  url "https://surfraw.alioth.debian.org/dist/surfraw-2.2.9.tar.gz"
+  sha256 "aa97d9ac24ca4299be39fcde562b98ed556b3bf5ee9a1ae497e0ce040bbcc4bb"
 
-  head "git://git.debian.org/surfraw/surfraw.git", :shallow => false
+  head do
+    url "git://git.debian.org/surfraw/surfraw.git", :shallow => false
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
 
   bottle do
-    sha1 "6c592c99adf6c1a0bb4993a36e4392bce6e24eaa" => :yosemite
-    sha1 "8ca477ffd5f157aa40b258d66e2536691d769921" => :mavericks
-    sha1 "b17ead2b3f8030e659d0af4b44332f76397607f5" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "cf0dd3b14c4e8034f0d0766fb09978eac0f19fa41730d72ed1422a67c0b0d0b3" => :yosemite
+    sha256 "1291ba20882c2dc1fbb092782e943ab0b99ad3642fb73db207dadff1fc00c5fc" => :mavericks
+    sha256 "30b885dc5908318868da2739f36834ce071bc7bff1a761fdc395afe82f75efa8" => :mountain_lion
   end
 
   def install
@@ -23,7 +30,7 @@ class Surfraw < Formula
   end
 
   test do
-    output = shell_output("#{bin}/surfraw -p google -results=1 homebrew")
-    assert_equal "http://www.google.com/search?q=homebrew&num=1\n", output
+    output = shell_output("#{bin}/surfraw -p duckduckgo homebrew")
+    assert_equal "https://www.duckduckgo.com/lite/?q=homebrew\n", output
   end
 end

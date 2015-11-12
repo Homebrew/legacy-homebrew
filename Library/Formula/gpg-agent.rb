@@ -1,15 +1,15 @@
 class GpgAgent < Formula
   desc "GPG key agent"
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  sha256 "68ed6b386ba78425b05a60e8ee22785ff0fef190bdc6f1c612f19a58819d4ac9"
 
   bottle do
-    revision 2
-    sha256 "0e13cf13842212387b756ee284ecd1a3a8c3c424025368c6dfe30009fd108300" => :yosemite
-    sha256 "a050658a4ae0c286a08a4ca52324b9f2d2bd85a6e1b8e3d0007d7d8234564e61" => :mavericks
-    sha256 "c0eb101a549b54f826013c3f4cafe7541669879296cce8b13b1cc0c5a1120ffe" => :mountain_lion
+    sha256 "9bebbc754c440be3ac5eada58600a2843d7922aed2a3c68a3329b5a94fbf6871" => :el_capitan
+    sha256 "adf4ef470b329e18679ebd06efdb918b9e0220c7f5ab53937b476b48e11b37cd" => :yosemite
+    sha256 "e9ada5047c3138066c28722dc281ea525bc78c3b368adf719541862c27192026" => :mavericks
+    sha256 "65647148cf2989c7869f13d91f07441549e38cb4c13187df14134ce2fdbaf7b4" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -44,7 +44,6 @@ class GpgAgent < Formula
   test do
     system "#{bin}/gpg-agent", "--help"
   end
-
 end
 
 __END__
@@ -60,6 +59,6 @@ index c022805..96ea7ed 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.27'
- PACKAGE_STRING='gnupg 2.0.27'
+ PACKAGE_VERSION='2.0.29'
+ PACKAGE_STRING='gnupg 2.0.29'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

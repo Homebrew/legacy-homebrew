@@ -1,17 +1,15 @@
-require "formula"
-
 # The system versions are too old to build ld64
 class CctoolsHeaders < Formula
   desc "cctools-headers via Apple"
   homepage "https://opensource.apple.com/"
   url "https://opensource.apple.com/tarballs/cctools/cctools-855.tar.gz"
-  sha1 "b6997939aa9f4f3c4ac70ec819e719330dcd7bcb"
+  sha256 "751748ddf32c8ea84c175f32792721fa44424dad6acbf163f84f41e9617dbc58"
 
   keg_only :provided_by_osx
 
   resource "headers" do
     url "https://opensource.apple.com/tarballs/xnu/xnu-2422.90.20.tar.gz"
-    sha1 "4aa6b80cc0ff6f9b27825317922b51c5f33d5bae"
+    sha256 "7bf3c6bc2f10b99e57b996631a7747b79d1e1684df719196db1e5c98a5585c23"
   end
 
   def install
@@ -22,6 +20,6 @@ class CctoolsHeaders < Formula
     (prefix/"usr").rmtree
 
     # ld64 requires an updated mach/machine.h to build
-    resource("headers").stage {(include/"mach").install "osfmk/mach/machine.h"}
+    resource("headers").stage { (include/"mach").install "osfmk/mach/machine.h" }
   end
 end

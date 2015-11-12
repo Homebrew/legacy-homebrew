@@ -1,5 +1,6 @@
-require 'formula'
-require 'keg'
+require "formula"
+require "keg"
+require "migrator"
 
 module Homebrew
   def outdated
@@ -16,8 +17,14 @@ module Homebrew
     formulae.map do |f|
       all_versions = []
       older_or_same_tap_versions = []
-      f.rack.subdirs.each do |dir|
-        keg = Keg.new dir
+
+      if f.oldname && !f.rack.exist? && (dir = HOMEBREW_CELLAR/f.oldname).directory? &&
+        !dir.subdirs.empty? && f.tap == Tab.for_keg(dir.subdirs.first).tap
+        raise Migrator::MigrationNeededError.new(f)
+      end
+
+      f.rack.subdirs.each do |keg_dir|
+        keg = Keg.new keg_dir
         version = keg.version
         all_versions << version
         older_version = f.pkg_version <= version
@@ -40,7 +47,7 @@ module Homebrew
 
     outdated_brews(formulae) do |f, versions|
       if verbose
-        puts "#{f.full_name} (#{versions*', '} < #{f.pkg_version})"
+        puts "#{f.full_name} (#{versions*", "} < #{f.pkg_version})"
       else
         puts f.full_name
       end
@@ -50,9 +57,9 @@ module Homebrew
   def print_outdated_json(formulae)
     json = []
     outdated = outdated_brews(formulae) do |f, versions|
-      json << {:name => f.full_name,
-               :installed_versions => versions.collect(&:to_s),
-               :current_version => f.pkg_version.to_s}
+      json << { :name => f.full_name,
+                :installed_versions => versions.collect(&:to_s),
+                :current_version => f.pkg_version.to_s }
     end
     puts Utils::JSON.dump(json)
 

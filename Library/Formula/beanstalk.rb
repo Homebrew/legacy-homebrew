@@ -1,10 +1,8 @@
-require "formula"
-
 class Beanstalk < Formula
   desc "Generic work queue originally designed to reduce web latency"
-  homepage "http://kr.github.io/beanstalkd/"
+  homepage "https://kr.github.io/beanstalkd/"
   url "https://github.com/kr/beanstalkd/archive/v1.10.tar.gz"
-  sha1 "bfc0ccf99e15b15eac03ec1d8a57a3aaff143237"
+  sha256 "923b1e195e168c2a91adcc75371231c26dcf23868ed3e0403cd4b1d662a52d59"
 
   bottle do
     sha1 "054320dc87c106976408f6bf195a87244635bb05" => :mavericks

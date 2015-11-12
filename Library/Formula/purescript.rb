@@ -5,13 +5,13 @@ class Purescript < Formula
 
   desc "Strongly typed programming language that compiles to JavaScript"
   homepage "http://www.purescript.org"
-  url "https://github.com/purescript/purescript/archive/v0.6.9.5.tar.gz"
-  sha256 "b7d24ce85c65a9d2adb178d2e9b628f8d4f5a33103c3da6f3312c63a1048ff80"
+  url "https://github.com/purescript/purescript/archive/v0.7.5.3.tar.gz"
+  sha256 "d1198dbc9396ee4b1f1b7aa9b83fc75449ac369e66a58b9d4367bdd025e90513"
 
   bottle do
-    sha256 "1f7e753da5fee42ed983254d5c8914e9c5cca3f876d219ca538726ae76aee68d" => :yosemite
-    sha256 "df653749f0b80a3f406d2e23b870775e651a5f264701d879386dbd5fe86083cc" => :mavericks
-    sha256 "dbab26a1e995dd5b64fed38bd9d287c2d33e519cedc5165ecdd2780429df82dc" => :mountain_lion
+    sha256 "5af33fb77c4859cd85d2bed08c72dc1ae79630b3d7390b909114fc323a92f60a" => :el_capitan
+    sha256 "e8a105d34734df4986f39894b5e238a7f9290790efbf2d1a1df68bc36db28d07" => :yosemite
+    sha256 "921e90b74645fb577d848028e31b92d838048a3a1b0a9df2dbaa31516ef5b7fa" => :mavericks
   end
 
   depends_on "ghc" => :build
@@ -20,7 +20,11 @@ class Purescript < Formula
   setup_ghc_compilers
 
   def install
-    install_cabal_package
+    cabal_sandbox do
+      cabal_install_tools "alex", "happy"
+      install_cabal_package
+    end
+    cabal_clean_lib
   end
 
   test do
@@ -28,9 +32,9 @@ class Purescript < Formula
     test_target_path = testpath/"test-module.js"
     test_module_path.write <<-EOS.undent
       module Test where
-      import Control.Monad.Eff
-      main :: forall e. Eff e Unit
-      main = return unit
+
+      main :: Int
+      main = 1
     EOS
     system bin/"psc", test_module_path, "-o", test_target_path
     assert File.exist?(test_target_path)

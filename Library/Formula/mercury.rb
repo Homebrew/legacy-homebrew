@@ -2,7 +2,7 @@ class Mercury < Formula
   desc "Logic/functional programming language"
   homepage "http://mercurylang.org/"
   url "http://dl.mercurylang.org/release/mercury-srcdist-14.01.1.tar.gz"
-  sha1 "8d8295aed6cadb6cd2e932490042de6075d18acf"
+  sha256 "98f7cbde7a7425365400feef3e69f1d6a848b25dc56ba959050523d546c4e88b"
 
   bottle do
     sha1 "82730c120043d0a741d8deeceb79c82b7e232549" => :yosemite

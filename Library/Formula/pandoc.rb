@@ -5,16 +5,15 @@ class Pandoc < Formula
 
   desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.14.0.4/pandoc-1.14.0.4.tar.gz"
-  sha256 "01955bfb1f397ec22bbce10e2df7b4f2214b7289bf79bf51eb7ae0e3b427fadf"
+  url "https://hackage.haskell.org/package/pandoc-1.15.1.1/pandoc-1.15.1.1.tar.gz"
+  sha256 "a70e0af56c294dbb1ba646df24f90b81542d060ec7167f70ff2b873ed7ed6d5e"
 
   head "https://github.com/jgm/pandoc.git"
 
   bottle do
-    revision 1
-    sha256 "a7470327540c74e9c5e05a7b6b6240faa82e521147439f8bfb3fc100e12b3cfa" => :yosemite
-    sha256 "7e803fffac74ac594caf39cdd194983083c2a7eaf3d86b358c9d41b59addcb1a" => :mavericks
-    sha256 "09efd70cef2bfdfa2b43dd80abd51faa276ff600703cd16928f06f45fc2eb8d6" => :mountain_lion
+    sha256 "3aaa65bd43d3d768d06fff00e58af6ec976a78ca6837469c1fbbae5b7e4d194d" => :el_capitan
+    sha256 "8d23b249fb30ef98e92c7ca0f4d783d05d96c4e4bfc054fe27a54b858db84025" => :yosemite
+    sha256 "dad2a70cddd0e0bf2d17970471942c4005f7da71fc0f735f0b5f402792dc0782" => :mavericks
   end
 
   depends_on "ghc" => :build
@@ -27,14 +26,21 @@ class Pandoc < Formula
     cabal_sandbox do
       cabal_install "--only-dependencies"
       cabal_install "--prefix=#{prefix}"
-      man1.install "man/man1/pandoc.1"
-      man5.install "man/man5/pandoc_markdown.5"
     end
     cabal_clean_lib
+    (bash_completion/"pandoc").write `#{bin}/pandoc --bash-completion`
   end
 
   test do
-    system "pandoc", "-o", testpath/"output.html", prefix/"README"
-    assert (testpath/"output.html").read.include? '<h1 id="synopsis">Synopsis</h1>'
+    input_markdown = <<-EOS.undent
+      # Homebrew
+
+      A package manager for humans. Cats should take a look at Tigerbrew.
+    EOS
+    expected_html = <<-EOS.undent
+      <h1 id="homebrew">Homebrew</h1>
+      <p>A package manager for humans. Cats should take a look at Tigerbrew.</p>
+    EOS
+    assert_equal expected_html, pipe_output("#{bin}/pandoc -f markdown -t html5", input_markdown)
   end
 end

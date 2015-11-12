@@ -2,10 +2,11 @@ class Cscope < Formula
   desc "Tool for browsing source code"
   homepage "http://cscope.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cscope/cscope/15.8a/cscope-15.8a.tar.gz"
-  sha1 "00f76825791b895532778f720c509cd13b9d6846"
+  sha256 "eb736ac40d5abebe8fa46820c7a8eccc8a17966a9a5f70375367b77177874d1e"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "10c4cd802d68e0c552a99e86b0609b882664583e39b9c3ff44591832e75277e2" => :el_capitan
     sha1 "75d73fea51fa5e4072134848a07c7c2f49308e35" => :yosemite
     sha1 "64cb7e095386c2119155b0be51b242860681e2ab" => :mavericks
     sha1 "bbccd86980669360c5085429a462166d8f238a15" => :mountain_lion

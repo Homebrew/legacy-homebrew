@@ -1,4 +1,6 @@
 # Troubleshooting
+**If you saw `Error: uninitialized constant Formulary::HOMEBREW_CORE_FORMULA_REGEX. Please report this bug: ...` don't worry: it's [already been fixed](https://github.com/Homebrew/homebrew/commit/ac5707c37470c25583d8fb712bf5dc04ab91db4b). Please only create an issue (or comment on [the existing one](https://github.com/Homebrew/homebrew/issues/42553)) if running `brew update` again doesn't fix it. Thanks!**
+
 ## Read this first!
 
 Please run `brew update` and `brew doctor` *before* creating an issue!
@@ -22,6 +24,7 @@ Thank you!
 * If you’re installing something Java-related, maybe you need the [Java Developer Update][] or [JDK 7][]?
 * Check that **Command Line Tools for Xcode (CLT)** and/or **Xcode** are up to date.
 * If things fail with permissions errors, check the permissions in `/usr/local`. If you’re unsure what to do, you can `sudo chown -R $(whoami) /usr/local`.
+* If you see permission errors after upgrading to El Capitan please see the [El Capitan and Homebrew](El_Capitan_and_Homebrew.md) document.
 
 #### Listen to Dr. Brew
 
@@ -30,7 +33,7 @@ Thank you!
 
 ## Check to see if the issue has been reported
 * Browse open issues on the [issue tracker](https://github.com/Homebrew/homebrew/issues) to see if someone else has already reported the same problem.
-* Make sure you check issues on the correct repository. If the formula that failed to build is part of a tap, like [homebrew-science](https://github.com/Homebrew/homebrew-science) or [homebrew-dupes](https://github.com/Homebrew/homebrew-dupes), check there instead.
+* Make sure you check issues on the correct repository. If the formula that failed to build is part of a tap, like [homebrew/science](https://github.com/Homebrew/homebrew-science) or [homebrew/dupes](https://github.com/Homebrew/homebrew-dupes), check there instead.
 
 ## Create an issue
 

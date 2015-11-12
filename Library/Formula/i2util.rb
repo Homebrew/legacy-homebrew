@@ -1,10 +1,8 @@
-require "formula"
-
 class I2util < Formula
   desc "Internet2 utility tools"
   homepage "http://software.internet2.edu/"
   url "http://software.internet2.edu/sources/I2util/I2util-1.2.tar.gz"
-  sha1 "56218a6e0f1306a70b641246fa6f63dd686e6766"
+  sha256 "3b704cdb88e83f7123f3cec0fe3283b0681cc9f80c426c3f761a0eefd1d72c59"
 
   bottle do
     cellar :any

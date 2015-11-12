@@ -1,10 +1,8 @@
-require "formula"
-
 class SwitchaudioOsx < Formula
   desc "Change OS X audio source from the command-line"
   homepage "https://github.com/deweller/switchaudio-osx/"
   url "https://github.com/deweller/switchaudio-osx/archive/1.0.0.tar.gz"
-  sha1 "4b7bae425f4b9ec71b67dc2c4c6f26fd195d623a"
+  sha256 "c00389837ffd02b1bb672624fec7b75434e2d72d55574afd7183758b419ed6a3"
   head "https://github.com/deweller/switchaudio-osx.git"
 
   bottle do

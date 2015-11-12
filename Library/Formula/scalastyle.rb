@@ -4,6 +4,8 @@ class Scalastyle < Formula
   url "https://oss.sonatype.org/content/repositories/releases/org/scalastyle/scalastyle_2.11/0.7.0/scalastyle_2.11-0.7.0-batch.jar"
   sha256 "3f61e6f03615019068ad79a8d70890a0af893650c98009b1c4acb73a0b8341ba"
 
+  bottle :unneeded
+
   resource "default_config" do
     url "https://raw.githubusercontent.com/scalastyle/scalastyle/v0.7.0/lib/scalastyle_config.xml"
     version "0.7.0"

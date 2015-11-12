@@ -1,16 +1,14 @@
-require 'formula'
-
 class Rlog < Formula
   desc "Flexible message logging facility for C++"
-  homepage 'http://www.arg0.net/rlog'
-  url 'https://rlog.googlecode.com/files/rlog-1.4.tar.gz'
-  sha1 '9cd86b4ceec3988f0a17730a8987110233797dcd'
+  homepage "http://www.arg0.net/rlog"
+  url "https://rlog.googlecode.com/files/rlog-1.4.tar.gz"
+  sha256 "a938eeedeb4d56f1343dc5561bc09ae70b24e8f70d07a6f8d4b6eed32e783f79"
 
   patch :DATA
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end
 

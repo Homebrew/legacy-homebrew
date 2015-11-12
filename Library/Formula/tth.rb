@@ -2,7 +2,7 @@ class Tth < Formula
   desc "TeX/LaTeX to HTML converter"
   homepage "http://hutchinson.belmont.ma.us/tth/"
   url "http://hutchinson.belmont.ma.us/tth/tth_distribution/tth_4.06.tgz"
-  sha1 "ba3c653bf05d25ac8a907fb1d51184da1ac42721"
+  sha256 "8e750f7532d87d97d0df380c688214885925f5c2032dc0c9d555af7f816416d1"
   revision 1
 
   bottle do
