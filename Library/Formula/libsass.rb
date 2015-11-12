@@ -1,7 +1,7 @@
 class Libsass < Formula
   desc "C implementation of a Sass compiler"
   homepage "https://github.com/sass/libsass"
-  url "https://github.com/sass/libsass.git", :tag => "3.3.1", :revision => "42e22fbadfcdc8ac3b983890518dfa0ebff3c229"
+  url "https://github.com/sass/libsass.git", :tag => "3.3.2", :revision => "f47645c2ebb98c9e0c970f59820b239ab417dda3"
   head "https://github.com/sass/libsass.git"
 
   bottle do
@@ -26,15 +26,30 @@ class Libsass < Formula
   end
 
   test do
-    (testpath/"input.scss").write <<-EOS.undent
-      div {
-        img {
-          border: 0px;
+    # This will need to be updated when devel = stable due to API changes.
+    (testpath/"test.c").write <<-EOS.undent
+      #include <sass/context.h>
+      #include <string.h>
+
+      int main()
+      {
+        const char* source_string = "a { color:blue; &:hover { color:red; } }";
+        struct Sass_Data_Context* data_ctx = sass_make_data_context(strdup(source_string));
+        struct Sass_Options* options = sass_data_context_get_options(data_ctx);
+        sass_option_set_precision(options, 1);
+        sass_option_set_source_comments(options, false);
+        sass_data_context_set_options(data_ctx, options);
+        sass_compile_data_context(data_ctx);
+        struct Sass_Context* ctx = sass_data_context_get_context(data_ctx);
+        int err = sass_context_get_error_status(ctx);
+        if(err != 0) {
+          return 1;
+        } else {
+          return strcmp(sass_context_get_output_string(ctx), "a {\\n  color: blue; }\\n  a:hover {\\n    color: red; }\\n") != 0;
         }
       }
     EOS
-
-    assert_equal "div img{border:0px}",
-    shell_output("#{bin}/sassc/bin/sassc --style compressed input.scss").strip
+    system ENV.cc, "-o", "test", "test.c", "-lsass"
+    system "./test"
   end
 end
