@@ -7,6 +7,13 @@ class Innotop < Formula
 
   head "https://github.com/innotop/innotop.git"
 
+  bottle do
+    cellar :any
+    sha256 "e4a6a4bf7f7d79d7075d4f6039d503372910be9f871e76fdeb13e29fe6212143" => :el_capitan
+    sha256 "a5ab3512b7c0959447f009495e95580086e3489407b6fc1cec7f67d3548314c8" => :yosemite
+    sha256 "36698acfd859e30239379ae9d7b99276903d03f05598eb276a35c0f1d3f10812" => :mavericks
+  end
+
   depends_on :mysql
   depends_on "openssl"
 
