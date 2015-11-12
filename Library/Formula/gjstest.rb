@@ -3,6 +3,8 @@ class Gjstest < Formula
   homepage "https://github.com/google/gjstest"
   url "https://github.com/google/gjstest/archive/v1.0.2.tar.gz"
   sha256 "7bf0de1c4b880b771a733c9a5ce07c71b93f073e6acda09bec7e400c91c2057c"
+  revision 1
+
   head "https://github.com/google/gjstest.git"
 
   bottle do
