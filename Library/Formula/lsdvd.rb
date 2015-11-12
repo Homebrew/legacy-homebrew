@@ -1,6 +1,6 @@
 class Lsdvd < Formula
   desc "Read the content info of a DVD"
-  homepage "http://sourceforge.net/projects/lsdvd"
+  homepage "https://sourceforge.net/projects/lsdvd"
   url "https://downloads.sourceforge.net/project/lsdvd/lsdvd/0.16%20-%20I%20hate%20James%20Blunt/lsdvd-0.16.tar.gz"
   sha256 "04ae3e2d823ed427e31d57f3677d28ec36bdf3bf984d35f7bdfab030d89b20f1"
 
