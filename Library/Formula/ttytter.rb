@@ -4,6 +4,13 @@ class Ttytter < Formula
   url "http://www.floodgap.com/software/ttytter/dist2/2.1.00.txt"
   sha256 "86c6e7767c65e3179d4ed6368e27df5c4b200285207c3df3164c5a84a73517b1"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "e420245d478de01c3af0d2eb6f4defffd41f797e2a1fdb2188fdfff0b6019138" => :el_capitan
+    sha256 "97862d3f0921ae13a32b80726af34c95ac219a9803638d7ab1402918da1d5f35" => :yosemite
+    sha256 "f6db877166218a340565eec1a85db1e24657f7cc560f77200f8a7df1034a6388" => :mavericks
+  end
+
   depends_on "readline" => :optional
 
   resource "Term::ReadLine::TTYtter" do
