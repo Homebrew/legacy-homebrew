@@ -14,7 +14,7 @@ class Imapsync < Formula
 
   resource "Unicode::String" do
     url "https://cpan.metacpan.org/authors/id/G/GA/GAAS/Unicode-String-2.09.tar.gz"
-    mirror "http://www.cpan.org/authors/id/G/GA/GAAS/Unicode-String-2.09.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/G/GA/GAAS/Unicode-String-2.09.tar.gz"
     sha256 "c817bedb954ea2d488bade56059028b99e0198f6826482e2f68fd6d78653faad"
   end
 
