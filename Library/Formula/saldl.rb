@@ -20,9 +20,7 @@ class Saldl < Formula
     # a2x/asciidoc needs this to build the man page successfully
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
-    args = [
-      "--prefix=#{prefix}"
-    ]
+    args = ["--prefix=#{prefix}"]
 
     # head uses git describe to acquire a version
     args << "--saldl-version=v#{version}" unless build.head?
