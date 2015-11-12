@@ -20,7 +20,7 @@ class PerconaToolkit < Formula
 
   resource "DBD::mysql" do
     url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
-    mirror "http://www.cpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.032_01.tar.gz"
     sha256 "76756b24eed46553f9dad22d0682a82b50ca2c8500ea4ede0a414acab48c9e77"
   end
 
