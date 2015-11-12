@@ -5,9 +5,11 @@ class Dnsrend < Formula
   sha256 "32fa6965f68e7090af7e4a9a06de53d12f40397f644a76cf97b6b4cb138da93a"
 
   bottle do
-    sha1 "017b703c7136f3c69c666bfc2b71e13f37c28df2" => :mavericks
-    sha1 "8e973f081e71f4a036545de08ac27161398cc203" => :mountain_lion
-    sha1 "0d2f73fb8de77cee8ef0fa6999aa4990adcb40d1" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "fd38fc65be2c773804e6b7713cabee7fbdbc9ac344e72382e36174aaf258a41f" => :el_capitan
+    sha256 "83519cb5e7899fa2d2eca7f2a0e4ff76336582206ac42063ad1a446612bf3471" => :yosemite
+    sha256 "d9f91e7344b0457ec4d0ab29c95a91bf91c4c8d3ee8432b4159b1818785c043f" => :mavericks
   end
 
   resource "Net::Pcap" do
