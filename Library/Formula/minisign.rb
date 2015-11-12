@@ -3,7 +3,6 @@ class Minisign < Formula
   homepage "https://jedisct1.github.io/minisign/"
   url "https://github.com/jedisct1/minisign/archive/0.5.tar.gz"
   sha256 "31162b0634367d9130a44a60bdaedac1f7abf466563aa4d7dcb9260fb73f07cc"
-  revision 1
 
   bottle do
     cellar :any
