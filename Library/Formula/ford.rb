@@ -76,12 +76,12 @@ class Ford < Formula
       project_dir: ./src
       output_dir: ./doc
       project_github: https://github.com/cmacmackin/futility
-      project_website: http://github.com
+      project_website: https://github.com
       summary: Some Fortran program which I wrote.
       author: John Doe
       author_description: I program stuff in Fortran.
       github: https://github.com/cmacmackin
-      email: john.doe@address.com
+      email: john.doe@example.com
       predocmark: >
       docmark_alt: #
       predocmark_alt: <
