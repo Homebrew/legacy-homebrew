@@ -8,9 +8,9 @@ class Sysbench < Formula
 
   bottle do
     cellar :any
-    sha1 "de4a0e7d639cb56d767a937268ddd02f90737504" => :yosemite
-    sha1 "5b14feb02648fa246ff2b3117bda9aa7700737fe" => :mavericks
-    sha1 "1b5819b0214bd5fdebe25171fe6840362593e08e" => :mountain_lion
+    sha256 "123270f2b97760e43a575585d1a1b9e815776edaaaa2a33faf419f5d60c18894" => :el_capitan
+    sha256 "c55629bcc6aa72d622d7998059136d49993dffd7394467fbf60711252d3f2655" => :yosemite
+    sha256 "1128a41e37dc93806e3fe81920cac22c046467e5f2a2d7e4bf2e20c4c8974224" => :mavericks
   end
 
   depends_on "autoconf" => :build
