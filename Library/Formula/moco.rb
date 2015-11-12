@@ -5,12 +5,7 @@ class Moco < Formula
   version "0.10.2"
   sha256 "ef946d090d3108843708c194809c57f192e3623dbbbcf86bdee54ce93c299a41"
 
-  bottle do
-    cellar :any
-    sha256 "c3ade71eea4010c60bc478e9a89fe888762b46f22855219148ede03bf952d62a" => :yosemite
-    sha256 "bd91b8f2dcc6d373a0d4e3a0639582c84c2b783927a1765543e5d333475cf02c" => :mavericks
-    sha256 "baf157a25988a5b80e3efeaa265d1f6032c183fa1e6a3fe8c3338e8246573b65" => :mountain_lion
-  end
+  bottle :unneeded
 
   def install
     libexec.install "moco-runner-0.10.2-standalone.jar"
