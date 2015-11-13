@@ -1,4 +1,4 @@
-require "cmd/tap"
+require "tap_utils"
 require "cmd/doctor"
 require "formula_versions"
 require "migrator"

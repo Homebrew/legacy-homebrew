@@ -1,4 +1,4 @@
-require "cmd/tap" # for tap_args
+require "tap_utils" # for tap_args
 
 module Homebrew
   def untap

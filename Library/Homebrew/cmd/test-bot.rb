@@ -31,7 +31,7 @@ require "date"
 require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
-require "cmd/tap"
+require "tap_utils"
 
 module Homebrew
   EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"

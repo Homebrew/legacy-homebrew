@@ -3,7 +3,7 @@
 
 require "utils"
 require "formula"
-require "cmd/tap"
+require "tap_utils"
 
 module Homebrew
   HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
