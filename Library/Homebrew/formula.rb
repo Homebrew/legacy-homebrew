@@ -1422,7 +1422,7 @@ class Formula
         log.puts
 
         require "cmd/config"
-        require "cmd/--env"
+        require "build_environment"
 
         env = ENV.to_hash
 
