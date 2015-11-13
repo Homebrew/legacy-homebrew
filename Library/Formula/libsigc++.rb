@@ -1,8 +1,8 @@
 class Libsigcxx < Formula
   desc "Callback framework for C++"
   homepage "http://libsigc.sourceforge.net"
-  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.1.tar.xz"
-  sha256 "186f2167c1b3d90529ce8e715246bf160bc67ec1ec19f4e45d76c0ae54dfbe1b"
+  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.2.tar.xz"
+  sha256 "fdace7134c31de792c17570f9049ca0657909b28c4c70ec4882f91a03de54437"
 
   bottle do
     cellar :any
