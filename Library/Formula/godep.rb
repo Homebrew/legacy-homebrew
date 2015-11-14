@@ -12,7 +12,7 @@ class Godep < Formula
     sha256 "d56277d4da05352acb6f0ed64f3bcc5cf27722e344e305a7e3cac20d9447c599" => :mavericks
   end
 
-  depends_on "go" => :build
+  depends_on "go"
 
   def install
     ENV["GOPATH"] = buildpath
