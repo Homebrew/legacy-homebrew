@@ -7,10 +7,11 @@ class Fugu < Formula
   sha256 "94ec61037c3afa1267ea990ffd03ba1d0d1628926b3fdde0133fece36fa81929"
 
   bottle do
-    cellar :any
-    sha256 "ea7fc32f2683bd6902bdddb3bcd9a51bf40fce495e3aeb5d52e493d57a928c9b" => :yosemite
-    sha256 "7f0774ebb3abec005f5c0e44cb3a2e574d3382ee33bf43ae6b4981e1ab80907a" => :mavericks
-    sha256 "547f6aa26659e6f13a2dd0b83b1d95e375f905d52a5447bf797a4395386e37c0" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "319b2c0dbb6a216501fa4bd22deb7981fcb66cc43c05887c617f76466ccabc77" => :el_capitan
+    sha256 "7eb31174fe5f1ed36f3026e5002d610468b38b1a968ae7fe58edb77439b6bc9b" => :yosemite
+    sha256 "0ff5162567bcba3ab4673942708b3c6de207b2e01aec45faed761f8832942817" => :mavericks
   end
 
   depends_on "go" => :build
