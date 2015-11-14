@@ -6,9 +6,10 @@ class GroongaNormalizerMysql < Formula
 
   bottle do
     cellar :any
-    sha256 "2ea7594e107a452df1122a6c878096b22198f2911ca9d9549e2e0df3a47c32b0" => :yosemite
-    sha256 "d38a6d41e21685052716f7b1cdc2d286936d1902b3bdad74385c1f71e5e20130" => :mavericks
-    sha256 "67622568e60dfa62be3ac7d480772bfa6c594484f8c4921ee5aa80348e8bd7cf" => :mountain_lion
+    revision 1
+    sha256 "648ffdafe1a451f2e625c5a83221be9e3ce53feb37566e19e39dd73fc9d4b58c" => :el_capitan
+    sha256 "849e755495c4594fab0537d9e4c54f4c084a028c727ab4c5f17e5a11a9587cd9" => :yosemite
+    sha256 "d8e610269a57e687a258049a62145f4aac617f58dd5ff487cbac07e6b2c37ab2" => :mavericks
   end
 
   depends_on "pkg-config" => :build
