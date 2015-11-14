@@ -17,11 +17,7 @@ class Vault < Formula
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-        :revision => "e2d1eb1649515318386cc637d8996ab37d6baa5e"
-  end
+  depends_on "godep" => :build
 
   # godep's dependencies
   go_resource "github.com/kr/fs" do
@@ -54,10 +50,6 @@ class Vault < Formula
     ENV.prepend_create_path "PATH", gopath/"bin"
 
     Language::Go.stage_deps resources, gopath/"src"
-
-    cd gopath/"src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     cd gopath/"src/github.com/mitchellh/gox" do
       system "go", "install"
