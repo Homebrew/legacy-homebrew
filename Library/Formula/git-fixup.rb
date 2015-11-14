@@ -1,8 +1,8 @@
 class GitFixup < Formula
   desc "Alias for git commit --fixup <ref>"
   homepage "https://github.com/keis/git-fixup"
-  url "https://github.com/keis/git-fixup/archive/v1.0.1.tar.gz"
-  sha256 "6e08eb0af39ca3327642ffecbd36a706fd7544d07ac71b8f58b437df33f152cf"
+  url "https://github.com/keis/git-fixup/archive/v1.0.2.tar.gz"
+  sha256 "e43bef5697927c8efa5f2b562ff8057bb30be828ec7327acba8d593f332eb4f8"
 
   head "https://github.com/keis/git-fixup.git", :branch => "master"
 
@@ -19,8 +19,12 @@ class GitFixup < Formula
   end
 
   test do
+    (testpath/".gitconfig").write <<-EOS.undent
+      [user]
+        name = Real Person
+        email = notacat@hotmail.cat
+      EOS
     system "git", "init"
-
     (testpath/"test").write "foo"
     system "git", "add", "test"
     system "git", "commit", "--message", "Initial commit"
