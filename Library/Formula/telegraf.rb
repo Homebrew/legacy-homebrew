@@ -14,11 +14,7 @@ class Telegraf < Formula
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
-  end
+  depends_on "godep" => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -28,12 +24,8 @@ class Telegraf < Formula
 
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
     cd telegraf_path do
-      system "#{buildpath}/bin/godep", "go", "build", "-o", "telegraf",
+      system "godep", "go", "build", "-o", "telegraf",
              "-ldflags", "-X main.Version #{version}",
              "cmd/telegraf/telegraf.go"
     end

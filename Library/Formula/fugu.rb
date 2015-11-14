@@ -14,29 +14,21 @@ class Fugu < Formula
   end
 
   depends_on "go" => :build
+  depends_on "godep" => :build
   depends_on "docker" => :recommended
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "e2d1eb1649515318386cc637d8996ab37d6baa5e"
-  end
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
   end
 
   def install
+    ENV["GOPATH"] = buildpath
     mkdir_p buildpath/"src/github.com/mattes/"
     ln_s buildpath, buildpath/"src/github.com/mattes/fugu"
-
-    ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd buildpath/"src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
     cd buildpath/"fugu" do
-      system buildpath/"bin/godep", "go", "build", "-o", bin/"fugu", "main.go", "usage.go", "version.go"
+      system "godep", "go", "build", "-o", bin/"fugu", "main.go", "usage.go", "version.go"
     end
   end
 
