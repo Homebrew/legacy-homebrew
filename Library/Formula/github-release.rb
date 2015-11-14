@@ -7,10 +7,9 @@ class GithubRelease < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "1f18841cfc233675c30f20f41f5cee5a47cfcbaa5ac7888281f67308270c9eb3" => :el_capitan
-    sha1 "1ad266fc6c56b6631214785c764fee4e19aaeb4e" => :yosemite
-    sha1 "31c085f718e68352a2b2f22f601512a1ba9adb65" => :mavericks
-    sha1 "0e120d55f94ea274ead008610a86b46d478f41b7" => :mountain_lion
+    sha256 "da81d46e83c078b2676a744f14a3e045264f92923e95160faf65f702de3bfd61" => :el_capitan
+    sha256 "1ae83d9d5f18aeb437409199200b8bc95d7a8eaefd3d815457a7ec079ef1bdcd" => :yosemite
+    sha256 "7023a11e0dbe16b7bbdafdc784a1ad28488251f1c17ecfb010542ce0c64a54e7" => :mavericks
   end
 
   depends_on "go" => :build
