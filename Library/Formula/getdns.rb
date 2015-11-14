@@ -24,6 +24,7 @@ class Getdns < Formula
     args = [
       "--with-ssl=#{Formula["openssl"].opt_prefix}",
       "--with-trust-anchor=#{etc}/getdns-root.key",
+      "--with-getdns_query",
     ]
     args << "--with-libevent" if build.with? "libevent"
     args << "--with-libev" if build.with? "libev"
