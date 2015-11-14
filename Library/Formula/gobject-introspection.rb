@@ -3,6 +3,7 @@ class GobjectIntrospection < Formula
   homepage "https://live.gnome.org/GObjectIntrospection"
   url "https://download.gnome.org/sources/gobject-introspection/1.46/gobject-introspection-1.46.0.tar.xz"
   sha256 "6658bd3c2b8813eb3e2511ee153238d09ace9d309e4574af27443d87423e4233"
+  revision 1
 
   bottle do
     sha256 "8cc016da6173e849904b707d9183f77078770bcda5db26838c28808b18b93dc0" => :el_capitan
@@ -17,6 +18,13 @@ class GobjectIntrospection < Formula
   depends_on "cairo"
   depends_on "libffi"
   depends_on :python if MacOS.version <= :mavericks
+
+  # see https://bugzilla.gnome.org/show_bug.cgi?id=625195
+  # to be removed when 1.48.0 is released
+  patch do
+    url "https://github.com/GNOME/gobject-introspection/commit/4a724ac699f0c34fba2fb452cfadea11540325e8.patch"
+    sha256 "047c350bad2d222f1037c3ce1889444ebc1095df76120188037c4eb2900848c4"
+  end
 
   resource "tutorial" do
     url "https://gist.github.com/7a0023656ccfe309337a.git",
