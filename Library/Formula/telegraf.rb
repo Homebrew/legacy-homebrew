@@ -8,17 +8,14 @@ class Telegraf < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2b156c8e49a49550ec3a57a05c556d247f0edfd3043964e82c304dd0ee3dec7c" => :el_capitan
-    sha256 "4123089ead5c46a19d6caeb4ca725719fa8244d9d00dbba66e1ae2abc5b23fb4" => :yosemite
-    sha256 "2f56b0a38a64ab1bf0deef8d13d111fa939973e1497c9e9b838e0ea3cf5ce9b3" => :mavericks
+    revision 1
+    sha256 "becca945bdf93c78240d3600c09896361ef35f8821d21ba10446e1dd50d6999a" => :el_capitan
+    sha256 "26eeb48c9f92bb460b8fec922b313e497ca67fb0e6d7815494e445e67be81431" => :yosemite
+    sha256 "9838c07339909f3936ed9b34df8dc94db417a4cdb53033ada1af224455b50e5e" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
-  end
+  depends_on "godep" => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -28,12 +25,8 @@ class Telegraf < Formula
 
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
     cd telegraf_path do
-      system "#{buildpath}/bin/godep", "go", "build", "-o", "telegraf",
+      system "godep", "go", "build", "-o", "telegraf",
              "-ldflags", "-X main.Version #{version}",
              "cmd/telegraf/telegraf.go"
     end
