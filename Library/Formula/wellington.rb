@@ -33,12 +33,8 @@ class Wellington < Formula
   end
 
   depends_on "go" => :build
+  depends_on "godep" => :build
   depends_on "pkg-config" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
-  end
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git",
@@ -57,10 +53,7 @@ class Wellington < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-    system "bin/godep", "restore"
+    system "godep", "restore"
 
     # Build libsass from source for head build
     if build.head?
