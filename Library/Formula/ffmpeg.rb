@@ -33,6 +33,7 @@ class Ffmpeg < Formula
   option "with-libsoxr", "Enable the soxr resample library"
   option "with-webp", "Enable using libwebp to encode WEBP images"
   option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
+  option "with-snappy", "Enable Snappy library"
 
   depends_on "pkg-config" => :build
 
@@ -56,6 +57,7 @@ class Ffmpeg < Formula
   depends_on "libass" => :optional
   depends_on "openjpeg" => :optional
   depends_on "sdl" if build.with? "ffplay"
+  depends_on "snappy" => :optional
   depends_on "speex" => :optional
   depends_on "schroedinger" => :optional
   depends_on "fdk-aac" => :optional
@@ -92,6 +94,7 @@ class Ffmpeg < Formula
     args << "--enable-libmp3lame" if build.with? "lame"
     args << "--enable-libvo-aacenc" if build.with? "libvo-aacenc"
     args << "--enable-libxvid" if build.with? "xvid"
+    args << "--enable-libsnappy" if build.with? "snappy"
 
     args << "--enable-libfontconfig" if build.with? "fontconfig"
     args << "--enable-libfreetype" if build.with? "freetype"

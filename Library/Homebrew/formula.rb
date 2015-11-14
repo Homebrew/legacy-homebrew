@@ -1052,7 +1052,9 @@ class Formula
   # @private
   def self.racks
     @racks ||= if HOMEBREW_CELLAR.directory?
-      HOMEBREW_CELLAR.subdirs.reject(&:symlink?)
+      HOMEBREW_CELLAR.subdirs.reject do |rack|
+        rack.symlink? || rack.subdirs.empty?
+      end
     else
       []
     end
