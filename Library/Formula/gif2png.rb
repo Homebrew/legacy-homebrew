@@ -1,8 +1,8 @@
 class Gif2png < Formula
   desc "Convert GIFs to PNGs."
   homepage "http://www.catb.org/~esr/gif2png/"
-  url "http://www.catb.org/~esr/gif2png/gif2png-2.5.10.tar.gz"
-  sha256 "3a593156f335c4ea6be68e37e09994461193f31872362de4b27ef6301492d5fd"
+  url "http://www.catb.org/~esr/gif2png/gif2png-2.5.11.tar.gz"
+  sha256 "40483169d2de06f632ada1de780c36f63325844ec62892b1652193f77fc508f7"
 
   bottle do
     cellar :any
@@ -14,14 +14,7 @@ class Gif2png < Formula
   depends_on "libpng"
 
   def install
-    # parallel install fails
-    # emailed bug report to upstream author on 2015-07-08
-    ENV.deparallelize
-
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}"
-    system "make", "install"
+    system "make", "install", "prefix=#{prefix}"
   end
 
   test do
