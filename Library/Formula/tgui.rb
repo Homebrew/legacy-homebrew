@@ -1,7 +1,7 @@
 class Tgui < Formula
   desc "GUI library for use with sfml"
   homepage "http://tgui.eu"
-  url "https://github.com/texus/TGUI/archive/v0.7-alpha2.zip"
+  url "https://github.com/texus/TGUI/archive/v0.7-alpha2.tar.gz"
   version "0.7-alpha2"
   sha256 "dc4505a65f1ff7793a41a9a70c040275fc225c61db0d2c516d67007bcfd2c953"
 
@@ -10,7 +10,7 @@ class Tgui < Formula
 
   def install
     system "cmake", ".", *std_cmake_args
-    system "make", "install" # if this fails, try separate make/make install steps
+    system "make", "install"
   end
 
   test do
