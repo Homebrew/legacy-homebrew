@@ -6,9 +6,9 @@ class GobjectIntrospection < Formula
   revision 1
 
   bottle do
-    sha256 "8cc016da6173e849904b707d9183f77078770bcda5db26838c28808b18b93dc0" => :el_capitan
-    sha256 "55644f76743a7d0ff9536876272ad3de9c40fe13e411fb34ccec0f4d4536c96f" => :yosemite
-    sha256 "1a7789dd8f4f693c5f494cace1a9b557bc8e440c1a562325b8d2242020fe63fb" => :mavericks
+    sha256 "6bae714bf138ddf4af57736d593d5cb4c68b2efa8422e8111fdecab0979786f8" => :el_capitan
+    sha256 "3ad3ce2a65ab5622087cc4a50313767c3ca97402b2c4064904a773cbd355c732" => :yosemite
+    sha256 "497496d62580f4d6a41fa285ee164d2d693139dc41cf5c2891225ee6869bb8c2" => :mavericks
   end
 
   option :universal
