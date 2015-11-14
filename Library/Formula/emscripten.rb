@@ -3,17 +3,17 @@ class Emscripten < Formula
   homepage "https://kripken.github.io/emscripten-site/"
 
   stable do
-    url "https://github.com/kripken/emscripten/archive/1.35.2.tar.gz"
-    sha256 "56feaa3037ec72e2d5299b0a92d7e3b9e1da164db32338c1fe02fe3ca68d8adb"
+    url "https://github.com/kripken/emscripten/archive/1.35.9.tar.gz"
+    sha256 "bc6966366d1d7720d362bf00f4c98de49ad0b7078909123a06cb02f764d4db3c"
 
     resource "fastcomp" do
-      url "https://github.com/kripken/emscripten-fastcomp/archive/1.35.2.tar.gz"
-      sha256 "3bbc7990138381b0cbdac39f83afee76fa143efe81dba4939c1f514dccc307a3"
+      url "https://github.com/kripken/emscripten-fastcomp/archive/1.35.9.tar.gz"
+      sha256 "87e1ea01868e775227a57f23ea21be9d47d1fe0e73682bd4a9ef4ae73cf3a2e4"
     end
 
     resource "fastcomp-clang" do
-      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.35.2.tar.gz"
-      sha256 "5f7090fe66b9462e172cb7a889d9044aa301ffc946072293dd2b269973f358ce"
+      url "https://github.com/kripken/emscripten-fastcomp-clang/archive/1.35.9.tar.gz"
+      sha256 "df55066375dd778186c7647a465bab5b09c5506a1c4cb90727fb1798a016b1bb"
     end
   end
 
