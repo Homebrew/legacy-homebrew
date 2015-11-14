@@ -15,10 +15,7 @@ class Doctl < Formula
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
@@ -33,17 +30,13 @@ class Doctl < Formula
   end
 
   def install
-    ENV["GOPATH"] = buildpath
+    ENV["GOPATH"] = buildpath/"src/github.com/digitalocean/doctl/Godeps/_workspace"
     mkdir_p buildpath/"src/github.com/digitalocean/"
     ln_sf buildpath, buildpath/"src/github.com/digitalocean/doctl"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-    ENV["GOPATH"] = buildpath/"src/github.com/digitalocean/doctl/Godeps/_workspace"
-    system "./bin/godep", "restore"
-    system "./bin/godep", "go", "build", "-o", "doctl", "."
+    system "godep", "restore"
+    system "godep", "go", "build", "-o", "doctl", "."
     bin.install "doctl"
   end
 
