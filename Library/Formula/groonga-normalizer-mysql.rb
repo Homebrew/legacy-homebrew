@@ -23,4 +23,18 @@ class GroongaNormalizerMysql < Formula
     lib.install Dir["stage/**/lib/*"]
     (share/"doc/groonga-normalizer-mysql").install Dir["stage/**/share/doc/groonga-normalizer-mysql/*"]
   end
+
+  test do
+    groonga_bin = Formula["groonga"].opt_bin
+    IO.popen("#{groonga_bin}/groonga -n  #{testpath}/test.db", "r+") {|io|
+      sleep 2
+      io.puts "register normalizers/mysql"
+      io.close_write
+      Process.kill("SIGINT", io.pid)
+      Process.wait(io.pid)
+      # expected retuned result is like this:
+      # [[0,1447502555.38667,0.000824928283691406],true]\n
+      assert_match(/[[0,\d+.\d+,\d+.\d+],true]/, io.read)
+    }
+  end
 end
