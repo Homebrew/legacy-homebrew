@@ -5,10 +5,10 @@ class GitOctopus < Formula
   sha256 "ff701edeeff139fc3086b3c05ead1efabac909453dbc9673508a3869c52dfb97"
 
   bottle do
-    cellar :any
-    sha256 "4979b6cf8a420382ea66d5afa883bdb28f76405c70f56f89a063123d9c6cafdf" => :yosemite
-    sha256 "8112153bc59267178cfc95fc1b30adbea362c3cd62bd39947de6b41aedcf0a1d" => :mavericks
-    sha256 "08dd8fe44df56b08d525310db0142bb77494ae614ab85ed08ee5fbf263a393d5" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0d65c7084a3bcf37dbeaa8588c37d0ca46a8aa4c547b3227cb459c7e383d4ca7" => :el_capitan
+    sha256 "84b80ab00ce8801ef6b222f073c849ebe52b7665f3241a9b791c15f6fe742880" => :yosemite
+    sha256 "13b574740d23c12dbac5359bc7c28fc2aa736f1fa9d82d7b3f82c3d1bda457e6" => :mavericks
   end
 
   def install
