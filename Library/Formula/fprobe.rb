@@ -14,6 +14,6 @@ class Fprobe < Formula
   end
 
   test do
-    system "fprobe"
+    assert_match /NetFlow/, shell_output("#{sbin}/fprobe -h").strip
   end
 end
