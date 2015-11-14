@@ -1,8 +1,8 @@
 class GitOctopus < Formula
   desc "Extends git-merge with branch naming patterns"
   homepage "https://github.com/lesfurets/git-octopus"
-  url "https://github.com/lesfurets/git-octopus/archive/v1.1.tar.gz"
-  sha256 "cc0f64be23a385a18e8cd7e913a54e582f9c8c07460b2c50b0df46b83fc3769d"
+  url "https://github.com/lesfurets/git-octopus/archive/v1.1.1.tar.gz"
+  sha256 "ff701edeeff139fc3086b3c05ead1efabac909453dbc9673508a3869c52dfb97"
 
   bottle do
     cellar :any
@@ -18,6 +18,16 @@ class GitOctopus < Formula
   end
 
   test do
-    system "#{bin}/git-octopus"
+    (testpath/".gitconfig").write <<-EOS.undent
+      [user]
+        name = Real Person
+        email = notacat@hotmail.cat
+      EOS
+    system "git", "init"
+    touch "homebrew"
+    system "git", "add", "homebrew"
+    system "git", "commit", "--message", "brewing"
+
+    assert_equal "", shell_output("#{bin}/git-octopus 2>&1", 0).strip
   end
 end
