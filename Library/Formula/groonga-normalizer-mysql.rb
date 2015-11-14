@@ -27,8 +27,8 @@ class GroongaNormalizerMysql < Formula
   test do
     groonga_bin = Formula["groonga"].opt_bin
     IO.popen("#{groonga_bin}/groonga -n #{testpath}/test.db", "r+") {|io|
-      sleep 2
       io.puts "register normalizers/mysql"
+      sleep 2
       io.close_write
       Process.kill("SIGINT", io.pid)
       Process.wait(io.pid)
