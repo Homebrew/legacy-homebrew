@@ -32,7 +32,7 @@ class GroongaNormalizerMysql < Formula
       io.close_write
       Process.kill("SIGINT", io.pid)
       Process.wait(io.pid)
-      # expected retuned result is like this:
+      # expected returned result is like this:
       # [[0,1447502555.38667,0.000824928283691406],true]\n
       assert_match(/[[0,\d+.\d+,\d+.\d+],true]/, io.read)
     }
