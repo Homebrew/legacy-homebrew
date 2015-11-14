@@ -16,11 +16,7 @@ class Forego < Formula
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-        :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git",
@@ -39,12 +35,9 @@ class Forego < Formula
     ln_sf buildpath, buildpath/"src/github.com/ddollar/forego"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     ldflags = "-X main.Version #{version} -X main.allowUpdate false"
-    system "./bin/godep", "go", "build", "-ldflags", ldflags, "-o", "forego"
+    system "godep", "go", "build", "-ldflags", ldflags, "-o", "forego"
     bin.install "forego"
   end
 
