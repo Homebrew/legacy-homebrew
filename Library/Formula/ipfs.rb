@@ -16,11 +16,7 @@ class Ipfs < Formula
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "5598a9815350896a2cdf9f4f1d0a3003ab9677fb"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git",
@@ -38,10 +34,6 @@ class Ipfs < Formula
     mkdir_p buildpath/"src/github.com/ipfs/"
     ln_sf buildpath, buildpath/"src/github.com/ipfs/go-ipfs"
     Language::Go.stage_deps resources, buildpath/"src"
-
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     cd "cmd/ipfs" do
       system "make", "build"
