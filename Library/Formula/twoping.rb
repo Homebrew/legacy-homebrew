@@ -3,6 +3,7 @@ class Twoping < Formula
   homepage "http://www.finnie.org/software/2ping/"
   url "http://www.finnie.org/software/2ping/2ping-3.0.1.tar.gz"
   sha256 "d6997cd1680151e6f7d5e60137d45cd41bf385d26029878afdaaf5dc4f63dcc4"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -18,6 +19,36 @@ class Twoping < Formula
     man1.install_symlink "2ping.1" => "2ping6.1"
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+  end
+
+  plist_options :manual => "2ping --listen", :startup => true
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/2ping</string>
+          <string>--listen</string>
+          <string>--quiet</string>
+        </array>
+        <key>UserName</key>
+        <string>nobody</string>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+      </dict>
+    </plist>
+    EOS
   end
 
   test do
