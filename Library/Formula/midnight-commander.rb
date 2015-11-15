@@ -31,9 +31,9 @@ class MidnightCommander < Formula
       --with-screen=slang
       --enable-vfs-sftp
     ]
-  
+
     args << "--disable-nls" if build.without? "nls"
-  
+
     system "./configure", *args
     system "make", "install"
 
