@@ -7,6 +7,13 @@ class Vultr < Formula
   sha256 "ca373d2748268b822e4ad5aeeb4ee8150f8c55c2d761e6c2c8913657469dcca5"
   head "https://github.com/JamesClonk/vultr.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "6ad75b4be6619e001a53b462cb1a0ecdb3fb7f973ec7d15259c453b7b4a1e5be" => :el_capitan
+    sha256 "ea65646bb2eb938867e4089b952029c19fa2fc5f57af73a66a5dabc0e5886d92" => :yosemite
+    sha256 "bad9639a37e7b95d6665bfed524b2e2c57389dbe1b20c67f7341494b4bc0a4a0" => :mavericks
+  end
+
   depends_on "go" => :build
   depends_on "godep" => :build
 
