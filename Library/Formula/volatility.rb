@@ -6,9 +6,9 @@ class Volatility < Formula
   head "https://github.com/volatilityfoundation/volatility.git"
 
   bottle do
-    sha1 "cf22cc05b0a17b14ebd781ce9ba8776df093fbfc" => :yosemite
-    sha1 "fa9bf1f6eed8a25ebeef726bcb178858e9c97043" => :mavericks
-    sha1 "f98e08887443635e783ca8bb2395b0737a810a93" => :mountain_lion
+    sha256 "1ecd23ba458142709598b16e9187a02b223ecc3443b996d4ce18c2618e472c58" => :el_capitan
+    sha256 "803f179496272348a701733060a33617c0350c25d1d4a186c4fdb552a530ffff" => :yosemite
+    sha256 "c570146019f2b92b5dc0384f53ecdc16eebbac7dee81fc8aab7ff7eb5adc71fd" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
