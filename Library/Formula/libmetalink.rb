@@ -1,8 +1,8 @@
 class Libmetalink < Formula
   desc "C library to parse Metalink XML files"
   homepage "https://launchpad.net/libmetalink/"
-  url "https://launchpad.net/libmetalink/trunk/packagingfix/+download/libmetalink-0.1.2.tar.bz2"
-  sha256 "cbed9121bf550ef14a434d6ed3d8806ded7a339db16b698cfa2f39fdc3d48bf6"
+  url "https://launchpad.net/libmetalink/trunk/libmetalink-0.1.3/+download/libmetalink-0.1.3.tar.xz"
+  sha256 "86312620c5b64c694b91f9cc355eabbd358fa92195b3e99517504076bf9fe33a"
 
   bottle do
     cellar :any
