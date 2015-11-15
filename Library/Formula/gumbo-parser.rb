@@ -6,9 +6,9 @@ class GumboParser < Formula
 
   bottle do
     cellar :any
-    sha256 "892139aee69838ab17bd6b117a2eb3af8b121015bf522f5b167ff3d7a112dd5f" => :yosemite
-    sha256 "61ba0bf840ec3cd221925c572c56605861eb31bca7c843bfd8df08e278f43c91" => :mavericks
-    sha256 "3eb7dd014c9e3fd8d7bf1b49d513e42f1f7d1bd76af2c5e38d20a0c29d231c05" => :mountain_lion
+    sha256 "56f5446eb431b628655748659a8a7479466e00addf7d90070464364a3f3cafa9" => :el_capitan
+    sha256 "02169cdaafcf9343bacf98e0e34b1f7383eb0b1b89385965d81796e110f8c38f" => :yosemite
+    sha256 "efc9658f05e6543d7faed663ef7106c5720e72a86672d7ef000372babade1e43" => :mavericks
   end
 
   depends_on "autoconf" => :build
