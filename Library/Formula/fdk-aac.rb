@@ -6,10 +6,10 @@ class FdkAac < Formula
 
   bottle do
     cellar :any
-    sha256 "16fc79ac78ac33f1ef5835511ea7fd2d731cf01b29fee94b5e13960953602609" => :el_capitan
-    sha256 "69c1659f65a9ca7644bf81ac4a8833ad23f63239c9f4cc14ab39bc203dbe2c68" => :yosemite
-    sha256 "6b4ea8d82e310acb425325ad19d79ad039c3a3c88db0534e59d0fd973c16d058" => :mavericks
-    sha256 "6288e9b2d40ea937f7964aa0ea86e99884d8f7729a8f57429ec51cdb53b3ca4f" => :mountain_lion
+    revision 1
+    sha256 "998a5ef1cf61ece14c2bb47991c8941bd939af323c3a1de018ad31546c49b674" => :el_capitan
+    sha256 "42e34f3a018e2902ee4082daa4df25d4a7453c015da8a4487f32fb8fadbb53af" => :yosemite
+    sha256 "433da3720d89f9d8c2791137836635a86ff7bd5636afcf37f89f3f70d57e6777" => :mavericks
   end
 
   head do
