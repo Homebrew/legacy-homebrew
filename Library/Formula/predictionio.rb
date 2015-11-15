@@ -1,7 +1,7 @@
 class Predictionio < Formula
   desc "Source machine learning server"
   homepage "https://prediction.io/"
-  url "https://d8k1yxp8elc6b.cloudfront.net/PredictionIO-0.9.5.tar.gz"
+  url "http://download.prediction.io/PredictionIO-0.9.5.tar.gz"
   sha256 "6af81c03ac5d74fc331ab2248d2cacc752a6c2a54e0a55d63b57f7f17eae2fb0"
 
   bottle :unneeded
