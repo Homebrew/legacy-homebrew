@@ -1,9 +1,9 @@
 class Subversion < Formula
   desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.13.tar.bz2"
-  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.13.tar.bz2"
-  sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.2.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.9.2.tar.bz2"
+  sha256 "023da881139b4514647b6f8a830a244071034efcaad8c8e98c6b92393122b4eb"
 
   bottle do
     revision 1
@@ -11,12 +11,6 @@ class Subversion < Formula
     sha256 "bf2389a0865234d120f5fc79735205ea77e93c549db3774131f3c5250622b68d" => :yosemite
     sha256 "95e5d20542567d39da4e964d50fddfbed74c4d8187ca55fb4a9784abb714efd5" => :mavericks
     sha256 "c11519346a1efdaf76ceec4689b88713279bdd352df0a61fd8fc11d427056f7b" => :mountain_lion
-  end
-
-  devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc3.tar.bz2"
-    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc3.tar.bz2"
-    sha256 "c49432a1a2e83fa3babd7a0602d207c8c11feb1d0660828609710f101737fa6d"
   end
 
   deprecated_option "java" => "with-java"
