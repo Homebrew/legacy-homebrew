@@ -4,6 +4,7 @@ class Mesos < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.25.0/mesos-0.25.0.tar.gz"
   mirror "https://archive.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz"
   sha256 "81ee9e722b66f52d8f3270a76eecea60fdcab48d6f7dba51ecce592293124b75"
+  revision 1
 
   bottle do
     sha256 "6a96f1ea83d731c6d48237798e6c3c7dd309e0b155fc7762d9cf23dd1dab1d15" => :el_capitan
