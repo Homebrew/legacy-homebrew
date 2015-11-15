@@ -1,8 +1,8 @@
 class Tachyon < Formula
   desc "A memory-centric storage system for data sharing across cluster frameworks"
   homepage "http://tachyon-project.org/"
-  url "http://tachyon-project.org/downloads/files/0.8.1/tachyon-0.8.1-bin.tar.gz"
-  sha256 "82c289b49fdd29a8969c404203d20ac29f7136a3af72597f25537a9263cf0c74"
+  url "http://tachyon-project.org/downloads/files/0.8.2/tachyon-0.8.2-bin.tar.gz"
+  sha256 "52823ba1b5764a3c4be6738a0becb80d88de636bb605310718f6bf0fdbb632a0"
 
   bottle :unneeded
 
