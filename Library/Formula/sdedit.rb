@@ -4,6 +4,8 @@ class Sdedit < Formula
   url "https://downloads.sourceforge.net/project/sdedit/sdedit/4.0/sdedit-4.01.jar"
   sha256 "060576f9fe79bda0a65f2cfa0b041fceaf7846f034a7519ef939b73ae82673f1"
 
+  bottle :unneeded
+
   depends_on :java => "1.5+"
 
   def install
