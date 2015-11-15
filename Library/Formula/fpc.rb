@@ -28,11 +28,15 @@ class Fpc < Formula
 
     # Prevent non-executable audit warning
     rm_f Dir[bin/"*.rsj"]
+
+    # Generate a default fpc.cfg to set up unit search paths
+    system "#{bin}/fpcmkcfg", "-p", "-d", "basepath=#{lib}/fpc/#{version}", "-o", "#{prefix}/etc/fpc.cfg"
   end
 
   test do
     hello = <<-EOS.undent
       program Hello;
+      uses GL;
       begin
         writeln('Hello Homebrew')
       end.
