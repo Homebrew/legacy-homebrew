@@ -6,10 +6,10 @@ class Libcsv < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "d247cc385fefdc1cadcb124f37df76ca173b4700" => :yosemite
-    sha1 "601cf88b49e3c3a4e06265d4cf1ff0dac3cccb37" => :mavericks
-    sha1 "6e87f90f6541f6cbf2f4df1b7e8c1a15059b509b" => :mountain_lion
+    revision 2
+    sha256 "3f69bb369fafd5c207f1c8ea500dc1e725e8e7dfe005215ff14b61fc25ac28e6" => :el_capitan
+    sha256 "ace67ec808ae6963525164b700ace39c8552f0c68364415401fea532f3ea2fe2" => :yosemite
+    sha256 "7c32b16f3528f615214dcca0633995ec01a70ff4db8badd09cbcc3a884fe64fc" => :mavericks
   end
 
   def install
