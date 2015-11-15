@@ -5,6 +5,8 @@ class Devil < Formula
   sha256 "682ffa3fc894686156337b8ce473c954bf3f4fb0f3ecac159c73db632d28a8fd"
   revision 1
 
+  bottle :disable, "Can't generate bottles until builds with either Clang or GCC-5"
+
   depends_on "libpng"
   depends_on "jpeg"
 
