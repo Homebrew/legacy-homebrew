@@ -6,10 +6,9 @@ class Libmetalink < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "0fd4cd6106168e23a2ce691bcc3db3afaef44001" => :yosemite
-    sha1 "3cbcf570dd17a7c617da687d1d90b20d03e9e299" => :mavericks
-    sha1 "ceeab999a4e6b19c7859ffc8e4d0319cd365cb48" => :mountain_lion
+    sha256 "4ca3f82ac2e2520c677def661168c6ba14ee2b8f0139fbe33cf5be66745244d3" => :el_capitan
+    sha256 "e627cde406e135a735fd2586622d2fa05cf6ef9fda8a0ea08d09ddfce20dca75" => :yosemite
+    sha256 "9ff31fac7dcd9f9231c067eff04d9b59e1de9f8416142d519799746dbfa34c24" => :mavericks
   end
 
   depends_on "pkg-config" => :build
