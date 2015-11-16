@@ -94,4 +94,9 @@ class Strongswan < Formula
     end
     msg
   end
+
+  test do
+    system "#{bin}/ipsec", "--version"
+    system "#{bin}/charon-cmd", "--version"
+  end
 end
