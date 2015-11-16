@@ -16,6 +16,10 @@ class GitCola < Formula
 
   depends_on "pyqt"
 
+  if build.with?("docs") && MacOS.version <= :snow_leopard
+    depends_on :python
+  end
+
   resource "alabaster" do
     url "https://pypi.python.org/packages/source/a/alabaster/alabaster-0.7.6.tar.gz"
     sha256 "309d33e0282c8209f792f3527f41ec04e508ff837c61fc1906dde988a256deeb"
@@ -31,9 +35,29 @@ class GitCola < Formula
     sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
   end
 
+  resource "Jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
+  end
+
+  resource "MarkupSafe" do
+    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
+  end
+
   resource "Pygments" do
     url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
     sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
+  end
+
+  resource "pytz" do
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.7.tar.bz2"
+    sha256 "fbd26746772c24cb93c8b97cbdad5cb9e46c86bbdb1b9d8a743ee00e2fb1fc5d"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   resource "snowballstemmer" do
