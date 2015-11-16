@@ -4,6 +4,13 @@ class SphinxDoc < Formula
   url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.3.1.tar.gz"
   sha256 "1a6e5130c2b42d2de301693c299f78cc4bd3501e78b610c08e45efc70e2b5114"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "ef7eadc82631f678426bcd7810697833b1ade955e87d078a57ba8fd3804eb6c1" => :el_capitan
+    sha256 "bddc4767fc0e7f8c13cbdad6d31820d4c17a7425aa4eab258eeb90928482e392" => :yosemite
+    sha256 "1909df10b3644145eff9bd1770ec6110427133704f4044176d90470b444becfe" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   keg_only <<-EOS.undent
