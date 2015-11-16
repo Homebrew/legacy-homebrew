@@ -3,7 +3,7 @@ class Gource < Formula
   homepage "https://github.com/acaudwell/Gource"
   url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
   sha256 "85a40ac8e4f5c277764216465c248d6b76589ceac012541c4cc03883a24abde4"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "42545a4bef92eb71b83204f59357d28e74e9d80d5f10673ac5c7317bd32c7e2f" => :el_capitan
