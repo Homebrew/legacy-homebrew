@@ -1,12 +1,11 @@
 class Volatility < Formula
   desc "Advanced memory forensics framework"
   homepage "https://github.com/volatilityfoundation/volatility"
-  url "http://downloads.volatilityfoundation.org/releases/2.4/volatility-2.4.tar.gz"
-  sha256 "684fdffd79ca4453298ee2eb001137cff802bc4b3dfaaa38c4335321f7cccef1"
+  url "http://downloads.volatilityfoundation.org/releases/2.5/volatility-2.5.zip"
+  sha256 "b90dfd18b6a99e1b35ef0f92f28422cca03bea0b7b8ec411cfbc603e72aa594b"
   head "https://github.com/volatilityfoundation/volatility.git"
 
   bottle do
-    revision 1
     sha1 "cf22cc05b0a17b14ebd781ce9ba8776df093fbfc" => :yosemite
     sha1 "fa9bf1f6eed8a25ebeef726bcb178858e9c97043" => :mavericks
     sha1 "f98e08887443635e783ca8bb2395b0737a810a93" => :mountain_lion
@@ -14,6 +13,8 @@ class Volatility < Formula
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "yara"
+  depends_on "jpeg"
+  depends_on "freetype"
 
   resource "yara-python" do
     url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
@@ -30,9 +31,9 @@ class Volatility < Formula
     sha256 "41542a5be24da239e0841cb66e9dd28b772e79684b78d0b8292118e5c0d4e184"
   end
 
-  resource "PIL" do
-    url "http://effbot.org/downloads/Imaging-1.1.7.tar.gz"
-    sha256 "895bc7c2498c8e1f9b99938f1a40dc86b3f149741f105cf7c7bd2e0725405211"
+  resource "pillow" do
+    url "https://pypi.python.org/packages/source/P/Pillow/Pillow-3.0.0.tar.gz"
+    sha256 "ad50bef540fe5518a4653c3820452a881b6a042cb0f8bb7657c491c6bd3654bb"
   end
 
   resource "openpyxl" do
@@ -59,13 +60,18 @@ class Volatility < Formula
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
 
-    res = %w[distorm3 pycrypto PIL openpyxl pytz ipython readline]
+    res = %w[distorm3 pycrypto openpyxl pytz ipython readline]
 
     res.each do |r|
       resource(r).stage do
         system "python", "setup.py", "build"
         system "python", "setup.py", "install", "--prefix=#{libexec}"
       end
+    end
+
+    resource("pillow").stage do
+      inreplace "setup.py", "'brew', '--prefix'", "'#{HOMEBREW_PREFIX}/bin/brew', '--prefix'"
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
     resource("yara-python").stage do
