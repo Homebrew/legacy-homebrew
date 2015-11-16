@@ -72,9 +72,11 @@ class Qt5 < Formula
 
   deprecated_option "qtdbus" => "with-d-bus"
 
-  # Snow Leopard is untested and support has been removed in 5.4
-  # https://qt.gitorious.org/qt/qtbase/commit/5be81925d7be19dd0f1022c3cfaa9c88624b1f08
-  depends_on :macos => :lion
+  # OS X 10.7 Lion is still supported in Qt 5.5, but is no longer a reference
+  # configuration and thus untested in practice. Builds on OS X 10.7 have been
+  # reported to fail: <https://github.com/Homebrew/homebrew/issues/45284>.
+  depends_on :macos => :mountain_lion
+
   depends_on "d-bus" => :optional
   depends_on :mysql => :optional
   depends_on :xcode => :build
