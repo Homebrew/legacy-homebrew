@@ -224,11 +224,6 @@ class Pgloader < Formula
     sha256 "90ae04cd1a43fe186d07e5f805faa6cc8a00d1134dd9d99b56e31fa2f5811279"
   end
 
-  resource "pgloader" do
-    url "https://beta.quicklisp.org/archive/pgloader/2015-03-02/pgloader-3.2.0.tgz"
-    sha256 "b6ee64da37b9c781deafbfb5f698bdd2d005bcb03380b7072e0cf1cecc237204"
-  end
-
   resource "postmodern" do
     url "https://beta.quicklisp.org/archive/postmodern/2014-11-06/postmodern-20141106-git.tgz"
     sha256 "e1c774c703de8c84ae9642b1f0e826d14644963977901b48e6fcade00e9e53a4"
@@ -304,7 +299,7 @@ class Pgloader < Formula
       resource.stage buildpath/"lib"/resource.name
     end
 
-    ENV["CL_SOURCE_REGISTRY"] = "#{buildpath}/lib//"
+    ENV["CL_SOURCE_REGISTRY"] = "#{buildpath}/lib//:#{buildpath}//"
     ENV["ASDF_OUTPUT_TRANSLATIONS"] = "/:/"
     system "make", "pgloader-standalone", "BUILDAPP=buildapp"
 
