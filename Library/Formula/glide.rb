@@ -3,8 +3,8 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.7.1.tar.gz"
-  sha256 "a02bb93793b86e6d31d955b4fb1adf0f3a6192d854abca87dc1816055121040f"
+  url "https://github.com/Masterminds/glide/archive/0.7.2.tar.gz"
+  sha256 "368420de355fcce99187b8ccd5bf1025bbfb6ad394efeb0551b6b09911dfb9f3"
 
   bottle do
     cellar :any_skip_relocation
@@ -46,12 +46,12 @@ class Glide < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.7.1", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.7.2", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
     bin.install "glide"
   end
 
   test do
     version = pipe_output("#{bin}/glide --version")
-    assert_match /0.7.1/, version
+    assert_match /0.7.2/, version
   end
 end
