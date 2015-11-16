@@ -1,6 +1,6 @@
 class Librevenge < Formula
   desc "Base library for writing document import filters"
-  homepage "http://sourceforge.net/p/libwpd/wiki/librevenge/"
+  homepage "https://sourceforge.net/p/libwpd/wiki/librevenge/"
   url "http://dev-www.libreoffice.org/src/librevenge-0.0.2.tar.bz2"
   mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.2/librevenge-0.0.2.tar.bz2"
   sha256 "dedd6fe1f643fc2f254f2ad3719547084bd86bcc482104b995caf3b828368b18"
@@ -15,7 +15,7 @@ class Librevenge < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "boost" => :build
+  depends_on "boost"
 
   # Fix build with Boost 1.59
   # https://sourceforge.net/p/libwpd/tickets/6/
