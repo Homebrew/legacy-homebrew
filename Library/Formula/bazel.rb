@@ -18,11 +18,12 @@ class Bazel < Formula
     (prefix/"base_workspace").mkdir
     cp_r Dir["base_workspace/*"], (prefix/"base_workspace"), :dereference_root => true
     bin.install "output/bazel" => "bazel"
-    (etc/"bazel/bazel.bazelrc").write <<-EOS.undent
+    (prefix/"etc/bazel.bazelrc").write <<-EOS.undent
       build --package_path=%workspace%:#{prefix}/base_workspace
       query --package_path=%workspace%:#{prefix}/base_workspace
       fetch --package_path=%workspace%:#{prefix}/base_workspace
     EOS
+    (etc/"bazel").install prefix/"etc/bazel.bazelrc"
   end
 
   test do
