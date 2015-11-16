@@ -6,9 +6,9 @@ class Gloox < Formula
 
   bottle do
     cellar :any
-    sha1 "5060164baddf38f05951775cfd5f70b2f52056d2" => :yosemite
-    sha1 "c2c278952e2256638c8165bf56168d069375fd7f" => :mavericks
-    sha1 "ce76ecc24eef8c32f79d6e65bf6eae8a0f6efdcf" => :mountain_lion
+    sha256 "b8f386579b18e8bd114fd6e73d12c375ba90d6a3a29b974e4d665b6a3c546406" => :el_capitan
+    sha256 "42999d48ba063b0963e3df47f4b7eda819831d016c2b77e136cc28166c3cf6c9" => :yosemite
+    sha256 "1bad7cafd725cfb2c9f8aadd16a75ce450465fa9bcc003283b13f96858b911e9" => :mavericks
   end
 
   depends_on "pkg-config" => :build
