@@ -1,7 +1,7 @@
 require "hardware"
 require "extend/ENV/shared"
 
-# @deprecated
+# @private
 module Stdenv
   include SharedEnvExtension
 
