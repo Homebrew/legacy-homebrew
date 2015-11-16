@@ -4,6 +4,8 @@ class Iproute2mac < Formula
   url "http://github.com/brona/iproute2mac/archive/v1.1.0.tar.gz"
   sha256 "3149dc23d5487e837646f50572d512a31799c74cf21288609887cbf8e465d4e6"
 
+  bottle :unneeded
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
