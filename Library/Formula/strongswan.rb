@@ -74,6 +74,7 @@ class Strongswan < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
+    system "make", "check"
     system "make", "install"
   end
 
