@@ -1,18 +1,9 @@
 class OpenalSoft < Formula
   desc "Implementation of the OpenAL 3D audio API"
   homepage "http://kcat.strangesoft.net/openal.html"
+  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.17.0.tar.bz2"
+  sha256 "5e93336de2e7c50f3a01beba51861d6f61c3e4045a896191dc806591e46264d1"
   head "http://repo.or.cz/openal-soft.git"
-  revision 1
-
-  stable do
-    url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.16.0.tar.bz2"
-    sha256 "2f3dcd313fe26391284fbf8596863723f99c65d6c6846dccb48e79cadaf40d5f"
-
-    # Fixed upstream already by:
-    # http://repo.or.cz/openal-soft.git/commit/4b53d0e90cec08b4df06be22a9516f12ac5647f5
-    # http://repo.or.cz/openal-soft.git/commit/6689c61ff474657109c5a73827b8733aba7dfd45
-    depends_on MaximumMacOSRequirement => :yosemite
-  end
 
   bottle do
     cellar :any
