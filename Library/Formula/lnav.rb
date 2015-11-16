@@ -1,8 +1,8 @@
 class Lnav < Formula
   desc "Curses-based tool for viewing and analyzing log files"
   homepage "http://lnav.org"
-  url "https://github.com/tstack/lnav/releases/download/v0.7.3/lnav-0.7.3.tar.gz"
-  sha256 "7eb052a8dc60bef6c5f4a8e7135b7089b4413edbf156cc8bafce0557d3166df3"
+  url "https://github.com/tstack/lnav/releases/download/v0.8.0/lnav-0.8.0.tar.gz"
+  sha256 "fbebe3f4656c89b307fe06e7746e6146ae856048413a7cd98aaf8fc2bb34fc33"
 
   bottle do
     sha256 "078a22f68115ff5d271f4cd530d93ef37e3b999b993843a34f34e2f65a6e8ece" => :el_capitan
@@ -21,6 +21,7 @@ class Lnav < Formula
 
   depends_on "readline"
   depends_on "pcre"
+  depends_on "curl" => :optional
 
   def install
     system "./autogen.sh" if build.head?
