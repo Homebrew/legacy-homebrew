@@ -18,7 +18,7 @@ class FormulaPin
   end
 
   def pin
-    pin_at(@f.rack.subdirs.map { |d| Keg.new(d).version }.first)
+    pin_at(@f.rack.subdirs.map { |d| Keg.new(d).version }.max)
   end
 
   def unpin
