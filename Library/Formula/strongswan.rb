@@ -78,6 +78,11 @@ class Strongswan < Formula
     system "make", "install"
   end
 
+  test do
+    system "#{bin}/ipsec", "--version"
+    system "#{bin}/charon-cmd", "--version"
+  end
+
   def caveats
     msg = <<-EOS.undent
       strongSwan's configuration files are placed in:
