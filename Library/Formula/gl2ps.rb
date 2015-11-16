@@ -1,9 +1,8 @@
 class Gl2ps < Formula
   desc "OpenGL to PostScript printing library"
   homepage "http://www.geuz.org/gl2ps/"
-  url "http://geuz.org/gl2ps/src/gl2ps-1.3.8.tgz"
-  sha256 "2fe58dd95df06688a8c188e70b1803093ebf0797954901f4a36a403dbc301ee5"
-  revision 1
+  url "http://geuz.org/gl2ps/src/gl2ps-1.3.9.tgz"
+  sha256 "8a680bff120df8bcd78afac276cdc38041fed617f2721bade01213362bcc3640"
 
   bottle do
     cellar :any
