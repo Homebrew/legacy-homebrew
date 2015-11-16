@@ -7,6 +7,12 @@ class Keybase < Formula
 
   head "https://github.com/keybase/client.git"
 
+  bottle do
+    sha256 "0082c09c96cf19d1443723a5d91345547a4e6ce90d4139ec55ed017626bf0202" => :el_capitan
+    sha256 "6f30a1b8f5d04fe767f42437852a4d3445624988f152c73dbf5a00d6bc4a2010" => :yosemite
+    sha256 "3cfd77bd3ae34a93f200d9e0800b615b129bd8bd330d5d0d036743b2548bca14" => :mavericks
+  end
+
   depends_on "go" => :build
 
   def install
