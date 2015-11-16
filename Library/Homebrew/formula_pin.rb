@@ -33,4 +33,8 @@ class FormulaPin
   def pinnable?
     @f.rack.exist? && @f.rack.subdirs.length > 0
   end
+
+  def pinned_version
+    Keg.new(path.resolved_path).version if pinned?
+  end
 end

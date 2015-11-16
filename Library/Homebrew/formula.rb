@@ -937,6 +937,11 @@ class Formula
   end
 
   # @private
+  def pinned_version
+    @pin.pinned_version
+  end
+
+  # @private
   def pin
     @pin.pin
   end
