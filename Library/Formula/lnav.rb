@@ -21,7 +21,7 @@ class Lnav < Formula
 
   depends_on "readline"
   depends_on "pcre"
-  depends_on "curl"
+  depends_on "curl" => :optional
 
   def install
     system "./autogen.sh" if build.head?
