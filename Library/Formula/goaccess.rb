@@ -1,8 +1,8 @@
 class Goaccess < Formula
   desc "Log analyzer and interactive viewer for the Apache Webserver"
   homepage "http://goaccess.io/"
-  url "http://tar.goaccess.io/goaccess-0.9.4.tar.gz"
-  sha256 "8a6e167f6a9330ccf37c652e577792c9c626d7134d64f841eb54fefcdff6c5ce"
+  url "http://tar.goaccess.io/goaccess-0.9.6.tar.gz"
+  sha256 "e848064c8555f95e770aa1c0475c784c094b42e4ae53ff852975f6498d8f649a"
 
   bottle do
     sha256 "e55d00891372ed68169bb759c7113fb47951793146287f58542f05033966b0a6" => :el_capitan
