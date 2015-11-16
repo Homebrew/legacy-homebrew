@@ -1,8 +1,8 @@
 class Glew < Formula
   desc "OpenGL Extension Wrangler Library"
   homepage "http://glew.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/glew/glew/1.13.0/glew-1.13.0.tgz"
-  sha256 "aa25dc48ed84b0b64b8d41cdd42c8f40f149c37fa2ffa39cd97f42c78d128bc7"
+  url "https://downloads.sourceforge.net/project/glew/glew/1.12.0/glew-1.12.0.tgz"
+  sha256 "af58103f4824b443e7fa4ed3af593b8edac6f3a7be3b30911edbc7344f48e4bf"
 
   bottle do
     cellar :any
