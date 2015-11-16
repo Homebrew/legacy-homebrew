@@ -6,6 +6,14 @@ class Z3 < Formula
   head "https://github.com/Z3Prover/z3.git"
   revision 1
 
+  option "without-python", "Build without python 2 support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
+  depends_on :python3 => :optional
+
+  if build.without?("python3") && build.without?("python")
+    odie "z3: --with-python3 must be specified when using --without-python"
+  end
+
   bottle do
     cellar :any
     sha256 "747f0ed14c4420c2724b970612150431983938a29174db9d03aad78a824193f4" => :el_capitan
@@ -15,11 +23,13 @@ class Z3 < Formula
 
   def install
     inreplace "scripts/mk_util.py", "dist-packages", "site-packages"
-    system "python", "scripts/mk_make.py", "--prefix=#{prefix}"
 
-    cd "build" do
-      system "make"
-      system "make", "install"
+    Language::Python.each_python(build) do |python, version|
+      system python, "scripts/mk_make.py", "--prefix=#{prefix}"
+      cd "build" do
+        system "make"
+        system "make", "install"
+      end
     end
 
     pkgshare.install "examples"
