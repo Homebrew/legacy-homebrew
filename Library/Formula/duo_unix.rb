@@ -1,16 +1,14 @@
 class DuoUnix < Formula
   desc "Two-factor authentication for SSH"
   homepage "https://www.duosecurity.com/docs/duounix"
-  url "https://dl.duosecurity.com/duo_unix-1.9.13.tar.gz"
-  sha256 "90397cd756669b22353d2ff024c6042affce23207e803bf9c1341ae3fc2e945a"
-  revision 1
+  url "https://dl.duosecurity.com/duo_unix-1.9.16.tar.gz"
+  sha256 "66a109723f5de0ad524a4ceb35e8a540d9fbbcecc9984be27ec91466cedd193b"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "0511973efe89292865a034e3f0e6c35717061f8c" => :yosemite
-    sha1 "77933fb49091788f90db88f0d41963889652ab6f" => :mavericks
-    sha1 "68ccaf5aeb4811f2f7c548c676f7a15957768dd5" => :mountain_lion
+    sha256 "3d2c111c427dbe2cdd824216b20e25831b5e5fa89fb583cb5376d55928f9995e" => :el_capitan
+    sha256 "5d8ce90613f03d5b6e4ac71450dffc35213f6aeaec36484e18db915514544300" => :yosemite
+    sha256 "10c5899dfe1493b604545c52c2bfb4d90deaa3007a753b7469701a4f8d0357ae" => :mavericks
   end
 
   depends_on "openssl"

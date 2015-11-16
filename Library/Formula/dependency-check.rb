@@ -5,6 +5,8 @@ class DependencyCheck < Formula
   version "1.3.1"
   sha256 "0f36689b6a8ade5db1d626aa9d067c6f6c083677ca04bcbae16b1d819d9af1d5"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

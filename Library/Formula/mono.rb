@@ -15,6 +15,8 @@ class Mono < Formula
     sha256 "71477844200f6760048cd3e804faa4ea19810a8129af9d4b5776dfefc21a9296" => :mavericks
   end
 
+  conflicts_with "czmq", :because => "both install `makecert` binaries"
+
   option "without-fsharp", "Build without support for the F# language."
 
   resource "monolite" do
@@ -37,6 +39,9 @@ class Mono < Formula
   link_overwrite "bin/fssrgen"
   link_overwrite "lib/mono"
   link_overwrite "lib/cli"
+
+  conflicts_with "disco", :because => "both install `disco` binaries"
+  conflicts_with "xsd", :because => "both install `xsd` binaries"
 
   def install
     # a working mono is required for the the build - monolite is enough

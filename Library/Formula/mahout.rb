@@ -1,13 +1,15 @@
 class Mahout < Formula
   desc "Library to help build scalable machine learning libraries"
   homepage "https://mahout.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=mahout/0.11.0/apache-mahout-distribution-0.11.0.zip"
-  sha256 "3b4a68c69cff2ce41b9ddd789469eaa85ea3d7bab980717182bf94ea71c22904"
+  url "https://www.apache.org/dyn/closer.cgi?path=mahout/0.11.1/apache-mahout-distribution-0.11.1.tar.gz"
+  sha256 "0731e01ba9610f034cbd5316b9ba911356bedca9ba7915db4e958180afaf9cc9"
 
   head do
     url "https://github.com/apache/mahout.git"
     depends_on "maven" => :build
   end
+
+  bottle :unneeded
 
   depends_on "hadoop"
   depends_on :java

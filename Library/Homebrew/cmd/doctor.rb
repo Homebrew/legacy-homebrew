@@ -117,6 +117,7 @@ class Checks
       "libntfs.*.dylib", # NTFS-3G
       "libublio.*.dylib", # NTFS-3G
       "libUFSDNTFS.dylib", # Paragon NTFS
+      "libUFSDExtFS.dylib", # Paragon ExtFS
     ]
 
     __check_stray_files "/usr/local/lib", "*.dylib", white_list, <<-EOS.undent
@@ -240,7 +241,7 @@ class Checks
   end
 
   def check_for_unsupported_osx
-    if !ARGV.homebrew_developer? && MacOS.version >= "10.12" then <<-EOS.undent
+    if !ARGV.homebrew_developer? && OS::Mac.prerelease? then <<-EOS.undent
     You are using OS X #{MacOS.version}.
     We do not provide support for this pre-release version.
     You may encounter build failures or other breakages.
@@ -259,8 +260,7 @@ class Checks
       end
     end
 
-    # TODO: bump version when new OS is released
-    if MacOS.version >= "10.12"
+    if OS::Mac.prerelease?
       def check_xcode_up_to_date
         if MacOS::Xcode.installed? && MacOS::Xcode.outdated?
           <<-EOS.undent
@@ -410,11 +410,12 @@ class Checks
 
     return if cant_read.empty?
     inject_file_list cant_read.sort, <<-EOS.undent
-    Some directories in #{target} aren't writable.
-    This can happen if you "sudo make install" software that isn't managed
-    by Homebrew. If a brew tries to add locale information to one of these
-    directories, then the install will fail during the link step.
-    You should probably `chown` them:
+      Some directories in #{target} aren't writable.
+      This can happen if you "sudo make install" software that isn't managed
+      by Homebrew. If a brew tries to add locale information to one of these
+      directories, then the install will fail during the link step.
+
+      You should probably `sudo chown -R $(whoami)` them:
     EOS
   end
 
@@ -429,7 +430,10 @@ class Checks
   def check_access_homebrew_repository
     unless HOMEBREW_REPOSITORY.writable_real? then <<-EOS.undent
       The #{HOMEBREW_REPOSITORY} is not writable.
-      You should probably `chown` #{HOMEBREW_REPOSITORY}
+
+      You should probably change the ownership and permissions of #{HOMEBREW_REPOSITORY}
+      back to your user account.
+        sudo chown -R $(whoami) #{HOMEBREW_REPOSITORY}
     EOS
     end
   end
@@ -451,6 +455,14 @@ class Checks
   end
 
   def check_tmpdir_sticky_bit
+    # Repair Disk Permissions was removed(?) in El Capitan.
+    # https://support.apple.com/en-us/HT201560
+    if MacOS.version < "10.11"
+      fix_message = "Please run \"Repair Disk Permissions\" in Disk Utility."
+    else
+      fix_message = "Please execute `sudo chmod +t #{HOMEBREW_TEMP}` in your Terminal"
+    end
+
     world_writable = HOMEBREW_TEMP.stat.mode & 0777 == 0777
     if world_writable && !HOMEBREW_TEMP.sticky? then <<-EOS.undent
     #{HOMEBREW_TEMP} is world-writable but does not have the sticky bit set.
@@ -466,11 +478,13 @@ class Checks
       if dir.exist? && !dir.writable_real? then <<-EOS.undent
       #{dir} isn't writable.
 
-      This can happen if you "sudo make install" software that isn't managed by
+      This can happen if you "sudo make install" software that isn't managed
       by Homebrew. If a formula tries to write a file to this directory, the
       install will fail during the link step.
 
-      You should probably `chown` #{dir}
+      You should probably change the ownership and permissions of #{dir}
+      back to your user account.
+        sudo chown -R $(whoami) #{dir}
       EOS
       end
     end
@@ -484,7 +498,9 @@ class Checks
       by Homebrew. If you install a formula with Python modules, the install
       will fail during the link step.
 
-      You should probably `chown` #{Language::Python.homebrew_site_packages}
+      You should probably change the ownership and permissions of #{Language::Python.homebrew_site_packages}
+      back to your user account.
+        sudo chown -R $(whoami) #{Language::Python.homebrew_site_packages}
     EOS
     end
   end
@@ -494,7 +510,10 @@ class Checks
       <<-EOS.undent
       #{HOMEBREW_LOGS} isn't writable.
       Homebrew writes debugging logs to this location.
-      You should probably `chown` #{HOMEBREW_LOGS}
+
+      You should probably change the ownership and permissions of #{HOMEBREW_LOGS}
+      back to your user account.
+        sudo chown -R $(whoami) #{HOMEBREW_LOGS}
     EOS
     end
   end
@@ -505,7 +524,10 @@ class Checks
       #{HOMEBREW_CACHE} isn't writable.
       This can happen if you run `brew install` or `brew fetch` as another user.
       Homebrew caches downloaded files to this location.
-      You should probably `chown` #{HOMEBREW_CACHE}
+
+      You should probably change the ownership and permissions of #{HOMEBREW_CACHE}
+      back to your user account.
+        sudo chown -R $(whoami) #{HOMEBREW_CACHE}
     EOS
     end
   end
@@ -514,7 +536,10 @@ class Checks
     if HOMEBREW_CELLAR.exist? && !HOMEBREW_CELLAR.writable_real?
       <<-EOS.undent
       #{HOMEBREW_CELLAR} isn't writable.
-      You should `chown` #{HOMEBREW_CELLAR}
+
+      You should probably change the ownership and permissions of #{HOMEBREW_CELLAR}
+      back to your user account.
+        sudo chown -R $(whoami) #{HOMEBREW_CELLAR}
     EOS
     end
   end
@@ -524,7 +549,9 @@ class Checks
     if opt.exist? && !opt.writable_real?
       <<-EOS.undent
       #{opt} isn't writable.
-      You should `chown` #{opt}
+      You should probably change the ownership and permissions of #{opt}
+      back to your user account.
+        sudo chown -R $(whoami) #{opt}
     EOS
     end
   end
@@ -1075,7 +1102,7 @@ class Checks
       unless `git status --untracked-files=all --porcelain -- Library/Homebrew/ 2>/dev/null`.chomp.empty?
         <<-EOS.undent_________________________________________________________72
       You have uncommitted modifications to Homebrew
-      If this a surprise to you, then you should stash these modifications.
+      If this is a surprise to you, then you should stash these modifications.
       Stashing returns Homebrew to a pristine state but can be undone
       should you later need to do so for some reason.
           cd #{HOMEBREW_LIBRARY} && git stash && git clean -d -f

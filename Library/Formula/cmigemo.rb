@@ -1,6 +1,7 @@
 class Cmigemo < Formula
   desc "Migemo is a tool that supports Japanese incremental search with Romaji"
   homepage "http://www.kaoriya.net/software/cmigemo"
+  head "https://github.com/koron/cmigemo.git"
 
   stable do
     url "https://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip"
@@ -10,18 +11,16 @@ class Cmigemo < Formula
     patch :DATA
   end
 
-  head "https://github.com/koron/cmigemo.git"
-
   depends_on "nkf" => :build
 
   def install
-    system "chmod +x ./configure"
+    chmod 0755, "./configure"
     system "./configure", "--prefix=#{prefix}"
     system "make", "osx"
-    system "make osx-dict"
+    system "make", "osx-dict"
     system "make", "-C", "dict", "utf-8" if build.stable?
     ENV.j1 # Install can fail on multi-core machines unless serialized
-    system "make osx-install"
+    system "make", "osx-install"
   end
 
   def caveats; <<-EOS.undent

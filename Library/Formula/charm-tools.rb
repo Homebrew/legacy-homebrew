@@ -1,14 +1,14 @@
 class CharmTools < Formula
   desc "Tools for authoring and maintaining juju charms"
-  homepage "https://launchpad.net/charm-tools"
-  url "https://launchpad.net/charm-tools/1.7/1.7.1/+download/charm-tools-1.7.1.tar.gz"
-  sha256 "0463f46eb9e4a2a9d2308d79845d9837bce031db668f9012319c714e8ddadbac"
+  homepage "https://github.com/juju/charm-tools"
+  url "https://github.com/juju/charm-tools/releases/download/v1.8.0/charm-tools-1.8.0.tar.gz"
+  sha256 "e72e788f069fcf4c2db7435db71ca8feb3dd8c6fd63c4b7e591b4064d76f4dbb"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ed4f2472ec3404d4f0fc8472eee0128a472132b194c3f4c8d2509e8ab33e4207" => :el_capitan
-    sha256 "b9d70fa7b1a6375988cada16f1fb60944093e7697cc35a48b5e250164acd0734" => :yosemite
-    sha256 "8b4cf466fd90d6ee807d315d277fa61579ca187961ed48674476e62e38b92224" => :mavericks
+    sha256 "ed3e5be4e4f379e2aca09a79a7f6a81225b7eb0c21266bf81ad048a9781d980e" => :el_capitan
+    sha256 "94cd704a118c3792103234da7cc981466a0186a7d41333761d9a4335b7a927e0" => :yosemite
+    sha256 "7e9dda9b12a176005c2ef5293cc001088cede449dc44cae09f0a24dd309c276a" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

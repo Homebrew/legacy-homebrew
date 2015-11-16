@@ -5,6 +5,8 @@ class GetFlashVideos < Formula
   version "1.24"
   sha256 "e41da715f817bfa1a65ae82cc4f5a82268b6e72a7f4d90ffabf89b3a522cbb91"
 
+  bottle :unneeded
+
   def install
     bin.install "combined-get_flash_videos-1.24" => "get_flash_videos"
   end

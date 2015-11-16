@@ -4,6 +4,8 @@ class Jhiccup < Formula
   url "http://www.azulsystems.com/sites/default/files/images/jHiccup.1.3.7.zip"
   sha256 "abc029bfb55bbe59824d0b6db6845bd0f08befba3b860747ed601a6c27573f24"
 
+  bottle :unneeded
+
   def install
     bin.install "jHiccup"
 

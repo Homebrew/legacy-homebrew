@@ -4,6 +4,8 @@ class WildflyAs < Formula
   url "https://download.jboss.org/wildfly/9.0.1.Final/wildfly-9.0.1.Final.tar.gz"
   sha256 "8f570f978dff65a006c1c6cb58c26a3856b19f01dad5b2a3ef9e463c8dee2a54"
 
+  bottle :unneeded
+
   def install
     rm_f Dir["bin/*.bat"]
     rm_f Dir["bin/*.ps1"]

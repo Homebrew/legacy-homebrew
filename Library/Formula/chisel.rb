@@ -4,6 +4,8 @@ class Chisel < Formula
   url "https://github.com/facebook/chisel/archive/1.3.0.tar.gz"
   sha256 "6e8f64a1cb48b0937a98a7d62dc0c6de8cea5afa0040088b426d166e188a6f59"
 
+  bottle :unneeded
+
   def install
     libexec.install Dir["*.py", "commands"]
     prefix.install "PATENTS"

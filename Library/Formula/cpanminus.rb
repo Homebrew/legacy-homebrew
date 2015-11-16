@@ -3,8 +3,9 @@ class Cpanminus < Formula
   homepage "https://github.com/miyagawa/cpanminus"
   url "https://github.com/miyagawa/cpanminus/archive/1.7039.tar.gz"
   sha256 "b3326c363a1b100008596e21cd3be182f712f1a2b9cb5d608e463ac3111dcc9c"
-
   head "https://github.com/miyagawa/cpanminus.git"
+
+  bottle :unneeded
 
   def install
     bin.install "cpanm"

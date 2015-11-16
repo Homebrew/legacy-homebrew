@@ -7,15 +7,16 @@ class Cspice < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 2
-    sha256 "6df710fca2dc4d81c49a486feb9ec38f54d1d6c45c88010246c818c78e13e65d" => :el_capitan
-    sha256 "6e079176731ac400fb3178cd1e8d783659f4d0b39e8ac5cd0bac9e9c6f139ecd" => :yosemite
-    sha256 "43d6dada0482cf26839fde38b0a074479c12b059fc24767bf09fd39e3be9ef44" => :mavericks
+    revision 3
+    sha256 "daa552c39c338739c8c435d1b7c5c77975172905ff91b5893667da6ad60f7a7e" => :el_capitan
+    sha256 "fda8c9832e01c3b51bf68981434501632083a0a88909f62b4248f63f248a5971" => :yosemite
+    sha256 "61e4b947ed7223919ae92ddfcaf1f64267ab8d27467bcfb4de51cbdd10edbaa1" => :mavericks
   end
 
   conflicts_with "openhmd", :because => "both install `simple` binaries"
   conflicts_with "libftdi0", :because => "both install `simple` binaries"
   conflicts_with "enscript", :because => "both install `states` binaries"
+  conflicts_with "fondu", :because => "both install `tobin` binaries"
 
   def install
     rm_f Dir["lib/*"]

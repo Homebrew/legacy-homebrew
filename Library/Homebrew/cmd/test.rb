@@ -40,7 +40,7 @@ module Homebrew
           args << "--devel"
         end
 
-        if Sandbox.available? && ARGV.sandbox?
+        if Sandbox.available? && !ARGV.no_sandbox?
           if Sandbox.auto_disable?
             Sandbox.print_autodisable_warning
           else
@@ -49,7 +49,7 @@ module Homebrew
         end
 
         Utils.safe_fork do
-          if Sandbox.available? && ARGV.sandbox? && !Sandbox.auto_disable?
+          if Sandbox.available? && !ARGV.no_sandbox? && !Sandbox.auto_disable?
             sandbox = Sandbox.new
             f.logs.mkpath
             sandbox.record_log(f.logs/"sandbox.test.log")

@@ -4,6 +4,8 @@ class Gwt < Formula
   url "https://storage.googleapis.com/gwt-releases/gwt-2.7.0.zip"
   sha256 "aa65061b73836190410720bea422eb8e787680d7bc0c2b244ae6c9a0d24747b3"
 
+  bottle :unneeded
+
   def install
     rm Dir["*.cmd"] # remove Windows cmd files
     share.install Dir["*"]

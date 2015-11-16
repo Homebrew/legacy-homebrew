@@ -5,6 +5,8 @@ class JettyRunner < Formula
   version "9.2.2.v20140723"
   sha256 "6b7ba03e23f65f86f946e19860da10afb326f13c74abfb84718db07280201e5c"
 
+  bottle :unneeded
+
   def install
     libexec.install Dir["*"]
 

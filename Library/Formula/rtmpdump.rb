@@ -12,11 +12,13 @@ class Rtmpdump < Formula
 
   bottle do
     cellar :any
-    sha256 "938bc686e564cc8a82d3d30edb685729bb8b12fb8d2e7f5bee37873e17a77e96" => :el_capitan
-    sha256 "5333be3b341a79c84d1bc9c2bb74ef71e2e6c49e5e2a94dd02e2ef5721acd5f5" => :yosemite
-    sha256 "f906ce07d4ab1e365f22afabfa594fffba1caf0d3e7fa749a76b07a944891aba" => :mavericks
-    sha256 "90f87f1c3e8c68385576812bdfadc39152d3bd9166cafb982761d1a6cc915710" => :mountain_lion
+    revision 1
+    sha256 "ff54a87e4bf675b5b06942c73bfba5d8aad086f164fa90bdc2c53d74198072a5" => :el_capitan
+    sha256 "b6ff97c9829c5e4e49b907b0cda95586b32c2041408d97ba67a8eb3341da1425" => :yosemite
+    sha256 "b6a70460afac0e3a73643af0fdc61cd332e1aa48ec1f7adee20c280e4601e0a6" => :mavericks
   end
+
+  conflicts_with "flvstreamer", :because => "both install 'rtmpsrv', 'rtmpsuck' and 'streams' binary"
 
   depends_on "openssl"
 

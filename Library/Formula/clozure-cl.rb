@@ -5,6 +5,8 @@ class ClozureCl < Formula
   version "1.10"
   sha256 "5ec70087e6ba54e1992210575d444ebb2e12dbd33ac2816fed1112d24d595ec9"
 
+  bottle :unneeded
+
   conflicts_with "cclive", :because => "both install a ccl binary"
 
   def install

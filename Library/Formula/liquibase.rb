@@ -4,6 +4,8 @@ class Liquibase < Formula
   url "https://github.com/liquibase/liquibase/releases/download/liquibase-parent-3.4.1/liquibase-3.4.1-bin.tar.gz"
   sha256 "693919918e217e7a88c5140e82f279f31f636233a62cd2108abdafa4f3ed0a02"
 
+  bottle :unneeded
+
   def install
     rm_f Dir["*.bat"]
     chmod 0755, "liquibase"

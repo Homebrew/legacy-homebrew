@@ -1,23 +1,19 @@
 class Pyqt5 < Formula
   desc "Python bindings for v5 of Qt"
   homepage "https://www.riverbankcomputing.com/software/pyqt/download5"
-  url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5/PyQt-gpl-5.5.tar.gz"
-  sha256 "cdd1bb55b431acdb50e9210af135428a13fb32d7b1ab86e972ac7101f6acd814"
-  revision 2
-
-  # Upstream fix for hard-coded dependency on QtDBus module, extracted from the
-  # snapshot `PyQt-gpl-5.5.1-snapshot-13f9ece29d02.tar.gz`.
-  # Should land in the 5.5.1 release.
-  patch :DATA
+  url "https://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-5.5.1/PyQt-gpl-5.5.1.tar.gz"
+  sha256 "0a70ef94fbffcf674b0dde024aae2a2a7a3f5a8c42806109ff7df2c941bd8386"
 
   bottle do
-    sha256 "038a01d845b448b1ab2f0a0a1fa1e2fc6c26c7c4a89414f5323b13c137cb6338" => :el_capitan
-    sha256 "e8dfc2ce94a18936550b1af0abaa8fed898c14b7fac06c6e6822da3eff7541d2" => :yosemite
-    sha256 "b116d5b4060d488f77a1d3536a3442cf8b15f5fe9a350186269e2ecc9e688fe3" => :mavericks
+    sha256 "b9e313a98af2b16a6ab3df8e0c2d7d153b80f49211741a565945049a18765c51" => :el_capitan
+    sha256 "c298d8b38ca10572c1026c5489dc879b64de97ae083847c78f547d388b8b2e26" => :yosemite
+    sha256 "33f2dfb85349db6826d9653512e608bde4f99f6297957c0c7c4ee8457d09ef9f" => :mavericks
   end
 
-  option "enable-debug", "Build with debug symbols"
+  option "with-debug", "Build with debug symbols"
   option "with-docs", "Install HTML documentation and python examples"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   depends_on :python3 => :recommended
   depends_on :python => :optional
@@ -50,7 +46,7 @@ class Pyqt5 < Formula
               "QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}",
               "--qml-plugindir=#{pkgshare}/plugins",
               "--verbose"]
-      args << "--debug" if build.include? "enable-debug"
+      args << "--debug" if build.with? "debug"
 
       system python, "configure.py", *args
       system "make"
@@ -79,38 +75,3 @@ class Pyqt5 < Formula
     end
   end
 end
-
-__END__
-diff --git 1/configure.py 2/configure.py
-index 2144c2e3..8aa4226a 100644
---- 1/configure.py
-+++ 2/configure.py
-@@ -2478,9 +2504,25 @@ win32 {
-         pro_lines.append('LIBS += %s' % libs)
-
-     if not target_config.static:
--        # Make sure these frameworks are already loaded by the time the
--        # libqcocoa.dylib plugin gets loaded.
--        extra_lflags = 'QMAKE_LFLAGS += "-framework QtPrintSupport -framework QtDBus -framework QtWidgets"\n        ' if mname == 'QtGui' else ''
-+        # For Qt v5.5 and later, Make sure these frameworks are already loaded
-+        # by the time the libqcocoa.dylib plugin gets loaded.  This problem is
-+        # due to be fixed in Qt v5.6.
-+        extra_lflags = ''
-+
-+        if mname == 'QtGui':
-+            # Note that this workaround is flawed because it looks at the PyQt
-+            # configuration rather than the Qt configuration.  It will fail if
-+            # the user is building a PyQt without the QtDBus module against a
-+            # Qt with the QtDBus library.  However it will be fine for the
-+            # common case where the PyQt configuration reflects the Qt
-+            # configuration.
-+            fwks = []
-+            for m in ('QtPrintSupport', 'QtDBus', 'QtWidgets'):
-+                if m in target_config.pyqt_modules:
-+                    fwks.append('-framework ' + m)
-+
-+            if len(fwks) != 0:
-+                extra_lflags = 'QMAKE_LFLAGS += "%s"\n        ' % ' '.join(fwks)
-
-         shared = '''
- win32 {

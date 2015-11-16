@@ -6,6 +6,8 @@ class Z < Formula
 
   head "https://github.com/rupa/z.git"
 
+  bottle :unneeded
+
   def install
     (prefix/"etc/profile.d").install "z.sh"
     man1.install "z.1"

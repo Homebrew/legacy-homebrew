@@ -2,7 +2,7 @@ class Mpfr < Formula
   desc "C library for multiple-precision floating-point computations"
   homepage "http://www.mpfr.org/"
   # Upstream is down a lot, so use mirrors
-  url "https://mirrors.kernel.org/debian/pool/main/m/mpfr4/mpfr4_3.1.3.orig.tar.xz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mpfr4/mpfr4_3.1.3.orig.tar.xz"
   mirror "https://ftp.gnu.org/gnu/mpfr/mpfr-3.1.3.tar.xz"
   sha256 "6835a08bd992c8257641791e9a6a2b35b02336c8de26d0a8577953747e514a16"
 
@@ -30,7 +30,7 @@ class Mpfr < Formula
     cause <<-EOS.undent
       clang build 421 segfaults while building in superenv;
       see https://github.com/Homebrew/homebrew/issues/15061
-      EOS
+    EOS
   end
 
   def install

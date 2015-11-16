@@ -3,15 +3,15 @@ require "language/go"
 class Snag < Formula
   desc "Automatic build tool for all your needs"
   homepage "https://github.com/Tonkpils/snag"
-  url "https://github.com/Tonkpils/snag/archive/v1.0.0.tar.gz"
-  sha256 "3b9df4e2409e37c8f74ab16e4d276544bac81acd66caabdab62b07f321adc0a1"
+  url "https://github.com/Tonkpils/snag/archive/v1.1.0.tar.gz"
+  sha256 "30197526352284067ebc7f8c066da37e1e92f535dcf7a185584bdc4d8ef37233"
   head "https://github.com/Tonkpils/snag.git"
 
   bottle do
-    cellar :any
-    sha256 "28b858b8b2cba0a79444018fbf382c002ecd905a35d75353a6db0626e436aa41" => :yosemite
-    sha256 "9fea39e73b26377b0904e88f954f2ebbb575fcd668ea32723f50aae1770ec9cd" => :mavericks
-    sha256 "a279c7f9e5f754480acdec327628b0b0593ba5390aac2408498b1930fc72434f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0440b77998204934baafcd3d607c1fee407a3116b4b0b23dd3b91dd0a29ebe04" => :el_capitan
+    sha256 "b2c058bcdab37bc890e03b843fcb07f500d0ccce5157c94cb75ab0bc0f629f71" => :yosemite
+    sha256 "a65fc487274d29dc68d8dba8cc85318606dae4c55aa64446fc61e76c5d82ed60" => :mavericks
   end
 
   depends_on "go" => :build

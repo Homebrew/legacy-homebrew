@@ -5,6 +5,8 @@ class Denominator < Formula
   version "4.7.1"
   sha256 "f2d09aaebb63ccb348dcba3a5cc3e94a42b0eae49e90ac0ec2b0a14adfbe5254"
 
+  bottle :unneeded
+
   def install
     bin.install "denominator-cli-4.7.1-fat.jar" => "denominator"
   end

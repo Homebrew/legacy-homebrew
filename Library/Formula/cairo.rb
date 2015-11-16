@@ -1,17 +1,14 @@
 class Cairo < Formula
   desc "Vector graphics library with cross-device output support"
   homepage "http://cairographics.org/"
-  url "http://cairographics.org/releases/cairo-1.14.2.tar.xz"
-  mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.2.tar.xz"
-  sha256 "c919d999ddb1bbbecd4bbe65299ca2abd2079c7e13d224577895afa7005ecceb"
-  revision 1
+  url "http://cairographics.org/releases/cairo-1.14.4.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.4.tar.xz"
+  sha256 "f6ec9c7c844db9ec011f0d66b57ef590c45adf55393d1fc249003512522ee716"
 
   bottle do
-    revision 3
-    sha256 "c53e4efa75921181a8689a0dcd13454d7a0759e259b331ebdc92c692d0716bad" => :el_capitan
-    sha256 "33d9cb9c8dcb1a12eaefb2c816cb7c82f948a9775f79b2427b011a03153fc8a0" => :yosemite
-    sha256 "4332ca15d3f37a421947d4d5a43ee7f6116cbc1f920fdd4db7a6b2538cddde7b" => :mavericks
-    sha256 "32c35db10bc86230c18c4484e6b7f314ba56c0186c80b356a0d0533576267a2e" => :mountain_lion
+    sha256 "a919a8e47b4405bf6b0a614a1f0b17fa3a224e6b10d6bf6e8f182919b1f40640" => :el_capitan
+    sha256 "6268e7a3e1d68f04250064ca380a939b114e6394affec53b70c034b5e73594a5" => :yosemite
+    sha256 "04f0b2caa48871a13f4e74e411b5bd6dda8aa511475ad3d1ade79a2d1c42766d" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion

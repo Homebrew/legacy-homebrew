@@ -5,6 +5,8 @@ class Datomic < Formula
   version "0.9.5302"
   sha256 "6fc4fa8d6fa290c19405dbc11cf7f20dbe94077bd5dddc65cfd10b8958f42950"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

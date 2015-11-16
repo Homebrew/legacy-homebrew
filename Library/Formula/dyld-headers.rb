@@ -4,6 +4,8 @@ class DyldHeaders < Formula
   url "https://opensource.apple.com/tarballs/dyld/dyld-239.4.tar.gz"
   sha256 "c76eacb0863669d68538173ff261cb3afe302863d5c3b2287dc6816eb6a7e71f"
 
+  bottle :unneeded
+
   keg_only :provided_by_osx
 
   # Use Tiger-style availability macros

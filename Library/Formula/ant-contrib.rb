@@ -5,6 +5,8 @@ class AntContrib < Formula
   version "1.0b3"
   sha256 "6e58c2ee65e1f4df031796d512427ea213a92ae40c5fc0b38d8ac82701f42a3c"
 
+  bottle :unneeded
+
   depends_on "ant"
 
   def install

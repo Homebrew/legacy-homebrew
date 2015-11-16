@@ -5,6 +5,8 @@ class ImgurScreenshot < Formula
   sha256 "147fe1c3b3e407d952fa8abbdb9b436192133cf7a56278edc0dd87c2a9c9c430"
   head "https://github.com/jomo/imgur-screenshot.git"
 
+  bottle :unneeded
+
   option "with-terminal-notifier", "Needed for Mac OS X Notifications"
 
   depends_on "terminal-notifier" => :optional
@@ -14,6 +16,6 @@ class ImgurScreenshot < Formula
   end
 
   test do
-    system "#{bin}/imgur-screenshot.sh", "--check"  # checks deps
+    system "#{bin}/imgur-screenshot.sh", "--check" # checks deps
   end
 end

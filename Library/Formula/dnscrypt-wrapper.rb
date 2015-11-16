@@ -4,16 +4,16 @@ class DnscryptWrapper < Formula
   url "https://github.com/Cofyc/dnscrypt-wrapper/releases/download/v0.2/dnscrypt-wrapper-v0.2.tar.bz2"
   sha256 "d26f9d6329653b71bed5978885385b45f16596021f219f46e49da60d5813054e"
   head "https://github.com/Cofyc/dnscrypt-wrapper.git"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "9a68b02511377f4912555eecc0b82d7bc0d29551fadabcd08436e2f73a338730" => :yosemite
-    sha256 "bba2f1f2761a693f099eaaa4a34c6be2e1591ed86b1b07555401ddb6874cfe54" => :mavericks
-    sha256 "c86c520f58207134ec8e365781cb7d8d80d4ff145d8c859ebca1518b565b5702" => :mountain_lion
+    sha256 "ed9f28b79ec8400c8f837fe4bce0e5a02926b586c6a164dc7ed32c78ecce183f" => :el_capitan
+    sha256 "3f109683a68405dbf9c402d9fb3e3156dff5a329949db702f0af4d4cfa71b513" => :yosemite
+    sha256 "2066d2eebfe145a3ba2f234bce6887a276da630233ff98f3f0764de5d431ba47" => :mavericks
   end
 
   depends_on "autoconf" => :build
-
   depends_on "libsodium"
   depends_on "libevent"
 

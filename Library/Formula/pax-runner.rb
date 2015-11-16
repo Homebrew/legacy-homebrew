@@ -5,6 +5,8 @@ class PaxRunner < Formula
   version "1.8.6"
   sha256 "42a650efdedcb48dca89f3e4272a9e2e1dcc6bc84570dbb176b5e578ca1ce2d4"
 
+  bottle :unneeded
+
   def install
     (bin+"pax-runner").write <<-EOS.undent
       #!/bin/sh

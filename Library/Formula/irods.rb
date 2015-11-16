@@ -19,6 +19,9 @@ class Irods < Formula
   depends_on :osxfuse => :optional
   depends_on "openssl"
 
+  conflicts_with "renameutils",
+    :because => "both install `icp` and `imv` binaries"
+
   def install
     cd "iRODS" do
       system "./scripts/configure"

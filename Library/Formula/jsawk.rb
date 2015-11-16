@@ -3,8 +3,9 @@ class Jsawk < Formula
   homepage "https://github.com/micha/jsawk"
   url "https://github.com/micha/jsawk/archive/1.4.tar.gz"
   sha256 "3d38ffb4b9c6ff7f17072a12c5817ffe68bd0ab58d6182de300fc1e587d34530"
-
   head "https://github.com/micha/jsawk.git"
+
+  bottle :unneeded
 
   depends_on "spidermonkey"
 

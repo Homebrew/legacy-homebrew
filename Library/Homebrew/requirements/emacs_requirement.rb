@@ -4,22 +4,27 @@ class EmacsRequirement < Requirement
 
   def initialize(tags)
     @version = tags.shift if /\d+\.*\d*/ === tags.first
-    raise "Specify a version for EmacsRequirement" unless @version
     super
   end
 
   satisfy :build_env => false do
-    next unless which "emacs"
+    next false unless which "emacs"
+    next true unless @version
     emacs_version = Utils.popen_read("emacs", "--batch", "--eval", "(princ emacs-version)")
     Version.new(emacs_version) >= Version.new(@version)
   end
 
   env do
     ENV.prepend_path "PATH", which("emacs").dirname
+    ENV["EMACS"] = "emacs"
   end
 
   def message
-    s = "Emacs #{@version} or later is required."
+    if @version
+      s = "Emacs #{@version} or later is required."
+    else
+      s = "Emacs is required."
+    end
     s += super
     s
   end

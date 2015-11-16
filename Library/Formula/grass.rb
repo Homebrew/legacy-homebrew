@@ -16,7 +16,7 @@ class Grass < Formula
 
     patch do
       url "https://gist.githubusercontent.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
-      sha1 "ffbe31682d8a7605d5548cdafd536f1c785d3a23"
+      sha256 "a30caef931b70f37700823d028bce38af978ccb472649ec17920d91197421bc5"
     end
   end
 
@@ -36,7 +36,7 @@ class Grass < Formula
   depends_on :mysql => :optional
   depends_on "cairo"
   depends_on "freetype"
-  depends_on :x11  # needs to find at least X11/include/GL/gl.h
+  depends_on :x11 # needs to find at least X11/include/GL/gl.h
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
@@ -112,8 +112,10 @@ class Grass < Formula
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
-    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
+    # make and make install must be separate steps.
+    system "make", "GDAL_DYNAMIC="
+    # GDAL_DYNAMIC set to blank for r.external compatability
+    system "make", "GDAL_DYNAMIC=", "install"
   end
 
   def caveats

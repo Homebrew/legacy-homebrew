@@ -4,6 +4,8 @@ class Bee < Formula
   url "https://github.com/bluesoft/bee/releases/download/1.54/bee-1.54.zip"
   sha256 "3b2e52d4d0cf69ee196fff1b06f4c0354ec496630d5fdff4ccac907eece437a5"
 
+  bottle :unneeded
+
   def install
     rm_rf Dir["bin/*.bat"]
     libexec.install Dir["*"]

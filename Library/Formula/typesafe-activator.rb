@@ -5,6 +5,8 @@ class TypesafeActivator < Formula
   version "1.3.6"
   sha256 "3fc80ea6f4068955db65d1355ccc06a1f7e1a0ff05d71dd0861fb30cea415512"
 
+  bottle :unneeded
+
   def install
     rm Dir["*.bat"] # Remove Windows .bat files
     libexec.install Dir["*"]

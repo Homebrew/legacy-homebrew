@@ -221,9 +221,9 @@ Use `brew log $FORMULA` to find out!
 Sometimes formulae are moved to specialized repositories. These are the
 likely candidates:
 
-* [https://github.com/Homebrew/homebrew-dupes](https://github.com/Homebrew/homebrew-dupes)
-* [https://github.com/Homebrew/homebrew-versions](https://github.com/Homebrew/homebrew-versions)
-* [https://github.com/Homebrew/homebrew-games](https://github.com/Homebrew/homebrew-games)
+* [homebrew/dupes](https://github.com/Homebrew/homebrew-dupes)
+* [homebrew/games](https://github.com/Homebrew/homebrew-games)
+* [homebrew/versions](https://github.com/Homebrew/homebrew-versions)
 
 You can use `brew tap` to access these formulae:
 

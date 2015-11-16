@@ -4,6 +4,8 @@ class Bfg < Formula
   url "https://repo1.maven.org/maven2/com/madgag/bfg/1.12.5/bfg-1.12.5.jar"
   sha256 "fa797cc6e5878a3b7b61104f3a3ba3d43987e2a7a9c596cb9d137c7b95e6b082"
 
+  bottle :unneeded
+
   depends_on :java => "1.7+"
 
   def install

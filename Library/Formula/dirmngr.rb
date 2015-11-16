@@ -1,8 +1,8 @@
 class Dirmngr < Formula
   desc "Server for managing certificate revocation lists"
-  homepage "https://www.gnupg.org"
-  url "ftp://ftp.gnupg.org/gcrypt/dirmngr/dirmngr-1.1.1.tar.bz2"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/d/dirmngr/dirmngr_1.1.1.orig.tar.bz2"
+  homepage "https://www.gnupg.org/"
+  url "https://gnupg.org/ftp/gcrypt/dirmngr/dirmngr-1.1.1.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/dirmngr/dirmngr-1.1.1.tar.bz2"
   sha256 "d2280b8c314db80cdaf101211a47826734443436f5c3545cc1b614c50eaae6ff"
   revision 1
 
@@ -23,8 +23,8 @@ class Dirmngr < Formula
 
   patch :p0 do
     # patch by upstream developer to fix an API incompatibility with libgcrypt >=1.6.0
-    # causing immediate segfault in dirmngr. see http://bugs.g10code.com/gnupg/issue1590
-    url "http://bugs.g10code.com/gnupg/file419/dirmngr-pth-fix.patch"
+    # causing immediate segfault in dirmngr. see https://bugs.gnupg.org/gnupg/issue1590
+    url "https://bugs.gnupg.org/gnupg/file419/dirmngr-pth-fix.patch"
     sha256 "0efbcf1e44177b3546fe318761c3386a11310a01c58a170ef60df366e5160beb"
   end
 

@@ -5,6 +5,8 @@ class Maven < Formula
   mirror "https://archive.apache.org/dist/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz"
   sha256 "3a8dc4a12ab9f3607a1a2097bbab0150c947ad6719d8f1bb6d5b47d0fb0c4779"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install
@@ -14,7 +16,6 @@ class Maven < Formula
     # Fix the permissions on the global settings file.
     chmod 0644, "conf/settings.xml"
 
-    prefix.install_metafiles
     libexec.install Dir["*"]
 
     # Leave conf file in libexec. The mvn symlink will be resolved and the conf

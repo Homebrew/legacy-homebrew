@@ -4,12 +4,13 @@ class Innoextract < Formula
   url "https://constexpr.org/innoextract/files/innoextract-1.5.tar.gz"
   sha256 "f2594e992ccf2859455475794803b29a67393fadb69d4df1eec34c451ffa48cf"
   head "https://github.com/dscharrer/innoextract.git"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "b1d25e6844a7975c215a959c96231a3e6acfc6b15c24651aeffe7e4300709037" => :el_capitan
-    sha256 "3964f1f383fa4d4576c9e51f09d9956870ac85f02c1affe5ed3ef3ec29009f75" => :yosemite
-    sha256 "dcc59554e88d1d9faaed328f772fe7dc5068d597581f4a953c0031421275342d" => :mavericks
+    sha256 "2dcfb2167b578c4d5294f636aaa3a9a49d83eb436f370c1e71e496908285b08c" => :el_capitan
+    sha256 "1e6fb6c0385e951cfb660e07d403e834523d6da3990edb924feb265a5a27d4b1" => :yosemite
+    sha256 "112e12920822cfbb1dfbea7db804050f3ef6d829ba1407a1b83015074d9cb40d" => :mavericks
   end
 
   depends_on "cmake" => :build

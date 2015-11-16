@@ -4,6 +4,8 @@ class SvtplayDl < Formula
   url "https://github.com/spaam/svtplay-dl/archive/0.10.2015.08.24.tar.gz"
   sha256 "0dcd2c6862ad0ed00a2b782f6484f005431de3229360e1797810f7adf16aedd9"
 
+  bottle :unneeded
+
   depends_on "rtmpdump"
 
   def install
