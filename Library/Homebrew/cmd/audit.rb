@@ -121,12 +121,14 @@ class FormulaAuditor
     boost-build
     bsdmake
     cmake
+    godep
     imake
     intltool
     libtool
     pkg-config
     scons
     smake
+    sphinx-doc
     swig
   ]
 
