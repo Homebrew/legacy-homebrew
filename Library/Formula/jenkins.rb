@@ -11,7 +11,7 @@ class Jenkins < Formula
 
   bottle :unneeded
 
-  depends_on :java => "1.6+"
+  depends_on :java => "1.7+"
 
   def install
     if build.head?
