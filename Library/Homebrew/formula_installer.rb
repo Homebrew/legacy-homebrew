@@ -200,7 +200,7 @@ class FormulaInstaller
           formula.prefix.rmtree if formula.prefix.directory?
           formula.rack.rmdir_if_possible
         end
-        raise if ARGV.homebrew_developer?
+        raise if ARGV.homebrew_developer? || e.is_a?(Interrupt)
         @pour_failed = true
         onoe e.message
         opoo "Bottle installation failed: building from source."
