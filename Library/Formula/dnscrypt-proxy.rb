@@ -18,6 +18,7 @@ class DnscryptProxy < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "minisign" => :build
   end
 
   option "with-plugins", "Support plugins and install example plugins."
@@ -26,8 +27,24 @@ class DnscryptProxy < Formula
 
   depends_on "libsodium"
 
-  resource "resolvers" do
-    url "https://raw.githubusercontent.com/jedisct1/dnscrypt-proxy/master/dnscrypt-resolvers.csv"
+  def updateresolvers; <<-EOS.undent
+    #!/bin/sh
+    RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
+    RESOLVERS_LIST_BASE_DIR=#{share}/dnscrypt-proxy
+    RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
+
+    curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+      "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
+      "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
+    curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+      "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
+      "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
+    minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+      -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
+      -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
+    mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+      ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
+    EOS
   end
 
   def install
@@ -44,8 +61,9 @@ class DnscryptProxy < Formula
     system "./configure", *args
     system "make", "install"
 
-    pkgshare.install resource("resolvers")
-    print "To verify resolver signature: https://github.com/jedisct1/dnscrypt-proxy/#dnscrypt-enabled-resolvers "
+    (libexec/"update-resolvers.sh").write updateresolvers
+    chmod 0774, libexec/"update-resolvers.sh"
+    bin.write_exec_script libexec/"update-resolvers.sh"
   end
 
   def caveats; <<-EOS.undent
@@ -59,6 +77,9 @@ class DnscryptProxy < Formula
     and under the "nobody" user using the dnscrypt.eu-dk DNSCrypt-enabled
     resolver. If you would like to change these settings, you will have to edit
     the plist file (e.g., --resolver-address, --provider-name, --provider-key, etc.)
+
+    If at some point the resolver file gets outdated, it can be updated to the
+    latest version by running:  #{libexec}/update-resolvers.sh
 
     To check that dnscrypt-proxy is working correctly, open Terminal and enter the
     following command. Replace en1 with whatever network interface you're using:
