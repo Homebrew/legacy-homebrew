@@ -6,6 +6,13 @@ class Shairport < Formula
 
   head "https://github.com/abrasive/shairport.git"
 
+  bottle do
+    cellar :any
+    sha256 "802bbe38bc98c8fc8174eae3e41c6d00914d551626c051cb9dc7ba6af4edcf18" => :el_capitan
+    sha256 "b3d9925e0335227f0ac5efc0f5d32d59cc41ea4af08a9db1658f68992e89f30f" => :yosemite
+    sha256 "589f12f2a0b495dafc3536f04c3901aff75da0ec1e99ac8ec5e9916b629c17fd" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "pulseaudio" => :optional
   depends_on "libao" => :optional
