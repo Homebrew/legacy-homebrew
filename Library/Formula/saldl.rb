@@ -11,10 +11,20 @@ class Saldl < Formula
 
   depends_on "pkg-config" => :build
   depends_on "asciidoc" => :build
+  # Install DTDs locally for a faster and more reliable build result
+  depends_on "docbook-xsl" => :build
+
   depends_on "libevent"
 
-  # curl >= 7.42 is required
-  depends_on "curl" if MacOS.version <= :mavericks
+  # Add option to use keg_only curl formula instead of the version provided by OSX
+  if MacOS.version >= :yosemite
+    option "with-local-libcurl", "Use keg_only curl formula which provides more features and faster fixes"
+  end
+
+  if MacOS.version < :yosemite || build.with?("local-libcurl")
+    # curl >= 7.42 is required
+    depends_on "curl"
+  end
 
   def install
     # a2x/asciidoc needs this to build the man page successfully
@@ -24,10 +34,6 @@ class Saldl < Formula
 
     # head uses git describe to acquire a version
     args << "--saldl-version=v#{version}" unless build.head?
-
-    # pkg-config is not supported with system libcurl
-    args << "--libcurl-libs=-lcurl" if MacOS.version > :mavericks
-    args << "--libcurl-cflags=" if MacOS.version > :mavericks
 
     system "./waf", "configure", *args
     system "./waf", "build"
