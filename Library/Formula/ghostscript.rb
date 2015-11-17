@@ -3,10 +3,13 @@ class Ghostscript < Formula
   homepage "http://www.ghostscript.com/"
 
   stable do
-    url "http://downloads.ghostscript.com/public/ghostscript-9.16.tar.gz"
-    sha256 "746d77280cca8afdd3d4c2c1389e332ed9b0605bd107bcaae1d761b061d1a68d"
+    url "http://downloads.ghostscript.com/public/ghostscript-9.18.tar.gz"
+    sha256 "5fc93079749a250be5404c465943850e3ed5ffbc0d5c07e10c7c5ee8afbbdb1b"
 
-    patch :DATA # Uncomment OS X-specific make vars
+    patch do
+      url "https://github.com/Homebrew/patches/raw/master/ghostscript/bug-696301_gserrors.h.patch"
+      sha256 "1639d20605693dd473399dc2ebc838442175a8f7e6eb7701fbe08e12b57bee18"
+    end
   end
 
   bottle do
@@ -27,25 +30,20 @@ class Ghostscript < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-
-    # Uncomment OS X-specific make vars
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/patches/b8863c4/ghostscript/gs.patch"
-      sha256 "b3c8903c00428f1a065ceda04e3377c3a110ec21bc149547615bc2166cde6163"
-    end
   end
+
+  patch :DATA # Uncomment OS X-specific make vars
 
   option "with-djvu", "Build drivers for DjVU file format"
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
-  depends_on "libtiff"
-  depends_on "jbig2dec"
-  depends_on "little-cms2"
-  depends_on "libpng"
-  depends_on :x11 => ["2.7.2", :optional]
   depends_on "djvulibre" if build.with? "djvu"
   depends_on "freetype"
+  depends_on "jbig2dec"
+  depends_on "jpeg"
+  depends_on "libtiff"
+  depends_on "little-cms2"
+  depends_on :x11 => :optional
 
   conflicts_with "gambit-scheme", :because => "both install `gsc` binaries"
 
@@ -67,13 +65,11 @@ class Ghostscript < Formula
     # the version included in ghostscript, we get errors
     # Taken from the MacPorts portfile:
     # https://trac.macports.org/browser/trunk/dports/print/ghostscript/Portfile#L64
-    renames = %w[freetype jbig2dec jpeg libpng tiff]
+    renames = %w[freetype jbig2dec jpeg tiff]
     renames.each { |lib| mv lib, "#{lib}_local" }
   end
 
   def install
-    src_dir = build.head? ? "gs" : "."
-
     if build.with? "djvu"
       resource("djvu").stage do
         inreplace "gsdjvu.mak", "$(GL", "$(DEV"
@@ -84,39 +80,35 @@ class Ghostscript < Formula
       end
     end
 
-    cd src_dir do
-      move_included_source_copies
-      args = %W[
-        --prefix=#{prefix}
-        --disable-cups
-        --disable-compile-inits
-        --disable-gtk
-        --with-system-libtiff
-      ]
-      args << "--without-x" if build.without? "x11"
+    move_included_source_copies
 
-      if build.head?
-        system "./autogen.sh", *args
-      else
-        system "./configure", *args
-      end
+    args = %W[
+      --prefix=#{prefix}
+      --disable-cups
+      --disable-compile-inits
+      --disable-gtk
+      --with-system-libtiff
+    ]
+    args << "--without-x" if build.without? "x11"
 
-      # versioned stuff in main tree is pointless for us
-      inreplace "Makefile", "/$(GS_DOT_VERSION)", ""
-
-      if build.with? "djvu"
-        inreplace "Makefile" do |s|
-          s.change_make_var!("DEVICE_DEVS17", "$(DD)djvumask.dev $(DD)djvusep.dev")
-        end
-      end
-
-      # Install binaries and libraries
-      system "make", "install"
-      system "make", "install-so"
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
     end
 
-    (share+"ghostscript/fonts").install resource("fonts")
-    (man+"de").rmtree
+    if build.with? "djvu"
+      inreplace "Makefile" do |s|
+        s.change_make_var!("DEVICE_DEVS17", "$(DD)djvumask.dev $(DD)djvusep.dev")
+      end
+    end
+
+    # Install binaries and libraries
+    system "make", "install"
+    system "make", "install-so"
+
+    (share/"ghostscript/fonts").install resource("fonts")
+    (man/"de").rmtree
   end
 
   test do
