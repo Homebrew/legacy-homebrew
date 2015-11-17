@@ -1,10 +1,51 @@
 require "pathname"
 require "resource"
 require "metafiles"
+require "utils"
+
+module DiskUsageExtension
+  def disk_usage
+    return @disk_usage if @disk_usage
+    compute_disk_usage
+    @disk_usage
+  end
+
+  def file_count
+    return @file_count if @file_count
+    compute_disk_usage
+    @file_count
+  end
+
+  def abv
+    out = ""
+    compute_disk_usage
+    out << "#{number_readable(@file_count)} files, " if @file_count > 1
+    out << "#{disk_usage_readable(@disk_usage)}"
+  end
+
+  private
+
+  def compute_disk_usage
+    if self.directory?
+      @file_count, @disk_usage = [0, 0]
+      self.find.each do |f|
+        if !File.directory?(f) and !f.to_s.match(/\.DS_Store/)
+          @file_count += 1
+          @disk_usage += File.size(f)
+        end
+      end
+    else
+      @file_count = 1
+      @disk_usage = self.size
+    end
+  end
+end
 
 # Homebrew extends Ruby's `Pathname` to make our code more readable.
 # @see http://ruby-doc.org/stdlib-1.8.7/libdoc/pathname/rdoc/Pathname.html  Ruby's Pathname API
 class Pathname
+  include DiskUsageExtension
+
   # @private
   BOTTLE_EXTNAME_RX = /(\.[a-z0-9_]+\.bottle\.(\d+\.)?tar\.gz)$/
 
@@ -392,17 +433,6 @@ class Pathname
       filename.chmod 0644
       install(filename)
     end
-  end
-
-  # @private
-  def abv
-    out = ""
-    n = Utils.popen_read("find", expand_path.to_s, "-type", "f", "!", "-name", ".DS_Store").split("\n").size
-    out << "#{n} files, " if n > 1
-    size = Utils.popen_read("/usr/bin/du", "-hs", expand_path.to_s).split("\t")[0]
-    size ||= "0B"
-    out << size.strip
-    out
   end
 
   # We redefine these private methods in order to add the /o modifier to
