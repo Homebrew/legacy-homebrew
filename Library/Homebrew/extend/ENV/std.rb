@@ -1,6 +1,7 @@
 require "hardware"
 require "extend/ENV/shared"
 
+# TODO: deprecate compiling related codes after it's only used by brew test.
 # @private
 module Stdenv
   include SharedEnvExtension
