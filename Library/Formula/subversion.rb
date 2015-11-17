@@ -75,6 +75,11 @@ class Subversion < Formula
       inreplace "SConstruct", "unique=1", "unique=0"
 
       ENV.universal_binary if build.universal?
+
+      # Fix perl bindings Makefile.pl failing with:
+      # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
+      ENV.delete "PERL_MM_OPT"
+
       # scons ignores our compiler and flags unless explicitly passed
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
