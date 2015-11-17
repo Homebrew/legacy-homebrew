@@ -38,10 +38,6 @@ class Ghostscript < Formula
 
   depends_on "pkg-config" => :build
   depends_on "djvulibre" if build.with? "djvu"
-  depends_on "freetype"
-  depends_on "jbig2dec"
-  depends_on "jpeg"
-  depends_on "libtiff"
   depends_on "little-cms2"
   depends_on :x11 => :optional
 
@@ -60,15 +56,6 @@ class Ghostscript < Formula
     sha256 "6236b14b79345eda87cce9ba22387e166e7614cca2ca86b1c6f0d611c26005df"
   end
 
-  def move_included_source_copies
-    # If the install version of any of these doesn't match
-    # the version included in ghostscript, we get errors
-    # Taken from the MacPorts portfile:
-    # https://trac.macports.org/browser/trunk/dports/print/ghostscript/Portfile#L64
-    renames = %w[freetype jbig2dec jpeg tiff]
-    renames.each { |lib| mv lib, "#{lib}_local" }
-  end
-
   def install
     if build.with? "djvu"
       resource("djvu").stage do
@@ -80,14 +67,11 @@ class Ghostscript < Formula
       end
     end
 
-    move_included_source_copies
-
     args = %W[
       --prefix=#{prefix}
       --disable-cups
       --disable-compile-inits
       --disable-gtk
-      --with-system-libtiff
     ]
     args << "--without-x" if build.without? "x11"
 
