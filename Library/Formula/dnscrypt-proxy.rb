@@ -25,7 +25,7 @@ class DnscryptProxy < Formula
   deprecated_option "plugins" => "with-plugins"
 
   depends_on "libsodium"
-  depends_on "minisign" 
+  depends_on "minisign"
 
   def install
     system "autoreconf", "-if" if build.head?
