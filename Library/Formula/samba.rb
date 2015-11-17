@@ -24,9 +24,6 @@ class Samba < Formula
   # https://bugzilla.samba.org/show_bug.cgi?id=8773
   patch :DATA
 
-  conflicts_with "jena",
-    :because => "both install `tdbbackup` and `tdbdump` binaries"
-
   def install
     cd "source3" do
       # This stops samba dumping .msg and .dat files directly into lib

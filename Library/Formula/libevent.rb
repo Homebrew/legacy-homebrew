@@ -34,9 +34,6 @@ class Libevent < Formula
     cause "Undefined symbol '_current_base' reported during linking."
   end
 
-  conflicts_with "pincaster",
-    :because => "both install `event_rpcgen.py` binaries"
-
   def install
     ENV.universal_binary if build.universal?
     ENV.j1

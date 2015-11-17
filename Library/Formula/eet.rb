@@ -25,8 +25,6 @@ class Eet < Formula
   depends_on "lzlib"
   depends_on "openssl"
 
-  conflicts_with "efl", :because => "both install `eet` binaries"
-
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",

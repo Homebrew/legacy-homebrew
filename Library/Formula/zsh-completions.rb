@@ -6,8 +6,6 @@ class ZshCompletions < Formula
 
   head "https://github.com/zsh-users/zsh-completions.git"
 
-  bottle :unneeded
-
   def install
     (share/"zsh-completions").install Dir["src/_*"]
   end

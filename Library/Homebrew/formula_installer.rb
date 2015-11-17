@@ -8,6 +8,7 @@ require "caveats"
 require "cleaner"
 require "formula_cellar_checks"
 require "install_renamed"
+require "cmd/tap"
 require "cmd/postinstall"
 require "hooks/bottles"
 require "debrew"
@@ -120,11 +121,10 @@ class FormulaInstaller
     begin
       formula.recursive_dependencies.map(&:to_formula)
     rescue TapFormulaUnavailableError => e
-      if e.tap.installed?
-        raise
-      else
-        e.tap.install
+      if Homebrew.install_tap(e.user, e.repo)
         retry
+      else
+        raise
       end
     end
   rescue FormulaUnavailableError => e
@@ -320,9 +320,6 @@ class FormulaInstaller
         end
       end
     end
-
-    # Merge the repeated dependencies, which may have different tags.
-    deps = Dependency.merge_repeats(deps)
 
     [unsatisfied_reqs, deps]
   end

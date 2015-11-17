@@ -1,6 +1,6 @@
 class Recode < Formula
   desc "Convert character set (charsets)"
-  homepage "https://github.com/pinard/Recode"
+  homepage "http://recode.progiciels-bpi.ca/index.html"
   url "https://github.com/pinard/Recode/archive/v3.7-beta2.tar.gz"
   sha256 "72c3c0abcfe2887b83a8f27853a9df75d7e94a9ebacb152892cc4f25108e2144"
   version "3.7-beta2"

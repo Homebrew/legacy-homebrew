@@ -26,8 +26,6 @@ class Xsd < Formula
   #    received no response (yet).
   patch :DATA
 
-  conflicts_with "mono", :because => "both install `xsd` binaries"
-
   def install
     ENV.append "LDFLAGS", `pkg-config --libs --static xerces-c`.chomp
     system "make", "install", "install_prefix=#{prefix}"

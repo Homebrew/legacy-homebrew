@@ -3,29 +3,27 @@ class Scalaenv < Formula
   homepage "https://github.com/mazgi/scalaenv"
   url "https://github.com/mazgi/scalaenv/archive/version/0.0.8.tar.gz"
   sha256 "5c11a0876696a4948fdc1ded4d813e2a30c9aa55a55d675bc7d14af4edef87fa"
-  head "https://github.com/mazgi/scalaenv.git"
 
-  bottle :unneeded
+  head "https://github.com/mazgi/scalaenv.git"
 
   def install
     inreplace "libexec/scalaenv", "/usr/local", HOMEBREW_PREFIX
     prefix.install "bin", "completions", "libexec"
     prefix.install "plugins" => "default-plugins"
 
-    %w[scalaenv-install].each do |cmd|
-      bin.install_symlink "#{prefix}/default-plugins/scala-install/bin/#{cmd}"
-    end
-  end
-
-  def post_install
-    var_lib = HOMEBREW_PREFIX/"var/lib/scalaenv"
+    var_lib = "#{HOMEBREW_PREFIX}/var/lib/scalaenv"
     %w[plugins versions].each do |dir|
       var_dir = "#{var_lib}/#{dir}"
       mkdir_p var_dir
       ln_sf var_dir, "#{prefix}/#{dir}"
     end
 
-    (var_lib/"plugins").install_symlink "#{prefix}/default-plugins/scala-install"
+    rm_f "#{var_lib}/plugins/scala-install"
+    ln_sf "#{prefix}/default-plugins/scala-install", "#{var_lib}/plugins/scala-install"
+
+    %w[scalaenv-install].each do |cmd|
+      bin.install_symlink "#{prefix}/default-plugins/scala-install/bin/#{cmd}"
+    end
   end
 
   def caveats; <<-EOS.undent

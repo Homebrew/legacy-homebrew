@@ -12,12 +12,7 @@ class CrystaxNdk < Formula
     sha256 "a46e5741d42406c39e85c79bfac895374b1831c20e16cfa5ea57d705c52dc1f1"
   end
 
-  bottle :unneeded
-
   depends_on "android-sdk" => :recommended
-
-  conflicts_with "android-ndk",
-    :because => "both install `ndk-build`, `ndk-gdb` and `ndk-stack` binaries"
 
   def install
     bin.mkpath
@@ -44,6 +39,11 @@ class CrystaxNdk < Formula
     %w[ndk-build ndk-gdb ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
   end
 
+  test do
+    system "#{bin}/ndk-build", "--version"
+    system "#{bin}/ndk-gdb", "--help"
+  end
+
   def caveats; <<-EOS.undent
     We agreed to the CrystaX NDK License Agreement for you by downloading the NDK.
     If this is unacceptable you should uninstall.
@@ -54,10 +54,5 @@ class CrystaxNdk < Formula
     For more documentation on CrystaX NDK, please check:
     #{homepage}
     EOS
-  end
-
-  test do
-    system "#{bin}/ndk-build", "--version"
-    system "#{bin}/ndk-gdb", "--help"
   end
 end

@@ -2,10 +2,8 @@ class GoogleSqlTool < Formula
   desc "Command-line tool for executing common SQL statements"
   homepage "https://cloud.google.com/sql/docs/mysql-client"
   url "https://dl.google.com/cloudsql/tools/google_sql_tool.zip"
-  version "r10"
   sha256 "b7e993edab12da32772bfa90c13999df728f06792757c496140d729d230b03c3"
-
-  bottle :unneeded
+  version "r10"
 
   def install
     # Patch script to find jar

@@ -5,12 +5,7 @@ class JavaRequirement < Requirement
   cask "java"
   download "http://www.oracle.com/technetwork/java/javase/downloads/index.html"
 
-  satisfy :build_env => false do
-    args = %w[--failfast]
-    args << "--version" << "#{@version}" if @version
-    @java_home = Utils.popen_read("/usr/libexec/java_home", *args).chomp
-    $?.success?
-  end
+  satisfy(:build_env => false) { java_version }
 
   env do
     java_home = Pathname.new(@java_home)

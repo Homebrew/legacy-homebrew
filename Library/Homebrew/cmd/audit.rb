@@ -172,12 +172,11 @@ class FormulaAuditor
       [/^  bottle do/,                     "bottle block"],
       [/^  devel do/,                      "devel block"],
       [/^  head do/,                       "head block"],
-      [/^  bottle (:unneeded|:disable)/,   "bottle modifier"],
       [/^  option/,                        "option"],
       [/^  depends_on/,                    "depends_on"],
       [/^  def install/,                   "install method"],
       [/^  def caveats/,                   "caveats method"],
-      [/^  test do/,                       "test block"],
+      [/^  test do/,                       "test block"]
     ]
 
     present = component_list.map do |regex, name|
@@ -193,9 +192,6 @@ class FormulaAuditor
     present.map!(&:last)
     if present.include?("head") && present.include?("head block")
       problem "Should not have both `head` and `head do`"
-    end
-    if present.include?("bottle modifier") && present.include?("bottle block")
-      problem "Should not have `bottle :unneeded/:disable` and `bottle do`"
     end
   end
 
@@ -390,11 +386,7 @@ class FormulaAuditor
     end
 
     if desc =~ /^([Aa]n?)\s/
-      problem "Description shouldn't start with an indefinite article (#{$1})"
-    end
-
-    if desc =~ /^#{formula.name}\s/i
-      problem "Description shouldn't include the formula name"
+      problem "Please remove the indefinite article \"#{$1}\" from the beginning of the description"
     end
   end
 
@@ -471,12 +463,6 @@ class FormulaAuditor
     end
   end
 
-  def audit_bottle_spec
-    if formula.bottle_disabled? && !formula.bottle_disable_reason.valid?
-      problem "Unrecognized bottle modifier"
-    end
-  end
-
   def audit_github_repository
     return unless @online
 
@@ -548,12 +534,10 @@ class FormulaAuditor
     stable = formula.stable
     case stable && stable.url
     when %r{download\.gnome\.org/sources}, %r{ftp\.gnome\.org/pub/GNOME/sources}i
-      version = Version.parse(stable.url)
-      if version >= Version.new("1.0")
-        minor_version = version.to_s.split(".", 3)[1].to_i
-        if minor_version.odd?
-          problem "#{stable.version} is a development release"
-        end
+      minor_version = Version.parse(stable.url).to_s.split(".", 3)[1].to_i
+
+      if minor_version.odd?
+        problem "#{stable.version} is a development release"
       end
     end
   end
@@ -619,19 +603,29 @@ class FormulaAuditor
     end
 
     # Comments from default template
-    [
-      "# PLEASE REMOVE",
-      "# Documentation:",
-      "# if this fails, try separate make/make install steps",
-      "# The URL of the archive",
-      "## Naming --",
-      "# if your formula requires any X11/XQuartz components",
-      "# if your formula fails when building in parallel",
-      "# Remove unrecognized options if warned by configure",
-    ].each do |comment|
-      if line.include? comment
-        problem "Please remove default template comments"
-      end
+    if line =~ /# PLEASE REMOVE/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# Documentation:/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# if this fails, try separate make\/make install steps/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# The URL of the archive/
+      problem "Please remove default template comments"
+    end
+    if line =~ /## Naming --/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# if your formula requires any X11\/XQuartz components/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# if your formula fails when building in parallel/
+      problem "Please remove default template comments"
+    end
+    if line =~ /# Remove unrecognized options if warned by configure/
+      problem "Please remove default template comments"
     end
 
     # FileUtils is included in Formula
@@ -910,7 +904,6 @@ class FormulaAuditor
     audit_specs
     audit_desc
     audit_homepage
-    audit_bottle_spec
     audit_github_repository
     audit_deps
     audit_conflicts

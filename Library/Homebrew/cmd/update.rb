@@ -82,13 +82,12 @@ module Homebrew
       next unless (dir = HOMEBREW_CELLAR/f).exist?
       migration = TAP_MIGRATIONS[f]
       next unless migration
-      tap = Tap.fetch(*migration.split("/"))
-      tap.install unless tap.installed?
-
+      tap_user, tap_repo = migration.split "/"
+      install_tap tap_user, tap_repo
       # update tap for each Tab
       tabs = dir.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
       next if tabs.first.source["tap"] != "Homebrew/homebrew"
-      tabs.each { |tab| tab.source["tap"] = "#{tap.user}/homebrew-#{tap.repo}" }
+      tabs.each { |tab| tab.source["tap"] = "#{tap_user}/homebrew-#{tap_repo}" }
       tabs.each(&:write)
     end if load_tap_migrations
 
@@ -109,8 +108,7 @@ module Homebrew
 
       begin
         f = Formulary.factory("#{user}/#{repo}/#{newname}")
-      # short term fix to prevent situation like https://github.com/Homebrew/homebrew/issues/45616
-      rescue Exception
+      rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS
       end
 
       next unless f
@@ -198,17 +196,18 @@ class Updater
   def initialize(repository)
     @repository = repository
     @stashed = false
-    @quiet_args = []
-    @quiet_args << "--quiet" unless ARGV.verbose?
   end
 
   def pull!(options = {})
+    quiet = []
+    quiet << "--quiet" unless ARGV.verbose?
+
     unless system "git", "diff", "--quiet"
-      if ARGV.verbose?
+      unless options[:silent]
         puts "Stashing your changes:"
         system "git", "status", "--short", "--untracked-files"
       end
-      safe_system "git", "stash", "save", "--include-untracked", *@quiet_args
+      safe_system "git", "stash", "save", "--include-untracked", *quiet
       @stashed = true
     end
 
@@ -243,7 +242,7 @@ class Updater
     end
 
     if @initial_branch != @upstream_branch && !@initial_branch.empty?
-      safe_system "git", "checkout", @upstream_branch, *@quiet_args
+      safe_system "git", "checkout", @upstream_branch, *quiet
     end
 
     @initial_revision = read_current_revision
@@ -254,7 +253,7 @@ class Updater
     args = ["pull"]
     args << "--ff"
     args << ((ARGV.include? "--rebase") ? "--rebase" : "--no-rebase")
-    args += @quiet_args
+    args += quiet
     args << "origin"
     # the refspec ensures that the default upstream branch gets updated
     args << "refs/heads/#{@upstream_branch}:refs/remotes/origin/#{@upstream_branch}"
@@ -264,12 +263,12 @@ class Updater
     @current_revision = read_current_revision
 
     if @initial_branch != "master" && !@initial_branch.empty?
-      safe_system "git", "checkout", @initial_branch, *@quiet_args
+      safe_system "git", "checkout", @initial_branch, *quiet
     end
 
     if @stashed
-      safe_system "git", "stash", "pop", *@quiet_args
-      if ARGV.verbose?
+      safe_system "git", "stash", "pop", *quiet
+      unless options[:silent]
         puts "Restored your changes:"
         system "git", "status", "--short", "--untracked-files"
       end
@@ -283,8 +282,7 @@ class Updater
     if $?.signaled? && $?.termsig == 2 # SIGINT
       safe_system "git", "checkout", @initial_branch unless @initial_branch.empty?
       safe_system "git", "reset", "--hard", @initial_revision
-      safe_system "git", "stash", "pop", *@quiet_args if @stashed
-      @stashed = false
+      safe_system "git", "stash", "pop" if @stashed
     end
   end
 
@@ -316,8 +314,7 @@ class Updater
             end
             old_version = FormulaVersions.new(formula).formula_at_revision(@initial_revision, &:pkg_version)
             next if new_version == old_version
-          # short term fix to prevent situation like https://github.com/Homebrew/homebrew/issues/45616
-          rescue Exception => e
+          rescue FormulaUnavailableError, *FormulaVersions::IGNORED_EXCEPTIONS => e
             onoe e if ARGV.homebrew_developer?
           end
           map[:M] << file

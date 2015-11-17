@@ -97,11 +97,7 @@ module MacCPUs
     if MacOS.version <= :leopard && !MacOS.prefer_64_bit?
       [arch_32_bit].extend ArchitectureListExtension
     else
-      # Amazingly, this order (64, then 32) matters. It shouldn't, but it
-      # does. GCC (some versions? some systems?) can blow up if the other
-      # order is used.
-      # http://superuser.com/questions/740563/gcc-4-8-on-macos-fails-depending-on-arch-order
-      [arch_64_bit, arch_32_bit].extend ArchitectureListExtension
+      [arch_32_bit, arch_64_bit].extend ArchitectureListExtension
     end
   end
 

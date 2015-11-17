@@ -19,8 +19,6 @@ class Disco < Formula
   # Modifies config for single-node operation
   patch :DATA
 
-  conflicts_with "mono", :because => "both install `disco` binaries"
-
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
 

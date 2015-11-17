@@ -36,8 +36,7 @@ class Ejabberd < Formula
             "--enable-pgsql",
             "--enable-mysql",
             "--enable-odbc",
-            "--enable-pam",
-           ]
+            "--enable-pam"]
 
     system "./configure", *args
     system "make"

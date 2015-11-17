@@ -5,8 +5,6 @@ class ClearlooksPhenix < Formula
   sha256 "663a40368107434b1333e42a630de74704f7b71a864e08d6b4ac1a5a68ccd874"
   head "https://github.com/jpfleury/clearlooks-phenix.git"
 
-  bottle :unneeded
-
   depends_on "gtk+3"
 
   def install

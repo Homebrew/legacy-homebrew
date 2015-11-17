@@ -5,8 +5,6 @@ class Serveit < Formula
   sha256 "8cf25c80ea9b9fe0383545d083e305f7723b6dec7e70d29a4e15016264861f49"
   head "https://github.com/garybernhardt/serveit.git"
 
-  bottle :unneeded
-
   depends_on :ruby => "1.9"
 
   def install

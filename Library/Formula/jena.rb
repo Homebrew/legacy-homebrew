@@ -4,8 +4,6 @@ class Jena < Formula
   url "https://archive.apache.org/dist/jena/binaries/apache-jena-2.12.1.tar.gz"
   sha256 "5bbda78a873c1f27af1719e1d1e724a56a0739d90a9450fc3b4b710ad128734b"
 
-  bottle :unneeded
-
   def shim_script(target)
     <<-EOS.undent
       #!/usr/bin/env bash
@@ -13,9 +11,6 @@ class Jena < Formula
       "$JENA_HOME/bin/#{target}" "$@"
     EOS
   end
-
-  conflicts_with "samba",
-    :because => "both install `tdbbackup` and `tdbdump` binaries"
 
   def install
     rm_rf "bat" # Remove Windows scripts

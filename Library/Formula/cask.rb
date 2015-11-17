@@ -1,11 +1,19 @@
 class Cask < Formula
   desc "Emacs dependency management"
   homepage "https://cask.readthedocs.org/"
-  url "https://github.com/cask/cask/archive/v0.7.3.tar.gz"
-  sha256 "661c15e63c0e8240033ec67f4333337db97178ad5b9bb36fa3dbd411e9196813"
+  url "https://github.com/cask/cask/archive/v0.7.2.tar.gz"
+  sha256 "5c8804933dd395ec79e957c96179bf6ac20af24066928685a713e54f44107a2c"
   head "https://github.com/cask/cask.git"
+  revision 1
 
-  bottle :unneeded
+  bottle do
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "32e91615a10deee8354fabd4c71a44bebde3520c16fe1ed10d437b126b0453e2" => :el_capitan
+    sha256 "0aa6408deec257c837b2e82b6971a3a0d0ab2c839e7a918c1d72c951e307f223" => :yosemite
+    sha256 "01a2665ec170894ae6c52cfea441743e5c61c2f62272852814bf2e932c2c11a2" => :mavericks
+    sha256 "587bed663534d0bec5ea0af10cc5a0bd5b9bda9a1178ea03706260849b089a32" => :mountain_lion
+  end
 
   depends_on :emacs => ["24", :run]
 
@@ -16,6 +24,7 @@ class Cask < Formula
     prefix.install Dir["*.el"]
     (share/"emacs/site-lisp/cask").install_symlink "#{prefix}/cask.el"
     (share/"emacs/site-lisp/cask").install_symlink "#{prefix}/cask-bootstrap.el"
+    zsh_completion.install "etc/cask_completion.zsh"
 
     # Stop cask performing self-upgrades.
     touch prefix/".no-upgrade"

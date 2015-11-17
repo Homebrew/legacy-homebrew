@@ -11,6 +11,4 @@ install:
 script:
  - brew test-bot --dry-run $TRAVIS_COMMIT |sed -n 's/^==> //p' |sh -ex
 notifications:
-  email:
-    on_success: never
-    on_failure: always
+    email: false

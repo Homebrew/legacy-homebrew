@@ -75,10 +75,6 @@ class SoftwareSpec
     @bottle_disable_reason
   end
 
-  def bottle_defined?
-    bottle_specification.collector.keys.any?
-  end
-
   def bottled?
     bottle_specification.tag?(bottle_tag) && \
       (bottle_specification.compatible_cellar? || ARGV.force_bottle?)

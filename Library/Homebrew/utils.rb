@@ -254,7 +254,7 @@ def curl(*args)
 
   args = [flags, HOMEBREW_USER_AGENT, *args]
   args << "--verbose" if ENV["HOMEBREW_CURL_VERBOSE"]
-  args << "--silent" if !$stdout.tty? || ENV["TRAVIS"]
+  args << "--silent" unless $stdout.tty?
 
   safe_system curl, *args
 end

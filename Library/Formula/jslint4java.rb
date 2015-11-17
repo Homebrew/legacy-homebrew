@@ -4,8 +4,6 @@ class Jslint4java < Formula
   url "https://jslint4java.googlecode.com/files/jslint4java-2.0.5-dist.zip"
   sha256 "078240b17256a0472f9981d68f11556238658ebaa67be49ea49958adafc96a81"
 
-  bottle :unneeded
-
   def install
     doc.install Dir["docs/*"]
     libexec.install Dir["*.jar"]
@@ -19,6 +17,6 @@ class Jslint4java < Formula
       var j = 1  // no semicolon
     EOS
     output = shell_output("#{bin}/jslint4java #{path}", 1)
-    assert_match "2:10:Expected ';' and instead saw '(end)'", output
+    assert output.include?("2:10:Expected ';' and instead saw '(end)'")
   end
 end

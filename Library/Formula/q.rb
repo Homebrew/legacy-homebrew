@@ -3,9 +3,8 @@ class Q < Formula
   homepage "https://github.com/harelba/q"
   url "https://github.com/harelba/q/archive/1.5.0.tar.gz"
   sha256 "69bde3fb75aa1d42ba306576b135b8a72121a995e6d865cc8c18db289c602c4b"
-  head "https://github.com/harelba/q.git"
 
-  bottle :unneeded
+  head "https://github.com/harelba/q.git"
 
   def install
     bin.install "bin/q"
@@ -17,3 +16,4 @@ class Q < Formula
     assert_equal "5050\n", output
   end
 end
+
