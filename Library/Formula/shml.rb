@@ -6,7 +6,7 @@ class Shml < Formula
 
   def install
     bin.install "shml.sh"
-    bin.install_symlink "foo.sh" => "foo"
+    bin.install_symlink bin/"shml.sh" => "shml"
   end
 
   test do
