@@ -3,15 +3,14 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level metric gathering agent for InfluxDB"
   homepage "https://influxdb.com"
-  url "https://github.com/influxdb/telegraf/archive/v0.2.0.tar.gz"
-  sha256 "f11d2f13b2370c91e3ec557d30f20d28da1bf4a4642b8871ccee50d6b361f8a4"
+  url "https://github.com/influxdb/telegraf/archive/v0.2.1.tar.gz"
+  sha256 "e3b397e21bad8c5f00d2c4569f43561b8213c744718ed865cfb4984e46be1b16"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "becca945bdf93c78240d3600c09896361ef35f8821d21ba10446e1dd50d6999a" => :el_capitan
-    sha256 "26eeb48c9f92bb460b8fec922b313e497ca67fb0e6d7815494e445e67be81431" => :yosemite
-    sha256 "9838c07339909f3936ed9b34df8dc94db417a4cdb53033ada1af224455b50e5e" => :mavericks
+    sha256 "286ee99d771bf5d5d98f8dab18c991a083fe0b52f297196cf7f9d1627e00b72b" => :el_capitan
+    sha256 "fdb7cee9e9a3145eec09a236abdf65856f97cd04b9c43517722b050d07eec884" => :yosemite
+    sha256 "f112adafe62b69dd4f41c617c1a4c84a7ec84ef2e7eda23ae09459714700a499" => :mavericks
   end
 
   depends_on "go" => :build
@@ -27,7 +26,7 @@ class Telegraf < Formula
 
     cd telegraf_path do
       system "godep", "go", "build", "-o", "telegraf",
-             "-ldflags", "-X main.Version #{version}",
+             "-ldflags", "-X main.Version=#{version}",
              "cmd/telegraf/telegraf.go"
     end
 

@@ -1,13 +1,13 @@
 class Strongswan < Formula
   desc "VPN based on IPsec"
   homepage "https://www.strongswan.org"
-  url "https://download.strongswan.org/strongswan-5.3.3.tar.bz2"
-  sha256 "39d2e8f572a57a77dda8dd8bdaf2ee47ad3cefeb86bbb840d594aa75f00f33e2"
+  url "https://download.strongswan.org/strongswan-5.3.4.tar.bz2"
+  sha256 "938ad1f7b612e039f1d32333f4865160be70f9fb3c207a31127d0168116459aa"
 
   bottle do
-    sha256 "8e8362e1186bd840387c072baff610e6e5903aa21add508ef43f5ed20963c918" => :el_capitan
-    sha256 "74b6831a6b2cc79023d64de1bc34860d4a05930ac436980b34e7ea48c450693d" => :yosemite
-    sha256 "9798290ab105adbd94e3d17063d17e540fb2da899b04bddebd90d117970730ce" => :mavericks
+    sha256 "909260113bd3eede7c5635ca82665eed2ea92aaa709805f5f7a33ae875948fdd" => :el_capitan
+    sha256 "74ded51bf661392c1ffdbdf08e9452471362ff0f871ba3f4bed4ee6ca483bcfd" => :yosemite
+    sha256 "897599453b695e96102fa43a0905027043b9d99e6092dacf6c79c25ae1ea1eef" => :mavericks
   end
 
   head do
@@ -74,6 +74,7 @@ class Strongswan < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
+    system "make", "check"
     system "make", "install"
   end
 
@@ -93,5 +94,10 @@ class Strongswan < Formula
       EOS
     end
     msg
+  end
+
+  test do
+    system "#{bin}/ipsec", "--version"
+    system "#{bin}/charon-cmd", "--version"
   end
 end
