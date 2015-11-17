@@ -5,8 +5,6 @@ class AutoScaling < Formula
   version "1.0.61.6"
   sha256 "2c81e092d5c479896007e7d1a3cf40631d09e6bffd83b42f49a56f42207326b6"
 
-  bottle :unneeded
-
   depends_on :java
 
   def install

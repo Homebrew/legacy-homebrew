@@ -180,7 +180,13 @@ class Keg
     # the basename of the file itself.
     basename = File.basename(file.dylib_id)
     relative_dirname = file.dirname.relative_path_from(path)
-    opt_record.join(relative_dirname, basename).to_s
+    shortpath = HOMEBREW_PREFIX.join(relative_dirname, basename)
+
+    if shortpath.exist? && !options[:keg_only]
+      shortpath.to_s
+    else
+      opt_record.join(relative_dirname, basename).to_s
+    end
   end
 
   def find_dylib(name)

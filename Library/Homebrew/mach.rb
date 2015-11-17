@@ -178,7 +178,8 @@ module MachO
       ENV["HOMEBREW_MACH_O_FILE"] = path.expand_path.to_s
       libs = `#{MacOS.otool} -L "$HOMEBREW_MACH_O_FILE"`.split("\n")
       unless $?.success?
-        raise ErrorDuringExecution.new(OS::Mac.otool, args)
+        raise ErrorDuringExecution.new(MacOS.otool,
+          ["-L", ENV["HOMEBREW_MACH_O_FILE"]])
       end
 
       libs.shift # first line is the filename
@@ -187,6 +188,8 @@ module MachO
       libs.map! { |lib| lib[OTOOL_RX, 1] }.compact!
 
       return id, libs
+    ensure
+      ENV.delete "HOMEBREW_MACH_O_FILE"
     end
   end
 

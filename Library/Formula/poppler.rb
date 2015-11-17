@@ -52,9 +52,7 @@ class Poppler < Formula
       --enable-introspection=yes
     ]
 
-    if build.with?("qt") && build.with?("qt5")
-      raise "poppler: --with-qt and --with-qt5 cannot be used at the same time"
-    elsif build.with? "qt"
+    if build.with? "qt"
       args << "--enable-poppler-qt4"
     elsif build.with? "qt5"
       args << "--enable-poppler-qt5"

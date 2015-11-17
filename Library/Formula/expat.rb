@@ -23,7 +23,8 @@ class Expat < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./configure", "--prefix=#{prefix}",
+    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make", "install"
   end

@@ -1,3 +1,4 @@
+require "os/mac"
 require "extend/ENV/shared"
 
 # ### Why `superenv`?

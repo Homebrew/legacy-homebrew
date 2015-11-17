@@ -39,18 +39,12 @@ module Homebrew
     report = Report.new
     master_updater = Updater.new(HOMEBREW_REPOSITORY)
     master_updater.pull!
-    master_updated = master_updater.updated?
-    if master_updated
-      puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} " \
-           "to #{master_updater.current_revision[0, 8]}."
-    end
     report.update(master_updater.report)
 
     # rename Taps directories
     # this procedure will be removed in the future if it seems unnecessasry
     rename_taps_dir_if_necessary
 
-    updated_taps = []
     Tap.each do |tap|
       next unless tap.git?
 
@@ -62,18 +56,12 @@ module Homebrew
         rescue
           onoe "Failed to update tap: #{tap}"
         else
-          updated_taps << tap.name if updater.updated?
           report.update(updater.report) do |_key, oldval, newval|
             oldval.concat(newval)
           end
         end
       end
     end
-    unless updated_taps.empty?
-      puts "Updated #{updated_taps.size} tap#{plural(updated_taps.size)} " \
-           "(#{updated_taps.join(", ")})."
-    end
-    puts "Already up-to-date." unless master_updated || !updated_taps.empty?
 
     Tap.clear_cache
 
@@ -121,8 +109,9 @@ module Homebrew
     end
 
     if report.empty?
-      puts "No changes to formulae." if master_updated || !updated_taps.empty?
+      puts "Already up-to-date."
     else
+      puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} to #{master_updater.current_revision[0, 8]}."
       report.dump
     end
     Descriptions.update_cache(report)
@@ -326,10 +315,6 @@ class Updater
     end
 
     map
-  end
-
-  def updated?
-    initial_revision && initial_revision != current_revision
   end
 
   private

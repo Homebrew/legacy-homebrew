@@ -29,9 +29,9 @@ class FormulaInstaller
   end
 
   attr_reader :formula
-  attr_accessor :options, :build_bottle
+  attr_accessor :options
   mode_attr_accessor :show_summary_heading, :show_header
-  mode_attr_accessor :build_from_source, :force_bottle
+  mode_attr_accessor :build_from_source, :build_bottle, :force_bottle
   mode_attr_accessor :ignore_deps, :only_deps, :interactive, :git
   mode_attr_accessor :verbose, :debug, :quieter
 
@@ -69,10 +69,6 @@ class FormulaInstaller
     raise BuildFlagsError.new(build_flags) unless build_flags.empty?
   end
 
-  def build_bottle?
-    !!@build_bottle && !formula.bottle_disabled?
-  end
-
   def pour_bottle?(install_bottle_options = { :warn=>false })
     return true if Homebrew::Hooks::Bottles.formula_has_bottle?(formula)
 
@@ -88,7 +84,7 @@ class FormulaInstaller
       return true if formula.name == "patchelf" && Formula["glibc"].installed?
       return false unless Formula["glibc"].installed? && Formula["patchelf"].installed?
     end
-    return false if formula.bottle_disabled?
+
     return true  if formula.local_bottle_path
     return false unless bottle && formula.pour_bottle?
 
@@ -170,7 +166,7 @@ class FormulaInstaller
 
     check_conflicts
 
-    if !pour_bottle? && !formula.bottle_unneeded? && !MacOS.has_apple_developer_tools?
+    if !pour_bottle? && !MacOS.has_apple_developer_tools?
       raise BuildToolsError.new([formula])
     end
 
@@ -262,10 +258,7 @@ class FormulaInstaller
   # abnormally with a BuildToolsError if one or more don't.
   # Only invoked when the user has no developer tools.
   def check_dependencies_bottled(deps)
-    unbottled = deps.reject do |dep, _|
-      dep_f = dep.to_formula
-      dep_f.pour_bottle? || dep_f.bottle_unneeded?
-    end
+    unbottled = deps.reject { |dep, _| dep.to_formula.pour_bottle? }
 
     raise BuildToolsError.new(unbottled) unless unbottled.empty?
   end
