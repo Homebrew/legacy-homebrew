@@ -16,9 +16,10 @@ class Z3 < Formula
 
   bottle do
     cellar :any
-    sha256 "747f0ed14c4420c2724b970612150431983938a29174db9d03aad78a824193f4" => :el_capitan
-    sha256 "3490f8cd97c7d90ccf635d8296e63dbc7b3055dccac0831065b39ab08363e9f3" => :yosemite
-    sha256 "ecae50a10a368e2684b7ab5d205efa58136369e4db9374fccf164fb0b8884f55" => :mavericks
+    revision 1
+    sha256 "5478a9d85f28665ab17d0bf16e42c36cb0a0395c240a6ff02691788f06a6f81d" => :el_capitan
+    sha256 "d91ef7d7bbecb962db6ab12053b3dddbcd6e8943e0ed5a5ebd572224743bcead" => :yosemite
+    sha256 "f4128b503528a0825bff4da559fffe7c27f7ec3764482eb67cb69f4b89e3010e" => :mavericks
   end
 
   def install
