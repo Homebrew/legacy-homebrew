@@ -1,4 +1,8 @@
-module DependencyCollectorCompat
+require "dependency_collector"
+
+class DependencyCollector
+  alias_method :_parse_symbol_spec, :parse_symbol_spec
+
   def parse_symbol_spec(spec, tags)
     case spec
     when :clt
@@ -10,13 +14,9 @@ module DependencyCollectorCompat
       tags << :run
       Dependency.new("libtool", tags)
     else
-      super(spec, tags)
+      _parse_symbol_spec(spec, tags)
     end
   end
-end
-
-class DependencyCollector
-  prepend DependencyCollectorCompat
 
   def autotools_dep(spec, tags)
     tags << :build unless tags.include? :run
