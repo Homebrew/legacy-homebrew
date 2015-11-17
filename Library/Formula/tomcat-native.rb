@@ -1,9 +1,9 @@
 class TomcatNative < Formula
   desc "Lets Tomcat use some native resources for performance"
   homepage "https://tomcat.apache.org/native-doc/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz"
-  sha256 "523dde7393c57307eedf4972ebbe19a9e9af6f7699e3b1ef6dabd7a11677866e"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.2.2/source/tomcat-native-1.2.2-src.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.2/source/tomcat-native-1.2.2-src.tar.gz"
+  sha256 "9bd4deb1a816efda8208bfb4f55ee1689571e1d05a5c1e84faf2ad1021a9cae6"
 
   bottle do
     cellar :any
@@ -22,7 +22,7 @@ class TomcatNative < Formula
   depends_on "apr" => :optional
 
   def install
-    cd "jni/native" do
+    cd "native" do
       if build.with? "apr"
         apr_path = Formula["apr"].opt_prefix
       else
