@@ -8,21 +8,15 @@ module OS
   end
 
   if OS.mac?
-    require "os/mac"
     GITHUB_REPOSITORY = "homebrew"
     ISSUES_URL = "https://git.io/brew-troubleshooting"
     PATH_OPEN = "/usr/bin/open"
-    # compatibility
-    ::MACOS_FULL_VERSION = OS::Mac.full_version.to_s
-    ::MACOS_VERSION = OS::Mac.version.to_s
-    ::OS_VERSION = "OS X #{MACOS_FULL_VERSION}"
+    PATH_PATCH = "/usr/bin/patch"
   elsif OS.linux?
     GITHUB_REPOSITORY = "linuxbrew"
-    ISSUES_URL = "https://github.com/Homebrew/linuxbrew/wiki/troubleshooting"
+    ISSUES_URL = "https://github.com/Homebrew/#{GITHUB_REPOSITORY}/blob/master/share/doc/homebrew/Troubleshooting.md#troubleshooting"
     PATH_OPEN = "xdg-open"
-    # compatibility
-    ::MACOS_FULL_VERSION = ::MACOS_VERSION = "0"
-    ::OS_VERSION = RUBY_PLATFORM
+    PATH_PATCH = "patch"
   else
     raise "Unknown operating system"
   end
