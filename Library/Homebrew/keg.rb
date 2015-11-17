@@ -134,6 +134,14 @@ class Keg
     path.abv
   end
 
+  def disk_usage
+    path.disk_usage
+  end
+
+  def file_count
+    path.file_count
+  end
+
   def directory?
     path.directory?
   end
