@@ -1,18 +1,18 @@
 class ClangFormat < Formula
   desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-07-31"
+  version "2015-09-01"
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-07-31/", :using => :svn
+    url "http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_370/final/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-07-31/", :using => :svn
+      url "http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_370/final/", :using => :svn
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.7.0/libcxx-3.7.0.src.tar.xz"
+      sha256 "c18f3c8333cd7e678c1424a57fe5e25efe740ca7caf62ac67152b4723f3ad08e"
     end
   end
 
