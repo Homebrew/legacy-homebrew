@@ -8,9 +8,9 @@ class Algernon < Formula
   head "https://github.com/xyproto/algernon.git"
 
   bottle do
-    sha256 "4afae3ee47dc003a6916c399b103dd8d8223db6c2234ba4a3a67f9e52e338efd" => :el_capitan
-    sha256 "aa0512e558bd8179c0c09149dee8eb6460f8f89518f18bfb240c6c28d159d5bd" => :yosemite
-    sha256 "eb6c1a3760fb5ba8257aef23c04837b511e86d61b1b9bd3e443b760f01ab6d6a" => :mavericks
+    sha256 "bd007774ba8e384f8b54b09e6d6c3a861c9352faca1f253396f7ad7314b0e3f4" => :el_capitan
+    sha256 "b9b1517b3893291c8c297001de78f78d2740b6d9e7b8c0cb53ac61db331bce12" => :yosemite
+    sha256 "dc143a065845bb2a027b2198241629629251921b0943ff55777326bededfa7c1" => :mavericks
   end
 
   depends_on "readline"
