@@ -10,7 +10,10 @@ class Shml < Formula
   end
 
   test do
-    assert_match "1.0.4", pipe_output("#{bin}/shml", "-v")
-    assert_match "1.0.4", pipe_output("#{bin}/shml.sh", "-v")
+    ["shml", "shml.sh"].each do |cmd|
+      result = shell_output("#{bin}/#{cmd} -v")
+      result.force_encoding("UTF-8") if result.respond_to?(:force_encoding)
+      assert_match "1.0.4", result
+    end
   end
 end
