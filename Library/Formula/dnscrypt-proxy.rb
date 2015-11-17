@@ -18,7 +18,7 @@ class DnscryptProxy < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on "minisign" => :build
+    depends_on "minisign" 
   end
 
   option "with-plugins", "Support plugins and install example plugins."
@@ -26,26 +26,6 @@ class DnscryptProxy < Formula
   deprecated_option "plugins" => "with-plugins"
 
   depends_on "libsodium"
-
-  def updateresolvers; <<-EOS.undent
-    #!/bin/sh
-    RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
-    RESOLVERS_LIST_BASE_DIR=#{share}/dnscrypt-proxy
-    RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
-
-    curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
-      "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
-      "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
-    curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
-      "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
-      "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
-    minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
-      -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
-      -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
-    mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
-      ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
-    EOS
-  end
 
   def install
     system "autoreconf", "-if" if build.head?
@@ -61,9 +41,26 @@ class DnscryptProxy < Formula
     system "./configure", *args
     system "make", "install"
 
-    (libexec/"update-resolvers.sh").write updateresolvers
+    (libexec/"update-resolvers.sh").write <<-EOS.undent
+      #!/bin/sh
+      RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
+      RESOLVERS_LIST_BASE_DIR=#{pkgshare}
+      RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
+
+      curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+        "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
+        "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
+      curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+        "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
+        "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
+      minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+        -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
+        -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
+      mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+        ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
+    EOS
     chmod 0774, libexec/"update-resolvers.sh"
-    bin.write_exec_script libexec/"update-resolvers.sh"
+    system libexec/"update-resolvers.sh"
   end
 
   def caveats; <<-EOS.undent
@@ -79,7 +76,7 @@ class DnscryptProxy < Formula
     the plist file (e.g., --resolver-address, --provider-name, --provider-key, etc.)
 
     If at some point the resolver file gets outdated, it can be updated to the
-    latest version by running:  #{libexec}/update-resolvers.sh
+    latest version by running: #{libexec}/update-resolvers
 
     To check that dnscrypt-proxy is working correctly, open Terminal and enter the
     following command. Replace en1 with whatever network interface you're using:
