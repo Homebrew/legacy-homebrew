@@ -3,6 +3,7 @@ class Libspectre < Formula
   homepage "https://wiki.freedesktop.org/www/Software/libspectre/"
   url "http://libspectre.freedesktop.org/releases/libspectre-0.2.7.tar.gz"
   sha256 "e81b822a106beed14cf0fec70f1b890c690c2ffa150fa2eee41dc26518a6c3ec"
+  revision 1
 
   bottle do
     cellar :any
@@ -12,6 +13,11 @@ class Libspectre < Formula
   end
 
   depends_on "ghostscript"
+
+  patch do
+    url "https://github.com/Homebrew/patches/raw/master/libspectre/libspectre-0.2.7-gs918.patch"
+    sha256 "e4c186ddc6cebc92ee0aee24bc79c7f5fff147a0c0d9cadf7ebdc3906d44711c"
+  end
 
   def install
     ENV.append "CFLAGS", "-I#{Formula["ghostscript"].opt_include}/ghostscript"
