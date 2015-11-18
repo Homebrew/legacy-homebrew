@@ -122,9 +122,10 @@ class Gcc < Formula
     # -fPIC, -shared, -ldl and -rdynamic."
     args << "--enable-plugin" if MacOS.version > :tiger
 
-    # Otherwise make fails during comparison at stage 3
+    # The pre-Mavericks toolchain requires the older DWARF-2 debugging data
+    # format to avoid failure during the stage 3 comparison of object files.
     # See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
-    args << "--with-dwarf2" if MacOS.version < :leopard
+    args << "--with-dwarf2" if MacOS.version <= :mountain_lion
 
     args << "--disable-nls" if build.without? "nls"
 
