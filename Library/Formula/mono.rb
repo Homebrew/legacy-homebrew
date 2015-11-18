@@ -1,8 +1,8 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-4.2.0.179.tar.bz2"
-  sha256 "fc53c825b8f1e83eaa52a681410261a5b0ac47d36ffd2b58581c476c2690933f"
+  url "http://download.mono-project.com/sources/mono/mono-4.2.1.102.tar.bz2"
+  sha256 "b7b461fe04375f621d88166ba8c6f1cb33c439fd3e17136460f7d087a51ed792"
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
@@ -20,8 +20,8 @@ class Mono < Formula
   option "without-fsharp", "Build without support for the F# language."
 
   resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-4.2.0-release/9b/9b990f2b19b1a534925cce3ddaabb70654b76066/monolite-135-latest.tar.gz"
-    sha256 "1529edbf34ebe498d315464e1211e65531ba25c492ba678a5bb079986a784131"
+    url "http://download.mono-project.com/monolite/monolite-138-latest.tar.gz"
+    sha256 "a7b1b0c20f28747e783d91f6e8e40e4c788bd25ca6192b43d622ea842d434a48"
   end
 
   resource "fsharp" do
