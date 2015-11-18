@@ -11,17 +11,17 @@ class ImatixGsl < Formula
   end
 
   test do
-    TEST_SCRIPT_NAME = "hello_world.gsl"
-    TEST_OUTPUT_NAME = "hello_world.txt"
-    TEST_SCRIPT = <<-GSL
-.output "#{TEST_OUTPUT_NAME}"
+    script_name = "hello_world.gsl"
+    output_name = "hello_world.txt"
+    script = <<-GSL
+.output "#{output_name}"
 .who = "world"
 >Hello $(who)!
     GSL
-    TEST_OUTPUT = "Hello world!\n"
+    output = "Hello world!\n"
 
-    (testpath/TEST_SCRIPT_NAME).write(TEST_SCRIPT)
-    system bin/"gsl", testpath/TEST_SCRIPT_NAME
-    assert_equal TEST_OUTPUT, (testpath/TEST_OUTPUT_NAME).read
+    (testpath/script_name).write(script)
+    system bin/"gsl", testpath/script_name
+    assert_equal output, (testpath/output_name).read
   end
 end
