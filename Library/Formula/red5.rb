@@ -9,27 +9,19 @@ class Red5 < Formula
 
   def install
     rm Dir["*.bat"]
+    (bin/"red5").write_env_script libexec/"red5.sh", Language::Java.java_home_env("1.7+").merge(:RED5_HOME => libexec)
 
-    (bin/"red5").write_env_script libexec/"red5.sh", Language::Java.java_home_env("1.7+")
-
-    # Move config files into etc
     (etc/"red5").install Dir["conf/*"]
     libexec.install_symlink "#{etc}/red5" => "conf"
     rm_rf "conf"
 
-    # Move webapps into var
     (var/"red5/webapps").install Dir["webapps/*"]
     libexec.install_symlink "#{var}/red5/webapps" => "webapps"
     rm_rf "webapps"
 
-    # Install others files
     libexec.install Dir["*"]
-
-    inreplace "#{libexec}/red5.sh" do |s|
-      # Configure RED5_HOME
-      s.sub!("export RED5_HOME=`pwd`", "export RED5_HOME=#{libexec}")
-      s.sub!("# start Red5", "# start Red5\ncd `dirname $0`")
-    end
+    # moving working directory to have tomcat8080 temporary folder inside libexec
+    inreplace "#{libexec}/red5.sh", "exec \"$JAVA\"", "cd #{libexec}\nexec \"$JAVA\""
   end
 
   test do
