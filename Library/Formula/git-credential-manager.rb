@@ -14,6 +14,6 @@ class GitCredentialManager < Formula
   end
 
   test do
-    system "java", "-jar", "#{libexec}/git-credential-manager-#{version}.jar", "version"
+    system "#{bin}/git-credential-manager", "version"
   end
 end
