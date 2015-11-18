@@ -1,9 +1,9 @@
 class Dos2unix < Formula
   desc "Convert text between DOS, UNIX, and Mac formats"
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
-  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.3/dos2unix-7.3.tar.gz"
-  sha256 "8175f7552a72edaaa8918fdee68ce2cbc982dc25452f33d4dc611d769f4944d1"
+  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.1.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.3.1/dos2unix-7.3.1.tar.gz"
+  sha256 "f4d5df24d181c2efecf7631aab6e894489012396092cf206829f1f9a98556b94"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,8 +14,8 @@ class Dos2unix < Formula
   end
 
   devel do
-    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.1-beta5.tar.gz"
-    sha256 "fb0933de4ba214a15d8e258a1031ac3c7f02f801b5b5c3a393d04a4bce21b351"
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.2-beta4.tar.gz"
+    sha256 "af033c7d992e72c666864f4a33e7a24a8c273909e1e45a5d497b12517076866e"
   end
 
   option "with-gettext", "Build with Native Language Support"
