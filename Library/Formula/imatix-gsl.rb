@@ -6,7 +6,7 @@ class ImatixGsl < Formula
   def install
     cd "src" do
       system "make"
-      system "make", "install"
+      system "make", "install", "DESTDIR=#{prefix}"
     end
   end
 
