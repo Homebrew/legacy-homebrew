@@ -4,6 +4,7 @@ class Graphicsmagick < Formula
   url "https://downloads.sourceforge.net/project/graphicsmagick/graphicsmagick/1.3.23/GraphicsMagick-1.3.23.tar.bz2"
   sha256 "6e14a9e9e42ec074239b2de4db37ebebb8268b0361332d5bc86d7c3fbfe5aabf"
   head "http://hg.code.sf.net/p/graphicsmagick/code", :using => :hg
+  revision 1
 
   bottle do
     sha256 "96b2c3787f3c6c86d2a6b5088b51ee5c4e7c740ffc9e1c18a720c40414ff7fa0" => :el_capitan
@@ -12,7 +13,7 @@ class Graphicsmagick < Formula
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
-  option "with-quantum-depth-16", "Compile with a quantum depth of 16 bit"
+  option "with-quantum-depth-16", "Compile with a quantum depth of 16 bit (default)"
   option "with-quantum-depth-32", "Compile with a quantum depth of 32 bit"
   option "without-magick-plus-plus", "disable build/install of Magick++"
   option "without-svg", "Compile without svg support"
@@ -58,15 +59,13 @@ class Graphicsmagick < Formula
     args << "--with-perl" if build.with? "perl"
     args << "--with-webp=yes" if build.with? "webp"
 
-    if build.with? "quantum-depth-32"
-      quantum_depth = 32
-    elsif build.with? "quantum-depth-16"
-      quantum_depth = 16
-    elsif build.with? "quantum-depth-8"
-      quantum_depth = 8
+    quantum_depth = [8, 16, 32].select { |n| build.with? "quantum-depth-#{n}" }
+    if quantum_depth.length > 1
+      odie "graphicsmagick: --with-quantum-depth-N options are mutually exclusive"
     end
+    quantum_depth = quantum_depth.first || 16 # user choice or default
 
-    args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
+    args << "--with-quantum-depth=#{quantum_depth}"
     args << "--without-x" if build.without? "x11"
     args << "--without-ttf" if build.without? "freetype"
     args << "--without-xml" if build.without? "svg"
