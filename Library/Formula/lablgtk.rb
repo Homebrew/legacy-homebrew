@@ -29,9 +29,8 @@ class Lablgtk < Formula
 
   test do
     (testpath/"test.ml").write <<-EOS.undent
-      let main () =
+      let _ =
         GtkMain.Main.init ()
-      let _ = main ()
     EOS
     ENV["CAML_LD_LIBRARY_PATH"] = "#{lib}/ocaml/stublibs"
     system "ocamlc", "-I", "#{opt_lib}/ocaml/lablgtk2", "lablgtk.cma", "gtkInit.cmo", "test.ml", "-o", "test",
