@@ -5,8 +5,8 @@ class Pandoc < Formula
 
   desc "Swiss-army knife of markup format conversion"
   homepage "http://pandoc.org"
-  url "https://hackage.haskell.org/package/pandoc-1.15.2/pandoc-1.15.2.tar.gz"
-  sha256 "9c6ffe77006513306b35daa7256c1625c6eaf2e16a8de8fe5248f20015c3d335"
+  url "https://hackage.haskell.org/package/pandoc-1.15.2.1/pandoc-1.15.2.1.tar.gz"
+  sha256 "60bcb0e65ecb63953dd26d5aacf1a5df83700d116062ffaeffe9edbc9be6df59"
 
   head "https://github.com/jgm/pandoc.git"
 
