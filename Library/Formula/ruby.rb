@@ -59,7 +59,7 @@ class Ruby < Formula
 
     paths = [
       Formula["libyaml"].opt_prefix,
-      Formula["openssl"].opt_prefix
+      Formula["openssl"].opt_prefix,
     ]
 
     %w[readline gdbm gmp libffi].each do |dep|
@@ -85,6 +85,9 @@ class Ruby < Formula
 
     system "make"
     system "make", "install"
+
+    # A newer version of ruby-mode.el is shipped with Emacs
+    elisp.install Dir["misc/*.el"].reject { |f| f == "misc/ruby-mode.el" }
   end
 
   def post_install
