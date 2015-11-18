@@ -21,7 +21,7 @@ class Newlisp < Formula
     sha256 "1b769d8026241a02ac7e6fc326c5d9b99b976482a40a0c8d5c828df72275aa18"
   end
 
-  depends_on "readline"
+  depends_on "readline" => :recommended
 
   def install
     # Required to use our configuration

@@ -33,7 +33,7 @@ class FormulaTests < Homebrew::TestCase
     refute_predicate f, :any_version_installed?
     prefix = HOMEBREW_CELLAR+f.name+"0.1"
     prefix.mkpath
-    FileUtils.touch (prefix+Tab::FILENAME)
+    FileUtils.touch prefix+Tab::FILENAME
     assert_predicate f, :any_version_installed?
   ensure
     f.rack.rmtree

@@ -6,7 +6,8 @@ class AptCacherNg < Formula
   sha256 "255b742d3551fcbfa71b6df4d8892038934812425222a15d085436a4a76b8400"
 
   bottle do
-    sha256 "ea6c5378a9fc50868236ed64b530e75818b9f5b330580d7ec1c30da4b7a4948a" => :mavericks
+    revision 1
+    sha256 "5775ba1cb6fc3db07e1b83d5c31cc6631d1eb7c9d457a9f41f5a65b64f39d75b" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -30,19 +31,14 @@ class AptCacherNg < Formula
     (var/"spool/apt-cacher-ng").mkpath
     (var/"log").mkpath
 
-    mkdir "build" do
-      system "cmake", "..", *std_cmake_args
-      system "make", "apt-cacher-ng"
+    inreplace "conf/acng.conf.in" do |s|
+      s.gsub!(/^CacheDir: .*/, "CacheDir: #{var}/spool/apt-cacher-ng")
+      s.gsub!(/^LogDir: .*/, "LogDir: #{var}/log")
     end
 
-    inreplace "build/conf/acng.conf" do |s|
-      s.gsub! /^CacheDir: .*/, "CacheDir: #{var}/spool/apt-cacher-ng"
-      s.gsub! /^LogDir: .*/, "LogDir: #{var}/log"
-    end
-
-    etc.install "build/conf" => "apt-cacher-ng" unless File.exist?(etc/"apt-cacher-ng")
-    sbin.install "build/apt-cacher-ng"
-    man8.install "doc/man/apt-cacher-ng.8"
+    system "cmake", ".", *std_cmake_args
+    system "make", "apt-cacher-ng"
+    system "make", "install"
   end
 
   plist_options :startup => true
@@ -84,7 +80,7 @@ class AptCacherNg < Formula
     sleep 2
 
     begin
-      assert_match /Information about APT configuration/, shell_output("curl localhost:3142")
+      assert_match(/Not Found or APT Reconfiguration required/, shell_output("curl localhost:3142"))
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)

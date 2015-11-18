@@ -937,6 +937,11 @@ class Formula
   end
 
   # @private
+  def pinned_version
+    @pin.pinned_version
+  end
+
+  # @private
   def pin
     @pin.pin
   end
@@ -1052,7 +1057,9 @@ class Formula
   # @private
   def self.racks
     @racks ||= if HOMEBREW_CELLAR.directory?
-      HOMEBREW_CELLAR.subdirs.reject(&:symlink?)
+      HOMEBREW_CELLAR.subdirs.reject do |rack|
+        rack.symlink? || rack.subdirs.empty?
+      end
     else
       []
     end
@@ -1273,7 +1280,7 @@ class Formula
     mktemp do
       @testpath = Pathname.pwd
       ENV["HOME"] = @testpath
-      setup_test_home @testpath
+      setup_home @testpath
       test
     end
   ensure
@@ -1309,8 +1316,8 @@ class Formula
 
   protected
 
-  def setup_test_home(home)
-    # keep Homebrew's site-packages in sys.path when testing with system Python
+  def setup_home(home)
+    # keep Homebrew's site-packages in sys.path when using system Python
     user_site_packages = home/"Library/Python/2.7/lib/python/site-packages"
     user_site_packages.mkpath
     (user_site_packages/"homebrew.pth").write <<-EOS.undent
@@ -1420,7 +1427,7 @@ class Formula
         log.puts
 
         require "cmd/config"
-        require "cmd/--env"
+        require "build_environment"
 
         env = ENV.to_hash
 
@@ -1470,6 +1477,7 @@ class Formula
       mkdir_p env_home
 
       old_home, ENV["HOME"] = ENV["HOME"], env_home
+      setup_home env_home
 
       begin
         yield

@@ -1,7 +1,7 @@
 class Npth < Formula
   desc "New GNU portable threads library"
-  homepage "https://gnupg.org/index.html"
-  url "ftp://ftp.gnupg.org/gcrypt/npth/npth-1.2.tar.bz2"
+  homepage "https://gnupg.org/"
+  url "https://gnupg.org/ftp/gcrypt/npth/npth-1.2.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/npth/npth-1.2.tar.bz2"
   sha256 "6ddbdddb2cf49a4723f9d1ad6563c480d6760dcb63cb7726b8fc3bc2e1b6c08a"
 

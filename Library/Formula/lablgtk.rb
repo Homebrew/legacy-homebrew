@@ -34,33 +34,19 @@ class Lablgtk < Formula
       let _ = main ()
     EOS
     ENV["CAML_LD_LIBRARY_PATH"] = "#{lib}/ocaml/stublibs"
-    flags = %W[
-      -cclib
-      -latk-1.0
-      -cclib
-      -lcairo
-      -cclib
-      -lgdk-quartz-2.0
-      -cclib
-      -lgdk_pixbuf-2.0
-      -cclib
-      -lgio-2.0
-      -cclib
-      -lglib-2.0
-      -cclib
-      -lgobject-2.0
-      -cclib
-      -lgtk-quartz-2.0
-      -cclib
-      -lgtksourceview-2.0
-      -cclib
-      -lintl
-      -cclib
-      -lpango-1.0
-      -cclib
-      -lpangocairo-1.0
-    ]
-    system "ocamlc", "-I", "#{Formula["lablgtk"].opt_lib}/ocaml/lablgtk2", "lablgtk.cma", "gtkInit.cmo", "test.ml", "-o", "test", *flags
+    system "ocamlc", "-I", "#{opt_lib}/ocaml/lablgtk2", "lablgtk.cma", "gtkInit.cmo", "test.ml", "-o", "test",
+      "-cclib", "-latk-1.0",
+      "-cclib", "-lcairo",
+      "-cclib", "-lgdk-quartz-2.0",
+      "-cclib", "-lgdk_pixbuf-2.0",
+      "-cclib", "-lgio-2.0",
+      "-cclib", "-lglib-2.0",
+      "-cclib", "-lgobject-2.0",
+      "-cclib", "-lgtk-quartz-2.0",
+      "-cclib", "-lgtksourceview-2.0",
+      "-cclib", "-lintl",
+      "-cclib", "-lpango-1.0",
+      "-cclib", "-lpangocairo-1.0"
     system "./test"
   end
 end

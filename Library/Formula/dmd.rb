@@ -3,50 +3,29 @@ class Dmd < Formula
   homepage "http://dlang.org"
 
   stable do
-    url "https://github.com/D-Programming-Language/dmd/archive/v2.068.2.tar.gz"
-    sha256 "787115a406d06b303be819da7e1ec978399373838f473d6b8446be400152c8fc"
+    url "https://github.com/D-Programming-Language/dmd/archive/v2.069.1.tar.gz"
+    sha256 "abf63eeae164560d4d2cd4b61d8b8f2444925376e02245bce1fd28baf4c1f252"
 
     resource "druntime" do
-      url "https://github.com/D-Programming-Language/druntime/archive/v2.068.2.tar.gz"
-      sha256 "da9f514078015b218e81e77c54c0da967f6ed4dddc3ecbc1db98ac9aa7f79e98"
+      url "https://github.com/D-Programming-Language/druntime/archive/v2.069.1.tar.gz"
+      sha256 "5d1fb286b2f3a032e8f4b1701ae6d787189701644b4e2b9b89e9b9a67f55439a"
     end
 
     resource "phobos" do
-      url "https://github.com/D-Programming-Language/phobos/archive/v2.068.2.tar.gz"
-      sha256 "1135038ea4e927d5aeb0436057064ade808799d6e5180578b520c4fbc9e0914e"
+      url "https://github.com/D-Programming-Language/phobos/archive/v2.069.1.tar.gz"
+      sha256 "737b4a630bb1734a34d4f61a145b99de022761edb3a92366ac777f8ccab87dc4"
     end
 
     resource "tools" do
-      url "https://github.com/D-Programming-Language/tools/archive/v2.068.2.tar.gz"
-      sha256 "9abe5b0ba60aae3341131533e99e6cdcf085040aabb596382f4ada1a018b6608"
+      url "https://github.com/D-Programming-Language/tools/archive/v2.069.1.tar.gz"
+      sha256 "5d0ee39e3f4e51ec9dbb7200249494f28846a3128a38d335260eb157b3bcfa68"
     end
   end
 
   bottle do
-    sha256 "0343dbafda40120f0dfa32ae90ba7fd4e62bfa11ae05a1c198f4a3f2e7800da1" => :el_capitan
-    sha256 "74407c8ac7930500354eff8eee812b08d532be8a1b2906614c20ef2771a5026f" => :yosemite
-    sha256 "102dda28a672c1c8cb99d0fefa1e0a749bfaf9ee72bc8368aa472debf8fbc70b" => :mavericks
-  end
-
-  devel do
-    url "https://github.com/D-Programming-Language/dmd/archive/v2.069.0-rc2.tar.gz"
-    sha256 "b11bbfb4404dcb700ec424018e52d6e8f3535e480be0cc8969c67b1405f61ea3"
-    version "2.069.0-rc2"
-
-    resource "druntime" do
-      url "https://github.com/D-Programming-Language/druntime/archive/v2.069.0-rc2.tar.gz"
-      sha256 "5eb488f6a1822418ce8d0152370412f3d02f1aa4c7cccd31a7b05f3542981ca6"
-    end
-
-    resource "phobos" do
-      url "https://github.com/D-Programming-Language/phobos/archive/v2.069.0-rc2.tar.gz"
-      sha256 "53324e521d5ea35c4016e8314e63ee5ff512febafd6ab82ea5573f8c1b8222fd"
-    end
-
-    resource "tools" do
-      url "https://github.com/D-Programming-Language/tools/archive/v2.069.0-rc2.tar.gz"
-      sha256 "42cf22992c6eac82b2936f7ac6d237666202605ab01f08b8cd3041e299a42776"
-    end
+    sha256 "0f79eadd2e9318222a561d67c66b4cf488bc33e67c4c9ac4c31c714bd9f2f46d" => :el_capitan
+    sha256 "9bd4b66fc5df16e665df31bfa61b15fbfb6ca10bbd6669553019c53ef7bd3d4b" => :yosemite
+    sha256 "73bcca9b4c6456725e3064b405043f586a91c9e32047259bfec41105635477e9" => :mavericks
   end
 
   head do

@@ -13,11 +13,17 @@ class Jsoncpp < Formula
     sha256 "5f52ce3f6720cebb193c4f50c78434065e98f0336ea7920c171558786517fd21" => :mavericks
   end
 
+  option :universal
+
   depends_on "cmake" => :build
 
   def install
     cmake_args = std_cmake_args
     cmake_args << "-DBUILD_STATIC_LIBS=ON" << "-DBUILD_SHARED_LIBS=ON" << "-DJSONCPP_WITH_CMAKE_PACKAGE=ON"
+    if build.universal?
+      ENV.universal_binary
+      cmake_args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
     system "cmake", ".", *cmake_args
     system "make", "install"
   end

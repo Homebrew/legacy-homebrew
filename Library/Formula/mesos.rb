@@ -4,11 +4,12 @@ class Mesos < Formula
   url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.25.0/mesos-0.25.0.tar.gz"
   mirror "https://archive.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz"
   sha256 "81ee9e722b66f52d8f3270a76eecea60fdcab48d6f7dba51ecce592293124b75"
+  revision 1
 
   bottle do
-    sha256 "6a96f1ea83d731c6d48237798e6c3c7dd309e0b155fc7762d9cf23dd1dab1d15" => :el_capitan
-    sha256 "b17cc387d71748e50bb0c2f08c8644dc9f7d0b997dc2c9e05e53022afa15fb7b" => :yosemite
-    sha256 "8e0839b6b5c04cc3b8fd33f845c3a4d505a70ebfad9cea41497a62125d8a1b8e" => :mavericks
+    sha256 "9cc964e98ca0e3f2a1a0a9dcc34019aa8beb14e68b626fdab9940e8b73c0dc2d" => :el_capitan
+    sha256 "9db0716715872af1372e178a782dba74fb593719589aec71b16e11d5fec43490" => :yosemite
+    sha256 "7837ef77b17f87ba10bccf659c35fd161271e308af33fadd36ef103806a73a30" => :mavericks
   end
 
   depends_on :java => "1.7+"

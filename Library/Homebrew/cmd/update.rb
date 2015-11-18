@@ -82,12 +82,13 @@ module Homebrew
       next unless (dir = HOMEBREW_CELLAR/f).exist?
       migration = TAP_MIGRATIONS[f]
       next unless migration
-      tap_user, tap_repo = migration.split "/"
-      install_tap tap_user, tap_repo
+      tap = Tap.fetch(*migration.split("/"))
+      tap.install unless tap.installed?
+
       # update tap for each Tab
       tabs = dir.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
       next if tabs.first.source["tap"] != "Homebrew/homebrew"
-      tabs.each { |tab| tab.source["tap"] = "#{tap_user}/homebrew-#{tap_repo}" }
+      tabs.each { |tab| tab.source["tap"] = "#{tap.user}/homebrew-#{tap.repo}" }
       tabs.each(&:write)
     end if load_tap_migrations
 

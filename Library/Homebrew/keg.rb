@@ -78,7 +78,7 @@ class Keg
     man/cat1 man/cat2 man/cat3 man/cat4
     man/cat5 man/cat6 man/cat7 man/cat8
     applications gnome gnome/help icons
-    mime-info pixmaps sounds
+    mime-info pixmaps sounds postgresql
   ]
 
   # if path is a file in a keg then this will return the containing Keg object
@@ -101,11 +101,6 @@ class Keg
     @name = path.parent.basename.to_s
     @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", name)
     @opt_record = HOMEBREW_PREFIX.join("opt", name)
-  end
-
-  def fname
-    opoo "Keg#fname is a deprecated alias for Keg#name and will be removed soon"
-    name
   end
 
   def to_s
