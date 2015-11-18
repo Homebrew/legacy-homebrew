@@ -12,7 +12,7 @@ class Graphicsmagick < Formula
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
-  option "with-quantum-depth-16", "Compile with a quantum depth of 16 bit"
+  option "with-quantum-depth-16", "Compile with a quantum depth of 16 bit (default)"
   option "with-quantum-depth-32", "Compile with a quantum depth of 32 bit"
   option "without-magick-plus-plus", "disable build/install of Magick++"
   option "without-svg", "Compile without svg support"
@@ -64,9 +64,11 @@ class Graphicsmagick < Formula
       quantum_depth = 16
     elsif build.with? "quantum-depth-8"
       quantum_depth = 8
+    else
+      quantum_depth = 16
     end
 
-    args << "--with-quantum-depth=#{quantum_depth}" if quantum_depth
+    args << "--with-quantum-depth=#{quantum_depth}"
     args << "--without-x" if build.without? "x11"
     args << "--without-ttf" if build.without? "freetype"
     args << "--without-xml" if build.without? "svg"
