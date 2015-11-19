@@ -33,7 +33,7 @@ class Openssl < Formula
     --prefix=#{prefix}
     --openssldir=#{openssldir}
     no-ssl2
-    zlib-dynamic
+    no-comp
     shared
     enable-cms
   ]
