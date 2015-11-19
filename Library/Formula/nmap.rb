@@ -6,11 +6,9 @@ class Nmap < Formula
   sha256 "9f442301c615c608a385831c3505cdfed9b0795cd100f1a258b04509802802ae"
 
   bottle do
-    revision 2
-    sha256 "3051ae50f1c1846e33412516824f63c26634d3bb8663bc34122b732a3c3e21ea" => :el_capitan
-    sha256 "9b6d72f580b7da225aedadad7682242356c80df9aa3f35153d040148dacf9d07" => :yosemite
-    sha256 "c452ee2ac7166b7330a5b4ec523d2a0ab166a05702816d1e0198afa36927a80d" => :mavericks
-    sha256 "73c5cc0e510d834016a13bc37013454805435db55575af53eb49d23d27a8756a" => :mountain_lion
+    sha256 "bae238a841b62906063ed10160235804d648b21fecb4f0871fb360c292e6fea1" => :el_capitan
+    sha256 "668190150ece1d4a50872ac84c013d5e9becda6bd345abbcc86a8ec4b3c45e6f" => :yosemite
+    sha256 "2d9ff311503dd7c839fb1e914ca82182bd144309e9e2811c81b7945978b23851" => :mavericks
   end
 
   depends_on "openssl"
