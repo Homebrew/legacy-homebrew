@@ -80,6 +80,7 @@ class FormulaInstaller
     bottle = formula.bottle
     return true  if force_bottle? && bottle
     return false if build_from_source? || build_bottle? || interactive?
+    return false if ARGV.cc
     return false unless options.empty?
     return false if formula.bottle_disabled?
     return true  if formula.local_bottle_path
