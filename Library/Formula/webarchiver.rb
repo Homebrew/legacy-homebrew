@@ -19,7 +19,7 @@ class Webarchiver < Formula
   end
 
   test do
-    system "webarchiver", "-url", "http://www.google.com", "-output", "foo.webarchive"
+    system "webarchiver", "-url", "https://www.google.com", "-output", "foo.webarchive"
     assert_match /Apple binary property list/, shell_output("file foo.webarchive", 0)
   end
 end
