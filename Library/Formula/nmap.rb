@@ -2,8 +2,8 @@ class Nmap < Formula
   desc "Port scanning utility for large networks"
   homepage "https://nmap.org/"
   head "https://guest:@svn.nmap.org/nmap/", :using => :svn
-  url "https://nmap.org/dist/nmap-6.47.tar.bz2"
-  sha256 "8fa11e9e203ce2d81a207db5ca4f110a525f6c01c1dd0018325a7112a51aa591"
+  url "https://nmap.org/dist/nmap-7.00.tar.bz2"
+  sha256 "9f442301c615c608a385831c3505cdfed9b0795cd100f1a258b04509802802ae"
 
   bottle do
     revision 2
