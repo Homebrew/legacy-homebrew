@@ -47,7 +47,7 @@ class Libkml < Formula
   def install
     if build.head?
       # The inreplace line below is only required until the patch in #issue 186
-      # is applied. http://code.google.com/p/libkml/issues/detail?id=186
+      # is applied. https://code.google.com/p/libkml/issues/detail?id=186
       # If the patch is applied, this find and replace will be unnecessary, but also
       # harmless
       inreplace "configure.ac", "-Werror", ""
