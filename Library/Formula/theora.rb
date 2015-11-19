@@ -6,11 +6,10 @@ class Theora < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "4c9d3f0e6788c2b8d3e3e142592b88fff12c35cb60f62fe4a60efe52f5cfdaac" => :el_capitan
-    sha1 "af6b483eb5119d88559d435f457b6d12d5ecf5bc" => :yosemite
-    sha1 "1ef8982b17448df7e7a665ff74381a6013a430a9" => :mavericks
-    sha1 "55f7781fe5ae59ef1c0aa1dfe95fd4d4f37ce060" => :mountain_lion
+    revision 2
+    sha256 "03b63a91812185120355da8292b40a2afd8377dcd8e3825eb9cbc217a3f4bc79" => :el_capitan
+    sha256 "ab9dd77803ec6885cb9701859de9b1b8ff6b85cb7cef24400dec6adb4b8c6378" => :yosemite
+    sha256 "58be26743e23be63aee48186bfa9cd8a982de957efb040a6ab3030aa62753977" => :mavericks
   end
 
   head do
