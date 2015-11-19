@@ -5,7 +5,7 @@ class Minisat < Formula
   sha256 "3ed44da999744c0a1be269df23c3ed8731cdb83c44a4f3aa29b3d6859bb2a4da"
 
   # Fix some declaration errors; see:
-  # http://groups.google.com/group/minisat/browse_thread/thread/f5b6a180cadbb214
+  # https://groups.google.com/forum/#!topic/minisat/9bahgMrbshQ
   patch :DATA
 
   fails_with :clang do
