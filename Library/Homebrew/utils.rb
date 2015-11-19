@@ -190,12 +190,23 @@ module Homebrew
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
-    args = [gem]
-    args << "-v" << version if version
+    if Gem::Specification.find_all_by_name(gem, version).empty?
+      ohai "Installing or updating '#{gem}' gem"
+      install_args = %W[--no-ri --no-rdoc --user-install #{gem}]
+      install_args << "--version" << version if version
 
-    unless quiet_system "gem", "list", "--installed", *args
-      safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", *args
+      # Do `gem install [...]` without having to spawn a separate process or
+      # having to find the right `gem` binary for the running Ruby interpreter.
+      require "rubygems/commands/install_command"
+      install_cmd = Gem::Commands::InstallCommand.new
+      install_cmd.handle_options(install_args)
+      exit_code = 1 # Should not matter as `install_cmd.execute` always throws.
+      begin
+        install_cmd.execute
+      rescue Gem::SystemExitException => e
+        exit_code = e.exit_code
+      end
+      odie "Failed to install/update the '#{gem}' gem." if exit_code != 0
     end
 
     unless which executable
