@@ -6,6 +6,13 @@ class Choose < Formula
 
   head "https://github.com/geier/choose.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "8f719b2bd5d9e2ddd820054d82468c421b64b9241180b348de7054cc200529ab" => :el_capitan
+    sha256 "9d9a580de75a6699a72d8e657f7bd010feb4d357abdc3f0268b2fb26e29a0ce6" => :yosemite
+    sha256 "b0e918080b27d6df6b01d8a6105e23540817d058ef1678d00216f52aec1d63d4" => :mavericks
+  end
+
   resource "urwid" do
     url "https://pypi.python.org/packages/source/u/urwid/urwid-1.2.1.tar.gz"
     sha256 "9b9b5dabb7df6c0f12e84feed488f9a9ddd5c2d66d1b7c7c087055720b87c68c"
