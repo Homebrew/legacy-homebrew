@@ -35,7 +35,7 @@ class Curlpp < Formula
         try {
           curlpp::Cleanup myCleanup;
           curlpp::Easy myHandle;
-          myHandle.setOpt(new curlpp::options::Url("http://google.com"));
+          myHandle.setOpt(new curlpp::options::Url("https://google.com"));
           myHandle.perform();
         } catch (curlpp::RuntimeError & e) {
           std::cout << e.what() << std::endl;
