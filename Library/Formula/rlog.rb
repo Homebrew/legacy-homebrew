@@ -4,6 +4,13 @@ class Rlog < Formula
   url "https://rlog.googlecode.com/files/rlog-1.4.tar.gz"
   sha256 "a938eeedeb4d56f1343dc5561bc09ae70b24e8f70d07a6f8d4b6eed32e783f79"
 
+  bottle do
+    cellar :any
+    sha256 "c95d8998639fd75131f923191eaa857bc3ff8f33ee64ca3b5d459ac1979e6fa2" => :el_capitan
+    sha256 "44f3b8ee89802fb13674e3b60e873045a459bf13513b84f3f7b94c8a4444b2eb" => :yosemite
+    sha256 "70c1faaac613087604231c7e30ba5dd458183c1dec4cfccb73b25a32fee6c603" => :mavericks
+  end
+
   patch :DATA
 
   def install
