@@ -7,9 +7,9 @@ class Gmime < Formula
   bottle do
     cellar :any
     sha256 "848440f6eaec305993135ee8708b81ad5ae2cfa9cfb5f7e6fcc8f4d077e9eda0" => :el_capitan
-    sha1 "0c1a5cbbee06768e007d38b020b1246f766b9915" => :yosemite
-    sha1 "d95faea4b6b509c58c848aa06981723317df888a" => :mavericks
-    sha1 "d342a6800769b6ecdf0071591bf794ce810cd35b" => :mountain_lion
+    sha256 "445348c5634172858befc936961626d1bc45ee6e6119f11b764032efc1b96687" => :yosemite
+    sha256 "be33acb8e9285f2d17a0895fb7c85b0938c517708e81ea3de34a86065f0c49cd" => :mavericks
+    sha256 "89e935d9ed23f2c5c426e2f19a112a682e71e805ac89f7faf91f102e24676691" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

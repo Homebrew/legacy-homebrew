@@ -6,9 +6,9 @@ class Tcping < Formula
 
   bottle do
     cellar :any
-    sha1 "d0a50ca49925897916c3ab8e06b0a2c3aa6cb48b" => :yosemite
-    sha1 "38d8390423e2fc6c4005589f7fa7eff28d065372" => :mavericks
-    sha1 "539939ac73c05e53d4304f17c5f91fdc078dec7d" => :mountain_lion
+    sha256 "1828eadf5c876317cd91a4795c88a6020e530411d519505fb3d3c8b0c1c9d77f" => :yosemite
+    sha256 "3628ebf998ef807a12264cc56e0ae2b5f17034055c6789e83a2a7dc82e53a93a" => :mavericks
+    sha256 "8708f8d8ed2b7e7ed62c9982fd6a6c0d420d1bb4c9ccc98db08a22ed498a1a8b" => :mountain_lion
   end
 
   def install

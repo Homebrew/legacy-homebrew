@@ -5,8 +5,8 @@ class Yamcha < Formula
   sha256 "413d4fc0a4c13895f5eb1468e15c9d2828151882f27aea4daf2399c876be27d5"
 
   bottle do
-    sha1 "7ba7244f3d95d350ee13686492d04267090cf024" => :yosemite
-    sha1 "5900e590dad8c01bb3598bdd0cb512f929130646" => :mavericks
+    sha256 "efeecbc666fd1aee3e89023d348c9dc04baace5d937ecb5a28b3097c32c30f97" => :yosemite
+    sha256 "c8872d56a004ec8750d75666d6f73947ea6f7cc99819880527e5deb498b9ba06" => :mavericks
     sha1 "4f7d40d5d02e0a431486450d119e83564f795a70" => :mountain_lion
   end
 

@@ -5,8 +5,8 @@ class MysqlCluster < Formula
   sha256 "eddcc2954ff7fbbc72b1266bd64a9548e9b9d7a4115d42b54c13257c226248ca"
 
   bottle do
-    sha1 "0f03e0282102b1635d3c1567f2046c0b67bd4b1a" => :mavericks
-    sha1 "694d4b6cf56ae7ac7e35315bfe6d20d3d0d1f9fd" => :mountain_lion
+    sha256 "a7f77a5b3dc5023fa63846f07c9b0d104376934331e62a9716222bd5efca2e98" => :mavericks
+    sha256 "fdec2e4159e9b021f4555f7348bf55f7aba79b6e4d85c20270bbc160e4c30706" => :mountain_lion
   end
 
   # Fix me: if you can get this to build on Yosemite, send a pull request!

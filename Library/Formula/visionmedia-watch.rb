@@ -8,9 +8,9 @@ class VisionmediaWatch < Formula
 
   bottle do
     cellar :any
-    sha1 "8491a4f2601bbb56bb071ea7c800d529d97e3b85" => :mavericks
-    sha1 "6fd809bb5216c0e1d75e7ea43c52a55b6bd52f0b" => :mountain_lion
-    sha1 "4e046b6c5fdc152127cb968b53324cc3fe362745" => :lion
+    sha256 "c3472ef163e074176e2bccfc957848ae128c3718d43aba0762ae763da2e56e14" => :mavericks
+    sha256 "771e32db925b2816db407938680c72c55b30ff173cb85f9e722f5e40c06a4dfe" => :mountain_lion
+    sha256 "4abb0beee91c8ead466949d830c0d4de466007aac4646144d9a52f6cc8e1e046" => :lion
   end
 
   conflicts_with "watch"

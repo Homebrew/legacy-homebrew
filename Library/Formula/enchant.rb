@@ -6,9 +6,9 @@ class Enchant < Formula
 
   bottle do
     sha256 "bbe368cbefd64aed845d98198d6f49fd533bc058b62290414865cca1ffdcc8cd" => :el_capitan
-    sha1 "12a7edc42b202159012238e0c0d3da0c1d43a74e" => :yosemite
-    sha1 "e6766b97a2db560403d6a1a26b3129a5c3057991" => :mavericks
-    sha1 "6dd74cd9a3c9f0ca1252820ada1f1e27fbf57c44" => :mountain_lion
+    sha256 "0315d7b75f8bcae0196e76c192cb514d723fd79df6f043c7ac13b3289d018b14" => :yosemite
+    sha256 "622f8b9b8f008eab4d689c6b39c00887c803fb49b5ec461b7fe520737f179427" => :mavericks
+    sha256 "35e3487d842e8b4be3e4dfa6d7c34a48c17bd875871da738733cb9305585619c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

@@ -6,9 +6,9 @@ class Mmix < Formula
 
   bottle do
     cellar :any
-    sha1 "3203586ea18c63f2332cd7d52e739f87c6bf71c6" => :mavericks
-    sha1 "cc8eeb7fe526992122ddf3a42fc422837b18a0d4" => :mountain_lion
-    sha1 "d1cddd4fff7468c8234f3362d42b2a4bfbd17cee" => :lion
+    sha256 "6c4c3827aeb30811a8b611cd4a32fd03891176461a0574d605afc7366f4c6b24" => :mavericks
+    sha256 "1923c3763f050c857b32695d5d01488159e677803aa6fd0cc9e2ba563e7424b1" => :mountain_lion
+    sha256 "9753b9a76618842b5c1d1d14d3ed0505aa233515db53465aa476e04dd186e548" => :lion
   end
 
   depends_on "cweb" => :build

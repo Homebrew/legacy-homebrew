@@ -6,9 +6,9 @@ class Ldapvi < Formula
   sha256 "6f62e92d20ff2ac0d06125024a914b8622e5b8a0a0c2d390bf3e7990cbd2e153"
   bottle do
     cellar :any
-    sha1 "c87e30a0955bb200d8f88011ee8eec8291562b93" => :yosemite
-    sha1 "f3bd57a8d0ce4f7e19ade3cf051396169441bdcf" => :mavericks
-    sha1 "13d1720d60f6557a57214baa7622f7ffac889edc" => :mountain_lion
+    sha256 "bd3f055256d05adb1e88e9641c57b4b01be37677f7991699606c2cee6af52f2f" => :yosemite
+    sha256 "ae6758ad1cb44a31377015f015c5c20626fb1bedbf90dfd33efdcd85447bb183" => :mavericks
+    sha256 "b26d6f88dad7109ac4b5cb48005366a0b103c8f6851e765f7797b187aaafd58b" => :mountain_lion
   end
 
   revision 1

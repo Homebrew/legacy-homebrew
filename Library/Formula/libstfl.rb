@@ -7,9 +7,9 @@ class Libstfl < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "99bd2857185a922489e9bf91250b5e65451293ed" => :yosemite
-    sha1 "28a41ab85a27163fd350764df8b2d704fd4f9269" => :mavericks
-    sha1 "c6858e2c5dfca711d1ce75693abe9d6604847071" => :mountain_lion
+    sha256 "8ca63ef8c7776df77eda7a327b2e4a9d413992c08605e7922a7b82f560be618a" => :yosemite
+    sha256 "9a0b5e72c534ca6bc3e1ba2fbafb384719e5df9663ff4b507936afebfde16272" => :mavericks
+    sha256 "f30b9c76dbd4d31b7860b8ed8c0c8024f820624880db32b00d1804d38e9e6808" => :mountain_lion
   end
 
   depends_on :python => :optional

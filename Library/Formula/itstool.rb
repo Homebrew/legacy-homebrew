@@ -6,9 +6,9 @@ class Itstool < Formula
 
   bottle do
     cellar :any
-    sha1 "25b55065039462db7fe3fb238b97af2a4a83b755" => :yosemite
-    sha1 "0ce0a174f26de66fb8ecc6e344c2df02dc699d63" => :mavericks
-    sha1 "2a9c5f6e0b35202c3520855c04497bc092c47ab1" => :mountain_lion
+    sha256 "3d9f3da33955d74521a2aee1ce75332868e2244f4293fe30c9d1f649a2e036e6" => :yosemite
+    sha256 "1c4826404a602f0931e5367b1fb5258d9a37986301170b099fa55f744bd31b9c" => :mavericks
+    sha256 "fd069b0b6f5c20fc420b4d21e5c025c2df934de9454c2d1fec85a0d11224783f" => :mountain_lion
   end
 
   head do

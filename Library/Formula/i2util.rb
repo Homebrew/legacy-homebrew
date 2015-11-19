@@ -6,9 +6,9 @@ class I2util < Formula
 
   bottle do
     cellar :any
-    sha1 "14336de85e35136a369e889d1072adf866998f09" => :yosemite
-    sha1 "c88dd13937831bab2efd3ad928d54635a48ef129" => :mavericks
-    sha1 "eced6a87c580fe024730ca09fa61c6a5e3cc4d63" => :mountain_lion
+    sha256 "ad1821b2637c75638de2ecd2bd3127a0c8300fe4fbd72c18ae648a131b97b6f7" => :yosemite
+    sha256 "b9a22dff1f4a26be02712d17de832a23fc3dbe5eee75ab62b72ffb5b18ecbd99" => :mavericks
+    sha256 "9f65e87b0ac438c0d5b635e599303d54b9024458ca4ef21fe7a65a7f013595c2" => :mountain_lion
   end
 
   def install

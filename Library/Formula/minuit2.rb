@@ -6,9 +6,9 @@ class Minuit2 < Formula
 
   bottle do
     cellar :any
-    sha1 "47323eddac5d8a29c33c1fc8be03e98559b21283" => :yosemite
-    sha1 "c47d5643105a8fb32c5a968a1777d6acf3fd3441" => :mavericks
-    sha1 "13995bc30ba826583b695c55cccc7b9d5c31a7ef" => :mountain_lion
+    sha256 "57ecab7373c4c38a614122409d46093b2305b1faab55084ceb212022776bc6d4" => :yosemite
+    sha256 "2df0da1eb93615b4ccf1f2cc6ef6eebcda6fdb8efc83743a3ffa034583dbeaa7" => :mavericks
+    sha256 "847bd789ef91a039aa12eceb3fe5de9ce5bd781e3eccd34a5c56ac5f12d290d1" => :mountain_lion
   end
 
   def install
