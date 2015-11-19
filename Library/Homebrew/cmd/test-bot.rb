@@ -647,7 +647,7 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-ffdx" unless ENV["TRAVIS"]
+      git "clean", "-ffdx"
       pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) { |lock| FileUtils.rm_rf lock }
     end
@@ -880,7 +880,7 @@ module Homebrew
 
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
        || ARGV.include?("--ci-testing")
-      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS"]
+      ARGV << "--cleanup" if ENV["JENKINS_HOME"]
       ARGV << "--junit" << "--local"
     end
     if ARGV.include? "--ci-master"
