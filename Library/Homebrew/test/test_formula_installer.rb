@@ -3,7 +3,9 @@ require "formula"
 require "compat/formula_specialties"
 require "formula_installer"
 require "keg"
+require "tab"
 require "testball"
+require "testball_bottle"
 
 class InstallTests < Homebrew::TestCase
   def temporary_install(formula)
@@ -18,6 +20,8 @@ class InstallTests < Homebrew::TestCase
     assert_predicate formula, :installed?
 
     begin
+      refute_predicate Tab.for_keg(keg), :poured_from_bottle
+
       yield formula
     ensure
       keg.unlink
@@ -65,6 +69,21 @@ class InstallTests < Homebrew::TestCase
 
     temporary_install(formula) do |f|
       assert_predicate f, :installed?
+    end
+  end
+
+  def test_not_poured_from_bottle_when_compiler_specified
+    assert_nil ARGV.cc
+
+    cc_arg = "--cc=llvm-gcc"
+    ARGV << cc_arg
+    begin
+      temporary_install(TestballBottle.new) do |f|
+        tab = Tab.for_formula(f)
+        assert_equal "llvm", tab.compiler
+      end
+    ensure
+      ARGV.delete_if { |x| x == cc_arg }
     end
   end
 end
