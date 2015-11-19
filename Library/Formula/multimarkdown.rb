@@ -10,10 +10,9 @@ class Multimarkdown < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0f9758705ae952f5d33d5eec397bf352a182217500c73bdd64b5c43e5d5c640c" => :el_capitan
-    sha256 "3ee488167591254206ff276f3b15ec760be60ff76bf1729ef0d49ba3efd1a1a2" => :yosemite
-    sha256 "e1ca2bd2e5667406abe9629a03e12b6670336e6efdcdfa71b6b53e93f6f886a1" => :mavericks
-    sha256 "7b3b8c13b58c25cd8eae393275361d7442d47e285df34898818604ac6279cb94" => :mountain_lion
+    sha256 "19e71e5fdd1532a5cad72f7b2ec8cf233edf3fcbb48a1edec31bc83cef70cf81" => :el_capitan
+    sha256 "447908fdb0e2a0ba123a4125e80473d9afad6a0f0b04c4fc031b651fec43f486" => :yosemite
+    sha256 "27142eda3b7c24650c23ea4996534d7b11ee32dbd28d3e218c7f750a00784f90" => :mavericks
   end
 
   depends_on "cmake" => :build
