@@ -134,7 +134,7 @@ class FormulaInstaller
         dep.installed? && !dep.keg_only? && !dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*" "}' before #{formula.full_name} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*" "}` before #{formula.full_name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -158,7 +158,7 @@ class FormulaInstaller
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
         #{formula.name}-#{formula.linked_keg.resolved_path.basename} already installed
-        To install this version, first `brew unlink #{formula.name}'
+        To install this version, first `brew unlink #{formula.name}`
       EOS
     end
 
