@@ -5,7 +5,7 @@ class Reaver < Formula
   sha256 "add3050a4a05fe0ab6bfb291ee2de8e9b8a85f1e64ced93ee27a75744954b22d"
 
   # Adds general support for Mac OS X in reaver:
-  # http://code.google.com/p/reaver-wps/issues/detail?id=245
+  # https://code.google.com/p/reaver-wps/issues/detail?id=245
   patch do
     url "https://gist.githubusercontent.com/syndicut/6134996/raw/16f1b4336c104375ff93a88858809eced53c1171/reaver-osx.diff"
     sha256 "2a8f791df1f59747724e2645f060f49742a625686427877d9f0f21dc62f811a7"
