@@ -19,6 +19,13 @@ class Theora < Formula
     depends_on "automake" => :build
   end
 
+  head do
+    url "https://git.xiph.org/theora.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
   depends_on "pkg-config" => :build
   depends_on "libtool" => :build
   depends_on "libogg"
