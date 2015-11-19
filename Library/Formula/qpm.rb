@@ -7,6 +7,13 @@ class Qpm < Formula
       :tag => "v0.10.0",
       :revision => "b0dfc0f26e009ff778cc25ebb8b166fa460ea998"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "ded01411fdc45dedb527513269fc85dfc3ee396c38dde33654c1231e310c9a01" => :el_capitan
+    sha256 "b3c8a74ccddfc85e61157745adce3d4e6c3d2ff321818730da14b7bdf47bedaf" => :yosemite
+    sha256 "d4ad41120560b6c006af29f79a7b6f1c82656cb46fc4fcb8746f23f5037e719d" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/golang/protobuf" do
