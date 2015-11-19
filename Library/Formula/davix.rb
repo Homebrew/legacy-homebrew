@@ -27,6 +27,6 @@ class Davix < Formula
   end
 
   test do
-    system "#{bin}/davix-get", "http://www.google.com"
+    system "#{bin}/davix-get", "https://www.google.com"
   end
 end
