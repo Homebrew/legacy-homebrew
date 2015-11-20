@@ -3,12 +3,20 @@ require "options"
 module Dependable
   RESERVED_TAGS = [:build, :optional, :recommended, :run]
 
-  RESERVED_TAGS.each do |tag|
-    method_name = "#{tag}?"
+  def build?
+    tags.include? :build
+  end
 
-    define_method method_name do
-      tags.include? tag
-    end
+  def optional?
+    tags.include? :optional
+  end
+
+  def recommended?
+    tags.include? :recommended
+  end
+
+  def run?
+    tags.include? :run
   end
 
   def required?
