@@ -56,6 +56,8 @@ class Keg
       changed = s.gsub!(old_cellar, new_cellar)
       changed = s.gsub!(old_prefix, new_prefix) || changed
 
+      next unless changed
+
       begin
         first.atomic_write(s)
       rescue SystemCallError
@@ -64,7 +66,7 @@ class Keg
         end
       else
         rest.each { |file| FileUtils.ln(first, file, :force => true) }
-      end if changed
+      end
     end
   end
 
