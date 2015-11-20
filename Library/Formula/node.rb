@@ -63,21 +63,11 @@ class Node < Formula
     system "make", "install"
 
     if build.with? "npm"
-      resource("npm").stage buildpath/"npm_install"
-
-      # make sure npm can find node
-      ENV.prepend_path "PATH", bin
-      # set log level temporarily for npm's `make install`
-      ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
-
-      cd buildpath/"npm_install" do
-        system "./configure", "--prefix=#{libexec}/npm"
-        system "make", "install"
-      end
+      resource("npm").stage "#{libexec}/npm"
 
       if build.with? "completion"
         bash_completion.install \
-          buildpath/"npm_install/lib/utils/completion.sh" => "npm"
+          "#{libexec}/npm/lib/utils/completion.sh" => "npm"
       end
     end
   end
@@ -91,7 +81,7 @@ class Node < Formula
     # Kill npm but preserve all other modules across node updates/upgrades.
     rm_rf node_modules/"npm"
 
-    cp_r libexec/"npm/lib/node_modules/npm", node_modules
+    cp_r libexec/"npm", node_modules
     # This symlink doesn't hop into homebrew_prefix/bin automatically so
     # remove it and make our own. This is a small consequence of our bottle
     # npm make install workaround. All other installs **do** symlink to
@@ -105,7 +95,7 @@ class Node < Formula
       # Dirs must exist first: https://github.com/Homebrew/homebrew/issues/35969
       mkdir_p HOMEBREW_PREFIX/"share/man/#{man}"
       rm_f Dir[HOMEBREW_PREFIX/"share/man/#{man}/{npm.,npm-,npmrc.}*"]
-      ln_sf Dir[libexec/"npm/lib/node_modules/npm/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
+      ln_sf Dir[libexec/"npm/man/#{man}/npm*"], HOMEBREW_PREFIX/"share/man/#{man}"
     end
 
     npm_root = node_modules/"npm"
