@@ -3,8 +3,8 @@ require "language/go"
 class DockerMachineParallels < Formula
   desc "Docker Machine Parallels Driver"
   homepage "https://github.com/Parallels/docker-machine-parallels"
-  url "https://github.com/Parallels/docker-machine-parallels/archive/v1.0.1.tar.gz"
-  sha256 "9a5abc454748aeb83c74c45efd3a73359a47e408e215318fbcc6446026581652"
+  url "https://github.com/Parallels/docker-machine-parallels/archive/v1.1.0.tar.gz"
+  sha256 "53f31c7d675c4ea7525466fd9a41cd80869754637bf42390ba9666d54b9ccc6e"
   head "https://github.com/Parallels/docker-machine-parallels.git"
 
   bottle do
