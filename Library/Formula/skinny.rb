@@ -1,15 +1,14 @@
 class Skinny < Formula
-  desc "Full-stack web app framework built on Scalatra"
+  desc "Full-stack web app framework in Scala"
   homepage "http://skinny-framework.org/"
-  url "https://github.com/skinny-framework/skinny-framework/releases/download/1.3.20/skinny-1.3.20.tar.gz"
-  sha256 "b47d3df42fa9b54c77e72bd921261131b565a51a0e4578acac699a83c7365233"
+  url "https://github.com/skinny-framework/skinny-framework/releases/download/2.0.0/skinny-2.0.0.tar.gz"
+  sha256 "b6bd65abbf61170b2802ca7d7fa27ef8692361ad49982a4269f6752058f79a67"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "b1e2dd61a6e1ee7baf9bace68908c0cc81fbec4fc5a72841b1eec34be8e05ddf" => :el_capitan
-    sha256 "d111d7e0cd3a6c8d759a3eeb2a4039f186c79b4a2ae69458dff3eeef773d9364" => :yosemite
-    sha256 "3f5fe80d9a51b7f7b9c82d0e547ca26933d9ce9be3f15fa3ad24c62dd5436f42" => :mavericks
-    sha256 "9ae8759b4feef01177fcfda6c84f450a028bc71a4bb3de6a413a8105e99b87e7" => :mountain_lion
+    sha256 "3379b7e2c76d63ce21df61ded15e464562e480ccc8c557b72212c53a8fb3f0db" => :el_capitan
+    sha256 "0081a830ddd3c5a968eaf1490cd8bc772e1c3b8ade0dd410494a807f5c583da6" => :yosemite
+    sha256 "06542db66377eb3b906859f610a3b8bfc628d07e9d14e006b1ef0cea17645cf4" => :mavericks
   end
 
   option "without-npm-generator", "Yeoman generator will not be installed"

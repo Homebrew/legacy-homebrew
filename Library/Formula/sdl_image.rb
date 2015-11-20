@@ -9,9 +9,9 @@ class SdlImage < Formula
     cellar :any
     revision 1
     sha256 "344d65182a61e9fa75180773f9cf706ff5d190777c6535abfbacd5965ac1ca0c" => :el_capitan
-    sha1 "8748809171bc755a7e359d6b229a1803eba5a3a8" => :yosemite
-    sha1 "f9d44a7ab0a8b97ff542f6b005cdc2d57a41884a" => :mavericks
-    sha1 "92e68a5f6681dfc0f884dfea752804c3876bf9d5" => :mountain_lion
+    sha256 "e83195b71168254d604d4ddce29e46fb20936aaeff552af6bc069789811fd8fb" => :yosemite
+    sha256 "44c25bb021c727aae7ea25288eb1cf4513e37989d09aab1f0ab18235c79fde6b" => :mavericks
+    sha256 "30d6d38faf7ac954ba52408aada73901a6d858ba97a685b635f763ac4f86c55f" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

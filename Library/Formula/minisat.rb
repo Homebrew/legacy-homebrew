@@ -4,8 +4,15 @@ class Minisat < Formula
   url "https://github.com/niklasso/minisat/archive/releases/2.2.0.tar.gz"
   sha256 "3ed44da999744c0a1be269df23c3ed8731cdb83c44a4f3aa29b3d6859bb2a4da"
 
+  bottle do
+    cellar :any
+    sha256 "c2537e0e2d6428e87f1ed7f502fd0fa86f3c7ee2cee58b27817f6fdd20b3a66b" => :el_capitan
+    sha256 "c261e92ecf583b97b78f3e4924324d8804387b61ed3474d2d3284120e07355d6" => :yosemite
+    sha256 "ce8794df1ba908e6b062fe55f2db55e9398b3c23e881da7e3cb118b645b938f0" => :mavericks
+  end
+
   # Fix some declaration errors; see:
-  # http://groups.google.com/group/minisat/browse_thread/thread/f5b6a180cadbb214
+  # https://groups.google.com/forum/#!topic/minisat/9bahgMrbshQ
   patch :DATA
 
   fails_with :clang do

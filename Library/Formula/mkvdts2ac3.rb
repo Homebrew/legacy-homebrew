@@ -14,8 +14,8 @@ class Mkvdts2ac3 < Formula
 
   bottle do
     cellar :any
-    sha1 "375129c89ce29fe5135b45d5f9a046b2372f39a4" => :mavericks
-    sha1 "dc7850a65fd6d181396a69deb0713b9ae7dad7a6" => :mountain_lion
+    sha256 "2dd48305bd115dbbb8a40319440b238540d5fe307b49c0300c7fcd64a875cb5e" => :mavericks
+    sha256 "47235c60299b61c5ba6fcb5e63a5d0004d0d877b441b6a64e78d432d3e7cfbce" => :mountain_lion
   end
 
   head "https://github.com/JakeWharton/mkvdts2ac3.git"

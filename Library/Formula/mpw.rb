@@ -7,9 +7,9 @@ class Mpw < Formula
 
   bottle do
     cellar :any
-    sha1 "67cc0d3615113021c944212cb3a8c5d07d404a58" => :yosemite
-    sha1 "9a41c1d203ec3fbb31e8e4c6daceba7c7f7ceb91" => :mavericks
-    sha1 "05f7d8d6eac5b6195e33c4ba9d928897b26b561a" => :mountain_lion
+    sha256 "f20cf074a7b286fad3e6f0d1c7ff48e34d56db0828faa4107b81ad82b9a08b21" => :yosemite
+    sha256 "943b13c7d67268a075722c4e8a8527666a9aff4a7eb4041ce8222eba3fa95409" => :mavericks
+    sha256 "7b1ec9c9225e827bc513139631716b010b8031b4b94e3dc8e41e5872913ad970" => :mountain_lion
   end
 
   depends_on "automake" => :build

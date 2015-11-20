@@ -6,9 +6,9 @@ class Abnfgen < Formula
 
   bottle do
     cellar :any
-    sha1 "44b60ec95b34c9869787025439ac699bb76e916e" => :yosemite
-    sha1 "f24c3fcf1371e5da17994205b887054078de2a92" => :mavericks
-    sha1 "ade80460f765a647fe8f2f1457ea54d2ff15219c" => :mountain_lion
+    sha256 "dbeb98b3292f61f3fcb2dab6ff49c676a71a102deae81c5de2d94c6bd1e2760d" => :yosemite
+    sha256 "a6ee5ffd408c8359664f46817718dc41fb287cb61968659a4e7637a094160025" => :mavericks
+    sha256 "cfd7d1f79d6b8ea5fb333405043e45b7f9b403de59420bcb3dba3770cea444b7" => :mountain_lion
   end
 
   def install

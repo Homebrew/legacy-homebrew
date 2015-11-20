@@ -7,9 +7,9 @@ class Osxutils < Formula
 
   bottle do
     cellar :any
-    sha1 "b2b540572693c94922b19b7109fb337bc45ffddf" => :yosemite
-    sha1 "1f29480eab579c4f97606aabe89d8b39c1c440dd" => :mavericks
-    sha1 "a76a3906847c9bdfa934ee46c7bcdeee772f1c26" => :mountain_lion
+    sha256 "0154957f7c9be66a35f4e14362ba0c35d432c76b5ce816f9f1ad2d423be9f0b6" => :yosemite
+    sha256 "a979cdf2c1512375431b9861bc743bf4f39ae809605ebfa124c852a0799c8618" => :mavericks
+    sha256 "ed8b660943ff437f3efb94bd906ea0dff7bd3be795af3fc0107f9578f8f99a0d" => :mountain_lion
   end
 
   conflicts_with "trash", :because => "both install a trash binary"

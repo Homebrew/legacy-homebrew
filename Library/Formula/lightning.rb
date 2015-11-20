@@ -8,9 +8,9 @@ class Lightning < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "6acd9f1ee9f3762d8e63a1fc2ee63c8ac83b67f4" => :yosemite
-    sha1 "f0a3c6d0415677ad7e741c0e5b954d513f433833" => :mavericks
-    sha1 "15b34af17f282400e8792e74787d7b8cf7308c30" => :mountain_lion
+    sha256 "3837efd2db95a7634d669f554591a2905262b3cc1c4a16d607e970ff4e2ed8c3" => :yosemite
+    sha256 "45d0d23a2129e23e0892c6bc8128c48f7641ebdb03c5a13c483c27f6611b8c93" => :mavericks
+    sha256 "632b74383622ca9622e1c9a905e94a12f395a2561cb6a5c66dddc072e866a711" => :mountain_lion
   end
 
   depends_on "binutils" => [:build, :optional]

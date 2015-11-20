@@ -6,9 +6,9 @@ class Kakasi < Formula
 
   bottle do
     revision 1
-    sha1 "3dc9fd7f8400f0f9881a85afd1031c6e4a3eec85" => :yosemite
-    sha1 "ebd2317184992b420fb44c2d5a287eb29a7c9cec" => :mavericks
-    sha1 "3fa224c221fd544782b8955f2988d918dea5caca" => :mountain_lion
+    sha256 "da407c10d807cf72679df6555d29b53f388dd32abf674f1ae0ecbace44fc3372" => :yosemite
+    sha256 "86403b2e2a45e2ea81b78bbe7edc7bf2b01d464f351ea265441413e63bf85822" => :mavericks
+    sha256 "7c4bb01289baeee60544acf6fd81e9b0f5522428938ac9cd5b6ed2b3bc6619bf" => :mountain_lion
   end
 
   def install

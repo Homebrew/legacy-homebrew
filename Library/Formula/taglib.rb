@@ -10,9 +10,9 @@ class Taglib < Formula
     cellar :any
     revision 1
     sha256 "1fce4606850daa8617ea9ed41970f0ec60c7348a0f7ad0f7363523a5798585c6" => :el_capitan
-    sha1 "431580f12a7811288b6e3b187ca75bf5e321fd7c" => :yosemite
-    sha1 "7b9a9466fcbfb5952b7c97e739fa38a94e110f16" => :mavericks
-    sha1 "9f12bf0949b250e67cb606cf389a99d7d2bc49ca" => :mountain_lion
+    sha256 "d6b357a5a7e1fda27486acc6c25a6e294631d4b01ddbc320d865196f31d86c07" => :yosemite
+    sha256 "7878267672c73747fdabfacb1043ab4eb54f757e826f4413be1020409bf4ede4" => :mavericks
+    sha256 "6f3a987dc2f35a7446ac29ad7b8050466528b7ba620e0ca8aac7f4fbbdb07a52" => :mountain_lion
   end
 
   depends_on "cmake" => :build

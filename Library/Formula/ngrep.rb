@@ -7,9 +7,9 @@ class Ngrep < Formula
 
   bottle do
     cellar :any
-    sha1 "8d06dc84b5e22b309dbf3b2eb1c6933b45478b9c" => :mavericks
-    sha1 "a03e65a486e3bd285ad2dd18ce8b6dc7faa04802" => :mountain_lion
-    sha1 "03fb46935a159ef96a5905b0f8c39900113a024d" => :lion
+    sha256 "eda4947ad23c1dd1c13fc7225686f30c1d7b2a20a294f4d5a3339ff5773d7ab1" => :mavericks
+    sha256 "49c45453a57f68cf5eb30184c101a0e9585ec0c486e4fa5f7e663456d82599dd" => :mountain_lion
+    sha256 "c380a98ece9cc122e3ba008a9f9a07aadccc5f2e393b5a68f55acd40f9fd325b" => :lion
   end
 
   # http://sourceforge.net/p/ngrep/bugs/27/

@@ -5,9 +5,9 @@ class Beanstalk < Formula
   sha256 "923b1e195e168c2a91adcc75371231c26dcf23868ed3e0403cd4b1d662a52d59"
 
   bottle do
-    sha1 "054320dc87c106976408f6bf195a87244635bb05" => :mavericks
-    sha1 "df0173105d8b03f21e88a38f0c0b787a9d06023b" => :mountain_lion
-    sha1 "608a644891b4648750760a5fb70eaecaba130d2b" => :lion
+    sha256 "e33e39c6319ae92305b2dd810fd70bba6a61db2ab1a8e845d1bfb68b33756005" => :mavericks
+    sha256 "ae3fe9c2c70291f524fc22fbf8df34e84283da8a885262f48262f87fe19178c2" => :mountain_lion
+    sha256 "71eaae9e6f8d3db525780b84121511020887eebdb3dfb1d12e418c5a3e8b9e34" => :lion
   end
 
   def install

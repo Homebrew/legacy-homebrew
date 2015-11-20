@@ -13,9 +13,9 @@ class Osh < Formula
   end
 
   bottle do
-    sha1 "7216e6df8d89efb36f07bdae0f7eedb667ad0ff5" => :yosemite
-    sha1 "5afde1b872117f02f951f6292c684e13d9f19332" => :mavericks
-    sha1 "b1f9dab5fcce8f3d8a1a791edb19d765a7361053" => :mountain_lion
+    sha256 "554a72a3c717bf1f29df8d7d15be31aed86d9538b4924bb242545b5c0891739b" => :yosemite
+    sha256 "6f70c00a27888c8c9b12ba28d872942a062aefd85180253d928afb50fa06a506" => :mavericks
+    sha256 "5a7d41cd9a354d647faff4021a7601b756af0255f906354bb3f79a33639e3ffc" => :mountain_lion
   end
 
   def install

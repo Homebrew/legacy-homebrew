@@ -8,9 +8,9 @@ class Liboil < Formula
     cellar :any
     revision 1
     sha256 "7d76b7a220caeb8dbaef27b879f4f3ac0ad5b236b563961abd9484e8bc9e0160" => :el_capitan
-    sha1 "1d7f799090d7ccfe52341971822d3af1269ea68f" => :yosemite
-    sha1 "14d746548dc6e18f900e4fe67d1f1958fda68016" => :mavericks
-    sha1 "41590a673b637d2307b1ce287ec692e4d47b3191" => :mountain_lion
+    sha256 "9ea78f801296e8643f366d634449a043376e9015e9329dc1c591a9ad55a37b66" => :yosemite
+    sha256 "b7f92d53730febc590a12c4812784428e947c61361354c46f2fef245c0a51bba" => :mavericks
+    sha256 "eaf6e1262d13a992443c25dd4d26acacb3c1e05851e8ec2a2e0a6cdd948885fe" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

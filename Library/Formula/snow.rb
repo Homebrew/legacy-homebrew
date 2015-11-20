@@ -6,9 +6,9 @@ class Snow < Formula
 
   bottle do
     cellar :any
-    sha1 "57229cfcf76e0643a19f3b2e8eeabe5796319d01" => :yosemite
-    sha1 "326c1e051f957c183f6aaef4e97782c1795945e2" => :mavericks
-    sha1 "f8e1b3e318c15a62190a7bf59c0309f2bc7e8de2" => :mountain_lion
+    sha256 "cd83ae6c6d087bdae0a3116e254cd2ebc229bdd587f143d97e69777574e5ef76" => :yosemite
+    sha256 "d559c8e54528d7372872cb933eeb13288f3f3de3749f1b28e5862541012e49e3" => :mavericks
+    sha256 "79ada7520a8147bd49ed617a3d62f2e83ec7942e9ed32105e7cfb4bb1940e4e2" => :mountain_lion
   end
 
   def install
