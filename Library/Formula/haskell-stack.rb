@@ -4,7 +4,7 @@ class HaskellStack < Formula
   include Language::Haskell::Cabal
 
   desc "The Haskell Tool Stack"
-  homepage "https://www.stackage.org"
+  homepage "https://github.com/commercialhaskell/stack"
   url "https://hackage.haskell.org/package/stack-0.1.8.0/stack-0.1.8.0.tar.gz"
   sha256 "89bca19a39f3148daa55dd51bcee28c9f8aa362732c915dd25a85c7a7c664338"
 
