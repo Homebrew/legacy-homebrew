@@ -12,7 +12,7 @@ class Openvpn < Formula
   end
 
   depends_on "lzo"
-  depends_on :tuntap
+  depends_on :tuntap if MacOS.version < :yosemite
   depends_on "openssl"
 
   def install
@@ -42,11 +42,19 @@ class Openvpn < Formula
     rm "#{share}/doc/openvpn/README.polarssl"
   end
 
-  def caveats; <<-EOS.undent
-    If you have installed the Tuntap dependency as a source package you will
-    need to follow the instructions found in `brew info tuntap`. If you have
-    installed the binary Tuntap package, no further action is necessary.
+  def caveats
+    s = ""
 
+    if MacOS.version < :yosemite
+      s += <<-EOS.undent
+      If you have installed the Tuntap dependency as a source package you will
+      need to follow the instructions found in `brew info tuntap`. If you have
+      installed the binary Tuntap package, no further action is necessary.
+
+      EOS
+    end
+
+    s += <<-EOS.undent
     For OpenVPN to work as a server, you will need to create configuration file
     in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
     EOS
