@@ -12,6 +12,7 @@ class UniversalBrewedPython < Requirement
 end
 
 class Gdb < Formula
+  desc "GNU debugger"
   homepage "https://www.gnu.org/software/gdb/"
   url "http://ftpmirror.gnu.org/gdb/gdb-7.10.tar.xz"
   mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.tar.xz"
@@ -23,6 +24,10 @@ class Gdb < Formula
     sha256 "b3fb66f0a854c2ea5601a1b95a0674024017d03d92d1e12b0947a4e38a4ddb39" => :mavericks
   end
 
+  option "with-brewed-python", "Use the Homebrew version of Python"
+  option "with-version-suffix", "Add a version suffix to program"
+  option "with-all-targets", "Build with support for all targets"
+
   depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "xz"
@@ -32,17 +37,13 @@ class Gdb < Formula
     depends_on UniversalBrewedPython
   end
 
-  option "with-brewed-python", "Use the Homebrew version of Python"
-  option "with-version-suffix", "Add a version suffix to program"
-  option "with-all-targets", "Build with support for all targets"
-
   def install
     args = [
       "--prefix=#{prefix}",
       "--disable-debug",
       "--disable-dependency-tracking",
       "--with-system-readline",
-      "--with-lzma"
+      "--with-lzma",
     ]
 
     args << "--with-guile" if build.with? "guile"
