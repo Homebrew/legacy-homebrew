@@ -6,6 +6,8 @@ class Choose < Formula
 
   head "https://github.com/geier/choose.git"
 
+  conflicts_with "choose-gui", :because => "both install a `choose` binary"
+
   bottle do
     cellar :any_skip_relocation
     sha256 "8f719b2bd5d9e2ddd820054d82468c421b64b9241180b348de7054cc200529ab" => :el_capitan
