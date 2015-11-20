@@ -18,6 +18,7 @@ class Groonga < Formula
   end
 
   option "with-benchmark", "With benchmark program for developer use"
+  option "with-suggest-plugin", "With suggest plugin for suggesting"
 
   deprecated_option "enable-benchmark" => "with-benchmark"
 
@@ -29,16 +30,22 @@ class Groonga < Formula
   depends_on "openssl"
   depends_on "mecab-ipadic" if build.with? "mecab"
   depends_on "glib" if build.with? "benchmark"
+  depends_on "libevent" if build.with? "suggest-plugin"
+  depends_on "zeromq" if build.with? "suggest-plugin"
 
   def install
     args = %W[
       --prefix=#{prefix}
       --with-zlib
-      --disable-zeromq
       --enable-mruby
       --without-libstemmer
     ]
 
+    if build.with? "suggest-plugin"
+      args << "--enable-zeromq"
+    else
+      args << "--disable-zeromq"
+    end
     args << "--enable-benchmark" if build.with? "benchmark"
     args << "--with-mecab" if build.with? "mecab"
     args << "--with-lz4" if build.with? "lz4"
