@@ -4,7 +4,7 @@ chdir() {
 }
 
 BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
-export HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
+HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
 BREW_SYMLINK="$(readlink "$0")"
 if [ -n "$BREW_SYMLINK" ]
@@ -31,10 +31,13 @@ then
   BREW_SYSTEM="$(uname -s | tr "[:upper:]" "[:lower:]")"
   if [ "$BREW_SYSTEM" = "darwin" ]
   then
-    export HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
+    HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
   else
-    export HOMEBREW_RUBY_PATH="$(which ruby)"
+    HOMEBREW_RUBY_PATH="$(which ruby)"
   fi
 fi
+
+export HOMEBREW_BREW_FILE
+export HOMEBREW_RUBY_PATH
 
 exec "$HOMEBREW_RUBY_PATH" -W0 "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"
