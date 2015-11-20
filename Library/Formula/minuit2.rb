@@ -13,8 +13,7 @@ class Minuit2 < Formula
   end
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--with-pic",
+    system "./configure", "--disable-dependency-tracking", "--with-pic",
                           "--disable-openmp",
                           "--prefix=#{prefix}"
     system "make", "install"
