@@ -31,7 +31,7 @@ if [ -z "$HOMEBREW_RUBY_PATH" ]; then
   if [ "$BREW_SYSTEM" = "darwin" ]; then
     export HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
   else
-    export HOMEBREW_RUBY_PATH="ruby"
+    export HOMEBREW_RUBY_PATH="$(which ruby)"
   fi
 fi
 
