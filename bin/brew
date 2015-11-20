@@ -29,9 +29,9 @@ fi
 if [ -z "$HOMEBREW_RUBY_PATH" ]; then
   BREW_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
   if [ "$BREW_SYSTEM" = "darwin" ]; then
-    HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
+    export HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
   else
-    HOMEBREW_RUBY_PATH="ruby"
+    export HOMEBREW_RUBY_PATH="ruby"
   fi
 fi
 
