@@ -22,7 +22,7 @@ class DockerMachineParallels < Formula
   end
 
   go_resource "github.com/docker/machine" do
-    url "https://github.com/docker/machine.git", :revision => "04cfa58445f063509699cdde41080a410330c4df"
+    url "https://github.com/docker/machine.git", :revision => "7e8e38e1485187c0064e054029bb1cc68c87d39a"
   end
 
   go_resource "golang.org/x/crypto" do
