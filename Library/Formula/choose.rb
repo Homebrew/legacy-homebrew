@@ -6,11 +6,14 @@ class Choose < Formula
 
   head "https://github.com/geier/choose.git"
 
+  conflicts_with "choose-gui", :because => "both install a `choose` binary"
+
   bottle do
     cellar :any_skip_relocation
-    sha256 "8f719b2bd5d9e2ddd820054d82468c421b64b9241180b348de7054cc200529ab" => :el_capitan
-    sha256 "9d9a580de75a6699a72d8e657f7bd010feb4d357abdc3f0268b2fb26e29a0ce6" => :yosemite
-    sha256 "b0e918080b27d6df6b01d8a6105e23540817d058ef1678d00216f52aec1d63d4" => :mavericks
+    revision 1
+    sha256 "0e597243f20f7a5a0699d72dcd4d0395976e481a1fc32c24725c2a4b4fee6992" => :el_capitan
+    sha256 "24a9edea9e97823c333d0352244d7b30f72ddb0c8df291706463f8c76a0ca2e9" => :yosemite
+    sha256 "47d5c12604878a2f3eb75da8c80a15d991b47129a17684fde8f02fe97f16e78b" => :mavericks
   end
 
   resource "urwid" do
