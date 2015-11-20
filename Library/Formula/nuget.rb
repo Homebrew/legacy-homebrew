@@ -11,6 +11,6 @@ class Nuget < Formula
   end
 
   test do
-    system "#{bin}/nuget", "-v"
+    system "#{bin}/nuget", "help"
   end
 end
