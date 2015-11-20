@@ -3,9 +3,9 @@ require "language/go"
 class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
-  url "https://github.com/hashicorp/nomad.git",
-    :tag => "v0.1.0",
-    :revision => "520763c0715ee88b6571db840e62fab186d7fe59"
+  
+  url "https://github.com/hashicorp/nomad/archive/v0.2.0.tar.gz"
+  sha256 "9406efc0169044b6fdd11ed30f7c716bcff444b522f247f4afbb73382c39ebe7"
 
   head "https://github.com/hashicorp/nomad.git"
 
