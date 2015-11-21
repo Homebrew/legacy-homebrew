@@ -50,7 +50,7 @@ class Yamcha < Formula
     EOS
 
     system "make", "-j", "1",
-                   "-f", "#{libexecdir}/Makefile",
+                   "-f", "#{libexec}/yamcha/Makefile",
                    "CORPUS=train.data", "MODEL=case_study", "train"
 
     %w[log model se svmdata txtmodel.gz].each do |ext|
