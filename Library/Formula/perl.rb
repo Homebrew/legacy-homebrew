@@ -20,14 +20,14 @@ class Perl < Formula
   option "with-tests", "Build and run the test suite"
 
   def install
-    args = [
-      "-des",
-      "-Dprefix=#{prefix}",
-      "-Dman1dir=#{man1}",
-      "-Dman3dir=#{man3}",
-      "-Duseshrplib",
-      "-Duselargefiles",
-      "-Dusethreads"
+    args = %W[
+      -des
+      -Dprefix=#{prefix}
+      -Dman1dir=#{man1}
+      -Dman3dir=#{man3}
+      -Duseshrplib
+      -Duselargefiles
+      -Dusethreads
     ]
 
     args << "-Dusedtrace" if build.with? "dtrace"
@@ -35,7 +35,15 @@ class Perl < Formula
 
     system "./Configure", *args
     system "make"
-    system "make", "test" if build.with?("tests") || build.bottle?
+
+    # OS X El Capitan's SIP feature prevents DYLD_LIBRARY_PATH from being passed to child
+    # processes, which causes the make test step to fail.
+    # https://rt.perl.org/Ticket/Display.html?id=126706
+    # https://github.com/Homebrew/homebrew/issues/41716
+    if MacOS.version < :el_capitan
+      system "make", "test" if build.with?("tests") || build.bottle?
+    end
+
     system "make", "install"
   end
 
