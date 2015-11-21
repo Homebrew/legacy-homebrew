@@ -4,6 +4,12 @@ class Pdns < Formula
   url "https://downloads.powerdns.com/releases/pdns-3.4.7.tar.bz2"
   sha256 "e17eca86c5e702b54b62b1edebc4741d8e0db748050a7214c778302039f28c4b"
 
+  bottle do
+    sha256 "2a0f00945c39d66ccb6523e0418293ece655ea430dee6565fd3f6f2550054865" => :el_capitan
+    sha256 "54c6fe77da6a45bfa61c54409aa27aa58fc1061739b103fb4bbd5646d314ae4f" => :yosemite
+    sha256 "69c2b5840ec2a21a9654370f36f17d4ca42b5b5a7153e1917543874010dcdc63" => :mavericks
+  end
+
   head do
     url "https://github.com/powerdns/pdns.git"
 
@@ -11,12 +17,6 @@ class Pdns < Formula
     depends_on "autoconf" => :build
     depends_on "libtool"  => :build
     depends_on "ragel"
-  end
-
-  bottle do
-    sha256 "2a0f00945c39d66ccb6523e0418293ece655ea430dee6565fd3f6f2550054865" => :el_capitan
-    sha256 "54c6fe77da6a45bfa61c54409aa27aa58fc1061739b103fb4bbd5646d314ae4f" => :yosemite
-    sha256 "69c2b5840ec2a21a9654370f36f17d4ca42b5b5a7153e1917543874010dcdc63" => :mavericks
   end
 
   option "with-pgsql", "Enable the PostgreSQL backend"
