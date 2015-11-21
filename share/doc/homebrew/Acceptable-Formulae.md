@@ -66,9 +66,12 @@ Formulae in the core repository must have a stable version tagged by
 the upstream project. Tarballs are preferred to git checkouts, and
 tarballs should include the version in the filename whenever possible.
 
-Software that does not provide a stable, tagged version, or had guidance to
-always install the most recent version, should be put in
-[homebrew/head-only](https://github.com/Homebrew/homebrew-head-only) or [homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only).
+Software that only provides a development/beta, tagged version should be put in
+[homebrew/devel-only](https://github.com/Homebrew/homebrew-devel-only).
+We don’t accept software without a tagged version because they regularly break
+due to upstream changes; we can’t provide [bottles](Bottles.md) for them; and
+we don’t have an automatic update mechanism for `head-only` formulae which
+makes them very quickly outdated.
 
 ### Bindings
 First check that there is not already a binding available via

@@ -67,7 +67,7 @@ Before contributing, make sure your package:
 *   isn't in another [Homebrew tap](https://github.com/Homebrew)
 *   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew/issues))
 *   is still supported by upstream
-*   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release and head-only versions belong.
+*   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release versions belong.
 *   passes all `brew audit --strict --online $FORMULA` tests.
 
 Make sure you search thoroughly (all aliases!). We don’t want you to waste your time.
