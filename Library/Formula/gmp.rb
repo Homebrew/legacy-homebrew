@@ -1,10 +1,8 @@
 class Gmp < Formula
   desc "GNU multiple precision arithmetic library"
   homepage "https://gmplib.org/"
-  url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-  mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-  sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+  url "https://gmplib.org/download/gmp/gmp-6.1.0.tar.xz"
+  sha256 "68dadacce515b0f8a54f510edf07c1b636492bcdb8e8d54c56eb216225d16989"
 
   bottle do
     cellar :any
@@ -33,7 +31,6 @@ class Gmp < Formula
     system "./configure", *args
     system "make"
     system "make", "check"
-    ENV.deparallelize
     system "make", "install"
   end
 
