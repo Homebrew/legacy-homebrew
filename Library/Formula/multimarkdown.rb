@@ -1,10 +1,13 @@
 class Multimarkdown < Formula
   desc "Turn marked-up plain text into well-formatted documents"
   homepage "http://fletcherpenney.net/multimarkdown/"
+
   # Use git tag instead of the tarball to get submodules
-  url "https://github.com/fletcher/MultiMarkdown-4.git", :tag => "4.7.1",
-                                                         :revision => "3083076038cdaceb666581636ef9e1fc68472ff0"
-  head "https://github.com/fletcher/MultiMarkdown-4.git"
+  url "https://github.com/fletcher/MultiMarkdown-5.git",
+    :tag => "v5.0",
+    :revision => "47e7c4a2fac0271ee52ae0c7062a726978219341"
+
+  head "https://github.com/fletcher/MultiMarkdown-5.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -14,25 +17,23 @@ class Multimarkdown < Formula
     sha256 "7b3b8c13b58c25cd8eae393275361d7442d47e285df34898818604ac6279cb94" => :mountain_lion
   end
 
+  depends_on "cmake" => :build
+
   conflicts_with "mtools", :because => "both install `mmd` binaries"
   conflicts_with "markdown", :because => "both install `markdown` binaries"
   conflicts_with "discount", :because => "both install `markdown` binaries"
 
   def install
-    ENV.append "CFLAGS", "-g -O3 -include GLibFacade.h"
+    system "sh", "link_git_modules"
+    system "sh", "update_git_modules"
     system "make"
-    rm_f Dir["scripts/*.bat"]
-    bin.install "multimarkdown", Dir["scripts/*"]
-    prefix.install "Support"
-  end
-
-  def caveats; <<-EOS.undent
-    Support files have been installed to:
-      #{opt_prefix}/Support
-    EOS
+    cd "build" do
+      system "make"
+      bin.install "multimarkdown"
+    end
   end
 
   test do
-    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"mmd", "foo *bar*\n")
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"multimarkdown", "foo *bar*\n")
   end
 end
