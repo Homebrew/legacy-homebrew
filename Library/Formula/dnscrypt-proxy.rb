@@ -25,7 +25,7 @@ class DnscryptProxy < Formula
   deprecated_option "plugins" => "with-plugins"
 
   depends_on "libsodium"
-  depends_on "minisign"
+  depends_on "minisign" => :recommended
 
   def install
     system "autoreconf", "-if" if build.head?
@@ -40,27 +40,31 @@ class DnscryptProxy < Formula
 
     system "./configure", *args
     system "make", "install"
+  end
 
-    (libexec/"update-resolvers.sh").write <<-EOS.undent
-      #!/bin/sh
-      RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
-      RESOLVERS_LIST_BASE_DIR=#{pkgshare}
-      RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
+  def post_install
+    if build.with? "minisign"
+      (libexec/"update-resolvers.sh").write <<-EOS.undent
+        #!/bin/sh
+        RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
+        RESOLVERS_LIST_BASE_DIR=#{pkgshare}
+        RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
 
-      curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
-        "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
-        "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
-      curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
-        "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
-        "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
-      minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
-        -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
-        -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
-      mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
-        ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
-    EOS
-    chmod 0774, libexec/"update-resolvers.sh"
-    system libexec/"update-resolvers.sh"
+        curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+          "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
+          "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
+        curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+          "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
+          "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
+        minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+          -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
+          -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
+        mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+          ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
+      EOS
+      chmod 0774, libexec/"update-resolvers.sh"
+      system libexec/"update-resolvers.sh"
+    end
   end
 
   def caveats; <<-EOS.undent
