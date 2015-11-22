@@ -1,8 +1,8 @@
 class CharmTools < Formula
   desc "Tools for authoring and maintaining juju charms"
   homepage "https://github.com/juju/charm-tools"
-  url "https://github.com/juju/charm-tools/releases/download/v1.8.0/charm-tools-1.8.0.tar.gz"
-  sha256 "e72e788f069fcf4c2db7435db71ca8feb3dd8c6fd63c4b7e591b4064d76f4dbb"
+  url "https://github.com/juju/charm-tools/releases/download/v1.9.1/charm-tools-1.9.1.tar.gz"
+  sha256 "2b224b296c36142f9c265d84b67c45d69404f0398106e4a52cfd4dc272545ea1"
 
   bottle do
     cellar :any_skip_relocation
@@ -19,9 +19,14 @@ class CharmTools < Formula
     sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
+  resource "colander" do
+    url "https://pypi.python.org/packages/source/c/colander/colander-1.0.tar.gz"
+    sha256 "7389413266b9e680c9529c16d56284edf87e0d5de557948e75f41d65683c23b3"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[pip].each do |r|
+    %w[pip colander].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
