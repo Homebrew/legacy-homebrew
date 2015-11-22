@@ -4,6 +4,8 @@ class Shml < Formula
   url "https://github.com/MaxCDN/shml/archive/1.0.4.tar.gz"
   sha256 "583fefbbf2adf45d989b052696be0f20f695903878558a4d2e9f74255b91ed51"
 
+  bottle :unneeded
+
   def install
     bin.install "shml.sh"
     bin.install_symlink bin/"shml.sh" => "shml"
