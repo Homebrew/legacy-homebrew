@@ -17,6 +17,6 @@ class Gist < Formula
   end
 
   test do
-    system "#{bin}/gist", "--version"
+    assert_match %r{https:\/\/gist}, pipe_output("#{bin}/gist", "homebrew")
   end
 end
