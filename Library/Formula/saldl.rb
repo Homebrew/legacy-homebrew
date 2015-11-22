@@ -3,6 +3,13 @@ class Saldl < Formula
   homepage "https://saldl.github.io"
   url "https://github.com/saldl/saldl/archive/v31.tar.gz"
   sha256 "146a980ae2109a391c7a8ab6a1c525458db9bf18f3f0477731c9b876630078b4"
+  bottle do
+    cellar :any
+    sha256 "416d951decbb228df958fdfd89b94dbe3dafede3cea23a165e80a8acb858237d" => :el_capitan
+    sha256 "7b697470f9ef296d4528ccec847dc160df78a7dac15cd3927be6d609a71100fb" => :yosemite
+    sha256 "a83c726df1115fac1ce66cd22bd545b7f27d1da01b7a3fd6472d793d039e82a4" => :mavericks
+  end
+
   head "https://github.com/saldl/saldl.git", :shallow => false
 
   depends_on "pkg-config" => :build
