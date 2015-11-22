@@ -1,10 +1,9 @@
 class Z3 < Formula
   desc "High-performance theorem prover"
   homepage "https://github.com/Z3Prover/z3"
-  url "https://github.com/Z3Prover/z3/archive/z3-4.4.0.tar.gz"
-  sha256 "65b72f9eb0af50949e504b47080fb3fc95f11c435633041d9a534473f3142cba"
+  url "https://github.com/Z3Prover/z3/archive/z3-4.4.1.tar.gz"
+  sha256 "50967cca12c5c6e1612d0ccf8b6ebf5f99840a783d6cf5216336a2b59c37c0ce"
   head "https://github.com/Z3Prover/z3.git"
-  revision 1
 
   option "without-python", "Build without python 2 support"
   depends_on :python => :recommended if MacOS.version <= :snow_leopard
