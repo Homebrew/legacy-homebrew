@@ -7,10 +7,9 @@ class Gist < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4e017290b588b0c357ae29b6f1c14b3d47a81f8002c3ef8a29312e084d4b636f" => :el_capitan
-    sha256 "164ad1f9427b51c135bb57699abc9b8ab42a1210097db88fb09387e81ceaa46a" => :yosemite
-    sha256 "5342577ed510c43e1293e0b0571311dbde3cc17f6754a211adf3a471141a9119" => :mavericks
-    sha256 "fff6af8f6c17c308009a4496032059defb8355ca646317dc8961475d2ffe683c" => :mountain_lion
+    sha256 "2412d7a6ab8631910becf70fc6749b9746da002145582b0ad9fbbf225ba31369" => :el_capitan
+    sha256 "365a758d97ee79f1601d36848f8efb2b5466eb70256ef2ad78129169cc363c0b" => :yosemite
+    sha256 "83e5d999746477c29d8d42f9e16554d248a97528abc311ab3bd880f819ccc94c" => :mavericks
   end
 
   def install
