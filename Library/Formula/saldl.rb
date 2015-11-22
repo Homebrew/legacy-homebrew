@@ -3,15 +3,11 @@ class Saldl < Formula
   homepage "https://saldl.github.io"
   url "https://github.com/saldl/saldl/archive/v31.tar.gz"
   sha256 "146a980ae2109a391c7a8ab6a1c525458db9bf18f3f0477731c9b876630078b4"
-
-  head do
-    url "https://github.com/saldl/saldl.git", :shallow => false
-  end
+  head "https://github.com/saldl/saldl.git", :shallow => false
 
   depends_on "pkg-config" => :build
   depends_on "asciidoc" => :build
   depends_on "docbook-xsl" => :build
-
   depends_on "libevent"
 
   if MacOS.version <= :mavericks
