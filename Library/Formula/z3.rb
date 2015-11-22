@@ -4,7 +4,6 @@ class Z3 < Formula
   url "https://github.com/Z3Prover/z3/archive/z3-4.4.1.tar.gz"
   sha256 "50967cca12c5c6e1612d0ccf8b6ebf5f99840a783d6cf5216336a2b59c37c0ce"
   head "https://github.com/Z3Prover/z3.git"
-  revision 1
 
   option "without-python", "Build without python 2 support"
   depends_on :python => :recommended if MacOS.version <= :snow_leopard
