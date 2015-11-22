@@ -5,9 +5,10 @@ class GstPython < Formula
   sha256 "3cbe332e18fd2eaf23ddeee96c414f79ac1edc2f7d990582fa0ec5f977bd04f1"
 
   bottle do
-    sha256 "4e4e6c99a7300ec2905e0f2fb8fb64ab5e3beec4365dd6c200240133e24cdb88" => :el_capitan
-    sha256 "94c32194e05e6522a6d8cd3deba62ed1eb1a59a06a67e611f19cc10398fe8ba3" => :yosemite
-    sha256 "c660e3c9b4f476bf63a84ff4e942ed2903a84fedb62015914e9629585c4db419" => :mavericks
+    revision 1
+    sha256 "43dffd8e42d3ec66163589f72a42e0d9258519617825ae795111670c211b3da1" => :el_capitan
+    sha256 "bbf99c94e9a3c18db045ce06d7d0a9819b5843d127609252f41f421664f89f43" => :yosemite
+    sha256 "3f52ca606176db072962f21316b08df73196237695d9a133e930d2ba3dfebe5f" => :mavericks
   end
 
   depends_on "gst-plugins-base"
