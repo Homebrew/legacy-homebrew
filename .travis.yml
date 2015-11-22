@@ -32,6 +32,7 @@ install:
       brew install homebrew/versions/ruby187;
       export PATH="/usr/local/opt/ruby187/bin:$PATH";
       export HOMEBREW_RUBY_PATH="/usr/local/opt/ruby187/bin/ruby";
+      brew untap homebrew/versions;
     fi
   - export HOMEBREW_DEVELOPER="1"
 
