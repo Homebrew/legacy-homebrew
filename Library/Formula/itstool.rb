@@ -3,6 +3,7 @@ class Itstool < Formula
   homepage "http://itstool.org/"
   url "http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2"
   sha256 "bf909fb59b11a646681a8534d5700fec99be83bb2c57badf8c1844512227033a"
+  revision 1
 
   bottle do
     cellar :any
@@ -18,7 +19,7 @@ class Itstool < Formula
     depends_on "automake" => :build
   end
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libxml2" => "with-python"
 
   def install
