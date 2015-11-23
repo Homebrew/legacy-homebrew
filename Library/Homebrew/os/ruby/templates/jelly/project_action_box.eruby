@@ -1,0 +1,5 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form" xmlns:metrics="/hudson/plugins/rvmRubyMetrics/tags">
+         
+	<metrics:floatingBox title="<%= @real_name %>"/>
+</j:jelly>

@@ -1,0 +1,323 @@
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
+
+$:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
+require "pathname"
+require "set"
+
+class Cmd
+  attr_reader :config, :prefix, :cellar, :tmpdir, :sysroot
+  attr_reader :archflags, :optflags
+
+  def initialize(arg0, args)
+    @arg0 = arg0
+    @args = args.freeze
+    @config = ENV.fetch("HOMEBREW_CCCFG") { "" }
+    @prefix = ENV["HOMEBREW_PREFIX"]
+    @cellar = ENV["HOMEBREW_CELLAR"]
+    @tmpdir = ENV["HOMEBREW_TEMP"]
+    @sysroot = ENV["HOMEBREW_SDKROOT"]
+    @archflags = ENV.fetch("HOMEBREW_ARCHFLAGS") { "" }.split(" ")
+    @optflags = ENV.fetch("HOMEBREW_OPTFLAGS") { "" }.split(" ")
+  end
+
+  def mode
+    if @arg0 == "cpp" || @arg0 == "ld"
+      @arg0.to_sym
+    elsif @args.include? "-c"
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxx
+      else
+        :cc
+      end
+    elsif @args.include? "-E"
+      :ccE
+    else
+      if @arg0 =~ /(?:c|g|clang)\+\+/
+        :cxxld
+      else
+        :ccld
+      end
+    end
+  end
+
+  def tool
+    @tool ||= case @arg0
+    when "ld" then "ld"
+    when "cpp" then "cpp"
+    when /\w\+\+(-\d(\.\d)?)?$/
+      case ENV["HOMEBREW_CC"]
+      when /clang/
+        "clang++"
+      when /llvm-gcc/
+        "llvm-g++-4.2"
+      when /gcc(-\d(\.\d)?)?$/
+        "g++" + $1.to_s
+      end
+    else
+      # Note that this is a universal fallback, so that we'll always invoke
+      # HOMEBREW_CC regardless of what name under which the tool was invoked.
+      ENV["HOMEBREW_CC"]
+    end
+  end
+
+  def args
+    if @args.length == 1 && @args[0] == "-v"
+      # Don't add linker arguments if -v passed as sole option. This stops gcc
+      # -v with no other arguments from outputting a linker error. Some
+      # software uses gcc -v (wrongly) to sniff the GCC version.
+      return @args.dup
+    end
+
+    if !refurbish_args? || tool == "ld" || configure?
+      args = @args.dup
+    else
+      args = refurbished_args
+    end
+
+    if sysroot
+      if tool == "ld"
+        args << "-syslibroot" << sysroot
+      else
+        args << "-isysroot" << sysroot << "--sysroot=#{sysroot}"
+      end
+    end
+
+    case mode
+    when :ccld
+      cflags + args + cppflags + ldflags
+    when :cxxld
+      cxxflags + args + cppflags + ldflags
+    when :cc
+      cflags + args + cppflags
+    when :cxx
+      cxxflags + args + cppflags
+    when :ccE
+      args + cppflags
+    when :cpp
+      args + cppflags
+    when :ld
+      ldflags + args
+    end
+  end
+
+  def refurbished_args
+    @lset = Set.new(library_paths + system_library_paths)
+    @iset = Set.new(isystem_paths + include_paths)
+
+    args = []
+    enum = @args.each
+
+    loop do
+      case arg = enum.next
+      when "-arch"
+        if permit_arch_flags?
+          args << arg << enum.next
+        else
+          enum.next
+        end
+      when "-m32", "-m64"
+        args << arg if permit_arch_flags?
+      when /^-Xarch_/
+        refurbished = refurbish_arg(enum.next, enum)
+        unless refurbished.empty?
+          args << arg
+          args += refurbished
+        end
+      else
+        args += refurbish_arg(arg, enum)
+      end
+    end
+
+    args
+  end
+
+  def refurbish_arg(arg, enum)
+    args = []
+
+    case arg
+    when /^-g\d?/, /^-gstabs\d+/, "-gstabs+", /^-ggdb\d?/, "-gdwarf-2",
+      /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
+      /^-O[0-9zs]?$/, "-fast", "-no-cpp-precomp",
+      "-pedantic", "-pedantic-errors", "-Wno-long-double",
+      "-Wno-unused-but-set-variable"
+    when "-fopenmp", "-lgomp", "-mno-fused-madd", "-fforce-addr", "-fno-defer-pop",
+      "-mno-dynamic-no-pic", "-fearly-inlining", /^-f(?:no-)?inline-functions-called-once/,
+      /^-finline-limit/, /^-f(?:no-)?check-new/, "-fno-delete-null-pointer-checks",
+      "-fcaller-saves", "-fthread-jumps", "-fno-reorder-blocks", "-fcse-skip-blocks",
+      "-frerun-cse-after-loop", "-frerun-loop-opt", "-fcse-follow-jumps",
+      "-fno-regmove", "-fno-for-scope", "-fno-tree-pre", "-fno-tree-dominator-opts",
+      "-fuse-linker-plugin"
+      # clang doesn't support these flags
+      args << arg unless tool =~ /^clang/
+    when /^-W[alp],/, /^-Wno-/
+      args << arg
+    when /^-W.*/
+      # prune warnings
+    when "-macosx_version_min", "-dylib_install_name"
+      args << "-Wl,#{arg},#{enum.next}"
+    when "-multiply_definedsuppress"
+      args << "-Wl,-multiply_defined,suppress"
+    when "-undefineddynamic_lookup"
+      args << "-Wl,-undefined,dynamic_lookup"
+    when /^-isysroot/, /^--sysroot/
+      sdk = enum.next
+      # We set the sysroot for OS X SDKs
+      args << "-isysroot" << sdk unless sdk.downcase.include? "osx"
+    when "-dylib"
+      args << "-Wl,#{arg}"
+    when /^-I(.+)?/
+      # Support both "-Ifoo" (one argument) and "-I foo" (two arguments)
+      val  = chuzzle($1) || enum.next
+      path = canonical_path(val)
+      args << "-I#{val}" if keep?(path) && @iset.add?(path)
+    when /^-L(.+)?/
+      val  = chuzzle($1) || enum.next
+      path = canonical_path(val)
+      args << "-L#{val}" if keep?(path) && @lset.add?(path)
+    else
+      args << arg
+    end
+
+    args
+  end
+
+  def keep?(path)
+    path.start_with?(prefix, cellar, tmpdir) || !path.start_with?("/opt", "/sw", "/usr/X11")
+  end
+
+  def cflags
+    args = []
+
+    return args unless refurbish_args? || configure?
+
+    args << "-pipe"
+    args << "-w" unless configure?
+    args << "-#{ENV["HOMEBREW_OPTIMIZATION_LEVEL"]}"
+    args.concat(optflags)
+    args.concat(archflags)
+    args << "-std=#{@arg0}" if @arg0 =~ /c[89]9/
+    args
+  end
+
+  def cxxflags
+    args = cflags
+    args << "-std=c++11" if cxx11?
+    args << "-stdlib=libc++" if libcxx?
+    args << "-stdlib=libstdc++" if libstdcxx?
+    args
+  end
+
+  def cppflags
+    path_flags("-isystem", isystem_paths) + path_flags("-I", include_paths)
+  end
+
+  def ldflags
+    args = path_flags("-L", library_paths)
+    case mode
+    when :ld
+      args << "-headerpad_max_install_names"
+    when :ccld, :cxxld
+      args << "-Wl,-headerpad_max_install_names"
+    end
+    args
+  end
+
+  def isystem_paths
+    path_split("HOMEBREW_ISYSTEM_PATHS")
+  end
+
+  def include_paths
+    path_split("HOMEBREW_INCLUDE_PATHS")
+  end
+
+  def library_paths
+    path_split("HOMEBREW_LIBRARY_PATHS")
+  end
+
+  def system_library_paths
+    %W[#{sysroot}/usr/lib /usr/local/lib]
+  end
+
+  def configure?
+    # configure scripts generated with autoconf 2.61 or later export as_nl
+    ENV.key? "as_nl"
+  end
+
+  def refurbish_args?
+    config.include?("O")
+  end
+
+  def cxx11?
+    config.include?("x")
+  end
+
+  def libcxx?
+    config.include?("g")
+  end
+
+  def libstdcxx?
+    config.include?("h")
+  end
+
+  def permit_arch_flags?
+    config.include?("K")
+  end
+
+  def canonical_path(path)
+    path = Pathname.new(path)
+    path = path.realpath if path.exist?
+    path.to_s
+  end
+
+  def path_flags(prefix, paths)
+    paths = paths.uniq.select { |path| File.directory?(path) }
+    paths.map! { |path| prefix + path }
+  end
+
+  def path_split(key)
+    ENV.fetch(key) { "" }.split(File::PATH_SEPARATOR)
+  end
+
+  def chuzzle(val)
+    return val if val.nil?
+    val = val.chomp
+    return val unless val.empty?
+  end
+end
+
+def log(basename, argv, tool, args)
+  return unless ENV.key?("HOMEBREW_CC_LOG_PATH")
+
+  adds = args - argv
+  dels = argv - args
+
+  s = ""
+  s << "#{basename} called with: #{argv.join(" ")}\n"
+  s << "superenv removed:  #{dels.join(" ")}\n" unless dels.empty?
+  s << "superenv added:    #{adds.join(" ")}\n" unless adds.empty?
+  s << "superenv executed: #{tool} #{args.join(" ")}\n\n"
+  File.open("#{ENV["HOMEBREW_CC_LOG_PATH"]}.cc", "a+") { |f| f.write(s) }
+end
+
+if __FILE__ == $PROGRAM_NAME
+  ##################################################################### sanity
+  abort "The build-tool has reset ENV. --env=std required." unless ENV["HOMEBREW_BREW_FILE"]
+
+  if (cc = ENV["HOMEBREW_CC"]).nil? || cc.empty? || cc == "cc"
+    # those values are not allowed
+    ENV["HOMEBREW_CC"] = "clang"
+  end
+
+  ####################################################################### main
+
+  dirname, basename = File.split($0)
+
+  cmd = Cmd.new(basename, ARGV)
+  tool = cmd.tool
+  args = cmd.args
+
+  log(basename, ARGV, tool, args)
+
+  args << { :close_others => false } if RUBY_VERSION >= "2.0"
+  exec "#{dirname}/xcrun", tool, *args
+end
