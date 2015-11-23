@@ -1,8 +1,8 @@
 class AwsElasticbeanstalk < Formula
   desc "Client for Amazon Elastic Beanstalk web service"
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.5.5.tar.gz"
-  sha256 "9e1506b0c8c1a0d8337246f9c4b032fe182981e71e1da013aec8bba444020d7b"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.5.6.tar.gz"
+  sha256 "4b3bc9b2698ab8ce7eafdc7f013b828c96ed0b05d698bc780568b57a7094f57c"
 
   bottle do
     cellar :any_skip_relocation
