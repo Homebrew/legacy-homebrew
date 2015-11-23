@@ -3,6 +3,9 @@ Making a formula is easy. Just `brew create URL` and then `brew install $FORMULA
 
 We want your formula to be awesome, and the cookbook will tell you how.
 
+## API documentation
+Some people find it easier to jump straight into API documentation rather than a walkthrough. If you're one of these check out the [Formula API](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula) which shows all the stuff you can use in a Homebrew Formula.
+
 ## Terminology - Homebrew speak
 
 <table>
@@ -81,8 +84,6 @@ Probably. But we have rules to keep the quality and goals of Homebrew intact: Pl
 Formulae aren’t that complicated. [etl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/etl.rb) is as simple as it gets.
 
 And then [Git](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/git.rb) and [flac](https://github.com/Homebrew/homebrew/tree/master/Library/Formula/flac.rb) show more advanced functionality.
-
-Refer to the [Formula class API documentation](http://www.rubydoc.info/github/Homebrew/homebrew/master/frames) which shows all the stuff you can use in a Formula.
 
 ## Grab the URL
 
@@ -208,9 +209,9 @@ A Hash specifies a formula dependency with some additional information. Given a 
 
 Sometimes there’s hard conflict between formulae, and it can’t be avoided or circumvented with `keg_only`.
 
-PolarSSL is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/polarssl.rb) formula for minor conflict.
+`mbedtls` is a good [example](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/mbedtls.rb) formula for minor conflict.
 
-PolarSSL ship and compile a "Hello World" executable. This is obviously non-essential to PolarSSL’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
+`mbedtls` ships and compiles a "Hello World" executable. This is obviously non-essential to `mbedtls`’s functionality, and conflict with the popular GNU `hello` formula would be overkill, so we just remove it.
 
 [pdftohtml](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/pdftohtml.rb) provides an example of a serious
 conflict, where both formula ship a identically-named binary that is essential to functionality, so a `conflicts_with` is preferable.

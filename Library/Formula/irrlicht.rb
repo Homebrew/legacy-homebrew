@@ -9,7 +9,7 @@ class Irrlicht < Formula
   head do
     patch do
       url "https://gist.githubusercontent.com/neoascetic/7487c936a3c5858ad762/raw/4f572fdca4cd7a3ae4bb3893d50821cee48e3236/trunk.diff"
-      sha1 "8c891aabaec1c462ae06415002a2eb92d66bbc2f"
+      sha256 "df3ea90cfaec1fc2887a2335706bb58b0ccca6258ddb2878f1e159086a3e1abf"
     end
   end
 

@@ -14,8 +14,8 @@ class Emacs < Formula
   end
 
   devel do
-    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
-    version "24.5-dev"
+    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-25"
+    version "25.0-dev"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
@@ -57,7 +57,8 @@ class Emacs < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
-            "--infodir=#{info}/emacs"]
+            "--infodir=#{info}/emacs",
+           ]
 
     args << "--with-file-notification=gfile" if build.with? "glib"
 
@@ -96,7 +97,7 @@ class Emacs < Formula
       (bin/"emacs").unlink # Kill the existing symlink
       (bin/"emacs").write <<-EOS.undent
         #!/bin/bash
-        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
+        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs "$@"
       EOS
     else
       if build.with? "x11"

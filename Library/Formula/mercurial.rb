@@ -3,14 +3,14 @@
 class Mercurial < Formula
   desc "Scalable distributed version control system"
   homepage "https://mercurial-scm.org/"
-  url "https://mercurial-scm.org/release/mercurial-3.5.2.tar.gz"
-  sha256 "23fdc038503911b21dc9e556118803f7b1d4150eb14933d2ea3d0ff0dc60ab5d"
+  url "https://mercurial-scm.org/release/mercurial-3.6.1.tar.gz"
+  sha256 "d4647943165affd11baf0705556920481d5346b97604babab6ad76f1744474c6"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8b3fd965bb4e294dab494ef4c719a634da9abf5743e962ec0ec6c50e97ae8eb6" => :el_capitan
-    sha256 "a03e7ae949bb72374fed97d8c5516ef79d1e9b894df33253cfea34e38e0b656c" => :yosemite
-    sha256 "75b4b9e659e3c9ef4822d77036991c3d7cba035c340eb4d8a56b93cd27ec84fc" => :mavericks
+    sha256 "796ce3c914200bb5d0d75d7b8cd291a22176a9573248a49535eeba1dd6ba1ebf" => :el_capitan
+    sha256 "b25d3b0840a1bfe19ab9557d8aec3c9898e91c819cf351b7b82e302a074a935b" => :yosemite
+    sha256 "f8daf8b1f7644c613d4c6993cfc6a45fbb3cdfc637cf5e0f869ae458e607118a" => :mavericks
   end
 
   def install

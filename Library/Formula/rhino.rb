@@ -6,6 +6,8 @@ class Rhino < Formula
 
   bottle :unneeded
 
+  conflicts_with "nut", :because => "both install `rhino` binaries"
+
   def install
     libexec.install "js.jar"
     bin.write_jar_script libexec/"js.jar", "rhino"

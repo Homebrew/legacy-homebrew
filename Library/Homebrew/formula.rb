@@ -231,6 +231,13 @@ class Formula
     active_spec.bottle_disable_reason
   end
 
+  # Does the currently active {SoftwareSpec} has any bottle?
+  # @private
+  def bottle_defined?
+    active_spec.bottle_defined?
+  end
+
+  # Does the currently active {SoftwareSpec} has an installable bottle?
   # @private
   def bottled?
     active_spec.bottled?
@@ -593,6 +600,15 @@ class Formula
     prefix+"share"+name
   end
 
+  # The directory where Emacs Lisp files should be installed, with the
+  # formula name appended to avoid linking conflicts.
+  #
+  # Install an Emacs mode included with a software package:
+  # <pre>elisp.install "contrib/emacs/example-mode.el"</pre>
+  def elisp
+    prefix+"share/emacs/site-lisp"+name
+  end
+
   # The directory where the formula's Frameworks should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.
@@ -750,6 +766,10 @@ class Formula
 
   def opt_pkgshare
     opt_prefix+"share"+name
+  end
+
+  def opt_elisp
+    opt_prefix+"share/emacs/site-lisp"+name
   end
 
   def opt_frameworks
@@ -917,6 +937,11 @@ class Formula
   end
 
   # @private
+  def pinned_version
+    @pin.pinned_version
+  end
+
+  # @private
   def pin
     @pin.pin
   end
@@ -1032,7 +1057,9 @@ class Formula
   # @private
   def self.racks
     @racks ||= if HOMEBREW_CELLAR.directory?
-      HOMEBREW_CELLAR.subdirs.reject(&:symlink?)
+      HOMEBREW_CELLAR.subdirs.reject do |rack|
+        rack.symlink? || rack.subdirs.empty?
+      end
     else
       []
     end
@@ -1197,7 +1224,8 @@ class Formula
     hsh["bottle"] = {}
     %w[stable devel].each do |spec_sym|
       next unless spec = send(spec_sym)
-      next unless (bottle_spec = spec.bottle_specification).checksums.any?
+      next unless spec.bottle_defined?
+      bottle_spec = spec.bottle_specification
       bottle_info = {
         "revision" => bottle_spec.revision,
         "cellar" => (cellar = bottle_spec.cellar).is_a?(Symbol) ? \
@@ -1252,7 +1280,7 @@ class Formula
     mktemp do
       @testpath = Pathname.pwd
       ENV["HOME"] = @testpath
-      setup_test_home @testpath
+      setup_home @testpath
       test
     end
   ensure
@@ -1288,8 +1316,8 @@ class Formula
 
   protected
 
-  def setup_test_home(home)
-    # keep Homebrew's site-packages in sys.path when testing with system Python
+  def setup_home(home)
+    # keep Homebrew's site-packages in sys.path when using system Python
     user_site_packages = home/"Library/Python/2.7/lib/python/site-packages"
     user_site_packages.mkpath
     (user_site_packages/"homebrew.pth").write <<-EOS.undent
@@ -1399,7 +1427,7 @@ class Formula
         log.puts
 
         require "cmd/config"
-        require "cmd/--env"
+        require "build_environment"
 
         env = ENV.to_hash
 
@@ -1449,6 +1477,7 @@ class Formula
       mkdir_p env_home
 
       old_home, ENV["HOME"] = ENV["HOME"], env_home
+      setup_home env_home
 
       begin
         yield

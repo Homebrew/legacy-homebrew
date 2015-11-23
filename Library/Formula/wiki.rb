@@ -20,6 +20,8 @@ class Wiki < Formula
 
   depends_on "go" => :build
 
+  conflicts_with "osxutils", :because => "both install `wiki` binaries"
+
   def install
     ENV["GOPATH"] = buildpath
     wikipath = buildpath/"src/github.com/walle/wiki"

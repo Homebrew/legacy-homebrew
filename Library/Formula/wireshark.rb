@@ -21,9 +21,9 @@ class Wireshark < Formula
   end
 
   devel do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0rc1.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0rc1.tar.bz2"
-    sha256 "a201938913f770cb1f022165574d312b66b97efaa6ad7a9c90daf325f7806582"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0rc3.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0rc3.tar.bz2"
+    sha256 "11f46b2d202f923c87a0b8e1a07bd9910bbcc5c265c69de3a23dde82e0f647e3"
 
     depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
   end
@@ -64,17 +64,24 @@ class Wireshark < Formula
   def install
     no_gui = build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+") && build.without?("qt5")
 
-    args = ["--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}",
-            "--with-gnutls"]
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --with-gnutls
+    ]
 
     args << "--disable-wireshark" if no_gui
     args << "--disable-gtktest" if build.without?("gtk+3") && build.without?("gtk+")
-    args << "--with-qt" if build.with?("qt") || build.with?("qt5")
     args << "--with-gtk3" if build.with? "gtk+3"
     args << "--with-gtk2" if build.with? "gtk+"
     args << "--with-libcap=#{Formula["libpcap"].opt_prefix}" if build.with? "libpcap"
+
+    if build.with?("qt") || build.with?("qt5")
+      args << "--with-qt"
+    else
+      args << "--with-qt=no"
+    end
 
     if build.head?
       args << "--disable-warnings-as-errors"

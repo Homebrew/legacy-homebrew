@@ -36,7 +36,7 @@ class Libkml < Formula
     # see stable patch
     patch do
       url "https://gist.githubusercontent.com/dakcarto/7420023/raw/65cdb088c91a7da844251e348eeda8df1d903f1d/libkml-svn-static-deps"
-      sha1 "9ef82d73199325e63596c28c6965ec8c151bf7c5"
+      sha256 "a85abf19e364ea745a5bbc9a24bf580058acaea98cf129adf28fc5bb0627f253"
     end
   end
 

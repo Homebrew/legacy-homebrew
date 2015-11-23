@@ -9,7 +9,6 @@
 # --skip-setup:    Don't check the local system is setup correctly.
 # --skip-homebrew: Don't check Homebrew's files and tests are all valid.
 # --junit:         Generate a JUnit XML test results file.
-# --email:         Generate an email subject file.
 # --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
@@ -34,7 +33,6 @@ require "rexml/cdata"
 require "cmd/tap"
 
 module Homebrew
-  EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
   BYTES_IN_1_MEGABYTE = 1024*1024
 
   def resolve_test_tap
@@ -366,14 +364,6 @@ module Homebrew
         raise "Cannot set @name: invalid command-line arguments!"
       end
 
-      if ENV["TRAVIS"]
-        puts "name: #{@name}"
-        puts "url: #{@url}"
-        puts "hash: #{@hash}"
-        puts "diff_start_sha1: #{diff_start_sha1}"
-        puts "diff_end_sha1: #{diff_end_sha1}"
-      end
-
       @log_root = @brewbot_root + @name
       FileUtils.mkdir_p @log_root
 
@@ -591,6 +581,7 @@ module Homebrew
             bottle_merge_args << "--keep-old" if ARGV.include? "--keep-old"
             test "brew", "bottle", *bottle_merge_args
             test "brew", "uninstall", "--force", canonical_formula_name
+            FileUtils.ln bottle_filename, HOMEBREW_CACHE/bottle_filename, :force => true
             if unchanged_build_dependencies.any?
               test "brew", "uninstall", "--force", *unchanged_build_dependencies
               unchanged_dependencies -= unchanged_build_dependencies
@@ -714,7 +705,7 @@ module Homebrew
       changed_formulae_dependents = {}
 
       @formulae.each do |formula|
-        formula_dependencies = Utils.popen_read("brew", "deps", formula).split("\n")
+        formula_dependencies = Utils.popen_read("brew", "deps", "--skip-optional", formula).split("\n")
         unchanged_dependencies = formula_dependencies - @formulae
         changed_dependences = formula_dependencies - unchanged_dependencies
         changed_dependences.each do |changed_formula|
@@ -893,21 +884,13 @@ module Homebrew
       ARGV << "--junit" << "--local"
     end
     if ARGV.include? "--ci-master"
-      ARGV << "--email" << "--fast"
+      ARGV << "--fast"
     end
 
     if ARGV.include? "--local"
       ENV["HOMEBREW_HOME"] = ENV["HOME"] = "#{Dir.pwd}/home"
       mkdir_p ENV["HOME"]
       ENV["HOMEBREW_LOGS"] = "#{Dir.pwd}/logs"
-    end
-
-    if ARGV.include? "--email"
-      File.open EMAIL_SUBJECT_FILE, "w" do |file|
-        # The file should be written at the end but in case we don't get to that
-        # point ensure that we have something valid.
-        file.write "#{MacOS.version}: internal error."
-      end
     end
   end
 
@@ -996,28 +979,15 @@ module Homebrew
         xml_document.write(xml_file, pretty_print_indent)
       end
     end
-
-    if ARGV.include? "--email"
-      failed_steps = []
-      tests.each do |test|
-        test.steps.each do |step|
-          next if step.passed?
-          failed_steps << step.command_short
-        end
-      end
-
-      if failed_steps.empty?
-        email_subject = ""
-      else
-        email_subject = "#{MacOS.version}: #{failed_steps.join ", "}."
-      end
-
-      File.open EMAIL_SUBJECT_FILE, "w" do |file|
-        file.write email_subject
+  ensure
+    if ARGV.include? "--clean-cache"
+      HOMEBREW_CACHE.children.each(&:rmtree)
+    else
+      Dir.glob("*.bottle*.tar.gz") do |bottle_file|
+        FileUtils.rm_f HOMEBREW_CACHE/bottle_file
       end
     end
-  ensure
-    HOMEBREW_CACHE.children.each(&:rmtree) if ARGV.include? "--clean-cache"
+
     Homebrew.failed = any_errors
   end
 end

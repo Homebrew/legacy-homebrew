@@ -8,16 +8,14 @@ class Deisctl < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "501e7c2a937f32a6b870ef7874dca2aecfd27d1b8642231fd5cf0d7d92e74685" => :el_capitan
-    sha256 "780662542e7b73eb2548bb4f614016e47c0dcd63b55991ab7a3c5e3ca2e491f4" => :yosemite
-    sha256 "bbbdc491ac6d70aee22d3a64dc97c48decf949adf001af0964ded630d2733533" => :mavericks
+    revision 1
+    sha256 "e29f688858937820a0ffed6acd8aeb59cf95b8d87fec95611b78154532e93c9f" => :el_capitan
+    sha256 "2c0c088d5c9ec80105c558380cb7ea89fa76a44547c495b0fd3e4197cf6e08e0" => :yosemite
+    sha256 "8308bb22e992270e0ca5a78ac2ec6cc9242508ee96731d249a5397160b3f0062" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "66fa30a455532b64a7f70f8716a274c833bee3c6"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/docopt/docopt-go" do
     url "https://github.com/docopt/docopt-go.git", :revision => "854c423c810880e30b9fecdabb12d54f4a92f9bb"
@@ -37,16 +35,10 @@ class Deisctl < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV.prepend_create_path "PATH", buildpath/"bin"
-
     mkdir_p "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis"
     ln_s buildpath, "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis/deis"
 
     Language::Go.stage_deps resources, buildpath/"src"
-
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     cd "deisctl" do
       system "godep", "go", "build", "-a", "-ldflags", "-s", "-o", "dist/deisctl"

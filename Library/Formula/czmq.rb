@@ -3,15 +3,16 @@ class Czmq < Formula
   homepage "http://czmq.zeromq.org/"
   url "http://download.zeromq.org/czmq-3.0.2.tar.gz"
   sha256 "8bca39ab69375fa4e981daf87b3feae85384d5b40cef6adbe9d5eb063357699a"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "d3e5623f2c031374d0aecacfa4fff264f290edb1c40a0fa4474daf0098c4b649" => :el_capitan
-    sha256 "f0c78d4d93ddcd16f18b6277c39e08b7eb8754c802d2a63c652852613305e4c4" => :yosemite
-    sha256 "c9f2bcf72a59b931946945e9661d8f6b43d2ce0f0a18ef8d15db60e830489caf" => :mavericks
+    sha256 "3e06ecdf8a59916e5a9db00364c846d494d59afa69db5502b3bf4fe37daa35ac" => :el_capitan
+    sha256 "a614cb6f6ad22446ada0acb1988f8e851c3bf6011ade80b688b36b2b846e3abf" => :yosemite
+    sha256 "0df3a704f0b7f3eb6e2e2a345cd00d4a87493220db869cfa10dc773325b5ecb9" => :mavericks
   end
+
+  conflicts_with "mono", :because => "both install `makecert` binaries"
 
   head do
     url "https://github.com/zeromq/czmq.git"

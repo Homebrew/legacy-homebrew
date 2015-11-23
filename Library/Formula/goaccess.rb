@@ -1,13 +1,13 @@
 class Goaccess < Formula
   desc "Log analyzer and interactive viewer for the Apache Webserver"
   homepage "http://goaccess.io/"
-  url "http://tar.goaccess.io/goaccess-0.9.4.tar.gz"
-  sha256 "8a6e167f6a9330ccf37c652e577792c9c626d7134d64f841eb54fefcdff6c5ce"
+  url "http://tar.goaccess.io/goaccess-0.9.6.tar.gz"
+  sha256 "e848064c8555f95e770aa1c0475c784c094b42e4ae53ff852975f6498d8f649a"
 
   bottle do
-    sha256 "e55d00891372ed68169bb759c7113fb47951793146287f58542f05033966b0a6" => :el_capitan
-    sha256 "e823561ca8d621ab0e33fa32e8750c9a29eb381ac8f3ed14001a6d90dce14812" => :yosemite
-    sha256 "ea928044dc0a5309be812828d29e75d4cba36300b269aa355f117a2489c8274f" => :mavericks
+    sha256 "b662cc46389aa92c3faeb233c03ed34f262e4c23fb8485245b63b10d4e8debe6" => :el_capitan
+    sha256 "93be499907187b525b43c5c81846f011fd1a13807298730e14a0519909e68342" => :yosemite
+    sha256 "9d661644f8617be774cf6a9fca9d363756604f4abb2133761ee798dd8216a062" => :mavericks
   end
 
   head do

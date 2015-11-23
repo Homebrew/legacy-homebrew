@@ -22,6 +22,9 @@ class Renameutils < Formula
   # Remove patch #4 at version > 0.12.0.  The first three should persist.
   patch :DATA
 
+  conflicts_with "ipmiutil", :because => "both install `icmd` binaries"
+  conflicts_with "irods", :because => "both install `icp` and `imv` binaries"
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
