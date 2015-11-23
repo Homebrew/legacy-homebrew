@@ -68,8 +68,6 @@ class Entr < Formula
     touch testpath/"test.1"
     fork do
       sleep 0.5
-  plist_options :manual => ""
-
       touch testpath/"test.2"
     end
     assert_equal "New File", pipe_output("#{bin}/entr -p -d echo 'New File'", testpath).strip
