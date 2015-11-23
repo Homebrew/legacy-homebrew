@@ -44,7 +44,7 @@ class DnscryptProxy < Formula
 
   def post_install
     if build.with? "minisign"
-      (libexec/"update-resolvers.sh").write <<-EOS.undent
+      (bin/"dnscrypt-update-resolvers").write <<-EOS.undent
         #!/bin/sh
         RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
         RESOLVERS_LIST_BASE_DIR=#{pkgshare}
@@ -62,8 +62,8 @@ class DnscryptProxy < Formula
         mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
           ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
       EOS
-      chmod 0774, libexec/"update-resolvers.sh"
-      system libexec/"update-resolvers.sh"
+      chmod 0775, bin/"dnscrypt-update-resolvers"
+      system bin/"dnscrypt-update-resolvers"
     end
   end
 
@@ -80,7 +80,7 @@ class DnscryptProxy < Formula
     the plist file (e.g., --resolver-address, --provider-name, --provider-key, etc.)
 
     If at some point the resolver file gets outdated, it can be updated to the
-    latest version by running: #{libexec}/update-resolvers
+    latest version by running: #{bin}/dnscrypt-update-resolvers
 
     To check that dnscrypt-proxy is working correctly, open Terminal and enter the
     following command. Replace en1 with whatever network interface you're using:
