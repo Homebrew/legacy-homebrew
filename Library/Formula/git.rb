@@ -7,9 +7,10 @@ class Git < Formula
   head "https://github.com/git/git.git", :shallow => false
 
   bottle do
-    sha256 "f884dc64e12a7f782a4752f4b076534818e63cddcb52b9c6d0b1060c4632a9d3" => :el_capitan
-    sha256 "0b9ba281e569697de6f1f35bd49254868ed8e103c93081c8c3eab885fcba2057" => :yosemite
-    sha256 "6fb007eb5be93d766fe8d8a8ad3803a5699e79da158a87c71e38e33de841b5e4" => :mavericks
+    revision 1
+    sha256 "0e37b76e7c74f3b4680b5df6afd8de598701da936a5f24d13707bf21f508cc96" => :el_capitan
+    sha256 "17f37e56578a3f978973012073b0b9a89ed5bf74d907213c0072eba560051c3c" => :yosemite
+    sha256 "3223fa320eb16cfcb10691c5a5a7b728c6886ba46557143e8a78b91f843b8ae4" => :mavericks
   end
 
   resource "man" do
@@ -53,7 +54,10 @@ class Git < Formula
     perl_version = /\d\.\d+/.match(`perl --version`)
 
     if build.with? "brewed-svn"
-      ENV["PERLLIB_EXTRA"] = "#{Formula["subversion"].opt_prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level"
+      ENV["PERLLIB_EXTRA"] = %W[
+        #{Formula["subversion"].opt_prefix}/lib/perl5/site_perl
+        #{Formula["subversion"].opt_prefix}/Library/Perl/#{perl_version}/darwin-thread-multi-2level
+      ].join(":")
     elsif MacOS.version >= :mavericks
       ENV["PERLLIB_EXTRA"] = %W[
         #{MacOS.active_developer_dir}

@@ -6,9 +6,9 @@ class Rfcdiff < Formula
 
   bottle do
     cellar :any
-    sha1 "d6fe59c07cbbe0ba0d268a5d84691a5720a0d16e" => :yosemite
-    sha1 "88884113013f1e061f180aeb2c4b0eaea1919334" => :mavericks
-    sha1 "62c13793f7558377afd40fde2aa18b93d96e034e" => :mountain_lion
+    sha256 "590587076415e6d76a0c352a903bee09dda664529fe3b6bb15d3ea825e66d44a" => :yosemite
+    sha256 "4a4b87ede364af23c406b53ec20e4729168363513c8ccc455f359bdde5bc120f" => :mavericks
+    sha256 "8473a25840800f44a284dc498966abca18cf41687fce0b101982e6dbd89952e4" => :mountain_lion
   end
 
   depends_on "wdiff"

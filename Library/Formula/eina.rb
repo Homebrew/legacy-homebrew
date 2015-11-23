@@ -5,9 +5,9 @@ class Eina < Formula
   sha256 "3f33ae45c927faedf8d342106136ef1269cf8dde6648c8165ce55e72341146e9"
 
   bottle do
-    sha1 "58d642bbf7088e75415c2d7267c1170e7bd99c39" => :yosemite
-    sha1 "17da185c9c97ac84a55fb814a69171da1db77bbf" => :mavericks
-    sha1 "1310e97405ab4ff2ab1160420ac8b0f4aa74cec7" => :mountain_lion
+    sha256 "4624c44c02ada4a1bc5a967efb13a2e5602cca01e61e83bfa03d389006bdb852" => :yosemite
+    sha256 "dbfcbd09d224c85aa1697d5892bfbe9e9aa03ba153a4aa2f4eb13625555dce68" => :mavericks
+    sha256 "6d3680d80b19884486c8379bf7cced4c141b9d7c7bc97c2044cd617343835ed0" => :mountain_lion
   end
 
   head do

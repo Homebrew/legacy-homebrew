@@ -6,9 +6,9 @@ class Nuttcp < Formula
 
   bottle do
     cellar :any
-    sha1 "95f9e698a06f16689483b342212bf09d61f31b8f" => :yosemite
-    sha1 "964e37122ffd9d1208d532c7bcc295a4a22071cb" => :mavericks
-    sha1 "7279df49a2e29d9c223cffd1f9cfc4b1a383a740" => :mountain_lion
+    sha256 "18cfa8910325006d83e53c94a845d611704ce882f3f48a5edd2ebc6e75def200" => :yosemite
+    sha256 "57c31d24a43302c4fb1b08f6a17a05da60c3486a52481b0580c3e1f5d75c7eaa" => :mavericks
+    sha256 "e289d316c0aea0a8b1a85bde5f72f648cfe2dbae26a9fee4f7614ccdd7aa983a" => :mountain_lion
   end
 
   def install

@@ -6,9 +6,9 @@ class Veraxx < Formula
 
   bottle do
     cellar :any
-    sha1 "4a3cb73eb8bc6144e1a2387ab5b39c14e68a1b11" => :yosemite
-    sha1 "db722169da4ef85bc970832976055acaf9068fcf" => :mavericks
-    sha1 "65dcc261bc60d4387ce72536a9c4f3948be36e5b" => :mountain_lion
+    sha256 "911f2a08616c7f62ca51d4ac7afa218c5e2f4d4c30099804340d2415f4886c68" => :yosemite
+    sha256 "71288764fde2bf17878a2641ba5ddd3b173c0782938b51135c452ee3e16026b9" => :mavericks
+    sha256 "7d3357f2d5bda931c9e5a7c3ccf9caa1cddb337d2e6cc22d3f791542d8e916ec" => :mountain_lion
   end
 
   depends_on "cmake" => :build

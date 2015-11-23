@@ -2,37 +2,37 @@ class Multimarkdown < Formula
   desc "Turn marked-up plain text into well-formatted documents"
   homepage "http://fletcherpenney.net/multimarkdown/"
   # Use git tag instead of the tarball to get submodules
-  url "https://github.com/fletcher/MultiMarkdown-4.git", :tag => "4.7.1",
-                                                         :revision => "3083076038cdaceb666581636ef9e1fc68472ff0"
-  head "https://github.com/fletcher/MultiMarkdown-4.git"
+  url "https://github.com/fletcher/MultiMarkdown-5.git",
+    :tag => "v5.0",
+    :revision => "47e7c4a2fac0271ee52ae0c7062a726978219341"
+
+  head "https://github.com/fletcher/MultiMarkdown-5.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0f9758705ae952f5d33d5eec397bf352a182217500c73bdd64b5c43e5d5c640c" => :el_capitan
-    sha256 "3ee488167591254206ff276f3b15ec760be60ff76bf1729ef0d49ba3efd1a1a2" => :yosemite
-    sha256 "e1ca2bd2e5667406abe9629a03e12b6670336e6efdcdfa71b6b53e93f6f886a1" => :mavericks
-    sha256 "7b3b8c13b58c25cd8eae393275361d7442d47e285df34898818604ac6279cb94" => :mountain_lion
+    sha256 "19e71e5fdd1532a5cad72f7b2ec8cf233edf3fcbb48a1edec31bc83cef70cf81" => :el_capitan
+    sha256 "447908fdb0e2a0ba123a4125e80473d9afad6a0f0b04c4fc031b651fec43f486" => :yosemite
+    sha256 "27142eda3b7c24650c23ea4996534d7b11ee32dbd28d3e218c7f750a00784f90" => :mavericks
   end
+
+  depends_on "cmake" => :build
 
   conflicts_with "mtools", :because => "both install `mmd` binaries"
   conflicts_with "markdown", :because => "both install `markdown` binaries"
   conflicts_with "discount", :because => "both install `markdown` binaries"
 
   def install
-    ENV.append "CFLAGS", "-g -O3 -include GLibFacade.h"
+    system "sh", "link_git_modules"
+    system "sh", "update_git_modules"
     system "make"
-    rm_f Dir["scripts/*.bat"]
-    bin.install "multimarkdown", Dir["scripts/*"]
-    prefix.install "Support"
-  end
 
-  def caveats; <<-EOS.undent
-    Support files have been installed to:
-      #{opt_prefix}/Support
-    EOS
+    cd "build" do
+      system "make"
+      bin.install "multimarkdown"
+    end
   end
 
   test do
-    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"mmd", "foo *bar*\n")
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"multimarkdown", "foo *bar*\n")
   end
 end

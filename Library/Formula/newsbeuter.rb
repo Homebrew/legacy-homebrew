@@ -10,9 +10,9 @@ class Newsbeuter < Formula
     cellar :any
     revision 1
     sha256 "15f454fa5f0c5cb2ee6b3c54fd312de8a1dbb7e38c5c90bbcf27bffd2536afaa" => :el_capitan
-    sha1 "6c509202d95792b56d6c14c335cf230a297ac6d0" => :yosemite
-    sha1 "8521be744f61fa39d95480625562ed12ba295656" => :mavericks
-    sha1 "973c64d2807a77163ee48c72da89748c75b0e880" => :mountain_lion
+    sha256 "fa722fd5772e770f042461d3b68aefdc5d656a0073d1d0a8ed0a4cfa2b1e193e" => :yosemite
+    sha256 "32bf15d33725a57bf5851e88f836b59a36b1715a26b2622bb759b19262998e59" => :mavericks
+    sha256 "cfaa1d087980a62164a121d012eed12c5135b3d25f770d383215839d61428ba2" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

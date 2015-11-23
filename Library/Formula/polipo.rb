@@ -8,9 +8,9 @@ class Polipo < Formula
 
   bottle do
     sha256 "2034a4d4ddf8542f91e2a977336f4b22ba5d9a5c67adcb5e1cef41559b7e6369" => :el_capitan
-    sha1 "b8a3690483249552c1ca12c8173767b847f7e296" => :yosemite
-    sha1 "40c9e227cc80b2378d0c5c0c397e7638628d694f" => :mavericks
-    sha1 "e293417dcc1d1708cdef6cc5476445741ee97bb4" => :mountain_lion
+    sha256 "13ad85c18936fc72dd1dc8c03f1d821fe3bae10af77ac9145dbdeed5178f5e7f" => :yosemite
+    sha256 "22b7c21ac284e81f7c23e00b6de80991dc7376a21208edd2c9d693c8a54a3bf6" => :mavericks
+    sha256 "5de1c405d5506806cd915ca4170b51b4e6d23143d7e7ede00824e901ded65e4f" => :mountain_lion
   end
 
   option "with-large-chunks", "Set chunk size to 16k (more RAM, but more performance)"

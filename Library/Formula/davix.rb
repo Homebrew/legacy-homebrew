@@ -10,9 +10,10 @@ class Davix < Formula
 
   bottle do
     cellar :any
-    sha256 "4bab71124c9638ab089f1784dd01805d814ee81e037fc6f8d7ddfd70a2ab785a" => :yosemite
-    sha256 "8cdd2495b9286226b7be91e111a72f3d6d565b0245d5741f53901eb44266be3f" => :mavericks
-    sha256 "00709d9ef997292d7154e92903c5375d5c9d572d6581814f1bd843b5319a76ab" => :mountain_lion
+    revision 1
+    sha256 "a30f6273f008e116f1d5a28300f87c09876f2e6a6d99ec066e0562adfd4605c6" => :el_capitan
+    sha256 "ee3fb1d6b783a2ac5569b35bced1b6ff815d1357632268ebc4ae8b7f9261bc1f" => :yosemite
+    sha256 "c8fc7c40b2dbbe177bb7ed819e2eaf5d165a1723d5dfcb4dcd351bce67e83b5f" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -27,6 +28,6 @@ class Davix < Formula
   end
 
   test do
-    system "#{bin}/davix-get", "http://www.google.com"
+    system "#{bin}/davix-get", "https://www.google.com"
   end
 end

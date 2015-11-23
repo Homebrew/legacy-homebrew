@@ -6,9 +6,9 @@ class Mon < Formula
 
   bottle do
     cellar :any
-    sha1 "4279caae6fd47b43bb884787daff34a0c65c915b" => :mavericks
-    sha1 "07ff0b1e1cf96cd22a57c26e8b03174964fa928f" => :mountain_lion
-    sha1 "c0f4c73f81ceb8773a40fbb5c9385f61ce9a25be" => :lion
+    sha256 "a3305413b9c09f2bce3a9c1b8204e05b673fe0d2dade6e5f0f9746eb67662f9e" => :mavericks
+    sha256 "8c31501863d20c6b582f577055bc55b40743725911c7015a38d93991eeb71ed8" => :mountain_lion
+    sha256 "36e66fd7d8452b14e15f5110ae0689c4e6ae9aa5a3977d4941df37aa71c96a23" => :lion
   end
 
   def install

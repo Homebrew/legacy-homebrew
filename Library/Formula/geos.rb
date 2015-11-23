@@ -8,9 +8,9 @@ class Geos < Formula
     cellar :any
     revision 1
     sha256 "1cea75a400d62adc42aa891451fc16d89cf25c28594a0877245d9fd4670ea7d3" => :el_capitan
-    sha1 "b4143e5f3a051ffbd88286d204fac02db95956a7" => :yosemite
-    sha1 "b052b96b44f00ceb6fdc94296c257fa93bf2b0c8" => :mavericks
-    sha1 "d1e56b9aa2d39c087bfc4914515954e21b82350d" => :mountain_lion
+    sha256 "19f9d18d16d2924b6352707cfa2d3fb95e4edfaee9e602e83f1d2a0bf904bd91" => :yosemite
+    sha256 "c38d4b37bbeae1cfa8a5e1f0aa55728597455eb8175d0fa174b247c1613695e7" => :mavericks
+    sha256 "56b3f19c50c661db5f0dc98ab89f65052f2d5f6816eaaee1a6e13343a2f1ebbd" => :mountain_lion
   end
 
   option :universal

@@ -5,9 +5,9 @@ class GnuProlog < Formula
   sha256 "18c0e9644b33afd4dd3cdf29f94c099ad820d65e0c99da5495b1ae43b4f2b18e"
 
   bottle do
-    sha1 "8dc1b5782b6fb5e89c62fe3f5b07a908ddff6850" => :yosemite
-    sha1 "faf4b9bd8c63bb89bc2217cde8ce0ea00866ddf8" => :mavericks
-    sha1 "92366ec981d47a8f30a602b1b40cb4a1de99922c" => :mountain_lion
+    sha256 "d1145e39194fda08dd0653e90cb37b516fc0aaac7c4820462586b36fc5dbc7cf" => :yosemite
+    sha256 "0c185324002089662da4d313b01d7fd6831ff477808cfc9b7a19f42449ba9f2f" => :mavericks
+    sha256 "4e167ef6d2dddf1d52bb39a093accdde86ea94711b0e7507d5e0f2c1507e789b" => :mountain_lion
   end
 
   # Upstream patch:

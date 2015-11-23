@@ -18,6 +18,7 @@ class Groonga < Formula
   end
 
   option "with-benchmark", "With benchmark program for developer use"
+  option "with-suggest-plugin", "With suggest plugin for suggesting"
 
   deprecated_option "enable-benchmark" => "with-benchmark"
 
@@ -30,14 +31,25 @@ class Groonga < Formula
   depends_on "mecab-ipadic" if build.with? "mecab"
   depends_on "glib" if build.with? "benchmark"
 
+  if build.with? "suggest-plugin"
+    depends_on "libevent"
+    depends_on "zeromq"
+  end
+
   def install
     args = %W[
       --prefix=#{prefix}
       --with-zlib
-      --disable-zeromq
       --enable-mruby
       --without-libstemmer
     ]
+
+    # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
+    if build.with? "suggest-plugin"
+      args << "--enable-zeromq"
+    else
+      args << "--disable-zeromq"
+    end
 
     args << "--enable-benchmark" if build.with? "benchmark"
     args << "--with-mecab" if build.with? "mecab"
@@ -47,7 +59,7 @@ class Groonga < Formula
       args << "--with-ruby"
       system "./autogen.sh"
     end
-    # ZeroMQ is an optional dependency that will be auto-detected unless we disable it
+
     system "./configure", *args
     system "make", "install"
   end

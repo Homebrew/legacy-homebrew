@@ -7,9 +7,9 @@ class Libltc < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "7c4a5165544c7219c9ed12bc39bc1cf384c995bb" => :yosemite
-    sha1 "c55d95885439c8d8696679742ea189db8beaca32" => :mavericks
-    sha1 "75242d6344965aab837d2e66569a8f128d084ff7" => :mountain_lion
+    sha256 "d564cdf6f1790cf144426fb2e3adb8e3a5caa9b519f4fa72a994ee416f118ba3" => :yosemite
+    sha256 "f29db88c6858b07e9273974a8c4633bd2ceb302ba033c41cfe31f171fa02c9d0" => :mavericks
+    sha256 "a3e44438c81e84aa4bfb3e1e86190cd4f8271d490a9ee7cea64ecd18936e070e" => :mountain_lion
   end
 
   def install

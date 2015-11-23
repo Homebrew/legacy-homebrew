@@ -4,53 +4,38 @@ class ConsulTemplate < Formula
   desc "Generic template rendering and notifications with Consul"
   homepage "https://github.com/hashicorp/consul-template"
   url "https://github.com/hashicorp/consul-template.git",
-      :tag => "v0.10.0",
-      :revision => "14cf110504f3089a3c96a36126bd6d5fe39df37a"
+      :tag => "v0.11.1",
+      :revision => "134aecc73e607f09986370600232ecb8f44d0940"
 
   head "https://github.com/hashicorp/consul-template.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "4a98696528c75498232b4d62efdd2570e1eeb175a0ef0e2786deb29893562492" => :el_capitan
-    sha256 "43da443b77fc0568cb24d5861707429e4235c2e5d09f407a254562f31cb50e83" => :yosemite
-    sha256 "4aff7ce95f70b5018852852e1043c87c6f8dbe8da491b1bc9942d7047f9eb756" => :mavericks
+    sha256 "95b8a25581a97c295c201641756e95ad2bbe6937f9fa050e736d97317b1dd271" => :el_capitan
+    sha256 "af712e022632da7f68019b3fd84fced8caff92d450df9ac9f8c69d3a184450d7" => :yosemite
+    sha256 "e0423df75f407f59e97b9f6a2f64d846efd74cf2565a1cb09489096763219a0c" => :mavericks
   end
 
   depends_on "go" => :build
 
-  go_resource "github.com/armon/go-metrics" do
-    url "https://github.com/armon/go-metrics.git",
-        :revision => "6c5fa0d8f48f4661c9ba8709799c88d425ad20f0"
+  go_resource "github.com/mitchellh/gox" do
+    url "https://github.com/mitchellh/gox.git",
+        :revision => "ef1967b9f538fe467e6a82fc42ec5dff966ad4ea"
   end
 
-  go_resource "github.com/armon/go-radix" do
-    url "https://github.com/armon/go-radix.git",
-        :revision => "fbd82e84e2b13651f3abc5ffd26b65ba71bc8f93"
-  end
-
-  go_resource "github.com/aws/aws-sdk-go" do
-    url "https://github.com/aws/aws-sdk-go.git",
-        :revision => "890e878e1bf2abba2e0c33e494daf3ca55b2e563"
-  end
-
-  go_resource "github.com/coreos/go-etcd" do
-    url "https://github.com/coreos/go-etcd.git",
-        :revision => "de3514f25635bbfb024fdaf2a8d5f67378492675"
+  go_resource "github.com/mitchellh/iochan" do
+    url "https://github.com/mitchellh/iochan.git",
+        :revision => "87b45ffd0e9581375c491fef3d32130bb15c5bd7"
   end
 
   go_resource "github.com/fatih/structs" do
     url "https://github.com/fatih/structs.git",
-        :revision => "a9f7daa9c2729e97450c2da2feda19130a367d8f"
-  end
-
-  go_resource "github.com/go-sql-driver/mysql" do
-    url "https://github.com/go-sql-driver/mysql.git",
-        :revision => "527bcd55aab2e53314f1a150922560174b493034"
+        :revision => "c701457aaa1ff6709d5e35fccb5c129448e0a37b"
   end
 
   go_resource "github.com/hashicorp/consul" do
     url "https://github.com/hashicorp/consul.git",
-        :revision => "78aa6f1443ba506e8c9bc88b6f4448ad6fee325f"
+        :revision => "ab63122a320928b290d681aaac1145b19a69cc0d"
   end
 
   go_resource "github.com/hashicorp/errwrap" do
@@ -58,9 +43,9 @@ class ConsulTemplate < Formula
         :revision => "7554cd9344cec97297fa6649b055a8c98c2a1e55"
   end
 
-  go_resource "github.com/hashicorp/go-msgpack" do
-    url "https://github.com/hashicorp/go-msgpack.git",
-        :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
+  go_resource "github.com/hashicorp/go-cleanhttp" do
+    url "https://github.com/hashicorp/go-cleanhttp.git",
+        :revision => "5df5ddc69534f1a4697289f1dca2193fbb40213f"
   end
 
   go_resource "github.com/hashicorp/go-multierror" do
@@ -73,14 +58,9 @@ class ConsulTemplate < Formula
         :revision => "42a2b573b664dbf281bd48c3cc12c086b17a39ba"
   end
 
-  go_resource "github.com/hashicorp/golang-lru" do
-    url "https://github.com/hashicorp/golang-lru.git",
-        :revision => "7f9ef20a0256f494e24126014135cf893ab71e9e"
-  end
-
   go_resource "github.com/hashicorp/hcl" do
     url "https://github.com/hashicorp/hcl.git",
-        :revision => "4de51957ef8d4aba6e285ddfc587633bbfc7c0e8"
+        :revision => "1688f22977e3b0bbdf1aaa5e2528cf10c2e93e78"
   end
 
   go_resource "github.com/hashicorp/logutils" do
@@ -88,44 +68,19 @@ class ConsulTemplate < Formula
         :revision => "0dc08b1671f34c4250ce212759ebd880f743d883"
   end
 
-  go_resource "github.com/hashicorp/vault" do
-    url "https://github.com/hashicorp/vault.git",
-        :revision => "e217795abd0f881b11e3c59718954e7bbbbe86d8"
+  go_resource "github.com/hashicorp/serf" do
+    url "https://github.com/hashicorp/serf.git",
+        :revision => "a72c0453da2ba628a013e98bf323a76be4aa1443"
   end
 
-  go_resource "github.com/mitchellh/copystructure" do
-    url "https://github.com/mitchellh/copystructure.git",
-        :revision => "6fc66267e9da7d155a9d3bd489e00dad02666dc6"
+  go_resource "github.com/hashicorp/vault" do
+    url "https://github.com/hashicorp/vault.git",
+        :revision => "93f196fd75d0a13d1489c02bf05d24d2d6168466"
   end
 
   go_resource "github.com/mitchellh/mapstructure" do
     url "https://github.com/mitchellh/mapstructure.git",
         :revision => "281073eb9eb092240d33ef253c404f1cca550309"
-  end
-
-  go_resource "github.com/mitchellh/reflectwalk" do
-    url "https://github.com/mitchellh/reflectwalk.git",
-        :revision => "eecf4c70c626c7cfbb95c90195bc34d386c74ac6"
-  end
-
-  go_resource "github.com/samuel/go-zookeeper" do
-    url "https://github.com/samuel/go-zookeeper.git",
-        :revision => "913027ed60abbe2436b35cf960193b06b00105cf"
-  end
-
-  go_resource "github.com/ugorji/go" do
-    url "https://github.com/ugorji/go.git",
-        :revision => "45ce7596ace4534e47b69051a92aef7b64ec7b3f"
-  end
-
-  go_resource "github.com/vaughan0/go-ini" do
-    url "https://github.com/vaughan0/go-ini.git",
-        :revision => "a98ad7ee00ec53921f08832bc06ecf7fd600e6a1"
-  end
-
-  go_resource "golang.org/x/crypto" do
-    url "https://go.googlesource.com/crypto.git",
-        :revision => "c8b9e6388ef638d5a8a9d865c634befdc46a6784"
   end
 
   go_resource "gopkg.in/yaml.v2" do
@@ -134,18 +89,33 @@ class ConsulTemplate < Formula
   end
 
   def install
-    contents = Dir["{*,.git,.gitignore,.travis.yml}"]
-    gopath = buildpath/"gopath"
-    (gopath/"src/github.com/hashicorp/consul-template").install contents
+    arch = MacOS.prefer_64_bit? ? "amd64" : "386"
+    revision = `git rev-parse HEAD`
+    ENV["GOPATH"] = buildpath
+    # For the gox buildtool used by consul-template, which doesn't need to
+    # get installed permanently
+    ENV.append_path "PATH", buildpath
 
-    ENV["GOPATH"] = gopath
-    ENV.prepend_create_path "PATH", gopath/"bin"
+    ctpath = buildpath/"src/github.com/hashicorp/consul-template"
+    ctpath.install Dir["{*,.git}"]
+    Language::Go.stage_deps resources, buildpath/"src"
+    mkdir_p buildpath/"bin"
 
-    Language::Go.stage_deps resources, gopath/"src"
+    cd "src/github.com/mitchellh/gox" do
+      system "go", "build"
+      buildpath.install "gox"
+    end
 
-    cd gopath/"src/github.com/hashicorp/consul-template" do
-      system "make"
-      bin.install "bin/consul-template"
+    cd "src/github.com/hashicorp/consul-template" do
+      system "gox",
+             "-os=darwin",
+             "-arch=#{arch}",
+             "-ldflags",
+             "-X main.GitCommit #{revision}",
+             "-output",
+             "consul-template",
+             "."
+      bin.install "consul-template"
     end
   end
 

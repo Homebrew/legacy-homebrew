@@ -7,9 +7,10 @@ class Mitmproxy < Formula
 
   bottle do
     cellar :any
-    sha256 "2f547f6de557f1bd9401236841d0660370e31cc5b4fc22aa04982f6aa577f31a" => :el_capitan
-    sha256 "9a7116abeb2ef10f48bc1f7b8394d3662db8390b691c12487679b1a46b93cfe5" => :yosemite
-    sha256 "faf33e7f3987f7339a4d2fd374870ebb9715100e2949cc84fa4b9862a9af8064" => :mavericks
+    revision 1
+    sha256 "58c50450515bc3a3299bf047b7f0ca2271e4ae77a963ff2fd0cc9ce3d3db0b4f" => :el_capitan
+    sha256 "1c2a1581063a02f7ea8f3c759c8556c10f5bf26089250dbf32116d055671db06" => :yosemite
+    sha256 "5d1e31f02b7c7b7c1578d42ddd6f3539f37312405119ed4be63540a6a08a85e1" => :mavericks
   end
 
   option "with-pyamf", "Enable action message format (AMF) support for python"
@@ -131,8 +132,8 @@ class Mitmproxy < Formula
   end
 
   resource "urwid" do
-    url "https://pypi.python.org/packages/source/u/urwid/urwid-1.3.0.tar.gz"
-    sha256 "29f04fad3bf0a79c5491f7ebec2d50fa086e9d16359896c9204c6a92bc07aba2"
+    url "https://pypi.python.org/packages/source/u/urwid/urwid-1.3.1.tar.gz"
+    sha256 "cfcec03e36de25a1073e2e35c2c7b0cc6969b85745715c3a025a31d9786896a1"
   end
 
   resource "construct" do

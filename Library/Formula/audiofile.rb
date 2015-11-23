@@ -6,9 +6,9 @@ class Audiofile < Formula
 
   bottle do
     cellar :any
-    sha1 "3ee5b808776b2ee6269aad02db795e8da61fa181" => :yosemite
-    sha1 "a15e1ae96b15c18c62cfd19e387eb5d21f0992f2" => :mavericks
-    sha1 "9994dc853442647fee82bf7291df0a2d35b93d16" => :mountain_lion
+    sha256 "0b7f9bd2023f2b52e4b3f7c03ddd822b0866874325adacfa10b582740e070cdc" => :yosemite
+    sha256 "a03ebac03c59a9a65482cfa420b54f6be76bfae546ceaa1e70340ef0d02d42a7" => :mavericks
+    sha256 "b68287cea599e95d784529b79a2b17fea366bc756d9a84ee8a77c06fcffda773" => :mountain_lion
   end
 
   head do
