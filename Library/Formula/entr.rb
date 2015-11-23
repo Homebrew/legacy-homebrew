@@ -25,10 +25,51 @@ class Entr < Formula
     system "make", "install"
   end
 
+  def caveats; <<-EOS
+    To increase the number of files `entr` is permitted to watch, run:
+
+      sudo launchctl limit maxfiles 65536 524288
+
+    Then copy the new property list file to make these limits permanent:
+
+      sudo cp #{opt_prefix}/limit.maxfiles.plist /Library/LaunchDaemons/
+    EOS
+  end
+
+  def plist_name(extra = nil)
+    "limit.maxfiles"
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+    <key>Label</key>
+    <string>limit.maxfiles</string>
+    <key>ProgramArguments</key>
+    <array>
+    <string>launchctl</string>
+    <string>limit</string>
+    <string>maxfiles</string>
+    <string>65536</string>
+    <string>524288</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>ServiceIPC</key>
+    <false/>
+    </dict>
+    </plist>
+    EOS
+  end
+
   test do
     touch testpath/"test.1"
     fork do
       sleep 0.5
+  plist_options :manual => ""
+
       touch testpath/"test.2"
     end
     assert_equal "New File", pipe_output("#{bin}/entr -p -d echo 'New File'", testpath).strip
