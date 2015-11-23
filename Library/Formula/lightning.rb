@@ -29,7 +29,7 @@ class Lightning < Formula
   end
 
   test do
-    # from http://www.gnu.org/software/lightning/manual/lightning.html#incr
+    # from https://www.gnu.org/software/lightning/manual/lightning.html#incr
     (testpath/"test.c").write <<-EOS.undent
       #include <stdio.h>
       #include <lightning.h>
