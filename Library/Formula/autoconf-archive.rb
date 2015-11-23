@@ -27,7 +27,7 @@ class AutoconfArchive < Formula
 
       m4_include([#{share}/aclocal/ax_have_select.m4])
 
-      # from http://www.gnu.org/software/autoconf-archive/ax_have_select.html
+      # from https://www.gnu.org/software/autoconf-archive/ax_have_select.html
       AX_HAVE_SELECT(
         [AX_CONFIG_FEATURE_ENABLE(select)],
         [AX_CONFIG_FEATURE_DISABLE(select)])
