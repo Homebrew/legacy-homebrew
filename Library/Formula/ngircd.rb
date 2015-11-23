@@ -1,14 +1,14 @@
 class Ngircd < Formula
   desc "Next generation IRC daemon"
   homepage "http://ngircd.barton.de"
-  url "http://ngircd.barton.de/pub/ngircd/ngircd-22.1.tar.gz"
-  mirror "http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-22.1.tar.gz"
-  sha256 "17ad08d0420c00a180b71e7284d1b6a8d2f6f39dbac756fe104f6ca59a9c66f5"
+  url "http://ngircd.barton.de/pub/ngircd/ngircd-23.tar.gz"
+  mirror "http://ngircd.mirror.3rz.org/pub/ngircd/ngircd-23.tar.gz"
+  sha256 "99b8b67a975a9ae9b81c96bdee02133a10f515c718825d34cedcb64f1fc95e73"
 
   bottle do
-    sha256 "30b362de911c6812d085e27c61c5aa66a1f4f3e598f6306613c91f6a74081f29" => :yosemite
-    sha256 "4ac8d533f8aa16a28a55d45f752ae9a8ac6e541b0cbf8e043752d2b33f964631" => :mavericks
-    sha256 "ec8f4c6e61e924fe46e90df8a7d7041037c752b4e03cb11c5643bb03ae771909" => :mountain_lion
+    sha256 "5ca03cd4c4b96553c0be0361311baad578ed5f33b0b70e510b2d503f2f5354b9" => :el_capitan
+    sha256 "32286cf3a53887c07293cc0d712aadd5ed7dc567d2f90bc3c9768d247d09061a" => :yosemite
+    sha256 "b8a848cce3bde15ed760b3c93065b5914dcd222cee5c11c4401e7901c929246e" => :mavericks
   end
 
   option "with-iconv", "Enable character conversion using libiconv."

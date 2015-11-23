@@ -121,6 +121,14 @@ class Node < Formula
       EOS
     end
 
+    if build.without? "full-icu"
+      s += <<-EOS.undent
+        Please note by default only English locale support is provided. If you need
+        full locale support you should:
+          `brew reinstall node --with-full-icu`
+      EOS
+    end
+
     s
   end
 

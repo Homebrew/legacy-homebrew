@@ -1,0 +1,10 @@
+#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby
+
+puts <<-EOS
+Whoops, the Homebrew installer has moved! Please instead run:
+
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+Also, please ask wherever you got this link from to update it to the above.
+Thanks!
+EOS

@@ -1,32 +1,16 @@
 class Io < Formula
   desc "Small prototype-based programming language"
   homepage "http://iolanguage.com/"
+  url "https://github.com/stevedekorte/io/archive/2015.11.11.tar.gz"
+  sha256 "00d7be0b69ad04891dd5f6c77604049229b08164d0c3f5877bfab130475403d3"
 
   head "https://github.com/stevedekorte/io.git"
 
-  stable do
-    url "https://github.com/stevedekorte/io/archive/2013.12.04.tar.gz"
-    sha256 "e31e8aded25069d945b55732960b3553ba69851a61bd8698b68dfca27b6724cd"
-
-    # Upstream commit to fix the compilation on OS X
-    patch do
-      url "https://github.com/stevedekorte/io/commit/19fa63e8ca0473e2d2327bcd4690b5123b15e58f.patch"
-      sha256 "30e4493a103b052b406634f7e431441c49d8c36788906de1944edc632ad71e9f"
-    end
-
-    # Fixes build on GCC with recursive inline functions;
-    # committed upstream, will be in the next release.
-    patch do
-      url "https://github.com/stevedekorte/io/commit/f21a10ca0e8959e2a0774962c36392cf166be6a6.diff"
-      sha256 "7dbea1f027de4a4b12decba13a3e58c3352cd599fae14054d7a3af5eb2c454bb"
-    end
-  end
   bottle do
-    sha256 "a7d1dfa5a71c8416e649ede0489db258ad768303f42572df04472b4bb67fea93" => :el_capitan
-    sha256 "2a399520d3969a2712f10a70527242df50353b413c0b911a59bdfb6bb1022059" => :yosemite
-    sha256 "8d9af751dad080d7d58a36cc8eaa05922457d39baaefb288ada4b9653890d4b5" => :mavericks
+    sha256 "741314b5c2629688c17eabca50e0a623a9318a44d94568d4d0cf53e86560c2b2" => :el_capitan
+    sha256 "e34facca9debca217eaab84e55c036fe1bbd30a34a18bac927dc4a435947604b" => :yosemite
+    sha256 "6c0b0d22dd8184f20c60b9d35437645314c7149b0a2e34d8c406546faf44e570" => :mavericks
   end
-
 
   option "without-addons", "Build without addons"
 

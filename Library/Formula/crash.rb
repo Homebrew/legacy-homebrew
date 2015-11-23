@@ -7,7 +7,7 @@ class Crash < Formula
   bottle :unneeded
 
   resource "docs" do
-    url "http://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.1/crash.distrib-1.3.1-docs.tar.gz"
+    url "https://search.maven.org/remotecontent?filepath=org/crashub/crash.distrib/1.3.1/crash.distrib-1.3.1-docs.tar.gz"
     sha256 "c594c005452fa02a54c60b47c82883b7a12e2293c00d1da24a9203b8d5898413"
   end
 
