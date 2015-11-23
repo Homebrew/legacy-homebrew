@@ -6,9 +6,9 @@ chdir() {
 BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
 HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
-BREW_SYMLINK="$(readlink "$0")"
-if [ -n "$BREW_SYMLINK" ]
+if [ -L "$HOMEBREW_BREW_FILE" ]
 then
+  BREW_SYMLINK="$(readlink "$HOMEBREW_BREW_FILE")"
   BREW_SYMLINK_DIRECTORY="$(dirname "$BREW_SYMLINK")"
   BREW_FILE_DIRECTORY="$(chdir "$BREW_FILE_DIRECTORY" &&
                          chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)"
