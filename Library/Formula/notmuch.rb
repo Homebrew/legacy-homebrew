@@ -2,6 +2,7 @@ class Notmuch < Formula
   desc "Thread-based email index, search, and tagging"
   homepage "https://notmuchmail.org"
   url "https://notmuchmail.org/releases/notmuch-0.21.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/n/notmuch/notmuch_0.21.orig.tar.gz"
   sha256 "d06f8ffed168c7d53ffc449dd611038b5fa90f7ee22d58f3bec3b379571e25b3"
 
   bottle do
@@ -12,7 +13,7 @@ class Notmuch < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "emacs" => :optional
+  depends_on :emacs => :optional
   depends_on :python => :optional
   depends_on :python3 => :optional
   depends_on "xapian"
@@ -35,7 +36,7 @@ class Notmuch < Formula
     args = ["--prefix=#{prefix}"]
     if build.with? "emacs"
       ENV.deparallelize # Emacs and parallel builds aren't friends
-      args << "--with-emacs"
+      args << "--with-emacs" << "--emacslispdir=#{elisp}"
     else
       args << "--without-emacs"
     end
