@@ -121,12 +121,14 @@ class FormulaAuditor
     boost-build
     bsdmake
     cmake
+    godep
     imake
     intltool
     libtool
     pkg-config
     scons
     smake
+    sphinx-doc
     swig
   ]
 
@@ -142,8 +144,14 @@ class FormulaAuditor
   end
 
   def audit_file
-    unless formula.path.stat.mode == 0100644
-      problem "Incorrect file permissions: chmod 644 #{formula.path}"
+    # Under normal circumstances (umask 0022), we expect a file mode of 644. If
+    # the user's umask is more restrictive, respect that by masking out the
+    # corresponding bits. (The also included 0100000 flag means regular file.)
+    wanted_mode = 0100644 & ~File.umask
+    actual_mode = formula.path.stat.mode
+    unless actual_mode == wanted_mode
+      problem format("Incorrect file permissions (%03o): chmod %03o %s",
+                     actual_mode & 0777, wanted_mode & 0777, formula.path)
     end
 
     if text.has_DATA? && !text.has_END?

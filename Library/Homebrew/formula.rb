@@ -937,6 +937,11 @@ class Formula
   end
 
   # @private
+  def pinned_version
+    @pin.pinned_version
+  end
+
+  # @private
   def pin
     @pin.pin
   end
@@ -1422,7 +1427,7 @@ class Formula
         log.puts
 
         require "cmd/config"
-        require "cmd/--env"
+        require "build_environment"
 
         env = ENV.to_hash
 

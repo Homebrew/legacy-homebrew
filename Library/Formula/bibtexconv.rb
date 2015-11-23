@@ -36,7 +36,7 @@ class Bibtexconv < Formula
   end
 
   test do
-    cp "#{Formula["bibtexconv"].opt_share}/doc/bibtexconv/examples/ExampleReferences.bib", testpath
+    cp "#{opt_share}/doc/bibtexconv/examples/ExampleReferences.bib", testpath
 
     system bin/"bibtexconv", "#{testpath}/ExampleReferences.bib",
                              "-export-to-bibtex=UpdatedReferences.bib",

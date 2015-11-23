@@ -105,18 +105,13 @@ module Homebrew
 
     specs << "HEAD" if f.head
 
-    puts "#{f.full_name}: #{specs*", "}#{" (pinned)" if f.pinned?}"
+    attrs = []
+    attrs << "pinned at #{f.pinned_version}" if f.pinned?
+    attrs << "keg-only" if f.keg_only?
 
+    puts "#{f.full_name}: #{specs * ", "}#{" [#{attrs * ", "}]" if attrs.any?}"
     puts f.desc if f.desc
-
-    puts f.homepage
-
-    if f.keg_only?
-      puts
-      puts "This formula is keg-only."
-      puts f.keg_only_reason
-      puts
-    end
+    puts "#{Tty.em}#{f.homepage}#{Tty.reset}" if f.homepage
 
     conflicts = f.conflicts.map(&:name).sort!
     puts "Conflicts with: #{conflicts*", "}" unless conflicts.empty?
@@ -132,8 +127,7 @@ module Homebrew
       puts "Not installed"
     end
 
-    history = github_info(f)
-    puts "From: #{history}" if history
+    puts "From: #{Tty.em}#{github_info(f)}#{Tty.reset}"
 
     unless f.deps.empty?
       ohai "Dependencies"

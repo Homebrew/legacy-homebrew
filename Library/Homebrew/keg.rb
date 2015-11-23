@@ -103,11 +103,6 @@ class Keg
     @opt_record = HOMEBREW_PREFIX.join("opt", name)
   end
 
-  def fname
-    opoo "Keg#fname is a deprecated alias for Keg#name and will be removed soon"
-    name
-  end
-
   def to_s
     path.to_s
   end
