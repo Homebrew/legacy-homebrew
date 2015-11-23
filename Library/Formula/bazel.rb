@@ -20,6 +20,8 @@ class Bazel < Formula
       "/etc/bazel.bazelrc",
       "#{etc}/bazel/bazel.bazelrc"
 
+    ENV["EMBED_LABEL"] = "#{version}-homebrew"
+
     system "./compile.sh"
 
     (prefix/"base_workspace").mkdir
