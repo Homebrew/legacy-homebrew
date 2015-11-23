@@ -937,6 +937,11 @@ class Formula
   end
 
   # @private
+  def pinned_version
+    @pin.pinned_version
+  end
+
+  # @private
   def pin
     @pin.pin
   end
@@ -1052,7 +1057,9 @@ class Formula
   # @private
   def self.racks
     @racks ||= if HOMEBREW_CELLAR.directory?
-      HOMEBREW_CELLAR.subdirs.reject(&:symlink?)
+      HOMEBREW_CELLAR.subdirs.reject do |rack|
+        rack.symlink? || rack.subdirs.empty?
+      end
     else
       []
     end
@@ -1420,7 +1427,7 @@ class Formula
         log.puts
 
         require "cmd/config"
-        require "cmd/--env"
+        require "build_environment"
 
         env = ENV.to_hash
 

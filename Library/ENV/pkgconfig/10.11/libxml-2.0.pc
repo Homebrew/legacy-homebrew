@@ -5,7 +5,7 @@ includedir=${prefix}/include
 modules=1
 
 Name: libXML
-Version: 2.9.0
+Version: 2.9.2
 Description: libXML library version2.
 Requires:
 Libs: -L${libdir} -lxml2

@@ -3,29 +3,29 @@ class Dmd < Formula
   homepage "http://dlang.org"
 
   stable do
-    url "https://github.com/D-Programming-Language/dmd/archive/v2.069.0.tar.gz"
-    sha256 "a75621e2584bbde8b10eefd58fdafa74adf4df8d35abdc9bb68dd00fbc1a4787"
+    url "https://github.com/D-Programming-Language/dmd/archive/v2.069.1.tar.gz"
+    sha256 "abf63eeae164560d4d2cd4b61d8b8f2444925376e02245bce1fd28baf4c1f252"
 
     resource "druntime" do
-      url "https://github.com/D-Programming-Language/druntime/archive/v2.069.0.tar.gz"
-      sha256 "84b359e7160a797cf4f21dda0b39e18256d12f68e16ad4348214f0d8785dffc8"
+      url "https://github.com/D-Programming-Language/druntime/archive/v2.069.1.tar.gz"
+      sha256 "5d1fb286b2f3a032e8f4b1701ae6d787189701644b4e2b9b89e9b9a67f55439a"
     end
 
     resource "phobos" do
-      url "https://github.com/D-Programming-Language/phobos/archive/v2.069.0.tar.gz"
-      sha256 "81b391dc943e8069217cda765bf015c29a2dcf70267c6e7bf4f845d67229b11a"
+      url "https://github.com/D-Programming-Language/phobos/archive/v2.069.1.tar.gz"
+      sha256 "737b4a630bb1734a34d4f61a145b99de022761edb3a92366ac777f8ccab87dc4"
     end
 
     resource "tools" do
-      url "https://github.com/D-Programming-Language/tools/archive/v2.069.0.tar.gz"
-      sha256 "6219306fcb51b5f69fabd241d1e78cb67f953589c6f0d10a627d2025e455ddff"
+      url "https://github.com/D-Programming-Language/tools/archive/v2.069.1.tar.gz"
+      sha256 "5d0ee39e3f4e51ec9dbb7200249494f28846a3128a38d335260eb157b3bcfa68"
     end
   end
 
   bottle do
-    sha256 "578203e347dffa72549d9edd2651f15bfa64de8d555a59f89cc83fb1d6bc51b6" => :el_capitan
-    sha256 "ad2908bb8822c1b3145009b158a95b825705f60da3a828c8bb221ca8a25538a9" => :yosemite
-    sha256 "9dbc01cf2450007bc85d965c43f795fd0504a8d195c13fa9789d567e4cd84cf3" => :mavericks
+    sha256 "0f79eadd2e9318222a561d67c66b4cf488bc33e67c4c9ac4c31c714bd9f2f46d" => :el_capitan
+    sha256 "9bd4b66fc5df16e665df31bfa61b15fbfb6ca10bbd6669553019c53ef7bd3d4b" => :yosemite
+    sha256 "73bcca9b4c6456725e3064b405043f586a91c9e32047259bfec41105635477e9" => :mavericks
   end
 
   head do

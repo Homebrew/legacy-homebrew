@@ -22,6 +22,7 @@ class Pyside < Formula
   option "without-docs", "Skip building documentation"
 
   depends_on "cmake" => :build
+  depends_on "sphinx-doc" => :build if build.with? "docs"
   depends_on "qt"
 
   if build.with? "python3"
@@ -30,24 +31,8 @@ class Pyside < Formula
     depends_on "shiboken"
   end
 
-  resource "sphinx" do
-    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
-    sha256 "94933b64e2fe0807da0612c574a021c0dac28c7bd3c4a23723ae5a39ea8f3d04"
-  end
-
   def install
-    if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
-      resources.each do |r|
-        r.stage do
-          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
-        end
-      end
-
-      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
-    else
-      rm buildpath/"doc/CMakeLists.txt"
-    end
+    rm buildpath/"doc/CMakeLists.txt" if build.without? "docs"
 
     # Add out of tree build because one of its deps, shiboken, itself needs an
     # out of tree build in shiboken.rb.

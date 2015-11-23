@@ -1,7 +1,7 @@
 class Libagg < Formula
   desc "High fidelity 2D graphics library for C++"
-  homepage "http://www.antigrain.com"
-  url "http://www.antigrain.com/agg-2.5.tar.gz"
+  homepage "https://web.archive.org/web/20150812005010/http://www.antigrain.com/"
+  url "https://web.archive.org/web/20150811231742/http://www.antigrain.com/agg-2.5.tar.gz"
   sha256 "ab1edc54cc32ba51a62ff120d501eecd55fceeedf869b9354e7e13812289911f"
 
   bottle do

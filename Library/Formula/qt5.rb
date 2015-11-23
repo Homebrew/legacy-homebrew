@@ -15,7 +15,7 @@ class Qt5 < Formula
   desc "Version 5 of the Qt framework"
   homepage "https://www.qt.io/"
   head "https://code.qt.io/qt/qt5.git", :branch => "5.5", :shallow => false
-  revision 1
+  revision 2
 
   stable do
     url "https://download.qt.io/official_releases/qt/5.5/5.5.1/single/qt-everywhere-opensource-src-5.5.1.tar.xz"
@@ -43,12 +43,22 @@ class Qt5 < Formula
       url "https://raw.githubusercontent.com/UniqMartin/patches/77d138fa/qt5/osx-no-rpath.patch"
       sha256 "92c9cfe701f9152f4b16219a04a523338d4b77bb0725a8adccc3fc72c9fb576f"
     end
+
+    # Fixes for Secure Transport in QtWebKit
+    # https://codereview.qt-project.org/#/c/139967/
+    # https://codereview.qt-project.org/#/c/139968/
+    # https://codereview.qt-project.org/#/c/139970/
+    # Should land in the 5.5.2 and/or 5.6 release.
+    patch do
+      url "https://gist.githubusercontent.com/The-Compiler/8202f92fff70da39353a/raw/884c3bef4d272d25d7d7202be99c3940248151ee/qt5.5-securetransport-qtwebkit.patch"
+      sha256 "c3302de2e23e74a99e62f22527e0edee5539b2e18d34c05e70075490ba7b3613"
+    end
   end
 
   bottle do
-    sha256 "9286d3a2402f77d5f645801b66dff78d5adf8e96654991340b4412c6b35e5dd1" => :el_capitan
-    sha256 "c4041f1f6271963cb87cd2b04fe3949051aa4862d4345e21873868d27f573582" => :yosemite
-    sha256 "67b6f7fe340b838dfcaf9d20a38d36ee9079f8c1728d50e5a3a4f3cff2f412f8" => :mavericks
+    sha256 "66392beb2f58ca5763c044de0f80128c4d2747b7708dfe749ffa551e323e12e5" => :el_capitan
+    sha256 "a7b2d4ef9027f41c0e1f70ecdd39682caa343ac5314eb226e441b30b0943739d" => :yosemite
+    sha256 "6a5a3cd1331a217eb2a1abfc09d73d6e06a0ce5cafac9188aee6d96c7fc4ca4e" => :mavericks
   end
 
   keg_only "Qt 5 conflicts Qt 4 (which is currently much more widely used)."

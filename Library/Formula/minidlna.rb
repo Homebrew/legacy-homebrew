@@ -1,15 +1,15 @@
 class Minidlna < Formula
   desc "Media server software, compliant with DLNA/UPnP-AV clients"
-  homepage "http://sourceforge.net/projects/minidlna/"
+  homepage "https://sourceforge.net/projects/minidlna/"
   url "https://downloads.sourceforge.net/project/minidlna/minidlna/1.1.5/minidlna-1.1.5.tar.gz"
   sha256 "8477ad0416bb2af5cd8da6dde6c07ffe1a413492b7fe40a362bc8587be15ab9b"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "a1720c0519c4c628f1741e340b4462f92a2b20a00f8ed319d7a98602d4ad27a5" => :el_capitan
-    sha256 "f59f5cc914bbd49af01f7421e5d0b368b05eca5a3f63b32be446c61b6ab151cc" => :yosemite
-    sha256 "00a50390c52a5fd7fed585776d586ef285c27ff98e7239ca219325577cf2c10d" => :mavericks
+    revision 2
+    sha256 "4d85c9e347059b147e137d97e4013d6410a2cf8a4ecd624854633b4c65a1615a" => :el_capitan
+    sha256 "1cf829580a368c8bcd0df473557e323219c4513c9c3cba3e7b9a29bf453ce98c" => :yosemite
+    sha256 "6966ecb8d620b6cb074a750926217c19d4f459caced01e28f72c512259387d4e" => :mavericks
   end
 
   head do

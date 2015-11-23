@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Homebrew
 Features, usage and installation instructions are [summarised on the homepage](http://brew.sh).
 
@@ -25,7 +26,7 @@ This is our PGP key which is valid until June 17, 2016.
 * Full key: https://keybase.io/homebrew/key.asc
 
 ## Who Are You?
-Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Adam Vandenberg](https://github.com/adamv), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4), [Tim Smith](https://github.com/tdsmith) and [Alex Dunn](https://github.com/dunn).
+Homebrew's current maintainers are [Misty De Meo](https://github.com/mistydemeo), [Andrew Janke](https://github.com/apjanke), [Xu Cheng](https://github.com/xu-cheng), [Mike McQuaid](https://github.com/mikemcquaid), [Baptiste Fontaine](https://github.com/bfontaine), [Brett Koonce](https://github.com/asparagui), [Dominyk Tiller](https://github.com/DomT4), [Tim Smith](https://github.com/tdsmith) and [Alex Dunn](https://github.com/dunn).
 
 Homebrew was originally created by [Max Howell](https://github.com/mxcl).
 
@@ -41,3 +42,8 @@ Our CI infrastructure is hosted by [The Positive Internet Company](http://www.po
 Our bottles (binary packages) are hosted by Bintray.
 
 [![Downloads by Bintray](https://bintray.com/docs/images/downloads_by_bintray_96.png)](https://bintray.com/homebrew)
+=======
+# Redirected
+
+The Homebrew homepage has moved to https://github.com/Homebrew/homebrew.github.io
+>>>>>>> origin/gh-pages
