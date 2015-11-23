@@ -124,7 +124,7 @@ class Gcc < Formula
 
     # The pre-Mavericks toolchain requires the older DWARF-2 debugging data
     # format to avoid failure during the stage 3 comparison of object files.
-    # See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
+    # See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
     args << "--with-dwarf2" if MacOS.version <= :mountain_lion
 
     args << "--disable-nls" if build.without? "nls"
