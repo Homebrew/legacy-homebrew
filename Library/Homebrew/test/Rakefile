@@ -1,0 +1,22 @@
+require "rake"
+require "rake/testtask"
+
+TEST_DIRECTORY = File.dirname(File.expand_path(__FILE__))
+TEST_FILES = Dir["#{TEST_DIRECTORY}/test_*.rb"]
+
+task :default => :test
+
+Rake::TestTask.new(:test) do |t|
+  t.libs << TEST_DIRECTORY
+  t.test_files = TEST_FILES
+end
+
+namespace :test do
+  TEST_FILES.each do |file|
+    name = file[/test_(.+)\.rb/, 1]
+    Rake::TestTask.new(name) do |t|
+      t.libs << TEST_DIRECTORY
+      t.test_files = [file]
+    end
+  end
+end

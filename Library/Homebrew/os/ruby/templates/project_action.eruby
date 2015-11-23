@@ -1,0 +1,24 @@
+package hudson.plugins.rvmRubyMetrics.<%= @package_name %>;
+
+import hudson.model.AbstractProject;
+import hudson.plugins.rvmRubyMetrics.AbstractRubyMetricsProjectAction;
+
+public class <%= @camelized_name %>ProjectAction<<%= @camelized_name %>BuildAction> extends AbstractRubyMetricsProjectAction {
+
+    public <%= @camelized_name %>ProjectAction(AbstractProject<?, ?> project) {
+        super(project);
+    }
+
+    @Override
+    protected Class getBuildActionClass() {
+        return hudson.plugins.rvmRubyMetrics.<%= @package_name %>.<%= @camelized_name %>BuildAction.class;
+    }
+
+    public String getDisplayName() {
+        return "<%= @camelized_name %> report";
+    }
+
+    public String getUrlName() {
+        return "<%= @tool_name %>";
+    }
+}

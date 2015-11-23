@@ -1,0 +1,96 @@
+package hudson.plugins.rvmRubyMetrics.<%= @package_name %>;
+
+import hudson.Extension;
+import hudson.Launcher;
+import hudson.model.AbstractBuild;
+import hudson.model.AbstractProject;
+import hudson.model.Action;
+import hudson.model.BuildListener;
+import hudson.plugins.rvmRubyMetrics.<%= @superclass_name %>;
+import hudson.plugins.rvmRubyMetrics.<%= @package_name %>.model.<%= @camelized_name %>BuildResults;
+import hudson.tasks.BuildStepDescriptor;
+import hudson.tasks.Publisher;
+
+import java.io.IOException;
+
+import org.kohsuke.stapler.DataBoundConstructor;
+
+public class <%= @camelized_name %>Publisher extends <%= @superclass_name %> {
+
+    <% unless @html_report -%>
+    private final String reportConfig;
+    <% end %>
+
+    @DataBoundConstructor
+    public <%= @camelized_name %>Publisher(String reportConfig) {
+        <% if @html_report -%>
+        this.reportDir = reportConfig;
+        <% else -%>
+        this.reportConfig = reportConfig;
+        <% end -%>
+    }
+
+    <% unless @html_report -%>
+    public String getReportConfig() {
+        return reportConfig;
+    }
+    <% end -%>
+
+    @Override
+    public boolean perform(AbstractBuild<?, ?> build, Launcher launcher, BuildListener listener) throws InterruptedException, IOException {
+        /* do something */
+
+        /* publish build results */
+        /*
+        <%= @camelized_name %>BuildResults buildResults = new <%= @camelized_name
+        %>BuildResults();
+
+        <%= @camelized_name %>BuildAction action = new <%= @camelized_name %>BuildAction(build, buildResults);
+        build.getActions().add(action);
+        */
+
+        return true;
+    }
+
+    @Override
+    public Action getProjectAction(AbstractProject<?,?> project) {
+        return new <%= @camelized_name %>ProjectAction<<%= @camelized_name %>BuildAction>(project);
+    }
+
+    @Override
+    public BuildStepDescriptor<Publisher> getDescriptor() {
+        return DESCRIPTOR;
+    }
+
+    @Extension
+    public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
+
+    public static final class DescriptorImpl extends BuildStepDescriptor<Publisher> {
+        protected DescriptorImpl() {
+          super(<%= @camelized_name %>Publisher.class);
+        }
+
+        public String getToolShortName() {
+          return "<%= @tool_name %>";
+        }
+
+        @Override
+        public String getDisplayName() {
+          return "Publish <%= @camelized_name %> report";
+        }
+
+        @Override
+        public boolean isApplicable(Class<? extends AbstractProject> jobType) {
+          return true;
+        }
+
+        <% if @health_report -%>
+        @Override
+        public SaikuroPublisher newInstance(StaplerRequest req, JSONObject formData) throws FormException {
+            return req.bindParameters(<%= @camelized_name %>Publisher.class, "<%=
+            @tool_name %>.");
+        }
+        <% end%>
+    }
+}
+
