@@ -5,10 +5,11 @@ class Veraxx < Formula
   sha256 "9415657a09438353489db10ca860dd6459e446cfd9c649a1a2e02268da66f270"
 
   bottle do
-    cellar :any
-    sha256 "911f2a08616c7f62ca51d4ac7afa218c5e2f4d4c30099804340d2415f4886c68" => :yosemite
-    sha256 "71288764fde2bf17878a2641ba5ddd3b173c0782938b51135c452ee3e16026b9" => :mavericks
-    sha256 "7d3357f2d5bda931c9e5a7c3ccf9caa1cddb337d2e6cc22d3f791542d8e916ec" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "76dcb0b9340b8fc9413fc848dff27e8805d7b2a9c63d5128fc83ce5bd3bd1cd5" => :el_capitan
+    sha256 "a2620392e9204964ecd0ec0bc6b90268d27e5e2a28ef304aff3d3719ed058b80" => :yosemite
+    sha256 "05d5ff89c4ce8aa8054a94d234824fff41cd9f16e029022096c1d99301c9e572" => :mavericks
   end
 
   depends_on "cmake" => :build
