@@ -4,6 +4,12 @@ class Arx < Formula
   url "https://github.com/solidsnack/arx/archive/0.2.1.tar.gz"
   sha256 "c3e91e4b9f72353061b0a104ee752da88770d695ef6329eca0f1049a56e9c110"
 
+  bottle do
+    sha256 "5f872b7d40a3c6dd1ea8fd3ee24296e7758c4693d62a2dbc07612688ab55c4a5" => :el_capitan
+    sha256 "2711faa378132775c5e152d6649a31d6a758006f1fb4fdd60d968466c7a3afee" => :yosemite
+    sha256 "acb50b98723382ab596b4e83aeb1ad3a8a3ad69648244bd3178425bc3a2ecebb" => :mavericks
+  end
+
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
