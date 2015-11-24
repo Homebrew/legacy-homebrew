@@ -8,9 +8,9 @@ class Keybase < Formula
   head "https://github.com/keybase/client.git"
 
   bottle do
-    sha256 "e680297fa09b43a2f6b1f361149096f31a2d5f57dfec41bec8d26fa5df575c88" => :el_capitan
-    sha256 "16085f981d6b6cfb34ee6198fc525433107fd171970e8895096088b9a9aa5e97" => :yosemite
-    sha256 "b6b97451768dd3e96ead3e14112c368ea76c2b96a3811cdf3237a48f889ef240" => :mavericks
+    sha256 "3048d0edd46a84fbeb74ac4972cc7ab67c821496545232026529fa15a36d607b" => :el_capitan
+    sha256 "81d832ee8170fae1971813ffd2e1604d6a596c4771bd76a79e9c6effbe14b5cb" => :yosemite
+    sha256 "a3c1aa2263b05808ca0875391310316beacde285dade434bcc93303dfa823dd6" => :mavericks
   end
 
   depends_on "go" => :build
