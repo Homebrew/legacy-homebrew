@@ -2,9 +2,9 @@ class Libpng < Formula
   desc "Library for manipulating PNG images"
   homepage "http://www.libpng.org/pub/png/libpng.html"
   # Sourceforge tarball is not up yet; review this later
-  url "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.18.tar.xz"
-  mirror "https://dl.bintray.com/homebrew/mirror/libpng-1.6.18.tar.xz"
-  sha256 "2e10c13b7949883ac961db6177c516d778184432d440317e9f0391305c360963"
+  url "ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-1.6.19.tar.xz"
+  mirror "https://dl.bintray.com/homebrew/mirror/libpng-1.6.19.tar.xz"
+  sha256 "311c5657f53516986c67713c946f616483e3cdb52b8b2ee26711be74e8ac35e8"
 
   bottle do
     cellar :any
