@@ -9,7 +9,6 @@ class Desk < Formula
   end
 
   test do
-    system "mkdir", "-p", testpath/".desk/desks"
     (testpath/".desk/desks/test-desk.sh").write("#\n# Description: A test desk\n#")
     list = pipe_output("#{bin}/desk list")
     assert_match /test-desk/, list
