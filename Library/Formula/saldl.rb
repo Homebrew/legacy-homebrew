@@ -1,8 +1,8 @@
 class Saldl < Formula
   desc "CLI downloader optimized for speed and early preview."
   homepage "https://saldl.github.io"
-  url "https://github.com/saldl/saldl/archive/v31.tar.gz"
-  sha256 "146a980ae2109a391c7a8ab6a1c525458db9bf18f3f0477731c9b876630078b4"
+  url "https://github.com/saldl/saldl/archive/v32.tar.gz"
+  sha256 "93a6f289d9520b986a4b5a6b4ab45ec97f890ae659cc06a2e391d35059cdfe8a"
   bottle do
     cellar :any
     sha256 "416d951decbb228df958fdfd89b94dbe3dafede3cea23a165e80a8acb858237d" => :el_capitan
