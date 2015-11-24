@@ -40,11 +40,8 @@ class DnscryptProxy < Formula
 
     system "./configure", *args
     system "make", "install"
-  end
 
-  def post_install
-    if build.with? "minisign"
-      (bin/"dnscrypt-update-resolvers").write <<-EOS.undent
+    (bin/"dnscrypt-update-resolvers").write <<-EOS.undent
         #!/bin/sh
         RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
         RESOLVERS_LIST_BASE_DIR=#{pkgshare}
@@ -63,6 +60,10 @@ class DnscryptProxy < Formula
           ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
       EOS
       chmod 0775, bin/"dnscrypt-update-resolvers"
+  end
+
+  def post_install
+    if build.with? "minisign"
       system bin/"dnscrypt-update-resolvers"
     end
   end
