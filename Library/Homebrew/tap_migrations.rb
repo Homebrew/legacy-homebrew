@@ -69,6 +69,7 @@ TAP_MIGRATIONS = {
   "fuse4x-kext" => "homebrew/fuse",
   "gant" => "homebrew/boneyard",
   "gcsfuse" => "homebrew/fuse",
+  "gdrive" => "homebrew/boneyard",
   "geany" => "homebrew/x11",
   "geda-gaf" => "homebrew/x11",
   "geeqie" => "homebrew/x11",
