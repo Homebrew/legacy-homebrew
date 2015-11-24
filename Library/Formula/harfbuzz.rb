@@ -1,8 +1,8 @@
 class Harfbuzz < Formula
   desc "OpenType text shaping engine"
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
-  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.0.4.tar.bz2"
-  sha256 "b030373457e7c00d3a7920f15e6fcd35defac3c4e44cd14ed85869030df74381"
+  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.1.0.tar.bz2"
+  sha256 "0f584a5947e60ede565e7a4e122baa5e4b17a62eab872abf5f73d8552ceb716b"
 
   head do
     url "https://github.com/behdad/harfbuzz.git"
@@ -32,6 +32,13 @@ class Harfbuzz < Formula
   resource "ttf" do
     url "https://github.com/behdad/harfbuzz/raw/fc0daafab0336b847ac14682e581a8838f36a0bf/test/shaping/fonts/sha1sum/270b89df543a7e48e206a2d830c0e10e5265c630.ttf"
     sha256 "9535d35dab9e002963eef56757c46881f6b3d3b27db24eefcc80929781856c77"
+  end
+
+  # https://github.com/behdad/harfbuzz/issues/183
+  # Fixes compilation on OS X
+  patch do
+    url "https://patch-diff.githubusercontent.com/raw/behdad/harfbuzz/pull/184.patch"
+    sha256 "9b2c07f8a5d4398d0b3089c6cc4467eb3820e66cb9c18459f7a5850d1267c9cc"
   end
 
   def install
