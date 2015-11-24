@@ -34,7 +34,7 @@ class Rust < Formula
   option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
   depends_on "llvm" => :optional
   depends_on "openssl"
   depends_on "libssh2"
