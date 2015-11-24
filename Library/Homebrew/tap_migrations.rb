@@ -220,6 +220,7 @@ TAP_MIGRATIONS = {
   "tmap" => "homebrew/boneyard",
   "transmission-remote-gtk" => "homebrew/x11",
   "tup" => "homebrew/fuse",
+  "uim" => "homebrew/x11",
   "ume" => "homebrew/games",
   "upnp-router-control" => "homebrew/x11",
   "urweb" => "homebrew/boneyard",
