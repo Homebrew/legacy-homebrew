@@ -157,9 +157,15 @@ class Llvm < Formula
         "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
 
       (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
-      inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
-      bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
-      man1.install_symlink share/"clang/tools/scan-build/scan-build.1"
+      if build.head?
+        inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
+        bin.install_symlink share/"clang/tools/scan-build/bin/scan-build", share/"clang/tools/scan-view/bin/scan-view"
+        man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"
+      else
+        inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
+        bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
+        man1.install_symlink share/"clang/tools/scan-build/scan-build.1"
+      end
     end
 
     # install llvm python bindings
