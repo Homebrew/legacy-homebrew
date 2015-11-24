@@ -6,6 +6,13 @@ class Dromeaudio < Formula
 
   head "https://github.com/joshb/dromeaudio.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "79eba06cdf2c4c56a1ffb1788e516e7436234ffafa9b7aca6709f547987b4928" => :el_capitan
+    sha256 "9c7ec4059a1ef3c42bad35ab17d08d9da3cd3df40bbdf22d590f86d3a147f29a" => :yosemite
+    sha256 "01d67d410a4c4c83ae46b885ba7d7a344fdb9f0ca737d13395df5382bd4d81aa" => :mavericks
+  end
+
   depends_on "cmake" => :build
 
   def install
