@@ -7,8 +7,7 @@ class Wires < Formula
   depends_on "rust" => :build
 
   def install
-    puts "#{bin}"
-    system "cargo build"
+    system "cargo", "build"
     bin.install "target/debug/wires"
   end
 
