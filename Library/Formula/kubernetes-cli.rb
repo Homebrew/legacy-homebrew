@@ -1,11 +1,11 @@
 class KubernetesCli < Formula
-  desc "Command-line tool for kubernetes, a cluster manager for Docker"
+  desc "Kubernetes command-line interface"
   homepage "http://kubernetes.io/"
   head "https://github.com/kubernetes/kubernetes.git"
 
   stable do
-    url "https://github.com/kubernetes/kubernetes/archive/v1.1.1.tar.gz"
-    sha256 "9b293a37a4782b1906f3f6e0412a064e15a0d55113c6c20ee035edd06e5579fb"
+    url "https://github.com/kubernetes/kubernetes/archive/v1.1.2.tar.gz"
+    sha256 "ffbbf62d7fa324b6f4c3dcdb229e028204ec458f7f78fbf87856a72ab29ec942"
   end
 
   bottle do
