@@ -17,7 +17,6 @@ class Nuxeo < Formula
   def install
     libexec.install Dir["#{buildpath}/*"]
 
-    bin.mkpath
     bin.install_symlink "#{libexec}/bin/nuxeoctl"
 
     # TODO: https://jira.nuxeo.com/browse/NXBT-966 Use a wrapper
@@ -38,13 +37,14 @@ class Nuxeo < Formula
 
   def caveats; <<-EOS.undent
     You need to edit #{etc}/nuxeo.conf file to configure manually the server.
-    In case of upgrade, use 'nuxeoctl mp-list' against the old version then 'nuxeoctl mp-set' on the new version to reinstall packages.
+    In case of upgrade, use 'nuxeoctl mp-list' against the old version then
+    'nuxeoctl mp-set' on the new version to reinstall packages.
     EOS
   end
 
   test do
     # Copy configuration file to test path, due to some automatic writes on it.
-    cp("#{etc}/nuxeo.conf", "#{testpath}/nuxeo.conf")
+    cp "#{etc}/nuxeo.conf", "#{testpath}/nuxeo.conf"
     inreplace "#{testpath}/nuxeo.conf" do |s|
       s.gsub! /#{var}/, testpath
     end
