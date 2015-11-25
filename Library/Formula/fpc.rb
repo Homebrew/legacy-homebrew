@@ -5,10 +5,10 @@ class Fpc < Formula
   sha256 "46354862cefab8011bcfe3bc2942c435f96a8958b245c42e10283ec3e44be2dd"
 
   bottle do
-    cellar :any
-    sha256 "45462778a4998a7fa052bedb5989588fff6c8e492216bf254b7c4cd5d10fdabb" => :mavericks
-    sha256 "617a926b5b13a63cd0af749ef0f44adec7a93c9f718ad63dca630d7e92291189" => :mountain_lion
-    sha256 "bb3d3a5b9acaaf95b57a73b010be3d16749dfd42671a40c5c09c16bb24915fff" => :lion
+    cellar :any_skip_relocation
+    sha256 "4b52e73f38825e27f17fc75b4fd54f2c80242bc84d1637041991388ef336a7be" => :el_capitan
+    sha256 "35fac52eb637dd5696b4d988813c9a6ed19105caee0b5726032eb4f33d5a0ef9" => :yosemite
+    sha256 "3a3a1a2872f5ab37a5cc42b29fd0226737a5fbeb56df634aea6a3295016e869a" => :mavericks
   end
 
   resource "bootstrap" do
