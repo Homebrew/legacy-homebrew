@@ -11,11 +11,8 @@ class Unar < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "3b6c6c9b3daad466a48d2212990303afee2e7b4d7104bea8300d67bd9a1b801d" => :el_capitan
-    sha256 "b1133a9d6ad0ef36471eba78243ea22e1818525ccc0dd619fecd3189861eae63" => :mavericks
-    sha256 "fed764cd8287e0978e1c97b68f39505d5f31a8fa3b896579039b5b5d64eadc9c" => :mountain_lion
-    sha256 "cfcbb24f0952548666d5da7aca059c56b4b132c4beb692d1af8bc6c8ce2929f5" => :lion
+    sha256 "3f0abeedfdc17860ef6f8f8406b34cc6fb2b334e13c3081d00fb7c2ef98f7cc1" => :el_capitan
+    sha256 "829f81a91ebb65385bb5b39944f40a8a6a3a900e4717ef00cf608fec2884e3d6" => :yosemite
   end
 
   def install
