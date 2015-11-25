@@ -14,7 +14,7 @@ module Homebrew
     problem_count = 0
 
     strict = ARGV.include? "--strict"
-    if strict && ARGV.resolved_formulae.any? && MacOS.version >= :mavericks
+    if strict && ARGV.resolved_formulae.any? && RUBY_VERSION.split(".").first.to_i >= 2
       require "cmd/style"
       ohai "brew style #{ARGV.resolved_formulae.join " "}"
       style
