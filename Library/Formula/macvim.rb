@@ -14,10 +14,10 @@ end
 # Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
   desc "GUI for vim, made for OS X"
-  homepage "https://code.google.com/p/macvim/"
-  url "https://github.com/macvim-dev/macvim/archive/snapshot-77.tar.gz"
-  version "7.4-77"
-  sha256 "6b7f4b48ecef4a00dca17efef551884fcea1aa9897005497d31f52da7304bc5f"
+  homepage "https://github.com/macvim-dev/macvim"
+  url "https://github.com/macvim-dev/macvim/archive/snapshot-83.tar.gz"
+  version "7.4-83"
+  sha256 "c1fbfa1df092fc5023081ba198ca9c9743eccb50c18e4ac75e47e3b5efb00a2d"
 
   head "https://github.com/macvim-dev/macvim.git"
 

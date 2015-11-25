@@ -77,6 +77,7 @@ class FormulaInstaller
     bottle = formula.bottle
     return true  if force_bottle? && bottle
     return false if build_from_source? || build_bottle? || interactive?
+    return false if ARGV.cc
     return false unless options.empty?
 
     if OS.linux?
@@ -136,7 +137,7 @@ class FormulaInstaller
         dep.installed? && !dep.keg_only? && !dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*" "}' before #{formula.full_name} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*" "}` before #{formula.full_name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -160,7 +161,7 @@ class FormulaInstaller
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
         #{formula.name}-#{formula.linked_keg.resolved_path.basename} already installed
-        To install this version, first `brew unlink #{formula.name}'
+        To install this version, first `brew unlink #{formula.name}`
       EOS
     end
 
@@ -202,7 +203,7 @@ class FormulaInstaller
           formula.prefix.rmtree if formula.prefix.directory?
           formula.rack.rmdir_if_possible
         end
-        raise if ARGV.homebrew_developer?
+        raise if ARGV.homebrew_developer? || e.is_a?(Interrupt)
         @pour_failed = true
         onoe e.message
         opoo "Bottle installation failed: building from source."
@@ -668,7 +669,7 @@ class FormulaInstaller
   end
 
   def fix_install_names(keg)
-    keg.fix_install_names(:keg_only => formula.keg_only?)
+    keg.fix_install_names
   rescue Exception => e
     onoe "Failed to fix install names"
     puts "The formula built, but you may encounter issues using it or linking other"
@@ -717,7 +718,7 @@ class FormulaInstaller
     keg = Keg.new(formula.prefix)
     unless formula.bottle_specification.skip_relocation?
       keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
-        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s, :keg_only => formula.keg_only?
+        Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s
     end
     keg.relocate_text_files Keg::PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s,
       Keg::CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s

@@ -6,9 +6,9 @@ class Aespipe < Formula
 
   bottle do
     cellar :any
-    sha1 "f3441fee13b4daab1a717abd55453791278206e2" => :yosemite
-    sha1 "f72e5107d0ff2a6a9d215b956c806c6fcf4ba208" => :mavericks
-    sha1 "77f01ed2cae7844319119520576e5b198ff4e9a0" => :mountain_lion
+    sha256 "01261308206a529caaae3b4e6a5a9204f257732ab76602c33085b00d140cfef8" => :yosemite
+    sha256 "428bb615dad55b2930c2437a116ee78c2931f1fa0b73d0c615a77c6e0cfc9f78" => :mavericks
+    sha256 "9e43b91d6974c7bc4c5d64f081469f679a25b81ba21bd5d23f04c7be47b4f8b8" => :mountain_lion
   end
 
   def install

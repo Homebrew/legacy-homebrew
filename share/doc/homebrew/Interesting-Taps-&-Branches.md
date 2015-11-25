@@ -31,8 +31,7 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
 *   [homebrew/python](https://github.com/Homebrew/homebrew-python)
     - A few Python formulae that do not build well with `pip` alone.
 
-*   [homebrew/completions](https://github.com/Homebrew/homebrew-completions)
-    - Shell completion formulae.
+*   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only): A tap for brews that only have unstable, unreleased versions. This tap is **deprecated** and doesn’t accept new formulae.
 
 *   [homebrew/x11](https://github.com/Homebrew/homebrew-x11)
     - Formulae with hard X11 dependencies.

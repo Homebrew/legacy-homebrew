@@ -17,7 +17,7 @@ class Newlisp < Formula
     sha1 "15fff9bff3eb4bb2118b1941ffd34255b9a9a5b5"
   end
 
-  depends_on "readline"
+  depends_on "readline" => :recommended
 
   patch :DATA
 

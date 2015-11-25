@@ -7,9 +7,9 @@ class Opus < Formula
   bottle do
     cellar :any
     sha256 "c6bd7005b94ea672d5f78ea295ea53e8a2c46d1dfb10b7c3ae4a396ea34939f6" => :el_capitan
-    sha1 "5fb89890cfc8c254a6f13f9657a66da385887b2b" => :yosemite
-    sha1 "8ac2e93276b0df2f69c01d0b727fbff57a637e9e" => :mavericks
-    sha1 "a7e6ed2455861c41e021fec280b6fa28462341a2" => :mountain_lion
+    sha256 "3f4b7f577aa33eedac368a0fbc1d7fccb28db451365a27164e950990efaf72b6" => :yosemite
+    sha256 "39340732d092ce7e29dcda519f6bb4185f3760bbb111f7f0f6bc912030114b0c" => :mavericks
+    sha256 "f1e5202d8e95f14adddf952f78b2a0e56e6b0a14abdf7b32a1baf34eb513bc44" => :mountain_lion
   end
 
   option "with-custom-modes", "Enable custom-modes for opus see http://www.opus-codec.org/docs/html_api-1.1.0/group__opus__custom.html"

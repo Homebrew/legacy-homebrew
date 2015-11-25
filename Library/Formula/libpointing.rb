@@ -7,9 +7,9 @@ class Libpointing < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "02be7b605af13fbc724fd0d7df55577a81441b54" => :yosemite
-    sha1 "5b97a2c58b9101aba98f43de0b7e4753dd32b85b" => :mavericks
-    sha1 "402cb8cf65ea6712ad9b0dca43361bdf3fabc9a4" => :mountain_lion
+    sha256 "fb544294bb9d75208743783863c2bd0966f8b158a6a914411e52eb6ad3a19614" => :yosemite
+    sha256 "620493ef9861892aa784b1f616bc41ca937a6f3aba8577f06acd63fb36d06425" => :mavericks
+    sha256 "e59dfc519f194617aed36efa182f77583efa545d05f3b7d2756ade851400a90a" => :mountain_lion
   end
 
   def install

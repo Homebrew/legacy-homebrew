@@ -3,22 +3,18 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level metric gathering agent for InfluxDB"
   homepage "https://influxdb.com"
-  url "https://github.com/influxdb/telegraf/archive/v0.1.9.tar.gz"
-  sha256 "04765e691ff287c4c5eed67409a8bb26718a6413c3d730c7f019215ba28704af"
+  url "https://github.com/influxdb/telegraf/archive/v0.2.2.tar.gz"
+  sha256 "e0bff0c9d2ae548a9c21ee7fe2a0052c4dc630adb5a55327fa14db1a735ad1c9"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6769b07add42cd6635f5a3e99dfc5bb750db5aacd69234a69a9f4f827eed4789" => :el_capitan
-    sha256 "be0c12d61f4fce374a0780ac7aae033c9a8ca8ef0ab97dd2737d712d91b91c65" => :yosemite
-    sha256 "44e0ab0a34ce70c2cf6443c487d8fea4c999860177459a1b2f5765074d575d5d" => :mavericks
+    sha256 "76d1f91241546592cc8dc830f52bcc950fe63cde3b6b259cef09369de08441aa" => :el_capitan
+    sha256 "985dd1eab5fb8d0bb70cf3e025b51b245eb3271f12234761b8745e440c34e7b4" => :yosemite
+    sha256 "55b75da3affe7a3b3aff64eb49313ff7ab68ae9c8c4ff00cda4f3f17441a628e" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
-  end
+  depends_on "godep" => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -28,13 +24,9 @@ class Telegraf < Formula
 
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
     cd telegraf_path do
-      system "#{buildpath}/bin/godep", "go", "build", "-o", "telegraf",
-             "-ldflags", "-X main.Version #{version}",
+      system "godep", "go", "build", "-o", "telegraf",
+             "-ldflags", "-X main.Version=#{version}",
              "cmd/telegraf/telegraf.go"
     end
 

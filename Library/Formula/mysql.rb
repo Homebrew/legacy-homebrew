@@ -1,13 +1,14 @@
 class Mysql < Formula
   desc "Open source relational database management system"
-  homepage "https://dev.mysql.com/doc/refman/5.6/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.6/mysql-5.6.27.tar.gz"
-  sha256 "8356bba23f3f6c0c2d4806110c41d1c4d6a4b9c50825e11c5be4bbee2b20b71d"
+  homepage "https://dev.mysql.com/doc/refman/5.7/en/"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.9.tar.gz"
+  sha256 "315342f5bee1179548cecad2d776cd7758092fd2854024e60a3a5007feba34e0"
 
   bottle do
-    sha256 "ce2f5697236b85c82cea6f727b0ef99aa47bf1b9e3c9f86f46e29e19eb48fe03" => :el_capitan
-    sha256 "d367874bcebaf3d551a1101d42a3d023bcf13ea249deff65b7bb39409b7b94f0" => :yosemite
-    sha256 "b715084d9d16c12506cdee1453d99b825379c3aa75d70e0883e68993baa08e08" => :mavericks
+    revision 1
+    sha256 "95c6d7fbc023e66c8c05c25a6c60da2a86f785a6aa294ef47dbb52e3f0ede47e" => :el_capitan
+    sha256 "25d22186b29c508e6ad178da999c03c3e04d1b436640e0cf4f56d14345f8f42a" => :yosemite
+    sha256 "9552b55a18e73cdf9a818e6496ea71875ca95d8c92fd018a4bf7807ceedb11cf" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -28,6 +29,11 @@ class Mysql < Formula
   deprecated_option "enable-local-infile" => "with-local-infile"
   deprecated_option "enable-memcached" => "with-memcached"
   deprecated_option "enable-debug" => "with-debug"
+
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
+  depends_on "boost"
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -114,7 +120,10 @@ class Mysql < Formula
     # See: https://github.com/Homebrew/homebrew/issues/4975
     rm_rf prefix/"data"
 
-    # Link the setup script into bin
+    # Perl script was removed in 5.7.9 so install C++ binary instead.
+    # Binary is deprecated & will be removed in future upstream
+    # update but is still required for mysql-test-run to pass in test.
+    (prefix/"scripts").install "client/mysql_install_db"
     bin.install_symlink prefix/"scripts/mysql_install_db"
 
     # Fix up the control script and link into bin
@@ -125,9 +134,6 @@ class Mysql < Formula
     end
 
     bin.install_symlink prefix/"support-files/mysql.server"
-
-    libexec.install bin/"mysqlaccess"
-    libexec.install bin/"mysqlaccess.conf"
   end
 
   def post_install
@@ -135,18 +141,27 @@ class Mysql < Formula
     datadir.mkpath
     unless (datadir/"mysql/user.frm").exist?
       ENV["TMPDIR"] = nil
-      system bin/"mysql_install_db", "--verbose", "--user=#{ENV["USER"]}",
+      system bin/"mysqld", "--initialize-insecure", "--user=#{ENV["USER"]}",
         "--basedir=#{prefix}", "--datadir=#{datadir}", "--tmpdir=/tmp"
     end
   end
 
-  def caveats; <<-EOS.undent
-    A "/etc/my.cnf" from another install may interfere with a Homebrew-built
-    server starting up correctly.
+  def caveats
+    s = <<-EOS.undent
+    We've installed your MySQL database without a root password. To secure it run:
+        mysql_secure_installation
 
-    To connect:
+    To connect run:
         mysql -uroot
     EOS
+    if File.exist? "/etc/my.cnf"
+      s += <<-EOS.undent
+
+        A "/etc/my.cnf" from another install may interfere with a Homebrew-built
+        server starting up correctly.
+      EOS
+    end
+    s
   end
 
   plist_options :manual => "mysql.server start"

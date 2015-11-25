@@ -3,14 +3,14 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.6.1.tar.gz"
-  sha256 "41e36010ab6255782699f3239e7b5254597d692c0740443cd853b895174f6d6c"
+  url "https://github.com/Masterminds/glide/archive/0.7.2.tar.gz"
+  sha256 "368420de355fcce99187b8ccd5bf1025bbfb6ad394efeb0551b6b09911dfb9f3"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "96c5f9193b5df54583b28de56ea3022d219b368d8194fc6c84ce3ce270880377" => :el_capitan
-    sha256 "1b77586f91d3da1cdc06c9ee0c096b721a670385b8fceeb85123de4f5f307e60" => :yosemite
-    sha256 "615e73ec5290a044bd581ef068c3ff75aefcff8359456b6848beb2ebe8ab65fc" => :mavericks
+    sha256 "d763fca5637dc539410670ba14e9a9cc577a47d5316fa0e6191bcf09ced220f4" => :el_capitan
+    sha256 "702f859a36258b64170f31dbb259198eb757dcbc9e5db6a06dc3e7e808d42efd" => :yosemite
+    sha256 "192f9a7e4af551a25943e6f4e8ad0e5567c3e94937af8c915622b67ff11f0392" => :mavericks
   end
 
   depends_on "go" => :build
@@ -41,12 +41,12 @@ class Glide < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.6.1", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.7.2", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
     bin.install "glide"
   end
 
   test do
     version = pipe_output("#{bin}/glide --version")
-    assert_match /0.6.1/, version
+    assert_match /0.7.2/, version
   end
 end

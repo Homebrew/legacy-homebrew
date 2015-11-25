@@ -4,15 +4,14 @@
 class Wget < Formula
   desc "Internet file retriever"
   homepage "https://www.gnu.org/software/wget/"
-  url "http://ftpmirror.gnu.org/wget/wget-1.16.3.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.3.tar.xz"
-  sha256 "67f7b7b0f5c14db633e3b18f53172786c001e153d545cfc85d82759c5c2ffb37"
+  url "http://ftpmirror.gnu.org/wget/wget-1.17.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.17.tar.xz"
+  sha256 "bd69d63acbf329a8286ccebbe63cd4fecc998718131a0d4b2ab9239542d2bb87"
 
   bottle do
-    sha256 "36e966088b7f94c5a1084e1f5fefeeb6b00aa57053a11fb26c323239851c00e5" => :el_capitan
-    sha256 "9202d7ea3d0419921bf3c34d16fe6be1f3c835afd0dbeeb4f97c222e96b00806" => :yosemite
-    sha256 "4ba8249466dc7bd1fa4c0cae1b7195e5bd23996e0920e516daa7b262292efe29" => :mavericks
-    sha256 "76c509f6d93dbec0207de5ada9830b0988211c3211c465f41ed100226950d8f8" => :mountain_lion
+    sha256 "7a0981c0be8037f97ed2f74c7ae8c2404629d1b50abfca792aaa857cbc68d05f" => :el_capitan
+    sha256 "29aa8f54fe9ebf09ee671bbca3ac0c62cd8e63919bcab7d38167a6332a4939a4" => :yosemite
+    sha256 "3c15fe7e35dcba11c897df8daa5ebcc3c9a60a6673b8ca6477f3b204104a85d2" => :mavericks
   end
 
   head do

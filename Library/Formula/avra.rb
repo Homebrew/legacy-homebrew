@@ -6,9 +6,9 @@ class Avra < Formula
 
   bottle do
     cellar :any
-    sha1 "e2421ffa73e2cce740fdf6d03083931511ba729c" => :yosemite
-    sha1 "93af396271220b7b110c8506affea3703c914482" => :mavericks
-    sha1 "9a850a1c6ca9634a2a8e33b1f399d272cf2c78ee" => :mountain_lion
+    sha256 "b3063d26dedacb12dcb20cce18653227d4ba0b6b7de999748f75c8b7bb816ad3" => :yosemite
+    sha256 "c991364ca6331ba74ccc59efb085040d1fb62178e4b8acb69f0fffd255733041" => :mavericks
+    sha256 "256106f07e192dc8d94f1fb21c4b61e1233b3bd79b48353bb514ad42dd6e5e56" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

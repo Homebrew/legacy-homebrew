@@ -1,6 +1,5 @@
 #!/bin/sh
-
-chdir () {
+chdir() {
   cd "$@" >/dev/null
 }
 
@@ -10,9 +9,9 @@ export HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 BREW_SYMLINK=$(readlink "$0")
 if [ -n "$BREW_SYMLINK" ]
 then
-    BREW_SYMLINK_DIRECTORY=$(dirname "$BREW_SYMLINK")
-    BREW_FILE_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY" &&
-                          chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)
+  BREW_SYMLINK_DIRECTORY=$(dirname "$BREW_SYMLINK")
+  BREW_FILE_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY" &&
+                        chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)
 fi
 
 BREW_LIBRARY_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
@@ -22,10 +21,18 @@ BREW_LIBRARY_DIRECTORY=$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)
 unset GEM_HOME
 unset GEM_PATH
 
-BREW_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
-if [ "$BREW_SYSTEM" = "darwin" ]
+if [ -z "$HOMEBREW_DEVELOPER" ]
 then
-    exec "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"
-else
-    exec ruby -W0 "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"
+  unset HOMEBREW_RUBY_PATH
 fi
+
+if [ -z "$HOMEBREW_RUBY_PATH" ]; then
+  BREW_SYSTEM=$(uname -s | tr "[:upper:]" "[:lower:]")
+  if [ "$BREW_SYSTEM" = "darwin" ]; then
+    export HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
+  else
+    export HOMEBREW_RUBY_PATH="$(which ruby)"
+  fi
+fi
+
+exec "$HOMEBREW_RUBY_PATH" -W0 "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"

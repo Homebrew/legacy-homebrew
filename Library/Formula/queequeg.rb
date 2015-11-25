@@ -6,9 +6,9 @@ class Queequeg < Formula
 
   bottle do
     cellar :any
-    sha1 "865d487cdd7f447eee5cc102b2d5f79efdc1fb9e" => :yosemite
-    sha1 "c088cb0e9a0ddc16c113fc8ff41446376d7f755c" => :mavericks
-    sha1 "8cc2f12a1c395d8e1693f5ed6b37b94307968541" => :mountain_lion
+    sha256 "4b34b55b1e0686180a0b12b4d03a50d4b4a47aa63637cea6bcd8653b7bf4f39b" => :yosemite
+    sha256 "8356dfd1ec596b87d62a5bc9df8a7574f8d85b06ccc6c55fcc5d1483676f9be1" => :mavericks
+    sha256 "adc25d3e542a2d71924a1c2470fb86bed1eceb1938d259b4013fb8d36206e374" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

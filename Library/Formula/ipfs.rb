@@ -9,15 +9,17 @@ class Ipfs < Formula
   head "https://github.com/ipfs/go-ipfs.git"
 
   bottle do
-    cellar :any
-    sha256 "7fa2048c60b4de4326ebc0e1086ee302f255b9b25c29e16bc596308440f56757" => :yosemite
-    sha256 "d12b1c31921d09444bcb0d9781e2c60df69eb1abbe5da5b05ede28ceeb54604c" => :mavericks
-    sha256 "02903326215f9ca5d0abfb52d6507b0900baee270d7d78fe6f98c8bd7c7065b2" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "02ba7f03c7ae2d4540f35ed09f216d3e191595e9fbca8dd8100cf89aac605104" => :el_capitan
+    sha256 "1cc7dd74d1b26a5076e23c40f9cf834ecdc33045fe50846527dfa26f4cfaee9d" => :yosemite
+    sha256 "4294823203d142dd54fe86b2f48f5a7c570ec89dcdc1b8658bdd51967a739664" => :mavericks
   end
 
   depends_on "go" => :build
+  depends_on "godep" => :build
 
-  go_resource "github.com/tools/godep" do
+   go_resource"github.com/tools/godep" do
     url "https://github.com/tools/godep.git",
       :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
   end
@@ -38,10 +40,6 @@ class Ipfs < Formula
     mkdir_p buildpath/"src/github.com/ipfs/"
     ln_sf buildpath, buildpath/"src/github.com/ipfs/go-ipfs"
     Language::Go.stage_deps resources, buildpath/"src"
-
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     cd "cmd/ipfs" do
       system "make", "build"

@@ -7,9 +7,9 @@ class Afio < Formula
 
   bottle do
     cellar :any
-    sha1 "1a3bbc0e6d6ff0926a75141af4204a6f167af533" => :mavericks
-    sha1 "ffda2ae983cf6e1212aff8f4933799f124ec136f" => :mountain_lion
-    sha1 "68ecadc2fc7e8dd268ac9e6a63fc12927d60f897" => :lion
+    sha256 "c729e81f3952e8475ec4fe1ed4dc5a870e550af781b877a610a09686e9fe8a71" => :mavericks
+    sha256 "74a74e153dda86a7d08ab9cf293c1ac8796f64d1f94f0f31590ee96de88b2c3d" => :mountain_lion
+    sha256 "7ff316d9e43e5a55b95d381f13f0429a87ff36d39425fb62ec2af2cb00fc22af" => :lion
   end
 
   # Note - The Freecode website is no longer being updated and alternative

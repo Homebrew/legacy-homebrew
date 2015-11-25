@@ -11,17 +11,14 @@ class Vault < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e8591e186a3eba4f963821ff8c90ee24597cf937a2ed999d22f0a733487aef82" => :el_capitan
-    sha256 "6ec4ce0956d895329e34a84483d61a49bf322d0ad9d65752a4c3f1f2cde38a25" => :yosemite
-    sha256 "83949323d8a0aa09528c17d9326d77138c8c9d0f51454b34ec7cde79627a7913" => :mavericks
+    revision 1
+    sha256 "a52e6daba780f523191e96a7ab3084b48190354db95d2d2dc7039a16c7fbcb82" => :el_capitan
+    sha256 "28ba8b9ef7a457741250a680885964ebb1daa5a6e779862df5d0809508f99f34" => :yosemite
+    sha256 "f7088ed870024f5b8c3d1abef77ffe5d4533e68d22c47433b9ea00ba3d67378e" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-        :revision => "e2d1eb1649515318386cc637d8996ab37d6baa5e"
-  end
+  depends_on "godep" => :build
 
   # godep's dependencies
   go_resource "github.com/kr/fs" do
@@ -54,10 +51,6 @@ class Vault < Formula
     ENV.prepend_create_path "PATH", gopath/"bin"
 
     Language::Go.stage_deps resources, gopath/"src"
-
-    cd gopath/"src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     cd gopath/"src/github.com/mitchellh/gox" do
       system "go", "install"

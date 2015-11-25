@@ -38,7 +38,8 @@ class Rust < Formula
   end
 
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
+  depends_on "llvm" => :optional
   depends_on "openssl"
 
   # According to the official readme, GCC 4.7+ is required

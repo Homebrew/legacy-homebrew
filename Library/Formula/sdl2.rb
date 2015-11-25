@@ -8,9 +8,9 @@ class Sdl2 < Formula
     cellar :any
     revision 1
     sha256 "ad55070725fa11d107f1dafbc233cb4a1a5a7d229e5994d97921e4c3bd2e2288" => :el_capitan
-    sha1 "8254a12777c10ec1d4f1d896a07d03d62fdc5c99" => :yosemite
-    sha1 "0e9a2ac818e67dfb759ce8d43f4abd3a0dcaed8b" => :mavericks
-    sha1 "3211cd71e5c956e38ed934c65be376a42aaf63c9" => :mountain_lion
+    sha256 "ae40b379b1221d9817bc313510dc4c984c05ba0d9643a6335252e8c0bcfe7bc8" => :yosemite
+    sha256 "4b2106b8a792079506f271cb4b90f85b179782c04fa3838cb98d572804a787e1" => :mavericks
+    sha256 "b9449247a8637da1d558954f931b19b8267b57ef92941173a28aeb56a82c6f11" => :mountain_lion
   end
 
   head do

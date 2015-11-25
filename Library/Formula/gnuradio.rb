@@ -138,7 +138,7 @@ class Gnuradio < Formula
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
     res = %w[Markdown Cheetah lxml numpy]
-    res << %w[sphinx sphinx_rtd_theme alabaster babel docutils pygments
+    res += %w[sphinx sphinx_rtd_theme alabaster babel docutils pygments
               jinja2 markupsafe snowballstemmer six pytz] if build.with? "documentation"
     res.each do |r|
       resource(r).stage do

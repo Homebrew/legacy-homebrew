@@ -8,9 +8,9 @@ class Rtpbreak < Formula
 
   bottle do
     cellar :any
-    sha1 "0ba5286070de0faeb39197d9ce96a5b28cb5d01e" => :yosemite
-    sha1 "f2105bfaefd67bf150b6d3bb80afba5c43f82cf6" => :mavericks
-    sha1 "a58e0738e815217695e288c4b2f1b75207fe6767" => :mountain_lion
+    sha256 "64c4e6a0e4a7a6e5629832f6d33605c068ff02ce623ed36467d09fb9a300b983" => :yosemite
+    sha256 "2cb901c96dfc9edf0cad72bd1a97da493877a36d046697e7665f174cf5f91698" => :mavericks
+    sha256 "d3f404e84878cc1d3423dc3c007123fd0e2bfbd7e6f45a83bf904f274f790f88" => :mountain_lion
   end
 
   depends_on "libnet"

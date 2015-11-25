@@ -15,6 +15,8 @@ class MidnightCommander < Formula
     sha256 "e75f3aed5a28a381a1bce9461108d21e76abb094d98ad8cfe580720ad390d7e8" => :mountain_lion
   end
 
+  option "without-nls", "Build without Native Language Support"
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "openssl"
@@ -22,13 +24,19 @@ class MidnightCommander < Formula
   depends_on "libssh2"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--without-x",
-                          "--with-screen=slang",
-                          "--enable-vfs-sftp"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --without-x
+      --with-screen=slang
+      --enable-vfs-sftp
+    ]
+
+    args << "--disable-nls" if build.without? "nls"
+
+    system "./configure", *args
     system "make", "install"
 
     # https://www.midnight-commander.org/ticket/3509

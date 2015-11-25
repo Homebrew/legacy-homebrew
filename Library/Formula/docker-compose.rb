@@ -3,34 +3,20 @@ class DockerCompose < Formula
   homepage "https://docs.docker.com/compose/"
 
   stable do
-    url "https://github.com/docker/compose/archive/1.4.2.tar.gz"
-    sha256 "cc11f8281f0cf99fcb5502edb6e0d49caca26f4a11570b8ad68943bd3a97dd5c"
-
-    resource "docker-py" do
-      url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.3.1.tar.gz"
-      sha256 "743f3fc78f6159d14ac603def6470cf1b4edefc04de8b1ad8c349b380b503f50"
-    end
-
-    resource "requests" do
-      url "https://pypi.python.org/packages/source/r/requests/requests-2.6.1.tar.gz"
-      sha256 "490b111c824d64b84797a899a4c22618bbc45323ac24a0a0bb4b73a8758e943c"
-    end
+    url "https://github.com/docker/compose/archive/1.5.1.tar.gz"
+    sha256 "334814f64910823fa588e89eea8f73d8ad3bb0d304e513fe51026a1f1d08d3db"
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "4d7c22ead5c3f11ab69b6b11f2592730c93e46d758a314c37a414591edce9271" => :el_capitan
-    sha256 "d191a2c85ee7856fd43ca76b42dea22d3365e07aafc9d72eb7147dc0d5a94a41" => :yosemite
-    sha256 "281f74269ab30d37c7fcbabce41a07b49c370f2db4a778c8d06249c19aac1499" => :mavericks
   end
 
   head do
     url "https://github.com/docker/compose.git"
 
     resource "docker-py" do
-      url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.4.0.tar.gz"
-      sha256 "933bd55ec332adfe69b2825d81e7d238f51d970d5b16f63a14199789cd04c7b8"
+      url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.5.0.tar.gz"
+      sha256 "6924128fac46afef0de16ebdffc30a8c071246312260f289d895129f4e00f8d0"
     end
 
     resource "requests" do

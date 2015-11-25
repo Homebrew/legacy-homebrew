@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 language: ruby
 install:
  - unset DYLD_LIBRARY_PATH

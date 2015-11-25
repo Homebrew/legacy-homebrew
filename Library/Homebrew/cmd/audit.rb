@@ -14,7 +14,7 @@ module Homebrew
     problem_count = 0
 
     strict = ARGV.include? "--strict"
-    if strict && ARGV.resolved_formulae.any? && MacOS.version >= :mavericks
+    if strict && ARGV.resolved_formulae.any? && RUBY_VERSION.split(".").first.to_i >= 2
       require "cmd/style"
       ohai "brew style #{ARGV.resolved_formulae.join " "}"
       style
@@ -121,12 +121,14 @@ class FormulaAuditor
     boost-build
     bsdmake
     cmake
+    godep
     imake
     intltool
     libtool
     pkg-config
     scons
     smake
+    sphinx-doc
     swig
   ]
 
@@ -142,8 +144,14 @@ class FormulaAuditor
   end
 
   def audit_file
-    unless formula.path.stat.mode == 0100644
-      problem "Incorrect file permissions: chmod 644 #{formula.path}"
+    # Under normal circumstances (umask 0022), we expect a file mode of 644. If
+    # the user's umask is more restrictive, respect that by masking out the
+    # corresponding bits. (The also included 0100000 flag means regular file.)
+    wanted_mode = 0100644 & ~File.umask
+    actual_mode = formula.path.stat.mode
+    unless actual_mode == wanted_mode
+      problem format("Incorrect file permissions (%03o): chmod %03o %s",
+                     actual_mode & 0777, wanted_mode & 0777, formula.path)
     end
 
     if text.has_DATA? && !text.has_END?
@@ -167,11 +175,14 @@ class FormulaAuditor
       [/^  mirror ["'][\S\ ]+["']/,        "mirror"],
       [/^  version ["'][\S\ ]+["']/,       "version"],
       [/^  (sha1|sha256) ["'][\S\ ]+["']/, "checksum"],
+      [/^  revision/,                      "revision"],
       [/^  head ["'][\S\ ]+["']/,          "head"],
       [/^  stable do/,                     "stable block"],
       [/^  bottle do/,                     "bottle block"],
       [/^  devel do/,                      "devel block"],
       [/^  head do/,                       "head block"],
+      [/^  bottle (:unneeded|:disable)/,   "bottle modifier"],
+      [/^  keg_only/,                      "keg_only"],
       [/^  option/,                        "option"],
       [/^  depends_on/,                    "depends_on"],
       [/^  def install/,                   "install method"],
@@ -584,7 +595,7 @@ class FormulaAuditor
       problem "\"Formula.factory(name)\" is deprecated in favor of \"Formula[name]\""
     end
 
-    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec}/npm/bin]
+    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec\}/npm/bin]
       need_npm = "\#{Formula[\"node\"].opt_libexec\}/npm/bin"
       problem <<-EOS.undent
        Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install

@@ -1,21 +1,20 @@
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
   homepage "https://www.arangodb.com/"
-  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.6.9.tar.gz"
-  sha256 "1a56212eb52c92a2942969af6ac4a92eb4ef60be80dc6eb3868efb48c8edc515"
+  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.7.1.tar.gz"
+  sha256 "a0f5cb20bdfa9750f43ee57a559a370a22bfc3f184a9d6d2d30d0bdadf639e12"
 
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
-
-  bottle do
-    sha256 "58a9e5c9253a5409240f8882af3b022757131cf473c5d86b2a2b8280c5521dc0" => :el_capitan
-    sha256 "919b0aca0151265e38c8b1a6c8c856356383f54402e7b89a9b796b6f7ea102fa" => :yosemite
-    sha256 "b863dfc1013ea8009e4683c5a59e13fbd18ab887b3f7908a8a704cd53993d01f" => :mavericks
-  end
 
   depends_on "go" => :build
   depends_on "openssl"
 
   needs :cxx11
+
+  fails_with :clang do
+    build 600
+    cause "Fails with compile errors"
+  end
 
   def install
     # clang on 10.8 will still try to build against libstdc++,

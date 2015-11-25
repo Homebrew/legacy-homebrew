@@ -1,14 +1,14 @@
 class Minisign < Formula
   desc "Sign files & verify signatures. Works with signify in OpenBSD."
   homepage "https://jedisct1.github.io/minisign/"
-  url "https://github.com/jedisct1/minisign/archive/0.4.tar.gz"
-  sha256 "dc7695513e715654a51d07ad3e6b0083f9cb38b1a5bc9f16e1177d15af992dcc"
+  url "https://github.com/jedisct1/minisign/archive/0.6.tar.gz"
+  sha256 "f2267a07bece923d4d174ccacccc56eff9c05b28c4d971e601de896355442f09"
 
   bottle do
     cellar :any
-    sha256 "8ccc144f89e11b04454f9325435673ff71ea94fa338201de6eca7d061d338b23" => :yosemite
-    sha256 "190c6d48b0e36513acb206e16e38499f67bfade858042f035c12db6455abc153" => :mavericks
-    sha256 "c3e7f23a822474155414b30a6d45492e44aec10a80af2e9813414eaff190f3a9" => :mountain_lion
+    sha256 "8ba8bd4efa18b1bb418fbfe0f734e36b497f50fdcdd7c90ba33c054ed03f8cf5" => :el_capitan
+    sha256 "51078510d83f37e6df87bd601d6f593e88798500249a05c5b431f756bd41ae62" => :yosemite
+    sha256 "0327b84d602a990be9046a3fead0e219a4cfd0f5f66e0128842b7c2e0898bc79" => :mavericks
   end
 
   depends_on "libsodium"

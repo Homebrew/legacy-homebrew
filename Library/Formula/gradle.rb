@@ -1,8 +1,10 @@
 class Gradle < Formula
   desc "Build system based on the Groovy language"
   homepage "https://www.gradle.org/"
-  url "https://downloads.gradle.org/distributions/gradle-2.7-bin.zip"
-  sha256 "cde43b90945b5304c43ee36e58aab4cc6fb3a3d5f9bd9449bb1709a68371cb06"
+  url "https://downloads.gradle.org/distributions/gradle-2.9-bin.zip"
+  sha256 "c9159ec4362284c0a38d73237e224deae6139cbde0db4f0f44e1c7691dd3de2f"
+
+  bottle :unneeded
 
   def install
     libexec.install %w[bin lib]

@@ -1,14 +1,14 @@
 class Swiftgen < Formula
   desc "Collection of Swift tools to generate Swift code"
   homepage "https://github.com/AliSoftware/SwiftGen"
-  url "https://github.com/AliSoftware/SwiftGen/archive/0.5.0.tar.gz"
-  sha256 "555f190f2ffef940eebd80a926eeb05d3d0de573412028c5bd2184e2b9542929"
+  url "https://github.com/AliSoftware/SwiftGen/archive/0.7.2.tar.gz"
+  sha256 "a3d39da9f53d5e31447191e1c821c5a83b06be92a73ce7973e4f632d1e7dee9e"
   head "https://github.com/AliSoftware/SwiftGen.git"
 
   bottle do
     cellar :any
-    sha256 "29391f183e1606e50008ad148b3665d240c28ab5cbd42a293d1ca99b29aa3793" => :el_capitan
-    sha256 "c150775bf2f6b8e77a821eae7bd89233a134eb22ce5eed88de9eaf2822dd79ee" => :yosemite
+    sha256 "800c8f7c729fa0c4a2944ded6dde8814b692841e47d79c7955e5dbdb60dc67c3" => :el_capitan
+    sha256 "7d42236c6d36969bbb7b5ef3ddec6c1bdbace3ddcfa58fcded590be450a89a0a" => :yosemite
   end
 
   depends_on :xcode => "7.0"
@@ -35,13 +35,16 @@ class Swiftgen < Formula
     output = shell_output("#{bin}/swiftgen images #{pkgshare}/Images.xcassets").strip
     assert_equal output, (pkgshare/"Images-File-Defaults.swift.out").read.strip, "swiftgen images failed"
 
-    output = shell_output("#{bin}/swiftgen colors #{pkgshare}/colors.txt").strip
-    assert_equal output, (pkgshare/"Colors-File-Defaults.swift.out").read.strip, "swiftgen colors failed"
+    output = shell_output("#{bin}/swiftgen images --templatePath #{pkgshare/"templates/images-default.stencil"} #{fixtures}/Images.xcassets").strip
+    assert_equal output, (fixtures/"Images-File-Defaults.swift.out").read.strip, "swiftgen images failed"
 
-    output = shell_output("#{bin}/swiftgen strings #{pkgshare}/Localizable.strings").strip
-    assert_equal output, (pkgshare/"Strings-File-Defaults.swift.out").read.strip, "swiftgen strings failed"
+    output = shell_output("#{bin}/swiftgen colors --templatePath #{pkgshare/"templates/colors-default.stencil"} #{fixtures}/colors.txt").strip
+    assert_equal output, (fixtures/"Colors-File-Defaults.swift.out").read.strip, "swiftgen colors failed"
 
-    output = shell_output("#{bin}/swiftgen storyboards #{pkgshare}/Message.storyboard").strip
-    assert_equal output, (pkgshare/"Storyboards-Message-Defaults.swift.out").read.strip, "swiftgen storyboards failed"
+    output = shell_output("#{bin}/swiftgen strings --templatePath #{pkgshare/"templates/strings-default.stencil"} #{fixtures}/Localizable.strings").strip
+    assert_equal output, (fixtures/"Strings-File-Defaults.swift.out").read.strip, "swiftgen strings failed"
+
+    output = shell_output("#{bin}/swiftgen storyboards --templatePath #{pkgshare/"templates/storyboards-default.stencil"} #{fixtures}/Message.storyboard").strip
+    assert_equal output, (fixtures/"Storyboards-Message-Defaults.swift.out").read.strip, "swiftgen storyboards failed"
   end
 end

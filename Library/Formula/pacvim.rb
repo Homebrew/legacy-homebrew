@@ -6,9 +6,9 @@ class Pacvim < Formula
   head "https://github.com/jmoon018/PacVim.git"
 
   bottle do
-    sha1 "72ab787738913d09abc2221f37a8ec9c6da31d5a" => :yosemite
-    sha1 "8fab0bdb05fbd24bb0282e68d805fe2e0eaf0908" => :mavericks
-    sha1 "c38b89d4de35684122e4ab14ca605fdf4977a7b5" => :mountain_lion
+    sha256 "36b138084ac97f4eb28bc6b7068e19dc28cc478459fc59de12e8e849820ac65d" => :yosemite
+    sha256 "1f5e908420b40f2af868727b7065a51ebc39525c241b983f7f9b9449b95fdc1c" => :mavericks
+    sha256 "13f43d00b08183febdc7afcba0553cd512dd9ae23a7fd770b09e3eedb4f8ea37" => :mountain_lion
   end
 
   needs :cxx11

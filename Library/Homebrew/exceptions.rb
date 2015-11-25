@@ -229,7 +229,7 @@ class BuildError < RuntimeError
       end
     else
       require "cmd/config"
-      require "cmd/--env"
+      require "build_environment"
 
       ohai "Formula"
       puts "Tap: #{formula.tap}" if formula.tap?

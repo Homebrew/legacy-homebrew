@@ -6,9 +6,9 @@ class ThcPptpBruter < Formula
 
   bottle do
     cellar :any
-    sha1 "1693dcceb59ea85f265be800af5615d75dd217b0" => :yosemite
-    sha1 "e75d5e3c5eb439522a3896956918ad0f1f676907" => :mavericks
-    sha1 "febbca57781732342980f6e52c3dad393cc43b30" => :mountain_lion
+    sha256 "9236475e9ec15fdddefd4b9ad01d619d645ad0227adc50e9ae7c5b01a68ff964" => :yosemite
+    sha256 "e34bda13c8753b1064fb59712e799191dd00addfa30b0f9947d2dd97dac47b1a" => :mavericks
+    sha256 "fa6df7bd11a9f2a2903e60775ab1324a7220d37da30a4bb6e4a8eb77e2163c3d" => :mountain_lion
   end
 
   depends_on "openssl"

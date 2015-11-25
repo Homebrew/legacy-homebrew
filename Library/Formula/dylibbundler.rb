@@ -9,9 +9,9 @@ class Dylibbundler < Formula
     cellar :any_skip_relocation
     revision 1
     sha256 "5dff018e62a9787871e45f4ae976358cfc3f7f85972a0aa0d4e039f97d4b8e0f" => :el_capitan
-    sha1 "7796af4a80af52b2cda87f9a6af74919811cddb4" => :yosemite
-    sha1 "af56868cede7747f2559320659654e017cb0144a" => :mavericks
-    sha1 "81c315d6fbaea3b56ba78e967953f3f8a11d08ec" => :mountain_lion
+    sha256 "eee9c829e932d8d25ded1e249bbf372ebfa0c9911dd3adc11a642184ecb6a6b7" => :yosemite
+    sha256 "49c1600c49ff7b10bdae8dc7351496680a9a4fb434ce6cd7393d10008506393e" => :mavericks
+    sha256 "351213e36062eee71018bb8ff9c0fa02d351fad63993c46f984223426ffe3efd" => :mountain_lion
   end
 
   def install

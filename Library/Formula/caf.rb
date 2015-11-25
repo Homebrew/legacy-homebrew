@@ -2,16 +2,13 @@ class Caf < Formula
   # Renamed from libccpa
   desc "Implementation of the Actor Model for C++"
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.14.2.tar.gz"
-  sha256 "5d7fadee7c6af2ad2eb9cb66cf2a6109c72f47652b7e3f0c01a267d3dfb99290"
+  url "https://github.com/actor-framework/actor-framework/archive/0.14.4.tar.gz"
+  sha256 "7e77b1edc708ac66be3ab2ba29506681458422e59a2e1b3cd801152ba345fb00"
   head "https://github.com/actor-framework/actor-framework.git",
     :branch => "develop"
 
   bottle do
     cellar :any
-    sha256 "5b0d8d5b21051111480c9213132570c2d8c944b00a2ef1c21ba7338777a9d9d9" => :el_capitan
-    sha256 "e247d4384eccd86021cb1bb67fd552e05d32dacb5ebd292053008834fd0defb5" => :yosemite
-    sha256 "3d5b7662c7cf136f6ba87864f4ce67464228d2db2d31ffe8e470c7803d34bac4" => :mavericks
   end
 
   needs :cxx11

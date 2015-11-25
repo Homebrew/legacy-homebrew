@@ -1,8 +1,11 @@
 class KotlinCompiler < Formula
   desc "Statically typed programming language for the JVM"
-  homepage "http://kotlinlang.org/"
-  url "https://github.com/JetBrains/kotlin/releases/download/build-0.14.449/kotlin-compiler-0.14.449.zip"
-  sha256 "bbb55c84669b6d920dc89beab811b26dfbdbeb95d71e1d6d3384fbfbcd48ec70"
+  homepage "https://kotlinlang.org/"
+  url "https://github.com/JetBrains/kotlin/releases/download/build-1.0.0-beta-2423/kotlin-compiler-1.0.0-beta-2423.zip"
+  sha256 "130c7dbcaeb269e4d3e11021264e4cc6e9d202e5e54a0810ed2648da827bf3f3"
+  version "1.0.0-beta-2423"
+
+  bottle :unneeded
 
   def install
     libexec.install %w[bin lib]

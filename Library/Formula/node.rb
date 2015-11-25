@@ -1,14 +1,14 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v4.2.1/node-v4.2.1.tar.gz"
-  sha256 "8861b9f4c3b4db380fcda19a710c0430c3d62d03ee176c64db63eef95a672663"
+  url "https://nodejs.org/dist/v5.1.0/node-v5.1.0.tar.gz"
+  sha256 "25b2d3b7dd57fe47a483539fea240a3c6bbbdab4d89a45a812134cf1380ecb94"
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "8592bb96777b29c45293da698de092da39547130e9eced251060cd032ffd0326" => :el_capitan
-    sha256 "474d4f7c08fd5c3ede9155e0f44704abbe84db0ccaba4346d923079a74a59105" => :yosemite
-    sha256 "006d46e8db90432c8dc1140b32f5ac1ea041a0ce3a84c70db3276fecca1243a5" => :mavericks
+    sha256 "0f9518b4847974b8b67cb195c4e0b3d3797325658eb1beb5d3390a0141821bb9" => :el_capitan
+    sha256 "86fa3b3c73ca32d262dac36328d8d67d14d10e6caf32c73f9bda06603677c488" => :yosemite
+    sha256 "35f7b653e07ad00eefa0b3b869d3f47cb6979062f95008f0b84977f5ea984c2a" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -27,9 +27,17 @@ class Node < Formula
     build 2326
   end
 
+  # We track major/minor from upstream Node releases.
+  # We will accept *important* npm patch releases when necessary.
+  # https://github.com/Homebrew/homebrew/pull/46098#issuecomment-157802319
   resource "npm" do
+<<<<<<< HEAD
     url "https://registry.npmjs.org/npm/-/npm-2.14.7.tgz"
     sha256 "54f3a5195a1e6b52fc954749e81f8abf1f7c8ca912b90ecf2b33581800d0f6a5"
+=======
+    url "https://registry.npmjs.org/npm/-/npm-3.3.12.tgz"
+    sha256 "09475d7096731d93c0aacd7dfe58794d67c52ee6562675aee6c1f734ddba8158"
+>>>>>>> homebrew/master
   end
 
   resource "icu4c" do
@@ -112,6 +120,14 @@ class Node < Formula
         Homebrew has NOT installed npm. If you later install it, you should supplement
         your NODE_PATH with the npm module folder:
           #{HOMEBREW_PREFIX}/lib/node_modules
+      EOS
+    end
+
+    if build.without? "full-icu"
+      s += <<-EOS.undent
+        Please note by default only English locale support is provided. If you need
+        full locale support you should:
+          `brew reinstall node --with-full-icu`
       EOS
     end
 

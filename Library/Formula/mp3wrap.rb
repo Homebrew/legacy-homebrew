@@ -6,9 +6,9 @@ class Mp3wrap < Formula
 
   bottle do
     cellar :any
-    sha1 "5569a9dbeabf76247ef2e98fdeb6f0c8fda4c188" => :mavericks
-    sha1 "691e84d652214da84193bd6ca194cf308fed986d" => :mountain_lion
-    sha1 "bd461a4b06439c0fb736fd5546607e5261d9130b" => :lion
+    sha256 "4e8f01653ab2067bcb7ed2716fdb864aac08b517c995839f6d3b942cb705504c" => :mavericks
+    sha256 "ea4a05df9dc44f6fc5f9658fcc6694c0ec0c649a882bc97b3b37354de08f7d0f" => :mountain_lion
+    sha256 "10128ee1f87efb4e7259c39c14633d16d1f6138f6bde064a50e66d3ba8427b1f" => :lion
   end
 
   def install

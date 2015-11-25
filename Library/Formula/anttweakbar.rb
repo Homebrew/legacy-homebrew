@@ -7,9 +7,9 @@ class Anttweakbar < Formula
 
   bottle do
     cellar :any
-    sha1 "103b4c69883ace7c1d24a8ea9405669f491a00bc" => :yosemite
-    sha1 "52b1d49b36d290e5f90897b3fb291c52c936007b" => :mavericks
-    sha1 "370619e705719ed57ba0b31447c1f33a3b014c77" => :mountain_lion
+    sha256 "71bf3f31c1740c2681e6d485ce8c1bfad7d925a4f2a1b6fca7bd5ccec397d05b" => :yosemite
+    sha256 "6c50f550356576120d4c7aa943bd825c23fc70236530561720631aa45070f668" => :mavericks
+    sha256 "6359bdc12aa85c7fdc8332260db1f6aa19675dc6d2f36960ee935510eb0b0184" => :mountain_lion
   end
 
   # See

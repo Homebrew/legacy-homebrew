@@ -4,9 +4,16 @@ class Cmockery < Formula
   url "https://cmockery.googlecode.com/files/cmockery-0.1.2.tar.gz"
   sha256 "b9e04bfbeb45ceee9b6107aa5db671c53683a992082ed2828295e83dc84a8486"
 
+  bottle do
+    cellar :any
+    sha256 "6cc440503b2fce7def7d584aacf8e9142ad430de799b466f609f57fd9beb4ede" => :el_capitan
+    sha256 "a6ac86af8d5b7f5964a480cc91bfbdaf260c59eae2c4b79663ebab2dfdb7d062" => :yosemite
+    sha256 "673662bebae6bc4e43b60137ebad7141af0eeecffa41f4e7c61065b0f2262d25" => :mavericks
+  end
+
   # This patch will be integrated upstream in 0.1.3, this is due to malloc.h being already in stdlib on OSX
   # It is safe to remove it on the next version
-  # More info on http://code.google.com/p/cmockery/issues/detail?id=3
+  # More info on https://code.google.com/p/cmockery/issues/detail?id=3
   patch :DATA
 
   def install

@@ -7,9 +7,9 @@ class Sipsak < Formula
 
   bottle do
     cellar :any
-    sha1 "0887f7a2fc31fa4dac20abc09b3978102ceb585e" => :yosemite
-    sha1 "0792fa0643ed06e407ee67fdf34a0bca6ef93fdd" => :mavericks
-    sha1 "bd7856973c90e54510f7d5b6305f032bd0f006fa" => :mountain_lion
+    sha256 "873d8cd50cce684ad55abbdf834157b4464c70877de9d1c37ad3c4ec9aaf6e10" => :yosemite
+    sha256 "d70729739fcfe770fdfa997dc33cd04370a6cd2f6916e63adfed60473c4bfc55" => :mavericks
+    sha256 "09d0961004d525dfc5f81bfe111884b401a09993fd83ff2f426016feb99607d4" => :mountain_lion
   end
 
   depends_on "openssl"

@@ -5,9 +5,9 @@ class Sdf < Formula
   sha256 "181ae979118d75c6163f2acec8e455952f3033378a4518b0b829d26a96e10b3d"
 
   bottle do
-    sha1 "86d9132aa6d0b168265486619986905f5e4d934e" => :mavericks
-    sha1 "84b6e3fefe67faad2f0e6e4a407f9323a6eaf9d5" => :mountain_lion
-    sha1 "8ff0e900e359df0e0fca16b686f87a201d10a5d2" => :lion
+    sha256 "fd6d28045077329bfa7a65db2d70a21e5d5b36168deba4b54ec053f2e5af7168" => :mavericks
+    sha256 "52088515427e70bb3f4f5602476d03508c93d8e8be266b170c18dbd1aa49198f" => :mountain_lion
+    sha256 "1abf4584e65dbfab2fb42c857bcff3879f8db8764dd9c64bcf844fae8485bfe0" => :lion
   end
 
   depends_on "pkg-config" => :build

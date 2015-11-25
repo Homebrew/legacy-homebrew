@@ -6,9 +6,9 @@ class Renameutils < Formula
 
   bottle do
     cellar :any
-    sha1 "f2ad6649f1636f36308781ca75d80757ddf03d5c" => :yosemite
-    sha1 "7e9d5223ce53c47d32dacbfb841c44b6f4e0361f" => :mavericks
-    sha1 "00fe259bce0743080676d617e9a521d7d4732418" => :mountain_lion
+    sha256 "cd3327f073ba1c67da113906854727e806829a9dc4f9abaaa516ab80c2981571" => :yosemite
+    sha256 "3f0ffe1f0d2d66032657e1281b796d6f71cdac36b9a0ae7ad1e8ef5df267d3de" => :mavericks
+    sha256 "6ac784f69ad72c25a17eafbd85fc7e66fa5285c834f1adb08f3943fa1d4ed48c" => :mountain_lion
   end
 
   depends_on "readline" # Use instead of system libedit
