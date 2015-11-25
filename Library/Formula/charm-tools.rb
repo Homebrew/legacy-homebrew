@@ -5,10 +5,10 @@ class CharmTools < Formula
   sha256 "23a80020a1255a504a11eb2b2098c2f01a00dfc1e5096017e1a502b09a9c68c8"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "ed3e5be4e4f379e2aca09a79a7f6a81225b7eb0c21266bf81ad048a9781d980e" => :el_capitan
-    sha256 "94cd704a118c3792103234da7cc981466a0186a7d41333761d9a4335b7a927e0" => :yosemite
-    sha256 "7e9dda9b12a176005c2ef5293cc001088cede449dc44cae09f0a24dd309c276a" => :mavericks
+    cellar :any
+    sha256 "44067cd2584eaaabd1ba799c97cb45999a5f259ef3d1657e36b54c01360dfeec" => :el_capitan
+    sha256 "a1c27ae8452081650da7297aab08f17717c0a0f600616261fe7eb8ef92a1658a" => :yosemite
+    sha256 "f777d152a063792c9390d5be40d599345b85734d54f34d9cdceb5640d278cd8d" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
