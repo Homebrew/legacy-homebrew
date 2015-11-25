@@ -23,22 +23,24 @@ class BuildOptions
   # else
   #   args << "--with-example1"
   # end</pre>
-  def with?(val)
-    name = val.respond_to?(:option_name) ? val.option_name : val
+  def with?(*vals)
+    vals.all? do |val|
+      name = val.respond_to?(:option_name) ? val.option_name : val
 
-    if option_defined? "with-#{name}"
-      include? "with-#{name}"
-    elsif option_defined? "without-#{name}"
-      !include? "without-#{name}"
-    else
-      false
+      if option_defined? "with-#{name}"
+        include? "with-#{name}"
+      elsif option_defined? "without-#{name}"
+        !include? "without-#{name}"
+      else
+        false
+      end
     end
   end
 
   # True if a {Formula} is being built without a specific option.
   # <pre>args << "--no-spam-plz" if build.without? "spam"
-  def without?(name)
-    !with? name
+  def without?(*names)
+    !names.any? { |name| with? name }
   end
 
   # True if a {Formula} is being built as a bottle (i.e. binary package).
