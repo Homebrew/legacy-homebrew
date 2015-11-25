@@ -14,5 +14,4 @@ class Wires < Formula
   test do
     system "#{bin}/wires", "--help"
   end
-
 end
