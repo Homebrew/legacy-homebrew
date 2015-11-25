@@ -1,8 +1,8 @@
 class Fpc < Formula
   desc "Free Pascal: multi-architecture Pascal compiler"
   homepage "http://www.freepascal.org/"
-  url "https://downloads.sourceforge.net/project/freepascal/Source/2.6.4/fpc-2.6.4.source.tar.gz"
-  sha256 "c16f2e6e0274c7afc0f1d2dded22d0fec98fe329b1d5b2f011af1655f3a1cc29"
+  url "https://downloads.sourceforge.net/project/freepascal/Source/3.0.0/fpc-3.0.0.source.tar.gz"
+  sha256 "46354862cefab8011bcfe3bc2942c435f96a8958b245c42e10283ec3e44be2dd"
 
   bottle do
     cellar :any
@@ -25,6 +25,9 @@ class Fpc < Formula
     system "make", "install", "PP=#{fpc_compiler}", "PREFIX=#{prefix}"
 
     bin.install_symlink lib/"#{name}/#{version}/ppcx64"
+
+    # Prevent non-executable audit warning
+    rm_f Dir[bin/"*.rsj"]
   end
 
   test do
