@@ -46,7 +46,6 @@ TAP_MIGRATIONS = {
   "dmenu" => "homebrew/x11",
   "dotwrp" => "homebrew/science",
   "drizzle" => "homebrew/boneyard",
-  "dromeaudio" => "homebrew/head-only",
   "drush" => "homebrew/php",
   "dsniff" => "homebrew/boneyard",
   "dupx" => "homebrew/boneyard",
