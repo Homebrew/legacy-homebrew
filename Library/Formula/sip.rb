@@ -1,8 +1,9 @@
 class Sip < Formula
   desc "Tool to create Python bindings for C and C++ libraries"
   homepage "https://www.riverbankcomputing.com/software/sip/intro"
-  url "https://downloads.sourceforge.net/project/pyqt/sip/sip-4.16.9/sip-4.16.9.tar.gz"
-  sha256 "dbe173aa566e26ca0bb5bcbc1d30ef780f416267bb3b5df48149a737ea6b0555"
+  url "https://downloads.sourceforge.net/project/pyqt/sip/sip-4.17/sip-4.17.tar.gz"
+  sha256 "603026822adf8673fca6e0ea20b02c3c4a2dccb309647656f7269adc8de89060"
+  head "https://www.riverbankcomputing.com/hg/sip", :using => :hg
 
   bottle do
     cellar :any_skip_relocation
@@ -13,17 +14,15 @@ class Sip < Formula
     sha256 "8832546d36baa62fdecd0df427ba4f3b02ab2f39fc5fcb47f114ae5020f11342" => :mountain_lion
   end
 
-  head "https://www.riverbankcomputing.com/hg/sip", :using => :hg
-
   option "without-python", "Build without python2 support"
   depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
 
-  if build.without?("python3") && build.without?("python")
-    odie "sip: --with-python3 must be specified when using --without-python"
-  end
-
   def install
+    if build.without?("python3") && build.without?("python")
+      odie "sip: --with-python3 must be specified when using --without-python"
+    end
+
     if build.head?
       # Link the Mercurial repository into the download directory so
       # build.py can use it to figure out a version number.
@@ -95,7 +94,8 @@ class Sip < Formula
       t = Test()
       t.test()
     EOS
-    system ENV.cxx, "-shared", "-o", "libtest.dylib", "test.cpp"
+    system ENV.cxx, "-shared", "-Wl,-install_name,#{testpath}/libtest.dylib",
+                    "-o", "libtest.dylib", "test.cpp"
     system "#{bin}/sip", "-b", "test.build", "-c", ".", "test.sip"
     Language::Python.each_python(build) do |python, version|
       ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"
