@@ -51,7 +51,7 @@ class Dovecot < Formula
           --prefix=#{prefix}
         ]
 
-        args << "--with-unfinished-features" if build.with? "unfinished-features"
+        args << "--with-unfinished-features" if build.with? "pigeonhole-unfinished-features"
 
         system "./configure", *args
         system "make"
