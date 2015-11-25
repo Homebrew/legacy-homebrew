@@ -13,7 +13,7 @@ class Notmuch < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on :emacs => :optional
+  depends_on :emacs => ["21.1", :optional]
   depends_on :python => :optional
   depends_on :python3 => :optional
   depends_on "xapian"
