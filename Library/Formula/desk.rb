@@ -4,6 +4,8 @@ class Desk < Formula
   url "https://github.com/jamesob/desk/archive/v0.3.1.tar.gz"
   sha256 "b687e2cfa742f763d689391f67a5b5225324e282a0fed100487b1570988d7758"
 
+  bottle :unneeded
+
   def install
     bin.install "desk"
   end
