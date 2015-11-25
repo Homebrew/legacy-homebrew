@@ -19,7 +19,10 @@ class BuildOptionsTests < Homebrew::TestCase
     assert @build.with?("foo")
     assert @build.with?("bar")
     assert @build.with?("baz")
+    assert @build.with?("bar", "baz")
     assert @build.without?("qux")
+    assert @build.without?("qux", "abc")
+    assert !@build.without?("qux", "baz")
   end
 
   def test_used_options
