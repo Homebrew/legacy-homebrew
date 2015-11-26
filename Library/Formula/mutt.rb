@@ -70,7 +70,6 @@ class Mutt < Formula
   end
 
   def install
-<<<<<<< HEAD
     args = ["--disable-dependency-tracking",
             "--disable-warnings",
             "--prefix=#{prefix}",

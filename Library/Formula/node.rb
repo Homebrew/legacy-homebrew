@@ -31,13 +31,8 @@ class Node < Formula
   # We will accept *important* npm patch releases when necessary.
   # https://github.com/Homebrew/homebrew/pull/46098#issuecomment-157802319
   resource "npm" do
-<<<<<<< HEAD
-    url "https://registry.npmjs.org/npm/-/npm-2.14.7.tgz"
-    sha256 "54f3a5195a1e6b52fc954749e81f8abf1f7c8ca912b90ecf2b33581800d0f6a5"
-=======
     url "https://registry.npmjs.org/npm/-/npm-3.3.12.tgz"
     sha256 "09475d7096731d93c0aacd7dfe58794d67c52ee6562675aee6c1f734ddba8158"
->>>>>>> homebrew/master
   end
 
   resource "icu4c" do

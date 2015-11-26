@@ -46,13 +46,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-<<<<<<< HEAD
     url "https://pypi.python.org/packages/source/b/botocore/botocore-1.2.8.tar.gz"
     sha256 "acfe99ca0c5bf100e62e012ac3f26924b04275f667677552527fdc36db1009dd"
-=======
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.9.tar.gz"
-    sha256 "a41e1ba136696684c8b46f21833ae0c3616986fe86029df6587bbf577d389703"
->>>>>>> homebrew/master
   end
 
   resource "docutils" do
