@@ -1,9 +1,11 @@
 class Mapnik < Formula
   desc "Toolkit for developing mapping applications"
   homepage "http://www.mapnik.org/"
-  head "https://github.com/mapnik/mapnik.git"
   url "https://s3.amazonaws.com/mapnik/dist/v3.0.5/mapnik-v3.0.5.tar.bz2"
   sha256 "d8f771d45b236d987aab44819a517f4c1ed6d7ff2c42c2e51160e37d28c89cc3"
+  revision 1
+
+  head "https://github.com/mapnik/mapnik.git"
 
   bottle do
     cellar :any
@@ -68,7 +70,7 @@ class Mapnik < Formula
             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config",
             "NIK2IMG=False",
             "CPP_TESTS=False", # too long to compile to be worth it
-            "INPUT_PLUGINS=all"
+            "INPUT_PLUGINS=all",
            ]
 
     if build.with? "cairo"
