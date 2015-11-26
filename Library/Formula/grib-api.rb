@@ -1,8 +1,8 @@
 class GribApi < Formula
   desc "Encode and decode grib messages (editions 1 and 2)"
   homepage "https://software.ecmwf.int/wiki/display/GRIB/Home"
-  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.14.2-Source.tar.gz"
-  sha256 "9323ca03d989ca4175b069f0752dd3cd0ff4a26a22e8837ca7647d2135775344"
+  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.14.3-Source.tar.gz"
+  sha256 "da29650a5d58d27509a055db3685f28789b06d94fafb2527fd1ddacad8eae4a7"
 
   bottle do
     sha256 "7a0cf51c46783c775ba0ad7ee0d28a37aa61cf4fa405657072fe66af97301e87" => :el_capitan
