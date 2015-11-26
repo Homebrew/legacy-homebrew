@@ -1,11 +1,12 @@
 class Couchdb < Formula
-  desc "CouchDB is a document database server"
+  desc "Document database server"
   homepage "https://couchdb.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
-  sha256 "5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627"
-  revision 3
+  revision 4
 
   stable do
+    url "https://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
+    sha256 "5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627"
+
     # Support Erlang/OTP 18.0 compatibility, see upstream #95cb436
     # It will be in the next CouchDB point release, likely 1.6.2.
     patch :DATA
@@ -61,10 +62,11 @@ class Couchdb < Formula
     system "make", "install"
 
     # Use our plist instead to avoid faffing with a new system user.
-    (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").delete
-    (lib+"couchdb/bin/couchjs").chmod 0755
-    (var+"lib/couchdb").mkpath
-    (var+"log/couchdb").mkpath
+    (prefix/"Library/LaunchDaemons/org.apache.couchdb.plist").delete
+    (lib/"couchdb/bin/couchjs").chmod 0755
+    (var/"lib/couchdb").mkpath
+    (var/"log/couchdb").mkpath
+    (var/"run/couchdb").mkpath
   end
 
   def post_install
@@ -111,8 +113,27 @@ class Couchdb < Formula
   test do
     # ensure couchdb embedded spidermonkey vm works
     system "#{bin}/couchjs", "-h"
+
+    (testpath/"var/lib/couchdb").mkpath
+    (testpath/"var/log/couchdb").mkpath
+    (testpath/"var/run/couchdb").mkpath
+    cp_r etc/"couchdb", testpath
+    inreplace "#{testpath}/couchdb/default.ini", "/usr/local/var", testpath/"var"
+
+    pid = fork do
+      exec "#{bin}/couchdb -A #{testpath}/couchdb"
+    end
+    sleep 2
+
+    begin
+      assert_match /Homebrew/, shell_output("curl localhost:5984")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
+
 __END__
 commit 95cb436be30305efa091809813b64ef31af968c8
 Author: Dave Cottlehuber <dch@apache.org>
