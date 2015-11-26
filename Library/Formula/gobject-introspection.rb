@@ -17,7 +17,10 @@ class GobjectIntrospection < Formula
   depends_on "glib"
   depends_on "cairo"
   depends_on "libffi"
-  depends_on :python if MacOS.version <= :mavericks
+  # System python in Mavericks or below has bug in distutils/sysconfig.py, which breaks the install.
+  #    Caught exception: <type 'exceptions.AttributeError'> AttributeError("'NoneType' object has no attribute 'get'",)
+  #    > /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/sysconfig.py(171)customize_compiler()
+  depends_on "python" if MacOS.version <= :mavericks
 
   # see https://bugzilla.gnome.org/show_bug.cgi?id=625195
   # to be removed when 1.48.0 is released
