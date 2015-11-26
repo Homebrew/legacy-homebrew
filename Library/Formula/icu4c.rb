@@ -1,11 +1,12 @@
 class Icu4c < Formula
   desc "C/C++ and Java libraries for Unicode and globalization"
   homepage "http://site.icu-project.org/"
+  url "https://ssl.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz"
+  mirror "https://fossies.org/linux/misc/icu4c-56_1-src.tgz"
+  version "56.1"
+  sha256 "3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314816"
+
   head "https://ssl.icu-project.org/repos/icu/icu/trunk/", :using => :svn
-  url "https://ssl.icu-project.org/files/icu4c/55.1/icu4c-55_1-src.tgz"
-  mirror "https://fossies.org/linux/misc/icu4c-55_1-src.tgz"
-  version "55.1"
-  sha256 "e16b22cbefdd354bec114541f7849a12f8fc2015320ca5282ee4fd787571457b"
 
   bottle do
     sha256 "11625fd5a49ecdc8d653b707db778d32eb1e7cf6cee04108822a7615289e7411" => :el_capitan
@@ -23,8 +24,9 @@ class Icu4c < Formula
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
 
-    args = ["--prefix=#{prefix}", "--disable-samples", "--disable-tests", "--enable-static"]
+    args = %W[--prefix=#{prefix} --disable-samples --disable-tests --enable-static]
     args << "--with-library-bits=64" if MacOS.prefer_64_bit?
+
     cd "source" do
       system "./configure", *args
       system "make"
