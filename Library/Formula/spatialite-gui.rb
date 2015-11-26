@@ -24,6 +24,13 @@ class SpatialiteGui < Formula
   patch :DATA
 
   def install
+    # Link flags for sqlite don't seem to get passed to make, which
+    # causes builds to fatally error out on linking.
+    # https://github.com/Homebrew/homebrew/issues/44003
+    sqlite = Formula["sqlite"]
+    ENV.prepend "LDFLAGS", "-L#{sqlite.opt_lib} -lsqlite3"
+    ENV.prepend "CFLAGS", "-I#{sqlite.opt_include}"
+
     # Add aui library; reported upstream multiple times:
     # https://groups.google.com/forum/#!searchin/spatialite-users/aui/spatialite-users/wnkjK9pde2E/hVCpcndUP_wJ
     inreplace "configure", "WX_LIBS=\"$(wx-config --libs)\"", "WX_LIBS=\"$(wx-config --libs std,aui)\""
@@ -33,7 +40,6 @@ class SpatialiteGui < Formula
 end
 
 __END__
-
 For some strange reason, wxWidgets does not take the required steps to register
 programs as GUI apps like other toolkits do. This necessitates the creation of
 an app bundle on OS X.
