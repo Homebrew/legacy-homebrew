@@ -1,8 +1,10 @@
 class Graphite2 < Formula
   desc "Smart font renderer for non-Roman scripts"
   homepage "https://scripts.sil.org/cms/scripts/page.php?site_id=projects&item_id=graphite_home"
-  url "https://downloads.sourceforge.net/project/silgraphite/graphite2/graphite2-1.3.2.tgz"
-  sha256 "97af064ff07828f8724b5a9c27d63e2df5aef69a742f0f67cc3f68c3f15d3850"
+  url "https://github.com/silnrsi/graphite/archive/1.3.4.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/graphite2/graphite2_1.3.4.orig.tar.gz"
+  sha256 "9e3c3e223dbc48c072b654711d0c3c29c24f368f5ef628b7bb53a5a8233c6346"
+  head "https://github.com/silnrsi/graphite.git"
 
   bottle do
     cellar :any
