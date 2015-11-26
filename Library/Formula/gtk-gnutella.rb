@@ -1,8 +1,8 @@
 class GtkGnutella < Formula
   desc "Share files in a peer-to-peer (P2P) network"
   homepage "http://gtk-gnutella.sourceforge.net/en/?page=news"
-  url "https://downloads.sourceforge.net/project/gtk-gnutella/gtk-gnutella/1.1.3/gtk-gnutella-1.1.3.tar.bz2"
-  sha256 "2659ddb846f60d13789674e926a71bbb4a8b9d3ca98c6b034a95eaa073531405"
+  url "https://downloads.sourceforge.net/project/gtk-gnutella/gtk-gnutella/1.1.6/gtk-gnutella-1.1.6.tar.bz2"
+  sha256 "b755250f6b8af65b449f20e4dac77a677c1c3fd52f603dc9cd82b035740974c3"
 
   bottle do
     sha256 "63de0c311d36f4fd819f52b948020bc92b3b931bcb696cef5a15cb197b084faa" => :yosemite
@@ -16,10 +16,10 @@ class GtkGnutella < Formula
   def install
     ENV.deparallelize
 
-    system "./build.sh",  "--prefix=#{prefix}", "--disable-nls"
+    system "./build.sh", "--prefix=#{prefix}", "--disable-nls"
     system "make", "install"
-    rm_rf share+"pixmaps"
-    rm_rf share+"applications"
+    rm_rf share/"pixmaps"
+    rm_rf share/"applications"
   end
 
   test do
