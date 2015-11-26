@@ -3,6 +3,7 @@ class Harfbuzz < Formula
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
   url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.1.1.tar.bz2"
   sha256 "0c366a77276fa69d40006cf8a2f2dbcd82f3fb406f3960c3c3a0d34dd3a0f06c"
+  revision 1
 
   head do
     url "https://github.com/behdad/harfbuzz.git"
