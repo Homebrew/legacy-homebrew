@@ -178,8 +178,14 @@ class Hugo < Formula
 
     system "go", "build", "-o", bin/"hugo", "main.go"
 
+    # Build bash completion
     system bin/"hugo", "gen", "autocomplete", "--completionfile=#{buildpath}/hugo.sh"
     bash_completion.install "hugo.sh"
+
+    # Build man pages; target dir man/ is hardcoded :(
+    mkdir_p buildpath/"man/"
+    system bin/"hugo", "gen", "man"
+    man1.install Dir["man/*.1"]
   end
 
   test do
