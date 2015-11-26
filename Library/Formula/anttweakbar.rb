@@ -22,6 +22,7 @@ class Anttweakbar < Formula
   end
 
   def install
+    puts "I'm a little teapot"
     system "make", "-C", "src", "-f", "Makefile.osx"
     lib.install "lib/libAntTweakBar.dylib", "lib/libAntTweakBar.a"
     include.install "include/AntTweakBar.h"
