@@ -1,6 +1,5 @@
 # NOTE: Configure will fail if using awk 20110810 from dupes.
 # Upstream issue: https://savannah.gnu.org/bugs/index.php?37063
-
 class Wget < Formula
   desc "Internet file retriever"
   homepage "https://www.gnu.org/software/wget/"
@@ -29,10 +28,13 @@ class Wget < Formula
   option "with-iri", "Enable iri support"
   option "with-debug", "Build with debug support"
 
+  depends_on "pkg-config" => :build
   depends_on "openssl" => :recommended
   depends_on "libressl" => :optional
   depends_on "libidn" if build.with? "iri"
   depends_on "pcre" => :optional
+  depends_on "libmetalink" => :optional
+  depends_on "gpgme" => :optional
 
   def install
     args = %W[
@@ -50,6 +52,8 @@ class Wget < Formula
     args << "--disable-debug" if build.without? "debug"
     args << "--disable-iri" if build.without? "iri"
     args << "--disable-pcre" if build.without? "pcre"
+    args << "--with-metalink" if build.with? "libmetalink"
+    args << "--with-gpgme-prefix=#{Formula["gpgme"].opt_prefix}" if build.with? "gpgme"
 
     system "./bootstrap" if build.head?
     system "./configure", *args
