@@ -18,6 +18,14 @@ class Libgphoto2 < Formula
     depends_on "gettext" => :build
   end
 
+  head do
+    url "https://github.com/gphoto/libgphoto2.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "gettext" => :build
+  end
+
   option :universal
 
   depends_on "pkg-config" => :build
