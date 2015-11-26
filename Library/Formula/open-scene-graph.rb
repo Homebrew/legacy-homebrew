@@ -62,7 +62,11 @@ class OpenSceneGraph < Formula
     end
 
     if build.with? "collada-dom"
-      args << "-DCOLLADA_INCLUDE_DIR=#{Formula["collada-dom"].opt_include}/collada-dom"
+      # https://github.com/Homebrew/homebrew/issues/43536
+      collada_include_dir = Dir.glob("#{Formula["collada-dom"].opt_include}/collada-dom*").first
+      raise "Could not locate collada-dom include directory" unless collada_include_dir
+      args << "-DCOLLADA_INCLUDE_DIR=#{collada_include_dir}"
+      args << "-DCOLLADA_DOM_ROOT=#{collada_include_dir}/1.4/dom"
     end
 
     if build.with? "qt5"
