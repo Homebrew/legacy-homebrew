@@ -1,8 +1,8 @@
 class Viewvc < Formula
   desc "Browser interface for CVS and Subversion repositories"
   homepage "http://www.viewvc.org"
-  url "http://viewvc.tigris.org/files/documents/3330/49392/viewvc-1.1.23.tar.gz"
-  sha256 "d14290b23f44e8f5301a7ca9fc946bcd0f8bb8206d9b9c111ac56e19f2588b7d"
+  url "http://viewvc.tigris.org/files/documents/3330/49471/viewvc-1.1.24.tar.gz"
+  sha256 "0620f69fa5ba02ac65e000586ba31015a2053a82711bedb30629fd6087003d7e"
 
   bottle do
     cellar :any_skip_relocation
@@ -18,10 +18,10 @@ class Viewvc < Formula
   depends_on "subversion" => "with-python"
 
   def install
-    system "/usr/bin/python", "./viewvc-install", "--prefix=#{libexec}", "--destdir="
+    system "python", "./viewvc-install", "--prefix=#{libexec}", "--destdir="
     Pathname.glob(libexec/"bin/*") do |f|
       next if f.directory?
-      (bin/"viewvc-#{f.basename}").write_env_script f, :PYTHONPATH => "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
+      bin.install_symlink f => "viewvc-#{f.basename}"
     end
   end
 
