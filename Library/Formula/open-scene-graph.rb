@@ -113,3 +113,16 @@ index 321cede..6497589 100644
      ENDIF()
 
  ENDIF()
+diff --git a/src/osgPlugins/dicom/CMakeLists.txt b/src/osgPlugins/dicom/CMakeLists.txt
+index 55c2a57..e6e3f4a 100644
+--- a/src/osgPlugins/dicom/CMakeLists.txt
++++ b/src/osgPlugins/dicom/CMakeLists.txt
+@@ -5,7 +5,7 @@ IF  (DCMTK_FOUND)
+
+     SET(TARGET_SRC ReaderWriterDICOM.cpp )
+
+-    LINK_LIBRARIES(${DCMTK_LIBRARIES} ${ZLIB_LIBRARY})
++    LINK_LIBRARIES(${DCMTK_LIBRARIES} iconv ${ZLIB_LIBRARY})
+
+     ADD_DEFINITIONS(-DUSE_DCMTK)
+
