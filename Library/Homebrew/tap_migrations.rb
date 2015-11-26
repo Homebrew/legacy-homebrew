@@ -88,6 +88,7 @@ TAP_MIGRATIONS = {
   "gobby" => "homebrew/x11",
   "googlecl" => "homebrew/boneyard",
   "gpredict" => "homebrew/x11",
+  "gptfdisk" => "homebrew/boneyard",
   "grace" => "homebrew/x11",
   "grads" => "homebrew/binary",
   "graylog2-server" => "homebrew/boneyard",
