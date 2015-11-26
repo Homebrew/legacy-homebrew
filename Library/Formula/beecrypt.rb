@@ -3,7 +3,7 @@ class Beecrypt < Formula
   homepage "http://beecrypt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/beecrypt/beecrypt/4.2.1/beecrypt-4.2.1.tar.gz"
   sha256 "286f1f56080d1a6b1d024003a5fa2158f4ff82cae0c6829d3c476a4b5898c55d"
-  revision 3
+  revision 4
 
   bottle do
     cellar :any
@@ -13,8 +13,8 @@ class Beecrypt < Formula
     sha256 "9baaefc4c2af1220ec4d8f8d3328f8d2107bd43a4c0499fc2402b647684d9b04" => :mountain_lion
   end
 
-  depends_on "icu4c"
   depends_on "libtool" => :build
+  depends_on "icu4c"
 
   # fix build with newer clang, gcc 4.7 (https://bugs.gentoo.org/show_bug.cgi?id=413951)
   patch :p0, :DATA
