@@ -6,9 +6,9 @@ class TelepathyGabble < Formula
     :revision => "30cd70a45b6659ad9c571468ae6c49f38142dd5f"
 
   bottle do
-    sha1 "39edf6b7b6392eb7ff400798bbb0d304114a55d5" => :mavericks
-    sha1 "e1727fc04c0c2510f646b2c9ab947394cd730ee2" => :mountain_lion
-    sha1 "1084ce8a5c9bf36c544bbe7105310d8410c38a37" => :lion
+    sha256 "2095502b671631f5d1d466c2b67d52ba055dd985bcb8c56ee659c57c31f67244" => :el_capitan
+    sha256 "3cf49e282137f0fd64c5f966407613252b2908fec66d972ac5acffbc13f56791" => :yosemite
+    sha256 "cf516a9606026697e4c1cf64f4dbbe02be5dc82efad2ba7343b2b347866f1fb6" => :mavericks
   end
 
   depends_on "autoconf" => :build
