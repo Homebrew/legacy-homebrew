@@ -10,18 +10,19 @@ class Sword < Formula
     sha256 "07751178c42bcfe1c668bfd3f5f6c10bea4040f92d75f09fd42947d49f61c5ed" => :mountain_lion
   end
 
-  depends_on "clucene" => :optional
-  depends_on "icu4c" => :optional
   option "with-clucene", "Use clucene for text searching capabilities"
   option "with-icu4c", "Use icu4c for unicode support"
 
+  depends_on "clucene" => :optional
+  depends_on "icu4c" => :optional
+
   def install
-    args = [
-      "--prefix=#{prefix}",
-      "--disable-debug",
-      "--disable-profile",
-      "--disable-tests",
-      "--with-curl", # use system curl
+    args = %W[
+      --prefix=#{prefix}
+      --disable-debug
+      --disable-profile
+      --disable-tests
+      --with-curl
     ]
 
     if build.with? "icu4c"
