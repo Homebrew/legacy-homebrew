@@ -1,8 +1,8 @@
 class Yaz < Formula
   desc "Toolkit for Z39.50/SRW/SRU clients/servers"
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.14.11.tar.gz"
-  sha256 "216bc0e76e3deb655017bb639e87f2175facfdc060138a550e290c383da2cf7a"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.15.1.tar.gz"
+  sha256 "ebef25b0970ea1485bbba43a721d7001523b6faa18c8d8da4080a8f83d5e2116"
 
   bottle do
     cellar :any
@@ -15,8 +15,6 @@ class Yaz < Formula
 
   depends_on "pkg-config" => :build
   depends_on "icu4c" => :recommended
-  depends_on "gnutls" => :optional
-  depends_on "libgcrypt" if build.with? "gnutls"
 
   def install
     ENV.universal_binary if build.universal?
@@ -32,7 +30,7 @@ class Yaz < Formula
     # text encoding supported by yaz-iconv, and UTF8.
     marc8file = testpath/"marc8.txt"
     marc8file.write "$1!0-!L,i$3i$si$Ki$Ai$O!+=(B"
-    result = `#{bin}/yaz-iconv -f marc8 -t utf8 #{marc8file}`
+    result = shell_output("#{bin}/yaz-iconv -f marc8 -t utf8 #{marc8file}")
     result.force_encoding(Encoding::UTF_8) if result.respond_to?(:force_encoding)
     assert_equal "世界こんにちは！", result
 
@@ -68,7 +66,7 @@ class Yaz < Formula
         4 1 '' ''
       EOS
 
-      result = `#{bin}/yaz-icu -c #{configurationfile} #{inputfile}`
+      result = shell_output("#{bin}/yaz-icu -c #{configurationfile} #{inputfile}")
       assert_equal expectedresult, result
     end
   end
