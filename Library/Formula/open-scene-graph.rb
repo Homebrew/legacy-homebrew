@@ -4,12 +4,18 @@ class OpenSceneGraph < Formula
   url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.4.0.zip"
   sha256 "5c727d84755da276adf8c4a4a3a8ba9c9570fc4b4969f06f1d2e9f89b1e3040e"
 
-  head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
+  head "https://github.com/openscenegraph/osg.git"
 
   bottle do
     sha256 "d24a9ba62fdd3d700e8c326e0ac8786229a4d84ca9786fac58b1ff8d785148ff" => :yosemite
     sha256 "a2bb83a0e02b1f5a75e802053cba6c81b6928c716fb805caf7d53becc9e0ee8e" => :mavericks
     sha256 "86e946339bf8293c784e4ceb78b2ff5f203bf7166427d2e66abb462d6f03e406" => :mountain_lion
+  end
+
+  devel do
+    # Odd-numbered minor versions are dev releases
+    url "https://github.com/openscenegraph/osg/archive/OpenSceneGraph-3.5.1.zip"
+    sha256 "f51f2cef2fa3edcfdc47142db5f6c9706e74c8aea983a7583858eb7c8c40e307"
   end
 
   option :cxx11
