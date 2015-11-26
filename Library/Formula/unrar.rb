@@ -1,9 +1,8 @@
 class Unrar < Formula
   desc "Extract, view, and test RAR archives"
   homepage "http://www.rarlab.com"
-  url "http://www.rarlab.com/rar/unrarsrc-5.2.7.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/non-free/u/unrar-nonfree/unrar-nonfree_5.2.7.orig.tar.gz"
-  sha256 "ef14757e943787b439fedf2c564c1f38d0db315528a928e0de170860717e2fac"
+  url "http://www.rarlab.com/rar/unrarsrc-5.3.8.tar.gz"
+  sha256 "52386ee592150f009a5438829dffc91c1e0006935e8ef701f3c8d8785b8eeb99"
 
   bottle do
     cellar :any
