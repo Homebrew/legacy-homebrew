@@ -12,7 +12,6 @@ class OpenSceneGraph < Formula
     sha256 "86e946339bf8293c784e4ceb78b2ff5f203bf7166427d2e66abb462d6f03e406" => :mountain_lion
   end
 
-  option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
   deprecated_option "docs" => "with-docs"
 
@@ -33,6 +32,8 @@ class OpenSceneGraph < Formula
   depends_on "qt5" => :optional
   depends_on "qt" => :optional
 
+  needs :cxx11
+
   # patch necessary to ensure support for gtkglext-quartz
   # filed as an issue to the developers https://github.com/openscenegraph/osg/issues/34
   patch :DATA
@@ -43,7 +44,7 @@ class OpenSceneGraph < Formula
   end
 
   def install
-    ENV.cxx11 if build.cxx11?
+    ENV.cxx11
 
     # Turning off FFMPEG takes this change or a dozen "-DFFMPEG_" variables
     if build.without? "ffmpeg"
@@ -52,6 +53,10 @@ class OpenSceneGraph < Formula
 
     args = std_cmake_args
     args << "-DBUILD_DOCUMENTATION=" + ((build.with? "docs") ? "ON" : "OFF")
+
+    # Fixes Xcode 7.1 failure due to warning in system Framework
+    # https://github.com/Homebrew/homebrew/issues/46372
+    args << "-DCMAKE_CXX_FLAGS=-Wno-c++11-narrowing"
 
     if MacOS.prefer_64_bit?
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.arch_64_bit}"
