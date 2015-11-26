@@ -1,8 +1,8 @@
 class Gwyddion < Formula
   desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage "http://gwyddion.net/"
-  url "http://gwyddion.net/download/2.42/gwyddion-2.42.tar.gz"
-  sha256 "0bcafaafca1584ebcd4d7c1f1e437a67bd94749c78d9f33a74c8000bba3fb364"
+  url "http://gwyddion.net/download/2.43/gwyddion-2.43.tar.gz"
+  sha256 "9feb33f991b785f238f62bf5c204a41d654e6c04929ec6c8c4b025691d60334e"
 
   bottle do
     sha256 "3705ee0da0077fbf5ae69be824dfe5ee21939c23482b4df2d0324a0d5b4bdaa7" => :el_capitan
@@ -11,11 +11,12 @@ class Gwyddion < Formula
   end
 
   depends_on "pkg-config" => :build
+  depends_on "fftw"
   depends_on "gtk+"
   depends_on "gtk-mac-integration"
-  depends_on "libxml2"
-  depends_on "fftw"
   depends_on "gtkglext"
+  depends_on "libxml2"
+
   depends_on :python => :optional
   depends_on "pygtk" if build.with? "python"
   depends_on "gtksourceview" if build.with? "python"
