@@ -1,8 +1,8 @@
 class Fobis < Formula
   desc "KISS build tool for automaticaly building modern Fortran projects."
   homepage "https://github.com/szaghi/FoBiS"
-  url "https://pypi.python.org/packages/source/F/FoBiS.py/FoBiS.py-1.7.4.tar.gz"
-  sha256 "f63d38e532afa5b5fbe7e6d50591e161a86b78e9ecfe2273d164c330f7feb3ba"
+  url "https://pypi.python.org/packages/source/F/FoBiS.py/FoBiS.py-1.8.4.tar.gz"
+  sha256 "2f55ec1ef0b70c8870d497697f8c0cab3012e391db1b80481b32869358fb10f7"
 
   bottle do
     cellar :any
