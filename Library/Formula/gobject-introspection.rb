@@ -5,6 +5,15 @@ class GobjectIntrospection < Formula
   sha256 "6658bd3c2b8813eb3e2511ee153238d09ace9d309e4574af27443d87423e4233"
   revision 1
 
+  head do
+    url "https://github.com/GNOME/gobject-introspection.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on :python3 => :optional
+  end
+
   bottle do
     sha256 "6bae714bf138ddf4af57736d593d5cb4c68b2efa8422e8111fdecab0979786f8" => :el_capitan
     sha256 "3ad3ce2a65ab5622087cc4a50313767c3ca97402b2c4064904a773cbd355c732" => :yosemite
@@ -35,13 +44,25 @@ class GobjectIntrospection < Formula
     ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
     ENV.universal_binary if build.universal?
     inreplace "giscanner/transformer.py", "/usr/share", "#{HOMEBREW_PREFIX}/share"
-    inreplace "configure" do |s|
-      s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
-    end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make"
-    system "make", "install"
+    if build.head?
+      Language::Python.each_python(build) do |python, _version|
+        system "./autogen.sh"
+        inreplace "configure" do |s|
+          s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
+        end
+        system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "PYTHON=#{python}"
+        system "make"
+        system "make", "install"
+      end
+    else
+      inreplace "configure" do |s|
+        s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
+      end
+      system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "PYTHON=#{python}"
+      system "make"
+      system "make", "install"
+    end
   end
 
   test do
@@ -49,5 +70,8 @@ class GobjectIntrospection < Formula
     resource("tutorial").stage testpath
     system "make"
     assert (testpath/"Tut-0.1.typelib").exist?
+    Language::Python.each_python(build) do |python, _version|
+      system python, "-c", "import gi"
+    end
   end
 end
