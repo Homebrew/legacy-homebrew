@@ -7,9 +7,9 @@ class Libfreehand < Formula
 
   bottle do
     cellar :any
-    sha256 "9179aa1f2f70931d95a632f88b90dab2dae1a03d85ccf6c4cdb191258844e158" => :yosemite
-    sha256 "eb8d65c58a1138f638fd9daa375af93cd50d18fdb41b3031ba860271779f9be4" => :mavericks
-    sha256 "1d905f049eb5471b15f2af24cd7a8ae909574aedacc20231795e927123a7d926" => :mountain_lion
+    sha256 "1d223998ddc8b0b43a1046bd68a1ffa5a803e8915de39936a9fdf88892e5f14d" => :el_capitan
+    sha256 "4fb596bf8a90d9bc7d807cef66017bebdd43f7018c2e821dcdd18aad5e9f9082" => :yosemite
+    sha256 "1768d357e69076690af0622d9de6ca07de1c4e59e87fc7e3f96ec5b5e4f392ff" => :mavericks
   end
 
   depends_on "pkg-config" => :build
