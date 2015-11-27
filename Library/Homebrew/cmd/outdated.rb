@@ -1,6 +1,5 @@
 require "formula"
 require "keg"
-require "migrator"
 
 module Homebrew
   def outdated
