@@ -12,6 +12,7 @@ require "pkg_version"
 require "tap"
 require "formula_renames"
 require "keg"
+require "migrator"
 
 # A formula provides instructions and metadata for Homebrew to install a piece
 # of software. Every Homebrew formula is a {Formula}.
