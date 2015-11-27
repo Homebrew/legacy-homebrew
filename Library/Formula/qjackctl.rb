@@ -15,6 +15,12 @@ class Qjackctl < Formula
     # https://sourceforge.net/p/qjackctl/code/ci/979f0a5afef3107288b17a508966ca5f27ce7069
     patch :DATA
   end
+  bottle do
+    sha256 "5eb11af861de629ba8afba7d75c71b02029817a69d2a6a2db15f13fb3bea9594" => :el_capitan
+    sha256 "5cf871c347c52298c161c83443f12a825cd18ce8037286dcc9cd552ab3857e9e" => :yosemite
+    sha256 "671c6d52aa37729c4471390673310fa90c68139dae697f1630552b3b2511d690" => :mavericks
+  end
+
 
   depends_on "autoconf" => :build
   depends_on "qt"
