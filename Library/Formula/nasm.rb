@@ -1,8 +1,17 @@
 class Nasm < Formula
   desc "Netwide Assembler (NASM) is an 80x86 assembler"
   homepage "http://www.nasm.us/"
-  url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.08/nasm-2.11.08.tar.xz"
-  sha256 "c99467c7072211c550d147640d8a1a0aa4d636d4d8cf849f3bf4317d900a1f7f"
+  revision 1
+
+  stable do
+    url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.08/nasm-2.11.08.tar.xz"
+    sha256 "c99467c7072211c550d147640d8a1a0aa4d636d4d8cf849f3bf4317d900a1f7f"
+
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/7a329c65e/nasm/nasm_outmac64.patch"
+      sha256 "54bfb2a8e0941e0108efedb4a3bcdc6ce8dff0d31d3abdf2256410c0f93f5ad7"
+    end
+  end
 
   bottle do
     cellar :any_skip_relocation
@@ -12,12 +21,17 @@ class Nasm < Formula
     sha256 "0191f8c219a08f1a3207d63e07b736b627f90d80373d400bded4cada29afc184" => :mountain_lion
   end
 
+  devel do
+    url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.09rc1/nasm-2.11.09rc1.tar.xz"
+    sha256 "8b76b7f40701a5bdc8ef29fc352edb0714a8e921b2383072283057d2b426a890"
+  end
+
   option :universal
 
   def install
     ENV.universal_binary if build.universal?
     system "./configure", "--prefix=#{prefix}"
-    system "make install install_rdf"
+    system "make", "install", "install_rdf"
   end
 
   test do
