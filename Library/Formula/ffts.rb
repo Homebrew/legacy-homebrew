@@ -2,8 +2,9 @@ class Ffts < Formula
   desc "C library that computes the discrete Fourier transform"
   homepage "http://anthonix.com/ffts/"
   head "https://github.com/anthonix/ffts.git"
-  url "http://anthonix.com/ffts/releases/ffts-0.7.tar.gz"
-  sha256 "6362e498e5aa241661cfe9060153076b78e300a5d3c365997ba6ac2f637df3ff"
+  url "https://github.com/anthonix/ffts/archive/fa1780c68593762b1e4bdbc46d83912db3eba27a.tar.gz"
+  sha256 "4c94ef94070f12b5042c136e9a0e140c18f5260f6643bd4de17b57109f58ddd4"
+  version "0.7"
 
   bottle do
     cellar :any
