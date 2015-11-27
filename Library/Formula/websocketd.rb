@@ -32,14 +32,14 @@ class Websocketd < Formula
   end
 
   test do
-    pid = Process.fork
-    if pid.nil?
-      exec "#{bin}/websocketd", "--port=8080", "echo", "ok"
-    else
-      Process.detach(pid)
-    end
+    pid = Process.fork { exec "#{bin}/websocketd", "--port=8080", "echo", "ok" }
+    sleep 2
 
-    assert_equal("404 page not found\n", shell_output("curl -s http://localhost:8080"))
-    Process.kill(9, pid)
+    begin
+      assert_equal("404 page not found\n", shell_output("curl -s http://localhost:8080"))
+    ensure
+      Process.kill 9, pid
+      Process.wait pid
+    end
   end
 end
