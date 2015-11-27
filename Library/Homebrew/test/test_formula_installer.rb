@@ -20,10 +20,12 @@ class InstallTests < Homebrew::TestCase
     assert_predicate formula, :installed?
 
     begin
+      Tab.clear_cache
       refute_predicate Tab.for_keg(keg), :poured_from_bottle
 
       yield formula
     ensure
+      Tab.clear_cache
       keg.unlink
       keg.uninstall
       formula.clear_cache
