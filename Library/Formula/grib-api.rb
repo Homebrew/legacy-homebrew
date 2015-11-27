@@ -5,9 +5,9 @@ class GribApi < Formula
   sha256 "da29650a5d58d27509a055db3685f28789b06d94fafb2527fd1ddacad8eae4a7"
 
   bottle do
-    sha256 "7a0cf51c46783c775ba0ad7ee0d28a37aa61cf4fa405657072fe66af97301e87" => :el_capitan
-    sha256 "1734c076ba6d2b4d078196d8fa04185181ce0a42424adcc2881c21c7bce73933" => :yosemite
-    sha256 "0c0bff9379631e5b0d8d7da4a6e92cd8c7c051e215be01f13e203e136e197d89" => :mavericks
+    sha256 "7b95c615906d92606038ac56c65672f4028de4d1333cf02ea9cc9ca3c04f3a16" => :el_capitan
+    sha256 "f152472b23c9708ac5dd5a5e6cdcbaeadc79d9888b0b384d850a2f40ce4f0da9" => :yosemite
+    sha256 "3a72bb44150630fff2eadcdf07dfb6c8e71812934701634222958921f44ee6ab" => :mavericks
   end
 
   depends_on :fortran
