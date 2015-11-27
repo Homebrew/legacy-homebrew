@@ -7,6 +7,8 @@ class Nasm < Formula
     url "http://www.nasm.us/pub/nasm/releasebuilds/2.11.08/nasm-2.11.08.tar.xz"
     sha256 "c99467c7072211c550d147640d8a1a0aa4d636d4d8cf849f3bf4317d900a1f7f"
 
+    # http://repo.or.cz/nasm.git/commit/4920a0324348716d6ab5106e65508496241dc7a2
+    # http://bugzilla.nasm.us/show_bug.cgi?id=3392306#c5
     patch do
       url "https://raw.githubusercontent.com/Homebrew/patches/7a329c65e/nasm/nasm_outmac64.patch"
       sha256 "54bfb2a8e0941e0108efedb4a3bcdc6ce8dff0d31d3abdf2256410c0f93f5ad7"
