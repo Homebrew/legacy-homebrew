@@ -20,4 +20,28 @@ class Pazpar2 < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test-config.xml").write <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <pazpar2 xmlns="http://www.indexdata.com/pazpar2/1.0">
+      <threads number="2"/>
+      <server>
+        <listen port="8081"/>
+      </server>
+    </pazpar2>
+    EOS
+
+    pid = fork do
+      exec "#{sbin}/pazpar2 -f #{testpath}/test-config.xml"
+    end
+    sleep 2
+
+    begin
+      assert_match /xml version/, shell_output("curl localhost:8081")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
+  end
 end
