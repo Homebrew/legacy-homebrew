@@ -1,8 +1,8 @@
 class Ford < Formula
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/cmacmackin/ford/"
-  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.2.3.tar.gz"
-  sha256 "8dac3abec4ea88ff68218738bbd0407c2a0b1714c644e28883b1e36611c609b4"
+  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.4.0.tar.gz"
+  sha256 "cd51e937a04aea92d8a7b2f2aeb08853d7c6860396bd09a962f958892100fd47"
 
   head "https://github.com/cmacmackin/ford.git"
 
@@ -18,13 +18,13 @@ class Ford < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "beautifulsoup4" do
-    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.0.tar.gz"
-    sha256 "fad91da88f69438b9ba939ab1b2cabaa31b1d914f1cccb4bb157a993ed2917f6"
+    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.1.tar.gz"
+    sha256 "87d4013d0625d4789a4f56b8d79a04d5ce6db1152bb65f1d39744f7709a366b4"
   end
 
   resource "graphviz" do
-    url "https://pypi.python.org/packages/source/g/graphviz/graphviz-0.4.6.zip"
-    sha256 "f12da6fd8318d909ef13bb269bf6b96dd09d3b908a8e2b373b9ba5dbe3d3ec69"
+    url "https://pypi.python.org/packages/source/g/graphviz/graphviz-0.4.8.zip"
+    sha256 "71d56c61af9b4ff5e1e64a89b46872aa27c598bab8b0e9083f0fd3213cfc28b0"
   end
 
   resource "Jinja2" do
@@ -33,8 +33,8 @@ class Ford < Formula
   end
 
   resource "Markdown" do
-    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.2.tar.gz"
-    sha256 "ee17d0d7dc091e645dd48302a2e21301cc68f188505c2069d8635f94554170bf"
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.5.tar.gz"
+    sha256 "8d94cf6273606f76753fcb1324623792b3738c7612c2b180c85cc5e88642e560"
   end
 
   resource "markdown-include" do
