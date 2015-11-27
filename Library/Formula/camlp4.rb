@@ -2,10 +2,9 @@ class Camlp4 < Formula
   desc "Tool to write extensible parsers in OCaml"
   homepage "https://github.com/ocaml/camlp4"
   url "https://github.com/ocaml/camlp4/archive/4.02+6.tar.gz"
-  version "4.02.2+6"
+  version "4.02.3+6"
   sha256 "820c35b69fdff3225bda6045fabffe5d7c54dda00fb157444ac8bda5e1778d45"
   head "https://github.com/ocaml/camlp4.git", :branch => "trunk"
-  revision 1
 
   bottle do
     cellar :any_skip_relocation
