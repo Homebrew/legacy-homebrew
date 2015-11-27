@@ -5,9 +5,9 @@ class Anjuta < Formula
   sha256 "be864f2f1807e1b870697f646294e997d221d5984a135245543b719e501cef8e"
 
   bottle do
-    sha256 "22e821a109a25b33b7f72f351cd302eab8ede6cb094a30ba681580eb7f7077b2" => :el_capitan
-    sha256 "c5e4bd90df721536f8246c526fa0706ccf0aa1b60b8c8727e5dec5f4f3be9c47" => :yosemite
-    sha256 "993d2a4bc85eb28f5771458ece73d8b25eb4ff55ac865a4fee6ec3c5dc59a7ae" => :mavericks
+    sha256 "f18b5bd818bece4547ee341dd77c12977e8363987a37e24de04a88b131076a3e" => :el_capitan
+    sha256 "5265c40071f8622a92ef148b99d8c28f956cca2c78239e92fe7c7bbbf9de0c4c" => :yosemite
+    sha256 "cef5fe5fa9c508147b133e048f3dcb81c918d3a9f6875d00617e8d472f118c0a" => :mavericks
   end
 
   depends_on "pkg-config" => :build
