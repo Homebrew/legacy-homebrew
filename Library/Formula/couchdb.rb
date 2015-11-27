@@ -60,8 +60,7 @@ class Couchdb < Formula
     system "make"
     system "make", "install"
 
-    # Use our plist instead to avoid faffing with a new system user.
-    (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").delete
+    (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").chmod 0644
     (lib+"couchdb/bin/couchjs").chmod 0755
     (var+"lib/couchdb").mkpath
     (var+"log/couchdb").mkpath
