@@ -9,10 +9,10 @@ class Icu4c < Formula
   head "https://ssl.icu-project.org/repos/icu/icu/trunk/", :using => :svn
 
   bottle do
-    sha256 "11625fd5a49ecdc8d653b707db778d32eb1e7cf6cee04108822a7615289e7411" => :el_capitan
-    sha256 "a27e2b3645992acec22c95cb6ff4c4893139d3710c1a0be6d54c9f22593fc148" => :yosemite
-    sha256 "c68728ae3a0401fb32ddb3a85eb5ddf8c367268090421d66db2631d49f7b1ce1" => :mavericks
-    sha256 "be4ecad0c4f0542df384dd48c8c57380f6d843958c5d1eddb068e52f910e2dd9" => :mountain_lion
+    cellar :any
+    sha256 "a6ca9e033a1b0cc58620b5ab70dc32565a7700cc643773476ed8e1b7e5641d2c" => :el_capitan
+    sha256 "b1e4a9fcf06da4c0303d95d10fbc40b5553c22f97d5586d696807ac44a80e55b" => :yosemite
+    sha256 "64996840dbc39cb4a02cedc5d6bf2d266c01cab8ad46d956a12daf9b40c65763" => :mavericks
   end
 
   keg_only :provided_by_osx, "OS X provides libicucore.dylib (but nothing else)."
