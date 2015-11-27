@@ -63,13 +63,33 @@ class SoftwareSpec
     dependency_collector.add(@resource)
   end
 
+  def bottle_unneeded?
+    !!@bottle_disable_reason && @bottle_disable_reason.unneeded?
+  end
+
+  def bottle_disabled?
+    !!@bottle_disable_reason
+  end
+
+  def bottle_disable_reason
+    @bottle_disable_reason
+  end
+
+  def bottle_defined?
+    bottle_specification.collector.keys.any?
+  end
+
   def bottled?
     bottle_specification.tag?(bottle_tag) && \
       (bottle_specification.compatible_cellar? || ARGV.force_bottle?)
   end
 
-  def bottle(&block)
-    bottle_specification.instance_eval(&block)
+  def bottle(disable_type = nil, disable_reason = nil,  &block)
+    if disable_type
+      @bottle_disable_reason = BottleDisableReason.new(disable_type, disable_reason)
+    else
+      bottle_specification.instance_eval(&block)
+    end
   end
 
   def resource_defined?(name)
@@ -268,8 +288,8 @@ class BottleSpecification
   DEFAULT_CELLAR = "/usr/local/Cellar".freeze
   DEFAULT_DOMAIN_MAC = "https://homebrew.bintray.com"
   DEFAULT_DOMAIN_LINUX = "https://linuxbrew.bintray.com"
-  DEFAULT_DOMAIN_OS = OS.linux? ? DEFAULT_DOMAIN_LINUX : DEFAULT_DOMAIN_MAC
-  DEFAULT_DOMAIN = (ENV["HOMEBREW_BOTTLE_DOMAIN"] || DEFAULT_DOMAIN_OS).freeze
+  DEFAULT_DOMAIN = (OS.linux? ? DEFAULT_DOMAIN_LINUX : DEFAULT_DOMAIN_MAC).freeze
+  DEFAULT_ROOT_URL = "#{DEFAULT_DOMAIN}/bottles".freeze
 
   attr_rw :prefix, :cellar, :revision
   attr_accessor :tap
@@ -319,7 +339,7 @@ class BottleSpecification
   def checksums
     checksums = {}
     os_versions = collector.keys
-    os_versions.map! { |osx| MacOS::Version.from_symbol osx rescue osx.to_s }
+    os_versions.map! { |osx| MacOS::Version.from_symbol osx rescue nil }.compact!
     os_versions.sort.reverse_each do |os_version|
       osx = os_version.to_sym
       checksum = collector[osx]

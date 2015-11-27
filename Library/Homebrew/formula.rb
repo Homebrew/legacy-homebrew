@@ -217,6 +217,28 @@ class Formula
   end
 
   # @private
+  def bottle_unneeded?
+    active_spec.bottle_unneeded?
+  end
+
+  # @private
+  def bottle_disabled?
+    active_spec.bottle_disabled?
+  end
+
+  # @private
+  def bottle_disable_reason
+    active_spec.bottle_disable_reason
+  end
+
+  # Does the currently active {SoftwareSpec} has any bottle?
+  # @private
+  def bottle_defined?
+    active_spec.bottle_defined?
+  end
+
+  # Does the currently active {SoftwareSpec} has an installable bottle?
+  # @private
   def bottled?
     active_spec.bottled?
   end
@@ -578,6 +600,15 @@ class Formula
     prefix+"share"+name
   end
 
+  # The directory where Emacs Lisp files should be installed, with the
+  # formula name appended to avoid linking conflicts.
+  #
+  # Install an Emacs mode included with a software package:
+  # <pre>elisp.install "contrib/emacs/example-mode.el"</pre>
+  def elisp
+    prefix+"share/emacs/site-lisp"+name
+  end
+
   # The directory where the formula's Frameworks should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.
@@ -735,6 +766,10 @@ class Formula
 
   def opt_pkgshare
     opt_prefix+"share"+name
+  end
+
+  def opt_elisp
+    opt_prefix+"share/emacs/site-lisp"+name
   end
 
   def opt_frameworks
@@ -961,7 +996,7 @@ class Formula
       -Wno-dev
     ]
     # Set RPATH for Linux to fix error while loading shared libraries
-    args += ["-DCMAKE_BUILD_WITH_INSTALL_RPATH=1", "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=1"] if OS.linux?
+    args << "-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=1" if OS.linux?
     args
   end
 
@@ -1192,7 +1227,8 @@ class Formula
     hsh["bottle"] = {}
     %w[stable devel].each do |spec_sym|
       next unless spec = send(spec_sym)
-      next unless (bottle_spec = spec.bottle_specification).checksums.any?
+      next unless spec.bottle_defined?
+      bottle_spec = spec.bottle_specification
       bottle_info = {
         "revision" => bottle_spec.revision,
         "cellar" => (cellar = bottle_spec.cellar).is_a?(Symbol) ? \
@@ -1247,7 +1283,7 @@ class Formula
     mktemp do
       @testpath = Pathname.pwd
       ENV["HOME"] = @testpath
-      setup_test_home @testpath
+      setup_home @testpath
       test
     end
   ensure
@@ -1283,8 +1319,8 @@ class Formula
 
   protected
 
-  def setup_test_home(home)
-    # keep Homebrew's site-packages in sys.path when testing with system Python
+  def setup_home(home)
+    # keep Homebrew's site-packages in sys.path when using system Python
     user_site_packages = home/"Library/Python/2.7/lib/python/site-packages"
     user_site_packages.mkpath
     (user_site_packages/"homebrew.pth").write <<-EOS.undent
@@ -1444,6 +1480,7 @@ class Formula
       mkdir_p env_home
 
       old_home, ENV["HOME"] = ENV["HOME"], env_home
+      setup_home env_home
 
       begin
         yield
@@ -1587,23 +1624,37 @@ class Formula
     # @!attribute [w] bottle
     # Adds a {.bottle} {SoftwareSpec}.
     # This provides a pre-built binary package built by the Homebrew maintainers for you.
-    # It will be installed automatically if there is a binary package for your platform and you haven't passed or previously used any options on this formula.
+    # It will be installed automatically if there is a binary package for your platform
+    # and you haven't passed or previously used any options on this formula.
+    #
     # If you maintain your own repository, you can add your own bottle links.
     # https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Bottles.md
     # You can ignore this block entirely if submitting to Homebrew/Homebrew, It'll be
     # handled for you by the Brew Test Bot.
     #
     # <pre>bottle do
-    #   root_url "http://mikemcquaid.com" # Optional root to calculate bottle URLs
+    #   root_url "https://example.com" # Optional root to calculate bottle URLs
     #   prefix "/opt/homebrew" # Optional HOMEBREW_PREFIX in which the bottles were built.
     #   cellar "/opt/homebrew/Cellar" # Optional HOMEBREW_CELLAR in which the bottles were built.
     #   revision 1 # Making the old bottle outdated without bumping the version/revision of the formula.
-    #   sha256 "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865" => :yosemite
-    #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :mavericks
-    #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mountain_lion
+    #   sha256 "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865" => :el_capitan
+    #   sha256 "53c234e5e8472b6ac51c1ae1cab3fe06fad053beb8ebfd8977b010655bfdd3c3" => :yosemite
+    #   sha256 "1121cfccd5913f0a63fec40a6ffd44ea64f9dc135c66634ba001d10bcf4302a2" => :mavericks
     # end</pre>
-    def bottle(*, &block)
-      stable.bottle(&block)
+    #
+    # Only formulae where the upstream URL breaks or moves frequently, require compile
+    # or have a reasonable amount of patches/resources should be bottled.
+    # Formulae which do not meet the above requirements should not be bottled.
+    #
+    # Formulae which should not be bottled & can be installed without any compile
+    # required should be tagged with:
+    # <pre>bottle :unneeded</pre>
+    #
+    # Otherwise formulae which do not meet the above requirements and should not
+    # be bottled should be tagged with:
+    # <pre>bottle :disable, "reasons"</pre>
+    def bottle(*args, &block)
+      stable.bottle(*args, &block)
     end
 
     # @private

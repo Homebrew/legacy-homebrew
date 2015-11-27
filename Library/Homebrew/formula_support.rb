@@ -14,11 +14,11 @@ class KegOnlyReason
     when :provided_by_osx, :shadowed_by_osx
       OS.mac?
     when :provided_pre_mountain_lion
-      OS.mac? && MacOS.version < :mountain_lion
+      MacOS.version < :mountain_lion
     when :provided_pre_mavericks
-      OS.mac? && MacOS.version < :mavericks
+      MacOS.version < :mavericks
     when :provided_pre_el_capitan
-      OS.mac? && MacOS.version < :el_capitan
+      MacOS.version < :el_capitan
     when :provided_until_xcode43
       OS.mac? && MacOS::Xcode.version < "4.3"
     when :provided_until_xcode5
@@ -55,5 +55,31 @@ EOS
     else
       @reason
     end.strip
+  end
+end
+
+# Used to annotate formulae that don't require compiling or cannot build bottle.
+class BottleDisableReason
+  SUPPORTED_TYPES = [:unneeded, :disable]
+
+  def initialize(type, reason)
+    @type = type
+    @reason = reason
+  end
+
+  def unneeded?
+    @type == :unneeded
+  end
+
+  def valid?
+    SUPPORTED_TYPES.include? @type
+  end
+
+  def to_s
+    if @type == :unneeded
+      "This formula doesn't require compiling."
+    else
+      @reason
+    end
   end
 end

@@ -128,9 +128,18 @@ module Homebrew
         end
       end
 
-      unless ARGV.include? "--bottle"
-        changed_formulae.each do |f|
-          next unless f.bottle
+      fetch_bottles = false
+      changed_formulae.each do |f|
+        if ARGV.include? "--bottle"
+          if f.bottle_unneeded?
+            ohai "#{f}: skipping unneeded bottle."
+          elsif f.bottle_disabled?
+            ohai "#{f}: skipping disabled bottle: #{f.bottle_disable_reason}"
+          else
+            fetch_bottles = true
+          end
+        else
+          next unless f.bottle_defined?
           opoo "#{f.full_name} has a bottle: do you need to update it with --bottle?"
         end
       end
@@ -155,8 +164,7 @@ module Homebrew
         end
       end
 
-      if ARGV.include? "--bottle"
-
+      if fetch_bottles
         bottle_commit_url = if testing_job
           bottle_branch = "testing-bottle-#{testing_job}"
           url
