@@ -935,7 +935,7 @@ class Formula
 
       if oldname && !rack.exist? && (dir = HOMEBREW_CELLAR/oldname).directory? &&
         !dir.subdirs.empty? && tap == Tab.for_keg(dir.subdirs.first).tap
-        raise Migrator::MigrationNeededError.new(f)
+        raise Migrator::MigrationNeededError.new(self)
       end
 
       rack.subdirs.each do |keg_dir|
