@@ -927,6 +927,44 @@ class Formula
   end
 
   # @private
+  def outdated_versions
+    @outdated_versions ||= begin
+      all_versions = []
+      older_or_same_tap_versions = []
+
+      if oldname && !rack.exist? && (dir = HOMEBREW_CELLAR/oldname).directory? &&
+        !dir.subdirs.empty? && tap == Tab.for_keg(dir.subdirs.first).tap
+        raise Migrator::MigrationNeededError.new(f)
+      end
+
+      rack.subdirs.each do |keg_dir|
+        keg = Keg.new keg_dir
+        version = keg.version
+        all_versions << version
+        older_version = pkg_version <= version
+
+        tab_tap = Tab.for_keg(keg).tap
+        if tab_tap.nil? || tab_tap == tap || older_version
+          older_or_same_tap_versions << version
+        end
+      end
+
+      if older_or_same_tap_versions.all? { |v| pkg_version > v }
+        all_versions
+      else
+        []
+      end
+    end
+  end
+
+  # @private
+  def outdated?
+    outdated_versions.any?
+  rescue Migrator::MigrationNeededError
+    true
+  end
+
+  # @private
   def pinnable?
     @pin.pinnable?
   end
@@ -1202,6 +1240,8 @@ class Formula
       "revision" => revision,
       "installed" => [],
       "linked_keg" => (linked_keg.resolved_path.basename.to_s if linked_keg.exist?),
+      "pinned" => pinned?,
+      "outdated" => outdated?,
       "keg_only" => keg_only?,
       "dependencies" => deps.map(&:name).uniq,
       "conflicts_with" => conflicts.map(&:name),
