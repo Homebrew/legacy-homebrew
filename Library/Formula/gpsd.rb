@@ -1,17 +1,11 @@
 class Gpsd < Formula
   desc "Global Positioning System (GPS) daemon"
   homepage "http://catb.org/gpsd/"
-  url "http://download.savannah.gnu.org/releases/gpsd/gpsd-3.9.tar.gz"
-  sha256 "d9b24be838b48db5e8eba66f74edf32d1982fe0fb018c9d9a7ad1ada9f189d5a"
+  url "http://download.savannah.gnu.org/releases/gpsd/gpsd-3.15.tar.gz"
+  sha256 "81c89e271ae112313e68655ab30d227bc38fe7841ffbff0f1860b12a9d7696ea"
 
   depends_on "scons" => :build
   depends_on "libusb" => :optional
-
-  # Patch via MacPorts
-  patch :p0 do
-    url "https://raw.githubusercontent.com/Homebrew/patches/f1d5d5b7/gpsd/string.patch"
-    sha256 "b3c4627cd75fd5869ab692e443bbcd0e8406e6d38f732ad43f1d9ed9952cf3c1"
-  end
 
   def install
     scons "chrpath=False", "python=False", "strip=False", "prefix=#{prefix}/"
