@@ -8,6 +8,8 @@ class Desk < Formula
 
   def install
     bin.install "desk"
+    bash_completion.install "completions/bash/desk"
+    zsh_completion.install "completions/zsh/_desk"
   end
 
   test do
