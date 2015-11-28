@@ -202,6 +202,12 @@ module SharedEnvExtension
     self["PATH"] = new_paths.uniq.join(File::PATH_SEPARATOR)
   end
 
+  def cuda
+    nvcc = which("nvcc")
+    self["CUDACC"] = nvcc
+    prepend_create_path "DYLD_LIBRARY_PATH", nvcc.dirname.parent/"lib"
+  end
+
   def fortran
     flags = []
 

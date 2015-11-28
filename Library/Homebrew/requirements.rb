@@ -13,6 +13,7 @@ require "requirements/tuntap_requirement"
 require "requirements/unsigned_kext_requirement"
 require "requirements/x11_requirement"
 require "requirements/emacs_requirement"
+require "requirements/cuda_requirement"
 
 class XcodeRequirement < Requirement
   fatal true
