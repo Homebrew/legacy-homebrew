@@ -68,8 +68,7 @@ class Groonga < Formula
     io = IO.popen("#{bin}/groonga -n #{testpath}/test.db", "r+")
     io.puts("table_create --name TestTable --flags TABLE_HASH_KEY --key_type ShortText")
     sleep 2
-    Process.kill("SIGINT", io.pid)
-    Process.wait(io.pid)
+    io.puts("shutdown")
     # expected returned result is like this:
     # [[0,1447502555.38667,0.000824928283691406],true]\n
     assert_match(/[[0,\d+.\d+,\d+.\d+],true]/, io.read)
