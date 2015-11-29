@@ -997,7 +997,7 @@ class Checks
   end
 
   def __check_linked_brew(f)
-    f.rack.subdirs.each do |prefix|
+    f.installed_prefixes.each do |prefix|
       prefix.find do |src|
         next if src == prefix
         dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)
