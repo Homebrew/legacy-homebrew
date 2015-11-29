@@ -6,10 +6,9 @@ class Libbpg < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "02a25cb0b5672e5a78b8439bce4016341229fca8902042263090a3f72ef29aba" => :yosemite
-    sha256 "03f7fd9e4785c4d024c00d686680e3e06cd331379578e24151b853215446fa68" => :mavericks
-    sha256 "8a052c59fc6881292eb00deb01d4c6a5dd01a7ce7ff58c821ea3e8dc2278b1c4" => :mountain_lion
+    sha256 "98b771795e3f03995005af5f26d3c74bd178a6f2bc69b41a8e35fe735c95b765" => :el_capitan
+    sha256 "d5d9b76f692ead22f64e84c1ca9bdf11877d6bc249d92bad98f8a11ce3120106" => :yosemite
+    sha256 "7b8d1585ee9e2de010abfab1aaab419d052cf35d82704587c2f75947d4fc8ee5" => :mavericks
   end
 
   option "with-x265", "Enable x265 encoder"
