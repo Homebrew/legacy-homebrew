@@ -6,10 +6,9 @@ class Hh < Formula
 
   bottle do
     cellar :any
-    sha256 "8e5a229c8733c28bc6655d2fa3c1ac141be27780d851e37c9b512861c53b3113" => :el_capitan
-    sha256 "ceb89140b07409845bd3bd40cafb9dcf65ff65de35a634d013455a100c6e8066" => :yosemite
-    sha256 "192d154897ebce7cb5b55e0ca1c0cc8503ac9bd5e1e5cc2bc8a7f7fe7aee188d" => :mavericks
-    sha256 "50dc71816420d5ec1fdcb90cd9ef82a0ee47208250c8525f72e238aa90a0404c" => :mountain_lion
+    sha256 "b241ad9ec87ae46d2e125fa939294a6aea603fc857aeea030526954290bfee18" => :el_capitan
+    sha256 "f737693414e21b5ab9c434be4ffd5923fb4ccc153c4039ba2a65dea4f1010a95" => :yosemite
+    sha256 "b87d487cb1a2d951d9b38c651dda2cc6f3161e183a2174d033f220c0b9bb2cda" => :mavericks
   end
 
   head do
