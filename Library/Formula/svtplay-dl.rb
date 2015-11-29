@@ -4,8 +4,6 @@ class SvtplayDl < Formula
   url "https://pypi.python.org/packages/source/s/svtplay-dl/svtplay-dl-0.20.2015.11.29.tar.gz"
   sha256 "7f93734da5c80387f354ccfa6cdd73af7a54978ac65ca65b1a29c801ac6dd685"
 
-  bottle :unneeded
-
   resource "requests" do
     url "https://pypi.python.org/packages/source/r/requests/requests-2.8.1.tar.gz"
     sha256 "84fe8d5bf4dcdcc49002446c47a146d17ac10facf00d9086659064ac43b6c25b"
