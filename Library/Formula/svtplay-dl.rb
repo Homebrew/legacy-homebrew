@@ -4,6 +4,13 @@ class SvtplayDl < Formula
   url "https://pypi.python.org/packages/source/s/svtplay-dl/svtplay-dl-0.20.2015.11.29.tar.gz"
   sha256 "7f93734da5c80387f354ccfa6cdd73af7a54978ac65ca65b1a29c801ac6dd685"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "3b26888e8aedd32827e2caa6ffcdeb2c115261662409dc0daf7ef2d6b4a842dc" => :el_capitan
+    sha256 "dc6e349be3fc0dd8ff7a396b0e7e2c480613af46a8c1643cff5a0bd5bfea59c8" => :yosemite
+    sha256 "1be2a31d2ce11561b486129ba2a2d6cf087d7126f02a91bb350c4d7a790c57b6" => :mavericks
+  end
+
   resource "requests" do
     url "https://pypi.python.org/packages/source/r/requests/requests-2.8.1.tar.gz"
     sha256 "84fe8d5bf4dcdcc49002446c47a146d17ac10facf00d9086659064ac43b6c25b"
