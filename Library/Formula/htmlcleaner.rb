@@ -1,14 +1,15 @@
 class Htmlcleaner < Formula
   desc "HTML parser written in Java"
   homepage "http://htmlcleaner.sourceforge.net/index.php"
-  url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.10/htmlcleaner-2.10.zip"
-  sha256 "904b6d11b97c3363de9ab0eeb966fa015c2afe2733786e671d9d79a34078ad32"
+  url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.15/htmlcleaner-2.15-src.zip"
+  sha256 "ef53982c3bc40c48931f4ea46e3dfa615b525d91afc1bfb3ed1727eca7168403"
 
-  bottle :unneeded
+  depends_on "maven" => :build
 
   def install
-    libexec.install "htmlcleaner-#{version}.jar"
-    bin.write_jar_script libexec/"htmlcleaner-#{version}.jar", "htmlcleaner"
+    system "mvn", "clean", "package", "-Duser.home=#{buildpath}"
+    libexec.install Dir["target/htmlcleaner-*-SNAPSHOT.jar"]
+    bin.write_jar_script Dir["#{libexec}/htmlcleaner-*-SNAPSHOT.jar"].first, "htmlcleaner"
   end
 
   test do
