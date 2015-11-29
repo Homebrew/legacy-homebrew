@@ -18,11 +18,6 @@ class Mono < Formula
 
   option "without-fsharp", "Build without support for the F# language."
 
-  resource "monolite" do
-    url "http://download.mono-project.com/monolite/monolite-138-latest.tar.gz"
-    sha256 "a7b1b0c20f28747e783d91f6e8e40e4c788bd25ca6192b43d622ea842d434a48"
-  end
-
   resource "fsharp" do
     url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.5",
         :revision => "c5e345b194eaddad7f06d47cd944b098f3dbe325"
@@ -43,10 +38,6 @@ class Mono < Formula
   conflicts_with "xsd", :because => "both install `xsd` binaries"
 
   def install
-    # a working mono is required for the the build - monolite is enough
-    # for the job
-    (buildpath+"mcs/class/lib/monolite").install resource("monolite")
-
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
