@@ -101,7 +101,7 @@ class Tab < OpenStruct
       paths << f.linked_keg.resolved_path
     end
 
-    if f.rack.directory? && (dirs = f.rack.subdirs).length == 1
+    if (dirs = f.installed_prefixes).length == 1
       paths << dirs.first
     end
 
