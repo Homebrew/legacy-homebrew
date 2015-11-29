@@ -436,6 +436,18 @@ class Formula
     prefix.parent
   end
 
+  # All of current installed prefix directories.
+  # @private
+  def installed_prefixes
+    rack.directory? ? rack.subdirs : []
+  end
+
+  # All of current installed kegs.
+  # @private
+  def installed_kegs
+    installed_prefixes.map { |dir| Keg.new(dir) }
+  end
+
   # The directory where the formula's binaries should be installed.
   # This is symlinked into `HOMEBREW_PREFIX` after installation or with
   # `brew link` for formulae that are not keg-only.
