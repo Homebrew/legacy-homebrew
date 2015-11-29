@@ -5,9 +5,10 @@ class Upscaledb < Formula
   sha256 "f68c7e7b8f5aaf41ab47d60e351db35506f96ebf8be2ad695a0d8a12035001df"
 
   bottle do
-    sha256 "27151089e42c383b22ddf599b0d9f42498e8b30564b8306f80ceab16ea79741f" => :yosemite
-    sha256 "ae81107767d2954c978573edc85e0b50b84ba1b829d016d5ca898ce64fdd1046" => :mavericks
-    sha256 "5c2645a8d1f51613bfa0aa05f1045836f5b0117d674af297878ca5e78bb136a6" => :mountain_lion
+    cellar :any
+    sha256 "9f10d82a1189c8de362efb53e7cb0a67fd6e804f1c64626087f089dd882bbef0" => :el_capitan
+    sha256 "fb96b299611a38359cbbc6befbfcf8a43a3cd6807248e1e685d73d344e1c3fa8" => :yosemite
+    sha256 "9ba5cc10a0be221f02f43b700754a4dee74c7de70db47e2cf342e6134d2fe349" => :mavericks
   end
 
   head do
