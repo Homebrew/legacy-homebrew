@@ -1,8 +1,8 @@
 class Mruby < Formula
   desc "Lightweight implementation of the Ruby language"
   homepage "http://www.mruby.org"
-  url "https://github.com/mruby/mruby/archive/1.1.0.tar.gz"
-  sha256 "134422735eeb73e47985343e1146f40ffe50760319c6c052c5517daedc9281ac"
+  url "https://github.com/mruby/mruby/archive/1.2.0.tar.gz"
+  sha256 "05ad0135a9c34158ff0cfd4631f4fbaed28cbb8243680d2c97ffdb9c246b1f3d"
 
   head "https://github.com/mruby/mruby.git"
 
@@ -20,7 +20,7 @@ class Mruby < Formula
 
     cd "build/host/" do
       lib.install Dir["lib/*.a"]
-      prefix.install %w[bin mrbgems mrblib tools]
+      prefix.install %w[bin mrbgems mrblib]
     end
 
     prefix.install "include"
