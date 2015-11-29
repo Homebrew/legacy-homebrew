@@ -938,6 +938,8 @@ class Formula
         raise Migrator::MigrationNeededError.new(self)
       end
 
+      return [] unless rack.exist?
+
       rack.subdirs.each do |keg_dir|
         keg = Keg.new keg_dir
         version = keg.version
