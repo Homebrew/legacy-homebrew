@@ -30,6 +30,25 @@ class Ejabberd < Formula
     end
   end
 
+  head do
+    url "https://github.com/processone/ejabberd.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+
+    resource "oauth2" do
+      url "https://github.com/prefiks/oauth2",
+          :using => :git,
+          :revision => "e6da9912e5d8f658e7e868f41a102d085bdbef59"
+    end
+
+    resource "xmlrpc" do
+      url "https://github.com/rds13/xmlrpc",
+          :using => :git,
+          :revision => "42e6e96a0fe7106830274feed915125feb1056f3"
+    end
+  end
+
   option "32-bit"
 
   depends_on "openssl"
