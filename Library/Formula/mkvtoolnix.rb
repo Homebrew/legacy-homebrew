@@ -1,8 +1,8 @@
 class Mkvtoolnix < Formula
   desc "Matroska media files manipulation tools"
   homepage "https://www.bunkus.org/videotools/mkvtoolnix/"
-  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.3.0.tar.xz"
-  sha256 "87bd82222995d35c310a426ed43e0b27cbfefa0caadcbcca8296787314affc37"
+  url "https://www.bunkus.org/videotools/mkvtoolnix/sources/mkvtoolnix-8.6.0.tar.xz"
+  sha256 "5e9f604b38ec8b28a4c54ee7765919cc32ed9b97cea95ee34893f5fe6bf6c3bd"
 
   bottle do
     revision 1
