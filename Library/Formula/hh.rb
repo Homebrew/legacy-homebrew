@@ -1,8 +1,8 @@
 class Hh < Formula
   desc "Bash and zsh history suggest box"
   homepage "https://github.com/dvorka/hstr"
-  url "https://github.com/dvorka/hstr/releases/download/1.17/hh-1.17-src.tgz"
-  sha256 "68eae9ecb022d3f492b85e1479d9b81e3b47b568b7714fd35e4e0fca50234c6e"
+  url "https://github.com/dvorka/hstr/releases/download/1.19/hh-1.19-src.tgz"
+  sha256 "b67cb5e2515948fd0fb402b732630a51885be5dfe58cbf914c22ea444129a647"
 
   bottle do
     cellar :any
