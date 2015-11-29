@@ -116,8 +116,8 @@ module Homebrew
     conflicts = f.conflicts.map(&:name).sort!
     puts "Conflicts with: #{conflicts*", "}" unless conflicts.empty?
 
-    if f.rack.directory?
-      kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
+    kegs = f.installed_kegs.sort_by(&:version)
+    if kegs.any?
       kegs.each do |keg|
         puts "#{keg} (#{keg.abv})#{" *" if keg.linked?}"
         tab = Tab.for_keg(keg).to_s
