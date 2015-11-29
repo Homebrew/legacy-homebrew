@@ -6,17 +6,31 @@ class Logstash < Formula
 
   bottle :unneeded
 
+  head do
+    url "https://github.com/elastic/logstash.git"
+    depends_on :java => "1.8"
+  end
+
   depends_on :java => "1.7+"
 
   def install
-    inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$0`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
+    if build.head?
+      # Build the package from source
+      system "rake", "artifact:tar"
+      # Extract the package to the current directory
+      mkdir "tar"
+      system "tar", "--strip-components=1", "-xf", Dir["build/logstash-*.tar.gz"].first, "-C", "tar"
+      cd "tar"
+    end
+
+    sub = if build.head? then "SOURCEPATH" else "0" end
+    inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$#{sub}`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
     inreplace %w[bin/logstash.lib.sh], /^LOGSTASH_HOME=.*$/, "LOGSTASH_HOME=#{libexec}"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/logstash"
   end
 
   def caveats; <<-EOS.undent
-    Logstash 1.5 emits an unhelpful error if you try to start it without config.
     Please read the getting started guide located at:
       https://www.elastic.co/guide/en/logstash/current/getting-started-with-logstash.html
     EOS
@@ -28,7 +42,7 @@ class Logstash < Formula
       output { stdout { codec => rubydebug } }
     EOS
 
-    output = pipe_output("/bin/echo 'hello world' | #{bin}/logstash agent -f simple.conf")
+    output = pipe_output("#{bin}/logstash -f simple.conf", "hello world\n")
     assert_match /hello world/, output
   end
 end
