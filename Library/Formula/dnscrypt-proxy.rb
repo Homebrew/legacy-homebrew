@@ -30,7 +30,7 @@ class DnscryptProxy < Formula
   def install
     system "autoreconf", "-if" if build.head?
 
-    args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
 
     if build.with? "plugins"
       args << "--enable-plugins"
@@ -43,53 +43,45 @@ class DnscryptProxy < Formula
 
     if build.with? "minisign"
       (bin/"dnscrypt-update-resolvers").write <<-EOS.undent
-          #!/bin/sh
-          RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
-          RESOLVERS_LIST_BASE_DIR=#{pkgshare}
-          RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
+        #!/bin/sh
+        RESOLVERS_UPDATES_BASE_URL=https://download.dnscrypt.org/dnscrypt-proxy
+        RESOLVERS_LIST_BASE_DIR=#{pkgshare}
+        RESOLVERS_LIST_PUBLIC_KEY="RWQf6LRCGA9i53mlYecO4IzT51TGPpvWucNSCh1CBM0QTaLn73Y7GFO3"
 
-          curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
-            "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
-            "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
-          curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
-            "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
-            "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
-          minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
-            -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
-            -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
-          mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
-            ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
-        EOS
-        chmod 0775, bin/"dnscrypt-update-resolvers"
+        curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+          "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv" > \
+          "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp" && \
+        curl -L --max-redirs 5 -4 -m 30 --connect-timeout 30 -s \
+          "${RESOLVERS_UPDATES_BASE_URL}/dnscrypt-resolvers.csv.minisig" > \
+          "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" && \
+        minisign -Vm ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+          -x "${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.minisig" \
+          -P "$RESOLVERS_LIST_PUBLIC_KEY" -q && \
+        mv -f ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv.tmp \
+          ${RESOLVERS_LIST_BASE_DIR}/dnscrypt-resolvers.csv
+      EOS
+      chmod 0775, bin/"dnscrypt-update-resolvers"
     end
   end
 
   def post_install
-    if build.with? "minisign"
-      system bin/"dnscrypt-update-resolvers"
-    end
+    return if build.without? "minisign"
+
+    system bin/"dnscrypt-update-resolvers"
   end
 
-  def caveats; s = <<-EOS.undent
-    After starting dnscrypt-proxy, you will need to point your
-    local DNS server to 127.0.0.1. You can do this by going to
-    System Preferences > "Network" and clicking the "Advanced..."
-    button for your interface. You will see a "DNS" tab where you
-    can click "+" and enter 127.0.0.1 in the "DNS Servers" section.
+  def caveats
+    s = <<-EOS.undent
+      After starting dnscrypt-proxy, you will need to point your
+      local DNS server to 127.0.0.1. You can do this by going to
+      System Preferences > "Network" and clicking the "Advanced..."
+      button for your interface. You will see a "DNS" tab where you
+      can click "+" and enter 127.0.0.1 in the "DNS Servers" section.
 
-    By default, dnscrypt-proxy runs on localhost (127.0.0.1), port 53,
-    and under the "nobody" user using the dnscrypt.eu-dk DNSCrypt-enabled
-    resolver. If you would like to change these settings, you will have to edit
-    the plist file (e.g., --resolver-address, --provider-name, --provider-key, etc.)
-    EOS
-    if build.with? "minisign"
-      s += <<-EOS.undent
-
-        If at some point the resolver file gets outdated, it can be updated to the
-        latest version by running: #{opt_bin}/dnscrypt-update-resolvers
-      EOS
-    end
-    s += <<-EOS.undent
+      By default, dnscrypt-proxy runs on localhost (127.0.0.1), port 53,
+      and under the "nobody" user using the dnscrypt.eu-dk DNSCrypt-enabled
+      resolver. If you would like to change these settings, you will have to edit
+      the plist file (e.g., --resolver-address, --provider-name, --provider-key, etc.)
 
       To check that dnscrypt-proxy is working correctly, open Terminal and enter the
       following command. Replace en1 with whatever network interface you're using:
@@ -100,6 +92,15 @@ class DnscryptProxy < Formula
 
           resolver2.dnscrypt.eu.https
     EOS
+
+    if build.with? "minisign"
+      s += <<-EOS.undent
+
+        If at some point the resolver file gets outdated, it can be updated to the
+        latest version by running: #{opt_bin}/dnscrypt-update-resolvers
+      EOS
+    end
+
     s
   end
 
