@@ -1,8 +1,122 @@
 class Ejabberd < Formula
   desc "XMPP application server"
   homepage "https://www.ejabberd.im"
-  url "https://www.process-one.net/downloads/ejabberd/15.07/ejabberd-15.07.tgz"
-  sha256 "87d5001521cbb779b84bc74879e032e2514d9a651e24c4e40cce0907ab405bd1"
+
+  stable do
+    url "https://www.process-one.net/downloads/ejabberd/15.07/ejabberd-15.07.tgz"
+    sha256 "87d5001521cbb779b84bc74879e032e2514d9a651e24c4e40cce0907ab405bd1"
+
+    resource "p1_cache_tab" do
+      url "https://github.com/processone/cache_tab.git",
+          :revision => "f7ea12b0ba962a3d2f9a406d2954cf7de4e27230"
+    end
+
+    resource "p1_tls" do
+      url "https://github.com/processone/tls.git",
+          :revision => "2e06ed6ae7d48fe469a2c9cb0869e756105a72f0"
+    end
+
+    resource "p1_stringprep" do
+      url "https://github.com/processone/stringprep.git",
+          :revision => "3c640237a3a7831dc39de6a6d329d3a9af25c579"
+    end
+
+    resource "p1_xml" do
+      url "https://github.com/processone/xml.git",
+          :revision => "7ff90b7a06ee842543bcb47564e8f0e3d3119efd"
+    end
+
+    resource "esip" do
+      url "https://github.com/processone/p1_sip.git",
+          :revision => "d662d3fe7f6288b444ea321d854de0bd6d40e022"
+    end
+
+    resource "p1_stun" do
+      url "https://github.com/processone/stun.git",
+          :revision => "61d90fd9e11fbacb128ebf5cc227d75f6b7e1933"
+    end
+
+    resource "p1_yaml" do
+      url "https://github.com/processone/p1_yaml.git",
+          :revision => "e1f081e1bbf34c35fc60c1b988d62a07fbead3e8"
+    end
+
+    resource "p1_utils" do
+      url "https://github.com/processone/p1_utils.git",
+          :revision => "1bf99f9c8daed3b03f76e2714ca102c520c88b26"
+    end
+
+    resource "jiffy" do
+      url "https://github.com/davisp/jiffy.git",
+          :revision => "e008c0c3fffb4f509c5ae6b73b960663d778f231"
+    end
+
+    resource "p1_mysql" do
+      url "https://github.com/processone/mysql.git",
+          :revision => "d568bbe317c4e86ee58a603c46a98809c1279013"
+    end
+
+    resource "p1_pgsql" do
+      url "https://github.com/processone/pgsql.git",
+          :revision => "e72c03c60bfcb56bbb5d259342021d9cb3581dac"
+    end
+
+    resource "sqlite" do
+      url "https://github.com/alexeyr/erlang-sqlite3.git",
+          :revision => "8350dc603804c503f99c92bfd2eab1dd6885758e"
+    end
+
+    resource "p1_pam" do
+      url "https://github.com/processone/epam.git",
+          :revision => "d3ce290b7da75d780a03e86e7a8198a80e9826a6"
+    end
+
+    resource "p1_zlib" do
+      url "https://github.com/processone/zlib.git",
+          :revision => "e3d4222b7aae616d7ef2e7e2fa0bbf451516c602"
+    end
+
+    resource "riakc" do
+      url "https://github.com/basho/riak-erlang-client.git",
+          :tag => "1.4.2",
+          :revision => "8d33c020f4ca392200b2d0d973c77dd48164b263"
+    end
+
+    resource "rebar_elixir_plugin" do
+      url "https://github.com/yrashk/rebar_elixir_plugin.git",
+          :revision => "7058379b7c7e017555647f6b9cecfd87cd50f884"
+    end
+
+    resource "elixir" do
+      url "https://github.com/elixir-lang/elixir.git",
+          :revisison => "1d9548fd285d243721b7eba71912bde2ffd1f6c3"
+    end
+
+    resource "p1_iconv" do
+      url "https://github.com/processone/eiconv.git",
+          :revision => "8b7542b1aaf0a851f335e464956956985af6d9a2"
+    end
+
+    resource "lager" do
+      url "https://github.com/basho/lager.git",
+          :revision => "26540665e640872718d3dd9c35f2addf1279114b"
+    end
+
+    resource "p1_logger" do
+      url "https://github.com/processone/p1_logger.git",
+          :revision => "3e19507fd5606a73694917158767ecb3f5704e3f"
+    end
+
+    resource "meck" do
+      url "https://github.com/eproxus/meck.git",
+          :revision => "fc362e037f424250130bca32d6bf701f2f49dc75"
+    end
+
+    resource "eredis" do
+      url "https://github.com/wooga/eredis.git",
+          :revision => "770f828918db710d0c0958c6df63e90a4d341ed7"
+    end
+  end
 
   bottle do
     revision 1
@@ -17,16 +131,100 @@ class Ejabberd < Formula
     depends_on "automake" => :build
     depends_on "autoconf" => :build
 
+    resource "p1_cache_tab" do
+      url "https://github.com/processone/cache_tab.git"
+    end
+
+    resource "p1_tls" do
+      url "https://github.com/processone/tls.git"
+    end
+
+    resource "p1_stringprep" do
+      url "https://github.com/processone/stringprep.git"
+    end
+
+    resource "p1_xml" do
+      url "https://github.com/processone/xml.git"
+    end
+
+    resource "esip" do
+      url "https://github.com/processone/p1_sip.git"
+    end
+
+    resource "p1_stun" do
+      url "https://github.com/processone/stun.git"
+    end
+
+    resource "p1_yaml" do
+      url "https://github.com/processone/p1_yaml.git"
+    end
+
+    resource "p1_utils" do
+      url "https://github.com/processone/p1_utils.git"
+    end
+
+    resource "jiffy" do
+      url "https://github.com/davisp/jiffy.git"
+    end
+
+    resource "p1_mysql" do
+      url "https://github.com/processone/mysql.git"
+    end
+
+    resource "p1_pgsql" do
+      url "https://github.com/processone/pgsql.git"
+    end
+
+    resource "sqlite" do
+      url "https://github.com/alexeyr/erlang-sqlite3.git"
+    end
+
+    resource "p1_pam" do
+      url "https://github.com/processone/epam.git"
+    end
+
+    resource "p1_zlib" do
+      url "https://github.com/processone/zlib.git"
+    end
+
+    resource "riakc" do
+      url "https://github.com/basho/riak-erlang-client.git"
+    end
+
+    resource "rebar_elixir_plugin" do
+      url "https://github.com/yrashk/rebar_elixir_plugin.git"
+    end
+
+    resource "elixir" do
+      url "https://github.com/elixir-lang/elixir.git"
+    end
+
+    resource "p1_iconv" do
+      url "https://github.com/processone/eiconv.git"
+    end
+
+    resource "lager" do
+      url "https://github.com/basho/lager.git"
+    end
+
+    resource "p1_logger" do
+      url "https://github.com/processone/p1_logger.git"
+    end
+
+    resource "meck" do
+      url "https://github.com/eproxus/meck.git"
+    end
+
+    resource "eredis" do
+      url "https://github.com/wooga/eredis.git"
+    end
+
     resource "oauth2" do
-      url "https://github.com/prefiks/oauth2",
-          :using => :git,
-          :revision => "e6da9912e5d8f658e7e868f41a102d085bdbef59"
+      url "https://github.com/prefiks/oauth2.git"
     end
 
     resource "xmlrpc" do
-      url "https://github.com/rds13/xmlrpc",
-          :using => :git,
-          :revision => "42e6e96a0fe7106830274feed915125feb1056f3"
+      url "https://github.com/rds13/xmlrpc.git"
     end
   end
 
@@ -37,138 +235,6 @@ class Ejabberd < Formula
   depends_on "libyaml"
   # for CAPTCHA challenges
   depends_on "imagemagick" => :optional
-
-  resource "p1_cache_tab" do
-    url "https://github.com/processone/cache_tab",
-        :using => :git,
-        :revision => "f7ea12b0ba962a3d2f9a406d2954cf7de4e27230"
-  end
-
-  resource "p1_tls" do
-    url "https://github.com/processone/tls",
-        :using => :git,
-        :revision => "e56321afd974e9da33da913cd31beebc8e73e75f"
-  end
-
-  resource "p1_stringprep" do
-    url "https://github.com/processone/stringprep",
-        :using => :git,
-        :revision => "941b454684d230caf514ee2877085dcf92722a97"
-  end
-
-  resource "p1_xml" do
-    url "https://github.com/processone/xml",
-        :using => :git,
-        :revision => "8d477a2cb8846a739fefa0714cc6812aed15c6e1"
-  end
-
-  resource "esip" do
-    url "https://github.com/processone/p1_sip",
-        :using => :git,
-        :revision => "d662d3fe7f6288b444ea321d854de0bd6d40e022"
-  end
-
-  resource "p1_stun" do
-    url "https://github.com/processone/stun",
-        :using => :git,
-        :revision => "061bdae484268cbf0457ad4797e74b8516df3ad1"
-  end
-
-  resource "p1_yaml" do
-    url "https://github.com/processone/p1_yaml",
-        :using => :git,
-        :revision => "79f756ba73a235c4d3836ec07b5f7f2b55f49638"
-  end
-
-  resource "p1_utils" do
-    url "https://github.com/processone/p1_utils",
-        :using => :git,
-        :revision => "0799907b75d1c23fc279a184ef4742a26d4242c5"
-  end
-
-  resource "jiffy" do
-    url "https://github.com/davisp/jiffy",
-        :using => :git,
-        :revision => "cfc61a2e952dc3182e0f9b1473467563699992e2"
-  end
-
-  resource "p1_mysql" do
-    url "https://github.com/processone/mysql",
-        :using => :git,
-        :revision => "dfa87da95f8fdb92e270741c2a53f796b682f918"
-  end
-
-  resource "p1_pgsql" do
-    url "https://github.com/processone/pgsql",
-        :using => :git,
-        :revision => "e72c03c60bfcb56bbb5d259342021d9cb3581dac"
-  end
-
-  resource "sqlite" do
-    url "https://github.com/alexeyr/erlang-sqlite3",
-        :using => :git,
-        :revision => "8350dc603804c503f99c92bfd2eab1dd6885758e"
-  end
-
-  resource "p1_pam" do
-    url "https://github.com/processone/epam",
-        :using => :git,
-        :revision => "d3ce290b7da75d780a03e86e7a8198a80e9826a6"
-  end
-
-  resource "p1_zlib" do
-    url "https://github.com/processone/zlib",
-        :using => :git,
-        :revision => "e3d4222b7aae616d7ef2e7e2fa0bbf451516c602"
-  end
-
-  resource "riakc" do
-    url "https://github.com/basho/riak-erlang-client",
-        :using => :git,
-        :revision => "527722d12d0433b837cdb92a60900c2cb5df8942"
-  end
-
-  resource "rebar_elixir_plugin" do
-    url "https://github.com/yrashk/rebar_elixir_plugin",
-        :using => :git,
-        :revision => "7058379b7c7e017555647f6b9cecfd87cd50f884"
-  end
-
-  resource "elixir" do
-    url "https://github.com/elixir-lang/elixir",
-        :using => :git,
-        :revisison => "805ee01b5f432625bfb74dd95ebcd70a57d7ea2f"
-  end
-
-  resource "p1_iconv" do
-    url "https://github.com/processone/eiconv",
-        :using => :git,
-        :revision => "8b7542b1aaf0a851f335e464956956985af6d9a2"
-  end
-
-  resource "lager" do
-    url "https://github.com/basho/lager",
-        :using => :git,
-        :revision => "1265b62df5ad9c874f3f3518d7b7f5eb087701fc"
-  end
-
-  resource "p1_logger" do
-    url "https://github.com/processone/p1_logger",
-        :using => :git,
-        :revision => "3e19507fd5606a73694917158767ecb3f5704e3f"
-  end
-
-  resource "meck" do
-    url "https://github.com/eproxus/meck",
-        :using => :git,
-        :revision => "be12fdf0522162f801093ec1d52ed2e99dc4c025"
-  end
-
-  resource "eredis" do
-    url "https://github.com/wooga/eredis",
-        :using => :git,
-        :revision => "bf12ecb30253c84a2331f4f0d93fd68856fcb9f4"
-  end
 
   def install
     ENV["TARGET_DIR"] = ENV["DESTDIR"] = "#{lib}/ejabberd/erlang/lib/ejabberd-#{version}"
@@ -181,11 +247,7 @@ class Ejabberd < Formula
 
     resources.each do |r|
       r.fetch
-      if r.name == "oauth2" || r.name == "xmlrpc"
-        inreplace "rebar.config.script", "#{r.url}.git", r.cached_download
-      else
-        inreplace "rebar.config.script", r.url, r.cached_download
-      end
+      inreplace "rebar.config.script", /#{r.url.sub(".git", "")}\.?g?i?t?/, r.cached_download
     end
 
     args = ["--prefix=#{prefix}",
