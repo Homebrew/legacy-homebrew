@@ -6,9 +6,9 @@ class Yank < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "310f46a6d042d720424fcb43e40cc71aaa2c4d10f9e221f8229fb68da20939f9" => :el_capitan
-    sha256 "2f820af12a2af1495f42b92f43f60fbfe25e77740d83f98fe5a3c182afb33a91" => :yosemite
-    sha256 "02b0f0c04a68d1875b39a8651520b23fa762705f24e2302b4bfa6f72603e93ad" => :mavericks
+    sha256 "9b3af1fe58e5ae257370df1229577a18bde8eadc925fe3676560c6cd78f3a5d9" => :el_capitan
+    sha256 "9a008ddf303dde9d3b44e69b76534245d34cf29ec768fd0aee2ef8df94a928a8" => :yosemite
+    sha256 "523fa3f42ba361f22e1f65da4e04567501e2a54b38b00074ab79e9ce3870a03a" => :mavericks
   end
 
   def install
