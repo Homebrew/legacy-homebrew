@@ -3,8 +3,8 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-    :revision => "005c7d82e18e51117463fe92e47a4663ae21f2c5"
-  version "1.6.0-7"
+    :tag => "1.6.1",
+    :revision => "58456a659a8c370678e5a251fdf56c3c230894ee"
 
   bottle do
     sha256 "41a2355ea05e1f3b25eec101f06564c032289472df773601d1e36ec8e9619968" => :el_capitan
@@ -80,7 +80,7 @@ class Osquery < Formula
       class ExampleTablePlugin : public TablePlugin {
        private:
         TableColumns columns() const {
-          return {{"example_text", "TEXT"}, {"example_integer", "INTEGER"}};
+          return {{"example_text", TEXT_TYPE}, {"example_integer", INTEGER_TYPE}};
         }
 
         QueryData generate(QueryContext& request) {
