@@ -14,6 +14,7 @@ class V8 < Formula
   end
 
   option "with-readline", "Use readline instead of libedit"
+  option "with-icu4c", "Use icu4c for l18n support"
 
   # not building on Snow Leopard:
   # https://github.com/Homebrew/homebrew/issues/21426
@@ -21,6 +22,10 @@ class V8 < Formula
 
   depends_on :python => :build # gyp doesn't run under 2.6 or lower
   depends_on "readline" => :optional
+
+  if build.with? "icu4c"
+    depends_on "icu4c"
+  end
 
   needs :cxx11
 
@@ -55,6 +60,12 @@ class V8 < Formula
         :revision => "9855a87157778d39b95eccfb201a9dc90f6d61c6"
   end
 
+  if build.with? "icu4c"
+    # Patch tools/gyp/v8.gyp so it finds icu4c headers and .dylibs
+    # See https://groups.google.com/a/chromium.org/forum/#!topic/chromium-packagers/pNpOJ0wh5c8
+    patch :DATA
+  end
+
   def install
     # Bully GYP into correctly linking with c++11
     ENV.cxx11
@@ -76,8 +87,18 @@ class V8 < Formula
     (buildpath/"testing/gtest").install resource("gtest")
     (buildpath/"tools/clang").install resource("clang")
 
+    i18nsupport="i18nsupport=off"
+    if build.with? "icu4c"
+      i18nsupport="i18nsupport=on"
+      
+      # Patch needs icu-config on our path
+      icu4c = Formula["icu4c"]
+      ENV.append "PATH", icu4c.opt_bin
+      ENV.append "GYP_DEFINES", "use_system_icu=1"
+    end
+
     system "make", "native", "library=shared", "snapshot=on",
-                   "console=readline", "i18nsupport=off",
+                   "console=readline", i18nsupport,
                    "strictaliasing=off"
 
     include.install Dir["include/*"]
@@ -93,3 +114,56 @@ class V8 < Formula
     assert_equal "Hello World!", pipe_output("#{bin}/v8 -e 'print(\"Hello World!\")'").chomp
   end
 end
+
+# Patch so gyp finds brew's icu4c when it's installed outside /usr/local
+__END__
+diff --git a/tools/gyp/v8.gyp b/tools/gyp/v8.gyp
+index fb9679e..abfaefe 100644
+--- a/tools/gyp/v8.gyp
++++ b/tools/gyp/v8.gyp
+@@ -43,6 +43,18 @@
+       'dependencies_traverse': 1,
+       'dependencies': ['v8_maybe_snapshot'],
+       'conditions': [
++        ['use_system_icu==1', {
++          'direct_dependents_settings' : {
++            'include_dirs': [
++              '<!@(icu-config --cppflags-searchpath | sed "s/^-I//")' 
++            ],  
++          },
++          'link_settings': {
++            'library_dirs': [
++              '<!@(icu-config --ldflags-searchpath | sed "s/^-L//")',
++            ],
++          }
++        }],
+         ['want_separate_host_toolset==1', {
+           'toolsets': ['host', 'target'],
+         }, {
+@@ -1057,6 +1069,25 @@
+         '../../src/third_party/fdlibm/fdlibm.h',
+       ],
+       'conditions': [
++        ['use_system_icu==1', {
++            'library_dirs': [
++              '<!@(icu-config --ldflags-searchpath | sed "s/^-L//")',
++            ],
++            'include_dirs': [
++              '../..',
++              '<!@(icu-config --cppflags-searchpath | sed "s/^-I//")' 
++            ],
++            'link_settings': {
++              'library_dirs': [
++                '<!@(icu-config --ldflags-searchpath | sed "s/^-L//")',
++              ],
++            },
++            'direct_dependents_settings' : {
++              'include_dirs': [
++                '<!@(icu-config --cppflags-searchpath | sed "s/^-I//")' 
++              ],  
++            }
++        }],
+         ['want_separate_host_toolset==1', {
+           'toolsets': ['host', 'target'],
+         }, {
+
