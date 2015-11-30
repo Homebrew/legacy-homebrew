@@ -1,8 +1,8 @@
 class JujuQuickstart < Formula
   desc "Opinionated command-line tool for quickly starting Juju"
   homepage "https://launchpad.net/juju-quickstart"
-  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.2.2.tar.gz"
-  sha256 "07eb4c53b9091a75fcef94eb243d42cd6b8c289f2763b0dbde462a2b602094c3"
+  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.2.3.tar.gz"
+  sha256 "7cff26ebfb7bb0bcaf5f97320de6ebeda70da24c84d290c45a24bc43e0019ba0"
 
   bottle do
     cellar :any_skip_relocation
