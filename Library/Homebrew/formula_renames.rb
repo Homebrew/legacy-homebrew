@@ -5,6 +5,7 @@ FORMULA_RENAMES = {
   "go-app-engine-64" => "app-engine-go-64",
   "app-engine-java-sdk" => "app-engine-java",
   "google-app-engine" => "app-engine-python",
+  "hamsterdb" => "upscaledb",
   "libcppa" => "caf",
   "objective-caml" => "ocaml",
   "mpich2" => "mpich",
