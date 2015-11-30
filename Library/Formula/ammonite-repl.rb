@@ -1,8 +1,8 @@
 class AmmoniteRepl < Formula
   desc "Ammonite is a cleanroom re-implementation of the Scala REPL"
   homepage "https://lihaoyi.github.io/Ammonite/#Ammonite-REPL"
-  url "https://github.com/lihaoyi/Ammonite/archive/0.4.8.tar.gz"
-  sha256 "5ba76b6dad8e4397e5163112fd6ae2c4a35ea52a0e612b6f8ac774e896d9aa87"
+  url "https://github.com/lihaoyi/Ammonite/archive/0.5.0.tar.gz"
+  sha256 "302a90c229df39badc623b5bbb4e7ac3530e7f5cc5b62b72d375d90b05d75bbc"
 
   bottle do
     cellar :any_skip_relocation
@@ -17,7 +17,7 @@ class AmmoniteRepl < Formula
   def install
     ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}"
     system "sbt", "repl/assembly"
-    bin.install "repl/target/scala-2.11/ammonite-repl-0.4.8-2.11.7" => "amm"
+    bin.install "repl/target/scala-2.11/ammonite-repl-0.5.0-2.11.7" => "amm"
   end
 
   test do
