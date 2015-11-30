@@ -1,8 +1,8 @@
 class Kibana < Formula
   desc "Visualization tool for elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
-  url "https://github.com/elastic/kibana/archive/v4.1.1.tar.gz"
-  sha256 "3f91e99e20e82d4e84ec141007822fea8f9454c71595551f9348ea2609c98284"
+  url "https://github.com/elastic/kibana/archive/v4.2.1.tar.gz"
+  sha256 "f69eb7d4e0447222a9e383b95562b384212e9070361400d8d722eda278ade56f"
   head "https://github.com/elastic/kibana.git"
 
   bottle do
@@ -20,11 +20,9 @@ class Kibana < Formula
 
     system "npm", "install"
     system "npm", "install", "grunt-cli"
-    system "npm", "install", "bower"
-    system "./node_modules/.bin/bower", "install"
     system "./node_modules/.bin/grunt", "build", "--force"
 
-    dist_dir = buildpath/"build/dist/kibana"
+    dist_dir = buildpath/"build/kibana"
 
     rm_f dist_dir/"bin/*.bat"
 
