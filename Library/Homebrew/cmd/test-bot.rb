@@ -625,25 +625,17 @@ module Homebrew
 
     def homebrew
       @category = __method__
-<<<<<<< HEAD
-      return if ARGV.include? "--skip-homebrew"
-      test "brew", "tests" unless OS.linux?
-      readall_args = []
-      readall_args << "--syntax" if MacOS.version >= :mavericks
-      test "brew", "readall", *readall_args
-=======
       return if @skip_homebrew
-      test "brew", "tests"
+      test "brew", "tests" unless OS.linux?
       if @tap
         test "brew", "readall", @tap.name
       else
-        test "brew", "tests", "--no-compat"
+        test "brew", "tests", "--no-compat" unless OS.linux?
         readall_args = ["--aliases"]
         readall_args << "--syntax" if RUBY_VERSION.split(".").first.to_i >= 2
         test "brew", "readall", *readall_args
         test "brew", "update-test"
       end
->>>>>>> 8cc01190afc3a699c3cd47ce5552751f38bded3a
     end
 
     def cleanup_before
