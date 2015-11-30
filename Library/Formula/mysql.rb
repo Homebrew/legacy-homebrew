@@ -11,12 +11,6 @@ class Mysql < Formula
     sha256 "9552b55a18e73cdf9a818e6496ea71875ca95d8c92fd018a4bf7807ceedb11cf" => :mavericks
   end
 
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion || !OS.mac?
-  depends_on "openssl"
-  # Fix error: Cannot find system editline libraries.
-  depends_on "libedit" unless OS.mac?
-
   option :universal
   option "with-tests", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
@@ -31,9 +25,11 @@ class Mysql < Formula
   deprecated_option "enable-debug" => "with-debug"
 
   depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "pidof" unless MacOS.version >= :mountain_lion || !OS.mac?
   depends_on "openssl"
   depends_on "boost"
+  # Fix error: Cannot find system editline libraries.
+  depends_on "libedit" unless OS.mac?
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
