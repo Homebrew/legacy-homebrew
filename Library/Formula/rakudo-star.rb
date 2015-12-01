@@ -4,6 +4,12 @@ class RakudoStar < Formula
   url "http://rakudo.org/downloads/star/rakudo-star-2015.11.tar.gz"
   sha256 "714aed706706f02efeadc0d7e4c7ad216de5ded80d4a1b2879c275d5d05beae7"
 
+  bottle do
+    sha256 "7de961893c649707a3d0ddb943909fd9be4e0ac6d8859c327b00807c654068f7" => :el_capitan
+    sha256 "d1af4fbaa08cd8869ec30088dcf3c2b535681e71ad26575e867f6e0a7c6e8898" => :yosemite
+    sha256 "f9220ee6259bdc542be0a2f540ca2d9049520a2cc488f5a966c17af91cbd529b" => :mavericks
+  end
+
   option "with-jvm", "Build also for jvm as an alternate backend."
 
   conflicts_with "parrot"
