@@ -1,8 +1,8 @@
 class Ccat < Formula
   desc "Like cat but displays content with syntax highlighting"
   homepage "https://github.com/jingweno/ccat"
-  url "https://github.com/jingweno/ccat/archive/v1.0.0.tar.gz"
-  sha256 "5bd558009a9054ff25f3d023d67080c211354d1552ffe377ce11d49376fb4aee"
+  url "https://github.com/jingweno/ccat/archive/v1.1.0.tar.gz"
+  sha256 "b02d2c8d573f5d73595657c7854c9019d3bd2d9e6361b66ce811937ffd2bfbe1"
 
   bottle do
     cellar :any_skip_relocation
