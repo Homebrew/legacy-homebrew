@@ -21,6 +21,7 @@ class Hercules < Formula
                           "--enable-optimization=no"
     system "make"
     system "make", "install"
+    pkgshare.install "hercules.cnf"
   end
 
   test do
