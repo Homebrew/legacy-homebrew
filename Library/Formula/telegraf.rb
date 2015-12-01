@@ -3,8 +3,8 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level metric gathering agent for InfluxDB"
   homepage "https://influxdb.com"
-  url "https://github.com/influxdb/telegraf/archive/v0.2.2.tar.gz"
-  sha256 "e0bff0c9d2ae548a9c21ee7fe2a0052c4dc630adb5a55327fa14db1a735ad1c9"
+  url "https://github.com/influxdb/telegraf/archive/v0.2.3.tar.gz"
+  sha256 "b6891b5f310232e47461b780a1151afed942438e323c44b77496a885fa6fea86"
 
   bottle do
     cellar :any_skip_relocation
@@ -31,7 +31,7 @@ class Telegraf < Formula
     end
 
     bin.install telegraf_path/"telegraf"
-    etc.install telegraf_path/"etc/config.sample.toml" => "telegraf.conf"
+    etc.install telegraf_path/"etc/telegraf.conf" => "telegraf.conf"
   end
 
   plist_options :manual => "telegraf -config #{HOMEBREW_PREFIX}/etc/telegraf.conf"
