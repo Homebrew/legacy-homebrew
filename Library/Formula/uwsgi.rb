@@ -55,6 +55,7 @@ class Uwsgi < Formula
 
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
+      ssl = true
       json = #{json}
       yaml = #{yaml}
       inherit = base
