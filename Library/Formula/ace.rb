@@ -32,5 +32,16 @@ class Ace < Formula
                    "shared_libs=1",
                    "static_libs=0",
                    "install"
+
+    cd "examples" do
+    system "make"
+    end
+
+    pkgshare.install "examples"
+  end
+
+  test do
+    cp_r "#{pkgshare}/examples/Log_Msg/.", testpath
+    system "./test_callback"
   end
 end
