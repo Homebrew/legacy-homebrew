@@ -22,4 +22,12 @@ class Hercules < Formula
     system "make"
     system "make", "install"
   end
+
+  test do
+    (testpath/"test00.ctl").write <<-EOS.undent
+      TEST00 3390 10
+      TEST.PDS EMPTY CYL 1 0 5 PO FB 80 6080
+    EOS
+    system "#{bin}/dasdload", "test00.ctl", "test00.ckd"
+  end
 end
