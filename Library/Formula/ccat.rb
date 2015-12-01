@@ -6,10 +6,9 @@ class Ccat < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d516a7d20395e317dd78ad2294aadc55e17c77127ffb15703e699d4fd8c0f027" => :el_capitan
-    sha256 "70c3e7597d8c767d83ebaded9056e94221c71aa70f9b79146fc35874959c5655" => :yosemite
-    sha256 "201def201539d94334b2cc6fec04154a808d90811352ffeb7d01cd6789e00ccf" => :mavericks
-    sha256 "7f31873c0412ff8fa3c04ab70cdb4ecb4f2232c415ca535b6e7b149f166695d1" => :mountain_lion
+    sha256 "10eb7df98a05c968f006bbda2c6f690bd7d5053e4bb6d2c9c4a043616648a23b" => :el_capitan
+    sha256 "063b4cab434b5d16e8884aad6eb7d18068c33f9ec884fabf5ada3ad821428897" => :yosemite
+    sha256 "04342b5be5ffffaa696799b006b592cad530b0fcd510514ad9c72bc70c5865ba" => :mavericks
   end
 
   conflicts_with "ccrypt", :because => "both install `ccat` binaries"
