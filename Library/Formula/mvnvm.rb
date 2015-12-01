@@ -1,8 +1,8 @@
 class Mvnvm < Formula
   desc "Maven version manager"
   homepage "http://mvnvm.org"
-  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.7.zip"
-  sha256 "1cd930d2d00bb8cdbc3f3a6c8e2ff1b98ba2bc5ffd77d639219b3dce273f826b"
+  url "https://bitbucket.org/mjensen/mvnvm/get/mvnvm-1.0.8.zip"
+  sha256 "740d8a4605ef60c01b4ba9160bd1954adb727428092f0694a5d0d5403522dc02"
   head "https://bitbucket.org/mjensen/mvnvm.git"
 
   bottle :unneeded
@@ -21,7 +21,7 @@ class Mvnvm < Formula
       <settings><localRepository>#{testpath}/repository</localRepository></settings>
     EOS
     (testpath/"mvnvm.properties").write <<-EOS.undent
-      mvn_version=3.2.5
+      mvn_version=3.3.9
     EOS
     (testpath/"pom.xml").write <<-EOS.undent
       <?xml version="1.0" encoding="UTF-8"?>
