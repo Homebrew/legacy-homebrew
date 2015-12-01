@@ -11,6 +11,8 @@ class Yank < Formula
     sha256 "523fa3f42ba361f22e1f65da4e04567501e2a54b38b00074ab79e9ce3870a03a" => :mavericks
   end
 
+  patch :DATA
+
   def install
     system "make", "install", "PREFIX=#{prefix}", "YANKCMD=pbcopy"
   end
@@ -33,3 +35,22 @@ class Yank < Formula
     system "./test"
   end
 end
+
+# This is here to provide a temporary workaround for mptre/yank#22.
+# Once that is resolved in the next release, this can be removed.
+__END__
+diff --git a/yank.c b/yank.c
+index fb971f5..fbc852c 100644
+--- a/yank.c
++++ b/yank.c
+@@ -26,8 +26,8 @@
+ #define T_KEY_LEFT            "\033[D"
+ #define T_KEY_RIGHT           "\033[C"
+ #define T_KEY_UP              "\033[A"
+-#define T_RESTORE_CURSOR      "\033[u"
+-#define T_SAVE_CURSOR         "\033[s"
++#define T_RESTORE_CURSOR      "\0338"
++#define T_SAVE_CURSOR         "\0337"
+ 
+ #define CONTROL(c) (c ^ 0x40)
+ #define MIN(x, y) ((x) < (y) ? (x) : (y))
