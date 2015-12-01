@@ -40,7 +40,7 @@ class Logstash < Formula
       output { stdout { codec => rubydebug } }
     EOS
 
-    output = pipe_output("/bin/echo 'hello world' | #{bin}/logstash -f simple.conf")
+    output = pipe_output("#{bin}/logstash -f simple.conf", "hello world\n")
     assert_match /hello world/, output
   end
 end
