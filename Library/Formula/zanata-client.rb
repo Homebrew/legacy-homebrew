@@ -1,8 +1,8 @@
 class ZanataClient < Formula
   desc "Zanata translation system command-line client"
   homepage "http://zanata.org/"
-  url "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/3.7.4/zanata-cli-3.7.4-dist.tar.gz"
-  sha256 "4424322bffb81f5185f87d1f11c7e92cde504c736695dbb4ced5854e49672037"
+  url "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/3.8.1/zanata-cli-3.8.1-dist.tar.gz"
+  sha256 "cc4ecfa2d530ff314076bd0173bdf829824737d48d4f4a2f4ca18d263e9da7c3"
 
   bottle do
     cellar :any_skip_relocation
@@ -11,11 +11,11 @@ class ZanataClient < Formula
     sha256 "db3d050b39b9dfc4a47c53f86196ff4f0f129c5afcd730b7e4d6f3fae1a54b17" => :mavericks
   end
 
-  depends_on :java => "1.7+"
+  depends_on :java => "1.8+"
 
   def install
     libexec.install Dir["*"]
-    (bin/"zanata-cli").write_env_script libexec/"bin/zanata-cli", Language::Java.java_home_env("1.7+")
+    (bin/"zanata-cli").write_env_script libexec/"bin/zanata-cli", Language::Java.java_home_env("1.8+")
     bash_completion.install libexec/"bin/zanata-cli-completion"
   end
 
