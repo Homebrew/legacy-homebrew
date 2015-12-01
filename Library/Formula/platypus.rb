@@ -1,9 +1,9 @@
 class Platypus < Formula
   desc "Create OS X applications from {Perl,Ruby,sh,Python} scripts"
   homepage "http://sveinbjorn.org/platypus"
-  url "https://github.com/sveinbjornt/Platypus/raw/master/Releases/platypus4.9.src.zip"
-  version "4.9"
-  sha256 "11b32fc5c68b4e73abeeabd22e1547c2c9b53bafe86cf04474c1f78863d2c1ae"
+  url "http://sveinbjorn.org/files/software/platypus/platypus5.0.src.zip"
+  version "5.0"
+  sha256 "53efa052920a0f8a0fcc6a5d5806447be1270279aa98961cb5cea34447a79706"
   head "https://github.com/sveinbjornt/Platypus.git"
 
   bottle do
@@ -16,10 +16,6 @@ class Platypus < Formula
   depends_on :xcode => :build
 
   def install
-    # 4.9 stable tarball has unexpected unpacked name, so go to the right
-    # place.
-    cd "platypus" if build.stable?
-
     xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
                "-project", "Platypus.xcodeproj",
                "-target", "platypus",
@@ -33,7 +29,7 @@ class Platypus < Formula
 
     bin.install "platypus_clt" => "platypus"
 
-    cd "ScriptExec.app/Contents" do
+    cd "build/UninstalledProducts/macosx/ScriptExec.app/Contents" do
       (share/"platypus").install "Resources/MainMenu.nib", "MacOS/ScriptExec"
     end
   end
