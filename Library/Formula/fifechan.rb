@@ -1,5 +1,5 @@
 class Fifechan < Formula
-  desc "Is a C++ GUI library designed for games."
+  desc "C++ GUI library designed for games."
   homepage "https://fifengine.github.io/fifechan/"
   url "https://github.com/fifengine/fifechan/archive/0.1.2.tar.gz"
   sha256 "4a4239314ae33c5413e4d7d3e5f2f1a7e53fb596fd1480ea7443ee78041e6b2d"
