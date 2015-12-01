@@ -111,13 +111,13 @@ class Uwsgi < Formula
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/#{plugin}", "brew"
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/#{plugin}", "brew"
     end
 
     python_versions = ["python", "python2"]
     python_versions << "python3" if build.with? "python3"
     python_versions.each do |v|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/python", "brew", v
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/python", "brew", v
     end
 
     bin.install "uwsgi"
