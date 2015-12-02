@@ -1,8 +1,8 @@
 class Giflib < Formula
-  desc "GIF library using patented LZW algorithm"
+  desc "A library and utilities for processing GIFs"
   homepage "http://giflib.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/giflib/giflib-4.x/giflib-4.2.3.tar.bz2"
-  sha256 "0ac8d56726f77c8bc9648c93bbb4d6185d32b15ba7bdb702415990f96f3cb766"
+  url "https://downloads.sourceforge.net/project/giflib/giflib-5.1.1.tar.bz2"
+  sha256 "391014aceb21c8b489dc7b0d0b6a917c4e32cc014ce2426d47ca376d02fe2ffc"
 
   bottle do
     cellar :any
@@ -36,6 +36,6 @@ class Giflib < Formula
   end
 
   test do
-    assert_match /Size: 1x1/, shell_output("#{bin}/gifinfo #{test_fixtures("test.gif")}")
+    assert_match /Screen Size - Width = 1, Height = 1/, shell_output("#{bin}/giftext #{test_fixtures("test.gif")}")
   end
 end
