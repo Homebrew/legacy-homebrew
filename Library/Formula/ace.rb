@@ -33,10 +33,7 @@ class Ace < Formula
                    "static_libs=0",
                    "install"
 
-    cd "examples" do
-    system "make"
-    end
-
+    system "make", "-C", "examples"
     pkgshare.install "examples"
   end
 
