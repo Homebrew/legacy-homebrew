@@ -40,8 +40,7 @@ class Imageworsener < Formula
   end
 
   test do
-    cd share/"tests" do
-      system "./runtest", bin/"imagew"
-    end
+    cp_r Dir["#{share}/tests/*"], testpath
+    system "./runtest", bin/"imagew"
   end
 end
