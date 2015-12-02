@@ -1,8 +1,8 @@
 class Syntaxerl < Formula
   homepage "https://github.com/ten0s/syntaxerl"
   desc "Syntax checker for Erlang code and config files"
-  url "https://github.com/ten0s/syntaxerl/archive/0.8.0.tar.gz"
-  sha256 "4c5a6390a7d28869bf44cc831ae59cb69480a8481853de8dd59672b7cf5bff7b"
+  url "https://github.com/ten0s/syntaxerl/archive/0.10.0.tar.gz"
+  sha256 "ee2748ecfbcdc62a6cc4181032be9c6de232f5603ac019f9d14d6861a3c5df8a"
 
   bottle do
     cellar :any
