@@ -7,10 +7,9 @@ class Pianobar < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "02b39caa7b8e62aa061d8bb416e914c4ad3002073eb47d541a04c3437f8e92cc" => :yosemite
-    sha256 "ad95ed05407af335e80867e06379e898036745aa7a92b5438de255cfd22e4e12" => :mavericks
-    sha256 "f2c38f52caa79e5a4aa2c852d2b0bcf72f59c15eef21ec2e186d3520752d2506" => :mountain_lion
+    sha256 "af31da8a1c37f0c8a96cb3ac0dc77729273876c9fbf297b3ad8bac760c5c5a93" => :el_capitan
+    sha256 "9391c326669a36450344beaf238585882694bd302fff41fbb3ce70bd3061090f" => :yosemite
+    sha256 "c9173c98d827a8ab01faefe581512cb19ff27d6a01ec2356db00ce3a9e21e028" => :mavericks
   end
 
   depends_on "pkg-config" => :build
