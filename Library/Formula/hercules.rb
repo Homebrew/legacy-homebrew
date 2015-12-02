@@ -1,8 +1,8 @@
 class Hercules < Formula
   desc "System/370, ESA/390 and z/Architecture Emulator"
   homepage "http://www.hercules-390.eu/"
-  url "http://downloads.hercules-390.eu/hercules-3.10.tar.gz"
-  sha256 "26264569b7d78bbc3b6221926051ac3761c4a792dfc84d591d3230de40aa46fa"
+  url "http://downloads.hercules-390.eu/hercules-3.12.tar.gz"
+  sha256 "aefbe9d2f09372a530c17c177b7d2a0f4bcf8cfd28474672935b067e5f9ee373"
 
   skip_clean :la
 
@@ -21,5 +21,14 @@ class Hercules < Formula
                           "--enable-optimization=no"
     system "make"
     system "make", "install"
+    pkgshare.install "hercules.cnf"
+  end
+
+  test do
+    (testpath/"test00.ctl").write <<-EOS.undent
+      TEST00 3390 10
+      TEST.PDS EMPTY CYL 1 0 5 PO FB 80 6080
+    EOS
+    system "#{bin}/dasdload", "test00.ctl", "test00.ckd"
   end
 end
