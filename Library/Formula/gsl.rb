@@ -1,3 +1,6 @@
+# Please don't update me to the 2.x branch yet until issues discussed in
+# https://github.com/Homebrew/homebrew/issues/45812 are resolved.
+# If you want 2.x now, file a PR in homebrew/versions. Thanks!
 class Gsl < Formula
   desc "Numerical library for C and C++"
   homepage "https://www.gnu.org/software/gsl/"
