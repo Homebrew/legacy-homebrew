@@ -76,7 +76,7 @@ class TapFormulaAmbiguityError < RuntimeError
     @paths = paths
     @formulae = paths.map do |path|
       path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      "#{Tap.fetch($1, $2)}/#{path.basename(".rb")}"
     end
 
     super <<-EOS.undent

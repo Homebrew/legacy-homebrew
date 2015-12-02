@@ -134,7 +134,7 @@ class Formula
     @revision = self.class.revision || 0
 
     if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      @full_name = "#{$1}/#{$2.gsub(/^homebrew-/, "")}/#{name}"
+      @full_name = "#{Tap.fetch($1, $2)}/#{name}"
     else
       @full_name = name
     end
@@ -296,7 +296,7 @@ class Formula
       end
     elsif tap?
       user, repo = tap.split("/")
-      formula_renames = Tap.fetch(user, repo.sub("homebrew-", "")).formula_renames
+      formula_renames = Tap.fetch(user, repo).formula_renames
       if formula_renames.value?(name)
         formula_renames.to_a.rassoc(name).first
       end
@@ -309,7 +309,7 @@ class Formula
       Formula.core_alias_reverse_table[name] || []
     elsif tap?
       user, repo = tap.split("/")
-      Tap.fetch(user, repo.sub("homebrew-", "")).alias_reverse_table[full_name] || []
+      Tap.fetch(user, repo).alias_reverse_table[full_name] || []
     else
       []
     end
