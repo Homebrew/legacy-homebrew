@@ -36,8 +36,8 @@ class Thefuck < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.2.tar.gz"
-    sha256 "0994a58df27ea5dc523782a601357a2198b7493dcc99a30d51827a23585b5b1d"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.7.1.tar.gz"
+    sha256 "aff36c95035e0b311eacb1434e3f7e85f5ccaad477773847e582978f8f45bd74"
   end
 
   resource "decorator" do

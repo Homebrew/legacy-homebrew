@@ -23,8 +23,8 @@ class Pushpin < Formula
 
   # MacOS versions prior to Yosemite need the latest setuptools in order to compile dependencies
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
-    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.7.1.tar.gz"
+    sha256 "aff36c95035e0b311eacb1434e3f7e85f5ccaad477773847e582978f8f45bd74"
   end
 
   resource "MarkupSafe" do
