@@ -11,20 +11,21 @@ class Libbpg < Formula
     sha256 "7b8d1585ee9e2de010abfab1aaab419d052cf35d82704587c2f75947d4fc8ee5" => :mavericks
   end
 
-  option "with-x265", "Enable x265 encoder"
-  option "without-jctvc", "Disable built-in JCTVC encoder"
+  option "with-jctvc", "Enable built-in JCTVC encoder - Mono threaded, slower but produce smaller file"
+  option "without-x265", "Disable built-in x265 encoder - Multi threaded, faster but produce bigger file"
 
   depends_on "cmake" => :build
-  depends_on "yasm" => :build
+  depends_on "yasm" => :build if build.with? "x265"
   depends_on "libpng"
   depends_on "jpeg"
-  depends_on "x265" => :optional
 
   def install
     bin.mkpath
+
     args = []
-    args << "USE_X265=y" if build.with? "x265"
-    args << "USE_JCTVC=" if build.without? "jctvc"
+    args << "USE_JCTVC=y" if build.with? "jctvc"
+    args << "USE_X265=" if build.without? "x265"
+
     system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y", *args
   end
 
