@@ -6,6 +6,7 @@ class AndroidSdk < Formula
   url "https://dl.google.com/android/android-sdk_r24.4.1-macosx.zip"
   version "24.4.1"
   sha256 "ce1638cb48526a0e55857fc46b57eda4349e6512006244ad13dd6c1361c74104"
+  revision 1
 
   bottle :unneeded
 
