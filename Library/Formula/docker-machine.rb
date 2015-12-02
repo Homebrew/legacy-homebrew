@@ -3,8 +3,8 @@ require "language/go"
 class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
-  url "https://github.com/docker/machine/archive/v0.5.1.tar.gz"
-  sha256 "cd515d9b2d14edb9ce3429865cb9cdadc81d7c4ba685422fbd1ee10025987460"
+  url "https://github.com/docker/machine/archive/v0.5.2.tar.gz"
+  sha256 "2dd6ed03e546a7c733ec6964b47b85b6d328e830ebca318240f6ddfcaed6f98a"
   head "https://github.com/docker/machine.git"
 
   bottle do
@@ -22,9 +22,13 @@ class DockerMachine < Formula
     mkdir_p buildpath/"src/github.com/docker/"
     ln_sf buildpath, buildpath/"src/github.com/docker/machine"
 
-    system "make", "build"
-    bin.install Dir["bin/*"]
+    Dir.chdir(buildpath/"src/github.com/docker/machine/") do
+      # Hack to force ruby chdir into the symlinked path
+      ENV["PWD"] = buildpath/"src/github.com/docker/machine/"
+      system "make", "build"
+    end
 
+    bin.install Dir["bin/*"]
     bash_completion.install Dir["contrib/completion/bash/*.bash"]
   end
 
