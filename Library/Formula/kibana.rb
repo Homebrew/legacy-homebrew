@@ -1,8 +1,7 @@
 class Kibana < Formula
-  desc "Visualization tool for elasticsearch"
+  desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
-  url "https://github.com/elastic/kibana/archive/v4.1.1.tar.gz"
-  sha256 "3f91e99e20e82d4e84ec141007822fea8f9454c71595551f9348ea2609c98284"
+  url "https://github.com/elastic/kibana.git", :tag => "v4.3.0", :revision => "e32749e1fa442853975ce2abd5ac2fd88a2dcf58"
   head "https://github.com/elastic/kibana.git"
 
   bottle do
@@ -13,39 +12,70 @@ class Kibana < Formula
     sha256 "5d102f006b25dae70bd62c99d9787abe10111460bc2119e5e5ceb412d6335dae" => :mountain_lion
   end
 
-  depends_on "node"
+  resource "node" do
+    url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
+    sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
+  end
 
   def install
-    ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
-
-    system "npm", "install"
-    system "npm", "install", "grunt-cli"
-    system "npm", "install", "bower"
-    system "./node_modules/.bin/bower", "install"
-    system "./node_modules/.bin/grunt", "build", "--force"
-
-    dist_dir = buildpath/"build/dist/kibana"
-
-    rm_f dist_dir/"bin/*.bat"
-
-    prefix.install dist_dir/"src"
-    (etc/"kibana").mkpath
-    (var/"lib/kibana/plugins").mkpath
-
-    (etc/"kibana").install dist_dir/"config/kibana.yml" unless (etc/"kibana/kibana.yml").exist?
-
-    # point to our node
-    inreplace dist_dir/"bin/kibana" do |s|
-      s.sub! /^NODE=.*$/, "NODE=#{Formula["node"].opt_bin}/node"
+    resource("node").stage buildpath/"node"
+    cd buildpath/"node" do
+      system "./configure", "--prefix=#{libexec}/node"
+      system "make", "install"
     end
 
-    bin.install dist_dir/"bin/kibana"
+    # do not download binary installs of Node.js
+    inreplace buildpath/"tasks/build/index.js", %r{('_build:downloadNodeBuilds:\w+',)}, "// \\1"
 
-    (prefix/"config").install_symlink etc/"kibana/kibana.yml"
-    prefix.install_symlink var/"lib/kibana/plugins"
+    # do not build packages for other platforms
+    platforms = Set.new(["darwin-x64", "linux-x64", "linux-x86", "windows"])
+    if OS.mac? && Hardware::CPU.is_64_bit?
+      platform = "darwin-x64"
+    elsif OS.linux?
+      platform = if Hardware::CPU.is_64_bit? then "linux-x64" else "linux-x86" end
+    else
+      raise "Installing Kibana via Homebrew is only supported on Darwin x86_64, Linux i386, Linux i686, and Linux x86_64"
+    end
+    platforms.delete(platform)
+    sub = platforms.to_a.join("|")
+    inreplace buildpath/"tasks/config/platforms.js", %r{('(#{sub})',?(?!;))}, "// \\1"
+
+    # do not build zip package
+    inreplace buildpath/"tasks/build/archives.js", %r{(await exec\('zip'.*)}, "// \\1"
+
+    ENV.prepend_path "PATH", prefix/"libexec/node/bin"
+    system "npm", "install"
+    system "npm", "run", "build"
+    mkdir "tar" do
+      system "tar", "--strip-components", "1", "-xf", Dir[buildpath/"target/kibana-*-#{platform}.tar.gz"].first
+
+      rm_f Dir["bin/*.bat"]
+      prefix.install "bin", "config", "node_modules", "optimize", "package.json", "src", "webpackShims"
+    end
+
+    inreplace "#{bin}/kibana", %r{/node/bin/node}, "/libexec/node/bin/node"
+
+    cd prefix do
+      inreplace "config/kibana.yml", %{/var/run/kibana.pid}, var/"run/kibana.pid"
+      (etc/"kibana").install Dir["config/*"]
+      rm_rf "config"
+    end
+  end
+
+  def post_install
+    ln_s etc/"kibana", prefix/"config"
+
+    (var/"lib/kibana/installedPlugins").mkpath
+    ln_s var/"lib/kibana/installedPlugins", prefix/"installedPlugins"
   end
 
   plist_options :manual => "kibana"
+
+  def caveats; <<-EOS.undent
+    Plugins: #{var}/kibana/installedPlugins/
+    Config: #{etc}/kibana/
+    EOS
+  end
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -65,6 +95,7 @@ class Kibana < Formula
   end
 
   test do
+    ENV["BABEL_CACHE_PATH"] = testpath/".babelcache.json"
     assert_match /#{version}/, shell_output("#{bin}/kibana -V")
   end
 end
