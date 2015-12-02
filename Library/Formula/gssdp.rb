@@ -5,9 +5,9 @@ class Gssdp < Formula
   sha256 "b3d570455746284f3e65843c7f94d9595be54d68a9525629b625196bad2cac07"
 
   bottle do
-    sha256 "0194bc2c5249d25c2726bc584cc8fc8e84d6b630c0fd0a92f1cf446886ecb829" => :el_capitan
-    sha256 "aa48eda5113267ff3c2aa0c8fd60a24ce5df415fb4db3215b6c3ce38a7209010" => :yosemite
-    sha256 "fbd6382df7b4247f2f3b04a92f588011174af63d47bdec87a66fb795c3924e4b" => :mavericks
+    sha256 "81f04682a589403208f87da3f52a22e13c855eaeafba9e0a67a16a32798b7215" => :el_capitan
+    sha256 "a4044ab3b0fcbfe6bc0110e9facf6bb7c5f2ff7cbf9718770f6a6e08fdd64fd9" => :yosemite
+    sha256 "d6639f36269afccfde5d8b286cbb035be7ab1b7223f9267ca339d99b891782db" => :mavericks
   end
 
   depends_on "pkg-config" => :build
