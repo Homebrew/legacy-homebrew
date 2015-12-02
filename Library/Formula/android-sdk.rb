@@ -90,6 +90,9 @@ class AndroidSdk < Formula
       decoded_file.write Base64.decode64(File.read("adb.bash"))
       bash_completion.install decoded_file
     end
+
+    # automatically install platform and build tools
+    system "echo y | bash #{bin}/android --verbose update sdk --no-ui --all --filter platform-tools,build-tools-#{build_tools_version}"
   end
 
   def caveats; <<-EOS.undent
