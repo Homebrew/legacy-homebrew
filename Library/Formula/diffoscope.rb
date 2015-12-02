@@ -4,6 +4,13 @@ class Diffoscope < Formula
   url "https://pypi.python.org/packages/source/d/diffoscope/diffoscope-42.tar.gz"
   sha256 "c0241acf5de7eb0e9e209e43dbf389beca722ddfb8b5d5630fd40569f1f465e2"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "e3da95ec12e2ceb498269d4cca444cc0a74c97ea9ba5dce7f0eafd12e55b2970" => :el_capitan
+    sha256 "d11689783435f77d5e00c2b3477dee5189063c76359dc17528b59b9c7d793f60" => :yosemite
+    sha256 "4c2c9c24fc2c7d02b0ddd5db7cf2f0f84d36df801b72e14a058d0b3ad9c76544" => :mavericks
+  end
+
   depends_on "libmagic"
   depends_on "libarchive"
   depends_on "gnu-tar"
