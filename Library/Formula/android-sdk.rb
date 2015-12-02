@@ -8,8 +8,6 @@ class AndroidSdk < Formula
   sha256 "ce1638cb48526a0e55857fc46b57eda4349e6512006244ad13dd6c1361c74104"
   revision 1
 
-  bottle :unneeded
-
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
 
