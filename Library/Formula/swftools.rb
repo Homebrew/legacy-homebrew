@@ -3,7 +3,7 @@ class Swftools < Formula
   homepage "http://www.swftools.org"
   url "http://www.swftools.org/swftools-0.9.2.tar.gz"
   sha256 "bf6891bfc6bf535a1a99a485478f7896ebacbe3bbf545ba551298080a26f01f1"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "7343a6c406b0374b460f1d814e5542372f85df5d6ee500759648084713e33174" => :el_capitan
