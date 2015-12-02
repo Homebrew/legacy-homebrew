@@ -3,8 +3,8 @@ require "language/go"
 class Sift < Formula
   desc "Fast and powerful open source alternative to grep"
   homepage "https://sift-tool.org"
-  url "https://github.com/svent/sift/archive/v0.4.0.tar.gz"
-  sha256 "6682b3eb08ae45eca8c6a09ef7811a79f6a9f244cdd06b76cd65eed956375b31"
+  url "https://github.com/svent/sift/archive/v0.5.0.tar.gz"
+  sha256 "efa1877761e6c86a5ef04548923f9f99bc7a8bacd54fe8926c3b74900bf72e20"
 
   bottle do
     cellar :any_skip_relocation
@@ -21,6 +21,10 @@ class Sift < Formula
 
   go_resource "github.com/svent/go-nbreader" do
     url "https://github.com/svent/go-nbreader.git", :revision => "7cef48da76dca6a496faa7fe63e39ed665cbd219"
+  end
+
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git", :revision => "7b85b097bf7527677d54d3220065e966a0e3b613"
   end
 
   def install
