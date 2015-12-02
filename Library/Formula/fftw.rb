@@ -27,7 +27,8 @@ class Fftw < Formula
             "--disable-debug",
             "--prefix=#{prefix}",
             "--enable-threads",
-            "--disable-dependency-tracking"]
+            "--disable-dependency-tracking",
+           ]
     simd_args = ["--enable-sse2"]
     simd_args << "--enable-avx" if ENV.compiler == :clang && Hardware::CPU.avx? && !build.bottle?
 

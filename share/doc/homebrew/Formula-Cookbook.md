@@ -67,7 +67,7 @@ Before contributing, make sure your package:
 *   isn't in another [Homebrew tap](https://github.com/Homebrew)
 *   isn't already waiting to be merged (check the [issue tracker](https://github.com/Homebrew/homebrew/issues))
 *   is still supported by upstream
-*   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release and head-only versions belong.
+*   has a stable, tagged version (i.e. not just a GitHub repository with no versions). See [Interesting-Taps-&-Branches](Interesting-Taps-&-Branches.md) for where pre-release versions belong.
 *   passes all `brew audit --strict --online $FORMULA` tests.
 
 Make sure you search thoroughly (all aliases!). We don’t want you to waste your time.
@@ -909,7 +909,9 @@ Homebrew provides two Formula methods for launchd plist files. `plist_name` will
 
 ## Updating formulae
 
-Eventually a new version of the software will be released. In this case you should update the `url` and `sha256`. Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
+Eventually a new version of the software will be released. In this case you should update the `url` and `sha256`. If a `revision` line exists outside any `bottle do` block, it should be removed.
+
+Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
 
 Check if the formula you are updating is a dependency for any other formulae by running `brew uses UPDATED_FORMULA`. If it is a dependency please `brew reinstall` all the dependencies after it is installed and verify they work correctly.
 

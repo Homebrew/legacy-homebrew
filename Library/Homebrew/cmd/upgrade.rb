@@ -1,5 +1,4 @@
 require "cmd/install"
-require "cmd/outdated"
 require "cmd/cleanup"
 
 module Homebrew
@@ -9,14 +8,15 @@ module Homebrew
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      outdated = Homebrew.outdated_brews(Formula.installed)
+      outdated = Formula.installed.select(&:outdated?)
       exit 0 if outdated.empty?
     elsif ARGV.named.any?
-      outdated = Homebrew.outdated_brews(ARGV.resolved_formulae)
+      outdated = ARGV.resolved_formulae.select(&:outdated?)
 
       (ARGV.resolved_formulae - outdated).each do |f|
-        if f.rack.directory?
-          version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
+        versions = f.installed_kegs.map { |keg| keg.version }
+        if versions.any?
+          version = versions.max
           onoe "#{f.full_name} #{version} already installed"
         else
           onoe "#{f.full_name} not installed"

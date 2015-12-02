@@ -3,12 +3,12 @@ class Osm2pgsql < Formula
   homepage "https://wiki.openstreetmap.org/wiki/Osm2pgsql"
   url "https://github.com/openstreetmap/osm2pgsql/archive/0.88.1.tar.gz"
   sha256 "08ec33c833768dec9856f537bbf4416ad45837ee0851eeeab0081c7bbed3449e"
+  revision 1
 
   bottle do
-    sha256 "367d2eb028e4c9e90d9c9806ced4c4663088d7d9bd53779b4fbcc851d6a1628a" => :el_capitan
-    sha256 "007bc7c7cb4a662ada92f7654209be84c95ee3b0f6636e41b1a3bd9e5c2461af" => :yosemite
-    sha256 "57b8e4e8440802ea6de3ae4cdb1a687c2c4bfcf8b20b31300a9a1854a6b13ad7" => :mavericks
-    sha256 "0bc4e07736a3ec197e82934ae570e87d22b78564589182aafa33b3a30af3d1df" => :mountain_lion
+    sha256 "7f388ee56a6bf0d685434823d238ebbd8ca01e74320c862892e61e21b24b9a08" => :el_capitan
+    sha256 "17c80db14f36b5831b03a4026d3d970ae29c782344c11c5fbec9cf19716a3e6d" => :yosemite
+    sha256 "ef2655f802ca66c3cb137d80be9fcbe9fae64743c0f67c0b0e3944faddbc8913" => :mavericks
   end
 
   depends_on :postgresql

@@ -1,6 +1,7 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "http://www.musicpd.org/"
+  revision 1
 
   stable do
     url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.11.tar.xz"
@@ -15,9 +16,9 @@ class Mpd < Formula
 
   bottle do
     cellar :any
-    sha256 "5b2a900c9f20da37df7a73799282edb00d2e956f22033f178ca566c41f651028" => :el_capitan
-    sha256 "1f193a8fee458079c112e88e24772cd59689cc0aef483703daad80df3218bff6" => :yosemite
-    sha256 "f0e478b9cf8f18943af84d3d521c1ba7c126ad68dec22225528d63e00e9ef320" => :mavericks
+    sha256 "ca834bea5c7c2512dc8dd5c9855dd1f36eeacd9448253e67f722c6a58ae28f71" => :el_capitan
+    sha256 "40de5c575f8a4a79e802a9bac978c1993f060041b12ea923a5632116d6448d88" => :yosemite
+    sha256 "12d5c8f5c1016fb52cffa16f9b5482f3c9feae70e84d61e37e2df13fe72c580c" => :mavericks
   end
 
   head do
@@ -48,7 +49,7 @@ class Mpd < Formula
   needs :cxx11
 
   depends_on "libmpdclient"
-  depends_on "ffmpeg"                   # lots of codecs
+  depends_on "ffmpeg" # lots of codecs
   # mpd also supports mad, mpg123, libsndfile, and audiofile, but those are
   # redundant with ffmpeg
   depends_on "fluid-synth"              # MIDI

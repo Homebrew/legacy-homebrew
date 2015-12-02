@@ -1,13 +1,13 @@
 class Gedit < Formula
   desc "The GNOME text editor"
   homepage "https://wiki.gnome.org/Apps/Gedit"
-  url "https://download.gnome.org/sources/gedit/3.18/gedit-3.18.1.tar.xz"
-  sha256 "5ad5aeb01b0a299bb7c154e82fcff96e1a722617fcc4e39b3b57ddcbe88363cd"
+  url "https://download.gnome.org/sources/gedit/3.18/gedit-3.18.2.tar.xz"
+  sha256 "856e451aec29ee45980011de57cadfe89c3cbc53968f6cc865f8efe0bd0d49b1"
 
   bottle do
-    sha256 "048b76ff116bb622fad8e5f50430816a2bad67749a5778ecec15731efe139883" => :el_capitan
-    sha256 "5736b85778e8714eb5767d2cfc32f5e067aff02ec2d265f03de63e7ffa9d75b6" => :yosemite
-    sha256 "4dac3e015c3d9a5bd8dffd7e3badb966d10944ce447dca8d80ead518f8b102dc" => :mavericks
+    sha256 "1bc79acc4d9647ffcfd9bb9d3e4745c1132657caef70bc6740fc245d794e2775" => :el_capitan
+    sha256 "15cc979b0d56fbec3062a257e7cab588c78dd06df508d9e7d8dfebf6f2f38157" => :yosemite
+    sha256 "3da4d68313bc5dcad43be6841dcdac48b19d297905a54022f3b0dc06f19242dc" => :mavericks
   end
 
   depends_on "pkg-config" => :build

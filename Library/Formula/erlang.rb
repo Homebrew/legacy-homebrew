@@ -2,8 +2,9 @@
 # Homebrew-versions, and only be merged to master when things like couchdb and
 # elixir are compatible.
 class Erlang < Formula
-  desc "Erlang Programming Language"
+  desc "Programming language for highly scalable real-time systems"
   homepage "http://www.erlang.org"
+  head "https://github.com/erlang/otp.git"
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
@@ -11,13 +12,12 @@ class Erlang < Formula
     sha256 "1bb9afabbaf11d929f1ca9593db8b443e51388cdc78bd01267217438de7aed20"
   end
 
-  head "https://github.com/erlang/otp.git"
-
   bottle do
     cellar :any
-    sha256 "bf18573b48e421395e4df1b25b6b211b21f3b90319b7098d527884d7292d6cb9" => :el_capitan
-    sha256 "6da625cb19236ae2c0627ae8e1b295e923ada1d54e4ba258c4754680a813a04a" => :yosemite
-    sha256 "79eca633a2d6694827f59360fed2079cec900ed70ba03843288ea734a4e138fb" => :mavericks
+    revision 1
+    sha256 "29e93eb3160aadfd55e47bb32bd11c7a56a160dbb5db5fdbd75f848b54455f88" => :el_capitan
+    sha256 "f7f35256115d4c7262d014abc200508322e47e51a44ed6d86b0bc17e6fb296cc" => :yosemite
+    sha256 "68f395700569d983e6bf5afc6b1c45e95247e621c9922256983f30872170b608" => :mavericks
   end
 
   resource "man" do
@@ -56,7 +56,7 @@ class Erlang < Formula
     ENV["FOP"] = "#{HOMEBREW_PREFIX}/bin/fop" if build.with? "fop"
 
     # Do this if building from a checkout to generate configure
-    system "./otp_build autoconf" if File.exist? "otp_build"
+    system "./otp_build", "autoconf" if File.exist? "otp_build"
 
     args = %W[
       --disable-debug

@@ -22,7 +22,7 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
 
 *   [homebrew/games](https://github.com/Homebrew/homebrew-games): Game or gaming-emulation related formulae.
 
-*   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only): A tap for brews that only have unstable, unreleased versions.
+*   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only): A tap for brews that only have unstable, unreleased versions. This tap is **deprecated** and doesn’t accept new formulae.
 
 *   [homebrew/nginx](https://github.com/Homebrew/homebrew-nginx): Feature rich Nginx tap for modules.
 

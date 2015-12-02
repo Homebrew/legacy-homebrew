@@ -6,9 +6,10 @@ class GobjectIntrospection < Formula
   revision 1
 
   bottle do
-    sha256 "6bae714bf138ddf4af57736d593d5cb4c68b2efa8422e8111fdecab0979786f8" => :el_capitan
-    sha256 "3ad3ce2a65ab5622087cc4a50313767c3ca97402b2c4064904a773cbd355c732" => :yosemite
-    sha256 "497496d62580f4d6a41fa285ee164d2d693139dc41cf5c2891225ee6869bb8c2" => :mavericks
+    revision 1
+    sha256 "f74299d5504653f479d86f29239def40bcc790bfcf9a3df4ecd4ab95e2a13aab" => :el_capitan
+    sha256 "e1d5345ae31ba57ccffdfb12e8499e3cfe3c69e29387c4d0765c9872f1117baa" => :yosemite
+    sha256 "e3468554dddb9d16af1a15741f2734ce0aa9d87e7c81cd6a1c7161b6ef57d93c" => :mavericks
   end
 
   option :universal
@@ -17,7 +18,10 @@ class GobjectIntrospection < Formula
   depends_on "glib"
   depends_on "cairo"
   depends_on "libffi"
-  depends_on :python if MacOS.version <= :mavericks
+  # System python in Mavericks or below has bug in distutils/sysconfig.py, which breaks the install.
+  #    Caught exception: <type 'exceptions.AttributeError'> AttributeError("'NoneType' object has no attribute 'get'",)
+  #    > /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/sysconfig.py(171)customize_compiler()
+  depends_on "python" if MacOS.version <= :mavericks
 
   # see https://bugzilla.gnome.org/show_bug.cgi?id=625195
   # to be removed when 1.48.0 is released
@@ -39,7 +43,7 @@ class GobjectIntrospection < Formula
       s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
     end
 
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "PYTHON=python"
     system "make"
     system "make", "install"
   end

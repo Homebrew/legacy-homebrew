@@ -6,9 +6,9 @@ class Exodriver < Formula
 
   head "https://github.com/labjack/exodriver.git"
 
-  depends_on "libusb"
-
   option :universal
+
+  depends_on "libusb"
 
   def install
     ENV.universal_binary if build.universal?

@@ -8,8 +8,8 @@ class Ansible < Formula
 
   devel do
     url "https://github.com/ansible/ansible.git",
-        :revision => "07b588f6c0065f5c91b95f96885b946852187197"
-    version '2.0.0-0.5.beta3'
+        :revision => "f2225395f96d5c309dddc66fafd984862d99b708"
+    version '2.0.0-0.6.rc1'
   end
 
   bottle do

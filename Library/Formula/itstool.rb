@@ -3,12 +3,13 @@ class Itstool < Formula
   homepage "http://itstool.org/"
   url "http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2"
   sha256 "bf909fb59b11a646681a8534d5700fec99be83bb2c57badf8c1844512227033a"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "3d9f3da33955d74521a2aee1ce75332868e2244f4293fe30c9d1f649a2e036e6" => :yosemite
-    sha256 "1c4826404a602f0931e5367b1fb5258d9a37986301170b099fa55f744bd31b9c" => :mavericks
-    sha256 "fd069b0b6f5c20fc420b4d21e5c025c2df934de9454c2d1fec85a0d11224783f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "31ee8604a8a59c9257c221639361eb943a75946b373d6e9ebf03d94671eb53b1" => :el_capitan
+    sha256 "89c6a74cb5e584aada110adaaa68d24738f463100541578268b1c44bc2f70bb0" => :yosemite
+    sha256 "1cc3a9e1da7b5a35ea9e4592f6ccbc1371b48c7fca40fe242dfabb1b1ef98e34" => :mavericks
   end
 
   head do
@@ -18,7 +19,7 @@ class Itstool < Formula
     depends_on "automake" => :build
   end
 
-  depends_on :python
+  depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libxml2" => "with-python"
 
   def install

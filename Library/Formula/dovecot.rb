@@ -13,9 +13,16 @@ class Dovecot < Formula
   end
 
   option "with-pam", "Build with PAM support"
+  option "with-pigeonhole", "Add Sieve addon for Dovecot mailserver"
+  option "with-pigeonhole-unfinished-features", "Build unfinished new Sieve addon features/extensions"
 
   depends_on "openssl"
   depends_on "clucene" => :optional
+
+  resource "pigeonhole" do
+    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.8.tar.gz"
+    sha256 "d73c1c5a11cdfdcb58304a1c1272cce6c8e1868e3f61d393b3b8a725f3bf665b"
+  end
 
   def install
     args = %W[
@@ -35,6 +42,22 @@ class Dovecot < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    if build.with? "pigeonhole"
+      resource("pigeonhole").stage do
+        args = %W[
+          --disable-dependency-tracking
+          --with-dovecot=#{lib}/dovecot
+          --prefix=#{prefix}
+        ]
+
+        args << "--with-unfinished-features" if build.with? "pigeonhole-unfinished-features"
+
+        system "./configure", *args
+        system "make"
+        system "make", "install"
+      end
+    end
   end
 
   plist_options :startup => true

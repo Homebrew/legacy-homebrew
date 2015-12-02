@@ -6,9 +6,10 @@ class Bazel < Formula
 
   bottle do
     cellar :any
-    sha256 "8b65246774756d31cc97f29bddc6de705ca2fc9517d7a9d997e21aacad39855b" => :el_capitan
-    sha256 "35f5743ed99b97df7a41b489d61677e8ea337d7eb04f95a1ff8089da60adca62" => :yosemite
-    sha256 "ca1cd3f07bfe772cea1ce8e307891adb26081fc0012d5d9f438306ca36a52fef" => :mavericks
+    revision 1
+    sha256 "4e2ceee3d1a79339ab90377352b93631960bf4599853cea765116e7e6d0bc4ff" => :el_capitan
+    sha256 "63396e0919c7034ce3a6fd0a91567f1ffcd352a2b62230f7177d74d5be49d992" => :yosemite
+    sha256 "75f9ed1b50fef939e5806818835205fe11f4494bfe0aeb65ddfb4a8a1763146a" => :mavericks
   end
 
   depends_on :java => "1.8+"
@@ -19,6 +20,8 @@ class Bazel < Formula
     inreplace "src/main/cpp/blaze_startup_options.cc",
       "/etc/bazel.bazelrc",
       "#{etc}/bazel/bazel.bazelrc"
+
+    ENV["EMBED_LABEL"] = "#{version}-homebrew"
 
     system "./compile.sh"
 

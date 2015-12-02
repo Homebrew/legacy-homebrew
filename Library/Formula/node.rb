@@ -6,9 +6,10 @@ class Node < Formula
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "0f9518b4847974b8b67cb195c4e0b3d3797325658eb1beb5d3390a0141821bb9" => :el_capitan
-    sha256 "86fa3b3c73ca32d262dac36328d8d67d14d10e6caf32c73f9bda06603677c488" => :yosemite
-    sha256 "35f7b653e07ad00eefa0b3b869d3f47cb6979062f95008f0b84977f5ea984c2a" => :mavericks
+    revision 1
+    sha256 "485007341181ec9842a4fcef051336037cdfd48075490af57d8f82d2d1a829e6" => :el_capitan
+    sha256 "a21e68fc0915e0834b0dea8a4e4afa3df59dd6417704ca4e4bb86c8b13016b20" => :yosemite
+    sha256 "194788b88b5846de2304a6a8c953b4df654556621a0e37161b718a96c4428522" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -73,6 +74,10 @@ class Node < Formula
       cd buildpath/"npm_install" do
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
+        # `package.json` has relative paths to the npm_install directory.
+        # This copies back over the vanilla `package.json` that is expected.
+        # https://github.com/Homebrew/homebrew/issues/46131#issuecomment-157845008
+        cp buildpath/"npm_install/package.json", libexec/"npm/lib/node_modules/npm"
       end
 
       if build.with? "completion"

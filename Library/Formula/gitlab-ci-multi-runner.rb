@@ -2,16 +2,16 @@ class GitlabCiMultiRunner < Formula
   desc "The official GitLab CI runner written in Go"
   homepage "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner"
   url "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git",
-    :tag => "v0.6.2",
-    :revision => "3227f0aa5be1d64d2ec694bd3758e0d43e92b36b"
+    :tag => "v0.7.2",
+    :revision => "998cf5d5ef3caf6535cc4c5f3279b08c3ee2ecc8"
 
   head "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ed05bd9d27b5c4541add770d71af010471b91d107137398344ae630609abd293" => :el_capitan
-    sha256 "78659d13de49d5dcd348b7dbade44047b448912070b68ecd6bc5e7a376652dbb" => :yosemite
-    sha256 "b687dc1dcf9886a02b25188af0c4f38548ec23a7f3c848b95e8e2b5e1108db0f" => :mavericks
+    sha256 "5ec8bce6be01aa22a2efafe18c091a397914e6ef500df33d82e4b76f658a8fbe" => :el_capitan
+    sha256 "985fb658f94d106a335e1b11e085e2606e3d6c5a0de9efac9fabda36eaccc497" => :yosemite
+    sha256 "6456a87e5091b8c8f44d260e56dbf5e8e8783a060f59dba83bbb7a06f007ee45" => :mavericks
   end
 
   depends_on "go" => :build

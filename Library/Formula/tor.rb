@@ -13,10 +13,9 @@ class Tor < Formula
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.7.4-rc.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.7.4-rc.tar.gz"
-    sha256 "6741c3e6abfedb76be781b767b77f794ee1a0f554cc4ccf083e44d4d9dc8af67"
-    version "0.2.7.4-rc"
+    url "https://dist.torproject.org/tor-0.2.7.5.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.7.5.tar.gz"
+    sha256 "7d2a9e4db1bd99deb8395609b59cac217b0c1ee9ff2eeb0f088b91a5d8f6aa5f"
   end
 
   depends_on "libevent"

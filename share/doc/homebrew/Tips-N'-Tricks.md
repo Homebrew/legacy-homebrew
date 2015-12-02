@@ -71,7 +71,7 @@ name }}-{{ version }}</code>.  In the case of Erlang, this requires
 renaming the file from <code>otp_src_R13B03</code> to
 <code>erlang-R13B03</code>.
 
-`brew –-cache -s erlang` will print the correct name of the cached
+`brew --cache -s erlang` will print the correct name of the cached
 download.  This means instead of manually renaming a formula, you can
 run `mv the_tarball $(brew --cache -s $FORMULA)`.
 

@@ -21,7 +21,8 @@ class Findutils < Formula
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}/locate",
             "--disable-dependency-tracking",
-            "--disable-debug"]
+            "--disable-debug",
+           ]
     args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args

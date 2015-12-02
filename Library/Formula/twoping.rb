@@ -1,15 +1,15 @@
 class Twoping < Formula
   desc "Ping utility to determine directional packet loss"
   homepage "http://www.finnie.org/software/2ping/"
-  url "http://www.finnie.org/software/2ping/2ping-3.0.1.tar.gz"
-  sha256 "d6997cd1680151e6f7d5e60137d45cd41bf385d26029878afdaaf5dc4f63dcc4"
-  revision 1
+  url "http://www.finnie.org/software/2ping/2ping-3.1.0.tar.gz"
+  sha256 "0f5b4e10f89dd99ef04e2cc0564d6673ceae897ed0bf59b636553ec6aa1c7a92"
+  head "https://github.com/rfinnie/2ping.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f63e7af668f34e6b293e5a554832a7432de14cbb71c15e0a225c6ea1ce3e3924" => :el_capitan
-    sha256 "13794ca27a86eec6ede9a1f1cd3d01cda5f675db91c2e937471bf7d718c0fed4" => :yosemite
-    sha256 "b2a81bf692ca4fc69367536e069634438dd2dce53a9f0f7e05b6749342a96db4" => :mavericks
+    sha256 "82565f026de15aa37b5c3fff961d1a9d270f9211aea25aa242c4d2dd5690bd1a" => :el_capitan
+    sha256 "3746a2e18e26a360bebe578b66d470dfc8f1a01e607d4a7763760e103be569b7" => :yosemite
+    sha256 "2bcba7e19411b626ea04fb8fd0d4969c1de94f98f8c0e97fd67df9931dd27b05" => :mavericks
   end
 
   def install

@@ -12,9 +12,8 @@ class Exim < Formula
     sha256 "28f88bffa0447b615552d5a80c31ff8a762afd801a803429cf015af00aafae8b" => :mountain_lion
   end
 
-  option "with-maildir", "Support delivery in Maildir format"
-
   deprecated_option "support-maildir" => "with-maildir"
+  option "with-maildir", "Support delivery in Maildir format"
 
   depends_on "pcre"
   depends_on "berkeley-db4"
@@ -56,7 +55,7 @@ class Exim < Formula
 
     ENV.j1 # See: https://lists.exim.org/lurker/thread/20111109.083524.87c96d9b.en.html
     system "make"
-    system "make INSTALL_ARG=-no_chown install"
+    system "make", "INSTALL_ARG=-no_chown", "install"
     man8.install "doc/exim.8"
     (bin/"exim_ctl").write startup_script
   end
