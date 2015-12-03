@@ -16,7 +16,7 @@ class Libbpg < Formula
   option "without-x265", "Disable built-in x265 encoder - Multi threaded, faster but produce bigger file"
 
   depends_on "cmake" => :build
-  depends_on "yasm" => :build if !build.without? "x265"
+  depends_on "yasm" => :build if build.with? "x265"
   depends_on "libpng"
   depends_on "jpeg"
 
@@ -40,7 +40,7 @@ class Libbpg < Formula
       #system "#{bin}/bpgenc", "-e", "jctvc", test_fixtures("test.jpg")
     end
 
-    if !build.without? "x265"
+    if build.with? "x265"
       system "#{bin}/bpgenc", "-e", "x265", test_fixtures("test.png")
       # Unable to test 1x1 jpg
       #system "#{bin}/bpgenc", "-e", "x265", test_fixtures("test.jpg")
