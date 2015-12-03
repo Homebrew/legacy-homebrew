@@ -1,8 +1,8 @@
 class Kettle < Formula
   desc "Pentaho Data Integration software"
   homepage "http://community.pentaho.com/projects/data-integration/"
-  url "https://downloads.sourceforge.net/project/pentaho/Data%20Integration/5.0.1-stable/pdi-ce-5.0.1-stable.zip"
-  sha256 "f669f1aaaf0ef0e453ea64df91e016dac8a8b20e3ba90ede758d2f80dc262855"
+  url "https://downloads.sourceforge.net/project/pentaho/Data%20Integration/6.0/pdi-ce-6.0.0.0-353.zip"
+  sha256 "6d8c05828c36b9174cc1fe8e135c777721414d6067bd13bca8f96a336bfa3b07"
 
   bottle :unneeded
 
@@ -55,7 +55,6 @@ class Kettle < Formula
 
   test do
     ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
-    system "#{bin}/pdikitchen", "-file=#{libexec}/samples/jobs/Slowly\ Changing\ Dimension/create\ -\ populate\ -\ update\ slowly\ changing\ dimension.kjb", "-level=RowLevel"
     system "#{bin}/pdipan", "-file=#{libexec}/samples/transformations/Encrypt\ Password.ktr", "-level=RowLevel"
   end
 end
