@@ -30,6 +30,19 @@ class BerkeleyDb5 < Formula
       mv prefix+"docs", doc
     end
   end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <db.h>
+
+      int main() {
+        db_version(NULL,NULL,NULL);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{prefix}/lib", "-ldb-5", "-o", "test"
+    system "./test"
+  end
 end
 
 __END__
