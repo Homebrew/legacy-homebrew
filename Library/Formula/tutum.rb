@@ -6,9 +6,9 @@ class Tutum < Formula
 
   bottle do
     cellar :any
-    sha256 "f79db409110e9a24d745cd39f8f07ec6d56bd5389346f80b7b99f9dcc319e98b" => :el_capitan
-    sha256 "07d9553d7c52325c77b38e87d06c4ee23a9bc09fcf24262150b253cce9f50be8" => :yosemite
-    sha256 "d2b9431771304f7b8587f52202a5f42fb88ab1f1bdb215a43e75f78ba38531d6" => :mavericks
+    sha256 "6cd9543017eb45f76a24acd42934e8b21d4cd39f91298e8b80d34cb1b822e32f" => :el_capitan
+    sha256 "7b4372d2657cf2aa7362351b7d002e1956f6cc6a55c9b14d9fc860a78b3057b8" => :yosemite
+    sha256 "cc3432c8b6203b5dcff645fdce7cb889ce131625ef80935a409249a44c97a2f0" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
