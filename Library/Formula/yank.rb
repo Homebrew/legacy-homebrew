@@ -6,9 +6,10 @@ class Yank < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9b3af1fe58e5ae257370df1229577a18bde8eadc925fe3676560c6cd78f3a5d9" => :el_capitan
-    sha256 "9a008ddf303dde9d3b44e69b76534245d34cf29ec768fd0aee2ef8df94a928a8" => :yosemite
-    sha256 "523fa3f42ba361f22e1f65da4e04567501e2a54b38b00074ab79e9ce3870a03a" => :mavericks
+    revision 1
+    sha256 "68966e9d6754840e48af52c6ce191cbc6099c83c5f248f66599ed2b6a9d3e620" => :el_capitan
+    sha256 "8efef9a1b790145dea93f95c0831502e1ca5b36d861ea8674dfe9fd7676a1137" => :yosemite
+    sha256 "5b90b3eb0791c0993ea3e0c0e44c02d2aeb09908f3f2c398268d426ac6378a89" => :mavericks
   end
 
   # This is here to provide a temporary workaround for mptre/yank#22.
