@@ -1,8 +1,8 @@
 class Libchamplain < Formula
   desc "ClutterActor for displaying maps"
   homepage "https://wiki.gnome.org/Projects/libchamplain"
-  url "https://download.gnome.org/sources/libchamplain/0.12/libchamplain-0.12.11.tar.xz"
-  sha256 "851e24888d967c10acb8fd878df1292a84b8180eb4c48fc5bfbf1a48896d4aa5"
+  url "https://download.gnome.org/sources/libchamplain/0.12/libchamplain-0.12.12.tar.xz"
+  sha256 "e7de797200a91dba07bd8ba6583a672e1b3dcee842b9b100798925ebde8254a6"
 
   bottle do
     revision 1
