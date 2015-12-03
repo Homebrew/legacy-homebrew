@@ -191,7 +191,7 @@ class Python3 < Formula
 
     # These makevars are available through distutils.sysconfig at runtime and
     # some third-party software packages depend on them
-    inreplace frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}m/Makefile" do |s|
+    inreplace Dir.glob(frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}*/Makefile") do |s|
       s.change_make_var! "LINKFORSHARED",
                          "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
     end
