@@ -40,7 +40,7 @@ class BerkeleyDb5 < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-L#{prefix}/lib", "-ldb-5", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-ldb-5", "-o", "test"
     system "./test"
   end
 end
