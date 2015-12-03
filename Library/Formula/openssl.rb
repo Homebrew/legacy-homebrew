@@ -1,11 +1,10 @@
 class Openssl < Formula
   desc "OpenSSL SSL/TLS cryptography library"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-1.0.2d.tar.gz"
-  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2d.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2d.tar.gz"
-  sha256 "671c36487785628a703374c652ad2cebea45fa920ae5681515df25d9f2c9a8c8"
-  revision 1
+  url "https://www.openssl.org/source/openssl-1.0.2e.tar.gz"
+  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2e.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2e.tar.gz"
+  sha256 "e23ccafdb75cfcde782da0151731aa2185195ac745eea3846133f2e05c0e0bff"
 
   bottle do
     sha256 "b0d8d2082ec30add6327f50ade554a9d45c09ef04b9086a4b779bb7d5816794b" => :el_capitan
