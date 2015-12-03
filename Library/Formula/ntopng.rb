@@ -1,8 +1,8 @@
 class Ntopng < Formula
   desc "Next generation version of the original ntop"
   homepage "http://www.ntop.org/products/ntop/"
-  url "https://downloads.sourceforge.net/project/ntop/ntopng/ntopng-2.0.tar.gz"
-  sha256 "3cbfd6de1bc44d65f7c7f0de282d122d11f493f1261ba137c3b5b202e08e0251"
+  url "https://downloads.sourceforge.net/project/ntop/ntopng/ntopng-2.2.tar.gz"
+  sha256 "4fccfc9e9f333addcd3c957b4520c471117bc2df5655d6eabf328c7385fb255e"
 
   bottle do
     sha256 "c3a9c8be354c9fd3cbed7f84a6b9585d2b2d9bd1111a44e68c37694ea85707ba" => :yosemite
@@ -18,6 +18,8 @@ class Ntopng < Formula
     end
   end
 
+  option "with-mariadb", "Build with mariadb support"
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
@@ -32,6 +34,8 @@ class Ntopng < Formula
   depends_on "luajit"
   depends_on "geoip"
   depends_on "redis"
+  depends_on "mysql" if build.without? "mariadb"
+  depends_on "mariadb" => :optional
 
   def install
     if build.head?
