@@ -4,8 +4,7 @@ class Openssl < Formula
   url "https://www.openssl.org/source/openssl-1.0.2e.tar.gz"
   mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2e.tar.gz"
   mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2e.tar.gz"
-  sha256 "eee11def03647aa2267434a779608af6fca645023c9a194ddb82f14426835537"
-  revision 1
+  sha256 "e23ccafdb75cfcde782da0151731aa2185195ac745eea3846133f2e05c0e0bff"
 
   bottle do
     sha256 "b0d8d2082ec30add6327f50ade554a9d45c09ef04b9086a4b779bb7d5816794b" => :el_capitan
