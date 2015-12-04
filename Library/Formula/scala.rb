@@ -31,20 +31,20 @@ class Scala < Formula
   end
 
   devel do
-    url "http://www.scala-lang.org/files/archive/scala-2.12.0-M1.tgz"
-    sha256 "e48971939fa0f82ff3190ecafd22ad98d9d00eb4aef09cd2197265dc44f72eee"
-    version "2.12.0-M1"
+    url "http://www.scala-lang.org/files/archive/scala-2.12.0-M3.tgz"
+    sha256 "67ee3394ff5f9a98f9579accc9e20e0c9911d6f0bce96d70cf63cbb676643802"
+    version "2.12.0-M3"
 
     resource "docs" do
-      url "http://www.scala-lang.org/files/archive/scala-docs-2.12.0-M1.zip"
-      sha256 "36683ec16e30b69e3abf424c8cff1d49ebfd5f07b4cd3a015ced767a1ca81221"
-      version "2.12.0-M1"
+      url "http://www.scala-lang.org/files/archive/scala-docs-2.12.0-M3.zip"
+      sha256 "f5c5bc3635c08dde2e938b8051974404bb7126c27039753de337f7e3fa4e5844"
+      version "2.12.0-M3"
     end
 
     resource "src" do
-      url "https://github.com/scala/scala/archive/v2.12.0-M1.tar.gz"
-      sha256 "0c129529b8dbafa89782c997904705dc59d5b9abf01f97218f86f1c602fca339"
-      version "2.12.0-M1"
+      url "https://github.com/scala/scala/archive/v2.12.0-M3.tar.gz"
+      sha256 "104a5ec973bfc40bfd1cd1bbaeec43b767555367c65fa7880a615f2285550d70"
+      version "2.12.0-M3"
     end
   end
 
