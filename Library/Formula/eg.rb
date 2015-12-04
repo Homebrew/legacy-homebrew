@@ -6,9 +6,14 @@ class Eg < Formula
 
   depends_on "s-lang"
 
+  # clang complains about escaped newlines used in the source
+  # to form a multiline string. The patch converts said string
+  # to a more common C syntax.
   patch :DATA
 
   def install
+    # Change S-Lang header references to the canonical way, otherwise
+    # they are not found in the Homebrew environment.
     inreplace %w[
       eg.c
       egcmplte.c
