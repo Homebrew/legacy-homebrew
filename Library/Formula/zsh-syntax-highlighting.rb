@@ -5,6 +5,13 @@ class ZshSyntaxHighlighting < Formula
   sha256 "e38581310479646e8f4df7e572489b28b361c8332b186207685efbd90b3016f1"
   head "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "c9bcc98f3e4991208631d2dac684b5ed58e62095d9d075ad12c26f4086e5900a" => :el_capitan
+    sha256 "064d1f67b697df90b05210abda64d87e17054f13d027f2f3d409ab3d0a01208a" => :yosemite
+    sha256 "c26a6fdba485b471b9ac489c6ba67a134b494c56e3abe467789f56b7c35c7ed1" => :mavericks
+  end
+
   def install
     system "make", "install", "PREFIX=#{prefix}"
   end
