@@ -1,8 +1,8 @@
 class MupdfTools < Formula
   desc "Lightweight PDF and XPS viewer"
   homepage "http://mupdf.com"
-  url "http://mupdf.com/downloads/mupdf-1.7a-source.tar.gz"
-  sha256 "8c035ffa011fc44f8a488f70da3e6e51889508bbf66fe6b90a63e0cfa6c17d1c"
+  url "http://mupdf.com/downloads/mupdf-1.8-source.tar.gz"
+  sha256 "a2a3c64d8b24920f87cf4ea9339a25abf7388496440f13b37482d1403c33c206"
   head "git://git.ghostscript.com/mupdf.git"
 
   bottle do
@@ -26,6 +26,6 @@ class MupdfTools < Formula
 
   test do
     pdf = test_fixtures("test.pdf")
-    assert_match /Homebrew test/, shell_output("#{bin}/mudraw -F txt #{pdf}")
+    assert_match /Homebrew test/, shell_output("#{bin}/mutool draw -F txt #{pdf}")
   end
 end
