@@ -1,4 +1,3 @@
-# coding: utf-8
 class Qriollo < Formula
   desc "An impure functional language, based on Rioplatense Spanish."
   homepage "https://qriollo.github.io"
@@ -6,7 +5,7 @@ class Qriollo < Formula
   sha256 "c8357af8254a082d8e4da1de1bbf13bee27cfde8adb31ea0a5a0966bfbb7b28d"
   head "https://github.com/qriollo/qriollo.git"
 
-  depends_on "ghc"
+  depends_on "ghc" => :build
 
   def install
     system "make"
