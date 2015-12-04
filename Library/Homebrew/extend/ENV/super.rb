@@ -67,6 +67,11 @@ module Superenv
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
 
+    if MacOS::Xcode.without_clt?
+      self["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
+      self["SDKROOT"] = MacOS.sdk_path
+    end
+
     # On 10.9, the tools in /usr/bin proxy to the active developer directory.
     # This means we can use them for any combination of CLT and Xcode.
     self["HOMEBREW_PREFER_CLT_PROXIES"] = "1" if MacOS.version >= "10.9"
