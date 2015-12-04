@@ -15,6 +15,7 @@ class Logcheck < Formula
 
   def install
     inreplace "Makefile", "$(DESTDIR)/$(CONFDIR)", "$(CONFDIR)"
+    inreplace "src/logcheck-test", "mktemp --tmpdir logcheck-test", "mktemp /tmp/logcheck-test"
 
     system "make", "install", "--always-make", "DESTDIR=#{prefix}",
                    "SBINDIR=sbin", "BINDIR=bin", "CONFDIR=#{etc}/logcheck"
