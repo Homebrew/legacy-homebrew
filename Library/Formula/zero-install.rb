@@ -34,7 +34,7 @@ class ZeroInstall < Formula
   resource "cppo" do # [required by yojson]
     url "https://opam.ocaml.org/archives/cppo.1.1.2+opam.tar.gz"
     version "1.1.2"
-    sha256 "35c1caddb249293c5a24f095e0dea85c670056083e30010078124b65e557a2d8"
+    sha256 "8341d5a37d9e9351c1a46bf4d0843bff4fe1690b6329c28f8f41ca3dd189252a"
   end
 
   resource "yojson" do
@@ -46,19 +46,19 @@ class ZeroInstall < Formula
   resource "xmlm" do
     url "https://opam.ocaml.org/archives/xmlm.1.2.0+opam.tar.gz"
     version "1.2.0"
-    sha256 "518617e737730c89a04ca68ae927cb1510a027a9924df591df8575e386d810f0"
+    sha256 "a73af14cb2771247311e9130cbf7d10d66970f4725359db0923c92106ba94457"
   end
 
   resource "ounit" do
     url "https://opam.ocaml.org/archives/ounit.2.0.0+opam.tar.gz"
     version "2.0.0"
-    sha256 "bc87d648a6186d7a708442a9dcb2197e9f0d5d8ba62f60daf18ae8b592b658ce"
+    sha256 "5a26c6404d9c8701f5a7510a985963f4eae003d58ae5fc3d9b7f1a862e91de71"
   end
 
   resource "react" do
     url "https://opam.ocaml.org/archives/react.1.2.0+opam.tar.gz"
     version "1.2.0"
-    sha256 "690a1a7b18be21fa83876599639ddd3954c2a53d5cf1e13a76f2a140e1f9aa71"
+    sha256 "51cab5941511220cd3f51b04cbab58ed34409bf9ec78dfed7611ab169f294499"
   end
 
   resource "ppx_tools" do # [required by lwt]
@@ -70,7 +70,7 @@ class ZeroInstall < Formula
   resource "lwt" do
     url "https://opam.ocaml.org/archives/lwt.2.4.6+opam.tar.gz"
     version "2.4.6"
-    sha256 "297eda984412d6cd231bea548da4ef2d8b08db5f1a0bc295d47ac993243005b5"
+    sha256 "f0d814e04e4447322b592ee38b2bb634287bc6142c195381da39e28d4a0e9071"
   end
 
   resource "extlib" do
