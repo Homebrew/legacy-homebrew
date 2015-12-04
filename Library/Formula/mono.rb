@@ -3,15 +3,16 @@ class Mono < Formula
   homepage "http://www.mono-project.com/"
   url "http://download.mono-project.com/sources/mono/mono-4.2.1.102.tar.bz2"
   sha256 "b7b461fe04375f621d88166ba8c6f1cb33c439fd3e17136460f7d087a51ed792"
+  revision 1
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    sha256 "0a418eb2d030156ac263e908d5b4f8dec501ae24f4038d32192f5e810185aa12" => :el_capitan
-    sha256 "b17ba42ea772b596a03ff4b6991f44ab35f9243f07ef2083a833a42c3968a5a5" => :yosemite
-    sha256 "0f7bbf43d86dd0d4c229b63a1da030b7a5b04e4cba0fe031e47b90a3a5a8fa6f" => :mavericks
+    sha256 "af939c83b4896ef34306b310deade23530d195749bb868dc1dd504cc9f1acc5b" => :el_capitan
+    sha256 "aa3ae4ac79b5b8c502c9d43449332e04b7d6cc69c4380b00e2c5f033ea1ffbc9" => :yosemite
+    sha256 "54e408d1a43ffbf6c023bb608c6785996c810305551b3d296f34e1126900e55c" => :mavericks
   end
 
   conflicts_with "czmq", :because => "both install `makecert` binaries"
@@ -19,8 +20,8 @@ class Mono < Formula
   option "without-fsharp", "Build without support for the F# language."
 
   resource "fsharp" do
-    url "https://github.com/fsharp/fsharp.git", :tag => "3.1.2.5",
-        :revision => "c5e345b194eaddad7f06d47cd944b098f3dbe325"
+    url "https://github.com/fsharp/fsharp.git", :tag => "4.0.1.0",
+        :revision => "b22167013d1f4f0c41107fd40935dc1a8fe46386"
   end
 
   depends_on "automake" => :build

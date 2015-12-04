@@ -9,9 +9,10 @@ class DockerCompose < Formula
 
   bottle do
     cellar :any
-    sha256 "7fa526cbbe59007c5c781df2dfb5c0da37c9c7f09c6f6eb4754fba92e3ffbe4e" => :el_capitan
-    sha256 "882b21f34c9567091bb689c73a21d1e3c0dd74819b5c4ee0c175a224af87bdbc" => :yosemite
-    sha256 "27ba7ebdff9e81835b8ddda06ee52b539f47b5f4073532a9c669ee9282ecb5bd" => :mavericks
+    revision 1
+    sha256 "b6ba01c5cf31f4c285983342fd6dd639f3a67d2b98f346c5ea2ff4d16b7f0f12" => :el_capitan
+    sha256 "3a1aaf708ef9749a5ddf25d6c854b862a06bd4543546cc841477a27096117ca0" => :yosemite
+    sha256 "70500ceb259ac49cbc33672c775574eb530282a5187d5a0f4ceaae4cb0c6c981" => :mavericks
   end
 
   head do
@@ -67,8 +68,8 @@ class DockerCompose < Formula
   end
 
   resource "texttable" do
-    url "https://pypi.python.org/packages/source/t/texttable/texttable-0.8.2.tar.gz"
-    sha256 "c0c5b2aa4eab132d40aadb7c4e81f98fc93d3a1e6cb44e9be76779d74f32e6be"
+    url "https://pypi.python.org/packages/source/t/texttable/texttable-0.8.4.tar.gz"
+    sha256 "8587b61cb6c6022d0eb79e56e59825df4353f0f33099b4ae3bcfe8d41bd1702e"
   end
 
   resource "docopt" do

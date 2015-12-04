@@ -17,6 +17,9 @@ class Tap
   end
 
   def self.fetch(user, repo)
+    # we special case homebrew so users don't have to shift in a terminal
+    user = "Homebrew" if user == "homebrew"
+    repo = repo.strip_prefix "homebrew-"
     cache_key = "#{user}/#{repo}".downcase
     CACHE.fetch(cache_key) { |key| CACHE[key] = Tap.new(user, repo) }
   end
@@ -39,9 +42,9 @@ class Tap
   # e.g. `/usr/local/Library/Taps/user/homebrew-repo`
   attr_reader :path
 
+  # @private
   def initialize(user, repo)
-    # we special case homebrew so users don't have to shift in a terminal
-    @user = user == "homebrew" ? "Homebrew" : user
+    @user = user
     @repo = repo
     @name = "#{@user}/#{@repo}".downcase
     @path = TAP_DIRECTORY/"#{@user}/homebrew-#{@repo}".downcase
@@ -268,7 +271,7 @@ class Tap
 
     TAP_DIRECTORY.subdirs.each do |user|
       user.subdirs.each do |repo|
-        yield fetch(user.basename.to_s, repo.basename.to_s.sub("homebrew-", ""))
+        yield fetch(user.basename.to_s, repo.basename.to_s)
       end
     end
   end

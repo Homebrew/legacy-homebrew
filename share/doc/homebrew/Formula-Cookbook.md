@@ -909,7 +909,7 @@ Homebrew provides two Formula methods for launchd plist files. `plist_name` will
 
 ## Updating formulae
 
-Eventually a new version of the software will be released. In this case you should update the `url` and `sha256`. If a `revision` line exists outside any `bottle do` block, it should be removed.
+Eventually a new version of the software will be released. In this case you should update the `url` and `sha256`. If a `revision` line exists outside any `bottle do` block *and* the new release is stable rather than devel, it should be removed.
 
 Please leave the `bottle do ... end`  block as-is; our CI system will update it when we pull your change.
 

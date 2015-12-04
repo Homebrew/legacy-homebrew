@@ -16,9 +16,7 @@ module Homebrew
     ARGV.named.each do |name|
       if !File.exist?(name) && (name !~ HOMEBREW_CORE_FORMULA_REGEX) \
               && (name =~ HOMEBREW_TAP_FORMULA_REGEX || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
-        user = $1
-        repo = $2.sub(/^homebrew-/, "")
-        tap = Tap.fetch(user, repo)
+        tap = Tap.fetch($1, $2)
         tap.install unless tap.installed?
       end
     end unless ARGV.force?

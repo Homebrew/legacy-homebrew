@@ -403,10 +403,8 @@ class Report
     fetch(:D, []).each do |path|
       case path.to_s
       when HOMEBREW_TAP_PATH_REGEX
-        user = $1
-        repo = $2.sub("homebrew-", "")
         oldname = path.basename(".rb").to_s
-        next unless newname = Tap.fetch(user, repo).formula_renames[oldname]
+        next unless newname = Tap.fetch($1, $2).formula_renames[oldname]
       else
         oldname = path.basename(".rb").to_s
         next unless newname = FORMULA_RENAMES[oldname]
@@ -427,7 +425,7 @@ class Report
   def select_formula(key)
     fetch(key, []).map do |path, newpath|
       if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-        tap = "#{$1}/#{$2.sub("homebrew-", "")}"
+        tap = Tap.fetch($1, $2)
         if newpath
           ["#{tap}/#{path.basename(".rb")}", "#{tap}/#{newpath.basename(".rb")}"]
         else

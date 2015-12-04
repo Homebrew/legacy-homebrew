@@ -13,10 +13,10 @@ class Ansible < Formula
   end
 
   bottle do
-    revision 2
-    sha256 "4614671ee60aa2e7ed48c8d96fad9d6b9155005bc018081abae22e6c0b0e21c8" => :el_capitan
-    sha256 "f818de1dd92984742f30d0d6905f2682015b105ebf8a4fe2e473adef05529ce1" => :yosemite
-    sha256 "aac323e05e19295b7d493821af63d54a3dd13368ad7b8198fd8b515afa4f1a6b" => :mavericks
+    revision 3
+    sha256 "8105fdce4e745159fc80373e6773ec38e775bf208475615abc6e0c39987dc094" => :el_capitan
+    sha256 "edd0f87d68016d66e602edf6ef5cd308d8b43954bc8cabaa96ff445d391f6a6f" => :yosemite
+    sha256 "55dc3d486393c03a3c997c735a6cbc5488292fe145753f9a394a9b7067ff91fa" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -307,8 +307,8 @@ class Ansible < Formula
   end
 
   resource "passlib" do
-    url "https://pypi.python.org/packages/source/p/passlib/passlib-1.6.4.tar.gz"
-    sha256 "d41bd7a2d22f9bd7e19ff4eed0eea2316eb737f3ec6a7c361dde6b2785b08cdc"
+    url "https://pypi.python.org/packages/source/p/passlib/passlib-1.6.5.tar.gz"
+    sha256 "a83d34f53dc9b17aa42c9a35c3fbcc5120f3fcb07f7f8721ec45e6a27be347fc"
   end
 
   #

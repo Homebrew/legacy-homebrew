@@ -131,7 +131,7 @@ class Ejabberd < Formula
     depends_on "automake" => :build
     depends_on "autoconf" => :build
 
-    resource "p1_cache_tab" do
+    resource "cache_tab" do
       url "https://github.com/processone/cache_tab.git"
     end
 
