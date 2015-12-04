@@ -15,6 +15,13 @@ class Rubberband < Formula
       sha1 "76ea7cac0fc0ab99b38081176375ef7c34be678f"
     end
   end
+  bottle do
+    cellar :any
+    sha256 "e1890156ef9c638993fc9410bc4b5ccee113a14bb59861ebd25a6d68501f83d7" => :el_capitan
+    sha256 "746b65592ab6a93e990a7930a22aaa5c7c559e1bfdff7da8d3f292168e79e512" => :yosemite
+    sha256 "06c1b9d0bea22637edec00a3bd41b118472caee55902b6c1f8ea8941d922a3f7" => :mavericks
+  end
+
 
   depends_on "pkg-config" => :build
   depends_on "libsamplerate"
