@@ -25,6 +25,8 @@ class Gcc < Formula
   mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
   sha256 "5f835b04b5f7dd4f4d2dc96190ec1621b8d89f2dc6f638f9f8bc1b1014ba8cad"
 
+  head "svn://gcc.gnu.org/svn/gcc/trunk"
+
   bottle do
     revision 3
     sha256 "c52a4d2edf5261e25803e2ee67f5e477b9ec0d079c11348822efb34c369ddfce" => :el_capitan
@@ -115,7 +117,7 @@ class Gcc < Formula
       "--with-build-config=bootstrap-debug",
       "--disable-werror",
       "--with-pkgversion=Homebrew #{name} #{pkg_version} #{build.used_options*" "}".strip,
-      "--with-bugurl=https://github.com/Homebrew/homebrew/issues"
+      "--with-bugurl=https://github.com/Homebrew/homebrew/issues",
     ]
 
     # "Building GCC with plugin support requires a host that supports
@@ -177,7 +179,7 @@ class Gcc < Formula
         "#{lib}/gcc/#{version_suffix}/logging.properties",
         "#{lib}/gcc/#{version_suffix}/security/classpath.security",
         "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
-        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security"
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file
