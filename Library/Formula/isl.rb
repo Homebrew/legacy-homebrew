@@ -1,14 +1,15 @@
 class Isl < Formula
   desc "Integer Set Library for the polyhedral model"
-  homepage "http://freecode.com/projects/isl"
+  homepage "http://isl.gforge.inria.fr"
   # Note: Always use tarball instead of git tag for stable version.
   #
   # Currently isl detects its version using source code directory name
   # and update isl_version() function accordingly.  All other names will
   # result in isl_version() function returning "UNKNOWN" and hence break
   # package detection.
-  url "http://isl.gforge.inria.fr/isl-0.14.1.tar.xz"
-  sha256 "8882c9e36549fc757efa267706a9af733bb8d7fe3905cbfde43e17a89eea4675"
+  url "http://isl.gforge.inria.fr/isl-0.15.tar.bz2"
+  mirror "ftp://gcc.gnu.org//pub/gcc/infrastructure/isl-0.15.tar.bz2"
+  sha256 "8ceebbf4d9a81afa2b4449113cee4b7cb14a687d7a549a963deb5e2a41458b6b"
 
   bottle do
     cellar :any
@@ -36,7 +37,6 @@ class Isl < Formula
                           "--prefix=#{prefix}",
                           "--with-gmp=system",
                           "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}"
-    system "make"
     system "make", "install"
     (share/"gdb/auto-load").install Dir["#{lib}/*-gdb.py"]
   end
