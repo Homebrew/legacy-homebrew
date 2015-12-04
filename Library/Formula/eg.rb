@@ -3,6 +3,7 @@ class Eg < Formula
   homepage "http://www.davep.org/norton-guides/"
   url "http://www.davep.org/norton-guides/eg-1.00.tar.gz"
   sha256 "e985b2abd160c5f65bea661de800f0a83f0bfbaca54e5cbdc2e738dfbbdb164e"
+  head "https://github.com/davep/eg.git"
 
   depends_on "s-lang"
 
