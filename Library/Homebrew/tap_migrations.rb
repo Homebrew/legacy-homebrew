@@ -113,6 +113,7 @@ TAP_MIGRATIONS = {
   "imake" => "homebrew/x11",
   "inkscape" => "homebrew/x11",
   "iojs" => "homebrew/versions",
+  "ipe" => "homebrew/boneyard",
   "ipopt" => "homebrew/science",
   "iptux" => "homebrew/x11",
   "itsol" => "homebrew/science",
