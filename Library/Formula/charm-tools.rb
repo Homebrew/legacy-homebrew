@@ -1,8 +1,8 @@
 class CharmTools < Formula
   desc "Tools for authoring and maintaining juju charms"
   homepage "https://github.com/juju/charm-tools"
-  url "https://github.com/juju/charm-tools/releases/download/v1.9.3/charm-tools-1.9.3.tar.gz"
-  sha256 "23a80020a1255a504a11eb2b2098c2f01a00dfc1e5096017e1a502b09a9c68c8"
+  url "https://github.com/juju/charm-tools/releases/download/v1.10.0/charm-tools-1.10.0.tar.gz"
+  sha256 "e5b82e9e0003f424caec91e0da9e0391802eaeb226b82d492b753fc6bc261c37"
 
   bottle do
     cellar :any
