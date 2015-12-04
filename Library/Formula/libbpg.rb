@@ -3,7 +3,6 @@ class Libbpg < Formula
   homepage "http://bellard.org/bpg/"
   url "http://bellard.org/bpg/libbpg-0.9.6.tar.gz"
   sha256 "2800777d88a77fd64a4a9036b131f021a5bda8304e1dbe7996dd466567fb484e"
-  revision 1
 
   bottle do
     cellar :any
@@ -23,27 +22,16 @@ class Libbpg < Formula
   def install
     bin.mkpath
 
-    makeArgs = []
-    makeArgs << "install"
-    makeArgs << "prefix=#{prefix}"
-    makeArgs << "CONFIG_APPLE=y"
-    makeArgs << "USE_JCTVC=y" if build.with? "jctvc"
-    makeArgs << "USE_X265=" if build.without? "x265"
+    args = []
+    args << "USE_JCTVC=y" if build.with? "jctvc"
+    args << "USE_X265=" if build.without? "x265"
 
-    system "make", *makeArgs
+    system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y", *args
   end
 
   test do
-    if build.with? "jctvc"
-      system "#{bin}/bpgenc", "-e", "jctvc", test_fixtures("test.png")
-      # Unable to test 1x1 jpg
-      #system "#{bin}/bpgenc", "-e", "jctvc", test_fixtures("test.jpg")
-    end
-
-    if build.with? "x265"
-      system "#{bin}/bpgenc", "-e", "x265", test_fixtures("test.png")
-      # Unable to test 1x1 jpg
-      #system "#{bin}/bpgenc", "-e", "x265", test_fixtures("test.jpg")
-    end
+    system "#{bin}/bpgenc", test_fixtures("test.png")
+    # Unable to test 1x1 jpg
+    #system "#{bin}/bpgenc", test_fixtures("test.jpg")
   end
 end
