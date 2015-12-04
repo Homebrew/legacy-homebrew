@@ -1,14 +1,14 @@
 class Freetds < Formula
   desc "Libraries to talk to Microsoft SQL Server and Sybase databases"
   homepage "http://www.freetds.org/"
-  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.8.tar.gz"
-  mirror "https://fossies.org/linux/privat/freetds-0.95.8.tar.gz"
-  sha256 "e31eec13907e0bb5e8fb86237b59f4b3cb44d6a91652a1bc8b0d86aaa0ba5ab5"
+  url "ftp://ftp.freetds.org/pub/freetds/stable/freetds-0.95.69.tar.gz"
+  mirror "https://fossies.org/linux/privat/freetds-0.95.69.tar.gz"
+  sha256 "0443fa56a2cd6540a55d1bf7bc3aa483f7dfaeb538d9caf0c455bf4e0e43fe1f"
 
   bottle do
-    sha256 "a0b474e2e2ca56801e93880e128eee8bfa15acd6760e55eee0a21aeadd7c4e70" => :yosemite
-    sha256 "4c07e7a6aae583dce5d6fb1b761d4115e5177bd7861661a9daf22cf916cec967" => :mavericks
-    sha256 "eadf351ec885fd512763ff7cf54778c5d09e3fd68c38c0431aeb5c9c0c56639d" => :mountain_lion
+    sha256 "fa7c27accb7a33d1732f00ac6ba55adcc4f787d85729191719afb20c9fbec240" => :el_capitan
+    sha256 "fe8fff265af5e88230a806ac2a881710a48481e1a5f1dc3495efd8ed5787f866" => :yosemite
+    sha256 "12562a867f3ebfd0865ff264408195d6235588e77998733340a41ebcb32cdad5" => :mavericks
   end
 
   head do
@@ -16,6 +16,7 @@ class Freetds < Formula
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
+    depends_on "gettext" => :build
     depends_on "libtool" => :build
   end
 
@@ -24,7 +25,6 @@ class Freetds < Formula
   option "with-sybase-compat", "Enable close compatibility with Sybase's ABI, at the expense of other features"
   option "with-odbc-wide", "Enable odbc wide, prevent unicode - MemoryError's"
   option "with-krb5", "Enable Kerberos support"
-  option "without-openssl", "Build without OpenSSL support (default is to use brewed OpenSSL)"
 
   deprecated_option "enable-msdblib" => "with-msdblib"
   deprecated_option "enable-sybase-compat" => "with-sybase-compat"
@@ -36,8 +36,6 @@ class Freetds < Formula
   depends_on "openssl" => :recommended
 
   def install
-    system "autoreconf", "-i" if build.head?
-
     args = %W[
       --prefix=#{prefix}
       --with-tdsver=7.1
@@ -61,7 +59,12 @@ class Freetds < Formula
     end
 
     ENV.universal_binary if build.universal?
-    system "./configure", *args
+
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
     system "make"
     ENV.j1 # Or fails to install on multi-core machines
     system "make", "install"

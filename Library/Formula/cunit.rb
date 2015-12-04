@@ -1,14 +1,14 @@
 class Cunit < Formula
-  desc "A lightweight unit testing framework for C"
+  desc "Lightweight unit testing framework for C"
   homepage "http://cunit.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cunit/CUnit/2.1-3/CUnit-2.1-3.tar.bz2"
-  sha1 "eac0c71167aa3fab83483ae1313b78163f0f7238"
+  sha256 "f5b29137f845bb08b77ec60584fdb728b4e58f1023e6f249a464efa49a40f214"
 
   bottle do
     cellar :any
-    sha1 "7f56e9cd7509523403a9989ebdb4bde202c9b834" => :yosemite
-    sha1 "ecad657c01ac67e6da01d3d6de086f11ad9c06cf" => :mavericks
-    sha1 "a4fa117d4d1ba31a42b41645324919defea49f16" => :mountain_lion
+    sha256 "63c1d2905cf9214281b8dad71a7d86fcf57d46ccbeb026a43dc73dddac569840" => :yosemite
+    sha256 "4add1b332febce1ba3ee01ab98213be0729f3d2cad14f435f4064fec0273c3cd" => :mavericks
+    sha256 "758213aea9b80d97eb4d30da882933e80e69685ae035ef298f2d39bde84eba06" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

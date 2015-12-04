@@ -1,8 +1,10 @@
 class Riemann < Formula
   desc "Event stream processor"
   homepage "http://riemann.io"
-  url "http://aphyr.com/riemann/riemann-0.2.9.tar.bz2"
-  sha256 "8363e936d5c31d879a7e725e6c8fe41f1a1627b90530a7fb7968aaf4b448ff83"
+  url "https://aphyr.com/riemann/riemann-0.2.10.tar.bz2"
+  sha256 "ec697519e80781dc478983de04204760f2790da1715acfd233b35da071be5455"
+
+  bottle :unneeded
 
   def shim_script
     <<-EOS.undent
@@ -13,7 +15,7 @@ class Riemann < Formula
       else
         config=$@
       fi
-      exec "#{libexec}/bin/riemann" "$config"
+      exec "#{libexec}/bin/riemann" $config
     EOS
   end
 

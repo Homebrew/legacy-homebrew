@@ -1,9 +1,9 @@
-require 'dependency'
-require 'dependencies'
-require 'ld64_dependency'
-require 'requirement'
-require 'requirements'
-require 'set'
+require "dependency"
+require "dependencies"
+require "ld64_dependency"
+require "requirement"
+require "requirements"
+require "set"
 
 ## A dependency is a formula that another formula needs to install.
 ## A requirement is something other than a formula that another formula
@@ -116,14 +116,6 @@ class DependencyCollector
     when :emacs      then EmacsRequirement.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
-    when :clt # deprecated
-    when :autoconf, :automake, :bsdmake, :libtool # deprecated
-      autotools_dep(spec, tags)
-    when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
-      Dependency.new(spec.to_s, tags)
-    when :libltdl # deprecated
-      tags << :run
-      Dependency.new("libtool", tags)
     when :python2
       PythonRequirement.new(tags)
     else
@@ -137,11 +129,6 @@ class DependencyCollector
     else
       raise TypeError, "#{spec.inspect} is not a Requirement subclass"
     end
-  end
-
-  def autotools_dep(spec, tags)
-    tags << :build unless tags.include? :run
-    Dependency.new(spec.to_s, tags)
   end
 
   def ant_dep(spec, tags)
@@ -177,10 +164,10 @@ class DependencyCollector
 
   def parse_url_spec(url, tags)
     case File.extname(url)
-    when '.xz'  then Dependency.new('xz', tags)
-    when '.lz'  then Dependency.new('lzip', tags)
-    when '.rar' then Dependency.new('unrar', tags)
-    when '.7z'  then Dependency.new('p7zip', tags)
+    when ".xz"  then Dependency.new("xz", tags)
+    when ".lz"  then Dependency.new("lzip", tags)
+    when ".rar" then Dependency.new("unrar", tags)
+    when ".7z"  then Dependency.new("p7zip", tags)
     end
   end
 end

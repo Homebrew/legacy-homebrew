@@ -2,13 +2,13 @@ class Yacas < Formula
   desc "General purpose computer algebra system"
   homepage "http://yacas.sourceforge.net"
   url "https://downloads.sourceforge.net/project/yacas/yacas-source/1.3/yacas-1.3.4.tar.gz"
-  sha1 "c166fe92eaf3dd4218e4b10ac752457b980ae6e2"
+  sha256 "18482f22d6a8336e9ebfda3bec045da70db2da68ae02f32987928a3c67284233"
 
   bottle do
     revision 1
-    sha1 "7613703c3bc41a2897e0cf8a70e4210efbbe71ba" => :yosemite
-    sha1 "5626da72853a063aaf4f568b62b3c0c3898a3e1b" => :mavericks
-    sha1 "81376d90f1e74a797202f214c08e8f8fafae77b2" => :mountain_lion
+    sha256 "c143a1764ec3dd64563e78e75c09b11d519124a10c97614bd5c6fbc99bab058b" => :yosemite
+    sha256 "52c5071ec1f10c3181d11be1cd54d345fef5cdcbd4dcd6ef1d2cd71a8cff1d85" => :mavericks
+    sha256 "c3fb8303de3f7e455047994b26b0cb7edbdee3c466eb77e22a66c42746ea766e" => :mountain_lion
   end
 
   option "with-server", "Build the network server version"
@@ -16,7 +16,7 @@ class Yacas < Formula
   def install
     args = ["--disable-silent-rules",
             "--disable-dependency-tracking",
-            "--prefix=#{prefix}",
+            "--prefix=#{prefix}"
            ]
 
     args << "--enable-server" if build.with? "server"

@@ -6,14 +6,16 @@ class Emacs < Formula
   sha256 "dd47d71dd2a526cf6b47cb49af793ec2e26af69a0951cc40e43ae290eacfc34e"
 
   bottle do
-    sha256 "01d4fcc1d234b191849cd10524cd4a987786ee533af5e8b94cbfb1f25387973e" => :yosemite
-    sha256 "db50780fe2e249d68f353d3c1b80aef80d265cb4a726d2e224bfaad1e8632cb7" => :mavericks
-    sha256 "fc28dc93d42840b5483804a68de12a0840c7f78495be79f3912e4e41ae1d1455" => :mountain_lion
+    revision 1
+    sha256 "a799ddefe9768259397652a2b9d40e0b0a8907f658e288dc2096a3f4777a421b" => :el_capitan
+    sha256 "ff8230366edd23657a2b2ddcd7fcfc49b3f8ff78a5b2be620908651dd7d2ea94" => :yosemite
+    sha256 "3af5f90d7177e8185db5e288f7ead4210156c896b652450117fa8fc3e232bc39" => :mavericks
+    sha256 "79b8a1ad560779dc60b8abf4f178684a240c47905324181642d56a6e5cabe7a8" => :mountain_lion
   end
 
   devel do
-    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
-    version "24.5-dev"
+    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-25"
+    version "25.0-dev"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
@@ -26,6 +28,7 @@ class Emacs < Formula
 
   option "with-cocoa", "Build a Cocoa version of emacs"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
+  option "without-libxml2", "Don't build with libxml2 support"
 
   deprecated_option "cocoa" => "with-cocoa"
   deprecated_option "keep-ctags" => "with-ctags"
@@ -54,9 +57,16 @@ class Emacs < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
-            "--infodir=#{info}/emacs"]
+            "--infodir=#{info}/emacs",
+           ]
 
     args << "--with-file-notification=gfile" if build.with? "glib"
+
+    if build.with? "libxml2"
+      args << "--with-xml2"
+    else
+      args << "--without-xml2"
+    end
 
     if build.with? "d-bus"
       args << "--with-dbus"
@@ -87,7 +97,7 @@ class Emacs < Formula
       (bin/"emacs").unlink # Kill the existing symlink
       (bin/"emacs").write <<-EOS.undent
         #!/bin/bash
-        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
+        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs "$@"
       EOS
     else
       if build.with? "x11"
@@ -100,6 +110,7 @@ class Emacs < Formula
       else
         args << "--without-x"
       end
+      args << "--without-ns"
 
       system "./configure", *args
       system "make"

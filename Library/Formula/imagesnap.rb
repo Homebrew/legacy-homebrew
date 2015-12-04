@@ -1,10 +1,8 @@
-require 'formula'
-
 class Imagesnap < Formula
   desc "Tool to capture still images from an iSight or other video source"
-  homepage 'http://iharder.sourceforge.net/current/macosx/imagesnap/'
-  url 'https://downloads.sourceforge.net/project/iharder/imagesnap/ImageSnap-v0.2.5.tgz'
-  sha1 '3761bada4fddc92df0c61750d5ead24cf944c469'
+  homepage "http://iharder.sourceforge.net/current/macosx/imagesnap/"
+  url "https://downloads.sourceforge.net/project/iharder/imagesnap/ImageSnap-v0.2.5.tgz"
+  sha256 "2516edd6e8fe35c075f0a6517b9fb8ba9af296f8f29b9e349566b9ba6f729615"
 
   bottle do
     cellar :any

@@ -1,21 +1,19 @@
-require 'formula'
-
 class Libstfl < Formula
   desc "Library implementing a curses-based widget set for terminals"
-  homepage 'http://www.clifford.at/stfl/'
-  url 'http://www.clifford.at/stfl/stfl-0.22.tar.gz'
-  sha1 '226488be2b33867dfb233f0fa2dde2d066e494bd'
+  homepage "http://www.clifford.at/stfl/"
+  url "http://www.clifford.at/stfl/stfl-0.22.tar.gz"
+  sha256 "2dddafd331e61ad04baf1251ccecb3a69feaf99880dd75155be8423c1cc55418"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "99bd2857185a922489e9bf91250b5e65451293ed" => :yosemite
-    sha1 "28a41ab85a27163fd350764df8b2d704fd4f9269" => :mavericks
-    sha1 "c6858e2c5dfca711d1ce75693abe9d6604847071" => :mountain_lion
+    sha256 "8ca63ef8c7776df77eda7a327b2e4a9d413992c08605e7922a7b82f560be618a" => :yosemite
+    sha256 "9a0b5e72c534ca6bc3e1ba2fbafb384719e5df9663ff4b507936afebfde16272" => :mavericks
+    sha256 "f30b9c76dbd4d31b7860b8ed8c0c8024f820624880db32b00d1804d38e9e6808" => :mountain_lion
   end
 
   depends_on :python => :optional
-  depends_on 'swig' => :build
+  depends_on "swig" => :build
 
   patch :DATA
 
@@ -24,11 +22,11 @@ class Libstfl < Formula
 
     args << "FOUND_RUBY = 0" unless MacOS::CLT.installed? || MacOS.version >= :mavericks
 
-    if build.with? 'python'
+    if build.with? "python"
       # Install into the site-packages in the Cellar (so uninstall works)
-      inreplace 'python/Makefile.snippet' do |s|
-        s.change_make_var! "PYTHON_SITEARCH", lib/'python2.7/site-packages'
-        s.gsub! 'lib-dynload/', ''
+      inreplace "python/Makefile.snippet" do |s|
+        s.change_make_var! "PYTHON_SITEARCH", lib/"python2.7/site-packages"
+        s.gsub! "lib-dynload/", ""
       end
       # Fails race condition of test:
       #   ImportError: dynamic module does not define init function (init_stfl)

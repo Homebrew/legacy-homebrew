@@ -1,20 +1,18 @@
-require "formula"
-
 class Gputils < Formula
   desc "GNU PIC Utilities"
   homepage "http://gputils.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/gputils/gputils/1.4.0/gputils-1.4.0-1.tar.gz"
-  sha1 "26593b7237b0c436b4482d1038216b467ec660b7"
+  sha256 "d0ce93b6bcf266b8dfa0d0d589d5626a04b950a4e450ff27ef62534243ac7edb"
 
   bottle do
-    sha1 "8990a94d132cc92b08518767ecaa25c93246f7cb" => :yosemite
-    sha1 "2536c92c27e1982743965fa4c5c3bbae997105e1" => :mavericks
-    sha1 "b4ef0c6743be8f8b0cd11e7148cee046f8780d59" => :mountain_lion
+    sha256 "c45aa7a206c4189fcd84c5431fa085e2db597e9aa4a979fd5d66909b649e2074" => :yosemite
+    sha256 "cba4bed649033815a26a588a1e6ffd14cda8c21bdbce8f60c51c65868b2509bf" => :mavericks
+    sha256 "ebdd16d0f3ba5a5770aeea5b3202213704d7ef863b8898f9140e1cf949ce0534" => :mountain_lion
   end
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 
   test do

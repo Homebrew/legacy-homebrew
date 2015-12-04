@@ -2,12 +2,12 @@ class Qwt < Formula
   desc "Qt Widgets for Technical Applications (v5.1)"
   homepage "http://qwt.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/qwt/qwt/6.1.2/qwt-6.1.2.tar.bz2"
-  sha1 "6af82b6ee4132f779d1c8c2db872f01463b0d61c"
+  sha256 "2b08f18d1d3970e7c3c6096d850f17aea6b54459389731d3ce715d193e243d0c"
 
   bottle do
-    sha1 "a2882aaaff55c53881e82a97181d907e6d6edc46" => :yosemite
-    sha1 "02f9e3920fa64ff44393aa339a784e93e786fc8b" => :mavericks
-    sha1 "12f8a7d2a4cd125918d40f11db1dcbbfd424cec2" => :mountain_lion
+    sha256 "b2c5aeab5bb61f3986ec133be41a78dfe6782951c800f84957a2f737c43f1602" => :yosemite
+    sha256 "7f297caf1eb539cbe632dd7aad8e1d5a86a697f714e02d786fe5623874be4d76" => :mavericks
+    sha256 "07e5a611af760b775ac5e7c405b1d0f20deed6e767045cd07335a09102e42256" => :mountain_lion
   end
 
   option "with-qwtmathml", "Build the qwtmathml library"
@@ -27,7 +27,7 @@ class Qwt < Formula
 
     args = ["-config", "release", "-spec"]
     # On Mavericks we want to target libc++, this requires a unsupported/macx-clang-libc++ flag
-    if ENV.compiler == :clang and MacOS.version >= :mavericks
+    if ENV.compiler == :clang && MacOS.version >= :mavericks
       args << "unsupported/macx-clang-libc++"
     else
       args << "macx-g++"
@@ -48,7 +48,7 @@ class Qwt < Formula
   end
 
   def caveats
-    if build.with? "qwtmathml";<<-EOS.undent
+    if build.with? "qwtmathml"; <<-EOS.undent
         The qwtmathml library contains code of the MML Widget from the Qt solutions package.
         Beside the Qwt license you also have to take care of its license:
         #{opt_prefix}/qtmmlwidget-license

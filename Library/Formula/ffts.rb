@@ -1,17 +1,15 @@
-require "formula"
-
 class Ffts < Formula
   desc "C library that computes the discrete Fourier transform"
   homepage "http://anthonix.com/ffts/"
-  head "https://github.com/anthonix/ffts.git"
   url "http://anthonix.com/ffts/releases/ffts-0.7.tar.gz"
-  sha1 "8318dc460413d952d2468c8bc9aa2e484bb72d98"
+  sha256 "6362e498e5aa241661cfe9060153076b78e300a5d3c365997ba6ac2f637df3ff"
+  head "https://github.com/anthonix/ffts.git"
 
   bottle do
     cellar :any
-    sha1 "aa66ec913d790d6ea76a5bb9680150f8cb55e84c" => :yosemite
-    sha1 "b2cbeeb8dfae98c1dfbaea17aae5ee85d904afae" => :mavericks
-    sha1 "3c550705b80ef08b2bfa0195d417d654e3228175" => :mountain_lion
+    sha256 "1f5247eaac6427f34ac4ad8155fd29841d4adea671f21b264c679d2adbdb22ef" => :yosemite
+    sha256 "f22fd4ecf695fe69df9177f68e2d880fcdc5c37201ded5d29c39760de3b787db" => :mavericks
+    sha256 "9057a22063635a12c8645f1a63f282d548df2dabd9e67114f3036e2a43cf2836" => :mountain_lion
   end
 
   def install

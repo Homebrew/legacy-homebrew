@@ -1,27 +1,25 @@
-require 'formula'
-
 class Elinks < Formula
   desc "Text mode web browser"
-  homepage 'http://elinks.or.cz/'
-  url 'http://elinks.or.cz/download/elinks-0.11.7.tar.bz2'
-  sha1 'd13edc1477d0ab32cafe7d3c1f3a23ae1c0a5c54'
+  homepage "http://elinks.or.cz/"
+  url "http://elinks.or.cz/download/elinks-0.11.7.tar.bz2"
+  sha256 "456db6f704c591b1298b0cd80105f459ff8a1fc07a0ec1156a36c4da6f898979"
   revision 2
 
   bottle do
     revision 1
-    sha1 "97954464d63684d343152aa3dbb7bd5384d8e56d" => :mavericks
-    sha1 "882e21d742e1f373b9403ef932bddc855430948e" => :mountain_lion
-    sha1 "ce8f6c3521d89ed3c0e3f09813934154ec6b4bcb" => :lion
+    sha256 "4a4ba514c46b18fa2925bb28cb83eebe085ad6795ed84bdd411a2bedae2ee4d0" => :mavericks
+    sha256 "06842f124db95b48c26f071419bd12f88a25c5b08ae519d22453971d5d4feea4" => :mountain_lion
+    sha256 "f54731731b2422afc2ecb1021f7e9d5b152479480fb93856aae8510091210ebb" => :lion
   end
 
   devel do
-    url 'http://elinks.cz/download/elinks-0.12pre6.tar.bz2'
-    version '0.12pre6'
-    sha1 '3517795e8a390cb36ca249a5be6514b9784520a5'
+    url "http://elinks.cz/download/elinks-0.12pre6.tar.bz2"
+    version "0.12pre6"
+    sha256 "383646375b8a325bef5a132c8300caab90eb0b842c5f8eff68febc00e29acada"
   end
 
   head do
-    url 'http://elinks.cz/elinks.git'
+    url "http://elinks.cz/elinks.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -32,11 +30,11 @@ class Elinks < Formula
 
   def install
     ENV.deparallelize
-    ENV.delete('LD')
+    ENV.delete("LD")
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--without-spidermonkey",
                           "--enable-256-colors"
-    system "make install"
+    system "make", "install"
   end
 
   test do

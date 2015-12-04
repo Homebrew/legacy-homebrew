@@ -3,23 +3,26 @@ class Md5sha1sum < Formula
   homepage "http://www.microbrew.org/tools/md5sha1sum/"
   url "http://www.microbrew.org/tools/md5sha1sum/md5sha1sum-0.9.5.tar.gz"
   mirror "http://www.sourcefiles.org/Utilities/Console/M-P/md5sha1sum-0.9.5.tar.gz"
-  sha1 "84a46bfd2b49daa0a601a9c55b7d87c27e19ef87"
+  sha256 "2fe6b4846cb3e343ed4e361d1fd98fdca6e6bf88e0bba5b767b0fdc5b299f37b"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "bcc33c65f871406565ef2a6903ef8d710b5dbe13" => :yosemite
-    sha1 "4336eec700ddbf54292291005fbd7bebbdf1d805" => :mavericks
-    sha1 "e7908cb541f5b419978a71e2d0a443856e006b4c" => :mountain_lion
+    revision 2
+    sha256 "5ff64041e3ce1028522dabfa6e6260d1502033e207434e9d41598259f426af56" => :yosemite
+    sha256 "ea565d1739e48e43d36d46a86772e6159fef7c98260aa5d82404f3d2ffea81ef" => :mavericks
+    sha256 "f3925bbf60e1b8eaf47fe26cf19d49e61dd9623f891ec62a5500b07dbc186410" => :mountain_lion
   end
 
   depends_on "openssl"
 
-  conflicts_with "polarssl", :because => "both install conflicting binaries"
-
   def install
+    openssl = Formula["openssl"]
+    ENV["SSLINCPATH"] = openssl.opt_include
+    ENV["SSLLIBPATH"] = openssl.opt_lib
+
     system "./configure", "--prefix=#{prefix}"
     system "make"
+
     bin.install "md5sum"
     bin.install_symlink bin/"md5sum" => "sha1sum"
     bin.install_symlink bin/"md5sum" => "ripemd160sum"
@@ -32,5 +35,4 @@ class Md5sha1sum < Formula
     EOS
     system "#{bin}/sha1sum", "--check", "file.txt.sha1"
   end
-
 end

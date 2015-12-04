@@ -1,25 +1,24 @@
-require 'formula'
-
 class Liblo < Formula
   desc "Lightweight Open Sound Control implementation"
-  homepage 'http://liblo.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/liblo/liblo/0.28/liblo-0.28.tar.gz'
-  sha1 '949d5f0c9919741c67602514786b9c7366fa001b'
+  homepage "http://liblo.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/liblo/liblo/0.28/liblo-0.28.tar.gz"
+  sha256 "da94a9b67b93625354dd89ff7fe31e5297fc9400b6eaf7378c82ee1caf7db909"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "4e54400bfd62515b26619c7ed1e281c747467ed5" => :yosemite
-    sha1 "c05b222b88ebf22eedb74a41c5a22a6af867d82c" => :mavericks
-    sha1 "1245b84f62785f894cdb77aae345fbc9b4c3d974" => :mountain_lion
+    sha256 "be6b11c3e18ae25490abae43ae12e2fbd87fd8e398b53e817dafd5c3ba494c11" => :el_capitan
+    sha256 "7abf46af9b74b666397be1b55431992e7590ad6863ef78a2d4c5610686bc53c2" => :yosemite
+    sha256 "4377ab68d1648e544fcc84344f912d9541c0d6b776633692e8ced9507e76f595" => :mavericks
+    sha256 "4dac2be4653e7256704cddf2b78e8246f622a6d577ea226dd40483d91fec2cfd" => :mountain_lion
   end
 
   head do
-    url 'git://liblo.git.sourceforge.net/gitroot/liblo/liblo'
+    url "git://liblo.git.sourceforge.net/gitroot/liblo/liblo"
 
-    depends_on 'autoconf' => :build
-    depends_on 'automake' => :build
-    depends_on 'libtool' => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
   end
 
   option "enable-ipv6", "Compile with support for ipv6"
@@ -40,6 +39,6 @@ class Liblo < Formula
       system "./configure", *args
     end
 
-    system "make install"
+    system "make", "install"
   end
 end

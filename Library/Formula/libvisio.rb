@@ -2,14 +2,14 @@ class Libvisio < Formula
   desc "Interpret and import Visio diagrams"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libvisio"
   url "http://dev-www.libreoffice.org/src/libvisio/libvisio-0.1.1.tar.xz"
-  sha1 "2284866af215a56683bfe4d49a921a053eff4cf9"
-  revision 1
+  sha256 "4b510168d1465516fdf6e57c01e2f9eae1fc0ae232c74e44e70693bbc49227f1"
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "2baf447a0865b93ddcf93afb2fbbe0ab2c0f0e37f0d5ebe6d2f7d4b618e428f2" => :yosemite
-    sha256 "b2432c53569d0c8e0eb0befcb3b2f10ebdebcf8ca09c6f06299486652429a075" => :mavericks
-    sha256 "2257bf59998222573140be09039f3a49ebf0a6c5badf3c896e1928b75baa25dd" => :mountain_lion
+    sha256 "6cd8e60063bb63145546a09014190066c5f8b1e62e0131578b126bcd77763b5e" => :el_capitan
+    sha256 "db7f98d6a94e3c03912727036589c6eab7e992c4c48cc598d67894e1c202b47e" => :yosemite
+    sha256 "0884c6df13acd44449610f63deb144abf452251f235e9506f5441c82544f84f5" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -21,6 +21,8 @@ class Libvisio < Formula
   depends_on "librevenge"
 
   def install
+    # Needed for Boost 1.59.0 compatibility.
+    ENV["LDFLAGS"] = "-lboost_system-mt"
     system "./configure", "--without-docs",
                           "-disable-dependency-tracking",
                           "--enable-static=no",

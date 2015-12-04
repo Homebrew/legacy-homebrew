@@ -1,17 +1,16 @@
-require "formula"
-
 class Lsyncd < Formula
   desc "Synchronize local directories with remote targets"
   homepage "https://github.com/axkibe/lsyncd"
   url "https://github.com/axkibe/lsyncd/archive/release-2.1.5.tar.gz"
-  sha1 "2b8eb169365edc54488a97435bbd39ae4a6731b8"
+  sha256 "aa82fd9bf5737395e374650720c02f033d74a7101b57878ac92f5720ae9e7ece"
   revision 2
 
   bottle do
     cellar :any
-    sha1 "f42be91eff9963543d9b42a34f8cf5b6be720152" => :yosemite
-    sha1 "9519e202543d0f371f4f9827e707937e23442854" => :mavericks
-    sha1 "cb180347af72d91152cfb510f2f7f583543bf4f5" => :mountain_lion
+    revision 2
+    sha256 "04dd6dfbfe0e66ed04228a3ee941b89a3b0442eb595b2ea455f523a5d4aa5f31" => :el_capitan
+    sha256 "552db4284f88d3b92df0424ccaa276c7bb92ce3ca3e3a7b50c335ebf2f306612" => :yosemite
+    sha256 "e56f564e19f3e8d46401915c139214e1ddc56df82be773a1304596d0adbbfc01" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -25,30 +24,33 @@ class Lsyncd < Formula
   depends_on :macos => :lion
 
   xnu_headers = {
-    "10.7.5" => ["xnu-1699.32.7.tar.gz",  "da3df48952b40ad3b8612c7f639b8bf0f92fb414"],
-    "10.8"   => ["xnu-2050.7.9.tar.gz",   "9aaf1e0b0a148ff303577161fecaf3ea6188aa1b"],
-    "10.8.1" => ["xnu-2050.9.2.tar.gz",   "2bd58959afc5ac8f2c9fa3d693882acc96b25321"],
-    "10.8.2" => ["xnu-2050.18.24.tar.gz", "3a2a0b3629cb215b17aca3bb365b8b10b8b408fe"],
-    "10.8.3" => ["xnu-2050.22.13.tar.gz", "a002806d1e64505c6a98c10af26186454818a9ff"],
-    "10.8.4" => ["xnu-2050.24.15.tar.gz", "a080f28b7385b0cc63f9ba5a07d922d53ea0a4a3"],
-    "10.8.5" => ["xnu-2050.48.11.tar.gz", "1f6860148f8231a53a6b393aa1af589cdedfc70c"],
-    "10.9"   => ["xnu-2422.1.72.tar.gz",  "c7bdc40396df3c51ece934c0e3b4a19b063ea34c"],
-    "10.9.1" => ["xnu-2422.1.72.tar.gz",  "c7bdc40396df3c51ece934c0e3b4a19b063ea34c"],
-    "10.9.2" => ["xnu-2422.90.20.tar.gz",  "4aa6b80cc0ff6f9b27825317922b51c5f33d5bae"],
-    "10.9.3" => ["xnu-2422.100.13.tar.gz", "3c02b0b43947d4af3363ada0c77310d4c1e501b5"],
-    "10.9.4" => ["xnu-2422.110.17.tar.gz", "64eff89852eaa10b298ee58c0a1c92da8283f459"],
-    "10.9.5" => ["xnu-2422.115.4.tar.gz", "48207e250422be7e78d238cd8b4d741ac98856df"],
-    "10.10"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
-    "10.10.1"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
-    "10.10.2"  => ["xnu-2782.1.97.tar.gz", "c99cf8ec04c29d40b771652241dd325e4977d92b"],
+    "10.7.5"   => ["xnu-1699.32.7.tar.gz",   "2163816aae990675d8f45cdced4b680bb112fb7a600eb0063af2c2bc2ea15e15"],
+    "10.8"     => ["xnu-2050.7.9.tar.gz",    "25c8fc346d1c209f6d20b456dcb256f1e829e844f67b262c090caf088559f4b1"],
+    "10.8.1"   => ["xnu-2050.9.2.tar.gz",    "f342179c625413ae3a74fc1a5747fc555c1353cfef6259c595626469744a6405"],
+    "10.8.2"   => ["xnu-2050.18.24.tar.gz",  "5d018b33efd9eebb05142958432b9a5058febe04a3b92ba5a16a285490a83445"],
+    "10.8.3"   => ["xnu-2050.22.13.tar.gz",  "54011448f0cbb84792146657f4f5f8f64beca52e63bd0eb6028aadedf153a4d6"],
+    "10.8.4"   => ["xnu-2050.24.15.tar.gz",  "24e6dc5d98d8f2be450832ea9cfaf2fc85c090422e5b89b24c2a80f0d2957a04"],
+    "10.8.5"   => ["xnu-2050.48.11.tar.gz",  "454203188d19a368f850f335a6b4c8fbfc383e929116b2b06e63d8365ccd207e"],
+    "10.9"     => ["xnu-2422.1.72.tar.gz",   "fbefe23943d0c4c12b3d7abd3f304224176f269b19ef6ad801314bc69cf773db"],
+    "10.9.1"   => ["xnu-2422.1.72.tar.gz",   "fbefe23943d0c4c12b3d7abd3f304224176f269b19ef6ad801314bc69cf773db"],
+    "10.9.2"   => ["xnu-2422.90.20.tar.gz",  "7bf3c6bc2f10b99e57b996631a7747b79d1e1684df719196db1e5c98a5585c23"],
+    "10.9.3"   => ["xnu-2422.100.13.tar.gz", "0deb3a323804a18e23261b1f770a7b85b6329213cb77f525d5a2663e8961d87a"],
+    "10.9.4"   => ["xnu-2422.110.17.tar.gz", "0b973913648d5773367f264002f7832bd01510687fa55a28ef1438c86affa141"],
+    "10.9.5"   => ["xnu-2422.115.4.tar.gz",  "1a505922bbf232a616a7398e17eff4477fb0621a6c046ff802a2c7b7bf2b5ceb"],
+    "10.10"    => ["xnu-2782.1.97.tar.gz",   "18fd93155c53fa66c48c2c876313311bba55cff260ea10e7b67dd7ed1f4b945c"],
+    "10.10.1"  => ["xnu-2782.1.97.tar.gz",   "18fd93155c53fa66c48c2c876313311bba55cff260ea10e7b67dd7ed1f4b945c"],
+    "10.10.2"  => ["xnu-2782.10.72.tar.gz",  "0725dfc77ce245e37b57d226445217c17d0a7750db099d3ca69a4ad1c7f39356"],
+    "10.10.3"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
+    "10.10.4"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
+    "10.10.5"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
+    "10.11"    => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
   }
 
-  # TODO wrap MACOS_FULL_VERSION in a MacOS module method
-  if xnu_headers.key? MACOS_FULL_VERSION
-    tarball, checksum = xnu_headers.fetch(MACOS_FULL_VERSION)
+  if xnu_headers.key? MacOS.full_version
+    tarball, checksum = xnu_headers.fetch(MacOS.full_version)
     resource "xnu" do
-      url "http://www.opensource.apple.com/tarballs/xnu/#{tarball}"
-      sha1 checksum
+      url "https://opensource.apple.com/tarballs/xnu/#{tarball}"
+      sha256 checksum
     end
   end
 
@@ -57,7 +59,7 @@ class Lsyncd < Formula
   # https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2014-8990
   patch do
     url "https://gist.githubusercontent.com/tdsmith/d807811d3c6965b0221e/raw/965545662eec39b60d50645487e6ade9d7d43834/cve-2014-8990.diff"
-    sha1 "3ef7d28db8a5e1719a0b7298cb204809f6b5d9d7"
+    sha256 "c6476855acaefd4619bd6900751247c2af12983ed2aff9bdfbf971ffcb662fc2"
   end
 
   def install
@@ -75,7 +77,6 @@ class Lsyncd < Formula
                           "--without-inotify",
                           "--prefix=#{prefix}"
     system "make", "install"
-
   end
 
   test do

@@ -1,10 +1,14 @@
-require "formula"
-
 class Transmission < Formula
   desc "Lightweight BitTorrent client"
   homepage "http://www.transmissionbt.com/"
   url "https://transmission.cachefly.net/transmission-2.84.tar.xz"
-  sha1 "455359bc1fa34aeecc1bac9255ad0c884b94419c"
+  sha256 "a9fc1936b4ee414acc732ada04e84339d6755cd0d097bcbd11ba2cfc540db9eb"
+
+  bottle do
+    sha256 "ad78662725cb4b924a7c1f7ad2fe1de2e9b8bf998233aee26b0f51c23d53b4de" => :yosemite
+    sha256 "488408f72a451333d1c06e71bbc100cba255c4cfd541645ce1f7e4e800212d01" => :mavericks
+    sha256 "3e20545a9e0ca3a4c11e645585427cb00be1cebbf7a76f76fce595ff883fd11c" => :mountain_lion
+  end
 
   option "with-nls", "Build with native language support"
 
@@ -28,14 +32,14 @@ class Transmission < Formula
 
     args << "--disable-nls" if build.without? "nls"
 
-    #fixes issue w/ webui files not being found #21151
-    #submitted upstream: https://trac.transmissionbt.com/ticket/5304
+    # fixes issue w/ webui files not being found #21151
+    # submitted upstream: https://trac.transmissionbt.com/ticket/5304
     inreplace "libtransmission/platform.c", "SYS_DARWIN", "BUILD_MAC_CLIENT"
     inreplace "libtransmission/utils.c", "SYS_DARWIN", "BUILD_MAC_CLIENT"
 
     system "./configure", *args
     system "make" # Make and install in one step fails
-    system "make install"
+    system "make", "install"
 
     (var/"transmission").mkpath
   end
@@ -47,7 +51,7 @@ class Transmission < Formula
     EOS
   end
 
-  plist_options :manual => 'transmission-daemon --foreground'
+  plist_options :manual => "transmission-daemon --foreground"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -71,6 +75,8 @@ class Transmission < Formula
           <key>NetworkState</key>
           <true/>
         </dict>
+        <key>RunAtLoad</key>
+        <true/>
       </dict>
     </plist>
     EOS

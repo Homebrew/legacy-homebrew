@@ -131,15 +131,21 @@ __brew_complete_tapped ()
     __brewcomp "$taps"
 }
 
+_brew_tap_unpin ()
+{
+    __brewcomp "$(brew tap --list-pinned)"
+}
+
 _brew_complete_tap ()
 {
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--repair"
+        __brewcomp "--repair --list-official --list-pinned"
         return
         ;;
     esac
+    __brewcomp "$(brew tap --list-official)"
 }
 
 _brew_bottle ()
@@ -183,6 +189,18 @@ _brew_deps ()
     case "$cur" in
     --*)
         __brewcomp "--1 --all --tree"
+        return
+        ;;
+    esac
+    __brew_complete_formulae
+}
+
+_brew_desc ()
+{
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    case "$cur" in
+    --*)
+        __brewcomp "--search --name --description"
         return
         ;;
     esac
@@ -308,6 +326,7 @@ _brew_linkapps ()
         return
         ;;
     esac
+    __brew_complete_installed
 }
 
 _brew_list ()
@@ -536,6 +555,7 @@ _brew_upgrade ()
         __brewcomp "
             --all
             --build-from-source --build-bottle --force-bottle
+            --cleanup
             --debug
             --verbose
             "
@@ -580,62 +600,10 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        __brewcomp "
-            --cache --cellar
-            --env --prefix --repository
-            aspell-dictionaries
-            audit
-            bottle
-            cat
-            cleanup
-            commands
-            config --config
-            create
-            deps
-            diy configure
-            doctor
-            edit
-            fetch
-            gist-logs
-            help
-            home
-            info abv
-            install
-            irb
-            leaves
-            linkapps
-            link ln
-            list ls
-            log
-            man
-            missing
-            options
-            outdated
-            prune
-            pin
-            postinstall
-            pull
-            readall
-            search
-            reinstall
-            sh
-            style
-            switch
-            tap
-            tap-readme
-            test
-            test-bot
-            tests
-            uninstall remove rm
-            unlink
-            unlinkapps
-            unpack
-            unpin
-            untap
-            update
-            upgrade
-            uses
-            "
+        # Do not auto-complete "instal" abbreviation for "install" command.
+        # Prefix newline to prevent not checking the first command.
+        local cmds=$'\n'"$(brew commands --quiet --include-aliases)"
+        __brewcomp "${cmds/$'\n'instal$'\n'/$'\n'}"
         return
     fi
 
@@ -648,6 +616,7 @@ _brew ()
     cleanup)                    _brew_cleanup ;;
     create)                     _brew_create ;;
     deps)                       _brew_deps ;;
+    desc)                       _brew_desc ;;
     doctor|dr)                  _brew_doctor ;;
     diy|configure)              _brew_diy ;;
     fetch)                      _brew_fetch ;;
@@ -656,7 +625,7 @@ _brew ()
     install|instal|reinstall)   _brew_install ;;
     irb)                        _brew_irb ;;
     link|ln)                    _brew_link ;;
-    linkapps)                   _brew_linkapps ;;
+    linkapps|unlinkapps)        _brew_linkapps ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
     man)                        _brew_man ;;
@@ -673,11 +642,12 @@ _brew ()
     switch)                     _brew_switch ;;
     tap)                        _brew_complete_tap ;;
     tap-readme)                 _brew_tap_readme ;;
+    tap-unpin)                  _brew_tap_unpin ;;
     tests)                      _brew_tests ;;
     uninstall|remove|rm)        _brew_uninstall ;;
     unpack)                     _brew_unpack ;;
     unpin)                      __brew_complete_formulae ;;
-    untap)                      __brew_complete_tapped ;;
+    untap|tap-info|tap-pin)     __brew_complete_tapped ;;
     update)                     _brew_update ;;
     upgrade)                    _brew_upgrade ;;
     uses)                       _brew_uses ;;

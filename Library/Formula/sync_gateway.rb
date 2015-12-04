@@ -1,5 +1,3 @@
-require "formula"
-
 class SyncGateway < Formula
   desc "Make Couchbase Server a replication endpoint for Couchbase Lite"
   homepage "http://docs.couchbase.com/sync-gateway"
@@ -9,9 +7,9 @@ class SyncGateway < Formula
 
   bottle do
     cellar :any
-    sha1 "cd5eef55308a0cbbfbd92e774b86d47344abea7e" => :yosemite
-    sha1 "6b9a112f3ff48989aea5380e8b7bcbccf7a6b385" => :mavericks
-    sha1 "daff7035dd82ab3c9f44a521ab1ea99f93a10343" => :mountain_lion
+    sha256 "bcdb6482c2e6c484d930ffe5e5e35b2cc8aeeb10606bfc520f9e0c2b6bbb6ddb" => :yosemite
+    sha256 "01123f7a5c82bbc6d2e11094416a8ac63fd0b8c0575e7b942f5cf2cc8bb50495" => :mavericks
+    sha256 "7eac953de233b84b5b28e16cf5baab41ae3c4acc5c54e1f1abb0c5aa4c2117f6" => :mountain_lion
   end
 
   depends_on "go" => :build

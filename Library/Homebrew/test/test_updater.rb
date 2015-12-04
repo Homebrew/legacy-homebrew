@@ -1,11 +1,11 @@
-require 'testing_env'
-require 'cmd/update'
+require "testing_env"
+require "cmd/update"
 require "formula_versions"
-require 'yaml'
+require "yaml"
 
 class UpdaterTests < Homebrew::TestCase
   class UpdaterMock < ::Updater
-    attr_accessor :diff
+    attr_accessor :diff, :expected, :called
 
     def initialize(*)
       super
@@ -14,14 +14,14 @@ class UpdaterTests < Homebrew::TestCase
       @called = []
     end
 
-    def in_repo_expect(cmd, output = '')
+    def in_repo_expect(cmd, output = "")
       @expected << cmd
       @outputs[cmd] << output
     end
 
     def `(*args)
       cmd = args.join(" ")
-      if @expected.include?(cmd) and !@outputs[cmd].empty?
+      if @expected.include?(cmd) && !@outputs[cmd].empty?
         @called << cmd
         @outputs[cmd].shift
       else
@@ -29,10 +29,7 @@ class UpdaterTests < Homebrew::TestCase
       end
     end
     alias_method :safe_system, :`
-
-    def expectations_met?
-      @expected == @called
-    end
+    alias_method :system, :`
 
     def inspect
       "#<#{self.class.name}>"
@@ -56,18 +53,21 @@ class UpdaterTests < Homebrew::TestCase
     FileUtils.rm_rf HOMEBREW_LIBRARY.join("Taps")
   end
 
-  def perform_update(fixture_name="")
+  def perform_update(fixture_name = "")
     Formulary.stubs(:factory).returns(stub(:pkg_version => "1.0"))
     FormulaVersions.stubs(:new).returns(stub(:formula_at_revision => "2.0"))
     @updater.diff = fixture(fixture_name)
-    @updater.in_repo_expect("git checkout -q master")
+    @updater.in_repo_expect("git diff --quiet", true)
+    @updater.in_repo_expect("git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null", "refs/remotes/origin/master")
+    @updater.in_repo_expect("git symbolic-ref --short HEAD 2>/dev/null", "master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "1234abcd")
     @updater.in_repo_expect("git config core.autocrlf false")
-    @updater.in_repo_expect("git pull -q origin refs/heads/master:refs/remotes/origin/master")
+    @updater.in_repo_expect("git pull --ff --no-rebase --quiet origin refs/heads/master:refs/remotes/origin/master")
     @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
-    @updater.pull!
+    @updater.pull!(:silent => true)
+    @updater.in_repo_expect("git rev-parse -q --verify HEAD", "3456cdef")
     @report.update(@updater.report)
-    assert_predicate @updater, :expectations_met?
+    assert_equal @updater.expected, @updater.called
   end
 
   def test_update_homebrew_without_any_changes
@@ -84,13 +84,13 @@ class UpdaterTests < Homebrew::TestCase
 
   def test_update_homebrew_with_formulae_changes
     perform_update("update_git_diff_output_with_formulae_changes")
-    assert_equal %w{ xar yajl }, @report.select_formula(:M)
-    assert_equal %w{ antiword bash-completion ddrescue dict lua }, @report.select_formula(:A)
+    assert_equal %w[xar yajl], @report.select_formula(:M)
+    assert_equal %w[antiword bash-completion ddrescue dict lua], @report.select_formula(:A)
   end
 
   def test_update_homebrew_with_removed_formulae
     perform_update("update_git_diff_output_with_removed_formulae")
-    assert_equal %w{libgsasl}, @report.select_formula(:D)
+    assert_equal %w[libgsasl], @report.select_formula(:D)
   end
 
   def test_update_homebrew_with_changed_filetype
@@ -104,7 +104,7 @@ class UpdaterTests < Homebrew::TestCase
 
     perform_update("update_git_diff_output_with_restructured_tap")
 
-    assert_equal %w{foo/bar/git foo/bar/lua}, @report.select_formula(:A)
+    assert_equal %w[foo/bar/git foo/bar/lua], @report.select_formula(:A)
     assert_empty @report.select_formula(:D)
   end
 
@@ -116,7 +116,7 @@ class UpdaterTests < Homebrew::TestCase
     perform_update("update_git_diff_simulate_homebrew_php_restructuring")
 
     assert_empty @report.select_formula(:A)
-    assert_equal %w{foo/bar/git foo/bar/lua}, @report.select_formula(:D)
+    assert_equal %w[foo/bar/git foo/bar/lua], @report.select_formula(:D)
   end
 
   def test_update_homebrew_with_tap_formulae_changes
@@ -126,8 +126,8 @@ class UpdaterTests < Homebrew::TestCase
 
     perform_update("update_git_diff_output_with_tap_formulae_changes")
 
-    assert_equal %w{foo/bar/lua}, @report.select_formula(:A)
-    assert_equal %w{foo/bar/git}, @report.select_formula(:M)
+    assert_equal %w[foo/bar/lua], @report.select_formula(:A)
+    assert_equal %w[foo/bar/git], @report.select_formula(:M)
     assert_empty @report.select_formula(:D)
   end
 end

@@ -1,17 +1,20 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  # Wait for 1.8.6 and skip 1.8.5 due to a severe memory leak on OS X:
-  # https://github.com/open-mpi/ompi/issues/579
-  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.4.tar.bz2"
-  sha256 "23158d916e92c80e2924016b746a93913ba7fae9fff51bf68d5c2a0ae39a2f8a"
-  revision 1
+  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.1.tar.bz2"
+  sha256 "7919ecde15962bab2e26d01d5f5f4ead6696bbcacb504b8560f2e3a152bfe492"
 
   bottle do
-    revision 1
-    sha256 "78d4850f74cc2c6043bc3fb77cb431dcb43edde4bd898640840aa444c3268e6e" => :yosemite
-    sha256 "21c9b28a601b07a0c5ac85b5155e79d4e083f233dbddfe5a62a5274d24b40866" => :mavericks
-    sha256 "b2d256bf0430a7a3853683354137102f5ab5d8ba729f8e889877763e65dd7d22" => :mountain_lion
+    sha256 "257a75a3227ddc0b5e7c970a97c76cadeda417a259c54efbe25df955e0efe32b" => :el_capitan
+    sha256 "2c9afac3f1350e4693e2077fa3b5a6f149fc0b0cb19e804bba15cd8d00e62456" => :yosemite
+    sha256 "7c106ab43c8aa5fcde2d9961a084c4c34d5a8ea1888668d825ce1ec818519e29" => :mavericks
+  end
+
+  head do
+    url "https://github.com/open-mpi/ompi.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   deprecated_option "disable-fortran" => "without-fortran"
@@ -20,7 +23,7 @@ class OpenMpi < Formula
   option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
   option :cxx11
 
-  conflicts_with "mpich2", :because => "both install mpi__ compiler wrappers"
+  conflicts_with "mpich", :because => "both install mpi__ compiler wrappers"
   conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
 
   depends_on :java => :build
@@ -38,9 +41,11 @@ class OpenMpi < Formula
       --with-libevent=#{Formula["libevent"].opt_prefix}
       --with-sge
     ]
+    args << "--with-platform-optimized" if build.head?
     args << "--disable-mpi-fortran" if build.without? "fortran"
     args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
 
+    system "./autogen.pl" if build.head?
     system "./configure", *args
     system "make", "all"
     system "make", "check"
@@ -50,9 +55,11 @@ class OpenMpi < Formula
     # (Fortran header) in `lib` that need to be moved to `include`.
     include.install Dir["#{lib}/*.mod"]
 
-    # Move vtsetup.jar from bin to libexec.
-    libexec.install bin/"vtsetup.jar"
-    inreplace bin/"vtsetup", "$bindir/vtsetup.jar", "$prefix/libexec/vtsetup.jar"
+    if build.stable?
+      # Move vtsetup.jar from bin to libexec.
+      libexec.install bin/"vtsetup.jar"
+      inreplace bin/"vtsetup", "$bindir/vtsetup.jar", "$prefix/libexec/vtsetup.jar"
+    end
   end
 
   test do

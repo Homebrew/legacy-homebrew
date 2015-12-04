@@ -1,30 +1,27 @@
-require 'formula'
-
 class Editorconfig < Formula
   desc "Maintain consistent coding style between multiple editors"
-  homepage 'http://editorconfig.org'
-  url 'https://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.12.0/source/editorconfig-core-c-0.12.0.tar.gz'
-  sha1 'dfa96da823133fd925e7384f19d7f2acf44f50ba'
+  homepage "http://editorconfig.org"
+  url "https://downloads.sourceforge.net/project/editorconfig/EditorConfig-C-Core/0.12.0/source/editorconfig-core-c-0.12.0.tar.gz"
+  sha256 "98c581d1dce24158160c9235190ce93eeae121f978aa84a89c7de258b5122e01"
+  head "https://github.com/editorconfig/editorconfig-core-c.git"
 
   bottle do
     cellar :any
-    sha1 "9ecacf9c908945bcda00206afa77d1871b5f2f72" => :mavericks
-    sha1 "1b2365c812d65888725763d7dd4ec9cf7bb6c924" => :mountain_lion
-    sha1 "84b22980c00b6c779f6308561b06058f5e3d5b11" => :lion
+    sha256 "8701378252f11b3ace91a48addc5c9a93e264b5f5a2d7be60082713a53f2f43d" => :mavericks
+    sha256 "3dbc17ab5abf697ea8d4cde6bc896b2bba5d89058983e3688755c288b96fbeec" => :mountain_lion
+    sha256 "b6b87de9eedcd1a292ac32c5a100cb555548729e73d5a41e1854f0610dffe746" => :lion
   end
 
   option :universal
 
-  head 'https://github.com/editorconfig/editorconfig-core-c.git'
-
-  depends_on 'cmake' => :build
-  depends_on 'pcre'
+  depends_on "cmake" => :build
+  depends_on "pcre"
 
   def install
     ENV.universal_binary if build.universal?
 
     system "cmake", ".", "-DCMAKE_INSTALL_PREFIX:PATH=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

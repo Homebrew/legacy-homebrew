@@ -1,14 +1,15 @@
 class Libspatialite < Formula
   desc "Adds spatial SQL capabilities to SQLite"
   homepage "https://www.gaia-gis.it/fossil/libspatialite/index"
-  url "https://www.gaia-gis.it/gaia-sins/libspatialite-4.3.0.tar.gz"
-  sha256 "4acf2d2b891989e61351584fe28514a6561f8f6a1901b988990513be5fe1bdfe"
+  url "https://www.gaia-gis.it/gaia-sins/libspatialite-sources/libspatialite-4.3.0a.tar.gz"
+  sha256 "88900030a4762904a7880273f292e5e8ca6b15b7c6c3fb88ffa9e67ee8a5a499"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "77993169138d6bb4a185e599b8d55c73a06352ece3461d8b8358a31ed69d9e4e" => :yosemite
-    sha256 "2c2374ee420d33011f2be12bfb9f09b3b2c8cffa63cd0544adf5f5a6c5b2c7b4" => :mavericks
-    sha256 "761b07489fc2591e9e9788b1127253c52025e4208a3cbf78e72afcf9edc58f67" => :mountain_lion
+    sha256 "6d447980d1a3ecefa6d234cd00333ff93f27455a5f6ebb4971301f5382d07513" => :el_capitan
+    sha256 "6e77fb5cd2bab34aa5bc984a8519f14e89401f87d92b50109445a12df8ff3b68" => :yosemite
+    sha256 "fdc799a3f520cd2cce7c1bc01b2f4ad18f5796948f88cfd6746bd81e02c82930" => :mavericks
   end
 
   head do

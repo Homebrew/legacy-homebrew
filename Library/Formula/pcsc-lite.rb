@@ -1,16 +1,18 @@
-require "formula"
-
 class PcscLite < Formula
   desc "Middleware to access a smart card using SCard API"
-  homepage "http://pcsclite.alioth.debian.org"
-  url "https://alioth.debian.org/frs/download.php/file/4126/pcsc-lite-1.8.13.tar.bz2"
-  sha1 "baa1ac3a477c336805cdf375912da5cbc8ebab8d"
+  homepage "https://pcsclite.alioth.debian.org"
+  url "https://alioth.debian.org/frs/download.php/file/4138/pcsc-lite-1.8.14.tar.bz2"
+  sha256 "b91f97806042315a41f005e69529cb968621f73f2ddfbd1380111a175b02334e"
+  revision 1
 
   bottle do
-    sha1 "8b726aaf4467583d1fd808650229757c9561c4d5" => :yosemite
-    sha1 "42eff3939a65ea2cea53b8a61dc60321c01cb00f" => :mavericks
-    sha1 "3600bfdc0d7e74f27c0c0474660805f58378e903" => :mountain_lion
+    sha256 "a5262d5c606a27f28e0b77a5c3dbec63953d61f312df7ce13221c8f3beca1138" => :el_capitan
+    sha256 "11283901f721da3c928dea443801ddf009370a6145b9abea3c413e60ce84e6a3" => :yosemite
+    sha256 "77fe5fbded50874ceed1fde57c9478faaae50042ef4a0086d8c92297e1d8655c" => :mavericks
   end
+
+  keg_only :provided_by_osx,
+    "pcsc-lite interferes with detection of OS X's PCSC.framework."
 
   def install
     system "./configure", "--disable-dependency-tracking",

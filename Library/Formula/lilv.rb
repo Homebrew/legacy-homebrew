@@ -1,10 +1,8 @@
-require 'formula'
-
 class Lilv < Formula
   desc "C library to use LV2 plugins"
-  homepage 'http://drobilla.net/software/lilv/'
-  url 'http://download.drobilla.net/lilv-0.20.0.tar.bz2'
-  sha1 'b3a7d0089b16b04114895d47a898b8d494774927'
+  homepage "http://drobilla.net/software/lilv/"
+  url "http://download.drobilla.net/lilv-0.20.0.tar.bz2"
+  sha256 "428a39f1265d44c55f2604829a12ade0ea13e1a1022ff937ca2a9ad227bd422a"
 
   bottle do
     cellar :any
@@ -13,11 +11,11 @@ class Lilv < Formula
     sha256 "bec3ad89f065c13c9d5d72182fcc5ca11bf913b2238bc3bddf8b09a2e56dea98" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'lv2'
-  depends_on 'serd'
-  depends_on 'sord'
-  depends_on 'sratom'
+  depends_on "pkg-config" => :build
+  depends_on "lv2"
+  depends_on "serd"
+  depends_on "sord"
+  depends_on "sratom"
 
   def install
     system "./waf", "configure", "--prefix=#{prefix}"

@@ -3,16 +3,16 @@ require "language/go"
 class Ghq < Formula
   desc "Remote repository management made easy"
   homepage "https://github.com/motemen/ghq"
-  url "https://github.com/motemen/ghq.git", :tag => "v0.6", :revision => "b6f7aadbeb21ae18972577173ce175af83ce239d"
-  sha256 "d8ab0ef7386647b30210aabc79bf0391ea5c2887be0d4c6a3fb58b8c31eb9b24"
+  url "https://github.com/motemen/ghq/archive/v0.7.1.tar.gz"
+  sha256 "c43c469e47761ca67103c056c79d976933265905bd7ddd662035162532c76fb2"
 
   head "https://github.com/motemen/ghq.git"
 
   bottle do
     cellar :any
-    sha256 "243adcfa107af6b6d87d2491ef8dc56e44dacd95505bf60c03ff4aa69b37d0cd" => :yosemite
-    sha256 "4348cffae023d0a300fa1cc8a1d9f5e26bced6c5330483b4437f25cd6f81bfe7" => :mavericks
-    sha256 "bd653fda50b8ed0e05f336dabace93ddf9c4be58d43becd4d694c0f04327096c" => :mountain_lion
+    sha256 "df6df9c2100ad46586d62233dfdb99401bb5beab42a0d87635419bf439797212" => :yosemite
+    sha256 "80a4db2f17fb2c3614604231921fd867f0a85e2034942c96e1f9d33dd6b1b136" => :mavericks
+    sha256 "7d6e66fef647214c51a79a0759be423e990894c3dc03be45fc654b8e74270148" => :mountain_lion
   end
 
   option "without-completions", "Disable zsh completions"
@@ -32,7 +32,7 @@ class Ghq < Formula
   end
 
   go_resource "github.com/daviddengcn/go-colortext" do
-    url "https://github.com/daviddengcn/go-colortext.git", :revision => "13eaeb896f5985a1ab74ddea58707a73d875ba57"
+    url "https://github.com/daviddengcn/go-colortext.git", :revision => "3b18c8575a432453d41fdafb340099fff5bba2f7"
   end
 
   def install
@@ -42,7 +42,7 @@ class Ghq < Formula
     ENV.append_path "PATH", "#{ENV["GOPATH"]}/bin"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "ghq"
+    system "go", "build", "-ldflags", "-X main.Version #{version}", "-o", "ghq"
     bin.install "ghq"
 
     if build.with? "completions"

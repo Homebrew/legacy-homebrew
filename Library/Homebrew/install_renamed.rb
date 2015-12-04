@@ -9,17 +9,17 @@ module InstallRenamed
     end
   end
 
-  def cp_path_sub pattern, replacement
+  def cp_path_sub(pattern, replacement)
     super do |src, dst|
       append_default_if_different(src, dst)
     end
   end
 
-  def + path
+  def +(path)
     super(path).extend(InstallRenamed)
   end
 
-  def / path
+  def /(path)
     super(path).extend(InstallRenamed)
   end
 

@@ -7,9 +7,10 @@ class LibusbCompat < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "98881038beb113fcfe91bff9a531e48099eda615" => :yosemite
-    sha1 "798b32ab3ad03641b6d95a9a219730e4fb977c09" => :mavericks
-    sha1 "f0e4dec2847f1cfa6f759a00de6e35e3cdbde927" => :mountain_lion
+    sha256 "df7e556f8af9bccb149bb26becc8a2e6cd9a3d22fc04b2ebf81e981abc892fef" => :el_capitan
+    sha256 "564b4c326a98e27c164544531535be57668ce242ca536a7b34e3716b20f8cd00" => :yosemite
+    sha256 "264bc9dacd754bae665907cd087e06e7063d15fbad38b336c567f76e7f886193" => :mavericks
+    sha256 "239e6f2a527713c38b4e802cd25b80fbb01af30a88a36b77b591f5e95890511f" => :mountain_lion
   end
 
   option :universal

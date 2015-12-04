@@ -2,13 +2,14 @@ class Wslay < Formula
   desc "C websocket library"
   homepage "http://wslay.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/wslay/wslay-1.0.0/wslay-1.0.0.tar.xz"
-  sha1 "199308322e67094ee803063eca0077dfc042bc77"
+  sha256 "148d5272255b76034f97cf0298f606aed4908ebb4198412a321280f2319160ef"
 
   bottle do
     cellar :any
-    sha1 "d5996cbcaefa8fb31052257c83eccb1121721a35" => :yosemite
-    sha1 "0352cd0da3febe6bfc917f620acd3b694899bcd4" => :mavericks
-    sha1 "04cfebe7140b51febd90b99e2a398bca966759dc" => :mountain_lion
+    revision 1
+    sha256 "30939fd620cff4702d15d61a75774b71e1b226fb7b2b3fab8a3acdf96bdd9b7d" => :el_capitan
+    sha256 "294d4646dcf7d352368de8b422a5354e72b3027a8678e993d68ea8d55646388e" => :yosemite
+    sha256 "410634e15d5ce6f680ccd5d96b97fc2226aad9530aebe42690d3ceb4d7011e69" => :mavericks
   end
 
   option "without-docs", "Don't generate or install documentation"
@@ -21,46 +22,11 @@ class Wslay < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
+  depends_on "sphinx-doc" => :build if build.with? "docs"
   depends_on "cunit" => :build
   depends_on "pkg-config" => :build
 
-  resource "sphinx" do
-    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
-    sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
-  end
-
-  resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
-    sha1 "002450621b33c5690060345b0aac25bc2426d675"
-  end
-
-  resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
-  end
-
-  resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
-  end
-
-  resource "markupsafe" do
-    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
-  end
-
   def install
-    if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
-      resources.each do |r|
-        r.stage do
-          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
-        end
-      end
-      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
-    end
-
     system "autoreconf", "-fvi" if build.head?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--disable-silent-rules"
     system "make", "check"

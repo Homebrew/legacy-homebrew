@@ -2,13 +2,13 @@ class Wsmancli < Formula
   desc "Openwsman command-line client"
   homepage "https://github.com/Openwsman/wsmancli"
   url "https://github.com/Openwsman/wsmancli/archive/v2.3.1.tar.gz"
-  sha1 "a9b3dbe14d257687da4ace7c142e829c05c80994"
+  sha256 "f8e71b842c506885f63d80d7cd49bb95989043b1305b95c1fbda27ca2df9528b"
 
   bottle do
     cellar :any
-    sha1 "d6e54b66cf4e0f18f69805cb762015739954c56c" => :yosemite
-    sha1 "e8c5852a0e3fe97db973b90c676c779177b2d0ca" => :mavericks
-    sha1 "cafa52a3f52158c65f36f05f550f525c2ddcfa12" => :mountain_lion
+    sha256 "0f39a0bdfb252363b5fa64ddf6e412d3ed8c6b81d206d29c3fa94b702c38877c" => :yosemite
+    sha256 "e965cf5411b4f8c6a4d39729a32dc0b58bd03984b83ee361a4046a21cc212d21" => :mavericks
+    sha256 "11f1296fd8079b931a5e316c42ba7071c169f57bc9af88975eec36b8d47dc0d1" => :mountain_lion
   end
 
   depends_on "openwsman"

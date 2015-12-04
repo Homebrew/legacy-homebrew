@@ -1,6 +1,6 @@
-require 'formula'
-require 'keg'
-require 'irb'
+require "formula"
+require "keg"
+require "irb"
 
 class Symbol
   def f(*args)

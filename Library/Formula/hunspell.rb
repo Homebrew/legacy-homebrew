@@ -1,12 +1,12 @@
-require "formula"
-
 class Hunspell < Formula
   desc "Spell checker and morphological analyzer"
   homepage "http://hunspell.sourceforge.net/"
   url "https://downloads.sourceforge.net/hunspell/hunspell-1.3.3.tar.gz"
-  sha1 "219b20f305d6690f666ff3864a16e4674908a553"
+  sha256 "a7b2c0de0e2ce17426821dc1ac8eb115029959b3ada9d80a81739fa19373246c"
 
   depends_on "readline"
+
+  conflicts_with "freeling", :because => "both install 'analyze' binary"
 
   # hunspell does not prepend $HOME to all USEROODIRs
   # http://sourceforge.net/p/hunspell/bugs/236/
@@ -19,7 +19,9 @@ class Hunspell < Formula
                           "--with-readline"
     system "make"
     ENV.deparallelize
-    system "make install"
+    system "make", "install"
+
+    pkgshare.install "tests"
   end
 
   def caveats; <<-EOS.undent
@@ -30,6 +32,11 @@ class Hunspell < Formula
     https://wiki.openoffice.org/wiki/Dictionaries .
     EOS
   end
+
+  test do
+    cp_r "#{pkgshare}/tests/.", testpath
+    system "./test.sh"
+  end
 end
 
 __END__
@@ -37,7 +44,7 @@ __END__
 +++ src/tools/hunspell.cxx	2013-08-02 18:20:27.000000000 +0200
 @@ -28,7 +28,7 @@
  #ifdef WIN32
- 
+
  #define LIBDIR "C:\\Hunspell\\"
 -#define USEROOODIR "Application Data\\OpenOffice.org 2\\user\\wordbook"
 +#define USEROOODIR { "Application Data\\OpenOffice.org 2\\user\\wordbook" }
@@ -71,5 +78,5 @@ __END__
 +    if (HOME) path = add(add(add(add(path, HOME), DIRSEP), userooodir[i]), PATHSEP);
 +  }
  	path = add(path, OOODIR);
- 
+
  	if (showpath) {

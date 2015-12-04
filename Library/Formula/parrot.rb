@@ -1,5 +1,3 @@
-require "formula"
-
 class Parrot < Formula
   desc "Open source virtual machine (for Perl6, et al.)"
   homepage "http://www.parrot.org/"
@@ -8,9 +6,9 @@ class Parrot < Formula
   sha256 "ad5f3723c216675b9ebc2e3d3807d24fd13aa55e1eb3e7ffcad4062e0026f482"
 
   bottle do
-    sha1 "8cadb0beb3984785d995a64847ed78b279798cee" => :yosemite
-    sha1 "da39dec1f80b1fa5192ed3b72ca53b7333e8ca3b" => :mavericks
-    sha1 "d09c985f1f51ecf6bed935da78311cb650b23ba7" => :mountain_lion
+    sha256 "6c03426ea421562a7ae6489c93423f047d5bc2cbc6f8e9fd5ad6ae48d3096d21" => :yosemite
+    sha256 "5f071956ca3f5ba7eab6b571bd9a77b059ed80af7ed1d5a8857aba5819f1ac0f" => :mavericks
+    sha256 "c6deb6d7f91f91aa426a1c5604f3c9684fee81261d570f1e3b852e4a194262a1" => :mountain_lion
   end
 
   conflicts_with "rakudo-star"
@@ -28,7 +26,7 @@ class Parrot < Formula
                                    "--cc=#{ENV.cc}"
 
     system "make"
-    system "make install"
+    system "make", "install"
     # Don't install this file in HOMEBREW_PREFIX/lib
     rm_rf lib/"VERSION"
   end

@@ -1,31 +1,28 @@
 class Eigen < Formula
   desc "C++ template library for linear algebra"
   homepage "http://eigen.tuxfamily.org/"
-  url "http://bitbucket.org/eigen/eigen/get/3.2.4.tar.bz2"
-  sha1 "64ea809acc449adbd8fe616def7d48ff4f0776a8"
-
-  bottle do
-    cellar :any
-    sha1 "24b12f960b5d1b29814baee5d4ffd1f070d82b93" => :yosemite
-    sha1 "4aeb1dc9374989f6721e655a51443c5fd92770bf" => :mavericks
-    sha1 "69d4e8c691887006dfdae968ea8650c11cff3b51" => :mountain_lion
-  end
-
+  url "https://bitbucket.org/eigen/eigen/get/3.2.6.tar.bz2"
+  sha256 "8a3352f9a5361fe90e451a7305fb1896fc7f771dc16cc0edd8e6b157f52c343e"
   head "https://bitbucket.org/eigen/eigen", :using => :hg
 
-  depends_on "cmake" => :build
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "10492e31aa6f9b9764aae344198b0e1f55e644510a67d11e73ccdc685c8e32b4" => :el_capitan
+    sha256 "925c934e9215bfaa438d69723e0c785eb92761a70591b4c9038263ebf81afb90" => :yosemite
+    sha256 "964552d6a1463744bbdf26de9be97836f84b4f6fcf007559f0cfd913c0873847" => :mavericks
+  end
 
   option :universal
+
+  depends_on "cmake" => :build
 
   def install
     ENV.universal_binary if build.universal?
     mkdir "eigen-build" do
       args = std_cmake_args
-      args.delete "-DCMAKE_BUILD_TYPE=None"
-      args << "-DCMAKE_BUILD_TYPE=Release"
       args << "-Dpkg_config_libdir=#{lib}" << ".."
       system "cmake", *args
-      system "make install"
+      system "make", "install"
     end
     (share/"cmake/Modules").install "cmake/FindEigen3.cmake"
   end

@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'dependency'
+require "testing_env"
+require "dependency"
 
 class DependableTests < Homebrew::TestCase
   def setup
@@ -8,7 +8,7 @@ class DependableTests < Homebrew::TestCase
   end
 
   def test_options
-    assert_equal %w{--foo --bar}.sort, @dep.options.as_flags.sort
+    assert_equal %w[--foo --bar].sort, @dep.options.as_flags.sort
   end
 
   def test_interrogation
@@ -20,13 +20,13 @@ end
 
 class DependencyTests < Homebrew::TestCase
   def test_accepts_single_tag
-    dep = Dependency.new("foo", %w{bar})
-    assert_equal %w{bar}, dep.tags
+    dep = Dependency.new("foo", %w[bar])
+    assert_equal %w[bar], dep.tags
   end
 
   def test_accepts_multiple_tags
-    dep = Dependency.new("foo", %w{bar baz})
-    assert_equal %w{bar baz}.sort, dep.tags.sort
+    dep = Dependency.new("foo", %w[bar baz])
+    assert_equal %w[bar baz].sort, dep.tags.sort
   end
 
   def test_preserves_symbol_tags

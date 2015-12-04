@@ -1,15 +1,13 @@
 class Librsvg < Formula
   desc "Library to render SVG files using Cairo"
   homepage "https://live.gnome.org/LibRsvg"
-  url "https://download.gnome.org/sources/librsvg/2.40/librsvg-2.40.9.tar.xz"
-  sha256 "13964c5d35357552b47d365c34215eee0a63bf0e6059b689f048648c6bf5f43a"
-  revision 1
+  url "https://download.gnome.org/sources/librsvg/2.40/librsvg-2.40.12.tar.xz"
+  sha256 "ffe40c4378bf3899f4d679a475726bab03a127a5bdccddec86404cc329ffb550"
 
   bottle do
-    revision 1
-    sha256 "f955dd5db15b8963cecbe16243d21672894a4486594610e71c24612ad4607259" => :yosemite
-    sha256 "656a206ab678897eda447ab3f13681f5c133e00581aee70382de6707bed34a5d" => :mavericks
-    sha256 "be9e61f02fe0d10f25d1980c56041c2856c65a69c02e19dd72ae04d05e634768" => :mountain_lion
+    sha256 "7f2a76242fac8e4bbe5e15bbcad0a104a34981297e3aacb82a29787ca66d996a" => :el_capitan
+    sha256 "0b981eb4c509774648c40e7f153c9c20d2df0c4c204d7cd88409af328f2c312b" => :yosemite
+    sha256 "b4af571b334f5ec247c4ced7116a9ffbe879ee995a9a6ebd6c236eb663ca5fdd" => :mavericks
   end
 
   depends_on "pkg-config" => :build

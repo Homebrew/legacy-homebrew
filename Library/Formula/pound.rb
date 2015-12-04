@@ -12,7 +12,7 @@ class Pound < Formula
 
   depends_on "openssl"
   depends_on "pcre"
-  depends_on "google-perftools" => :recommended
+  depends_on "gperftools" => :recommended
 
   def install
     system "./configure", "--prefix=#{prefix}", "--disable-tcmalloc"

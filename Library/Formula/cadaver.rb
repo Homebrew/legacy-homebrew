@@ -1,17 +1,15 @@
-require "formula"
-
 class Cadaver < Formula
   desc "Command-line client for DAV"
   homepage "http://www.webdav.org/cadaver/"
   url "http://www.webdav.org/cadaver/cadaver-0.23.3.tar.gz"
-  sha1 "4ad8ea2341b77e7dee26b46e4a8a496f1a2962cd"
+  sha256 "fd4ce68a3230ba459a92bcb747fc6afa91e46d803c1d5ffe964b661793c13fca"
   revision 1
 
   bottle do
     revision 1
-    sha1 "0829bec6edbe68f27cac9698755b16ba0781bb88" => :mavericks
-    sha1 "d65e0588474bd227e077fab167e6bbdf848296b5" => :mountain_lion
-    sha1 "fdef244b44064695da2d0c2107bc4721ee47e613" => :lion
+    sha256 "95b45e67937664ebdd1a96b3ef20ed870eba06270ce3d611aed233a337534008" => :mavericks
+    sha256 "ef03f3dbc276461c957b0f72f906402b4c507dc21a2e77774b716e6cf90813cd" => :mountain_lion
+    sha256 "37e4a590ce5cb112ce78a63f126b45bd581400444f09aa35dff8bcdad9764668" => :lion
   end
 
   depends_on "pkg-config" => :build

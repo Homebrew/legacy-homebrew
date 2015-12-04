@@ -1,17 +1,17 @@
-require 'formula'
-require 'blacklist'
-require 'digest'
-require 'erb'
+require "formula"
+require "blacklist"
+require "digest"
+require "erb"
 
 module Homebrew
-
   # Create a formula from a tarball URL
   def create
-
     # Allow searching MacPorts or Fink.
-    if ARGV.include? '--macports'
+    if ARGV.include? "--macports"
+      opoo "`brew create --macports` is deprecated; use `brew search --macports` instead"
       exec_browser "https://www.macports.org/ports.php?by=name&substr=#{ARGV.next}"
-    elsif ARGV.include? '--fink'
+    elsif ARGV.include? "--fink"
+      opoo "`brew create --fink` is deprecated; use `brew search --fink` instead"
       exec_browser "http://pdb.finkproject.org/pdb/browse.php?summary=#{ARGV.next}"
     end
 
@@ -22,17 +22,17 @@ module Homebrew
 
     url = ARGV.named.first # Pull the first (and only) url from ARGV
 
-    version = ARGV.next if ARGV.include? '--set-version'
-    name = ARGV.next if ARGV.include? '--set-name'
+    version = ARGV.next if ARGV.include? "--set-version"
+    name = ARGV.next if ARGV.include? "--set-name"
 
     fc = FormulaCreator.new
     fc.name = name
     fc.version = version
     fc.url = url
 
-    fc.mode = if ARGV.include? '--cmake'
+    fc.mode = if ARGV.include? "--cmake"
       :cmake
-    elsif ARGV.include? '--autotools'
+    elsif ARGV.include? "--autotools"
       :autotools
     end
 
@@ -76,14 +76,20 @@ class FormulaCreator
   attr_reader :url, :sha256
   attr_accessor :name, :version, :path, :mode
 
-  def url= url
+  def url=(url)
     @url = url
     path = Pathname.new(url)
     if @name.nil?
-      %r{github.com/\S+/(\S+)/archive/}.match url
-      @name ||= $1
-      /(.*?)[-_.]?#{path.version}/.match path.basename
-      @name ||= $1
+      case url
+      when %r{github\.com/\S+/(\S+)\.git}
+        @name = $1
+        @head = true
+      when %r{github\.com/\S+/(\S+)/archive/}
+        @name = $1
+      else
+        /(.*?)[-_.]?#{path.version}/.match path.basename
+        @name = $1
+      end
       @path = Formulary.path @name unless @name.nil?
     else
       @path = Formulary.path name
@@ -96,7 +102,11 @@ class FormulaCreator
   end
 
   def fetch?
-    !ARGV.include?("--no-fetch")
+    !head? && !ARGV.include?("--no-fetch")
+  end
+
+  def head?
+    @head || ARGV.build_head?
   end
 
   def generate!
@@ -115,22 +125,26 @@ class FormulaCreator
       @sha256 = r.fetch.sha256 if r.download_strategy == CurlDownloadStrategy
     end
 
-    path.write ERB.new(template, nil, '>').result(binding)
+    path.write ERB.new(template, nil, ">").result(binding)
   end
 
   def template; <<-EOS.undent
     # Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-    #                #{HOMEBREW_CONTRIB}/example-formula.rb
+    #                http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula
     # PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
 
     class #{Formulary.class_s(name)} < Formula
       desc ""
       homepage ""
+    <% if head? %>
+      head "#{url}"
+    <% else %>
       url "#{url}"
     <% unless version.nil? or version.detected_from_url? %>
       version "#{version}"
     <% end %>
       sha256 "#{sha256}"
+    <% end %>
 
     <% if mode == :cmake %>
       depends_on "cmake" => :build

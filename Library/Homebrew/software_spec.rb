@@ -1,13 +1,13 @@
-require 'forwardable'
-require 'resource'
-require 'checksum'
-require 'version'
-require 'options'
-require 'build_options'
-require 'dependency_collector'
-require 'bottles'
-require 'patch'
-require 'compilers'
+require "forwardable"
+require "resource"
+require "checksum"
+require "version"
+require "options"
+require "build_options"
+require "dependency_collector"
+require "bottles"
+require "patch"
+require "compilers"
 
 class SoftwareSpec
   extend Forwardable
@@ -15,7 +15,7 @@ class SoftwareSpec
   PREDEFINED_OPTIONS = {
     :universal => Option.new("universal", "Build a universal binary"),
     :cxx11     => Option.new("c++11", "Build using C++11 mode"),
-    "32-bit"   => Option.new("32-bit", "Build 32-bit only"),
+    "32-bit"   => Option.new("32-bit", "Build 32-bit only")
   }
 
   attr_reader :name, :full_name, :owner
@@ -44,7 +44,7 @@ class SoftwareSpec
     @compiler_failures = []
   end
 
-  def owner= owner
+  def owner=(owner)
     @name = owner.name
     @full_name = owner.full_name
     @bottle_specification.tap = owner.tap
@@ -57,10 +57,26 @@ class SoftwareSpec
     patches.each { |p| p.owner = self }
   end
 
-  def url val=nil, specs={}
+  def url(val = nil, specs = {})
     return @resource.url if val.nil?
     @resource.url(val, specs)
     dependency_collector.add(@resource)
+  end
+
+  def bottle_unneeded?
+    !!@bottle_disable_reason && @bottle_disable_reason.unneeded?
+  end
+
+  def bottle_disabled?
+    !!@bottle_disable_reason
+  end
+
+  def bottle_disable_reason
+    @bottle_disable_reason
+  end
+
+  def bottle_defined?
+    bottle_specification.collector.keys.any?
   end
 
   def bottled?
@@ -68,15 +84,19 @@ class SoftwareSpec
       (bottle_specification.compatible_cellar? || ARGV.force_bottle?)
   end
 
-  def bottle &block
-    bottle_specification.instance_eval(&block)
+  def bottle(disable_type = nil, disable_reason = nil,  &block)
+    if disable_type
+      @bottle_disable_reason = BottleDisableReason.new(disable_type, disable_reason)
+    else
+      bottle_specification.instance_eval(&block)
+    end
   end
 
-  def resource_defined? name
-    resources.has_key?(name)
+  def resource_defined?(name)
+    resources.key?(name)
   end
 
-  def resource name, klass=Resource, &block
+  def resource(name, klass = Resource, &block)
     if block_given?
       raise DuplicateResourceError.new(name) if resource_defined?(name)
       res = klass.new(name, &block)
@@ -87,7 +107,7 @@ class SoftwareSpec
     end
   end
 
-  def go_resource name, &block
+  def go_resource(name, &block)
     resource name, Resource::Go, &block
   end
 
@@ -95,7 +115,7 @@ class SoftwareSpec
     options.include?(name)
   end
 
-  def option(name, description="")
+  def option(name, description = "")
     opt = PREDEFINED_OPTIONS.fetch(name) do
       if Symbol === name
         opoo "Passing arbitrary symbols to `option` is deprecated: #{name.inspect}"
@@ -110,7 +130,7 @@ class SoftwareSpec
     options << opt
   end
 
-  def deprecated_option hash
+  def deprecated_option(hash)
     raise ArgumentError, "deprecated_option hash must not be empty" if hash.empty?
     hash.each do |old_options, new_options|
       Array(old_options).each do |old_option|
@@ -131,7 +151,7 @@ class SoftwareSpec
     @build = BuildOptions.new(Options.create(@flags), options)
   end
 
-  def depends_on spec
+  def depends_on(spec)
     dep = dependency_collector.add(spec)
     add_dep_option(dep) if dep
   end
@@ -144,15 +164,15 @@ class SoftwareSpec
     dependency_collector.requirements
   end
 
-  def patch strip=:p1, src=nil, &block
+  def patch(strip = :p1, src = nil, &block)
     patches << Patch.create(strip, src, &block)
   end
 
-  def fails_with compiler, &block
+  def fails_with(compiler, &block)
     compiler_failures << CompilerFailure.create(compiler, &block)
   end
 
-  def needs *standards
+  def needs(*standards)
     standards.each do |standard|
       compiler_failures.concat CompilerFailure.for_standard(standard)
     end
@@ -178,11 +198,11 @@ end
 class HeadSoftwareSpec < SoftwareSpec
   def initialize
     super
-    @resource.version = Version.new('HEAD')
+    @resource.version = Version.new("HEAD")
   end
 
-  def verify_download_integrity fn
-    return
+  def verify_download_integrity(_fn)
+    nil
   end
 end
 
@@ -245,6 +265,11 @@ class Bottle
     @spec.compatible_cellar?
   end
 
+  # Does the bottle need to be relocated?
+  def skip_relocation?
+    @spec.skip_relocation?
+  end
+
   def stage
     resource.downloader.stage
   end
@@ -272,7 +297,7 @@ class BottleSpecification
     @collector = BottleCollector.new
   end
 
-  def root_url(var=nil)
+  def root_url(var = nil)
     if var.nil?
       @root_url ||= "#{DEFAULT_DOMAIN}/#{Bintray.repository(tap)}"
     else
@@ -281,7 +306,12 @@ class BottleSpecification
   end
 
   def compatible_cellar?
-    cellar == :any || cellar == HOMEBREW_CELLAR.to_s
+    cellar == :any || cellar == :any_skip_relocation || cellar == HOMEBREW_CELLAR.to_s
+  end
+
+  # Does the Bottle this BottleSpecification belongs to need to be relocated?
+  def skip_relocation?
+    cellar == :any_skip_relocation
   end
 
   def tag?(tag)
@@ -304,7 +334,7 @@ class BottleSpecification
   def checksums
     checksums = {}
     os_versions = collector.keys
-    os_versions.map! {|osx| MacOS::Version.from_symbol osx rescue nil }.compact!
+    os_versions.map! { |osx| MacOS::Version.from_symbol osx rescue nil }.compact!
     os_versions.sort.reverse_each do |os_version|
       osx = os_version.to_sym
       checksum = collector[osx]

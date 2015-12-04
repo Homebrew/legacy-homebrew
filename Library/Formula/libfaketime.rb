@@ -1,29 +1,27 @@
-require 'formula'
-
 class Libfaketime < Formula
   desc "Report faked system time to programs"
-  homepage 'http://www.code-wizards.com/projects/libfaketime'
-  url 'http://code-wizards.com/projects/libfaketime/libfaketime-0.9.5.tar.gz'
-  sha1 '12199af854004f231892ab6976c2e99b937e2d61'
+  homepage "http://www.code-wizards.com/projects/libfaketime"
+  url "http://code-wizards.com/projects/libfaketime/libfaketime-0.9.5.tar.gz"
+  sha256 "5e07678d440d632bef012068ca58825402da5ad25954513e785717cc539c213d"
 
   bottle do
     revision 1
-    sha1 "f50875aa4b38f408258c144ea55c098fe04b25f2" => :yosemite
-    sha1 "42bd3fbc36e8dff01d9b21523f9c3d7385ff0455" => :mavericks
-    sha1 "9bf2033a9b41825e0f4b09f7cc619b233ea98d17" => :mountain_lion
+    sha256 "5148ca77b62f044e604d80cd18f2a7c46c2bd44ffff2b828eea05b98154f2b17" => :yosemite
+    sha256 "9beebb4e5b6fa274f6114a141d7c20f726532e851496733b60825e9c75926480" => :mavericks
+    sha256 "4b7477042b15dd475fc16de06df07e9cc3a983033d6d21ac6029dfc1ddfb1925" => :mountain_lion
   end
 
   depends_on :macos => :lion
 
   fails_with :llvm do
     build 2336
-    cause 'No thread local storage support'
+    cause "No thread local storage support"
   end
 
   def install
     system "make", "-C", "src", "-f", "Makefile.OSX", "PREFIX=#{prefix}"
-    bin.install 'src/faketime'
-    (lib/'faketime').install 'src/libfaketime.1.dylib'
-    man1.install 'man/faketime.1'
+    bin.install "src/faketime"
+    (lib/"faketime").install "src/libfaketime.1.dylib"
+    man1.install "man/faketime.1"
   end
 end

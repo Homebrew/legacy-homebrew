@@ -1,17 +1,12 @@
 class SshCopyId < Formula
   desc "Add a public key to a remote machine's authorized_keys file"
   homepage "http://www.openssh.com/"
-  url "http://ftp.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
-  mirror "http://ftp3.usa.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-6.8p1.tar.gz"
-  version "6.8p1"
-  sha256 "3ff64ce73ee124480b5bf767b9830d7d3c03bbcb6abe716b78f0192c37ce160e"
+  url "http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-7.1p1.tar.gz"
+  mirror "https://www.mirrorservice.org/pub/OpenBSD/OpenSSH/portable/openssh-7.1p1.tar.gz"
+  version "7.1p1"
+  sha256 "fc0a6d2d1d063d5c66dffd952493d0cda256cad204f681de0f84ef85b2ad8428"
 
-  bottle do
-    cellar :any
-    sha256 "4c89eddf0780ce6d65d9b2c8a5c1c3ddb536953daf4758524c369f6b40fcf593" => :yosemite
-    sha256 "36d4f00ce8ea2a61b89b3af35252cfc269010d10b4e6ddfc09d1b74189070184" => :mavericks
-    sha256 "5e57c77e0eae4650040b81824063e9672936d80aff16dbc77986e00d38a79e8a" => :mountain_lion
-  end
+  bottle :unneeded
 
   def install
     bin.install "contrib/ssh-copy-id"
@@ -19,6 +14,7 @@ class SshCopyId < Formula
   end
 
   test do
-    shell_output bin/"ssh-copy-id -h", 1
+    output = shell_output("#{bin}/ssh-copy-id -h 2>&1", 1)
+    assert_match /identity_file/, output
   end
 end

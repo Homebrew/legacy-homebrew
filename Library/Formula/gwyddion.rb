@@ -1,23 +1,22 @@
 class Gwyddion < Formula
   desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage "http://gwyddion.net/"
-  url "http://gwyddion.net/download/2.40/gwyddion-2.40.tar.gz"
-  sha256 "b3838dab5a4ff8e1f62d2ab859fabb42c3a8c31f5dc4f72dc679a46de2b67bab"
-  revision 1
+  url "http://gwyddion.net/download/2.43/gwyddion-2.43.tar.gz"
+  sha256 "9feb33f991b785f238f62bf5c204a41d654e6c04929ec6c8c4b025691d60334e"
 
   bottle do
-    revision 1
-    sha256 "f3a8511395ab3752d03d69e0ae8cc5607803ba33e7adfcb275257a03bcee991e" => :yosemite
-    sha256 "a5bdfac3b34d95547c35dfb559616e037048efb36e880bd9367b3f102a20b642" => :mavericks
-    sha256 "66a3aa0f4154e483b64427c6459cd6cdd514a66c4838cada26793a077586a124" => :mountain_lion
+    sha256 "cfc9ca892b910a3e99aeacd364d59a7b0be14249f5629d0a16db62a314e418ab" => :el_capitan
+    sha256 "52d889d6aa15945904a1b1713a0bbf1b4d486bba81225a52a7d38dca295673a5" => :yosemite
+    sha256 "8728365fda96c5092b6475068edb85ff8a5d7dc0807080b7ff29ae063e7ac351" => :mavericks
   end
 
   depends_on "pkg-config" => :build
+  depends_on "fftw"
   depends_on "gtk+"
   depends_on "gtk-mac-integration"
-  depends_on "libxml2"
-  depends_on "fftw"
   depends_on "gtkglext"
+  depends_on "libxml2"
+
   depends_on :python => :optional
   depends_on "pygtk" if build.with? "python"
   depends_on "gtksourceview" if build.with? "python"

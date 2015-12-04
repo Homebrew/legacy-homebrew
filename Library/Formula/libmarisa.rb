@@ -1,17 +1,15 @@
-require "formula"
-
 class Libmarisa < Formula
   desc "Static and space-efficient trie data structure"
   homepage "https://code.google.com/p/marisa-trie/"
   url "https://marisa-trie.googlecode.com/files/marisa-0.2.4.tar.gz"
-  sha1 "fb0ed7d993e84dff32ec456a79bd36a00022629d"
+  sha256 "67a7a4f70d3cc7b0a85eb08f10bc3eaf6763419f0c031f278c1f919121729fb3"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "99eb0cbc6afdfb058a12d944217b5dd0e13ed95d" => :yosemite
-    sha1 "0881fd8efe266861d9f60deb6ccd9860419db679" => :mavericks
-    sha1 "a9a51d0e5c0ad1ceb8e857493cfce501c208e76d" => :mountain_lion
+    sha256 "7f64d134b201a2791f49db66452ddeaad60310cc44df117830a5671459f535e8" => :yosemite
+    sha256 "8255b1f73c5fa15b3f7c7f5a61d54e8acc781f7bce98911f64faf4a2228e952f" => :mavericks
+    sha256 "64a82f591bea1b75e3146080a713b6d919cfd5143167061c602b277a47a576b0" => :mountain_lion
   end
 
   def install
@@ -21,7 +19,7 @@ class Libmarisa < Formula
   end
 
   test do
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <marisa.h>
       int main() {
         marisa::Keyset keyset;

@@ -1,18 +1,18 @@
-require 'requirement'
-require 'requirements/apr_requirement'
-require 'requirements/fortran_requirement'
-require 'requirements/language_module_requirement'
-require 'requirements/minimum_macos_requirement'
-require 'requirements/maximum_macos_requirement'
-require 'requirements/mpi_requirement'
-require 'requirements/osxfuse_requirement'
-require 'requirements/python_requirement'
-require 'requirements/java_requirement'
-require 'requirements/ruby_requirement'
-require 'requirements/tuntap_requirement'
-require 'requirements/unsigned_kext_requirement'
-require 'requirements/x11_requirement'
-require 'requirements/emacs_requirement'
+require "requirement"
+require "requirements/apr_requirement"
+require "requirements/fortran_requirement"
+require "requirements/language_module_requirement"
+require "requirements/minimum_macos_requirement"
+require "requirements/maximum_macos_requirement"
+require "requirements/mpi_requirement"
+require "requirements/osxfuse_requirement"
+require "requirements/python_requirement"
+require "requirements/java_requirement"
+require "requirements/ruby_requirement"
+require "requirements/tuntap_requirement"
+require "requirements/unsigned_kext_requirement"
+require "requirements/x11_requirement"
+require "requirements/emacs_requirement"
 
 class XcodeRequirement < Requirement
   fatal true
@@ -42,7 +42,7 @@ class XcodeRequirement < Requirement
       EOS
     else
       message += <<-EOS.undent
-        Xcode can be installed from https://developer.apple.com/downloads/
+        Xcode can be installed from https://developer.apple.com/xcode/downloads/
       EOS
     end
   end
@@ -54,16 +54,16 @@ end
 
 class MysqlRequirement < Requirement
   fatal true
-  default_formula 'mysql'
+  default_formula "mysql"
 
-  satisfy { which 'mysql_config' }
+  satisfy { which "mysql_config" }
 end
 
 class PostgresqlRequirement < Requirement
   fatal true
-  default_formula 'postgresql'
+  default_formula "postgresql"
 
-  satisfy { which 'pg_config' }
+  satisfy { which "pg_config" }
 end
 
 class GPGRequirement < Requirement
@@ -78,7 +78,7 @@ class TeXRequirement < Requirement
   cask "mactex"
   download "https://www.tug.org/mactex/"
 
-  satisfy { which('tex') || which('latex') }
+  satisfy { which("tex") || which("latex") }
 
   def message
     s = <<-EOS.undent
@@ -114,14 +114,14 @@ end
 
 class MercurialRequirement < Requirement
   fatal true
-  default_formula 'mercurial'
+  default_formula "mercurial"
 
-  satisfy { which('hg') }
+  satisfy { which("hg") }
 end
 
 class GitRequirement < Requirement
   fatal true
-  default_formula 'git'
-  satisfy { !!which('git') }
+  default_formula "git"
+  satisfy { Utils.git_available? }
 end
 

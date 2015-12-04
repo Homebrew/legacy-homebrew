@@ -3,7 +3,9 @@ require "formula"
 require "compat/formula_specialties"
 require "formula_installer"
 require "keg"
+require "tab"
 require "testball"
+require "testball_bottle"
 
 class InstallTests < Homebrew::TestCase
   def temporary_install(formula)
@@ -18,11 +20,17 @@ class InstallTests < Homebrew::TestCase
     assert_predicate formula, :installed?
 
     begin
+      Tab.clear_cache
+      refute_predicate Tab.for_keg(keg), :poured_from_bottle
+
       yield formula
     ensure
+      Tab.clear_cache
       keg.unlink
       keg.uninstall
       formula.clear_cache
+      # there will be log files when sandbox is enable.
+      formula.logs.rmtree if formula.logs.directory?
     end
 
     refute_predicate keg, :exist?
@@ -38,7 +46,7 @@ class InstallTests < Homebrew::TestCase
       assert_predicate f.libexec, :directory?
       assert_equal 1, f.libexec.children.length
 
-      refute_predicate f.prefix+'main.c', :exist?
+      refute_predicate f.prefix+"main.c", :exist?
 
       # Test that things make it into the Cellar
       keg = Keg.new f.prefix
@@ -50,21 +58,34 @@ class InstallTests < Homebrew::TestCase
     end
   end
 
-  def test_script_install
-    mktmpdir do |dir|
-      name = "test_script_formula"
-      path = Pathname.new(dir)+"#{name}.rb"
+  def test_bottle_unneeded_formula_install
+    MacOS.stubs(:has_apple_developer_tools?).returns(false)
 
-      path.write <<-EOS.undent
-        class #{Formulary.class_s(name)} < ScriptFileFormula
-          url "file://#{File.expand_path(__FILE__)}"
-          version "1"
-        end
-        EOS
+    formula = Testball.new
+    formula.stubs(:bottle_unneeded?).returns(true)
+    formula.stubs(:bottle_disabled?).returns(true)
 
-      f = Formulary.factory(path.to_s)
+    refute_predicate formula, :bottled?
+    assert_predicate formula, :bottle_unneeded?
+    assert_predicate formula, :bottle_disabled?
 
-      temporary_install(f) { assert_equal 1, f.bin.children.length }
+    temporary_install(formula) do |f|
+      assert_predicate f, :installed?
+    end
+  end
+
+  def test_not_poured_from_bottle_when_compiler_specified
+    assert_nil ARGV.cc
+
+    cc_arg = "--cc=llvm-gcc"
+    ARGV << cc_arg
+    begin
+      temporary_install(TestballBottle.new) do |f|
+        tab = Tab.for_formula(f)
+        assert_equal "llvm", tab.compiler
+      end
+    ensure
+      ARGV.delete_if { |x| x == cc_arg }
     end
   end
 end

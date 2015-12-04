@@ -1,16 +1,11 @@
 class Jetty < Formula
   desc "Java servlet engine and webserver"
   homepage "https://www.eclipse.org/jetty/"
-  url "http://download.eclipse.org/jetty/9.3.0.v20150612/dist/jetty-distribution-9.3.0.v20150612.tar.gz"
-  version "9.3.0.v20150612"
-  sha256 "0a06c7ee2997819e5b46302c7b6f0269f0c953f194a30f15912d2e45d2c30a5c"
+  url "http://download.eclipse.org/jetty/9.3.5.v20151012/dist/jetty-distribution-9.3.5.v20151012.tar.gz"
+  version "9.3.5.v20151012"
+  sha256 "24e80e350fcc9749aa4a29913c34917ad238a0fa3abdb7d7c9b42dc40bdf0f9b"
 
-  bottle do
-    cellar :any
-    sha256 "124258ef3fc8e1ffc3c17a157ba0fea091b3142b85596b95705e9c76cbc2ebd8" => :yosemite
-    sha256 "6e861d3f2233e03f790c846d935d0322171fdf417566d92550093b68f8a3bcf1" => :mavericks
-    sha256 "3e808c691ffd66116ecef596871fa6082da3c1964be5402acd651740363b6d6d" => :mountain_lion
-  end
+  bottle :unneeded
 
   depends_on :java => "1.8+"
 
@@ -31,7 +26,9 @@ class Jetty < Formula
   end
 
   test do
-    pid = fork { system bin/"jetty", "start" }
+    ENV["JETTY_BASE"] = testpath
+    cp_r Dir[libexec/"*"], testpath
+    pid = fork { exec bin/"jetty", "start" }
     sleep 5 # grace time for server start
     begin
       assert_match /Jetty running pid=\d+/, shell_output("#{bin}/jetty check")

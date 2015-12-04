@@ -1,14 +1,19 @@
-require 'formula'
-
 class Osm2pgrouting < Formula
   desc "Import OSM data into pgRouting database"
-  homepage 'http://pgrouting.org/docs/tools/osm2pgrouting.html'
-  url 'https://github.com/pgRouting/osm2pgrouting/archive/v2.0.0.tar.gz'
-  sha1 '2d100ac9914919993a7c341e2395b8bafdfe3759'
-  head 'https://github.com/pgRouting/osm2pgrouting.git'
+  homepage "http://pgrouting.org/docs/tools/osm2pgrouting.html"
+  url "https://github.com/pgRouting/osm2pgrouting/archive/osm2pgrouting-2.0.0.tar.gz"
+  sha256 "607e67b85664a40a495bfa37fdc236b617c3c6b41c3aa4fd68f780ba6a629469"
+  head "https://github.com/pgRouting/osm2pgrouting.git"
 
-  depends_on 'cmake' => :build
-  depends_on 'boost'
+  bottle do
+    cellar :any
+    sha256 "e2eeea2392b2febb64ad5beb1e974ba10f9b38012b6d41edb9111b6cc3e19911" => :el_capitan
+    sha256 "24a7fbe3a7079145f76b8e9f70c3f1fd02bd82e4324ef782950d3f98678530c8" => :yosemite
+    sha256 "6fced08cc54a523a0923a7091b735c45becc63d51ca16775b381fd455150a124" => :mavericks
+  end
+
+  depends_on "cmake" => :build
+  depends_on "boost"
   depends_on :postgresql
 
   def install
@@ -23,5 +28,9 @@ class Osm2pgrouting < Formula
     system "cmake", ".", *std_cmake_args
     system "make"
     system "make", "install"
+  end
+
+  test do
+    shell_output("#{bin}/osm2pgrouting", 1)
   end
 end

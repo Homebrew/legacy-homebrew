@@ -1,16 +1,14 @@
-require "formula"
-
 class Megacmd < Formula
   desc "Command-line client for mega.co.nz storage service"
   homepage "https://github.com/t3rm1n4l/megacmd"
   url "https://github.com/t3rm1n4l/megacmd/archive/0.012.tar.gz"
-  sha1 "30690366ef00b64296cd4acca6f842d83dcc9d69"
+  sha256 "804861f2a7a36eef53a7310e52627e790fa9de66acf8565f697089389d2709a0"
   head "https://github.com/t3rm1n4l/megacmd.git"
 
   bottle do
-    sha1 "6ee3f124bf3c9eae280aefb07f2d25af8353a779" => :mavericks
-    sha1 "8292dfa4c648bbe95d1f9752c63ff3dd78104891" => :mountain_lion
-    sha1 "c49c5876032f94ec4e3d2ff71632f347d08191c0" => :lion
+    sha256 "a76d92587a6274e359b4bac0360b3a51f0316c4c5f6fb7ab20b22965a0d8ad8f" => :mavericks
+    sha256 "9d2d5ce97263306ffd83e270a380a40e5fe1f8464830870cb132a2bdab15356c" => :mountain_lion
+    sha256 "fc9d06348d244401315228598c9e3e83137fbc42e7367b08b1430ea7cb93918a" => :lion
   end
 
   depends_on "go" => :build

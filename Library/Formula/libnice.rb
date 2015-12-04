@@ -1,17 +1,15 @@
-require "formula"
-
 class Libnice < Formula
   desc "GLib ICE implementation"
   homepage "http://nice.freedesktop.org/wiki/"
   url "http://nice.freedesktop.org/releases/libnice-0.1.7.tar.gz"
-  sha1 "94d459fc409da9cf5e4ac30d680ee6c0ded2cb64"
+  sha256 "4ed165aa2203136dce548c7cef735d8becf5d9869793f96b99dcbbaa9acf78d8"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "8040ab61239c18ac7fd55c661c810115c57ad94f" => :yosemite
-    sha1 "d7e063ed0efe3d2d1873843a9b15a0a3e6ec0b51" => :mavericks
-    sha1 "e5bc420dad36c42a8cfc57a1a089aa4f6dd1d122" => :mountain_lion
+    sha256 "3a14bfa7c0252d38aeb166fce93f8baace5f3ed51728e432838fe2c0f4486746" => :yosemite
+    sha256 "fb43d403aa966cb0dacd28e089a6b02ad376ff4b144393b33bc91f530909786b" => :mavericks
+    sha256 "659391e379d1fe736cc95aff8414a2328cfb424bb9bd962eb35347257688dd3b" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -27,6 +25,6 @@ class Libnice < Formula
     ]
 
     system "./configure",  *args
-    system "make install"
+    system "make", "install"
   end
 end

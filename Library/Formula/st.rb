@@ -1,13 +1,13 @@
 class St < Formula
   desc "Statistics from the command-line"
   homepage "https://github.com/nferraz/st"
-  url "https://github.com/nferraz/st/archive/v1.1.1.tar.gz"
-  sha256 "fbfb0680e15448efccc6c6c83e4ae2f4c6a24d12c753444bffbd099632fa70c6"
+  url "https://github.com/nferraz/st/archive/v1.1.2.tar.gz"
+  sha256 "46a3d10995a910870d07550ed86c2979a46523059bed4067e9a49a403be331c8"
 
   bottle do
-    sha256 "12c6eccd64e7607dbaf7e3f18d3434957047e348e8d7a901352aae46442387c7" => :yosemite
-    sha256 "1e38e3d700ba13981b45c54de2cb3f820bb5addf0dca6cae5fabd4418b3a7ad2" => :mavericks
-    sha256 "77dbba21e74dcbddbf9a3f890f63b5416be9512f94bd4f7a694f8f5339ffd373" => :mountain_lion
+    sha256 "d2654ec5ed18e1fcfe41e8c34bfc5bda5b134698f9f7eaf1b8d1fb73e6603f49" => :yosemite
+    sha256 "bee18d7a80cf6858c025206472913e6dc39512459a0543462bdff7bee689b1c0" => :mavericks
+    sha256 "01fecae7c00ca950cd36ae14efd132027269687b59ec21d79d3ae9800617839a" => :mountain_lion
   end
 
   def install

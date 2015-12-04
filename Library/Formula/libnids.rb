@@ -1,17 +1,15 @@
-require 'formula'
-
 class Libnids < Formula
   desc "Implements E-component of network intrusion detection system"
-  homepage 'http://libnids.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz'
-  sha1 '9a421df05cefdc4f5f7db95efc001b3c2b5249ce'
+  homepage "http://libnids.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/libnids/libnids/1.24/libnids-1.24.tar.gz"
+  sha256 "314b4793e0902fbf1fdb7fb659af37a3c1306ed1aad5d1c84de6c931b351d359"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "49f12f0277e954aad59221c16f28d1ac86838ea1" => :yosemite
-    sha1 "fcb4eed5e69d8f80e5f7bacd6dad1d09d942e4f7" => :mavericks
-    sha1 "23f8aaac028f2fd18323cebd0f5e06c74e708893" => :mountain_lion
+    sha256 "a0375ba5851ffc54b89948d05d843102dbf33dbe8f8d77e46673a985df40ca4f" => :yosemite
+    sha256 "4ad0be7662127faff0e9103f678f9d3f277278de4cdc801e2ecdc40ad81e448a" => :mavericks
+    sha256 "e88e84cda8a3bad62118791243f4642572fa19b9656f30bcdda08c510fd6b366" => :mountain_lion
   end
 
   deprecated_option "disable-libnet" => "without-libnet"
@@ -29,13 +27,13 @@ class Libnids < Formula
 
   def install
     # autoreconf the old 2005 era code for sanity.
-    system 'autoreconf', '-ivf'
+    system "autoreconf", "-ivf"
     args = ["--prefix=#{prefix}", "--mandir=#{man}", "--enable-shared"]
     args << "--disable-libnet" if build.without? "libnet"
     args << "--disable-libglib" if build.without? "glib"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
 

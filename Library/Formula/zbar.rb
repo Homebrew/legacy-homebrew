@@ -1,20 +1,18 @@
-require 'formula'
-
 class Zbar < Formula
   desc "Suite of barcodes-reading tools"
-  homepage 'http://zbar.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2'
-  sha1 '273b47c26788faba4325baecc34063e27a012963'
+  homepage "http://zbar.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2"
+  sha256 "234efb39dbbe5cef4189cc76f37afbe3cfcfb45ae52493bfe8e191318bdbadc6"
   revision 1
 
   depends_on :x11 => :optional
-  depends_on 'pkg-config' => :build
-  depends_on 'jpeg'
-  depends_on 'imagemagick'
-  depends_on 'ufraw'
-  depends_on 'xz'
-  depends_on 'freetype'
-  depends_on 'libtool' => :run
+  depends_on "pkg-config" => :build
+  depends_on "jpeg"
+  depends_on "imagemagick"
+  depends_on "ufraw"
+  depends_on "xz"
+  depends_on "freetype"
+  depends_on "libtool" => :run
 
   # Fix JPEG handling using patch from
   # http://sourceforge.net/p/zbar/discussion/664596/thread/58b8d79b#8f67
@@ -31,14 +29,14 @@ class Zbar < Formula
       --without-gtk
     ]
 
-    if build.with? 'x11'
-      args << '--with-x'
+    if build.with? "x11"
+      args << "--with-x"
     else
-      args << '--without-x'
+      args << "--without-x"
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
 

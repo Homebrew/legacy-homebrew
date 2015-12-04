@@ -1,18 +1,14 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
   homepage "https://sourceforge.net/projects/cppcheck/"
-
-  stable do
-    url "https://github.com/danmar/cppcheck/archive/1.69.tar.gz"
-    sha256 "6e54f0dc97cbcc6c742cef4ceb1ade7f20f88af713a19c7613dba1d78eed6363"
-  end
-
+  url "https://github.com/danmar/cppcheck/archive/1.71.tar.gz"
+  sha256 "49f8d44516a1534eb01e3cc8300d60c3577c5e4339336defaf213d08ff914f1b"
   head "https://github.com/danmar/cppcheck.git"
 
   bottle do
-    sha256 "3f788dd4abcf544005030332c7c6228a27987699442548e007857ead6f13a5a7" => :yosemite
-    sha256 "7716a9fa9ef5c47250552c9f67c6d024acdd90f42e0427848e24c8af4f8e770e" => :mavericks
-    sha256 "8a81c8a4785239955506ef1f1bb37b0140eba63f20e0e8c2a9052a4afbd226f2" => :mountain_lion
+    sha256 "57f0796aeae7641466857abb9f55786c62cd1970941756813f9559cf370a25e2" => :el_capitan
+    sha256 "6f7e66fefcf465e8cf3171d9aa63584fe3eaaf9e7aa4c8c8e6b7f519bb7950cc" => :yosemite
+    sha256 "ba9a7d4674ced19e545d25d973ea2127faa91a011940b925200f9cc177c34081" => :mavericks
   end
 
   option "without-rules", "Build without rules (no pcre dependency)"
@@ -37,10 +33,8 @@ class Cppcheck < Formula
       system "make", "HAVE_RULES=no", "CFGDIR=#{prefix}/cfg"
     end
 
-    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
-
-    # make sure cppcheck can find its configure directory, #26194
-    prefix.install "cfg"
+    # CFGDIR is relative to the prefix for install, don't add #{prefix}.
+    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=/cfg", "install"
 
     if build.with? "gui"
       cd "gui" do

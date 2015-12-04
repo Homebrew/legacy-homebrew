@@ -1,18 +1,16 @@
-require 'formula'
-
 class OsmPbf < Formula
   desc "Tools related to PBF (an alternative to XML format)"
-  homepage 'http://wiki.openstreetmap.org/wiki/PBF_Format'
-  url 'https://github.com/scrosby/OSM-binary/archive/v1.3.3.tar.gz'
-  sha1 '639e3eecc00041e6326b69da6c200fabe7ad2895'
+  homepage "http://wiki.openstreetmap.org/wiki/PBF_Format"
+  url "https://github.com/scrosby/OSM-binary/archive/v1.3.3.tar.gz"
+  sha256 "a109f338ce6a8438a8faae4627cd08599d0403b8977c185499de5c17b92d0798"
 
-  depends_on 'protobuf'
+  depends_on "protobuf"
 
   def install
-    cd 'src' do
+    cd "src" do
       system "make"
-      lib.install 'libosmpbf.a'
+      lib.install "libosmpbf.a"
     end
-    include.install Dir['include/*']
+    include.install Dir["include/*"]
   end
 end

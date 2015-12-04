@@ -3,12 +3,12 @@ class Gource < Formula
   homepage "https://github.com/acaudwell/Gource"
   url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
   sha256 "85a40ac8e4f5c277764216465c248d6b76589ceac012541c4cc03883a24abde4"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 "f98ddff763524d0d5bc670a31c12229145be613077b250a2af79acd36ee1df0b" => :yosemite
-    sha256 "83dd5ace96b12094dfe287d1655072d57e15ed79588b65ff3752e870460f3068" => :mavericks
-    sha256 "7107bae161947b07edf8361846fd18d1b77a6a900456ff30ae01f9a9c9db6978" => :mountain_lion
+    sha256 "d062abff352d5a192cbe73840c8790e8f608ea62c7438aceb346273384c24559" => :el_capitan
+    sha256 "c06d9b4f2e1498a2c6b058ff4218004c0dd56aa64123ba0add3d5d744d699167" => :yosemite
+    sha256 "910e7a041667ab60ba79590356617fb5934ad4b43ba57f1783d37632953eeb26" => :mavericks
   end
 
   head do

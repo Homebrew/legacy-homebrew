@@ -1,18 +1,16 @@
-require 'formula'
-
 class Henplus < Formula
   desc "SQL shell that can handle multiple sessions in parallel"
-  homepage 'https://github.com/neurolabs/henplus'
-  url 'https://github.com/downloads/neurolabs/henplus/henplus-0.9.8.tar.gz'
-  sha1 'ab1fc3a2ec5a6c8f434d2965d9bbe2121030ffd1'
+  homepage "https://github.com/neurolabs/henplus"
+  url "https://github.com/downloads/neurolabs/henplus/henplus-0.9.8.tar.gz"
+  sha256 "ea7ca363d0503317235e97f66aa0efefe44463d8445e88b304ec0ac1748fe1ff"
 
   depends_on :ant => :build
-  depends_on 'libreadline-java'
+  depends_on "libreadline-java"
 
   def install
-    ENV['JAVA_HOME'] = `/usr/libexec/java_home`.chomp
+    ENV["JAVA_HOME"] = `/usr/libexec/java_home`.chomp
 
-    inreplace 'bin/henplus' do |s|
+    inreplace "bin/henplus" do |s|
       s.gsub! "LD_LIBRARY_PATH", "DYLD_LIBRARY_PATH"
       s.change_make_var! "DYLD_LIBRARY_PATH", Formula["libreadline-java"].opt_lib
       s.gsub! "$THISDIR/..", HOMEBREW_PREFIX
@@ -20,7 +18,7 @@ class Henplus < Formula
               "share/libreadline-java/libreadline-java.jar"
     end
 
-    system 'ant', 'install', "-Dprefix=#{prefix}"
+    system "ant", "install", "-Dprefix=#{prefix}"
   end
 
   def caveats; <<-EOS.undent

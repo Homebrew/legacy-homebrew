@@ -1,17 +1,16 @@
-require "formula"
-
 class Findutils < Formula
   desc "Collection of GNU find, xargs, and locate"
-  homepage "http://www.gnu.org/software/findutils/"
+  homepage "https://www.gnu.org/software/findutils/"
   url "http://ftpmirror.gnu.org/findutils/findutils-4.4.2.tar.gz"
   mirror "https://ftp.gnu.org/gnu/findutils/findutils-4.4.2.tar.gz"
-  sha1 "e8dd88fa2cc58abffd0bfc1eddab9020231bb024"
+  sha256 "434f32d171cbc0a5e72cfc5372c6fc4cb0e681f8dce566a0de5b6fccd702b62a"
 
   bottle do
     revision 1
-    sha1 "2f98c4a6352ba11092a3e90cab5670e4e1b95e07" => :yosemite
-    sha1 "93a1389d8a4124a8f36832484dd0232ac7bf99c7" => :mavericks
-    sha1 "60134ccc215dd1216bfb256a1d38dd58c74525de" => :mountain_lion
+    sha256 "27dfbb29443811ccac8ed9062dd251ce565de7383449ab18d16d0e6461a951c3" => :el_capitan
+    sha256 "4d65d83123ae350e3a4e79f61f3a5d6e797dd6cda434db3c61a7f86ecda9bf09" => :yosemite
+    sha256 "52b6ad3ccde5c2a56d56e7a08fb297be2651c5e6998500d85cbecab43842b692" => :mavericks
+    sha256 "1ad71a6f373f31e2b3b71c3de67b8e7cf0bcb9d16339846f0efa2709aef91c7b" => :mountain_lion
   end
 
   deprecated_option "default-names" => "with-default-names"
@@ -22,7 +21,8 @@ class Findutils < Formula
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}/locate",
             "--disable-dependency-tracking",
-            "--disable-debug"]
+            "--disable-debug",
+           ]
     args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args
@@ -30,6 +30,10 @@ class Findutils < Formula
   end
 
   test do
-    system "#{bin}/gfind", "--version"
+    if build.with? "default-names"
+      system "#{bin}/find", "."
+    else
+      system "#{bin}/gfind", "."
+    end
   end
 end

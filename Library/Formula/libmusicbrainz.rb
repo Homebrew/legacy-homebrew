@@ -2,13 +2,13 @@ class Libmusicbrainz < Formula
   desc "MusicBrainz Client Library"
   homepage "https://musicbrainz.org/doc/libmusicbrainz"
   url "https://github.com/metabrainz/libmusicbrainz/releases/download/release-5.1.0/libmusicbrainz-5.1.0.tar.gz"
-  sha1 "1576b474c777bb9c4ff906853ef1d3bb14915f50"
+  sha256 "6749259e89bbb273f3f5ad7acdffb7c47a2cf8fcaeab4c4695484cef5f4c6b46"
 
   bottle do
     cellar :any
-    sha1 "96390dbcc935eba33bf6908cda20f556991fbf8c" => :yosemite
-    sha1 "b985f402432c3bafa240cd6541c518100fbb5230" => :mavericks
-    sha1 "b336d4eb2c17a1143cefd2838f614ea685f35e34" => :mountain_lion
+    sha256 "0851c7889df9dc2971b60fe9fd8ad891afd8d5dae08877393e2f69e3cc33f589" => :yosemite
+    sha256 "44fa04315d5bbda3e6b9e6ce20a6140c93d535d8c58e8816c574a7e6d4b90429" => :mavericks
+    sha256 "e187188a465f4464c2d294cf10e3058c4e3fdbe76c49a346b996f3c108e68ead" => :mountain_lion
   end
 
   depends_on "cmake" => :build

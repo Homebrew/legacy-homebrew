@@ -1,15 +1,16 @@
 class PcapDnsproxy < Formula
-  desc "A powerful DNS proxy designed to anti DNS spoofing"
+  desc "Powerful DNS proxy designed to anti DNS spoofing"
   homepage "https://github.com/chengr28/Pcap_DNSProxy"
-  url "https://github.com/chengr28/Pcap_DNSProxy/archive/v0.4.2.tar.gz"
-  sha256 "0737b16283e84bc94f63066f448ba84416141b8d5a86b5e01f1f97164d9d44f2"
+  url "https://github.com/chengr28/Pcap_DNSProxy/archive/v0.4.4.tar.gz"
+  sha256 "4412e5f6b8bd1cf985f69132a1a38fcf3bf81ba83e9439920ae3237cf059816b"
   head "https://github.com/chengr28/Pcap_DNSProxy.git"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "5e618117b29e420fb1726ed1c4ef493a7bcd7610c1431445c879d4032c608f68" => :yosemite
-    sha256 "8b814cd69b3af060da528aebd4bc4dca49fbb1977ed472df3a3d25277f91d635" => :mavericks
-    sha256 "32d4fcc6f22ba124a3a9ded9322cc645aa8ca5bdb1bcd0a5abf6b458afe775e0" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "741c8146733dffe379137cbce612537ae22e69a8b3d5a03c1bdf58d23549006a" => :el_capitan
+    sha256 "0b81bfe38ace57eba6a7a5a5d8672999ff1fbebd9315e5d1a1b39b75e9cd8458" => :yosemite
+    sha256 "33c919db4973f2fbb44f0e35a5d2c381744622f67b4dfe4bc97423b2b0a9c184" => :mavericks
   end
 
   depends_on :xcode => :build
@@ -25,22 +26,6 @@ class PcapDnsproxy < Formula
     bin.install "Source/build/Release/KeyPairGenerator"
     bin.install "Source/build/Release/Pcap_DNSProxy"
     (etc/"pcap_DNSproxy").install Dir["Source/ExampleConfig/*.{ini,txt}"]
-  end
-
-  test do
-    mkdir testpath/"pcap_dnsproxy"
-    cp Dir[etc/"pcap_dnsproxy/*"], testpath/"pcap_dnsproxy/"
-    inreplace testpath/"pcap_dnsproxy/Config.ini" do |s|
-      s.gsub! /^Hosts Only.*/, "Hosts Only = 1"
-      s.gsub! /^Listen Port.*/, "Listen Port = 9999"
-    end
-    pid = fork { exec bin/"Pcap_DNSProxy", "-c", testpath/"pcap_dnsproxy/" }
-    begin
-      system "dig", "google.com", "@127.0.0.1", "-p", "9999", "+short"
-    ensure
-      Process.kill 9, pid
-      Process.wait pid
-    end
   end
 
   plist_options :startup => true, :manual => "sudo #{HOMEBREW_PREFIX}/opt/pcap_dnsproxy/bin/Pcap_DNSProxy -c #{HOMEBREW_PREFIX}/etc/pcap_dnsproxy/"
@@ -68,5 +53,24 @@ class PcapDnsproxy < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (testpath/"pcap_dnsproxy").mkpath
+    cp Dir[etc/"pcap_dnsproxy/*"], testpath/"pcap_dnsproxy/"
+
+    inreplace testpath/"pcap_dnsproxy/Config.ini" do |s|
+      s.gsub! /^Direct Request.*/, "Direct Request = IPv4 + IPv6"
+      s.gsub! /^Operation Mode.*/, "Operation Mode = Proxy"
+      s.gsub! /^Listen Port.*/, "Listen Port = 9999"
+    end
+
+    pid = fork { exec bin/"Pcap_DNSProxy", "-c", testpath/"pcap_dnsproxy/" }
+    begin
+      system "dig", "google.com", "@127.0.0.1", "-p", "9999", "+short"
+    ensure
+      Process.kill 9, pid
+      Process.wait pid
+    end
   end
 end

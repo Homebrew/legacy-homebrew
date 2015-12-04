@@ -1,22 +1,20 @@
-require 'formula'
-
 class Dasm < Formula
   desc "Macro assembler with support for several 8-bit microprocessors"
-  homepage 'http://dasm-dillon.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/dasm-dillon/dasm-dillon/2.20.11/dasm-2.20.11-2014.03.04-source.tar.gz'
-  sha1 '2ce78b29505b31778b8f796ba4b161b9f890e77e'
-  head 'svn://svn.code.sf.net/p/dasm-dillon/code/trunk'
+  homepage "http://dasm-dillon.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/dasm-dillon/dasm-dillon/2.20.11/dasm-2.20.11-2014.03.04-source.tar.gz"
+  sha256 "a9330adae534aeffbfdb8b3ba838322b92e1e0bb24f24f05b0ffb0a656312f36"
+  head "svn://svn.code.sf.net/p/dasm-dillon/code/trunk"
 
   bottle do
     cellar :any
-    sha1 "16a36f8d3d57693ea2b2fea55ab264e538ddcfaf" => :mavericks
-    sha1 "5bf2a732a5e3d3b9963ad405c6b526b0a9cb74d0" => :mountain_lion
-    sha1 "14895b0dee0237dec3cc7cedafeba2fdb4b88bad" => :lion
+    sha256 "2db683ba88f8f3323517d67c0a34ad0dfbbe5dc8d81d905a9855b0c070471382" => :mavericks
+    sha256 "992fe2df21a3794e509e8ba29b0c08c1fee3c04fb4e4352d0c44295435bce226" => :mountain_lion
+    sha256 "5866332ebc746563da519818b581d137c82352655a171bf0eb88684812e3601c" => :lion
   end
 
   def install
     system "make"
-    prefix.install 'bin', 'doc'
+    prefix.install "bin", "doc"
   end
 
   test do

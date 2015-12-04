@@ -1,5 +1,3 @@
-require "formula"
-
 class Perlmagick < Formula
   desc "Objected-oriented Perl interface to ImageMagick"
   homepage "http://www.imagemagick.org/script/perl-magick.php"
@@ -8,9 +6,9 @@ class Perlmagick < Formula
   revision 1
 
   bottle do
-    sha1 "ce1cf658507f5269ea3167a9d6f83ff4e38b9749" => :mavericks
-    sha1 "939ec50e438de4caf808f324e9949a5a75c13eb8" => :mountain_lion
-    sha1 "c040bc6e0b238c49c076414b5a082b4b54047406" => :lion
+    sha256 "2ac8b23b7b1f1e8c0b85fdf4d44cb12813744e899604abed5524684c7be5a687" => :mavericks
+    sha256 "59f5ede00a0f376aebb5010a04a8b3a8545db8d4b86e6ff79e0072e90cf74a56" => :mountain_lion
+    sha256 "3dd6bb5a60023b31bc7f350c1dd6fac58f0511beb110a69831ea7031537deb1d" => :lion
   end
 
   depends_on "freetype"

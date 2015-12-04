@@ -1,14 +1,15 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.22.1/mesos-0.22.1.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.22.1/mesos-0.22.1.tar.gz"
-  sha256 "a51f6bb1be4c90160b233df471beece82d998bcfa7fd55be4366a9fbfebdc067"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.25.0/mesos-0.25.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz"
+  sha256 "81ee9e722b66f52d8f3270a76eecea60fdcab48d6f7dba51ecce592293124b75"
+  revision 1
 
   bottle do
-    sha256 "c16f5ca8fa963c0374ba78e2d02c104fdcac74e1a77211e0e31d37d7dde1836b" => :yosemite
-    sha256 "0736237391a31f05a61f235541724eec5e9f41c93e128ac6e40a2ebdd85be360" => :mavericks
-    sha256 "65732dd0a57ca22927641aa08ca9eb315e1d92d5256b6632d1f23943ab6be894" => :mountain_lion
+    sha256 "9cc964e98ca0e3f2a1a0a9dcc34019aa8beb14e68b626fdab9940e8b73c0dc2d" => :el_capitan
+    sha256 "9db0716715872af1372e178a782dba74fb593719589aec71b16e11d5fec43490" => :yosemite
+    sha256 "7837ef77b17f87ba10bccf659c35fd161271e308af33fadd36ef103806a73a30" => :mavericks
   end
 
   depends_on :java => "1.7+"
@@ -19,43 +20,46 @@ class Mesos < Formula
 
   resource "boto" do
     url "https://pypi.python.org/packages/source/b/boto/boto-2.36.0.tar.gz"
-    sha1 "f230ff9b041d3b43244086e38b7b6029450898be"
+    sha256 "8033c6f7a7252976df0137b62536cfe38f1dbd1ef443a7a6d8bc06c063bc36bd"
   end
 
   resource "protobuf" do
     url "https://pypi.python.org/packages/source/p/protobuf/protobuf-2.6.1.tar.gz"
-    sha1 "3dff24d019729060eff569d7a718bdbb10db13a3"
+    sha256 "8faca1fb462ee1be58d00f5efb4ca4f64bde92187fe61fde32615bbee7b3e745"
   end
 
-# build dependencies for protobuf
+  # build dependencies for protobuf
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
+    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
   end
 
   resource "python-dateutil" do
     url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.0.tar.gz"
-    sha1 "159081a4c5b3602ab440a7db305f987c00ee8c6d"
+    sha256 "439df33ce47ef1478a4f4765f3390eab0ed3ec4ae10be32f2930000c8d19f417"
   end
 
   resource "pytz" do
     url "https://pypi.python.org/packages/source/p/pytz/pytz-2014.10.tar.bz2"
-    sha1 "74a1869c804dd422afbc49cb92206a0ca1529ddc"
+    sha256 "387f968fde793b142865802916561839f5591d8b4b14c941125eb0fca7e4e58d"
   end
 
   resource "python-gflags" do
     url "https://pypi.python.org/packages/source/p/python-gflags/python-gflags-2.0.tar.gz"
-    sha1 "1529a1102da2fc671f2a9a5e387ebabd1ceacbbf"
+    sha256 "0dff6360423f3ec08cbe3bfaf37b339461a54a21d13be0dd5d9c9999ce531078"
   end
 
   resource "google-apputils" do
     url "https://pypi.python.org/packages/source/g/google-apputils/google-apputils-0.4.2.tar.gz"
-    sha1 "6f82069efd1a2cbc168dfb814d077df2fca4cff1"
+    sha256 "47959d0651c32102c10ad919b8a0ffe0ae85f44b8457ddcf2bdc0358fb03dc29"
   end
 
   needs :cxx11
 
   def install
+    # Set _JAVA_OPTIONS to make mesos java plugins compile success in Homebrew sandbox.
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home"
+
     boto_path = libexec/"boto/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", boto_path
     resource("boto").stage do
@@ -77,6 +81,19 @@ class Mesos < Formula
               "import ext_modules",
               native_patch
 
+    # skip build javadoc because Homebrew sandbox set _JAVA_OPTIONS would
+    # trigger maven-javadoc-plugin bug.
+    # https://issues.apache.org/jira/browse/MESOS-3482
+    maven_javadoc_patch = <<-EOS.undent
+      <properties>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+      \\0
+    EOS
+    inreplace "src/java/mesos.pom.in",
+              "<url>http://mesos.apache.org</url>",
+              maven_javadoc_patch
+
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
@@ -95,7 +112,7 @@ class Mesos < Formula
     system "make", "install"
 
     system "./configure", "--enable-python", *args
-    ["native", "interface", ""].each do |p|
+    ["native", "interface", "cli", ""].each do |p|
       cd "src/python/#{p}" do
         system "python", *Language::Python.setup_install_args(prefix)
       end
@@ -117,8 +134,6 @@ class Mesos < Formula
     end
     pth_contents = "import site; site.addsitedir('#{protobuf_path}')\n"
     (lib/"python2.7/site-packages/homebrew-mesos-protobuf.pth").write pth_contents
-
-    (share/"mesos").install "ec2"
   end
 
   test do

@@ -4,11 +4,12 @@ class Ffmbc < Formula
   url "https://drive.google.com/uc?export=download&id=0B0jxxycBojSwTEgtbjRZMXBJREU"
   version "0.7.2"
   sha256 "caaae2570c747077142db34ce33262af0b6d0a505ffbed5c4bdebce685d72e42"
+  revision 2
 
   bottle do
-    sha256 "46519725eff4d6b78e67fa9a9ddd268c6f11951aac75d334878fa09fb46d884f" => :yosemite
-    sha256 "dc107a71f2865144699f9b610cf31925be313529673d23d8f4b3ed12d886a33e" => :mavericks
-    sha256 "450afcd5675ffa2f530ecb52294478a9eed65a3c35356dae57a79559651b5bac" => :mountain_lion
+    sha256 "677c16abc9d8b26bc46202293ccee4e21c27c7360e6a09dcad40f47ca8c06880" => :el_capitan
+    sha256 "7399a568ff4e63dfe6991043d2f879ef55592c3f3c3f9a149a3ce06ba2921af3" => :yosemite
+    sha256 "41d265bbb0ad192f8d9aeff278127a64626b7db2e5cce89ec31453316e0ef433" => :mavericks
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -25,7 +26,7 @@ class Ffmbc < Formula
   depends_on "xvid" => :recommended
 
   depends_on "freetype" => :optional
-  depends_on "theora"  => :optional
+  depends_on "theora" => :optional
   depends_on "libvorbis" => :optional
   depends_on "libogg" => :optional
   depends_on "libvpx" => :optional
@@ -38,7 +39,8 @@ class Ffmbc < Formula
             "--disable-shared",
             "--enable-gpl",
             "--enable-nonfree",
-            "--cc=#{ENV.cc}"]
+            "--cc=#{ENV.cc}",
+           ]
 
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libfaac" if build.with? "faac"

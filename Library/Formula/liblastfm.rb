@@ -1,15 +1,13 @@
-require "formula"
-
 class Liblastfm < Formula
   desc "Libraries for Last.fm site services"
   homepage "https://github.com/lastfm/liblastfm/"
   url "https://github.com/lastfm/liblastfm/archive/1.0.9.tar.gz"
-  sha1 "4a6323538a26c5ea2080a8ebe58e4407dbc42397"
+  sha256 "5276b5fe00932479ce6fe370ba3213f3ab842d70a7d55e4bead6e26738425f7b"
 
   bottle do
-    sha1 "1e919a51bc85ccc07753feec683ff8b9b96e4f0d" => :yosemite
-    sha1 "efe8b8353f833aa7162602f00f4f28b6d56e770f" => :mavericks
-    sha1 "7d69b0a7013c97a78fcbba626f6d33dbb734f180" => :mountain_lion
+    sha256 "6d6010150ff154400622bb6e95d1017ece5627b1eb845ff58d0753767f0d7965" => :yosemite
+    sha256 "e9e9d6f323fcf3d7ccd07bed4c25bdb8c6053769c24729486868f7f2c9f7af17" => :mavericks
+    sha256 "7083be85d79ee12c621e380ae149d5105a1117de4733eca024d64ef72d435cb5" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

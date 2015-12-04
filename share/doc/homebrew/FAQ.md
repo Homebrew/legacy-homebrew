@@ -10,7 +10,7 @@ You can now find out what is outdated with:
 
 Upgrade everything with:
 
-    brew upgrade --all
+    brew upgrade
 
 Or upgrade a specific formula with:
 
@@ -174,7 +174,7 @@ creating a separate user account especially for use of Homebrew.
 
 ### Why isn’t a particular command documented?
 
-If it’s not in `man brew`, it’s probably an external command. These are documented [here](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/External-Commands.md).
+If it’s not in `man brew`, it’s probably an external command. These are documented [here](External-Commands.md).
 
 ### Why haven’t you pulled my pull request?
 If it’s been a while, bump it with a “bump” comment. Sometimes we miss requests and there are plenty of them. Maybe we were thinking on something. It will encourage consideration. In the meantime if you could rebase the pull request so that it can be cherry-picked more easily we will love you for a long time.
@@ -221,9 +221,9 @@ Use `brew log $FORMULA` to find out!
 Sometimes formulae are moved to specialized repositories. These are the
 likely candidates:
 
-* [https://github.com/Homebrew/homebrew-dupes](https://github.com/Homebrew/homebrew-dupes)
-* [https://github.com/Homebrew/homebrew-versions](https://github.com/Homebrew/homebrew-versions)
-* [https://github.com/Homebrew/homebrew-games](https://github.com/Homebrew/homebrew-games)
+* [homebrew/dupes](https://github.com/Homebrew/homebrew-dupes)
+* [homebrew/games](https://github.com/Homebrew/homebrew-games)
+* [homebrew/versions](https://github.com/Homebrew/homebrew-versions)
 
 You can use `brew tap` to access these formulae:
 

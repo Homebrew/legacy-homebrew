@@ -1,35 +1,33 @@
-require 'formula'
-
 class Liblunar < Formula
   desc "Lunar date calendar"
-  homepage 'http://code.google.com/p/liblunar/'
-  url 'https://liblunar.googlecode.com/files/liblunar-2.2.5.tar.gz'
-  sha1 'c149dc32776667ed8d53124eec414ab15ace0981'
+  homepage "https://code.google.com/p/liblunar/"
+  url "https://liblunar.googlecode.com/files/liblunar-2.2.5.tar.gz"
+  sha256 "c24a7cd3ccbf7ab739d752a437f1879f62b975b95abcf9eb9e1dd623982bc167"
 
   bottle do
     revision 1
-    sha1 "8113fe85f888c12a9841aa6281016406ec7b9799" => :yosemite
-    sha1 "b92965d3651332b69eb42a1f6341b5daf12b9632" => :mavericks
-    sha1 "69b6824161e90b0578e314efcae5db056930ed2e" => :mountain_lion
+    sha256 "0964777ae7bbc24c64cab3a1197b5dfa123a08d7e320b4829b9f0a3d1a3cb6be" => :yosemite
+    sha256 "9c4abb431abb5c60d1a9beba72f8139255f64d19a02e1994345531c948c72c3d" => :mavericks
+    sha256 "66a40eb29dedc1cecc5947e5837e221a233273b130361eecb3488d51eede35be" => :mountain_lion
   end
 
-  option 'python', 'Build python bindings using pygobject'
+  option "python", "Build python bindings using pygobject"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'intltool' => :build
-  depends_on 'glib'
-  depends_on 'gettext'
-  depends_on 'vala' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "intltool" => :build
+  depends_on "glib"
+  depends_on "gettext"
+  depends_on "vala" => :optional
   depends_on :python => :optional
-  depends_on 'pygobject' if build.with? 'python'
+  depends_on "pygobject" if build.with? "python"
 
   def install
     args = %W[
-       --disable-dependency-tracking
-       --prefix=#{prefix}
+      --disable-dependency-tracking
+      --prefix=#{prefix}
     ]
-    args << '--disable-python' if build.without? 'python'
-    system './configure', *args
-    system 'make install'
+    args << "--disable-python" if build.without? "python"
+    system "./configure", *args
+    system "make", "install"
   end
 end

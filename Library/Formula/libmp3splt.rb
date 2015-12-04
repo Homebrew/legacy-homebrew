@@ -1,15 +1,13 @@
-require "formula"
-
 class Libmp3splt < Formula
   desc "Utility library to split mp3, ogg, and FLAC files"
   homepage "http://mp3splt.sourceforge.net"
   url "https://downloads.sourceforge.net/project/mp3splt/libmp3splt/0.9.2/libmp3splt-0.9.2.tar.gz"
-  sha1 "d4e84e1f466e7fdabe30d0a12acb751903bb9203"
+  sha256 "30eed64fce58cb379b7cc6a0d8e545579cb99d0f0f31eb00b9acc8aaa1b035dc"
 
   bottle do
-    sha1 "c8c679d41172345360105247e20e6996d8ad8a6e" => :yosemite
-    sha1 "9814ea3e104296b7c4deda3d7a548737b2abd605" => :mavericks
-    sha1 "1be429bb92ffc593284b8f33456795f78c711a1e" => :mountain_lion
+    sha256 "47d3aaeee6d237273e8457666cd2717e1264742ae776d541c40a203e1b82003f" => :yosemite
+    sha256 "0bac13f95cb16925fe28cd1d662bec10a66c93bf9b27c2c9533ab38b7a1f38a2" => :mavericks
+    sha256 "a6100bee5fe14afed4702b474360078b75bddaa0328290b2fcf902c3f808c78c" => :mountain_lion
   end
 
   depends_on "libtool" => :run

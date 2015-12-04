@@ -3,16 +3,16 @@ require "language/go"
 class DockerSwarm < Formula
   desc "Turn a pool of Docker hosts into a single, virtual host"
   homepage "https://github.com/docker/swarm"
-  url "https://github.com/docker/swarm/archive/v0.2.0.tar.gz"
-  sha256 "7c9bb5b820f740e2963edc37cb0a2fc8160d42537870bf4caedb09036276008f"
+  url "https://github.com/docker/swarm/archive/v1.0.0.tar.gz"
+  sha256 "85951f91a2e3b6b82ac775bafce3fc76dd29aa2cdeb6a3ad84a97116fd72d2d8"
 
   head "https://github.com/docker/swarm.git"
 
   bottle do
-    cellar :any
-    sha256 "b104c0a882af39060b3f0dc2859b4e72e4ce9802948681454848c79da87efb1f" => :yosemite
-    sha256 "dc68ea1fd995fe9e5a8532c8ad10aae33079545896a67a3f669d75e374e3de22" => :mavericks
-    sha256 "be2da9ac833e4283be4a0182d63ef19051aad23f0c3f8905c64d23f2a7205096" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "82c2d64fcc9893f077244eaee10cc76d27fad5f7ae250d6e2cd4d9ac73b85dc4" => :el_capitan
+    sha256 "652c451d30e33987c2607d86b62387a1373ec4d48b1861e5c34ff0d17d96ff3d" => :yosemite
+    sha256 "77401660d38f872dd0f2abc548fb67f927f49e8233f3651dfd6b0568bb508838" => :mavericks
   end
 
   depends_on "go" => :build
@@ -32,6 +32,6 @@ class DockerSwarm < Formula
 
   test do
     output = shell_output(bin/"docker-swarm --version")
-    assert output.include? "swarm version 0.2.0 (HEAD)"
+    assert_match "swarm version #{version} (HEAD)", output
   end
 end

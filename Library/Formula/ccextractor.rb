@@ -1,20 +1,21 @@
 class Ccextractor < Formula
-  desc "A free, GPL licensed closed caption tool"
+  desc "Free, GPL licensed closed caption tool"
   homepage "http://ccextractor.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ccextractor/ccextractor/0.75/ccextractor.src.0.75.zip"
-  sha1 "c36f8eadb2074d88782d6628e07c762e80e4c31c"
+  sha256 "fb6ed33d516b9198e1b625fec4fce99f079e28f1c556eff4552f53c92ecc9cca"
   head "https://github.com/ccextractor/ccextractor.git"
   revision 1
 
-  depends_on "cmake" => :build
-  depends_on "libpng"
-
   bottle do
     cellar :any
-    sha1 "2bd02af2ba9c80f8cdf6871eaaf2daac5fdbf4ae" => :yosemite
-    sha1 "3a8e49c088e63b8d3b20e7819265c59d35b970cb" => :mavericks
-    sha1 "1d77c07e0c5477c813219b4fd44e8479e720ce92" => :mountain_lion
+    revision 1
+    sha256 "58a191a71de18ec0dd05dc87d939ec77734ae56be0a5ddb474ee0752daeb272d" => :el_capitan
+    sha256 "ccefb5fb2a0ac270ed2e59bcffdb9510f583b2b71134b51b1cb521fb04db997d" => :yosemite
+    sha256 "d912fde7ea48d6c50a2c675d851e2ca5c2edd52b06074e126ab708e63f7e7e8b" => :mavericks
   end
+
+  depends_on "cmake" => :build
+  depends_on "libpng"
 
   def install
     system "cmake", "src", *std_cmake_args

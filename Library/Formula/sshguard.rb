@@ -1,31 +1,24 @@
 class Sshguard < Formula
   desc "Protect from brute force attacks against SSH"
   homepage "http://www.sshguard.net/"
-  url "https://downloads.sourceforge.net/project/sshguard/sshguard/1.6.0/sshguard-1.6.0.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/s/sshguard/sshguard_1.6.0.orig.tar.xz"
-  sha256 "dce32b1fc3fb0f8d15b6c56b9822c300434faaa87240e5373c095dc22bfa07e4"
+  url "https://downloads.sourceforge.net/project/sshguard/sshguard/1.6.1/sshguard-1.6.1.tar.xz"
+  mirror "https://dl.bintray.com/homebrew/mirror/sshguard-1.6.1.tar.xz"
+  sha256 "f431899c20fa2f41fa293605af96ff97d44823b84db41c914ee60da44f1ff6c8"
 
   bottle do
     cellar :any
-    sha256 "5fd4d11c40756356476a882a5ef8317ade15d163eb7b5b402e9b3e4474dbb1d7" => :yosemite
-    sha256 "e272de3bb7284d8dfb930295d0dc310666bcf807356d9af80b31e2e6e4bd5a7e" => :mavericks
-    sha256 "16d633776b9b44032a3c3067851217193fdd7e2984ae881d7aece14cca772b13" => :mountain_lion
+    sha256 "d1939f763079959ce9bd3c49db2b56b0cb2dac3206c33c6c69ff14d07407790b" => :yosemite
+    sha256 "0ab30d0a677d360f02ead6c98f510bd86ddbd9a693c63f87e6a5e7c79e830474" => :mavericks
+    sha256 "2c115efec5b401a9c3463b830031db885db06b6bb432d29c81db4a0596de28bd" => :mountain_lion
   end
 
   depends_on "automake" => :build
   depends_on "autoconf" => :build
 
-  # Fix blacklist flag (-b) so that it doesn't abort on first usage.
-  # Upstream bug report:
-  # http://sourceforge.net/tracker/?func=detail&aid=3252151&group_id=188282&atid=924685
-  patch do
-    url "http://sourceforge.net/p/sshguard/bugs/_discuss/thread/3d94b7ef/c062/attachment/sshguard.c.diff"
-    sha1 "68cd0910d310e4d23e7752dee1b077ccfe715c0b"
-  end
-
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
+                          "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--with-firewall=#{firewall}"
     system "make", "install"

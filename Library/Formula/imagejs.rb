@@ -2,14 +2,14 @@ class Imagejs < Formula
   desc "Tool to hide JavaScript inside valid image files"
   homepage "http://jklmnn.de/imagejs/"
   url "https://github.com/jklmnn/imagejs/archive/0.7.1.tar.gz"
-  sha1 "4c3e1c2134194cced5924c9cc577d36165548575"
+  sha256 "d1a1368ce72a1a7d18d053f82bf19c7af14861588a459f3bf69f2b50a335633f"
   head "https://github.com/jklmnn/imagejs.git"
 
   bottle do
     cellar :any
-    sha1 "d5a3f3c28b1e5510fc106a0070f4ba5a136ed67f" => :yosemite
-    sha1 "18f653871caf008d21292f12c43a5592e64e7816" => :mavericks
-    sha1 "5a65ab6f7a32e27c4908f33c46c150545317dbc7" => :mountain_lion
+    sha256 "128e1bdbbfbed86c41eff7487fbf65bcea8a17367b8b91077989a56878ab1dcb" => :yosemite
+    sha256 "374bd224d00aaa4f11921d81444afc6dbcb23d6df6368c8594886f4172b773eb" => :mavericks
+    sha256 "a78dcf76d4df78103aab79d4b35441f7709f31bec5ea8bcd268cac4e780f6037" => :mountain_lion
   end
 
   def install

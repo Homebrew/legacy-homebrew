@@ -1,10 +1,8 @@
-require "formula"
-
 class Lwtools < Formula
   desc "Cross-development tools for Motorola 6809 and Hitachi 6309 microprocessors"
   homepage "http://lwtools.projects.l-w.ca/"
   url "http://lwtools.projects.l-w.ca/releases/lwtools/lwtools-4.9.tar.gz"
-  sha1 "a9191d9f7a2148757526f8f14166f483feb3e560"
+  sha256 "e0c96e4f1e10ef00a1c5b1f55ccba8f5924d826ac89837bef96382a474ccf975"
 
   def install
     system "make"

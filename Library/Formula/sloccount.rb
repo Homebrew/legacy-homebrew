@@ -1,12 +1,10 @@
-require 'formula'
-
 class Sloccount < Formula
   desc "Count lines of code in many languages"
-  homepage 'http://www.dwheeler.com/sloccount/'
-  url 'http://www.dwheeler.com/sloccount/sloccount-2.26.tar.gz'
-  sha1 '505031c6adfb93e454aaf8b0ee7de04122079d13'
+  homepage "http://www.dwheeler.com/sloccount/"
+  url "http://www.dwheeler.com/sloccount/sloccount-2.26.tar.gz"
+  sha256 "fa7fa2bbf2f627dd2d0fdb958bd8ec4527231254c120a8b4322405d8a4e3d12b"
 
-  depends_on 'md5sha1sum'
+  depends_on "md5sha1sum"
 
   patch :DATA
 
@@ -14,7 +12,7 @@ class Sloccount < Formula
     rm "makefile.orig" # Delete makefile.orig or patch falls over
     bin.mkpath # Create the install dir or install falls over
     system "make", "install", "PREFIX=#{prefix}"
-    (bin+'erlang_count').write "#!/bin/sh\ngeneric_count '%' $@"
+    (bin+"erlang_count").write "#!/bin/sh\ngeneric_count '%' $@"
   end
 end
 

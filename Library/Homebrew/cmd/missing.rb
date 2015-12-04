@@ -1,8 +1,8 @@
-require 'formula'
-require 'tab'
+require "formula"
+require "tab"
 
 module Homebrew
-  def missing_deps ff
+  def missing_deps(ff)
     missing = {}
     ff.each do |f|
       missing_deps = f.recursive_dependencies do |dependent, dep|
@@ -15,7 +15,7 @@ module Homebrew
       end
 
       missing_deps.map!(&:to_formula)
-      missing_deps.reject! { |d| d.rack.exist? && d.rack.subdirs.length > 0 }
+      missing_deps.reject! { |d| d.installed_prefixes.any? }
 
       unless missing_deps.empty?
         yield f.full_name, missing_deps if block_given?
@@ -36,7 +36,7 @@ module Homebrew
 
     missing_deps(ff) do |name, missing|
       print "#{name}: " if ff.size > 1
-      puts "#{missing * ' '}"
+      puts "#{missing * " "}"
     end
   end
 end

@@ -2,7 +2,7 @@ class LibxmpLite < Formula
   desc "Lite libxmp"
   homepage "http://xmp.sourceforge.net"
   url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.5/libxmp-lite-4.3.5.tar.gz"
-  sha1 "45ae99bf939f1fe2cb8c75ec76406cbb028a1bf8"
+  sha256 "e3ce0f3099432afefa2459c8de37958ff95daeb231ef97b7df10a58fa1e416da"
 
   def install
     system "./configure", "--prefix=#{prefix}"

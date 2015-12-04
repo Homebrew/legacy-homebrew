@@ -2,7 +2,7 @@ class Tnote < Formula
   desc "Small note-taking program for the terminal"
   homepage "http://tnote.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/tnote/tnote/tnote-0.2.1/tnote-0.2.1.tar.gz"
-  sha1 "8d5d3694b921191c7e91e8907ec6c6970ce29ec6"
+  sha256 "451e0e352cb279725c5e12ad1c1377be63c7113f3fe568fb6213ede478ba6a87"
 
   depends_on :python if MacOS.version <= :snow_leopard
 

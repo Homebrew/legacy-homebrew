@@ -2,14 +2,16 @@ class SpeechTools < Formula
   desc "C++ general speech software library from the University of Edinburgh"
   homepage "http://festvox.org/docs/speech_tools-2.4.0/"
   url "http://festvox.org/packed/festival/2.4/speech_tools-2.4-release.tar.gz"
-  sha1 "5b0ebd39bb7afa33e4093724a2123bdc62a6aebc"
+  sha256 "fbc2482c443919aa79d2e599d6a5faee4e793df55a79ef377f1dc7e8ba237010"
 
   bottle do
     cellar :any
-    sha1 "861a04fc277c90118cf88641c2ea2d07e7afa636" => :yosemite
-    sha1 "c4b33389281c09184012fb79f53cc1112c8e11ce" => :mavericks
-    sha1 "2fe64f901cd995effbcb26edf0ebce2b0a1141fd" => :mountain_lion
+    sha256 "48091e873f0d038ebc6e46ab3ca7c1e494d061afab3dae64e1dbd594e4afccbe" => :yosemite
+    sha256 "dca2c0deebfd3bd6aeba1cfaa4f72a3cc29b90e879fd51ed38c2524d1789eaad" => :mavericks
+    sha256 "16895a28e900f2b7d209d2c4dda0228024c6da9627189f356c631f1b8c990c27" => :mountain_lion
   end
+
+  conflicts_with "align", :because => "both install `align` binaries"
 
   def install
     ENV.deparallelize
@@ -28,7 +30,7 @@ class SpeechTools < Formula
     wavfile = "#{basename}.wav"
     ptcfile = "#{basename}.ptc"
 
-    File.open(txtfile, 'w') do |f|
+    File.open(txtfile, "w") do |f|
       scale = 2 ** 15 - 1
       f.puts Array.new(duration_secs * rate_hz) { |i| (scale * Math.sin(frequency_hz * 2 * Math::PI * i / rate_hz)).to_i }
     end

@@ -2,12 +2,13 @@ class Enchant < Formula
   desc "Spellchecker wrapping library"
   homepage "http://www.abisource.com/projects/enchant/"
   url "http://www.abisource.com/downloads/enchant/1.6.0/enchant-1.6.0.tar.gz"
-  sha1 "321f9cf0abfa1937401676ce60976d8779c39536"
+  sha256 "2fac9e7be7e9424b2c5570d8affe568db39f7572c10ed48d4e13cddf03f7097f"
 
   bottle do
-    sha1 "12a7edc42b202159012238e0c0d3da0c1d43a74e" => :yosemite
-    sha1 "e6766b97a2db560403d6a1a26b3129a5c3057991" => :mavericks
-    sha1 "6dd74cd9a3c9f0ca1252820ada1f1e27fbf57c44" => :mountain_lion
+    sha256 "bbe368cbefd64aed845d98198d6f49fd533bc058b62290414865cca1ffdcc8cd" => :el_capitan
+    sha256 "0315d7b75f8bcae0196e76c192cb514d723fd79df6f043c7ac13b3289d018b14" => :yosemite
+    sha256 "622f8b9b8f008eab4d689c6b39c00887c803fb49b5ec461b7fe520737f179427" => :mavericks
+    sha256 "35e3487d842e8b4be3e4dfa6d7c34a48c17bd875871da738733cb9305585619c" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build
@@ -18,7 +19,7 @@ class Enchant < Formula
   # http://pythonhosted.org/pyenchant/
   resource "pyenchant" do
     url "https://pypi.python.org/packages/source/p/pyenchant/pyenchant-1.6.5.tar.gz"
-    sha1 "6f01b8657b64e970a11945c2a9b4d6d8023997bc"
+    sha256 "623f332a9fbb70ae6c9c2d0d4e7f7bae5922d36ba0fe34be8e32df32ebbb4f84"
   end
 
   def install

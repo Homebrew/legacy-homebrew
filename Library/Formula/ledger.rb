@@ -2,11 +2,12 @@ class Ledger < Formula
   desc "Command-line, double-entry accounting tool"
   homepage "http://ledger-cli.org"
   url "https://github.com/ledger/ledger/archive/v3.1.tar.gz"
-  sha1 "549aa375d4802e9dd4fd153c45ab64d8ede94afc"
+  sha256 "eeb5d260729834923fc94822bcc54ca3080c434f81466a3f5dc4274b357ce694"
   head "https://github.com/ledger/ledger.git"
   revision 1
 
   bottle do
+    sha256 "c4ba63c2f50664ce2d32028e02a11c88ee9e087597368c1fd7f17ef8b49003b7" => :el_capitan
     sha256 "a9caafb67ee6b9bef882d7dff8e24747f3997a84bacb82b456b96c5c6448e899" => :yosemite
     sha256 "7c396585b474187340429297f151435a545c0ab0509f094461599f338eb8d045" => :mavericks
     sha256 "a47cc33ddd2ef9df9921d1ad333eac68e791e32dad86b497c9abbe8bc707a5b2" => :mountain_lion

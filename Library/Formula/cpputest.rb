@@ -1,10 +1,8 @@
-require "formula"
-
 class Cpputest < Formula
   desc "C /C++ based unit xUnit test framework"
   homepage "http://www.cpputest.org/"
   url "https://github.com/cpputest/cpputest/releases/download/3.7.2/cpputest-3.7.2.tar.gz"
-  sha1 "6a20695ba0094bf5db089da5baf08aca7101c1c6"
+  sha256 "8c5d00be3a08ea580e51e5cfe26f05d05c6bf546206ff67dbb3757d48c109653"
 
   bottle do
     cellar :any
@@ -23,6 +21,6 @@ class Cpputest < Formula
   def install
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

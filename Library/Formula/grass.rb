@@ -1,13 +1,11 @@
-require 'formula'
-
 class Grass < Formula
   desc "Geographic Resources Analysis Support System"
-  homepage 'http://grass.osgeo.org/'
+  homepage "http://grass.osgeo.org/"
   revision 1
 
   stable do
     url "http://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
-    sha1 "0e4dac9fb3320a26e4f640f641485fde0323dd46"
+    sha256 "5ddba27b4e5495f602ee5249a07e287f342dd8e1422ea5d490c04311c731d274"
 
     # Patches that files are not installed outside of the prefix.
     patch :DATA
@@ -18,14 +16,14 @@ class Grass < Formula
 
     patch do
       url "https://gist.githubusercontent.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
-      sha1 "ffbe31682d8a7605d5548cdafd536f1c785d3a23"
+      sha256 "a30caef931b70f37700823d028bce38af978ccb472649ec17920d91197421bc5"
     end
   end
 
   option "without-gui", "Build without WxPython interface. Command line tools still available."
 
   depends_on :macos => :lion
-  depends_on 'gcc' if MacOS.version >= :mountain_lion
+  depends_on "gcc" if MacOS.version >= :mountain_lion
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "readline"
@@ -38,7 +36,7 @@ class Grass < Formula
   depends_on :mysql => :optional
   depends_on "cairo"
   depends_on "freetype"
-  depends_on :x11  # needs to find at least X11/include/GL/gl.h
+  depends_on :x11 # needs to find at least X11/include/GL/gl.h
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
@@ -47,7 +45,7 @@ class Grass < Formula
   def headless?
     # The GRASS GUI is based on WxPython. Unfortunately, Lion does not include
     # this module so we have to drop it.
-    build.without? "gui" or MacOS.version == :lion
+    build.without?("gui") || MacOS.version == :lion
   end
 
   def install
@@ -83,7 +81,7 @@ class Grass < Formula
       args << "--with-opengl-includes=#{MacOS.sdk_path}/System/Library/Frameworks/OpenGL.framework/Headers"
     end
 
-    if headless? or build.without? 'wxmac'
+    if headless? || build.without?("wxmac")
       args << "--without-wxwidgets"
     else
       args << "--with-wxwidgets=#{Formula["wxmac"].opt_bin}/wx-config"
@@ -114,8 +112,10 @@ class Grass < Formula
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
-    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
+    # make and make install must be separate steps.
+    system "make", "GDAL_DYNAMIC="
+    # GDAL_DYNAMIC set to blank for r.external compatability
+    system "make", "GDAL_DYNAMIC=", "install"
   end
 
   def caveats

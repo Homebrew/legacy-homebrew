@@ -1,21 +1,19 @@
-require "formula"
-
 class Fpc < Formula
   desc "Free Pascal: multi-architecture Pascal compiler"
   homepage "http://www.freepascal.org/"
-  url "https://downloads.sourceforge.net/project/freepascal/Source/2.6.4/fpc-2.6.4.source.tar.gz"
-  sha1 "60eeadf65db25b10b174627457a5799bf0fd0d52"
+  url "https://downloads.sourceforge.net/project/freepascal/Source/3.0.0/fpc-3.0.0.source.tar.gz"
+  sha256 "46354862cefab8011bcfe3bc2942c435f96a8958b245c42e10283ec3e44be2dd"
 
   bottle do
-    cellar :any
-    sha1 "c77e7a5b6b9fb84b9d90bb4515a8557ccb98a253" => :mavericks
-    sha1 "47f760e84fc84f845718efe4737402e086de705c" => :mountain_lion
-    sha1 "90d3b9d4ad5e3d06efc0108e0b1dbd8e58b18034" => :lion
+    cellar :any_skip_relocation
+    sha256 "4b52e73f38825e27f17fc75b4fd54f2c80242bc84d1637041991388ef336a7be" => :el_capitan
+    sha256 "35fac52eb637dd5696b4d988813c9a6ed19105caee0b5726032eb4f33d5a0ef9" => :yosemite
+    sha256 "3a3a1a2872f5ab37a5cc42b29fd0226737a5fbeb56df634aea6a3295016e869a" => :mavericks
   end
 
   resource "bootstrap" do
     url "https://downloads.sourceforge.net/project/freepascal/Bootstrap/2.6.4/universal-macosx-10.5-ppcuniversal.tar.bz2"
-    sha1 "1476a19ad7f901868fcbe3dc49e6d46a5865f722"
+    sha256 "e7243e83e6a04de147ebab7530754ec92cd1fbabbc9b6b00a3f90a796312f3e9"
   end
 
   def install
@@ -27,6 +25,9 @@ class Fpc < Formula
     system "make", "install", "PP=#{fpc_compiler}", "PREFIX=#{prefix}"
 
     bin.install_symlink lib/"#{name}/#{version}/ppcx64"
+
+    # Prevent non-executable audit warning
+    rm_f Dir[bin/"*.rsj"]
   end
 
   test do

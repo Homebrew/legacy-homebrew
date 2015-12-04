@@ -1,16 +1,14 @@
-require "formula"
-
 class Odo < Formula
   desc "Atomic odometer for the command-line"
   homepage "https://github.com/atomicobject/odo"
   url "https://github.com/atomicobject/odo/archive/v0.2.2.tar.gz"
-  sha1 "2024e3afeee76eb9f4f7e798ac986f4ce8b489d6"
+  sha256 "52133a6b92510d27dfe80c7e9f333b90af43d12f7ea0cf00718aee8a85824df5"
 
   bottle do
     cellar :any
-    sha1 "32b8859f631257fe07822f8b1874587b307c2e5e" => :yosemite
-    sha1 "c144e0e0b62432b4ee22f28297028b3f2e9d7499" => :mavericks
-    sha1 "545135a2f69e20036ff34dd7b0f44493c8e74c40" => :mountain_lion
+    sha256 "066649031770814fe0991dc595f123a145f5c786e5efdc6142c4be7b11eb86be" => :yosemite
+    sha256 "eda3760bca97cc11d11dadc2aabcbb76fef5c47022900e5c628eda1f46cf4adc" => :mavericks
+    sha256 "218018e5ffcf9ce61836429440d28d2b0ca690f66a0491c9d42d9c7482459447" => :mountain_lion
   end
 
   def install

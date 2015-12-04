@@ -1,16 +1,13 @@
-require "formula"
-
 class GstPluginsBase < Formula
   desc "GStreamer plugins (well-supported, basic set)"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-base-1.4.5.tar.xz"
-  sha256 "77bd8199e7a312d3d71de9b7ddf761a3b78560a2c2a80829d0815ca39cbd551d"
+  url "https://download.gnome.org/sources/gst-plugins-base/1.6/gst-plugins-base-1.6.1.tar.xz"
+  sha256 "9533dcfaa4ee32d435483d9fa88c06b1eba6e9bb234aacd7583f207199f44ba3"
 
   bottle do
-    sha1 "8e9098a2afac082a3eb54bf0c62387f827443ef6" => :yosemite
-    sha1 "ab9e0aef6bf01b6e5ff379a1c0d694a588ea938d" => :mavericks
-    sha1 "eb0cea91727094bf924aac81a21bc71c7d4f8e68" => :mountain_lion
+    sha256 "a8b0cf88b5d999bf0f920a2136576da1a8ae2574a50ed6c0755c008b8bdd5ad9" => :el_capitan
+    sha256 "a2161b82a858c0ec0a1d7a0ea14c41664e507053a756e6874450d557a6142d15" => :yosemite
+    sha256 "3be63e57479cf37569e17f31106ce0b98dd347b377bc8f7dd80286785c8bde0e" => :mavericks
   end
 
   head do
@@ -36,7 +33,6 @@ class GstPluginsBase < Formula
   depends_on "libvorbis" => :optional
 
   def install
-
     # gnome-vfs turned off due to lack of formula for it.
     args = %W[
       --prefix=#{prefix}

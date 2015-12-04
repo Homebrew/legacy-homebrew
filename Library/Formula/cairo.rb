@@ -1,16 +1,14 @@
 class Cairo < Formula
   desc "Vector graphics library with cross-device output support"
   homepage "http://cairographics.org/"
-  url "http://cairographics.org/releases/cairo-1.14.2.tar.xz"
-  mirror "http://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.2.tar.xz"
-  sha256 "c919d999ddb1bbbecd4bbe65299ca2abd2079c7e13d224577895afa7005ecceb"
-  revision 1
+  url "http://cairographics.org/releases/cairo-1.14.4.tar.xz"
+  mirror "https://www.mirrorservice.org/sites/ftp.netbsd.org/pub/pkgsrc/distfiles/cairo-1.14.4.tar.xz"
+  sha256 "f6ec9c7c844db9ec011f0d66b57ef590c45adf55393d1fc249003512522ee716"
 
   bottle do
-    revision 2
-    sha256 "3307b2b8c32b21af9f9ccd78ab3f798a12a864a2165371782c757db575232824" => :yosemite
-    sha256 "53d24aab616e3040bec8f2caf736c5b7b1c137d10479596624c5331be61a8a8b" => :mavericks
-    sha256 "da209992941c375d2d8ba135393546dc181219fa7210bd2d0e0eda80cdf0cfdf" => :mountain_lion
+    sha256 "a919a8e47b4405bf6b0a614a1f0b17fa3a224e6b10d6bf6e8f182919b1f40640" => :el_capitan
+    sha256 "6268e7a3e1d68f04250064ca380a939b114e6394affec53b70c034b5e73594a5" => :yosemite
+    sha256 "04f0b2caa48871a13f4e74e411b5bd6dda8aa511475ad3d1ade79a2d1c42766d" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion
@@ -18,6 +16,7 @@ class Cairo < Formula
   option :universal
 
   depends_on "pkg-config" => :build
+  depends_on :x11 => :optional if MacOS.version > :leopard
   depends_on "freetype"
   depends_on "fontconfig"
   depends_on "libpng"
@@ -33,12 +32,14 @@ class Cairo < Formula
       --enable-gobject=yes
       --enable-svg=yes
       --enable-tee=yes
-      --enable-xlib=no
-      --enable-xlib-xrender=no
       --enable-quartz-image
     ]
 
-    args << "--enable-xcb=no" if MacOS.version <= :leopard
+    if build.with? "x11"
+      args << "--enable-xcb=yes" << "--enable-xlib=yes" << "--enable-xlib-xrender=yes"
+    else
+      args << "--enable-xcb=no" << "--enable-xlib=no" << "--enable-xlib-xrender=no"
+    end
 
     system "./configure", *args
     system "make", "install"

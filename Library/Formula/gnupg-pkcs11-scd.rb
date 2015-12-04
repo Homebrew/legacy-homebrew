@@ -1,22 +1,20 @@
-require 'formula'
-
 class GnupgPkcs11Scd < Formula
   desc "Enable the use of PKCS#11 tokens with GnuPG"
-  homepage 'http://gnupg-pkcs11.sourceforge.net'
-  url 'https://github.com/alonbl/gnupg-pkcs11-scd/archive/gnupg-pkcs11-scd-0.7.3.tar.gz'
-  sha1 '60a3d523f5e814c89eeff69b12f9d0adb0d63937'
+  homepage "http://gnupg-pkcs11.sourceforge.net"
+  url "https://github.com/alonbl/gnupg-pkcs11-scd/archive/gnupg-pkcs11-scd-0.7.3.tar.gz"
+  sha256 "69412cf0a71778026dd9a8adc5276b43e54dc698d12ca36f7f6969d1a76330b8"
   revision 1
 
-  head 'https://github.com/alonbl/gnupg-pkcs11-scd.git'
+  head "https://github.com/alonbl/gnupg-pkcs11-scd.git"
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'pkg-config' => :build
-  depends_on 'libgpg-error'
-  depends_on 'libassuan'
-  depends_on 'libgcrypt'
-  depends_on 'pkcs11-helper'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "libgpg-error"
+  depends_on "libassuan"
+  depends_on "libgcrypt"
+  depends_on "pkcs11-helper"
 
   def install
     system "autoreconf", "-fvi"
@@ -25,7 +23,7 @@ class GnupgPkcs11Scd < Formula
                           "--with-libassuan-prefix=#{Formula["libassuan"].opt_prefix}",
                           "--with-libgcrypt-prefix=#{Formula["libgcrypt"].opt_prefix}",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do

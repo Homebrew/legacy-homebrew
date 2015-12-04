@@ -2,14 +2,14 @@ class Cbmbasic < Formula
   desc "Commodore BASIC V2 as a scripting language"
   homepage "https://github.com/mist64/cbmbasic"
   url "https://downloads.sourceforge.net/project/cbmbasic/cbmbasic/1.0/cbmbasic-1.0.tgz"
-  sha1 "54564daa7f28be98b03ae7dd1eece9e5439c95c3"
+  sha256 "2735dedf3f9ad93fa947ad0fb7f54acd8e84ea61794d786776029c66faf64b04"
   head "https://github.com/mist64/cbmbasic.git"
 
   bottle do
     cellar :any
-    sha1 "83830760860b56bb7c10dd301c72aae60e8172c1" => :yosemite
-    sha1 "3e6da115337e59d612236113185fd29d49cd5763" => :mavericks
-    sha1 "7da6d8d160c73fd00e28999ae6c6f4c89b1cacbb" => :mountain_lion
+    sha256 "d7285a8376e20ac008e51814a97f155f8ac80ce94a809c953ee63932a1d2c1d7" => :yosemite
+    sha256 "ffe1126f8e12f15471abadf280fa83b8e77770170749805a28fdaa1a1adf51b0" => :mavericks
+    sha256 "04ac2ecc60ab69d7d4c6150260aeb8c63dc0bb3974d554241b8470792332be56" => :mountain_lion
   end
 
   def install

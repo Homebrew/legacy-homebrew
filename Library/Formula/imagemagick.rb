@@ -1,17 +1,16 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "http://www.imagemagick.org"
-  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.1-7.tar.xz"
-  mirror "http://ftp.nluug.nl/ImageMagick/ImageMagick-6.9.1-7.tar.xz"
-  sha256 "b610e5261c01664e19c91e513e21b3c2d76d583b497ee3c7cf2f20876d742328"
+  url "http://www.imagemagick.org/download/releases/ImageMagick-6.9.2-7.tar.xz"
+  mirror "http://ftp.nluug.nl/ImageMagick/ImageMagick-6.9.2-7.tar.xz"
+  sha256 "eef80bf259823523dafbcdae15e236b443ecf6d4ae415106d7a861d1fa8d9d13"
 
-  head "https://subversion.imagemagick.org/subversion/ImageMagick/trunk",
-       :using => :svn
+  head "http://git.imagemagick.org/repos/ImageMagick.git"
 
   bottle do
-    sha256 "e154adfb757c60e673a4ed62f2ffde447b3605041c06609f9fecf47967ed2f8d" => :yosemite
-    sha256 "40be3af57e9970d2b885e4441744475d71ee88e9215158cc5b6118f745e13e06" => :mavericks
-    sha256 "451cb7a0616fe966a3b4c7cc97067cf33933c14b458bdc9f4d107a8f2980b1a1" => :mountain_lion
+    sha256 "45c6549819d8a29ff50cbcc9a81bb7ede5e801792a018ed116e8a2d3db653455" => :el_capitan
+    sha256 "3b8a66a04e8a1cb9ad8bf48739998f417dd9a996c76f49ba5fa819237a3bb907" => :yosemite
+    sha256 "294c85278a1538ce46ab14ada13e92d2b16737da3e82a8a250693fe4ef0f0f00" => :mavericks
   end
 
   deprecated_option "enable-hdri" => "with-hdri"

@@ -2,14 +2,14 @@ class Makefile2graph < Formula
   desc "Create a graph of dependencies from GNU-Make"
   homepage "https://github.com/lindenb/makefile2graph"
   url "https://github.com/lindenb/makefile2graph/archive/v1.5.0.tar.gz"
-  sha1 "0f7be09d8b77e3a0b1769ddd011a45283ea4f1f4"
+  sha256 "9464c6c1291609c211284a9889faedbab22ef504ce967b903630d57a27643b40"
   head "https://github.com/lindenb/makefile2graph.git"
 
   bottle do
     cellar :any
-    sha1 "dd3b740ea2abc872fca365d6e6872b36cad8d10d" => :yosemite
-    sha1 "eef36f040d63dd9df3ec69cb787b1ceea610bf42" => :mavericks
-    sha1 "f2ae7bcf26c93031f82d15dc636885aff4c0b1da" => :mountain_lion
+    sha256 "37aebae489e0f341f80417ec711e5c2817f5b8097c3493dcc11bc754bdd1b1cf" => :yosemite
+    sha256 "0de3d4a2492797c3259798493e287ac2403f02254c6cfcf74948a16bcc4bcd0d" => :mavericks
+    sha256 "52dea69b4d18c1c6fa451ab834a43e1ca57ba64d9efb4c63972126a387682040" => :mountain_lion
   end
 
   depends_on "graphviz" => :recommended

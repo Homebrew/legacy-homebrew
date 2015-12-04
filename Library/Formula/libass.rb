@@ -1,28 +1,40 @@
-require 'formula'
-
 class Libass < Formula
   desc "Subtitle renderer for the ASS/SSA subtitle format"
-  homepage 'https://github.com/libass/libass'
-  url 'https://github.com/libass/libass/releases/download/0.12.2/libass-0.12.2.tar.gz'
-  sha1 '416efe79a8529c246a4ed98c8698265a87ffa22a'
+  homepage "https://github.com/libass/libass"
+  url "https://github.com/libass/libass/releases/download/0.13.0/libass-0.13.0.tar.gz"
+  sha256 "67692ef2a56e0423d22b142edb072c04949fe88c37be1d19cf22669c44f935f3"
+
+  head do
+    url "https://github.com/libass/libass.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
-    sha256 "06264f637a349f9229055e7d0f18b6ff1c360cef75f6376511bd20761880f00b" => :yosemite
-    sha256 "30abe24a8426edd4e101fedbda934f46e63269da66e07dcff7057b90ca8621fb" => :mavericks
-    sha256 "a8c24f02234dc48f1521924547b5957fa7341172f7c7199208d81c2a6a90339c" => :mountain_lion
+    sha256 "cf1af3bd7ddb8138afe2d404897d48a4c78d5b2518ffef7d8785fcaa09144113" => :el_capitan
+    sha256 "cf0373b3f9d85cd4db27f37ea1cdc34a18033b5f5ce966d391165a1dcffc9e48" => :yosemite
+    sha256 "7303bf3c119bc80d850f8e16ac1212e70224c83df3f8a3c0bf2adb0d378a6e80" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'yasm' => :build
+  option "with-fontconfig", "Disable CoreText backend in favor of the more traditional fontconfig"
 
-  depends_on 'freetype'
-  depends_on 'fribidi'
-  depends_on 'fontconfig'
-  depends_on 'harfbuzz' => :optional
+  depends_on "pkg-config" => :build
+  depends_on "yasm" => :build
+
+  depends_on "freetype"
+  depends_on "fribidi"
+  depends_on "harfbuzz" => :recommended
+  depends_on "fontconfig" => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--disable-coretext" if build.with? "fontconfig"
+
+    system "autoreconf", "-i" if build.head?
+    system "./configure", *args
+    system "make", "install"
   end
 end

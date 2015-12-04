@@ -1,10 +1,8 @@
-require "formula"
-
 class PhoronixTestSuite < Formula
   desc "Automated testing framework"
   homepage "http://www.phoronix-test-suite.com/"
   url "http://www.phoronix-test-suite.com/download.php?file=phoronix-test-suite-5.2.1"
-  sha1 "1328ff293879bf18009228ffc856ae7b9c4c6af5"
+  sha256 "1186f460691e2fe7a07df5edb8d8ed1ac0c65327512e646da2b2e3a60dda6cd9"
 
   patch :DATA
 

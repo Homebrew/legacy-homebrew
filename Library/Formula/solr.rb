@@ -1,9 +1,11 @@
 class Solr < Formula
   desc "Enterprise search platform from the Apache Lucene project"
   homepage "https://lucene.apache.org/solr/"
-  url "https://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.2.0/solr-5.2.0.tgz"
-  mirror "https://archive.apache.org/dist/lucene/solr/5.2.0/solr-5.2.0.tgz"
-  sha256 "dff2c5df505b732e23178e8f12e817dba4a088a8afe6599dcacf9ea241f76a1e"
+  url "https://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.3.1/solr-5.3.1.tgz"
+  mirror "https://archive.apache.org/dist/lucene/solr/5.3.1/solr-5.3.1.tgz"
+  sha256 "34ddcac071226acd6974a392af7671f687990aa1f9eb4b181d533ca6dca6f42d"
+
+  bottle :unneeded
 
   depends_on :java
 
@@ -44,6 +46,6 @@ class Solr < Formula
   end
 
   test do
-    system "solr"
+    system bin/"solr"
   end
 end

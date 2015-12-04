@@ -2,6 +2,7 @@ class Binwalk < Formula
   desc "Searches a binary image for embedded files and executable code"
   homepage "http://binwalk.org/"
   revision 1
+
   stable do
     url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
     sha256 "90ee8426d71e91b62dfe4a1446c457bc7835b475b28717859e275a0494403959"
@@ -19,17 +20,11 @@ class Binwalk < Formula
     patch :DATA
   end
 
-  bottle do
-    revision 2
-    sha256 "0f82745a58604fd03f88fd41a6a0b4c3408982c5aa31e099f421a641a1c67520" => :yosemite
-    sha256 "2371ec0e725e8ade778849e1ad6fc9c5aaef2887d0e2052c32ab2c992413db88" => :mavericks
-    sha256 "0e95d22e718e204bff65a768fc925afbacd612c77969f638731cdfa2f439a61a" => :mountain_lion
-  end
-
   head do
     url "https://github.com/devttys0/binwalk.git"
 
     option "with-capstone", "Enable disasm options via capstone"
+
     resource "capstone" do
       url "https://pypi.python.org/packages/source/c/capstone/capstone-3.0.2.tar.gz"
       sha256 "b32022fe956e940f8e67c17841dd3f6f1c50a60e451f9b5ce1f4dd2e5c5b3339"
@@ -54,8 +49,8 @@ class Binwalk < Formula
   end
 
   resource "numpy" do
-    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.9.2/numpy-1.9.2.tar.gz"
-    sha256 "325e5f2b0b434ecb6e6882c7e1034cc6cdde3eeeea87dbc482575199a6aeef2a"
+    url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.1.tar.gz"
+    sha256 "8b9f453f29ce96a14e625100d3dcf8926301d36c5f622623bf8820e748510858"
   end
 
   resource "scipy" do

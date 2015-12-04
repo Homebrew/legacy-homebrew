@@ -1,9 +1,9 @@
-require 'requirement'
+require "requirement"
 
 class FortranRequirement < Requirement
   fatal true
 
-  default_formula 'gcc'
+  default_formula "gcc"
 
   env { ENV.fortran }
 

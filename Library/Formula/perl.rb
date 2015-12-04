@@ -1,16 +1,17 @@
 class Perl < Formula
   desc "Highly capable, feature-rich programming language"
   homepage "https://www.perl.org/"
-  url "http://www.cpan.org/src/5.0/perl-5.20.2.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.20.2.orig.tar.bz2"
-  sha256 "e5a4713bc65e1da98ebd833dce425c000768bfe84d17ec5183ec5ca249db71ab"
+  url "http://www.cpan.org/src/5.0/perl-5.22.0.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.22.0.orig.tar.xz"
+  sha256 "be83ead0c5c26cbbe626fa4bac1a4beabe23a9eebc15d35ba49ccde11878e196"
 
-  head "git://perl5.git.perl.org/perl.git", :branch => "blead"
+  head "https://perl5.git.perl.org/perl.git", :branch => "blead"
 
   bottle do
-    sha256 "dd039ec422108c181e19fcb6e4cf166ff2cfaff6dd0f57640f2a7a292c5fbfad" => :yosemite
-    sha256 "525d6a0a33c1bf78330f69ba3b33f218117b49183afd4ead85f3044af4a49cf4" => :mavericks
-    sha256 "44ac37fb68bca3ffa86bd6a5ece9ec3e27eac43257bfa2506647bd82d50f8b50" => :mountain_lion
+    revision 1
+    sha256 "ebb13b34c8f16e00bc2c1f27b58e1429ffed46ab62fc985daba01995cb634718" => :el_capitan
+    sha256 "f856738f95e476155e396ce666aa03daeb02d8b69584310b089e5ad2ba16dfd6" => :yosemite
+    sha256 "54ae891865a973f2f8cea6639eb52fa2bad39ad7a31d9c04f255de52bc85ae58" => :mavericks
   end
 
   keg_only :provided_by_osx,
@@ -20,14 +21,14 @@ class Perl < Formula
   option "with-tests", "Build and run the test suite"
 
   def install
-    args = [
-      "-des",
-      "-Dprefix=#{prefix}",
-      "-Dman1dir=#{man1}",
-      "-Dman3dir=#{man3}",
-      "-Duseshrplib",
-      "-Duselargefiles",
-      "-Dusethreads"
+    args = %W[
+      -des
+      -Dprefix=#{prefix}
+      -Dman1dir=#{man1}
+      -Dman3dir=#{man3}
+      -Duseshrplib
+      -Duselargefiles
+      -Dusethreads
     ]
 
     args << "-Dusedtrace" if build.with? "dtrace"
@@ -35,7 +36,15 @@ class Perl < Formula
 
     system "./Configure", *args
     system "make"
-    system "make", "test" if build.with?("tests") || build.bottle?
+
+    # OS X El Capitan's SIP feature prevents DYLD_LIBRARY_PATH from being passed to child
+    # processes, which causes the make test step to fail.
+    # https://rt.perl.org/Ticket/Display.html?id=126706
+    # https://github.com/Homebrew/homebrew/issues/41716
+    if MacOS.version < :el_capitan
+      system "make", "test" if build.with?("tests") || build.bottle?
+    end
+
     system "make", "install"
   end
 

@@ -1,19 +1,18 @@
-require "formula"
-
 class Libstrophe < Formula
   desc "XMPP library for C"
   homepage "http://strophe.im/libstrophe/"
   url "https://github.com/strophe/libstrophe/archive/0.8.6.tar.gz"
-  sha1 "fc30c78945cb075a636cff8c76be671c8a364eb0"
+  sha256 "a2158134381e544a7697e9379f45abe18da817cd05eb3272eabec2151599d702"
   head "https://github.com/strophe/libstrophe.git"
   revision 1
 
   bottle do
     cellar :any
     revision 2
-    sha1 "cba04617714a99e25d71ab0efd9d26d046d336c4" => :yosemite
-    sha1 "1f824c9bcb4d8e370e5423d26b75bc926de23afc" => :mavericks
-    sha1 "5ed9df92858ba19d256cfc99c1459649b4840f68" => :mountain_lion
+    sha256 "b533ba5fbc93054ff666907002045eb057decaa582223610135bf5240f2f579b" => :el_capitan
+    sha256 "2ae7ce796b2f9318c7dd156c9014fcd214ab88d28e9af4b081161fc2166d732e" => :yosemite
+    sha256 "6bd460eafc013874c19fc20734d82a43deba034da23df9bf8e54533b79740686" => :mavericks
+    sha256 "64de9bbabe8ff8fd860d3db9d57eb55a83e5899f469731751f7da613a9155752" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -35,7 +34,7 @@ class Libstrophe < Formula
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <strophe.h>
       #include <assert.h>
 

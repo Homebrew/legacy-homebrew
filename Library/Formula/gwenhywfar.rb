@@ -1,15 +1,18 @@
 class Gwenhywfar < Formula
   desc "Utility library required by aqbanking and related software"
   homepage "http://www.aqbanking.de/"
-  url "http://www2.aquamaniac.de/sites/download/download.php?package=01&release=77&file=01&dummy=gwenhywfar-4.13.0.tar.gz"
-  sha1 "c4f37eb7fed069f3478e06a9311193a98cc9ddbf"
-  head "http://devel.aqbanking.de/svn/gwenhywfar/trunk"
+  url "http://www2.aquamaniac.de/sites/download/download.php?package=01&release=01&file=01&dummy=gwenhywfar-4.14.0.tar.gz"
+  sha256 "7e0ec2f1cab7d22a5ae0066e0ef827d4affec59470b1bdbc42132b58a903dd03"
+  head "http://git.aqbanking.de/git/gwenhywfar.git"
 
   bottle do
-    sha1 "3855ce27d2b51561e7d5fbb720bb13363051d742" => :yosemite
-    sha1 "567cf27a34cb43468ade7422aeec1e410ff819a8" => :mavericks
-    sha1 "746a3db32ec9f3f033752fc594761b596fec7f2d" => :mountain_lion
+    sha256 "46680498dc76f514f537dfd8881df82ad8bb41c48eca6c0133cf10aea3839506" => :el_capitan
+    sha256 "04f45fcee06842a6e767b10e1a003a3f232486de5ac39104b4f98d9488a56078" => :yosemite
+    sha256 "0969c806c101ab0fe17652bbb3727ef57f276216e8a645247185b15d30c76d87" => :mavericks
   end
+
+  option "without-cocoa", "Build without cocoa support"
+  option "with-check", "Run build-time check"
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -18,9 +21,6 @@ class Gwenhywfar < Formula
   depends_on "libgcrypt"
   depends_on "gtk+" => :optional
   depends_on "qt" => :optional
-
-  option "without-cocoa", "Build without cocoa support"
-  option "with-check", "Run build-time check"
 
   def install
     guis = []
@@ -34,5 +34,19 @@ class Gwenhywfar < Formula
                           "--with-guis=#{guis.join(" ")}"
     system "make", "check" if build.with? "check"
     system "make", "install"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <gwenhywfar/gwenhywfar.h>
+
+      int main()
+      {
+        GWEN_Init();
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-I#{include}/gwenhywfar4", "-L#{lib}", "-lgwenhywfar", "-o", "test"
+    system "./test"
   end
 end

@@ -1,11 +1,11 @@
-require 'formula'
-
 class H2 < Formula
   desc "Java SQL database"
-  homepage 'http://www.h2database.com/'
-  url 'http://www.h2database.com/h2-2015-04-10.zip'
-  version '1.4.187'
-  sha1 '20241dfbe12c1986d46b928f8ca1689b1be1fc97'
+  homepage "http://www.h2database.com/"
+  url "http://www.h2database.com/h2-2015-10-11.zip"
+  version "1.4.190"
+  sha256 "7881f308debe6d587219db3610b699af21d5e4b50ccb6fccac563382772a09c8"
+
+  bottle :unneeded
 
   def script; <<-EOS.undent
     #!/bin/sh
@@ -20,11 +20,11 @@ class H2 < Formula
     # Fix the permissions on the script
     chmod 0755, "bin/h2.sh"
 
-    libexec.install Dir['*']
-    (bin+'h2').write script
+    libexec.install Dir["*"]
+    (bin+"h2").write script
   end
 
-  plist_options :manual => 'h2'
+  plist_options :manual => "h2"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>

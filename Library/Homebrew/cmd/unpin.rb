@@ -1,4 +1,4 @@
-require 'formula'
+require "formula"
 
 module Homebrew
   def unpin

@@ -1,22 +1,49 @@
-require 'pathname'
-require 'exceptions'
-require 'os/mac'
-require 'utils/json'
-require 'utils/inreplace'
-require 'utils/popen'
-require 'utils/fork'
-require 'open-uri'
+require "pathname"
+require "exceptions"
+require "utils/json"
+require "utils/inreplace"
+require "utils/popen"
+require "utils/fork"
+require "utils/git"
+require "open-uri"
 
 class Tty
   class << self
-    def blue; bold 34; end
-    def white; bold 39; end
-    def red; underline 31; end
-    def yellow; underline 33; end
-    def reset; escape 0; end
-    def em; underline 39; end
-    def green; bold 32; end
-    def gray; bold 30; end
+    def blue
+      bold 34
+    end
+
+    def white
+      bold 39
+    end
+
+    def red
+      underline 31
+    end
+
+    def yellow
+      underline 33
+    end
+
+    def reset
+      escape 0
+    end
+
+    def em
+      underline 39
+    end
+
+    def green
+      bold 32
+    end
+
+    def gray
+      bold 30
+    end
+
+    def highlight
+      bold 39
+    end
 
     def width
       `/usr/bin/tput cols`.strip.to_i
@@ -28,67 +55,75 @@ class Tty
 
     private
 
-    def color n
+    def color(n)
       escape "0;#{n}"
     end
-    def bold n
+
+    def bold(n)
       escape "1;#{n}"
     end
-    def underline n
+
+    def underline(n)
       escape "4;#{n}"
     end
-    def escape n
+
+    def escape(n)
       "\033[#{n}m" if $stdout.tty?
     end
   end
 end
 
-def ohai title, *sput
+def ohai(title, *sput)
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.blue}==>#{Tty.white} #{title}#{Tty.reset}"
   puts sput
 end
 
-def oh1 title
+def oh1(title)
   title = Tty.truncate(title) if $stdout.tty? && !ARGV.verbose?
   puts "#{Tty.green}==>#{Tty.white} #{title}#{Tty.reset}"
 end
 
-def opoo warning
+# Print a warning (do this rarely)
+def opoo(warning)
   $stderr.puts "#{Tty.yellow}Warning#{Tty.reset}: #{warning}"
 end
 
-def onoe error
+def onoe(error)
   $stderr.puts "#{Tty.red}Error#{Tty.reset}: #{error}"
 end
 
-def ofail error
+def ofail(error)
   onoe error
   Homebrew.failed = true
 end
 
-def odie error
+def odie(error)
   onoe error
   exit 1
 end
 
-def pretty_duration s
+def pretty_duration(s)
   return "2 seconds" if s < 3 # avoids the plural problem ;)
   return "#{s.to_i} seconds" if s < 120
-  return "%.1f minutes" % (s/60)
+  "%.1f minutes" % (s/60)
 end
 
-def plural n, s="s"
+def plural(n, s = "s")
   (n == 1) ? "" : s
 end
 
-def interactive_shell f=nil
+def interactive_shell(f = nil)
   unless f.nil?
-    ENV['HOMEBREW_DEBUG_PREFIX'] = f.prefix
-    ENV['HOMEBREW_DEBUG_INSTALL'] = f.full_name
+    ENV["HOMEBREW_DEBUG_PREFIX"] = f.prefix
+    ENV["HOMEBREW_DEBUG_INSTALL"] = f.full_name
   end
 
-  Process.wait fork { exec ENV['SHELL'] }
+  if ENV["SHELL"].include?("zsh") && ENV["HOME"].start_with?(HOMEBREW_TEMP.resolved_path.to_s)
+    FileUtils.touch "#{ENV["HOME"]}/.zshrc"
+  end
+
+  Process.wait fork { exec ENV["SHELL"] }
 
   if $?.success?
     return
@@ -101,11 +136,10 @@ def interactive_shell f=nil
 end
 
 module Homebrew
-  def self.system cmd, *args
-    puts "#{cmd} #{args*' '}" if ARGV.verbose?
+  def self._system(cmd, *args)
     pid = fork do
       yield if block_given?
-      args.collect!{|arg| arg.to_s}
+      args.collect!(&:to_s)
       exec(cmd, *args) rescue nil
       exit! 1 # never gets here unless exec failed
     end
@@ -113,24 +147,66 @@ module Homebrew
     $?.success?
   end
 
+  def self.system(cmd, *args)
+    puts "#{cmd} #{args*" "}" if ARGV.verbose?
+    _system(cmd, *args)
+  end
+
+  def self.git_origin
+    return unless Utils.git_available?
+    HOMEBREW_REPOSITORY.cd { `git config --get remote.origin.url 2>/dev/null`.chuzzle }
+  end
+
   def self.git_head
+    return unless Utils.git_available?
     HOMEBREW_REPOSITORY.cd { `git rev-parse --verify -q HEAD 2>/dev/null`.chuzzle }
   end
 
+  def self.git_short_head
+    return unless Utils.git_available?
+    HOMEBREW_REPOSITORY.cd { `git rev-parse --short=4 --verify -q HEAD 2>/dev/null`.chuzzle }
+  end
+
   def self.git_last_commit
+    return unless Utils.git_available?
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cr" HEAD 2>/dev/null`.chuzzle }
   end
 
-  def self.install_gem_setup_path! gem, version=nil, executable=gem
+  def self.git_last_commit_date
+    return unless Utils.git_available?
+    HOMEBREW_REPOSITORY.cd { `git show -s --format="%cd" --date=short HEAD 2>/dev/null`.chuzzle }
+  end
+
+  def self.homebrew_version_string
+    if pretty_revision = git_short_head
+      last_commit = git_last_commit_date
+      "#{HOMEBREW_VERSION} (git revision #{pretty_revision}; last commit #{last_commit})"
+    else
+      "#{HOMEBREW_VERSION} (no git repository)"
+    end
+  end
+
+  def self.install_gem_setup_path!(gem, version = nil, executable = gem)
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
-    args = [gem]
-    args << "-v" << version if version
+    if Gem::Specification.find_all_by_name(gem, version).empty?
+      ohai "Installing or updating '#{gem}' gem"
+      install_args = %W[--no-ri --no-rdoc --user-install #{gem}]
+      install_args << "--version" << version if version
 
-    unless quiet_system "gem", "list", "--installed", *args
-      safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", *args
+      # Do `gem install [...]` without having to spawn a separate process or
+      # having to find the right `gem` binary for the running Ruby interpreter.
+      require "rubygems/commands/install_command"
+      install_cmd = Gem::Commands::InstallCommand.new
+      install_cmd.handle_options(install_args)
+      exit_code = 1 # Should not matter as `install_cmd.execute` always throws.
+      begin
+        install_cmd.execute
+      rescue Gem::SystemExitException => e
+        exit_code = e.exit_code
+      end
+      odie "Failed to install/update the '#{gem}' gem." if exit_code != 0
     end
 
     unless which executable
@@ -143,87 +219,113 @@ module Homebrew
 end
 
 def with_system_path
-  old_path = ENV['PATH']
-  ENV['PATH'] = '/usr/bin:/bin'
+  old_path = ENV["PATH"]
+  ENV["PATH"] = "/usr/bin:/bin"
   yield
 ensure
-  ENV['PATH'] = old_path
+  ENV["PATH"] = old_path
 end
 
-def run_as_not_developer(&block)
-  begin
-    old = ENV.delete "HOMEBREW_DEVELOPER"
-    yield
-  ensure
-    ENV["HOMEBREW_DEVELOPER"] = old
-  end
+def run_as_not_developer(&_block)
+  old = ENV.delete "HOMEBREW_DEVELOPER"
+  yield
+ensure
+  ENV["HOMEBREW_DEVELOPER"] = old
 end
 
 # Kernel.system but with exceptions
-def safe_system cmd, *args
-  Homebrew.system(cmd, *args) or raise ErrorDuringExecution.new(cmd, args)
+def safe_system(cmd, *args)
+  Homebrew.system(cmd, *args) || raise(ErrorDuringExecution.new(cmd, args))
 end
 
 # prints no output
-def quiet_system cmd, *args
-  Homebrew.system(cmd, *args) do
+def quiet_system(cmd, *args)
+  Homebrew._system(cmd, *args) do
     # Redirect output streams to `/dev/null` instead of closing as some programs
     # will fail to execute if they can't write to an open stream.
-    $stdout.reopen('/dev/null')
-    $stderr.reopen('/dev/null')
+    $stdout.reopen("/dev/null")
+    $stderr.reopen("/dev/null")
   end
 end
 
-def curl *args
+def curl(*args)
   brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
   curl = if MacOS.version <= "10.6" && brewed_curl.exist?
     brewed_curl
   else
-    Pathname.new '/usr/bin/curl'
+    Pathname.new "/usr/bin/curl"
   end
-  raise "#{curl} is not executable" unless curl.exist? and curl.executable?
+  raise "#{curl} is not executable" unless curl.exist? && curl.executable?
 
   flags = HOMEBREW_CURL_ARGS
   flags = flags.delete("#") if ARGV.verbose?
 
   args = [flags, HOMEBREW_USER_AGENT, *args]
-  args << "--verbose" if ENV['HOMEBREW_CURL_VERBOSE']
-  args << "--silent" unless $stdout.tty?
+  args << "--verbose" if ENV["HOMEBREW_CURL_VERBOSE"]
+  args << "--silent" if !$stdout.tty? || ENV["TRAVIS"]
 
   safe_system curl, *args
 end
 
-def puts_columns items, star_items=[]
+def puts_columns(items, highlight = [])
   return if items.empty?
 
-  if star_items && star_items.any?
-    items = items.map{|item| star_items.include?(item) ? "#{item}*" : item}
+  unless $stdout.tty?
+    puts items
+    return
   end
 
-  if $stdout.tty?
-    # determine the best width to display for different console sizes
-    console_width = `/bin/stty size`.chomp.split(" ").last.to_i
-    console_width = 80 if console_width <= 0
-    longest = items.sort_by { |item| item.length }.last
-    optimal_col_width = (console_width.to_f / (longest.length + 2).to_f).floor
-    cols = optimal_col_width > 1 ? optimal_col_width : 1
+  # TTY case: If possible, output using multiple columns.
+  console_width = Tty.width
+  console_width = 80 if console_width <= 0
+  max_len = items.max_by(&:length).length
+  col_gap = 2 # number of spaces between columns
+  gap_str = " " * col_gap
+  cols = (console_width + col_gap) / (max_len + col_gap)
+  cols = 1 if cols < 1
+  rows = (items.size + cols - 1) / cols
+  cols = (items.size + rows - 1) / rows # avoid empty trailing columns
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w"){|io| io.puts(items) }
-  else
+  plain_item_lengths = items.map(&:length) if cols >= 2
+  if highlight && highlight.any?
+    items = items.map do |item|
+      highlight.include?(item) ? "#{Tty.highlight}#{item}#{Tty.reset}" : item
+    end
+  end
+
+  if cols >= 2
+    col_width = (console_width + col_gap) / cols - col_gap
+    items = items.each_with_index.map do |item, index|
+      item + "".ljust(col_width - plain_item_lengths[index])
+    end
+  end
+
+  if cols == 1
     puts items
+  else
+    rows.times do |row_index|
+      item_indices_for_row = row_index.step(items.size - 1, rows).to_a
+      puts items.values_at(*item_indices_for_row).join(gap_str)
+    end
   end
 end
 
-def which cmd, path=ENV['PATH']
+def which(cmd, path = ENV["PATH"])
   path.split(File::PATH_SEPARATOR).each do |p|
-    pcmd = File.expand_path(cmd, p)
+    begin
+      pcmd = File.expand_path(cmd, p)
+    rescue ArgumentError
+      # File.expand_path will raise an ArgumentError if the path is malformed.
+      # See https://github.com/Homebrew/homebrew/issues/32789
+      next
+    end
     return Pathname.new(pcmd) if File.file?(pcmd) && File.executable?(pcmd)
   end
-  return nil
+  nil
 end
 
 def which_editor
-  editor = ENV.values_at('HOMEBREW_EDITOR', 'VISUAL', 'EDITOR').compact.first
+  editor = ENV.values_at("HOMEBREW_EDITOR", "VISUAL", "EDITOR").compact.first
   return editor unless editor.nil?
 
   # Find Textmate
@@ -244,31 +346,31 @@ def which_editor
   editor
 end
 
-def exec_editor *args
+def exec_editor(*args)
   safe_exec(which_editor, *args)
 end
 
-def exec_browser *args
-  browser = ENV['HOMEBREW_BROWSER'] || ENV['BROWSER'] || OS::PATH_OPEN
+def exec_browser(*args)
+  browser = ENV["HOMEBREW_BROWSER"] || ENV["BROWSER"] || OS::PATH_OPEN
   safe_exec(browser, *args)
 end
 
-def safe_exec cmd, *args
+def safe_exec(cmd, *args)
   # This buys us proper argument quoting and evaluation
   # of environment variables in the cmd parameter.
   exec "/bin/sh", "-c", "#{cmd} \"$@\"", "--", *args
 end
 
 # GZips the given paths, and returns the gzipped paths
-def gzip *paths
+def gzip(*paths)
   paths.collect do |path|
-    with_system_path { safe_system 'gzip', path }
+    with_system_path { safe_system "gzip", path }
     Pathname.new("#{path}.gz")
   end
 end
 
 # Returns array of architectures that the given command or library is built for.
-def archs_for_command cmd
+def archs_for_command(cmd)
   cmd = which(cmd) unless Pathname.new(cmd).absolute?
   Pathname.new(cmd).archs
 end
@@ -298,9 +400,9 @@ def nostdout
 end
 
 def paths
-  @paths ||= ENV['PATH'].split(File::PATH_SEPARATOR).collect do |p|
+  @paths ||= ENV["PATH"].split(File::PATH_SEPARATOR).collect do |p|
     begin
-      File.expand_path(p).chomp('/')
+      File.expand_path(p).chomp("/")
     rescue ArgumentError
       onoe "The following PATH component is invalid: #{p}"
     end
@@ -317,7 +419,8 @@ def shell_profile
   end
 end
 
-module GitHub extend self
+module GitHub
+  extend self
   ISSUES_URI = URI.parse("https://api.github.com/search/issues")
 
   Error = Class.new(RuntimeError)
@@ -327,10 +430,10 @@ module GitHub extend self
     def initialize(reset, error)
       super <<-EOS.undent
         GitHub #{error}
-        Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
-          https://github.com/settings/tokens
+        Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
+          #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
         and then set the token as: HOMEBREW_GITHUB_API_TOKEN
-        EOS
+      EOS
     end
 
     def pretty_ratelimit_reset(reset)
@@ -347,20 +450,20 @@ module GitHub extend self
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/tokens
-        EOS
+          #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
+      EOS
     end
   end
 
-  def open(url, &block)
+  def open(url, &_block)
     # This is a no-op if the user is opting out of using the GitHub API.
-    return if ENV['HOMEBREW_NO_GITHUB_API']
+    return if ENV["HOMEBREW_NO_GITHUB_API"]
 
     require "net/https"
 
     headers = {
       "User-Agent" => HOMEBREW_USER_AGENT,
-      "Accept"     => "application/vnd.github.v3+json",
+      "Accept"     => "application/vnd.github.v3+json"
     }
 
     headers["Authorization"] = "token #{HOMEBREW_GITHUB_API_TOKEN}" if HOMEBREW_GITHUB_API_TOKEN
@@ -393,10 +496,14 @@ module GitHub extend self
     end
   end
 
-  def issues_matching(query, qualifiers={})
+  def issues_matching(query, qualifiers = {})
     uri = ISSUES_URI.dup
     uri.query = build_query_string(query, qualifiers)
     open(uri) { |json| json["items"] }
+  end
+
+  def repository(user, repo)
+    open(URI.parse("https://api.github.com/repos/#{user}/#{repo}")) { |j| j }
   end
 
   def build_query_string(query, qualifiers)
@@ -408,10 +515,10 @@ module GitHub extend self
   def build_search_qualifier_string(qualifiers)
     {
       :repo => "Homebrew/homebrew",
-      :in => "title",
-    }.update(qualifiers).map { |qualifier, value|
+      :in => "title"
+    }.update(qualifiers).map do |qualifier, value|
       "#{qualifier}:#{value}"
-    }.join("+")
+    end.join("+")
   end
 
   def uri_escape(query)
@@ -423,17 +530,17 @@ module GitHub extend self
     end
   end
 
-  def issues_for_formula name
+  def issues_for_formula(name)
     issues_matching(name, :state => "open")
   end
 
   def print_pull_requests_matching(query)
-    return [] if ENV['HOMEBREW_NO_GITHUB_API']
-    puts "Searching pull requests..."
+    return [] if ENV["HOMEBREW_NO_GITHUB_API"]
+    ohai "Searching pull requests..."
 
     open_or_closed_prs = issues_matching(query, :type => "pr")
 
-    open_prs = open_or_closed_prs.select {|i| i["state"] == "open" }
+    open_prs = open_or_closed_prs.select { |i| i["state"] == "open" }
     if open_prs.any?
       puts "Open pull requests:"
       prs = open_prs

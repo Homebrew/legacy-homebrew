@@ -6,6 +6,7 @@ class Pstoedit < Formula
 
   bottle do
     revision 1
+    sha256 "ebead6381ae8729b99868e77f53433123293b0153adea4399ce52b481dc79a30" => :el_capitan
     sha256 "7aaeb9a02ccedc2487890d021e56a5303d0e3b9a45a2ebb1a79d82136f5f98eb" => :yosemite
     sha256 "edf89792e82fd205773febafd90e9af391566fc20c1a48799854aa2ef1bf6888" => :mavericks
     sha256 "d1f51d8a33fe2f1d69200cee962bd8a0eb78cd891f174efa872a6d91fe11b35b" => :mountain_lion

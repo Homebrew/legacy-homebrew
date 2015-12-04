@@ -1,10 +1,8 @@
-require 'formula'
-
 class Hidapi < Formula
   desc "Library for communicating with USB and Bluetooth HID devices"
   homepage "https://github.com/signal11/hidapi"
   url "https://github.com/signal11/hidapi/archive/hidapi-0.8.0-rc1.tar.gz"
-  sha1 "5e72a4c7add8b85c8abcdd360ab8b1e1421da468"
+  sha256 "3c147200bf48a04c1e927cd81589c5ddceff61e6dac137a605f6ac9793f4af61"
 
   # This patch addresses a bug discovered in the HidApi IOHidManager back-end
   # that is being used with Macs.
@@ -19,25 +17,26 @@ class Hidapi < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "7fb4f99e0d29846541d91834a85c993b4391f78e5635d154da3ef025b0f84be3" => :yosemite
-    sha256 "28c0f7b67d8d041f70f2e7278f0e216660c5b4f004d6330f741485e8d75a4955" => :mavericks
-    sha256 "b7ced91d5e87d1d47ffc12de47ffbeac3391f1070fb0e2b47b84c929f372e99e" => :mountain_lion
+    revision 2
+    sha256 "cea4750ae62177a9b399b43d463eec41852161f691a148b03d7b7f91789932fc" => :el_capitan
+    sha256 "06daf7b3080f0c87c46b3f69c869ce3b88de5ce1187db2435cd8e3a1db2e9871" => :yosemite
+    sha256 "6821097f8a0bb55df7697aa26fc7bea3e79914e76932eb69e03b4346a22309dc" => :mavericks
   end
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'pkg-config' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
 
   def install
-    system './bootstrap'
+    system "./bootstrap"
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
+    bin.install "hidtest/.libs/hidtest"
   end
 
   test do
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include "hidapi.h"
       int main(void)
       {
@@ -47,6 +46,6 @@ class Hidapi < Formula
 
     flags = ["-I#{include}/hidapi", "-L#{lib}", "-lhidapi"] + ENV.cflags.to_s.split
     system ENV.cc, "-o", "test", "test.c", *flags
-    system './test'
+    system "./test"
   end
 end
