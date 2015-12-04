@@ -10,11 +10,15 @@ class Eg < Formula
   # clang complains about escaped newlines used in the source
   # to form a multiline string. The patch converts said string
   # to a more common C syntax.
+  # Upstream patch:
+  #   https://github.com/davep/eg/commit/2c1463accba1babb822f9093c5ad3f838d706960
   patch :DATA
 
   def install
     # Change S-Lang header references to the canonical way, otherwise
     # they are not found in the Homebrew environment.
+    # Upstream patch:
+    #   https://github.com/davep/eg/commit/f724fd6b402544f38b06f5a7f3f934dc77807899
     inreplace %w[
       eg.c
       egcmplte.c
