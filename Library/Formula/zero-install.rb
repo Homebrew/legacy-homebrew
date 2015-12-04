@@ -5,10 +5,11 @@ class ZeroInstall < Formula
   sha256 "12de771be748bce9350c90bc4720029a566b078ceabd335af09386ac6a37df2b"
 
   bottle do
-    cellar :any
-    sha256 "3ab466845d13b43ea73eace0f6c56536f224303f056962f57c35709bf5204385" => :yosemite
-    sha256 "ebd5dc48e1bd1d6acaa97fa628fcb16facf0ed24b3a907a657b6087cb7c267cf" => :mavericks
-    sha256 "6eca41e9ec6f3fb6e575a34838dca9c87b28bc756f9aa3992bc0da508d47dd55" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "f8fd9ea034aec0c405abc9504db4c06b4b870e62191964fef7fae3717c5a2255" => :el_capitan
+    sha256 "636bfc8df15907e8c87728689b49ed551f814a3addd597e6e9d4cd7b819bc031" => :yosemite
+    sha256 "6620f4b044215ae1ec0dcf374b1aba9d22f451a57b905b3b128c01e7df7d1042" => :mavericks
   end
 
   depends_on "pkg-config" => :build
