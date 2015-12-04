@@ -89,6 +89,9 @@ module OS
       begin
         @locator.sdk_for v
       rescue SDKLocator::NoSDKError
+        sdk = @locator.latest_sdk
+        # don't return an SDK that's older than the OS version
+        sdk unless sdk.nil? || sdk.version < version
       end
     end
 
