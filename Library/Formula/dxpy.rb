@@ -4,6 +4,13 @@ class Dxpy < Formula
   url "https://pypi.python.org/packages/source/d/dxpy/dxpy-0.162.1.tar.gz"
   sha256 "095bd85bccecc1cc8b5fb1322fe773f27fe963e69d0f9f397df740c3a2523b24"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "5a3dafb8eb91139a0836148fc13df92d1284ad7eee022c3402b71b4d4525d65c" => :el_capitan
+    sha256 "864c64bb8c71bad5f7be34cd35cef96881db775761d3b26a52472a51e4eb0a07" => :yosemite
+    sha256 "57632398add68a99404793b6e76f7868fdfeb03ba3c4d30e49d1401aad24ed02" => :mavericks
+  end
+
   resource "futures" do
     url "https://pypi.python.org/packages/source/f/futures/futures-3.0.3.tar.gz"
     sha256 "2fe2342bb4fe8b8e217f0d21b5921cbe5408bf966d9f92025e707e881b198bed"
