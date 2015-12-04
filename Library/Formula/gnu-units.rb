@@ -28,6 +28,11 @@ class GnuUnits < Formula
   patch :DATA
 
   def install
+    # OSX doesn't provide 'python2', but on some Linux distributions
+    # 'python' is an alias for python3 so this won't be changed
+    # upstream
+    inreplace "units_cur", "#!/usr/bin/python2", "#!/usr/bin/env python"
+
     args = ["--prefix=#{prefix}"]
     args << "--program-prefix=g" if build.without? "default-names"
 
