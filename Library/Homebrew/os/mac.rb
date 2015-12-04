@@ -3,6 +3,7 @@ require "os/mac/version"
 require "os/mac/xcode"
 require "os/mac/xquartz"
 require "os/mac/pathname"
+require "os/mac/sdk"
 
 module OS
   module Mac
@@ -79,17 +80,22 @@ module OS
       @active_developer_dir ||= Utils.popen_read("/usr/bin/xcode-select", "-print-path").strip
     end
 
-    def sdk_path(v = version)
-      (@sdk_path ||= {}).fetch(v.to_s) do |key|
-        opts = []
-        # First query Xcode itself
-        opts << Utils.popen_read(locate("xcodebuild"), "-version", "-sdk", "macosx#{v}", "Path").chomp
-        # Xcode.prefix is pretty smart, so lets look inside to find the sdk
-        opts << "#{Xcode.prefix}/Platforms/MacOSX.platform/Developer/SDKs/MacOSX#{v}.sdk"
-        # Xcode < 4.3 style
-        opts << "/Developer/SDKs/MacOSX#{v}.sdk"
-        @sdk_path[key] = opts.map { |a| Pathname.new(a) }.detect(&:directory?)
+    # Returns the requested SDK, if installed.
+    # If the requested SDK is not installed returns either:
+    # a) The newest SDK (if any SDKs are available), or
+    # b) nil
+    def sdk(v = version)
+      @locator ||= SDKLocator.new
+      begin
+        @locator.sdk_for v
+      rescue SDKLocator::NoSDKError
       end
+    end
+
+    # Returns the path to an SDK or nil, following the rules set by #sdk.
+    def sdk_path(v = version)
+      s = sdk(v)
+      s.path unless s.nil?
     end
 
     def default_cc
