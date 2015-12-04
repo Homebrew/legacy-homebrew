@@ -33,6 +33,7 @@ class Eg < Formula
     # It will return a non-zero exit code when called with any option
     # except a filename, but will return success even if the file
     # doesn't exist, and we're exploiting this here.
+    ENV["TERM"] = "xterm"
     system "eg", "not_here.ng"
   end
 end
