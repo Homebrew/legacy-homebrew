@@ -15,6 +15,9 @@ class Logcheck < Formula
 
   def install
     inreplace "Makefile", "$(DESTDIR)/$(CONFDIR)", "$(CONFDIR)"
+    # email sent to logcheck mailing list asking whether this patch can land upstream:
+    # http://lists.alioth.debian.org/pipermail/logcheck-users/2015-December/000328.html
+    inreplace "src/logcheck-test", "mktemp --tmpdir logcheck-test", "mktemp /tmp/logcheck-test"
 
     system "make", "install", "--always-make", "DESTDIR=#{prefix}",
                    "SBINDIR=sbin", "BINDIR=bin", "CONFDIR=#{etc}/logcheck"
