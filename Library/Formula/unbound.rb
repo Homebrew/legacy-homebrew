@@ -4,15 +4,15 @@ class Unbound < Formula
   url "https://unbound.net/downloads/unbound-1.5.6.tar.gz"
   sha256 "ad3823f5895f59da9e408ea273fcf81d8a76914c18864fba256d7f140b83e404"
 
-  depends_on "openssl"
-  depends_on "libevent"
-
   bottle do
     cellar :any
     sha256 "5478c4b2c340bb1dd8689039fbe2a95375bdacf7a83e33530482fe99f1af675c" => :el_capitan
     sha256 "c6338a9b564f24b91f511eee53cb38e27132f69537f6b0f317043f2d7c383874" => :yosemite
     sha256 "049c3cd6c2dea2a82007ee0ce019e5c0e964367fc7abff040903d22d72537aaa" => :mavericks
   end
+
+  depends_on "openssl"
+  depends_on "libevent"
 
   def install
     system "./configure", "--prefix=#{prefix}",
