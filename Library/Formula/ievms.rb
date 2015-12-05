@@ -4,6 +4,8 @@ class Ievms < Formula
   url "https://github.com/xdissent/ievms/archive/v0.3.1.tar.gz"
   sha256 "4db0b334fa9471f1116e56b472ffd24f92c4d8a2d6e016cd9d4060c6059664bb"
 
+  bottle :unneeded
+
   depends_on "unar"
 
   def install

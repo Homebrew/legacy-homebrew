@@ -5,9 +5,11 @@ class Xapian < Formula
   sha256 "4a78260388ff1b042f0ab5d18afdd524a530ae609690d0339990ddc147a54785"
 
   bottle do
-    sha1 "51971954b89b767f45c0cdbec9b3bc39c4704d2e" => :yosemite
-    sha1 "90cc658d5639598783c165938edce758f44657f4" => :mavericks
-    sha1 "fd032717423f8440865e9b6b3e82b3d1b70f8fad" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "223966e50beed39b091f1e0e9c99113420211d99c7a959efcc44a66507506f89" => :el_capitan
+    sha256 "6ffe866abf19269399d42d4f77f6251b2fa99abfa6ea0c3ccedf1b554f6bd26b" => :yosemite
+    sha256 "2bffd7ca22b71a06537138c43b3a0dc010d2af5bb3bd26b190d57cfb998e4434" => :mavericks
   end
 
   option "java",   "Java bindings"

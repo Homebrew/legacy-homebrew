@@ -1,23 +1,22 @@
 class Libchamplain < Formula
   desc "ClutterActor for displaying maps"
   homepage "https://wiki.gnome.org/Projects/libchamplain"
-  url "https://download.gnome.org/sources/libchamplain/0.12/libchamplain-0.12.10.tar.xz"
-  sha256 "bf53ceb2405d4e23a14596a53ecc2a821b003f8c69de4a7de3a39d6e99462b05"
+  url "https://download.gnome.org/sources/libchamplain/0.12/libchamplain-0.12.12.tar.xz"
+  sha256 "e7de797200a91dba07bd8ba6583a672e1b3dcee842b9b100798925ebde8254a6"
 
   bottle do
-    sha256 "323d628038e62d767e553aa0473901dc7cf2e50895aa390dda5ef163a70ab15a" => :yosemite
-    sha256 "198aadbcf5f5f9bc44d82306fd75752ab4419d64337fd61cd65ef57b5cb9836b" => :mavericks
-    sha256 "7b4a9c531cadf9a8af43f9fd0e7f1b293761fa0bbf9266cff4cc0a8fa54782be" => :mountain_lion
+    sha256 "c489324cfd7be98817af7ab6d1cc1645dad41803566ccafef8b30c78ad383190" => :el_capitan
+    sha256 "302278ca1ccc1e91cd705b9af97c0b0f61a0f4cf3f7d956d9ce279ea199b25cb" => :yosemite
+    sha256 "e14e6a06013cc796cdf0d09ea8491e59cd9ecf52d4be1327621bd765667f8051" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "clutter"
   depends_on "libsoup"
   depends_on "gobject-introspection"
-  depends_on "gtk+3" => :recommended
+  depends_on "gtk+3"
+  depends_on "clutter-gtk"
   depends_on "vala" => :optional
-
-  depends_on "clutter-gtk" if build.with? "gtk+3"
 
   def install
     system "./configure", "--disable-debug",
@@ -47,6 +46,7 @@ class Libchamplain < Formula
     gettext = Formula["gettext"]
     glib = Formula["glib"]
     gtkx3 = Formula["gtk+3"]
+    harfbuzz = Formula["harfbuzz"]
     json_glib = Formula["json-glib"]
     libepoxy = Formula["libepoxy"]
     libpng = Formula["libpng"]
@@ -67,6 +67,7 @@ class Libchamplain < Formula
       -I#{glib.opt_include}/glib-2.0
       -I#{glib.opt_lib}/glib-2.0/include
       -I#{gtkx3.opt_include}/gtk-3.0
+      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/libchamplain-0.12
       -I#{json_glib.opt_include}/json-glib-1.0
       -I#{libepoxy.opt_include}

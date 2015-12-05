@@ -1,16 +1,16 @@
 class Fakeroot < Formula
   desc "Provide a fake root environment"
   homepage "https://tracker.debian.org/pkg/fakeroot"
-  url "https://mirrors.kernel.org/debian/pool/main/f/fakeroot/fakeroot_1.20.2.orig.tar.bz2"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/f/fakeroot/fakeroot_1.20.2.orig.tar.bz2"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/f/fakeroot/fakeroot_1.20.2.orig.tar.bz2"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/f/fakeroot/fakeroot_1.20.2.orig.tar.bz2"
   sha256 "7c0a164d19db3efa9e802e0fc7cdfeff70ec6d26cdbdc4338c9c2823c5ea230c"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "33ae18f3adadf47b0266d5e8ef7d2ec6d87f49a4" => :yosemite
-    sha1 "96ab6f2489b44639d575f61604401eba046ff08c" => :mavericks
-    sha1 "3f4c8d4554f6311d38dcdccc7844e1a62e4de13b" => :mountain_lion
+    sha256 "8826383a8dcef74009b3813a0297732daba8c6dc0fad6ccef0cafda1086a347a" => :yosemite
+    sha256 "3f3a1a9c01102dd3fa90cd0d83c55745b5b8d44769128831cf050dd413a03402" => :mavericks
+    sha256 "88f49412644e3182a2208e782a91f0da7aec1fc64655baf9c7b4696429ceaf50" => :mountain_lion
   end
 
   # Compile is broken. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=766649

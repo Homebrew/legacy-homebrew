@@ -1,9 +1,11 @@
 class ClozureCl < Formula
   desc "Common Lisp implementation with a long history"
   homepage "http://ccl.clozure.com/"
-  url "http://ccl.clozure.com/ftp/pub/release/1.10/ccl-1.10-darwinx86.tar.gz"
-  version "1.10"
-  sha256 "5ec70087e6ba54e1992210575d444ebb2e12dbd33ac2816fed1112d24d595ec9"
+  url "http://ccl.clozure.com/ftp/pub/release/1.11/ccl-1.11-darwinx86.tar.gz"
+  version "1.11"
+  sha256 "2fc4b519f26f7df3fbb62314b15bd5d098082b05d40c3539f8204aa10f546913"
+
+  bottle :unneeded
 
   conflicts_with "cclive", :because => "both install a ccl binary"
 

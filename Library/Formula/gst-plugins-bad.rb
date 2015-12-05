@@ -1,15 +1,13 @@
 class GstPluginsBad < Formula
   desc "GStreamer plugins (less supported, missing docs, not fully tested)"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-bad-1.4.5.tar.xz"
-  sha256 "152fad7250683d72f9deb36c5685428338365fe4a4c87ffe15e38783b14f983c"
+  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.6.1.tar.xz"
+  sha256 "e176a9af125f6874b3d6724aa7566a198fa225d3ece0a7ac2f2b51c57e525466"
 
   bottle do
-    revision 1
-    sha256 "c4cb9cf4187786a73e43618260378e3db8cff3887acf3f352a1a549373f0340d" => :yosemite
-    sha256 "5280b336808a878ba93477d5664d6f784e2f78f6880b5ea267adcd93e7e7f38b" => :mavericks
-    sha256 "1de5eb524831527facb2f91df2c8b7292aca6d7e72f3c454116f3c67989edcba" => :mountain_lion
+    sha256 "2de786143627ce949fd3bb7f3dae6cb9cc9110b42072061d60206f55ea381826" => :el_capitan
+    sha256 "87249ebeb2cbb133a5cf75c1c4f272df0ca1583659642d5588572e30c62c6257" => :yosemite
+    sha256 "f6b52b9c2d0ce7901b36af8ac2e393c8290fd882eaf43d0a1b4a6886cc53e74f" => :mavericks
   end
 
   head do
@@ -18,12 +16,14 @@ class GstPluginsBad < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on "openssl"
   end
+
+  option "with-applemedia", "Build with applemedia support"
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
   depends_on "gst-plugins-base"
+  depends_on "openssl"
 
   depends_on "dirac" => :optional
   depends_on "faac" => :optional
@@ -38,8 +38,6 @@ class GstPluginsBad < Formula
   depends_on "schroedinger" => :optional
   depends_on "sound-touch" => :optional
   depends_on "srtp" => :optional
-
-  option "with-applemedia", "Build with applemedia support"
 
   def install
     args = %W[

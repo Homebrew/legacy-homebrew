@@ -8,9 +8,9 @@ class Libwpg < Formula
     cellar :any
     revision 1
     sha256 "976dc5670fc09408ea89d58519d713605aad953fcd47b836ce1d5204ccb790ac" => :el_capitan
-    sha1 "4ffcaff0f379c8be9497fe5783ef1e8ec19a5df5" => :yosemite
-    sha1 "869f2ed7ca10f81070797af9f6668ce483013c3b" => :mavericks
-    sha1 "23b67bcab674ef8a3d47370fd1fc6c7c2a84fa78" => :mountain_lion
+    sha256 "ea801f9c413c99ec2ba1b6edee8e8bd574b7be60599c9586782b352f5d3bf498" => :yosemite
+    sha256 "76c66ba7812eeea20b3e250646cdcb92c0684a12679397f831f92ae7b042159d" => :mavericks
+    sha256 "eb5de2dd771901a8836ffc5531660d39c6d3612b6d8f82d9bc8a531e4e175b7d" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

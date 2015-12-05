@@ -6,9 +6,9 @@ class Abook < Formula
   head "git://git.code.sf.net/p/abook/git"
 
   bottle do
-    sha1 "79a5f0c68339b53df2558854ffef927aa1ef9b29" => :yosemite
-    sha1 "2b71a4c791d982933129d096468e9faf365cf35a" => :mavericks
-    sha1 "9d84e27e92763c9c9d45f4af89e433e6f5b77a49" => :mountain_lion
+    sha256 "3aeddea7c0bb71c664a2df2d8974df26d156f25f5a2ff993060396f0af22b574" => :yosemite
+    sha256 "87ee3c353da4421ac95d43dcf6581a8ee60f9c8b6c2a1821b498dabbab60942e" => :mavericks
+    sha256 "882983ecabf61b120b50eb313c698bc85806d95dd8712375f64decd2f2ebce59" => :mountain_lion
   end
 
   devel do

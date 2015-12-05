@@ -7,9 +7,9 @@ class PostgresXc < Formula
 
   bottle do
     revision 1
-    sha1 "21bd6d6b471211de5ac391200055ed3637c40c25" => :mavericks
-    sha1 "3eb982b371f865a2f9738d211486467a414bec9c" => :mountain_lion
-    sha1 "ad1057744dfba12797cd1ecffadcd42dd17b6093" => :lion
+    sha256 "fd135afdee2713911606dfae877ee8d219d595590b6d5a145a12a258304ead55" => :mavericks
+    sha256 "27c61d8b927b03c356700d5115358f5aa3f429d05b398dcb3c014504c2a6f1d0" => :mountain_lion
+    sha256 "a23ac1d0746207ccc5548b93156b0bbea6c633897842d323b4dd470c687f0ec1" => :lion
   end
 
   depends_on :arch => :x86_64

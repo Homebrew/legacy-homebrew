@@ -2,23 +2,22 @@ class X264 < Formula
   desc "H.264/AVC encoder"
   homepage "https://www.videolan.org/developers/x264.html"
   # the latest commit on the stable branch
-  url "https://git.videolan.org/git/x264.git", :revision => "0c21480fa2fdee345a3049e2169624dc6fc2acfc"
-  version "r2555"
+  url "https://git.videolan.org/git/x264.git", :revision => "a0cd7d38acb6c31973228ab207e18344920e0aa3"
+  version "r2601"
 
   devel do
     # the latest commit on the master branch
-    url "https://git.videolan.org/git/x264.git", :revision => "73ae2d11d472d0eb3b7c218dc1659db32f649b14"
-    version "r2579"
+    url "https://git.videolan.org/git/x264.git", :revision => "75992107adcc8317ba2888e3957a7d56f16b5cd4"
+    version "r2638"
   end
 
   head "https://git.videolan.org/git/x264.git"
 
   bottle do
     cellar :any
-    sha256 "9e54452d398d03432d1a1c6d8c65becf72f0806e6b866e40ea2f93b38cbe3caf" => :el_capitan
-    sha256 "59a15f331aa60995fca0fc9d27ad687064a8459aa7b8e10dd068b5b5e7948bed" => :yosemite
-    sha256 "0b0fba0bd52fa74352bada52c5dda7d76327c79e81e84a84d636cac21580275b" => :mavericks
-    sha256 "141c28c2226424f82968f7ecb92e23a3ce9af6ae5e78beeb31f9e321b88bc8d4" => :mountain_lion
+    sha256 "010cb2be57c48fb617749e583ad2fbeb148cc522b47d59b407dfb9f10f1f3a2b" => :el_capitan
+    sha256 "e093adfd1af594a592ace82f77bd59748e3040d263e507acd3d8ad2275292e16" => :yosemite
+    sha256 "977c077c5d38c1a5842bda75aec11831f4980ae258556b9bd9ba2184deb11faa" => :mavericks
   end
 
   depends_on "yasm" => :build

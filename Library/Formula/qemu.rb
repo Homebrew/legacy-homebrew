@@ -1,15 +1,15 @@
 class Qemu < Formula
   desc "x86 and PowerPC Emulator"
   homepage "http://wiki.qemu.org"
-  url "http://wiki.qemu-project.org/download/qemu-2.4.0.tar.bz2"
-  sha256 "72b0b991bbcc540663a019e1e8c4f714053b691dda32c9b9ee80b25f367e6620"
+  url "http://wiki.qemu-project.org/download/qemu-2.4.0.1.tar.bz2"
+  mirror "http://ftp.osuosl.org/pub/blfs/conglomeration/qemu/qemu-2.4.0.1.tar.bz2"
+  sha256 "ecfe8b88037e41e817d72c460c56c6a0b573d540d6ba38b162d0de4fd22d1bdb"
   head "git://git.qemu-project.org/qemu.git"
 
   bottle do
-    sha256 "4d10274191ecfd568eb3405234850530868d46d2c75345ab174a4f9ce873a0a5" => :el_capitan
-    sha256 "61b412440c385fbf72b82e9219b06f36afcdbbcaaf3413ab7916ea737457866e" => :yosemite
-    sha256 "d00b7115acd2576c6a7c9c86878e3d11689e30d666c2ac4ad4bbe9df7be6cbf4" => :mavericks
-    sha256 "e3ac5d506519645ba982cf8d031373a400c8dbb706a27cb134453a7f5e399983" => :mountain_lion
+    sha256 "c6bf8ef38e8af71b00a906a4578bd180d91dce2f3c2f092818690b52bfaac895" => :el_capitan
+    sha256 "36e3cee1a950d0877d6120b4e7603ddd96e506af54e72337276e5d931e8c40dc" => :yosemite
+    sha256 "043f1c5b577fdfbaac516bc1ca909dee089cd591fd018b68c1298ab859170ef9" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -36,10 +36,15 @@ class Qemu < Formula
       --prefix=#{prefix}
       --cc=#{ENV.cc}
       --host-cc=#{ENV.cc}
-      --enable-cocoa
       --disable-bsd-user
       --disable-guest-agent
     ]
+
+    if build.with?("sdl") && build.head?
+      args << "--disable-cocoa"
+    else
+      args << "--enable-cocoa"
+    end
 
     args << (build.with?("sdl") ? "--enable-sdl" : "--disable-sdl")
     args << (build.with?("vde") ? "--enable-vde" : "--disable-vde")

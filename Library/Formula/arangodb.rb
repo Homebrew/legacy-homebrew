@@ -1,21 +1,26 @@
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
   homepage "https://www.arangodb.com/"
-  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.6.8.tar.gz"
-  sha256 "5d6f7b5a8c94a3ccf645c03dea37f8d4c28bfd3f6ab1a418365bdc4e162630f1"
+  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.7.2.tar.gz"
+  sha256 "e306bec9ba7068c40063e496ab7793e28a085ede131764f4620c06a514d94bdb"
 
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
   bottle do
-    sha256 "64c3bee72c275937d6c5f24f278d2f0eaf42eeb01ccb42c0de30b2fa656f1ddb" => :yosemite
-    sha256 "ab27ada15dc3ee1c0e0ff534c03d944fa1e436fa65786dd5da1b7b14056fc880" => :mavericks
-    sha256 "8633947964bbe2b281f6c13d7c864661c1de73b70a796ea96645e86b18198e2d" => :mountain_lion
+    sha256 "8a6a3b00127328cf34c7bc251bc43fc44d3e554d076f12c322695c4f900f3518" => :el_capitan
+    sha256 "8e75d249a593402c0cdab3f1b59d2787b2d7fa09013c470b77cd1538b01fdc11" => :yosemite
+    sha256 "c7852e150a935856dc542f9ab76ed00f58bf7493b78ec81bbeaee31b60fe2cb1" => :mavericks
   end
 
   depends_on "go" => :build
   depends_on "openssl"
 
   needs :cxx11
+
+  fails_with :clang do
+    build 600
+    cause "Fails with compile errors"
+  end
 
   def install
     # clang on 10.8 will still try to build against libstdc++,
@@ -27,7 +32,6 @@ class Arangodb < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --disable-relative
-      --enable-mruby
       --datadir=#{share}
       --localstatedir=#{var}
     ]

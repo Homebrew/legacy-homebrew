@@ -1,8 +1,10 @@
 class Geoserver < Formula
   desc "Java server to share and edit geospatial data"
   homepage "http://geoserver.org/"
-  url "https://downloads.sourceforge.net/project/geoserver/GeoServer/2.7.1.1/geoserver-2.7.1.1-bin.zip"
-  sha256 "4c584ae1e586736533e3a4bd9969eb0d180ec683cf79f2aff8512075b742da60"
+  url "https://downloads.sourceforge.net/project/geoserver/GeoServer/2.8.0/geoserver-2.8.0-bin.zip"
+  sha256 "182957ae500dfc41775ca0448feb53da488c3aa90ddbc3e9f9ba4568fad6779e"
+
+  bottle :unneeded
 
   def install
     libexec.install Dir["*"]
@@ -19,9 +21,6 @@ class Geoserver < Formula
   def caveats; <<-EOS.undent
     To start geoserver:
       geoserver path/to/data/dir
-
-    See the Geoserver homepage for more setup information:
-      brew home geoserver
     EOS
   end
 

@@ -3,26 +3,26 @@ require "language/go"
 class Bitrise < Formula
   desc "Command-line automation tool"
   homepage "https://github.com/bitrise-io/bitrise"
-  url "https://github.com/bitrise-io/bitrise/archive/1.0.0.tar.gz"
-  sha256 "364476e0bbdb75a09c2b500b83e3049293c47679d4fb9023a53addc4a61eb9f3"
+  url "https://github.com/bitrise-io/bitrise/archive/1.2.4.tar.gz"
+  sha256 "7cf365dca04ac2adadea1fbe286a117336460daa2488b0e62dc080b8ac868a09"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "49b2458062224ee1071a12e408182fc9581ca08c135cddb68b7b17217b265dd3" => :yosemite
-    sha256 "5ee243d58e16ca5b70fd65d4590da15bd876eef7b0065d9190d3d7f4c7172efd" => :mavericks
-    sha256 "8322b383e4e32e7636d8c765256e7ce0005192f4dc6eb998cb31648d2858cb24" => :mountain_lion
+    sha256 "3c9c6d4c4a135d79fe4dfabf93e33550e3fb3d207d366bcbe7cfe13d88a66fdc" => :el_capitan
+    sha256 "91723eb65af76465347356047ed7c38ce26b1e73bb578fc5e51d7c5336407a83" => :yosemite
+    sha256 "0f32b8a62ab83e509a2dfdfbc4df9eb333b0e7d4a0eb59ccb18e50760ed7343d" => :mavericks
   end
 
   depends_on "go" => :build
 
   resource "envman" do
-    url "https://github.com/bitrise-io/envman/archive/0.9.8.tar.gz"
-    sha256 "21a952dfe4f0e27ed9d340fe1a445942b6429cf9cc04b6ca04e72a5bb577c939"
+    url "https://github.com/bitrise-io/envman/archive/1.0.0.tar.gz"
+    sha256 "439d6c1732c3f2dbe121750ba1951df126576e393ce1028426a70dcaafcffe3a"
   end
 
   resource "stepman" do
-    url "https://github.com/bitrise-io/stepman/archive/0.9.14.tar.gz"
-    sha256 "e8153e409009d15f2a74909ccceb1cf616500da06e0e0071ac39b1b42821dff2"
+    url "https://github.com/bitrise-io/stepman/archive/0.9.17.tar.gz"
+    sha256 "d4eee2cc46f63f3c842d86d9c04f0de71541eaff45d817d16ffd116673383ee8"
   end
 
   def go_install_package(basepth, pkgname)
@@ -48,7 +48,7 @@ class Bitrise < Formula
 
   test do
     (testpath/"bitrise.yml").write <<-EOS.undent
-      format_version: 1.0.0
+      format_version: 1.1.0
       default_step_lib_source: https://github.com/bitrise-io/bitrise-steplib.git
       workflows:
         test_wf:

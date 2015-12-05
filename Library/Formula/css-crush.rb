@@ -5,6 +5,8 @@ class CssCrush < Formula
   sha256 "75c8d868adf5a537a47fedff28c53fe4e6764264239573a858a0048036280d6c"
   head "https://github.com/peteboere/css-crush.git"
 
+  bottle :unneeded
+
   def install
     libexec.install Dir["*"]
     (bin+"csscrush").write <<-EOS.undent

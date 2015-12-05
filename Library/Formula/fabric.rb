@@ -7,7 +7,8 @@ class Fabric < Formula
   head "https://github.com/fabric/fabric.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "99e1479291e89efe294cdd094741dc70154d644633877add11a9b1a39c7fee62" => :el_capitan
     sha256 "ddaccc0db8c861b4f1d5d0fec3d845ff440f86af3a28751a299ad7784253ba1d" => :yosemite
     sha256 "044c9dec4d5021abd8b4c356e8ff0bfc5968115267b030219f010ff5b97abfbf" => :mavericks
     sha256 "768df88335578704b1029b859ab7d36654cb5b20bfd1b0bc64e487476b7c214e" => :mountain_lion

@@ -3,13 +3,13 @@ class Libcdr < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
   url "http://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.1.tar.bz2"
   sha256 "72fe7bbbf2275242acdf67ad2f9b6c71ac9146a56c409def360dabcac5695b49"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "b452336a6390e8cbfd7e87804b0420a2e9240d170e82f186c9aa826df3a301e0" => :yosemite
-    sha256 "6a86890eaf44898483b2e2bbd4e3b1fdafb8cc50ae690065593131453d6d4800" => :mavericks
-    sha256 "7152daedf07953bdd29fae52358e5259ac88e565931eb9e70edf5c924de65043" => :mountain_lion
+    sha256 "673cbd599ba4a4ba9cbdffd13e688932285591b84806b10643370d2feb11beb0" => :el_capitan
+    sha256 "62a91376392eff0a32ad875dd7c52868e0225b9214939f1d253d4a0ca415a254" => :yosemite
+    sha256 "69f35e9c988a305a26a04d7c4b8180bc769f05d9839e44fd43fe2ecfd737213f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -20,6 +20,8 @@ class Libcdr < Formula
 
   def install
     ENV.cxx11
+    # Needed for Boost 1.59.0 compatibility.
+    ENV["LDFLAGS"] = "-lboost_system-mt"
     system "./configure", "--disable-werror",
                           "--without-docs",
                           "--prefix=#{prefix}"

@@ -6,6 +6,8 @@ class Mg < Formula
 
   depends_on "clens"
 
+  conflicts_with "mg3a", :because => "both install `mg` binaries"
+
   def install
     # makefile hardcodes include path to clens; since it's a
     # nonstandard path, Homebrew's standard include paths won't
@@ -17,5 +19,19 @@ class Mg < Formula
     bin.install "mg"
     doc.install "tutorial"
     man1.install "mg.1"
+  end
+
+  test do
+    (testpath/"command.sh").write <<-EOS.undent
+      #!/usr/bin/expect -f
+      set timeout -1
+      spawn #{bin}/mg
+      match_max 100000
+      send -- "\u0018\u0003"
+      expect eof
+    EOS
+    chmod 0755, testpath/"command.sh"
+
+    system testpath/"command.sh"
   end
 end

@@ -4,12 +4,11 @@ class Ioke < Formula
   url "https://ioke.org/dist/ioke-P-ikj-0.4.0.tar.gz"
   sha256 "701d24d8a8d0901cde64f11c79605c21d43cafbfb2bdd86765b664df13daec7c"
 
+  bottle :unneeded
+
   def install
     # Remove windows files
     rm_f Dir["bin/*.bat"]
-
-    prefix.install_metafiles
-
     # Install jars in libexec to avoid conflicts
     libexec.install Dir["*"]
 

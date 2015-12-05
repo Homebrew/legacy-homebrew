@@ -46,7 +46,7 @@ module Homebrew
     if ARGV.named.empty?
       formulae = Formula.files
     else
-      tap = Tap.new(*tap_args)
+      tap = Tap.fetch(*tap_args)
       raise TapUnavailableError, tap.name unless tap.installed?
       formulae = tap.formula_files
     end

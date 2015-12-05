@@ -4,6 +4,8 @@ class RbenvGemRehash < Formula
   url "https://github.com/sstephenson/rbenv-gem-rehash/archive/v1.0.0.tar.gz"
   sha256 "93bdefa3e1376f0bea5a9ab7d24a26ae7d7f15ae3cd55cd0b6b03548ada7eed3"
 
+  bottle :unneeded
+
   depends_on "rbenv"
 
   # Fixes issues with Homebrew-managed git-etc alpha.
@@ -27,6 +29,6 @@ class RbenvGemRehash < Formula
   end
 
   test do
-    assert shell_output("rbenv hooks exec").include?("gem-rehash.bash")
+    assert_match "gem-rehash.bash", shell_output("rbenv hooks exec")
   end
 end

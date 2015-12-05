@@ -1,15 +1,16 @@
 class JbossForge < Formula
   desc "Tools to help set up and configure a project"
   homepage "http://forge.jboss.org/"
-  url "https://downloads.jboss.org/forge/releases/2.19.2.Final/forge-distribution-2.19.2.Final-offline.zip"
-  version "2.19.2.Final"
-  sha256 "be3b079ae57f3c3d9c18c6f1d8c0c71914e8fcdd09554321b93457e168572f58"
+  url "https://downloads.jboss.org/forge/releases/2.20.1.Final/forge-distribution-2.20.1.Final-offline.zip"
+  version "2.20.1.Final"
+  sha256 "dbe51b8c9cd0cf1b0a9adadcd8161c442a4ab586ca63f3a3f6d3369a2831afae"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "700167db26aa4ee2b502807ff444879662fb645e3e126b9cff0929c9fbcc6c4b" => :el_capitan
-    sha256 "709aa0df9229e169fe1005763d51fe33be652348f6c45662955e41392ef8e9ab" => :yosemite
-    sha256 "e100821705db0ec9db49eb0f1ae05746b2f2bbfcbf74f1df6fa14bf86ad85a42" => :mavericks
+  bottle :unneeded
+
+  devel do
+    url "https://downloads.jboss.org/forge/releases/3.0.0.Alpha2/forge-distribution-3.0.0.Alpha2-offline.zip"
+    version "3.0.0.Alpha2"
+    sha256 "798ae01e70a43d4f9339f5654d37629cf45782b373a42b2a4c35c806eca2b0e6"
   end
 
   def install

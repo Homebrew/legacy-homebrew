@@ -8,9 +8,9 @@ class Mbelib < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "ce1b002a5de2daeb6a0f3c191354b23989ce64dc" => :yosemite
-    sha1 "67706f7658034d8894a3bc8e86d79857dc4472d1" => :mavericks
-    sha1 "979a2c63f3e44231ddf6e7b8829721a0e0a3c2bc" => :mountain_lion
+    sha256 "d2aa6f1c7c37ad0de9d49c2a18947314f5d790888490024456f2cdc2877d05ba" => :yosemite
+    sha256 "95f0f605cef097156dda1f68b451eced4c36b74a7dd520a4aa1be26d30423550" => :mavericks
+    sha256 "3931a6a0b89f5b170df43b91a7e5a1e348c9b13d24d7001bda51d034cd72bef6" => :mountain_lion
   end
 
   depends_on "cmake" => :build

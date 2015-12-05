@@ -10,6 +10,14 @@ class FormulaPinTests < Homebrew::TestCase
     def rack
       Pathname.new("#{HOMEBREW_CELLAR}/#{name}")
     end
+
+    def installed_prefixes
+      rack.directory? ? rack.subdirs : []
+    end
+
+    def installed_kegs
+      installed_prefixes.map { |d| Keg.new d }
+    end
   end
 
   def setup

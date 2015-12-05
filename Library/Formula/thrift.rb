@@ -3,8 +3,8 @@ class Thrift < Formula
   homepage "https://thrift.apache.org/"
 
   stable do
-    url "https://www.apache.org/dyn/closer.cgi?path=thrift/0.9.2/thrift-0.9.2.tar.gz"
-    sha256 "cef50d3934c41db5fa7724440cc6f10a732e7a77fe979b98c23ce45725349570"
+    url "https://www.apache.org/dyn/closer.cgi?path=/thrift/0.9.3/thrift-0.9.3.tar.gz"
+    sha256 "b0740a070ac09adde04d43e852ce4c320564a292f26521c46b78e0641564969e"
 
     # Apply any necessary patches (none currently required)
     [
@@ -22,10 +22,9 @@ class Thrift < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "ac58757137dd6171e416a2d59f3d4fdcd0a3e5d24ba4a218a777986ea909d21e" => :yosemite
-    sha256 "a598a6231f7456a4cde3b8a164007e631a21abe511783bce9043b783e3e1550c" => :mavericks
-    sha256 "d09f58eb56f1f47a152371c4cd255ec1e140fd5e585132a99bd8fef20fa819a2" => :mountain_lion
+    sha256 "171011fa42efb2fcafb1bae1e2d173e585eda199f145a62a825359c7a622b24b" => :el_capitan
+    sha256 "655bb0a05eb51ff465f8f378a7d3ea2438095e2d4c2a70da45965731b5de9cfb" => :yosemite
+    sha256 "092ff2a100f41871d3527c450403cfc2cf1cc0527ce2fdb4089f93915365713d" => :mavericks
   end
 
   head do
@@ -44,11 +43,11 @@ class Thrift < Formula
   option "with-php", "Install PHP binding"
   option "with-libevent", "Install nonblocking server libraries"
 
+  depends_on "bison" => :build
   depends_on "boost"
   depends_on "openssl"
   depends_on "libevent" => :optional
   depends_on :python => :optional
-  depends_on "bison" => :build
 
   def install
     system "./bootstrap.sh" unless build.stable?
@@ -77,13 +76,12 @@ class Thrift < Formula
     system "make", "install"
   end
 
-  def caveats
-    <<-EOS.undent
+  def caveats; <<-EOS.undent
     To install Ruby binding:
       gem install thrift
 
     To install PHP extension for e.g. PHP 5.5:
       brew install homebrew/php/php55-thrift
-    EOS
+  EOS
   end
 end

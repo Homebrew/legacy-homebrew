@@ -5,6 +5,8 @@ class Distribution < Formula
   sha256 "5f6bea7da09eb47f7f9e9db5ae90db5bcfd67974efbaa984bbe25be458ea151f"
   head "https://github.com/philovivero/distribution.git"
 
+  bottle :unneeded
+
   def install
     bin.install "distribution.py" => "distribution"
     doc.install "LICENSE.md", "README.md", "distributionrc", "screenshot.png"

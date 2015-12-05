@@ -9,6 +9,11 @@ require "utils/json"
 # `Tab.create`.
 class Tab < OpenStruct
   FILENAME = "INSTALL_RECEIPT.json"
+  CACHE = {}
+
+  def self.clear_cache
+    CACHE.clear
+  end
 
   def self.create(formula, compiler, stdlib, build)
     attributes = {
@@ -32,7 +37,7 @@ class Tab < OpenStruct
   end
 
   def self.from_file(path)
-    from_file_content(File.read(path), path)
+    CACHE.fetch(path) { |p| CACHE[p] = from_file_content(File.read(p), p) }
   end
 
   def self.from_file_content(content, path)
@@ -96,7 +101,7 @@ class Tab < OpenStruct
       paths << f.linked_keg.resolved_path
     end
 
-    if f.rack.directory? && (dirs = f.rack.subdirs).length == 1
+    if (dirs = f.installed_prefixes).length == 1
       paths << dirs.first
     end
 
@@ -217,6 +222,7 @@ class Tab < OpenStruct
   end
 
   def write
+    CACHE[tabfile] = self
     tabfile.atomic_write(to_json)
   end
 

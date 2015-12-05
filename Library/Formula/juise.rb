@@ -5,9 +5,9 @@ class Juise < Formula
   sha256 "5985f2b19d017a52de2a77b0246afed86d2b9227acd277113468407db11cd146"
 
   bottle do
-    sha1 "a8acedc9b48bc87a2daa4da9e81f17693d08fc32" => :mavericks
-    sha1 "eaf3ecb17214b7319a96409fe1180de8ca2134ac" => :mountain_lion
-    sha1 "e99ad8fe4f05ecd24773633cef6cd25109df936e" => :lion
+    sha256 "da6dcf67dee23e98befee63f93796490a877229679e77befa25246da59756822" => :mavericks
+    sha256 "abcd4d9e493d030922978364f95b7e91c38f99e661c9fa118a666c282abe3758" => :mountain_lion
+    sha256 "076b551d5489dd55636e7c5945b593ad75219416c95bd61656cc7cfd45ea2e8f" => :lion
   end
 
   head do

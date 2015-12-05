@@ -12,6 +12,8 @@ class Libepoxy < Formula
     sha256 "495b9da3d417b836eaf1cdd1aba41782d975d0b3d007e1f9c91fab7e57c2a197" => :mountain_lion
   end
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "automake" => :build
   depends_on "autoconf" => :build
@@ -24,6 +26,8 @@ class Libepoxy < Formula
   end
 
   def install
+    ENV.universal_binary if build.universal?
+
     resource("xorg-macros").stage do
       system "./configure", "--prefix=#{buildpath}/xorg-macros"
       system "make", "install"

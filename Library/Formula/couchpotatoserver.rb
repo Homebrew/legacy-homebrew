@@ -1,17 +1,11 @@
 class Couchpotatoserver < Formula
   desc "Download movies automatically"
   homepage "https://couchpota.to"
-  url "https://github.com/RuudBurger/CouchPotatoServer/archive/build/2.6.3.tar.gz"
-  sha256 "8735adc2c518fb517da916f4e9554dcfbba67d2e640b24fc7acdfa7baa0c78fc"
-
+  url "https://github.com/RuudBurger/CouchPotatoServer/archive/build/3.0.1.tar.gz"
+  sha256 "f08f9c6ac02f66c6667f17ded1eea4c051a62bbcbadd2a8673394019878e92f7"
   head "https://github.com/RuudBurger/CouchPotatoServer.git"
 
-  bottle do
-    cellar :any
-    sha256 "060521cab660a6fb15265e8239d9685dc9034a65100f1960b5249b8a84a563af" => :yosemite
-    sha256 "b2c7bbcd61a338c4b35cebc76a393c3564d7b5dc35c494df3ecda65c88d174d9" => :mavericks
-    sha256 "f2ea47a3082dce305db9efd82001a5a7479475abfe1ce1efd7332ebcbc29f145" => :mountain_lion
-  end
+  bottle :unneeded
 
   def install
     prefix.install_metafiles

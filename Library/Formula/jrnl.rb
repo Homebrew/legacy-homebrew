@@ -5,10 +5,11 @@ class Jrnl < Formula
   sha256 "789de4bffe0c22911a4968e525feeb20a6c7c4f4fe762a936ce2dac2213cd855"
 
   bottle do
-    cellar :any
-    sha1 "85aeed5404abd7a962fe30cb68151f461e944070" => :yosemite
-    sha1 "cec814646e140a72c994c9e7a55a4428a6b7e336" => :mavericks
-    sha1 "127d73c4f50620bfab34bd398102c8f9f1821f12" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "b5f24dc1ba2c58e7a9cebd7ae0492be6fbab0c05c3fa96e2f7cf9f9e9513bfd5" => :el_capitan
+    sha256 "0b3c9aa68cb0030d466a7791bf20efba2969ba1884f04a96c51503f2e13fb62b" => :yosemite
+    sha256 "85b7ad5b70623523729e5211581e5fc3b096b6dff8d6828781df4133f6b9a545" => :mavericks
+    sha256 "b4e68781cff4b60490c309a26e66b60860dd0b3b87e580e8d93c0930cd5481c7" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

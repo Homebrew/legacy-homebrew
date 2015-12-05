@@ -1,6 +1,6 @@
 class Proj < Formula
   desc "PROJ.4, a Cartographic Projections Library"
-  homepage "http://trac.osgeo.org/proj/"
+  homepage "https://trac.osgeo.org/proj/"
   url "http://download.osgeo.org/proj/proj-4.9.2.tar.gz"
   sha256 "60bf9ad1ed1c18158e652dfff97865ba6fb2b67f1511bc8dceae4b3c7e657796"
   head "http://svn.osgeo.org/metacrs/proj/trunk/proj"

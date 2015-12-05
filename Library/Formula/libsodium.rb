@@ -1,15 +1,14 @@
 class Libsodium < Formula
   desc "NaCl networking and cryptography library"
   homepage "https://github.com/jedisct1/libsodium/"
-  url "https://github.com/jedisct1/libsodium/releases/download/1.0.3/libsodium-1.0.3.tar.gz"
-  sha256 "cbcfc63cc90c05d18a20f229a62c7e7054a73731d0aa858c0517152c549b1288"
+  url "https://github.com/jedisct1/libsodium/releases/download/1.0.6/libsodium-1.0.6.tar.gz"
+  sha256 "940d03ea7d2caa7940e24564bf6d9f66d6edd1df1e0111ff8e3655f3b864fb59"
 
   bottle do
     cellar :any
-    sha256 "0d9c3a8522a81cc512826a2382b50102175c65a066391a0ecb72f0f2d27bf637" => :el_capitan
-    sha256 "7f7859d1c5c40ec44e527552d52f33d6b05e2136f20b4476b05c6fe723dde6a7" => :yosemite
-    sha256 "27b62f10fbae4bd2db62441f63516f6bfce341a1681cac6e385394ec31c60bbe" => :mavericks
-    sha256 "6796e57b7cdbc04df9da2e35cc1c16fb07db68fe7fd664773d050bcb53b33143" => :mountain_lion
+    sha256 "21d834fc5380d111c75b09a2063cbdfa471a5dac7ace8cf463836c7cd8551867" => :el_capitan
+    sha256 "121c099c8525d3ccade878c9834e1b4c14ec1c2fd44308dbb204ee2a5c568a20" => :yosemite
+    sha256 "3b050a9c1224a5ee24b5e192a1be125be047da53bb5cb964004fa4b3732f959e" => :mavericks
   end
 
   head do
@@ -24,8 +23,8 @@ class Libsodium < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system "./autogen.sh" if build.head?
 
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "check"

@@ -5,9 +5,9 @@ class Omega < Formula
   sha256 "528feb8021a52ab06c7833cb9ebacefdb782f036e99e7ed5342046c3a82380c2"
 
   bottle do
-    sha1 "afdc13cb8c4a768df40606f12943ef56a314e3d3" => :mavericks
-    sha1 "7ea1a55103d2367a4d033508336274e0181a64bd" => :mountain_lion
-    sha1 "55217805d501af8d6bfac7db3a65e3b403d4c0b6" => :lion
+    sha256 "29e89b142dcfb969ebb56efa7210964c2043de3b363e99a5fde9908c254b54b0" => :mavericks
+    sha256 "6c49cda8bf44de8f2a11248bbb6f3e1c5d6054765d27db093c942b17c5449eb8" => :mountain_lion
+    sha256 "e8a5b87a85315c7100f72035422773950c3544d0f024b910a2e225f04ea7dad3" => :lion
   end
 
   depends_on "pcre"

@@ -4,9 +4,9 @@ class Lolcode < Formula
   head "https://github.com/justinmeza/lolcode.git"
   bottle do
     cellar :any
-    sha1 "3adaf4e185615a450be5102252c54ea881fe6195" => :yosemite
-    sha1 "ac8426fbea700357f25e98911fdd8d748769ae1e" => :mavericks
-    sha1 "28d703003ff61e29c2f6c9f9bee09e758aa1a00a" => :mountain_lion
+    sha256 "571a57a0fa8b60aac62ce3a358c0b123efcd2af9ec4004c51194c549ad8dd3f1" => :yosemite
+    sha256 "9159a0b5f907f400f7e233c026579568dd2c6a98d952fde2759f84cb52101508" => :mavericks
+    sha256 "28fb518f1ae0311dcd2c77529a8bf8450b6e0947d95db6a243598f08a335a683" => :mountain_lion
   end
 
   # note: 0.10.* releases are stable versions, 0.11.* are dev ones

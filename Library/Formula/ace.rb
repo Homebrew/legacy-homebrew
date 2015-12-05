@@ -1,14 +1,15 @@
 class Ace < Formula
   desc "ADAPTIVE Communication Environment: OO network programming in C++"
-  homepage "http://www.dre.vanderbilt.edu/~schmidt/ACE.html"
+  homepage "https://www.dre.vanderbilt.edu/~schmidt/ACE.html"
   url "http://download.dre.vanderbilt.edu/previous_versions/ACE-6.3.3.tar.bz2"
   sha256 "f362e45f624db3343db529654b601d5df69b5f56fa4597cf453da35d80989888"
 
   bottle do
     cellar :any
-    sha256 "4cab5cd3539a5c1d9c622a01b4739374c6a84a1b14312fbba1043a0aeb69d012" => :el_capitan
-    sha256 "e8a145050c666048031f8ebd2404eaccf2b6bd52fbd6eba75ee98ba780480e90" => :yosemite
-    sha256 "4e2fdfc92d15c28413102c1fbabe9f9953f0b0892c951123bc50b7ce166d4a68" => :mavericks
+    revision 1
+    sha256 "18c8fa1ffa10fc33f3c498a60a0e7a741a01dc8982e7e2141161f126baff2ec9" => :el_capitan
+    sha256 "4b3d4e048ee9fe295844be6a2c1461f9391fd89f30e1603e8c2a8af636c1164f" => :yosemite
+    sha256 "40f562e9afb830079075d9ae973ed73e071ac5ef0e610732d523949394aa4c99" => :mavericks
   end
 
   def install
@@ -32,5 +33,13 @@ class Ace < Formula
                    "shared_libs=1",
                    "static_libs=0",
                    "install"
+
+    system "make", "-C", "examples"
+    pkgshare.install "examples"
+  end
+
+  test do
+    cp_r "#{pkgshare}/examples/Log_Msg/.", testpath
+    system "./test_callback"
   end
 end

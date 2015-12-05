@@ -3,12 +3,13 @@ class Gtkmm < Formula
   homepage "http://www.gtkmm.org/"
   url "https://download.gnome.org/sources/gtkmm/2.24/gtkmm-2.24.4.tar.xz"
   sha256 "443a2ff3fcb42a915609f1779000390c640a6d7fd19ad8816e6161053696f5ee"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 "a40d400e6c26790b66be7202b4d5b600b46f12c8c1962671f4668f22be53c95f" => :yosemite
-    sha256 "1c37f50965de90cc802c2ec2ce124aa9351d469862ba681cc2f48243ae669b47" => :mavericks
-    sha256 "7e978d4f7b903baf4f843546bd7169619c8c9d8dfc4a15eb8034988f85948c72" => :mountain_lion
+    cellar :any
+    sha256 "b700d9e2d3389f371e59fe39bd0bd1c537badd5356e51448d55c32e036b7f26b" => :el_capitan
+    sha256 "1a48acc2f862ac672410ace2a25aea1f79557be26c47db254cd860e619b35746" => :yosemite
+    sha256 "e8c600eec1f8a6062f2623a696700a3deb5a72d710b6287f5ce052b13da15432" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -19,7 +20,10 @@ class Gtkmm < Formula
   depends_on "atkmm"
   depends_on "cairomm"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
@@ -114,7 +118,7 @@ class Gtkmm < Formula
       -lpangomm-1.4
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

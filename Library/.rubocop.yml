@@ -126,4 +126,4 @@ Style/DotPosition:
 
 # makes diffs nicer
 Style/TrailingComma:
-  EnforcedStyleForMultiline: consistent_comma
+  EnforcedStyleForMultiline: comma

@@ -6,7 +6,8 @@ class Pig < Formula
   sha256 "c52112ca618daaca298cf068e6451449fe946e8dccd812d56f8f537aa275234b"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "42445b9440e6ce97fa9d4f3fa30b228629035782a76b2419415355683beadd62" => :el_capitan
     sha256 "c937d3472443b64d1f7cbbd1e98caf1bee32787b02be552d0b82f3e1d44225e2" => :yosemite
     sha256 "1a6a720a36bf3b9812caee860828b028b253190f9cfcc73078afcf6e251176f2" => :mavericks
     sha256 "ce4626cd10cb18e6c1ef25fee0e6a10a47be587d2913b48fdee0f4ede1a9dc25" => :mountain_lion

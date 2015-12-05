@@ -1,15 +1,15 @@
 class ShadowsocksLibev < Formula
   desc "Libev port of shadowsocks"
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
-  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.3.3.tar.gz"
-  sha256 "c00e18a19f20b837ea7d74c98720536044338daf652db1cdad3eae5d7a2718e5"
+  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.4.1.tar.gz"
+  sha256 "a11a341adf9a921bb9aa9529472b722fba2836a92eef7ef8820f7c3226acef1c"
   head "https://github.com/shadowsocks/shadowsocks-libev.git"
 
   bottle do
     cellar :any
-    sha256 "31b22b39c5a8dd12435a5267f3804849516b6e13341a0a7154ee25c2f3373e2a" => :el_capitan
-    sha256 "30792d0d594888993e0a06e86471be7ce37213bcb30272ac09358f5068a3163a" => :yosemite
-    sha256 "ad2d76f3934d876c4243425e261e675734c178efc06bd648c0644058b830644a" => :mavericks
+    sha256 "1b1117025762b1d32e3b8ebcb56ff0d40ede3907f05217a60548fa329327033a" => :el_capitan
+    sha256 "946939bffb4bdd39acd28203f9e71abf07695755fc5d9e511427933fcbd6232a" => :yosemite
+    sha256 "5aaa91595a1c93e016bd582e20bfe84e4a1e10233af065edfa347695a7ff5e5d" => :mavericks
   end
 
   depends_on "openssl"

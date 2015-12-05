@@ -1,17 +1,17 @@
 class SstpClient < Formula
   desc "SSTP (Microsofts Remote Access Solution for PPP over SSL) client"
   homepage "http://sstp-client.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/sstp-client/sstp-client/1.0.9/sstp-client-1.0.9.tar.gz"
-  sha256 "d3d8a26485b2cf0b24e148301b94b3ab9cdb17700ecd7c408b8fd6ad16f7fc4e"
-  revision 1
+  url "https://downloads.sourceforge.net/project/sstp-client/sstp-client/1.0.10/sstp-client-1.0.10.tar.gz"
+  sha256 "5f9084d8544c42c806724a4e70d039d8cb7b0ea06be8ea9cc5120684d4e0d424"
 
   bottle do
     cellar :any
-    sha1 "844e03c512067d1f378acd6af678654915882edd" => :yosemite
-    sha1 "d8f68257b54af08c4942a60892c36616a8f03a05" => :mavericks
-    sha1 "0984d3b9beed2cf92a47218bfb43bf4ff3b606b1" => :mountain_lion
+    sha256 "d70a56f837f32f2ceab2050fc32855428f6c1df368da447491107dd3c80c030b" => :el_capitan
+    sha256 "8c4a3b20b2b92a4dfca222ecb3ccf46a1c20c8cdbcdab60fe6907e81f039927b" => :yosemite
+    sha256 "5a07e517c449759938b41c886203fed7294667ba3bc185924e26b7d94267a92f" => :mavericks
   end
 
+  depends_on "pkg-config" => :build
   depends_on "libevent"
   depends_on "openssl"
 
@@ -21,11 +21,10 @@ class SstpClient < Formula
                           "--disable-ppp-plugin",
                           "--prefix=#{prefix}",
                           "--with-runtime-dir=#{var}/run/sstpc"
-
     system "make", "install"
 
     # Create a directory needed by sstpc for privilege separation
-    mkdir_p var/"run/sstpc"
+    (var/"run/sstpc").mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -37,8 +36,6 @@ class SstpClient < Formula
   end
 
   test do
-    # I know it's a bad test, but I have no idea how to test a VPN client
-    # more thoroughly without trying to connect to an actual VPN server
     system "#{sbin}/sstpc", "--version"
   end
 end

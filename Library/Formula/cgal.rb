@@ -1,20 +1,22 @@
 class Cgal < Formula
   desc "CGAL: Computational Geometry Algorithm Library"
   homepage "http://www.cgal.org/"
-  url "https://gforge.inria.fr/frs/download.php/file/35009/CGAL-4.6.2.tar.gz"
-  sha256 "9dc88cd6a2d0f77120ca1f0a88cf83408b7763eaec9948de1fee228ea0ed31d7"
+  url "https://gforge.inria.fr/frs/download.php/file/35138/CGAL-4.6.3.tar.gz"
+  sha256 "f90fc9d319a0bdb66b09570a8a0399671c25caeb5db1dc8c555f876d795c74ff"
 
   bottle do
     cellar :any
-    sha256 "32eea5b3030bc61a7a5e8143694320dd478b1fc6fb8e285c38bc9ae8a3ce0bad" => :el_capitan
-    sha256 "a729d74f92920f5d19850187bd026707ce435df5137968da32bfba88fb24f38e" => :yosemite
-    sha256 "ab7d1c685f33fae339d11d0c9d71aacd43835f2fb61778aa86776bafdb0b4560" => :mavericks
-    sha256 "83c449caa96e82718aeaf3bf7e17b62b964bb21c64109bd9368645159413db8b" => :mountain_lion
+    revision 1
+    sha256 "959e6543c21356acaf134f8a74e0004fcb8baa9b005bd372f82039d5f53be01e" => :el_capitan
+    sha256 "90931e766efe645fce196f86061d0a673062af7a149b5cd8d05a735fc05d6421" => :yosemite
+    sha256 "5ac845bf8d152a062059be1cb2c2db01d15c747a66d3cb5641abf3b8322376e5" => :mavericks
   end
 
   option :cxx11
 
-  option "imaging", "Build ImageIO and QT compoments of CGAL"
+  deprecated_option "imaging" => "with-imaging"
+
+  option "with-imaging", "Build ImageIO and QT compoments of CGAL"
   option "with-eigen3", "Build with Eigen3 support"
   option "with-lapack", "Build with LAPACK support"
 
@@ -28,7 +30,7 @@ class Cgal < Formula
   end
   depends_on "mpfr"
 
-  depends_on "qt" if build.include? "imaging"
+  depends_on "qt" if build.with? "imaging"
   depends_on "eigen" if build.with? "eigen3"
 
   # Allows to compile with clang 425: http://goo.gl/y9Dg2y
@@ -39,8 +41,9 @@ class Cgal < Formula
     args = ["-DCMAKE_INSTALL_PREFIX=#{prefix}",
             "-DCMAKE_BUILD_TYPE=Release",
             "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
-            "-DCMAKE_INSTALL_NAME_DIR=#{HOMEBREW_PREFIX}/lib"]
-    unless build.include? "imaging"
+            "-DCMAKE_INSTALL_NAME_DIR=#{HOMEBREW_PREFIX}/lib",
+           ]
+    if build.without? "imaging"
       args << "-DWITH_CGAL_Qt3=OFF" << "-DWITH_CGAL_Qt4=OFF" << "-DWITH_CGAL_ImageIO=OFF"
     end
     if build.with? "eigen3"

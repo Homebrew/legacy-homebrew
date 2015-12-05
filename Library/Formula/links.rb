@@ -1,15 +1,16 @@
 class Links < Formula
   desc "Lynx-like WWW browser that supports tables, menus, etc."
   homepage "http://links.twibright.com/"
-  url "http://links.twibright.com/download/links-2.11.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/l/links2/links2_2.11.orig.tar.bz2"
-  sha256 "87f7f927d6394f1dc45886dd5ff89234c4e0fb321132ceaa009db5bcc26f123f"
+  # Switch url & mirror back over when twibright is responsive.
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/l/links2/links2_2.12.orig.tar.bz2"
+  mirror "http://links.twibright.com/download/links-2.12.tar.bz2"
+  sha256 "98411811ded1e8028f5aed708dd7d8ec0ae63ce24c2991a0241a989b7d09d84e"
 
   bottle do
     cellar :any
-    sha256 "8779e7a0cf9424c4115ca1fcc7ebc894e576cee06ce16be100dcfbd7e9a496bf" => :el_capitan
-    sha256 "3fb2262ebfabe71227d8bc1ccaa13e54e4b44b85792b7720874c27a0975cf6de" => :yosemite
-    sha256 "c02773c8a66a69990669d35e712852db52c8f64a3f801af9e10222d811351869" => :mavericks
+    sha256 "67692ebeb7ebb67762edfdadc9be95b0e377bb8fefb953ee5fb1ac78b3b67afe" => :el_capitan
+    sha256 "d50d0e0eeffb7dbddc34b4533d2ab6f176de31bf9879b25dfea361dfca23e7c3" => :yosemite
+    sha256 "fd396fed5e0d5c9a43da779fc8ed57ca68c9af02ddaa9d14b46d3a0402bdaf25" => :mavericks
   end
 
   depends_on "pkg-config" => :build

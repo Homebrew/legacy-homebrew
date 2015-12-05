@@ -1,17 +1,18 @@
 class Moreutils < Formula
   desc "Collection of tools that nobody wrote when UNIX was young"
   homepage "https://joeyh.name/code/moreutils/"
-  url "https://mirrors.kernel.org/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/m/moreutils/moreutils_0.57.orig.tar.gz"
   sha256 "3a7d54b0634e5eda8c3c43490d47cea189156700892dea6d876867cef9bc0d1d"
 
   head "git://git.kitenet.net/moreutils"
 
   bottle do
-    cellar :any
-    sha256 "abbe3897f14ef314900fb165e76de97bd7a948cded5b26f3c2471f50adfd2f11" => :yosemite
-    sha256 "ec107c6a7c081c5e990c9b79eb3fde8cb6c9ac4e8e0c52de8f751b624927861a" => :mavericks
-    sha256 "d506ebb771c12c334e5597bb57b751c3ad738ca38aaf5cb00f88b7b25f6a776c" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "58f4880792b76e847b7ce7ad4ba057c7c63b2ffb0dbe3e6532630e7216c3ee5f" => :el_capitan
+    sha256 "a7deb1afc2618334d45b48796543a8ca1d01ade8b47937b4fe67a0de19dd32a6" => :yosemite
+    sha256 "08e96c68bc1786c779b96902164840bcd14342388194c61674711204b96576a0" => :mavericks
   end
 
   option "without-parallel", "Build without the 'parallel' tool."
@@ -22,19 +23,19 @@ class Moreutils < Formula
   conflicts_with "task-spooler", :because => "Both install a 'ts' executable."
 
   resource "Time::Duration" do
-    url "http://search.cpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
-    mirror "https://cpan.metacpan.org/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/A/AV/AVIF/Time-Duration-1.1.tar.gz"
     sha256 "a69c419c4892f21eba10002e2ab8c55b657b6691cf6873544ef99ef5fd188f4e"
   end
 
   resource "IPC::Run" do
-    url "http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
-    mirror "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/T/TO/TODDR/IPC-Run-0.92.tar.gz"
     sha256 "e186b46ddf1577d24f11eec1ba42285963c3f71ec7ecb1ce51d6e88c729d46d2"
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
+    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
 
     resource("Time::Duration").stage do
       system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}", "--skipdeps"

@@ -3,12 +3,12 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.3.0-src.tar.gz"
-    sha256 "ea02d7bc9e7de5b8be3fe6b37ea9b2bd823f9a532c8e4c47d02f37f24ffa3126"
+    url "https://static.rust-lang.org/dist/rustc-1.4.0-src.tar.gz"
+    sha256 "1c0dfdce5c85d8098fcebb9adf1493847ab40c1dfaa8cc997af09b2ef0aa8211"
 
     resource "cargo" do
       # git required because of submodules
-      url "https://github.com/rust-lang/cargo.git", :tag => "0.5.0", :revision => "8d21fd21a6b20056e9b5745e4e3f3b4279dc7fe4"
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.6.0", :revision => "e1ed9956e079a563796fb380871f4b67619f58ee"
     end
 
     # name includes date to satisfy cache
@@ -26,14 +26,20 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "d3223136640440ae5255ad5aa7488d20d740e5474bf6506e924d8d4ed822252b" => :el_capitan
-    sha256 "a1820e100d565929c584aa3575000330dbcab20e1abeb990467f548e97094fdf" => :yosemite
-    sha256 "04f68ef26b4ca636b35be1d17ad2b641727bbc10cec52582a9e3a64b5784dbeb" => :mavericks
+    sha256 "4b085815987a83b4d436a7250ba749d320c016d07232c4846a014bf1fa8ad828" => :el_capitan
+    sha256 "5752099e65266112c01422b211cd5a398e260782cf958eed2e6f37c8e813bd8c" => :yosemite
+    sha256 "312a9da9a0180e729e972bebf1de59875fe9e8b5da3debb25beab92d65429543" => :mavericks
   end
 
+  option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
+
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
+  depends_on "llvm" => :optional
   depends_on "openssl"
+  depends_on "libssh2"
+
+  conflicts_with "multirust", :because => "both install rustc, rustdoc, cargo, rust-lldb, rust-gdb"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0
@@ -46,6 +52,7 @@ class Rust < Formula
     args = ["--prefix=#{prefix}"]
     args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
+    args << "--llvm-root=#{Formula["llvm"].opt_prefix}" if build.with? "llvm"
     if build.head?
       args << "--release-channel=nightly"
     else
@@ -66,7 +73,7 @@ class Rust < Formula
         end
       end
 
-      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}"
+      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}", "--enable-optimize"
       system "make"
       system "make", "install"
     end

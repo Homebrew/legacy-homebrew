@@ -1,26 +1,39 @@
 class Tomcat < Formula
   desc "Implementation of Java Servlet and JavaServer Pages"
   homepage "https://tomcat.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26.tar.gz"
-  sha256 "9f11588f0ff767adde63cd6919462c0c2742897560f4b367a0ffffdd8b1ed382"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "f596c50bc9ca7e1fc04785377feab5a1f7a89a79dc7ea7e89191e71879e2ce0d" => :el_capitan
-    sha256 "0451222ba2341cba4152c5007967b536a6bf536c9cdd304ab9c2474dffe7b3b7" => :yosemite
-    sha256 "9258495d4ced771aa184ac7811df80f9932db61cda28ba811e595b8c8167ccbc" => :mavericks
-    sha256 "a1e6d8ed630f87bb5861f3fb0fadd97dc824d55fa3d689483779c14b3e2c7cfa" => :mountain_lion
+  stable do
+    url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29.tar.gz"
+    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29.tar.gz"
+    sha256 "5fdb315918f3c635258f25d412c6c89869162fcd3ee7161291d484e72076e9d0"
+
+    depends_on :java => "1.7+"
+
+    resource "fulldocs" do
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29-fulldocs.tar.gz"
+      mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.29/bin/apache-tomcat-8.0.29-fulldocs.tar.gz"
+      version "8.0.29"
+      sha256 "5453eec4bfd94f254f9d06a759794e723e6a77a1f3f4dde73691bad0b8c91409"
+    end
   end
+
+  devel do
+    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M1/bin/apache-tomcat-9.0.0.M1.tar.gz"
+    version "9.0.0.M1"
+    sha256 "5e06b82709dba9a1314957f164f270f0edb2e94b7df9ad002ca50fbc881d512f"
+
+    depends_on :java => "1.8+"
+
+    resource "fulldocs" do
+      url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-9/v9.0.0.M1/bin/apache-tomcat-9.0.0.M1-fulldocs.tar.gz"
+      version "9.0.0.M1"
+      sha256 "7a23854526968793c423e7afac1329b0268aa85e5ccbaefeb411d7749bcc090e"
+    end
+  end
+
+  bottle :unneeded
 
   option "with-fulldocs", "Install full documentation locally"
-
-  resource "fulldocs" do
-    url "https://www.apache.org/dyn/closer.cgi?path=/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26-fulldocs.tar.gz"
-    mirror "https://archive.apache.org/dist/tomcat/tomcat-8/v8.0.26/bin/apache-tomcat-8.0.26-fulldocs.tar.gz"
-    version "8.0.26"
-    sha256 "813513d61e6def5ccf01adc95bf9d28594fce71ff32f5e23dc1482c7ec2f129b"
-  end
 
   def install
     # Remove Windows scripts

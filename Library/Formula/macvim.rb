@@ -14,12 +14,14 @@ end
 # Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
   desc "GUI for vim, made for OS X"
-  homepage "https://code.google.com/p/macvim/"
-  url "https://github.com/macvim-dev/macvim/archive/snapshot-77.tar.gz"
-  version "7.4-77"
-  sha256 "6b7f4b48ecef4a00dca17efef551884fcea1aa9897005497d31f52da7304bc5f"
+  homepage "https://github.com/macvim-dev/macvim"
+  url "https://github.com/macvim-dev/macvim/archive/snapshot-84.tar.gz"
+  version "7.4-84"
+  sha256 "8c72fc5ee59ff7d6e126a48d4b49e9db762abe50f9fce5f5e9df7ba95a5ade0e"
 
   head "https://github.com/macvim-dev/macvim.git"
+
+  bottle :disable, "To use the user's Python."
 
   option "with-custom-icons", "Try to generate custom document icons"
   option "with-override-system-vim", "Override system vim"

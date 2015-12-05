@@ -1,9 +1,11 @@
 class H2 < Formula
   desc "Java SQL database"
   homepage "http://www.h2database.com/"
-  url "http://www.h2database.com/h2-2015-04-10.zip"
-  version "1.4.187"
-  sha256 "f71b2bbc9a56da6b3af2b09a3fb6663f4bb8f94b41ab7ee6c3d381085b272cbe"
+  url "http://www.h2database.com/h2-2015-10-11.zip"
+  version "1.4.190"
+  sha256 "7881f308debe6d587219db3610b699af21d5e4b50ccb6fccac563382772a09c8"
+
+  bottle :unneeded
 
   def script; <<-EOS.undent
     #!/bin/sh

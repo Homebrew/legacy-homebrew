@@ -15,9 +15,9 @@ class UnittestCpp < Formula
 
   bottle do
     cellar :any
-    sha1 "6d9dbaebbfce4e6da037f55d70766b305ae361de" => :yosemite
-    sha1 "6042952c71d97f611f7dc6662125e02fb1a3f56a" => :mavericks
-    sha1 "e0289f35b526795fad1d204374928996f7f208a2" => :mountain_lion
+    sha256 "44d3ebdf38a4fe0f6e7c31385a6f2474eabbf228277e67fec8accb4437140f72" => :yosemite
+    sha256 "5e383d6c98685cab234a7c8ddf3839df42059e5e8db493e185ff4c2259fbbe3e" => :mavericks
+    sha256 "942d4451a5985818fd1a881be3405573eba6d4a93e2dabca04dfe7b9e3afc105" => :mountain_lion
   end
 
   head do

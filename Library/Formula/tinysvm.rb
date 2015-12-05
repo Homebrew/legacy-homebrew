@@ -6,14 +6,14 @@ class Tinysvm < Formula
 
   bottle do
     cellar :any
-    sha1 "3d4091d59c33a861cade86fc324f0dfc337c818c" => :yosemite
-    sha1 "4a779733c331e5b32d4ba79a51c4ec288ca29314" => :mavericks
-    sha1 "ae5f0cd4fdb3b6c6e951791496ba0a0487fb687c" => :mountain_lion
+    sha256 "ea90446332244176d4ec3bc4ff0c6175810c3a39d942f225bb55c0fb6252858d" => :yosemite
+    sha256 "c3464518eb4a82d123939aca024c328d885c3f14e74df31b4deed9588bb495b1" => :mavericks
+    sha256 "3d55eaafeeef653a2e41f6d521a2050dc9dac24cfdaf49ba21c311cbcdfa676d" => :mountain_lion
   end
 
-  # Use correct compilation flag
+  # Use correct compilation flag, via MacPorts.
   patch :p0 do
-    url "https://trac.macports.org/export/94156/trunk/dports/math/TinySVM/files/patch-configure.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/838f605/tinysvm/patch-configure.diff"
     sha256 "b4cd84063fd56cdcb0212528c6d424788528a9d6b8b0a17aa01294773c62e8a7"
   end
 

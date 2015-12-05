@@ -9,27 +9,27 @@ class Hping < Formula
   patch :DATA
 
   patch :p0 do
-    url "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-libpcap_stuff.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/fc1d446f/hping/patch-libpcap_stuff.c.diff"
     sha256 "56d3af80a6385bf93257080233e971726283d6555cc244ebe886ea21133e83ad"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-ars.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/fc1d446f/hping/patch-ars.c.diff"
     sha256 "02138051414e48b9f057a2dd8134c01ccd374aff65593833a799a5aaa36193c4"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-sendip.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/fc1d446f/hping/patch-sendip.c.diff"
     sha256 "e7befff6dd546cdb38b59d9e6d3ef4a4dc09c79af2982f4609b2ea5dadf1a360"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-Makefile.in.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/fc1d446f/hping/patch-Makefile.in.diff"
     sha256 "18ceb30104bdb906b540bb5f6316678ce85fb55f5c086d2d74417416de3792f8"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/70033/trunk/dports/net/hping3/files/patch-bytesex.h.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/fc1d446f/hping/patch-bytesex.h.diff"
     sha256 "7bad5e8b4b5441f72f85d50fa3461857a398b87e2d0cb63bb30985c9457be21d"
   end
 

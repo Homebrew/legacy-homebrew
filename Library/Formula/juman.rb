@@ -5,9 +5,9 @@ class Juman < Formula
   sha256 "64bee311de19e6d9577d007bb55281e44299972637bd8a2a8bc2efbad2f917c6"
 
   bottle do
-    sha1 "124c6163b63a4ae87269419329ebb65c810f30b2" => :yosemite
-    sha1 "d3c9051c201101118fdde6ae5a49dea75911a59e" => :mavericks
-    sha1 "d886637082bfb1a55c528077abcaaf43d6b54372" => :mountain_lion
+    sha256 "b2ccfe90011dead77ca0789cbdcdf30aa24e2ebcd3dd19c8d01b6adacbf7c816" => :yosemite
+    sha256 "f959168856e884fcdadea2d19e9ebfa3ee6cdafb6e133588fce001de677fbe2a" => :mavericks
+    sha256 "098a7ddfd7cd9524e34473c286465ef63864de21c4a23c91d449b1bd5272b090" => :mountain_lion
   end
 
   def install

@@ -1,7 +1,7 @@
 class SharedMimeInfo < Formula
   desc "Database of common MIME types"
   homepage "https://wiki.freedesktop.org/www/Software/shared-mime-info"
-  url "http://freedesktop.org/~hadess/shared-mime-info-1.5.tar.xz"
+  url "https://freedesktop.org/~hadess/shared-mime-info-1.5.tar.xz"
   sha256 "d6412840eb265bf36e61fd7b6fc6bea21b0f58cb22bed16f2ccccdd54bea4180"
 
   bottle do

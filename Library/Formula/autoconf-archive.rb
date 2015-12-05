@@ -6,9 +6,11 @@ class AutoconfArchive < Formula
   sha256 "69715bdd078f552ca85e498a94543e11cb8bcdf0359e659b84d84d19372b0dc5"
 
   bottle do
-    sha1 "379b87f4f2a0ab895b98566a9d846e39143febb9" => :yosemite
-    sha1 "57aa4726af450fa77e509a29aeb03d6c819706cf" => :mavericks
-    sha1 "5c2d27e4a970cdc0ef102e0404a5eb13cc1f0543" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "cdef16863febf3b58e3faee528b1646d6214f9f00febb92d3de1c8f0ef8cffc4" => :el_capitan
+    sha256 "137af13ba528ab8d6360c98294354990a88ade4b008c8f6b17effa2c6c50fbeb" => :yosemite
+    sha256 "0529c2360f87d1a357eee395f226f20257057eed909876b42028f9cd53aee51b" => :mavericks
   end
 
   # autoconf-archive is useless without autoconf
@@ -26,7 +28,7 @@ class AutoconfArchive < Formula
 
       m4_include([#{share}/aclocal/ax_have_select.m4])
 
-      # from http://www.gnu.org/software/autoconf-archive/ax_have_select.html
+      # from https://www.gnu.org/software/autoconf-archive/ax_have_select.html
       AX_HAVE_SELECT(
         [AX_CONFIG_FEATURE_ENABLE(select)],
         [AX_CONFIG_FEATURE_DISABLE(select)])

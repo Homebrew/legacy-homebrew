@@ -1,22 +1,24 @@
 class Glibmm < Formula
   desc "C++ interface to glib"
   homepage "http://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/glibmm/2.44/glibmm-2.44.0.tar.xz"
-  sha256 "1b0ac0425d24895507c0e0e8088a464c7ae2d289c47afa1c11f63278fc672ea8"
+  url "https://download.gnome.org/sources/glibmm/2.46/glibmm-2.46.2.tar.xz"
+  sha256 "7221a01a768c1cce2bb994cb6ebfe634246dba4788f910484d04e3b0d903a3c8"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "45187c701fdee69aa16b8b0b1c7b03cd028f9ff2381f2f141d83acdf4c80ac5d" => :el_capitan
-    sha256 "61af2fe3799a6728f8d20834175e266afbbd75b544edf92db93415c340e916dd" => :yosemite
-    sha256 "cce003756f83b8f2b7895602142ba537935c1d76149cb97a1de18b3f302c7c1d" => :mavericks
+    sha256 "23d3f8ebbf05a14400d2c979618746083ead086dd711845d160f0205392dd186" => :el_capitan
+    sha256 "232f007e86a6cc5262f2c3febaf64442e4506230300346e74c795cfad1b5cccd" => :yosemite
+    sha256 "57c1d139cd13f56646ad49a8c223d2e9bb3501166c7a41730ea7834c6a7e735e" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "libsigc++"
   depends_on "glib"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
   end
@@ -53,7 +55,7 @@ class Glibmm < Formula
       -lintl
       -lsigc-2.0
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

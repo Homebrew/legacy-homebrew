@@ -19,7 +19,7 @@ class Libinfinity < Formula
 
   # MacPorts patch to fix pam include. This is still applicable to 0.6.4.
   patch :p0 do
-    url "https://trac.macports.org/export/92297/trunk/dports/comms/libinfinity/files/patch-infinoted-infinoted-pam.c.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/f8e3d2e4/libinfinity/patch-infinoted-infinoted-pam.c.diff"
     sha256 "d5924d6ee90c3aa756e52b97e32345dc1d77afdb5e4e0de8eac2a343d95ade00"
   end
 

@@ -4,6 +4,8 @@ class Pegtl < Formula
   url "https://github.com/ColinH/PEGTL/archive/1.1.0.tar.gz"
   sha256 "7131df800d4647610c68cb120c58fb34ede9adfad741c502785cdfe8aab698db"
 
+  bottle :unneeded
+
   def install
     include.install "pegtl.hh", "pegtl"
     pkgshare.install "examples"

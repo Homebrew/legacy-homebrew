@@ -5,10 +5,10 @@ class ApacheOpennlp < Formula
   mirror "https://www.us.apache.org/dist/opennlp/opennlp-1.6.0/apache-opennlp-1.6.0-bin.tar.gz"
   sha256 "417ca3d4e535fa69238ab0eb657a0b471da821218d078de959967b31748d99e6"
 
-  def install
-    prefix.install_metafiles
-    libexec.install Dir["*"]
+  bottle :unneeded
 
+  def install
+    libexec.install Dir["*"]
     bin.write_exec_script libexec/"bin/opennlp"
   end
 

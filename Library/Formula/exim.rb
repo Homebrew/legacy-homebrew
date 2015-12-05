@@ -1,5 +1,3 @@
-require "formula"
-
 class Exim < Formula
   desc "Complete replacement for sendmail"
   homepage "http://exim.org"
@@ -14,7 +12,8 @@ class Exim < Formula
     sha256 "28f88bffa0447b615552d5a80c31ff8a762afd801a803429cf015af00aafae8b" => :mountain_lion
   end
 
-  option "support-maildir", "Support delivery in Maildir format"
+  deprecated_option "support-maildir" => "with-maildir"
+  option "with-maildir", "Support delivery in Maildir format"
 
   depends_on "pcre"
   depends_on "berkeley-db4"
@@ -29,9 +28,9 @@ class Exim < Formula
       s.gsub! "/usr/exim/configure", etc/"exim.conf"
       s.gsub! "/usr/exim", prefix
       s.gsub! "/var/spool/exim", var/"spool/exim"
-      # http://trac.macports.org/ticket/38654
+      # https://trac.macports.org/ticket/38654
       s.gsub! 'TMPDIR="/tmp"', "TMPDIR=/tmp"
-      s << "SUPPORT_MAILDIR=yes\n" if build.include? "support-maildir"
+      s << "SUPPORT_MAILDIR=yes\n" if build.with? "maildir"
       s << "AUTH_PLAINTEXT=yes\n"
       s << "SUPPORT_TLS=yes\n"
       s << "TLS_LIBS=-lssl -lcrypto\n"
@@ -56,9 +55,9 @@ class Exim < Formula
 
     ENV.j1 # See: https://lists.exim.org/lurker/thread/20111109.083524.87c96d9b.en.html
     system "make"
-    system "make INSTALL_ARG=-no_chown install"
+    system "make", "INSTALL_ARG=-no_chown", "install"
     man8.install "doc/exim.8"
-    (bin+"exim_ctl").write startup_script
+    (bin/"exim_ctl").write startup_script
   end
 
   # Inspired by MacPorts startup script. Fixes restart issue due to missing setuid.

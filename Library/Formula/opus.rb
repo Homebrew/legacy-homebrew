@@ -1,15 +1,14 @@
 class Opus < Formula
   desc "Audio codec"
-  homepage "http://www.opus-codec.org"
-  url "http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz"
-  sha256 "b9727015a58affcf3db527322bf8c4d2fcf39f5f6b8f15dbceca20206cbe1d95"
+  homepage "https://www.opus-codec.org"
+  url "http://downloads.xiph.org/releases/opus/opus-1.1.1.tar.gz"
+  sha256 "9b84ff56bd7720d5554103c557664efac2b8b18acc4bbcc234cb881ab9a3371e"
 
   bottle do
     cellar :any
-    sha256 "c6bd7005b94ea672d5f78ea295ea53e8a2c46d1dfb10b7c3ae4a396ea34939f6" => :el_capitan
-    sha1 "5fb89890cfc8c254a6f13f9657a66da385887b2b" => :yosemite
-    sha1 "8ac2e93276b0df2f69c01d0b727fbff57a637e9e" => :mavericks
-    sha1 "a7e6ed2455861c41e021fec280b6fa28462341a2" => :mountain_lion
+    sha256 "41f6ff91b8b9b318a366fc692fdbdf768bc92ef61c37fa494f1dffc4babee21f" => :el_capitan
+    sha256 "e347b0546ee09d1782e60c99d9e946ee81c6c4fb91c1e067e62585bfddbc04d6" => :yosemite
+    sha256 "42bcd3d6fa7500e1c6e58a2d6d8a520d068ab5e2d7264b0ddf909b8302930d0f" => :mavericks
   end
 
   option "with-custom-modes", "Enable custom-modes for opus see http://www.opus-codec.org/docs/html_api-1.1.0/group__opus__custom.html"

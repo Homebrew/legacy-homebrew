@@ -25,12 +25,13 @@ class Gcc < Formula
   mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
   sha256 "5f835b04b5f7dd4f4d2dc96190ec1621b8d89f2dc6f638f9f8bc1b1014ba8cad"
 
+  head "svn://gcc.gnu.org/svn/gcc/trunk"
+
   bottle do
-    revision 1
-    sha256 "ad5350f6197eacc3e70439c5c0dcc8118500bf909141ea49f78110f77b0d6d93" => :el_capitan
-    sha256 "9cc95abd2144c8af4449c9610b0f6e22e5351b27edafe7af958d3757b7f96064" => :yosemite
-    sha256 "1fe4d5663ef0ceec8faa388045cf81dbadd6970a8d45f517f4cadf9f13f96bb1" => :mavericks
-    sha256 "80893dd79e0ec91e9705556dd65f46f0c0acbe45e7386d36d31f68295dcbd474" => :mountain_lion
+    revision 4
+    sha256 "b90aaf44d772f0ad864e17f8454ef67e280bf5d5763ca7f74cd20890e4165470" => :el_capitan
+    sha256 "4c829be9f06a6cc0b782a9e2ad1f1a7e6d511f40fc940805dde6ed97ef5062bc" => :yosemite
+    sha256 "c7ae5ce395cd50facbe15d001fee6736334da7ca433c9d6178fd261875446090" => :mavericks
   end
 
   option "with-java", "Build the gcj compiler"
@@ -116,16 +117,17 @@ class Gcc < Formula
       "--with-build-config=bootstrap-debug",
       "--disable-werror",
       "--with-pkgversion=Homebrew #{name} #{pkg_version} #{build.used_options*" "}".strip,
-      "--with-bugurl=https://github.com/Homebrew/homebrew/issues"
+      "--with-bugurl=https://github.com/Homebrew/homebrew/issues",
     ]
 
     # "Building GCC with plugin support requires a host that supports
     # -fPIC, -shared, -ldl and -rdynamic."
     args << "--enable-plugin" if MacOS.version > :tiger
 
-    # Otherwise make fails during comparison at stage 3
-    # See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
-    args << "--with-dwarf2" if MacOS.version < :leopard
+    # The pre-Mavericks toolchain requires the older DWARF-2 debugging data
+    # format to avoid failure during the stage 3 comparison of object files.
+    # See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
+    args << "--with-dwarf2" if MacOS.version <= :mountain_lion
 
     args << "--disable-nls" if build.without? "nls"
 
@@ -177,7 +179,7 @@ class Gcc < Formula
         "#{lib}/gcc/#{version_suffix}/logging.properties",
         "#{lib}/gcc/#{version_suffix}/security/classpath.security",
         "#{lib}/gcc/#{version_suffix}/i386/logging.properties",
-        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security"
+        "#{lib}/gcc/#{version_suffix}/i386/security/classpath.security",
       ]
       config_files.each do |file|
         add_suffix file, version_suffix if File.exist? file

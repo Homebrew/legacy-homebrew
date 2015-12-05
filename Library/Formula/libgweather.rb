@@ -1,13 +1,13 @@
 class Libgweather < Formula
   desc "GNOME library for weather, locations and timezones"
   homepage "https://wiki.gnome.org/Projects/LibGWeather"
-  url "https://download.gnome.org/sources/libgweather/3.18/libgweather-3.18.0.tar.xz"
-  sha256 "8f4fda67f48c776f2bf955d384de4cc842aacb8d9b2ad87b42d83d0dc5a1cb1f"
+  url "https://download.gnome.org/sources/libgweather/3.18/libgweather-3.18.1.tar.xz"
+  sha256 "94b2292f8f7616e2aa81b1516befd7b27682b20acecbd5d656b6954990ca7ad0"
 
   bottle do
-    sha256 "1e1e920043ffd690905aad4c3dffbef5303a8c9bdf75e88b8c59508c221318ed" => :el_capitan
-    sha256 "759601b2b137e77b1b09b6030cbd183cbb711004bb84b814167764d70453f51f" => :yosemite
-    sha256 "2f53f88e7802d98b78b4ce8e267c9462f28dce08ffc4818d5091986000bc0f0f" => :mavericks
+    sha256 "e2b7853e95cf104ccd5f3cff216336077d77e671349b1734f7b4c3a4f0773fba" => :el_capitan
+    sha256 "96c5965af80663bb49d302d38120bcf747c7f14105d7d1abd238a369a544c95c" => :yosemite
+    sha256 "6b1b5cb020dbe92b6ef1221c895536f889ca8ed4ac14938cda10bf838286de09" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -19,14 +19,8 @@ class Libgweather < Formula
   depends_on "vala" => :optional
 
   def install
-    # ensures that the gobject-introspection files remain within the keg
-    inreplace "libgweather/Makefile.in" do |s|
-      s.gsub! "@HAVE_INTROSPECTION_TRUE@girdir = $(INTROSPECTION_GIRDIR)",
-              "@HAVE_INTROSPECTION_TRUE@girdir = $(datadir)/gir-1.0"
-      s.gsub! "@HAVE_INTROSPECTION_TRUE@typelibdir = $(INTROSPECTION_TYPELIBDIR)",
-              "@HAVE_INTROSPECTION_TRUE@typelibdir = $(libdir)/girepository-1.0"
-    end
-
+    # ensures that the vala files remain within the keg
+    inreplace "libgweather/Makefile.in", "VAPIGEN_VAPIDIR = @VAPIGEN_VAPIDIR@", "VAPIGEN_VAPIDIR = @datadir@/vala/vapi"
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",

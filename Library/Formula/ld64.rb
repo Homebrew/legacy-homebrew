@@ -5,12 +5,11 @@ class Ld64 < Formula
   # 127.2 won't build on Tiger, at least without some patching.
   # Leopard users: if you like, add a 127.2 option or fix the build
   # on Tiger.
-  #
   url "https://opensource.apple.com/tarballs/ld64/ld64-97.17.tar.gz"
   sha256 "02bd46af0809eaa415d096d7d41c3e8e7d80f7d8d181840866fb87f036b4e089"
 
   resource "makefile" do
-    url "https://trac.macports.org/export/123511/trunk/dports/devel/ld64/files/Makefile-97", :using => :nounzip
+    url "https://raw.githubusercontent.com/Homebrew/patches/3b073fca/ld64/Makefile-97", :using => :nounzip
     sha256 "48e3475bd73f9501d17b7d334d3bf319f5664f2d5ab9d13378e37c2519ae2a3a"
   end
 
@@ -21,6 +20,7 @@ class Ld64 < Formula
   depends_on "cctools-headers" => :build
   depends_on "dyld-headers" => :build
   depends_on "libunwind-headers" => :build
+  depends_on "openssl"
 
   keg_only :provided_by_osx,
     "ld64 is an updated version of the ld shipped by Apple."
@@ -31,19 +31,19 @@ class Ld64 < Formula
 
   # Fixes logic on PPC branch islands
   patch :p0 do
-    url "https://trac.macports.org/export/103948/trunk/dports/devel/ld64/files/ld64-97-ppc-branch-island.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/3b073fca/ld64/ld64-97-ppc-branch-island.patch"
     sha256 "a6bbf25c6e4fa348eee3d4756ad65f42ba42b78922dc0f75669023cdf9c25d72"
   end
 
   # Remove LTO support
   patch :p0 do
-    url "https://trac.macports.org/export/103949/trunk/dports/devel/ld64/files/ld64-97-no-LTO.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/3b073fca/ld64/ld64-97-no-LTO.patch"
     sha256 "2596cc25118981cbc31e82ddcb70508057f1946c46c3d6d6845ab7bd01ff1433"
   end
 
   # Fix version number
   patch :p0 do
-    url "https://trac.macports.org/export/103951/trunk/dports/devel/ld64/files/ld64-version.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/3b073fca/ld64/ld64-version.patch"
     sha256 "3753b6877641648017eab2bb391361840fe887a2b3eb2e5ef689272a28c374fc"
   end
 

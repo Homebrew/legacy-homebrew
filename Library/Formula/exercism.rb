@@ -8,7 +8,8 @@ class Exercism < Formula
   head "https://github.com/exercism.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "70001dac0a4c3c01663ed6425468c21194035bc9973e23042ea8b7a947778ceb" => :el_capitan
     sha256 "9959b2578131f7a19c234753277e535317a7d421f67bd384ea47f6cc2e886575" => :yosemite
     sha256 "4ab067a75cba97a079a5580c66f6d2be3e0927910bb04590671a98fd93b65882" => :mavericks
     sha256 "bac42ae1c756c328155b6561e5ae451683c3b5aff8824aa6e7b52445db27b1d4" => :mountain_lion

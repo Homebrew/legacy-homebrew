@@ -5,9 +5,10 @@ class Nut < Formula
   sha256 "ff44d95d06a51559a0a018eef7f8d17911c1002b6352a7d7580ff75acb12126b"
 
   bottle do
-    sha256 "92af5c4593bfb1231c770ace968f80d42867883e66544a06c46cf26400bdec27" => :yosemite
-    sha256 "9c7100a6f831b7e21615ab4e2551056abda2e7b0b72c4e697e499e1c7908198a" => :mavericks
-    sha256 "e1a76ac63b98a306cb6dfd524a475d5127ba811c0cd96bf32da10d059b12a35a" => :mountain_lion
+    revision 1
+    sha256 "b78afeef0043a9a22fe57d673c0c4f4ff14fcf77cfcdb7ea8d8b9b9092ba00d2" => :el_capitan
+    sha256 "8d2e76b8ee440afde4ea901484b73d60d587fa0f06000f5397b2686e526d09ed" => :yosemite
+    sha256 "d2f0ffcf035b9a7313732d3581f4ff57b9af2006e5f77286b403b2973024d9ed" => :mavericks
   end
 
   head do
@@ -38,6 +39,8 @@ class Nut < Formula
   depends_on "libtool" => :build
   depends_on "gd" if build.with? "cgi"
 
+  conflicts_with "rhino", :because => "both install `rhino` binaries"
+
   def install
     if build.head?
       ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
@@ -55,7 +58,7 @@ class Nut < Formula
             "--without-wrap"
            ]
     args << (build.with?("serial") ? "--with-serial" : "--without-serial")
-    args << (build.with?("libusb") ? "--with-usb" : "--without-usb")
+    args << (build.with?("libusb-compat") ? "--with-usb" : "--without-usb")
     args << (build.with?("dev") ? "--with-dev" : "--without-dev")
     args << (build.with?("net-snmp") ? "--with-snmp" : "--without-snmp")
     args << (build.with?("neon") ? "--with-neon" : "--without-neon")

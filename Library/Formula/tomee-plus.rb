@@ -5,6 +5,8 @@ class TomeePlus < Formula
   version "1.7.2"
   sha256 "deb551788f56e5051e4f9cd6a642b9543c7635819a58015b72d8506de08c693a"
 
+  bottle :unneeded
+
   def install
     # Remove Windows scripts
     rm_rf Dir["bin/*.bat"]

@@ -69,7 +69,7 @@ module Homebrew
   def github_info(f)
     if f.tap?
       user, repo = f.tap.split("/", 2)
-      tap = Tap.new user, repo.gsub(/^homebrew-/, "")
+      tap = Tap.fetch user, repo
       if remote = tap.remote
         path = f.path.relative_path_from(tap.path)
         github_remote_path(remote, path)
@@ -105,24 +105,19 @@ module Homebrew
 
     specs << "HEAD" if f.head
 
-    puts "#{f.full_name}: #{specs*", "}#{" (pinned)" if f.pinned?}"
+    attrs = []
+    attrs << "pinned at #{f.pinned_version}" if f.pinned?
+    attrs << "keg-only" if f.keg_only?
 
+    puts "#{f.full_name}: #{specs * ", "}#{" [#{attrs * ", "}]" if attrs.any?}"
     puts f.desc if f.desc
-
-    puts f.homepage
-
-    if f.keg_only?
-      puts
-      puts "This formula is keg-only."
-      puts f.keg_only_reason
-      puts
-    end
+    puts "#{Tty.em}#{f.homepage}#{Tty.reset}" if f.homepage
 
     conflicts = f.conflicts.map(&:name).sort!
     puts "Conflicts with: #{conflicts*", "}" unless conflicts.empty?
 
-    if f.rack.directory?
-      kegs = f.rack.subdirs.map { |keg| Keg.new(keg) }.sort_by(&:version)
+    kegs = f.installed_kegs.sort_by(&:version)
+    if kegs.any?
       kegs.each do |keg|
         puts "#{keg} (#{keg.abv})#{" *" if keg.linked?}"
         tab = Tab.for_keg(keg).to_s
@@ -132,8 +127,7 @@ module Homebrew
       puts "Not installed"
     end
 
-    history = github_info(f)
-    puts "From: #{history}" if history
+    puts "From: #{Tty.em}#{github_info(f)}#{Tty.reset}"
 
     unless f.deps.empty?
       ohai "Dependencies"

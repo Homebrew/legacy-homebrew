@@ -5,9 +5,10 @@ class Fourstore < Formula
   sha256 "2bdd6fb804288802187c5779e365eea2b3ddebce419b3da0609be38edc9e8c5b"
 
   bottle do
-    sha256 "af6db4040f02b4d05cad3e860030522089e00882b924cf4ac420a08ec1be4cc7" => :yosemite
-    sha256 "1999ddd3484593da6fa2579eb9978457bd844c157bff8796182ac2b2ed2e86c5" => :mavericks
-    sha256 "d2c2d74e44e4aa14215f2f22778744993140479b3269ab7483f80d980bd14d7b" => :mountain_lion
+    revision 1
+    sha256 "74616c1034dfd440df713febf7b8343e6e4413825ecf7834c57a4538a5aacb37" => :el_capitan
+    sha256 "d8e757d9eb36769584853668411a72c63356c468d578238cf3e153465551a888" => :yosemite
+    sha256 "404164a3d01bcec3d92311e76c149928cfc69151132cb1a9168770f3bd1ab9a1" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -17,6 +18,7 @@ class Fourstore < Formula
   depends_on "pcre"
 
   def install
+    (var/"fourstore").mkpath
     system "./configure", "--prefix=#{prefix}",
                           "--with-storage-path=#{var}/fourstore",
                           "--sysconfdir=#{etc}/fourstore"
@@ -41,6 +43,6 @@ class Fourstore < Formula
   end
 
   test do
-    system "#{bin}/4s-backend-setup", "demo"
+    assert_match version.to_s, shell_output("#{bin}/4s-admin --version")
   end
 end

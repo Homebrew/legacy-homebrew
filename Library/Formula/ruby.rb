@@ -5,10 +5,10 @@ class Ruby < Formula
   sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
 
   bottle do
-    sha256 "13b2a0096f65a74b31a6055bf421332930b2c41101ed2c507d5d0c6a5b9b5770" => :el_capitan
-    sha256 "45f8ba8eb5cb90ba89e0bf950148be4f50a88d3d1daf496b954d288543025735" => :yosemite
-    sha256 "40b34f18f354dc2bb55fdae3082c1004483f44141628c473a5fe0c0882fdee80" => :mavericks
-    sha256 "ae3460dc786fd5ad45d984a700ccb134cdab445da3c6c2fa8053136d2a9ff1f3" => :mountain_lion
+    revision 1
+    sha256 "a1360891dc5f037f5f28d54a0f4314b601a12f79abd49972216419d186142b70" => :el_capitan
+    sha256 "ad503cac645b112e2d50327b50608d5833aca8d0cdded52d82c21ccecc2ba399" => :yosemite
+    sha256 "ebdca4210ea52abd85ec1102f223ef2f537ae20249da305f720144b4424e9b93" => :mavericks
   end
 
   head do
@@ -59,7 +59,7 @@ class Ruby < Formula
 
     paths = [
       Formula["libyaml"].opt_prefix,
-      Formula["openssl"].opt_prefix
+      Formula["openssl"].opt_prefix,
     ]
 
     %w[readline gdbm gmp libffi].each do |dep|
@@ -85,6 +85,9 @@ class Ruby < Formula
 
     system "make"
     system "make", "install"
+
+    # A newer version of ruby-mode.el is shipped with Emacs
+    elisp.install Dir["misc/*.el"].reject { |f| f == "misc/ruby-mode.el" }
   end
 
   def post_install

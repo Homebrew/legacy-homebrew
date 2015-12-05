@@ -158,7 +158,7 @@ class TabLoadingTests < Homebrew::TestCase
     f2.prefix.mkpath
 
     assert_equal @f.rack, f2.rack
-    assert_equal 2, @f.rack.subdirs.length
+    assert_equal 2, @f.installed_prefixes.length
 
     tab = Tab.for_formula(@f)
     assert_equal @path, tab.tabfile
@@ -168,7 +168,7 @@ class TabLoadingTests < Homebrew::TestCase
     f2 = formula { url "foo-2.0" }
 
     assert_equal @f.rack, f2.rack
-    assert_equal 1, @f.rack.subdirs.length
+    assert_equal 1, @f.installed_prefixes.length
 
     tab = Tab.for_formula(f2)
     assert_equal @path, tab.tabfile
