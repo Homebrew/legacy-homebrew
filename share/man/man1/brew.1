@@ -188,7 +188,7 @@ If \fB\-\-force\-bottle\fR is passed, download a bottle if it exists for the cur
 To view formula history locally: \fBbrew log \-p <formula>\fR\.
 .
 .IP "\(bu" 4
-\fBinfo \-\-json=\fR\fIversion\fR\fB(\fR\-\-all\fB|\fR\-\-installed\fB|\fR\fIformulae\fR): Print a JSON representation of \fIformulae\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
+\fBinfo \-\-json=\fR\fIversion\fR (\fB\-\-all\fR|\fB\-\-installed\fR|\fIformulae\fR): Print a JSON representation of \fIformulae\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
 .
 .IP
 Pass \fB\-\-all\fR to get information on all formulae, or \fB\-\-installed\fR to get information on all installed formulae\.
@@ -272,10 +272,10 @@ If no \fIformulae\fR are provided, all of them will have their \.apps symlinked\
 If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\fR directory instead of the system directory\. It may need to be created, first\.
 .
 .IP "\(bu" 4
-\fBls\fR, \fBlist\fR [\fB\-\-full\-name\fR] List all installed formulae\. If \fB\-\-full\-name\fR is passed, print formulae with full\-qualified names\.
+\fBls\fR, \fBlist\fR [\fB\-\-full\-name\fR]: List all installed formulae\. If \fB\-\-full\-name\fR is passed, print formulae with full\-qualified names\.
 .
 .IP "\(bu" 4
-\fBls\fR, \fBlist \-\-unbrewed\fR List all files in the Homebrew prefix not installed by Homebrew\.
+\fBls\fR, \fBlist \-\-unbrewed\fR: List all files in the Homebrew prefix not installed by Homebrew\.
 .
 .IP "\(bu" 4
 \fBls\fR, \fBlist\fR [\fB\-\-versions\fR [\fB\-\-multiple\fR]] [\fB\-\-pinned\fR] [\fIformulae\fR]: List the installed files for \fIformulae\fR\. Combined with \fB\-\-verbose\fR, recursively list the contents of all subdirectories in each \fIformula\fR\'s keg\.
@@ -314,7 +314,7 @@ If \fB\-\-all\fR is passed, show options for all formulae\.
 If \fB\-\-installed\fR is passed, show options for all installed formulae\.
 .
 .IP "\(bu" 4
-\fBoutdated\fR [\fB\-\-quiet\fR | \fB\-\-verbose\fR | \fB\-\-json=v1\fR ]: Show formulae that have an updated version available\.
+\fBoutdated\fR [\fB\-\-quiet\fR|\fB\-\-verbose\fR|\fB\-\-json=v1\fR]: Show formulae that have an updated version available\.
 .
 .IP
 By default, version information is displayed in interactive shells, and suppressed otherwise\.
@@ -365,7 +365,7 @@ If \fB\-\-force\fR is passed, and there are multiple versions of \fIformula\fR i
 \fBtap\fR without arguments displays existing taps\.
 .
 .IP "\(bu" 4
-\fBtap\fR \fIuser\fR\fB/\fR\fIrepo\fR\fBtaps a formula repository from GitHub using HTTPS\. Since so many taps are hosted on GitHub, this command is a shortcut for\fRtap \fIuser\fR/\fIrepo\fR https://github\.com/\fIuser\fR/homebrew\-\fIrepo\fR`\.
+\fBtap\fR \fIuser\fR\fB/\fR\fIrepo\fR taps a formula repository from GitHub using HTTPS\. Since so many taps are hosted on GitHub, this command is a shortcut for \fBtap <user>/<repo> https://github\.com/<user>/homebrew\-<repo>\fR\.
 .
 .IP "\(bu" 4
 \fBtap\fR \fIuser\fR\fB/\fR\fIrepo\fR \fIURL\fR taps a formula repository from anywhere, using any transport protocol that \fBgit\fR handles\. The one\-argument form of \fBtap\fR simplifies but also limits\. This two\-argument command makes no assumptions, so taps can be cloned from places other than GitHub and using protocols other than HTTPS, e\.g\., SSH, GIT, HTTP, FTP(S), RSYNC\.
