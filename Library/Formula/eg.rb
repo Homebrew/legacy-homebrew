@@ -20,11 +20,6 @@ class Eg < Formula
       url "https://github.com/davep/eg/commit/f724fd6.patch"
       sha256 "6b9d6bbd1575a4d3dfaa3b87bad833e349a7a1c1d4759d4866cda364b8ad3c43"
     end
-    # Remove rogue object file
-    patch do
-      url "https://github.com/davep/eg/commit/b3d2864.patch"
-      sha256 "fa26eacbae087a6d09e4cf0b09f00bc2c1e45f764408cd964b48291ec67226fb"
-    end
   end
 
   depends_on "s-lang"
