@@ -96,7 +96,7 @@ class Agda < Formula
     # compile the included Emacs mode
     if build.with? "emacs"
       system bin/"agda-mode", "compile"
-      elisp.install Dir["#{share}/*/Agda-#{version}/emacs-mode/*"]
+      elisp.install_symlink Dir["#{share}/*/Agda-#{version}/emacs-mode/*"]
     end
   end
 
