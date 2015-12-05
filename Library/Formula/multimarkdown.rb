@@ -30,9 +30,12 @@ class Multimarkdown < Formula
       system "make"
       bin.install "multimarkdown"
     end
+
+    bin.install Dir["scripts/*"].reject { |f| f =~ /\.bat$/ }
   end
 
   test do
     assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"multimarkdown", "foo *bar*\n")
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"mmd", "foo *bar*\n")
   end
 end
