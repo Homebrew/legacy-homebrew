@@ -20,7 +20,7 @@ class Jack < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "berkeley-db"
+  depends_on "berkeley-db5"
   depends_on "libsndfile"
   depends_on "libsamplerate"
 
