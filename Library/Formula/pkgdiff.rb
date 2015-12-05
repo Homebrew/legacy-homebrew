@@ -5,10 +5,10 @@ class Pkgdiff < Formula
   sha256 "4ec03bd6b02a1d378e29e88658915c8dfe8f839bfa08263f4ef54cf10d4528ea"
 
   bottle do
-    cellar :any
-    sha256 "c74cfbd52e81aebeb30cd3a7439310cfc738ff84fa10e96b3e755d513d71eed6" => :yosemite
-    sha256 "9d272b363b8188686ce6eafa1e7edf7a1b5e1264c5ea944cfc88835c0e259f43" => :mavericks
-    sha256 "b3b592c5186b5943db228fbda09893e1009df20e59e7504dd3501e5fd53f48af" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "2ddfe2965818eacba2224f3245dda1be7f2a93a17a6480fd248008b13aa71030" => :el_capitan
+    sha256 "c7d0ca1827a921102c4569316816e6fe37f258d963048916ece4535b1653df34" => :yosemite
+    sha256 "6d624c4aa012144957750b6299ef3c12b53f3c7a5996bc1e161b581cb156c87a" => :mavericks
   end
 
   depends_on "wdiff"
