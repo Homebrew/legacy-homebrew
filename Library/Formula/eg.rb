@@ -7,31 +7,27 @@ class Eg < Formula
 
   depends_on "s-lang"
 
-  # clang complains about escaped newlines used in the source
-  # to form a multiline string. The patch converts said string
-  # to a more common C syntax.
-  # Upstream patch:
-  #   https://github.com/davep/eg/commit/2c1463accba1babb822f9093c5ad3f838d706960
-  patch :DATA
-
-  def install
+  stable do
+    # clang complains about escaped newlines used in the source
+    # to form a multiline string. The patch converts said string
+    # to a more common C syntax.
+    patch do
+      url "https://github.com/davep/eg/commit/2c1463.patch"
+      sha256 "729c38c9f8c76580437d6ffe8bd91deaaebff9e4aa2684cfaf87edfa694fa4fc"
+    end
     # Change S-Lang header references to the canonical way, otherwise
     # they are not found in the Homebrew environment.
-    # Upstream patch:
-    #   https://github.com/davep/eg/commit/f724fd6b402544f38b06f5a7f3f934dc77807899
-    inreplace %w[
-      eg.c
-      egcmplte.c
-      egdir.c
-      egdraw.c
-      eggetfld.c
-      eghelp.c
-      eglib.c
-      egmenu.c
-      egnavgte.c
-      egregex.c
-      egscreen.c
-      egsigs.c], "<slang/slang.h>", "<slang.h>"
+    patch do
+      url "https://github.com/davep/eg/commit/a22d276.patch"
+      sha256 "262bea4186cabcedd154063bee08f86f4075545fd58c255ab3cfab8e09ff9d2a"
+    end
+    patch do
+      url "https://github.com/davep/eg/commit/f724fd6.patch"
+      sha256 "6b9d6bbd1575a4d3dfaa3b87bad833e349a7a1c1d4759d4866cda364b8ad3c43"
+    end
+  end
+
+  def install
     inreplace "eglib.c", "/usr/share/", "#{HOMEBREW_PREFIX}/share/"
     system "make"
     bin.install "eg"
@@ -47,50 +43,3 @@ class Eg < Formula
     system "eg", "not_here.ng"
   end
 end
-
-__END__
-diff -u a/eg.c b/eg.c
---- a/eg.c
-+++ b/eg.c
-@@ -174,24 +174,23 @@
-     uname( &utsn );
- 
-     printf( "Expert Guide Version " EG_VERSION "\n\n"
--            "\
--     Expert Guide - A Text Mode Norton Guide Reader
--     Copyright (C) 1997,1998,1999,2000 David A Pearson
--   
--     This program is free software; you can redistribute it and/or modify
--     it under the terms of the GNU General Public License as published by
--     the Free Software Foundation; either version 2 of the license, or 
--     (at your option) any later version.
--     
--     This program is distributed in the hope that it will be useful,
--     but WITHOUT ANY WARRANTY; without even the implied warranty of
--     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--     GNU General Public License for more details.
--     
--     You should have received a copy of the GNU General Public License
--     along with this program; if not, write to the Free Software
--     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
--\n" );
-+"     Expert Guide - A Text Mode Norton Guide Reader\n"
-+"     Copyright (C) 1997,1998,1999,2000 David A Pearson\n"
-+"\n"
-+"     This program is free software; you can redistribute it and/or modify\n"
-+"     it under the terms of the GNU General Public License as published by\n"
-+"     the Free Software Foundation; either version 2 of the license, or \n"
-+"     (at your option) any later version.\n"
-+"\n"
-+"     This program is distributed in the hope that it will be useful,\n"
-+"     but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-+"     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-+"     GNU General Public License for more details.\n"
-+"\n"
-+"     You should have received a copy of the GNU General Public License\n"
-+"     along with this program; if not, write to the Free Software\n"
-+"     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
-+"\n" );
-     
-     printf( "System details:\n"
-             "\tSystem.......: %s %s\n"
