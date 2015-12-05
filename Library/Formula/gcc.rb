@@ -28,10 +28,9 @@ class Gcc < Formula
   head "svn://gcc.gnu.org/svn/gcc/trunk"
 
   bottle do
-    revision 4
-    sha256 "b90aaf44d772f0ad864e17f8454ef67e280bf5d5763ca7f74cd20890e4165470" => :el_capitan
-    sha256 "4c829be9f06a6cc0b782a9e2ad1f1a7e6d511f40fc940805dde6ed97ef5062bc" => :yosemite
-    sha256 "c7ae5ce395cd50facbe15d001fee6736334da7ca433c9d6178fd261875446090" => :mavericks
+    sha256 "90ad519442f0336b0beee3cf2be305ea495fb2e2ad82c2a96c5b0c3bcef8f268" => :el_capitan
+    sha256 "334bd7afbec85740ec7c49eedf52858209c31ed1f284ad10ccab7c50a41bcd35" => :yosemite
+    sha256 "679c9bfc2082f8ab4320c89082b08c4eab9523dd72bfed27fe4b712de7013a1f" => :mavericks
   end
 
   option "with-java", "Build the gcj compiler"
