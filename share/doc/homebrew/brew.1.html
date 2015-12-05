@@ -168,7 +168,7 @@ Display information about <var>formula</var>.</p></li>
 Open a browser to the GitHub History page for formula <var>formula</var>.</p>
 
 <p>To view formula history locally: <code>brew log -p &lt;formula></code>.</p></li>
-<li><p><code>info --json=</code><var>version</var><code>(</code>--all<code>|</code>--installed<code>|</code><var>formulae</var>):
+<li><p><code>info --json=</code><var>version</var> (<code>--all</code>|<code>--installed</code>|<var>formulae</var>):
 Print a JSON representation of <var>formulae</var>. Currently the only accepted value
 for <var>version</var> is <code>v1</code>.</p>
 
@@ -251,10 +251,10 @@ for easier access.</p>
 
 <p>If provided, <code>--local</code> will move them into the user's <code>~/Applications</code>
 directory instead of the system directory. It may need to be created, first.</p></li>
-<li><p><code>ls</code>, <code>list</code> [<code>--full-name</code>]
+<li><p><code>ls</code>, <code>list</code> [<code>--full-name</code>]:
 List all installed formulae. If <code>--full-name</code> is passed, print formulae with
 full-qualified names.</p></li>
-<li><p><code>ls</code>, <code>list --unbrewed</code>
+<li><p><code>ls</code>, <code>list --unbrewed</code>:
 List all files in the Homebrew prefix not installed by Homebrew.</p></li>
 <li><p><code>ls</code>, <code>list</code> [<code>--versions</code> [<code>--multiple</code>]] [<code>--pinned</code>] [<var>formulae</var>]:
 List the installed files for <var>formulae</var>. Combined with <code>--verbose</code>, recursively
@@ -289,7 +289,7 @@ spaces.</p>
 <p>If <code>--all</code> is passed, show options for all formulae.</p>
 
 <p>If <code>--installed</code> is passed, show options for all installed formulae.</p></li>
-<li><p><code>outdated</code> [<code>--quiet</code> | <code>--verbose</code> | <code>--json=v1</code> ]:
+<li><p><code>outdated</code> [<code>--quiet</code>|<code>--verbose</code>|<code>--json=v1</code>]:
 Show formulae that have an updated version available.</p>
 
 <p>By default, version information is displayed in interactive shells, and
@@ -338,9 +338,9 @@ in three ways.</p>
 
 <ul>
 <li><p><code>tap</code> without arguments displays existing taps.</p></li>
-<li><p><code>tap</code> <var>user</var><code>/</code><var>repo</var><code>taps a formula repository from GitHub using HTTPS.
+<li><p><code>tap</code> <var>user</var><code>/</code><var>repo</var> taps a formula repository from GitHub using HTTPS.
 Since so many taps are hosted on GitHub, this command is a shortcut for
-</code>tap <var>user</var>/<var>repo</var> https://github.com/<var>user</var>/homebrew-<var>repo</var>`.</p></li>
+<code>tap &lt;user>/&lt;repo> https://github.com/&lt;user>/homebrew-&lt;repo></code>.</p></li>
 <li><p><code>tap</code> <var>user</var><code>/</code><var>repo</var> <var>URL</var> taps a formula repository from anywhere, using
 any transport protocol that <code>git</code> handles. The one-argument form of <code>tap</code>
 simplifies but also limits.  This two-argument command makes no

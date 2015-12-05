@@ -189,7 +189,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
 
     To view formula history locally: `brew log -p <formula>`.
 
-  * `info --json=`<version>` (`--all`|`--installed`|`<formulae>):
+  * `info --json=`<version> (`--all`|`--installed`|<formulae>):
     Print a JSON representation of <formulae>. Currently the only accepted value
     for <version> is `v1`.
 
@@ -279,11 +279,11 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     If provided, `--local` will move them into the user's `~/Applications`
     directory instead of the system directory. It may need to be created, first.
 
-  * `ls`, `list` [`--full-name`]
+  * `ls`, `list` [`--full-name`]:
     List all installed formulae. If `--full-name` is passed, print formulae with
     full-qualified names.
 
-  * `ls`, `list --unbrewed`
+  * `ls`, `list --unbrewed`:
     List all files in the Homebrew prefix not installed by Homebrew.
 
   * `ls`, `list` [`--versions` [`--multiple`]] [`--pinned`] [<formulae>]:
@@ -324,7 +324,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
 
     If `--installed` is passed, show options for all installed formulae.
 
-  * `outdated` [`--quiet` | `--verbose` | `--json=v1` ]:
+  * `outdated` [`--quiet`|`--verbose`|`--json=v1`]:
     Show formulae that have an updated version available.
 
     By default, version information is displayed in interactive shells, and
@@ -383,7 +383,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
 
     + `tap` without arguments displays existing taps.
 
-    + `tap` <user>`/`<repo>` taps a formula repository from GitHub using HTTPS.
+    + `tap` <user>`/`<repo> taps a formula repository from GitHub using HTTPS.
       Since so many taps are hosted on GitHub, this command is a shortcut for
       `tap <user>/<repo> https://github.com/<user>/homebrew-<repo>`.
 
