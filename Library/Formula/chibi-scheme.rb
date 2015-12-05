@@ -20,7 +20,7 @@ class ChibiScheme < Formula
     ENV.deparallelize
 
     # "make" and "make install" must be done separately
-    system "make"
+    system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
   end
 
