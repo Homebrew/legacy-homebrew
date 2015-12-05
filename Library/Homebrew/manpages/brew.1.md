@@ -189,7 +189,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
 
     To view formula history locally: `brew log -p <formula>`.
 
-  * `info --json=`<version>` (`--all`|`--installed`|<formulae>):
+  * `info --json=`<version>` (`--all`|`--installed`|`<formulae>):
     Print a JSON representation of <formulae>. Currently the only accepted value
     for <version> is `v1`.
 
