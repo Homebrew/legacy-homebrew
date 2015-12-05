@@ -17,11 +17,11 @@ class MupdfTools < Formula
 
   def install
     system "make", "install",
-           "build=release",
-           "verbose=yes",
-           "HAVE_X11=no",
-           "CC=#{ENV.cc}",
-           "prefix=#{prefix}"
+                   "build=release",
+                   "verbose=yes",
+                   "HAVE_X11=no",
+                   "CC=#{ENV.cc}",
+                   "prefix=#{prefix}"
   end
 
   test do
