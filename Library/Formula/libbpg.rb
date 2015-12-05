@@ -31,7 +31,5 @@ class Libbpg < Formula
 
   test do
     system "#{bin}/bpgenc", test_fixtures("test.png")
-    # Unable to test 1x1 jpg
-    #system "#{bin}/bpgenc", test_fixtures("test.jpg")
   end
 end
