@@ -10,9 +10,8 @@ class Eg < Formula
   def install
     inreplace "eglib.c", "/usr/share/", "#{HOMEBREW_PREFIX}/share/"
     system "make"
-    system "make", "install"
-    # bin.install "eg"
-    # man1.install "eg.1"
+    bin.install "eg"
+    man1.install "eg.1"
     # TODO: copy 'default-guide/eg.ng' to '#{HOMEBREW_PREFIX}/share/norton-guides/'
   end
 
