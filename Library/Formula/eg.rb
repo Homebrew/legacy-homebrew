@@ -8,15 +8,12 @@ class Eg < Formula
   depends_on "s-lang"
 
   stable do
-    # clang complains about escaped newlines used in the source
-    # to form a multiline string. The patch converts said string
-    # to a more common C syntax.
+    # Fix unescaped EOLs in static string
     patch do
       url "https://github.com/davep/eg/commit/2c1463.patch"
       sha256 "729c38c9f8c76580437d6ffe8bd91deaaebff9e4aa2684cfaf87edfa694fa4fc"
     end
-    # Change S-Lang header references to the canonical way, otherwise
-    # they are not found in the Homebrew environment.
+    # Let environment find the slang header
     patch do
       url "https://github.com/davep/eg/commit/a22d276.patch"
       sha256 "262bea4186cabcedd154063bee08f86f4075545fd58c255ab3cfab8e09ff9d2a"
