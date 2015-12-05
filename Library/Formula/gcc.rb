@@ -21,18 +21,11 @@ class Gcc < Formula
 
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.2.0/gcc-5.2.0.tar.bz2"
-  sha256 "5f835b04b5f7dd4f4d2dc96190ec1621b8d89f2dc6f638f9f8bc1b1014ba8cad"
-
+  url "http://ftpmirror.gnu.org/gcc/gcc-5.3.0/gcc-5.3.0.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.3.0/gcc-5.3.0.tar.bz2"
+  sha256 "b84f5592e9218b73dbae612b5253035a7b34a9a1f7688d2e1bfaaf7267d5c4db"
+ 
   head "svn://gcc.gnu.org/svn/gcc/trunk"
-
-  bottle do
-    revision 4
-    sha256 "b90aaf44d772f0ad864e17f8454ef67e280bf5d5763ca7f74cd20890e4165470" => :el_capitan
-    sha256 "4c829be9f06a6cc0b782a9e2ad1f1a7e6d511f40fc940805dde6ed97ef5062bc" => :yosemite
-    sha256 "c7ae5ce395cd50facbe15d001fee6736334da7ca433c9d6178fd261875446090" => :mavericks
-  end
 
   option "with-java", "Build the gcj compiler"
   option "with-all-languages", "Enable all compilers and languages, except Ada"
