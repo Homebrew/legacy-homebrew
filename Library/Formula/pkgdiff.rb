@@ -1,8 +1,8 @@
 class Pkgdiff < Formula
   desc "Tool for analyzing changes in software packages (e.g. RPM, DEB, TAR.GZ)"
   homepage "https://lvc.github.io/pkgdiff/"
-  url "https://github.com/lvc/pkgdiff/archive/1.6.3.tar.gz"
-  sha256 "80d5bdec415db2627c3da2f086a4172791a667a0bbb33743a0c84a49b8ce3332"
+  url "https://github.com/lvc/pkgdiff/archive/1.7.0.tar.gz"
+  sha256 "4ec03bd6b02a1d378e29e88658915c8dfe8f839bfa08263f4ef54cf10d4528ea"
 
   bottle do
     cellar :any
