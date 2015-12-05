@@ -1,9 +1,8 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.6.3.tar.xz"
-  mirror "http://http.debian.net/debian/pool/main/k/knot/knot_1.6.3.orig.tar.xz"
-  sha256 "48da608e29c2c1ef5937eb692f8ef0462ebb50fa7d128478a23e0a9788533e86"
+  url "https://secure.nic.cz/files/knot-dns/knot-1.6.6.tar.xz"
+  sha256 "6ccae42b0878201e2113a048317bf518acad70fe436b04e24da32703d27edf03"
 
   head do
     url "https://gitlab.labs.nic.cz/labs/knot.git"
