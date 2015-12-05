@@ -601,6 +601,11 @@ can take several different forms:
     *Default:* `~/Library/Caches/Homebrew` if it exists; otherwise,
     `/Library/Caches/Homebrew`.
 
+  * HOMEBREW\_CC:
+    Directs Homebrew to use a specific compiler for building from source. The
+    allowed values are the same as for the --cc option to `install`, described
+    above, like `gcc-5`.
+
   * HOMEBREW\_CURL\_VERBOSE:
     If set, Homebrew will pass `--verbose` when invoking `curl`(1).
 

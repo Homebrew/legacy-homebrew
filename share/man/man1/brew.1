@@ -565,6 +565,10 @@ If set, instructs Homebrew to use the given directory as the download cache\.
 \fIDefault:\fR \fB~/Library/Caches/Homebrew\fR if it exists; otherwise, \fB/Library/Caches/Homebrew\fR\.
 .
 .TP
+HOMEBREW_CC
+Directs Homebrew to use a specific compiler for building from source\. The allowed values are the same as for the \-\-cc option to \fBinstall\fR, described above, like \fBgcc\-5\fR\.
+.
+.TP
 HOMEBREW_CURL_VERBOSE
 If set, Homebrew will pass \fB\-\-verbose\fR when invoking \fBcurl\fR(1)\.
 .
