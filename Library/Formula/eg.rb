@@ -5,8 +5,6 @@ class Eg < Formula
   sha256 "e985b2abd160c5f65bea661de800f0a83f0bfbaca54e5cbdc2e738dfbbdb164e"
   head "https://github.com/davep/eg.git"
 
-  depends_on "s-lang"
-
   stable do
     # Fix unescaped EOLs in static string
     patch do
@@ -22,7 +20,14 @@ class Eg < Formula
       url "https://github.com/davep/eg/commit/f724fd6.patch"
       sha256 "6b9d6bbd1575a4d3dfaa3b87bad833e349a7a1c1d4759d4866cda364b8ad3c43"
     end
+    # Remove rogue object file
+    patch do
+      url "https://github.com/davep/eg/commit/b3d2864.patch"
+      sha256 "fa26eacbae087a6d09e4cf0b09f00bc2c1e45f764408cd964b48291ec67226fb"
+    end
   end
+
+  depends_on "s-lang"
 
   def install
     inreplace "eglib.c", "/usr/share/", "#{HOMEBREW_PREFIX}/share/"
