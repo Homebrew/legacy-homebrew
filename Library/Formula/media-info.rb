@@ -28,6 +28,8 @@ class MediaInfo < Formula
       args = ["--disable-debug",
               "--disable-dependency-tracking",
               "--with-libcurl",
+              "--enable-static",
+              "--enable-shared",
               "--prefix=#{prefix}"]
       system "./configure", *args
       system "make", "install"
