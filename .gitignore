@@ -24,3 +24,5 @@
 /Library/PinnedKegs
 /Library/Taps
 /Library/PinnedTaps
+# RubyMine project files:
+.idea
