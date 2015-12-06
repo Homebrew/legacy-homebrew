@@ -4,8 +4,18 @@ class Plan9port < Formula
   url "https://plan9port.googlecode.com/files/plan9port-20140306.tgz"
   sha256 "cbb826cde693abdaa2051c49e7ebf75119bf2a4791fe3b3229f1ac36a408eaeb"
 
+  depends_on :x11 => :optional
+
   def install
     ENV["PLAN9_TARGET"] = libexec
+
+    if build.with? "x11"
+      # Make OS X system fonts available to Plan 9
+      File.open("LOCAL.config", "a") do |f|
+        f.puts "FONTSRV=fontsrv"
+      end
+    end
+
     system "./INSTALL"
 
     libexec.install Dir["*"]
