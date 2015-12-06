@@ -158,6 +158,6 @@ class Cayley < Formula
 
   test do
     result = pipe_output("#{bin}/cayley version")
-    assert result.include?("Cayley snapshot")
+    assert_match result, "Cayley snapshot\n"
   end
 end
