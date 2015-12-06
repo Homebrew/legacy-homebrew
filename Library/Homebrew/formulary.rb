@@ -262,14 +262,6 @@ class Formulary
       return FromUrlLoader.new(ref)
     when Pathname::BOTTLE_EXTNAME_RX
       return BottleLoader.new(ref)
-    when HOMEBREW_CORE_FORMULA_REGEX
-      name = $1
-      formula_with_that_name = core_path(name)
-      if (newname = FORMULA_RENAMES[name]) && !formula_with_that_name.file?
-        return FormulaLoader.new(newname, core_path(newname))
-      else
-        return FormulaLoader.new(name, formula_with_that_name)
-      end
     when HOMEBREW_TAP_FORMULA_REGEX
       return TapLoader.new(ref)
     end
