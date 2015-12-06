@@ -171,10 +171,16 @@ class Tap
     @formula_names ||= formula_files.map { |f| "#{name}/#{f.basename(".rb")}" }
   end
 
+  # path to the directory of all alias files for this {Tap}.
+  # @private
+  def alias_dir
+    path/"Aliases"
+  end
+
   # an array of all alias files of this {Tap}.
   # @private
   def alias_files
-    @alias_files ||= Pathname.glob("#{path}/Aliases/*").select(&:file?)
+    @alias_files ||= Pathname.glob("#{alias_dir}/*").select(&:file?)
   end
 
   # an array of all aliases of this {Tap}.
