@@ -32,6 +32,10 @@ class Rethinkdb < Formula
     system "make", "install-osx"
 
     (var/"log/rethinkdb").mkpath
+
+    inreplace "packaging/assets/config/default.conf.sample",
+              /^# directory=.*/, "directory=#{var}/rethinkdb"
+    etc.install "packaging/assets/config/default.conf.sample" => "rethinkdb.conf"
   end
 
   def plist; <<-EOS.undent
@@ -44,8 +48,8 @@ class Rethinkdb < Formula
       <key>ProgramArguments</key>
       <array>
           <string>#{opt_bin}/rethinkdb</string>
-          <string>-d</string>
-          <string>#{var}/rethinkdb</string>
+          <string>--config-file</string>
+          <string>#{etc}/rethinkdb.conf</string>
       </array>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>
