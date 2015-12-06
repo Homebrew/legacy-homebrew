@@ -152,10 +152,15 @@ class Tap
     remote.casecmp("https://github.com/#{user}/homebrew-#{repo}") != 0
   end
 
+  # path to the directory of all {Formula} files for this {Tap}.
+  def formula_dir
+    @formula_dir ||= [path/"Formula", path/"HomebrewFormula", path].detect(&:directory?)
+  end
+
   # an array of all {Formula} files of this {Tap}.
   def formula_files
-    @formula_files ||= if dir = [path/"Formula", path/"HomebrewFormula", path].detect(&:directory?)
-      dir.children.select { |p| p.extname == ".rb" }
+    @formula_files ||= if formula_dir
+      formula_dir.children.select { |p| p.extname == ".rb" }
     else
       []
     end
