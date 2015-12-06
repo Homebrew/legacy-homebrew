@@ -11,6 +11,8 @@ class Dxpy < Formula
     sha256 "57632398add68a99404793b6e76f7868fdfeb03ba3c4d30e49d1401aad24ed02" => :mavericks
   end
 
+  depends_on :python if MacOS.version <= :snow_leopard
+
   resource "futures" do
     url "https://pypi.python.org/packages/source/f/futures/futures-3.0.3.tar.gz"
     sha256 "2fe2342bb4fe8b8e217f0d21b5921cbe5408bf966d9f92025e707e881b198bed"
