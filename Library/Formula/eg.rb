@@ -8,11 +8,11 @@ class Eg < Formula
   depends_on "s-lang"
 
   def install
-    inreplace "eglib.c", "/usr/share/", "#{HOMEBREW_PREFIX}/share/"
+    inreplace "eglib.c", "/usr/share/", "#{etc}/share/"
     bin.mkpath
     man1.mkpath
     system "make"
-    system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man}", "NGDIR=#{HOMEBREW_PREFIX}/norton-guides"
+    system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man}", "NGDIR=#{etc}/norton-guides"
   end
 
   test do
