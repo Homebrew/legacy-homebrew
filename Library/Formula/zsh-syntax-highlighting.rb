@@ -1,14 +1,12 @@
 class ZshSyntaxHighlighting < Formula
   desc "Fish shell like syntax highlighting for zsh"
   homepage "https://github.com/zsh-users/zsh-syntax-highlighting"
-  url "https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.2.1.tar.gz"
-  sha256 "3cdf47ee613ff748230e9666c0122eca22dc05352f266fe640019c982f3ef6db"
+  url "https://github.com/zsh-users/zsh-syntax-highlighting/archive/0.4.0.tar.gz"
+  sha256 "e38581310479646e8f4df7e572489b28b361c8332b186207685efbd90b3016f1"
   head "https://github.com/zsh-users/zsh-syntax-highlighting.git"
 
-  bottle :unneeded
-
   def install
-    (share/"zsh-syntax-highlighting").install Dir["*"]
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   def caveats
@@ -29,6 +27,7 @@ class ZshSyntaxHighlighting < Formula
   end
 
   test do
-    system "#{share}/zsh-syntax-highlighting/tests/test-highlighting.zsh", "main"
+    assert_match "#{version}\n",
+      shell_output("zsh -c '. #{share}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh && echo $ZSH_HIGHLIGHT_VERSION'")
   end
 end
