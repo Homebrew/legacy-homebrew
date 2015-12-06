@@ -23,7 +23,8 @@ class Logstash < Formula
       Dir.chdir "tar"
     end
 
-    inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$0`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
+    sub = if build.head? then "SOURCEPATH" else "0" end
+    inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$#{sub}`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
     inreplace %w[bin/logstash.lib.sh], /^LOGSTASH_HOME=.*$/, "LOGSTASH_HOME=#{libexec}"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/logstash"
