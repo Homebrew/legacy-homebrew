@@ -5,7 +5,7 @@ class SwaggerCodegen < Formula
   sha256 "b4965158fb8abbebdfcaab2fdc0c5556001c587a526279d44ea9878f7ef9ef4c"
   head "https://github.com/swagger-api/swagger-codegen.git"
 
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
   depends_on "maven" => :build
 
   def install
