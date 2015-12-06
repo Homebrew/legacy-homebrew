@@ -15,7 +15,7 @@ class Eg < Formula
   depends_on "s-lang"
 
   def install
-    inreplace "eglib.c", "/usr/share/", "#{etc}/share/"
+    inreplace "eglib.c", "/usr/share/", "#{etc}/"
     bin.mkpath
     man1.mkpath
     system "make"
