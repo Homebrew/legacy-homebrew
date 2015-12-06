@@ -36,9 +36,16 @@ class Fish < Formula
       chsh -s #{HOMEBREW_PREFIX}/bin/fish
     to make fish your default shell.
 
-    If you are upgrading from an older version of fish, you should now run:
+    And optionally:
+      fish_config
+    to review configuration.
+
+    If you are upgrading from an older version of fish, you should:
+
+    1. Terminate the outdated fish daemon:
       killall fishd
-    to terminate the outdated fish daemon.
+    2. Update tab completions:
+      fish_update_completions
     EOS
   end
 
