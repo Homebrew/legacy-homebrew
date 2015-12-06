@@ -3,47 +3,55 @@ require "pathname"
 # Return actual name of some formula at commit commit
 
 class FormulaResolver
-  class RenamesSheet
-    attr_reader :name
+  attr_reader :sheets
+  @sheets = {}
+
+  class Entry
+    attr_reader :name, :commit
+
+    def initialize(name, commit)
+      @name = name
+      @commit = commit
+    end
+
+    # TODO add smart comparator and add exception handling
+    def <=> (entry)
+      commit <=> entry.commit
+    end
+
+    # TODO what if str has bad format? can check using regex
+    def self.parse_from_string(str)
+      Entry.new *str.chomp.split(',').each { |e| e.lstrip! }
+    end
+  end
+
+  class Sheet
     attr_reader :entries
-    sheets = {}
+    attr_reader :last_sarched_index
 
     def initialize(name)
       @name = name
       @entries = []
       File.open(HOMEBREW_LIBRARY/"Homebrew/Renames/#{name}").each do |line|
-        entries << line.split(',').each { |e| e.lstrip!; e.chomp! }
+        entries << Entry.new(*line.chomp.split(',').map(&:lstrip))
       end
     end
-  end
 
-  def self.get_sheet(name)
-    entries = []
-    File.open(HOMEBREW_LIBRARY/"Homebrew/Renames/#{name}").each do |line|
-      entries << line.split(',').each { |e| e.lstrip!; e.chomp! }
-    end
-    entries
-  end
-
-  def self.compare(commit_a, commit_b)
-    # TODO get rid of comparator or rewrite using git
-    commit_a < commit_b
-  end
-
-  def self.search_after(name, commit)
-    sheet = sheets.fetch(name, get_sheet(name))
-    # binary search here
-    # TODO replace with library implementation
-  end
-
-  def self.get_next_name(name, commit)
-
-  end
-
-  def self.resolve(name, commit)
-    while name
-      name, commit = search_after(name, commit)
+    def entry_after(other)
+      # TODO change linear search to binary
+      entries.detect { |e| e > other }
     end
 
+    def name_after(other)
+      entry_after(other).name
+    end
+  end
+
+  def resolve_name(name, commit)
+    result_entry = Entry.new(name, commit)
+    while next_entry = sheets[result_entry.name].entry_after(result_entry)
+      result_entry = next_entry
+    end
+    result_entry.name
   end
 end
