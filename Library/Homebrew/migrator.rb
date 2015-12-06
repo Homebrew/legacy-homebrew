@@ -31,7 +31,7 @@ class Migrator
       msg = if tap == "Homebrew/homebrew"
         "Please try to use #{formula.oldname} to refer the formula.\n"
       elsif tap
-        "Please try to use fully-qualified #{Tap.fetch(*tap.split("/"))}/#{formula.oldname} to refer the formula.\n"
+        "Please try to use fully-qualified #{tap}/#{formula.oldname} to refer the formula.\n"
       end
 
       super <<-EOS.undent
@@ -117,7 +117,7 @@ class Migrator
   # Fix INSTALL_RECEIPTS for tap-migrated formula.
   def fix_tabs
     old_tabs.each do |tab|
-      tab.source["tap"] = formula.tap
+      tab.tap = formula.tap
       tab.write
     end
   end
@@ -132,10 +132,10 @@ class Migrator
     # newname's tap is the same as tap to which oldname migrated, then we
     # can perform migrations and the taps for oldname and newname are the same.
     elsif TAP_MIGRATIONS && (rec = TAP_MIGRATIONS[formula.oldname]) \
-        && rec == formula.tap.sub("homebrew-", "") && old_tap == "Homebrew/homebrew"
+        && formula.tap == rec && old_tap == "Homebrew/homebrew"
       fix_tabs
       true
-    elsif formula.tap
+    else
       false
     end
   end
