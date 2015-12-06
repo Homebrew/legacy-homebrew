@@ -11,7 +11,8 @@ class Eg < Formula
     inreplace "eglib.c", "/usr/share/", "#{HOMEBREW_PREFIX}/share/"
     bin.mkpath
     man1.mkpath
-    system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man}", "NGDIR=#{share}/norton-guides"
+    system "make"
+    system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man}", "NGDIR=#{HOMEBREW_PREFIX}/norton-guides"
   end
 
   test do
