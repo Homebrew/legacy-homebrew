@@ -7,6 +7,8 @@ class FormulaResolver
   @sheets = {}
 
   class Entry
+    include Comparable
+
     attr_reader :name, :commit
 
     def initialize(name, commit)
