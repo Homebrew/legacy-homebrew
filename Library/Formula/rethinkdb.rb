@@ -35,8 +35,7 @@ class Rethinkdb < Formula
 
     inreplace "packaging/assets/config/default.conf.sample",
               /^# directory=.*/, "directory=#{var}/rethinkdb"
-    cp "packaging/assets/config/default.conf.sample", "rethinkdb.conf"
-    etc.install "rethinkdb.conf"
+    etc.install "packaging/assets/config/default.conf.sample" => "rethinkdb.conf"
   end
 
   def plist; <<-EOS.undent
