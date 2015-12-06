@@ -68,6 +68,11 @@ class Formula
   # e.g. `/usr/local/Library/Formula/this-formula.rb`
   attr_reader :path
 
+  # The {Tap} instance associated with this {Formula}.
+  # If it's <code>nil</code>, then this formula is loaded from path or URL.
+  # @private
+  attr_reader :tap
+
   # The stable (and default) {SoftwareSpec} for this {Formula}
   # This contains all the attributes (e.g. URL, checksum) that apply to the
   # stable version of this formula.
@@ -133,9 +138,14 @@ class Formula
     @path = path
     @revision = self.class.revision || 0
 
-    if path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      @full_name = "#{Tap.fetch($1, $2)}/#{name}"
+    if path == Formulary.core_path(name)
+      @tap = CoreFormulaRepository.instance
+      @full_name = name
+    elsif path.to_s =~ HOMEBREW_TAP_PATH_REGEX
+      @tap = Tap.fetch($1, $2)
+      @full_name = "#{@tap}/#{name}"
     else
+      @tap = nil
       @full_name = name
     end
 
@@ -290,13 +300,8 @@ class Formula
 
   # An old name for the formula
   def oldname
-    @oldname ||= if core_formula?
-      if FORMULA_RENAMES && FORMULA_RENAMES.value?(name)
-        FORMULA_RENAMES.to_a.rassoc(name).first
-      end
-    elsif tap?
-      user, repo = tap.split("/")
-      formula_renames = Tap.fetch(user, repo).formula_renames
+    @oldname ||= if tap
+      formula_renames = tap.formula_renames
       if formula_renames.value?(name)
         formula_renames.to_a.rassoc(name).first
       end
@@ -305,11 +310,8 @@ class Formula
 
   # All of aliases for the formula
   def aliases
-    @aliases ||= if core_formula?
-      Formula.core_alias_reverse_table[name] || []
-    elsif tap?
-      user, repo = tap.split("/")
-      Tap.fetch(user, repo).alias_reverse_table[full_name] || []
+    @aliases ||= if tap
+      tap.alias_reverse_table[full_name] || []
     else
       []
     end
@@ -873,8 +875,8 @@ class Formula
     rescue NotAKegError, Errno::ENOENT
       # file doesn't belong to any keg.
     else
-      tap = Tab.for_keg(keg).tap
-      return false if tap.nil? # this keg doesn't below to any core/tap formula, most likely coming from a DIY install.
+      tab_tap = Tab.for_keg(keg).tap
+      return false if tab_tap.nil? # this keg doesn't below to any core/tap formula, most likely coming from a DIY install.
       begin
         Formulary.factory(keg.name)
       rescue FormulaUnavailableError
@@ -1173,18 +1175,16 @@ class Formula
     Formulary.factory(name)
   end
 
+  # True if this formula is provided by Homebrew itself
   # @private
-  def tap?
-    HOMEBREW_TAP_DIR_REGEX === path
+  def core_formula?
+    tap && tap.core_formula_repository?
   end
 
+  # True if this formula is provided by external Tap
   # @private
-  def tap
-    if path.to_s =~ HOMEBREW_TAP_DIR_REGEX
-      "#{$1}/#{$2}"
-    elsif core_formula?
-      "Homebrew/homebrew"
-    end
+  def tap?
+    tap && !tap.core_formula_repository?
   end
 
   # @private
@@ -1193,12 +1193,6 @@ class Formula
       verb = options[:verb] || "Installing"
       ohai "#{verb} #{name} from #{tap}"
     end
-  end
-
-  # True if this formula is provided by Homebrew itself
-  # @private
-  def core_formula?
-    path == Formulary.core_path(name)
   end
 
   # @private
