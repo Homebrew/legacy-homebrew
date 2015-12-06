@@ -14,9 +14,9 @@ class Qriollo < Formula
   end
 
   def caveats
-  <<-EOS.undent
-    The standard module "Chamuyo.q" has been placed in #{lib/"chamuyo"}.
-  EOS
+    <<-EOS.undent
+      The standard module "Chamuyo.q" has been placed in #{lib/"chamuyo"}.
+    EOS
   end
 
   test do
