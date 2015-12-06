@@ -122,6 +122,7 @@ TAP_MIGRATIONS = {
   "jsl" => "homebrew/binary",
   "jstalk" => "homebrew/boneyard",
   "justniffer" => "homebrew/boneyard",
+  "kbtin" => "homebrew/boneyard",
   "kerl" => "homebrew/head-only",
   "kernagic" => "homebrew/x11",
   "kismet" => "homebrew/boneyard",
