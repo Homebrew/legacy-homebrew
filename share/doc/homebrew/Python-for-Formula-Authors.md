@@ -166,7 +166,7 @@ Formulæ that declare a dependency on `:python` will always be bottled against H
 
 Libraries may be installed to `libexec` and added to `sys.path` by writing a .pth file (named like "homebrew-foo.pth") to the `prefix` site-packages. This simplifies the ensuing drama if pip is accidentally used to upgrade a Homebrew-installed package and prevents the accumulation of stale .pyc files in Homebrew's site-packages.
 
-Most formulas presently just install to `prefix`.
+Most formulae presently just install to `prefix`.
 
 ## Dependencies
 

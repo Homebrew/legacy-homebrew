@@ -592,7 +592,9 @@ can take several different forms:
 
   * `HOMEBREW_BUILD_FROM_SOURCE`:
     If set, instructs Homebrew to compile from source even when a formula
-    provides a bottle.
+    provides a bottle. This environment variable is intended for use by
+    Homebrew developers. Please do not file issues if you encounter errors when
+    using this environment variable.
 
   * `HOMEBREW_CACHE`:
     If set, instructs Homebrew to use the given directory as the download cache.
@@ -715,10 +717,10 @@ Homebrew Documentation: <https://github.com/Homebrew/homebrew/blob/master/share/
 
 ## AUTHORS
 
-Homebrew's current maintainers are Misty De Meo, Andrew Janke, Xu Cheng, Mike McQuaid, Baptiste Fontaine, Brett Koonce, Dominyk Tiller, Tim Smith and Alex Dunn.
+Homebrew's current maintainers are Misty De Meo, Andrew Janke, Xu Cheng, Mike McQuaid, Baptiste Fontaine, Brett Koonce, Martin Afanasjew, Dominyk Tiller, Tim Smith and Alex Dunn.
 
-Homebrew was originally created by Max Howell.
+Former maintainers with significant contributions include Jack Nagel, Adam Vandenberg and Homebrew's creator: Max Howell.
 
 ## BUGS
 
-See Issues on GitHub: <https://github.com/Homebrew/homebrew/issues>
+See our issues on GitHub: <https://github.com/Homebrew/homebrew/issues>
