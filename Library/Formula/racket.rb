@@ -58,16 +58,17 @@ class Racket < Formula
     assert_match /Hello Homebrew/, output
 
     # show that the config file isn't malformed
-    output = `'#{bin}/raco' pkg config`
+    output = shell_output("'#{bin}/raco' pkg config")
     assert $?.success?
-    assert_match Regexp.new("^name:
-  #{version}
-catalogs:
-  http://download.racket-lang.org/releases/#{version}/catalog/
-  http://pkgs.racket-lang.org
-  http://planet-compats.racket-lang.org
-default-scope:
-  installation
-"), output
+    assert_match Regexp.new(<<-EOS.undent), output
+      ^name:
+        #{version}
+      catalogs:
+        http://download.racket-lang.org/releases/#{version}/catalog/
+        http://pkgs.racket-lang.org
+        http://planet-compats.racket-lang.org
+      default-scope:
+        installation
+    EOS
   end
 end
