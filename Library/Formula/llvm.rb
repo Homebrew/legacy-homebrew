@@ -30,9 +30,19 @@ class Llvm < Formula
       sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
     end
 
+    resource "extra-tools" do
+      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
+      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+    end
+
     resource "libcxx" do
       url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
       sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+    end
+
+    resource "libcxxabi" do
+      url "http://llvm.org/releases/3.6.2/libcxxabi-3.6.2.src.tar.xz"
+      sha256 "6fb48ce5a514686b9b75e73e59869f782ed374a86d71be8423372e4b3329b09b"
     end
 
     resource "lld" do
@@ -45,9 +55,14 @@ class Llvm < Formula
       sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
     end
 
-    resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
-      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+    resource "polly" do
+      url "http://llvm.org/releases/3.6.2/polly-3.6.2.src.tar.xz"
+      sha256 "f2a956730b76212f22a1c10f35f195795e4d027ad28c226f97ddb8c0fd16bcbc"
+    end
+
+    resource "sanitizers" do
+      url "http://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz"
+      sha256 "0f2ff37d80a64575fecd8cf0d5c50f7ac1f837ddf700d1855412bb7547431d87"
     end
   end
 
@@ -66,8 +81,16 @@ class Llvm < Formula
       url "http://llvm.org/git/clang.git"
     end
 
+    resource "extra-tools" do
+      url "http://llvm.org/git/clang-tools-extra.git"
+    end
+
     resource "libcxx" do
       url "http://llvm.org/git/libcxx.git"
+    end
+
+    resource "libcxxabi" do
+      url "http://llvm.org/git/libcxxabi.git"
     end
 
     resource "lld" do
@@ -78,17 +101,25 @@ class Llvm < Formula
       url "http://llvm.org/git/lldb.git"
     end
 
-    resource "clang-tools-extra" do
-      url "http://llvm.org/git/clang-tools-extra.git"
+    resource "polly" do
+      url "http://llvm.org/git/polly.git"
+    end
+
+    resource "sanitizers" do
+      url "http://llvm.org/git/compiler-rt.git"
     end
   end
 
   option :universal
-  option "with-clang", "Build Clang support library"
+  option "with-clang", "Build the Clang compiler and support libraries"
+  option "with-extra-tools", "Build extra tools for Clang"
+  option "with-libcxx", "Build the libc++ standard library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
+  option "with-polly", "Build with the experimental Polly optimizer"
   option "with-python", "Build Python bindings against Homebrew Python"
+  option "with-sanitizers", "Enable Clang code sanitizers"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
@@ -106,6 +137,10 @@ class Llvm < Formula
     depends_on CodesignRequirement
   end
 
+  if build.with? "polly"
+    depends_on "isl"
+  end
+
   keg_only :provided_by_osx
 
   # Apple's libstdc++ is too old to build LLVM
@@ -116,18 +151,74 @@ class Llvm < Formula
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
 
-    if build.with?("lldb") && build.without?("clang")
-      raise "Building LLDB needs Clang support library."
-    end
-
     if build.with? "clang"
-      (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"tools/clang").install resource("clang")
-      (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
     end
 
-    (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
-    (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
+    if build.with? "extra-tools"
+      if build.with? "clang"
+        (buildpath/"tools/clang/tools/extra").install resource("extra-tools")
+      else
+        odie "clang's extra tools must be built with clang"
+      end
+    end
+
+    if build.with? "libcxx"
+      (buildpath/"projects/libcxx").install resource("libcxx")
+      (buildpath/"projects/libcxxabi").install resource("libcxxabi")
+    end
+
+    if build.with? "lld"
+      (buildpath/"tools/lld").install resource("lld")
+    end
+
+    if build.with? "lldb"
+      if build.with? "clang"
+        (buildpath/"tools/lldb").install resource("lldb")
+
+        # Building lldb requires a code signing certificate.
+        # The instructions provided by llvm creates this certificate in the
+        # user's login keychain. Unfortunately, the login keychain is not in
+        # the search path in a superenv build. The following three lines add
+        # the login keychain to ~/Library/Preferences/com.apple.security.plist,
+        # which adds it to the superenv keychain search path.
+        mkdir_p "#{ENV["HOME"]}/Library/Preferences"
+        username = ENV["USER"]
+        system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
+      else
+        odie "lldb must be built along with clang"
+      end
+    end
+
+    if build.with? "polly"
+      if build.with? "clang"
+        (buildpath/"tools/polly").install resource("polly")
+      else
+        odie "polly must be built along with clang"
+      end
+    end
+
+    if build.with? "sanitizers"
+      if build.with? "clang"
+        (buildpath/"projects/compiler-rt").install resource("sanitizers")
+
+        # compiler-rt has some iOS simulator features that require i386 symbols
+        # I'm assuming the rest of clang needs support too for 32-bit compilation
+        # to work correctly, but if not, perhaps universal binaries could be
+        # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
+        # can almost be treated as an entirely different build from llvm.
+        ENV.permit_arch_flags
+
+      else
+        odie "sanitizers must be built along with clang"
+      end
+    end
+
+    if build.with?("tests") &&
+       build.with?("sanitizers") &&
+       build.without?("libcxx")
+      odie "Building and running sanitizer tests requires libc++"
+    end
 
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
@@ -142,8 +233,11 @@ class Llvm < Formula
     end
 
     if build.universal?
-      ENV.permit_arch_flags
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
+
+    if build.with?("polly")
+      args << "-DLINK_POLLY_INTO_TOOLS:Bool=ON"
     end
 
     mktemp do
@@ -153,9 +247,6 @@ class Llvm < Formula
     end
 
     if build.with? "clang"
-      system "make", "-C", "projects/libcxx", "install",
-        "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
-
       (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
       if build.head?
         inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
