@@ -16,10 +16,25 @@ class Tap
     CACHE.clear
   end
 
-  def self.fetch(user, repo)
+  def self.fetch(*args)
+    case args.length
+    when 1
+      user, repo = args.first.split("/", 2)
+    when 2
+      user = args[0]
+      repo = args[1]
+    end
+
+    raise "Invalid tap name" unless user && repo
+
     # we special case homebrew so users don't have to shift in a terminal
     user = "Homebrew" if user == "homebrew"
     repo = repo.strip_prefix "homebrew-"
+
+    if user == "Homebrew" && repo == "homebrew"
+      return CoreFormulaRepository.instance
+    end
+
     cache_key = "#{user}/#{repo}".downcase
     CACHE.fetch(cache_key) { |key| CACHE[key] = Tap.new(user, repo) }
   end
@@ -300,5 +315,79 @@ class Tap
 
   def alias_file_to_name(file)
     "#{name}/#{file.basename}"
+  end
+end
+
+# A specialized {Tap} class to mimic the core formula file system, which shares many
+# similarities with normal {Tap}.
+# TODO Separate core formulae with core codes. See discussion below for future plan:
+#      https://github.com/Homebrew/homebrew/pull/46735#discussion_r46820565
+class CoreFormulaRepository < Tap
+  # @private
+  def initialize
+    @user = "Homebrew"
+    @repo = "homebrew"
+    @name = "Homebrew/homebrew"
+    @path = HOMEBREW_REPOSITORY
+  end
+
+  def self.instance
+    @instance ||= CoreFormulaRepository.new
+  end
+
+  # @private
+  def uninstall
+    raise "Tap#uninstall is not available for CoreFormulaRepository"
+  end
+
+  # @private
+  def pin
+    raise "Tap#pin is not available for CoreFormulaRepository"
+  end
+
+  # @private
+  def unpin
+    raise "Tap#unpin is not available for CoreFormulaRepository"
+  end
+
+  # @private
+  def pinned?
+    false
+  end
+
+  # @private
+  def command_files
+    []
+  end
+
+  # @private
+  def custom_remote?
+    remote != "https://github.com/#{user}/#{repo}.git"
+  end
+
+  # @private
+  def formula_dir
+    HOMEBREW_LIBRARY/"Formula"
+  end
+
+  # @private
+  def alias_dir
+    HOMEBREW_LIBRARY/"Aliases"
+  end
+
+  # @private
+  def formula_renames
+    require "formula_renames"
+    FORMULA_RENAMES
+  end
+
+  private
+
+  def formula_file_to_name(file)
+    file.basename(".rb").to_s
+  end
+
+  def alias_file_to_name(file)
+    file.basename.to_s
   end
 end
