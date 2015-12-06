@@ -168,7 +168,7 @@ class Tap
 
   # an array of all {Formula} names of this {Tap}.
   def formula_names
-    @formula_names ||= formula_files.map { |f| "#{name}/#{f.basename(".rb")}" }
+    @formula_names ||= formula_files.map { |f| formula_file_to_name(f) }
   end
 
   # path to the directory of all alias files for this {Tap}.
@@ -186,7 +186,7 @@ class Tap
   # an array of all aliases of this {Tap}.
   # @private
   def aliases
-    @aliases ||= alias_files.map { |f| "#{name}/#{f.basename}" }
+    @aliases ||= alias_files.map { |f| alias_file_to_name(f) }
   end
 
   # a table mapping alias to formula name
@@ -195,7 +195,7 @@ class Tap
     return @alias_table if @alias_table
     @alias_table = Hash.new
     alias_files.each do |alias_file|
-      @alias_table["#{name}/#{alias_file.basename}"] = "#{name}/#{alias_file.resolved_path.basename(".rb")}"
+      @alias_table[alias_file_to_name(alias_file)] = formula_file_to_name(alias_file.resolved_path)
     end
     @alias_table
   end
@@ -290,5 +290,15 @@ class Tap
   # an array of all installed {Tap} names.
   def self.names
     map(&:name)
+  end
+
+  private
+
+  def formula_file_to_name(file)
+    "#{name}/#{file.basename(".rb")}"
+  end
+
+  def alias_file_to_name(file)
+    "#{name}/#{file.basename}"
   end
 end
