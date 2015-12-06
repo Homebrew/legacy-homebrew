@@ -20,6 +20,6 @@ class Eg < Formula
     # except a filename, but will return success if the file doesn't
     # exist, without popping into the UI - we're exploiting this here.
     ENV["TERM"] = "xterm"
-    system "eg", "not_here.ng"
+    system bin/"eg", "not_here.ng"
   end
 end
