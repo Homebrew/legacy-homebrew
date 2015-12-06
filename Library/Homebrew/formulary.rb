@@ -150,7 +150,7 @@ class Formulary
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
 
       unless path
-        if (possible_alias = @tap.path/"Aliases/#{name}").file?
+        if (possible_alias = @tap.alias_dir/name).file?
           path = possible_alias.resolved_path
           name = path.basename(".rb").to_s
         else
