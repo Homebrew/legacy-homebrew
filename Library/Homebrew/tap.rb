@@ -55,7 +55,7 @@ class Tap
   def remote
     @remote ||= if installed?
       if git?
-        @path.cd do
+        path.cd do
           Utils.popen_read("git", "config", "--get", "remote.origin.url").chomp
         end
       end
@@ -66,7 +66,7 @@ class Tap
 
   # True if this {Tap} is a git repository.
   def git?
-    (@path/".git").exist?
+    (path/".git").exist?
   end
 
   def to_s
@@ -75,13 +75,13 @@ class Tap
 
   # True if this {Tap} is an official Homebrew tap.
   def official?
-    @user == "Homebrew"
+    user == "Homebrew"
   end
 
   # True if the remote of this {Tap} is a private repository.
   def private?
     return true if custom_remote?
-    GitHub.private_repo?(@user, "homebrew-#{@repo}")
+    GitHub.private_repo?(user, "homebrew-#{repo}")
   rescue GitHub::HTTPNotFoundError
     true
   rescue GitHub::Error
@@ -90,7 +90,7 @@ class Tap
 
   # True if this {Tap} has been installed.
   def installed?
-    @path.directory?
+    path.directory?
   end
 
   # install this {Tap}.
@@ -104,8 +104,8 @@ class Tap
     # ensure git is installed
     Utils.ensure_git_installed!
     ohai "Tapping #{name}"
-    remote = options[:clone_target] || "https://github.com/#{@user}/homebrew-#{@repo}"
-    args = %W[clone #{remote} #{@path}]
+    remote = options[:clone_target] || "https://github.com/#{user}/homebrew-#{repo}"
+    args = %W[clone #{remote} #{path}]
     args << "--depth=1" unless options.fetch(:full_clone, false)
 
     begin
@@ -113,13 +113,13 @@ class Tap
     rescue Interrupt, ErrorDuringExecution
       ignore_interrupts do
         sleep 0.1 # wait for git to cleanup the top directory when interrupt happens.
-        @path.parent.rmdir_if_possible
+        path.parent.rmdir_if_possible
       end
       raise
     end
 
     formula_count = formula_files.size
-    puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{@path.abv})"
+    puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{path.abv})"
     Descriptions.cache_formulae(formula_names)
 
     if !options[:clone_target] && private?
@@ -127,8 +127,8 @@ class Tap
         It looks like you tapped a private repository. To avoid entering your
         credentials each time you update, you can use git HTTP credential
         caching or issue the following command:
-          cd #{@path}
-          git remote set-url origin git@github.com:#{@user}/homebrew-#{@repo}.git
+          cd #{path}
+          git remote set-url origin git@github.com:#{user}/homebrew-#{repo}.git
       EOS
     end
   end
@@ -137,24 +137,24 @@ class Tap
   def uninstall
     raise TapUnavailableError, name unless installed?
 
-    puts "Untapping #{name}... (#{@path.abv})"
+    puts "Untapping #{name}... (#{path.abv})"
     unpin if pinned?
     formula_count = formula_files.size
     Descriptions.uncache_formulae(formula_names)
-    @path.rmtree
-    @path.dirname.rmdir_if_possible
+    path.rmtree
+    path.dirname.rmdir_if_possible
     puts "Untapped #{formula_count} formula#{plural(formula_count, "e")}"
   end
 
   # True if the {#remote} of {Tap} is customized.
   def custom_remote?
     return true unless remote
-    remote.casecmp("https://github.com/#{@user}/homebrew-#{@repo}") != 0
+    remote.casecmp("https://github.com/#{user}/homebrew-#{repo}") != 0
   end
 
   # an array of all {Formula} files of this {Tap}.
   def formula_files
-    @formula_files ||= if dir = [@path/"Formula", @path/"HomebrewFormula", @path].detect(&:directory?)
+    @formula_files ||= if dir = [path/"Formula", path/"HomebrewFormula", path].detect(&:directory?)
       dir.children.select { |p| p.extname == ".rb" }
     else
       []
@@ -209,7 +209,7 @@ class Tap
   # path to the pin record for this {Tap}.
   # @private
   def pinned_symlink_path
-    HOMEBREW_LIBRARY/"PinnedTaps/#{@name}"
+    HOMEBREW_LIBRARY/"PinnedTaps/#{name}"
   end
 
   # True if this {Tap} has been pinned.
@@ -222,7 +222,7 @@ class Tap
   def pin
     raise TapUnavailableError, name unless installed?
     raise TapPinStatusError.new(name, true) if pinned?
-    pinned_symlink_path.make_relative_symlink(@path)
+    pinned_symlink_path.make_relative_symlink(path)
     @pinned = true
   end
 
@@ -237,10 +237,10 @@ class Tap
 
   def to_hash
     hash = {
-      "name" => @name,
-      "user" => @user,
-      "repo" => @repo,
-      "path" => @path.to_s,
+      "name" => name,
+      "user" => user,
+      "repo" => repo,
+      "path" => path.to_s,
       "installed" => installed?,
       "official" => official?,
       "formula_names" => formula_names,
