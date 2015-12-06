@@ -235,7 +235,7 @@ class FormulaAuditor
   def audit_formula_name
     return unless @strict
     # skip for non-official taps
-    return if !formula.core_formula? && !formula.tap.to_s.start_with?("homebrew")
+    return unless formula.tap.official?
 
     name = formula.name
     full_name = formula.full_name
