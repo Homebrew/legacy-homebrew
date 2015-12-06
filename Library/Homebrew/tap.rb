@@ -297,6 +297,11 @@ class Tap
     end
   end
 
+  def ==(other)
+    other = Tap.fetch(other) if other.is_a?(String)
+    self.class == other.class && self.name == other.name
+  end
+
   def self.each
     return unless TAP_DIRECTORY.directory?
 
