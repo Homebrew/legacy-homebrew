@@ -26,6 +26,6 @@ class Qriollo < Formula
       el programa es
          escupir "Hola mundo\n"
     EOS
-    system bin/"qr", "--ruta", lib/"chamuyo", test_file_path
+    system bin/"qr", "--ruta", "#{lib/"chamuyo"}:#{testpath}", test_file_path
   end
 end
