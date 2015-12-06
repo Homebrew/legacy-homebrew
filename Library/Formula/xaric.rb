@@ -5,9 +5,10 @@ class Xaric < Formula
   sha256 "fd8cd677e2403e44ff525eac7c239cd8d64b7448aaf56a1272d1b0c53df1140c"
 
   bottle do
-    sha256 "6605f6b79fb540c515f05bce2c222f10487cf5789c22450456998c4d71e1a52c" => :el_capitan
-    sha256 "be969c46a98cd5a89f26ab589f65a9b86bab2d491ce1feee0902b92c0a5b56d7" => :yosemite
-    sha256 "d445890b697137ebc45b8218bf5a839e386c511b12e7a9cf7986af29dd76e23a" => :mavericks
+    revision 1
+    sha256 "9ddfb8878904f92a7281f5611a11b72b81ebed0ef6ac7af9c10588cb717b9317" => :el_capitan
+    sha256 "f29d234ec8065f976ce8f14e21374871e5b8b2d092a26ad163d9cac32988bb9b" => :yosemite
+    sha256 "3b8f2a6b837e43ff57ef626b4d46142562c1eda120ac5889124eab11d8b46b86" => :mavericks
   end
 
   depends_on "openssl"
