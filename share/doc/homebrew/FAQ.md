@@ -80,14 +80,10 @@ including how to set this across reboots. If you’re pre-Mountain Lion,
 alternative](https://developer.apple.com/legacy/library/qa/qa1067/_index.html).
 
 ### How do I contribute to Homebrew?
-Read everything in https://github.com/Homebrew/homebrew/blob/master/CONTRIBUTING.md.
+Read [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 ### Why do you compile everything?
-Homebrew is about **homebrewing**, it’s half the point that you can just
-`brew edit $FORMULA` and change how the formula is compiled to your own
-specification.
-
-Homebrew does provide pre-compiled versions for some formulae. These
+Homebrew provides pre-compiled versions for some formulae. These
 pre-compiled versions are referred to as **bottles** and are available
 at:
 [https://bintray.com/homebrew/bottles](https://bintray.com/homebrew/bottles).
@@ -126,7 +122,7 @@ Or:
 
 `brew pull https://github.com/Homebrew/homebrew/pulls/1234`
 
-### Why does Homebrew insist I install to `/usr/local` with such vehemence?
+### Why does Homebrew insist I install to `/usr/local`?
 <a name="usrlocal"></a>
 
 1.  **It’s easier**<br>`/usr/local/bin` is already in your
@@ -235,7 +231,7 @@ brew install …
 Note that brew search still finds formula in taps.
 
 ### Homebrew is a poor name, it is generic, why was it chosen?
-mxcl was too concerned with the beer theme and didn’t consider that the
+@mxcl was too concerned with the beer theme and didn’t consider that the
 project may actually prove popular. By the time he realized it was too
 late. However, today, the first google hit for “homebrew” is not beer
 related ;-)

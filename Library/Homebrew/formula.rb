@@ -723,11 +723,12 @@ class Formula
   end
   alias_method :startup_plist, :plist
 
-  # The {.plist} name (the name of the launchd service).
+  # The generated launchd {.plist} service name.
   def plist_name
     "homebrew.mxcl."+name
   end
 
+  # The generated launchd {.plist} file path.
   def plist_path
     prefix+(plist_name+".plist")
   end
@@ -1627,7 +1628,7 @@ class Formula
     #     `S3DownloadStrategy` (download from S3 using signed request)
     #
     # <pre>url "https://packed.sources.and.we.prefer.https.example.com/archive-1.2.3.tar.bz2"</pre>
-    # <pre>url "https://some.dont.provide.archives.example.com", :using => :git, :tag => "1.2.3"</pre>
+    # <pre>url "https://some.dont.provide.archives.example.com", :using => :git, :tag => "1.2.3", :revision => "db8e4de5b2d6653f66aea53094624468caad15d2"</pre>
     def url(val, specs = {})
       stable.url(val, specs)
     end
@@ -1853,6 +1854,11 @@ class Formula
       specs.each { |spec| spec.option(name, description) }
     end
 
+    # @!attribute [w] deprecated_option
+    # Deprecated options are used to rename options and migrate users who used
+    # them to newer ones. They are mostly used for migrating non-`with` options
+    # (e.g. `enable-debug`) to `with` options (e.g. `with-debug`).
+    # <pre>deprecated_option "enable-debug" => "with-debug"</pre>
     def deprecated_option(hash)
       specs.each { |spec| spec.deprecated_option(hash) }
     end
