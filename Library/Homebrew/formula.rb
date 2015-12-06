@@ -1051,13 +1051,13 @@ class Formula
   # an array of all core {Formula} names
   # @private
   def self.core_names
-    @core_names ||= core_files.map { |f| f.basename(".rb").to_s }.sort
+    CoreFormulaRepository.instance.formula_names
   end
 
   # an array of all core {Formula} files
   # @private
   def self.core_files
-    @core_files ||= Pathname.glob("#{HOMEBREW_LIBRARY}/Formula/*.rb")
+    CoreFormulaRepository.instance.formula_files
   end
 
   # an array of all tap {Formula} names
@@ -1130,13 +1130,13 @@ class Formula
   # an array of all alias files of core {Formula}
   # @private
   def self.core_alias_files
-    @core_alias_files ||= Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*")
+    CoreFormulaRepository.instance.alias_files
   end
 
   # an array of all core aliases
   # @private
   def self.core_aliases
-    @core_aliases ||= core_alias_files.map { |f| f.basename.to_s }.sort
+    CoreFormulaRepository.instance.aliases
   end
 
   # an array of all tap aliases
@@ -1160,24 +1160,13 @@ class Formula
   # a table mapping core alias to formula name
   # @private
   def self.core_alias_table
-    return @core_alias_table if @core_alias_table
-    @core_alias_table = Hash.new
-    core_alias_files.each do |alias_file|
-      @core_alias_table[alias_file.basename.to_s] = alias_file.resolved_path.basename(".rb").to_s
-    end
-    @core_alias_table
+    CoreFormulaRepository.instance.alias_table
   end
 
   # a table mapping core formula name to aliases
   # @private
   def self.core_alias_reverse_table
-    return @core_alias_reverse_table if @core_alias_reverse_table
-    @core_alias_reverse_table = Hash.new
-    core_alias_table.each do |alias_name, formula_name|
-      @core_alias_reverse_table[formula_name] ||= []
-      @core_alias_reverse_table[formula_name] << alias_name
-    end
-    @core_alias_reverse_table
+    CoreFormulaRepository.instance.alias_reverse_table
   end
 
   def self.[](name)
