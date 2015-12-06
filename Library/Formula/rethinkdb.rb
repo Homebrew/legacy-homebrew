@@ -33,80 +33,10 @@ class Rethinkdb < Formula
 
     (var/"log/rethinkdb").mkpath
 
-    (buildpath+"rethinkdb.conf").write rethinkdb_conf
+    inreplace "packaging/assets/config/default.conf.sample",
+              /^# directory=.*/, "directory=#{var}/rethinkdb"
+    cp "packaging/assets/config/default.conf.sample", "rethinkdb.conf"
     etc.install "rethinkdb.conf"
-  end
-
-  def rethinkdb_conf; <<-EOS.undent
-    directory=#{var}/rethinkdb
-
-    ### Network options
-
-    ## Address of local interfaces to listen on when accepting connections
-    ## May be 'all' or an IP address, loopback addresses are enabled by default
-    ## Default: all local addresses
-    bind=127.0.0.1
-
-    ## Address that other rethinkdb instances will use to connect to this server.
-    ## It can be specified multiple times
-    # canonical-address=
-
-    ## The port for rethinkdb protocol for client drivers
-    ## Default: 28015 + port-offset
-    # driver-port=28015
-
-    ## The port for receiving connections from other nodes
-    ## Default: 29015 + port-offset
-    # cluster-port=29015
-
-    ## The host:port of a node that rethinkdb will connect to
-    ## This option can be specified multiple times.
-    ## Default: none
-    # join=example.com:29015
-
-    ## All ports used locally will have this value added
-    ## Default: 0
-    # port-offset=0
-
-    ## r.http(...) queries will use the given server as a web proxy
-    ## Default: no proxy
-    # reql-http-proxy=socks5://example.com:1080
-
-    ### Web options
-
-    ## Port for the http admin console
-    ## Default: 8080 + port-offset
-    # http-port=8080
-
-    ## Disable web administration console
-    # no-http-admin
-
-    ### CPU options
-
-    ## The number of cores to use
-    ## Default: total number of cores of the CPU
-    # cores=2
-
-    ### Memory options
-
-    ## Size of the cache in MB
-    ## Default: Half of the available RAM on startup
-    # cache-size=1024
-
-    ### Disk
-
-    ## How many simultaneous I/O operations can happen at the same time
-    # io-threads=64
-
-    ## Enable direct I/O
-    # direct-io
-
-    ### Meta
-
-    ## The name for this server (as will appear in the metadata).
-    ## If not specified, it will be randomly chosen from a short list of names.
-    # server-name=server1
-    EOS
   end
 
   def plist; <<-EOS.undent
