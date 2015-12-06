@@ -14,6 +14,11 @@ Please read:
 
 * [Code of Conduct](https://github.com/Homebrew/homebrew/blob/master/CODEOFCONDUCT.md#code-of-conduct)
 
+Commit message format for simple version updates:
+
+* `"FORMULA_NAME NEW_VERSION"`, e.g. `"source-highlight 3.1.8"`
+* devel version bumps should have the commit message marked with addtional (devel) suffix like `"nginx 1.9.1 (devel)"`
+
 To contribute code please read:
 
 * [Formula API](http://www.rubydoc.info/github/Homebrew/homebrew/master/frames)
