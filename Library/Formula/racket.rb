@@ -6,9 +6,10 @@ class Racket < Formula
   sha256 "72d79026e1301ee222089fb555b3eb7290b95f4b7541fec21b4ddb5842fff081"
 
   bottle do
-    sha256 "a37d51fb235adfe4b796335e56eb6b826b9967ed6a75c996360997865cdabd49" => :el_capitan
-    sha256 "0ab11d912b82ab21b53990b94c8e9d55c28d3a5d6c4c58335f29e78aa937c7c5" => :yosemite
-    sha256 "474e72aee9d5e4a3b122caac9fe5429da912050bc9353f8c3a8687c4ff232b0d" => :mavericks
+    revision 1
+    sha256 "bfa9a6ecd8ec2b61fe58f7f3576471f09c08c1ec404d059a18609bff6728967b" => :el_capitan
+    sha256 "dc4b3f00480486eb54a1e86b6c7148cfd14fee1fb3e8cd7f8caa4b8c11436729" => :yosemite
+    sha256 "01ebd100e40cdc605d5023da5a608b8a73c4151829bf36806baec71aa126d04a" => :mavericks
   end
 
   # these two files are amended when (un)installing packages
