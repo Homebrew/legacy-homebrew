@@ -154,6 +154,7 @@ TAP_MIGRATIONS = {
   "mysql-connector-odbc" => "homebrew/boneyard",
   "mysql-proxy" => "homebrew/boneyard",
   "mysqlreport" => "homebrew/boneyard",
+  "net6" => "homebrew/boneyard",
   "newick-utils" => "homebrew/science",
   "nlopt" => "homebrew/science",
   "ntfs-3g" => "homebrew/fuse",
