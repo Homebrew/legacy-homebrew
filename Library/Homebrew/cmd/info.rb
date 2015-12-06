@@ -67,18 +67,9 @@ module Homebrew
   end
 
   def github_info(f)
-    if f.tap?
-      user, repo = f.tap.split("/", 2)
-      tap = Tap.fetch user, repo
-      if remote = tap.remote
-        path = f.path.relative_path_from(tap.path)
-        github_remote_path(remote, path)
-      else
-        f.path
-      end
-    elsif f.core_formula?
-      if remote = git_origin
-        path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
+    if f.tap
+      if remote = f.tap.remote
+        path = f.path.relative_path_from(f.tap.path)
         github_remote_path(remote, path)
       else
         f.path
