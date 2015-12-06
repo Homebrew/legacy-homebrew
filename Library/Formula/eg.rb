@@ -7,9 +7,10 @@ class Eg < Formula
 
   bottle do
     cellar :any
-    sha256 "e8ab1c7a1d605b7b709730fbf80fd8fcd2bafa06a638f81dd2069efc6b104197" => :el_capitan
-    sha256 "f47076de6f48d34d81e948a4fc48cab22de20ffe872a3100770d36a49a02a74d" => :yosemite
-    sha256 "512ebd1293a80523e446893da92300b210b8beeafd424dc1dbd047d16543a1f1" => :mavericks
+    revision 1
+    sha256 "e7d8afd59c28e7b0b1c41adddf33a81612beb702dafcc361b6419f8ceb557849" => :el_capitan
+    sha256 "a76496f35cb02e8c6a71a821e408ddc7c771810a594c2f42359802f4e8833a2b" => :yosemite
+    sha256 "2197c470b87aa65d756c2e574477bfaaf4ce755427d1fa7bb56d948292237eb6" => :mavericks
   end
 
   depends_on "s-lang"
