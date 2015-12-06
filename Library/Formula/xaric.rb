@@ -1,9 +1,8 @@
 class Xaric < Formula
   desc "IRC client"
   homepage "http://xaric.org/"
-  url "http://xaric.org/software/xaric/releases/xaric-0.13.6.tar.gz"
-  sha256 "dbed41ed43efcea05baac0af0fe87cca36eebd96e5b7d4838b38cca3da4518bb"
-  revision 1
+  url "http://xaric.org/software/xaric/releases/xaric-0.13.7.tar.gz"
+  sha256 "fd8cd677e2403e44ff525eac7c239cd8d64b7448aaf56a1272d1b0c53df1140c"
 
   bottle do
     revision 1
@@ -15,10 +14,9 @@ class Xaric < Formula
   depends_on "openssl"
 
   def install
-    # Re OpenSSL: https://github.com/laeos/xaric/issues/2
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "withval=#{Formula["openssl"].opt_prefix}"
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 
