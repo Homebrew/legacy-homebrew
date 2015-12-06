@@ -18,8 +18,9 @@ class Logstash < Formula
       # Build the package from source
       system "rake", "artifact:tar"
       # Extract the package to the current directory
-      targz = Dir["build/logstash-*.tar.gz"].first
-      system "tar", "-xf", targz
+      mkdir "tar"
+      system "tar", "--strip-components=1", "-xf", Dir["build/logstash-*.tar.gz"].first, "-C", "tar"
+      Dir.chdir "tar"
     end
 
     inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$0`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
