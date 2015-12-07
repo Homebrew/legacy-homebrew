@@ -428,7 +428,7 @@ module Homebrew
         formula_name
       end
 
-      test "brew", "uses", canonical_formula_name
+      test "brew", "uses", "--recursive", canonical_formula_name
 
       formula = Formulary.factory(canonical_formula_name)
 
@@ -512,7 +512,7 @@ module Homebrew
       build_dependencies = dependencies - runtime_dependencies
       unchanged_build_dependencies = build_dependencies - @formulae
 
-      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
+      dependents = Utils.popen_read("brew", "uses", "--recursive", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
       dependents -= @formulae
       dependents = dependents.map { |d| Formulary.factory(d) }
 
