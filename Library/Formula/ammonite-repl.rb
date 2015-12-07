@@ -15,13 +15,15 @@ class AmmoniteRepl < Formula
   depends_on "sbt" => :build
 
   def install
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}"
+    ENV.java_cache
+
     system "sbt", "repl/assembly"
     bin.install "repl/target/scala-2.11/ammonite-repl-0.5.1-2.11.7" => "amm"
   end
 
   test do
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
+    ENV.java_cache
+
     assert_equal "hello world!", shell_output("#{bin}/amm -c 'print(\"hello world!\")'")
   end
 end
