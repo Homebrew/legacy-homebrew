@@ -108,6 +108,11 @@ class Tap
     path.directory?
   end
 
+  # @private
+  def core_formula_repository?
+    false
+  end
+
   # install this {Tap}.
   #
   # @param [Hash] options
@@ -363,6 +368,11 @@ class CoreFormulaRepository < Tap
   # @private
   def custom_remote?
     remote != "https://github.com/#{user}/#{repo}.git"
+  end
+
+  # @private
+  def core_formula_repository?
+    true
   end
 
   # @private
