@@ -647,7 +647,7 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-ffdx" unless ENV["HOMEBREW_RUBY_PATH"]
+      git "clean", "-ffdx" unless ENV["HOMEBREW_RUBY"] == "1.8.7"
       pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) { |lock| FileUtils.rm_rf lock }
     end
