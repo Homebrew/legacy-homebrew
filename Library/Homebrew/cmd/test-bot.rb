@@ -414,7 +414,7 @@ module Homebrew
     def setup
       @category = __method__
       return if ARGV.include? "--skip-setup"
-      test "brew", "doctor" unless ENV["TRAVIS"]
+      test "brew", "doctor" if !ENV["TRAVIS"] && ENV["HOMEBREW_RUBY"] != "1.8.7"
       test "brew", "--env"
       test "brew", "config"
     end
@@ -655,16 +655,10 @@ module Homebrew
     def cleanup_after
       @category = __method__
 
-      checkout_args = []
-      if ARGV.include? "--cleanup"
-        test "git", "clean", "-ffdx"
-        checkout_args << "-f"
-      end
-
-      checkout_args << @start_branch
-
       if @start_branch && !@start_branch.empty? && \
          (ARGV.include?("--cleanup") || @url || @hash)
+        checkout_args = [@start_branch]
+        checkout_args << "-f" if ARGV.include? "--cleanup"
         test "git", "checkout", *checkout_args
       end
 
@@ -673,6 +667,7 @@ module Homebrew
         git "stash", "pop"
         test "brew", "cleanup", "--prune=7"
         git "gc", "--auto"
+        test "git", "clean", "-ffdx"
         if ARGV.include? "--local"
           FileUtils.rm_rf ENV["HOMEBREW_HOME"]
           FileUtils.rm_rf ENV["HOMEBREW_LOGS"]
