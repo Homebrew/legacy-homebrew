@@ -455,30 +455,20 @@ class Report
   end
 
   def dump_formula_report(key, title)
-    formula = select_formula(key)
-    unless formula.empty?
-      # Determine list item indices of installed formulae.
-      formula_installed_index = formula.each_index.select do |index|
-        name, newname = formula[index]
-        installed?(name) || (newname && installed?(newname))
-      end
-
-      # Format list items of renamed formulae.
+    formula = select_formula(key).map do |name, new_name|
+      # Format list items of renamed formulae
       if key == :R
-        formula.map! { |oldname, newname| "#{oldname} -> #{newname}" }
+        new_name = pretty_installed(new_name) if installed?(name)
+        "#{name} -> #{new_name}"
+      else
+        installed?(name) ? pretty_installed(name) : name
       end
+    end
 
-      # Append suffix '(installed)' to list items of installed formulae.
-      formula_installed_index.each do |index|
-        formula[index] += " (installed)"
-      end
-
-      # Fetch list items of installed formulae for highlighting.
-      formula_installed = formula.values_at(*formula_installed_index)
-
+    unless formula.empty?
       # Dump formula list.
       ohai title
-      puts_columns(formula, formula_installed)
+      puts_columns(formula)
     end
   end
 
