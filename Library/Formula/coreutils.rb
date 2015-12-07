@@ -35,7 +35,7 @@ class Coreutils < Formula
     # GNU projects. See:
     # https://github.com/Homebrew/homebrew/issues/45273
     # https://github.com/Homebrew/homebrew/issues/44993
-    # This is thought to be an el_captian bug:
+    # This is thought to be an el_capitan bug:
     # http://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
     if MacOS.version == :el_capitan
       ENV["gl_cv_func_getcwd_abort_bug"] = "no"
