@@ -147,24 +147,8 @@ module Homebrew
   end
 
   def decorate_dependencies(dependencies)
-    # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
-    tick = ["2714".hex].pack("U*")
-    cross = ["2718".hex].pack("U*")
-
     deps_status = dependencies.collect do |dep|
-      if dep.installed?
-        color = Tty.green
-        symbol = tick
-      else
-        color = Tty.red
-        symbol = cross
-      end
-      if ENV["HOMEBREW_NO_EMOJI"]
-        colored_dep = "#{color}#{dep}"
-      else
-        colored_dep = "#{dep} #{color}#{symbol}"
-      end
-      "#{colored_dep}#{Tty.reset}"
+      dep.installed? ? pretty_installed(dep) : pretty_uninstalled(dep)
     end
     deps_status * ", "
   end
