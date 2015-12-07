@@ -38,11 +38,11 @@ class Racket < Formula
     inreplace etc/"racket/config.rktd" do |s|
         s.gsub!(
             /\(bin-dir\s+\.\s+"#{Regexp.quote(bin)}"\)/,
-            "(bin-dir . \"#{HOMEBREW_PREFIX}/bin\")",
+            "(bin-dir . \"#{HOMEBREW_PREFIX}/bin\")"
         )
         s.gsub!(
             /\n\)$/,
-            "\n      (default-scope . \"installation\")\n)",
+            "\n      (default-scope . \"installation\")\n)"
         )
     end
   end
