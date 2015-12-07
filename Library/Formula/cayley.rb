@@ -92,7 +92,7 @@ class Cayley < Formula
     ln_s buildpath, "src/github.com/google/cayley"
 
     # Build
-    system "go", "build", "-o", "cayley"
+    system "go", "build", "-o", "cayley", "github.com/google/cayley"
 
     # Create sample configuration that uses the Homebrew-based directories
     inreplace "cayley.cfg.example", "/tmp/cayley_test", "#{var}/cayley"
