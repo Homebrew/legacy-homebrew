@@ -20,7 +20,7 @@ class Logstash < Formula
       # Extract the package to the current directory
       mkdir "tar"
       system "tar", "--strip-components=1", "-xf", Dir["build/logstash-*.tar.gz"].first, "-C", "tar"
-      Dir.chdir "tar"
+      cd "tar"
     end
 
     sub = if build.head? then "SOURCEPATH" else "0" end
