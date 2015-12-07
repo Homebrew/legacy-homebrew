@@ -22,7 +22,6 @@ class Rubberband < Formula
     sha256 "06c1b9d0bea22637edec00a3bd41b118472caee55902b6c1f8ea8941d922a3f7" => :mavericks
   end
 
-
   depends_on "pkg-config" => :build
   depends_on "libsamplerate"
   depends_on "libsndfile"
