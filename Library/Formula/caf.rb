@@ -17,17 +17,19 @@ class Caf < Formula
   needs :cxx11
 
   option "with-opencl", "build with support for OpenCL actors"
-  option "without-check", "skip unit tests (not recommended)"
+  option "without-test", "skip unit tests (not recommended)"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "cmake" => :build
 
   def install
-    args = %W[./configure --prefix=#{prefix} --no-examples --build-static]
+    args = %W[--prefix=#{prefix} --no-examples --build-static]
     args << "--no-opencl" if build.without? "opencl"
 
-    system *args
+    system "./configure", *args
     system "make"
-    system "make", "test" if build.with? "check"
+    system "make", "test" if build.with? "test"
     system "make", "install"
   end
 
@@ -45,7 +47,8 @@ class Caf < Formula
         return 0;
       }
     EOS
-    system *%W[#{ENV.cxx} -std=c++11 -stdlib=libc++ test.cpp -lcaf_core -o test]
+    system ENV.cxx, "-std=c++11", "-stdlib=libc++", "test.cpp",
+      "-lcaf_core", "-o", "test"
     system "./test"
   end
 end
