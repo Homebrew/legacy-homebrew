@@ -20,12 +20,13 @@ class Qriollo < Formula
   end
 
   test do
-    test_file_path = testpath/"HolaMundo.q"
+    test_file_name = "HolaMundo.q"
+    test_file_path = testpath/test_file_name
     test_file_path.write <<-EOS.undent
       enchufar Chamuyo
       el programa es
          escupir "Hola mundo\n"
     EOS
-    system bin/"qr", "--ruta", "#{lib/"chamuyo"}:#{testpath}", test_file_path
+    system bin/"qr", "--ruta", "#{lib/"chamuyo"}:#{testpath}", test_file_name
   end
 end
