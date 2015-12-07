@@ -41,7 +41,7 @@ module Homebrew
     else
       query = ARGV.first
       rx = query_regexp(query)
-      local_results = search_formulae(rx)
+      local_results = search_formulae(rx, :decoration => :text)
       local_results_installed = local_results.select { |f| f.end_with? "(installed)" }
       puts_columns(local_results, local_results_installed)
       tap_results = search_taps(rx)
@@ -141,26 +141,42 @@ module Homebrew
     []
   end
 
-  def search_formulae(rx)
+  # @param [Regexp] rx
+  # @param [Hash] options
+  # @option options [Boolean] :installed If true, include installed formulae
+  # @option options [Symbol] :decoration
+  #
+  # @return [Array<String>]
+  def search_formulae(rx, options = {})
     aliases = Formula.alias_full_names
     results = (Formula.full_names+aliases).grep(rx).sort
 
     results.map do |name|
       begin
         formula = Formulary.factory(name)
+        next if formula.installed? && !options.fetch(:installed, true)
+
         canonical_name = formula.name
         canonical_full_name = formula.full_name
-      rescue
+      rescue FormulaUnavailableError
         canonical_name = canonical_full_name = name
       end
       # Ignore aliases from results when the full name was also found
-      if aliases.include?(name) && results.include?(canonical_full_name)
-        next
-      elsif (HOMEBREW_CELLAR/canonical_name).directory?
-        "#{name} (installed)"
-      else
-        name
+      next if aliases.include?(name) && results.include?(canonical_full_name)
+
+      decorate = options.fetch(:decoration, nil)
+      next name unless decorate
+
+      if (HOMEBREW_CELLAR/canonical_name).directory?
+        if decorate == :text
+          tag = " (installed)"
+        elsif decorate == :unicode
+          tag = " #{["2714".hex].pack("U*")}"
+        end
+      elsif decorate == :unicode
+        tag = " #{["2718".hex].pack("U*")}"
       end
+      "#{name}#{tag}"
     end.compact
   end
 end
