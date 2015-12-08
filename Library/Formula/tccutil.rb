@@ -1,8 +1,8 @@
 class Tccutil < Formula
   desc "Utility to modify the OS X Accessibility Database (TCC.db)"
   homepage "https://github.com/jacobsalmela/tccutil"
-  url "https://github.com/jacobsalmela/tccutil/archive/v1.2.0.tar.gz"
-  sha256 "3fcac0c458969629366002a2e0142a7291ab44a0077c5495de4b1383704861bc"
+  url "https://github.com/jacobsalmela/tccutil/archive/v1.2.1.tar.gz"
+  sha256 "7aa4506889db29ae2949f3496d4d649d6de96631a7114eaaa445664367cf288c"
   head "https://github.com/jacobsalmela/tccutil.git"
 
   bottle :unneeded
