@@ -1,33 +1,51 @@
-# Unlinks any Applications (.app) found in installed prefixes from /Applications
-require "keg"
+require "cmd/linkapps"
 
 module Homebrew
   def unlinkapps
-    target_dir = ARGV.include?("--local") ? File.expand_path("~/Applications") : "/Applications"
+    target_dir = linkapps_target(:local => ARGV.include?("--local"))
 
-    return unless File.exist? target_dir
-
-    cellar_apps = Dir[target_dir + "/*.app"].select do |app|
-      if File.symlink?(app)
-        should_unlink? File.readlink(app)
-      end
-    end
-
-    cellar_apps.each do |app|
-      puts "Unlinking #{app}"
-      system "unlink", app
-    end
-
-    puts "Finished unlinking from #{target_dir}" if cellar_apps
+    unlinkapps_from_dir(target_dir)
   end
 
   private
 
-  def should_unlink?(file)
-    if ARGV.named.empty?
-      file.start_with?("#{HOMEBREW_CELLAR}/", "#{HOMEBREW_PREFIX}/opt/")
+  def unlinkapps_from_dir(target_dir)
+    return unless target_dir.directory?
+
+    apps = Pathname.glob("#{target_dir}/*.app").select do |app|
+      unlinkapps_unlink?(app)
+    end
+
+    ObserverPathnameExtension.reset_counts!
+
+    apps.each do |app|
+      app.extend(ObserverPathnameExtension)
+      puts "Unlinking: #{app}"
+      app.unlink
+    end
+
+    if ObserverPathnameExtension.total.zero?
+      puts "No apps unlinked from #{target_dir}" if ARGV.verbose?
     else
-      ARGV.kegs.any? { |keg| file.start_with?("#{keg}/", "#{keg.opt_record}/") }
+      n = ObserverPathnameExtension.total
+      puts "Unlinked #{n} app#{plural(n)} from #{target_dir}"
+    end
+  end
+
+  UNLINKAPPS_PREFIXES = %W[
+    #{HOMEBREW_CELLAR}/
+    #{HOMEBREW_PREFIX}/opt/
+  ].freeze
+
+  def unlinkapps_unlink?(target_app)
+    # Skip non-symlinks and symlinks that don't point into the Homebrew prefix.
+    app = "#{target_app.readlink}" if target_app.symlink?
+    return false unless app && app.start_with?(*UNLINKAPPS_PREFIXES)
+
+    if ARGV.named.empty?
+      true
+    else
+      ARGV.kegs.any? { |keg| app.start_with?("#{keg}/", "#{keg.opt_record}/") }
     end
   end
 end
