@@ -26,8 +26,8 @@ class Emacs < Formula
     depends_on "automake" => :build
   end
 
-  option "with-cocoa", "Build a Cocoa version of emacs"
-  option "with-ctags", "Don't remove the ctags executable that emacs provides"
+  option "without-cocoa", "Don't build the Cocoa version of Emacs"
+  option "with-ctags", "Keep the ctags executable that Emacs provides"
   option "without-libxml2", "Don't build with libxml2 support"
 
   deprecated_option "cocoa" => "with-cocoa"
@@ -35,13 +35,13 @@ class Emacs < Formula
   deprecated_option "with-x" => "with-x11"
 
   depends_on "pkg-config" => :build
-  depends_on :x11 => :optional
   depends_on "d-bus" => :optional
-  depends_on "gnutls" => :optional
-  depends_on "librsvg" => :optional
-  depends_on "imagemagick" => :optional
-  depends_on "mailutils" => :optional
   depends_on "glib" => :optional
+  depends_on "gnutls" => :optional
+  depends_on "imagemagick" => :optional
+  depends_on "librsvg" => :optional
+  depends_on "mailutils" => :optional
+  depends_on :x11 => :optional
 
   # https://github.com/Homebrew/homebrew/issues/37803
   if build.with? "x11"
@@ -59,6 +59,10 @@ class Emacs < Formula
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
             "--infodir=#{info}/emacs",
            ]
+
+    if build.with? "cocoa"
+      args << "--with-ns" << "--disable-ns-self-contained"
+    end
 
     args << "--with-file-notification=gfile" if build.with? "glib"
 
@@ -80,41 +84,35 @@ class Emacs < Formula
       args << "--without-gnutls"
     end
 
-    args << "--with-rsvg" if build.with? "librsvg"
     args << "--with-imagemagick" if build.with? "imagemagick"
+    args << "--with-rsvg" if build.with? "librsvg"
     args << "--without-popmail" if build.with? "mailutils"
+
+    if build.with? "x11"
+      # These libs are not specified in xft's .pc. See:
+      # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
+      # https://github.com/Homebrew/homebrew/issues/8156
+      ENV.append "LDFLAGS", "-lfreetype -lfontconfig"
+      args << "--with-x"
+      args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
+    else
+      args << "--without-x"
+    end
 
     system "./autogen.sh" if build.head? || build.devel?
 
-    if build.with? "cocoa"
-      args << "--with-ns" << "--disable-ns-self-contained"
-      system "./configure", *args
-      system "make"
-      system "make", "install"
-      prefix.install "nextstep/Emacs.app"
+    system "./configure", *args
+    system "make"
+    system "make", "install"
 
-      # Replace the symlink with one that avoids starting Cocoa.
+    if build.with? "cocoa"
+      prefix.install "nextstep/Emacs.app"
+      # Replace the symlink with a wrapper that doesn't start Cocoa
       (bin/"emacs").unlink # Kill the existing symlink
       (bin/"emacs").write <<-EOS.undent
         #!/bin/bash
         exec #{prefix}/Emacs.app/Contents/MacOS/Emacs "$@"
       EOS
-    else
-      if build.with? "x11"
-        # These libs are not specified in xft's .pc. See:
-        # https://trac.macports.org/browser/trunk/dports/editors/emacs/Portfile#L74
-        # https://github.com/Homebrew/homebrew/issues/8156
-        ENV.append "LDFLAGS", "-lfreetype -lfontconfig"
-        args << "--with-x"
-        args << "--with-gif=no" << "--with-tiff=no" << "--with-jpeg=no"
-      else
-        args << "--without-x"
-      end
-      args << "--without-ns"
-
-      system "./configure", *args
-      system "make"
-      system "make", "install"
     end
 
     # Follow MacPorts and don't install ctags from Emacs. This allows Vim
@@ -126,11 +124,21 @@ class Emacs < Formula
   end
 
   def caveats
-    if build.with? "cocoa" then <<-EOS.undent
-      A command line wrapper for the cocoa app was installed to:
+    s = ""
+    if build.with? "cocoa"
+      s += <<-EOS.undent
+      A command line wrapper for the Cocoa app was installed to:
         #{bin}/emacs
       EOS
+      if build.with? "x11"
+        s += <<-EOS.undent
+
+          WARNING: --with-cocoa and --with-x11 were both specified.
+          Emacs was built with the Cocoa window system.
+        EOS
+      end
     end
+    s
   end
 
   def plist; <<-EOS.undent
@@ -153,6 +161,6 @@ class Emacs < Formula
   end
 
   test do
-    assert_equal "4", shell_output("#{bin}/emacs --batch --eval=\"(print (+ 2 2))\"").strip
+    assert_equal "4", shell_output("#{bin}/emacs -Q --batch --eval=\"(print (+ 2 2))\"").strip
   end
 end
