@@ -3,6 +3,7 @@ class Fwup < Formula
   homepage "https://github.com/fhunleth/fwup"
   url "https://github.com/fhunleth/fwup/archive/v0.4.2.tar.gz"
   sha256 "1c444d52dded8f69de127f71346d53ebee16fae7cfde23f6a324336b2b6940bb"
+  revision 1
 
   bottle do
     cellar :any
@@ -11,11 +12,11 @@ class Fwup < Formula
     sha256 "10241696fa264411ac99db61411ca32a6c9337e9ccd0561975e485ab244c64c1" => :mavericks
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
   depends_on "confuse"
   depends_on "libarchive"
   depends_on "libsodium"
-  depends_on "autoconf" => :build
-  depends_on "automake" => :build
 
   def install
     system "./autogen.sh"
