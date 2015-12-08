@@ -3,14 +3,12 @@ class Sleuthkit < Formula
   homepage "http://www.sleuthkit.org/"
 
   stable do
-    url "https://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.3/sleuthkit-4.1.3.tar.gz"
-    sha256 "67f9d2a31a8884d58698d6122fc1a1bfa9bf238582bde2b49228ec9b899f0327"
+    url "https://github.com/sleuthkit/sleuthkit/archive/sleuthkit-4.2.0.tar.gz"
+    sha256 "d71414134c9f8ce8e193150dd478c063173ee7f3b01f8a2a5b18c09aaa956ba7"
+  end
 
-    # Upstream fix for https://github.com/sleuthkit/sleuthkit/issues/345
-    patch do
-      url "https://github.com/sleuthkit/sleuthkit/commit/39c62d6d169f8723c821ca7decdb8e124e126782.diff"
-      sha256 "f9419d6665a89df5625487dd50c16c12d1680477797917f8ec9182db55df4f7f"
-    end
+  head do
+    url "https://github.com/sleuthkit/sleuthkit.git"
   end
 
   bottle do
@@ -20,20 +18,19 @@ class Sleuthkit < Formula
     sha256 "abe6fee63395ae2a7f81179d993d9f114bef6633f3845af52541fc79a58321ae" => :mountain_lion
   end
 
-  head do
-    url "https://github.com/sleuthkit/sleuthkit.git"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   conflicts_with "irods", :because => "both install `ils`"
 
   option "with-jni", "Build Sleuthkit with JNI bindings"
+  option "with-debug", "Build debug version"
 
-  depends_on :java
-  depends_on :ant => :build
+  if build.with? "jni"
+    depends_on :java
+    depends_on :ant => :build
+  end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "afflib" => :optional
   depends_on "libewf" => :optional
 
@@ -41,9 +38,12 @@ class Sleuthkit < Formula
     :because => "both install a 'ffind' executable."
 
   def install
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home"
-    system "./bootstrap" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.append_to_cflags "-DNDEBUG" if build.without? "debug"
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home" if build.with? "jni"
+
+    system "./bootstrap"
+    system "./configure", "--disable-dependency-tracking",
+                          if build.without? "jni" then "--disable-java" end,
                           "--prefix=#{prefix}"
     system "make"
     system "make", "install"
@@ -54,5 +54,9 @@ class Sleuthkit < Formula
       end
       prefix.install "bindings"
     end
+  end
+
+  test do
+    system "#{bin}/tsk_loaddb", "-V"
   end
 end
