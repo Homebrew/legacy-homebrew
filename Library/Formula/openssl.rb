@@ -13,7 +13,9 @@ class Openssl < Formula
   end
 
   option :universal
-  option "without-check", "Skip build-time tests (not recommended)"
+  option "without-test", "Skip build-time tests (not recommended)"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "makedepend" => :build
 
@@ -63,7 +65,7 @@ class Openssl < Formula
       system "make", "depend"
       system "make"
 
-      if (MacOS.prefer_64_bit? || arch == MacOS.preferred_arch) && build.with?("check")
+      if (MacOS.prefer_64_bit? || arch == MacOS.preferred_arch) && build.with?("test")
         system "make", "test"
       end
 
