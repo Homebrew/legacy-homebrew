@@ -12,7 +12,9 @@ class Gwenhywfar < Formula
   end
 
   option "without-cocoa", "Build without cocoa support"
-  option "with-check", "Run build-time check"
+  option "with-test", "Run build-time check"
+
+  deprecated_option "with-check" => "with-test"
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -32,7 +34,7 @@ class Gwenhywfar < Formula
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-guis=#{guis.join(" ")}"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 
