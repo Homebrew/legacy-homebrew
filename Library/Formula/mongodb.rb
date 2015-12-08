@@ -34,6 +34,7 @@ class Mongodb < Formula
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+  option "with-sasl", "Compile with SASL support"
 
   needs :cxx11
 
