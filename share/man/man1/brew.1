@@ -365,7 +365,7 @@ Pin the specified \fIformulae\fR, preventing them from being upgraded when issui
 .
 .TP
 \fBprune\fR [\fB\-\-dry\-run\fR]
-Remove dead symlinks from the Homebrew prefix\. This is generally not needed, but can be useful when doing DIY installations\.
+Remove dead symlinks from the Homebrew prefix\. This is generally not needed, but can be useful when doing DIY installations\. Also remove broken app symlinks from \fB/Applications\fR and \fB~/Applications\fR that were previously created by \fBbrew linkapps\fR\.
 .
 .IP
 If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, show what would be removed, but do not actually remove anything\.
