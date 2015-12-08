@@ -4,7 +4,7 @@ class DnscryptProxy < Formula
   url "https://github.com/jedisct1/dnscrypt-proxy/releases/download/1.6.0/dnscrypt-proxy-1.6.0.tar.bz2"
   mirror "https://download.dnscrypt.org/dnscrypt-proxy/dnscrypt-proxy-1.6.0.tar.bz2"
   sha256 "e0cce91dc6ab4ed76478579a899b2abb888b1d7ed133cb55294c2f9ce24edc7d"
-  revision 2
+  revision 3
 
   bottle do
     sha256 "ecdce204206f93e58d05c039e47d430cad0c1b0f0a42d8db50c681c263a909c8" => :el_capitan
