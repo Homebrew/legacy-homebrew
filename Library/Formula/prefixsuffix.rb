@@ -1,8 +1,8 @@
 class Prefixsuffix < Formula
   desc "GUI batch renaming utility"
   homepage "https://github.com/murraycu/prefixsuffix"
-  url "https://download.gnome.org/sources/prefixsuffix/0.6/prefixsuffix-0.6.6.tar.xz"
-  sha256 "2d6b9d9b4b0f0699828d1aa0799d30cd173274fde57d063089e519ea794ca9a0"
+  url "https://download.gnome.org/sources/prefixsuffix/0.6/prefixsuffix-0.6.9.tar.xz"
+  sha256 "fc3202bddf2ebbb93ffd31fc2a079cfc05957e4bf219535f26e6d8784d859e9b"
 
   bottle do
     sha256 "f7f00db2e39546fdc85ae153223d861703a6200736c4176f0d026adcfeab79a7" => :el_capitan
