@@ -6,17 +6,17 @@ class Ansible < Formula
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
-  devel do
-    url "https://github.com/ansible/ansible.git",
-        :revision => "f2225395f96d5c309dddc66fafd984862d99b708"
-    version '2.0.0-0.6.rc1'
-  end
-
   bottle do
     revision 3
     sha256 "8105fdce4e745159fc80373e6773ec38e775bf208475615abc6e0c39987dc094" => :el_capitan
     sha256 "edd0f87d68016d66e602edf6ef5cd308d8b43954bc8cabaa96ff445d391f6a6f" => :yosemite
     sha256 "55dc3d486393c03a3c997c735a6cbc5488292fe145753f9a394a9b7067ff91fa" => :mavericks
+  end
+
+  devel do
+    url "https://releases.ansible.com/ansible/ansible-2.0.0-0.7.rc2.tar.gz"
+    sha256 "4f7227260becd444435bc4eddac21c603a725c52eddebff19a2a6708dbbe1462"
+    version "2.0.0-0.7.rc2"
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -524,7 +524,7 @@ class Ansible < Formula
         - name: ping
           ping:
     EOF
-    (testpath/"hosts.ini").write("localhost ansible_connection=local\n")
+    (testpath/"hosts.ini").write "localhost ansible_connection=local\n"
     system bin/"ansible-playbook", testpath/"playbook.yml", "-i", testpath/"hosts.ini"
   end
 end
