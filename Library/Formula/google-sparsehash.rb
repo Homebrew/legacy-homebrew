@@ -12,13 +12,15 @@ class GoogleSparsehash < Formula
   end
 
   option :cxx11
-  option "without-check", "Skip build-time tests (not recommended)"
+  option "without-test", "Skip build-time tests (not recommended)"
+
+  deprecated_option "without-check" => "without-test"
 
   def install
     ENV.cxx11 if build.cxx11?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 end
