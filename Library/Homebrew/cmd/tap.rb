@@ -5,6 +5,7 @@ module Homebrew
     if ARGV.empty?
       puts Tap.names
     elsif ARGV.first == "--repair"
+      Tap.each(&:link_manpages)
       migrate_taps :force => true
     elsif ARGV.first == "--list-official"
       require "official_taps"

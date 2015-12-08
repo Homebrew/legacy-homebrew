@@ -138,6 +138,8 @@ class Tap
       raise
     end
 
+    link_manpages
+
     formula_count = formula_files.size
     puts "Tapped #{formula_count} formula#{plural(formula_count, "e")} (#{path.abv})"
     Descriptions.cache_formulae(formula_names)
@@ -153,6 +155,29 @@ class Tap
     end
   end
 
+  def link_manpages
+    return unless (path/"man").exist?
+    conflicts = []
+    (path/"man").find do |src|
+      next if src.directory?
+      dst = HOMEBREW_PREFIX/"share"/src.relative_path_from(path)
+      next if dst.symlink? && src == dst.resolved_path
+      if dst.exist?
+        conflicts << dst
+        next
+      end
+      dst.make_relative_symlink(src)
+    end
+    unless conflicts.empty?
+      onoe <<-EOS.undent
+        Could not link #{name} manpages to:
+          #{conflicts.join("\n")}
+
+        Please delete these files and run `brew tap --repair`.
+      EOS
+    end
+  end
+
   # uninstall this {Tap}.
   def uninstall
     raise TapUnavailableError, name unless installed?
@@ -161,9 +186,20 @@ class Tap
     unpin if pinned?
     formula_count = formula_files.size
     Descriptions.uncache_formulae(formula_names)
+    unlink_manpages
     path.rmtree
-    path.dirname.rmdir_if_possible
+    path.parent.rmdir_if_possible
     puts "Untapped #{formula_count} formula#{plural(formula_count, "e")}"
+  end
+
+  def unlink_manpages
+    return unless (path/"man").exist?
+    (path/"man").find do |src|
+      next if src.directory?
+      dst = HOMEBREW_PREFIX/src.relative_path_from(path)
+      dst.delete if dst.symlink? && src == dst.resolved_path
+      dst.parent.rmdir_if_possible
+    end
   end
 
   # True if the {#remote} of {Tap} is customized.
@@ -262,7 +298,7 @@ class Tap
     raise TapUnavailableError, name unless installed?
     raise TapPinStatusError.new(name, false) unless pinned?
     pinned_symlink_path.delete
-    pinned_symlink_path.dirname.rmdir_if_possible
+    pinned_symlink_path.parent.rmdir_if_possible
     @pinned = false
   end
 

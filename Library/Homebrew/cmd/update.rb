@@ -76,6 +76,7 @@ module Homebrew
     puts "Already up-to-date." unless master_updated || !updated_taps.empty?
 
     Tap.clear_cache
+    Tap.each(&:link_manpages)
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
