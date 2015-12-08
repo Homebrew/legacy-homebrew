@@ -9,6 +9,13 @@ class Kapacitor < Formula
 
   head "https://github.com/influxdb/kapacitor.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "4c75d2db70eb2c5952209f79cab6dccb4c3766a107082405da7db0151c45031e" => :el_capitan
+    sha256 "5c5097b0507ebd543a2519167bb8fd876b87fdb3e3289c22a1583e4c7a2aa5a5" => :yosemite
+    sha256 "40cea054a5b5579108fee3d6217cafd789cc39d910f3d930905d96668f32eb9c" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/armon/go-metrics" do
