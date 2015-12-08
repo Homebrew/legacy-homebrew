@@ -13,12 +13,13 @@ class PerconaServer < Formula
   end
 
   option :universal
-  option "with-tests", "Build with unit tests"
+  option "with-test", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
   option "with-memcached", "Build with InnoDB Memcached plugin"
   option "with-local-infile", "Build with local infile loading support"
 
   deprecated_option "enable-local-infile" => "with-local-infile"
+  deprecated_option "with-tests" => "with-test"
 
   depends_on "cmake" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion
@@ -86,7 +87,7 @@ class PerconaServer < Formula
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.with? "tests"
+    if build.with? "test"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
