@@ -372,6 +372,10 @@ class FormulaAuditor
       if o.name !~ /with(out)?-/ && o.name != "c++11" && o.name != "universal" && o.name != "32-bit"
         problem "Options should begin with with/without. Migrate '--#{o.name}' with `deprecated_option`."
       end
+
+      if o.name =~ /^with(out)?-(?:checks?|tests)$/
+        problem "Use '--with#{$1}-test' instead of '--#{o.name}'. Migrate '--#{o.name}' with `deprecated_option`."
+      end
     end
   end
 
