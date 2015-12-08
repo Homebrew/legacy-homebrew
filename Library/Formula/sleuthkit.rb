@@ -3,13 +3,12 @@ class Sleuthkit < Formula
   homepage "http://www.sleuthkit.org/"
 
   stable do
-    url "https://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.3/sleuthkit-4.1.3.tar.gz"
-    sha256 "67f9d2a31a8884d58698d6122fc1a1bfa9bf238582bde2b49228ec9b899f0327"
+    url "https://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.2.0/sleuthkit-4.2.0.tar.gz"
+    sha256 "91b287f19798ae480083c15401686e4a041c15f7a92054a5c0320bcb65604723"
 
-    # Upstream fix for https://github.com/sleuthkit/sleuthkit/issues/345
+    # Fix for https://github.com/sleuthkit/sleuthkit/issues/510
     patch do
-      url "https://github.com/sleuthkit/sleuthkit/commit/39c62d6d169f8723c821ca7decdb8e124e126782.diff"
-      sha256 "f9419d6665a89df5625487dd50c16c12d1680477797917f8ec9182db55df4f7f"
+      url "https://gist.github.com/anarchivist/c3c360db3b7d3f1b5f78/raw/4c403b57ec0d5819171eb33bffbab0bf3d6aab1b/tsk-4.2.0-exclude-jni-sample-verification.patch"
     end
   end
 
@@ -50,9 +49,13 @@ class Sleuthkit < Formula
 
     if build.with? "jni"
       cd "bindings/java" do
-        system "ant"
+        system "make"
       end
       prefix.install "bindings"
     end
+  end
+
+  test do
+    system "#{bin}/tsk_loaddb", "-V"
   end
 end
