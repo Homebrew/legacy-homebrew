@@ -29,9 +29,8 @@ class Splint < Formula
       }
     EOS
 
-    output = `#{bin}/splint #{path} 2>&1`
-    assert output.include?("5:18: Variable c used before definition")
-    assert_equal 1, $?.exitstatus
+    output = shell_output("#{bin}/splint #{path} 2>&1", 1)
+    assert_match "5:18: Variable c used before definition", output
   end
 end
 
