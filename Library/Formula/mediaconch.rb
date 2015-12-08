@@ -4,6 +4,7 @@ class Mediaconch < Formula
   url "https://mediaarea.net/download/binary/mediaconch/15.11/MediaConch_CLI_15.11_GNU_FromSource.tar.bz2"
   version "15.11"
   sha256 "06f76ac63a41eb5b7e2c31fd16e450a2d7ae93db832710497d140c1b2c47bf82"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -27,7 +28,10 @@ class Mediaconch < Formula
       args = ["--disable-debug",
               "--disable-dependency-tracking",
               "--with-libcurl",
-              "--prefix=#{prefix}"]
+              "--prefix=#{prefix}",
+              # mediaconch installs libs/headers at the same paths as mediainfo
+              "--libdir=#{lib}/mediaconch",
+              "--includedir=#{include}/mediaconch"]
       system "./configure", *args
       system "make", "install"
     end
