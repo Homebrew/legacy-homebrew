@@ -5,6 +5,12 @@ class Gasnet < Formula
   mirror "https://bitbucket.org/berkeleylab/gasnet/downloads/GASNet-1.26.0.tar.gz"
   sha256 "32b84c47910c36137db198a9c5396dd0a87c29ad72f2040493aa9e8b2a24f929"
 
+  bottle do
+    sha256 "0f1359084e423cdb287254e14b68ff38a49f4c87338a02d02d9904b8bab77c38" => :el_capitan
+    sha256 "78e20db5ff24d5379c7337b63f60ad6013c4a6283882d30170b59701e587cd88" => :yosemite
+    sha256 "05cfeb3bc455822fb029d53798fb7485914432621e2d3e731c8f2b83530a6ab2" => :mavericks
+  end
+
   head do
     url "https://bitbucket.org/berkeleylab/gasnet.git"
 
