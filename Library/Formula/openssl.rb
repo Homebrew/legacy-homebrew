@@ -14,6 +14,7 @@ class Openssl < Formula
 
   option :universal
   option "without-check", "Skip build-time tests (not recommended)"
+  option "with-trace", "Enable s_client support for the -trace option"
 
   depends_on "makedepend" => :build
 
@@ -59,7 +60,9 @@ class Openssl < Formula
       end
 
       ENV.deparallelize
-      system "perl", "./Configure", *(configure_args + arch_args[arch])
+      args = configure_args
+      args << "enable-ssl-trace" if build.with? "trace"
+      system "perl", "./Configure", *(args + arch_args[arch])
       system "make", "depend"
       system "make"
 
