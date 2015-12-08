@@ -23,7 +23,9 @@ class Libspatialite < Formula
   option "without-libxml2", "Disable support for xml parsing (parsing needed by spatialite-gui)"
   option "without-liblwgeom", "Build without additional sanitization/segmentation routines provided by PostGIS 2.0+ library"
   option "without-geopackage", "Build without OGC GeoPackage support"
-  option "without-check", "Do not run `make check` prior to installing"
+  option "without-test", "Do not run `make check` prior to installing"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "pkg-config" => :build
   depends_on "proj"
@@ -62,20 +64,21 @@ class Libspatialite < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --with-sysroot=#{HOMEBREW_PREFIX}
+      --enable-geocallbacks
     ]
-    args << "--enable-geocallbacks"
     args << "--enable-freexl=no" if build.without? "freexl"
     args << "--enable-libxml2=no" if build.without? "libxml2"
     args << "--enable-lwgeom=yes" if build.with? "liblwgeom"
     args << "--enable-geopackage=no" if build.without? "geopackage"
 
     system "./configure", *args
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 
   test do
     # Verify mod_spatialite extension can be loaded using Homebrew's SQLite
-    system "echo \"SELECT load_extension('#{opt_lib}/mod_spatialite');\" | #{Formula["sqlite"].opt_bin}/sqlite3"
+    pipe_output("#{Formula["sqlite"].opt_bin}/sqlite3",
+      "SELECT load_extension('#{opt_lib}/mod_spatialite');")
   end
 end
