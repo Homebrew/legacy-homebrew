@@ -6,9 +6,9 @@ class Cfengine < Formula
 
   bottle do
     cellar :any
-    sha256 "9f385aae7fcd38256be3a72ce91fbcc1b86c6b3345b959db87161a75186134db" => :yosemite
-    sha256 "b5ad2d8d0cb6f5c1be9bd3c8d27e7a3ca8b8bc0e266a60daed62fe7e671ad86a" => :mavericks
-    sha256 "ede0bd07c38d96d290c74303e4469f5dfa3da29f23e539b67ea411c450f008ab" => :mountain_lion
+    sha256 "82b937ae5f95320c0dc70942a022d21bcf07794394cd87b2d878ca348791d1ab" => :el_capitan
+    sha256 "cd7e4ea9521f133e207b8dfb1fda1cc571cd4f2ed9a4be5dd128622193790ce0" => :yosemite
+    sha256 "eff5d4c4f4713df4aa5f862b5c2d9c6fade5c507d8a323b41e0618236cdd0ef8" => :mavericks
   end
 
   resource "masterfiles" do
