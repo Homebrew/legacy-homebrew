@@ -20,10 +20,11 @@ class GnuSmalltalk < Formula
     sha256 "aa6cab17841f999c9217cdccd185a74e42fc6a7fc17139120dad8815bdff137c"
   end
 
-  option "with-tests", "Verify the build with make check (this may hang)"
+  option "with-test", "Verify the build with make check (this may hang)"
   option "with-tcltk", "Build the Tcl/Tk module that requires X11"
 
-  deprecated_option "tests" => "with-tests"
+  deprecated_option "tests" => "with-test"
+  deprecated_option "with-tests" => "with-test"
   deprecated_option "tcltk" => "with-tcltk"
 
   depends_on "autoconf" => :build
@@ -66,7 +67,7 @@ class GnuSmalltalk < Formula
     system "autoreconf", "-ivf"
     system "./configure", *args
     system "make"
-    system "make", "-j1", "check" if build.with? "tests"
+    system "make", "-j1", "check" if build.with? "test"
     system "make", "install"
   end
 
