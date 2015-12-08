@@ -4,13 +4,14 @@ module Homebrew
   def unlinkapps
     target_dir = linkapps_target(:local => ARGV.include?("--local"))
 
-    unlinkapps_from_dir(target_dir)
+    unlinkapps_from_dir(target_dir, :dry_run => ARGV.dry_run?)
   end
 
   private
 
-  def unlinkapps_from_dir(target_dir)
+  def unlinkapps_from_dir(target_dir, opts = {})
     return unless target_dir.directory?
+    dry_run = opts.fetch(:dry_run, false)
 
     apps = Pathname.glob("#{target_dir}/*.app").select do |app|
       unlinkapps_unlink?(app)
@@ -20,9 +21,15 @@ module Homebrew
 
     apps.each do |app|
       app.extend(ObserverPathnameExtension)
-      puts "Unlinking: #{app}"
-      app.unlink
+      if dry_run
+        puts "Would unlink: #{app}"
+      else
+        puts "Unlinking: #{app}"
+        app.unlink
+      end
     end
+
+    return if dry_run
 
     if ObserverPathnameExtension.total.zero?
       puts "No apps unlinked from #{target_dir}" if ARGV.verbose?
