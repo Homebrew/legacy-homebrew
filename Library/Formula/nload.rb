@@ -11,6 +11,12 @@ class Nload < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
 
+  # crash on F2 and garbage in adapter name, see http://sourceforge.net/p/nload/bugs/8/ reported on 2014-04-03
+  patch :p0 do
+    url "https://sourceforge.net/p/nload/bugs/_discuss/thread/c9b68d8e/4a65/attachment/devreader-bsd.cpp.patch"
+    sha256 "19055158b72722f7dabff9890931094cac591bcc6de3e90a7f4744d28746ebc7"
+  end
+
   # Patching configure.in file to make configure compile on Mac OS.
   # Patch taken from MacPorts.
   patch :DATA
