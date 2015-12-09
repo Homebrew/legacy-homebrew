@@ -61,7 +61,7 @@ class Povray < Formula
       --disable-debug
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --mandir=#{man}"
+      --mandir=#{man}
     ]
 
     args << "--with-openexr=#{HOMEBREW_PREFIX}" if build.with? "openexr"
