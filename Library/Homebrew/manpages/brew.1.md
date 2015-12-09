@@ -29,7 +29,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
   * `list`:
     List all installed formulae.
 
-  * `search` <text> | `/`<text>`/`:
+  * `search` <text>|`/`<text>`/`:
     Perform a substring search of formula names for <text>. If <text> is
     surrounded with slashes, then it is interpreted as a regular expression.
     The search for <text> is extended online to some popular taps.
