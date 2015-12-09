@@ -146,8 +146,18 @@ class Letsencrypt < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[ setuptools cffi ConfigArgParse configobj cryptography enum34 funcsigs idna ipaddress mock ndg-httpsclient parsedatetime pbr psutil pyasn1 pycparser pyOpenSSL pyRFC3339 python2-pythondialog pytz requests six Werkzeug zope.component zope.event zope.interface python-augeas].each do |r|
-      resource(r).stage do
+
+    # First install setuptools because mock requires setuptools>=17.1
+    resource("setuptools").stage do
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
+    end
+
+    # Then install all the rest
+    resources.each do |r|
+      if r.name == "setuptools" then
+        next
+      end
+      r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
@@ -156,14 +166,16 @@ class Letsencrypt < Formula
     touch libexec/"vendor/lib/python2.7/site-packages/zope/__init__.py"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-    system "python", *Language::Python.setup_install_args(libexec)
 
+    # Install acme
     cd "acme" do
       system "python", *Language::Python.setup_install_args(libexec)
     end
 
+    # Install letsencrypt
     system "python", *Language::Python.setup_install_args(libexec)
 
+    # Install letsencrypt-apache
     cd "letsencrypt-apache" do
       system "python", *Language::Python.setup_install_args(libexec)
     end
