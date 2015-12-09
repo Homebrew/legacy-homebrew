@@ -4,6 +4,12 @@ class Devhelp < Formula
   url "https://download.gnome.org/sources/devhelp/3.18/devhelp-3.18.1.tar.xz"
   sha256 "303a162ad294dc6f9984898e501a06dc5d2aa9812b06801c2e39b250d8c51aef"
 
+  bottle do
+    sha256 "0a8fceef8356c847134a86553a469af6c4e48f72b9e8e9b6576e4bcfe80eca79" => :el_capitan
+    sha256 "3f052f305449b5f24d004c1b2561b3fa59c2354d2fb2b54ba61189e115fb91b9" => :yosemite
+    sha256 "81fd4026bae8091f1d8485b69189de7cb4184e87f4dadff8a779100c4d19534d" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "webkitgtk"
