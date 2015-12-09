@@ -1,7 +1,7 @@
 require "blacklist"
 require "cmd/doctor"
 require "cmd/search"
-require "cmd/tap"
+require "tap_utils"
 require "formula_installer"
 require "hardware"
 

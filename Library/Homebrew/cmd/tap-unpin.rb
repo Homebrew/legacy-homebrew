@@ -1,4 +1,4 @@
-require "cmd/tap"
+require "tap_utils"
 
 module Homebrew
   def tap_unpin

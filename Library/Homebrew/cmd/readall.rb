@@ -4,8 +4,8 @@
 # or to determine if any current formulae have Ruby issues
 
 require "formula"
-require "cmd/tap"
 require "thread"
+require "tap_utils"
 
 module Homebrew
   def readall
