@@ -13,6 +13,6 @@ class Ploticus242 < Formula
   end
 
   test do
-    system "pl 2>&1 >/dev/null | grep 'usage: pl scriptfile'"
+    assert_match "usage: pl scriptfile", shell_output("#{bin}/pl 2>&1", 1)
   end
 end
