@@ -25,8 +25,6 @@ module Homebrew
       formulae = []
 
       if ARGV.casks.any?
-        brew_cask = Formulary.factory("brew-cask")
-        install_formula(brew_cask) unless brew_cask.installed?
         args = []
         args << "--force" if ARGV.force?
         args << "--debug" if ARGV.debug?

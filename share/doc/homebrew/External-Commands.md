@@ -73,7 +73,6 @@ These commands have been contributed by Homebrew users but are not included in t
 > Install using:
 > ```
   $ brew tap caskroom/cask
-  $ brew install brew-cask
 > ```
 
 ### brew-gem
