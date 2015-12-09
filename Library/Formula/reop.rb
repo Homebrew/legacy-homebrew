@@ -3,13 +3,13 @@ class Reop < Formula
   homepage "http://www.tedunangst.com/flak/post/reop"
   url "http://www.tedunangst.com/flak/files/reop-2.1.0.tgz"
   sha256 "e429c7ff47f130bd465eaa0c23a1783b476bc484d32793592b54a568b55e49af"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "ab56f50d663731a70446daea85a616c84643fe263d3550546c19049fde21af0c" => :el_capitan
-    sha256 "6f8ed983458773d51cf1a7fa0a36c655bcb4d1e4ad0eaff9734c32df4f6259b1" => :yosemite
-    sha256 "1691a7dff3d0b17dc585d1aa1841e80ad0101ea0f0253fa8e53ee1d510acf076" => :mavericks
+    sha256 "b1075b4d0f121d9f60a1f07ab4488ce225fcd151c1300a5b895bbe26575472a1" => :el_capitan
+    sha256 "024324a71df875f40d2b4a596ce6b97d7e5606496140a72c532d92dca5541125" => :yosemite
+    sha256 "c46860b76c7cef21c71d8dd369911c8c73d846efab659e3ca476bd6bc5730d56" => :mavericks
   end
 
   depends_on "libsodium"

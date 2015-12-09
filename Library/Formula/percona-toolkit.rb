@@ -10,13 +10,16 @@ class PerconaToolkit < Formula
 
   bottle do
     cellar :any
-    sha256 "d790bd7957bd1380492624fb16944d9643f0ab8c53321befd80bb5697b5cf0c9" => :el_capitan
-    sha256 "daa0d1f6cbae57d017da85efee033cb9923e8e9a34ed3cb3c123d17505d9c61a" => :yosemite
-    sha256 "5074c177635a4c5d2618687acc5d028b6bb989dfd8fa980e4d6f913c4490497e" => :mavericks
+    revision 1
+    sha256 "d371749d14ea3cac95262bbbe0566081b801573b7778039d62778b5273d4ed81" => :el_capitan
+    sha256 "ae886b3bf78c6bcb37724e1bc569d76a6f9159701848c050619f96c29f45bb9c" => :yosemite
+    sha256 "735e791e9f13df2a8f800dbf95fab147f0de458e9c32337ada5f01420ae05daf" => :mavericks
   end
 
   depends_on :mysql
   depends_on "openssl"
+
+  conflicts_with "mytop", :because => "both install `perllocal.pod`"
 
   resource "DBD::mysql" do
     url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"

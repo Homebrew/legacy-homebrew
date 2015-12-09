@@ -162,20 +162,26 @@ begin
       Tap.fetch("Homebrew", "services")
     end
 
+    command_installed = false
+
     if possible_tap && !possible_tap.installed?
       possible_tap.install
-
-      if cmd == "cask"
-        require "cmd/install"
-        brew_cask = Formulary.factory("brew-cask")
-        Homebrew.install_formula(brew_cask)
-      end
-
-      exec HOMEBREW_BREW_FILE, cmd, *ARGV
+      command_installed = true
     end
 
-    onoe "Unknown command: #{cmd}"
-    exit 1
+    if cmd == "cask" && (brew_cask = Formulary.factory("brew-cask")) \
+       && !brew_cask.installed?
+      require "cmd/install"
+      Homebrew.install_formula(brew_cask)
+      command_installed = true
+    end
+
+    if command_installed
+      exec HOMEBREW_BREW_FILE, cmd, *ARGV
+    else
+      onoe "Unknown command: #{cmd}"
+      exit 1
+    end
   end
 
 rescue FormulaUnspecifiedError

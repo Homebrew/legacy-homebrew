@@ -13,7 +13,9 @@ class Cereal < Formula
     sha256 "00ef7732975fb675326d0dc1f1a8732b995626075cb5f0a3f2740f28c3fcdda6" => :mountain_lion
   end
 
-  option "with-tests", "Build and run the test suite"
+  option "with-test", "Build and run the test suite"
+
+  deprecated_option "with-tests" => "with-test"
 
   depends_on "cmake" => :build if build.with? "tests"
 
@@ -21,7 +23,7 @@ class Cereal < Formula
 
   def install
     ENV.cxx11
-    if build.with? "tests"
+    if build.with? "test"
       system "cmake", ".", *std_cmake_args
       system "make"
       system "make", "test"

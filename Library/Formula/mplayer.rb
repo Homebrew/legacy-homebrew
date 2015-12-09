@@ -8,9 +8,10 @@ class Mplayer < Formula
   end
 
   bottle do
-    sha256 "5504434dce05f51d0d6336426f64af559740203193f6f34d1ef250ebfe955d8f" => :el_capitan
-    sha256 "6d6ccf0b963bc4a0edd48bc7d1e1008db888dc38b91fe85c6c58c5d6dded4f48" => :yosemite
-    sha256 "d90208d62889b8c74d06917ba926f91fddb039ab15b27c825e4356b75b9d105b" => :mavericks
+    revision 1
+    sha256 "f14962c22eaf81b94f43026b67b34e818f64bd3f1c5383f0a5cd729bd73f9992" => :el_capitan
+    sha256 "dea0b59f52a6b73f09668e71ccc484536f5889b596b163fac6d033a52e967192" => :yosemite
+    sha256 "06f46e9347a77dd6f4190f864f30841e1aeab17309966e96648af4c186358fb2" => :mavericks
   end
 
   head do
@@ -22,21 +23,8 @@ class Mplayer < Formula
     patch :DATA
   end
 
-  option "without-osd", "Build without OSD"
-
   depends_on "yasm" => :build
   depends_on "libcaca" => :optional
-  depends_on :x11 => :optional
-
-  deprecated_option "with-x" => "with-x11"
-
-  if build.with?("osd") || build.with?("x11")
-    # These are required for the OSD. We can get them from X11, or we can
-    # build our own.
-    depends_on "fontconfig"
-    depends_on "freetype"
-    depends_on "libpng"
-  end
 
   fails_with :clang do
     build 211
@@ -51,18 +39,17 @@ class Mplayer < Formula
     ENV.O1 if ENV.compiler == :llvm
 
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
-    # and mplayer doesn't expect the hacks we apply. So it chokes.
+    # and mplayer doesn't expect the hacks we apply. So it chokes. Only relevant
+    # if you have cdparanoia installed.
     # Specify our compiler to stop ffmpeg from defaulting to gcc.
     args = %W[
-      --prefix=#{prefix}
       --cc=#{ENV.cc}
       --host-cc=#{ENV.cc}
       --disable-cdparanoia
+      --prefix=#{prefix}
+      --disable-x11
     ]
 
-    args << "--enable-menu" if build.with? "osd"
-    args << "--disable-x11" if build.without? "x11"
-    args << "--enable-freetype" if build.with?("osd") || build.with?("x11")
     args << "--enable-caca" if build.with? "libcaca"
 
     system "./configure", *args

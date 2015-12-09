@@ -15,9 +15,10 @@ class Agda < Formula
   end
 
   bottle do
-    sha256 "91f67965e6a349b98b785aa189e80203321e8bd3e0b190fa4079ea5722c60813" => :el_capitan
-    sha256 "1fb3c63041d1b77395b44c7cd30c25a55dde4a8915103869209e5764358650d4" => :yosemite
-    sha256 "45030e84681d5460fe1c4458f5578b5757a2cc55fe2d09d034665acf10f16f5c" => :mavericks
+    revision 1
+    sha256 "72926be89f32a171d46e92aeefcca5005f9c0078689d9d63427757b1b5651bfb" => :el_capitan
+    sha256 "2822c9f9ce79c0354da58ba604190c6eb8bebf64f0be4925b7cd2d9f1bb1f950" => :yosemite
+    sha256 "aee69ac2b9cdf715f39defba8b81d6572dc02e5edb21417781a39932fc132356" => :mavericks
   end
 
   head do
@@ -96,7 +97,7 @@ class Agda < Formula
     # compile the included Emacs mode
     if build.with? "emacs"
       system bin/"agda-mode", "compile"
-      elisp.install Dir["#{share}/*/Agda-#{version}/emacs-mode/*"]
+      elisp.install_symlink Dir["#{share}/*/Agda-#{version}/emacs-mode/*"]
     end
   end
 

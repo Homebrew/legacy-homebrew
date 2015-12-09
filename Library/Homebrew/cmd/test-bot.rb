@@ -37,20 +37,29 @@ module Homebrew
 
   def resolve_test_tap
     tap = ARGV.value("tap")
-    return Tap.fetch(*tap_args(tap)) if tap
+    if tap
+      tap = Tap.fetch(tap)
+      return tap unless tap.core_formula_repository?
+    end
 
     if ENV["UPSTREAM_BOT_PARAMS"]
       bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
       bot_argv.extend HomebrewArgvExtension
       tap = bot_argv.value("tap")
-      return Tap.fetch(*tap_args(tap)) if tap
+      if tap
+        tap = Tap.fetch(tap)
+        return tap unless tap.core_formula_repository?
+      end
     end
 
     if git_url = ENV["UPSTREAM_GIT_URL"] || ENV["GIT_URL"]
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
-      HOMEBREW_TAP_ARGS_REGEX =~ url_path
-      return Tap.fetch($1, $3) if $1 && $3 && $3 != "homebrew"
+      begin
+        tap = Tap.fetch(tap)
+        return tap unless tap.core_formula_repository?
+      rescue
+      end
     end
 
     # return nil means we are testing core repo.
@@ -414,7 +423,7 @@ module Homebrew
     def setup
       @category = __method__
       return if ARGV.include? "--skip-setup"
-      test "brew", "doctor" unless ENV["TRAVIS"]
+      test "brew", "doctor" if !ENV["TRAVIS"] && ENV["HOMEBREW_RUBY"] != "1.8.7"
       test "brew", "--env"
       test "brew", "config"
     end
@@ -428,7 +437,7 @@ module Homebrew
         formula_name
       end
 
-      test "brew", "uses", canonical_formula_name
+      test "brew", "uses", "--recursive", canonical_formula_name
 
       formula = Formulary.factory(canonical_formula_name)
 
@@ -512,7 +521,7 @@ module Homebrew
       build_dependencies = dependencies - runtime_dependencies
       unchanged_build_dependencies = build_dependencies - @formulae
 
-      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
+      dependents = Utils.popen_read("brew", "uses", "--recursive", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
       dependents -= @formulae
       dependents = dependents.map { |d| Formulary.factory(d) }
 
@@ -647,7 +656,7 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-ffdx"
+      git "clean", "-ffdx" unless ENV["HOMEBREW_RUBY"] == "1.8.7"
       pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) { |lock| FileUtils.rm_rf lock }
     end
@@ -655,16 +664,10 @@ module Homebrew
     def cleanup_after
       @category = __method__
 
-      checkout_args = []
-      if ARGV.include? "--cleanup"
-        test "git", "clean", "-ffdx"
-        checkout_args << "-f"
-      end
-
-      checkout_args << @start_branch
-
       if @start_branch && !@start_branch.empty? && \
          (ARGV.include?("--cleanup") || @url || @hash)
+        checkout_args = [@start_branch]
+        checkout_args << "-f" if ARGV.include? "--cleanup"
         test "git", "checkout", *checkout_args
       end
 
@@ -673,6 +676,7 @@ module Homebrew
         git "stash", "pop"
         test "brew", "cleanup", "--prune=7"
         git "gc", "--auto"
+        test "git", "clean", "-ffdx"
         if ARGV.include? "--local"
           FileUtils.rm_rf ENV["HOMEBREW_HOME"]
           FileUtils.rm_rf ENV["HOMEBREW_LOGS"]

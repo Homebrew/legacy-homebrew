@@ -76,6 +76,7 @@ module Homebrew
     puts "Already up-to-date." unless master_updated || !updated_taps.empty?
 
     Tap.clear_cache
+    Tap.each(&:link_manpages)
 
     # automatically tap any migrated formulae's new tap
     report.select_formula(:D).each do |f|
@@ -203,15 +204,6 @@ class Updater
   end
 
   def pull!(options = {})
-    unless system "git", "diff", "--quiet"
-      if ARGV.verbose?
-        puts "Stashing your changes:"
-        system "git", "status", "--short", "--untracked-files"
-      end
-      safe_system "git", "stash", "save", "--include-untracked", *@quiet_args
-      @stashed = true
-    end
-
     # The upstream repository's default branch may not be master;
     # check refs/remotes/origin/HEAD to see what the default
     # origin branch name is, and use that. If not set, fall back to "master".
@@ -226,6 +218,16 @@ class Updater
       @initial_branch = `git symbolic-ref --short HEAD 2>/dev/null`.chomp
     rescue ErrorDuringExecution
       @initial_branch = ""
+    end
+
+    unless `git status --untracked-files=all --porcelain 2>/dev/null`.chomp.empty?
+      if ARGV.verbose?
+        puts "Stashing uncommitted changes to #{repository}."
+        system "git", "status", "--short", "--untracked-files=all"
+      end
+      safe_system "git", "stash", "save", "--include-untracked", *@quiet_args
+      safe_system "git", "reset", "--hard", *@quiet_args
+      @stashed = true
     end
 
     # Used for testing purposes, e.g., for testing formula migration after
@@ -243,7 +245,7 @@ class Updater
     end
 
     if @initial_branch != @upstream_branch && !@initial_branch.empty?
-      safe_system "git", "checkout", @upstream_branch, *@quiet_args
+      safe_system "git", "checkout", "--force", "-B", @upstream_branch, "origin/#{@upstream_branch}", *@quiet_args
     end
 
     @initial_revision = read_current_revision
@@ -263,18 +265,29 @@ class Updater
 
     @current_revision = read_current_revision
 
-    if @initial_branch != "master" && !@initial_branch.empty?
+    if @initial_branch != @upstream_branch && !@initial_branch.empty?
       safe_system "git", "checkout", @initial_branch, *@quiet_args
+      pop_stash
+    else
+      pop_stash_message
     end
+  end
 
-    if @stashed
-      safe_system "git", "stash", "pop", *@quiet_args
-      if ARGV.verbose?
-        puts "Restored your changes:"
-        system "git", "status", "--short", "--untracked-files"
-      end
-      @stashed = false
+  def pop_stash
+    return unless @stashed
+    safe_system "git", "stash", "pop", *@quiet_args
+    if ARGV.verbose?
+      puts "Restoring your stashed changes to #{repository}:"
+      system "git", "status", "--short", "--untracked-files"
     end
+    @stashed = false
+  end
+
+  def pop_stash_message
+    return unless @stashed
+    puts "To restore the stashed changes to #{repository} run:"
+    puts "  `cd #{repository} && git stash pop`"
+    @stashed = false
   end
 
   def reset_on_interrupt
@@ -282,9 +295,12 @@ class Updater
   ensure
     if $?.signaled? && $?.termsig == 2 # SIGINT
       safe_system "git", "checkout", @initial_branch unless @initial_branch.empty?
-      safe_system "git", "reset", "--hard", @initial_revision
-      safe_system "git", "stash", "pop", *@quiet_args if @stashed
-      @stashed = false
+      safe_system "git", "reset", "--hard", @initial_revision, *@quiet_args
+      if @initial_branch
+        pop_stash
+      else
+        pop_stash_message
+      end
     end
   end
 
@@ -407,7 +423,7 @@ class Report
         next unless newname = Tap.fetch($1, $2).formula_renames[oldname]
       else
         oldname = path.basename(".rb").to_s
-        next unless newname = FORMULA_RENAMES[oldname]
+        next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
       end
 
       if fetch(:A, []).include?(newpath = path.dirname.join("#{newname}.rb"))
@@ -440,30 +456,20 @@ class Report
   end
 
   def dump_formula_report(key, title)
-    formula = select_formula(key)
-    unless formula.empty?
-      # Determine list item indices of installed formulae.
-      formula_installed_index = formula.each_index.select do |index|
-        name, newname = formula[index]
-        installed?(name) || (newname && installed?(newname))
-      end
-
-      # Format list items of renamed formulae.
+    formula = select_formula(key).map do |name, new_name|
+      # Format list items of renamed formulae
       if key == :R
-        formula.map! { |oldname, newname| "#{oldname} -> #{newname}" }
+        new_name = pretty_installed(new_name) if installed?(name)
+        "#{name} -> #{new_name}"
+      else
+        installed?(name) ? pretty_installed(name) : name
       end
+    end
 
-      # Append suffix '(installed)' to list items of installed formulae.
-      formula_installed_index.each do |index|
-        formula[index] += " (installed)"
-      end
-
-      # Fetch list items of installed formulae for highlighting.
-      formula_installed = formula.values_at(*formula_installed_index)
-
+    unless formula.empty?
       # Dump formula list.
       ohai title
-      puts_columns(formula, formula_installed)
+      puts_columns(formula)
     end
   end
 

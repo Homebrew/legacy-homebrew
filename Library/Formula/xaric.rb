@@ -1,24 +1,22 @@
 class Xaric < Formula
   desc "IRC client"
-  homepage "http://xaric.org/"
-  url "http://xaric.org/software/xaric/releases/xaric-0.13.6.tar.gz"
-  sha256 "dbed41ed43efcea05baac0af0fe87cca36eebd96e5b7d4838b38cca3da4518bb"
-  revision 1
+  homepage "https://xaric.org/"
+  url "https://xaric.org/software/xaric/releases/xaric-0.13.7.tar.gz"
+  sha256 "fd8cd677e2403e44ff525eac7c239cd8d64b7448aaf56a1272d1b0c53df1140c"
 
   bottle do
     revision 1
-    sha256 "cf732bf5a8c56555687ac99752f06e7ad2cdf5948943c3edaf9d758c0b713d33" => :el_capitan
-    sha256 "bc164f72419c5185fde2a73f75ea48724f0c5ccccf892241001e9df3cae4b86b" => :yosemite
-    sha256 "f999829820363af7324ed2934f1447ef2fb068ec9935be41687e2249d7fca328" => :mavericks
+    sha256 "9ddfb8878904f92a7281f5611a11b72b81ebed0ef6ac7af9c10588cb717b9317" => :el_capitan
+    sha256 "f29d234ec8065f976ce8f14e21374871e5b8b2d092a26ad163d9cac32988bb9b" => :yosemite
+    sha256 "3b8f2a6b837e43ff57ef626b4d46142562c1eda120ac5889124eab11d8b46b86" => :mavericks
   end
 
   depends_on "openssl"
 
   def install
-    # Re OpenSSL: https://github.com/laeos/xaric/issues/2
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "withval=#{Formula["openssl"].opt_prefix}"
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
     system "make", "install"
   end
 

@@ -12,7 +12,9 @@ class Wolfssl < Formula
     sha256 "57dafa375ce859c97d3c0cd90b31d00d0a57a3ee2ba3fe663e7e4afe18293f57" => :mavericks
   end
 
-  option "without-check", "Skip compile-time tests."
+  option "without-test", "Skip compile-time tests"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -84,7 +86,7 @@ class Wolfssl < Formula
     system "./autogen.sh"
     system "./configure", *args
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 

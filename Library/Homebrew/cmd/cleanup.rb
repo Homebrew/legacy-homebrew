@@ -39,9 +39,10 @@ module Homebrew
       else
         eligible_kegs.each { |keg| opoo "Skipping (old) keg-only: #{keg}" }
       end
-    elsif f.installed_prefixes.any?
+    elsif f.installed_prefixes.any? && !f.pinned?
       # If the cellar only has one version installed, don't complain
-      # that we can't tell which one to keep.
+      # that we can't tell which one to keep. Don't complain at all if the
+      # only installed version is a pinned formula.
       opoo "Skipping #{f.full_name}: most recent version #{f.pkg_version} not installed"
     end
   end
