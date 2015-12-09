@@ -22,7 +22,7 @@ class Postgrest < Formula
   setup_ghc_compilers
 
   def install
-    install_cabal_package
+    install_cabal_package "--enable-executable-stripping"
   end
 
   test do
