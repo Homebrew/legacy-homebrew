@@ -1,5 +1,5 @@
 class Ncutil < Formula
-  desc "Modify OS X's Notification Center from the command line"
+  desc "Modify OS X's Notification Center from the command-line"
   homepage "https://github.com/jacobsalmela/NCutil"
   url "https://github.com/jacobsalmela/NCutil/archive/2.4.tar.gz"
   version "2.4"
