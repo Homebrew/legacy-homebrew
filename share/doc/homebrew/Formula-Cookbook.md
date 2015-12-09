@@ -755,8 +755,7 @@ For example, Ruby 1.9’s gems should be installed to `var/lib/ruby/` so that ge
 
 ### launchd plist files
 
-<<<<<<< 12f42a6761cb29ed3c9715fe2cbccff02bdc448f
-Homebrew provides two Formula methods for launchd plist files. `plist_name` will return `homebrew.mxcl.<formula>`, and `plist_path` will return, for example, `/usr/local/Cellar/foo/0.1/homebrew.mxcl.foo.plist`.
+Homebrew provides two Formula methods for launchd plist files. [`plist_name`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#plist_name-instance_method) will return e.g. `homebrew.mxcl.<formula>` and [`plist_path`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#plist_path-instance_method) will return e.g. `/usr/local/Cellar/foo/0.1/homebrew.mxcl.foo.plist`.
 
 ## Updating formulae
 
@@ -772,11 +771,6 @@ Homebrew wants to maintain a consistent Ruby style across all formulae based on 
 
 * The order of methods in a formula should be consistent with other formulae (e.g.: `def patches` goes before `def install`)
 * An empty line is required before the `__END__` line
-
-
-=======
-Homebrew provides two Formula methods for launchd plist files. [`plist_name`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#plist_name-instance_method) will return e.g. `homebrew.mxcl.<formula>` and [`plist_path`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#plist_path-instance_method) will return e.g. `/usr/local/Cellar/foo/0.1/homebrew.mxcl.foo.plist`.
->>>>>>> Overhaul, simplify and cleanup documentation.
 
 # Troubleshooting for people writing new formulae
 
