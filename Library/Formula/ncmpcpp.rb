@@ -1,14 +1,15 @@
 class Ncmpcpp < Formula
   desc "Ncurses-based client for the Music Player Daemon"
-  homepage "http://ncmpcpp.rybczak.net/"
-  url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.6.tar.bz2"
-  sha256 "2b7408b207c3ffd1ddd11bcb9c0a1f2434bb80db990dcf482968cf915ebc0e67"
+  homepage "http://rybczak.net/ncmpcpp/"
+  url "http://rybczak.net/ncmpcpp/stable/ncmpcpp-0.6.7.tar.bz2"
+  sha256 "08807dc515b4e093154a6e91cdd17ba64ebedcfcd7aa34d0d6eb4d4cc28a217b"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "d063bae471ea0a7af3bc33adb96d6963f7b703a20eb2d178624aafe42a7ee359" => :yosemite
-    sha256 "c6a96d12f6b6d29c5261b80c9ea11504e2e823515ca51aa2df6ff71928154d1b" => :mavericks
-    sha256 "6f09296129ada8c0e511150640f7f44439bf1a56829776a6245f3a9e9640ca2d" => :mountain_lion
+    sha256 "f3a1dff9e1e053f22799c7ecdea3997f7adabf923c9b91dde9d1f29d30720bef" => :el_capitan
+    sha256 "e7597bdcc79ec3dcde075f60ebcb958e95abf09c6bc6c3fd49b539e2ad59525d" => :yosemite
+    sha256 "c781cec0064aab5a050a314b1a67f5980f3879955ef3d32fbda1b0ee58676111" => :mavericks
   end
 
   head do
@@ -30,6 +31,7 @@ class Ncmpcpp < Formula
   depends_on "pkg-config" => :build
   depends_on "libmpdclient"
   depends_on "readline"
+  depends_on "fftw" if build.with? "visualizer"
 
   if MacOS.version < :mavericks
     depends_on "boost" => "c++11"
@@ -38,8 +40,6 @@ class Ncmpcpp < Formula
     depends_on "boost"
     depends_on "taglib"
   end
-
-  depends_on "fftw" if build.with? "visualizer"
 
   needs :cxx11
 
@@ -66,5 +66,9 @@ class Ncmpcpp < Formula
       system "./configure", *args
     end
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/ncmpcpp --version")
   end
 end

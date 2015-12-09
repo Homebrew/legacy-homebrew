@@ -1,7 +1,7 @@
 class Mcabber < Formula
   desc "Console Jabber client"
-  homepage "http://mcabber.com/"
-  url "http://lilotux.net/~mikael/mcabber/files/mcabber-1.0.0.tar.bz2"
+  homepage "https://mcabber.com/"
+  url "https://lilotux.net/~mikael/mcabber/files/mcabber-1.0.0.tar.bz2"
   sha256 "5476bcba395e0b9527823f5a9bce725151756f685ce2dcf6fad3dbe50a157032"
 
   bottle do

@@ -1,13 +1,13 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.0.tar.bz2"
-  sha256 "26b432ce8dcbad250a9787402f2c999ecb6c25695b00c9c6ee05a306c78b6490"
+  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.1.tar.bz2"
+  sha256 "7919ecde15962bab2e26d01d5f5f4ead6696bbcacb504b8560f2e3a152bfe492"
 
   bottle do
-    sha256 "27b7652c76a14b6cc2587963a7b90384844cbc52e947569f24bee71697447b37" => :yosemite
-    sha256 "8db6160f29874dac3705f5c18a3cb9e62e0b36c8beaed70b72dc4aeda642d1c8" => :mavericks
-    sha256 "823851cf8e01825899d97dc1766dc1c44eb11f5cc1a3a25b60b5c087c35ec81d" => :mountain_lion
+    sha256 "257a75a3227ddc0b5e7c970a97c76cadeda417a259c54efbe25df955e0efe32b" => :el_capitan
+    sha256 "2c9afac3f1350e4693e2077fa3b5a6f149fc0b0cb19e804bba15cd8d00e62456" => :yosemite
+    sha256 "7c106ab43c8aa5fcde2d9961a084c4c34d5a8ea1888668d825ce1ec818519e29" => :mavericks
   end
 
   head do
@@ -41,6 +41,7 @@ class OpenMpi < Formula
       --with-libevent=#{Formula["libevent"].opt_prefix}
       --with-sge
     ]
+    args << "--with-platform-optimized" if build.head?
     args << "--disable-mpi-fortran" if build.without? "fortran"
     args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
 

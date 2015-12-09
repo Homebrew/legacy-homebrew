@@ -1,16 +1,14 @@
 class GlibNetworking < Formula
   desc "Network related modules for glib"
   homepage "https://launchpad.net/glib-networking"
-  url "https://download.gnome.org/sources/glib-networking/2.44/glib-networking-2.44.0.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/g/glib-networking/glib-networking_2.44.0.orig.tar.xz"
-  sha256 "8f8a340d3ba99bfdef38b653da929652ea6640e27969d29f7ac51fbbe11a4346"
+  url "https://download.gnome.org/sources/glib-networking/2.46/glib-networking-2.46.1.tar.xz"
+  sha256 "d5034214217f705891b6c9e719cc2c583c870bfcfdc454ebbb5e5e8940ac90b1"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "fd29427de98662c12afd02ef385a2a99cc6117a6e1c3f0456c7c87ff6e8d1943" => :yosemite
-    sha256 "9adb59c4b037ad2c6915c0a3b192b82ef17df89a9fb9137f132d7c2a0fb7689a" => :mavericks
-    sha256 "ece7fd3deec1bfee535d19ce7494c00ed71f24816096c484b6021e148c1ad913" => :mountain_lion
+    sha256 "019a74e4cf9d8479d2379ac3d2833150bca7d30fdc662df0046c05ca739c0503" => :el_capitan
+    sha256 "35da1bacbc373d4430dccf0cba27cc84eebc69b6710b36efc63f236c61e09481" => :yosemite
+    sha256 "ab88b21eb30c66be5ba5c7ae77e991849e5370e395f85d2bd0824e78704efede" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -63,7 +61,7 @@ class GlibNetworking < Formula
       "-I#{HOMEBREW_PREFIX}/opt/gettext/include",
       "-L#{HOMEBREW_PREFIX}/lib",
       "-L#{HOMEBREW_PREFIX}/opt/gettext/lib",
-      "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl"
+      "-lgio-2.0", "-lgobject-2.0", "-lglib-2.0", "-lintl",
     ]
 
     system ENV.cc, "gtls-test.c", "-o", "gtls-test", *flags

@@ -157,9 +157,15 @@ class Llvm < Formula
         "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
 
       (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
-      inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
-      bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
-      man1.install_symlink share/"clang/tools/scan-build/scan-build.1"
+      if build.head?
+        inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
+        bin.install_symlink share/"clang/tools/scan-build/bin/scan-build", share/"clang/tools/scan-view/bin/scan-view"
+        man1.install_symlink share/"clang/tools/scan-build/man/scan-build.1"
+      else
+        inreplace "#{share}/clang/tools/scan-build/scan-build", "$RealBin/bin/clang", "#{bin}/clang"
+        bin.install_symlink share/"clang/tools/scan-build/scan-build", share/"clang/tools/scan-view/scan-view"
+        man1.install_symlink share/"clang/tools/scan-build/scan-build.1"
+      end
     end
 
     # install llvm python bindings
@@ -175,6 +181,21 @@ class Llvm < Formula
   end
 
   test do
-    system "#{bin}/llvm-config", "--version"
+    assert_equal prefix.to_s, shell_output("#{bin}/llvm-config --prefix").chomp
+
+    if build.with? "clang"
+      (testpath/"test.cpp").write <<-EOS.undent
+        #include <iostream>
+        using namespace std;
+
+        int main()
+        {
+          cout << "Hello World!" << endl;
+          return 0;
+        }
+      EOS
+      system "#{bin}/clang++", "test.cpp", "-o", "test"
+      system "./test"
+    end
   end
 end

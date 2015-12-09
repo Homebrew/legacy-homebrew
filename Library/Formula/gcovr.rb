@@ -6,6 +6,8 @@ class Gcovr < Formula
   sha256 "5a969caf61452705a39f6642f4707d23644bdd2e5ef913014bf95c4bd0263db6"
   head "https://github.com/gcovr/gcovr.git"
 
+  bottle :unneeded
+
   def install
     libexec.install Dir["*"]
     bin.install_symlink "../libexec/scripts/gcovr"

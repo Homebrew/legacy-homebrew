@@ -1,17 +1,16 @@
-require "formula"
-
 class Amap < Formula
   desc "Perform application protocol detection"
   homepage "https://www.thc.org/thc-amap/"
   url "https://www.thc.org/releases/amap-5.4.tar.gz"
-  sha1 "79056f29a3b9e0a21062116aec3e966b1a46d7d3"
+  sha256 "a75ea58de75034de6b10b0de0065ec88e32f9e9af11c7d69edbffc4da9a5b059"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "3e5f595cd8e8427dd9e644331538be8c39997500" => :yosemite
-    sha1 "8e3eaec3b621aa8cda4f9fae3a80f66bfb53cb47" => :mavericks
-    sha1 "6b625caf2d80f33a9175d1e6370ebff677237c29" => :mountain_lion
+    revision 1
+    sha256 "5e45a4191eb3b768574f8c823f5a4d927366d50b4fd435abd0508d978797e58b" => :el_capitan
+    sha256 "62650b87327fa3555e78842b22a9e306865db0779e14c705624ebbaf163cc0b2" => :yosemite
+    sha256 "24b1d262f00a3f8c32910766ed1bc1002fb9a16902d62b31927e1912b47b2149" => :mavericks
   end
 
   depends_on "openssl"

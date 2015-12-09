@@ -1,7 +1,7 @@
 class Log4shib < Formula
   desc "Forked version of log4cpp for the Shibboleth project"
   homepage "https://wiki.shibboleth.net/confluence/display/OpenSAML/log4shib"
-  url "http://shibboleth.net/downloads/log4shib/1.0.9/log4shib-1.0.9.tar.gz"
+  url "https://shibboleth.net/downloads/log4shib/1.0.9/log4shib-1.0.9.tar.gz"
   sha256 "b34cc90f50962cc245a238b472f72852732d32a9caf9a10e0244d0e70a311d6d"
 
   bottle do

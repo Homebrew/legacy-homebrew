@@ -6,9 +6,10 @@ class Hamlib < Formula
 
   bottle do
     revision 1
-    sha1 "065230b0278836ac59ff9cfaef2c0c5a3447c4be" => :yosemite
-    sha1 "a84950c2f3415fddd514121d3638b53671d74727" => :mavericks
-    sha1 "febb53a406f79f38d8a7ba1cbdebb88e3aeca966" => :mountain_lion
+    sha256 "d4e86dbc6d9bf5e0b4a1c1bce2471e90becf05b19b1c595952c94b3bda91e0db" => :el_capitan
+    sha256 "31a75a43cf17a17d35ee0c57048522e73de7c69f43279b45c766a903b5239372" => :yosemite
+    sha256 "6d9dd131db4baa70355822033257f822e029aa167b6c43643419bd75ef06395a" => :mavericks
+    sha256 "0e78439f806f68ae1ae36fa3e5315d13cbabf6da714571eec9816945a90b2985" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

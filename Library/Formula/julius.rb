@@ -1,14 +1,14 @@
 class Julius < Formula
   desc "Two-pass large vocabulary continuous speech recognition engine"
-  homepage "http://julius.osdn.jp"
+  homepage "https://julius.osdn.jp"
   url "http://dl.osdn.jp/julius/60273/julius-4.3.1.tar.gz"
   sha256 "4bf77c7b91f4bb0686c375c70bd4f2077e7de7db44f60716af9f3660f65a6253"
 
   bottle do
     cellar :any
-    sha1 "bba5ca072725622c54b1c599d214fd1da333490d" => :yosemite
-    sha1 "644114d2e731527419c6793e392684879caed612" => :mavericks
-    sha1 "bffe9f6902a93e1f62a103ace1906a5434c69ed7" => :mountain_lion
+    sha256 "42b7494d1a3f3d74cef3363a329c93df0cfb5903399193892c5834a7d482c394" => :yosemite
+    sha256 "e4cdb2839882a69a95e9136e232e616e8e4ee20766dbb7ed480cde333ba50527" => :mavericks
+    sha256 "14c430143ee00b9981e39e91450be1c2442636b4f37d9c51e432d3377f747449" => :mountain_lion
   end
 
   depends_on "libsndfile"

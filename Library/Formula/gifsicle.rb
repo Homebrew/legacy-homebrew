@@ -1,14 +1,15 @@
 class Gifsicle < Formula
   desc "GIF image/animation creator/editor"
-  homepage "http://www.lcdf.org/gifsicle/"
-  url "http://www.lcdf.org/gifsicle/gifsicle-1.88.tar.gz"
+  homepage "https://www.lcdf.org/gifsicle/"
+  url "https://www.lcdf.org/gifsicle/gifsicle-1.88.tar.gz"
   sha256 "4585d2e683d7f68eb8fcb15504732d71d7ede48ab5963e61915201f9e68305be"
 
   bottle do
-    cellar :any
-    sha256 "7946dca4fc1327add6a1693902ee9eeccb2a370a8ec87ec59f9a466aad8f7947" => :yosemite
-    sha256 "59f5c2fa014c0a1e4c362f136bf01dcf7fb8c3bfaf6bb0839d0a370a18517985" => :mavericks
-    sha256 "9f00374d5fe18ffb90ea2c96df43d440dd41cbb05aa820cb23398e9f4471d56b" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2d40a7dc8d0f2a39134872a99ab8e8c3f5e5dc6381826abdd8d4f89c3fe287d0" => :el_capitan
+    sha256 "f4699986ab815c25764b4c7049fc067d6209922bcfd8b841bb19f2ae41c66f8d" => :yosemite
+    sha256 "29af107b09e41c0e40a10411565345cb636e724cd28e9d2f4e58c5dc0dd819c9" => :mavericks
   end
 
   head do

@@ -2,9 +2,11 @@ class Vim < Formula
   desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
   # *** Vim should be updated no more than once every 7 days ***
-  url "https://github.com/vim/vim/archive/v7.4.865.tar.gz"
-  sha256 "b3c92b2bc6ba7933b38fdf1879f8d7014efeb7b94aead6ef82f7c4a954fb75cf"
+  url "https://github.com/vim/vim/archive/v7.4.944.tar.gz"
+  sha256 "be8832365ef64557eaa9abbe8bcb40bab55b266fe3fb2da06f72eec3a62c9d39"
   head "https://github.com/vim/vim.git"
+
+  bottle :disable, "To use the user's Python."
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -94,7 +96,7 @@ class Vim < Formula
     system "make"
     # If stripping the binaries is enabled, vim will segfault with
     # statically-linked interpreters like ruby
-    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    # https://github.com/vim/vim/issues/114
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end

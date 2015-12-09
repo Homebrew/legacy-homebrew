@@ -16,6 +16,8 @@ class Plenv < Formula
   def caveats; <<-EOS.undent
     To enable shims add to your profile:
       if which plenv > /dev/null; then eval "$(plenv init -)"; fi
+    With zsh, add to your .zshrc:
+      if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
     EOS
   end
 end

@@ -5,13 +5,13 @@ class Purescript < Formula
 
   desc "Strongly typed programming language that compiles to JavaScript"
   homepage "http://www.purescript.org"
-  url "https://github.com/purescript/purescript/archive/v0.7.0.tar.gz"
-  sha256 "aea0fec66044ae2a3d05c88824ab9dc50d9744c5c7831c5ca749b1412fb156e7"
+  url "https://github.com/purescript/purescript/archive/v0.7.6.1.tar.gz"
+  sha256 "408fe21a9b7664e218ec6a68bd0b145ea14ad20b5d1a6b314e8ca378c5421ddc"
 
   bottle do
-    sha256 "462d6d468b1064a3d75a63126b5263fd5091417400a268f30909a85d96239613" => :yosemite
-    sha256 "b1995100f87c03ba6cc4a272e13792ac421674b77b16b2479add947a5b19e22e" => :mavericks
-    sha256 "19b4e283ff429735340b272038e4a2983b57171c6851863c37be1fc9a99df787" => :mountain_lion
+    sha256 "16049cc723f853a748ddec257ba2326d7a7aefdf3c8fc30052289ac3a1568242" => :el_capitan
+    sha256 "a24c414bd02fd646d5c430a09e48ce8ed17eaa7f0b7ab68f21084a046d00062d" => :yosemite
+    sha256 "64ab9e1da4c55d9a1170bfe5ce80c22ab6162bfd2bba34e8377b9cdc9216d237" => :mavericks
   end
 
   depends_on "ghc" => :build

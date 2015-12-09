@@ -1,14 +1,15 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.23.0/mesos-0.23.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.23.0/mesos-0.23.0.tar.gz"
-  sha256 "b967355ec1f7cf9ffcef76b58939ed48dd4975ea90d1c976669b50c589bdbdec"
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.25.0/mesos-0.25.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz"
+  sha256 "81ee9e722b66f52d8f3270a76eecea60fdcab48d6f7dba51ecce592293124b75"
+  revision 1
 
   bottle do
-    sha256 "717f73125b020b89e545384a3e5c1fbf2c36647b365fb181423954b9ceaa7b5d" => :yosemite
-    sha256 "090168dc4599d005491053e3fee6b0e932b7cf388066adec20e1e6eeb128e2b4" => :mavericks
-    sha256 "5c0916e2622083f4903449576a8b751e9dcc64da88ef0434efce6d76f14ab2cf" => :mountain_lion
+    sha256 "9cc964e98ca0e3f2a1a0a9dcc34019aa8beb14e68b626fdab9940e8b73c0dc2d" => :el_capitan
+    sha256 "9db0716715872af1372e178a782dba74fb593719589aec71b16e11d5fec43490" => :yosemite
+    sha256 "7837ef77b17f87ba10bccf659c35fd161271e308af33fadd36ef103806a73a30" => :mavericks
   end
 
   depends_on :java => "1.7+"
@@ -56,6 +57,9 @@ class Mesos < Formula
   needs :cxx11
 
   def install
+    # Set _JAVA_OPTIONS to make mesos java plugins compile success in Homebrew sandbox.
+    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home"
+
     boto_path = libexec/"boto/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", boto_path
     resource("boto").stage do
@@ -77,6 +81,19 @@ class Mesos < Formula
               "import ext_modules",
               native_patch
 
+    # skip build javadoc because Homebrew sandbox set _JAVA_OPTIONS would
+    # trigger maven-javadoc-plugin bug.
+    # https://issues.apache.org/jira/browse/MESOS-3482
+    maven_javadoc_patch = <<-EOS.undent
+      <properties>
+        <maven.javadoc.skip>true</maven.javadoc.skip>
+      </properties>
+      \\0
+    EOS
+    inreplace "src/java/mesos.pom.in",
+              "<url>http://mesos.apache.org</url>",
+              maven_javadoc_patch
+
     args = ["--prefix=#{prefix}",
             "--disable-debug",
             "--disable-dependency-tracking",
@@ -95,7 +112,7 @@ class Mesos < Formula
     system "make", "install"
 
     system "./configure", "--enable-python", *args
-    ["native", "interface", ""].each do |p|
+    ["native", "interface", "cli", ""].each do |p|
       cd "src/python/#{p}" do
         system "python", *Language::Python.setup_install_args(prefix)
       end
@@ -117,8 +134,6 @@ class Mesos < Formula
     end
     pth_contents = "import site; site.addsitedir('#{protobuf_path}')\n"
     (lib/"python2.7/site-packages/homebrew-mesos-protobuf.pth").write pth_contents
-
-    (share/"mesos").install "ec2"
   end
 
   test do

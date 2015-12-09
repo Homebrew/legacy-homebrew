@@ -3,13 +3,15 @@
 # http://nmav.gnutls.org/2014/10/what-about-poodle.html
 class Gnutls < Formula
   desc "GNU Transport Layer Security (TLS) Library"
-  homepage "http://gnutls.org"
+  homepage "http://gnutls.org/"
   url "ftp://ftp.gnutls.org/gcrypt/gnutls/v3.3/gnutls-3.3.18.tar.xz"
+  mirror "https://gnupg.org/ftp/gcrypt/gnutls/v3.3/gnutls-3.3.18.tar.xz"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnutls/v3.3/gnutls-3.3.18.tar.xz"
   sha256 "7a87e7f486d1ada10007356917a412cde6c6114dac018e3569e3aa09e9f29395"
 
   bottle do
     cellar :any
+    sha256 "1db97f157e90bf1f15c7c0aa5320326dd4cf291d3fa9af9d2b3eac5e7f709f66" => :el_capitan
     sha256 "4554845d703670e1090803134943ac5bd0bb0ca4a4f92368d013092e44884c7a" => :yosemite
     sha256 "7c24af896d97de3b9c38660199dc64bbff5352dd2de00c178e407ac0e9184658" => :mavericks
     sha256 "57cafffefdee4d3f113a969e36349b8a5d56d4798656c900abb4efb8b4af22a3" => :mountain_lion

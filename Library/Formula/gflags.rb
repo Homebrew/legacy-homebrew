@@ -7,6 +7,7 @@ class Gflags < Formula
   bottle do
     cellar :any
     revision 2
+    sha256 "6ed095ce8dc4921841a7dd0045f9160d6704dba6853dd631ee6855a02efb6bde" => :el_capitan
     sha256 "8e648b5824007745eb546beffe4d94a3c25a29556f89eaa4a156dec6984335dd" => :yosemite
     sha256 "8f4093596ce2b359821d9a3398b82d7d327288d24ca9f0218a9ade1ace2bdbfa" => :mavericks
     sha256 "19d46507297d14c4ff50d99c9279ddd513df439a5d87e5325ef8fb52c37f7e6d" => :mountain_lion

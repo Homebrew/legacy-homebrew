@@ -3,15 +3,15 @@ require "language/go"
 class Fzf < Formula
   desc "Fuzzy finder for your shell"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.10.5.tar.gz"
-  sha256 "a0e4f2dce23a5b3edad44d4b96a5c4222c5bee928a43ea4b5686f1bce2a3fddf"
+  url "https://github.com/junegunn/fzf/archive/0.10.9.tar.gz"
+  sha256 "55a9b8d27f3832be569519bcd3afe1f1e345daaa8b8b6523aedff661954f42fb"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7318f09c5170600833287540a812a7d4a86874462dbb01b6a15c59f5a02d0bd3" => :yosemite
-    sha256 "e768063541ea6a55f31ba3b3a5a15721de4f81cc2f616a1df693e71a41b11336" => :mavericks
-    sha256 "6b9f36d48d385c327ccce01060533864165d6ee6f7da6762fbbbb90a314f0799" => :mountain_lion
+    sha256 "3f788e4e27755e6973b67bb28885654d5861e0a5cfae3120f6dc49bfe1f78abc" => :el_capitan
+    sha256 "b518e6cece9536d2add097c09003f96d25cf2a70240fec60a6f0be8ed7d60077" => :yosemite
+    sha256 "18f48d17cd9b6e746e6090d89119d443318d5a3ba4853007c4002cb6413b046c" => :mavericks
   end
 
   depends_on "go" => :build

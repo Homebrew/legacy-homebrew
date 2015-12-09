@@ -13,7 +13,7 @@ class Uudeview < Formula
 
   # Fix function signatures (for clang)
   patch :p0 do
-    url "https://trac.macports.org/export/102865/trunk/dports/mail/uudeview/files/inews.c.patch"
+    url "https://raw.githubusercontent.com/Homebrew/patches/19da78c/uudeview/inews.c.patch"
     sha256 "4bdf357ede31abc17b1fbfdc230051f0c2beb9bb8805872bd66e40989f686d7b"
   end
 

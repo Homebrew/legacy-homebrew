@@ -6,7 +6,8 @@ class Subliminal < Formula
   head "https://github.com/Diaoul/subliminal.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "c47b05c0b4017f605636591322d9c7b8622353f0c14c5e88e29e34c5ed850309" => :el_capitan
     sha256 "29d0af54b61269c0e371494ebb56429afc6a98e6e21423e692c25c367af2a07d" => :yosemite
     sha256 "8f3eff7ac992dce702753f2058c1c9513567658d2928e5dc82634db5f8df07cc" => :mavericks
     sha256 "419f7156a3b2cce921860d39dba17cdcb544b910c8223aa4e4fa1cf68a29950f" => :mountain_lion

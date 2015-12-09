@@ -1,8 +1,8 @@
 class Pinentry < Formula
   desc "Passphrase entry dialog utilizing the Assuan protocol"
-  homepage "https://www.gnupg.org/related_software/pinentry/index.en.html"
-  url "ftp://ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.5.tar.bz2"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/pinentry/pinentry_0.9.5.orig.tar.bz2"
+  homepage "https://www.gnupg.org/related_software/pinentry/"
+  url "https://gnupg.org/ftp/gcrypt/pinentry/pinentry-0.9.5.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/pinentry/pinentry-0.9.5.tar.bz2"
   sha256 "6a57fd3afc0d8aaa5599ffcb3ea4e7c42c113a181e8870122203ea018384688c"
 
   bottle do

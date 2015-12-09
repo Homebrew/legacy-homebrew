@@ -4,6 +4,8 @@ class Autopsy < Formula
   url "https://downloads.sourceforge.net/project/autopsy/autopsy/2.24/autopsy-2.24.tar.gz"
   sha256 "ab787f519942783d43a561d12be0554587f11f22bc55ab79d34d8da703edc09e"
 
+  bottle :unneeded
+
   depends_on "sleuthkit"
   depends_on "afflib" => :optional
   depends_on "libewf" => :optional

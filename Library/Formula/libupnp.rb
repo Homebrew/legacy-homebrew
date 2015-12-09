@@ -7,8 +7,8 @@ class Libupnp < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "52432174b87b12486f78f8d4c45d0ac7b23e11eb" => :yosemite
-    sha1 "09c01a27803cc08266a601e401b9556f87e760d3" => :mavericks
+    sha256 "d15eed74f72a97b797db6f3ae23182f56c8dc5bfd4c0f7746fe245d927884b8e" => :yosemite
+    sha256 "deb2e1d0ef15fa03e9f27c3726e81fd9eb8392ab6463ab90fef191f04492a9ce" => :mavericks
   end
 
   option "with-ipv6", "Enable IPv6 support"

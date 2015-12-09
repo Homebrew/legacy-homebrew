@@ -1,14 +1,14 @@
 class Clhep < Formula
   desc "Class Library for High Energy Physics"
   homepage "https://proj-clhep.web.cern.ch/proj-clhep/"
-  url "https://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.2.0.8.tgz"
-  sha256 "2be2a0386967720df8fc06e16ea0ccaf97822425b2f5e0d4919ba00ca057e892"
+  url "https://proj-clhep.web.cern.ch/proj-clhep/DISTRIBUTION/tarFiles/clhep-2.3.1.1.tgz"
+  sha256 "0e2b170df99176feb0aa4f20ea3b33463193c086682749790c5b9b79388d0ff4"
 
   bottle do
     cellar :any
-    sha256 "2bd3b78f6bba745c5b629dba5b906e9c6e9291c587abe9a9b3468b7f69328309" => :yosemite
-    sha256 "4b05bfd4b0eaea17f6df4956c080f8325063513ce6975ba8e0dadf00f95075ef" => :mavericks
-    sha256 "4db90c676d11907ff0f4585c07060a9a411cf59a132ef3fedc958a40a5e43f11" => :mountain_lion
+    sha256 "2201b22072c449346bea78bbad4f46fccd968b11b342c83310c25e79c16f0997" => :el_capitan
+    sha256 "18e6581c3d9d83e9853283c4d00e021701135b502432bab291c8e4a7e8e9e6db" => :yosemite
+    sha256 "c17e92f408af3768b363ea226e158c5008371e383a2f963fcc565bd7ba28c899" => :mavericks
   end
 
   head do

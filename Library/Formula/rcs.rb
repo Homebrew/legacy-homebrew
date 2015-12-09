@@ -7,9 +7,9 @@ class Rcs < Formula
 
   bottle do
     cellar :any
-    sha1 "c1b9165adefc09d0ec1ed38ba7d25a47d61617b6" => :yosemite
-    sha1 "f3b9ff862830ecc7d84451b82a22d8b6db7ff9eb" => :mavericks
-    sha1 "f47df6b50e9d48d06a72b03e9425cf4bf4fbc429" => :mountain_lion
+    sha256 "78b2ee59084552734375e1cc4e3ddec28952e6226c09cb608e7b5428577353f4" => :yosemite
+    sha256 "1708b8974b09b04b863ff90863732dfc11689f8b0fee305d48586aaf128b48a6" => :mavericks
+    sha256 "9581dbb7719c35db41b3d198185b798b08e1d4bca92b4c4ab32e53deb8207f7e" => :mountain_lion
   end
 
   def install

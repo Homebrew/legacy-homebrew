@@ -5,13 +5,13 @@ class Darcs < Formula
 
   desc "Distributed version control system that tracks changes, via Haskell"
   homepage "http://darcs.net/"
-  url "http://darcs.net/releases/darcs-2.10.0.tar.gz"
-  sha256 "52b3db3f7b64a4306585b96af7b5887f62ba54f6e9c3bdbed9b6a18d97f16b36"
+  url "http://darcs.net/releases/darcs-2.10.2.tar.gz"
+  sha256 "6337d3fac04711fa2ef5813558b409c59166c5599b0c9d68c418d21cdccfb327"
 
   bottle do
-    sha256 "66086e078cdb111cf517313997a29044d8f3c16e45bdcdc06ad438a37d6d0c32" => :yosemite
-    sha256 "6c1161e09c005bab52e63faec61610076c3c4393e850229e2117c94a0e78f4d4" => :mavericks
-    sha256 "c97c89b0b0d04e067476a807d308ef3ee24296a420d13a0be16b8822b919d8ab" => :mountain_lion
+    sha256 "7233b3d0fd8fbae5c3dd6f8229fd2755ce047961c6692eaeeb63064f7184fd29" => :el_capitan
+    sha256 "62a0c990b8585130d6c8955d2884ec07030dd1b3c5b0f711126a9dd9b5762d02" => :yosemite
+    sha256 "edd6a36b7146e20cf5a6a3bbe70737f6013f855bbb881523bdf460e416d9626a" => :mavericks
   end
 
   depends_on "ghc" => :build
@@ -33,7 +33,7 @@ class Darcs < Formula
     end
     system "darcs", "get", "my_repo", "my_repo_clone"
     Dir.chdir "my_repo_clone" do
-      assert (Pathname.pwd/"foo").read.include? "hello homebrew!"
+      assert_match "hello homebrew!", (Pathname.pwd/"foo").read
     end
   end
 end

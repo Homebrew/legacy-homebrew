@@ -4,7 +4,7 @@
 
 The preferred and supported method of installing specific versions of
 formulae is to use the
-[Homebrew-versions](https://github.com/Homebrew/homebrew-versions)
+[homebrew/versions](https://github.com/Homebrew/homebrew-versions)
 tap.  If the version you’re looking for isn’t available, consider [opening a
 pull request](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged).md)!
 
@@ -27,7 +27,16 @@ This can be useful if a package can't build against the version of something you
 
 And of course, you can simply `brew link $FORMULA` again afterwards!
 
-## Install into Homebrew without formulas
+## Activate a previously installed version of a formula
+
+```sh
+brew info $FORMULA
+brew switch $FORMULA $VERSION
+```
+
+Use `brew info $FORMULA` to check what versions are installed but not currently activated, then `brew switch $FORMULA $VERSION` to activate the desired version. This can be useful if you would like to switch between versions of a formula.
+
+## Install into Homebrew without formulae
 
 ```sh
 ./configure --prefix=/usr/local/Cellar/foo/1.2 && make && make install && brew link foo
@@ -62,7 +71,7 @@ name }}-{{ version }}</code>.  In the case of Erlang, this requires
 renaming the file from <code>otp_src_R13B03</code> to
 <code>erlang-R13B03</code>.
 
-`brew –-cache -s erlang` will print the correct name of the cached
+`brew --cache -s erlang` will print the correct name of the cached
 download.  This means instead of manually renaming a formula, you can
 run `mv the_tarball $(brew --cache -s $FORMULA)`.
 

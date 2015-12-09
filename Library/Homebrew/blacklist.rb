@@ -11,8 +11,10 @@ def blacklisted?(name)
     EOS
   when "pip" then <<-EOS.undent
     Homebrew provides pip via: `brew install python`. However you will then
-    have two Pythons installed on your Mac, so alternatively you can:
-        sudo easy_install pip
+    have two Pythons installed on your Mac, so alternatively you can install
+    pip via the instructions at:
+
+      https://pip.readthedocs.org/en/stable/installing/#install-pip
     EOS
   when "pil" then <<-EOS.undent
     Instead of PIL, consider `pip install pillow` or `brew install Homebrew/python/pillow`.

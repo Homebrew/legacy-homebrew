@@ -1,34 +1,27 @@
 class Gwyddion < Formula
   desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage "http://gwyddion.net/"
-  url "http://gwyddion.net/download/2.41/gwyddion-2.41.tar.gz"
-  sha256 "093e5e20e85cbfc14786a8dcc319943ad30419bffd5ab883e7d0400161fb3cd4"
+  url "http://gwyddion.net/download/2.43/gwyddion-2.43.tar.gz"
+  sha256 "9feb33f991b785f238f62bf5c204a41d654e6c04929ec6c8c4b025691d60334e"
 
   bottle do
-    sha256 "557467222d7732e7ab0909336e60cf40e865db1802b424716c749c0acd1f3338" => :yosemite
-    sha256 "51840b592615b74443d82450486a26834b2b154ff9a34d6e0452c67a3d6b7658" => :mavericks
-    sha256 "70333e143e8e5e6845fcc891cecd2123c2aa9b84e74572daf52637fde5857914" => :mountain_lion
+    sha256 "cfc9ca892b910a3e99aeacd364d59a7b0be14249f5629d0a16db62a314e418ab" => :el_capitan
+    sha256 "52d889d6aa15945904a1b1713a0bbf1b4d486bba81225a52a7d38dca295673a5" => :yosemite
+    sha256 "8728365fda96c5092b6475068edb85ff8a5d7dc0807080b7ff29ae063e7ac351" => :mavericks
   end
 
   depends_on "pkg-config" => :build
+  depends_on "fftw"
   depends_on "gtk+"
   depends_on "gtk-mac-integration"
-  depends_on "libxml2"
-  depends_on "fftw"
   depends_on "gtkglext"
+  depends_on "libxml2"
+
   depends_on :python => :optional
   depends_on "pygtk" if build.with? "python"
   depends_on "gtksourceview" if build.with? "python"
 
   def install
-    # Add Python library path and prevent explicit linkage for the gwy module.
-    # Upstream patch: <http://sourceforge.net/p/gwyddion/mailman/message/34347458/>
-    inreplace "configure", 'PYTHON_LIBS=-l$libpython',
-                           %(py_prefix=`$PYTHON -c "import sys; print sys.prefix"`
-                           PYTHON_LIBS="-L${py_prefix}/lib -l$libpython")
-    inreplace "modules/pygwy/Makefile.in", '$(PYTHON_LIBS) $(PYGTK_LIBS) @GTK_LIBS@',
-                                           '-undefined dynamic_lookup $(PYGTK_LIBS) @GTK_LIBS@'
-
     system "./configure", "--disable-dependency-tracking",
                           "--disable-desktop-file-update",
                           "--prefix=#{prefix}",

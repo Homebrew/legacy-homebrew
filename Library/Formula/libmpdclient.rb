@@ -6,9 +6,10 @@ class Libmpdclient < Formula
 
   bottle do
     cellar :any
-    sha1 "9be910acd8278521e8f43b20448f31d7bb841ca5" => :yosemite
-    sha1 "a5e180c855e756a33049a7f5aa4b2b4776cb6967" => :mavericks
-    sha1 "e7e1ea43d44615bdacb1d4bb06ad8e4413e30ac2" => :mountain_lion
+    sha256 "260ae000202c5d848b014c682db6f414b621c37fa0ada15a50d39ffa30a7d06e" => :el_capitan
+    sha256 "53c232fdc4c66fb2aa823b474337f8c5275cf01171077b8772a0dd2b1aaf670c" => :yosemite
+    sha256 "a6d500dd34581bb30a623df20b2e031eb3f1a6a586886acc97e437a5447e144b" => :mavericks
+    sha256 "d583dffa231db87e89bc291d20aedb63d9ac5324eeff80cdc974cff2b93c6a1a" => :mountain_lion
   end
 
   head do

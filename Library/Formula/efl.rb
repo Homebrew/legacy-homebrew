@@ -44,7 +44,8 @@ class Efl < Formula
             "--disable-silent-rules",
             "--enable-cocoa",
             "--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aba", # There's currently (1.14) no clean profile for Mac OS, so we need to force passing configure
-            "--prefix=#{prefix}"]
+            "--prefix=#{prefix}",
+           ]
     args << "--with-x11=none" if build.without? "x11"
 
     system "./configure", *args

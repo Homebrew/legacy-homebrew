@@ -3,6 +3,8 @@ class Fastbit < Formula
   homepage "https://sdm.lbl.gov/fastbit/"
   url "https://codeforge.lbl.gov/frs/download.php/416/fastbit-2.0.2.tar.gz"
   sha256 "a9d6254fcc32da6b91bf00285c7820869950bed25d74c993da49e1336fd381b4"
+  head "https://codeforge.lbl.gov/anonscm/fastbit/trunk",
+       :using => :svn
 
   bottle do
     cellar :any
@@ -10,9 +12,6 @@ class Fastbit < Formula
     sha256 "f2da8bed14e66f334f870cec65c678961f925d519bddefc74ef806b493346833" => :mavericks
     sha256 "d62226b902928b479e2835848a8eafdcd52557cb4249c59bd15cc1bd23d1e67e" => :mountain_lion
   end
-
-  head "https://codeforge.lbl.gov/anonscm/fastbit/trunk",
-       :using => :svn
 
   conflicts_with "iniparser",
                  :because => "Both install `include/dictionary.h`"

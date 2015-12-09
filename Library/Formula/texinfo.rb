@@ -6,9 +6,10 @@ class Texinfo < Formula
   sha256 "83d3183290f34e7f958d209d0b20022c6fe9e921eb6fe94c27d988827d4878d2"
 
   bottle do
-    sha256 "4bd78f0303130865e121263b7d7809a69816b30697da412b9c7101b4bf62cfaa" => :yosemite
-    sha256 "e976cec2aacc4a2754058dc54145e8aba61444bd01c5573a79b4a1912f4cda1a" => :mavericks
-    sha256 "c9ee6147bbc2c1a21b65fb4f2df220b811c1144e58d1ce53ad94e7dffd6633e8" => :mountain_lion
+    revision 1
+    sha256 "9157162006baab3069abb5d61241712f059a97c3752c1d1663e66d61062b18a5" => :el_capitan
+    sha256 "9f611165b36ae3aac1b5c7a965de48659c41e53209e00a80649560414c861667" => :yosemite
+    sha256 "d6031029c35ef99b7d3ef9d43daf993d6897bf73dd81cf2f53f5a6d1d38d7d73" => :mavericks
   end
 
   keg_only :provided_by_osx, <<-EOS.undent
@@ -21,6 +22,7 @@ class Texinfo < Formula
                           "--disable-install-warnings",
                           "--prefix=#{prefix}"
     system "make", "install"
+    doc.install Dir["doc/refcard/txirefcard*"]
   end
 
   test do

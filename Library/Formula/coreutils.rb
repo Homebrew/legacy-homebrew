@@ -6,10 +6,10 @@ class Coreutils < Formula
   sha256 "a2d75286a4b9ef3a13039c2da3868a61be4ee9f17d8ae380a35a97e506972170"
 
   bottle do
-    sha256 "982576be0136e46016643da0efdb44e3ab201263b2a43433448821c19fb9edd4" => :el_capitan
-    sha256 "142edfec5f84958bdb27866e3a826f9b580a4ae07bfd805c766ab6a9a368e34f" => :yosemite
-    sha256 "851e007f3edaa58fc00d9c67aeed2ab5a8b9a1bad608dc3e5d76732cc35c593f" => :mavericks
-    sha256 "32ef44141d7dff2995ea0a692a3861ee9049a37a1254a3978c7dc8283c258476" => :mountain_lion
+    revision 1
+    sha256 "b7bfca75eb3155763f2646fcc68e735da8e3c256378ea77b5145b8b05ab98487" => :el_capitan
+    sha256 "2a8a58876cba90cd2c12b95e082566007eade29fbed15508463457cd7647cfcf" => :yosemite
+    sha256 "adbc19369319460f5e7e088c2ffdec20b8ab92d4aa8fd4bdd4c81d5f0fc340c3" => :mavericks
   end
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
@@ -31,6 +31,16 @@ class Coreutils < Formula
   depends_on "gmp" => :optional
 
   def install
+    # Work around unremovable, nested dirs bug that affects lots of
+    # GNU projects. See:
+    # https://github.com/Homebrew/homebrew/issues/45273
+    # https://github.com/Homebrew/homebrew/issues/44993
+    # This is thought to be an el_capitan bug:
+    # http://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
+    if MacOS.version == :el_capitan
+      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
+    end
+
     system "./bootstrap" if build.head?
     args = %W[
       --prefix=#{prefix}

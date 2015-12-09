@@ -13,10 +13,9 @@ class Tor < Formula
   end
 
   devel do
-    url "https://dist.torproject.org/tor-0.2.7.2-alpha.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.7.2-alpha.tar.gz"
-    sha256 "006de44b01e15916b1f648df92723c2a7d58e6a2cd05484d70d0af2f566b330c"
-    version "0.2.7.2-alpha"
+    url "https://dist.torproject.org/tor-0.2.7.5.tar.gz"
+    mirror "https://tor.eff.org/dist/tor-0.2.7.5.tar.gz"
+    sha256 "7d2a9e4db1bd99deb8395609b59cac217b0c1ee9ff2eeb0f088b91a5d8f6aa5f"
   end
 
   depends_on "libevent"
@@ -52,7 +51,10 @@ class Tor < Formula
   end
 
   test do
-    system bin/"tor", "--version"
+    pipe_output("script -q /dev/null #{bin}/tor-gencert --create-identity-key", "passwd\npasswd\n")
+    assert (testpath/"authority_certificate").exist?
+    assert (testpath/"authority_signing_key").exist?
+    assert (testpath/"authority_identity_key").exist?
   end
 
   def plist; <<-EOS.undent

@@ -7,16 +7,20 @@ class Speex < Formula
   bottle do
     cellar :any
     revision 2
-    sha1 "035c405657c5debb5e41d291bb44f508797a7b51" => :yosemite
-    sha1 "123e086d2548614ff66691f46e6f6e3dce3fa362" => :mavericks
-    sha1 "d9cb07f7de4d226c25d0b8ddbddd3fb0de5f5c53" => :mountain_lion
+    sha256 "fc685c1693b9a669112c9c13bf9b1758a6ac2adf45ff99fdbf8c6202254110bf" => :el_capitan
+    sha256 "72bf08da8cf820cdf56072fa4bdb2cecf79d9eb8f4999873f48358f0acc92793" => :yosemite
+    sha256 "79678ca5128b013bedd0e2dee757d4b746f3120b64742d6e9a587e91f2659b4a" => :mavericks
+    sha256 "c245232af0587e05254cbce4d078f420c5bf79508c0021c2aa72edfdcdc4f8b2" => :mountain_lion
   end
+
+  option :universal
 
   depends_on "pkg-config" => :build
   depends_on "libogg" => :recommended
 
   def install
     ENV.j1
+    ENV.universal_binary if build.universal?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"

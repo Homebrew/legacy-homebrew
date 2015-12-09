@@ -1,15 +1,14 @@
 class Gl2ps < Formula
   desc "OpenGL to PostScript printing library"
   homepage "http://www.geuz.org/gl2ps/"
-  url "http://geuz.org/gl2ps/src/gl2ps-1.3.8.tgz"
-  sha256 "2fe58dd95df06688a8c188e70b1803093ebf0797954901f4a36a403dbc301ee5"
-  revision 1
+  url "http://geuz.org/gl2ps/src/gl2ps-1.3.9.tgz"
+  sha256 "8a680bff120df8bcd78afac276cdc38041fed617f2721bade01213362bcc3640"
 
   bottle do
     cellar :any
-    sha1 "ed85fb272142121ab9e28a79266cfcf6dd6e60ce" => :yosemite
-    sha1 "f80c1fbd51b505902fb8a00f7fd97133cc9be4b0" => :mavericks
-    sha1 "5650d4b48f26d1a5bf66b86db927cc672eef95d3" => :mountain_lion
+    sha256 "660715c44772d7fb7463216af03797a9f377390550857fafb60ff07e8307d54c" => :el_capitan
+    sha256 "2641d23b28b8800c346e6c5b5579b56cbbfb5922086d9c68b3f51a243054c45f" => :yosemite
+    sha256 "601ef91d17ee6390113b98ce744493eb71ab0d17026994dfa64f6a83783b6d79" => :mavericks
   end
 
   depends_on "cmake" => :build

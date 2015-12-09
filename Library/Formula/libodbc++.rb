@@ -6,7 +6,7 @@ class Libodbcxx < Formula
 
   bottle do
     cellar :any
-    sha1 "2bbe061284cc6a3188e776c8bb9544fad672862e" => :mountain_lion
+    sha256 "72f4f3330afd79df2346134fa5f28183d5fe3134c65d90395e20cada497d4ca7" => :mountain_lion
   end
 
   # Two patches are included:

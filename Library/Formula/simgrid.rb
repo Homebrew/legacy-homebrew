@@ -1,14 +1,14 @@
 class Simgrid < Formula
   desc "Studies behavior of large-scale distributed systems"
   homepage "http://simgrid.gforge.inria.fr"
-  url "http://gforge.inria.fr/frs/download.php/file/33686/SimGrid-3.11.1.tar.gz"
+  url "https://gforge.inria.fr/frs/download.php/file/33686/SimGrid-3.11.1.tar.gz"
   sha256 "7796ef6d4288462fdabdf5696c453ea6aabc433a813a384db2950ae26eff7956"
 
   bottle do
     cellar :any
-    sha1 "880b9462dcea8f3f9c4aa4c32e507ef8e7155db5" => :mavericks
-    sha1 "bbaba0f593b4b81f1e1ebd604dc46eaa58ec8568" => :mountain_lion
-    sha1 "7f1cdc6fd8de1a046b15cbc3b8a648e8ccb5775f" => :lion
+    sha256 "8ba35b7d81ce31495edce912ecdfc603a4be684c03c384b38a36f1b8ffb604e0" => :mavericks
+    sha256 "e72c2f8824f8d0a457a848d0611f309f2cfd150f48e608baee7075c920e9cfb5" => :mountain_lion
+    sha256 "65311d5c64c2253a33c9a0c4c703b1eab6c8554c7833ef933c8fd5cb7f36230e" => :lion
   end
 
   depends_on "cmake" => :build

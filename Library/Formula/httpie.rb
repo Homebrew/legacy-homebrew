@@ -8,7 +8,8 @@ class Httpie < Formula
   head "https://github.com/jakubroztocil/httpie.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "d707a541466d018c25214ac5c37db81be6f3c55f9a8a7ddfb4e9a40771e207e0" => :el_capitan
     sha256 "b8fc458dec0f25a47998302c0bdb1c1914a415e023dbd7f3f0cb90dbbd9ca208" => :yosemite
     sha256 "24d33a99c527f2e8353d1a913106ec9fa78dd422aabecfa7289a7d324dfb9076" => :mavericks
     sha256 "b8489da61c51c9cdca81dbedbb39f2c36f7f50d532c0cea4520d3751ac47a06a" => :mountain_lion
@@ -42,7 +43,7 @@ class Httpie < Formula
   end
 
   test do
-    output = shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
-    assert output.include?("PYTHONPATH")
+    assert_match "PYTHONPATH",
+      shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
   end
 end

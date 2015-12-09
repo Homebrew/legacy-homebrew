@@ -23,11 +23,12 @@ class NoSuchKegError < RuntimeError
 end
 
 class FormulaValidationError < StandardError
-  attr_reader :attr
+  attr_reader :attr, :formula
 
-  def initialize(attr, value)
+  def initialize(formula, attr, value)
     @attr = attr
-    super "invalid attribute: #{attr} (#{value.inspect})"
+    @formula = formula
+    super "invalid attribute for formula '#{formula}': #{attr} (#{value.inspect})"
   end
 end
 
@@ -46,7 +47,7 @@ class FormulaUnavailableError < RuntimeError
   end
 
   def to_s
-    "No available formula for #{name} #{dependent_s}"
+    "No available formula with the name \"#{name}\" #{dependent_s}"
   end
 end
 
@@ -75,7 +76,7 @@ class TapFormulaAmbiguityError < RuntimeError
     @paths = paths
     @formulae = paths.map do |path|
       path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      "#{Tap.fetch($1, $2)}/#{path.basename(".rb")}"
     end
 
     super <<-EOS.undent
@@ -114,6 +115,18 @@ class TapUnavailableError < RuntimeError
 
     super <<-EOS.undent
       No available tap #{name}.
+    EOS
+  end
+end
+
+class TapAlreadyTappedError < RuntimeError
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+
+    super <<-EOS.undent
+      Tap #{name} already tapped.
     EOS
   end
 end
@@ -228,7 +241,7 @@ class BuildError < RuntimeError
       end
     else
       require "cmd/config"
-      require "cmd/--env"
+      require "build_environment"
 
       ohai "Formula"
       puts "Tap: #{formula.tap}" if formula.tap?
@@ -250,10 +263,9 @@ class BuildError < RuntimeError
       puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
 
-    if MacOS.version >= "10.11"
-      require "cmd/doctor"
-      opoo Checks.new.check_for_unsupported_osx
-    end
+    require "cmd/doctor"
+    unsupported_osx = Checks.new.check_for_unsupported_osx
+    opoo unsupported_osx if unsupported_osx
   end
 end
 

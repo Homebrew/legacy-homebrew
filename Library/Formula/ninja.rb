@@ -13,7 +13,9 @@ class Ninja < Formula
     sha256 "3717352656bb260ac96de4a0db856ebaa6602c6b4f4d42a0d2475ba511ab834f" => :mountain_lion
   end
 
-  option "without-tests", "Run build-time tests"
+  option "without-test", "Don't run build-time tests"
+
+  deprecated_option "without-tests" => "without-test"
 
   resource "gtest" do
     url "https://googletest.googlecode.com/files/gtest-1.7.0.zip"
@@ -23,11 +25,11 @@ class Ninja < Formula
   def install
     system "python", "configure.py", "--bootstrap"
 
-    if build.with? "tests"
+    if build.with? "test"
       (buildpath/"gtest").install resource("gtest")
-      system buildpath/"configure.py", "--with-gtest=gtest"
-      system buildpath/"ninja", "ninja_test"
-      system buildpath/"ninja_test", "--gtest_filter=-SubprocessTest.SetWithLots"
+      system "./configure.py", "--with-gtest=gtest"
+      system "./ninja", "ninja_test"
+      system "./ninja_test", "--gtest_filter=-SubprocessTest.SetWithLots"
     end
 
     bin.install "ninja"

@@ -9,7 +9,7 @@ class Qca < Formula
 
     # Fixes build with Qt 5.5 by adding a missing include (already fixed in HEAD).
     patch do
-      url "http://quickgit.kde.org/?p=qca.git&a=commitdiff&h=7207e6285e932044cd66d49d0dc484666cfb0092&o=plain"
+      url "https://quickgit.kde.org/?p=qca.git&a=commitdiff&h=7207e6285e932044cd66d49d0dc484666cfb0092&o=plain"
       sha256 "b3ab2eb010f4a16f85349e4b858d0ee17a84ba2927311b79aeeff1bb2465cd3d"
     end
   end

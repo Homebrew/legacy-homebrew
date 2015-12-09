@@ -1,26 +1,26 @@
 class ClangFormat < Formula
-  desc "C, C++, Obj-C, Java, JavaScript, TypeScript formatting tools and editor plugins"
+  desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-07-31"
-
-  bottle do
-    cellar :any
-    sha256 "23f3215f23cd4bc36d9b37ee566a3482f7b70a3baa887730a83067934a300b10" => :yosemite
-    sha256 "c645415feb57129f30247ade34fc25ca17fc9e72619d52f1b93b086cca411426" => :mavericks
-    sha256 "280f1a6c6c1d7823739027582c568f32bd88ca5d96d946230e6a7bfeddd46962" => :mountain_lion
-  end
+  version "2015-09-01"
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-07-31/", :using => :svn
+    url "http://llvm.org/svn/llvm-project/llvm/tags/RELEASE_370/final/", :using => :svn
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-07-31/", :using => :svn
+      url "http://llvm.org/svn/llvm-project/cfe/tags/RELEASE_370/final/", :using => :svn
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.7.0/libcxx-3.7.0.src.tar.xz"
+      sha256 "c18f3c8333cd7e678c1424a57fe5e25efe740ca7caf62ac67152b4723f3ad08e"
     end
+  end
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "6d48fca1fda278f2c14fa0e0a4266ad495d88e848315db3ca4615f7d7b437e74" => :el_capitan
+    sha256 "7665ddb3a09455ed331d2aa99a3c51e3a9df2b71576fe1a46aa76523541c9b9b" => :yosemite
+    sha256 "b76c50d116f7e0a1f76ad89cfe3e43ac0ac36107f24179a45ab1b3b7afb7bbd8" => :mavericks
   end
 
   head do

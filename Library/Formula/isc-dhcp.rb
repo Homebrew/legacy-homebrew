@@ -1,8 +1,14 @@
 class IscDhcp < Formula
   desc "Production-grade DHCP solution"
-  homepage "http://www.isc.org/software/dhcp"
-  url "http://ftp.isc.org/isc/dhcp/4.3.0/dhcp-4.3.0.tar.gz"
-  sha256 "a7b6517d5cf32c5e49d2323a63de00efe5391df7cb0045dfa0ec8f6ee46ebe8a"
+  homepage "https://www.isc.org/software/dhcp"
+  url "https://ftp.isc.org/isc/dhcp/4.3.3/dhcp-4.3.3.tar.gz"
+  sha256 "553c4945b09b1c1b904c4780f34f72aaefa2fc8c6556715de0bc9d4e3d255ede"
+
+  bottle do
+    sha256 "a822cb1bafbf175f2c85e7089c1c5e52d2239f3d8467fc913733d193999dce28" => :el_capitan
+    sha256 "3d4c4e8254772daf4d797967690f5fd062273b581dfd05b5b062b7741dbecf17" => :yosemite
+    sha256 "6a7ef92897aa1a6f2d5ad736ee03d710c9efb3111eb6fde7705507cc29c18933" => :mavericks
+  end
 
   def install
     # use one dir under var for all runtime state.
@@ -23,7 +29,7 @@ class IscDhcp < Formula
       "_PATH_DHCLIENT_PID"  => dhcpd_dir+"dhclient.pid",
       "_PATH_DHCLIENT6_PID" => dhcpd_dir+"dhclient6.pid",
       "_PATH_DHCRELAY_PID"  => dhcpd_dir+"dhcrelay.pid",
-      "_PATH_DHCRELAY6_PID" => dhcpd_dir+"dhcrelay6.pid"
+      "_PATH_DHCRELAY6_PID" => dhcpd_dir+"dhcrelay6.pid",
     }
 
     path_opts.each do |symbol, path|

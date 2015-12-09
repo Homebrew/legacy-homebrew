@@ -2,6 +2,7 @@ class Tcc < Formula
   desc "Tiny C compiler"
   homepage "http://bellard.org/tcc/"
   url "http://download.savannah.gnu.org/releases/tinycc/tcc-0.9.26.tar.bz2"
+  mirror "https://dl.bintray.com/homebrew/mirror/tcc-0.9.26.tar.bz2"
   sha256 "521e701ae436c302545c3f973a9c9b7e2694769c71d9be10f70a2460705b6d71"
 
   bottle do

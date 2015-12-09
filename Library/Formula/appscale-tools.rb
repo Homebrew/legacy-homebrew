@@ -1,15 +1,15 @@
 class AppscaleTools < Formula
   desc "Command-line tools for working with AppScale"
   homepage "https://github.com/AppScale/appscale-tools"
-  url "https://github.com/AppScale/appscale-tools/archive/2.3.1.tar.gz"
-  sha256 "f24460657d46cb84d657e900999349fbd789d2bc6546a866932cfc20fe195a58"
+  url "https://github.com/AppScale/appscale-tools/archive/2.5.0.tar.gz"
+  sha256 "9edf33999fe9a3a55b0b3c45ca14bced1a747ee0450a8922f521499b3ae2bbb7"
   head "https://github.com/AppScale/appscale-tools.git"
 
   bottle do
     cellar :any
-    sha256 "c05f8f8571caa73f5d02bebe2eea467d1613f77109d73f3475f18cd79561d34c" => :yosemite
-    sha256 "dd00c04bdc9d7ea38a1295e742a87e28272d8b903f0249243d39b2ec18b30332" => :mavericks
-    sha256 "138a2bfa6c45de2f6567fb8b6116cca31a46435de776771a81f3ec83e6cd68a9" => :mountain_lion
+    sha256 "38d088cf9dd631669c4167118c086125ed8032ea067c804bc113c7ce846318c0" => :el_capitan
+    sha256 "911092f177254c966d0fee0467804096acb347db003d744e89f12ab344fc038b" => :yosemite
+    sha256 "d35a34660e0360b6f3cbb4a978cc3af6b1d48c7b2b5778614e4396adb9132ac1" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -72,11 +72,6 @@ class AppscaleTools < Formula
   resource "httplib2" do
     url "https://pypi.python.org/packages/source/h/httplib2/httplib2-0.9.1.tar.gz"
     sha256 "bc6339919a5235b9d1aaee011ca5464184098f0c47c9098001f91c97176583f5"
-  end
-
-  resource "python-gflags" do
-    url "https://pypi.python.org/packages/source/p/python-gflags/python-gflags-2.0.tar.gz"
-    sha256 "0dff6360423f3ec08cbe3bfaf37b339461a54a21d13be0dd5d9c9999ce531078"
   end
 
   def install

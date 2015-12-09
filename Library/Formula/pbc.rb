@@ -7,9 +7,9 @@ class Pbc < Formula
 
   bottle do
     cellar :any
-    sha1 "57180c03e2d82474c205d60783f5c657de8f5bd5" => :yosemite
-    sha1 "9519b2e974ff93fb7e33ff776c008a3a0083d70b" => :mavericks
-    sha1 "2a3e05bc353b12436aad2ad6fdd67224651e6e44" => :mountain_lion
+    sha256 "5ec07e1b5752aa02b6a479665ca8a57b85ed55d5cd3b05a34cf403d7b47ea142" => :yosemite
+    sha256 "3be60cf755e2d568867c2d5c53a46774627afe1fe7439b7f86437e718ba52ed8" => :mavericks
+    sha256 "f9f7455441a38df308bd433f1a13a208ef65a2081a1884f45156f3b63072c832" => :mountain_lion
   end
 
   depends_on "gmp"

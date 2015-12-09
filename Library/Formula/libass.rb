@@ -1,26 +1,40 @@
 class Libass < Formula
   desc "Subtitle renderer for the ASS/SSA subtitle format"
   homepage "https://github.com/libass/libass"
-  url "https://github.com/libass/libass/releases/download/0.12.3/libass-0.12.3.tar.gz"
-  sha256 "5aa6b02b00de7aa2d795e8afa77def47485fcc68a190f4326b6e4d40aee30560"
+  url "https://github.com/libass/libass/releases/download/0.13.1/libass-0.13.1.tar.gz"
+  sha256 "9741b9b4059e18b4369f8f3f77248416f988589896fd7bf9ce3da7dfb9a84797"
+
+  head do
+    url "https://github.com/libass/libass.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   bottle do
     cellar :any
-    sha256 "5790f99bd0c16069163657ab46601c25ccb1e3586326f0914305797fbf49f1a1" => :yosemite
-    sha256 "0e41667064f0c89ccec2f3e01c67bb6e5fd319bb279921a33da4c4a23eb5a541" => :mavericks
-    sha256 "bf8e4ad18cc7c245db6607cd4ccdae7addebd2a267d8473c1da1b6db508c5bbf" => :mountain_lion
+    sha256 "abee4670d1a58fcbf57e180aa31543f42f84abda4c5f88212a0baea480819633" => :el_capitan
+    sha256 "f0154b4f829949c2187e94515b3ff9319a83d8c20d2143df14514d19560b0f0c" => :yosemite
+    sha256 "7fed313daf90cb1949d943a8edecced7a4c9616af5bc862218bbc7bb8a8c54a6" => :mavericks
   end
+
+  option "with-fontconfig", "Disable CoreText backend in favor of the more traditional fontconfig"
 
   depends_on "pkg-config" => :build
   depends_on "yasm" => :build
 
   depends_on "freetype"
   depends_on "fribidi"
-  depends_on "fontconfig"
-  depends_on "harfbuzz" => :optional
+  depends_on "harfbuzz" => :recommended
+  depends_on "fontconfig" => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
+    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
+    args << "--disable-coretext" if build.with? "fontconfig"
+
+    system "autoreconf", "-i" if build.head?
+    system "./configure", *args
     system "make", "install"
   end
 end

@@ -6,9 +6,9 @@ class Fsh < Formula
 
   bottle do
     cellar :any
-    sha1 "0032ffd126903008825b9f3d1d7a6a261da8411e" => :yosemite
-    sha1 "fa0639c0b04a59327078f3c56fd416530ecf48ee" => :mavericks
-    sha1 "4cb087d1b5b153e22cf726c6e986615620551273" => :mountain_lion
+    sha256 "8a49ad906b045a293259c199fd5d1737894099c487b1bfc83fb60d18acf065ac" => :yosemite
+    sha256 "ed852d51f5a0a4024d4a195c9cffd604758a11a115620a3da0975b541c912770" => :mavericks
+    sha256 "2ddff507244ca8dc352c39d5372f13cfe42c04e19d7b1d4832ecafb58fc8d00b" => :mountain_lion
   end
 
   def install

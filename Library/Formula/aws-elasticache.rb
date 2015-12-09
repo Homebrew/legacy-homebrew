@@ -5,6 +5,8 @@ class AwsElasticache < Formula
   version "1.12.000"
   sha256 "0aee0849a78c8129ed16e99706dde34972c02ed1846e70b76a1e21a133d9648f"
 
+  bottle :unneeded
+
   depends_on "ec2-api-tools"
   depends_on :java
 

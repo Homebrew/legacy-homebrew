@@ -3,8 +3,9 @@ class Hr < Formula
   homepage "https://github.com/LuRsT/hr"
   url "https://github.com/LuRsT/hr/archive/1.1.tar.gz"
   sha256 "1aa26d670a55da3a97730c89fe5fa6ae690e20d5aa8e56e07802afc75c974442"
-
   head "https://github.com/LuRsT/hr"
+
+  bottle :unneeded
 
   def install
     bin.install "hr"

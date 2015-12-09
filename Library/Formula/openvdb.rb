@@ -1,20 +1,23 @@
 class Openvdb < Formula
   desc "Sparse volume processing toolkit"
   homepage "http://www.openvdb.org/"
-  url "https://github.com/dreamworksanimation/openvdb/archive/v3.0.0.tar.gz"
-  sha256 "6c90cfda032c54876b321031717c13ea56a6b7b15c911d3edfbb2ad7af49700e"
+  url "https://github.com/dreamworksanimation/openvdb/archive/v3.1.0.tar.gz"
+  sha256 "b95a32f4f0195452a64870bda978999a719006a0c036b9ac985b466532d32d4b"
   head "https://github.com/dreamworksanimation/openvdb.git"
+  revision 1
 
   bottle do
-    sha256 "9001f9f2bf882a7186ff6dd0e676c1947bdcfdfe0f10cd1ff21b114bcef47722" => :yosemite
-    sha256 "572cc54af2939f50de34174540d26947037b7e055e38c21d31794186f2663a3a" => :mavericks
-    sha256 "70a2321ed4e82b098b9a9befd4cc513529583881496793815089d463ee5744fd" => :mountain_lion
+    sha256 "d60e3a904697fd6d4722a888ee929ffa42ca44da0fc3d82d2935bc81c6612283" => :el_capitan
+    sha256 "67dbc7e057b55d08585a3f0f86933d23d5fa8d66d42b791adbf63b6428a3ad75" => :yosemite
+    sha256 "a280aa60b2f6d752b488b88694dd30074149ef5a909edf5154be0980023f0f64" => :mavericks
   end
 
   option "with-viewer", "Installs the command-line tool to view OpenVDB files"
-  option "with-tests", "Installs the unit tests for the OpenVDB library"
+  option "with-test", "Installs the unit tests for the OpenVDB library"
   option "with-logging", "Requires log4cplus"
   option "with-docs", "Installs documentation"
+
+  deprecated_option "with-tests" => "with-test"
 
   depends_on "openexr"
   depends_on "ilmbase"
@@ -28,7 +31,7 @@ class Openvdb < Formula
   end
 
   depends_on "homebrew/versions/glfw3" if build.with? "viewer"
-  depends_on "cppunit" if build.with? "tests"
+  depends_on "cppunit" if build.with? "test"
   depends_on "doxygen" if build.with? "docs"
   depends_on "log4cplus" if build.with? "logging"
   needs :cxx11
@@ -95,6 +98,10 @@ class Openvdb < Formula
 
     cd "openvdb" do
       system "make", "install", *args
+      if build.with? "tests"
+        system "make", "vdb_test", *args
+        bin.install "vdb_test"
+      end
     end
   end
 

@@ -5,16 +5,16 @@ class Fail2ban < Formula
   sha256 "2d579d9f403eb95064781ffb28aca2b258ca55d7a2ba056a8fa2b3e6b79721f2"
 
   bottle do
-    sha1 "ab90e39f9669b929dd4ec43b9f736a1ab1cac652" => :mavericks
-    sha1 "3b2c563f7316ed9c485744e24ec6abc3bb242040" => :mountain_lion
-    sha1 "0c91986b55c0d35497ef0d4c42d992c9958c577e" => :lion
+    sha256 "fe169a2bba521ebd253035f22ee3c652db3a6d324ee6d92bd07689e1d6bd0bf7" => :mavericks
+    sha256 "0bf16e328ce670886caaeccc7279a7ebe491665e6b671aa2598ac47f93023f2d" => :mountain_lion
+    sha256 "93bd451f8f47b2962152a46b533250522fa7129b684cc3a6e82a959acaaf9758" => :lion
   end
 
   def install
     rm "setup.cfg"
     inreplace "setup.py" do |s|
-      s.gsub! /\/etc/, etc
-      s.gsub! /\/var/, var
+      s.gsub! %r{/etc}, etc
+      s.gsub! %r{/var}, var
     end
 
     # Replace hardcoded paths

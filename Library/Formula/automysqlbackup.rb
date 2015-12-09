@@ -1,9 +1,11 @@
 class Automysqlbackup < Formula
   desc "Automate MySQL backups"
-  homepage "http://sourceforge.net/projects/automysqlbackup/"
+  homepage "https://sourceforge.net/projects/automysqlbackup/"
   url "https://downloads.sourceforge.net/project/automysqlbackup/AutoMySQLBackup/AutoMySQLBackup%20VER%203.0/automysqlbackup-v3.0_rc6.tar.gz"
   version "3.0-rc6"
   sha256 "889e064d086b077e213da11e937ea7242a289f9217652b9051c157830dc23cc0"
+
+  bottle :unneeded
 
   def install
     inreplace "automysqlbackup" do |s|

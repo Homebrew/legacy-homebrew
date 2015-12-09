@@ -1,4 +1,3 @@
-require "os/mac"
 require "extend/ENV/shared"
 
 # ### Why `superenv`?
@@ -67,6 +66,11 @@ module Superenv
     self["HOMEBREW_ISYSTEM_PATHS"] = determine_isystem_paths
     self["HOMEBREW_INCLUDE_PATHS"] = determine_include_paths
     self["HOMEBREW_LIBRARY_PATHS"] = determine_library_paths
+
+    if MacOS::Xcode.without_clt?
+      self["MACOSX_DEPLOYMENT_TARGET"] = MacOS.version.to_s
+      self["SDKROOT"] = MacOS.sdk_path
+    end
 
     # On 10.9, the tools in /usr/bin proxy to the active developer directory.
     # This means we can use them for any combination of CLT and Xcode.

@@ -1,15 +1,22 @@
 class Theora < Formula
   desc "Open video compression format"
-  homepage "http://www.theora.org/"
+  homepage "https://www.theora.org/"
   url "http://downloads.xiph.org/releases/theora/libtheora-1.1.1.tar.bz2"
   sha256 "b6ae1ee2fa3d42ac489287d3ec34c5885730b1296f0801ae577a35193d3affbc"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "af6b483eb5119d88559d435f457b6d12d5ecf5bc" => :yosemite
-    sha1 "1ef8982b17448df7e7a665ff74381a6013a430a9" => :mavericks
-    sha1 "55f7781fe5ae59ef1c0aa1dfe95fd4d4f37ce060" => :mountain_lion
+    revision 2
+    sha256 "03b63a91812185120355da8292b40a2afd8377dcd8e3825eb9cbc217a3f4bc79" => :el_capitan
+    sha256 "ab9dd77803ec6885cb9701859de9b1b8ff6b85cb7cef24400dec6adb4b8c6378" => :yosemite
+    sha256 "58be26743e23be63aee48186bfa9cd8a982de957efb040a6ab3030aa62753977" => :mavericks
+  end
+
+  head do
+    url "https://git.xiph.org/theora.git"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
   end
 
   depends_on "pkg-config" => :build
@@ -19,6 +26,7 @@ class Theora < Formula
 
   def install
     cp Dir["#{Formula["libtool"].opt_share}/libtool/*/config.{guess,sub}"], buildpath
+    system "./autogen.sh" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-oggtest",

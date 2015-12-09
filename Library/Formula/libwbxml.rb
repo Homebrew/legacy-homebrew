@@ -1,15 +1,15 @@
 class Libwbxml < Formula
   desc "Library and tools to parse and encode WBXML documents"
-  homepage "https://libwbxml.opensync.org/"
-  url "https://downloads.sourceforge.net/project/libwbxml/libwbxml/0.11.2/libwbxml-0.11.2.tar.bz2"
-  sha256 "5f642027ece0225d80ef21979a57cf59b1027d46cb8dbd5ff4b87662eec2557d"
+  homepage "https://sourceforge.net/projects/libwbxml/"
+  url "https://downloads.sourceforge.net/project/libwbxml/libwbxml/0.11.4/libwbxml-0.11.4.tar.bz2"
+  sha256 "8057998042b8a724328346a50c326010ba011a40e18e2df7043e87498a679c28"
+  head "https://github.com/libwbxml/libwbxml.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "15b0e5a41fad5114daf23f702893b347829ae885" => :yosemite
-    sha1 "2e9d6fe9a6b9147b612350c4f12c59319bb71f5a" => :mavericks
-    sha1 "3aced5392e10b5bad5e53e579a99b0247157cc42" => :mountain_lion
+    sha256 "8dea99c05944dcc9b28a3494d00ff32d136669c6bb49ad3eb6640f7a2601f879" => :el_capitan
+    sha256 "3a3c54f55e3ca674f6e8cc993519b3988d174a642ad25bcbf3e540e35d541d90" => :yosemite
+    sha256 "cc821ee98e3af666012edf1abfbce6cf1816e3609a1fcf679519c2f883a84000" => :mavericks
   end
 
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
@@ -24,10 +24,14 @@ class Libwbxml < Formula
   end
 
   def install
+    # Sandbox fix:
+    # Install in Cellar & then automatically symlink into top-level Module path.
+    inreplace "cmake/CMakeLists.txt", "${CMAKE_ROOT}/Modules/", "#{share}/cmake/Modules"
+
     mkdir "build" do
-      args = std_cmake_args + %w[..]
+      args = std_cmake_args
       args << "-DBUILD_DOCUMENTATION=ON" if build.with? "docs"
-      system "cmake", *args
+      system "cmake", "..", *args
       system "make", "install"
     end
   end

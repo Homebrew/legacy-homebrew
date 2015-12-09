@@ -1,13 +1,13 @@
 class Mpdscribble < Formula
   desc "Last.fm reporting client for mpd"
-  homepage "http://mpd.wikia.com/wiki/Client:Mpdscribble"
+  homepage "https://mpd.wikia.com/wiki/Client:Mpdscribble"
   url "http://www.musicpd.org/download/mpdscribble/0.22/mpdscribble-0.22.tar.gz"
   sha256 "ff882d02bd830bdcbccfe3c3c9b0d32f4f98d9becdb68dc3135f7480465f1e38"
 
   bottle do
-    sha1 "975024cac5d4bc41221f7f9a6fcd889a487e658d" => :mavericks
-    sha1 "bc541d05e57c74932ae0151d2271fd51bcb022fe" => :mountain_lion
-    sha1 "3d45208c83304423bdca07e5c26d7d37d2271170" => :lion
+    sha256 "4db146ed5a26dbc001635cb3367c0d26978371d932acad6e0416f5c47ba38c18" => :mavericks
+    sha256 "e1e0581c453237c817b326a0da0bb5b0fe70a0ea10c4383e2f75b7332651f17a" => :mountain_lion
+    sha256 "fc0ef6831fa92779da48b9694c14d71d7b712a070b432e6aa3a9855d16b04cda" => :lion
   end
 
   depends_on "pkg-config" => :build

@@ -1,18 +1,15 @@
 class Mu < Formula
   desc "Tool for searching e-mail messages stored in the maildir-format"
   homepage "http://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/v0.9.12.tar.gz"
-  sha256 "b871124fc7774a2593815f89286671a8f31d7243bb898a8ca454685599f2b9af"
-
+  url "https://github.com/djcb/mu/archive/0.9.15.tar.gz"
+  sha256 "60c63fdf1b726696cb0028b86eaee2aa72e171493b2d5626ea173b912ff25d4c"
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    sha256 "8166a3b3788068a97ceb81cb64cca24bd8b92ff3a1ece722e3a27a304979ea6f" => :yosemite
-    sha256 "8c99800aa123e167c835d05024ac6a3efe435e7e4b05e8ddcc249c5a50805f74" => :mavericks
-    sha256 "d59cf5dce157f19561f3a2575fb7f4498cd16668e1cee8ea28b80aecdc086428" => :mountain_lion
+    sha256 "58843a9fa75b7ab59618b99b98cb5106393b81c377f88541fee23b341d987702" => :el_capitan
+    sha256 "2f85daec392f24260d7d87ba4c67ecb9223c89751665b60762cbb46ac21b2a7a" => :yosemite
+    sha256 "1e355cb0ce355ba7b78debbaec8830d083c0c7332448189945acd62b0a0f2b43" => :mavericks
   end
-
-  option "with-emacs", "Build with Emacs support (requires Emacs 23 or higher)"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build

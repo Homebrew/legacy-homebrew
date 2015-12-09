@@ -326,6 +326,7 @@ _brew_linkapps ()
         return
         ;;
     esac
+    __brew_complete_installed
 }
 
 _brew_list ()
@@ -554,6 +555,7 @@ _brew_upgrade ()
         __brewcomp "
             --all
             --build-from-source --build-bottle --force-bottle
+            --cleanup
             --debug
             --verbose
             "
@@ -598,7 +600,10 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        __brewcomp "$(brew commands --quiet --include-aliases)"
+        # Do not auto-complete "instal" abbreviation for "install" command.
+        # Prefix newline to prevent not checking the first command.
+        local cmds=$'\n'"$(brew commands --quiet --include-aliases)"
+        __brewcomp "${cmds/$'\n'instal$'\n'/$'\n'}"
         return
     fi
 
@@ -620,7 +625,7 @@ _brew ()
     install|instal|reinstall)   _brew_install ;;
     irb)                        _brew_irb ;;
     link|ln)                    _brew_link ;;
-    linkapps)                   _brew_linkapps ;;
+    linkapps|unlinkapps)        _brew_linkapps ;;
     list|ls)                    _brew_list ;;
     log)                        _brew_log ;;
     man)                        _brew_man ;;

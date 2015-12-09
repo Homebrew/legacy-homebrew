@@ -1,17 +1,18 @@
 class Libzdb < Formula
   desc "Database connection pool library"
   homepage "http://tildeslash.com/libzdb/"
-  url "http://tildeslash.com/libzdb/dist/libzdb-3.0.tar.gz"
-  sha256 "e334bcb9ca1410e863634a164e3b1b5784018eb6e90b6c2b527780fc29a123c8"
+  url "http://tildeslash.com/libzdb/dist/libzdb-3.1.tar.gz"
+  sha256 "0f01abb1b01d1a1f4ab9b55ad3ba445d203fc3b4757abdf53e1d85e2b7b42695"
+  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "e733947b31862fd1c8964872a29bd8aa5479635c" => :yosemite
-    sha1 "aa3ccc94e86d2158c1041474c79cdccb25e5d0b1" => :mavericks
-    sha1 "4ab2279dae830f543cc9fec5d41197150163bf83" => :mountain_lion
+    sha256 "05236a5fa351eab9946a17e8c3219277a553287d40686e9dd3034acb02faed8a" => :el_capitan
+    sha256 "bcee0be3f6bb6eab4d8213f239db7f8d86b8548f99504be4b8a5b735c9f66bf4" => :yosemite
+    sha256 "989e41024a32bfab580881d647c8d7dbad9d9bb17a3fd9072e784ff98e2d0cef" => :mavericks
   end
 
+  depends_on "openssl"
   depends_on :postgresql => :recommended
   depends_on :mysql => :recommended
   depends_on "sqlite" => :recommended

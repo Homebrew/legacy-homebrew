@@ -1,15 +1,15 @@
 class Libagg < Formula
   desc "High fidelity 2D graphics library for C++"
-  homepage "http://www.antigrain.com"
-  url "http://www.antigrain.com/agg-2.5.tar.gz"
+  homepage "https://web.archive.org/web/20150812005010/http://www.antigrain.com/"
+  url "https://web.archive.org/web/20150811231742/http://www.antigrain.com/agg-2.5.tar.gz"
   sha256 "ab1edc54cc32ba51a62ff120d501eecd55fceeedf869b9354e7e13812289911f"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "bc541437d106b01999c703b805d50beb66ad07c0" => :yosemite
-    sha1 "5bc19c91d6f937036fa3f6cc67a6687449ad37c8" => :mavericks
-    sha1 "2db5f38b2110dd31fd1932d7ea003d7ca6ea2972" => :mountain_lion
+    sha256 "9d3da78ab9824db755cbfeb9e6596527db1ace71525cb079465b1a9fb1c00417" => :yosemite
+    sha256 "9704ec5652775cbab7af51e48eb42b19cb55f7cdb5894e6e1abac3e478581e2a" => :mavericks
+    sha256 "a8519e34820cb112ca057020eda27574bec5fff386fc738d7d867a4296e8b117" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

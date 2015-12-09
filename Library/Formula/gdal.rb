@@ -1,16 +1,14 @@
 class Gdal < Formula
   desc "GDAL: Geospatial Data Abstraction Library"
   homepage "http://www.gdal.org/"
-  url "http://download.osgeo.org/gdal/1.11.2/gdal-1.11.2.tar.gz"
-  sha256 "66bc8192d24e314a66ed69285186d46e6999beb44fc97eeb9c76d82a117c0845"
-  revision 3
+  url "http://download.osgeo.org/gdal/1.11.3/gdal-1.11.3.tar.gz"
+  sha256 "561588bdfd9ca91919d4679a77a2b44214b158934ee8b425295ca5be33a1014d"
+  revision 1
 
   bottle do
-    revision 1
-    sha256 "c74fbb797278914a6e53eb2b9b83e2b40520262e17eee1eee63e157a3a58dbec" => :el_capitan
-    sha256 "4ae2dce70845b902946ab4a82895b744ad871aa7979bb86f38df5ba1250d6901" => :yosemite
-    sha256 "5d21fd019e17323fa70cb13e97592c565f57b4e4636b8760817f8ee69ea63521" => :mavericks
-    sha256 "7baac4d062d457e3a05b4a7b21978c413481a7a097e4d26d423f37c1d4cb59eb" => :mountain_lion
+    sha256 "768d5ee34e959628f630ea7f8ba1933b5936c82da5cfbae9f4eb6b90bf0bbc25" => :el_capitan
+    sha256 "eae2f587ef0dbd43b1fe2f68bced28b5a6eec92fad136eb6b2ace194e8b78efe" => :yosemite
+    sha256 "f976aaf7d52096afb4f8af340f81837e50678d1be06cee7712f9278233b5bb98" => :mavericks
   end
 
   head do
@@ -31,11 +29,6 @@ class Gdal < Formula
   deprecated_option "enable-unsupported" => "with-unsupported"
   deprecated_option "enable-mdb" => "with-mdb"
   deprecated_option "complete" => "with-complete"
-
-  depends_on :python => :optional
-  if build.with? "python"
-    depends_on :fortran => :build
-  end
 
   depends_on "libpng"
   depends_on "jpeg"
@@ -88,6 +81,11 @@ class Gdal < Formula
     depends_on "swig" => :build
   end
 
+  option "without-python", "Build without python2 support"
+  depends_on :python => :optional if MacOS.version <= :snow_leopard
+  depends_on :python3 => :optional
+  depends_on :fortran => :build if build.with?("python") || build.with?("python3")
+
   # Extra linking libraries in configure test of armadillo may throw warning
   # see: https://trac.osgeo.org/gdal/ticket/5455
   # including prefix lib dir added by Homebrew:
@@ -100,8 +98,8 @@ class Gdal < Formula
   end
 
   resource "numpy" do
-    url "https://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz"
-    sha256 "3d722fc3ac922a34c50183683e828052cd9bb7e9134a95098441297d7ea1c7a9"
+    url "https://pypi.python.org/packages/source/n/numpy/numpy-1.9.3.tar.gz"
+    sha256 "c3b74d3b9da4ceb11f66abd21e117da8cf584b63a0efbd01a9b7e91b693fbbd6"
   end
 
   resource "libkml" do
@@ -243,13 +241,6 @@ class Gdal < Formula
   end
 
   def install
-    if build.with? "python"
-      ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
-      numpy_args = ["build", "--fcompiler=gnu95",
-                    "install", "--prefix=#{libexec}"]
-      resource("numpy").stage { system "python", "setup.py", *numpy_args }
-    end
-
     if build.with? "libkml"
       resource("libkml").stage do
         # See main `libkml` formula for info on patches
@@ -291,17 +282,18 @@ class Gdal < Formula
     system "make"
     system "make", "install"
 
-    # `python-config` may try to talk us into building bindings for more
-    # architectures than we really should.
-    if MacOS.prefer_64_bit?
-      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_64_bit}"
-    else
-      ENV.append_to_cflags "-arch #{Hardware::CPU.arch_32_bit}"
-    end
-
-    cd "swig/python" do
-      system "python", "setup.py", "install", "--prefix=#{prefix}", "--record=installed.txt", "--single-version-externally-managed"
-      bin.install Dir["scripts/*"]
+    inreplace "swig/python/setup.cfg", /#(.*_dirs)/, "\\1"
+    Language::Python.each_python(build) do |python, python_version|
+      numpy_site_packages = buildpath/"homebrew-numpy/lib/python#{python_version}/site-packages"
+      numpy_site_packages.mkpath
+      ENV["PYTHONPATH"] = numpy_site_packages
+      resource("numpy").stage do
+        system python, *Language::Python.setup_install_args(buildpath/"homebrew-numpy")
+      end
+      cd "swig/python" do
+        system python, *Language::Python.setup_install_args(prefix)
+        bin.install Dir["scripts/*"] if python == "python"
+      end
     end
 
     if build.with? "swig-java"

@@ -5,6 +5,8 @@ class DynamodbLocal < Formula
   version "2015-07-16_1.0"
   sha256 "5868fd4b9f624001cda88059af7a54f412a4794dea0d3497e7c57470bfb272fa"
 
+  bottle :unneeded
+
   def data_path
     var/"data/dynamodb-local"
   end

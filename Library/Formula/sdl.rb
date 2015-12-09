@@ -8,9 +8,9 @@ class Sdl < Formula
     cellar :any
     revision 2
     sha256 "c9c66beaee50897468330709dc618246b298d63854309863e958e6b46ecec06a" => :el_capitan
-    sha1 "3f767029ead055192d70e143cf1e5b18a1b18a3e" => :yosemite
-    sha1 "4396e988f0c34d6859f994a4fa89d50a6e4a8cf9" => :mavericks
-    sha1 "1917ce67939b9b539cd33469749e881e7b611b0d" => :mountain_lion
+    sha256 "ec2202243209e378fc50bb9ad1bd7c7cff0ae893f81780228113b542059e3a92" => :yosemite
+    sha256 "92f71a40ad275455e0db75057fcfd29ca35abbf583de73e106ccb903541405af" => :mavericks
+    sha256 "10f73b430cc6794a9fe16382ffe9616ab6bf541f46f6bda903472699369a7856" => :mountain_lion
   end
 
   head do
@@ -22,10 +22,11 @@ class Sdl < Formula
   end
 
   option "with-x11", "Compile with support for X11 video driver"
-  option "with-tests", "Compile and install the tests"
+  option "with-test", "Compile and install the tests"
   option :universal
 
   deprecated_option "with-x11-driver" => "with-x11"
+  deprecated_option "with-tests" => "with-test"
 
   depends_on :x11 => :optional
 
@@ -37,7 +38,7 @@ class Sdl < Formula
     # Fix build against recent libX11; requires regenerating configure script
     patch do
       url "https://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
-      sha1 "1b35949d9ac360a7e39aac76d1f0a6ad5381b0f4"
+      sha256 "04fa6aaf1ae1043e82d85f367fdb3bea5532e60aa944ce17357030ee93bb856c"
     end
   end
 
@@ -77,7 +78,7 @@ class Sdl < Formula
     # Copy source files needed for Ojective-C support.
     libexec.install Dir["src/main/macosx/*"] if build.stable?
 
-    if build.with? "tests"
+    if build.with? "test"
       ENV.prepend_path "PATH", "#{bin}"
       # This is stupid but necessary. Blurgh. Otherwise, test building fails, even
       # with various flags, prepending & pkg_config_path tinkering.

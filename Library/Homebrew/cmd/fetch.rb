@@ -19,9 +19,21 @@ module Homebrew
     bucket.each do |f|
       f.print_tap_action :verb => "Fetching"
 
+      fetched_bottle = false
       if fetch_bottle?(f)
-        fetch_formula(f.bottle)
-      else
+        begin
+          fetch_formula(f.bottle)
+        rescue Exception => e
+          raise if ARGV.homebrew_developer? || e.is_a?(Interrupt)
+          fetched_bottle = false
+          onoe e.message
+          opoo "Bottle fetch failed: fetching the source."
+        else
+          fetched_bottle = true
+        end
+      end
+
+      unless fetched_bottle
         fetch_formula(f)
         f.resources.each { |r| fetch_resource(r) }
         f.patchlist.each { |p| fetch_patch(p) if p.external? }

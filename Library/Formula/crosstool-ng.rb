@@ -5,10 +5,11 @@ class CrosstoolNg < Formula
   sha256 "67122ba42657da258f23de4a639bc49c6ca7fe2173b5efba60ce729c6cce7a41"
 
   bottle do
-    cellar :any
-    sha256 "fbc3920e7189b2c7e637890d60df8289b89cc0b2be8dc0bae8c9fdc8bcf35191" => :yosemite
-    sha256 "1c3efe8b7bb00129838870fabb44db60767ea2831ce2e705ada924fc5ea9e66e" => :mavericks
-    sha256 "15d5c1e9803492e947c3649796ffb405324e7573a4b6a1cf64f6b5412808346d" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "12da46c49731e5bdd94b3e209d86bc3a2e0fa4a26e7982a76b07a492641c5e6d" => :el_capitan
+    sha256 "bce130a66509ebb9a134b1aec50abcbcc505c3d012fecd8d135b9acaf128ef01" => :yosemite
+    sha256 "46ec6b65cb40a715a166aa6c4544be4028e2ac7d95ce24e15878318529133bea" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -36,11 +37,12 @@ class CrosstoolNg < Formula
             "--with-libtoolize=glibtoolize",
             "--with-install=ginstall",
             "--with-sed=gsed",
-            "--with-awk=gawk"]
+            "--with-awk=gawk",
+           ]
 
     args << "--with-grep=ggrep" if build.with? "grep"
 
-    args << "--with-make=gmake" if build.with? "make"
+    args << "--with-make=#{Formula["make"].opt_bin}/gmake" if build.with? "make"
 
     args << "CFLAGS=-std=gnu89"
 
@@ -48,7 +50,7 @@ class CrosstoolNg < Formula
 
     # Must be done in two steps
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
@@ -60,4 +62,3 @@ class CrosstoolNg < Formula
     system "#{bin}/ct-ng", "version"
   end
 end
-

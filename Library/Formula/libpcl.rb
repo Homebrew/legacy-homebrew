@@ -7,9 +7,10 @@ class Libpcl < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "f765f414f926e08424a150ef9d6ed0c781c747a5" => :yosemite
-    sha1 "659570156b38f819a880f0cb4e8650129b4c6d29" => :mavericks
-    sha1 "144245dc5c42c66e42144a7ccfa648fc96550752" => :mountain_lion
+    sha256 "1975baf018352fd1f1ca88bd39fc02db384e2f6be4017976184dda3365c60608" => :el_capitan
+    sha256 "e9c6f7bc1efab583e44879426a5abb2ff5e7f3eb30261a81a7be723c3280c3a3" => :yosemite
+    sha256 "8f8e6669f9a552618b5578ad649e0b2a5f0860922e756c79a609b2eb21b5d4b4" => :mavericks
+    sha256 "791a1bcac65adcb6ad8a9b3d1ce3e4f74a34aebadd60a135083fad42d9b5965b" => :mountain_lion
   end
 
   def install

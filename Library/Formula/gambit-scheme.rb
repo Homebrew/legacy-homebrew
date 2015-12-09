@@ -1,7 +1,7 @@
 class GambitScheme < Formula
   desc "Complete, portable implementation of Scheme"
   homepage "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page"
-  url "http://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_9.tgz"
+  url "https://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_9.tgz"
   sha256 "17e4a2eebbd0f5ebd807b4ad79a98b89b2a5eef00199c318a885db4ef950f14f"
 
   bottle do
@@ -13,9 +13,11 @@ class GambitScheme < Formula
   conflicts_with "ghostscript", :because => "both install `gsc` binaries"
   conflicts_with "scheme48", :because => "both install `scheme-r5rs` binaries"
 
-  deprecated_option "enable-shared" => "with-shared"
-  option "with-check", 'Execute "make check" before installing'
+  option "with-test", 'Execute "make check" before installing'
   option "with-shared", "Build Gambit Scheme runtime as shared library"
+
+  deprecated_option "with-check" => "with-test"
+  deprecated_option "enable-shared" => "with-shared"
 
   fails_with :llvm
   fails_with :clang
@@ -33,7 +35,7 @@ class GambitScheme < Formula
     args << "--enable-shared" if build.with? "shared"
 
     system "./configure", *args
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
 
     system "make"
     system "make", "install", "emacsdir=#{share}/emacs/site-lisp/#{name}"

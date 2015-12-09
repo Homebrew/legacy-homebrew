@@ -1,15 +1,15 @@
 class Openh264 < Formula
   desc "H.264 codec from Cisco"
   homepage "http://www.openh264.org"
-  url "https://github.com/cisco/openh264/archive/v1.3.1.tar.gz"
-  sha256 "b0a9a61840b4a58fbadd2a0640a81917c0ee84e922d2476c1dbcb9f29b85d7a0"
+  url "https://github.com/cisco/openh264/archive/v1.5.0.tar.gz"
+  sha256 "98077bd5d113c183ce02b678733b0cada2cf36750370579534c4d70f0b6c27b5"
   head "https://github.com/cisco/openh264.git"
 
   bottle do
     cellar :any
-    sha1 "582bf09f67c1c1f6cb775e9fcff3ea8f1d8dc482" => :yosemite
-    sha1 "44136761ff774546fb4ef571d38712edc5e5e0a2" => :mavericks
-    sha1 "2a464bb129406b2ee227c63720bef8b2235a9910" => :mountain_lion
+    sha256 "424ff1307edceda5ac26df93bbd689b39ff1abb8ccbcbfa160bac5d95ae9a2dd" => :el_capitan
+    sha256 "1b7af220ac4bba224ef15271d25b5204c96ac7f727b2250628813233dac96239" => :yosemite
+    sha256 "e6049b768ce933f23a84634ae84e31b02a3bdb81b9e1d30250ca207a193861a0" => :mavericks
   end
 
   depends_on "nasm" => :build

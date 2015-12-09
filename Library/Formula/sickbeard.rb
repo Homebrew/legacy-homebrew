@@ -6,9 +6,9 @@ class Sickbeard < Formula
   sha256 "eaf95ac78e065f6dd8128098158b38674479b721d95d937fe7adb892932e9101"
 
   bottle do
-    sha1 "d144a55f9a667036255b373f7fcf294455d447e2" => :yosemite
-    sha1 "2c47e5cec2a12f46f57cff89f29cb34f14b72183" => :mavericks
-    sha1 "1a2abb4fcbae529e5c378d5ca75f506c726a8a0b" => :mountain_lion
+    sha256 "35184b4b809cd6e1bc507332425a9c4f21926263ae01f7061db2d295fb89a149" => :yosemite
+    sha256 "396dc7161b8fd6cac7cf8ff1d4db040dbd4f093a58efd01c92b438f67f531c2b" => :mavericks
+    sha256 "dad4730b6c2a1a9cb435ff95ca3191adcd9c5f539cc358a66fdcc0be970b9fa3" => :mountain_lion
   end
 
   resource "Markdown" do

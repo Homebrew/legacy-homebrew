@@ -1,13 +1,13 @@
 class Nsd < Formula
   desc "Name server daemon"
   homepage "https://www.nlnetlabs.nl/projects/nsd/"
-  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.1.3.tar.gz"
-  sha256 "097cb295cdd3e8a73a8afac343caf0fca11b72b2214b022689ddc423312d17e5"
+  url "https://www.nlnetlabs.nl/downloads/nsd/nsd-4.1.6.tar.gz"
+  sha256 "88f622055c95d38b9ef3723a240d1d0da35a28d09fe23b601015181a61d7775f"
 
   bottle do
-    sha256 "502aa5481346dec1c0d4b93ea52124b4a1048da77e6f3e35b7e5511d4160e190" => :yosemite
-    sha256 "2259c260c9adc42effab728f8482db424a18c7706d059f47f11c10898b3f45bb" => :mavericks
-    sha256 "774de8fc2c45a20ea33088183a0d8ab120eddbc87bdf6a43fa0f974458ad163b" => :mountain_lion
+    sha256 "dd753639f90df74bf6f8421aa032bdd2334a9463f71bdc91e912f4274cfafb1f" => :el_capitan
+    sha256 "d16ec152b764291646bbafe3b69d8778fca7e25c9ebc9360b61e12e5726c7528" => :yosemite
+    sha256 "086a51e77b7ea6bfaa79c1853a049a2304053a1311da9009fa4c9da607e9caa2" => :mavericks
   end
 
   option "with-root-server", "Allow NSD to run as a root name server"
@@ -16,11 +16,13 @@ class Nsd < Formula
   option "with-zone-stats", "Enable per-zone statistics"
 
   depends_on "libevent"
+  depends_on "openssl"
 
   def install
     args = %W[
       --prefix=#{prefix}
       --with-libevent=#{Formula["libevent"].opt_prefix}
+      --with-ssl=#{Formula["openssl"].opt_prefix}
     ]
 
     args << "--enable-root-server" if build.with? "root-server"

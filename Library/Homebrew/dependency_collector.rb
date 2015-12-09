@@ -116,14 +116,6 @@ class DependencyCollector
     when :emacs      then EmacsRequirement.new(tags)
     # Tiger's ld is too old to properly link some software
     when :ld64       then LD64Dependency.new if MacOS.version < :leopard
-    when :clt # deprecated
-    when :autoconf, :automake, :bsdmake, :libtool # deprecated
-      autotools_dep(spec, tags)
-    when :cairo, :fontconfig, :freetype, :libpng, :pixman # deprecated
-      Dependency.new(spec.to_s, tags)
-    when :libltdl # deprecated
-      tags << :run
-      Dependency.new("libtool", tags)
     when :python2
       PythonRequirement.new(tags)
     else
@@ -137,11 +129,6 @@ class DependencyCollector
     else
       raise TypeError, "#{spec.inspect} is not a Requirement subclass"
     end
-  end
-
-  def autotools_dep(spec, tags)
-    tags << :build unless tags.include? :run
-    Dependency.new(spec.to_s, tags)
   end
 
   def ant_dep(spec, tags)

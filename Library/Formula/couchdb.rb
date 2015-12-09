@@ -1,21 +1,22 @@
 class Couchdb < Formula
-  desc "CouchDB is a document database server"
+  desc "Document database server"
   homepage "https://couchdb.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
-  sha256 "5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627"
-  revision 3
+  revision 4
 
   stable do
+    url "https://www.apache.org/dyn/closer.cgi?path=/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz"
+    sha256 "5a601b173733ce3ed31b654805c793aa907131cd70b06d03825f169aa48c8627"
+
     # Support Erlang/OTP 18.0 compatibility, see upstream #95cb436
     # It will be in the next CouchDB point release, likely 1.6.2.
     patch :DATA
   end
 
   bottle do
-    revision 1
-    sha256 "0ebf91452aaf8ee153e4a6935f8806461534e61b7f2bd6625fd9e4aa3090e799" => :yosemite
-    sha256 "c591136e082653ca49b25a4fe213a04c6008c8720eedbd0331528d0c4ed2f5a5" => :mavericks
-    sha256 "aba33d69595b13e1fad63f59cb4a32693cbcc1ad082d67ea0f5bd6ee461c8fb8" => :mountain_lion
+    cellar :any
+    sha256 "a5b08c369ff6a488d91b30173f03048b41bf819f622bb67a26949a8ec7e34624" => :el_capitan
+    sha256 "02b3c014abb137ba979555d742ff3245c1b615aef85c39c529991346abd83aed" => :yosemite
+    sha256 "e9523348ef555ee4f55279d59979eef7a65546096bd5525aea2f12977945b7bd" => :mavericks
   end
 
   head do
@@ -60,10 +61,11 @@ class Couchdb < Formula
     system "make", "install"
 
     # Use our plist instead to avoid faffing with a new system user.
-    (prefix+"Library/LaunchDaemons/org.apache.couchdb.plist").delete
-    (lib+"couchdb/bin/couchjs").chmod 0755
-    (var+"lib/couchdb").mkpath
-    (var+"log/couchdb").mkpath
+    (prefix/"Library/LaunchDaemons/org.apache.couchdb.plist").delete
+    (lib/"couchdb/bin/couchjs").chmod 0755
+    (var/"lib/couchdb").mkpath
+    (var/"log/couchdb").mkpath
+    (var/"run/couchdb").mkpath
   end
 
   def post_install
@@ -110,8 +112,27 @@ class Couchdb < Formula
   test do
     # ensure couchdb embedded spidermonkey vm works
     system "#{bin}/couchjs", "-h"
+
+    (testpath/"var/lib/couchdb").mkpath
+    (testpath/"var/log/couchdb").mkpath
+    (testpath/"var/run/couchdb").mkpath
+    cp_r etc/"couchdb", testpath
+    inreplace "#{testpath}/couchdb/default.ini", "/usr/local/var", testpath/"var"
+
+    pid = fork do
+      exec "#{bin}/couchdb -A #{testpath}/couchdb"
+    end
+    sleep 2
+
+    begin
+      assert_match /Homebrew/, shell_output("curl localhost:5984")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end
+
 __END__
 commit 95cb436be30305efa091809813b64ef31af968c8
 Author: Dave Cottlehuber <dch@apache.org>

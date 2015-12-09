@@ -1,6 +1,5 @@
 require "pathname"
 require "exceptions"
-require "os/mac"
 require "utils/json"
 require "utils/inreplace"
 require "utils/popen"
@@ -10,6 +9,20 @@ require "open-uri"
 
 class Tty
   class << self
+    def tick
+      # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+      @tick ||= ["2714".hex].pack("U*")
+    end
+
+    def cross
+      # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
+      @cross ||= ["2718".hex].pack("U*")
+    end
+
+    def strip_ansi(string)
+      string.gsub(/\033\[\d+(;\d+)*m/, "")
+    end
+
     def blue
       bold 34
     end
@@ -40,6 +53,10 @@ class Tty
 
     def gray
       bold 30
+    end
+
+    def highlight
+      bold 39
     end
 
     def width
@@ -98,6 +115,26 @@ end
 def odie(error)
   onoe error
   exit 1
+end
+
+def pretty_installed(f)
+  if !$stdout.tty?
+    "#{f}"
+  elsif ENV["HOMEBREW_NO_EMOJI"]
+    "#{Tty.highlight}#{Tty.green}#{f} (installed)#{Tty.reset}"
+  else
+    "#{Tty.highlight}#{f} #{Tty.green}#{Tty.tick}#{Tty.reset}"
+  end
+end
+
+def pretty_uninstalled(f)
+  if !$stdout.tty?
+    "#{f}"
+  elsif ENV["HOMEBREW_NO_EMOJI"]
+    "#{Tty.red}#{f} (uninstalled)#{Tty.reset}"
+  else
+    "#{f} #{Tty.red}#{Tty.cross}#{Tty.reset}"
+  end
 end
 
 def pretty_duration(s)
@@ -187,12 +224,23 @@ module Homebrew
     require "rubygems"
     ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
 
-    args = [gem]
-    args << "-v" << version if version
+    if Gem::Specification.find_all_by_name(gem, version).empty?
+      ohai "Installing or updating '#{gem}' gem"
+      install_args = %W[--no-ri --no-rdoc --user-install #{gem}]
+      install_args << "--version" << version if version
 
-    unless quiet_system "gem", "list", "--installed", *args
-      safe_system "gem", "install", "--no-ri", "--no-rdoc",
-                                    "--user-install", *args
+      # Do `gem install [...]` without having to spawn a separate process or
+      # having to find the right `gem` binary for the running Ruby interpreter.
+      require "rubygems/commands/install_command"
+      install_cmd = Gem::Commands::InstallCommand.new
+      install_cmd.handle_options(install_args)
+      exit_code = 1 # Should not matter as `install_cmd.execute` always throws.
+      begin
+        install_cmd.execute
+      rescue Gem::SystemExitException => e
+        exit_code = e.exit_code
+      end
+      odie "Failed to install/update the '#{gem}' gem." if exit_code != 0
     end
 
     unless which executable
@@ -248,29 +296,45 @@ def curl(*args)
 
   args = [flags, HOMEBREW_USER_AGENT, *args]
   args << "--verbose" if ENV["HOMEBREW_CURL_VERBOSE"]
-  args << "--silent" unless $stdout.tty?
+  args << "--silent" if !$stdout.tty? || ENV["TRAVIS"]
 
   safe_system curl, *args
 end
 
-def puts_columns(items, star_items = [])
+def puts_columns(items)
   return if items.empty?
 
-  if star_items && star_items.any?
-    items = items.map { |item| star_items.include?(item) ? "#{item}*" : item }
+  unless $stdout.tty?
+    puts items
+    return
   end
 
-  if $stdout.tty?
-    # determine the best width to display for different console sizes
-    console_width = `/bin/stty size`.chomp.split(" ").last.to_i
-    console_width = 80 if console_width <= 0
-    max_len = items.reduce(0) { |max, item| l = item.length ; l > max ? l : max }
-    optimal_col_width = (console_width.to_f / (max_len + 2).to_f).floor
-    cols = optimal_col_width > 1 ? optimal_col_width : 1
+  # TTY case: If possible, output using multiple columns.
+  console_width = Tty.width
+  console_width = 80 if console_width <= 0
+  plain_item_lengths = items.map { |s| Tty.strip_ansi(s).length }
+  max_len = plain_item_lengths.max
+  col_gap = 2 # number of spaces between columns
+  gap_str = " " * col_gap
+  cols = (console_width + col_gap) / (max_len + col_gap)
+  cols = 1 if cols < 1
+  rows = (items.size + cols - 1) / cols
+  cols = (items.size + rows - 1) / rows # avoid empty trailing columns
 
-    IO.popen("/usr/bin/pr -#{cols} -t -w#{console_width}", "w") { |io| io.puts(items) }
-  else
+  if cols >= 2
+    col_width = (console_width + col_gap) / cols - col_gap
+    items = items.each_with_index.map do |item, index|
+      item + "".ljust(col_width - plain_item_lengths[index])
+    end
+  end
+
+  if cols == 1
     puts items
+  else
+    rows.times do |row_index|
+      item_indices_for_row = row_index.step(items.size - 1, rows).to_a
+      puts items.values_at(*item_indices_for_row).join(gap_str)
+    end
   end
 end
 
@@ -394,10 +458,10 @@ module GitHub
     def initialize(reset, error)
       super <<-EOS.undent
         GitHub #{error}
-        Try again in #{pretty_ratelimit_reset(reset)}, or create an personal access token:
-          https://github.com/settings/tokens
+        Try again in #{pretty_ratelimit_reset(reset)}, or create a personal access token:
+          #{Tty.em}https://github.com/settings/tokens/new?scopes=&description=Homebrew#{Tty.reset}
         and then set the token as: HOMEBREW_GITHUB_API_TOKEN
-                    EOS
+      EOS
     end
 
     def pretty_ratelimit_reset(reset)
@@ -414,8 +478,8 @@ module GitHub
       super <<-EOS.undent
         GitHub #{error}
         HOMEBREW_GITHUB_API_TOKEN may be invalid or expired, check:
-          https://github.com/settings/tokens
-                    EOS
+          #{Tty.em}https://github.com/settings/tokens#{Tty.reset}
+      EOS
     end
   end
 

@@ -1,15 +1,17 @@
 class Mapnik < Formula
   desc "Toolkit for developing mapping applications"
   homepage "http://www.mapnik.org/"
+  url "https://s3.amazonaws.com/mapnik/dist/v3.0.5/mapnik-v3.0.5.tar.bz2"
+  sha256 "d8f771d45b236d987aab44819a517f4c1ed6d7ff2c42c2e51160e37d28c89cc3"
+  revision 1
+
   head "https://github.com/mapnik/mapnik.git"
-  url "https://s3.amazonaws.com/mapnik/dist/v3.0.1/mapnik-v3.0.1.tar.bz2"
-  sha256 "539cb1831fc03b2d2b7b1f8487b02f2c23864f723aaea70719b12fb458fd87de"
 
   bottle do
     cellar :any
-    sha256 "02f9a8c8d840257771e1de87bb6276dda4311d0a41b09322cab26ce5027aa4a9" => :yosemite
-    sha256 "f2d7f914407e7cc60dcb9bcfaa062b4f5faf6ffb33063a05579e60295a184ef0" => :mavericks
-    sha256 "fa078f136711175a0e2eb5de232934033df1e78c36c52df1e0e36eabaf328ccb" => :mountain_lion
+    sha256 "6b2f666dd55d0e805f15d78d02d60efefbf1637e292bd5390eff4df8e870052d" => :el_capitan
+    sha256 "02ce05b5880cc5638d82814ecfce0f416a053374cd401febb2d33e4fce274c59" => :yosemite
+    sha256 "1e7cd508563618a23e8e7dba57bc967bdee50925c558e7368cae287b0063f544" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -68,7 +70,7 @@ class Mapnik < Formula
             "FREETYPE_CONFIG=#{freetype}/bin/freetype-config",
             "NIK2IMG=False",
             "CPP_TESTS=False", # too long to compile to be worth it
-            "INPUT_PLUGINS=all"
+            "INPUT_PLUGINS=all",
            ]
 
     if build.with? "cairo"

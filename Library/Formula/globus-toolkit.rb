@@ -2,20 +2,21 @@ class GlobusToolkit < Formula
   desc "Toolkit used for building grids"
   homepage "http://www.globus.org/toolkit/"
   # Note: Stable distributions have an even minor version number (e.g. 5.0.3)
-  url "http://toolkit.globus.org/ftppub/gt6/installers/src/globus_toolkit-6.0.tar.gz"
-  sha256 "c38473a0477bc7a941868d78dd8d8a3d5dd99d0fc3d127580c629663202e8c7d"
+  url "http://toolkit.globus.org/ftppub/gt6/installers/src/globus_toolkit-6.0.1443479657.tar.gz"
+  sha256 "1aebd5599af535c5978bd085c5614f0f28cbd1fd724a53072a30e74a07597cc5"
 
   bottle do
-    sha1 "ad1c40f3be3184206addd9c8f5c091b6eac1023c" => :yosemite
-    sha1 "0388612635950a8c971e8fe61bc99a70293f4cb3" => :mavericks
-    sha1 "4ab429c5c616124872ba7102dfc0014232320371" => :mountain_lion
+    sha256 "bac29ffc13caffc83fc7862cc5d9e259ed63134680084959afe057dc97a36f50" => :el_capitan
+    sha256 "091e8b213a1c6338ea1edf85a87c4bbecd8535887263441ac73e28759268861a" => :yosemite
+    sha256 "3f7fed89fd07105e6ff59741c0d8d4449aebf4269d1fdb166d6b4ade077d3cdd" => :mavericks
   end
+
+  option "with-test", "Test the toolkit when installing"
+  deprecated_option "with-check" => "with-test"
 
   depends_on "openssl"
   depends_on "libtool" => :run
   depends_on "pkg-config" => :build
-
-  option "with-check", "Test the toolkit when installing"
 
   def install
     ENV.deparallelize
@@ -25,7 +26,7 @@ class GlobusToolkit < Formula
                           "--mandir=#{man}",
                           "--disable-dependency-tracking"
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
     bins = Dir["#{libexec}/bin/*"].select { |f| File.executable? f }
     bin.write_exec_script bins

@@ -3,22 +3,18 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level metric gathering agent for InfluxDB"
   homepage "https://influxdb.com"
-  url "https://github.com/influxdb/telegraf/archive/v0.1.8.tar.gz"
-  sha256 "5b0fa37ed18efb3f279fc846dd27a04629f2cd1ecc6aa5d907b0c273d3096843"
+  url "https://github.com/influxdb/telegraf/archive/v0.2.3.tar.gz"
+  sha256 "b6891b5f310232e47461b780a1151afed942438e323c44b77496a885fa6fea86"
 
   bottle do
-    cellar :any
-    sha256 "a7ad1b4e7170ef108daf649c66ecd97cf2b5a93c6565e39dcf197c035512e845" => :yosemite
-    sha256 "576cfb8d529f2d94720f449ea39c2a2a98e330fa8cc81883674978d52c752c72" => :mavericks
-    sha256 "227c001afbddc8c4d8efb4fb2e07a5ff6888445a7251a93f7a45fa5a2adcd8ea" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "c26df3331a29c4104c397f0233055ec64cac03be964e32a68a059bc9a5563e78" => :el_capitan
+    sha256 "67fc5b3b22d843a467a521807a158ada5ff9f90b2cda7e54ce62ebcdd0c1de9e" => :yosemite
+    sha256 "d52224210126cfe21c0f5185d34eb7987f6fdfd713f6a3da98990a4dfd32c7a0" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
-  end
+  depends_on "godep" => :build
 
   def install
     ENV["GOPATH"] = buildpath
@@ -28,18 +24,14 @@ class Telegraf < Formula
 
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
     cd telegraf_path do
-      system "#{buildpath}/bin/godep", "go", "build", "-o", "telegraf",
-             "-ldflags", "-X main.Version #{version}",
+      system "godep", "go", "build", "-o", "telegraf",
+             "-ldflags", "-X main.Version=#{version}",
              "cmd/telegraf/telegraf.go"
     end
 
     bin.install telegraf_path/"telegraf"
-    etc.install telegraf_path/"etc/config.sample.toml" => "telegraf.conf"
+    etc.install telegraf_path/"etc/telegraf.conf" => "telegraf.conf"
   end
 
   plist_options :manual => "telegraf -config #{HOMEBREW_PREFIX}/etc/telegraf.conf"

@@ -3,15 +3,16 @@ class Czmq < Formula
   homepage "http://czmq.zeromq.org/"
   url "http://download.zeromq.org/czmq-3.0.2.tar.gz"
   sha256 "8bca39ab69375fa4e981daf87b3feae85384d5b40cef6adbe9d5eb063357699a"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "936bd015196746bccb8cf3282564333f1d2bec0b42c509415b56c7ee89104506" => :el_capitan
-    sha256 "cb5e7a40b945b014c92597ce275b76f5a39541e0f96e6ea541cb0d6e706bcfaa" => :yosemite
-    sha256 "42f0561a90ba0d17d17477282a2c2cc3f36ed72eb37209114626f51565852948" => :mavericks
-    sha256 "1b6ecec3b74fb846b025c6da0ae28820569e542eee55c80658c2074a8d2ada87" => :mountain_lion
+    sha256 "3e06ecdf8a59916e5a9db00364c846d494d59afa69db5502b3bf4fe37daa35ac" => :el_capitan
+    sha256 "a614cb6f6ad22446ada0acb1988f8e851c3bf6011ade80b688b36b2b846e3abf" => :yosemite
+    sha256 "0df3a704f0b7f3eb6e2e2a345cd00d4a87493220db869cfa10dc773325b5ecb9" => :mavericks
   end
+
+  conflicts_with "mono", :because => "both install `makecert` binaries"
 
   head do
     url "https://github.com/zeromq/czmq.git"
@@ -24,10 +25,10 @@ class Czmq < Formula
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "libsodium" => :optional
+  depends_on "libsodium" => :recommended
 
-  if build.with? "libsodium"
-    depends_on "zeromq" => "with-libsodium"
+  if build.without? "libsodium"
+    depends_on "zeromq" => "without-libsodium"
   else
     depends_on "zeromq"
   end
@@ -44,8 +45,5 @@ class Czmq < Formula
     system "make", "check"
     system "make", "install"
     rm Dir["#{bin}/*.gsl"]
-
-    # makecert clashes with Mono. Rename it less generically.
-    mv bin/"makecert", bin/"czmq-makecert"
   end
 end

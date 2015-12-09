@@ -5,6 +5,8 @@ class Kawa < Formula
   mirror "https://ftp.gnu.org/gnu/kawa/kawa-2.0.jar"
   sha256 "dc5605950c9ab197a95337dbd241c369e8341a4f101072995f791d5fd2bf0400"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

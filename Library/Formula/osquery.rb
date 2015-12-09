@@ -3,14 +3,14 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-      :tag => "1.5.2",
-      :revision => "225a14660abeb1071fff58e73cc753d54037c6ae"
-  revision 1
+    :tag => "1.6.1",
+    :revision => "58456a659a8c370678e5a251fdf56c3c230894ee"
 
   bottle do
-    revision 1
-    sha256 "0f45aeb033ed4393c66bbf7b926ab9ecb9f537372fc12b4127d2d61c236e3450" => :yosemite
-    sha256 "c8c818319a762e0f300cf2d01c2697b0de2348bc83075b8d6713ab5ebbe280a5" => :mavericks
+    cellar :any
+    sha256 "0b9ef8292a5de744bedf2bddbe22365eccd29c093e6c75fcc63c07cf0737b8a3" => :el_capitan
+    sha256 "c1ac0671a1a6744d95cc463bf66c904f5cd154be8e19a7116eb4f91559322307" => :yosemite
+    sha256 "b6f6a810d75345636b1760e4fa0a262d0be3ea7b60968d6f8cfb7d3564c9cbe1" => :mavericks
   end
 
   # osquery only supports OS X 10.9 and above. Do not remove this.
@@ -25,6 +25,8 @@ class Osquery < Formula
   depends_on "libressl"
   depends_on "gflags"
   depends_on "glog"
+  depends_on "libmagic"
+  depends_on "cpp-netlib"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
@@ -34,6 +36,11 @@ class Osquery < Formula
   resource "jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
     sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+  end
+
+  resource "psutil" do
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
+    sha256 "a0e9b96f1946975064724e242ac159f3260db24ffa591c3da0a355361a3a337f"
   end
 
   def install
@@ -74,7 +81,7 @@ class Osquery < Formula
       class ExampleTablePlugin : public TablePlugin {
        private:
         TableColumns columns() const {
-          return {{"example_text", "TEXT"}, {"example_integer", "INTEGER"}};
+          return {{"example_text", TEXT_TYPE}, {"example_integer", INTEGER_TYPE}};
         }
 
         QueryData generate(QueryContext& request) {

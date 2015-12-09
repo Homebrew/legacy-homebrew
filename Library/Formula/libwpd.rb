@@ -7,9 +7,10 @@ class Libwpd < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "5ee8b064986e9a93d7160000fed86631ec67ac5b" => :yosemite
-    sha1 "76609ba2ba73cf1fbb60e6de22c3eb7b73f61483" => :mavericks
-    sha1 "dfb25198b4294801aa9d5e8b5bca484291f7e19d" => :mountain_lion
+    sha256 "05355b386219f540bd2e8072ff05d89bb8b0026ccc4ee19b57acbf00d1aba0ea" => :el_capitan
+    sha256 "8e65b69dae039f3a08c5eb285871ded7b4fe1c7a503ad3bab1ab3811e8ed6ebc" => :yosemite
+    sha256 "d372b1e93a6bbbf6c7bf767240da55cc12559bc79d6449a5b8a0bb05a728cc98" => :mavericks
+    sha256 "7fe3f5acefc232f42b983928795d9cb9f40d5b03d52abfb1cac079e571bf689a" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

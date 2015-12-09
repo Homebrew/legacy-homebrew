@@ -4,6 +4,8 @@ class TitanServer < Formula
   url "http://s3.thinkaurelius.com/downloads/titan/titan-server-0.4.4.zip"
   sha256 "46703d315aa6ca0602b022fadca3846a58ba69bb490acb210bedd5be3bf12ef5"
 
+  bottle :unneeded
+
   # In reference to PR #30107 this patch will update the titan.sh and rexster-console.sh
   # scripts to properly follow multiple symlinks so that java calls can accurately find
   # their associated necessary libraries.

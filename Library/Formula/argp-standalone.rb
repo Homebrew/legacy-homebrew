@@ -7,14 +7,14 @@ class ArgpStandalone < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "72d7282e4ca51c5832e68f06bfdd5c144a73973a" => :yosemite
-    sha1 "500784846c3a83e25194cb578eedbbba6e2600fa" => :mavericks
-    sha1 "232276ab4611f2d1fa315de24fc062a53cfbd7c4" => :mountain_lion
+    sha256 "c926ac0ad3b8dbb8c3e08299ade556470f81d3a88eb51dc60e7cfe107da533e8" => :yosemite
+    sha256 "789a73a54793c058ee419824d76d603562d56fe6c2bce37c6b5b47f8f0ddce2a" => :mavericks
+    sha256 "c1d91ec4ec7f0abee15fa5f58860057d8e8c58e25fd9231107f716bcd5e2a607" => :mountain_lion
   end
 
   # This patch fixes compilation with Clang.
   patch :p0 do
-    url "https://trac.macports.org/export/86556/trunk/dports/devel/argp-standalone/files/patch-argp-fmtstream.h"
+    url "https://raw.githubusercontent.com/Homebrew/patches/b5f0ad3/argp-standalone/patch-argp-fmtstream.h"
     sha256 "5656273f622fdb7ca7cf1f98c0c9529bed461d23718bc2a6a85986e4f8ed1cb8"
   end
 

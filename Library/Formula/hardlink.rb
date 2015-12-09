@@ -6,9 +6,9 @@ class Hardlink < Formula
 
   bottle do
     cellar :any
-    sha1 "620848862aa5692f5418c50158ff21ae64cbc3d7" => :yosemite
-    sha1 "1fc61fc57e8bdec0f49302ba75dab3e14b6b663f" => :mavericks
-    sha1 "ba185ba3f4bf55c9a25b2cf9bfd381e392563112" => :mountain_lion
+    sha256 "36c30ed90a3d2b9d2d4d07cb182c2838dfba276a05c22d022a42e16043e86f02" => :yosemite
+    sha256 "cba1b82474c668bbb36e2e56cf7b36685924592d291dc05067d7c4a605686084" => :mavericks
+    sha256 "733b12fdaffb5b2dd0f5d87394eaf058ce4a621d3234dca2b18a9487c1d487f2" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

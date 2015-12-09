@@ -7,9 +7,9 @@ class Libcmph < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "f85df680877127051920003e29e9676e30322157" => :yosemite
-    sha1 "84d44f39e19ebd4e921a11fb81be175935e2b36f" => :mavericks
-    sha1 "10c0d6dea19a512b4ff02148bf1f6f60e346c417" => :mountain_lion
+    sha256 "4dba37edbd9ec4f32fcb911cbec5cbd457001c3f6a26f14a3ff88a412a42f017" => :yosemite
+    sha256 "ba56f5d7f7c750329312dbf4d43d5d937320082ab32fe35ec84b05aecff125ee" => :mavericks
+    sha256 "af52629547db4cef5a17fb5c4b46b8da9f165e9a9aed4bdd7f87d43d37e65687" => :mountain_lion
   end
 
   def install

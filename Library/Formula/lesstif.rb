@@ -6,9 +6,10 @@ class Lesstif < Formula
 
   bottle do
     revision 1
-    sha1 "50b1cecbfce9a66ae8253b6efe1ecef4c58678fc" => :yosemite
-    sha1 "f6439fb1fda16afd5ae5447f071170b08a9484c3" => :mavericks
-    sha1 "dff63d044e87b2137cf8f961f9c46186b7af18d1" => :mountain_lion
+    sha256 "bc26ea0e27740c5b3a045b776737ff94ea0bc68b833fc013b92177511271bbcd" => :el_capitan
+    sha256 "a9c9a7fe8261ddbf4830655e6a1a3baa8849669064b990d04338c7bcfb57e6c3" => :yosemite
+    sha256 "b5650ec87b85ac2b36f8e9cb53a452af1ed28f939cf007b209b458773d0634a6" => :mavericks
+    sha256 "07279be1550eef882ed3b9f751cdd152412e84285c5d4e719dfd7fa21c897046" => :mountain_lion
   end
 
   depends_on :x11

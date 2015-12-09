@@ -5,6 +5,8 @@ class TomeeJaxRs < Formula
   version "1.7.2"
   sha256 "561ef98f69b312a03b305f37fd492ed59f9802137e2995ea57db98d438b0b9c8"
 
+  bottle :unneeded
+
   def install
     # Remove Windows scripts
     rm_rf Dir["bin/*.bat"]

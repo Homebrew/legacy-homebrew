@@ -1,14 +1,15 @@
 class Cvc4 < Formula
   desc "Open-source automatic theorem prover for SMT "
   homepage "https://cvc4.cs.nyu.edu/"
-  url "https://cvc4.cs.nyu.edu/builds/src/cvc4-1.4.tar.gz"
+  url "http://cvc4.cs.nyu.edu/builds/src/cvc4-1.4.tar.gz"
   sha256 "76fe4ff9eb9ad7d65589efb47d41aae95f3191bd0d0c3940698a7cb2df3f7024"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "8c18aef83d90f85ae6d4f1beeecc30863e9882097babdfff3bc3e2652182130f" => :yosemite
-    sha256 "a465f035282ee686be55186931122c65e70c1ec025ea55326bbc9de72147c360" => :mavericks
-    sha256 "c517ff1710952e6b8d46517dda794017a0f620bf2b75dbdff3a24987631b6a4a" => :mountain_lion
+    sha256 "45e90f3952ba323a73d0377947de1377ab421941284a10bf1989650a8f8f0e6b" => :el_capitan
+    sha256 "0fcfa3a3dcad9ecd8fa457f6568458cba0f4eb020bf541515edbc8ea525a1b0f" => :yosemite
+    sha256 "784e380d0c9753764618fd81144e29f8c26f2436ac4468ae822eff70d412558d" => :mavericks
   end
 
   head do
