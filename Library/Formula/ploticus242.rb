@@ -5,11 +5,11 @@ class Ploticus242 < Formula
   version "2.42"
   sha256 "3f29e4b9f405203a93efec900e5816d9e1b4381821881e241c08cab7dd66e0b0"
 
+  depends_on "libpng"
+
   def install
-    cd "src" do
-      system "make"
-      bin.install "pl"
-    end
+    system "make", "-C", "src"
+    bin.install "src/pl"
   end
 
   test do
