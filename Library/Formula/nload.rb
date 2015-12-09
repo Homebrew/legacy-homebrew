@@ -12,7 +12,7 @@ class Nload < Formula
   depends_on "automake" => :build
 
   # F2 Option Crash and Wrong adapter read, see http://sourceforge.net/p/nload/bugs/8/
-  patch :dsrc do
+  patch :p0 do
     url "http://sourceforge.net/p/nload/bugs/_discuss/thread/c9b68d8e/4a65/attachment/devreader-bsd.cpp.patch"
     sha256 "19055158b72722f7dabff9890931094cac591bcc6de3e90a7f4744d28746ebc7"
   end
