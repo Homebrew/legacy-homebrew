@@ -422,7 +422,7 @@ class Report
         next unless newname = Tap.fetch($1, $2).formula_renames[oldname]
       else
         oldname = path.basename(".rb").to_s
-        next unless newname = FORMULA_RENAMES[oldname]
+        next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
       end
 
       if fetch(:A, []).include?(newpath = path.dirname.join("#{newname}.rb"))

@@ -245,8 +245,8 @@ class FormulaAuditor
       return
     end
 
-    if FORMULA_RENAMES.key? name
-      problem "'#{name}' is reserved as the old name of #{FORMULA_RENAMES[name]}"
+    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+      problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
 

@@ -289,7 +289,7 @@ class Formulary
       return FormulaLoader.new(name, path)
     end
 
-    if newref = FORMULA_RENAMES[ref]
+    if newref = CoreFormulaRepository.instance.formula_renames[ref]
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
         return FormulaLoader.new(newref, formula_with_that_oldname)
