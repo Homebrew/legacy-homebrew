@@ -1,8 +1,8 @@
 class Logstash < Formula
   desc "Tool for managing events and logs"
   homepage "https://www.elastic.co/products/logstash"
-  url "https://download.elastic.co/logstash/logstash/logstash-2.1.0.tar.gz"
-  sha256 "1f132e0fc9fc46ebe836951bb44c5cd1a5f8e3f653bb44bded55300cc6c892dc"
+  url "https://download.elastic.co/logstash/logstash/logstash-2.1.1.tar.gz"
+  sha256 "2ea975e16a02b416a5bd9eed5ab280224820f278d54f6e0ec4cccf0d8f5ca610"
 
   bottle :unneeded
 
@@ -23,8 +23,7 @@ class Logstash < Formula
       cd "tar"
     end
 
-    sub = if build.head? then "SOURCEPATH" else "0" end
-    inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$#{sub}`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
+    inreplace %w[bin/logstash], %r{^\. "\$\(cd `dirname \$SOURCEPATH`\/\.\.; pwd\)\/bin\/logstash\.lib\.sh\"}, ". #{libexec}/bin/logstash.lib.sh"
     inreplace %w[bin/logstash.lib.sh], /^LOGSTASH_HOME=.*$/, "LOGSTASH_HOME=#{libexec}"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/logstash"
