@@ -9,7 +9,7 @@
 
 note(){ echo "$(blue)$(bold) ➔  $(cclear)$(bold)$*$(cclear)" >&2   ;}
 warn(){ echo "$(yellow)$(bold) ⚠  $(cclear)$(bold)$*$(cclear)" >&2 ;}
-die(){ echo "$(red)$(bold) ⨷  $(magenta)$*$(cclear)" >&2; exit 1   ;}
+die(){ echo "$(red)$(bold) ⨷  $*$(cclear)" >&2; exit 1   ;}
 
 ohai(){ note "$*" ;}
 opoo(){ warn "$*" ;}
@@ -234,12 +234,13 @@ brew_shellutils_term_init()
 {
   [ -t 1 ] && [ -t 2 ] || { TERM=dumb; export TERM ;}
 }
+
 #===--------------------------------------------------------------------===##
 
 brew_shellutils_help(){
 
   echo "
-  $(bold)Available in $(underline)brew-shellutils$(cclear) (source this file):
+  $(bold)Available in $(underline)brew shellutils$(cclear) (source this file):
 
   - $(bold)$(blue)realpath$(cclear)
   - $(bold)$(blue)readlink$(cclear) [-efmnqsvz]
@@ -287,8 +288,10 @@ brew_shellutils_help(){
 
 # Intitialization and help.
 
-brew_shellutils_term_init
-brew_shellutils_main(){ brew_shellutils_help "$@" ;}
+brew_shellutils_main(){
+ brew_shellutils_term_init
+ brew_shellutils_help "$@"
+}
 
 ##===--------------------------------------------------------------------===##
 ##===--- end helper functions -------------------------------------------===##

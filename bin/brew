@@ -57,12 +57,31 @@ export HOMEBREW_PREFIX
 export HOMEBREW_BREW_FILE
 
 case "$1" in
-      update) shift
+
+          update) shift
               exec "$BREW_LIBRARY_DIRECTORY/Homebrew/cmd/update"     "$@" ;;
-  shellutils) shift
+
+      shellutils) shift
               exec "$BREW_LIBRARY_DIRECTORY/Homebrew/cmd/shellutils" "$@" ;;
 
-  ## This is where other commands which don't call any ruby would be handled.
+        --prefix) shift
+              [ $# -eq 0 ] && echo $HOMEBREW_PREFIX && exit 0
+
+              for each in "$@"; do
+                incellar=$(ls -1d $HOMEBREW_PREFIX/Cellar/$each/* 2>/dev/null)
+                [ -z "$incellar" ] && echo "$HOMEBREW_PREFIX/opt/$each" ||
+                  echo "$cellar"
+                shift
+              done
+
+              exit 0 ;;
+
+           *) tapcommand=$(ls $HOMEBREW_PREFIX/*/*/*/*/*/brew-$1 2>/dev/null)
+              [ ! -z $tapcommand ] && shift && exec "$tapcommand" "$@"
+
+              externalcommand=$(which brew-$1) && shift &&
+                exec "$externalcommand" "$@" || continue ;;
+
         ''|*) continue ;;
 esac
 
