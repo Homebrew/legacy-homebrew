@@ -24,4 +24,4 @@ brew gist-logs <formula>
 0. Upload debugging information to a [Gist](https://gist.github.com):
   - If you had a formula error: run `brew gist-logs <formula>` (where `<formula>` is the name of the formula that failed to build).
   - If you encountered a non-formula bug: upload the output of `brew config` and `brew doctor` to a new [Gist](https://gist.github.com).
-1. [Create a new issue](https://github.com/Homebrew/homebrew/issues/new) titled "\<formula name> failed to build on 10.x", where `<formula name>` is the name of the formula that failed to build, and `10.x` is the version of OS X you are using and including the link output by `brew gist-logs
+1. [Create a new issue](https://github.com/Homebrew/homebrew/issues/new) titled "\<formula name> failed to build on 10.x", where `<formula name>` is the name of the formula that failed to build, and `10.x` is the version of OS X you are using and including the link output by `brew gist-logs`
