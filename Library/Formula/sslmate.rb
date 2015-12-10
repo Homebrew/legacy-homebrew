@@ -1,8 +1,8 @@
 class Sslmate < Formula
   desc "Buy SSL certs from the command-line"
   homepage "https://sslmate.com"
-  url "https://packages.sslmate.com/other/sslmate-1.5.0.tar.gz"
-  sha256 "8ff98393de04d18b1b0b36dec3dd9adb48ba253278431d4de48a70ce9b9fadef"
+  url "https://packages.sslmate.com/other/sslmate-1.5.1.tar.gz"
+  sha256 "533d05e483d06460876916bfe2a9b33be4e8b6212b1f46e96ab4dc9e8e87c660"
 
   bottle do
     cellar :any_skip_relocation
