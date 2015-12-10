@@ -1,8 +1,8 @@
 class Flex < Formula
   desc "Fast Lexical Analyzer, generates Scanners (tokenizers)"
   homepage "http://flex.sourceforge.net"
-  url "https://downloads.sourceforge.net/flex/flex-2.5.39.tar.bz2"
-  sha256 "add2b55f3bc38cb512b48fad7d72f43b11ef244487ff25fc00aabec1e32b617f"
+  url "https://downloads.sourceforge.net/flex/flex-2.6.0.tar.bz2"
+  sha256 "24e611ef5a4703a191012f80c1027dc9d12555183ce0ecd46f3636e587e9b8e9"
 
   bottle do
     sha256 "31607eeace06e7460d03b2a0bfb9b13f3ca5b0407eb3e80d75d3b4f1ec43ba0f" => :el_capitan
