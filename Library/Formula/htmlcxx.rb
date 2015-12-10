@@ -5,7 +5,7 @@ class Htmlcxx < Formula
   sha256 "ab02a0c4addc82f82d564f7d163fe0cc726179d9045381c288f5b8295996bae5"
 
   # Don't try to use internal GCC headers; rely on standards-compliant header
-  # Reported upstream: https://sourceforge.net/p/htmlcxx/bugs/18/
+  # Fixed upstream: http://sourceforge.net/p/htmlcxx/code/ci/b26a4fae4e3d59d24600f9a7dfb013ce43bdd2df/
   patch :DATA
 
   def install
