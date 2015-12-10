@@ -1,0 +1,300 @@
+#!/bin/sh ##==-- brew-shellutils - shell utility functions for homebrew --==##
+##===--------------------------------------------------------------------===##
+
+##===--------------------------------------------------------------------===##
+##===-- begin helper functions -- source this file or copy/paste below --===##
+##===--------------------------------------------------------------------===##
+
+# Convenience functions for verbose warnings and errors.
+
+note(){ echo "$(blue)$(bold) ➔  $(cclear)$(bold)$*$(cclear)" >&2   ;}
+warn(){ echo "$(yellow)$(bold) ⚠  $(cclear)$(bold)$*$(cclear)" >&2 ;}
+die(){ echo "$(red)$(bold) ⨷  $(magenta)$*$(cclear)" >&2; exit 1   ;}
+
+ohai(){ note "$*" ;}
+opoo(){ warn "$*" ;}
+odie(){ die "$*"  ;}
+
+##===--------------------------------------------------------------------===##
+
+# `/bin/echo` handles multibyte UTF-8 much better than builtins.
+
+echo(){   /bin/echo "$@"              ;}
+print(){  /bin/echo "$@"              ;}
+printf(){ /bin/echo "$@" | tr -d '\n' ;}
+
+##===--------------------------------------------------------------------===##
+
+# Use `tput` for safe terminal colors, so we don't have to hardcode escapes.
+# `tput` is a POSIX utility and outputs proper escapes based on terminfo.
+# This is much safer than hardcoding escape sequences.
+
+underline(){ tput smul    ;}
+cclear(){    tput sgr0    ;}
+bold(){      tput bold    ;}
+black(){     tput setaf 0 ;}
+red(){       tput setaf 1 ;}
+green(){     tput setaf 2 ;}
+yellow(){    tput setaf 3 ;}
+blue(){      tput setaf 4 ;}
+magenta(){   tput setaf 5 ;}
+cyan(){      tput setaf 6 ;}
+white(){     tput setaf 7 ;}
+
+##===--------------------------------------------------------------------===##
+
+# readlink(1), realpath(1) including GNU extensions like `readlink -f`.
+
+## A XSI/POSIX shell implementation of readlink(1), supporting GNU extensions.
+## Also realpath(1) [like the mksh builtin], but doesn't wrap realpath(3).
+## GNU *short* options are supported, just avoid the --longopt aliases;
+## Otherwise, the functionality should be identical.
+
+## One benefit of a using a pure shell implementation is that it can be used
+## *within a script* to canonicalize the path *of the script itself*.
+
+## Latest version should be somewhere around http://github.com/geoff-codes.
+## (c) 2015 Geoff Nixon. Public Domain; no warranty expressed or implied.
+
+readlink()
+{
+  readlink_exists=1
+  readlink_dirs_exist=1
+  readlink_print=echo
+  readlink_sep=''
+
+  readlink_usage()
+  {
+    echo "usage: "$(basename "$0")" [-efmnqsvz] [file ...]" >&2
+  }
+
+  OPTIND=1; while getopts "efhmnqsvz?" readlink_opt; do
+      case "$readlink_opt" in
+        e) readlink_realpath=1; readlink_dirs_exist=1; readlink_exists=1 ;;
+        f) readlink_realpath=1; readlink_dirs_exist=1; readlink_exists=  ;;
+        h) readlink_usage; exit 0                                        ;;
+        m) readlink_realpath=1; readlink_dirs_exist= ; readlink_exists=  ;;
+        n) readlink_print=printf                                         ;;
+      q|s) readlink_verbose=0                                            ;;
+        v) readlink_verbose=1                                            ;;
+        z) readlink_print=printf; readlink_sep='\0'                      ;;
+       \?) readlink_usage; exit 1                                        ;;
+      esac
+  done
+  shift $((OPTIND - 1))
+
+
+  readlink_readlink()
+  {
+    [ $(ls -ld "$@" | wc -l) -ne 1 ] &&
+      echo "Path contains newline!" >&2 && exit 1
+    readlink_readlink="$(ls -ld "$@" | sed 's|.* -> ||')"
+
+    [ $readlink_realpath- != - ] &&
+      [ "$(echo "$readlink_readlink" | cut -c1)" != "/" ] &&
+        readlink_readlink="$(pwd -P)/$readlink_readlink"
+
+    echo "$readlink_readlink"
+  }
+
+  readlink_canonicalize()
+  {
+    [ "$(basename "$@")"- = "."- ] || [ -"$(basename "$@")"- = -".."- ] &&
+      readlink_canon="$(cd "$(pwd -P)/$(basename "$@")"; pwd -P)" ||
+      readlink_canon="$(echo $(pwd -P)/$(basename "$@") | sed 's|//|/|g')"
+    readlink_canonical="$(echo "$readlink_canon" | sed 's|//|/|g')"
+
+    echo "$readlink_canonical"
+  }
+
+  readlink_no_dir()
+  {
+    [ $readlink_dirs_exist- = - ] &&
+      $readlink_print "$@$readlink_sep" && exit 0
+
+    [ $readlink_verbose- = - ] ||
+      echo "Directory $(dirname "$@") doesn't exist." >&2 && exit 1
+  }
+
+  readlink_no_target()
+  {
+     [ $readlink_exists- = - ] &&
+      $readlink_print "$(readlink_canonicalize "$@")$readlink_sep" && exit 0
+
+    [ $readlink_verbose- = - ] ||
+      echo "$@: No such file or directory." >&2 && exit 1
+  }
+
+  readlink_not_link()
+  {
+    [ $readlink_realpath- = - ]  && [ $readlink_verbose- = - ]  && exit 1 ||
+    [ $readlink_realpath- = - ]  && [ $readlink_verbose- != - ] &&
+      echo "$@ is not a link." >&2 && exit 1
+
+    [ $readlink_realpath- != - ]                           &&
+      readlink_canonical="$(readlink_canonicalize "$@")"   &&
+        $readlink_print "$readlink_canonical$readlink_sep" && exit 0
+
+    [ $readlink_verbose-  = - ] ||
+    { [ -f "$@" ] && readlink_file_type="regular file"                     ||
+        [ -d "$@" ] && readlink_file_type="directory"                      ||
+          [ -p "$@" ] && readlink_file_type="FIFO"                         ||
+            [ -b "$@" ] && readlink_file_type="block special file"         ||
+              [ -c "$@" ] && readlink_file_type="character special file"   ||
+                [ -S "$@" ] && readlink_file_type="socket"
+      echo "$(basename "$0"): "$@": is a $readlink_file_type." >&2; exit 1
+    }
+  }
+
+  readlink_try(){
+    readlink_cur_dir="$(dirname "$@")"
+    readlink_cur_base="$(basename "$@")"
+
+    cd "$readlink_cur_dir" 2>/dev/null || readlink_no_dir "$@"
+    [ -e "$readlink_cur_base" ]        || readlink_no_target "$(pwd -P)/$@"
+    [ -L "$readlink_cur_base" ]        || readlink_not_link "$@"
+
+    readlink_readlink="$(readlink_readlink "$readlink_cur_base")"
+
+    [ -$readlink_realpath- = -- ]                                 &&
+      $readlink_print "$readlink_readlink$readlink_sep" && exit 0 ||
+        readlink_try "$readlink_readlink"
+  }
+
+  for readlink_target; do :; done
+  [ "$readlink_target"- = ""- ] && readlink_usage && exit 1
+  readlink_try "$readlink_target"
+}
+
+realpath(){ readlink -f "$@" ;}
+
+##===--------------------------------------------------------------------===##
+
+## whence/which(1), written in POSIX shell and utilities.
+## Supports `which` options: -s (silent) and -a (all), and -v (verbose).
+## Does not support traditional ksh `whence` options.
+
+## (c) 2015 Geoff Nixon. Public Domain; no warranty expressed or implied.
+
+whence(){
+
+  whence_try=""
+  whence_result=""
+  whence_verbose=0
+  whence_silent=0
+  whence_next=break
+
+  whence_usage()
+  {
+    echo "usage: "$(basename "$0")" [-asv] program ..." >&2
+  }
+
+  whence_error()
+  {
+    [ -$whence_verbose- = -1- ] &&
+      echo "$(basename "$0"): no $whence_util in ($PATH)" >&2 ||:
+  }
+
+  OPTIND=1; while getopts "ahsv?" whence_opt; do
+      case "$whence_opt" in
+        a) whence_next=continue ;;
+        h) whence_usage; exit 0 ;;
+        s) whence_silent=1      ;;
+        v) whence_verbose=1     ;;
+       \?) whence_usage; exit 1 ;;
+      esac
+  done; shift $((OPTIND - 1))
+
+  whence_try()
+  {
+    echo "$PATH:." | tr ':' '\n' | while read whence_component; do
+
+      whence_try="$whence_component/$whence_util"
+      [ -e "$whence_try" ] && [ -x "$whence_try" ] &&
+        echo "$whence_try" && $whence_next || continue
+    done
+  }
+
+  for whence_util; do :; done
+  [ -"$whence_util"- = -""- ] && whence_usage && exit 1
+
+  whence_result="$(whence_try "$whence_util")"
+
+  [ -"$whence_result"- = -""- ] && whence_error && exit 1 ||
+    [ -$whence_silent- = -1- ] && exit 0 || echo "$whence_result" | uniq
+}
+
+which(){ whence "$@" ;}
+
+##===--------------------------------------------------------------------===##
+
+# Override TERM if not outputting to a TTY.
+
+brew_shellutils_term_init()
+{
+  [ -t 1 ] && [ -t 2 ] || { TERM=dumb; export TERM ;}
+}
+#===--------------------------------------------------------------------===##
+
+brew_shellutils_help(){
+
+  echo "
+  $(bold)Available in $(underline)brew-shellutils$(cclear) (source this file):
+
+  - $(bold)$(blue)realpath$(cclear)
+  - $(bold)$(blue)readlink$(cclear) [-efmnqsvz]
+
+    $(bold)Fully dereference symbolic links. Compatible with GNU readlink.
+    ($(cclear)brew shellutils is $(underline)$(realpath "$0")$(cclear)"\)."
+    $(cclear)$(bold)
+  - $(blue)whence$(cclear)$(bold)
+  - $(blue)which $(cclear)[-asv]
+
+    $(bold)Like /usr/bin/which. $(underline)Not a ksh \`whence\`$(cclear).
+    $(cclear)$(bold)
+  - $(blue)ohai$(cclear)$(bold)
+  - $(blue)note$(cclear)$(bold)
+       " >&2
+  note "Pretty-print a message to standard error."
+
+   echo "$(bold)
+  - $(blue)opoo$(cclear)$(bold)
+  - $(blue)warn$(cclear)$(bold)
+        " >&2
+
+  warn "$(yellow)Pretty-print a warning to standard error."
+
+  echo "$(bold)
+  - $(blue)odie$(cclear)$(bold)
+  - $(blue)die$(cclear)$(bold)
+       " >&2
+
+  echo " $(red)⨷  $(bold)Pretty-print an error to standard error, exit 1." >&2
+
+  echo "$(cclear)
+  - $(bold)$(red)red$(cclear)
+  - $(bold)$(yellow)yellow$(cclear)
+  - $(bold)$(magenta)magenta$(cclear)
+  - $(bold)$(cyan)cyan$(cclear)
+  - $(bold)$(green)green$(cclear)
+
+  $(bold) These use tput for $(underline)safe$(cclear)$(bold) terminal colors.
+  $(cclear)" >&2
+ cclear
+}
+
+##===--------------------------------------------------------------------===##
+
+# Intitialization and help.
+
+brew_shellutils_term_init
+brew_shellutils_main(){ brew_shellutils_help "$@" ;}
+
+##===--------------------------------------------------------------------===##
+##===--- end helper functions -------------------------------------------===##
+##===--------------------------------------------------------------------===##
+
+case $(basename "$0") in
+   *shellutils) brew_shellutils_main "$@" ;;
+   *|'') continue ;;
+esac
