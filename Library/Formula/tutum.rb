@@ -1,8 +1,8 @@
 class Tutum < Formula
   desc "Docker platform for dev and ops"
   homepage "https://www.tutum.co/"
-  url "https://github.com/tutumcloud/cli/archive/v0.20.2.tar.gz"
-  sha256 "b15d4141fdd9dbf0de4a32b63cddc3d7cfc1efea527e8ac3c1e45364b6abff01"
+  url "https://github.com/tutumcloud/cli/archive/v0.21.0.tar.gz"
+  sha256 "7657b337292cd480cd206776647bf6eee8c4e7b7ec370f42d2c2685818752e70"
 
   bottle do
     cellar :any
@@ -30,8 +30,8 @@ class Tutum < Formula
   end
 
   resource "python-tutum" do
-    url "https://github.com/tutumcloud/python-tutum/archive/v0.20.2.tar.gz"
-    sha256 "783e6f3791936fdec4b3aef7f50a1d2119e69013692b391f025b1508f1a16561"
+    url "https://github.com/tutumcloud/python-tutum/archive/v0.21.0.tar.gz"
+    sha256 "18652073b9b0cf5afac01a98f792b5e064fd873c62e2609cde0ebde69fbb3c19"
   end
 
   resource "backports.ssl-match-hostname" do
