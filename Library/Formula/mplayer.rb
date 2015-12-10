@@ -1,6 +1,7 @@
 class Mplayer < Formula
   desc "UNIX movie player"
   homepage "https://www.mplayerhq.hu/"
+  revision 1
 
   stable do
     url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.tar.xz"
