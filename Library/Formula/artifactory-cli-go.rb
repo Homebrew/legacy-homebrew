@@ -14,8 +14,5 @@ class ArtifactoryCliGo < Formula
   end
   test do
     system "#{bin}/art", "-v"
-    actual = pipe_output("#{bin}/art upload")
-    expected = "Wrong number of arguments. Try 'art upload --help'.\n"
-    assert_equal expected, actual
   end
 end
