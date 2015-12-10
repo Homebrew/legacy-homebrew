@@ -3,9 +3,9 @@ class Wireshark < Formula
   homepage "https://www.wireshark.org"
 
   stable do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-1.12.8.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-1.12.8.tar.bz2"
-    sha256 "357e0a4e49525d80cdc740bb16539fcdb526ad38cc2ed6cabedafc9bdee5c7e7"
+    url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0.tar.bz2"
+    mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0.tar.bz2"
+    sha256 "90026c761a85701d7783c7e2eaa4c1de247dfbadbd53221df355f121e42691dd"
 
     # Removes SDK checks that prevent the build from working on CLT-only systems
     # Reported upstream: https://bugs.wireshark.org/bugzilla/show_bug.cgi?id=9290
@@ -18,14 +18,6 @@ class Wireshark < Formula
     sha256 "011b9c1f55fdb42223af49b7bec04f387d5dd89d5b8a600faecca2011b776f08" => :el_capitan
     sha256 "2db41f691c2700bcb8bd20141671b279298cf65049966601f7d6ee96b4496482" => :yosemite
     sha256 "7980680d82cb4c3bf01c6b8c1f3970767773d9a09d5573e3ba418fe08f224bb4" => :mavericks
-  end
-
-  devel do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0rc3.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0rc3.tar.bz2"
-    sha256 "11f46b2d202f923c87a0b8e1a07bd9910bbcc5c265c69de3a23dde82e0f647e3"
-
-    depends_on "homebrew/dupes/libpcap" if MacOS.version == :mavericks
   end
 
   head do
