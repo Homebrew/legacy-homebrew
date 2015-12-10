@@ -169,13 +169,6 @@ begin
       command_installed = true
     end
 
-    if cmd == "cask" && (brew_cask = Formulary.factory("brew-cask")) \
-       && !brew_cask.installed?
-      require "cmd/install"
-      Homebrew.install_formula(brew_cask)
-      command_installed = true
-    end
-
     if command_installed
       exec HOMEBREW_BREW_FILE, cmd, *ARGV
     else
