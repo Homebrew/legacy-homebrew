@@ -3,6 +3,7 @@ class Webp < Formula
   homepage "https://developers.google.com/speed/webp/"
   url "http://downloads.webmproject.org/releases/webp/libwebp-0.4.4.tar.gz"
   sha256 "c65d34edb57338e331ba4d622227a2b3179444cfca17d02c34f1ead63f603e86"
+  revision 1
 
   bottle do
     cellar :any

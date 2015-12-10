@@ -4,6 +4,7 @@ class Fontforge < Formula
   url "https://github.com/fontforge/fontforge/archive/20150824.tar.gz"
   sha256 "28ab2471cb010c1fa75b8ab8191a1dded81fe1e9490aa5ff6ab4706a4c78ff27"
   head "https://github.com/fontforge/fontforge.git"
+  revision 1
 
   bottle do
     revision 1
