@@ -1,10 +1,9 @@
 class Tlsdate < Formula
   desc "Secure rdate replacement"
   homepage "https://www.github.com/ioerror/tlsdate/"
+  url "https://github.com/ioerror/tlsdate/archive/tlsdate-0.0.13.tar.gz"
+  sha256 "90efdff87504b5159cb6a3eefa9ddd43723c073d49c4b3febba9e48fc1292bf9"
   head "https://github.com/ioerror/tlsdate.git"
-  url "https://github.com/ioerror/tlsdate/archive/tlsdate-0.0.8.tar.gz"
-  sha256 "65b2f8bd36556c7685916f7a783f3bec7b0712a012a6f34247a2fd5e8b410d17"
-  revision 1
 
   bottle do
     sha256 "3cccdaaa4afef83888242af97c7d114c98bc0729abefc1f4f520c962be87db33" => :el_capitan
@@ -16,7 +15,14 @@ class Tlsdate < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on "libevent" => :build
   depends_on "openssl"
+
+  # Upstream PR to fix the build on OS X
+  patch do
+    url "https://github.com/ioerror/tlsdate/pull/160.patch"
+    sha256 "78a739d952d2fa0046eec958194136c50751c0e97bfe9f5ed173ecc864f8adb8"
+  end
 
   def install
     system "./autogen.sh"
