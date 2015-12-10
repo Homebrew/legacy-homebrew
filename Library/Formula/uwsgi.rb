@@ -54,6 +54,11 @@ class Uwsgi < Formula
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
+    # Fix build on case-sensitive filesystems
+    # https://github.com/Homebrew/homebrew/issues/45560
+    # https://github.com/unbit/uwsgi/pull/1128
+    inreplace "plugins/alarm_speech/uwsgiplugin.py", "'-framework appkit'", "'-framework AppKit'"
+
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
       ssl = true
@@ -81,7 +86,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper", "ugreen", "webdav", "zergpool",]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"
