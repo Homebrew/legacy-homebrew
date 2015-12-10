@@ -3,8 +3,8 @@ require "language/go"
 class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
-  url "https://github.com/docker/machine/archive/v0.5.1.tar.gz"
-  sha256 "cd515d9b2d14edb9ce3429865cb9cdadc81d7c4ba685422fbd1ee10025987460"
+  url "https://github.com/docker/machine/archive/v0.5.2.tar.gz"
+  sha256 "2dd6ed03e546a7c733ec6964b47b85b6d328e830ebca318240f6ddfcaed6f98a"
   head "https://github.com/docker/machine.git"
 
   bottle do
@@ -16,6 +16,11 @@ class DockerMachine < Formula
 
   depends_on "go" => :build
   depends_on "automake" => :build
+
+  go_resource "github.com/codegangsta/cli" do
+    url "https://github.com/codegangsta/cli.git",
+      :revision => "bca61c476e3c752594983e4c9bcd5f62fb09f157"
+  end
 
   def install
     ENV["GOPATH"] = buildpath
