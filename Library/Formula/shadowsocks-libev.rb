@@ -1,8 +1,8 @@
 class ShadowsocksLibev < Formula
   desc "Libev port of shadowsocks"
   homepage "https://github.com/shadowsocks/shadowsocks-libev"
-  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.4.1.tar.gz"
-  sha256 "a11a341adf9a921bb9aa9529472b722fba2836a92eef7ef8820f7c3226acef1c"
+  url "https://github.com/shadowsocks/shadowsocks-libev/archive/v2.4.2.tar.gz"
+  sha256 "0a2367b1f14fb68b0a8329ca2199abbe2f98e2caeb3234229396d10fd2becaa7"
   head "https://github.com/shadowsocks/shadowsocks-libev.git"
 
   bottle do
@@ -83,10 +83,7 @@ class ShadowsocksLibev < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>KeepAlive</key>
-        <dict>
-          <key>SuccessfulExit</key>
-          <false/>
-        </dict>
+        <true/>
       </dict>
     </plist>
     EOS
