@@ -15,10 +15,20 @@ class GenerateJsonSchema < Formula
 
   depends_on "node"
 
-  def install
-    ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
+  resource "npm-type-of-is" do
+    url "https://registry.npmjs.org/type-of-is/-/type-of-is-3.4.0.tgz"
+    sha256 "5e09fc1d5968ef748ecac3d048244cc2a28ef4e6b503342662d0734498d166b8"
+  end
 
-    system "npm", "install"
+  def install
+    npm = "#{Formula["node"].opt_libexec}/npm/bin/npm"
+    resources.each do |r|
+      r.fetch
+      system npm, "install",
+        "--no-bin-links", "--no-optional", "--only=production",
+        r.cached_download
+    end
+
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
