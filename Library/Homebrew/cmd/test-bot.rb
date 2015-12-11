@@ -898,9 +898,7 @@ module Homebrew
       safe_system "brew", "tap", tap.name
     end
 
-    if ARGV.include? "--ci-reset-and-update"
-      return test_bot_ci_reset_and_update
-    elsif ARGV.include? "--ci-upload"
+    if ARGV.include? "--ci-upload"
       return test_ci_upload(tap)
     end
 
