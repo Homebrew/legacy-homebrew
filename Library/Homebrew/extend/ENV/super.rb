@@ -268,6 +268,8 @@ module Superenv
   end
 
   def universal_binary
+    check_for_compiler_universal_support
+
     self["HOMEBREW_ARCHFLAGS"] = Hardware::CPU.universal_archs.as_arch_flags
 
     # GCC doesn't accept "-march" for a 32-bit CPU with "-arch x86_64"

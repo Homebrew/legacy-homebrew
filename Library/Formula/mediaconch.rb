@@ -4,12 +4,13 @@ class Mediaconch < Formula
   url "https://mediaarea.net/download/binary/mediaconch/15.11/MediaConch_CLI_15.11_GNU_FromSource.tar.bz2"
   version "15.11"
   sha256 "06f76ac63a41eb5b7e2c31fd16e450a2d7ae93db832710497d140c1b2c47bf82"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "54f45f88f933e2d9d66e11d2eaa33ce5606fd20ebd07c3c8622c74f7793af3ef" => :el_capitan
-    sha256 "0e0ea9b251f1cad8e5fc7358fa26c9a50a752407fc556cd7b1ee8bb303623ad1" => :yosemite
-    sha256 "9da30167b4741cc6fba1030a4ba0dac1b78ac5dd59f6cd54b936967616907018" => :mavericks
+    sha256 "6952797738c558cc457ce26155de8c697e542967eae0a705df92769574e96848" => :el_capitan
+    sha256 "b7bc97e760479f97f35c54ff9bef9d0f08ebfb7286c3bb7684d99c26a182d58e" => :yosemite
+    sha256 "ec3441854b7c60d59a1c6df057da0ba6853c3e1bf320199f6ab5414aa96c32c6" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -27,7 +28,10 @@ class Mediaconch < Formula
       args = ["--disable-debug",
               "--disable-dependency-tracking",
               "--with-libcurl",
-              "--prefix=#{prefix}"]
+              "--prefix=#{prefix}",
+              # mediaconch installs libs/headers at the same paths as mediainfo
+              "--libdir=#{lib}/mediaconch",
+              "--includedir=#{include}/mediaconch"]
       system "./configure", *args
       system "make", "install"
     end

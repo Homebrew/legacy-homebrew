@@ -10,9 +10,10 @@ class Multimarkdown < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "19e71e5fdd1532a5cad72f7b2ec8cf233edf3fcbb48a1edec31bc83cef70cf81" => :el_capitan
-    sha256 "447908fdb0e2a0ba123a4125e80473d9afad6a0f0b04c4fc031b651fec43f486" => :yosemite
-    sha256 "27142eda3b7c24650c23ea4996534d7b11ee32dbd28d3e218c7f750a00784f90" => :mavericks
+    revision 1
+    sha256 "a68770c5e002c4d8d4ee1a0740cee09c9c78ee22ccbe9a2531d719d7549af2cc" => :el_capitan
+    sha256 "7729153a228a109bb0d8c1822bded14c513bedda6683d7e84556a4d6c7fd2092" => :yosemite
+    sha256 "c1cd1527d934780701e4cceb0649ee20c81bdfecd3e38409de2008840a6d07f0" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -30,9 +31,12 @@ class Multimarkdown < Formula
       system "make"
       bin.install "multimarkdown"
     end
+
+    bin.install Dir["scripts/*"].reject { |f| f =~ /\.bat$/ }
   end
 
   test do
     assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"multimarkdown", "foo *bar*\n")
+    assert_equal "<p>foo <em>bar</em></p>\n", pipe_output(bin/"mmd", "foo *bar*\n")
   end
 end

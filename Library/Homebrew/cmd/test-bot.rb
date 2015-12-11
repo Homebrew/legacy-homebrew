@@ -22,7 +22,6 @@
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
 # --ci-testing:          Shortcut for Homebrew testing CI options.
 # --ci-upload:           Homebrew CI bottle upload.
-# --ci-reset-and-update: Homebrew CI repository and tap reset and update.
 
 require "formula"
 require "utils"
@@ -56,7 +55,7 @@ module Homebrew
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
       begin
-        tap = Tap.fetch(tap)
+        tap = Tap.fetch(url_path)
         return tap unless tap.core_formula_repository?
       rescue
       end
@@ -446,13 +445,28 @@ module Homebrew
       deps = []
       reqs = []
 
+      fetch_args = [canonical_formula_name]
+      fetch_args << "--build-bottle" if !ARGV.include?("--fast") && !formula.bottle_disabled?
+      fetch_args << "--force" if ARGV.include? "--cleanup"
+
+      audit_args = [canonical_formula_name]
+      audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
+
       if formula.stable
-        return unless satisfied_requirements?(formula, :stable)
+        unless satisfied_requirements?(formula, :stable)
+          test "brew", "fetch", "--retry", *fetch_args
+          test "brew", "audit", *audit_args
+          return
+        end
 
         deps |= formula.stable.deps.to_a.reject(&:optional?)
         reqs |= formula.stable.requirements.to_a.reject(&:optional?)
       elsif formula.devel
-        return unless satisfied_requirements?(formula, :devel)
+        unless satisfied_requirements?(formula, :devel)
+          test "brew", "fetch", "--retry", "--devel", *fetch_args
+          test "brew", "audit", "--devel", *audit_args
+          return
+        end
       end
 
       if formula.devel && !ARGV.include?("--HEAD")
@@ -541,11 +555,7 @@ module Homebrew
         # this step
         test "brew", "postinstall", *changed_dependences
       end
-      formula_fetch_options = []
-      formula_fetch_options << "--build-bottle" if !ARGV.include?("--fast") && !formula.bottle_disabled?
-      formula_fetch_options << "--force" if ARGV.include? "--cleanup"
-      formula_fetch_options << canonical_formula_name
-      test "brew", "fetch", "--retry", *formula_fetch_options
+      test "brew", "fetch", "--retry", *fetch_args
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
       install_args = ["--verbose"]
       install_args << "--build-bottle" if !ARGV.include?("--fast") && !formula.bottle_disabled?
@@ -573,8 +583,6 @@ module Homebrew
           install_passed = steps.last.passed?
         end
       end
-      audit_args = [canonical_formula_name]
-      audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
         if formula.stable? && !ARGV.include?("--fast") && !formula.bottle_disabled?
@@ -620,7 +628,7 @@ module Homebrew
       if formula.devel && formula.stable? \
          && !ARGV.include?("--HEAD") && !ARGV.include?("--fast") \
          && satisfied_requirements?(formula, :devel)
-        test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
+        test "brew", "fetch", "--retry", "--devel", *fetch_args
         run_as_not_developer { test "brew", "install", "--devel", "--verbose", canonical_formula_name }
         devel_install_passed = steps.last.passed?
         test "brew", "audit", "--devel", *audit_args
@@ -750,20 +758,6 @@ module Homebrew
     end
   end
 
-  def test_bot_ci_reset_and_update
-    Tap.each do |tap|
-      next unless tap.git?
-      cd tap.path do
-        quiet_system "git", "am", "--abort"
-        quiet_system "git", "rebase", "--abort"
-        safe_system "git", "checkout", "-f", "master"
-        safe_system "git", "reset", "--hard", "origin/master"
-      end
-    end
-
-    exec "brew", "update"
-  end
-
   def test_ci_upload(tap)
     jenkins = ENV["JENKINS_HOME"]
     job = ENV["UPSTREAM_JOB_NAME"]
@@ -821,11 +815,7 @@ module Homebrew
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
-    bintray_repo = if tap.nil?
-      Bintray.repository(tap)
-    else
-      Bintray.repository(tap.name)
-    end
+    bintray_repo = Bintray.repository(tap)
     bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
     formula_packaged = {}
 
@@ -908,9 +898,7 @@ module Homebrew
       safe_system "brew", "tap", tap.name
     end
 
-    if ARGV.include? "--ci-reset-and-update"
-      return test_bot_ci_reset_and_update
-    elsif ARGV.include? "--ci-upload"
+    if ARGV.include? "--ci-upload"
       return test_ci_upload(tap)
     end
 
