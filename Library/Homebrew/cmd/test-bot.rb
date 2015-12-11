@@ -56,7 +56,7 @@ module Homebrew
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
       begin
-        tap = Tap.fetch(tap)
+        tap = Tap.fetch(url_path)
         return tap unless tap.core_formula_repository?
       rescue
       end
