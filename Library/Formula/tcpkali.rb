@@ -13,6 +13,7 @@ class Tcpkali < Formula
   end
 
   test do
-    system "#{bin}/tcpkali", "127.1:1237", "-l1237", "-T0.1"
+    system "#{bin}/tcpkali", "--version"
+    system "#{bin}/tcpkali", "-l1237", "-T0.5", "127.1:1237"
   end
 end
