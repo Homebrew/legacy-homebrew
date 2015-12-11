@@ -52,6 +52,16 @@ module Homebrew
       end
     end
 
+    if git_url = ENV["UPSTREAM_GIT_URL"] || ENV["GIT_URL"]
+      # Also can get tap from Jenkins GIT_URL.
+      url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
+      begin
+        tap = Tap.fetch(tap)
+        return tap unless tap.core_formula_repository?
+      rescue
+      end
+    end
+
     # return nil means we are testing core repo.
   end
 
