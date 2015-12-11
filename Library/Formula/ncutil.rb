@@ -9,6 +9,6 @@ class Ncutil < Formula
   end
 
   test do
-    system "#{bin}/ncutil", "--list"
+    system "#{bin}/ncutil", "--get-info", "com.apple.Safari"
   end
 end
