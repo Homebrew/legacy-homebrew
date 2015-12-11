@@ -54,6 +54,15 @@ diff --git a/bash_completion b/bash_completion
 index 6601937..5184767 100644
 --- a/bash_completion
 +++ b/bash_completion
+@@ -640,7 +640,7 @@
+
+     _quote_readline_by_ref "$cur" quoted
+     toks=( ${toks[@]-} $(
+-        compgen -d -- "$quoted" | {
++        compgen -d -- "$cur" | {
+             while read -r tmp; do
+                 # TODO: I have removed a "[ -n $tmp ] &&" before 'printf ..',
+                 #       and everything works again. If this bug suddenly
 @@ -1334,7 +1334,7 @@ _known_hosts_real()
  
      # append any available aliases from config files
