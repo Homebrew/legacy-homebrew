@@ -12,12 +12,6 @@ class Tor < Formula
     sha256 "6e4085a67f555cb0b34b74818fb4f43dcc353d653100633aefa85804148f5d5e" => :mountain_lion
   end
 
-  devel do
-    url "https://dist.torproject.org/tor-0.2.7.6.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.7.6.tar.gz"
-    sha256 "493a8679f904503048114aca6467faef56861206bab8283d858f37141d95105d"
-  end
-
   depends_on "libevent"
   depends_on "openssl"
   depends_on "libnatpmp" => :optional
