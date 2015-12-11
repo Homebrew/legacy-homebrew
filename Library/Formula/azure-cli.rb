@@ -6,6 +6,13 @@ class AzureCli < Formula
 
   head "https://github.com/azure/azure-xplat-cli.git", :branch => "dev"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "faf354f229e336c131c7eeaa50257e3fd5a03e3cd4afc731982c1b4615832956" => :el_capitan
+    sha256 "74f743ffad23cca801642faa1e967b0ad3c52a700887aa8a89a3db4304091f82" => :yosemite
+    sha256 "8c4a14e8ce79f7010e0834d02199a928eed799bd3b1e5f910cc239aec450f462" => :mavericks
+  end
+
   depends_on "node"
 
   def install
