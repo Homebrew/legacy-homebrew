@@ -830,11 +830,7 @@ module Homebrew
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
-    bintray_repo = if tap.nil?
-      Bintray.repository(tap)
-    else
-      Bintray.repository(tap.name)
-    end
+    bintray_repo = Bintray.repository(tap)
     bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
     formula_packaged = {}
 
