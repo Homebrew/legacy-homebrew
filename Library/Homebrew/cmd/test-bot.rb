@@ -22,7 +22,6 @@
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
 # --ci-testing:          Shortcut for Homebrew testing CI options.
 # --ci-upload:           Homebrew CI bottle upload.
-# --ci-reset-and-update: Homebrew CI repository and tap reset and update.
 
 require "formula"
 require "utils"
@@ -757,20 +756,6 @@ module Homebrew
       end
       check_results
     end
-  end
-
-  def test_bot_ci_reset_and_update
-    Tap.each do |tap|
-      next unless tap.git?
-      cd tap.path do
-        quiet_system "git", "am", "--abort"
-        quiet_system "git", "rebase", "--abort"
-        safe_system "git", "checkout", "-f", "master"
-        safe_system "git", "reset", "--hard", "origin/master"
-      end
-    end
-
-    exec "brew", "update"
   end
 
   def test_ci_upload(tap)
