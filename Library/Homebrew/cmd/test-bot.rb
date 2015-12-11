@@ -244,6 +244,9 @@ module Homebrew
 
     def safe_formulary(formula)
       Formulary.factory formula
+    rescue TapFormulaUnavailableError => e
+      test "brew", "tap", e.tap.name
+      retry unless steps.last.failed?
     rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
     end
 
