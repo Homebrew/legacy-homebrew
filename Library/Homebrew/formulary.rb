@@ -291,12 +291,22 @@ class Formulary
       return FormulaLoader.new(name, path)
     end
 
+    # TODO add FormulaResolver here
+    # probably need to rename FormulaResolver to FormulaNameResolver
+    # We'll try to resolve it firstly among core formulae
+    # NOTE: the resolution depends on from what commit we want to resolve
+    # the formula. do we need to use the commit sha right here or leave
+    # this work for FormulaResolver?
+
     if newref = CoreFormulaRepository.instance.formula_renames[ref]
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
         return FormulaLoader.new(newref, formula_with_that_oldname)
       end
     end
+
+    # TODO the same as for core formula renames.
+    # try to resolve as tap formula renames.
 
     possible_tap_newname_formulae = []
     Tap.each do |tap|
