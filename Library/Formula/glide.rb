@@ -3,8 +3,8 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.7.2.tar.gz"
-  sha256 "368420de355fcce99187b8ccd5bf1025bbfb6ad394efeb0551b6b09911dfb9f3"
+  url "https://github.com/Masterminds/glide/archive/0.8.0.tar.gz"
+  sha256 "110d24bbc8d04c09d7deeb22a28e62aeafc2439f54c069b7d65f2db81a573454"
 
   bottle do
     cellar :any_skip_relocation
@@ -17,7 +17,7 @@ class Glide < Formula
 
   go_resource "gopkg.in/yaml.v2" do
     url "https://gopkg.in/yaml.v2.git",
-      :revision => "53feefa2559fb8dfa8d81baad31be332c97d6c77"
+      :revision => "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
   end
 
   go_resource "github.com/Masterminds/cookoo" do
@@ -32,7 +32,7 @@ class Glide < Formula
 
   go_resource "github.com/codegangsta/cli" do
     url "https://github.com/codegangsta/cli.git",
-      :revision => "70e3fa51ebed95df8c0fbe1519c1c1f9bc16bb13"
+      :revision => "0302d3914d2a6ad61404584cdae6e6dbc9c03599"
   end
 
   go_resource "github.com/Masterminds/semver" do
@@ -41,17 +41,17 @@ class Glide < Formula
   end
 
   def install
-    (buildpath + "src/github.com/Masterminds/glide").install "glide.go", "cmd", "gb", "util", "yaml"
+    (buildpath + "src/github.com/Masterminds/glide").install "glide.go", "cfg", "cmd", "dependency", "gb", "msg", "util"
 
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "glide", "-ldflags", "-X main.version 0.7.2", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
+    system "go", "build", "-o", "glide", "-ldflags", "-X main.version #{version}", "#{buildpath}/src/github.com/Masterminds/glide/glide.go"
     bin.install "glide"
   end
 
   test do
     version = pipe_output("#{bin}/glide --version")
-    assert_match /0.7.2/, version
+    assert_match /#{version}/, version
   end
 end
