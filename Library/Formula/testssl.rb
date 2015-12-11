@@ -9,4 +9,8 @@ class Testssl < Formula
   def install
     bin.install "testssl.sh"
   end
+
+  test do
+    system "#{bin}/testssl.sh", "--local"
+  end
 end
