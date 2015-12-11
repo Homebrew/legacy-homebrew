@@ -19,11 +19,14 @@ class Unbound < Formula
                           "--sysconfdir=#{etc}",
                           "--with-libevent=#{Formula["libevent"].opt_prefix}",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
+    inreplace "doc/example.conf", 'username: "unbound"', 'username: "@@HOMEBREW-UNBOUND-USER@@"'
     system "make", "install"
   end
 
   def post_install
-    inreplace etc/"unbound/unbound.conf", 'username: "unbound"', "username: \"#{ENV["USER"]}\""
+    if File.read(etc/"unbound/unbound.conf").include?('username: "@@HOMEBREW-UNBOUND-USER@@"')
+      inreplace etc/"unbound/unbound.conf", 'username: "@@HOMEBREW-UNBOUND-USER@@"', "username: \"#{ENV["USER"]}\""
+    end
   end
 
   plist_options :startup => true
