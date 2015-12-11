@@ -13,7 +13,7 @@ class Platypus < Formula
     sha256 "d33acad77bacbbec3c602541b3e0410576efda95679760314b7e5ba737154871" => :mountain_lion
   end
 
-  depends_on :xcode => :build
+  depends_on :xcode => ["7.0", :build]
 
   def install
     xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
