@@ -1,18 +1,10 @@
 class Gtkx < Formula
   desc "GUI toolkit"
   homepage "http://gtk.org/"
-  revision 3
 
   stable do
-    url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.28.tar.xz"
-    sha256 "b2c6441e98bc5232e5f9bba6965075dcf580a8726398f7374d39f90b88ed4656"
-
-    # Fix crash on OS X 10.11
-    # See: https://bugzilla.gnome.org/show_bug.cgi?id=753992
-    patch do
-      url "https://bug753992.bugzilla-attachments.gnome.org/attachment.cgi?id=312565"
-      sha256 "e2e8d5c236d4de7d5b5fd79a2e90861b281746132a3f96aca6ab0cb780926876"
-    end
+    url "https://download.gnome.org/sources/gtk+/2.24/gtk+-2.24.29.tar.xz"
+    sha256 "0741c59600d3d810a223866453dc2bbb18ce4723828681ba24aa6519c37631b8"
   end
 
   bottle do
