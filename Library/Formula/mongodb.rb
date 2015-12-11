@@ -73,7 +73,10 @@ class Mongodb < Formula
     args << "--disable-warnings-as-errors" if MacOS.version >= :yosemite
 
     if build.with? "openssl"
-      args << "--ssl" << "--extrapath=#{Formula["openssl"].opt_prefix}"
+      args << "--ssl"
+
+      args << "CCFLAGS=-I#{Formula["openssl"].opt_prefix}/include"
+      args << "LINKFLAGS=-L#{Formula["openssl"].opt_prefix}/lib"
     end
 
     scons "install", *args
