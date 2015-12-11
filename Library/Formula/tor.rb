@@ -1,21 +1,15 @@
 class Tor < Formula
   desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.6.10.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.6.10.tar.gz"
-  sha256 "0542c0efe43b86619337862fa7eb02c7a74cb23a79d587090628a5f0f1224b8d"
+  url "https://dist.torproject.org/tor-0.2.7.6.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.7.6.tar.gz"
+  sha256 "493a8679f904503048114aca6467faef56861206bab8283d858f37141d95105d"
 
   bottle do
     sha256 "10215ccde70597d6bb8efdad496de4b76991aae838a66ffcbb0f1ca033da786c" => :el_capitan
     sha256 "acf689a5cf4ac59116b04cc271d999aea16d6dac44d8dce3b873a9ac0f854433" => :yosemite
     sha256 "b6e02ebdbc250b0beb199e55135d9514e88b3c195f442931ef8528bb9de8680c" => :mavericks
     sha256 "6e4085a67f555cb0b34b74818fb4f43dcc353d653100633aefa85804148f5d5e" => :mountain_lion
-  end
-
-  devel do
-    url "https://dist.torproject.org/tor-0.2.7.5.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.7.5.tar.gz"
-    sha256 "7d2a9e4db1bd99deb8395609b59cac217b0c1ee9ff2eeb0f088b91a5d8f6aa5f"
   end
 
   depends_on "libevent"
