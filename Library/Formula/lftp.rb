@@ -1,8 +1,8 @@
 class Lftp < Formula
   desc "Sophisticated file transfer program"
   homepage "http://lftp.yar.ru/"
-  url "http://lftp.yar.ru/ftp/lftp-4.6.4.tar.xz"
-  sha256 "1e7cb674c83ace48172263f86847ed04bb6ab2f24116b11a8505f70a15e8805c"
+  url "http://lftp.yar.ru/ftp/lftp-4.6.5.tar.xz"
+  sha256 "1fd0920a1791ce0e9e39ffce77ae6619e5dc665f16e9380bafbfc69411eeb71e"
 
   bottle do
     sha256 "490d37a27d7b1b1ba22109bb3dfb10a21c2d32dc35fe4698e33a852ff239337e" => :el_capitan
