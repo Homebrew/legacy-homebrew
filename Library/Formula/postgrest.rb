@@ -10,9 +10,10 @@ class Postgrest < Formula
   sha256 "d2e92795a480e3a06d625905fb20bce30e5b86af6525cdec809e6a88200efab8"
 
   bottle do
-    sha256 "014fb53489ebac28326ba27f40b5eedfcf31a14ad79939b485d4b753cd1dbdca" => :el_capitan
-    sha256 "5e1c84e9477d3d4a0c3f97a7673aca70cef03c57fdfd651a77378f6ccfdc8334" => :yosemite
-    sha256 "ea30c5eba3af8c4314ffe0acf07481107dc313aa73c9d135860c1205efb5c8dc" => :mavericks
+    revision 1
+    sha256 "6e3dbaeeba86ca9f071af471d5a3296652aedc9b6484674ed337f23abef88f85" => :el_capitan
+    sha256 "a6ad263ae0aa979ed9da6bcb9002316a0a3e3980653c2a1921efbbfc1f3edf3a" => :yosemite
+    sha256 "6d2ee6020ab78948b30aefddb92f3d372eb0f6f9629b2d64399f5b7863a54ace" => :mavericks
   end
 
   depends_on "ghc" => :build
@@ -22,7 +23,7 @@ class Postgrest < Formula
   setup_ghc_compilers
 
   def install
-    install_cabal_package
+    install_cabal_package "--enable-executable-stripping"
   end
 
   test do
