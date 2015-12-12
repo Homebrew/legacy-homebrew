@@ -1,7 +1,7 @@
 class Ghc < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3a-src.tar.xz"
+  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3a-src.tar.bz2"
   sha256 "877899988b64d13a86148f4db29b26d5adddef9207f718b726dc5c202d8efd8e"
 
   bottle do
