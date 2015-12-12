@@ -7,6 +7,13 @@ class Pond < Formula
   sha256 "f66c625b0d7e3fe8c125fe9401a5f67ec75af3e8dca47e18fba6696a99705b21"
   head "https://github.com/agl/pond.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "8b0450658c275b7fdb58c35274513ba05e640bd87ded16f25aa36647b47a90c3" => :el_capitan
+    sha256 "1cf7d965625f8362ef29a8d4a421db62d4d90c764dae5bfab564db95954971a0" => :yosemite
+    sha256 "22c81a223698a8293884f4d7c400cf5777a2cf5367a830c0dbf5b34eb9106d90" => :mavericks
+  end
+
   depends_on "go" => :build
   depends_on "tor" => :recommended
 
