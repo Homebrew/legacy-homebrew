@@ -49,8 +49,8 @@ class Mongodb < Formula
 
       if build.with? "openssl"
         args << "ssl"
-        ENV["LIBRARY_PATH"] = "#{Formula["openssl"].opt_prefix}/lib"
-        ENV["CPATH"] = "#{Formula["openssl"].opt_prefix}/include"
+        ENV["LIBRARY_PATH"] = "#{Formula["openssl"].opt_lib}"
+        ENV["CPATH"] = "#{Formula["openssl"].opt_include}"
       end
       system "./build.sh", *args
     end
@@ -75,8 +75,8 @@ class Mongodb < Formula
     if build.with? "openssl"
       args << "--ssl"
 
-      args << "CCFLAGS=-I#{Formula["openssl"].opt_prefix}/include"
-      args << "LINKFLAGS=-L#{Formula["openssl"].opt_prefix}/lib"
+      args << "CCFLAGS=-I#{Formula["openssl"].opt_include}"
+      args << "LINKFLAGS=-L#{Formula["openssl"].opt_lib}"
     end
 
     scons "install", *args
