@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Homebrew
 Features, usage and installation instructions are [summarised on the homepage](http://brew.sh).
 
@@ -41,3 +42,8 @@ Our CI infrastructure is hosted by [The Positive Internet Company](http://www.po
 Our bottles (binary packages) are hosted by Bintray.
 
 [![Downloads by Bintray](https://bintray.com/docs/images/downloads_by_bintray_96.png)](https://bintray.com/homebrew)
+=======
+# Redirected
+
+The Homebrew homepage has moved to https://github.com/Homebrew/homebrew.github.io
+>>>>>>> origin/gh-pages

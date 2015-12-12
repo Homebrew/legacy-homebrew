@@ -1,0 +1,16 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <l:layout xmlns:rcov="/hudson/plugins/rvmRubyMetrics/tags" css="/plugin/rvmRubyMetrics/css/style.css">
+        <st:include it="${it.project}" page="sidepanel.jelly"/>
+        <l:main-panel>
+            <h1>No valid coverage data available</h1>
+            <p>
+                Tracking and trending code coverage works best when like is compared with like. In this regard it is
+                best to only track builds when all unit tests are passing.
+            </p>
+            <p>
+                This plugin will not report code coverage until there is at least one stable build.
+            </p>
+        </l:main-panel>
+    </l:layout>
+</j:jelly>
