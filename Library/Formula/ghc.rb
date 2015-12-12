@@ -1,8 +1,8 @@
 class Ghc < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-src.tar.xz"
-  sha256 "54cd73755b784d78e2f13d5eb161bfa38d3efee9e8a56f7eb6cd9f2d6e2615f5"
+  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3a-src.tar.xz"
+  sha256 "877899988b64d13a86148f4db29b26d5adddef9207f718b726dc5c202d8efd8e"
 
   bottle do
     revision 1
@@ -39,14 +39,14 @@ class Ghc < Formula
       url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     else
-      url "https://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-x86_64-apple-darwin.tar.xz"
-      sha256 "ef0f00885096e3621cec84a112dfae050cf546ad39bdef29a7719407c6bc5b36"
+      url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3-x86_64-apple-darwin.tar.xz"
+      sha256 "852781d43d41cd55d02f818fe798bb4d1f7e52f488408167f413f7948cf1e7df"
     end
   end
 
   resource "testsuite" do
-    url "https://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-testsuite.tar.xz"
-    sha256 "8b4885d376ca635935b49d4e36e2fa6f07164563ea496eac5fffa0ac926ae962"
+    url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3-testsuite.tar.xz"
+    sha256 "50c151695c8099901334a8478713ee3bb895a90132e2b75d1493961eb8ec643a"
   end
 
   def install
