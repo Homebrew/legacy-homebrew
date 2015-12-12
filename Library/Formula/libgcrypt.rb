@@ -4,6 +4,7 @@ class Libgcrypt < Formula
   url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.6.4.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.4.tar.bz2"
   sha256 "c9bc2c7fe2e5f4ea13b0c74f9d24bcbb1ad889bb39297d8082aebf23f4336026"
+  revision 1
 
   bottle do
     cellar :any
