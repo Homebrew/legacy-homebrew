@@ -14,9 +14,9 @@ end
 class Gdb < Formula
   desc "GNU debugger"
   homepage "https://www.gnu.org/software/gdb/"
-  url "http://ftpmirror.gnu.org/gdb/gdb-7.10.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.tar.xz"
-  sha256 "7ebdaa44f9786ce0c142da4e36797d2020c55fa091905ac5af1846b5756208a8"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.10.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.1.tar.xz"
+  sha256 "25c72f3d41c7c8554d61cacbeacd5f40993276d2ccdec43279ac546e3993d6d5"
 
   bottle do
     sha256 "a2fcab9d9c35c283cc732bde32c7e92cb62acf6b031e570a212a1d0509fe3cb4" => :el_capitan
@@ -76,5 +76,9 @@ class Gdb < Formula
 
       http://sourceware.org/gdb/wiki/BuildingOnDarwin
     EOS
+  end
+
+  test do
+    system bin/"gdb", bin/"gdb", "-configuration"
   end
 end
