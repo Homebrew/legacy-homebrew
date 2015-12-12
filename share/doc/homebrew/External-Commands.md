@@ -1,7 +1,7 @@
 # External Commands
 Homebrew, like Git, supports *external commands*. This lets you create new commands that can be run like:
 
-```
+```shell
 $ brew mycommand --option1 --option3 formula
 ```
 
@@ -73,7 +73,6 @@ These commands have been contributed by Homebrew users but are not included in t
 > Install using:
 > ```
   $ brew tap caskroom/cask
-  $ brew install brew-cask
 > ```
 
 ### brew-gem

@@ -13,9 +13,11 @@ class Openvdb < Formula
   end
 
   option "with-viewer", "Installs the command-line tool to view OpenVDB files"
-  option "with-tests", "Installs the unit tests for the OpenVDB library"
+  option "with-test", "Installs the unit tests for the OpenVDB library"
   option "with-logging", "Requires log4cplus"
   option "with-docs", "Installs documentation"
+
+  deprecated_option "with-tests" => "with-test"
 
   depends_on "openexr"
   depends_on "ilmbase"
@@ -29,7 +31,7 @@ class Openvdb < Formula
   end
 
   depends_on "homebrew/versions/glfw3" if build.with? "viewer"
-  depends_on "cppunit" if build.with? "tests"
+  depends_on "cppunit" if build.with? "test"
   depends_on "doxygen" if build.with? "docs"
   depends_on "log4cplus" if build.with? "logging"
   needs :cxx11

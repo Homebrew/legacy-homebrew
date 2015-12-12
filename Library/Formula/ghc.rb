@@ -12,8 +12,9 @@ class Ghc < Formula
     sha256 "b94cb5912e23a86a475a10114bf14da05fcbbb6b5b85584998f566fc64c01461" => :mountain_lion
   end
 
-  option "with-tests", "Verify the build using the testsuite."
-  deprecated_option "tests" => "with-tests"
+  option "with-test", "Verify the build using the testsuite"
+  deprecated_option "tests" => "with-test"
+  deprecated_option "with-tests" => "with-test"
 
   resource "gmp" do
     url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
@@ -88,7 +89,7 @@ class Ghc < Formula
     system "./configure", "--prefix=#{prefix}", *args
     system "make"
 
-    if build.with? "tests"
+    if build.with? "test"
       resource("testsuite").stage { buildpath.install Dir["*"] }
       cd "testsuite" do
         system "make", "clean"
@@ -101,6 +102,6 @@ class Ghc < Formula
 
   test do
     (testpath/"hello.hs").write('main = putStrLn "Hello Homebrew"')
-    system "runghc", testpath/"hello.hs"
+    system "#{bin}/runghc", testpath/"hello.hs"
   end
 end

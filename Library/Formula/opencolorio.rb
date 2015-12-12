@@ -6,14 +6,16 @@ class Opencolorio < Formula
 
   head "https://github.com/imageworks/OpenColorIO.git"
 
+  option "with-test", "Verify the build with its unit tests (~1min)"
+  option "with-java", "Build ocio with java bindings"
+  option "with-docs", "Build the documentation"
+
+  deprecated_option "with-tests" => "with-test"
+
   depends_on "cmake" => :build
   depends_on "pkg-config" => :build
   depends_on "little-cms2"
   depends_on :python => :optional
-
-  option "with-tests", "Verify the build with its unit tests (~1min)"
-  option "with-java", "Build ocio with java bindings"
-  option "with-docs", "Build the documentation"
 
   # Fix build with libc++
   patch do
@@ -28,7 +30,7 @@ class Opencolorio < Formula
   def install
     args = std_cmake_args
     args << "-DOCIO_BUILD_JNIGLUE=ON" if build.with? "java"
-    args << "-DOCIO_BUILD_TESTS=ON" if build.with? "tests"
+    args << "-DOCIO_BUILD_TESTS=ON" if build.with? "test"
     args << "-DOCIO_BUILD_DOCS=ON" if build.with? "docs"
     args << "-DCMAKE_VERBOSE_MAKEFILE=OFF"
 
@@ -42,7 +44,7 @@ class Opencolorio < Formula
     mkdir "macbuild" do
       system "cmake", *args
       system "make"
-      system "make test" if build.with? "tests"
+      system "make", "test" if build.with? "test"
       system "make", "install"
     end
   end

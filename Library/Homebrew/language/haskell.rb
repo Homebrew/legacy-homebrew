@@ -1,6 +1,6 @@
 module Language
   module Haskell
-    # module for formulas using cabal-install as build tool
+    # module for formulae using cabal-install as build tool
     module Cabal
       module ClassMethods
         def setup_ghc_compilers

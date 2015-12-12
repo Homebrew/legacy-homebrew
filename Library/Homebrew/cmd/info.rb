@@ -67,18 +67,9 @@ module Homebrew
   end
 
   def github_info(f)
-    if f.tap?
-      user, repo = f.tap.split("/", 2)
-      tap = Tap.fetch user, repo
-      if remote = tap.remote
-        path = f.path.relative_path_from(tap.path)
-        github_remote_path(remote, path)
-      else
-        f.path
-      end
-    elsif f.core_formula?
-      if remote = git_origin
-        path = f.path.relative_path_from(HOMEBREW_REPOSITORY)
+    if f.tap
+      if remote = f.tap.remote
+        path = f.path.relative_path_from(f.tap.path)
         github_remote_path(remote, path)
       else
         f.path
@@ -147,24 +138,8 @@ module Homebrew
   end
 
   def decorate_dependencies(dependencies)
-    # necessary for 1.8.7 unicode handling since many installs are on 1.8.7
-    tick = ["2714".hex].pack("U*")
-    cross = ["2718".hex].pack("U*")
-
     deps_status = dependencies.collect do |dep|
-      if dep.installed?
-        color = Tty.green
-        symbol = tick
-      else
-        color = Tty.red
-        symbol = cross
-      end
-      if ENV["HOMEBREW_NO_EMOJI"]
-        colored_dep = "#{color}#{dep}"
-      else
-        colored_dep = "#{dep} #{color}#{symbol}"
-      end
-      "#{colored_dep}#{Tty.reset}"
+      dep.installed? ? pretty_installed(dep) : pretty_uninstalled(dep)
     end
     deps_status * ", "
   end

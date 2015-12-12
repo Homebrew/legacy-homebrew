@@ -6,9 +6,10 @@ class Rethinkdb < Formula
 
   bottle do
     cellar :any
-    sha256 "6258c8d65ecadf89ed7ce11259ddd3e700ee7ad9bb51dfbf742d7bd686119320" => :el_capitan
-    sha256 "9c9e77fe00e25ba430c8550a418ecebd9e2cb366e135b42ec5218c206ece59ee" => :yosemite
-    sha256 "5ae5ebd460bf8a7bdd2d4a77d00f6a20721133c48985651162d573fc20a29a99" => :mavericks
+    revision 1
+    sha256 "952e669603cf7c4a91dc0af3c1ae0b6b7489d3573da2c88d7074f4558867c7bc" => :el_capitan
+    sha256 "843c3ccbcf004becaaaaa582a1bbcd29b2671143a7fe0323ff14f6df0b5155c5" => :yosemite
+    sha256 "2ead827b843c81e0d3b48c469c665f81a92dbe48dfc530d06060d06e36c49381" => :mavericks
   end
 
   depends_on :macos => :lion
@@ -32,6 +33,10 @@ class Rethinkdb < Formula
     system "make", "install-osx"
 
     (var/"log/rethinkdb").mkpath
+
+    inreplace "packaging/assets/config/default.conf.sample",
+              /^# directory=.*/, "directory=#{var}/rethinkdb"
+    etc.install "packaging/assets/config/default.conf.sample" => "rethinkdb.conf"
   end
 
   def plist; <<-EOS.undent
@@ -44,8 +49,8 @@ class Rethinkdb < Formula
       <key>ProgramArguments</key>
       <array>
           <string>#{opt_bin}/rethinkdb</string>
-          <string>-d</string>
-          <string>#{var}/rethinkdb</string>
+          <string>--config-file</string>
+          <string>#{etc}/rethinkdb.conf</string>
       </array>
       <key>WorkingDirectory</key>
       <string>#{HOMEBREW_PREFIX}</string>

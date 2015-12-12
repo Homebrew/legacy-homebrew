@@ -3,14 +3,14 @@ class Pdf2htmlex < Formula
   homepage "https://coolwanglu.github.io/pdf2htmlEX/"
   url "https://github.com/coolwanglu/pdf2htmlEX/archive/v0.13.6.tar.gz"
   sha256 "fc133a5791bfd76a4425af16c6a6a2460f672501b490cbda558213cb2b03d5d7"
-  revision 4
+  revision 5
 
   head "https://github.com/coolwanglu/pdf2htmlEX.git"
 
   bottle do
-    sha256 "df830f4adb1c44a561f95630c265b818205ca27f3adf4843c4dff65b39874ffe" => :el_capitan
-    sha256 "c05533083e0d8e40394ad834071dd3a5998ef91697bd1af130bd7810bc44b878" => :yosemite
-    sha256 "88db76b93a9d758af6619f85565054f8eae2120bc50b63e664cf85d7a142d48c" => :mavericks
+    sha256 "fe31e34a4b17d972247390b88f4f93bf6267e3f924564515f29119e52400455c" => :el_capitan
+    sha256 "e6b77d8db22ced81951a78a162048ffe5c7588e00f0dd0c7150f27200e436a92" => :yosemite
+    sha256 "bfc55cc9670e978e7514de2d2d864f7af4b9eeb5e67ca40c928ad26c6ed32e2b" => :mavericks
   end
 
   # Pdf2htmlex use an outdated, customised Fontforge installation.

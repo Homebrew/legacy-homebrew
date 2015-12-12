@@ -5,13 +5,13 @@ class Elasticsearch < Formula
   sha256 "8a4e85bcb506daa369651506af1cbc55c09fd7ff387d111142ae14d0a85d4d14"
   revision 1
 
-  bottle :unneeded
-
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
     depends_on :java => "1.8"
     depends_on "gradle" => :build
   end
+
+  bottle :unneeded
 
   depends_on :java => "1.7+"
 
@@ -59,7 +59,7 @@ class Elasticsearch < Formula
 
     # Move config files into etc
     (etc/"elasticsearch").install Dir[libexec/"config/*"]
-    (etc/"elasticsearch/scripts").mkdir unless File.exists?(etc/"elasticsearch/scripts")
+    (etc/"elasticsearch/scripts").mkdir unless File.exist?(etc/"elasticsearch/scripts")
     (libexec/"config").rmtree
 
     bin.write_exec_script Dir[libexec/"bin/*"]
@@ -104,9 +104,9 @@ class Elasticsearch < Formula
           <key>WorkingDirectory</key>
           <string>#{var}</string>
           <key>StandardErrorPath</key>
-          <string>/dev/null</string>
+          <string>#{var}/log/elasticsearch.log</string>
           <key>StandardOutPath</key>
-          <string>/dev/null</string>
+          <string>#{var}/log/elasticsearch.log</string>
         </dict>
       </plist>
     EOS

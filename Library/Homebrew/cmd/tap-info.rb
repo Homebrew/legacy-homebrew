@@ -1,4 +1,4 @@
-require "cmd/tap"
+require "tap"
 
 module Homebrew
   def tap_info
@@ -6,9 +6,11 @@ module Homebrew
       taps = Tap
     else
       taps = ARGV.named.map do |name|
-        Tap.fetch(*tap_args(name))
+        Tap.fetch(name)
       end
     end
+
+    raise "Homebrew/homebrew is not allowed" if taps.any?(&:core_formula_repository?)
 
     if ARGV.json == "v1"
       print_tap_json(taps)

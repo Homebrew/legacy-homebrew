@@ -1,8 +1,8 @@
 # brew tap
 
-**tl;dr** `brew tap` adds more repos to the list of formulae that `brew`
-tracks, updates, and installs from. By default, `tap` assumes that the repos
-come from GitHub, but the command isn't limited to any one location.
+`brew tap` adds more repos to the list of formulae that `brew` tracks, updates,
+and installs from. By default, `tap` assumes that the repos come from GitHub,
+but the command isn't limited to any one location.
 
 ## The command
 
@@ -65,7 +65,7 @@ Whenever a `brew install foo` command is issued, brew will find which formula
 to use by searching in the following order:
 
 * Pinned taps
-* Core formulas
+* Core formulae
 * Other taps
 
 If you need a formula to be installed from a particular tap, you can use fully

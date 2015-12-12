@@ -12,7 +12,9 @@ class Freexl < Formula
     sha256 "ae6d78c69b399ea733ff6ef346d83499408c0c510fe40484072c423b9552925b" => :mountain_lion
   end
 
-  option "without-check", "Skip compile-time make checks."
+  option "without-test", "Skip compile-time make checks"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "doxygen" => [:optional, :build]
 
@@ -20,7 +22,7 @@ class Freexl < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
                           "--disable-silent-rules"
 
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
 
     if build.with? "doxygen"
