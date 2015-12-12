@@ -1,9 +1,8 @@
 class Clamav < Formula
   desc "Anti-virus software"
   homepage "http://www.clamav.net/"
-  url "https://downloads.sourceforge.net/clamav/clamav-0.98.7.tar.gz"
-  sha256 "282417b707740de13cd8f18d4cbca9ddd181cf96b444db2cad98913a5153e272"
-  revision 1
+  url "http://www.clamav.net/downloads/production/clamav-0.99.tar.gz"
+  sha256 "d2792c8cfadd685fffc40b2199679628815df031fd3149ccf961649fc8787ea9"
 
   bottle do
     revision 1
@@ -20,28 +19,33 @@ class Clamav < Formula
     depends_on "libtool" => :build
   end
 
+  depends_on "pkg-config" => :build
   depends_on "openssl"
+  depends_on "yara" => :optional
   depends_on "json-c" => :optional
+  depends_on "pcre" => :optional
 
   skip_clean "share/clamav"
 
   def install
-    args = [
-      "--disable-dependency-tracking",
-      "--disable-silent-rules",
-      "--prefix=#{prefix}",
-      "--libdir=#{lib}",
-      "--sysconfdir=#{etc}/clamav",
-      "--disable-zlib-vcheck",
-      "--with-zlib=#{MacOS.sdk_path}/usr",
-      "--with-openssl=#{Formula["openssl"].opt_prefix}",
-      "--enable-llvm=no",
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --libdir=#{lib}
+      --sysconfdir=#{etc}/clamav
+      --disable-zlib-vcheck
+      --with-zlib=#{MacOS.sdk_path}/usr
+      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --enable-llvm=no
     ]
 
     args << "--with-libjson=#{Formula["json-c"].opt_prefix}" if build.with? "json-c"
+    args << "--disable-yara" if build.without? "yara"
+    args << "--without-pcre" if build.without? "pcre"
 
     (share/"clamav").mkpath
-    system "autoreconf", "-i" if build.head?
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
     system "make", "install"
   end
