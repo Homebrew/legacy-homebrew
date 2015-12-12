@@ -10,11 +10,11 @@ class Suil < Formula
     sha256 "cdf01f1c90d9e540e5f798691554a5ecca4765895db1f3fc4877db3301d72e7d" => :mavericks
   end
 
+  depends_on "pkg-config" => :build
   depends_on "lv2"
+  depends_on "gtk+" => :recommended
   depends_on "qt" => :optional
   depends_on "qt5" => :optional
-  depends_on "gtk+" => :recommended
-  depends_on "pkg-config" => :build
   depends_on :x11 => :optional
 
   def install
