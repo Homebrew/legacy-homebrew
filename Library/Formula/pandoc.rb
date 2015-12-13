@@ -24,7 +24,9 @@ class Pandoc < Formula
 
   def install
     cabal_sandbox do
-      cabal_install "--only-dependencies"
+      args = []
+      args << "--constraint=cryptonite -support_aesni" if MacOS.version <= :lion
+      cabal_install "--only-dependencies", *args
       cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib

@@ -13,16 +13,17 @@ class Bup < Formula
     sha256 "9c7b4eda48367a6c62786e8c74aa1b455ecc9525a6431d2a2837d13fb592c0f6" => :mountain_lion
   end
 
-  option "with-tests", "Run unit tests after compilation"
+  option "with-test", "Run unit tests after compilation"
   option "with-pandoc", "Build and install the manpages"
 
-  deprecated_option "run-tests" => "with-tests"
+  deprecated_option "run-tests" => "with-test"
+  deprecated_option "with-tests" => "with-test"
 
   depends_on "pandoc" => [:optional, :build]
 
   def install
     system "make"
-    system "make", "test" if build.with? "tests"
+    system "make", "test" if build.with? "test"
     system "make", "install", "DESTDIR=#{prefix}", "PREFIX="
   end
 

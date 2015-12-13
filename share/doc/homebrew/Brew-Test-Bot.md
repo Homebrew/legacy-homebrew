@@ -10,10 +10,6 @@ requests and custom builds requested by maintainers.
 
 ## Pull Requests
 
-There is [a brew test-bot mailing list on Google Groups](https://groups.google.com/forum/#!forum/brew-test-bot)
-which emails its members any failed builds that failed on the Homebrew master
-branch.
-
 The bot automatically builds pull requests and updates their status depending
 on the result of the job.
 

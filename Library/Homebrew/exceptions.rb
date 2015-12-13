@@ -230,8 +230,8 @@ class BuildError < RuntimeError
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
-        case formula.tap
-        when "homebrew/homebrew-boneyard"
+        case formula.tap.name
+        when "homebrew/boneyard"
           puts "#{formula} was moved to homebrew-boneyard because it has unfixable issues."
           puts "Please do not file any issues about this. Sorry!"
         else

@@ -6,25 +6,27 @@ class Libbpg < Formula
 
   bottle do
     cellar :any
-    sha256 "98b771795e3f03995005af5f26d3c74bd178a6f2bc69b41a8e35fe735c95b765" => :el_capitan
-    sha256 "d5d9b76f692ead22f64e84c1ca9bdf11877d6bc249d92bad98f8a11ce3120106" => :yosemite
-    sha256 "7b8d1585ee9e2de010abfab1aaab419d052cf35d82704587c2f75947d4fc8ee5" => :mavericks
+    revision 1
+    sha256 "f5d2349fa1e247411ed624baf5730782fed1e72643cf2e96ce49c4dac50c7764" => :el_capitan
+    sha256 "7c4cde5957cfb855aa52edbb3fcf0f489d1803e42060dd8ff7cb042fe84c05f0" => :yosemite
+    sha256 "93a4d03c32d1fe837f35a94d9c0f524684ddb29e02a5b507e4817e5b1cddabda" => :mavericks
   end
 
-  option "with-x265", "Enable x265 encoder"
-  option "without-jctvc", "Disable built-in JCTVC encoder"
+  option "with-jctvc", "Enable built-in JCTVC encoder - Mono threaded, slower but produce smaller file"
+  option "without-x265", "Disable built-in x265 encoder - Multi threaded, faster but produce bigger file"
 
   depends_on "cmake" => :build
-  depends_on "yasm" => :build
+  depends_on "yasm" => :build if build.with? "x265"
   depends_on "libpng"
   depends_on "jpeg"
-  depends_on "x265" => :optional
 
   def install
     bin.mkpath
+
     args = []
-    args << "USE_X265=y" if build.with? "x265"
-    args << "USE_JCTVC=" if build.without? "jctvc"
+    args << "USE_JCTVC=y" if build.with? "jctvc"
+    args << "USE_X265=" if build.without? "x265"
+
     system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y", *args
   end
 

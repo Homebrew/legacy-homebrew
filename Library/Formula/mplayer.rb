@@ -1,6 +1,7 @@
 class Mplayer < Formula
   desc "UNIX movie player"
   homepage "https://www.mplayerhq.hu/"
+  revision 1
 
   stable do
     url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.tar.xz"
@@ -8,9 +9,9 @@ class Mplayer < Formula
   end
 
   bottle do
-    sha256 "5504434dce05f51d0d6336426f64af559740203193f6f34d1ef250ebfe955d8f" => :el_capitan
-    sha256 "6d6ccf0b963bc4a0edd48bc7d1e1008db888dc38b91fe85c6c58c5d6dded4f48" => :yosemite
-    sha256 "d90208d62889b8c74d06917ba926f91fddb039ab15b27c825e4356b75b9d105b" => :mavericks
+    sha256 "13be908b635ef84ab9a121f7e6787c20e6405bf645417e2f82f98192ea07c92e" => :el_capitan
+    sha256 "c6d4cc95a347807eacf219ed68c6dffae61b5abffae65e938f8e2d959a84c1fb" => :yosemite
+    sha256 "f9c8305916c2eb5363edc7715e499191e18eb39d6f8efd921d3a4d2881326ad9" => :mavericks
   end
 
   head do
@@ -22,21 +23,8 @@ class Mplayer < Formula
     patch :DATA
   end
 
-  option "without-osd", "Build without OSD"
-
   depends_on "yasm" => :build
   depends_on "libcaca" => :optional
-  depends_on :x11 => :optional
-
-  deprecated_option "with-x" => "with-x11"
-
-  if build.with?("osd") || build.with?("x11")
-    # These are required for the OSD. We can get them from X11, or we can
-    # build our own.
-    depends_on "fontconfig"
-    depends_on "freetype"
-    depends_on "libpng"
-  end
 
   fails_with :clang do
     build 211
@@ -51,18 +39,17 @@ class Mplayer < Formula
     ENV.O1 if ENV.compiler == :llvm
 
     # we disable cdparanoia because homebrew's version is hacked to work on OS X
-    # and mplayer doesn't expect the hacks we apply. So it chokes.
+    # and mplayer doesn't expect the hacks we apply. So it chokes. Only relevant
+    # if you have cdparanoia installed.
     # Specify our compiler to stop ffmpeg from defaulting to gcc.
     args = %W[
-      --prefix=#{prefix}
       --cc=#{ENV.cc}
       --host-cc=#{ENV.cc}
       --disable-cdparanoia
+      --prefix=#{prefix}
+      --disable-x11
     ]
 
-    args << "--enable-menu" if build.with? "osd"
-    args << "--disable-x11" if build.without? "x11"
-    args << "--enable-freetype" if build.with?("osd") || build.with?("x11")
     args << "--enable-caca" if build.with? "libcaca"
 
     system "./configure", *args

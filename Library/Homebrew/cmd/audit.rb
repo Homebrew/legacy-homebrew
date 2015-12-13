@@ -235,7 +235,7 @@ class FormulaAuditor
   def audit_formula_name
     return unless @strict
     # skip for non-official taps
-    return if !formula.core_formula? && !formula.tap.to_s.start_with?("homebrew")
+    return unless formula.tap.official?
 
     name = formula.name
     full_name = formula.full_name
@@ -245,8 +245,8 @@ class FormulaAuditor
       return
     end
 
-    if FORMULA_RENAMES.key? name
-      problem "'#{name}' is reserved as the old name of #{FORMULA_RENAMES[name]}"
+    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+      problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
 
@@ -371,6 +371,10 @@ class FormulaAuditor
       next unless @strict
       if o.name !~ /with(out)?-/ && o.name != "c++11" && o.name != "universal" && o.name != "32-bit"
         problem "Options should begin with with/without. Migrate '--#{o.name}' with `deprecated_option`."
+      end
+
+      if o.name =~ /^with(out)?-(?:checks?|tests)$/
+        problem "Use '--with#{$1}-test' instead of '--#{o.name}'. Migrate '--#{o.name}' with `deprecated_option`."
       end
     end
   end

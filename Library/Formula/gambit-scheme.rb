@@ -13,9 +13,11 @@ class GambitScheme < Formula
   conflicts_with "ghostscript", :because => "both install `gsc` binaries"
   conflicts_with "scheme48", :because => "both install `scheme-r5rs` binaries"
 
-  deprecated_option "enable-shared" => "with-shared"
-  option "with-check", 'Execute "make check" before installing'
+  option "with-test", 'Execute "make check" before installing'
   option "with-shared", "Build Gambit Scheme runtime as shared library"
+
+  deprecated_option "with-check" => "with-test"
+  deprecated_option "enable-shared" => "with-shared"
 
   fails_with :llvm
   fails_with :clang
@@ -33,7 +35,7 @@ class GambitScheme < Formula
     args << "--enable-shared" if build.with? "shared"
 
     system "./configure", *args
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
 
     system "make"
     system "make", "install", "emacsdir=#{share}/emacs/site-lisp/#{name}"

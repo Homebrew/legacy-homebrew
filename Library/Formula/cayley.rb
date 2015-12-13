@@ -8,10 +8,11 @@ class Cayley < Formula
   head "https://github.com/google/cayley.git"
 
   bottle do
-    cellar :any
-    sha256 "999dbf6a51615becf310f6cb5cdd71c9939fc93cc6e743234d2511d20a561641" => :yosemite
-    sha256 "56395b48c4025e8242cbbe1e365a67a639bdb3b350799db0ad0e495c7d6c59f0" => :mavericks
-    sha256 "1a96db8eb29e1e985a430970f84bb31db44024dd9ab264ac1f83ad7e1c9251ab" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "f58e92c03d9ec3bf16911ac5ffc9cd65ce83982f18e8836aafce4a0f9af22b84" => :el_capitan
+    sha256 "3364dd8ec9ec244c7c0558e0bbab0e93790d24f00e73263cda9f36a38b729436" => :yosemite
+    sha256 "7a02a7326bb2b6f4ba85995553d03322b71c42b24873129a7aa4b375d2bd1c55" => :mavericks
   end
 
   depends_on "bazaar" => :build
@@ -92,7 +93,7 @@ class Cayley < Formula
     ln_s buildpath, "src/github.com/google/cayley"
 
     # Build
-    system "go", "build", "-o", "cayley"
+    system "go", "build", "-o", "cayley", "github.com/google/cayley"
 
     # Create sample configuration that uses the Homebrew-based directories
     inreplace "cayley.cfg.example", "/tmp/cayley_test", "#{var}/cayley"
@@ -158,6 +159,6 @@ class Cayley < Formula
 
   test do
     result = pipe_output("#{bin}/cayley version")
-    assert result.include?("Cayley snapshot")
+    assert_match result, "Cayley snapshot\n"
   end
 end

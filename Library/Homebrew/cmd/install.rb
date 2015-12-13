@@ -14,8 +14,8 @@ module Homebrew
     end
 
     ARGV.named.each do |name|
-      if !File.exist?(name) && (name !~ HOMEBREW_CORE_FORMULA_REGEX) \
-              && (name =~ HOMEBREW_TAP_FORMULA_REGEX || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
+      if !File.exist?(name) &&
+         (name =~ HOMEBREW_TAP_FORMULA_REGEX || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
         tap = Tap.fetch($1, $2)
         tap.install unless tap.installed?
       end
@@ -25,8 +25,6 @@ module Homebrew
       formulae = []
 
       if ARGV.casks.any?
-        brew_cask = Formulary.factory("brew-cask")
-        install_formula(brew_cask) unless brew_cask.installed?
         args = []
         args << "--force" if ARGV.force?
         args << "--debug" if ARGV.debug?

@@ -18,7 +18,9 @@ class Perl < Formula
     "OS X ships Perl and overriding that can cause unintended issues"
 
   option "with-dtrace", "Build with DTrace probes"
-  option "with-tests", "Build and run the test suite"
+  option "with-test", "Build and run the test suite"
+
+  deprecated_option "with-tests" => "with-test"
 
   def install
     args = %W[
@@ -42,7 +44,7 @@ class Perl < Formula
     # https://rt.perl.org/Ticket/Display.html?id=126706
     # https://github.com/Homebrew/homebrew/issues/41716
     if MacOS.version < :el_capitan
-      system "make", "test" if build.with?("tests") || build.bottle?
+      system "make", "test" if build.with?("test") || build.bottle?
     end
 
     system "make", "install"

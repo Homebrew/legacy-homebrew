@@ -36,7 +36,7 @@ brew switch $FORMULA $VERSION
 
 Use `brew info $FORMULA` to check what versions are installed but not currently activated, then `brew switch $FORMULA $VERSION` to activate the desired version. This can be useful if you would like to switch between versions of a formula.
 
-## Install into Homebrew without formulas
+## Install into Homebrew without formulae
 
 ```sh
 ./configure --prefix=/usr/local/Cellar/foo/1.2 && make && make install && brew link foo

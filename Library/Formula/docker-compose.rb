@@ -3,16 +3,15 @@ class DockerCompose < Formula
   homepage "https://docs.docker.com/compose/"
 
   stable do
-    url "https://github.com/docker/compose/archive/1.5.1.tar.gz"
-    sha256 "334814f64910823fa588e89eea8f73d8ad3bb0d304e513fe51026a1f1d08d3db"
+    url "https://github.com/docker/compose/archive/1.5.2.tar.gz"
+    sha256 "8f0851b417d89bc5023e72918233449a0fa72d9952ac66494c1b37434516583d"
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "b6ba01c5cf31f4c285983342fd6dd639f3a67d2b98f346c5ea2ff4d16b7f0f12" => :el_capitan
-    sha256 "3a1aaf708ef9749a5ddf25d6c854b862a06bd4543546cc841477a27096117ca0" => :yosemite
-    sha256 "70500ceb259ac49cbc33672c775574eb530282a5187d5a0f4ceaae4cb0c6c981" => :mavericks
+    sha256 "5b3c92a6648c919d94fa002365ddfab725df37bb14a00c3bd55e9217078054f2" => :el_capitan
+    sha256 "372f021380dbf7db250400f334873090d36a561cfcd290851ffc4e2312220fd3" => :yosemite
+    sha256 "5a45a61d82c5ca8f3815fcb889db5efda6e2e07f71451f48791d8f7746b5ab4e" => :mavericks
   end
 
   head do

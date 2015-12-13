@@ -12,18 +12,19 @@ class Sha2 < Formula
     sha256 "dc28fabf8cd4680b5ff534de7ef19ad95c4b839f6b891f80292e6ac9bd0952ad" => :mountain_lion
   end
 
-  option "without-check", "Skip compile-time tests"
+  option "without-test", "Skip compile-time tests"
+
+  deprecated_option "without-check" => "without-test"
 
   def install
     system ENV.cc, "-o", "sha2", "sha2prog.c", "sha2.c"
-    system "perl", "sha2test.pl" if build.with? "check"
+    system "perl", "sha2test.pl" if build.with? "test"
     bin.install "sha2"
   end
 
   test do
-    (testpath/"checkme.txt").write("homebrew")
-    output = pipe_output("#{bin}/sha2 -q -256 #{testpath}/checkme.txt")
-    expected = "12c87370d1b5472793e67682596b60efe2c6038d63d04134a1a88544509737b4"
-    assert output.include? expected
+    (testpath/"checkme.txt").write "homebrew"
+    assert_match "12c87370d1b5472793e67682596b60efe2c6038d63d04134a1a88544509737b4",
+      pipe_output("#{bin}/sha2 -q -256 #{testpath}/checkme.txt")
   end
 end

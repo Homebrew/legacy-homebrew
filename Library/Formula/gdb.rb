@@ -14,14 +14,14 @@ end
 class Gdb < Formula
   desc "GNU debugger"
   homepage "https://www.gnu.org/software/gdb/"
-  url "http://ftpmirror.gnu.org/gdb/gdb-7.10.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.tar.xz"
-  sha256 "7ebdaa44f9786ce0c142da4e36797d2020c55fa091905ac5af1846b5756208a8"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.10.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.1.tar.xz"
+  sha256 "25c72f3d41c7c8554d61cacbeacd5f40993276d2ccdec43279ac546e3993d6d5"
 
   bottle do
-    sha256 "a2fcab9d9c35c283cc732bde32c7e92cb62acf6b031e570a212a1d0509fe3cb4" => :el_capitan
-    sha256 "a99976ef19b7344c10c09cb1ef6fd910079f58d9fdabdfcb1a98afbad8064014" => :yosemite
-    sha256 "b3fb66f0a854c2ea5601a1b95a0674024017d03d92d1e12b0947a4e38a4ddb39" => :mavericks
+    sha256 "380d33fdf8f3c0716e3b9307e60cde1d1a66d2cfebdd5306949c483c870f8a30" => :el_capitan
+    sha256 "2953ed51376554c7147dc4a01fba9f76ed3c8e6fa45bf9ab006159429d3b7780" => :yosemite
+    sha256 "1c48758042eed1ba9357fdb98b49b5b819555d664f9bb876e35c8bbaad58b0ec" => :mavericks
   end
 
   option "with-brewed-python", "Use the Homebrew version of Python"
@@ -76,5 +76,9 @@ class Gdb < Formula
 
       http://sourceware.org/gdb/wiki/BuildingOnDarwin
     EOS
+  end
+
+  test do
+    system bin/"gdb", bin/"gdb", "-configuration"
   end
 end

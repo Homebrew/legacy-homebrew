@@ -1,14 +1,13 @@
 class Libchamplain < Formula
   desc "ClutterActor for displaying maps"
   homepage "https://wiki.gnome.org/Projects/libchamplain"
-  url "https://download.gnome.org/sources/libchamplain/0.12/libchamplain-0.12.11.tar.xz"
-  sha256 "851e24888d967c10acb8fd878df1292a84b8180eb4c48fc5bfbf1a48896d4aa5"
+  url "https://download.gnome.org/sources/libchamplain/0.12/libchamplain-0.12.12.tar.xz"
+  sha256 "e7de797200a91dba07bd8ba6583a672e1b3dcee842b9b100798925ebde8254a6"
 
   bottle do
-    revision 1
-    sha256 "b47d4c49d9f7d6bfc8e51de2ccd1912c49acbe5f4a7468a0cb2983350a38709d" => :el_capitan
-    sha256 "511afec4f201270a963900311dfae5e0cbf4d25bc1742501225f2ddd1ad5c952" => :yosemite
-    sha256 "d9ecb9dbb31ca73260f7fe08887f21c15ffd87b835df66bd1b1759bf6ba9dd30" => :mavericks
+    sha256 "c489324cfd7be98817af7ab6d1cc1645dad41803566ccafef8b30c78ad383190" => :el_capitan
+    sha256 "302278ca1ccc1e91cd705b9af97c0b0f61a0f4cf3f7d956d9ce279ea199b25cb" => :yosemite
+    sha256 "e14e6a06013cc796cdf0d09ea8491e59cd9ecf52d4be1327621bd765667f8051" => :mavericks
   end
 
   depends_on "pkg-config" => :build

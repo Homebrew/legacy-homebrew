@@ -10,9 +10,10 @@ class Mytop < Formula
 
   bottle do
     cellar :any
-    sha256 "1208f12adb4cee930f856bf985a8091dee5d1b6cfd319bf3ddb9a7304c9e8d76" => :el_capitan
-    sha256 "3d50646b72aec1b32204e77fba3183dd9a44e2d73aa8a15bbff64f0d0eaae425" => :yosemite
-    sha256 "28144af40340021ac1fb1449a918a5bfe5f15f2b3856be5486e298d5f58ed721" => :mavericks
+    revision 1
+    sha256 "67a7e69f19a610123bd0dbd3fc9ffac02ee39a61c03e0b1c7c2760705d9c84a9" => :el_capitan
+    sha256 "610b2021a5a02b923e22a99d156f2246b315b759f01f34b507b5e3a585c40d38" => :yosemite
+    sha256 "9882bc7674838f879ff5c8342bab1cdbd284b60e7d250f0bb49cc568be6ee373" => :mavericks
   end
 
   depends_on :mysql
@@ -20,6 +21,7 @@ class Mytop < Formula
 
   conflicts_with "mariadb", :because => "both install `mytop` binaries"
   conflicts_with "innotop", :because => "both install `perllocal.pod`"
+  conflicts_with "percona-toolkit", :because => "both install `perllocal.pod`"
 
   resource "DBD::mysql" do
     url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"

@@ -1,14 +1,14 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "http://www.zsh.org/"
-  url "https://downloads.sourceforge.net/project/zsh/zsh/5.1.1/zsh-5.1.1.tar.gz"
-  mirror "http://www.zsh.org/pub/zsh-5.1.1.tar.gz"
-  sha256 "94ed5b412023761bc8d2f03c173f13d625e06e5d6f0dff2c7a6e140c3fa55087"
+  url "https://downloads.sourceforge.net/project/zsh/zsh/5.2/zsh-5.2.tar.gz"
+  mirror "http://www.zsh.org/pub/zsh-5.2.tar.gz"
+  sha256 "fa924c534c6633c219dcffdcd7da9399dabfb63347f88ce6ddcd5bb441215937"
 
   bottle do
-    sha256 "079cc9661532edf75b4602fffcf900d3d23a1f143f35ca3cce93a37c0fbc6ae8" => :el_capitan
-    sha256 "385e57d2ef3e6ef24925a64cbaaf85d1776d8d466ef366223d7b599583fbaddf" => :yosemite
-    sha256 "932fe97487753363d3ddd683918210367ec29104e700001bbf5cd18c2f4d59fa" => :mavericks
+    sha256 "cd259a16f0645a085e01b49b6ff92f5d11605775e6b10ba4759be3487fb29b5d" => :el_capitan
+    sha256 "0d33821053045530db4f7b9588d9f5dced22d02a8b6491260aecb990ad55fb7e" => :yosemite
+    sha256 "47b00e430b5922fdf7260ccdd77e510c50961a55e11cc89aa029a11e8e82d309" => :mavericks
   end
 
   head do

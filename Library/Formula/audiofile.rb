@@ -20,7 +20,9 @@ class Audiofile < Formula
   end
 
   option "with-lcov", "Enable Code Coverage support using lcov"
-  option "with-check", "Run the test suite during install ~30sec"
+  option "with-test", "Run the test suite during install (~30sec)"
+
+  deprecated_option "with-check" => "with-test"
 
   depends_on "lcov" => :optional
 
@@ -35,7 +37,7 @@ class Audiofile < Formula
     args << "--enable-coverage" if build.with? "lcov"
     system configure, *args
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 

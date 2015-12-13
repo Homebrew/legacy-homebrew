@@ -3,14 +3,14 @@
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.6.85.31.tar.gz"
-  sha256 "6034b20794bcdc3190db8fe1614c458daee7ac36449131dd29444200bb7bbc6d"
+  url "https://github.com/v8/v8-git-mirror/archive/4.7.80.25.tar.gz"
+  sha256 "8db572565d599ef2fe9c639920cc0f1969facc4986c2d54eaa0700aa62486aa6"
 
   bottle do
     cellar :any
-    sha256 "e664e94981fa50212ede32af4a1a8ba6dd6ad7aec7da49966b46f39382146865" => :el_capitan
-    sha256 "604b8871c4916cc8343b3a359a172b2c0d2f39d88fed58ead55306e6bf4737b9" => :yosemite
-    sha256 "ea3fe86e89f1289a405a4a28423b2cdd490262b0ba2d1e0f4922c09cdf84d186" => :mavericks
+    sha256 "2cfa0b932284f12d9d12a4f4d00f0cc7c38cfc5eea1db2716da89c840f379b24" => :el_capitan
+    sha256 "4a6fd3d6aa6064f5aa165926485f6f9a44020d8cd42f966aa7c72c8ff65ba888" => :yosemite
+    sha256 "a5c409009810b4d126d528a39e72a86fa76989c333cec729b6c14b7193cd8e63" => :mavericks
   end
 
   option "with-readline", "Use readline instead of libedit"
@@ -27,22 +27,27 @@ class V8 < Formula
   # Update from "DEPS" file in tarball.
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "6ee91ad8659871916f9aa840d42e1513befdf638"
+        :revision => "01528c7244837168a1c80f06ff60fa5a9793c824"
   end
 
   resource "icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        :revision => "89dcdec16381883782b9cc9cff38e00f047a0f46"
+        :revision => "423fc7e1107fb08ccf007c4aeb76dcab8b2747c1"
   end
 
   resource "buildtools" do
     url "https://chromium.googlesource.com/chromium/buildtools.git",
-        :revision => "565d04e8741429fb1b4f26d102f2c6c3b849edeb"
+        :revision => "e7111440c07a883b82ffbbe6d26c744dfc6c9673"
+  end
+
+  resource "swarming_client" do
+    url "https://chromium.googlesource.com/external/swarming.client.git",
+        :revision => "6e5d2b21f0ac98396cd736097a985346feed1328"
   end
 
   resource "clang" do
     url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
-        :revision => "5b12e334ec0e571a8e1f68d028dc5427b58c17ec"
+        :revision => "0150e39a3112dbc7e4c7a3ab25276b8d7781f3b6"
   end
 
   resource "gmock" do
@@ -75,6 +80,7 @@ class V8 < Formula
     (buildpath/"testing/gmock").install resource("gmock")
     (buildpath/"testing/gtest").install resource("gtest")
     (buildpath/"tools/clang").install resource("clang")
+    (buildpath/"tools/swarming_client").install resource("swarming_client")
 
     system "make", "native", "library=shared", "snapshot=on",
                    "console=readline", "i18nsupport=off",
