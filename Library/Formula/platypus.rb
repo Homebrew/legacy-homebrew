@@ -7,10 +7,9 @@ class Platypus < Formula
   head "https://github.com/sveinbjornt/Platypus.git"
 
   bottle do
-    cellar :any
-    sha256 "398efe2d6afe358e13dc881be58ae8e27c73bd1538ca954e7067c055d25adf75" => :yosemite
-    sha256 "99a07275ad62b9d26bf2e31ce5f4e0d9e35525a18c1414ef7d655c11a92510f9" => :mavericks
-    sha256 "d33acad77bacbbec3c602541b3e0410576efda95679760314b7e5ba737154871" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "c48c2b021df9de8b3e14e6b662eda5e1d8952820a50e05297e4cc51998b15980" => :el_capitan
+    sha256 "bee357b4dfb3ae25bb2ae31ffe61e5fd0d29076426f587f45096480c998500e6" => :yosemite
   end
 
   depends_on :xcode => ["7.0", :build]
