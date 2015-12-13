@@ -1,8 +1,19 @@
 class Libvpx < Formula
   desc "VP8 video codec"
   homepage "https://www.webmproject.org/code/"
-  url "https://github.com/webmproject/libvpx/archive/v1.4.0.tar.gz"
-  sha256 "eca30ea7fae954286c9fe9de9d377128f36b56ea6b8691427783b20c67bcfc13"
+
+  stable do
+    url "https://github.com/webmproject/libvpx/archive/v1.4.0.tar.gz"
+    sha256 "eca30ea7fae954286c9fe9de9d377128f36b56ea6b8691427783b20c67bcfc13"
+
+    # 1.4.0 patch only
+    # until https://code.google.com/p/webm/issues/detail?id=1082 is resolved
+    # https://github.com/Homebrew/homebrew/issues/38790
+    patch :p3 do
+      url "https://hg.mozilla.org/mozilla-central/raw-file/5515fa5ba20d/media/libvpx/apple-clang.patch"
+      sha256 "c9510bf1e03fed9b7ad740d3970f18c168b759f32e9ec61882a8896c59aaf654"
+    end
+  end
 
   head "https://chromium.googlesource.com/webm/libvpx", :using => :git
 
