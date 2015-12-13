@@ -6,10 +6,10 @@ class Osxutils < Formula
   head "https://github.com/specious/osxutils.git"
 
   bottle do
-    cellar :any
-    sha256 "0154957f7c9be66a35f4e14362ba0c35d432c76b5ce816f9f1ad2d423be9f0b6" => :yosemite
-    sha256 "a979cdf2c1512375431b9861bc743bf4f39ae809605ebfa124c852a0799c8618" => :mavericks
-    sha256 "ed8b660943ff437f3efb94bd906ea0dff7bd3be795af3fc0107f9578f8f99a0d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "8a3039916a2cc607a98f5d4576b534e341f7823b7b16bdcfa66fca487379f366" => :el_capitan
+    sha256 "86cee8409262fdda5d6634a86a29fe2d0fcee537baa8c9696de3a8abd27c2aa8" => :yosemite
+    sha256 "91808d79c75537c563ee9a36b45e21703fcc4377d6c6ea7e7215f5ad9b0aa605" => :mavericks
   end
 
   conflicts_with "trash", :because => "both install a trash binary"
