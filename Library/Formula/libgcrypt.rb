@@ -4,13 +4,13 @@ class Libgcrypt < Formula
   url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.6.4.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.4.tar.bz2"
   sha256 "c9bc2c7fe2e5f4ea13b0c74f9d24bcbb1ad889bb39297d8082aebf23f4336026"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "c239866860860e717e646856b9870e7cd9ee0729b8700a40f8be47a174d29146" => :el_capitan
-    sha256 "e8559d5c93be44c94a4652f74d8835a416b1771e492446c2a2d9da725460d5ca" => :yosemite
-    sha256 "09a01dd58c81f0efb278d2e1270983ae4e477bb5fc4c54489dc6582084a147bb" => :mavericks
-    sha256 "1c79948cbb7bb2750f23a6b3a91aafbd49ef0eb4d5868cabd91dcfb7592dac19" => :mountain_lion
+    sha256 "2b59bd7e872728065d2303b5da5f69a16dbcebc89394252ee48707cf14654c86" => :el_capitan
+    sha256 "5f070f9cc28560ef51b21364be72eb3b42ff5eb32c19a4b4589d0ebe896f09f2" => :yosemite
+    sha256 "5ce09777ff6a640092874ab3461f6f5699db045f7669530bf1059129c34fe7af" => :mavericks
   end
 
   option :universal

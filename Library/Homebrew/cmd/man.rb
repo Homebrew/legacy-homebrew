@@ -25,15 +25,21 @@ module Homebrew
       puts "Writing HTML fragments to #{DOC_PATH}"
       puts "Writing manpages to #{TARGET_PATH}"
 
-      target_file = nil
       Dir["#{SOURCE_PATH}/*.md"].each do |source_file|
-        target_html = DOC_PATH/"#{File.basename(source_file, ".md")}.html"
-        safe_system "ronn --fragment --pipe --organization='Homebrew' --manual='brew' #{source_file} > #{target_html}"
-        target_man = TARGET_PATH/File.basename(source_file, ".md")
-        safe_system "ronn --roff --pipe --organization='Homebrew' --manual='brew' #{source_file} > #{target_man}"
-      end
+        args = %W[
+          --pipe
+          --organization=Homebrew
+          --manual=brew
+          #{source_file}
+        ]
+        page = File.basename(source_file, ".md")
 
-      system "man", target_file if ARGV.flag? "--verbose"
+        target_html = DOC_PATH/"#{page}.html"
+        target_html.atomic_write Utils.popen_read("ronn", "--fragment", *args)
+
+        target_man = TARGET_PATH/page
+        target_man.atomic_write Utils.popen_read("ronn", "--roff", *args)
+      end
     end
   end
 end

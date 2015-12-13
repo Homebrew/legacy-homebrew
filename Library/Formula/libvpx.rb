@@ -1,31 +1,34 @@
 class Libvpx < Formula
   desc "VP8 video codec"
-  homepage "https://www.webmproject.org/code/"
-  url "https://github.com/webmproject/libvpx/archive/v1.4.0.tar.gz"
-  sha256 "eca30ea7fae954286c9fe9de9d377128f36b56ea6b8691427783b20c67bcfc13"
-
+  homepage "http://www.webmproject.org/code/"
+  url "https://github.com/webmproject/libvpx/archive/v1.5.0.tar.gz"
+  sha256 "f199b03b67042e8d94a3ae8bc841fb82b6a8430bdf3965aeeaafe8245bcfa699"
   head "https://chromium.googlesource.com/webm/libvpx", :using => :git
 
   bottle do
-    revision 1
-    sha256 "c7f7b9f334d25eca449c2c8898218016eb86e5958d8a1478d28ea496ee4a2f6e" => :el_capitan
-    sha256 "822c4963c52d34335c05d10c2600e85af7409418478c36addce495d073251140" => :yosemite
-    sha256 "efba3f78c38ac66f52d21d5a6b4274b48586ca6ad689b852bdf996d9d0b5dccd" => :mavericks
+    sha256 "662f6f2cb3fab1a9fa74ecd100a9266d86d10a60e179a11b0c80594f4bd7e347" => :el_capitan
+    sha256 "0209b85c32d4c08e23db9afa56bd4c9c0535ebbd1af1f36488b6e34ec1d6e8a1" => :yosemite
+    sha256 "423d1ecee05d00a68d04e390d368c0a03f1597a28d02793cdad3c1219abf4a03" => :mavericks
   end
+
+  option "with-gcov", "Enable code coverage"
+  option "with-mem-tracker", "Enable tracking memory usage"
+  option "with-visualizer", "Enable post processing visualizer"
+  option "with-examples", "Build examples (vpxdec/vpxenc)"
+
+  deprecated_option "gcov" => "with-gcov"
+  deprecated_option "mem-tracker" => "with-mem-tracker"
+  deprecated_option "visualizer" => "with-visualizer"
 
   depends_on "yasm" => :build
 
-  option "gcov", "Enable code coverage"
-  option "mem-tracker", "Enable tracking memory usage"
-  option "visualizer", "Enable post processing visualizer"
-  option "with-examples", "Build examples (vpxdec/vpxenc)"
-
   def install
-    args = ["--prefix=#{prefix}", "--enable-pic", "--disable-unit-tests"]
+    args = %W[--prefix=#{prefix} --enable-pic --disable-unit-tests]
+
     args << (build.with?("examples") ? "--enable-examples" : "--disable-examples")
-    args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
-    args << "--enable-mem-tracker" if build.include? "mem-tracker"
-    args << "--enable-postproc-visualizer" if build.include? "visualizer"
+    args << "--enable-gcov" if !ENV.compiler == :clang && build.with?("gcov")
+    args << "--enable-mem-tracker" if build.with? "mem-tracker"
+    args << "--enable-postproc-visualizer" if build.with? "visualizer"
 
     # configure misdetects 32-bit 10.6
     # https://code.google.com/p/webm/issues/detail?id=401

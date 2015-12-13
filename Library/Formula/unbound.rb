@@ -1,14 +1,14 @@
 class Unbound < Formula
   desc "Validating, recursive, caching DNS resolver"
   homepage "https://www.unbound.net"
-  url "https://unbound.net/downloads/unbound-1.5.6.tar.gz"
-  sha256 "ad3823f5895f59da9e408ea273fcf81d8a76914c18864fba256d7f140b83e404"
+  url "https://unbound.net/downloads/unbound-1.5.7.tar.gz"
+  sha256 "4b2088e5aa81a2d48f6337c30c1cf7e99b2e2dc4f92e463b3bee626eee731ca8"
 
   bottle do
     cellar :any
-    sha256 "5478c4b2c340bb1dd8689039fbe2a95375bdacf7a83e33530482fe99f1af675c" => :el_capitan
-    sha256 "c6338a9b564f24b91f511eee53cb38e27132f69537f6b0f317043f2d7c383874" => :yosemite
-    sha256 "049c3cd6c2dea2a82007ee0ce019e5c0e964367fc7abff040903d22d72537aaa" => :mavericks
+    sha256 "fbfde16dc3317b8b1860f46627e44c7f61ebf5ab7a32012f3cecce7ef325435b" => :el_capitan
+    sha256 "861d239840a865e8a1394c4c0ae0b84d95de2b51a45c7a3c503804494b9d53a0" => :yosemite
+    sha256 "70c85a2de938b1346c004b3f8b556343b3cc54370a7eb3fc0f74ce2563c766c7" => :mavericks
   end
 
   depends_on "openssl"
@@ -19,11 +19,14 @@ class Unbound < Formula
                           "--sysconfdir=#{etc}",
                           "--with-libevent=#{Formula["libevent"].opt_prefix}",
                           "--with-ssl=#{Formula["openssl"].opt_prefix}"
+    inreplace "doc/example.conf", 'username: "unbound"', 'username: "@@HOMEBREW-UNBOUND-USER@@"'
     system "make", "install"
   end
 
   def post_install
-    inreplace etc/"unbound/unbound.conf", 'username: "unbound"', "username: \"#{ENV["USER"]}\""
+    if File.read(etc/"unbound/unbound.conf").include?('username: "@@HOMEBREW-UNBOUND-USER@@"')
+      inreplace etc/"unbound/unbound.conf", 'username: "@@HOMEBREW-UNBOUND-USER@@"', "username: \"#{ENV["USER"]}\""
+    end
   end
 
   plist_options :startup => true
