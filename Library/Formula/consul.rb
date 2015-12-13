@@ -7,11 +7,10 @@ class Consul < Formula
     :tag => "v0.6.0", :revision => "46499d6e7237ca8547c15ce44e9b93bea48a455b"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "202a4b756ed7e56a67505e1ea924ee83c7fc12969f1b27f1af16d2cf0dbfe997" => :yosemite
-    sha256 "6378dbdd6bf1e16b2a7b21b12f9e5f2ea2656229d1a376e69653f290736566a1" => :mavericks
-    sha256 "3e4c6a01071652f3012ce25744925ab773231a5762f6f574e4100728736b5817" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "00846640d99db5b0cedee6432201dff081b1d5b50459cc31ab118c439bd5d648" => :el_capitan
+    sha256 "525c303e6000e59dc04c6610fd081825306aed932be27e1a053b8e536808ca87" => :yosemite
+    sha256 "c8944ce4f9c2542447e1968a72585411f06662e9c43c6ad54bbac554edab5826" => :mavericks
   end
 
   option "with-web-ui", "Installs the consul web ui"
