@@ -26,7 +26,7 @@ class Openssl < Formula
   # incorrectly declare suitable instructions.
   # https://github.com/openssl/openssl/issues/494
   # https://svn.macports.org/repository/macports/trunk/dports/devel/openssl/files/fix-Apple-clang-version-detection.patch
-  if MacOS.version <= :lion
+  if MacOS.version <= :mountain_lion
     patch do
       url "https://raw.githubusercontent.com/Homebrew/patches/312f6228/openssl/fix-Apple-clang-version-detection.patch"
       sha256 "a3e0e13e6c70d85d916bb88cbddc134952794d6292fbab4f2740ac9a07759606"
