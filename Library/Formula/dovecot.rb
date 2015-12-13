@@ -1,9 +1,9 @@
 class Dovecot < Formula
   desc "IMAP/POP3 server"
   homepage "http://dovecot.org/"
-  url "http://dovecot.org/releases/2.2/dovecot-2.2.18.tar.gz"
-  mirror "https://fossies.org/linux/misc/dovecot-2.2.18.tar.gz"
-  sha256 "b6d8468cea47f1227f47b80618f7fb872e2b2e9d3302adc107a005dd083865bb"
+  url "http://dovecot.org/releases/2.2/dovecot-2.2.21.tar.gz"
+  mirror "https://fossies.org/linux/misc/dovecot-2.2.21.tar.gz"
+  sha256 "7ab7139e59e1f0353bf9c24251f13c893cf1a6ef4bcc47e2d44de437108d0b20"
 
   bottle do
     revision 2
@@ -20,8 +20,8 @@ class Dovecot < Formula
   depends_on "clucene" => :optional
 
   resource "pigeonhole" do
-    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.8.tar.gz"
-    sha256 "d73c1c5a11cdfdcb58304a1c1272cce6c8e1868e3f61d393b3b8a725f3bf665b"
+    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.9.tar.gz"
+    sha256 "82892f876d26008a076973dfddf1cffaf5a0451825fd44e06287e94b89078649"
   end
 
   def install
