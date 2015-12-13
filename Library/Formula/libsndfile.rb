@@ -2,7 +2,6 @@ class Libsndfile < Formula
   desc "C library for files containing sampled sound"
   homepage "http://www.mega-nerd.com/libsndfile/"
   url "http://www.mega-nerd.com/libsndfile/files/libsndfile-1.0.26.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/libs/libsndfile/libsndfile_1.0.26.orig.tar.gz"
   sha256 "cd6520ec763d1a45573885ecb1f8e4e42505ac12180268482a44b28484a25092"
 
   bottle do
