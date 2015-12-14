@@ -23,7 +23,7 @@ class AzureCli < Formula
     rm_rf "bin/windows"
     (prefix/"src").install Dir["lib", "node_modules", "package.json", "bin"]
     bin.install_symlink (prefix/"src/bin/azure")
-    (bash_completion/"azure").write system("#{bin}/azure", "--completion")
+    (bash_completion/"azure").write `#{bin}/azure --completion`
   end
 
   test do
