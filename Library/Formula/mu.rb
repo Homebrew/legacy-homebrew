@@ -32,7 +32,8 @@ class Mu < Formula
 
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{elisp}"
     system "make"
     system "make", "install"
   end
