@@ -19,7 +19,7 @@ class ThePlatinumSearcher < Formula
 
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
-		    :revision => "0a28dbe50f23d8fce6b016975b964cfe7b97a20a"
+        :revision => "0a28dbe50f23d8fce6b016975b964cfe7b97a20a"
   end
 
   go_resource "github.com/monochromegane/terminal" do
@@ -39,27 +39,27 @@ class ThePlatinumSearcher < Formula
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-      :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
+        :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
   end
 
   go_resource "github.com/monochromegane/conflag" do
     url "https://github.com/monochromegane/conflag.git",
-      :revision => "6d68c9aa4183844ddc1655481798fe4d90d483e9"
+        :revision => "6d68c9aa4183844ddc1655481798fe4d90d483e9"
   end
 
   go_resource "github.com/monochromegane/go-gitignore" do
     url "https://github.com/monochromegane/go-gitignore.git",
-      :revision => "1ffeeb6761d4574b515b2cfede9073d2eac5fbfc"
+        :revision => "1ffeeb6761d4574b515b2cfede9073d2eac5fbfc"
   end
 
   go_resource "github.com/monochromegane/go-home" do
     url "https://github.com/monochromegane/go-home.git",
-      :revision => "25d9dda593924a11ea52e4ffbc8abdb0dbe96401"
+        :revision => "25d9dda593924a11ea52e4ffbc8abdb0dbe96401"
   end
 
   go_resource "gopkg.in/yaml.v2" do
-   url "https://gopkg.in/yaml.v2.git",
-      :revision => "c1cd2254a6dd314c9d73c338c12688c9325d85c6"
+    url "https://gopkg.in/yaml.v2.git",
+        :revision => "c1cd2254a6dd314c9d73c338c12688c9325d85c6"
   end
 
   def install
