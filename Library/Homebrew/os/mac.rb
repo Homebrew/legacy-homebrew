@@ -127,7 +127,7 @@ module OS
     def gcc_40_build_version
       @gcc_40_build_version ||=
         if (path = locate("gcc-4.0"))
-        `#{path} --version`[/build (\d{4,})/, 1].to_i
+          `#{path} --version`[/build (\d{4,})/, 1].to_i
         end
     end
     alias_method :gcc_4_0_build_version, :gcc_40_build_version
@@ -146,21 +146,21 @@ module OS
     def llvm_build_version
       @llvm_build_version ||=
         if (path = locate("llvm-gcc")) && path.realpath.basename.to_s !~ /^clang/
-        `#{path} --version`[/LLVM build (\d{4,})/, 1].to_i
+          `#{path} --version`[/LLVM build (\d{4,})/, 1].to_i
         end
     end
 
     def clang_version
       @clang_version ||=
         if (path = locate("clang"))
-        `#{path} --version`[/(?:clang|LLVM) version (\d\.\d)/, 1]
+          `#{path} --version`[/(?:clang|LLVM) version (\d\.\d)/, 1]
         end
     end
 
     def clang_build_version
       @clang_build_version ||=
         if (path = locate("clang"))
-        `#{path} --version`[/clang-(\d{2,})/, 1].to_i
+          `#{path} --version`[/clang-(\d{2,})/, 1].to_i
         end
     end
 
