@@ -4,6 +4,12 @@ class Gjs < Formula
   url "https://download.gnome.org/sources/gjs/1.44/gjs-1.44.0.tar.xz"
   sha256 "88c960f6ad47a6931d123f5d6317d13704f58572f68a4391913a254ff27dce80"
 
+  bottle do
+    sha256 "064d5c01e71abb4d7ea8fa83cf6d12649a1285b15087ad73e9f3d00895e8921f" => :el_capitan
+    sha256 "42c41dab3869b1db0993362682c2319ba743b6dcc3fbeb840c65f736b4928a63" => :yosemite
+    sha256 "de191dae86b0ce0185ac6061784caae913eb3dbd5bb27276363bdb9f19db3de4" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gobject-introspection"
   depends_on "nspr"
