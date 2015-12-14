@@ -23,6 +23,8 @@ class CrystaxNdk < Formula
     bin.mkpath
 
     # Cleanup some files since "brew audit" complains they're linked against system OpenSSL
+    # Those files are present there by mistake, and will be removed in next upstream patch version (10.3.1?),
+    # so it's safe to remove them here.
     %w{_hashlib.so _ssl.so}.each { |file| rm_f Dir.glob("prebuilt/darwin-*/lib/python*/lib-dynload/#{file}") }
 
     prefix.install Dir["*"]
