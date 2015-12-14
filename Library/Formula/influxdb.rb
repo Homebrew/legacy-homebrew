@@ -2,9 +2,9 @@ require "language/go"
 
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
-  homepage "https://influxdb.com"
-  url "https://github.com/influxdb/influxdb/archive/v0.9.5.1.tar.gz"
-  sha256 "d823288a826188526831602ee834195266abb7d4a0db7c3638d8f86793a0ffd6"
+  homepage "https://influxdata.com"
+  url "https://github.com/influxdb/influxdb/archive/v0.9.6.1.tar.gz"
+  sha256 "4e5e2a83f885d1c531ea538397cef1de94717eab02c7e589b9696f22dd65d3e2"
 
   bottle do
     cellar :any_skip_relocation
@@ -15,11 +15,6 @@ class Influxdb < Formula
 
   head do
     url "https://github.com/influxdb/influxdb.git"
-
-    go_resource "github.com/paulbellamy/ratecounter" do
-      url "https://github.com/paulbellamy/ratecounter.git",
-        :revision => "5a11f585a31379765c190c033b6ad39956584447"
-    end
   end
 
   depends_on "go" => :build
@@ -117,6 +112,16 @@ class Influxdb < Formula
   go_resource "collectd.org" do
     url "https://github.com/collectd/go-collectd.git",
       :revision => "9fc824c70f713ea0f058a07b49a4c563ef2a3b98"
+  end
+
+  go_resource "github.com/paulbellamy/ratecounter" do
+    url "https://github.com/paulbellamy/ratecounter.git",
+      :revision => "5a11f585a31379765c190c033b6ad39956584447"
+  end
+
+  go_resource "github.com/influxdb/usage-client" do
+    url "https://github.com/influxdb/usage-client.git",
+      :revision => "475977e68d79883d9c8d67131c84e4241523f452"
   end
 
   def install
