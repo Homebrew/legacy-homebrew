@@ -3,8 +3,8 @@ class GstPluginsGood < Formula
   homepage "http://gstreamer.freedesktop.org/"
 
   stable do
-    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.1.tar.xz"
-    sha256 "86d4b814099f7b7b16be19d4b94fa41002ac01fdf1525b07c5764d54c0605935"
+    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.2.tar.xz"
+    sha256 "876e54dfce93274b98e024f353258d35fa4d49d1f9010069e676c530f6eb6a92"
 
     depends_on "check" => :optional
   end
