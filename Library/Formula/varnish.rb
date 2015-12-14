@@ -1,14 +1,13 @@
 class Varnish < Formula
   desc "High-performance HTTP accelerator"
   homepage "https://www.varnish-cache.org/"
-  url "https://repo.varnish-cache.org/source/varnish-4.0.3.tar.gz"
-  sha256 "94b9a174097f47db2286acd2c35f235e49a2b7a9ddfdbd6eb7aa4da9ae8f8206"
-  revision 1
+  url "https://repo.varnish-cache.org/source/varnish-4.1.0.tar.gz"
+  sha256 "4a6ea08e30b62fbf25f884a65f0d8af42e9cc9d25bf70f45ae4417c4f1c99017"
 
   bottle do
-    sha256 "d33eaf2a6dfa517b4ee61c0dee4af786d28ab07068d5afdfc3ff731e4177d06f" => :el_capitan
-    sha256 "76969be042dd6cd03024eb8f85f0e4c5a48fa45fc6d616430154665d6fddd25a" => :yosemite
-    sha256 "e96d457b8e7641f696a38c4301f1739874b65a181bcaabba2ad5cb07c3744b69" => :mavericks
+    sha256 "0eda704c372f73437ee8b29d3d4183f69672e074ceceadae56b630d9f86499e8" => :el_capitan
+    sha256 "aaf399bcddbaec19f164834f6a514a573f9a6016048805729693ff199267ad06" => :yosemite
+    sha256 "b5fda8068aa76e6f580c334ada855796d911a6223150c782696c014968abed51" => :mavericks
   end
 
   depends_on "pkg-config" => :build

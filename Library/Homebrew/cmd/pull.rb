@@ -6,13 +6,6 @@ require "formula"
 require "cmd/tap"
 
 module Homebrew
-  HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
-
-  def tap(arg)
-    match = arg.match(%r{homebrew-([\w-]+)/})
-    match[1].downcase if match
-  end
-
   def pull_url(url)
     # GitHub provides commits/pull-requests raw patches using this URL.
     url += ".patch"
@@ -61,37 +54,31 @@ module Homebrew
 
     ARGV.named.each do |arg|
       if arg.to_i > 0
-        url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
         issue = arg
+        url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
+        tap = CoreFormulaRepository.instance
       elsif (testing_match = arg.match %r{brew.sh/job/Homebrew.*Testing/(\d+)/})
         _, testing_job = *testing_match
         url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
+        tap = CoreFormulaRepository.instance
         odie "Testing URLs require `--bottle`!" unless ARGV.include?("--bottle")
+      elsif (api_match = arg.match HOMEBREW_PULL_API_REGEX)
+        _, user, repo, issue = *api_match
+        url = "https://github.com/#{user}/homebrew#{repo}/pull/#{issue}"
+        tap = Tap.fetch(user, "homebrew#{repo}")
+      elsif (url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX)
+        url, user, repo, issue = *url_match
+        tap = Tap.fetch(user, "homebrew#{repo}")
       else
-        if (api_match = arg.match HOMEBREW_PULL_API_REGEX)
-          _, user, tap, pull = *api_match
-          arg = "https://github.com/#{user}/homebrew#{tap}/pull/#{pull}"
-        end
-
-        url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-        odie "Not a GitHub pull request or commit: #{arg}" unless url_match
-
-        url = url_match[0]
-        issue = url_match[3]
+        odie "Not a GitHub pull request or commit: #{arg}"
       end
 
       if !testing_job && ARGV.include?("--bottle") && issue.nil?
         raise "No pull request detected!"
       end
 
-      if !testing_job && tap_name = tap(url)
-        user = url_match[1].downcase
-        tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
-        safe_system "brew", "tap", "#{user}/#{tap_name}" unless tap_dir.exist?
-        Dir.chdir tap_dir
-      else
-        Dir.chdir HOMEBREW_REPOSITORY
-      end
+      tap.install unless tap.installed?
+      Dir.chdir tap.path
 
       # The cache directory seems like a good place to put patches.
       HOMEBREW_CACHE.mkpath
@@ -108,15 +95,9 @@ module Homebrew
 
       changed_formulae = []
 
-      if tap_dir
-        formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
-      else
-        formula_dir = "Library/Formula"
-      end
-
       Utils.popen_read(
         "git", "diff-tree", "-r", "--name-only",
-        "--diff-filter=AM", revision, "HEAD", "--", formula_dir
+        "--diff-filter=AM", revision, "HEAD", "--", tap.formula_dir.to_s
       ).each_line do |line|
         name = File.basename(line.chomp, ".rb")
 
@@ -170,10 +151,10 @@ module Homebrew
           url
         else
           bottle_branch = "pull-bottle-#{issue}"
-          if tap_name
-            "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
-          else
+          if tap.core_formula_repository?
             "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+          else
+            "https://github.com/BrewTestBot/homebrew-#{tap.repo}/compare/homebrew:master...pr-#{issue}"
           end
         end
         curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
@@ -190,7 +171,7 @@ module Homebrew
         bintray_key = ENV["BINTRAY_KEY"]
 
         if bintray_user && bintray_key
-          repo = Bintray.repository(tap_name)
+          repo = Bintray.repository(tap)
           changed_formulae.each do |f|
             next if f.bottle_unneeded? || f.bottle_disabled?
             ohai "Publishing on Bintray:"

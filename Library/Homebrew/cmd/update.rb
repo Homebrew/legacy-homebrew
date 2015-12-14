@@ -225,7 +225,9 @@ class Updater
         puts "Stashing uncommitted changes to #{repository}."
         system "git", "status", "--short", "--untracked-files=all"
       end
-      safe_system "git", "stash", "save", "--include-untracked", *@quiet_args
+      safe_system "git", "-c", "user.email=brew-update@localhost",
+                         "-c", "user.name=brew update",
+                         "stash", "save", "--include-untracked", *@quiet_args
       safe_system "git", "reset", "--hard", *@quiet_args
       @stashed = true
     end

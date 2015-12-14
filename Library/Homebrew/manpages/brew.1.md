@@ -55,7 +55,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup` [`--force`] [`--prune=`<days>] [`-n`] [`-s`] [<formulae>]:
+  * `cleanup` [`--force`] [`--prune=`<days>] [`--dry-run`] [`-s`] [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
     cellar. By default, does not remove out-of-date keg-only brews, as other
     software may link directly to specific versions. In addition, old downloads from
@@ -65,7 +65,8 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
 
     If `--prune=`<days> is specified, remove all cache files older than <days>.
 
-    If `-n` is passed, show what would be removed, but do not actually remove anything.
+    If `--dry-run` or `-n` is passed, show what would be removed, but do not
+    actually remove anything.
 
     If `-s` is passed, scrubs the cache, removing downloads for even the latest
     versions of formulae. Note downloads for any installed formulae will still not be
