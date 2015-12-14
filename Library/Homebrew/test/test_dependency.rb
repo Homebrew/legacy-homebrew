@@ -52,3 +52,10 @@ class DependencyTests < Homebrew::TestCase
     refute_eql foo1, foo3
   end
 end
+
+class TapDependencyTests < Homebrew::TestCase
+  def test_option_name
+    dep = TapDependency.new("foo/bar/dog")
+    assert_equal "dog", dep.option_name
+  end
+end

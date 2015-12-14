@@ -2,6 +2,8 @@ require "testing_env"
 require "requirement"
 
 class RequirementTests < Homebrew::TestCase
+  class TestRequirement < Requirement; end
+
   def test_accepts_single_tag
     dep = Requirement.new(%w[bar])
     assert_equal %w[bar], dep.tags
@@ -10,6 +12,11 @@ class RequirementTests < Homebrew::TestCase
   def test_accepts_multiple_tags
     dep = Requirement.new(%w[bar baz])
     assert_equal %w[bar baz].sort, dep.tags.sort
+  end
+
+  def test_option_name
+    dep = TestRequirement.new
+    assert_equal "test", dep.option_name
   end
 
   def test_preserves_symbol_tags
