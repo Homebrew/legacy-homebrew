@@ -22,6 +22,9 @@ class CrystaxNdk < Formula
   def install
     bin.mkpath
 
+    # Cleanup some files since "brew audit" complains they're linked against system OpenSSL
+    %w{_hashlib.so _ssl.so}.each { |file| rm_f Dir.glob("prebuilt/darwin-*/lib/python*/lib-dynload/#{file}") }
+
     prefix.install Dir["*"]
 
     # Create a dummy script to launch the ndk apps
