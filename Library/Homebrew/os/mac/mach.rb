@@ -79,8 +79,6 @@ module MachO
         offsets << 0
       when 0x7f454c46 # ELF
         mach_data << { :arch => :x86_64, :type => :executable }
-      else
-        raise "Not a Mach-O binary."
       end
 
       offsets.each do |offset|
