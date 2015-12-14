@@ -160,3 +160,15 @@ To list all files that would be deleted:
 Don't follow the advice here but fix by using
 `Language::Python.setup_install_args` in the formula as described in
 [Python for Formula Authors](Python-for-Formula-Authors.md).
+
+### Upgrading / updating Mac OSX
+
+Upgrading / updating Mac OSX can cause errors which manifest in a variety of ways:
+
+- dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.54.dylib
+- configure: error: Cannot find libz
+
+Following an upgrade it may be necessary to upgrade all installed formula:
+
+        xcode-select --install
+        brew upgrade
