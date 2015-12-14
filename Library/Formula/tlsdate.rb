@@ -6,9 +6,9 @@ class Tlsdate < Formula
   head "https://github.com/ioerror/tlsdate.git"
 
   bottle do
-    sha256 "3cccdaaa4afef83888242af97c7d114c98bc0729abefc1f4f520c962be87db33" => :el_capitan
-    sha256 "c904319078859012e71d74349fa5af1807bfa7ca2d768f3cc369c70d2ecefaa7" => :yosemite
-    sha256 "7029cf53f6f9f1c6a7bd00a4a8e846bc9b0d3f18bbc86b147f03ef3814f324d1" => :mavericks
+    sha256 "c7d7ea17bf9e7cb9b897a0f0aeed0ef3c50f2c309e0b6055fdfe7bee3aca5152" => :el_capitan
+    sha256 "58bfadb241575316ab6877c584a09e3681084165bfd733430e5c3f4b0b8be494" => :yosemite
+    sha256 "cf446ccff505ef69dd583f61d82a61420697b39c66c2cd2f006944d688ac8fee" => :mavericks
   end
 
   depends_on "autoconf" => :build
