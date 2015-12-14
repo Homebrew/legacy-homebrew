@@ -4,7 +4,7 @@ class ArtifactoryCliGo < Formula
   url "https://github.com/JFrogDev/artifactory-cli-go/archive/1.2.0.tar.gz"
   sha256 "173a24e0b821c6ff2bb85fa4cbe733fa681a8284029b77387baf0fa5f2fcfc4e"
 
-  depends_on "go"
+  depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
