@@ -6,8 +6,8 @@ class Swiftlint < Formula
 
   bottle do
     cellar :any
-    sha256 "521cfb773447c79a59a8f7f9f307a53873ab73353e4d0814182cf643bb949d5f" => :el_capitan
-    sha256 "e5f7664cc984b942a91d73bc4658b1dfdb5a2e8e6467de28d5e590ce6d5b6845" => :yosemite
+    sha256 "06b03ecb315af8ae0504c599e27e4ffd476b1fdea93335ccb7b0ff19cf1c55d0" => :el_capitan
+    sha256 "24cd77802aa30c26fa08ff8a8fe3b2a956a315804a611dc548290c8a3de0cc7f" => :yosemite
   end
 
   depends_on :xcode => ["7.1", :build]
