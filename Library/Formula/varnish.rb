@@ -3,7 +3,12 @@ class Varnish < Formula
   homepage "https://www.varnish-cache.org/"
   url "https://repo.varnish-cache.org/source/varnish-4.1.0.tar.gz"
   sha256 "4a6ea08e30b62fbf25f884a65f0d8af42e9cc9d25bf70f45ae4417c4f1c99017"
-  revision 1
+
+  bottle do
+    sha256 "d33eaf2a6dfa517b4ee61c0dee4af786d28ab07068d5afdfc3ff731e4177d06f" => :el_capitan
+    sha256 "76969be042dd6cd03024eb8f85f0e4c5a48fa45fc6d616430154665d6fddd25a" => :yosemite
+    sha256 "e96d457b8e7641f696a38c4301f1739874b65a181bcaabba2ad5cb07c3744b69" => :mavericks
+  end
 
   depends_on "pkg-config" => :build
   depends_on "pcre"
