@@ -88,6 +88,7 @@ class Llvm < Formula
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-rtti", "Build with C++ RTTI"
+  option "with-llvm-dylib", "Build shared library (libLLVM.dylib)"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
@@ -144,6 +145,10 @@ class Llvm < Formula
     if build.universal?
       ENV.permit_arch_flags
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
+    end
+
+    if build.with? "llvm-dylib"
+      args << "-DLLVM_BUILD_LLVM_DYLIB=On"
     end
 
     mktemp do
