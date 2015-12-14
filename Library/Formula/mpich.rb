@@ -11,11 +11,6 @@ class Mpich < Formula
     sha256 "56070798b3958bced4b32c3ef3c21f21b07df5e0f14389645d4ba03119d09a78" => :mountain_lion
   end
 
-  devel do
-    url "https://www.mpich.org/static/downloads/3.2b4/mpich-3.2b4.tar.gz"
-    sha256 "4fecce31b02095643a093aa01900fc1c6dec7690259c7459cc423f0ed10e949b"
-  end
-
   head do
     url "git://git.mpich.org/mpich.git"
 
