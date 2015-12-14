@@ -48,6 +48,14 @@ class UtilTests < Homebrew::TestCase
     assert_predicate $?, :success?
   end
 
+  def test_pretty_duration
+    assert_equal "2 seconds", pretty_duration(1)
+    assert_equal "2 seconds", pretty_duration(2.5)
+    assert_equal "42 seconds", pretty_duration(42)
+    assert_equal "4.2 minutes", pretty_duration(252)
+    assert_equal "4.2 minutes", pretty_duration(252.45)
+  end
+
   def test_plural
     assert_equal "", plural(1)
     assert_equal "s", plural(0)
