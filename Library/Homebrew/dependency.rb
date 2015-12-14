@@ -4,15 +4,15 @@ require "dependable"
 class Dependency
   include Dependable
 
-  attr_reader :name, :tags, :env_proc, :option_name
+  attr_reader :name, :tags, :env_proc, :option_names
 
   DEFAULT_ENV_PROC = proc {}
 
-  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name)
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_names = [name])
     @name = name
     @tags = tags
     @env_proc = env_proc
-    @option_name = option_name
+    @option_names = option_names
   end
 
   def to_s
@@ -125,7 +125,8 @@ class Dependency
         deps = grouped.fetch(name)
         dep  = deps.first
         tags = deps.flat_map(&:tags).uniq
-        dep.class.new(name, tags, dep.env_proc)
+        option_names = deps.flat_map(&:option_names).uniq
+        dep.class.new(name, tags, dep.env_proc, option_names)
       end
     end
   end
@@ -134,9 +135,9 @@ end
 class TapDependency < Dependency
   attr_reader :tap
 
-  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_name = name.split("/").last)
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_names = [name.split("/").last])
     @tap = name.rpartition("/").first
-    super(name, tags, env_proc, option_name)
+    super(name, tags, env_proc, option_names)
   end
 
   def installed?

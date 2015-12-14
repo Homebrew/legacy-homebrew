@@ -147,12 +147,15 @@ class Tab < OpenStruct
   end
 
   def with?(val)
-    name = val.respond_to?(:option_name) ? val.option_name : val
-    include?("with-#{name}") || unused_options.include?("without-#{name}")
+    option_names = val.respond_to?(:option_names) ? val.option_names : [val]
+
+    option_names.any? do |name|
+      include?("with-#{name}") || unused_options.include?("without-#{name}")
+    end
   end
 
-  def without?(name)
-    !with? name
+  def without?(val)
+    !with?(val)
   end
 
   def include?(opt)

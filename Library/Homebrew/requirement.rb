@@ -10,7 +10,6 @@ class Requirement
   include Dependable
 
   attr_reader :tags, :name, :cask, :download, :default_formula
-  alias_method :option_name, :name
 
   def initialize(tags = [])
     @default_formula = self.class.default_formula
@@ -24,6 +23,10 @@ class Requirement
     @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
+  end
+
+  def option_names
+    [name]
   end
 
   # The message to show when the requirement is not met.

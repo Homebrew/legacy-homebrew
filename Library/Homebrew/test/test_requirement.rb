@@ -14,9 +14,9 @@ class RequirementTests < Homebrew::TestCase
     assert_equal %w[bar baz].sort, dep.tags.sort
   end
 
-  def test_option_name
+  def test_option_names
     dep = TestRequirement.new
-    assert_equal "test", dep.option_name
+    assert_equal %w[test], dep.option_names
   end
 
   def test_preserves_symbol_tags

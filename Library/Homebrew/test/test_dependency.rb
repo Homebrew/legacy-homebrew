@@ -49,13 +49,13 @@ class DependencyTests < Homebrew::TestCase
 
     foo_named_dep = merged.find {|d| d.name == "foo"}
     assert_equal [:build, "bar"], foo_named_dep.tags
-    assert_includes foo_named_dep.option_name, "foo"
-    assert_includes foo_named_dep.option_name, "foo2"
+    assert_includes foo_named_dep.option_names, "foo"
+    assert_includes foo_named_dep.option_names, "foo2"
 
     xyz_named_dep = merged.find {|d| d.name == "xyz"}
     assert_equal ["abc"], xyz_named_dep.tags
-    assert_includes xyz_named_dep.option_name, "foo"
-    refute_includes xyz_named_dep.option_name, "foo2"
+    assert_includes xyz_named_dep.option_names, "foo"
+    refute_includes xyz_named_dep.option_names, "foo2"
   end
 
   def test_equality
@@ -73,8 +73,8 @@ class DependencyTests < Homebrew::TestCase
 end
 
 class TapDependencyTests < Homebrew::TestCase
-  def test_option_name
+  def test_option_names
     dep = TapDependency.new("foo/bar/dog")
-    assert_equal "dog", dep.option_name
+    assert_equal %w[dog], dep.option_names
   end
 end
