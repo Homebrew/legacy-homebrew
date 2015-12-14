@@ -140,7 +140,7 @@ end
 def pretty_duration(s)
   return "2 seconds" if s < 3 # avoids the plural problem ;)
   return "#{s.to_i} seconds" if s < 120
-  "%.1f minutes" % (s/60)
+  "%.1f minutes" % (s/60.0)
 end
 
 def plural(n, s = "s")
