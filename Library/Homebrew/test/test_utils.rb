@@ -47,4 +47,11 @@ class UtilTests < Homebrew::TestCase
     assert_equal "success", out
     assert_predicate $?, :success?
   end
+
+  def test_plural
+    assert_equal "", plural(1)
+    assert_equal "s", plural(0)
+    assert_equal "s", plural(42)
+    assert_equal "", plural(42, "")
+  end
 end
