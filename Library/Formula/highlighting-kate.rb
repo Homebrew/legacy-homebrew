@@ -5,12 +5,10 @@ class HighlightingKate < Formula
 
   desc "Haskell syntax highlighting library, based on the Kate editor"
   homepage "https://github.com/jgm/highlighting-kate"
-  url "https://hackage.haskell.org/package/highlighting-kate-0.5.15/highlighting-kate-0.5.15.tar.gz"
-  sha256 "e4e52471dcef0771109d1f748ca9989a32eac8a31971b7e09e1c81c6cef7e945"
+  url "https://hackage.haskell.org/package/highlighting-kate-0.6.1/highlighting-kate-0.6.1.tar.gz"
+  sha256 "cb57caf861bda046043575772ffc7fd4cd21dd63a0ecdf26b624c7e930e0f30e"
 
   head "https://github.com/jgm/highlighting-kate.git"
-
-  revision 1
 
   bottle do
     sha256 "db7a73bbcb74eb2d4842fdcf0a45d2622b55f5e8253002fcebbc72ffd9802418" => :yosemite
