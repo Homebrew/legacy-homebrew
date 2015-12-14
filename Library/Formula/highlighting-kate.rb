@@ -11,9 +11,9 @@ class HighlightingKate < Formula
   head "https://github.com/jgm/highlighting-kate.git"
 
   bottle do
-    sha256 "db7a73bbcb74eb2d4842fdcf0a45d2622b55f5e8253002fcebbc72ffd9802418" => :yosemite
-    sha256 "2399e5d788f4a5df5cb982391469a1ce098a2949e07edefd6360b6ebdae86ad9" => :mavericks
-    sha256 "92acb3a9ceca6de37a683647f0fa16e2d2ffa2e2910bb6bdcb99afc91f589f42" => :mountain_lion
+    sha256 "22f7ecae654b2995bc9de1063560c82e00bd9238e62cc4bf96c9c14f3e6955fd" => :el_capitan
+    sha256 "6e05943301b13d727ccfdfe312c33ba616d39a331a46bf71a080bdc75b0ece33" => :yosemite
+    sha256 "827a5dc67aedb86cbd829de6bc1f4b0d06168fa4f36b68fa57de0ef5d7316544" => :mavericks
   end
 
   depends_on "ghc" => :build
