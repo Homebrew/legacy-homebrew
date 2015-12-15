@@ -58,6 +58,51 @@ class DependencyTests < Homebrew::TestCase
     refute_includes xyz_named_dep.option_names, "foo2"
   end
 
+  def test_merges_necessity_tags
+    required_dep = Dependency.new("foo")
+    recommended_dep = Dependency.new("foo", [:recommended])
+    optional_dep = Dependency.new("foo", [:optional])
+
+    deps = Dependency.merge_repeats([required_dep, recommended_dep])
+    assert_equal deps.count, 1
+    assert_predicate deps.first, :required?
+    refute_predicate deps.first, :recommended?
+    refute_predicate deps.first, :optional?
+
+    deps = Dependency.merge_repeats([required_dep, optional_dep])
+    assert_equal deps.count, 1
+    assert_predicate deps.first, :required?
+    refute_predicate deps.first, :recommended?
+    refute_predicate deps.first, :optional?
+
+    deps = Dependency.merge_repeats([recommended_dep, optional_dep])
+    assert_equal deps.count, 1
+    refute_predicate deps.first, :required?
+    assert_predicate deps.first, :recommended?
+    refute_predicate deps.first, :optional?
+  end
+
+  def test_merges_temporality_tags
+    normal_dep = Dependency.new("foo")
+    build_dep = Dependency.new("foo", [:build])
+    run_dep = Dependency.new("foo", [:run])
+
+    deps = Dependency.merge_repeats([normal_dep, build_dep])
+    assert_equal deps.count, 1
+    refute_predicate deps.first, :build?
+    refute_predicate deps.first, :run?
+
+    deps = Dependency.merge_repeats([normal_dep, run_dep])
+    assert_equal deps.count, 1
+    refute_predicate deps.first, :build?
+    refute_predicate deps.first, :run?
+
+    deps = Dependency.merge_repeats([build_dep, run_dep])
+    assert_equal deps.count, 1
+    refute_predicate deps.first, :build?
+    refute_predicate deps.first, :run?
+  end
+
   def test_equality
     foo1 = Dependency.new("foo")
     foo2 = Dependency.new("foo")
