@@ -211,6 +211,11 @@ class Llvm < Formula
 
     args << "-DLINK_POLLY_INTO_TOOLS:Bool=ON" if build.with? "polly"
 
+    args << "-DLIBCLANG_BUILD_STATIC:Bool=ON" if build.with? "clang"
+
+    args << "-DLIBCXX_ENABLE_SHARED:Bool=OFF"    if build.with? "libcxx"
+    args << "-DLIBCXXABI_ENABLE_SHARED:Bool=OFF" if build.with? "libcxx"
+
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
