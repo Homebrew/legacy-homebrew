@@ -9,9 +9,10 @@ class Pond < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "8b0450658c275b7fdb58c35274513ba05e640bd87ded16f25aa36647b47a90c3" => :el_capitan
-    sha256 "1cf7d965625f8362ef29a8d4a421db62d4d90c764dae5bfab564db95954971a0" => :yosemite
-    sha256 "22c81a223698a8293884f4d7c400cf5777a2cf5367a830c0dbf5b34eb9106d90" => :mavericks
+    revision 1
+    sha256 "ec6e265c8d717d63815777fc98f287df5c0a927b72120e2f359c533c60d5111b" => :el_capitan
+    sha256 "a5babef84837c25b20c716112aa78f2112835636e1ba5c7d881df4bbaad70f55" => :yosemite
+    sha256 "2bd9a3094f61ca9e541085c8f6b926788214a0d21e51ef91786a72691612c7bc" => :mavericks
   end
 
   option "with-gui", "Additionally build the gtk+3 GUI of pond"
