@@ -211,7 +211,7 @@ class Influxdb < Formula
     end
 
     pid = fork do
-      exec "influxd -config #{testpath}/config.toml"
+      exec "#{bin}/influxd -config #{testpath}/config.toml"
     end
     sleep 5
 
