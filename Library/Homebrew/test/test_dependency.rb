@@ -48,7 +48,7 @@ class DependencyTests < Homebrew::TestCase
     assert_equal Dependency, merged.first.class
 
     foo_named_dep = merged.find {|d| d.name == "foo"}
-    assert_equal [:build, "bar"], foo_named_dep.tags
+    assert_equal ["bar"], foo_named_dep.tags
     assert_includes foo_named_dep.option_names, "foo"
     assert_includes foo_named_dep.option_names, "foo2"
 
