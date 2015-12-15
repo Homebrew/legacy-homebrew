@@ -6,9 +6,9 @@ class Mpich < Formula
   sha256 "0778679a6b693d7b7caff37ff9d2856dc2bfc51318bf8373859bfa74253da3dc"
 
   bottle do
-    sha256 "52f8f331dbb01514fca1d7921c38c6cab2dd77b06ee6a0c42e608d0719041aeb" => :yosemite
-    sha256 "2d99e877646cc27a13dd4b901050d1e1f5a716f2b2c775cbeaec263886a2d12d" => :mavericks
-    sha256 "56070798b3958bced4b32c3ef3c21f21b07df5e0f14389645d4ba03119d09a78" => :mountain_lion
+    sha256 "92bd5dd588ce1adb69db97596fe03ddae40b87921b514fb32cd587f4db06b061" => :el_capitan
+    sha256 "116f84d01db3c935052a6687966677fda0c09f737a471b6a009c8df96a4a5f62" => :yosemite
+    sha256 "23d4eb3ae767cbe0a9bce00ccd133c08cc803553d9583e71b858a28043c5036e" => :mavericks
   end
 
   head do
