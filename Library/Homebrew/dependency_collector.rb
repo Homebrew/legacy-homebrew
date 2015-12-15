@@ -35,7 +35,12 @@ class DependencyCollector
   end
 
   def add(spec)
-    case dep = fetch(spec)
+    return unless dep = fetch(spec)
+    # We only use spec as the cache key.
+    # However, different `owner_tap` will affect dependency/requirement as well.
+    # So we make a clone here.
+    dep = dep.clone
+    case dep
     when Dependency
       @deps << dep
     when Requirement

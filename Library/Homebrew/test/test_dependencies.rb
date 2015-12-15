@@ -83,7 +83,7 @@ class DependenciesTests < Homebrew::TestCase
     a = Dependencies.new
     assert_equal "#<Dependencies: []>", a.inspect
     a << Dependency.new("foo")
-    assert_equal "#<Dependencies: [#<Dependency: \"foo\" []>]>", a.inspect
+    assert_equal "#<Dependencies: [#<Dependency: \"foo\" [] owner_tap=nil>]>", a.inspect
   end
 end
 

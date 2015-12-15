@@ -2,9 +2,14 @@ require "testing_env"
 require "dependency"
 
 class DependencyExpansionTests < Homebrew::TestCase
+  def build_formula(name, deps = [])
+    stub(:name => name, :full_name => name, :deps => deps,
+         :options => Options.new, :build= => nil)
+  end
+
   def build_dep(name, tags = [], deps = [])
     dep = Dependency.new(name.to_s, tags)
-    dep.stubs(:to_formula).returns(stub(:deps => deps, :name => name))
+    dep.stubs(:to_formula).returns(build_formula(name, deps))
     dep
   end
 
@@ -14,7 +19,7 @@ class DependencyExpansionTests < Homebrew::TestCase
     @baz = build_dep(:baz)
     @qux = build_dep(:qux)
     @deps = [@foo, @bar, @baz, @qux]
-    @f    = stub(:deps => @deps, :name => "f")
+    @f = build_formula("f", @deps)
   end
 
   def test_expand_yields_dependent_and_dep_pairs
@@ -43,7 +48,7 @@ class DependencyExpansionTests < Homebrew::TestCase
   end
 
   def test_expand_preserves_dependency_order
-    @foo.stubs(:to_formula).returns(stub(:name => "f", :deps => [@qux, @baz]))
+    @foo.stubs(:to_formula).returns(build_formula("f", [@qux, @baz]))
     assert_equal [@qux, @baz, @foo, @bar], Dependency.expand(@f)
   end
 
@@ -73,7 +78,7 @@ class DependencyExpansionTests < Homebrew::TestCase
   def test_merger_preserves_env_proc
     env_proc = stub
     dep = Dependency.new("foo", [], env_proc)
-    dep.stubs(:to_formula).returns(stub(:deps => []))
+    dep.stubs(:to_formula).returns(build_formula("foo", []))
     @deps.replace [dep]
     assert_equal env_proc, Dependency.expand(@f).first.env_proc
   end
