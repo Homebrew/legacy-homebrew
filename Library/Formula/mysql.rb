@@ -26,9 +26,9 @@ class Mysql < Formula
   deprecated_option "with-tests" => "with-test"
 
   depends_on "cmake" => :build
+  depends_on "boost" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion
   depends_on "openssl"
-  depends_on "boost" => :build
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
