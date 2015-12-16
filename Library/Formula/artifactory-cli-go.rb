@@ -8,11 +8,9 @@ class ArtifactoryCliGo < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["GOBIN"] = buildpath
     ENV["GO15VENDOREXPERIMENT"] = "1"
     (buildpath/"src/github.com/JFrogDev/artifactory-cli-go/").install Dir["*"]
-    system "go", "build", "-v", "github.com/JFrogDev/artifactory-cli-go/art/"
-    bin.install "art"
+    system "go", "build", "-o", "#{bin}/art", "-v", "github.com/JFrogDev/artifactory-cli-go/art/"
   end
 
   test do
