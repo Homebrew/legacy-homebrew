@@ -30,7 +30,7 @@ class Libvpx < Formula
 
     args << (build.with?("examples") ? "--enable-examples" : "--disable-examples")
     args << "--enable-gcov" if !ENV.compiler == :clang && build.with?("gcov")
-    args << "--enable-postproc-visualizer" if build.with? "visualizer"
+    args << "--enable-postproc" << "--enable-postproc-visualizer" if build.with? "visualizer"
 
     # configure misdetects 32-bit 10.6
     # https://code.google.com/p/webm/issues/detail?id=401
