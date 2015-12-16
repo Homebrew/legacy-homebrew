@@ -6,9 +6,9 @@ class Avrdude < Formula
   sha256 "e65f833493b7d63a4436c7056694a0f04ae5b437b72cc084e32c58bc543b0f91"
 
   bottle do
-    sha256 "11694fb816ab1dc789ee40bf9e5985c19d0d889b2c6ea7514a1e0b7908d5450b" => :mavericks
-    sha256 "e50e3589b2d1656b1e8773bb2853cfa71268b0826b88d81421bdc89877ec7976" => :mountain_lion
-    sha256 "53b39b6a0972dd9046b74790661c4bcc325053066493b57d0a25f5fcd3d7c9d4" => :lion
+    sha256 "b2ac65f070879456e2047ba543a7fafb1d45c98b745b7915b4059ea90c10dfcd" => :el_capitan
+    sha256 "4c092d851e6ed8ed58ac5a1997606db420ee153289d4289917fad50f8432d5ad" => :yosemite
+    sha256 "a3b312dde0f3a268d6ccc9085e4a14d8d7703ff1ae09a9257b373976e7cf49ec" => :mavericks
   end
 
   head do
