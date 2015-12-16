@@ -19,11 +19,13 @@ class Global < Formula
     depends_on "libtool" => :build
   end
 
-  option "with-exuberant-ctags", "Enable Exuberant Ctags as a plug-in parser"
+  option "with-ctags", "Enable Exuberant Ctags as a plug-in parser"
   option "with-pygments", "Enable Pygments as a plug-in parser (should enable exuberent-ctags too)"
   option "with-sqlite3", "Use SQLite3 API instead of BSD/DB API for making tag files"
 
-  depends_on "ctags" if build.with? "exuberant-ctags"
+  deprecated_option "with-exuberant-ctags" => "with-ctags"
+
+  depends_on "ctags" => :optional
 
   skip_clean "lib/gtags"
 
@@ -43,7 +45,7 @@ class Global < Formula
 
     args << "--with-sqlite3" if build.with? "sqlite3"
 
-    if build.with? "exuberant-ctags"
+    if build.with? "ctags"
       args << "--with-exuberant-ctags=#{Formula["ctags"].opt_bin}/ctags"
     end
 
@@ -73,7 +75,7 @@ class Global < Formula
        int c2func (void) { return 0; }
        void cfunc (void) {int cvar = c2func(); }")
     EOF
-    if build.with?("pygments") || build.with?("exuberant-ctags")
+    if build.with?("pygments") || build.with?("ctags")
       (testpath/"test.py").write <<-EOF
         def py2func ():
              return 0
@@ -83,7 +85,7 @@ class Global < Formula
     end
     if build.with? "pygments"
       assert shell_output("#{bin}/gtags --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=pygments .")
-      if build.with? "exuberant-ctags"
+      if build.with? "ctags"
         assert_match /test\.c/, shell_output("#{bin}/global -d cfunc")
         assert_match /test\.c/, shell_output("#{bin}/global -d c2func")
         assert_match /test\.c/, shell_output("#{bin}/global -r c2func")
@@ -101,7 +103,7 @@ class Global < Formula
         assert_match /test\.py/, shell_output("#{bin}/global -s pyvar")
       end
     end
-    if build.with? "exuberant-ctags"
+    if build.with? "ctags"
       assert shell_output("#{bin}/gtags --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=exuberant-ctags .")
       # ctags only yields definitions
       assert_match /test\.c/, shell_output("#{bin}/global -d cfunc   # passes")
