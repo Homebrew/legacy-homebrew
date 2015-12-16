@@ -11,6 +11,12 @@ class Ffmpeg < Formula
     sha256 "51350b8c1b8629ae26acc638a2e4b75ec2b3785e426d40084594c2d9a803a9c3" => :mavericks
   end
 
+  # Fix build with libvpx 1.5.0, see https://trac.ffmpeg.org/ticket/4956
+  patch do
+    url "https://raw.githubusercontent.com/UniqMartin/patches/67c3b7c8/ffmpeg/libvpx-1.5.0.patch"
+    sha256 "277994aca5a6e40c1a90750859828817e0646bfb28142fdb34d5f9d3196c3f7a"
+  end
+
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
   option "without-libvo-aacenc", "Disable VisualOn AAC encoder"
