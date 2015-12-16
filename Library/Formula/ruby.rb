@@ -1,8 +1,8 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2"
-  sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
+  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.4.tar.bz2"
+  sha256 "31203696adbfdda6f2874a2de31f7c5a1f3bcb6628f4d1a241de21b158cd5c76"
 
   bottle do
     revision 1
@@ -172,8 +172,7 @@ class Ruby < Formula
   end
 
   test do
-    output = `#{bin}/ruby -e "puts 'hello'"`
-    assert_equal "hello\n", output
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/ruby -e \"puts 'hello'\"")
+    assert_match "hello\n", output
   end
 end
