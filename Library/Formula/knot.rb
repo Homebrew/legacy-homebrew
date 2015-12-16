@@ -3,6 +3,7 @@ class Knot < Formula
   homepage "https://www.knot-dns.cz/"
   url "https://secure.nic.cz/files/knot-dns/knot-2.0.2.tar.xz"
   sha256 "0418a22f9e801503993b3c872f2403bf73eab5ef7266128789b0531b41ea0c7e"
+  revision 1
 
   head "https://gitlab.labs.nic.cz/labs/knot.git"
 
