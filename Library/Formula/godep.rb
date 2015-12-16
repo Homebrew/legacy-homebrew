@@ -1,8 +1,8 @@
 class Godep < Formula
   desc "dependency tool for go"
   homepage "https://godoc.org/github.com/tools/godep"
-  url "https://github.com/tools/godep/archive/v29.tar.gz"
-  sha256 "ca896c220f2995a50a5d9e63df929fa393c3cd1de9722210b5ef3684981bed2a"
+  url "https://github.com/tools/godep/archive/v41.tar.gz"
+  sha256 "bafc00163710bdf425fc158621a42be06c31e0ccff20b8601beeb07b9897ec17"
   head "https://github.com/tools/godep.git"
 
   bottle do
