@@ -1,9 +1,9 @@
 class Avrdude < Formula
   desc "Atmel AVR MCU programmer"
   homepage "https://savannah.nongnu.org/projects/avrdude/"
-  url "http://download.savannah.gnu.org/releases/avrdude/avrdude-6.1.tar.gz"
-  mirror "http://download-mirror.savannah.gnu.org/releases/avrdude/avrdude-6.1.tar.gz"
-  sha256 "9e98baca8e57cad402aaa1c7b61c8de750ed4f6fed577f7e4935db0430783d3b"
+  url "http://download.savannah.gnu.org/releases/avrdude/avrdude-6.2.tar.gz"
+  mirror "http://download-mirror.savannah.gnu.org/releases/avrdude/avrdude-6.2.tar.gz"
+  sha256 "e65f833493b7d63a4436c7056694a0f04ae5b437b72cc084e32c58bc543b0f91"
 
   bottle do
     sha256 "11694fb816ab1dc789ee40bf9e5985c19d0d889b2c6ea7514a1e0b7908d5450b" => :mavericks
@@ -34,5 +34,10 @@ class Avrdude < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make", "install"
+  end
+
+  test do
+    assert_equal "avrdude done.  Thank you.",
+      shell_output("#{bin}/avrdude -c jtag2 -p x16a4 2>&1", 1).strip
   end
 end
