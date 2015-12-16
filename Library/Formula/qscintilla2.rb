@@ -77,10 +77,21 @@ class Qscintilla2 < Formula
         system "make"
         system "make", "install"
       end
-      # symlink Qt Designer plugin (note: not removed on qscintilla2 formula uninstall)
-      ln_sf prefix/"plugins/designer/libqscintillaplugin.dylib",
-            Formula["qt"].opt_prefix/"plugins/designer/"
     end
+  end
+
+  def caveats
+    s = ""
+    s += <<-EOS.undent if build.with? "plugin"
+      QScintilla installed a Qt Designer plugin. Issue the following commands
+      to create a symbolic link that makes the plugin available to Qt Designer:
+
+        cd #{Formula["qt"].opt_prefix}/plugins/designer
+        ln -sf #{opt_prefix}/plugins/designer/libqscintillaplugin.dylib
+
+      The symbolic link needs to be recreated if Qt is upgraded or reinstalled.
+    EOS
+    s
   end
 
   test do
