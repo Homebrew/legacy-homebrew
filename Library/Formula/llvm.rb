@@ -17,6 +17,35 @@ class CodesignRequirement < Requirement
   end
 end
 
+class OCamlRequirement < Requirement
+  include FileUtils
+  fatal true
+
+  def opam_is_installed(package_name)
+    # "opam show <package>" outputs a bunch of text giving the package name,
+    # version, checksum, etc. One of the lines lists the installed version[s]
+    # if any, and is blank otherwise. The below matches that line and looks
+    # for at least 1 digit after the colon, which should imply that some
+    # version is installed.
+    `opam show #{package_name}`[/^\s+installed-version[s]?:\s+\d.*$/]
+  end
+
+  satisfy(:build_env => false) do
+    opam_is_installed("ocamlfind")
+    opam_is_installed("ctypes")
+    opam_is_installed("ounit")
+  end
+
+  def message
+    <<-EOS.undent
+      ocamlfind, ctypes, and ounit 2 are required to build
+      OCaml bindings for LLVM. You can install them using:
+
+          opam install ocamlfind ctypes ounit
+    EOS
+  end
+end
+
 class Llvm < Formula
   desc "Next-gen compiler infrastructure"
   homepage "http://llvm.org/"
@@ -119,6 +148,7 @@ class Llvm < Formula
   option "with-libcxx", "Build the libc++ standard library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
+  option "with-ocaml", "Build with OCaml bindings"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-rtti", "Build with C++ RTTI"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
@@ -136,6 +166,12 @@ class Llvm < Formula
   if build.with? "lldb"
     depends_on "swig"
     depends_on CodesignRequirement
+  end
+
+  if build.with? "ocaml"
+    depends_on "ocaml"
+    depends_on "opam"
+    depends_on OCamlRequirement
   end
 
   # Apple's libstdc++ is too old to build LLVM
