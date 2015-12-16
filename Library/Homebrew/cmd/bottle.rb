@@ -203,9 +203,9 @@ module Homebrew
 
         tab = Tab.for_keg(keg)
         original_tab = tab.dup
-        tab["poured_from_bottle"] = false
-        tab["HEAD"] = nil
-        tab["time"] = nil
+        tab.poured_from_bottle = false
+        tab.HEAD = nil
+        tab.time = nil
         tab.write
 
         keg.find {|k| File.utime(File.atime(k), formula_source_time, k) }
