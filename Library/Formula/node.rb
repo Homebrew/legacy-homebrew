@@ -1,8 +1,8 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v5.2.0/node-v5.2.0.tar.gz"
-  sha256 "5df5682f9fdd8e747f652e0b09fed46478a1e3df159797852787a074b8787664"
+  url "https://nodejs.org/dist/v5.3.0/node-v5.3.0.tar.gz"
+  sha256 "cc05ff06149c638345835788f448471d264a7e011bf083394f86d5be51975c7e"
   head "https://github.com/nodejs/node.git"
 
   bottle do
@@ -24,10 +24,7 @@ class Node < Formula
   depends_on "openssl" => :optional
 
   # Per upstream - "Need g++ 4.8 or clang++ 3.4".
-  # Clang should work *above* Snow Leopard but currently doesn't.
-  # https://github.com/nodejs/node/issues/4284
-  # Fix is landing in v5.3.0, so line below can revert to snow_leopard then.
-  fails_with :clang if MacOS.version <= :lion
+  fails_with :clang if MacOS.version <= :snow_leopard
   fails_with :llvm
   fails_with :gcc_4_0
   fails_with :gcc
@@ -80,6 +77,10 @@ class Node < Formula
         # This copies back over the vanilla `package.json` that is expected.
         # https://github.com/Homebrew/homebrew/issues/46131#issuecomment-157845008
         cp buildpath/"npm_install/package.json", libexec/"npm/lib/node_modules/npm"
+        # Remove manpage symlinks from the buildpath, they are breaking bottle
+        # creation. The real manpages are living in libexec/npm/lib/node_modules/npm/man/
+        # https://github.com/Homebrew/homebrew/pull/47081#issuecomment-165280470
+        rm_rf libexec/"npm/share/"
       end
 
       if build.with? "completion"
