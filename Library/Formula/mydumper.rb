@@ -4,6 +4,13 @@ class Mydumper < Formula
   url "https://launchpad.net/mydumper/0.6/0.6.2/+download/mydumper-0.6.2.tar.gz"
   sha256 "fa28563e8967752828954c5d81e26ef50aad9083d50a977bf5733833b23e3330"
 
+  bottle do
+    cellar :any
+    sha256 "393d50cebae3861acafa2a3c7e91378f2dc8be87433da5abde2cbc3f5585b332" => :el_capitan
+    sha256 "0c03e9b4eca0f19a77a5f69992c61b88928346fe0b76896da47a76a3910b5e9b" => :yosemite
+    sha256 "a299235d0f0460bef8164ea5aea66eea25cff73adfb5319c08a9af61b53724cb" => :mavericks
+  end
+
   option "without-docs", "Don't build man pages"
 
   depends_on "cmake" => :build
