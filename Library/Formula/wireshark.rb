@@ -52,13 +52,14 @@ class Wireshark < Formula
   def install
     if MacOS.version <= :mavericks
       resource("libpcap").stage do
-        system "./configure", "--prefix=#{prefix}/libexec/vendor",
+        system "./configure", "--prefix=#{libexec}/vendor",
                               "--enable-ipv6",
                               "--disable-universal"
         system "make", "install"
       end
-      ENV.prepend "CFLAGS", "-I#{prefix}/libexec/vendor/include"
-      ENV.prepend "LDFLAGS", "-L#{prefix}/libexec/vendor/lib"
+      ENV.prepend_path "PATH", libexec/"vendor/bin"
+      ENV.prepend "CFLAGS", "-I#{libexec}/vendor/include"
+      ENV.prepend "LDFLAGS", "-L#{libexec}/vendor/lib"
     end
 
     no_gui = build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+") && build.without?("qt5")
