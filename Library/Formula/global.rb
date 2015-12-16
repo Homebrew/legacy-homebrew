@@ -1,9 +1,9 @@
 class Global < Formula
   desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.5.1.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.5.1.tar.gz"
-  sha256 "0e9d5227d400e8cb2ffa1732d98b8735d58d4bf8476c2845365770fdd5b264f8"
+  url "http://ftpmirror.gnu.org/global/global-6.5.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.5.2.tar.gz"
+  sha256 "c0fc831c1a54a5ee4f5fc765a7af90ade773e4fb4763416c0b6d4d2e571b1d1f"
 
   bottle do
     sha256 "2c15f88285fc7eeb875e73808eac0f577335c7cf1c1727020909c48381aea623" => :el_capitan
@@ -62,7 +62,6 @@ class Global < Formula
       bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     end
 
-    inreplace "gtags.conf", prefix, opt_prefix
     etc.install "gtags.conf"
 
     # we copy these in already
