@@ -1,24 +1,15 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "http://www.musicpd.org/"
-  revision 1
-
-  stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.11.tar.xz"
-    sha256 "7a5c66aa5af97a5b7af3dc49e3d2594071dafd62a14e2e9f7c9a5a86342836c6"
-
-    # Fixes build because of missing patch on 0.19 branch
-    patch :p1 do
-      url "http://git.musicpd.org/cgit/master/mpd.git/patch/?id=eae9cb4afe0e311a65dc566a0655a54656c8d807"
-      sha256 "0f60cfe354e1f81904cbdc469d49c65508d1f9c219f3d20332fbabdb17a17318"
-    end
-  end
+  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.12.tar.xz"
+  sha256 "7b6fe6c7ce72f5f80a276d680072b524ecb395e546e252b8f3a0756377e1e875"
 
   bottle do
     cellar :any
-    sha256 "ca834bea5c7c2512dc8dd5c9855dd1f36eeacd9448253e67f722c6a58ae28f71" => :el_capitan
-    sha256 "40de5c575f8a4a79e802a9bac978c1993f060041b12ea923a5632116d6448d88" => :yosemite
-    sha256 "12d5c8f5c1016fb52cffa16f9b5482f3c9feae70e84d61e37e2df13fe72c580c" => :mavericks
+    revision 1
+    sha256 "74fb8ae7870946873685a5b8c24645ea428bbc954c7085d31f54c06bff7e4df1" => :el_capitan
+    sha256 "697c3ecf1ae16ad64544bef0ffb3172bca1aa06ec2eb3169c76bb77c11ea9b72" => :yosemite
+    sha256 "4c4e2cf7804434c23511fe7cc933bdc52e300935a6cb03d41ad38bd5ea173c7e" => :mavericks
   end
 
   head do
@@ -103,7 +94,7 @@ class Mpd < Formula
     ENV.j1 # Directories are created in parallel, so let's not do that
     system "make", "install"
 
-    (etc+"mpd").install "doc/mpdconf.example" => "mpd.conf"
+    (etc/"mpd").install "doc/mpdconf.example" => "mpd.conf"
   end
 
   plist_options :manual => "mpd"
@@ -138,10 +129,10 @@ class Mpd < Formula
     sleep 2
 
     begin
-      assert_match /OK MPD/, shell_output("curl localhost:6600")
+      assert_match "OK MPD", shell_output("curl localhost:6600")
     ensure
-      Process.kill("SIGINT", pid)
-      Process.wait(pid)
+      Process.kill "SIGINT", pid
+      Process.wait pid
     end
   end
 end

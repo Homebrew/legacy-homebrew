@@ -174,6 +174,9 @@ module Homebrew
     filename = Bottle::Filename.create(f, bottle_tag, bottle_revision)
     bottle_path = Pathname.pwd/filename
 
+    tar_filename = filename.to_s.sub(/.gz$/, "")
+    tar_path = Pathname.pwd/tar_filename
+
     prefix = HOMEBREW_PREFIX.to_s
     cellar = HOMEBREW_CELLAR.to_s
 
@@ -183,7 +186,13 @@ module Homebrew
     relocatable = false
     skip_relocation = false
 
+    formula_source_time = f.stable.stage do
+      Pathname.pwd.to_enum(:find).map(&:mtime).max
+    end
+
     keg.lock do
+      original_tab = nil
+
       begin
         keg.relocate_install_names prefix, Keg::PREFIX_PLACEHOLDER,
           cellar, Keg::CELLAR_PLACEHOLDER
@@ -192,10 +201,24 @@ module Homebrew
 
         keg.delete_pyc_files!
 
+        tab = Tab.for_keg(keg)
+        original_tab = tab.dup
+        tab.poured_from_bottle = false
+        tab.HEAD = nil
+        tab.time = nil
+        tab.write
+
+        keg.find {|k| File.utime(File.atime(k), formula_source_time, k) }
+
         cd cellar do
+          safe_system "tar", "cf", tar_path, "#{f.name}/#{f.pkg_version}"
+          File.utime(File.atime(tar_path), formula_source_time, tar_path)
+          relocatable_tar_path = "#{f}-bottle.tar"
+          mv tar_path, relocatable_tar_path
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
           # or an uncompressed tarball (and more bandwidth friendly).
-          safe_system "tar", "czf", bottle_path, "#{f.name}/#{f.pkg_version}"
+          safe_system "gzip", "-f", relocatable_tar_path
+          mv "#{relocatable_tar_path}.gz", bottle_path
         end
 
         if bottle_path.size > 1*1024*1024
@@ -222,6 +245,7 @@ module Homebrew
         raise
       ensure
         ignore_interrupts do
+          original_tab.write
           keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
             Keg::CELLAR_PLACEHOLDER, cellar
         end

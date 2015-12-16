@@ -13,21 +13,24 @@ class P7zip < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/p7zip/p7zip/9.38.1/p7zip_9.38.1_src_all.tar.bz2"
-    sha256 "fd5019109c9a1bf34ad3257d37a6853eae8151ff50345f0a3ffba7d8c5fdb995"
+    url "https://downloads.sourceforge.net/project/p7zip/p7zip/15.09/p7zip_15.09_src_all.tar.bz2"
+    sha256 "8783acf747e210e00150f7311cc06c4cd8ecf7b0c27b4adf2194284cc49b4d6f"
   end
 
   option "32-bit"
 
   def install
-    if Hardware.is_32_bit? || build.build_32_bit?
-      mv "makefile.macosx_32bits", "makefile.machine"
+    if build.devel?
+      mv "makefile.macosx_llvm_64bits", "makefile.machine"
     else
-      mv "makefile.macosx_64bits", "makefile.machine"
+      if Hardware.is_32_bit? || build.build_32_bit?
+        mv "makefile.macosx_32bits", "makefile.machine"
+      else
+        mv "makefile.macosx_64bits", "makefile.machine"
+      end
+      # install.sh chmods to 444, which is bad and breaks uninstalling
+      inreplace "install.sh", /chmod (444|555).*/, ""
     end
-
-    # install.sh chmods to 444, which is bad and breaks uninstalling
-    inreplace "install.sh", /chmod (444|555).*/, ""
 
     system "make", "all3",
                    "CC=#{ENV.cc} $(ALLFLAGS)",

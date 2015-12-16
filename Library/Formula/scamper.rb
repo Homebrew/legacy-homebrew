@@ -1,14 +1,16 @@
 class Scamper < Formula
   desc "Advanced traceroute and network measurement utility"
   homepage "https://www.caida.org/tools/measurement/scamper/"
-  url "https://www.caida.org/tools/measurement/scamper/code/scamper-cvs-20141211a.tar.gz"
-  sha256 "1073d4889abd9d4ec0d8f988921b6ad4f3535030cf007abb99e67f9e6b2052b8"
+  url "https://www.caida.org/tools/measurement/scamper/code/scamper-cvs-20141211c.tar.gz"
+  sha256 "303ca5c408604acc54759a922050094f24bcfc7fe6c7cedf5aea95b59792c1ad"
+
+  depends_on "openssl" if MacOS.version < :el_capitan
 
   bottle do
     cellar :any
-    sha256 "d07d1e41c4d9f2c7dac1861e695b2bda63fe9d12c8f710383f3b4337112c70cf" => :yosemite
-    sha256 "ee6317d956817966ae7ecb04cba1432c238b4e0450df9471b4d9b50a28b1591d" => :mavericks
-    sha256 "c0eaa62c685890f9943148d259b5dcffdc9c988afd96e577e2eb5cfa17aee220" => :mountain_lion
+    sha256 "47399b4eff1888cc2c15a10f43c814218fc0567cf007ecd01d355be1f3ef08e5" => :el_capitan
+    sha256 "f2062ee005e32ae802a79ab5282a07bc695b813628a7fbf15deb2c6afc21db92" => :yosemite
+    sha256 "3193ff3d026504bea4a41102e5afe67fc10c3739db039833aa0872f0b85ee2c7" => :mavericks
   end
 
   def install

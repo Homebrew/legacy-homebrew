@@ -18,7 +18,7 @@ class CodesignRequirement < Requirement
 end
 
 class Llvm < Formula
-  desc "llvm (Low Level Virtual Machine): a next-gen compiler infrastructure"
+  desc "Next-gen compiler infrastructure"
   homepage "http://llvm.org/"
 
   stable do
@@ -30,9 +30,24 @@ class Llvm < Formula
       sha256 "ae9180466a23acb426d12444d866b266ff2289b266064d362462e44f8d4699f3"
     end
 
+    resource "clang-extra-tools" do
+      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
+      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
+    end
+
+    resource "compiler-rt" do
+      url "http://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz"
+      sha256 "0f2ff37d80a64575fecd8cf0d5c50f7ac1f837ddf700d1855412bb7547431d87"
+    end
+
     resource "libcxx" do
       url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
       sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+    end
+
+    resource "libcxxabi" do
+      url "http://llvm.org/releases/3.6.2/libcxxabi-3.6.2.src.tar.xz"
+      sha256 "6fb48ce5a514686b9b75e73e59869f782ed374a86d71be8423372e4b3329b09b"
     end
 
     resource "lld" do
@@ -44,19 +59,14 @@ class Llvm < Formula
       url "http://llvm.org/releases/3.6.2/lldb-3.6.2.src.tar.xz"
       sha256 "940dc96b64919b7dbf32c37e0e1d1fc88cc18e1d4b3acf1e7dfe5a46eb6523a9"
     end
-
-    resource "clang-tools-extra" do
-      url "http://llvm.org/releases/3.6.2/clang-tools-extra-3.6.2.src.tar.xz"
-      sha256 "6a0ec627d398f501ddf347060f7a2ccea4802b2494f1d4fd7bda3e0442d04feb"
-    end
   end
 
   bottle do
     cellar :any
-    sha256 "fa04afc62800a236e32880efe30e1dbb61eace1e7e9ec20d2d53393ef9d68636" => :el_capitan
-    sha256 "a0ec4b17ae8c1c61071e603d0dcf3e1c39a5aae63c3f8237b4363a06701a3319" => :yosemite
-    sha256 "17a62c19d119c88972fa3dce920cfbc6150af8892ba8e29ce551ae7e2e84f42e" => :mavericks
-    sha256 "6d780faae2647ebce704b2f0a246b52d4037ebf4a2f796644814607e7751af93" => :mountain_lion
+    revision 1
+    sha256 "844303abab16526635eab9a8302a9615be1a06065ae2a9d12e8b2def7d0f1528" => :el_capitan
+    sha256 "1c086b886d00e18d4f959c3038307bce90f647d84e8ce15e656362c8b6953808" => :yosemite
+    sha256 "4805dbeef4754db9f0ae1aae2497a4f907adb52d323124177266f441686e327f" => :mavericks
   end
 
   head do
@@ -66,8 +76,20 @@ class Llvm < Formula
       url "http://llvm.org/git/clang.git"
     end
 
+    resource "clang-extra-tools" do
+      url "http://llvm.org/git/clang-tools-extra.git"
+    end
+
+    resource "compiler-rt" do
+      url "http://llvm.org/git/compiler-rt.git"
+    end
+
     resource "libcxx" do
       url "http://llvm.org/git/libcxx.git"
+    end
+
+    resource "libcxxabi" do
+      url "http://llvm.org/git/libcxxabi.git"
     end
 
     resource "lld" do
@@ -78,17 +100,27 @@ class Llvm < Formula
       url "http://llvm.org/git/lldb.git"
     end
 
-    resource "clang-tools-extra" do
-      url "http://llvm.org/git/clang-tools-extra.git"
+    # Polly is --HEAD-only because it requires isl and the version of Polly
+    # shipped with 3.6.2 only compiles with isl 0.14 and earlier (current
+    # version is 0.15). isl is distributed with the Polly source code from LLVM
+    # 3.7 and up, so --HEAD builds do not need to depend on homebrew isl.
+    option "with-polly", "Build with the experimental Polly optimizer"
+    resource "polly" do
+      url "http://llvm.org/git/polly.git"
     end
   end
 
+  keg_only :provided_by_osx
+
   option :universal
-  option "with-clang", "Build Clang support library"
+  option "with-clang", "Build the Clang compiler and support libraries"
+  option "with-clang-extra-tools", "Build extra tools for Clang"
+  option "with-compiler-rt", "Build Clang runtime support libraries for code sanitizers, builtins, and profiling"
+  option "with-libcxx", "Build the libc++ standard library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
-  option "with-rtti", "Build with C++ RTTI"
   option "with-python", "Build Python bindings against Homebrew Python"
+  option "with-rtti", "Build with C++ RTTI"
   option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
@@ -106,8 +138,6 @@ class Llvm < Formula
     depends_on CodesignRequirement
   end
 
-  keg_only :provided_by_osx
-
   # Apple's libstdc++ is too old to build LLVM
   fails_with :gcc
   fails_with :llvm
@@ -116,18 +146,51 @@ class Llvm < Formula
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
 
-    if build.with?("lldb") && build.without?("clang")
-      raise "Building LLDB needs Clang support library."
+    (buildpath/"tools/clang").install resource("clang") if build.with? "clang"
+
+    if build.with? "clang-extra-tools"
+      odie "--with-extra-tools requires --with-clang" if build.without? "clang"
+      (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
     end
 
-    if build.with? "clang"
+    if build.with? "libcxx"
       (buildpath/"projects/libcxx").install resource("libcxx")
-      (buildpath/"tools/clang").install resource("clang")
-      (buildpath/"tools/clang/tools/extra").install resource("clang-tools-extra")
+      (buildpath/"projects/libcxxabi").install resource("libcxxabi")
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
-    (buildpath/"tools/lldb").install resource("lldb") if build.with? "lldb"
+
+    if build.with? "lldb"
+      odie "--with-lldb requires --with-clang" if build.without? "clang"
+      (buildpath/"tools/lldb").install resource("lldb")
+
+      # Building lldb requires a code signing certificate.
+      # The instructions provided by llvm creates this certificate in the
+      # user's login keychain. Unfortunately, the login keychain is not in
+      # the search path in a superenv build. The following three lines add
+      # the login keychain to ~/Library/Preferences/com.apple.security.plist,
+      # which adds it to the superenv keychain search path.
+      mkdir_p "#{ENV["HOME"]}/Library/Preferences"
+      username = ENV["USER"]
+      system "security", "list-keychains", "-d", "user", "-s", "/Users/#{username}/Library/Keychains/login.keychain"
+    end
+
+    if build.with? "polly"
+      odie "--with-polly requires --with-clang" if build.without? "clang"
+      (buildpath/"tools/polly").install resource("polly")
+    end
+
+    if build.with? "compiler-rt"
+      odie "--with-compiler-rt requires --with-clang" if build.without? "clang"
+      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
+
+      # compiler-rt has some iOS simulator features that require i386 symbols
+      # I'm assuming the rest of clang needs support too for 32-bit compilation
+      # to work correctly, but if not, perhaps universal binaries could be
+      # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
+      # can almost be treated as an entirely different build from llvm.
+      ENV.permit_arch_flags
+    end
 
     args = %w[
       -DLLVM_OPTIMIZED_TABLEGEN=On
@@ -146,6 +209,8 @@ class Llvm < Formula
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
+    args << "-DLINK_POLLY_INTO_TOOLS:Bool=ON" if build.with? "polly"
+
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
@@ -153,9 +218,6 @@ class Llvm < Formula
     end
 
     if build.with? "clang"
-      system "make", "-C", "projects/libcxx", "install",
-        "DSTROOT=#{prefix}", "SYMROOT=#{buildpath}/projects/libcxx"
-
       (share/"clang/tools").install Dir["tools/clang/tools/scan-{build,view}"]
       if build.head?
         inreplace "#{share}/clang/tools/scan-build/bin/scan-build", "$RealBin/bin/clang", "#{bin}/clang"

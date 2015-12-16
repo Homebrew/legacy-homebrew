@@ -5,9 +5,10 @@ class Mysql < Formula
   sha256 "1ea1644884d086a23eafd8ccb04d517fbd43da3a6a06036f23c5c3a111e25c74"
 
   bottle do
-    sha256 "7ae8f867a55df376cf0d2e6de4d915271805077660f248a0cd1400645f586fe5" => :el_capitan
-    sha256 "d626277de0795dca5393d0b2fc223deaacd9541e67ac800eb8d001aa0e3bd952" => :yosemite
-    sha256 "29d34e35b680ac112abfae03e759147dafb3780b9760fd3a60333e2a2df9e817" => :mavericks
+    revision 1
+    sha256 "866d0adbfe88f626452006bb50aa9489413a81a03cbef40c3175f7e7daaab879" => :el_capitan
+    sha256 "048629d5759e5aa7cabd934214a011c30c1f94c57ea47c8b853b338213572c77" => :yosemite
+    sha256 "84b963def9d2ff10bd21435ac2b9b87cce34a8e68bb9e82e3b2c6a0200970975" => :mavericks
   end
 
   option :universal
@@ -25,9 +26,9 @@ class Mysql < Formula
   deprecated_option "with-tests" => "with-test"
 
   depends_on "cmake" => :build
+  depends_on "boost" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion
   depends_on "openssl"
-  depends_on "boost"
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."

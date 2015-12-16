@@ -24,7 +24,10 @@ class Node < Formula
   depends_on "openssl" => :optional
 
   # Per upstream - "Need g++ 4.8 or clang++ 3.4".
-  fails_with :clang if MacOS.version <= :snow_leopard
+  # Clang should work *above* Snow Leopard but currently doesn't.
+  # https://github.com/nodejs/node/issues/4284
+  # Fix is landing in v5.3.0, so line below can revert to snow_leopard then.
+  fails_with :clang if MacOS.version <= :lion
   fails_with :llvm
   fails_with :gcc_4_0
   fails_with :gcc

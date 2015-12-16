@@ -2,121 +2,124 @@ require "language/go"
 
 class Influxdb < Formula
   desc "Time series, events, and metrics database"
-  homepage "https://influxdb.com"
-  url "https://github.com/influxdb/influxdb/archive/v0.9.5.1.tar.gz"
-  sha256 "d823288a826188526831602ee834195266abb7d4a0db7c3638d8f86793a0ffd6"
+  homepage "https://influxdata.com/time-series-platform/influxdb/"
+  url "https://github.com/influxdb/influxdb/archive/v0.9.6.1.tar.gz"
+  sha256 "4e5e2a83f885d1c531ea538397cef1de94717eab02c7e589b9696f22dd65d3e2"
+
+  head "https://github.com/influxdb/influxdb.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0624c8aa90e7090fc1d007a5574c203ea0ce11fd8db702fd40529c9f365ecb31" => :el_capitan
-    sha256 "164627127bc3ec0bddb910cf3c2a745bfdb0be8fdecac9f023caf77005a0dfe6" => :yosemite
-    sha256 "f4bbaf35b36641d9f8c7a5d0091bf62be2921d3426084375b4f4f104443b6a88" => :mavericks
-  end
-
-  head do
-    url "https://github.com/influxdb/influxdb.git"
-
-    go_resource "github.com/paulbellamy/ratecounter" do
-      url "https://github.com/paulbellamy/ratecounter.git",
-        :revision => "5a11f585a31379765c190c033b6ad39956584447"
-    end
+    sha256 "5abab60d9a86c7bcd801ea3883565cad64010bc679d35974206812f4f5383ea1" => :el_capitan
+    sha256 "5fa26bb3d1c3f8e832cc1dcc5fee10b26f2d4f140cb96180d7b26762f7a23327" => :yosemite
+    sha256 "f356125427c3fa3bdc90485d2af6f7399da185b925c9542842b788890c977d1d" => :mavericks
   end
 
   depends_on "go" => :build
 
+  go_resource "collectd.org" do
+    url "https://github.com/collectd/go-collectd.git",
+    :revision => "9fc824c70f713ea0f058a07b49a4c563ef2a3b98"
+  end
+
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
-      :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
+    :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
   end
 
   go_resource "github.com/armon/go-metrics" do
     url "https://github.com/armon/go-metrics.git",
-      :revision => "6c5fa0d8f48f4661c9ba8709799c88d425ad20f0"
+    :revision => "06b60999766278efd6d2b5d8418a58c3d5b99e87"
   end
 
   go_resource "github.com/bmizerany/pat" do
     url "https://github.com/bmizerany/pat.git",
-      :revision => "b8a35001b773c267eb260a691f4e5499a3531600"
+    :revision => "b8a35001b773c267eb260a691f4e5499a3531600"
   end
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-      :revision => "6e1ca38c6a73025366cd8705553b404746ee6e63"
+    :revision => "b34b35ea8d06bb9ae69d9a349119252e4c1d8ee0"
+  end
+
+  go_resource "github.com/davecgh/go-spew" do
+    url "https://github.com/davecgh/go-spew.git",
+    :revision => "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d"
   end
 
   go_resource "github.com/dgryski/go-bits" do
     url "https://github.com/dgryski/go-bits.git",
-      :revision => "dffe1d50093678b150156c4ad97029473994f459"
+    :revision => "86c69b3c986f9d40065df5bd8f765796549eef2e"
   end
 
   go_resource "github.com/dgryski/go-bitstream" do
     url "https://github.com/dgryski/go-bitstream.git",
-      :revision => "8c62433445abdcf8c50094b3d67a15f728d8292b"
+    :revision => "27cd5973303fde7d914860be1ea4b927a6be0c92"
   end
 
   go_resource "github.com/gogo/protobuf" do
     url "https://github.com/gogo/protobuf.git",
-      :revision => "d3235f01ecae4901dd9f7ea6af57a352c0189deb"
+    :revision => "e492fd34b12d0230755c45aa5fb1e1eea6a84aa9"
   end
 
   go_resource "github.com/golang/snappy" do
     url "https://github.com/golang/snappy.git",
-      :revision => "723cc1e459b8eea2dea4583200fd60757d40097a"
+    :revision => "723cc1e459b8eea2dea4583200fd60757d40097a"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
     url "https://github.com/hashicorp/go-msgpack.git",
-      :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
+    :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
   end
 
   go_resource "github.com/hashicorp/raft" do
     url "https://github.com/hashicorp/raft.git",
-      :revision => "d136cd15dfb7876fd7c89cad1995bc4f19ceb294"
+    :revision => "d136cd15dfb7876fd7c89cad1995bc4f19ceb294"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
     url "https://github.com/hashicorp/raft-boltdb.git",
-      :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
+    :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
   end
 
-  go_resource "github.com/influxdb/enterprise-client" do
-    url "https://github.com/influxdb/enterprise-client.git",
-      :revision => "25665cba4f54fa822546c611c9414ac31aa10faa"
+  go_resource "github.com/influxdb/usage-client" do
+    url "https://github.com/influxdb/usage-client.git",
+    :revision => "475977e68d79883d9c8d67131c84e4241523f452"
   end
 
   go_resource "github.com/jwilder/encoding" do
     url "https://github.com/jwilder/encoding.git",
-      :revision => "07d88d4f35eec497617bee0c7bfe651a796dae13"
+    :revision => "07d88d4f35eec497617bee0c7bfe651a796dae13"
   end
 
   go_resource "github.com/kimor79/gollectd" do
     url "https://github.com/kimor79/gollectd.git",
-      :revision => "61d0deeb4ffcc167b2a1baa8efd72365692811bc"
+    :revision => "61d0deeb4ffcc167b2a1baa8efd72365692811bc"
   end
 
-  go_resource "github.com/rakyll/statik" do
-    url "https://github.com/rakyll/statik.git",
-      :revision => "274df120e9065bdd08eb1120e0375e3dc1ae8465"
-  end
-
-  go_resource "golang.org/x/crypto" do
-    url "https://go.googlesource.com/crypto.git",
-      :revision => "beef0f4390813b96e8e68fd78570396d0f4751fc"
-  end
-
-  go_resource "gopkg.in/fatih/pool.v2" do
-    url "https://gopkg.in/fatih/pool.v2.git",
-      :revision => "cba550ebf9bce999a02e963296d4bc7a486cb715"
+  go_resource "github.com/paulbellamy/ratecounter" do
+    url "https://github.com/paulbellamy/ratecounter.git",
+    :revision => "5a11f585a31379765c190c033b6ad39956584447"
   end
 
   go_resource "github.com/peterh/liner" do
     url "https://github.com/peterh/liner.git",
-      :revision => "4d47685ab2fd2dbb46c66b831344d558bc4be5b9"
+    :revision => "4d47685ab2fd2dbb46c66b831344d558bc4be5b9"
   end
 
-  go_resource "collectd.org" do
-    url "https://github.com/collectd/go-collectd.git",
-      :revision => "9fc824c70f713ea0f058a07b49a4c563ef2a3b98"
+  go_resource "github.com/rakyll/statik" do
+    url "https://github.com/rakyll/statik.git",
+    :revision => "274df120e9065bdd08eb1120e0375e3dc1ae8465"
+  end
+
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git",
+    :revision => "7b85b097bf7527677d54d3220065e966a0e3b613"
+  end
+
+  go_resource "gopkg.in/fatih/pool.v2" do
+    url "https://gopkg.in/fatih/pool.v2.git",
+    :revision => "cba550ebf9bce999a02e963296d4bc7a486cb715"
   end
 
   def install
@@ -128,9 +131,9 @@ class Influxdb < Formula
 
     cd influxdb_path do
       if build.head?
-        system "go", "install", "-ldflags", "-X main.version 0.9.6-HEAD -X main.branch master -X main.commit #{`git rev-parse HEAD`.strip}", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.10.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
       else
-        system "go", "install", "-ldflags", "-X main.version 0.9.5.1 -X main.branch 0.9.5 -X main.commit 9eab56311373ee6f788ae5dfc87e2240038f0eb4", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.9.6.1 -X main.branch=0.9.6 -X main.commit=6d3a8603cfdaf1a141779ed88b093dcc5c528e5e", "./..."
       end
     end
 
@@ -141,8 +144,8 @@ class Influxdb < Formula
       s.gsub! "/var/lib/influxdb/wal", "#{var}/influxdb/wal"
     end
 
-    bin.install buildpath/"bin/influxd"
-    bin.install buildpath/"bin/influx"
+    bin.install "bin/influxd"
+    bin.install "bin/influx"
     etc.install influxdb_path/"etc/config.sample.toml" => "influxdb.conf"
 
     (var/"influxdb/data").mkpath
@@ -196,5 +199,29 @@ class Influxdb < Formula
     To generate a new config file:
         influxd config > influxdb.conf.generated
     EOS
+  end
+
+  test do
+    (testpath/"config.toml").write shell_output("influxd config")
+    inreplace testpath/"config.toml" do |s|
+      s.gsub! /\/.*\/\.influxdb\/data/, "#{testpath}/influxdb/data"
+      s.gsub! /\/.*\/\.influxdb\/meta/, "#{testpath}/influxdb/meta"
+      s.gsub! /\/.*\/\.influxdb\/hh/, "#{testpath}/influxdb/hh"
+      s.gsub! /\/.*\/\.influxdb\/wal/, "#{testpath}/influxdb/wal"
+    end
+
+    pid = fork do
+      exec "#{bin}/influxd -config #{testpath}/config.toml"
+    end
+    sleep 5
+
+    begin
+      output = shell_output("curl -Is localhost:8086/ping")
+      sleep 2
+      assert_match /X-Influxdb-Version:/, output
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

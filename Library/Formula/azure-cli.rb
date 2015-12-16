@@ -8,9 +8,10 @@ class AzureCli < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "faf354f229e336c131c7eeaa50257e3fd5a03e3cd4afc731982c1b4615832956" => :el_capitan
-    sha256 "74f743ffad23cca801642faa1e967b0ad3c52a700887aa8a89a3db4304091f82" => :yosemite
-    sha256 "8c4a14e8ce79f7010e0834d02199a928eed799bd3b1e5f910cc239aec450f462" => :mavericks
+    revision 1
+    sha256 "ece78be41a76a480c8578098fe3a10e1db32259ad6b2007e2bf21db0cffd4ddc" => :el_capitan
+    sha256 "f72ee827bd18549ae59a7173d1c20ac8f21c2b42fd842fbeb7ae4ba1f587e6a3" => :yosemite
+    sha256 "17b053270b261c16eadbb1a1103a301237b44577d4e062ac81623a8785ef9c21" => :mavericks
   end
 
   depends_on "node"
@@ -23,7 +24,7 @@ class AzureCli < Formula
     rm_rf "bin/windows"
     (prefix/"src").install Dir["lib", "node_modules", "package.json", "bin"]
     bin.install_symlink (prefix/"src/bin/azure")
-    (bash_completion/"azure").write system("#{bin}/azure", "--completion")
+    (bash_completion/"azure").write `#{bin}/azure --completion`
   end
 
   test do

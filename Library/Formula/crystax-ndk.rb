@@ -2,14 +2,14 @@ class CrystaxNdk < Formula
   desc "Drop-in replacement for Google's Android NDK"
   homepage "https://www.crystax.net/android/ndk"
 
-  version "10.2.1"
+  version "10.3.0"
 
   if MacOS.prefer_64_bit?
-    url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86_64.7z"
-    sha256 "1503eec2b883ffbe8f24bcfd2f3d47579ff1c9ce84be3612d8cfe5339aa0df40"
+    url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86_64.tar.xz"
+    sha256 "1c3894aa306fd77e73f299c6b92b7de60465f8a4807d76faf7805595170e938f"
   else
-    url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86.7z"
-    sha256 "a46e5741d42406c39e85c79bfac895374b1831c20e16cfa5ea57d705c52dc1f1"
+    url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86.tar.xz"
+    sha256 "22339c6ef7c4a1e8fb35eb6a948e966c0ae27480a7a0ad6ac3a94f3233199362"
   end
 
   bottle :unneeded
@@ -17,20 +17,17 @@ class CrystaxNdk < Formula
   depends_on "android-sdk" => :recommended
 
   conflicts_with "android-ndk",
-    :because => "both install `ndk-build`, `ndk-gdb` and `ndk-stack` binaries"
+    :because => "both install `ndk-build`, `ndk-gdb`, `ndk-stack`, `ndk-depends` and `ndk-which` binaries"
 
   def install
     bin.mkpath
 
-    if MacOS.prefer_64_bit?
-      arch = :x86_64
-    else
-      arch = :x86
-    end
+    # Cleanup some files since "brew audit" complains they're linked against system OpenSSL
+    # Those files are present there by mistake, and will be removed in next upstream patch version (10.3.1?),
+    # so it's safe to remove them here.
+    %w{_hashlib.so _ssl.so}.each { |file| rm_f Dir.glob("prebuilt/darwin-*/lib/python*/lib-dynload/#{file}") }
 
-    system "7z", "x", "crystax-ndk-#{version}-darwin-#{arch}.7z"
-
-    prefix.install Dir["crystax-ndk-#{version}/*"]
+    prefix.install Dir["*"]
 
     # Create a dummy script to launch the ndk apps
     ndk_exec = prefix+"ndk-exec.sh"
@@ -38,10 +35,10 @@ class CrystaxNdk < Formula
       #!/bin/sh
       BASENAME=`basename $0`
       EXEC="#{prefix}/$BASENAME"
-      test -f "$EXEC" && exec "$EXEC" "$@"
+      test -e "$EXEC" && exec "$EXEC" "$@"
     EOS
     ndk_exec.chmod 0755
-    %w[ndk-build ndk-gdb ndk-stack].each { |app| bin.install_symlink ndk_exec => app }
+    %w[ndk-build ndk-gdb ndk-stack ndk-depends ndk-which].each { |app| bin.install_symlink ndk_exec => app }
   end
 
   def caveats; <<-EOS.undent
@@ -59,5 +56,6 @@ class CrystaxNdk < Formula
   test do
     system "#{bin}/ndk-build", "--version"
     system "#{bin}/ndk-gdb", "--help"
+    system "#{bin}/ndk-depends", "--help"
   end
 end
