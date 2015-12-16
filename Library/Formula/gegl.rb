@@ -1,7 +1,7 @@
 class Gegl < Formula
   desc "Graph based image processing framework"
   homepage "http://www.gegl.org/"
-  url "http://download.gimp.org/pub/gegl/0.3/gegl-0.3.0.tar.bz2"
+  url "https://download.gimp.org/pub/gegl/0.3/gegl-0.3.0.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/g/gegl/gegl_0.3.0.orig.tar.bz2"
   sha256 "f0fec8f2e7b8835979d3cf4e38b05d41bb79f68dc80cf899a846484da693bbf7"
 

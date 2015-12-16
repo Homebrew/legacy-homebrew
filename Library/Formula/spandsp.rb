@@ -1,7 +1,7 @@
 class Spandsp < Formula
   desc "DSP functions library for telephony"
   homepage "http://www.soft-switch.org"
-  url "http://www.soft-switch.org/downloads/spandsp/spandsp-0.0.6.tar.gz"
+  url "https://www.soft-switch.org/downloads/spandsp/spandsp-0.0.6.tar.gz"
   sha256 "cc053ac67e8ac4bb992f258fd94f275a7872df959f6a87763965feabfdcc9465"
 
   bottle do

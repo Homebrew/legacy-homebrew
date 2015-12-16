@@ -1,7 +1,7 @@
 class Rdfind < Formula
   desc "Find duplicate files based on content (NOT file names)"
   homepage "http://rdfind.pauldreik.se"
-  url "http://rdfind.pauldreik.se/rdfind-1.3.4.tar.gz"
+  url "https://rdfind.pauldreik.se/rdfind-1.3.4.tar.gz"
   sha256 "a5f0b3f72093d927b93898c993479b35682cccb47f7393fb72bd4803212fcc7d"
   revision 1
 

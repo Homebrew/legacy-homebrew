@@ -24,7 +24,7 @@ class Liblwgeom < Formula
   end
 
   head do
-    url "http://svn.osgeo.org/postgis/trunk/"
+    url "https://svn.osgeo.org/postgis/trunk/"
     depends_on "postgresql" => :build # don't maintain patches for HEAD
   end
 
