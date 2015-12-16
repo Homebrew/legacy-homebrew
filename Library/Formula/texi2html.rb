@@ -6,10 +6,9 @@ class Texi2html < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 2
-    sha256 "2505d8132d26d63d6e78c6d00d521bd7f4389b9ce2e497f9fbcc9227f1712efc" => :el_capitan
-    sha256 "8af085412d76b324f4abd5fc48b2e32c0cbd3f24844e3dcffe41395866fbb58a" => :yosemite
-    sha256 "5c3f4c8aa21f944f7a45844bcdecfab5ca0840d2bf7968b553fc9974fca7c0bf" => :mavericks
+    sha256 "75d7f657b619df77f6242cf24f07819730bd3907b1a74f683d54a4d2fb351fb2" => :el_capitan
+    sha256 "3c3922e7c49aa3a0e1c02c845fd186d6feb1832067801d07168ef311960bdbf3" => :yosemite
+    sha256 "b38ff58a22f0b79bc719bd16c987af8cd6673230f150eaac5d11c886e5a3883a" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion
