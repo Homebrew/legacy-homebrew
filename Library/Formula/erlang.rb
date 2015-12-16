@@ -8,8 +8,8 @@ class Erlang < Formula
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-18.1.tar.gz"
-    sha256 "1bb9afabbaf11d929f1ca9593db8b443e51388cdc78bd01267217438de7aed20"
+    url "https://github.com/erlang/otp/archive/OTP-18.2.tar.gz"
+    sha256 "4175ce492f9043dec53880333e12107545ae269d72672ced55d54c7f7b50f829"
   end
 
   bottle do
@@ -21,8 +21,8 @@ class Erlang < Formula
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_18.1.tar.gz"
-    sha256 "e080e656820b26dd45d806b632e12eec7d1de34f38e5de19a7aebc9fd6e5c9b6"
+    url "http://www.erlang.org/download/otp_doc_man_18.2.tar.gz"
+    sha256 "3695f3a10652e1e1b06d14639d9690d5e533c5e3b831c37f80214f68b8c56a29"
   end
 
   resource "html" do
