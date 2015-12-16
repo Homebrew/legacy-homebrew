@@ -1,18 +1,8 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "http://www.musicpd.org/"
-  revision 1
-
-  stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.11.tar.xz"
-    sha256 "7a5c66aa5af97a5b7af3dc49e3d2594071dafd62a14e2e9f7c9a5a86342836c6"
-
-    # Fixes build because of missing patch on 0.19 branch
-    patch :p1 do
-      url "http://git.musicpd.org/cgit/master/mpd.git/patch/?id=eae9cb4afe0e311a65dc566a0655a54656c8d807"
-      sha256 "0f60cfe354e1f81904cbdc469d49c65508d1f9c219f3d20332fbabdb17a17318"
-    end
-  end
+  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.12.tar.xz"
+  sha256 "7b6fe6c7ce72f5f80a276d680072b524ecb395e546e252b8f3a0756377e1e875"
 
   bottle do
     cellar :any
