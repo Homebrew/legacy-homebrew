@@ -1,8 +1,8 @@
 class Burp < Formula
   desc "Network backup and restore"
   homepage "http://burp.grke.org/"
-  url "http://burp.grke.org/downloads/burp-1.4.28/burp-1.4.28.tar.bz2"
-  sha256 "01c41c07805ebe8c882d7cb9f294e779b6decbe2eb2c81fd65d8fb2b174e18f0"
+  url "https://github.com/grke/burp/archive/1.4.40.tar.gz"
+  sha256 "2e6a9a28453a11f3e36d0beefa185e72e7781a8718b55d3101144c9900752d6f"
   head "https://github.com/grke/burp.git"
 
   bottle do
@@ -16,7 +16,8 @@ class Burp < Formula
   depends_on "librsync"
   depends_on "openssl"
 
-  # patches to change directories to brew conventions in Makefile and config files
+  # patches to change directories to brew conventions in Makefile and config
+  # files
   patch :DATA
 
   def install
@@ -29,7 +30,7 @@ class Burp < Formula
 
   def caveats; <<-EOS.undent
     Before installing the launchd entry you should configure your burp client in
-    #{etc}/burp/burp.conf
+      #{etc}/burp/burp.conf
     EOS
   end
 
