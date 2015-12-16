@@ -14,6 +14,7 @@ class Gjs < Formula
   depends_on "gobject-introspection"
   depends_on "nspr"
   depends_on "readline"
+  depends_on "gtk+3" => :recommended
 
   resource "mozjs24" do
     url "https://ftp.mozilla.org/pub/mozilla.org/js/mozjs-24.2.0.tar.bz2"
