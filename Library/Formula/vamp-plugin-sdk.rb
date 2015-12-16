@@ -10,6 +10,13 @@ class VampPluginSdk < Formula
     # https://code.soundsoftware.ac.uk/issues/1473
     patch :p1, :DATA
   end
+  bottle do
+    cellar :any
+    sha256 "3c1665b45ed9060ddcc00036b760e48e2d8f884877a8976bfb5d5bb8b8dc09b0" => :el_capitan
+    sha256 "9f9faa350b6a0072264107506a243cc627459da143e41b1cde8af2cad1b52079" => :yosemite
+    sha256 "86a5d017be8bccf01f43b6e99fb2f441bde4dc6edff36837d58467926563e4f7" => :mavericks
+  end
+
 
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
