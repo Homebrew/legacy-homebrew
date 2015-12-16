@@ -10,10 +10,10 @@ class Qscintilla2 < Formula
     sha256 "d487010da4ab0eee416ae7dcd1f22e2be2ed60984dda8da1b579094351e173f4" => :mountain_lion
   end
 
+  option "without-plugin", "Skip building the Qt Designer plugin"
+
   depends_on :python => :recommended
   depends_on :python3 => :optional
-
-  option "without-plugin", "Skip building the Qt Designer plugin"
 
   if build.with? "python3"
     depends_on "pyqt" => "with-python3"
