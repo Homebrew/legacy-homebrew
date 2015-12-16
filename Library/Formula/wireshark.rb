@@ -1,14 +1,9 @@
 class Wireshark < Formula
   desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
-
-  stable do
-    url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0.tar.bz2"
-    mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0.tar.bz2"
-    sha256 "90026c761a85701d7783c7e2eaa4c1de247dfbadbd53221df355f121e42691dd"
-
-    depends_on "homebrew/dupes/libpcap" => :optional
-  end
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0.tar.bz2"
+  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0.tar.bz2"
+  sha256 "90026c761a85701d7783c7e2eaa4c1de247dfbadbd53221df355f121e42691dd"
 
   bottle do
     sha256 "011b9c1f55fdb42223af49b7bec04f387d5dd89d5b8a600faecca2011b776f08" => :el_capitan
@@ -49,7 +44,23 @@ class Wireshark < Formula
   depends_on "gtk+" => :optional
   depends_on "gnome-icon-theme" if build.with? "gtk+3"
 
+  resource "libpcap" do
+    url "http://www.tcpdump.org/release/libpcap-1.5.3.tar.gz"
+    sha256 "9ae92159c1060f15e6a90f2c4ad227268b6aaa382c316fa49a31c496b9979e93"
+  end
+
   def install
+    if MacOS.version <= :mavericks
+      resource("libpcap").stage do
+        system "./configure", "--prefix=#{prefix}/libexec/vendor",
+                              "--enable-ipv6",
+                              "--disable-universal"
+        system "make", "install"
+      end
+      ENV.prepend "CFLAGS", "-I#{prefix}/libexec/vendor/include"
+      ENV.prepend "LDFLAGS", "-L#{prefix}/libexec/vendor/lib"
+    end
+
     no_gui = build.without?("gtk+3") && build.without?("qt") && build.without?("gtk+") && build.without?("qt5")
 
     args = %W[
