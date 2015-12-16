@@ -26,8 +26,8 @@ class Erlang < Formula
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_18.1.tar.gz"
-    sha256 "fe7d035f84492bbf86f8d53891bf31fa327a81ed7dde15c050e9c32615dceb3c"
+    url "http://www.erlang.org/download/otp_doc_html_18.2.tar.gz"
+    sha256 "15f262ef6b9fb31063d485cf4d0016e22279dabcfa1c9e3670f0c7ca8e84f60f"
   end
 
   option "without-hipe", "Disable building hipe; fails on various OS X systems"
