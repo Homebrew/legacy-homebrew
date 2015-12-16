@@ -250,6 +250,7 @@ class Llvm < Formula
     mktemp do
       system "cmake", "-G", "Unix Makefiles", buildpath, *(std_cmake_args + args)
       system "make"
+      system "make", "ocaml_doc" if build.with? "ocaml"
       system "make", "install"
     end
 
