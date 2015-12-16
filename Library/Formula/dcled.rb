@@ -1,7 +1,7 @@
 class Dcled < Formula
   desc "Linux driver for dream cheeky USB message board"
   homepage "http://www.jeffrika.com/~malakai/dcled/index.html"
-  url "http://www.jeffrika.com/~malakai/dcled/dcled-2.2.tgz"
+  url "https://www.jeffrika.com/~malakai/dcled/dcled-2.2.tgz"
   sha256 "0da78c04e1aa42d16fa3df985cf54b0fbadf2d8ff338b9bf59bfe103c2a959c6"
 
   depends_on "libhid"

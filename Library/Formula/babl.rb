@@ -1,7 +1,7 @@
 class Babl < Formula
   desc "Dynamic, any-to-any, pixel format translation library"
   homepage "http://www.gegl.org/babl/"
-  url "http://download.gimp.org/pub/babl/0.1/babl-0.1.12.tar.bz2"
+  url "https://download.gimp.org/pub/babl/0.1/babl-0.1.12.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/b/babl/babl_0.1.12.orig.tar.bz2"
   sha256 "2f802b7f1a17b72c10bf0fe1e69b7a888cf7ce62b7cf1537b030f7f88d55a407"
 

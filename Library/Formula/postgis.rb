@@ -13,7 +13,7 @@ class Postgis < Formula
   end
 
   head do
-    url "http://svn.osgeo.org/postgis/trunk/"
+    url "https://svn.osgeo.org/postgis/trunk/"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
