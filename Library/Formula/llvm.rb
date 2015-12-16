@@ -153,6 +153,18 @@ class Llvm < Formula
       (buildpath/"tools/clang/tools/extra").install resource("clang-extra-tools")
     end
 
+    if build.with? "compiler-rt"
+      odie "--with-compiler-rt requires --with-clang" if build.without? "clang"
+      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
+
+      # compiler-rt has some iOS simulator features that require i386 symbols
+      # I'm assuming the rest of clang needs support too for 32-bit compilation
+      # to work correctly, but if not, perhaps universal binaries could be
+      # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
+      # can almost be treated as an entirely different build from llvm.
+      ENV.permit_arch_flags
+    end
+
     if build.with? "libcxx"
       (buildpath/"projects/libcxx").install resource("libcxx")
       (buildpath/"projects/libcxxabi").install resource("libcxxabi")
@@ -178,18 +190,6 @@ class Llvm < Formula
     if build.with? "polly"
       odie "--with-polly requires --with-clang" if build.without? "clang"
       (buildpath/"tools/polly").install resource("polly")
-    end
-
-    if build.with? "compiler-rt"
-      odie "--with-compiler-rt requires --with-clang" if build.without? "clang"
-      (buildpath/"projects/compiler-rt").install resource("compiler-rt")
-
-      # compiler-rt has some iOS simulator features that require i386 symbols
-      # I'm assuming the rest of clang needs support too for 32-bit compilation
-      # to work correctly, but if not, perhaps universal binaries could be
-      # limited to compiler-rt. llvm makes this somewhat easier because compiler-rt
-      # can almost be treated as an entirely different build from llvm.
-      ENV.permit_arch_flags
     end
 
     args = %w[
