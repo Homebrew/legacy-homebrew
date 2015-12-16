@@ -23,7 +23,12 @@ class Libvpx < Formula
   depends_on "yasm" => :build
 
   def install
-    args = %W[--prefix=#{prefix} --enable-pic --disable-unit-tests]
+    args = %W[
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+      --enable-pic
+      --disable-unit-tests
+    ]
 
     args << (build.with?("examples") ? "--enable-examples" : "--disable-examples")
     args << "--enable-gcov" if !ENV.compiler == :clang && build.with?("gcov")
