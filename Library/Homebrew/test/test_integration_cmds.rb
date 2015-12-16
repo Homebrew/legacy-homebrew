@@ -79,4 +79,34 @@ class IntegrationCommandTests < Homebrew::TestCase
     assert_match HOMEBREW_REPOSITORY.to_s,
                  cmd("--repository")
   end
+
+  def test_install
+    assert_match "#{HOMEBREW_CELLAR}/testball/0.1", cmd("install", testball)
+  ensure
+    cmd("uninstall", "--force", testball)
+    cmd("cleanup", "--force", "--prune=all")
+  end
+
+  def test_bottle
+    cmd("install", "--build-bottle", testball)
+    HOMEBREW_CACHE.cd do
+      assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
+                   cmd_output("bottle", "--no-revision", testball))
+    end
+  ensure
+    cmd("uninstall", "--force", testball)
+    cmd("cleanup", "--force", "--prune=all")
+  end
+
+  def test_uninstall
+    cmd("install", "--build-bottle", testball)
+    assert_match "Uninstalling testball", cmd("uninstall", "--force", testball)
+  ensure
+    cmd("cleanup", "--force", "--prune=all")
+  end
+
+  def test_cleanup
+    (HOMEBREW_CACHE/"test").write "test"
+    assert_match "#{HOMEBREW_CACHE}/test", cmd("cleanup", "--prune=all")
+  end
 end
