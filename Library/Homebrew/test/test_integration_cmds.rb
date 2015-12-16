@@ -1,3 +1,4 @@
+require "bundler"
 require "testing_env"
 
 class IntegrationCommandTests < Homebrew::TestCase

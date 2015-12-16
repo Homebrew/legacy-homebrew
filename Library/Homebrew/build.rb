@@ -70,9 +70,10 @@ class Build
   end
 
   def install
-    keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
+    formula_deps = deps.map(&:to_formula)
+    keg_only_deps = formula_deps.select(&:keg_only?)
 
-    deps.map(&:to_formula).each do |dep|
+    formula_deps.each do |dep|
       fixopt(dep) unless dep.opt_prefix.directory?
     end
 
@@ -80,7 +81,7 @@ class Build
 
     if superenv?
       ENV.keg_only_deps = keg_only_deps
-      ENV.deps = deps.map(&:to_formula)
+      ENV.deps = formula_deps
       ENV.x11 = reqs.any? { |rq| rq.is_a?(X11Requirement) }
       ENV.setup_build_environment(formula)
       post_superenv_hacks

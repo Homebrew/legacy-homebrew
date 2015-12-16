@@ -3,14 +3,13 @@ class Libcdr < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
   url "http://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.1.tar.bz2"
   sha256 "72fe7bbbf2275242acdf67ad2f9b6c71ac9146a56c409def360dabcac5695b49"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "ae25bf920b37198c7968453ecdf8bab7749e1498f61d25b0de6987b1c9959330" => :el_capitan
-    sha256 "4143fa583f4d466d3e7f07fd5c51f553e410dad2739a7fed6af52a82e23fdb69" => :yosemite
-    sha256 "5a4366e25d4a084f3d2a5b87f21e93fe78bf026ca6785da30cdc12435a401456" => :mavericks
+    sha256 "673cbd599ba4a4ba9cbdffd13e688932285591b84806b10643370d2feb11beb0" => :el_capitan
+    sha256 "62a91376392eff0a32ad875dd7c52868e0225b9214939f1d253d4a0ca415a254" => :yosemite
+    sha256 "69f35e9c988a305a26a04d7c4b8180bc769f05d9839e44fd43fe2ecfd737213f" => :mavericks
   end
 
   depends_on "pkg-config" => :build

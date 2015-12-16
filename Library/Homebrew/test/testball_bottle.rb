@@ -12,4 +12,9 @@ class TestballBottle < Formula
     end
     super
   end
+
+  def install
+    prefix.install "bin"
+    prefix.install "libexec"
+  end
 end

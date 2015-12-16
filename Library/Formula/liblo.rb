@@ -8,9 +8,9 @@ class Liblo < Formula
     cellar :any
     revision 1
     sha256 "be6b11c3e18ae25490abae43ae12e2fbd87fd8e398b53e817dafd5c3ba494c11" => :el_capitan
-    sha1 "4e54400bfd62515b26619c7ed1e281c747467ed5" => :yosemite
-    sha1 "c05b222b88ebf22eedb74a41c5a22a6af867d82c" => :mavericks
-    sha1 "1245b84f62785f894cdb77aae345fbc9b4c3d974" => :mountain_lion
+    sha256 "7abf46af9b74b666397be1b55431992e7590ad6863ef78a2d4c5610686bc53c2" => :yosemite
+    sha256 "4377ab68d1648e544fcc84344f912d9541c0d6b776633692e8ced9507e76f595" => :mavericks
+    sha256 "4dac2be4653e7256704cddf2b78e8246f622a6d577ea226dd40483d91fec2cfd" => :mountain_lion
   end
 
   head do

@@ -15,9 +15,9 @@ class Postgresql < Formula
   end
 
   devel do
-    url "https://ftp.postgresql.org/pub/source/v9.5beta1/postgresql-9.5beta1.tar.bz2"
-    sha256 "b53199e2667982de2039ad7e30467f67c5d7af678e69d6211de8ba1cac75c9f0"
-    version "9.5beta1"
+    url "https://ftp.postgresql.org/pub/source/v9.5beta2/postgresql-9.5beta2.tar.bz2"
+    sha256 "031051cd50ebc4ab07da4e6587c59af6712b21979c486b1af0c31e97e1d9e703"
+    version "9.5beta2"
   end
 
   option "32-bit"

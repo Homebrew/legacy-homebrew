@@ -1,13 +1,14 @@
 class Anjuta < Formula
   desc "GNOME Integrated Development Environment"
   homepage "http://anjuta.org"
-  url "https://download.gnome.org/sources/anjuta/3.18/anjuta-3.18.0.tar.xz"
-  sha256 "6a3fec0963f04bc62a9dfb951e577a3276d39c3414083ef73163c3fea8e741ba"
+  url "https://download.gnome.org/sources/anjuta/3.18/anjuta-3.18.2.tar.xz"
+  sha256 "be864f2f1807e1b870697f646294e997d221d5984a135245543b719e501cef8e"
 
   bottle do
-    sha256 "22e821a109a25b33b7f72f351cd302eab8ede6cb094a30ba681580eb7f7077b2" => :el_capitan
-    sha256 "c5e4bd90df721536f8246c526fa0706ccf0aa1b60b8c8727e5dec5f4f3be9c47" => :yosemite
-    sha256 "993d2a4bc85eb28f5771458ece73d8b25eb4ff55ac865a4fee6ec3c5dc59a7ae" => :mavericks
+    revision 1
+    sha256 "a86acb12825402db12cf881bb80600a4b04792251202f431806203909ed25eea" => :el_capitan
+    sha256 "d886002dcfa6fef994dcebc2e6552b70be5bc0ec346ef3f39525ee40814d5618" => :yosemite
+    sha256 "d8d56bd52d1f3eeec0ea3adb7a01c3e6b641236f1a283d408b73d105607417a2" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -21,6 +22,7 @@ class Anjuta < Formula
   depends_on "hicolor-icon-theme"
   depends_on "gnome-icon-theme"
   depends_on "gnome-themes-standard" => :optional
+  depends_on "devhelp" => :optional
   depends_on "shared-mime-info"
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "vala" => :recommended

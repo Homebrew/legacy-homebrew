@@ -1,14 +1,14 @@
 class Nspr < Formula
   desc "Platform-neutral API for system-level and libc-like functions"
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
-  url "https://archive.mozilla.org/pub/mozilla.org/nspr/releases/v4.10.10/src/nspr-4.10.10.tar.gz"
-  sha256 "343614971c30520d0fa55f4af0a72578e2d8674bb71caf7187490c3379523107"
+  url "https://archive.mozilla.org/pub/mozilla.org/nspr/releases/v4.11/src/nspr-4.11.tar.gz"
+  sha256 "cb320a9eee7028275ac0fce7adc39dee36f14f02fd8432fce1b7e1aa5e3685c2"
 
   bottle do
     cellar :any
-    sha256 "4a7a5cc541a308d7621f4da9da1cfafe46fcd0aa997d391d66dd54e2555eea30" => :el_capitan
-    sha256 "121e9afb075e94538f0c231cf72cf9daa122633b4395e56cd4aa11346a659d20" => :yosemite
-    sha256 "6b3b2ae585784346e27963d52aa438b4b1909f8cf329463d9483350c7504771c" => :mavericks
+    sha256 "eff5dd947456737ffd3b6d4d23224d4c03b00161e8297c590bef8ca2558625da" => :el_capitan
+    sha256 "f1caf728ad54fffbc335be659c4b7262b2180fd6bb6f4770cf3ec2255e02d633" => :yosemite
+    sha256 "d56c87f6ea6ccc4efa65a1ba14e2fd67a6ab5ea51eedd6e89bb065954c1a28ee" => :mavericks
   end
 
   keg_only <<-EOS.undent

@@ -6,9 +6,10 @@ class Subversion < Formula
   sha256 "023da881139b4514647b6f8a830a244071034efcaad8c8e98c6b92393122b4eb"
 
   bottle do
-    sha256 "1e3a2f9869e0448729f57457637559ee5608abade9d1889eba53e5521087ca3a" => :el_capitan
-    sha256 "858125c5c91abf8f6462cd0265d7a5ff1303c9b5284bbbe522927c5d9568344d" => :yosemite
-    sha256 "d299df9587548280cd4065e408f269e84c0bd51d727aefa9b5084a17a228c495" => :mavericks
+    revision 1
+    sha256 "231ddc0930b2e46d35778fd25b7521440afdd572325dd6741fb3eb8283905823" => :el_capitan
+    sha256 "14185bb5f0def4260da5bfa3b410ca690bb6cf2c069585e850d5fb1532457bde" => :yosemite
+    sha256 "744d0fd60fcd718589a04880897c0e56c256f3de53a8f884790d673700313254" => :mavericks
   end
 
   deprecated_option "java" => "with-java"
@@ -75,6 +76,11 @@ class Subversion < Formula
       inreplace "SConstruct", "unique=1", "unique=0"
 
       ENV.universal_binary if build.universal?
+
+      # Fix perl bindings Makefile.pl failing with:
+      # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
+      ENV.delete "PERL_MM_OPT"
+
       # scons ignores our compiler and flags unless explicitly passed
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}

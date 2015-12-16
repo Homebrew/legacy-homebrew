@@ -7,9 +7,9 @@ class Sqtop < Formula
 
   bottle do
     cellar :any
-    sha1 "2200c1623c2cb8d8214fc5ea34e3942fc55cc7df" => :yosemite
-    sha1 "f7d5f09979a76de5f3edd77b9ced98d03aff5954" => :mavericks
-    sha1 "4a092176469214d7f45f7502701165cb5ccdc140" => :mountain_lion
+    sha256 "29291fedaa06b7b680e44e1b82f643f7ddffc67435312b7c2f3654df0728cb8b" => :yosemite
+    sha256 "f1ab5347b698d2e1221a5111fec52022159afc898e5ad7a5318becb23cd35543" => :mavericks
+    sha256 "39b62e9a679009e6dc0106a6e63d229b6c310d222966a0f69b90ec388926102e" => :mountain_lion
   end
 
   def install

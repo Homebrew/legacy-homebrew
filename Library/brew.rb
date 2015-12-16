@@ -14,15 +14,12 @@ HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require "global"
 
-if ARGV.first == "--version"
-  puts Homebrew.homebrew_version_string
+if ARGV == %w[--version] || ARGV == %w[-v]
+  puts "Homebrew #{Homebrew.homebrew_version_string}"
   exit 0
 elsif ARGV.first == "-v"
-  puts "Homebrew #{Homebrew.homebrew_version_string}"
   # Shift the -v to the end of the parameter list
   ARGV << ARGV.shift
-  # If no other arguments, just quit here.
-  exit 0 if ARGV.length == 1
 end
 
 if OS.mac?
@@ -164,18 +161,11 @@ begin
 
     if possible_tap && !possible_tap.installed?
       possible_tap.install
-
-      if cmd == "cask"
-        require "cmd/install"
-        brew_cask = Formulary.factory("brew-cask")
-        Homebrew.install_formula(brew_cask)
-      end
-
       exec HOMEBREW_BREW_FILE, cmd, *ARGV
+    else
+      onoe "Unknown command: #{cmd}"
+      exit 1
     end
-
-    onoe "Unknown command: #{cmd}"
-    exit 1
   end
 
 rescue FormulaUnspecifiedError

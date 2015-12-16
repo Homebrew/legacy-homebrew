@@ -6,9 +6,9 @@ class Cabocha < Formula
 
   bottle do
     sha256 "bf3ed6bc9333b43919264913c40a86997a7601a83abf6dcfa1dfe14745b3fc7c" => :el_capitan
-    sha1 "c6d6a98dedfe7466c454101174b3d5cbc2752f9b" => :yosemite
-    sha1 "de55a785d8dcce5696a36f69b67168c913405259" => :mavericks
-    sha1 "40106c50d68d5bd03941946378679ff490ae679a" => :mountain_lion
+    sha256 "fe97decdca655899faffd6356bb8ddbb52d4949222690835374c3aeb9a65cdb2" => :yosemite
+    sha256 "794df46e362f3146b2bab17ba132978609954b0ba0a51ffa4d6d4e8845548764" => :mavericks
+    sha256 "b1aaf6623ac7332459c795ebd992ed92224b0d0b9e20fb57dd0313fbeea7647c" => :mountain_lion
   end
 
   depends_on "crf++"

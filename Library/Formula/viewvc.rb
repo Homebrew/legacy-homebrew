@@ -1,14 +1,14 @@
 class Viewvc < Formula
   desc "Browser interface for CVS and Subversion repositories"
   homepage "http://www.viewvc.org"
-  url "http://viewvc.tigris.org/files/documents/3330/49392/viewvc-1.1.23.tar.gz"
-  sha256 "d14290b23f44e8f5301a7ca9fc946bcd0f8bb8206d9b9c111ac56e19f2588b7d"
+  url "http://viewvc.tigris.org/files/documents/3330/49471/viewvc-1.1.24.tar.gz"
+  sha256 "0620f69fa5ba02ac65e000586ba31015a2053a82711bedb30629fd6087003d7e"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "89041cf76c25bcc0c6ebf4a5991af5a5dc0d5cb0f436149d57d563e2401f20d8" => :el_capitan
-    sha256 "77d7571e6a36dc12e5e34f06d1fa76caeb4f34d046689eef08656d6596987757" => :yosemite
-    sha256 "56b8feafaa2282718d8db6a4612f58de01efdc0b86b62cb80e5715d5085c8a56" => :mavericks
+    sha256 "389820a6f60d0977413ac7aebbf3bbacd2661cc105865813e5cf50c1f9f02020" => :el_capitan
+    sha256 "06d3611ba9c051f0e5d51859c739c77a1bb2c6beb054008ca2a63db1c2f3a1f1" => :yosemite
+    sha256 "8d76afcfed4be03aee5c35b83a389dd4174fc6dbc528386c1e9ba3dd4a7a575d" => :mavericks
   end
 
   # swig is a dependency of subversion --with-python, but due to a
@@ -18,10 +18,10 @@ class Viewvc < Formula
   depends_on "subversion" => "with-python"
 
   def install
-    system "/usr/bin/python", "./viewvc-install", "--prefix=#{libexec}", "--destdir="
+    system "python", "./viewvc-install", "--prefix=#{libexec}", "--destdir="
     Pathname.glob(libexec/"bin/*") do |f|
       next if f.directory?
-      (bin/"viewvc-#{f.basename}").write_env_script f, :PYTHONPATH => "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"
+      bin.install_symlink f => "viewvc-#{f.basename}"
     end
   end
 

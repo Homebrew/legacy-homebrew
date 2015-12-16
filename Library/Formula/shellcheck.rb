@@ -7,6 +7,7 @@ class Shellcheck < Formula
   homepage "http://www.shellcheck.net"
   url "https://github.com/koalaman/shellcheck/archive/v0.4.1.tar.gz"
   sha256 "47518d9024cbd0a15796bc2da3894047b648c9d30605a4e16f3514784e72ec24"
+  head "https://github.com/koalaman/shellcheck.git"
 
   bottle do
     sha256 "14e1a8a2f36ddc39337d311d808be42714d61b13321d2eebf3a56652b47e92c7" => :el_capitan

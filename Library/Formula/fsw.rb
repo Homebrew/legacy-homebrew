@@ -5,9 +5,9 @@ class Fsw < Formula
   sha256 "9222f76f99ef9841dc937a8f23b529f635ad70b0f004b9dd4afb35c1b0d8f0ff"
 
   bottle do
-    sha1 "37e0d950a4c82a603788007b9a40aadb6ebf9373" => :yosemite
-    sha1 "fb0448832cd6e1c9a1a834c6ba64095572a367d1" => :mavericks
-    sha1 "7dce3e9f85da19d300dc1f2ebe9ac1af0aa39ada" => :mountain_lion
+    sha256 "8f2bef3c6a8c71c9eaf476cfa035c4c5f4a7ade3792260978d6eb43d68c36915" => :yosemite
+    sha256 "e6154369d0f4383524024c58a87a7903545db37244b7311bcb4ffda2ecb0db2d" => :mavericks
+    sha256 "365500d0a239aee9df902e24d5cefba97ab4a07c2d7976f58a1383bbe6f490a8" => :mountain_lion
   end
 
   def install

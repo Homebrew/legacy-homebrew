@@ -1,14 +1,13 @@
 class Python3 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz"
-  sha256 "d6d7aa1634a5eeeca6ed4fca266982a04f84bd8f3945a9179e20b24ad2e2be91"
+  url "https://www.python.org/ftp/python/3.5.1/Python-3.5.1.tar.xz"
+  sha256 "c6d57c0c366d9060ab6c0cdf889ebf3d92711d466cc0119c441dbf2746f725c9"
 
   bottle do
-    revision 3
-    sha256 "5a955a6800431f4b38f7dcc4910deaf3c9e3a47f68b5a4b2117527c57290c4dd" => :el_capitan
-    sha256 "956b2bfe8289da7584089768e6143f852b9586ffd552d9b1e4c5e116f7c52587" => :yosemite
-    sha256 "98e2f771b7bc6e33f5eae068788b9197619eb037f043a292790482aa82577528" => :mavericks
+    sha256 "5cd4be0d6586796f30b43cb2707ee9ba0b6da487d67d5bbb00360fea4bd7b160" => :el_capitan
+    sha256 "a7460ffce7b258ddd43f8a4d17d07665b7ff97307bb50d74d4c7555b553a0ae5" => :yosemite
+    sha256 "dfe5c1db69b17b4c2022e731b1d1caa97e1c06d52c4a0497cc3ba0460fa6117e" => :mavericks
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -109,17 +108,20 @@ class Python3 < Formula
 
     args << "--without-gcc" if ENV.compiler == :clang
 
+    cflags   = []
+    ldflags  = []
+    cppflags = []
+
     unless MacOS::CLT.installed?
       # Help Python's build system (setuptools/pip) to build things on Xcode-only systems
       # The setup.py looks at "-isysroot" to get the sysroot (and not at --sysroot)
-      cflags = "CFLAGS=-isysroot #{MacOS.sdk_path}"
-      ldflags = "LDFLAGS=-isysroot #{MacOS.sdk_path}"
-      args << "CPPFLAGS=-I#{MacOS.sdk_path}/usr/include" # find zlib
+      cflags   << "-isysroot #{MacOS.sdk_path}"
+      ldflags  << "-isysroot #{MacOS.sdk_path}"
+      cppflags << "-I#{MacOS.sdk_path}/usr/include" # find zlib
+      # For the Xlib.h, Python needs this header dir with the system Tk
       if build.without? "tcl-tk"
-        cflags += " -I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
+        cflags << "-I#{MacOS.sdk_path}/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers"
       end
-      args << cflags
-      args << ldflags
     end
     # Avoid linking to libgcc http://code.activestate.com/lists/python-dev/112195/
     args << "MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
@@ -150,9 +152,13 @@ class Python3 < Formula
 
     if build.with? "tcl-tk"
       tcl_tk = Formula["tcl-tk"].opt_prefix
-      ENV.append "CPPFLAGS", "-I#{tcl_tk}/include"
-      ENV.append "LDFLAGS", "-L#{tcl_tk}/lib"
+      cppflags << "-I#{tcl_tk}/include"
+      ldflags  << "-L#{tcl_tk}/lib"
     end
+
+    args << "CFLAGS=#{cflags.join(' ')}"     unless cflags.empty?
+    args << "LDFLAGS=#{ldflags.join(' ')}"   unless ldflags.empty?
+    args << "CPPFLAGS=#{cppflags.join(' ')}" unless cppflags.empty?
 
     system "./configure", *args
 
@@ -185,7 +191,7 @@ class Python3 < Formula
 
     # These makevars are available through distutils.sysconfig at runtime and
     # some third-party software packages depend on them
-    inreplace frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}m/Makefile" do |s|
+    inreplace Dir.glob(frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}*/Makefile") do |s|
       s.change_make_var! "LINKFORSHARED",
                          "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
     end

@@ -16,7 +16,9 @@ class Jbigkit < Formula
        :using => :git
 
   option :universal
-  option "with-check", "Verify the library during install"
+  option "with-test", "Verify the library during install"
+
+  deprecated_option "with-check" => "with-test"
 
   def install
     # Set for a universal build and patch the Makefile.
@@ -24,7 +26,7 @@ class Jbigkit < Formula
     ENV.universal_binary if build.universal?
     system "make", "CC=#{ENV.cc}", "CCFLAGS=#{ENV.cflags}"
 
-    if build.with? "check"
+    if build.with? "test"
       # It needs j1 to make the tests happen in sequence.
       ENV.deparallelize
       system "make", "test"

@@ -1,17 +1,17 @@
 class Elasticsearch < Formula
   desc "Distributed real-time search & analytics engine for the cloud"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.0.0/elasticsearch-2.0.0.tar.gz"
-  sha256 "b25f13f615337c2072964fd9fc5c7250f8a2a983b22198daf93548285d5d16df"
+  url "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.1.0/elasticsearch-2.1.0.tar.gz"
+  sha256 "8a4e85bcb506daa369651506af1cbc55c09fd7ff387d111142ae14d0a85d4d14"
   revision 1
-
-  bottle :unneeded
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
     depends_on :java => "1.8"
     depends_on "gradle" => :build
   end
+
+  bottle :unneeded
 
   depends_on :java => "1.7+"
 
@@ -59,7 +59,7 @@ class Elasticsearch < Formula
 
     # Move config files into etc
     (etc/"elasticsearch").install Dir[libexec/"config/*"]
-    (etc/"elasticsearch/scripts").mkdir unless File.exists?(etc/"elasticsearch/scripts")
+    (etc/"elasticsearch/scripts").mkdir unless File.exist?(etc/"elasticsearch/scripts")
     (libexec/"config").rmtree
 
     bin.write_exec_script Dir[libexec/"bin/*"]
@@ -104,9 +104,9 @@ class Elasticsearch < Formula
           <key>WorkingDirectory</key>
           <string>#{var}</string>
           <key>StandardErrorPath</key>
-          <string>/dev/null</string>
+          <string>#{var}/log/elasticsearch.log</string>
           <key>StandardOutPath</key>
-          <string>/dev/null</string>
+          <string>#{var}/log/elasticsearch.log</string>
         </dict>
       </plist>
     EOS

@@ -1,14 +1,14 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v5.0.0/node-v5.0.0.tar.gz"
-  sha256 "698d9662067ae6a20a2586e5c09659735fc0050769a0d8f76f979189ceaccdf4"
+  url "https://nodejs.org/dist/v5.2.0/node-v5.2.0.tar.gz"
+  sha256 "5df5682f9fdd8e747f652e0b09fed46478a1e3df159797852787a074b8787664"
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "53de115aa6307f01f3e34f560f1258441441336b515287101556bdd4cc753d60" => :el_capitan
-    sha256 "4e7e42bda989b3acc24168e00c62fe4ff5fa09e788c5d84c1add1ef27ae59a5b" => :yosemite
-    sha256 "b6a4b8e9648c0fc982e2284fecf19d3cc007dc7cf93788f573e50d08a399cebd" => :mavericks
+    sha256 "5b8af8f39fd8d9eb4e1bd8898aa1dbd72cd63656e4aa6b61291846e940d7b7e1" => :el_capitan
+    sha256 "97f9a90b5ba39a36b1c2c8cdaa72be152d5276f33795c4b4d1a02b98e9b41e27" => :yosemite
+    sha256 "fa510f9c72aa236669d8ed5e20fda643aa97aa374e4a1f4f21c9e2d397843291" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -24,7 +24,9 @@ class Node < Formula
   depends_on "openssl" => :optional
 
   # Per upstream - "Need g++ 4.8 or clang++ 3.4".
-  fails_with :clang if MacOS.version <= :snow_leopard
+  # Clang should work *above* Snow Leopard but currently doesn't.
+  # https://github.com/nodejs/node/issues/4284
+  fails_with :clang if MacOS.version <= :lion
   fails_with :llvm
   fails_with :gcc_4_0
   fails_with :gcc
@@ -32,9 +34,12 @@ class Node < Formula
     fails_with :gcc => n
   end
 
+  # We track major/minor from upstream Node releases.
+  # We will accept *important* npm patch releases when necessary.
+  # https://github.com/Homebrew/homebrew/pull/46098#issuecomment-157802319
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-3.3.9.tgz"
-    sha256 "b406bfc670045c2b92432aff419fe22ff28fd439bb0ef4faa14fd6f16bda0c22"
+    url "https://registry.npmjs.org/npm/-/npm-3.3.12.tgz"
+    sha256 "09475d7096731d93c0aacd7dfe58794d67c52ee6562675aee6c1f734ddba8158"
   end
 
   resource "icu4c" do
@@ -70,6 +75,10 @@ class Node < Formula
       cd buildpath/"npm_install" do
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
+        # `package.json` has relative paths to the npm_install directory.
+        # This copies back over the vanilla `package.json` that is expected.
+        # https://github.com/Homebrew/homebrew/issues/46131#issuecomment-157845008
+        cp buildpath/"npm_install/package.json", libexec/"npm/lib/node_modules/npm"
       end
 
       if build.with? "completion"

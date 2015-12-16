@@ -1,9 +1,8 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.6.3.tar.xz"
-  mirror "http://http.debian.net/debian/pool/main/k/knot/knot_1.6.3.orig.tar.xz"
-  sha256 "48da608e29c2c1ef5937eb692f8ef0462ebb50fa7d128478a23e0a9788533e86"
+  url "https://secure.nic.cz/files/knot-dns/knot-1.6.6.tar.xz"
+  sha256 "6ccae42b0878201e2113a048317bf518acad70fe436b04e24da32703d27edf03"
 
   head do
     url "https://gitlab.labs.nic.cz/labs/knot.git"
@@ -15,9 +14,9 @@ class Knot < Formula
 
   bottle do
     cellar :any
-    sha256 "cb802cbc1c228a0acaffd49483c7a144eb223bd69955b610a18c5f77b567e988" => :yosemite
-    sha256 "e537709607541d660b68546fd28e06ec5b226b247f2b3e36ca8bb3645d3d1925" => :mavericks
-    sha256 "90dc89d5fb73b6675dfa808ad6d1a96a6bc26e9516009b4841d77ecc88ab5ea2" => :mountain_lion
+    sha256 "90e45148b081f6c98c9d181e3b89f08ce0db4a47199c4d194b67d758420442a2" => :el_capitan
+    sha256 "40afc8d6991964587e1637847ad13cd4825d28064144fc1b5a3f7228705ea7c1" => :yosemite
+    sha256 "b100ac007518f53f4829b0cb45c67f287a0fc99ee1846b6526959635291b1ce8" => :mavericks
   end
 
   depends_on "gnutls"

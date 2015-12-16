@@ -6,9 +6,9 @@ class Visitors < Formula
 
   bottle do
     cellar :any
-    sha1 "928de6f2794afa9e0158067ebf008e6389ef91f0" => :mavericks
-    sha1 "74a01b10e5eba82754b52c4db7bf03c5f19470f0" => :mountain_lion
-    sha1 "af85dc4e113dfc1d54661d7b762c191dca5f8fb9" => :lion
+    sha256 "fd3a509f025daac959cac9f3e4cb6d6d3b5fdf5983182f44602f10eb7920b1c3" => :mavericks
+    sha256 "338234df5fe8c3487bd412adb5ab87dbca45825a0e53f38dd97927eacdd7b93f" => :mountain_lion
+    sha256 "33a3eeddc20a421ae83a51b223e2ad4f801374a40bb7cf2947d5635cc08393ec" => :lion
   end
 
   def install

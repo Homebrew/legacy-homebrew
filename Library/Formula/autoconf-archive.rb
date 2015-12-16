@@ -7,9 +7,10 @@ class AutoconfArchive < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "e624e553fc32244c54188a9e397d03265478482f28942eb8b3af0d3c78810046" => :yosemite
-    sha256 "661fc895512c91c0b2afd4c906b9c96f8f471b4b10884be893342f396183a8db" => :mavericks
+    revision 2
+    sha256 "cdef16863febf3b58e3faee528b1646d6214f9f00febb92d3de1c8f0ef8cffc4" => :el_capitan
+    sha256 "137af13ba528ab8d6360c98294354990a88ade4b008c8f6b17effa2c6c50fbeb" => :yosemite
+    sha256 "0529c2360f87d1a357eee395f226f20257057eed909876b42028f9cd53aee51b" => :mavericks
   end
 
   # autoconf-archive is useless without autoconf
@@ -27,7 +28,7 @@ class AutoconfArchive < Formula
 
       m4_include([#{share}/aclocal/ax_have_select.m4])
 
-      # from http://www.gnu.org/software/autoconf-archive/ax_have_select.html
+      # from https://www.gnu.org/software/autoconf-archive/ax_have_select.html
       AX_HAVE_SELECT(
         [AX_CONFIG_FEATURE_ENABLE(select)],
         [AX_CONFIG_FEATURE_DISABLE(select)])

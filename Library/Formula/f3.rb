@@ -8,9 +8,9 @@ class F3 < Formula
 
   bottle do
     cellar :any
-    sha1 "60c3eabb3069d9aca853a8e9a482b7922499dc56" => :yosemite
-    sha1 "e79ac68956f2b72bd76dbb8a359a75da12ed85fe" => :mavericks
-    sha1 "2407d28f6497df41aa5784e1cd0153d3fc8214c7" => :mountain_lion
+    sha256 "5e379a59a7d17621e2dd8c1cda625a2fad2ea805c02f6d82d6f93e8b5d84da91" => :yosemite
+    sha256 "c64243dc2b2779c4f469b81da9a55e9d22361b44d5eee2c426afe009acf2cbc8" => :mavericks
+    sha256 "d77022b5c08217dce3f2dce67a47b2b18fe27c7cc3f8a866fbb2d3a0f1cb8291" => :mountain_lion
   end
 
   def install

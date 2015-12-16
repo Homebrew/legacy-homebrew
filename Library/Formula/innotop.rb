@@ -17,6 +17,8 @@ class Innotop < Formula
   depends_on :mysql
   depends_on "openssl"
 
+  conflicts_with "mytop", :because => "both install `perllocal.pod`"
+
   resource "DBD::mysql" do
     url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"
     mirror "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"

@@ -15,7 +15,7 @@ module Homebrew
       end
 
       missing_deps.map!(&:to_formula)
-      missing_deps.reject! { |d| d.rack.exist? && d.rack.subdirs.length > 0 }
+      missing_deps.reject! { |d| d.installed_prefixes.any? }
 
       unless missing_deps.empty?
         yield f.full_name, missing_deps if block_given?

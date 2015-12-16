@@ -1,14 +1,14 @@
 class Libcroco < Formula
   desc "CSS parsing and manipulation toolkit for GNOME"
   homepage "http://www.linuxfromscratch.org/blfs/view/svn/general/libcroco.html"
-  url "https://download.gnome.org/sources/libcroco/0.6/libcroco-0.6.9.tar.xz"
-  sha256 "38b9a6aed1813e55b3ca07a68d1af845ad4d1f984602e9272fe692930c0be0ae"
+  url "https://download.gnome.org/sources/libcroco/0.6/libcroco-0.6.10.tar.xz"
+  sha256 "72066611df77f5c4fb28268cfc7306ecc1517212a6182c2ea756c326a154246c"
 
   bottle do
     cellar :any
-    sha256 "a3473ef024c5223325a1de3240d68182f4137f573314d68a792b71bd60573a3a" => :el_capitan
-    sha256 "8799bb46166eedd4a65a54b397bd1acf08a423ae3c05a50bcedbde300c43ed72" => :yosemite
-    sha256 "cfce473c43e9c832f594d6a5f3ebe4654296fe71ccf8f217aa6fd020d84af2b6" => :mavericks
+    sha256 "fd0eadca9804cfbfd338b95b365d28080a80a7ed3bf3421595fdb0717cf80131" => :el_capitan
+    sha256 "a3f6a8e4d231a33ff0081cc7e967510e9805c61b9e4717fa144add6e2640b672" => :yosemite
+    sha256 "8b9ea38c7c54700e5148dea73a2ae118b473083a01bcaa2a19ab2ef98a8184e2" => :mavericks
   end
 
   depends_on "pkg-config" => :build

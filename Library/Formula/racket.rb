@@ -1,23 +1,19 @@
 class Racket < Formula
   desc "Modern programming language in the Lisp/Scheme family"
   homepage "http://racket-lang.org/"
-  url "http://mirror.racket-lang.org/installers/6.2.1/racket-minimal-6.2.1-src-builtpkgs.tgz"
-  version "6.2.1"
-  sha256 "47eceb5f23ab66a939650fa44dd89ffcb17a6227f58c6bc80e90aa8999c86b36"
+  url "http://mirror.racket-lang.org/installers/6.3/racket-minimal-6.3-src-builtpkgs.tgz"
+  version "6.3"
+  sha256 "72d79026e1301ee222089fb555b3eb7290b95f4b7541fec21b4ddb5842fff081"
 
   bottle do
     revision 1
-    sha256 "387b381f886f75682cf7fc96062ccf771ba3cc8d07f468a4cd25d1fec92e392f" => :el_capitan
-    sha256 "865df1ab0fa1fae096a156df99b92f91c73746b9720d261ba7dcfe3cb8559662" => :yosemite
-    sha256 "cb5cf69488eabefe14f4bbb9c4ffa6028638b9ba7d8bbc13971bda83604a4750" => :mavericks
+    sha256 "bfa9a6ecd8ec2b61fe58f7f3576471f09c08c1ec404d059a18609bff6728967b" => :el_capitan
+    sha256 "dc4b3f00480486eb54a1e86b6c7148cfd14fee1fb3e8cd7f8caa4b8c11436729" => :yosemite
+    sha256 "01ebd100e40cdc605d5023da5a608b8a73c4151829bf36806baec71aa126d04a" => :mavericks
   end
 
-  # Upstream patch to resolve 10.11 build errors to handle `availability` declarations.
-  # Remove on next release.
-  patch :p2 do
-    url "https://github.com/racket/racket/commit/1ddaad8d58.diff"
-    sha256 "136993d40613a0f657c73b1b3694ab79ef74e411ee0698ca70fd94800bb9e7d1"
-  end
+  # these two files are amended when (un)installing packages
+  skip_clean "lib/racket/launchers.rktd", "lib/racket/mans.rktd"
 
   def install
     cd "src" do
@@ -36,17 +32,44 @@ class Racket < Formula
       system "make"
       system "make", "install"
     end
+
+    # configure racket's package tool (raco) to do the Right Thing
+    # see: http://docs.racket-lang.org/raco/config-file.html
+    inreplace etc/"racket/config.rktd" do |s|
+        s.gsub!(
+            /\(bin-dir\s+\.\s+"#{Regexp.quote(bin)}"\)/,
+            "(bin-dir . \"#{HOMEBREW_PREFIX}/bin\")"
+        )
+        s.gsub!(
+            /\n\)$/,
+            "\n      (default-scope . \"installation\")\n)"
+        )
+    end
   end
 
   def caveats; <<-EOS.undent
     This is a minimal Racket distribution.
-    If you want to use the DrRacket IDE, we recommend that you use
-    the PLT-provided packages from http://racket-lang.org/download/.
+    If you want to use the DrRacket IDE, you may run
+      raco pkg install --auto drracket
     EOS
   end
 
   test do
     output = shell_output("#{bin}/racket -e '(displayln \"Hello Homebrew\")'")
     assert_match /Hello Homebrew/, output
+
+    # show that the config file isn't malformed
+    output = shell_output("'#{bin}/raco' pkg config")
+    assert $?.success?
+    assert_match Regexp.new(<<-EOS.undent), output
+      ^name:
+        #{version}
+      catalogs:
+        http://download.racket-lang.org/releases/#{version}/catalog/
+        http://pkgs.racket-lang.org
+        http://planet-compats.racket-lang.org
+      default-scope:
+        installation
+    EOS
   end
 end

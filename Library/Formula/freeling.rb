@@ -4,14 +4,13 @@ class Freeling < Formula
   url "http://devel.cpl.upc.edu/freeling/downloads/32"
   version "3.1"
   sha256 "e98471ceb3f58afbe70369584d8d316323d13fcc51d09b2fd7f431a3220982ba"
-  revision 5
+  revision 6
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "b324f4b00c5e9a79c2fcb42b2647e4ac1031f711c4b60a59c81db8ee1ff1ff61" => :el_capitan
-    sha256 "38072877b598c0a68da4927f7cc42fcef26d848577f91e19b1f7948725982187" => :yosemite
-    sha256 "ef9eb1970588a5a1715f67e8fd96456db9ce7a9e7c28a7a19dba63208c0bde3c" => :mavericks
+    sha256 "e991520d3d2b561c323074755769e17d2105d25ea950db49915952f6dceb3a10" => :el_capitan
+    sha256 "59ece6bc2018545d27c5fce49dc3978aa7fe1d2ac0cea267f9cd088358fe58a3" => :yosemite
+    sha256 "4185e107bca9371fa06e1573b91c7be1005f288478542534ee6bff502ed48368" => :mavericks
   end
 
   depends_on "libtool" => :build

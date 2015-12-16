@@ -25,7 +25,7 @@ class Nvm < Formula
     configuration file:
 
       export NVM_DIR=~/.nvm
-      source $(brew --prefix nvm)/nvm.sh
+      . $(brew --prefix nvm)/nvm.sh
 
     You can set $NVM_DIR to any location, but leaving it unchanged from
     #{prefix} will destroy any nvm-installed Node installations

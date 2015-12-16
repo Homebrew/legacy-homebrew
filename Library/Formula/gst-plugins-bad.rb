@@ -1,13 +1,13 @@
 class GstPluginsBad < Formula
   desc "GStreamer plugins (less supported, missing docs, not fully tested)"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.6.1.tar.xz"
-  sha256 "e176a9af125f6874b3d6724aa7566a198fa225d3ece0a7ac2f2b51c57e525466"
+  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.6.2.tar.xz"
+  sha256 "650855e39ff56a8bb6cb0c192109c5926ce12f536d06e19ebf829de71ef396fe"
 
   bottle do
-    sha256 "2de786143627ce949fd3bb7f3dae6cb9cc9110b42072061d60206f55ea381826" => :el_capitan
-    sha256 "87249ebeb2cbb133a5cf75c1c4f272df0ca1583659642d5588572e30c62c6257" => :yosemite
-    sha256 "f6b52b9c2d0ce7901b36af8ac2e393c8290fd882eaf43d0a1b4a6886cc53e74f" => :mavericks
+    sha256 "62fe5bada427937462a1f987a51610238dc2a93ebdcd49125f32f0d6c12aadbd" => :el_capitan
+    sha256 "370942a6751b7cc5d585cc8d9b6bfb80fc7939fa5a4cce203a3eb0bff8aefdfe" => :yosemite
+    sha256 "09cb36ec9d229934dfa9a04830e737c972ee3bbeb7406be50f5d257dfa2e19af" => :mavericks
   end
 
   head do

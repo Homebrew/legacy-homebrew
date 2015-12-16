@@ -600,7 +600,10 @@ _brew ()
     done
 
     if [[ $i -eq $COMP_CWORD ]]; then
-        __brewcomp "$(brew commands --quiet --include-aliases)"
+        # Do not auto-complete "instal" abbreviation for "install" command.
+        # Prefix newline to prevent not checking the first command.
+        local cmds=$'\n'"$(brew commands --quiet --include-aliases)"
+        __brewcomp "${cmds/$'\n'instal$'\n'/$'\n'}"
         return
     fi
 

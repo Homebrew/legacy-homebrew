@@ -36,14 +36,13 @@ class Forego < Formula
     ln_sf buildpath, buildpath/"src/github.com/ddollar/forego"
     Language::Go.stage_deps resources, buildpath/"src"
 
-
     ldflags = "-X main.Version #{version} -X main.allowUpdate false"
     system "godep", "go", "build", "-ldflags", ldflags, "-o", "forego"
     bin.install "forego"
   end
 
   test do
-    (testpath/"Procfile").write("web: echo \"it works!\"")
-    assert `#{bin}/forego start` =~ /it works!/
+    (testpath/"Procfile").write "web: echo \"it works!\""
+    assert_match "it works", shell_output("#{bin}/forego start")
   end
 end

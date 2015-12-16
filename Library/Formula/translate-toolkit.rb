@@ -8,9 +8,9 @@ class TranslateToolkit < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "b06dbd6f29d109d1afe8854ea4e3256a0305c775" => :yosemite
-    sha1 "a2642c64d692c38b057be500196fcfaad76c69fb" => :mavericks
-    sha1 "5b36a52a091ee936ed0ed414cd86879f742827d0" => :mountain_lion
+    sha256 "ee17dc35e2f0f862ac5c011f9cd0cd0022f7a4c62de0353e20eeaf9480006f49" => :yosemite
+    sha256 "ae6ed22058dfd558efa42f5779f97b05fd5575bb3cfd06dff61e60c49f374337" => :mavericks
+    sha256 "31459fd05ccb213ded2ff0c048e25590913778211c9eda9b980ba8248150baaa" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

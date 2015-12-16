@@ -34,9 +34,9 @@ class Icecream < Formula
   end
 
   bottle do
-    sha1 "df2ce444f943ca2e5f9850f934e1098c043f6888" => :yosemite
-    sha1 "cfc146ad19cec4a60a10e8e68399f413b0f41bd7" => :mavericks
-    sha1 "f44f687d335131f79cbb70abe69235f880de48e8" => :mountain_lion
+    sha256 "9767c0d31cce91446873f3f4baa8068f73909e575f6a8f81f1ccfa33d17ec2b4" => :yosemite
+    sha256 "7dbedeb6418bd830e33818c95bb6339e193f37e664452a1ffc5af514b2778921" => :mavericks
+    sha256 "67891ddbf7f15b7e2f66f5e9ef5f12dc719317c2d0503d52aaad23527770affb" => :mountain_lion
   end
 
   devel do
