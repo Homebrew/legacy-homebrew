@@ -12,12 +12,10 @@ class Libvpx < Formula
   end
 
   option "with-gcov", "Enable code coverage"
-  option "with-mem-tracker", "Enable tracking memory usage"
   option "with-visualizer", "Enable post processing visualizer"
   option "with-examples", "Build examples (vpxdec/vpxenc)"
 
   deprecated_option "gcov" => "with-gcov"
-  deprecated_option "mem-tracker" => "with-mem-tracker"
   deprecated_option "visualizer" => "with-visualizer"
 
   depends_on "yasm" => :build
@@ -32,7 +30,6 @@ class Libvpx < Formula
 
     args << (build.with?("examples") ? "--enable-examples" : "--disable-examples")
     args << "--enable-gcov" if !ENV.compiler == :clang && build.with?("gcov")
-    args << "--enable-mem-tracker" if build.with? "mem-tracker"
     args << "--enable-postproc-visualizer" if build.with? "visualizer"
 
     # configure misdetects 32-bit 10.6
