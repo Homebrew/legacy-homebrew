@@ -1,6 +1,6 @@
 class Yap < Formula
   desc "Prolog compiler designed for performance and extensibility"
-  homepage "http://www.dcc.fc.up.pt/~vsc/Yap/index.html"
+  homepage "https://www.dcc.fc.up.pt/~vsc/Yap/"
   url "https://www.dcc.fc.up.pt/~vsc/Yap/yap-6.2.2.tar.gz"
   sha256 "f15f8382104443319a5883eafce5f52f4143b526c7f1cd88d19c1f63fc06d750"
 
