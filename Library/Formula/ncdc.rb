@@ -1,6 +1,6 @@
 class Ncdc < Formula
   desc "NCurses direct connect"
-  homepage "http://dev.yorhel.nl/ncdc"
+  homepage "https://dev.yorhel.nl/ncdc"
   url "https://dev.yorhel.nl/download/ncdc-1.19.1.tar.gz"
   sha256 "a6b23381434a47f7134d9ebdf5658fd06768f9b5de498c43e0fa00d1c7229d47"
 
