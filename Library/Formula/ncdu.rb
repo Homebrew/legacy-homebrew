@@ -1,6 +1,6 @@
 class Ncdu < Formula
   desc "NCurses Disk Usage"
-  homepage "http://dev.yorhel.nl/ncdu"
+  homepage "https://dev.yorhel.nl/ncdu"
   url "https://dev.yorhel.nl/download/ncdu-1.11.tar.gz"
   sha256 "d0aea772e47463c281007f279a9041252155a2b2349b18adb9055075e141bb7b"
 
