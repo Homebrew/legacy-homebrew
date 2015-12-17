@@ -6,8 +6,6 @@ class Apkpatch < Formula
 
   def install
     rm_rf Dir["*.bat"]
-
-    chmod 0755, Dir["*"]
     libexec.install Dir["*"]
 
     Dir.glob("#{libexec}/*.sh") do |script|
