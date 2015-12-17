@@ -16,9 +16,10 @@ class Cdrtools < Formula
   end
 
   bottle do
-    sha256 "b5a0c5a733c4f33e3ff186f77eeb54a560b1cc9a0ab4436d05996a92822ca72d" => :el_capitan
-    sha256 "a7514a01e0318ae4a3d992faa39e411b960f1ff9191903c37c0ed6805e6e76f3" => :yosemite
-    sha256 "79aa34f5484ca2b160902805379135d291a22148331ed6247984883d76f6f57d" => :mavericks
+    revision 1
+    sha256 "4724b3dfe367cf28dbd98dad6ddd47179e5b5d1b599a8fff8f0fa8cc4621acb2" => :el_capitan
+    sha256 "5370586e423d9b842b7ebd0cdb3dd2c763c433be9896bcab636cc56ecd5e0634" => :yosemite
+    sha256 "1b3f3ab5baf44ad31f8d09e36de6df59901ce036cc681c54187fe5f41dc8bb94" => :mavericks
   end
 
   devel do
