@@ -6,9 +6,9 @@ class AmmoniteRepl < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5855943db8a32bcf8587c456be3c95a1da6b24623a5a12c3a8b0ee2954d71b5f" => :el_capitan
-    sha256 "7534443455b082f7019ec9e311128b99442bdcae21cada3f00acd1c8125e2443" => :yosemite
-    sha256 "82176a954409a2db7194dbe53f194a5aa1956cb806108608ebd642c730e98a8a" => :mavericks
+    sha256 "22360a08a174b61dddcfee8319b39b4c587f2cf5db1042c6e5c9648ba8bc2b8b" => :el_capitan
+    sha256 "0e653f4ff906a47ad24af33f20b4f177abe6182d4162a7e4c237c9cb2d1bf1a5" => :yosemite
+    sha256 "faf12614b1f3beed91e89b973141aba234830276a1e00e1d8b7aeb4b60e01e47" => :mavericks
   end
 
   depends_on :java => "1.6+"
