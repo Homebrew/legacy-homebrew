@@ -4,7 +4,7 @@ class Pdal < Formula
   url "https://github.com/PDAL/PDAL/archive/0.9.9.tar.gz"
   sha256 "d4f91478ca55b6b775980c5c2e4c23f43b6bb4e1908ae739b1605a30b57b8a83"
   head "https://github.com/PDAL/PDAL.git"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "67a6dc161a09be18f5b71aee0b80a193edd5be777a2cb328d4e0766fc998b715" => :el_capitan

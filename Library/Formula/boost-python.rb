@@ -1,8 +1,8 @@
 class BoostPython < Formula
   desc "C++ library for C++/Python interoperability"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
-  sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2"
+  sha256 "686affff989ac2488f79a97b9479efb9f2abae035b5ed4d8226de6857933fd3b"
   head "https://github.com/boostorg/boost.git"
 
   bottle do
@@ -32,14 +32,6 @@ class BoostPython < Formula
 
   def install
     ENV.universal_binary if build.universal?
-
-    if stable?
-      # fix make_setter regression
-      # https://github.com/boostorg/python/pull/40
-      inreplace "boost/python/data_members.hpp",
-                "# if BOOST_WORKAROUND(__EDG_VERSION__, <= 238)",
-                "# if !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)"
-    end
 
     # "layout" should be synchronized with boost
     args = ["--prefix=#{prefix}",
