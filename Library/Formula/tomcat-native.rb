@@ -7,9 +7,9 @@ class TomcatNative < Formula
 
   bottle do
     cellar :any
-    sha256 "e9e472d50ff1c5edfd2c02bd57db7d8412f607250ae759614c9689289e922ffb" => :el_capitan
-    sha256 "75d6f31a1618f29d8d98efb69afacc3cdf310ee683f21ff4ba18ee2dee666e57" => :yosemite
-    sha256 "5ea0be1d91ab2c69bc51ead44cd460fdd2dbd07f5175e6038d9d711a8c2b8d89" => :mavericks
+    sha256 "ec11f702b8e33e7b2ac6dbb94ff543db521962c8debbc1e08efc533070accf7b" => :el_capitan
+    sha256 "f05e5053671ebb7a37a2d805308ffc8944da8f69625c8ba66b5ec9107cf0f58c" => :yosemite
+    sha256 "5c53ab17372579ee1753c2c9c88cf9d0a08e94b61c1ecf8e9771967528344663" => :mavericks
   end
 
   option "with-apr", "Include APR support via Homebrew"
