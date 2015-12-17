@@ -633,12 +633,21 @@ class Checks
             provided by Homebrew. The following tools exist at both paths:
             EOS
 
-            out += <<-EOS.undent
+            if shell_profile.include? ".fish"
+              out += <<-EOS.undent
 
-            Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
-            occurs before /usr/bin. Here is a one-liner:
-                echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >> #{shell_profile}
-          EOS
+              Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
+              occurs before /usr/bin. Here is a one-liner:
+                  echo 'set -x PATH #{HOMEBREW_PREFIX}/bin $PATH' >> #{shell_profile}
+              EOS
+            else
+              out += <<-EOS.undent
+
+              Consider setting your PATH so that #{HOMEBREW_PREFIX}/bin
+              occurs before /usr/bin. Here is a one-liner:
+                  echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >> #{shell_profile}
+              EOS
+            end
           end
         end
       when "#{HOMEBREW_PREFIX}/bin"
@@ -652,11 +661,19 @@ class Checks
 
   def check_user_path_2
     unless $seen_prefix_bin
-      <<-EOS.undent
-      Homebrew's bin was not found in your PATH.
-      Consider setting the PATH for example like so
-          echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >> #{shell_profile}
-    EOS
+      if shell_profile.include? ".fish"
+        <<-EOS.undent
+        Homebrew's bin was not found in your PATH.
+        Consider setting the PATH for example like so
+            echo 'set -x PATH #{HOMEBREW_PREFIX}/bin $PATH' >> #{shell_profile}
+        EOS
+      else
+        <<-EOS.undent
+        Homebrew's bin was not found in your PATH.
+        Consider setting the PATH for example like so
+            echo 'export PATH="#{HOMEBREW_PREFIX}/bin:$PATH"' >> #{shell_profile}
+        EOS
+      end
     end
   end
 
@@ -665,12 +682,21 @@ class Checks
     sbin = (HOMEBREW_PREFIX+"sbin")
     if sbin.directory? && sbin.children.length > 0
       unless $seen_prefix_sbin
-        <<-EOS.undent
-        Homebrew's sbin was not found in your PATH but you have installed
-        formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
-        Consider setting the PATH for example like so
-            echo 'export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH"' >> #{shell_profile}
-      EOS
+        if shell_profile.include? ".fish"
+          <<-EOS.undent
+          Homebrew's sbin was not found in your PATH but you have installed
+          formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
+          Consider setting the PATH for example like so
+              echo 'set -x PATH #{HOMEBREW_PREFIX}/sbin $PATH' >> #{shell_profile}
+          EOS
+        else
+          <<-EOS.undent
+          Homebrew's sbin was not found in your PATH but you have installed
+          formulae that put executables in #{HOMEBREW_PREFIX}/sbin.
+          Consider setting the PATH for example like so
+              echo 'export PATH="#{HOMEBREW_PREFIX}/sbin:$PATH"' >> #{shell_profile}
+        EOS
+        end
       end
     end
   end

@@ -443,6 +443,7 @@ def shell_profile
   when %r{/(ba)?sh} then "~/.bash_profile"
   when %r{/zsh} then "~/.zshrc"
   when %r{/ksh} then "~/.kshrc"
+  when %r{/fish} then "~/.config/fish/config.fish"
   else "~/.bash_profile"
   end
 end
