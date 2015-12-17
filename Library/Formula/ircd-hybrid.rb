@@ -1,8 +1,8 @@
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.9/ircd-hybrid-8.2.9.tgz"
-  sha256 "10594036c8f1502d61f68f8feb9216aaed8d611df36145e34746d93039a830a7"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.11/ircd-hybrid-8.2.11.tgz"
+  sha256 "eeb916ca22b0ee2c7b36e00249ca41001a82587597084c102fe11ad8e85cfe78"
 
   bottle do
     sha256 "01479a3ad06cb6dc0bad08bbd516ba9e870ab3d3745374c656adefa43705b236" => :el_capitan
@@ -29,14 +29,14 @@ class IrcdHybrid < Formula
     etc.install "doc/reference.conf" => "ircd.conf"
   end
 
-  test do
-    system "#{bin}/ircd", "-version"
-  end
-
   def caveats; <<-EOS.undent
     You'll more than likely need to edit the default settings in the config file:
       #{etc}/ircd.conf
     EOS
+  end
+
+  test do
+    system "#{bin}/ircd", "-version"
   end
 
   plist_options :manual => "ircd"
