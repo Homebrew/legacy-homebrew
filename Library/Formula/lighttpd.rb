@@ -5,10 +5,9 @@ class Lighttpd < Formula
   sha256 "4912568b7befcf3f552ca4668bd7f38cd85f42a22944359d00816ec27eb1e504"
 
   bottle do
-    sha256 "5ccc450f4e552726c108b00955c835c8b4c82ae844eb944f588cedc590f3ea43" => :el_capitan
-    sha256 "31ad0f53176a0509c51b52082868a847751be055b2d0c11f16974cdb18bdfa51" => :yosemite
-    sha256 "c2900f5ea5bc9cc6ebdf7e2e86724f21b2f4fed923912f2904f5466b9a040109" => :mavericks
-    sha256 "0b4fd109bba1b5ad7c2ff7299fe495fe646f8bd767ddea78e6fccefeeb095347" => :mountain_lion
+    sha256 "628be8e2726f07b71b8232b93327de186f4994cc266fe320c377fab37a66bfd2" => :el_capitan
+    sha256 "7e5d9761a5ec1b7dff0f9ec0c6823b0dd8583e0e24df8bddfbaf83d6ad5b1d27" => :yosemite
+    sha256 "be69f6b7f4eeee9fb0b561d71a05dfcfe2843b87cdad6a32d7faeaaee31ca2a4" => :mavericks
   end
 
   # this patch can be removed with the next release
