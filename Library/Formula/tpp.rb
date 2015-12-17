@@ -1,6 +1,6 @@
 class Tpp < Formula
   desc "Ncurses-based presentation tool"
-  homepage "http://synflood.at/tpp.html"
+  homepage "https://synflood.at/tpp.html"
   url "https://synflood.at/tpp/tpp-1.3.1.tar.gz"
   sha256 "68e3de94fbfb62bd91a6d635581bcf8671a306fffe615d00294d388ad91e1b5f"
 
