@@ -1,8 +1,8 @@
 class CharmTools < Formula
   desc "Tools for authoring and maintaining juju charms"
   homepage "https://github.com/juju/charm-tools"
-  url "https://github.com/juju/charm-tools/releases/download/v1.10.1/charm-tools-1.10.1.tar.gz"
-  sha256 "a5d7f36355959f95a05e1865d2ac97ba48a49bd93351b645c8a8583fe712f1ba"
+  url "https://github.com/juju/charm-tools/releases/download/v1.11.0/charm-tools-1.11.0.tar.gz"
+  sha256 "3c64c44e0540d2a0b59b764342738cf2b8af398e73244c030c992d57fa0c4a6a"
 
   bottle do
     cellar :any
@@ -13,6 +13,7 @@ class CharmTools < Formula
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
+  depends_on :hg
 
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
@@ -62,6 +63,11 @@ class CharmTools < Formula
   resource "iso8601" do
     url "https://pypi.python.org/packages/source/i/iso8601/iso8601-0.1.11.tar.gz"
     sha256 "e8fb52f78880ae063336c94eb5b87b181e6a0cc33a6c008511bac9a6e980ef30"
+  end
+
+  resource "jsonschema" do
+    url "https://pypi.python.org/packages/source/j/jsonschema/jsonschema-2.5.1.tar.gz"
+    sha256 "36673ac378feed3daa5956276a829699056523d7961027911f064b52255ead41"
   end
 
   resource "jujubundlelib" do
@@ -201,7 +207,7 @@ class CharmTools < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[pip blessings bzr charm-tools charmworldlib Cheetah colander ecdsa httplib2 iso8601 jujubundlelib keyring launchpadlib lazr.authentication lazr.restfulclient lazr.uri Markdown oauth otherstuf paramiko parse path.py pathspec pycrypto PyYAML requests ruamel.base ruamel.ordereddict ruamel.yaml simplejson stuf testresources translationstring virtualenv wadllib wsgi_intercept zope.interface].each do |r|
+    %w[pip blessings bzr charm-tools charmworldlib Cheetah colander ecdsa httplib2 iso8601 jsonschema jujubundlelib keyring launchpadlib lazr.authentication lazr.restfulclient lazr.uri Markdown oauth otherstuf paramiko parse path.py pathspec pycrypto PyYAML requests ruamel.base ruamel.ordereddict ruamel.yaml simplejson stuf testresources translationstring virtualenv wadllib wsgi_intercept zope.interface].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
