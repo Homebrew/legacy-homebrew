@@ -31,10 +31,12 @@ class GitlabCiMultiRunner < Formula
       # Copy from Makefile
       system "go", "build", "-o", "gitlab-ci-multi-runner", "-ldflags", "-X main.NAME=gitlab-ci-multi-runner -X main.VERSION=#{version} -X main.REVISION=#{commit_sha}"
       bin.install "gitlab-ci-multi-runner"
+      bin.install_symlink "#{bin}/gitlab-ci-multi-runner" => "gitlab-runner"
     end
   end
 
   test do
     assert_match /gitlab-ci-multi-runner version #{version}/, shell_output("gitlab-ci-multi-runner --version")
+    assert_match /gitlab-runner version #{version}/, shell_output("gitlab-runner --version")
   end
 end
