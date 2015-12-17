@@ -1,6 +1,6 @@
 class Gasnet < Formula
   desc "Global-Address Space Networking layer and communication primitives"
-  homepage "http://gasnet.lbl.gov"
+  homepage "https://gasnet.lbl.gov/"
   url "https://gasnet.lbl.gov/GASNet-1.26.0.tar.gz"
   mirror "https://bitbucket.org/berkeleylab/gasnet/downloads/GASNet-1.26.0.tar.gz"
   sha256 "32b84c47910c36137db198a9c5396dd0a87c29ad72f2040493aa9e8b2a24f929"
