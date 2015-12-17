@@ -3,8 +3,8 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-    :tag => "1.6.1",
-    :revision => "58456a659a8c370678e5a251fdf56c3c230894ee"
+    :tag => "1.6.2",
+    :revision => "5a66d5b8383fa6b5b2164b98a7c415279178bdc4"
 
   bottle do
     cellar :any
@@ -27,6 +27,7 @@ class Osquery < Formula
   depends_on "glog"
   depends_on "libmagic"
   depends_on "cpp-netlib"
+  depends_on "sleuthkit"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
