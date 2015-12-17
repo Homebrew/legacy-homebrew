@@ -4,6 +4,7 @@ class Ledger < Formula
   url "https://github.com/ledger/ledger/archive/v3.1.1.tar.gz"
   sha256 "90f06561ab692b192d46d67bc106158da9c6c6813cc3848b503243a9dfd8548a"
   head "https://github.com/ledger/ledger.git"
+  revision 1
 
   bottle do
     sha256 "4aac92ddbafe1a02011bb69b1d57520e1fe566c08655a27111a7803a104fdde6" => :el_capitan

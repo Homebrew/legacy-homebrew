@@ -4,7 +4,7 @@ class Freeling < Formula
   url "http://devel.cpl.upc.edu/freeling/downloads/32"
   version "3.1"
   sha256 "e98471ceb3f58afbe70369584d8d316323d13fcc51d09b2fd7f431a3220982ba"
-  revision 6
+  revision 7
 
   bottle do
     cellar :any
