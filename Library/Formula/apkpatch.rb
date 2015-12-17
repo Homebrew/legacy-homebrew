@@ -4,6 +4,8 @@ class Apkpatch < Formula
   url "https://raw.githubusercontent.com/alibaba/AndFix/master/tools/apkpatch-1.0.3.zip"
   sha256 "0f94cd2a675af89ff3990f4b6490dd70877ad4eb109f0cdbefece1f9a73e4512"
 
+  depends_on :java
+
   def install
     rm_rf Dir["*.bat"]
     libexec.install Dir["*"]
