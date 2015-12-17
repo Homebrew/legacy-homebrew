@@ -6,9 +6,10 @@ class Gasnet < Formula
   sha256 "32b84c47910c36137db198a9c5396dd0a87c29ad72f2040493aa9e8b2a24f929"
 
   bottle do
-    sha256 "0f1359084e423cdb287254e14b68ff38a49f4c87338a02d02d9904b8bab77c38" => :el_capitan
-    sha256 "78e20db5ff24d5379c7337b63f60ad6013c4a6283882d30170b59701e587cd88" => :yosemite
-    sha256 "05cfeb3bc455822fb029d53798fb7485914432621e2d3e731c8f2b83530a6ab2" => :mavericks
+    revision 1
+    sha256 "aa051e901cc57da3c5a81f010982c3b66efe02655d90c33a1b58a66382e9f23e" => :el_capitan
+    sha256 "baa7c802089c0d2287c74a1547604df0327d9a89ffb1063faba961de478a2ea1" => :yosemite
+    sha256 "fb1a75582f413d837d6ddcb205c6123593559fcee382a6fa8c89302cce03d0c4" => :mavericks
   end
 
   head do
