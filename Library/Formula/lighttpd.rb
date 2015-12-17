@@ -17,6 +17,13 @@ class Lighttpd < Formula
     sha256 "e04c11ce6ce5a32f1208311671acb7413fbeca5ce3fefa9a0e3121cd920a5cdb"
   end
 
+  # this patch can be removed with the next release
+  # https://redmine.lighttpd.net/issues/2698
+  patch do
+    url "https://redmine.lighttpd.net/attachments/download/1671/0001-core-fix-memset_s-call-fixes-2698.patch"
+    sha256 "e04c11ce6ce5a32f1208311671acb7413fbeca5ce3fefa9a0e3121cd920a5cdb"
+  end
+
   option "with-lua51", "Include Lua scripting support for mod_magnet"
 
   depends_on "pkg-config" => :build
