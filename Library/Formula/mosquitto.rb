@@ -1,6 +1,6 @@
 class Mosquitto < Formula
   desc "Message broker implementing MQ telemetry transport protocol"
-  homepage "http://mosquitto.org/"
+  homepage "https://mosquitto.org/"
   url "https://mosquitto.org/files/source/mosquitto-1.4.5.tar.gz"
   sha256 "b432e19fee0c549f4a0fb0e866d1b6a897b38dbf1ddfda92bb43e2a24f01df66"
 
