@@ -1,9 +1,9 @@
 class AptCacherNg < Formula
   desc "Caching proxy"
   homepage "https://www.unix-ag.uni-kl.de/~bloch/acng/"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.6.orig.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.6.orig.tar.xz"
-  sha256 "255b742d3551fcbfa71b6df4d8892038934812425222a15d085436a4a76b8400"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.7.orig.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.7.orig.tar.xz"
+  sha256 "7a369632ab6b3f735221de12a10c1d74d706f9cec565cbeea5cc9a630716acd7"
 
   bottle do
     revision 1
@@ -21,12 +21,6 @@ class AptCacherNg < Formula
 
   def install
     ENV.cxx11
-
-    # https://alioth.debian.org/tracker/index.php?func=detail&aid=315130&group_id=100566&atid=413111
-    # All of these cause breakage during compile. Have added a comment to original bug report.
-    inreplace "CMakeLists.txt",
-      "linkarg -Wl,--as-needed -Wl,-O1 -Wl,--discard-all -Wl,--no-undefined -Wl,--build-id=sha1",
-      "linkarg -Wl"
 
     (var/"spool/apt-cacher-ng").mkpath
     (var/"log").mkpath
