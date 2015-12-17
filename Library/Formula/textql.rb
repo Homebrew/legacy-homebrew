@@ -3,8 +3,8 @@ require "language/go"
 class Textql < Formula
   desc "Executes SQL across text files"
   homepage "https://github.com/dinedal/textql"
-  url "https://github.com/dinedal/textql/archive/2.0.2.tar.gz"
-  sha256 "e68c0be0df3c9f8ce06224382031cbeecf4c45e9b46fc218b95e72d2f9cb551b"
+  url "https://github.com/dinedal/textql/archive/2.0.3.tar.gz"
+  sha256 "1fc4e7db5748938c31fe650e882aec4088d9123d46284c6a6f0ed6e8ea487e48"
 
   bottle do
     cellar :any_skip_relocation
@@ -25,8 +25,9 @@ class Textql < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-ldflags", "-X main.VERSION=2.0.2",
+    system "go", "build", "-ldflags", "-X main.VERSION=2.0.3",
       "-o", "#{bin}/textql", "#{buildpath}/src/github.com/dinedal/textql/textql/main.go"
+    man1.install "man/textql.1"
   end
 
   test do
