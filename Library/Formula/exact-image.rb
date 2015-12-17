@@ -1,6 +1,6 @@
 class ExactImage < Formula
   desc "Image processing library"
-  homepage "http://www.exactcode.com/site/open_source/exactimage"
+  homepage "https://exactcode.com/opensource/exactimage/"
   url "https://dl.exactcode.de/oss/exact-image/exact-image-0.9.1.tar.bz2"
   sha256 "79e6a58522897f9740aa3b5a337f63ad1e0361a772141b24aaff2e31264ece7d"
 
