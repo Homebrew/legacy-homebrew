@@ -1,6 +1,6 @@
 class Grass < Formula
   desc "Geographic Resources Analysis Support System"
-  homepage "http://grass.osgeo.org/"
+  homepage "https://grass.osgeo.org/"
   revision 1
 
   stable do
