@@ -5,6 +5,13 @@ class Joshua < Formula
   sha256 "972116a74468389e89da018dd985f1ed1005b92401907881a14bdcc1be8bd98a"
   head "https://github.com/joshua-decoder/joshua.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "c373b6ed390b6fdc1f9fca0feb59306539aba04cb95d8f4a72af6215d7bc0969" => :el_capitan
+    sha256 "2e3c7ba471fbd45fa321e2e17f12debe6f3256dfc1e546fe654e4b4942d43f50" => :yosemite
+    sha256 "577237cd1bd6b58e274a78d7dd262440a980319111b9d516f74086aad36b78b5" => :mavericks
+  end
+
   option "with-es-en-phrase-pack", "Build with Spanish–English phrase-based model [1.9 GB]."
   option "with-ar-en-phrase-pack", "Build with Arabic–English phrase-based model [2.4 GB]."
 
