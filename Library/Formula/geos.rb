@@ -27,6 +27,7 @@ class Geos < Formula
 
     args = [
       "--disable-dependency-tracking",
+      "--disable-cassert",
       "--prefix=#{prefix}",
     ]
 
