@@ -1,7 +1,7 @@
 class Multitail < Formula
   desc "Tail multiple files in one terminal simultaneously"
-  homepage "http://vanheusden.com/multitail/"
-  url "https://www.vanheusden.com/multitail/multitail-6.4.2.tgz"
+  homepage "https://vanheusden.com/multitail/"
+  url "https://vanheusden.com/multitail/multitail-6.4.2.tgz"
   sha256 "af1d5458a78ad3b747c5eeb135b19bdca281ce414cefdc6ea0cff6d913caa1fd"
 
   bottle do
