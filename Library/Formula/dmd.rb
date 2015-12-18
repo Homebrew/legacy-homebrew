@@ -1,6 +1,6 @@
 class Dmd < Formula
   desc "D programming language compiler for OS X"
-  homepage "http://dlang.org"
+  homepage "https://dlang.org/"
 
   stable do
     url "https://github.com/D-Programming-Language/dmd/archive/v2.069.2.tar.gz"
