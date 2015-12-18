@@ -121,10 +121,8 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-rtti", "Build with C++ RTTI"
-  option "without-assertions", "Speeds up LLVM, but provides less debug information"
 
   deprecated_option "rtti" => "with-rtti"
-  deprecated_option "disable-assertions" => "without-assertions"
 
   if MacOS.version <= :snow_leopard
     depends_on :python
@@ -197,12 +195,6 @@ class Llvm < Formula
     ]
 
     args << "-DLLVM_ENABLE_RTTI=On" if build.with? "rtti"
-
-    if build.with? "assertions"
-      args << "-DLLVM_ENABLE_ASSERTIONS=On"
-    else
-      args << "-DCMAKE_CXX_FLAGS_RELEASE='-DNDEBUG'"
-    end
 
     if build.universal?
       ENV.permit_arch_flags
