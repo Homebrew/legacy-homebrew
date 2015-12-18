@@ -64,7 +64,7 @@ class Gdb < Formula
       "--with-lzma",
     ]
 
-		args << "--with-system-readline" if build.with? "brewed-pyhon"
+    args << "--with-system-readline" if build.with? "brewed-pyhon"
     args << "--with-guile" if build.with? "guile"
     args << "--enable-targets=all" if build.with? "all-targets"
 
