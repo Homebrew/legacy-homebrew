@@ -1,6 +1,6 @@
 class Vramsteg < Formula
   desc "Add progress bars to command-line applications"
-  homepage "http://tasktools.org/projects/vramsteg.html"
+  homepage "https://tasktools.org/projects/vramsteg.html"
   url "https://taskwarrior.org/download/vramsteg-1.0.1.tar.gz"
   sha256 "bc47e078079a845fa9c9cc5e4c9f4585402430ac6efc82ea6ff607506af8bdb9"
 
