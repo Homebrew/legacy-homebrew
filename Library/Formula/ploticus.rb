@@ -1,4 +1,4 @@
-class Ploticus242 < Formula
+class Ploticus < Formula
   desc "ploticus data display package"
   homepage "http://ploticus.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ploticus/ploticus/2.42/ploticus242_src.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fploticus%2F%3Fsource%3Dtyp_redirect&ts=1449655936"
