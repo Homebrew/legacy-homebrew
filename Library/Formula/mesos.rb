@@ -57,8 +57,7 @@ class Mesos < Formula
   needs :cxx11
 
   def install
-    # Set _JAVA_OPTIONS to make mesos java plugins compile success in Homebrew sandbox.
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home"
+    ENV.java_cache
 
     boto_path = libexec/"boto/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", boto_path
@@ -98,7 +97,7 @@ class Mesos < Formula
             "--disable-debug",
             "--disable-dependency-tracking",
             "--disable-silent-rules",
-            "--with-svn=#{Formula["subversion"].opt_prefix}"
+            "--with-svn=#{Formula["subversion"].opt_prefix}",
            ]
 
     unless MacOS::CLT.installed?
