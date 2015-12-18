@@ -1,0 +1,31 @@
+class Scour < Formula
+  desc "SVG file scrubber"
+  homepage "http://www.codedread.com/scour/"
+  url "https://github.com/codedread/scour/archive/v0.32.tar.gz"
+  sha256 "c40104ec02120ed02ce2d7d76d5829cb17a06e3fa76fb19b4fe958c0cf403952"
+
+  depends_on :python if MacOS.version <= :snow_leopard
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+  end
+
+  def install
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    resource("six").stage do
+      system "python", *Language::Python.setup_install_args(libexec/"vendor")
+    end
+
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+  end
+
+  test do
+    system "#{bin}/scour", "-i", test_fixtures("test.svg"), "-o", "scrubbed.svg"
+    assert File.exist? "scrubbed.svg"
+  end
+end
