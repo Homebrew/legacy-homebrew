@@ -1,6 +1,6 @@
 class Stgit < Formula
   desc "Push/pop utility built on top of Git"
-  homepage "http://gna.org/projects/stgit/"
+  homepage "https://gna.org/projects/stgit/"
   url "http://download.gna.org/stgit/stgit-0.17.1.tar.gz"
   sha256 "d43365a0c22e41a6fb9ba1a86de164d6475e79054e7f33805d6a829eb4056ade"
 
