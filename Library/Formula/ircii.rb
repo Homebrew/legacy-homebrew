@@ -1,8 +1,8 @@
 class Ircii < Formula
   desc "IRC and ICB client"
   homepage "http://www.eterna.com.au/ircii/"
-  url "http://ircii.warped.com/ircii-20150903.tar.bz2"
-  sha256 "617502e17788d619510f3f5efc1217e6c9d3a55e8227ece591c56981b0901324"
+  url "http://ircii.warped.com/ircii-20151120.tar.bz2"
+  sha256 "5dfd3fd364a96960e1f57ade4d755474556858653e4ce64265599520378c5f65"
 
   bottle do
     sha256 "62e2eddce9afdcb017823462fee587f140a195c0b98bfdf328e1a4112331ccdb" => :el_capitan
