@@ -80,8 +80,8 @@ class Mesos < Formula
               "import ext_modules",
               native_patch
 
-    # skip build javadoc because Homebrew sandbox set _JAVA_OPTIONS would
-    # trigger maven-javadoc-plugin bug.
+    # skip build javadoc because Homebrew sandbox ENV.java_cache
+    # would trigger maven-javadoc-plugin bug.
     # https://issues.apache.org/jira/browse/MESOS-3482
     maven_javadoc_patch = <<-EOS.undent
       <properties>
