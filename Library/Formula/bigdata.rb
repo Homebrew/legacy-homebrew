@@ -1,6 +1,6 @@
 class Bigdata < Formula
   desc "Graph database supporting RDF data model, Sesame, and Blueprint APIs"
-  homepage "http://www.blazegraph.com/bigdata"
+  homepage "https://www.blazegraph.com/bigdata"
   url "https://downloads.sourceforge.net/project/bigdata/bigdata/1.5.1/bigdata-bundled.jar"
   version "1.5.1"
   sha256 "092ecfb1293de27ef40c02795a34ac410e30d175623a342b27271952f01c1f1a"
