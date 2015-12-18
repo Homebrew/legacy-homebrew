@@ -1,8 +1,8 @@
 class AwsElasticbeanstalk < Formula
   desc "Client for Amazon Elastic Beanstalk web service"
   homepage "https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-reference-eb.html"
-  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.6.1.tar.gz"
-  sha256 "383cbf481c1515ee22eb7153beba5bbea9fecb04e42fd2c4ddaa958ee6dc5ce7"
+  url "https://pypi.python.org/packages/source/a/awsebcli/awsebcli-3.6.2.tar.gz"
+  sha256 "4b98ab1b2bc26c947363bf982662f83d2e0f5ddacd845e5160426cf75cbdc521"
 
   bottle do
     cellar :any_skip_relocation
@@ -44,8 +44,8 @@ class AwsElasticbeanstalk < Formula
   end
 
   resource "texttable" do
-    url "https://pypi.python.org/packages/source/t/texttable/texttable-0.8.3.tar.gz"
-    sha256 "f333ac915e7c5daddc7d4877b096beafe74ea88b4b746f82a4b110f84e348701"
+    url "https://pypi.python.org/packages/source/t/texttable/texttable-0.8.4.tar.gz"
+    sha256 "8587b61cb6c6022d0eb79e56e59825df4353f0f33099b4ae3bcfe8d41bd1702e"
   end
 
   resource "websocket-client" do
