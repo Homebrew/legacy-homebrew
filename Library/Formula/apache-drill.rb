@@ -13,7 +13,8 @@ class ApacheDrill < Formula
   end
 
   test do
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
+    ENV.java_cache
+
     pipe_output("#{bin}/sqlline -u jdbc:drill:zk=local", "!tables", 0)
   end
 end
