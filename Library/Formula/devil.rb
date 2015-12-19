@@ -7,10 +7,10 @@ class Devil < Formula
 
   bottle :disable, "Can't generate bottles until builds with either Clang or GCC-5"
 
+  option :universal
+
   depends_on "libpng"
   depends_on "jpeg"
-
-  option :universal
 
   # see https://sourceforge.net/p/openil/bugs/204/
   # also, even with -std=gnu99 removed from the configure script,
