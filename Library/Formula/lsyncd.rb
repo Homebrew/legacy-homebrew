@@ -44,6 +44,8 @@ class Lsyncd < Formula
     "10.10.4"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
     "10.10.5"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
     "10.11"    => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
+    "10.11.1"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
+    "10.11.2"  => ["xnu-2782.20.48.tar.gz",  "d1d7cfdf282b6b651415d5adb7f591f3d7ee0e0ccdd29db664c0ec3f9f827146"],
   }
 
   if xnu_headers.key? MACOS_FULL_VERSION
