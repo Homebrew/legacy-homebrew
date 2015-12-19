@@ -12,8 +12,4 @@ class Cpprestsdk < Formula
     system "getconf _NPROCESSORS_ONLN | make -j"
     system "make", "install"
   end
-
-  test do
-    system "false"
-  end
 end
