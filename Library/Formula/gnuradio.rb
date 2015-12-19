@@ -23,7 +23,6 @@ class Gnuradio < Formula
   option "with-documentation", "Build with documentation"
   option :universal
 
-  depends_on "cmake" => :build
   depends_on "pkg-config" => :build
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -51,6 +50,12 @@ class Gnuradio < Formula
   depends_on "sdl" => :recommended
   depends_on "jack" => :recommended
   depends_on "portaudio" => :recommended
+
+  # gnuradio is known not to compile against CMake >3.3.2 currently.
+  resource "cmake" do
+    url "http://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
+    sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
+  end
 
   resource "numpy" do
     url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.1.tar.gz"
@@ -82,6 +87,32 @@ class Gnuradio < Formula
   def install
     ENV["CHEETAH_INSTALL_WITHOUT_SETUPTOOLS"] = "1"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+
+    resource("cmake").stage do
+      args = %W[
+        --prefix=#{buildpath}/cmake
+        --no-system-libs
+        --parallel=#{ENV.make_jobs}
+        --datadir=/share/cmake
+        --docdir=/share/doc/cmake
+        --mandir=/share/man
+        --system-zlib
+        --system-bzip2
+      ]
+
+      # https://github.com/Homebrew/homebrew/issues/45989
+      if MacOS.version <= :lion
+        args << "--no-system-curl"
+      else
+        args << "--system-curl"
+      end
+
+      system "./bootstrap", *args
+      system "make"
+      system "make", "install"
+    end
+
+    ENV.prepend_path "PATH", buildpath/"cmake/bin"
 
     res = %w[Markdown Cheetah lxml numpy]
     res.each do |r|
