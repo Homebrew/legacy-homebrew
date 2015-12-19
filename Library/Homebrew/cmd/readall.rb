@@ -33,22 +33,29 @@ module Homebrew
       Homebrew.failed = failed
     end
 
-    if ARGV.delete("--aliases")
-      Pathname.glob("#{HOMEBREW_LIBRARY}/Aliases/*").each do |f|
-        next unless f.symlink?
-        next if f.file?
-        onoe "Broken alias: #{f}"
-        Homebrew.failed = true
-      end
-    end
-
     formulae = []
+    alias_dirs = []
     if ARGV.named.empty?
       formulae = Formula.files
+      alias_dirs = Tap.map(&:alias_dir)
+      alias_dirs.unshift CoreFormulaRepository.instance.alias_dir
     else
       tap = Tap.fetch(ARGV.named.first)
       raise TapUnavailableError, tap.name unless tap.installed?
       formulae = tap.formula_files
+      alias_dirs = [tap.alias_dir]
+    end
+
+    if ARGV.delete("--aliases")
+      alias_dirs.each do |alias_dir|
+        next unless alias_dir.directory?
+        Pathname.glob("#{alias_dir}/*").each do |f|
+          next unless f.symlink?
+          next if f.file?
+          onoe "Broken alias: #{f}"
+          Homebrew.failed = true
+        end
+      end
     end
 
     formulae.each do |file|
