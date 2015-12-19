@@ -1,8 +1,22 @@
+class FrameworkPythonRequirement < Requirement
+  fatal true
+
+  satisfy do
+    q = `python -c "import distutils.sysconfig as c; print(c.get_config_var('PYTHONFRAMEWORK'))"`
+    !q.chomp.empty?
+  end
+
+  def message
+    "Python needs to be built as a framework."
+  end
+end
+
 class Wxmac < Formula
   desc "wxWidgets, a cross-platform C++ GUI toolkit (for OS X)"
   homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha256 "346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d"
+  revision 1
 
   bottle do
     cellar :any
@@ -14,17 +28,28 @@ class Wxmac < Formula
   end
 
   option :universal
-  option "with-stl", "use standard C++ classes for everything"
-  option "with-static", "build static libraries"
+  option "with-stl", "Use standard C++ classes for everything"
+  option "with-static", "Build static libraries"
+  option "without-wxpython", "Don't build wxpython"
 
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
 
+  if MacOS.version <= :snow_leopard && build.with?("wxpython")
+    depends_on :python
+    depends_on FrameworkPythonRequirement
+  end
+
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
   # Theoretically the above linked patch should still be needed, but it isn't. Try to find out why.
   patch :DATA
+
+  resource "wxpython" do
+    url "https://downloads.sourceforge.net/project/wxpython/wxPython/3.0.2.0/wxPython-src-3.0.2.0.tar.bz2"
+    sha256 "d54129e5fbea4fb8091c87b2980760b72c22a386cb3b9dd2eebc928ef5e8df61"
+  end
 
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
@@ -77,10 +102,36 @@ class Wxmac < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    if build.with? "wxpython"
+      resource("wxpython").stage do
+        ENV["WXWIN"] = buildpath
+        ENV.append_to_cflags "-arch #{MacOS.preferred_arch}" unless build.universal?
+
+        args = [
+          "WXPORT=osx_cocoa",
+          # Reference our wx-config
+          "WX_CONFIG=#{bin}/wx-config",
+          # At this time Wxmac is installed Unicode only
+          "UNICODE=1",
+          # Some scripts (e.g. matplotlib) expect to `import wxversion`, which is
+          # only available on a multiversion build.
+          "INSTALL_MULTIVERSION=1",
+          # OpenGL and stuff
+          "BUILD_GLCANVAS=1",
+          "BUILD_GIZMOS=1",
+          "BUILD_STC=1",
+        ]
+
+        cd "wxPython" do
+          system "python", "setup.py", "install", "--prefix=#{prefix}", *args
+        end
+      end
+    end
   end
 
   test do
-    system "wx-config", "--libs"
+    system bin/"wx-config", "--libs"
   end
 end
 
