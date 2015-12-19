@@ -91,6 +91,14 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make", "install"
+
+      # Remove when 25.1 is released
+      if build.stable?
+        chmod 0644, %w[nextstep/Emacs.app/Contents/PkgInfo
+                       nextstep/Emacs.app/Contents/Resources/Credits.html
+                       nextstep/Emacs.app/Contents/Resources/document.icns
+                       nextstep/Emacs.app/Contents/Resources/Emacs.icns]
+      end
       prefix.install "nextstep/Emacs.app"
 
       # Replace the symlink with one that avoids starting Cocoa.
