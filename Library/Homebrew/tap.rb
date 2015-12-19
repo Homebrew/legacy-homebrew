@@ -299,6 +299,7 @@ class Tap
     raise TapPinStatusError.new(name, false) unless pinned?
     pinned_symlink_path.delete
     pinned_symlink_path.parent.rmdir_if_possible
+    pinned_symlink_path.parent.parent.rmdir_if_possible
     @pinned = false
   end
 
