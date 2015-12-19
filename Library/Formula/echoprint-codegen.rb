@@ -3,6 +3,7 @@ class EchoprintCodegen < Formula
   homepage "http://echoprint.me"
   url "https://github.com/echonest/echoprint-codegen/archive/v4.12.tar.gz"
   sha256 "c40eb79af3abdb1e785b6a48a874ccfb0e9721d7d180626fe29c72a29acd3845"
+  revision 1
   head "https://github.com/echonest/echoprint-codegen.git"
 
   bottle do
@@ -12,8 +13,6 @@ class EchoprintCodegen < Formula
     sha256 "02e03a969cc7efba2a8d43a7783d9d3354df14f3148730f47170681167dec99c" => :mavericks
     sha256 "9538866db7e68b664c9aebc22241bf00acec9b19629b08c1cedf6f87f5ec5dc6" => :mountain_lion
   end
-
-  revision 1
 
   depends_on "ffmpeg"
   depends_on "taglib"
