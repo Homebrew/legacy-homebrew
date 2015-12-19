@@ -109,4 +109,22 @@ class IntegrationCommandTests < Homebrew::TestCase
     (HOMEBREW_CACHE/"test").write "test"
     assert_match "#{HOMEBREW_CACHE}/test", cmd("cleanup", "--prune=all")
   end
+
+  def test_readall
+    repo = CoreFormulaRepository.new
+    formula_file = repo.formula_dir/"foo.rb"
+    formula_file.write <<-EOS.undent
+      class Foo < Formula
+        url "https://example.com/foo-1.0.tar.gz"
+      end
+    EOS
+    alias_file = repo.alias_dir/"bar"
+    alias_file.parent.mkpath
+    FileUtils.ln_s formula_file, alias_file
+    cmd("readall", "--aliases", "--syntax")
+    cmd("readall", "Homebrew/homebrew")
+  ensure
+    formula_file.unlink
+    repo.alias_dir.rmtree
+  end
 end
