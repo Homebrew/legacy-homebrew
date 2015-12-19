@@ -4,7 +4,8 @@
 # or to determine if any current formulae have Ruby issues
 
 require "formula"
-require "cmd/tap"
+require "tap"
+require "core_formula_repository"
 require "thread"
 
 module Homebrew

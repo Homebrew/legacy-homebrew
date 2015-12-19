@@ -3,7 +3,8 @@
 
 require "utils"
 require "formula"
-require "cmd/tap"
+require "tap"
+require "core_formula_repository"
 
 module Homebrew
   def pull_url(url)
