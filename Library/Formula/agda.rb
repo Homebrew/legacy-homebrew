@@ -2,16 +2,24 @@ require "language/haskell"
 
 class Agda < Formula
   include Language::Haskell::Cabal
+
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  revision 1
+  revision 2
 
   stable do
     url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
     sha256 "0147f8a1395a69bee1e7a452682094e45c83126233f9864544b8a14f956ce8c3"
+
     # fix compilation of the included Emacs mode
     # merged upstream in https://github.com/agda/agda/pull/1700
     patch :DATA
+
+    resource "stdlib" do
+      url "https://github.com/agda/agda-stdlib.git",
+          :tag => "v0.11",
+          :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
+    end
   end
 
   bottle do
@@ -22,16 +30,11 @@ class Agda < Formula
   end
 
   head do
-    url "https://github.com/agda/agda.git", :branch => "master"
-    resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib.git", :branch => "master"
-    end
-  end
+    url "https://github.com/agda/agda.git"
 
-  resource "stdlib" do
-    url "https://github.com/agda/agda-stdlib.git",
-        :tag => "v0.11",
-        :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
+    resource "stdlib" do
+      url "https://github.com/agda/agda-stdlib.git"
+    end
   end
 
   option "without-stdlib", "Don't install the Agda standard library"
