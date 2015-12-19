@@ -4,6 +4,13 @@ class Scour < Formula
   url "https://github.com/codedread/scour/archive/v0.32.tar.gz"
   sha256 "c40104ec02120ed02ce2d7d76d5829cb17a06e3fa76fb19b4fe958c0cf403952"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "e20386a449eee13ff8efd15b517b0f259a69699876b9698e48a0a4d3e0854503" => :el_capitan
+    sha256 "46b84524f4551881018c7c9ef2f3e82e99b875de44b63e21328d69b0df731761" => :yosemite
+    sha256 "dbc08567e8e78e9020417f859c0e97dbd93314174c2a6fa5bcf4234de1ded610" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "six" do
