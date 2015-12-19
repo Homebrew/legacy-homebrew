@@ -1,5 +1,5 @@
 class Awf < Formula
-  desc "awf (A Widget Factory) is a theme preview application for gtk2 and gtk3"
+  desc "'A Widget Factory' is a theme preview application for gtk2 and gtk3"
   homepage "https://github.com/valr/awf"
   url "https://github.com/valr/awf/archive/v1.3.0.tar.gz"
   sha256 "911ded8a307beecbb8ee1dab489fa7b1aa9d7965cb34bd938482220505814fa4"
