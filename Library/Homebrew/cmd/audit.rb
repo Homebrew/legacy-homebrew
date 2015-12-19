@@ -790,9 +790,10 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if line =~ /MACOS_FULL_VERSION/
-      problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
-    end
+    # TODO: comment out this after core code and formulae separation.
+    # if line =~ /MACOS_FULL_VERSION/
+    #   problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
+    # end
 
     cats = %w[leopard snow_leopard lion mountain_lion].join("|")
     if line =~ /MacOS\.(?:#{cats})\?/
