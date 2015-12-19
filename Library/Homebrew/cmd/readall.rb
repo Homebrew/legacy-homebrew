@@ -54,6 +54,8 @@ module Homebrew
     formulae.each do |file|
       begin
         Formulary.factory(file)
+      rescue Interrupt
+        raise
       rescue Exception => e
         onoe "problem in #{file}"
         puts e
