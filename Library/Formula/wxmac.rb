@@ -58,6 +58,10 @@ class Wxmac < Formula
   end
 
   def install
+    if build.with?("static") && build.with?("wxpython")
+      odie "wxpython will not build against a static wxmac."
+    end
+
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
     args = [
       "--disable-debug",
