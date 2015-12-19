@@ -138,6 +138,7 @@ class Wxmac < Formula
 
   test do
     system bin/"wx-config", "--libs"
+    system "python", "-c", "import wx" if build.with? "wxpython"
   end
 end
 
