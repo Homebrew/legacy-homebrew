@@ -7,9 +7,9 @@ class Graphicsmagick < Formula
   revision 1
 
   bottle do
-    sha256 "96b2c3787f3c6c86d2a6b5088b51ee5c4e7c740ffc9e1c18a720c40414ff7fa0" => :el_capitan
-    sha256 "954b907626decb5aa636c214e848a4dc374322f86b6d757680b6cf73f70f5bc8" => :yosemite
-    sha256 "1252ee90b8812aea84378a9cad0cd2313e805d586bbca4fab6496839a5bc3a26" => :mavericks
+    sha256 "a77f97d5e497e26cbc73568b42f6b9d26fd4efec83b49adf9fa079961d0ba739" => :el_capitan
+    sha256 "71144976c74ef0afac37fc9e00b278f746a5c02c04322654078a5a127fbaecf4" => :yosemite
+    sha256 "66057aa95ba0524fc9bf9903eb5ca734b69faec5f95c09bca519e29e76c4f670" => :mavericks
   end
 
   option "with-quantum-depth-8", "Compile with a quantum depth of 8 bit"
