@@ -32,7 +32,7 @@ class Kettle < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/pdicarte</string>
+          <string>#{opt_bin}/pdicarte</string>
           <string>#{etc}/kettle/carte-config.xml</string>
         </array>
         <key>EnvironmentVariables</key>
