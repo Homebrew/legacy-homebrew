@@ -41,6 +41,12 @@ class Wxmac < Formula
     depends_on FrameworkPythonRequirement
   end
 
+  link_overwrite "lib/python2.7/site-packages/wx-3.0-osx_cocoa"
+  link_overwrite "lib/python2.7/site-packages/wx.pth"
+  link_overwrite "lib/python2.7/site-packages/wxPython_common-3.0.2.0-py2.7.egg-info"
+  link_overwrite "lib/python2.7/site-packages/wxversion.py"
+  link_overwrite "lib/python2.7/site-packages/wxversion.pyc"
+
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
   # Theoretically the above linked patch should still be needed, but it isn't. Try to find out why.
