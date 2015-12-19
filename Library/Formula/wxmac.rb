@@ -3,6 +3,7 @@ class Wxmac < Formula
   homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha256 "346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d"
+  revision 1
 
   bottle do
     cellar :any
@@ -13,12 +14,13 @@ class Wxmac < Formula
     sha256 "59eb370bb7368a155ad3d6b7dba8536160d9d1ee6ebc67d240eb014f4a6d2dda" => :mountain_lion
   end
 
+  option :universal
+  option "with-stl", "use standard C++ classes for everything"
+  option "with-static", "build static libraries"
+
   depends_on "jpeg"
   depends_on "libpng"
   depends_on "libtiff"
-
-  option "with-stl", "use standard C++ classes for everything"
-  option "with-static", "build static libraries"
 
   # Various fixes related to Yosemite. Revisit in next stable release.
   # Please keep an eye on http://trac.wxwidgets.org/ticket/16329 as well
@@ -27,14 +29,6 @@ class Wxmac < Formula
 
   def install
     # need to set with-macosx-version-min to avoid configure defaulting to 10.5
-    # need to enable universal binary build in order to build all x86_64
-    # Jack - I don't believe this is the whole story, surely this can be fixed
-    # without building universal for users who don't need it.
-    # headers need to specify x86_64 and i386 or will try to build for ppc arch
-    # and fail on newer OSes
-    # DomT4 - MacPorts seems to have stopped building universal by default? Can we do the same?
-    # https://trac.macports.org/browser/trunk/dports/graphics/wxWidgets-3.0/Portfile#L210
-    ENV.universal_binary
     args = [
       "--disable-debug",
       "--prefix=#{prefix}",
@@ -63,12 +57,16 @@ class Wxmac < Formula
       "--enable-controls",
       "--enable-dataviewctrl",
       "--with-expat",
-      "--with-macosx-version-min=#{MacOS.version}",
-      "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(",")}",
       "--disable-precomp-headers",
+      "--with-macosx-version-min=#{MacOS.version}",
       # This is the default option, but be explicit
-      "--disable-monolithic"
+      "--disable-monolithic",
     ]
+
+    if build.universal?
+      ENV.universal_binary
+      args << "--enable-universal_binary=#{Hardware::CPU.universal_archs.join(",")}"
+    end
 
     args << "--enable-stl" if build.with? "stl"
 
@@ -83,7 +81,7 @@ class Wxmac < Formula
   end
 
   test do
-    system "wx-config", "--libs"
+    system bin/"wx-config", "--libs"
   end
 end
 
