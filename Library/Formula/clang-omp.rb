@@ -23,6 +23,14 @@ class ClangOmp < Formula
     end
   end
 
+  bottle do
+    revision 2
+    sha256 "9db72fb0f069d564f9ad509922ebabda30008587924b4af33b8b80c5795e7fdd" => :el_capitan
+    sha256 "2d29cc7bcde757610a325e57c0ea0162cee97c2cf04ea424f8e4010c57ae2295" => :yosemite
+    sha256 "3989eb56c26ca2903ea1bde7aaf0b02c05a5dbfc1eae59056860abca9c6d5fec" => :mavericks
+    sha256 "2a848d5efa46b5cc6e906f2c71608c8098238a397e6979912dcef2b5b1d2807c" => :mountain_lion
+  end
+
   head do
     url "https://github.com/clang-omp/llvm_trunk.git"
 
@@ -37,14 +45,6 @@ class ClangOmp < Formula
     resource "libcxx" do
       url "https://github.com/llvm-mirror/libcxx.git"
     end
-  end
-
-  bottle do
-    revision 2
-    sha256 "9db72fb0f069d564f9ad509922ebabda30008587924b4af33b8b80c5795e7fdd" => :el_capitan
-    sha256 "2d29cc7bcde757610a325e57c0ea0162cee97c2cf04ea424f8e4010c57ae2295" => :yosemite
-    sha256 "3989eb56c26ca2903ea1bde7aaf0b02c05a5dbfc1eae59056860abca9c6d5fec" => :mavericks
-    sha256 "2a848d5efa46b5cc6e906f2c71608c8098238a397e6979912dcef2b5b1d2807c" => :mountain_lion
   end
 
   depends_on "libiomp"
