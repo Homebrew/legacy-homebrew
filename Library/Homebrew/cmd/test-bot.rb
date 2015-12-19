@@ -651,9 +651,13 @@ module Homebrew
       if @tap
         test "brew", "readall", @tap.name
       else
-        test "brew", "tests", "--no-compat"
+        tests_args = ["--no-compat"]
         readall_args = ["--aliases"]
-        readall_args << "--syntax" if RUBY_VERSION.split(".").first.to_i >= 2
+        if RUBY_VERSION.split(".").first.to_i >= 2
+          tests_args << "--coverage" if ENV["TRAVIS"]
+          readall_args << "--syntax"
+        end
+        test "brew", "tests", *tests_args
         test "brew", "readall", *readall_args
         test "brew", "update-test"
       end
