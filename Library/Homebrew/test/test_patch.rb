@@ -35,6 +35,7 @@ class PatchTests < Homebrew::TestCase
 
   def test_raises_for_unknown_values
     assert_raises(ArgumentError) { Patch.create(Object.new) }
+    assert_raises(ArgumentError) { Patch.create(Object.new, Object.new) }
   end
 end
 
@@ -98,5 +99,27 @@ class LegacyPatchTests < Homebrew::TestCase
 
   def test_nil
     assert_empty Patch.normalize_legacy_patches(nil)
+  end
+end
+
+class EmbeddedPatchTests < Homebrew::TestCase
+  def test_inspect
+    p = EmbeddedPatch.new :p1
+    assert_equal "#<EmbeddedPatch: :p1>", p.inspect
+  end
+end
+
+class ExternalPatchTests < Homebrew::TestCase
+  def setup
+    @p = ExternalPatch.new(:p1) { url "file:///my.patch" }
+
+  end
+
+  def test_url
+    assert_equal "file:///my.patch", @p.url
+  end
+
+  def test_inspect
+    assert_equal %(#<ExternalPatch: :p1 "file:///my.patch">), @p.inspect
   end
 end
