@@ -1,6 +1,7 @@
 require "digest/md5"
 require "formula_renames"
 require "tap"
+require "core_formula_repository"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.

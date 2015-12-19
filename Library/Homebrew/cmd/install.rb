@@ -1,8 +1,9 @@
 require "blacklist"
 require "cmd/doctor"
 require "cmd/search"
-require "cmd/tap"
 require "formula_installer"
+require "tap"
+require "core_formula_repository"
 require "hardware"
 
 module Homebrew
