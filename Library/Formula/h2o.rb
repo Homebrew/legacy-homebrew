@@ -6,9 +6,9 @@ class H2o < Formula
   head "https://github.com/h2o/h2o.git"
 
   bottle do
-    sha256 "14b9188f8e461e608ff40a4fa78e8afcb31f3980dc70fbbf9e397fa2e97536d5" => :el_capitan
-    sha256 "846bd2d1f674008ebc8937c77a5b5f0a731034416fcfd6346dfb4bcaa1bcc2fd" => :yosemite
-    sha256 "64d22c2a81a925adf9a62192eb4498731b61f7bc3ec66a181e8c27a6829d2175" => :mavericks
+    sha256 "0c64bb64a2ccb9065c4ad79dca90e20e66dea74c7a8116c166a6f22f65117ea4" => :el_capitan
+    sha256 "d0603d6520f363e8c1f47698337c0431aee8be3e5948920ced8fbef84debfda5" => :yosemite
+    sha256 "6dc8da7d19191070e2ff1a95edfddaccc6c349886c1bfa6a15fc1dba184ed57f" => :mavericks
   end
 
   option "with-libuv", "Build the H2O library in addition to the executable"
