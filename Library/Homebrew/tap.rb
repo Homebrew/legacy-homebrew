@@ -196,7 +196,7 @@ class Tap
     return unless (path/"man").exist?
     (path/"man").find do |src|
       next if src.directory?
-      dst = HOMEBREW_PREFIX/src.relative_path_from(path)
+      dst = HOMEBREW_PREFIX/"share"/src.relative_path_from(path)
       dst.delete if dst.symlink? && src == dst.resolved_path
       dst.parent.rmdir_if_possible
     end
