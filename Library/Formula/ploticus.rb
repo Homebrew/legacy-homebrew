@@ -5,6 +5,13 @@ class Ploticus < Formula
   version "2.42"
   sha256 "3f29e4b9f405203a93efec900e5816d9e1b4381821881e241c08cab7dd66e0b0"
 
+  bottle do
+    cellar :any
+    sha256 "4692b3e6ac406608edda1a7e3a7a209e79b535ad15e5592ed58354d5c06c8da8" => :el_capitan
+    sha256 "394fd11e14746155110865f98f3dbab9b54bd6de166ffdbe31e380b20d58c5f1" => :yosemite
+    sha256 "1e9f32e1e439d234a0597a33a2a28399995f9a05e1c91901c590b44697c4cbee" => :mavericks
+  end
+
   depends_on "libpng"
 
   def install
