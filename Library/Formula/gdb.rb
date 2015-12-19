@@ -53,7 +53,7 @@ class Gdb < Formula
 
   if build.with? "brewed-python3"
     depends_on UniversalBrewedPython3
-		patch :p1, :DATA
+    patch :p1, :DATA
   end
 
   def install
@@ -68,12 +68,12 @@ class Gdb < Formula
     args << "--with-guile" if build.with? "guile"
     args << "--enable-targets=all" if build.with? "all-targets"
 
-    if build.with? "brewed-python" 
+    if build.with? "brewed-python"
       args << "--with-python=#{HOMEBREW_PREFIX}/bin/python"
-		elsif build.with? "brewed-python3"
+    elsif build.with? "brewed-python3"
       args << "--with-python=#{HOMEBREW_PREFIX}/bin/python3"
-		else
-      args << "--with-python=/usr/local"
+    else
+      args << "--with-python=/usr"
     end
 
     if build.with? "version-suffix"
