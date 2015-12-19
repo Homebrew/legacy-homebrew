@@ -62,6 +62,10 @@ module Homebrew
         cleanup_path(path) { path.unlink }
         next
       end
+      if path.basename.to_s == "java_cache" && path.directory?
+        cleanup_path(path) { FileUtils.rm_rf path }
+        next
+      end
       if prune?(path)
         if path.file?
           cleanup_path(path) { path.unlink }

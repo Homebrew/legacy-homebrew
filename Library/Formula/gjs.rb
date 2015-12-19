@@ -5,15 +5,17 @@ class Gjs < Formula
   sha256 "88c960f6ad47a6931d123f5d6317d13704f58572f68a4391913a254ff27dce80"
 
   bottle do
-    sha256 "064d5c01e71abb4d7ea8fa83cf6d12649a1285b15087ad73e9f3d00895e8921f" => :el_capitan
-    sha256 "42c41dab3869b1db0993362682c2319ba743b6dcc3fbeb840c65f736b4928a63" => :yosemite
-    sha256 "de191dae86b0ce0185ac6061784caae913eb3dbd5bb27276363bdb9f19db3de4" => :mavericks
+    revision 1
+    sha256 "fb613d40633ad455a5a057d8ea196b6fd602bfd3c5920bb917783f413f0982d0" => :el_capitan
+    sha256 "dfcf484bc4ccbf5d3e6db92247d963712609d7d8d821b8046843899368f9aef1" => :yosemite
+    sha256 "dab6d6305eb3d8046b7f87659b5c3207bb309787a7f58d64a9c018fab78f6437" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "gobject-introspection"
   depends_on "nspr"
   depends_on "readline"
+  depends_on "gtk+3" => :recommended
 
   resource "mozjs24" do
     url "https://ftp.mozilla.org/pub/mozilla.org/js/mozjs-24.2.0.tar.bz2"

@@ -1,9 +1,9 @@
 class Solr < Formula
   desc "Enterprise search platform from the Apache Lucene project"
   homepage "https://lucene.apache.org/solr/"
-  url "https://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.3.1/solr-5.3.1.tgz"
-  mirror "https://archive.apache.org/dist/lucene/solr/5.3.1/solr-5.3.1.tgz"
-  sha256 "34ddcac071226acd6974a392af7671f687990aa1f9eb4b181d533ca6dca6f42d"
+  url "https://www.apache.org/dyn/closer.cgi?path=lucene/solr/5.4.0/solr-5.4.0.tgz"
+  mirror "https://archive.apache.org/dist/lucene/solr/5.4.0/solr-5.4.0.tgz"
+  sha256 "84c0f04a23047946f54618a092d4510d88d7205a756b948208de9e5afb42f7cd"
 
   bottle :unneeded
 
@@ -14,6 +14,8 @@ class Solr < Formula
   def install
     libexec.install Dir["*"]
     bin.install "#{libexec}/bin/solr"
+    bin.install "#{libexec}/bin/post"
+    bin.install "#{libexec}/bin/oom_solr.sh"
     share.install "#{libexec}/bin/solr.in.sh"
     prefix.install "#{libexec}/example"
     prefix.install "#{libexec}/server"

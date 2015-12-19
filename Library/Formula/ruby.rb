@@ -1,14 +1,13 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2"
-  sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
+  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.4.tar.bz2"
+  sha256 "31203696adbfdda6f2874a2de31f7c5a1f3bcb6628f4d1a241de21b158cd5c76"
 
   bottle do
-    revision 1
-    sha256 "a1360891dc5f037f5f28d54a0f4314b601a12f79abd49972216419d186142b70" => :el_capitan
-    sha256 "ad503cac645b112e2d50327b50608d5833aca8d0cdded52d82c21ccecc2ba399" => :yosemite
-    sha256 "ebdca4210ea52abd85ec1102f223ef2f537ae20249da305f720144b4424e9b93" => :mavericks
+    sha256 "0ae4452015623280e369cd6c991f25adf547d9d94fa78c869fa581767069453f" => :el_capitan
+    sha256 "8afc123353ab4373c5cb2b90ad918a92e7416456413f946c46af50ea71935cc2" => :yosemite
+    sha256 "a3efd1af32f998025b70534fc6f505ab082613f7235c36624183d4a7e60221dd" => :mavericks
   end
 
   head do
@@ -172,8 +171,7 @@ class Ruby < Formula
   end
 
   test do
-    output = `#{bin}/ruby -e "puts 'hello'"`
-    assert_equal "hello\n", output
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/ruby -e \"puts 'hello'\"")
+    assert_match "hello\n", output
   end
 end

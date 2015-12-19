@@ -15,11 +15,11 @@ class Cayley < Formula
     sha256 "7a02a7326bb2b6f4ba85995553d03322b71c42b24873129a7aa4b375d2bd1c55" => :mavericks
   end
 
+  option "without-samples", "Disable installing sample data"
+
   depends_on "bazaar" => :build
   depends_on :hg => :build
   depends_on "go" => :build
-
-  option "without-samples", "Disable installing sample data"
 
   # Go dependencies
   go_resource "github.com/badgerodon/peg" do

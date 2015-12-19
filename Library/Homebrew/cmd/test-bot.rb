@@ -29,7 +29,8 @@ require "date"
 require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
-require "cmd/tap"
+require "tap"
+require "core_formula_repository"
 
 module Homebrew
   BYTES_IN_1_MEGABYTE = 1024*1024

@@ -26,7 +26,7 @@ class Kafka < Formula
   end
 
   def install
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}"
+    ENV.java_cache
 
     system "gradle"
     system "gradle", "jar"

@@ -4,7 +4,7 @@ class Grass < Formula
   revision 1
 
   stable do
-    url "http://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
+    url "https://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
     sha256 "5ddba27b4e5495f602ee5249a07e287f342dd8e1422ea5d490c04311c731d274"
 
     # Patches that files are not installed outside of the prefix.

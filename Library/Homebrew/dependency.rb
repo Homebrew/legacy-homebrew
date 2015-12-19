@@ -124,9 +124,37 @@ class Dependency
       all.map(&:name).uniq.map do |name|
         deps = grouped.fetch(name)
         dep  = deps.first
-        tags = deps.flat_map(&:tags).uniq
+        tags = merge_tags(deps)
         option_names = deps.flat_map(&:option_names).uniq
         dep.class.new(name, tags, dep.env_proc, option_names)
+      end
+    end
+
+    private
+
+    def merge_tags(deps)
+      options = deps.flat_map(&:option_tags).uniq
+      merge_necessity(deps) + merge_temporality(deps) + options
+    end
+
+    def merge_necessity(deps)
+      # Cannot use `deps.any?(&:required?)` here due to its definition.
+      if deps.any? { |dep| !dep.recommended? && !dep.optional? }
+        [] # Means required dependency.
+      elsif deps.any?(&:recommended?)
+        [:recommended]
+      else # deps.all?(&:optional?)
+        [:optional]
+      end
+    end
+
+    def merge_temporality(deps)
+      if deps.all?(&:build?)
+        [:build]
+      elsif deps.all?(&:run?)
+        [:run]
+      else
+        [] # Means both build and runtime dependency.
       end
     end
   end

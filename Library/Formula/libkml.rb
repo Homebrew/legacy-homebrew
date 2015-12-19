@@ -27,7 +27,7 @@ class Libkml < Formula
   end
 
   head do
-    url "http://libkml.googlecode.com/svn/trunk/"
+    url "https://libkml.googlecode.com/svn/trunk/"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

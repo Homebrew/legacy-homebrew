@@ -19,12 +19,12 @@ class Cctools < Formula
     sha256 "f9f74d98119d2efd5530f8d98eb7838a77be35576880ecec73fe9d535aa2afb0" => :mountain_lion
   end
 
+  keg_only :provided_by_osx,
+    "This package duplicates tools shipped by Xcode."
+
   depends_on :ld64
 
   cxxstdlib_check :skip
-
-  keg_only :provided_by_osx,
-    "This package duplicates tools shipped by Xcode."
 
   if MacOS.version >= :snow_leopard
     option "with-llvm", "Build with LTO support"
