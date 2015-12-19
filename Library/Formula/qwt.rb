@@ -41,19 +41,28 @@ class Qwt < Formula
     system "qmake", *args
     system "make"
     system "make", "install"
+  end
 
-    # symlink Qt Designer plugin (note: not removed on qwt formula uninstall)
+  def post_install
+    # This is a dirty hack, but one we've been using since 2014 and may as well
+    # stick with until we decide how to handle the qt plugin problem UM is working on.
+    # Symlink Qt Designer plugin (note: not removed on qwt formula uninstall)
     ln_sf prefix/"plugins/designer/libqwt_designer_plugin.dylib",
           Formula["qt"].opt_prefix/"plugins/designer/" if build.with? "plugin"
   end
 
   def caveats
-    if build.with? "qwtmathml"; <<-EOS.undent
+    s = ""
+
+    if build.with? "qwtmathml"
+      s += <<-EOS.undent
         The qwtmathml library contains code of the MML Widget from the Qt solutions package.
         Beside the Qwt license you also have to take care of its license:
         #{opt_prefix}/qtmmlwidget-license
       EOS
     end
+
+    s
   end
 end
 
