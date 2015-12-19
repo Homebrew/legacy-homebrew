@@ -243,8 +243,8 @@ class Duplicity < Formula
     # OSX doesn't provide a /usr/bin/python2. Upstream has been notified but
     # cannot fix the issue. See:
     #   https://github.com/Homebrew/homebrew/pull/34165#discussion_r22342214
-    inreplace "src", "#!/usr/bin/env python2", "#!/usr/bin/env python"
-    
+    inreplace "duplicity", "#!/usr/bin/env python2", "#!/usr/bin/env python"
+
     ENV["PYTHONPATH"] = libexec/"lib/python2.7/site-packages"
 
     ENV.universal_binary if build.universal?
