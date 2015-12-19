@@ -4,6 +4,12 @@ class Nload < Formula
   url "http://www.roland-riegel.de/nload/nload-0.7.4.tar.gz"
   sha256 "c1c051e7155e26243d569be5d99c744d8620e65fa8a7e05efcf84d01d9d469e5"
 
+  bottle do
+    sha256 "dd23e0631ece0bc06328be086993d030c8bf4e99d29898e59eb0e6f546c44990" => :el_capitan
+    sha256 "465b4d813588821d240dce65ffc46bc67d55f64044a26a33b5a49b810deea7f8" => :yosemite
+    sha256 "344b909ee8033a4ab27c1db04e9505b0bbf6d0141f391c470cc36b33e6dd7723" => :mavericks
+  end
+
   fails_with :llvm do
     build 2334
   end
