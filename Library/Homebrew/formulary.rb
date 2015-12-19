@@ -276,7 +276,7 @@ class Formulary
       return FormulaLoader.new(ref, formula_with_that_name)
     end
 
-    possible_alias = Pathname.new("#{HOMEBREW_LIBRARY}/Aliases/#{ref}")
+    possible_alias = CoreFormulaRepository.instance.alias_dir/ref
     if possible_alias.file?
       return AliasLoader.new(possible_alias)
     end

@@ -69,7 +69,7 @@ class FormularyFactoryTest < Homebrew::TestCase
   end
 
   def test_factory_from_alias
-    alias_dir = HOMEBREW_LIBRARY/"Aliases"
+    alias_dir = CoreFormulaRepository.instance.alias_dir
     alias_dir.mkpath
     FileUtils.ln_s @path, alias_dir/"foo"
     assert_kind_of Formula, Formulary.factory("foo")
