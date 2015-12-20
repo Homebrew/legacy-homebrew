@@ -24,16 +24,17 @@ class Gdb < Formula
     sha256 "1c48758042eed1ba9357fdb98b49b5b819555d664f9bb876e35c8bbaad58b0ec" => :mavericks
   end
 
-  option "with-brewed-python", "Use the Homebrew version of Python"
+  deprecated_option "with-brewed-python" => "with-python"
+
+  option "with-python", "Use the Homebrew version of Python; by default system Python is used"
   option "with-version-suffix", "Add a version suffix to program"
   option "with-all-targets", "Build with support for all targets"
 
   depends_on "pkg-config" => :build
-  depends_on "readline"
-  depends_on "xz"
+  depends_on "python" => :optional
   depends_on "guile" => :optional
 
-  if build.with? "brewed-python"
+  if build.with? "python"
     depends_on UniversalBrewedPython
   end
 
@@ -42,14 +43,12 @@ class Gdb < Formula
       "--prefix=#{prefix}",
       "--disable-debug",
       "--disable-dependency-tracking",
-      "--with-system-readline",
-      "--with-lzma",
     ]
 
     args << "--with-guile" if build.with? "guile"
     args << "--enable-targets=all" if build.with? "all-targets"
 
-    if build.with? "brewed-python"
+    if build.with? "python"
       args << "--with-python=#{HOMEBREW_PREFIX}"
     else
       args << "--with-python=/usr"
