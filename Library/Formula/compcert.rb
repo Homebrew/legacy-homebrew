@@ -1,5 +1,5 @@
 class Compcert < Formula
-  desc "Formally verified C verified compiler"
+  desc "Formally verified C compiler"
   homepage "http://compcert.inria.fr"
   url "https://github.com/AbsInt/CompCert/archive/v2.5.tar.gz"
   sha256 "36847b00fa5436ac8e052489b728adef2bc68064fe22dbdc18bf22256856fd95"
@@ -19,7 +19,7 @@ class Compcert < Formula
     ENV.permit_arch_flags
 
     # Compcert's configure script hard-codes gcc. On Lion and under, this
-    # creates problems since XCode's gcc does not support CFI,
+    # creates problems since Xcode's gcc does not support CFI,
     # but superenv will trick it into using clang which does. This
     # causes problems with the compcert compiler at runtime.
     inreplace "configure", "${toolprefix}gcc", "${toolprefix}#{ENV.cc}"
