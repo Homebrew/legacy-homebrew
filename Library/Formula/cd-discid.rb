@@ -11,10 +11,11 @@ class CdDiscid < Formula
   patch :DATA
 
   bottle do
-    cellar :any
-    sha256 "0647971b092ef9505401fef5987a99ff3a9e4bc2956fc167899a85e9361c335b" => :yosemite
-    sha256 "d16b9fb0eb3820f7531ce223e0e0c18ad85bb6e24020319151afff09e8d2e80f" => :mavericks
-    sha256 "b12730d1530c45bce73cb6ae8cb7337c6063dea9d1fe50981111dd843269c1f1" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "14cfc760d2cbd99750c84634b964a6950428ac014b8edce68a5262ed8b7605e2" => :el_capitan
+    sha256 "b8b56556b0818b6d2dd1bfd389f317dd701abb4c74ebaa187edd2b13565e6851" => :yosemite
+    sha256 "9231f27b586840defbdcca95084365c13c6ba85231da20d9bc199b735b9b0d66" => :mavericks
   end
 
   def install
