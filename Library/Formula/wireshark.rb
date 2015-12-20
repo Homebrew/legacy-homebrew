@@ -75,7 +75,6 @@ class Wireshark < Formula
     args << "--disable-gtktest" if build.without?("gtk+3") && build.without?("gtk+")
     args << "--with-gtk3" if build.with? "gtk+3"
     args << "--with-gtk2" if build.with? "gtk+"
-    args << "--with-libcap=#{Formula["libpcap"].opt_prefix}" if build.with? "libpcap"
 
     if build.with?("qt") || build.with?("qt5")
       args << "--with-qt"
