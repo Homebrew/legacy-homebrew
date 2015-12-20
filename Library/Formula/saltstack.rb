@@ -5,8 +5,8 @@ class Saltstack < Formula
   # (URLs starting with https://github.com/saltstack/salt/releases/download)
   # github tag archives will report wrong version number
   # https://github.com/Homebrew/homebrew/issues/43493
-  url "https://github.com/saltstack/salt/releases/download/v2015.8.1/salt-2015.8.1.tar.gz"
-  sha256 "04133839b4632859ad696a40261d1d14b62902dbcaf7df2f9e5e926c89401c23"
+  url "https://github.com/saltstack/salt/releases/download/v2015.8.3/salt-2015.8.3.tar.gz"
+  sha256 "4cda3a49d9dc57e849ec93014d31a1983a191c0a88c8ee4d7162e975b67a6b56"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
@@ -19,27 +19,22 @@ class Saltstack < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "zeromq"
   depends_on "libyaml"
+  depends_on "swig" => :build
   depends_on "openssl" # For M2Crypto
 
-  # For vendored Swig
-  depends_on "pcre" => :build
-
-  # Homebrew's swig breaks M2Crypto due to upstream's undermaintained status.
-  # https://github.com/swig/swig/issues/344
-  # https://github.com/martinpaljak/M2Crypto/issues/60
-  resource "swig304" do
-    url "https://downloads.sourceforge.net/project/swig/swig/swig-3.0.4/swig-3.0.4.tar.gz"
-    sha256 "410ffa80ef5535244b500933d70c1b65206333b546ca5a6c89373afb65413795"
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   resource "m2crypto" do
-    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.3.tar.gz"
-    sha256 "6071bfc817d94723e9b458a010d565365104f84aa73f7fe11919871f7562ff72"
+    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.6rc4.tar.gz"
+    sha256 "466c6058bcdf504e6e83c731bbb69490cf73a314459fb4c183e5aee29d066f81"
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.0.tar.gz"
+    sha256 "4881966532b5a36c552244fd909de66d1b8c4a26086f56fd5837cfcde63f8eb8"
   end
 
   resource "futures" do
@@ -68,8 +63,8 @@ class Saltstack < Formula
   end
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-14.7.0.tar.gz"
-    sha256 "77994f80360488e7153e64e5959dc5471531d1648e3a4bff14a714d074a38cc2"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.1.0.tar.gz"
+    sha256 "bd5b279998538bb197baf59c81584550d713b1b17761e8a638bb6fbda9e5d08d"
   end
 
   resource "msgpack-python" do
@@ -79,8 +74,8 @@ class Saltstack < Formula
 
   # Required by tornado
   resource "certifi" do
-    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.9.6.2.tar.gz"
-    sha256 "dc3a2b2d9d1033dbf27586366ae61b9d7c44d8c3a6f29694ffcbb0618ea7aea6"
+    url "https://pypi.python.org/packages/source/c/certifi/certifi-2015.11.20.1.tar.gz"
+    sha256 "30b0a7354a1b32caa8b4705d3f5fb2dadefac7ba4bf8af8a2176869f93e38f16"
   end
 
   # Required by tornado
@@ -89,33 +84,32 @@ class Saltstack < Formula
     sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
   end
 
+  # Required by tornado
+  resource "backports_abc" do
+    url "https://pypi.python.org/packages/source/b/backports_abc/backports_abc-0.4.tar.gz"
+    sha256 "8b3e4092ba3d541c7a2f9b7d0d9c0275b21c6a01c53a61c731eba6686939d0a5"
+  end
+
+  # Required by tornado
+  resource "singledispatch" do
+    url "https://pypi.python.org/packages/source/s/singledispatch/singledispatch-3.4.0.3.tar.gz"
+    sha256 "5b06af87df13818d14f08a028e42f566640aef80805c3b50c5056b086e3c2b9c"
+  end
+
   resource "tornado" do
-    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.2.1.tar.gz"
-    sha256 "a16fcdc4f76b184cb82f4f9eaeeacef6113b524b26a2cb331222e4a7fa6f2969"
+    url "https://pypi.python.org/packages/source/t/tornado/tornado-4.3.tar.gz"
+    sha256 "c9c2d32593d16eedf2cec1b6a41893626a2649b40b21ca9c4cac4243bde2efbf"
   end
 
   def install
-    resource("swig304").stage do
-      system "./configure", "--disable-dependency-tracking", "--prefix=#{buildpath}/swig"
-      system "make"
-      system "make", "install"
-    end
-
-    ENV.prepend_path "PATH", buildpath/"swig/bin"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
-    rs = %w[requests futures pycrypto pyyaml markupsafe jinja2 pyzmq msgpack-python]
-    rs += %w[certifi backports.ssl_match_hostname tornado]
-    rs.each do |r|
-      resource(r).stage do
+    resources.each do |r|
+      r.stage do
+        # M2Crypto always has to be done individually as we have to inreplace OpenSSL path
+        inreplace "setup.py", "self.openssl = '/usr'", "self.openssl = '#{Formula["openssl"].opt_prefix}'" if r.name == "m2crypto"
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
-    end
-
-    # M2Crypto always has to be done individually as we have to inreplace OpenSSL path
-    resource("m2crypto").stage do
-      inreplace "setup.py", "self.openssl = '/usr'", "self.openssl = '#{Formula["openssl"].opt_prefix}'"
-      system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
