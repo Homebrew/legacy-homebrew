@@ -30,12 +30,12 @@ class Elm < Formula
       sha256 "fd105180b92364c3ba8df58bfa88306adb8a21074786267ab1eaa634777ded7f"
     end
   end
+
   bottle do
     sha256 "af4973a6501741e69289163297cb1f3f20f1837dbca7c38ca8fc7cf8116a8460" => :el_capitan
     sha256 "8e768f845671c3e83197abd99cb4e07bea0c2cdaa293023fe27fbb7b5f90cb19" => :yosemite
     sha256 "631587361e3e35dbd6677de2c6b580bd88b5ed04835c8b6ca763649d98579da7" => :mavericks
   end
-
 
   head do
     url "https://github.com/elm-lang/elm-compiler.git"
