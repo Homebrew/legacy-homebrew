@@ -26,6 +26,22 @@ class LinkGrammar < Formula
     sha256 "6d9ec0de8349ab694035d75e3a3afefe7c031661b447eda1c0e673d4d0e1e2a4"
   end
 
+  # Can be removed with the next release
+  # Bug fix in the test_enabled macro
+  # https://github.com/opencog/link-grammar/issues/255
+  patch do
+    url "https://github.com/opencog/link-grammar/commit/61a788512b78b12b94429f8863ca6c3ee6eafe05.patch"
+    sha256 "8da30ed3a86120101b8f5253af4bf42e23b5da2a9f2f0336fd9e8761c1d37399"
+  end
+
+  # Can be removed with the next release
+  # Disable Perl bindings by default
+  # https://github.com/opencog/link-grammar/issues/255
+  patch do
+    url "https://github.com/ampli/link-grammar/commit/adabf00ddb05b32c98b34da6691f0638781b0994.patch"
+    sha256 "6d9ec0de8349ab694035d75e3a3afefe7c031661b447eda1c0e673d4d0e1e2a4"
+  end
+
   depends_on "pkg-config" => :build
   depends_on "autoconf" => :build
   depends_on "autoconf-archive" => :build
