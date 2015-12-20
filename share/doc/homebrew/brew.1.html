@@ -7,7 +7,7 @@
 <h2 id="SYNOPSIS">SYNOPSIS</h2>
 
 <p><code>brew</code> <code>--version</code><br />
-<code>brew</code> <var>command</var> [<code>--verbose</code>|<code>-v</code>] [<var>options</var>] [<var>formula</var>] ...</p>
+<code>brew</code> <var>command</var> [<code>--verbose</code>|<code>-v</code>] [<code>--debug</code>|<code>-d</code>] [<var>options</var>] [<var>formula</var>] ...</p>
 
 <h2 id="DESCRIPTION">DESCRIPTION</h2>
 
@@ -18,7 +18,10 @@ didn't include with OS X.</p>
 
 <p>For the full command list, see the <a href="#COMMANDS" title="COMMANDS" data-bare-link="true">COMMANDS</a> section.</p>
 
-<p>With <code>--verbose</code> or <code>-v</code>, many commands print extra debugging information. Note that these flags should only appear after a command.</p>
+<p>With <code>--verbose</code> or <code>-v</code>, many commands print extra debugging information.
+With <code>--debug</code> or <code>-d</code>, additional debugging output and behaviors are enabled.
+Details are documented under the individual commands below.
+Note that these flags should only appear after a command.</p>
 
 <dl>
 <dt><code>install</code> <var>formula</var></dt><dd><p>Install <var>formula</var>.</p></dd>
