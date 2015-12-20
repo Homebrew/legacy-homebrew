@@ -1,20 +1,14 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.8.3.tar.bz2"
-  sha256 "1bcf993a71839bb4a37eaa0c51daf315932b6dad6089f672294545cc51a5caf6"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.4.tar.bz2"
+  sha256 "83cc8136a7845546062a43cda9ae3cf0a02f43ef5e434d2f997f055231a75f8e"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
     sha256 "8f7c153e2657663c173a7062a7375c18501f1f985b98e8b6854746053e7f3c78" => :el_capitan
     sha256 "9563c03fb1861b755c5869489824b2b676ba53322fdb2e5122c1e187a15e3136" => :yosemite
     sha256 "51350b8c1b8629ae26acc638a2e4b75ec2b3785e426d40084594c2d9a803a9c3" => :mavericks
-  end
-
-  # Fix build with libvpx 1.5.0, see https://trac.ffmpeg.org/ticket/4956
-  patch do
-    url "https://raw.githubusercontent.com/UniqMartin/patches/67c3b7c8/ffmpeg/libvpx-1.5.0.patch"
-    sha256 "277994aca5a6e40c1a90750859828817e0646bfb28142fdb34d5f9d3196c3f7a"
   end
 
   option "without-x264", "Disable H.264 encoder"
