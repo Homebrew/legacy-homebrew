@@ -45,11 +45,6 @@ class Llvm < Formula
       sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
     end
 
-    resource "libcxxabi" do
-      url "http://llvm.org/releases/3.6.2/libcxxabi-3.6.2.src.tar.xz"
-      sha256 "6fb48ce5a514686b9b75e73e59869f782ed374a86d71be8423372e4b3329b09b"
-    end
-
     resource "lld" do
       url "http://llvm.org/releases/3.6.2/lld-3.6.2.src.tar.xz"
       sha256 "43f553c115563600577764262f1f2fac3740f0c639750f81e125963c90030b33"
@@ -155,7 +150,6 @@ class Llvm < Formula
 
     if build.with? "libcxx"
       (buildpath/"projects/libcxx").install resource("libcxx")
-      (buildpath/"projects/libcxxabi").install resource("libcxxabi")
     end
 
     (buildpath/"tools/lld").install resource("lld") if build.with? "lld"
@@ -234,10 +228,19 @@ class Llvm < Formula
   end
 
   def caveats
-    <<-EOS.undent
+    s = <<-EOS.undent
       LLVM executables are installed in #{opt_bin}.
       Extra tools are installed in #{opt_share}/llvm.
     EOS
+
+    if build.with? "libcxx"
+      s += <<-EOS.undent
+        To use the bundled libc++ please add the following LDFLAGS:
+          LDFLAGS="-L#{opt_lib} -lc++abi"
+      EOS
+    end
+
+    s
   end
 
   test do
