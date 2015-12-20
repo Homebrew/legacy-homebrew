@@ -7,8 +7,8 @@ class Swiftgen < Formula
 
   bottle do
     cellar :any
-    sha256 "bbd49dbdd07a9f139e8399e2c32a78721001aa1ddce56682fe1b729ca86b4fb9" => :el_capitan
-    sha256 "c1fd5c0160b0d04650840fab9f49841ccd9b2d84c8c6bfc9d14abc4e866d4515" => :yosemite
+    sha256 "a5d14ec979eea1c36a7b0103f106bc1d7ca2ae5b7b80b934c04aa97eee751ed7" => :el_capitan
+    sha256 "1e0f3414659c088a3828629bbcbfb558cba2f66a5bef5b49d354177e63da2009" => :yosemite
   end
 
   depends_on :xcode => "7.0"
