@@ -7,11 +7,14 @@ class Openvpn < Formula
 
   bottle do
     cellar :any
-    sha256 "efefc8ed7e50cef4012750836c10088e9ee03bf10a59af805022d9c2f67695ea" => :mavericks
+    revision 1
+    sha256 "882a30fe91692b21da5a003d392bc87c87abd2e064a51f6466c95cf0b25924ce" => :el_capitan
+    sha256 "4da6b041921df90a929821be483a67e3bb3e0a5ea4b28aed9a93cbab706b45e8" => :yosemite
+    sha256 "c2fb3da6a522f8f64330c238c9e5266cdea1d23e908113bb2b82eeb80f3e884d" => :mavericks
   end
 
   depends_on "lzo"
-  depends_on :tuntap
+  depends_on :tuntap if MacOS.version < :yosemite
   depends_on "openssl"
 
   def install
@@ -41,13 +44,21 @@ class Openvpn < Formula
     rm "#{share}/doc/openvpn/README.polarssl"
   end
 
-  def caveats; <<-EOS.undent
-    If you have installed the Tuntap dependency as a source package you will
-    need to follow the instructions found in `brew info tuntap`. If you have
-    installed the binary Tuntap package, no further action is necessary.
+  def caveats
+    s = ""
 
-    For OpenVPN to work as a server, you will need to create configuration file
-    in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
+    if MacOS.version < :yosemite
+      s += <<-EOS.undent
+        If you have installed the Tuntap dependency as a source package you will
+        need to follow the instructions found in `brew info tuntap`. If you have
+        installed the binary Tuntap package, no further action is necessary.
+
+      EOS
+    end
+
+    s += <<-EOS.undent
+      For OpenVPN to work as a server, you will need to create configuration file
+      in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
     EOS
   end
 

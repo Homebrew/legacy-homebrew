@@ -3,8 +3,8 @@ class Creduce < Formula
   homepage "https://embed.cs.utah.edu/creduce/"
   url "https://github.com/csmith-project/creduce/archive/creduce-2.3.0.tar.gz"
   sha256 "47a42751aab8b51bc10d8df62f359bdc1b4a644f16feb85b9f7325f0c5bce4a3"
-  head "https://github.com/csmith-project/creduce.git"
   revision 2
+  head "https://github.com/csmith-project/creduce.git"
 
   bottle do
     revision 1

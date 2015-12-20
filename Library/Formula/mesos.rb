@@ -57,8 +57,7 @@ class Mesos < Formula
   needs :cxx11
 
   def install
-    # Set _JAVA_OPTIONS to make mesos java plugins compile success in Homebrew sandbox.
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home"
+    ENV.java_cache
 
     boto_path = libexec/"boto/lib/python2.7/site-packages"
     ENV.prepend_create_path "PYTHONPATH", boto_path
@@ -81,8 +80,8 @@ class Mesos < Formula
               "import ext_modules",
               native_patch
 
-    # skip build javadoc because Homebrew sandbox set _JAVA_OPTIONS would
-    # trigger maven-javadoc-plugin bug.
+    # skip build javadoc because Homebrew sandbox ENV.java_cache
+    # would trigger maven-javadoc-plugin bug.
     # https://issues.apache.org/jira/browse/MESOS-3482
     maven_javadoc_patch = <<-EOS.undent
       <properties>
@@ -98,7 +97,7 @@ class Mesos < Formula
             "--disable-debug",
             "--disable-dependency-tracking",
             "--disable-silent-rules",
-            "--with-svn=#{Formula["subversion"].opt_prefix}"
+            "--with-svn=#{Formula["subversion"].opt_prefix}",
            ]
 
     unless MacOS::CLT.installed?

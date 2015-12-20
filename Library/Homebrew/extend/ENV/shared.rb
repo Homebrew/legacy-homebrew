@@ -240,6 +240,10 @@ module SharedEnvExtension
     set_cpu_flags(flags)
   end
 
+  def java_cache
+    append "_JAVA_OPTIONS", "-Duser.home=#{HOMEBREW_CACHE}/java_cache"
+  end
+
   # ld64 is a newer linker provided for Xcode 2.5
   # @private
   def ld64
