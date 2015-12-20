@@ -6,6 +6,10 @@ class CdDiscid < Formula
   sha256 "ffd68cd406309e764be6af4d5cbcc309e132c13f3597c6a4570a1f218edd2c63"
   head "https://github.com/taem/cd-discid.git"
 
+  # OS X fix; see ps://github.com/Homebrew/homebrew/issues/46267
+  # Already fixed in upstream head; remove when bumping version to >1.4
+  patch :DATA
+
   bottle do
     cellar :any
     sha256 "0647971b092ef9505401fef5987a99ff3a9e4bc2956fc167899a85e9361c335b" => :yosemite
@@ -23,3 +27,18 @@ class CdDiscid < Formula
     assert_equal "cd-discid #{version}.", shell_output("#{bin}/cd-discid --version 2>&1").chomp
   end
 end
+
+__END__
+diff --git a/cd-discid.c b/cd-discid.c
+index 9b0b40a..1a0a594 100644
+--- a/cd-discid.c
++++ b/cd-discid.c
+@@ -93,7 +93,7 @@
+ #define cdth_trk1               lastTrackNumberInLastSessionLSB
+ #define cdrom_tocentry          CDTrackInfo
+ #define cdte_track_address      trackStartAddress
+-#define DEVICE_NAME             "/dev/disk1"
++#define DEVICE_NAME             "/dev/rdisk1"
+
+ #else
+ #error "Your OS isn't supported yet."
