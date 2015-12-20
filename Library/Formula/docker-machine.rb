@@ -17,13 +17,25 @@ class DockerMachine < Formula
   depends_on "go" => :build
   depends_on "automake" => :build
 
-  def install
-    ENV["GOPATH"] = buildpath
-    mkdir_p buildpath/"src/github.com/docker/"
-    ln_sf buildpath, buildpath/"src/github.com/docker/machine"
+  go_resource "github.com/codegangsta/cli" do
+    url "https://github.com/codegangsta/cli.git",
+      :revision => "bca61c476e3c752594983e4c9bcd5f62fb09f157"
+  end
 
-    system "make", "build"
-    bin.install Dir["bin/*"]
+  def install
+    ENV["GOBIN"] = bin
+    ENV["GOPATH"] = buildpath
+    ENV["GOHOME"] = buildpath
+
+    path = buildpath/"src/github.com/docker/machine"
+    path.install Dir["*"]
+
+    Language::Go.stage_deps resources, buildpath/"src"
+
+    cd path do
+      system "make", "build"
+      bin.install Dir["bin/*"]
+    end
 
     bash_completion.install Dir["contrib/completion/bash/*.bash"]
   end
