@@ -5,10 +5,11 @@ class Compcert < Formula
   sha256 "36847b00fa5436ac8e052489b728adef2bc68064fe22dbdc18bf22256856fd95"
 
   bottle do
-    cellar :any
-    sha256 "c5868acdb43b5c467e4e969b665b8775b8065454c339ef98e56034230b24750f" => :yosemite
-    sha256 "eb646e83d7be1cc4e0b5e426c9247a45d26906de3f06c39e2e0451c4849b59ba" => :mavericks
-    sha256 "7ce52bcd1e488829d71481741f49abd3489b9b86e2f400825de439a730d3ba2b" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "f0f88dc58d3beacc0f1534966b71f16de0fa46ef92bd5bb1803b666395363b58" => :el_capitan
+    sha256 "a266c0316f33643e39f7608202823fdb1d61df60333e85d888ceeeae47e96772" => :yosemite
+    sha256 "2df9fcb4ad87d751ddd67109e0d68741ba15317f14ba726db03c329237d6983f" => :mavericks
   end
 
   depends_on "ocaml" => :build
