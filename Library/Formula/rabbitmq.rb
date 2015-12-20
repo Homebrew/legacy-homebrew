@@ -1,3 +1,6 @@
+# We'd really like this formula to be built from source so we can build
+# against a modern OpenSSL rather than the prehistoric system version.
+# Submit a PR if you're interested, Thanks!
 class Rabbitmq < Formula
   desc "Messaging broker"
   homepage "https://www.rabbitmq.com"
