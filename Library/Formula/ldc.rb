@@ -12,6 +12,12 @@ class Ldc < Formula
     sha256 "0d1f8e211e525e8eb106aa1ec6553240d8813e82dfec8bca0adc3cda590fc9a8" => :mavericks
   end
 
+  devel do
+    url "https://github.com/ldc-developers/ldc/releases/download/v0.17.0-alpha1/ldc-0.17.0-alpha1-src.tar.gz"
+    sha256 "68b13ece2d1aae6876cce3e143949966282a287169472b84c5bce5c119340532"
+    version "0.17.0-a1"
+  end
+
   needs :cxx11
 
   depends_on "cmake" => :build
