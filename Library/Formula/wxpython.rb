@@ -18,9 +18,11 @@ class Wxpython < Formula
   sha256 "d54129e5fbea4fb8091c87b2980760b72c22a386cb3b9dd2eebc928ef5e8df61"
 
   bottle do
-    sha256 "b6390fed49e3f8da554814bc1c08d13d0da44d6ef5efa22de30e43e9f7bc023a" => :yosemite
-    sha256 "b563163757eb060202d40004e96914ffe5d01070c74f7a47d186e2658e9713da" => :mavericks
-    sha256 "73db27fb5b2c795140722b3016384038bfa86cee895afb3c2343111061e104e5" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "9956afc649ebc394fbae40dd55d3ce367ab42abe6be43ef01c35c1c6d0a8e225" => :el_capitan
+    sha256 "04d8dfeab6dbb7a1c099c8e866f35e6d5d528ea69ef283d556c545347882abe2" => :yosemite
+    sha256 "41ec8003758d804b8c426ce654a87f2d9f4be3be40fcbcb3d5686e3ecabaddbc" => :mavericks
   end
 
   if MacOS.version <= :snow_leopard
