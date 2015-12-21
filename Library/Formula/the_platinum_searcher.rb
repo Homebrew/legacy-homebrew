@@ -3,8 +3,8 @@ require "language/go"
 class ThePlatinumSearcher < Formula
   desc "Multi-platform code-search similar to ack and ag"
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v2.0.0.tar.gz"
-  sha256 "0a4d295a11a99c99265ff45388bdf4f20e6fd3655c36d4c85fa0eb3f45107d99"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v2.0.2.tar.gz"
+  sha256 "437f5f0e283530ea95275ef5fd9abe460218d7e868883355a85a672f30070ee9"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   bottle do
