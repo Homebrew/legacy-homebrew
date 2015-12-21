@@ -1,9 +1,9 @@
 class Znc < Formula
   desc "Advanced IRC bouncer"
   homepage "http://wiki.znc.in/ZNC"
-  url "http://znc.in/releases/archive/znc-1.6.1.tar.gz"
-  mirror "https://github.com/znc/znc/archive/znc-1.6.1.tar.gz"
-  sha256 "ba49397364f48d6d32ae5242bc1166f21d972f85dd390d6bbe68a63ecbb6c140"
+  url "http://znc.in/releases/archive/znc-1.6.2.tar.gz"
+  mirror "https://github.com/znc/znc/archive/znc-1.6.2.tar.gz"
+  sha256 "eef17727c0c6433fed1affba0ea76ec7fd60198d2f3c234d8529bd5fb26f0593"
 
   bottle do
     sha256 "4127f180543c057c53bee581634dd0e26bb4419858240ffa228365129ee8c773" => :yosemite
@@ -57,7 +57,7 @@ class Znc < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/znc</string>
+          <string>#{opt_bin}/znc</string>
           <string>--foreground</string>
         </array>
         <key>StandardErrorPath</key>
