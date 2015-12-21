@@ -1,3 +1,5 @@
+require "base64"
+
 # Track Chrome stable.
 # https://omahaproxy.appspot.com/
 class V8 < Formula
@@ -14,18 +16,15 @@ class V8 < Formula
   end
 
   option "with-readline", "Use readline instead of libedit"
-  option "with-icu4c", "Use icu4c for l18n support"
 
   # not building on Snow Leopard:
   # https://github.com/Homebrew/homebrew/issues/21426
   depends_on :macos => :lion
 
   depends_on :python => :build # gyp doesn't run under 2.6 or lower
+  depends_on "pkg-config" => :build
+  depends_on "icu4c"
   depends_on "readline" => :optional
-
-  if build.with? "icu4c"
-    depends_on "icu4c"
-  end
 
   needs :cxx11
 
@@ -60,10 +59,11 @@ class V8 < Formula
         :revision => "9855a87157778d39b95eccfb201a9dc90f6d61c6"
   end
 
-  if build.with? "icu4c"
-    # Patch tools/gyp/v8.gyp so it finds icu4c headers and .dylibs
-    # See https://groups.google.com/a/chromium.org/forum/#!topic/chromium-packagers/pNpOJ0wh5c8
-    patch :DATA
+  # Borrow the unbundled icu.gyp from the chromium project so we can build against icu4c
+  # See https://groups.google.com/a/chromium.org/forum/#!topic/chromium-packagers/pNpOJ0wh5c8
+  resource "icu-unbundle" do
+    url "https://chromium.googlesource.com/chromium/src/build/+/master/linux/unbundle/icu.gyp?format=TEXT"
+    sha256 "55bc6d3235e8a8bb8485011136a68ebdb31674490edc5dfb89913ae3dc0a3bb0"
   end
 
   def install
@@ -72,7 +72,10 @@ class V8 < Formula
     ENV["GYP_DEFINES"] = "clang=1 mac_deployment_target=#{MacOS.version}"
     # https://code.google.com/p/v8/issues/detail?id=4511#c3
     ENV.append "GYP_DEFINES", "v8_use_external_startup_data=0"
-
+    ENV.append "GYP_DEFINES", "use_system_icu=1"
+    
+    # ENV.prepend_path "PKG_CONFIG_PATH", "#{Formula["icu4c"].opt_lib}/pkgconfig"
+    
     # fix up libv8.dylib install_name
     # https://github.com/Homebrew/homebrew/issues/36571
     # https://code.google.com/p/v8/issues/detail?id=3871
@@ -87,18 +90,16 @@ class V8 < Formula
     (buildpath/"testing/gtest").install resource("gtest")
     (buildpath/"tools/clang").install resource("clang")
 
-    i18nsupport="i18nsupport=off"
-    if build.with? "icu4c"
-      i18nsupport="i18nsupport=on"
-      
-      # Patch needs icu-config on our path
-      icu4c = Formula["icu4c"]
-      ENV.append "PATH", icu4c.opt_bin
-      ENV.append "GYP_DEFINES", "use_system_icu=1"
+    resource("icu-unbundle").stage do
+      # googlesource.com only serves up the file in base64-encoded format; we
+      # need to decode it before overwriting the icu.gyp installed above
+      rm buildpath/"third_party/icu/icu.gyp"
+      decoded_file = buildpath/"third_party/icu/icu.gyp"
+      decoded_file.write Base64.decode64(File.read("icu.gyp"))
     end
-
+    
     system "make", "native", "library=shared", "snapshot=on",
-                   "console=readline", i18nsupport,
+                   "console=readline", "i18nsupport=on",
                    "strictaliasing=off"
 
     include.install Dir["include/*"]
@@ -114,56 +115,3 @@ class V8 < Formula
     assert_equal "Hello World!", pipe_output("#{bin}/v8 -e 'print(\"Hello World!\")'").chomp
   end
 end
-
-# Patch so gyp finds brew's icu4c when it's installed outside /usr/local
-__END__
-diff --git a/tools/gyp/v8.gyp b/tools/gyp/v8.gyp
-index fb9679e..abfaefe 100644
---- a/tools/gyp/v8.gyp
-+++ b/tools/gyp/v8.gyp
-@@ -43,6 +43,18 @@
-       'dependencies_traverse': 1,
-       'dependencies': ['v8_maybe_snapshot'],
-       'conditions': [
-+        ['use_system_icu==1', {
-+          'direct_dependents_settings' : {
-+            'include_dirs': [
-+              '<!@(icu-config --cppflags-searchpath | sed "s/^-I//")' 
-+            ],  
-+          },
-+          'link_settings': {
-+            'library_dirs': [
-+              '<!@(icu-config --ldflags-searchpath | sed "s/^-L//")',
-+            ],
-+          }
-+        }],
-         ['want_separate_host_toolset==1', {
-           'toolsets': ['host', 'target'],
-         }, {
-@@ -1057,6 +1069,25 @@
-         '../../src/third_party/fdlibm/fdlibm.h',
-       ],
-       'conditions': [
-+        ['use_system_icu==1', {
-+            'library_dirs': [
-+              '<!@(icu-config --ldflags-searchpath | sed "s/^-L//")',
-+            ],
-+            'include_dirs': [
-+              '../..',
-+              '<!@(icu-config --cppflags-searchpath | sed "s/^-I//")' 
-+            ],
-+            'link_settings': {
-+              'library_dirs': [
-+                '<!@(icu-config --ldflags-searchpath | sed "s/^-L//")',
-+              ],
-+            },
-+            'direct_dependents_settings' : {
-+              'include_dirs': [
-+                '<!@(icu-config --cppflags-searchpath | sed "s/^-I//")' 
-+              ],  
-+            }
-+        }],
-         ['want_separate_host_toolset==1', {
-           'toolsets': ['host', 'target'],
-         }, {
-
