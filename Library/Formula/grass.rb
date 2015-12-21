@@ -1,7 +1,7 @@
 class Grass < Formula
   desc "Geographic Resources Analysis Support System"
   homepage "http://grass.osgeo.org/"
-  revision 1
+  revision 2
 
   stable do
     url "https://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
@@ -31,11 +31,11 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
-  depends_on :postgresql => :optional
-  depends_on :mysql => :optional
   depends_on "cairo"
   depends_on "freetype"
+  depends_on "wxmac" => :recommended
+  depends_on :postgresql => :optional
+  depends_on :mysql => :optional
   depends_on :x11 # needs to find at least X11/include/GL/gl.h
 
   fails_with :clang do
@@ -85,9 +85,7 @@ class Grass < Formula
       args << "--without-wxwidgets"
     else
       args << "--with-wxwidgets=#{Formula["wxmac"].opt_bin}/wx-config"
-    end
 
-    if build.with? "wxpython"
       python_site_packages = HOMEBREW_PREFIX/"lib/python2.7/site-packages"
       default_wx_path = File.read(python_site_packages/"wx.pth").strip
       ENV.prepend_path "PYTHONPATH", python_site_packages/default_wx_path
