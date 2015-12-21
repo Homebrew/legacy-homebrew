@@ -19,6 +19,14 @@ class Gnuradio < Formula
     sha256 "9e1c612f0f4063d387d85517cc420f050f49c7903d36fab45b72e8d828549e3c"
   end
 
+  # The wxpython dependency isn't properly found on multiversion 
+  # python systems.  This patches gr-wxgui's CMakeLists.txt file 
+  # to correctly import wxversion and select the brewed wxpython package.
+  patch do
+    url "https://gist.githubusercontent.com/metacollin/d6c7854a01e0e9094a60/raw/7569850f4a87d67bbb31d83a4bc20445cf0df61d/wx.patch"
+    sha256 "52b2c8b94675be74878f7a63340fb779152d56810b2f81901983f1712124848a"
+  end
+
   option "without-python", "Build without python support"
   option "with-documentation", "Build with documentation"
   option :universal
@@ -41,6 +49,7 @@ class Gnuradio < Formula
     depends_on "qt"
     depends_on "qwt"
     depends_on "pyqt"
+    depends_on "wxmac"
   end
 
   depends_on "uhd" => :recommended
