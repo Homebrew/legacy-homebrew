@@ -16,8 +16,9 @@ class Sslscan < Formula
   depends_on "openssl"
 
   def install
+    rm "INSTALL"
     system "make"
-    bin.install "sslscan"
+    system "make", "install", "BINPATH=#{bin}", "MANPATH=#{man}/"
   end
 
   test do
