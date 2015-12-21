@@ -59,7 +59,7 @@ module Homebrew
         url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
         tap = CoreFormulaRepository.instance
       elsif (testing_match = arg.match %r{brew.sh/job/Homebrew.*Testing/(\d+)/})
-        _, testing_job = *testing_match
+        testing_job = testing_match[1]
         url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
         tap = CoreFormulaRepository.instance
         odie "Testing URLs require `--bottle`!" unless ARGV.include?("--bottle")

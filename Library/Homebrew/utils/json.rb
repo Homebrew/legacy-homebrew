@@ -24,7 +24,8 @@ module Utils
         obj.inject({}) do |result, (key, val)|
           key = key.respond_to?(:to_s) ? key.to_s : key
           val = stringify_keys(val)
-          result.merge!(key => val)
+          result[key] = val
+          result
         end
       else
         obj
