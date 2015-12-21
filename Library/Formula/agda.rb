@@ -5,15 +5,10 @@ class Agda < Formula
 
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  revision 3
 
   stable do
-    url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
-    sha256 "0147f8a1395a69bee1e7a452682094e45c83126233f9864544b8a14f956ce8c3"
-
-    # fix compilation of the included Emacs mode
-    # merged upstream in https://github.com/agda/agda/pull/1700
-    patch :DATA
+    url "https://github.com/agda/agda/archive/2.4.2.5.tar.gz"
+    sha256 "a357470e47751e5757922b05ab8d692a526b8ed50619fb3dab0735a9a0e94cd1"
 
     resource "stdlib" do
       url "https://github.com/agda/agda-stdlib.git",
@@ -165,17 +160,3 @@ class Agda < Formula
     end
   end
 end
-
-__END__
-diff --git a/src/data/emacs-mode/agda2-mode.el b/src/data/emacs-mode/agda2-mode.el
-index 04604ee..f6b3122 100644
---- a/src/data/emacs-mode/agda2-mode.el
-+++ b/src/data/emacs-mode/agda2-mode.el
-@@ -20,6 +20,7 @@ Note that the same version of the Agda executable must be used.")
- (require 'time-date)
- (require 'eri)
- (require 'annotation)
-+(require 'fontset)
- (require 'agda-input)
- (require 'agda2)
- (require 'agda2-highlight)
