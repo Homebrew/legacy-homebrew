@@ -3,8 +3,8 @@ require "language/go"
 class Glide < Formula
   desc "Simplified Go project management, dependency management, and vendoring"
   homepage "https://github.com/Masterminds/glide"
-  url "https://github.com/Masterminds/glide/archive/0.8.1.tar.gz"
-  sha256 "a38d7dd9f88871a251c9859278b432435de6ab007abc54e72554cf6a0aabeeb9"
+  url "https://github.com/Masterminds/glide/archive/0.8.2.tar.gz"
+  sha256 "4b4d432632ddbd56624c89738a44589f72d5b097eb9f58ebe41e28900acbc20d"
 
   bottle do
     cellar :any_skip_relocation
@@ -32,7 +32,7 @@ class Glide < Formula
 
   go_resource "github.com/codegangsta/cli" do
     url "https://github.com/codegangsta/cli.git",
-      :revision => "0302d3914d2a6ad61404584cdae6e6dbc9c03599"
+      :revision => "b5232bb2934f606f9f27a1305f1eea224e8e8b88"
   end
 
   go_resource "github.com/Masterminds/semver" do
