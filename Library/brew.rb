@@ -175,8 +175,9 @@ rescue KegUnspecifiedError
 rescue UsageError
   onoe "Invalid usage"
   abort ARGV.usage
-rescue SystemExit
-  puts "Kernel.exit" if ARGV.verbose?
+rescue SystemExit => e
+  onoe "Kernel.exit" if ARGV.verbose? && !e.success?
+  puts e.backtrace if ARGV.debug?
   raise
 rescue Interrupt => e
   puts # seemingly a newline is typical
