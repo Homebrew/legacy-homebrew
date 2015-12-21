@@ -17,6 +17,7 @@ class BashCompletion < Formula
 
   # Backports the following upstream patch from 2.x:
   # https://anonscm.debian.org/gitweb/?p=bash-completion/bash-completion.git;a=commitdiff_plain;h=50ae57927365a16c830899cc1714be73237bdcb2
+  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=740971
   patch :DATA
 
   def compdir
