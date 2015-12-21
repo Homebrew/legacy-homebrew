@@ -2,36 +2,38 @@ require "language/haskell"
 
 class Agda < Formula
   include Language::Haskell::Cabal
+
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  revision 1
+  revision 2
 
   stable do
     url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
     sha256 "0147f8a1395a69bee1e7a452682094e45c83126233f9864544b8a14f956ce8c3"
+
     # fix compilation of the included Emacs mode
     # merged upstream in https://github.com/agda/agda/pull/1700
     patch :DATA
-  end
 
-  bottle do
-    revision 1
-    sha256 "72926be89f32a171d46e92aeefcca5005f9c0078689d9d63427757b1b5651bfb" => :el_capitan
-    sha256 "2822c9f9ce79c0354da58ba604190c6eb8bebf64f0be4925b7cd2d9f1bb1f950" => :yosemite
-    sha256 "aee69ac2b9cdf715f39defba8b81d6572dc02e5edb21417781a39932fc132356" => :mavericks
-  end
-
-  head do
-    url "https://github.com/agda/agda.git", :branch => "master"
     resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib.git", :branch => "master"
+      url "https://github.com/agda/agda-stdlib.git",
+          :tag => "v0.11",
+          :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
     end
   end
 
-  resource "stdlib" do
-    url "https://github.com/agda/agda-stdlib.git",
-        :tag => "v0.11",
-        :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
+  bottle do
+    sha256 "03fc9286e1f6a041208a8d836af0b5f68ee1c3c4995f6b26cee941c5a013908f" => :el_capitan
+    sha256 "36fbd7f3195b7135fe7ded46f3bc2920f0078559db59cca07eb8f4a78ea3c034" => :yosemite
+    sha256 "c448bc73d17adcfca1edfcdc2d361e3aa3f130cef9e50198c5463c66ca71effd" => :mavericks
+  end
+
+  head do
+    url "https://github.com/agda/agda.git"
+
+    resource "stdlib" do
+      url "https://github.com/agda/agda-stdlib.git"
+    end
   end
 
   option "without-stdlib", "Don't install the Agda standard library"
