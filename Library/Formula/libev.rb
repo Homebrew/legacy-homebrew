@@ -1,8 +1,8 @@
 class Libev < Formula
   desc "Asynchronous event library"
   homepage "http://software.schmorp.de/pkg/libev.html"
-  url "http://dist.schmorp.de/libev/Attic/libev-4.20.tar.gz"
-  sha256 "f870334c7fa961e7f31087c7d76abf849f596e3048f8ed2a0aaa983cd73d449e"
+  url "http://dist.schmorp.de/libev/Attic/libev-4.22.tar.gz"
+  sha256 "736079e8ac543c74d59af73f9c52737b3bfec9601f020bf25a87a4f4d0f01bd6"
 
   bottle do
     cellar :any
