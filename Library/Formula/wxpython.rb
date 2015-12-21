@@ -40,6 +40,12 @@ class Wxpython < Formula
       ENV.append_to_cflags "-arch #{MacOS.preferred_arch}"
     end
 
+    # wxPython is hardcoded to install headers in wx's prefix;
+    # set it to use wxPython's prefix instead
+    # See #47187.
+    inreplace %w[wxPython/config.py wxPython/wx/build/config.py],
+      "WXPREFIX +", "'#{prefix.to_s}' +"
+
     args = [
       "WXPORT=osx_cocoa",
       # Reference our wx-config
