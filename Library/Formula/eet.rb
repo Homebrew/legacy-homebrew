@@ -40,14 +40,12 @@ class Eet < Formula
   test do
     cp "#{pkgshare}/examples/eet-basic.c", testpath
     eina = Formula["eina"]
-    flags = %W[
-      -I#{include}/eet-1
-      -I#{eina.include}/eina-1
-      -I#{eina.include}/eina-1/eina
-      -L#{lib}
-      -leet
-    ]
-    system ENV.cc, "-o", "eet-basic", "eet-basic.c", *flags
+    system ENV.cc, "-o", "eet-basic", "eet-basic.c",
+        "-I#{include}/eet-1",
+        "-I#{eina.include}/eina-1",
+        "-I#{eina.include}/eina-1/eina",
+        "-L#{lib}",
+        "-leet"
     system "./eet-basic"
   end
 end
