@@ -1,8 +1,8 @@
 class ArtifactoryCliGo < Formula
   desc "Provides a command-line interface for Artifactory."
   homepage "https://github.com/JFrogDev/artifactory-cli-go"
-  url "https://github.com/JFrogDev/artifactory-cli-go/archive/1.2.0.tar.gz"
-  sha256 "173a24e0b821c6ff2bb85fa4cbe733fa681a8284029b77387baf0fa5f2fcfc4e"
+  url "https://github.com/JFrogDev/artifactory-cli-go/archive/1.2.1.tar.gz"
+  sha256 "b1224ba6f1dd770b12b9dbd2b38a405a5a06132f60ff94bf3f2775a973e3d1b7"
 
   bottle do
     cellar :any_skip_relocation
