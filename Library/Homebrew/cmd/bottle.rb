@@ -36,7 +36,8 @@ MAXIMUM_STRING_MATCHES = 100
 
 module Homebrew
   def keg_contains(string, keg, ignores)
-    @put_string_exists_header, @put_filenames = nil
+    @put_string_exists_header = nil
+    @put_filenames = nil
 
     def print_filename(string, filename)
       unless @put_string_exists_header

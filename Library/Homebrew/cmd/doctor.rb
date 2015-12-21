@@ -1298,13 +1298,14 @@ module Homebrew
 
     first_warning = true
     methods.each do |method|
-      begin
-        out = checks.send(method)
-      rescue NoMethodError
+      unless checks.respond_to?(method)
         Homebrew.failed = true
         puts "No check available by the name: #{method}"
         next
       end
+
+      out = checks.send(method)
+
       unless out.nil? || out.empty?
         if first_warning
           $stderr.puts <<-EOS.undent
