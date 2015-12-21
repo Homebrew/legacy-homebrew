@@ -1,16 +1,10 @@
 class Knot < Formula
   desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.6.6.tar.xz"
-  sha256 "6ccae42b0878201e2113a048317bf518acad70fe436b04e24da32703d27edf03"
+  url "https://secure.nic.cz/files/knot-dns/knot-2.0.2.tar.xz"
+  sha256 "0418a22f9e801503993b3c872f2403bf73eab5ef7266128789b0531b41ea0c7e"
 
-  head do
-    url "https://gitlab.labs.nic.cz/labs/knot.git"
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
-    depends_on "libtool" => :build
-    depends_on "pkg-config" => :build
-  end
+  head "https://gitlab.labs.nic.cz/labs/knot.git"
 
   bottle do
     cellar :any
@@ -19,6 +13,10 @@ class Knot < Formula
     sha256 "b100ac007518f53f4829b0cb45c67f287a0fc99ee1846b6526959635291b1ce8" => :mavericks
   end
 
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
   depends_on "gnutls"
   depends_on "jansson"
   depends_on "libidn"
@@ -48,40 +46,25 @@ class Knot < Formula
   end
 
   def knot_conf; <<-EOS.undent
-    system {
-      identity on;
-      version on;
-      rundir "#{var}/knot";
-    }
-    interfaces {
-      all_ipv4 {
-        address 0.0.0.0;
-        port 53;
-      }
-      all_ipv6 {
-        address [::];
-        port 53;
-      }
-    }
-    control {
-      listen-on "knot.sock";
-    }
-    zones {
-      storage "#{var}/knot";
-    #  example.com {
-    #    file "#{var}/knot/example.com.zone";
-    #  }
-    }
-    log {
-      syslog {
-        any error;
-        zone warning, notice;
-        server info;
-      }
-      stderr {
-        any error, warning;
-      }
-    }
+    server:
+      rundir: "#{var}/knot"
+      listen: [ "0.0.0.0@53", "::@53" ]
+
+    log:
+      - target: "stderr"
+        any: "error"
+
+      - target: "syslog"
+        server: "info"
+        zone: "warning"
+        any: "error"
+
+    control:
+      listen: "knot.sock"
+
+    template:
+      - id: "default"
+        storage: "#{var}/knot"
     EOS
   end
 
