@@ -30,6 +30,10 @@ class Qwtpolar < Formula
       s.sub! /\+(=\s*QwtPolarDesigner)/, "-\\1" if build.without? "plugin"
       # Don't build examples now, since linking flawed until qwtpolar installed
       s.sub! /\+(=\s*QwtPolarExamples)/, "-\\1"
+
+      # Install Qt plugin in `lib/qt4/plugins/designer`, not `plugins/designer`.
+      s.sub! %r{(= \$\$\{QWT_POLAR_INSTALL_PREFIX\})/(plugins/designer)$},
+             "\\1/lib/qt4/\\2"
     end
 
     args = %W[-config release -spec]
@@ -44,10 +48,6 @@ class Qwtpolar < Formula
     system "qmake", *args
     system "make"
     system "make", "install"
-
-    # symlink Qt Designer plugin (note: not removed on qwtpolar formula uninstall)
-    ln_sf prefix/"plugins/designer/libqwt_polar_designer_plugin.dylib",
-          Formula["qt"].opt_prefix/"plugins/designer/" if build.with? "plugin"
   end
 end
 
