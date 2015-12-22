@@ -4,11 +4,12 @@
 class Rabbitmq < Formula
   desc "Messaging broker"
   homepage "https://www.rabbitmq.com"
-  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.0/rabbitmq-server-mac-standalone-3.6.0.tar.xz"
-  sha256 "db10cb920cfc77f5714ca92275dcb5d4870301817debcc27c399041a4ed87ea8"
+  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.0/rabbitmq-server-generic-unix-3.6.0.tar.xz"
+  sha256 "f8b8e8cac8874d947c364350e215723309caf158b69ea265bac61a0f5e8d101b"
 
   bottle :unneeded
 
+  depends_on "erlang"
   depends_on "simplejson" => :python if MacOS.version <= :leopard
 
   def install
@@ -22,8 +23,9 @@ class Rabbitmq < Formula
     # Correct SYS_PREFIX for things like rabbitmq-plugins
     inreplace sbin/"rabbitmq-defaults" do |s|
       s.gsub! "SYS_PREFIX=${RABBITMQ_HOME}", "SYS_PREFIX=#{HOMEBREW_PREFIX}"
-      s.gsub! 'CLEAN_BOOT_FILE="${SYS_PREFIX}', "CLEAN_BOOT_FILE=\"#{prefix}"
-      s.gsub! 'SASL_BOOT_FILE="${SYS_PREFIX}', "SASL_BOOT_FILE=\"#{prefix}"
+      erlang = Formula["erlang"]
+      s.gsub! "CLEAN_BOOT_FILE=start_clean", "CLEAN_BOOT_FILE=#{erlang.opt_lib/"erlang/bin/start_clean"}"
+      s.gsub! "SASL_BOOT_FILE=start_sasl", "SASL_BOOT_FILE=#{erlang.opt_lib/"erlang/bin/start_clean"}"
     end
 
     # Set RABBITMQ_HOME in rabbitmq-env
