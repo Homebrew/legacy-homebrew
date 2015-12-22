@@ -5,9 +5,11 @@ class Qwt < Formula
   sha256 "2b08f18d1d3970e7c3c6096d850f17aea6b54459389731d3ce715d193e243d0c"
 
   bottle do
-    sha256 "b2c5aeab5bb61f3986ec133be41a78dfe6782951c800f84957a2f737c43f1602" => :yosemite
-    sha256 "7f297caf1eb539cbe632dd7aad8e1d5a86a697f714e02d786fe5623874be4d76" => :mavericks
-    sha256 "07e5a611af760b775ac5e7c405b1d0f20deed6e767045cd07335a09102e42256" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "7b1e1cf69dea710e9eebb69e5dbf54fdaecc8fdd87c0090dd56030d705e4c3a1" => :el_capitan
+    sha256 "5371059fa8b35a67d9ca975d9d2fa9a7e8b7f71aca7b39b95c3704a18799655c" => :yosemite
+    sha256 "dbf6302f800dd4c48a5cc08b3adf98a1b423ea09f3579c883515a2fc33fb96b5" => :mavericks
   end
 
   option "with-qwtmathml", "Build the qwtmathml library"
