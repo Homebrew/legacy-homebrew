@@ -12,7 +12,7 @@ class Gradle < Formula
   end
 
   test do
-    output = shell_output("#{bin}/gradle --version")
+    output = shell_output("#{bin}/gradle --version --stacktrace")
     assert_match /Gradle #{version}/, output
   end
 end
