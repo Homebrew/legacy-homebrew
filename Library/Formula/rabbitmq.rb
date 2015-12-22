@@ -52,6 +52,13 @@ class Rabbitmq < Formula
     EOS
   end
 
+  test do
+    ENV["RABBITMQ_MNESIA_BASE"] = testpath/"var/lib/rabbitmq/mnesia"
+    system sbin/"rabbitmq-server", "-detached"
+    system sbin/"rabbitmqctl", "status"
+    system sbin/"rabbitmqctl", "stop"
+  end
+
   def rabbitmq_env; <<-EOS.undent
     CONFIG_FILE=#{etc}/rabbitmq/rabbitmq
     NODE_IP_ADDRESS=127.0.0.1
