@@ -5,10 +5,10 @@ class UserspaceRcu < Formula
   sha256 "f8d278e9d95bec97c9ba954fc4c3fb584936bc0010713a8fe358b916bafd8715"
 
   bottle do
-    cellar :any
-    sha256 "f0c0badb4e39284c68fee23e2abed3055150b696d374dcc3b46f02c607fccbdc" => :yosemite
-    sha256 "37c33ee463ea71b2deca8ab72d02d9191846cf2ddd639cf1eb51a8039db2eeb5" => :mavericks
-    sha256 "e9ba30f7d6e8eae7bb7fed85d65dbaf7c3d970eb764d03b5561d6d91e3d01871" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d0b393a777b07767cef195b897777e9b65d9186e4307a2ce5a20989082a97976" => :el_capitan
+    sha256 "2842341210131cff185ace17b10599eaa002fc60407267322749191ae5fa1fdc" => :yosemite
+    sha256 "03e24c928b31060eecb8de113be45f0ae8d70ee20073d481a2244d10ae4d1825" => :mavericks
   end
 
   def install
