@@ -5,7 +5,7 @@ class Agda < Formula
 
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  revision 2
+  revision 3
 
   stable do
     url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
@@ -61,10 +61,10 @@ class Agda < Formula
     cabal_clean_lib
 
     if build.with? "stdlib"
-      resource("stdlib").stage prefix/"agda-stdlib"
+      resource("stdlib").stage lib/"agda"
 
       # generate the standard library's bytecode
-      cd prefix/"agda-stdlib" do
+      cd lib/"agda" do
         cabal_sandbox do
           cabal_install "--only-dependencies"
           cabal_install
@@ -76,22 +76,22 @@ class Agda < Formula
       # install the standard library's FFI bindings for the MAlonzo backend
       # in a dedicated GHC package database
       if build.with? "malonzo"
-        db_path = prefix/"agda-stdlib"/"ffi"/"package.conf.d"
+        db_path = lib/"agda"/"ffi"/"package.conf.d"
 
         mkdir db_path
         system "ghc-pkg", "--package-db=#{db_path}", "recache"
 
-        cd prefix/"agda-stdlib"/"ffi" do
+        cd lib/"agda"/"ffi" do
           cabal_sandbox do
             system "cabal", "--ignore-sandbox", "install", "--package-db=#{db_path}",
-              "--prefix=#{prefix/"agda-stdlib"/"ffi"}"
+              "--prefix=#{lib}/agda/ffi"
           end
           rm_rf [".cabal", "dist"]
         end
       end
 
       # generate the standard library's documentation and vim highlighting files
-      cd prefix/"agda-stdlib" do
+      cd lib/"agda" do
         system bin/"agda", "-i", ".", "-i", "src", "--html", "--vim", "README.agda"
       end
     end
@@ -109,14 +109,14 @@ class Agda < Formula
     if build.with? "stdlib"
       s += <<-EOS.undent
       To use the Agda standard library, point Agda to the following include dir:
-        #{prefix/"agda-stdlib"/"src"}
+        #{HOMEBREW_PREFIX}/lib/agda/src
       EOS
 
       if build.with? "malonzo"
         s += <<-EOS.undent
 
         To use the FFI bindings for the MAlonzo backend, give Agda the following option:
-          --ghc-flag=-package-db=#{prefix/"agda-stdlib"/"ffi"/"package.conf.d"}
+          --ghc-flag=-package-db=#{HOMEBREW_PREFIX}/lib/agda/ffi/package.conf.d
         EOS
       end
     end
@@ -158,10 +158,10 @@ class Agda < Formula
         main : _
         main = run $ putStr "Hello, world!"
       EOS
-      system bin/"agda", "-i", testpath, "-i", prefix/"agda-stdlib"/"src",
-        "--ghc-flag=-package-db=#{prefix/"agda-stdlib"/"ffi"/"package.conf.d"}",
+      system bin/"agda", "-i", testpath, "-i", lib/"agda"/"src",
+        "--ghc-flag=-package-db=#{lib}/agda/ffi/package.conf.d",
         "-c", test_file_path
-      assert_equal "Hello, world!", shell_output("#{testpath/"stdlib-test"}")
+      assert_equal "Hello, world!", shell_output("#{testpath}/stdlib-test")
     end
   end
 end
