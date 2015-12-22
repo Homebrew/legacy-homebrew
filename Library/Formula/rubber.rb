@@ -1,9 +1,10 @@
 class Rubber < Formula
   desc "Automated building of LaTeX documents"
   homepage "https://launchpad.net/rubber/"
-  url "https://launchpad.net/rubber/trunk/1.2/+download/rubber-1.2.tar.gz"
-  sha256 "776d859fb75f952cac37bd1b60833840e3a6cdd8d6d01f214b379d3c76618e95"
-  version "20150624-1.2"
+  url "https://launchpad.net/rubber/trunk/1.4/+download/rubber-1.4.tar.gz"
+  sha256 "824af6142a0e52804de2f80d571c0aade1d0297a7d359a5f1874acbb53c0f0b4"
+
+  head "lp:rubber", :using => :bzr
 
   bottle do
     sha256 "928de907e2ff3961c72ff71380fd7db0fc072ae526dc77068718b618ce80f5e6" => :yosemite
@@ -11,18 +12,11 @@ class Rubber < Formula
     sha256 "e7480ca80262718ac62b26c3573c1b7e3091a2ed1766d7f33967f2620911fbc4" => :mountain_lion
   end
 
-  head "lp:rubber", :using => :bzr
+  depends_on "texinfo" => :build
+  depends_on :tex
 
   def install
-    system "./configure", "--prefix=#{prefix}",
-                          "--mandir=#{man}",
-                          "--infodir=#{info}"
-    # `install` requires but does not make the docs
-    system "make"
-    system "make", "install"
-
-    # Don't need to peg to a specific Python version
-    inreplace Dir["#{bin}/*"], %r{^#!.*\/python.*$}, "#!/usr/bin/env python"
+    system "python", "setup.py", "install", "--prefix=#{prefix}"
   end
 
   test do
