@@ -5,9 +5,9 @@ class Sfcgal < Formula
   sha256 "dae7de4c7e1b4ef2a51c55f7d201a6d8049b518caac14f4033fd2d43f14eb031"
 
   bottle do
-    sha256 "3b0c29e4702a59acb4443d494b7c8f216afac1efc028045f725ed0f0851ca8fd" => :el_capitan
-    sha256 "7f8f7058a80e1cb15b0e518f662686dc149b95169f44a1370f042e758d4953bf" => :yosemite
-    sha256 "9ef9f97f69537662765306beb5f8387e79f3426b3f405791a2f56b3cf94e8468" => :mavericks
+    sha256 "cddb259f1fdc03ba213c56757485efee012acf10c96f39af7387ee40b4901f8e" => :el_capitan
+    sha256 "65c06ed4853d2179793da87bebd78c3b025cb8b2437e41dd40f247f9a322a656" => :yosemite
+    sha256 "6512802b7da2f59d1a449dda91d15537be24814bee913ca73c68ccd7082f1d9e" => :mavericks
   end
 
   depends_on "cmake" => :build
