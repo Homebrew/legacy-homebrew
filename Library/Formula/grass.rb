@@ -31,12 +31,12 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
-  depends_on :postgresql => :optional
-  depends_on :mysql => :optional
   depends_on "cairo"
   depends_on "freetype"
   depends_on :x11 # needs to find at least X11/include/GL/gl.h
+  depends_on "wxpython" => :recommended
+  depends_on :postgresql => :optional
+  depends_on :mysql => :optional
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
