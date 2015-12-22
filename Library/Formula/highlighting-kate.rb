@@ -22,11 +22,7 @@ class HighlightingKate < Formula
   setup_ghc_compilers
 
   def install
-    cabal_sandbox do
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}", "-fexecutable"
-    end
-    cabal_clean_lib
+    install_cabal_package "-f executable"
   end
 
   test do
