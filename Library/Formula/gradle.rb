@@ -12,6 +12,7 @@ class Gradle < Formula
   end
 
   test do
+    ENV.java_cache
     output = shell_output("#{bin}/gradle --version --stacktrace")
     assert_match /Gradle #{version}/, output
   end
