@@ -5,6 +5,13 @@ class Digitemp < Formula
   sha256 "6fa4d965350d5501b6ca73ee8a09276ca4f65b6d85dae62f0a796239bae5000e"
   head "https://github.com/bcl/digitemp.git"
 
+  bottle do
+    cellar :any
+    sha256 "b29a65bbf11f11ff637ce398461cd84750b5f66dabef902878af443033c751fa" => :el_capitan
+    sha256 "7b1e87bb23751f09debbe4f2062f2329a8fd7451d01e872a84983709ca4fe351" => :yosemite
+    sha256 "4559a48e8b4b438cd9bbc27efd78a7fe9e5555ed24cc9ee979a3fbdde1381107" => :mavericks
+  end
+
   depends_on "libusb-compat"
 
   def install
