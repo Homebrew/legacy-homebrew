@@ -8,9 +8,9 @@ class Burp < Formula
 
   bottle do
     cellar :any
-    sha256 "b9a08302e1644929ce15ef2f3291a151fb92ff61cc137fca3ede5fe594b74ec3" => :el_capitan
-    sha256 "8488fb6b32673e1e3f42f7887c3ab5b57461983c1e7c0a2f373be4d297fb2eff" => :yosemite
-    sha256 "07fda514cbea286da583ea1a2fe682814733e64b3eada7c35fb87421be65f64e" => :mavericks
+    sha256 "2342aea1a1ac623c8154c1d64a7b583eae62a6177136173d73adada6fd58380e" => :el_capitan
+    sha256 "a892287dbaf7a4d5557a471b16d6ce09a5dc0faab004635bc0c90b79d07e92b3" => :yosemite
+    sha256 "d3b8cc95839835dd9ba9574444d5cf7394d398376fe2a06fcd3ba9a00b395476" => :mavericks
   end
 
   depends_on "librsync"
