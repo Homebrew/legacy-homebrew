@@ -3,6 +3,7 @@ class Sdl2Image < Formula
   homepage "https://www.libsdl.org/projects/SDL_image/"
   url "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz"
   sha256 "b29815c73b17633baca9f07113e8ac476ae66412dec0d29a5045825c27a47234"
+  revision 1
 
   bottle do
     cellar :any
@@ -13,7 +14,7 @@ class Sdl2Image < Formula
     sha256 "76fd7ece6082d8c1624ec28adcdeb7089676fc97554b7964628c5f8d0a3a1c97" => :mountain_lion
   end
 
-  revision 1
+  option :universal
 
   depends_on "pkg-config" => :build
   depends_on "sdl2"
@@ -21,8 +22,6 @@ class Sdl2Image < Formula
   depends_on "libpng"  => :recommended
   depends_on "libtiff" => :recommended
   depends_on "webp"    => :recommended
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?
