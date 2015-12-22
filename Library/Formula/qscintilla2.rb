@@ -70,16 +70,13 @@ class Qscintilla2 < Formula
       mkpath prefix/"plugins/designer"
       cd "designer-Qt4Qt5" do
         inreplace "designer.pro" do |s|
-          s.sub! "$$[QT_INSTALL_PLUGINS]", "#{prefix}/plugins"
+          s.sub! "$$[QT_INSTALL_PLUGINS]", "#{lib}/qt4/plugins"
           s.sub! "$$[QT_INSTALL_LIBS]", "#{lib}"
         end
         system "qmake", "designer.pro", *args
         system "make"
         system "make", "install"
       end
-      # symlink Qt Designer plugin (note: not removed on qscintilla2 formula uninstall)
-      ln_sf prefix/"plugins/designer/libqscintillaplugin.dylib",
-            Formula["qt"].opt_prefix/"plugins/designer/"
     end
   end
 
