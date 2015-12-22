@@ -6,9 +6,10 @@ class Sdl2Net < Formula
 
   bottle do
     cellar :any
-    sha256 "a2cb7b9d8e656c3c307a9b5384912da665b9c7edace584e97d82c229cb64a7f0" => :el_capitan
-    sha256 "0f84b5c2cfa26b3af60c05eb137b5f0fb1aaccc1ccae35cb6d724599db1204b2" => :yosemite
-    sha256 "b1177a6c6c2836e2f5dd574c17efe61df837dddbac1aa6d1b266f8b892faec36" => :mavericks
+    revision 1
+    sha256 "0cacd3c585011d400bca056c9066775716c742c8dc11a2dff9ff5853d6443e7f" => :el_capitan
+    sha256 "251f8d47a039fbf6c3d78800c9678a114e3795402ff2712b12c34cd4773aa2f0" => :yosemite
+    sha256 "1977669f81a83dfcb00c55d79f7cfbdefae1d5fdbe8ce814a0497b516e83084e" => :mavericks
   end
 
   option :universal
