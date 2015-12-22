@@ -1,8 +1,8 @@
 class Makensis < Formula
   desc "System to create Windows installers"
   homepage "http://nsis.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2"
-  sha256 "f5f9e5e22505e44b25aea14fe17871c1ed324c1f3cc7a753ef591f76c9e8a1ae"
+  url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.49/nsis-2.49-src.tar.bz2"
+  sha256 "b9777b376e4fc7aae05e89aa6c52a1137fe443952931e15cf0382b3a5d198512"
 
   depends_on "scons" => :build
 
@@ -12,8 +12,8 @@ class Makensis < Formula
   patch :DATA
 
   resource "nsis" do
-    url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip"
-    sha256 "ced6561f8aed81c8f3d6bc5a33684e03ca36a618110c0a849880c703337f26cc"
+    url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.49/nsis-2.49.zip"
+    sha256 "b7416935d0db6c27b9dfe33e5110456569bbf65ca33cc105fb46ad36226c2eb9"
   end
 
   def install
