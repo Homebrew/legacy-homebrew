@@ -5,10 +5,13 @@ class Cless < Formula
 
   desc "Display file contents with colorized syntax highlighting"
   homepage "https://github.com/tanakh/cless"
-  url "https://hackage.haskell.org/package/cless-0.3.0.0/cless-0.3.0.0.tar.gz"
-  sha256 "0f06437973de1c36c1ac2472091a69c2684db40ba12f881592f1f08e8584629b"
-
+  url "https://github.com/tanakh/cless/archive/0.3.0.0.tar.gz"
+  sha256 "382ad9b2ce6bf216bf2da1b9cadd9a7561526bfbab418c933b646d03e56833b2"
   revision 1
+
+  # fix compilation with GHC 7.10
+  # to be removed once https://github.com/tanakh/cless/pull/2 is merged
+  patch :DATA
 
   bottle do
     sha256 "49b15946ec65f85e5b94333485ba8a8eee1b7ec6d2f53c4619d894c9aaf3e6a8" => :yosemite
@@ -22,8 +25,7 @@ class Cless < Formula
   setup_ghc_compilers
 
   def install
-    # The "--allow-newer" is a hack for GHC 7.10.1, remove when possible.
-    install_cabal_package "--allow-newer"
+    install_cabal_package
   end
 
   test do
@@ -32,3 +34,18 @@ class Cless < Formula
     system "#{bin}/cless", "--list-styles"
   end
 end
+
+__END__
+diff --git a/cless.cabal b/cless.cabal
+index 0e8913d..105a7c9 100644
+--- a/cless.cabal
++++ b/cless.cabal
+@@ -19,7 +19,7 @@ source-repository head
+ executable cless
+   main-is:             Main.hs
+
+-  build-depends:       base >=4.7 && <4.8
++  build-depends:       base >=4.7 && <5
+                      , highlighting-kate >=0.5
+                      , wl-pprint-terminfo >=3.7
+                      , wl-pprint-extras
