@@ -25,6 +25,10 @@ class Qwt < Formula
     inreplace "qwtconfig.pri" do |s|
       s.gsub! /^\s*QWT_INSTALL_PREFIX\s*=(.*)$/, "QWT_INSTALL_PREFIX=#{prefix}"
       s.sub! /\+(=\s*QwtDesigner)/, "-\\1" if build.without? "plugin"
+
+      # Install Qt plugin in `lib/qt4/plugins/designer`, not `plugins/designer`.
+      s.sub! %r{(= \$\$\{QWT_INSTALL_PREFIX\})/(plugins/designer)$},
+             "\\1/lib/qt4/\\2"
     end
 
     args = ["-config", "release", "-spec"]
@@ -43,14 +47,6 @@ class Qwt < Formula
     system "qmake", *args
     system "make"
     system "make", "install"
-  end
-
-  def post_install
-    # This is a dirty hack, but one we've been using since 2014 and may as well
-    # stick with until we decide how to handle the qt plugin problem UM is working on.
-    # Symlink Qt Designer plugin (note: not removed on qwt formula uninstall)
-    ln_sf prefix/"plugins/designer/libqwt_designer_plugin.dylib",
-          Formula["qt"].opt_prefix/"plugins/designer/" if build.with? "plugin"
   end
 
   def caveats
