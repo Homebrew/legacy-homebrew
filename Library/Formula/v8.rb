@@ -67,7 +67,7 @@ class V8 < Formula
   # Borrow the unbundled icu.gyp from the chromium project so we can build against icu4c
   # See https://groups.google.com/a/chromium.org/forum/#!topic/chromium-packagers/pNpOJ0wh5c8
   resource "icu-unbundle" do
-    url "https://chromium.googlesource.com/chromium/src/build/+/master/linux/unbundle/icu.gyp?format=TEXT"
+    url "https://chromium.googlesource.com/chromium/src/build/+/05db126cc0a2dddb5d3b60b3e8e8b560eb32e419/linux/unbundle/icu.gyp?format=TEXT"
     sha256 "55bc6d3235e8a8bb8485011136a68ebdb31674490edc5dfb89913ae3dc0a3bb0"
   end
 
