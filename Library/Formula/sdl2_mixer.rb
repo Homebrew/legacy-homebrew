@@ -7,9 +7,10 @@ class Sdl2Mixer < Formula
 
   bottle do
     cellar :any
-    sha256 "96cb856887d20982443ac02647e20cec3df1496bca263b3b1f733c3e125bd064" => :yosemite
-    sha256 "5a9fadfc66d69b7c2665029ea957d1b1d1b1a3381f932be8ab74c1e2c344370e" => :mavericks
-    sha256 "b66197fe45e0a83fb658c94c95c5d755ace4fef16fb1d5c94f3b0f68876e0afc" => :mountain_lion
+    revision 1
+    sha256 "f32a78d1b3c6d95368124407b099215d6d778fa11f0acff68d4cf1f76f7574a0" => :el_capitan
+    sha256 "c4ee54f586e9f88bf29393274ec3811426068484f03d0e48500a07217b5d69c8" => :yosemite
+    sha256 "7b127a9c1aec81587871db9c288e3d17219b76f8bebc486bce91a6c2a845c4c5" => :mavericks
   end
 
   option :universal
