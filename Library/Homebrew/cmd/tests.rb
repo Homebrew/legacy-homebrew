@@ -4,11 +4,19 @@ module Homebrew
       ENV["TESTOPTS"] = "-v" if ARGV.verbose?
       ENV["HOMEBREW_TESTS_COVERAGE"] = "1" if ARGV.include? "--coverage"
       ENV["HOMEBREW_NO_COMPAT"] = "1" if ARGV.include? "--no-compat"
+
       Homebrew.install_gem_setup_path! "bundler"
-      quiet_system("bundle", "check") || \
-        system("bundle", "install", "--path", "vendor/bundle")
-      system "bundle", "exec", "rake", "test"
+      unless quiet_system("bundle", "check")
+        system "bundle", "install", "--path", "vendor/bundle"
+      end
+
+      args = []
+      args << "--trace" if ARGV.include? "--trace"
+      args += ARGV.named
+      system "bundle", "exec", "rake", "test", *args
+
       Homebrew.failed = !$?.success?
+
       if (fs_leak_log = HOMEBREW_LIBRARY/"Homebrew/test/fs_leak_log").file?
         fs_leak_log_content = fs_leak_log.read
         unless fs_leak_log_content.empty?
