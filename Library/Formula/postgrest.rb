@@ -6,11 +6,10 @@ class Postgrest < Formula
 
   desc "Serves a fully RESTful API from any existing PostgreSQL database."
   homepage "https://github.com/begriffs/postgrest"
-  url "https://github.com/begriffs/postgrest/archive/v0.3.0.1.tar.gz"
-  sha256 "d2e92795a480e3a06d625905fb20bce30e5b86af6525cdec809e6a88200efab8"
+  url "https://github.com/begriffs/postgrest/archive/v0.3.0.2.tar.gz"
+  sha256 "376ce2cef0f79a85ea99639e5b1420ede52935ff931535fe6ea0430e7579a9be"
 
   bottle do
-    revision 1
     sha256 "6e3dbaeeba86ca9f071af471d5a3296652aedc9b6484674ed337f23abef88f85" => :el_capitan
     sha256 "a6ad263ae0aa979ed9da6bcb9002316a0a3e3980653c2a1921efbbfc1f3edf3a" => :yosemite
     sha256 "6d2ee6020ab78948b30aefddb92f3d372eb0f6f9629b2d64399f5b7863a54ace" => :mavericks
@@ -23,7 +22,7 @@ class Postgrest < Formula
   setup_ghc_compilers
 
   def install
-    install_cabal_package "--enable-executable-stripping"
+    install_cabal_package
   end
 
   test do
