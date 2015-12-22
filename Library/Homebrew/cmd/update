@@ -1,0 +1,54 @@
+#!/bin/sh # brew-update.sh
+[ -n "$HOMEBREW_VERBOSE" ] && set -x
+
+trap_cleanup()
+{
+  for job in $(jobs -p); do
+    kill -s 2 $job >/dev/null 2>&1
+  done
+
+  for each in $HOMEBREW_PREFIX $(ls -1d $BREW_LIBRARY_DIRECTORY/Taps/*/* 2>/dev/null); do
+    cd "$each"
+    git config --remove-section brew >/dev/null 2>&1
+    git stash pop >/dev/null 2>&1
+  done
+}
+
+trap trap_cleanup HUP INT QUIT ABRT KILL TERM
+
+update_if_necessary()
+(
+  cd "$*"
+  trap trap_cleanup HUP INT QUIT ABRT KILL TERM
+
+  # Build the URI for the API call based on our remote and branch.
+  uri=$(git ls-remote --get-url | sed -e's|git://|https://|' -e's|\.git$||' \
+                                      -e's|github.com|api.github.com/repos|')
+  ref=$(git symbolic-ref HEAD)
+  api_uri=$(echo $uri | sed 's|$|/git|')/$ref
+
+  # We save a few milliseconds with a standard config avoiding the refs API.
+  [ "$ref" = "refs/heads/master" ] && api_uri="$uri/commits/master"
+
+  etag=$(git config brew.etag) # ETag gets cached in .git/config.
+  [ -z "$etag" ] && etag=xxx # On first run, set a fake ETag (for grep).
+
+  response=$(curl -isLH "If-None-Match: \"$etag\"" $api_uri)
+
+  # If the ETag matches, we can exit now.
+  echo "$response" | grep "ETag: \"$etag\"" >/dev/null 2>&1 && return 0 ||
+  {
+    { git stash save --include-untracked >/dev/null 2>&1 || :;} &&
+    { git pull --ff --no-rebase >/dev/null 2>&1 ;}              &&
+    { git stash pop >/dev/null 2>&1 || :;}
+
+    etag=$(echo "$response" | grep 'ETag:' | sed 's|.* "\(.*\)"|\1|')
+    git config brew.etag $(echo $etag | tr -d '\r') # Updated cached ETag
+  }
+)
+
+update_if_necessary "$HOMEBREW_PREFIX"
+
+for each in $(ls -1d $BREW_LIBRARY_DIRECTORY/Taps/*/* 2>/dev/null); do
+  update_if_necessary "$each" &
+done
