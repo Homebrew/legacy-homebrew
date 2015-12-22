@@ -5,8 +5,8 @@ class HaskellStack < Formula
 
   desc "The Haskell Tool Stack"
   homepage "http://haskellstack.org"
-  url "https://hackage.haskell.org/package/stack-0.1.10.1/stack-0.1.10.1.tar.gz"
-  sha256 "03d3f1cd03cbb70364f013aa6ccaefa07397a76984bc8b7ce51376e0bdc51a7c"
+  url "https://github.com/commercialhaskell/stack/archive/v0.1.10.1.tar.gz"
+  sha256 "eb53fafac78e8f84b8c3f57e29f608ef1eb9a40fd92b24aef1be5f6b422982a0"
 
   head "https://github.com/commercialhaskell/stack.git"
 
@@ -22,11 +22,7 @@ class HaskellStack < Formula
   setup_ghc_compilers
 
   def install
-    cabal_sandbox do
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-    end
-    cabal_clean_lib
+    install_cabal_package
   end
 
   test do
