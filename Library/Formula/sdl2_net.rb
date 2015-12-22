@@ -11,10 +11,10 @@ class Sdl2Net < Formula
     sha256 "b1177a6c6c2836e2f5dd574c17efe61df837dddbac1aa6d1b266f8b892faec36" => :mavericks
   end
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "sdl2"
-
-  option :universal
 
   def install
     ENV.universal_binary if build.universal?
