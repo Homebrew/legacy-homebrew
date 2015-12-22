@@ -5,10 +5,8 @@ class Texmath < Formula
 
   desc "Haskell library for converting LaTeX math to MathML"
   homepage "http://johnmacfarlane.net/texmath.html"
-  url "https://hackage.haskell.org/package/texmath-0.8.0.2/texmath-0.8.0.2.tar.gz"
-  sha256 "47b9c3fdceed63c5d63987db7e511a38ea8ddf8591786ef56efea734a3c31f86"
-
-  revision 1
+  url "https://github.com/jgm/texmath/archive/0.8.4.1.tar.gz"
+  sha256 "f3e6e8ba0136462299c8873e9aefc05aa61a85b782ba8e487d4fc4a1fe10005f"
 
   bottle do
     sha256 "ba657b85f95ff38251a9a60146702dc15b3622649881d13075e70cac4213e307" => :yosemite
@@ -22,11 +20,7 @@ class Texmath < Formula
   setup_ghc_compilers
 
   def install
-    cabal_sandbox do
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}", "-fexecutable"
-    end
-    cabal_clean_lib
+    install_cabal_package "-f executable"
   end
 
   test do
