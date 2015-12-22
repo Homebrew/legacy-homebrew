@@ -23,13 +23,9 @@ class Pandoc < Formula
   setup_ghc_compilers
 
   def install
-    cabal_sandbox do
-      args = []
-      args << "--constraint=cryptonite -support_aesni" if MacOS.version <= :lion
-      cabal_install "--only-dependencies", *args
-      cabal_install "--prefix=#{prefix}"
-    end
-    cabal_clean_lib
+    args = []
+    args << "--constraint=cryptonite -support_aesni" if MacOS.version <= :lion
+    install_cabal_package *args
     (bash_completion/"pandoc").write `#{bin}/pandoc --bash-completion`
   end
 
