@@ -20,6 +20,7 @@ class Saltstack < Formula
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "zeromq"
   depends_on "libyaml"
+  depends_on "swig" => :build
   depends_on "openssl" # For M2Crypto
 
   resource "six" do
