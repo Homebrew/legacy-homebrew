@@ -6,11 +6,10 @@ class Ode < Formula
   head "https://bitbucket.org/odedevs/ode/", :using => :hg
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "ffc8af301c91530661b4d83bba10af79b51a1204ee3111bcb1d73714a9073137" => :yosemite
-    sha256 "3daad0d75cba00147966ed9f5ff27c825f25142c664d41341481943eb70f5ac4" => :mavericks
-    sha256 "1956cbf2602b3a8ab1a1bc770a6bfa005eb9f484362b543176f9477ce3bd797e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a819c7f5b726beab6c2dbb4bd4e0e09535e31e012fd6c2827d798eba88ecefec" => :el_capitan
+    sha256 "978f6488c0bec75919bfc2b12882a5d7c517e5e9a3ff3c55eea5bc9a3f99b7fb" => :yosemite
+    sha256 "1909c03ba89ab957497e58a02a95972e57f37bb7d4a45a5e7aa822eb37177e5c" => :mavericks
   end
 
   option "with-double-precision", "Compile ODE with double precision"
