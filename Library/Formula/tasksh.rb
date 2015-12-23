@@ -21,10 +21,8 @@ class Tasksh < Formula
   end
 
   test do
+    # More meaningful tests are difficult, since this is simply a wrapper for another
+    # tool that is only a recommended dependency.
     system "#{bin}/tasksh", "--version"
-
-    # Test fails if recommended program task is not installed or if a version > 1.0.0 is used
-    # (testpath/".taskrc").write "data.location=#{testpath}/.task\n"
-    # assert pipe_output("#{bin}/tasksh", "add Test Task").include?("Created task")
   end
 end
