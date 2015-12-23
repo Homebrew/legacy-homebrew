@@ -1,8 +1,8 @@
 class Blink1 < Formula
   desc "Control blink(1) indicator light"
   homepage "https://blink1.thingm.com/"
-  url "https://github.com/todbot/blink1/archive/v1.97.tar.gz"
-  sha256 "974722b466249ee47ec27659b160d2e4fd0c2bc3732d009f180f8ffb53dc5d92"
+  url "https://github.com/todbot/blink1/archive/v1.98.tar.gz"
+  sha256 "2bbf8848c3c656ab8fb01035fd31103a321fbee20164691cf67e3706c4b50b16"
   head "https://github.com/todbot/blink1.git"
 
   bottle do
