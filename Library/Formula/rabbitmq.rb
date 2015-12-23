@@ -4,8 +4,8 @@
 class Rabbitmq < Formula
   desc "Messaging broker"
   homepage "https://www.rabbitmq.com"
-  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.7/rabbitmq-server-mac-standalone-3.5.7.tar.gz"
-  sha256 "48a2acb30c1731f82303ef8fe3447a5f643ea7327bb8503e44149790ed7d5a7d"
+  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.0/rabbitmq-server-mac-standalone-3.6.0.tar.xz"
+  sha256 "db10cb920cfc77f5714ca92275dcb5d4870301817debcc27c399041a4ed87ea8"
 
   bottle :unneeded
 
@@ -27,7 +27,7 @@ class Rabbitmq < Formula
     end
 
     # Set RABBITMQ_HOME in rabbitmq-env
-    inreplace (sbin + "rabbitmq-env"), 'RABBITMQ_HOME="${SCRIPT_DIR}/.."', "RABBITMQ_HOME=#{prefix}"
+    inreplace (sbin + "rabbitmq-env"), 'RABBITMQ_HOME="$(rmq_realpath "${RABBITMQ_SCRIPTS_DIR}/..")"', "RABBITMQ_HOME=#{prefix}"
 
     # Create the rabbitmq-env.conf file
     rabbitmq_env_conf = etc+"rabbitmq/rabbitmq-env.conf"
