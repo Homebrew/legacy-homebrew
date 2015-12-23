@@ -17,8 +17,6 @@ class Arx < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
-  setup_ghc_compilers
-
   def install
     cabal_sandbox do
       cabal_install "--only-dependencies"
@@ -28,7 +26,6 @@ class Arx < Formula
       tag = `./bin/dist tag`.chomp
       bin.install "tmp/dist/arx-#{tag}/arx" => "arx"
     end
-    cabal_clean_lib
   end
 
   test do
