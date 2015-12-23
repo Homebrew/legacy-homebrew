@@ -19,8 +19,6 @@ class Shellcheck < Formula
   depends_on "cabal-install" => :build
   depends_on "pandoc" => :build
 
-  setup_ghc_compilers
-
   def install
     install_cabal_package
     system "pandoc", "-s", "-t", "man", "shellcheck.1.md", "-o", "shellcheck.1"
