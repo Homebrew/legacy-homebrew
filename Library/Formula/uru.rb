@@ -6,9 +6,9 @@ class Uru < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9c616c324409575a681c156bdfbbecffdb55f6d4c59a664a5a0231c7373e1489" => :el_capitan
-    sha256 "979224d18653ddbdff2922af2cff156274904a75d40f5dab1263726cd6126228" => :yosemite
-    sha256 "f68f12bb741ba6483268c6a8721368589db150d058919c76117ff7bd5ca15f26" => :mavericks
+    sha256 "c510cfeea72b21ce8928095a53bdc8176fda8210507ac12ac1c04cd55d7f4f43" => :el_capitan
+    sha256 "505c30f4109b6436c8b27a6118de6fb122e79d24dffe8f6213829a9c307c25a9" => :yosemite
+    sha256 "16b0fee7939e8d14d200ca565f5a977caf17c0c2444f1131320572c6ec7a359f" => :mavericks
   end
 
   depends_on "go" => :build
