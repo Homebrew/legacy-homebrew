@@ -19,6 +19,9 @@ class Mplayer < Formula
     patch :DATA
   end
 
+  option "with-x11OSD", "Enable x11 for freefont/freetype menu support"
+
+  depends_on :x11 => :optional
   depends_on "yasm" => :build
   depends_on "libcaca" => :optional
 
@@ -45,10 +48,14 @@ class Mplayer < Formula
       --host-cc=#{ENV.cc}
       --disable-cdparanoia
       --prefix=#{prefix}
-      --disable-x11
     ]
 
     args << "--enable-caca" if build.with? "libcaca"
+
+    args << "--enable-x11" if build.with? "x11OSD"
+    args << "--extra-libs=-lX11" if build.with? "x11OSD"
+    args << "--extra-libs-mplayer=-lXext" if build.with? "x11OSD"
+    args << "--enable-menu" if build.with? "x11OSD"
 
     system "./configure", *args
     system "make"
