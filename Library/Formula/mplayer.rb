@@ -19,7 +19,7 @@ class Mplayer < Formula
     patch :DATA
   end
 
-  option "with-x11OSD", "Enable x11 for freefont/freetype menu support"
+  option "with-x11", "Enable x11 for freefont/freetype menu support (OSD)"
 
   depends_on :x11 => :optional
   depends_on "yasm" => :build
@@ -52,10 +52,13 @@ class Mplayer < Formula
 
     args << "--enable-caca" if build.with? "libcaca"
 
-    args << "--enable-x11" if build.with? "x11OSD"
-    args << "--extra-libs=-lX11" if build.with? "x11OSD"
-    args << "--extra-libs-mplayer=-lXext" if build.with? "x11OSD"
-    args << "--enable-menu" if build.with? "x11OSD"
+    # to get OSD to work on El Capitan we seen to need x11
+    if build.with? "x11"
+      args << "--enable-x11" 
+      args << "--extra-libs=-lX11"
+      args << "--extra-libs-mplayer=-lXext"
+      args << "--enable-menu"
+    end
 
     system "./configure", *args
     system "make"
