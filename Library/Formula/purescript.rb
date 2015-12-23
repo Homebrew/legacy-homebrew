@@ -22,7 +22,8 @@ class Purescript < Formula
   def install
     cabal_sandbox do
       cabal_install_tools "alex", "happy"
-      install_cabal_package
+      cabal_install "--only-dependencies"
+      cabal_install "--prefix=#{prefix}"
     end
     cabal_clean_lib
   end
