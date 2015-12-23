@@ -20,8 +20,6 @@ class Cryptol < Formula
   depends_on "cabal-install" => :build
   depends_on "z3"
 
-  setup_ghc_compilers
-
   def install
     cabal_sandbox do
       system "make", "PREFIX=#{prefix}", "install"
