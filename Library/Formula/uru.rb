@@ -1,8 +1,8 @@
 class Uru < Formula
   desc "Use multiple rubies on multiple platforms"
   homepage "https://bitbucket.org/jonforums/uru"
-  url "https://bitbucket.org/jonforums/uru/get/v0.8.0.tar.gz"
-  sha256 "7201ee957ad35131f6461ca35cc0fe77ca8e38d4e1603bad02871f5222413ee4"
+  url "https://bitbucket.org/jonforums/uru/get/v0.8.1.tar.gz"
+  sha256 "169cfaa2982be8ee6e58dbbf90a92fb57e14f99e943d223c3c5e2d4bab0b6c46"
 
   bottle do
     cellar :any_skip_relocation
