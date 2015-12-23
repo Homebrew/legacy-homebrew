@@ -20,8 +20,6 @@ class Pandoc < Formula
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
-  setup_ghc_compilers
-
   def install
     args = []
     args << "--constraint=cryptonite -support_aesni" if MacOS.version <= :lion
