@@ -4,8 +4,8 @@ class Nomad < Formula
   desc "Distributed, Highly Available, Datacenter-Aware Scheduler"
   homepage "https://www.nomadproject.io"
   url "https://github.com/hashicorp/nomad.git",
-    :tag => "v0.1.0",
-    :revision => "520763c0715ee88b6571db840e62fab186d7fe59"
+    :tag => "v0.2.3",
+    :revision => "2977583c78e622ab257ed323ec1bc6cd8b8120dd"
 
   head "https://github.com/hashicorp/nomad.git"
 
@@ -41,7 +41,8 @@ class Nomad < Formula
     end
 
     cd gopath/"src/github.com/hashicorp/nomad" do
-      system "make"
+      system "make", "bootstrap"
+      system "make", "dev"
       bin.install "bin/nomad"
     end
   end
@@ -51,7 +52,7 @@ class Nomad < Formula
       pid = fork do
         exec "#{bin}/nomad", "agent", "-dev"
       end
-      sleep 5
+      sleep 10
       ENV.append "NOMAD_ADDR", "http://127.0.0.1:4646"
       system "#{bin}/nomad", "node-status"
     ensure
