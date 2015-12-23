@@ -25,14 +25,8 @@ class GitAnnex < Formula
   depends_on "gnutls"
   depends_on "quvi"
 
-  setup_ghc_compilers
-
   def install
-    cabal_sandbox do
-      cabal_install_tools "alex", "happy", "c2hs"
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-
+    install_cabal_package :using => ["alex", "happy", "c2hs"] do
       # this can be made the default behavior again once git-union-merge builds properly when bottling
       if build.with? "git-union-merge"
         system "make", "git-union-merge", "PREFIX=#{prefix}"
@@ -41,7 +35,6 @@ class GitAnnex < Formula
       end
     end
     bin.install_symlink "git-annex" => "git-annex-shell"
-    cabal_clean_lib
   end
 
   test do
