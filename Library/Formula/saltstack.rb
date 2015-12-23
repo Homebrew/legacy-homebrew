@@ -16,10 +16,10 @@ class Saltstack < Formula
     sha256 "5f9e12ce508da8cf3c8ba48250356ef6e0167b5255980f6da04da4c59800824f" => :mavericks
   end
 
+  depends_on "swig" => :build
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "zeromq"
   depends_on "libyaml"
-  depends_on "swig" => :build
   depends_on "openssl" # For M2Crypto
 
   resource "six" do
