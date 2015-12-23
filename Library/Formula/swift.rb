@@ -24,6 +24,11 @@ class Swift < Formula
     end
   end
 
+  bottle do
+    sha256 "d6702f2d52b0f570c3851e88605529e3102df8b3bf243d8c8db0cbe18b63d027" => :el_capitan
+    sha256 "6d5ed861ec71459e6671a534f52e0e449e9025bdad1a6faab6dc3bc843aa4af8" => :yosemite
+  end
+
   head do
     url "https://github.com/apple/swift"
 
