@@ -60,8 +60,6 @@ class Elm < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
-  setup_ghc_compilers
-
   def install
     # elm-compiler needs to be staged in a subdirectory for the build process to succeed
     (buildpath/"elm-compiler").install Dir["*"]
@@ -73,7 +71,7 @@ class Elm < Formula
     end
 
     cabal_sandbox do
-      system "cabal", "sandbox", "add-source", "elm-compiler", *extras
+      cabal_sandbox_add_source "elm-compiler", *extras
       cabal_install "--only-dependencies", "elm-compiler", *extras
       cabal_install "--prefix=#{prefix}", "elm-compiler", *extras_no_reactor
 
@@ -82,7 +80,6 @@ class Elm < Formula
 
       cabal_install "--prefix=#{prefix}", "elm-reactor"
     end
-    cabal_clean_lib
   end
 
   test do
