@@ -8,10 +8,9 @@ class Cryptopp < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 2
-    sha256 "cb169ef2c25cf280f9c980694af6e566c947031d9667e8aac08edf11052794cd" => :el_capitan
-    sha256 "319e5e4bb18076bbc367ea240f931c81f037059add9122c1157f3a3a6c9dc442" => :yosemite
-    sha256 "732f74da193f079d6c44200f6592e1b170f4a7a1cdfd3fde3cdd77fa59d59838" => :mavericks
+    sha256 "6a1df1d638f115f46665337a43c04da6c573e34e6970636df1679b81b6b55ef5" => :el_capitan
+    sha256 "8bb962c7ec3895b111cc57c726ceffb191a84034192b18573fcb6107a2b869c2" => :yosemite
+    sha256 "9192678ac6745d338d412af85b071d86c8e75de64ba6664775d322065dbc0ea4" => :mavericks
   end
 
   option :cxx11
