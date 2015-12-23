@@ -2,7 +2,6 @@ class Tgui < Formula
   desc "GUI library for use with sfml"
   homepage "http://tgui.eu"
   url "https://github.com/texus/TGUI/archive/v0.6.9.tar.gz"
-  version "0.6.9"
   sha256 "9bbde01e918e950e484d75b3eaeb0c77f38180865f3cfcb188a56e77a62db8bb"
 
   depends_on "cmake" => :build
