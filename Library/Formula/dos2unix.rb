@@ -7,9 +7,9 @@ class Dos2unix < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "886a78adf2a767701e465fdf5c1023091df426236a72e05c91e259d0c9fe4f94" => :el_capitan
-    sha256 "f40a28d1464de115f92e86e24780021a06c068c71dbaa91dab2882c3666563ad" => :yosemite
-    sha256 "cc94e34364107792aa714a8e763389badef404097866c642d2446629c52aa21e" => :mavericks
+    sha256 "7168cf225befc0bb1bd4a435e3311444407ce1f37be4d42059d694e7cf9230ab" => :el_capitan
+    sha256 "e278bc37bfc17d64b269fab313f8d9ed2a2af3361b8204c7ca2bd2d55404d15f" => :yosemite
+    sha256 "61ef99b643f822bd8644124d4225ce46e39ee9912787737b1d1efe42170d11ab" => :mavericks
   end
 
   option "with-gettext", "Build with Native Language Support"
