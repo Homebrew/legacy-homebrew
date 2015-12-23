@@ -44,6 +44,6 @@ class Logentries < Formula
   end
 
   test do
-    system "if [ \"`#{bin}/le --help || echo $?`\" -ne \"4\" ]; then exit 1; fi"
+    shell_output("#{bin}/le --help", 4)
   end
 end
