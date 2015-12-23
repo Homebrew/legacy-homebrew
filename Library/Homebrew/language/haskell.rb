@@ -2,13 +2,7 @@ module Language
   module Haskell
 
     module Cabal
-      module ClassMethods # TODO: Remove
-        def setup_ghc_compilers
-        end
-      end
-
       def self.included(base)
-        base.extend ClassMethods # TODO: Remove
         # use llvm-gcc on Lion or below, as when building GHC)
         fails_with(:clang) if MacOS.version <= :lion
       end
@@ -62,9 +56,6 @@ module Language
         # unregister packages installed as dependencies for the tools, so
         # that they can't cause dependency conflicts for the main package
         rm_rf Dir[".cabal-sandbox/*packages.conf.d/"]
-      end
-
-      def cabal_clean_lib # TODO: Remove
       end
 
       def install_cabal_package(*args)
