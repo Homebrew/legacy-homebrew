@@ -53,7 +53,7 @@ class Gnuradio < Formula
 
   # gnuradio is known not to compile against CMake >3.3.2 currently.
   resource "cmake" do
-    url "http://www.cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
+    url "https://cmake.org/files/v3.3/cmake-3.3.2.tar.gz"
     sha256 "e75a178d6ebf182b048ebfe6e0657c49f0dc109779170bad7ffcb17463f2fc22"
   end
 
