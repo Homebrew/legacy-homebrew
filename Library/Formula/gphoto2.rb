@@ -6,10 +6,9 @@ class Gphoto2 < Formula
 
   bottle do
     cellar :any
-    sha256 "ae8d38e94f0ff037eb26e248413877ef7e8045b1b05fdfd6d357f2a1bf92d84f" => :el_capitan
-    sha256 "6d57973dbb611b2b77776d67ad35519f163621dc93e6a0deb23f3ffccc67c71f" => :yosemite
-    sha256 "b665dcc42de947a48e66cf4251104f003bc7c1c881c73b67b9d1cb48430257c9" => :mavericks
-    sha256 "34da8bdafd4e10cb03a03bf8ccd3dbf193fc66c93c638bd9631f8dffba014a6b" => :mountain_lion
+    sha256 "f570a7e2cd5a68785ec706283f5eaabc706d330243019ad8aabed72e837d6a06" => :el_capitan
+    sha256 "7ad0a0e1cb35c51c4a913c2d27b7dbf684326126e5daf1ac7c6abdc8a0499e24" => :yosemite
+    sha256 "7da8bfde56b1081046ccb4c01cec549c75aeb0b2e272c2164e372677286138a5" => :mavericks
   end
 
   depends_on "pkg-config" => :build
