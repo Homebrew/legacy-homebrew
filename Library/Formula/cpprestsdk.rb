@@ -6,12 +6,10 @@ class Cpprestsdk < Formula
   depends_on "boost"
   depends_on "openssl"
   depends_on "cmake" => :build
-
   def install
     system "cmake", "-DBUILD_SAMPLES=OFF", "Release", *std_cmake_args
     system "make", "install"
   end
-  
   test do
     (testpath/"test.cc").write <<-EOS.undent
       #include <iostream>
