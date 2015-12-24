@@ -1,8 +1,11 @@
+# We'd really like this formula to be built from source so we can build
+# against a modern OpenSSL rather than the prehistoric system version.
+# Submit a PR if you're interested, Thanks!
 class Rabbitmq < Formula
   desc "Messaging broker"
   homepage "https://www.rabbitmq.com"
-  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.5.6/rabbitmq-server-mac-standalone-3.5.6.tar.gz"
-  sha256 "da35427cc9b153dc2158ca0b4b9f8ca334164a246943dad0cbe94e4de776dff4"
+  url "https://www.rabbitmq.com/releases/rabbitmq-server/v3.6.0/rabbitmq-server-mac-standalone-3.6.0.tar.xz"
+  sha256 "db10cb920cfc77f5714ca92275dcb5d4870301817debcc27c399041a4ed87ea8"
 
   bottle :unneeded
 
@@ -24,7 +27,7 @@ class Rabbitmq < Formula
     end
 
     # Set RABBITMQ_HOME in rabbitmq-env
-    inreplace (sbin + "rabbitmq-env"), 'RABBITMQ_HOME="${SCRIPT_DIR}/.."', "RABBITMQ_HOME=#{prefix}"
+    inreplace (sbin + "rabbitmq-env"), 'RABBITMQ_HOME="$(rmq_realpath "${RABBITMQ_SCRIPTS_DIR}/..")"', "RABBITMQ_HOME=#{prefix}"
 
     # Create the rabbitmq-env.conf file
     rabbitmq_env_conf = etc+"rabbitmq/rabbitmq-env.conf"

@@ -1,6 +1,6 @@
 class Grass < Formula
   desc "Geographic Resources Analysis Support System"
-  homepage "http://grass.osgeo.org/"
+  homepage "https://grass.osgeo.org/"
   revision 1
 
   stable do
@@ -9,6 +9,12 @@ class Grass < Formula
 
     # Patches that files are not installed outside of the prefix.
     patch :DATA
+  end
+
+  bottle do
+    sha256 "9881162ad659b3e04e687933477fd10cf8726c53aa19fbfba9dfb3f685edaa25" => :el_capitan
+    sha256 "aa4db69f55a2fd3b5a09cebcc4706009743ba5d7e46ee46ad958f274799e33f6" => :yosemite
+    sha256 "42304f890bd466dfbbe4dcccde86ecd85c209ea38e908320f94d2a745233ef59" => :mavericks
   end
 
   head do
@@ -31,12 +37,12 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
-  depends_on :postgresql => :optional
-  depends_on :mysql => :optional
   depends_on "cairo"
   depends_on "freetype"
   depends_on :x11 # needs to find at least X11/include/GL/gl.h
+  depends_on "wxpython" => :recommended
+  depends_on :postgresql => :optional
+  depends_on :mysql => :optional
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."

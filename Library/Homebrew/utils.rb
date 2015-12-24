@@ -138,9 +138,18 @@ def pretty_uninstalled(f)
 end
 
 def pretty_duration(s)
-  return "2 seconds" if s < 3 # avoids the plural problem ;)
-  return "#{s.to_i} seconds" if s < 120
-  "%.1f minutes" % (s/60.0)
+  s = s.to_i
+  res = ""
+
+  if s > 59
+    m = s / 60
+    s %= 60
+    res = "#{m} minute#{plural m}"
+    return res if s == 0
+    res << " "
+  end
+
+  res + "#{s} second#{plural s}"
 end
 
 def plural(n, s = "s")
@@ -465,11 +474,7 @@ module GitHub
     end
 
     def pretty_ratelimit_reset(reset)
-      if (seconds = Time.at(reset) - Time.now) > 180
-        "%d minutes %d seconds" % [seconds / 60, seconds % 60]
-      else
-        "#{seconds} seconds"
-      end
+      pretty_duration(Time.at(reset) - Time.now)
     end
   end
 
