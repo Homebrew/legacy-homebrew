@@ -10,8 +10,25 @@ class Rbenv < Formula
   depends_on "ruby-build" => :recommended
 
   def install
-    inreplace "libexec/rbenv", "/usr/local", HOMEBREW_PREFIX
-    prefix.install Dir["*"]
+    inreplace "libexec/rbenv" do |s|
+      s.gsub!('"${BASH_SOURCE%/*}"/../libexec', libexec.to_s, false)
+    end
+
+    # Compile optional bash extension. Failure is not critical.
+    if File.exist? "src/configure"
+      Kernel.system "src/configure"
+      Kernel.system "make", "-C" "src"
+    end
+
+    if head?
+      # Record exact git revision for `rbenv --version` output
+      inreplace "libexec/rbenv---version" do |s|
+        git_revision=`git rev-parse --short HEAD`.chomp
+        s.sub!(/^(version=)"([^"]+)"/, %{\\1"\\2-g#{git_revision}"})
+      end
+    end
+
+    prefix.install Dir["{bin,completions,libexec,rbenv.d}"]
   end
 
   def caveats; <<-EOS.undent
