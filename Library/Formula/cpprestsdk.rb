@@ -20,7 +20,7 @@ class Cpprestsdk < Formula
         std::cout << client.request(web::http::methods::GET).get().extract_string().get() << std::endl;
       }
     EOS
-    flags = ["-stdlib=libc++", "-std=c++14", "-I#{include}", "-I#{Formula["boost"].include}", "-I/usr/local/opt/openssl/include", "-L#{lib}", "-L/usr/local/opt/openssl/lib", "-L#{Formula["boost"].lib}", "-lssl", "-lcrypto", "-lboost_random", "-lboost_chrono", "-lboost_thread-mt", "-lboost_system-mt", "-lboost_regex", "-lboost_filesystem", "-lcpprest"] + ENV.cflags.to_s.split
+    flags = ["-stdlib=libc++", "-std=c++11", "-I#{include}", "-I#{Formula["boost"].include}", "-I/usr/local/opt/openssl/include", "-L#{lib}", "-L/usr/local/opt/openssl/lib", "-L#{Formula["boost"].lib}", "-lssl", "-lcrypto", "-lboost_random", "-lboost_chrono", "-lboost_thread-mt", "-lboost_system-mt", "-lboost_regex", "-lboost_filesystem", "-lcpprest"] + ENV.cflags.to_s.split
     system ENV.cxx, "-o", "test_cpprest", "test.cc", *flags
     system "./test_cpprest"
   end
