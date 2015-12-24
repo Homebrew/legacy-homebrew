@@ -5,6 +5,13 @@ class Weboob < Formula
   sha256 "2500823b6de62161d4da11382181f5def0d91823b23cebd9a470479714844068"
   head "git://git.symlink.me/pub/weboob/stable.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "65149686e5324c2899c254c20b84eace15541fef0bbdfacb73c4c27cf3657438" => :el_capitan
+    sha256 "5264b1509bc30f59dcbc4428afb87eb47aa26f10a6d42e877851b718509c32f8" => :yosemite
+    sha256 "fbd9aad5e5c443e01da7047d84d3989c015cdb9b763a4855d357389c2f97278b" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
   depends_on :gpg
