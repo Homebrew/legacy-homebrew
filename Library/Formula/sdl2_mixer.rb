@@ -20,17 +20,30 @@ class Sdl2Mixer < Formula
   depends_on "flac" => :optional
   depends_on "fluid-synth" => :optional
   depends_on "smpeg2" => :optional
+  depends_on "libmodplug" => :optional
   depends_on "libmikmod" => :optional
   depends_on "libvorbis" => :optional
 
   def install
+    if build.with?("libmodplug") && !build.head? then
+      # libmodplug support was fixed in changeset 695 (https://hg.libsdl.org/SDL_mixer/rev/6a5e6d8d6a35).
+      odie "sdl2_mixer 2.0.0 doesn't properly support a compilation with libmodplug. Use --HEAD."
+    end
+
     ENV.universal_binary if build.universal?
     inreplace "SDL2_mixer.pc.in", "@prefix@", HOMEBREW_PREFIX
 
     ENV["SMPEG_CONFIG"] = "#{Formula["smpeg2"].bin}/smpeg2-config" if build.with? "smpeg2"
 
-    system "./configure", "--prefix=#{prefix}",
-                          "--disable-dependency-tracking"
+    args = ["--prefix=#{prefix}",
+            "--disable-dependency-tracking",
+           ]
+
+    args << "--enable-music-mod-modplug" if build.with? "libmodplug"
+    args << "--enable-music-mod-mikmod" if build.with? "libmikmod"
+
+    system "./configure", *args
+
     system "make", "install"
   end
 end
