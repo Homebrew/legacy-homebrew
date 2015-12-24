@@ -71,6 +71,7 @@ class Node < Formula
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
       cd buildpath/"npm_install" do
+        mkdir_p "#{libexec}/npm"
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
         # `package.json` has relative paths to the npm_install directory.
