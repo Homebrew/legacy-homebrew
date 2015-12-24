@@ -8,8 +8,8 @@ class Erlang < Formula
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-18.2.tar.gz"
-    sha256 "4175ce492f9043dec53880333e12107545ae269d72672ced55d54c7f7b50f829"
+    url "https://github.com/erlang/otp/archive/OTP-18.2.1.tar.gz"
+    sha256 "2207d7f62605937560cb15c54d183f9b262b82867df6c944887763d1fcbb3280"
   end
 
   bottle do
@@ -20,13 +20,13 @@ class Erlang < Formula
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_18.2.tar.gz"
-    sha256 "3695f3a10652e1e1b06d14639d9690d5e533c5e3b831c37f80214f68b8c56a29"
+    url "http://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
+    sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_18.2.tar.gz"
-    sha256 "15f262ef6b9fb31063d485cf4d0016e22279dabcfa1c9e3670f0c7ca8e84f60f"
+    url "http://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
+    sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
   end
 
   option "without-hipe", "Disable building hipe; fails on various OS X systems"
