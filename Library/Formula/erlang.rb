@@ -14,9 +14,9 @@ class Erlang < Formula
 
   bottle do
     cellar :any
-    sha256 "cdc72cec00ee3f25f8120bb8f014f182724f1e1eb00ea34c9c74b3ce4ee020c8" => :el_capitan
-    sha256 "f78f5b2b5dfeff14efe093344577daeb5320066100c67736911757814455bd47" => :yosemite
-    sha256 "1cbe98f152ea2b5ed6147599bf8c371da4d6bb800969222ed135bd4dcde8ce31" => :mavericks
+    sha256 "b0b6f0d6dd03f5c45388481940f169c335c4a1b5803e96cb2d46830df285a861" => :el_capitan
+    sha256 "3c49f6e032111938e6a2093a3952a5461bbacd78d38b9eda9fcce7f729409b49" => :yosemite
+    sha256 "5cc9d9e1f16d8e7d9fa1dcd6788b9c8ebb9abcfb033c3a003448fbd5da0649aa" => :mavericks
   end
 
   resource "man" do
