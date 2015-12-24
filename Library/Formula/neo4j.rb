@@ -5,6 +5,12 @@ class Neo4j < Formula
   version "2.3.1"
   sha256 "7b2f30d73af107eacd9a3a619475ef448a08eecb2cdb42ab1f8a38d091c70ecb"
 
+  devel do
+    url "http://dist.neo4j.org/neo4j-community-3.0.0-M02-unix.tar.gz"
+    sha256 "2a20f420e94fe4189363ce8ab327c0e5e054df3fc74a0249e9e2c7fe0455a0d6"
+    version "3.0.0-M02"
+  end
+
   bottle :unneeded
 
   def install
