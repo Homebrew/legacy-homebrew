@@ -6,6 +6,13 @@ class GitSecrets < Formula
 
   head "https://github.com/awslabs/git-secrets.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "167a9368281483ab3b12ef357b8ce902c1504dceba3244856ea0c3f436b89b58" => :el_capitan
+    sha256 "d3bc63056ae93f0faf6c1ae162325479b87d1bd5be3fe0495f1ae38ae7c9cc87" => :yosemite
+    sha256 "ed704030babb07a359d332811f9f97b98b48b1bd9e0f82161e2565ea4a949f8d" => :mavericks
+  end
+
   def install
     system "make", "install", "PREFIX=#{prefix}"
   end
