@@ -7,8 +7,6 @@ class RbenvBundleExec < Formula
 
   bottle :unneeded
 
-  depends_on "rbenv"
-
   def install
     prefix.install Dir["*"]
   end

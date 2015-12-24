@@ -6,7 +6,6 @@ class RbenvUse < Formula
 
   bottle :unneeded
 
-  depends_on "rbenv"
   depends_on "rbenv-whatis"
 
   def install
