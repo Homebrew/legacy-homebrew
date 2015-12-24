@@ -6,8 +6,8 @@ class Cryptol < Formula
   desc "Domain-specific language for specifying cryptographic algorithms"
   homepage "http://www.cryptol.net/"
   url "https://github.com/GaloisInc/cryptol.git",
-      :tag => "v2.2.4",
-      :revision => "ebaa98699bfc704c5ac5a100e2829e68f3a11d9b"
+      :tag => "v2.2.5",
+      :revision => "02a7afb5523c4339ae27ac7ddbc22958ed3a5c57"
   head "https://github.com/GaloisInc/cryptol.git"
 
   bottle do
