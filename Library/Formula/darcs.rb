@@ -18,8 +18,6 @@ class Darcs < Formula
   depends_on "cabal-install" => :build
   depends_on "gmp"
 
-  setup_ghc_compilers
-
   def install
     install_cabal_package
   end

@@ -19,8 +19,6 @@ class HaskellStack < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
-  setup_ghc_compilers
-
   def install
     install_cabal_package
   end

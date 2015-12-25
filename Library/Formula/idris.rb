@@ -22,13 +22,11 @@ class Idris < Formula
   depends_on "libffi" => :recommended
   depends_on "pkg-config" => :build if build.with? "libffi"
 
-  setup_ghc_compilers
-
   def install
-    flags = []
-    flags << "-f FFI" if build.with? "libffi"
-    flags << "-f release" if build.stable?
-    install_cabal_package flags
+    args = []
+    args << "-f FFI" if build.with? "libffi"
+    args << "-f release" if build.stable?
+    install_cabal_package *args
   end
 
   test do

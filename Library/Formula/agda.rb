@@ -44,28 +44,20 @@ class Agda < Formula
   depends_on "gmp"
   depends_on :emacs => ["21.1", :recommended]
 
-  setup_ghc_compilers
-
   def install
     # install Agda core
-    cabal_sandbox do
-      cabal_install_tools "alex", "happy", "cpphs"
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-    end
-    cabal_clean_lib
+    install_cabal_package :using => ["alex", "happy", "cpphs"]
 
     if build.with? "stdlib"
       resource("stdlib").stage lib/"agda"
 
       # generate the standard library's bytecode
       cd lib/"agda" do
-        cabal_sandbox do
+        cabal_sandbox :home => buildpath, :keep_lib => true do
           cabal_install "--only-dependencies"
           cabal_install
           system "GenerateEverything"
         end
-        rm_rf [".cabal", "dist"]
       end
 
       # install the standard library's FFI bindings for the MAlonzo backend
@@ -77,11 +69,10 @@ class Agda < Formula
         system "ghc-pkg", "--package-db=#{db_path}", "recache"
 
         cd lib/"agda"/"ffi" do
-          cabal_sandbox do
+          cabal_sandbox :home => buildpath, :keep_lib => true do
             system "cabal", "--ignore-sandbox", "install", "--package-db=#{db_path}",
               "--prefix=#{lib}/agda/ffi"
           end
-          rm_rf [".cabal", "dist"]
         end
       end
 
