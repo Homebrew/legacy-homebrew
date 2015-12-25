@@ -1,12 +1,16 @@
 class RubyInstall < Formula
-  desc "Install Ruby, JRuby, Rubinius, or MagLev"
+  desc "Install Ruby, JRuby, Rubinius, MagLev, or mruby"
   homepage "https://github.com/postmodern/ruby-install#readme"
-  url "https://github.com/postmodern/ruby-install/archive/v0.5.0.tar.gz"
-  sha256 "aa4448c2c356510cc7c2505961961a17bd3f3435842831e04c8516eb703afd19"
+  url "https://github.com/postmodern/ruby-install/archive/v0.6.0.tar.gz"
+  sha256 "3cc90846ca972d88b601789af2ad9ed0a496447a13cb986a3d74a4de062af37d"
 
   head "https://github.com/postmodern/ruby-install.git"
 
   def install
     system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  test do
+    system "#{bin}/ruby-install"
   end
 end
