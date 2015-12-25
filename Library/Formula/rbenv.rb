@@ -5,6 +5,13 @@ class Rbenv < Formula
   sha256 "4658f2d8604ef847b39cb8216bb0d8a8aa000f504b6d06b30e008f92e6fa5210"
   head "https://github.com/rbenv/rbenv.git"
 
+  bottle do
+    cellar :any
+    sha256 "02457958c3aae15e162436c481581639782134c7600c7cfd8eb9af1275f7b922" => :el_capitan
+    sha256 "5f2bda33e2574d02eb076c70ef8de3e7765b40a8945c2fcc9749e9d9f9d7685c" => :yosemite
+    sha256 "a8af7a2dfbf2aa9e1ce1dd0951550482e5456efb2b59ccc72c06b60d7186943b" => :mavericks
+  end
+
   depends_on "ruby-build" => :recommended
 
   def install
