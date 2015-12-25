@@ -1,9 +1,9 @@
 class ArgyllCms < Formula
   desc "ICC compatible color management system"
   homepage "http://www.argyllcms.com/"
-  url "http://www.argyllcms.com/Argyll_V1.8.2_src.zip"
-  version "1.8.2"
-  sha256 "59bdfaeace35d2007c90fc53234ba33bf8a64cffc08f7b27a297fc5f85455377"
+  url "http://www.argyllcms.com/Argyll_V1.8.3_src.zip"
+  version "1.8.3"
+  sha256 "60494176785f6c2e4e4daefb9452d83859880449040b2a843ed81de3bd0c558e"
 
   bottle do
     cellar :any
