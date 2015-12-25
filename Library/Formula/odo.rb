@@ -6,9 +6,9 @@ class Odo < Formula
 
   bottle do
     cellar :any
-    sha1 "32b8859f631257fe07822f8b1874587b307c2e5e" => :yosemite
-    sha1 "c144e0e0b62432b4ee22f28297028b3f2e9d7499" => :mavericks
-    sha1 "545135a2f69e20036ff34dd7b0f44493c8e74c40" => :mountain_lion
+    sha256 "066649031770814fe0991dc595f123a145f5c786e5efdc6142c4be7b11eb86be" => :yosemite
+    sha256 "eda3760bca97cc11d11dadc2aabcbb76fef5c47022900e5c628eda1f46cf4adc" => :mavericks
+    sha256 "218018e5ffcf9ce61836429440d28d2b0ca690f66a0491c9d42d9c7482459447" => :mountain_lion
   end
 
   def install

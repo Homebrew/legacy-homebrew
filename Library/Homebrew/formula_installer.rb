@@ -80,6 +80,7 @@ class FormulaInstaller
     bottle = formula.bottle
     return true  if force_bottle? && bottle
     return false if build_from_source? || build_bottle? || interactive?
+    return false if ARGV.cc
     return false unless options.empty?
     return false if formula.bottle_disabled?
     return true  if formula.local_bottle_path
@@ -134,7 +135,7 @@ class FormulaInstaller
         dep.installed? && !dep.keg_only? && !dep.linked_keg.directory?
       end
       raise CannotInstallFormulaError,
-        "You must `brew link #{unlinked_deps*" "}' before #{formula.full_name} can be installed" unless unlinked_deps.empty?
+        "You must `brew link #{unlinked_deps*" "}` before #{formula.full_name} can be installed" unless unlinked_deps.empty?
     end
   end
 
@@ -158,7 +159,7 @@ class FormulaInstaller
       # some other version is already installed *and* linked
       raise CannotInstallFormulaError, <<-EOS.undent
         #{formula.name}-#{formula.linked_keg.resolved_path.basename} already installed
-        To install this version, first `brew unlink #{formula.name}'
+        To install this version, first `brew unlink #{formula.name}`
       EOS
     end
 
@@ -285,7 +286,7 @@ class FormulaInstaller
   def install_requirement_default_formula?(req, dependent, build)
     return false unless req.default_formula?
     return true unless req.satisfied?
-    return false if req.tags.include?(:run)
+    return false if req.run?
     install_bottle_for?(dependent, build) || build_bottle?
   end
 
@@ -740,6 +741,8 @@ class FormulaInstaller
 
     tab.tap = formula.tap
     tab.poured_from_bottle = true
+    tab.time = Time.now.to_i
+    tab.head = Homebrew.git_head
     tab.write
   end
 

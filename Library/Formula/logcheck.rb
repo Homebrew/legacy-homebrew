@@ -7,14 +7,17 @@ class Logcheck < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 2
-    sha256 "b919397f55dcbab89df41e9ad83d6b5ff09f6f5d91e366b0eeaa627b3b8cfa9a" => :el_capitan
-    sha256 "a72f565e1014a37e90498c52b6c67c0608c867e78ec2f0411803e57e2650ed88" => :yosemite
-    sha256 "fe1817125f5fde6b259dfdfd70597e16f8189775ae78b9fd8f6821c4e1ea22b6" => :mavericks
+    revision 3
+    sha256 "aab0ab066fe378c88c74b9783a90fb0a4896dd3a6258d00b08cd1d0d2987b108" => :el_capitan
+    sha256 "c75e01fb14bdd0adfc04e110a3c8a65d036b9bd71ac03a6ac58d69006a892fe9" => :yosemite
+    sha256 "25f2dfec7bb30fded535bdb354767a2680108dcd93d0627f8384a115c008cf89" => :mavericks
   end
 
   def install
     inreplace "Makefile", "$(DESTDIR)/$(CONFDIR)", "$(CONFDIR)"
+    # email sent to logcheck mailing list asking whether this patch can land upstream:
+    # http://lists.alioth.debian.org/pipermail/logcheck-users/2015-December/000328.html
+    inreplace "src/logcheck-test", "mktemp --tmpdir logcheck-test", "mktemp /tmp/logcheck-test"
 
     system "make", "install", "--always-make", "DESTDIR=#{prefix}",
                    "SBINDIR=sbin", "BINDIR=bin", "CONFDIR=#{etc}/logcheck"

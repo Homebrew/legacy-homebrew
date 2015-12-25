@@ -2,16 +2,17 @@ class GitlabCiMultiRunner < Formula
   desc "The official GitLab CI runner written in Go"
   homepage "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner"
   url "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git",
-    :tag => "v0.6.2",
-    :revision => "3227f0aa5be1d64d2ec694bd3758e0d43e92b36b"
+    :tag => "v0.7.2",
+    :revision => "998cf5d5ef3caf6535cc4c5f3279b08c3ee2ecc8"
 
   head "https://gitlab.com/gitlab-org/gitlab-ci-multi-runner.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "ed05bd9d27b5c4541add770d71af010471b91d107137398344ae630609abd293" => :el_capitan
-    sha256 "78659d13de49d5dcd348b7dbade44047b448912070b68ecd6bc5e7a376652dbb" => :yosemite
-    sha256 "b687dc1dcf9886a02b25188af0c4f38548ec23a7f3c848b95e8e2b5e1108db0f" => :mavericks
+    revision 1
+    sha256 "60ed30aa096a7306e13dc9a8d0d3f227a98947823125470175aee91e8cf600bd" => :el_capitan
+    sha256 "5afef9708d4d728589583e2217a8a5679d3f00f99c3e80661478daf712551933" => :yosemite
+    sha256 "455097004bb8c7b46ca4dad64634cdc60085a0f9c54dcfeab19802c2f5486cb3" => :mavericks
   end
 
   depends_on "go" => :build
@@ -31,10 +32,12 @@ class GitlabCiMultiRunner < Formula
       # Copy from Makefile
       system "go", "build", "-o", "gitlab-ci-multi-runner", "-ldflags", "-X main.NAME=gitlab-ci-multi-runner -X main.VERSION=#{version} -X main.REVISION=#{commit_sha}"
       bin.install "gitlab-ci-multi-runner"
+      bin.install_symlink "#{bin}/gitlab-ci-multi-runner" => "gitlab-runner"
     end
   end
 
   test do
-    assert_match /gitlab-ci-multi-runner version #{version}/, shell_output("gitlab-ci-multi-runner --version")
+    assert_match "gitlab-ci-multi-runner version #{version}", shell_output("#{bin}/gitlab-ci-multi-runner --version")
+    assert_match "gitlab-runner version #{version}", shell_output("#{bin}/gitlab-runner --version")
   end
 end

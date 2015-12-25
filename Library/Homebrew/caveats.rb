@@ -143,7 +143,7 @@ class Caveats
     if keg && keg.elisp_installed?
       <<-EOS.undent
         Emacs Lisp files have been installed to:
-        #{HOMEBREW_PREFIX}/share/emacs/site-lisp/#{f.name}
+          #{HOMEBREW_PREFIX}/share/emacs/site-lisp/#{f.name}
       EOS
     end
   end

@@ -6,11 +6,10 @@ class Findutils < Formula
   sha256 "434f32d171cbc0a5e72cfc5372c6fc4cb0e681f8dce566a0de5b6fccd702b62a"
 
   bottle do
-    revision 1
-    sha256 "27dfbb29443811ccac8ed9062dd251ce565de7383449ab18d16d0e6461a951c3" => :el_capitan
-    sha1 "2f98c4a6352ba11092a3e90cab5670e4e1b95e07" => :yosemite
-    sha1 "93a1389d8a4124a8f36832484dd0232ac7bf99c7" => :mavericks
-    sha1 "60134ccc215dd1216bfb256a1d38dd58c74525de" => :mountain_lion
+    revision 2
+    sha256 "217c0203656216f069d5bf5487107b9e72824650b090af84694fdd22e001cd28" => :el_capitan
+    sha256 "80643a96a454d2ef125a56d3b650ed2331d1a5e6c7f93f442018120519ca2399" => :yosemite
+    sha256 "4100412c363ca3964785fe10b74c06ddb3bf7ce0557ad61c915d35833118fd24" => :mavericks
   end
 
   deprecated_option "default-names" => "with-default-names"
@@ -18,10 +17,21 @@ class Findutils < Formula
   option "with-default-names", "Do not prepend 'g' to the binary"
 
   def install
+    # Work around unremovable, nested dirs bug that affects lots of
+    # GNU projects. See:
+    # https://github.com/Homebrew/homebrew/issues/45273
+    # https://github.com/Homebrew/homebrew/issues/44993
+    # This is thought to be an el_capitan bug:
+    # http://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
+    if MacOS.version == :el_capitan
+      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
+    end
+
     args = ["--prefix=#{prefix}",
             "--localstatedir=#{var}/locate",
             "--disable-dependency-tracking",
-            "--disable-debug"]
+            "--disable-debug",
+           ]
     args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args

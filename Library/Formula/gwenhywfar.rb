@@ -12,7 +12,9 @@ class Gwenhywfar < Formula
   end
 
   option "without-cocoa", "Build without cocoa support"
-  option "with-check", "Run build-time check"
+  option "with-test", "Run build-time check"
+
+  deprecated_option "with-check" => "with-test"
 
   depends_on "pkg-config" => :build
   depends_on "gettext"
@@ -28,11 +30,14 @@ class Gwenhywfar < Formula
     guis << "qt4" if build.with? "qt"
     guis << "cocoa" if build.with? "cocoa"
 
+    # https://devel.aqbanking.de/trac/aqbanking/ticket/247
+    # http://www.gnutls.org/manual/html_node/Priority-Strings.html
+    inreplace "src/sio/syncio_tls.c", "gnutls_protocol_set_priority", "gnutls_priority_set"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-guis=#{guis.join(" ")}"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 

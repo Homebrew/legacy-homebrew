@@ -7,9 +7,9 @@ class Libdmtx < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "43462753a32c217d3c2c9e022cd8fe0b7ad377d2" => :yosemite
-    sha1 "c5847ec7293fe289749c9628ec5635ec57e2ce93" => :mavericks
-    sha1 "4abe90743ec104a81eb13348cd7d4dfccb78f33c" => :mountain_lion
+    sha256 "ecb61e93fa9c7698011856693ac7b5335008cbda9807cc5852f0b47dcf1188d8" => :yosemite
+    sha256 "c6c2c336211aca2d6fc9c1a71ed4028d99ce2e0f3f50b34e6b916068557c7c18" => :mavericks
+    sha256 "86300de879b8d17dbf3f075a5fa1f1d3762c1eebb77e0fdd05ed38f76b75769e" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

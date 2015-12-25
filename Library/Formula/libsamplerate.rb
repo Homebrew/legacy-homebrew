@@ -8,9 +8,9 @@ class Libsamplerate < Formula
     cellar :any
     revision 1
     sha256 "d44b893117eb6f1f2e02c862997eb96f2f5855846370152bd56aab88fa8bea81" => :el_capitan
-    sha1 "7bdee60fa49e368546369cafdbff37a772970492" => :yosemite
-    sha1 "a60d3e18f126fe69826cd8e4ab9944574e1ac9b6" => :mavericks
-    sha1 "64fd25bc4134aa6f3d3d463892c662e0e73bc333" => :mountain_lion
+    sha256 "99c9fd31d3c17d23aef7cf3ef11406776fcf87509a8e480563723d7d2685f8b1" => :yosemite
+    sha256 "dfefd0e6d5bb2344ef3980d5a2d738740c45f8227cff4f328113174cd1de6675" => :mavericks
+    sha256 "6cc3d92e098322ca544c1e59a4dfc93b4c9ed393a476d0a9e788e726232c25f4" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

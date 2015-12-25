@@ -14,17 +14,17 @@ class Cctools < Formula
   bottle do
     cellar :any_skip_relocation
     sha256 "398333f85c3944de889172ca9d3aa5ffd709403ca2225316f130be817f09873a" => :el_capitan
-    sha1 "1acad163d4a245f5bd7ad2668cc87a5c9102163a" => :yosemite
-    sha1 "2629465c3d063d3a108adc987bbaa910a49db5f4" => :mavericks
-    sha1 "b5ccf7ea27f82e7eb8aeed1e327079c8a07434fb" => :mountain_lion
+    sha256 "a76a710f5f164feace5ad107eb40bf5e6a25e916f7334e69ee197a8e3d02b90c" => :yosemite
+    sha256 "3b0c895c6f0832ef9509720ebc15478e188ea6396ba41729273eb64d7b2f7ec2" => :mavericks
+    sha256 "f9f74d98119d2efd5530f8d98eb7838a77be35576880ecec73fe9d535aa2afb0" => :mountain_lion
   end
+
+  keg_only :provided_by_osx,
+    "This package duplicates tools shipped by Xcode."
 
   depends_on :ld64
 
   cxxstdlib_check :skip
-
-  keg_only :provided_by_osx,
-    "This package duplicates tools shipped by Xcode."
 
   if MacOS.version >= :snow_leopard
     option "with-llvm", "Build with LTO support"

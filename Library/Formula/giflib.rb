@@ -1,3 +1,7 @@
+# Please check & build every `brew uses giflib` locally prior to
+# submitting 5.x.x. Many formulae requiring giflib haven't
+# updated to use 5.x.x yet.
+# Can `brew install homebrew/versions/giflib5` for now.
 class Giflib < Formula
   desc "GIF library using patented LZW algorithm"
   homepage "http://giflib.sourceforge.net/"

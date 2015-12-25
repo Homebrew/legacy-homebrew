@@ -7,13 +7,13 @@ class Ack < Formula
 
   head "https://github.com/petdance/ack2.git", :branch => "dev"
 
-  bottle :unneeded
-
   devel do
     url "https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/ack-2.15_01.tar.gz"
     sha256 "dfd1df3def5d3b16af8a7c585fc8954362d4f2b097891919490c89fdb484fd83"
     version "2.15-01"
   end
+
+  bottle :unneeded
 
   resource "File::Next" do
     url "https://cpan.metacpan.org/authors/id/P/PE/PETDANCE/File-Next-1.12.tar.gz"

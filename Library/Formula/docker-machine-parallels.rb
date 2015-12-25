@@ -3,30 +3,33 @@ require "language/go"
 class DockerMachineParallels < Formula
   desc "Docker Machine Parallels Driver"
   homepage "https://github.com/Parallels/docker-machine-parallels"
-  url "https://github.com/Parallels/docker-machine-parallels/archive/v1.0.1.tar.gz"
-  sha256 "9a5abc454748aeb83c74c45efd3a73359a47e408e215318fbcc6446026581652"
+  url "https://github.com/Parallels/docker-machine-parallels/archive/v1.1.0.tar.gz"
+  sha256 "0f2ccc1c470a71b40e81b548b4587cdcbc098f0ceeea6295ec8bebbb06aa9135"
   head "https://github.com/Parallels/docker-machine-parallels.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "44650aa4e70e2c7d53c3480150cd4733cdde9959c836f520517a7ff3a9335544" => :el_capitan
-    sha256 "b3b09d60c173542970dbaa0257bbdaf54520b229df2135284f534f952d121b39" => :yosemite
-    sha256 "575cd941ec602f32cdb0b66910009ecf6d20212a327df2c0143ef051c7db7b74" => :mavericks
+    sha256 "1e07e344fba14561f64c27d4822af244c1b4ea0245d9af29a61031e4fc71be6a" => :el_capitan
+    sha256 "86b96ffe41ef992f3b71737896b77ac93e5663e40cebba0e56e0c7198ffeca6b" => :yosemite
+    sha256 "1f434e04a3715bb0ea9f1138c99822205fd38c72972c7edfced37b0553054895" => :mavericks
   end
 
   depends_on "go" => :build
+  depends_on "godep" => :build
   depends_on "docker-machine"
 
   go_resource "github.com/docker/docker" do
-    url "https://github.com/docker/docker.git", :revision => "76d6bc9a9f1690e16f3721ba165364688b626de2"
+    # Docker v1.9.1 release
+    url "https://github.com/docker/docker.git", :revision => "a34a1d598c6096ed8b5ce5219e77d68e5cd85462"
   end
 
   go_resource "github.com/docker/machine" do
-    url "https://github.com/docker/machine.git", :revision => "04cfa58445f063509699cdde41080a410330c4df"
+    # Docker Machine v0.5.1 release
+    url "https://github.com/docker/machine.git", :revision => "7e8e38e1485187c0064e054029bb1cc68c87d39a"
   end
 
   go_resource "golang.org/x/crypto" do
-    url "https://github.com/golang/crypto.git", :revision => "8b27f58b78dbd60e9a26b60b0d908ea642974b6d"
+    url "https://go.googlesource.com/crypto.git", :revision => "beef0f4390813b96e8e68fd78570396d0f4751fc"
   end
 
   def install
@@ -36,7 +39,7 @@ class DockerMachineParallels < Formula
     ln_sf buildpath, buildpath/"src/github.com/Parallels/docker-machine-parallels"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "make", "build"
+    system "godep", "go", "build", "-i", "-o", "./bin/docker-machine-driver-parallels", "./bin"
     bin.install "bin/docker-machine-driver-parallels"
   end
 

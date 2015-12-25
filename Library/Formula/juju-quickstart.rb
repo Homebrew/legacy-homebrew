@@ -1,14 +1,14 @@
 class JujuQuickstart < Formula
   desc "Opinionated command-line tool for quickly starting Juju"
   homepage "https://launchpad.net/juju-quickstart"
-  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.2.2.tar.gz"
-  sha256 "07eb4c53b9091a75fcef94eb243d42cd6b8c289f2763b0dbde462a2b602094c3"
+  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.2.4.tar.gz"
+  sha256 "fb01c8b48fe8b1e5d75ad3bc29527e78f5b4aadbe464b96e06ba15662a1edaac"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c3a7ebf7e43b506b3f80af3be55dcb48a695e173b142a87281e621ec83c52484" => :el_capitan
-    sha256 "d96836ff4ff4adf6d474a75f5407d7d93681ff06ffab5af0f215c12f5d19ea3c" => :yosemite
-    sha256 "70b1633e51e76021c59dcf5f5af3b877b0f418271e8ffd24967f5351a9f1176e" => :mavericks
+    sha256 "a6dd9cb553b399995f36a076ffdb949f429a46a312bd9d8580ba28d3fe172b2a" => :el_capitan
+    sha256 "55994b277c93c19b9534f56ac23c183ec0f27e7441609107e510f892e2e98c86" => :yosemite
+    sha256 "b4c3a7b5d42d808bd96ec8b1a398e4d2950e1f5e3c0d1e00cfd259069e1191f5" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

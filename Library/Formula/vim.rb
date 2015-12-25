@@ -2,8 +2,8 @@ class Vim < Formula
   desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
   # *** Vim should be updated no more than once every 7 days ***
-  url "https://github.com/vim/vim/archive/v7.4.922.tar.gz"
-  sha256 "213da8458f31460675a68aa4f38013920c18588a23f147860c4e9ea1ef4f7c0f"
+  url "https://github.com/vim/vim/archive/v7.4.979.tar.gz"
+  sha256 "b91bd610a07d6d72cb113fe06f2db722a130f8218568e0958a84c266758bd75b"
   head "https://github.com/vim/vim.git"
 
   bottle :disable, "To use the user's Python."
@@ -96,7 +96,7 @@ class Vim < Formula
     system "make"
     # If stripping the binaries is enabled, vim will segfault with
     # statically-linked interpreters like ruby
-    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    # https://github.com/vim/vim/issues/114
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end

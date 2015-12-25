@@ -610,19 +610,6 @@ class Checks
     end
   end
 
-  # Xcode 7 lacking the 10.10 SDK is forcing sysroot to be declared
-  # nil on 10.10 & breaking compiles. CLT is workaround.
-  def check_sdk_path_not_nil_yosemite
-    if MacOS.version == :yosemite && !MacOS::CLT.installed? && MacOS::Xcode.installed? && MacOS.sdk_path.nil?
-      <<-EOS.undent
-      Xcode 7 lacks the 10.10 SDK which can cause some builds to fail.
-      We recommend installing the Command Line Tools with:
-        xcode-select --install
-      to resolve this issue.
-     EOS
-    end
-  end
-
   def check_user_path_1
     $seen_prefix_bin = false
     $seen_prefix_sbin = false
@@ -997,7 +984,7 @@ class Checks
   end
 
   def __check_linked_brew(f)
-    f.rack.subdirs.each do |prefix|
+    f.installed_prefixes.each do |prefix|
       prefix.find do |src|
         next if src == prefix
         dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)

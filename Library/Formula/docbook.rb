@@ -67,7 +67,7 @@ class Docbook < Formula
     ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
     # only create catalog file if it doesn't exist already to avoid content added
-    # by other formulas to be removed
+    # by other formulae to be removed
     unless File.file?("#{etc}/xml/catalog")
       system "xmlcatalog", "--noout", "--create", "#{etc}/xml/catalog"
     end

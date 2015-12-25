@@ -14,7 +14,7 @@ module Homebrew
     problem_count = 0
 
     strict = ARGV.include? "--strict"
-    if strict && ARGV.resolved_formulae.any? && MacOS.version >= :mavericks
+    if strict && ARGV.resolved_formulae.any? && RUBY_VERSION.split(".").first.to_i >= 2
       require "cmd/style"
       ohai "brew style #{ARGV.resolved_formulae.join " "}"
       style
@@ -175,12 +175,14 @@ class FormulaAuditor
       [/^  mirror ["'][\S\ ]+["']/,        "mirror"],
       [/^  version ["'][\S\ ]+["']/,       "version"],
       [/^  (sha1|sha256) ["'][\S\ ]+["']/, "checksum"],
+      [/^  revision/,                      "revision"],
       [/^  head ["'][\S\ ]+["']/,          "head"],
       [/^  stable do/,                     "stable block"],
       [/^  bottle do/,                     "bottle block"],
       [/^  devel do/,                      "devel block"],
       [/^  head do/,                       "head block"],
       [/^  bottle (:unneeded|:disable)/,   "bottle modifier"],
+      [/^  keg_only/,                      "keg_only"],
       [/^  option/,                        "option"],
       [/^  depends_on/,                    "depends_on"],
       [/^  def install/,                   "install method"],
@@ -233,7 +235,7 @@ class FormulaAuditor
   def audit_formula_name
     return unless @strict
     # skip for non-official taps
-    return if !formula.core_formula? && !formula.tap.to_s.start_with?("homebrew")
+    return if formula.tap.nil? || !formula.tap.official?
 
     name = formula.name
     full_name = formula.full_name
@@ -243,8 +245,8 @@ class FormulaAuditor
       return
     end
 
-    if FORMULA_RENAMES.key? name
-      problem "'#{name}' is reserved as the old name of #{FORMULA_RENAMES[name]}"
+    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+      problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
 
@@ -369,6 +371,10 @@ class FormulaAuditor
       next unless @strict
       if o.name !~ /with(out)?-/ && o.name != "c++11" && o.name != "universal" && o.name != "32-bit"
         problem "Options should begin with with/without. Migrate '--#{o.name}' with `deprecated_option`."
+      end
+
+      if o.name =~ /^with(out)?-(?:checks?|tests)$/
+        problem "Use '--with#{$1}-test' instead of '--#{o.name}'. Migrate '--#{o.name}' with `deprecated_option`."
       end
     end
   end
@@ -784,9 +790,10 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if line =~ /MACOS_FULL_VERSION/
-      problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
-    end
+    # TODO: comment out this after core code and formulae separation.
+    # if line =~ /MACOS_FULL_VERSION/
+    #   problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
+    # end
 
     cats = %w[leopard snow_leopard lion mountain_lion].join("|")
     if line =~ /MacOS\.(?:#{cats})\?/

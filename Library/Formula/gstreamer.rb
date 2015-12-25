@@ -1,13 +1,13 @@
 class Gstreamer < Formula
   desc "GStreamer is a development framework for multimedia applications"
   homepage "http://gstreamer.freedesktop.org/"
-  url "https://download.gnome.org/sources/gstreamer/1.6/gstreamer-1.6.1.tar.xz"
-  sha256 "973a3f213c8d41d6dd0e4e7e38fd6cccacd5ae1ac09e1179a8d5d869ef0a5c9c"
+  url "https://download.gnome.org/sources/gstreamer/1.6/gstreamer-1.6.2.tar.xz"
+  sha256 "5896716bd8e089dba452932a2eff2bb6f6c9d58ff64a96635d157f1ffaf8feb2"
 
   bottle do
-    sha256 "dbec8f67917ddd35c0441705d78d204b7f4203b11c69cf01b536226872d2681c" => :el_capitan
-    sha256 "6acc4ac51cf32cf5ad738cd430db01a20e49be65652d1675b510d3cf58d908ed" => :yosemite
-    sha256 "4f5516ae0b85327eb5bba76cdb81193fbc2bb35abbc04adfa3ce08d3c8ed0de3" => :mavericks
+    sha256 "685890cb9c1b4e4063d9ba9bd77f4a73dd22d97d5b7dca0bc416000dab80964b" => :el_capitan
+    sha256 "b43979ee2f9b68a1cc95dd9a1bf32ae11e36c5324543f5d26d2b63ecf5b6327f" => :yosemite
+    sha256 "3a650e5b242c7d33bb2c0fd66e9ab5954587769986bc455d0a3a3455402547ec" => :mavericks
   end
 
   head do
@@ -23,11 +23,6 @@ class Gstreamer < Formula
   depends_on "gettext"
   depends_on "glib"
   depends_on "bison"
-
-  # Fix header file issue (exact OS versions affected unknown; first noticed on
-  # Snow Leopard)
-  # https://bugzilla.gnome.org/show_bug.cgi?id=756136
-  patch :DATA if MacOS.version <= :mountain_lion
 
   def install
     args = %W[
@@ -63,16 +58,3 @@ class Gstreamer < Formula
     system bin/"gst-inspect-1.0"
   end
 end
-__END__
-diff --git a/libs/gst/helpers/gst-ptp-helper.c b/libs/gst/helpers/gst-ptp-helper.c
-index 6c753df..5642741 100644
---- a/libs/gst/helpers/gst-ptp-helper.c
-+++ b/libs/gst/helpers/gst-ptp-helper.c
-@@ -37,6 +37,7 @@
- #include <sys/types.h>
- #include <errno.h>
- #include <sys/ioctl.h>
-+#include <sys/socket.h>
- #include <net/if.h>
- #include <netinet/in.h>
- #include <string.h>

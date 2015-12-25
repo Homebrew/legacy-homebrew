@@ -13,8 +13,10 @@ class Libuv < Formula
   end
 
   option "without-docs", "Don't build and install documentation"
-  option "with-check", "Execute compile time checks (Requires Internet connection)"
+  option "with-test", "Execute compile time checks (Requires Internet connection)"
   option :universal
+
+  deprecated_option "with-check" => "with-test"
 
   depends_on "pkg-config" => :build
   depends_on "automake" => :build
@@ -40,7 +42,7 @@ class Libuv < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 

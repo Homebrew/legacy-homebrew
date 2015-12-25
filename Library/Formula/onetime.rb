@@ -6,9 +6,9 @@ class Onetime < Formula
 
   bottle do
     cellar :any
-    sha1 "efecf649c941cde0917e4660db0ba460f2193554" => :mavericks
-    sha1 "ec09cda341e360b493e28cf05b2ef847caafd90d" => :mountain_lion
-    sha1 "b243466379b50a72945aaa124405a5e350dc9203" => :lion
+    sha256 "2f9ac9a0b17acc87ba1261e87808b0cfe18fee20f2658d390c0e10923eddc1fa" => :mavericks
+    sha256 "d907f93a662fd117c8f27c1aa700a3fa11b9fc682cf4bf40d20ca9013df64405" => :mountain_lion
+    sha256 "3697775f966740653693392d8bd16ace72183ea228b82b9d3a8c744fddf97e1e" => :lion
   end
 
   devel do

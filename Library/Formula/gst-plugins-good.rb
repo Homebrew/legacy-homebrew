@@ -3,26 +3,16 @@ class GstPluginsGood < Formula
   homepage "http://gstreamer.freedesktop.org/"
 
   stable do
-    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.1.tar.xz"
-    sha256 "86d4b814099f7b7b16be19d4b94fa41002ac01fdf1525b07c5764d54c0605935"
+    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.2.tar.xz"
+    sha256 "876e54dfce93274b98e024f353258d35fa4d49d1f9010069e676c530f6eb6a92"
 
     depends_on "check" => :optional
-
-    if MacOS.version < :lion
-      # Snow Leopard and below don't have strnlen()
-      # https://bugzilla.gnome.org/show_bug.cgi?id=756154
-      # http://cgit.freedesktop.org/gstreamer/gst-plugins-good/commit/?id=fc203a4bd7eb1cecc0e17bcb7ec67e0672806867
-      patch do
-        url "https://bugzilla.gnome.org/attachment.cgi?id=313403&action=diff&context=patch&collapsed=&headers=1&format=raw"
-        sha256 "63a2f18683c967d321f42fcfca0c1d8e070b489ce8f8b08f3340c30c6903250d"
-      end
-    end
   end
 
   bottle do
-    sha256 "54f3c1f03ce857d1aac43f15f018b18c83a4b2e6d83f8b449bb84f605f2353e7" => :el_capitan
-    sha256 "41049fe7ea566e09abf1962242227801dddb29745784bd2664edca053fc7d76a" => :yosemite
-    sha256 "300051ff8d0dfe6a08238c6d7f13b234d04a259abc43e8a0a564e5d6099ec1fd" => :mavericks
+    sha256 "2b270292dd58a8b0a703ee00f80f50100eeb48617cfbf024eb4d3beeb25c40d5" => :el_capitan
+    sha256 "5d76d76b1914d9a1f589a32a6795f3e17870ca68820ddce07ab23554e2bd42a9" => :yosemite
+    sha256 "4990905eb444d443e8488858c3cf362da11e66d9c886e25f5fd0f9245d7a5de4" => :mavericks
   end
 
   head do

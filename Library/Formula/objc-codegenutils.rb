@@ -7,8 +7,8 @@ class ObjcCodegenutils < Formula
   bottle do
     cellar :any_skip_relocation
     sha256 "d7b945db595b07ee5677902586e01002ba555affdcae366f1fcbe919a6013772" => :el_capitan
-    sha1 "6444a44bb506d0078b494d243475aa492da91b4a" => :mavericks
-    sha1 "115f70a9c8b61545630a14d7503d4e20c221f6cb" => :mountain_lion
+    sha256 "46d389e6ec12462dfbdd97822ce7c6e8156bbe9fac7a3baf04c20cb1991d9f75" => :mavericks
+    sha256 "b2a970d293782e5dc6cdf2902df97c89dfa3552aeb5994c7b035a256e5659868" => :mountain_lion
   end
 
   head "https://github.com/square/objc-codegenutils.git"

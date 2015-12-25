@@ -3,8 +3,8 @@ class Dspdfviewer < Formula
   homepage "http://dspdfviewer.danny-edel.de"
   url "https://github.com/dannyedel/dspdfviewer/archive/v1.13.1.tar.gz"
   sha256 "333588de0316cfdb5821b8484ee55690dfa3c7431b67c126bfdbe9c9cc3e1ed4"
-  head "https://github.com/dannyedel/dspdfviewer.git"
   revision 1
+  head "https://github.com/dannyedel/dspdfviewer.git"
 
   bottle do
     sha256 "5244f01fc6f84515341409ea8bda1edec1309fa08c34df3b752f8b51d995dff8" => :el_capitan

@@ -6,9 +6,10 @@ class Uwsgi < Formula
   head "https://github.com/unbit/uwsgi.git"
 
   bottle do
-    sha256 "b761923ea5a00c55509b14770714b9bc728463e8b985dd131731b50da8bb1c20" => :el_capitan
-    sha256 "fca347e8b730b652fd2d98b89d65f17f146c89393f3264d706e247e9fca89723" => :yosemite
-    sha256 "d4132453a8c210a32452a1b49cdb5d032e38da6b2027f09df38f17200735a455" => :mavericks
+    revision 2
+    sha256 "63766f3efb450c4241154da60181c542abc2c7141c535ee1e1c10983c7ee9b4d" => :el_capitan
+    sha256 "4ad53a8a16b8ba2c0543def66315e30ba8f374fc9c8d67790e11d6fc577ea0a1" => :yosemite
+    sha256 "b3b341d72bfd762b88dbe26f406b510d89187ca8702344158bb346688dbc25f0" => :mavericks
   end
 
   option "with-java", "Compile with Java support"
@@ -53,8 +54,14 @@ class Uwsgi < Formula
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
+    # Fix build on case-sensitive filesystems
+    # https://github.com/Homebrew/homebrew/issues/45560
+    # https://github.com/unbit/uwsgi/pull/1128
+    inreplace "plugins/alarm_speech/uwsgiplugin.py", "'-framework appkit'", "'-framework AppKit'"
+
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
+      ssl = true
       json = #{json}
       yaml = #{yaml}
       inherit = base
@@ -79,7 +86,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper", "ugreen", "webdav", "zergpool",]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"
@@ -111,13 +118,13 @@ class Uwsgi < Formula
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/#{plugin}", "brew"
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/#{plugin}", "brew"
     end
 
     python_versions = ["python", "python2"]
     python_versions << "python3" if build.with? "python3"
     python_versions.each do |v|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/python", "brew", v
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/python", "brew", v
     end
 
     bin.install "uwsgi"

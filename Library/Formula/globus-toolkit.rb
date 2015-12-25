@@ -11,7 +11,8 @@ class GlobusToolkit < Formula
     sha256 "3f7fed89fd07105e6ff59741c0d8d4449aebf4269d1fdb166d6b4ade077d3cdd" => :mavericks
   end
 
-  option "with-check", "Test the toolkit when installing"
+  option "with-test", "Test the toolkit when installing"
+  deprecated_option "with-check" => "with-test"
 
   depends_on "openssl"
   depends_on "libtool" => :run
@@ -25,7 +26,7 @@ class GlobusToolkit < Formula
                           "--mandir=#{man}",
                           "--disable-dependency-tracking"
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
     bins = Dir["#{libexec}/bin/*"].select { |f| File.executable? f }
     bin.write_exec_script bins

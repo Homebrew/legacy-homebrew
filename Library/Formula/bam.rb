@@ -8,9 +8,9 @@ class Bam < Formula
 
   bottle do
     cellar :any
-    sha1 "7ec0b273b35f7e543cc6a1810a14e14062f81639" => :yosemite
-    sha1 "6b531fb8df899d603f93262f87cfdcb8001b8436" => :mavericks
-    sha1 "dce2512abc5625827a16becba635941b007c16dd" => :mountain_lion
+    sha256 "832033a89e90b4152690ac9738af8db839f322e79b7169bc8bdf1a866707cf22" => :yosemite
+    sha256 "ba4ee90c3fc9001761bf2c09906c5c3df66c6175d7b763fa3527c3c512c2f2d5" => :mavericks
+    sha256 "73362b46dfe24dc3d6c4bb59bdb9d0403ec717054428f78bc9dd32a93343a187" => :mountain_lion
   end
 
   def install

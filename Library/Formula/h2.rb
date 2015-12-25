@@ -17,6 +17,14 @@ class H2 < Formula
     # Remove windows files
     rm_f Dir["bin/*.bat"]
 
+    # As of 1.4.190, the script contains \r\n line endings,
+    # causing it to fail on OS X. This is a workaround until
+    # upstream publishes a fix.
+    #
+    # https://github.com/h2database/h2database/issues/218
+    h2_script = File.read("bin/h2.sh").gsub("\r\n", "\n")
+    File.open("bin/h2.sh", "w") {|f| f.write h2_script}
+
     # Fix the permissions on the script
     chmod 0755, "bin/h2.sh"
 

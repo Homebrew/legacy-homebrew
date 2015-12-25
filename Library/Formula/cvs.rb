@@ -13,9 +13,9 @@ class Cvs < Formula
     cellar :any_skip_relocation
     revision 1
     sha256 "c454f576c58dbabc3d3ce4af4974dfdcf47c4232af3de9275f171a93dbdf264a" => :el_capitan
-    sha1 "054097e7fccf4a8ba60b9d1c364c411a6cd5de3c" => :yosemite
-    sha1 "8e84ffd198414118da1ffb18f9d18a885e68d60f" => :mavericks
-    sha1 "dea18dfba299690f2d8ed5dfc2205323207bc856" => :mountain_lion
+    sha256 "3b6a02a69d14c6a6476727ade22b47a542dae280df6375a9bce9374a21176f86" => :yosemite
+    sha256 "ff6b161b7379b44bf42635828f45e7f43c932d2be9fbf9691714f2f4a356ec7f" => :mavericks
+    sha256 "cbabf7f11bb08b7018117f5b45dda26d55a0584f9ef7e00c0a134bbbe1284655" => :mountain_lion
   end
 
   keg_only :provided_until_xcode5

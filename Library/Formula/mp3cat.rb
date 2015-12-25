@@ -6,9 +6,9 @@ class Mp3cat < Formula
 
   bottle do
     cellar :any
-    sha1 "ad6a863bffdc425ef897b1dc77062eeb8ee41f4a" => :yosemite
-    sha1 "8cf1ca338feb3c3520c84013326bc86c0d48f4d7" => :mavericks
-    sha1 "cc89db74d0e7ddfbc38beeb9bc53d3ade5a7e8dc" => :mountain_lion
+    sha256 "a70d1a1a379c4813f57c32284f13348e36302a61d0c933c2a4fb19342c43be1f" => :yosemite
+    sha256 "43053bea923c17bd7a31532cdcaedfcb3681a04aa1b0b66e33defc41c7e00629" => :mavericks
+    sha256 "bffd0a1ea0cb5ce1eb39c4147686702f060dd25e949385009946835be9826b8d" => :mountain_lion
   end
 
   def install

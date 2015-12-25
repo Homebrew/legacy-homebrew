@@ -1,7 +1,7 @@
 # External Commands
 Homebrew, like Git, supports *external commands*. This lets you create new commands that can be run like:
 
-```
+```shell
 $ brew mycommand --option1 --option3 formula
 ```
 
@@ -64,19 +64,6 @@ These commands have been contributed by Homebrew users but are not included in t
 > $ brew tap youtux/livecheck
 > ```
 
-### brew-any-tap
-
-> Like `brew tap` but works on *any* git repository, whether public or private, on GitHub or not.
->
-> Install using (ironically enough) `brew tap`:
->
-> ```
-> brew tap telemachus/anytap
-> brew install brew-any-tap
-> ```
->
-> See the  [`README`](https://github.com/telemachus/homebrew-anytap/blob/master/README.md) for further explanation and examples of use.
-
 ### brew-cask
 
 >Install .app and other "Drag to install" packages from Homebrew.
@@ -86,15 +73,6 @@ These commands have been contributed by Homebrew users but are not included in t
 > Install using:
 > ```
   $ brew tap caskroom/cask
-  $ brew install brew-cask
-> ```
-
-### brew-desc
->Get short descriptions for Homebrew formulae or search formulae by description: [https://github.com/telemachus/brew-desc](https://github.com/telemachus/homebrew-desc)
-
->You can install manually or using `brew tap`:
-> ```
-> $ brew tap telemachus/desc
 > ```
 
 ### brew-gem

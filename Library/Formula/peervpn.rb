@@ -7,8 +7,8 @@ class Peervpn < Formula
 
   bottle do
     cellar :any
-    sha1 "b560c712976a84dfc0b84aec277becf0ab2aa930" => :mavericks
-    sha1 "7af025a1bf74dcbd992f988d3e3ef9978445d860" => :mountain_lion
+    sha256 "dac8fa509dcf02ba28bc7d07d2d47dddae96672c332db1fbe7fdd78d6eb8a7f6" => :mavericks
+    sha256 "daf4a93d6e08cdc6de5f849bf6bf05ea44fdfc8ca72683dd6e6197d045f4168e" => :mountain_lion
   end
 
   depends_on "openssl"
