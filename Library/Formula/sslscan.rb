@@ -17,6 +17,7 @@ class Sslscan < Formula
   depends_on "openssl"
 
   def install
+    # Note: when next version (>1.11.1) comes out, revise this per https://github.com/Homebrew/homebrew/pull/47229
     rm "INSTALL"
     system "make"
     system "make", "install", "BINPATH=#{bin}", "MANPATH=#{man}/"
