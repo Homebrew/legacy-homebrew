@@ -118,6 +118,8 @@ class Checks
       "libublio.*.dylib", # NTFS-3G
       "libUFSDNTFS.dylib", # Paragon NTFS
       "libUFSDExtFS.dylib", # Paragon ExtFS
+      "libtliinfocus10.dylib", # Topaz Labs plugin
+      "libtlImageIO.dylib", # Topaz Labs plugin
     ]
 
     __check_stray_files "/usr/local/lib", "*.dylib", white_list, <<-EOS.undent
