@@ -200,8 +200,6 @@ class Llvm < Formula
 
     if build.with? "assertions"
       args << "-DLLVM_ENABLE_ASSERTIONS=On"
-    else
-      args << "-DCMAKE_CXX_FLAGS_RELEASE='-DNDEBUG'"
     end
 
     if build.universal?

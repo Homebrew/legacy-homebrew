@@ -21,7 +21,6 @@ class Taglib < Formula
 
   def install
     ENV.cxx11 if build.cxx11?
-    ENV.append "CXXFLAGS", "-DNDEBUG=1"
     system "cmake", "-DWITH_MP4=ON", "-DWITH_ASF=ON", *std_cmake_args
     system "make"
     system "make", "install"
