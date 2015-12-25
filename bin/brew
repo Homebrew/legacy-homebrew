@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 chdir() {
-  cd "$@" >/dev/null
+  cd "$@" >/dev/null || {
+    echo "Error: failed to cd to " "$@" "!" >&2
+    exit 1
+  }
 }
 
 # Force UTF-8 to avoid encoding issues for users with broken locale settings.
@@ -61,4 +64,30 @@ export HOMEBREW_REPOSITORY
 export HOMEBREW_LIBRARY
 export HOMEBREW_CELLAR
 
-exec "$HOMEBREW_RUBY_PATH" -W0 "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"
+for i in "$@"
+do
+  if [[ "$1" = -v ]]
+  then
+    shift
+    set -- "$@" -v
+  fi
+  [[ "$i" =~ ^- ]] && continue
+  HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$i.sh"
+  break
+done
+
+if [ -n "$HOMEBREW_BASH_COMMAND" ] && [ -x "$HOMEBREW_BASH_COMMAND" ]
+then
+  # source rather than executing directly to ensure the entire file is read into
+  # memory before it is run. This makes running a Bash script behave more like
+  # a Ruby script and avoids hard-to-debug issues if the Bash script is updated
+  # at the same time as being run.
+  #
+  # Hide shellcheck complaint:
+  # shellcheck source=/dev/null
+  source "$HOMEBREW_BASH_COMMAND"
+  "$HOMEBREW_COMMAND" "$@"
+  exit $?
+else
+  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$@"
+fi
