@@ -11,32 +11,29 @@ class Rbenv < Formula
 
   def install
     inreplace "libexec/rbenv" do |s|
-      s.gsub!('"${BASH_SOURCE%/*}"/../libexec', libexec.to_s, false)
+      s.gsub! '"${BASH_SOURCE%/*}"/../libexec', libexec
       if HOMEBREW_PREFIX.to_s != "/usr/local"
-        s.gsub!(":/usr/local/etc/rbenv.d", ":#{HOMEBREW_PREFIX}/etc/rbenv.d\\0")
+        s.gsub! ":/usr/local/etc/rbenv.d", ":#{HOMEBREW_PREFIX}/etc/rbenv.d\\0"
       end
     end
 
-    # Compile optional bash extension. Failure is not critical.
-    if File.exist? "src/configure"
-      Kernel.system "src/configure"
-      Kernel.system "make", "-C" "src"
-    end
+    # Compile optional bash extension.
+    system "src/configure"
+    system "make", "-C", "src"
 
-    if head?
+    if build.head?
       # Record exact git revision for `rbenv --version` output
-      inreplace "libexec/rbenv---version" do |s|
-        git_revision=`git rev-parse --short HEAD`.chomp
-        s.sub!(/^(version=)"([^"]+)"/, %{\\1"\\2-g#{git_revision}"})
-      end
+      git_revision = `git rev-parse --short HEAD`.chomp
+      inreplace "libexec/rbenv---version", /^(version=)"([^"]+)"/,
+                                           %(\\1"\\2-g#{git_revision}")
     end
 
-    prefix.install Dir["{bin,completions,libexec,rbenv.d}"]
+    prefix.install ["bin", "completions", "libexec", "rbenv.d"]
   end
 
   def caveats; <<-EOS.undent
-    Rbenv stores data under `~/.rbenv' by default. If you absolutely need to instead
-    store everything under the Homebrew prefix, include this in your profile:
+    Rbenv stores data under ~/.rbenv by default. If you absolutely need to
+    store everything under Homebrew's prefix, include this in your profile:
       export RBENV_ROOT=#{var}/rbenv
 
     To enable shims and autocompletion, run this and follow the instructions:
