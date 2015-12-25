@@ -1,8 +1,8 @@
 class RabbitmqC < Formula
   desc "RabbitMQ C client"
   homepage "https://github.com/alanxz/rabbitmq-c"
-  url "https://github.com/alanxz/rabbitmq-c/archive/v0.7.0.tar.gz"
-  sha256 "b8b9a5cca871968de95538a87189f7321a3f86aca07ae8a81874e93d73cf9a4d"
+  url "https://github.com/alanxz/rabbitmq-c/releases/download/v0.7.1/rabbitmq-c-0.7.1.tar.gz"
+  sha256 "23df349a7d157543e756acc67e47b217843ecbdafaefe3e4974073bb99d8a26d"
 
   head "https://github.com/alanxz/rabbitmq-c.git"
 
