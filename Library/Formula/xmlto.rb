@@ -6,10 +6,9 @@ class Xmlto < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "07ed7c132ab25310937ac0bf68d8a2b523a35c74a7c7c8ba2666bfe1e2b0574b" => :el_capitan
-    sha256 "948d7e69332c0c0f015344ad84dd0b688b9646157fb3f9bded7101e9e32fb45d" => :yosemite
-    sha256 "7f556c84d9e2ad7ba4b0dc0b8a44b9bb0a022611d28062b6259d8a0ecce6a014" => :mavericks
-    sha256 "d14c15e5ced0c310ed9c60852c9405d947ab3e6a0b745ba7ed33a4ab11853694" => :mountain_lion
+    sha256 "25c7921f993a9cc8c4b9e2bd8a4e6f1a90b7f755f747b55f391ed063f123f64d" => :el_capitan
+    sha256 "add17a1f3fd3569e3a8ed9e970f5d9397bdf1cca185c47b50af4f56492f8afff" => :yosemite
+    sha256 "afd12ae6c79db17692175c1da036fbcf3df0c33592c0c6d7a686ce37f2443838" => :mavericks
   end
 
   depends_on "docbook"
