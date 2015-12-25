@@ -6,8 +6,6 @@ class RbenvGemRehash < Formula
 
   bottle :unneeded
 
-  depends_on "rbenv"
-
   # Fixes issues with Homebrew-managed git-etc alpha.
   patch do
     url "https://github.com/sstephenson/rbenv-gem-rehash/commit/0756890cfd9c7bbbdde38560fe81626a0c5769bd.diff"

@@ -7,8 +7,7 @@ class RbenvCtags < Formula
 
   bottle :unneeded
 
-  depends_on "rbenv"
-  depends_on "ctags"
+  depends_on "ctags" => :optional
 
   def install
     prefix.install Dir["*"]
