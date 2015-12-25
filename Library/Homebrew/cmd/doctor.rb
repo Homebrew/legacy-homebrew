@@ -444,7 +444,8 @@ class Checks
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
-    "InstantOn" component of Airfoil are known to do this.
+    "InstantOn" component of Airfoil or running Cocktail cleanup/optimizations
+    are known to do this.
 
     You should probably change the ownership and permissions of /usr/local
     back to your user account.
