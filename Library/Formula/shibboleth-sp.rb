@@ -4,6 +4,11 @@ class ShibbolethSp < Formula
   url "http://shibboleth.net/downloads/service-provider/latest/shibboleth-sp-2.5.5.tar.gz"
   sha256 "30da36e0bba2ce4606a9effc37c05cd110dafdd6d3141468c4aa0f57ce4d96ce"
 
+  bottle do
+    sha256 "0b677a96f1db3fc05e77e2d19233c8e28e50db96813a533ba579e634844b8810" => :el_capitan
+    sha256 "bc8acf35899aac2a824d7120c1f6e4076775df35e46fea14bfaa5f2884e221c9" => :yosemite
+  end
+
   option "with-apache-22", "Build mod_shib_22.so instead of mod_shib_24.so"
 
   depends_on :macos => :yosemite
