@@ -6,8 +6,8 @@ class Cryptol < Formula
   desc "Domain-specific language for specifying cryptographic algorithms"
   homepage "http://www.cryptol.net/"
   url "https://github.com/GaloisInc/cryptol.git",
-      :tag => "v2.2.4",
-      :revision => "ebaa98699bfc704c5ac5a100e2829e68f3a11d9b"
+      :tag => "v2.2.6",
+      :revision => "22fa2f0538f8c6c60f32735f54fe9877f56e1cba"
   head "https://github.com/GaloisInc/cryptol.git"
 
   bottle do
@@ -18,7 +18,7 @@ class Cryptol < Formula
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "cvc4"
+  depends_on "z3"
 
   setup_ghc_compilers
 
