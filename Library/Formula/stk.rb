@@ -10,7 +10,9 @@ class Stk < Formula
     sha256 "377f662ab8c73979f8aeed28e75bc3884f1840a7e6dc82bb48855dd89fb4a8dc" => :lion
   end
 
-  option "enable-debug", "Compile with debug flags and modified CFLAGS for easier debugging"
+  option "with-debug", "Compile with debug flags and modified CFLAGS for easier debugging"
+
+  deprecated_option "enable-debug" => "with-debug"
 
   fails_with :clang do
     build 421
@@ -18,19 +20,18 @@ class Stk < Formula
   end
 
   def install
-    if build.include? "enable-debug"
+    args = %W[--prefix=#{prefix}]
+
+    if build.with? "debug"
       inreplace "configure", 'CFLAGS="-g -O2"', 'CFLAGS="-g -O0"'
       inreplace "configure", 'CXXFLAGS="-g -O2"', 'CXXFLAGS="-g -O0"'
       inreplace "configure", 'CPPFLAGS="$CPPFLAGS $cppflag"', ' CPPFLAGS="$CPPFLAGS $cppflag -g -O0"'
-      debug_status = "--enable-debug"
+      args << "--enable-debug"
     else
-      debug_status = "--disable-debug"
+      args << "--disable-debug"
     end
 
-    system "./configure", "--prefix=#{prefix}",
-                          debug_status,
-                          "--disable-dependency-tracking"
-
+    system "./configure", *args
     system "make"
 
     lib.install "src/libstk.a"
@@ -38,7 +39,7 @@ class Stk < Formula
 
     (include/"stk").install Dir["include/*"]
     doc.install Dir["doc/*"]
-    (share/"stk").install "src", "projects", "rawwaves"
+    pkgshare.install "src", "projects", "rawwaves"
   end
 
   def caveats; <<-EOS.undent
@@ -47,7 +48,7 @@ class Stk < Formula
       #include \"stk/FileLoop.h\"
       #include \"stk/FileWvOut.h\"
 
-    src/ projects/ and rawwaves/ have all been copied to /usr/local/share/stk
+    src/ projects/ and rawwaves/ have all been copied to #{opt_pkgshare}
     EOS
   end
 end
