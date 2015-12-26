@@ -15,6 +15,7 @@ class Poco < Formula
 
   option :cxx11
   option :universal
+  option "with-static", "Build static libraries"
 
   depends_on "openssl"
   depends_on "cmake" => :build
@@ -38,6 +39,11 @@ class Poco < Formula
     mkdir "macbuild" do
       system "cmake", buildpath, *args
       system "make", "install"
+      if build.with? "static"
+      	args << "-DPOCO_STATIC=ON" 
+      	system "cmake", buildpath, *args
+      	system "make", "install"
+      end
     end
   end
 end
