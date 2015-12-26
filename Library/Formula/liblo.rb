@@ -21,17 +21,21 @@ class Liblo < Formula
     depends_on "libtool" => :build
   end
 
-  option "enable-ipv6", "Compile with support for ipv6"
   option :universal
+  option "with-ipv6", "Compile with support for ipv6"
+
+  deprecated_option "enable-ipv6" => "with-ipv6"
 
   def install
     ENV.universal_binary if build.universal?
 
-    args = %W[--disable-debug
-              --disable-dependency-tracking
-              --prefix=#{prefix}]
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
 
-    args << "--enable-ipv6" if build.include? "enable-ipv6"
+    args << "--enable-ipv6" if build.with? "ipv6"
 
     if build.head?
       system "./autogen.sh", *args
