@@ -46,4 +46,21 @@ class Tomcat < Formula
 
     (share/"fulldocs").install resource("fulldocs") if build.with? "fulldocs"
   end
+
+  test do
+    ENV["CATALINA_BASE"] = testpath
+    cp_r Dir["#{libexec}/*"], testpath
+    rm Dir["#{libexec}/logs/*"]
+
+    pid = fork do
+      exec bin/"catalina", "start"
+    end
+    sleep 3
+    begin
+      system bin/"catalina", "stop"
+    ensure
+      Process.wait pid
+    end
+    File.exist? testpath/"logs/catalina.out"
+  end
 end
