@@ -156,9 +156,9 @@ class Python3 < Formula
       ldflags  << "-L#{tcl_tk}/lib"
     end
 
-    args << "CFLAGS=#{cflags.join(' ')}"     unless cflags.empty?
-    args << "LDFLAGS=#{ldflags.join(' ')}"   unless ldflags.empty?
-    args << "CPPFLAGS=#{cppflags.join(' ')}" unless cppflags.empty?
+    args << "CFLAGS=#{cflags.join(" ")}" unless cflags.empty?
+    args << "LDFLAGS=#{ldflags.join(" ")}" unless ldflags.empty?
+    args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
     system "./configure", *args
 
@@ -169,7 +169,7 @@ class Python3 < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
-    system "make", "quicktest" if build.include? "quicktest"
+    system "make", "quicktest" if build.with? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
     Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(".app", " 3.app") }
