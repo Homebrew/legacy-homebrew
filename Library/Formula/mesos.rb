@@ -1,10 +1,9 @@
 class Mesos < Formula
   desc "Apache cluster manager"
   homepage "https://mesos.apache.org"
-  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.25.0/mesos-0.25.0.tar.gz"
-  mirror "https://archive.apache.org/dist/mesos/0.25.0/mesos-0.25.0.tar.gz"
-  sha256 "81ee9e722b66f52d8f3270a76eecea60fdcab48d6f7dba51ecce592293124b75"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=mesos/0.26.0/mesos-0.26.0.tar.gz"
+  mirror "https://archive.apache.org/dist/mesos/0.26.0/mesos-0.26.0.tar.gz"
+  sha256 "6529002f2139bf21c7bea2e1b6bb83345b4737333cd637042fc1cf9728565b33"
 
   bottle do
     sha256 "9cc964e98ca0e3f2a1a0a9dcc34019aa8beb14e68b626fdab9940e8b73c0dc2d" => :el_capitan
@@ -14,8 +13,8 @@ class Mesos < Formula
 
   depends_on :java => "1.7+"
   depends_on :macos => :mountain_lion
-  depends_on "maven" => :build
   depends_on :apr => :build
+  depends_on "maven" => :build
   depends_on "subversion"
 
   resource "boto" do
@@ -93,12 +92,13 @@ class Mesos < Formula
               "<url>http://mesos.apache.org</url>",
               maven_javadoc_patch
 
-    args = ["--prefix=#{prefix}",
-            "--disable-debug",
-            "--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--with-svn=#{Formula["subversion"].opt_prefix}",
-           ]
+    args = %W[
+      --prefix=#{prefix}
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --with-svn=#{Formula["subversion"].opt_prefix}
+    ]
 
     unless MacOS::CLT.installed?
       args << "--with-apr=#{Formula["apr"].opt_prefix}/libexec"
