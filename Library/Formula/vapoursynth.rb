@@ -5,6 +5,12 @@ class Vapoursynth < Formula
   sha256 "5a2e37f3a9a5dc60f55a301b222df75a580ccf319b099a3e421e2334ef8cbde6"
   head "https://github.com/vapoursynth/vapoursynth.git"
 
+  bottle do
+    sha256 "32a0caee25b2dddf9fec8a95bba6a313b323fc4459340f55969852e8c423db36" => :el_capitan
+    sha256 "eed8b170d7fa571ba825ecc0b54fa8b62365a25bd3bf0f4997e339a5d4e70778" => :yosemite
+    sha256 "90247e7b2a1fa10587512449d822ea548846ee904ffd26a0dace3e7944de61d5" => :mavericks
+  end
+
   # issue with upstream: https://github.com/vapoursynth/vapoursynth/issues/201
   patch :DATA
 
