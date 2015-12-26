@@ -1,29 +1,48 @@
 class Kibana < Formula
   desc "Analytics and search dashboard for Elasticsearch"
   homepage "https://www.elastic.co/products/kibana"
-  url "https://download.elastic.co/kibana/kibana/kibana-4.3.0-darwin-x64.tar.gz"
-  sha256 "b9952879be618b179275a0a0fb6ef9121f4f6d8784f70fb9aa059a05e3991c9d"
-  version "4.3.0"
+  url "https://github.com/elastic/kibana.git", :tag => "v4.3.0", :revision => "e32749e1fa442853975ce2abd5ac2fd88a2dcf58"
   head "https://github.com/elastic/kibana.git"
 
-  bottle :unneeded
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "a63101c190529aa0798ff7dabe7e7ee3fe8a6a04a126d324eb58fa8343e3a67d" => :el_capitan
+    sha256 "f8768f21442e9ce85b3c9b3da58d8e73c176d7bf656b636d15ab582074f14991" => :yosemite
+    sha256 "0bcea2ae726c5a175660c6350f4d60ee07a364d1574c90a2bd691ee25123afbb" => :mavericks
+    sha256 "5d102f006b25dae70bd62c99d9787abe10111460bc2119e5e5ceb412d6335dae" => :mountain_lion
+  end
+
+  resource "node" do
+    url "https://nodejs.org/dist/v0.12.7/node-v0.12.7.tar.gz"
+    sha256 "b23d64df051c9c969b0c583f802d5d71de342e53067127a5061415be7e12f39d"
+  end
 
   def install
-    rm_f Dir["bin/*.bat"]
-    prefix.install Dir["*"]
-
-    inreplace "#{prefix}/config/kibana.yml" do |s|
-      s.sub!(%r{/var/run/kibana.pid}, "/usr/local/var/run/kibana.pid")
+    resource("node").stage buildpath/"node"
+    cd buildpath/"node" do
+      system "./configure", "--prefix=#{prefix}/node"
+      system "make", "install"
     end
-    (etc/"kibana").install Dir[prefix/"config/kibana.yml"] unless (etc/"kibana/kibana.yml").exist?
+
+    ENV.prepend_path "PATH", prefix/"node/bin"
+    system "npm", "install"
+    system "npm", "run", "build"
+    mkdir "tar"
+    system "tar", "--strip-components", "1", "-xf", Dir["target/kibana-*-darwin-x64.tar.gz"].first, "-C", "tar"
+
+    rm_f Dir["tar/bin/*.bat"]
+    ["bin", "config", "node_modules", "optimize", "package.json", "src", "webpackShims"].each do |s|
+      prefix.install "tar/#{s}"
+      end
   end
 
   def post_install
+    inreplace "#{prefix}/config/kibana.yml" do |s|
+      s.sub!(%r{/var/run/kibana.pid}, "/usr/local/var/run/kibana.pid")
+    end
+    (etc/"kibana").install prefix/"config/kibana.yml" unless (etc/"kibana/kibana.yml").exist?
+    rm_rf prefix/"config"
     ln_s etc/"kibana", prefix/"config"
-
-    (var/"lib/kibana").mkpath
-    rm_f var/"lib/kibana/node_modules"
-    ln_s prefix/"node_modules", var/"lib/kibana/node_modules"
 
     (var/"lib/kibana/installedPlugins").mkpath
     ln_s var/"lib/kibana/installedPlugins", prefix/"installedPlugins"
