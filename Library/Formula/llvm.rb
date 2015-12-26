@@ -117,6 +117,7 @@ class Llvm < Formula
   option "with-clang-extra-tools", "Build extra tools for Clang"
   option "with-compiler-rt", "Build Clang runtime support libraries for code sanitizers, builtins, and profiling"
   option "with-libcxx", "Build the libc++ standard library"
+  option "with-libcxxabi", "Build the libc++abi low-level support for libc++"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-python", "Build Python bindings against Homebrew Python"
@@ -155,6 +156,9 @@ class Llvm < Formula
 
     if build.with? "libcxx"
       (buildpath/"projects/libcxx").install resource("libcxx")
+    end
+
+    if build.with? "libcxxabi"
       (buildpath/"projects/libcxxabi").install resource("libcxxabi")
     end
 
