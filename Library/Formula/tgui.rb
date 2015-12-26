@@ -7,6 +7,11 @@ class Tgui < Formula
   depends_on "cmake" => :build
   depends_on "sfml"
 
+  devel do
+    url "https://github.com/texus/TGUI/archive/v0.7-alpha2.tar.gz"
+    sha256 "12da819d3e396a3d3369051e3b40eb1c8f660a13dd5648706235aa282f415e4a"
+  end
+
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
