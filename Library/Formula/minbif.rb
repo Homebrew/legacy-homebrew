@@ -6,6 +6,13 @@ class Minbif < Formula
   version "1.0.5-20150505"
   sha256 "4e264fce518a0281de9fc3d44450677c5fa91097a0597ef7a0d2a688ee66d40b"
 
+  bottle do
+    cellar :any
+    sha256 "dad011900de96b796e7738bc5641c4d699d217959007be9971f3cd4041be6b49" => :el_capitan
+    sha256 "d861dcf51038caeab530d2f0fc1f986bfa28d5d408209b29402de0db89d349f0" => :yosemite
+    sha256 "f02386c6871f4c4762c62a377760b5a18c70c337f9266b4995b350bbe97a868e" => :mavericks
+  end
+
   option "with-pam", "Build with PAM support, patching for OSX PAM headers"
 
   deprecated_option "pam" => "with-pam"
