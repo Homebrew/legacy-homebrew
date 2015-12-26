@@ -149,6 +149,10 @@ module Homebrew
       return ofail "Formula not installed or up-to-date: #{f.full_name}"
     end
 
+    unless f.tap
+      return ofail "Formula not from core or any taps: #{f.full_name}"
+    end
+
     if f.bottle_disabled?
       ofail "Formula has disabled bottle: #{f.full_name}"
       puts f.bottle_disable_reason
