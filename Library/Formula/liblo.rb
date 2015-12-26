@@ -6,11 +6,10 @@ class Liblo < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "be6b11c3e18ae25490abae43ae12e2fbd87fd8e398b53e817dafd5c3ba494c11" => :el_capitan
-    sha256 "7abf46af9b74b666397be1b55431992e7590ad6863ef78a2d4c5610686bc53c2" => :yosemite
-    sha256 "4377ab68d1648e544fcc84344f912d9541c0d6b776633692e8ced9507e76f595" => :mavericks
-    sha256 "4dac2be4653e7256704cddf2b78e8246f622a6d577ea226dd40483d91fec2cfd" => :mountain_lion
+    revision 2
+    sha256 "d81d8b215a608d3bc9d5c125a04243372e9ac8c5b1b627045a30c728f89c1c7a" => :el_capitan
+    sha256 "e56f28e422f08467b0db99b6db4771a36cd6dba6f4880e57f993f84c41ee1df9" => :yosemite
+    sha256 "26f814026942763e874c480f35f0a3345c2267633d7fbc63cdeef4704dd991a4" => :mavericks
   end
 
   head do
