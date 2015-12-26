@@ -1,9 +1,8 @@
 class Libcdr < Formula
   desc "C++ library to parse the file format of CorelDRAW documents"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
-  url "http://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.1.tar.bz2"
-  sha256 "72fe7bbbf2275242acdf67ad2f9b6c71ac9146a56c409def360dabcac5695b49"
-  revision 2
+  url "http://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.2.tar.bz2"
+  sha256 "d05a986dab9f960e64466072653a900d03f8257b084440d9d16599e16060581e"
 
   bottle do
     cellar :any
@@ -14,6 +13,7 @@ class Libcdr < Formula
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
+  depends_on "cppunit" => :build
   depends_on "icu4c"
   depends_on "librevenge"
   depends_on "little-cms2"
