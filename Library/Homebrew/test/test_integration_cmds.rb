@@ -1,5 +1,6 @@
 require "bundler"
 require "testing_env"
+require "core_formula_repository"
 
 class IntegrationCommandTests < Homebrew::TestCase
   def cmd_output(*args)
@@ -15,7 +16,21 @@ class IntegrationCommandTests < Homebrew::TestCase
       ENV["HOMEBREW_BREW_FILE"] = HOMEBREW_PREFIX/"bin/brew"
       ENV["HOMEBREW_INTEGRATION_TEST"] = args.join " "
       ENV["HOMEBREW_TEST_TMPDIR"] = TEST_TMPDIR
-      Utils.popen_read(RUBY_PATH, *cmd_args).chomp
+      read, write = IO.pipe
+      begin
+        pid = fork do
+          read.close
+          $stdout.reopen(write)
+          $stderr.reopen(write)
+          write.close
+          exec RUBY_PATH, *cmd_args
+        end
+        write.close
+        read.read.chomp
+      ensure
+        Process.wait(pid)
+        read.close
+      end
     end
   end
 
@@ -89,17 +104,26 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_bottle
     cmd("install", "--build-bottle", testball)
+    assert_match "Formula not from core or any taps",
+                 cmd_fail("bottle", "--no-revision", testball)
+    formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
+    formula_file.write <<-EOS.undent
+      class Testball < Formula
+        url "https://example.com/testabll-0.1.tar.gz"
+      end
+    EOS
     HOMEBREW_CACHE.cd do
-      assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
-                   cmd_output("bottle", "--no-revision", testball))
+      assert_match /testball-0\.1.*\.bottle\.tar\.gz/,
+                   cmd_output("bottle", "--no-revision", "testball")
     end
   ensure
-    cmd("uninstall", "--force", testball)
+    cmd("uninstall", "--force", "testball")
     cmd("cleanup", "--force", "--prune=all")
+    formula_file.unlink
   end
 
   def test_uninstall
-    cmd("install", "--build-bottle", testball)
+    cmd("install", testball)
     assert_match "Uninstalling testball", cmd("uninstall", "--force", testball)
   ensure
     cmd("cleanup", "--force", "--prune=all")
