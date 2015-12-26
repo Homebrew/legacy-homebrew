@@ -1,12 +1,11 @@
 class Libwpg < Formula
   desc "Library for reading and parsing Word Perfect Graphics format"
   homepage "http://libwpg.sourceforge.net/"
-  url "http://dev-www.libreoffice.org/src/libwpg-0.3.0.tar.bz2"
-  sha256 "28fc3580228a82948dfc01d07abd5076c8b0df76a68702c1a81eb88fdf377348"
+  url "http://dev-www.libreoffice.org/src/libwpg-0.3.1.tar.bz2"
+  sha256 "29049b95895914e680390717a243b291448e76e0f82fb4d2479adee5330fbb59"
 
   bottle do
     cellar :any
-    revision 1
     sha256 "976dc5670fc09408ea89d58519d713605aad953fcd47b836ce1d5204ccb790ac" => :el_capitan
     sha256 "ea801f9c413c99ec2ba1b6edee8e8bd574b7be60599c9586782b352f5d3bf498" => :yosemite
     sha256 "76c66ba7812eeea20b3e250646cdcb92c0684a12679397f831f92ae7b042159d" => :mavericks
