@@ -3,7 +3,6 @@ class Libcdr < Formula
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libcdr"
   url "http://dev-www.libreoffice.org/src/libcdr/libcdr-0.1.2.tar.bz2"
   sha256 "d05a986dab9f960e64466072653a900d03f8257b084440d9d16599e16060581e"
-  revision 2
 
   bottle do
     cellar :any
@@ -18,7 +17,6 @@ class Libcdr < Formula
   depends_on "icu4c"
   depends_on "librevenge"
   depends_on "little-cms2"
-
 
   def install
     ENV.cxx11
