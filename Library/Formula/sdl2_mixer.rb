@@ -13,6 +13,27 @@ class Sdl2Mixer < Formula
     sha256 "7b127a9c1aec81587871db9c288e3d17219b76f8bebc486bce91a6c2a845c4c5" => :mavericks
   end
 
+  stable do
+    # Next 4 patches are required to build sdl2_mixer 2.0.0 with libmodplug.
+    # Fix is already in upstream, see changeset 695 (https://hg.libsdl.org/SDL_mixer/rev/6a5e6d8d6a35).
+    patch do
+      url "https://hg.libsdl.org/SDL_mixer/raw-diff/6a5e6d8d6a35/configure"
+      sha256 "b5b47486dc84725b0b5464997111b5b5fad5fa97c5ca8b22a7dac0d89c1452bd"
+    end
+    patch do
+      url "https://hg.libsdl.org/SDL_mixer/raw-diff/6a5e6d8d6a35/configure.in"
+      sha256 "be60dace4d169afcf40a0c9974a09a2d4f1976cc94f37d7b40e4ffc3a2cb77e7"
+    end
+    patch do
+      url "https://hg.libsdl.org/SDL_mixer/raw-diff/6a5e6d8d6a35/dynamic_modplug.h"
+      sha256 "cb0c1251d7f018aa8a98c8f7b3dc9553bb22629ca32f2c89235e61daeda42fe2"
+    end
+    patch do
+      url "https://hg.libsdl.org/SDL_mixer/raw-diff/6a5e6d8d6a35/music_modplug.h"
+      sha256 "c6318a877effd5b5186ca49dbd040ecb1cfd39e73d03a380c80331fb86bfc00d"
+    end
+  end
+
   option :universal
 
   depends_on "pkg-config" => :build
@@ -21,6 +42,7 @@ class Sdl2Mixer < Formula
   depends_on "fluid-synth" => :optional
   depends_on "smpeg2" => :optional
   depends_on "libmikmod" => :optional
+  depends_on "libmodplug" => :optional
   depends_on "libvorbis" => :optional
 
   def install
@@ -31,6 +53,7 @@ class Sdl2Mixer < Formula
 
     args = %W[--prefix=#{prefix} --disable-dependency-tracking]
     args << "--enable-music-mod-mikmod" if build.with? "libmikmod"
+    args << "--enable-music-mod-modplug" if build.with? "libmodplug"
 
     system "./configure", *args
     system "make", "install"
