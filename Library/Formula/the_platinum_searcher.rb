@@ -3,15 +3,15 @@ require "language/go"
 class ThePlatinumSearcher < Formula
   desc "Multi-platform code-search similar to ack and ag"
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v2.0.0.tar.gz"
-  sha256 "0a4d295a11a99c99265ff45388bdf4f20e6fd3655c36d4c85fa0eb3f45107d99"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v2.0.2.tar.gz"
+  sha256 "437f5f0e283530ea95275ef5fd9abe460218d7e868883355a85a672f30070ee9"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "66316240fa3342e5ec72ccf4111837f684e05f5c6132f390ca79f6583101aaaa" => :el_capitan
-    sha256 "bf9e3ecdf167409775d7c420b96d394328c97023b8410069f9c327bf4d4d1a3a" => :yosemite
-    sha256 "d0c2997cf66f0adbf5e6f19252c5e50d418a993661aabc06694ed6eb1bba93da" => :mavericks
+    sha256 "0d3979c24e1dc16b2facf14031b4cb72f1306a783470fb296e9a59b19222e91a" => :el_capitan
+    sha256 "3abdcc4eae1a77c137947974c1ee4e1e1d34d80022729fe45978a1183412a492" => :yosemite
+    sha256 "2ee014d17b5017224105c472a2397916382918f6a31d93d1f88d811ba3ee8870" => :mavericks
   end
 
   depends_on "go" => :build

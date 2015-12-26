@@ -19,6 +19,13 @@ class Wine < Formula
     sha256 "2a48bfc22f9a90db8505ba5d6dcd572c8841f679e284a6b0a26b1ce9c52a0dab" => :mavericks
   end
 
+  devel do
+    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.0.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.0.tar.bz2"
+    mirror "http://mirrors.ibiblio.org/wine/source/1.9/wine-1.9.0.tar.bz2"
+    sha256 "b72221ac97e77616a4fee39961e26d6714109aa35d7e465ab83e2eb42663d5f9"
+  end
+
   head do
     url "git://source.winehq.org/git/wine.git"
   end

@@ -1,17 +1,16 @@
 class Abcde < Formula
   desc "Better CD Encoder"
   homepage "http://abcde.einval.com"
-  url "http://abcde.einval.com/download/abcde-2.7.tar.gz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/abcde/abcde_2.7.orig.tar.gz"
-  sha256 "0148698a09fedcbae37ee9da295afe411a1190cf8ae224b7814d31b5bf737746"
+  url "http://abcde.einval.com/download/abcde-2.7.1.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/abcde/abcde_2.7.1.orig.tar.gz"
+  sha256 "3401e39785b20edee843d4d875b47d2b559f764681c482c4491a8c8ba605f250"
   head "http://git.einval.com/git/abcde.git"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "8eb62fee6347c03f27d4999395c767ac7436f9c032547da45c6b08d84f01a6b3" => :el_capitan
-    sha256 "6d4f26fde607164987e2db970d461980204993e9998f262aa18129c0129ae4ef" => :yosemite
-    sha256 "243f8ae6d987901524e82790f4e89687795d52c6b4f5d9a20cfec4ae38a9f462" => :mavericks
+    sha256 "280d8fb0d65538b2fc048f1bd04bde8e613debf0ce11ff1920965f584733d1a7" => :el_capitan
+    sha256 "07e438a74a135cfb7edb8c4e111f584d16d66a7d9a1479261e91ff53a25ce6ec" => :yosemite
+    sha256 "27fda1409d19f6f34fa4f4de866ba9da564873139f21b74edf3e0494a647097d" => :mavericks
   end
 
   depends_on "cd-discid"

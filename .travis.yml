@@ -36,6 +36,7 @@ install:
       brew untap homebrew/versions;
     fi
   - export HOMEBREW_DEVELOPER="1"
+  - ulimit -n 1024
 
 script:
   - brew test-bot

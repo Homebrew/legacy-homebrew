@@ -1,13 +1,13 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.4.tar.bz2"
-  sha256 "31203696adbfdda6f2874a2de31f7c5a1f3bcb6628f4d1a241de21b158cd5c76"
+  url "https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.0.tar.bz2"
+  sha256 "ec7579eaba2e4c402a089dbc86c98e5f1f62507880fd800b9b34ca30166bfa5e"
 
   bottle do
-    sha256 "0ae4452015623280e369cd6c991f25adf547d9d94fa78c869fa581767069453f" => :el_capitan
-    sha256 "8afc123353ab4373c5cb2b90ad918a92e7416456413f946c46af50ea71935cc2" => :yosemite
-    sha256 "a3efd1af32f998025b70534fc6f505ab082613f7235c36624183d4a7e60221dd" => :mavericks
+    sha256 "8b1ace3180541e4496e37a28a78129874151f54f1cb80ccbcca0bd3ba9c25eab" => :el_capitan
+    sha256 "eb9204f071cec843b84cf9c4d7a8baac24958a25e4ade0f9bb6d7177cc33ee31" => :yosemite
+    sha256 "d1a4124bc928178cd2108b54b2241da8528908f3323ffd859ad7dcec884fedbf" => :mavericks
   end
 
   head do
@@ -16,7 +16,7 @@ class Ruby < Formula
   end
 
   option :universal
-  option "with-suffix", "Suffix commands with '22'"
+  option "with-suffix", "Suffix commands with '23'"
   option "with-doc", "Install documentation"
   option "with-tcltk", "Install with Tcl/Tk support"
 
@@ -47,7 +47,7 @@ class Ruby < Formula
       args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
     end
 
-    args << "--program-suffix=22" if build.with? "suffix"
+    args << "--program-suffix=23" if build.with? "suffix"
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
@@ -102,7 +102,7 @@ class Ruby < Formula
   end
 
   def abi_version
-    "2.2.0"
+    "2.3.0"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -164,7 +164,7 @@ class Ruby < Formula
       end
 
       def self.ruby
-        "#{opt_bin}/ruby#{"22" if build.with? "suffix"}"
+        "#{opt_bin}/ruby#{"23" if build.with? "suffix"}"
       end
     end
     EOS

@@ -43,8 +43,7 @@ class Aubio < Formula
 
     if build.with? "python"
       cd "python" do
-        system "python", "./setup.py", "build"
-        system "python", "./setup.py", "install", "--prefix", prefix
+        system "python", *Language::Python.setup_install_args(prefix)
         bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
       end
     end
