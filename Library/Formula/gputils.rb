@@ -18,12 +18,11 @@ class Gputils < Formula
   test do
     # assemble with gpasm
     (testpath/"test.asm").write " movlw 0x42\n end\n"
-    system "#{bin}/gpasm -p p16f84 test.asm"
+    system "#{bin}/gpasm", "-p", "p16f84", "test.asm"
     assert File.exist?("test.hex")
 
     # disassemble with gpdasm
-    output = `#{bin}/gpdasm -p p16f84 test.hex`
-    assert_equal "0000:  3042  movlw   0x42\n", output
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/gpdasm -p p16f84 test.hex")
+    assert_match "0000:  3042  movlw   0x42\n", output
   end
 end
