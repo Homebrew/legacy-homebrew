@@ -5,10 +5,10 @@ class Fortune < Formula
   sha256 "1a98a6fd42ef23c8aec9e4a368afb40b6b0ddfb67b5b383ad82a7b78d8e0602a"
 
   bottle do
-    revision 1
-    sha256 "dc8c37eb3010db915670bb48e3dfe7a785e2503553cf1ac7b3f7e416c5983468" => :el_capitan
-    sha256 "7b3d96921c3c20feed7e2bf180bc9d8634ee0d6fe2d8b438c91f2d524388fa05" => :yosemite
-    sha256 "cd124a5664773bf11fa334461a835b508c401dc59462abb99d3d83b430091b2d" => :mavericks
+    revision 2
+    sha256 "fe681ea371ce058faeebbd459ac9b5f492b7b523652da937ed8cb7d9bbf0eaf8" => :el_capitan
+    sha256 "97c35357e5becf525ddaede462e40283872d0b5d2cebfeeb7d509cb0ef06fc7c" => :yosemite
+    sha256 "61792a39fce2c81cf7a47a9230884d0bc19ff7c5f84bc7264f2bc0aa705f8eb1" => :mavericks
   end
 
   option "without-offensive", "Don't install potentially offensive fortune files"
