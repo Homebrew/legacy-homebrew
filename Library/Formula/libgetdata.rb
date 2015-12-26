@@ -5,9 +5,10 @@ class Libgetdata < Formula
   sha256 "b38de059ff21df873e95978867eb82f716b89fc7e8e503e2cc7cef93d22685a2"
 
   bottle do
-    sha256 "8cca507b99623199f5cca86fa0c88fad9205b7a41f410af56c150bff5222bb14" => :yosemite
-    sha256 "9bb073d0fe1df3fcb50b96b11038f5bc89b97472679456dc5fbac60400307f00" => :mavericks
-    sha256 "6bfb2f3c90b58f82a2f08adb9e940b32a46f8d5370a8d6278d31532490dcda31" => :mountain_lion
+    cellar :any
+    sha256 "cb9eeb31d322ae668aa42808d3dfabd871bfead6a7b1d82e51493e4c3acd0cd7" => :el_capitan
+    sha256 "eda5fc0d909f1ab30370e714730d270b2c8881653b61fd239e795a3152a51f31" => :yosemite
+    sha256 "54dc79a3ea3c5a3f783917342bfb724bfbbd9fbe3139f78a002d929223416255" => :mavericks
   end
 
   option "with-fortran", "Build Fortran 77 bindings"
