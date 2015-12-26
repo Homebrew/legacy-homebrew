@@ -8,7 +8,7 @@ class MdaLv2 < Formula
   depends_on "lv2"
 
   def install
-    system "./waf", "configure", "--prefix=#{prefix}", "--lv2dir=#{share}/lv2"
+    system "./waf", "configure", "--prefix=#{prefix}"
     system "./waf"
     system "./waf", "install"
   end
