@@ -29,10 +29,7 @@ class Sdl2Mixer < Formula
 
     ENV["SMPEG_CONFIG"] = "#{Formula["smpeg2"].bin}/smpeg2-config" if build.with? "smpeg2"
 
-    args = ["--prefix=#{prefix}",
-            "--disable-dependency-tracking",
-           ]
-
+    args = %W[--prefix=#{prefix} --disable-dependency-tracking]
     args << "--enable-music-mod-mikmod" if build.with? "libmikmod"
 
     system "./configure", *args
