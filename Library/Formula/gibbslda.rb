@@ -6,9 +6,9 @@ class Gibbslda < Formula
 
   bottle do
     cellar :any
-    sha1 "0a0861b3c2fd9037a8ec71f43a09115dceaed4a8" => :yosemite
-    sha1 "65dd821a8ce2c7f24001a56218b0c00cdf1d9051" => :mavericks
-    sha1 "7ecc74e2069e864ac26614209a7236215ab4faa0" => :mountain_lion
+    sha256 "091c214c2589c2a2a0b0dcb90f45cf993ffeeb7d7260f505ef84f1fd773b326c" => :yosemite
+    sha256 "bd4c35f5f73ae1aa5fdee00bd89c7b9c455c30061effe1660fbfbd203cb82cd3" => :mavericks
+    sha256 "329fa8a93faa35c16e484a1198fcbc186b21e268e2ec91481c19787352bf1e41" => :mountain_lion
   end
 
   # Build fails without including stdlib - https://trac.macports.org/ticket/41915

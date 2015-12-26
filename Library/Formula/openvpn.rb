@@ -1,18 +1,20 @@
 class Openvpn < Formula
   desc "SSL VPN implementing OSI layer 2 or 3 secure network extension"
   homepage "https://openvpn.net/index.php/download/community-downloads.html"
-  url "https://swupdate.openvpn.org/community/releases/openvpn-2.3.8.tar.gz"
-  mirror "http://build.openvpn.net/downloads/releases/openvpn-2.3.8.tar.gz"
-  sha256 "532435eff61c14b44a583f27b72f93e7864e96c95fe51134ec0ad4b1b1107c51"
+  url "https://swupdate.openvpn.org/community/releases/openvpn-2.3.9.tar.gz"
+  mirror "http://build.openvpn.net/downloads/releases/openvpn-2.3.9.tar.gz"
+  sha256 "2c12fe9ea641ac1291e70322cc500641c84e5903dd4f40bf2eda7e9f209b2f9c"
 
   bottle do
     cellar :any
-    sha256 "af7a9b8a5e3668a8edb5e008fe3fb1e9a142811aae41ebf86f33950d90440cfc" => :mavericks
-    sha256 "ef56a0198dbd76e6b0fd9e3f5454027d011320e02ca7b359a63db13373faafd0" => :mountain_lion
+    revision 1
+    sha256 "882a30fe91692b21da5a003d392bc87c87abd2e064a51f6466c95cf0b25924ce" => :el_capitan
+    sha256 "4da6b041921df90a929821be483a67e3bb3e0a5ea4b28aed9a93cbab706b45e8" => :yosemite
+    sha256 "c2fb3da6a522f8f64330c238c9e5266cdea1d23e908113bb2b82eeb80f3e884d" => :mavericks
   end
 
   depends_on "lzo"
-  depends_on :tuntap
+  depends_on :tuntap if MacOS.version < :yosemite
   depends_on "openssl"
 
   def install
@@ -42,13 +44,21 @@ class Openvpn < Formula
     rm "#{share}/doc/openvpn/README.polarssl"
   end
 
-  def caveats; <<-EOS.undent
-    If you have installed the Tuntap dependency as a source package you will
-    need to follow the instructions found in `brew info tuntap`. If you have
-    installed the binary Tuntap package, no further action is necessary.
+  def caveats
+    s = ""
 
-    For OpenVPN to work as a server, you will need to create configuration file
-    in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
+    if MacOS.version < :yosemite
+      s += <<-EOS.undent
+        If you have installed the Tuntap dependency as a source package you will
+        need to follow the instructions found in `brew info tuntap`. If you have
+        installed the binary Tuntap package, no further action is necessary.
+
+      EOS
+    end
+
+    s += <<-EOS.undent
+      For OpenVPN to work as a server, you will need to create configuration file
+      in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
     EOS
   end
 

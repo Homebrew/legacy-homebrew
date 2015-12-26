@@ -10,7 +10,7 @@ class Icmake < Formula
     sha256 "8e25ce4cb2d564ef4ed938b69b1b0566520383dd9d754af77a4271ab6281784e" => :mavericks
   end
 
-  depends_on "gnu-sed" => :build
+  depends_on "gnu-sed"
 
   def install
     ENV.prepend_path "PATH", Formula["gnu-sed"].libexec/"gnubin"

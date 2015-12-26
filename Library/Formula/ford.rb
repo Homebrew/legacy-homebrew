@@ -1,30 +1,29 @@
 class Ford < Formula
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/cmacmackin/ford/"
-  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.2.3.tar.gz"
-  sha256 "8dac3abec4ea88ff68218738bbd0407c2a0b1714c644e28883b1e36611c609b4"
+  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.5.0.tar.gz"
+  sha256 "90d350e8891a74043420447b2980b1edac44f2654990309afd9349a7fbcd3509"
 
   head "https://github.com/cmacmackin/ford.git"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "1568c6f29b3ce8cabd14e742c64899fee7106419012eca0c159f7588d35c4fee" => :el_capitan
-    sha256 "64f2a52e3d3a0c1d74acb8225aa568be508ce50c848fd7bd47d08af2e4f1ad2d" => :yosemite
-    sha256 "04e4235f11b40e7b9ae76680da94bee4ff64565089f50837773cf950365c56dc" => :mavericks
+    sha256 "7f5652924ddd58db0758bce7defb39fe294c4af6cf25c5727b5938a41829483f" => :el_capitan
+    sha256 "71ecbc702d0e2dedf7163cc28a59e85b1b3b0a1e4efcfe6eca5b92b5bd465294" => :yosemite
+    sha256 "07c3b805459499e4408ec484cdb546e4f3e8bfc1717eeef0977ac0700ff43ad3" => :mavericks
   end
 
   depends_on "graphviz"
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "beautifulsoup4" do
-    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.0.tar.gz"
-    sha256 "fad91da88f69438b9ba939ab1b2cabaa31b1d914f1cccb4bb157a993ed2917f6"
+    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.1.tar.gz"
+    sha256 "87d4013d0625d4789a4f56b8d79a04d5ce6db1152bb65f1d39744f7709a366b4"
   end
 
   resource "graphviz" do
-    url "https://pypi.python.org/packages/source/g/graphviz/graphviz-0.4.6.zip"
-    sha256 "f12da6fd8318d909ef13bb269bf6b96dd09d3b908a8e2b373b9ba5dbe3d3ec69"
+    url "https://pypi.python.org/packages/source/g/graphviz/graphviz-0.4.8.zip"
+    sha256 "71d56c61af9b4ff5e1e64a89b46872aa27c598bab8b0e9083f0fd3213cfc28b0"
   end
 
   resource "Jinja2" do
@@ -33,8 +32,8 @@ class Ford < Formula
   end
 
   resource "Markdown" do
-    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.2.tar.gz"
-    sha256 "ee17d0d7dc091e645dd48302a2e21301cc68f188505c2069d8635f94554170bf"
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.5.tar.gz"
+    sha256 "8d94cf6273606f76753fcb1324623792b3738c7612c2b180c85cc5e88642e560"
   end
 
   resource "markdown-include" do

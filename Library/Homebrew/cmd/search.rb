@@ -42,8 +42,7 @@ module Homebrew
       query = ARGV.first
       rx = query_regexp(query)
       local_results = search_formulae(rx)
-      local_results_installed = local_results.select { |f| f.end_with? "(installed)" }
-      puts_columns(local_results, local_results_installed)
+      puts_columns(local_results)
       tap_results = search_taps(rx)
       puts_columns(tap_results)
 
@@ -157,7 +156,7 @@ module Homebrew
       if aliases.include?(name) && results.include?(canonical_full_name)
         next
       elsif (HOMEBREW_CELLAR/canonical_name).directory?
-        "#{name} (installed)"
+        pretty_installed(name)
       else
         name
       end

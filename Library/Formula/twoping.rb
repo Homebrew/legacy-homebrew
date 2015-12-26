@@ -1,14 +1,15 @@
 class Twoping < Formula
   desc "Ping utility to determine directional packet loss"
   homepage "http://www.finnie.org/software/2ping/"
-  url "http://www.finnie.org/software/2ping/2ping-3.0.1.tar.gz"
-  sha256 "d6997cd1680151e6f7d5e60137d45cd41bf385d26029878afdaaf5dc4f63dcc4"
+  url "http://www.finnie.org/software/2ping/2ping-3.1.0.tar.gz"
+  sha256 "0f5b4e10f89dd99ef04e2cc0564d6673ceae897ed0bf59b636553ec6aa1c7a92"
+  head "https://github.com/rfinnie/2ping.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "115f515900391449e9f22602744c680ea54451f534cac89eddb4bc133f38c6cb" => :el_capitan
-    sha256 "01b54ba53327fa3c8da79add6ee0bc9549f7b2f8ee18cf340f30049b17388719" => :yosemite
-    sha256 "dbc7b643c3cea44b8e00956d530244f7722c0d3ccebcec34913a3051d5cd348e" => :mavericks
+    sha256 "82565f026de15aa37b5c3fff961d1a9d270f9211aea25aa242c4d2dd5690bd1a" => :el_capitan
+    sha256 "3746a2e18e26a360bebe578b66d470dfc8f1a01e607d4a7763760e103be569b7" => :yosemite
+    sha256 "2bcba7e19411b626ea04fb8fd0d4969c1de94f98f8c0e97fd67df9931dd27b05" => :mavericks
   end
 
   def install
@@ -18,6 +19,36 @@ class Twoping < Formula
     man1.install_symlink "2ping.1" => "2ping6.1"
     bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+  end
+
+  plist_options :manual => "2ping --listen", :startup => true
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/2ping</string>
+          <string>--listen</string>
+          <string>--quiet</string>
+        </array>
+        <key>UserName</key>
+        <string>nobody</string>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+      </dict>
+    </plist>
+    EOS
   end
 
   test do

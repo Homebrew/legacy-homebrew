@@ -9,14 +9,15 @@ class BashCompletion < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "5f7f9f96ebf1a31d08a8bf429f47c83a8a44ac2b98f6556888e9e1f5b2f1bb35" => :el_capitan
-    sha256 "a31fe5655a5f0298e69da7b858be6af05a47faeabb635e445ea3d481b48e5a6c" => :yosemite
-    sha256 "5b5d5c9d802c4d77b5eb7db2179ed595ab464a387639b0829cd65e282509b9aa" => :mavericks
+    revision 2
+    sha256 "fa3223e326e3319c261bbd1b289da4118e7a38887494b82aa4a67c99c6eb99ef" => :el_capitan
+    sha256 "0968d379dccbb2c63459aa20a97df8422740fedb599d529735c01750543792a4" => :yosemite
+    sha256 "7b9e7523a70c0dd79dc3eaa9c868660f0e5bce07d03ce66621535233504903ec" => :mavericks
   end
 
   # Backports the following upstream patch from 2.x:
   # https://anonscm.debian.org/gitweb/?p=bash-completion/bash-completion.git;a=commitdiff_plain;h=50ae57927365a16c830899cc1714be73237bdcb2
+  # https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=740971
   patch :DATA
 
   def compdir
@@ -54,6 +55,15 @@ diff --git a/bash_completion b/bash_completion
 index 6601937..5184767 100644
 --- a/bash_completion
 +++ b/bash_completion
+@@ -640,7 +640,7 @@
+
+     _quote_readline_by_ref "$cur" quoted
+     toks=( ${toks[@]-} $(
+-        compgen -d -- "$quoted" | {
++        compgen -d -- "$cur" | {
+             while read -r tmp; do
+                 # TODO: I have removed a "[ -n $tmp ] &&" before 'printf ..',
+                 #       and everything works again. If this bug suddenly
 @@ -1334,7 +1334,7 @@ _known_hosts_real()
  
      # append any available aliases from config files

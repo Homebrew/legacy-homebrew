@@ -9,10 +9,10 @@ class Nettle < Formula
     cellar :any
     revision 1
     sha256 "c4d9262d13cae53467788b50eeebdc39b9adbba0367070b1d21d059c99159590" => :el_capitan
-    sha1 "41d80787422ed29f084c147b49e2f7c3a223eded" => :yosemite
-    sha1 "89238f83e4f3f18145553d3c442fe022680cbd7b" => :mavericks
-    sha1 "8f2a4c261926f2f62e9d8f197a8466a2489b37e0" => :mountain_lion
-    sha1 "6c56084887da5b7e99d7c730bf22a68c9af360e9" => :lion
+    sha256 "7f006b8cf57112837ad7b4e9a82e30a4007c161eb32e552e16bcb6c47e8a3a1d" => :yosemite
+    sha256 "9adfe3d199966936d8d8977769fddb2cb71334e64b18f2ec081a155de6308c16" => :mavericks
+    sha256 "26082a9e2cab89927a3593ca7af7624de81720c4b7faab9dbf83baa838105851" => :mountain_lion
+    sha256 "6a46aec5ff57bffdc658d1c375b48cfbe162eceeb52f1865c98e85a5fd23de50" => :lion
   end
 
   depends_on "gmp"

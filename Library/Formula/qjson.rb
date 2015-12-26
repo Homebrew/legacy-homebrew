@@ -8,9 +8,9 @@ class Qjson < Formula
 
   bottle do
     revision 1
-    sha1 "22ac2eb6b1345cc6a7a61223be8dae6c90493f66" => :yosemite
-    sha1 "2c037b5df8551e2c63341a60609c5b97ab7c4b05" => :mavericks
-    sha1 "b34c75bb1e7fc1a7535b71a26b0736c10cef9f59" => :mountain_lion
+    sha256 "17cfd3051322f724d3796b104bf14a47d54e81f0421462619d8462e5b848d297" => :yosemite
+    sha256 "0b4e1a589d1d479724f05e22afdfcb5aede88ec01aae7917956171b799772abc" => :mavericks
+    sha256 "86d22c75328ecce5a07483b20ea2d9470c37a7f40184471d262a233e89e8cbdf" => :mountain_lion
   end
 
   depends_on "cmake" => :build

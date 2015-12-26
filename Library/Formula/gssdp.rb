@@ -1,14 +1,13 @@
 class Gssdp < Formula
   desc "GUPnP library for resource discovery and announcement over SSDP"
   homepage "https://wiki.gnome.org/GUPnP/"
-  url "https://download.gnome.org/sources/gssdp/0.14/gssdp-0.14.11.tar.xz"
-  sha256 "7bf5aeaf2119fe0bec5f3632ecf39dae15bc85276c72c2ad8dd4b0e345c6535a"
+  url "https://download.gnome.org/sources/gssdp/0.14/gssdp-0.14.12.1.tar.xz"
+  sha256 "b3d570455746284f3e65843c7f94d9595be54d68a9525629b625196bad2cac07"
 
   bottle do
-    cellar :any
-    sha256 "f0346d2cdac6d5e2a2fc40b282426582c09e177c6d7202961cd51522bf680551" => :yosemite
-    sha256 "b0554ba681354f342915e358ce628a06164b1984ee9486b6fcb56b78f26efc55" => :mavericks
-    sha256 "f598056ff1d988ee2f96b3f8bd34e83fc23418e1880b85bd215766de20029262" => :mountain_lion
+    sha256 "81f04682a589403208f87da3f52a22e13c855eaeafba9e0a67a16a32798b7215" => :el_capitan
+    sha256 "a4044ab3b0fcbfe6bc0110e9facf6bb7c5f2ff7cbf9718770f6a6e08fdd64fd9" => :yosemite
+    sha256 "d6639f36269afccfde5d8b286cbb035be7ab1b7223f9267ca339d99b891782db" => :mavericks
   end
 
   depends_on "pkg-config" => :build

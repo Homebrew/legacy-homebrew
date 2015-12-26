@@ -444,7 +444,8 @@ class Checks
     The /usr/local directory is not writable.
     Even if this directory was writable when you installed Homebrew, other
     software may change permissions on this directory. Some versions of the
-    "InstantOn" component of Airfoil are known to do this.
+    "InstantOn" component of Airfoil or running Cocktail cleanup/optimizations
+    are known to do this.
 
     You should probably change the ownership and permissions of /usr/local
     back to your user account.
@@ -607,19 +608,6 @@ class Checks
       You should change it to the correct path:
         sudo xcode-select -switch #{path}
     EOS
-    end
-  end
-
-  # Xcode 7 lacking the 10.10 SDK is forcing sysroot to be declared
-  # nil on 10.10 & breaking compiles. CLT is workaround.
-  def check_sdk_path_not_nil_yosemite
-    if MacOS.version == :yosemite && !MacOS::CLT.installed? && MacOS::Xcode.installed? && MacOS.sdk_path.nil?
-      <<-EOS.undent
-      Xcode 7 lacks the 10.10 SDK which can cause some builds to fail.
-      We recommend installing the Command Line Tools with:
-        xcode-select --install
-      to resolve this issue.
-     EOS
     end
   end
 
@@ -997,7 +985,7 @@ class Checks
   end
 
   def __check_linked_brew(f)
-    f.rack.subdirs.each do |prefix|
+    f.installed_prefixes.each do |prefix|
       prefix.find do |src|
         next if src == prefix
         dst = HOMEBREW_PREFIX + src.relative_path_from(prefix)

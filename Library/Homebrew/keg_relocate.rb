@@ -56,6 +56,8 @@ class Keg
       changed = s.gsub!(old_cellar, new_cellar)
       changed = s.gsub!(old_prefix, new_prefix) || changed
 
+      next unless changed
+
       begin
         first.atomic_write(s)
       rescue SystemCallError
@@ -64,7 +66,7 @@ class Keg
         end
       else
         rest.each { |file| FileUtils.ln(first, file, :force => true) }
-      end if changed
+      end
     end
   end
 
@@ -130,7 +132,7 @@ class Keg
       "@loader_path/#{bad_name}"
     elsif file.mach_o_executable? && (lib + bad_name).exist?
       "#{lib}/#{bad_name}"
-    elsif (abs_name = find_dylib(Pathname.new(bad_name).basename)) && abs_name.exist?
+    elsif (abs_name = find_dylib(bad_name)) && abs_name.exist?
       abs_name.to_s
     else
       opoo "Could not fix #{bad_name} in #{file}"
@@ -156,8 +158,22 @@ class Keg
     opt_record.join(relative_dirname, basename).to_s
   end
 
-  def find_dylib(name)
-    lib.find { |pn| break pn if pn.basename == name } if lib.directory?
+  # Matches framework references like `XXX.framework/Versions/YYY/XXX` and
+  # `XXX.framework/XXX`, both with or without a slash-delimited prefix.
+  FRAMEWORK_RX = %r{(?:^|/)(([^/]+)\.framework/(?:Versions/[^/]+/)?\2)$}.freeze
+
+  def find_dylib_suffix_from(bad_name)
+    if (framework = bad_name.match(FRAMEWORK_RX))
+      framework[1]
+    else
+      File.basename(bad_name)
+    end
+  end
+
+  def find_dylib(bad_name)
+    return unless lib.directory?
+    suffix = "/#{find_dylib_suffix_from(bad_name)}"
+    lib.find { |pn| break pn if pn.to_s.end_with?(suffix) }
   end
 
   def mach_o_files

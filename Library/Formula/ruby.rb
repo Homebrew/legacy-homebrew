@@ -1,14 +1,13 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2"
-  sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
+  url "https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.0.tar.bz2"
+  sha256 "ec7579eaba2e4c402a089dbc86c98e5f1f62507880fd800b9b34ca30166bfa5e"
 
   bottle do
-    sha256 "13b2a0096f65a74b31a6055bf421332930b2c41101ed2c507d5d0c6a5b9b5770" => :el_capitan
-    sha256 "45f8ba8eb5cb90ba89e0bf950148be4f50a88d3d1daf496b954d288543025735" => :yosemite
-    sha256 "40b34f18f354dc2bb55fdae3082c1004483f44141628c473a5fe0c0882fdee80" => :mavericks
-    sha256 "ae3460dc786fd5ad45d984a700ccb134cdab445da3c6c2fa8053136d2a9ff1f3" => :mountain_lion
+    sha256 "8b1ace3180541e4496e37a28a78129874151f54f1cb80ccbcca0bd3ba9c25eab" => :el_capitan
+    sha256 "eb9204f071cec843b84cf9c4d7a8baac24958a25e4ade0f9bb6d7177cc33ee31" => :yosemite
+    sha256 "d1a4124bc928178cd2108b54b2241da8528908f3323ffd859ad7dcec884fedbf" => :mavericks
   end
 
   head do
@@ -17,7 +16,7 @@ class Ruby < Formula
   end
 
   option :universal
-  option "with-suffix", "Suffix commands with '22'"
+  option "with-suffix", "Suffix commands with '23'"
   option "with-doc", "Install documentation"
   option "with-tcltk", "Install with Tcl/Tk support"
 
@@ -48,7 +47,7 @@ class Ruby < Formula
       args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
     end
 
-    args << "--program-suffix=22" if build.with? "suffix"
+    args << "--program-suffix=23" if build.with? "suffix"
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
@@ -59,7 +58,7 @@ class Ruby < Formula
 
     paths = [
       Formula["libyaml"].opt_prefix,
-      Formula["openssl"].opt_prefix
+      Formula["openssl"].opt_prefix,
     ]
 
     %w[readline gdbm gmp libffi].each do |dep|
@@ -85,6 +84,9 @@ class Ruby < Formula
 
     system "make"
     system "make", "install"
+
+    # A newer version of ruby-mode.el is shipped with Emacs
+    elisp.install Dir["misc/*.el"].reject { |f| f == "misc/ruby-mode.el" }
   end
 
   def post_install
@@ -100,7 +102,7 @@ class Ruby < Formula
   end
 
   def abi_version
-    "2.2.0"
+    "2.3.0"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -162,15 +164,14 @@ class Ruby < Formula
       end
 
       def self.ruby
-        "#{opt_bin}/ruby#{"22" if build.with? "suffix"}"
+        "#{opt_bin}/ruby#{"23" if build.with? "suffix"}"
       end
     end
     EOS
   end
 
   test do
-    output = `#{bin}/ruby -e "puts 'hello'"`
-    assert_equal "hello\n", output
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/ruby -e \"puts 'hello'\"")
+    assert_match "hello\n", output
   end
 end

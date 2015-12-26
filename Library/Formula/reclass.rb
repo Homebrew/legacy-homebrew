@@ -7,9 +7,9 @@ class Reclass < Formula
 
   bottle do
     cellar :any
-    sha1 "4c055763f00605f006fb585f34ccae585b514dc8" => :yosemite
-    sha1 "bf1b1acdd4475d3271f8b27eb41b0f414dac6147" => :mavericks
-    sha1 "4d1a4805aef3db3858c6d6fa01e982eae3a8cd1b" => :mountain_lion
+    sha256 "9777a5365e3bbce9eb30d7cc174e9fefbf2a38c52560ea15ca7a83145fa0547a" => :yosemite
+    sha256 "72260fdea312b34878863a7aaa9f8f64f731d0fc5df2825d9447ee73ad5969eb" => :mavericks
+    sha256 "9a58dbd778a4ae0cb83c3394b8a3b2638d9d2562789be744a95e1a7254ed7de7" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

@@ -4,8 +4,14 @@ class Htmlcxx < Formula
   url "https://downloads.sourceforge.net/project/htmlcxx/htmlcxx/0.85/htmlcxx-0.85.tar.gz"
   sha256 "ab02a0c4addc82f82d564f7d163fe0cc726179d9045381c288f5b8295996bae5"
 
+  bottle do
+    sha256 "708b5eeb03eb5f2070f4fe34efb80f9198009a23106c98ec9aaf5472b49dbf1c" => :el_capitan
+    sha256 "a013c7a43b1587c458df1ebae586d4b15b2a3c994c7de12dc6c7c24a80886a09" => :yosemite
+    sha256 "fceb4660730162bdb44be089ab347afd7a24b3f06bc3579cffdf2bb5891466f5" => :mavericks
+  end
+
   # Don't try to use internal GCC headers; rely on standards-compliant header
-  # Reported upstream: https://sourceforge.net/p/htmlcxx/bugs/18/
+  # Fixed upstream: http://sourceforge.net/p/htmlcxx/code/ci/b26a4fae4e3d59d24600f9a7dfb013ce43bdd2df/
   patch :DATA
 
   def install

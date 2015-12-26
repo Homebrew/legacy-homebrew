@@ -1,20 +1,14 @@
 class Mpich < Formula
   desc "Implementation of the MPI Message Passing Interface standard"
   homepage "https://www.mpich.org/"
-  url "https://www.mpich.org/static/downloads/3.1.4/mpich-3.1.4.tar.gz"
-  mirror "https://fossies.org/linux/misc/mpich-3.1.4.tar.gz"
-  sha256 "f68b5330e94306c00ca5a1c0e8e275c7f53517d01d6c524d51ce9359d240466b"
-  revision 1
+  url "https://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz"
+  mirror "https://fossies.org/linux/misc/mpich-3.2.tar.gz"
+  sha256 "0778679a6b693d7b7caff37ff9d2856dc2bfc51318bf8373859bfa74253da3dc"
 
   bottle do
-    sha256 "52f8f331dbb01514fca1d7921c38c6cab2dd77b06ee6a0c42e608d0719041aeb" => :yosemite
-    sha256 "2d99e877646cc27a13dd4b901050d1e1f5a716f2b2c775cbeaec263886a2d12d" => :mavericks
-    sha256 "56070798b3958bced4b32c3ef3c21f21b07df5e0f14389645d4ba03119d09a78" => :mountain_lion
-  end
-
-  devel do
-    url "https://www.mpich.org/static/downloads/3.2b4/mpich-3.2b4.tar.gz"
-    sha256 "4fecce31b02095643a093aa01900fc1c6dec7690259c7459cc423f0ed10e949b"
+    sha256 "92bd5dd588ce1adb69db97596fe03ddae40b87921b514fb32cd587f4db06b061" => :el_capitan
+    sha256 "116f84d01db3c935052a6687966677fda0c09f737a471b6a009c8df96a4a5f62" => :yosemite
+    sha256 "23d4eb3ae767cbe0a9bce00ccd133c08cc803553d9583e71b858a28043c5036e" => :mavericks
   end
 
   head do
@@ -42,7 +36,7 @@ class Mpich < Formula
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}",
-      "--mandir=#{man}"
+      "--mandir=#{man}",
     ]
 
     args << "--disable-fortran" if build.without? "fortran"
@@ -74,5 +68,21 @@ class Mpich < Formula
     system "#{bin}/mpicc", "hello.c", "-o", "hello"
     system "./hello"
     system "#{bin}/mpirun", "-np", "4", "./hello"
+    if build.with? "fortran"
+      (testpath/"hellof.f90").write <<-EOS.undent
+        program hello
+        include 'mpif.h'
+        integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
+        call MPI_INIT(ierror)
+        call MPI_COMM_SIZE(MPI_COMM_WORLD, size, ierror)
+        call MPI_COMM_RANK(MPI_COMM_WORLD, rank, ierror)
+        print*, 'node', rank, ': Hello Fortran world'
+        call MPI_FINALIZE(ierror)
+        end
+      EOS
+      system "#{bin}/mpif90", "hellof.f90", "-o", "hellof"
+      system "./hellof"
+      system "#{bin}/mpirun", "-np", "4", "./hellof"
+    end
   end
 end

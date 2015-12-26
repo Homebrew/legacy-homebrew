@@ -1,7 +1,7 @@
 class Cvc4 < Formula
   desc "Open-source automatic theorem prover for SMT "
   homepage "https://cvc4.cs.nyu.edu/"
-  url "http://cvc4.cs.nyu.edu/builds/src/cvc4-1.4.tar.gz"
+  url "https://cvc4.cs.nyu.edu/builds/src/cvc4-1.4.tar.gz"
   sha256 "76fe4ff9eb9ad7d65589efb47d41aae95f3191bd0d0c3940698a7cb2df3f7024"
   revision 1
 

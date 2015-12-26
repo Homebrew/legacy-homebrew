@@ -6,9 +6,9 @@ class IkeScan < Formula
   revision 1
 
   bottle do
-    sha1 "43ea7f5447f086855d2b536555241c72d6e55df1" => :yosemite
-    sha1 "67c1151191bb54bccb2b899a4101eca4f71be022" => :mavericks
-    sha1 "2ebab8a22e925846ae35980944b82b142df21326" => :mountain_lion
+    sha256 "70276baa029ee6c1a451175e3254cc74754fd5de83fe748d17ba4fcf0586349a" => :yosemite
+    sha256 "a0967f6ce6e9903068149c9b379926a25b315c3bdb9aca451f28b0d9cc744abd" => :mavericks
+    sha256 "2281b3d5f1f590e69e435a39c1032872db80439411ea74410a58243096645668" => :mountain_lion
   end
 
   head do

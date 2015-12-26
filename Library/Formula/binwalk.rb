@@ -2,6 +2,7 @@ class Binwalk < Formula
   desc "Searches a binary image for embedded files and executable code"
   homepage "http://binwalk.org/"
   revision 1
+
   stable do
     url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
     sha256 "90ee8426d71e91b62dfe4a1446c457bc7835b475b28717859e275a0494403959"
@@ -19,17 +20,11 @@ class Binwalk < Formula
     patch :DATA
   end
 
-  bottle do
-    revision 3
-    sha256 "726f9e451d322c8036a28249e05daceb68f0d254ec9fe4e540ec35f6e3f00630" => :el_capitan
-    sha256 "16927d8350d18f8ff704f4d3c7039e8bc6641a7c065459e4c2fe897a7e66a121" => :yosemite
-    sha256 "07cf1eb10a6ec35429a7bf7e5ce13f3c180a205a747239d94fe4bffd66f471b1" => :mavericks
-  end
-
   head do
     url "https://github.com/devttys0/binwalk.git"
 
     option "with-capstone", "Enable disasm options via capstone"
+
     resource "capstone" do
       url "https://pypi.python.org/packages/source/c/capstone/capstone-3.0.2.tar.gz"
       sha256 "b32022fe956e940f8e67c17841dd3f6f1c50a60e451f9b5ce1f4dd2e5c5b3339"

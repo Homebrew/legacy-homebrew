@@ -13,4 +13,8 @@ class JsonSmokeTest < Homebrew::TestCase
     json = '{"foo":["bar","baz"],"qux":1}'
     assert_equal hash, Utils::JSON.load(json)
   end
+
+  def test_decode_failure
+    assert_raises(Utils::JSON::Error) { Utils::JSON.load("nope") }
+  end
 end

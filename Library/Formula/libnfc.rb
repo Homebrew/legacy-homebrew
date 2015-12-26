@@ -7,9 +7,9 @@ class Libnfc < Formula
   bottle do
     revision 2
     sha256 "76437c13d93466c6f64ebcdee2a8aea6fa54bf129755f368844713a7817b263e" => :el_capitan
-    sha1 "55ecc37dabd8c848975f3bbf20a8ab7eb191a788" => :yosemite
-    sha1 "13c61f303c9a2dc90d316f81ce7c615b8bb0e2f1" => :mavericks
-    sha1 "4d9b2216eb876d9a63fe0c0b168b2de0766d0a21" => :mountain_lion
+    sha256 "80d5a6bb48a2bfe3079689d7b1655c128dbaab946a05528344e284a1bea5173f" => :yosemite
+    sha256 "5f63291718ab86e92d0afbaae02fba9b1a2a4d355524d098bc894ffb409b4b6f" => :mavericks
+    sha256 "72fde407ef486e39b73f37c92a4d585e47c2e9dad1528c1a40e3ffe0338af6b8" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

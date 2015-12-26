@@ -7,9 +7,9 @@ class Lcab < Formula
 
   bottle do
     cellar :any
-    sha1 "59abd5c575ebef28014ece5e5eed683a708e743d" => :yosemite
-    sha1 "baa794d78fdb16b1ce38e1f3bfbcc7d0898e6900" => :mavericks
-    sha1 "4f16ad16bcd28d90c26760d7ffe3ea540d6cf46c" => :mountain_lion
+    sha256 "10fc88aa964ecf8b1b9a9dc0baca91b07418ff912abcfc78bf42d53795e8cd76" => :yosemite
+    sha256 "8820e54c9322556195ed64afb37648e65c5c613251737c713972e3b7654ffaca" => :mavericks
+    sha256 "ba57da441ce55e0c64d3d96a8660859b8a79979f8fb9f8fe20bdf14f09645d4a" => :mountain_lion
   end
 
   def install

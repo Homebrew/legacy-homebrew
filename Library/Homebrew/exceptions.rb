@@ -76,7 +76,7 @@ class TapFormulaAmbiguityError < RuntimeError
     @paths = paths
     @formulae = paths.map do |path|
       path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      "#{Tap.fetch($1, $2)}/#{path.basename(".rb")}"
     end
 
     super <<-EOS.undent
@@ -230,8 +230,8 @@ class BuildError < RuntimeError
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
-        case formula.tap
-        when "homebrew/homebrew-boneyard"
+        case formula.tap.name
+        when "homebrew/boneyard"
           puts "#{formula} was moved to homebrew-boneyard because it has unfixable issues."
           puts "Please do not file any issues about this. Sorry!"
         else
@@ -241,7 +241,7 @@ class BuildError < RuntimeError
       end
     else
       require "cmd/config"
-      require "cmd/--env"
+      require "build_environment"
 
       ohai "Formula"
       puts "Tap: #{formula.tap}" if formula.tap?

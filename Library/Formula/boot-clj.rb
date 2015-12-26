@@ -14,7 +14,8 @@ class BootClj < Formula
   end
 
   test do
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
+    ENV.java_cache
+
     system "#{bin}/boot", "repl", "-e", "(System/exit 0)"
   end
 end

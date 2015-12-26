@@ -1,8 +1,15 @@
 class Tpp < Formula
   desc "Ncurses-based presentation tool"
-  homepage "http://synflood.at/tpp.html"
-  url "http://synflood.at/tpp/tpp-1.3.1.tar.gz"
+  homepage "https://synflood.at/tpp.html"
+  url "https://synflood.at/tpp/tpp-1.3.1.tar.gz"
   sha256 "68e3de94fbfb62bd91a6d635581bcf8671a306fffe615d00294d388ad91e1b5f"
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "a0b802dc4116de3774ec49c334cfc3857812abe01dd1925d2c0a2c0a10313bd8" => :el_capitan
+    sha256 "4f22f55329a54c477c0f2dbc795be1aa7711e7c11b0c941d6a1c72d511ad94e5" => :yosemite
+    sha256 "7b84619c71138a698f5fb04b1e431f999c2b2d08626fa8fdfdc2a5f4c1202196" => :mavericks
+  end
 
   depends_on "figlet" => :optional
 

@@ -22,7 +22,7 @@ Homebrew has the capability to add (and remove) multiple taps to your local inst
 
 *   [homebrew/games](https://github.com/Homebrew/homebrew-games): Game or gaming-emulation related formulae.
 
-*   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only): A tap for brews that only have unstable, unreleased versions.
+*   [homebrew/head-only](https://github.com/Homebrew/homebrew-head-only): A tap for brews that only have unstable, unreleased versions. This tap is **deprecated** and doesn’t accept new formulae.
 
 *   [homebrew/nginx](https://github.com/Homebrew/homebrew-nginx): Feature rich Nginx tap for modules.
 
@@ -52,13 +52,11 @@ You can be added as a maintainer for one of the Homebrew organization taps and a
 
 *   [titanous/gnuradio](https://github.com/titanous/homebrew-gnuradio):  GNU Radio and friends running on OS X.
 
-## Interesting Branches (aka forks)
+## Interesting Forks
 
 *   [mistydemeo/tigerbrew](https://github.com/mistydemeo/tigerbrew): Experimental Tiger PowerPC version
 
 *   [homebrew/linuxbrew](https://github.com/Homebrew/linuxbrew): Experimental Linux version
-
-*   [wilmoore/homebrew-home](https://github.com/wilmoore/homebrew-home): Homebrew install for those that like to Homebrew @ $HOME (i.e. ~/.homebrew).
 
 *   [nddrylliog/homebrew-mingw](https://github.com/nddrylliog/homebrew-mingw): An experimental port of Homebrew for Windows (with an MSYS/MinGW environment).
 

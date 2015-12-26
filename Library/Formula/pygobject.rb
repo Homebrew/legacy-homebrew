@@ -6,9 +6,9 @@ class Pygobject < Formula
 
   bottle do
     sha256 "2eeb114e8508e6e58a35ac263f39abce53b409f350e3677a0bf49980e4a9920b" => :el_capitan
-    sha1 "41b026312378b3d1cc90135e68e88e72aed68fea" => :yosemite
-    sha1 "5ab93e8961a6645aa4213b5deaf30acf3d7d0011" => :mavericks
-    sha1 "0eb2294d2eff8f0efef2b12c8d7b7e87d0026bee" => :mountain_lion
+    sha256 "f4bbcbe9194e8d36a93575e793cbff1281e28d591175e966a4a5aa1c55cf479c" => :yosemite
+    sha256 "81f190d8f7cf5a97c25041eb17cd3d4540923a7f17926b7b9854a901bea9d7ab" => :mavericks
+    sha256 "0f9ac32001eae1ac15bca6cd81dcf3f27474bf3d16dd3dbcfccdd95e1a676349" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

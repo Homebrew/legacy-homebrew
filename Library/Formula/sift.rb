@@ -3,14 +3,14 @@ require "language/go"
 class Sift < Formula
   desc "Fast and powerful open source alternative to grep"
   homepage "https://sift-tool.org"
-  url "https://github.com/svent/sift/archive/v0.4.0.tar.gz"
-  sha256 "6682b3eb08ae45eca8c6a09ef7811a79f6a9f244cdd06b76cd65eed956375b31"
+  url "https://github.com/svent/sift/archive/v0.5.0.tar.gz"
+  sha256 "efa1877761e6c86a5ef04548923f9f99bc7a8bacd54fe8926c3b74900bf72e20"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "468759cd724c11c568475a7f5a3572cb66d45746c0b42ff99b474ca1a97e3226" => :el_capitan
-    sha256 "5f7356890eb2a1a102fee1fafbf101d229daea46bbfcc9ca1ad61e90595e68ef" => :yosemite
-    sha256 "e7416798b373bc67b9aa68d1166ef8d0c1fd5e29389a2dacaebb26f2add53b1b" => :mavericks
+    sha256 "0d670eb492a2952e8f60543e15a4b455e4f40172264c37c1debd6efa1e32eeae" => :el_capitan
+    sha256 "574e63c3e1c6e305b0eb16caa1687c714f7adec49c03f5674a6f2bec473df545" => :yosemite
+    sha256 "35635bc5fc7563a59200c95d003bd61505ae740b623ba9102868fcc427a3d47c" => :mavericks
   end
 
   depends_on "go" => :build
@@ -21,6 +21,10 @@ class Sift < Formula
 
   go_resource "github.com/svent/go-nbreader" do
     url "https://github.com/svent/go-nbreader.git", :revision => "7cef48da76dca6a496faa7fe63e39ed665cbd219"
+  end
+
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git", :revision => "7b85b097bf7527677d54d3220065e966a0e3b613"
   end
 
   def install

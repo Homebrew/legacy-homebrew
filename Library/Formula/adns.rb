@@ -7,9 +7,9 @@ class Adns < Formula
 
   bottle do
     cellar :any
-    sha1 "c06199054fc9cbffc10f0cc3fe9068e6f67bf0f7" => :yosemite
-    sha1 "e448d98d144e981dc37ff926637d834997197170" => :mavericks
-    sha1 "cb85701fcdfc8c2ef2de0486b0df57111bf99f38" => :mountain_lion
+    sha256 "164485aab044141ce1a0234be59024888ce4ffcaff3a6fee610e1ff46ab7a43d" => :yosemite
+    sha256 "a7340ab0e7f90f369e7e6feb470475e551c38d0d257c49ee090bc5fc19b93861" => :mavericks
+    sha256 "e3ff55e6fc0d0297a2e96ea0f4004fbb05330d0ce3a8932073f020a26f79961d" => :mountain_lion
   end
 
   def install

@@ -1,18 +1,16 @@
 # NOTE: Configure will fail if using awk 20110810 from dupes.
 # Upstream issue: https://savannah.gnu.org/bugs/index.php?37063
-
 class Wget < Formula
   desc "Internet file retriever"
   homepage "https://www.gnu.org/software/wget/"
-  url "http://ftpmirror.gnu.org/wget/wget-1.16.3.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/wget/wget-1.16.3.tar.xz"
-  sha256 "67f7b7b0f5c14db633e3b18f53172786c001e153d545cfc85d82759c5c2ffb37"
+  url "http://ftpmirror.gnu.org/wget/wget-1.17.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/wget/wget-1.17.1.tar.xz"
+  sha256 "fe559b61eb9cc01635ac6206a14e02cb51591838c35fa83c7a4aacae0bdd97c9"
 
   bottle do
-    sha256 "36e966088b7f94c5a1084e1f5fefeeb6b00aa57053a11fb26c323239851c00e5" => :el_capitan
-    sha256 "9202d7ea3d0419921bf3c34d16fe6be1f3c835afd0dbeeb4f97c222e96b00806" => :yosemite
-    sha256 "4ba8249466dc7bd1fa4c0cae1b7195e5bd23996e0920e516daa7b262292efe29" => :mavericks
-    sha256 "76c509f6d93dbec0207de5ada9830b0988211c3211c465f41ed100226950d8f8" => :mountain_lion
+    sha256 "95942c6d5567f921180a68478b81512a367e7bb28578ddeaa4271f1044a0d8a6" => :el_capitan
+    sha256 "340d6525d8fa2ff17a96ec9187442388fa61e1a646d3de21934ea284f0117cb7" => :yosemite
+    sha256 "d52ef32746799c21505da02c757cc3cdf1498b6c8dd29002cb8a422fc219db04" => :mavericks
   end
 
   head do
@@ -30,10 +28,13 @@ class Wget < Formula
   option "with-iri", "Enable iri support"
   option "with-debug", "Build with debug support"
 
+  depends_on "pkg-config" => :build
   depends_on "openssl" => :recommended
   depends_on "libressl" => :optional
   depends_on "libidn" if build.with? "iri"
   depends_on "pcre" => :optional
+  depends_on "libmetalink" => :optional
+  depends_on "gpgme" => :optional
 
   def install
     args = %W[
@@ -51,6 +52,8 @@ class Wget < Formula
     args << "--disable-debug" if build.without? "debug"
     args << "--disable-iri" if build.without? "iri"
     args << "--disable-pcre" if build.without? "pcre"
+    args << "--with-metalink" if build.with? "libmetalink"
+    args << "--with-gpgme-prefix=#{Formula["gpgme"].opt_prefix}" if build.with? "gpgme"
 
     system "./bootstrap" if build.head?
     system "./configure", *args

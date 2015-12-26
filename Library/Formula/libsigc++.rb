@@ -1,14 +1,14 @@
 class Libsigcxx < Formula
   desc "Callback framework for C++"
   homepage "http://libsigc.sourceforge.net"
-  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.1.tar.xz"
-  sha256 "186f2167c1b3d90529ce8e715246bf160bc67ec1ec19f4e45d76c0ae54dfbe1b"
+  url "https://download.gnome.org/sources/libsigc++/2.6/libsigc++-2.6.2.tar.xz"
+  sha256 "fdace7134c31de792c17570f9049ca0657909b28c4c70ec4882f91a03de54437"
 
   bottle do
     cellar :any
-    sha256 "7cb0428fce126cba9275b8212eedc7f56544829c52aec30096c7bc64a51e8d8a" => :el_capitan
-    sha256 "68673c2a78a593dafb0c980e00b87057c449c0a751fca4ee10a678d57f00a958" => :yosemite
-    sha256 "3bc196123da746ebdbab0902faf5bd9b2043e51530085c651bdad1f36292b011" => :mavericks
+    sha256 "e05bb72083f15eb00759fb6da20f05efcae4f0caf925913b350646891ba83564" => :el_capitan
+    sha256 "f3ef9a7150b278423eff444ea57aede51e3236c09fa7ef5a88fe26438ca422dc" => :yosemite
+    sha256 "8e953bc77aeb93ea50568a53472dd9bc2651675e46c57dac2b87b93c40c7df3e" => :mavericks
   end
 
   needs :cxx11

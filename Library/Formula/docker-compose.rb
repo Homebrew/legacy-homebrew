@@ -3,15 +3,15 @@ class DockerCompose < Formula
   homepage "https://docs.docker.com/compose/"
 
   stable do
-    url "https://github.com/docker/compose/archive/1.5.0.tar.gz"
-    sha256 "d44d7c966c3ec6b2baf493fb8c8f94b0c23cb03609517cc174884c7ff46cf809"
+    url "https://github.com/docker/compose/archive/1.5.2.tar.gz"
+    sha256 "8f0851b417d89bc5023e72918233449a0fa72d9952ac66494c1b37434516583d"
   end
 
   bottle do
     cellar :any
-    sha256 "8d5b081c2f716d68549c1f3bdbc6f27f19e1e0412a44b6bcd36b4ba97172dbcb" => :el_capitan
-    sha256 "3ec142c94ad42a41401765f9e1695c933b0e12d0b5f19ae1d75daad76213e971" => :yosemite
-    sha256 "ce75360b20b427d3bb77b18f32be23bf14d01fb295373d3cd871ba55d870244a" => :mavericks
+    sha256 "5b3c92a6648c919d94fa002365ddfab725df37bb14a00c3bd55e9217078054f2" => :el_capitan
+    sha256 "372f021380dbf7db250400f334873090d36a561cfcd290851ffc4e2312220fd3" => :yosemite
+    sha256 "5a45a61d82c5ca8f3815fcb889db5efda6e2e07f71451f48791d8f7746b5ab4e" => :mavericks
   end
 
   head do
@@ -67,8 +67,8 @@ class DockerCompose < Formula
   end
 
   resource "texttable" do
-    url "https://pypi.python.org/packages/source/t/texttable/texttable-0.8.2.tar.gz"
-    sha256 "c0c5b2aa4eab132d40aadb7c4e81f98fc93d3a1e6cb44e9be76779d74f32e6be"
+    url "https://pypi.python.org/packages/source/t/texttable/texttable-0.8.4.tar.gz"
+    sha256 "8587b61cb6c6022d0eb79e56e59825df4353f0f33099b4ae3bcfe8d41bd1702e"
   end
 
   resource "docopt" do
