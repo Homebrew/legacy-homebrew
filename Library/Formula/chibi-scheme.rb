@@ -9,11 +9,10 @@ class ChibiScheme < Formula
   end
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "b3f470a3d3000eb8d1d8ff2f94a68f03678f78e852db513df7aa446cacf5f2a2" => :el_capitan
-    sha256 "6d03409ae6925139c07eb58b7cf310e98cca5465cb0d41dfb41300ed24b584ee" => :yosemite
-    sha256 "eccb3f2e0229c542edb4f15d985b6ce231bb6ae223d6b117e085f3217dc8652c" => :mavericks
+    revision 2
+    sha256 "6427ba91b6fd3e63591d9b1f9c4cd173a53dfbef21acfdf1e41612c07ad4a18f" => :el_capitan
+    sha256 "a999ce57390290ecc5452be6bda5f6fb415e565b46eb6806650649a85edce99d" => :yosemite
+    sha256 "f29383f76167d2998917a0cfe97e362a7780a1e0288fa17d7132099a41291102" => :mavericks
   end
 
   def install
