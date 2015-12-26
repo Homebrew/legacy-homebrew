@@ -161,9 +161,9 @@ class Python < Formula
       ldflags  << "-L#{tcl_tk}/lib"
     end
 
-    args << "CFLAGS=#{cflags.join(' ')}"     unless cflags.empty?
-    args << "LDFLAGS=#{ldflags.join(' ')}"   unless ldflags.empty?
-    args << "CPPFLAGS=#{cppflags.join(' ')}" unless cppflags.empty?
+    args << "CFLAGS=#{cflags.join(" ")}" unless cflags.empty?
+    args << "LDFLAGS=#{ldflags.join(" ")}" unless ldflags.empty?
+    args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
     system "./configure", *args
 
@@ -181,7 +181,7 @@ class Python < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
-    system "make", "quicktest" if build.include? "quicktest"
+    system "make", "quicktest" if build.with? "quicktest"
 
     # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
     (lib/"pkgconfig").install_symlink Dir["#{frameworks}/Python.framework/Versions/Current/lib/pkgconfig/*"]
