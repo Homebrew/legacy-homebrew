@@ -7,9 +7,9 @@ class Librevenge < Formula
 
   bottle do
     cellar :any
-    sha256 "3918ba5cde28067e9afd41881efd7948b79355751179cd01d4b34efa319bfbd1" => :el_capitan
-    sha256 "b4b7a9049414395115d58fc95c48dfb2eb79fd0255e8ca85e1b076db891eeccb" => :yosemite
-    sha256 "3b5bced358dc205d7a848854a9460bb5a49abaec97ada3d284ef2ad9262aa882" => :mavericks
+    sha256 "3e16d90cf5e0bacbc83e410a154455e241b50a12fbc844565ca6c565bf569db8" => :el_capitan
+    sha256 "1f021b70ff8591078386937b29dd419c53660b6ea3628a9c8f916ae37498d5c6" => :yosemite
+    sha256 "cf4c15ade5beab757a4d6b3ba7ce4a3eac9e67c7835a2b53639dc6222fc3769f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
