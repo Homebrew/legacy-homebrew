@@ -4,6 +4,13 @@ class Zimg < Formula
   url "https://github.com/sekrit-twc/zimg/archive/release-2.0.2.tar.gz"
   sha256 "b9c7bac9e6ad53dfa94215c28440167d72d41109df10278673789f8e531f2142"
 
+  bottle do
+    cellar :any
+    sha256 "22c9bdbc35f215f8ddf524ff5b3d0cb2cd8295f29f96c5e9c6179b8267b692b9" => :el_capitan
+    sha256 "8c1816bd05d9e16b4ba287c60089d84d6e02fe5d99cb0d005076fb99e22c58c3" => :yosemite
+    sha256 "3e608f7eeaa6c76e31a26209aa1e4ad4136cab30bd49192e663cb4f2df06bff3" => :mavericks
+  end
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
