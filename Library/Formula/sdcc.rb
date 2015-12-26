@@ -12,11 +12,14 @@ class Sdcc < Formula
     sha256 "79f62fa7c8972a9b8b25bf1a96b92262ddc916517bda7567b2c761c5ea211ffe" => :mountain_lion
   end
 
+  option "with-avr-port", "Enables the AVR port (UNSUPPORTED, MAY FAIL)"
+  option "with-xa51-port", "Enables the xa51 port (UNSUPPORTED, MAY FAIL)"
+
+  deprecated_option "enable-avr-port" => "with-avr-port"
+  deprecated_option "enable-xa51-port" => "with-xa51-port"
+
   depends_on "gputils"
   depends_on "boost"
-
-  option "enable-avr-port", "Enables the AVR port (UNSUPPORTED, MAY FAIL)"
-  option "enable-xa51-port", "Enables the xa51 port (UNSUPPORTED, MAY FAIL)"
 
   # SDCC Doesn't build huge-stack-auto by default for mcs51, but it
   # is needed by Contiki and others. This simple patch enables it to build.
@@ -26,10 +29,9 @@ class Sdcc < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
-
-    args << "--enable-avr-port" if build.include? "enable-avr-port"
-    args << "--enable-xa51-port" if build.include? "enable-xa51-port"
+    args = %W[--prefix=#{prefix}]
+    args << "--enable-avr-port" if build.with? "avr-port"
+    args << "--enable-xa51-port" if build.with? "xa51-port"
 
     system "./configure", *args
     system "make", "all"
