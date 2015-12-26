@@ -13,14 +13,18 @@ class Phash < Formula
     sha256 "caba9909717b1286db3be662f975928ee470f9ebe5bdcd3ac9fc2955180be04b" => :mountain_lion
   end
 
-  option "disable-image-hash", "Disable image hash"
-  option "disable-video-hash", "Disable video hash"
-  option "disable-audio-hash", "Disable audio hash"
+  option "without-image-hash", "Disable image hash"
+  option "without-video-hash", "Disable video hash"
+  option "without-audio-hash", "Disable audio hash"
 
-  depends_on "cimg" unless build.include?("disable-image-hash") && build.include?("disable-video-hash")
-  depends_on "ffmpeg" unless build.include? "disable-video-hash"
+  deprecated_option "disable-image-hash" => "without-image-hash"
+  deprecated_option "disable-video-hash" => "without-video-hash"
+  deprecated_option "disable-audio-hash" => "without-audio-hash"
 
-  unless build.include? "disable-audio-hash"
+  depends_on "cimg" if build.with?("image-hash") || build.with?("video-hash")
+  depends_on "ffmpeg" if build.with? "video-hash"
+
+  if build.with? "audio-hash"
     depends_on "libsndfile"
     depends_on "libsamplerate"
     depends_on "mpg123"
@@ -41,9 +45,9 @@ class Phash < Formula
       --enable-shared
     ]
 
-    args << "--disable-image-hash" if build.include? "disable-image-hash"
-    args << "--disable-video-hash" if build.include? "disable-video-hash"
-    args << "--disable-audio-hash" if build.include? "disable-audio-hash"
+    args << "--disable-image-hash" if build.without? "image-hash"
+    args << "--disable-video-hash" if build.without? "video-hash"
+    args << "--disable-audio-hash" if build.without? "audio-hash"
 
     system "./configure", *args
     system "make", "install"
