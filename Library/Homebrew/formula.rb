@@ -1271,7 +1271,7 @@ class Formula
         "root_url" => bottle_spec.root_url,
       }
       bottle_info["files"] = {}
-      bottle_spec.collector.each_key do |os|
+      bottle_spec.collector.keys.each do |os|
         checksum = bottle_spec.collector[os]
         bottle_info["files"][os] = {
           "url" => "#{bottle_spec.root_url}/#{Bottle::Filename.create(self, os, bottle_spec.revision)}",

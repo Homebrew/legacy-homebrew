@@ -33,7 +33,7 @@ class CompilerFailure
   def self.create(spec, &block)
     # Non-Apple compilers are in the format fails_with compiler => version
     if spec.is_a?(Hash)
-      major_version = spec.first[1]
+      _, major_version = spec.first
       name = "gcc-#{major_version}"
       # so fails_with :gcc => '4.8' simply marks all 4.8 releases incompatible
       version = "#{major_version}.999"
