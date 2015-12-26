@@ -31,7 +31,7 @@ class Fortune < Formula
       # OS X only supports POSIX regexes
       s.change_make_var! "REGEXDEFS", "-DHAVE_REGEX_H -DPOSIX_REGEX"
       # Don't install offensive fortunes
-      s.change_make_var! "OFFENSIVE", "0" if build.include? "no-offensive"
+      s.change_make_var! "OFFENSIVE", "0" if build.without? "offensive"
     end
 
     system "make", "install"
