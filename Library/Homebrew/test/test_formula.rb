@@ -292,4 +292,57 @@ class FormulaTests < Homebrew::TestCase
     assert f1.post_install_defined?
     refute f2.post_install_defined?
   end
+
+  def test_test_defined
+    f1 = formula do
+      url "foo-1.0"
+
+      def test; end
+    end
+
+    f2 = formula do
+      url "foo-1.0"
+    end
+
+    assert f1.test_defined?
+    refute f2.test_defined?
+  end
+
+  def test_test_fixtures
+    f1 = formula do
+      url "foo-1.0"
+    end
+
+    assert_equal Pathname.new("#{HOMEBREW_LIBRARY}/Homebrew/test/fixtures/foo"),
+      f1.test_fixtures("foo")
+  end
+
+  def test_to_hash
+    f1 = formula("foo") do
+      url "foo-1.0"
+    end
+
+    h = f1.to_hash
+    assert h.is_a?(Hash), "Formula#to_hash should return a Hash"
+    assert_equal "foo", h["name"]
+    assert_equal "foo", h["full_name"]
+    assert_equal "1.0", h["versions"]["stable"]
+  end
+
+  def test_to_hash_bottle
+    MacOS.stubs(:version).returns(MacOS::Version.new("10.11"))
+
+    f1 = formula("foo") do
+      url "foo-1.0"
+
+      bottle do
+        cellar :any
+        sha256 TEST_SHA256 => :el_capitan
+      end
+    end
+
+    h = f1.to_hash
+    assert h.is_a?(Hash), "Formula#to_hash should return a Hash"
+    assert h["versions"]["bottle"], "The hash should say the formula is bottled"
+  end
 end
