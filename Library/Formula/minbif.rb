@@ -1,10 +1,10 @@
 class Minbif < Formula
   desc "IRC-to-other-IM-networks gateway using Pidgin library"
-  homepage "http://minbif.im/"
-  url "http://ftp.de.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20120508.orig.tar.gz"
-  version "1.0.5"
-  sha256 "307bd98e367c1202cfa119ee8f33ff5b5a2a05d2544709f850a2d26b7919d697"
-  revision 2
+  homepage "https://symlink.me/projects/minbif/wiki/"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/minbif/minbif_1.0.5+git20150505.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/m/minbif/minbif_1.0.5+git20150505.orig.tar.gz"
+  version "1.0.5-20150505"
+  sha256 "4e264fce518a0281de9fc3d44450677c5fa91097a0597ef7a0d2a688ee66d40b"
 
   option "with-pam", "Build with PAM support, patching for OSX PAM headers"
 
@@ -21,7 +21,7 @@ class Minbif < Formula
 
   # Problem:  Apple doesn't have <security/pam_misc.h> so don't ask for it.
   # Reported: https://symlink.me/issues/917
-  patch :DATA if build.include? "pam"
+  patch :DATA if build.with? "pam"
 
   def install
     inreplace "minbif.conf" do |s|
@@ -36,21 +36,21 @@ class Minbif < Formula
       ENABLE_VIDEO=OFF
       ENABLE_TLS=ON
     ]
-    args << "ENABLE_IMLIB=" + ((build.include? "imlib2") ? "ON" : "OFF")
-    args << "ENABLE_CACA=" + ((build.include? "libcaca") ? "ON" : "OFF")
-    args << "ENABLE_PAM=" + ((build.include? "pam") ? "ON" : "OFF")
+    args << "ENABLE_IMLIB=" + ((build.with? "imlib2") ? "ON" : "OFF")
+    args << "ENABLE_CACA=" + ((build.with? "libcaca") ? "ON" : "OFF")
+    args << "ENABLE_PAM=" + ((build.with? "pam") ? "ON" : "OFF")
 
     system "make", *args
     system "make", "install"
 
-    (var + "lib/minbif/users").mkpath
+    (var/"lib/minbif/users").mkpath
   end
 
   def caveats; <<-EOS.undent
     Minbif must be passed its config as first argument:
         minbif #{etc}/minbif/minbif.conf
 
-    Learn more about minbif: http://minbif.im/Quick_start
+    Learn more about minbif: https://symlink.me/projects/minbif/wiki/Quick_start
     EOS
   end
 
