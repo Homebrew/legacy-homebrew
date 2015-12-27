@@ -294,6 +294,11 @@ class Formula
     PkgVersion.new(version, revision)
   end
 
+  def last_commit
+    # TODO raise if can't use git
+    @commit ||= Utils.popen_read("git", "rev-list", "-1", "origin/master", "#{path}").chomp
+  end
+
   # A named Resource for the currently active {SoftwareSpec}.
   # Additional downloads can be defined as {#resource}s.
   # {Resource#stage} will create a temporary directory and yield to a block.
