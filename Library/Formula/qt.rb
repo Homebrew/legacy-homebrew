@@ -1,7 +1,7 @@
 class Qt < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  revision 1
+  revision 2
 
   head "https://code.qt.io/qt/qt.git", :branch => "4.8"
 
@@ -125,12 +125,22 @@ class Qt < Formula
       include.install_symlink path => path.parent.basename(".framework")
     end
 
+    # Make `HOMEBREW_PREFIX/lib/qt4/plugins` an additional plug-in search path
+    # for Qt Designer to support formulae that provide Qt Designer plug-ins.
+    system "/usr/libexec/PlistBuddy",
+            "-c", "Add :LSEnvironment:QT_PLUGIN_PATH string \"#{HOMEBREW_PREFIX}/lib/qt4/plugins\"",
+           "#{bin}/Designer.app/Contents/Info.plist"
+
     Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
   end
 
   def caveats; <<-EOS.undent
     We agreed to the Qt opensource license for you.
     If this is unacceptable you should uninstall.
+
+    Qt Designer no longer picks up changes to the QT_PLUGIN_PATH environment
+    variable as it was tweaked to search for plug-ins provided by formulae in
+      #{HOMEBREW_PREFIX}/lib/qt4/plugins
     EOS
   end
 
