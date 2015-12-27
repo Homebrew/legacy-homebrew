@@ -34,6 +34,11 @@ class Kibana < Formula
       s.gsub!(%r{('(linux-x64|linux-x86|windows)',?(?!;))}, "// \\1")
     end
 
+    # do not build zip package
+    inreplace buildpath/"tasks/build/archives.js" do |s|
+      s.gsub!(%r{(await exec\('zip'.*)}, "// \\1")
+    end
+
     ENV.prepend_path "PATH", prefix/"libexec/node/bin"
     system "npm", "install"
     system "npm", "run", "build"
