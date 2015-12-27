@@ -1,6 +1,6 @@
 require "blacklist"
 require "caveats"
-require "cmd/options"
+require "options"
 require "formula"
 require "keg"
 require "tab"
