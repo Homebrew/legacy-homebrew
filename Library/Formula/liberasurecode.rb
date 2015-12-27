@@ -21,6 +21,32 @@ class Liberasurecode < Formula
   end
 
   test do
-    system "true"
+    (testpath/"liberasurecode-test.cpp").write <<-EOS.undent
+      #include <erasurecode.h>
+
+      int main() {
+          /*
+           * Assumes if you can create an erasurecode instance that
+           * the library loads, relying on the library test suites
+           * to test for correctness.
+           */
+          struct ec_args args = {
+              .k  = 10,
+              .m  = 5,
+              .hd = 3
+          };
+          int ed = liberasurecode_instance_create(
+                  EC_BACKEND_FLAT_XOR_HD,
+                  &args
+                  );
+
+          if (ed <= 0) { exit(1); }
+          liberasurecode_instance_destroy(ed);
+
+          exit(0);
+      }
+    EOS
+    system ENV.cxx, "liberasurecode-test.cpp", "-L#{lib}", "-lerasurecode", "-I#{include}/liberasurecode", "-o", "liberasurecode-test"
+    system "./liberasurecode-test"
   end
 end
