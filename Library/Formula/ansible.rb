@@ -3,6 +3,7 @@ class Ansible < Formula
   homepage "https://www.ansible.com/home"
   url "https://releases.ansible.com/ansible/ansible-1.9.4.tar.gz"
   sha256 "972c2face49f1577bd0ff7989440bfe2820e66fb10d7579915cc536bccfa6fe3"
+  revision 1
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
