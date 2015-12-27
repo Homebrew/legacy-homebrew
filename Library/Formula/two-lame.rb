@@ -1,12 +1,16 @@
 class TwoLame < Formula
   desc "Optimized MPEG Audio Layer 2 (MP2) encoder"
-  homepage "http://www.twolame.org/"
+  # Homepage down since at least December 2015
+  # homepage "http://www.twolame.org/"
+  homepage "https://sourceforge.net/projects/twolame/"
   url "https://downloads.sourceforge.net/twolame/twolame-0.3.13.tar.gz"
   sha256 "98f332f48951f47f23f70fd0379463aff7d7fb26f07e1e24e42ddef22cc6112a"
 
-  option "frontend", "Build the twolame frontend using libsndfile"
+  option "with-libsndfile", "Build the twolame frontend"
 
-  depends_on "libsndfile" if build.include? "frontend"
+  deprecated_option "frontend" => "with-libsndfile"
+
+  depends_on "libsndfile" => :optional
 
   def install
     system "./configure", "--disable-dependency-tracking",
