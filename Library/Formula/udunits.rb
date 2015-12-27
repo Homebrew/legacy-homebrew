@@ -5,10 +5,9 @@ class Udunits < Formula
   sha256 "f10a02014bc6a200d50d8719997bb3a6b3d364de688469d2f7d599688dd9d195"
 
   bottle do
-    sha256 "3aa330fc152eeb7a07ccd6cd7ecb9febbb62e553c23d66ca4ab887be8fc4ee7c" => :el_capitan
-    sha256 "87cff3ad47878d9d70c00f3ad1dadb88a452630987a01e531204a3871e096bcd" => :yosemite
-    sha256 "b0e9e98d80f806019f4737f836dc0384bfadeabbf40df93816bcf50311f6794c" => :mavericks
-    sha256 "47de40fd15a7a8ab34c206d7fe5e8e5c840f6e14102457b0620394f5f44ff18c" => :mountain_lion
+    sha256 "96a8404c5310ef1ef997b008cd19986ccb0d80c02ede040ee1c3bff1e0455852" => :el_capitan
+    sha256 "0ad20f0938aec3bf1ded8db9e75670ddfde638aa48c19f63759892e7b20d6a85" => :yosemite
+    sha256 "556023a25be4d19680bcbbb3bad8fb4cdd29204956187f34c01aa0fd8b9662aa" => :mavericks
   end
 
   option "with-html-docs", "Installs html documentation"
