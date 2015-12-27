@@ -18,6 +18,7 @@ class Duplicity < Formula
   depends_on "openssl"
   depends_on "par2" => :optional
   depends_on :gpg => :run
+  depends_on "par2" => :optional
 
   # Generated with homebrew-pypi-poet from
   # for i in boto pyrax dropbox mega.py paramiko pexpect pycrypto
