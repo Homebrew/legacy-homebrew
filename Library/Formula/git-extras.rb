@@ -13,9 +13,11 @@ class GitExtras < Formula
     sha256 "2a168cd564773f8bb5e936082715df4e624fb1caaf94a9b5a96ca37882c5708c" => :mavericks
   end
 
-  # Disable "git extras update", which will produce a broken install under Homebrew
-  # https://github.com/Homebrew/homebrew/issues/44520
-  patch :DATA
+  stable do
+    # Disable "git extras update", which will produce a broken install under Homebrew
+    # https://github.com/Homebrew/homebrew/issues/44520
+    patch :DATA
+  end
 
   def install
     inreplace "Makefile", %r{\$\(DESTDIR\)(?=/etc/bash_completion\.d)}, "$(DESTDIR)$(PREFIX)"
