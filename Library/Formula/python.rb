@@ -6,9 +6,10 @@ class Python < Formula
   sha256 "82929b96fd6afc8da838b149107078c02fa1744b7e60999a8babbc0d3fa86fc6"
 
   bottle do
-    sha256 "1265ae7a14df1ff83fc669687f44d575fca96c05497d2dc4048afc78d306a4c3" => :el_capitan
-    sha256 "e22a23bec350c287ddcc1d48b1a58b2b27a8d19e79837fa684e71c2eb7ea6456" => :yosemite
-    sha256 "d2a155c107aed03dcc5b84a7b8e55ed1f170a84b8990e9f24ab3bb1362845e46" => :mavericks
+    revision 1
+    sha256 "55155fde94eb339fbf10807293f2c0d8d66e0aaf8887f2f3114ceead1b14d6f9" => :el_capitan
+    sha256 "e363b8de21fafec817837bde17a597a99b7b79f9ac9bec0cfde93f124bc53717" => :yosemite
+    sha256 "62371d4170205e0d30e8b76570c6810a4cdbf66afa37cb35072b31d9f73738e9" => :mavericks
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
