@@ -6,10 +6,9 @@ class Xapian < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "223966e50beed39b091f1e0e9c99113420211d99c7a959efcc44a66507506f89" => :el_capitan
-    sha256 "6ffe866abf19269399d42d4f77f6251b2fa99abfa6ea0c3ccedf1b554f6bd26b" => :yosemite
-    sha256 "2bffd7ca22b71a06537138c43b3a0dc010d2af5bb3bd26b190d57cfb998e4434" => :mavericks
+    sha256 "cf95639064497cc1feb65e37d229fba087a1073eea30a75059fa71781b6049e1" => :el_capitan
+    sha256 "a9034d7ccda68338fcbc1031b03dd839a4e3136b88419e4405f0c857b736ad5c" => :yosemite
+    sha256 "3178b70875da0811ea384c862b57f89c975cf932b12cdf22111c5ac584650bde" => :mavericks
   end
 
   option "with-java", "Java bindings"
