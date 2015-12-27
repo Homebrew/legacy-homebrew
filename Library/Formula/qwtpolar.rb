@@ -4,6 +4,13 @@ class Qwtpolar < Formula
   url "https://downloads.sf.net/project/qwtpolar/qwtpolar/1.1.0/qwtpolar-1.1.0.tar.bz2"
   sha256 "e45a1019b481f52a63483c536c5ef3225f1cced04abf45d7d0ff8e06d30e2355"
 
+  bottle do
+    cellar :any
+    sha256 "e51aec713366e7406d63b0eea55f41385a24d67ff7d298f9fd479ae14dea2e3c" => :el_capitan
+    sha256 "8bd14ade82bd28887ec4bfef8098cd893806b380b2176eae6885ec5da4168a54" => :yosemite
+    sha256 "cb47115b5ca12d61ccc63a2cd681323825f6a73001a02f62a1f58c8a920ae82d" => :mavericks
+  end
+
   option "with-examples", "Install source code for example apps"
   option "without-plugin", "Skip building the Qt Designer plugin"
 
