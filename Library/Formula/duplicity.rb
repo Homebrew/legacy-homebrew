@@ -19,7 +19,7 @@ class Duplicity < Formula
   depends_on :gpg => :run
 
   # Generated with homebrew-pypi-poet from
-  # for i in boto pyrax dropbox mega.py paramiko pycrypto
+  # for i in boto pyrax dropbox mega.py paramiko pexpect pycrypto
   # lockfile python-swiftclient python-keystoneclient; do poet -r $i >>
   # resources; done
   # Additional dependencies of requests[security] should also be installed.
@@ -199,6 +199,16 @@ class Duplicity < Formula
   resource "pbr" do
     url "https://pypi.python.org/packages/source/p/pbr/pbr-1.8.1.tar.gz"
     sha256 "e2127626a91e6c885db89668976db31020f0af2da728924b56480fc7ccf09649"
+  end
+
+  resource "pexpect" do
+    url "https://pypi.python.org/packages/source/p/pexpect/pexpect-4.0.1.tar.gz"
+    sha256 "232795ebcaaf2e120396dbbaa3a129eda51757eeaae1911558f4ef8ee414fc6c"
+  end
+
+  resource "ptyprocess" do
+    url "https://pypi.python.org/packages/source/p/ptyprocess/ptyprocess-0.5.tar.gz"
+    sha256 "dcb78fb2197b49ca1b7b2f37b047bc89c0da7a90f90bd5bc17c3ce388bb6ef59"
   end
 
   resource "pyOpenSSL" do
