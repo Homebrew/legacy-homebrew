@@ -20,11 +20,11 @@ class Kibana < Formula
   def install
     resource("node").stage buildpath/"node"
     cd buildpath/"node" do
-      system "./configure", "--prefix=#{prefix}/node"
+      system "./configure", "--prefix=#{libexec}/node"
       system "make", "install"
     end
 
-    ENV.prepend_path "PATH", prefix/"node/bin"
+    ENV.prepend_path "PATH", prefix/"libexec/node/bin"
     system "npm", "install"
     system "npm", "run", "build"
     mkdir "tar"
@@ -37,6 +37,9 @@ class Kibana < Formula
   end
 
   def post_install
+    inreplace "#{bin}/kibana" do |s|
+      s.sub!(%r{/node/bin/node}, "/libexec/node/bin/node")
+    end
     inreplace "#{prefix}/config/kibana.yml" do |s|
       s.sub!(%r{/var/run/kibana.pid}, "/usr/local/var/run/kibana.pid")
     end
