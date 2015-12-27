@@ -15,7 +15,7 @@ class Vsftpd < Formula
   depends_on "openssl" => :optional
 
   # Patch to remove UTMPX dependency, locate OS X's PAM library, and
-  # remove incompatible LDFLAGS. (reported to developer via email)
+  #   remove incompatible LDFLAGS. (reported to developer via email)
   patch :DATA
 
   def install
@@ -36,16 +36,12 @@ class Vsftpd < Formula
   end
 
   def caveats
-    s = ""
-
-    if build.with? "openssl"
-      s += <<-EOS.undent
+    if build.include? "openssl"
+      return <<-EOD.undent
         vsftpd was compiled with SSL support. To use it you must generate a SSL
         certificate and set 'enable_ssl=YES' in your config file.
-      EOS
+      EOD
     end
-
-    s
   end
 end
 
