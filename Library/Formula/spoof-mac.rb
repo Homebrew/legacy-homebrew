@@ -1,8 +1,8 @@
 class SpoofMac < Formula
   desc "Spoof your MAC address in OS X"
   homepage "https://github.com/feross/SpoofMAC"
-  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.0.6.tar.gz"
-  sha256 "d134fb69059e399d0dcba508b1a65d7218f54fa418002ef4b48df2355d711014"
+  url "https://pypi.python.org/packages/source/S/SpoofMAC/SpoofMAC-2.1.0.tar.gz"
+  sha256 "02a6a1eaed85d0e2be52299db29cbc517f60d41eeca9897eff3d5bb1ca14f3ab"
   head "https://github.com/feross/SpoofMAC.git"
 
   bottle do
