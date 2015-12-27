@@ -24,6 +24,11 @@ class Kibana < Formula
       system "make", "install"
     end
 
+    # do not download binary installs of Node.js
+    inreplace buildpath/"tasks/build/index.js" do |s|
+      s.gsub!(%r{('_build:downloadNodeBuilds:\w+',)}, "// \\1")
+    end
+
     ENV.prepend_path "PATH", prefix/"libexec/node/bin"
     system "npm", "install"
     system "npm", "run", "build"
