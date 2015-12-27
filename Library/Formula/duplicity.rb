@@ -3,6 +3,7 @@ class Duplicity < Formula
   homepage "http://www.nongnu.org/duplicity/"
   url "https://code.launchpad.net/duplicity/0.7-series/0.7.06/+download/duplicity-0.7.06.tar.gz"
   sha256 "0075595edb894399cf00fae9154aae93a07eaadc031fede5df4cc595436c7f8c"
+  revision 1
 
   bottle do
     sha256 "36bfb11bd2f1fc81693e887c0b24e5af4b19579eac21af331c3e6eb9fd31c1e7" => :el_capitan
