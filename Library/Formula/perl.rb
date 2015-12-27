@@ -1,9 +1,9 @@
 class Perl < Formula
   desc "Highly capable, feature-rich programming language"
   homepage "https://www.perl.org/"
-  url "http://www.cpan.org/src/5.0/perl-5.22.0.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/perl/perl_5.22.0.orig.tar.xz"
-  sha256 "be83ead0c5c26cbbe626fa4bac1a4beabe23a9eebc15d35ba49ccde11878e196"
+  url "http://www.cpan.org/src/5.0/perl-5.22.1.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/p/perl/perl_5.22.1.orig.tar.xz"
+  sha256 "2b475d0849d54c4250e9cba4241b7b7291cffb45dfd083b677ca7b5d38118f27"
 
   head "https://perl5.git.perl.org/perl.git", :branch => "blead"
 
@@ -18,7 +18,7 @@ class Perl < Formula
     "OS X ships Perl and overriding that can cause unintended issues"
 
   option "with-dtrace", "Build with DTrace probes"
-  option "with-test", "Build and run the test suite"
+  option "without-test", "Skip running the build test suite"
 
   deprecated_option "with-tests" => "with-test"
 
@@ -44,7 +44,7 @@ class Perl < Formula
     # https://rt.perl.org/Ticket/Display.html?id=126706
     # https://github.com/Homebrew/homebrew/issues/41716
     if MacOS.version < :el_capitan
-      system "make", "test" if build.with?("test") || build.bottle?
+      system "make", "test" if build.with? "test"
     end
 
     system "make", "install"
