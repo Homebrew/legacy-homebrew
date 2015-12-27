@@ -4,6 +4,12 @@ class Konoha < Formula
   url "https://github.com/konoha-project/konoha3/archive/v0.1.tar.gz"
   sha256 "e7d222808029515fe229b0ce1c4e84d0a35b59fce8603124a8df1aeba06114d3"
 
+  bottle do
+    sha256 "85ae184ec6d34407588f31830e5669ee0a69be8d36ce2d9ef7074eb01b8831bf" => :el_capitan
+    sha256 "0be611a0289cff989e4da04177788c91345a579a187833710967d6f0bd8d11c3" => :yosemite
+    sha256 "e35edb76cab240a9c35e8727027d745cf7835099fa68c6622159b00d50736802" => :mavericks
+  end
+
   head do
     url "https://github.com/konoha-project/konoha3.git"
 
