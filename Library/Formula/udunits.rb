@@ -20,10 +20,10 @@ class Udunits < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    args = %w[install]
-    args << "install-html" if build.with? "html-docs"
-    args << "install-pdf" if build.with? "pdf-docs"
-    system "make", *args
+    targets = ["install"]
+    targets << "install-html" if build.include? "html-docs"
+    targets << "install-pdf" if build.include? "pdf-docs"
+    system "make", *targets
   end
 
   test do
