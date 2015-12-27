@@ -29,6 +29,11 @@ class Kibana < Formula
       s.gsub!(%r{('_build:downloadNodeBuilds:\w+',)}, "// \\1")
     end
 
+    # do not build packages for other platforms
+    inreplace buildpath/"tasks/config/platforms.js" do |s|
+      s.gsub!(%r{('(linux-x64|linux-x86|windows)',?(?!;))}, "// \\1")
+    end
+
     ENV.prepend_path "PATH", prefix/"libexec/node/bin"
     system "npm", "install"
     system "npm", "run", "build"
