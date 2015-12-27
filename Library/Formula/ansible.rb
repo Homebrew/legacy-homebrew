@@ -342,6 +342,7 @@ class Ansible < Formula
     sha256 "f43f9f15b0b719de94cab2754dcf78ef63b40ee2a12cea296e7af788b28501bb"
   end
 
+  # also required by the htpasswd core module
   resource "passlib" do
     url "https://pypi.python.org/packages/source/p/passlib/passlib-1.6.5.tar.gz"
     sha256 "a83d34f53dc9b17aa42c9a35c3fbcc5120f3fcb07f7f8721ec45e6a27be347fc"
