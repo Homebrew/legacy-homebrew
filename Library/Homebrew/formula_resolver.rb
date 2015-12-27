@@ -3,13 +3,6 @@ require "pathname"
 # Return actual name of some formula at commit commit
 
 class FormulaResolver
-  # name of the formula to be resolved
-  attr_reader :formula_name
-
-  # formula renames hashes for resolving current name of the formula
-  attr_reader :sheets
-
-  @sheets = {}
 
   # {Entry} is used to store one entry in from renames file
   # entry in file is a string `newname, commit`
@@ -68,6 +61,12 @@ class FormulaResolver
     end
   end
 
+  # name of the formula to be resolved
+  attr_reader :formula_name
+
+  # formula renames hashes for resolving current name of the formula
+  attr_reader :sheets
+
   def resolve_name(name, commit)
     result_entry = Entry.new(name, commit)
     while next_entry = sheets[result_entry.name].entry_after(result_entry)
@@ -77,6 +76,7 @@ class FormulaResolver
   end
 
   def initialize(formula_name)
+    @sheets = Hash.new
     @formula_name = formula_name
     @sheets[formula_name] = Sheet.new(formula_name)
   end
@@ -98,8 +98,9 @@ class FormulaResolver
   # TODO write a corresponding comment in install/updgrade and commands that
   # reinstalls package
   # TODO implement method
-  def get_installed_commit
 
+  def get_installed_commit
+    HOMEBREW_CELLAR.join("#{formula_name}/LAST_COMMIT").read.chomp
   end
 
   def self.for_name(formula_name)
