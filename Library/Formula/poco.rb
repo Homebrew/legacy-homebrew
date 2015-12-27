@@ -40,9 +40,9 @@ class Poco < Formula
       system "cmake", buildpath, *args
       system "make", "install"
       if build.with? "static"
-      	args << "-DPOCO_STATIC=ON" 
-      	system "cmake", buildpath, *args
-      	system "make", "install"
+        args << "-DPOCO_STATIC=ON"
+        system "cmake", buildpath, *args
+        system "make", "install"
       end
     end
   end
