@@ -31,6 +31,8 @@ class Poco < Formula
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
+    args << "-DPOCO_STATIC=ON" if build.with? "static"
+
     if build.stable?
       # Fix Foundation library version (already fixed upstream).
       inreplace "Foundation/CMakeLists.txt", "VERSION ${PROJECT_VERSION}", "VERSION ${SHARED_LIBRARY_VERSION}"
@@ -39,11 +41,6 @@ class Poco < Formula
     mkdir "macbuild" do
       system "cmake", buildpath, *args
       system "make", "install"
-      if build.with? "static"
-        args << "-DPOCO_STATIC=ON"
-        system "cmake", buildpath, *args
-        system "make", "install"
-      end
     end
   end
 end
