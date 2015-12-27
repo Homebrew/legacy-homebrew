@@ -15,17 +15,17 @@ class GnuCobol < Formula
     end
   end
 
-  devel do
-    version "2.0_nightly_r411"
-    url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r411.tar.gz"
-    sha256 "5d6d767bf0255fa63bc5c26493d53f4749eb0e369b81c626d156f346b3664fe7"
-  end
-
   bottle do
     revision 2
     sha256 "2836f2bf3362ff9e9d9578a42e7207a3c29411d481279e46c723df8ac5189292" => :yosemite
     sha256 "c24443ab3ac33ae5d8f1092cba070e62fdc5fbd4cced94fa813b5494424d8aa4" => :mavericks
     sha256 "3be8e2c52d16b4a829f8669636d2e13f0346855899605e02cb7c6e8c47234b20" => :mountain_lion
+  end
+
+  devel do
+    version "2.0_nightly_r658"
+    url "https://downloads.sourceforge.net/project/open-cobol/gnu-cobol/2.0/gnu-cobol-2.0_nightly_r658.tar.gz"
+    sha256 "0a210d10624a53904871526afd69a6bef9feab40c2766386f74477598a313ae8"
   end
 
   depends_on "autoconf" => :build
