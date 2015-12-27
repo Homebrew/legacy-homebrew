@@ -1047,6 +1047,7 @@ class Formula
       -DCMAKE_BUILD_TYPE=Release
       -DCMAKE_FIND_FRAMEWORK=LAST
       -DCMAKE_VERBOSE_MAKEFILE=ON
+      -DCMAKE_OSX_SYSROOT=#{MacOS.sdk_path}
       -Wno-dev
     ]
   end
