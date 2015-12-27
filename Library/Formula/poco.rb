@@ -15,7 +15,7 @@ class Poco < Formula
 
   option :cxx11
   option :universal
-  option "with-static", "Build static libraries"
+  option "with-static", "Build static libraries (instead of shared)"
 
   depends_on "openssl"
   depends_on "cmake" => :build
