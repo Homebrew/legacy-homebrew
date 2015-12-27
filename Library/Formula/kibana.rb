@@ -36,13 +36,12 @@ class Kibana < Formula
     ENV.prepend_path "PATH", prefix/"libexec/node/bin"
     system "npm", "install"
     system "npm", "run", "build"
-    mkdir "tar"
-    system "tar", "--strip-components", "1", "-xf", Dir["target/kibana-*-darwin-x64.tar.gz"].first, "-C", "tar"
+    mkdir "tar" do
+      system "tar", "--strip-components", "1", "-xf", Dir[buildpath/"target/kibana-*-darwin-x64.tar.gz"].first
 
-    rm_f Dir["tar/bin/*.bat"]
-    ["bin", "config", "node_modules", "optimize", "package.json", "src", "webpackShims"].each do |s|
-      prefix.install "tar/#{s}"
-      end
+      rm_f Dir["bin/*.bat"]
+      prefix.install "bin", "config", "node_modules", "optimize", "package.json", "src", "webpackShims"
+    end
   end
 
   def post_install
