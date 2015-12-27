@@ -5,9 +5,11 @@ class Stk < Formula
   sha256 "619f1a0dee852bb2b2f37730e2632d83b7e0e3ea13b4e8a3166bf11191956ee3"
 
   bottle do
-    sha256 "0574da516da74a8f48d54e945fcaa67201de4f77ac0842d76cb642677fa86d95" => :mavericks
-    sha256 "3d7b94dff2b2b4b5620ed8fa4087720f4ccbf7a83c5f68325a50d0cbb641b62f" => :mountain_lion
-    sha256 "377f662ab8c73979f8aeed28e75bc3884f1840a7e6dc82bb48855dd89fb4a8dc" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "8d8b488cd816e06005998c7ecf1d76a1fee75698a567073d0dc654ce64b51647" => :el_capitan
+    sha256 "3549b42faa4640d337110a5f5a44841790b1764cee11acb2145ffa638b3570a2" => :yosemite
+    sha256 "b1195d0437e7ab54130a2c49aaf2ab77f4b587b08e0bbb4513c1898f4db0c010" => :mavericks
   end
 
   option "with-debug", "Compile with debug flags and modified CFLAGS for easier debugging"
