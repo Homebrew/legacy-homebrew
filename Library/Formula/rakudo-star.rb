@@ -1,8 +1,8 @@
 class RakudoStar < Formula
   desc "Perl 6 compiler"
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.11.tar.gz"
-  sha256 "714aed706706f02efeadc0d7e4c7ad216de5ded80d4a1b2879c275d5d05beae7"
+  url "https://github.com/rakudo/rakudo/archive/2015.12.tar.gz"
+  sha256 "d7c4fd1c8bc525e16cefe2d28513dcd9642ecbed37775cd2a89b324a62278780"
 
   bottle do
     sha256 "7de961893c649707a3d0ddb943909fd9be4e0ac6d8859c327b00807c654068f7" => :el_capitan
@@ -24,7 +24,7 @@ class RakudoStar < Formula
     ENV.remove "CPPFLAGS", "-I#{libffi.include}"
     ENV.prepend "CPPFLAGS", "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
-    ENV.j1  # An intermittent race condition causes random build failures.
+    ENV.j1 # An intermittent race condition causes random build failures.
 
     backends = ["moar"]
     generate = ["--gen-moar"]
