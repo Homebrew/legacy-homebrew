@@ -54,12 +54,15 @@ class Kibana < Formula
     end
 
     inreplace "#{bin}/kibana", %r{/node/bin/node}, "/libexec/node/bin/node"
+
+    cd prefix do
+      inreplace "config/kibana.yml", %{/var/run/kibana.pid}, var/"run/kibana.pid"
+      (etc/"kibana").install Dir["config/*"]
+      rm_rf "config"
+    end
   end
 
   def post_install
-    inreplace "#{prefix}/config/kibana.yml", %{/var/run/kibana.pid}, var/"run/kibana.pid"
-    (etc/"kibana").install prefix/"config/kibana.yml" unless (etc/"kibana/kibana.yml").exist?
-    rm_rf prefix/"config"
     ln_s etc/"kibana", prefix/"config"
 
     (var/"lib/kibana/installedPlugins").mkpath
