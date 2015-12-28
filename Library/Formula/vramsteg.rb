@@ -3,7 +3,7 @@ class Vramsteg < Formula
   homepage "https://tasktools.org/projects/vramsteg.html"
   url "https://tasktools.org/download/vramsteg-1.1.0.tar.gz"
   sha256 "9cc82eb195e4673d9ee6151373746bd22513033e96411ffc1d250920801f7037"
-  head "https://git.tasktools.org/scm/ut/vramsteg.git", :branch => "1.1.1", :shallow => false
+  head "https://git.tasktools.org/scm/ut/vramsteg.git", :branch => "1.1.1"
 
   depends_on "cmake" => :build
 
