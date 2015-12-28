@@ -14,11 +14,8 @@ class Pod2man < Formula
   keg_only :provided_by_osx
 
   def install
-    system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
+    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make", "install"
-
-    # makefile installs manpages into a root man directory
-    share.install prefix/"man"
   end
 
   test do
