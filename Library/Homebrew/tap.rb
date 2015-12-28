@@ -82,6 +82,14 @@ class Tap
     (path/".git").exist?
   end
 
+  # The issues URL of this {Tap}.
+  # e.g. `https://github.com/user/homebrew-repo/issues`
+  def issues_url
+    if official? || !custom_remote?
+      "https://github.com/#{user}/homebrew-#{repo}/issues"
+    end
+  end
+
   def to_s
     name
   end
