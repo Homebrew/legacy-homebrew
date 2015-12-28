@@ -5,11 +5,9 @@ class Kibana < Formula
   head "https://github.com/elastic/kibana.git"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "a63101c190529aa0798ff7dabe7e7ee3fe8a6a04a126d324eb58fa8343e3a67d" => :el_capitan
-    sha256 "f8768f21442e9ce85b3c9b3da58d8e73c176d7bf656b636d15ab582074f14991" => :yosemite
-    sha256 "0bcea2ae726c5a175660c6350f4d60ee07a364d1574c90a2bd691ee25123afbb" => :mavericks
-    sha256 "5d102f006b25dae70bd62c99d9787abe10111460bc2119e5e5ceb412d6335dae" => :mountain_lion
+    sha256 "a324b8d38a6f488aedbbaf58410e247e7319c502e259c889e68a35a829a2e757" => :el_capitan
+    sha256 "29b5cc931a3bcfbd6df658b1f7a160245a4afea9fb8818689a99420dfb5c36b8" => :yosemite
+    sha256 "9036742597f5ef7cbea88f4e04f9d3a0227a3effad6ce9547142b31efdc67cd1" => :mavericks
   end
 
   resource "node" do
