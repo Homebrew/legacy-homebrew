@@ -42,6 +42,10 @@ class Lldpd < Formula
     system "make", "install"
   end
 
+  def postinstall
+    (var/"run").mkpath
+  end
+
   plist_options :startup => true
 
   def plist
