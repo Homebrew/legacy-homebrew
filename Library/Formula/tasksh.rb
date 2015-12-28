@@ -2,8 +2,8 @@ class Tasksh < Formula
   desc "Shell wrapper for Taskwarrior commands"
   homepage "https://tasktools.org/projects/tasksh.html"
   url "https://taskwarrior.org/download/tasksh-1.0.0.tar.gz"
-  head "https://git.tasktools.org/scm/ex/tasksh.git"
   sha256 "9accc81f5ae3a985e33be728d56aba0401889d21f856cd94734d73c221bf8652"
+  head "https://git.tasktools.org/scm/ex/tasksh.git", :branch => "1.1.0", :shallow => false
 
   bottle do
     cellar :any
@@ -21,8 +21,8 @@ class Tasksh < Formula
   end
 
   test do
+    # More meaningful tests are difficult, since this is simply a wrapper for another
+    # tool that is only a recommended dependency.
     system "#{bin}/tasksh", "--version"
-    (testpath/".taskrc").write "data.location=#{testpath}/.task\n"
-    assert pipe_output("#{bin}/tasksh", "add Test Task").include?("Created task")
   end
 end
