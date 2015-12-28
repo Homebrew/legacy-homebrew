@@ -52,11 +52,12 @@ class Kibana < Formula
       rm_f Dir["bin/*.bat"]
       prefix.install "bin", "config", "node_modules", "optimize", "package.json", "src", "webpackShims"
     end
+
+    inreplace "#{bin}/kibana", %r{/node/bin/node}, "/libexec/node/bin/node"
   end
 
   def post_install
-    inreplace "#{bin}/kibana", %r{/node/bin/node}, "/libexec/node/bin/node"
-    inreplace "#{prefix}/config/kibana.yml", %{/var/run/kibana.pid}, "/usr/local/var/run/kibana.pid"
+    inreplace "#{prefix}/config/kibana.yml", %{/var/run/kibana.pid}, var/"run/kibana.pid"
     (etc/"kibana").install prefix/"config/kibana.yml" unless (etc/"kibana/kibana.yml").exist?
     rm_rf prefix/"config"
     ln_s etc/"kibana", prefix/"config"
