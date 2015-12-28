@@ -1,8 +1,8 @@
 class Ghi < Formula
   desc "Work on GitHub issues on the command-line"
   homepage "https://github.com/stephencelis/ghi"
-  url "https://github.com/stephencelis/ghi/archive/1.0.3.tar.gz"
-  sha256 "98ddf904bfd78d7363986b75ecea294933c8b98d9c1d2828419fddcaeadc0fdd"
+  url "https://github.com/stephencelis/ghi/archive/1.0.4.tar.gz"
+  sha256 "6fd0442a4b64a66ee27f0d09caf27bcc117737bd997653b94e8404ef7795f963"
   head "https://github.com/stephencelis/ghi.git"
 
   bottle :unneeded
