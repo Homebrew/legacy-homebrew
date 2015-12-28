@@ -6,16 +6,17 @@ class Vsftpd < Formula
   sha256 "9d4d2bf6e6e2884852ba4e69e157a2cecd68c5a7635d66a3a8cf8d898c955ef7"
 
   bottle do
-    cellar :any
-    sha256 "1b89166674f7558a158bab938d9f96211d5e81410a47488980498bf4a45b8cb1" => :yosemite
-    sha256 "acdbf0783edeb56df1e85eec01bf4bb41495023f38fb45236ba05a092c61962b" => :mavericks
-    sha256 "2f375a416262bf9a71446ea1088dc1ade8b8264eed5dc2a232dea5159a1842b9" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "3227e7afcd2af84901a16d675bd1a7566002c4eacffa2313d89fbc3b7e594f76" => :el_capitan
+    sha256 "aba9772d903374b3d3de5ce8c96a5f02badbc7676735c5ee42571ad0170dbb7f" => :yosemite
+    sha256 "3bd82ae896d375342b6444f3c6be2eb5987df5da5084ee3c5f8dc073e001a5c2" => :mavericks
   end
 
   depends_on "openssl" => :optional
 
   # Patch to remove UTMPX dependency, locate OS X's PAM library, and
-  #   remove incompatible LDFLAGS. (reported to developer via email)
+  # remove incompatible LDFLAGS. (reported to developer via email)
   patch :DATA
 
   def install
@@ -36,12 +37,16 @@ class Vsftpd < Formula
   end
 
   def caveats
-    if build.include? "openssl"
-      return <<-EOD.undent
+    s = ""
+
+    if build.with? "openssl"
+      s += <<-EOS.undent
         vsftpd was compiled with SSL support. To use it you must generate a SSL
         certificate and set 'enable_ssl=YES' in your config file.
-      EOD
+      EOS
     end
+
+    s
   end
 end
 
