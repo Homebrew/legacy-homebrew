@@ -5,9 +5,9 @@ class Gom < Formula
   sha256 "bce8f0f94af6ff7847b853580ba6baebbab8ae531cedb0c78a5c473f39c758fd"
 
   bottle do
-    sha256 "e99534f832cc2723f415daac071d5749aaf0b7922c2e8b4a02d80afb470c944c" => :el_capitan
-    sha256 "8d0529743d173c12105e8c7b48e83539bfaabfc33a06d74a9bf2e25f86ce42ec" => :yosemite
-    sha256 "cc678372f2a0e1f8a876872183532e81b2aa94b3d17a6d85d93b6a8468b942a7" => :mavericks
+    sha256 "c0d7ef477da47db79a99241bf4e514a74a43f2390c5c90b3a8eb11851f6a4b44" => :el_capitan
+    sha256 "060cf100046bd8bedf1ba4df90527754102fea42c7b20ff6147f813bd3c5fb8b" => :yosemite
+    sha256 "1c67b623bf29a0dabedf0cf2c686d1b22f3b28ff0a227fe96624754a14feb88f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
