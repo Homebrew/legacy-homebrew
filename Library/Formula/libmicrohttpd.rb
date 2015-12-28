@@ -8,10 +8,9 @@ class Libmicrohttpd < Formula
 
   bottle do
     cellar :any
-    sha256 "124b6fa52eac50c5e72b839dec9834e7b85993db417785010d45130e5876dd77" => :el_capitan
-    sha256 "9db7600654f0ad7696af3f4dd6452414cb0ef93b96a415b13a150af04b4e5d64" => :yosemite
-    sha256 "fa713ee51f66eee037ebda50eccdf2af9d6fa989dddb51bab8d96b0417dfc824" => :mavericks
-    sha256 "9763e609a18dd5a02ffc3439c94acee2a8db0b602f2712fea428398517763c44" => :mountain_lion
+    sha256 "93c8f51521bcf53845a45e9b4b6d3e3ed75e8139e6fd2ebb9746d81e7f897a60" => :el_capitan
+    sha256 "5e7745e96d525f853d1ddbe1665ed7245283b88ae17d51e019c8dc4319071f17" => :yosemite
+    sha256 "45bb84451daa9e020cc81e8b17f8a461ce0f972735d583a2d366b9b7d468544d" => :mavericks
   end
 
   option "with-ssl", "Enable SSL support"
