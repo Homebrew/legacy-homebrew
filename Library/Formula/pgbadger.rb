@@ -7,10 +7,10 @@ class Pgbadger < Formula
   head "https://github.com/dalibo/pgbadger.git"
 
   bottle do
-    cellar :any
-    sha256 "588d67e7a2ceee5a2465e2d28d4087d1c51d25593b1ae15f728d6b260628cc9e" => :yosemite
-    sha256 "b24b5ef55b6b26c3e51a184488317cbc0e303c460ac068e5336181f24652aa6f" => :mavericks
-    sha256 "3754aa6ed54fbfe21b48ba5dc528bd1ffa44256c464a02d1c68f3fd377798258" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3a690686f1cb848602e13f441459cdc703a9035fc1f45d021abbba7adb419c72" => :el_capitan
+    sha256 "b40504b9e111b0d7b833957da303523309fc98a7427e59180e92cc925eac9040" => :yosemite
+    sha256 "418225494d697e088c67c3b7d469b77f07689fe10263f53a6732a4befc70c01e" => :mavericks
   end
 
   def install
