@@ -3,6 +3,7 @@ class Ola < Formula
   homepage "https://www.openlighting.org/ola/"
   url "https://github.com/OpenLightingProject/ola/releases/download/0.9.8/ola-0.9.8.tar.gz"
   sha256 "1c1e0fc1810b0c0857563bc481c872b8ed5d2e62c97c1083c82eabd7ebbd70a6"
+  revision 1
 
   bottle do
     sha256 "4cdc7b5055bdbc0242a1d424b7436cbdac39f60d38f259931ff0b86b58e2b42a" => :el_capitan
