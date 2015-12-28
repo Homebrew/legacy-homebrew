@@ -20,8 +20,6 @@ class Lldpd < Formula
   depends_on "jansson"  if build.with? "json"
 
   def install
-    (var/"run").mkpath
-
     readline = Formula["readline"]
     args = [
       "--prefix=#{prefix}",
@@ -42,6 +40,10 @@ class Lldpd < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
+
+  def postinstall
+    (var/"run").mkpath
   end
 
   plist_options :startup => true
