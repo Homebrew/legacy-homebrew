@@ -9,9 +9,9 @@ class Mighttpd2 < Formula
   sha256 "b5d8b8a310598d952f3b4329808ef8211a6a0b224d66fcc18cef4f0a737d25f1"
 
   bottle do
-    sha256 "8afb5d8f59f110843312dda179e3d22117a35cf3655344b6cfd8110323ac9449" => :yosemite
-    sha256 "3ea1d214807ca01c3ef08a70f94baef725b7a57daa0bbe750a5adb7535808b97" => :mavericks
-    sha256 "e208bc09450183896e38217bf2a8bdc01634d8169454efacc5a03dac57476e77" => :mountain_lion
+    sha256 "cd1946c30b560973e279d21b1a59e8b5d2d09d51d32283275ce876c21f627c7e" => :el_capitan
+    sha256 "e09fc4ac2f592186a0e865527dd55d7cb1baa8190d088b3ecc7f05e5be8036e2" => :yosemite
+    sha256 "e550287f94677fb7c7179e2aea9441cc7d46c54ea9c4176a2641d18396a0a463" => :mavericks
   end
 
   depends_on "ghc" => :build
