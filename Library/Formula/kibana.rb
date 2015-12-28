@@ -71,6 +71,12 @@ class Kibana < Formula
 
   plist_options :manual => "kibana"
 
+  def caveats; <<-EOS.undent
+    Plugins: #{var}/kibana/installedPlugins/
+    Config: #{etc}/kibana/
+    EOS
+  end
+
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
