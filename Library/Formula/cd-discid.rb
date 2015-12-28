@@ -8,7 +8,7 @@ class CdDiscid < Formula
   head "https://github.com/taem/cd-discid.git"
 
   stable do
-    # OS X fix; see ps://github.com/Homebrew/homebrew/issues/46267
+    # OS X fix; see https://github.com/Homebrew/homebrew/issues/46267
     # Already fixed in upstream head; remove when bumping version to >1.4
     patch :DATA
   end
