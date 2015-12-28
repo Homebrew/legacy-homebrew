@@ -28,7 +28,18 @@ class Kibana < Formula
     inreplace buildpath/"tasks/build/index.js", %r{('_build:downloadNodeBuilds:\w+',)}, "// \\1"
 
     # do not build packages for other platforms
-    inreplace buildpath/"tasks/config/platforms.js", %r{('(linux-x64|linux-x86|windows)',?(?!;))}, "// \\1"
+    platforms = Set.new(["darwin-x64", "linux-x64", "linux-x86", "windows"])
+    if OS.mac?
+      raise "Building Kibana is not supported on Darwin x86" unless Hardware::CPU.is_64_bit?
+      platform = "darwin-x64"
+    elsif OS.linux?
+      platform = if Hardware::CPU.is_64_bit? then "linux-x64" else "linux-x86" end
+    else
+      raise "Unexpected platform"
+    end
+    platforms.delete(platform)
+    sub = platforms.to_a.join("|")
+    inreplace buildpath/"tasks/config/platforms.js", %r{('(#{sub})',?(?!;))}, "// \\1"
 
     # do not build zip package
     inreplace buildpath/"tasks/build/archives.js", %r{(await exec\('zip'.*)}, "// \\1"
@@ -37,7 +48,7 @@ class Kibana < Formula
     system "npm", "install"
     system "npm", "run", "build"
     mkdir "tar" do
-      system "tar", "--strip-components", "1", "-xf", Dir[buildpath/"target/kibana-*-darwin-x64.tar.gz"].first
+      system "tar", "--strip-components", "1", "-xf", Dir[buildpath/"target/kibana-*-#{platform}.tar.gz"].first
 
       rm_f Dir["bin/*.bat"]
       prefix.install "bin", "config", "node_modules", "optimize", "package.json", "src", "webpackShims"
