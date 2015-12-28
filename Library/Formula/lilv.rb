@@ -6,9 +6,9 @@ class Lilv < Formula
 
   bottle do
     cellar :any
-    sha256 "d20c024762fd5d230431c4047881115d83d459d29d3a04ea4d3668a54c918612" => :yosemite
-    sha256 "719480d52e2c05d68b8a922cf7058a825cf30a103d91d604185241d5db87be2d" => :mavericks
-    sha256 "bec3ad89f065c13c9d5d72182fcc5ca11bf913b2238bc3bddf8b09a2e56dea98" => :mountain_lion
+    sha256 "d85d88a631e6a1d44a625e627b1baa83184c1079165681dc5484a61ccb9caa34" => :el_capitan
+    sha256 "298450b7a9438d76ae68372458671736db651ee86fe9ae9ad46fd714df87cb73" => :yosemite
+    sha256 "94f3da678e5ace390aa9b397dc77113956664ebb37c5b41831147404ee0923ba" => :mavericks
   end
 
   depends_on "pkg-config" => :build
