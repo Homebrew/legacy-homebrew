@@ -32,6 +32,9 @@ class Freeswitch < Formula
   depends_on "speex"
   depends_on "sqlite"
 
+  # https://github.com/Homebrew/homebrew/issues/42865
+  fails_with :gcc
+
   #----------------------- Begin sound file resources -------------------------
   sounds_url_base = "https://files.freeswitch.org/releases/sounds"
 
