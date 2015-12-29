@@ -11,6 +11,8 @@ class Colordiff < Formula
     sha256 "386b872c9ce130d237efcf4874c4e06582e56bc243fe89c7cd355e72f6d0f048" => :mavericks
   end
 
+  conflicts_with "cdiff", :because => "both install `cdiff` binaries"
+
   patch :DATA
 
   def install
