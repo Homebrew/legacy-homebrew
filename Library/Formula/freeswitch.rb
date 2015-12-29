@@ -206,7 +206,7 @@ class Freeswitch < Formula
         <string>#{plist_name}</string>
       <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/freeswitch</string>
+          <string>#{opt_bin}/freeswitch</string>
           <string>-nc</string>
           <string>-nonat</string>
         </array>
