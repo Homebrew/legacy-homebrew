@@ -21,6 +21,13 @@ class Scrypt < Formula
 
   depends_on "openssl"
 
+  head do
+    url "https://github.com/Tarsnap/scrypt.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
   def install
     system "autoreconf", "-fvi" if build.head?
     system "./configure", "--prefix=#{prefix}"
