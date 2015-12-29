@@ -11,9 +11,17 @@ class Scrypt < Formula
     sha256 "451f8217e0d27b265b6aa7f9752488b7c4986d5dce77e394aeae35361e839bd7" => :mountain_lion
   end
 
+  head do
+    url "https://github.com/Tarsnap/scrypt.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
   depends_on "openssl"
 
   def install
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
