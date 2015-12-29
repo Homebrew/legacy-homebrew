@@ -3,7 +3,6 @@ class Scrypt < Formula
   homepage "https://www.tarsnap.com/scrypt.html"
   url "https://www.tarsnap.com/scrypt/scrypt-1.2.0.tgz"
   sha256 "1754bc89405277c8ac14220377a4c240ddc34b1ce70882aa92cd01bfdc8569d4"
-  head "https://github.com/Tarsnap/scrypt.git"
 
   bottle do
     cellar :any
@@ -15,6 +14,8 @@ class Scrypt < Formula
   depends_on "openssl"
 
   head do
+    url "https://github.com/Tarsnap/scrypt.git"
+
     depends_on "automake" => :build
     depends_on "autoconf" => :build
   end
