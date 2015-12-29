@@ -1,8 +1,8 @@
 class Taglib < Formula
   desc "Audio metadata library"
   homepage "https://taglib.github.io/"
-  url "https://github.com/taglib/taglib/archive/v1.9.1.tar.gz"
-  sha256 "d4da9aaaddf590ff15273b9b2c4622b6ce8377de0f40bab40155d471ede9c585"
+  url "https://taglib.github.io/releases/taglib-1.10.tar.gz"
+  sha256 "24c32d50042cb0ddf162eb263f8ac75c5a158e12bf32ed534c1d5c71ee369baa"
 
   head "https://github.com/taglib/taglib.git"
 
@@ -15,9 +15,9 @@ class Taglib < Formula
     sha256 "6f3a987dc2f35a7446ac29ad7b8050466528b7ba620e0ca8aac7f4fbbdb07a52" => :mountain_lion
   end
 
-  depends_on "cmake" => :build
-
   option :cxx11
+
+  depends_on "cmake" => :build
 
   def install
     ENV.cxx11 if build.cxx11?
