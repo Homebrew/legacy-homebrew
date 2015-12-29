@@ -21,7 +21,7 @@ class Scrypt < Formula
   end
 
   def install
-    system "autoreconf", "-i" if build.head?
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
