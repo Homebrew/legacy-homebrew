@@ -902,6 +902,7 @@ module Homebrew
 
   def test_bot
     sanitize_ARGV_and_ENV
+    p ARGV
 
     tap = resolve_test_tap
     # Tap repository if required, this is done before everything else
