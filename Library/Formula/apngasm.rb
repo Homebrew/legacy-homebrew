@@ -27,6 +27,6 @@ class Apngasm < Formula
   end
 
   test do
-    system "apngasm", "#{pkgshare}/test/samples/clock*.png"
+    system bin/"apngasm", "#{pkgshare}/test/samples/clock*.png"
   end
 end
