@@ -553,11 +553,13 @@ module Homebrew
 
       unless changed_dependences.empty?
         test "brew", "fetch", "--retry", "--build-bottle", *changed_dependences
-        # Install changed dependencies as new bottles so we don't have checksum problems.
-        test "brew", "install", "--build-bottle", *changed_dependences
-        # Run postinstall on them because the tested formula might depend on
-        # this step
-        test "brew", "postinstall", *changed_dependences
+        unless ARGV.include?("--fast")
+          # Install changed dependencies as new bottles so we don't have checksum problems.
+          test "brew", "install", "--build-bottle", *changed_dependences
+          # Run postinstall on them because the tested formula might depend on
+          # this step
+          test "brew", "postinstall", *changed_dependences
+        end
       end
       test "brew", "fetch", "--retry", *fetch_args
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
@@ -619,8 +621,10 @@ module Homebrew
             conflicts.each do |conflict|
               test "brew", "unlink", conflict.name
             end
-            run_as_not_developer { test "brew", "install", dependent.name }
-            next if steps.last.failed?
+            unless ARGV.include?("--fast")
+              run_as_not_developer { test "brew", "install", dependent.name }
+              next if steps.last.failed?
+            end
           end
           if dependent.installed?
             test "brew", "test", "--verbose", dependent.name
