@@ -40,7 +40,7 @@ class Sdl2 < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh" if build.head? || build.devel?
 
     args = %W[--prefix=#{prefix}]
     # LLVM-based compilers choke on the assembly code packaged with SDL.
