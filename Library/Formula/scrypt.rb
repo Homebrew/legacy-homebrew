@@ -13,7 +13,8 @@ class Scrypt < Formula
   end
 
   depends_on "openssl"
-  if build.head?
+
+  head do
     depends_on "automake" => :build
     depends_on "autoconf" => :build
   end
