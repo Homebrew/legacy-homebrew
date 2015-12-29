@@ -4,8 +4,8 @@ class AutopanoSiftC < Formula
   url "https://downloads.sourceforge.net/project/hugin/autopano-sift-C/autopano-sift-C-2.5.1/autopano-sift-C-2.5.1.tar.gz"
   sha256 "9a9029353f240b105a9c0e31e4053b37b0f9ef4bd9166dcb26be3e819c431337"
 
-  depends_on "libpano"
   depends_on "cmake" => :build
+  depends_on "libpano"
 
   def install
     system "cmake", ".", *std_cmake_args
@@ -13,7 +13,6 @@ class AutopanoSiftC < Formula
   end
 
   test do
-    assert_match /Version #{Regexp.escape(version)}/,
-                 pipe_output("#{bin}/autopano-sift-c")
+    assert_match "Version #{version}", pipe_output("#{bin}/autopano-sift-c")
   end
 end
