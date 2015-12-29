@@ -18,6 +18,7 @@ class Eigen < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
     mkdir "eigen-build" do
       args = std_cmake_args
       args << "-Dpkg_config_libdir=#{lib}" << ".."
@@ -43,6 +44,6 @@ class Eigen < Formula
       }
     EOS
     system ENV.cxx, "test.cpp", "-I#{include}/eigen3", "-o", "test"
-    assert_equal `./test`.split, %w[3 -1 2.5 1.5]
+    assert_equal %w[3 -1 2.5 1.5], shell_output("./test").split
   end
 end
