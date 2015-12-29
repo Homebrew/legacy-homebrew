@@ -8,6 +8,7 @@ class Cdiff < Formula
 
   bottle :unneeded
 
+  conflicts_with "colordiff", :because => "both install `cdiff` binaries"
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
