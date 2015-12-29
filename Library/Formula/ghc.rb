@@ -1,8 +1,8 @@
 class Ghc < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3a-src.tar.bz2"
-  sha256 "877899988b64d13a86148f4db29b26d5adddef9207f718b726dc5c202d8efd8e"
+  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3b-src.tar.bz2"
+  sha256 "b0bb177b8095de6074e5a3538e55fd1fc187dae6eb6ae36b05582c55f7d2db6f"
 
   bottle do
     sha256 "a6999a2e17980f7837f73206648939d09042715020ef2b32be47546a74ce5178" => :el_capitan
@@ -15,10 +15,10 @@ class Ghc < Formula
   deprecated_option "with-tests" => "with-test"
 
   resource "gmp" do
-    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://gmplib.org/download/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.1.0.tar.bz2"
+    sha256 "498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8"
   end
 
   if MacOS.version <= :lion
