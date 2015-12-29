@@ -28,15 +28,6 @@ class Corectl < Formula
     args = []
     args << "VERSION=#{version}" if build.stable?
 
-    # system "make", "corectl", *args
-    # busts with "cannot load DWARF output from ""...
-    # similar to https://github.com/jwaldrip/homebrew-utils/issues/1
-    # workaround ...
-    ["TheNewNormal/libxhyve", "TheNewNormal/corectl/uuid2ip",
-     "yeonsh/go-ps"].each do |repo|
-      system "godep", "go", "install", "github.com/#{repo}"
-    end
-
     system "make", "corectl", *args
     system "make", "documentation/man"
 
