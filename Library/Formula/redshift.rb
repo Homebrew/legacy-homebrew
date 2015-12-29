@@ -1,5 +1,5 @@
 class Redshift < Formula
-  desc "Adjusts color temperature of your screen according to your surroundings"
+  desc "Adjust color temperature of your screen according to your surroundings"
   homepage "http://jonls.dk/redshift/"
   url "https://github.com/jonls/redshift/releases/download/v1.10/redshift-1.10.tar.xz"
   sha256 "5bc2e70aa414f42dafb45c6e06ea90157d7d4b298af48877144ff442639aeea6"
@@ -52,7 +52,7 @@ class Redshift < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/redshift</string>
+          <string>#{opt_bin}/redshift</string>
         </array>
         <key>KeepAlive</key>
         <true/>
@@ -70,7 +70,7 @@ class Redshift < Formula
   def caveats; <<-EOS.undent
     A .conf file has not been provided. If you want one, see:
       http://jonls.dk/redshift/
-    And place it in $HOME/.config
+    And place it in #{ENV["HOME"]}/.config
     EOS
   end
 
