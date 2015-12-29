@@ -1,9 +1,9 @@
 class Subversion < Formula
   desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.2.tar.bz2"
-  mirror "https://archive.apache.org/dist/subversion/subversion-1.9.2.tar.bz2"
-  sha256 "023da881139b4514647b6f8a830a244071034efcaad8c8e98c6b92393122b4eb"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.3.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.9.3.tar.bz2"
+  sha256 "8bbf6bb125003d88ee1c22935a36b7b1ab7d957e0c8b5fbfe5cb6310b6e86ae0"
 
   bottle do
     revision 1
@@ -95,18 +95,6 @@ class Subversion < Formula
       scons "install"
     end
 
-    if build.include? "unicode-path"
-      raise <<-EOS.undent
-        The --unicode-path patch is not supported on Subversion 1.8.
-
-        Upgrading from a 1.7 version built with this patch is not supported.
-
-        You should stay on 1.7, install 1.7 from homebrew-versions, or
-          brew rm subversion && brew install subversion
-        to build a new version of 1.8 without this patch.
-      EOS
-    end
-
     if build.with? "java"
       # Java support doesn't build correctly in parallel:
       # https://github.com/Homebrew/homebrew/issues/20415
@@ -126,15 +114,17 @@ class Subversion < Formula
     # Use existing system zlib
     # Use dep-provided other libraries
     # Don't mess with Apache modules (since we're not sudo)
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--with-zlib=/usr",
-            "--with-sqlite=#{Formula["sqlite"].opt_prefix}",
-            "--with-serf=#{serf_prefix}",
-            "--disable-mod-activation",
-            "--disable-nls",
-            "--without-apache-libexecdir",
-            "--without-berkeley-db"]
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --with-zlib=/usr
+      --with-sqlite=#{Formula["sqlite"].opt_prefix}
+      --with-serf=#{serf_prefix}
+      --disable-mod-activation
+      --disable-nls
+      --without-apache-libexecdir
+      --without-berkeley-db
+    ]
 
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
     args << "--without-gpg-agent" if build.without? "gpg-agent"
