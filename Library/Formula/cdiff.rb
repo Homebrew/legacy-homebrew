@@ -7,13 +7,18 @@ class Cdiff < Formula
 
   bottle :unneeded
 
+  depends_on :python if MacOS.version <= :snow_leopard
+
   def install
-    system "python", *Language::Python.setup_install_args(prefix)
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+    bin.install Dir[libexec/"bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    diff_fixture = File.read test_fixtures "test.diff"
-    diff = pipe_output "#{bin}/cdiff -cnever", diff_fixture
-    assert_equal diff, diff_fixture
+    diff_fixture = test_fixtures("test.diff").read
+    assert_equal diff_fixture,
+      pipe_output("#{bin}/cdiff -cnever", diff_fixture)
   end
 end
