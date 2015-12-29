@@ -5,6 +5,12 @@ class Taylor < Formula
   sha256 "0fd11aeed6d99bf76dbad9359d706db4ff62450f7903474771c36fd6c5e6f0a7"
   head "https://github.com/yopeso/Taylor.git"
 
+  bottle do
+    cellar :any
+    sha256 "b1f6569df01e41996bdd8176951b0aa5b6bf3f72a28fc0501ed3d4f8f83db323" => :el_capitan
+    sha256 "89a80e4442f3518b09475d8dc8a47d497712e30d734cc9bbded5178a6a1aeaff" => :yosemite
+  end
+
   depends_on :xcode => ["7.2", :build]
 
   def install
