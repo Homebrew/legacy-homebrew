@@ -33,13 +33,6 @@ class Nomad < Formula
 
     Language::Go.stage_deps resources, gopath/"src"
 
-    # explicit install of shirou/gopsutil/cpu to work around error message:
-    #   cannot load DWARF output from $WORK/github.com/shirou/gopsutil/cpu/_obj//_cgo_.o:
-    #   decoding dwarf section info at offset 0x0: too short
-    cd gopath/"src/github.com/shirou/gopsutil/cpu" do
-      system "go", "install"
-    end
-
     cd gopath/"src/github.com/hashicorp/nomad" do
       system "make", "bootstrap"
       system "make", "dev"
