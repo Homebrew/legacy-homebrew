@@ -14,6 +14,7 @@ class Dovecot < Formula
   option "with-pam", "Build with PAM support"
   option "with-pigeonhole", "Add Sieve addon for Dovecot mailserver"
   option "with-pigeonhole-unfinished-features", "Build unfinished new Sieve addon features/extensions"
+  option "with-stemmer", "Build with libstemmer support"
 
   depends_on "openssl"
   depends_on "clucene" => :optional
@@ -21,6 +22,11 @@ class Dovecot < Formula
   resource "pigeonhole" do
     url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.9.tar.gz"
     sha256 "82892f876d26008a076973dfddf1cffaf5a0451825fd44e06287e94b89078649"
+  end
+
+  resource "stemmer" do
+    url "https://github.com/snowballstem/snowball.git",
+      :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
   end
 
   def install
@@ -38,6 +44,13 @@ class Dovecot < Formula
 
     args << "--with-lucene" if build.with? "clucene"
     args << "--with-pam" if build.with? "pam"
+    args << "--with-libstemmer" if build.with? "stemmer"
+
+    resource("stemmer").stage do
+      system "make", "dist_libstemmer_c"
+      system "tar", "xzf", "dist/libstemmer_c.tgz", "-C", buildpath
+    end
+
 
     system "./configure", *args
     system "make", "install"
