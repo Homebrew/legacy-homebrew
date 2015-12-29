@@ -1,5 +1,5 @@
 require "cmd/install"
-require "cmd/cleanup"
+require "cleanup"
 
 module Homebrew
   def upgrade
@@ -44,7 +44,9 @@ module Homebrew
 
     outdated.each do |f|
       upgrade_formula(f)
-      cleanup_formula(f) if ARGV.include?("--cleanup") && f.installed?
+      next unless ARGV.include?("--cleanup")
+      next unless f.installed?
+      Homebrew::Cleanup.cleanup_formula f
     end
   end
 

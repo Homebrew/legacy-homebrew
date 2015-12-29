@@ -1,5 +1,6 @@
 require "testing_env"
 require "testball"
+require "formula"
 
 class FormulaTests < Homebrew::TestCase
   def test_formula_instantiation
@@ -344,5 +345,26 @@ class FormulaTests < Homebrew::TestCase
     h = f1.to_hash
     assert h.is_a?(Hash), "Formula#to_hash should return a Hash"
     assert h["versions"]["bottle"], "The hash should say the formula is bottled"
+  end
+
+  def test_eligible_kegs_for_cleanup
+    f1 = Class.new(Testball) { version "0.1" }.new
+    f2 = Class.new(Testball) { version "0.2" }.new
+    f3 = Class.new(Testball) { version "0.3" }.new
+
+    shutup do
+      f1.brew { f1.install }
+      f2.brew { f2.install }
+      f3.brew { f3.install }
+    end
+
+    assert_predicate f1, :installed?
+    assert_predicate f2, :installed?
+    assert_predicate f3, :installed?
+
+    assert_equal f3.installed_kegs[0..1], f3.eligible_kegs_for_cleanup
+  ensure
+    [f1, f2, f3].each(&:clear_cache)
+    f3.rack.rmtree
   end
 end
