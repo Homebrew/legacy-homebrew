@@ -14,6 +14,6 @@ class Vramsteg < Formula
 
   test do
     # Check to see if vramsteg can obtain the current time as epoch
-    assert_match /^\d*$/, shell_output("#{bin}/vramsteg --now").chomp
+    assert_match /^\d+$/, shell_output("#{bin}/vramsteg --now")
   end
 end
