@@ -1,5 +1,5 @@
 require "cmd/tap"
-require "cmd/doctor"
+require "permission_checker"
 require "formula_versions"
 require "migrator"
 require "formulary"
@@ -15,13 +15,10 @@ module Homebrew
     end
 
     # check permissions
-    checks = Checks.new
-    %w[
-      check_access_usr_local
-      check_access_homebrew_repository
-    ].each do |check|
-      out = checks.send(check)
-      odie out unless out.nil?
+    checker = PermissionChecker.new
+    unless checker.check!
+      opoo checker.report
+      puts "To fix permissions, run `brew fix-permissions`"
     end
 
     # ensure git is installed
