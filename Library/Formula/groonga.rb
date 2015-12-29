@@ -1,8 +1,8 @@
 class Groonga < Formula
   desc "Fulltext search engine and column store"
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.1.0.tar.gz"
-  sha256 "08cd6037e8a1429e36da54d1c10bcdbadfb37aa7111fb6869f324f60344566d4"
+  url "http://packages.groonga.org/source/groonga/groonga-5.1.1.tar.gz"
+  sha256 "a265e64d30128646cfd84eec8a2e76cba23a2f662d30037027d4e7bc57aa7da4"
 
   bottle do
     sha256 "6700081b9f3b3aaf0ab072a4d17e27f1792bf5adae567751c1c3c9d744c3d048" => :el_capitan
@@ -71,6 +71,6 @@ class Groonga < Formula
     io.puts("shutdown")
     # expected returned result is like this:
     # [[0,1447502555.38667,0.000824928283691406],true]\n
-    assert_match(/[[0,\d+.\d+,\d+.\d+],true]/, io.read)
+    assert_match(/\[\[0,\d+.\d+,\d+.\d+\],true\]/, io.read)
   end
 end
