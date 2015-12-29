@@ -21,6 +21,15 @@ class Sdl2 < Formula
     depends_on "libtool" => :build
   end
 
+  devel do
+    url "https://www.libsdl.org/tmp/SDL-2.0.4-9901.tar.gz"
+    sha256 "f50ca4a5fc89289181e42e649a690dd71641fe7616278903de726f5aa73d8f68"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   option :universal
 
   def install
