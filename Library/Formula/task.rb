@@ -6,10 +6,10 @@ class Task < Formula
   head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.5.1", :shallow => false
 
   bottle do
-    revision 1
-    sha256 "b5215c6498e14ce80811d34ffcdeb0097e5ffe699f4bd93bc845e12cf9df3aa4" => :el_capitan
-    sha256 "026ac81ac65d3c34e7345e72d80c756521cfda7e19bb5148a7608bdab274d0ef" => :yosemite
-    sha256 "8651183eacf5d5c23a84d3593a67fb24a0dae92c03b6664d03ee0952b5eb6ae4" => :mavericks
+    revision 2
+    sha256 "fc6d7d516179dbf8d16768e8d003017c7ae4e28de6e01fb72231f54d0ac91eb3" => :el_capitan
+    sha256 "6fb193925ef9ac04569d715062fc6f650ff5575a873ad73d45abbabca40d2bc5" => :yosemite
+    sha256 "91fae7d81bb7befc6d1637ab72b928ee753dd073f0d61aada6f5f9f959a6c04f" => :mavericks
   end
 
   option "without-gnutls", "Don't use gnutls; disables sync support"
