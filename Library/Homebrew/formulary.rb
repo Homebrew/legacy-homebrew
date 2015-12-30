@@ -2,6 +2,7 @@ require "digest/md5"
 require "formula_renames"
 require "tap"
 require "core_formula_repository"
+require "formula_resolver"
 
 # The Formulary is responsible for creating instances of Formula.
 # It is not meant to be used directy from formulae.
@@ -298,6 +299,15 @@ class Formulary
     # the formula. do we need to use the commit sha right here or leave
     # this work for FormulaResolver?
 
+    # resolve installed formula newname if there is one
+    if newref = FormulaResolver.new(ref).resolved_name
+      formula_with_that_oldname = core_path(newref)
+      if formula_with_that_oldname.file?
+        return FormulaLoader.new(newref, formula_with_that_oldname)
+      end
+    end
+
+  # TODO remove this part
     if newref = CoreFormulaRepository.instance.formula_renames[ref]
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
@@ -307,6 +317,12 @@ class Formulary
 
     # TODO the same as for core formula renames.
     # try to resolve as tap formula renames.
+    #
+    # When we tap a tap repository we download not the whole commit
+    # history unless we path --depth option. However, the renames file
+    # can have some of the commits that were before the last one and
+    # we should handle this case i.e. we should treat these commits
+    # as if they are bofore the last one.
 
     possible_tap_newname_formulae = []
     Tap.each do |tap|
