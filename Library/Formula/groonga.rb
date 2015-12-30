@@ -71,6 +71,6 @@ class Groonga < Formula
     io.puts("shutdown")
     # expected returned result is like this:
     # [[0,1447502555.38667,0.000824928283691406],true]\n
-    assert_match(/[[0,\d+.\d+,\d+.\d+],true]/, io.read)
+    assert_match(/\[\[0,\d+.\d+,\d+.\d+\],true\]/, io.read)
   end
 end
