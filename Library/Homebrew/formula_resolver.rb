@@ -44,8 +44,11 @@ class FormulaResolver
     def initialize(name)
       @name = name
       @entries = []
-      File.open(HOMEBREW_LIBRARY/"Homebrew/Renames/#{name}").each do |line|
-        entries << Entry.new(*line.chomp.split(',').map(&:lstrip))
+      entry_file = HOMEBREW_LIBRARY/"Homebrew/Renames/#{name}"
+      if entry_file.file?
+        File.open(entry_file).each do |line|
+          entries << Entry.new(*line.chomp.split(',').map(&:lstrip))
+        end
       end
     end
 
@@ -67,14 +70,6 @@ class FormulaResolver
   # formula renames hashes for resolving current name of the formula
   attr_reader :sheets
 
-  def resolve_name(name, commit)
-    result_entry = Entry.new(name, commit)
-    while next_entry = sheets[result_entry.name].entry_after(result_entry)
-      result_entry = next_entry
-    end
-    result_entry.name
-  end
-
   def initialize(formula_name)
     @sheets = Hash.new
     @formula_name = formula_name
@@ -83,9 +78,11 @@ class FormulaResolver
 
   def resolved_name
     previous_entry = Entry.new(formula_name, get_installed_commit)
-    while (current_entry = sheets[previous_name].entry_after(previous_entry))
+    puts "previous_entry #{previous_entry}"
+    while (current_entry = sheets[previous_entry.name].entry_after(previous_entry))
+      puts current_entry.name
       previous_entry = current_entry
-      sheets[pervious_entry] ||= Sheet.new(previous_entry.name)
+      sheets[previous_entry.name] ||= Sheet.new(previous_entry.name)
     end
     previous_entry.name
   end
@@ -100,11 +97,15 @@ class FormulaResolver
   # TODO implement method
 
   def get_installed_commit
-    HOMEBREW_CELLAR.join("#{formula_name}/LAST_COMMIT").read.chomp
+    last_commit_file = HOMEBREW_CELLAR.join("#{formula_name}/LAST_COMMIT")
+    if last_commit_file.exist?
+      last_commit_file.read.chomp
+    else
+      0
+    end
   end
 
   def self.for_name(formula_name)
     FormulaResolver.new(formula_name)
   end
-
 end
