@@ -594,25 +594,25 @@ module GitHub
 end
 
 def disk_usage_readable(size_in_bytes)
-  len = size_in_bytes.to_s.length
-  case
-  when len > 9
-    sym, unit = ["G", 1_073_741_824]
-  when len > 6
-    sym, unit = ["M", 1_048_576]
-  when len > 3
-    sym, unit = ["K", 1_024]
+  if size_in_bytes >= 1_073_741_824
+    size = size_in_bytes.to_f / 1_073_741_824
+    unit = "G"
+  elsif size_in_bytes >= 1_048_576
+    size = size_in_bytes.to_f / 1_048_576
+    unit = "M"
+  elsif size_in_bytes >= 1_024
+    size = size_in_bytes.to_f / 1_024
+    unit = "K"
   else
-    sym, unit = ["B", 1]
+    size = size_in_bytes
+    unit = "B"
   end
 
-  num = "%.1f" % [size_in_bytes.to_f / unit]
-  # check whether the rounded value has a zero after decimal point,
-  # if true, then display just the integer value.
-  if num.split(".").last.to_i == 0
-    "%d#{sym}" % num.to_i
+  # avoid trailing zero after decimal point
+  if (size * 10).to_i % 10 == 0
+    "#{size.to_i}#{unit}"
   else
-    "#{num}#{sym}"
+    "#{"%.1f" % size}#{unit}"
   end
 end
 
