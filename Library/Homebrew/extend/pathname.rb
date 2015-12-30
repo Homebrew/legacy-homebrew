@@ -28,7 +28,7 @@ module DiskUsageExtension
   def compute_disk_usage
     if self.directory?
       @file_count, @disk_usage = [0, 0]
-      self.find.each do |f|
+      self.find do |f|
         if !File.directory?(f) and !f.to_s.match(/\.DS_Store/)
           @file_count += 1
           @disk_usage += File.size(f)
