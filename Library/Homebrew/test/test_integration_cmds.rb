@@ -109,7 +109,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
     formula_file.write <<-EOS.undent
       class Testball < Formula
-        url "https://example.com/testabll-0.1.tar.gz"
+        url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
     HOMEBREW_CACHE.cd do
