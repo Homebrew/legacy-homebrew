@@ -4,7 +4,7 @@ module Language
     module Cabal
       def self.included(base)
         # use llvm-gcc on Lion or below, as when building GHC)
-        fails_with(:clang) if MacOS.version <= :lion
+        base.fails_with(:clang) if MacOS.version <= :lion
       end
 
       def cabal_sandbox(options = {})
