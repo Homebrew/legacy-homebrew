@@ -1,8 +1,8 @@
 class Libpst < Formula
   desc "Utilities for the PST file format"
   homepage "http://www.five-ten-sg.com/libpst/"
-  url "http://www.five-ten-sg.com/libpst/packages/libpst-0.6.65.tar.gz"
-  sha256 "89e895f6d70c125dd9953f42069c1aab601ed305879b5170821e33cee3c94e23"
+  url "http://www.five-ten-sg.com/libpst/packages/libpst-0.6.66.tar.gz"
+  sha256 "92b49939d821091d9d25e27e17c78dbb867f3f9ab5b8f43e2b01ace0677e1f72"
 
   bottle do
     cellar :any
