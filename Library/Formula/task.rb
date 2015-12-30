@@ -19,6 +19,8 @@ class Task < Formula
 
   needs :cxx11
 
+  needs :cxx11
+
   def install
     args = std_cmake_args
     args << "-DENABLE_SYNC=OFF" if build.without? "gnutls"
