@@ -30,7 +30,7 @@ module DiskUsageExtension
       @file_count = 0
       @disk_usage = 0
       self.find do |f|
-        if !f.directory? && f.basename.to_s != ".DS_Store"
+        if !f.directory? && !f.symlink? && f.basename.to_s != ".DS_Store"
           @file_count += 1
           @disk_usage += f.size
         end
