@@ -62,7 +62,7 @@ module Language
         options = if args[-1].kind_of?(Hash) then args.pop else {} end
 
         cabal_sandbox do
-          cabal_install_tools *options[:using] if options[:using]
+          cabal_install_tools(*options[:using]) if options[:using]
 
           # install dependencies in the sandbox
           cabal_install "--only-dependencies", *args
