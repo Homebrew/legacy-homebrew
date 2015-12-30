@@ -19,8 +19,26 @@ class Xdgdirs < Formula
     # behavior for the test
     new_env = ENV.reject { |name, _value| name.start_with? "XDG_" }
 
-    xdg_str, stderr, status = Open3.capture3(new_env, "#{bin}/xdgdirs -l json homebrew")
-    assert_equal 0, status, "xdgdirs failed, stderr:\n#{stderr}"
+    xdg_str = nil
+    error_str = nil
+
+    # To support ruby 1.8.7 we use Open3.popen3 and threads to accomplish what
+    # Open3.capture3 does
+    stdin, stdout, stderr, wait_thr = Open3.popen3(new_env, "#{bin}/xdgdirs -l json homebrew")
+
+    stdin.close
+
+    output_thread = Thread.new { xdg_str = stdout.read }
+    error_thread = Thread.new { error_str = stderr.read }
+
+    output_thread.join
+    error_thread.join
+
+    # Ruby 1.8.7's popen3 apparently doesn't return a wait thread, so don't
+    # bother checking its status if it doesn't exist.
+    unless wait_thr.nil?
+      assert_equal 0, wait_thr.value, "xdgdirs failed, stderr:\n#{error_str}"
+    end
 
     xdg_values = Utils::JSON.load(xdg_str)
     assert_equal "#{Dir.home}/.config/homebrew", xdg_values["config-home"]
@@ -34,10 +52,23 @@ class Xdgdirs < Formula
     new_env["XDG_CONFIG_HOME"] = "/foo/bar"
     new_env["XDG_RUNTIME_DIR"] = "/baz/qux"
 
-    xdg_str, stderr, status = Open3.capture3(new_env, "#{bin}/xdgdirs -l json homebrew")
-    xdg_values = Utils::JSON.load(xdg_str)
+    stdin, stdout, stderr, wait_thr = Open3.popen3(new_env, "#{bin}/xdgdirs -l json homebrew")
 
-    assert_equal 0, status, "xdgdirs failed, stderr:\n#{stderr}"
+    stdin.close
+
+    output_thread = Thread.new { xdg_str = stdout.read }
+    error_thread = Thread.new { error_str = stderr.read }
+
+    output_thread.join
+    error_thread.join
+
+    # Ruby 1.8.7's popen3 apparently doesn't return a wait thread, so don't
+    # bother checking its status if it doesn't exist.
+    unless wait_thr.nil?
+      assert_equal 0, wait_thr.value, "xdgdirs failed, stderr:\n#{error_str}"
+    end
+
+    xdg_values = Utils::JSON.load(xdg_str)
     assert_equal "/foo/bar/homebrew", xdg_values["config-home"]
     assert_equal "/baz/qux/homebrew", xdg_values["runtime-dir"]
   end
