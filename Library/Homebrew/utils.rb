@@ -592,3 +592,32 @@ module GitHub
     open(uri) { |json| json["private"] }
   end
 end
+
+def disk_usage_readable(size_in_bytes)
+  len = size_in_bytes.to_s.length
+  case
+  when len > 9
+    sym, unit = ["G", 1_073_741_824]
+  when len > 6
+    sym, unit = ["M", 1_048_576]
+  when len > 3
+    sym, unit = ["K", 1_024]
+  else
+    sym, unit = ["B", 1]
+  end
+
+  num = "%.1f" % [size_in_bytes.to_f / unit]
+  # check whether the rounded value has a zero after decimal point,
+  # if true, then display just the integer value.
+  if num.split(".").last.to_i == 0
+    "%d#{sym}" % num.to_i
+  else
+    "#{num}#{sym}"
+  end
+end
+
+def number_readable(number)
+  numstr = number.to_i.to_s
+  (numstr.size - 3).step(1, -3) { |i| numstr.insert(i, ",") }
+  numstr
+end
