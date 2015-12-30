@@ -177,7 +177,6 @@ class Pathname
   end
   private :default_stat
 
-
   # @private
   def cp_path_sub(pattern, replacement)
     raise "#{self} does not exist" unless self.exist?
@@ -229,7 +228,6 @@ class Pathname
   rescue Errno::EACCES, Errno::ENOENT
     false
   end
-
 
   # @private
   def version
