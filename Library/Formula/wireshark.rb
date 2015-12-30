@@ -1,9 +1,9 @@
 class Wireshark < Formula
   desc "Graphical network analyzer and capture tool"
   homepage "https://www.wireshark.org"
-  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.0.tar.bz2"
-  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.0.tar.bz2"
-  sha256 "90026c761a85701d7783c7e2eaa4c1de247dfbadbd53221df355f121e42691dd"
+  url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.1.tar.bz2"
+  mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.1.tar.bz2"
+  sha256 "c9bd07dd0d0045d6ca7537390a1afbcdf33716d193ea7d7084ae4f6c30b683ab"
 
   bottle do
     sha256 "37e8b1ec77e0e60d6a4060172afefbffd8994772a46b3e897c4d4aa9e1820c7b" => :el_capitan
@@ -45,8 +45,8 @@ class Wireshark < Formula
   depends_on "gnome-icon-theme" if build.with? "gtk+3"
 
   resource "libpcap" do
-    url "http://www.tcpdump.org/release/libpcap-1.5.3.tar.gz"
-    sha256 "9ae92159c1060f15e6a90f2c4ad227268b6aaa382c316fa49a31c496b9979e93"
+    url "http://www.tcpdump.org/release/libpcap-1.7.4.tar.gz"
+    sha256 "7ad3112187e88328b85e46dce7a9b949632af18ee74d97ffc3f2b41fe7f448b0"
   end
 
   def install
