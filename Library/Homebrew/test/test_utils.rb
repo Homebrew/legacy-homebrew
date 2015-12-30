@@ -62,4 +62,19 @@ class UtilTests < Homebrew::TestCase
     assert_equal "s", plural(42)
     assert_equal "", plural(42, "")
   end
+
+  def test_disk_usage_readable
+    assert_equal "1B", disk_usage_readable(1)
+    assert_equal "1000B", disk_usage_readable(1000)
+    assert_equal "1K", disk_usage_readable(1024)
+    assert_equal "1K", disk_usage_readable(1025)
+    assert_equal "4.2M", disk_usage_readable(4_404_020)
+    assert_equal "4.2G", disk_usage_readable(4_509_715_660)
+  end
+
+  def test_number_readable
+    assert_equal "1", number_readable(1)
+    assert_equal "1,000", number_readable(1_000)
+    assert_equal "1,000,000", number_readable(1_000_000)
+  end
 end
