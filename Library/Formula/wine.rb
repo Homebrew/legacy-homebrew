@@ -9,7 +9,6 @@ class Wine < Formula
   stable do
     url "https://dl.winehq.org/wine/source/1.8/wine-1.8.tar.bz2"
     mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8.tar.bz2"
-    mirror "http://mirrors.ibiblio.org/wine/source/1.8/wine-1.8.tar.bz2"
     sha256 "f33b45c18112b2071fbf9edee0e8c575407f9e2a9855ca4ee918ed33efa7c6f4"
   end
 
@@ -22,7 +21,6 @@ class Wine < Formula
   devel do
     url "https://dl.winehq.org/wine/source/1.9/wine-1.9.0.tar.bz2"
     mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.0.tar.bz2"
-    mirror "http://mirrors.ibiblio.org/wine/source/1.9/wine-1.9.0.tar.bz2"
     sha256 "b72221ac97e77616a4fee39961e26d6714109aa35d7e465ab83e2eb42663d5f9"
   end
 
@@ -141,8 +139,6 @@ class Wine < Formula
         s.change_make_var! "CXX", cc.sub(ENV.cxx, "xcrun clang++") if cxx
 
         # Emulate some things that superenv would normally handle for us
-        # We're configured to use GNU GCC, so remote an unsupported flag
-        s.gsub! "-gstabs+", "" if build.stable?
         # Pass the sysroot to support Xcode-only systems
         cflags  = s.get_make_var("CFLAGS")
         cflags += " --sysroot=#{MacOS.sdk_path}"
