@@ -113,8 +113,8 @@ class IntegrationCommandTests < Homebrew::TestCase
       end
     EOS
     HOMEBREW_CACHE.cd do
-      assert_match /testball-0\.1.*\.bottle\.tar\.gz/,
-                   cmd_output("bottle", "--no-revision", "testball")
+      assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
+                   cmd_output("bottle", "--no-revision", "testball"))
     end
   ensure
     cmd("uninstall", "--force", "testball")
