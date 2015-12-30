@@ -1,6 +1,5 @@
 module Language
   module Haskell
-
     module Cabal
       def self.included(base)
         # use llvm-gcc on Lion or below, as when building GHC)
@@ -18,7 +17,7 @@ module Language
         ENV["HOME"] = home
 
         system "cabal", "sandbox", "init"
-        cabal_sandbox_bin = pwd/".cabal-sandbox"/"bin"
+        cabal_sandbox_bin = pwd/".cabal-sandbox/bin"
         mkdir_p cabal_sandbox_bin
 
         # make available any tools that will be installed in the sandbox
@@ -26,7 +25,7 @@ module Language
         ENV.prepend_path "PATH", cabal_sandbox_bin
 
         # avoid updating the cabal package database more than once
-        system "cabal", "update" unless (home/".cabal"/"packages").exist?
+        system "cabal", "update" unless (home/".cabal/packages").exist?
 
         yield
 
