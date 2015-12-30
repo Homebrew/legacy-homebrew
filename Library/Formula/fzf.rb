@@ -3,8 +3,8 @@ require "language/go"
 class Fzf < Formula
   desc "Fuzzy finder for your shell"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/0.10.9.tar.gz"
-  sha256 "55a9b8d27f3832be569519bcd3afe1f1e345daaa8b8b6523aedff661954f42fb"
+  url "https://github.com/junegunn/fzf/archive/0.11.1.tar.gz"
+  sha256 "611cf1c2da6a7c0d5b582a203774c4d1145c55b601413eb1e7c03e9410bb6733"
   head "https://github.com/junegunn/fzf.git"
 
   bottle do
