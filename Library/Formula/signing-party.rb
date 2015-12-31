@@ -7,9 +7,9 @@ class SigningParty < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0692c36cb488a6513418aa680b047f66330a48b6273c80d7f7d64c4a56a5bf48" => :el_capitan
-    sha256 "33115eca8d24439f772797d16e727b158befc4f71f119cdde01cd795c73b7e17" => :yosemite
-    sha256 "fb5a0eb7e0ddda57f16b2d12d7f11325cea737cb180c8a29f44cd88af13d29ab" => :mavericks
+    sha256 "ab9402d885e55ac2edb59d1c851ceba1a5a68e49bbecf1e3ebc51bbaa851a851" => :el_capitan
+    sha256 "f9e76620c0bbddc7790d08b3b04570b47ef1e2bda514c91cee387f013002a800" => :yosemite
+    sha256 "b19c2c8df1addf2a8013c681e7b55d3ca45a742901ad167a212c1bfbbec73b9c" => :mavericks
   end
 
   option "with-rename-pgpring", "Install pgpring as pgppubring to avoid conflicting with mutt"
