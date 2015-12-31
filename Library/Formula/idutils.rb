@@ -6,9 +6,10 @@ class Idutils < Formula
   sha256 "8181f43a4fb62f6f0ccf3b84dbe9bec71ecabd6dfdcf49c6b5584521c888aac2"
 
   bottle do
-    sha256 "a0533ea0385b7aaae0222ed55e711fa5ce96194d7ab021f6a3209dc265a7fc95" => :yosemite
-    sha256 "ff09770db3a3fd0c5bdb02387b1c41375a74c938b2d0de0e8f340aed2fcb24a8" => :mavericks
-    sha256 "d078b7c9c5e7c011141d9f2665a9509c93996d49f301bc3ef49fc54fe0c4f663" => :mountain_lion
+    revision 1
+    sha256 "5b148e92b0febab9a96211449f464385be7b2b6572d79001c87acb274095a6dc" => :el_capitan
+    sha256 "b965eb4579741ab5721cb99f706b0601056055b8b9aa9178695e548cb3b9bf0c" => :yosemite
+    sha256 "4625ef2ac2f7b2c87010880a0c31044ef850da4faded85c957b8ae23eeb7ab85" => :mavericks
   end
 
   conflicts_with "coreutils", :because => "both install `gid` and `gid.1`"
