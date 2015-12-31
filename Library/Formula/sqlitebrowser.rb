@@ -1,8 +1,8 @@
 class Sqlitebrowser < Formula
   desc "Visual tool to create, design, and edit SQLite databases"
   homepage "http://sqlitebrowser.org"
-  url "https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.7.0.tar.gz"
-  sha256 "3093a1dcf5b3138c1adf29857d62249ab2b068e70b001869a31151763e28cc3a"
+  url "https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.8.0.tar.gz"
+  sha256 "f638a751bccde4bf0305a75685e2a72d26fc3e3a69d7e15fd84573f88c1a4d92"
 
   head "https://github.com/sqlitebrowser/sqlitebrowser.git"
 
