@@ -361,4 +361,8 @@ class VersionParsingTests < Homebrew::TestCase
     assert_version_detected "1.0.2",
       "https://opam.ocaml.org/archives/easy-format.1.0.2+opam.tar.gz"
   end
+
+  def test_waf_version
+    assert_version_detected "1.8.12", "https://waf.io/waf-1.8.12"
+  end
 end

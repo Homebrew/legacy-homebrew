@@ -2,36 +2,33 @@ require "language/haskell"
 
 class Agda < Formula
   include Language::Haskell::Cabal
+
   desc "Dependently typed functional programming language"
   homepage "http://wiki.portal.chalmers.se/agda/"
-  revision 1
 
   stable do
-    url "https://github.com/agda/agda/archive/2.4.2.4.tar.gz"
-    sha256 "0147f8a1395a69bee1e7a452682094e45c83126233f9864544b8a14f956ce8c3"
-    # fix compilation of the included Emacs mode
-    # merged upstream in https://github.com/agda/agda/pull/1700
-    patch :DATA
-  end
+    url "https://github.com/agda/agda/archive/2.4.2.5.tar.gz"
+    sha256 "a357470e47751e5757922b05ab8d692a526b8ed50619fb3dab0735a9a0e94cd1"
 
-  bottle do
-    revision 1
-    sha256 "72926be89f32a171d46e92aeefcca5005f9c0078689d9d63427757b1b5651bfb" => :el_capitan
-    sha256 "2822c9f9ce79c0354da58ba604190c6eb8bebf64f0be4925b7cd2d9f1bb1f950" => :yosemite
-    sha256 "aee69ac2b9cdf715f39defba8b81d6572dc02e5edb21417781a39932fc132356" => :mavericks
-  end
-
-  head do
-    url "https://github.com/agda/agda.git", :branch => "master"
     resource "stdlib" do
-      url "https://github.com/agda/agda-stdlib.git", :branch => "master"
+      url "https://github.com/agda/agda-stdlib.git",
+          :tag => "v0.11",
+          :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
     end
   end
 
-  resource "stdlib" do
-    url "https://github.com/agda/agda-stdlib.git",
-        :tag => "v0.11",
-        :revision => "8602c29a7627eb001344cf50e6b74f880fb6bf18"
+  bottle do
+    sha256 "499162feef2e0f8357743b4166a468cfa46b75145f44bc4684e7ad7ca3164f9f" => :el_capitan
+    sha256 "9da031fabbbac72c22bcc6788d1a76d02be5947d496ee7d590bc735762e7c21c" => :yosemite
+    sha256 "4a8b2ecdaec7b443cfac1b0e2336f2d849e1180919fff3f6682f70ae6a57c0f0" => :mavericks
+  end
+
+  head do
+    url "https://github.com/agda/agda.git"
+
+    resource "stdlib" do
+      url "https://github.com/agda/agda-stdlib.git"
+    end
   end
 
   option "without-stdlib", "Don't install the Agda standard library"
@@ -47,49 +44,40 @@ class Agda < Formula
   depends_on "gmp"
   depends_on :emacs => ["21.1", :recommended]
 
-  setup_ghc_compilers
-
   def install
     # install Agda core
-    cabal_sandbox do
-      cabal_install_tools "alex", "happy", "cpphs"
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-    end
-    cabal_clean_lib
+    install_cabal_package :using => ["alex", "happy", "cpphs"]
 
     if build.with? "stdlib"
-      resource("stdlib").stage prefix/"agda-stdlib"
+      resource("stdlib").stage lib/"agda"
 
       # generate the standard library's bytecode
-      cd prefix/"agda-stdlib" do
-        cabal_sandbox do
+      cd lib/"agda" do
+        cabal_sandbox :home => buildpath, :keep_lib => true do
           cabal_install "--only-dependencies"
           cabal_install
           system "GenerateEverything"
         end
-        rm_rf [".cabal", "dist"]
       end
 
       # install the standard library's FFI bindings for the MAlonzo backend
       # in a dedicated GHC package database
       if build.with? "malonzo"
-        db_path = prefix/"agda-stdlib"/"ffi"/"package.conf.d"
+        db_path = lib/"agda"/"ffi"/"package.conf.d"
 
         mkdir db_path
         system "ghc-pkg", "--package-db=#{db_path}", "recache"
 
-        cd prefix/"agda-stdlib"/"ffi" do
-          cabal_sandbox do
+        cd lib/"agda"/"ffi" do
+          cabal_sandbox :home => buildpath, :keep_lib => true do
             system "cabal", "--ignore-sandbox", "install", "--package-db=#{db_path}",
-              "--prefix=#{prefix/"agda-stdlib"/"ffi"}"
+              "--prefix=#{lib}/agda/ffi"
           end
-          rm_rf [".cabal", "dist"]
         end
       end
 
       # generate the standard library's documentation and vim highlighting files
-      cd prefix/"agda-stdlib" do
+      cd lib/"agda" do
         system bin/"agda", "-i", ".", "-i", "src", "--html", "--vim", "README.agda"
       end
     end
@@ -107,14 +95,14 @@ class Agda < Formula
     if build.with? "stdlib"
       s += <<-EOS.undent
       To use the Agda standard library, point Agda to the following include dir:
-        #{prefix/"agda-stdlib"/"src"}
+        #{HOMEBREW_PREFIX}/lib/agda/src
       EOS
 
       if build.with? "malonzo"
         s += <<-EOS.undent
 
         To use the FFI bindings for the MAlonzo backend, give Agda the following option:
-          --ghc-flag=-package-db=#{prefix/"agda-stdlib"/"ffi"/"package.conf.d"}
+          --ghc-flag=-package-db=#{HOMEBREW_PREFIX}/lib/agda/ffi/package.conf.d
         EOS
       end
     end
@@ -156,24 +144,10 @@ class Agda < Formula
         main : _
         main = run $ putStr "Hello, world!"
       EOS
-      system bin/"agda", "-i", testpath, "-i", prefix/"agda-stdlib"/"src",
-        "--ghc-flag=-package-db=#{prefix/"agda-stdlib"/"ffi"/"package.conf.d"}",
+      system bin/"agda", "-i", testpath, "-i", lib/"agda"/"src",
+        "--ghc-flag=-package-db=#{lib}/agda/ffi/package.conf.d",
         "-c", test_file_path
-      assert_equal "Hello, world!", shell_output("#{testpath/"stdlib-test"}")
+      assert_equal "Hello, world!", shell_output("#{testpath}/stdlib-test")
     end
   end
 end
-
-__END__
-diff --git a/src/data/emacs-mode/agda2-mode.el b/src/data/emacs-mode/agda2-mode.el
-index 04604ee..f6b3122 100644
---- a/src/data/emacs-mode/agda2-mode.el
-+++ b/src/data/emacs-mode/agda2-mode.el
-@@ -20,6 +20,7 @@ Note that the same version of the Agda executable must be used.")
- (require 'time-date)
- (require 'eri)
- (require 'annotation)
-+(require 'fontset)
- (require 'agda-input)
- (require 'agda2)
- (require 'agda2-highlight)

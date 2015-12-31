@@ -1,14 +1,14 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v5.2.0/node-v5.2.0.tar.gz"
-  sha256 "5df5682f9fdd8e747f652e0b09fed46478a1e3df159797852787a074b8787664"
+  url "https://nodejs.org/dist/v5.3.0/node-v5.3.0.tar.gz"
+  sha256 "cc05ff06149c638345835788f448471d264a7e011bf083394f86d5be51975c7e"
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "5b8af8f39fd8d9eb4e1bd8898aa1dbd72cd63656e4aa6b61291846e940d7b7e1" => :el_capitan
-    sha256 "97f9a90b5ba39a36b1c2c8cdaa72be152d5276f33795c4b4d1a02b98e9b41e27" => :yosemite
-    sha256 "fa510f9c72aa236669d8ed5e20fda643aa97aa374e4a1f4f21c9e2d397843291" => :mavericks
+    sha256 "cb9c05f9ecf2d79f3f17cef0fe41328cc05db6aa905ad4c75096f146de02b6e6" => :el_capitan
+    sha256 "93b56709932c37fe9abd02c8de83064bb6caa1ecceedbe00756bff7254a9f9cb" => :yosemite
+    sha256 "b13eac857fc25c40183b6760e1acc708ae62db73f28f3c3bc323e49696f64229" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -24,10 +24,7 @@ class Node < Formula
   depends_on "openssl" => :optional
 
   # Per upstream - "Need g++ 4.8 or clang++ 3.4".
-  # Clang should work *above* Snow Leopard but currently doesn't.
-  # https://github.com/nodejs/node/issues/4284
-  # Fix is landing in v5.3.0, so line below can revert to snow_leopard then.
-  fails_with :clang if MacOS.version <= :lion
+  fails_with :clang if MacOS.version <= :snow_leopard
   fails_with :llvm
   fails_with :gcc_4_0
   fails_with :gcc
@@ -80,6 +77,10 @@ class Node < Formula
         # This copies back over the vanilla `package.json` that is expected.
         # https://github.com/Homebrew/homebrew/issues/46131#issuecomment-157845008
         cp buildpath/"npm_install/package.json", libexec/"npm/lib/node_modules/npm"
+        # Remove manpage symlinks from the buildpath, they are breaking bottle
+        # creation. The real manpages are living in libexec/npm/lib/node_modules/npm/man/
+        # https://github.com/Homebrew/homebrew/pull/47081#issuecomment-165280470
+        rm_rf libexec/"npm/share/"
       end
 
       if build.with? "completion"

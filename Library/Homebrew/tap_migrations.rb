@@ -151,7 +151,6 @@ TAP_MIGRATIONS = {
   "mscgen" => "homebrew/x11",
   "msgpack-rpc" => "homebrew/boneyard",
   "mupdf" => "homebrew/x11",
-  "mydumper" => "homebrew/boneyard",
   "mysql-connector-odbc" => "homebrew/boneyard",
   "mysql-proxy" => "homebrew/boneyard",
   "mysqlreport" => "homebrew/boneyard",

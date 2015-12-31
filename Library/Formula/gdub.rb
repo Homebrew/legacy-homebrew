@@ -13,9 +13,9 @@ class Gdub < Formula
   end
 
   test do
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
-    system "gradle", "init"
+    ENV.java_cache
 
+    system "gradle", "init"
     cd "gradle" do
       system bin/"gw", "tasks"
     end

@@ -140,9 +140,17 @@ module Homebrew
     erb.result(bottle.instance_eval { binding }).gsub(/^\s*$\n/, "")
   end
 
+  def most_recent_mtime(pathname)
+    pathname.to_enum(:find).select(&:exist?).map(&:mtime).max
+  end
+
   def bottle_formula(f)
     unless f.installed?
       return ofail "Formula not installed or up-to-date: #{f.full_name}"
+    end
+
+    unless f.tap
+      return ofail "Formula not from core or any taps: #{f.full_name}"
     end
 
     if f.bottle_disabled?
@@ -187,7 +195,7 @@ module Homebrew
     skip_relocation = false
 
     formula_source_time = f.stable.stage do
-      Pathname.pwd.to_enum(:find).map(&:mtime).max
+      most_recent_mtime(Pathname.pwd)
     end
 
     keg.lock do

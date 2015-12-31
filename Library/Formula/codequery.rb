@@ -25,9 +25,13 @@ class Codequery < Formula
   end
 
   test do
-    cd share+"test" do
-      system "#{bin}/cqmakedb", "-s", "./codequery.db", "-c", "./cscope.out", "-t", "./tags", "-p"
-      assert_match "info_platform", `#{bin}/cqsearch -s ./codequery.db -t 'info_platform'`
-    end
+    test_files = (share/"test").children
+    testpath.install_symlink test_files
+    system "#{bin}/cqmakedb", "-s", "./codequery.db",
+                              "-c", "./cscope.out",
+                              "-t", "./tags",
+                              "-p"
+    output = shell_output("#{bin}/cqsearch -s ./codequery.db -t info_platform")
+    assert_match "info_platform", output
   end
 end

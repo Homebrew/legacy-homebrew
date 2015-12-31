@@ -6,15 +6,23 @@ class Sdl2 < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "ad55070725fa11d107f1dafbc233cb4a1a5a7d229e5994d97921e4c3bd2e2288" => :el_capitan
-    sha256 "ae40b379b1221d9817bc313510dc4c984c05ba0d9643a6335252e8c0bcfe7bc8" => :yosemite
-    sha256 "4b2106b8a792079506f271cb4b90f85b179782c04fa3838cb98d572804a787e1" => :mavericks
-    sha256 "b9449247a8637da1d558954f931b19b8267b57ef92941173a28aeb56a82c6f11" => :mountain_lion
+    revision 2
+    sha256 "8e6efe3ab41d7ef76f37357f56016b717643f0f079e60664f27e77182041ac6c" => :el_capitan
+    sha256 "0c54061dec0b6771f6f10058becf7e0cf247d0523f1befa0e4c121de7c3424d4" => :yosemite
+    sha256 "e0d1f1cb2994446692b634e13194e9a470346c4025b42173e7206550aa059c37" => :mavericks
   end
 
   head do
     url "http://hg.libsdl.org/SDL", :using => :hg
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  devel do
+    url "https://www.libsdl.org/tmp/SDL-2.0.4-9901.tar.gz"
+    sha256 "f50ca4a5fc89289181e42e649a690dd71641fe7616278903de726f5aa73d8f68"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -31,7 +39,7 @@ class Sdl2 < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./autogen.sh" if build.head?
+    system "./autogen.sh" if build.head? || build.devel?
 
     args = %W[--prefix=#{prefix}]
     # LLVM-based compilers choke on the assembly code packaged with SDL.

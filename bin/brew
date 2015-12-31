@@ -1,7 +1,14 @@
 #!/bin/sh
+
 chdir() {
   cd "$@" >/dev/null
 }
+
+# Force UTF-8 to avoid encoding issues for users with broken locale settings.
+if [ "$(locale charmap 2> /dev/null)" != "UTF-8" ]
+then
+  export LC_ALL="en_US.UTF-8"
+fi
 
 BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
 HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"

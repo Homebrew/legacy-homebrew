@@ -5,9 +5,10 @@ class Python3 < Formula
   sha256 "c6d57c0c366d9060ab6c0cdf889ebf3d92711d466cc0119c441dbf2746f725c9"
 
   bottle do
-    sha256 "5cd4be0d6586796f30b43cb2707ee9ba0b6da487d67d5bbb00360fea4bd7b160" => :el_capitan
-    sha256 "a7460ffce7b258ddd43f8a4d17d07665b7ff97307bb50d74d4c7555b553a0ae5" => :yosemite
-    sha256 "dfe5c1db69b17b4c2022e731b1d1caa97e1c06d52c4a0497cc3ba0460fa6117e" => :mavericks
+    revision 1
+    sha256 "d748217b106fd30cfff4c5ea5e403acc76059783e21a5b4247f95f2f6bb6bf5b" => :el_capitan
+    sha256 "a8a8dc876ae4eec188b3beb4afb9f6c67ffa905eb32fdd7f02b4945a11a045a1" => :yosemite
+    sha256 "86c45243e36b33556ee641e1e277d9749301ab4b854d0390fa0b08cfd71f12dc" => :mavericks
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -44,6 +45,11 @@ class Python3 < Formula
   resource "wheel" do
     url "https://pypi.python.org/packages/source/w/wheel/wheel-0.26.0.tar.gz"
     sha256 "eaad353805c180a47545a256e6508835b65a8e830ba1093ed8162f19a50a530c"
+  end
+
+  fails_with :clang do
+    build 425
+    cause "https://bugs.python.org/issue24844"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
@@ -156,9 +162,9 @@ class Python3 < Formula
       ldflags  << "-L#{tcl_tk}/lib"
     end
 
-    args << "CFLAGS=#{cflags.join(' ')}"     unless cflags.empty?
-    args << "LDFLAGS=#{ldflags.join(' ')}"   unless ldflags.empty?
-    args << "CPPFLAGS=#{cppflags.join(' ')}" unless cppflags.empty?
+    args << "CFLAGS=#{cflags.join(" ")}" unless cflags.empty?
+    args << "LDFLAGS=#{ldflags.join(" ")}" unless ldflags.empty?
+    args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
     system "./configure", *args
 
@@ -169,7 +175,7 @@ class Python3 < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
-    system "make", "quicktest" if build.include? "quicktest"
+    system "make", "quicktest" if build.with? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
     Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(".app", " 3.app") }

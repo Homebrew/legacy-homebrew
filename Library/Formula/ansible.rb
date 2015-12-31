@@ -3,20 +3,20 @@ class Ansible < Formula
   homepage "https://www.ansible.com/home"
   url "https://releases.ansible.com/ansible/ansible-1.9.4.tar.gz"
   sha256 "972c2face49f1577bd0ff7989440bfe2820e66fb10d7579915cc536bccfa6fe3"
+  revision 1
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
   bottle do
-    revision 3
-    sha256 "8105fdce4e745159fc80373e6773ec38e775bf208475615abc6e0c39987dc094" => :el_capitan
-    sha256 "edd0f87d68016d66e602edf6ef5cd308d8b43954bc8cabaa96ff445d391f6a6f" => :yosemite
-    sha256 "55dc3d486393c03a3c997c735a6cbc5488292fe145753f9a394a9b7067ff91fa" => :mavericks
+    sha256 "9b6311a5b12b257caa6714021d784bbdc006c1a84aec9e2d3154a6a68cb7b612" => :el_capitan
+    sha256 "6a0e6b7260048fa03f8c2dd0a50f682de54a668ce417c7c944b42b945f5ee076" => :yosemite
+    sha256 "6a094f0db17de2814c06eea6c0720e113cd4ebf72aee4f3b72e86103c1c7fb9a" => :mavericks
   end
 
   devel do
-    url "https://releases.ansible.com/ansible/ansible-2.0.0-0.7.rc2.tar.gz"
-    sha256 "4f7227260becd444435bc4eddac21c603a725c52eddebff19a2a6708dbbe1462"
-    version "2.0.0-0.7.rc2"
+    url "https://releases.ansible.com/ansible/ansible-2.0.0-0.8.rc3.tar.gz"
+    sha256 "d1a4e0c16cbb1879f62c699f9c94e4c10b2252d5be2bf00a93ba19abbb600e57"
+    version "2.0.0-0.8.rc3"
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -70,11 +70,47 @@ class Ansible < Formula
   end
 
   #
-  # Resources required by docker-py and pyrax (see below)
+  # Resources required by docker-py, pyrax, and shade (see below).
+  # Install requests with [security]
   #
+  resource "cffi" do
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.4.2.tar.gz"
+    sha256 "8f1d177d364ea35900415ae24ca3e471be3d5334ed0419294068c49f45913998"
+  end
+
+  resource "cryptography" do
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.2.tar.gz"
+    sha256 "7f51459f84d670444275e615839f4542c93547a12e938a0a4906dafe5f7de153"
+  end
+
+  resource "enum34" do
+    url "https://pypi.python.org/packages/source/e/enum34/enum34-1.1.2.tar.gz"
+    sha256 "2475d7fcddf5951e92ff546972758802de5260bf409319a9f1934e6bbc8b1dc7"
+  end
+
+  resource "idna" do
+    url "https://pypi.python.org/packages/source/i/idna/idna-2.0.tar.gz"
+    sha256 "16199aad938b290f5be1057c0e1efc6546229391c23cea61ca940c115f7d3d3b"
+  end
+
+  resource "ndg-httpsclient" do
+    url "https://pypi.python.org/packages/source/n/ndg-httpsclient/ndg_httpsclient-0.4.0.tar.gz"
+    sha256 "e8c155fdebd9c4bcb0810b4ed01ae1987554b1ee034dd7532d7b8fdae38a6274"
+  end
+
+  resource "pyasn1" do
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.9.tar.gz"
+    sha256 "853cacd96d1f701ddd67aa03ecc05f51890135b7262e922710112f12a2ed2a7f"
+  end
+
+  resource "pycparser" do
+    url "https://pypi.python.org/packages/source/p/pycparser/pycparser-2.14.tar.gz"
+    sha256 "7959b4a74abdc27b312fed1c21e6caf9309ce0b29ea86b591fd2e99ecdf27f73"
+  end
+
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.8.1.tar.gz"
-    sha256 "84fe8d5bf4dcdcc49002446c47a146d17ac10facf00d9086659064ac43b6c25b"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
   end
 
   resource "six" do
@@ -306,6 +342,7 @@ class Ansible < Formula
     sha256 "f43f9f15b0b719de94cab2754dcf78ef63b40ee2a12cea296e7af788b28501bb"
   end
 
+  # also required by the htpasswd core module
   resource "passlib" do
     url "https://pypi.python.org/packages/source/p/passlib/passlib-1.6.5.tar.gz"
     sha256 "a83d34f53dc9b17aa42c9a35c3fbcc5120f3fcb07f7f8721ec45e6a27be347fc"
@@ -485,13 +522,17 @@ class Ansible < Formula
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    vendor_site_packages = libexec/"vendor/lib/python2.7/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", vendor_site_packages
 
     resources.each do |r|
       r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
+
+    # ndg is a namespace package
+    touch vendor_site_packages/"ndg/__init__.py"
 
     inreplace "lib/ansible/constants.py" do |s|
       s.gsub! "/usr/share/ansible", share/"ansible"

@@ -36,7 +36,7 @@ class Mpich < Formula
       "--disable-dependency-tracking",
       "--disable-silent-rules",
       "--prefix=#{prefix}",
-      "--mandir=#{man}"
+      "--mandir=#{man}",
     ]
 
     args << "--disable-fortran" if build.without? "fortran"
@@ -68,5 +68,21 @@ class Mpich < Formula
     system "#{bin}/mpicc", "hello.c", "-o", "hello"
     system "./hello"
     system "#{bin}/mpirun", "-np", "4", "./hello"
+    if build.with? "fortran"
+      (testpath/"hellof.f90").write <<-EOS.undent
+        program hello
+        include 'mpif.h'
+        integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
+        call MPI_INIT(ierror)
+        call MPI_COMM_SIZE(MPI_COMM_WORLD, size, ierror)
+        call MPI_COMM_RANK(MPI_COMM_WORLD, rank, ierror)
+        print*, 'node', rank, ': Hello Fortran world'
+        call MPI_FINALIZE(ierror)
+        end
+      EOS
+      system "#{bin}/mpif90", "hellof.f90", "-o", "hellof"
+      system "./hellof"
+      system "#{bin}/mpirun", "-np", "4", "./hellof"
+    end
   end
 end

@@ -203,6 +203,12 @@ module SharedEnvExtension
   end
 
   def fortran
+    # Ignore repeated calls to this function as it will misleadingly warn about
+    # building with an alternative Fortran compiler without optimization flags,
+    # despite it often being the Homebrew-provided one set up in the first call.
+    return if @fortran_setup_done
+    @fortran_setup_done = true
+
     flags = []
 
     if fc
@@ -238,6 +244,10 @@ module SharedEnvExtension
 
     flags.each { |key| self[key] = cflags }
     set_cpu_flags(flags)
+  end
+
+  def java_cache
+    append "_JAVA_OPTIONS", "-Duser.home=#{HOMEBREW_CACHE}/java_cache"
   end
 
   # ld64 is a newer linker provided for Xcode 2.5

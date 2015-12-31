@@ -1,6 +1,3 @@
-require "utils/json"
-require "descriptions"
-
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
 # a Github repository with the name of `user/homebrew-repo`. In such
@@ -32,6 +29,7 @@ class Tap
     repo = repo.strip_prefix "homebrew-"
 
     if user == "Homebrew" && repo == "homebrew"
+      require "core_formula_repository"
       return CoreFormulaRepository.instance
     end
 
@@ -84,6 +82,14 @@ class Tap
     (path/".git").exist?
   end
 
+  # The issues URL of this {Tap}.
+  # e.g. `https://github.com/user/homebrew-repo/issues`
+  def issues_url
+    if official? || !custom_remote?
+      "https://github.com/#{user}/homebrew-#{repo}/issues"
+    end
+  end
+
   def to_s
     name
   end
@@ -119,6 +125,7 @@ class Tap
   # @option options [String]  :clone_targe If passed, it will be used as the clone remote.
   # @option options [Boolean] :full_clone If set as true, full clone will be used.
   def install(options = {})
+    require "descriptions"
     raise TapAlreadyTappedError, name if installed?
 
     # ensure git is installed
@@ -180,6 +187,7 @@ class Tap
 
   # uninstall this {Tap}.
   def uninstall
+    require "descriptions"
     raise TapUnavailableError, name unless installed?
 
     puts "Untapping #{name}... (#{path.abv})"
@@ -196,7 +204,7 @@ class Tap
     return unless (path/"man").exist?
     (path/"man").find do |src|
       next if src.directory?
-      dst = HOMEBREW_PREFIX/src.relative_path_from(path)
+      dst = HOMEBREW_PREFIX/"share"/src.relative_path_from(path)
       dst.delete if dst.symlink? && src == dst.resolved_path
       dst.parent.rmdir_if_possible
     end
@@ -299,6 +307,7 @@ class Tap
     raise TapPinStatusError.new(name, false) unless pinned?
     pinned_symlink_path.delete
     pinned_symlink_path.parent.rmdir_if_possible
+    pinned_symlink_path.parent.parent.rmdir_if_possible
     @pinned = false
   end
 
@@ -326,6 +335,8 @@ class Tap
 
   # Hash with tap formula renames
   def formula_renames
+    require "utils/json"
+
     @formula_renames ||= if (rename_file = path/"formula_renames.json").file?
       Utils::JSON.load(rename_file.read)
     else
@@ -361,84 +372,5 @@ class Tap
 
   def alias_file_to_name(file)
     "#{name}/#{file.basename}"
-  end
-end
-
-# A specialized {Tap} class to mimic the core formula file system, which shares many
-# similarities with normal {Tap}.
-# TODO Separate core formulae with core codes. See discussion below for future plan:
-#      https://github.com/Homebrew/homebrew/pull/46735#discussion_r46820565
-class CoreFormulaRepository < Tap
-  # @private
-  def initialize
-    @user = "Homebrew"
-    @repo = "homebrew"
-    @name = "Homebrew/homebrew"
-    @path = HOMEBREW_REPOSITORY
-  end
-
-  def self.instance
-    @instance ||= CoreFormulaRepository.new
-  end
-
-  # @private
-  def uninstall
-    raise "Tap#uninstall is not available for CoreFormulaRepository"
-  end
-
-  # @private
-  def pin
-    raise "Tap#pin is not available for CoreFormulaRepository"
-  end
-
-  # @private
-  def unpin
-    raise "Tap#unpin is not available for CoreFormulaRepository"
-  end
-
-  # @private
-  def pinned?
-    false
-  end
-
-  # @private
-  def command_files
-    []
-  end
-
-  # @private
-  def custom_remote?
-    remote != "https://github.com/#{user}/#{repo}.git"
-  end
-
-  # @private
-  def core_formula_repository?
-    true
-  end
-
-  # @private
-  def formula_dir
-    HOMEBREW_LIBRARY/"Formula"
-  end
-
-  # @private
-  def alias_dir
-    HOMEBREW_LIBRARY/"Aliases"
-  end
-
-  # @private
-  def formula_renames
-    require "formula_renames"
-    FORMULA_RENAMES
-  end
-
-  private
-
-  def formula_file_to_name(file)
-    file.basename(".rb").to_s
-  end
-
-  def alias_file_to_name(file)
-    file.basename.to_s
   end
 end

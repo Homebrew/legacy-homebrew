@@ -2,8 +2,15 @@ require "formula"
 require "keg"
 require "bottles"
 require "thread"
+require "utils"
 
 module Homebrew
+  @@disk_cleanup_size = 0
+
+  def update_disk_cleanup_size(path_size)
+    @@disk_cleanup_size += path_size
+  end
+
   def cleanup
     if ARGV.named.empty?
       cleanup_cellar
@@ -15,6 +22,15 @@ module Homebrew
       end
     else
       ARGV.resolved_formulae.each { |f| cleanup_formula(f) }
+    end
+
+    if @@disk_cleanup_size > 0
+      disk_space = disk_usage_readable(@@disk_cleanup_size)
+      if ARGV.dry_run?
+        ohai "This operation would free approximately #{disk_space} of disk space."
+      else
+        ohai "This operation has freed approximately #{disk_space} of disk space."
+      end
     end
   end
 
@@ -60,6 +76,10 @@ module Homebrew
     HOMEBREW_CACHE.children.each do |path|
       if path.to_s.end_with? ".incomplete"
         cleanup_path(path) { path.unlink }
+        next
+      end
+      if path.basename.to_s == "java_cache" && path.directory?
+        cleanup_path(path) { FileUtils.rm_rf path }
         next
       end
       if prune?(path)
@@ -109,6 +129,7 @@ module Homebrew
       puts "Removing: #{path}... (#{path.abv})"
       yield
     end
+    update_disk_cleanup_size(path.disk_usage)
   end
 
   def cleanup_lockfiles

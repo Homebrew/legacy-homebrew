@@ -1,19 +1,15 @@
 class Yank < Formula
   desc "Yank terminal output to clipboard"
   homepage "https://github.com/mptre/yank"
-  url "https://github.com/mptre/yank/archive/v0.6.0.tar.gz"
-  sha256 "06de92ab1368f29311264c7924457ec6ef0415f77c8d38e807b32bd89beb9cde"
+  url "https://github.com/mptre/yank/archive/v0.6.2.tar.gz"
+  sha256 "e6dbeb1b8e5883f76156c2d3ff1b9a4171a6b59fabf5d38469e33d7719ffeb1b"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "108ab013dc85f6cea0dc45ec2753a6cb89d855354c6edcaaee4c4859b328a132" => :el_capitan
-    sha256 "472e97039209d0490e517b4a16ca003c03eeca7ee819af3e0cf0feb4ba22a5a7" => :yosemite
-    sha256 "e44007432eb1e51ccf430451d9f9123f0523b68ad2d84f1840c6f9b8646381d8" => :mavericks
+    sha256 "16341bd1904ef0c2d4b5647479f8f53ec3b247d7afc0c7548367d11c855b395e" => :el_capitan
+    sha256 "f2d04f91eb8d86f6bc2c59b7e902ac13b1f2bdff924ac6909cc4716ab89c454f" => :yosemite
+    sha256 "bd47cbb68e38b6d1fdc2eccd0c9dcde31ec0c4ad9f2f0badbe39d201bf01498b" => :mavericks
   end
-
-  # This is here to provide a temporary workaround for mptre/yank#22.
-  # Once that is resolved in the next release, this can be removed.
-  patch :DATA
 
   def install
     system "make", "install", "PREFIX=#{prefix}", "YANKCMD=pbcopy"
@@ -37,20 +33,3 @@ class Yank < Formula
     system "./test"
   end
 end
-
-__END__
-diff --git a/yank.c b/yank.c
-index fb971f5..fbc852c 100644
---- a/yank.c
-+++ b/yank.c
-@@ -26,8 +26,8 @@
- #define T_KEY_LEFT            "\033[D"
- #define T_KEY_RIGHT           "\033[C"
- #define T_KEY_UP              "\033[A"
--#define T_RESTORE_CURSOR      "\033[u"
--#define T_SAVE_CURSOR         "\033[s"
-+#define T_RESTORE_CURSOR      "\0338"
-+#define T_SAVE_CURSOR         "\0337"
-
- #define CONTROL(c) (c ^ 0x40)
- #define MIN(x, y) ((x) < (y) ? (x) : (y))

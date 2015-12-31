@@ -1,14 +1,14 @@
 class Global < Formula
   desc "Source code tag system"
   homepage "https://www.gnu.org/software/global/"
-  url "http://ftpmirror.gnu.org/global/global-6.5.1.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/global/global-6.5.1.tar.gz"
-  sha256 "0e9d5227d400e8cb2ffa1732d98b8735d58d4bf8476c2845365770fdd5b264f8"
+  url "http://ftpmirror.gnu.org/global/global-6.5.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/global/global-6.5.2.tar.gz"
+  sha256 "c0fc831c1a54a5ee4f5fc765a7af90ade773e4fb4763416c0b6d4d2e571b1d1f"
 
   bottle do
-    sha256 "2c15f88285fc7eeb875e73808eac0f577335c7cf1c1727020909c48381aea623" => :el_capitan
-    sha256 "20b49507cf026b517f1b0a855f0cbf804ae16a20f2fe5073f2b1b957e95514ec" => :yosemite
-    sha256 "0b132bd00315344cf41234882274d50b2a36fe97647d05cc805571c05ddaf314" => :mavericks
+    sha256 "3b95c738a13d098ab7ae312dfce2fb58ae931508dfd9cc0ddaa4b03207f4008c" => :el_capitan
+    sha256 "92ac310e7f060425aa8a8cb76f8a12675beb49c862b327ba26dcdb20981255eb" => :yosemite
+    sha256 "88caf7e8c5cdb6f413a3f9ea197ea54c66130d96a21a464b17624e456192fe82" => :mavericks
   end
 
   head do
@@ -62,7 +62,6 @@ class Global < Formula
       bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
     end
 
-    inreplace "gtags.conf", prefix, opt_prefix
     etc.install "gtags.conf"
 
     # we copy these in already

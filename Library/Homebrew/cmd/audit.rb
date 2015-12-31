@@ -614,7 +614,7 @@ class FormulaAuditor
       problem "\"Formula.factory(name)\" is deprecated in favor of \"Formula[name]\""
     end
 
-    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec\}/npm/bin]
+    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec\}/npm/bin] && formula.name !~ /^kibana(\d{2})?$/
       need_npm = "\#{Formula[\"node\"].opt_libexec\}/npm/bin"
       problem <<-EOS.undent
        Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
@@ -790,9 +790,10 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if line =~ /MACOS_FULL_VERSION/
-      problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
-    end
+    # TODO: comment out this after core code and formulae separation.
+    # if line =~ /MACOS_FULL_VERSION/
+    #   problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
+    # end
 
     cats = %w[leopard snow_leopard lion mountain_lion].join("|")
     if line =~ /MacOS\.(?:#{cats})\?/

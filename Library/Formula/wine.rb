@@ -5,58 +5,27 @@
 class Wine < Formula
   desc "Wine Is Not an Emulator"
   homepage "https://www.winehq.org/"
-  revision 1
 
   stable do
-    url "https://downloads.sourceforge.net/project/wine/Source/wine-1.6.2.tar.bz2"
-    sha256 "f0ab9eede5a0ccacbf6e50682649f9377b9199e49cf55641f1787cf72405acbe"
-
-    resource "gecko" do
-      url "https://downloads.sourceforge.net/wine/wine_gecko-2.21-x86.msi", :using => :nounzip
-      sha256 "f01fafa6d7aab995c38add77315c4cbc2f32f52d5d6a9350056f42b62d631fd8"
-    end
-
-    resource "mono" do
-      url "https://downloads.sourceforge.net/wine/wine-mono-0.0.8.msi", :using => :nounzip
-      sha256 "3dfc23bbc29015e4e538dab8b83cb825d3248a0e5cf3b3318503ee7331115402"
-    end
+    url "https://dl.winehq.org/wine/source/1.8/wine-1.8.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8.tar.bz2"
+    sha256 "f33b45c18112b2071fbf9edee0e8c575407f9e2a9855ca4ee918ed33efa7c6f4"
   end
 
   bottle do
-    sha256 "1e3492bc9865f293112516f0e7ab1cc15668888818d759090d2c808867da0992" => :el_capitan
-    sha256 "a94a320c8f5a82b6c040d2ff1e0c3891274b0c6af49847784944dd755aca8122" => :yosemite
-    sha256 "341bb3bbe9e29dc1835eece6822df46b3d2df6761742b10ded6247a81db721f3" => :mavericks
+    sha256 "b5b42f4d790649416562ef0b1b36f96a976c20879d0a0c9e7899f367112dcf47" => :el_capitan
+    sha256 "2567f21a96a1dded04659c2f4d583eb254d8eed2ed2df52ecd44620a987b4c73" => :yosemite
+    sha256 "2a48bfc22f9a90db8505ba5d6dcd572c8841f679e284a6b0a26b1ce9c52a0dab" => :mavericks
   end
 
   devel do
-    url "https://dl.winehq.org/wine/source/1.8/wine-1.8-rc4.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.8-rc4.tar.bz2"
-    mirror "http://mirrors.ibiblio.org/wine/source/1.8/wine-1.8-rc4.tar.bz2"
-    sha256 "aec083196d0b813cf5971d0b2edbcc02a343827e84360e106a3284a612599530"
-
-    depends_on "samba" => :optional
-    depends_on "gnutls"
-
-    # Patch to fix screen-flickering issues. Still relevant on 1.7.53.
-    # https://bugs.winehq.org/show_bug.cgi?id=34166
-    patch do
-      url "https://bugs.winehq.org/attachment.cgi?id=52485"
-      sha256 "59f1831a1b49c1b7a4c6e6af7e3f89f0bc60bec0bead645a615b251d37d232ac"
-    end
-
-    # Patch to fix texture compression issues. Still relevant on 1.7.53.
-    # https://bugs.winehq.org/show_bug.cgi?id=14939
-    patch do
-      url "https://bugs.winehq.org/attachment.cgi?id=52384"
-      sha256 "30766403f5064a115f61de8cacba1defddffe2dd898b59557956400470adc699"
-    end
+    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.0.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.0.tar.bz2"
+    sha256 "b72221ac97e77616a4fee39961e26d6714109aa35d7e465ab83e2eb42663d5f9"
   end
 
   head do
     url "git://source.winehq.org/git/wine.git"
-    depends_on "samba" => :optional
-    option "with-win64",
-           "Build with win64 emulator (won't run 32-bit binaries.)"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,
@@ -77,6 +46,28 @@ class Wine < Formula
   depends_on "libtiff"
   depends_on "sane-backends"
   depends_on "libgsm" => :optional
+  depends_on "samba" => :optional
+  depends_on "gnutls"
+
+  # Patch to fix screen-flickering issues. Still relevant on 1.8.
+  # https://bugs.winehq.org/show_bug.cgi?id=34166
+  patch do
+    url "https://bugs.winehq.org/attachment.cgi?id=52485"
+    sha256 "59f1831a1b49c1b7a4c6e6af7e3f89f0bc60bec0bead645a615b251d37d232ac"
+  end
+
+  # Patch to fix texture compression issues. Still relevant on 1.8.
+  # https://bugs.winehq.org/show_bug.cgi?id=14939
+  patch do
+    url "https://bugs.winehq.org/attachment.cgi?id=52384"
+    sha256 "30766403f5064a115f61de8cacba1defddffe2dd898b59557956400470adc699"
+  end
+
+  # This option is currently disabled because Apple clang currently doesn't
+  # support a required feature: http://reviews.llvm.org/D1623
+  # It builds fine with GCC, however.
+  # option "with-win64",
+  #        "Build with win64 emulator (won't run 32-bit binaries.)"
 
   resource "gecko" do
     url "https://downloads.sourceforge.net/wine/wine_gecko-2.40-x86.msi", :using => :nounzip
@@ -148,8 +139,6 @@ class Wine < Formula
         s.change_make_var! "CXX", cc.sub(ENV.cxx, "xcrun clang++") if cxx
 
         # Emulate some things that superenv would normally handle for us
-        # We're configured to use GNU GCC, so remote an unsupported flag
-        s.gsub! "-gstabs+", "" if build.stable?
         # Pass the sysroot to support Xcode-only systems
         cflags  = s.get_make_var("CFLAGS")
         cflags += " --sysroot=#{MacOS.sdk_path}"
@@ -172,17 +161,6 @@ class Wine < Formula
       You may want to get winetricks:
         brew install winetricks
     EOS
-
-    if build.stable?
-      s += <<-EOS.undent
-
-        The current version of Wine contains a partial implementation of dwrite.dll
-        which may cause text rendering issues in applications such as Steam.
-        We recommend that you run winecfg, add an override for dwrite in the
-        Libraries tab, and edit the override mode to "disable". See:
-          https://bugs.winehq.org/show_bug.cgi?id=31374
-      EOS
-    end
 
     if build.with? "x11"
       s += <<-EOS.undent

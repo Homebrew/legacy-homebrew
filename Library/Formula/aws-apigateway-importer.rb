@@ -15,7 +15,8 @@ class AwsApigatewayImporter < Formula
   depends_on "maven" => :build
 
   def install
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}"
+    ENV.java_cache
+
     system "mvn", "assembly:assembly"
     libexec.install "target/aws-apigateway-importer-1.0.1-jar-with-dependencies.jar"
     bin.write_jar_script libexec/"aws-apigateway-importer-1.0.1-jar-with-dependencies.jar", "aws-api-import"

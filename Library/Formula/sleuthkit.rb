@@ -33,7 +33,7 @@ class Sleuthkit < Formula
 
   def install
     ENV.append_to_cflags "-DNDEBUG" if build.without? "debug"
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}/.brew_home" if build.with? "jni"
+    ENV.java_cache if build.with? "jni"
 
     system "./bootstrap"
     system "./configure", "--disable-dependency-tracking",

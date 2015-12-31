@@ -1,23 +1,26 @@
 class Sslscan < Formula
   desc "Test SSL/TLS enabled services to discover supported cipher suites."
   homepage "https://github.com/rbsec/sslscan"
-  url "https://github.com/rbsec/sslscan/archive/1.11.0-rbsec.tar.gz"
-  version "1.11.0"
-  sha256 "698dbf01b9af29aaddf6bce466f568762d852f7b71936861191a3b18d9dda6a5"
+  url "https://github.com/rbsec/sslscan/archive/1.11.1-rbsec.tar.gz"
+  version "1.11.1"
+  sha256 "0631713b16cea51df49b9666aa17e742e8177d79e85bdb13f66105657c98f169"
   head "https://github.com/rbsec/sslscan.git"
 
   bottle do
     cellar :any
-    sha256 "5373126ffd3a5d26069dded06d4999d2fa4884a78b68c0b7b9cde0f7c9100639" => :el_capitan
-    sha256 "52d76e298a4bbd5db755626d4bf50f3ea5a4f2af09f7bfb6b6125d3790a70cc2" => :yosemite
-    sha256 "3a4dde232387d14e70cb5b3aeb670ccc96bbcc34cb685c0025c9eb087f2c79e4" => :mavericks
+    revision 1
+    sha256 "aa0e2014b067ab8c98958007fab3ef1416b8ba79d9f9b5abf522be2d8375e751" => :el_capitan
+    sha256 "b552e3fd368382501a203d193373f62a6e18a4996cc7bc0df7b0c75218449521" => :yosemite
+    sha256 "6dde7ff7cad621d7c217f3b8cbc612792a3a58abdc409ecb0b4ca29cb126bc8f" => :mavericks
   end
 
   depends_on "openssl"
 
   def install
+    # Note: when next version (>1.11.1) comes out, revise this per https://github.com/Homebrew/homebrew/pull/47229
+    rm "INSTALL"
     system "make"
-    bin.install "sslscan"
+    system "make", "install", "BINPATH=#{bin}", "MANPATH=#{man}/"
   end
 
   test do

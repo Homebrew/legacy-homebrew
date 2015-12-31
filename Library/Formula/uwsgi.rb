@@ -6,10 +6,10 @@ class Uwsgi < Formula
   head "https://github.com/unbit/uwsgi.git"
 
   bottle do
-    revision 1
-    sha256 "d62f57b59f7c99b2473915c7ce522ec173ca441b433e975d95494a5909240700" => :el_capitan
-    sha256 "395525761e354fd2876068996ec942f890c77c6f4c98477b9e13fb1c64ea8caa" => :yosemite
-    sha256 "b148ea31ff2f2ec58790c69d238d5b9d5497fd8d9757aed0ae99cf4c8eb2e70c" => :mavericks
+    revision 2
+    sha256 "63766f3efb450c4241154da60181c542abc2c7141c535ee1e1c10983c7ee9b4d" => :el_capitan
+    sha256 "4ad53a8a16b8ba2c0543def66315e30ba8f374fc9c8d67790e11d6fc577ea0a1" => :yosemite
+    sha256 "b3b341d72bfd762b88dbe26f406b510d89187ca8702344158bb346688dbc25f0" => :mavericks
   end
 
   option "with-java", "Compile with Java support"
@@ -54,6 +54,11 @@ class Uwsgi < Formula
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
+    # Fix build on case-sensitive filesystems
+    # https://github.com/Homebrew/homebrew/issues/45560
+    # https://github.com/unbit/uwsgi/pull/1128
+    inreplace "plugins/alarm_speech/uwsgiplugin.py", "'-framework appkit'", "'-framework AppKit'"
+
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
       ssl = true
@@ -81,7 +86,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper", "ugreen", "webdav", "zergpool",]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"

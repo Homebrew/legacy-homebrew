@@ -1,14 +1,21 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
-  homepage "http://www.lighttpd.net/"
-  url "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.37.tar.xz"
-  sha256 "804e6f60567ca1da2b3927f92b7e9332b93aca9560f282ca135b86b7558979bd"
+  homepage "https://www.lighttpd.net/"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.38.tar.xz"
+  sha256 "4912568b7befcf3f552ca4668bd7f38cd85f42a22944359d00816ec27eb1e504"
 
   bottle do
-    sha256 "5ccc450f4e552726c108b00955c835c8b4c82ae844eb944f588cedc590f3ea43" => :el_capitan
-    sha256 "31ad0f53176a0509c51b52082868a847751be055b2d0c11f16974cdb18bdfa51" => :yosemite
-    sha256 "c2900f5ea5bc9cc6ebdf7e2e86724f21b2f4fed923912f2904f5466b9a040109" => :mavericks
-    sha256 "0b4fd109bba1b5ad7c2ff7299fe495fe646f8bd767ddea78e6fccefeeb095347" => :mountain_lion
+    revision 1
+    sha256 "c88a139e5914a38194eba56154f3472cb6467ef343bc3c0b209f2df3e1e16c9a" => :el_capitan
+    sha256 "aeada1a7d5c027b6716755b1e61a8a3d3dca3617e1f61a8318dc866617f60e3b" => :yosemite
+    sha256 "a4a350a5ec1e2d295db457bfffb6e6ad238140e78d54de761c00002ac2ab759a" => :mavericks
+  end
+
+  # this patch can be removed with the next release
+  # https://redmine.lighttpd.net/issues/2698
+  patch do
+    url "https://redmine.lighttpd.net/attachments/download/1671/0001-core-fix-memset_s-call-fixes-2698.patch"
+    sha256 "e04c11ce6ce5a32f1208311671acb7413fbeca5ce3fefa9a0e3121cd920a5cdb"
   end
 
   option "with-lua51", "Include Lua scripting support for mod_magnet"
@@ -86,7 +93,7 @@ class Lighttpd < Formula
         s.sub!(/^server\.network-backend\s*=\s*"sendfile"$/, 'server.network-backend = "writev"')
 
         # "max-connections == max-fds/2",
-        # http://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
+        # https://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
         s.sub!(/^server\.max-connections = .+$/, "server.max-connections = " + (MAX_FDS / 2).to_s)
       end
     end

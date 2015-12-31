@@ -29,7 +29,8 @@ require "date"
 require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
-require "cmd/tap"
+require "tap"
+require "core_formula_repository"
 
 module Homebrew
   BYTES_IN_1_MEGABYTE = 1024*1024
@@ -552,11 +553,13 @@ module Homebrew
 
       unless changed_dependences.empty?
         test "brew", "fetch", "--retry", "--build-bottle", *changed_dependences
-        # Install changed dependencies as new bottles so we don't have checksum problems.
-        test "brew", "install", "--build-bottle", *changed_dependences
-        # Run postinstall on them because the tested formula might depend on
-        # this step
-        test "brew", "postinstall", *changed_dependences
+        unless ARGV.include?("--fast")
+          # Install changed dependencies as new bottles so we don't have checksum problems.
+          test "brew", "install", "--build-bottle", *changed_dependences
+          # Run postinstall on them because the tested formula might depend on
+          # this step
+          test "brew", "postinstall", *changed_dependences
+        end
       end
       test "brew", "fetch", "--retry", *fetch_args
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
@@ -618,8 +621,10 @@ module Homebrew
             conflicts.each do |conflict|
               test "brew", "unlink", conflict.name
             end
-            run_as_not_developer { test "brew", "install", dependent.name }
-            next if steps.last.failed?
+            unless ARGV.include?("--fast")
+              run_as_not_developer { test "brew", "install", dependent.name }
+              next if steps.last.failed?
+            end
           end
           if dependent.installed?
             test "brew", "test", "--verbose", dependent.name
@@ -650,9 +655,13 @@ module Homebrew
       if @tap
         test "brew", "readall", @tap.name
       else
-        test "brew", "tests", "--no-compat"
+        tests_args = ["--no-compat"]
         readall_args = ["--aliases"]
-        readall_args << "--syntax" if RUBY_VERSION.split(".").first.to_i >= 2
+        if RUBY_VERSION.split(".").first.to_i >= 2
+          tests_args << "--coverage" if ENV["TRAVIS"]
+          readall_args << "--syntax"
+        end
+        test "brew", "tests", *tests_args
         test "brew", "readall", *readall_args
         test "brew", "update-test"
       end
@@ -893,6 +902,7 @@ module Homebrew
 
   def test_bot
     sanitize_ARGV_and_ENV
+    p ARGV
 
     tap = resolve_test_tap
     # Tap repository if required, this is done before everything else
