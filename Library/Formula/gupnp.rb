@@ -1,8 +1,8 @@
 class Gupnp < Formula
   desc "Framework for creating UPnP devices and control points"
   homepage "https://wiki.gnome.org/Projects/GUPnP"
-  url "https://download.gnome.org/sources/gupnp/0.20/gupnp-0.20.14.tar.xz"
-  sha256 "77ffb940ba77c4a6426d09d41004c75d92652dcbde86c84ac1c847dbd9ad59bd"
+  url "https://download.gnome.org/sources/gupnp/0.20/gupnp-0.20.15.tar.xz"
+  sha256 "0446b42d0d5b8adfcdca78832f2ce6173ab33793fca055afc97aec1fcc579fe2"
 
   head do
     url "https://github.com/GNOME/gupnp.git"
