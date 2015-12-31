@@ -3,8 +3,10 @@ require "language/go"
 class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
-  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.5.tar.gz"
-  sha256 "430297896bb05396268fd29cc555eba6542b42263489784c9843f4daf625ac5c"
+  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.7.tar.gz"
+  sha256 "33f51b34906548fe69b4aab2dbbb24397b523b357d4c9137324c1fddda9022b0"
+
+  head "https://github.com/syncthing/syncthing-inotify.git"
 
   bottle do
     cellar :any
@@ -17,7 +19,7 @@ class SyncthingInotify < Formula
 
   go_resource "github.com/cenkalti/backoff" do
     url "https://github.com/cenkalti/backoff.git",
-        :revision => "6c45d6bc1e78d94431dff8fc28a99f20bafa355a" # not sure !
+      :revision => "4dc77674aceaabba2c7e3da25d4c823edfb73f99" # not sure !
   end
 
   go_resource "github.com/zillode/notify" do
@@ -27,10 +29,9 @@ class SyncthingInotify < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV.append_path "PATH", buildpath
     bin_name = "syncthing-inotify"
     Language::Go.stage_deps resources, buildpath/"src"
-    system "go", "build", "-o", bin_name
+    system "go", "build", "-ldflags", "-w -X main.Version #{version}", "-o", bin_name
     bin.install bin_name
   end
 
