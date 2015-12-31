@@ -1,9 +1,9 @@
 class SigningParty < Formula
   desc "Various OpenPGP related tools"
   homepage "https://pgp-tools.alioth.debian.org/"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/signing-party/signing-party_2.1.orig.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/s/signing-party/signing-party_2.1.orig.tar.gz"
-  sha256 "ca87849a74ea4c271e92422bfe6b1be2bfe2c2de9a723bf11aa088e4ea88965d"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/signing-party/signing-party_2.2.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/s/signing-party/signing-party_2.2.orig.tar.gz"
+  sha256 "ad5d06c6c58de17aee104b9cf2f3a954cd9b854e5a77c1a8b62cf0a67c63168f"
 
   bottle do
     cellar :any_skip_relocation
@@ -183,7 +183,7 @@ class SigningParty < Formula
 
   test do
     args = "--frontend=plain --keyserver=hkps.pool.sks-keyservers.net 0xE33A3D3CCE59E297"
-    assert_match /security@brew.sh/, shell_output("#{bin}/keylookup #{args}")
+    assert_match "security@brew.sh", shell_output("#{bin}/keylookup #{args}")
   end
 end
 
