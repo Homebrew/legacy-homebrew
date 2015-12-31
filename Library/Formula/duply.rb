@@ -10,5 +10,8 @@ class Duply < Formula
 
   def install
     bin.install "duply"
+    # Homebrew uses env_script_all_files in the duplicity script, so calling it
+    # with the python interpreter doesn't work
+    inreplace "#{bin}/duply", "DEFAULT_PYTHON=\'python2\'", "DEFAULT_PYTHON=\'bash\'"
   end
 end
