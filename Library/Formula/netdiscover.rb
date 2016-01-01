@@ -1,5 +1,5 @@
 class Netdiscover < Formula
-  desc "Netdiscover ARP Scanner"
+  desc "ARP Scanner"
   homepage "http://sourceforge.net/projects/netdiscover/"
   url "svn://svn.code.sf.net/p/netdiscover/code/trunk"
   version "0.3-pre-beta7"
@@ -17,28 +17,22 @@ class Netdiscover < Formula
   # see http://stackoverflow.com/questions/34011043/pcap-not-receiving-traffic-os-x-el-capitan?rq=1
   # Other changes were needed for the LLVM compiler to work right
   patch :DATA
-  
+
   def install
-    # ENV.deparallelize  # if your formula fails when building in parallel
-
     system "./autogen.sh"
-
-    # Remove unrecognized options if warned by configure
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    
-    system "chmod +x ./update-oui-database.sh"
+    chmod 0755, "update-oui-database.sh"
     system "./update-oui-database.sh"
-    
-    system "make", "install" # if this fails, try separate make/make install steps
+    system "make", "install"
   end
-  
+
   def caveats; <<-EOS.undent
     Netdiscover suffers from the same issues that are common in wireshark.
     All applications that rely on libpcap running on OS X have permission issues
     with /dev/bpf*. The following caveat from the wireshark formula applies here.
-    
+
     If your list of available capture interfaces is empty
     (default OS X behavior), try the following commands:
 
@@ -57,7 +51,7 @@ class Netdiscover < Formula
   end
 
   test do
-    system "./src/netdiscover --version"
+    system "./src/netdiscover", "--version"
   end
 end
 
