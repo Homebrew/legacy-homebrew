@@ -9,10 +9,10 @@ class SyncthingInotify < Formula
   head "https://github.com/syncthing/syncthing-inotify.git"
 
   bottle do
-    cellar :any
-    sha256 "30c9a5de4a72ccf8046aa58c70eb3d010575b675940c2251d34e3c1c01e28ff4" => :yosemite
-    sha256 "0d15a5a3157c4afe71fcecad6fa4dae504abf183036863d8e65f470414010edb" => :mavericks
-    sha256 "6ca9ddd5a10e9efd9c193abced9bbfc03e29c5305f6dd4b98ba0d1da3f6905cf" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "344e58eeef25bb5e4df938746e6cf3f9ccf884b34d0f787096a125e91691e1c6" => :el_capitan
+    sha256 "9c9dc1b88337d004261df6b5e923a8ef67724e5b82abb4027dbd40c334899ea8" => :yosemite
+    sha256 "42b69b5131ca24c3521833b35035c3dd8fe7efa54b143fc211e56dbfa9ffff00" => :mavericks
   end
 
   depends_on "go" => :build
