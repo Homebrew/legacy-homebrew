@@ -57,6 +57,10 @@ class Aiccu < Formula
       a different one.
     EOS
   end
+
+  test do
+    system "#{sbin}/aiccu", "version"
+  end
 end
 
 __END__
@@ -113,11 +117,11 @@ index ef65000..5b2eb43 100755
   * where we can't make contact to the main server
   */
 -#define AICCU_CACHE	"/var/cache/aiccu.cache"
-+#define AICCU_CACHE	"/usr/local/var/cache/aiccu.cache"
++#define AICCU_CACHE	"HOMEBREW_PREFIX/var/cache/aiccu.cache"
 
  /* The PID we are running as when daemonized */
 -#define AICCU_PID	"/var/run/aiccu.pid"
-+#define AICCU_PID	"/usr/local/var/run/aiccu.pid"
++#define AICCU_PID	"HOMEBREW_PREFIX/var/run/aiccu.pid"
 
  /* AICCU Configuration file */
  #ifdef _WIN32
@@ -125,7 +129,7 @@ index ef65000..5b2eb43 100755
  #define AICCU_CONFIG	"aiccu.conf"
  #else
 -#define AICCU_CONFIG	"/etc/aiccu.conf"
-+#define AICCU_CONFIG	"/usr/local/etc/aiccu.conf"
++#define AICCU_CONFIG	"HOMEBREW_PREFIX/etc/aiccu.conf"
  #endif
 
  /* Inbound listen queue */
