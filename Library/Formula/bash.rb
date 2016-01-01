@@ -19,6 +19,12 @@ class Bash < Formula
     end
   end
 
+  devel do
+    url "http://ftpmirror.gnu.org/bash/bash-4.4-beta.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/bash/bash-4.4-beta.tar.gz"
+    sha256 "8273c415b70260baaf7a9fdc9632451cd3987718fd054ee7ee13d7613808d231"
+  end
+
   bottle do
     sha256 "a767075b636c0964d2eca3c4f87eb679384fcd2eb7a778ea862248717f63b082" => :el_capitan
     sha256 "e4c37730749adcdbc274fa57b62300f2f2c68078b962cfd196a7e8f0764b543c" => :yosemite
@@ -37,7 +43,11 @@ class Bash < Formula
     # Homebrew's bash instead of /bin/bash.
     ENV.append_to_cflags "-DSSH_SOURCE_BASHRC"
 
-    system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
+    if build.devel? || build.head?
+      system "./configure", "--prefix=#{prefix}"
+    else
+      system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
+    end
     system "make", "install"
   end
 
