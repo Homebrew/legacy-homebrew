@@ -312,7 +312,7 @@ class Version
     return m.captures.first unless m.nil?
 
     # e.g. lame-398-1
-    m = /-((?:\d)+-\d)/.match(stem)
+    m = /-((?:\d)+-\d+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. foobar-4.5.1
