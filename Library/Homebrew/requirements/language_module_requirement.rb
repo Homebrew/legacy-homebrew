@@ -31,7 +31,6 @@ class LanguageModuleRequirement < Requirement
     when :python then %W[/usr/bin/env python -c import\ #{@import_name}]
     when :python3 then %W[/usr/bin/env python3 -c import\ #{@import_name}]
     when :ruby then %W[/usr/bin/env ruby -rubygems -e require\ '#{@import_name}']
-    when :rbx then %W[/usr/bin/env rbx -rubygems -e require\ '#{@import_name}']
     end
   end
 
@@ -46,7 +45,6 @@ class LanguageModuleRequirement < Requirement
     when :perl    then "cpan -i"
     when :python  then "pip install"
     when :python3 then "pip3 install"
-    when :rbx     then "rbx gem install"
     when :ruby    then "gem install"
     end
   end
