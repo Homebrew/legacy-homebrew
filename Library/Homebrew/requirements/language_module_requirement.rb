@@ -21,7 +21,6 @@ class LanguageModuleRequirement < Requirement
 
   def the_test
     case @language
-    when :chicken then %W[/usr/bin/env csi -e (use\ #{@import_name})]
     when :jruby then %W[/usr/bin/env jruby -rubygems -e require\ '#{@import_name}']
     when :lua then %W[/usr/bin/env luarocks-5.2 show #{@import_name}]
     when :lua51 then %W[/usr/bin/env luarocks-5.1 show #{@import_name}]
@@ -36,7 +35,6 @@ class LanguageModuleRequirement < Requirement
 
   def command_line
     case @language
-    when :chicken then "chicken-install"
     when :jruby   then "jruby -S gem install"
     when :lua     then "luarocks-5.2 install"
     when :lua51   then "luarocks-5.1 install"
