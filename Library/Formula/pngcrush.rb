@@ -1,8 +1,8 @@
 class Pngcrush < Formula
   desc "Optimizer for PNG files"
   homepage "http://pmt.sourceforge.net/pngcrush/"
-  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.88/pngcrush-1.7.88.tar.gz"
-  sha256 "e426e3d8e705b057ae8d677980266b9773576e24e4c883053d23646ac6df7dc0"
+  url "https://downloads.sourceforge.net/project/pmt/pngcrush/1.7.91/pngcrush-1.7.91.tar.gz"
+  sha256 "aed76bf3f2b96f34c764234ffb68bdaee9d6092b0738889575d6ea48ab07dc82"
 
   bottle do
     cellar :any_skip_relocation
