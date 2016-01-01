@@ -19,7 +19,7 @@ class SyncthingInotify < Formula
 
   go_resource "github.com/cenkalti/backoff" do
     url "https://github.com/cenkalti/backoff.git",
-        :revision => "6c45d6bc1e78d94431dff8fc28a99f20bafa355a" # not sure !
+      :revision => "4dc77674aceaabba2c7e3da25d4c823edfb73f99" # not sure !
   end
 
   go_resource "github.com/zillode/notify" do
