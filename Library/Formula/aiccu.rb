@@ -4,6 +4,13 @@ class Aiccu < Formula
   url "https://www.sixxs.net/archive/sixxs/aiccu/unix/aiccu_20070115.tar.gz"
   sha256 "2260f426c13471169ccff8cb4a3908dc5f79fda18ddb6a55363e7824e6c4c760"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "c49bc224f4ab5bc469a55c9236a74efb585b176f5addff1853d17d753cb3551c" => :el_capitan
+    sha256 "00d05929df3a1951fa3c28108071e0dcc88236a37dfb89af37af66142b1746bf" => :yosemite
+    sha256 "31117537770464542e1186d32032aba90507a11bd4e41c9f46aa717515e8e3cf" => :mavericks
+  end
+
   # Patches per MacPorts
   patch :DATA
 
