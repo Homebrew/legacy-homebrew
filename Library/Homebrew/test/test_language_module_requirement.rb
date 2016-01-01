@@ -50,14 +50,4 @@ class LanguageModuleRequirementTests < Homebrew::TestCase
   def test_good_ruby_deps
     assert_deps_pass "date" => :ruby
   end
-
-  if which("node")
-    def test_bad_node_deps
-      assert_deps_fail "notapackage" => :node
-    end
-
-    def test_good_node_deps
-      assert_deps_pass "util" => :node
-    end
-  end
 end
