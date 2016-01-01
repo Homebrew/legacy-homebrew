@@ -18,7 +18,7 @@ require "set"
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = Set[
-    :jruby, :lua, :perl, :python, :python3, :ruby
+    :lua, :perl, :python, :python3, :ruby
   ].freeze
 
   CACHE = {}
