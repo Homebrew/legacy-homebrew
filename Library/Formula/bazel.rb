@@ -14,8 +14,6 @@ class Bazel < Formula
   depends_on :java => "1.8+"
 
   def install
-    # Replace the default system wide rc path to
-    # /usr/local/etc/bazel/bazel.bazelrc
     inreplace "src/main/cpp/blaze_startup_options.cc",
       "/etc/bazel.bazelrc",
       "#{etc}/bazel/bazel.bazelrc"
@@ -36,7 +34,7 @@ class Bazel < Formula
   end
 
   test do
-    (testpath/"WORKSPACE").write("")
+    touch testpath/"WORKSPACE"
 
     (testpath/"ProjectRunner.java").write <<-EOS.undent
       public class ProjectRunner {
