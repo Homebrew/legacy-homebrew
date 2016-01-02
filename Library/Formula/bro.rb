@@ -15,6 +15,7 @@ class Bro < Formula
   depends_on "swig" => :build
   depends_on "openssl"
   depends_on "geoip" => :recommended
+  
   conflicts_with "brotli", :because => "Both install a `bro` binary"
 
   def install
