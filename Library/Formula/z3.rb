@@ -19,13 +19,19 @@ class Z3 < Formula
   if build.without?("python3") && build.without?("python")
     odie "z3: --with-python3 must be specified when using --without-python"
   end
+  depends_on :java => :optional
   depends_on "ocaml" => :optional
 
   def install
     inreplace "scripts/mk_util.py", "dist-packages", "site-packages"
 
+    # Installing  JARs to "lib" can cause conflicts between packages. Therefore install the jar to libexec
+    inreplace "scripts/mk_util.py", "out.write('\\t@cp %s.jar %s.jar\\n' % (self.package_name, os.path.join('$(PREFIX)', 'lib', self.package_name)))", "out.write('\\t@cp %s.jar %s.jar\\n' % (self.package_name, os.path.join('$(PREFIX)', 'libexec', self.package_name)))"
+    libexec.mkpath
+
     Language::Python.each_python(build) do |python, _|
       args = ["--prefix=#{prefix}"]
+      args << "-j" if build.with? "java"
       args << "--ml" if build.with? "ocaml"
       system python, "scripts/mk_make.py", *args
       cd "build" do
@@ -39,6 +45,21 @@ class Z3 < Formula
     end
 
     pkgshare.install "examples"
+  end
+
+  def caveats
+    s = ""
+    if build.with? "java"
+      s += <<-EOS.undent
+
+        Java bindings were installed into #{libexec}/com.microsoft.z3.jar and #{lib}/z3java.dylib.
+    To use these, set the classpath and java.library.path accordingly.
+        Alternatively, you may need to link the Java bindings into the Java Extensions folder:
+          sudo mkdir -p /Library/Java/Extensions
+          sudo ln -s #{lib}/libz3java.dylib #{libexec}/com.microsoft.z3.jar /Library/Java/Extensions
+      EOS
+    end
+    s
   end
 
   test do
@@ -82,6 +103,14 @@ class Z3 < Formula
 
     if build.with? "python"
       assert_equal "#{version}\n", shell_output('python -c "import z3; print z3.get_version_string()"')
+    end
+
+    if build.with? "java"
+      # Build and run the java example
+      ln_s pkgshare/"examples/java/JavaExample.java", testpath
+      system "javac", "-cp", "#{libexec}/com.microsoft.z3.jar", "JavaExample.java"
+      assert File.exist? "JavaExample.class"
+      assert_match(/Z3 Full Version: #{version}/, shell_output("java -cp #{testpath}:#{libexec}/com.microsoft.z3.jar -Djava.library.path=#{lib} JavaExample"))
     end
 
     if build.with? "ocaml"
