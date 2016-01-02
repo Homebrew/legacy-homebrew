@@ -1,11 +1,10 @@
 class Httpie < Formula
   desc "User-friendly cURL replacement (command-line HTTP client)"
-  homepage "https://github.com/jakubroztocil/httpie"
-  url "https://github.com/jakubroztocil/httpie/archive/0.9.2.tar.gz"
-  sha256 "1f0b0b6563de25bad0ed190d62f1130573124201382824756d015b1422a234cc"
-  revision 1
+  homepage "http://httpie.org/"
+  url "https://github.com/jkbrzt/httpie/archive/0.9.3.tar.gz"
+  sha256 "2a0c7cf6a6914620eebc2d7700e8e7a57aabde62bd62cd7fa68f8b216c0b2340"
 
-  head "https://github.com/jakubroztocil/httpie.git"
+  head "https://github.com/jkbrzt/httpie.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -23,8 +22,8 @@ class Httpie < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
-    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
   end
 
   def install
