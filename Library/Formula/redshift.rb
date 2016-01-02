@@ -1,8 +1,8 @@
 class Redshift < Formula
   desc "Adjust color temperature of your screen according to your surroundings"
   homepage "http://jonls.dk/redshift/"
-  url "https://github.com/jonls/redshift/releases/download/v1.10/redshift-1.10.tar.xz"
-  sha256 "5bc2e70aa414f42dafb45c6e06ea90157d7d4b298af48877144ff442639aeea6"
+  url "https://github.com/jonls/redshift/releases/download/v1.11/redshift-1.11.tar.xz"
+  sha256 "10e350f93951c0521dd6f103d67a485972c307214f036e009acea2978fe4f359"
 
   bottle do
     revision 1
@@ -40,6 +40,7 @@ class Redshift < Formula
     system "./bootstrap" if build.head?
     system "./configure", *args
     system "make", "install"
+    pkgshare.install "redshift.conf.sample"
   end
 
   plist_options :manual => "redshift"
@@ -69,9 +70,10 @@ class Redshift < Formula
   end
 
   def caveats; <<-EOS.undent
-    A .conf file has not been provided. If you want one, see:
-      http://jonls.dk/redshift/
-    And place it in #{ENV["HOME"]}/.config
+    A sample .conf file has been installed to #{opt_pkgshare}.
+
+    Please note redshift expects to read its configuration file from
+    #{ENV["HOME"]}/.config
     EOS
   end
 
