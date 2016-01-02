@@ -1,22 +1,18 @@
 class Zopfli < Formula
   desc "New zlib (gzip, deflate) compatible compressor"
-  homepage "https://code.google.com/p/zopfli/"
-  url "https://zopfli.googlecode.com/files/zopfli-1.0.0.zip"
-  sha256 "e20d73b56620285e6cce5b510d8e5da6835a81940e48cdf35a69090e666f3adb"
-  head "https://code.google.com/p/zopfli/", :using => :git
+  homepage "https://github.com/google/zopfli"
+  url "https://github.com/google/zopfli/archive/zopfli-1.0.1.tar.gz"
+  sha256 "29743d727a4e0ecd1b93e0bf89476ceeb662e809ab2e6ab007a0b0344800e9b4"
+  head "https://github.com/google/zopfli.git"
 
   def install
-    # Makefile hardcodes gcc
-    inreplace "makefile", "gcc", ENV.cc
-    system "make", "-f", "makefile"
-    bin.install "zopfli"
-    if build.head?
-      system "make", "-f", "makefile", "zopflipng"
-      bin.install "zopflipng"
-    end
+    system "make", "zopfli", "zopflipng"
+    bin.install "zopfli", "zopflipng"
   end
 
   test do
     system "#{bin}/zopfli"
+    system "#{bin}/zopflipng", test_fixtures("test.png"), "#{testpath}/out.png"
+    File.exist? "#{testpath}/out.png"
   end
 end
