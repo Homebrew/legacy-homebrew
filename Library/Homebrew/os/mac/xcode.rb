@@ -35,28 +35,36 @@ module OS
       end
 
       def prefix
-        @prefix ||=
-          begin
-            dir = MacOS.active_developer_dir
+        @prefix = uncached_prefix unless instance_variable_defined?(:@prefix)
+        @prefix
+      end
 
-            if dir.empty? || dir == CLT::MAVERICKS_PKG_PATH || !File.directory?(dir)
-              path = bundle_path
-              path.join("Contents", "Developer") if path
-            else
-              Pathname.new(dir)
-            end
-          end
+      def uncached_prefix
+        dir = MacOS.active_developer_dir
+        if dir.empty? || dir == CLT::MAVERICKS_PKG_PATH || !File.directory?(dir)
+          path = bundle_path
+          path/"Contents/Developer" if path
+        else
+          Pathname.new(dir)
+        end
+      end
+
+      def auto_selected?
+        !prefix.nil? && prefix.to_s != MacOS.active_developer_dir
       end
 
       def toolchain_path
         Pathname.new("#{prefix}/Toolchains/XcodeDefault.xctoolchain") if installed? && version >= "4.3"
       end
 
-      # Ask Spotlight where Xcode is. If the user didn't install the
-      # helper tools and installed Xcode in a non-conventional place, this
-      # is our only option. See: https://superuser.com/questions/390757
       def bundle_path
-        MacOS.app_with_bundle_id(V4_BUNDLE_ID, V3_BUNDLE_ID)
+        # Ask Spotlight where Xcode is if the path returned by `xcode-select` is
+        # invalid or points at the CLT. Make sure we only auto-select an Xcode
+        # installation in one of the default locations (see #default_prefix).
+        xcode_path = MacOS.mdfind(V4_BUNDLE_ID, V3_BUNDLE_ID).detect do |path|
+          "#{path}/".start_with?("/Applications/Xcode.app/", "/Developer/")
+        end
+        Pathname.new(xcode_path) unless xcode_path.nil?
       end
 
       def installed?
