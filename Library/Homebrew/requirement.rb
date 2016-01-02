@@ -134,6 +134,10 @@ class Requirement
     super(cmd, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
   end
 
+  def which_all(cmd)
+    super(cmd, ORIGINAL_PATHS.join(File::PATH_SEPARATOR))
+  end
+
   class << self
     include BuildEnvironmentDSL
 
