@@ -24,7 +24,8 @@ class Z3 < Formula
     inreplace "scripts/mk_util.py", "dist-packages", "site-packages"
 
     Language::Python.each_python(build) do |python, _|
-      system python, "scripts/mk_make.py", "--prefix=#{prefix}"
+      args = ["--prefix=#{prefix}"]
+      system python, "scripts/mk_make.py", *args
       cd "build" do
         system "make"
         system "make", "install"
@@ -35,8 +36,46 @@ class Z3 < Formula
   end
 
   test do
+    # Test C bindings
     system ENV.cc, "-I#{include}", "-L#{lib}", "-lz3",
            pkgshare/"examples/c/test_capi.c", "-o", testpath/"test"
-    system "./test"
+    assert_match(/Z3 #{version}/, shell_output("./test"))
+
+    # Test z3 binary with SMT2 input
+    field_test = testpath/"test_field.smt"
+    field_test.write <<-EOS.undent
+      (declare-const a Real)
+      (declare-const b Real)
+      (declare-const c Real)
+
+      ; Verify the axioms of the field of Real numbers
+      (assert (= (+ (+ a b) c) (+ a (+ b c))))        ; Associativity of addition
+      (assert (= (+ a b) (+ b a)))                    ; Commutativity of addition
+      (assert (= (+ (- 0 a) a) 0))                    ; Existence of an inverse element of addition
+      (assert (= (+ 0 a) a))                          ; Existence of a neutral element of addition
+      (assert (= (* (* a b) c) (* a (* b c))))        ; Associativity of multiplication
+      (assert (= (* a b) (* b a)))                    ; Commutativity of multiplication
+      (assert (= (* (/ 1 a) a) 0))                    ; Existence of an inverse element of addition
+      (assert (= (* 1 a) a))                          ; Existence of a neutral element of addition
+      (assert (= (* a (+ b c)) (+ (* a b) (* a c))))  ; Left-distributive property
+      (assert (= (* (+ a b) c) (+ (* a c) (* b c))))  ; Right-distributive property
+
+      (check-sat)
+    EOS
+    field_sat = shell_output("#{bin}/z3 -smt2 #{field_test}")
+    assert_equal "sat\n", field_sat
+
+    # Test if a simple unsatisfiable test fails
+    unsat_test = testpath/"unsat_test.smt"
+    unsat_test.write <<-EOS.undent
+      (assert (= 42 23))
+      (check-sat)
+    EOS
+    unsat = shell_output("#{bin}/z3 -smt2 #{unsat_test}")
+    assert_equal "unsat\n", unsat
+
+    if build.with? "python"
+      assert_equal "#{version}\n", shell_output('python -c "import z3; print z3.get_version_string()"')
+    end
   end
 end
