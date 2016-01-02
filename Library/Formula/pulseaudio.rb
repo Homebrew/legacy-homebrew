@@ -1,9 +1,9 @@
 class Pulseaudio < Formula
   desc "Sound system for POSIX OSes"
   homepage "http://pulseaudio.org"
-  url "http://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-6.0.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/p/pulseaudio/pulseaudio_6.0.orig.tar.xz"
-  sha256 "b50640e0b80b1607600accfad2e45aabb79d379bf6354c9671efa2065477f6f6"
+  url "http://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-7.1.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/p/pulseaudio/pulseaudio_7.1.orig.tar.xz"
+  sha256 "e667514a28328f92aceea754a224a0150dddfe7e9a71b4c6d31489220153b9d9"
 
   bottle do
     sha256 "d57bc83ad5fc738faeb8fe64b03139e1164cecff7cc969b17f4b551e31ff25fa" => :yosemite
