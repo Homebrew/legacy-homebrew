@@ -2,14 +2,14 @@ class CrystaxNdk < Formula
   desc "Drop-in replacement for Google's Android NDK"
   homepage "https://www.crystax.net/android/ndk"
 
-  version "10.3.0"
+  version "10.3.1"
 
   if MacOS.prefer_64_bit?
     url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86_64.tar.xz"
-    sha256 "1c3894aa306fd77e73f299c6b92b7de60465f8a4807d76faf7805595170e938f"
+    sha256 "6469c37e8fa107db51f9ada26fe3e27fddf3d6c3c51272a783fed36b110550ef"
   else
     url "https://www.crystax.net/download/crystax-ndk-#{version}-darwin-x86.tar.xz"
-    sha256 "22339c6ef7c4a1e8fb35eb6a948e966c0ae27480a7a0ad6ac3a94f3233199362"
+    sha256 "a59218c0bfc477f0ef2dbd345f21cca4fb1f183b4e154ff7724ea0f6df8a7855"
   end
 
   bottle :unneeded
@@ -21,11 +21,6 @@ class CrystaxNdk < Formula
 
   def install
     bin.mkpath
-
-    # Cleanup some files since "brew audit" complains they're linked against system OpenSSL
-    # Those files are present there by mistake, and will be removed in next upstream patch version (10.3.1?),
-    # so it's safe to remove them here.
-    %w[_hashlib.so _ssl.so].each { |file| rm_f Dir.glob("prebuilt/darwin-*/lib/python*/lib-dynload/#{file}") }
 
     prefix.install Dir["*"]
 
