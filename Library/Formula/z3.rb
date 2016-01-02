@@ -19,16 +19,22 @@ class Z3 < Formula
   if build.without?("python3") && build.without?("python")
     odie "z3: --with-python3 must be specified when using --without-python"
   end
+  depends_on "ocaml" => :optional
 
   def install
     inreplace "scripts/mk_util.py", "dist-packages", "site-packages"
 
     Language::Python.each_python(build) do |python, _|
       args = ["--prefix=#{prefix}"]
+      args << "--ml" if build.with? "ocaml"
       system python, "scripts/mk_make.py", *args
       cd "build" do
         system "make"
         system "make", "install"
+
+        if build.with? "ocaml"
+          (lib/"ocaml").install Dir["api/ml/*"]
+        end
       end
     end
 
@@ -76,6 +82,18 @@ class Z3 < Formula
 
     if build.with? "python"
       assert_equal "#{version}\n", shell_output('python -c "import z3; print z3.get_version_string()"')
+    end
+
+    if build.with? "ocaml"
+      ln_s pkgshare/"examples/ml/ml_example.ml", testpath
+      ocamlc_args = [
+        "-custom",
+        "-o", "ml_example",
+        "-cclib", "-L. -lz3",
+        "nums.cma", "z3ml.cma", "ml_example.ml",
+      ]
+      system "ocamlc", *ocamlc_args
+      assert_match(/Running Z3 version #{version}/, shell_output("./ml_example"))
     end
   end
 end
