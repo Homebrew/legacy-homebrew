@@ -9,8 +9,8 @@ class Mp3unicode < Formula
 
   def install
     ENV.append("PKG_CONFIG", "true")
-    ENV.append("TAGLIB_CFLAGS", "-I/usr/local/include/taglib")
-    ENV.append("TAGLIB_LIBS", "-L/usr/local/lib -ltag")
+    ENV.append("TAGLIB_CFLAGS", "-I#{Formula["taglib"].opt_include}/taglib")
+    ENV.append("TAGLIB_LIBS", "-L#{Formula["taglib"].opt_lib} -ltag")
     ENV.append("ICONV_LIBS", "-liconv")
 
     system "./configure", "--prefix=#{prefix}"
