@@ -32,7 +32,11 @@ module Homebrew
       @xcode
     elsif MacOS::Xcode.installed?
       @xcode = MacOS::Xcode.version
-      @xcode += " => #{MacOS::Xcode.prefix}" unless MacOS::Xcode.default_prefix?
+      if MacOS::Xcode.auto_selected?
+        @xcode += " => #{MacOS::Xcode.prefix} (auto-selected)"
+      elsif !MacOS::Xcode.default_prefix?
+        @xcode += " => #{MacOS::Xcode.prefix}"
+      end
       @xcode
     end
   end
