@@ -5,9 +5,10 @@ class GnuGetopt < Formula
   sha256 "d0bf1dc642a993e7388a1cddfb9409bed375c21d5278056ccca3a0acd09dc5fe"
 
   bottle do
-    sha1 "a9028999ae9bb3e606df3ff6a1b246311b77fae5" => :yosemite
-    sha1 "6e8df00f7607127df705d7c1eb6a046e599f7825" => :mavericks
-    sha1 "cbd65e8f5e2c613d48dfefdcb801aa0a7ecdc10f" => :mountain_lion
+    sha256 "5e9e87fe18c5681e80f1cf940fed275ed895831304326bc5e7be6fb6e53e8594" => :el_capitan
+    sha256 "f8dbbec03aaaeb1bc774d9bf606701901cc9a8ad15cecc5473567e51845057e6" => :yosemite
+    sha256 "27938c615808c8e4ff2eacac0a4059c76dee5518a5c8bbfb304b24b70736b429" => :mavericks
+    sha256 "88a02cd609a91253e9b996a1fcb1e8837161673e413fe792e5d05aa3ff9a94cf" => :mountain_lion
   end
 
   depends_on "gettext"

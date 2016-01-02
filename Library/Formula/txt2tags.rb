@@ -4,6 +4,8 @@ class Txt2tags < Formula
   url "https://txt2tags.googlecode.com/files/txt2tags-2.6.tgz"
   sha256 "601467d7860f3cfb3d48050707c6277ff3ceb22fa7be4f5bd968de540ac5b05c"
 
+  bottle :unneeded
+
   def install
     bin.install "txt2tags"
     man1.install "doc/manpage.man" => "txt2tags.1"

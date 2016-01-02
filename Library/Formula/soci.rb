@@ -1,7 +1,7 @@
 class Soci < Formula
   desc "Database access library for C++"
   homepage "http://soci.sourceforge.net/"
-  url "http://download.sourceforge.net/project/soci/soci/soci-3.2.2/soci-3.2.2.zip"
+  url "https://download.sourceforge.net/project/soci/soci/soci-3.2.2/soci-3.2.2.zip"
   sha256 "e3ad3ea0ef37eab0ae9e6459d2cdd099b1fa1165b663c349e1200356cf4e9c91"
 
   depends_on "cmake" => :build

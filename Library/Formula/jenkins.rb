@@ -1,22 +1,17 @@
 class Jenkins < Formula
   desc "Extendable open source continuous integration server"
   homepage "https://jenkins-ci.org"
-  url "http://mirrors.jenkins-ci.org/war/1.624/jenkins.war"
-  sha256 "f8be718fe5ca3b025f53c89ddb484e1844995902816f739f93f5d2746e6db48a"
-
-  bottle do
-    cellar :any
-    sha256 "01a81aef39d3e86505963c3f616b66727b9ffabd95a58579b5c490b81cb46c82" => :yosemite
-    sha256 "52f70b1f5728971ccd26b36fb4e0463b7ff9f16a597e0ba4258b0811d3bea431" => :mavericks
-    sha256 "c61099c5fd0c00113d4f96ebf904957e1daabafe733279aa6fd32271574820e0" => :mountain_lion
-  end
+  url "http://mirrors.jenkins-ci.org/war/1.643/jenkins.war"
+  sha256 "b8c6387e56d04a0a4a7ec8d9dacd379fbd5d4001d01fdfcd443f9864809f9293"
 
   head do
     url "https://github.com/jenkinsci/jenkins.git"
     depends_on "maven" => :build
   end
 
-  depends_on :java => "1.6+"
+  bottle :unneeded
+
+  depends_on :java => "1.7+"
 
   def install
     if build.head?
@@ -60,6 +55,7 @@ class Jenkins < Formula
   end
 
   test do
+    ENV["JENKINS_HOME"] = testpath
     pid = fork do
       exec "#{bin}/jenkins"
     end

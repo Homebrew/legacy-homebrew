@@ -1,14 +1,21 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
-  homepage "http://www.lighttpd.net/"
-  url "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.36.tar.xz"
-  sha256 "897ab6b1cc7bd51671f8af759e7846245fbbca0685c30017e93a5882a9ac1a53"
+  homepage "https://www.lighttpd.net/"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.38.tar.xz"
+  sha256 "4912568b7befcf3f552ca4668bd7f38cd85f42a22944359d00816ec27eb1e504"
 
   bottle do
     revision 1
-    sha256 "7a88d41abb5e7ade23e1cec1baa71c38a045e162f160303f07dd7d854ca7c8d3" => :yosemite
-    sha256 "48404aef3bd458b5c63a1162b579466b8d77264287b5721f3abe63339c17d227" => :mavericks
-    sha256 "d4b861b7b36a0f984cafcc14703f2c4a49be23be4ff24f41310d65f95df25f00" => :mountain_lion
+    sha256 "c88a139e5914a38194eba56154f3472cb6467ef343bc3c0b209f2df3e1e16c9a" => :el_capitan
+    sha256 "aeada1a7d5c027b6716755b1e61a8a3d3dca3617e1f61a8318dc866617f60e3b" => :yosemite
+    sha256 "a4a350a5ec1e2d295db457bfffb6e6ad238140e78d54de761c00002ac2ab759a" => :mavericks
+  end
+
+  # this patch can be removed with the next release
+  # https://redmine.lighttpd.net/issues/2698
+  patch do
+    url "https://redmine.lighttpd.net/attachments/download/1671/0001-core-fix-memset_s-call-fixes-2698.patch"
+    sha256 "e04c11ce6ce5a32f1208311671acb7413fbeca5ce3fefa9a0e3121cd920a5cdb"
   end
 
   option "with-lua51", "Include Lua scripting support for mod_magnet"
@@ -57,9 +64,6 @@ class Lighttpd < Formula
     args << "--with-lua" if build.with? "lua51"
     args << "--with-libev" if build.with? "libev"
 
-    # fixed upstream, should be in next release: http://redmine.lighttpd.net/issues/2517
-    inreplace "src/Makefile.am", "$(LDAP_LIB)", "$(SSL_LIB) $(LDAP_LIB)"
-
     # autogen must be run, otherwise prebuilt configure may complain
     # about a version mismatch between included automake and Homebrew's
     system "./autogen.sh"
@@ -86,10 +90,10 @@ class Lighttpd < Formula
         s.sub!(/^server\.username\s*=\s*".+"$/, 'server.username  = "_www"')
         s.sub!(/^server\.groupname\s*=\s*".+"$/, 'server.groupname = "_www"')
         s.sub!(/^server\.event-handler\s*=\s*"linux-sysepoll"$/, 'server.event-handler = "select"')
-        s.sub!(/^server\.network-backend\s*=\s*"linux-sendfile"$/, 'server.network-backend = "writev"')
+        s.sub!(/^server\.network-backend\s*=\s*"sendfile"$/, 'server.network-backend = "writev"')
 
         # "max-connections == max-fds/2",
-        # http://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
+        # https://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
         s.sub!(/^server\.max-connections = .+$/, "server.max-connections = " + (MAX_FDS / 2).to_s)
       end
     end

@@ -23,6 +23,10 @@ _brew_official_taps() {
   official_taps=(`brew tap --list-official`)
 }
 
+_brew_pinned_taps() {
+  pinned_taps=(`brew tap --list-pinned`)
+}
+
 _brew_outdated_formulae() {
   outdated_formulae=(`brew outdated`)
 }
@@ -36,6 +40,7 @@ _1st_arguments=(
   'config:show homebrew and system configuration'
   'create:create a new formula'
   'deps:list dependencies and dependants of a formula'
+  'desc:display a description of a formula'
   'doctor:audits your installation for common issues'
   'edit:edit a formula'
   'fetch:download formula resources to the cache'
@@ -46,6 +51,7 @@ _1st_arguments=(
   'reinstall:install a formula anew; re-using its current options'
   'leaves:show installed formulae that are not dependencies of another installed formula'
   'link:link a formula'
+  'linkapps:symlink .app bundles provided by formulae into /Applications'
   'list:list files in a formula or not-installed formulae'
   'log:git commit log for a formula'
   'missing:check all installed formuale for missing dependencies.'
@@ -59,9 +65,12 @@ _1st_arguments=(
   'switch:switch between different versions of a formula'
   'tap:tap a new formula repository from GitHub, or list existing taps'
   'tap-info:information about a tap'
+  'tap-pin:pin a tap'
+  'tap-unpin:unpin a tap'
   'test-bot:test a formula and build a bottle'
   'uninstall:uninstall a formula'
   'unlink:unlink a formula'
+  'unlinkapps:remove symlinked .app bundles provided by formulae from /Applications'
   'unpin:unpin specified formulae'
   'untap:remove a tapped repository'
   'update:fetch latest version of Homebrew and all formulae'
@@ -89,9 +98,18 @@ if (( CURRENT == 1 )); then
 fi
 
 case "$words[1]" in
-  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|edit|options|switch)
+  install|reinstall|audit|home|homepage|log|info|abv|uses|cat|deps|desc|edit|options|switch)
     _brew_all_formulae
     _wanted formulae expl 'all formulae' compadd -a formulae ;;
+  linkapps|unlinkapps)
+    _arguments \
+      '(--local)--local[operate on ~/Applications instead of /Applications]' \
+      '1: :->forms' && return 0
+
+    if [[ "$state" == forms ]]; then
+      _brew_installed_formulae
+      _wanted installed_formulae expl 'installed formulae' compadd -a installed_formulae
+    fi ;;
   list|ls)
     _arguments \
       '(--unbrewed)--unbrewed[files in brew --prefix not controlled by brew]' \
@@ -110,12 +128,15 @@ case "$words[1]" in
     _arguments \
       '(--macports)--macports[search the macports repository]' \
       '(--fink)--fink[search the fink repository]' ;;
-  untap|tap-info)
+  untap|tap-info|tap-pin)
     _brew_installed_taps
     _wanted installed_taps expl 'installed taps' compadd -a installed_taps ;;
   tap)
     _brew_official_taps
     _wanted official_taps expl 'official taps' compadd -a official_taps ;;
+  tap-unpin)
+    _brew_pinned_taps
+    _wanted pinned_taps expl 'pinned taps' compadd -a pinned_taps ;;
   upgrade)
     _brew_outdated_formulae
     _wanted outdated_formulae expl 'outdated formulae' compadd -a outdated_formulae ;;

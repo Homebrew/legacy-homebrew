@@ -5,17 +5,22 @@ class Wellington < Formula
   homepage "https://github.com/wellington/wellington"
 
   stable do
-    url "https://github.com/wellington/wellington/archive/v0.9.1.tar.gz"
-    sha256 "133a3d698f98139808c4a86955a9cdc0d9e91a0ed886c0851aceaed4595d8022"
-
-    depends_on "libsass"
+    url "https://github.com/wellington/wellington/archive/v0.9.3.tar.gz"
+    sha256 "108e5626dad9494a1de7d6241a2f96c6fa5bd774133a00c301d42abd1089f3e2"
   end
 
   bottle do
-    cellar :any
-    sha256 "843f251fe4157482b0c758512f734c7931016e9fcfd501ed1a5e267ac3efcd36" => :yosemite
-    sha256 "860cdde8a2327cfd11910fb434f3c9666e1b186928c6fbf5cb106eb5d7f19ae9" => :mavericks
-    sha256 "10c2b1bbbe26bbfd5f5644c1d0047292b896d6b5555e275d0d47788566e7973f" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "3656e211a96b653dbb5d32a8e4f51a6b68bd3ee95019aad8cd0f4d512352da38" => :el_capitan
+    sha256 "8fcca3d1cc4f4ae6f2821b4b215c58ab6c7d88178b5c4cffe7adc72e86da38c5" => :yosemite
+    sha256 "2ef26afb326f22102249daee8c795fb467ce9716a2aae306efd23efc65020df3" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/wellington/wellington/archive/v1.0.0-beta1.tar.gz"
+    sha256 "6ea2a260ba7146a6bd87f42ab22082dfd84eb5aa52adae0629cbe71395cf56de"
+    version "1.0.0-beta1"
   end
 
   needs :cxx11
@@ -29,12 +34,8 @@ class Wellington < Formula
   end
 
   depends_on "go" => :build
+  depends_on "godep" => :build
   depends_on "pkg-config" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-      :revision => "fe7138c011ae7875d4af21efe8b237f4987d8c4a"
-  end
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git",
@@ -53,10 +54,7 @@ class Wellington < Formula
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-    system "bin/godep", "restore"
+    system "godep", "restore"
 
     # Build libsass from source for head build
     if build.head?
@@ -73,7 +71,7 @@ class Wellington < Formula
     mkdir_p buildpath/"src/github.com/wellington"
     ln_s buildpath, buildpath/"src/github.com/wellington/wellington"
 
-    system "go", "build", "-ldflags", "-X main.version #{version}", "-o", "dist/wt", "wt/main.go"
+    system "go", "build", "-ldflags", "-X github.com/wellington/wellington/version.Version #{version}", "-o", "dist/wt", "wt/main.go"
     bin.install "dist/wt"
   end
 

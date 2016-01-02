@@ -3,22 +3,22 @@ require "language/go"
 class ThePlatinumSearcher < Formula
   desc "Multi-platform code-search similar to ack and ag"
   homepage "https://github.com/monochromegane/the_platinum_searcher"
-  url "https://github.com/monochromegane/the_platinum_searcher/archive/v1.7.8.tar.gz"
-  sha256 "965f33c1b30d76d083fc425160ec2562acf64fb087dd62ebce510424bee787b8"
+  url "https://github.com/monochromegane/the_platinum_searcher/archive/v2.0.2.tar.gz"
+  sha256 "437f5f0e283530ea95275ef5fd9abe460218d7e868883355a85a672f30070ee9"
   head "https://github.com/monochromegane/the_platinum_searcher.git"
 
   bottle do
-    cellar :any
-    sha256 "b54f456ff639feb502bb0d2e26e56d88226df18588617c43be4701cd04a68be7" => :yosemite
-    sha256 "a3d438fb5d3caf361b58b482b77d58a72534ed4d91d16194702d35c3790c182a" => :mavericks
-    sha256 "66fa09e74f3cb51a3e54623e0a6b4af1fe3cc1b2b010abd62157f7c189f06aec" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0d3979c24e1dc16b2facf14031b4cb72f1306a783470fb296e9a59b19222e91a" => :el_capitan
+    sha256 "3abdcc4eae1a77c137947974c1ee4e1e1d34d80022729fe45978a1183412a492" => :yosemite
+    sha256 "2ee014d17b5017224105c472a2397916382918f6a31d93d1f88d811ba3ee8870" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/jessevdk/go-flags" do
     url "https://github.com/jessevdk/go-flags.git",
-        :revision => "1b89bf73cd2c3a911d7b2a279ab085c4a18cf539"
+        :revision => "0a28dbe50f23d8fce6b016975b964cfe7b97a20a"
   end
 
   go_resource "github.com/monochromegane/terminal" do
@@ -28,12 +28,37 @@ class ThePlatinumSearcher < Formula
 
   go_resource "github.com/shiena/ansicolor" do
     url "https://github.com/shiena/ansicolor.git",
-        :revision => "a5e2b567a4dd6cc74545b8a4f27c9d63b9e7735b"
+        :revision => "691ac7d4ac14053de3cbe16e07b79246300db97d"
   end
 
   go_resource "golang.org/x/text" do
     url "https://github.com/golang/text.git",
-        :revision => "3eb7007b740b66a77f3c85f2660a0240b284115a"
+        :revision => "c980adc4a823548817b9c47d38c6ca6b7d7d8b6a"
+  end
+
+  go_resource "github.com/BurntSushi/toml" do
+    url "https://github.com/BurntSushi/toml.git",
+        :revision => "056c9bc7be7190eaa7715723883caffa5f8fa3e4"
+  end
+
+  go_resource "github.com/monochromegane/conflag" do
+    url "https://github.com/monochromegane/conflag.git",
+        :revision => "6d68c9aa4183844ddc1655481798fe4d90d483e9"
+  end
+
+  go_resource "github.com/monochromegane/go-gitignore" do
+    url "https://github.com/monochromegane/go-gitignore.git",
+        :revision => "1ffeeb6761d4574b515b2cfede9073d2eac5fbfc"
+  end
+
+  go_resource "github.com/monochromegane/go-home" do
+    url "https://github.com/monochromegane/go-home.git",
+        :revision => "25d9dda593924a11ea52e4ffbc8abdb0dbe96401"
+  end
+
+  go_resource "gopkg.in/yaml.v2" do
+    url "https://gopkg.in/yaml.v2.git",
+        :revision => "c1cd2254a6dd314c9d73c338c12688c9325d85c6"
   end
 
   def install

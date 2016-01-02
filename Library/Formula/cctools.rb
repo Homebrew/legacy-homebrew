@@ -12,16 +12,19 @@ class Cctools < Formula
   end
 
   bottle do
-    cellar :any
-    sha1 "1acad163d4a245f5bd7ad2668cc87a5c9102163a" => :yosemite
-    sha1 "2629465c3d063d3a108adc987bbaa910a49db5f4" => :mavericks
-    sha1 "b5ccf7ea27f82e7eb8aeed1e327079c8a07434fb" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "398333f85c3944de889172ca9d3aa5ffd709403ca2225316f130be817f09873a" => :el_capitan
+    sha256 "a76a710f5f164feace5ad107eb40bf5e6a25e916f7334e69ee197a8e3d02b90c" => :yosemite
+    sha256 "3b0c895c6f0832ef9509720ebc15478e188ea6396ba41729273eb64d7b2f7ec2" => :mavericks
+    sha256 "f9f74d98119d2efd5530f8d98eb7838a77be35576880ecec73fe9d535aa2afb0" => :mountain_lion
   end
-
-  depends_on :ld64
 
   keg_only :provided_by_osx,
     "This package duplicates tools shipped by Xcode."
+
+  depends_on :ld64
+
+  cxxstdlib_check :skip
 
   if MacOS.version >= :snow_leopard
     option "with-llvm", "Build with LTO support"
@@ -29,31 +32,31 @@ class Cctools < Formula
 
     # These patches apply to cctools 855, for newer OSes
     patch :p0 do
-      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-829-lto.patch"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/cctools-829-lto.patch"
       sha256 "8ed90e0eef2a3afc810b375f9d3873d1376e16b17f603466508793647939a868"
     end
 
     patch :p0 do
-      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/PR-37520.patch"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/PR-37520.patch"
       sha256 "921cba3546389809500449b08f4275cfd639295ace28661c4f06174b455bf3d4"
     end
 
     patch :p0 do
-      url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/cctools-839-static-dis_info.patch"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/cctools-839-static-dis_info.patch"
       sha256 "f49162b5c5d2753cf19923ff09e90949f01379f8de5604e86c59f67441a1214c"
     end
 
     # Fix building libtool with LTO disabled
     patch do
-      url "https://gist.githubusercontent.com/mistydemeo/9fc5589d568d2fc45fb5/raw/c752d5c4567809c10b14d623b6c2d7416211b33a/libtool-no-lto.diff"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/libtool-no-lto.diff"
       sha256 "3b687f2b9388ac6c4acac2b7ba28d9fd07f2a16e7d2dad09aa2255d98ec1632b"
     end
 
     # strnlen patch only needed on Snow Leopard
     if MacOS.version == :snow_leopard
       patch :p0 do
-        url "https://trac.macports.org/export/129741/trunk/dports/devel/cctools/files/snowleopard-strnlen.patch"
-        sha1 "31c083b056d4510702484436fc66f24cc8635060"
+        url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/snowleopard-strnlen.patch"
+        sha256 "b118f94411ad194596102f230abafa2f20262343ab36f2a578c6bdc1ae83ae12"
       end
     end
   else
@@ -61,34 +64,34 @@ class Cctools < Formula
 
     # This set of patches only applies to cctools 806, for older OSes
     patch :p0 do
-      url "https://trac.macports.org/export/103959/trunk/dports/devel/cctools/files/cctools-806-lto.patch"
-      sha1 "f8a2059a4730119687d2ba6a5d9e7b49b66840e8"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/cctools-806-lto.patch"
+      sha256 "a92f38f0c34749b0988d4bfec77dec3ce3fc27d50a2cf9f3aaffa4277386470c"
     end
 
     patch :p0 do
-      url "https://trac.macports.org/export/103959/trunk/dports/devel/cctools/files/PR-9087924.patch"
-      sha1 "1e5040370944a84e06bd983ea9f4e544a2ea7236"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/PR-9087924.patch"
+      sha256 "6020933a25196660c2eb09d06f2cc4c2b5d67158fd2d99c221a17b63111ff391"
     end
 
     patch :p0 do
-      url "https://trac.macports.org/export/103959/trunk/dports/devel/cctools/files/PR-9830754.patch"
-      sha1 "65b8e2f7a877716fec82fcd2cd0c6c34adfdece3"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/PR-9830754.patch"
+      sha256 "092e2762328477227f9589adf14c14945ebe6f266567deef16754ccc2ecb352d"
     end
 
     # Despite the patch name this is needed on 806 too
     patch :p0 do
-      url "https://trac.macports.org/export/103985/trunk/dports/devel/cctools/files/cctools-822-no-lto.patch"
-      sha1 "e58ee836dde4693e90a39579c20df45f067d75a1"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/cctools-822-no-lto.patch"
+      sha256 "535fe18d8842b03d23b0be057905f4f685d63b9c6436227b623b7aecd8e6ea83"
     end
 
     patch :p0 do
-      url "https://trac.macports.org/export/103959/trunk/dports/devel/cctools/files/PR-11136237.patch"
-      sha1 "88c045c08161d14241b7d51437b3ba77093d573a"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/PR-11136237.patch"
+      sha256 "a19685c8870bdf270ed0fb8240985d87556be07eef14920ea782e2f5ec076759"
     end
 
     patch :p0 do
-      url "https://trac.macports.org/export/103959/trunk/dports/devel/cctools/files/PR-12475288.patch"
-      sha1 "3d6cb1ff1443b8c1c68c21c9808833537f7ce48d"
+      url "https://raw.githubusercontent.com/Homebrew/patches/db27850/cctools/PR-12475288.patch"
+      sha256 "2883e782094e05cbe5bc5a9f672aa775bc23ca0c77d2ecaa931be8b39e3525cb"
     end
   end
 

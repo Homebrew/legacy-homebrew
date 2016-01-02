@@ -1,16 +1,16 @@
 class CppNetlib < Formula
   desc "C++ libraries for high level network programming"
   homepage "http://cpp-netlib.org"
-  url "https://storage.googleapis.com/cpp-netlib-downloads/0.11.1/cpp-netlib-0.11.1-final.tar.bz2"
-  version "0.11.1"
-  sha256 "8f5a0bb7e5940490b4e409f9c805b752ee4b598e06d740d04adfc76eb5c8e23e"
-  revision 1
+  url "http://downloads.cpp-netlib.org/0.11.2/cpp-netlib-0.11.2-final.tar.gz"
+  version "0.11.2"
+  sha256 "71953379c5a6fab618cbda9ac6639d87b35cab0600a4450a7392bc08c930f2b1"
 
   bottle do
-    cellar :any
-    sha256 "908f012404ef102a2c9d537bb09852f2b6547eb00f32a0694a7a65e634fc05c4" => :yosemite
-    sha256 "63797d147576de712c1d4e02722767d8335239464fe3e28b09a15e07f33ef2d4" => :mavericks
-    sha256 "a933931c06e160a3792e1d71cc0c12ae47b8ad058c37dffae5e92f217edd11f5" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5669a528afe56b310179af07d0191b96491f90a2365b5b9e7f1d26daa011b463" => :el_capitan
+    sha256 "2ddb407f33dd6a8c8ec1e3a8afd67a3afb1666f843794e72632f203fb5b42ecb" => :yosemite
+    sha256 "0913efd07660f359ee7d043f06a25ccb9fc3010f42b15f4dbd43b558f2161bb1" => :mavericks
+    sha256 "093cc615abf08eeb6d698d85e9d4bb8003e536548f925246d86baa7f1ec45506" => :mountain_lion
   end
 
   depends_on "cmake" => :build

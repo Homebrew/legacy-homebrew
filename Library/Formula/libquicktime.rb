@@ -6,10 +6,10 @@ class Libquicktime < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha1 "15ba1227bfc6f81475ea8d57d59019d211117a82" => :yosemite
-    sha1 "95a530bd3c46303f6df49fc0c0bb3d18b43706f2" => :mavericks
-    sha1 "97260df51e133923c94c88aeee5d84a216617490" => :mountain_lion
+    revision 2
+    sha256 "2cae7adf72e3bb72e629702828a1fd6b45cfdaf75d5c168a5a64fd2ed3789814" => :el_capitan
+    sha256 "1c6114f8e1afcca388259b917f8a4c2718de06b75ccb4f031c8378fbc77b99f7" => :yosemite
+    sha256 "743855f6c61608efd44d918975c264fecfe223606fd0bb21e6e3e85a31c99647" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -21,9 +21,9 @@ class Libquicktime < Formula
   depends_on "libvorbis" => :optional
 
   # Fixes compilation with ffmpeg 2.x; applied upstream
-  # http://sourceforge.net/p/libquicktime/mailman/message/30792767/
+  # https://sourceforge.net/p/libquicktime/mailman/message/30792767/
   patch :p0 do
-    url "http://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
+    url "https://sourceforge.net/p/libquicktime/mailman/attachment/51812B9E.3090802%40mirriad.com/1/"
     sha256 "ae9773d11db5e60824d4cd8863daa6931e980b7385c595eabc37c7bb8319f225"
   end
   patch :DATA

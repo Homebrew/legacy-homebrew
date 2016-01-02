@@ -1,17 +1,10 @@
 class Akka < Formula
   desc "Toolkit for building concurrent, distributed, and fault tolerant apps"
   homepage "http://akka.io/"
+  url "https://downloads.typesafe.com/akka/akka_2.11-2.4.0.zip"
+  sha256 "22155144e5828a1dc40fa0a74031d5bf10292e8fb574d1c7fc5fc0ddebd03667"
 
-  stable do
-    url "https://downloads.typesafe.com/akka/akka_2.11-2.3.11.zip"
-    sha256 "58157e4f85024d66e20d7e14d2681e041e385af82985eceb5210a454c251abec"
-  end
-
-  devel do
-    url "https://downloads.typesafe.com/akka/akka_2.11-2.4-M2.zip"
-    sha256 "dc62020928a182cfd1125bd9ec5ff4ce4fcd3629004af450653cc45ad583cfd2"
-    version "2.4-M2"
-  end
+  bottle :unneeded
 
   def install
     # Remove Windows files

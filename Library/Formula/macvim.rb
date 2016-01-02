@@ -14,17 +14,17 @@ end
 # Reference: https://github.com/macvim-dev/macvim/wiki/building
 class Macvim < Formula
   desc "GUI for vim, made for OS X"
-  homepage "https://code.google.com/p/macvim/"
-  url "https://github.com/macvim-dev/macvim/archive/snapshot-77.tar.gz"
-  version "7.4-77"
-  sha256 "6b7f4b48ecef4a00dca17efef551884fcea1aa9897005497d31f52da7304bc5f"
+  homepage "https://github.com/macvim-dev/macvim"
+  url "https://github.com/macvim-dev/macvim/archive/snapshot-88.tar.gz"
+  version "7.4-88"
+  sha256 "4dfce8da6b2c3f03483befb413279e0db1770d4181eeaa26d4b070a938cf92ad"
 
   head "https://github.com/macvim-dev/macvim.git"
 
-  option "with-custom-icons", "Try to generate custom document icons"
+  bottle :disable, "To use the user's Python."
+
   option "with-override-system-vim", "Override system vim"
 
-  deprecated_option "custom-icons" => "with-custom-icons"
   deprecated_option "override-system-vim" => "with-override-system-vim"
 
   depends_on :xcode => :build
@@ -41,11 +41,6 @@ class Macvim < Formula
   def install
     # MacVim doesn't have and required any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
-
-    # Set ARCHFLAGS so the Python app (with C extension) that is
-    # used to create the custom icons will not try to compile in
-    # PPC support (which isn't needed in Homebrew-supported systems.)
-    ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
 
     # If building for 10.7 or up, make sure that CC is set to "clang".
     ENV.clang if MacOS.version >= :lion
@@ -103,16 +98,6 @@ class Macvim < Formula
     end
 
     system "./configure", *args
-
-    if build.with? "custom-icons"
-      # Get the custom font used by the icons
-      system "make", "-C", "src/MacVim/icons", "getenvy"
-    else
-      # Building custom icons fails for many users, so off by default.
-      inreplace "src/MacVim/icons/Makefile", "$(MAKE) -C makeicns", ""
-      inreplace "src/MacVim/icons/make_icons.py", "dont_create = False", "dont_create = True"
-    end
-
     system "make"
 
     prefix.install "src/MacVim/build/Release/MacVim.app"

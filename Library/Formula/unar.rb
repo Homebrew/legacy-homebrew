@@ -1,23 +1,30 @@
 class Unar < Formula
   desc "RAR archive command-line tools"
-  homepage "http://unarchiver.c3.cx/commandline"
-  url "https://theunarchiver.googlecode.com/files/unar1.8.1_src.zip"
-  version "1.8.1"
-  sha256 "67ccb1c780150840f38de63b8e7047717ef4c71b7574d9ef57bd9d9c93255709"
+  homepage "https://unarchiver.c3.cx/commandline"
+  url "https://wakaba.c3.cx/releases/TheUnarchiver/unar1.9.1_src.zip"
+  sha256 "28045fb688563c002b7c2807e80575d3f9af8eb024739f9ab836f681bb8e822c"
+  version "1.9.1"
 
-  head "https://code.google.com/p/theunarchiver/", :using => :hg
+  head "https://bitbucket.org/WAHa_06x36/theunarchiver", :using => :hg
 
   depends_on :xcode => :build
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "cb7c91f0aab580a0d4edb2db4934b7879cb468e3" => :mavericks
-    sha1 "35f2b3655adfed8daed2eee14f757c0ada553c00" => :mountain_lion
-    sha1 "a6254624528195ab69b6adf3b649571814b4d638" => :lion
+    sha256 "3f0abeedfdc17860ef6f8f8406b34cc6fb2b334e13c3081d00fb7c2ef98f7cc1" => :el_capitan
+    sha256 "829f81a91ebb65385bb5b39944f40a8a6a3a900e4717ef00cf608fec2884e3d6" => :yosemite
   end
 
   def install
+    # Files in unar1.9.1_src.zip have "The Unarchiver" path prefix, but HEAD checkout does not.
+    # Build on some versions of Xcode will fail if there's whitespace in path, so workaround
+    # by moving things out of "The Unarchiver" folder.
+    unless build.head?
+      mv "./The Unarchiver/Extra", "."
+      mv "./The Unarchiver/UniversalDetector", "."
+      mv "./The Unarchiver/XADMaster", "."
+    end
+
     # Build XADMaster.framework, unar and lsar
     xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "XADMaster", "SYMROOT=../", "-configuration", "Release"
     xcodebuild "-project", "./XADMaster/XADMaster.xcodeproj", "-target", "unar", "SYMROOT=../", "-configuration", "Release"

@@ -1,13 +1,14 @@
 class Rtorrent < Formula
   desc "Console-based BitTorrent client"
-  # Both homepage and primary url have been down since at least ~April 2015
   homepage "https://github.com/rakshasa/rtorrent"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/r/rtorrent/rtorrent_0.9.4.orig.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/r/rtorrent/rtorrent_0.9.4.orig.tar.gz"
-  sha256 "bc0a2c1ee613b68f37021beaf4e64a9252f91ed06f998c1e897897c354ce7e84"
-  revision 1
+  url "http://rtorrent.net/downloads/rtorrent-0.9.6.tar.gz"
+  sha256 "1e69c24f1f26f8f07d58d673480dc392bfc4317818c1115265b08a7813ff5b0e"
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on "cppunit" => :build
   depends_on "libtorrent"
   depends_on "xmlrpc-c" => :optional
 
@@ -28,6 +29,7 @@ class Rtorrent < Formula
           '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" | sed -e "s/-arch [^-]*/-arch $(uname -m) /" 2>/dev/null`'
       end
     end
+    system "sh", "autogen.sh"
     system "./configure", *args
     system "make"
     system "make", "install"

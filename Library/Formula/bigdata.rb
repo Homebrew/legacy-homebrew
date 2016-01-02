@@ -1,9 +1,11 @@
 class Bigdata < Formula
   desc "Graph database supporting RDF data model, Sesame, and Blueprint APIs"
-  homepage "http://www.blazegraph.com/bigdata"
-  url "https://downloads.sourceforge.net/project/bigdata/bigdata/1.5.1/bigdata-bundled.jar"
-  sha256 "092ecfb1293de27ef40c02795a34ac410e30d175623a342b27271952f01c1f1a"
-  version "1.5.1"
+  homepage "https://www.blazegraph.com/bigdata"
+  url "https://downloads.sourceforge.net/project/bigdata/bigdata/1.5.3/bigdata-bundled.jar"
+  version "1.5.3"
+  sha256 "d72a490a7e86ad96a85e26f52977675ac0f0621b8b02866ce29410796d70d552"
+
+  bottle :unneeded
 
   depends_on :java => "1.7+"
 
@@ -23,7 +25,7 @@ class Bigdata < Formula
         <key>Label</key>
         <string>#{plist_name}</string>
         <key>Program</key>
-        <string>#{bin}/bigdata</string>
+        <string>#{opt_bin}/bigdata</string>
         <key>RunAtLoad</key>
         <true/>
         <key>WorkingDirectory</key>

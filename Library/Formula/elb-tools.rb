@@ -5,6 +5,8 @@ class ElbTools < Formula
   version "1.0.35.0"
   sha256 "31d9aa0ca579c270f8e3579f967b6048bc070802b7b41a30a9fa090fbffba62b"
 
+  bottle :unneeded
+
   depends_on "ec2-api-tools"
   depends_on :java
 

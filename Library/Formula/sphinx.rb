@@ -1,11 +1,10 @@
 class Sphinx < Formula
   desc "Sphinx is a full-text search engine"
   homepage "http://www.sphinxsearch.com"
-  revision 1
 
   stable do
-    url "http://sphinxsearch.com/files/sphinx-2.2.9-release.tar.gz"
-    sha256 "79bcb9fca069ba630fd71fb40fba05bb16e19b475906fb6ae026334d50a6bf3a"
+    url "http://sphinxsearch.com/files/sphinx-2.2.10-release.tar.gz"
+    sha256 '054cb86e64bd48997d89386e1224d4405063d9857b2d7c33dc6cc1b9ef6df440'
   end
 
   devel do
@@ -16,9 +15,9 @@ class Sphinx < Formula
   head "http://sphinxsearch.googlecode.com/svn/trunk/"
 
   bottle do
-    sha256 "c9cdc77ed228f264c3f93293215cdb621129f52b90c49e157ac69ecf85027b16" => :yosemite
-    sha256 "b46915db19659083d4a6428a704dac03a4c4d4a2b0d88ad32902c5c739715714" => :mavericks
-    sha256 "419d876d846d9ad280be6f8ffdde5962cc6cb5accb32688e8af44f8c4e50989d" => :mountain_lion
+    sha256 "becbeff5c3c56ff65a66ce321dbe19673be86bc2466b560f3be651c81a1166ed" => :el_capitan
+    sha256 "7ac68d7f84767988fd1842b59999dba1226549f98847032ac179c763662b11d3" => :yosemite
+    sha256 "0a6cab6b68544bce68a09912f5cd26b10cee817adf9a2ec6f3b011d46444323f" => :mavericks
   end
 
   option "with-mysql",      "Force compiling against MySQL"
@@ -81,7 +80,7 @@ class Sphinx < Formula
 
   def caveats; <<-EOS.undent
     This is not sphinx - the Python Documentation Generator.
-    To install sphinx-python: use pip or easy_install,
+    To install sphinx-python use pip.
 
     Sphinx has been compiled with libstemmer support.
 

@@ -1,30 +1,34 @@
 class Launchdns < Formula
   desc "Mini DNS server designed soely to route queries to localhost"
   homepage "https://github.com/josh/launchdns"
-  url "https://github.com/josh/launchdns/archive/v1.0.1.tar.gz"
+  url "https://github.com/josh/launchdns/archive/v1.0.3.tar.gz"
   head "https://github.com/josh/launchdns.git"
-  sha256 "e96d1b92819a294f1e325df629ae4bf202fd137b8504cf4ddd00cda7e47f7099"
+  sha256 "c34bab9b4f5c0441d76fefb1ee16cb0279ab435e92986021c7d1d18ee408a5dd"
+
+  depends_on :macos => :yosemite
 
   bottle do
-    sha1 "592ca0ff9d89f00613dd850be91fa15a8d2cfc6a" => :yosemite
-    sha1 "9ff650e25b17a1f29e9965c5e5bc678fc82d32aa" => :mavericks
-    sha1 "ffb5f5e33aa4429c4ada07f5992dbef2853b2cb5" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d9434fae9c609c44264c90bef1e52b66db7f1ce2ef12cb8f2498a89d2ba4d0e0" => :el_capitan
+    sha256 "bdc3fea3f9a6c59908a2b81f1d3bb373dbe807efe62f4b6e0c00fac4dbf0d2c7" => :yosemite
   end
 
   def install
     ENV["PREFIX"] = prefix
+    system "./configure", "--with-launch-h", "--with-launch-h-activate-socket"
     system "make", "install"
 
     (prefix+"etc/resolver/dev").write("nameserver 127.0.0.1\nport 55353\n")
   end
 
   test do
+    assert_no_match /without socket activation/, shell_output("#{bin}/launchdns --version")
     system "#{bin}/launchdns", "-p0", "-t1"
   end
 
   def caveats; <<-EOS.undent
       To have *.dev resolved to 127.0.0.1:
-          sudo ln -s #{HOMEBREW_PREFIX}/etc/resolver /etc/resolver
+          sudo ln -s #{HOMEBREW_PREFIX}/etc/resolver /etc
     EOS
   end
 

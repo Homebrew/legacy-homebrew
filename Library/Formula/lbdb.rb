@@ -1,11 +1,14 @@
 # Originally:
-#   homepage 'http://www.spinnaker.de/lbdb/'
+#   homepage 'https://www.spinnaker.de/lbdb/'
 
 class Lbdb < Formula
   desc "Little brother's database for the mutt mail reader"
   homepage "https://github.com/tgray/lbdb/"
   url "https://github.com/tgray/lbdb/archive/v0.38.2.tar.gz"
   sha256 "a125fc304ca17b2ef82e00e59e0480adc9f3beb06ef5448b9010ed39027bc78e"
+
+  bottle do
+  end
 
   head "https://github.com/tgray/lbdb.git"
 
@@ -33,8 +36,8 @@ class Lbdb < Formula
   end
 
   def caveats; <<-EOS.undent
-    lbdb from <http://www.spinnaker.de/lbdb/> doesn't build on OS X because the
-    XCode project file is not compatible with XCode 4 or OS X 10.7.  This
+    lbdb from <https://www.spinnaker.de/lbdb/> doesn't build on OS X because the
+    Xcode project file is not compatible with Xcode 4 or OS X 10.7.  This
     version of lbdb has been modified to fix this.  A query was sent to the
     upstream maintainer to see if he was interested in the patch, but so far,
     there has been no response.

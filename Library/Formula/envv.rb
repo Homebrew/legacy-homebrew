@@ -6,9 +6,9 @@ class Envv < Formula
 
   bottle do
     cellar :any
-    sha1 "f403ddfed11541ee58575fc089b947ba047471f7" => :yosemite
-    sha1 "cfb8db8045fa214b29a5bd37dfcb84f6c92c5338" => :mavericks
-    sha1 "a6ffa7d40799a58a4ad6643d93083194a6b2c090" => :mountain_lion
+    sha256 "90a718606ec61e5a0e494d3e41b7d87048de803567f4ba2c65231fe41880bd97" => :yosemite
+    sha256 "9ac7617d6475a67c60604fcd72d0ae1a5515df331944e8fb2c2a9223c16e3504" => :mavericks
+    sha256 "333dd38f6cc080740ca155abcb6e9aa40be46d83ccdced16435cb9c5faf8b518" => :mountain_lion
   end
 
   def install

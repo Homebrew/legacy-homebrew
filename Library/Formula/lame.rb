@@ -7,9 +7,10 @@ class Lame < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "6e0b0c061c85bff64ac8359227d75133e6eb4234" => :yosemite
-    sha1 "7ce12008e94a451c7564e6b966d9c088e4934082" => :mavericks
-    sha1 "5e14b56d3bd8d6b93e8245bdf8ed4b01fd3899a3" => :mountain_lion
+    sha256 "fc7884b76f15e5feebef087b4597e1f142b9aed83274e989c1ca959edb294454" => :el_capitan
+    sha256 "064e13206ca4f731d919f89adb480b4a83116a4374f5aa6d205528838364ca7b" => :yosemite
+    sha256 "43ee3550ab5ce2c5e9b4e8adfedc197b5ffbf252320d46de97cd6a7133ddd16f" => :mavericks
+    sha256 "db743baefa0ec1b0f8c00df4728536418916c4d42c71c548dc43d43a1b24b523" => :mountain_lion
   end
 
   option :universal

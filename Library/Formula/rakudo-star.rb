@@ -1,13 +1,13 @@
 class RakudoStar < Formula
   desc "Perl 6 compiler"
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.07.tar.gz"
-  sha256 "84d7812a735eedc39d7c0898d4fd15ecd82563971744b2bc6ff0a1c581c82910"
+  url "https://github.com/rakudo/rakudo/archive/2015.12.tar.gz"
+  sha256 "d7c4fd1c8bc525e16cefe2d28513dcd9642ecbed37775cd2a89b324a62278780"
 
   bottle do
-    sha256 "82e75716f260d56213902d41ea0c3f4f31c9c38202cc605887eba97c1fd9c762" => :yosemite
-    sha256 "5ef37f2b8a655614ae64c488ec29bc758e336df52216405a47eda09283e261d2" => :mavericks
-    sha256 "21eeb7930847526b283fe411c0e9c733fd915f31ff66127985a0b4aebb9c80a0" => :mountain_lion
+    sha256 "1dc08a7a33242131b827e7e266b8af9d3fb630dba738f9c22250de77a7088eb1" => :el_capitan
+    sha256 "422c27c197fe44d47ac5df2295f88370937812b13257160953712fe96258f609" => :yosemite
+    sha256 "4fb89edadbc6d8db1bf752d7d3e9e9ccee5cfe78d89668d73ea0411eba50a88b" => :mavericks
   end
 
   option "with-jvm", "Build also for jvm as an alternate backend."
@@ -24,7 +24,7 @@ class RakudoStar < Formula
     ENV.remove "CPPFLAGS", "-I#{libffi.include}"
     ENV.prepend "CPPFLAGS", "-I#{libffi.lib}/libffi-#{libffi.version}/include"
 
-    ENV.j1  # An intermittent race condition causes random build failures.
+    ENV.j1 # An intermittent race condition causes random build failures.
 
     backends = ["moar"]
     generate = ["--gen-moar"]

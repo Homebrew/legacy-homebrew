@@ -5,9 +5,11 @@ class Byobu < Formula
   sha256 "4917013f590110d25b18293a51af02bd1ebcd1c665474f62e2566fb9b8f62916"
 
   bottle do
-    sha256 "3b5da5651f1d2f0b1233b1ae764c3f4a7e72a4c1725f4889c526bb83d5eca816" => :yosemite
-    sha256 "00f1ef5add1a0c204aedc18c562274d8740c4699b1b28cd21b6e44f9564428ce" => :mavericks
-    sha256 "85c10105b1d5a4b6b1ed3161c755643070fbd446547dbeac44bb4388ecd00669" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "210e6c1e3e682f64decac62c00f07729f700b22e3aaa4fea115d3276136b4cee" => :el_capitan
+    sha256 "5b9cd209e5607b1a24f000172bbe750906f5ec25c1f653f123332c0d7f314704" => :yosemite
+    sha256 "e554b1b2db2ae5008bff7fadf2ca98e6269c4b68374da80d103379d6b22b68a5" => :mavericks
   end
 
   conflicts_with "ctail", :because => "both install `ctail` binaries"

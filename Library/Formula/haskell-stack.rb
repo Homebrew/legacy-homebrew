@@ -4,29 +4,23 @@ class HaskellStack < Formula
   include Language::Haskell::Cabal
 
   desc "The Haskell Tool Stack"
-  homepage "https://www.stackage.org"
-  url "https://github.com/commercialhaskell/stack/archive/v0.1.3.1.tar.gz"
-  sha256 "3e6a575a3f5206af345912c4deba9552dfb156391357cec4eb1c2a9028ba4c51"
+  homepage "http://haskellstack.org"
+  url "https://github.com/commercialhaskell/stack/archive/v1.0.0.tar.gz"
+  sha256 "72f1874fa709b5c6dd3bc281b691064256963019f8c3747dd138baf3dc345fca"
 
   head "https://github.com/commercialhaskell/stack.git"
 
   bottle do
-    sha256 "cb28bda6f3aae15015f5fcf58b1ef36655a609542da709fb51ce8138440fa341" => :yosemite
-    sha256 "ca459d7260b5092be38c2a395d5dd5f248b6f9020ab2f3c5032a29ad7754ebb5" => :mavericks
-    sha256 "d538c8a32841c5f6203297c8b8b059f2e98a01ba82e9c353a24194952f19d203" => :mountain_lion
+    sha256 "be5897f86a381bc0dff8c675df60bdc6c35f72cc0ca28126de2f7de0faf6b3c7" => :el_capitan
+    sha256 "508d1771fcf677b5f33bc25e65955103556d009fc60c932c16b0f0c4ddea76f3" => :yosemite
+    sha256 "19b32eb15c78af9ae9510918767f57480c1f0f2cdb8d2933086c41318efd6c18" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
-  setup_ghc_compilers
-
   def install
-    cabal_sandbox do
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-    end
-    cabal_clean_lib
+    install_cabal_package
   end
 
   test do

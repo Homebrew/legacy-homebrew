@@ -3,8 +3,9 @@ class Resty < Formula
   homepage "https://github.com/micha/resty"
   url "https://github.com/micha/resty/archive/2.2.tar.gz"
   sha256 "a6961e16f1489ffa25bf9f2d8b38b9599c008d49267e32adf93f4f87184d4857"
-
   head "https://github.com/micha/resty.git"
+
+  bottle :unneeded
 
   # Don't take +x off these files
   skip_clean "bin"

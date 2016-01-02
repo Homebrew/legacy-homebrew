@@ -5,7 +5,8 @@ class GitReview < Formula
   sha256 "087e0a7dc2415796a9f21c484a6f652c5410e6ba4562c36291c5399f9395a11d"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "61b0cc402cb811d105da4f8a97472fe20818266e9b8e7275602ed378c8ce2e75" => :el_capitan
     sha256 "494c845139d081b189fcb98e708a0ae8ffddfea4b5c80c4e916abb30dc07450c" => :yosemite
     sha256 "4f83f2c08de81ea1c9c8f200ee5244e06449e68d5cff8d028d36b5e4022b511e" => :mavericks
     sha256 "fd4f64dfc96931c075790f27cf4fb077ab0378e04addff2a885e3c99ae58e13a" => :mountain_lion

@@ -3,18 +3,18 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.2.0-src.tar.gz"
-    sha256 "ea6eb983daf2a073df57186a58f0d4ce0e85c711bec13c627a8c85d51b6a6d78"
+    url "https://static.rust-lang.org/dist/rustc-1.5.0-src.tar.gz"
+    sha256 "641037af7b7b6cad0b231cc20671f8a314fbf2f40fc0901d0b877c39fc8da5a0"
 
     resource "cargo" do
       # git required because of submodules
-      url "https://github.com/rust-lang/cargo.git", :tag => "0.4.0", :revision => "553b363bcfcf444c5bd4713e30382a6ffa2a52dd"
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.7.0", :revision => "1af03beaffe9be40ae81ca39431c1f1651ef6b02"
     end
 
     # name includes date to satisfy cache
-    resource "cargo-nightly-2015-08-12" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-08-12/cargo-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "3d0ea9e20215e6450e2ae3977bbe20b9fb2bbf51ce145017ab198ea3409ffda2"
+    resource "cargo-nightly-2015-09-17" do
+      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-09-17/cargo-nightly-x86_64-apple-darwin.tar.gz"
+      sha256 "02ba744f8d29bad84c5e698c0f316f9e428962b974877f7f582cd198fdd807a8"
     end
   end
 
@@ -26,14 +26,20 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "c9bb07ae7830548c875f6d65bbc09ecde943a2c87b5564a8e63dac5e08ca276d" => :yosemite
-    sha256 "74a4271c86bc8a5ed0bfaac0cdd9d793b8f2c23e845f1107c1709d8bfca0d6f6" => :mavericks
-    sha256 "bfa7e32786aef2065c14fc8ca1464bc59301f4479462adefba99b491a9dc74be" => :mountain_lion
+    sha256 "5aeabcbbf97d221a9391d971215de2db2704f6a1f7f10d91d33b89ef4aff6d20" => :el_capitan
+    sha256 "d6a6d90a90590bfb211608dc99dbaa5ceebe6ed9be9d52c0fd7d60069141e7e8" => :yosemite
+    sha256 "d4239efd38e9312e67782cbefc223bde3b37ee5709107a437575d11cc0f93df0" => :mavericks
   end
 
+  option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
+
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
+  depends_on "llvm" => :optional
   depends_on "openssl"
+  depends_on "libssh2"
+
+  conflicts_with "multirust", :because => "both install rustc, rustdoc, cargo, rust-lldb, rust-gdb"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0
@@ -46,6 +52,7 @@ class Rust < Formula
     args = ["--prefix=#{prefix}"]
     args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
+    args << "--llvm-root=#{Formula["llvm"].opt_prefix}" if build.with? "llvm"
     if build.head?
       args << "--release-channel=nightly"
     else
@@ -59,21 +66,14 @@ class Rust < Formula
       cargo_stage_path = pwd
 
       if build.stable?
-        resource("cargo-nightly-2015-08-12").stage do
+        resource("cargo-nightly-2015-09-17").stage do
           system "./install.sh", "--prefix=#{cargo_stage_path}/target/snapshot/cargo"
           # satisfy make target to skip download
           touch "#{cargo_stage_path}/target/snapshot/cargo/bin/cargo"
         end
       end
 
-      # Fix for El Capitan DYLD_LIBRARY_PATH behavior
-      # https://github.com/rust-lang/cargo/issues/1816
-      inreplace "Makefile.in" do |s|
-        s.gsub! '"$$(CFG_RUSTC)"', '$$(CFG_RUSTC)'
-        s.gsub! '"$$(CARGO)"', '$$(CARGO)'
-      end
-
-      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}"
+      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}", "--enable-optimize"
       system "make"
       system "make", "install"
     end

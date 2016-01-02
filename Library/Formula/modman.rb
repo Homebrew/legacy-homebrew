@@ -4,6 +4,8 @@ class Modman < Formula
   url "https://github.com/colinmollenhour/modman/archive/1.12.tar.gz"
   sha256 "437547bb54f62101215038a678506e87b1e9d5a8f04eed68e0c823198dd0b6ec"
 
+  bottle :unneeded
+
   def install
     bin.install "modman"
     bash_completion.install "bash_completion" => "modman.bash"

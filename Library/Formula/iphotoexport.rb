@@ -4,6 +4,8 @@ class Iphotoexport < Formula
   url "https://iphotoexport.googlecode.com/files/iphotoexport-1.6.4.zip"
   sha256 "85644b5be1541580a35f1ea6144d832267f1284ac3ca23fe9bcd9eda5aaea5d3"
 
+  bottle :unneeded
+
   depends_on "exiftool"
 
   def install

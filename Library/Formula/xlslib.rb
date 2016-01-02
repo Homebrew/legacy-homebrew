@@ -1,23 +1,26 @@
-require "formula"
-
 class Xlslib < Formula
   desc "C++/C library to construct Excel .xls files in code"
-  homepage "http://sourceforge.net/projects/xlslib"
-  url "https://downloads.sourceforge.net/project/xlslib/xlslib-package-2.4.0.zip"
-  sha1 "73447c5c632c0e92c1852bd2a2cada7dd25f5492"
+  homepage "https://sourceforge.net/projects/xlslib"
+  url "https://downloads.sourceforge.net/project/xlslib/xlslib-package-2.5.0.zip"
+  mirror "https://dl.bintray.com/homebrew/mirror/xlslib-package-2.5.0.zip"
+  sha256 "05a5d052ffdd6590755949d80d16a56285561557bc9a5e887e3b8b3fef92a3f3"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "0161ba098ddc20603702218aafb04d6e26a9e135" => :yosemite
-    sha1 "39b190165018891f8df7711851d9bd0efd24026e" => :mavericks
-    sha1 "3935bcbc13fb51f5646dc55126f0cd921cde6f63" => :mountain_lion
+    sha256 "a4d5714e19c1d4e44d67bbe9cda064120dc01e9cf207771ae5ef208e76ed2cd9" => :el_capitan
+    sha256 "cfd77ea71da12276124cb9cb08bb9ad51ab38b17e912d4dd8c4fec8a428714a1" => :yosemite
+    sha256 "b23da4149e9db9bf4152cfc8943ac83d254796d88741592949c3928ae7988149" => :mavericks
   end
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   def install
     cd "xlslib"
+    system "autoreconf", "-i" # shipped configure hardcodes automake-1.13
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

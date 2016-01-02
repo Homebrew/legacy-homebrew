@@ -1,14 +1,21 @@
 class Libgphoto2 < Formula
   desc "Gphoto2 digital camera library"
   homepage "http://www.gphoto.org/proj/libgphoto2/"
-  # Sourceforge URL is still down
-  url "https://fossies.org/linux/privat/libgphoto2-2.5.8.tar.bz2"
-  sha256 "031a262e342fae43f724afe66787947ce1fb483277dfe5a8cf1fbe92c58e27b6"
+  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.9/libgphoto2-2.5.9.tar.bz2"
+  sha256 "cdb0e8e3a93417eb25892c4b03e64c07e93488ce05072edb62e1b70ff3291f32"
 
   bottle do
-    sha256 "c5849c3b1611cd54458134d5ae8d94b1e2faf6c5de8ccbfa446664025678514f" => :yosemite
-    sha256 "425d858334ca59eb8219b01017f799954001d86af107c5a7f48480a098ada324" => :mavericks
-    sha256 "292b0ae9dfd78befb17b3d54e358cbca0d0f994f6819f888b95aa28dde407d8b" => :mountain_lion
+    sha256 "e2d8ad91607270b43671899448beb926b98e639f4a61892eb2756743a5d74d0e" => :el_capitan
+    sha256 "7ffab7c5114e341807a93656bca4909dba424ed847ebb939be5d1eb46bdeb6eb" => :yosemite
+    sha256 "2e444b4547330228c78e30112692d79d54f3786c99a015328ba9b039dfcc79c2" => :mavericks
+  end
+
+  head do
+    url "https://github.com/gphoto/libgphoto2.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "gettext" => :build
   end
 
   option :universal
@@ -21,6 +28,8 @@ class Libgphoto2 < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"

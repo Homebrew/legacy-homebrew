@@ -1,15 +1,15 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  url "https://github.com/docker/docker.git", :tag => "v1.8.1",
-                                              :revision => "d12ea79c9de6d144ce6bc7ccfe41c507cca6fd35"
+  url "https://github.com/docker/docker.git", :tag => "v1.9.1",
+                                              :revision => "a34a1d598c6096ed8b5ce5219e77d68e5cd85462"
   head "https://github.com/docker/docker.git"
 
   bottle do
-    cellar :any
-    sha256 "c462e7f8e35f6a3a24c92e77adf6d9edaeca0677b5d7b0f2e265b60e6bb2690b" => :yosemite
-    sha256 "a2f91f72b04ee275d484e887fe679ba16190991aba46c3a4845b63c714dc1726" => :mavericks
-    sha256 "6ef8a317664148cc3af5939468a577bde2090bd65814c2ae7ea66fd5f5809e01" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "95dd6bae779945643e3380035fcee5aee3899c3c6eccf6573c0e5f119f91e0de" => :el_capitan
+    sha256 "2e4d8fa1a23b98f5709b19173736a5c8742a29025d35695f8585298c531e52cf" => :yosemite
+    sha256 "4033ae90e80faf0eae197e753f94d4b26461285ead526a3330ffc989cb283ef7" => :mavericks
   end
 
   option "with-experimental", "Enable experimental features"
@@ -29,6 +29,7 @@ class Docker < Formula
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"
+      fish_completion.install "contrib/completion/fish/docker.fish"
       zsh_completion.install "contrib/completion/zsh/_docker"
     end
   end

@@ -6,9 +6,10 @@ class Libimobiledevice < Formula
 
   bottle do
     cellar :any
-    sha1 "7e4b860af3e151499c8444cd5617033dc696e228" => :yosemite
-    sha1 "9db2d736d715cc8ea6af1f3c95679679792a5c25" => :mavericks
-    sha1 "9f7786afecdd2b7ad55b92d5713dc8ade9d012fe" => :mountain_lion
+    sha256 "db353988bbd70c57409338bba501a618e1d92e920e409ef587a870618878c18c" => :el_capitan
+    sha256 "b13e2074ea7c8bb541b9604c6f2cdcdf8b55ee53ddbb541c1b9905ec09bd0c1c" => :yosemite
+    sha256 "1ef2fe290630098b2c868d10625af7bd66a244c21b0290ae611072ab3fdedb01" => :mavericks
+    sha256 "9b1c6444d223a9eb99dcade6ee8382a062701293b5e6ddaa11e23405e4d92977" => :mountain_lion
   end
 
   head do

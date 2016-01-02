@@ -1,38 +1,44 @@
 class Mono < Formula
   desc "Cross platform, open source .NET development framework"
   homepage "http://www.mono-project.com/"
-  url "http://download.mono-project.com/sources/mono/mono-4.0.2.5.tar.bz2"
-  sha256 "b074584eea5bbaaf29362486a69d70abe53d0d2feb334f231fa9c841cf6fd651"
+  url "http://download.mono-project.com/sources/mono/mono-4.2.1.102.tar.bz2"
+  sha256 "b7b461fe04375f621d88166ba8c6f1cb33c439fd3e17136460f7d087a51ed792"
+  revision 1
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
   skip_clean "lib/mono"
 
   bottle do
-    revision 1
-    sha256 "58a84b443f8cf3eac731d87ce8d484fec90ddf43b44b51854a6186d11b53daee" => :yosemite
-    sha256 "7bb30673b0de1d41980da3527f55db7e453da66b0673a5a5c93c464426716db8" => :mavericks
-    sha256 "3a3c35b4bdafc31607fabedece5caa8200ed1deca321bfaeca3869560d6e3d0e" => :mountain_lion
+    sha256 "af939c83b4896ef34306b310deade23530d195749bb868dc1dd504cc9f1acc5b" => :el_capitan
+    sha256 "aa3ae4ac79b5b8c502c9d43449332e04b7d6cc69c4380b00e2c5f033ea1ffbc9" => :yosemite
+    sha256 "54e408d1a43ffbf6c023bb608c6785996c810305551b3d296f34e1126900e55c" => :mavericks
   end
 
-  # Fix compile and runtime error on OS X 10.11 Beta 3
-  # https://github.com/mono/mono/pull/1919
-  # https://bugzilla.xamarin.com/show_bug.cgi?id=31761
-  patch do
-    url "https://github.com/mono/mono/pull/1919.diff"
-    sha256 "53c39c2145027fdf1a2233e12bd96da2c1164e1422e631cdb50598910b39a020"
+  conflicts_with "czmq", :because => "both install `makecert` binaries"
+
+  option "without-fsharp", "Build without support for the F# language."
+
+  resource "fsharp" do
+    url "https://github.com/fsharp/fsharp.git", :tag => "4.0.1.0",
+        :revision => "b22167013d1f4f0c41107fd40935dc1a8fe46386"
   end
 
-  resource "monolite" do
-    url "http://storage.bos.xamarin.com/mono-dist-4.0.0-release/c1/c1b37f29b1a439acf7ef42a384550ab1dca5295a/monolite-117-latest.tar.gz"
-    sha256 "a3bd1c826186e4896193ad1f909bf8756f66f62d1e249fe301b10bc80ebe0795"
-  end
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "pkg-config" => :build
+
+  link_overwrite "bin/fsharpi"
+  link_overwrite "bin/fsharpiAnyCpu"
+  link_overwrite "bin/fsharpc"
+  link_overwrite "bin/fssrgen"
+  link_overwrite "lib/mono"
+  link_overwrite "lib/cli"
+
+  conflicts_with "disco", :because => "both install `disco` binaries"
+  conflicts_with "xsd", :because => "both install `xsd` binaries"
 
   def install
-    # a working mono is required for the the build - monolite is enough
-    # for the job
-    (buildpath+"mcs/class/lib/monolite").install resource("monolite")
-
     args = %W[
       --prefix=#{prefix}
       --disable-dependency-tracking
@@ -48,6 +54,17 @@ class Mono < Formula
     # mono-gdb.py and mono-sgen-gdb.py are meant to be loaded by gdb, not to be
     # run directly, so we move them out of bin
     libexec.install bin/"mono-gdb.py", bin/"mono-sgen-gdb.py"
+
+    # Now build and install fsharp as well
+    if build.with? "fsharp"
+      resource("fsharp").stage do
+        ENV.prepend_path "PATH", bin
+        ENV.prepend_path "PKG_CONFIG_PATH", lib/"pkgconfig"
+        system "./autogen.sh", "--prefix=#{prefix}"
+        system "make"
+        system "make", "install"
+      end
+    end
   end
 
   test do
@@ -80,12 +97,49 @@ class Mono < Formula
         <Import Project="$(MSBuildBinPath)\\Microsoft.CSharp.targets" />
       </Project>
     EOS
-    shell_output "#{bin}/xbuild test.csproj"
+    system "#{bin}/xbuild", "test.csproj"
+
+    if build.with? "fsharp"
+      # Test that fsharpi is working
+      ENV.prepend_path "PATH", bin
+      output = pipe_output("#{bin}/fsharpi", "printfn \"#{test_str}\"; exit 0")
+      assert_match test_str, output
+
+      # Tests that xbuild is able to execute fsc.exe
+      (testpath/"test.fsproj").write <<-EOS.undent
+        <?xml version="1.0" encoding="utf-8"?>
+        <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+          <PropertyGroup>
+            <ProductVersion>8.0.30703</ProductVersion>
+            <SchemaVersion>2.0</SchemaVersion>
+            <ProjectGuid>{B6AB4EF3-8F60-41A1-AB0C-851A6DEB169E}</ProjectGuid>
+            <OutputType>Exe</OutputType>
+            <FSharpTargetsPath>$(MSBuildExtensionsPath32)\\Microsoft\\VisualStudio\\v$(VisualStudioVersion)\\FSharp\\Microsoft.FSharp.Targets</FSharpTargetsPath>
+          </PropertyGroup>
+          <Import Project="$(FSharpTargetsPath)" Condition="Exists('$(FSharpTargetsPath)')" />
+          <ItemGroup>
+            <Compile Include="Main.fs" />
+          </ItemGroup>
+          <ItemGroup>
+            <Reference Include="mscorlib" />
+            <Reference Include="System" />
+            <Reference Include="FSharp.Core" />
+          </ItemGroup>
+        </Project>
+      EOS
+      (testpath/"Main.fs").write <<-EOS.undent
+        [<EntryPoint>]
+        let main _ = printfn "#{test_str}"; 0
+      EOS
+      system "#{bin}/xbuild", "test.fsproj"
+    end
   end
 
   def caveats; <<-EOS.undent
     To use the assemblies from other formulae you need to set:
       export MONO_GAC_PREFIX="#{HOMEBREW_PREFIX}"
+    Note that the 'mono' formula now includes F#. If you have
+    the 'fsharp' formula installed, remove it with 'brew uninstall fsharp'.
     EOS
   end
 end

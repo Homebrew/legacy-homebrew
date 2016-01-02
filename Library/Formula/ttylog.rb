@@ -6,9 +6,9 @@ class Ttylog < Formula
 
   bottle do
     cellar :any
-    sha1 "5c8e70c0b3a1ad9b5708aa4bcb2fed311d24ead3" => :mavericks
-    sha1 "f5e83d8be3255cede1df0c55f51bfc2bfc4533ff" => :mountain_lion
-    sha1 "5a003888636ca2b2bd252d7f65602a2ac86f540c" => :lion
+    sha256 "b424c6473bcd948c8ef60d81d9cf0e176cd77189a54d08e480ad2c2f33692364" => :mavericks
+    sha256 "5a0e421f1735316419f1620227a9e76d89160bb79e3e2463e6ea89145cd3f398" => :mountain_lion
+    sha256 "076970af724989d93fc7eb4eee008a8320eb5a6e09e3517f55dca7841bfced12" => :lion
   end
 
   depends_on "cmake" => :build

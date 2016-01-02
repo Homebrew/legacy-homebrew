@@ -72,13 +72,13 @@ class Keg
   # These paths relative to the keg's share directory should always be real
   # directories in the prefix, never symlinks.
   SHARE_PATHS = %w[
-    aclocal doc info locale man
+    aclocal doc info java locale man
     man/man1 man/man2 man/man3 man/man4
     man/man5 man/man6 man/man7 man/man8
     man/cat1 man/cat2 man/cat3 man/cat4
     man/cat5 man/cat6 man/cat7 man/cat8
     applications gnome gnome/help icons
-    mime-info pixmaps sounds
+    mime-info pixmaps sounds postgresql
   ]
 
   # if path is a file in a keg then this will return the containing Keg object
@@ -101,11 +101,6 @@ class Keg
     @name = path.parent.basename.to_s
     @linked_keg_record = HOMEBREW_LIBRARY.join("LinkedKegs", name)
     @opt_record = HOMEBREW_PREFIX.join("opt", name)
-  end
-
-  def fname
-    opoo "Keg#fname is a deprecated alias for Keg#name and will be removed soon"
-    name
   end
 
   def to_s
@@ -137,6 +132,14 @@ class Keg
 
   def abv
     path.abv
+  end
+
+  def disk_usage
+    path.disk_usage
+  end
+
+  def file_count
+    path.file_count
   end
 
   def directory?
@@ -186,7 +189,7 @@ class Keg
     remove_oldname_opt_record
   end
 
-  def unlink
+  def unlink(mode = OpenStruct.new)
     ObserverPathnameExtension.reset_counts!
 
     dirs = []
@@ -201,6 +204,12 @@ class Keg
 
         # check whether the file to be unlinked is from the current keg first
         if dst.symlink? && src == dst.resolved_path
+          if mode.dry_run
+            puts dst
+            Find.prune if src.directory?
+            next
+          end
+
           dst.uninstall_info if dst.to_s =~ INFOFILE_RX
           dst.unlink
           Find.prune if src.directory?
@@ -208,15 +217,22 @@ class Keg
       end
     end
 
-    remove_linked_keg_record if linked?
-
-    dirs.reverse_each(&:rmdir_if_possible)
+    unless mode.dry_run
+      remove_linked_keg_record if linked?
+      dirs.reverse_each(&:rmdir_if_possible)
+    end
 
     ObserverPathnameExtension.total
   end
 
   def lock
-    FormulaLock.new(name).with_lock { yield }
+    FormulaLock.new(name).with_lock do
+      if oldname_opt_record
+        FormulaLock.new(oldname_opt_record.basename.to_s).with_lock { yield }
+      else
+        yield
+      end
+    end
   end
 
   def completion_installed?(shell)
@@ -240,12 +256,18 @@ class Keg
     Dir["#{path}/lib/python2.7/site-packages/*.pth"].any?
   end
 
+  def apps
+    app_prefix = optlinked? ? opt_record : path
+    Pathname.glob("#{app_prefix}/{,libexec/}*.app")
+  end
+
   def app_installed?
-    Dir["#{path}/{,libexec/}*.app"].any?
+    !apps.empty?
   end
 
   def elisp_installed?
-    Dir["#{path}/share/emacs/site-lisp/**/*.el"].any?
+    return false unless (path/"share/emacs/site-lisp"/name).exist?
+    (path/"share/emacs/site-lisp"/name).children.any? { |f| %w[.el .elc].include? f.extname }
   end
 
   def version
@@ -303,7 +325,9 @@ class Keg
       when "dtrace" then :mkpath
       when /^gdk-pixbuf/ then :mkpath
       when "ghc" then :mkpath
+      when /^gio/ then :mkpath
       when "lua" then :mkpath
+      when /^mecab/ then :mkpath
       when /^node/ then :mkpath
       when /^ocaml/ then :mkpath
       when /^perl5/ then :mkpath

@@ -30,41 +30,33 @@ class Rtags < Formula
 
   test do
     mkpath testpath/"src"
-    (testpath/"src/foo.c").write(<<-END.undent)
+    (testpath/"src/foo.c").write <<-EOS.undent
         void zaphod() {
         }
 
         void beeblebrox() {
           zaphod();
         }
-        END
-    (testpath/"src/README").write(<<-END.undent)
+    EOS
+    (testpath/"src/README").write <<-EOS.undent
         42
-      END
+    EOS
+
     rdm = fork do
       $stdout.reopen("/dev/null")
       $stderr.reopen("/dev/null")
       exec "#{bin}/rdm", "-L", "log"
     end
-    def pause
-      slept = 0
-      while slept < 5
-        Kernel.system "#{bin}/rc --is-indexing >/dev/null 2>&1"
-        if $? == 0
-          break
-        end
-        dt = 0.01
-        sleep dt
-        slept += dt
-      end
+
+    begin
+      sleep 1
+      pipe_output("#{bin}/rc -c", "clang -c src/foo.c", 0)
+      sleep 1
+      assert_match "foo.c:1:6", shell_output("#{bin}/rc -f src/foo.c:5:3")
+      system "#{bin}/rc", "-q"
+    ensure
+      Process.kill 9, rdm
+      Process.wait rdm
     end
-    pause
-    system "sh", "-c", "echo clang -c src/foo.c | #{bin}/rc -c"
-    assert_equal $?, 0
-    pause
-    assert_match /foo\.c:1:6/, shell_output("#{bin}/rc -f src/foo.c:5:3")
-    system "#{bin}/rc", "-q"
-    assert_equal $?, 0
-    Process.wait(rdm)
   end
 end

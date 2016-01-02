@@ -5,9 +5,10 @@ class Kyua < Formula
   sha256 "2b8b64a458b642df75086eeb73e8073d105b8d9cff04c9b1a905b68bc8502560"
 
   bottle do
-    sha1 "d9aec0a429eea528157e8f9442a39601047b29c9" => :yosemite
-    sha1 "34c93c5aca199d6b6382c067d1b9e7b4899a3e32" => :mavericks
-    sha1 "a44bd2fbf521782a7f9e93b85ef48ebfd3d38b91" => :mountain_lion
+    sha256 "c64ff3815d5a237ee32ca2c3fa46ed9508b055dc6ab33e814f484e7dd0e04578" => :el_capitan
+    sha256 "3d2bbb23c7b1b7599cc55e5f6de9474f3e6fedfb73e993da0345e8502bc7c3e6" => :yosemite
+    sha256 "854b21751c3e76ad484b693d19c58745b7e666de234f067b9f40814e984a9332" => :mavericks
+    sha256 "76c4f08417963cda929dbbf017c4617c89b336b78a74004f4b8baa95e150738d" => :mountain_lion
   end
 
   depends_on "atf"

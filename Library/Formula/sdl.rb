@@ -7,13 +7,14 @@ class Sdl < Formula
   bottle do
     cellar :any
     revision 2
-    sha1 "3f767029ead055192d70e143cf1e5b18a1b18a3e" => :yosemite
-    sha1 "4396e988f0c34d6859f994a4fa89d50a6e4a8cf9" => :mavericks
-    sha1 "1917ce67939b9b539cd33469749e881e7b611b0d" => :mountain_lion
+    sha256 "c9c66beaee50897468330709dc618246b298d63854309863e958e6b46ecec06a" => :el_capitan
+    sha256 "ec2202243209e378fc50bb9ad1bd7c7cff0ae893f81780228113b542059e3a92" => :yosemite
+    sha256 "92f71a40ad275455e0db75057fcfd29ca35abbf583de73e106ccb903541405af" => :mavericks
+    sha256 "10f73b430cc6794a9fe16382ffe9616ab6bf541f46f6bda903472699369a7856" => :mountain_lion
   end
 
   head do
-    url "http://hg.libsdl.org/SDL", :branch => "SDL-1.2", :using => :hg
+    url "https://hg.libsdl.org/SDL", :branch => "SDL-1.2", :using => :hg
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -21,10 +22,11 @@ class Sdl < Formula
   end
 
   option "with-x11", "Compile with support for X11 video driver"
-  option "with-tests", "Compile and install the tests"
+  option "with-test", "Compile and install the tests"
   option :universal
 
   deprecated_option "with-x11-driver" => "with-x11"
+  deprecated_option "with-tests" => "with-test"
 
   depends_on :x11 => :optional
 
@@ -35,21 +37,21 @@ class Sdl < Formula
 
     # Fix build against recent libX11; requires regenerating configure script
     patch do
-      url "http://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
-      sha1 "1b35949d9ac360a7e39aac76d1f0a6ad5381b0f4"
+      url "https://hg.libsdl.org/SDL/raw-rev/91ad7b43317a"
+      sha256 "04fa6aaf1ae1043e82d85f367fdb3bea5532e60aa944ce17357030ee93bb856c"
     end
   end
 
   # Fix for a bug preventing SDL from building at all on OSX 10.9 Mavericks
   # Related ticket: https://bugzilla.libsdl.org/show_bug.cgi?id=2085
   patch do
-    url "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320"
+    url "https://bugzilla-attachments.libsdl.org/attachment.cgi?id=1320"
     sha256 "ba0bf2dd8b3f7605db761be11ee97a686c8516a809821a4bc79be738473ddbf5"
   end
 
   # Fix compilation error on 10.6 introduced by the above patch
   patch do
-    url "http://bugzilla-attachments.libsdl.org/attachment.cgi?id=1324"
+    url "https://bugzilla-attachments.libsdl.org/attachment.cgi?id=1324"
     sha256 "ee7eccb51cefff15c6bf8313a7cc7a3f347dc8e9fdba7a3c3bd73f958070b3eb"
   end
 
@@ -76,7 +78,7 @@ class Sdl < Formula
     # Copy source files needed for Ojective-C support.
     libexec.install Dir["src/main/macosx/*"] if build.stable?
 
-    if build.with? "tests"
+    if build.with? "test"
       ENV.prepend_path "PATH", "#{bin}"
       # This is stupid but necessary. Blurgh. Otherwise, test building fails, even
       # with various flags, prepending & pkg_config_path tinkering.
@@ -85,12 +87,12 @@ class Sdl < Formula
         system "./configure"
         system "make"
         # Upstream - Why no make install? Why?
-        (share+"tests").install %w[checkkeys graywin loopwave testalpha testbitmap testblitspeed testcdrom
+        (share/"tests").install %w[checkkeys graywin loopwave testalpha testbitmap testblitspeed testcdrom
                                    testcursor testdyngl testerror testfile testgamma testgl testhread testiconv
                                    testjoystick testkeys testloadso testlock testoverlay testoverlay2 testpalette
                                    testplatform testsem testsprite testtimer testver testvidinfo testwin testwm
                                    threadwin torturethread]
-        (share+"test_extras").install %w[icon.bmp moose.dat picture.xbm sail.bmp sample.bmp sample.wav]
+        (share/"test_extras").install %w[icon.bmp moose.dat picture.xbm sail.bmp sample.bmp sample.wav]
         bin.write_exec_script Dir["#{share}/tests/*"]
       end
       # And then we undo stupid but necessary so it doesn't break all the other things.

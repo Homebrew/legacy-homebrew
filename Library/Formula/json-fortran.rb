@@ -1,16 +1,16 @@
 class JsonFortran < Formula
   desc "Fortran 2008 JSON API"
   homepage "https://github.com/jacobwilliams/json-fortran"
-  url "https://github.com/jacobwilliams/json-fortran/archive/4.2.0.tar.gz"
-  sha256 "5cf12ce527809b644ae35a0a34ce330804285d3b7987b17488d1752330dd7a81"
+  url "https://github.com/jacobwilliams/json-fortran/archive/4.3.0.tar.gz"
+  sha256 "c97f8de53e2ca9ee91fb3148bfa971b00eaea6e757b5e3d67cc4b4ff197e392e"
 
   head "https://github.com/jacobwilliams/json-fortran.git"
 
   bottle do
     cellar :any
-    sha256 "bb9cbce17fa229548bb63d71c4905a669ddeca4c4d18553e5a2d9fb5da6a29a5" => :yosemite
-    sha256 "2bedbab56f3f1e042423732ae20e69318e26a42143f66461148794f1913db03c" => :mavericks
-    sha256 "0c2ec996d2fe95095a66cfe2aa6f4de7b995edf729494b02b3bc251b9007d8f4" => :mountain_lion
+    sha256 "a80853e1da087f33cccfc10f1ebce1f77339a211d3223347d8659d977965ea50" => :el_capitan
+    sha256 "f790c4a3c3ff3a720fd69ee70b6bec42f13c5d0c0f4dee433e1b40ce73630f23" => :yosemite
+    sha256 "f908838becce85cf6cba0f355b66f677695d9e718b6a1e4d3f46db327f884058" => :mavericks
   end
 
   option "with-unicode-support", "Build json-fortran to support unicode text in json objects and files"

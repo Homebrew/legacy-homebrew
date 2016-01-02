@@ -1,14 +1,16 @@
 class Glew < Formula
   desc "OpenGL Extension Wrangler Library"
   homepage "http://glew.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/glew/glew/1.12.0/glew-1.12.0.tgz"
-  sha256 "af58103f4824b443e7fa4ed3af593b8edac6f3a7be3b30911edbc7344f48e4bf"
+  url "https://downloads.sourceforge.net/project/glew/glew/1.13.0/glew-1.13.0.tgz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/glew/glew_1.13.0.orig.tar.gz"
+  sha256 "aa25dc48ed84b0b64b8d41cdd42c8f40f149c37fa2ffa39cd97f42c78d128bc7"
+  head "https://github.com/nigels-com/glew.git"
 
   bottle do
     cellar :any
-    sha256 "4c8befbf2493fa5491e64cf6e6e0db3d8ca876ab31f742af6ad0f7a5548d8e7c" => :yosemite
-    sha256 "b5b97f390fd241729c5023941e34378bb3e3c2d64825370fcd5845e3d226ae0d" => :mavericks
-    sha256 "ad52c4946186b87fd290833e3b7c68287316f5dc8a2c96f662478a403697bb4f" => :mountain_lion
+    sha256 "a0d99f5538ffc0a182f227934753b0129b5b6cdfdc790cf7ef208fb4d8b00845" => :el_capitan
+    sha256 "351ff9dbee1b1307720a2e3ad8e86c28975b3bc2614cfbc7ae45492cb3810062" => :yosemite
+    sha256 "a8d8c2095176c09b10667627de9861b0e35d310bcd860922a2be4037a3e6418c" => :mavericks
   end
 
   option :universal
@@ -27,9 +29,27 @@ class Glew < Formula
     inreplace "glew.pc.in", "Requires: @requireslib@", ""
     system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "all"
     system "make", "GLEW_PREFIX=#{prefix}", "GLEW_DEST=#{prefix}", "install.all"
+
+    doc.install Dir["doc/*"]
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/glewinfo")
+    (testpath/"test.c").write <<-EOS.undent
+      #include <GL/glew.h>
+      #include <GLUT/glut.h>
+
+      int main(int argc, char** argv) {
+        glutInit(&argc, argv);
+        glutCreateWindow("GLEW Test");
+        GLenum err = glewInit();
+        if (GLEW_OK != err) {
+          return 1;
+        }
+        return 0;
+      }
+    EOS
+    system ENV.cc, "-framework", "OpenGL", "-framework", "GLUT",
+           "-lglew", testpath/"test.c", "-o", "test"
+    system "./test"
   end
 end

@@ -7,9 +7,10 @@ class Fftw < Formula
 
   bottle do
     cellar :any
-    sha1 "b5c2d04489567aff02e2e002d906ce7349057f6e" => :yosemite
-    sha1 "af376c8efd9de7501d56f763a1ead65a5d32e533" => :mavericks
-    sha1 "1585929f22c6851d87cf9d451cd26ff403991a8c" => :mountain_lion
+    sha256 "92f9c2aea12100ba53084c5fe886418c348ab744fd47b60a9cee9c922044942b" => :el_capitan
+    sha256 "14ba3f3d52df54d350a009ff1e65859095b99b31da996c52155bb3f2420716ad" => :yosemite
+    sha256 "e32ceb93872580935d6e63878717ce35c964a21fdd0a6a93b29715f6aafb6811" => :mavericks
+    sha256 "bb29553043cc4db9c38e0290215fb216facb5ae09a4c3dadf3b19a41df161764" => :mountain_lion
   end
 
   option "with-fortran", "Enable Fortran bindings"
@@ -26,7 +27,8 @@ class Fftw < Formula
             "--disable-debug",
             "--prefix=#{prefix}",
             "--enable-threads",
-            "--disable-dependency-tracking"]
+            "--disable-dependency-tracking",
+           ]
     simd_args = ["--enable-sse2"]
     simd_args << "--enable-avx" if ENV.compiler == :clang && Hardware::CPU.avx? && !build.bottle?
 

@@ -9,7 +9,8 @@ class Pup < Formula
   head "https://github.com/EricChiang/pup.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "e3766f1c194ece7e6eea245627c6ca2ae83d7a7cd33dfaf61da53ad85577dfd6" => :el_capitan
     sha256 "0c3f2f89d57313b4d5d90a73c39e5187470e7dd9f35a0d8b030d518f69b21766" => :yosemite
     sha256 "5bc9ab2b8ecb14048115c876bf77a7490139715d3250407785159aa2b72faf8f" => :mavericks
     sha256 "da53aea34a10ecba854eb3f65b451e99fa4dbe5134261ef2deadff8266ff49e2" => :mountain_lion

@@ -6,10 +6,11 @@ class Makedepend < Formula
 
   bottle do
     cellar :any
-    sha1 "9a35ee27a96d2916dd347b362a2f62a3eb37b252" => :yosemite
-    sha1 "83db1daee01e4eb752c711934eb88850b3ee70d6" => :mavericks
-    sha1 "9c55ea85af719a448a4522958bd0e57e5e7741d1" => :mountain_lion
-    sha1 "66c5cb0f796db17741c38fb98bd2c05c82bf989c" => :lion
+    sha256 "3f3535296b2232448aa2b7509eee7ef65460ccc913475daf0b30b7ab6277e0e1" => :el_capitan
+    sha256 "0ed4b80471255f5a6170b7adeae03655c73e828dc6e3eeefeedb1a87f14a9142" => :yosemite
+    sha256 "1c7014f27716ce9b8d22423ef0ad79c46eb0a9452f893786a21e018461e0ece1" => :mavericks
+    sha256 "99af6d3fd80033e7197ae4aa16db748f2f1078f2e3985a69a55ff58db2a3177a" => :mountain_lion
+    sha256 "84195584f1c9d0849bb8aa44b3466b24eee589c39f2a0323ba77fc4033e8e1f8" => :lion
   end
 
   depends_on "pkg-config" => :build

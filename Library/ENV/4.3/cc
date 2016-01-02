@@ -135,7 +135,7 @@ class Cmd
     args = []
 
     case arg
-    when /^-g\d?/, /^-gstabs\d+/, "-gstabs+", /^-ggdb\d?/, "-gdwarf-2",
+    when /^-g\d?$/, /^-gstabs\d+/, "-gstabs+", /^-ggdb\d?/,
       /^-march=.+/, /^-mtune=.+/, /^-mcpu=.+/,
       /^-O[0-9zs]?$/, "-fast", "-no-cpp-precomp",
       "-pedantic", "-pedantic-errors", "-Wno-long-double",
@@ -160,8 +160,9 @@ class Cmd
     when "-undefineddynamic_lookup"
       args << "-Wl,-undefined,dynamic_lookup"
     when /^-isysroot/, /^--sysroot/
-      # We set the sysroot
-      enum.next
+      sdk = enum.next
+      # We set the sysroot for OS X SDKs
+      args << "-isysroot" << sdk unless sdk.downcase.include? "osx"
     when "-dylib"
       args << "-Wl,#{arg}"
     when /^-I(.+)?/

@@ -1,14 +1,15 @@
 class Aqbanking < Formula
   desc "Generic online banking interface"
   homepage "http://www.aqbanking.de/"
-  head "http://devel.aqbanking.de/svn/aqbanking/trunk"
   url "http://www2.aquamaniac.de/sites/download/download.php?package=03&release=118&file=01&dummy=aqbanking-5.5.1.tar.gz"
   sha256 "238f17d27d86e0cef239479c4be152cb98f5be9d6b87fca38741d32e762faddf"
+  head "http://devel.aqbanking.de/svn/aqbanking/trunk"
 
   bottle do
-    sha1 "285f830f8112289906fac106fc0e489aa13494f0" => :yosemite
-    sha1 "ef66dfa1649ce43a0773aa9649168d02b23884a7" => :mavericks
-    sha1 "53b0094bae8278c3305925126749d3fa27b907af" => :mountain_lion
+    revision 1
+    sha256 "3413c3854115dd4df8f37c62a1d93f1818a76b7c67e806c1c36d840026941561" => :el_capitan
+    sha256 "b3937077d7f8f7a5e451c2951119f1cd53cca98495f42b9a3af86f5a30ee960d" => :yosemite
+    sha256 "1e6acd66f0d6de60a379ed0a640a740db9fca41a3a114f346efc558f092a8a55" => :mavericks
   end
 
   depends_on "gwenhywfar"

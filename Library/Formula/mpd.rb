@@ -1,18 +1,15 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "http://www.musicpd.org/"
-  revision 1
-
-  stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.10.tar.xz"
-    sha256 "c386eb3d22f98dc993b5ae3c272f969aa7763713483c6800040ebf1791b15851"
-  end
+  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.12.tar.xz"
+  sha256 "7b6fe6c7ce72f5f80a276d680072b524ecb395e546e252b8f3a0756377e1e875"
 
   bottle do
     cellar :any
-    sha256 "a6615df5ecee11a47d2e89492ba1d0eceb51bc832947fa819bab7b047ce09769" => :yosemite
-    sha256 "e42806034935a83e74af7be956dd1bb2c01dacad3243713f0af806a16ac4068f" => :mavericks
-    sha256 "6b2bd4efd0e48f603327446c40229fc67fc697b0011859cdefb3cb0fa3ef8059" => :mountain_lion
+    revision 1
+    sha256 "74fb8ae7870946873685a5b8c24645ea428bbc954c7085d31f54c06bff7e4df1" => :el_capitan
+    sha256 "697c3ecf1ae16ad64544bef0ffb3172bca1aa06ec2eb3169c76bb77c11ea9b72" => :yosemite
+    sha256 "4c4e2cf7804434c23511fe7cc933bdc52e300935a6cb03d41ad38bd5ea173c7e" => :mavericks
   end
 
   head do
@@ -43,7 +40,7 @@ class Mpd < Formula
   needs :cxx11
 
   depends_on "libmpdclient"
-  depends_on "ffmpeg"                   # lots of codecs
+  depends_on "ffmpeg" # lots of codecs
   # mpd also supports mad, mpg123, libsndfile, and audiofile, but those are
   # redundant with ffmpeg
   depends_on "fluid-synth"              # MIDI
@@ -60,6 +57,7 @@ class Mpd < Formula
   depends_on "opus" => :optional        # Opus support
   depends_on "libvorbis" => :optional
   depends_on "libnfs" => :optional
+  depends_on "mad" => :optional
 
   def install
     # mpd specifies -std=gnu++0x, but clang appears to try to build
@@ -81,7 +79,7 @@ class Mpd < Formula
       --disable-libwrap
     ]
 
-    args << "--disable-mad"
+    args << "--disable-mad" if build.without? "mad"
     args << "--disable-curl" if MacOS.version <= :leopard
 
     args << "--enable-zzip" if build.with? "libzzip"
@@ -96,7 +94,7 @@ class Mpd < Formula
     ENV.j1 # Directories are created in parallel, so let's not do that
     system "make", "install"
 
-    (etc+"mpd").install "doc/mpdconf.example" => "mpd.conf"
+    (etc/"mpd").install "doc/mpdconf.example" => "mpd.conf"
   end
 
   plist_options :manual => "mpd"
@@ -131,10 +129,10 @@ class Mpd < Formula
     sleep 2
 
     begin
-      assert_match /OK MPD/, shell_output("curl localhost:6600")
+      assert_match "OK MPD", shell_output("curl localhost:6600")
     ensure
-      Process.kill("SIGINT", pid)
-      Process.wait(pid)
+      Process.kill "SIGINT", pid
+      Process.wait pid
     end
   end
 end

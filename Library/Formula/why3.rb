@@ -11,7 +11,7 @@ class Why3 < Formula
   end
 
   depends_on "menhir"
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "coq" => :optional
   depends_on "lablgtk" => :optional
   depends_on "hevea" => [:build, :optional]

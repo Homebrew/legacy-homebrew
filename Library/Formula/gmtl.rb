@@ -14,9 +14,9 @@ class Gmtl < Formula
 
   bottle do
     cellar :any
-    sha1 "905af4149c167870069b22d3cb082897f8bf1259" => :mavericks
-    sha1 "09ef2b92b09f46a1ee33866fda35494bbe545819" => :mountain_lion
-    sha1 "3444ed4b6eb1859a64f3f7250656ae5c1e074fd3" => :lion
+    sha256 "5e6d70f957f11e58d8b3cd24d5474a8bedc73e0aec6df13f85322f4fda8a1164" => :mavericks
+    sha256 "ffeb26dd58a9b05a4427ca02392f93f9d5b352af790e536e4d2989baa81e4faf" => :mountain_lion
+    sha256 "568a43df4aebd32ab9638d2725721b9c062bca0ecb778dbffb67fafd926d4a1a" => :lion
   end
 
   head "https://ggt.svn.sourceforge.net/svnroot/ggt/trunk/"

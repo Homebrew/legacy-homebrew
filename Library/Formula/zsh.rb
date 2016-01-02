@@ -1,15 +1,19 @@
 class Zsh < Formula
   desc "UNIX shell (command interpreter)"
   homepage "http://www.zsh.org/"
-  url "https://downloads.sourceforge.net/project/zsh/zsh/5.0.8/zsh-5.0.8.tar.bz2"
-  mirror "http://www.zsh.org/pub/zsh-5.0.8.tar.bz2"
-  sha256 "8079cf08cb8beff22f84b56bd72bb6e6962ff4718d816f3d83a633b4c9e17d23"
+  url "https://downloads.sourceforge.net/project/zsh/zsh/5.2/zsh-5.2.tar.gz"
+  mirror "http://www.zsh.org/pub/zsh-5.2.tar.gz"
+  sha256 "fa924c534c6633c219dcffdcd7da9399dabfb63347f88ce6ddcd5bb441215937"
 
   bottle do
-    revision 1
-    sha256 "0b25363741f6511290d28d56f620ccfda25c1e7938d255f35336bef1c0355e94" => :yosemite
-    sha256 "afb1a3bc447b2ba5a8b2a4f30d33750a5195cb08412213a9dc48dc9b7bb4308a" => :mavericks
-    sha256 "c68dff49299b118989c53654f668733afe191cdb2bcd965eca849f331ddc68d6" => :mountain_lion
+    sha256 "cd259a16f0645a085e01b49b6ff92f5d11605775e6b10ba4759be3487fb29b5d" => :el_capitan
+    sha256 "0d33821053045530db4f7b9588d9f5dced22d02a8b6491260aecb990ad55fb7e" => :yosemite
+    sha256 "47b00e430b5922fdf7260ccdd77e510c50961a55e11cc89aa029a11e8e82d309" => :mavericks
+  end
+
+  head do
+    url "git://git.code.sf.net/p/zsh/code"
+    depends_on "autoconf" => :build
   end
 
   option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
@@ -19,12 +23,9 @@ class Zsh < Formula
   depends_on "gdbm"
   depends_on "pcre"
 
-  # zsh 5.0.8 broke du tab-completion for files, but this has been fixed in
-  # bug #35467. We ship our own version of the patch to avoid CHANGELOG conflict.
-  # http://sourceforge.net/p/zsh/code/ci/806f73a0b3d3959d5af12ce97e0258b4d4fe7d76/
-  patch :DATA
-
   def install
+    system "Util/preconfig" if build.head?
+
     args = %W[
       --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
@@ -52,11 +53,19 @@ class Zsh < Formula
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
-    system "make", "install"
-    system "make", "install.info"
+    if build.head?
+      # disable target install.man, because the required yodl comes neither with OS X nor Homebrew
+      # also disable install.runhelp and install.info because they would also fail or have no effect
+      system "make", "install.bin", "install.modules", "install.fns"
+    else
+      system "make", "install"
+      system "make", "install.info"
+    end
   end
 
   def caveats; <<-EOS.undent
+    In order to use this build of zsh as your login shell,
+    it must be added to /etc/shells.
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
@@ -65,19 +74,7 @@ class Zsh < Formula
   end
 
   test do
-    system "#{bin}/zsh", "--version"
+    assert_equal "homebrew\n",
+      shell_output("#{bin}/zsh -c 'echo homebrew'")
   end
 end
-
-__END__
-diff --git a/Completion/Unix/Command/_du b/Completion/Unix/Command/_du
-index d8871cd..4065a20 100644
---- a/Completion/Unix/Command/_du
-+++ b/Completion/Unix/Command/_du
-@@ -74,5 +74,5 @@ else
-   do
-     [[ $OSTYPE = $~pattern ]] && args+=( $arg )
-   done
--  _arguments -s -A "-*" $args
-+  _arguments -s -A "-*" $args '*:file:_files'
- fi

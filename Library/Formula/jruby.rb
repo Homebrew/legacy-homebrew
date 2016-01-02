@@ -1,8 +1,10 @@
 class Jruby < Formula
   desc "Ruby implementation in pure Java"
   homepage "http://www.jruby.org"
-  url "https://s3.amazonaws.com/jruby.org/downloads/9.0.0.0/jruby-bin-9.0.0.0.tar.gz"
-  sha256 "655665db3a1dc0462cba99d45532ab57d8416b5f168d8a0081bde9b7a93a394e"
+  url "https://s3.amazonaws.com/jruby.org/downloads/9.0.4.0/jruby-bin-9.0.4.0.tar.gz"
+  sha256 "fcf828c4ad5b92430a349f1e873c067a15e0952d167d07368135c513fe0d18fb"
+
+  bottle :unneeded
 
   depends_on :java => "1.7+"
 

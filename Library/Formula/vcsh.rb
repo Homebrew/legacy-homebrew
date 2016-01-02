@@ -5,6 +5,8 @@ class Vcsh < Formula
   version "1.20150502-1"
   sha256 "ffb2f619926eee942da5687262e63f0816b10abdfd7f10bf5f44d50739d5f4d1"
 
+  bottle :unneeded
+
   def install
     bin.install "vcsh"
     man1.install "vcsh.1"

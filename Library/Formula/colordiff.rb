@@ -1,15 +1,18 @@
 class Colordiff < Formula
   desc "Color-highlighted diff(1) output"
   homepage "http://www.colordiff.org/"
-  url "http://www.colordiff.org/colordiff-1.0.15.tar.gz"
-  sha256 "595ee4e9796ba02fad0b181e21df3ee34ae71d1611e301e146c0bf00c5269d45"
+  url "http://www.colordiff.org/colordiff-1.0.16.tar.gz"
+  sha256 "eaf1cfe17dd0e820d38a0b24b0a402eba68b32e9bf9e7791ca2d1831029f138b"
 
   bottle do
-    cellar :any
-    sha256 "c5ed797abdaedc5a5f163bafce625307249408afd87bd1a2d31b086af29e02d6" => :yosemite
-    sha256 "a316bce78fc4bfd7fead8f6a6ce87161e9bd862e61882c72be60bcc42d248db1" => :mavericks
-    sha256 "45232a4a2de9ccf1848b28593d2a870efaf38017b465fdb8f04e261f7ccad8e7" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "745965f6a9e37d91242b421a17697ce67328d390d2d94dd5b449d5c0dbae9e65" => :el_capitan
+    sha256 "e0e8a697a98972c3f336a867d4da2124b5b997bfd9c77a2fdca84d0cd1de541f" => :yosemite
+    sha256 "add0c4af1ad602b31f674b921435aa826951e125480220b6f66b8de406123345" => :mavericks
   end
+
+  conflicts_with "cdiff", :because => "both install `cdiff` binaries"
 
   patch :DATA
 

@@ -1,14 +1,14 @@
 class SoundTouch < Formula
   desc "Audio processing library"
   homepage "http://www.surina.net/soundtouch/"
-  url "http://www.surina.net/soundtouch/soundtouch-1.8.0.tar.gz"
-  sha256 "3d4161d74ca25c5a98c69dbb8ea10fd2be409ba1a3a0bf81db407c4c261f166b"
+  url "http://www.surina.net/soundtouch/soundtouch-1.9.1.tar.gz"
+  sha256 "7d22e09e5e0a5bb8669da4f97ec1d6ee324aa3e7515db7fa2554d08f5259aecd"
 
   bottle do
     cellar :any
-    sha1 "ba626eb84b2e8e82b4e2b608534f13800da00994" => :mavericks
-    sha1 "9dbb7296e5b8ea20790d97ee43967614dba9b584" => :mountain_lion
-    sha1 "728d89303b4cd85cd95f1ad625007d164c1f64bb" => :lion
+    sha256 "ec3cebf59b93b32cfce7e257e4dbf29f69902e968c357e42c5af6bac7c501ca9" => :el_capitan
+    sha256 "f0825880145526db97129bb02690a5823e69f008bb83713fed7b79a9fabc1636" => :yosemite
+    sha256 "75ae537da4d561053c0b974dfe77da16fafc72bafbc47b84e393d142afd5be73" => :mavericks
   end
 
   option "with-integer-samples", "Build using integer samples? (default is float)"
@@ -20,14 +20,20 @@ class SoundTouch < Formula
 
   def install
     system "/bin/sh", "bootstrap"
-    args = ["--disable-dependency-tracking",
-            "--disable-silent-rules",
-            "--prefix=#{prefix}"]
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+    ]
     args << "--enable-integer-samples" if build.with? "integer-samples"
 
     ENV.universal_binary if build.universal?
 
     system "./configure", *args
     system "make", "install"
+  end
+
+  test do
+    assert_match /SoundStretch v#{version} -/, shell_output("#{bin}/soundstretch 2>&1", 255)
   end
 end

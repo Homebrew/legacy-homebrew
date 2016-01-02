@@ -7,9 +7,9 @@ class Libtermkey < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "0335d158aa03bd7ad2d75b9b902f8ae4ffc2c864" => :yosemite
-    sha1 "29ba1ee30a2462b3eff036c2cdd32fbdcf349571" => :mavericks
-    sha1 "c77ce1bf195352319b3f09da116a67922d4b4265" => :mountain_lion
+    sha256 "050eb2c5c5d60eb6c13549a58315b200c4d4a8f6f3a955e7616ef61c31c432a1" => :yosemite
+    sha256 "d9de1749b5984508c0000e05720c43a21c3ab6352c1385f2e0fc90c13ce44282" => :mavericks
+    sha256 "69f38749bff4448406e507d1f581235449db079ed01c629558ede737a1d7d6ec" => :mountain_lion
   end
 
   option :universal

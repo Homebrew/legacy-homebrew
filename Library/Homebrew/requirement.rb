@@ -10,7 +10,6 @@ class Requirement
   include Dependable
 
   attr_reader :tags, :name, :cask, :download, :default_formula
-  alias_method :option_name, :name
 
   def initialize(tags = [])
     @default_formula = self.class.default_formula
@@ -24,6 +23,10 @@ class Requirement
     @tags = tags
     @tags << :build if self.class.build
     @name ||= infer_name
+  end
+
+  def option_names
+    [name]
   end
 
   # The message to show when the requirement is not met.
@@ -53,12 +56,6 @@ class Requirement
     result = self.class.satisfy.yielder { |p| instance_eval(&p) }
     @satisfied_result = result
     !!result
-  end
-
-  # Can overridden to optionally prevent a formula with this requirement from
-  # pouring a bottle.
-  def pour_bottle?
-    true
   end
 
   # Overriding #fatal? is deprecated.
@@ -117,7 +114,11 @@ class Requirement
   def to_dependency
     f = self.class.default_formula
     raise "No default formula defined for #{inspect}" if f.nil?
-    Dependency.new(f, tags, method(:modify_build_environment), name)
+    if HOMEBREW_TAP_FORMULA_REGEX === f
+      TapDependency.new(f, tags, method(:modify_build_environment), name)
+    else
+      Dependency.new(f, tags, method(:modify_build_environment), name)
+    end
   end
 
   private

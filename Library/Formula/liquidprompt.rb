@@ -3,6 +3,9 @@ class Liquidprompt < Formula
   homepage "https://github.com/nojhan/liquidprompt"
   url "https://github.com/nojhan/liquidprompt/archive/v_1.9.tar.gz"
   sha256 "4751665b6dbf37517ba8e7b6af067369937006b60ca23fc320fd5416b1a065fd"
+  head "https://github.com/nojhan/liquidprompt.git", :branch => "develop"
+
+  bottle :unneeded
 
   def install
     share.install "liquidpromptrc-dist"

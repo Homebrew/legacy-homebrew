@@ -5,10 +5,11 @@ class Aeskeyfind < Formula
   sha256 "1417e5c1b61e86bb9527db1f5bee1995a0eea82475db3cbc880e04bf706083e4"
 
   bottle do
-    cellar :any
-    sha1 "ae159914bc1563e9c8590bafd698fe7bec3d84b5" => :yosemite
-    sha1 "ad2ec5824cc627e30699eaaa759e778e18c549be" => :mavericks
-    sha1 "f84ccc33df3d7627f91d8088d3fbbe1e2fd48d05" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "697164fffdd9980d5a27497d9efeff361bd3138262ba52985e6b78933100f1b1" => :el_capitan
+    sha256 "291bf5f582110923f992976078e2a5569fecacac3dfaf20fc1dbc63576c022f5" => :yosemite
+    sha256 "59010916c55f28c10a7f0eed3bdfb52f8926457d7793fb75e1e0c6bedbe73cc3" => :mavericks
   end
 
   def install
@@ -60,7 +61,7 @@ class Aeskeyfind < Formula
     ]
 
     path = testpath/"aeskey.bin"
-    path.binwrite(test_data.pack("C*"))
+    path.binwrite test_data.pack("C*")
     output = shell_output("#{bin}/aeskeyfind -q #{path}").strip
 
     assert_equal test_key, output

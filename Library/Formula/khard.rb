@@ -1,14 +1,14 @@
 class Khard < Formula
   desc "Console carddav client."
   homepage "https://github.com/scheibler/khard"
-  url "https://github.com/scheibler/khard/archive/v0.4.0.tar.gz"
-  sha256 "4140fb06a1da63a5eb26edc7d3e3c01b99c464276a9e590b57ee2451c4416f77"
+  url "https://pypi.python.org/packages/source/k/khard/khard-0.6.3.tar.gz"
+  sha256 "88f8962524490b78fd9780fa2abe8f65d59d4bac4bf0b2cf9485434442c01ec7"
 
   bottle do
-    cellar :any
-    sha256 "feaf4976378a4b3a9e7ff1ee9bd9b6804dd084041bc0f1381cc9b2a64437b754" => :yosemite
-    sha256 "744c1982ee4f85d96694be11c616af0eee7fa4470419e713c287f2ba6a8e4a8e" => :mavericks
-    sha256 "67a638ab7cc7055c04d1063877e603f1c77251e655440ad86ea1c4055c7d0e61" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "9122a318179ba49809493701c90b0fcedb67071a7fa6e1b5381d4c1aafc4b14b" => :el_capitan
+    sha256 "6625163c8d9173d8c954caab431a3151cbff8db6e456bec63fbf2b135444d49b" => :yosemite
+    sha256 "b555feb3d97632e4b1693db0463b90c8096de5626c9dbf46c63cb43608462112" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -55,6 +55,7 @@ class Khard < Formula
       path = ~/.contacts/
       [general]
       editor = /usr/bin/vi
+      merge_editor = /usr/bin/vi
       default_country = Germany
       default_action = list
       show_nicknames = yes

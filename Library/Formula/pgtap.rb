@@ -11,12 +11,12 @@ class Pgtap < Formula
   skip_clean "share"
 
   resource "Test::Harness" do
-    url "http://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.30.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Test-Harness-3.30.tar.gz"
     sha256 "ff1900f3b3e61321d3c4b3283298f3106d43d55446605e9cfcf1dcec036acec1"
   end
 
   resource "TAP::Parser::SourceHandler::pgTAP" do
-    url "http://cpan.metacpan.org/authors/id/D/DW/DWHEELER/TAP-Parser-SourceHandler-pgTAP-3.29.tar.gz"
+    url "https://cpan.metacpan.org/authors/id/D/DW/DWHEELER/TAP-Parser-SourceHandler-pgTAP-3.29.tar.gz"
     sha256 "918aa9ada7a05334ace7304e7b9e002bbf0b569bfcf8fb06118777bdabd60e1b"
   end
 

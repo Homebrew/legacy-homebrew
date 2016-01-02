@@ -7,9 +7,9 @@ class Libresample < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "493df1e911173a8e5a3a9ccd7ab6165186816e2a" => :yosemite
-    sha1 "6e5b4b8d2ff893e3ff5df2562f49e39625283b36" => :mavericks
-    sha1 "6b37a559dabe8fec702605ec28b26925e3afaefd" => :mountain_lion
+    sha256 "c39ce9a7a453628e13f64c2de3a109ddcdba8f90fa0b4dd437b03d7c7a12f372" => :yosemite
+    sha256 "e33b8ebd4536680314863dad42bb37a742602894542d1cf230ae10f94af0608e" => :mavericks
+    sha256 "b227998aa09a85b0de27361e4574313e4754d0b54b9de56b183ef0e2c4843383" => :mountain_lion
   end
 
   def install

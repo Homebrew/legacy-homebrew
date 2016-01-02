@@ -7,15 +7,20 @@ class GitImerge < Formula
   head "https://github.com/mhagger/git-imerge.git"
 
   bottle do
-    cellar :any
-    sha256 "82bedf792a1362e3f2246d05157fd1db3b1329d70c55a85df4cdd2aa4f60bc7c" => :yosemite
-    sha256 "5749360293db9b7ecec21cd6d5a13e6c152cac4f6e664251fc5f90c059108259" => :mavericks
-    sha256 "946881e6e92d39ef2e998a2fa7e023f6bf1009191b53a02e7a0e273a18680e6b" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "9b7742de26a901cf873a9829c443443f3f06a3ada26aaa3d56e7b800b8f481fa" => :el_capitan
+    sha256 "f4e97a9cab7626785cf3c60a64746d187e89dec23e2f3cb1de29c5f8ae2a8b47" => :yosemite
+    sha256 "33ef64eb73b8748c18a0760ced72ddef026bd08b9fc06910f13565d0954826e2" => :mavericks
   end
 
   def install
     bin.mkpath
     system "make", "install", "PREFIX=#{prefix}"
+    # completion hasn't been released in a tagged stable version yet
+    if build.head?
+      bash_completion.install "git-imerge.bashcomplete"
+    end
   end
 
   test do

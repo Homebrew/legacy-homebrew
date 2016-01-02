@@ -15,6 +15,12 @@ module Homebrew
       #{formula.path}
     ].concat(ARGV.options_only)
 
+    if formula.head?
+      args << "--HEAD"
+    elsif formula.devel?
+      args << "--devel"
+    end
+
     if Sandbox.available? && ARGV.sandbox?
       if Sandbox.auto_disable?
         Sandbox.print_autodisable_warning
@@ -31,6 +37,7 @@ module Homebrew
         sandbox.allow_write_temp_and_cache
         sandbox.allow_write_log(formula)
         sandbox.allow_write_cellar(formula)
+        sandbox.allow_write_xcode
         sandbox.allow_write_path HOMEBREW_PREFIX
         sandbox.deny_write_homebrew_library
         sandbox.exec(*args)

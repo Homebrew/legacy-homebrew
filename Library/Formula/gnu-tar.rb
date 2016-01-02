@@ -8,10 +8,10 @@ class GnuTar < Formula
   option "with-default-names", "Do not prepend 'g' to the binary"
 
   bottle do
-    revision 2
-    sha1 "bc61f3210e6f8adaade8abe7e8bed4542ead62e2" => :yosemite
-    sha1 "01e82dddbbadb8a40af90f1f844cce3684a19399" => :mavericks
-    sha1 "63268147e47588ccbb33be80e3484611bfacc2f4" => :mountain_lion
+    revision 3
+    sha256 "e454d4acb5d791a70b9f00658c1f2397f7a52e28657ea55a67b4f1d469222d98" => :el_capitan
+    sha256 "eacc46c8c80c5223cf77ff88ff16dc698b6e30927f7f3599b3af4222050d5a0c" => :yosemite
+    sha256 "b21d9afff94eba7d94b7e3fb886ab781e6bd3e3acc1615092788143b08384f49" => :mavericks
   end
 
   # Fix for xattrs bug causing build failures on OS X:
@@ -22,6 +22,16 @@ class GnuTar < Formula
   end
 
   def install
+    # Work around unremovable, nested dirs bug that affects lots of
+    # GNU projects. See:
+    # https://github.com/Homebrew/homebrew/issues/45273
+    # https://github.com/Homebrew/homebrew/issues/44993
+    # This is thought to be an el_capitan bug:
+    # http://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
+    if MacOS.version == :el_capitan
+      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
+    end
+
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--program-prefix=g" if build.without? "default-names"
 

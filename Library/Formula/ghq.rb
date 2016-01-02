@@ -3,16 +3,16 @@ require "language/go"
 class Ghq < Formula
   desc "Remote repository management made easy"
   homepage "https://github.com/motemen/ghq"
-  url "https://github.com/motemen/ghq/archive/v0.7.1.tar.gz"
-  sha256 "c43c469e47761ca67103c056c79d976933265905bd7ddd662035162532c76fb2"
+  url "https://github.com/motemen/ghq/archive/v0.7.2.tar.gz"
+  sha256 "8b0ae2302c341d7fbaf3f59b8b083da9f8c1a620da110ab615fe805e048e9420"
 
   head "https://github.com/motemen/ghq.git"
 
   bottle do
-    cellar :any
-    sha256 "df6df9c2100ad46586d62233dfdb99401bb5beab42a0d87635419bf439797212" => :yosemite
-    sha256 "80a4db2f17fb2c3614604231921fd867f0a85e2034942c96e1f9d33dd6b1b136" => :mavericks
-    sha256 "7d6e66fef647214c51a79a0759be423e990894c3dc03be45fc654b8e74270148" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "6abb47a3dd1d757eb1d94d41cc9b4c652e4ebce66988f8e19b7258686dd5c51f" => :el_capitan
+    sha256 "242455918cf81b89c0df7cea4dcdbbe96ab5455b8d5bc4b9c71cc0f5fd57c02a" => :yosemite
+    sha256 "a2398582bb3fa06cc8ea70c3bc835d8d06dc1b814ef7119cdaa66234fd661229" => :mavericks
   end
 
   option "without-completions", "Disable zsh completions"

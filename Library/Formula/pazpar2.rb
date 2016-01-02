@@ -1,14 +1,14 @@
 class Pazpar2 < Formula
   desc "Metasearching middleware webservice"
-  homepage "http://www.indexdata.com/pazpar2"
-  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.11.3.tar.gz"
-  sha256 "bee8d3529a129cda7c5281b7e9b50ca5d9a2ed1647f4e7cae7da6b568c00eb7a"
+  homepage "https://www.indexdata.com/pazpar2"
+  url "http://ftp.indexdata.dk/pub/pazpar2/pazpar2-1.12.5.tar.gz"
+  sha256 "a526ac9a91f6ac4683af3e27d58adb70755d82da7ad909eb98edf68dd07062d3"
 
   bottle do
     cellar :any
-    sha256 "bde377a7f03ccb193a462d947982891a6270895cd629fc7503ef29ad52a5424a" => :yosemite
-    sha256 "f615f07179329182d2f00344c9b4a7d65b07692b45ba292dc035f503123755c1" => :mavericks
-    sha256 "87127b01639c7ea919f7570e6cc041b11621b7e78fc43fdfce8881f72ad6e0a6" => :mountain_lion
+    sha256 "e9f9d2c673695192d7ae17edebaab7250424c770b46b4cfd1d21a51ee8e5d208" => :el_capitan
+    sha256 "1908559c2937827579f5acd97e0c18d6bad701dac2bc50af0600d832c648ce0a" => :yosemite
+    sha256 "4cfa57e70f207ac60f53596d6359b7c39e4c54abd49dc7069d8765b171d605e7" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -19,19 +19,5 @@ class Pazpar2 < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
-  end
-
-  test do
-    (testpath/"test-config.xml").write <<-EOS.undent
-    <?xml version="1.0" encoding="UTF-8"?>
-    <pazpar2 xmlns="http://www.indexdata.com/pazpar2/1.0">
-      <threads number="2"/>
-      <server>
-        <listen port="8004"/>
-      </server>
-    </pazpar2>
-    EOS
-
-    system "#{sbin}/pazpar2", "-t", "-f", "#{testpath}/test-config.xml"
   end
 end

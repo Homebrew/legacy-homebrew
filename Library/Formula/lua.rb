@@ -7,9 +7,16 @@ class Lua < Formula
 
   bottle do
     cellar :any
+    sha256 "b8ab4306d8c3c5ff2a5289986238af1e0090d3793f73987c9c8beb07826b2e64" => :el_capitan
     sha256 "ad2fceaf391771c9e4120f00ac78c5e634aa3c6cd911566e38d016fec4d6c315" => :yosemite
     sha256 "997e8eb591ea1e44dc9cf0910cac61137e0e231d228953b61826ff37a452a8dc" => :mavericks
     sha256 "519abb38296981baf49dd00ac80a2ac742f8e278b0b616d88d7fab8702ad430d" => :mountain_lion
+  end
+
+  def pour_bottle?
+    # DomT4: I'm pretty sure this can be fixed, so don't leave this in place forever.
+    # https://github.com/Homebrew/homebrew/issues/44619
+    HOMEBREW_PREFIX.to_s == "/usr/local"
   end
 
   fails_with :llvm do
@@ -51,6 +58,9 @@ class Lua < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    # Subtitute formula prefix in `src/Makefile` for install name (dylib ID).
+    inreplace "src/Makefile", "@LUA_PREFIX@", prefix
+
     # Use our CC/CFLAGS to compile.
     inreplace "src/Makefile" do |s|
       s.remove_make_var! "CC"
@@ -71,7 +81,7 @@ class Lua < Formula
     bin.install_symlink "lua" => "lua-5.2"
     bin.install_symlink "luac" => "luac5.2"
     bin.install_symlink "luac" => "luac-5.2"
-    include.install_symlink include => "#{include}/lua5.2"
+    (include/"lua5.2").install_symlink include.children
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
 
@@ -107,7 +117,7 @@ class Lua < Formula
   def pc_file; <<-EOS.undent
     V= 5.2
     R= 5.2.4
-    prefix=#{HOMEBREW_PREFIX}
+    prefix=#{prefix}
     INSTALL_BIN= ${prefix}/bin
     INSTALL_INC= ${prefix}/include
     INSTALL_LIB= ${prefix}/lib
@@ -190,7 +200,7 @@ index 8c9ee67..7f92407 100644
  $(LUA_A): $(BASE_O)
 -	$(AR) $@ $(BASE_O)
 -	$(RANLIB) $@
-+	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.2.dylib \
++	$(CC) -dynamiclib -install_name @LUA_PREFIX@/lib/liblua.5.2.dylib \
 +		-compatibility_version 5.2 -current_version 5.2.4 \
 +		-o liblua.5.2.4.dylib $^
 

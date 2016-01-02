@@ -6,18 +6,20 @@ class PerconaServer < Formula
   sha256 "5a0d88465e4bb081e621b06bc943fafadb4c67a2cca50839b44fcd94ae793b50"
 
   bottle do
+    sha256 "6cb0507097b26b45397a762a473614635fd354817cc906a02d28ec1ea97ac150" => :el_capitan
     sha256 "f1ecbe431098b4618e448634dba41a75f8ed0fada773344b469e9c9e3db653df" => :yosemite
     sha256 "5f2e8564ea19bdca58b522fb0ca2c24835fd27a3d1b0c5aaf64641f69c62c474" => :mavericks
     sha256 "8bb2a50aedda323875f2955bd7cafe75e5e63b24596dfb8b090e88814b85befa" => :mountain_lion
   end
 
   option :universal
-  option "with-tests", "Build with unit tests"
+  option "with-test", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
   option "with-memcached", "Build with InnoDB Memcached plugin"
   option "with-local-infile", "Build with local infile loading support"
 
   deprecated_option "enable-local-infile" => "with-local-infile"
+  deprecated_option "with-tests" => "with-test"
 
   depends_on "cmake" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion
@@ -85,7 +87,7 @@ class PerconaServer < Formula
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.with? "tests"
+    if build.with? "test"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"

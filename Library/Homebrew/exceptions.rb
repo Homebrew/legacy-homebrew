@@ -23,11 +23,12 @@ class NoSuchKegError < RuntimeError
 end
 
 class FormulaValidationError < StandardError
-  attr_reader :attr
+  attr_reader :attr, :formula
 
-  def initialize(attr, value)
+  def initialize(formula, attr, value)
     @attr = attr
-    super "invalid attribute: #{attr} (#{value.inspect})"
+    @formula = formula
+    super "invalid attribute for formula '#{formula}': #{attr} (#{value.inspect})"
   end
 end
 
@@ -46,7 +47,7 @@ class FormulaUnavailableError < RuntimeError
   end
 
   def to_s
-    "No available formula for #{name} #{dependent_s}"
+    "No available formula with the name \"#{name}\" #{dependent_s}"
   end
 end
 
@@ -75,7 +76,7 @@ class TapFormulaAmbiguityError < RuntimeError
     @paths = paths
     @formulae = paths.map do |path|
       path.to_s =~ HOMEBREW_TAP_PATH_REGEX
-      "#{$1}/#{$2.sub("homebrew-", "")}/#{path.basename(".rb")}"
+      "#{Tap.fetch($1, $2)}/#{path.basename(".rb")}"
     end
 
     super <<-EOS.undent
@@ -99,7 +100,7 @@ class TapFormulaWithOldnameAmbiguityError < RuntimeError
     end
 
     super <<-EOS.undent
-      Formulae with '#{name}' old name found in multiple taps: #{taps.map { |t|  "\n       * #{t}" }.join}
+      Formulae with '#{name}' old name found in multiple taps: #{taps.map { |t| "\n       * #{t}" }.join}
 
       Please use the fully-qualified name e.g. #{taps.first}/#{name} to refer the formula or use its new name.
     EOS
@@ -118,10 +119,22 @@ class TapUnavailableError < RuntimeError
   end
 end
 
+class TapAlreadyTappedError < RuntimeError
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+
+    super <<-EOS.undent
+      Tap #{name} already tapped.
+    EOS
+  end
+end
+
 class TapPinStatusError < RuntimeError
   attr_reader :name, :pinned
 
-  def initialize name, pinned
+  def initialize(name, pinned)
     @name = name
     @pinned = pinned
 
@@ -217,18 +230,20 @@ class BuildError < RuntimeError
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
-        case formula.tap
-        when "homebrew/homebrew-boneyard"
+        case formula.tap.name
+        when "homebrew/boneyard"
           puts "#{formula} was moved to homebrew-boneyard because it has unfixable issues."
           puts "Please do not file any issues about this. Sorry!"
         else
-          puts "If reporting this issue please do so at (not Homebrew/homebrew):"
-          puts "  https://github.com/#{formula.tap}/issues"
+          if issues_url = formula.tap.issues_url
+            puts "If reporting this issue please do so at (not Homebrew/homebrew):"
+            puts "  #{issues_url}"
+          end
         end
       end
     else
       require "cmd/config"
-      require "cmd/--env"
+      require "build_environment"
 
       ohai "Formula"
       puts "Tap: #{formula.tap}" if formula.tap?
@@ -245,15 +260,108 @@ class BuildError < RuntimeError
       end
     end
     puts
-    unless RUBY_VERSION < "1.8.7" || issues.empty?
+    if RUBY_VERSION >= "1.8.7" && issues && issues.any?
       puts "These open issues may also help:"
       puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
 
-    if MacOS.version >= "10.11"
-      require "cmd/doctor"
-      opoo Checks.new.check_for_unsupported_osx
+    require "cmd/doctor"
+    unsupported_osx = Checks.new.check_for_unsupported_osx
+    opoo unsupported_osx if unsupported_osx
+  end
+end
+
+# raised by FormulaInstaller.check_dependencies_bottled and
+# FormulaInstaller.install if the formula or its dependencies are not bottled
+# and are being installed on a system without necessary build tools
+class BuildToolsError < RuntimeError
+  def initialize(formulae)
+    if formulae.length > 1
+      formula_text = "formulae"
+      package_text = "binary packages"
+    else
+      formula_text = "formula"
+      package_text = "a binary package"
     end
+
+    if MacOS.version >= "10.10"
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode from the App Store,
+        or the CLT by running:
+          xcode-select --install
+      EOS
+    elsif MacOS.version == "10.9"
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode from:
+          https://developer.apple.com/downloads/
+        or the CLT by running:
+          xcode-select --install
+      EOS
+    elsif MacOS.version >= "10.7"
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode or the CLT from:
+          https://developer.apple.com/downloads/
+      EOS
+    else
+      xcode_text = <<-EOS.undent
+        To continue, you must install Xcode from:
+          https://developer.apple.com/xcode/downloads/
+      EOS
+    end
+
+    super <<-EOS.undent
+      The following #{formula_text}:
+        #{formulae.join(", ")}
+      cannot be installed as a #{package_text} and must be built from source.
+      #{xcode_text}
+    EOS
+  end
+end
+
+# raised by Homebrew.install, Homebrew.reinstall, and Homebrew.upgrade
+# if the user passes any flags/environment that would case a bottle-only
+# installation on a system without build tools to fail
+class BuildFlagsError < RuntimeError
+  def initialize(flags)
+    if flags.length > 1
+      flag_text = "flags"
+      require_text = "require"
+    else
+      flag_text = "flag"
+      require_text = "requires"
+    end
+
+    if MacOS.version >= "10.10"
+      xcode_text = <<-EOS.undent
+        or install Xcode from the App Store, or the CLT by running:
+          xcode-select --install
+      EOS
+    elsif MacOS.version == "10.9"
+      xcode_text = <<-EOS.undent
+        or install Xcode from:
+          https://developer.apple.com/downloads/
+        or the CLT by running:
+          xcode-select --install
+      EOS
+    elsif MacOS.version >= "10.7"
+      xcode_text = <<-EOS.undent
+        or install Xcode or the CLT from:
+          https://developer.apple.com/downloads/
+      EOS
+    else
+      xcode_text = <<-EOS.undent
+        or install Xcode from:
+          https://developer.apple.com/xcode/downloads/
+      EOS
+    end
+
+    super <<-EOS.undent
+      The following #{flag_text}:
+        #{flags.join(", ")}
+      #{require_text} building tools, but none are installed.
+      Either remove the #{flag_text} to attempt bottle installation,
+      #{xcode_text}
+    EOS
   end
 end
 

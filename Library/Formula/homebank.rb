@@ -1,15 +1,13 @@
 class Homebank < Formula
   desc "Manage your personal accounts at home"
   homepage "http://homebank.free.fr"
-  url "http://homebank.free.fr/public/homebank-5.0.2.tar.gz"
-  sha256 "f2c3f9da0aa9af76cfed63a19104d99d33b1766cac89dd1586c378b9cf54a2ca"
-  revision 1
+  url "http://homebank.free.fr/public/homebank-5.0.6.tar.gz"
+  sha256 "4a52ef7a20accd50f8cead0d0564042912573c7d60887ef5e4d462fb28b239e4"
 
   bottle do
-    revision 1
-    sha256 "f6e9b9f19a0e86678d91dddc53760b0387fe6af32846e189d30222d560b04735" => :yosemite
-    sha256 "d215f28742deee07a858b4bdc224a231d92574fcf55fe31c4d7f95b83a1072cb" => :mavericks
-    sha256 "f733d5b201ab5408abf26bad47dc7393553c44d6f1e5248f6d8358217c8d8160" => :mountain_lion
+    sha256 "07d147dcb3410ca05271f7adb41a5414f108c59e659c6a4f0255f79dcfa7487f" => :el_capitan
+    sha256 "383b722e42c3d1d0b1a46516a9804120b5cdc93dc117c99081c3f17743e8ee93" => :yosemite
+    sha256 "ac44fb6b35c39791a9b71d2673178e520440527aa1255df49421c1a40c56e7c3" => :mavericks
   end
 
   depends_on "pkg-config" => :build

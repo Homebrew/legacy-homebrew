@@ -3,14 +3,14 @@ class Mal4s < Formula
   homepage "https://github.com/secure411dotorg/mal4s/"
   url "https://service.dissectcyber.com/mal4s/mal4s-1.2.8.tar.gz"
   sha256 "1c40ca9d11d113278c4fbd5c7ec9ce0edc78d6c8bd1aa7d85fb6b9473e60f0f1"
-  revision 1
+  revision 3
 
   head "https://github.com/secure411dotorg/mal4s.git"
 
   bottle do
-    sha256 "7860372e817d304308db192b87533b0e8eb390bef57137b9ba2f6a96c5a53802" => :yosemite
-    sha256 "e9b2e3bb2770db34cba13f0fcdbe4a141e6e2fb581fcd5394ece2188e276d1e0" => :mavericks
-    sha256 "85fad50f95402df580d98b546d39fcaab97989c0ac4ff3f3b2499e7cc2575e22" => :mountain_lion
+    sha256 "d1ad4e30b3597321f42624c1fc3f90091db9a701fd880b17f5c7c1036e636717" => :el_capitan
+    sha256 "3ae37791185eac8b4b93f6b06e7407543f47d1c7a17d52c7ad48098f20dd7d94" => :yosemite
+    sha256 "9483f98d5cf33be8ffe68ca83adce46a5f0ccb47171ab737a1bbf4016cb6c12c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

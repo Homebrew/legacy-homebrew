@@ -1,13 +1,14 @@
 class OpenMpi < Formula
   desc "High performance message passing library"
   homepage "https://www.open-mpi.org/"
-  url "https://www.open-mpi.org/software/ompi/v1.8/downloads/openmpi-1.8.6.tar.bz2"
-  sha256 "b9fe3bdfb86bd42cc53448e17f11278531b989b05ff9513bc88ba1a523f14e87"
+  url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.1.tar.bz2"
+  sha256 "7919ecde15962bab2e26d01d5f5f4ead6696bbcacb504b8560f2e3a152bfe492"
+  revision 1
 
   bottle do
-    sha256 "7e2e8fa7bea94e1ac4ff3eb8c4912c71b2854355f9a0eff42e52a068a24290ac" => :yosemite
-    sha256 "5d8130410f17a814bf40f6e6bd89da01f1f10ac7803341f15a8f9e6da6722d2e" => :mavericks
-    sha256 "299f483c52a86264f31617c086b49c1ab451910211e8e5bfb778fc16396460bb" => :mountain_lion
+    sha256 "4d88289344121d4e27764d9f11ac3daf16229bc17680534e251622af2631adf7" => :el_capitan
+    sha256 "9e95ece40f8e1de74d35e637c5f83f65b5ab70b6b4346a331449c664f2acdda7" => :yosemite
+    sha256 "239b560ef01724af3c05f9c090490f75908f0fa0a3cd60cea64485e1574ec11f" => :mavericks
   end
 
   head do
@@ -23,7 +24,7 @@ class OpenMpi < Formula
   option "with-mpi-thread-multiple", "Enable MPI_THREAD_MULTIPLE"
   option :cxx11
 
-  conflicts_with "mpich2", :because => "both install mpi__ compiler wrappers"
+  conflicts_with "mpich", :because => "both install mpi__ compiler wrappers"
   conflicts_with "lcdf-typetools", :because => "both install same set of binaries."
 
   depends_on :java => :build
@@ -41,6 +42,7 @@ class OpenMpi < Formula
       --with-libevent=#{Formula["libevent"].opt_prefix}
       --with-sge
     ]
+    args << "--with-platform-optimized" if build.head?
     args << "--disable-mpi-fortran" if build.without? "fortran"
     args << "--enable-mpi-thread-multiple" if build.with? "mpi-thread-multiple"
 
@@ -82,5 +84,19 @@ class OpenMpi < Formula
     system "#{bin}/mpicc", "hello.c", "-o", "hello"
     system "./hello"
     system "#{bin}/mpirun", "-np", "4", "./hello"
+    (testpath/"hellof.f90").write <<-EOS.undent
+      program hello
+      include 'mpif.h'
+      integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
+      call MPI_INIT(ierror)
+      call MPI_COMM_SIZE(MPI_COMM_WORLD, size, ierror)
+      call MPI_COMM_RANK(MPI_COMM_WORLD, rank, ierror)
+      print*, 'node', rank, ': Hello Fortran world'
+      call MPI_FINALIZE(ierror)
+      end
+    EOS
+    system "#{bin}/mpif90", "hellof.f90", "-o", "hellof"
+    system "./hellof"
+    system "#{bin}/mpirun", "-np", "4", "./hellof"
   end
 end

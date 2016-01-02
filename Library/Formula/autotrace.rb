@@ -11,12 +11,12 @@ class Autotrace < Formula
   # Issue 16569: Use MacPorts patch to port input-png.c to libpng 1.5.
   # Fix underquoted m4
   patch :p0 do
-    url "https://trac.macports.org/export/100575/trunk/dports/graphics/autotrace/files/patch-libpng-1.5.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/5b41470/autotrace/patch-libpng-1.5.diff"
     sha256 "9c57a03d907db94956324e9199c7b5431701c51919af6dfcff4793421a1f31fe"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/77101/trunk/dports/graphics/autotrace/files/patch-autotrace.m4.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/5b41470/autotrace/patch-autotrace.m4.diff"
     sha256 "12d794c99938994f5798779ab268a88aff56af8ab4d509e14383a245ae713720"
   end
 
@@ -24,7 +24,8 @@ class Autotrace < Formula
     args = ["--disable-debug",
             "--disable-dependency-tracking",
             "--prefix=#{prefix}",
-            "--mandir=#{man}"]
+            "--mandir=#{man}",
+           ]
 
     args << "--without-magick" if build.without? "imagemagick"
 

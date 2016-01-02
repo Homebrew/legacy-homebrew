@@ -1,14 +1,14 @@
 class Libmtp < Formula
   desc "Implementation of Microsoft's Media Transfer Protocol (MTP)"
   homepage "http://libmtp.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.9/libmtp-1.1.9.tar.gz"
-  sha256 "23f1d3c0b54107388bf2824d56415e9e087c980c86e5d179865652c022b6b189"
+  url "https://downloads.sourceforge.net/project/libmtp/libmtp/1.1.10/libmtp-1.1.10.tar.gz"
+  sha256 "1eee8d4c052fe29e58a408fedc08a532e28626fa3e232157abd8fca063c90305"
 
   bottle do
     cellar :any
-    sha256 "be5a361ac01b6aaa620c48525bff8de6a2f8e46c11b190c6b307de57dd02c03e" => :yosemite
-    sha256 "620dd6cbd96f7e5287c9c6c2e651a69b303e100f0ebab309267fd4686fdd7d7a" => :mavericks
-    sha256 "7f92dfe69e7732ea5e1e583aae5a259b11302020cfb519372d2d5488662bff1f" => :mountain_lion
+    sha256 "f1aef2931e982752ef4fd41a5be2d22fd7ee59004692dfbb62ed378b85b8059d" => :el_capitan
+    sha256 "b7f92f9c8f9ba818bf8b3913ac00f8502b43cedad27af6396daecb2c73d5637e" => :yosemite
+    sha256 "0e0da0a291315f2ac64fa3592f6fe477433e7e5ef97258016b7e870a418cdc7c" => :mavericks
   end
 
   depends_on "pkg-config" => :build

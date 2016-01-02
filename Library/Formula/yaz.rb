@@ -1,22 +1,24 @@
 class Yaz < Formula
   desc "Toolkit for Z39.50/SRW/SRU clients/servers"
   homepage "http://www.indexdata.com/yaz"
-  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.14.4.tar.gz"
-  sha256 "0238e2fd09a5060880c3447528c68adeb56c4444d67078033c0f3e3cdeda573b"
+  url "http://ftp.indexdata.dk/pub/yaz/yaz-5.15.1.tar.gz"
+  sha256 "ebef25b0970ea1485bbba43a721d7001523b6faa18c8d8da4080a8f83d5e2116"
 
   bottle do
     cellar :any
-    sha256 "d873eec6aae920b48c3f6c86ffb0e6bb1b8b24f23241107cfc194deef76f5fe7" => :yosemite
-    sha256 "4c5e7d13920ea1ce514f8ff2920936dff9aab883fe962056a204086d09f9c7aa" => :mavericks
-    sha256 "cff5a0ffe4c60545203c6b4f7b7642a58c787552ef35baced12cdf73d5fa6df6" => :mountain_lion
+    sha256 "05147a6762eba37c57a8a8b267fbb2dd33815dd1b487e19e46f736c63c83f4af" => :el_capitan
+    sha256 "805923726ca5c129fd5edb544a46520850b01379c6e9e5b9b391229bbe437991" => :yosemite
+    sha256 "74fc45348ff2e120c73271286e3da354e42daeca90853ac242f3fb38a3a941fe" => :mavericks
   end
+
+  option :universal
 
   depends_on "pkg-config" => :build
   depends_on "icu4c" => :recommended
-  depends_on "gnutls" => :optional
-  depends_on "libgcrypt" if build.with? "gnutls"
 
   def install
+    ENV.universal_binary if build.universal?
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-xml2"
@@ -28,7 +30,7 @@ class Yaz < Formula
     # text encoding supported by yaz-iconv, and UTF8.
     marc8file = testpath/"marc8.txt"
     marc8file.write "$1!0-!L,i$3i$si$Ki$Ai$O!+=(B"
-    result = `#{bin}/yaz-iconv -f marc8 -t utf8 #{marc8file}`
+    result = shell_output("#{bin}/yaz-iconv -f marc8 -t utf8 #{marc8file}")
     result.force_encoding(Encoding::UTF_8) if result.respond_to?(:force_encoding)
     assert_equal "世界こんにちは！", result
 
@@ -64,7 +66,7 @@ class Yaz < Formula
         4 1 '' ''
       EOS
 
-      result = `#{bin}/yaz-icu -c #{configurationfile} #{inputfile}`
+      result = shell_output("#{bin}/yaz-icu -c #{configurationfile} #{inputfile}")
       assert_equal expectedresult, result
     end
   end

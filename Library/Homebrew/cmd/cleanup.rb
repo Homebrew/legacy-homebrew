@@ -2,8 +2,15 @@ require "formula"
 require "keg"
 require "bottles"
 require "thread"
+require "utils"
 
 module Homebrew
+  @@disk_cleanup_size = 0
+
+  def update_disk_cleanup_size(path_size)
+    @@disk_cleanup_size += path_size
+  end
+
   def cleanup
     if ARGV.named.empty?
       cleanup_cellar
@@ -15,6 +22,15 @@ module Homebrew
       end
     else
       ARGV.resolved_formulae.each { |f| cleanup_formula(f) }
+    end
+
+    if @@disk_cleanup_size > 0
+      disk_space = disk_usage_readable(@@disk_cleanup_size)
+      if ARGV.dry_run?
+        ohai "This operation would free approximately #{disk_space} of disk space."
+      else
+        ohai "This operation has freed approximately #{disk_space} of disk space."
+      end
     end
   end
 
@@ -33,15 +49,16 @@ module Homebrew
 
   def cleanup_formula(f)
     if f.installed?
-      eligible_kegs = f.rack.subdirs.map { |d| Keg.new(d) }.select { |k| f.pkg_version > k.version }
+      eligible_kegs = f.installed_kegs.select { |k| f.pkg_version > k.version }
       if eligible_kegs.any? && eligible_for_cleanup?(f)
         eligible_kegs.each { |keg| cleanup_keg(keg) }
       else
         eligible_kegs.each { |keg| opoo "Skipping (old) keg-only: #{keg}" }
       end
-    elsif f.rack.subdirs.length > 1
+    elsif f.installed_prefixes.any? && !f.pinned?
       # If the cellar only has one version installed, don't complain
-      # that we can't tell which one to keep.
+      # that we can't tell which one to keep. Don't complain at all if the
+      # only installed version is a pinned formula.
       opoo "Skipping #{f.full_name}: most recent version #{f.pkg_version} not installed"
     end
   end
@@ -57,6 +74,14 @@ module Homebrew
   def cleanup_cache
     return unless HOMEBREW_CACHE.directory?
     HOMEBREW_CACHE.children.each do |path|
+      if path.to_s.end_with? ".incomplete"
+        cleanup_path(path) { path.unlink }
+        next
+      end
+      if path.basename.to_s == "java_cache" && path.directory?
+        cleanup_path(path) { FileUtils.rm_rf path }
+        next
+      end
       if prune?(path)
         if path.file?
           cleanup_path(path) { path.unlink }
@@ -81,7 +106,7 @@ module Homebrew
 
       begin
         f = Formulary.from_rack(HOMEBREW_CELLAR/name)
-      rescue FormulaUnavailableError, TapFormulaAmbiguityError
+      rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
         next
       end
 
@@ -104,6 +129,7 @@ module Homebrew
       puts "Removing: #{path}... (#{path.abv})"
       yield
     end
+    update_disk_cleanup_size(path.disk_usage)
   end
 
   def cleanup_lockfiles
@@ -133,7 +159,7 @@ module Homebrew
     workers.map(&:join)
   end
 
-  def prune?(path, options={})
+  def prune?(path, options = {})
     @time ||= Time.now
 
     path_modified_time = path.mtime
@@ -168,7 +194,7 @@ module Homebrew
         f.deps.any? do |d|
           d.to_formula.full_name == formula.full_name rescue d.name == formula.name
         end
-      end.all? { |f| f.rack.subdirs.all? { |keg| Tab.for_keg(keg).HEAD } }
+      end.all? { |f| f.installed_prefixes.all? { |keg| Tab.for_keg(keg).HEAD } }
     end
   end
 end

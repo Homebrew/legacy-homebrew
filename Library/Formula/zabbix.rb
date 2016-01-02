@@ -1,14 +1,13 @@
 class Zabbix < Formula
   desc "Availability and monitoring solution"
   homepage "https://www.zabbix.com/"
-  url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.4/zabbix-2.4.4.tar.gz"
-  sha256 "e9f31b96104681b050fd27b4a669736dea9c5d4efc8444effb2bff1eab6cc34c"
+  url "https://downloads.sourceforge.net/project/zabbix/ZABBIX%20Latest%20Stable/2.4.6/zabbix-2.4.6.tar.gz"
+  sha256 "0ebc6a3326e506cee18826baf2940e39fca3667650f7187e4aa103bf6f7f613c"
 
   bottle do
-    revision 1
-    sha256 "da258ee3875028433d61757fa6025aab5af1cd22b397f3bb470f826e69464878" => :yosemite
-    sha256 "429ed618c9b1be7546595b4a227e440037f0b5322cb4f35b42d5720cee22edf4" => :mavericks
-    sha256 "63acb31c04f4d4e9edbe5cc4e3016df4712466de42efc7c1c9c1c9874cd246f4" => :mountain_lion
+    sha256 "ea0c555731f24f86bc0b2b721a339ae6a265116f7ca88a572c64b5ee0e70f3cd" => :yosemite
+    sha256 "c6d0238be50628da5cd0b201bac7c50dfada43f2f4725317f39371a6055623b9" => :mavericks
+    sha256 "bd5661ac3cb78386872bcb22e5bc85dbb5858be9cbc0cf0ac9ae077e2d30da55" => :mountain_lion
   end
 
   option "with-mysql", "Use Zabbix Server with MySQL library instead PostgreSQL."

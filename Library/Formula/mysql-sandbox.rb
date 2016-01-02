@@ -1,21 +1,26 @@
 class MysqlSandbox < Formula
   desc "Install one or more MySQL servers"
   homepage "http://mysqlsandbox.net"
-  url "https://launchpad.net/mysql-sandbox/mysql-sandbox-3/mysql-sandbox-3/+download/MySQL-Sandbox-3.0.50.tar.gz"
-  sha256 "c709c4dec711ab37265c5c596330ad3af01866f418e8158cdf949efcdcab96d8"
+  url "https://github.com/datacharmer/mysql-sandbox/archive/3.1.00.tar.gz"
+  sha256 "50934d23ec40b209cc08c19a7b38ea70e1f15f00845f91da0581e7e1cba4cf29"
+  head "https://github.com/datacharmer/mysql-sandbox.git"
 
   bottle do
-    sha256 "1ad86e367e36e62fe32b15fc93129f0f8ef5ab43f0e2ab171df22361fc3b48ff" => :yosemite
-    sha256 "3bd2fb88ca6d0aa370396962233e3a925c5f67cd205a1a46279a6a7cdb2c8f87" => :mavericks
-    sha256 "08da8aa5ab71e34f9f87838ff3b5f17c53a021683c569df000d27940890b7d7b" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "fda093673b17f173d861f451f47590abeb140d0add10999e324a6b320722b192" => :el_capitan
+    sha256 "f9676cd687585bef7b34939884e592411581ac0835a601da04188681aa34d031" => :yosemite
+    sha256 "615972d1ddbdff6654f7ba4cd140b0787342604a0313b96dd9817e0b834e5477" => :mavericks
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", "#{HOMEBREW_PREFIX}/lib/perl5/site_perl"
+    # Both variables need to be set. One is compile-time, the other run-time.
+    ENV["PERL_LIBDIR"] = libexec/"lib/perl5"
+    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
 
     system "perl", "Makefile.PL", "PREFIX=#{prefix}"
     system "make", "test", "install"
 
+    bin.install Dir["#{libexec}/bin/*"]
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 end

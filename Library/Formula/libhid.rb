@@ -7,8 +7,9 @@ class Libhid < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "906bbdb53b10becc5fa7662513ac7ee98bef5b24" => :yosemite
-    sha1 "fcd7fdf048247a5ecb01abbd56f7c03e330c62ca" => :mavericks
+    sha256 "a22388fc2ac89d99ed04449c590b035308a81c8f1a2e80ee68ca64a7e10ced7e" => :el_capitan
+    sha256 "4920ff4278cbc288fc8c84ef9b3137d99010ba047d6f072b9a6eccf07588721a" => :yosemite
+    sha256 "cda30ad7a75c6a9b156806f398d39afd8288dd7c94c6d06685f8168125906cae" => :mavericks
   end
 
   depends_on "libusb"

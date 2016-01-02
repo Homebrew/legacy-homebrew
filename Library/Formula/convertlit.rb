@@ -2,8 +2,8 @@ class Convertlit < Formula
   desc "Convert Microsoft Reader format eBooks into open format"
   homepage "http://www.convertlit.com/"
   url "http://www.convertlit.com/clit18src.zip"
-  sha256 "d70a85f5b945104340d56f48ec17bcf544e3bb3c35b1b3d58d230be699e557ba"
   version "1.8"
+  sha256 "d70a85f5b945104340d56f48ec17bcf544e3bb3c35b1b3d58d230be699e557ba"
 
   depends_on "libtommath"
 

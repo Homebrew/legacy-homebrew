@@ -1,13 +1,13 @@
 class Libvirt < Formula
   desc "C virtualization API"
   homepage "https://www.libvirt.org"
-  url "https://libvirt.org/sources/libvirt-1.2.18.tar.gz"
-  sha256 "d5a5ff18af4cced21fed986d28fa0a21b782d256920326bf0ff1c7731eeb6ade"
+  url "https://libvirt.org/sources/libvirt-1.2.21.tar.gz"
+  sha256 "8d406582f5fe88d739d1d83e0ba7ac7f91f5a8da4be82162ab85631744d8925b"
 
   bottle do
-    sha256 "385dad41cdce6fc90b1be64dd96635064d92317381c4fb248b3e3cfbefd5ad5b" => :yosemite
-    sha256 "d9e894e931fbaf30462bb69751fa2f59e7c345600657ce96c73208cd31948fd7" => :mavericks
-    sha256 "f2724581920b9158085cfff9f2ddba681adb15cf27d049e864a83c2ffb013052" => :mountain_lion
+    sha256 "9244b0a722fea407c5e75d4c301cd54b99a6eb7d8c6d0b7adfa8d4b1da3a01c8" => :el_capitan
+    sha256 "05654a4e0e0c5f6e5b837826da104f4044aeabc591619e2d3728fb6f9d418af7" => :yosemite
+    sha256 "25ae8e110d474b60744e45c028d4b21867100819140c196be42b52db05991092" => :mavericks
   end
 
   option "without-libvirtd", "Build only the virsh client and development libraries"

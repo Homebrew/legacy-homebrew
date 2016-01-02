@@ -6,7 +6,8 @@ class Bullet < Formula
   head "https://github.com/bulletphysics/bullet3.git"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
+    sha256 "1d9119bc35c1349dd67776d358abd8f62ffd4cb2a8ada2f3dbd045ee5cfc8e22" => :el_capitan
     sha256 "79e79f3dcc6dbe62ca2422df12469a545be28ee150eaba3d67fa66826da7c730" => :yosemite
     sha256 "bc42f536182a138dc1007df0ab7188a9c8fbaa6e6c9ac27d1ed550ab1372816f" => :mavericks
     sha256 "f63b943a84faa74f80756ba3aae7b3c12f6a934a50953fcf367a7f088c769615" => :mountain_lion

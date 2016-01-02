@@ -7,9 +7,9 @@ class Groovyserv < Formula
 
   bottle do
     cellar :any
-    sha1 "2acd972802f63afcdebb622015ab059c23423789" => :yosemite
-    sha1 "b2cb34764f861b8ef374ead20bac89f1866d03d4" => :mavericks
-    sha1 "9936c0eadffe669dca07631c0609bc5a07968800" => :mountain_lion
+    sha256 "574847450b751be607198f21d470b5e7cd4693d1dafd634474700d121fc2b4eb" => :yosemite
+    sha256 "891d92de6d33ca81ec885640a3a30b37749c272a2c69a37126e31bac2659b59c" => :mavericks
+    sha256 "58a7a2dbd1327dd88b5a010b570140c479a1b28940769ac0cff644c7f19e11bb" => :mountain_lion
   end
 
   depends_on "go" => :build
@@ -21,7 +21,9 @@ class Groovyserv < Formula
   end
 
   def install
-    system "./gradlew", "clean" "executables"
+    # Sandbox fix to stop it ignoring our temporary $HOME variable.
+    ENV["GRADLE_USER_HOME"] = buildpath/".brew_home"
+    system "./gradlew", "clean", "executables"
 
     # Install executables in libexec to avoid conflicts
     libexec.install Dir["build/executables/{bin,lib}"]

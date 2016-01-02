@@ -72,7 +72,7 @@ without sudo. You should add this to your path. See the caveats in the
 
 ### With system’s Ruby
 
-To make Ruby install install to `/usr/local`, we need to add
+To make Ruby install to `/usr/local`, we need to add
 `gem: -n/usr/local/bin` to your `~/.gemrc`. It’s YAML…so do it manually
 or use this:
 

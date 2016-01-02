@@ -1,6 +1,6 @@
 class String
   def undent
-    gsub(/^.{#{(slice(/^ +/) || '').length}}/, "")
+    gsub(/^[ \t]{#{(slice(/^[ \t]+/) || '').length}}/, "")
   end
 
   # eg:
@@ -20,6 +20,10 @@ class String
   def chuzzle
     s = chomp
     s unless s.empty?
+  end
+
+  def strip_prefix(prefix)
+    start_with?(prefix) ? self[prefix.length..-1] : self
   end
 end
 

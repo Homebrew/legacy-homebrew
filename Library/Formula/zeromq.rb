@@ -1,13 +1,14 @@
 class Zeromq < Formula
   desc "High-performance, asynchronous messaging library"
   homepage "http://www.zeromq.org/"
+  url "http://download.zeromq.org/zeromq-4.1.4.tar.gz"
+  sha256 "e99f44fde25c2e4cb84ce440f87ca7d3fe3271c2b8cfbc67d55e4de25e6fe378"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "52bdc9f995f14e3e8cc83cfd3de52f8375278a5d7a1e4e208a7981a946fdf9e1" => :yosemite
-    sha256 "f42f60ac5ac0258b37496628af97b502f801b7332d859857f13e0ee90413caec" => :mavericks
-    sha256 "99fe88c9a673ec6c26c1c3df65747b0de9c811de0c9a9b15f641f6e60d937edb" => :mountain_lion
+    sha256 "a0875f5b8256eafaf86e311046a2321edcb7af829db59cc6bb8c2ef6a3d26886" => :el_capitan
+    sha256 "0bf4140e81b230f09ce7e2f4cffc54c8343c0ef99526770f782336d2225567ab" => :yosemite
+    sha256 "b3fdd2f17ea70e3f9ea2d3363d141b0b7eb73fe65f480dd24400bdf0ddbd8ccd" => :mavericks
   end
 
   head do
@@ -16,11 +17,6 @@ class Zeromq < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-  end
-
-  stable do
-    url "http://download.zeromq.org/zeromq-4.1.2.tar.gz"
-    sha256 "f9162ead6d68521e5154d871bac304f88857308bb02366b81bb588497a345927"
   end
 
   option :universal

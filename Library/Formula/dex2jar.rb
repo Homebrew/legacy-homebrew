@@ -1,9 +1,11 @@
 class Dex2jar < Formula
-  desc "Tools to work with and reverse-engineer Android .dex and Java .class files"
+  desc "Tools to work with Android .dex and Java .class files"
   homepage "https://github.com/pxb1988/dex2jar"
   url "https://downloads.sourceforge.net/project/dex2jar/dex2jar-2.0.zip"
   mirror "https://bitbucket.org/pxb1988/dex2jar/downloads/dex2jar-2.0.zip"
   sha256 "7907eb4d6e9280b6e17ddce7ee0507eae2ef161ee29f70a10dbc6944fdca75bc"
+
+  bottle :unneeded
 
   def install
     # Remove Windows scripts

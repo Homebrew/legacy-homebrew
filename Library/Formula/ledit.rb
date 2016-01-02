@@ -11,7 +11,7 @@ class Ledit < Formula
     sha256 "338e160cde4ece1c167ec07e8b202f599ba0267ac5c3b6ca896b569067cb2e20" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "camlp5"
 
   def install

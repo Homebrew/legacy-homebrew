@@ -5,9 +5,9 @@ class Tin < Formula
   sha256 "cf588884bbe4711498b807311e53d82a1b6ca343f4c85e53001c90e8c0e456ac"
 
   bottle do
-    sha1 "64bb6a1947bf0d5daf81d6dd1a964a555e5c618b" => :yosemite
-    sha1 "960642645d2022d2f5568af56518b1d4633be1d0" => :mavericks
-    sha1 "4ae3d6485d114bab7e0ff293bd11939e5fd76d12" => :mountain_lion
+    sha256 "1444c2fa1a3f63f4f8f8330b69d6c255c70c4732d13673a4beab2d621d753d3e" => :yosemite
+    sha256 "11505b2e7b9953370a54fab8dc3460e28d3aabc1e02d2d713d514e4a78eb68d7" => :mavericks
+    sha256 "231470502b1e124011bd79c44d84740d068ccc32aad86a5599e7006755e7a200" => :mountain_lion
   end
 
   devel do

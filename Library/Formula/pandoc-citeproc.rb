@@ -5,27 +5,21 @@ class PandocCiteproc < Formula
 
   desc "Library and executable for using citeproc with pandoc"
   homepage "https://github.com/jgm/pandoc-citeproc"
-  url "https://hackage.haskell.org/package/pandoc-citeproc-0.7.2/pandoc-citeproc-0.7.2.tar.gz"
-  sha256 "3eddf364561a8f175493cdd32eb4c7994164d2c27625c07cf13bfd491539f936"
+  url "https://github.com/jgm/pandoc-citeproc/archive/0.8.1.3.tar.gz"
+  sha256 "d1806c65b35851abb44faa90c0ba60e15a11656420713a5907dfa1563c32be5b"
 
   bottle do
-    sha256 "f11bd1023f207b5c2655e51a7494dbf8e5c065ebaebce2bca6a79fd9c5650360" => :yosemite
-    sha256 "5262e34bd21b6d3e6eb7bb4883949e17d4268fdb99892d5420a98b237b55c172" => :mavericks
-    sha256 "b5ebf2ba3ff01756661c748bccdaf8719d7dd7eb03d325bbf17522ff74ee5121" => :mountain_lion
+    sha256 "4746358b6bd2d4aab12183bac43a5601b101e8f13a39a7ea9181dc6a25aa2bfc" => :el_capitan
+    sha256 "7317b36cba86ffe0679cdefc39ae794e8dcb3b7af9a26ac0e66eddbfec32d0ff" => :yosemite
+    sha256 "77a7cef82d67ea5d47a21ad02e3df8e60338d4b548fab6de4aaf18bfa00e7e06" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "pandoc"
 
-  setup_ghc_compilers
-
   def install
-    cabal_sandbox do
-      cabal_install "--only-dependencies"
-      cabal_install "--prefix=#{prefix}"
-    end
-    cabal_clean_lib
+    install_cabal_package
   end
 
   test do

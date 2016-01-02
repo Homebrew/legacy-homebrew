@@ -9,10 +9,9 @@ class Xsane < Formula
   depends_on "gtk+"
   depends_on "sane-backends"
 
-  # Needed to compile against libpng 1.5
-  # Project appears to be dead
+  # Needed to compile against libpng 1.5, Project appears to be dead.
   patch :p0 do
-    url "https://trac.macports.org/export/113352/trunk/dports/graphics/xsane/files/patch-src__xsane-save.c-libpng15-compat.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/e1a592d/xsane/patch-src__xsane-save.c-libpng15-compat.diff"
     sha256 "404b963b30081bfc64020179be7b1a85668f6f16e608c741369e39114af46e27"
   end
 

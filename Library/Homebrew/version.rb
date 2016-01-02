@@ -307,6 +307,10 @@ class Version
     m = /[-_]((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
+    # URL with no extension e.g. https://waf.io/waf-1.8.12
+    m = /-((?:\d+\.)*\d+)$/.match(spec_s)
+    return m.captures.first unless m.nil?
+
     # e.g. lame-398-1
     m = /-((?:\d)+-\d)/.match(stem)
     return m.captures.first unless m.nil?
@@ -326,6 +330,13 @@ class Version
     # e.g. http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip
     # e.g. http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip
     m = /-(\d+\.\d+(?:\.\d+)?)-w(?:in)?(?:32|64)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # Opam packages
+    # e.g. https://opam.ocaml.org/archives/sha.1.9+opam.tar.gz
+    # e.g. https://opam.ocaml.org/archives/lablgtk.2.18.3+opam.tar.gz
+    # e.g. https://opam.ocaml.org/archives/easy-format.1.0.2+opam.tar.gz
+    m = /\.(\d+\.\d+(?:\.\d+)?)\+opam$/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm

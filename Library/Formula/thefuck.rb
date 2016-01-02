@@ -1,23 +1,23 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-2.7.tar.gz"
-  sha256 "5486f9244315b83645efd1aaba98d83a74e23ccad8499d24d80a6b64dde850a7"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.2.tar.gz"
+  sha256 "14fc211beff811b4bbc481e0653b5c2a65be21ced116c1faeda57414d30777ac"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
-    cellar :any
-    sha256 "fafef0f2d06b9ccab5d035f041d656167c37372e33d0039b0d260a27b7067938" => :yosemite
-    sha256 "90a62137449bc70c077d98e5fa1ee4a233a84550de8a1ceaa78eb215fdc9d66a" => :mavericks
-    sha256 "48eb9527a4c6405d90f9d8c328635da50d5445ba5e78c1c1b51e203d0bfe8d0c" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "f822502249ce6cfa2fa384188e39a3fee8d53fe39ee5364305dc6675052ae525" => :el_capitan
+    sha256 "0a606a770b8499f4c21f50383da3d9f9d509d7d0ac6647e995a945c60bf5562c" => :yosemite
+    sha256 "27502a738902f3c56fe69088d477c35a1fcf3b584b022e0243d21c67ad6b25d1" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
-    sha256 "a0e9b96f1946975064724e242ac159f3260db24ffa591c3da0a355361a3a337f"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.2.1.tar.gz"
+    sha256 "7f6bea8bfe2e5cfffd0f411aa316e837daadced1893b44254bb9a38a654340f7"
   end
 
   resource "pathlib" do
@@ -36,14 +36,19 @@ class Thefuck < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.0.1.tar.gz"
-    sha256 "4d49c99fd51edf22baa997fb6105b07482feaebcb174b7d348a4307c29264b94"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.2.tar.gz"
+    sha256 "0994a58df27ea5dc523782a601357a2198b7493dcc99a30d51827a23585b5b1d"
+  end
+
+  resource "decorator" do
+    url "https://pypi.python.org/packages/source/d/decorator/decorator-4.0.2.tar.gz"
+    sha256 "1a089279d5de2471c47624d4463f2e5b3fc6a2cf65045c39bf714fc461a25206"
   end
 
   def install
     xy = Language::Python.major_minor_version "python"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{xy}/site-packages"
-    %w[setuptools pathlib psutil colorama six].each do |r|
+    %w[setuptools pathlib psutil colorama six decorator].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
@@ -66,13 +71,11 @@ class Thefuck < Formula
   end
 
   test do
-    assert_equal "The Fuck #{version}", shell_output("#{bin}/thefuck --version 2>&1").chomp
+    ENV["THEFUCK_REQUIRE_CONFIRMATION"] = "false"
+    assert_match /The Fuck #{version} using Python [0-9\.]+/, shell_output("#{bin}/thefuck --version 2>&1").chomp
     assert_match /.+TF_ALIAS.+thefuck.+/, shell_output("#{bin}/thefuck --alias").chomp
-    IO.popen("#{bin}/thefuck git branchh 2>&1", "r+") do |pipe|
-      pipe.puts "\n"
-      pipe.close_write
-      assert_match /git branch.+/, pipe.gets.chomp
-      pipe.close
-    end
+    assert_match /git branch/, shell_output("#{bin}/thefuck git branchh").chomp
+    assert_match /echo ok/, shell_output("#{bin}/thefuck echho ok").chomp
+    assert_match /^Seems like .+fuck.+ alias isn't configured.+/, shell_output("#{bin}/fuck").chomp
   end
 end

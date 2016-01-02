@@ -1,26 +1,25 @@
 class ChibiScheme < Formula
   desc "Small footprint Scheme for use as a C Extension Language"
   homepage "http://synthcode.com/wiki/chibi-scheme"
+  head "https://github.com/ashinn/chibi-scheme.git"
 
   stable do
     url "http://synthcode.com/scheme/chibi/chibi-scheme-0.7.3.tgz"
     sha256 "21a0cf669d42a670a11c08f50dc5aedb7b438fae892260900da58f0ed545fc7d"
   end
 
-  head "https://github.com/ashinn/chibi-scheme.git"
-
   bottle do
-    cellar :any
-    sha256 "9fab20beb2d9afdd48d97434ca022f327f7b1eb3bec7d0a4d2ed6d44a091946a" => :yosemite
-    sha256 "bcd1046b43b40256705c162d6f92f71665811120143f7857d0ba7938f20cc433" => :mavericks
-    sha256 "98b0bb6559ce5b8225b481e56024dc44fcb6e4c71ece3a54a3bcbe8395d8e463" => :mountain_lion
+    revision 2
+    sha256 "6427ba91b6fd3e63591d9b1f9c4cd173a53dfbef21acfdf1e41612c07ad4a18f" => :el_capitan
+    sha256 "a999ce57390290ecc5452be6bda5f6fb415e565b46eb6806650649a85edce99d" => :yosemite
+    sha256 "f29383f76167d2998917a0cfe97e362a7780a1e0288fa17d7132099a41291102" => :mavericks
   end
 
   def install
     ENV.deparallelize
 
     # "make" and "make install" must be done separately
-    system "make"
+    system "make", "PREFIX=#{prefix}"
     system "make", "install", "PREFIX=#{prefix}"
   end
 
@@ -30,4 +29,3 @@ class ChibiScheme < Formula
     assert_equal 0, $?.exitstatus
   end
 end
-

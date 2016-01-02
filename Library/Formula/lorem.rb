@@ -1,9 +1,20 @@
 class Lorem < Formula
   desc "Lorem Ipsum generator"
-  homepage "https://code.google.com/p/lorem/"
-  url "http://lorem.googlecode.com/svn-history/r4/trunk/lorem", :using => :curl
-  version "0.6.1"
-  sha256 "fa2db7c3db356d76ed6dd5244a76d9b6e0d261d89d5efa646c8fe2924be5abcf"
+  homepage "https://github.com/per9000/lorem"
+  url "https://github.com/per9000/lorem/archive/6da0a5ac4dcce0e2463a0d820baafde72210fbff.tar.gz"
+  version "0.7.4"
+  sha256 "bb103552d6532e4e0276a936b9cec02ceffd5dce56325f2bf53fed8203a26ae1"
+  head "https://github.com/per9000/lorem.git"
+
+  stable do
+    # Patch to fix broken -q option in latest numbered release
+    patch do
+      url "https://github.com/per9000/lorem/commit/1e3167d15b1337665a236a1e65a582ad2e3dd994.diff"
+      sha256 "b0675f2d6d939ab2adf0334a2ec20684b66b415e7b231e13cdbfc2608501283f"
+    end
+  end
+
+  bottle :unneeded
 
   def install
     inreplace "lorem", "!/usr/bin/python", "!/usr/bin/env python"
@@ -11,6 +22,6 @@ class Lorem < Formula
   end
 
   test do
-    assert_equal "lorem ipsum", shell_output("#{bin}/lorem -n 2").strip
+    assert_equal "lorem ipsum", shell_output("#{bin}/lorem -n 2").strip.downcase
   end
 end

@@ -6,9 +6,9 @@ class Yconalyzer < Formula
 
   bottle do
     cellar :any
-    sha1 "1e71b1cbd2446ef4e7776424bf989260023282a7" => :mavericks
-    sha1 "da4be93c06dd3fd56425d14a82fb55f848c2f9fc" => :mountain_lion
-    sha1 "a9bb41501a0a6e49247702b3e7546cf3af06e25e" => :lion
+    sha256 "0425db9794e242424ce15c56cc1c5c0aa4cba2ea91bd96f2cc6960db62387f8e" => :mavericks
+    sha256 "2d1477201d70504d4ecad48dd27b4e49c5b7c2c4535eb0f761d7646ae9ca89c5" => :mountain_lion
+    sha256 "d4f646f82389d1ff7b0fb9a592a648cd1be522569af340069245668e06a5e1bb" => :lion
   end
 
   def install

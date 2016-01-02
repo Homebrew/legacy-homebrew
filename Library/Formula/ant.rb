@@ -6,10 +6,11 @@ class Ant < Formula
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
 
   bottle do
-    cellar :any
-    sha256 "4807efd018abecb583b69b87103aaf458ee456f65860e6bd6a0e01a63cace749" => :yosemite
-    sha256 "d52cff7f6feb7c2c1e8c96048fc1adc103a0656c60ddbefdbc2b1da054213793" => :mavericks
-    sha256 "838ffd9059831c2d0cb49c0bae1b8cbde48312042428754a476429246071e0c8" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "c47d0d7e80c0f6bb85ff38a183371f5a80dc39cc15dd092db73a83c515f17219" => :el_capitan
+    sha256 "9a88cdbd7a0dc3593f828c9278ab43be3b84a45670aef7df462cb33fd08998cf" => :yosemite
+    sha256 "d9eeeb2b1ac7926b3888d6a8a001fc05f4a1efb6a50c93036a8818b5e31786cd" => :mavericks
   end
 
   keg_only :provided_by_osx if MacOS.version < :mavericks
@@ -23,7 +24,7 @@ class Ant < Formula
   end
 
   resource "bcel" do
-    url "http://central.maven.org/maven2/org/apache/bcel/bcel/5.2/bcel-5.2.jar"
+    url "https://search.maven.org/remotecontent?filepath=org/apache/bcel/bcel/5.2/bcel-5.2.jar"
     sha256 "7b87e2fd9ac3205a6e5ba9ef5e58a8f0ab8d1a0e0d00cb2a761951fa298cc733"
   end
 

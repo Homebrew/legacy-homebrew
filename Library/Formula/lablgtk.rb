@@ -6,14 +6,15 @@ class Lablgtk < Formula
   revision 1
 
   bottle do
-    sha256 "8b30f87a6c0a13f4ba20c6f6b1047bcba4d1d9f24c98ee99866535d4d516cdbd" => :yosemite
-    sha256 "7452a64cdcf4fc7a6cc705099012cdbd9ffcf2f68395755df53f8c2c04922189" => :mavericks
-    sha256 "d1bd4b3bf0b983183c677a81f2ba2667057a17f743e5f02b066ab370e3edfe23" => :mountain_lion
+    revision 1
+    sha256 "7b1168d1648ebb615cf1726c318c93f7d620dbedeefe8b76aa8bf656dc36ce3c" => :el_capitan
+    sha256 "6ff31c6c35e7743652e1168d253fabd561bf71e1e470bd47e6e2b9f2a7aa51fa" => :yosemite
+    sha256 "1d48921be1b1f4fcac28b15038a5bba350414a0fe0049ddd44f75e4aac1f4dfa" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "camlp4" => :build
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "gtk+"
   depends_on "librsvg"
 
@@ -29,38 +30,23 @@ class Lablgtk < Formula
 
   test do
     (testpath/"test.ml").write <<-EOS.undent
-      let main () =
+      let _ =
         GtkMain.Main.init ()
-      let _ = main ()
     EOS
     ENV["CAML_LD_LIBRARY_PATH"] = "#{lib}/ocaml/stublibs"
-    flags = %W[
-      -cclib
-      -latk-1.0
-      -cclib
-      -lcairo
-      -cclib
-      -lgdk-quartz-2.0
-      -cclib
-      -lgdk_pixbuf-2.0
-      -cclib
-      -lgio-2.0
-      -cclib
-      -lglib-2.0
-      -cclib
-      -lgobject-2.0
-      -cclib
-      -lgtk-quartz-2.0
-      -cclib
-      -lgtksourceview-2.0
-      -cclib
-      -lintl
-      -cclib
-      -lpango-1.0
-      -cclib
-      -lpangocairo-1.0
-    ]
-    system "ocamlc", "-I", "#{Formula["lablgtk"].opt_lib}/ocaml/lablgtk2", "lablgtk.cma", "gtkInit.cmo", "test.ml", "-o", "test", *flags
+    system "ocamlc", "-I", "#{opt_lib}/ocaml/lablgtk2", "lablgtk.cma", "gtkInit.cmo", "test.ml", "-o", "test",
+      "-cclib", "-latk-1.0",
+      "-cclib", "-lcairo",
+      "-cclib", "-lgdk-quartz-2.0",
+      "-cclib", "-lgdk_pixbuf-2.0",
+      "-cclib", "-lgio-2.0",
+      "-cclib", "-lglib-2.0",
+      "-cclib", "-lgobject-2.0",
+      "-cclib", "-lgtk-quartz-2.0",
+      "-cclib", "-lgtksourceview-2.0",
+      "-cclib", "-lintl",
+      "-cclib", "-lpango-1.0",
+      "-cclib", "-lpangocairo-1.0"
     system "./test"
   end
 end

@@ -1,24 +1,31 @@
 class Postmark < Formula
   desc "File system benchmark from NetApp"
-  homepage "https://packages.debian.org/stable/utils/postmark"
-  url "https://mirrors.kernel.org/debian/pool/main/p/postmark/postmark_1.51.orig.tar.gz"
-  mirror "http://ftp.us.debian.org/debian/pool/main/p/postmark/postmark_1.51.orig.tar.gz"
-  sha256 "7cb7c31d4e7725ce8d8e11fb7df62ed700dee4dbd5ca1e31bf3a9161fc890b41"
+  homepage "https://packages.debian.org/sid/postmark"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/p/postmark/postmark_1.53.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/p/postmark/postmark_1.53.orig.tar.gz"
+  sha256 "8a88fd322e1c5f0772df759de73c42aa055b1cd36cbba4ce6ee610ac5a3c47d3"
 
   bottle do
-    cellar :any
-    sha256 "cabe905fb4faa947b20ee8daa027101b4b827d39fa2068fe6b2cac43f24872b3" => :yosemite
-    sha256 "0dec9ea7763130539dc58334f07cbad0e1e7dd157d3acb77f9a9c790b2740446" => :mavericks
-    sha256 "db75ec9875810e2dded29dac2b73abc066bd1ce659928ce4489d0c8709d7e8b6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "784b46fe9883d27d347a44da73413ccf5c589088c0b57da577ebc1c79e64e1e6" => :el_capitan
+    sha256 "7fb38c3960e124a836cdc48650fd5f4d1fc446897b590e0dd6b6b6b5cbdec522" => :yosemite
+    sha256 "2ccb3812b371bc02e66d84ff853cb9684f8941485af3287424b4c183205bc649" => :mavericks
   end
 
   def install
     system ENV.cc, "-o", "postmark", "postmark-#{version}.c"
     bin.install "postmark"
+    man1.install "postmark.1"
   end
 
   test do
-    assert_match(/PostMark v#{version}/,
-                 pipe_output("#{bin}/postmark", "run\n", 0))
+    (testpath/"config").write <<-EOS.undent
+      set transactions 50
+      set location #{testpath}
+      run
+    EOS
+
+    output = pipe_output("#{bin}/postmark #{testpath}/config")
+    assert_match /(50 per second)/, output
   end
 end

@@ -1,20 +1,21 @@
 class Libetonyek < Formula
   desc "Interpret and import Apple Keynote presentations"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
-  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.2.tar.xz"
-  sha256 "58d078a76c3fd839c282244a1a7dabca81cef64be086a5c7d8470bb64208da39"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.5.tar.xz"
+  sha256 "29f8097f77a193511e940f7a70dfc6ac7fad57fbfc6e60b81fa1ee011daea903"
 
   bottle do
     cellar :any
-    sha256 "626991163cce2d71306b8cc2182f0881006d23402b6bd6d970c610d386b02c4a" => :yosemite
-    sha256 "6f3d2a303b340f3e1a89f4d0d07a25609a8888c3cbabecb90abdc7b18a622687" => :mavericks
-    sha256 "a3df704492a824517d62d3ca29f0b916b8a52486a9745f300090d2c9dec2f038" => :mountain_lion
+    sha256 "62cccdece5d76f43ac0fd55eaccbd7a186848b962967140e322dbcba54909ce0" => :el_capitan
+    sha256 "f2d6be638e76f14060ff49ae65a5082e9538353e4688e04688129337b64815ae" => :yosemite
+    sha256 "73a38f30705c97a32aade008ac09e26ed51c74bb6146794d07cae0af607e427d" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
   depends_on "librevenge"
   depends_on "glm"
+  depends_on "mdds"
 
   def install
     system "./configure", "--without-docs",

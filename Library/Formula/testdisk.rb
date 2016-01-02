@@ -1,14 +1,15 @@
 class Testdisk < Formula
   desc "TestDisk is a powerful free data recovery utility"
-  homepage "http://www.cgsecurity.org/wiki/TestDisk"
-  url "http://www.cgsecurity.org/testdisk-7.0.tar.bz2"
+  homepage "https://www.cgsecurity.org/wiki/TestDisk"
+  url "https://www.cgsecurity.org/testdisk-7.0.tar.bz2"
   sha256 "00bb3b6b22e6aba88580eeb887037aef026968c21a87b5f906c6652cbee3442d"
 
   bottle do
-    cellar :any
-    sha256 "0ca542c57ca8ed24c3ecb5d5b449dc18fda306744309fb59598e2a7e9c55c08b" => :yosemite
-    sha256 "e537da6b508c8aac5842c3d2094b5b914effea9ea04484cf09ac9bb80d46e3f0" => :mavericks
-    sha256 "afbf7d1f54c14b40d86baadc34efeaed0399257598d60755d910aec978aee7ef" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "979d1f6ba12aeee68300a657a78a234874707068232934d7f91597621a60253e" => :el_capitan
+    sha256 "13f6481decb5ad3f40f0617351dd9c78a02c3c0694a82cb048adde6ba897703f" => :yosemite
+    sha256 "d3e8a600a135807b630a4d649c052dc6065270910bd96f6b1f27265251787331" => :mavericks
   end
 
   def install

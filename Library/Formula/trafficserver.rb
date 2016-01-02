@@ -1,15 +1,15 @@
 class Trafficserver < Formula
   desc "HTTP/1.1 compliant caching proxy server"
   homepage "https://trafficserver.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.3.1.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.3.1.tar.bz2"
-  sha256 "e6c33c7cfb629406a320a61217e08db3123cfe4b77c2eaef0eaa520065dbeb43"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-6.0.0.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-6.0.0.tar.bz2"
+  sha256 "1ef6a9ed1d53532bbe2c294d86d4103a0140e3f23a27970936366f1bc8feb3d1"
 
   bottle do
-    sha256 "adf4707016dadcae715e667fce18c743c5fb93be11c3c8d8faba2d4fabde83ec" => :yosemite
-    sha256 "ec2b11799c68cf87c2a9b141ccabb9f65ffabc562499b6b258666f8ac44b294d" => :mavericks
-    sha256 "af9c959c4f8960240a4c990f651c76c9d61554da9a93fdb7d3838f4f6c7cd021" => :mountain_lion
+    revision 2
+    sha256 "b815aa4c085ee9ea10064260fe58e0d46264d283915ceaac3f48ce96b1e94ac6" => :el_capitan
+    sha256 "ab5d00a893335cc2cd763819b617d20b7c4675b4276bd665d2db6695d382f28c" => :yosemite
+    sha256 "70f63d966cfbe960218fe8cc12b8fe5644a4d619642446ba45ec5a81fc99752c" => :mavericks
   end
 
   head do
@@ -24,6 +24,7 @@ class Trafficserver < Formula
 
   depends_on "openssl"
   depends_on "pcre"
+
   if build.with? "spdy"
     depends_on "spdylay"
     depends_on "pkg-config" => :build
@@ -37,17 +38,29 @@ class Trafficserver < Formula
     ENV.enable_warnings
     # Needed for OpenSSL headers on Lion.
     ENV.append_to_cflags "-Wno-deprecated-declarations"
-    system "autoreconf", "-fvi" if build.head?
-    args = [
-      "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      "--with-openssl=#{Formula["openssl"].opt_prefix}",
-      "--with-user=#{ENV["USER"]}",
-      "--with-group=admin"
+    # Fix lib/perl/Makefile.pl failing with:
+    # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
+    ENV.delete "PERL_MM_OPT"
+
+    (var/"log/trafficserver").mkpath
+    (var/"trafficserver").mkpath
+
+    args = %W[
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --localstatedir=#{var}
+      --sysconfdir=#{etc}/trafficserver
+      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-group=admin
+      --disable-silent-rules
     ]
+
     args << "--enable-spdy" if build.with? "spdy"
     args << "--enable-experimental-plugins" if build.with? "experimental-plugins"
+
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
+
     # Fix wrong username in the generated startup script for bottles.
     inreplace "rc/trafficserver.in", "@pkgsysuser@", "$USER"
     if build.with? "experimental-plugins"
@@ -55,8 +68,19 @@ class Trafficserver < Formula
       # https://issues.apache.org/jira/browse/TS-3490
       inreplace "plugins/experimental/Makefile", " mysql_remap", ""
     end
+
     system "make" if build.head?
     system "make", "install"
+  end
+
+  def post_install
+    config = etc/"trafficserver/records.config"
+    return unless File.exist?(config)
+    return if File.read(config).include?("proxy.config.admin.user_id STRING #{ENV["USER"]}")
+
+    File.open("#{config}", "a") do |f|
+      f.puts "CONFIG proxy.config.admin.user_id STRING #{ENV["USER"]}"
+    end
   end
 
   test do

@@ -1,9 +1,11 @@
 class HerokuToolbelt < Formula
   desc "Everything you need to get started with Heroku"
   homepage "https://toolbelt.heroku.com/other"
-  url "https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.41.3.tgz"
-  sha256 "7e2604bcecad5d3c003d47c4b5f064b1e6fc65e9dd15e39291b452a1be45fdb2"
+  url "https://s3.amazonaws.com/assets.heroku.com/heroku-client/heroku-client-3.42.22.tgz"
+  sha256 "752e74b0ccf87d706a551c451f2e912fa0417397804b5ad5ea2edd9869e6a2f6"
   head "https://github.com/heroku/heroku.git"
+
+  bottle :unneeded
 
   depends_on :ruby => "1.9"
 
@@ -14,14 +16,6 @@ class HerokuToolbelt < Formula
       inreplace libexec/"bin/heroku", "Heroku::Updater.inject_libpath", "Heroku::Updater.disable(\"Use `brew upgrade heroku-toolbelt` to update\")"
     end
     bin.write_exec_script libexec/"bin/heroku"
-  end
-
-  def caveats
-    <<-EOS.undent
-      Unlike the standalone download for Heroku Toolbelt, the Homebrew package
-      does not come with Foreman. It is available via RubyGems, direct download,
-      and other installation methods. See https://ddollar.github.io/foreman/ for more info.
-    EOS
   end
 
   test do

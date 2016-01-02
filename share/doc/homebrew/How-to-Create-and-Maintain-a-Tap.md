@@ -15,7 +15,7 @@ repository’s root, or under `Formula` or `HomebrewFormula` subdirectories. We
 recommend the latter options because it makes the repository organisation
 easier to grasp, and top-level files are not mixed with formulae.
 
-See [homebrew-tex](https://github.com/Homebrew/homebrew-tex) for an example of
+See [homebrew/tex](https://github.com/Homebrew/homebrew-tex) for an example of
 a tap with a `Formula` subdirectory.
 
 ### Installing
@@ -52,5 +52,5 @@ Once your tap installed, Homebrew will update it each time an user runs
 You can provide your tap users with custom `brew` commands by adding them in a
 `cmd` subdirectory. [Read more on external commands](External-Commands.md).
 
-See [homebrew-aliases](https://github.com/Homebrew/homebrew-aliases) for an
+See [homebrew/aliases](https://github.com/Homebrew/homebrew-aliases) for an
 example of a tap with external commands.

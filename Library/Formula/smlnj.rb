@@ -2,13 +2,15 @@ class Smlnj < Formula
   desc "Standard ML of New Jersey"
   homepage "http://www.smlnj.org/"
   url "http://smlnj.cs.uchicago.edu/dist/working/110.78/config.tgz"
-  sha256 "e2dd00b39b00ad892f182ce3f824d1540b0e350f2aee748ca971d44b5d340c05"
   version "110.78"
+  sha256 "e2dd00b39b00ad892f182ce3f824d1540b0e350f2aee748ca971d44b5d340c05"
 
   bottle do
-    sha256 "faa649b3781c84abd7f83855ecaa566c26e1a01a80df746ceaf762f07bdb3205" => :yosemite
-    sha256 "2ec8a12dfd01d80bcab51c736a8525800e135ede2f52a2ecf157268383e315c0" => :mavericks
-    sha256 "38ec6f36214fb451c0d69b4d05876a1d87a2b5cc39b9aa24935a86b65485c5d9" => :mountain_lion
+    revision 1
+    sha256 "148c036610f5a5e21543254c9e3af39ea9dfe73b8ed83b999ab70e492ed516d1" => :el_capitan
+    sha256 "bc060f3794995fe9919d77a606de7084654d27b6185b51725db78cdf62736f4e" => :yosemite
+    sha256 "d65bdd75825461dc6fd3f15f50de7ebe339b0644e7cb21132b0f2cd742cd293f" => :mavericks
+    sha256 "ae8daf8491c3b2d6d2b12ce101fba322791591065b69129ff734325a1a1be063" => :mountain_lion
   end
 
   resource "cm" do
@@ -125,6 +127,12 @@ class Smlnj < Formula
     sha256 "2d48e6466314c7563f7f7b07700f3d93430c8082199874de0b1ff25d1a536821"
   end
 
+  # Pings `unname -r` to determine OS X version & panics that
+  # it doesn't recognise El Capitan. Already fixed upstream, but
+  # patch doesn't apply cleanly from trunk.
+  # http://smlnj-gforge.cs.uchicago.edu/scm/viewvc.php?view=rev&root=smlnj&revision=4073
+  patch :DATA
+
   def install
     ENV.deparallelize
     ENV.m32 # does not build 64-bit
@@ -193,4 +201,24 @@ class Smlnj < Formula
       request heap2asm
     EOS
   end
+
+  test do
+    system bin/"ml-nlffigen"
+    assert File.exist?("NLFFI-Generated/nlffi-generated.cm")
+  end
 end
+
+__END__
+
+diff --git a/_arch-n-opsys b/_arch-n-opsys
+index 2da504c..020e1a0 100644
+--- a/_arch-n-opsys
++++ b/_arch-n-opsys
+@@ -47,6 +47,7 @@ case `uname -s` in
+	  12*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.8 Mountain Lion
+	  13*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.9 Mavericks
+	  14*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.10 Yosemite
++	  15*) OPSYS=darwin;  HEAP_OPSYS=darwin ;; # MacOS X 10.11 El Capitan
+	  *) exit 1;;
+	esac;;
+     esac

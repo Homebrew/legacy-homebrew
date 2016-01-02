@@ -1,14 +1,14 @@
 class Libev < Formula
   desc "Asynchronous event library"
   homepage "http://software.schmorp.de/pkg/libev.html"
-  url "http://dist.schmorp.de/libev/Attic/libev-4.20.tar.gz"
-  sha256 "f870334c7fa961e7f31087c7d76abf849f596e3048f8ed2a0aaa983cd73d449e"
+  url "http://dist.schmorp.de/libev/Attic/libev-4.22.tar.gz"
+  sha256 "736079e8ac543c74d59af73f9c52737b3bfec9601f020bf25a87a4f4d0f01bd6"
 
   bottle do
     cellar :any
-    sha256 "7943ef71a65a1a7118d314c0c428eb467e10131be82e0b3ffc3a2b179d779c3e" => :yosemite
-    sha256 "21c5b5060434406af0ace8361084845422a2d28625c2388278d44eeeeecf21aa" => :mavericks
-    sha256 "70631a7212920732b2dacd6155b5cdfd404c4304586203f83649c427d453a460" => :mountain_lion
+    sha256 "218e853cb1518b865bc5e3eddda8f2dde1aa3d0fbdaef9a57d5744f32753d8f1" => :el_capitan
+    sha256 "dec143577828c516a9c3d6b7d0ee917b92a1ca152cf51b8847f5f712a45fd4cc" => :yosemite
+    sha256 "6d1791789a21f1b1637f56b76b4e49256adffcec6d13a337a16038d06f186f69" => :mavericks
   end
 
   def install

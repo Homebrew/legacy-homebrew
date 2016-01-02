@@ -3,6 +3,7 @@ require "formula"
 module Homebrew
   SOURCE_PATH=HOMEBREW_REPOSITORY/"Library/Homebrew/manpages"
   TARGET_PATH=HOMEBREW_REPOSITORY/"share/man/man1"
+  DOC_PATH=HOMEBREW_REPOSITORY/"share/doc/homebrew"
   LINKED_PATH=HOMEBREW_PREFIX/"share/man/man1"
 
   def man
@@ -21,15 +22,24 @@ module Homebrew
     else
       Homebrew.install_gem_setup_path! "ronn"
 
+      puts "Writing HTML fragments to #{DOC_PATH}"
       puts "Writing manpages to #{TARGET_PATH}"
 
-      target_file = nil
       Dir["#{SOURCE_PATH}/*.md"].each do |source_file|
-        target_file = TARGET_PATH/File.basename(source_file, ".md")
-        safe_system "ronn --roff --pipe --organization='Homebrew' --manual='brew' #{source_file} > #{target_file}"
-      end
+        args = %W[
+          --pipe
+          --organization=Homebrew
+          --manual=brew
+          #{source_file}
+        ]
+        page = File.basename(source_file, ".md")
 
-      system "man", target_file if ARGV.flag? "--verbose"
+        target_html = DOC_PATH/"#{page}.html"
+        target_html.atomic_write Utils.popen_read("ronn", "--fragment", *args)
+
+        target_man = TARGET_PATH/page
+        target_man.atomic_write Utils.popen_read("ronn", "--roff", *args)
+      end
     end
   end
 end

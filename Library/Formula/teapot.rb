@@ -1,14 +1,15 @@
 class Teapot < Formula
   desc "Table editor and planner"
-  homepage "http://www.syntax-k.de/projekte/teapot/"
-  url "http://www.syntax-k.de/projekte/teapot/teapot-2.3.0.tar.gz"
+  homepage "https://www.syntax-k.de/projekte/teapot/"
+  url "https://www.syntax-k.de/projekte/teapot/teapot-2.3.0.tar.gz"
   sha256 "580e0cb416ae3fb3df87bc6e92e43bf72929d47b65ea2b50bc09acea3bff0b65"
 
   bottle do
-    cellar :any
-    sha256 "02cfa676915adfa9702eab91be72c757bb250d492f446a7f3f084dcff2d63727" => :yosemite
-    sha256 "13998ff994a63d0e59fb99582c18aee845d760706591ae8e0f57036aa9f685d5" => :mavericks
-    sha256 "c130b452b7d339181fff49b4f5438de67c56402f81b9fffe10a154fa07351dcb" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "84673e8886e1f24250116d8c423383d0babbc53e1cb669ba46b45a37a2344399" => :el_capitan
+    sha256 "0ffd7fa1ac31cc91c9c71d225d26970e23da5719d7505d4a1dcaf40617c44afb" => :yosemite
+    sha256 "24dd3dfcdc52f47f3247ae56931cc9864434118e8d097e64e72201fdaeb08391" => :mavericks
   end
 
   depends_on "cmake" => :build

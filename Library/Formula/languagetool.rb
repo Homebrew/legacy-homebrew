@@ -1,8 +1,10 @@
 class Languagetool < Formula
   desc "Style and grammar checker"
-  homepage "http://www.languagetool.org/"
-  url "https://www.languagetool.org/download/LanguageTool-2.8.zip"
-  sha256 "2d4d38dc6aeab828654fbb6bd805253c22c1c463c2adcfd2379879c9dfa026f3"
+  homepage "https://www.languagetool.org/"
+  url "https://www.languagetool.org/download/LanguageTool-3.2.zip"
+  sha256 "9dca4596de39d4a83ed762f3125decd3b12057c8069b8107e2869b2993280f09"
+
+  bottle :unneeded
 
   def server_script(server_jar); <<-EOS.undent
     #!/bin/bash
@@ -15,5 +17,9 @@ class Languagetool < Formula
     bin.write_jar_script libexec/"languagetool-commandline.jar", "languagetool"
     (bin+"languagetool-server").write server_script(libexec/"languagetool-server.jar")
     bin.write_jar_script libexec/"languagetool.jar", "languagetool-gui"
+  end
+
+  test do
+    pipe_output("#{bin}/languagetool -l en-US -", "This is a test.")
   end
 end

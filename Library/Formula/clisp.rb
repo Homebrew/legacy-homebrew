@@ -22,7 +22,7 @@ class Clisp < Formula
   patch :DATA
 
   patch :p0 do
-    url "https://trac.macports.org/export/89054/trunk/dports/lang/clisp/files/patch-src_lispbibl_d.diff"
+    url "https://raw.githubusercontent.com/Homebrew/patches/e2cc7c1/clisp/patch-src_lispbibl_d.diff"
     sha256 "fd4e8a0327e04c224fb14ad6094741034d14cb45da5b56a2f3e7c930f84fd9a0"
   end
 

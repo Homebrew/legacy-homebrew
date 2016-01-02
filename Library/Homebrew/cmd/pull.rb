@@ -3,16 +3,10 @@
 
 require "utils"
 require "formula"
-require "cmd/tap"
+require "tap"
+require "core_formula_repository"
 
 module Homebrew
-  HOMEBREW_PULL_API_REGEX = %r{https://api\.github\.com/repos/([\w-]+)/homebrew(-[\w-]+)?/pulls/(\d+)}
-
-  def tap(arg)
-    match = arg.match(%r{homebrew-([\w-]+)/})
-    match[1].downcase if match
-  end
-
   def pull_url(url)
     # GitHub provides commits/pull-requests raw patches using this URL.
     url += ".patch"
@@ -57,39 +51,35 @@ module Homebrew
       odie "You meant `git pull --rebase`."
     end
 
+    bintray_fetch_formulae =[]
+
     ARGV.named.each do |arg|
       if arg.to_i > 0
-        url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
         issue = arg
-      elsif (testing_match = arg.match %r{brew.sh/job/Homebrew%20Testing/(\d+)/})
+        url = "https://github.com/Homebrew/homebrew/pull/#{arg}"
+        tap = CoreFormulaRepository.instance
+      elsif (testing_match = arg.match %r{brew.sh/job/Homebrew.*Testing/(\d+)/})
         _, testing_job = *testing_match
         url = "https://github.com/Homebrew/homebrew/compare/master...BrewTestBot:testing-#{testing_job}"
+        tap = CoreFormulaRepository.instance
         odie "Testing URLs require `--bottle`!" unless ARGV.include?("--bottle")
+      elsif (api_match = arg.match HOMEBREW_PULL_API_REGEX)
+        _, user, repo, issue = *api_match
+        url = "https://github.com/#{user}/homebrew#{repo}/pull/#{issue}"
+        tap = Tap.fetch(user, "homebrew#{repo}")
+      elsif (url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX)
+        url, user, repo, issue = *url_match
+        tap = Tap.fetch(user, "homebrew#{repo}")
       else
-        if (api_match = arg.match HOMEBREW_PULL_API_REGEX)
-          _, user, tap, pull = *api_match
-          arg = "https://github.com/#{user}/homebrew#{tap}/pull/#{pull}"
-        end
-
-        url_match = arg.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-        odie "Not a GitHub pull request or commit: #{arg}" unless url_match
-
-        url = url_match[0]
-        issue = url_match[3]
+        odie "Not a GitHub pull request or commit: #{arg}"
       end
 
       if !testing_job && ARGV.include?("--bottle") && issue.nil?
         raise "No pull request detected!"
       end
 
-      if !testing_job && tap_name = tap(url)
-        user = url_match[1].downcase
-        tap_dir = HOMEBREW_REPOSITORY/"Library/Taps/#{user}/homebrew-#{tap_name}"
-        safe_system "brew", "tap", "#{user}/#{tap_name}" unless tap_dir.exist?
-        Dir.chdir tap_dir
-      else
-        Dir.chdir HOMEBREW_REPOSITORY
-      end
+      tap.install unless tap.installed?
+      Dir.chdir tap.path
 
       # The cache directory seems like a good place to put patches.
       HOMEBREW_CACHE.mkpath
@@ -106,15 +96,9 @@ module Homebrew
 
       changed_formulae = []
 
-      if tap_dir
-        formula_dir = %w[Formula HomebrewFormula].find { |d| tap_dir.join(d).directory? } || ""
-      else
-        formula_dir = "Library/Formula"
-      end
-
       Utils.popen_read(
         "git", "diff-tree", "-r", "--name-only",
-        "--diff-filter=AM", revision, "HEAD", "--", formula_dir
+        "--diff-filter=AM", revision, "HEAD", "--", tap.formula_dir.to_s
       ).each_line do |line|
         name = File.basename(line.chomp, ".rb")
 
@@ -126,9 +110,18 @@ module Homebrew
         end
       end
 
-      unless ARGV.include? "--bottle"
-        changed_formulae.each do |f|
-          next unless f.bottle
+      fetch_bottles = false
+      changed_formulae.each do |f|
+        if ARGV.include? "--bottle"
+          if f.bottle_unneeded?
+            ohai "#{f}: skipping unneeded bottle."
+          elsif f.bottle_disabled?
+            ohai "#{f}: skipping disabled bottle: #{f.bottle_disable_reason}"
+          else
+            fetch_bottles = true
+          end
+        else
+          next unless f.bottle_defined?
           opoo "#{f.full_name} has a bottle: do you need to update it with --bottle?"
         end
       end
@@ -153,17 +146,16 @@ module Homebrew
         end
       end
 
-      if ARGV.include? "--bottle"
-
+      if fetch_bottles
         bottle_commit_url = if testing_job
           bottle_branch = "testing-bottle-#{testing_job}"
           url
         else
           bottle_branch = "pull-bottle-#{issue}"
-          if tap_name
-            "https://github.com/BrewTestBot/homebrew-#{tap_name}/compare/homebrew:master...pr-#{issue}"
-          else
+          if tap.core_formula_repository?
             "https://github.com/BrewTestBot/homebrew/compare/homebrew:master...pr-#{issue}"
+          else
+            "https://github.com/BrewTestBot/homebrew-#{tap.repo}/compare/homebrew:master...pr-#{issue}"
           end
         end
         curl "--silent", "--fail", "-o", "/dev/null", "-I", bottle_commit_url
@@ -180,8 +172,9 @@ module Homebrew
         bintray_key = ENV["BINTRAY_KEY"]
 
         if bintray_user && bintray_key
-          repo = Bintray.repository(tap_name)
+          repo = Bintray.repository(tap)
           changed_formulae.each do |f|
+            next if f.bottle_unneeded? || f.bottle_disabled?
             ohai "Publishing on Bintray:"
             package = Bintray.package f.name
             version = f.pkg_version
@@ -189,13 +182,7 @@ module Homebrew
               "-u#{bintray_user}:#{bintray_key}", "-X", "POST",
               "-d", '{"publish_wait_for_secs": -1}',
               "https://api.bintray.com/content/homebrew/#{repo}/#{package}/#{version}/publish"
-            sleep 5
-            success = system "brew", "fetch", "--retry", "--force-bottle", f.full_name
-            unless success
-              ohai "That didn't work; sleeping another 10 and trying again..."
-              sleep 10
-              system "brew", "fetch", "--retry", "--force-bottle", f.full_name
-            end
+            bintray_fetch_formulae << f
           end
         else
           opoo "You must set BINTRAY_USER and BINTRAY_KEY to add or update bottles on Bintray!"
@@ -211,6 +198,22 @@ module Homebrew
           install = f.installed? ? "upgrade" : "install"
           safe_system "brew", install, "--debug", f.full_name
         end
+      end
+    end
+
+    bintray_fetch_formulae.each do |f|
+      max_retries = 8
+      retry_count = 0
+      begin
+        success = system "brew", "fetch", "--force-bottle", f.full_name
+        raise "Failed to download #{f} bottle!" unless success
+      rescue RuntimeError => e
+        retry_count += 1
+        raise e if retry_count >= max_retries
+        sleep_seconds = 2**retry_count
+        ohai "That didn't work; sleeping #{sleep_seconds} seconds and trying again..."
+        sleep sleep_seconds
+        retry
       end
     end
   end

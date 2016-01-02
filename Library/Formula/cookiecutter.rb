@@ -1,22 +1,42 @@
 class Cookiecutter < Formula
   desc "Utility that creates projects from templates"
   homepage "https://github.com/audreyr/cookiecutter"
-  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-1.0.0.tar.gz"
-  sha256 "ebe8bc662dce0a26effc2a0fb344e5006832aef4cedb9c6a950a1e0e3f3f41fb"
+  url "https://pypi.python.org/packages/source/c/cookiecutter/cookiecutter-1.1.0.tar.gz"
+  sha256 "8a503098ae97825b51499b973849daecc34d4a2223a30b73bed0b7543a9f63dc"
   head "https://github.com/audreyr/cookiecutter.git"
 
   bottle do
-    cellar :any
-    sha256 "501bfc26db09d2997cc175aad4b87c1113f9648d036d52d442b130d323f373ec" => :yosemite
-    sha256 "1636f003e6ca16a387fbe16b1c73aaaed1f7d817bb3302170a77652f0d895c06" => :mavericks
-    sha256 "8463ae544df9c9dd5eb1b1daba476fbeaffe678c961b1149b42426e654d82002" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "14d0f7285d61dd830f75b49dc014c2de0ecf9d4d45d7fa6fed8f769c97dd2fac" => :el_capitan
+    sha256 "5cb2ed59a110c818146d767064a9bbc5c4eba222e55f433a50d9f7f2fe48e07a" => :yosemite
+    sha256 "25cf7a6487354a2a6c7d0a95d40992d4f8f187f1df3fbd93db43aec48a5f1888" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "binaryornot" do
-    url "https://pypi.python.org/packages/source/b/binaryornot/binaryornot-0.3.0.tar.gz"
-    sha256 "83bc656b147983da8755c7b1e1323825d29a318ee437f91d210b16b1ec8bacf4"
+    url "https://pypi.python.org/packages/source/b/binaryornot/binaryornot-0.4.0.tar.gz"
+    sha256 "ab0f387b28912ac9c300db843461359e2773da3b922ae378ab69b0d85b288ec8"
+  end
+
+  resource "chardet" do
+    url "https://pypi.python.org/packages/source/c/chardet/chardet-2.3.0.tar.gz"
+    sha256 "e53e38b3a4afe6d1132de62b7400a4ac363452dc5dfcf8d88e8e0cce663c68aa"
+  end
+
+  resource "click" do
+    url "https://pypi.python.org/packages/source/c/click/click-5.1.tar.gz"
+    sha256 "678c98275431fad324275dec63791e4a17558b40e5a110e20a82866139a85a5a"
+  end
+
+  resource "future" do
+    url "https://pypi.python.org/packages/source/f/future/future-0.15.2.tar.gz"
+    sha256 "3d3b193f20ca62ba7d8782589922878820d0a023b885882deec830adbf639b97"
+  end
+
+  resource "Jinja2" do
+    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.8.tar.gz"
+    sha256 "bc1ff2ff88dbfacefde4ddde471d1417d3b304e8df103a7a9437d47269201bf4"
   end
 
   resource "MarkupSafe" do
@@ -29,19 +49,9 @@ class Cookiecutter < Formula
     sha256 "c36c938a872e5ff494938b33b14aaa156cb439ec67548fcab3535bb78b0846e8"
   end
 
-  resource "Jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
-  end
-
-  resource "mock" do
-    url "https://pypi.python.org/packages/source/m/mock/mock-1.0.1.tar.gz"
-    sha256 "b839dd2d9c117c701430c149956918a423a9863b48b09c90e30a6013e7d2f44f"
-  end
-
-  resource "click" do
-    url "https://pypi.python.org/packages/source/c/click/click-3.3.tar.gz"
-    sha256 "f79c8c04d7eb50071bcad67fd23f3c10fab6c72d56857adf848367806845d6e5"
+  resource "whichcraft" do
+    url "https://pypi.python.org/packages/source/w/whichcraft/whichcraft-0.1.1.tar.gz"
+    sha256 "5df20674e0a90028b5633417510f0001b63bc0f345ab3cbb184dd4b221d125ec"
   end
 
   def install

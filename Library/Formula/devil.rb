@@ -1,16 +1,18 @@
 class Devil < Formula
   desc "Cross-platform image library"
-  homepage "http://sourceforge.net/projects/openil/"
+  homepage "https://sourceforge.net/projects/openil/"
   url "https://downloads.sourceforge.net/project/openil/DevIL/1.7.8/DevIL-1.7.8.tar.gz"
   sha256 "682ffa3fc894686156337b8ce473c954bf3f4fb0f3ecac159c73db632d28a8fd"
   revision 1
 
-  depends_on "libpng"
-  depends_on "jpeg"
+  bottle :disable, "Can't generate bottles until builds with either Clang or GCC-5"
 
   option :universal
 
-  # see http://sourceforge.net/tracker/?func=detail&aid=3404133&group_id=4470&atid=104470
+  depends_on "libpng"
+  depends_on "jpeg"
+
+  # see https://sourceforge.net/p/openil/bugs/204/
   # also, even with -std=gnu99 removed from the configure script,
   # devil fails to build with clang++ while compiling il_exr.cpp
   fails_with :clang do

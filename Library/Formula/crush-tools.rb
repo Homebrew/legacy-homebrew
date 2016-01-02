@@ -19,6 +19,7 @@ class CrushTools < Formula
   end
 
   conflicts_with "aggregate", :because => "both install an `aggregate` binary"
+  conflicts_with "num-utils", :because => "both install an `range` binary"
 
   depends_on "pcre"
 
