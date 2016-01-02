@@ -3,6 +3,7 @@ class Flowgrind < Formula
   homepage "https://launchpad.net/flowgrind"
   url "https://launchpad.net/flowgrind/trunk/flowgrind-0.7.5/+download/flowgrind-0.7.5.tar.bz2"
   sha256 "7d7fec5e62d34422a7cadeab4a5d65eb3ffb600e8e6861fd3cbf16c29b550ae4"
+  revision 1
 
   bottle do
     cellar :any
