@@ -6,9 +6,9 @@ class XmlrpcC < Formula
 
   bottle do
     cellar :any
-    sha256 "7957f1242e7556f0dd5a956e826bcfa5fb0c777f7c986b489b44cf65b4def4d9" => :yosemite
-    sha256 "357c6f02d5b12ee56518b23cd2c9418d26c6e8097c2e07dd74e90ae42e4d6bf3" => :mavericks
-    sha256 "4a51dc5bc81393f1bee7121534c7759b1fa34f4a35a9b42114f3d23153e712d6" => :mountain_lion
+    sha256 "bbbdb697490a78b9a83ca9f38f83cb5220c5ddc61a75c419c22f8779f869ec50" => :el_capitan
+    sha256 "fa59a570d88523416352a681e09bad49e864c5bf5cf5c7896d179155a7c62f10" => :yosemite
+    sha256 "6b6a45b94ccc09e499b2216bf394d3641d01a5974cdf1212c908c26ea903428a" => :mavericks
   end
 
   def install
