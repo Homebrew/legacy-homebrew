@@ -19,7 +19,8 @@ class LanguageModuleRequirement < Requirement
         `#{command_line} #{@module_name}`
     EOS
 
-    if $?.exitstatus == 127
+    sys_prov = :python || :perl || :ruby
+    unless @language == sys_prov
       s << <<-EOS.undent
 
       You may need to: `brew install #{@language}`
