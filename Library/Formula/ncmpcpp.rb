@@ -1,9 +1,8 @@
 class Ncmpcpp < Formula
   desc "Ncurses-based client for the Music Player Daemon"
   homepage "http://rybczak.net/ncmpcpp/"
-  url "http://rybczak.net/ncmpcpp/stable/ncmpcpp-0.6.7.tar.bz2"
-  sha256 "08807dc515b4e093154a6e91cdd17ba64ebedcfcd7aa34d0d6eb4d4cc28a217b"
-  revision 2
+  url "http://rybczak.net/ncmpcpp/stable/ncmpcpp-0.7.1.tar.bz2"
+  sha256 "73b76ca9a7b08b220c49251195b9a929768759bd03cf6956b74a2f218b2e2fdf"
 
   bottle do
     cellar :any
@@ -34,10 +33,10 @@ class Ncmpcpp < Formula
   depends_on "fftw" if build.with? "visualizer"
 
   if MacOS.version < :mavericks
-    depends_on "boost" => "c++11"
+    depends_on "boost" => ["with-icu4c", "c++11"]
     depends_on "taglib" => "c++11"
   else
-    depends_on "boost"
+    depends_on "boost" => ["with-icu4c"]
     depends_on "taglib"
   end
 
@@ -46,6 +45,8 @@ class Ncmpcpp < Formula
   def install
     ENV.cxx11
     ENV.append "LDFLAGS", "-liconv"
+    ENV.append "BOOST_LIB_SUFFIX", "-mt"
+    ENV.append "CXXFLAGS", "-D_XOPEN_SOURCE_EXTENDED"
 
     args = [
       "--disable-dependency-tracking",
