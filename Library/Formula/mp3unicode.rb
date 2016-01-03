@@ -5,6 +5,13 @@ class Mp3unicode < Formula
   sha256 "375b432ce784407e74fceb055d115bf83b1bd04a83b95256171e1a36e00cfe07"
   head "https://github.com/alonbl/mp3unicode.git"
 
+  bottle do
+    cellar :any
+    sha256 "e9db3c9529d5358f83bb67d5966c6b508851f27a3bc61d5212b674d620a03a7e" => :el_capitan
+    sha256 "56c77d872d7adda53f68661145a5b372ecf64ef0284181a7ecd9b56997f14c74" => :yosemite
+    sha256 "10d647d04714f9e95d9bf3ab8dfd023fea3f22876dfe055c01211e527a2facd3" => :mavericks
+  end
+
   depends_on "taglib"
 
   def install
