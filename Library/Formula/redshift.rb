@@ -5,10 +5,9 @@ class Redshift < Formula
   sha256 "10e350f93951c0521dd6f103d67a485972c307214f036e009acea2978fe4f359"
 
   bottle do
-    revision 1
-    sha256 "5be5b17938bddcec8b4a01f5b27c433215362172965c4fdef94297a48191e1c5" => :el_capitan
-    sha256 "c5a69fc49a3d4913c3333774b3365bcfd3ca841d6aae4d70b6c868ace54108cd" => :yosemite
-    sha256 "5433ef625a0df216939ba5bc5af8609e39c5c1704e3cf41ac89bd21c320b8ba2" => :mavericks
+    sha256 "f8fc6b6b2279982aefc06a03571c8de76df9542808558e542e87d7e28187d58f" => :el_capitan
+    sha256 "b51cd606ac04a3709ca9a02196c26ee6b79b1b32d976ef01155db382f5145f81" => :yosemite
+    sha256 "9d151b44efdd166ae4239af7dff907a4868441c126f7fd11aa69a53e9d39de7a" => :mavericks
   end
 
   head do
