@@ -44,13 +44,15 @@ class Dovecot < Formula
 
     args << "--with-lucene" if build.with? "clucene"
     args << "--with-pam" if build.with? "pam"
-    args << "--with-libstemmer" if build.with? "stemmer"
 
-    resource("stemmer").stage do
-      system "make", "dist_libstemmer_c"
-      system "tar", "xzf", "dist/libstemmer_c.tgz", "-C", buildpath
+    if build.with? "stemmer"
+      args << "--with-libstemmer"
+
+      resource("stemmer").stage do
+        system "make", "dist_libstemmer_c"
+        system "tar", "xzf", "dist/libstemmer_c.tgz", "-C", buildpath
+      end
     end
-
 
     system "./configure", *args
     system "make", "install"
