@@ -8,10 +8,10 @@ class Mp3unicode < Formula
   depends_on "taglib"
 
   def install
-    ENV.append("PKG_CONFIG", "true")
-    ENV.append("TAGLIB_CFLAGS", "-I#{Formula["taglib"].opt_include}/taglib")
-    ENV.append("TAGLIB_LIBS", "-L#{Formula["taglib"].opt_lib} -ltag")
-    ENV.append("ICONV_LIBS", "-liconv")
+    ENV.append "PKG_CONFIG", "true"
+    ENV.append "TAGLIB_CFLAGS", "-I#{Formula["taglib"].opt_include}/taglib"
+    ENV.append "TAGLIB_LIBS", "-L#{Formula["taglib"].opt_lib} -ltag"
+    ENV.append "ICONV_LIBS", "-liconv"
 
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
