@@ -8,9 +8,9 @@ class Syncthing < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "7c0ed0372e2a86c9946e62b797f66242c607de6b30be5f0a0b9255a2bdd95176" => :el_capitan
-    sha256 "d10283b2887993dfa32d7a9ae8146a368cf85bcb945c1394038b4cb6e496c6ec" => :yosemite
-    sha256 "824721467f9f5c5cc18347f018aeb99b9674535eb7e59c3ee439d06254263f5c" => :mavericks
+    sha256 "e91f402bf31b5ba4237823e1030a3969f387f27fa7ef186f2d1eb611b437b14f" => :el_capitan
+    sha256 "22a12c4a330fbdc64e029d2b9c8422a3a647bb685688cd34822ba3e128f650df" => :yosemite
+    sha256 "1763a36a8d4461699439a58b527d6bc05a0f768c5542c3216d686a2116bfd9ce" => :mavericks
   end
 
   depends_on "go" => :build
