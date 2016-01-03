@@ -5,11 +5,9 @@ class Pidgin < Formula
   sha256 "2c7523f0fefe89749c03b2b738ab9f7bd186da435be4762f1487eee31e77ffdd"
 
   bottle do
-    revision 5
-    sha256 "854c81ff4f98653156fecb49b0d8736def6c3507da9ab47982c540f1913cb418" => :el_capitan
-    sha256 "67e7892b128e2b5589cd7649c74bb449aa54adf133789ff1a0a3bd9f3c52ec57" => :yosemite
-    sha256 "8d6452281c705226b987d79ae1642a256ec010a47a613d2674c0750215efe528" => :mavericks
-    sha256 "b7daac4be432e5420d690750c8403486edbcb3ba173f4165c32f2aa79b85859f" => :mountain_lion
+    sha256 "f7ac5aa4dc2c9e2ea50e6c5b4e9ca654fa8080427410a7b85d217a1ebd039546" => :el_capitan
+    sha256 "0dd17a65d1e4935dce7676be0d38736cc1a00509f9d9abfffbc4b1b6252f0b8e" => :yosemite
+    sha256 "3a0d9de34f0b38996da8c17875251172a5bf49891c671cb768e5125b65af0eef" => :mavericks
   end
 
   option "with-perl", "Build Pidgin with Perl support"
