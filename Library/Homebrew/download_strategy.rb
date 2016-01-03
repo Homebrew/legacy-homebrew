@@ -184,7 +184,8 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
       with_system_path { buffered_write("bunzip2") }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
-      with_system_path { safe_system "tar", "xf", cached_location }
+      tar_flags = ARGV.verbose? ? "xvf" : "xf"
+      with_system_path { safe_system "tar", tar_flags, cached_location }
       chdir
     when :xz
       with_system_path { pipe_to_tar(xzpath) }
