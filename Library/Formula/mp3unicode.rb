@@ -15,8 +15,15 @@ class Mp3unicode < Formula
   depends_on "pkg-config" => :build
   depends_on "taglib"
 
+  if build.head?
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+  end
+
   def install
     ENV.append "ICONV_LIBS", "-liconv"
+
+    system "autoreconf", "-i" if build.head?
 
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
