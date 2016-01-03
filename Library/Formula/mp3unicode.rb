@@ -3,7 +3,6 @@ class Mp3unicode < Formula
   homepage "http://mp3unicode.sourceforge.net/"
   url "https://github.com/downloads/alonbl/mp3unicode/mp3unicode-1.2.1.tar.bz2"
   sha256 "375b432ce784407e74fceb055d115bf83b1bd04a83b95256171e1a36e00cfe07"
-  head "https://github.com/alonbl/mp3unicode.git"
 
   bottle do
     cellar :any
@@ -12,19 +11,20 @@ class Mp3unicode < Formula
     sha256 "10d647d04714f9e95d9bf3ab8dfd023fea3f22876dfe055c01211e527a2facd3" => :mavericks
   end
 
-  depends_on "pkg-config" => :build
-  depends_on "taglib"
+  head do
+    url "https://github.com/alonbl/mp3unicode.git"
 
-  if build.head?
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
+  depends_on "pkg-config" => :build
+  depends_on "taglib"
+
   def install
     ENV.append "ICONV_LIBS", "-liconv"
 
-    system "autoreconf", "-i" if build.head?
-
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
   end
