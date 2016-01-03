@@ -6,9 +6,9 @@ class SoundTouch < Formula
 
   bottle do
     cellar :any
-    sha256 "ec3cebf59b93b32cfce7e257e4dbf29f69902e968c357e42c5af6bac7c501ca9" => :el_capitan
-    sha256 "f0825880145526db97129bb02690a5823e69f008bb83713fed7b79a9fabc1636" => :yosemite
-    sha256 "75ae537da4d561053c0b974dfe77da16fafc72bafbc47b84e393d142afd5be73" => :mavericks
+    sha256 "71d50484d79decdb52b05893e28d86a5996b73c9174cc9e266647f04d1afccca" => :el_capitan
+    sha256 "fdd99f6a7879b3b65ad8283f3072afccedf7cb9c82b126a1a96a242a6b20cc07" => :yosemite
+    sha256 "c2a721df1155a2a87de6c3e3f756b812ed37e69c98dfad170e5a1e327018578a" => :mavericks
   end
 
   option "with-integer-samples", "Build using integer samples? (default is float)"
