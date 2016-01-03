@@ -1,8 +1,8 @@
 class SoundTouch < Formula
   desc "Audio processing library"
   homepage "http://www.surina.net/soundtouch/"
-  url "http://www.surina.net/soundtouch/soundtouch-1.9.1.tar.gz"
-  sha256 "7d22e09e5e0a5bb8669da4f97ec1d6ee324aa3e7515db7fa2554d08f5259aecd"
+  url "http://www.surina.net/soundtouch/soundtouch-1.9.2.tar.gz"
+  sha256 "caeb86511e81420eeb454cb5db53f56d96b8451d37d89af6e55b12eb4da1c513"
 
   bottle do
     cellar :any
