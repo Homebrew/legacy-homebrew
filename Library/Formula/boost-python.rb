@@ -91,6 +91,7 @@ class BoostPython < Formula
 
     lib.install Dir["stage-python3/lib/*py*"] if build.with?("python3")
     lib.install Dir["stage-python/lib/*py*"] if build.with?("python")
+    doc.install Dir["libs/python/doc/*"]
   end
 
   test do
