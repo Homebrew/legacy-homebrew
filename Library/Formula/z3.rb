@@ -53,7 +53,7 @@ class Z3 < Formula
       s += <<-EOS.undent
 
         Java bindings were installed into #{libexec}/com.microsoft.z3.jar and #{lib}/z3java.dylib.
-    To use these, set the classpath and java.library.path accordingly.
+        To use these, set the classpath and java.library.path accordingly.
         Alternatively, you may need to link the Java bindings into the Java Extensions folder:
           sudo mkdir -p /Library/Java/Extensions
           sudo ln -s #{lib}/libz3java.dylib #{libexec}/com.microsoft.z3.jar /Library/Java/Extensions
