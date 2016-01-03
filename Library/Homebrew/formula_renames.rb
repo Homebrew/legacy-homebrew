@@ -15,4 +15,5 @@ FORMULA_RENAMES = {
   "crystal" => "autocode",
   "nimrod" => "nim",
   "cyassl" => "wolfssl",
+  "offline-imap" => "offlineimap",
 }
