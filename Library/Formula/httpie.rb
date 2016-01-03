@@ -3,7 +3,6 @@ class Httpie < Formula
   homepage "http://httpie.org/"
   url "https://github.com/jkbrzt/httpie/archive/0.9.3.tar.gz"
   sha256 "2a0c7cf6a6914620eebc2d7700e8e7a57aabde62bd62cd7fa68f8b216c0b2340"
-  revision 1
 
   head "https://github.com/jkbrzt/httpie.git"
 
