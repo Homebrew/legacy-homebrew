@@ -12,12 +12,10 @@ class Mp3unicode < Formula
     sha256 "10d647d04714f9e95d9bf3ab8dfd023fea3f22876dfe055c01211e527a2facd3" => :mavericks
   end
 
+  depends_on "pkg-config" => :build
   depends_on "taglib"
 
   def install
-    ENV.append "PKG_CONFIG", "true"
-    ENV.append "TAGLIB_CFLAGS", "-I#{Formula["taglib"].opt_include}/taglib"
-    ENV.append "TAGLIB_LIBS", "-L#{Formula["taglib"].opt_lib} -ltag"
     ENV.append "ICONV_LIBS", "-liconv"
 
     system "./configure", "--prefix=#{prefix}"
