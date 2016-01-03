@@ -1,9 +1,8 @@
 class AmdatuBootstrap < Formula
   desc "Bootstrapping OSGi development"
   homepage "http://amdatu.org/bootstrap/intro.html"
-  # The next release should not use a zip with "brew" in the name.
-  url "https://bitbucket.org/amdatu/amdatu-bootstrap/downloads/bootstrap-r8-bin-brew.zip"
-  sha256 "5c89667e10b57060c67fc54188ded3b0b281f88fab062bfb4290994e8df2295a"
+  url "https://bitbucket.org/amdatu/amdatu-bootstrap/downloads/bootstrap-bin-r9.zip"
+  sha256 "937ef932a740665439ea0118ed417ff7bdc9680b816b8b3c81ecfd6d0fc4773b"
 
   bottle :unneeded
 
@@ -13,6 +12,6 @@ class AmdatuBootstrap < Formula
   end
 
   test do
-    assert_match "Amdatu Bootstrap R8", shell_output("#{bin}/amdatu-bootstrap --info")
+    assert_match "Amdatu Bootstrap R9", shell_output("#{bin}/amdatu-bootstrap --info")
   end
 end
