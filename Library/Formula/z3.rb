@@ -38,9 +38,7 @@ class Z3 < Formula
         system "make"
         system "make", "install"
 
-        if build.with? "ocaml"
-          (lib/"ocaml").install Dir["api/ml/*"]
-        end
+        (lib/"ocaml").install Dir["api/ml/*"] if build.with? "ocaml"
       end
     end
 
