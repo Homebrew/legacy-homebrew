@@ -1,4 +1,4 @@
-class OfflineImap < Formula
+class Offlineimap < Formula
   desc "Synchronizes emails between two repositories"
   homepage "http://offlineimap.org/"
   url "https://github.com/OfflineIMAP/offlineimap/archive/v6.6.1.tar.gz"
