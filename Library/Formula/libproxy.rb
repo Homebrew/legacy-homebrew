@@ -14,8 +14,7 @@ class Libproxy < Formula
   head do
     url "https://github.com/libproxy/libproxy.git"
     patch do
-      url "https://github.com/andyetitmoves/libproxy/commit/baa844d5992c30e996ae7a552d7afee7099e8dfb.diff"
-      sha256 "ac714f2cc010a5428556b4b66a42f4df043a6f42540269bba7da11a773f7529c"
+      url "https://patch-diff.githubusercontent.com/raw/libproxy/libproxy/pull/3.diff"
     end
   end
 
