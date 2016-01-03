@@ -1,8 +1,8 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.3.tar.gz"
-  sha256 "3e87df25f7f5af172f2063e39deccac7c5477a2be3c7ff16183b6b8e9f2d112a"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.5.tar.gz"
+  sha256 "3f51c1fabac7f231327deb098998185cbd77564dc1bfc29f4bc8d89226c96a37"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
@@ -37,18 +37,18 @@ class Vdirsyncer < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
+  end
+
+  resource "requests-toolbelt" do
+    url "https://pypi.python.org/packages/source/r/requests-toolbelt/requests-toolbelt-0.5.1.tar.gz"
+    sha256 "4f4be5325cf4af12847252406eefca8e9d1cd3cfb23a377aaac5cea32d55d23e"
   end
 
   resource "lxml" do
     url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.4.tar.gz"
     sha256 "b3d362bac471172747cda3513238f115cbd6c5f8b8e6319bf6a97a7892724099"
-  end
-
-  resource "requests-toolbelt" do
-    url "https://pypi.python.org/packages/source/r/requests-toolbelt/requests-toolbelt-0.4.0.tar.gz"
-    sha256 "15b74b90a63841b8430d6301e5062cd92929b1074b0c95bf62166b8239db1a96"
   end
 
   resource "atomicwrites" do
