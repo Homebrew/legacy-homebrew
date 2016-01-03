@@ -293,7 +293,7 @@ end
 
 def curl(*args)
   brewed_curl = HOMEBREW_PREFIX/"opt/curl/bin/curl"
-  curl = if MacOS.version <= "10.6" && brewed_curl.exist?
+  curl = if MacOS.version <= "10.8" && brewed_curl.exist?
     brewed_curl
   else
     Pathname.new "/usr/bin/curl"
