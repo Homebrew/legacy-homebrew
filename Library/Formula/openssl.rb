@@ -81,6 +81,7 @@ class Openssl < Formula
       end
 
       if build.universal?
+        cp "include/openssl/opensslconf.h", dir
         cp Dir["*.?.?.?.dylib", "*.a", "apps/openssl"], dir
         cp Dir["engines/**/*.dylib"], "#{dir}/engines"
       end
@@ -108,6 +109,15 @@ class Openssl < Formula
       system "lipo", "-create", "#{dirs.first}/openssl",
                                 "#{dirs.last}/openssl",
                      "-output", "#{bin}/openssl"
+
+      confs = archs.map do |arch|
+        <<-EOS.undent
+          #ifdef __#{arch}__
+          #{(buildpath/"build-#{arch}/opensslconf.h").read}
+          #endif
+          EOS
+      end
+      (include/"openssl/opensslconf.h").atomic_write confs.join("\n")
     end
   end
 
