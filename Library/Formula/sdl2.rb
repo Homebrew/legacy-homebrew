@@ -1,8 +1,8 @@
 class Sdl2 < Formula
   desc "Low-level access to audio, keyboard, mouse, joystick, and graphics"
   homepage "https://www.libsdl.org/"
-  url "https://libsdl.org/release/SDL2-2.0.3.tar.gz"
-  sha256 "a5a69a6abf80bcce713fa873607735fe712f44276a7f048d60a61bb2f6b3c90c"
+  url "https://libsdl.org/release/SDL2-2.0.4.tar.gz"
+  sha256 "da55e540bf6331824153805d58b590a29c39d2d506c6d02fa409aedeab21174b"
 
   bottle do
     cellar :any
@@ -14,15 +14,6 @@ class Sdl2 < Formula
 
   head do
     url "http://hg.libsdl.org/SDL", :using => :hg
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
-  devel do
-    url "https://www.libsdl.org/tmp/SDL-2.0.4-9901.tar.gz"
-    sha256 "f50ca4a5fc89289181e42e649a690dd71641fe7616278903de726f5aa73d8f68"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
