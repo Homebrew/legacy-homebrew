@@ -4,6 +4,8 @@ require "core_formula_repository"
 
 class IntegrationCommandTests < Homebrew::TestCase
   def cmd_output(*args)
+    # 1.8-compatible way of writing def cmd_output(*args, **env)
+    env = args.last.is_a?(Hash) ? args.pop : {}
     cmd_args = %W[
       -W0
       -I#{HOMEBREW_LIBRARY_PATH}/test/lib
@@ -16,6 +18,8 @@ class IntegrationCommandTests < Homebrew::TestCase
       ENV["HOMEBREW_BREW_FILE"] = HOMEBREW_PREFIX/"bin/brew"
       ENV["HOMEBREW_INTEGRATION_TEST"] = args.join " "
       ENV["HOMEBREW_TEST_TMPDIR"] = TEST_TMPDIR
+      env.each_pair { |k,v| ENV[k] = v }
+
       read, write = IO.pipe
       begin
         pid = fork do
