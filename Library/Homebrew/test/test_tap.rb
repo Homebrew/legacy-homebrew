@@ -5,6 +5,7 @@ class TapTest < Homebrew::TestCase
     @path = Tap::TAP_DIRECTORY/"homebrew/homebrew-foo"
     @path.mkpath
     @tap = Tap.new("Homebrew", "foo")
+    @tap.stubs(:private?).returns(true) if ENV["HOMEBREW_NO_GITHUB_API"]
   end
 
   def setup_tap_files
