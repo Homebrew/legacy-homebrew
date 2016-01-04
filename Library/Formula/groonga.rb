@@ -22,6 +22,11 @@ class Groonga < Formula
 
   deprecated_option "enable-benchmark" => "with-benchmark"
 
+  resource "groonga-normalizer-mysql" do
+    url "http://packages.groonga.org/source/groonga-normalizer-mysql/groonga-normalizer-mysql-1.1.0.tar.gz"
+    sha256 "525daffdb999b647ce87328ec2e94c004ab59803b00a71ce1afd0b5dfd167116"
+  end
+
   depends_on "pkg-config" => :build
   depends_on "pcre"
   depends_on "msgpack"
@@ -35,6 +40,10 @@ class Groonga < Formula
     depends_on "libevent"
     depends_on "zeromq"
   end
+
+  link_overwrite "lib/groonga/plugins/normalizers/"
+  link_overwrite "share/doc/groonga-normalizer-mysql/"
+  link_overwrite "lib/pkgconfig/groonga-normalizer-mysql.pc"
 
   def install
     args = %W[
@@ -62,15 +71,33 @@ class Groonga < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    resource("groonga-normalizer-mysql").stage do
+      ENV.prepend_path "PATH", bin
+      ENV.prepend_path "PKG_CONFIG_PATH", lib/"pkgconfig"
+      system "./configure", "--prefix=#{prefix}"
+      system "make"
+      system "make", "install"
+    end
   end
 
   test do
-    io = IO.popen("#{bin}/groonga -n #{testpath}/test.db", "r+")
-    io.puts("table_create --name TestTable --flags TABLE_HASH_KEY --key_type ShortText")
-    sleep 2
-    io.puts("shutdown")
-    # expected returned result is like this:
-    # [[0,1447502555.38667,0.000824928283691406],true]\n
-    assert_match(/\[\[0,\d+.\d+,\d+.\d+\],true\]/, io.read)
+    IO.popen("#{bin}/groonga -n #{testpath}/test.db", "r+") {|io|
+      io.puts("table_create --name TestTable --flags TABLE_HASH_KEY --key_type ShortText")
+      sleep 2
+      io.puts("shutdown")
+      # expected returned result is like this:
+      # [[0,1447502555.38667,0.000824928283691406],true]\n
+      assert_match(/\[\[0,\d+.\d+,\d+.\d+\],true\]/, io.read)
+    }
+
+    IO.popen("#{bin}/groonga -n #{testpath}/test-normalizer-mysql.db", "r+") {|io|
+      io.puts "register normalizers/mysql"
+      sleep 2
+      io.puts("shutdown")
+      # expected returned result is like this:
+      # [[0,1447502555.38667,0.000824928283691406],true]\n
+      assert_match(/\[\[0,\d+.\d+,\d+.\d+\],true\]/, io.read)
+    }
   end
 end
