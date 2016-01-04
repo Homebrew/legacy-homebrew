@@ -10,10 +10,10 @@ class Pstree < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "1384492af3d3ae0c57cd8d9b57ff40ebdd6b2d077a17e7a34796bb824c2211ef" => :el_capitan
-    sha256 "981c4ac06c8c3740f84390a65736437cb94eb163c0e2f06cc15f7ef440257826" => :yosemite
-    sha256 "8ddef0f2adb1ff02997d9f0eed6ed753cbbf9d594bfc5f25a3865ab08c653d6a" => :mavericks
+    revision 2
+    sha256 "624458274db8e826c170121061ad25547c5a245788c8108bd2bf0af4a3678dea" => :el_capitan
+    sha256 "127b605bf4b20cbddf63f875bd15f78ad5fc31eaebb57d9ce2051a3b856a8bd5" => :yosemite
+    sha256 "2334d959beae2171fe10f6781a060eab40d57b841aa1905ead0b0936fb4145ef" => :mavericks
   end
 
   def install
