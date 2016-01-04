@@ -119,7 +119,7 @@ class IntegrationCommandTests < Homebrew::TestCase
   ensure
     cmd("uninstall", "--force", "testball")
     cmd("cleanup", "--force", "--prune=all")
-    formula_file.unlink
+    formula_file.unlink unless formula_file.nil?
   end
 
   def test_uninstall
