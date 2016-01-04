@@ -1495,7 +1495,7 @@ class Formula
       # If the cellar only has one version installed, don't complain
       # that we can't tell which one to keep. Don't complain at all if the
       # only installed version is a pinned formula.
-      opoo "Skipping #{full_name}: most recent version #{f.pkg_version} not installed"
+      opoo "Skipping #{full_name}: most recent version #{pkg_version} not installed"
     end
     eligible_for_cleanup
   end
