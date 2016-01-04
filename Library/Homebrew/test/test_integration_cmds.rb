@@ -1,6 +1,7 @@
 require "bundler"
 require "testing_env"
 require "core_formula_repository"
+require "fileutils"
 
 class IntegrationCommandTests < Homebrew::TestCase
   def cmd_output(*args)
@@ -152,7 +153,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     cmd("readall", "--aliases", "--syntax")
     cmd("readall", "Homebrew/homebrew")
   ensure
-    formula_file.unlink
+    formula_file.unlink unless formula_file.nil?
     repo.alias_dir.rmtree
   end
 
@@ -180,5 +181,59 @@ class IntegrationCommandTests < Homebrew::TestCase
     assert_match "Untapped", cmd("untap", "homebrew/bar")
   ensure
     Tap::TAP_DIRECTORY.rmtree
+  end
+
+  def test_missing
+    url = "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
+    sha256 = "1dfb13ce0f6143fe675b525fc9e168adb2215c5d5965c9f57306bb993170914f"
+    repo = CoreFormulaRepository.new
+    foo_file = repo.formula_dir/"foo.rb"
+    foo_file.write <<-EOS.undent
+      class Foo < Formula
+        url "#{url}"
+        sha256 "#{sha256}"
+      end
+    EOS
+
+    bar_file = repo.formula_dir/"bar.rb"
+    bar_file.write <<-EOS.undent
+      class Bar < Formula
+        url "#{url}"
+        sha256 "#{sha256}"
+        depends_on "foo"
+      end
+    EOS
+
+    cmd("install", "bar")
+    cmd("uninstall", "foo")
+    assert_match "foo", cmd("missing")
+  ensure
+    cmd("uninstall", "--force", "foo", "bar")
+    cmd("cleanup", "--force", "--prune=all")
+    foo_file.unlink unless foo_file.nil?
+    bar_file.unlink unless bar_file.nil?
+  end
+
+  def test_doctor_check_path_for_trailing_slashes
+    assert_match "Some directories in your path end in a slash",
+      cmd_fail("doctor", "check_path_for_trailing_slashes",
+               {"PATH" => ENV["PATH"] + File::PATH_SEPARATOR + "/foo/bar/"})
+  end
+
+  def test_doctor_check_for_anaconda
+    mktmpdir do |path|
+      anaconda = "#{path}/anaconda"
+      python = "#{path}/python"
+      FileUtils.touch anaconda
+      File.open(python, "w") do |file|
+        file.write("#! #{`which bash`}\necho -n '#{python}'\n")
+      end
+      FileUtils.chmod 0777, anaconda
+      FileUtils.chmod 0777, python
+
+      assert_match "Anaconda",
+        cmd_fail("doctor", "check_for_anaconda",
+                 {"PATH" => path + File::PATH_SEPARATOR + ENV["PATH"]})
+    end
   end
 end

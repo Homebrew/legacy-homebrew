@@ -1,5 +1,5 @@
 require "cmd/tap"
-require "cmd/doctor"
+require "diagnostic"
 require "formula_versions"
 require "migrator"
 require "formulary"
@@ -15,7 +15,7 @@ module Homebrew
     end
 
     # check permissions
-    checks = Checks.new
+    checks = Diagnostic::Checks.new
     %w[
       check_access_usr_local
       check_access_homebrew_repository

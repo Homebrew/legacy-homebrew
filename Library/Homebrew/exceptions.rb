@@ -265,8 +265,8 @@ class BuildError < RuntimeError
       puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
 
-    require "cmd/doctor"
-    unsupported_osx = Checks.new.check_for_unsupported_osx
+    require "diagnostic"
+    unsupported_osx = Diagnostic::Checks.new.check_for_unsupported_osx
     opoo unsupported_osx if unsupported_osx
   end
 end
