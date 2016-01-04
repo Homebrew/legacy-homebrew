@@ -13,7 +13,7 @@ class Ttf2pt1 < Formula
     args = %W[INSTDIR=#{prefix}]
 
     if build.with? "freetype"
-      args << "CFLAGS_FT= -DUSE_FREETYPE -I#{Formula["freetype"].include}/freetype2 -I#{prefix}/include"
+      args << "CFLAGS_FT= -DUSE_FREETYPE -I#{Formula["freetype"].include}/freetype2 -I#{include}"
       args << "LIBS_FT=-L#{Formula["freetype"].lib} -lfreetype"
     end
 
