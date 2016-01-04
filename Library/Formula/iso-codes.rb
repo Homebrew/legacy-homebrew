@@ -1,8 +1,8 @@
 class IsoCodes < Formula
   desc "ISO language, territory, currency, script codes, and their translations"
   homepage "https://pkg-isocodes.alioth.debian.org/"
-  url "https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.63.tar.xz"
-  sha256 "60600e56952dc92b3a8cd8a7044348f7cfa35be528bab2491c3c18582fb5277f"
+  url "https://pkg-isocodes.alioth.debian.org/downloads/iso-codes-3.64.tar.xz"
+  sha256 "5ef061381e37e9576760df1ad504d4bbc84c270da30512b2891baed9add70729"
 
   head "git://git.debian.org/git/iso-codes/iso-codes.git", :shallow => false
 
