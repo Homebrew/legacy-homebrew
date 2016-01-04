@@ -6,10 +6,9 @@ class Libdvdcss < Formula
 
   bottle do
     cellar :any
-    sha256 "b46bbb4c0171ba189a991e8b6c6248e8f5d2b84ccb9ba10a7e36659281383514" => :el_capitan
-    sha256 "e4bdd8b17ba4090c3d37462e52c8fd4081ecdb1ae0ed2dd489e883b71081cc1f" => :yosemite
-    sha256 "e00c47db17a7cd58a4f74422c25821f32e120a3b7c17b136939e7b33d4a38b0d" => :mavericks
-    sha256 "c56de86974076eb11a8c55e73a6c1b2e2cff61a6fee7936250be56ef686adc9f" => :mountain_lion
+    sha256 "f833ab30a591de897cab74d05cb35cd2017af23311431229f98af23f539a63d1" => :el_capitan
+    sha256 "612ee99696b4bfa8a9fa8e7d0f57f391a6c4ff678116ad670a860e82145a171a" => :yosemite
+    sha256 "17b3292cb7d2f2055ab411e2eb9667337808e505ba12cf8c6386626d70b75d2e" => :mavericks
   end
 
   head do
