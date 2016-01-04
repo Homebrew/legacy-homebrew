@@ -15,17 +15,16 @@ class VersionTests < Homebrew::TestCase
 end
 
 class VersionComparisonTests < Homebrew::TestCase
-  def test_version_comparisons
+  def test_comparing_regular_versions
     assert_operator version("0.1"), :==, version("0.1.0")
     assert_operator version("0.1"), :<, version("0.2")
     assert_operator version("1.2.3"), :>, version("1.2.2")
     assert_operator version("1.2.4"), :<, version("1.2.4.1")
-  end
 
-  def test_patchlevel
-    assert_operator version("1.2.3-p34"), :>, version("1.2.3-p33")
-    assert_operator version("1.2.3-p33"), :<, version("1.2.3-p34")
-    assert_operator version("1.2.3-p10"), :>, version("1.2.3-p9")
+    assert_operator version("1.2.3"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3"), :>, version("1.2.3beta2")
+    assert_operator version("1.2.3"), :>, version("1.2.3rc3")
+    assert_operator version("1.2.3"), :<, version("1.2.3-p34")
   end
 
   def test_HEAD
@@ -33,14 +32,54 @@ class VersionComparisonTests < Homebrew::TestCase
     assert_operator version("1.2.3"), :<, version("HEAD")
   end
 
-  def test_alpha_beta_rc
-    assert_operator version("3.2.0b4"), :<, version("3.2.0")
-    assert_operator version("1.0beta6"), :<, version("1.0b7")
-    assert_operator version("1.0b6"), :<, version("1.0beta7")
-    assert_operator version("1.1alpha4"), :<, version("1.1beta2")
-    assert_operator version("1.1beta2"), :<, version("1.1rc1")
-    assert_operator version("1.0.0beta7"), :<, version("1.0.0")
-    assert_operator version("3.2.1"), :>, version("3.2beta4")
+  def test_comparing_alpha_versions
+    assert_operator version("1.2.3alpha4"), :==, version("1.2.3a4")
+    assert_operator version("1.2.3alpha4"), :==, version("1.2.3A4")
+    assert_operator version("1.2.3alpha4"), :>, version("1.2.3alpha3")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3alpha5")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3alpha10")
+
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3beta2")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3rc3")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3")
+    assert_operator version("1.2.3alpha4"), :<, version("1.2.3-p34")
+  end
+
+  def test_comparing_beta_versions
+    assert_operator version("1.2.3beta2"), :==, version("1.2.3b2")
+    assert_operator version("1.2.3beta2"), :==, version("1.2.3B2")
+    assert_operator version("1.2.3beta2"), :>, version("1.2.3beta1")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3beta3")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3beta10")
+
+    assert_operator version("1.2.3beta2"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3rc3")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3")
+    assert_operator version("1.2.3beta2"), :<, version("1.2.3-p34")
+  end
+
+  def test_comparing_rc_versions
+    assert_operator version("1.2.3rc3"), :==, version("1.2.3RC3")
+    assert_operator version("1.2.3rc3"), :>, version("1.2.3rc2")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3rc4")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3rc10")
+
+    assert_operator version("1.2.3rc3"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3rc3"), :>, version("1.2.3beta2")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3")
+    assert_operator version("1.2.3rc3"), :<, version("1.2.3-p34")
+  end
+
+  def test_comparing_patchlevel_versions
+    assert_operator version("1.2.3-p34"), :==, version("1.2.3-P34")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3-p33")
+    assert_operator version("1.2.3-p34"), :<, version("1.2.3-p35")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3-p9")
+
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3alpha4")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3beta2")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3rc3")
+    assert_operator version("1.2.3-p34"), :>, version("1.2.3")
   end
 
   def test_comparing_unevenly_padded_versions
@@ -55,10 +94,6 @@ class VersionComparisonTests < Homebrew::TestCase
     v = version("1.0")
     assert_nil v <=> Object.new
     assert_raises(ArgumentError) { v > Object.new }
-  end
-
-  def test_compare_patchlevel_to_non_patchlevel
-    assert_operator version("9.9.3-P1"), :>, version("9.9.3")
   end
 
   def test_erlang_version
