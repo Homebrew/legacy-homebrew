@@ -24,6 +24,8 @@ class Ttf2pt1 < Formula
 
 end
 
+# The patch is needed to update the FreeType headers from 1.x to 2.x.
+# see http://www.freetype.org/freetype2/docs/tutorial/step1.html
 __END__
 --- /ft.c
 +++ /ft.c
