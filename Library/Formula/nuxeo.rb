@@ -31,12 +31,15 @@ class Nuxeo < Formula
     (var/"log/nuxeo").mkpath
     (var/"lib/nuxeo/data").mkpath
     (var/"run/nuxeo").mkpath
+    (var/"cache/nuxeo/packages").mkpath
+
+    libexec.install_symlink var/"cache/nuxeo/packages"
   end
 
   def caveats; <<-EOS.undent
     You need to edit #{etc}/nuxeo.conf file to configure manually the server.
-    In case of upgrade, use 'nuxeoctl mp-list' against the old version then
-    'nuxeoctl mp-set' on the new version to reinstall packages.
+    Also, in case of upgrade, run 'nuxeoctl mp-upgrade' to ensure all
+    downloaded addons are up to date.
     EOS
   end
 
