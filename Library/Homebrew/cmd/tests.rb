@@ -5,6 +5,13 @@ module Homebrew
       ENV["HOMEBREW_TESTS_COVERAGE"] = "1" if ARGV.include? "--coverage"
       ENV["HOMEBREW_NO_COMPAT"] = "1" if ARGV.include? "--no-compat"
 
+      # Override author/committer as global settings might be invalid and thus
+      # will cause silent failure during the setup of dummy Git repositories.
+      %w[AUTHOR COMMITTER].each do |role|
+        ENV["GIT_#{role}_NAME"] = "brew tests"
+        ENV["GIT_#{role}_EMAIL"] = "brew-tests@localhost"
+      end
+
       Homebrew.install_gem_setup_path! "bundler"
       unless quiet_system("bundle", "check")
         system "bundle", "install", "--path", "vendor/bundle"
