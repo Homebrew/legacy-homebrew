@@ -102,25 +102,5 @@ class Z3 < Formula
     if build.with? "python"
       assert_equal "#{version}\n", shell_output('python -c "import z3; print z3.get_version_string()"')
     end
-
-    if build.with? "java"
-      # Build and run the java example
-      ln_s pkgshare/"examples/java/JavaExample.java", testpath
-      system "javac", "-cp", "#{libexec}/com.microsoft.z3.jar", "JavaExample.java"
-      assert File.exist? "JavaExample.class"
-      assert_match(/Z3 Full Version: #{version}/, shell_output("java -cp #{testpath}:#{libexec}/com.microsoft.z3.jar -Djava.library.path=#{lib} JavaExample"))
-    end
-
-    if build.with? "ocaml"
-      ln_s pkgshare/"examples/ml/ml_example.ml", testpath
-      ocamlc_args = [
-        "-custom",
-        "-o", "ml_example",
-        "-cclib", "-L. -lz3",
-        "nums.cma", "z3ml.cma", "ml_example.ml",
-      ]
-      system "ocamlc", *ocamlc_args
-      assert_match(/Running Z3 version #{version}/, shell_output("./ml_example"))
-    end
   end
 end
