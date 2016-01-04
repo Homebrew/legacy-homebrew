@@ -16,4 +16,5 @@ FORMULA_RENAMES = {
   "nimrod" => "nim",
   "cyassl" => "wolfssl",
   "offline-imap" => "offlineimap",
+  "kotlin-compiler" => "kotlin",
 }
