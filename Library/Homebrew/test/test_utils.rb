@@ -62,6 +62,21 @@ class UtilTests < Homebrew::TestCase
     assert_predicate $?, :success?
   end
 
+  def test_popen_read_with_block
+    out = Utils.popen_read("/bin/sh", "-c", "echo success") do |pipe|
+      pipe.read.chomp
+    end
+    assert_equal "success", out
+    assert_predicate $?, :success?
+  end
+
+  def test_popen_write_with_block
+    Utils.popen_write("/usr/bin/grep", "-q", "success") do |pipe|
+      pipe.write("success\n")
+    end
+    assert_predicate $?, :success?
+  end
+
   def test_pretty_duration
     assert_equal "1 second", pretty_duration(1)
     assert_equal "2 seconds", pretty_duration(2.5)
