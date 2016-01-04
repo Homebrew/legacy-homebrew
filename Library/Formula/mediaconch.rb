@@ -6,10 +6,10 @@ class Mediaconch < Formula
   sha256 "4899d43c097c552b2f970da6362407f002c61f93b11e8be3cf79b29c4733fd06"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "6952797738c558cc457ce26155de8c697e542967eae0a705df92769574e96848" => :el_capitan
-    sha256 "b7bc97e760479f97f35c54ff9bef9d0f08ebfb7286c3bb7684d99c26a182d58e" => :yosemite
-    sha256 "ec3441854b7c60d59a1c6df057da0ba6853c3e1bf320199f6ab5414aa96c32c6" => :mavericks
+    cellar :any
+    sha256 "f226b697b1f1bfd4331f726668e1636f95c5f56bbd50ac134a0982e1aa222b3a" => :el_capitan
+    sha256 "bee2dc3b0e7cb39c94d805f794b1b088cbb90671021489581c537bad5c2848f0" => :yosemite
+    sha256 "0dd10e2b16a58dc330b3b5b6d0fbe74559f52224bce2be28414458f26d7d6ca0" => :mavericks
   end
 
   depends_on "pkg-config" => :build
