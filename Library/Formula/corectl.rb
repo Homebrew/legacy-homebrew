@@ -3,8 +3,8 @@ require "language/go"
 class Corectl < Formula
   desc "CoreOS over OS X made very simple"
   homepage "https://github.com/TheNewNormal/corectl"
-  url "https://github.com/TheNewNormal/corectl/archive/v0.0.20.tar.gz"
-  sha256 "f88f036c8c3e21e6b2b926ae3eed1898a57f795bf7086611dcd18bdccf38119b"
+  url "https://github.com/TheNewNormal/corectl/archive/v0.5.0.tar.gz"
+  sha256 "285e65e3a9e7db4dd231ebe73e8e65f983d2f8ef436e0f45df6b05dc0b326a64"
   head "https://github.com/TheNewNormal/corectl.git", :branch => "golang"
 
   bottle do
