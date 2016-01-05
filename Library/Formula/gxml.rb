@@ -1,8 +1,8 @@
 class Gxml < Formula
   desc "GObject-based XML DOM API"
   homepage "https://wiki.gnome.org/GXml"
-  url "https://download.gnome.org/sources/gxml/0.6/gxml-0.6.0.tar.xz"
-  sha256 "50f5e1b691fcc2994264565bcbfa4cfcd386bd01ea98c9fbec3ae4ec66ce7fc8"
+  url "https://download.gnome.org/sources/gxml/0.8/gxml-0.8.0.tar.xz"
+  sha256 "fb255f09eefce063a94c3e9b46dbd9d87aca48ee443adf749ea0ced0ddaaf833"
 
   bottle do
     cellar :any
@@ -14,9 +14,6 @@ class Gxml < Formula
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
   depends_on "vala" => :build
-  # gnu-sed dependency to be removed when 0.6.1 is released
-  # usage here circumvents a bug in gxml when using Mac OS X's sed
-  depends_on "gnu-sed" => :build
   depends_on "libxml2"
   depends_on "glib"
   depends_on "libgee"
