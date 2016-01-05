@@ -231,7 +231,12 @@ module Homebrew
 
   def self.install_gem_setup_path!(gem, version = nil, executable = gem)
     require "rubygems"
-    ENV["PATH"] = "#{Gem.user_dir}/bin:#{ENV["PATH"]}"
+
+    # Add Gem binary directory and (if missing) Ruby binary directory to PATH.
+    path = ENV["PATH"].split(File::PATH_SEPARATOR)
+    path.unshift(RUBY_BIN) if which("ruby") != RUBY_PATH
+    path.unshift("#{Gem.user_dir}/bin")
+    ENV["PATH"] = path.join(File::PATH_SEPARATOR)
 
     if Gem::Specification.find_all_by_name(gem, version).empty?
       ohai "Installing or updating '#{gem}' gem"
