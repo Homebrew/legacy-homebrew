@@ -6,9 +6,9 @@ class Apktool < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c90dd13af012a5921977bf100bd53f68cc1b29ca6a5eac25af731bc0a47a6b89" => :el_capitan
-    sha256 "ffc20fe7e42429a059198a34aa267b03901c416b4a8c5729a565d35637111d12" => :yosemite
-    sha256 "17733334df7798014a01a6b59cc484544fd42bce63bd242f26561831619286d1" => :mavericks
+    sha256 "a7a126b2f51d9bb040d4ed3e65927af3c59d729ae5ff4db632ae99d5b1360a78" => :el_capitan
+    sha256 "e381c8bfa9be3f6c0698a8ae55d8be96e0d68acf372d410b3e5460122a3933ea" => :yosemite
+    sha256 "07acb5961b0ee3174ed381157cfc38e7644cb8582c207a519e00ef41e7c4b74b" => :mavericks
   end
 
   resource "sample.apk" do
