@@ -13,9 +13,19 @@ class Openvpn < Formula
     sha256 "c2fb3da6a522f8f64330c238c9e5266cdea1d23e908113bb2b82eeb80f3e884d" => :mavericks
   end
 
+  option "with-pkcs11", "Enable pkcs11 support"
+
   depends_on "lzo"
   depends_on :tuntap if MacOS.version < :yosemite
   depends_on "openssl"
+
+  if build.with? "pkcs11"
+      depends_on "pkg-config" => :build
+      depends_on "autoconf" => :build
+      depends_on "automake" => :build
+      depends_on "libtool" => :build
+      depends_on "pkcs11-helper"
+  end
 
   def install
     # pam_appl header is installed in a different location on Leopard
@@ -25,12 +35,22 @@ class Openvpn < Formula
         "security/pam_appl.h", "pam/pam_appl.h"
     end
 
+    opts = []
+    if build.with? "pkcs11"
+        opts << "--enable-pkcs11"
+        ENV.append_path "PKG_CONFIG_PATH", "/usr/local/lib/pkgconfig"
+        ENV.append "PKCS11_HELPER_CFLAGS", `pkg-config --cflags libpkcs11-helper-1`.chomp
+        ENV.append "PKCS11_HELPER_LIBS",   `pkg-config --libs   libpkcs11-helper-1`.chomp
+    end
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--with-crypto-library=openssl",
                           "--prefix=#{prefix}",
-                          "--enable-password-save"
+                          "--enable-password-save",
+                          *opts
+
     system "make", "install"
 
     inreplace "sample/sample-config-files/openvpn-startup.sh",
