@@ -50,7 +50,8 @@ class Nuxeo < Formula
     end
     ENV["NUXEO_CONF"] = "#{testpath}/nuxeo.conf"
 
-    assert_equal "#{testpath}/nuxeo.conf", shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.conf").strip
-    assert_equal "#{libexec}", shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.home").strip
+    # TODO: Remove grep as soon as warn are correctly written on stderr (https://jira.nuxeo.com/browse/NXP-18724)
+    assert_equal "#{testpath}/nuxeo.conf", shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.conf | grep -v WARN").strip
+    assert_equal "#{libexec}", shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.home | grep -v WARN").strip
   end
 end
