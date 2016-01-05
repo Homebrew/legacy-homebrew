@@ -16,6 +16,14 @@ class Openvpn < Formula
   depends_on "lzo"
   depends_on :tuntap if MacOS.version < :yosemite
   depends_on "openssl"
+  depends_on "pkcs11-helper" => :optional
+
+  if build.with? "pkcs11-helper"
+    depends_on "pkg-config" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
 
   def install
     # pam_appl header is installed in a different location on Leopard
@@ -25,12 +33,19 @@ class Openvpn < Formula
         "security/pam_appl.h", "pam/pam_appl.h"
     end
 
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--with-crypto-library=openssl",
-                          "--prefix=#{prefix}",
-                          "--enable-password-save"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --with-crypto-library=openssl
+      --prefix=#{prefix}
+      --enable-password-save
+    ]
+
+    args << "--enable-pkcs11" if build.with? "pkcs11-helper"
+
+    system "./configure", *args
+
     system "make", "install"
 
     inreplace "sample/sample-config-files/openvpn-startup.sh",
@@ -60,6 +75,8 @@ class Openvpn < Formula
       For OpenVPN to work as a server, you will need to create configuration file
       in #{etc}/openvpn, samples can be found in #{share}/doc/openvpn
     EOS
+
+    s
   end
 
   plist_options :startup => true
