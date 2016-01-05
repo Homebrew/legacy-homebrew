@@ -10,6 +10,6 @@ class Xmake < Formula
   end
 
   test do
-    system "#{bin}/xmake", "--help"
+    system "#{bin}/xmake --help"
   end
 end
