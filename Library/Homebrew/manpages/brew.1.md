@@ -176,6 +176,12 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     If `--force-bottle` is passed, download a bottle if it exists for the current
     version of OS X, even if it would not be used during installation.
 
+  * `fix-permissions` [`--dry-run`]:
+    Fix permission problems in the filesystem.
+
+    If `--dry-run` or `-n` is passed, show what would be fixed, but do not
+    actually change anything.
+
   * `home`:
     Open Homebrew's own homepage in a browser.
 

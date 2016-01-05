@@ -421,64 +421,6 @@ class Checks
     end
   end
 
-  def __check_subdir_access(base)
-    target = HOMEBREW_PREFIX+base
-    return unless target.exist?
-
-    cant_read = []
-
-    target.find do |d|
-      next unless d.directory?
-      cant_read << d unless d.writable_real?
-    end
-
-    return if cant_read.empty?
-    inject_file_list cant_read.sort, <<-EOS.undent
-      Some directories in #{target} aren't writable.
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a brew tries to add locale information to one of these
-      directories, then the install will fail during the link step.
-
-      You should probably `sudo chown -R $(whoami)` them:
-    EOS
-  end
-
-  def check_access_share_locale
-    __check_subdir_access "share/locale"
-  end
-
-  def check_access_share_man
-    __check_subdir_access "share/man"
-  end
-
-  def check_access_homebrew_repository
-    unless HOMEBREW_REPOSITORY.writable_real? then <<-EOS.undent
-      The #{HOMEBREW_REPOSITORY} is not writable.
-
-      You should probably change the ownership and permissions of #{HOMEBREW_REPOSITORY}
-      back to your user account.
-        sudo chown -R $(whoami) #{HOMEBREW_REPOSITORY}
-    EOS
-    end
-  end
-
-  def check_access_usr_local
-    return unless HOMEBREW_PREFIX.to_s == "/usr/local"
-
-    unless HOMEBREW_PREFIX.writable_real? then <<-EOS.undent
-    The /usr/local directory is not writable.
-    Even if this directory was writable when you installed Homebrew, other
-    software may change permissions on this directory. Some versions of the
-    "InstantOn" component of Airfoil or running Cocktail cleanup/optimizations
-    are known to do this.
-
-    You should probably change the ownership and permissions of /usr/local
-    back to your user account.
-      sudo chown -R $(whoami):admin /usr/local
-    EOS
-    end
-  end
-
   def check_tmpdir_sticky_bit
     # Repair Disk Permissions was removed(?) in El Capitan.
     # https://support.apple.com/en-us/HT201560
@@ -496,88 +438,13 @@ class Checks
     end
   end
 
-  (Keg::TOP_LEVEL_DIRECTORIES + ["lib/pkgconfig"]).each do |d|
-    define_method("check_access_#{d.sub("/", "_")}") do
-      dir = HOMEBREW_PREFIX.join(d)
-      if dir.exist? && !dir.writable_real? then <<-EOS.undent
-      #{dir} isn't writable.
-
-      This can happen if you "sudo make install" software that isn't managed
-      by Homebrew. If a formula tries to write a file to this directory, the
-      install will fail during the link step.
-
-      You should probably change the ownership and permissions of #{dir}
-      back to your user account.
-        sudo chown -R $(whoami) #{dir}
-      EOS
-      end
-    end
-  end
-
-  def check_access_site_packages
-    if Language::Python.homebrew_site_packages.exist? && !Language::Python.homebrew_site_packages.writable_real?
-      <<-EOS.undent
-      #{Language::Python.homebrew_site_packages} isn't writable.
-      This can happen if you "sudo pip install" software that isn't managed
-      by Homebrew. If you install a formula with Python modules, the install
-      will fail during the link step.
-
-      You should probably change the ownership and permissions of #{Language::Python.homebrew_site_packages}
-      back to your user account.
-        sudo chown -R $(whoami) #{Language::Python.homebrew_site_packages}
-    EOS
-    end
-  end
-
-  def check_access_logs
-    if HOMEBREW_LOGS.exist? && !HOMEBREW_LOGS.writable_real?
-      <<-EOS.undent
-      #{HOMEBREW_LOGS} isn't writable.
-      Homebrew writes debugging logs to this location.
-
-      You should probably change the ownership and permissions of #{HOMEBREW_LOGS}
-      back to your user account.
-        sudo chown -R $(whoami) #{HOMEBREW_LOGS}
-    EOS
-    end
-  end
-
-  def check_access_cache
-    if HOMEBREW_CACHE.exist? && !HOMEBREW_CACHE.writable_real?
-      <<-EOS.undent
-      #{HOMEBREW_CACHE} isn't writable.
-      This can happen if you run `brew install` or `brew fetch` as another user.
-      Homebrew caches downloaded files to this location.
-
-      You should probably change the ownership and permissions of #{HOMEBREW_CACHE}
-      back to your user account.
-        sudo chown -R $(whoami) #{HOMEBREW_CACHE}
-    EOS
-    end
-  end
-
-  def check_access_cellar
-    if HOMEBREW_CELLAR.exist? && !HOMEBREW_CELLAR.writable_real?
-      <<-EOS.undent
-      #{HOMEBREW_CELLAR} isn't writable.
-
-      You should probably change the ownership and permissions of #{HOMEBREW_CELLAR}
-      back to your user account.
-        sudo chown -R $(whoami) #{HOMEBREW_CELLAR}
-    EOS
-    end
-  end
-
-  def check_access_prefix_opt
-    opt = HOMEBREW_PREFIX.join("opt")
-    if opt.exist? && !opt.writable_real?
-      <<-EOS.undent
-      #{opt} isn't writable.
-      You should probably change the ownership and permissions of #{opt}
-      back to your user account.
-        sudo chown -R $(whoami) #{opt}
-    EOS
-    end
+  def check_permissions
+    require "permission_checker"
+    checker = PermissionChecker.new
+    return if checker.check!
+    s = checker.report
+    s << "To fix permissions, run `brew fix-permissions`\n"
+    s
   end
 
   def check_ruby_version
