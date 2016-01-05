@@ -40,13 +40,13 @@ class Qemu < Formula
       --disable-guest-agent
     ]
 
-    if build.with?("sdl") && build.head?
-      args << "--disable-cocoa"
+    # Cocoa and SDL UIs cannot both be enabled at once.
+    if build.with? "sdl"
+      args << "--enable-sdl" << "--disable-cocoa"
     else
-      args << "--enable-cocoa"
+      args << "--enable-cocoa" << "--disable-sdl"
     end
 
-    args << (build.with?("sdl") ? "--enable-sdl" : "--disable-sdl")
     args << (build.with?("vde") ? "--enable-vde" : "--disable-vde")
     args << (build.with?("gtk+") ? "--enable-gtk" : "--disable-gtk")
     args << (build.with?("libssh2") ? "--enable-libssh2" : "--disable-libssh2")
@@ -57,6 +57,6 @@ class Qemu < Formula
 
   test do
     resource("armtest").stage testpath
-    assert_match /file format: raw/, shell_output("#{bin}/qemu-img info arm_root.img")
+    assert_match "file format: raw", shell_output("#{bin}/qemu-img info arm_root.img")
   end
 end
