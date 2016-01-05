@@ -20,11 +20,11 @@ class Openvpn < Formula
   depends_on "openssl"
 
   if build.with? "pkcs11"
-      depends_on "pkg-config" => :build
-      depends_on "autoconf" => :build
-      depends_on "automake" => :build
-      depends_on "libtool" => :build
-      depends_on "pkcs11-helper"
+    depends_on "pkg-config" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+    depends_on "pkcs11-helper"
   end
 
   def install
@@ -37,10 +37,10 @@ class Openvpn < Formula
 
     opts = []
     if build.with? "pkcs11"
-        opts << "--enable-pkcs11"
-        ENV.append_path "PKG_CONFIG_PATH", "/usr/local/lib/pkgconfig"
-        ENV.append "PKCS11_HELPER_CFLAGS", `pkg-config --cflags libpkcs11-helper-1`.chomp
-        ENV.append "PKCS11_HELPER_LIBS",   `pkg-config --libs   libpkcs11-helper-1`.chomp
+      opts << "--enable-pkcs11"
+      ENV.append_path "PKG_CONFIG_PATH", "/usr/local/lib/pkgconfig"
+      ENV.append "PKCS11_HELPER_CFLAGS", `pkg-config --cflags libpkcs11-helper-1`.chomp
+      ENV.append "PKCS11_HELPER_LIBS",   `pkg-config --libs   libpkcs11-helper-1`.chomp
     end
 
     system "./configure", "--disable-debug",
