@@ -1,9 +1,9 @@
 class Concurrencykit < Formula
   desc "Aid design and implementation of concurrent systems"
   homepage "http://concurrencykit.org"
-  url "http://concurrencykit.org/releases/ck-0.5.0.tar.gz"
-  mirror "https://github.com/concurrencykit/ck/archive/0.5.0.tar.gz"
-  sha256 "55cbfaeace11bad65cd78ed663708652b8982f0c37bc49e6578e64dab1df3ff4"
+  url "http://concurrencykit.org/releases/ck-0.5.1.tar.gz"
+  mirror "https://github.com/concurrencykit/ck/archive/0.5.1.tar.gz"
+  sha256 "efeebda38d68a7c194a4632e842987f03be58f2f910f0745a56f0ae7d9a1dac5"
 
   head "https://github.com/concurrencykit/ck.git"
 
