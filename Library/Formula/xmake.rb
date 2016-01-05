@@ -10,7 +10,7 @@ class Xmake < Formula
   end
 
   test do
-    system "touch", "xmake.lua"
-    system "#{bin}/xmake", "--help"
+    (testpath/"xmake.lua").write("")
+    system "#{bin}/xmake"
   end
 end
