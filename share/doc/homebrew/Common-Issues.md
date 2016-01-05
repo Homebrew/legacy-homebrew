@@ -170,7 +170,7 @@ Upgrading OS X can cause errors like the following:
 
 Following an OS X upgrade it may be necessary to reinstall the Xcode Command Line Tools and `brew upgrade` all installed formula:
 
-```shell
-        xcode-select --install
-        brew upgrade
+```bash
+xcode-select --install
+brew upgrade
 ```
