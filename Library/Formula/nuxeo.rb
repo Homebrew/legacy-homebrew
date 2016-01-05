@@ -18,8 +18,7 @@ class Nuxeo < Formula
     libexec.install Dir["#{buildpath}/*"]
 
     (bin/"nuxeoctl").write_env_script "#{libexec}/bin/nuxeoctl",
-      {:NUXEO_HOME => "#{libexec}", :NUXEO_CONF => "#{etc}/nuxeo.conf"}
-
+      :NUXEO_HOME => "#{libexec}", :NUXEO_CONF => "#{etc}/nuxeo.conf"
 
     inreplace "#{libexec}/bin/nuxeo.conf" do |s|
       s.gsub! /#nuxeo\.log\.dir.*/, "nuxeo.log.dir=#{var}/log/nuxeo"
