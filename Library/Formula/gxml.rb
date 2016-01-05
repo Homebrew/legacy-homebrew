@@ -5,10 +5,9 @@ class Gxml < Formula
   sha256 "fb255f09eefce063a94c3e9b46dbd9d87aca48ee443adf749ea0ced0ddaaf833"
 
   bottle do
-    cellar :any
-    sha256 "907c5c9c24ad05217ac96e68f41165e0b70e3630ecb9b3d32837366013773438" => :yosemite
-    sha256 "ca5fa07377716ee580774970611afbd42ebf5e11a5dc95dee7a35bdf479fa4f1" => :mavericks
-    sha256 "c7ac403245fcc9801037e97170b98a6fe1f2272170c5658703fca4ad82d25954" => :mountain_lion
+    sha256 "4114add97335434a435451824cd470ee2d958b991ad76be4b100afb5173a0b84" => :el_capitan
+    sha256 "d6fabfe3e414d468938b5a2fbb93dabd7693be318daf98cfd7ff1baf69175836" => :yosemite
+    sha256 "e2e1625a88c4d8c1a275f9b1f1735ee407da98c84ce85234c07843de07f317e6" => :mavericks
   end
 
   depends_on "pkg-config" => :build
