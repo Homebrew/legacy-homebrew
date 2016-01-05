@@ -35,9 +35,9 @@ class Openvpn < Formula
         "security/pam_appl.h", "pam/pam_appl.h"
     end
 
-    opts = []
+    args = []
     if build.with? "pkcs11"
-      opts << "--enable-pkcs11"
+      args << "--enable-pkcs11"
       ENV.append_path "PKG_CONFIG_PATH", "/usr/local/lib/pkgconfig"
       ENV.append "PKCS11_HELPER_CFLAGS", `pkg-config --cflags libpkcs11-helper-1`.chomp
       ENV.append "PKCS11_HELPER_LIBS",   `pkg-config --libs   libpkcs11-helper-1`.chomp
@@ -49,7 +49,7 @@ class Openvpn < Formula
                           "--with-crypto-library=openssl",
                           "--prefix=#{prefix}",
                           "--enable-password-save",
-                          *opts
+                          *args
 
     system "make", "install"
 
