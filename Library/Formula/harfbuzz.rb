@@ -5,9 +5,10 @@ class Harfbuzz < Formula
   sha256 "4a2c5790bd3db7c3ca8c02e4858f2fd592df7932c1d2fa9f6b99acbce0f8461f"
 
   bottle do
-    sha256 "3377d63354b90ead95f75469a501ff2406811d966ebb952a922b482d4c1358c0" => :el_capitan
-    sha256 "634e3efd520d92425b74a0338cc29b6e5fd5fb62e4004f57dd8d7a0487444e7c" => :yosemite
-    sha256 "805cd40e1e33d7d5753609726fa92de8bcc7e5c76b03074f6ff96115f8a52f96" => :mavericks
+    revision 1
+    sha256 "9d62dfc1e0cc95026ec8ee0e8604fdf7e6fc1acf245a1e0ae44d57e15e2449fb" => :el_capitan
+    sha256 "435d5b1c30e05b8ba685ad9e1a66279374cf9b2e1a29d582cda3aa222bcadd61" => :yosemite
+    sha256 "db5a9e44f9bf8cd631744d8cf2048c1ff48e8e7877a0cfd62468e9a31b230553" => :mavericks
   end
 
   head do
