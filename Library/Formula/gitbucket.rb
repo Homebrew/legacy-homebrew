@@ -1,8 +1,8 @@
 class Gitbucket < Formula
   desc "GitHub clone"
   homepage "https://github.com/gitbucket/gitbucket"
-  url "https://github.com/gitbucket/gitbucket/releases/download/3.9/gitbucket.war"
-  sha256 "f3b902c5aea585d9ee57fb65f19eab106c1512f5fae0d8e7bab03d606efbc3c2"
+  url "https://github.com/gitbucket/gitbucket/releases/download/3.10.1/gitbucket.war"
+  sha256 "a689d8fd221db8e0fc437127bf0ce82ccef98c1acc9bc83067496ed286b5326f"
 
   head do
     url "https://github.com/gitbucket/gitbucket.git"
