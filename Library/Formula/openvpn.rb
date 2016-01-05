@@ -40,9 +40,7 @@ class Openvpn < Formula
       --prefix=#{prefix}
       --enable-password-save)
 
-    if build.with? "pkcs11-helper"
-      args << "--enable-pkcs11"
-    end
+    args << "--enable-pkcs11" if build.with? "pkcs11-helper"
 
     system "./configure", *args
 
