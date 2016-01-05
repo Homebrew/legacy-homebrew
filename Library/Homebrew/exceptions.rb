@@ -266,7 +266,7 @@ class BuildError < RuntimeError
     end
 
     require "diagnostic"
-    unsupported_osx = Diagnostic::Checks.new.check_for_unsupported_osx
+    unsupported_osx = Homebrew::Diagnostic::Checks.new.check_for_unsupported_osx
     opoo unsupported_osx if unsupported_osx
   end
 end
