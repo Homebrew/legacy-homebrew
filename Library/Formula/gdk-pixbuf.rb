@@ -32,6 +32,7 @@ class GdkPixbuf < Formula
             "--prefix=#{prefix}",
             "--enable-introspection=yes",
             "--disable-Bsymbolic",
+            "--enable-static",
             "--without-gdiplus",]
 
     args << "--enable-relocations" if build.with?("relocations")
