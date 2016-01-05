@@ -21,6 +21,7 @@ class Libgit2 < Formula
 
   def install
     args = std_cmake_args
+    args << "-DBUILD_EXAMPLES=YES"
     args << "-DBUILD_CLAR=NO" # Don't build tests.
     args << "-DUSE_SSH=NO" if build.without? "libssh2"
 
@@ -32,6 +33,13 @@ class Libgit2 < Formula
     mkdir "build" do
       system "cmake", "..", *args
       system "make", "install"
+      cd "examples" do
+        (pkgshare/"examples").install "add", "blame", "cat-file", "cgit2",
+                                      "describe", "diff", "for-each-ref",
+                                      "general", "init", "log", "remote",
+                                      "rev-list", "rev-parse", "showindex",
+                                      "status", "tag"
+      end
     end
   end
 
