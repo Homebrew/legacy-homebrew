@@ -184,7 +184,7 @@ class AbstractFileDownloadStrategy < AbstractDownloadStrategy
       with_system_path { buffered_write("bunzip2") }
     when :gzip, :bzip2, :compress, :tar
       # Assume these are also tarred
-      tar_flags = ARGV.verbose? ? "xvf" : "xf"
+      tar_flags = (ARGV.verbose? && ENV["TRAVIS"].nil?) ? "xvf" : "xf"
       with_system_path { safe_system "tar", tar_flags, cached_location }
       chdir
     when :xz
