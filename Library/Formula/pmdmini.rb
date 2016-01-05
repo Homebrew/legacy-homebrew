@@ -7,7 +7,12 @@ class Pmdmini < Formula
   option "with-lib-only", "Do not build commandline player"
   deprecated_option "lib-only" => "with-lib-only"
 
-  depends_on "sdl" unless build.without? "lib-only"
+  depends_on "sdl" if build.without? "lib-only"
+
+  resource "test_song" do
+    url "ftp://ftp.modland.com/pub/modules/PMD/Shiori%20Ueno/His%20Name%20Is%20Diamond/dd06.m"
+    sha256 "36be8cfbb1d3556554447c0f77a02a319a88d8c7a47f9b7a3578d4a21ac85510"
+  end
 
   def install
     # Specify Homebrew's cc
@@ -21,9 +26,29 @@ class Pmdmini < Formula
     # Makefile doesn't build a dylib
     system "#{ENV.cc} -dynamiclib -install_name #{lib}/libpmdmini.dylib -o libpmdmini.dylib -undefined dynamic_lookup obj/*.o"
 
-    bin.install "pmdplay" unless build.with? "lib-only"
+    bin.install "pmdplay" if build.without? "lib-only"
     lib.install "libpmdmini.a", "libpmdmini.dylib"
     (include+"libpmdmini").install Dir["src/*.h"]
     (include+"libpmdmini/pmdwin").install Dir["src/pmdwin/*.h"]
+  end
+
+  test do
+    resource("test_song").stage testpath
+    (testpath/"pmdtest.c").write <<-EOS.undent
+    #include <stdio.h>
+    #include "libpmdmini/pmdmini.h"
+
+    int main(int argc, char** argv)
+    {
+        char title[1024];
+        pmd_init();
+        pmd_play(argv[1], argv[2]);
+        pmd_get_title(title);
+        printf("%s\\n", title);
+    }
+    EOS
+    system ENV.cc, "pmdtest.c", "-lpmdmini", "-o", "pmdtest"
+    result = `#{testpath}/pmdtest #{testpath}/dd06.m #{testpath}`.chomp
+    assert_equal "mus #06", result
   end
 end
