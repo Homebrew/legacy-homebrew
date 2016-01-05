@@ -9,12 +9,12 @@
 !/README.md
 !/SUPPORTERS.md
 !/bin
-/bin/*
+/bin
 !/bin/brew
 !/share
-/share/*
+/share
 !/share/doc
-/share/doc/*
+/share/doc
 !/share/doc/homebrew
 !/share/man/man1/brew.1
 .DS_Store
