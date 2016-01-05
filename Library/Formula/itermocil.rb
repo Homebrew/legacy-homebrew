@@ -19,11 +19,14 @@ class Itermocil < Formula
 
     bin.install "itermocil"
     bin.install "itermocil.py"
+    prefix.install "test_layouts/_tiled_4_panes.yml"
 
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do
-    system "#{bin}/itermocil", "-h"
+    cp "#{prefix}/_tiled_4_panes.yml", "test.yml"
+    ENV["EDITOR"] = "cat"
+    system "#{bin}/itermocil", "--debug", "--layout", "test.yml"
   end
 end
