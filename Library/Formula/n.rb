@@ -2,8 +2,8 @@ class N < Formula
   desc "Node version management"
   homepage "https://github.com/tj/n"
   head "https://github.com/tj/n.git"
-  url "https://github.com/tj/n/archive/2.0.2.tar.gz"
-  sha256 "217155e6a1e20461e0a2216ef8710cb4119e806814e4b0e86f4d5021195f132a"
+  url "https://github.com/tj/n/archive/v2.1.0.tar.gz"
+  sha256 "6fb70b39065a6d6ba1d12915906c06907a3e1afbb25c7653ad23a21217f51c76"
 
   def install
     bin.mkdir
