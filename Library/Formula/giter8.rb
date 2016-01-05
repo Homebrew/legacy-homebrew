@@ -2,7 +2,7 @@ class Giter8 < Formula
   desc "Generate files and directories from templates in a git repo"
   homepage "https://github.com/n8han/giter8"
   url "https://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.7/sbt-launch.jar"
-  version "0.6.9"
+  version "0.6.8"
   sha256 "9673ca4611e6367955ae068d5888f7ae665ab013c3e8435ffe2ca94318c6d607"
   # note: because sbt-launch dynamically downloads giter8 from the maven repos
   #   at first run (using the launchconfig mechanism), and not when the formula
