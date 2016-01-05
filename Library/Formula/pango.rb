@@ -47,6 +47,7 @@ class Pango < Formula
       --with-html-dir=#{share}/doc
       --enable-introspection=yes
       --without-xft
+      --enable-static
     ]
 
     system "./autogen.sh" if build.head?
