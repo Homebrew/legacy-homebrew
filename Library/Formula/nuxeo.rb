@@ -44,7 +44,14 @@ class Nuxeo < Formula
   end
 
   test do
-    assert_equal "#{etc}/nuxeo.conf", shell_output("#{bin}/nuxeoctl config -q --get nuxeo.conf").strip
-    assert_equal "#{libexec}", shell_output("#{bin}/nuxeoctl config -q --get nuxeo.home").strip
+    # Copy configuration file to test path, due to some automatic writes on it.
+    cp "#{etc}/nuxeo.conf", "#{testpath}/nuxeo.conf"
+    inreplace "#{testpath}/nuxeo.conf" do |s|
+      s.gsub! /#{var}/, testpath
+    end
+    ENV["NUXEO_CONF"] = "#{testpath}/nuxeo.conf"
+
+    assert_equal "#{testpath}/nuxeo.conf", shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.conf").strip
+    assert_equal "#{libexec}", shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.home").strip
   end
 end
