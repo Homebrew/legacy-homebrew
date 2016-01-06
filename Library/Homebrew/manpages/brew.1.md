@@ -315,8 +315,8 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     If `--force` is passed, then treat installed <formulae> and passed <formulae>
     like if they are from same taps and migrate them anyway.
 
-  * `options` [`--compact`] [`--all`] [`--installed`] <formula>:
-    Display install options specific to <formula>.
+  * `options` [`--compact`] (`--all`|`--installed`|<formulae>):
+    Display install options specific to <formulae>.
 
     If `--compact` is passed, show all options on a single line separated by
     spaces.
