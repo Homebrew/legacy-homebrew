@@ -1,7 +1,9 @@
 class Hexedit < Formula
   desc "View and edit files in hexadecimal or ASCII"
+  # Homepage/URL down since at least Jan 2016.
   homepage "http://rigaux.org/hexedit.html"
   url "http://rigaux.org/hexedit-1.2.13.src.tgz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/h/hexedit/hexedit_1.2.13.orig.tar.gz"
   sha256 "6a126da30a77f5c0b08038aa7a881d910e3b65d13767fb54c58c983963b88dd7"
 
   bottle do
@@ -12,10 +14,7 @@ class Hexedit < Formula
   end
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make", "install"
   end
 
