@@ -365,7 +365,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     surrounded with slashes, then it is interpreted as a regular expression.
     The search for <text> is extended online to some popular taps.
 
-  * `search` `--debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu` <text>:
+  * `search` (`--debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu`) <text>:
     Search for <text> in the given package manager's list.
 
   * `sh` [`--env=std`]:
