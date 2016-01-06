@@ -16,7 +16,7 @@ class Openvpn < Formula
   depends_on "lzo"
   depends_on :tuntap if MacOS.version < :yosemite
   depends_on "openssl"
-  depends_on "pkcs11-helper" => [:optional, "disable-threading", "disable-slotevent"]
+  depends_on "pkcs11-helper" => [:optional, "without-threading", "without-slotevent"]
 
   if build.with? "pkcs11-helper"
     depends_on "pkg-config" => :build
