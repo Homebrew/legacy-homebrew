@@ -14,8 +14,8 @@ class Pkcs11Helper < Formula
     sha256 "24bb6ab8aa56792d9b658fa617eef363fc9be794dc3327e5afb88eed30ea8af1" => :mavericks
   end
 
-  option "disable-threading", "Build pkcs11-helper without threading support (useful for proper pkcs11 support in openvpn)"
-  option "disable-slotevent", "Build pkcs11-helper without slotevent support (useful for proper pkcs11 support in openvpn)"
+  option "without-threading", "Build without threading support"
+  option "without-slotevent", "Build without slotevent support"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -24,12 +24,14 @@ class Pkcs11Helper < Formula
   depends_on "openssl"
 
   def install
-    args = %W(--disable-debug
+    args = %W(
+      --disable-debug
       --disable-dependency-tracking
-      --prefix=#{prefix})
+      --prefix=#{prefix}
+    )
 
-    args << "--disable-threading" if build.include? "disable-threading"
-    args << "--disable-slotevent" if build.include? "disable-slotevent"
+    args << "--disable-threading" if build.without? "threading"
+    args << "--disable-slotevent" if build.without? "slotevent"
 
     system "autoreconf", "--verbose", "--install", "--force"
     system "./configure", *args
