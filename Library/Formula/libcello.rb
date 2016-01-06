@@ -1,9 +1,9 @@
 class Libcello < Formula
   desc "Higher-level programming in C"
   homepage "http://libcello.org/"
+  url "http://libcello.org/static/libCello-2.0.3.tar.gz"
+  sha256 "2ebe995f0175c8397f41a32751e60d1b4907eddae7c1442c67d484a16d1c6b99"
   head "https://github.com/orangeduck/libCello.git"
-  url "http://libcello.org/static/libCello-1.1.7.tar.gz"
-  sha256 "2273fe8257109c2dd19054beecd83ddcc780ec565a1ad02721e24efa74082908"
 
   bottle do
     cellar :any
@@ -16,5 +16,23 @@ class Libcello < Formula
   def install
     system "make", "check"
     system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include "Cello.h"
+
+      int main(int argc, char** argv) {
+        var i0 = $(Int, 5);
+        var i1 = $(Int, 3);
+        var items = new(Array, Int, i0, i1);
+        foreach (item in items) {
+          print("Object %$ is of type %$\\n", item, type_of(item));
+        }
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-lCello", "-o", "test"
+    system "./test"
   end
 end
