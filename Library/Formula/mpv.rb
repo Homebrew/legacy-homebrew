@@ -4,6 +4,7 @@ class Mpv < Formula
   url "https://github.com/mpv-player/mpv/archive/v0.14.0.tar.gz"
   sha256 "042937f483603f0c3d1dec11e8f0045e8c27f19eee46ea64d81a3cdf01e51233"
   head "https://github.com/mpv-player/mpv.git"
+  revision 1
 
   bottle do
     sha256 "b66985dc9a5253adcde0a56bf0ce3264b44a5aac76f0cd787a4e05aa09054c5c" => :el_capitan
