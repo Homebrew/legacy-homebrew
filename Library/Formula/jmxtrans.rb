@@ -1,9 +1,9 @@
 class Jmxtrans < Formula
   desc "Tool to connect to JVMs and query their attributes"
   homepage "https://github.com/jmxtrans/jmxtrans"
-  url "https://github.com/jmxtrans/jmxtrans/archive/jmxtrans-249.tar.gz"
-  version "20150330-249"
-  sha256 "770699c04d3cbc36f877551821e15b6daa6dd9decf76b971f70534533854f7f2"
+  url "https://github.com/jmxtrans/jmxtrans/archive/jmxtrans-250.tar.gz"
+  version "20150426-250"
+  sha256 "8590731dcbfb900e46b7073ff5d99f7df542da488f97fbaa5c70999f45ca69b4"
 
   bottle do
     cellar :any
@@ -16,6 +16,8 @@ class Jmxtrans < Formula
   depends_on "maven" => :build
 
   def install
+    ENV.java_cache
+
     system "mvn", "package", "-DskipTests=true",
                              "-Dmaven.javadoc.skip=true",
                              "-Dcobertura.skip=true"
@@ -29,7 +31,7 @@ class Jmxtrans < Formula
   end
 
   test do
-    assert_equal "jmxtrans is not running.",
-                 shell_output("#{bin}/jmxtrans status", 3).chomp
+    output = shell_output("#{bin}/jmxtrans status", 3).chomp
+    assert_equal "jmxtrans is not running.", output
   end
 end
