@@ -5,6 +5,12 @@ class Ekg2 < Formula
   sha256 "6ad360f8ca788d4f5baff226200f56922031ceda1ce0814e650fa4d877099c63"
   revision 1
 
+  bottle do
+    sha256 "be4e7a4617040be1f74dc1f16e0acb4792e5ac8b046a6a6a2c0e78a514d851ca" => :el_capitan
+    sha256 "a5525ed827252440db82d1c55480afc7cc0c7a0b45add9dfe2659b96a50e6140" => :yosemite
+    sha256 "ee1dca223f03cbe33e3e7361db7440b5c11d6c1a5f0f8e9c88f880c69d89e63a" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "readline"
   depends_on "libgadu" => :optional
