@@ -271,8 +271,11 @@ precedence over <code>--verbose</code>).</p>
 valid version is <code>v1</code>.</p></dd>
 <dt><code>pin</code> <var>formulae</var></dt><dd><p>Pin the specified <var>formulae</var>, preventing them from being upgraded when
 issuing the <code>brew upgrade</code> command. See also <code>unpin</code>.</p></dd>
-<dt class="flush"><code>prune</code></dt><dd><p>Remove dead symlinks from the Homebrew prefix. This is generally not
-needed, but can be useful when doing DIY installations.</p></dd>
+<dt><code>prune</code> [<code>--dry-run</code>]</dt><dd><p>Remove dead symlinks from the Homebrew prefix. This is generally not
+needed, but can be useful when doing DIY installations.</p>
+
+<p>If <code>--dry-run</code> or <code>-n</code> is passed, show what would be removed, but do not
+actually remove anything.</p></dd>
 <dt><code>reinstall</code> <var>formula</var></dt><dd><p>Uninstall then install <var>formula</var></p></dd>
 <dt><code>rm</code>, <code>remove</code>, <code>uninstall</code> [<code>--force</code>] <var>formula</var></dt><dd><p>Uninstall <var>formula</var>.</p>
 

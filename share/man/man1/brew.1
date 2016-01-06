@@ -367,8 +367,11 @@ If \fB\-\-json=\fR\fIversion\fR is passed, the output will be in JSON format\. T
 Pin the specified \fIformulae\fR, preventing them from being upgraded when issuing the \fBbrew upgrade\fR command\. See also \fBunpin\fR\.
 .
 .TP
-\fBprune\fR
+\fBprune\fR [\fB\-\-dry\-run\fR]
 Remove dead symlinks from the Homebrew prefix\. This is generally not needed, but can be useful when doing DIY installations\.
+.
+.IP
+If \fB\-\-dry\-run\fR or \fB\-n\fR is passed, show what would be removed, but do not actually remove anything\.
 .
 .TP
 \fBreinstall\fR \fIformula\fR

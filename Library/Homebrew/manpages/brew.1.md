@@ -343,9 +343,12 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     Pin the specified <formulae>, preventing them from being upgraded when
     issuing the `brew upgrade` command. See also `unpin`.
 
-  * `prune`:
+  * `prune` [`--dry-run`]:
     Remove dead symlinks from the Homebrew prefix. This is generally not
     needed, but can be useful when doing DIY installations.
+
+    If `--dry-run` or `-n` is passed, show what would be removed, but do not
+    actually remove anything.
 
   * `reinstall` <formula>:
     Uninstall then install <formula>
