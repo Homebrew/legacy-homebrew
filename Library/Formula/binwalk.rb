@@ -3,15 +3,12 @@ class Binwalk < Formula
   homepage "http://binwalk.org/"
   url "https://github.com/devttys0/binwalk/archive/v2.1.1.tar.gz"
   sha256 "1b70a5b03489d29f60fef18008a2164974234874faab48a4f47ec53d461d284a"
+  head "https://github.com/devttys0/binwalk.git"
 
   bottle do
     sha256 "7c45d823c2fc4eae924ebda88a59fa1ea793bbc43346816a48da9f87931a13ec" => :el_capitan
     sha256 "764a4275eb3ffa1317cdb9d38a9af75490717fb5eb0efd84b3968a11443a1a1e" => :yosemite
     sha256 "8b5210a335b36d32040061b611ad122828877a7df8138dc544c566b16542fcee" => :mavericks
-  end
-
-  head do
-    url "https://github.com/devttys0/binwalk.git"
   end
 
   option "with-matplotlib", "Check for presence of matplotlib, which is required for entropy graphing support"
