@@ -41,8 +41,8 @@ module Homebrew
     master_updater.pull!
     master_updated = master_updater.updated?
     if master_updated
-      puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} " \
-           "to #{master_updater.current_revision[0, 8]}."
+      puts "Updated Homebrew from #{master_updater.initial_revision[0, 7]} " \
+           "to #{master_updater.current_revision[0, 7]}."
     end
     report.update(master_updater.report)
 
