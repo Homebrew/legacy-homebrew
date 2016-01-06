@@ -6,10 +6,10 @@ class Jmxtrans < Formula
   sha256 "8590731dcbfb900e46b7073ff5d99f7df542da488f97fbaa5c70999f45ca69b4"
 
   bottle do
-    cellar :any
-    sha256 "a8acc895c3c7d2b214c0fc3ba19191deb5b3293566377dc6a7d30ebbcd77c254" => :yosemite
-    sha256 "707e8bdf07687133290f9cfc3d3ab4861ee23785c154ef825a134ab5dc6363de" => :mavericks
-    sha256 "22ec2c5971a36b82121cdf25135613fc7bcbbe13a4f77c56141ff5dda01ad0d5" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "83d1adc9a2dc7f73c99d5bee85c78bf129afef269fe83cf4da1ac8c889cedfc9" => :el_capitan
+    sha256 "a7e7e933f1da5c5ca88b0b399c9606d8805f7756dba8cf1ef7df0595e23f707c" => :yosemite
+    sha256 "64337db305c727c34f20f619c647fc11f07b2ae9f1716e048ca954b13da179aa" => :mavericks
   end
 
   depends_on :java => "1.6+"
