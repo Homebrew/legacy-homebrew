@@ -9,6 +9,8 @@ class SwaggerCodegen < Formula
   depends_on "maven" => :build
 
   def install
+    ENV.java_cache
+
     system "mvn", "clean", "package"
     libexec.install "modules/swagger-codegen-cli/target/swagger-codegen-cli.jar"
     bin.write_jar_script libexec/"swagger-codegen-cli.jar", "swagger-codegen"
