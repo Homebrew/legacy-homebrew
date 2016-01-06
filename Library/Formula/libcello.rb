@@ -6,11 +6,10 @@ class Libcello < Formula
   head "https://github.com/orangeduck/libCello.git"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "99e4284df31d64596818917832663c6ddca528d1cf0dee15a29152261dde7dae" => :yosemite
-    sha256 "9f018f1773ca94ce29a5d534dde008ddaa9bf66d8ef2c30d0e341e1fe36bf468" => :mavericks
-    sha256 "4730b47efc29ea8896151ec04afc6b3426cb76669bc65d37f3aa33a5e935fa46" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "54cfca99a424590796858d57fd1226c763abdf519715b7f7435b812ab504eed6" => :el_capitan
+    sha256 "58f80b859bc0d3f40f4de5f1bf39168dd5560a98471c999f76d0416cca5a29fb" => :yosemite
+    sha256 "28188bd3d10965c1a9e57d4ca3c652642ddb931a5bf0967fd6141b4dc12e2fc6" => :mavericks
   end
 
   def install
