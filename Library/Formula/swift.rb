@@ -1,9 +1,9 @@
 class Swift < Formula
   desc "High-performance system programming language"
   homepage "https://github.com/apple/swift"
-  url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2015-12-18-a.tar.gz"
-  version "2.2-SNAPSHOT-2015-12-18-a"
-  sha256 "2ff6c780f1768e410e444915d6830048025a7f353c9a4bc30456bbd40ad33951"
+  url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2015-12-31-a.tar.gz"
+  version "2.2-SNAPSHOT-2015-12-31-a"
+  sha256 "d899e995c9cfa8987e470f0ad799f311ba9d8ae54ca889c4a22e60ac44bea26a"
 
   stable do
     swift_tag = "swift-#{version}"
@@ -15,12 +15,12 @@ class Swift < Formula
 
     resource "clang" do
       url "https://github.com/apple/swift-clang/archive/#{swift_tag}.tar.gz"
-      sha256 "a626feb26119cde3f9df15549d8a53028c704c5deba5e84b60ba434398a529da"
+      sha256 "9660637e380472e3c30244d43f0d56499483a10dd960a8ae5323a0ba374152a2"
     end
 
     resource "llvm" do
       url "https://github.com/apple/swift-llvm/archive/#{swift_tag}.tar.gz"
-      sha256 "6d69cd1ea9bb830bc7f21a80c30d5be29e55878b9f9f46ef4faa2fd02d36b160"
+      sha256 "4730fb75898110ed892d4cc35f2f58b457879c51283b19cccf797c443b3bc05e"
     end
   end
 
@@ -59,38 +59,17 @@ class Swift < Formula
     resources.each { |r| r.stage("#{workspace}/#{r.name}") }
 
     mkdir build do
-      system "#{buildpath}/utils/build-script-impl",
-        "--build-dir=#{build}",
-        "--cmark-build-type=Release",
-        "--llvm-build-type=Release",
-        "--swift-build-type=Release",
-        "--swift-stdlib-build-type=Release",
-        "--lldb-build-type=Release",
-        "--llvm-enable-assertions=false",
-        "--swift-enable-assertions=false",
-        "--swift-stdlib-enable-assertions=false",
-        "--cmake-generator=Ninja",
+      system "#{buildpath}/utils/build-script",
+        "-R",
+        "--build-subdir=",
+        "--no-llvm-assertions",
+        "--no-swift-assertions",
+        "--no-swift-stdlib-assertions",
+        "--",
         "--workspace=#{workspace}",
-        "--skip-test-cmark",
-        "--skip-test-lldb",
-        "--skip-test-swift",
-        "--skip-test-llbuild",
-        "--skip-test-swiftpm",
-        "--skip-test-xctest",
-        "--skip-test-foundation",
-        "--skip-test-validation",
-        "--skip-test-optimized",
-        "--skip-build-lldb",
-        "--skip-build-llbuild",
-        "--skip-build-swiftpm",
-        "--skip-build-xctest",
-        "--skip-build-foundation",
         "--build-args=-j#{ENV.make_jobs}",
         "--lldb-use-system-debugserver",
         "--install-prefix=#{prefix}",
-        "--skip-ios",
-        "--skip-tvos",
-        "--skip-watchos",
         "--darwin-deployment-version-osx=#{MacOS.version}",
         "--build-jobs=#{ENV.make_jobs}"
     end
