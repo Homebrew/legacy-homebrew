@@ -1,8 +1,8 @@
 class Lua < Formula
   desc "Powerful, lightweight programming language"
   homepage "http://www.lua.org/"
-  url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
-  sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
+  url "http://www.lua.org/ftp/lua-5.3.2.tar.gz"
+  sha256 "c740c7bb23a936944e1cc63b7c3c5351a8976d7867c5252c8854f7b2af9da68f"
   revision 1
 
   bottle do
@@ -37,16 +37,16 @@ class Lua < Formula
   # See http://lua-users.org/wiki/LuaPowerPatches
   if build.with? "completion"
     patch do
-      url "http://luajit.org/patches/lua-5.2.0-advanced_readline.patch"
-      sha256 "33d32d11fce4f85b88ce8f9bd54e6a6cbea376dfee3dbf8cdda3640e056bc29d"
+      url "http://luajit.org/patches/lua-5.3.1-advanced_readline.patch"
+      sha256 "1f0874f4364f72e3ffbcae5c7cfb3a1a84a48ca9c6826cf09f0ef5db8faa398a"
     end
   end
 
   # sigaction provided by posix signalling power patch
   if build.with? "sigaction"
     patch do
-      url "http://lua-users.org/files/wiki_insecure/power_patches/5.2/lua-5.2.3-sig_catch.patch"
-      sha256 "f2e77f73791c08169573658caa3c97ba8b574c870a0a165972ddfbddb948c164"
+      url "http://lua-users.org/files/wiki_insecure/power_patches/5.3/lua-5.3-sig_catch.patch"
+      sha256 "6b43ba9c945707c6fbb9a487ca33c385d1f28f20802f1a87aa9239a580b9930c"
     end
   end
 
@@ -77,13 +77,13 @@ class Lua < Formula
     (lib+"pkgconfig/lua.pc").write pc_file
 
     # Fix some software potentially hunting for different pc names.
-    bin.install_symlink "lua" => "lua5.2"
-    bin.install_symlink "lua" => "lua-5.2"
-    bin.install_symlink "luac" => "luac5.2"
-    bin.install_symlink "luac" => "luac-5.2"
-    (include/"lua5.2").install_symlink include.children
-    (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
-    (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
+    bin.install_symlink "lua" => "lua5.3"
+    bin.install_symlink "lua" => "lua-5.3"
+    bin.install_symlink "luac" => "luac5.3"
+    bin.install_symlink "luac" => "luac-5.3"
+    (include/"lua5.3").install_symlink include.children
+    (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.3.pc"
+    (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.3.pc"
 
     # This resource must be handled after the main install, since there's a lua dep.
     # Keeping it in install rather than postinstall means we can bottle.
@@ -92,19 +92,19 @@ class Lua < Formula
         ENV.prepend_path "PATH", bin
 
         system "./configure", "--prefix=#{libexec}", "--rocks-tree=#{HOMEBREW_PREFIX}",
-                              "--sysconfdir=#{etc}/luarocks52", "--with-lua=#{prefix}",
-                              "--lua-version=5.2", "--versioned-rocks-dir"
+                              "--sysconfdir=#{etc}/luarocks53", "--with-lua=#{prefix}",
+                              "--lua-version=5.3", "--versioned-rocks-dir"
         system "make", "build"
         system "make", "install"
 
-        (share+"lua/5.2/luarocks").install_symlink Dir["#{libexec}/share/lua/5.2/luarocks/*"]
-        bin.install_symlink libexec/"bin/luarocks-5.2"
-        bin.install_symlink libexec/"bin/luarocks-admin-5.2"
+        (share+"lua/5.3/luarocks").install_symlink Dir["#{libexec}/share/lua/5.3/luarocks/*"]
+        bin.install_symlink libexec/"bin/luarocks-5.3"
+        bin.install_symlink libexec/"bin/luarocks-admin-5.3"
         bin.install_symlink libexec/"bin/luarocks"
         bin.install_symlink libexec/"bin/luarocks-admin"
 
         # This block ensures luarock exec scripts don't break across updates.
-        inreplace libexec/"share/lua/5.2/luarocks/site_config.lua" do |s|
+        inreplace libexec/"share/lua/5.3/luarocks/site_config.lua" do |s|
           s.gsub! libexec.to_s, opt_libexec
           s.gsub! include.to_s, "#{HOMEBREW_PREFIX}/include"
           s.gsub! lib.to_s, "#{HOMEBREW_PREFIX}/lib"
@@ -115,8 +115,8 @@ class Lua < Formula
   end
 
   def pc_file; <<-EOS.undent
-    V= 5.2
-    R= 5.2.4
+    V= 5.3
+    R= 5.3.2
     prefix=#{prefix}
     INSTALL_BIN= ${prefix}/bin
     INSTALL_INC= ${prefix}/include
@@ -130,7 +130,7 @@ class Lua < Formula
 
     Name: Lua
     Description: An Extensible Extension Language
-    Version: 5.2.4
+    Version: 5.3.2
     Requires:
     Libs: -L${libdir} -llua -lm
     Cflags: -I${includedir}
@@ -150,9 +150,9 @@ class Lua < Formula
   test do
     system "#{bin}/lua", "-e", "print ('Ducks are cool')"
 
-    if File.exist?(bin/"luarocks-5.2")
+    if File.exist?(bin/"luarocks-5.3")
       mkdir testpath/"luarocks"
-      system bin/"luarocks-5.2", "install", "moonscript", "--tree=#{testpath}/luarocks"
+      system bin/"luarocks-5.3", "install", "moonscript", "--tree=#{testpath}/luarocks"
       assert File.exist? testpath/"luarocks/bin/moon"
     end
   end
@@ -168,7 +168,7 @@ index bd9515f..5940ba9 100644
  TO_BIN= lua luac
  TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
 -TO_LIB= liblua.a
-+TO_LIB= liblua.5.2.4.dylib
++TO_LIB= liblua.5.3.2.dylib
  TO_MAN= lua.1 luac.1
 
  # Lua version and release.
@@ -176,8 +176,8 @@ index bd9515f..5940ba9 100644
 	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
 	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
 	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
-+	ln -s -f liblua.5.2.4.dylib $(INSTALL_LIB)/liblua.5.2.dylib
-+	ln -s -f liblua.5.2.dylib $(INSTALL_LIB)/liblua.dylib
++	ln -s -f liblua.5.3.2.dylib $(INSTALL_LIB)/liblua.5.3.dylib
++	ln -s -f liblua.5.3.dylib $(INSTALL_LIB)/liblua.dylib
 
  uninstall:
 	cd src && cd $(INSTALL_BIN) && $(RM) $(TO_BIN)
@@ -190,7 +190,7 @@ index 8c9ee67..7f92407 100644
  PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
 
 -LUA_A=	liblua.a
-+LUA_A=	liblua.5.2.4.dylib
++LUA_A=	liblua.5.3.2.dylib
  CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o \
 	lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o \
 	ltm.o lundump.o lvm.o lzio.o
@@ -200,13 +200,13 @@ index 8c9ee67..7f92407 100644
  $(LUA_A): $(BASE_O)
 -	$(AR) $@ $(BASE_O)
 -	$(RANLIB) $@
-+	$(CC) -dynamiclib -install_name @LUA_PREFIX@/lib/liblua.5.2.dylib \
-+		-compatibility_version 5.2 -current_version 5.2.4 \
-+		-o liblua.5.2.4.dylib $^
++	$(CC) -dynamiclib -install_name @LUA_PREFIX@/lib/liblua.5.3.dylib \
++		-compatibility_version 5.3 -current_version 5.3.2 \
++		-o liblua.5.3.2.dylib $^
 
  $(LUA_T): $(LUA_O) $(LUA_A)
 -	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
-+	$(CC) -fno-common $(MYLDFLAGS) -o $@ $(LUA_O) $(LUA_A) -L. -llua.5.2.4 $(LIBS)
++	$(CC) -fno-common $(MYLDFLAGS) -o $@ $(LUA_O) $(LUA_A) -L. -llua.5.3.2 $(LIBS)
 
  $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
