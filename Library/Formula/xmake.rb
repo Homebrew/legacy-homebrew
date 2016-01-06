@@ -1,9 +1,9 @@
 class Xmake < Formula
   desc "The Automatic Cross-platform Build Tool"
   homepage "https://github.com/waruqi/xmake"
-  url "https://github.com/waruqi/xmake/archive/v1.0.4.tar.gz"
-  mirror "http://tboox.net/release/xmake/xmake-1.0.4.tar.gz"
-  sha256 "0fb8b71ed1af4db2ad154a7a50386bf66de54f548a171c9d730c115641f4466f"
+  url "https://github.com/waruqi/xmake/archive/v1.0.4.zip"
+  mirror "http://tboox.net/release/xmake/xmake-v1.0.4.zip"
+  sha256 "bd1edfeabe94c78b6cf50a3d3f9c109984c417baef5072712d2b7a461d884b41"
   head "https://github.com/waruqi/xmake.git"
 
   def install
