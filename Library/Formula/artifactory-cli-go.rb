@@ -6,9 +6,9 @@ class ArtifactoryCliGo < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6b384392c3f0478b96f052c53158a6b882720558cdfca651ab8f8d018f604e0f" => :el_capitan
-    sha256 "42c6251ffbeed5ee7ec807f288e2aa40e931c929f2d289680c306d1b03285941" => :yosemite
-    sha256 "eb00c774dc85ddc4e4ad64c8da3bead4cbbbc96315815eb0bd307edc8b5589c9" => :mavericks
+    sha256 "de6ce27454f9a6568bd850a17c3522dafbb61023a926baa8e7dc5dc7524ebb7a" => :el_capitan
+    sha256 "fdf4ca022e79f5c185a5e446ae0b3eadd010b269164ab62e3be253745d2bd696" => :yosemite
+    sha256 "c2c517183bf08206441c3a76acdf64b061b61ee5b131597fca5aaa62cd60e634" => :mavericks
   end
 
   depends_on "go" => :build
