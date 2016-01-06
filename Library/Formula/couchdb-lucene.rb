@@ -15,6 +15,8 @@ class CouchdbLucene < Formula
   depends_on :java
 
   def install
+    ENV.java_cache
+
     system "mvn"
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 
@@ -92,7 +94,13 @@ class CouchdbLucene < Formula
   end
 
   test do
-    io = IO.popen("#{bin}/cl_run")
+    # This seems to be the easiest way to make the test play nicely in our
+    # sandbox. If it works here, it'll work in the normal location though.
+    cp_r Dir[opt_prefix/"*"], testpath
+    inreplace "bin/cl_run", "CL_BASEDIR=#{libexec}/bin",
+                            "CL_BASEDIR=#{testpath}/libexec/bin"
+
+    io = IO.popen("#{testpath}/bin/cl_run")
     sleep 2
     Process.kill("SIGINT", io.pid)
     Process.wait(io.pid)
