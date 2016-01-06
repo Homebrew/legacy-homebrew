@@ -2,7 +2,7 @@ class AptCacherNg < Formula
   desc "Caching proxy"
   homepage "https://www.unix-ag.uni-kl.de/~bloch/acng/"
   url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.8.orig.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.8.orig.tar.xz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.8.orig.tar.xz"
   sha256 "7847f970ed9b3b3b65fe9c302107ede9cd0c5de57e3ddb497a409e8720f1fe58"
 
   bottle do
