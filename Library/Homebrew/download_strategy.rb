@@ -265,6 +265,14 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
   end
 
   def fetch
+    if ARGV.force_domain? && !ENV["HOMEBREW_BOTTLE_DOMAIN"].nil?
+      if !@url.include? ENV["HOMEBREW_BOTTLE_DOMAIN"]
+        @url = @url.sub(/^((ht|f)tps?:\/\/)?/, ENV["HOMEBREW_BOTTLE_DOMAIN"]+"/#{Bintray.repository(tap)}/")
+      end
+    else
+      odie "Set value for HOMEBREW_BOTTLE_DOMAIN"
+    end
+    
     ohai "Downloading #{@url}"
 
     unless cached_location.exist?
