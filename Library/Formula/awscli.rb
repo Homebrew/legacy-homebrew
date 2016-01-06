@@ -1,9 +1,9 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.9.15.tar.gz"
-  mirror "https://github.com/aws/aws-cli/archive/1.9.15.tar.gz"
-  sha256 "21ce3edd76d8ad6ebb6edab212f7b0fb501f75f13236f931bab5bad6976484fa"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.9.16.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.9.16.tar.gz"
+  sha256 "800ceeb899879f5de9334291347cc98a91e4e3ab08271bbc871c2477ea531ad8"
 
   bottle do
     cellar :any_skip_relocation
@@ -49,8 +49,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.15.tar.gz"
-    sha256 "7cc7e9c03d1c15550c71806bc0fb41ee7291b4051d5ca6b7d93d15891bac04ea"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.16.tar.gz"
+    sha256 "3d7896332fa3009318de331d8aa75cf9af58e8bb988ca0e893da2eb109d94c37"
   end
 
   resource "docutils" do
@@ -64,8 +64,8 @@ class Awscli < Formula
   end
 
   resource "rsa" do
-    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.1.4.tar.gz"
-    sha256 "e2b0b05936c276b1edd2e1525553233b666df9e29b5c3ba223eed738277c82a0"
+    url "https://pypi.python.org/packages/source/r/rsa/rsa-3.2.3.tar.gz"
+    sha256 "14db288cc40d6339dedf60d7a47053ab004b4a8976a5c59402a211d8fc5bf21f"
   end
 
   def install
