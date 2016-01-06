@@ -1,8 +1,8 @@
 class Libmaxminddb < Formula
   desc "C library for the MaxMind DB file format"
   homepage "https://github.com/maxmind/libmaxminddb"
-  url "https://github.com/maxmind/libmaxminddb/releases/download/1.1.2/libmaxminddb-1.1.2.tar.gz"
-  sha256 "e2c0ea40ad932e5f0a0314a13fbd1354889b4ae85472a5499edb6279dd4964fa"
+  url "https://github.com/maxmind/libmaxminddb/releases/download/1.1.4/libmaxminddb-1.1.4.tar.gz"
+  sha256 "fb618d22f9dd3494faf860e82e75e4e1f4cc14410a01118feb7bb7c31ea089a4"
 
   bottle do
     cellar :any
