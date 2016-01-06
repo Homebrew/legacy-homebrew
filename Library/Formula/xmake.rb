@@ -7,6 +7,9 @@ class Xmake < Formula
   head "https://github.com/waruqi/xmake.git"
 
   def install
+    system "pwd"
+    system "ls"
+    system "cat", "./install"
     system "./install", prefix
   end
 
