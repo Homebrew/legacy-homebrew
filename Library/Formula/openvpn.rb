@@ -1,9 +1,9 @@
 class Openvpn < Formula
   desc "SSL VPN implementing OSI layer 2 or 3 secure network extension"
   homepage "https://openvpn.net/index.php/download/community-downloads.html"
-  url "https://swupdate.openvpn.org/community/releases/openvpn-2.3.9.tar.gz"
-  mirror "http://build.openvpn.net/downloads/releases/openvpn-2.3.9.tar.gz"
-  sha256 "2c12fe9ea641ac1291e70322cc500641c84e5903dd4f40bf2eda7e9f209b2f9c"
+  url "https://swupdate.openvpn.org/community/releases/openvpn-2.3.10.tar.gz"
+  mirror "http://build.openvpn.net/downloads/releases/openvpn-2.3.10.tar.gz"
+  sha256 "f8b0b5b92e35bbca1db1a7e6b49e04639e45634e9accd460459b40b2c99ec8f6"
 
   bottle do
     cellar :any
