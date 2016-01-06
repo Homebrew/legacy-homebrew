@@ -1,9 +1,9 @@
 class AptCacherNg < Formula
   desc "Caching proxy"
   homepage "https://www.unix-ag.uni-kl.de/~bloch/acng/"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.7.orig.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.7.orig.tar.xz"
-  sha256 "7a369632ab6b3f735221de12a10c1d74d706f9cec565cbeea5cc9a630716acd7"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.8.orig.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/a/apt-cacher-ng/apt-cacher-ng_0.8.8.orig.tar.xz"
+  sha256 "7847f970ed9b3b3b65fe9c302107ede9cd0c5de57e3ddb497a409e8720f1fe58"
 
   bottle do
     sha256 "27fbb48ef19f55486e6ff22dfe690fe34f227cba9138105299948fd29e85ef0d" => :mavericks
@@ -17,6 +17,19 @@ class AptCacherNg < Formula
   depends_on "xz" # For LZMA
 
   needs :cxx11
+
+  if MacOS.version <= :mavericks
+    # clang++ 3.5 (Mavericks) fails to compile because it cannot deduce the
+    # lambda return type due to multiple returns and, in the case of clang++ 3.5,
+    # lambdas would preserve cv-qualifiers.  These are DRs (defect reports) to
+    # C++11, of which clang++ 3.5 is affected.  A decent summary of thesse issues
+    # can be found in the link below.
+    # https://stackoverflow.com/questions/28955478/when-can-we-omit-the-return-type-in-a-c11-lambda
+    #
+    # Raised https://alioth.debian.org/tracker/index.php?func=detail&aid=315276&group_id=100566&atid=413109
+    # with upstream to address.
+    patch :DATA
+  end
 
   def install
     ENV.cxx11
@@ -80,3 +93,18 @@ class AptCacherNg < Formula
     end
   end
 end
+
+__END__
+diff --git a/source/acfg.cc b/source/acfg.cc
+index fe9867d..922f16b 100644
+--- a/source/acfg.cc
++++ b/source/acfg.cc
+@@ -180,7 +180,7 @@ tProperty n2pTbl[] =
+		BARF("Invalid proxy specification, aborting...");
+	}
+	return true;
+-}, [](bool superUser)
++}, [](bool superUser) -> string
+ {
+	if(!superUser && !proxy_info.sUserPass.empty())
+		return string("#");
