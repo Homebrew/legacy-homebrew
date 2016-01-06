@@ -207,7 +207,7 @@ Open a browser to the GitHub History page for formula \fIformula\fR\.
 To view formula history locally: \fBbrew log \-p <formula>\fR\.
 .
 .TP
-\fBinfo \-\-json=\fR\fIversion\fR (\fB\-\-all\fR|\fB\-\-installed\fR|\fIformulae\fR)
+\fBinfo\fR \fB\-\-json=\fR\fIversion\fR (\fB\-\-all\fR|\fB\-\-installed\fR|\fIformulae\fR)
 Print a JSON representation of \fIformulae\fR\. Currently the only accepted value for \fIversion\fR is \fBv1\fR\.
 .
 .IP
@@ -257,7 +257,7 @@ If \fB\-\-HEAD\fR is passed, and \fIformula\fR defines it, install the HEAD vers
 To install a newer version of HEAD use \fBbrew rm <foo> && brew install \-\-HEAD <foo>\fR\.
 .
 .TP
-\fBinstall \-\-interactive\fR [\fB\-\-git\fR] \fIformula\fR
+\fBinstall\fR \fB\-\-interactive\fR [\fB\-\-git\fR] \fIformula\fR
 Download and patch \fIformula\fR, then open a shell\. This allows the user to run \fB\./configure \-\-help\fR and otherwise determine how to turn the software package into a Homebrew formula\.
 .
 .IP
@@ -302,7 +302,7 @@ If provided, \fB\-\-local\fR will move them into the user\'s \fB~/Applications\f
 List all installed formulae\. If \fB\-\-full\-name\fR is passed, print formulae with full\-qualified names\.
 .
 .TP
-\fBls\fR, \fBlist \-\-unbrewed\fR
+\fBls\fR, \fBlist\fR \fB\-\-unbrewed\fR
 List all files in the Homebrew prefix not installed by Homebrew\.
 .
 .TP
@@ -390,7 +390,7 @@ Display all locally available formulae for brewing (including tapped ones)\. No 
 Perform a substring search of formula names for \fItext\fR\. If \fItext\fR is surrounded with slashes, then it is interpreted as a regular expression\. The search for \fItext\fR is extended online to some popular taps\.
 .
 .TP
-\fBsearch \-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
+\fBsearch\fR \fB\-\-debian\fR|\fB\-\-fedora\fR|\fB\-\-fink\fR|\fB\-\-macports\fR|\fB\-\-opensuse\fR|\fB\-\-ubuntu\fR \fItext\fR
 Search for \fItext\fR in the given package manager\'s list\.
 .
 .TP
@@ -419,15 +419,15 @@ With \fIURL\fR specified, taps a formula repository from anywhere, using any tra
 By default, the repository is cloned as a shallow copy (\fB\-\-depth=1\fR), but if \fB\-\-full\fR is passed, a full clone will be used\.
 .
 .TP
-\fBtap \-\-repair\fR
+\fBtap\fR \fB\-\-repair\fR
 Migrate tapped formulae from symlink\-based to directory\-based structure\.
 .
 .TP
-\fBtap \-\-list\-official\fR
+\fBtap\fR \fB\-\-list\-official\fR
 List all official taps\.
 .
 .TP
-\fBtap \-\-list\-pinned\fR
+\fBtap\fR \fB\-\-list\-pinned\fR
 List all pinned taps\.
 .
 .TP
