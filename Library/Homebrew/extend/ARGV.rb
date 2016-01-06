@@ -96,6 +96,10 @@ module HomebrewArgvExtension
     flag? "--force"
   end
 
+  def force_domain?
+    flag?("--force-domain") || !ENV["HOMEBREW_FORCE_DOMAIN"].nil?
+  end
+
   def verbose?
     flag?("--verbose") || !ENV["VERBOSE"].nil? || !ENV["HOMEBREW_VERBOSE"].nil?
   end
