@@ -30,6 +30,7 @@ class Ola < Formula
   depends_on "ossp-uuid"
   depends_on :python => :optional
   depends_on "doxygen" => :optional
+
   if build.with? "ftdi"
     depends_on "libftdi"
     depends_on "libftdi0"
@@ -48,7 +49,7 @@ class Ola < Formula
     args << "--enable-python-libs" if build.with? "python"
     args << "--enable-doxygen-man" if build.with? "doxygen"
 
-    system "autoreconf", "-i" if build.head?
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
     system "make", "install"
   end
