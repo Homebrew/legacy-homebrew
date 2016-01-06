@@ -14,7 +14,9 @@ class Htmlcleaner < Formula
   depends_on "maven" => :build
 
   def install
-    system "mvn", "clean", "package", "-Duser.home=#{buildpath}"
+    ENV.java_cache
+
+    system "mvn", "clean", "package"
     libexec.install Dir["target/htmlcleaner-*-SNAPSHOT.jar"]
     bin.write_jar_script Dir["#{libexec}/htmlcleaner-*-SNAPSHOT.jar"].first, "htmlcleaner"
   end
