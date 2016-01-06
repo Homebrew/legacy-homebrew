@@ -8,6 +8,7 @@ class Gcviewer < Formula
   depends_on "maven" => :build
 
   def install
+    ENV.java_cache
     system "mvn", "-Dmaven.surefire.debug=-Duser.language=en", "clean", "install"
     libexec.install Dir["*"]
     bin.write_jar_script libexec/"target/gcviewer-1.34.1.jar", "gcviewer"
