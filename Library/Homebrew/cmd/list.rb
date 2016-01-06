@@ -49,6 +49,9 @@ module Homebrew
     lib/python[23].[0-9]/*
     lib/pypy/*
     lib/pypy3/*
+    lib/ruby/gems/[12].*
+    lib/ruby/site_ruby/[12].*
+    lib/ruby/vendor_ruby/[12].*
     share/pypy/*
     share/pypy3/*
     share/doc/homebrew/*
