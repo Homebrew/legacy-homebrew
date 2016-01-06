@@ -1,8 +1,8 @@
 class Fossil < Formula
   desc "Distributed software configuration management"
   homepage "https://www.fossil-scm.org/"
-  url "https://www.fossil-scm.org/download/fossil-src-1.33.tar.gz"
-  sha256 "6295c48289456f09e86099988058a12148dbe0051b72d413b4dff7216d6a7f3e"
+  url "https://www.fossil-scm.org/download/fossil-src-1.34.tar.gz"
+  sha256 "53a6b83e878feced9ac7705f87e5b6ea82727314e3e19202ae1c46c7e4dba49f"
 
   head "https://www.fossil-scm.org/", :using => :fossil
 
@@ -22,7 +22,11 @@ class Fossil < Formula
   depends_on :osxfuse => :optional
 
   def install
-    args = []
+    args = [
+      # fix a build issue, recommended by upstream on the mailing-list:
+      # http://comments.gmane.org/gmane.comp.version-control.fossil-scm.user/22444
+      "--with-tcl-private-stubs=1"
+    ]
     args << "--json" if build.with? "json"
 
     if MacOS::CLT.installed? && build.with?("tcl")
