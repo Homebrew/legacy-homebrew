@@ -1,5 +1,6 @@
 require "testing_env"
 require "fileutils"
+require "pathname"
 require "diagnostic"
 
 class DiagnosticChecksTest < Homebrew::TestCase
@@ -26,8 +27,8 @@ class DiagnosticChecksTest < Homebrew::TestCase
       File.open(python, "w") do |file|
         file.write("#! #{`which bash`}\necho -n '#{python}'\n")
       end
-      FileUtils.chmod 0777, anaconda
-      FileUtils.chmod 0777, python
+      FileUtils.chmod 0755, anaconda
+      FileUtils.chmod 0755, python
 
       ENV["PATH"] = path + File::PATH_SEPARATOR + ENV["PATH"]
 
@@ -139,6 +140,83 @@ class DiagnosticChecksTest < Homebrew::TestCase
 
       assert_match "You have a curlrc file",
         @checks.check_user_curlrc
+    end
+  end
+
+  def test_check_for_unsupported_curl_vars
+    MacOS.stubs(:version).returns OS::Mac::Version.new("10.10")
+    ENV["SSL_CERT_DIR"] = "/some/path"
+
+    assert_match "SSL_CERT_DIR support was removed from Apple's curl.",
+      @checks.check_for_unsupported_curl_vars
+  end
+
+  def test_check_for_config_scripts
+    mktmpdir do |path|
+      file = "#{path}/foo-config"
+      FileUtils.touch file
+      FileUtils.chmod 0755, file
+      ENV["PATH"] = "#{path}#{File::PATH_SEPARATOR}#{ENV["PATH"]}"
+
+      assert_match %("config" scripts exist),
+        @checks.check_for_config_scripts
+    end
+  end
+
+  def test_check_DYLD_vars
+    ENV["DYLD_INSERT_LIBRARIES"] = "foo"
+    assert_match "Setting DYLD_INSERT_LIBRARIES",
+      @checks.check_DYLD_vars
+  end
+
+  def test_check_for_symlinked_cellar
+    HOMEBREW_CELLAR.rmtree
+
+    mktmpdir do |path|
+      FileUtils.ln_s path, HOMEBREW_CELLAR
+
+      assert_match path,
+        @checks.check_for_symlinked_cellar
+    end
+
+  ensure
+    HOMEBREW_CELLAR.unlink
+    HOMEBREW_CELLAR.mkpath
+  end
+
+  def test_check_for_autoconf
+    MacOS::Xcode.stubs(:provides_autotools?).returns true
+    mktmpdir do |path|
+      file = "#{path}/autoconf"
+      FileUtils.touch file
+      FileUtils.chmod 0755, file
+      ENV["PATH"] = [path, ENV["PATH"]].join File::PATH_SEPARATOR
+
+      assert_match "This custom autoconf",
+        @checks.check_for_autoconf
+    end
+  end
+
+  def test_check_tmpdir
+    ENV["TMPDIR"] = "/i/don/t/exis/t"
+    assert_match "doesn't exist",
+      @checks.check_tmpdir
+  end
+
+  def test_check_for_external_cmd_name_conflict
+    mktmpdir do |path1|
+      mktmpdir do |path2|
+        [path1, path2].each do |path|
+          cmd = "#{path}/brew-foo"
+          FileUtils.touch cmd
+          FileUtils.chmod 0755, cmd
+        end
+
+        ENV["PATH"] = [path1, path2, ENV["PATH"]].join File::PATH_SEPARATOR
+
+        assert_match "brew-foo",
+          @checks.check_for_external_cmd_name_conflict
+      end
     end
   end
 end
