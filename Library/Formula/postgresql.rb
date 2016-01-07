@@ -1,22 +1,13 @@
 class Postgresql < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  revision 2
-
-  stable do
-    url "https://ftp.postgresql.org/pub/source/v9.4.5/postgresql-9.4.5.tar.bz2"
-    sha256 "b87c50c66b6ea42a9712b5f6284794fabad0616e6ae420cf0f10523be6d94a39"
-  end
+  url "https://ftp.postgresql.org/pub/source/v9.5.0/postgresql-9.5.0.tar.bz2"
+  sha256 "f1c0d3a1a8aa8c92738cab0153fbfffcc4d4158b3fee84f7aa6bfea8283978bc"
 
   bottle do
     sha256 "b57a3b65cd90917273d754f2625a83e69eac78aeff5b79573f8ac9811bdf643c" => :el_capitan
     sha256 "6b26ad24a228620e16d7f81b4f3bd183a80e1c2f02b8505a1a6b71356eec53a4" => :yosemite
     sha256 "a6a49e234543bb7c4fb33b64dd14b48da5b8373fb2110d62e82d7129997f4926" => :mavericks
-  end
-
-  devel do
-    url "https://ftp.postgresql.org/pub/source/v9.5rc1/postgresql-9.5rc1.tar.bz2"
-    sha256 "497c44b95accec23e38f7ee93fd42488bddfbdab4858ad94de18348b0913add3"
   end
 
   option "32-bit"
@@ -102,8 +93,8 @@ class Postgresql < Formula
     you may need to remove the previous version first. See:
       https://github.com/Homebrew/homebrew/issues/2510
 
-    To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
-      https://www.postgresql.org/docs/9.4/static/upgrading.html
+    To migrate existing data from a previous major version (pre-9.5) of PostgreSQL, see:
+      https://www.postgresql.org/docs/9.5/static/upgrading.html
     EOS
   end
 
