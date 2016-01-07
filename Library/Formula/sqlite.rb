@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3090200.tar.gz"
-  version "3.9.2"
-  sha256 "064c0abe9c9177534d4c770bca7a5902f9924b629ac886b4c08956be6dfbc36b"
+  url "https://sqlite.org/2016/sqlite-autoconf-3100000.tar.gz"
+  version "3.10.0"
+  sha256 "43cc292d70711fa7580250c8a1cd7c64813a4a0a479dbd502cce5f10b5d91042"
 
   bottle do
     cellar :any
@@ -36,9 +36,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3090200.zip"
-    version "3.9.2"
-    sha256 "4b9ecb9d2b0424ca2a288184ee36fa16a11033400638117dd7c669ad2d39177c"
+    url "https://sqlite.org/2016/sqlite-doc-3100000.zip"
+    version "3.10.0"
+    sha256 "40af646d8c2109e5a15b1787e53524ed16c8e0d1705dda5f005b6186f18c2f2a"
   end
 
   def install
@@ -109,8 +109,7 @@ class Sqlite < Formula
       select name from students order by age asc;
     EOS
 
-    names = `#{bin}/sqlite3 < #{path}`.strip.split("\n")
+    names = shell_output("#{bin}/sqlite3 < #{path}").strip.split("\n")
     assert_equal %w[Sue Tim Bob], names
-    assert_equal 0, $?.exitstatus
   end
 end
