@@ -7,10 +7,9 @@ class Acpica < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "cc725e69697566a45bc3398020ed869428096585f1a719c327cca44179bb4ab6" => :el_capitan
-    sha256 "97f48c365f61d024a47dc37d074bf12b3946b006e4f047f6b06ab47e98c58dfe" => :yosemite
-    sha256 "2dee2a8911b99c8cc52b1534d9f6f0e87c04521d81a1b89c5ac46f7a149cd4db" => :mavericks
+    sha256 "51ab4a89dc3e931fbe33961c31f93ec0fa4eb9f4bab03364cebebe58ac6b3694" => :el_capitan
+    sha256 "3bf29505e1d269d065737a7152f5d7edd87c6f02a849090c73cbca67cf2c713b" => :yosemite
+    sha256 "7e82e6ba4a87489ea74f721505bbb8a8048b9a817457463ab278e4018c1b16c8" => :mavericks
   end
 
   def install
