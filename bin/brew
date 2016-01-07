@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 chdir() {
   cd "$@" >/dev/null
 }
 
 # Force UTF-8 to avoid encoding issues for users with broken locale settings.
-if [ "$(locale charmap 2> /dev/null)" != "UTF-8" ]
+if [[ "$(locale charmap 2> /dev/null)" != "UTF-8" ]]
 then
   export LC_ALL="en_US.UTF-8"
 fi
@@ -13,7 +13,7 @@ fi
 BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
 HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
-if [ -L "$HOMEBREW_BREW_FILE" ]
+if [[ -L "$HOMEBREW_BREW_FILE" ]]
 then
   BREW_SYMLINK="$(readlink "$HOMEBREW_BREW_FILE")"
   BREW_SYMLINK_DIRECTORY="$(dirname "$BREW_SYMLINK")"
@@ -28,14 +28,14 @@ BREW_LIBRARY_DIRECTORY="$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)"
 unset GEM_HOME
 unset GEM_PATH
 
-if [ -z "$HOMEBREW_DEVELOPER" ]
+if [[ -z "$HOMEBREW_DEVELOPER" ]]
 then
   unset HOMEBREW_RUBY_PATH
 fi
 
-if [ -z "$HOMEBREW_RUBY_PATH" ]
+if [[ -z "$HOMEBREW_RUBY_PATH" ]]
 then
-  if [ "$(uname -s)" = "Darwin" ]
+  if [[ "$(uname -s)" = "Darwin" ]]
   then
     HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
   else
