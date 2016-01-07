@@ -41,10 +41,9 @@ module Homebrew
     master_updater.pull!
     master_updated = master_updater.updated?
     if master_updated
-      initial_revision_short = shorten_revision(master_updater.initial_revision)
-      current_revision_short = shorten_revision(master_updater.current_revision)
-      puts "Updated Homebrew from #{initial_revision_short} " \
-           "to #{current_revision_short}."
+      initial_short = shorten_revision(master_updater.initial_revision)
+      current_short = shorten_revision(master_updater.current_revision)
+      puts "Updated Homebrew from #{initial_short} to #{current_short}."
     end
     report.update(master_updater.report)
 
