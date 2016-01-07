@@ -1,8 +1,8 @@
 class Fobis < Formula
   desc "KISS build tool for automaticaly building modern Fortran projects."
   homepage "https://github.com/szaghi/FoBiS"
-  url "https://pypi.python.org/packages/source/F/FoBiS.py/FoBiS.py-1.8.4.tar.gz"
-  sha256 "2f55ec1ef0b70c8870d497697f8c0cab3012e391db1b80481b32869358fb10f7"
+  url "https://pypi.python.org/packages/source/F/FoBiS.py/FoBiS.py-1.9.0.tar.gz"
+  sha256 "2ea24aabee4bfeddca90782f816a60f1d5f844d9941822c1dce5f6b05cab9cda"
 
   bottle do
     cellar :any_skip_relocation
@@ -11,10 +11,37 @@ class Fobis < Formula
     sha256 "cb16c0c004c5471ba3f7a6454b74b0b8c91172e2db067fcb8874d53eb77bf81e" => :mavericks
   end
 
+  option "without-pygooglechart", "Disable support for coverage charts generated with pygooglechart"
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on :fortran
+  depends_on "graphviz" => :recommended
+
+  resource "pygooglechart" do
+    url "https://pypi.python.org/packages/source/p/pygooglechart/pygooglechart-0.4.0.tar.gz"
+    sha256 "018d4dd800eea8e0e42a4b3af2a3d5d6b2a2b39e366071b7f270e9628b5f6454"
+  end
+
+  resource "graphviz" do
+    url "https://pypi.python.org/packages/source/g/graphviz/graphviz-0.4.8.zip"
+    sha256 "71d56c61af9b4ff5e1e64a89b46872aa27c598bab8b0e9083f0fd3213cfc28b0"
+  end
 
   def install
+    if build.with? "pygooglechart"
+      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+      resource("pygooglechart").stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+
+    if build.with? "graphviz"
+      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+      resource("graphviz").stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
+
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
