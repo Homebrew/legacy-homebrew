@@ -22,6 +22,8 @@ class Libgda < Formula
   depends_on "libgcrypt"
   depends_on "sqlite"
   depends_on "openssl"
+  depends_on "mysql" => :optional
+  depends_on "mysql56" => :optional
 
   def install
     ENV.libxml2
