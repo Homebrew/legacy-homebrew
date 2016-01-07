@@ -15,6 +15,9 @@ class Gettext < Formula
 
   option :universal
 
+  # https://savannah.gnu.org/bugs/index.php?46844
+  depends_on "libxml2" if MacOS.version <= :mountain_lion
+
   def install
     ENV.libxml2
     ENV.universal_binary if build.universal?
