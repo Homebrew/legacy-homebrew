@@ -3,29 +3,22 @@ class Xmake < Formula
   homepage "https://github.com/waruqi/xmake"
   url "https://github.com/waruqi/xmake/archive/v1.0.4.tar.gz"
   mirror "http://tboox.net/release/xmake/xmake-v1.0.4.tar.gz"
-  sha256 "317c29d9267567963a25b4fa69a02ac1568153717644db7492659006b2ea9389"
+  sha256 "c09e1e3c3c58641c6b39de169f1a1232d7556cf6820f805683991c58ec143880"
   head "https://github.com/waruqi/xmake.git"
 
   def install
-    # compile xmake core
-    cd "./core"
-    system "make", "f", "DEBUG=n"
-    system "make", "r"
-    system "make", "i"
-    cd ".."
-
-    # install the xmake core file
-    cp "./core/bin/demo.pkg/bin/mac/x64/demo.b", prefix+"xmake"
-    chmod 0755, prefix+"xmake"
+    # install to the output directory first
+    system "./install", "./output"
 
     # install the xmake directory
     share.mkdir
     (share/"xmake").mkdir
     (share/"xmake").install Dir["./xmake/*"]
 
-    # install the xmake loader
-    (bin/"xmake").write("#!/bin/bash\nexport XMAKE_PROGRAM_DIR=#{share}/xmake\n#{prefix}/xmake $verbose \"\$@\"")
-    chmod 0755, bin/"xmake"
+    # install the xmake binary
+    libexec.install "./output/share/xmake/xmake"
+    bin.install Dir[libexec/"*"]
+    bin.env_script_all_files(libexec, :XMAKE_PROGRAM_DIR =>"#{share}/xmake")
   end
 
   test do
