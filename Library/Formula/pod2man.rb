@@ -1,7 +1,7 @@
 class Pod2man < Formula
   desc "perl documentation generator"
   homepage "http://www.eyrie.org/~eagle/software/podlators/"
-  url "http://archives.eyrie.org/software/perl/podlators-4.03.tar.xz"
+  url "http://archives.eyrie.org/software/ARCHIVE/podlators/podlators-4.03.tar.xz"
   sha256 "4694326b35f569dafc4226398b25d5c82c86ed485039effdeb4f14c2ae5b7032"
 
   bottle do
