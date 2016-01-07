@@ -1,4 +1,5 @@
 require "diagnostic"
+require "thread"
 
 module Homebrew
   def doctor
@@ -11,24 +12,22 @@ module Homebrew
 
     checks.inject_dump_stats! if ARGV.switch? "D"
 
+    methods = Queue.new
+    reports = Queue.new
+
     if ARGV.named.empty?
-      methods = checks.all.sort
-      methods << "check_for_linked_keg_only_brews" << "check_for_outdated_homebrew"
-      methods = methods.reverse.uniq.reverse
+      checks.all.each do |method|
+        methods << method
+      end
     else
-      methods = ARGV.named
+      ARGV.named.each do |method|
+        methods << method
+      end
     end
 
-    first_warning = true
-    methods.each do |method|
-      unless checks.respond_to?(method)
-        Homebrew.failed = true
-        puts "No check available by the name: #{method}"
-        next
-      end
-
-      out = checks.send(method)
-      unless out.nil? || out.empty?
+    reporter = Thread.new do
+      first_warning = true
+      while report = reports.deq # wait for nil to break loop
         if first_warning
           $stderr.puts <<-EOS.undent
             #{Tty.white}Please note that these warnings are just used to help the Homebrew maintainers
@@ -38,11 +37,31 @@ module Homebrew
         end
 
         $stderr.puts
-        opoo out
+        opoo report
         Homebrew.failed = true
         first_warning = false
       end
     end
+
+    workers = (0...Hardware::CPU.cores).map do
+      Thread.new do
+        begin
+          while method = methods.deq(true)
+            if checks.respond_to?(method)
+              report = checks.send(method)
+              reports << report unless report.nil? || report.empty?
+            else
+              reports << "No check available by the name: #{method}"
+            end
+          end
+        rescue ThreadError # ignore empty queue error
+        end
+      end
+    end
+
+    workers.map(&:join)
+    reports << nil
+    reporter.join
 
     puts "Your system is ready to brew." unless Homebrew.failed?
   end
