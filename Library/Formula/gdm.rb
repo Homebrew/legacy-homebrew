@@ -3,8 +3,8 @@ require "language/go"
 class Gdm < Formula
   desc "Go Dependency Manager (gdm)"
   homepage "https://github.com/sparrc/gdm"
-  url "https://github.com/sparrc/gdm/archive/v1.0.tar.gz"
-  sha256 "e0dbec8deed27af3ff4cb16782bc38a4fd8eeb0db8e024b3083a00d36f877cab"
+  url "https://github.com/sparrc/gdm/archive/v1.1.tar.gz"
+  sha256 "dbe0530f85dc85db100b2a3d6270975247537683b4031c72ed5c377a90e10452"
 
   bottle do
     cellar :any_skip_relocation
