@@ -6,9 +6,9 @@ class Pod2man < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "cc054b30603815cb2bb3aec5df885e16a7d93cf8140c11ded05e9ac781d25580" => :el_capitan
-    sha256 "45c095c3b709ff0588930c34749fe6990d5f73067f46140892774b14049539de" => :yosemite
-    sha256 "9e937ed310b36a4e587ae769a0237a2e2948eabbfe7c21dba00ca894084ef82a" => :mavericks
+    sha256 "231ffab06e0aabb25b3630e4e2ba1990dc32abb3b7a3336c6880db4a0f721928" => :el_capitan
+    sha256 "58004f85a51625bfc5d3666d4a082268d5a280d76bc0da6a37f3b9991ba3b610" => :yosemite
+    sha256 "e47670d56d9a8bf9a5822c21fb35f9e663bcfd596fcda91f4a595cdcc53697eb" => :mavericks
   end
 
   keg_only :provided_by_osx
