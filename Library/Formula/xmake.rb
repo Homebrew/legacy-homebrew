@@ -7,7 +7,25 @@ class Xmake < Formula
   head "https://github.com/waruqi/xmake.git"
 
   def install
-    system "./install", prefix
+    # compile xmake core
+    cd "./core"
+    system "make", "f", "DEBUG=n"
+    system "make", "r"
+    system "make", "i"
+    cd ".."
+
+    # install the xmake core file
+    cp "./core/bin/demo.pkg/bin/mac/x64/demo.b", prefix+"xmake"
+    chmod 0755, prefix+"xmake"
+
+    # install the xmake directory
+    share.mkdir
+    (share/"xmake").mkdir
+    (share/"xmake").install Dir["./xmake/*"]
+
+    # install the xmake loader
+    (bin/"xmake").write("#!/bin/bash\nexport XMAKE_PROGRAM_DIR=#{share}/xmake\n#{prefix}/xmake $verbose \"\$@\"")
+    chmod 0755, bin/"xmake"
   end
 
   test do
