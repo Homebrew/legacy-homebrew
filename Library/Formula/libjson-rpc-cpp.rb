@@ -12,6 +12,7 @@ class LibjsonRpcCpp < Formula
     sha256 "07afaeb45d0cb55fe1cc1770498700046f238c2e01ba39544eb697b72965cd32" => :mavericks
   end
 
+
   depends_on "cmake" => :build
   depends_on "argtable"
   depends_on "jsoncpp"
