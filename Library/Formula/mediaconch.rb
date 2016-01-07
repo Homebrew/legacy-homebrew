@@ -4,6 +4,7 @@ class Mediaconch < Formula
   url "https://mediaarea.net/download/binary/mediaconch/15.12/MediaConch_CLI_15.12hotfix1_GNU_FromSource.tar.bz2"
   version "15.12"
   sha256 "4899d43c097c552b2f970da6362407f002c61f93b11e8be3cf79b29c4733fd06"
+  revision 1
 
   bottle do
     cellar :any
@@ -13,9 +14,9 @@ class Mediaconch < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jansson" => :build
-  depends_on "libevent" => :build
-  depends_on "sqlite" => :build
+  depends_on "jansson"
+  depends_on "libevent"
+  depends_on "sqlite"
   # fails to build against Leopard's older libcurl
   depends_on "curl" if MacOS.version < :snow_leopard
 
