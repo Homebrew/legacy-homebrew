@@ -3,7 +3,7 @@ class Xmake < Formula
   homepage "https://github.com/waruqi/xmake"
   url "https://github.com/waruqi/xmake/archive/v1.0.4.tar.gz"
   mirror "http://tboox.net/release/xmake/xmake-v1.0.4.tar.gz"
-  sha256 "c09e1e3c3c58641c6b39de169f1a1232d7556cf6820f805683991c58ec143880"
+  sha256 "adb4714ce89d6c9fcb24f7ae641ac9221d4172d728add441e29a6453a908f76f"
   head "https://github.com/waruqi/xmake.git"
 
   def install
