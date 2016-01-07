@@ -5,10 +5,9 @@ class Libnfc < Formula
   sha256 "945e74d8e27683f9b8a6f6e529557b305d120df347a960a6a7ead6cb388f4072"
 
   bottle do
-    sha256 "76437c13d93466c6f64ebcdee2a8aea6fa54bf129755f368844713a7817b263e" => :el_capitan
-    sha256 "80d5a6bb48a2bfe3079689d7b1655c128dbaab946a05528344e284a1bea5173f" => :yosemite
-    sha256 "5f63291718ab86e92d0afbaae02fba9b1a2a4d355524d098bc894ffb409b4b6f" => :mavericks
-    sha256 "72fde407ef486e39b73f37c92a4d585e47c2e9dad1528c1a40e3ffe0338af6b8" => :mountain_lion
+    sha256 "792064362ef2b224a15190b6fcf97066c7a1d47a3bee13495134aafb067cc11d" => :el_capitan
+    sha256 "3f2e7a57fca1f12b4b938c6136036f889562540e6c6a8e5188cd32fabd927a9c" => :yosemite
+    sha256 "cabb3f773d92c2cd95af437d6f4c567529229b26b82d568af1c89ec50b674f59" => :mavericks
   end
 
   depends_on "pkg-config" => :build
