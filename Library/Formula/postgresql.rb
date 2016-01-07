@@ -4,8 +4,8 @@ class Postgresql < Formula
   revision 2
 
   stable do
-    url "https://ftp.postgresql.org/pub/source/v9.4.5/postgresql-9.4.5.tar.bz2"
-    sha256 "b87c50c66b6ea42a9712b5f6284794fabad0616e6ae420cf0f10523be6d94a39"
+    url "https://ftp.postgresql.org/pub/source/v9.5.0/postgresql-9.5.0.tar.gz"
+    sha256 "20b86281ca812b9709c66a259147633abb3f402b4bf682ab8ba92a29ebb8ee68"
   end
 
   bottle do
