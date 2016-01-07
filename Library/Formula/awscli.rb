@@ -1,9 +1,9 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.9.16.tar.gz"
-  mirror "https://github.com/aws/aws-cli/archive/1.9.16.tar.gz"
-  sha256 "800ceeb899879f5de9334291347cc98a91e4e3ab08271bbc871c2477ea531ad8"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.9.17.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.9.17.tar.gz"
+  sha256 "5144b7bf73e39a5c556e84493bd4556f8081dcd2d206bfa083a7e04b379647da"
 
   bottle do
     cellar :any_skip_relocation
@@ -29,8 +29,8 @@ class Awscli < Formula
   depends_on :python if MacOS.version <= :lion
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   resource "python-dateutil" do
@@ -39,8 +39,8 @@ class Awscli < Formula
   end
 
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.3.tar.gz"
-    sha256 "eb21f2ba718fbf357afdfdf6f641ab393901c7ca8d9f37edd0bee4806ffa269c"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.5.tar.gz"
+    sha256 "0880a751afcb111881b437a846a93e540c7e1346030ba7bd7fda03434371fbc3"
   end
 
   resource "jmespath" do
@@ -49,8 +49,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.16.tar.gz"
-    sha256 "3d7896332fa3009318de331d8aa75cf9af58e8bb988ca0e893da2eb109d94c37"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.17.tar.gz"
+    sha256 "1ca85c5ebe0beed7b54fc47de81d3f39c6bb907951fe6db6a38185de63db7723"
   end
 
   resource "docutils" do
@@ -59,8 +59,8 @@ class Awscli < Formula
   end
 
   resource "pyasn1" do
-    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.8.tar.gz"
-    sha256 "5d33be7ca0ec5997d76d29ea4c33b65c00c0231407fff975199d7f40530b8347"
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.9.tar.gz"
+    sha256 "853cacd96d1f701ddd67aa03ecc05f51890135b7262e922710112f12a2ed2a7f"
   end
 
   resource "rsa" do
