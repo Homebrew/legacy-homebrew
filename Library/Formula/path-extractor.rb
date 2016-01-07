@@ -8,6 +8,13 @@ class PathExtractor < Formula
 
   head "https://github.com/edi9999/path-extractor.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "fc2d9e129562bdc7142c186d5e8c22b7b9bbf7bbd386d020e1804eec35b6faae" => :el_capitan
+    sha256 "cbb931f9afcb5178bb08ea6c09bd1a9ca9ea695e4279bf7b36461ff3eeb490f2" => :yosemite
+    sha256 "8afd140f08bdb53ac36ca4e221236cd58406ff16c136aa466c5a28c8c1829714" => :mavericks
+  end
+
   depends_on "go" => :build
 
   def install
