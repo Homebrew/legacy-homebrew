@@ -1,19 +1,20 @@
 require "tap"
+require "core_formula_repository"
 
 module Homebrew
   def tap
-    if ARGV.empty?
-      puts Tap.names
-    elsif ARGV.first == "--repair"
+    if ARGV.include? "--repair"
+      Tap.each(&:link_manpages)
       migrate_taps :force => true
-    elsif ARGV.first == "--list-official"
+    elsif ARGV.include? "--list-official"
       require "official_taps"
       puts OFFICIAL_TAPS.map { |t| "homebrew/#{t}" }
-    elsif ARGV.first == "--list-pinned"
+    elsif ARGV.include? "--list-pinned"
       puts Tap.select(&:pinned?).map(&:name)
+    elsif ARGV.named.empty?
+      puts Tap.names
     else
-      user, repo = tap_args
-      tap = Tap.fetch(user, repo)
+      tap = Tap.fetch(ARGV.named[0])
       begin
         tap.install(:clone_target => ARGV.named[1],
                     :full_clone   => ARGV.include?("--full"))
@@ -42,13 +43,5 @@ module Homebrew
     return unless ignore.exist? || options.fetch(:force, false)
     (HOMEBREW_LIBRARY/"Formula").children.each { |c| c.unlink if c.symlink? }
     ignore.unlink if ignore.exist?
-  end
-
-  private
-
-  def tap_args(tap_name = ARGV.named.first)
-    tap_name =~ HOMEBREW_TAP_ARGS_REGEX
-    raise "Invalid tap name" unless $1 && $3
-    [$1, $3]
   end
 end

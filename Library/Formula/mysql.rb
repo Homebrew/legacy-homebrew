@@ -1,18 +1,18 @@
 class Mysql < Formula
   desc "Open source relational database management system"
   homepage "https://dev.mysql.com/doc/refman/5.7/en/"
-  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.9.tar.gz"
-  sha256 "315342f5bee1179548cecad2d776cd7758092fd2854024e60a3a5007feba34e0"
+  url "https://cdn.mysql.com/Downloads/MySQL-5.7/mysql-5.7.10.tar.gz"
+  sha256 "1ea1644884d086a23eafd8ccb04d517fbd43da3a6a06036f23c5c3a111e25c74"
 
   bottle do
     revision 1
-    sha256 "95c6d7fbc023e66c8c05c25a6c60da2a86f785a6aa294ef47dbb52e3f0ede47e" => :el_capitan
-    sha256 "25d22186b29c508e6ad178da999c03c3e04d1b436640e0cf4f56d14345f8f42a" => :yosemite
-    sha256 "9552b55a18e73cdf9a818e6496ea71875ca95d8c92fd018a4bf7807ceedb11cf" => :mavericks
+    sha256 "866d0adbfe88f626452006bb50aa9489413a81a03cbef40c3175f7e7daaab879" => :el_capitan
+    sha256 "048629d5759e5aa7cabd934214a011c30c1f94c57ea47c8b853b338213572c77" => :yosemite
+    sha256 "84b963def9d2ff10bd21435ac2b9b87cce34a8e68bb9e82e3b2c6a0200970975" => :mavericks
   end
 
   option :universal
-  option "with-tests", "Build with unit tests"
+  option "with-test", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
   option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
   option "with-blackhole-storage-engine", "Compile with the BLACKHOLE storage engine enabled"
@@ -23,11 +23,12 @@ class Mysql < Formula
   deprecated_option "enable-local-infile" => "with-local-infile"
   deprecated_option "enable-memcached" => "with-memcached"
   deprecated_option "enable-debug" => "with-debug"
+  deprecated_option "with-tests" => "with-test"
 
   depends_on "cmake" => :build
+  depends_on "boost" => :build
   depends_on "pidof" unless MacOS.version >= :mountain_lion
   depends_on "openssl"
-  depends_on "boost"
 
   conflicts_with "mysql-cluster", "mariadb", "percona-server",
     :because => "mysql, mariadb, and percona install the same binaries."
@@ -76,7 +77,7 @@ class Mysql < Formula
     ]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.with? "tests"
+    if build.with? "test"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"

@@ -15,7 +15,7 @@ class Httperf < Formula
 
   # Upstream actually recommend using head over stable now.
   head do
-    url "http://httperf.googlecode.com/svn/trunk/"
+    url "https://httperf.googlecode.com/svn/trunk/"
 
     depends_on "automake" => :build
     depends_on "autoconf" => :build

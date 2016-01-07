@@ -1,27 +1,29 @@
 class AmmoniteRepl < Formula
   desc "Ammonite is a cleanroom re-implementation of the Scala REPL"
   homepage "https://lihaoyi.github.io/Ammonite/#Ammonite-REPL"
-  url "https://github.com/lihaoyi/Ammonite/archive/0.4.8.tar.gz"
-  sha256 "5ba76b6dad8e4397e5163112fd6ae2c4a35ea52a0e612b6f8ac774e896d9aa87"
+  url "https://github.com/lihaoyi/Ammonite/archive/0.5.2.tar.gz"
+  sha256 "78d496e8ad7b8e98aa7005c8160e99c326c8a9b6dba82bd2ae2a171577965237"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "12e78b67e23fc788271414f1cddc9c324598072e5412aa5279892bdd0be448da" => :el_capitan
-    sha256 "93498007184d56b7106be5e30c2982909d35caa32305fbac49b0afd85da9e7d3" => :yosemite
-    sha256 "5939b0268a1d751507a74b3d8c51f20243e7120cdcd129da866d8a2c8b7e7b01" => :mavericks
+    sha256 "b9933e8aa1915ae0daffca393779d6a21e675c9c639652a50717211f053f48ae" => :el_capitan
+    sha256 "0ba8b816a6184d82cd25574318da6150e7e19559e82effa39f9e2c314400aa66" => :yosemite
+    sha256 "249e79ee6096295ab85f554a4ee38a1a31b108c437b9bb31df057d5e96adbcc5" => :mavericks
   end
 
   depends_on :java => "1.6+"
   depends_on "sbt" => :build
 
   def install
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{buildpath}"
+    ENV.java_cache
+
     system "sbt", "repl/assembly"
-    bin.install "repl/target/scala-2.11/ammonite-repl-0.4.8-2.11.7" => "amm"
+    bin.install "repl/target/scala-2.11/ammonite-repl-0.5.2-2.11.7" => "amm"
   end
 
   test do
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{testpath}"
+    ENV.java_cache
+
     assert_equal "hello world!", shell_output("#{bin}/amm -c 'print(\"hello world!\")'")
   end
 end

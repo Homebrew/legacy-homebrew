@@ -1,14 +1,14 @@
 class Khal < Formula
   desc "CLI calendar application."
   homepage "https://github.com/geier/khal"
-  url "https://pypi.python.org/packages/source/k/khal/khal-0.6.0.tar.gz"
-  sha256 "1a2e8d56d20b12ed2c3ef2468ff0ce0c658a8a566b249821b0f4b30cce8ada9a"
+  url "https://pypi.python.org/packages/source/k/khal/khal-0.7.0.tar.gz"
+  sha256 "c6b0c81df56133e4592f02d8e9b60702079da2affd1b09ba96358ccd8eec9402"
 
   bottle do
-    cellar :any
-    sha256 "1796df34f81473c1ad2eb8527803b8b30c993e20199e00d3457b8c3289b07244" => :yosemite
-    sha256 "67b02a0db471f4799ee54b65b39a3067af158a18d8bea6537eb681185456a4f3" => :mavericks
-    sha256 "06f4f64db39be3cf026439ab604bdb6e83c1db0ef25ce0e3a49076c74764c8d2" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a16a360d2a7ede6c8b1bd8bbbd8cd2c35c6f19aa4445fdd47f82091fa8925133" => :el_capitan
+    sha256 "c7449542c557bf6b3811c613059bd1b5cefd3a026a9087e6247169304f391a69" => :yosemite
+    sha256 "913747585138e99fbf333185674d044f03981e7fd773fd28e7b92b7d03a1cda8" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

@@ -23,3 +23,8 @@ if name = ENV["HOMEBREW_INTEGRATION_TEST"]
     exit! exit_code
   end
 end
+
+if RUBY_VERSION.split(".").first.to_i >= 2 && !ENV["HOMEBREW_INTEGRATION_TEST"]
+  require "coveralls"
+  Coveralls.wear!
+end

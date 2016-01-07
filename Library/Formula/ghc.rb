@@ -1,25 +1,24 @@
 class Ghc < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-src.tar.xz"
-  sha256 "54cd73755b784d78e2f13d5eb161bfa38d3efee9e8a56f7eb6cd9f2d6e2615f5"
+  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3b-src.tar.bz2"
+  sha256 "b0bb177b8095de6074e5a3538e55fd1fc187dae6eb6ae36b05582c55f7d2db6f"
 
   bottle do
-    revision 1
-    sha256 "1ce1a67a1bf09dabf97f105a536b1ab0a0b59b3bfd1e9cdd288aaae500bc79c3" => :el_capitan
-    sha256 "cc097abdfd1d392ffe6f8193627168279441fb868555823ac5aa75c41f2d9e74" => :yosemite
-    sha256 "3688f280ef8e85f1ff681ed03cf111a6cd28d58977fcdf7bed5a7ac2e61f7a01" => :mavericks
-    sha256 "b94cb5912e23a86a475a10114bf14da05fcbbb6b5b85584998f566fc64c01461" => :mountain_lion
+    sha256 "72c6c729ea385aaebfa22b55fe31b85f46e423a510c83d2f76c8f57336f9bf2c" => :el_capitan
+    sha256 "3914b0875845c0e419c440c1b5833631ea709e6e8d5d9bf546422852c4c96ea8" => :yosemite
+    sha256 "3ca8542ed077871a9da2e7af1a2362eb6ddc52501e6625fa5b06e9fda288e980" => :mavericks
   end
 
-  option "with-tests", "Verify the build using the testsuite."
-  deprecated_option "tests" => "with-tests"
+  option "with-test", "Verify the build using the testsuite"
+  deprecated_option "tests" => "with-test"
+  deprecated_option "with-tests" => "with-test"
 
   resource "gmp" do
-    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://gmplib.org/download/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.1.0.tar.bz2"
+    sha256 "498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8"
   end
 
   if MacOS.version <= :lion
@@ -38,14 +37,14 @@ class Ghc < Formula
       url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     else
-      url "https://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-x86_64-apple-darwin.tar.xz"
-      sha256 "ef0f00885096e3621cec84a112dfae050cf546ad39bdef29a7719407c6bc5b36"
+      url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3-x86_64-apple-darwin.tar.xz"
+      sha256 "852781d43d41cd55d02f818fe798bb4d1f7e52f488408167f413f7948cf1e7df"
     end
   end
 
   resource "testsuite" do
-    url "https://downloads.haskell.org/~ghc/7.10.2/ghc-7.10.2-testsuite.tar.xz"
-    sha256 "8b4885d376ca635935b49d4e36e2fa6f07164563ea496eac5fffa0ac926ae962"
+    url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3-testsuite.tar.xz"
+    sha256 "50c151695c8099901334a8478713ee3bb895a90132e2b75d1493961eb8ec643a"
   end
 
   def install
@@ -88,7 +87,7 @@ class Ghc < Formula
     system "./configure", "--prefix=#{prefix}", *args
     system "make"
 
-    if build.with? "tests"
+    if build.with? "test"
       resource("testsuite").stage { buildpath.install Dir["*"] }
       cd "testsuite" do
         system "make", "clean"
@@ -101,6 +100,6 @@ class Ghc < Formula
 
   test do
     (testpath/"hello.hs").write('main = putStrLn "Hello Homebrew"')
-    system "runghc", testpath/"hello.hs"
+    system "#{bin}/runghc", testpath/"hello.hs"
   end
 end

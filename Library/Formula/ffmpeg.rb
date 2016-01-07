@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.8.2.tar.bz2"
-  sha256 "830ec647f7ad774fc0caf17ba47774bf5dee7a89cbd65894f364a87ba3ad21b2"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.4.tar.bz2"
+  sha256 "83cc8136a7845546062a43cda9ae3cf0a02f43ef5e434d2f997f055231a75f8e"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "f64fc57eddec2f0ba39f82111641d64d5c5e2cb2f0d632763e2a128da3944c2c" => :el_capitan
-    sha256 "7e2dfbf74763b7c62ce2189857290ec69f0d773d51493b41eb768299646c3ebe" => :yosemite
-    sha256 "839d6593f140577eab402c7f93be9fc739de6996d2e90692c26d575c16e01803" => :mavericks
+    sha256 "22f7b8c0cf8d85635e06dded64407f15225fc20353f7f3c4eb1c6a94087958e8" => :el_capitan
+    sha256 "4190ddb616d72af8e28e9cef2a3427894aa8a52abb41329d1b5ac9b611b84166" => :yosemite
+    sha256 "936ac1f1e231bba467bdf0028cc03951c9fbf76f00d53f72ea3b754dda94b6be" => :mavericks
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -33,6 +33,7 @@ class Ffmpeg < Formula
   option "with-webp", "Enable using libwebp to encode WEBP images"
   option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
   option "with-snappy", "Enable Snappy library"
+  option "with-dcadec", "Enable dcadec library"
 
   depends_on "pkg-config" => :build
 
@@ -73,6 +74,7 @@ class Ffmpeg < Formula
   depends_on "webp" => :optional
   depends_on "zeromq" => :optional
   depends_on "libbs2b" => :optional
+  depends_on "dcadec" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -84,7 +86,7 @@ class Ffmpeg < Formula
             "--enable-avresample",
             "--cc=#{ENV.cc}",
             "--host-cflags=#{ENV.cflags}",
-            "--host-ldflags=#{ENV.ldflags}"
+            "--host-ldflags=#{ENV.ldflags}",
            ]
 
     args << "--enable-opencl" if MacOS.version > :lion
@@ -120,6 +122,7 @@ class Ffmpeg < Formula
     args << "--enable-libwebp" if build.with? "webp"
     args << "--enable-libzmq" if build.with? "zeromq"
     args << "--enable-libbs2b" if build.with? "libbs2b"
+    args << "--enable-libdcadec" if build.with? "dcadec"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"

@@ -1,27 +1,19 @@
 class Cryptopp < Formula
   desc "Free C++ class library of cryptographic schemes"
   homepage "https://www.cryptopp.com/"
-  url "https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.2/cryptopp562.zip"
-  mirror "https://www.cryptopp.com/cryptopp562.zip"
-  version "5.6.2"
-  sha256 "5cbfd2fcb4a6b3aab35902e2e0f3b59d9171fee12b3fc2b363e1801dfec53574"
+  url "https://downloads.sourceforge.net/project/cryptopp/cryptopp/5.6.3/cryptopp563.zip"
+  mirror "https://www.cryptopp.com/cryptopp563.zip"
+  version "5.6.3"
+  sha256 "9390670a14170dd0f48a6b6b06f74269ef4b056d4718a1a329f6f6069dc957c9"
 
   bottle do
     cellar :any_skip_relocation
-    revision 2
-    sha256 "cb169ef2c25cf280f9c980694af6e566c947031d9667e8aac08edf11052794cd" => :el_capitan
-    sha256 "319e5e4bb18076bbc367ea240f931c81f037059add9122c1157f3a3a6c9dc442" => :yosemite
-    sha256 "732f74da193f079d6c44200f6592e1b170f4a7a1cdfd3fde3cdd77fa59d59838" => :mavericks
+    sha256 "6a1df1d638f115f46665337a43c04da6c573e34e6970636df1679b81b6b55ef5" => :el_capitan
+    sha256 "8bb962c7ec3895b111cc57c726ceffb191a84034192b18573fcb6107a2b869c2" => :yosemite
+    sha256 "9192678ac6745d338d412af85b071d86c8e75de64ba6664775d322065dbc0ea4" => :mavericks
   end
 
   option :cxx11
-
-  # Incorporated upstream, remove on next version update
-  # https://groups.google.com/forum/#!topic/cryptopp-users/1wdyb2FSwc4
-  patch :p1 do
-    url "https://github.com/weidai11/cryptopp/commit/44015c26ba215f955b1e653f9c8f3c894a532707.patch"
-    sha256 "2ca6c2f9dda56fa29df952d0ee829c9501a2cbc43a68bdc786d8241aefaddea6"
-  end
 
   def install
     ENV.cxx11 if build.cxx11?

@@ -1,14 +1,14 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2"
-  sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
+  url "https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.0.tar.bz2"
+  sha256 "ec7579eaba2e4c402a089dbc86c98e5f1f62507880fd800b9b34ca30166bfa5e"
 
   bottle do
     revision 1
-    sha256 "a1360891dc5f037f5f28d54a0f4314b601a12f79abd49972216419d186142b70" => :el_capitan
-    sha256 "ad503cac645b112e2d50327b50608d5833aca8d0cdded52d82c21ccecc2ba399" => :yosemite
-    sha256 "ebdca4210ea52abd85ec1102f223ef2f537ae20249da305f720144b4424e9b93" => :mavericks
+    sha256 "75ea4854975889abc491a24386d1e4ed3de61e4b5037e4420b54a98beec0b28f" => :el_capitan
+    sha256 "cc4c7f1f8cc8603dfd538064045c93c4ede512cb1c5a9fd3e7bfeca82482d215" => :yosemite
+    sha256 "89ccfea5af864e0ff0dc24e26dc2e36101b5dc9ff8264a939f5ad487ef7eb171" => :mavericks
   end
 
   head do
@@ -17,9 +17,17 @@ class Ruby < Formula
   end
 
   option :universal
-  option "with-suffix", "Suffix commands with '22'"
+  option "with-suffix", "Suffix commands with '23'"
   option "with-doc", "Install documentation"
   option "with-tcltk", "Install with Tcl/Tk support"
+
+  # Reverts an upstream commit which incorrectly tries to install headers
+  # into SDKROOT, if defined
+  # See https://bugs.ruby-lang.org/issues/11881
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/patches/ba8cc6b88e6b7153ac37739e5a1a6bbbd8f43817/ruby/mkconfig.patch"
+    sha256 "929c618f74e89a5e42d899a962d7d2e4af75716523193af42626884eaba1d765"
+  end
 
   depends_on "pkg-config" => :build
   depends_on "readline" => :recommended
@@ -48,7 +56,7 @@ class Ruby < Formula
       args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
     end
 
-    args << "--program-suffix=22" if build.with? "suffix"
+    args << "--program-suffix=23" if build.with? "suffix"
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
@@ -103,7 +111,7 @@ class Ruby < Formula
   end
 
   def abi_version
-    "2.2.0"
+    "2.3.0"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -165,15 +173,14 @@ class Ruby < Formula
       end
 
       def self.ruby
-        "#{opt_bin}/ruby#{"22" if build.with? "suffix"}"
+        "#{opt_bin}/ruby#{"23" if build.with? "suffix"}"
       end
     end
     EOS
   end
 
   test do
-    output = `#{bin}/ruby -e "puts 'hello'"`
-    assert_equal "hello\n", output
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/ruby -e \"puts 'hello'\"")
+    assert_match "hello\n", output
   end
 end

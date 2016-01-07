@@ -60,7 +60,11 @@ module Homebrew
   def describe_path(path)
     return "N/A" if path.nil?
     realpath = path.realpath
-    if realpath == path then path else "#{path} => #{realpath}" end
+    if realpath == path
+      path
+    else
+      "#{path} => #{realpath}"
+    end
   end
 
   def describe_x11

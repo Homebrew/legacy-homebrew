@@ -59,7 +59,7 @@ class DynamodbLocal < Formula
       <false/>
       <key>ProgramArguments</key>
       <array>
-        <string>#{bin}/dynamodb-local</string>
+        <string>#{opt_bin}/dynamodb-local</string>
       </array>
       <key>StandardErrorPath</key>
       <string>#{log_path}</string>

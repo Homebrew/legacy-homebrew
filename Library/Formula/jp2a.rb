@@ -11,7 +11,9 @@ class Jp2a < Formula
     sha256 "d2f2828c5ed021cac439243a6c5fbb29b9ec460fc96d7fa19c69bec7838d4689" => :mountain_lion
   end
 
-  option "without-check", "Skip compile-time tests."
+  option "without-test", "Skip compile-time tests"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "jpeg"
 
@@ -19,7 +21,7 @@ class Jp2a < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make", "test" if build.with? "check"
+    system "make", "test" if build.with? "test"
     system "make", "install"
   end
 

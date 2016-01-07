@@ -1,13 +1,13 @@
 class Groonga < Formula
   desc "Fulltext search engine and column store"
   homepage "http://groonga.org/"
-  url "http://packages.groonga.org/source/groonga/groonga-5.0.9.tar.gz"
-  sha256 "4fb59009dca154ffb53f9b408dc296e6e215f8eda613a8ef184fa634e702d35d"
+  url "http://packages.groonga.org/source/groonga/groonga-5.1.0.tar.gz"
+  sha256 "08cd6037e8a1429e36da54d1c10bcdbadfb37aa7111fb6869f324f60344566d4"
 
   bottle do
-    sha256 "69bc0854ee969cd7627f1d7856b5cde5b429b106a298e1673989c83cc1ff3db8" => :el_capitan
-    sha256 "a8eab8472f4d58c807441c94f0c2c904241ee918cbb0223defbe743bc1f322e3" => :yosemite
-    sha256 "089a97b55ad3733005d3ae5a7f8a9501dfefb0620c1e484e9021ee2bfb438424" => :mavericks
+    sha256 "6700081b9f3b3aaf0ab072a4d17e27f1792bf5adae567751c1c3c9d744c3d048" => :el_capitan
+    sha256 "b89d0e7d809c8a2b6cf9e60c0935170b57c96f638f6394bbd9f79da3b67ae511" => :yosemite
+    sha256 "13cc291a0a7034da80c28cfe4e87f343e7015628d9402e5d5d53d65480fa59d8" => :mavericks
   end
 
   head do
@@ -65,7 +65,12 @@ class Groonga < Formula
   end
 
   test do
-    output = shell_output("groonga --version")
-    assert_match /groonga #{version}/, output
+    io = IO.popen("#{bin}/groonga -n #{testpath}/test.db", "r+")
+    io.puts("table_create --name TestTable --flags TABLE_HASH_KEY --key_type ShortText")
+    sleep 2
+    io.puts("shutdown")
+    # expected returned result is like this:
+    # [[0,1447502555.38667,0.000824928283691406],true]\n
+    assert_match(/[[0,\d+.\d+,\d+.\d+],true]/, io.read)
   end
 end

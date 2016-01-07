@@ -235,7 +235,7 @@ class FormulaAuditor
   def audit_formula_name
     return unless @strict
     # skip for non-official taps
-    return if !formula.core_formula? && !formula.tap.to_s.start_with?("homebrew")
+    return if formula.tap.nil? || !formula.tap.official?
 
     name = formula.name
     full_name = formula.full_name
@@ -245,8 +245,8 @@ class FormulaAuditor
       return
     end
 
-    if FORMULA_RENAMES.key? name
-      problem "'#{name}' is reserved as the old name of #{FORMULA_RENAMES[name]}"
+    if oldname = CoreFormulaRepository.instance.formula_renames[name]
+      problem "'#{name}' is reserved as the old name of #{oldname}"
       return
     end
 
@@ -302,7 +302,7 @@ class FormulaAuditor
         end
 
         if dep_f.oldname && dep.name.split("/").last == dep_f.oldname
-          problem "Dependency '#{dep.name}' was renamed; use newname '#{dep_f.name}'."
+          problem "Dependency '#{dep.name}' was renamed; use new name '#{dep_f.name}'."
         end
 
         if @@aliases.include?(dep.name)
@@ -371,6 +371,10 @@ class FormulaAuditor
       next unless @strict
       if o.name !~ /with(out)?-/ && o.name != "c++11" && o.name != "universal" && o.name != "32-bit"
         problem "Options should begin with with/without. Migrate '--#{o.name}' with `deprecated_option`."
+      end
+
+      if o.name =~ /^with(out)?-(?:checks?|tests)$/
+        problem "Use '--with#{$1}-test' instead of '--#{o.name}'. Migrate '--#{o.name}' with `deprecated_option`."
       end
     end
   end
@@ -610,7 +614,7 @@ class FormulaAuditor
       problem "\"Formula.factory(name)\" is deprecated in favor of \"Formula[name]\""
     end
 
-    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec\}/npm/bin]
+    if text =~ /system "npm", "install"/ && text !~ %r[opt_libexec\}/npm/bin] && formula.name !~ /^kibana(\d{2})?$/
       need_npm = "\#{Formula[\"node\"].opt_libexec\}/npm/bin"
       problem <<-EOS.undent
        Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
@@ -786,9 +790,10 @@ class FormulaAuditor
       problem "Use MacOS.version instead of MACOS_VERSION"
     end
 
-    if line =~ /MACOS_FULL_VERSION/
-      problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
-    end
+    # TODO: comment out this after core code and formulae separation.
+    # if line =~ /MACOS_FULL_VERSION/
+    #   problem "Use MacOS.full_version instead of MACOS_FULL_VERSION"
+    # end
 
     cats = %w[leopard snow_leopard lion mountain_lion].join("|")
     if line =~ /MacOS\.(?:#{cats})\?/

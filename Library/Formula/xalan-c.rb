@@ -11,8 +11,13 @@ class XalanC < Formula
     sha256 "fcfe6027b7d366f6a2bff783e0ab1e9abfc7c38c1a6fd31fa4a2fb9d325a2819" => :mavericks
   end
 
+  option "with-docs", "Install HTML docs"
   option :universal
 
+  if build.with? "docs"
+    depends_on "doxygen" => :build
+    depends_on "graphviz" => :build
+  end
   depends_on "xerces-c"
 
   # Fix segfault. See https://issues.apache.org/jira/browse/XALANC-751
@@ -30,6 +35,18 @@ class XalanC < Formula
                             "--disable-silent-rules",
                             "--prefix=#{prefix}"
       system "make", "install"
+      if build.with? "docs"
+        ENV.prepend_path "PATH", "#{buildpath}/c/bin"
+        cd "xdocs" do
+          # Set the library path in the script which runs Xalan from
+          # the source tree, or else the libxalan-c.dylib won't be found.
+          # See https://issues.apache.org/jira/browse/XALANC-766
+          inreplace "sources/make-xalan.sh", "\"${XALANCMD}\" \\",
+                    "export DYLD_FALLBACK_LIBRARY_PATH=#{buildpath}/c/lib:$DYLD_FALLBACK_LIBRARY_PATH\n\"${XALANCMD}\" \\"
+          system "./make-apiDocs.sh"
+        end
+        (share/"doc").install "build/docs/xalan-c"
+      end
       # Clean up links
       rm Dir["#{lib}/*.dylib.*"]
     end

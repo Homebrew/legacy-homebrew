@@ -1,5 +1,5 @@
 class Bash < Formula
-  desc "Bash (Bourne-again SHell) is a UNIX command interpreter"
+  desc "Bourne-Again SHell, a UNIX command interpreter"
   homepage "https://www.gnu.org/software/bash/"
 
   head "http://git.savannah.gnu.org/r/bash.git"
@@ -17,6 +17,12 @@ class Bash < Formula
       url "https://gist.githubusercontent.com/dunn/a8986687991b57eb3b25/raw/76dd864812e821816f4b1c18e3333c8fced3919b/bash-4.3.42.diff"
       sha256 "2eeb9b3ed71f1e13292c2212b6b8036bc258c58ec9c82eec7a86a091b05b15d2"
     end
+  end
+
+  devel do
+    url "http://ftpmirror.gnu.org/bash/bash-4.4-beta.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/bash/bash-4.4-beta.tar.gz"
+    sha256 "8273c415b70260baaf7a9fdc9632451cd3987718fd054ee7ee13d7613808d231"
   end
 
   bottle do
@@ -37,7 +43,11 @@ class Bash < Formula
     # Homebrew's bash instead of /bin/bash.
     ENV.append_to_cflags "-DSSH_SOURCE_BASHRC"
 
-    system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
+    if build.devel? || build.head?
+      system "./configure", "--prefix=#{prefix}"
+    else
+      system "./configure", "--prefix=#{prefix}", "--with-installed-readline"
+    end
     system "make", "install"
   end
 

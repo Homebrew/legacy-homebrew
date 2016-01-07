@@ -2,15 +2,14 @@ class Python < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org"
   head "https://hg.python.org/cpython", :using => :hg, :branch => "2.7"
-  url "https://www.python.org/ftp/python/2.7.10/Python-2.7.10.tgz"
-  sha256 "eda8ce6eec03e74991abb5384170e7c65fcd7522e409b8e83d7e6372add0f12a"
-  revision 2
+  url "https://www.python.org/ftp/python/2.7.11/Python-2.7.11.tgz"
+  sha256 "82929b96fd6afc8da838b149107078c02fa1744b7e60999a8babbc0d3fa86fc6"
 
   bottle do
-    revision 3
-    sha256 "16b0c9e4b255e90f022a1dcf8cf7247bb52667d4240dd25d82787d594e4860b4" => :el_capitan
-    sha256 "b406c0ee81765195a8bc44ceb88ae155390cc388680a0518c597f1a9278520c9" => :yosemite
-    sha256 "2e717460179c72b61ab70f4df401fa5bc7e34a21403754f3397d0e34215ddc01" => :mavericks
+    revision 1
+    sha256 "55155fde94eb339fbf10807293f2c0d8d66e0aaf8887f2f3114ceead1b14d6f9" => :el_capitan
+    sha256 "e363b8de21fafec817837bde17a597a99b7b79f9ac9bec0cfde93f124bc53717" => :yosemite
+    sha256 "62371d4170205e0d30e8b76570c6810a4cdbf66afa37cb35072b31d9f73738e9" => :mavericks
   end
 
   # Please don't add a wide/ucs4 option as it won't be accepted.
@@ -36,8 +35,8 @@ class Python < Formula
   skip_clean "bin/easy_install", "bin/easy_install-2.7"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.3.1.tar.gz"
-    sha256 "2fa230727104b07e522deec17929e84e041c9047e392c055347a02b0d5ca874d"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.7.1.tar.gz"
+    sha256 "aff36c95035e0b311eacb1434e3f7e85f5ccaad477773847e582978f8f45bd74"
   end
 
   resource "pip" do
@@ -163,9 +162,9 @@ class Python < Formula
       ldflags  << "-L#{tcl_tk}/lib"
     end
 
-    args << "CFLAGS=#{cflags.join(' ')}"     unless cflags.empty?
-    args << "LDFLAGS=#{ldflags.join(' ')}"   unless ldflags.empty?
-    args << "CPPFLAGS=#{cppflags.join(' ')}" unless cppflags.empty?
+    args << "CFLAGS=#{cflags.join(" ")}" unless cflags.empty?
+    args << "LDFLAGS=#{ldflags.join(" ")}" unless ldflags.empty?
+    args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
     system "./configure", *args
 
@@ -183,7 +182,7 @@ class Python < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python"
-    system "make", "quicktest" if build.include? "quicktest"
+    system "make", "quicktest" if build.with? "quicktest"
 
     # Symlink the pkgconfig files into HOMEBREW_PREFIX so they're accessible.
     (lib/"pkgconfig").install_symlink Dir["#{frameworks}/Python.framework/Versions/Current/lib/pkgconfig/*"]

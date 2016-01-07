@@ -21,6 +21,6 @@ class Flickcurl < Formula
 
   test do
     output = shell_output("#{bin}/flickcurl -h 2>&1", 1)
-    assert output.include? "flickcurl: Configuration file"
+    assert_match "flickcurl: Configuration file", output
   end
 end

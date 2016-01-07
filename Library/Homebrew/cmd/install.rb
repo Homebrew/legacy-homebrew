@@ -1,8 +1,9 @@
 require "blacklist"
-require "cmd/doctor"
+require "diagnostic"
 require "cmd/search"
-require "cmd/tap"
 require "formula_installer"
+require "tap"
+require "core_formula_repository"
 require "hardware"
 
 module Homebrew
@@ -14,11 +15,9 @@ module Homebrew
     end
 
     ARGV.named.each do |name|
-      if !File.exist?(name) && (name !~ HOMEBREW_CORE_FORMULA_REGEX) \
-              && (name =~ HOMEBREW_TAP_FORMULA_REGEX || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
-        user = $1
-        repo = $2.sub(/^homebrew-/, "")
-        tap = Tap.fetch(user, repo)
+      if !File.exist?(name) &&
+         (name =~ HOMEBREW_TAP_FORMULA_REGEX || name =~ HOMEBREW_CASK_TAP_FORMULA_REGEX)
+        tap = Tap.fetch($1, $2)
         tap.install unless tap.installed?
       end
     end unless ARGV.force?
@@ -27,8 +26,6 @@ module Homebrew
       formulae = []
 
       if ARGV.casks.any?
-        brew_cask = Formulary.factory("brew-cask")
-        install_formula(brew_cask) unless brew_cask.installed?
         args = []
         args << "--force" if ARGV.force?
         args << "--debug" if ARGV.debug?
@@ -162,7 +159,7 @@ module Homebrew
   end
 
   def check_xcode
-    checks = Checks.new
+    checks = Diagnostic::Checks.new
     %w[
       check_for_unsupported_osx
       check_for_bad_install_name_tool

@@ -48,16 +48,16 @@ class Disco < Formula
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  test do
-    system "#{bin}/disco"
-  end
-
   def caveats
     <<-EOS.undent
       Please copy #{etc}/disco/settings.py to ~/.disco and edit it if necessary.
       The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.
       Please see http://discoproject.org/doc/disco/start/install.html for further instructions.
     EOS
+  end
+
+  test do
+    system "#{bin}/disco"
   end
 end
 

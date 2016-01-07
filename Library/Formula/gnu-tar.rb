@@ -8,11 +8,10 @@ class GnuTar < Formula
   option "with-default-names", "Do not prepend 'g' to the binary"
 
   bottle do
-    revision 2
-    sha256 "ec164a19cec89dd5fcec0fd1cc25f78d33b73bdf6d149bae586fa398d89fa2e9" => :el_capitan
-    sha256 "0187700c9462dc4ff64bc157f0e7cf4e7c0bda1c96aa0a7aef6ed3522d5d3484" => :yosemite
-    sha256 "732121b85fca598b1ba9e71b2aae6687a1642724d94e3e5f63acefd461dfdbd7" => :mavericks
-    sha256 "f81f7d823d52f224087ec560e3542cd90b16e9b983ca68cd59cd2ec430236218" => :mountain_lion
+    revision 3
+    sha256 "e454d4acb5d791a70b9f00658c1f2397f7a52e28657ea55a67b4f1d469222d98" => :el_capitan
+    sha256 "eacc46c8c80c5223cf77ff88ff16dc698b6e30927f7f3599b3af4222050d5a0c" => :yosemite
+    sha256 "b21d9afff94eba7d94b7e3fb886ab781e6bd3e3acc1615092788143b08384f49" => :mavericks
   end
 
   # Fix for xattrs bug causing build failures on OS X:
@@ -23,6 +22,16 @@ class GnuTar < Formula
   end
 
   def install
+    # Work around unremovable, nested dirs bug that affects lots of
+    # GNU projects. See:
+    # https://github.com/Homebrew/homebrew/issues/45273
+    # https://github.com/Homebrew/homebrew/issues/44993
+    # This is thought to be an el_capitan bug:
+    # http://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
+    if MacOS.version == :el_capitan
+      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
+    end
+
     args = ["--prefix=#{prefix}", "--mandir=#{man}"]
     args << "--program-prefix=g" if build.without? "default-names"
 

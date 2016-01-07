@@ -1,8 +1,15 @@
 class Tcpflow < Formula
   desc "TCP flow recorder"
   homepage "https://github.com/simsong/tcpflow"
-  url "http://digitalcorpora.org/downloads/tcpflow/tcpflow-1.4.4.tar.gz"
-  sha256 "b6f5605e7e3f71d004736f4ded9e2a4f5c2233d3423019f3dc0af56037ed544c"
+  url "http://digitalcorpora.org/downloads/tcpflow/tcpflow-1.4.5.tar.gz"
+  sha256 "f39fed437911b858c97937bc902f68f9a690753617abe825411a8483a7f70c72"
+
+  bottle do
+    cellar :any
+    sha256 "ea92e38288a2fea16c85b9a937951b8ecc0c5ca619ccff050d36590866543356" => :el_capitan
+    sha256 "d5e07b6218d3160b27d12e154910286af4f3edbbbc70fe5879852849a046cfae" => :yosemite
+    sha256 "b0e5f0a0e6f6fc81be55627483028a578a679d1c342a7127aa3a983983acef1a" => :mavericks
+  end
 
   head do
     url "https://github.com/simsong/tcpflow.git"
@@ -14,14 +21,6 @@ class Tcpflow < Formula
   depends_on "boost" => :build
   depends_on "sqlite" if MacOS.version < :lion
   depends_on "openssl"
-
-  stable do
-    # Upstream fix for 10.6; can be removed in next release
-    patch do
-      url "https://github.com/simsong/tcpflow/commit/1cd5a9168c2ebf72c1fadcd64634398bd8470bce.diff"
-      sha256 "6c3aae2f3a140847a9333c5f4d1e94bddb60e79b7c7ee2d13a2cc116fd9620c3"
-    end
-  end
 
   def install
     system "bash", "./bootstrap.sh" if build.head?

@@ -1,23 +1,15 @@
 class Mpd < Formula
   desc "Music Player Daemon"
   homepage "http://www.musicpd.org/"
-
-  stable do
-    url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.11.tar.xz"
-    sha256 "7a5c66aa5af97a5b7af3dc49e3d2594071dafd62a14e2e9f7c9a5a86342836c6"
-
-    # Fixes build because of missing patch on 0.19 branch
-    patch :p1 do
-      url "http://git.musicpd.org/cgit/master/mpd.git/patch/?id=eae9cb4afe0e311a65dc566a0655a54656c8d807"
-      sha256 "0f60cfe354e1f81904cbdc469d49c65508d1f9c219f3d20332fbabdb17a17318"
-    end
-  end
+  url "http://www.musicpd.org/download/mpd/0.19/mpd-0.19.12.tar.xz"
+  sha256 "7b6fe6c7ce72f5f80a276d680072b524ecb395e546e252b8f3a0756377e1e875"
 
   bottle do
     cellar :any
-    sha256 "5b2a900c9f20da37df7a73799282edb00d2e956f22033f178ca566c41f651028" => :el_capitan
-    sha256 "1f193a8fee458079c112e88e24772cd59689cc0aef483703daad80df3218bff6" => :yosemite
-    sha256 "f0e478b9cf8f18943af84d3d521c1ba7c126ad68dec22225528d63e00e9ef320" => :mavericks
+    revision 1
+    sha256 "74fb8ae7870946873685a5b8c24645ea428bbc954c7085d31f54c06bff7e4df1" => :el_capitan
+    sha256 "697c3ecf1ae16ad64544bef0ffb3172bca1aa06ec2eb3169c76bb77c11ea9b72" => :yosemite
+    sha256 "4c4e2cf7804434c23511fe7cc933bdc52e300935a6cb03d41ad38bd5ea173c7e" => :mavericks
   end
 
   head do
@@ -48,7 +40,7 @@ class Mpd < Formula
   needs :cxx11
 
   depends_on "libmpdclient"
-  depends_on "ffmpeg"                   # lots of codecs
+  depends_on "ffmpeg" # lots of codecs
   # mpd also supports mad, mpg123, libsndfile, and audiofile, but those are
   # redundant with ffmpeg
   depends_on "fluid-synth"              # MIDI
@@ -102,7 +94,7 @@ class Mpd < Formula
     ENV.j1 # Directories are created in parallel, so let's not do that
     system "make", "install"
 
-    (etc+"mpd").install "doc/mpdconf.example" => "mpd.conf"
+    (etc/"mpd").install "doc/mpdconf.example" => "mpd.conf"
   end
 
   plist_options :manual => "mpd"
@@ -137,10 +129,10 @@ class Mpd < Formula
     sleep 2
 
     begin
-      assert_match /OK MPD/, shell_output("curl localhost:6600")
+      assert_match "OK MPD", shell_output("curl localhost:6600")
     ensure
-      Process.kill("SIGINT", pid)
-      Process.wait(pid)
+      Process.kill "SIGINT", pid
+      Process.wait pid
     end
   end
 end

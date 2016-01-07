@@ -4,13 +4,20 @@ class CdDiscid < Formula
   url "http://linukz.org/download/cd-discid-1.4.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/c/cd-discid/cd-discid_1.4.orig.tar.gz"
   sha256 "ffd68cd406309e764be6af4d5cbcc309e132c13f3597c6a4570a1f218edd2c63"
+  revision 1
   head "https://github.com/taem/cd-discid.git"
 
+  stable do
+    # OS X fix; see https://github.com/Homebrew/homebrew/issues/46267
+    # Already fixed in upstream head; remove when bumping version to >1.4
+    patch :DATA
+  end
+
   bottle do
-    cellar :any
-    sha256 "0647971b092ef9505401fef5987a99ff3a9e4bc2956fc167899a85e9361c335b" => :yosemite
-    sha256 "d16b9fb0eb3820f7531ce223e0e0c18ad85bb6e24020319151afff09e8d2e80f" => :mavericks
-    sha256 "b12730d1530c45bce73cb6ae8cb7337c6063dea9d1fe50981111dd843269c1f1" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "5f8552d8d7c590fedc966ceecfd5f9840d63e0760c575759f4ba2fcffdd54fd9" => :el_capitan
+    sha256 "cb22bb523253be82c72aadd9b016cdbb74e9f861fd109d9a3e0f78a611a306a3" => :yosemite
+    sha256 "1b18004d18aa98eacb9eb638c0bce844e57ea277c551965843eefe2378ef315d" => :mavericks
   end
 
   def install
@@ -23,3 +30,18 @@ class CdDiscid < Formula
     assert_equal "cd-discid #{version}.", shell_output("#{bin}/cd-discid --version 2>&1").chomp
   end
 end
+
+__END__
+diff --git a/cd-discid.c b/cd-discid.c
+index 9b0b40a..1a0a594 100644
+--- a/cd-discid.c
++++ b/cd-discid.c
+@@ -93,7 +93,7 @@
+ #define cdth_trk1               lastTrackNumberInLastSessionLSB
+ #define cdrom_tocentry          CDTrackInfo
+ #define cdte_track_address      trackStartAddress
+-#define DEVICE_NAME             "/dev/disk1"
++#define DEVICE_NAME             "/dev/rdisk1"
+
+ #else
+ #error "Your OS isn't supported yet."

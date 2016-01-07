@@ -14,26 +14,28 @@ end
 class Gdb < Formula
   desc "GNU debugger"
   homepage "https://www.gnu.org/software/gdb/"
-  url "http://ftpmirror.gnu.org/gdb/gdb-7.10.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.tar.xz"
-  sha256 "7ebdaa44f9786ce0c142da4e36797d2020c55fa091905ac5af1846b5756208a8"
+  url "http://ftpmirror.gnu.org/gdb/gdb-7.10.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-7.10.1.tar.xz"
+  sha256 "25c72f3d41c7c8554d61cacbeacd5f40993276d2ccdec43279ac546e3993d6d5"
 
   bottle do
-    sha256 "a2fcab9d9c35c283cc732bde32c7e92cb62acf6b031e570a212a1d0509fe3cb4" => :el_capitan
-    sha256 "a99976ef19b7344c10c09cb1ef6fd910079f58d9fdabdfcb1a98afbad8064014" => :yosemite
-    sha256 "b3fb66f0a854c2ea5601a1b95a0674024017d03d92d1e12b0947a4e38a4ddb39" => :mavericks
+    revision 1
+    sha256 "c465704eadcac21448ca0308bf5236ac85621dc88c293262433e0779b97d8e1d" => :el_capitan
+    sha256 "d90d5fd1152b6552887acae5a096d1caa76097069862dbb75c69af813b4900f0" => :yosemite
+    sha256 "5d9bd02c50846d289629d8ec503a41d84aeb4bc9df638c6c66d98e16263d089e" => :mavericks
   end
 
-  option "with-brewed-python", "Use the Homebrew version of Python"
+  deprecated_option "with-brewed-python" => "with-python"
+
+  option "with-python", "Use the Homebrew version of Python; by default system Python is used"
   option "with-version-suffix", "Add a version suffix to program"
   option "with-all-targets", "Build with support for all targets"
 
   depends_on "pkg-config" => :build
-  depends_on "readline"
-  depends_on "xz"
+  depends_on "python" => :optional
   depends_on "guile" => :optional
 
-  if build.with? "brewed-python"
+  if build.with? "python"
     depends_on UniversalBrewedPython
   end
 
@@ -42,14 +44,12 @@ class Gdb < Formula
       "--prefix=#{prefix}",
       "--disable-debug",
       "--disable-dependency-tracking",
-      "--with-system-readline",
-      "--with-lzma",
     ]
 
     args << "--with-guile" if build.with? "guile"
     args << "--enable-targets=all" if build.with? "all-targets"
 
-    if build.with? "brewed-python"
+    if build.with? "python"
       args << "--with-python=#{HOMEBREW_PREFIX}"
     else
       args << "--with-python=/usr"
@@ -76,5 +76,9 @@ class Gdb < Formula
 
       http://sourceware.org/gdb/wiki/BuildingOnDarwin
     EOS
+  end
+
+  test do
+    system bin/"gdb", bin/"gdb", "-configuration"
   end
 end

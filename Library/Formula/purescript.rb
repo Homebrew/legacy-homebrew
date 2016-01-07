@@ -17,14 +17,8 @@ class Purescript < Formula
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
-  setup_ghc_compilers
-
   def install
-    cabal_sandbox do
-      cabal_install_tools "alex", "happy"
-      install_cabal_package
-    end
-    cabal_clean_lib
+    install_cabal_package :using => ["alex", "happy"]
   end
 
   test do

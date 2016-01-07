@@ -1,14 +1,14 @@
 class Nanomsg < Formula
   desc "Socket library in C"
   homepage "http://nanomsg.org"
-  url "https://github.com/nanomsg/nanomsg/releases/download/0.7-beta/nanomsg-0.7-beta.tar.gz"
-  sha256 "43343e68947f819633b99fd91d2dd93ab44563b4079e9b780afd4488c4786297"
+  url "https://github.com/nanomsg/nanomsg/releases/download/0.8-beta/nanomsg-0.8-beta.tar.gz"
+  sha256 "75ce0c68a50cc68070d899035d5bb1e2bd75a5e01cbdd86ba8af62a84df3a947"
 
   bottle do
     cellar :any
-    sha256 "c07fc3771bca0564ce5014199fb4c1d4c4c7dabd6e294c840cd8305602d91d87" => :el_capitan
-    sha256 "171487d05d9e68fcfc7a30662fba99c178d93082858720f96a0afc0376864381" => :yosemite
-    sha256 "6cc5919438afe609bf0da0cd1a450fd689711f958a977d5e0a227582a86cffa7" => :mavericks
+    sha256 "a4ce042732d7112efac1f35c654f748615396b7f8defecfb55c3ac5c3ad2bcb6" => :el_capitan
+    sha256 "68c2434b5da8880dd93f5bc6c6a58cf9a6a6315dcdc5d8a8d9586fe1cd35c6b4" => :yosemite
+    sha256 "252a364dc0d5da396e3b3c194e502bace71b670cdbc3a073216255ee3d1fab12" => :mavericks
   end
 
   head do

@@ -1,29 +1,32 @@
 class Libbpg < Formula
   desc "Image format meant to improve on JPEG quality and file size"
   homepage "http://bellard.org/bpg/"
-  url "http://bellard.org/bpg/libbpg-0.9.5.tar.gz"
-  sha256 "30de1d0099920e24b7c9aae4d4e6b62f446823f0a1d52eb195dfc25c662ee203"
+  url "http://bellard.org/bpg/libbpg-0.9.6.tar.gz"
+  sha256 "2800777d88a77fd64a4a9036b131f021a5bda8304e1dbe7996dd466567fb484e"
 
   bottle do
     cellar :any
     revision 1
-    sha256 "02a25cb0b5672e5a78b8439bce4016341229fca8902042263090a3f72ef29aba" => :yosemite
-    sha256 "03f7fd9e4785c4d024c00d686680e3e06cd331379578e24151b853215446fa68" => :mavericks
-    sha256 "8a052c59fc6881292eb00deb01d4c6a5dd01a7ce7ff58c821ea3e8dc2278b1c4" => :mountain_lion
+    sha256 "f5d2349fa1e247411ed624baf5730782fed1e72643cf2e96ce49c4dac50c7764" => :el_capitan
+    sha256 "7c4cde5957cfb855aa52edbb3fcf0f489d1803e42060dd8ff7cb042fe84c05f0" => :yosemite
+    sha256 "93a4d03c32d1fe837f35a94d9c0f524684ddb29e02a5b507e4817e5b1cddabda" => :mavericks
   end
 
-  option "with-x265", "Enable x265 encoder"
-  option "without-jctvc", "Disable built-in JCTVC encoder"
+  option "with-jctvc", "Enable built-in JCTVC encoder - Mono threaded, slower but produce smaller file"
+  option "without-x265", "Disable built-in x265 encoder - Multi threaded, faster but produce bigger file"
 
+  depends_on "cmake" => :build
+  depends_on "yasm" => :build if build.with? "x265"
   depends_on "libpng"
   depends_on "jpeg"
-  depends_on "x265" => :optional
 
   def install
     bin.mkpath
+
     args = []
-    args << "USE_X265=y" if build.with? "x265"
-    args << "USE_JCTVC=" if build.without? "jctvc"
+    args << "USE_JCTVC=y" if build.with? "jctvc"
+    args << "USE_X265=" if build.without? "x265"
+
     system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y", *args
   end
 

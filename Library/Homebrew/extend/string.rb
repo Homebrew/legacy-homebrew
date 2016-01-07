@@ -21,6 +21,10 @@ class String
     s = chomp
     s unless s.empty?
   end
+
+  def strip_prefix(prefix)
+    start_with?(prefix) ? self[prefix.length..-1] : self
+  end
 end
 
 class NilClass

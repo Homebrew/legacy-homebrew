@@ -8,15 +8,12 @@ class PerconaToolkit < Formula
 
   head "lp:percona-toolkit", :using => :bzr
 
-  bottle do
-    cellar :any
-    sha256 "d790bd7957bd1380492624fb16944d9643f0ab8c53321befd80bb5697b5cf0c9" => :el_capitan
-    sha256 "daa0d1f6cbae57d017da85efee033cb9923e8e9a34ed3cb3c123d17505d9c61a" => :yosemite
-    sha256 "5074c177635a4c5d2618687acc5d028b6bb989dfd8fa980e4d6f913c4490497e" => :mavericks
-  end
+  bottle :disable, "To use the user's database of choice."
 
   depends_on :mysql
   depends_on "openssl"
+
+  conflicts_with "mytop", :because => "both install `perllocal.pod`"
 
   resource "DBD::mysql" do
     url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"

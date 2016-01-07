@@ -1,14 +1,14 @@
 class Node < Formula
   desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v5.1.0/node-v5.1.0.tar.gz"
-  sha256 "25b2d3b7dd57fe47a483539fea240a3c6bbbdab4d89a45a812134cf1380ecb94"
+  url "https://nodejs.org/dist/v5.4.0/node-v5.4.0.tar.gz"
+  sha256 "1dfe37a00cf0ed62beb73071f571ac56697f544a98cc2ff3318faec6363d72ab"
   head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "0f9518b4847974b8b67cb195c4e0b3d3797325658eb1beb5d3390a0141821bb9" => :el_capitan
-    sha256 "86fa3b3c73ca32d262dac36328d8d67d14d10e6caf32c73f9bda06603677c488" => :yosemite
-    sha256 "35f7b653e07ad00eefa0b3b869d3f47cb6979062f95008f0b84977f5ea984c2a" => :mavericks
+    sha256 "6728cbc0b840b12d68f5e898ec9bceb456b066a74cf65797805a20d25f639ec5" => :el_capitan
+    sha256 "06289d541bca1e7cb1208ad96abfc2383354d29961f4cabe050f29187b2d45c4" => :yosemite
+    sha256 "ea66760683f1a05a1a1f4c8572d6129502d6a72feef56a3f9a6e8f9d6f6d8c88" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
@@ -73,6 +73,14 @@ class Node < Formula
       cd buildpath/"npm_install" do
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
+        # `package.json` has relative paths to the npm_install directory.
+        # This copies back over the vanilla `package.json` that is expected.
+        # https://github.com/Homebrew/homebrew/issues/46131#issuecomment-157845008
+        cp buildpath/"npm_install/package.json", libexec/"npm/lib/node_modules/npm"
+        # Remove manpage symlinks from the buildpath, they are breaking bottle
+        # creation. The real manpages are living in libexec/npm/lib/node_modules/npm/man/
+        # https://github.com/Homebrew/homebrew/pull/47081#issuecomment-165280470
+        rm_rf libexec/"npm/share/"
       end
 
       if build.with? "completion"

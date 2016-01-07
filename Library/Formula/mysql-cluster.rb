@@ -17,13 +17,15 @@ class MysqlCluster < Formula
   depends_on "pidof" unless MacOS.version >= :mountain_lion
 
   option :universal
-  option "with-tests", "Build with unit tests"
+  option "with-test", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
   option "with-libedit", "Compile with editline wrapper instead of readline"
   option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
   option "with-blackhole-storage-engine", "Compile with the BLACKHOLE storage engine enabled"
   option "enable-local-infile", "Build with local infile loading support"
   option "enable-debug", "Build with debug support"
+
+  deprecated_option "with-tests" => "with-test"
 
   conflicts_with "memcached", :because => "both install `bin/memcached`"
   conflicts_with "mysql", "mariadb", "percona-server",
@@ -40,7 +42,7 @@ class MysqlCluster < Formula
     ENV.minimal_optimization
 
     # Make sure the var/mysql-cluster directory exists
-    (var+"mysql-cluster").mkpath
+    (var/"mysql-cluster").mkpath
 
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
@@ -56,7 +58,7 @@ class MysqlCluster < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.with? "tests"
+    if build.with? "test"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
@@ -91,11 +93,11 @@ class MysqlCluster < Formula
     system "make", "install"
 
     # Create default directories and configuration files
-    (var+"mysql-cluster/ndb_data").mkpath
-    (var+"mysql-cluster/mysqld_data").mkpath
-    (var+"mysql-cluster/conf").mkpath
-    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exist? var+"mysql-cluster/conf/my.cnf"
-    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exist? var+"mysql-cluster/conf/config.ini"
+    (var/"mysql-cluster/ndb_data").mkpath
+    (var/"mysql-cluster/mysqld_data").mkpath
+    (var/"mysql-cluster/conf").mkpath
+    (var/"mysql-cluster/conf/my.cnf").write my_cnf unless File.exist? var/"mysql-cluster/conf/my.cnf"
+    (var/"mysql-cluster/conf/config.ini").write config_ini unless File.exist? var/"mysql-cluster/conf/config.ini"
 
     plist_path("ndb_mgmd").write ndb_mgmd_startup_plist("ndb_mgmd")
     plist_path("ndb_mgmd").chmod 0644

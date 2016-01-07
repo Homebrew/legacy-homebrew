@@ -3,15 +3,15 @@ require "language/go"
 class Caddy < Formula
   desc "Alternative general-purpose HTTP/2 web server"
   homepage "https://caddyserver.com/"
-  url "https://github.com/mholt/caddy/archive/v0.7.5.tar.gz"
-  sha256 "3e322497466f1706c85a214095e645b2d4340ce83961ebd370178fbf840253bd"
+  url "https://github.com/mholt/caddy/archive/v0.8.0.tar.gz"
+  sha256 "c7650e8772b8b19cbe5aca1c51898c053c9df397237e54f671cee8780f21d741"
   head "https://github.com/mholt/caddy.git"
 
   bottle do
-    cellar :any
-    sha256 "bb91e6fdf8214ced695a79d8a4b1c1bf30612f24cb46119f8eaf9479edbe9da8" => :yosemite
-    sha256 "638006bfc8db6721e692be399d9250dcc01194e43765e2ef5aeed7c4f00c3f89" => :mavericks
-    sha256 "6a89643de7a9f61435e9a27838f095d0fa1616ef11b9fcfafb0d94980921e763" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "42f193d8198defa82104f5a14a351373bec0c380809b5dcab96ee66dbc1fd941" => :el_capitan
+    sha256 "50989f247c3ef052bb6292897904d11f48c2551f70b09805a8789d526dd77061" => :yosemite
+    sha256 "a6c652d74658ecb21dc801f6c504aa6a5287aebdc042ee302b71ff471710ccd1" => :mavericks
   end
 
   depends_on "go" => :build
@@ -27,7 +27,11 @@ class Caddy < Formula
   end
 
   go_resource "golang.org/x/net" do
-    url "https://go.googlesource.com/net.git", :revision => "e0403b4e005737430c05a57aac078479844f919c"
+    url "https://go.googlesource.com/net.git", :revision => "943b8c241accc9aa2b2a91735b28aea7f26765cb"
+  end
+
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git", :revision => "7b85b097bf7527677d54d3220065e966a0e3b613"
   end
 
   go_resource "github.com/bradfitz/http2" do
@@ -52,6 +56,26 @@ class Caddy < Formula
 
   go_resource "github.com/hashicorp/go-syslog" do
     url "https://github.com/hashicorp/go-syslog.git", :revision => "42a2b573b664dbf281bd48c3cc12c086b17a39ba"
+  end
+
+  go_resource "github.com/gorilla/websocket" do
+    url "https://github.com/gorilla/websocket.git", :revision => "844dd6d40e1a9215ef4c8a204bfc839fcf5dd5dd"
+  end
+
+  go_resource "github.com/jimstudt/http-authentication" do
+    url "https://github.com/jimstudt/http-authentication.git", :revision => "3eca13d6893afd7ecabe15f4445f5d2872a1b012"
+  end
+
+  go_resource "github.com/xenolf/lego" do
+    url "https://github.com/xenolf/lego.git", :revision => "bf740fa2cafb7d6deb0911792a13f37ef5995a03"
+  end
+
+  go_resource "gopkg.in/natefinch/lumberjack.v2" do
+    url "https://github.com/natefinch/lumberjack.git", :revision => "600ceb4523e5b7ff745f91083c8a023c2bf73af5"
+  end
+
+  go_resource "github.com/square/go-jose" do
+    url "https://github.com/square/go-jose.git", :revision => "37934a899dd03635373fd1e143936d32cfe48d31"
   end
 
   def install

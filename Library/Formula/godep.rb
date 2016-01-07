@@ -1,15 +1,15 @@
 class Godep < Formula
   desc "dependency tool for go"
   homepage "https://godoc.org/github.com/tools/godep"
-  url "https://github.com/tools/godep/archive/v29.tar.gz"
-  sha256 "ca896c220f2995a50a5d9e63df929fa393c3cd1de9722210b5ef3684981bed2a"
+  url "https://github.com/tools/godep/archive/v45.tar.gz"
+  sha256 "525ad8d41bc64ace00c085d0beeff8fa90a5ddf443c637ef1b0e6578832aa59c"
   head "https://github.com/tools/godep.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "0c9d4a7386b86fca27e1762859bdad5e90883ddc038ffd3eb82c631055381f3f" => :el_capitan
-    sha256 "d70a3a2b143f7440f201829562748f976119fc8517859deac109b24739cbf0bc" => :yosemite
-    sha256 "da476787515094caf65b3f13cfc7a3c4058e9291607243c005fce3c6946cd4fc" => :mavericks
+    sha256 "9e20c51fff6afb5e353869b847098b7e6c1fff754872ff967c34a442918f8402" => :el_capitan
+    sha256 "58770f590f8af2098a91deba8a045faa93d57135782e73bcc066ab7808b4ad71" => :yosemite
+    sha256 "a3790a10b9052d75c6a9fc0502cdd877ca5cd8d103bb346817489b4fbdce276e" => :mavericks
   end
 
   depends_on "go"

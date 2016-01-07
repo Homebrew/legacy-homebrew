@@ -3,12 +3,12 @@ class Rust < Formula
   homepage "https://www.rust-lang.org/"
 
   stable do
-    url "https://static.rust-lang.org/dist/rustc-1.4.0-src.tar.gz"
-    sha256 "1c0dfdce5c85d8098fcebb9adf1493847ab40c1dfaa8cc997af09b2ef0aa8211"
+    url "https://static.rust-lang.org/dist/rustc-1.5.0-src.tar.gz"
+    sha256 "641037af7b7b6cad0b231cc20671f8a314fbf2f40fc0901d0b877c39fc8da5a0"
 
     resource "cargo" do
       # git required because of submodules
-      url "https://github.com/rust-lang/cargo.git", :tag => "0.6.0", :revision => "e1ed9956e079a563796fb380871f4b67619f58ee"
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.7.0", :revision => "1af03beaffe9be40ae81ca39431c1f1651ef6b02"
     end
 
     # name includes date to satisfy cache
@@ -26,9 +26,9 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "4b085815987a83b4d436a7250ba749d320c016d07232c4846a014bf1fa8ad828" => :el_capitan
-    sha256 "5752099e65266112c01422b211cd5a398e260782cf958eed2e6f37c8e813bd8c" => :yosemite
-    sha256 "312a9da9a0180e729e972bebf1de59875fe9e8b5da3debb25beab92d65429543" => :mavericks
+    sha256 "5aeabcbbf97d221a9391d971215de2db2704f6a1f7f10d91d33b89ef4aff6d20" => :el_capitan
+    sha256 "d6a6d90a90590bfb211608dc99dbaa5ceebe6ed9be9d52c0fd7d60069141e7e8" => :yosemite
+    sha256 "d4239efd38e9312e67782cbefc223bde3b37ee5709107a437575d11cc0f93df0" => :mavericks
   end
 
   option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."

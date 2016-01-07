@@ -12,7 +12,7 @@ class FormulaVersions
   def initialize(formula)
     @name = formula.name
     @path = formula.path
-    @repository = formula.tap? ? HOMEBREW_LIBRARY.join("Taps", formula.tap) : HOMEBREW_REPOSITORY
+    @repository = formula.tap.path
     @entry_name = @path.relative_path_from(repository).to_s
   end
 

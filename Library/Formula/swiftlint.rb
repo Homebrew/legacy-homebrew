@@ -1,13 +1,13 @@
 class Swiftlint < Formula
   desc "Experimental tool to enforce Swift style and conventions"
   homepage "https://github.com/realm/SwiftLint"
-  url "https://github.com/realm/SwiftLint.git", :tag => "0.4.0", :revision => "1201a9e38cddb842aee7ad8ae48078e1d722f39f"
+  url "https://github.com/realm/SwiftLint.git", :tag => "0.5.4", :revision => "4421657de5ef66b3f3de4c1c2bc7f72b9b5072d0"
   head "https://github.com/realm/SwiftLint.git"
 
   bottle do
     cellar :any
-    sha256 "ffe867b5dbfac006d0d28b70dcda2c9e839ecac99412738bbea29e661dafc447" => :el_capitan
-    sha256 "3eb2a1380f6f2684228bb2836c250db56ef29cea661356a73898fedc3d725fb7" => :yosemite
+    sha256 "7c20de6100924cfc93b5275abb3db522aaca401095d0eb73a15478c49d1e0454" => :el_capitan
+    sha256 "f9fa5f5e1ef845bf3967539d7d9fbd930fb734c7e16c50edf23d3c7e75e5a37b" => :yosemite
   end
 
   depends_on :xcode => ["7.1", :build]

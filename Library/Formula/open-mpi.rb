@@ -3,11 +3,12 @@ class OpenMpi < Formula
   homepage "https://www.open-mpi.org/"
   url "https://www.open-mpi.org/software/ompi/v1.10/downloads/openmpi-1.10.1.tar.bz2"
   sha256 "7919ecde15962bab2e26d01d5f5f4ead6696bbcacb504b8560f2e3a152bfe492"
+  revision 1
 
   bottle do
-    sha256 "257a75a3227ddc0b5e7c970a97c76cadeda417a259c54efbe25df955e0efe32b" => :el_capitan
-    sha256 "2c9afac3f1350e4693e2077fa3b5a6f149fc0b0cb19e804bba15cd8d00e62456" => :yosemite
-    sha256 "7c106ab43c8aa5fcde2d9961a084c4c34d5a8ea1888668d825ce1ec818519e29" => :mavericks
+    sha256 "4d88289344121d4e27764d9f11ac3daf16229bc17680534e251622af2631adf7" => :el_capitan
+    sha256 "9e95ece40f8e1de74d35e637c5f83f65b5ab70b6b4346a331449c664f2acdda7" => :yosemite
+    sha256 "239b560ef01724af3c05f9c090490f75908f0fa0a3cd60cea64485e1574ec11f" => :mavericks
   end
 
   head do
@@ -83,5 +84,19 @@ class OpenMpi < Formula
     system "#{bin}/mpicc", "hello.c", "-o", "hello"
     system "./hello"
     system "#{bin}/mpirun", "-np", "4", "./hello"
+    (testpath/"hellof.f90").write <<-EOS.undent
+      program hello
+      include 'mpif.h'
+      integer rank, size, ierror, tag, status(MPI_STATUS_SIZE)
+      call MPI_INIT(ierror)
+      call MPI_COMM_SIZE(MPI_COMM_WORLD, size, ierror)
+      call MPI_COMM_RANK(MPI_COMM_WORLD, rank, ierror)
+      print*, 'node', rank, ': Hello Fortran world'
+      call MPI_FINALIZE(ierror)
+      end
+    EOS
+    system "#{bin}/mpif90", "hellof.f90", "-o", "hellof"
+    system "./hellof"
+    system "#{bin}/mpirun", "-np", "4", "./hellof"
   end
 end

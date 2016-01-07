@@ -18,7 +18,7 @@ require "set"
 class DependencyCollector
   # Define the languages that we can handle as external dependencies.
   LANGUAGE_MODULES = Set[
-    :chicken, :jruby, :lua, :node, :ocaml, :perl, :python, :python3, :rbx, :ruby
+    :lua, :lua51, :perl, :python, :python3, :ruby
   ].freeze
 
   CACHE = {}
@@ -165,6 +165,7 @@ class DependencyCollector
   def parse_url_spec(url, tags)
     case File.extname(url)
     when ".xz"  then Dependency.new("xz", tags)
+    when ".lha", ".lzh" then Dependency.new("lha", tags)
     when ".lz"  then Dependency.new("lzip", tags)
     when ".rar" then Dependency.new("unrar", tags)
     when ".7z"  then Dependency.new("p7zip", tags)

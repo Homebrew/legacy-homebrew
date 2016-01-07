@@ -8,9 +8,10 @@ class Apngasm < Formula
 
   bottle do
     cellar :any
-    sha256 "ab2011a6528d8e9fb38b72473fda3932f1087d4bdc8fd1402adbcac8f19ca678" => :yosemite
-    sha256 "37fca4b69383dfbaf247ce99e8f7414fa3046bda30f3443c0291c3906a21d298" => :mavericks
-    sha256 "a1898e9debc434fcbc93ae2a0e62a2ae8175eaca856b4118d9fcb99df7dc6d94" => :mountain_lion
+    revision 1
+    sha256 "073f74cacea8907e430113f4aae80d248887fc1d18de36f64889e683c08e3441" => :el_capitan
+    sha256 "5fb1bd67761e2717c78c3842c7effd8835acb5f6193a05516df7cde7ff7051e8" => :yosemite
+    sha256 "124cee4bf9746a9e60882cf6fd5b2430265fc661af5dbe9bab2f85e83e985cfa" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -27,6 +28,6 @@ class Apngasm < Formula
   end
 
   test do
-    system "apngasm", "#{pkgshare}/test/samples/clock*.png"
+    system bin/"apngasm", "#{pkgshare}/test/samples/clock*.png"
   end
 end

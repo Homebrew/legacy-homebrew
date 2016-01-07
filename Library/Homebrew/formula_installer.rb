@@ -80,6 +80,7 @@ class FormulaInstaller
     bottle = formula.bottle
     return true  if force_bottle? && bottle
     return false if build_from_source? || build_bottle? || interactive?
+    return false if ARGV.cc
     return false unless options.empty?
     return false if formula.bottle_disabled?
     return true  if formula.local_bottle_path
@@ -285,7 +286,7 @@ class FormulaInstaller
   def install_requirement_default_formula?(req, dependent, build)
     return false unless req.default_formula?
     return true unless req.satisfied?
-    return false if req.tags.include?(:run)
+    return false if req.run?
     install_bottle_for?(dependent, build) || build_bottle?
   end
 
@@ -740,6 +741,8 @@ class FormulaInstaller
 
     tab.tap = formula.tap
     tab.poured_from_bottle = true
+    tab.time = Time.now.to_i
+    tab.head = Homebrew.git_head
     tab.write
   end
 

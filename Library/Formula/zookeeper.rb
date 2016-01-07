@@ -1,41 +1,21 @@
 class Zookeeper < Formula
   desc "Centralized server for distributed coordination of services"
   homepage "https://zookeeper.apache.org/"
-  revision 1
 
   stable do
-    url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.6/zookeeper-3.4.6.tar.gz"
-    sha256 "01b3938547cd620dc4c93efe07c0360411f4a66962a70500b163b59014046994"
-
-    # To resolve >+Yosemite build errors.
-    # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
-    if MacOS.version >= :yosemite
-      patch :p0 do
-        url "https://issues.apache.org/jira/secure/attachment/12673210/ZOOKEEPER-2049.noprefix.branch-3.4.patch"
-        sha256 "b90eda47d21e60655dffe476eb437400afed24b37bbd71e7291faa8ece35c62b"
-      end
-    end
+    url "https://www.apache.org/dyn/closer.cgi?path=zookeeper/zookeeper-3.4.7/zookeeper-3.4.7.tar.gz"
+    sha256 "2e043e04c4da82fbdb38a68e585f3317535b3842c726e0993312948afcc83870"
   end
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "12241242d81eb12e9d6f520bfd9a20c7a52682bc08435952109fe49e8257b7c3" => :el_capitan
-    sha256 "568d84b98466d842c3a1fa799892e01769bfa06069809fcd2d52f15c40285e50" => :yosemite
-    sha256 "49ae8ae95b5f631b2883f88ca0a91c23aea84c334f018a24734a16e828ca8dbd" => :mavericks
+    sha256 "60e839601ed35505f5d6150337d549557da43080c09ab507c3b1d6d06ef61942" => :el_capitan
+    sha256 "db117595b1d68c2fad858775318b108ae61e6c84ea08dce2aab556cb57c573a2" => :yosemite
+    sha256 "63a718951817139bea6829215db795b8cd958a21f0ad7a7b306422b9f2a11082" => :mavericks
   end
 
   head do
     url "https://svn.apache.org/repos/asf/zookeeper/trunk"
-
-    # To resolve >+Yosemite build errors.
-    # https://issues.apache.org/jira/browse/ZOOKEEPER-2049
-    if MacOS.version >= :yosemite
-      patch :p0 do
-        url "https://issues.apache.org/jira/secure/attachment/12673212/ZOOKEEPER-2049.noprefix.trunk.patch"
-        sha256 "64b5a4279a159977cbc1a1ab8fe782644f38ed04489b5a294d53aea74c84db89"
-      end
-    end
 
     depends_on "ant" => :build
     depends_on "cppunit" => :build

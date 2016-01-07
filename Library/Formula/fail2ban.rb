@@ -13,8 +13,8 @@ class Fail2ban < Formula
   def install
     rm "setup.cfg"
     inreplace "setup.py" do |s|
-      s.gsub! /\/etc/, etc
-      s.gsub! /\/var/, var
+      s.gsub! %r{/etc}, etc
+      s.gsub! %r{/var}, var
     end
 
     # Replace hardcoded paths

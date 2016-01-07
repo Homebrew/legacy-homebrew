@@ -1,14 +1,14 @@
 class Python3 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.5.0/Python-3.5.0.tar.xz"
-  sha256 "d6d7aa1634a5eeeca6ed4fca266982a04f84bd8f3945a9179e20b24ad2e2be91"
+  url "https://www.python.org/ftp/python/3.5.1/Python-3.5.1.tar.xz"
+  sha256 "c6d57c0c366d9060ab6c0cdf889ebf3d92711d466cc0119c441dbf2746f725c9"
 
   bottle do
-    revision 3
-    sha256 "5a955a6800431f4b38f7dcc4910deaf3c9e3a47f68b5a4b2117527c57290c4dd" => :el_capitan
-    sha256 "956b2bfe8289da7584089768e6143f852b9586ffd552d9b1e4c5e116f7c52587" => :yosemite
-    sha256 "98e2f771b7bc6e33f5eae068788b9197619eb037f043a292790482aa82577528" => :mavericks
+    revision 1
+    sha256 "d748217b106fd30cfff4c5ea5e403acc76059783e21a5b4247f95f2f6bb6bf5b" => :el_capitan
+    sha256 "a8a8dc876ae4eec188b3beb4afb9f6c67ffa905eb32fdd7f02b4945a11a045a1" => :yosemite
+    sha256 "86c45243e36b33556ee641e1e277d9749301ab4b854d0390fa0b08cfd71f12dc" => :mavericks
   end
 
   head "https://hg.python.org/cpython", :using => :hg
@@ -45,6 +45,11 @@ class Python3 < Formula
   resource "wheel" do
     url "https://pypi.python.org/packages/source/w/wheel/wheel-0.26.0.tar.gz"
     sha256 "eaad353805c180a47545a256e6508835b65a8e830ba1093ed8162f19a50a530c"
+  end
+
+  fails_with :clang do
+    build 425
+    cause "https://bugs.python.org/issue24844"
   end
 
   # Homebrew's tcl-tk is built in a standard unix fashion (due to link errors)
@@ -157,9 +162,9 @@ class Python3 < Formula
       ldflags  << "-L#{tcl_tk}/lib"
     end
 
-    args << "CFLAGS=#{cflags.join(' ')}"     unless cflags.empty?
-    args << "LDFLAGS=#{ldflags.join(' ')}"   unless ldflags.empty?
-    args << "CPPFLAGS=#{cppflags.join(' ')}" unless cppflags.empty?
+    args << "CFLAGS=#{cflags.join(" ")}" unless cflags.empty?
+    args << "LDFLAGS=#{ldflags.join(" ")}" unless ldflags.empty?
+    args << "CPPFLAGS=#{cppflags.join(" ")}" unless cppflags.empty?
 
     system "./configure", *args
 
@@ -170,7 +175,7 @@ class Python3 < Formula
     system "make", "install", "PYTHONAPPSDIR=#{prefix}"
     # Demos and Tools
     system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{share}/python3"
-    system "make", "quicktest" if build.include? "quicktest"
+    system "make", "quicktest" if build.with? "quicktest"
 
     # Any .app get a " 3" attached, so it does not conflict with python 2.x.
     Dir.glob("#{prefix}/*.app") { |app| mv app, app.sub(".app", " 3.app") }
@@ -192,7 +197,7 @@ class Python3 < Formula
 
     # These makevars are available through distutils.sysconfig at runtime and
     # some third-party software packages depend on them
-    inreplace frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}m/Makefile" do |s|
+    inreplace Dir.glob(frameworks/"Python.framework/Versions/#{xy}/lib/python#{xy}/config-#{xy}*/Makefile") do |s|
       s.change_make_var! "LINKFORSHARED",
                          "-u _PyMac_Error #{opt_prefix}/Frameworks/Python.framework/Versions/#{xy}/Python"
     end

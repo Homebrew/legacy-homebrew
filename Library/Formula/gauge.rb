@@ -6,6 +6,13 @@ class Gauge < Formula
   url "https://github.com/getgauge/gauge/archive/v0.2.1.tar.gz"
   sha256 "382378435500d426464cd05c921ae351d46535b443ce775c908d019526943fc3"
 
+  stable do
+    go_resource "github.com/getgauge/common" do
+      url "https://github.com/getgauge/common.git",
+          :revision => "69cd40635244cf13bceac2ef382bb43152464798"
+    end
+  end
+
   bottle do
     cellar :any_skip_relocation
     sha256 "d5d14ee930390c3f21152d7308bbbbdb5e0194b7bc653e0d38f173a5ecaf7c8b" => :el_capitan
@@ -13,16 +20,30 @@ class Gauge < Formula
     sha256 "10ea87a88cd1ea8b74b6b4e7cc459e1af2387e6d3ade01329ac72be05a368ecd" => :mavericks
   end
 
+  head do
+    url "https://github.com/getgauge/gauge.git"
+
+    go_resource "github.com/getgauge/common" do
+      url "https://github.com/getgauge/common.git",
+          :revision => "581c7b4383ac47872c364a1848fc2e627b4c92cf"
+    end
+
+    go_resource "github.com/gosuri/uilive" do
+      url "https://github.com/gosuri/uilive.git",
+        :revision => "eb9a944a94f38ebcfa43d48bed49e47050c1aa73"
+    end
+
+    go_resource "github.com/daviddengcn/go-colortext" do
+      url "https://github.com/daviddengcn/go-colortext.git",
+        :revision => "3b18c8575a432453d41fdafb340099fff5bba2f7"
+    end
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/golang/protobuf" do
     url "https://github.com/golang/protobuf.git",
         :revision => "7f07925444bb51fa4cf9dfe6f7661876f8852275"
-  end
-
-  go_resource "github.com/getgauge/common" do
-    url "https://github.com/getgauge/common.git",
-        :revision => "69cd40635244cf13bceac2ef382bb43152464798"
   end
 
   go_resource "github.com/getgauge/mflag" do
@@ -65,12 +86,12 @@ class Gauge < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    gaugePath = buildpath/"src/github.com/getgauge"
-    mkdir_p gaugePath
-    ln_s buildpath, gaugePath/"gauge"
+    gauge_path = buildpath/"src/github.com/getgauge"
+    mkdir_p gauge_path
+    ln_s buildpath, gauge_path/"gauge"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd gaugePath/"gauge" do
+    cd gauge_path/"gauge" do
       system "go", "run", "build/make.go"
       system "go", "run", "build/make.go", "--install", "--prefix", prefix
     end
