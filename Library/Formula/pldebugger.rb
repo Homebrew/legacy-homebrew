@@ -13,6 +13,7 @@ class Pldebugger < Formula
 
   version "1.0" # See default_version field in pldbgapi.control
   sha256 "2bb8e27aa8f8434a4861fdbc70adb9cb4b47e1dfe472910d62d6042cb80a2ee1"
+  revision 1
 
   head "http://git.postgresql.org/git/pldebugger.git"
 
