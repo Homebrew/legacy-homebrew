@@ -676,7 +676,7 @@ Generally we'd rather you were specific about what files or directories need to 
     </tr>
     <tr>
       <th><code>buildpath</code></th>
-      <td>A temporary dir somewhere on your system</td>
+      <td>A temporary directory somewhere on your system</td>
       <td><code>/private/tmp/[formula-name]-0q2b/[formula-name]</code></td>
     </tr>
   </tbody>

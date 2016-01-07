@@ -190,7 +190,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
 
     To view formula history locally: `brew log -p <formula>`.
 
-  * `info --json=`<version> (`--all`|`--installed`|<formulae>):
+  * `info` `--json=`<version> (`--all`|`--installed`|<formulae>):
     Print a JSON representation of <formulae>. Currently the only accepted value
     for <version> is `v1`.
 
@@ -240,7 +240,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     To install a newer version of HEAD use
     `brew rm <foo> && brew install --HEAD <foo>`.
 
-  * `install --interactive` [`--git`] <formula>:
+  * `install` `--interactive` [`--git`] <formula>:
     Download and patch <formula>, then open a shell. This allows the user to
     run `./configure --help` and otherwise determine how to turn the software
     package into a Homebrew formula.
@@ -284,7 +284,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     List all installed formulae. If `--full-name` is passed, print formulae with
     full-qualified names.
 
-  * `ls`, `list --unbrewed`:
+  * `ls`, `list` `--unbrewed`:
     List all files in the Homebrew prefix not installed by Homebrew.
 
   * `ls`, `list` [`--versions` [`--multiple`]] [`--pinned`] [<formulae>]:
@@ -315,8 +315,8 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     If `--force` is passed, then treat installed <formulae> and passed <formulae>
     like if they are from same taps and migrate them anyway.
 
-  * `options` [`--compact`] [`--all`] [`--installed`] <formula>:
-    Display install options specific to <formula>.
+  * `options` [`--compact`] (`--all`|`--installed`|<formulae>):
+    Display install options specific to <formulae>.
 
     If `--compact` is passed, show all options on a single line separated by
     spaces.
@@ -343,9 +343,12 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     Pin the specified <formulae>, preventing them from being upgraded when
     issuing the `brew upgrade` command. See also `unpin`.
 
-  * `prune`:
+  * `prune` [`--dry-run`]:
     Remove dead symlinks from the Homebrew prefix. This is generally not
     needed, but can be useful when doing DIY installations.
+
+    If `--dry-run` or `-n` is passed, show what would be removed, but do not
+    actually remove anything.
 
   * `reinstall` <formula>:
     Uninstall then install <formula>
@@ -365,7 +368,7 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     surrounded with slashes, then it is interpreted as a regular expression.
     The search for <text> is extended online to some popular taps.
 
-  * `search --debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu` <text>:
+  * `search` (`--debian`|`--fedora`|`--fink`|`--macports`|`--opensuse`|`--ubuntu`) <text>:
     Search for <text> in the given package manager's list.
 
   * `sh` [`--env=std`]:
@@ -397,13 +400,13 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
     By default, the repository is cloned as a shallow copy (`--depth=1`), but
     if `--full` is passed, a full clone will be used.
 
-  * `tap --repair`:
+  * `tap` `--repair`:
     Migrate tapped formulae from symlink-based to directory-based structure.
 
-  * `tap --list-official`:
+  * `tap` `--list-official`:
     List all official taps.
 
-  * `tap --list-pinned`:
+  * `tap` `--list-pinned`:
     List all pinned taps.
 
   * `tap-info` <tap>:

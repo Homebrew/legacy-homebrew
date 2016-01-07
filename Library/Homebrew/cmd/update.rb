@@ -1,5 +1,5 @@
 require "cmd/tap"
-require "cmd/doctor"
+require "diagnostic"
 require "formula_versions"
 require "migrator"
 require "formulary"
@@ -15,7 +15,7 @@ module Homebrew
     end
 
     # check permissions
-    checks = Checks.new
+    checks = Diagnostic::Checks.new
     %w[
       check_access_usr_local
       check_access_homebrew_repository
@@ -247,7 +247,13 @@ class Updater
     end
 
     if @initial_branch != @upstream_branch && !@initial_branch.empty?
-      safe_system "git", "checkout", "--force", "-B", @upstream_branch, "origin/#{@upstream_branch}", *@quiet_args
+      # Recreate and check out `#{upstream_branch}` if unable to fast-forward
+      # it to `origin/#{@upstream_branch}`. Otherwise, just check it out.
+      if system("git", "merge-base", "--is-ancestor", @upstream_branch, "origin/#{@upstream_branch}")
+        safe_system "git", "checkout", "--force", @upstream_branch, *@quiet_args
+      else
+        safe_system "git", "checkout", "--force", "-B", @upstream_branch, "origin/#{@upstream_branch}", *@quiet_args
+      end
     end
 
     @initial_revision = read_current_revision

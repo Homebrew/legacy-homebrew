@@ -8,6 +8,8 @@ class AndroidSdk < Formula
   sha256 "ce1638cb48526a0e55857fc46b57eda4349e6512006244ad13dd6c1361c74104"
   revision 1
 
+  depends_on :macos => :mountain_lion
+
   bottle do
     cellar :any
     sha256 "d38989fcd9b2fcf731be79ae24834d6f50f425dd44003a149b7dea6b323a4718" => :el_capitan

@@ -302,7 +302,7 @@ class FormulaAuditor
         end
 
         if dep_f.oldname && dep.name.split("/").last == dep_f.oldname
-          problem "Dependency '#{dep.name}' was renamed; use newname '#{dep_f.name}'."
+          problem "Dependency '#{dep.name}' was renamed; use new name '#{dep_f.name}'."
         end
 
         if @@aliases.include?(dep.name)
