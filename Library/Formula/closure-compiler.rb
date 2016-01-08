@@ -7,9 +7,9 @@ class ClosureCompiler < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fc38c9cf78a05755c56902bd91140518c8cac8882b96c4720aafdb980313e49a" => :el_capitan
-    sha256 "c10eeaacd57d11f9550854b473bd949aa4bd0b039d8eac4788c1afeebf5e847e" => :yosemite
-    sha256 "a4182e1f6061f795977120b3327b9006fe70ef49e69820282c472a0089382ab0" => :mavericks
+    sha256 "042e65a6e430d02cabdada6b30e9ff03a9894748bdf395efde020740eee50fdd" => :el_capitan
+    sha256 "174a12e056a5c62e6b35b5b5aa4b7fbc32b5bf22e352b029348b5c2185fc7e96" => :yosemite
+    sha256 "3bcf1652d33c42f3508ce5655db61103b4fe2b98b34c996138daf6212cf6e2cf" => :mavericks
   end
 
   depends_on :ant => :build
