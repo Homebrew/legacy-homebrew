@@ -5,10 +5,10 @@ class Mat < Formula
   sha256 "a928cb2d5ebcafec4563b552096436771598376f8b4dded86a769c278c1314d1"
 
   bottle do
-    cellar :any
-    sha1 "3476e92b91bddb20d386c35c997662fe08805da6" => :yosemite
-    sha1 "2f30838e07c7c342c01afa3a7faaa5cde129b4ab" => :mavericks
-    sha1 "810fe4dfe335c5dc8331734b1ea9abbe207b446d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d3b96d99a81bbf560d6aa6f288d85c10e1f3ff31c54559fd22958a8a882baeb6" => :el_capitan
+    sha256 "4e8d9c641e402bbd41330df930eb3476ebd502bb6c671691a699b775d28a03f5" => :yosemite
+    sha256 "53c46830d2c77a24e2096e8aa6e30fdc1a2510957573b8578d8316dfeab1b635" => :mavericks
   end
 
   depends_on :python => :optional
