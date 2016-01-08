@@ -6,9 +6,9 @@ class CrystalLang < Formula
   head "https://github.com/manastech/crystal.git"
 
   bottle do
-    sha256 "838751d5fee2b06062cf5d4ec510bc08c5b94b586467665f90fd339b8be0ab64" => :el_capitan
-    sha256 "efda5b0dbf1a93b9974b715950830325ea701e1390fdc8e3ffe9be86c4f1b93a" => :yosemite
-    sha256 "488ee324319e4517f531b65da13892258ba603b7c354aa6448e496998aaecafa" => :mavericks
+    sha256 "70711d694b0906c1d67a82f44357c70b568a16a3f1860e14c7fe643b197a76e8" => :el_capitan
+    sha256 "be67aa7cfea8d5531541c7c1baf9293fcf26a54e3a41a0be262f8636470f40c0" => :yosemite
+    sha256 "181a4a048d438a1cd1d3dc7e9f4bb729be5499d92d9f80d35e8daa6c677fe7c6" => :mavericks
   end
 
   resource "boot" do
