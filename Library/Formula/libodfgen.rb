@@ -7,9 +7,9 @@ class Libodfgen < Formula
 
   bottle do
     cellar :any
-    sha256 "9472f468c381ec54266f2a58fe062b240f2b9434ccd66b638a26e7d00d4b5f21" => :el_capitan
-    sha256 "507de249c787af8d91177ae195356c8004483c23e3fc4e3829cbe002787d43b6" => :yosemite
-    sha256 "fd1131394ab4c726564a69bf78b677dab5472f0e4563a089bddda5ff076e84fd" => :mavericks
+    sha256 "b8b0cd9fb81020c6d6018830d75f75004a8edd9f7034e630937e92512b2ee35f" => :el_capitan
+    sha256 "342c71b7855e8a8699638f01f917c29ce85a0d7f695fc2e404446fef3b0eedd4" => :yosemite
+    sha256 "a3062a3348ba437f1cad676dd5c3c58e1541b0ec8cdd5413ab165248d18bd63e" => :mavericks
   end
 
   depends_on "pkg-config" => :build
