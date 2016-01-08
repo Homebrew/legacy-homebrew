@@ -1,8 +1,8 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/manastech/crystal/archive/0.10.0.tar.gz"
-  sha256 "349172eacaf1cd1a2e984b2ecd02aa5c7e64c318f27afe58004bf955aa332922"
+  url "https://github.com/manastech/crystal/archive/0.10.1.tar.gz"
+  sha256 "f567866ea4cf7d0ca1356806f4871c964eca939ddcd93796ecc0e3f3889cd7f3"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
@@ -12,8 +12,8 @@ class CrystalLang < Formula
   end
 
   resource "boot" do
-    url "https://github.com/manastech/crystal/releases/download/0.9.1/crystal-0.9.1-1-darwin-x86_64.tar.gz"
-    sha256 "1103edbb5d1ccb9555ce81d2b3630e7fbde93a75b2e368433859de0e4dc2717e"
+    url "https://github.com/manastech/crystal/releases/download/0.10.0/crystal-0.10.0-1-darwin-x86_64.tar.gz"
+    sha256 "a94562c2e683a6149accb6ec52f30e96ff2cd5a4cdbf3d0785181c9ec561f003"
   end
 
   resource "shards" do
