@@ -11,8 +11,6 @@ class Xmake < Formula
     system "./install", "output"
 
     # install the xmake scripts
-    share.mkdir
-    (share/"xmake").mkdir
     (share/"xmake").install Dir["xmake/*"]
 
     # install the xmake binary
