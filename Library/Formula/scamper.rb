@@ -1,10 +1,9 @@
 class Scamper < Formula
   desc "Advanced traceroute and network measurement utility"
   homepage "https://www.caida.org/tools/measurement/scamper/"
-  url "https://www.caida.org/tools/measurement/scamper/code/scamper-cvs-20141211c.tar.gz"
-  sha256 "303ca5c408604acc54759a922050094f24bcfc7fe6c7cedf5aea95b59792c1ad"
-
-  depends_on "openssl" if MacOS.version < :el_capitan
+  url "https://www.caida.org/tools/measurement/scamper/code/scamper-cvs-20141211d.tar.gz"
+  version "20141211d"
+  sha256 "5887f2ba5f213600908be6b4cbb009218b65d98d7dcb8581f9d36c0a2f740784"
 
   bottle do
     cellar :any
@@ -12,6 +11,9 @@ class Scamper < Formula
     sha256 "f2062ee005e32ae802a79ab5282a07bc695b813628a7fbf15deb2c6afc21db92" => :yosemite
     sha256 "3193ff3d026504bea4a41102e5afe67fc10c3739db039833aa0872f0b85ee2c7" => :mavericks
   end
+
+  depends_on "pkg-config" => :build
+  depends_on "openssl"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
