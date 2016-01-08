@@ -9,8 +9,8 @@ class Symlinks < Formula
     inreplace "Makefile", "/usr/local/man/man8", "#{man8}/"
     inreplace "Makefile", "-o root -g root", ""
 
-    mkdir_p "#{bin}"
-    mkdir_p "#{man8}"
+    bin.mkpath
+    man8.mkpath
 
     ENV["CFLAGS"]="-I/usr/include/malloc"
     system "make", "CFLAGS=#{ENV.cflags}"
