@@ -1,8 +1,8 @@
 class Djview4 < Formula
   desc "Viewer for the DjVu image format"
   homepage "http://djvu.sourceforge.net/djview4.html"
-  url "https://downloads.sourceforge.net/project/djvu/DjView/4.10/djview-4.10.3.tar.gz"
-  sha256 "50b80ecddc5aec03c49882c91b3af2f42abfe8454d5ddc01fb313e3481e6ab25"
+  url "https://downloads.sourceforge.net/project/djvu/DjView/4.10/djview-4.10.5.tar.gz"
+  sha256 "a0b302807106053d1983659ebb0139c7b1c393b3e6407f1f47990d7e3c5d7b3d"
 
   bottle do
     sha256 "5290a8aef17bd16879e382315d0aa34585ddcbf0512315a2829f299ecb26a08a" => :yosemite
