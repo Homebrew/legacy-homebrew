@@ -13,7 +13,7 @@ class GitSubrepo < Formula
   end
 
   def install
-    mkdir_p libexec
+    libexec.mkpath
     system "make", "PREFIX=#{prefix}", "INSTALL_LIB=#{libexec}", "install"
     bin.install_symlink libexec/"git-subrepo"
   end
