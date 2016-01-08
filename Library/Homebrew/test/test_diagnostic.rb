@@ -13,6 +13,13 @@ class DiagnosticChecksTest < Homebrew::TestCase
     ENV.replace(@env)
   end
 
+  def test_inject_file_list
+    assert_equal "foo:\n",
+      @checks.inject_file_list([], "foo:\n")
+    assert_equal "foo:\n    /a\n    /b\n",
+      @checks.inject_file_list(%w[/a /b], "foo:\n")
+  end
+
   def test_check_path_for_trailing_slashes
     ENV["PATH"] += File::PATH_SEPARATOR + "/foo/bar/"
     assert_match "Some directories in your path end in a slash",
@@ -35,6 +42,19 @@ class DiagnosticChecksTest < Homebrew::TestCase
       assert_match "Anaconda",
         @checks.check_for_anaconda
     end
+  end
+
+  def test_check_for_other_package_managers
+    MacOS.stubs(:macports_or_fink).returns ["fink"]
+    assert_match "You have MacPorts or Fink installed:",
+      @checks.check_for_other_package_managers
+  end
+
+  def test_check_for_unsupported_osx
+    ARGV.stubs(:homebrew_developer?).returns false
+    OS::Mac.stubs(:prerelease?).returns true
+    assert_match "We do not provide support for this pre-release version.",
+      @checks.check_for_unsupported_osx
   end
 
   def test_check_access_homebrew_repository
