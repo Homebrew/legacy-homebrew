@@ -1,13 +1,13 @@
 class Prefixsuffix < Formula
   desc "GUI batch renaming utility"
   homepage "https://github.com/murraycu/prefixsuffix"
-  url "https://download.gnome.org/sources/prefixsuffix/0.6/prefixsuffix-0.6.6.tar.xz"
-  sha256 "2d6b9d9b4b0f0699828d1aa0799d30cd173274fde57d063089e519ea794ca9a0"
+  url "https://download.gnome.org/sources/prefixsuffix/0.6/prefixsuffix-0.6.9.tar.xz"
+  sha256 "fc3202bddf2ebbb93ffd31fc2a079cfc05957e4bf219535f26e6d8784d859e9b"
 
   bottle do
-    sha256 "f7f00db2e39546fdc85ae153223d861703a6200736c4176f0d026adcfeab79a7" => :el_capitan
-    sha256 "54123b148ef7f22c64e8ad70d274e098ff6e1af73dbd8e092a2c86da46be28f1" => :yosemite
-    sha256 "45e8bc8da91cefebc45846c14bec29dcd21f8fd93702b43d0f663754ebd13542" => :mavericks
+    sha256 "1143a29769e566e030bec8f3bf7a3f24a9c7fc69638511b6964571cc255b696f" => :el_capitan
+    sha256 "544f17fbc8873abb8725d469f2cb076245d93527008f805f7b29416b6b20a82f" => :yosemite
+    sha256 "eb984287bf98618cf61cf5e9ed85103077aaf4a36c8309fdcb6c9ecb736b4272" => :mavericks
   end
 
   depends_on "pkg-config" => :build

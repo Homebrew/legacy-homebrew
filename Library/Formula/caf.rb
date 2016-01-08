@@ -2,32 +2,34 @@ class Caf < Formula
   # Renamed from libccpa
   desc "Implementation of the Actor Model for C++"
   homepage "http://actor-framework.org/"
-  url "https://github.com/actor-framework/actor-framework/archive/0.14.2.tar.gz"
-  sha256 "5d7fadee7c6af2ad2eb9cb66cf2a6109c72f47652b7e3f0c01a267d3dfb99290"
+  url "https://github.com/actor-framework/actor-framework/archive/0.14.4.tar.gz"
+  sha256 "7e77b1edc708ac66be3ab2ba29506681458422e59a2e1b3cd801152ba345fb00"
   head "https://github.com/actor-framework/actor-framework.git",
     :branch => "develop"
 
   bottle do
     cellar :any
-    sha256 "5b0d8d5b21051111480c9213132570c2d8c944b00a2ef1c21ba7338777a9d9d9" => :el_capitan
-    sha256 "e247d4384eccd86021cb1bb67fd552e05d32dacb5ebd292053008834fd0defb5" => :yosemite
-    sha256 "3d5b7662c7cf136f6ba87864f4ce67464228d2db2d31ffe8e470c7803d34bac4" => :mavericks
+    sha256 "c161ba6878e220bd41ba3b387e04c9af5148a11ca76fda4b12cf90c3ad7f285c" => :el_capitan
+    sha256 "058410d9287e31c1c5bc956749dd88b3756429fddcae9626fa3cf4fb0a482a6d" => :yosemite
+    sha256 "cce3011d963e53ac1fe86e0155d76d6396b676066ddbf0c4aa7f9ea9917abd08" => :mavericks
   end
 
   needs :cxx11
 
   option "with-opencl", "build with support for OpenCL actors"
-  option "without-check", "skip unit tests (not recommended)"
+  option "without-test", "skip unit tests (not recommended)"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "cmake" => :build
 
   def install
-    args = %W[./configure --prefix=#{prefix} --no-examples --build-static]
+    args = %W[--prefix=#{prefix} --no-examples --build-static]
     args << "--no-opencl" if build.without? "opencl"
 
-    system *args
+    system "./configure", *args
     system "make"
-    system "make", "test" if build.with? "check"
+    system "make", "test" if build.with? "test"
     system "make", "install"
   end
 
@@ -45,7 +47,8 @@ class Caf < Formula
         return 0;
       }
     EOS
-    system *%W[#{ENV.cxx} -std=c++11 -stdlib=libc++ test.cpp -lcaf_core -o test]
+    system ENV.cxx, "-std=c++11", "-stdlib=libc++", "test.cpp",
+      "-lcaf_core", "-o", "test"
     system "./test"
   end
 end

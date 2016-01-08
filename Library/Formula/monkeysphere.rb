@@ -1,21 +1,19 @@
-require 'formula'
-
 class Monkeysphere < Formula
   desc "Use the OpenPGP web of trust to verify ssh connections"
-  homepage 'http://web.monkeysphere.info/'
-  url 'http://archive.monkeysphere.info/debian/pool/monkeysphere/m/monkeysphere/monkeysphere_0.36.orig.tar.gz'
-  sha1 'c4f950346040f7703cb4c6e8b32022f4361d0c9d'
+  homepage "http://web.monkeysphere.info/"
+  url "http://archive.monkeysphere.info/debian/pool/monkeysphere/m/monkeysphere/monkeysphere_0.36.orig.tar.gz"
+  sha256 "6ae4edeff2cc29b6913346e15b61500ea7cc06d761a9f42e67de83b7d2607be7"
 
-  head 'git://git.monkeysphere.info/monkeysphere'
+  head "git://git.monkeysphere.info/monkeysphere"
 
-  depends_on 'Crypt::OpenSSL::Bignum' => :perl
+  depends_on "Crypt::OpenSSL::Bignum" => :perl
 
   patch :DATA
 
   def install
-    ENV['PREFIX']="#{prefix}"
-    ENV['ETCPREFIX']="#{prefix}"
-    system "make install"
+    ENV["PREFIX"] = "#{prefix}"
+    ENV["ETCPREFIX"] = "#{prefix}"
+    system "make", "install"
   end
 end
 

@@ -4,6 +4,8 @@ class Checkstyle < Formula
   url "https://downloads.sourceforge.net/project/checkstyle/checkstyle/6.9/checkstyle-6.9-all.jar"
   sha256 "b97de32dd519744fe501dff90c1d8dc94c267c5fd5bc367be05dc1a693451502"
 
+  bottle :unneeded
+
   def install
     libexec.install "checkstyle-#{version}-all.jar"
     bin.write_jar_script libexec/"checkstyle-#{version}-all.jar", "checkstyle"

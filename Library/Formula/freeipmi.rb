@@ -1,14 +1,14 @@
 class Freeipmi < Formula
   desc "In-band and out-of-band IPMI (v1.5/2.0) software"
   homepage "https://www.gnu.org/software/freeipmi/"
-  url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.4.9.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/freeipmi/freeipmi-1.4.9.tar.gz"
-  sha256 "178b11ea24d59337581dbb827551deb2fa4ed8f551656300fa66573123775d6c"
+  url "http://ftpmirror.gnu.org/freeipmi/freeipmi-1.5.1.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/freeipmi/freeipmi-1.5.1.tar.gz"
+  sha256 "47985ab902a62e23aba60e30a9fba5190599eecbc107d442e8b948a220ed1252"
 
   bottle do
-    sha256 "35a7f4c5a6c00f3ba22294b0b22cf95bbbe2bd339a3b7b6ae05dee19738e63eb" => :yosemite
-    sha256 "22f8d1ef9bb9cb989ca02e035b2f466524f10610d5d12a8d1fb9dd62eefab80f" => :mavericks
-    sha256 "ee380370279915cd118536747fe189131f0506f4d3a6879b4d65724155c752a6" => :mountain_lion
+    sha256 "3899c06966a03f33c81bcc3e9c8bda0c97b3b2a76d4735aa5d2442aa327f83ea" => :el_capitan
+    sha256 "03bf2f25261711adc97bbd49a448fd8c6377343bad7e64ae3f43f0f30eebd0ed" => :yosemite
+    sha256 "f03eea84bc3c7e8548f29716ff181489f97eb8021ea1daff73dcf13b02b0f917" => :mavericks
   end
 
   depends_on "argp-standalone"

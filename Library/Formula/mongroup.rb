@@ -6,9 +6,9 @@ class Mongroup < Formula
 
   bottle do
     cellar :any
-    sha1 "362393e9e2409030379af478625bc1eac846acef" => :mavericks
-    sha1 "a813a9be26dd962ab7dd1a2e4f8b53adcb082b25" => :mountain_lion
-    sha1 "988c86f7ef36e75354dc676028d5ed560ecd3ae5" => :lion
+    sha256 "39b8052e644bf78570cd9393f3229843445784e93f6891924ae05c118c3bc16b" => :mavericks
+    sha256 "5279c40b110406b0cdd3e62c6ea978a1a02f6a9601fadc414bd8edd04ed8ca7f" => :mountain_lion
+    sha256 "5803b417bacf1630a0044485342af46471a4107116ff05d65ad62330234a96c7" => :lion
   end
 
   depends_on "mon"

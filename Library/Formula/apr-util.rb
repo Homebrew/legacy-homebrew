@@ -19,6 +19,11 @@ class AprUtil < Formula
   depends_on "apr"
   depends_on "openssl"
   depends_on "postgresql" => :optional
+  depends_on "mysql" => :optional
+  depends_on "freetds" => :optional
+  depends_on "unixodbc" => :optional
+  depends_on "sqlite" => :optional
+  depends_on "homebrew/dupes/openldap" => :optional
 
   def install
     ENV.universal_binary if build.universal?
@@ -31,6 +36,15 @@ class AprUtil < Formula
     ]
 
     args << "--with-pgsql=#{Formula["postgresql"].opt_prefix}" if build.with? "postgresql"
+    args << "--with-mysql=#{Formula["mysql"].opt_prefix}" if build.with? "mysql"
+    args << "--with-freetds=#{Formula["freetds"].opt_prefix}" if build.with? "freetds"
+    args << "--with-odbc=#{Formula["unixodbc"].opt_prefix}" if build.with? "unixodbc"
+
+    if build.with? "openldap"
+      args << "--with-ldap"
+      args << "--with-ldap-lib=#{Formula["openldap"].opt_lib}"
+      args << "--with-ldap-include=#{Formula["openldap"].opt_include}"
+    end
 
     system "./configure", *args
     system "make"

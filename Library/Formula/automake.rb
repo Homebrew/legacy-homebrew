@@ -14,9 +14,9 @@ class Automake < Formula
     sha256 "6e6fdaa7fb7ddaaeb103341d1ca351e0669874f86eb21eb6623cb345dd1f5b6f" => :mountain_lion
   end
 
-  depends_on "autoconf" => :run
-
   keg_only :provided_until_xcode43
+
+  depends_on "autoconf" => :run
 
   def install
     ENV["PERL"] = "/usr/bin/perl"

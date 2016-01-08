@@ -1,9 +1,8 @@
 class Gpgme < Formula
   desc "Library access to GnuPG"
   homepage "https://www.gnupg.org/related_software/gpgme/"
-  url "ftp://ftp.gnupg.org/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
+  url "https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
-  mirror "https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.6.0.tar.bz2"
   sha256 "b09de4197ac280b102080e09eaec6211d081efff1963bf7821cf8f4f9916099d"
 
   bottle do

@@ -15,6 +15,7 @@ class Poco < Formula
 
   option :cxx11
   option :universal
+  option "with-static", "Build static libraries (instead of shared)"
 
   depends_on "openssl"
   depends_on "cmake" => :build
@@ -29,6 +30,8 @@ class Poco < Formula
       ENV.universal_binary
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
+
+    args << "-DPOCO_STATIC=ON" if build.with? "static"
 
     if build.stable?
       # Fix Foundation library version (already fixed upstream).

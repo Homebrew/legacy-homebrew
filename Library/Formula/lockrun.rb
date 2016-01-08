@@ -7,9 +7,9 @@ class Lockrun < Formula
 
   bottle do
     cellar :any
-    sha1 "d157639542e6b17bb4881cbde0aef98594da7764" => :yosemite
-    sha1 "c28e303637b7f156d01c3fc132294c863c2f60c2" => :mavericks
-    sha1 "57ee54e2f8157acf5f2b76cd869ca9dd1b97c777" => :mountain_lion
+    sha256 "8f2914ed87c42a369b3870b5688720cf0cc7382ae6428452ba32fdf0e422ab57" => :yosemite
+    sha256 "c319dba85122ea12d120a7ea3acbdc1c50ee35f2eadb274aa5ec59622b026ca0" => :mavericks
+    sha256 "382ed13c3dcbf64143ea6058f593338af2b6449a2cba889d64ac988d08e2b139" => :mountain_lion
   end
 
   def install

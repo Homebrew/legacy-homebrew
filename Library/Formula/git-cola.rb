@@ -1,37 +1,28 @@
 class GitCola < Formula
   desc "Highly caffeinated git GUI"
   homepage "https://git-cola.github.io/"
-  url "https://github.com/git-cola/git-cola/archive/v2.3.tar.gz"
-  sha256 "3319810c16f6864deb5f94f533c7cfd17f30961595454da7c3c75879f56511b3"
-
+  url "https://github.com/git-cola/git-cola/archive/v2.4.tar.gz"
+  sha256 "ef735431a2e58bac7671c4b9ab4fbb369195b16987fe9d3d931a9097c06c7f36"
   head "https://github.com/git-cola/git-cola.git"
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "844c8eebab249212800e996ae3130049823238ffecd28545b37020bb06f0c5b9" => :el_capitan
-    sha256 "fa89698f2a4b30a95ea75d9ceff7075b908dce9180f08d4612dd4265b77b91ab" => :yosemite
-    sha256 "fbb533d16e29f44da27ad628043c483e575ab022ac27fed2730d56cc3bbfffe3" => :mavericks
+    sha256 "1d9b0f0b7df97b5e37fdf2b548f297aca05d303b4b27e66a81bd2972a9164163" => :el_capitan
+    sha256 "0e307cb96047b9448bc531188fb8f44831074647a95819d5de76c59b4c4fb9fa" => :yosemite
+    sha256 "3c1cde2b3b70661603f9eb94d3d0560ceaf27b11b98edb2b68b3bf524c444751" => :mavericks
   end
 
-  option "with-docs", "Build man pages using asciidoc and xmlto"
+  option "with-docs", "Build manpages and HTML docs"
 
   depends_on "pyqt"
-
-  if build.with? "docs"
-    # these are needed to build man pages
-    depends_on "asciidoc"
-    depends_on "xmlto"
-  end
+  depends_on "sphinx-doc" => :build if build.with? "docs"
 
   def install
     system "make", "prefix=#{prefix}", "install"
 
     if build.with? "docs"
-      system "make", "-C", "share/doc/git-cola",
-                     "-f", "Makefile.asciidoc",
-                     "prefix=#{prefix}",
-                     "install", "install-html"
+      system "make", "install-doc", "prefix=#{prefix}",
+             "SPHINXBUILD=#{Formula["sphinx-doc"].opt_bin}/sphinx-build"
     end
   end
 

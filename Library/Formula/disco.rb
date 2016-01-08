@@ -6,9 +6,9 @@ class Disco < Formula
 
   bottle do
     cellar :any
-    sha1 "f1a4e9775053971dac6ab3b183ebb13d6928c050" => :yosemite
-    sha1 "286325ec178e1bd06a78127333c835a1bf5a2763" => :mavericks
-    sha1 "da6e23c51a8ca6c353e83724746f0e11dba37a99" => :mountain_lion
+    sha256 "5c2cce9d23b29c1be6d5226eae384d8350b4bb490d6d548f10e66761f49cbd65" => :yosemite
+    sha256 "2dc00048144e2faecd558a9db6af23c6bc95157445124f7b25790c6508ee2acc" => :mavericks
+    sha256 "003628e6ba324264409fb54c457089ead2d1c2490565e6a52fd01f19f4ffbaed" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -18,6 +18,8 @@ class Disco < Formula
 
   # Modifies config for single-node operation
   patch :DATA
+
+  conflicts_with "mono", :because => "both install `disco` binaries"
 
   def install
     ENV["PYTHONPATH"] = lib+"python2.7/site-packages"
@@ -46,16 +48,16 @@ class Disco < Formula
     bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  test do
-    system "#{bin}/disco"
-  end
-
   def caveats
     <<-EOS.undent
       Please copy #{etc}/disco/settings.py to ~/.disco and edit it if necessary.
       The DDFS_*_REPLICA settings have been set to 1 assuming a single-machine install.
       Please see http://discoproject.org/doc/disco/start/install.html for further instructions.
     EOS
+  end
+
+  test do
+    system "#{bin}/disco"
   end
 end
 

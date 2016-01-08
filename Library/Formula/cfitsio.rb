@@ -8,9 +8,10 @@ class Cfitsio < Formula
 
   bottle do
     cellar :any
-    sha256 "57504126a20d43f2ded74383113b7ed899c97f1ff4f55cfc4c7fe53a8d780e26" => :el_capitan
-    sha256 "6dc2862f40385939693ce01ccea8f794dc7aeaf85e3d53a79ac40ea6ed430614" => :yosemite
-    sha256 "96a8865b7d1f4ad3be76daf085006d2acdbefa8807dfc35156683681d68c6384" => :mavericks
+    revision 1
+    sha256 "b2547586bac20323985eddf44b08f9b3f33272dbb6517d8fd2c467369a67891b" => :el_capitan
+    sha256 "1d8292ec9b2e94aa664e1d50a40d53fd11af1143de9f94a2d483619923c61df4" => :yosemite
+    sha256 "5f10522a362eddf2ca8a0d8492630076143bc0d8501b5140fd6c82ebcda6799d" => :mavericks
   end
 
   option "with-examples", "Compile and install example programs"
@@ -22,7 +23,7 @@ class Cfitsio < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--enable-reentrant"
     system "make", "shared"
     system "make", "install"
 

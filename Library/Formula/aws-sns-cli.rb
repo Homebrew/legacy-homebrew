@@ -6,6 +6,8 @@ class AwsSnsCli < Formula
   version "2013-09-27"
   sha256 "c14adade30bf366f7d95d19d177babd33669dbd0e4b46f2c81304723776d382f"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

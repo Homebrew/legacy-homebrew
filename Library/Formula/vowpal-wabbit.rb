@@ -1,16 +1,16 @@
 class VowpalWabbit < Formula
   desc "Online learning algorithm"
   homepage "https://github.com/JohnLangford/vowpal_wabbit"
-  head "https://github.com/JohnLangford/vowpal_wabbit.git"
   url "https://github.com/JohnLangford/vowpal_wabbit/archive/8.0.tar.gz"
   sha256 "ebf7fea91eead6da3d9fd479b901a320d5ab3ed20b2b134b5ce86aec771b0a60"
+  head "https://github.com/JohnLangford/vowpal_wabbit.git"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "4072bdb5976df63030b3460014bbecaa0b2232adf86094128ea67799fd0368f4" => :el_capitan
-    sha256 "0dc906d8ea75c06d1d682a6e7c2477c939491f41f473e986cfdacf1b6fee2d1a" => :yosemite
-    sha256 "8b42c4cf697b11ffadeeb19c5331eaf6706de3be3e40b350a4976373a5fddde5" => :mavericks
-    sha256 "8a93b68d965449d2a385aba6752e1d9833b676b9a1b08e5434f6fd9239fca837" => :mountain_lion
+    sha256 "158cb297f18c9ace81658cf29218b830f7ff861692f1cea2ff8d77bcf3957d42" => :el_capitan
+    sha256 "f80d7f6b1a2fc2178110132e733d27b5dec66b79d6664b830dee6e89114874f1" => :yosemite
+    sha256 "2c07a0f02f3b7f7c1af5b6a1aefd5a1edb0098d9f2437218f638bb967c527901" => :mavericks
   end
 
   if MacOS.version < :mavericks
@@ -39,7 +39,7 @@ class VowpalWabbit < Formula
       1 2 'second_house | price:.18 sqft:.15 age:.35 1976
       0 1 0.5 'third_house | price:.53 sqft:.32 age:.87 1924
     EOS
-    system bin/"vw", "house_dataset",  "-l", "10",  "-c",  "--passes", "25",  "--holdout_off",  "--audit",  "-f", "house.model", "--nn", "5"
+    system bin/"vw", "house_dataset", "-l", "10", "-c", "--passes", "25", "--holdout_off", "--audit", "-f", "house.model", "--nn", "5"
     system bin/"vw", "-t", "-i", "house.model", "-d", "house_dataset", "-p", "house.predict"
 
     (testpath/"csoaa.dat").write <<-EOS.undent

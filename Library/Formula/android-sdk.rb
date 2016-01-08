@@ -3,15 +3,18 @@ require "base64"
 class AndroidSdk < Formula
   desc "Android API libraries and developer tools"
   homepage "https://developer.android.com/index.html"
-  url "https://dl.google.com/android/android-sdk_r24.4-macosx.zip"
-  version "24.4"
-  sha256 "a1cb0c9b2036d597e18986de1bd43918b6113373ff3bf6fdb81b6cce4ec3efd7"
+  url "https://dl.google.com/android/android-sdk_r24.4.1-macosx.zip"
+  version "24.4.1"
+  sha256 "ce1638cb48526a0e55857fc46b57eda4349e6512006244ad13dd6c1361c74104"
+  revision 1
+
+  depends_on :macos => :mountain_lion
 
   bottle do
     cellar :any
-    sha256 "6813bb19eb0127850832a32cddd55cfd0106a8d079726c3a9e8e18855efe0165" => :el_capitan
-    sha256 "7210e0118c1bbba916add540c9a1b7dc9b14b0c2cfbdbea9a1e0ca0e6b0143ec" => :yosemite
-    sha256 "e148339aa960c019ae70e967b3cadcd57fe93838067453b21264a8e330818a42" => :mavericks
+    sha256 "d38989fcd9b2fcf731be79ae24834d6f50f425dd44003a149b7dea6b323a4718" => :el_capitan
+    sha256 "dac31fa15cb355141d8f6df68f15e21aba584d869d6d88967740fa803c191464" => :yosemite
+    sha256 "4dacf5677233c1f227d22eccc09717e1b0fc16a7a9ec0f78a95e156441c459d7" => :mavericks
   end
 
   conflicts_with "android-platform-tools",
@@ -95,6 +98,9 @@ class AndroidSdk < Formula
       decoded_file.write Base64.decode64(File.read("adb.bash"))
       bash_completion.install decoded_file
     end
+
+    # automatically install platform and build tools
+    system "echo y | bash #{bin}/android --verbose update sdk --no-ui --all --filter platform-tools,build-tools-#{build_tools_version}"
   end
 
   def caveats; <<-EOS.undent
@@ -102,19 +108,8 @@ class AndroidSdk < Formula
 
     The Android-SDK is available at #{opt_prefix}
 
-    You will have to install the platform-tools and docs EVERY time this formula
-    updates. If you want to try and fix this then see the comment in this formula.
-
     You may need to add the following to your .bashrc:
       export ANDROID_HOME=#{opt_prefix}
     EOS
   end
-
-  # The 'android' tool insists on deleting #{prefix}/platform-tools
-  # and then installing the new one. So it is impossible for us to redirect
-  # the SDK location to var so that the platform-tools don't have to be
-  # freshly installed EVERY DANG time the base SDK updates.
-
-  # Ideas: make android a script that calls the actual android tool, but after
-  # that tool exits it repairs the directory locations?
 end

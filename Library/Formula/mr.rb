@@ -1,13 +1,13 @@
 class Mr < Formula
   desc "Multiple Repository management tool"
   homepage "https://myrepos.branchable.com/"
-  url "git://myrepos.branchable.com/", :tag => "1.20150503", :revision => "073a3b517580bcd2236bf9d36beff18c1222e8aa"
+  url "git://myrepos.branchable.com/", :tag => "1.20151022", :revision => "038088c6b4903ce96c73fd4a99751c9848f98863"
 
   bottle do
-    cellar :any
-    sha256 "e0afd82b9ce781ceb404831e1ee068e69b7f09a0d38e79a8c8050d6970bc1ae1" => :yosemite
-    sha256 "bba106fbbd96d7ba29f89efd9d4f73a899cce76777a34c92438da03e8883c75e" => :mavericks
-    sha256 "06e4131b245b49510d74d0f5da3125d107a45dd8f8a54544eda2e1e50a908e6d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "fa047bbe29a893475aa0c3b9ae04f4359378b2dd658172ca159f765d6559511e" => :el_capitan
+    sha256 "df78b4c53b52fd50a1d1fe0a34c92faeee63792360dafd6b9b31e47f7e47da3d" => :yosemite
+    sha256 "9da103695bd2d1cc681efd6101fb8dff4ea0765c669eb932f0b9ff68656808c9" => :mavericks
   end
 
   resource("test-repo") do

@@ -13,6 +13,8 @@ class Rem < Formula
 
   depends_on :xcode => :build
 
+  conflicts_with "remind", :because => "both install `rem` binaries"
+
   def install
     xcodebuild
     bin.install "build/Release/rem"

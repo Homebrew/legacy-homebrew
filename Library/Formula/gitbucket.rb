@@ -1,20 +1,15 @@
 class Gitbucket < Formula
   desc "GitHub clone"
-  homepage "https://github.com/takezoe/gitbucket"
-  url "https://github.com/takezoe/gitbucket/releases/download/3.7/gitbucket.war"
-  sha256 "4de0834506486f772b81cba53c69639b223d3516274f696ec21429a25cf80db7"
-
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "ac0d9b0b78279918fbd30b39c999aa8dba0f461791261325133f07c00528cd48" => :el_capitan
-    sha256 "3b8b1b681bf59e5939ffd5e8afec5f4cdf710ecab065e75616fdf710e4bf8818" => :yosemite
-    sha256 "b54d0e3c3dad7506cd3547facb4dda5982d0a9b7e0a409015cb6ef888d8ae2bd" => :mavericks
-  end
+  homepage "https://github.com/gitbucket/gitbucket"
+  url "https://github.com/gitbucket/gitbucket/releases/download/3.10.1/gitbucket.war"
+  sha256 "a689d8fd221db8e0fc437127bf0ce82ccef98c1acc9bc83067496ed286b5326f"
 
   head do
-    url "https://github.com/takezoe/gitbucket.git"
+    url "https://github.com/gitbucket/gitbucket.git"
     depends_on :ant => :build
   end
+
+  bottle :unneeded
 
   def install
     if build.head?

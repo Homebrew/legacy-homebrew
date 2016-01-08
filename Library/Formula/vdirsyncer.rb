@@ -1,15 +1,15 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.6.0.tar.gz"
-  sha256 "0d2a9677b086cfbe5fe5e7cb5e55db4c1afab62cb5dc56aeaff6e95d34bf60d5"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.5.tar.gz"
+  sha256 "3f51c1fabac7f231327deb098998185cbd77564dc1bfc29f4bc8d89226c96a37"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "5a075cb9ad8523b8a8689929f241c885f12d0ef7026431d0c37cb7e8eefa5bba" => :el_capitan
-    sha256 "a66186aecfba8ca661cd42c6759f01380ca79319537da47ec30346e0b6f17ccf" => :yosemite
-    sha256 "9aa878ddfc411b84f951a1bff222bd4499264b5cf80c1edb261e126a48350b9d" => :mavericks
+    sha256 "e223ccf3faa9163a4667f332e9820644e20186faa80c601332a0511e2ed3452b" => :el_capitan
+    sha256 "e8cad2147490a517c46f3d7bb9ef6733769a41cf475bc57ee78973a09d6bd89a" => :yosemite
+    sha256 "d0ad5bd159acdfeaf28aec0abda9f34d35750c4377624a365180c24798a8059c" => :mavericks
   end
 
   option "without-keyring", "Build without python-keyring support"
@@ -26,19 +26,29 @@ class Vdirsyncer < Formula
     sha256 "678c98275431fad324275dec63791e4a17558b40e5a110e20a82866139a85a5a"
   end
 
+  resource "click_threading" do
+    url "https://pypi.python.org/packages/source/c/click-threading/click-threading-0.1.2.tar.gz"
+    sha256 "85045457e02f16fba3110dc6b16e980bf3e65433808da2b550dd513206d9b94a"
+  end
+
+  resource "click_log" do
+    url "https://pypi.python.org/packages/source/c/click-log/click-log-0.1.1.tar.gz"
+    sha256 "0bc7e69311007adc4b5304d47933761999a43a18a87b9b7f2aa12b5e256f72fc"
+  end
+
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
+  end
+
+  resource "requests-toolbelt" do
+    url "https://pypi.python.org/packages/source/r/requests-toolbelt/requests-toolbelt-0.5.1.tar.gz"
+    sha256 "4f4be5325cf4af12847252406eefca8e9d1cd3cfb23a377aaac5cea32d55d23e"
   end
 
   resource "lxml" do
     url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.4.tar.gz"
     sha256 "b3d362bac471172747cda3513238f115cbd6c5f8b8e6319bf6a97a7892724099"
-  end
-
-  resource "requests-toolbelt" do
-    url "https://pypi.python.org/packages/source/r/requests-toolbelt/requests-toolbelt-0.4.0.tar.gz"
-    sha256 "15b74b90a63841b8430d6301e5062cd92929b1074b0c95bf62166b8239db1a96"
   end
 
   resource "atomicwrites" do
@@ -49,7 +59,7 @@ class Vdirsyncer < Formula
   def install
     version = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{version}/site-packages"
-    rs = %w[click requests lxml requests-toolbelt atomicwrites]
+    rs = %w[click click_threading click_log requests lxml requests-toolbelt atomicwrites]
     rs << "keyring" if build.with? "keyring"
     rs.each do |r|
       resource(r).stage do

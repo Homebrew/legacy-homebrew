@@ -325,7 +325,7 @@ These brilliant people supported our Kickstarter by giving us £15 or more:
 * [Chuck Fouts](https://github.com/gnarl)
 * [Chip Warden](https://twitter.com/lgw4)
 * [Ethan Schoonover](http://ethanschoonover.com)
-* [Chi Trung Nguyen](http://www.napcaesmind.de)
+* [Chi Trung Nguyen](http://ctnguyen.net)
 * [Danny Amey](http://www.dannyamey.com/)
 * Oscar
 * [Brian Pollack](http://www.protovate.com)

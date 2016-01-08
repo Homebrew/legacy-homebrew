@@ -1,10 +1,12 @@
 class Z < Formula
   desc "Tracks most-used directories to make cd smarter"
   homepage "https://github.com/rupa/z"
-  url "https://github.com/rupa/z/archive/v1.8.tar.gz"
-  sha256 "8c06cc65a14cd76bc35f1394ea3a8734eade76b2e676b2245aae22acb2485897"
+  url "https://github.com/rupa/z/archive/v1.9.tar.gz"
+  sha256 "e2860e4f65770e02297ca4ca08ec1ee623a658bd9cc1acddbbe5ad22e1de70a7"
 
   head "https://github.com/rupa/z.git"
+
+  bottle :unneeded
 
   def install
     (prefix/"etc/profile.d").install "z.sh"

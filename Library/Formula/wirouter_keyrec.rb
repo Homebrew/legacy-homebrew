@@ -5,9 +5,9 @@ class WirouterKeyrec < Formula
   sha256 "3e59138f35502b32b47bd91fe18c0c232921c08d32525a2ae3c14daec09058d4"
 
   bottle do
-    sha1 "70d0cc222e0a6215d9ba9868c281603eac63c8a7" => :yosemite
-    sha1 "ef0a2fcab2ebcefe87b91946036cd8d22331f54d" => :mavericks
-    sha1 "cdbdb678f080ada0d5432f8f2b1c6b0b2f1c8254" => :mountain_lion
+    sha256 "65d21ba4cb167dd2cca395dd5b51edc1ddd0df06fc65843cd2d2eba9e307ea11" => :yosemite
+    sha256 "b5740e7929fc911881e007103921c712483971accb581bd5fdb86357f65b8312" => :mavericks
+    sha256 "fb6bc3066b31fde62280752b2795e13d8850011f5910ad28dbb1c9e15208af74" => :mountain_lion
   end
 
   def install

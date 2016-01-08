@@ -1,9 +1,11 @@
 class TomeeWebprofile < Formula
   desc "All-Apache Java EE 6 Web Profile stack"
   homepage "https://tomee.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.2/apache-tomee-1.7.2-webprofile.tar.gz"
-  version "1.7.2"
-  sha256 "9802fef834a3d2944fc325440e1aadbd3b00956e5ef43f5ef9eea8b91a12d230"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomee/tomee-1.7.3/apache-tomee-1.7.3-webprofile.tar.gz"
+  version "1.7.3"
+  sha256 "d738c56b96537a5157a827e73ceac60b6cc43a1c8d6d31b65ae69c77b6a9e7b6"
+
+  bottle :unneeded
 
   def install
     # Remove Windows scripts

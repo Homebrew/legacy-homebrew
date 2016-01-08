@@ -1,11 +1,15 @@
 class AppEngineGo32 < Formula
   desc "Google App Engine SDK for Go!"
   homepage "https://cloud.google.com/appengine/docs/go/"
-  url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_386-1.9.23.zip"
-  sha256 "01271376dd0f04e1ff3bc52d71f2a933b4add478a6c9e8ca3b2de3468327b561"
+  url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_386-1.9.30.zip"
+  sha256 "15d7f5f378d6e765da22c5db7ff855dafee1c2f72c78347bc9a1e4426248f2e3"
 
-  conflicts_with "go-app-engine-64", :because => "multiple conflicting files"
-  conflicts_with "google-app-engine", :because => "multiple conflicting files"
+  bottle :unneeded
+
+  conflicts_with "app-engine-go-64",
+    :because => "both install the same binaries"
+  conflicts_with "app-engine-python",
+    :because => "both install the same binaries"
 
   def install
     cd ".."

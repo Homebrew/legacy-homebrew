@@ -1,14 +1,14 @@
 class Jsonnet < Formula
   desc "Domain specific configuration language for defining JSON data."
   homepage "https://google.github.io/jsonnet/doc/"
-  url "https://github.com/google/jsonnet/archive/v0.8.1.tar.gz"
-  sha256 "c844623f3d21d81488b20ba5e32b388d6ffcf68fc6f2216e65c23b7196663382"
+  url "https://github.com/google/jsonnet/archive/v0.8.5.tar.gz"
+  sha256 "514df86f954150baac5cace169bc7df3c6989d61c6d95cf5c0f483a68e84dcac"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "6c3ed87edc644e760d41f59ca52fa3d04bef21908ba9511ad24eacacac05a4f5" => :el_capitan
-    sha256 "0888a627040f4824ce7b68045060d2c8e8dbb779e60c1858dcee9115c67119ee" => :yosemite
-    sha256 "f75e9d814e801e60cdfd3eeb5752e6ae861672cc6ab5d14440b1754c01888102" => :mavericks
+    sha256 "b2ecd2c543dffa729829c4ac274b63d93f36555ab3fd1cd2f175e24abf56c447" => :el_capitan
+    sha256 "a3baed2fa2c5f00aa41274de6824eb12e1f6b8d35f3d7b7a204e4d877e0c5184" => :yosemite
+    sha256 "4d60ec983b864e64042d702c80e1e47a64a43272778533715abb28a0fa2fc9e9" => :mavericks
   end
 
   needs :cxx11
@@ -22,7 +22,7 @@ class Jsonnet < Formula
   end
 
   test do
-    require "json"
+    require "utils/json"
 
     (testpath/"example.jsonnet").write <<-EOS
       {
@@ -34,20 +34,18 @@ class Jsonnet < Formula
       }
     EOS
 
-    expected_output = <<-EOS
-      {
-        "person1": {
-          "name": "Alice",
-          "welcome": "Hello Alice!"
-        },
-        "person2": {
-          "name": "Bob",
-          "welcome": "Hello Bob!"
-        }
+    expected_output = {
+      "person1" => {
+        "name" => "Alice",
+        "welcome" => "Hello Alice!"
+      },
+      "person2" => {
+        "name" => "Bob",
+        "welcome" => "Hello Bob!"
       }
-    EOS
+    }
 
     output = shell_output("#{bin}/jsonnet #{testpath}/example.jsonnet")
-    assert_equal JSON.parse(expected_output), JSON.parse(output)
+    assert_equal expected_output, Utils::JSON.load(output)
   end
 end

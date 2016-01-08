@@ -4,6 +4,8 @@ class Grc < Formula
   url "http://korpus.juls.savba.sk/~garabik/software/grc/grc_1.9.orig.tar.gz"
   sha256 "41626e571ca255e1a9fe0816f3c0dfd1a30d9564d0decaf4b7365e28e3c54f5b"
 
+  bottle :unneeded
+
   conflicts_with "cc65", :because => "both install `grc` binaries"
 
   def install

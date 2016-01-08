@@ -5,6 +5,8 @@ class Sqoop < Formula
   version "1.4.6"
   sha256 "d582e7968c24ff040365ec49764531cb76dfa22c38add5f57a16a57e70d5d496"
 
+  bottle :unneeded
+
   depends_on :java => "1.6+"
   depends_on "hadoop"
   depends_on "hbase"

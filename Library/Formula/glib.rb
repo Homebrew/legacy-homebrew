@@ -1,18 +1,17 @@
 class Glib < Formula
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
-  url "https://download.gnome.org/sources/glib/2.46/glib-2.46.1.tar.xz"
-  sha256 "5a1f03b952ebc3a7e9f612b8724f70898183e31503db329b4f15d07163c8fdfb"
+  url "https://download.gnome.org/sources/glib/2.46/glib-2.46.2.tar.xz"
+  sha256 "5031722e37036719c1a09163cc6cf7c326e4c4f1f1e074b433c156862bd733db"
 
   bottle do
-    sha256 "d9a33e02f6765853ccaa85b1a221773256d61057f0755677b50634270c0c8b30" => :el_capitan
-    sha256 "53ad4b0c5d6e4849202db3aef088da6ef204a43f9db75ca3455624f3eb42c0fc" => :yosemite
-    sha256 "db8695d039e14aa95c86adcb347e08aa4dbbf9823b809278cdc80dcfe7eef4d0" => :mavericks
+    sha256 "7712b8d7682c79d31f8325e4a6a99d43ed480907420193035ba4a874603d720e" => :el_capitan
+    sha256 "8422313233976bdfc64bbfa2e899bdfb97c38015505ccaca02039c44d00426b7" => :yosemite
+    sha256 "b4cdea43b21075a6bb51d263d0e1bd486d32302ca464aa3928fb453dfb95d0cb" => :mavericks
   end
 
   option :universal
   option "with-test", "Build a debug build and run tests. NOTE: Not all tests succeed yet"
-  option "with-static", "Build glib with a static archive."
 
   deprecated_option "test" => "with-test"
 
@@ -85,12 +84,11 @@ class Glib < Formula
       --disable-silent-rules
       --disable-dtrace
       --disable-libelf
+      --enable-static
       --prefix=#{prefix}
       --localstatedir=#{var}
       --with-gio-module-dir=#{HOMEBREW_PREFIX}/lib/gio/modules
     ]
-
-    args << "--enable-static" if build.with? "static"
 
     system "./configure", *args
 

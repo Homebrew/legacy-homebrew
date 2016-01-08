@@ -12,6 +12,8 @@ class Align < Formula
     sha256 "783440c9aaca24183a35be475b268d82dd33acccaef86f3e4eb8b2ca8e1ed1d1" => :mavericks
   end
 
+  conflicts_with "speech-tools", :because => "both install `align` binaries"
+
   def install
     system "make", "install", "BINDIR=#{bin}"
   end

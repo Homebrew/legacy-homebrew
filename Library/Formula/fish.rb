@@ -30,7 +30,9 @@ class Fish < Formula
   def caveats; <<-EOS.undent
     You will need to add:
       #{HOMEBREW_PREFIX}/bin/fish
-    to /etc/shells. Run:
+    to /etc/shells.
+
+    Then run:
       chsh -s #{HOMEBREW_PREFIX}/bin/fish
     to make fish your default shell.
 

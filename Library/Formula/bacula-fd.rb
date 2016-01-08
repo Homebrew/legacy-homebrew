@@ -5,9 +5,10 @@ class BaculaFd < Formula
   sha256 "1457849eb33011b43371801b62ffa13d29bebe51be8d5a36da563b87bb094a49"
 
   bottle do
-    sha1 "aa312ee016437c22b7e4955c67defa51c7703540" => :yosemite
-    sha1 "400280627f03404732bf3db7a5612bfab5fe3876" => :mavericks
-    sha1 "9ac0bc82522ce93b349a71d2f0cfeac4d6501545" => :mountain_lion
+    revision 1
+    sha256 "7b1f201752034bc00cc8410454bb1b7ce9fc991545dddf485e97492612e006ad" => :el_capitan
+    sha256 "80b5c4fafcfb0662c5cf6792d65ad036a3df7b9390b699499592a89ae17ec0a9" => :yosemite
+    sha256 "7e9e7ac750ccc8f23a1f05a9bf9245b42c153e2be293ca183e741f758defb9fc" => :mavericks
   end
 
   depends_on "readline"
@@ -35,5 +36,28 @@ class BaculaFd < Formula
 
     # Create the working directory:
     (var + "lib/bacula").mkpath
+  end
+
+  plist_options :startup => true, :manual => "bacula-fd"
+
+  def plist; <<-EOS.undent
+    <?xml version="0.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>ProgramArguments</key>
+        <array>
+          <string>#{opt_bin}/bacula-fd</string>
+          <string>-f</string>
+        </array>
+        <key>UserName</key>
+        <string>root</string>
+      </dict>
+    </plist>
+  EOS
   end
 end

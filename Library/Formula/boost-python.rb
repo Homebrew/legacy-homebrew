@@ -1,25 +1,16 @@
 class BoostPython < Formula
   desc "C++ library for C++/Python interoperability"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.58.0/boost_1_58_0.tar.bz2"
-  sha256 "fdfc204fc33ec79c99b9a74944c3e54bd78be4f7f15e260c0e2700a36dc7d3e5"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
+  sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
   head "https://github.com/boostorg/boost.git"
-
-  stable do
-    # don't explicitly link a Python framework
-    # https://github.com/boostorg/build/pull/78
-    patch do
-      url "https://gist.githubusercontent.com/tdsmith/9026da299ac1bfd3f419/raw/b73a919c38af08941487ca37d46e711864104c4d/boost-python.diff"
-      sha256 "9f374761ada11eecd082e7f9d5b80efeb387039d3a290f45b61f0730bce3801a"
-    end
-  end
 
   bottle do
     cellar :any
-    sha256 "aa56ab952ef93ad52672b86cc8b8371fe79cb907d6eed88a316ed2808a264cd2" => :el_capitan
-    sha256 "7f627fb1887ecaaea4b6b363d300a21c5274a1607c7dc64f2114d3794b5fec11" => :yosemite
-    sha256 "6239719b00615abb9ce2bd40c680b14182325c2e1844c1bea410c002b42ce1db" => :mavericks
-    sha256 "24acf2ddde1edfabe04239856dec6ce85e8652f3c0d5d8cf357b219c2bf3272a" => :mountain_lion
+    revision 1
+    sha256 "4b16817f7f19f1b4ee2ffc4e0fc4593a5d404ddad2703f3be688ab6498f24f3e" => :el_capitan
+    sha256 "df627b338b9b42510eb5670d6e65856164d11714cfd436a19fd36c7ba0775259" => :yosemite
+    sha256 "2f5a292bddc892d6660179dab8b67261b3db93311f2a4b230256da5010f5c5d3" => :mavericks
   end
 
   option :universal
@@ -41,6 +32,14 @@ class BoostPython < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    if stable?
+      # fix make_setter regression
+      # https://github.com/boostorg/python/pull/40
+      inreplace "boost/python/data_members.hpp",
+                "# if BOOST_WORKAROUND(__EDG_VERSION__, <= 238)",
+                "# if !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)"
+    end
 
     # "layout" should be synchronized with boost
     args = ["--prefix=#{prefix}",
@@ -93,6 +92,7 @@ class BoostPython < Formula
 
     lib.install Dir["stage-python3/lib/*py*"] if build.with?("python3")
     lib.install Dir["stage-python/lib/*py*"] if build.with?("python")
+    doc.install Dir["libs/python/doc/*"]
   end
 
   test do

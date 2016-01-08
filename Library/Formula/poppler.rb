@@ -1,13 +1,13 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "http://poppler.freedesktop.org"
-  url "http://poppler.freedesktop.org/poppler-0.36.0.tar.xz"
-  sha256 "93cc067b23c4ef7421380d3e8bd7c940b2027668446750787d7c1cb42720248e"
+  url "http://poppler.freedesktop.org/poppler-0.39.0.tar.xz"
+  sha256 "afd75befa9c3a41e1d7755c4e43dea70cfd8f1a4dac118e83032cbb41ce17bb9"
 
   bottle do
-    sha256 "ee3a00acc6fc9ea30530e59a09b758cbde2fb64b762553a7de39268ec70aa174" => :el_capitan
-    sha256 "9a2b1e4159da1ee0c898f7b6b0aab3d936846c310b801f0d1724c19834c70e0a" => :yosemite
-    sha256 "c924b235f741f53850d308170a3f38d65a0d5eb7472f9144369d6d8aa7c12bba" => :mavericks
+    sha256 "4a4961e3e9370adf320a988d5138a6e4f6ce753fda0d44df290e7823ed81458c" => :el_capitan
+    sha256 "b9a9ef2ca73c2f2b71ef475daae201ffbebe1459f454bdc90cfd993b2509f1b0" => :yosemite
+    sha256 "1a5d03be2094a8717cc58a3698e408fec6d288ec66c3c4d2812e920f37628994" => :mavericks
   end
 
   option "with-qt", "Build Qt backend"
@@ -52,7 +52,9 @@ class Poppler < Formula
       --enable-introspection=yes
     ]
 
-    if build.with? "qt"
+    if build.with?("qt") && build.with?("qt5")
+      raise "poppler: --with-qt and --with-qt5 cannot be used at the same time"
+    elsif build.with? "qt"
       args << "--enable-poppler-qt4"
     elsif build.with? "qt5"
       args << "--enable-poppler-qt5"

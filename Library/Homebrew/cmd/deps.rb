@@ -82,7 +82,7 @@ module Homebrew
     max = deps.length - 1
     deps.each_with_index do |dep, i|
       chr = i == max ? "└──" : "├──"
-      prefix_ext = i == max ? "    " : "|   "
+      prefix_ext = i == max ? "    " : "│   "
       puts prefix + "#{chr} #{dep.name}"
       recursive_deps_tree(Formulary.factory(dep.name), prefix + prefix_ext)
     end

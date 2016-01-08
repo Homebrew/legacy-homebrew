@@ -1,24 +1,19 @@
 class Jemalloc < Formula
   desc "malloc implementation emphasizing fragmentation avoidance"
   homepage "http://www.canonware.com/jemalloc/download.html"
-  url "http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2"
-  sha256 "e16c2159dd3c81ca2dc3b5c9ef0d43e1f2f45b04548f42db12e7c12d7bdf84fe"
+  url "https://github.com/jemalloc/jemalloc/releases/download/4.0.0/jemalloc-4.0.0.tar.bz2"
+  sha256 "214dbc74c3669b34219b0c5a55cb96f07cb12f44c834ed9ee64d1185ee6c3ef2"
   head "https://github.com/jemalloc/jemalloc.git"
-  revision 1
 
   bottle do
     cellar :any
-    sha256 "988d311a2aea0ae12d14456b43d4c6d21c21a2490d3f8acf06d09dad22517d93" => :el_capitan
-    sha256 "c4439e555f79aa22adbb3b935f059dc1e1dc984644e7398362b3b34dbadd39fd" => :yosemite
-    sha256 "c117b315a5c8b81d53b67474082de5fb0617fe83d510987a340247dafebe36d8" => :mavericks
-    sha256 "eca61c4b66a8c6df7ef1eb48258ccdf90c91d6b4ee48e8523a3b724c83ee11bb" => :mountain_lion
+    sha256 "2d9d3b8a36e1ffda6d5f4c5e1fabd95f496e4562a75cafba6ae975faa49e9bcd" => :el_capitan
+    sha256 "2167fc05024156684666e97527784c9a260db0c9308e604fb27fd314e4be70e7" => :yosemite
+    sha256 "5f3dbdc9c6a55e0cd7b8f53a4f001f36937d7c2f6afe92fe8cd0ce3ea39b922f" => :mavericks
   end
 
   def install
     system "./configure", "--disable-debug", "--prefix=#{prefix}", "--with-jemalloc-prefix="
     system "make", "install"
-
-    # This otherwise conflicts with gperftools
-    mv "#{bin}/pprof", "#{bin}/jemalloc-pprof"
   end
 end

@@ -9,9 +9,9 @@ class Geocouch < Formula
 
   bottle do
     cellar :any
-    sha1 "c1114f8a472fc8fa916ddbe9f73d22b1922a0a3b" => :mavericks
-    sha1 "2aa501910c42d122a05ab066e4dffdf7e0df2242" => :mountain_lion
-    sha1 "d1a81ebdbea1d8598461d194fa47d988bc4d36df" => :lion
+    sha256 "ca0c35c820bd58fb23f703a61494b732d7cd3d5887741483f5b6cbbe3eb5f383" => :mavericks
+    sha256 "f0e0fcd810819820dad6f1eb005b2ed58aa3d953d25507292b68b6c16d6394f4" => :mountain_lion
+    sha256 "3405263e277d08749e771506555bdd5353d4b4c09e1aab155bcb94f0f1ee0c04" => :lion
   end
 
   depends_on "couchdb"

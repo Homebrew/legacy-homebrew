@@ -1,13 +1,13 @@
 class GstPluginsBase < Formula
   desc "GStreamer plugins (well-supported, basic set)"
   homepage "http://gstreamer.freedesktop.org/"
-  url "https://download.gnome.org/sources/gst-plugins-base/1.6/gst-plugins-base-1.6.0.tar.xz"
-  sha256 "314fd1b707f65caf8eb6164d9422fc51e2b220a890ccd2de6ec03a2883d77231"
+  url "https://download.gnome.org/sources/gst-plugins-base/1.6/gst-plugins-base-1.6.2.tar.xz"
+  sha256 "c75dd400e451526ed71e1c4955e33d470a2581f5e71ecf84920a41c0a5c75322"
 
   bottle do
-    sha256 "e1c9b62174870496f06c2a31c639b267559cf0d5bbd6344042d6798c528890c9" => :el_capitan
-    sha256 "d923837664e2ae437b3a9f8e5251794c50e721f761f601df9128ef0d2a60b7b1" => :yosemite
-    sha256 "b99d142014674fcecffb2920a6fae7c4862c4ca4f1f817690dbe5dfd931f14db" => :mavericks
+    sha256 "1185b081a3cbaa4b8bab072212656b1901be0ea4cf9f559a339a8cbba1d1f688" => :el_capitan
+    sha256 "5218d039d3556f5f4a2c9401c174d60bca13c84591c93b3459ed1194b224971a" => :yosemite
+    sha256 "4c9391e8e6f064e0a78dc56250f0a92d4b431b200eb1dfc825aa82454298a985" => :mavericks
   end
 
   head do

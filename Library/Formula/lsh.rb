@@ -6,9 +6,10 @@ class Lsh < Formula
   sha256 "8bbf94b1aa77a02cac1a10350aac599b7aedda61881db16606debeef7ef212e3"
 
   bottle do
-    sha1 "72d573729a1ab019f2b1f5f7f53a2dd6b9096044" => :yosemite
-    sha1 "059c5b4112b9f1d1645bcd98a42c0e8524ecaf8d" => :mavericks
-    sha1 "72229b6a88ad27b22f4904d3a4b3a3539bb9b09b" => :mountain_lion
+    revision 1
+    sha256 "5ade7c67942a35410f130ef1fb76548161e3be2dc22307d2ddc77d21fa24b2ef" => :el_capitan
+    sha256 "ef1ee7f5b0cc58ef8820924f46f2a82f6c72c373317cbca4ff3567499a86e59b" => :yosemite
+    sha256 "620b97949d1fb024fcf5019455e1cb4d28b9ad498aadcf2d1aac4fa67735fd40" => :mavericks
   end
 
   depends_on :x11 => :optional # For libXau library
@@ -16,7 +17,8 @@ class Lsh < Formula
   depends_on "gmp"
 
   resource "liboop" do
-    url "https://mirrors.kernel.org/debian/pool/main/libo/liboop/liboop_1.0.orig.tar.gz"
+    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/libo/liboop/liboop_1.0.orig.tar.gz"
+    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/libo/liboop/liboop_1.0.orig.tar.gz"
     sha256 "34d83c6e0f09ee15cb2bc3131e219747c3b612bb57cf7d25318ab90da9a2d97c"
   end
 
@@ -41,7 +43,7 @@ class Lsh < Formula
 
     # Find the sandboxed liboop.
     ENV.append "LDFLAGS", "-L#{libexec}/liboop/lib"
-    # Compile lsh without the 89 flag? Ha, Nope!
+    # Compile fails without passing gnu89.
     ENV.append_to_cflags "-I#{libexec}/liboop/include -std=gnu89"
 
     system "./configure", *args

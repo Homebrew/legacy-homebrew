@@ -3,16 +3,16 @@ class GstPluginsGood < Formula
   homepage "http://gstreamer.freedesktop.org/"
 
   stable do
-    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.0.tar.xz"
-    sha256 "a0915639595305e48884656e22b16fda7c6892aa02cdb3eb43e23dab6e6b81fa"
+    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.2.tar.xz"
+    sha256 "876e54dfce93274b98e024f353258d35fa4d49d1f9010069e676c530f6eb6a92"
 
     depends_on "check" => :optional
   end
 
   bottle do
-    sha256 "f0b959674f1bf2135378c640853971899df115830e047d0a33784671c35d17d4" => :el_capitan
-    sha256 "1a3009aa7e6dc2cd2cffd598a0c9e1f3183a268460aa15ebd1f750153a4d0f9d" => :yosemite
-    sha256 "cd42820977c3cdb2ca5315f7c86c1e041b523960fac07e767175958c873ff683" => :mavericks
+    sha256 "2b270292dd58a8b0a703ee00f80f50100eeb48617cfbf024eb4d3beeb25c40d5" => :el_capitan
+    sha256 "5d76d76b1914d9a1f589a32a6795f3e17870ca68820ddce07ab23554e2bd42a9" => :yosemite
+    sha256 "4990905eb444d443e8488858c3cf362da11e66d9c886e25f5fd0f9245d7a5de4" => :mavericks
   end
 
   head do
@@ -66,6 +66,12 @@ class GstPluginsGood < Formula
     else
       args << "--disable-x"
     end
+
+    # This plugin causes hangs on Snow Leopard (and possibly other versions?)
+    # Upstream says it hasn't "been actively tested in a long time";
+    # successor is glimagesink (in gst-plugins-bad).
+    # https://bugzilla.gnome.org/show_bug.cgi?id=756918
+    args << "--disable-osx_video" if MacOS.version == :snow_leopard
 
     if build.head?
       ENV["NOCONFIGURE"] = "yes"

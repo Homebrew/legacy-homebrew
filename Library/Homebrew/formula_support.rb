@@ -58,6 +58,8 @@ end
 
 # Used to annotate formulae that don't require compiling or cannot build bottle.
 class BottleDisableReason
+  SUPPORTED_TYPES = [:unneeded, :disable]
+
   def initialize(type, reason)
     @type = type
     @reason = reason
@@ -65,6 +67,10 @@ class BottleDisableReason
 
   def unneeded?
     @type == :unneeded
+  end
+
+  def valid?
+    SUPPORTED_TYPES.include? @type
   end
 
   def to_s

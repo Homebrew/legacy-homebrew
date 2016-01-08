@@ -5,6 +5,8 @@ class Transcrypt < Formula
   sha256 "b061b9579cec7d76b05ac898c2da19168de9b0c173d2f3f986fcb0c6c971f95d"
   head "https://github.com/elasticdog/transcrypt.git"
 
+  bottle :unneeded
+
   def install
     bin.install "transcrypt"
     man.install "man/transcrypt.1"

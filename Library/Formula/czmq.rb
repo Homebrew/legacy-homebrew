@@ -3,15 +3,16 @@ class Czmq < Formula
   homepage "http://czmq.zeromq.org/"
   url "http://download.zeromq.org/czmq-3.0.2.tar.gz"
   sha256 "8bca39ab69375fa4e981daf87b3feae85384d5b40cef6adbe9d5eb063357699a"
-  revision 1
+  revision 3
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "d3e5623f2c031374d0aecacfa4fff264f290edb1c40a0fa4474daf0098c4b649" => :el_capitan
-    sha256 "f0c78d4d93ddcd16f18b6277c39e08b7eb8754c802d2a63c652852613305e4c4" => :yosemite
-    sha256 "c9f2bcf72a59b931946945e9661d8f6b43d2ce0f0a18ef8d15db60e830489caf" => :mavericks
+    sha256 "9bbf6566cd74644ae22f5dd9338c1123bf3ecdf7a920dcaabf166aeb3902e3f7" => :el_capitan
+    sha256 "4a569da4e60f3b8252b4ef9a998e50153ac119108135ce832f2494b0edf7e87a" => :yosemite
+    sha256 "ae42e5b89ed47c00a3a45d9c3a4759a2f0a772c787f62b34cb024f489790efff" => :mavericks
   end
+
+  conflicts_with "mono", :because => "both install `makecert` binaries"
 
   head do
     url "https://github.com/zeromq/czmq.git"
@@ -19,13 +20,6 @@ class Czmq < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-
-    # Patch to fix zdir_test fail on `make check`
-    # https://github.com/Homebrew/homebrew/issues/44210
-    patch do
-      url "https://patch-diff.githubusercontent.com/raw/zeromq/czmq/pull/1127.patch"
-      sha256 "3a0672bf6e12ca7b400f70df36a93ecc31fbdc86bb977a94a5963754a4fc29b8"
-    end
   end
 
   option :universal

@@ -27,13 +27,11 @@ module Homebrew
   end
 
   def internal_commands
-    with_directory = false
-    (HOMEBREW_LIBRARY_PATH/"cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
+    (HOMEBREW_LIBRARY_PATH/"cmd").children.select(&:file?).map { |f| f.basename(".rb").to_s }
   end
 
   def internal_development_commands
-    with_directory = false
-    (HOMEBREW_LIBRARY_PATH/"dev-cmd").children(with_directory).map { |f| File.basename(f, ".rb") }
+    (HOMEBREW_LIBRARY_PATH/"dev-cmd").children.select(&:file?).map { |f| f.basename(".rb").to_s }
   end
 
   def external_commands

@@ -1,15 +1,15 @@
 class Sickrage < Formula
   desc "Automatic video library manager for TV Shows"
   homepage "https://www.sickrage.tv"
-  url "https://github.com/SiCKRAGETV/SickRage/archive/v4.0.66.tar.gz"
-  sha256 "37e74190b1393c4cd2fafc72581ced6f9188e5c90ad3af9192706e2173e1db6f"
+  url "https://github.com/SiCKRAGETV/SickRage/archive/v4.0.76.2.tar.gz"
+  sha256 "bb47558fa67ec8d5d728f6ce9cdb4dc4a80ab505fe17454c8eb43c13c8ce2e3c"
   head "https://github.com/SiCKRAGETV/SickRage.git"
 
   bottle do
     cellar :any
-    sha256 "2c6ce172da9c55c3f7baf1b93581c4ead89713346e21a437038dbe1ad35dc1ac" => :el_capitan
-    sha256 "81ef3934e67213f5836beb673da263bd278a22d66750cabe1157bc5b8f49ddf1" => :yosemite
-    sha256 "8d41c66dfcc471a110857c8a33578df9416e12ba93d7f42b519d7df4043af769" => :mavericks
+    sha256 "94f6add1a3f4517b36f2f3861847922851cbb7657c89275d6aea53ab95fa0b70" => :el_capitan
+    sha256 "0cb4b2f6e2d290a125737ba670267da20f3851a21677a39895038f18e14df051" => :yosemite
+    sha256 "f3463916bf2cac143dbff400394f347f960d552cfbba36d5731677539245b71d" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -21,8 +21,8 @@ class Sickrage < Formula
   end
 
   resource "Markdown" do
-    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.2.tar.gz"
-    sha256 "ee17d0d7dc091e645dd48302a2e21301cc68f188505c2069d8635f94554170bf"
+    url "https://pypi.python.org/packages/source/M/Markdown/Markdown-2.6.3.tar.gz"
+    sha256 "ad75fc03c45492eba3bc63645e1e6465f65523a05fff0abf36910f810465a9af"
   end
 
   resource "pyOpenSSL" do
@@ -31,13 +31,13 @@ class Sickrage < Formula
   end
 
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.1.2.tar.gz"
-    sha256 "390970b602708c91ddc73953bb6929e56291c18a4d80f360afa00fad8b6f3339"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.3.0.tar.gz"
+    sha256 "9daa53aff0b5cf64c85c10eab7ce6776880d0ee71b78cedeae196ae82b6734e9"
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.0.tar.gz"
-    sha256 "211c02fe77d791d7fc437227ba1c046268d5da665e05d8a53fc19f4f74c21001"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.tar.gz"
+    sha256 "059bc6428b1d0e2317f505698602642f1d8dda5b120ec573a59a430d8cb7a32d"
   end
 
   resource "enum34" do
@@ -56,8 +56,8 @@ class Sickrage < Formula
   end
 
   resource "pyasn1" do
-    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.8.tar.gz"
-    sha256 "5d33be7ca0ec5997d76d29ea4c33b65c00c0231407fff975199d7f40530b8347"
+    url "https://pypi.python.org/packages/source/p/pyasn1/pyasn1-0.1.9.tar.gz"
+    sha256 "853cacd96d1f701ddd67aa03ecc05f51890135b7262e922710112f12a2ed2a7f"
   end
 
   resource "pycparser" do
@@ -66,8 +66,8 @@ class Sickrage < Formula
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   def install

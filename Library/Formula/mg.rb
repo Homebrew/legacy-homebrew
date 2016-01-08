@@ -6,6 +6,8 @@ class Mg < Formula
 
   depends_on "clens"
 
+  conflicts_with "mg3a", :because => "both install `mg` binaries"
+
   def install
     # makefile hardcodes include path to clens; since it's a
     # nonstandard path, Homebrew's standard include paths won't

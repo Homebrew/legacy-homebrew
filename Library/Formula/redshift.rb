@@ -1,13 +1,13 @@
 class Redshift < Formula
-  desc "Adjusts color temperature of your screen according to your surroundings"
+  desc "Adjust color temperature of your screen according to your surroundings"
   homepage "http://jonls.dk/redshift/"
-  url "https://github.com/jonls/redshift/releases/download/v1.10/redshift-1.10.tar.xz"
-  sha256 "5bc2e70aa414f42dafb45c6e06ea90157d7d4b298af48877144ff442639aeea6"
+  url "https://github.com/jonls/redshift/releases/download/v1.11/redshift-1.11.tar.xz"
+  sha256 "10e350f93951c0521dd6f103d67a485972c307214f036e009acea2978fe4f359"
 
   bottle do
-    sha1 "1cb7c9779ea9bbd693deed7c74187efe45e1a924" => :yosemite
-    sha1 "699455a7634fb9ad524c4cdc9bafa7c4561b8de4" => :mavericks
-    sha1 "4fc7ff402d12a09ab6abc2a9c91ee03b2483cc8d" => :mountain_lion
+    sha256 "f8fc6b6b2279982aefc06a03571c8de76df9542808558e542e87d7e28187d58f" => :el_capitan
+    sha256 "b51cd606ac04a3709ca9a02196c26ee6b79b1b32d976ef01155db382f5145f81" => :yosemite
+    sha256 "9d151b44efdd166ae4239af7dff907a4868441c126f7fd11aa69a53e9d39de7a" => :mavericks
   end
 
   head do
@@ -39,6 +39,7 @@ class Redshift < Formula
     system "./bootstrap" if build.head?
     system "./configure", *args
     system "make", "install"
+    pkgshare.install "redshift.conf.sample"
   end
 
   plist_options :manual => "redshift"
@@ -52,7 +53,7 @@ class Redshift < Formula
         <string>#{plist_name}</string>
         <key>ProgramArguments</key>
         <array>
-          <string>#{bin}/redshift</string>
+          <string>#{opt_bin}/redshift</string>
         </array>
         <key>KeepAlive</key>
         <true/>
@@ -68,9 +69,10 @@ class Redshift < Formula
   end
 
   def caveats; <<-EOS.undent
-    A .conf file has not been provided. If you want one, see:
-      http://jonls.dk/redshift/
-    And place it in $HOME/.config
+    A sample .conf file has been installed to #{opt_pkgshare}.
+
+    Please note redshift expects to read its configuration file from
+    #{ENV["HOME"]}/.config
     EOS
   end
 

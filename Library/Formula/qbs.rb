@@ -1,14 +1,15 @@
 class Qbs < Formula
   desc "Qt Build Suite"
   homepage "https://wiki.qt.io/Qt_Build_Suite"
-  url "https://download.qt.io/official_releases/qbs/1.4.2/qbs-src-1.4.2.tar.gz"
-  sha256 "b9d36118c3ae0f7d4df6bf7239a0a0163c0340b701d00191fa5f832cef341ce5"
+  url "https://download.qt.io/official_releases/qbs/1.4.4/qbs-src-1.4.4.tar.gz"
+  sha256 "23fb37bfbe775907a2593f716b17151f25995ec37cd5bedabaf266781078b404"
+  head "https://code.qt.io/qt-labs/qbs.git"
 
   bottle do
     cellar :any
-    sha256 "711702ab21e1d79ec8af07f79b7df5ca1f248bbc7a33bca5956d1d8d8f63d66b" => :yosemite
-    sha256 "66104f7ef11819ab5ed04ae4389824e4e015b91e85cd21215b5a85d2e3c822b2" => :mavericks
-    sha256 "fa16108941859b3b8ddfbc44d086e4401efb1583cf52e6f391b0710fb0e80b05" => :mountain_lion
+    sha256 "05a7f29c42f055d6a679926071dd3b630de2a292c8c3cc52464710c7b3b8db34" => :el_capitan
+    sha256 "26a6312cb1d399f7d3e0cac86ee697e8452959b9cdd90bde5b47a50585288f48" => :yosemite
+    sha256 "d850b60a497e36c0aec5661112564a963cc6cda3dcbecd45eecd71bd10a94ac8" => :mavericks
   end
 
   depends_on "qt5"

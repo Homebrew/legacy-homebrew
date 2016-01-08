@@ -7,16 +7,20 @@ class Sdcc < Formula
   head "https://sdcc.svn.sourceforge.net/svnroot/sdcc/trunk/sdcc/"
 
   bottle do
-    sha256 "f22ecc49004e7e760c3510d90a8818289974c702e18887a46d04104d11e3a69b" => :yosemite
-    sha256 "2ad5b170ee4c018faeb6c5ec3a1b7dc01a34cec0b635ea8c654f5d290b801f19" => :mavericks
-    sha256 "79f62fa7c8972a9b8b25bf1a96b92262ddc916517bda7567b2c761c5ea211ffe" => :mountain_lion
+    revision 1
+    sha256 "d46fdad8f291ea90162e7218ec3d43468de8b85680da5f1088617be8521005f5" => :el_capitan
+    sha256 "b5cd6950c3dd7b2d7399e0a7eabdd02992a34b8ec0c1c9fc9e46ddc7f561fce6" => :yosemite
+    sha256 "73aecffe0f2ec715f532c09ef0f95d3a045582cc65b5e10c48208eac5bfe655e" => :mavericks
   end
+
+  option "with-avr-port", "Enables the AVR port (UNSUPPORTED, MAY FAIL)"
+  option "with-xa51-port", "Enables the xa51 port (UNSUPPORTED, MAY FAIL)"
+
+  deprecated_option "enable-avr-port" => "with-avr-port"
+  deprecated_option "enable-xa51-port" => "with-xa51-port"
 
   depends_on "gputils"
   depends_on "boost"
-
-  option "enable-avr-port", "Enables the AVR port (UNSUPPORTED, MAY FAIL)"
-  option "enable-xa51-port", "Enables the xa51 port (UNSUPPORTED, MAY FAIL)"
 
   # SDCC Doesn't build huge-stack-auto by default for mcs51, but it
   # is needed by Contiki and others. This simple patch enables it to build.
@@ -26,10 +30,9 @@ class Sdcc < Formula
   end
 
   def install
-    args = ["--prefix=#{prefix}"]
-
-    args << "--enable-avr-port" if build.include? "enable-avr-port"
-    args << "--enable-xa51-port" if build.include? "enable-xa51-port"
+    args = %W[--prefix=#{prefix}]
+    args << "--enable-avr-port" if build.with? "avr-port"
+    args << "--enable-xa51-port" if build.with? "xa51-port"
 
     system "./configure", *args
     system "make", "all"

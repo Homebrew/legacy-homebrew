@@ -1,26 +1,27 @@
 class Pgbadger < Formula
   desc "Log analyzer for PostgreSQL"
   homepage "https://dalibo.github.io/pgbadger/"
-  url "https://downloads.sourceforge.net/project/pgbadger/6.4/pgbadger-6.4.tar.gz"
-  sha256 "a2a3b38e64c20b95d3ae395f93f41cda30492f844885a7ec5d5b2fbb090ec2f3"
+  url "https://github.com/dalibo/pgbadger/archive/v7.1.tar.gz"
+  sha256 "de7f36cb55d2c177fdf47115f3fb5c2e842b443432631212e408726baacbad7e"
 
   head "https://github.com/dalibo/pgbadger.git"
 
   bottle do
-    cellar :any
-    sha256 "588d67e7a2ceee5a2465e2d28d4087d1c51d25593b1ae15f728d6b260628cc9e" => :yosemite
-    sha256 "b24b5ef55b6b26c3e51a184488317cbc0e303c460ac068e5336181f24652aa6f" => :mavericks
-    sha256 "3754aa6ed54fbfe21b48ba5dc528bd1ffa44256c464a02d1c68f3fd377798258" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3a690686f1cb848602e13f441459cdc703a9035fc1f45d021abbba7adb419c72" => :el_capitan
+    sha256 "b40504b9e111b0d7b833957da303523309fc98a7427e59180e92cc925eac9040" => :yosemite
+    sha256 "418225494d697e088c67c3b7d469b77f07689fe10263f53a6732a4befc70c01e" => :mavericks
   end
 
   def install
+    ENV.delete "PERL_MM_OPT"
     system "perl", "Makefile.PL", "DESTDIR=#{buildpath}"
     system "make"
     system "make", "install"
     bin.install "usr/local/bin/pgbadger"
-    man1.install "usr/local/share/man/man1/pgbadger.1"
+    man1.install "usr/local/share/man/man1/pgbadger.1p"
     chmod 0755, bin+"pgbadger" # has 555 by default
-    chmod 0644, man1+"pgbadger.1" # has 444 by default
+    chmod 0644, man1+"pgbadger.1p" # has 444 by default
   end
 
   def caveats; <<-EOS.undent

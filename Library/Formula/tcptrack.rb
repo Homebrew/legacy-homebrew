@@ -1,6 +1,6 @@
 class Tcptrack < Formula
   desc "Monitor status of TCP connections on a network interface"
-  homepage "http://www.rhythm.cx/~steve/devel/tcptrack/"
+  homepage "http://linux.die.net/man/1/tcptrack"
   url "http://ftp.de.debian.org/debian/pool/main/t/tcptrack/tcptrack_1.4.2.orig.tar.gz"
   sha256 "6607b1e1c778c49d3e8795e119065cf66eb2db28b3255dbc56b1612527107049"
 

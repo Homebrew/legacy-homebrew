@@ -7,9 +7,9 @@ class Libxspf < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "ab194a0906d4f987bbd61b29d4f9de7c8698e2f5" => :yosemite
-    sha1 "56c55987e4c83926e160de92b6c929be9b28dcf7" => :mavericks
-    sha1 "341ddf653ddcc41d7b24e47299202ea284bf8721" => :mountain_lion
+    sha256 "1d87baedae1c21d2df5bdd91c35be294b7c570e83c5c83fcdf284bce9a985c27" => :yosemite
+    sha256 "9f85ead926bf875a18a91db004a04d6aa814c4766a3ab22c3ffa1a0c5371b836" => :mavericks
+    sha256 "96a893aa4699d97dc39ef95089d6475f44cc00f7d9a9bea991bec30193e8b005" => :mountain_lion
   end
 
   depends_on "pkg-config" => :build

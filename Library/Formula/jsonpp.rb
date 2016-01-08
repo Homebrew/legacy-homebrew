@@ -5,6 +5,8 @@ class Jsonpp < Formula
   version "1.2.0"
   sha256 "f680a18341fec15d0e4235e579e551ffab243e0ea9e6f5fc90106a62db8f5780"
 
+  bottle :unneeded
+
   def install
     bin.install "jsonpp"
   end

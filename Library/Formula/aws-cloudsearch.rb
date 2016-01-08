@@ -6,6 +6,8 @@ class AwsCloudsearch < Formula
   sha256 "882a6442172957b27c0b3cd1f271531112092d4d227b528ce912b2e7ea886d51"
   revision 1
 
+  bottle :unneeded
+
   depends_on :java => "1.7+"
 
   def install

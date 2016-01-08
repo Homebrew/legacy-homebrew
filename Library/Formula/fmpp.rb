@@ -5,6 +5,8 @@ class Fmpp < Formula
   sha256 "b893451b5450a7f35fe680e934f6903ec8143d88959dcfca5d17467fbe4142f9"
   head "https://github.com/freemarker/fmpp.git"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

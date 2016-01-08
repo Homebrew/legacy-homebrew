@@ -5,6 +5,8 @@ class Chromedriver < Formula
   version "2.20"
   sha256 "aa28baba2338ae6f9107ad52dfc1f4029227dd6ec35c03ce551d65c243493711"
 
+  bottle :unneeded
+
   def install
     bin.install "chromedriver"
   end

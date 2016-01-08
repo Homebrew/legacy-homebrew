@@ -7,9 +7,9 @@ class Libnxml < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "7cb66793cd407da933402efdba8fef4c0a6df5e9" => :yosemite
-    sha1 "ebc5579cac15cc564df904594fb1e773bb90e747" => :mavericks
-    sha1 "656ec4f843adb2ab16fc30ea708fb5abccd76490" => :mountain_lion
+    sha256 "7c2bff9c49c93ef6a3901050212671c60e0cb4e72f2faf968eb4ae57f3d6fbeb" => :yosemite
+    sha256 "49cfdc9ab57c78deed6b2fc3ce1c13b48a943384b2d366f9c37cfb673528b637" => :mavericks
+    sha256 "6625f30468eb89a785443261aa63a4f69267cd72338a3acb604326245566e3f8" => :mountain_lion
   end
 
   depends_on "curl" if MacOS.version < :lion # needs >= v7.20.1

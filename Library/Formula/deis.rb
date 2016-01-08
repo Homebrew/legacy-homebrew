@@ -8,16 +8,14 @@ class Deis < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e024e5d2cfed1fcf6a04547ba4a149c943bc81868097185374c7ae5c4f41bea3" => :el_capitan
-    sha256 "779e8f88ea17de931f58014e96628c719bc0ff34a60532c7d8b19ede684e253f" => :yosemite
-    sha256 "a286d2d1a76f6e9ae0f046b824dd4d4117f39d5833168404ab03be429c0dcd63" => :mavericks
+    revision 1
+    sha256 "c62ccd9efa4f93b290b846942c16df504c8546637d24f038c5f2855bb5b992e8" => :el_capitan
+    sha256 "5e2a430023e6bc4273fc1054303e5e8e84e822ebefafc16ff686ef67db1882cf" => :yosemite
+    sha256 "7e57cf0300d8f31e45129402d9d3137619b2ee34630f4be81a5b33f68229b17d" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "dd8d14d5985f95e87948edfe1038f0b752bacbef"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/docopt/docopt-go" do
     url "https://github.com/docopt/docopt-go.git", :revision => "854c423c810880e30b9fecdabb12d54f4a92f9bb"
@@ -33,16 +31,10 @@ class Deis < Formula
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV.prepend_create_path "PATH", buildpath/"bin"
-
     mkdir_p "#{buildpath}/client/Godeps/_workspace/src/github.com/deis"
     ln_s buildpath, "#{buildpath}/client/Godeps/_workspace/src/github.com/deis/deis"
 
     Language::Go.stage_deps resources, buildpath/"src"
-
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
 
     cd "client" do
       system "godep", "go", "build", "-a", "-ldflags", "-s", "-o", "dist/deis"

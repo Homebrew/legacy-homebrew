@@ -1,13 +1,13 @@
 class Pygobject3 < Formula
   desc "GLib/GObject/GIO Python bindings for Python 3"
   homepage "https://live.gnome.org/PyGObject"
-  url "https://download.gnome.org/sources/pygobject/3.18/pygobject-3.18.0.tar.xz"
-  sha256 "1c3ba1112d3713cd5c86260312bfeb0de1f84f18808e51072c50b29d46156dc9"
+  url "https://download.gnome.org/sources/pygobject/3.18/pygobject-3.18.2.tar.xz"
+  sha256 "2a3cad1517916b74e131e6002c3824361aee0671ffb0d55ded119477fc1c2c5f"
 
   bottle do
-    sha256 "62d07f2c2358f218b550529be214120c27d8aa17110ee432007306505650bd45" => :el_capitan
-    sha256 "22463499593a38fec4ed389992c122b6024ddcd9e1ca8d896b31148779d8388f" => :yosemite
-    sha256 "5bc154b74662f36df70f3bfa88c58196856bc1c835bd5251b3fb27424a252fd5" => :mavericks
+    sha256 "28dd19d1d32f8890d246b0e98fbb788438ee753f85e880eb754044752bc3e322" => :el_capitan
+    sha256 "bf85d0cccf9311f91909886745a6ea330868f2dff1045e8f2d53c01ae0531bc7" => :yosemite
+    sha256 "133386638620543280a54cbfe5ed9982b1a55fdeb79e33ab3c3516fb3e6a8033" => :mavericks
   end
 
   option :universal

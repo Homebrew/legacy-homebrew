@@ -1,14 +1,20 @@
 class Grass < Formula
   desc "Geographic Resources Analysis Support System"
-  homepage "http://grass.osgeo.org/"
+  homepage "https://grass.osgeo.org/"
   revision 1
 
   stable do
-    url "http://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
+    url "https://grass.osgeo.org/grass64/source/grass-6.4.4.tar.gz"
     sha256 "5ddba27b4e5495f602ee5249a07e287f342dd8e1422ea5d490c04311c731d274"
 
     # Patches that files are not installed outside of the prefix.
     patch :DATA
+  end
+
+  bottle do
+    sha256 "9881162ad659b3e04e687933477fd10cf8726c53aa19fbfba9dfb3f685edaa25" => :el_capitan
+    sha256 "aa4db69f55a2fd3b5a09cebcc4706009743ba5d7e46ee46ad958f274799e33f6" => :yosemite
+    sha256 "42304f890bd466dfbbe4dcccde86ecd85c209ea38e908320f94d2a745233ef59" => :mavericks
   end
 
   head do
@@ -16,7 +22,7 @@ class Grass < Formula
 
     patch do
       url "https://gist.githubusercontent.com/jctull/0fe3db92a3e7c19fa6e0/raw/42e819f0a9b144de782c94f730dbc4da136e9227/grassPatchHead.diff"
-      sha1 "ffbe31682d8a7605d5548cdafd536f1c785d3a23"
+      sha256 "a30caef931b70f37700823d028bce38af978ccb472649ec17920d91197421bc5"
     end
   end
 
@@ -31,12 +37,12 @@ class Grass < Formula
   depends_on "libtiff"
   depends_on "unixodbc"
   depends_on "fftw"
-  depends_on "wxpython" => :recommended # prefer over OS X's version because of 64bit
-  depends_on :postgresql => :optional
-  depends_on :mysql => :optional
   depends_on "cairo"
   depends_on "freetype"
-  depends_on :x11  # needs to find at least X11/include/GL/gl.h
+  depends_on :x11 # needs to find at least X11/include/GL/gl.h
+  depends_on "wxpython" => :recommended
+  depends_on :postgresql => :optional
+  depends_on :mysql => :optional
 
   fails_with :clang do
     cause "Multiple build failures while compiling GRASS tools."
@@ -112,8 +118,10 @@ class Grass < Formula
     end
 
     system "./configure", "--prefix=#{prefix}", *args
-    system "make GDAL_DYNAMIC=" # make and make install must be separate steps.
-    system "make GDAL_DYNAMIC= install" # GDAL_DYNAMIC set to blank for r.external compatability
+    # make and make install must be separate steps.
+    system "make", "GDAL_DYNAMIC="
+    # GDAL_DYNAMIC set to blank for r.external compatability
+    system "make", "GDAL_DYNAMIC=", "install"
   end
 
   def caveats

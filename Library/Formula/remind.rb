@@ -11,6 +11,8 @@ class Remind < Formula
     sha256 "fb78fa7e3df893822473b56d79d64d48ff5827c7df3ce6d518985262c99d3056" => :mountain_lion
   end
 
+  conflicts_with "rem", :because => "both install `rem` binaries"
+
   def install
     # Remove unnecessary sleeps when running on Apple
     inreplace "configure", "sleep 1", "true"

@@ -7,9 +7,9 @@ class SwitchaudioOsx < Formula
 
   bottle do
     cellar :any
-    sha1 "5e5809f498765a2402a3082d3f643f7772f7851f" => :mavericks
-    sha1 "419a9487393be1d4b08fae2fc7aa6ab097b7cd75" => :mountain_lion
-    sha1 "94e17d2daaefe1118ce7915d26b4cbd0219b07c8" => :lion
+    sha256 "1fe317d92bd690f9f9b9b4ab3d6b856b02a1213ab1df49d847d53cccf199a8b6" => :mavericks
+    sha256 "80dbff685611e2129746f99e535ad8cc6e030606652686594ad8c81b308c5c16" => :mountain_lion
+    sha256 "974919281dd0263b866e737bb23e998a2e116f1116a65f20b35fd34be6cd39d1" => :lion
   end
 
   depends_on :macos => :lion

@@ -8,7 +8,7 @@ Python libraries exist to be imported from other Python modules; they are often 
 
 Bindings are a special case of libraries that allow Python code to interact with a library or application implemented in another language.
 
-Homebrew is happy to accept applications that are built in Python, whether the apps are available from PyPI or not. Homebrew generally won't accept libraries that can be installed correctly with `pip install foo`. Libraries that can be pip-installed but have several Homebrew dependencies may be appropriate for the [homebrew-python tap](https://github.com/Homebrew/homebrew-python). Bindings may be installed for packages that provide them, especially if equivalent functionality isn't available through pip.
+Homebrew is happy to accept applications that are built in Python, whether the apps are available from PyPI or not. Homebrew generally won't accept libraries that can be installed correctly with `pip install foo`. Libraries that can be pip-installed but have several Homebrew dependencies may be appropriate for the [homebrew/python](https://github.com/Homebrew/homebrew-python) tap. Bindings may be installed for packages that provide them, especially if equivalent functionality isn't available through pip.
 
 # Running setup.py
 
@@ -166,7 +166,7 @@ Formulæ that declare a dependency on `:python` will always be bottled against H
 
 Libraries may be installed to `libexec` and added to `sys.path` by writing a .pth file (named like "homebrew-foo.pth") to the `prefix` site-packages. This simplifies the ensuing drama if pip is accidentally used to upgrade a Homebrew-installed package and prevents the accumulation of stale .pyc files in Homebrew's site-packages.
 
-Most formulas presently just install to `prefix`.
+Most formulae presently just install to `prefix`.
 
 ## Dependencies
 

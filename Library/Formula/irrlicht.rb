@@ -9,7 +9,7 @@ class Irrlicht < Formula
   head do
     patch do
       url "https://gist.githubusercontent.com/neoascetic/7487c936a3c5858ad762/raw/4f572fdca4cd7a3ae4bb3893d50821cee48e3236/trunk.diff"
-      sha1 "8c891aabaec1c462ae06415002a2eb92d66bbc2f"
+      sha256 "df3ea90cfaec1fc2887a2335706bb58b0ccca6258ddb2878f1e159086a3e1abf"
     end
   end
 
@@ -23,9 +23,9 @@ class Irrlicht < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "10609d1af910d5c1efb9de13b52b25fdabd077b8" => :yosemite
-    sha1 "631246df8cf27ce69f951710737fd0b10b56ca0b" => :mavericks
-    sha1 "0684b7c6e105988e15609ed52331608e5d1d40b8" => :mountain_lion
+    sha256 "f3e6427bc2499611b12b5babb907153fdd63c478d9745e59821958644e02f915" => :yosemite
+    sha256 "4ef8e3d8f22ed7114223f89b6bc286c3fa9cadb9135d274265f2dce396522d27" => :mavericks
+    sha256 "5a68f99034d50ce45afe554a36486be55f435bd6b2ff32c8c0f647a0697b0fbb" => :mountain_lion
   end
 
   depends_on :xcode => :build

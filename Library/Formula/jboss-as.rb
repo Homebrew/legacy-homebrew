@@ -1,9 +1,11 @@
 class JbossAs < Formula
   desc "JBoss Application Server"
-  homepage "http://www.jboss.org/jbossas"
-  url "http://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.tar.gz"
+  homepage "https://jbossas.jboss.org/"
+  url "https://download.jboss.org/jbossas/7.1/jboss-as-7.1.1.Final/jboss-as-7.1.1.Final.tar.gz"
   version "7.1.1.Final"
   sha256 "88fd3fdac4f7951cee3396eff3d70e8166c3319de82d77374a24e3b422e0b2ad"
+
+  bottle :unneeded
 
   def install
     rm_f Dir["bin/*.bat"]

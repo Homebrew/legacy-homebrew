@@ -1,15 +1,15 @@
 class OpenalSoft < Formula
   desc "Implementation of the OpenAL 3D audio API"
   homepage "http://kcat.strangesoft.net/openal.html"
-  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.16.0.tar.bz2"
-  sha256 "2f3dcd313fe26391284fbf8596863723f99c65d6c6846dccb48e79cadaf40d5f"
-  revision 1
+  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.17.0.tar.bz2"
+  sha256 "5e93336de2e7c50f3a01beba51861d6f61c3e4045a896191dc806591e46264d1"
+  head "http://repo.or.cz/openal-soft.git"
 
   bottle do
     cellar :any
-    sha256 "500f9689c526d26ffb39fafd03ade82f2e913b59c3c29ccc4698f3579db1eab8" => :yosemite
-    sha256 "ecd9497afe87e2fdba9cb7d18efbc81548a06f0972f2a7a9ceda0056f97f5112" => :mavericks
-    sha256 "e5e9b16266db4532c9387e4d87e5839cb1c6545065bc3b911ee8890fa5446e2f" => :mountain_lion
+    sha256 "81d1fd4cf4e709f04071d6586c3961aed84cc98727a30b397315cf63ecc5be66" => :el_capitan
+    sha256 "f6bf71249e4b2d909e0a7240b9c4529b6abe94cb637738c339a0ea357e9166ae" => :yosemite
+    sha256 "da9897a08329506de8767b3681a2683bccea4d385c98243f79e056615603dfd8" => :mavericks
   end
 
   option :universal

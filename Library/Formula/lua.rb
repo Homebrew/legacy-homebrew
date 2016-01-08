@@ -58,6 +58,9 @@ class Lua < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    # Subtitute formula prefix in `src/Makefile` for install name (dylib ID).
+    inreplace "src/Makefile", "@LUA_PREFIX@", prefix
+
     # Use our CC/CFLAGS to compile.
     inreplace "src/Makefile" do |s|
       s.remove_make_var! "CC"
@@ -78,7 +81,7 @@ class Lua < Formula
     bin.install_symlink "lua" => "lua-5.2"
     bin.install_symlink "luac" => "luac5.2"
     bin.install_symlink "luac" => "luac-5.2"
-    include.install_symlink include => "#{include}/lua5.2"
+    (include/"lua5.2").install_symlink include.children
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
 
@@ -114,7 +117,7 @@ class Lua < Formula
   def pc_file; <<-EOS.undent
     V= 5.2
     R= 5.2.4
-    prefix=#{HOMEBREW_PREFIX}
+    prefix=#{prefix}
     INSTALL_BIN= ${prefix}/bin
     INSTALL_INC= ${prefix}/include
     INSTALL_LIB= ${prefix}/lib
@@ -197,7 +200,7 @@ index 8c9ee67..7f92407 100644
  $(LUA_A): $(BASE_O)
 -	$(AR) $@ $(BASE_O)
 -	$(RANLIB) $@
-+	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.2.dylib \
++	$(CC) -dynamiclib -install_name @LUA_PREFIX@/lib/liblua.5.2.dylib \
 +		-compatibility_version 5.2 -current_version 5.2.4 \
 +		-o liblua.5.2.4.dylib $^
 

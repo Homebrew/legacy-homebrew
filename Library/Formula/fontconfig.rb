@@ -8,11 +8,10 @@ class Fontconfig < Formula
   # is relocatable, but it has hardcoded paths in the executables.
   bottle do
     cellar :any
-    revision 3
-    sha256 "1bfd3fe75bf477dcc0942cba4d1b4ceae1a8f47f1ad2ac8884e2e5110577f224" => :el_capitan
-    sha1 "aa8cd844a4740cb6458a4c4bd74746de6e75a02b" => :yosemite
-    sha1 "5d273ae804ff4c3f2ad735d77e9d25b2cb1ce910" => :mavericks
-    sha1 "17c0696a6e075db8d6822bdde341616d36cb0c0d" => :mountain_lion
+    revision 4
+    sha256 "ebf34b370ba91f92df903e7b080135f3cc6e0492156002ee3fdd899128f60aa8" => :el_capitan
+    sha256 "5b27c11fd4dc7ccc4c37484775efa581f5c6cb3b447ea744a8d14573800ae516" => :yosemite
+    sha256 "bd0b9ce3d85d4767ac326d1ec58eb99825a6218e20d32ca20508f399867be700" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion
@@ -32,6 +31,7 @@ class Fontconfig < Formula
     ENV.universal_binary if build.universal?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
+                          "--enable-static",
                           "--with-add-fonts=/System/Library/Fonts,/Library/Fonts,~/Library/Fonts",
                           "--prefix=#{prefix}",
                           "--localstatedir=#{var}",

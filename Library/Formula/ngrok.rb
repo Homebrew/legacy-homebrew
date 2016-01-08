@@ -1,3 +1,6 @@
+# Please don't update this formula to the 2.x releases until those are
+# open-source and available to build from source. Ref:
+# https://github.com/Homebrew/homebrew/pull/45441
 class Ngrok < Formula
   desc "Expose localhost to the internet and capture traffic for replay"
   homepage "https://ngrok.com"

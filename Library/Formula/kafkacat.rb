@@ -1,14 +1,14 @@
 class Kafkacat < Formula
   desc "Generic command-line non-JVM Apache Kafka producer and consumer"
   homepage "https://github.com/edenhill/kafkacat"
-  url "https://github.com/edenhill/kafkacat/archive/1.1.0.tar.gz"
-  sha256 "290a16b6bbacedf2ae7b0eb89e1295ec803a378ecd7307485ebf4ef0a89702d9"
+  url "https://github.com/edenhill/kafkacat/archive/1.2.0.tar.gz"
+  sha256 "43e5e3d6de7882324ca4afc3c1f6c49c8485d74b6e4eb4047ba5a6eba8c1cab9"
 
   bottle do
     cellar :any
-    sha256 "88d376e81786a4be1cef64daafa233d6bcf9e664cbb1a6654e9b946842720e68" => :yosemite
-    sha256 "a5a67429b038a546f3265cbb6660f9244e50e05ae26774f845d4b443b34b6b24" => :mavericks
-    sha256 "06dbf479f58cf9b81e2ab1fbde95eacb6b9d088b25ab152a4900c139c28ab82b" => :mountain_lion
+    sha256 "6a5d1f3ab0c3619b53f88d435f05a2bc6e5ca05a612b3e12d13f85bba7d71517" => :el_capitan
+    sha256 "f9cdd267383c3ca532da813bdabd7bf3715e2e22bc078f949a8e12dd4f103f49" => :yosemite
+    sha256 "a66d6d312498e117d485d7eea58e412da287be1dc08a1be0cd621d6a77763c7f" => :mavericks
   end
 
   depends_on "librdkafka"

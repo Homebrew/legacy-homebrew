@@ -5,9 +5,10 @@ class Augeas < Formula
   sha256 "659fae7ac229029e60a869a3b88c616cfd51cf2fba286cdfe3af3a052cb35b30"
 
   bottle do
-    sha256 "9f9d87829624afc741c590614bb0dbf8858ebd5df6728e55925d3a8d82125d84" => :yosemite
-    sha256 "2e6bed040b7f9fadce3c059327fbbbb60830b0ffb7eda41ccd452d9ebe04c865" => :mavericks
-    sha256 "df76e18d45e3240416b47d2dc91a82a3ae0dc9291fd3e350953646b0148b9b41" => :mountain_lion
+    revision 1
+    sha256 "34d6940f0ab935135c1a69a31c878712c9b28954e6686f52f48315c6e7c92f3e" => :el_capitan
+    sha256 "0cc6f1fe0eff9493bc33044c3a8289120bcd2ffaebf2a3623bf95ae9b7baf7a9" => :yosemite
+    sha256 "fd49d49a8dce0fd653b21536c2396a8ecd9f394c73ea4ec6cd50d90eb39303d0" => :mavericks
   end
 
   head do
@@ -30,11 +31,6 @@ class Augeas < Formula
       system "./autogen.sh", *args
     else
       system "./configure", *args
-    end
-
-    # libfa example program doesn't compile cleanly on OSX, so skip it
-    inreplace "Makefile" do |s|
-      s.change_make_var! "SUBDIRS", "gnulib/lib src gnulib/tests tests man doc"
     end
 
     system "make", "install"

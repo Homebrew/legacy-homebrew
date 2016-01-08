@@ -1,14 +1,14 @@
 class Primesieve < Formula
-  desc "Optimized sieve of Eratosthenes implementation"
+  desc "Fast C/C++ prime number generator"
   homepage "http://primesieve.org/"
-  url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.2.tar.gz"
-  sha256 "73abf4ff118e8d41ffaf687cf902b0b53a8bbc357bf4efa1798477d346f85cc8"
+  url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.6.0.tar.gz"
+  sha256 "dc4dc76288cd8b48f530153d8f56b0e095212d0f6c83a2b4e4ab1b8538456de0"
 
   bottle do
     cellar :any
-    sha256 "db994cff1eea28e828e3c0df8d1a4bc82be16ff377ab7088224f9afdb609978d" => :yosemite
-    sha256 "48e0da06374d96fc4e5ded73c5093b947a9dd254fb257cf14405c27a076fa77e" => :mavericks
-    sha256 "1fd0410a04f8cc14b90577d714223517712bde14aaefbd1250787c41a3065e23" => :mountain_lion
+    sha256 "b7b5b03ab3c266646c5204390c9bb87dcf277a80853d6e69d5416f77722386f5" => :el_capitan
+    sha256 "37807685a64d9f3ff6ec39769b8609db24c63a6ad3584ba825cd5fa9934647ab" => :yosemite
+    sha256 "a9c2ffee2b6c72bb1ee0ffc9bd81b40e45227b4e57950923635e65e8f5f24c72" => :mavericks
   end
 
   def install

@@ -6,9 +6,9 @@ class T1lib < Formula
 
   bottle do
     revision 1
-    sha1 "d0e610a54eeaa0f6a5dfdbfe8a60b7d4a7bbd2c4" => :yosemite
-    sha1 "480846a0795f75a04b0e86621afcc7e19352ca16" => :mavericks
-    sha1 "e7ae71cb8f1080e9c8b5bc95468ff4dd0bc4c7d6" => :mountain_lion
+    sha256 "3e1e05aaf56a7b1569faaab30f6281d79958cd1dc230d4a94aff77ae88500ac6" => :yosemite
+    sha256 "1cbdcf850c4dbcdefff6e25843c84ff08cf1e03d70744920cb35a9fff68b38a5" => :mavericks
+    sha256 "01be2a73a4870445f2a612b99126b66804d53fdbf24a95e49b117ebf58427a66" => :mountain_lion
   end
 
   def install

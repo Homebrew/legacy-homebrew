@@ -1,7 +1,8 @@
 require "hardware"
 require "extend/ENV/shared"
 
-# @deprecated
+# TODO: deprecate compiling related codes after it's only used by brew test.
+# @private
 module Stdenv
   include SharedEnvExtension
 
@@ -268,6 +269,8 @@ module Stdenv
   end
 
   def universal_binary
+    check_for_compiler_universal_support
+
     append_to_cflags Hardware::CPU.universal_archs.as_arch_flags
     append "LDFLAGS", Hardware::CPU.universal_archs.as_arch_flags
 

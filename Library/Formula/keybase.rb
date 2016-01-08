@@ -1,33 +1,33 @@
 class Keybase < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io/"
-  url "https://github.com/keybase/node-client/archive/v0.8.22.tar.gz"
-  sha256 "4290251ddf7d1f124211731aa8d0dd47f43ba9e1eb9b0b0f326d7986a3f87cb7"
-  head "https://github.com/keybase/node-client.git"
+  url "https://github.com/keybase/client/archive/v1.0.7-0.tar.gz"
+  sha256 "50db952880ed4f72825429dc595fe62196b181b9cbcc946b990e58a680fff3ff"
+  version "1.0.7-0"
 
-  bottle :unneeded
+  head "https://github.com/keybase/client.git"
 
-  depends_on "node"
-  depends_on :gpg
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "1150c09a9833b6e5b6a8926ff5d1d645636364dc3633a3a0c30b309a5f46d7d1" => :el_capitan
+    sha256 "b12987e6404c4fb6808ecb3e136490a428e5819ba632798cfb66645ba654df4a" => :yosemite
+    sha256 "265f041ea4e57c46e20fdd1aff6ed3b91e01a10d729804cde9b5558da81fbf33" => :mavericks
+  end
+
+  depends_on "go" => :build
 
   def install
-    # remove self-update command
-    # https://github.com/keybase/keybase-issues/issues/1477
-    rm "lib/command/update.js"
-    inreplace "lib/command/all.js", '"update", ', ""
-    inreplace "lib/req.js", "keybase-installer", "brew update && brew upgrade keybase"
+    ENV["GOPATH"] = buildpath
+    ENV["GOBIN"] = buildpath
+    ENV["GO15VENDOREXPERIMENT"] = "1"
+    (buildpath/"src/github.com/keybase/client/").install "go"
 
-    libexec.install Dir["*"]
-    (bin/"keybase").write <<-EOS.undent
-      #!/bin/sh
-      export KEYBASE_BIN="#{bin}/keybase"
-      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/bin/main.js" "$@"
-    EOS
+    system "go", "build", "-a", "-tags", "production brew", "github.com/keybase/client/go/keybase"
+
+    bin.install "keybase"
   end
 
   test do
-    # Keybase requires a valid GPG keychain to be set up. Fetch Homebrew's pubkey.
-    system "gpg", "--keyserver", "pgp.mit.edu", "--recv-keys", "0xE33A3D3CCE59E297"
-    system "#{bin}/keybase", "id", "homebrew"
+    system "#{bin}/keybase", "-standalone", "id", "homebrew"
   end
 end

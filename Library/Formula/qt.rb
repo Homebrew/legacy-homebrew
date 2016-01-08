@@ -1,7 +1,9 @@
 class Qt < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  revision 1
+  revision 2
+
+  head "https://code.qt.io/qt/qt.git", :branch => "4.8"
 
   stable do
     url "https://download.qt.io/official_releases/qt/4.8/4.8.7/qt-everywhere-opensource-src-4.8.7.tar.gz"
@@ -10,26 +12,22 @@ class Qt < Formula
   end
 
   bottle do
-    sha256 "48e2e4d7f4659409c74e6acb9b59fdf9ab5d8e4b7f9b438a73e3d0ca03635e93" => :el_capitan
-    sha256 "8e041b0a48c8a0785022c8a77e8c40efeb9d57cd701b635cc0a7ce46692c0c5f" => :yosemite
-    sha256 "fe687f9a9b657d33b7c11ad4ccd7208deddd8e96d2104df2df98de13b0c5d5d7" => :mavericks
+    sha256 "f6dc9df6f78e1d8c12ebf961c8a9196885a1ee732eed098b2cbe8320f2d9a7a8" => :el_capitan
+    sha256 "323bcba88bd3600a4a5dc26d43602e57a71609f1d9a620b9d42b63426569e191" => :yosemite
+    sha256 "157a2338190f124a7c9446ecafa6669f503ca4e0221fece620096832a767f852" => :mavericks
   end
 
-  # Backport of Qt5 commit to fix the fatal build error on OS X El Capitan.
+  # Backport of Qt5 commit to fix the fatal build error with Xcode 7, SDK 10.11.
   # http://code.qt.io/cgit/qt/qtbase.git/commit/?id=b06304e164ba47351fa292662c1e6383c081b5ca
-  if MacOS.version >= :el_capitan
-    patch do
-      url "https://raw.githubusercontent.com/Homebrew/patches/480b7142c4e2ae07de6028f672695eb927a34875/qt/el-capitan.patch"
-      sha256 "c8a0fa819c8012a7cb70e902abb7133fc05235881ce230235d93719c47650c4e"
-    end
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/patches/480b7142c4e2ae07de6028f672695eb927a34875/qt/el-capitan.patch"
+    sha256 "c8a0fa819c8012a7cb70e902abb7133fc05235881ce230235d93719c47650c4e"
   end
-
-  head "https://code.qt.io/qt/qt.git", :branch => "4.8"
 
   option :universal
   option "with-qt3support", "Build with deprecated Qt3Support module support"
   option "with-docs", "Build documentation"
-  option "with-developer", "Build and link with developer options"
+  option "without-webkit", "Build without QtWebKit module"
 
   depends_on "openssl"
   depends_on "d-bus" => :optional
@@ -37,7 +35,6 @@ class Qt < Formula
   depends_on "postgresql" => :optional
 
   deprecated_option "qtdbus" => "with-d-bus"
-  deprecated_option "developer" => "with-developer"
 
   resource "test-project" do
     url "https://gist.github.com/tdsmith/f55e7e69ae174b5b5a03.git",
@@ -47,12 +44,20 @@ class Qt < Formula
   def install
     ENV.universal_binary if build.universal?
 
-    args = ["-prefix", prefix,
-            "-system-zlib",
-            "-qt-libtiff", "-qt-libpng", "-qt-libjpeg",
-            "-confirm-license", "-opensource",
-            "-nomake", "demos", "-nomake", "examples",
-            "-cocoa", "-fast", "-release"]
+    args = %W[
+      -prefix #{prefix}
+      -release
+      -opensource
+      -confirm-license
+      -fast
+      -system-zlib
+      -qt-libtiff
+      -qt-libpng
+      -qt-libjpeg
+      -nomake demos
+      -nomake examples
+      -cocoa
+    ]
 
     if ENV.compiler == :clang
       args << "-platform"
@@ -96,7 +101,7 @@ class Qt < Formula
       args << "-arch" << "x86"
     end
 
-    args << "-developer-build" if build.with? "developer"
+    args << "-no-webkit" if build.without? "webkit"
 
     system "./configure", *args
     system "make"
@@ -119,7 +124,23 @@ class Qt < Formula
       include.install_symlink path => path.parent.basename(".framework")
     end
 
+    # Make `HOMEBREW_PREFIX/lib/qt4/plugins` an additional plug-in search path
+    # for Qt Designer to support formulae that provide Qt Designer plug-ins.
+    system "/usr/libexec/PlistBuddy",
+            "-c", "Add :LSEnvironment:QT_PLUGIN_PATH string \"#{HOMEBREW_PREFIX}/lib/qt4/plugins\"",
+           "#{bin}/Designer.app/Contents/Info.plist"
+
     Pathname.glob("#{bin}/*.app") { |app| mv app, prefix }
+  end
+
+  def caveats; <<-EOS.undent
+    We agreed to the Qt opensource license for you.
+    If this is unacceptable you should uninstall.
+
+    Qt Designer no longer picks up changes to the QT_PLUGIN_PATH environment
+    variable as it was tweaked to search for plug-ins provided by formulae in
+      #{HOMEBREW_PREFIX}/lib/qt4/plugins
+    EOS
   end
 
   test do
@@ -128,11 +149,5 @@ class Qt < Formula
     system bin/"qmake"
     system "make"
     assert_match /GitHub/, pipe_output(testpath/"qtnetwork-test 2>&1", nil, 0)
-  end
-
-  def caveats; <<-EOS.undent
-    We agreed to the Qt opensource license for you.
-    If this is unacceptable you should uninstall.
-    EOS
   end
 end

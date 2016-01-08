@@ -6,9 +6,9 @@ class Tmpwatch < Formula
 
   bottle do
     cellar :any
-    sha1 "4afc50b010310169a0bd37dac99df9e2b44370c6" => :yosemite
-    sha1 "8eef5be45661363ee34a791f1f331ba519f4d9b4" => :mavericks
-    sha1 "079eb69792c8a9de70cb02eaebe0c77642b7d18b" => :mountain_lion
+    sha256 "6b7935b74c118e797b2cba298e0f546d4231ac2c5eb165f4a63bc6c2d0a372dc" => :yosemite
+    sha256 "0083a3dd898627e47dabc967328de86df6bf60c2c62210fd9dd4846795de0a8f" => :mavericks
+    sha256 "c0416097ea10d23751b2db15f21d437d863e5de3ed44fe50e0f8ebc34f487f2f" => :mountain_lion
   end
 
   def install

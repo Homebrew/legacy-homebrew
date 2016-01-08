@@ -1,8 +1,8 @@
 # Homebrew's Formula API
-This is the (partially) documented public API for Homebrew. It's currently a work in progress. Sorry about that!
+This is the (partially) documented public API for Homebrew.
 
 The main class you should look at is the {Formula} class (and classes linked from there). That's the class that's used to create Homebrew formulae (i.e. package descriptions). Assume anything else you stumble upon is private.
 
-You may also find the [Formula Cookbook](Formula-Cookbook.md) and [Ruby Style Guide](https://github.com/styleguide/ruby) helpful in creating formulae.
+You may also find the [Formula Cookbook](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md) and [Ruby Style Guide](https://github.com/styleguide/ruby) helpful in creating formulae.
 
 Good luck!

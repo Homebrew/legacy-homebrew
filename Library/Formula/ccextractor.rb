@@ -1,17 +1,15 @@
 class Ccextractor < Formula
   desc "Free, GPL licensed closed caption tool"
   homepage "http://ccextractor.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ccextractor/ccextractor/0.75/ccextractor.src.0.75.zip"
-  sha256 "fb6ed33d516b9198e1b625fec4fce99f079e28f1c556eff4552f53c92ecc9cca"
+  url "https://downloads.sourceforge.net/project/ccextractor/ccextractor/0.78/ccextractor.src.0.78.zip"
+  sha256 "95c40f788c803c1932f5678d10b4b63e6650290c35fa2328882af551ec6d3fc9"
   head "https://github.com/ccextractor/ccextractor.git"
-  revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "58a191a71de18ec0dd05dc87d939ec77734ae56be0a5ddb474ee0752daeb272d" => :el_capitan
-    sha256 "ccefb5fb2a0ac270ed2e59bcffdb9510f583b2b71134b51b1cb521fb04db997d" => :yosemite
-    sha256 "d912fde7ea48d6c50a2c675d851e2ca5c2edd52b06074e126ab708e63f7e7e8b" => :mavericks
+    sha256 "1e596a6366ac48c9d42b880516b574a81bb35f331e511e2c01cf0b5a39906c9a" => :el_capitan
+    sha256 "ad7639a5c96bd1e7f94234dce0fbea2685e81d1ea2a853c6e09b7de5059d0c52" => :yosemite
+    sha256 "1d13697115f36df12c3eb5633527369f65324b30cb89ba4e13c1bddd3d196011" => :mavericks
   end
 
   depends_on "cmake" => :build

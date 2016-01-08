@@ -5,12 +5,15 @@ class ObjcRun < Formula
   sha256 "6d02a31764c457c4a6a9f5df0963d733d611ba873fc32672151ee02a05acd6f2"
   head "https://github.com/iljaiwas/objc-run.git"
 
+  bottle :unneeded
+
   def install
     bin.install "objc-run"
-    (share+"objc-run").install "examples", "test.bash"
+    pkgshare.install "examples", "test.bash"
   end
 
   test do
-    system "#{share}/objc-run/test.bash"
+    cp_r pkgshare, testpath
+    system "./objc-run/test.bash"
   end
 end

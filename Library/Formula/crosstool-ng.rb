@@ -42,7 +42,7 @@ class CrosstoolNg < Formula
 
     args << "--with-grep=ggrep" if build.with? "grep"
 
-    args << "--with-make=gmake" if build.with? "make"
+    args << "--with-make=#{Formula["make"].opt_bin}/gmake" if build.with? "make"
 
     args << "CFLAGS=-std=gnu89"
 

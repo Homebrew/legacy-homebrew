@@ -1,13 +1,13 @@
 class Mercury < Formula
   desc "Logic/functional programming language"
-  homepage "http://mercurylang.org/"
+  homepage "https://mercurylang.org/"
   url "http://dl.mercurylang.org/release/mercury-srcdist-14.01.1.tar.gz"
   sha256 "98f7cbde7a7425365400feef3e69f1d6a848b25dc56ba959050523d546c4e88b"
 
   bottle do
-    sha1 "82730c120043d0a741d8deeceb79c82b7e232549" => :yosemite
-    sha1 "70e9c006f0287ff012441f469d1fa39b6ec5a291" => :mavericks
-    sha1 "0ab2f708f25879f4b894d89a271ddb23be0d984e" => :mountain_lion
+    sha256 "cd513a5ca92a2dc2162db2f87208129cb5b3ab0ce6d85e0da0c4b54498278144" => :yosemite
+    sha256 "bcf3147bb1480f1f99f4af7b43a0b4a217b7f2192ec621c8b2c6777a4df8dba3" => :mavericks
+    sha256 "ebef2e58fbf08029606fba423f6e689231af0fe2d96f3baff270f1a47ed2003c" => :mountain_lion
   end
 
   depends_on "erlang" => :optional

@@ -1,24 +1,26 @@
 class Sshuttle < Formula
   desc "Proxy server that works as a poor man's VPN"
   homepage "https://github.com/sshuttle/sshuttle"
-  url "https://github.com/sshuttle/sshuttle/archive/sshuttle-0.71.tar.gz"
-  sha256 "62f0f8be5497c2d0098238c54e881ac001cd84fce442c2506ab6d37aa2f698f0"
-
+  url "https://github.com/sshuttle/sshuttle/archive/v0.73.tar.gz"
+  sha256 "d78a6aa76f93ab69fd9685ce11b428a9b549c049a6c0104740c06c9b354a5ae3"
   head "https://github.com/sshuttle/sshuttle.git"
 
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "937b43e0254726fcbae33fd4f3b2038b99640e63c36ba9da2c55f25cae47a844" => :el_capitan
-    sha256 "1b759a0906561923790010588e9021985fad41a46f62715bbbe3161289135c56" => :yosemite
-    sha256 "1cd57390faf6c628fc7edd60b9dad0030e705477efa47f50c280723549b73058" => :mavericks
-    sha256 "7187a29546982362e87cdab10e4aedeb1b5bda7c0ddf40740602534151912133" => :mountain_lion
-  end
+  bottle :unneeded
+
+  depends_on :python if MacOS.version <= :snow_leopard
 
   def install
     # Building the docs requires installing
     # markdown & BeautifulSoup Python modules
     # so we don't.
-    libexec.install Dir["*"]
-    bin.write_exec_script libexec/"src/sshuttle"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+  end
+
+  test do
+    shell_output("#{bin}/sshuttle -h", 97)
   end
 end

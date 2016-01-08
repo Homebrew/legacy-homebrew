@@ -8,7 +8,7 @@ class CupsPdf < Formula
   patch :DATA
 
   def install
-    system "#{ENV.cc} #{ENV.cflags} -o cups-pdf src/cups-pdf.c"
+    system ENV.cc, ENV.cflags, "-o", "cups-pdf", "src/cups-pdf.c"
 
     (etc+"cups").install "extra/cups-pdf.conf"
     (lib+"cups/backend").install "cups-pdf"

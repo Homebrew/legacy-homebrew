@@ -5,6 +5,8 @@ class Chcase < Formula
   version "2.0"
   sha256 "386e6f294157957adbd433a10591d9d78cd54d13e1347fb15a19e70f03319ed3"
 
+  bottle :unneeded
+
   # add a shebang so that brew properly sets it executable
   patch :DATA
 

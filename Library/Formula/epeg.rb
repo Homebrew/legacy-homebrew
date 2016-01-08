@@ -8,9 +8,9 @@ class Epeg < Formula
 
   bottle do
     cellar :any
-    sha1 "a12a4553bd78bff070f01be5d3e7062372383e31" => :yosemite
-    sha1 "ce665a144c3c355ae745067e686465f1f6dfafc3" => :mavericks
-    sha1 "24ca70477748c42a71a31df9facc1b21a400c1e1" => :mountain_lion
+    sha256 "f7abbd3547174648e37bd74d73e5ec0a6e4f8391c97a1153d0ed63adc7b02193" => :yosemite
+    sha256 "617efb3a645d90f883921752c45d298178e26f535270c38fb46c44a46e3fcc9d" => :mavericks
+    sha256 "3caf1686250bbd6933e5c5e1cc03c79eeffff3877e07087549acd75334319547" => :mountain_lion
   end
 
   depends_on "automake" => :build
