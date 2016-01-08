@@ -14,9 +14,9 @@ class Ansible < Formula
   end
 
   devel do
-    url "https://releases.ansible.com/ansible/ansible-2.0.0-0.8.rc3.tar.gz"
-    sha256 "d1a4e0c16cbb1879f62c699f9c94e4c10b2252d5be2bf00a93ba19abbb600e57"
-    version "2.0.0-0.8.rc3"
+    url "https://releases.ansible.com/ansible/ansible-2.0.0-0.9.rc4.tar.gz"
+    sha256 "aa4f512501c31e4ee44e7f5a1be30b1d0b68f4925ec849433b74f8d6d36430bd"
+    version "2.0.0-0.9.rc4"
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
