@@ -1,4 +1,7 @@
 require "testing_env"
+require "formula"
+require "formula_installer"
+require "bottles"
 
 class FormularyTest < Homebrew::TestCase
   def test_class_naming
