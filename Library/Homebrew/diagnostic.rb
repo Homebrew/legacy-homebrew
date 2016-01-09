@@ -304,11 +304,19 @@ module Homebrew
       end
 
       def check_for_unsupported_osx
-        if !ARGV.homebrew_developer? && OS::Mac.prerelease? then <<-EOS.undent
-        You are using OS X #{MacOS.version}.
-        We do not provide support for this pre-release version.
-        You may encounter build failures or other breakages.
-        EOS
+        return if ARGV.homebrew_developer?
+        if OS::Mac.prerelease?
+          <<-EOS.undent
+            You are using OS X #{MacOS.version}.
+            We do not provide support for this pre-release version.
+            You may encounter build failures or other breakages.
+          EOS
+        elsif OS::Mac.outdated_release?
+          <<-EOS.undent
+            You are using OS X #{MacOS.version}.
+            We (and Apple) do not provide support for this old version.
+            You may encounter build failures or other breakages.
+          EOS
         end
       end
 
