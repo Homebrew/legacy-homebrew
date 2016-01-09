@@ -124,7 +124,7 @@ class FormulaInstaller
       end
     end
   rescue FormulaUnavailableError => e
-    e.dependent = formula.full_name
+    e.formula = formula.full_name
     raise
   end
 
@@ -274,9 +274,9 @@ class FormulaInstaller
   def check_requirements(req_map)
     fatals = []
 
-    req_map.each_pair do |dependent, reqs|
+    req_map.each_pair do |f, reqs|
       reqs.each do |req|
-        puts "#{dependent}: #{req.message}"
+        puts "#{f}: #{req.message}"
         fatals << req if req.fatal?
       end
     end
@@ -284,11 +284,11 @@ class FormulaInstaller
     raise UnsatisfiedRequirements.new(fatals) unless fatals.empty?
   end
 
-  def install_requirement_default_formula?(req, dependent, build)
+  def install_requirement_default_formula?(req, formula, build)
     return false unless req.default_formula?
     return true unless req.satisfied?
     return false if req.run?
-    install_bottle_for?(dependent, build) || build_bottle?
+    install_bottle_for?(formula, build) || build_bottle?
   end
 
   def expand_requirements
@@ -296,15 +296,15 @@ class FormulaInstaller
     deps = []
     formulae = [formula]
 
-    while f = formulae.pop
-      f.recursive_requirements do |dependent, req|
-        build = effective_build_options_for(dependent)
+    while f_outer = formulae.pop
+      f_outer.recursive_requirements do |f, req|
+        build = effective_build_options_for(f)
 
         if (req.optional? || req.recommended?) && build.without?(req)
           Requirement.prune
-        elsif req.build? && install_bottle_for?(dependent, build)
+        elsif req.build? && install_bottle_for?(f, build)
           Requirement.prune
-        elsif install_requirement_default_formula?(req, dependent, build)
+        elsif install_requirement_default_formula?(req, f, build)
           dep = req.to_dependency
           deps.unshift(dep)
           formulae.unshift(dep.to_formula)
@@ -312,7 +312,7 @@ class FormulaInstaller
         elsif req.satisfied?
           Requirement.prune
         else
-          unsatisfied_reqs[dependent] << req
+          unsatisfied_reqs[f] << req
         end
       end
     end
@@ -326,16 +326,16 @@ class FormulaInstaller
   def expand_dependencies(deps)
     inherited_options = {}
 
-    expanded_deps = Dependency.expand(formula, deps) do |dependent, dep|
+    expanded_deps = Dependency.expand(formula, deps) do |f, dep|
       options = inherited_options[dep.name] = inherited_options_for(dep)
       build = effective_build_options_for(
-        dependent,
-        inherited_options.fetch(dependent.name, [])
+        f,
+        inherited_options.fetch(f.name, [])
       )
 
       if (dep.optional? || dep.recommended?) && build.without?(dep)
         Dependency.prune
-      elsif dep.build? && install_bottle_for?(dependent, build)
+      elsif dep.build? && install_bottle_for?(f, build)
         Dependency.prune
       elsif dep.satisfied?(options)
         Dependency.skip
@@ -345,11 +345,11 @@ class FormulaInstaller
     expanded_deps.map { |dep| [dep, inherited_options[dep.name]] }
   end
 
-  def effective_build_options_for(dependent, inherited_options = [])
-    args  = dependent.build.used_options
-    args |= dependent == formula ? options : inherited_options
-    args |= Tab.for_formula(dependent).used_options
-    BuildOptions.new(args, dependent.options)
+  def effective_build_options_for(f, inherited_options = [])
+    args  = f.build.used_options
+    args |= f == formula ? options : inherited_options
+    args |= Tab.for_formula(f).used_options
+    BuildOptions.new(args, f.options)
   end
 
   def inherited_options_for(dep)
