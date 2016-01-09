@@ -17,20 +17,23 @@ class Truncate < Formula
   end
 end
 __END__
-diff --git a/truncate.c b/truncate.c
-index 3dcb0d0..53cb190 100644
---- a/truncate.c
-+++ b/truncate.c
-@@ -9,79,11 @@
+diff -Naur truncate-0.8/truncate.c truncate/truncate.c
+--- truncate-0.8/truncate.c	2009-04-03 14:39:56 +0800
++++ truncate/truncate.c	2016-01-09 12:26:28 +0800
+@@ -9,7 +9,15 @@
  #include <sys/stat.h>
  #include <fcntl.h>
- 
+
 -#include "error.h"
++//#include "error.h"
++void error_exit(char *format, ...);
++
 +#ifdef __APPLE__
 +#define off64_t off_t
 +#define stat64 stat
 +#define ftruncate64 ftruncate
++#define fstat64 fstat
 +#endif
- 
+
  off64_t get_file_size(char *file_name)
  {
