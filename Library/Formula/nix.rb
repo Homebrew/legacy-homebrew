@@ -10,11 +10,22 @@ class Nix < Formula
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
-  depends_on "WWW::Curl" => :perl
   depends_on "openssl"
   depends_on "bdw-gc" => :optional
 
+  resource "WWW::Curl" do
+    url "https://cpan.metacpan.org/authors/id/S/SZ/SZBALINT/WWW-Curl-4.17.tar.gz"
+    sha256 "52ffab110e32348d775f241c973eb56f96b08eedbc110d77d257cdb0a24ab7ba"
+  end
+
   def install
+    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
+    resource("WWW::Curl").stage do
+      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+      system "make"
+      system "make", "install"
+    end
+
     system "./bootstrap.sh"
     args = %W[--prefix=#{prefix}
               --localstatedir=#{var}
@@ -29,6 +40,8 @@ class Nix < Formula
 
     mkdir elisp
     mv share/"emacs/site-lisp/nix-mode.el", elisp
+
+    bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 
   test do
