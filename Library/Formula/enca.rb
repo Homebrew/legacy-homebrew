@@ -1,8 +1,8 @@
 class Enca < Formula
   desc "Charset analyzer and converter"
   homepage "https://cihar.com/software/enca/"
-  url "https://dl.cihar.com/enca/enca-1.16.tar.gz"
-  sha256 "de63ce06b373964ee5fbb3fea8286876de03ee095b1a2e3b7d28a940a13aff6f"
+  url "https://dl.cihar.com/enca/enca-1.18.tar.gz"
+  sha256 "b69373cb73d9704dfc5b5b1c6f9121339f6a75f6094c918ad8f7fd8708935ebf"
   head "https://github.com/nijel/enca.git"
 
   bottle do
