@@ -1,8 +1,20 @@
 class Pmd < Formula
   desc "Source code analyzer for Java, JavaScript, and more"
   homepage "http://pmd.sourceforge.net/"
-  url "https://github.com/pmd/pmd/releases/download/pmd_releases/5.3.3/pmd-src-5.3.3.zip"
-  sha256 "38004ea3274d2f71701f438606a4c4095b7a86110e8d7f2a8940170c9bd5ddbb"
+  head "https://github.com/pmd/pmd.git"
+
+  stable do
+    url "https://github.com/pmd/pmd/releases/download/pmd_releases/5.4.1/pmd-src-5.4.1.zip"
+    sha256 "1dcef1a9f6e7681e474faf2d37ed82b408edf880b3707f17f42b0046cf3130a1"
+
+    # Some versions of PMD have incorrect versions specified for parent POM's.
+    # When updating this formula, please grep for the version number and
+    # make sure there are no SNAPSHOT versions specified.
+    patch do
+      url "https://gist.githubusercontent.com/rwhogg/39fb99f1c5c01e113c6d/raw/35c4933ff54fde394dac02cc4212c2a7a2a273a2/pom-versions.diff"
+      sha256 "80c023c8384adb9963a6c434a1224b029a4a27b720dbb9ea50fe780c65150fdb"
+    end
+  end
 
   bottle do
     cellar :any_skip_relocation
@@ -21,8 +33,11 @@ class Pmd < Formula
     doc.install "LICENSE", "NOTICE", "README.md"
 
     # The mvn package target produces a .zip with all the jars needed for PMD
-    safe_system "unzip", buildpath/"pmd-dist/target/pmd-bin-#{version}.zip"
-    libexec.install "pmd-bin-#{version}/bin", "pmd-bin-#{version}/lib"
+    require "rexml/document"
+    pom_xml = REXML::Document.new(File.new("pom.xml"))
+    version_string = REXML::XPath.first(pom_xml, "string(/pom:project/pom:version)", "pom" => "http://maven.apache.org/POM/4.0.0")
+    safe_system "unzip", buildpath/"pmd-dist/target/pmd-bin-#{version_string}.zip"
+    libexec.install "pmd-bin-#{version_string}/bin", "pmd-bin-#{version_string}/lib"
 
     bin.install_symlink "#{libexec}/bin/run.sh" => "pmd"
     inreplace "#{libexec}/bin/run.sh", "${script_dir}/../lib", "#{libexec}/lib"
