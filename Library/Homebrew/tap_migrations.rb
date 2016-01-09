@@ -59,6 +59,7 @@ TAP_MIGRATIONS = {
   "ext4fuse" => "homebrew/fuse",
   "fceux" => "homebrew/games",
   "feh" => "homebrew/x11",
+  "ffts" => "homebrew/boneyard",
   "figtoipe" => "homebrew/head-only",
   "fox" => "homebrew/x11",
   "freeglut" => "homebrew/x11",
