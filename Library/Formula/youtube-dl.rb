@@ -4,8 +4,8 @@
 class YoutubeDl < Formula
   desc "Download YouTube videos from the command-line"
   homepage "https://rg3.github.io/youtube-dl/"
-  url "https://yt-dl.org/downloads/2016.01.01/youtube-dl-2016.01.01.tar.gz"
-  sha256 "732f37c99d71b4239d72d61dd32214b5a5a618671fb0629c8f8deb28209a172c"
+  url "https://yt-dl.org/downloads/2016.01.09/youtube-dl-2016.01.09.tar.gz"
+  sha256 "463cfed59a1e2c6609a8e3d3354e0494833f1b249fe1979984b06a51ac5c904d"
 
   bottle do
     cellar :any_skip_relocation
