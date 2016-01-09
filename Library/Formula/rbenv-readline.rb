@@ -15,6 +15,6 @@ class RbenvReadline < Formula
   end
 
   test do
-    assert shell_output("rbenv hooks install").include? "readline-brew.bash"
+    assert_match "readline-brew.bash", shell_output("rbenv hooks install")
   end
 end
