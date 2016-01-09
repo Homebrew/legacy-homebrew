@@ -28,6 +28,11 @@ module OS
       version >= "10.12"
     end
 
+    def outdated_release?
+      # TODO: bump version when new OS is released
+      version < "10.9"
+    end
+
     def cat
       version.to_sym
     end
