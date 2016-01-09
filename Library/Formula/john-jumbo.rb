@@ -18,10 +18,10 @@ class JohnJumbo < Formula
 
   bottle do
     cellar :any
-    revision 5
-    sha256 "d42a48a458820727be0108d222165d83bb307042e0f27b20fd013b5089521ad4" => :el_capitan
-    sha256 "180d93eb1b3ca38c76be1b6d67ff924b4c1b070884924f11bf44590e7654498c" => :yosemite
-    sha256 "5022fb58f6d60107bf3dc4eda6bb21efecc0c7250e6e4f61fb0f4f76abd5050d" => :mavericks
+    revision 6
+    sha256 "a87bf02d882413393f3f3759ab0fa6a171438609d101c7c9bc7772fe69e2ab47" => :el_capitan
+    sha256 "cf9c82f416a4eb3aad7d4202b21105988d346be8d8df262ea4ca18e683475d32" => :yosemite
+    sha256 "b36f66b0469b5c6cde95f780671db5b32e4e4dd7c16c4e7e591043bfdef2b65c" => :mavericks
   end
 
   conflicts_with "john", :because => "both install the same binaries"
