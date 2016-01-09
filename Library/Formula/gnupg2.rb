@@ -4,9 +4,9 @@
 class Gnupg2 < Formula
   desc "GNU Privacy Guard: a free PGP replacement"
   homepage "https://www.gnupg.org/"
-  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
-  sha256 "68ed6b386ba78425b05a60e8ee22785ff0fef190bdc6f1c612f19a58819d4ac9"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.1.9.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.1.9.tar.bz2"
+  sha256 "1cb7633a57190beb66f9249cb7446603229b273d4d89331b75c652fa4a29f7b6"
 
   bottle do
     sha256 "76d5ab157d1ee5dc047b972ae8082fcc21981d2bc2e0ba2c888a65f9bd384da3" => :el_capitan
@@ -20,7 +20,7 @@ class Gnupg2 < Formula
   depends_on "libksba"
   depends_on "libassuan"
   depends_on "pinentry"
-  depends_on "pth"
+  depends_on "npth"
   depends_on "gpg-agent"
   depends_on "curl" if MacOS.version <= :mavericks
   depends_on "dirmngr" => :recommended
@@ -37,8 +37,6 @@ class Gnupg2 < Formula
     inreplace "tests/openpgp/Makefile.in" do |s|
       s.gsub! "required_pgms = ../../g10/gpg2 ../../agent/gpg-agent",
               "required_pgms = ../../g10/gpg2"
-      s.gsub! "../../agent/gpg-agent --quiet --daemon sh",
-              "gpg-agent --quiet --daemon sh"
     end
     inreplace "tools/gpgkey2ssh.c", "gpg --list-keys", "gpg2 --list-keys"
 
