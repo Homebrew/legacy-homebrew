@@ -311,7 +311,7 @@ module Homebrew
             We do not provide support for this pre-release version.
             You may encounter build failures or other breakages.
           EOS
-        elsif OS::Mac.version < :mavericks
+        elsif OS::Mac.outdated_release?
           <<-EOS.undent
             You are using OS X #{MacOS.version}.
             We (and Apple) do not provide support for this old version.
