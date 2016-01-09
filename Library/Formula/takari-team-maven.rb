@@ -1,12 +1,8 @@
-# Documentation: https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/Formula-Cookbook.md
-#                http://www.rubydoc.info/github/Homebrew/homebrew/master/frames
-# PLEASE REMOVE ALL GENERATED COMMENTS BEFORE SUBMITTING YOUR PULL REQUEST!
-
 class TakariTeamMaven < Formula
-  desc ""
-  homepage ""
+  desc "Takari Maven Distribution"
+  homepage "http://takari.io/"
   url "http://repo1.maven.org/maven2/io/takari/takari-team-maven/0.9.0/takari-team-maven-0.9.0.tar.gz"
-  version "0.9.0"
+  # version "0.9.0"
   sha256 "ef45c1c3faaf2848cff2e7357006fb3c0a9860050bffac3b43713d0d324ca4b4"
 
   depends_on :java
@@ -54,5 +50,4 @@ class TakariTeamMaven < Formula
     EOS
     system "#{bin}/mvn", "compile"
   end
-
 end
