@@ -19,9 +19,9 @@ class Wine < Formula
   end
 
   devel do
-    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.0.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.0.tar.bz2"
-    sha256 "b72221ac97e77616a4fee39961e26d6714109aa35d7e465ab83e2eb42663d5f9"
+    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.1.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.1.tar.bz2"
+    sha256 "0b3265fb9ae82ddf1b3629bac61bd2340b7b4cfa7210f696c679e8e4a5b80bb6"
   end
 
   head do
