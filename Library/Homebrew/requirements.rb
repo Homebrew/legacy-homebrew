@@ -80,6 +80,13 @@ class GPGRequirement < Requirement
   satisfy { which("gpg") || which("gpg2") }
 end
 
+class AckRequirement < Requirement
+  fatal true
+  default_formula "ack"
+
+  satisfy { which "ack" }
+end
+
 class TeXRequirement < Requirement
   fatal true
   cask "mactex"
