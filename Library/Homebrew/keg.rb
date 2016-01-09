@@ -150,6 +150,18 @@ class Keg
     path.exist?
   end
 
+  def empty_installation?
+    Pathname.glob("#{path}/**/*") do |file|
+      next if file.directory?
+      basename = file.basename.to_s
+      next if Metafiles.copy?(basename)
+      next if %w[.DS_Store INSTALL_RECEIPT.json].include?(basename)
+      return false
+    end
+
+    true
+  end
+
   def /(other)
     path / other
   end
