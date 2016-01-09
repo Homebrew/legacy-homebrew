@@ -1,10 +1,11 @@
 require "language/go"
 
 class Srclib < Formula
-  desc "Polyglot code analysis library, build for hackability"
+  desc "Polyglot code analysis library, built for hackability"
   homepage "https://srclib.org"
   url "https://github.com/sourcegraph/srclib/archive/v0.0.42.tar.gz"
   sha256 "de9af74ec0805b0ef4f1c7ddf26c5aef43f84668b12c001f2f413ff20a19ebee"
+  revision 1
   head "https://github.com/sourcegraph/srclib.git"
 
   bottle do
@@ -141,7 +142,7 @@ class Srclib < Formula
 
   go_resource "sourcegraph.com/sourcegraph/go-flags" do
     url "https://github.com/sourcegraph/go-flags",
-        :revision => "f819544216a8b66157184f0976948f92a8144fe7", :using => :git
+        :revision => "f59c328da6215a0b6acf0441ef19e361660ff405", :using => :git
   end
 
   go_resource "sourcegraph.com/sourcegraph/go-nnz" do
@@ -190,16 +191,18 @@ class Srclib < Formula
 
   # For test
   resource "srclib-sample" do
-    url "https://github.com/sourcegraph/srclib-sample/archive/0.1.tar.gz"
-    sha256 "7699eea46992c41331daacbff9df05f7aeec841582783ce3ac7e8eef790f1f1d"
+    url "https://github.com/sourcegraph/srclib-sample.git",
+      :revision => "e753b113784bf383f627394e86e4936629a3b588"
   end
 
   test do
     resource("srclib-sample").stage do
+      # Avoid automatic writing to $HOME/.srclib
+      ENV["SRCLIBPATH"] = testpath
       ENV.prepend_path "PATH", bin
       system "#{bin}/src", "toolchain", "add", "--force", "sourcegraph.com/sourcegraph/srclib-sample"
       result = pipe_output("#{bin}/src api units")
-      assert result.include?('"Type":"sample"')
+      assert_match '"Type":"sample"', result
     end
   end
 end
