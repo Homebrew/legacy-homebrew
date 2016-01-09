@@ -52,14 +52,15 @@ class PerconaServer < Formula
   end
 
   # Where the database files should be located. Existing installs have them
-  # under var/percona, but going forward they will be under var/msyql to be
+  # under var/percona, but going forward they will be under var/mysql to be
   # shared with the mysql and mariadb formulae.
   def datadir
     @datadir ||= (var/"percona").directory? ? var/"percona" : var/"mysql"
   end
 
-  def pour_bottle?
-    datadir == var/"mysql"
+  pour_bottle? do
+    reason "The bottle needs a var/mysql datadir (yours is var/percona)."
+    satisfy { datadir == var/"mysql" }
   end
 
   def install
