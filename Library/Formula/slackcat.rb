@@ -6,6 +6,13 @@ class Slackcat < Formula
   url "https://github.com/vektorlab/slackcat/archive/v0.7.tar.gz"
   sha256 "b51ab794af2a0014b5372944699d7ff9c88af4e1860206abee3a0f9bbc70d147"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "d060276dad87e703b9c43cd31e6cfcdf1ab105ba0f41a8d81bd18e5306777dab" => :el_capitan
+    sha256 "af05bb5d4a831de18d09ba88b342c4a9aca051a1c3fe6836103fca4b6e923537" => :yosemite
+    sha256 "7d5ffabf0caaef172e90a7ed001e5440d23ee445f5d9020e0afaf6b31756b914" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/bluele/slack" do
