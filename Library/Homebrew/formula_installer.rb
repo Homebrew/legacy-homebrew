@@ -8,7 +8,6 @@ require "caveats"
 require "cleaner"
 require "formula_cellar_checks"
 require "install_renamed"
-require "cmd/audit"
 require "cmd/postinstall"
 require "hooks/bottles"
 require "debrew"
@@ -573,9 +572,7 @@ class FormulaInstaller
       end
     end
 
-    auditor = FormulaAuditor.new(formula)
-    auditor.audit_prefix_has_contents
-    unless formula.prefix.exist? && auditor.problems.empty?
+    if !formula.prefix.directory? || Keg.new(formula.prefix).empty_installation?
       raise "Empty installation"
     end
 
