@@ -190,34 +190,28 @@ class IntegrationCommandTests < Homebrew::TestCase
   end
 
   def test_missing
-    url = "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
-    sha256 = "1dfb13ce0f6143fe675b525fc9e168adb2215c5d5965c9f57306bb993170914f"
     repo = CoreFormulaRepository.new
     foo_file = repo.formula_dir/"foo.rb"
     foo_file.write <<-EOS.undent
       class Foo < Formula
-        url "#{url}"
-        sha256 "#{sha256}"
+        url "https://example.com/foo-1.0"
       end
     EOS
 
     bar_file = repo.formula_dir/"bar.rb"
     bar_file.write <<-EOS.undent
       class Bar < Formula
-        url "#{url}"
-        sha256 "#{sha256}"
+        url "https://example.com/bar-1.0"
         depends_on "foo"
       end
     EOS
 
-    cmd("install", "bar")
-    cmd("uninstall", "foo")
+    (HOMEBREW_CELLAR/"bar/1.0").mkpath
     assert_match "foo", cmd("missing")
   ensure
-    cmd("uninstall", "--force", "foo", "bar")
-    cmd("cleanup", "--force", "--prune=all")
-    foo_file.unlink unless foo_file.nil?
-    bar_file.unlink unless bar_file.nil?
+    (HOMEBREW_CELLAR/"bar").rmtree
+    foo_file.unlink
+    bar_file.unlink
   end
 
   def test_doctor
