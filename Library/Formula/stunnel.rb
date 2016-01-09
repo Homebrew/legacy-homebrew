@@ -1,9 +1,9 @@
 class Stunnel < Formula
   desc "SSL tunneling program"
   homepage "https://www.stunnel.org/"
-  url "https://www.stunnel.org/downloads/stunnel-5.28.tar.gz"
-  mirror "https://www.usenix.org.uk/mirrors/stunnel/stunnel-5.28.tar.gz"
-  sha256 "9a25b87b1ef0c08fa3d796edce07b4408e6a8acece23de2eb7ee9285b78852b5"
+  url "https://www.stunnel.org/downloads/stunnel-5.29.tar.gz"
+  mirror "https://www.usenix.org.uk/mirrors/stunnel/stunnel-5.29.tar.gz"
+  sha256 "43909625403ea634fa7cb8399d58faf8e7f11c1b7b29097491469951f56df551"
 
   bottle do
     sha256 "6f2c32372f1a3213877b08a88d1620a489277e0aac3ebadb0d75e0f5063b80ca" => :el_capitan
@@ -69,6 +69,6 @@ class Stunnel < Formula
       connect = 143
     EOS
 
-    assert_match /successful/, pipe_output("#{bin}/stunnel #{testpath}/tstunnel.conf 2>&1")
+    assert_match "successful", pipe_output("#{bin}/stunnel #{testpath}/tstunnel.conf 2>&1")
   end
 end
