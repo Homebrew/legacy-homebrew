@@ -85,7 +85,15 @@ class FormulaInstaller
     return false unless options.empty?
     return false if formula.bottle_disabled?
     return true  if formula.local_bottle_path
-    return false unless formula.pour_bottle?
+    unless formula.pour_bottle?
+      if install_bottle_options[:warn] && formula.pour_bottle_check_unsatisfied_reason
+        opoo <<-EOS.undent
+          Building #{formula.full_name} from source:
+            #{formula.pour_bottle_check_unsatisfied_reason}
+        EOS
+      end
+      return false
+    end
 
     unless bottle.compatible_cellar?
       if install_bottle_options[:warn]
