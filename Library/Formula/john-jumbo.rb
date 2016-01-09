@@ -1,9 +1,20 @@
 class JohnJumbo < Formula
   desc "Enhanced version of john, a UNIX password cracker"
   homepage "http://www.openwall.com/john/"
-  url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
-  version "1.8.0"
-  sha256 "bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923"
+
+  stable do
+    url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
+    sha256 "bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923"
+    version "1.8.0"
+
+    # Previously john-jumbo ignored the value of $HOME; fixed
+    # upstream.  See
+    # https://github.com/magnumripper/JohnTheRipper/issues/1901
+    patch do
+      url "https://github.com/magnumripper/JohnTheRipper/commit/d29ad8aabaa9726eb08f440001c37611fa072e0c.diff"
+      sha256 "de5c09397f3666d0592e0f418f26a78a6624c5a947347ec2440e141c8915ae82"
+    end
+  end
 
   bottle do
     cellar :any
@@ -64,16 +75,12 @@ class JohnJumbo < Formula
     mv share/"john/john.conf", share/"john/john.ini"
   end
 
-  # The test is currently failing against the sandbox since john
-  # always writes to the user's home directory; see
-  # https://github.com/magnumripper/JohnTheRipper/issues/1901
-  #
-  # test do
-  #   touch "john2.pot"
-  #   (testpath/"test").write "dave:#{`printf secret | /usr/bin/openssl md5`}"
-  #   assert_match(/secret/, shell_output("#{bin}/john --nolog --pot=#{testpath}/john2.pot --format=raw-md5 test"))
-  #   assert_match(/secret/, (testpath/"john2.pot").read)
-  # end
+  test do
+    touch "john2.pot"
+    (testpath/"test").write "dave:#{`printf secret | /usr/bin/openssl md5`}"
+    assert_match(/secret/, shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test"))
+    assert_match(/secret/, (testpath/"john2.pot").read)
+  end
 end
 
 
