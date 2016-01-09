@@ -351,7 +351,7 @@ class PourBottleCheck
   end
 
   def reason(reason)
-    @formula.pour_bottle_check_unsatisfied_reason(reason)
+    @formula.pour_bottle_check_unsatisfied_reason = reason
   end
 
   def satisfy(&block)
