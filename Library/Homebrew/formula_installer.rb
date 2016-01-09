@@ -353,6 +353,7 @@ class FormulaInstaller
     args  = dependent.build.used_options
     args |= dependent == formula ? options : inherited_options
     args |= Tab.for_formula(dependent).used_options
+    args &= dependent.options
     BuildOptions.new(args, dependent.options)
   end
 
