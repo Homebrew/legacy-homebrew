@@ -8,8 +8,7 @@ class RbenvDefaultGems < Formula
 
   head "https://github.com/sstephenson/rbenv-default-gems.git"
 
-  depends_on "rbenv"
-  depends_on "ruby-build"
+  depends_on :rbenv
 
   # Upstream patch: https://github.com/sstephenson/rbenv-default-gems/pull/3
   patch do
