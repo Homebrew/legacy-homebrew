@@ -1,6 +1,8 @@
-#!/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby -W0
+#!/bin/sh
+# Make sure this shim uses the same Ruby interpreter that is used by Homebrew.
+exec "$HOMEBREW_RUBY_PATH" -x "$0" "$@"
+#!/usr/bin/env ruby -W0
 
-$:.unshift Dir["/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/lib/ruby/{1.8,2.0.0}"].first
 require "pathname"
 require "set"
 
