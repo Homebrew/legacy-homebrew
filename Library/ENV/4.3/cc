@@ -1,5 +1,7 @@
 #!/bin/sh
 # Make sure this shim uses the same Ruby interpreter that is used by Homebrew.
+unset RUBYLIB
+unset RUBYOPT
 exec "$HOMEBREW_RUBY_PATH" -x "$0" "$@"
 #!/usr/bin/env ruby -W0
 
