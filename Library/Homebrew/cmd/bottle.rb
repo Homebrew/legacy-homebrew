@@ -371,15 +371,15 @@ module Homebrew
             else
               string = s.sub!(
                 /(
-                  \ {2}(                                                              # two spaces at the beginning
-                    url\ ['"][\S\ ]+['"]                                              # url with a string
+                  \ {2}(                                                         # two spaces at the beginning
+                    (url|head)\ ['"][\S\ ]+['"]                                  # url or head with a string
                     (
-                      ,[\S\ ]*$                                                       # url may have options
-                      (\n^\ {3}[\S\ ]+$)*                                             # options can be in multiple lines
+                      ,[\S\ ]*$                                                  # url may have options
+                      (\n^\ {3}[\S\ ]+$)*                                        # options can be in multiple lines
                     )?|
-                    (homepage|desc|sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
-                    revision\ \d+                                                     # revision with a number
-                  )\n+                                                                # multiple empty lines
+                    (homepage|desc|sha1|sha256|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
+                    revision\ \d+                                                # revision with a number
+                  )\n+                                                           # multiple empty lines
                  )+
                /mx, '\0' + output + "\n")
             end
