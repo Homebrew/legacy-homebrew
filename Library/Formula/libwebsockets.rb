@@ -9,10 +9,9 @@ class Libwebsockets < Formula
   depends_on "openssl"
 
   bottle do
-    sha256 "c5e9fa776e0a00d3219ce4597c844e9396742fffe86dee2949d721c8845b2595" => :el_capitan
-    sha256 "3dff3a837b8204b09b49d16bc9f08eddf8730253772b18117b2ca08b3ecb47c1" => :yosemite
-    sha256 "b95d36361c26bf1ef29032981462a581d461cc5abcd2698a4490c2677148ecb2" => :mavericks
-    sha256 "60f191872c2c470fbd5716109df094bf82dad51fa9c4f76a5debcd45a11bf280" => :mountain_lion
+    sha256 "a75859658c26c0d2f74e53ffb111bf8d7160b6e167665c4131729f3d4d293236" => :el_capitan
+    sha256 "1b9a456a63f0084b525aa5219aea58c3a2ccaaaa3659a7b6d2a8a0c0f8db068a" => :yosemite
+    sha256 "57473c1cc3496eef606c827d19b823ba7f68ef03c8eace90808b89d65780a893" => :mavericks
   end
 
   depends_on "cmake" => :build
