@@ -14,7 +14,9 @@ class Pod2man < Formula
   keg_only :provided_by_osx
 
   def install
-    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
+    system "perl", "Makefile.PL", "PREFIX=#{prefix}",
+                   "INSTALLSCRIPT=#{bin}",
+                   "INSTALLMAN1DIR=#{man1}", "INSTALLMAN3DIR=#{man3}"
     system "make", "install"
   end
 
