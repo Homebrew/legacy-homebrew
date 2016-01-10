@@ -4,7 +4,7 @@ class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
   url "https://github.com/hashicorp/consul.git",
-    :tag => "v0.6.0", :revision => "46499d6e7237ca8547c15ce44e9b93bea48a455b"
+    :tag => "v0.6.1", :revision => "68969ce5f4499cbe3a4f946917be2e580f1b1936"
 
   bottle do
     cellar :any_skip_relocation
@@ -19,7 +19,7 @@ class Consul < Formula
 
   go_resource "github.com/DataDog/datadog-go" do
     url "https://github.com/DataDog/datadog-go.git",
-      :revision => "b050cd8f4d7c394545fd7d966c8e2909ce89d552"
+      :revision => "bc97e0770ad4edae1c9dc14beb40b79b2dde32f8"
   end
 
   go_resource "github.com/armon/circbuf" do
@@ -29,7 +29,7 @@ class Consul < Formula
 
   go_resource "github.com/armon/go-metrics" do
     url "https://github.com/armon/go-metrics.git",
-      :revision => "6c5fa0d8f48f4661c9ba8709799c88d425ad20f0"
+      :revision => "345426c77237ece5dab0e1605c3e4b35c3f54757"
   end
 
   go_resource "github.com/armon/go-radix" do
@@ -39,12 +39,12 @@ class Consul < Formula
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-      :revision => "0b00effdd7a8270ebd91c24297e51643e370dd52"
+      :revision => "25b28102db2053fa885b2a4798d5dfa94745f4b6"
   end
 
   go_resource "github.com/fsouza/go-dockerclient" do
     url "https://github.com/fsouza/go-dockerclient.git",
-      :revision => "2350d7bc12bb04f2d7d6824c7718012b1397b760"
+      :revision => "175e1df973274f04e9b459a62cffc49808f1a649"
   end
 
   go_resource "github.com/hashicorp/errwrap" do
@@ -59,17 +59,17 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/go-cleanhttp" do
     url "https://github.com/hashicorp/go-cleanhttp.git",
-      :revision => "5df5ddc69534f1a4697289f1dca2193fbb40213f"
+      :revision => "ce617e79981a8fff618bb643d155133a8f38db96"
   end
 
   go_resource "github.com/hashicorp/go-immutable-radix" do
     url "https://github.com/hashicorp/go-immutable-radix.git",
-      :revision => "aca1bd0689e10884f20d114aff148ddb849ece80"
+      :revision => "12e90058b2897552deea141eff51bb7a07a09e63"
   end
 
   go_resource "github.com/hashicorp/go-memdb" do
     url "https://github.com/hashicorp/go-memdb.git",
-      :revision => "9ea975be0e31ada034a5760340d4892f3f543d20"
+      :revision => "31949d523ade8a236956c6f1761e9dcf902d1638"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -89,12 +89,12 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/golang-lru" do
     url "https://github.com/hashicorp/golang-lru.git",
-      :revision => "a6091bb5d00e2e9c4a16a0e739e306f8a3071a3c"
+      :revision => "5c7531c003d8bf158b0fe5063649a2f41a822146"
   end
 
   go_resource "github.com/hashicorp/hcl" do
     url "https://github.com/hashicorp/hcl.git",
-      :revision => "2deb1d1db27ed473f38fe65a16044572b9ff9d30"
+      :revision => "197e8d3cf42199cfd53cd775deb37f3637234635"
   end
 
   go_resource "github.com/hashicorp/logutils" do
@@ -104,7 +104,7 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/memberlist" do
     url "https://github.com/hashicorp/memberlist.git",
-      :revision => "28424fb38c7c3e30f366b72b1a55f690d318d8f3"
+      :revision => "9888dc523910e5d22c5be4f6e34520943df21809"
   end
 
   go_resource "github.com/hashicorp/net-rpc-msgpackrpc" do
@@ -129,7 +129,7 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/serf" do
     url "https://github.com/hashicorp/serf.git",
-      :revision => "a72c0453da2ba628a013e98bf323a76be4aa1443"
+      :revision => "39c7c06298b480560202bec00c2c77e974e88792"
   end
 
   go_resource "github.com/hashicorp/yamux" do
@@ -144,12 +144,12 @@ class Consul < Formula
 
   go_resource "github.com/miekg/dns" do
     url "https://github.com/miekg/dns.git",
-      :revision => "d27455715200c7d3e321a1e5cadb27c9ee0b0f02"
+      :revision => "1756430e42a7b2ecded216a9fdd37d002c116df5"
   end
 
   go_resource "github.com/mitchellh/cli" do
     url "https://github.com/mitchellh/cli.git",
-      :revision => "8102d0ed5ea2709ade1243798785888175f6e415"
+      :revision => "cb6853d606ea4a12a15ac83cc43503df99fd28fb"
   end
 
   go_resource "github.com/mitchellh/mapstructure" do
@@ -164,12 +164,12 @@ class Consul < Formula
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "346896d57731cb5670b36c6178fc5519f3225980"
+      :revision => "803f01ea27e23d998825ec085f0d153cac01c828"
   end
 
   resource "web-ui" do
-    url "https://releases.hashicorp.com/consul/0.6.0/consul_0.6.0_web_ui.zip"
-    sha256 "73c5e7ee50bb4a2efe56331d330e6d7dbf46335599c028344ccc4031c0c32eb0"
+    url "https://releases.hashicorp.com/consul/0.6.1/consul_0.6.1_web_ui.zip"
+    sha256 "afccdd540b166b778c7c0483becc5e282bbbb1ee52335bfe94bf757df8c55efc"
   end
 
   def install
