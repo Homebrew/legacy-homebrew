@@ -1,9 +1,8 @@
 class Sdl2Image < Formula
   desc "Library for loading images as SDL surfaces and textures"
   homepage "https://www.libsdl.org/projects/SDL_image/"
-  url "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz"
-  sha256 "b29815c73b17633baca9f07113e8ac476ae66412dec0d29a5045825c27a47234"
-  revision 1
+  url "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz"
+  sha256 "3a3eafbceea5125c04be585373bfd8b3a18f259bd7eae3efc4e6d8e60e0d7f64"
 
   bottle do
     cellar :any
