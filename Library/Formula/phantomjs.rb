@@ -3,8 +3,9 @@ class Phantomjs < Formula
   homepage "http://phantomjs.org/"
   head "https://github.com/ariya/phantomjs.git"
   # Temporarily use Vitallium's fork (who is a maintainer) until 2.1.0.
-  url "https://github.com/Vitallium/phantomjs.git", :tag => "2.0.1",
-    :revision => "33aaaff64a197b20076faab1b08b8757516aa976"
+  url "https://github.com/Vitallium/phantomjs.git",
+      :tag => "2.0.1",
+      :revision => "33aaaff64a197b20076faab1b08b8757516aa976"
 
   bottle do
     cellar :any
@@ -13,10 +14,14 @@ class Phantomjs < Formula
     sha256 "45091efed57f4de5f04810a874e050206ae587ac85e17892f570e0e7eb50b977" => :mountain_lion
   end
 
+  depends_on "openssl"
+
   def install
+    inreplace "src/qt/preconfig.sh", "QT_CFG+=' -openssl -openssl-linked'",
+              "QT_CFG+=' -openssl -openssl-linked -I #{Formula["openssl"].opt_include} -L #{Formula["openssl"].opt_lib}'"
     system "./build.sh", "--confirm", "--jobs", ENV.make_jobs
     bin.install "bin/phantomjs"
-    (share+"phantomjs").install "examples"
+    (share/"phantomjs").install "examples"
   end
 
   test do
