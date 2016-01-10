@@ -26,7 +26,7 @@ class Dovecot < Formula
 
   resource "stemmer" do
     url "https://github.com/snowballstem/snowball.git",
-      :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
+      :revision => "3b1f4c2ac4b924bb429f929d9decd3f50662a6e0"
   end
 
   def install
