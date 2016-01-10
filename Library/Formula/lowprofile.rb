@@ -1,16 +1,15 @@
 require "language/go"
 
 class Lowprofile < Formula
-  desc "Simple profile management for AWS."
+  desc "Command-line utility for AWS profile management."
   homepage "https://github.com/DualSpark/lowprofile"
   url "https://github.com/DualSpark/lowprofile/archive/v0.1.tar.gz"
-  version "0.1"
   sha256 "056834b644ea01b2244babb13ed462077d1df6361524f124df0c3f31639db938"
 
   depends_on "go" => :build
 
   go_resource "github.com/DualSpark/lowprofile" do
-    url "https://github.com/DualSpark/lowprofile.git", :tag => "v0.1"
+    url "https://github.com/DualSpark/lowprofile.git", :revision => "v0.1"
   end
 
   def install
