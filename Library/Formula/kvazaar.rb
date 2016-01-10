@@ -1,14 +1,14 @@
 class Kvazaar < Formula
   desc "HEVC encoder"
   homepage "https://github.com/ultravideo/kvazaar"
-  url "https://github.com/ultravideo/kvazaar/archive/v0.4.0.tar.gz"
-  sha1 "28fce493e8fcd7274993ab46eb1a1c5d07569853"
+  url "https://github.com/ultravideo/kvazaar/archive/v0.5.0.tar.gz"
+  sha256 "2facdbffcf739171127487cd7d1e48c925560f39755a16542c4a40e65e293070"
 
   bottle do
     cellar :any
-    sha1 "14925edf1ac9c07c54c872d7b5d3d7708a9f814a" => :yosemite
-    sha1 "f7c026308db68e957324585b74a3ab0746289a6d" => :mavericks
-    sha1 "d0c6b625b2beefbb9dafe2f9eaad678fe97d0fa7" => :mountain_lion
+    sha256 "1cf96786d4613d94b93a8091027ea9d14ae6c801d11996def7c4b408316032e6" => :yosemite
+    sha256 "aa78c8fa2657ccac25a0c3ac30d7840f281ab8af8a59aafb8058a122090e1b97" => :mavericks
+    sha256 "5fc3c49c10479539474539e1bee928f89a3586f1f44e2f346c3b6484ff6395d2" => :mountain_lion
   end
 
   depends_on "yasm" => :build

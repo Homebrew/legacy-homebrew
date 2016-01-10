@@ -7,6 +7,7 @@ class Socat < Formula
   bottle do
     cellar :any
     revision 1
+    sha256 "f611b1af13a4ffd67edb2e051112b65d5ae72c04fd1a6cdb1bd17fdc37dfed92" => :el_capitan
     sha256 "a989fcc760a1e05a53b4193ec49d16d84072b29311366b2f5c38af4490338fef" => :yosemite
     sha256 "dc80a1cfabde2f6abdf4a898bd92d4f8ff9a90a0464e61f5862bde0cb2f1ffe3" => :mavericks
     sha256 "1956257e901dbb67a3286950059c7edca5cb08e435fa87b038cc3ef306def1ea" => :mountain_lion
@@ -28,6 +29,6 @@ class Socat < Formula
   end
 
   test do
-    assert_match /#{version}/, shell_output("#{bin}/socat -V")
+    assert_match "HTTP/1.0", pipe_output("#{bin}/socat - tcp:www.google.com:80", "GET / HTTP/1.0\r\n\r\n")
   end
 end

@@ -1,33 +1,44 @@
 class MidnightCommander < Formula
   desc "Terminal-based visual file manager"
   homepage "https://www.midnight-commander.org/"
-  url "http://ftp.midnight-commander.org/mc-4.8.14.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/midnightcommander/mc-4.8.14.tar.xz"
-  sha256 "6b1f74efbdf394bfab084f4d2ea2e72173de5f12cd42be2533ca2c3b72edb8e6"
+  url "http://ftp.midnight-commander.org/mc-4.8.15.tar.xz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/m/mc/mc_4.8.15.orig.tar.xz"
+  sha256 "cf4e8f5dfe419830d56ca7e5f2495898e37ebcd05da1e47ff7041446c87fba16"
 
   head "https://github.com/MidnightCommander/mc.git"
 
   bottle do
-    sha256 "f970c724cc382ae72b6f96b52d7b1150103f92ff7264468f92089adb72f7399f" => :yosemite
-    sha256 "ecfe69da36ed93971799b4f521fbf2cc5e88f4590820c8cc6950210493b510ce" => :mavericks
-    sha256 "e666054bd7bd889492f0298df8b2a5816cb4474b7834634c481753c65a6860db" => :mountain_lion
+    sha256 "614744903b7ea7d59b79ab8722b83d4537bf04a6b14c534c9e8135ab25206798" => :el_capitan
+    sha256 "f15a295f0a18df0302fc79e2ce81e5d7950985d4160b3eeff7558e72ca810427" => :yosemite
+    sha256 "e001897e0301e20f5d04dfc6ec728fb47ebb708ca3cae59a0cfa666771794d90" => :mavericks
   end
+
+  option "without-nls", "Build without Native Language Support"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "openssl" if MacOS.version <= :leopard
+  depends_on "openssl"
   depends_on "s-lang"
   depends_on "libssh2"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--without-x",
-                          "--with-screen=slang",
-                          "--enable-vfs-sftp"
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --without-x
+      --with-screen=slang
+      --enable-vfs-sftp
+    ]
+
+    args << "--disable-nls" if build.without? "nls"
+
+    system "./configure", *args
     system "make", "install"
+
+    # https://www.midnight-commander.org/ticket/3509
+    inreplace libexec/"mc/ext.d/text.sh", "man -P cat -l ", "man -P cat "
   end
 
   test do

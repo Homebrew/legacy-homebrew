@@ -2,26 +2,27 @@ class Makedepend < Formula
   desc "Creates dependencies in makefiles"
   homepage "http://x.org"
   url "http://xorg.freedesktop.org/releases/individual/util/makedepend-1.0.5.tar.bz2"
-  sha1 "2599afa039d2070bae9df6ce43da288b3a4adf97"
+  sha256 "f7a80575f3724ac3d9b19eaeab802892ece7e4b0061dd6425b4b789353e25425"
 
   bottle do
     cellar :any
-    sha1 "9a35ee27a96d2916dd347b362a2f62a3eb37b252" => :yosemite
-    sha1 "83db1daee01e4eb752c711934eb88850b3ee70d6" => :mavericks
-    sha1 "9c55ea85af719a448a4522958bd0e57e5e7741d1" => :mountain_lion
-    sha1 "66c5cb0f796db17741c38fb98bd2c05c82bf989c" => :lion
+    sha256 "3f3535296b2232448aa2b7509eee7ef65460ccc913475daf0b30b7ab6277e0e1" => :el_capitan
+    sha256 "0ed4b80471255f5a6170b7adeae03655c73e828dc6e3eeefeedb1a87f14a9142" => :yosemite
+    sha256 "1c7014f27716ce9b8d22423ef0ad79c46eb0a9452f893786a21e018461e0ece1" => :mavericks
+    sha256 "99af6d3fd80033e7197ae4aa16db748f2f1078f2e3985a69a55ff58db2a3177a" => :mountain_lion
+    sha256 "84195584f1c9d0849bb8aa44b3466b24eee589c39f2a0323ba77fc4033e8e1f8" => :lion
   end
 
   depends_on "pkg-config" => :build
 
   resource "xproto" do
     url "http://xorg.freedesktop.org/releases/individual/proto/xproto-7.0.25.tar.bz2"
-    sha1 "335f84713f9da3f77c48536f53abb9b03bcb3961"
+    sha256 "92247485dc4ffc3611384ba84136591923da857212a7dc29f4ad7797e13909fe"
   end
 
   resource "xorg-macros" do
     url "http://xorg.freedesktop.org/releases/individual/util/util-macros-1.18.0.tar.bz2"
-    sha1 "c0b04a082e50bb8d56a904648f61a8f3eea63043"
+    sha256 "e5e3d132a852f0576ea2cf831a9813c54a58810a59cdb198f56b884c5a78945b"
   end
 
   def install

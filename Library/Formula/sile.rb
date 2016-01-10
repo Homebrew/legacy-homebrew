@@ -22,11 +22,6 @@ class Sile < Formula
   depends_on "luaexpat" => :lua
   depends_on "luafilesystem" => :lua
 
-  resource("simple.sil") do
-    url "https://raw.githubusercontent.com/simoncozens/sile/v0.9.2/examples/simple.sil"
-    sha256 "f788723cd984d98343c8f8dc1b93b8f769cea6894a28f9ba6e0bec6aebf78f92"
-  end
-
   def install
     system "./bootstrap.sh" if build.head?
     system "./configure", "--disable-debug",
@@ -36,12 +31,5 @@ class Sile < Formula
                           "--prefix=#{prefix}"
     system "make"
     system "make", "install"
-  end
-
-  test do
-    resource("simple.sil").stage do
-      system "sile", "simple.sil"
-      assert File.exist? "simple.pdf"
-    end
   end
 end

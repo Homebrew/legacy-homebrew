@@ -2,7 +2,7 @@ class PyenvWhichExt < Formula
   desc "Integrate pyenv and system commands"
   homepage "https://github.com/yyuu/pyenv-which-ext"
   url "https://github.com/yyuu/pyenv-which-ext/archive/v0.0.2.tar.gz"
-  sha1 "72d2d3a80d6d9226276dfb897d12f7be69a12f0a"
+  sha256 "4098e5a96b048192b0eab66ca5f588602e30ed16aac816e96ff514f6b5896257"
 
   head "https://github.com/yyuu/pyenv-which-ext.git"
 

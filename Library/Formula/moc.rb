@@ -1,8 +1,8 @@
 class Moc < Formula
   desc "Terminal-based music player"
-  homepage 'http://moc.daper.net'
+  homepage "http://moc.daper.net"
   url "http://ftp.daper.net/pub/soft/moc/stable/moc-2.5.0.tar.bz2"
-  sha1 "a02c10075541995771dbdccb7f2d0ecd19d70b81"
+  sha256 "d29ea52240af76c4aa56fa293553da9d66675823e689249cee5f8a60657a6091"
 
   bottle do
     revision 1
@@ -19,23 +19,23 @@ class Moc < Formula
     depends_on "gettext" => :build
   end
 
-  option 'with-ncurses', 'Build with wide character support.'
+  option "with-ncurses", "Build with wide character support."
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
   depends_on "libtool" => :run
-  depends_on 'berkeley-db'
-  depends_on 'jack'
-  depends_on 'ffmpeg' => :recommended
-  depends_on 'mad' => :optional
-  depends_on 'flac' => :optional
-  depends_on 'speex' => :optional
-  depends_on 'musepack' => :optional
-  depends_on 'libsndfile' => :optional
-  depends_on 'wavpack' => :optional
-  depends_on 'faad2' => :optional
-  depends_on 'timidity' => :optional
-  depends_on 'libmagic' => :optional
-  depends_on 'homebrew/dupes/ncurses' => :optional
+  depends_on "berkeley-db"
+  depends_on "jack"
+  depends_on "ffmpeg" => :recommended
+  depends_on "mad" => :optional
+  depends_on "flac" => :optional
+  depends_on "speex" => :optional
+  depends_on "musepack" => :optional
+  depends_on "libsndfile" => :optional
+  depends_on "wavpack" => :optional
+  depends_on "faad2" => :optional
+  depends_on "timidity" => :optional
+  depends_on "libmagic" => :optional
+  depends_on "homebrew/dupes/ncurses" => :optional
 
   def install
     system "autoreconf", "-fvi" if build.head?

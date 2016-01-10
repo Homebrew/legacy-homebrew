@@ -6,13 +6,14 @@ class Packer < Formula
 
   # buildscript requires the .git directory be present
   url "https://github.com/mitchellh/packer.git",
-    :tag => "v0.8.1", :revision => "872e78d5b0a387eb3b87ddeef210264c3199d178"
+    :tag => "v0.8.6", :revision => "f8f7b7a34c1be06058f5aca23a51247db12cdbc5"
 
   bottle do
-    cellar :any
-    sha256 "2cdb04a81b56b38d83c060b528e30b7827b228299cc48b80fa5d80dd38f508ee" => :yosemite
-    sha256 "d3ef82efa9334d68225433a01354a7d7a047e9ea69b9702a24ad4d3eab2adc0c" => :mavericks
-    sha256 "c88f95e96dfb564a8186db04742ffcc8cce4f5acb34271ae6329be992a22ee6a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "310977dd6cd5de15e1b5a8f01f87e29d7d80426ac74d18fbc5f7ab6c59bda8d1" => :el_capitan
+    sha256 "b3a4651095012db176d712759bd7f5b8fb449a188f5e67545b4768a12918473e" => :yosemite
+    sha256 "031a0f64f5f6d08a45d7407f82a5ff9ffd3715fda0195db10dfd5530283f5629" => :mavericks
+    sha256 "d036b3c82f0a5137c63d7fb56f11a2eb161e007187729dffb37cf331b85197a7" => :mountain_lion
   end
 
   depends_on :hg => :build
@@ -20,7 +21,7 @@ class Packer < Formula
 
   go_resource "github.com/mitchellh/gox" do
     url "https://github.com/mitchellh/gox.git",
-      :revision => "a5a468f84d74eb51ece602cb113edeb37167912f"
+      :revision => "ef1967b9f538fe467e6a82fc42ec5dff966ad4ea"
   end
 
   go_resource "github.com/mitchellh/iochan" do
@@ -30,7 +31,7 @@ class Packer < Formula
 
   go_resource "github.com/hashicorp/atlas-go" do
     url "https://github.com/hashicorp/atlas-go.git",
-      :revision => "1b403631cd2d44764a68a9549874213cf95b285e"
+      :revision => "d1d08e8e25f0659388ede7bb8157aaa4895f5347"
   end
 
   go_resource "github.com/hashicorp/go-checkpoint" do
@@ -43,6 +44,11 @@ class Packer < Formula
       :revision => "fa3f63826f7c23912c15263591e65d54d080b458"
   end
 
+  go_resource "github.com/hashicorp/go-multierror" do
+    url "https://github.com/hashicorp/go-multierror.git",
+      :revision => "56912fb08d85084aa318edcf2bba735b97cf35c5"
+  end
+
   go_resource "github.com/hashicorp/go-version" do
     url "https://github.com/hashicorp/go-version.git",
       :revision => "999359b6b7a041ce16e695d51e92145b83f01087"
@@ -50,7 +56,7 @@ class Packer < Formula
 
   go_resource "github.com/hashicorp/yamux" do
     url "https://github.com/hashicorp/yamux.git",
-      :revision => "b2e55852ddaf823a85c67f798080eb7d08acd71d"
+      :revision => "ae139c4ae7fe21e9d99459d2acc57967cebb6918"
   end
 
   go_resource "github.com/mitchellh/cli" do
@@ -60,7 +66,7 @@ class Packer < Formula
 
   go_resource "github.com/mitchellh/mapstructure" do
     url "https://github.com/mitchellh/mapstructure.git",
-      :revision => "2caf8efc93669b6c43e0441cdc6aed17546c96f3"
+      :revision => "281073eb9eb092240d33ef253c404f1cca550309"
   end
 
   go_resource "github.com/mitchellh/osext" do
@@ -76,6 +82,11 @@ class Packer < Formula
   go_resource "github.com/mitchellh/prefixedio" do
     url "https://github.com/mitchellh/prefixedio.git",
       :revision => "89d9b535996bf0a185f85b59578f2e245f9e1724"
+  end
+
+  go_resource "github.com/mitchellh/reflectwalk" do
+    url "https://github.com/mitchellh/reflectwalk.git",
+      :revision => "eecf4c70c626c7cfbb95c90195bc34d386c74ac6"
   end
 
   go_resource "code.google.com/p/go.crypto" do
@@ -110,37 +121,37 @@ class Packer < Formula
 
   go_resource "google.golang.org/api" do
     url "https://github.com/google/google-api-go-client.git",
-      :revision => "a09229c13c2f13bbdedf7b31b506cad4c83ef3bf"
+      :revision => "a5c3e2a4792aff40e59840d9ecdff0542a202a80"
   end
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "2f677ffe0a128ed6d4e3ecb565e4d29a6c6365da"
+      :revision => "81bf7719a6b7ce9b665598222362b50122dfc13b"
   end
 
   go_resource "golang.org/x/oauth2" do
     url "https://go.googlesource.com/oauth2.git",
-      :revision => "8914e5017ca260f2a3a1575b1e6868874050d95e"
+      :revision => "397fe7649477ff2e8ced8fc0b2696f781e53745a"
   end
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git",
-      :revision => "d9558e5c97f85372afee28cf2b6059d7d3818919"
+      :revision => "7654728e381988afd88e58cabfd6363a5ea91810"
   end
 
   go_resource "google.golang.org/appengine" do
     url "https://github.com/golang/appengine.git",
-      :revision => "e335b53aaf7a699963a1cfea40b65ee3bf09f711"
+      :revision => "cdd515334b113fdc9b35cb1e7a3b457eeb5ad5cf"
   end
 
   go_resource "google.golang.org/cloud" do
     url "https://github.com/GoogleCloudPlatform/gcloud-golang.git",
-      :revision => "feda659df33f28fe2d0524fad496b4d01a2015af"
+      :revision => "e34a32f9b0ecbc0784865fb2d47f3818c09521d4"
   end
 
   go_resource "github.com/golang/protobuf" do
     url "https://github.com/golang/protobuf.git",
-      :revision => "a1463b958edbdb9d1fa8daa3a0a469bf678a1b89"
+      :revision => "59b73b37c1e45995477aae817e4a653c89a858db"
   end
 
   go_resource "github.com/mitchellh/gophercloud-fork-40444fb" do
@@ -179,6 +190,8 @@ class Packer < Formula
   end
 
   def install
+    ENV["XC_OS"] = "darwin"
+    ENV["XC_ARCH"] = MacOS.prefer_64_bit? ? "amd64" : "386"
     ENV["GOPATH"] = buildpath
     # For the gox buildtool used by packer, which doesn't need to
     # get installed permanently
@@ -187,6 +200,7 @@ class Packer < Formula
     packerpath = buildpath/"src/github.com/mitchellh/packer"
     packerpath.install Dir["{*,.git}"]
     Language::Go.stage_deps resources, buildpath/"src"
+    mkdir_p buildpath/"bin"
 
     cd "src/github.com/mitchellh/gox" do
       system "go", "build"

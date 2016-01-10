@@ -1,22 +1,23 @@
 class Golo < Formula
   desc "Lightweight dynamic language for the JVM"
   homepage "http://golo-lang.org"
-  url "http://search.maven.org/remotecontent?filepath=org/golo-lang/golo/2.1.0/golo-2.1.0-distribution.tar.gz"
-  sha1 "42bc1f44007b7aa4dfc85ad8da0a75918faf65fb"
+  url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation.zip"
+  sha256 "e7d350148a3a7492348f0214679b282858ced58e4063a17bbf53f9ec2ae5f288"
 
   head do
-    url "https://github.com/golo-lang/golo-lang.git"
-    depends_on "maven" => :build
+    url "https://github.com/eclipse/golo-lang.git"
   end
 
-  depends_on :java => "1.7+"
+  bottle :unneeded
+
+  depends_on :java => "1.8+"
 
   def install
     if build.head?
-      rake "special:bootstrap"
-      libexec.install %w[target/appassembler/bin target/appassembler/lib]
+      system "./gradlew", "installDist"
+      libexec.install %w[build/install/golo/bin build/install/golo/docs build/install/golo/lib]
     else
-      libexec.install %w[bin doc lib]
+      libexec.install %w[bin docs lib]
     end
     libexec.install %w[share samples]
 

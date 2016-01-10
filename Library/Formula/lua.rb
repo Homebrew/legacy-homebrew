@@ -3,11 +3,20 @@ class Lua < Formula
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
   sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
+  revision 1
 
   bottle do
-    sha256 "50c2d69eeeea78d4a61b9126c5d26109dc0f07e2f5612d6f4cb284f327218ef2" => :yosemite
-    sha256 "1ca69d6f4762433ad74212f8ead6afcb36c4abf52f1d9ab7823a2cc2ca39f9a0" => :mavericks
-    sha256 "aed50b343543c89ea90f386b97b51ad219ee268919c982ccde7ffce40510cebd" => :mountain_lion
+    cellar :any
+    sha256 "b8ab4306d8c3c5ff2a5289986238af1e0090d3793f73987c9c8beb07826b2e64" => :el_capitan
+    sha256 "ad2fceaf391771c9e4120f00ac78c5e634aa3c6cd911566e38d016fec4d6c315" => :yosemite
+    sha256 "997e8eb591ea1e44dc9cf0910cac61137e0e231d228953b61826ff37a452a8dc" => :mavericks
+    sha256 "519abb38296981baf49dd00ac80a2ac742f8e278b0b616d88d7fab8702ad430d" => :mountain_lion
+  end
+
+  def pour_bottle?
+    # DomT4: I'm pretty sure this can be fixed, so don't leave this in place forever.
+    # https://github.com/Homebrew/homebrew/issues/44619
+    HOMEBREW_PREFIX.to_s == "/usr/local"
   end
 
   fails_with :llvm do
@@ -49,6 +58,9 @@ class Lua < Formula
   def install
     ENV.universal_binary if build.universal?
 
+    # Subtitute formula prefix in `src/Makefile` for install name (dylib ID).
+    inreplace "src/Makefile", "@LUA_PREFIX@", prefix
+
     # Use our CC/CFLAGS to compile.
     inreplace "src/Makefile" do |s|
       s.remove_make_var! "CC"
@@ -69,7 +81,7 @@ class Lua < Formula
     bin.install_symlink "lua" => "lua-5.2"
     bin.install_symlink "luac" => "luac5.2"
     bin.install_symlink "luac" => "luac-5.2"
-    include.install_symlink include => "#{include}/lua5.2"
+    (include/"lua5.2").install_symlink include.children
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
 
@@ -105,7 +117,7 @@ class Lua < Formula
   def pc_file; <<-EOS.undent
     V= 5.2
     R= 5.2.4
-    prefix=#{HOMEBREW_PREFIX}
+    prefix=#{prefix}
     INSTALL_BIN= ${prefix}/bin
     INSTALL_INC= ${prefix}/include
     INSTALL_LIB= ${prefix}/lib
@@ -156,7 +168,7 @@ index bd9515f..5940ba9 100644
  TO_BIN= lua luac
  TO_INC= lua.h luaconf.h lualib.h lauxlib.h lua.hpp
 -TO_LIB= liblua.a
-+TO_LIB= liblua.5.2.3.dylib
++TO_LIB= liblua.5.2.4.dylib
  TO_MAN= lua.1 luac.1
 
  # Lua version and release.
@@ -164,7 +176,7 @@ index bd9515f..5940ba9 100644
 	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
 	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
 	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
-+	ln -s -f liblua.5.2.3.dylib $(INSTALL_LIB)/liblua.5.2.dylib
++	ln -s -f liblua.5.2.4.dylib $(INSTALL_LIB)/liblua.5.2.dylib
 +	ln -s -f liblua.5.2.dylib $(INSTALL_LIB)/liblua.dylib
 
  uninstall:
@@ -178,7 +190,7 @@ index 8c9ee67..7f92407 100644
  PLATS= aix ansi bsd freebsd generic linux macosx mingw posix solaris
 
 -LUA_A=	liblua.a
-+LUA_A=	liblua.5.2.3.dylib
++LUA_A=	liblua.5.2.4.dylib
  CORE_O=	lapi.o lcode.o lctype.o ldebug.o ldo.o ldump.o lfunc.o lgc.o llex.o \
 	lmem.o lobject.o lopcodes.o lparser.o lstate.o lstring.o ltable.o \
 	ltm.o lundump.o lvm.o lzio.o
@@ -188,13 +200,13 @@ index 8c9ee67..7f92407 100644
  $(LUA_A): $(BASE_O)
 -	$(AR) $@ $(BASE_O)
 -	$(RANLIB) $@
-+	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.2.dylib \
-+		-compatibility_version 5.2 -current_version 5.2.3 \
-+		-o liblua.5.2.3.dylib $^
++	$(CC) -dynamiclib -install_name @LUA_PREFIX@/lib/liblua.5.2.dylib \
++		-compatibility_version 5.2 -current_version 5.2.4 \
++		-o liblua.5.2.4.dylib $^
 
  $(LUA_T): $(LUA_O) $(LUA_A)
 -	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
-+	$(CC) -fno-common $(MYLDFLAGS) -o $@ $(LUA_O) $(LUA_A) -L. -llua.5.2.3 $(LIBS)
++	$(CC) -fno-common $(MYLDFLAGS) -o $@ $(LUA_O) $(LUA_A) -L. -llua.5.2.4 $(LIBS)
 
  $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)

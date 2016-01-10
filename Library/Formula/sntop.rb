@@ -1,12 +1,10 @@
-require 'formula'
-
 class Sntop < Formula
   desc "Curses-based utility that polls hosts to determine connectivity"
-  homepage 'http://sntop.sourceforge.net/'
-  url 'http://distcache.freebsd.org/ports-distfiles/sntop-1.4.3.tar.gz'
-  sha1 '8a96bb453a83262e30215a31be508c16dbd71e27'
+  homepage "http://sntop.sourceforge.net/"
+  url "http://distcache.freebsd.org/ports-distfiles/sntop-1.4.3.tar.gz"
+  sha256 "943a5af1905c3ae7ead064e531cde6e9b3dc82598bbda26ed4a43788d81d6d89"
 
-  depends_on 'fping'
+  depends_on "fping"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
@@ -16,7 +14,7 @@ class Sntop < Formula
     etc.mkpath
     bin.mkpath
     man1.mkpath
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

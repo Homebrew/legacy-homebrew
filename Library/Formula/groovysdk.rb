@@ -1,10 +1,12 @@
-require "formula"
-
 class Groovysdk < Formula
   desc "SDK for Groovy: a Java-based scripting language"
-  homepage "http://groovy.codehaus.org/"
-  url "http://dl.bintray.com/groovy/maven/groovy-sdk-2.4.3.zip"
-  sha1 "a3aa1161422132dc116f8b8171914b36668b3839"
+  homepage "http://www.groovy-lang.org"
+  url "https://dl.bintray.com/groovy/maven/apache-groovy-sdk-2.4.5.zip"
+  sha256 "48d9f7f1165c12f7eed2b9a762820a7ffe176b666b1605c9b1411ab3b3f45a1d"
+
+  bottle :unneeded
+
+  conflicts_with "groovy", :because => "both install the same binaries"
 
   def install
     ENV["GROOVY_HOME"] = libexec
@@ -14,7 +16,7 @@ class Groovysdk < Formula
 
     prefix.install_metafiles
     bin.install Dir["bin/*"]
-    libexec.install %w(conf lib embeddable src doc)
+    libexec.install %w[conf lib embeddable src doc]
     bin.env_script_all_files(libexec+"bin", :GROOVY_HOME => ENV["GROOVY_HOME"])
   end
 

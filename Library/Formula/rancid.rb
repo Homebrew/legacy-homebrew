@@ -11,6 +11,8 @@ class Rancid < Formula
     sha256 "dc6eb5f1cec36fb614ba2dc1bfd5590b19d9b57aaac1a88d00c635af5f46b2ae" => :mountain_lion
   end
 
+  conflicts_with "par", :because => "both install `par` binaries"
+
   def install
     system "./configure", "--prefix=#{prefix}", "--exec-prefix=#{prefix}", "--mandir=#{man}"
     system "make", "install"

@@ -1,20 +1,20 @@
-require "formula"
-
 class Uwsgi < Formula
   desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  url "https://projects.unbit.it/downloads/uwsgi-2.0.11.2.tar.gz"
+  sha256 "0b889b0b4d2dd3f6625df28cb0b86ec44a68d074ede2d0dfad0b91e88914885c"
   head "https://github.com/unbit/uwsgi.git"
 
-  stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.10.tar.gz"
-    sha1 "31bae2dac113af8d95dbc9b982df139ff61ce209"
+  bottle do
+    revision 2
+    sha256 "63766f3efb450c4241154da60181c542abc2c7141c535ee1e1c10983c7ee9b4d" => :el_capitan
+    sha256 "4ad53a8a16b8ba2c0543def66315e30ba8f374fc9c8d67790e11d6fc577ea0a1" => :yosemite
+    sha256 "b3b341d72bfd762b88dbe26f406b510d89187ca8702344158bb346688dbc25f0" => :mavericks
   end
 
-  bottle do
-    sha256 "85e9a1c89c49f76818c87be4a6a9fe200ccc4ff39d9d788d328702b1463c740f" => :yosemite
-    sha256 "12ce6b55caecc1fb74979e2d3d858dafd9e64805f748d78792e6c87948fb6664" => :mavericks
-    sha256 "9c0a86e07730a797191d06e01b9c30bce6af0edf15cf212be5b3a7ec5ac492fb" => :mountain_lion
-  end
+  option "with-java", "Compile with Java support"
+  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
+  option "with-ruby", "Compile with Ruby support"
 
   depends_on "pkg-config" => :build
   depends_on "openssl"
@@ -45,18 +45,23 @@ class Uwsgi < Formula
   depends_on "v8" => :optional
   depends_on "zeromq" => :optional
 
-  option "with-java", "Compile with Java support"
-  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
-  option "with-ruby", "Compile with Ruby support"
-
   def install
-    ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
+    ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
+    openssl = Formula["openssl"]
+    ENV.prepend "CFLAGS", "-I#{openssl.opt_include}"
+    ENV.prepend "LDFLAGS", "-L#{openssl.opt_lib}"
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
+    # Fix build on case-sensitive filesystems
+    # https://github.com/Homebrew/homebrew/issues/45560
+    # https://github.com/unbit/uwsgi/pull/1128
+    inreplace "plugins/alarm_speech/uwsgiplugin.py", "'-framework appkit'", "'-framework AppKit'"
+
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
+      ssl = true
       json = #{json}
       yaml = #{yaml}
       inherit = base
@@ -64,7 +69,7 @@ class Uwsgi < Formula
       embedded_plugins = null
     EOS
 
-    system "python", "uwsgiconfig.py", "--build", "brew"
+    system "python", "uwsgiconfig.py", "--verbose", "--build", "brew"
 
     plugins = ["airbrake", "alarm_curl", "alarm_speech", "asyncio", "cache",
                "carbon", "cgi", "cheaper_backlog2", "cheaper_busyness",
@@ -81,7 +86,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper","ugreen", "webdav", "zergpool"]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"
@@ -113,13 +118,13 @@ class Uwsgi < Formula
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/#{plugin}", "brew"
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/#{plugin}", "brew"
     end
 
     python_versions = ["python", "python2"]
     python_versions << "python3" if build.with? "python3"
     python_versions.each do |v|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/python", "brew", v
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/python", "brew", v
     end
 
     bin.install "uwsgi"
@@ -158,5 +163,25 @@ class Uwsgi < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (testpath/"helloworld.py").write <<-EOS.undent
+      def application(env, start_response):
+        start_response('200 OK', [('Content-Type','text/html')])
+        return [b"Hello World"]
+    EOS
+
+    pid = fork do
+      exec "#{bin}/uwsgi --http-socket 127.0.0.1:8080 --protocol=http --plugin python -w helloworld"
+    end
+    sleep 2
+
+    begin
+      assert_match /Hello World/, shell_output("curl localhost:8080")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

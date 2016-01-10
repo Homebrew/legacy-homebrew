@@ -1,24 +1,31 @@
-require 'formula'
-
 class Zsh < Formula
-  desc "A UNIX shell (command interpreter)"
-  homepage 'http://www.zsh.org/'
-  url 'https://downloads.sourceforge.net/project/zsh/zsh/5.0.8/zsh-5.0.8.tar.bz2'
-  mirror 'http://www.zsh.org/pub/zsh-5.0.8.tar.bz2'
-  sha256 '8079cf08cb8beff22f84b56bd72bb6e6962ff4718d816f3d83a633b4c9e17d23'
+  desc "UNIX shell (command interpreter)"
+  homepage "http://www.zsh.org/"
+  url "https://downloads.sourceforge.net/project/zsh/zsh/5.2/zsh-5.2.tar.gz"
+  mirror "http://www.zsh.org/pub/zsh-5.2.tar.gz"
+  sha256 "fa924c534c6633c219dcffdcd7da9399dabfb63347f88ce6ddcd5bb441215937"
 
   bottle do
-    sha256 "86da8afbbaa7a5a84b6362638f101a0698ac669a55282991c3488de4c1f6d6f3" => :yosemite
-    sha256 "748fd3b2f72b74bc63639aaa0b9bff59cd25592b94b4b84b4574cde7d0399fe8" => :mavericks
-    sha256 "808e64fa41634261b1427eff37ba4b1f1708d642504461c63cc3d10c073c735a" => :mountain_lion
+    sha256 "cd259a16f0645a085e01b49b6ff92f5d11605775e6b10ba4759be3487fb29b5d" => :el_capitan
+    sha256 "0d33821053045530db4f7b9588d9f5dced22d02a8b6491260aecb990ad55fb7e" => :yosemite
+    sha256 "47b00e430b5922fdf7260ccdd77e510c50961a55e11cc89aa029a11e8e82d309" => :mavericks
   end
 
-  depends_on 'gdbm'
-  depends_on 'pcre'
+  head do
+    url "git://git.code.sf.net/p/zsh/code"
+    depends_on "autoconf" => :build
+  end
 
-  option 'disable-etcdir', 'Disable the reading of Zsh rc files in /etc'
+  option "without-etcdir", "Disable the reading of Zsh rc files in /etc"
+
+  deprecated_option "disable-etcdir" => "without-etcdir"
+
+  depends_on "gdbm"
+  depends_on "pcre"
 
   def install
+    system "Util/preconfig" if build.head?
+
     args = %W[
       --prefix=#{prefix}
       --enable-fndir=#{share}/zsh/functions
@@ -34,10 +41,10 @@ class Zsh < Formula
       --with-tcsetpgrp
     ]
 
-    if build.include? 'disable-etcdir'
-      args << '--disable-etcdir'
+    if build.without? "etcdir"
+      args << "--disable-etcdir"
     else
-      args << '--enable-etcdir=/etc'
+      args << "--enable-etcdir=/etc"
     end
 
     system "./configure", *args
@@ -46,19 +53,28 @@ class Zsh < Formula
     inreplace ["Makefile", "Src/Makefile"],
       "$(libdir)/$(tzsh)/$(VERSION)", "$(libdir)"
 
-    system "make", "install"
-    system "make", "install.info"
-  end
-
-  test do
-    system "#{bin}/zsh", "--version"
+    if build.head?
+      # disable target install.man, because the required yodl comes neither with OS X nor Homebrew
+      # also disable install.runhelp and install.info because they would also fail or have no effect
+      system "make", "install.bin", "install.modules", "install.fns"
+    else
+      system "make", "install"
+      system "make", "install.info"
+    end
   end
 
   def caveats; <<-EOS.undent
+    In order to use this build of zsh as your login shell,
+    it must be added to /etc/shells.
     Add the following to your zshrc to access the online help:
       unalias run-help
       autoload run-help
       HELPDIR=#{HOMEBREW_PREFIX}/share/zsh/help
     EOS
+  end
+
+  test do
+    assert_equal "homebrew\n",
+      shell_output("#{bin}/zsh -c 'echo homebrew'")
   end
 end

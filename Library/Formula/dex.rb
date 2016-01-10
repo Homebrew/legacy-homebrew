@@ -7,9 +7,10 @@ class Dex < Formula
   head "https://github.com/tihirvon/dex.git"
 
   bottle do
-    sha256 "096db7c0595eede488f08321d97763360adb34aefb091cafba8e617e1e1c551e" => :yosemite
-    sha256 "c45e52da1f3bda6fa0c50f25eba8b746279abd26a0a032980aa4c2887501303f" => :mavericks
-    sha256 "6f2d7d8c6a1e54dbe6d815915ac0eb0100fd68426b3d91ec9d04a5356ca0a48b" => :mountain_lion
+    revision 1
+    sha256 "70c249809920acc2d10405c0487427d154ee55cf201507d910d8178693c7fd61" => :el_capitan
+    sha256 "a4cffc5c0b61be9452988d4435ccff1d1c72d2b9cdec595e55ea5f37ca2541a6" => :yosemite
+    sha256 "ce004b66bad4f8ad7d363f45a0b6af15fc96f719a591f3383cd2a84dc424d9e3" => :mavericks
   end
 
   depends_on "homebrew/dupes/ncurses" => :optional
@@ -18,7 +19,8 @@ class Dex < Formula
   def install
     args = ["prefix=#{prefix}",
             "CC=#{ENV.cc}",
-            "HOST_CC=#{ENV.cc}"]
+            "HOST_CC=#{ENV.cc}",
+           ]
 
     args << "VERSION=#{version}" if build.head?
 

@@ -1,17 +1,15 @@
-require 'formula'
-
 class Minizip < Formula
   desc "C library for zip/unzip via zLib"
-  homepage 'http://www.winimage.com/zLibDll/minizip.html'
-  url 'http://zlib.net/zlib-1.2.8.tar.gz'
-  sha1 'a4d316c404ff54ca545ea71a27af7dbc29817088'
-  version '1.1' # version for minizip, not zlib
+  homepage "http://www.winimage.com/zLibDll/minizip.html"
+  url "http://zlib.net/zlib-1.2.8.tar.gz"
+  sha256 "36658cb768a54c1d4dec43c3116c27ed893e88b02ecfcb44f2166f9c0b7f2a0d"
+  version "1.1" # version for minizip, not zlib
 
   option :universal
 
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'libtool' => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
 
   # configure script fails to detect the right compiler when "cc" is
   # clang, not gcc.
@@ -21,21 +19,20 @@ class Minizip < Formula
 
   def install
     ENV.universal_binary if build.universal?
-    system './configure', "--prefix=#{prefix}"
-    system 'make'
+    system "./configure", "--prefix=#{prefix}"
+    system "make"
 
-    cd 'contrib/minizip' do
+    cd "contrib/minizip" do
       # edits to statically link to libz.a
-      inreplace 'Makefile.am' do |s|
-        s.sub! '-L$(zlib_top_builddir)', '$(zlib_top_builddir)/libz.a'
-        s.sub! '-version-info 1:0:0 -lz', '-version-info 1:0:0'
-        s.sub! 'libminizip.la -lz', 'libminizip.la'
+      inreplace "Makefile.am" do |s|
+        s.sub! "-L$(zlib_top_builddir)", "$(zlib_top_builddir)/libz.a"
+        s.sub! "-version-info 1:0:0 -lz", "-version-info 1:0:0"
+        s.sub! "libminizip.la -lz", "libminizip.la"
       end
-      system 'autoreconf', '-fi'
-      system './configure', "--prefix=#{prefix}"
-      system 'make install'
+      system "autoreconf", "-fi"
+      system "./configure", "--prefix=#{prefix}"
+      system "make", "install"
     end
-
   end
 
   def caveats

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Bsdsfv < Formula
   desc "SFV utility tools"
-  homepage 'http://bsdsfv.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/bsdsfv/bsdsfv/1.18/bsdsfv-1.18.tar.gz'
-  sha1 '5e72c5e12bce2d5f77469d8f2425064a0ea6fc1e'
+  homepage "http://bsdsfv.sourceforge.net/"
+  url "https://downloads.sourceforge.net/project/bsdsfv/bsdsfv/1.18/bsdsfv-1.18.tar.gz"
+  sha256 "577245da123d1ea95266c1628e66a6cf87b8046e1a902ddd408671baecf88495"
 
   # bug report:
   # http://sourceforge.net/tracker/?func=detail&aid=2887842&group_id=7211&atid=107211
@@ -14,14 +12,14 @@ class Bsdsfv < Formula
   def install
     bin.mkpath
 
-    inreplace 'Makefile' do |s|
+    inreplace "Makefile" do |s|
       s.change_make_var! "INSTALL_PREFIX", prefix
       s.change_make_var! "INDENT", "indent"
-      s.gsub! '	${INSTALL_PROGRAM} bsdsfv ${INSTALL_PREFIX}/bin', "	${INSTALL_PROGRAM} bsdsfv #{bin}/"
+      s.gsub! "	${INSTALL_PROGRAM} bsdsfv ${INSTALL_PREFIX}/bin", "	${INSTALL_PROGRAM} bsdsfv #{bin}/"
     end
 
-    system "make all"
-    system "make install"
+    system "make", "all"
+    system "make", "install"
   end
 end
 

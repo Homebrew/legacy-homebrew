@@ -1,18 +1,18 @@
-require 'dependable'
+require "dependable"
 
 # A dependency on another Homebrew formula.
 class Dependency
   include Dependable
 
-  attr_reader :name, :tags, :env_proc, :option_name
+  attr_reader :name, :tags, :env_proc, :option_names
 
   DEFAULT_ENV_PROC = proc {}
 
-  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_names = [name])
     @name = name
     @tags = tags
     @env_proc = env_proc
-    @option_name = option_name
+    @option_names = option_names
   end
 
   def to_s
@@ -70,11 +70,11 @@ class Dependency
     # the list.
     # The default filter, which is applied when a block is not given, omits
     # optionals and recommendeds based on what the dependent has asked for.
-    def expand(dependent, deps=dependent.deps, &block)
+    def expand(dependent, deps = dependent.deps, &block)
       expanded_deps = []
 
       deps.each do |dep|
-        # FIXME don't hide cyclic dependencies
+        # FIXME: don't hide cyclic dependencies
         next if dependent.name == dep.name
 
         case action(dependent, dep, &block)
@@ -93,7 +93,7 @@ class Dependency
       merge_repeats(expanded_deps)
     end
 
-    def action(dependent, dep, &block)
+    def action(dependent, dep, &_block)
       catch(:action) do
         if block_given?
           yield dependent, dep
@@ -124,8 +124,37 @@ class Dependency
       all.map(&:name).uniq.map do |name|
         deps = grouped.fetch(name)
         dep  = deps.first
-        tags = deps.map(&:tags).flatten.uniq
-        dep.class.new(name, tags, dep.env_proc)
+        tags = merge_tags(deps)
+        option_names = deps.flat_map(&:option_names).uniq
+        dep.class.new(name, tags, dep.env_proc, option_names)
+      end
+    end
+
+    private
+
+    def merge_tags(deps)
+      options = deps.flat_map(&:option_tags).uniq
+      merge_necessity(deps) + merge_temporality(deps) + options
+    end
+
+    def merge_necessity(deps)
+      # Cannot use `deps.any?(&:required?)` here due to its definition.
+      if deps.any? { |dep| !dep.recommended? && !dep.optional? }
+        [] # Means required dependency.
+      elsif deps.any?(&:recommended?)
+        [:recommended]
+      else # deps.all?(&:optional?)
+        [:optional]
+      end
+    end
+
+    def merge_temporality(deps)
+      if deps.all?(&:build?)
+        [:build]
+      elsif deps.all?(&:run?)
+        [:run]
+      else
+        [] # Means both build and runtime dependency.
       end
     end
   end
@@ -134,9 +163,9 @@ end
 class TapDependency < Dependency
   attr_reader :tap
 
-  def initialize(name, tags=[], env_proc=DEFAULT_ENV_PROC, option_name=name)
-    @tap, _, option_name = option_name.rpartition "/"
-    super(name, tags, env_proc, option_name)
+  def initialize(name, tags = [], env_proc = DEFAULT_ENV_PROC, option_names = [name.split("/").last])
+    @tap = name.rpartition("/").first
+    super(name, tags, env_proc, option_names)
   end
 
   def installed?

@@ -1,10 +1,8 @@
-require "formula"
-
 class Pcrexx < Formula
   desc "C++ wrapper for the Perl Compatible Regular Expressions"
   homepage "http://www.daemon.de/PCRE"
   url "http://www.daemon.de/idisk/Apps/pcre++/pcre++-0.9.5.tar.gz"
-  sha1 "7cb640555c6adf34bf366139b22f6d1a66bd1fb0"
+  sha256 "77ee9fc1afe142e4ba2726416239ced66c3add4295ab1e5ed37ca8a9e7bb638a"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -28,7 +26,7 @@ class Pcrexx < Formula
     # Pcre++ ships Pcre.3, which causes a conflict with pcre.3 from pcre
     # in case-insensitive file system. Rename it to pcre++.3 to avoid
     # this problem.
-    mv man3/'Pcre.3', man3/'pcre++.3'
+    mv man3/"Pcre.3", man3/"pcre++.3"
   end
 
   def caveats; <<-EOS.undent

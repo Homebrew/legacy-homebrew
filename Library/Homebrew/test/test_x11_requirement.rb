@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'requirements/x11_requirement'
+require "testing_env"
+require "requirements/x11_requirement"
 
 class X11RequirementTests < Homebrew::TestCase
   def test_eql_instances_are_eql

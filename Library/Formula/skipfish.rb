@@ -1,19 +1,19 @@
-require 'formula'
-
 class Skipfish < Formula
   desc "Web application security scanner"
-  homepage 'http://code.google.com/p/skipfish/'
-  url 'https://skipfish.googlecode.com/files/skipfish-2.10b.tgz'
-  sha1 '2564162a13d02f8310eef5edcbaf74ed6043be99'
+  homepage "https://code.google.com/p/skipfish/"
+  url "https://skipfish.googlecode.com/files/skipfish-2.10b.tgz"
+  sha256 "1a4fbc9d013f1f9b970946ea7228d943266127b7f4100c994ad26c82c5352a9e"
+  revision 1
 
   bottle do
-    sha1 "509453d1b4e717ab4858b22c6fffe1d5f98744a2" => :mavericks
-    sha1 "d79d26539fac30870ee1699791638f7a38ffd884" => :mountain_lion
-    sha1 "516a27501c45f82c782cbe61867cc958f0063113" => :lion
+    sha256 "b897550f5399004d0082a8a5acb0aa7c4f20c92a9033d486c6172da30bd260d3" => :el_capitan
+    sha256 "a055fdc76fae7fc46cf6c2098ac21b7e88bfcc63c29c88e9727f0ecb83a4e99d" => :yosemite
+    sha256 "ed0cf629f0dd2f23782ff21bb728efe019d8bd84605f9ca85a317ef9841b5d8b" => :mavericks
   end
 
-  depends_on 'libidn'
-  depends_on 'pcre'
+  depends_on "libidn"
+  depends_on "pcre"
+  depends_on "openssl"
 
   def install
     ENV.append "CFLAGS", "-I#{HOMEBREW_PREFIX}/include"
@@ -24,9 +24,9 @@ class Skipfish < Formula
       "#define ASSETS_DIR              \"assets\"",
       "#define ASSETS_DIR	       \"#{libexec}/assets\""
 
-    system 'make'
-    bin.install 'skipfish'
-    libexec.install %w(assets dictionaries config signatures doc)
+    system "make"
+    bin.install "skipfish"
+    libexec.install %w[assets dictionaries config signatures doc]
   end
 
   def caveats; <<-EOS.undent

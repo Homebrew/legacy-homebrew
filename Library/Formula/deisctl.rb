@@ -3,44 +3,42 @@ require "language/go"
 class Deisctl < Formula
   desc "Deis Control Utility"
   homepage "http://deis.io/"
-  url "https://github.com/deis/deis/archive/v1.1.0.tar.gz"
-  sha1 "c57fb6073b374b95262c36959c6d2b6c508cda59"
+  url "https://github.com/deis/deis/archive/v1.11.1.tar.gz"
+  sha256 "0d5434dbcfcbeaf07e071898ee1d2592cde21422c551a6c87e169474123f6d74"
 
   bottle do
-    cellar :any
-    sha1 "db686dbc4dc02122cd98a77c74ca2b57ab859fd9" => :yosemite
-    sha1 "e4e8d2339df740dd10f8a396eb2d9f7502cfba55" => :mavericks
-    sha1 "3effb5512f9ac39b69b639c067a62239b1171677" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "e29f688858937820a0ffed6acd8aeb59cf95b8d87fec95611b78154532e93c9f" => :el_capitan
+    sha256 "2c0c088d5c9ec80105c558380cb7ea89fa76a44547c495b0fd3e4197cf6e08e0" => :yosemite
+    sha256 "8308bb22e992270e0ca5a78ac2ec6cc9242508ee96731d249a5397160b3f0062" => :mavericks
   end
 
-  depends_on :hg => :build
   depends_on "go" => :build
+  depends_on "godep" => :build
 
-  go_resource "github.com/kr/godep" do
-    url "https://github.com/kr/godep.git", :revision => "07a96a1131ddff383e0f502d24c0f989ed0a8bb1"
+  go_resource "github.com/docopt/docopt-go" do
+    url "https://github.com/docopt/docopt-go.git", :revision => "854c423c810880e30b9fecdabb12d54f4a92f9bb"
   end
 
-  go_resource "github.com/kr/fs" do
-    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
+  go_resource "github.com/coreos/go-etcd" do
+    url "https://github.com/coreos/go-etcd.git", :revision => "c904d7032a70da6551c43929f199244f6a45f4c1"
   end
 
-  go_resource "golang.org/x/tools" do
-    url "https://code.google.com/p/go.tools/", :revision => "140fcaadc586", :using => :hg
+  go_resource "github.com/coreos/fleet" do
+    url "https://github.com/coreos/fleet.git", :tag => "v0.9.2", :revision => "e0f7a2316dc6ae610979598c4efe127ac8ff1ae9"
+  end
+
+  go_resource "github.com/ugorji/go" do
+    url "https://github.com/ugorji/go.git", :revision => "821cda7e48749cacf7cad2c6ed01e96457ca7e9d"
   end
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["CGO_ENABLED"] = "0"
-    ENV.prepend_create_path "PATH", buildpath/"bin"
-
     mkdir_p "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis"
     ln_s buildpath, "#{buildpath}/deisctl/Godeps/_workspace/src/github.com/deis/deis"
 
     Language::Go.stage_deps resources, buildpath/"src"
-
-    cd "src/github.com/kr/godep" do
-      system "go", "install"
-    end
 
     cd "deisctl" do
       system "godep", "go", "build", "-a", "-ldflags", "-s", "-o", "dist/deisctl"
@@ -49,6 +47,6 @@ class Deisctl < Formula
   end
 
   test do
-    system "#{bin}/deisctl", "help"
+    system bin/"deisctl", "help"
   end
 end

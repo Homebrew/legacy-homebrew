@@ -2,11 +2,11 @@ class MysqlCluster < Formula
   desc "Shared-nothing clustering and auto-sharding for MySQL"
   homepage "https://www.mysql.com/products/cluster/"
   url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.8.tar.gz"
-  sha1 "f70ac7955343765146c556576c8b13dbedf9c593"
+  sha256 "eddcc2954ff7fbbc72b1266bd64a9548e9b9d7a4115d42b54c13257c226248ca"
 
   bottle do
-    sha1 "0f03e0282102b1635d3c1567f2046c0b67bd4b1a" => :mavericks
-    sha1 "694d4b6cf56ae7ac7e35315bfe6d20d3d0d1f9fd" => :mountain_lion
+    sha256 "a7f77a5b3dc5023fa63846f07c9b0d104376934331e62a9716222bd5efca2e98" => :mavericks
+    sha256 "fdec2e4159e9b021f4555f7348bf55f7aba79b6e4d85c20270bbc160e4c30706" => :mountain_lion
   end
 
   # Fix me: if you can get this to build on Yosemite, send a pull request!
@@ -17,13 +17,15 @@ class MysqlCluster < Formula
   depends_on "pidof" unless MacOS.version >= :mountain_lion
 
   option :universal
-  option "with-tests", "Build with unit tests"
+  option "with-test", "Build with unit tests"
   option "with-embedded", "Build the embedded server"
   option "with-libedit", "Compile with editline wrapper instead of readline"
   option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
   option "with-blackhole-storage-engine", "Compile with the BLACKHOLE storage engine enabled"
   option "enable-local-infile", "Build with local infile loading support"
   option "enable-debug", "Build with debug support"
+
+  deprecated_option "with-tests" => "with-test"
 
   conflicts_with "memcached", :because => "both install `bin/memcached`"
   conflicts_with "mysql", "mariadb", "percona-server",
@@ -40,7 +42,7 @@ class MysqlCluster < Formula
     ENV.minimal_optimization
 
     # Make sure the var/mysql-cluster directory exists
-    (var+"mysql-cluster").mkpath
+    (var/"mysql-cluster").mkpath
 
     args = [".",
             "-DCMAKE_INSTALL_PREFIX=#{prefix}",
@@ -56,7 +58,7 @@ class MysqlCluster < Formula
             "-DSYSCONFDIR=#{etc}"]
 
     # To enable unit testing at build, we need to download the unit testing suite
-    if build.with? "tests"
+    if build.with? "test"
       args << "-DENABLE_DOWNLOADS=ON"
     else
       args << "-DWITH_UNIT_TESTS=OFF"
@@ -91,11 +93,11 @@ class MysqlCluster < Formula
     system "make", "install"
 
     # Create default directories and configuration files
-    (var+"mysql-cluster/ndb_data").mkpath
-    (var+"mysql-cluster/mysqld_data").mkpath
-    (var+"mysql-cluster/conf").mkpath
-    (var+"mysql-cluster/conf/my.cnf").write my_cnf unless File.exist? var+"mysql-cluster/conf/my.cnf"
-    (var+"mysql-cluster/conf/config.ini").write config_ini unless File.exist? var+"mysql-cluster/conf/config.ini"
+    (var/"mysql-cluster/ndb_data").mkpath
+    (var/"mysql-cluster/mysqld_data").mkpath
+    (var/"mysql-cluster/conf").mkpath
+    (var/"mysql-cluster/conf/my.cnf").write my_cnf unless File.exist? var/"mysql-cluster/conf/my.cnf"
+    (var/"mysql-cluster/conf/config.ini").write config_ini unless File.exist? var/"mysql-cluster/conf/config.ini"
 
     plist_path("ndb_mgmd").write ndb_mgmd_startup_plist("ndb_mgmd")
     plist_path("ndb_mgmd").chmod 0644

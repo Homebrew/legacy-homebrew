@@ -29,7 +29,7 @@ class Neko < Formula
     neko.install Dir["bin/*"]
 
     # Symlink into bin so libneko.dylib resolves correctly for custom prefix
-    %w(neko nekoc nekoml nekotools).each do |file|
+    %w[neko nekoc nekoml nekotools].each do |file|
       bin.install_symlink neko/file
     end
     lib.install_symlink neko/"libneko.dylib"

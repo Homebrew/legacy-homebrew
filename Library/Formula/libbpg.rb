@@ -1,24 +1,33 @@
-require "formula"
-
 class Libbpg < Formula
   desc "Image format meant to improve on JPEG quality and file size"
   homepage "http://bellard.org/bpg/"
-  url "http://bellard.org/bpg/libbpg-0.9.5.tar.gz"
-  sha1 "1eee24f9d9d381b574b86a28d2af1073ab07bb55"
+  url "http://bellard.org/bpg/libbpg-0.9.6.tar.gz"
+  sha256 "2800777d88a77fd64a4a9036b131f021a5bda8304e1dbe7996dd466567fb484e"
 
   bottle do
     cellar :any
-    sha1 "b3484df329f2b40968a1d70f6a2b4e9df8b15c4d" => :yosemite
-    sha1 "dc8a09cf7f7ebc452aa0d27caa78b4fb1d26b8c1" => :mavericks
-    sha1 "ae5340b8b0a353282bafea08edce8146cf6d5106" => :mountain_lion
+    revision 1
+    sha256 "f5d2349fa1e247411ed624baf5730782fed1e72643cf2e96ce49c4dac50c7764" => :el_capitan
+    sha256 "7c4cde5957cfb855aa52edbb3fcf0f489d1803e42060dd8ff7cb042fe84c05f0" => :yosemite
+    sha256 "93a4d03c32d1fe837f35a94d9c0f524684ddb29e02a5b507e4817e5b1cddabda" => :mavericks
   end
 
+  option "with-jctvc", "Enable built-in JCTVC encoder - Mono threaded, slower but produce smaller file"
+  option "without-x265", "Disable built-in x265 encoder - Multi threaded, faster but produce bigger file"
+
+  depends_on "cmake" => :build
+  depends_on "yasm" => :build if build.with? "x265"
   depends_on "libpng"
   depends_on "jpeg"
 
   def install
     bin.mkpath
-    system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y"
+
+    args = []
+    args << "USE_JCTVC=y" if build.with? "jctvc"
+    args << "USE_X265=" if build.without? "x265"
+
+    system "make", "install", "prefix=#{prefix}", "CONFIG_APPLE=y", *args
   end
 
   test do

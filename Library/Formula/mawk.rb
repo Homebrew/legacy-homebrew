@@ -1,16 +1,14 @@
-require "formula"
-
 class Mawk < Formula
-  desc "An interpreter for the AWK Programming Language"
+  desc "Interpreter for the AWK Programming Language"
   homepage "http://invisible-island.net/mawk/"
   url "ftp://invisible-island.net/mawk/mawk-1.3.4-20141027.tgz"
-  sha1 "a0a54bde0c76a351fa073a6fa10ce912a1260144"
+  sha256 "a88f50c1a0800ae6d2cedb0672b15bd32cc57e482715ca7c1471fb398e89767a"
 
   bottle do
     cellar :any
-    sha1 "32fbaf50a142eba4ce968a0de1cc013cd2d39f66" => :yosemite
-    sha1 "9d733323a1e4e185ad6e9cf5a45139258f14ed37" => :mavericks
-    sha1 "169c70e2d8b83c9c19ebc97687278044fd8c855d" => :mountain_lion
+    sha256 "d513669dc87cf81fc1526d1784191f613837b871bde25e2a3eaaa0b7f0d991ad" => :yosemite
+    sha256 "e116bc17922da25b037f2b5cf15f93cf0f8f535efe5fc3435cf337af10f553e7" => :mavericks
+    sha256 "3d38eee059da9baa8aa70feb54b9e1eeaff8023b80bea0dfcd482039ee971476" => :mountain_lion
   end
 
   def install

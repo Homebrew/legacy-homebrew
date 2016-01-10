@@ -1,24 +1,22 @@
-require "formula"
-
 class Truecrack < Formula
   desc "Brute-force password cracker for TrueCrypt"
   homepage "https://code.google.com/p/truecrack/"
   url "https://truecrack.googlecode.com/files/truecrack_v35.tar.gz"
-  sha1 "21b2a0f2f860ecf401cfc1ac8191638b7410fc64"
+  sha256 "25bf270fa3bc3591c3d795e5a4b0842f6581f76c0b5d17c0aef260246fe726b3"
   version "3.5"
 
   bottle do
     cellar :any
-    sha1 "605d9c2eda636f918413f4ae3d9146bfa5168516" => :mavericks
-    sha1 "a320ed86f967c5b0e430c6506804f5a1574d3143" => :mountain_lion
-    sha1 "67c8b6637db713e7582f6db320fdc1926e7f531b" => :lion
+    sha256 "f89b74c141f59211a8e77f9d09288f3e5bfa8452074ddd41154bf54d4380146b" => :mavericks
+    sha256 "17be4dcefbf2274f24ced0b3772632ae67df962db59685fbf2f95aeb48b9fbcf" => :mountain_lion
+    sha256 "3f07f5450ab1106604b09d63ae32275bc55e42bc881aba5f1145023e91ad81e5" => :lion
   end
 
   # Fix missing return value compilation issue
   # https://code.google.com/p/truecrack/issues/detail?id=41
   patch do
     url "https://gist.githubusercontent.com/anonymous/b912a1ede06eb1e8eb38/raw/1394a8a6bedb7caae8ee034f512f76a99fe55976/truecrack-return-value-fix.patch"
-    sha1 "6a0fa8a58284dec2352e7c090f68bb03d4dc75ab"
+    sha256 "8aa608054f9b822a1fb7294a5087410f347ba632bbd4b46002aada76c289ed77"
   end
 
   def install

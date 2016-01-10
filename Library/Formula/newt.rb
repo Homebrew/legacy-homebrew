@@ -1,30 +1,31 @@
 class Newt < Formula
   desc "Library for color text mode, widget based user interfaces"
-  homepage 'https://fedorahosted.org/newt/'
-  url 'https://fedorahosted.org/releases/n/e/newt/newt-0.52.18.tar.gz'
-  sha1 '2992c926bd3699ff0d6fd7549d4a8a018e3ac8fd'
+  homepage "https://fedorahosted.org/newt/"
+  url "https://fedorahosted.org/releases/n/e/newt/newt-0.52.18.tar.gz"
+  sha256 "771b0e634ede56ae6a6acd910728bb5832ac13ddb0d1d27919d2498dab70c91e"
 
   bottle do
     cellar :any
-    sha1 "447b7cdf5ba5fb0be6bcaa80a9c30a5112071a87" => :yosemite
-    sha1 "07bcf73d646dd489d10d68ded6811aa5a7d5ea57" => :mavericks
-    sha1 "599600fa6e92c38dbaa7bb6e1138eda04a4c5bf1" => :mountain_lion
+    sha256 "33403d77594cecec7efb68b21a3a55b0c2510cd3c97d8aa5f252015632c5962b" => :yosemite
+    sha256 "d1a3b95da1718bae9461c958cc05b739f94ee4ec0e5d08f7a8001cd29aa82dc8" => :mavericks
+    sha256 "ace3c7f7beacda4039b3d147687214a01f6006a6d53eadbb245825a2cea402ad" => :mountain_lion
   end
 
-  depends_on 'gettext'
-  depends_on 'popt'
-  depends_on 's-lang'
+  depends_on "gettext"
+  depends_on "popt"
+  depends_on "s-lang"
   depends_on :python => :optional
 
   # build dylibs with -dynamiclib; version libraries
+  # Patch via MacPorts
   patch :p0 do
-    url "https://trac.macports.org/export/132914/trunk/dports/devel/libnewt/files/patch-Makefile.in.diff"
-    sha1 "f366a650ed100317344a3e7f49981a6dca1f4889"
+    url "https://raw.githubusercontent.com/Homebrew/patches/0eb53878/newt/patch-Makefile.in.diff"
+    sha256 "6672c253b42696fdacd23424ae0e07af6d86313718e06cd44e40e532a892db16"
   end
 
   def install
     args = ["--prefix=#{prefix}", "--without-tcl"]
-    args << "--without-python" if build.without? 'python'
+    args << "--without-python" if build.without? "python"
 
     inreplace "Makefile.in" do |s|
       # name libraries correctly

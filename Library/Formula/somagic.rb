@@ -1,10 +1,8 @@
-require "formula"
-
 class Somagic < Formula
   desc "Linux capture program for the Somagic variants of EasyCAP"
   homepage "https://code.google.com/p/easycap-somagic-linux/"
   url "https://easycap-somagic-linux.googlecode.com/files/somagic-easycap_1.1.tar.gz"
-  sha1 "97cda956ea319fdd9aa9be9aff222a3e804deb91"
+  sha256 "3a9dd78a47335a6d041cd5465d28124612dad97939c56d7c10e000484d78a320"
 
   depends_on "libusb"
   depends_on "libgcrypt"

@@ -8,23 +8,42 @@ class Sandbox
     OS.mac? && File.executable?(SANDBOX_EXEC)
   end
 
+  # there are times the sandbox cannot be used.
+  def self.auto_disable?
+    @auto_disable ||= ARGV.interactive? || ARGV.debug?
+  end
+
+  def self.print_autodisable_warning
+    unless @printed_autodisable_warning
+      opoo "The sandbox cannot be used in debug or interactive mode."
+      @printed_autodisable_warning = true
+    end
+  end
+
+  def self.print_sandbox_message
+    unless @printed_sandbox_message
+      ohai "Using the sandbox"
+      @printed_sandbox_message = true
+    end
+  end
+
   def initialize
     @profile = SandboxProfile.new
   end
 
   def record_log(file)
-    @log = file
+    @logfile = file
   end
 
   def add_rule(rule)
     @profile.add_rule(rule)
   end
 
-  def allow_write(path, options={})
+  def allow_write(path, options = {})
     add_rule :allow => true, :operation => "file-write*", :filter => path_filter(path, options[:type])
   end
 
-  def deny_write(path, options={})
+  def deny_write(path, options = {})
     add_rule :allow => false, :operation => "file-write*", :filter => path_filter(path, options[:type])
   end
 
@@ -38,6 +57,7 @@ class Sandbox
 
   def allow_write_temp_and_cache
     allow_write_path "/private/tmp"
+    allow_write_path "/private/var/tmp"
     allow_write "^/private/var/folders/[^/]+/[^/]+/[C,T]/", :type => :regex
     allow_write_path HOMEBREW_TEMP
     allow_write_path HOMEBREW_CACHE
@@ -47,6 +67,11 @@ class Sandbox
     allow_write_path formula.rack
     allow_write_path formula.etc
     allow_write_path formula.var
+  end
+
+  # Xcode projects expect access to certain cache/archive dirs.
+  def allow_write_xcode
+    allow_write_path "/Users/#{ENV["USER"]}/Library/Developer/Xcode/DerivedData/"
   end
 
   def allow_write_log(formula)
@@ -60,31 +85,40 @@ class Sandbox
   end
 
   def exec(*args)
-    begin
-      seatbelt = Tempfile.new(["homebrew", ".sb"], HOMEBREW_TEMP)
-      seatbelt.write(@profile.dump)
-      seatbelt.close
-      @start = Time.now
-      safe_system SANDBOX_EXEC, "-f", seatbelt.path, *args
-    rescue
-      if ARGV.verbose?
-        ohai "Sandbox profile:"
-        puts @profile.dump
+    seatbelt = Tempfile.new(["homebrew", ".sb"], HOMEBREW_TEMP)
+    seatbelt.write(@profile.dump)
+    seatbelt.close
+    @start = Time.now
+    safe_system SANDBOX_EXEC, "-f", seatbelt.path, *args
+  rescue
+    @failed = true
+    raise
+  ensure
+    seatbelt.unlink
+    sleep 0.1 # wait for a bit to let syslog catch up the latest events.
+    syslog_args = %W[
+      -F $((Time)(local))\ $(Sender)[$(PID)]:\ $(Message)
+      -k Time ge #{@start.to_i}
+      -k Message S deny
+      -k Sender kernel
+      -o
+      -k Time ge #{@start.to_i}
+      -k Message S deny
+      -k Sender sandboxd
+    ]
+    logs = Utils.popen_read("syslog", *syslog_args)
+    unless logs.empty?
+      if @logfile
+        log = open(@logfile, "w")
+        log.write logs
+        log.write "\nWe use time to filter sandbox log. Therefore, unrelated logs may be recorded.\n"
+        log.close
       end
-      raise
-    ensure
-      seatbelt.unlink
-      unless @log.nil?
-        sleep 0.1 # wait for a bit to let syslog catch up the latest events.
-        syslog_args = %W[
-          -F '$((Time)(local))\ $(Sender)[$(PID)]:\ $Message'
-          -k Time ge #{@start.to_i.to_s}
-          -k Sender kernel
-          -o
-          -k Time ge #{@start.to_i.to_s}
-          -k Sender sandboxd
-        ]
-        quiet_system "syslog #{syslog_args * " "} | grep deny > #{@log}"
+
+      if @failed && ARGV.verbose?
+        ohai "Sandbox log"
+        puts logs
+        $stdout.flush # without it, brew test-bot would fail to catch the log
       end
     end
   end
@@ -113,10 +147,15 @@ class Sandbox
           (literal "/dev/ptmx")
           (literal "/dev/dtracehelper")
           (literal "/dev/null")
+          (literal "/dev/zero")
           (regex #"^/dev/fd/[0-9]+$")
           (regex #"^/dev/ttys?[0-9]*$")
           )
       (deny file-write*) ; deny non-whitelist file write operations
+      (allow process-exec
+          (literal "/bin/ps")
+          (with no-sandbox)
+          ) ; allow certain processes running without sandbox
       (allow default) ; allow everything else
     EOS
 

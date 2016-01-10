@@ -1,14 +1,14 @@
 class Isync < Formula
   desc "Synchronize a maildir with an IMAP server"
   homepage "http://isync.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/isync/isync/1.1.2/isync-1.1.2.tar.gz"
-  sha256 "a225b5d5915b6e0f9da303caa6b4db1ee06241e98c1ad0a662e5dcea0654c0a4"
+  url "https://downloads.sourceforge.net/project/isync/isync/1.2.1/isync-1.2.1.tar.gz"
+  sha256 "e716de28c9a08e624a035caae3902fcf3b511553be5d61517a133e03aa3532ae"
 
   bottle do
     cellar :any
-    sha256 "0b8fc50a95165b6ad862459e389f1ad3d7aae5895e0ba401e41881e75ba8ea46" => :yosemite
-    sha256 "5283c962829e28ab17a612f7fa6ea99b23f1873a99b33f826bd9f8db07adc2a1" => :mavericks
-    sha256 "cf13b07b43c977ceb5ab7ca1df216127b05f9ea522a689bddb686d9828ed9e5d" => :mountain_lion
+    sha256 "b236f25f8fb6f2285fb6775deba1e61b89df904fc2fc933f2546bb69d0bb9ec6" => :el_capitan
+    sha256 "a4406974110a2f4ea3aaa81f0232c00f8aa9b572fab8709f1e16c7dc2d6ab6f6" => :yosemite
+    sha256 "3be99741095c146ef4bf44732cf3850aa62bf23a8676d6289bb11b988ac328fd" => :mavericks
   end
 
   head do

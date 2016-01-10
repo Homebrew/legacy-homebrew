@@ -1,16 +1,14 @@
-require "formula"
-
 class Bibclean < Formula
   desc "BibTeX bibliography file pretty printer and syntax checker"
   homepage "http://www.math.utah.edu/~beebe/software/bibclean/bibclean-03.html#HDR.3"
   url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.16.tar.gz"
-  sha1 "f6790cd97e7fe05abce06c991d58e96b4b53ad04"
+  sha256 "b8e7f89219e04a2b130d9d506b79265e9981b065ad32652a912211a6057428df"
 
   bottle do
     cellar :any
-    sha1 "f3a198aa80f7868c204101ee3bb4266135acba47" => :mavericks
-    sha1 "41d45fc6810d9bd2fac6e5f8b752273dd46f1ac6" => :mountain_lion
-    sha1 "3a0073569934c6d4cf831619842001e2e394679c" => :lion
+    sha256 "825009ac0bf781d29eedf23461d0032c1e57658fb53a4568931bd8e11bbec4bb" => :mavericks
+    sha256 "8bf50caf3f23d51de83e0805597bb1ca4f6aeb9e8a28bd03514f5345bdff7cc1" => :mountain_lion
+    sha256 "fb6023f2320a019d6bc0a46376f636e2b330776a22510469fc00715f10203044" => :lion
   end
 
   def install

@@ -1,17 +1,16 @@
-require "formula"
-
 class Libmemcached < Formula
   desc "C and C++ client library to the memcached server"
   homepage "http://libmemcached.org"
   url "https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz"
-  sha1 "8be06b5b95adbc0a7cb0f232e237b648caf783e1"
+  sha256 "e22c0bb032fde08f53de9ffbc5a128233041d9f33b5de022c0978a2149885f82"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "bc3d5a76a9ab01adf8e2f1e5379ed22c929695dd" => :yosemite
-    sha1 "252266ab9cd3465fd58be65d39b2f4a4247e96fc" => :mavericks
-    sha1 "4622bbb54b807a894d4ace68d45d761b9d68d07f" => :mountain_lion
+    sha256 "a6714baf6c2451c8ef44616a999183bf2ad1d6dd6b837ece97324bbc97c7b800" => :el_capitan
+    sha256 "726426f5a3fd386bbbe637935377e46cea6bd6ca24d086ecead5962de1ecdc33" => :yosemite
+    sha256 "819a893ecb0d662b2cc299dcc5f86879b569f91a2101a4b3e1f3b265bacc2708" => :mavericks
+    sha256 "bcf00c6004c5d4e5104867e16905f4375b129b527a47b2b000131bf59e15a423" => :mountain_lion
   end
 
   option "with-sasl", "Build with sasl support"
@@ -35,7 +34,7 @@ class Libmemcached < Formula
     end
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end
 

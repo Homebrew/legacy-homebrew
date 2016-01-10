@@ -1,10 +1,11 @@
 class PyenvVirtualenv < Formula
   desc "Pyenv plugin to manage virtualenv"
   homepage "https://github.com/yyuu/pyenv-virtualenv"
-  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20150119.tar.gz"
-  sha1 "8f91e04fb87b0f05b127a557c08ccbe1b42ef32f"
-
+  url "https://github.com/yyuu/pyenv-virtualenv/archive/v20151229.tar.gz"
+  sha256 "51bb8d99c38f5a618bbfba750d99b835764bd5bf6d8f1b391bacc9717da13ada"
   head "https://github.com/yyuu/pyenv-virtualenv.git"
+
+  bottle :unneeded
 
   depends_on "pyenv"
 

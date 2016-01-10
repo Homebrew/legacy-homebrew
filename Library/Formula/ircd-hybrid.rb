@@ -1,21 +1,21 @@
-require "formula"
-
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.6/ircd-hybrid-8.2.6.tgz"
-  sha256 "c712988ef43081e6d2218e4fe2523fdadf22df2959cf4c878f0625d16da5b79d"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.11/ircd-hybrid-8.2.11.tgz"
+  sha256 "eeb916ca22b0ee2c7b36e00249ca41001a82587597084c102fe11ad8e85cfe78"
 
   bottle do
-    sha256 "b0c505ad232ad94432d513595558dd5e92cb73c0f7fdda3a1ead22ea0ca1f84a" => :yosemite
-    sha256 "41f6f18ae7b788d87bf0bc65e286547c082ce6189c145c39b08bfb478c8b8249" => :mavericks
-    sha256 "681aa8d8494ed80b13f147d2134acb1d7d3b5daca02d9ebe8fee1e051c09ca6e" => :mountain_lion
+    sha256 "00cbc9c69d6445c49cfa98d9427a3c87934e15b447fff35eb95e373d83f266b9" => :el_capitan
+    sha256 "fd2e3d6d05f6e8b3f1b3e94d0a8b9efdd6553e4670a6deba9871537c1877b131" => :yosemite
+    sha256 "a357585cbbf0b4e2dc0323094e15b3451fa12566c717d4442a6bf8b54744ff77" => :mavericks
   end
 
   # ircd-hybrid needs the .la files
   skip_clean :la
 
   depends_on "openssl"
+
+  conflicts_with "ircd-irc2", :because => "both install an `ircd` binary"
 
   def install
     ENV.j1 # build system trips over itself
@@ -29,14 +29,14 @@ class IrcdHybrid < Formula
     etc.install "doc/reference.conf" => "ircd.conf"
   end
 
-  test do
-    system "#{bin}/ircd", "-version"
-  end
-
   def caveats; <<-EOS.undent
     You'll more than likely need to edit the default settings in the config file:
       #{etc}/ircd.conf
     EOS
+  end
+
+  test do
+    system "#{bin}/ircd", "-version"
   end
 
   plist_options :manual => "ircd"

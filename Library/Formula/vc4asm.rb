@@ -1,14 +1,14 @@
 class Vc4asm < Formula
   desc "Macro assembler for Broadcom VideoCore IV aka Raspberry Pi GPU"
   homepage "http://maazl.de/project/vc4asm/doc/index.html"
-  url "https://github.com/maazl/vc4asm/archive/V0.1.7.tar.gz"
-  sha256 "db9c50c1cc035a183ce8305a82a01cad08a246d13c718c420a8762296b00e3de"
+  url "https://github.com/maazl/vc4asm/archive/V0.1.8.tar.gz"
+  sha256 "6e98d5263879c7e24762f707961fa3e31db9c43e6ffc2ef5b22d5d44a180d666"
 
   bottle do
     cellar :any
-    sha256 "2d7c7eaad829267e1fcfba73ee1e31ee17c1a6e86c3be8d6fcab9acf5b311617" => :yosemite
-    sha256 "ad9c0bb8312909a8a601edd37e63ba49a115a85b306e4d7c648142815f70121d" => :mavericks
-    sha256 "763bdc099d24ddb7fe000e675e1a3405544a41e48e92701d06b7199d4bfb4df5" => :mountain_lion
+    sha256 "61d33586464106166ab596587e9e568d966073f328830b96b895cbd0e7f387b7" => :yosemite
+    sha256 "9a4abc2e869f51c8045468e7bc261ae5d863e9fd3eabefd797c898a88580bfc9" => :mavericks
+    sha256 "8c78b6050331c1580dfe22a330a0e449a8b94e18d6432078668f08a2ffc99583" => :mountain_lion
   end
 
   depends_on "cmake" => :build

@@ -1,16 +1,14 @@
-require "formula"
-
 class Mongroup < Formula
   desc "Monitor a group of processes with mon"
   homepage "https://github.com/jgallen23/mongroup"
   url "https://github.com/jgallen23/mongroup/archive/0.4.1.tar.gz"
-  sha1 "fa0f7b1e43ff3963f4851f378478a86a362dd345"
+  sha256 "50c6fb0eb6880fa837238a2036f9bc77d2f6db8c66b8c9a041479e2771a925ae"
 
   bottle do
     cellar :any
-    sha1 "362393e9e2409030379af478625bc1eac846acef" => :mavericks
-    sha1 "a813a9be26dd962ab7dd1a2e4f8b53adcb082b25" => :mountain_lion
-    sha1 "988c86f7ef36e75354dc676028d5ed560ecd3ae5" => :lion
+    sha256 "39b8052e644bf78570cd9393f3229843445784e93f6891924ae05c118c3bc16b" => :mavericks
+    sha256 "5279c40b110406b0cdd3e62c6ea978a1a02f6a9601fadc414bd8edd04ed8ca7f" => :mountain_lion
+    sha256 "5803b417bacf1630a0044485342af46471a4107116ff05d65ad62330234a96c7" => :lion
   end
 
   depends_on "mon"

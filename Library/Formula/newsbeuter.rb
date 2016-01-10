@@ -1,17 +1,17 @@
 class Newsbeuter < Formula
   desc "RSS/Atom feed reader for text terminals"
-  homepage "http://newsbeuter.org/"
-  url "http://www.newsbeuter.org/downloads/newsbeuter-2.9.tar.gz"
-  sha1 "e0d61cda874ea9b77ed27f2edfea50a6ea471894"
+  homepage "https://newsbeuter.org/"
+  url "https://www.newsbeuter.org/downloads/newsbeuter-2.9.tar.gz"
+  sha256 "74a8bf019b09c3b270ba95adc29f2bbe48ea1f55cc0634276b21fcce1f043dc8"
 
   head "https://github.com/akrennmair/newsbeuter.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "6c509202d95792b56d6c14c335cf230a297ac6d0" => :yosemite
-    sha1 "8521be744f61fa39d95480625562ed12ba295656" => :mavericks
-    sha1 "973c64d2807a77163ee48c72da89748c75b0e880" => :mountain_lion
+    revision 2
+    sha256 "c763ede64fb2bf9106fe720b54facf57efc992b24044c87af386d7e16413adb2" => :el_capitan
+    sha256 "24235bf62ef863239ac94027455f75700db201c29929ccc226c973e674d58306" => :yosemite
+    sha256 "381558b29bad7187433c935864ff9bb8c912419353239caf37c89833af4af225" => :mavericks
   end
 
   depends_on "pkg-config" => :build

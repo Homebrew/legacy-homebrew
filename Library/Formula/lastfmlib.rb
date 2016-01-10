@@ -1,20 +1,18 @@
-require 'formula'
-
 class Lastfmlib < Formula
   desc "Implements Last.fm v1.2 submissions protocol for scrobbling"
-  homepage 'http://code.google.com/p/lastfmlib/'
-  url 'https://lastfmlib.googlecode.com/files/lastfmlib-0.4.0.tar.gz'
-  sha1 'b9e15e4eb42a9ccd9b3c5373054b0bd51a406fdd'
+  homepage "https://code.google.com/p/lastfmlib/"
+  url "https://lastfmlib.googlecode.com/files/lastfmlib-0.4.0.tar.gz"
+  sha256 "28ecaffe2efecd5ac6ac00ba8e0a07b08e7fb35b45dfe384d88392ad6428309a"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "764db4a4f10b803d6fccf6552a47427634e70c18" => :yosemite
-    sha1 "dcb26b1acf66e30f694543ad32f3b4433745667d" => :mavericks
-    sha1 "61c0b04548eefedd3c546e3bbf392987d667c2b9" => :mountain_lion
+    sha256 "1d8ab109ccf48af2f959cee60a5db53342b54413b655217cca649532df644b03" => :yosemite
+    sha256 "7ca7a69ac77d521badefc24f656a2dfde70998b32aec67c5f1fd836582ba7ab2" => :mavericks
+    sha256 "6f5219ee8f973b6275cdd5c3a1fed9cfffe6e1d99a05a6ec35881a0e3317c02b" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
+  depends_on "pkg-config" => :build
 
   fails_with :clang do
     cause <<-EOS.undent
@@ -27,6 +25,6 @@ class Lastfmlib < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -1,16 +1,14 @@
-require "formula"
-
 class Marst < Formula
   desc "Algol-to-C translator"
-  homepage "http://www.gnu.org/software/marst"
+  homepage "https://www.gnu.org/software/marst"
   url "http://ftpmirror.gnu.org/marst/marst-2.7.tar.gz"
-  sha1 "a55ef653887c09045f04e00a179309463546f548"
+  sha256 "3ee7b9d1cbe3cd9fb5f622717da7bb5506f1a6da3b30f812e2384b87bce4da50"
 
   bottle do
     cellar :any
-    sha1 "517892e7d7575e99143685739a93f2bea6d655e1" => :mavericks
-    sha1 "2f4059e7e7c73292a5a61c82887393a9537f9913" => :mountain_lion
-    sha1 "7574be85edd2f0e4fa4283f2a6c4e300620442e7" => :lion
+    sha256 "21de984044f371e807240e74c60cf86e591e4fb2ef408cfa917a46ff2645dfd6" => :mavericks
+    sha256 "dcf72c779700c73f0628a5b6b8f44abaeaa87f8e9d8cd99b78e22c55d34fdd42" => :mountain_lion
+    sha256 "da26535819ad4d3dc429bd2053312727ada90a56d2d48dd8def3810ee1d35d0c" => :lion
   end
 
   def install
@@ -20,7 +18,7 @@ class Marst < Formula
   end
 
   test do
-    (testpath/'hello.alg').write('begin outstring(1, "Hello, world!\n") end')
+    (testpath/"hello.alg").write('begin outstring(1, "Hello, world!\n") end')
     system "#{bin}/marst -o hello.c hello.alg"
     system "#{ENV.cc} hello.c -lalgol -lm -o hello"
     system "./hello"

@@ -1,17 +1,15 @@
-require 'formula'
-
 class Liboauth < Formula
   desc "C library for the OAuth Core RFC 5849 standard"
-  homepage 'http://liboauth.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/liboauth/liboauth-1.0.3.tar.gz'
-  sha1 '791dbb4166b5d2c843c8ff48ac17284cc0884af2'
+  homepage "http://liboauth.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/liboauth/liboauth-1.0.3.tar.gz"
+  sha256 "0df60157b052f0e774ade8a8bac59d6e8d4b464058cc55f9208d72e41156811f"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "82c2ad1ea5f0821f2f6e00d132c6b8ae57f49957" => :yosemite
-    sha1 "d3afebefa5ffd84735eae7a65cb841ad1c212178" => :mavericks
-    sha1 "4ace4ab98187d48ab61be90e0b3f2c5123db9dbc" => :mountain_lion
+    sha256 "3d5b00cf3fc8ed4032b1e5e618ab0bfbc962414373ac9bf45a5ee883a4277a07" => :yosemite
+    sha256 "9bbd1a6e6cb7c089f3971858b84674545f4125e088072399bace245c29562f03" => :mavericks
+    sha256 "6a022751288301f6cca5cbce0022f8bac7b225df7adfd5b1cbb11a29f01c75ad" => :mountain_lion
   end
 
   depends_on "openssl"
@@ -20,6 +18,6 @@ class Liboauth < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--disable-curl"
-    system "make install"
+    system "make", "install"
   end
 end

@@ -2,13 +2,13 @@ class Cconv < Formula
   desc "Iconv based simplified-traditional Chinese conversion tool"
   homepage "https://code.google.com/p/cconv/"
   url "https://cconv.googlecode.com/files/cconv-0.6.2.tar.gz"
-  sha1 "9775f91fd5600d176552a88625aaa1f64ece09c1"
+  sha256 "f463da66c2ae18407441e12716f5f1c6cdea4e417ebfd475ec4c6dc6ad250c9d"
 
   bottle do
     cellar :any
-    sha1 "bf9023851423f52249b9107fe71a89f16ea00146" => :yosemite
-    sha1 "d3c284caaf0ef18e98050078c9eda2f3896b666c" => :mavericks
-    sha1 "3a700e441e9b0d2d2a939269fa7c71e985a453bf" => :mountain_lion
+    sha256 "65436699d38a250324868565690c295e9668d96f9fa5f1f8d23dfc2dff6fc122" => :yosemite
+    sha256 "6ccd7bc724cb38fb3af7ccb07fb4b45cc6486390c6c7030dc2f9cd89e7531cf4" => :mavericks
+    sha256 "21adc67fe672719cbfc93e940d044a2b2ceb32653cc1a901b79e251c3fb6d090" => :mountain_lion
   end
 
   def install

@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'hardware'
+require "testing_env"
+require "hardware"
 
 class HardwareTests < Homebrew::TestCase
   def test_hardware_cpu_type

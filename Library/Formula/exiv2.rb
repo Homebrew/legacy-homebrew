@@ -6,6 +6,7 @@ class Exiv2 < Formula
 
   bottle do
     cellar :any
+    sha256 "530145c8ab5017152cc084cec8f0b596ef9a19e27306795098a40111d69ffa65" => :el_capitan
     sha256 "8bb79b4e856fb907449e2f874174654d1d116e3db19356864ce864381dc58788" => :yosemite
     sha256 "b9e07c6c8b896698df0b52442894af8314f52878d468d1a348cd359c1afcb50f" => :mavericks
     sha256 "11669d8a844d23c5a99c0e0ff924347681b1c81b2c672ffa316654a7dd31d4e2" => :mountain_lion

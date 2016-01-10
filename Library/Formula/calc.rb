@@ -2,12 +2,13 @@ class Calc < Formula
   desc "Arbitrary precision calculator"
   homepage "http://www.isthe.com/chongo/tech/comp/calc/"
   url "http://www.isthe.com/chongo/src/calc/calc-2.12.5.0.tar.bz2"
-  sha1 "65e5a6c77f7f5f3a500959a5deafd1b89a356335"
+  sha256 "a0e7b47af38330f188970998c8e5039134dadf6f2e3f2c00d7efdae272a4338d"
 
   bottle do
-    sha1 "9d99ec472782f23cd5cd05a215cb3b8418b28032" => :yosemite
-    sha1 "23393e359956ed3b1c2717de019e5c803702273c" => :mavericks
-    sha1 "2eefd32770ca966b3c604f795af45a9717d15a13" => :mountain_lion
+    sha256 "f68eb0e031534c68f3fb1c2c1d53a90c343f281b81f998cf4bfc9745a0b8d306" => :el_capitan
+    sha256 "d19d417a55f14e96a944c4eb12869b93a26d0e5d74a65898c8225a3c00b9d050" => :yosemite
+    sha256 "4fe6049dd1e184c4996c606c9b25c7f8fde40f2a5dab5c6eda251125db5328e0" => :mavericks
+    sha256 "eb87150f3af2f86480594d99558e637ed063b6a3a3cff38331d46638e02af245" => :mountain_lion
   end
 
   depends_on "readline"

@@ -1,42 +1,44 @@
 class Nvm < Formula
   desc "Manage multiple Node.js versions"
   homepage "https://github.com/creationix/nvm"
-  url "https://github.com/creationix/nvm/archive/v0.25.4.tar.gz"
-  sha256 "6df007c5e9e36a8409f3daeced1d50d66b0d03ebecd780533d4546c519d351a7"
+  url "https://github.com/creationix/nvm/archive/v0.30.1.tar.gz"
+  sha256 "c3f063041407845ab4aa4ced6468084f8f63fb96fc8d904f66464e02c0867c5a"
   head "https://github.com/creationix/nvm.git"
 
-  resource "nvm-exec" do
-    url "https://raw.githubusercontent.com/creationix/nvm/v0.25.4/nvm-exec"
-    sha256 "a0581795f10114b9759992a82a43496daf4b4a52ad381a3072d8eee9866a28c5"
-    version "0.25.4"
-  end
+  bottle :unneeded
 
   def install
-    prefix.install "nvm.sh"
+    prefix.install "nvm.sh", "nvm-exec"
     bash_completion.install "bash_completion" => "nvm"
-
-    resource("nvm-exec").stage do
-      prefix.install("nvm-exec")
-      chmod 0755, "#{prefix}/nvm-exec"
-    end
   end
 
   def caveats; <<-EOS.undent
-      Add NVM's working directory to your $HOME path (if it doesn't exist):
+    Please note that upstream has asked us to make explicit managing
+    nvm via Homebrew is unsupported by them and you should check any
+    problems against the standard nvm install method prior to reporting.
 
-        mkdir ~/.nvm
+    You should create NVM's working directory if it doesn't exist:
 
-      Copy nvm-exec to NVM's working directory
+      mkdir ~/.nvm
 
-        cp $(brew --prefix nvm)/nvm-exec ~/.nvm/
+    Add the following to #{shell_profile} or your desired shell
+    configuration file:
 
-      Add the following to $HOME/.bashrc, $HOME/.zshrc, or your shell's
-      equivalent configuration file:
+      export NVM_DIR=~/.nvm
+      . $(brew --prefix nvm)/nvm.sh
 
-        export NVM_DIR=~/.nvm
-        source $(brew --prefix nvm)/nvm.sh
+    You can set $NVM_DIR to any location, but leaving it unchanged from
+    #{prefix} will destroy any nvm-installed Node installations
+    upon upgrade/reinstall.
 
-      Type `nvm help` for further information.
-    EOS
+    Type `nvm help` for further information.
+  EOS
+  end
+
+  test do
+    output = pipe_output("#{prefix}/nvm-exec 2>&1")
+    assert_no_match /No such file or directory/, output
+    assert_no_match /nvm: command not found/, output
+    assert_match /Node Version Manager/, output
   end
 end

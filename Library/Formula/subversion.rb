@@ -1,21 +1,14 @@
 class Subversion < Formula
   desc "Version control system designed to be a better CVS"
   homepage "https://subversion.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.8.13.tar.bz2"
-  mirror "https://archive.apache.org/dist/subversion/subversion-1.8.13.tar.bz2"
-  sha256 "1099cc68840753b48aedb3a27ebd1e2afbcc84ddb871412e5d500e843d607579"
+  url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.3.tar.bz2"
+  mirror "https://archive.apache.org/dist/subversion/subversion-1.9.3.tar.bz2"
+  sha256 "8bbf6bb125003d88ee1c22935a36b7b1ab7d957e0c8b5fbfe5cb6310b6e86ae0"
 
   bottle do
-    revision 1
-    sha256 "bf2389a0865234d120f5fc79735205ea77e93c549db3774131f3c5250622b68d" => :yosemite
-    sha256 "95e5d20542567d39da4e964d50fddfbed74c4d8187ca55fb4a9784abb714efd5" => :mavericks
-    sha256 "c11519346a1efdaf76ceec4689b88713279bdd352df0a61fd8fc11d427056f7b" => :mountain_lion
-  end
-
-  devel do
-    url "https://www.apache.org/dyn/closer.cgi?path=subversion/subversion-1.9.0-rc2.tar.bz2"
-    mirror "https://archive.apache.org/dist/subversion/subversion-1.9.0-rc2.tar.bz2"
-    sha256 "915161d5692d5ee3358bb04ae634d2b7173c308eef78070fe1905e40585ecd85"
+    sha256 "df2bc98152f018db3baf5755538d35fb156c161f84fcdc93f342b07ec480dec7" => :el_capitan
+    sha256 "f81d250ec0907d3c117239aec70fad623f1061b48961343260d1926976b526d6" => :yosemite
+    sha256 "7aadf3862a7d456c07763ca684d225b1924df3a511d8bd36a0b42e30f6a785a1" => :mavericks
   end
 
   deprecated_option "java" => "with-java"
@@ -72,19 +65,6 @@ class Subversion < Formula
   end
 
   def install
-    # OS X's Python is built universally and can't link with Homebrew's deps
-    # unless Homebrew's deps are universal as well.
-    # https://github.com/Homebrew/homebrew-versions/issues/777
-    # https://github.com/Homebrew/homebrew/issues/34119
-    if build.with?("python") && (which "python").universal?
-      unless build.universal?
-        raise <<-EOS.undent
-          You must build subversion --universal unless Homebrew's
-          Python is installed, otherwise the build will fail.
-        EOS
-      end
-    end
-
     serf_prefix = libexec+"serf"
 
     resource("serf").stage do
@@ -95,6 +75,11 @@ class Subversion < Formula
       inreplace "SConstruct", "unique=1", "unique=0"
 
       ENV.universal_binary if build.universal?
+
+      # Fix perl bindings Makefile.pl failing with:
+      # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
+      ENV.delete "PERL_MM_OPT"
+
       # scons ignores our compiler and flags unless explicitly passed
       args = %W[PREFIX=#{serf_prefix} GSSAPI=/usr CC=#{ENV.cc}
                 CFLAGS=#{ENV.cflags} LINKFLAGS=#{ENV.ldflags}
@@ -107,18 +92,6 @@ class Subversion < Formula
 
       scons *args
       scons "install"
-    end
-
-    if build.include? "unicode-path"
-      raise <<-EOS.undent
-        The --unicode-path patch is not supported on Subversion 1.8.
-
-        Upgrading from a 1.7 version built with this patch is not supported.
-
-        You should stay on 1.7, install 1.7 from homebrew-versions, or
-          brew rm subversion && brew install subversion
-        to build a new version of 1.8 without this patch.
-      EOS
     end
 
     if build.with? "java"
@@ -140,15 +113,17 @@ class Subversion < Formula
     # Use existing system zlib
     # Use dep-provided other libraries
     # Don't mess with Apache modules (since we're not sudo)
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--with-zlib=/usr",
-            "--with-sqlite=#{Formula["sqlite"].opt_prefix}",
-            "--with-serf=#{serf_prefix}",
-            "--disable-mod-activation",
-            "--disable-nls",
-            "--without-apache-libexecdir",
-            "--without-berkeley-db"]
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --with-zlib=/usr
+      --with-sqlite=#{Formula["sqlite"].opt_prefix}
+      --with-serf=#{serf_prefix}
+      --disable-mod-activation
+      --disable-nls
+      --without-apache-libexecdir
+      --without-berkeley-db
+    ]
 
     args << "--enable-javahl" << "--without-jikes" if build.with? "java"
     args << "--without-gpg-agent" if build.without? "gpg-agent"
@@ -166,6 +141,13 @@ class Subversion < Formula
       args << "--with-ruby-sitedir=#{lib}/ruby"
       # Peg to system Ruby
       args << "RUBY=/usr/bin/ruby"
+    end
+
+    # If Python is built universally, then extensions built with that Python
+    # are too. This default behaviour is not desired when building an extension
+    # for a single architecture.
+    if build.with?("python") && (which "python").universal? && !build.universal?
+      ENV["ARCHFLAGS"] = "-arch #{MacOS.preferred_arch}"
     end
 
     # The system Python is built with llvm-gcc, so we override this
@@ -232,11 +214,6 @@ class Subversion < Formula
     end
   end
 
-  test do
-    system "#{bin}/svnadmin", "create", "test"
-    system "#{bin}/svnadmin", "verify", "test"
-  end
-
   def caveats
     s = <<-EOS.undent
       svntools have been installed to:
@@ -269,6 +246,11 @@ class Subversion < Formula
     end
 
     s
+  end
+
+  test do
+    system "#{bin}/svnadmin", "create", "test"
+    system "#{bin}/svnadmin", "verify", "test"
   end
 end
 

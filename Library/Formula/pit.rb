@@ -32,7 +32,6 @@ class Pit < Formula
     sha256 "549ecc5ef0be59559d121fd558b02c0d42e149a205fed55b31e9d92b133a1dd2" => :mountain_lion
   end
 
-
   def install
     bin.mkpath
 

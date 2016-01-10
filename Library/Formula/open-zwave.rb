@@ -1,15 +1,13 @@
-require "formula"
-
 class OpenZwave < Formula
   desc "Library for selected Z-Wave PC controllers"
   homepage "http://www.openzwave.com"
   url "http://old.openzwave.com/downloads/openzwave-1.2.919.tar.gz"
-  sha1 "514fa8a9e8468d264a6e4fffc377f2e18368ef41"
+  sha256 "473229f3dd3d6b260e6584b17e5c5f2e09e61805f89763f486a9f7aa2b4181ba"
 
   bottle do
-    sha1 "0aea65c0a849243fd77171b8331670bec815c296" => :yosemite
-    sha1 "bdc7fd5fe1a9bcd8a3d2f3a881120dbb5192c06e" => :mavericks
-    sha1 "ab857cbb029a40ede770184e6262344db82f9832" => :mountain_lion
+    sha256 "9ceb267d8fb564daefb535f65ac71f426535f7552b9feffcb3638793f0c40810" => :yosemite
+    sha256 "753eb6cb76dd0c170c1e84285a702fb9fb49c76aa8d59970ecea2160938f0bba" => :mavericks
+    sha256 "be2b4c51703ee93865a6c755a4394b6271eb599ea98a7431b54d090276a0e9f7" => :mountain_lion
   end
 
   # Patch to build a .dylib instead of a .so

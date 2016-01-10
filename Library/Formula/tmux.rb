@@ -1,15 +1,25 @@
 class Tmux < Formula
   desc "Terminal multiplexer"
   homepage "https://tmux.github.io/"
-  url "https://github.com/tmux/tmux/releases/download/2.0/tmux-2.0.tar.gz"
-  sha256 "795f4b4446b0ea968b9201c25e8c1ef8a6ade710ebca4657dd879c35916ad362"
+
+  stable do
+    url "https://github.com/tmux/tmux/releases/download/2.1/tmux-2.1.tar.gz"
+    sha256 "31564e7bf4bcef2defb3cb34b9e596bd43a3937cad9e5438701a81a5a9af6176"
+
+    patch do
+      # This fixes the Tmux 2.1 update that broke the ability to use select-pane [-LDUR]
+      # to switch panes when in a maximized pane https://github.com/tmux/tmux/issues/150#issuecomment-149466158
+      url "https://github.com/tmux/tmux/commit/a05c27a7e1c4d43709817d6746a510f16c960b4b.diff"
+      sha256 "2a60a63f0477f2e3056d9f76207d4ed905de8a9ce0645de6c29cf3f445bace12"
+    end
+  end
 
   bottle do
     cellar :any
     revision 1
-    sha256 "4a15dbb353298f6ab5db3ad0121e50225328d49da1548bee570f93af4c294368" => :yosemite
-    sha256 "ccc3e43a9e544d74d5a081de07294a8c75d14f9649d7fc2e5bc94cc0107e625d" => :mavericks
-    sha256 "145f66ff2b0adf499ee4a8ceab8ec1556d43b74074921ff1e86a4d7be05492c8" => :mountain_lion
+    sha256 "671875e204c40cfdd202ab734bce872c2089eb69d6f8ba9e0e42e08f76d534a1" => :el_capitan
+    sha256 "bf0b9f1d072017cba16945d6b1777edafe6f5b737d3aa43657a3f041af6503ae" => :yosemite
+    sha256 "0f8cad0fd30933e9ce863a7db647ca197535f79f623ff19b054fb4b03b1c0613" => :mavericks
   end
 
   head do
@@ -34,12 +44,12 @@ class Tmux < Formula
     system "make", "install"
 
     bash_completion.install "examples/bash_completion_tmux.sh" => "tmux"
-    (share/"tmux").install "examples"
+    pkgshare.install "examples"
   end
 
   def caveats; <<-EOS.undent
     Example configurations have been installed to:
-      #{share}/tmux/examples
+      #{opt_pkgshare}/examples
     EOS
   end
 

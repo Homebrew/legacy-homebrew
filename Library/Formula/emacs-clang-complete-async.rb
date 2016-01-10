@@ -1,26 +1,24 @@
-require 'formula'
-
 class EmacsClangCompleteAsync < Formula
-  desc "Emacs plugin using libclang to complete C and C++ code"
-  homepage 'https://github.com/Golevka/emacs-clang-complete-async'
-  url 'https://github.com/Golevka/emacs-clang-complete-async/archive/v0.5.tar.gz'
-  sha1 '7f50d3029fedee5ef9306afdac547571928a16b4'
+  desc "Emacs plugin using libclang to complete C/C++ code"
+  homepage "https://github.com/Golevka/emacs-clang-complete-async"
+  url "https://github.com/Golevka/emacs-clang-complete-async/archive/v0.5.tar.gz"
+  sha256 "151a81ae8dd9181116e564abafdef8e81d1e0085a1e85e81158d722a14f55c76"
 
-  head 'https://github.com/Golevka/emacs-clang-complete-async.git'
-
-  option 'with-elisp', 'Include Emacs lisp package'
-
-  depends_on 'llvm' => 'with-clang'
+  head "https://github.com/Golevka/emacs-clang-complete-async.git"
 
   stable do
     # https://github.com/Golevka/emacs-clang-complete-async/issues/65
     patch :DATA
   end
 
+  option "with-elisp", "Include Emacs lisp package"
+
+  depends_on "llvm" => "with-clang"
+
   # https://github.com/Golevka/emacs-clang-complete-async/pull/59
   patch do
     url "https://github.com/yocchi/emacs-clang-complete-async/commit/5ce197b15d7b8c9abfc862596bf8d902116c9efe.diff"
-    sha1 "a933be38f09627cc6b841a49b849d68219a3bc96"
+    sha256 "6f638c473781a8f86a0ab970303579256f49882744863e36924748c010e7c1ed"
   end
 
   def install

@@ -2,7 +2,7 @@ class Yeti < Formula
   desc "ML-style functional programming language that runs on the JVM"
   homepage "https://mth.github.io/yeti/"
   url "https://github.com/mth/yeti/archive/v0.9.9.tar.gz"
-  sha1 "d4b3fee9e9e1c117f1a73b147695a24a217c2658"
+  sha256 "45854dc436c7204daa481fda5fab8f1ce11d9a353ab5136ba7fc75ff0e222454"
 
   head "https://github.com/mth/yeti.git"
 

@@ -1,9 +1,17 @@
 class PureFtpd < Formula
   desc "Secure and efficient FTP server"
-  homepage "http://www.pureftpd.org/"
-  url "http://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.37.tar.gz"
-  mirror "ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.37.tar.gz"
-  sha256 "a9c10b0b8b5772fbf2212bc46fece86f9d4bcc07e58dfd83b58e42a1b2acb76c"
+  homepage "https://www.pureftpd.org/"
+  url "https://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.41.tar.gz"
+  mirror "ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.41.tar.gz"
+  sha256 "a877c689ae1b982c968a767631740a84f164ac2ae6312a4a2f9f93ba79a348e8"
+
+  bottle do
+    cellar :any
+    revision 1
+    sha256 "fbd04555e96661f04440ce349e04a7a4bf6fb5fddfe7dccea37916ef581d8b36" => :el_capitan
+    sha256 "3fa9170128020e89f3dee1821dcfba81e641da3547382490a4d9c0d96345a1e0" => :yosemite
+    sha256 "9d9b93ea06dc763761835a8cff7673670b9d57b28677a308683e4f9f67572126" => :mavericks
+  end
 
   depends_on "openssl"
 

@@ -1,10 +1,8 @@
-require "formula"
-
 class CmuSphinxbase < Formula
   desc "Lightweight speech recognition engine for mobile devices"
   homepage "http://cmusphinx.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/cmusphinx/sphinxbase/0.8/sphinxbase-0.8.tar.gz"
-  sha1 "c0c4d52e143d07cd593bd6bcaeb92b9a8a5a8c8e"
+  sha256 "55708944872bab1015b8ae07b379bf463764f469163a8fd114cbb16c5e486ca8"
 
   head do
     url "https://github.com/cmusphinx/sphinxbase.git"
@@ -29,6 +27,6 @@ class CmuSphinxbase < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

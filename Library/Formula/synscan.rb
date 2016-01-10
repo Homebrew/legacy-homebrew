@@ -1,16 +1,14 @@
-require "formula"
-
 class Synscan < Formula
   desc "Asynchronous half-open TCP portscanner"
   homepage "http://www.digit-labs.org/files/tools/synscan/"
   url "http://www.digit-labs.org/files/tools/synscan/releases/synscan-5.02.tar.gz"
-  sha1 "fd2461a9520204682228f942cce075782e0fc21c"
+  sha256 "c4e6bbcc6a7a9f1ea66f6d3540e605a79e38080530886a50186eaa848c26591e"
 
   bottle do
     cellar :any
-    sha1 "e09f75a92648543f7b716b1fe032aa7c0e392a2f" => :yosemite
-    sha1 "1f20a172f16c90c75ed182bc69aa11f2008984ae" => :mavericks
-    sha1 "126a969ae17f84535a71333ba1372caca7efabd5" => :mountain_lion
+    sha256 "3298295fda8028da39ddbc6c3f2d26b42de9dd4f6e3a46a4e19bb871fa545035" => :yosemite
+    sha256 "4cacc06fdeda9a24bb681cb90c52c4692d5bf3993f18db496c5de19ab9d46dac" => :mavericks
+    sha256 "e27c723f84d94d6d209c40387fb4816365e11af1c09e296661b67dcaa254c36d" => :mountain_lion
   end
 
   def install

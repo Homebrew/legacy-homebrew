@@ -1,10 +1,8 @@
-require 'formula'
-
 class Mpgtx < Formula
   desc "Toolbox to manipulate MPEG files"
-  homepage 'http://mpgtx.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/mpgtx/mpgtx/1.3.1/mpgtx-1.3.1.tar.gz'
-  sha1 '58b3d18b6dac968e8dd969a7b33c8a8fc31569cd'
+  homepage "http://mpgtx.sourceforge.net"
+  url "https://downloads.sourceforge.net/project/mpgtx/mpgtx/1.3.1/mpgtx-1.3.1.tar.gz"
+  sha256 "8815e73e98b862f12ba1ef5eaaf49407cf211c1f668c5ee325bf04af27f8e377"
 
   def install
     system "./configure", "--parachute",

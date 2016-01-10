@@ -1,70 +1,45 @@
+require "language/go"
+
 class Deis < Formula
   desc "Deploy and manage applications on your own servers"
   homepage "http://deis.io"
-  url "https://github.com/deis/deis/archive/v1.5.1.tar.gz"
-  sha1 "3a4b0caa0720785a6c093d15a62f2bcbb76324a4"
+  url "https://github.com/deis/deis/archive/v1.11.1.tar.gz"
+  sha256 "0d5434dbcfcbeaf07e071898ee1d2592cde21422c551a6c87e169474123f6d74"
 
   bottle do
-    cellar :any
-    sha256 "fec83c5afc3261b56fccb415ae89588b1cde6828a007af0495b22f7cfbc93195" => :yosemite
-    sha256 "eb491d5b606955a10c0dfd916d61964e1a7b2447556b86b2928f977ba7036a0f" => :mavericks
-    sha256 "e357da38990b1e9cfd4ee3ad9577b8fa2c0e029752b0705d0bcaf6b9a14d899a" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "c62ccd9efa4f93b290b846942c16df504c8546637d24f038c5f2855bb5b992e8" => :el_capitan
+    sha256 "5e2a430023e6bc4273fc1054303e5e8e84e822ebefafc16ff686ef67db1882cf" => :yosemite
+    sha256 "7e57cf0300d8f31e45129402d9d3137619b2ee34630f4be81a5b33f68229b17d" => :mavericks
   end
 
-  depends_on :python if MacOS.version <= :snow_leopard
-  depends_on "libyaml"
+  depends_on "go" => :build
+  depends_on "godep" => :build
 
-  resource "docopt" do
-    url "https://pypi.python.org/packages/source/d/docopt/docopt-0.6.2.tar.gz"
-    sha1 "224a3ec08b56445a1bd1583aad06b00692671e04"
+  go_resource "github.com/docopt/docopt-go" do
+    url "https://github.com/docopt/docopt-go.git", :revision => "854c423c810880e30b9fecdabb12d54f4a92f9bb"
   end
 
-  resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.post1.tar.gz"
-    sha1 "55c712dac45ad14532d9bc05b64ba7e4bf6b56c6"
+  go_resource "golang.org/x/crypto" do
+    url "https://go.googlesource.com/crypto.git", :revision => "aedad9a179ec1ea11b7064c57cbc6dc30d7724ec"
   end
 
-  resource "PyYAML" do
-    url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
-    sha1 "1a2d5df8b31124573efb9598ec6d54767f3c4cd4"
-  end
-
-  resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.5.1.tar.gz"
-    sha1 "f906c441be2f0e7a834cbf701a72788d3ac3d144"
-  end
-
-  resource "termcolor" do
-    url "https://pypi.python.org/packages/source/t/termcolor/termcolor-1.1.0.tar.gz"
-    sha1 "52045880a05c0fbd192343d9c9aad46a73d20e8c"
-  end
-
-  resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha1 "d168e6d01f0900875c6ecebc97da72d0fda31129"
-  end
-
-  resource "tabulate" do
-    url "https://pypi.python.org/packages/source/t/tabulate/tabulate-0.7.4.tar.gz"
-    sha1 "8aa77884fc87932855f1a7eb7d741cc60e72281d"
+  go_resource "gopkg.in/yaml.v2" do
+    url "https://github.com/go-yaml/yaml.git", :revision => "7ad95dd0798a40da1ccdff6dff35fd177b5edf40"
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    ENV["GOPATH"] = buildpath
+    mkdir_p "#{buildpath}/client/Godeps/_workspace/src/github.com/deis"
+    ln_s buildpath, "#{buildpath}/client/Godeps/_workspace/src/github.com/deis/deis"
 
-    resources.each do |r|
-      r.stage do
-        system "python", *Language::Python.setup_install_args(libexec/"vendor")
-      end
-    end
+    Language::Go.stage_deps resources, buildpath/"src"
 
     cd "client" do
-      ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
-      system "python", *Language::Python.setup_install_args(libexec)
+      system "godep", "go", "build", "-a", "-ldflags", "-s", "-o", "dist/deis"
+      bin.install "dist/deis"
     end
-
-    bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

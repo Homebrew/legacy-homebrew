@@ -1,8 +1,14 @@
 class Vte3 < Formula
   desc "Terminal emulator widget used by GNOME terminal"
   homepage "https://developer.gnome.org/vte/"
-  url "https://download.gnome.org/sources/vte/0.40/vte-0.40.2.tar.xz"
-  sha256 "9b68fbc16b27f2d79e6271f2b0708808594ac5acf979d0fccea118608199fd2d"
+  url "https://download.gnome.org/sources/vte/0.42/vte-0.42.1.tar.xz"
+  sha256 "9e00e2e9e94f4202b979c871f407a8815890bc0f4a8448a08534f76ab0fc9d34"
+
+  bottle do
+    sha256 "3c9885bc1daf16738b5b70bebea8a5de0489d1f8422513c9e0c20a744d180ac1" => :el_capitan
+    sha256 "d17cb07611f566748c14744a3ea02897c732ba9cd87efe006daf1f252a18b716" => :yosemite
+    sha256 "b595a7489d01c7d622284304d670183a79af147619593511651c3c43ab7136bd" => :mavericks
+  end
 
   depends_on "pkg-config" => :build
   depends_on "intltool" => :build
@@ -10,6 +16,7 @@ class Vte3 < Formula
   depends_on "gtk+3"
   depends_on "gnutls"
   depends_on "vala"
+  depends_on "gobject-introspection"
 
   def install
     args = [
@@ -17,6 +24,7 @@ class Vte3 < Formula
       "--prefix=#{prefix}",
       "--disable-Bsymbolic",
       "--enable-introspection=yes",
+      "--enable-gnome-pty-helper",
     ]
 
     system "./configure", *args

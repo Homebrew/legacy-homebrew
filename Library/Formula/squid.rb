@@ -1,20 +1,20 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.5.tar.xz"
-  sha256 "23793da6b23871765188becae59a6f4b6c3672c256ba9be90743b46a3c7921cf"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.12.tar.xz"
+  sha256 "8bc83f3869f7404aefb10883109e28443255cf6dde50a13904c7954619707a42"
 
   bottle do
-    sha256 "71479ca4e9760be2a6484b7283acf218d8024325feabb243bca22faae837cdcc" => :yosemite
-    sha256 "68b00e8b3ac336a1d5db3e58d5e460ac0cb7f8eeca999d444141712423eeebaf" => :mavericks
-    sha256 "cf69206d528b13547f9943ebd8b0b06be26886e615649e930952c4c0c59b51ec" => :mountain_lion
+    sha256 "9ff5b97fbcdb1789ca19dbaacc465fe0780c71893d28e6c63f80eb9ca547d835" => :el_capitan
+    sha256 "ce4ffa2cd50625a056c74e71b6e18272936e00769c7d96508028546954c59a56" => :yosemite
+    sha256 "d8417271c5ea6eef69aafd5ab0bf91a2988a98baf95f5ddaa3005c6187d81380" => :mavericks
   end
 
   depends_on "openssl"
 
   def install
     # http://stackoverflow.com/questions/20910109/building-squid-cache-on-os-x-mavericks
-    ENV.append "LDFLAGS",  "-lresolv"
+    ENV.append "LDFLAGS", "-lresolv"
 
     # For --disable-eui, see:
     # http://squid-web-proxy-cache.1019090.n4.nabble.com/ERROR-ARP-MAC-EUI-operations-not-supported-on-this-operating-system-td4659335.html
@@ -23,6 +23,7 @@ class Squid < Formula
       --disable-dependency-tracking
       --prefix=#{prefix}
       --localstatedir=#{var}
+      --sysconfdir=#{etc}
       --enable-ssl
       --enable-ssl-crtd
       --disable-eui
@@ -57,5 +58,14 @@ class Squid < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    # This test should start squid and then check it runs correctly.
+    # However currently dies under the sandbox and "Current Directory"
+    # seems to be set hard on HOMEBREW_PREFIX/var/cache/squid.
+    # https://github.com/Homebrew/homebrew/pull/44348#issuecomment-143477353
+    # If you can fix this, please submit a PR. Thank you!
+    assert_match version.to_s, shell_output("#{sbin}/squid -v")
   end
 end

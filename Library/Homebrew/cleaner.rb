@@ -5,9 +5,8 @@
 # * sets permissions on executables
 # * removes unresolved symlinks
 class Cleaner
-
   # Create a cleaner for the given formula
-  def initialize f
+  def initialize(f)
     @f = f
   end
 
@@ -17,13 +16,13 @@ class Cleaner
 
     # Many formulae include 'lib/charset.alias', but it is not strictly needed
     # and will conflict if more than one formula provides it
-    observe_file_removal @f.lib/'charset.alias'
+    observe_file_removal @f.lib/"charset.alias"
 
-    [@f.bin, @f.sbin, @f.lib].select{ |d| d.exist? }.each{ |d| clean_dir d }
+    [@f.bin, @f.sbin, @f.lib].each { |d| clean_dir(d) if d.exist? }
 
     # Get rid of any info 'dir' files, so they don't conflict at the link stage
-    info_dir_file = @f.info + 'dir'
-    if info_dir_file.file? and not @f.skip_clean? info_dir_file
+    info_dir_file = @f.info + "dir"
+    if info_dir_file.file? && !@f.skip_clean?(info_dir_file)
       observe_file_removal info_dir_file
     end
 
@@ -32,7 +31,7 @@ class Cleaner
 
   private
 
-  def observe_file_removal path
+  def observe_file_removal(path)
     path.extend(ObserverPathnameExtension).unlink if path.exist?
   end
 
@@ -43,7 +42,7 @@ class Cleaner
     dirs = []
     symlinks = []
     @f.prefix.find do |path|
-      if path == @f.libexec or @f.skip_clean?(path)
+      if path == @f.libexec || @f.skip_clean?(path)
         Find.prune
       elsif path.symlink?
         symlinks << path
@@ -76,23 +75,23 @@ class Cleaner
   #
   # lib may have a large directory tree (see Erlang for instance), and
   # clean_dir applies cleaning rules to the entire tree
-  def clean_dir d
+  def clean_dir(d)
     d.find do |path|
       path.extend(ObserverPathnameExtension)
 
       Find.prune if @f.skip_clean? path
 
-      if path.symlink? or path.directory?
+      if path.symlink? || path.directory?
         next
-      elsif path.extname == '.la'
+      elsif path.extname == ".la"
         path.unlink
       else
         # Set permissions for executables and non-executables
         perms = if path.mach_o_executable? || path.text_executable?
-                  0555
-                else
-                  0444
-                end
+          0555
+        else
+          0444
+        end
         if ARGV.debug?
           old_perms = path.stat.mode & 0777
           if perms != old_perms
@@ -103,5 +102,4 @@ class Cleaner
       end
     end
   end
-
 end

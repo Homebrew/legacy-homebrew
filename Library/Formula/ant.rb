@@ -1,15 +1,16 @@
 class Ant < Formula
   desc "Java build tool"
   homepage "https://ant.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.5-bin.tar.bz2"
-  sha256 "3019f1b8c18151982bf217d7947a8cf9a526019718251d88cf3eb60b7922f614"
+  url "https://www.apache.org/dyn/closer.cgi?path=ant/binaries/apache-ant-1.9.6-bin.tar.bz2"
+  sha256 "a43b0928960d63d6b1e2bed37e1ce4fd8fa1788ba84e08388bfe9513f02e8db3"
   head "https://git-wip-us.apache.org/repos/asf/ant.git"
 
   bottle do
-    cellar :any
-    sha256 "4a3e8a137bd2d16160eb9115cb8fab16ba64285d5148d95e9fde569fe485f54c" => :yosemite
-    sha256 "6ae739e720f70613eb74bf020b211c0ed3a535712388ca92559f4060dccc7670" => :mavericks
-    sha256 "f672631ed1927c80759fec557c4d477056453b4ed267458b38916406d6146ee5" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "c47d0d7e80c0f6bb85ff38a183371f5a80dc39cc15dd092db73a83c515f17219" => :el_capitan
+    sha256 "9a88cdbd7a0dc3593f828c9278ab43be3b84a45670aef7df462cb33fd08998cf" => :yosemite
+    sha256 "d9eeeb2b1ac7926b3888d6a8a001fc05f4a1efb6a50c93036a8818b5e31786cd" => :mavericks
   end
 
   keg_only :provided_by_osx if MacOS.version < :mavericks
@@ -23,7 +24,7 @@ class Ant < Formula
   end
 
   resource "bcel" do
-    url "http://central.maven.org/maven2/org/apache/bcel/bcel/5.2/bcel-5.2.jar"
+    url "https://search.maven.org/remotecontent?filepath=org/apache/bcel/bcel/5.2/bcel-5.2.jar"
     sha256 "7b87e2fd9ac3205a6e5ba9ef5e58a8f0ab8d1a0e0d00cb2a761951fa298cc733"
   end
 
@@ -31,6 +32,11 @@ class Ant < Formula
     rm Dir["bin/*.{bat,cmd,dll,exe}"]
     libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
+    rm bin/"ant"
+    (bin/"ant").write <<-EOS.undent
+      #!/bin/sh
+      #{libexec}/bin/ant -lib #{HOMEBREW_PREFIX}/share/ant "$@"
+    EOS
     if build.with? "ivy"
       resource("ivy").stage do
         (libexec/"lib").install Dir["ivy-*.jar"]

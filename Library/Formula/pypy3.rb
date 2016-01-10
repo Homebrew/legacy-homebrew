@@ -1,17 +1,16 @@
-require "formula"
-
 class Pypy3 < Formula
   desc "Implementation of Python 3 in Python"
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy3-2.4.0-src.tar.bz2"
-  sha1 "438572443ae6f54eb6122d807f104787c5247e01"
+  sha256 "d9ba207d6eecf8a0dc4414e9f4e92db1abd143e8cc6ec4a6bdcac75b29f104f3"
 
   bottle do
     cellar :any
     revision 6
-    sha1 "b9a9d4093dba9fbd89be33a1b28039f43098860d" => :yosemite
-    sha1 "4b0a2a9633ebbf8749eb1c5980add2447d74ee11" => :mavericks
-    sha1 "e9c63d780fb3df53fe657d656dd9d0ccbe454f20" => :mountain_lion
+    sha256 "7fb0a8af405c03fda611ca3c30c9fda4da2fa727a4c37450fde428c5cb469471" => :el_capitan
+    sha256 "91733ffc891b16074fc06b0cdb3446070acf12cdf81475dca8afd2d2decbb4f0" => :yosemite
+    sha256 "fc8586a9aea45c5da1a899978cbc3d8b7a359801671caad55dd5c2255fcb538a" => :mavericks
+    sha256 "71d8d4319969feb8969e62a4ed4592e7779058c1cb7bcf9c3d506ea39d135ebf" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
@@ -20,12 +19,12 @@ class Pypy3 < Formula
 
   resource "setuptools" do
     url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
-    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
+    sha256 "bd25f17de4ecf00116a9f7368b614a54ca1612d7945d2eafe5d97bc08c138bc5"
   end
 
   resource "pip" do
     url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
-    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
+    sha256 "3a14091299dcdb9bab9e9004ae67ac401f2b1b14a7c98de074ca74fdddf4bfa0"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -98,7 +97,7 @@ class Pypy3 < Formula
     bin.install_symlink scripts_folder/"pip" => "pip_pypy3"
 
     # post_install happens after linking
-    %w[easy_install_pypy3 pip_pypy3].each{ |e| (HOMEBREW_PREFIX/"bin").install_symlink bin/e }
+    %w[easy_install_pypy3 pip_pypy3].each { |e| (HOMEBREW_PREFIX/"bin").install_symlink bin/e }
   end
 
   def caveats; <<-EOS.undent

@@ -1,22 +1,22 @@
 class Xonsh < Formula
   desc "Python-ish, BASHwards-compatible shell language and command prompt"
   homepage "http://xonsh.org"
-  url "https://github.com/scopatz/xonsh/archive/0.1.5.tar.gz"
-  sha256 "ed04665d4396837191594f2dd9107403eabecb14add5dfbb8f4fb31e13fc03c2"
+  url "https://github.com/scopatz/xonsh/archive/0.2.2.tar.gz"
+  sha256 "cd37fafb53ca18474132929117df02cfbf53526345183027f773db5b45bb7759"
   head "https://github.com/scopatz/xonsh.git"
 
   bottle do
-    cellar :any
-    sha256 "b01e69bc7edf7d3c8bb5c0fc82a77d634b11322d87f93370f0eaf7b033a1be36" => :yosemite
-    sha256 "c207006622b9b5990f22f972f391e0aee43a95ed98b1f0204c667a3b9f3a6b86" => :mavericks
-    sha256 "f228ac9474754634cb55d4916d41f7cc647daa243e8910db1189722a3e2554d7" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "08e216889fb6eede6e0db765d8f541fd53532a23d926d0a58bd59871cc1b43d1" => :el_capitan
+    sha256 "7c689d405aee2fb02aa94605ee0857e271e5ef083b5728a1ffa0b722d6ef9be0" => :yosemite
+    sha256 "142e2c7688f3e1f776900193d2f3bcb4157212435cf29a46cd05144b8b00b9ed" => :mavericks
   end
 
   depends_on :python3
 
   resource "ply" do
-    url "https://pypi.python.org/packages/source/p/ply/ply-3.6.tar.gz"
-    sha256 "61367b9eb2f4b819f69ea116750305270f1df8859992c9e356d6a851f25a4b47"
+    url "https://pypi.python.org/packages/source/p/ply/ply-3.8.tar.gz"
+    sha256 "e7d1bdff026beb159c9942f7a17e102c375638d9478a7ecd4cc0c76afd8de0b8"
   end
 
   def install
@@ -34,6 +34,6 @@ class Xonsh < Formula
   end
 
   test do
-    assert_match /4/, shell_output("#{bin}/xonsh -c 2+2")
+    assert_match "4", shell_output("#{bin}/xonsh -c 2+2")
   end
 end

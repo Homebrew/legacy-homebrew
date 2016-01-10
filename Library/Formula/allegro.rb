@@ -3,25 +3,27 @@ class Allegro < Formula
   homepage "http://liballeg.org/"
 
   stable do
-    url "https://downloads.sourceforge.net/project/alleg/allegro/5.0.11/allegro-5.0.11.tar.gz"
+    url "http://download.gna.org/allegro/allegro/5.0.11/allegro-5.0.11.tar.gz"
     sha256 "49fe14c9571463ba08db4ff778d1fbb15e49f9c33bdada3ac8599e04330ea531"
   end
+
   bottle do
     cellar :any
-    sha256 "2b960b185c3458e8f9dc39ad80f7861ab4ab11cb18c118ce9d3c9ab13488a422" => :yosemite
-    sha256 "762b4ba85b03478764ce857b905ca141843148a0ffe4f1a6b1e84640a6ce545d" => :mavericks
-    sha256 "32a6ba24e889fb5529edcf6b6da894610942ce4610da8cb9ea021bf97ae13532" => :mountain_lion
+    revision 2
+    sha256 "920e11cc6cbb00016fdd6626aae4a051b38bf97ce8702ffdc11fc567f192601f" => :el_capitan
+    sha256 "53bd9902195241cdddc873a3c9afa92beab73c234e1e337d376bcb8d4b3fd2c6" => :yosemite
+    sha256 "65a04aa3c0901264e54ca91f8982da085ea90bccabcb885fac054ba5219e19bd" => :mavericks
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/alleg/allegro-unstable/5.1.11/allegro-5.1.11.tar.gz"
-    sha256 "7a071635e39105ce52cd82c8641a8f3841efbdfe8fdb39f7a5ae1be6db3be07f"
+    url "http://download.gna.org/allegro/allegro-unstable/5.1.12/allegro-5.1.12.tar.gz"
+    sha256 "78d1056d6cc0e4527ef35646f612a80456442a7866445ca7cf61a11bd64e79c0"
 
     depends_on "theora" => :recommended
   end
 
   head do
-    url "git://git.code.sf.net/p/alleg/allegro", :branch => "5.1"
+    url "https://github.com/liballeg/allegro5.git", :branch => "5.1"
 
     depends_on "theora" => :recommended
   end
@@ -30,14 +32,13 @@ class Allegro < Formula
   depends_on "libvorbis" => :recommended
   depends_on "freetype" => :recommended
   depends_on "flac" => :recommended
-  depends_on "libpng" => :recommended
-  depends_on "jpeg" => :recommended
   depends_on "physfs" => :recommended
 
   def install
-    args = std_cmake_args + ["-DWANT_DOCS=OFF"]
-    system "cmake", ".", *args
-    system "make", "install"
+    mkdir "build" do
+      system "cmake", "..", "-DWANT_DOCS=OFF", *std_cmake_args
+      system "make", "install"
+    end
   end
 
   test do

@@ -1,15 +1,13 @@
-require "formula"
-
 class Hashcash < Formula
   desc "Proof-of-work algorithm to counter denial-of-service (DoS) attacks"
   homepage "http://hashcash.org"
   url "http://hashcash.org/source/hashcash-1.22.tgz"
-  sha1 "0fa03c9f266026e505c0ab7b671ad93aef9310de"
+  sha256 "0192f12d41ce4848e60384398c5ff83579b55710601c7bffe6c88bc56b547896"
 
   bottle do
     cellar :any
-    sha1 "c816296851be064a24cfd568acfa485731909877" => :yosemite
-    sha1 "9c6255cf6ca2b0fc0778468119272ecab94308b5" => :mavericks
+    sha256 "b9e7653e9f2c14aad3d4f3589bed6de036e78b766bc01be5ae9f24be0d9696c4" => :yosemite
+    sha256 "5b34b5d7a14ec55622545d823d7a707fcb7b736a88cc531e82799ef85ff8f494" => :mavericks
   end
 
   def install

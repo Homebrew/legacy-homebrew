@@ -26,9 +26,8 @@ class Jed < Formula
         system "make"
       end
     end
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}",
+                          "--with-slang=#{Formula["s-lang"].opt_prefix}"
     system "make"
     system "make", "xjed" if build.with? "x11"
     ENV.deparallelize

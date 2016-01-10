@@ -2,7 +2,7 @@ class Openconnect < Formula
   desc "Open client for Cisco AnyConnect VPN"
   homepage "http://www.infradead.org/openconnect.html"
   url "ftp://ftp.infradead.org/pub/openconnect/openconnect-7.06.tar.gz"
-  sha1 "2351408693aab0c6bc97d37e68b4a869fbb217ed"
+  sha256 "facf695368dc4537a6a30e2147be90b1d77ee3cb2d269eaef070b6d9ddab70f2"
 
   bottle do
     sha256 "7d514ce407dee1972abf23a51ff2acfe7d72bfde9854639bd6097bb39e6ab058" => :yosemite
@@ -28,7 +28,7 @@ class Openconnect < Formula
 
   resource "vpnc-script" do
     url "http://git.infradead.org/users/dwmw2/vpnc-scripts.git/blob_plain/a64e23b1b6602095f73c4ff7fdb34cccf7149fd5:/vpnc-script"
-    sha1 "e9ebbb7675993a8d3bab6bf6403bbb2f31c14057"
+    sha256 "cc30b74788ca76928f23cc7bc6532425df8ea3701ace1454d38174ca87d4b9c5"
   end
 
   def install

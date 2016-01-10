@@ -1,6 +1,6 @@
-require 'formula'
-require 'tab'
-require 'set'
+require "formula"
+require "tab"
+require "set"
 
 module Homebrew
   def leaves

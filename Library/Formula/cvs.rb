@@ -7,35 +7,36 @@ class Cvs < Formula
   desc "Version control system"
   homepage "http://cvs.nongnu.org/"
   url "https://ftp.gnu.org/non-gnu/cvs/source/feature/1.12.13/cvs-1.12.13.tar.bz2"
-  sha1 "93a8dacc6ff0e723a130835713235863f1f5ada9"
+  sha256 "78853613b9a6873a30e1cc2417f738c330e75f887afdaf7b3d0800cb19ca515e"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
-    sha1 "054097e7fccf4a8ba60b9d1c364c411a6cd5de3c" => :yosemite
-    sha1 "8e84ffd198414118da1ffb18f9d18a885e68d60f" => :mavericks
-    sha1 "dea18dfba299690f2d8ed5dfc2205323207bc856" => :mountain_lion
+    sha256 "c454f576c58dbabc3d3ce4af4974dfdcf47c4232af3de9275f171a93dbdf264a" => :el_capitan
+    sha256 "3b6a02a69d14c6a6476727ade22b47a542dae280df6375a9bce9374a21176f86" => :yosemite
+    sha256 "ff6b161b7379b44bf42635828f45e7f43c932d2be9fbf9691714f2f4a356ec7f" => :mavericks
+    sha256 "cbabf7f11bb08b7018117f5b45dda26d55a0584f9ef7e00c0a134bbbe1284655" => :mountain_lion
   end
 
   keg_only :provided_until_xcode5
 
   {
-    "PR5178707"         => "372385b34a346753249a7808e8d5db0a6cadd3ee",
-    "ea"                => "1ffcbe849e138229473e0cd796416dfbe4ad25bb",
-    "endian"            => "98fa880e0e2f1edddf123cdfdcc305f01c241f9b",
-    "fixtest-client-20" => "b9277695a611750fc4db063e8929a558658ba90f",
-    "fixtest-recase"    => "d546783658257ad1af67cecfd6d5fef66dc63e72",
-    "i18n"              => "ec7b44d5d138fd24ac551b880f59fb0351445b98",
-    "initgroups"        => "2c0a11ae5af7da75e02b256c5d9f6b88c8bfd6db",
-    "nopic"             => "260978aa2318cdc35121b09782f0924661d3cebb",
-    "remove-info"       => "7c0c9c406ae8e3d1c81eec5b4ca9e1abe6a8b660",
-    "remove-libcrypto"  => "6c83063cb625cd124dcac75527dbaaa2d52d55b6",
-    "tag"               => "44374b8601dc7e48cf0f3a558565d28b2d0066ab",
-    "zlib"              => "7781dc997c895df8cfa991ab7a04add245169ea4",
+    "PR5178707"         => "732495a63f9ef2c12997686df5e7567c2dd4dc0128c4349aadd9e6540cf5e368",
+    "ea"                => "54e99f44fde6d1502e03afc33cfced576109697d5d9d734e24296cb45743ad98",
+    "endian"            => "9538a7bb6a614b29b171b87df079491b9985ef7b626b8ff6f2afb6656b6fdb52",
+    "fixtest-client-20" => "22f6dddce9f8cc42f275fa297c73025c78738d4ee02c6240bb0a71ee09a38425",
+    "fixtest-recase"    => "2485b4b89383120e3a6e8762a8decc29fc5adba8a1fb4cfa0a5f3e43aff60511",
+    "i18n"              => "3c8c3e7be584b2f8224570acdba2f6b0a72564c2358deadcf576a6d91e1d99a5",
+    "initgroups"        => "22640ec9ddedb21d69c924231a44b6875e9af7b50d848da66ed6b614741bd0d6",
+    "nopic"             => "4a3b82984d7738d98d612d6951fded58e5513cb941ec82727c9f4e7786fa879d",
+    "remove-info"       => "daa6c899a12ccd7737ddd96c16130d2c65aeb7e79aeee1dd867e9ccb744b650e",
+    "remove-libcrypto"  => "7c739b061b892a0a3fd0ce4542257c661713e7fb854a77e2b34b8e192197338d",
+    "tag"               => "f44dc8e9406824990b87e46aa4ed6b75c3884a9b376b408ae2ef62fdabf0d929",
+    "zlib"              => "15067f80b61f98eee9907fc18c037857f6b949bd7f5faa79ce8b3a822ef01bca",
   }.each do |name, sha|
     patch :p0 do
       url "https://opensource.apple.com/source/cvs/cvs-45/patches/#{name}.diff?txt"
-      sha1 sha
+      sha256 sha
     end
   end
 

@@ -5,41 +5,36 @@ class Cgrep < Formula
 
   desc "Context-aware grep for source code"
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
-  sha256 "a38d7957854b9b6f55ed8610d88b0ba3d5061d7194e3ec13e608d7a4515371f5"
+  url "https://github.com/awgn/cgrep/archive/v6.5.10.tar.gz"
+  sha256 "a83b099e4fcccc886dcbbd4e9400f68c04ad0385f3b24b1a454e2fbf4bba5e41"
   head "https://github.com/awgn/cgrep.git"
 
-  revision 1
-
   bottle do
-    sha256 "677084bcc353b3bfc75629c6b974027c34c7330b2ecabe8489462585fbd10159" => :yosemite
-    sha256 "e8e7d72ed0db7ff54ec8bf6a08f4744135e2616df6360041736e26c8ff789668" => :mavericks
-    sha256 "5721bb4900b6d0ff7f6eb40c40bafa56f7153206d6851dd66297cf64b1c178e9" => :mountain_lion
+    sha256 "1191b0ff23a78058a6b85c66c1f0d0715c8894e242d7e760d49c9e146324e974" => :el_capitan
+    sha256 "54ffbd47e3f17bcc14910d66104e843f532cd982767e9005c5542e2fbaa4936b" => :yosemite
+    sha256 "2463d1e60d5f57a4d141eae5ca204a2c844096f79b5fc1a434a081bdbb4713c8" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-
-  setup_ghc_compilers
+  depends_on "pcre"
 
   def install
-    # The "--allow-newer" is a hack for GHC 7.10.1, remove when possible.
-    install_cabal_package "--allow-newer"
+    install_cabal_package
   end
 
   test do
-    test_string = "String in"
     path = testpath/"test.rb"
     path.write <<-EOS.undent
-      # puts #{test_string} comment.
-      puts "#{test_string} literal."
+      # puts test comment.
+      puts "test literal."
     EOS
 
-    comment = `cgrep --comment "#{test_string}" #{path}`
-    assert_equal 1, comment.lines.count
-    literal = `cgrep --literal "#{test_string}" #{path}`
-    assert_equal 1, literal.lines.count
-    code = `cgrep --code puts #{path}`
-    assert_equal 1, code.lines.count
+    assert_match ":1",
+      shell_output("script -q /dev/null #{bin}/cgrep --count --comment test #{path}")
+    assert_match ":1",
+      shell_output("script -q /dev/null #{bin}/cgrep --count --literal test #{path}")
+    assert_match ":1",
+      shell_output("script -q /dev/null #{bin}/cgrep --count --code puts #{path}")
   end
 end

@@ -1,29 +1,29 @@
 class Smali < Formula
   desc "Assembler/disassembler for Android's Java VM implementation"
-  homepage "https://code.google.com/p/smali/"
-  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.6.jar"
-  sha256 "fcadc564a35b121361930223a4e6431e000b24b3cc992ca63dd2e35f7b28746d"
+  homepage "https://github.com/JesusFreke/smali"
+  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.1.0.jar"
+  sha256 "d6e8ad43956853a883eeb551f51635c0788ff99a682a81aa7c22cde61e8c7e8f"
 
   bottle do
-    cellar :any
-    sha256 "84ab85c8c285d21f0086a4929829014a92a1b8e61213bb1d3c563812af7d253b" => :yosemite
-    sha256 "55be916588480e0d8cb8536f3db81662ac318b20effd628369bed2186443e439" => :mavericks
-    sha256 "de4a407f7e3dd02af1a00416cd8d9da813d0c268e128daf397e8854fcd4dbeec" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a712aa5b8e6167f60104b2cdeca4f421459c5ae1d468fafa537414455a93585b" => :el_capitan
+    sha256 "227d24b7edb4e8fe7ecd0461d95e285cff9c6a34b5ac4a73060015d88097cb63" => :yosemite
+    sha256 "dee07b91c1880ec48b9d6a2b5a94731f86d54e03eaa0be6d2ac198ef8ec2f309" => :mavericks
   end
 
   resource "baksmali-jar" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.0.6.jar"
-    sha256 "73c62f32ff53f43a0e551959d5ef1ce4adcc900e44035063b7a360c199912652"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.1.0.jar"
+    sha256 "7b76c6227a6f0a445f96ac7f13d885dd7a16b0ba60a3d4c6c374876947c684ce"
   end
 
   resource "baksmali" do
     url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali"
-    sha256 "c2dead21e9ed0a18494077872a4190b9928bd40983136256ab33dd96e947e409"
+    sha256 "5d4b79776d401f2cbdb66c7c88e23cca773b9a939520fef4bf42e2856bbbfed4"
   end
 
   resource "smali" do
     url "https://bitbucket.org/JesusFreke/smali/downloads/smali"
-    sha256 "7d4d9095ef54f97f49c132d33035fc1331480273e886e6e3c6fe3ffe33ce9901"
+    sha256 "910297fbeefb4590e6bffd185726c878382a0960fb6a7f0733f045b6faf60a30"
   end
 
   def install
@@ -64,6 +64,6 @@ class Smali < Formula
 
     system "#{bin}/smali", "-o", "classes.dex", "input.smali"
     system "#{bin}/baksmali", "-o", pwd, "classes.dex"
-    assert File.read("HelloWorld.smali").include?("Hello World!")
+    assert_match "Hello World!", File.read("HelloWorld.smali")
   end
 end

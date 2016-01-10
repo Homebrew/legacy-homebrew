@@ -1,13 +1,13 @@
 class HtopOsx < Formula
   desc "Improved top (interactive process viewer) for OS X"
   homepage "https://github.com/max-horvath/htop-osx"
-  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.6.tar.gz"
-  sha1 "f98d42db66136b243851142b3d9325b381caacf4"
+  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.8.tar.gz"
+  sha256 "3d8614a3be5f5ba76a96b22c14a456dc66242c5ef1ef8660a60bb6b766543458"
 
   bottle do
-    sha256 "d0b96a00a44bdc3ee68bc6e54637a98e578a798915be049a53da3a0c47c1e2ec" => :yosemite
-    sha256 "bb70c1dbd415929263c358288cc21489cdb45f9e18d9d3d9d51ffbe14e0ea6ef" => :mavericks
-    sha256 "b607461d74d89fdd9b9b7835f3c2311cfcfe1ddd16826260bbe089d80c40d60b" => :mountain_lion
+    sha256 "cbb0df837038f53f489d00cb89ed676463e341a9f1520735137f42a5bbd3c799" => :el_capitan
+    sha256 "3e2c9c3bbbd360e1418e516cf06df2989289fa4a4d36616b7357af21d4943f36" => :yosemite
+    sha256 "d205c9e82989e05bcbfca10c0aa2fea7c44a9468bb130b30437236589781e222" => :mavericks
   end
 
   depends_on "autoconf" => :build

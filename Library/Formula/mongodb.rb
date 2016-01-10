@@ -5,35 +5,27 @@ class Mongodb < Formula
   homepage "https://www.mongodb.org/"
 
   stable do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.0.4.tar.gz"
-    sha256 "6de7aa8b12ad892ee3852ac949069fda8cb87b3ee606a88226817505e2864360"
+    url "https://fastdl.mongodb.org/src/mongodb-src-r3.2.0.tar.gz"
+    sha256 "c6dd1d1670b86cbf02a531ddf7a7cda8f138d8733acce33766f174bd1e5ab2ee"
 
     go_resource "github.com/mongodb/mongo-tools" do
       url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.0.4",
-        :revision => "efe71bf185cdcfe9632f1fc2e42ca4e895f93269"
-    end
-  end
-
-  devel do
-    url "https://fastdl.mongodb.org/src/mongodb-src-r3.1.5.tar.gz"
-    sha256 "75d80d1266e91f6474e1c7588420b459e4a1471c608df9bf370235a986da1c3e"
-
-    go_resource "github.com/mongodb/mongo-tools" do
-      url "https://github.com/mongodb/mongo-tools.git",
-        :tag => "r3.1.5",
-        :revision => "c3cf04406379d2981ba5b8c860c2fa78a1d4bec0"
+        :tag => "r3.2.0",
+        :revision => "6186100ad0500c122a56f0a0e28ce1227ca4fc88"
     end
   end
 
   bottle do
-    cellar :any
-    sha256 "cb796f8f0aaa0f457660d6cfca16325d4a708ffe21e66cba7caabb7e58932f7d" => :yosemite
-    sha256 "5a5ad8cb4399a08bcc4dd05297d29bfaf225676d58df3f4c7d85c0e4b223df81" => :mavericks
-    sha256 "e0bfd72074a21e1090632018d4f91ea3f89d2694a8189bc6d1af7e2dfb7f608e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0dde2411b7dc3ca802449ef276e3d5729aa617b4b7c1fe5712052c1d8f03f28e" => :el_capitan
+    sha256 "a7b91ff62121d66ca77053c9d63234b35993761e620399bd245c8109b9c8f96d" => :yosemite
+    sha256 "65d09370cff5f3c120ec91c8aef44f7bd42bd3184ca187e814c59a2750823558" => :mavericks
   end
 
   option "with-boost", "Compile using installed boost, not the version shipped with mongodb"
+  option "with-sasl", "Compile with SASL support"
+
+  needs :cxx11
 
   depends_on "boost" => :optional
   depends_on "go" => :build
@@ -42,6 +34,7 @@ class Mongodb < Formula
   depends_on "openssl" => :optional
 
   def install
+    ENV.cxx11 if MacOS.version < :mavericks
     ENV.libcxx if build.devel?
 
     # New Go tools have their own build script but the server scons "install" target is still
@@ -56,8 +49,8 @@ class Mongodb < Formula
 
       if build.with? "openssl"
         args << "ssl"
-        ENV["LIBRARY_PATH"] = "#{Formula["openssl"].opt_prefix}/lib"
-        ENV["CPATH"] = "#{Formula["openssl"].opt_prefix}/include"
+        ENV["LIBRARY_PATH"] = "#{Formula["openssl"].opt_lib}"
+        ENV["CPATH"] = "#{Formula["openssl"].opt_include}"
       end
       system "./build.sh", *args
     end
@@ -71,21 +64,19 @@ class Mongodb < Formula
       --osx-version-min=#{MacOS.version}
     ]
 
-    if build.stable?
-      args << "--cc=#{ENV.cc}"
-      args << "--cxx=#{ENV.cxx}"
-    end
+    args << "CC=#{ENV.cc}"
+    args << "CXX=#{ENV.cxx}"
 
-    if build.devel?
-      args << "CC=#{ENV.cc}"
-      args << "CXX=#{ENV.cxx}"
-    end
-
+    args << "--use-sasl-client" if build.with? "sasl"
     args << "--use-system-boost" if build.with? "boost"
     args << "--use-new-tools"
+    args << "--disable-warnings-as-errors" if MacOS.version >= :yosemite
 
     if build.with? "openssl"
-      args << "--ssl" << "--extrapath=#{Formula["openssl"].opt_prefix}"
+      args << "--ssl"
+
+      args << "CCFLAGS=-I#{Formula["openssl"].opt_include}"
+      args << "LINKFLAGS=-L#{Formula["openssl"].opt_lib}"
     end
 
     scons "install", *args

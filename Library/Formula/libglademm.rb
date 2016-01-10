@@ -3,21 +3,23 @@ class Libglademm < Formula
   homepage "https://gnome.org"
   url "https://download.gnome.org/sources/libglademm/2.6/libglademm-2.6.7.tar.bz2"
   sha256 "38543c15acf727434341cc08c2b003d24f36abc22380937707fc2c5c687a2bc3"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "576f131d971857d7977448e2011211e2eeb067bb7d76b06f47fa963c4ec3e1f8" => :yosemite
-    sha256 "7c83009c9ee3687e53be88193714f19d7a2b14ca7f79e6fc11839ce93bace8a1" => :mavericks
-    sha256 "bf3e5362d3591b88686c1ad47aea11c943dec0f130312e886a313a42646a0fd7" => :mountain_lion
+    sha256 "0d0d09182101ac8f2dac48163073bf70998d04741ee156137605eedc91f65361" => :el_capitan
+    sha256 "a9f54db752f73d96c4332e7794ba770a222b5bcb1a70b654630886851ed07247" => :yosemite
+    sha256 "71ea08cf3a79daf7ecdc5ee7437d66288e3f4851808e04f64b3739fccac4d86a" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "gtkmm"
   depends_on "libglade"
 
+  needs :cxx11
+
   def install
+    ENV.cxx11
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
@@ -128,7 +130,7 @@ class Libglademm < Formula
       -lsigc-2.0
       -lxml2
     ]
-    system ENV.cxx, "test.cpp", "-o", "test", *flags
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
     system "./test"
   end
 end

@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'build_environment'
+require "testing_env"
+require "build_environment"
 
 class BuildEnvironmentTests < Homebrew::TestCase
   def setup

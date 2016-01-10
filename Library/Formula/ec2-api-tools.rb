@@ -1,8 +1,10 @@
 class Ec2ApiTools < Formula
   desc "Client interface to the Amazon EC2 web service"
   homepage "https://aws.amazon.com/developertools/351"
-  url "https://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.7.4.0.zip"
-  sha256 "4808c712944c8e7b806cd3b4812508036ae3de565edec35964a9e88bb42ab728"
+  url "https://ec2-downloads.s3.amazonaws.com/ec2-api-tools-1.7.5.1.zip"
+  sha256 "851abe30403ee1c86a3ebdddf5b4bffd7ef4b587110530feadf00954d9ae2f3a"
+
+  bottle :unneeded
 
   depends_on :java
 

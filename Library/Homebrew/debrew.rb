@@ -53,7 +53,7 @@ module Debrew
         menu.entries.each_with_index { |e, i| puts "#{i+1}. #{e.name}" }
         print menu.prompt unless menu.prompt.nil?
 
-        input = $stdin.gets or exit
+        input = $stdin.gets || exit
         input.chomp!
 
         i = input.to_i
@@ -85,8 +85,8 @@ module Debrew
     @active
   end
 
-  def self.debugged_exceptions
-    @debugged_exceptions
+  class << self
+    attr_reader :debugged_exceptions
   end
 
   def self.debrew

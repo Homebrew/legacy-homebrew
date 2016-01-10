@@ -8,9 +8,10 @@ class DfuUtil < Formula
 
   bottle do
     cellar :any
-    sha1 "285f3043fe09291b4485fe3c4dac36025489bca8" => :yosemite
-    sha1 "ed8be24bc65f7fc2791c42311be08f67649b6e23" => :mavericks
-    sha1 "cd533314e4700a3d746330b12aa08407f693d7a4" => :mountain_lion
+    sha256 "91eb66e5c5b113995ced22a67a2ab8bffb1d21f6f17d4d8c97564e86af43d768" => :el_capitan
+    sha256 "21db5fe596df9bf508985ee703ff9760c26346c286d38d3cf5d243350a7c2606" => :yosemite
+    sha256 "bd52b0eb3a8705189edf2c92409ac97d9d85832c7356b775a0f17e5da93d0ed3" => :mavericks
+    sha256 "3fd9cf66345b78bed8b61a3fdddcccc9a999ba58f31d67be2b4df18a9ba47618" => :mountain_lion
   end
 
   head do

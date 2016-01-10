@@ -1,13 +1,11 @@
-require 'formula'
-
 class Streamripper < Formula
   desc "Separate tracks via Shoutcasts title-streaming"
-  homepage 'http://streamripper.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/sourceforge/streamripper/streamripper-1.64.6.tar.gz'
-  sha1 'bc8a8d3ad045e0772ca691d2063c39efcc0dca45'
+  homepage "http://streamripper.sourceforge.net/"
+  url "https://downloads.sourceforge.net/sourceforge/streamripper/streamripper-1.64.6.tar.gz"
+  sha256 "c1d75f2e9c7b38fd4695be66eff4533395248132f3cc61f375196403c4d8de42"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
+  depends_on "pkg-config" => :build
+  depends_on "glib"
 
   fails_with :llvm do
     build 2335
@@ -24,6 +22,6 @@ class Streamripper < Formula
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking"
-    system "make install"
+    system "make", "install"
   end
 end

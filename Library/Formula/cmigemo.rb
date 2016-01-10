@@ -1,29 +1,26 @@
-require 'formula'
-
 class Cmigemo < Formula
   desc "Migemo is a tool that supports Japanese incremental search with Romaji"
-  homepage 'http://www.kaoriya.net/software/cmigemo'
+  homepage "http://www.kaoriya.net/software/cmigemo"
+  head "https://github.com/koron/cmigemo.git"
 
   stable do
     url "https://cmigemo.googlecode.com/files/cmigemo-default-src-20110227.zip"
-    sha1 "25e279c56d3a8f1e82cbfb3526d1b38742d1d66c"
+    sha256 "4aa759b2e055ef3c3fbeb9e92f7f0aacc1fd1f8602fdd2f122719793ee14414c"
 
     # Patch per discussion at: https://github.com/Homebrew/homebrew/pull/7005
     patch :DATA
   end
 
-  head 'https://github.com/koron/cmigemo.git'
-
-  depends_on 'nkf' => :build
+  depends_on "nkf" => :build
 
   def install
-    system "chmod +x ./configure"
+    chmod 0755, "./configure"
     system "./configure", "--prefix=#{prefix}"
-    system "make osx"
-    system "make osx-dict"
+    system "make", "osx"
+    system "make", "osx-dict"
     system "make", "-C", "dict", "utf-8" if build.stable?
     ENV.j1 # Install can fail on multi-core machines unless serialized
-    system "make osx-install"
+    system "make", "osx-install"
   end
 
   def caveats; <<-EOS.undent

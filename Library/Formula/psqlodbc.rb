@@ -41,8 +41,6 @@ class Psqlodbc < Formula
   end
 
   test do
-    output = `#{Formula["unixodbc"].bin}/dltest #{lib}/psqlodbcw.so`
-    assert_equal "SUCCESS: Loaded #{lib}/psqlodbcw.so\n", output
-    assert_equal 0, $?.exitstatus
+    assert_equal "SUCCESS: Loaded #{lib}/psqlodbcw.so\n", shell_output("#{Formula["unixodbc"].bin}/dltest #{lib}/psqlodbcw.so")
   end
 end

@@ -2,14 +2,14 @@ class Libharu < Formula
   desc "Library for generating PDF files"
   homepage "http://www.libharu.org/"
   url "https://github.com/libharu/libharu/archive/RELEASE_2_3_0.tar.gz"
-  sha1 "434177d4baaf2a37b2d2d16467dd786961919e0d"
+  sha256 "8f9e68cc5d5f7d53d1bc61a1ed876add1faf4f91070dbc360d8b259f46d9a4d2"
   head "https://github.com/libharu/libharu.git"
 
   bottle do
     cellar :any
-    sha1 "24ef451318dd8dba2a121585120bd29b0713001c" => :yosemite
-    sha1 "e0d113830d149a48a558f7eab1c44152f2e91fbf" => :mavericks
-    sha1 "0911c2c32d551471d7f0e185271bb48e06d2e9d7" => :mountain_lion
+    sha256 "fd4201d2cf6e068aed5e946b09ae1b22a390ca4ed968084bfed18ed705047987" => :yosemite
+    sha256 "74e714dd0419580bbde47d9458abd95efd4ea316ec0a28e4c665bbeb89401329" => :mavericks
+    sha256 "76798fc963932099d6760d1fcb46cf3b1d829f97cc00ac36b55a5a5aadf4bc3e" => :mountain_lion
   end
 
   depends_on "autoconf" => :build
@@ -19,10 +19,17 @@ class Libharu < Formula
 
   def install
     system "./buildconf.sh", "--force"
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--with-png=#{Formula["libpng"].opt_prefix}"
+
+    args = %W[
+      --disable-debug
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+      --with-png=#{Formula["libpng"].opt_prefix}
+    ]
+
+    args << "--with-zlib=#{MacOS.sdk_path}/usr" unless MacOS::CLT.installed?
+
+    system "./configure", *args
     system "make", "install"
   end
 

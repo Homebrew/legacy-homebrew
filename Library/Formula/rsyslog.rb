@@ -1,32 +1,30 @@
-require 'formula'
-
 class Rsyslog < Formula
   desc "Enhanced, multi-threaded syslogd"
-  homepage 'http://www.rsyslog.com'
-  url 'http://www.rsyslog.com/files/download/rsyslog/rsyslog-7.4.5.tar.gz'
-  sha256 'f5e46e9324e366f20368162b4f561cf7a76fecb4aa0570edcaaa49e9f8c2fe70'
+  homepage "http://www.rsyslog.com"
+  url "http://www.rsyslog.com/files/download/rsyslog/rsyslog-7.4.5.tar.gz"
+  sha256 "f5e46e9324e366f20368162b4f561cf7a76fecb4aa0570edcaaa49e9f8c2fe70"
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libestr'
-  depends_on 'json-c'
+  depends_on "pkg-config" => :build
+  depends_on "libestr"
+  depends_on "json-c"
 
   patch :DATA
 
   def install
     args = %W[
-             --prefix=#{prefix}
-             --disable-dependency-tracking
-             --enable-imfile
-             --enable-usertools
-             --enable-diagtools
-             --enable-cached-man-pages
-             --disable-uuid
-             --disable-libgcrypt
-           ]
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+      --enable-imfile
+      --enable-usertools
+      --enable-diagtools
+      --enable-cached-man-pages
+      --disable-uuid
+      --disable-libgcrypt
+    ]
 
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end
 

@@ -1,15 +1,14 @@
 class Pypy < Formula
   desc "Implementation of Python 2 in Python"
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.6.0-src.tar.bz2"
-  sha256 "9bf353f22d25e97a85a6d3766619966055edea1ea1b2218445d683a8ad0399d9"
-  revision 1
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-4.0.1-src.tar.bz2"
+  sha256 "29f5aa6ba17b34fd980e85172dfeb4086fdc373ad392b1feff2677d2d8aea23c"
 
   bottle do
     cellar :any
-    sha256 "b87916e1eb1ec3d66107930769b41a51c0b932aaada8fbbe130a76facc8a44be" => :yosemite
-    sha256 "6b0c8b9b084a62760669dab572651c231efeb730f85547efeb930854706ef589" => :mavericks
-    sha256 "6e271c461ac4a654a9aaaf258323e3c07b6fbe7372e82cc4686e33112bb73f68" => :mountain_lion
+    sha256 "fc1f5dde107fd9887c49bfbbe6207db6623e162acae98786c4dc37d4c661753d" => :el_capitan
+    sha256 "a299cfdc148e56f982b4573482e589c62c7ae6630538db2d024c8076f0d9252a" => :yosemite
+    sha256 "80225ff2367f678288e2790cc0c265570209f41a2d2fc8f60655d7d5463a08fb" => :mavericks
   end
 
   depends_on :arch => :x86_64
@@ -25,17 +24,17 @@ class Pypy < Formula
 
   resource "bootstrap" do
     url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-osx64.tar.bz2"
-    sha1 "ad47285526b1b3c14f4eecc874bb82a133a8e551"
+    sha256 "30b392b969b54cde281b07f5c10865a7f2e11a229c46b8af384ca1d3fe8d4e6e"
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-17.0.tar.gz"
-    sha256 "561b33819ef3da2bff89cc8b05fd9b5ea3caeb31ad588b53fdf06f886ac3d200"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.4.tar.gz"
+    sha256 "cdea5098e60b4ad83453d58723a61dc481ca8e2df251fe4ccbea9afa5a7d111f"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.0.1.tar.gz"
-    sha256 "cfec177552fdd0b2d12b72651c8e874f955b4c62c1c2c9f2588cbdc1c0d0d416"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
+    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391

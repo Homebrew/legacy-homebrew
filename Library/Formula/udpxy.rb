@@ -1,16 +1,14 @@
-require "formula"
-
 class Udpxy < Formula
   desc "UDP-to-HTTP multicast traffic relay daemon"
   homepage "http://www.udpxy.com/"
   url "http://www.udpxy.com/download/1_23/udpxy.1.0.23-9-prod.tar.gz"
-  sha1 "4194fc98d51284da48d07c44bbc5bdfa4813a4b8"
+  sha256 "6ce33b1d14a1aeab4bd2566aca112e41943df4d002a7678d9a715108e6b714bd"
   version "1.0.23-9"
 
   bottle do
-    sha1 "77d4bee071a84cbf4be6505b41a25cad4ac2c5ce" => :mavericks
-    sha1 "7c1859700e919715bf07663bd61564b5cc4b040d" => :mountain_lion
-    sha1 "7f2dfa95dcf0f437c1ddc0197b1fa1599281c68b" => :lion
+    sha256 "2ae930fd03be10be0767d1bc518b85459531cbfdf0697c21d86f0ca950bfe7fa" => :mavericks
+    sha256 "7460132da991c62d86bfad0f93854c770bd499eab80cf80c427a346fa5789581" => :mountain_lion
+    sha256 "fbe11b0ac2e5ea5bfe9783c477d34807fbab524872c7c9d8441d77074db32fdb" => :lion
   end
 
   # Fix gzip path in Makefile for uname Darwin, this is needed to fix the install task

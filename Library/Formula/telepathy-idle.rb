@@ -1,15 +1,13 @@
-require "formula"
-
 class TelepathyIdle < Formula
   desc "Telepathy IRC connection manager"
   homepage "http://telepathy.freedesktop.org/wiki/Components/"
   url "http://telepathy.freedesktop.org/releases/telepathy-idle/telepathy-idle-0.2.0.tar.gz"
-  sha1 "932c11e7c131cc106ef0a6670158535925d9ca9e"
+  sha256 "3013ad4b38d14ee630b8cc8ada5e95ccaa849b9a6fe15d2eaf6d0717d76f2fab"
 
   bottle do
-    sha1 "3a6af986bce3a470d02033de44d7e24480acef15" => :mavericks
-    sha1 "58c518ecf46e0ca0f74decf1a601a620f3e3418d" => :mountain_lion
-    sha1 "c7f27d805fbc6a93ee656daa06d3bc1fb512836b" => :lion
+    sha256 "01feaaaa1e88ec062a0ebe668a87455113d216aca2c86530f70b2ad6c4f7a589" => :mavericks
+    sha256 "60eb98b2e728fba1813df62c5852efd30c1ab9b098ce5970f1af50c876af38e9" => :mountain_lion
+    sha256 "a8c499da5e1b4f13e3545890223544ceb59c85e7f3665677b9d4e21d49d42c57" => :lion
   end
 
   depends_on "pkg-config" => :build
@@ -23,6 +21,6 @@ class TelepathyIdle < Formula
     ]
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

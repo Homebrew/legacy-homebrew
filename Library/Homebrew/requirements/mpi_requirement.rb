@@ -1,15 +1,14 @@
-require 'requirement'
+require "requirement"
 
 # There are multiple implementations of MPI-2 available.
 # http://www.mpi-forum.org/
 # This requirement is used to find an appropriate one.
 class MPIRequirement < Requirement
-
   attr_reader :lang_list
 
   fatal true
 
-  default_formula 'open-mpi'
+  default_formula "open-mpi"
 
   env :userpaths
 
@@ -23,15 +22,15 @@ class MPIRequirement < Requirement
     super(tags)
   end
 
-  def mpi_wrapper_works? compiler
+  def mpi_wrapper_works?(compiler)
     compiler = which compiler
-    return false if compiler.nil? or not compiler.executable?
+    return false if compiler.nil? || !compiler.executable?
 
     # Some wrappers are non-functional and will return a non-zero exit code
     # when invoked for version info.
     #
     # NOTE: A better test may be to do a small test compilation a la autotools.
-    quiet_system compiler, '--version'
+    quiet_system compiler, "--version"
   end
 
   def inspect
@@ -42,13 +41,13 @@ class MPIRequirement < Requirement
     @lang_list.each do |lang|
       case lang
       when :cc, :cxx, :f90, :f77
-        compiler = 'mpi' + lang.to_s
+        compiler = "mpi" + lang.to_s
         @non_functional << compiler unless mpi_wrapper_works? compiler
       else
         @unknown_langs << lang.to_s
       end
     end
-    @unknown_langs.empty? and @non_functional.empty?
+    @unknown_langs.empty? && @non_functional.empty?
   end
 
   env do
@@ -56,11 +55,11 @@ class MPIRequirement < Requirement
     # Variable names taken from:
     # https://www.gnu.org/software/autoconf-archive/ax_mpi.html
     @lang_list.each do |lang|
-      compiler = 'mpi' + lang.to_s
+      compiler = "mpi" + lang.to_s
       mpi_path = which compiler
 
       # Fortran 90 environment var has a different name
-      compiler = 'MPIFC' if lang == :f90
+      compiler = "MPIFC" if lang == :f90
       ENV[compiler.upcase] = mpi_path
     end
   end

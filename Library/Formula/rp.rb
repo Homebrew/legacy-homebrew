@@ -1,25 +1,23 @@
-require 'formula'
-
 class Rp < Formula
   desc "Tool to find ROP sequences in PE/Elf/Mach-O x86/x64 binaries"
-  homepage 'http://0vercl0k.github.io/rp/'
-  head 'https://github.com/0vercl0k/rp.git'
-  url 'https://github.com/0vercl0k/rp/archive/v1.tar.gz'
-  version '1.0'
-  sha1 '01f55e396048472ee8a0e452cc597858733ee390'
+  homepage "https://0vercl0k.github.io/rp/"
+  head "https://github.com/0vercl0k/rp.git"
+  url "https://github.com/0vercl0k/rp/archive/v1.tar.gz"
+  version "1.0"
+  sha256 "3bf69aee23421ffdc5c7fc3ce6c30eb7510640d384ce58f4a820bae02effebe3"
 
   depends_on :macos => :lion
-  depends_on 'cmake' => :build
+  depends_on "cmake" => :build
 
   # In order to have the same binary name in 32 and 64 bits.
   patch :DATA
 
   def install
-    mkdir 'build' do
+    mkdir "build" do
       system "cmake", ".."
       system "make"
     end
-    bin.install 'bin/rp-osx'
+    bin.install "bin/rp-osx"
   end
 end
 

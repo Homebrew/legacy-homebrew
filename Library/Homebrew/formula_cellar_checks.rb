@@ -1,5 +1,5 @@
 module FormulaCellarChecks
-  def check_PATH bin
+  def check_PATH(bin)
     # warn the user if stuff was installed outside of their PATH
     return unless bin.directory?
     return unless bin.children.length > 0
@@ -18,7 +18,7 @@ module FormulaCellarChecks
 
   def check_manpages
     # Check for man pages that aren't in share/man
-    return unless (formula.prefix+'man').directory?
+    return unless (formula.prefix+"man").directory?
 
     <<-EOS.undent
       A top-level "man" directory was found
@@ -29,7 +29,7 @@ module FormulaCellarChecks
 
   def check_infopages
     # Check for info pages that aren't in share/info
-    return unless (formula.prefix+'info').directory?
+    return unless (formula.prefix+"info").directory?
 
     <<-EOS.undent
       A top-level "info" directory was found
@@ -57,11 +57,11 @@ module FormulaCellarChecks
   def check_non_libraries
     return unless formula.lib.directory?
 
-    valid_extensions = %w(.a .dylib .framework .jnilib .la .o .so
-                          .jar .prl .pm .sh)
+    valid_extensions = %w[.a .dylib .framework .jnilib .la .o .so
+                          .jar .prl .pm .sh]
     non_libraries = formula.lib.children.select do |g|
       next if g.directory?
-      not valid_extensions.include? g.extname
+      !valid_extensions.include? g.extname
     end
     return if non_libraries.empty?
 
@@ -73,10 +73,10 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_non_executables bin
+  def check_non_executables(bin)
     return unless bin.directory?
 
-    non_exes = bin.children.select { |g| g.directory? or not g.executable? }
+    non_exes = bin.children.select { |g| g.directory? || !g.executable? }
     return if non_exes.empty?
 
     <<-EOS.undent
@@ -86,7 +86,7 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_generic_executables bin
+  def check_generic_executables(bin)
     return unless bin.directory?
     generic_names = %w[run service start stop]
     generics = bin.children.select { |g| generic_names.include? g.basename.to_s }
@@ -105,7 +105,7 @@ module FormulaCellarChecks
 
   def check_shadowed_headers
     ["libtool", "subversion", "berkeley-db"].each do |formula_name|
-      return if formula.name == formula_name
+      return if formula.name.start_with?(formula_name)
     end
 
     return if MacOS.version < :mavericks && formula.name.start_with?("postgresql")
@@ -126,7 +126,7 @@ module FormulaCellarChecks
     EOS
   end
 
-  def check_easy_install_pth lib
+  def check_easy_install_pth(lib)
     pth_found = Dir["#{lib}/python{2.7,3}*/site-packages/easy-install.pth"].map { |f| File.dirname(f) }
     return if pth_found.empty?
 
@@ -152,11 +152,11 @@ module FormulaCellarChecks
       object files were linked against system openssl
       These object files were linked against the deprecated system OpenSSL.
       Adding `depends_on "openssl"` to the formula may help.
-        #{system_openssl  * "\n        "}
+        #{system_openssl * "\n        "}
     EOS
   end
 
-  def check_python_framework_links lib
+  def check_python_framework_links(lib)
     python_modules = Pathname.glob lib/"python*/site-packages/**/*.so"
     framework_links = python_modules.select do |obj|
       dlls = obj.dynamically_linked_libraries
@@ -173,6 +173,41 @@ module FormulaCellarChecks
     EOS
   end
 
+  def check_elisp_dirname(share, name)
+    return unless (share/"emacs/site-lisp").directory?
+    # Emacs itself can do what it wants
+    return if name == "emacs"
+
+    bad_dir_name = (share/"emacs/site-lisp").children.any? do |child|
+      child.directory? && child.basename.to_s != name
+    end
+
+    return unless bad_dir_name
+    <<-EOS
+      Emacs Lisp files were installed into the wrong site-lisp subdirectory.
+      They should be installed into:
+      #{share}/emacs/site-lisp/#{name}
+    EOS
+  end
+
+  def check_elisp_root(share, name)
+    return unless (share/"emacs/site-lisp").directory?
+    # Emacs itself can do what it wants
+    return if name == "emacs"
+
+    elisps = (share/"emacs/site-lisp").children.select { |file| %w[.el .elc].include? file.extname }
+    return if elisps.empty?
+    <<-EOS.undent
+      Emacs Lisp files were linked directly to #{HOMEBREW_PREFIX}/share/emacs/site-lisp
+      This may cause conflicts with other packages.
+      They should instead be installed into:
+      #{share}/emacs/site-lisp/#{name}
+
+      The offending files are:
+        #{elisps * "\n        "}
+    EOS
+  end
+
   def audit_installed
     audit_check_output(check_manpages)
     audit_check_output(check_infopages)
@@ -186,6 +221,8 @@ module FormulaCellarChecks
     audit_check_output(check_easy_install_pth(formula.lib))
     audit_check_output(check_openssl_links)
     audit_check_output(check_python_framework_links(formula.lib))
+    audit_check_output(check_elisp_dirname(formula.share, formula.name))
+    audit_check_output(check_elisp_root(formula.share, formula.name))
   end
 
   private

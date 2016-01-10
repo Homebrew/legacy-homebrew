@@ -1,21 +1,19 @@
-require 'formula'
-
 class Libcapn < Formula
   desc "C library to send push notifications to Apple devices"
-  homepage 'http://libcapn.org/'
+  homepage "http://libcapn.org/"
   url "http://libcapn.org/download/libcapn-1.0.0-src.tar.gz"
-  sha1 "740dc87395fc7255b78c3c926a044f00692e8c41"
-  head 'https://github.com/adobkin/libcapn.git'
+  sha256 "2c80b3adedf8e2250c6e4d3047998903b8efc7af018032ed04b712158ea02983"
+  head "https://github.com/adobkin/libcapn.git"
 
   bottle do
     cellar :any
-    sha1 "7e72854c13412bf987b6c8a81908de2667939cd9" => :yosemite
-    sha1 "7108c97b5710b7a5c90b30051f9a55c6399dd48f" => :mavericks
-    sha1 "0ec5a47c3fb17267eb8d714746195ab9205f057f" => :mountain_lion
+    sha256 "09cbbfc8fb5037b3ec0c5ef70e79dbbf47370fb382284857ea333c3459179f9f" => :yosemite
+    sha256 "1113b788db1d53843e20693d668f5847957c04c83eefb14da41bf57778e61f48" => :mavericks
+    sha256 "eb99972edf809a3d2ea12c56bd7461574f4a108565e9ad75e1341cbf846f2b80" => :mountain_lion
   end
 
-  depends_on 'cmake' => :build
-  depends_on 'pkg-config' => :build
+  depends_on "cmake" => :build
+  depends_on "pkg-config" => :build
   depends_on "openssl"
 
   def install
@@ -26,7 +24,7 @@ class Libcapn < Formula
   end
 
   test do
-    (testpath/'test_install.c').write <<-TEST_SCRIPT.undent
+    (testpath/"test_install.c").write <<-TEST_SCRIPT.undent
     #include <apn.h>
     int main() {
         apn_ctx_ref ctx = NULL;

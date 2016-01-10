@@ -12,7 +12,7 @@ class OneMl < Formula
     sha256 "d9cc9f66611ddf1d255a3090886d84f76ecd90c82fc1b6833a9c736f372dc484" => :mountain_lion
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
 
   def install
     system "make"
