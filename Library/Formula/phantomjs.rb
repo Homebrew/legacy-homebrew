@@ -17,9 +17,13 @@ class Phantomjs < Formula
   depends_on "openssl"
 
   def install
-    inreplace "src/qt/preconfig.sh", "QT_CFG+=' -openssl -openssl-linked'",
-              "QT_CFG+=' -openssl -openssl-linked -I #{Formula["openssl"].opt_include} -L #{Formula["openssl"].opt_lib}'"
-    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs
+    if build.stable?
+      system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
+             "--qt-config", "-I #{Formula["openssl"].opt_include} -L #{Formula["openssl"].opt_lib}"
+    else
+      inreplace "build.py", "/usr/local", HOMEBREW_PREFIX
+      system "./build.py", "--confirm", "--jobs", ENV.make_jobs
+    end
     bin.install "bin/phantomjs"
     (share/"phantomjs").install "examples"
   end
