@@ -123,6 +123,9 @@ class Acmetool < Formula
     ENV["GOPATH"] = buildpath
     ENV["GOHOME"] = buildpath
 
+    ###########################################
+    # Ugly patch for Homebrew-compatible paths
+    # Issue: https://github.com/hlandau/acme/issues/64
     # git grep -l /etc/
     inreplace ["README.md",
                "cmd/acmetool/main.go",
@@ -131,7 +134,6 @@ class Acmetool < Formula
                "fdb/fdb.go"] do |s|
       s.gsub! "/etc", etc
     end
-
     # git grep -l /var/lib/
     inreplace ["README.md",
                "_doc/NOROOT.md",
@@ -140,14 +142,12 @@ class Acmetool < Formula
                "storage/storage.go"] do |s|
       s.gsub! "/var/lib/acme", var/"lib/acmetool"
     end
-
     # git grep -l /usr/lib
     inreplace ["_doc/NOROOT.md",
                "_doc/SCHEMA.md",
                "notify/notify.go"] do |s|
       s.gsub! "/usr/lib", lib
     end
-
     # git grep -l /var/run/
     inreplace ["_doc/NOROOT.md",
                "_doc/WSCONFIG.md",
@@ -157,6 +157,7 @@ class Acmetool < Formula
                "responder/http.go"] do |s|
       s.gsub! "/var/run/acme", var/"run/acmetool"
     end
+    ###########################################
 
     mkdir_p buildpath/"src/github.com/hlandau/"
     ln_sf buildpath, buildpath/"src/github.com/hlandau/acme"
