@@ -1,8 +1,8 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "http://www.squid-cache.org/"
-  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.12.tar.xz"
-  sha256 "8bc83f3869f7404aefb10883109e28443255cf6dde50a13904c7954619707a42"
+  url "http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.13.tar.xz"
+  sha256 "e75d94671895270272883187296f17e26954bf00a090c97bfea8a4fc264a5b40"
 
   bottle do
     sha256 "9ff5b97fbcdb1789ca19dbaacc465fe0780c71893d28e6c63f80eb9ca547d835" => :el_capitan
