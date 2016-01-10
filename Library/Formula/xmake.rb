@@ -7,20 +7,14 @@ class Xmake < Formula
   head "https://github.com/waruqi/xmake.git"
 
   def install
-    # install to the output directory first
     system "./install", "output"
-
-    # install the xmake scripts
-    (share/"xmake").install Dir["xmake/*"]
-
-    # install the xmake binary
-    libexec.install "output/share/xmake/xmake"
-    bin.install Dir[libexec/"*"]
-    bin.env_script_all_files(libexec, :XMAKE_PROGRAM_DIR =>"#{share}/xmake")
+    pkgshare.install Dir["xmake/*"]
+    bin.install "output/share/xmake/xmake"
+    bin.env_script_all_files(libexec, :XMAKE_PROGRAM_DIR =>"#{pkgshare}")
   end
 
   test do
-    (testpath/"xmake.lua").write("")
+    touch testpath/"xmake.lua"
     system "#{bin}/xmake"
   end
 end
