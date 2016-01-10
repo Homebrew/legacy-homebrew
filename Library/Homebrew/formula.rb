@@ -1287,7 +1287,7 @@ class Formula
       hsh["installed"] << {
         "version" => keg.version.to_s,
         "used_options" => tab.used_options.as_flags,
-        "built_as_bottle" => tab.built_bottle,
+        "built_as_bottle" => tab.built_as_bottle,
         "poured_from_bottle" => tab.poured_from_bottle
       }
     end
