@@ -503,6 +503,7 @@ class FormulaInstaller
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
+    args << "--default-fortran-flags" if ARGV.include? "--default-fortran-flags"
 
     if ARGV.env
       args << "--env=#{ARGV.env}"
