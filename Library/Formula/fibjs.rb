@@ -14,7 +14,7 @@ class Fibjs < Formula
     sha256 "dd613776c5fe0bf2719ebfa910a39cdd23c94eb3d9deeafc90deefb158604fc2" => :mavericks
   end
 
-  depends_on "cmake" => :build
+ depends_on "cmake" => :build
 
   def install
     system "./build", "Release", "-j#{ENV.make_jobs}"
