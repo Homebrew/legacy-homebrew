@@ -14,7 +14,7 @@ class Iodine < Formula
     sha256 "371c3443aeebef21ec9ec072e2bcc472bd76d4909466744c66f67a9bbce5d41f" => :mountain_lion
   end
 
-  depends_on :tuntap
+  depends_on :tuntap if not build.head?
 
   def install
     system "make", "install", "prefix=#{prefix}"
