@@ -6,9 +6,9 @@ class Sdl2Ttf < Formula
 
   bottle do
     cellar :any
-    sha256 "7ab0f82c53576616dea7c90bb13a43e77a7983d91688aacecbc24afccce97a22" => :el_capitan
-    sha256 "60887468da9d0953535711bd5d3ada6c0164ef564eee4fd3c12dfb33ab863905" => :yosemite
-    sha256 "81b146fbe2a5dfdc81770a728224f37ef85a7c24e6e39b5d881ef1e2e20cae31" => :mavericks
+    sha256 "cdc88dffd18a0875a1b2bb65082c8b4b457999c42a4f48352c2b40169e47d7a1" => :el_capitan
+    sha256 "d37c41ba21a809c7d60eb8779309fdde625a7e9b81b9fad34d17d2dbc90e6e28" => :yosemite
+    sha256 "bfddff4953dc3761a5e0379b6761bec7cdd6a7c90ea2b8e9e37a00009e586334" => :mavericks
   end
 
   option :universal
