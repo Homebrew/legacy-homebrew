@@ -1,4 +1,8 @@
-#!/usr/bin/ruby -W0
+#!/bin/sh
+# Make sure this shim uses the same Ruby interpreter that is used by Homebrew.
+exec "$HOMEBREW_RUBY_PATH" -x "$0" "$@"
+#!/usr/bin/env ruby -W0
+
 # This script because we support $GIT, $HOMEBREW_SVN, etc. and Xcode-only
 # configurations. Order is careful to be what the user would want.
 
