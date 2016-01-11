@@ -114,4 +114,8 @@ class Cassandra < Formula
     </plist>
     EOS
   end
+
+  test do
+    system "#{bin}/cassandra", "-v"
+  end
 end

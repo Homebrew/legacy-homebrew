@@ -108,6 +108,7 @@ class DependencyCollector
     when :python     then PythonRequirement.new(tags)
     when :python3    then Python3Requirement.new(tags)
     when :java       then JavaRequirement.new(tags)
+    when :rbenv      then RbenvRequirement.new(tags)
     when :ruby       then RubyRequirement.new(tags)
     when :osxfuse    then OsxfuseRequirement.new(tags)
     when :tuntap     then TuntapRequirement.new(tags)

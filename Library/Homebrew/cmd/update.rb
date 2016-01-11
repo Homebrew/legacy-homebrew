@@ -41,8 +41,9 @@ module Homebrew
     master_updater.pull!
     master_updated = master_updater.updated?
     if master_updated
-      puts "Updated Homebrew from #{master_updater.initial_revision[0, 8]} " \
-           "to #{master_updater.current_revision[0, 8]}."
+      initial_short = shorten_revision(master_updater.initial_revision)
+      current_short = shorten_revision(master_updater.current_revision)
+      puts "Updated Homebrew from #{initial_short} to #{current_short}."
     end
     report.update(master_updater.report)
 
@@ -132,6 +133,10 @@ module Homebrew
   end
 
   private
+
+  def shorten_revision(revision)
+    `git rev-parse --short #{revision}`.chomp
+  end
 
   def git_init_if_necessary
     if Dir[".git/*"].empty?

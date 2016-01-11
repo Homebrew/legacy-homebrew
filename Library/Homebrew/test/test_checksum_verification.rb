@@ -1,4 +1,5 @@
 require "testing_env"
+require "formula"
 
 class ChecksumVerificationTests < Homebrew::TestCase
   def assert_checksum_good

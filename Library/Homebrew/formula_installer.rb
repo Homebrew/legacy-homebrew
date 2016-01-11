@@ -503,6 +503,7 @@ class FormulaInstaller
     args << "--verbose" if verbose?
     args << "--debug" if debug?
     args << "--cc=#{ARGV.cc}" if ARGV.cc
+    args << "--default-fortran-flags" if ARGV.include? "--default-fortran-flags"
 
     if ARGV.env
       args << "--env=#{ARGV.env}"
@@ -572,7 +573,9 @@ class FormulaInstaller
       end
     end
 
-    raise "Empty installation" if Dir["#{formula.prefix}/*"].empty?
+    if !formula.prefix.directory? || Keg.new(formula.prefix).empty_installation?
+      raise "Empty installation"
+    end
 
   rescue Exception
     ignore_interrupts do

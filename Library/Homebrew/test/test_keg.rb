@@ -36,6 +36,18 @@ class LinkTests < Homebrew::TestCase
     rmtree HOMEBREW_PREFIX/"lib"
   end
 
+  def test_empty_installation
+    %w[.DS_Store INSTALL_RECEIPT.json LICENSE.txt].each do |file|
+      touch @keg/file
+    end
+    assert_predicate @keg, :exist?
+    assert_predicate @keg, :directory?
+    refute_predicate @keg, :empty_installation?
+
+    (@keg/"bin").rmtree
+    assert_predicate @keg, :empty_installation?
+  end
+
   def test_linking_keg
     assert_equal 3, @keg.link
     (HOMEBREW_PREFIX/"bin").children.each { |c| assert_predicate c.readlink, :relative? }

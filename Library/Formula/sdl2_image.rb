@@ -1,16 +1,14 @@
 class Sdl2Image < Formula
   desc "Library for loading images as SDL surfaces and textures"
   homepage "https://www.libsdl.org/projects/SDL_image/"
-  url "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.0.tar.gz"
-  sha256 "b29815c73b17633baca9f07113e8ac476ae66412dec0d29a5045825c27a47234"
-  revision 1
+  url "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz"
+  sha256 "3a3eafbceea5125c04be585373bfd8b3a18f259bd7eae3efc4e6d8e60e0d7f64"
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "2889b8332feb1684d474b9f7b3a18b776500d92641c6f136a8a6585bcbd083fa" => :el_capitan
-    sha256 "3b94e3c8aa7ae44c5dce4204adcb4d1a240c4a119cc16f40dadb49ddd0ebe61d" => :yosemite
-    sha256 "011f2227503c09a600fc715ebde104446568b67f8cdc38e8b971f31857e86e0d" => :mavericks
+    sha256 "dee664ee71b691ae0afa8aacfb041996e264f8219eea63ca2e94072c76fbc318" => :el_capitan
+    sha256 "751f20138c88a1ce344577f3533cc2427275d4cc373b64233045e0dad20d082f" => :yosemite
+    sha256 "622826a76aecb7d19d2c9a946e621a9aab3591b144a30725425ee8c8565f3f52" => :mavericks
   end
 
   option :universal

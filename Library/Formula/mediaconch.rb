@@ -4,18 +4,19 @@ class Mediaconch < Formula
   url "https://mediaarea.net/download/binary/mediaconch/15.12/MediaConch_CLI_15.12hotfix1_GNU_FromSource.tar.bz2"
   version "15.12"
   sha256 "4899d43c097c552b2f970da6362407f002c61f93b11e8be3cf79b29c4733fd06"
+  revision 1
 
   bottle do
     cellar :any
-    sha256 "f226b697b1f1bfd4331f726668e1636f95c5f56bbd50ac134a0982e1aa222b3a" => :el_capitan
-    sha256 "bee2dc3b0e7cb39c94d805f794b1b088cbb90671021489581c537bad5c2848f0" => :yosemite
-    sha256 "0dd10e2b16a58dc330b3b5b6d0fbe74559f52224bce2be28414458f26d7d6ca0" => :mavericks
+    sha256 "bffc87d94bad05bade06059d46f88871343805f186a4fd5bbede69d6d625fd8d" => :el_capitan
+    sha256 "253897aaff0f219252f044b1516f019e810a9059ac30228dddd6c646691a0825" => :yosemite
+    sha256 "349ce3bd26b6a56d9efaebcfacb0894d0bb73ed8ce23dac388ccaf68e36542cb" => :mavericks
   end
 
   depends_on "pkg-config" => :build
-  depends_on "jansson" => :build
-  depends_on "libevent" => :build
-  depends_on "sqlite" => :build
+  depends_on "jansson"
+  depends_on "libevent"
+  depends_on "sqlite"
   # fails to build against Leopard's older libcurl
   depends_on "curl" if MacOS.version < :snow_leopard
 
