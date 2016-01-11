@@ -1,6 +1,6 @@
 class Libwebsockets < Formula
   desc "C websockets server library"
-  homepage "http://libwebsockets.org"
+  homepage "https://libwebsockets.org"
   url "http://git.libwebsockets.org/cgi-bin/cgit/libwebsockets/snapshot/libwebsockets-1.6.0-chrome48-firefox42.tar.gz"
   version "1.6"
   sha256 "0b97d9f5f8a57fc3d34c17ac9e2bca578629ac407cca0f23b3491fda9bd6cba3"
