@@ -73,7 +73,6 @@ TAP_MIGRATIONS = {
   "geda-gaf" => "homebrew/science",
   "geeqie" => "homebrew/gui",
   "geomview" => "homebrew/x11",
-  "gerbv" => "homebrew/x11",
   "ggobi" => "homebrew/x11",
   "giblib" => "homebrew/x11",
   "git-encrypt" => "homebrew/boneyard",
