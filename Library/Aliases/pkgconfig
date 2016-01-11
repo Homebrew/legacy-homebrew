@@ -1,0 +1,1 @@
+../Formula/pkg-config.rb

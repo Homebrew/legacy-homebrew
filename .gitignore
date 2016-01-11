@@ -1,0 +1,44 @@
+# First, ignore everything.
+/*
+
+# Explicitly ignore OS X Finder thumbnail files.
+.DS_Store
+
+# Unignore the contents of `Library` as that's where our code lives.
+!/Library/
+
+# Ignore generated files within `Library` (again).
+/Library/Homebrew/doc
+/Library/Homebrew/test/.bundle
+/Library/Homebrew/test/bin
+/Library/Homebrew/test/vendor
+/Library/Homebrew/test/coverage
+/Library/Homebrew/test/fs_leak_log
+/Library/LinkedKegs
+/Library/PinnedKegs
+/Library/PinnedTaps
+/Library/Taps
+
+# Ignore `bin` contents (again).
+/bin
+
+# Unignore our `brew` script.
+!/bin/brew
+
+# Ignore `share` contents (again).
+/share
+/share/doc
+
+# Unignore our documentation.
+!/share/doc/homebrew
+!/share/man/man1/brew.1
+
+# Unignore our root-level metadata files.
+!/.gitignore
+!/.travis.yml
+!/.yardopts
+!/CODEOFCONDUCT.md
+!/CONTRIBUTING.md
+!/LICENSE.txt
+!/README.md
+!/SUPPORTERS.md

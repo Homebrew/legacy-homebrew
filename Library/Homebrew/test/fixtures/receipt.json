@@ -1,0 +1,21 @@
+{
+  "used_options": [
+    "--with-foo",
+    "--without-bar"
+  ],
+  "unused_options": [
+    "--with-baz",
+    "--without-qux"
+  ],
+  "built_as_bottle": false,
+  "poured_from_bottle": true,
+  "time": 1403827774,
+  "HEAD": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+  "stdlib": "libcxx",
+  "compiler": "clang",
+  "source": {
+      "path": "/usr/local/Library/Formula/foo.rb",
+      "tap": "Homebrew/homebrew",
+      "spec": "stable"
+  }
+}
