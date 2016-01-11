@@ -26,7 +26,7 @@ class GitAnnex < Formula
   depends_on "quvi"
 
   def install
-    install_cabal_package :using => ["alex", "happy", "c2hs"] do
+    install_cabal_package "-f", "ConcurrentOutput", :using => ["alex", "happy", "c2hs"] do
       # this can be made the default behavior again once git-union-merge builds properly when bottling
       if build.with? "git-union-merge"
         system "make", "git-union-merge", "PREFIX=#{prefix}"
