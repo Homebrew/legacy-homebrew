@@ -3,10 +3,13 @@ require "language/go"
 class Acmetool < Formula
   desc "Automatic certificate acquisition tool for ACME (Let's Encrypt)"
   homepage "https://github.com/hlandau/acme"
-  url "https://github.com/hlandau/acme/archive/v0.0.32.tar.gz"
-  sha256 "e82cde69e10b37c1ba1ca0c10e9668d3ba8461f946133d0d07fc48da9ce6a888"
+  url "https://github.com/hlandau/acme/archive/v0.0.34.tar.gz"
+  sha256 "f6f4ea05d1852a1a554cc03c6305108bf16ddba52e31a90bb2e6bc3ab59c2f80"
 
   depends_on "go" => :build
+
+  ###### Generated with homebrew-go-resources ######
+  # homebrew-go-resources github.com/hlandau/acme/cmd/acmetool
 
   go_resource "github.com/alecthomas/template" do
     url "https://github.com/alecthomas/template.git",
@@ -118,52 +121,30 @@ class Acmetool < Formula
       :revision => "53feefa2559fb8dfa8d81baad31be332c97d6c77"
   end
 
+  ################################################
+
   def install
     ENV["GOBIN"] = bin
     ENV["GOPATH"] = buildpath
     ENV["GOHOME"] = buildpath
 
-    ###########################################
-    # Ugly patch for Homebrew-compatible paths
-    # Issue: https://github.com/hlandau/acme/issues/64
-    # git grep -l /etc/
-    inreplace ["README.md",
-               "cmd/acmetool/main.go",
-               "cmd/acmetool/quickstart-linux.go",
-               "cmd/acmetool/quickstart.go",
-               "fdb/fdb.go"] do |s|
-      s.gsub! "/etc", etc
-    end
-    # git grep -l /var/lib/
-    inreplace ["README.md",
-               "_doc/NOROOT.md",
-               "_doc/SCHEMA.md",
-               "cmd/acmetool/doc.go",
-               "storage/storage.go"] do |s|
-      s.gsub! "/var/lib/acme", var/"lib/acmetool"
-    end
-    # git grep -l /usr/lib
-    inreplace ["_doc/NOROOT.md",
-               "_doc/SCHEMA.md",
-               "notify/notify.go"] do |s|
-      s.gsub! "/usr/lib", lib
-    end
-    # git grep -l /var/run/
-    inreplace ["_doc/NOROOT.md",
-               "_doc/WSCONFIG.md",
-               "cmd/acmetool/main.go",
-               "cmd/acmetool/main_test.go",
-               "redirector/redirector.go",
-               "responder/http.go"] do |s|
-      s.gsub! "/var/run/acme", var/"run/acmetool"
-    end
-    ###########################################
-
     mkdir_p buildpath/"src/github.com/hlandau/"
     ln_sf buildpath, buildpath/"src/github.com/hlandau/acme"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", bin/"acmetool", "github.com/hlandau/acme/cmd/acmetool"
+    # https://github.com/hlandau/acme/blob/master/_doc/PACKAGING-PATHS.md
+    # degoutils buildinfo depends on this being a git checkout, but it's a tarball.
+    # rawbuildinfo = `#{buildpath}/src/github.com/hlandau/degoutils/buildinfo/gen github.com/hlandau/acme/cmd/acmetool`
+    builddate = `date -u "+%Y%m%d%H%M%S"`.strip
+    ldflags = <<-LDFLAGS
+        -X github.com/hlandau/acme/storage.RecommendedPath=#{var}/lib/acme
+        -X github.com/hlandau/acme/notify.DefaultHookPath=#{lib}/hooks
+        -X github.com/hlandau/acme/responder.StandardWebrootPath=#{var}/run/acme/acme-challenge
+        -X github.com/hlandau/degoutils/buildinfo.BuildInfo=v#{version}-#{builddate}-Homebrew
+    LDFLAGS
+
+    system "go", "build", "-o", bin/"acmetool", "-ldflags", ldflags,
+        "github.com/hlandau/acme/cmd/acmetool"
 
     system "#{bin}/acmetool --help-man >> acmetool.8"
     man8.install "acmetool.8"
