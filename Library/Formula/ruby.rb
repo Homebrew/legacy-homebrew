@@ -21,12 +21,16 @@ class Ruby < Formula
   option "with-doc", "Install documentation"
   option "with-tcltk", "Install with Tcl/Tk support"
 
-  # Reverts an upstream commit which incorrectly tries to install headers
-  # into SDKROOT, if defined
-  # See https://bugs.ruby-lang.org/issues/11881
-  patch do
-    url "https://raw.githubusercontent.com/Homebrew/patches/ba8cc6b88e6b7153ac37739e5a1a6bbbd8f43817/ruby/mkconfig.patch"
-    sha256 "929c618f74e89a5e42d899a962d7d2e4af75716523193af42626884eaba1d765"
+  stable do
+    # Reverts an upstream commit which incorrectly tries to install headers
+    # into SDKROOT, if defined
+    # See https://bugs.ruby-lang.org/issues/11881
+    # The issue has been fixed on HEAD as of 1 Jan 2016, but there has not been
+    # a release since then, so the patch is still required for release builds
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/ba8cc6b88e6b7153ac37739e5a1a6bbbd8f43817/ruby/mkconfig.patch"
+      sha256 "929c618f74e89a5e42d899a962d7d2e4af75716523193af42626884eaba1d765"
+    end
   end
 
   depends_on "pkg-config" => :build
