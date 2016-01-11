@@ -4,6 +4,8 @@ class Onioncat < Formula
   url "https://www.cypherpunk.at/ocat/download/Source/current/onioncat-0.2.2.r569.tar.gz"
   sha256 "377777de0d3c731fd2253db02b25562a2ed17e82901d0569308754215223f0bb"
 
+  depends_on "tor" => [:recommended, :run]
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
