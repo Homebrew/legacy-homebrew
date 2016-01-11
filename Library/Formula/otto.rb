@@ -53,16 +53,12 @@ class Otto < Formula
     github.com/mitchellh/panicwrap a1e50bc201f387747a45ffff020f1af2d8759e88
     github.com/mitchellh/prefixedio 6e6954073784f7ee67b28f2d22749d6479151ed7
     github.com/mitchellh/reflectwalk eecf4c70c626c7cfbb95c90195bc34d386c74ac6
+    gopkg.in/flosch/pongo2.v3 5e81b817a0c48c1c57cdf1a9056cf76bdee02ca9
   ]
   otto_deps.each_slice(2) do |x, y|
     go_resource x do
       url "https://#{x}.git", :revision => y
     end
-  end
-
-  go_resource "gopkg.in/flosch/pongo2.v3" do
-    url "https://gopkg.in/flosch/pongo2.v3.git",
-      :revision => "5e81b817a0c48c1c57cdf1a9056cf76bdee02ca9"
   end
 
   go_resource "golang.org/x/crypto" do
