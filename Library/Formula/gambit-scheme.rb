@@ -21,6 +21,11 @@ class GambitScheme < Formula
 
   fails_with :llvm
   fails_with :clang
+  # According to the docs, gambit-scheme requires absurd amounts of RAM
+  # to build using GCC 4.2 or 4.3; see
+  # https://github.com/mistydemeo/tigerbrew/issues/389
+  fails_with :gcc
+  fails_with :gcc => "4.3"
 
   def install
     args = %W[
