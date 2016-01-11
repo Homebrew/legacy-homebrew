@@ -1,3 +1,5 @@
+require "extend/string"
+
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
 # a Github repository with the name of `user/homebrew-repo`. In such
@@ -80,6 +82,14 @@ class Tap
   # True if this {Tap} is a git repository.
   def git?
     (path/".git").exist?
+  end
+
+  # The issues URL of this {Tap}.
+  # e.g. `https://github.com/user/homebrew-repo/issues`
+  def issues_url
+    if official? || !custom_remote?
+      "https://github.com/#{user}/homebrew-#{repo}/issues"
+    end
   end
 
   def to_s

@@ -150,7 +150,7 @@ version of OS X, even if it would not be used during installation.</p></dd>
 <dt><code>info</code> <code>--github</code> <var>formula</var></dt><dd><p>Open a browser to the GitHub History page for formula <var>formula</var>.</p>
 
 <p>To view formula history locally: <code>brew log -p &lt;formula></code>.</p></dd>
-<dt><code>info --json=</code><var>version</var> (<code>--all</code>|<code>--installed</code>|<var>formulae</var>)</dt><dd><p>Print a JSON representation of <var>formulae</var>. Currently the only accepted value
+<dt><code>info</code> <code>--json=</code><var>version</var> (<code>--all</code>|<code>--installed</code>|<var>formulae</var>)</dt><dd><p>Print a JSON representation of <var>formulae</var>. Currently the only accepted value
 for <var>version</var> is <code>v1</code>.</p>
 
 <p>Pass <code>--all</code> to get information on all formulae, or <code>--installed</code> to get
@@ -196,7 +196,7 @@ aka master, trunk, unstable.</p>
 
 <p>To install a newer version of HEAD use
 <code>brew rm &lt;foo> &amp;&amp; brew install --HEAD &lt;foo></code>.</p></dd>
-<dt><code>install --interactive</code> [<code>--git</code>] <var>formula</var></dt><dd><p>Download and patch <var>formula</var>, then open a shell. This allows the user to
+<dt><code>install</code> <code>--interactive</code> [<code>--git</code>] <var>formula</var></dt><dd><p>Download and patch <var>formula</var>, then open a shell. This allows the user to
 run <code>./configure --help</code> and otherwise determine how to turn the software
 package into a Homebrew formula.</p>
 
@@ -228,7 +228,7 @@ for easier access.</p>
 directory instead of the system directory. It may need to be created, first.</p></dd>
 <dt><code>ls</code>, <code>list</code> [<code>--full-name</code>]</dt><dd><p>List all installed formulae. If <code>--full-name</code> is passed, print formulae with
 full-qualified names.</p></dd>
-<dt><code>ls</code>, <code>list --unbrewed</code></dt><dd><p>List all files in the Homebrew prefix not installed by Homebrew.</p></dd>
+<dt><code>ls</code>, <code>list</code> <code>--unbrewed</code></dt><dd><p>List all files in the Homebrew prefix not installed by Homebrew.</p></dd>
 <dt><code>ls</code>, <code>list</code> [<code>--versions</code> [<code>--multiple</code>]] [<code>--pinned</code>] [<var>formulae</var>]</dt><dd><p>List the installed files for <var>formulae</var>. Combined with <code>--verbose</code>, recursively
 list the contents of all subdirectories in each <var>formula</var>'s keg.</p>
 
@@ -249,7 +249,7 @@ packages.</p>
 
 <p>If <code>--force</code> is passed, then treat installed <var>formulae</var> and passed <var>formulae</var>
 like if they are from same taps and migrate them anyway.</p></dd>
-<dt><code>options</code> [<code>--compact</code>] [<code>--all</code>] [<code>--installed</code>] <var>formula</var></dt><dd><p>Display install options specific to <var>formula</var>.</p>
+<dt><code>options</code> [<code>--compact</code>] (<code>--all</code>|<code>--installed</code>|<var>formulae</var>)</dt><dd><p>Display install options specific to <var>formulae</var>.</p>
 
 <p>If <code>--compact</code> is passed, show all options on a single line separated by
 spaces.</p>
@@ -271,8 +271,11 @@ precedence over <code>--verbose</code>).</p>
 valid version is <code>v1</code>.</p></dd>
 <dt><code>pin</code> <var>formulae</var></dt><dd><p>Pin the specified <var>formulae</var>, preventing them from being upgraded when
 issuing the <code>brew upgrade</code> command. See also <code>unpin</code>.</p></dd>
-<dt class="flush"><code>prune</code></dt><dd><p>Remove dead symlinks from the Homebrew prefix. This is generally not
-needed, but can be useful when doing DIY installations.</p></dd>
+<dt><code>prune</code> [<code>--dry-run</code>]</dt><dd><p>Remove dead symlinks from the Homebrew prefix. This is generally not
+needed, but can be useful when doing DIY installations.</p>
+
+<p>If <code>--dry-run</code> or <code>-n</code> is passed, show what would be removed, but do not
+actually remove anything.</p></dd>
 <dt><code>reinstall</code> <var>formula</var></dt><dd><p>Uninstall then install <var>formula</var></p></dd>
 <dt><code>rm</code>, <code>remove</code>, <code>uninstall</code> [<code>--force</code>] <var>formula</var></dt><dd><p>Uninstall <var>formula</var>.</p>
 
@@ -283,7 +286,7 @@ No online search is performed if called without arguments.</p></dd>
 <dt><code>search</code>, <code>-S</code> <var>text</var>|<code>/</code><var>text</var><code>/</code></dt><dd><p>Perform a substring search of formula names for <var>text</var>. If <var>text</var> is
 surrounded with slashes, then it is interpreted as a regular expression.
 The search for <var>text</var> is extended online to some popular taps.</p></dd>
-<dt><code>search --debian</code>|<code>--fedora</code>|<code>--fink</code>|<code>--macports</code>|<code>--opensuse</code>|<code>--ubuntu</code> <var>text</var></dt><dd><p>Search for <var>text</var> in the given package manager's list.</p></dd>
+<dt><code>search</code> (<code>--debian</code>|<code>--fedora</code>|<code>--fink</code>|<code>--macports</code>|<code>--opensuse</code>|<code>--ubuntu</code>) <var>text</var></dt><dd><p>Search for <var>text</var> in the given package manager's list.</p></dd>
 <dt><code>sh</code> [<code>--env=std</code>]</dt><dd><p>Instantiate a Homebrew build environment. Uses our years-battle-hardened
 Homebrew build logic to help your <code>./configure &amp;&amp; make &amp;&amp; make install</code>
 or even your <code>gem install</code> succeed. Especially handy if you run Homebrew
@@ -305,9 +308,9 @@ using protocols other than HTTPS, e.g., SSH, GIT, HTTP, FTP(S), RSYNC.</p>
 
 <p>By default, the repository is cloned as a shallow copy (<code>--depth=1</code>), but
 if <code>--full</code> is passed, a full clone will be used.</p></dd>
-<dt><code>tap --repair</code></dt><dd><p>Migrate tapped formulae from symlink-based to directory-based structure.</p></dd>
-<dt><code>tap --list-official</code></dt><dd><p>List all official taps.</p></dd>
-<dt><code>tap --list-pinned</code></dt><dd><p>List all pinned taps.</p></dd>
+<dt><code>tap</code> <code>--repair</code></dt><dd><p>Migrate tapped formulae from symlink-based to directory-based structure.</p></dd>
+<dt><code>tap</code> <code>--list-official</code></dt><dd><p>List all official taps.</p></dd>
+<dt><code>tap</code> <code>--list-pinned</code></dt><dd><p>List all pinned taps.</p></dd>
 <dt><code>tap-info</code> <var>tap</var></dt><dd><p>Display information about <var>tap</var>.</p></dd>
 <dt><code>tap-info</code> <code>--json=</code><var>version</var> (<code>--installed</code>|<var>taps</var>)</dt><dd><p>Print a JSON representation of <var>taps</var>. Currently the only accepted value
 for <var>version</var> is <code>v1</code>.</p>

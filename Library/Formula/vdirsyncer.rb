@@ -1,15 +1,15 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.3.tar.gz"
-  sha256 "3e87df25f7f5af172f2063e39deccac7c5477a2be3c7ff16183b6b8e9f2d112a"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.5.tar.gz"
+  sha256 "3f51c1fabac7f231327deb098998185cbd77564dc1bfc29f4bc8d89226c96a37"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "074aadb17cfe961bb81842fc7391db12e3d2e4bd44690479d7535d3bc2c1cbbc" => :el_capitan
-    sha256 "1068d4515c5b9fa951dac43c9fb10fc7b7a33ab1252ef2d1547de2504da6b1bb" => :yosemite
-    sha256 "6c5d879d6a338b6fb05cc3800cff22aa8e91c402dc1d0288e6ce6f94606474a7" => :mavericks
+    sha256 "e223ccf3faa9163a4667f332e9820644e20186faa80c601332a0511e2ed3452b" => :el_capitan
+    sha256 "e8cad2147490a517c46f3d7bb9ef6733769a41cf475bc57ee78973a09d6bd89a" => :yosemite
+    sha256 "d0ad5bd159acdfeaf28aec0abda9f34d35750c4377624a365180c24798a8059c" => :mavericks
   end
 
   option "without-keyring", "Build without python-keyring support"
@@ -37,18 +37,18 @@ class Vdirsyncer < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
+  end
+
+  resource "requests-toolbelt" do
+    url "https://pypi.python.org/packages/source/r/requests-toolbelt/requests-toolbelt-0.5.1.tar.gz"
+    sha256 "4f4be5325cf4af12847252406eefca8e9d1cd3cfb23a377aaac5cea32d55d23e"
   end
 
   resource "lxml" do
     url "https://pypi.python.org/packages/source/l/lxml/lxml-3.4.4.tar.gz"
     sha256 "b3d362bac471172747cda3513238f115cbd6c5f8b8e6319bf6a97a7892724099"
-  end
-
-  resource "requests-toolbelt" do
-    url "https://pypi.python.org/packages/source/r/requests-toolbelt/requests-toolbelt-0.4.0.tar.gz"
-    sha256 "15b74b90a63841b8430d6301e5062cd92929b1074b0c95bf62166b8239db1a96"
   end
 
   resource "atomicwrites" do

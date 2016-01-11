@@ -5,6 +5,7 @@ class TapTest < Homebrew::TestCase
     @path = Tap::TAP_DIRECTORY/"homebrew/homebrew-foo"
     @path.mkpath
     @tap = Tap.new("Homebrew", "foo")
+    @tap.stubs(:private?).returns(true) if ENV["HOMEBREW_NO_GITHUB_API"]
   end
 
   def setup_tap_files
@@ -65,6 +66,22 @@ class TapTest < Homebrew::TestCase
     assert_predicate @tap, :installed?
     assert_predicate @tap, :official?
     refute_predicate @tap, :core_formula_repository?
+  end
+
+  def test_issues_url
+    t = Tap.new("someone", "foo")
+    path = Tap::TAP_DIRECTORY/"someone/homebrew-foo"
+    path.mkpath
+    FileUtils.cd path do
+      shutup { system "git", "init" }
+      system "git", "remote", "add", "origin",
+        "https://github.com/someone/homebrew-foo"
+    end
+    assert_equal "https://github.com/someone/homebrew-foo/issues", t.issues_url
+    assert_equal "https://github.com/Homebrew/homebrew-foo/issues", @tap.issues_url
+
+    (Tap::TAP_DIRECTORY/"someone/homebrew-no-git").mkpath
+    assert_nil Tap.new("someone", "no-git").issues_url
   end
 
   def test_files

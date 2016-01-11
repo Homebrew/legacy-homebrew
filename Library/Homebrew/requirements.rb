@@ -66,6 +66,13 @@ class PostgresqlRequirement < Requirement
   satisfy { which "pg_config" }
 end
 
+class RbenvRequirement < Requirement
+  fatal true
+  default_formula "rbenv"
+
+  satisfy { which "rbenv" }
+end
+
 class GPGRequirement < Requirement
   fatal true
   default_formula "gpg"
@@ -124,4 +131,3 @@ class GitRequirement < Requirement
   default_formula "git"
   satisfy { Utils.git_available? }
 end
-

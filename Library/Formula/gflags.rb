@@ -19,7 +19,6 @@ class Gflags < Formula
   depends_on "cmake" => :build
 
   def install
-    ENV.append_to_cflags "-DNDEBUG" if build.without? "debug"
     args = std_cmake_args
     if build.with? "static"
       args << "-DBUILD_SHARED_LIBS=OFF"

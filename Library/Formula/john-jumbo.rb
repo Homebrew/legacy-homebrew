@@ -1,16 +1,27 @@
 class JohnJumbo < Formula
   desc "Enhanced version of john, a UNIX password cracker"
   homepage "http://www.openwall.com/john/"
-  url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
-  version "1.8.0"
-  sha256 "bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923"
+
+  stable do
+    url "http://openwall.com/john/j/john-1.8.0-jumbo-1.tar.xz"
+    sha256 "bac93d025995a051f055adbd7ce2f1975676cac6c74a6c7a3ee4cfdd9c160923"
+    version "1.8.0"
+
+    # Previously john-jumbo ignored the value of $HOME; fixed
+    # upstream.  See
+    # https://github.com/magnumripper/JohnTheRipper/issues/1901
+    patch do
+      url "https://github.com/magnumripper/JohnTheRipper/commit/d29ad8aabaa9726eb08f440001c37611fa072e0c.diff"
+      sha256 "de5c09397f3666d0592e0f418f26a78a6624c5a947347ec2440e141c8915ae82"
+    end
+  end
 
   bottle do
     cellar :any
-    revision 5
-    sha256 "d42a48a458820727be0108d222165d83bb307042e0f27b20fd013b5089521ad4" => :el_capitan
-    sha256 "180d93eb1b3ca38c76be1b6d67ff924b4c1b070884924f11bf44590e7654498c" => :yosemite
-    sha256 "5022fb58f6d60107bf3dc4eda6bb21efecc0c7250e6e4f61fb0f4f76abd5050d" => :mavericks
+    revision 6
+    sha256 "a87bf02d882413393f3f3759ab0fa6a171438609d101c7c9bc7772fe69e2ab47" => :el_capitan
+    sha256 "cf9c82f416a4eb3aad7d4202b21105988d346be8d8df262ea4ca18e683475d32" => :yosemite
+    sha256 "b36f66b0469b5c6cde95f780671db5b32e4e4dd7c16c4e7e591043bfdef2b65c" => :mavericks
   end
 
   conflicts_with "john", :because => "both install the same binaries"
@@ -64,16 +75,12 @@ class JohnJumbo < Formula
     mv share/"john/john.conf", share/"john/john.ini"
   end
 
-  # The test is currently failing against the sandbox since john
-  # always writes to the user's home directory; see
-  # https://github.com/magnumripper/JohnTheRipper/issues/1901
-  #
-  # test do
-  #   touch "john2.pot"
-  #   (testpath/"test").write "dave:#{`printf secret | /usr/bin/openssl md5`}"
-  #   assert_match(/secret/, shell_output("#{bin}/john --nolog --pot=#{testpath}/john2.pot --format=raw-md5 test"))
-  #   assert_match(/secret/, (testpath/"john2.pot").read)
-  # end
+  test do
+    touch "john2.pot"
+    (testpath/"test").write "dave:#{`printf secret | /usr/bin/openssl md5`}"
+    assert_match(/secret/, shell_output("#{bin}/john --pot=#{testpath}/john2.pot --format=raw-md5 test"))
+    assert_match(/secret/, (testpath/"john2.pot").read)
+  end
 end
 
 

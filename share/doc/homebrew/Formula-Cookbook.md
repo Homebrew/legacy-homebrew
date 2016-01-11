@@ -225,7 +225,7 @@ end
 
 [jrnl](https://github.com/Homebrew/homebrew/blob/master/Library/Formula/jrnl.rb) is an example of a formula that does this well. The end result means the user doesn't have use `pip` or Python and can just run `jrnl`.
 
-[homebrew-pypi-poet](https://github.com/tdsmith/homebrew-pypi-poet) can help you generate resource stanzas for the dependencies of your Python application and [homebrew-go-resources](https://github.com/samertm/homebrew-go-resources) can help you generate go\_resource stanzas for the dependencies of your go application.
+[homebrew-pypi-poet](https://github.com/tdsmith/homebrew-pypi-poet) can help you generate resource stanzas for the dependencies of your Python application and [gdm](https://github.com/sparrc/gdm#homebrew) can help you generate go\_resource stanzas for the dependencies of your go application.
 
 ## Install the formula
 
@@ -676,7 +676,7 @@ Generally we'd rather you were specific about what files or directories need to 
     </tr>
     <tr>
       <th><code>buildpath</code></th>
-      <td>A temporary dir somewhere on your system</td>
+      <td>A temporary directory somewhere on your system</td>
       <td><code>/private/tmp/[formula-name]-0q2b/[formula-name]</code></td>
     </tr>
   </tbody>

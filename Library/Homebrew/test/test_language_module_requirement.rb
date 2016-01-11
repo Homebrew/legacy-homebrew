@@ -50,34 +50,4 @@ class LanguageModuleRequirementTests < Homebrew::TestCase
   def test_good_ruby_deps
     assert_deps_pass "date" => :ruby
   end
-
-  if which("rbx")
-    def test_bad_rubinius_deps
-      assert_deps_fail "notapackage" => :rbx
-    end
-
-    def test_good_rubinius_deps
-      assert_deps_pass "date" => :rbx
-    end
-  end
-
-  if which("csc")
-    def test_bad_chicken_deps
-      assert_deps_fail "notapackage" => :chicken
-    end
-
-    def test_good_chicken_deps
-      assert_deps_pass "extras" => :chicken
-    end
-  end
-
-  if which("node")
-    def test_bad_node_deps
-      assert_deps_fail "notapackage" => :node
-    end
-
-    def test_good_node_deps
-      assert_deps_pass "util" => :node
-    end
-  end
 end

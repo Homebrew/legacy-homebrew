@@ -235,8 +235,10 @@ class BuildError < RuntimeError
           puts "#{formula} was moved to homebrew-boneyard because it has unfixable issues."
           puts "Please do not file any issues about this. Sorry!"
         else
-          puts "If reporting this issue please do so at (not Homebrew/homebrew):"
-          puts "  https://github.com/#{formula.tap}/issues"
+          if issues_url = formula.tap.issues_url
+            puts "If reporting this issue please do so at (not Homebrew/homebrew):"
+            puts "  #{issues_url}"
+          end
         end
       end
     else
@@ -263,8 +265,8 @@ class BuildError < RuntimeError
       puts issues.map { |i| "#{i["title"]} #{i["html_url"]}" }.join("\n")
     end
 
-    require "cmd/doctor"
-    unsupported_osx = Checks.new.check_for_unsupported_osx
+    require "diagnostic"
+    unsupported_osx = Homebrew::Diagnostic::Checks.new.check_for_unsupported_osx
     opoo unsupported_osx if unsupported_osx
   end
 end

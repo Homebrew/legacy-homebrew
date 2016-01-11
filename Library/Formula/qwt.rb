@@ -6,10 +6,10 @@ class Qwt < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "7b1e1cf69dea710e9eebb69e5dbf54fdaecc8fdd87c0090dd56030d705e4c3a1" => :el_capitan
-    sha256 "5371059fa8b35a67d9ca975d9d2fa9a7e8b7f71aca7b39b95c3704a18799655c" => :yosemite
-    sha256 "dbf6302f800dd4c48a5cc08b3adf98a1b423ea09f3579c883515a2fc33fb96b5" => :mavericks
+    revision 2
+    sha256 "0203eb8c150c368c97e00e607c2bbda1bf7bd50740a987ba59f6198a408a4fc6" => :el_capitan
+    sha256 "e855bb9cec6c3c2a1c977a1ec3719eaf5f032b8c8654919ed8c1cbbc22ab63c3" => :yosemite
+    sha256 "e5e240d5a1b148679d79b95216615bfb997a41be27d178d8b056e0be3ffab6cd" => :mavericks
   end
 
   option "with-qwtmathml", "Build the qwtmathml library"
@@ -25,6 +25,10 @@ class Qwt < Formula
     inreplace "qwtconfig.pri" do |s|
       s.gsub! /^\s*QWT_INSTALL_PREFIX\s*=(.*)$/, "QWT_INSTALL_PREFIX=#{prefix}"
       s.sub! /\+(=\s*QwtDesigner)/, "-\\1" if build.without? "plugin"
+
+      # Install Qt plugin in `lib/qt4/plugins/designer`, not `plugins/designer`.
+      s.sub! %r{(= \$\$\{QWT_INSTALL_PREFIX\})/(plugins/designer)$},
+             "\\1/lib/qt4/\\2"
     end
 
     args = ["-config", "release", "-spec"]
@@ -43,14 +47,6 @@ class Qwt < Formula
     system "qmake", *args
     system "make"
     system "make", "install"
-  end
-
-  def post_install
-    # This is a dirty hack, but one we've been using since 2014 and may as well
-    # stick with until we decide how to handle the qt plugin problem UM is working on.
-    # Symlink Qt Designer plugin (note: not removed on qwt formula uninstall)
-    ln_sf prefix/"plugins/designer/libqwt_designer_plugin.dylib",
-          Formula["qt"].opt_prefix/"plugins/designer/" if build.with? "plugin"
   end
 
   def caveats

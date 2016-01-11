@@ -1,15 +1,15 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3090200.tar.gz"
-  version "3.9.2"
-  sha256 "064c0abe9c9177534d4c770bca7a5902f9924b629ac886b4c08956be6dfbc36b"
+  url "https://sqlite.org/2016/sqlite-autoconf-3100000.tar.gz"
+  version "3.10.0"
+  sha256 "43cc292d70711fa7580250c8a1cd7c64813a4a0a479dbd502cce5f10b5d91042"
 
   bottle do
     cellar :any
-    sha256 "87728b4a68575b2b26b21b20f9e175342dd951e5c723e3730cdfe094219d7870" => :el_capitan
-    sha256 "5904d6943b66ae30f2d1c2add3c39c23eeeec802adfb52d589a0baede082349a" => :yosemite
-    sha256 "26ca0151df66630ad513d3280fc010eeba4a8587143c8b3840916ded8717d889" => :mavericks
+    sha256 "2cd30af310be9c15df4614e5eadd676e621074ac032e9a0568c97b54f1f8f9ea" => :el_capitan
+    sha256 "7a8cd118da71793dd7919c06434ac908accf4ca461c93bea299056e607034318" => :yosemite
+    sha256 "70244afaa5073df19e67251d882bb9e4b26805c759e5b42efd10ddd422751b5b" => :mavericks
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -36,9 +36,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3090200.zip"
-    version "3.9.2"
-    sha256 "4b9ecb9d2b0424ca2a288184ee36fa16a11033400638117dd7c669ad2d39177c"
+    url "https://sqlite.org/2016/sqlite-doc-3100000.zip"
+    version "3.10.0"
+    sha256 "40af646d8c2109e5a15b1787e53524ed16c8e0d1705dda5f005b6186f18c2f2a"
   end
 
   def install
@@ -109,8 +109,7 @@ class Sqlite < Formula
       select name from students order by age asc;
     EOS
 
-    names = `#{bin}/sqlite3 < #{path}`.strip.split("\n")
+    names = shell_output("#{bin}/sqlite3 < #{path}").strip.split("\n")
     assert_equal %w[Sue Tim Bob], names
-    assert_equal 0, $?.exitstatus
   end
 end

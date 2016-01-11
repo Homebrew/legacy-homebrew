@@ -1,25 +1,20 @@
 class Librevenge < Formula
   desc "Base library for writing document import filters"
   homepage "https://sourceforge.net/p/libwpd/wiki/librevenge/"
-  url "http://dev-www.libreoffice.org/src/librevenge-0.0.2.tar.bz2"
-  mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.2/librevenge-0.0.2.tar.bz2"
-  sha256 "dedd6fe1f643fc2f254f2ad3719547084bd86bcc482104b995caf3b828368b18"
+  url "http://dev-www.libreoffice.org/src/librevenge-0.0.3.tar.bz2"
+  mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.3/librevenge-0.0.3.tar.bz2"
+  sha256 "8cac287a4f3f37833a7b98304e2d3631d01cf577cb99b9311d5d5cd70680df55"
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "3918ba5cde28067e9afd41881efd7948b79355751179cd01d4b34efa319bfbd1" => :el_capitan
-    sha256 "b4b7a9049414395115d58fc95c48dfb2eb79fd0255e8ca85e1b076db891eeccb" => :yosemite
-    sha256 "3b5bced358dc205d7a848854a9460bb5a49abaec97ada3d284ef2ad9262aa882" => :mavericks
+    sha256 "3e16d90cf5e0bacbc83e410a154455e241b50a12fbc844565ca6c565bf569db8" => :el_capitan
+    sha256 "1f021b70ff8591078386937b29dd419c53660b6ea3628a9c8f916ae37498d5c6" => :yosemite
+    sha256 "cf4c15ade5beab757a4d6b3ba7ce4a3eac9e67c7835a2b53639dc6222fc3769f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "boost"
 
-  # Fix build with Boost 1.59
-  # https://sourceforge.net/p/libwpd/tickets/6/
-  # https://sourceforge.net/p/libwpd/librevenge/ci/0beee70d1bf52f0d81b60ee8c373e477991fe546/
-  patch :DATA
 
   def install
     system "./configure", "--without-docs",
@@ -43,17 +38,3 @@ class Librevenge < Formula
                    "-I#{include}/librevenge-0.0", "-L#{lib}"
   end
 end
-__END__
-diff --git a/src/lib/Makefile.in b/src/lib/Makefile.in
-index d05d38f..692fcd0 100644
---- a/src/lib/Makefile.in
-+++ b/src/lib/Makefile.in
-@@ -467,7 +467,7 @@ librevenge_@RVNG_MAJOR_VERSION@_@RVNG_MINOR_VERSION@_include_HEADERS = \
- AM_CXXFLAGS = -I$(top_srcdir)/inc $(DEBUG_CXXFLAGS) $(ZLIB_CFLAGS) \
-	$(am__append_1)
- librevenge_@RVNG_MAJOR_VERSION@_@RVNG_MINOR_VERSION@_la_CPPFLAGS =  \
--	-DLIBREVENGE_BUILD $(am__append_2)
-+	-DLIBREVENGE_BUILD -DBOOST_ERROR_CODE_HEADER_ONLY $(am__append_2)
- librevenge_@RVNG_MAJOR_VERSION@_@RVNG_MINOR_VERSION@_la_LIBADD = @LIBREVENGE_WIN32_RESOURCE@
- librevenge_@RVNG_MAJOR_VERSION@_@RVNG_MINOR_VERSION@_la_DEPENDENCIES = @LIBREVENGE_WIN32_RESOURCE@
- librevenge_@RVNG_MAJOR_VERSION@_@RVNG_MINOR_VERSION@_la_LDFLAGS = $(version_info) -export-dynamic $(no_undefined)
