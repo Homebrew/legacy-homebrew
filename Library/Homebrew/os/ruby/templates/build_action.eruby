@@ -1,0 +1,50 @@
+package hudson.plugins.rvmRubyMetrics.<%= @package_name %>;
+
+import hudson.model.AbstractBuild;
+import hudson.model.HealthReport;
+import hudson.plugins.rvmRubyMetrics.AbstractRubyMetricsBuildAction;
+import hudson.plugins.rvmRubyMetrics.<%= @package_name %>.model.<%= @camelized_name %>BuildResults;
+import hudson.util.ChartUtil;
+import hudson.util.DataSetBuilder;
+import hudson.util.ChartUtil.NumberOnlyBuildLabel;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.Map;
+
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
+
+public class <%= @camelized_name %>BuildAction extends AbstractRubyMetricsBuildAction {
+
+    private final <%= @camelized_name %>BuildResults results;
+
+    public <%= @camelized_name %>BuildAction(AbstractBuild<?, ?> owner, <%= @camelized_name %>BuildResults results) {
+        super(owner);
+        this.results = results;
+    }
+
+    @Override
+    protected DataSetBuilder<String, NumberOnlyBuildLabel> getDataSetBuilder() {
+        DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel> dsb = new DataSetBuilder<String, ChartUtil.NumberOnlyBuildLabel>();
+
+        ChartUtil.NumberOnlyBuildLabel label = new ChartUtil.NumberOnlyBuildLabel(action.owner);
+
+        /* add data to the graph, i.e: */
+        /* dsb.add(results.getTotal(), "Total score", label);*/
+
+        return dsb;
+    }
+
+    public <%= @camelized_name %>BuildResults getResults() {
+        return results;
+    }
+
+    public String getDisplayName() {
+        return "<%= @camelized_name %> report";
+    }
+
+    public String getUrlName() {
+      return "<%= @tool_name %>";
+    }
+}
