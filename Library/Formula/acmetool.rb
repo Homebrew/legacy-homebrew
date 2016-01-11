@@ -133,8 +133,6 @@ class Acmetool < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     # https://github.com/hlandau/acme/blob/master/_doc/PACKAGING-PATHS.md
-    # degoutils buildinfo depends on this being a git checkout, but it's a tarball.
-    # rawbuildinfo = `#{buildpath}/src/github.com/hlandau/degoutils/buildinfo/gen github.com/hlandau/acme/cmd/acmetool`
     builddate = `date -u "+%Y%m%d%H%M%S"`.strip
     ldflags = <<-LDFLAGS
         -X github.com/hlandau/acme/storage.RecommendedPath=#{var}/lib/acme
