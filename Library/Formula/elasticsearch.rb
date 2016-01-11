@@ -61,7 +61,7 @@ class Elasticsearch < Formula
     (etc/"elasticsearch/scripts").mkdir unless File.exist?(etc/"elasticsearch/scripts")
     (libexec/"config").rmtree
 
-    bin.write_exec_script Dir[libexec/"bin/*"]
+    bin.write_exec_script Dir[libexec/"bin/elasticsearch"]
   end
 
   def post_install
@@ -77,6 +77,7 @@ class Elasticsearch < Formula
     Logs:    #{var}/log/elasticsearch/#{cluster_name}.log
     Plugins: #{libexec}/plugins/
     Config:  #{etc}/elasticsearch/
+    plugin script: #{libexec}/bin/plugin
     EOS
   end
 
@@ -112,7 +113,7 @@ class Elasticsearch < Formula
   end
 
   test do
-    system "#{bin}/plugin", "list"
+    system "#{libexec}/bin/plugin", "list"
     pid = "#{testpath}/pid"
     begin
       system "#{bin}/elasticsearch", "-d", "-p", pid, "--path.data", testpath
