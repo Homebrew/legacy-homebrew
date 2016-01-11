@@ -338,7 +338,7 @@ Three commands are provided for displaying informational messages to the user:
 *   `opoo` for warning messages
 *   `odie` for error messages and immediately exiting
 
-In particular, when a test needs to be performed before installation use `onoe` to bail out gracefully. For example:
+In particular, when a test needs to be performed before installation use `odie` to bail out gracefully. For example:
 
 ```ruby
 if build.with?("qt") && build.with("qt5")

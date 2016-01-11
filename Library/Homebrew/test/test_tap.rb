@@ -5,7 +5,6 @@ class TapTest < Homebrew::TestCase
     @path = Tap::TAP_DIRECTORY/"homebrew/homebrew-foo"
     @path.mkpath
     @tap = Tap.new("Homebrew", "foo")
-    @tap.stubs(:private?).returns(true) if ENV["HOMEBREW_NO_GITHUB_API"]
   end
 
   def setup_tap_files
@@ -104,7 +103,6 @@ class TapTest < Homebrew::TestCase
     assert_equal "https://github.com/Homebrew/homebrew-foo", @tap.remote
     assert_raises(TapUnavailableError) { Tap.new("Homebrew", "bar").remote }
     refute_predicate @tap, :custom_remote?
-    assert_predicate @tap, :private?
 
     version_tap = Tap.new("Homebrew", "versions")
     version_tap.path.mkpath
@@ -115,6 +113,11 @@ class TapTest < Homebrew::TestCase
       end
     end
     refute_predicate version_tap, :private?
+  end
+
+  def test_private_remote
+    skip "HOMEBREW_GITHUB_API_TOKEN is required" unless ENV["HOMEBREW_GITHUB_API_TOKEN"]
+    assert_predicate @tap, :private?
   end
 
   def test_install_tap_already_tapped_error

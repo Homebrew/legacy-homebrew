@@ -855,6 +855,14 @@ class FormulaAuditor
       if line =~ /(require ["']formula["'])/
         problem "`#{$1}` is now unnecessary"
       end
+
+      if line =~ /#\{share\}\/#{formula.name}/
+        problem "Use \#{pkgshare} instead of \#{share}/#{formula.name}"
+      end
+
+      if line =~ /share\/"#{formula.name}"/
+        problem "Use pkgshare instead of (share/\"#{formula.name}\")"
+      end
     end
   end
 
