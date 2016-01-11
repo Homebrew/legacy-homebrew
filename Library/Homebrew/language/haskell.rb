@@ -54,6 +54,10 @@ module Language
         system "cabal", "install", "--jobs=#{ENV.make_jobs}", "--max-backjumps=100000", *args
       end
 
+      def cabal_configure(flags)
+        system "cabal", "configure", flags
+      end
+
       def cabal_install_tools(*tools)
         # install tools sequentially, as some tools can depend on other tools
         tools.each { |tool| cabal_install tool }
@@ -69,8 +73,21 @@ module Language
         cabal_sandbox do
           cabal_install_tools(*options[:using]) if options[:using]
 
+          # if we have build flags, we have to pass them to cabal install to resolve the necessary
+          # dependencies, and call cabal configure afterwards to set the flags again for compile
+          flags = ""
+          if options[:flags]
+            flags = "--flags='#{options[:flags].join(" ")}'"
+          end
+
+          args_and_flags = args
+          args_and_flags << flags
+
           # install dependencies in the sandbox
-          cabal_install "--only-dependencies", *args
+          cabal_install "--only-dependencies", *args_and_flags
+
+          # call configure if build flags are set
+          cabal_configure flags unless flags.empty?
 
           # install the main package in the destination dir
           cabal_install "--prefix=#{prefix}", *args
