@@ -70,7 +70,6 @@ TAP_MIGRATIONS = {
   "gant" => "homebrew/boneyard",
   "gcsfuse" => "homebrew/fuse",
   "gdrive" => "homebrew/boneyard",
-  "geany" => "homebrew/x11",
   "geda-gaf" => "homebrew/x11",
   "geeqie" => "homebrew/x11",
   "geomview" => "homebrew/x11",
