@@ -21,10 +21,10 @@ class Ncdc < Formula
 
   option "with-geoip", "Build with geoip support"
 
+  depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "sqlite"
-  depends_on "gnutls" => "with-p11-kit"
-  depends_on "pkg-config" => :build
+  depends_on "gnutls"
   depends_on "geoip" => :optional
 
   def install
