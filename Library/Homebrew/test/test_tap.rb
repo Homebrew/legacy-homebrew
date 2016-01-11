@@ -104,7 +104,6 @@ class TapTest < Homebrew::TestCase
     assert_equal "https://github.com/Homebrew/homebrew-foo", @tap.remote
     assert_raises(TapUnavailableError) { Tap.new("Homebrew", "bar").remote }
     refute_predicate @tap, :custom_remote?
-    assert_predicate @tap, :private?
 
     version_tap = Tap.new("Homebrew", "versions")
     version_tap.path.mkpath
