@@ -12,7 +12,7 @@ class Smlnj < Formula
     sha256 "d65bdd75825461dc6fd3f15f50de7ebe339b0644e7cb21132b0f2cd742cd293f" => :mavericks
     sha256 "ae8daf8491c3b2d6d2b12ce101fba322791591065b69129ff734325a1a1be063" => :mountain_lion
   end
- 
+
   resource "cm" do
     url "http://smlnj.cs.uchicago.edu/dist/working/110.79/cm.tgz"
     version "110.79"
