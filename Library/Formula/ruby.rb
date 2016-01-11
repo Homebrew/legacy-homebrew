@@ -21,7 +21,7 @@ class Ruby < Formula
   option "with-doc", "Install documentation"
   option "with-tcltk", "Install with Tcl/Tk support"
 
-  unless head?
+  stable do
     # Reverts an upstream commit which incorrectly tries to install headers
     # into SDKROOT, if defined
     # See https://bugs.ruby-lang.org/issues/11881
