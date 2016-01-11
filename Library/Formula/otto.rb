@@ -4,8 +4,8 @@ class Otto < Formula
   desc "Development and deployment system designed as the successor to Vagrant"
   homepage "https://ottoproject.io"
   url "https://github.com/hashicorp/otto.git",
-      :tag => "v0.1.2",
-      :revision => "cc1a81fbce872ab1e2eff6342b8fa273cd9ebc0e"
+      :tag => "v0.2.0",
+      :revision => "d3d825bb135a2fa27a604e82e40f60151a5e2118"
 
   head "https://github.com/hashicorp/otto.git"
 
@@ -18,164 +18,57 @@ class Otto < Formula
 
   depends_on "go" => :build
 
-  go_resource "github.com/jteeuwen/go-bindata" do
-    url "https://github.com/jteeuwen/go-bindata.git",
-      :revision => "a0ff2567cfb70903282db057e799fd826784d41d"
-  end
-
-  go_resource "golang.org/x/tools" do
-    url "https://go.googlesource.com/tools.git",
-      :revision => "823804e1ae08dbb14eb807afc7db9993bc9e3cc3"
-  end
-
-  go_resource "github.com/mitchellh/gox" do
-    url "https://github.com/mitchellh/gox.git",
-      :revision => "770c39f64e66797aa46b70ea953ff57d41658e40"
-  end
-
-  go_resource "github.com/mitchellh/iochan" do
-    url "https://github.com/mitchellh/iochan.git",
-      :revision => "87b45ffd0e9581375c491fef3d32130bb15c5bd7"
-  end
-
-  go_resource "github.com/apparentlymart/go-cidr" do
-    url "https://github.com/apparentlymart/go-cidr.git",
-      :revision => "a3ebdb999b831ecb6ab8a226e31b07b2b9061c47"
-  end
-
-  go_resource "github.com/armon/circbuf" do
-    url "https://github.com/armon/circbuf.git",
-      :revision => "bbbad097214e2918d8543d5201d12bfd7bca254d"
-  end
-
-  go_resource "github.com/aws/aws-sdk-go" do
-    url "https://github.com/aws/aws-sdk-go.git",
-      :revision => "83bae04b770b2b9aae4c946f795149d294e147d3"
-  end
-
-  go_resource "github.com/boltdb/bolt" do
-    url "https://github.com/boltdb/bolt.git",
-      :revision => "119858097e94ac1089c404206de6f2eef3b22a9b"
-  end
-
-  go_resource "github.com/flosch/pongo2" do
-    url "https://github.com/flosch/pongo2.git",
-      :revision => "4bac3860f8edbc19717122ddd9776aa03c53cb46"
-  end
-
-  go_resource "github.com/hashicorp/atlas-go" do
-    url "https://github.com/hashicorp/atlas-go.git",
-      :revision => "6c9afe8bb88099b424db07dea18f434371de8199"
-  end
-
-  go_resource "github.com/hashicorp/errwrap" do
-    url "https://github.com/hashicorp/errwrap.git",
-      :revision => "7554cd9344cec97297fa6649b055a8c98c2a1e55"
-  end
-
-  go_resource "github.com/hashicorp/go-checkpoint" do
-    url "https://github.com/hashicorp/go-checkpoint.git",
-      :revision => "e4b2dc34c0f698ee04750bf2035d8b9384233e1b"
-  end
-
-  go_resource "github.com/hashicorp/go-cleanhttp" do
-    url "https://github.com/hashicorp/go-cleanhttp.git",
-      :revision => "5df5ddc69534f1a4697289f1dca2193fbb40213f"
-  end
-
-  go_resource "github.com/hashicorp/go-getter" do
-    url "https://github.com/hashicorp/go-getter.git",
-      :revision => "ed87cf163bcc928524f185164d988fac2db1c129"
-  end
-
-  go_resource "github.com/hashicorp/go-multierror" do
-    url "https://github.com/hashicorp/go-multierror.git",
-      :revision => "d30f09973e19c1dfcd120b2d9c4f168e68d6b5d5"
-  end
-
-  go_resource "github.com/hashicorp/go-version" do
-    url "https://github.com/hashicorp/go-version.git",
-      :revision => "2b9865f60ce11e527bd1255ba82036d465570aa3"
-  end
-
-  go_resource "github.com/hashicorp/hcl" do
-    url "https://github.com/hashicorp/hcl.git",
-      :revision => "4de51957ef8d4aba6e285ddfc587633bbfc7c0e8"
-  end
-
-  go_resource "github.com/hashicorp/terraform" do
-    url "https://github.com/hashicorp/terraform.git",
-      :revision => "82ad93539b43522705d203ecef6e2ff32a5404cb"
-  end
-
-  go_resource "github.com/hashicorp/vault" do
-    url "https://github.com/hashicorp/vault.git",
-      :revision => "8cf0d1444a5e73daf6317af383c3efd7857972e1"
-  end
-
-  go_resource "github.com/mitchellh/cli" do
-    url "https://github.com/mitchellh/cli.git",
-      :revision => "8102d0ed5ea2709ade1243798785888175f6e415"
-  end
-
-  go_resource "github.com/mitchellh/colorstring" do
-    url "https://github.com/mitchellh/colorstring.git",
-      :revision => "8631ce90f28644f54aeedcb3e389a85174e067d1"
-  end
-
-  go_resource "github.com/mitchellh/copystructure" do
-    url "https://github.com/mitchellh/copystructure.git",
-      :revision => "6fc66267e9da7d155a9d3bd489e00dad02666dc6"
-  end
-
-  go_resource "github.com/mitchellh/go-homedir" do
-    url "https://github.com/mitchellh/go-homedir.git",
-      :revision => "d682a8f0cf139663a984ff12528da460ca963de9"
-  end
-
-  go_resource "github.com/mitchellh/ioprogress" do
-    url "https://github.com/mitchellh/ioprogress.git",
-      :revision => "8163955264568045f462ae7e2d6d07b2001fc997"
-  end
-
-  go_resource "github.com/mitchellh/mapstructure" do
-    url "https://github.com/mitchellh/mapstructure.git",
-      :revision => "281073eb9eb092240d33ef253c404f1cca550309"
-  end
-
-  go_resource "github.com/mitchellh/osext" do
-    url "https://github.com/mitchellh/osext.git",
-      :revision => "5e2d6d41470f99c881826dedd8c526728b783c9c"
-  end
-
-  go_resource "github.com/mitchellh/panicwrap" do
-    url "https://github.com/mitchellh/panicwrap.git",
-      :revision => "1655d88c8ff7495ae9d2c19fd8f445f4657e22b0"
-  end
-
-  go_resource "github.com/mitchellh/prefixedio" do
-    url "https://github.com/mitchellh/prefixedio.git",
-      :revision => "89d9b535996bf0a185f85b59578f2e245f9e1724"
-  end
-
-  go_resource "github.com/mitchellh/reflectwalk" do
-    url "https://github.com/mitchellh/reflectwalk.git",
-      :revision => "eecf4c70c626c7cfbb95c90195bc34d386c74ac6"
-  end
-
-  go_resource "github.com/vaughan0/go-ini" do
-    url "https://github.com/vaughan0/go-ini.git",
-      :revision => "a98ad7ee00ec53921f08832bc06ecf7fd600e6a1"
+  otto_deps = %w[
+    github.com/apparentlymart/go-cidr a3ebdb999b831ecb6ab8a226e31b07b2b9061c47
+    github.com/armon/circbuf bbbad097214e2918d8543d5201d12bfd7bca254d
+    github.com/armon/go-radix fbd82e84e2b13651f3abc5ffd26b65ba71bc8f93
+    github.com/aws/aws-sdk-go b7b1a098eeebcdf7db0af5818e255dc8569b88ce
+    github.com/bgentry/speakeasy 36e9cfdd690967f4f690c6edcc9ffacd006014a0
+    github.com/boltdb/bolt 25b28102db2053fa885b2a4798d5dfa94745f4b6
+    github.com/flosch/pongo2 a269242022ae534b052672d6a9326a40560a63e7
+    github.com/go-ini/ini afbd495e5aaea13597b5e14fe514ddeaa4d76fc3
+    github.com/hashicorp/atlas-go b66e377f52e316206efe71abba20e276d8790d86
+    github.com/hashicorp/errwrap 7554cd9344cec97297fa6649b055a8c98c2a1e55
+    github.com/hashicorp/go-checkpoint e4b2dc34c0f698ee04750bf2035d8b9384233e1b
+    github.com/hashicorp/go-cleanhttp ce617e79981a8fff618bb643d155133a8f38db96
+    github.com/hashicorp/go-getter c5e245982bdb4708f89578c8e0054d82b5197401
+    github.com/hashicorp/go-multierror d30f09973e19c1dfcd120b2d9c4f168e68d6b5d5
+    github.com/hashicorp/go-version 2b9865f60ce11e527bd1255ba82036d465570aa3
+    github.com/hashicorp/hcl 197e8d3cf42199cfd53cd775deb37f3637234635
+    github.com/hashicorp/terraform 6d1d46c47ced8880ff4af5d48e49572c62fe7df6
+    github.com/hashicorp/vault 4fa678131a73a77cbac7cb456fb69950d3146ca6
+    github.com/hashicorp/yamux df949784da9ed028ee76df44652e42d37a09d7e4
+    github.com/jmespath/go-jmespath c01cf91b011868172fdcd9f41838e80c9d716264
+    github.com/jteeuwen/go-bindata a0ff2567cfb70903282db057e799fd826784d41d
+    github.com/kardianos/osext 29ae4ffbc9a6fe9fb2bc5029050ce6996ea1d3bc
+    github.com/mattn/go-isatty 56b76bdf51f7708750eac80fa38b952bb9f32639
+    github.com/mitchellh/cli cb6853d606ea4a12a15ac83cc43503df99fd28fb
+    github.com/mitchellh/iochan 87b45ffd0e9581375c491fef3d32130bb15c5bd7
+    github.com/mitchellh/colorstring 8631ce90f28644f54aeedcb3e389a85174e067d1
+    github.com/mitchellh/copystructure 6fc66267e9da7d155a9d3bd489e00dad02666dc6
+    github.com/mitchellh/go-homedir d682a8f0cf139663a984ff12528da460ca963de9
+    github.com/mitchellh/gox 39862d88e853ecc97f45e91c1cdcb1b312c51eaa
+    github.com/mitchellh/ioprogress 8163955264568045f462ae7e2d6d07b2001fc997
+    github.com/mitchellh/mapstructure 281073eb9eb092240d33ef253c404f1cca550309
+    github.com/mitchellh/panicwrap a1e50bc201f387747a45ffff020f1af2d8759e88
+    github.com/mitchellh/prefixedio 6e6954073784f7ee67b28f2d22749d6479151ed7
+    github.com/mitchellh/reflectwalk eecf4c70c626c7cfbb95c90195bc34d386c74ac6
+    gopkg.in/flosch/pongo2.v3 5e81b817a0c48c1c57cdf1a9056cf76bdee02ca9
+  ]
+  otto_deps.each_slice(2) do |x, y|
+    go_resource x do
+      url "https://#{x}.git", :revision => y
+    end
   end
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "c8b9e6388ef638d5a8a9d865c634befdc46a6784"
+      :revision => "803f01ea27e23d998825ec085f0d153cac01c828"
   end
 
-  go_resource "gopkg.in/flosch/pongo2.v3" do
-    url "https://gopkg.in/flosch/pongo2.v3.git",
-      :revision => "5e81b817a0c48c1c57cdf1a9056cf76bdee02ca9"
+  go_resource "golang.org/x/tools" do
+    url "https://go.googlesource.com/tools.git",
+      :revision => "4ad533583d0194672e7d3bc6fb8b67c8e905d853"
   end
 
   def install
