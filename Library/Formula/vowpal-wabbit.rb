@@ -1,10 +1,9 @@
 class VowpalWabbit < Formula
   desc "Online learning algorithm"
   homepage "https://github.com/JohnLangford/vowpal_wabbit"
-  url "https://github.com/JohnLangford/vowpal_wabbit/archive/8.0.tar.gz"
-  sha256 "ebf7fea91eead6da3d9fd479b901a320d5ab3ed20b2b134b5ce86aec771b0a60"
+  url "https://github.com/JohnLangford/vowpal_wabbit/archive/8.1.1.tar.gz"
+  sha256 "174609bb09eaeac150c08639a82713a2290442a42bc0b23d53943e9a0f22911b"
   head "https://github.com/JohnLangford/vowpal_wabbit.git"
-  revision 1
 
   bottle do
     cellar :any
