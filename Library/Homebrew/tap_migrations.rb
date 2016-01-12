@@ -212,6 +212,7 @@ TAP_MIGRATIONS = {
   "tetgen" => "homebrew/science",
   "texmacs" => "homebrew/boneyard",
   "texwrapper" => "homebrew/tex",
+  "threadscope" => "homebrew/gui",
   "ticcutils" => "homebrew/science",
   "tiger-vnc" => "homebrew/x11",
   "timbl" => "homebrew/science",
