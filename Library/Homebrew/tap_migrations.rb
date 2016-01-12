@@ -93,7 +93,6 @@ TAP_MIGRATIONS = {
   "gsmartcontrol" => "homebrew/gui",
   "gtk-chtheme" => "homebrew/gui",
   "gtkglarea" => "homebrew/boneyard",
-  "gtksourceviewmm3" => "homebrew/x11",
   "gtkwave" => "homebrew/gui",
   "guilt" => "homebrew/boneyard",
   "gv" => "homebrew/x11",
