@@ -21,7 +21,6 @@ class Gnutls < Formula
   depends_on "gmp"
   depends_on "nettle"
   depends_on "guile" => :optional
-  depends_on "p11-kit" => :optional
   depends_on "unbound" => :optional
 
   fails_with :llvm do
