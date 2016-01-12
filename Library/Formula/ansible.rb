@@ -1,8 +1,8 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
   homepage "https://www.ansible.com/home"
-  url "https://releases.ansible.com/ansible/ansible-1.9.4.tar.gz"
-  sha256 "972c2face49f1577bd0ff7989440bfe2820e66fb10d7579915cc536bccfa6fe3"
+  url "https://releases.ansible.com/ansible/ansible-2.0.0.0.tar.gz"
+  sha256 "63a9386ae96bd6ae3e87b9e9fecef3f3f919f333ed8db22292e37df7643cb3f6"
   revision 1
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
