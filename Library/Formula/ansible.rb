@@ -1,8 +1,8 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
   homepage "https://www.ansible.com/home"
-  url "https://releases.ansible.com/ansible/ansible-2.0.0.0.tar.gz"
-  sha256 "63a9386ae96bd6ae3e87b9e9fecef3f3f919f333ed8db22292e37df7643cb3f6"
+  url "https://releases.ansible.com/ansible/ansible-2.0.0.1.tar.gz"
+  sha256 "1085c1fae3b59f8e55a64b949489f1ddcd811a0c32d9df8ac18abf44a430f3b5"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
@@ -30,8 +30,8 @@ class Ansible < Formula
   end
 
   resource "paramiko" do
-    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.15.2.tar.gz"
-    sha256 "4f56a671a3eecbb76e6143e6e4ca007d503a39aa79aa9e14ade667fa53fd6e55"
+    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.16.0.tar.gz"
+    sha256 "3297ebd3cd072f573772f7c7426939a443c62c458d54bb632ff30fd6ecf96892"
   end
 
   resource "pycrypto" do
@@ -133,13 +133,13 @@ class Ansible < Formula
   # pywinrm (for Windows support)
   #
   resource "isodate" do
-    url "https://pypi.python.org/packages/source/i/isodate/isodate-0.5.1.tar.gz"
-    sha256 "b12aed31c0e834543497e24d609a41531a800d8304c39e6665c45ca023b012fb"
+    url "https://pypi.python.org/packages/source/i/isodate/isodate-0.5.4.tar.gz"
+    sha256 "42105c41d037246dc1987e36d96f3752ffd5c0c24834dd12e4fdbe1e79544e31"
   end
 
   resource "pywinrm" do
-    url "https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.0.3.tar.gz"
-    sha256 "be3775890effcddfb1fca440b43bf08af165527a7b102d43518232bfc9c021bc"
+    url "https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.1.1.tar.gz"
+    sha256 "0230d7e574a5375e8a0b46001a2bce2440aba2b866629342be0360859f8d514d"
   end
 
   resource "xmltodict" do
@@ -156,11 +156,40 @@ class Ansible < Formula
   end
 
   #
-  # boto (for AWS support)
+  # boto/boto3 (for AWS support)
   #
   resource "boto" do
     url "https://pypi.python.org/packages/source/b/boto/boto-2.38.0.tar.gz"
     sha256 "d9083f91e21df850c813b38358dc83df16d7f253180a1344ecfedce24213ecf2"
+  end
+
+  resource "boto3" do
+    url "https://pypi.python.org/packages/source/b/boto3/boto3-1.2.3.tar.gz"
+    sha256 "091206847d296520e5ec57706a5e4b428d017352eb3168c6bcb9a1ac9feab224"
+  end
+
+  #
+  # Required by the 'boto3' module
+  # https://github.com/boto/boto3
+  #
+  resource "botocore" do
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.17.tar.gz"
+    sha256 "1ca85c5ebe0beed7b54fc47de81d3f39c6bb907951fe6db6a38185de63db7723"
+  end
+
+  resource "docutils" do
+    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
+    sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
+  end
+
+  resource "jmespath" do
+    url "https://pypi.python.org/packages/source/j/jmespath/jmespath-0.9.0.tar.gz"
+    sha256 "08dfaa06d4397f283a01e57089f3360e3b52b5b9da91a70e1fd91e9f0cdd3d3d"
+  end
+
+  resource "python-dateutil" do
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.2.tar.gz"
+    sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
   end
 
   #
