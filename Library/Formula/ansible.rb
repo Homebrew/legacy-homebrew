@@ -1,9 +1,8 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
   homepage "https://www.ansible.com/home"
-  url "https://releases.ansible.com/ansible/ansible-1.9.4.tar.gz"
-  sha256 "972c2face49f1577bd0ff7989440bfe2820e66fb10d7579915cc536bccfa6fe3"
-  revision 1
+  url "https://releases.ansible.com/ansible/ansible-2.0.0.0.tar.gz"
+  sha256 "63a9386ae96bd6ae3e87b9e9fecef3f3f919f333ed8db22292e37df7643cb3f6"
 
   head "https://github.com/ansible/ansible.git", :branch => "devel"
 
@@ -11,12 +10,6 @@ class Ansible < Formula
     sha256 "9b6311a5b12b257caa6714021d784bbdc006c1a84aec9e2d3154a6a68cb7b612" => :el_capitan
     sha256 "6a0e6b7260048fa03f8c2dd0a50f682de54a668ce417c7c944b42b945f5ee076" => :yosemite
     sha256 "6a094f0db17de2814c06eea6c0720e113cd4ebf72aee4f3b72e86103c1c7fb9a" => :mavericks
-  end
-
-  devel do
-    url "https://releases.ansible.com/ansible/ansible-2.0.0-0.9.rc4.tar.gz"
-    sha256 "aa4f512501c31e4ee44e7f5a1be30b1d0b68f4925ec849433b74f8d6d36430bd"
-    version "2.0.0-0.9.rc4"
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
