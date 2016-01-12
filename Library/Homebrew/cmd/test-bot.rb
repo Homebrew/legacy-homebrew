@@ -9,6 +9,7 @@
 # --skip-setup:    Don't check the local system is setup correctly.
 # --skip-homebrew: Don't check Homebrew's files and tests are all valid.
 # --junit:         Generate a JUnit XML test results file.
+# --no-bottle:     Run brew install without --build-bottle
 # --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
@@ -450,7 +451,7 @@ module Homebrew
       reqs = []
 
       fetch_args = [canonical_formula_name]
-      fetch_args << "--build-bottle" if !ARGV.include?("--fast") && !formula.bottle_disabled?
+      fetch_args << "--build-bottle" if !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
       fetch_args << "--force" if ARGV.include? "--cleanup"
 
       audit_args = [canonical_formula_name]
@@ -564,7 +565,7 @@ module Homebrew
       test "brew", "fetch", "--retry", *fetch_args
       test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
       install_args = ["--verbose"]
-      install_args << "--build-bottle" if !ARGV.include?("--fast") && !formula.bottle_disabled?
+      install_args << "--build-bottle" if !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
       # Pass --devel or --HEAD to install in the event formulae lack stable. Supports devel-only/head-only.
@@ -591,7 +592,7 @@ module Homebrew
       end
       test "brew", "audit", *audit_args
       if install_passed
-        if formula.stable? && !ARGV.include?("--fast") && !formula.bottle_disabled?
+        if formula.stable? && !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
           bottle_args = ["--verbose", "--rb", canonical_formula_name]
           bottle_args << "--keep-old" if ARGV.include? "--keep-old"
           test "brew", "bottle", *bottle_args
