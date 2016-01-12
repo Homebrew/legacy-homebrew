@@ -1,13 +1,10 @@
 class Gimp < Formula
   desc "GNU Image Manipulation Program"
   homepage "http://www.gimp.org"
-  revision 1
 
   stable do
-    url "http://download.gimp.org/pub/gimp/v2.8/gimp-2.8.14.tar.bz2"
-    sha256 "d82a958641c9c752d68e35f65840925c08e314cea90222ad845892a40e05b22d"
-
-    # 2.8.14 cannot use >0.2.x Gegl. Fails during configure.
+    url "http://download.gimp.org/pub/gimp/v2.8/gimp-2.8.16.tar.bz2"
+    sha256 "95e3857bd0b5162cf8d1eda8c78b741eef968c3e3ac6c1195aaac2a4e2574fb7"
     depends_on "homebrew/versions/gegl02"
   end
 
@@ -19,11 +16,9 @@ class Gimp < Formula
 
   head do
     url "https://github.com/GNOME/gimp.git", :branch => "gimp-2-8"
-
     depends_on "gegl"
   end
 
-  depends_on :x11 => :recommended
   depends_on "pkg-config" => :build
   depends_on "gettext" => :build
   depends_on "intltool" => :build
@@ -57,9 +52,9 @@ class Gimp < Formula
       --disable-gtktest
       --datarootdir=#{share}
       --sysconfdir=#{etc}
+      --without-x
     ]
 
-    args << "--without-x" if build.without? "x11"
     args << "--without-libtiff" if build.without? "libtiff"
     args << "--without-libpng" if build.without? "libpng"
     args << "--without-wmf" if build.without? "libwmf"
