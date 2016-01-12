@@ -1,8 +1,8 @@
 class Pushpin < Formula
   desc "Reverse proxy for realtime web services"
   homepage "http://pushpin.org"
-  url "https://dl.bintray.com/fanout/source/pushpin-1.6.0.tar.bz2"
-  sha256 "ae9bec6e7a76a3c3415d59e251876741dbda1a14422d406d640c0ed5f1a75335"
+  url "https://dl.bintray.com/fanout/source/pushpin-1.7.0.tar.bz2"
+  sha256 "8702df894acbcc035c2faf23377b83c2dd2ec5a183091c50774e5e76d7a94a45"
 
   head "https://github.com/fanout/pushpin.git"
 
@@ -52,11 +52,6 @@ class Pushpin < Formula
     sha256 "55715a5d758214034db179005def47ed842da36c4c48e9e7ae59bcaffed7ca9b"
   end
 
-  resource "sortedcontainers" do
-    url "https://pypi.python.org/packages/source/s/sortedcontainers/sortedcontainers-0.9.6.tar.gz"
-    sha256 "bacaeb1c3e59c3083eec4d1198ba5625246c012e0342aafa46291632e8458dd3"
-  end
-
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
 
@@ -70,7 +65,7 @@ class Pushpin < Formula
     system "make", "install", "prefix=#{prefix}", "varprefix=#{var}"
 
     pyenv = { :PYTHONPATH => ENV["PYTHONPATH"] }
-    %w[pushpin pushpin-handler pushpin-publish].each do |f|
+    %w[pushpin pushpin-publish].each do |f|
       (libexec/"bin").install bin/f
       (bin/f).write_env_script libexec/"bin/#{f}", pyenv
     end
