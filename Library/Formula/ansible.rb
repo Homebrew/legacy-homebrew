@@ -133,13 +133,13 @@ class Ansible < Formula
   # pywinrm (for Windows support)
   #
   resource "isodate" do
-    url "https://pypi.python.org/packages/source/i/isodate/isodate-0.5.1.tar.gz"
-    sha256 "b12aed31c0e834543497e24d609a41531a800d8304c39e6665c45ca023b012fb"
+    url "https://pypi.python.org/packages/source/i/isodate/isodate-0.5.4.tar.gz"
+    sha256 "42105c41d037246dc1987e36d96f3752ffd5c0c24834dd12e4fdbe1e79544e31"
   end
 
   resource "pywinrm" do
-    url "https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.0.3.tar.gz"
-    sha256 "be3775890effcddfb1fca440b43bf08af165527a7b102d43518232bfc9c021bc"
+    url "https://pypi.python.org/packages/source/p/pywinrm/pywinrm-0.1.1.tar.gz"
+    sha256 "0230d7e574a5375e8a0b46001a2bce2440aba2b866629342be0360859f8d514d"
   end
 
   resource "xmltodict" do
