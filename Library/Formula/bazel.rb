@@ -5,10 +5,10 @@ class Bazel < Formula
   sha256 "5ba3e69b0867e00c3c765b499a5e836db791e3f2f5112f5684782eef5bab0218"
 
   bottle do
-    cellar :any
-    sha256 "90e36fc1e45c91a49e4b8cdf2491e635d0883192872f95e06a29493c45a361a2" => :el_capitan
-    sha256 "630d1aff9b2cde2e53eaba4b5589ed5948ae5af492a11bf95e479cffe44d013f" => :yosemite
-    sha256 "1084f2351cb2724d2e66b07839e9df5a6cdd3eae8fd6a6cf22ee850a1500f9db" => :mavericks
+    cellar :any_skip_relocation
+    sha256 "fe665d9ff99da2a40531106ad78cbe9ac41bfeacc17822280960aa86eea23a01" => :el_capitan
+    sha256 "e1cefe27d4eaa65a42578d0872b6936bb0670d03f013e790da4dbda27449c6b1" => :yosemite
+    sha256 "333a3699765ced173ece8d9f355d9cba8b9007de4a67c5dacb88511ec3bc7774" => :mavericks
   end
 
   depends_on :java => "1.8+"
