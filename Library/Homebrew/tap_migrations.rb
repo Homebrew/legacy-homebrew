@@ -81,7 +81,6 @@ TAP_MIGRATIONS = {
   "gitfs" => "homebrew/fuse",
   "gkrellm" => "homebrew/boneyard",
   "gle" => "homebrew/x11",
-  "gnumeric" => "homebrew/x11",
   "gnunet" => "homebrew/boneyard",
   "gobby" => "homebrew/x11",
   "googlecl" => "homebrew/boneyard",
