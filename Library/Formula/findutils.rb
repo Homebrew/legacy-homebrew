@@ -1,9 +1,9 @@
 class Findutils < Formula
   desc "Collection of GNU find, xargs, and locate"
   homepage "https://www.gnu.org/software/findutils/"
-  url "http://ftpmirror.gnu.org/findutils/findutils-4.4.2.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/findutils/findutils-4.4.2.tar.gz"
-  sha256 "434f32d171cbc0a5e72cfc5372c6fc4cb0e681f8dce566a0de5b6fccd702b62a"
+  url "http://ftpmirror.gnu.org/findutils/findutils-4.6.0.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/findutils/findutils-4.6.0.tar.gz"
+  sha256 "ded4c9f73731cd48fec3b6bdaccce896473b6d8e337e9612e16cf1431bb1169d"
 
   bottle do
     revision 2
@@ -27,22 +27,35 @@ class Findutils < Formula
       ENV["gl_cv_func_getcwd_abort_bug"] = "no"
     end
 
-    args = ["--prefix=#{prefix}",
-            "--localstatedir=#{var}/locate",
-            "--disable-dependency-tracking",
-            "--disable-debug",
-           ]
+    args = %W[
+      --prefix=#{prefix}
+      --localstatedir=#{var}/locate
+      --disable-dependency-tracking
+      --disable-debug
+    ]
     args << "--program-prefix=g" if build.without? "default-names"
 
     system "./configure", *args
     system "make", "install"
+
+    # https://savannah.gnu.org/bugs/index.php?46846
+    # https://github.com/Homebrew/homebrew/issues/47791
+    updatedb = (build.with?("default-names") ? "updatedb" : "gupdatedb")
+    (libexec/"bin").install bin/"#{updatedb}"
+    (bin/updatedb).write <<-EOS.undent
+      #!/bin/sh
+      export LC_ALL='C'
+      exec "#{libexec}/bin/#{updatedb}" "$@"
+    EOS
+  end
+
+  def post_install
+    (var/"locate").mkpath
   end
 
   test do
-    if build.with? "default-names"
-      system "#{bin}/find", "."
-    else
-      system "#{bin}/gfind", "."
-    end
+    find = (build.with?("default-names") ? "find" : "gfind")
+    touch "HOMEBREW"
+    assert_match "HOMEBREW", shell_output("#{bin}/#{find} .")
   end
 end
