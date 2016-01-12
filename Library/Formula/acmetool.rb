@@ -8,9 +8,6 @@ class Acmetool < Formula
 
   depends_on "go" => :build
 
-  ###### Generated with homebrew-go-resources ######
-  # homebrew-go-resources github.com/hlandau/acme/cmd/acmetool
-
   go_resource "github.com/alecthomas/template" do
     url "https://github.com/alecthomas/template.git",
       :revision => "14fd436dd20c3cc65242a9f396b61bfc8a3926fc"
@@ -120,8 +117,6 @@ class Acmetool < Formula
     url "https://gopkg.in/yaml.v2.git",
       :revision => "53feefa2559fb8dfa8d81baad31be332c97d6c77"
   end
-
-  ################################################
 
   def install
     ENV["GOBIN"] = bin
