@@ -11,6 +11,7 @@ class Mvnvm < Formula
 
   def install
     bin.install "mvn"
+    bin.install "mvnDebug"
     bin.env_script_all_files(libexec/"bin", Language::Java.overridable_java_home_env("1.7+"))
   end
 
