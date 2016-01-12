@@ -4,8 +4,8 @@ class Ipfs < Formula
   desc "IPFS is The Permanent Web - A new peer-to-peer hypermedia protocol"
   homepage "https://ipfs.io/"
   url "https://github.com/ipfs/go-ipfs.git",
-    :tag => "v0.3.10",
-    :revision => "f9dc4c726b770199f4ee64d97775d5fe8122814e"
+    :tag => "v0.3.11",
+    :revision => "b7d35e3af596bd2241a9633f3c11080f01b9b494"
   head "https://github.com/ipfs/go-ipfs.git"
 
   bottle do
