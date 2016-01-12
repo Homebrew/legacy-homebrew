@@ -6,10 +6,10 @@ class Findutils < Formula
   sha256 "ded4c9f73731cd48fec3b6bdaccce896473b6d8e337e9612e16cf1431bb1169d"
 
   bottle do
-    revision 2
-    sha256 "217c0203656216f069d5bf5487107b9e72824650b090af84694fdd22e001cd28" => :el_capitan
-    sha256 "80643a96a454d2ef125a56d3b650ed2331d1a5e6c7f93f442018120519ca2399" => :yosemite
-    sha256 "4100412c363ca3964785fe10b74c06ddb3bf7ce0557ad61c915d35833118fd24" => :mavericks
+    cellar :any_skip_relocation
+    sha256 "e6120861e27d3fabc684f47a848269b959c8353b071bcacca2cb21298abae543" => :el_capitan
+    sha256 "3f6ba384bb5f22e14c5474f21940154a289d075c3aac4e8299d8dc9112ac87c3" => :yosemite
+    sha256 "2869b60125ff5b945131d2654f5245967d5887d8f1003bccb02270369ad8550c" => :mavericks
   end
 
   deprecated_option "default-names" => "with-default-names"
