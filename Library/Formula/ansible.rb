@@ -30,8 +30,8 @@ class Ansible < Formula
   end
 
   resource "paramiko" do
-    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.15.2.tar.gz"
-    sha256 "4f56a671a3eecbb76e6143e6e4ca007d503a39aa79aa9e14ade667fa53fd6e55"
+    url "https://pypi.python.org/packages/source/p/paramiko/paramiko-1.16.0.tar.gz"
+    sha256 "3297ebd3cd072f573772f7c7426939a443c62c458d54bb632ff30fd6ecf96892"
   end
 
   resource "pycrypto" do
