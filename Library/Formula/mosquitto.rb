@@ -1,8 +1,8 @@
 class Mosquitto < Formula
   desc "Message broker implementing MQ telemetry transport protocol"
   homepage "https://mosquitto.org/"
-  url "https://mosquitto.org/files/source/mosquitto-1.4.5.tar.gz"
-  sha256 "b432e19fee0c549f4a0fb0e866d1b6a897b38dbf1ddfda92bb43e2a24f01df66"
+  url "https://mosquitto.org/files/source/mosquitto-1.4.7.tar.gz"
+  sha256 "71a1cb37893403e00b7db85c5db4af50b40d055ce61e5d21092c2594f2023b8b"
 
   bottle do
     revision 1
@@ -23,8 +23,9 @@ class Mosquitto < Formula
 
     system "cmake", ".", *args
     system "make", "install"
+  end
 
-    # Create the working directory
+  def post_install
     (var/"mosquitto").mkpath
   end
 
