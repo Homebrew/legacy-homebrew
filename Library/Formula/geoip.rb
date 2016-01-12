@@ -8,9 +8,9 @@ class Geoip < Formula
 
   bottle do
     cellar :any
-    sha256 "5007ba7a919e80d07e574d7e3d6b386b9961cbe048a00cdca83d98eb14e4678b" => :el_capitan
-    sha256 "2969446d080958c831a017fc5343a126cdd76fde9695cfd012733f8ba4e84aaa" => :yosemite
-    sha256 "c17cecf7bc7064fe2bbb30168824f6383314668def98b325b16830cca29eeb1a" => :mavericks
+    sha256 "dc7c79eef8500456198b3ba981c13498c049b2f8c4398fe885534c386dfbf283" => :el_capitan
+    sha256 "0525ae799027334cafb551a349c7837c8b17853660797dff430b035ca0eedc65" => :yosemite
+    sha256 "5ee66187d1b4510fd463ebb8bf360c2d78a4252467a0e10e905a2a3502f9bcaa" => :mavericks
   end
 
   depends_on "geoipupdate" => :optional
