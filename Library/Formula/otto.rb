@@ -11,9 +11,9 @@ class Otto < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d5cd70b1a6a9c90e6a71169d09ddd9889ee67a9f1b6ee087dc4f8aa43bef3997" => :el_capitan
-    sha256 "e4b30c4da6a208a435ee3c423832582660a41f12faefdc2c90bda6f554b96293" => :yosemite
-    sha256 "c0833235419c696f236157fa9540f8056ca2d64aa7e59db715535aec13108c03" => :mavericks
+    sha256 "7b5ba7dcc5320554e6597289e639470b0de06059f0d47cb6039e96476869d8c1" => :el_capitan
+    sha256 "64c858f546c5e0aae92e3808c1fec3921e754c3c0a1e64a534d5d0bf35defd51" => :yosemite
+    sha256 "1d58e25bbbc32a45e3e18c59c077eeebade29c6bde91546ce7d82ac4ddf4123d" => :mavericks
   end
 
   depends_on "go" => :build
