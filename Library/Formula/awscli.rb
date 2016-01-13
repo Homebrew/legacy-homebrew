@@ -1,9 +1,9 @@
 class Awscli < Formula
   desc "Official Amazon AWS command-line interface"
   homepage "https://aws.amazon.com/cli/"
-  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.9.17.tar.gz"
-  mirror "https://github.com/aws/aws-cli/archive/1.9.17.tar.gz"
-  sha256 "5144b7bf73e39a5c556e84493bd4556f8081dcd2d206bfa083a7e04b379647da"
+  url "https://pypi.python.org/packages/source/a/awscli/awscli-1.9.18.tar.gz"
+  mirror "https://github.com/aws/aws-cli/archive/1.9.18.tar.gz"
+  sha256 "c33a8bb77cc305dead1f45cac8c2be618546bd3b4dd5f1e6be093432977c5b23"
 
   bottle do
     cellar :any_skip_relocation
@@ -39,8 +39,8 @@ class Awscli < Formula
   end
 
   resource "colorama" do
-    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.5.tar.gz"
-    sha256 "0880a751afcb111881b437a846a93e540c7e1346030ba7bd7fda03434371fbc3"
+    url "https://pypi.python.org/packages/source/c/colorama/colorama-0.3.6.tar.gz"
+    sha256 "ec9efcccb086a1d727876384f94ee6358d2f3f096688c1ba18b0f318f2b453b5"
   end
 
   resource "jmespath" do
@@ -49,8 +49,8 @@ class Awscli < Formula
   end
 
   resource "botocore" do
-    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.17.tar.gz"
-    sha256 "1ca85c5ebe0beed7b54fc47de81d3f39c6bb907951fe6db6a38185de63db7723"
+    url "https://pypi.python.org/packages/source/b/botocore/botocore-1.3.18.tar.gz"
+    sha256 "6a21bbf3a569fd32ae9b672e6732462ac0f75a4bc8b21f051d367a5f79521211"
   end
 
   resource "docutils" do
