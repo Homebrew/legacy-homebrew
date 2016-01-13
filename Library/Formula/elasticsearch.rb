@@ -89,7 +89,7 @@ class Elasticsearch < Formula
       <plist version="1.0">
         <dict>
           <key>KeepAlive</key>
-          <true/>
+          <false/>
           <key>Label</key>
           <string>#{plist_name}</string>
           <key>ProgramArguments</key>
