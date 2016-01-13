@@ -41,6 +41,10 @@ class Groonga < Formula
     depends_on "zeromq"
   end
 
+  link_overwrite "lib/groonga/plugins/normalizers/"
+  link_overwrite "share/doc/groonga-normalizer-mysql/"
+  link_overwrite "lib/pkgconfig/groonga-normalizer-mysql.pc"
+
   def install
     args = %W[
       --prefix=#{prefix}
