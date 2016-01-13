@@ -3,6 +3,7 @@ class Upscaledb < Formula
   homepage "http://upscaledb.com/"
   url "http://files.upscaledb.com/dl/upscaledb-2.1.12.tar.gz"
   sha256 "f68c7e7b8f5aaf41ab47d60e351db35506f96ebf8be2ad695a0d8a12035001df"
+  revision 1
 
   bottle do
     cellar :any

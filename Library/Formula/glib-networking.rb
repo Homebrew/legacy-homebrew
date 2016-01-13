@@ -3,6 +3,7 @@ class GlibNetworking < Formula
   homepage "https://launchpad.net/glib-networking"
   url "https://download.gnome.org/sources/glib-networking/2.46/glib-networking-2.46.1.tar.xz"
   sha256 "d5034214217f705891b6c9e719cc2c583c870bfcfdc454ebbb5e5e8940ac90b1"
+  revision 1
 
   bottle do
     cellar :any

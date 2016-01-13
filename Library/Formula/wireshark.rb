@@ -4,6 +4,7 @@ class Wireshark < Formula
   url "https://www.wireshark.org/download/src/all-versions/wireshark-2.0.1.tar.bz2"
   mirror "https://1.eu.dl.wireshark.org/src/wireshark-2.0.1.tar.bz2"
   sha256 "c9bd07dd0d0045d6ca7537390a1afbcdf33716d193ea7d7084ae4f6c30b683ab"
+  revision 1
 
   bottle do
     sha256 "adaeb1341d1292d42895c05425c16ae247dd8ebf7e2e5636cc4a95a54631f424" => :el_capitan

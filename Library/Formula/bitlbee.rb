@@ -3,6 +3,8 @@ class Bitlbee < Formula
   homepage "https://www.bitlbee.org/"
   url "https://get.bitlbee.org/src/bitlbee-3.4.1.tar.gz"
   sha256 "500a0b19943040d67458eb3beb0a63d004abb2aa54a777addeb2a895d4f5c0e1"
+  revision 1
+
   head "https://github.com/bitlbee/bitlbee.git"
 
   bottle do
