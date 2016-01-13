@@ -6,6 +6,12 @@ class Acmetool < Formula
   url "https://github.com/hlandau/acme/archive/v0.0.34.tar.gz"
   sha256 "f6f4ea05d1852a1a554cc03c6305108bf16ddba52e31a90bb2e6bc3ab59c2f80"
 
+  bottle do
+    sha256 "6531a136b110aa18a8c2f3a7995cdb7f04da2547f006550f74ce88a20b9758d0" => :el_capitan
+    sha256 "db165546369cb19e45d4a2f5bcd1c0e6a0f7d1368736e7eb875b7d51cd36cc57" => :yosemite
+    sha256 "05a0ce73435a565e22daf045094673b889ee2a103920da9b2c391d79229b7cac" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/alecthomas/template" do
