@@ -1,8 +1,8 @@
 class Sshuttle < Formula
   desc "Proxy server that works as a poor man's VPN"
   homepage "https://github.com/sshuttle/sshuttle"
-  url "https://github.com/sshuttle/sshuttle/archive/v0.73.tar.gz"
-  sha256 "d78a6aa76f93ab69fd9685ce11b428a9b549c049a6c0104740c06c9b354a5ae3"
+  url "https://github.com/sshuttle/sshuttle/archive/v0.75.tar.gz"
+  sha256 "63714287d8f9128eefafe4e1b9fc9c8367490f9d074a2b2ff2f555c46ff794b2"
   head "https://github.com/sshuttle/sshuttle.git"
 
   bottle :unneeded
