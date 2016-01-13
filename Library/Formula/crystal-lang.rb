@@ -1,8 +1,8 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/manastech/crystal/archive/0.10.1.tar.gz"
-  sha256 "f567866ea4cf7d0ca1356806f4871c964eca939ddcd93796ecc0e3f3889cd7f3"
+  url "https://github.com/manastech/crystal/archive/0.10.2.tar.gz"
+  sha256 "05e1af0c50438c33f2912598eac684a12b1c7193e16a19f9870de50552cede5b"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
