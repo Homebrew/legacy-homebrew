@@ -201,6 +201,13 @@ class FormulaAuditor
       end
     end
     present.map!(&:last)
+    if present.include?("stable block")
+      %w[url checksum mirror].each do |component|
+        if present.include?(component)
+          problem "`#{component}` should be put inside `stable block`"
+        end
+      end
+    end
     if present.include?("head") && present.include?("head block")
       problem "Should not have both `head` and `head do`"
     end
