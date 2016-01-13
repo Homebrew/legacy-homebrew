@@ -3,7 +3,7 @@ class Lua < Formula
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
   sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
@@ -51,8 +51,8 @@ class Lua < Formula
   end
 
   resource "luarocks" do
-    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
-    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.3.0.tar.gz"
+    sha256 "68e38feeb66052e29ad1935a71b875194ed8b9c67c2223af5f4d4e3e2464ed97"
   end
 
   def install
