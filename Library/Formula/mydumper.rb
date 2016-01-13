@@ -6,9 +6,9 @@ class Mydumper < Formula
 
   bottle do
     cellar :any
-    sha256 "393d50cebae3861acafa2a3c7e91378f2dc8be87433da5abde2cbc3f5585b332" => :el_capitan
-    sha256 "0c03e9b4eca0f19a77a5f69992c61b88928346fe0b76896da47a76a3910b5e9b" => :yosemite
-    sha256 "a299235d0f0460bef8164ea5aea66eea25cff73adfb5319c08a9af61b53724cb" => :mavericks
+    sha256 "8dcd810f09fe2e8acaa447db3ed5557c7f15d49cb1f448b366d2bd9ab0bc13a1" => :el_capitan
+    sha256 "884224a200374ef892c40f844ef4f85bc33345a1ccd7387575deac52d2de8387" => :yosemite
+    sha256 "a2faa115d33c1029d49eb1dd684bc52b069d9df9bc6efb59bd21bd50cd8a4491" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"
