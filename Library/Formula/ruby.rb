@@ -51,7 +51,9 @@ class Ruby < Formula
     system "autoconf" if build.head?
 
     args = %W[
-      --prefix=#{prefix} --enable-shared --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-shared
+      --disable-silent-rules
       --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
       --with-vendordir=#{HOMEBREW_PREFIX}/lib/ruby/vendor_ruby
     ]
@@ -61,7 +63,7 @@ class Ruby < Formula
       args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
     end
 
-    args << "--program-suffix=23" if build.with? "suffix"
+    args << "--program-suffix=#{program_suffix}" if build.with? "suffix"
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
@@ -111,12 +113,22 @@ class Ruby < Formula
     config_file.write rubygems_config
 
     # Create the sitedir and vendordir that were skipped during install
-    mkdir_p `#{bin}/ruby -e 'require "rbconfig"; print RbConfig::CONFIG["sitearchdir"]'`
-    mkdir_p `#{bin}/ruby -e 'require "rbconfig"; print RbConfig::CONFIG["vendorarchdir"]'`
+    ruby="#{bin}/ruby#{program_suffix}"
+    %w[sitearchdir vendorarchdir].each do |dir|
+      mkdir_p `#{ruby} -rrbconfig -e 'print RbConfig::CONFIG["#{dir}"]'`
+    end
   end
 
   def abi_version
     "2.3.0"
+  end
+
+  def program_suffix
+    build.with?("suffix") ? "23" : ""
+  end
+
+  def rubygems_bindir
+    "#{HOMEBREW_PREFIX}/bin"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -174,18 +186,19 @@ class Ruby < Formula
       end
 
       def self.default_bindir
-        "#{HOMEBREW_PREFIX}/bin"
+        "#{rubygems_bindir}"
       end
 
       def self.ruby
-        "#{opt_bin}/ruby#{"23" if build.with? "suffix"}"
+        "#{opt_bin}/ruby#{program_suffix}"
       end
     end
     EOS
   end
 
   test do
-    output = shell_output("#{bin}/ruby -e \"puts 'hello'\"")
-    assert_match "hello\n", output
+    hello_text = shell_output("#{bin}/ruby#{program_suffix} -e 'puts :hello'")
+    assert_equal "hello\n", hello_text
+    system "#{bin}/gem#{program_suffix}", "list", "--local"
   end
 end
