@@ -81,7 +81,6 @@ TAP_MIGRATIONS = {
   "git-flow-clone" => "homebrew/boneyard",
   "git-latexdiff" => "homebrew/tex",
   "gitfs" => "homebrew/fuse",
-  "gkrellm" => "homebrew/boneyard",
   "glade" => "homebrew/x11",
   "gle" => "homebrew/x11",
   "gnumeric" => "homebrew/x11",
