@@ -3,6 +3,7 @@ class Pianod < Formula
   homepage "http://deviousfish.com/pianod/"
   url "http://deviousfish.com/Downloads/pianod/pianod-173.tar.gz"
   sha256 "d91a890561037ee3faf5d4d1d4de546c8ff8c828eced91eea6be026c4fcf16fd"
+  revision 1
 
   devel do
     url "http://deviousfish.com/Downloads/pianod/pianod-174.tar.gz"

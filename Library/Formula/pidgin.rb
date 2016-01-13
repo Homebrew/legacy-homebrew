@@ -3,6 +3,7 @@ class Pidgin < Formula
   homepage "https://pidgin.im/"
   url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.12/pidgin-2.10.12.tar.bz2"
   sha256 "2c7523f0fefe89749c03b2b738ab9f7bd186da435be4762f1487eee31e77ffdd"
+  revision 1
 
   bottle do
     sha256 "f7ac5aa4dc2c9e2ea50e6c5b4e9ca654fa8080427410a7b85d217a1ebd039546" => :el_capitan
