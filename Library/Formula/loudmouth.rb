@@ -3,6 +3,7 @@ class Loudmouth < Formula
   homepage "https://mcabber.com"
   url "https://mcabber.com/files/loudmouth/loudmouth-1.5.1.tar.bz2"
   sha256 "ffb493b085c1d40176ecbe1c478f05932f265e0e5ba93444b87d3cd076267939"
+  revision 1
 
   bottle do
     cellar :any

@@ -3,6 +3,7 @@ class Taskd < Formula
   homepage "https://taskwarrior.org/projects/show/taskwarrior"
   url "https://taskwarrior.org/download/taskd-1.1.0.tar.gz"
   sha256 "7b8488e687971ae56729ff4e2e5209ff8806cf8cd57718bfd7e521be130621b4"
+  revision 1
 
   head "https://git.tasktools.org/scm/tm/taskd.git"
 
