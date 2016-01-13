@@ -19,7 +19,7 @@ class Pinentry < Formula
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--disable-pinentry-qt4",
+                          "--disable-pinentry-qt",
                           "--disable-pinentry-gtk2",
                           "--disable-pinentry-gnome3"
     system "make", "install"
