@@ -769,7 +769,7 @@ Check if the formula you are updating is a dependency for any other formulae by 
 
 Homebrew wants to maintain a consistent Ruby style across all formulae based on [Ruby Style Guide](https://github.com/styleguide/ruby). Other formulae may not have been updated to match this guide yet but all new ones should. Also:
 
-* The order of methods in a formula should be consistent with other formulae (e.g.: `def patches` goes before `def install`)
+* The order of methods in a formula should be consistent with other formulae (e.g.: `def install` goes before `def post_install`)
 * An empty line is required before the `__END__` line
 
 # Troubleshooting for people writing new formulae
