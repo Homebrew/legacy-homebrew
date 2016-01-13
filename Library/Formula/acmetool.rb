@@ -130,9 +130,9 @@ class Acmetool < Formula
     # https://github.com/hlandau/acme/blob/master/_doc/PACKAGING-PATHS.md
     builddate = `date -u "+%Y%m%d%H%M%S"`.strip
     ldflags = <<-LDFLAGS
-        -X github.com/hlandau/acme/storage.RecommendedPath=#{var}/lib/acme
+        -X github.com/hlandau/acme/storage.RecommendedPath=#{var}/lib/acmetool
         -X github.com/hlandau/acme/notify.DefaultHookPath=#{lib}/hooks
-        -X github.com/hlandau/acme/responder.StandardWebrootPath=#{var}/run/acme/acme-challenge
+        -X github.com/hlandau/acme/responder.StandardWebrootPath=#{var}/run/acmetool/acme-challenge
         -X github.com/hlandau/degoutils/buildinfo.BuildInfo=v#{version}-#{builddate}-Homebrew
     LDFLAGS
 
@@ -147,5 +147,10 @@ class Acmetool < Formula
 
   test do
     system "#{bin}/acmetool", "help"
+  end
+
+  def post_install
+    (var/"lib/acmetool").mkpath
+    (var/"run/acmetool").mkpath
   end
 end
