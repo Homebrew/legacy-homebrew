@@ -8,9 +8,9 @@ class Dfmt < Formula
   head "https://github.com/Hackerpilot/dfmt.git", :shallow => false
 
   bottle do
-    sha256 "538c0e8888ba6192758525eeea3da9cea47d85f8e137485eebec0e29d949309b" => :el_capitan
-    sha256 "3ec2b8ed4813617fb871c8913e1deffd25496882e6106ff97ce9ea208099817d" => :yosemite
-    sha256 "98f64ee8ce26406649e9092da9a17d92628fae2afd056d7d8f65f499db19ce91" => :mavericks
+    sha256 "d8a2967609049e5804cffae5b980e63d36bc483125e8d174381e8c8d06641820" => :el_capitan
+    sha256 "15f60ab3dc90d0a55f87024bcb46eea6cee75a3ddc95f49bbaa69ba131ab8e01" => :yosemite
+    sha256 "e8824104b479775e9f164d137f3be4ba45a54b58e4358e59200efcf2eeae69cd" => :mavericks
   end
 
   depends_on "dmd" => :build
