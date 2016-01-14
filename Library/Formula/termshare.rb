@@ -10,9 +10,10 @@ class Termshare < Formula
   head "https://github.com/progrium/termshare.git"
 
   bottle do
-    sha256 "cdc5aa1875729ba51f995d7e658f4d800e2d50b4dd4d3dc166236b930b6931dc" => :mavericks
-    sha256 "c0d1f30479a2e629aa892b6e3be5b053c7855e387d93b430a6d09207d81edbab" => :mountain_lion
-    sha256 "fb308a82ab7b257b107e32d52930d8db05888a097ea9c33696287f56aafaaf9f" => :lion
+    cellar :any_skip_relocation
+    sha256 "d56c348b2700fb6abca76f2aa5f9414a3aed51a54176d6beeb5cc7d70ccaf9aa" => :el_capitan
+    sha256 "bf014af5e9a131d751e4b77b15dfbc4a77c4eeda2a05f51795878d04f90c04fb" => :yosemite
+    sha256 "fc339f6cc68ee5f9a712e26a59333dd7d74fa44a666395c9c433125979318f14" => :mavericks
   end
 
   depends_on "go" => :build
