@@ -7,9 +7,9 @@ class Uhd < Formula
   revision 2
 
   bottle do
-    sha256 "47de60fe5be8c80bc7d471ee782db3055a4b69b0677884a3dd24105097bed177" => :el_capitan
-    sha256 "3049b48a4c6539a05a9f79f90028e28c59649374869325d20b8c7fa5f88497ab" => :yosemite
-    sha256 "ca1ee5137565c4af4a50cda2ea9c7c8a7b854acb186612cb213eacf6ffd18bf4" => :mavericks
+    sha256 "a9219e143155d880befb4d46684a18838ad1671b5088372222ad67ff5c5c44cf" => :el_capitan
+    sha256 "ed9abd856281bcd07827a460f9f04b8cffa9dca31ed4eb360721bb833e15b7ec" => :yosemite
+    sha256 "7cc29536d0d8c679a9db0251cc0e08223de79e37bec368996abff5657fcea9b5" => :mavericks
   end
 
   option :universal
