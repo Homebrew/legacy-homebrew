@@ -48,6 +48,24 @@ class Keg
     lib.find { |pn| break pn if pn.to_s.end_with?(suffix) }
   end
 
+  def brewed_dylibs
+    return @brewed_dylibs if @brewed_dylibs
+    scan_dylibs
+    @brewed_dylibs
+  end
+
+  def system_dylibs
+    return @system_dylibs if @system_dylibs
+    scan_dylibs
+    @system_dylibs
+  end
+
+  def broken_dylibs
+    return @broken_dylibs if @broken_dylibs
+    scan_dylibs
+    @broken_dylibs
+  end
+
   private
 
   # Matches framework references like `XXX.framework/Versions/YYY/XXX` and
@@ -59,6 +77,26 @@ class Keg
       framework[1]
     else
       File.basename(bad_name)
+    end
+  end
+
+  def scan_dylibs
+    @brewed_dylibs = Hash.new { |h, k| h[k] = Set.new }
+    @system_dylibs = Set.new
+    @broken_dylibs = Set.new
+
+    mach_o_files.each do |file|
+      each_install_name_for(file) do |dylib|
+        begin
+          owner = Keg.for Pathname.new(dylib)
+        rescue NotAKegError
+          @system_dylibs << dylib
+        rescue Errno::ENOENT
+          @broken_dylibs << dylib
+        else
+          @brewed_dylibs[owner.name] << dylib
+        end
+      end
     end
   end
 end
