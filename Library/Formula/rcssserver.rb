@@ -5,12 +5,7 @@ class Rcssserver < Formula
   sha256 "329b3008689dac16d1f39ad8f5c8341aef283ef3750d137dcf299d1fbc30355a"
   revision 1
 
-  bottle do
-    revision 2
-    sha256 "979098bc6a12cfd6259e7d04dc46d56e066c1886d96e4d10900a151e8b635dd5" => :yosemite
-    sha256 "1658febeae0a35d422acc63cd8fef1282fd81811a3f2742d8b34000c5fc8ab07" => :mavericks
-    sha256 "a2560cd1527389c7312d71bede3ccd09eb6e037f42ceb79c41e9a030ed3b6b7e" => :mountain_lion
-  end
+  bottle :unneeded
 
   stable do
     resource "rcssmonitor" do
