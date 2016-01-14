@@ -5,6 +5,7 @@ class Vegeta < Formula
   homepage "https://github.com/tsenart/vegeta"
   url "https://github.com/tsenart/vegeta/archive/v6.0.0.tar.gz"
   sha256 "7933a77eaae1e5269f6490842527a646221d91515eb8e863e831df608e7a0d48"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
