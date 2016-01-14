@@ -50,7 +50,7 @@ class Rcssserver < Formula
 
     if build.head?
       # These inreplaces are artifacts of the upstream packaging process:
-      # http://sourceforge.net/p/sserver/discussion/76439/thread/bd3ad6e4
+      # https://sourceforge.net/p/sserver/discussion/76439/thread/bd3ad6e4
       inreplace "src/Makefile.am" do |s|
         s.gsub! "coach_lang_parser.h", "coach_lang_parser.hpp"
         s.gsub! "player_command_parser.h", "player_command_parser.hpp"
@@ -72,7 +72,7 @@ class Rcssserver < Formula
         # -framework Security-ldbus-1 -lz -ldbus-1
         # ld: framework not found Security-ldbus-1
         # Currently same error in both rcssmonitor & rcsslogplayer.
-        # DomT4: Mailed fairly-dead SF bug list on 14/01/16 but unpublished yet.
+        # https://sourceforge.net/p/sserver/mailman/message/34765272/
         inreplace "configure", "$QT4_REQUIRED_MODULES)$($PKG_CONFIG",
                                "$QT4_REQUIRED_MODULES) $($PKG_CONFIG"
 
