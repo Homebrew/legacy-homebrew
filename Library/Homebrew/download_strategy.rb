@@ -26,6 +26,12 @@ class AbstractDownloadStrategy
   def cached_location
   end
 
+  # @!attribute [r]
+  # return most recent modified time for all files in the current working directory after stage.
+  def source_modified_time
+    Pathname.pwd.to_enum(:find).select(&:file?).map(&:mtime).max
+  end
+
   # Remove {#cached_location} and any other files associated with the resource
   # from the cache.
   def clear_cache
@@ -553,6 +559,10 @@ class GitDownloadStrategy < VCSDownloadStrategy
   def stage
     super
     cp_r File.join(cached_location, "."), Dir.pwd
+  end
+
+  def source_modified_time
+    Time.parse Utils.popen_read("git", "--git-dir", git_dir, "show", "-s", "--format=%cD")
   end
 
   private
