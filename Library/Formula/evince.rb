@@ -3,6 +3,7 @@ class Evince < Formula
   homepage "https://wiki.gnome.org/Apps/Evince"
   url "https://download.gnome.org/sources/evince/3.18/evince-3.18.2.tar.xz"
   sha256 "42ad6c7354d881a9ecab136ea84ff867acb942605bcfac48b6c12e1c2d8ecb17"
+  revision 1
 
   bottle do
     sha256 "a887a9eef887273b34e84a0c003a5d37a9a6f3464afa8bd32638fe00cc36c2b3" => :el_capitan
@@ -21,6 +22,7 @@ class Evince < Formula
   depends_on "libsecret"
   depends_on "libspectre"
   depends_on "gobject-introspection"
+  depends_on "shared-mime-info"
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
@@ -43,6 +45,7 @@ class Evince < Formula
   def post_install
     system "#{Formula["glib"].opt_bin}/glib-compile-schemas", "#{HOMEBREW_PREFIX}/share/glib-2.0/schemas"
     system "#{Formula["gtk+3"].opt_bin}/gtk3-update-icon-cache", "-f", "-t", "#{HOMEBREW_PREFIX}/share/icons/hicolor"
+    system "#{Formula["shared-mime-info"].opt_bin}/update-mime-database", "#{HOMEBREW_PREFIX}/share/mime"
   end
 
   test do
