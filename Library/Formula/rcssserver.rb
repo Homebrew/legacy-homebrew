@@ -35,11 +35,11 @@ class Rcssserver < Formula
       url "svn://svn.code.sf.net/p/sserver/code/rcss/trunk/rcsslogplayer"
     end
 
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
   end
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "flex" => :build
   depends_on "pkg-config" => :build
   depends_on "boost"
@@ -67,7 +67,31 @@ class Rcssserver < Formula
 
     resources.each do |r|
       r.stage do
-        system "./bootstrap" if build.head?
+        Patch.create(:p1, <<EOD).apply
+diff --git a/m4/qt.m4 b/m4/qt.m4
+index 26ca1ab..57dd70d 100644
+--- a/m4/qt.m4
++++ b/m4/qt.m4
+@@ -68,7 +68,7 @@ AC_DEFUN([AX_QT3],
+   QT3_CXXFLAGS="$QT3_CFLAGS"
+   QT3_CPPFLAGS=""
+   QT3_LDFLAGS=$($PKG_CONFIG --libs-only-L qt-mt)
+-  QT3_LDADD="$($PKG_CONFIG --libs-only-other qt-mt)$($PKG_CONFIG --libs-only-l qt-mt)"
++  QT3_LDADD="$($PKG_CONFIG --libs-only-other qt-mt) $($PKG_CONFIG --libs-only-l qt-mt)"
+   AC_MSG_NOTICE([set QT3_CXXFLAGS... $QT3_CXXFLAGS])
+   AC_MSG_NOTICE([set QT3_LDFLAGS... $QT3_LDFLAGS])
+   AC_MSG_NOTICE([set QT3_LDADD... $QT3_LDADD])
+@@ -140,7 +140,7 @@ AC_DEFUN([AX_QT4],
+   QT4_CXXFLAGS="$QT4_CFLAGS"
+   QT4_CPPFLAGS=""
+   QT4_LDFLAGS=$($PKG_CONFIG --static --libs-only-L $QT4_REQUIRED_MODULES)
+-  QT4_LDADD="$($PKG_CONFIG --static --libs-only-other $QT4_REQUIRED_MODULES)$($PKG_CONFIG --static --libs-only-l $QT4_REQUIRED_MODULES)"
++  QT4_LDADD="$($PKG_CONFIG --static --libs-only-other $QT4_REQUIRED_MODULES) $($PKG_CONFIG --static --libs-only-l $QT4_REQUIRED_MODULES)"
+   AC_MSG_NOTICE([set QT4_CXXFLAGS... $QT4_CXXFLAGS])
+   AC_MSG_NOTICE([set QT4_LDFLAGS... $QT4_LDFLAGS])
+   AC_MSG_NOTICE([set QT4_LDADD... $QT4_LDADD])
+EOD
+        system "autoreconf", "-i", "-f"
         system "./configure", "--prefix=#{prefix}"
         system "make", "install"
       end
