@@ -8,7 +8,7 @@ require "version"
 class Resource
   include FileUtils
 
-  attr_reader :mirrors, :specs, :using
+  attr_reader :mirrors, :specs, :using, :source_modified_time
   attr_writer :version
   attr_accessor :download_strategy, :checksum
 
@@ -87,6 +87,7 @@ class Resource
   def unpack(target = nil)
     mktemp(download_name) do
       downloader.stage
+      @source_modified_time = downloader.source_modified_time
       if block_given?
         yield self
       elsif target
