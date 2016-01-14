@@ -14,6 +14,12 @@ class Gkrellm < Formula
       sha256 "d005e7ad9b4c46d4930ccb4391481716b72c9a68454b8d8f4dfd2b597bfd77cc"
     end
   end
+  bottle do
+    sha256 "1b33628604f2b3577d020a32ddf61af1dd4ae3cf7f52fc62617ea2a842e4d842" => :el_capitan
+    sha256 "64e1bf668b44b8a056d3f07d0644012f5778b42654d1d656bcba595f640786c7" => :yosemite
+    sha256 "f4ff4fc7fecd7ec1c057a329789546e7533c6fee7bf59b19901027c777ad9395" => :mavericks
+  end
+
 
   depends_on "pkg-config" => :build
   depends_on "atk"
