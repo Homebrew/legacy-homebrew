@@ -8,10 +8,10 @@ class SyncGateway < Formula
   head "https://github.com/couchbase/sync_gateway.git"
 
   bottle do
-    cellar :any
-    sha256 "bcdb6482c2e6c484d930ffe5e5e35b2cc8aeeb10606bfc520f9e0c2b6bbb6ddb" => :yosemite
-    sha256 "01123f7a5c82bbc6d2e11094416a8ac63fd0b8c0575e7b942f5cf2cc8bb50495" => :mavericks
-    sha256 "7eac953de233b84b5b28e16cf5baab41ae3c4acc5c54e1f1abb0c5aa4c2117f6" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "20d6523b8f7ded2362a4df137757cbb31b4b6bb95b3edb4a62533a85e23aee27" => :el_capitan
+    sha256 "e8c8d9601402296641338ae1349f6e4b9f20477c5c0ddacffcfec7c4d40e48c7" => :yosemite
+    sha256 "1ac9b9e256e74a9732a1c5a28aaf78fd6c9e843f831910ffeab7ca6ee9805259" => :mavericks
   end
 
   depends_on "go" => :build
