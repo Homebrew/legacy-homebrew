@@ -51,7 +51,7 @@ class Go < Formula
     # This should happen after we build the test Go, just in case
     # the bootstrap toolchain is aware of this variable too.
     ENV["GOROOT_BOOTSTRAP"] = ENV["GOROOT_FINAL"]
-b
+
     cd "src" do
       ENV["GOROOT_FINAL"] = libexec
       ENV["GOOS"]         = "darwin"
