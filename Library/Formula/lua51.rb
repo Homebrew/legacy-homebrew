@@ -4,9 +4,9 @@ class Lua51 < Formula
   desc "Powerful, lightweight programming language (v5.1.5)"
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.1.5.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5.orig.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/l/lua5.1/lua5.1_5.1.5.orig.tar.gz"
   sha256 "2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333"
-  revision 2
+  revision 3
 
   bottle do
     cellar :any
@@ -49,8 +49,8 @@ class Lua51 < Formula
   end
 
   resource "luarocks" do
-    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
-    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.3.0.tar.gz"
+    sha256 "68e38feeb66052e29ad1935a71b875194ed8b9c67c2223af5f4d4e3e2464ed97"
   end
 
   def install
