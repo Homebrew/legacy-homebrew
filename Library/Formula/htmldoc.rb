@@ -16,6 +16,7 @@ class Htmldoc < Formula
 
   def install
     system "./configure", "--disable-debug",
+                          "--disable-ssl",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
     system "make"
