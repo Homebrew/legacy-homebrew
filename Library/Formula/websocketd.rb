@@ -5,6 +5,7 @@ class Websocketd < Formula
   homepage "http://websocketd.com"
   url "https://github.com/joewalnes/websocketd/archive/v0.2.11.tar.gz"
   sha256 "b67a07248cd8675344e4a8553b1ea6434d6789a3990aafe5ecb98d5210f85071"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
