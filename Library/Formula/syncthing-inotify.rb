@@ -5,6 +5,7 @@ class SyncthingInotify < Formula
   homepage "https://github.com/syncthing/syncthing-inotify"
   url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.7.tar.gz"
   sha256 "33f51b34906548fe69b4aab2dbbb24397b523b357d4c9137324c1fddda9022b0"
+  revision 1
 
   head "https://github.com/syncthing/syncthing-inotify.git"
 
@@ -19,12 +20,12 @@ class SyncthingInotify < Formula
 
   go_resource "github.com/cenkalti/backoff" do
     url "https://github.com/cenkalti/backoff.git",
-      :revision => "4dc77674aceaabba2c7e3da25d4c823edfb73f99" # not sure !
+      :revision => "4dc77674aceaabba2c7e3da25d4c823edfb73f99"
   end
 
   go_resource "github.com/zillode/notify" do
     url "https://github.com/Zillode/notify.git",
-      :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"   # not sure !
+      :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"
   end
 
   def install
