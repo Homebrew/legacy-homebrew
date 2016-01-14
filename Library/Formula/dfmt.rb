@@ -3,7 +3,7 @@ class Dfmt < Formula
   homepage "https://github.com/Hackerpilot/dfmt"
   url "https://github.com/Hackerpilot/dfmt.git",
       :tag => "v0.4.2",
-      :revision => "6a8826b3798ac50028d4abc11164d1f067e720de"
+      :revision => "0d041834db4d66bdcf9383a8ab600fdbf2a6e8ad"
 
   head "https://github.com/Hackerpilot/dfmt.git", :shallow => false
 
