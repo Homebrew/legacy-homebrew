@@ -7,10 +7,9 @@ class BoostPython < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "4b16817f7f19f1b4ee2ffc4e0fc4593a5d404ddad2703f3be688ab6498f24f3e" => :el_capitan
-    sha256 "df627b338b9b42510eb5670d6e65856164d11714cfd436a19fd36c7ba0775259" => :yosemite
-    sha256 "2f5a292bddc892d6660179dab8b67261b3db93311f2a4b230256da5010f5c5d3" => :mavericks
+    sha256 "c3d8a80d9bb7783ef7e8b3018ed5feaaa8d1f32a306ba4b75bd3a45629f57872" => :el_capitan
+    sha256 "37e1c31ebae10162368b496fbe377b3b36fa007d1dbf14325686df717c6ce339" => :yosemite
+    sha256 "aaba8bc94797a6f4d79ad7b07c8abc23fd915aa6699eb7a6948aa189cc8e6d78" => :mavericks
   end
 
   option :universal
