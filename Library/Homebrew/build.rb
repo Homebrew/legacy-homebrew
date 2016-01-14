@@ -130,7 +130,7 @@ class Build
         formula.install
 
         stdlibs = detect_stdlibs(ENV.compiler)
-        Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
+        Tab.create(formula, ENV.compiler, stdlibs.first, formula.build, formula.source_modified_time).write
 
         # Find and link metafiles
         formula.prefix.install_metafiles Pathname.pwd
