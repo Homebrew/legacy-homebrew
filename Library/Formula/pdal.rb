@@ -7,9 +7,9 @@ class Pdal < Formula
   revision 2
 
   bottle do
-    sha256 "67a6dc161a09be18f5b71aee0b80a193edd5be777a2cb328d4e0766fc998b715" => :el_capitan
-    sha256 "1e9aa94323e5d9d26e02864a19b65b2649b695eb02df13516b8ec48606e09377" => :yosemite
-    sha256 "dce59dfd293f2bea47b95141f64b6196f1f8db8b4c1e74443de61b2c142ed9f4" => :mavericks
+    sha256 "84c4c25aaffc330d2f994b4f7aafd28d5d5a4f727eb354a84bfbd5313c04155a" => :el_capitan
+    sha256 "90b00596d80412ea55f292a3b0d030eb7e4eb2136edaea5fabf7b4e80d7617aa" => :yosemite
+    sha256 "7e8273951749b40d90029d152f70a708876879c3a1f8fd2cdc46308a59c2b4e2" => :mavericks
   end
 
   depends_on "cmake" => :build
