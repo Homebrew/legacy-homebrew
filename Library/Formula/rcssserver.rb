@@ -1,13 +1,12 @@
 class Rcssserver < Formula
   desc "Server for RoboCup Soccer Simulator"
   homepage "http://sserver.sourceforge.net/"
-  url "https://downloads.sourceforge.net/sserver/rcssserver/15.2.2/rcssserver-15.2.2.tar.gz"
-  sha256 "329b3008689dac16d1f39ad8f5c8341aef283ef3750d137dcf299d1fbc30355a"
-  revision 2
-
-  bottle :unneeded
+  revision 3
 
   stable do
+    url "https://downloads.sourceforge.net/sserver/rcssserver/15.2.2/rcssserver-15.2.2.tar.gz"
+    sha256 "329b3008689dac16d1f39ad8f5c8341aef283ef3750d137dcf299d1fbc30355a"
+
     resource "rcssmonitor" do
       url "https://downloads.sourceforge.net/sserver/rcssmonitor/15.1.1/rcssmonitor-15.1.1.tar.gz"
       sha256 "51f85f65cd147f5a9018a6a2af117fc45358eb2989399343eaadd09f2184ee41"
@@ -62,6 +61,15 @@ class Rcssserver < Formula
 
     resources.each do |r|
       r.stage do
+        # This line being glued together means unrelated libraries
+        # are joined and cause a fatal linking error build compile.
+        # -framework Security-ldbus-1 -lz -ldbus-1
+        # ld: framework not found Security-ldbus-1
+        # Currently same error in both rcssmonitor & rcsslogplayer.
+        # DomT4: Mailed fairly-dead SF bug list on 14/01/16 but unpublished yet.
+        inreplace "configure", "$QT4_REQUIRED_MODULES)$($PKG_CONFIG",
+                               "$QT4_REQUIRED_MODULES) $($PKG_CONFIG"
+
         system "./bootstrap" if build.head?
         system "./configure", "--prefix=#{prefix}"
         system "make", "install"
