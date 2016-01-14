@@ -7,9 +7,9 @@ class Ledger < Formula
   revision 1
 
   bottle do
-    sha256 "4aac92ddbafe1a02011bb69b1d57520e1fe566c08655a27111a7803a104fdde6" => :el_capitan
-    sha256 "180562ab8b2a7c15e69d38c07a98225dbdeaef276497881327d9ecaac035c56d" => :yosemite
-    sha256 "7c71238e63bf20270cfebd9371266fd418dd61a244896735012aef94ed080b46" => :mavericks
+    sha256 "a009cd705baad8407ccc6b56a3acecda01160f0eb27c7554ca30e6faec236c01" => :el_capitan
+    sha256 "073b143a8bb57cd4af2910f68869930232913b521e7f7d59446e350e306b2e5f" => :yosemite
+    sha256 "b56d36146f09a1e9b7c23511ca7075d2d8b0760b5171aedad17a3e4cca51cef7" => :mavericks
   end
 
   deprecated_option "debug" => "with-debug"
