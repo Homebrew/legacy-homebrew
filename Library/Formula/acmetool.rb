@@ -5,6 +5,7 @@ class Acmetool < Formula
   homepage "https://github.com/hlandau/acme"
   url "https://github.com/hlandau/acme/archive/v0.0.34.tar.gz"
   sha256 "f6f4ea05d1852a1a554cc03c6305108bf16ddba52e31a90bb2e6bc3ab59c2f80"
+  revision 1
 
   bottle do
     sha256 "6531a136b110aa18a8c2f3a7995cdb7f04da2547f006550f74ce88a20b9758d0" => :el_capitan
