@@ -5,6 +5,8 @@ class Vultr < Formula
   homepage "https://jamesclonk.github.io/vultr"
   url "https://github.com/JamesClonk/vultr/archive/v1.5.tar.gz"
   sha256 "ca373d2748268b822e4ad5aeeb4ee8150f8c55c2d761e6c2c8913657469dcca5"
+  revision 1
+
   head "https://github.com/JamesClonk/vultr.git"
 
   bottle do
