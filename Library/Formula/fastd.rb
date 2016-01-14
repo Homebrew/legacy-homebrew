@@ -15,9 +15,9 @@ class Fastd < Formula
   def install
     mkdir "fastd-build" do
       if build.with? "openssl"
-        system "cmake", "-DENABLE_LTO=ON -DENABLE_OPENSSL=ON", *std_cmake_args, ".."
+        system "cmake", *std_cmake_args, "-DENABLE_LTO=ON",  "-DENABLE_OPENSSL=ON", ".."
       else
-        system "cmake", "-DENABLE_LTO=ON", *std_cmake_args, ".."
+        system "cmake", *std_cmake_args, "-DENABLE_LTO=ON", ".."
       end
       system "make"
       system "make", "install"
