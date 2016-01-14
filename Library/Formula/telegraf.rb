@@ -5,6 +5,7 @@ class Telegraf < Formula
   homepage "https://influxdb.com"
   url "https://github.com/influxdb/telegraf/archive/v0.2.4.tar.gz"
   sha256 "5cea3a3133822d40e33fafb1f3c91036d1b8ec3a02d920fd4990a92774112179"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -259,7 +260,6 @@ class Telegraf < Formula
     url "https://gopkg.in/yaml.v2.git",
     :revision => "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
   end
-
 
   def install
     ENV["GOPATH"] = buildpath
