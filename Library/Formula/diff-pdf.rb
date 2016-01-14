@@ -3,7 +3,7 @@ class DiffPdf < Formula
   homepage "https://vslavik.github.io/diff-pdf/"
   url "https://github.com/vslavik/diff-pdf/archive/v0.2.tar.gz"
   sha256 "cb90f2e0fd4bc3fe235111f982bc20455a1d6bc13f4219babcba6bd60c1fe466"
-  revision 6
+  revision 7
 
   bottle do
     cellar :any
