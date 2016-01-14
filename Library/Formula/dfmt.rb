@@ -2,8 +2,8 @@ class Dfmt < Formula
   desc "Formatter for D source code"
   homepage "https://github.com/Hackerpilot/dfmt"
   url "https://github.com/Hackerpilot/dfmt.git",
-      :tag => "v0.4.1",
-      :revision => "5ce683bab21598db69e399768ecd143caa57ef34"
+      :tag => "v0.4.2",
+      :revision => "6a8826b3798ac50028d4abc11164d1f067e720de"
 
   head "https://github.com/Hackerpilot/dfmt.git", :shallow => false
 
