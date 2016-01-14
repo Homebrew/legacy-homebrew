@@ -6,9 +6,9 @@ class Evince < Formula
   revision 1
 
   bottle do
-    sha256 "a887a9eef887273b34e84a0c003a5d37a9a6f3464afa8bd32638fe00cc36c2b3" => :el_capitan
-    sha256 "a6b74c53788c92d7ea0d75f8d16a41c363f6a2622fda1c7b614dca0808fac408" => :yosemite
-    sha256 "69ecb87c7186689cfb4a0a1c7a6f8d12432985d8544ae75367fd74b5956745fe" => :mavericks
+    sha256 "75191edc36670312d866c3aea88d9d47c233e3c8e4c662a2fcc793c26810b2a7" => :el_capitan
+    sha256 "86eb70d99d5cdd2b6f327929f4a5b539f9acad07efa90e723b5d2648b5c9df51" => :yosemite
+    sha256 "2b6f3cd73566156fff7b20a8a268daf65cd755c672f0cae160e9169f9ed18c4d" => :mavericks
   end
 
   depends_on "pkg-config" => :build
