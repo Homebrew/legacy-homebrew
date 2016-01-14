@@ -1,6 +1,57 @@
 # Formula Cookbook
 A formula is a package definition written in Ruby. It can be created with `brew create $URL` and installed with `brew install $FORMULA` and debugged with `brew install --debug --verbose $FORMULA`. Formulae use the [Formula API](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula) which provides various Homebrew-specific helpers.
 
+## Table of Contents
+
+* [Formula Cookbook](#formula-cookbook)
+  * [Homebrew Terminology](#homebrew-terminology)
+  * [An Introduction](#an-introduction)
+* [Basic Instructions](#basic-instructions)
+  * [Grab the URL](#grab-the-url)
+  * [Fill in the <a href="http://www\.rubydoc\.info/github/Homebrew/homebrew/master/Formula\#homepage%3D\-class\_method">homepage</a>](#fill-in-the-homepage)
+  * [Check the build system](#check-the-build-system)
+  * [Check for dependencies](#check-for-dependencies)
+  * [Specifying other formulae as dependencies](#specifying-other-formulae-as-dependencies)
+  * [Specifying conflicts with other formulae](#specifying-conflicts-with-other-formulae)
+  * [Formulae Revisions](#formulae-revisions)
+  * [Double\-check for dependencies](#double-check-for-dependencies)
+  * [Specifying gems, Python modules, Go projects, etc\. as dependencies](#specifying-gems-python-modules-go-projects-etc-as-dependencies)
+  * [Install the formula](#install-the-formula)
+  * [Add a test to the formula](#add-a-test-to-the-formula)
+  * [Manuals](#manuals)
+  * [A Quick Word on Naming](#a-quick-word-on-naming)
+  * [Audit the formula](#audit-the-formula)
+  * [Commit](#commit)
+  * [Push](#push)
+* [Convenience Tools](#convenience-tools)
+  * [Messaging](#messaging)
+  * [bin\.install "foo"](#bininstall-foo)
+  * [<a href="http://www\.rubydoc\.info/github/Homebrew/homebrew/master/Utils/Inreplace">inreplace</a>](#inreplace)
+  * [Patches](#patches)
+  * [Creating the diff](#creating-the-diff)
+* [Advanced Formula Tricks](#advanced-formula-tricks)
+  * [Unstable versions (devel, head)](#unstable-versions-devel-head)
+    * [devel](#devel)
+    * [head](#head)
+  * [Compiler selection](#compiler-selection)
+  * [Specifying the Download Strategy explicitly](#specifying-the-download-strategy-explicitly)
+  * [Just moving some files](#just-moving-some-files)
+    * [Variables for directory locations](#variables-for-directory-locations)
+  * [Adding optional steps](#adding-optional-steps)
+  * [File level operations](#file-level-operations)
+  * [Handling files that should persist over formula upgrades](#handling-files-that-should-persist-over-formula-upgrades)
+    * [launchd plist files](#launchd-plist-files)
+  * [Updating formulae](#updating-formulae)
+* [Style guide](#style-guide)
+* [Troubleshooting for people writing new formulae](#troubleshooting-for-people-writing-new-formulae)
+    * [Version detection fails](#version-detection-fails)
+  * [Bad Makefiles](#bad-makefiles)
+  * [Still won’t work?](#still-wont-work)
+* [Superenv Notes](#superenv-notes)
+* [Fortran](#fortran)
+* [How to start over (reset to  upstream master)](#how-to-start-over-reset-to--upstream-master)
+
+
 ## Homebrew Terminology
 
 | Term           | Description                                                | Example                                              |
