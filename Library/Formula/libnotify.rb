@@ -4,8 +4,7 @@ class Libnotify < Formula
   sha256 "0ef61ca400d30e28217979bfa0e73a7406b19c32dd76150654ec5b2bdf47d837"
 
   depends_on "pkg-config" => :build
-  depends_on "gtk+3" => :build
-  depends_on "gdk-pixbuf"
+  depends_on "gtk+3"
 
   def install
     system "./configure", "--disable-dependency-tracking",
