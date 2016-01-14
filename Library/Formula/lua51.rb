@@ -10,10 +10,9 @@ class Lua51 < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "1518b45f3864b3f4dd63d373bab7e1c3928e8de4139bf8722522b1cb0a5a2582" => :el_capitan
-    sha256 "61b7ab098625551c83f4493c9b4d1c6dbbdf67bf56a7a373c75c23844497073e" => :yosemite
-    sha256 "fe4e727ab2c7ec85d75219953d24adcfccc72afa3bdc1d59df60989baa62b0a2" => :mavericks
+    sha256 "2e7855701001577f9dbd986e2926b6767adc56260d718235363b9762be58d524" => :el_capitan
+    sha256 "506eec22fb234dfab55763e83e57b13931b2516bd9c90cfe7c2c196e9a899256" => :yosemite
+    sha256 "0bc85b1cc7e78b7d79de9db53293c6e24bd9d284e6f0783a524c3686fae60351" => :mavericks
   end
 
   fails_with :llvm do
