@@ -4,6 +4,13 @@ class Libphonenumber < Formula
   url "https://github.com/googlei18n/libphonenumber/archive/libphonenumber-7.2.3.tar.gz"
   sha256 "9f93615b23d8a12a42099d8113a8d6304278bee4d0ef09fd366188a206aacd46"
 
+  bottle do
+    cellar :any
+    sha256 "a366e801dc9a3b5d7cd2683213c7559ad432be08b4d7bcad39a8f69f6ba158e0" => :el_capitan
+    sha256 "6c9dcdd382bf07f98b421f820026cdbdafae13c2642c07dd818d83e60f8c16f3" => :yosemite
+    sha256 "9d2c3989b760e1fc000970af88e07289229ed7905cf99a9f78d940e55a60533e" => :mavericks
+  end
+
   depends_on "cmake" => :build
   depends_on :java => "1.7+"
   depends_on "icu4c"
