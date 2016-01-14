@@ -78,7 +78,6 @@ class Formula
   # This contains all the attributes (e.g. URL, checksum) that apply to the
   # stable version of this formula.
   # @private
-
   attr_reader :stable
 
   # The development {SoftwareSpec} for this {Formula}.
@@ -107,6 +106,10 @@ class Formula
   # @see #active_spec
   # @private
   attr_reader :active_spec_sym
+
+  # most recent modified time for source files
+  # @private
+  attr_reader :source_modified_time
 
   # Used for creating new Homebrew versions of software without new upstream
   # versions.
@@ -1550,6 +1553,7 @@ class Formula
 
   def stage
     active_spec.stage do
+      @source_modified_time = active_spec.source_modified_time
       @buildpath = Pathname.pwd
       env_home = buildpath/".brew_home"
       mkdir_p env_home
