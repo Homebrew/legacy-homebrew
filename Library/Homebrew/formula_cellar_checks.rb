@@ -208,6 +208,33 @@ module FormulaCellarChecks
     EOS
   end
 
+  def check_broken_linkages
+    return unless formula.prefix.directory?
+    keg = Keg.new(formula.prefix)
+    s = ""
+
+    if keg.broken_dylibs.any?
+      s << "Missing libraries are found:\n"
+      keg.broken_dylibs.sort.each do |dylib|
+        s << "  #{dylib}\n"
+      end
+    end
+
+    declared_deps = formula.deps.map(&:name) + formula.requirements.map(&:default_formula)
+    declared_deps.map! { |f| f.split("/").last }
+    used_deps = keg.brewed_dylibs.keys
+    missing_deps = used_deps - declared_deps
+
+    if missing_deps.any?
+      s << "Missing direct dependencies are found:\n"
+      missing_deps.each do |dep|
+        s << "  #{dep}\n"
+      end
+    end
+
+    s unless s.empty?
+  end
+
   def audit_installed
     audit_check_output(check_manpages)
     audit_check_output(check_infopages)
@@ -223,6 +250,7 @@ module FormulaCellarChecks
     audit_check_output(check_python_framework_links(formula.lib))
     audit_check_output(check_elisp_dirname(formula.share, formula.name))
     audit_check_output(check_elisp_root(formula.share, formula.name))
+    audit_check_output(check_broken_linkages)
   end
 
   private
