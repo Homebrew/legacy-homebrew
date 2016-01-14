@@ -5,6 +5,8 @@ class Pond < Formula
   homepage "https://pond.imperialviolet.org/"
   url "https://github.com/agl/pond/archive/v0.1.1.tar.gz"
   sha256 "f66c625b0d7e3fe8c125fe9401a5f67ec75af3e8dca47e18fba6696a99705b21"
+  revision 1
+
   head "https://github.com/agl/pond.git"
 
   bottle do
