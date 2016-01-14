@@ -3,6 +3,8 @@ class Uwsgi < Formula
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
   url "https://projects.unbit.it/downloads/uwsgi-2.0.11.2.tar.gz"
   sha256 "0b889b0b4d2dd3f6625df28cb0b86ec44a68d074ede2d0dfad0b91e88914885c"
+  revision 1
+
   head "https://github.com/unbit/uwsgi.git"
 
   bottle do
@@ -17,11 +19,9 @@ class Uwsgi < Formula
   option "with-ruby", "Compile with Ruby support"
 
   depends_on "pkg-config" => :build
+  depends_on "pcre"
   depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
-
-  depends_on "pcre"
-  depends_on "yajl" if build.without? "jansson"
 
   depends_on "geoip" => :optional
   depends_on "gloox" => :optional
@@ -44,6 +44,7 @@ class Uwsgi < Formula
   depends_on "tcc" => :optional
   depends_on "v8" => :optional
   depends_on "zeromq" => :optional
+  depends_on "yajl" if build.without? "jansson"
 
   def install
     ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
@@ -145,7 +146,7 @@ class Uwsgi < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{bin}/uwsgi</string>
+            <string>#{opt_bin}/uwsgi</string>
             <string>--uid</string>
             <string>_www</string>
             <string>--gid</string>
@@ -178,7 +179,7 @@ class Uwsgi < Formula
     sleep 2
 
     begin
-      assert_match /Hello World/, shell_output("curl localhost:8080")
+      assert_match "Hello World", shell_output("curl localhost:8080")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)
