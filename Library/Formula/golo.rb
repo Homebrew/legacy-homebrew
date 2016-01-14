@@ -4,6 +4,12 @@ class Golo < Formula
   url "https://www.eclipse.org/downloads/download.php?file=/golo/golo-3.0.0-incubation.zip"
   sha256 "e7d350148a3a7492348f0214679b282858ced58e4063a17bbf53f9ec2ae5f288"
 
+  devel do
+    url "https://bintray.com/artifact/download/golo-lang/downloads/golo-3.1.0-incubation-M1.zip"
+    sha256 "f0a58d4602c417c0351759eaa8787e757c5dc095604a07887c1179c007c8304a"
+    version "3.1.0-incubation-M1"
+  end
+
   head do
     url "https://github.com/eclipse/golo-lang.git"
   end
