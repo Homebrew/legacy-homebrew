@@ -17,12 +17,12 @@ class Rcssserver < Formula
       sha256 "216473a9300e0733f66054345b8ea0afc50ce922341ac48eb5ef03d09bb740e6"
     end
   end
+
   bottle do
     sha256 "c38e5393d6d4c9074d2c70da05e0be9f61bc2f935848a3e2061a93f2b002e9af" => :el_capitan
     sha256 "d7db1cd2a729f558cbb3569e1c858f9de8b6ced18b8eaf110b8db53881ad8c84" => :yosemite
     sha256 "053199b5e554e73a385ffd7de6ef8bf9e04b1c3876e6fed0b9ca1c98066364a1" => :mavericks
   end
-
 
   head do
     url "svn://svn.code.sf.net/p/sserver/code/rcss/trunk/rcssserver"
