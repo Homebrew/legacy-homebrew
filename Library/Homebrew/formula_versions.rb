@@ -54,4 +54,14 @@ class FormulaVersions
     end
     map
   end
+
+  def revision_map(branch)
+    map = Hash.new { |h, k| h[k] = [] }
+    rev_list(branch) do |rev|
+      formula_at_revision(rev) do |f|
+        map[f.version] << f.revision
+      end
+    end
+    map
+  end
 end

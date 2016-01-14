@@ -1,4 +1,5 @@
 require "formula"
+require "formula_versions"
 require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
@@ -579,6 +580,19 @@ class FormulaAuditor
     end
   end
 
+  def audit_revision
+    return unless formula.tap # skip formula not from core or any taps
+    return unless formula.tap.git? # git log is required
+
+    fv = FormulaVersions.new(formula)
+    revision_map = fv.revision_map("origin/master")
+    if (revisions = revision_map[formula.version]).any?
+      problem "revision should not decrease" if formula.revision < revisions.max
+    else
+      problem "revision should be removed" unless formula.revision == 0
+    end
+  end
+
   def audit_legacy_patches
     return unless formula.respond_to?(:patches)
     legacy_patches = Patch.normalize_legacy_patches(formula.patches).grep(LegacyPatch)
@@ -932,6 +946,7 @@ class FormulaAuditor
     audit_formula_name
     audit_class
     audit_specs
+    audit_revision
     audit_desc
     audit_homepage
     audit_bottle_spec
