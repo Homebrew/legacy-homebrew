@@ -37,19 +37,19 @@ module Homebrew
   BYTES_IN_1_MEGABYTE = 1024*1024
 
   def resolve_test_tap
-    tap = ARGV.value("tap")
-    if tap
-      tap = Tap.fetch(tap)
-      return tap unless tap.core_formula_repository?
+    if tap = ARGV.value("tap")
+      return Tap.fetch(tap)
+    end
+
+    if tap = ENV["TRAVIS_REPO_SLUG"]
+      return Tap.fetch(tap)
     end
 
     if ENV["UPSTREAM_BOT_PARAMS"]
       bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
       bot_argv.extend HomebrewArgvExtension
-      tap = bot_argv.value("tap")
-      if tap
-        tap = Tap.fetch(tap)
-        return tap unless tap.core_formula_repository?
+      if tap = bot_argv.value("tap")
+        return Tap.fetch(tap)
       end
     end
 
@@ -57,21 +57,12 @@ module Homebrew
       # Also can get tap from Jenkins GIT_URL.
       url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/").sub(%r{\.git$}, "")
       begin
-        tap = Tap.fetch(url_path)
-        return tap unless tap.core_formula_repository?
+        return Tap.fetch(url_path)
       rescue
       end
     end
 
-    # return nil means we are testing core repo.
-  end
-
-  def homebrew_git_repo(tap = nil)
-    if tap
-      tap.path
-    else
-      HOMEBREW_REPOSITORY
-    end
+    CoreFormulaRepository.instance
   end
 
   class Step
@@ -219,7 +210,7 @@ module Homebrew
       @modified_formula = []
       @steps = []
       @tap = options[:tap]
-      @repository = Homebrew.homebrew_git_repo @tap
+      @repository = @tap.path
       @skip_homebrew = options[:skip_homebrew]
 
       url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
@@ -383,12 +374,7 @@ module Homebrew
       return unless diff_start_sha1 != diff_end_sha1
       return if @url && steps.last && !steps.last.passed?
 
-      if @tap
-        formula_path = %w[Formula HomebrewFormula].find { |dir| (@repository/dir).directory? } || ""
-      else
-        formula_path = "Library/Formula"
-      end
-
+      formula_path = @tap.formula_dir.to_s
       @added_formulae += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
       @modified_formula += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
       @formulae += @added_formulae + @modified_formula
@@ -435,10 +421,10 @@ module Homebrew
     def formula(formula_name)
       @category = "#{__method__}.#{formula_name}"
 
-      canonical_formula_name = if @tap
-        "#{@tap}/#{formula_name}"
-      else
+      canonical_formula_name = if @tap.core_formula_repository?
         formula_name
+      else
+        "#{@tap}/#{formula_name}"
       end
 
       test "brew", "uses", "--recursive", canonical_formula_name
@@ -653,9 +639,7 @@ module Homebrew
       @category = __method__
       return if @skip_homebrew
       test "brew", "tests"
-      if @tap
-        test "brew", "readall", @tap.name
-      else
+      if @tap.core_formula_repository?
         tests_args = ["--no-compat"]
         readall_args = ["--aliases"]
         if RUBY_VERSION.split(".").first.to_i >= 2
@@ -665,6 +649,8 @@ module Homebrew
         test "brew", "tests", *tests_args
         test "brew", "readall", *readall_args
         test "brew", "update-test"
+      else
+        test "brew", "readall", @tap.name
       end
     end
 
@@ -798,7 +784,7 @@ module Homebrew
 
     ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
     ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
-    ENV["GIT_WORK_TREE"] = Homebrew.homebrew_git_repo(tap)
+    ENV["GIT_WORK_TREE"] = tap.path
     ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
 
     pr = ENV["UPSTREAM_PULL_REQUEST"]
@@ -811,10 +797,10 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = if tap
-        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
-      else
+      pull_pr = if tap.core_formula_repository?
         pr
+      else
+        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
       end
       safe_system "brew", "pull", "--clean", pull_pr
     end
@@ -823,7 +809,7 @@ module Homebrew
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
-    remote_repo = tap ? "homebrew-#{tap.repo}" : "homebrew"
+    remote_repo = tap.core_formula_repository ? "homebrew" : "homebrew-#{tap.repo}"
     remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
@@ -908,9 +894,7 @@ module Homebrew
     tap = resolve_test_tap
     # Tap repository if required, this is done before everything else
     # because Formula parsing and/or git commit hash lookup depends on it.
-    if tap && !tap.installed?
-      safe_system "brew", "tap", tap.name
-    end
+    safe_system "brew", "tap", tap.name unless tap.installed?
 
     if ARGV.include? "--ci-upload"
       return test_ci_upload(tap)
