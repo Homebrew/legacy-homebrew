@@ -80,16 +80,19 @@ class Scala < Formula
   end
 
   test do
-    file = testpath/"hello.scala"
+    file = testpath/"Test.scala"
     file.write <<-EOS.undent
-      object Computer {
+      object Test {
         def main(args: Array[String]) {
           println(s"${2 + 2}")
         }
       }
     EOS
 
-    ENV.java_cache
-    assert_equal "4", shell_output("#{bin}/scala #{file}").strip
+    out = shell_output("#{bin}/scala #{file}").strip
+    # Shut down the compile server so as not to break Travis
+    system bin/"fsc", "-shutdown"
+
+    assert_equal "4", out
   end
 end
