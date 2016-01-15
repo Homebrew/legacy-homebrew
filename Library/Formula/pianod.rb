@@ -11,9 +11,9 @@ class Pianod < Formula
   end
 
   bottle do
-    sha256 "c445526d673caadf44783aa2992817f1a172a4ad83376b8c5ee0c62e94c3ef01" => :yosemite
-    sha256 "77975c68192f2fc203decc2122e05e720f6fb248b3aec061540536ea4371a871" => :mavericks
-    sha256 "dc09efd35ee5e55e5196c2a72ca8b3ca61b4a437fb66ff481e80be1782e9931a" => :mountain_lion
+    sha256 "575f57442be94b8a182549015d58ea8066dde351f15ac91116647d5f6ef9425d" => :el_capitan
+    sha256 "5537abdb08e7b78dce2d5b1d3cfa93bb2e525c9878214102cb34adea61f12ad8" => :yosemite
+    sha256 "fd027eecd50b1ba82e048b2eb289219cddf068a93b849950fe690e44151c9540" => :mavericks
   end
 
   depends_on "pkg-config" => :build
