@@ -1,9 +1,9 @@
 class Sqlite < Formula
   desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2016/sqlite-autoconf-3100000.tar.gz"
-  version "3.10.0"
-  sha256 "43cc292d70711fa7580250c8a1cd7c64813a4a0a479dbd502cce5f10b5d91042"
+  url "https://sqlite.org/2016/sqlite-autoconf-3100100.tar.gz"
+  version "3.10.1"
+  sha256 "3cb4e17137f7422554c8e8906b5a7274c7a0d362872e8aa25233c3f1246bda98"
 
   bottle do
     cellar :any
@@ -36,9 +36,9 @@ class Sqlite < Formula
   end
 
   resource "docs" do
-    url "https://sqlite.org/2016/sqlite-doc-3100000.zip"
-    version "3.10.0"
-    sha256 "40af646d8c2109e5a15b1787e53524ed16c8e0d1705dda5f005b6186f18c2f2a"
+    url "https://sqlite.org/2016/sqlite-doc-3100100.zip"
+    version "3.10.1"
+    sha256 "a3bd7b5de156dac38cea07e3229bd4f03905ff84b591339925f26f5ea4b1830e"
   end
 
   def install
@@ -62,7 +62,9 @@ class Sqlite < Formula
 
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-dependency-tracking",
+                          "--enable-dynamic-extensions"
     system "make", "install"
 
     if build.with? "functions"
