@@ -8,19 +8,16 @@ class Libtbox < Formula
 
   option "with-debug", "Build with debug support"
   option "without-zlib", "Disable Zlib compression library"
-  option "without-sqlite", "Disable Sqlite database"
   option "without-openssl", "Disable Openssl SSL/TLS cryptography library"
 
   depends_on "xmake" => :build
   depends_on "lzlib" => :recommended
-  depends_on "sqlite" => :recommended
   depends_on "openssl" => :recommended
 
   def install
-    args = ["--demo=false", "--pcre=false", "--pcre2=false", "--mysql=false", "--polarssl=false"]
+    args = ["--demo=false", "--pcre=false", "--pcre2=false", "--mysql=false", "--polarssl=false", "--sqlite3=false"]
     args << "--mode=debug" if build.with? "debug"
     args << "--zlib=false" if build.without? "zlib"
-    args << "--sqlite3=false" if build.without? "sqlite"
     args << "--openssl=false" if build.without? "openssl"
 
     system "xmake", "config", *args
@@ -40,7 +37,7 @@ class Libtbox < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-L#{lib}", "-ltbox", "-lssl", "-lcrypto", "-lsqlite3", "-lz", "-I#{include}", "-o", "test"
+    system ENV.cc, "test.c", "-L#{lib}", "-ltbox", "-lssl", "-lcrypto", "-lz", "-I#{include}", "-o", "test"
     system "./test"
   end
 end
