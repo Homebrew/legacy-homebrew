@@ -1,8 +1,8 @@
 class Xapian < Formula
   desc "C++ search engine library with many bindings"
   homepage "http://xapian.org"
-  url "http://oligarchy.co.uk/xapian/1.2.21/xapian-core-1.2.21.tar.xz"
-  sha256 "63f48758fbd13fa8456dd4cf9bf3ec35a096e4290f14a51ac7df23f78c162d3f"
+  url "http://oligarchy.co.uk/xapian/1.2.22/xapian-core-1.2.22.tar.xz"
+  sha256 "269b87ca3faf79d444e8bb82ed58a96f1955008d7702f9966dec68608588527f"
 
   bottle do
     cellar :any
@@ -22,8 +22,8 @@ class Xapian < Formula
   depends_on :python => :optional
 
   resource "bindings" do
-    url "http://oligarchy.co.uk/xapian/1.2.21/xapian-bindings-1.2.21.tar.xz"
-    sha256 "28a39247ac875be2dc1386c273167aab5c9949227c1070b65ca8de603c06d546"
+    url "http://oligarchy.co.uk/xapian/1.2.22/xapian-bindings-1.2.22.tar.xz"
+    sha256 "b15ca7984980a1d2aedd3378648ef5f3889cb39a047bac1522a8e5d04f0a8557"
   end
 
   skip_clean :la
@@ -94,7 +94,6 @@ class Xapian < Formula
   end
 
   test do
-    # This test is awful. Feel free to improve it.
     system bin/"xapian-config", "--libs"
   end
 end
