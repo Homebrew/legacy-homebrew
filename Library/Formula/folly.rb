@@ -21,6 +21,11 @@ class Folly < Formula
   depends_on "gflags"
   depends_on "boost"
   depends_on "libevent"
+  depends_on "xz"
+  depends_on "snappy"
+  depends_on "lz4"
+  depends_on "jemalloc"
+  depends_on "openssl"
 
   needs :cxx11
   depends_on :macos => :mavericks
