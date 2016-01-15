@@ -1,9 +1,9 @@
 class Librevenge < Formula
   desc "Base library for writing document import filters"
   homepage "https://sourceforge.net/p/libwpd/wiki/librevenge/"
-  url "http://dev-www.libreoffice.org/src/librevenge-0.0.3.tar.bz2"
-  mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.3/librevenge-0.0.3.tar.bz2"
-  sha256 "8cac287a4f3f37833a7b98304e2d3631d01cf577cb99b9311d5d5cd70680df55"
+  url "http://dev-www.libreoffice.org/src/librevenge-0.0.4.tar.bz2"
+  mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.4/librevenge-0.0.4.tar.bz2"
+  sha256 "c51601cd08320b75702812c64aae0653409164da7825fd0f451ac2c5dbe77cbf"
 
   bottle do
     cellar :any
