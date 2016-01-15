@@ -3,6 +3,8 @@ class Task < Formula
   homepage "https://taskwarrior.org/"
   url "https://taskwarrior.org/download/task-2.5.0.tar.gz"
   sha256 "4d8e67415a6993108c11b8eeef99b76a991af11b22874adbb7ae367e09334636"
+  revision 1
+
   head "https://git.tasktools.org/scm/tm/task.git", :branch => "2.5.1", :shallow => false
 
   bottle do
