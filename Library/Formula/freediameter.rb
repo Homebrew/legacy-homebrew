@@ -7,6 +7,12 @@ class Freediameter < Formula
 
   head "http://www.freediameter.net/hg/freeDiameter", :using => :hg
 
+  bottle do
+    sha256 "aa6f29018beafbe23e475334ed5be3718ba428e88b0741ef199d66cdaa988d08" => :el_capitan
+    sha256 "786f9873dbf0e85e8a54272697404d99fa60f6872fc8fdad54d66e8184c4dc28" => :yosemite
+    sha256 "c031628f3bbd387bdea44364fc6e99065216b68f2d2bf61abf516055e69f6620" => :mavericks
+  end
+
   option "with-all-extensions", "Enable all extensions"
 
   depends_on "cmake" => :build
