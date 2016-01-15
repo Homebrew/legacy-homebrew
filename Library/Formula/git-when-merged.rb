@@ -11,7 +11,6 @@ class GitWhenMerged < Formula
   end
 
   test do
-    system "#{bin}/git-when-merged", "-h"
     system "git", "init"
     touch "foo"
     system "git", "add", "foo"
