@@ -1,8 +1,8 @@
 class IrcdHybrid < Formula
   desc "High-performance secure IRC server"
   homepage "http://www.ircd-hybrid.org/"
-  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.11/ircd-hybrid-8.2.11.tgz"
-  sha256 "eeb916ca22b0ee2c7b36e00249ca41001a82587597084c102fe11ad8e85cfe78"
+  url "https://downloads.sourceforge.net/project/ircd-hybrid/ircd-hybrid/ircd-hybrid-8.2.12/ircd-hybrid-8.2.12.tgz"
+  sha256 "effeac9669bf77c298b5afd0b6c9e9362862be666dffeb77a13cd7f777d613fc"
 
   bottle do
     sha256 "00cbc9c69d6445c49cfa98d9427a3c87934e15b447fff35eb95e373d83f266b9" => :el_capitan
@@ -52,7 +52,7 @@ class IrcdHybrid < Formula
       <string>#{plist_name}</string>
       <key>ProgramArguments</key>
       <array>
-        <string>#{opt_sbin}/ircd</string>
+        <string>#{opt_bin}/ircd</string>
       </array>
       <key>RunAtLoad</key>
       <true/>
