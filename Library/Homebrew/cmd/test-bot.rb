@@ -397,26 +397,20 @@ module Homebrew
     def formula(formula_name)
       @category = "#{__method__}.#{formula_name}"
 
-      canonical_formula_name = if @tap.core_formula_repository?
-        formula_name
-      else
-        "#{@tap}/#{formula_name}"
-      end
+      test "brew", "uses", "--recursive", formula_name
 
-      test "brew", "uses", "--recursive", canonical_formula_name
-
-      formula = Formulary.factory(canonical_formula_name)
+      formula = Formulary.factory(formula_name)
 
       installed_gcc = false
 
       deps = []
       reqs = []
 
-      fetch_args = [canonical_formula_name]
+      fetch_args = [formula_name]
       fetch_args << "--build-bottle" if !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
       fetch_args << "--force" if ARGV.include? "--cleanup"
 
-      audit_args = [canonical_formula_name]
+      audit_args = [formula_name]
       audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
 
       if formula.stable
@@ -461,7 +455,7 @@ module Homebrew
           OS::Mac.clear_version_cache
           retry
         end
-        skip canonical_formula_name
+        skip formula_name
         puts e.message
         return
       end
@@ -480,8 +474,7 @@ module Homebrew
       end
 
       installed = Utils.popen_read("brew", "list").split("\n")
-      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
-                                      canonical_formula_name).split("\n")
+      dependencies = Utils.popen_read("brew", "deps", "--skip-optional", formula_name).split("\n")
 
       (installed & dependencies).each do |installed_dependency|
         installed_dependency_formula = Formulary.factory(installed_dependency)
@@ -498,11 +491,11 @@ module Homebrew
 
       runtime_dependencies = Utils.popen_read("brew", "deps",
                                               "--skip-build", "--skip-optional",
-                                              canonical_formula_name).split("\n")
+                                              formula_name).split("\n")
       build_dependencies = dependencies - runtime_dependencies
       unchanged_build_dependencies = build_dependencies - @formulae
 
-      dependents = Utils.popen_read("brew", "uses", "--recursive", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
+      dependents = Utils.popen_read("brew", "uses", "--recursive", "--skip-build", "--skip-optional", formula_name).split("\n")
       dependents -= @formulae
       dependents = dependents.map { |d| Formulary.factory(d) }
 
@@ -525,7 +518,7 @@ module Homebrew
         end
       end
       test "brew", "fetch", "--retry", *fetch_args
-      test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
+      test "brew", "uninstall", "--force", formula_name if formula.installed?
       install_args = ["--verbose"]
       install_args << "--build-bottle" if !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
       install_args << "--HEAD" if ARGV.include? "--HEAD"
@@ -542,7 +535,7 @@ module Homebrew
         formula_bottled = formula.bottled?
       end
 
-      install_args << canonical_formula_name
+      install_args << formula_name
       # Don't care about e.g. bottle failures for dependencies.
       install_passed = false
       run_as_not_developer do
@@ -555,7 +548,7 @@ module Homebrew
       test "brew", "audit", *audit_args
       if install_passed
         if formula.stable? && !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
-          bottle_args = ["--verbose", "--rb", canonical_formula_name]
+          bottle_args = ["--verbose", "--rb", formula_name]
           bottle_args << "--keep-old" if ARGV.include? "--keep-old"
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
@@ -566,7 +559,7 @@ module Homebrew
             bottle_merge_args = ["--merge", "--write", "--no-commit", bottle_rb_filename]
             bottle_merge_args << "--keep-old" if ARGV.include? "--keep-old"
             test "brew", "bottle", *bottle_merge_args
-            test "brew", "uninstall", "--force", canonical_formula_name
+            test "brew", "uninstall", "--force", formula_name
             FileUtils.ln bottle_filename, HOMEBREW_CACHE/bottle_filename, :force => true
             if unchanged_build_dependencies.any?
               test "brew", "uninstall", "--force", *unchanged_build_dependencies
@@ -575,7 +568,7 @@ module Homebrew
             test "brew", "install", bottle_filename
           end
         end
-        test "brew", "test", "--verbose", canonical_formula_name if formula.test_defined?
+        test "brew", "test", "--verbose", formula_name if formula.test_defined?
         testable_dependents.each do |dependent|
           unless dependent.installed?
             test "brew", "fetch", "--retry", dependent.name
@@ -593,19 +586,19 @@ module Homebrew
             test "brew", "test", "--verbose", dependent.name
           end
         end
-        test "brew", "uninstall", "--force", canonical_formula_name
+        test "brew", "uninstall", "--force", formula_name
       end
 
       if formula.devel && formula.stable? \
          && !ARGV.include?("--HEAD") && !ARGV.include?("--fast") \
          && satisfied_requirements?(formula, :devel)
         test "brew", "fetch", "--retry", "--devel", *fetch_args
-        run_as_not_developer { test "brew", "install", "--devel", "--verbose", canonical_formula_name }
+        run_as_not_developer { test "brew", "install", "--devel", "--verbose", formula_name }
         devel_install_passed = steps.last.passed?
         test "brew", "audit", "--devel", *audit_args
         if devel_install_passed
-          test "brew", "test", "--devel", "--verbose", canonical_formula_name if formula.test_defined?
-          test "brew", "uninstall", "--devel", "--force", canonical_formula_name
+          test "brew", "test", "--devel", "--verbose", formula_name if formula.test_defined?
+          test "brew", "uninstall", "--devel", "--force", formula_name
         end
       end
       test "brew", "uninstall", "--force", *unchanged_dependencies if unchanged_dependencies.any?
