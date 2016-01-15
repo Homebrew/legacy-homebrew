@@ -209,16 +209,13 @@ module Homebrew
       @added_formulae = []
       @modified_formula = []
       @steps = []
-      @tap = options[:tap]
+      @tap = options.fetch(:tap,  CoreFormulaRepository.instance)
       @repository = @tap.path
-      @skip_homebrew = options[:skip_homebrew]
+      @skip_homebrew = options.fetch(:skip_homebrew, false)
 
-      url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-
-      git "rev-parse", "--verify", "-q", argument
-      if $?.success?
+      if quiet_system "git", "rev-parse", "--verify", "-q", argument
         @hash = argument
-      elsif url_match
+      elsif url_match = argument.match(HOMEBREW_PULL_OR_COMMIT_URL_REGEX)
         @url = url_match[0]
       elsif safe_formulary(argument)
         @formulae = [argument]
