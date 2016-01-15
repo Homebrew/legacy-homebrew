@@ -84,6 +84,8 @@ class Scala < Formula
         }
       }
     EOS
+
+    ENV.java_cache
     assert_equal "4", shell_output("#{bin}/scala #{file}").strip
   end
 end
