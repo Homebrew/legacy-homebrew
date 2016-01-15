@@ -40,7 +40,7 @@ class Nix < Formula
 
     elisp.install share/"emacs/site-lisp/nix-mode.el"
 
-    bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
+    bin.env_script_all_files(libexec/"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 
   test do
