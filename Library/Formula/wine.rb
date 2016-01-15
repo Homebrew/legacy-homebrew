@@ -5,6 +5,7 @@
 class Wine < Formula
   desc "Wine Is Not an Emulator"
   homepage "https://www.winehq.org/"
+  head "git://source.winehq.org/git/wine.git"
 
   stable do
     url "https://dl.winehq.org/wine/source/1.8/wine-1.8.tar.bz2"
@@ -21,10 +22,6 @@ class Wine < Formula
     url "https://dl.winehq.org/wine/source/1.9/wine-1.9.1.tar.bz2"
     mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.1.tar.bz2"
     sha256 "0b3265fb9ae82ddf1b3629bac61bd2340b7b4cfa7210f696c679e8e4a5b80bb6"
-  end
-
-  head do
-    url "git://source.winehq.org/git/wine.git"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,
@@ -44,9 +41,9 @@ class Wine < Formula
   depends_on "libicns"
   depends_on "libtiff"
   depends_on "sane-backends"
+  depends_on "gnutls"
   depends_on "libgsm" => :optional
   depends_on "samba" => :optional
-  depends_on "gnutls"
 
   # Patch to fix screen-flickering issues. Still relevant on 1.8.
   # https://bugs.winehq.org/show_bug.cgi?id=34166
@@ -146,8 +143,8 @@ class Wine < Formula
     end
 
     system "make", "install"
-    (share/"wine/gecko").install resource("gecko")
-    (share/"wine/mono").install resource("mono")
+    (pkgshare/"gecko").install resource("gecko")
+    (pkgshare/"mono").install resource("mono")
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine
