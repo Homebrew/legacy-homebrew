@@ -8,9 +8,9 @@ class Sift < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "aa4d8be0f1d8c1f6f0c4d7563c7df7c48679a60ccf889d29b6b97b264b52255e" => :el_capitan
-    sha256 "c4d7102ac05e7fff864278d7be840326a17873f9fd71a62cec71868eefc5737f" => :yosemite
-    sha256 "1612e20741c909a12c4da5e5f1cb15ff45b609b864856871ba48cc3dad8c2a84" => :mavericks
+    sha256 "6dae9b20f62d634243e40a2ffd321756fa5012bf5b628ad4ffc65beac336e65a" => :el_capitan
+    sha256 "d6d0721dd56ed477a264954305b04c64b948804b1d4e00252613f2ebe35e7ada" => :yosemite
+    sha256 "dc900b64ddf7c4b757fe978d45f984dfc26dc51835880efb76662a1bf8573492" => :mavericks
   end
 
   depends_on "go" => :build
