@@ -3,13 +3,13 @@ require "language/go"
 class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "http://getgauge.io"
-  url "https://github.com/getgauge/gauge/archive/v0.2.1.tar.gz"
-  sha256 "382378435500d426464cd05c921ae351d46535b443ce775c908d019526943fc3"
+  url "https://github.com/getgauge/gauge/archive/v0.3.0.tar.gz"
+  sha256 "83257f2e71385ff7cf4480f2ea83af4d99cbc08a52af1c0ccaa043852f4dcd78"
 
   stable do
     go_resource "github.com/getgauge/common" do
       url "https://github.com/getgauge/common.git",
-          :revision => "69cd40635244cf13bceac2ef382bb43152464798"
+          :revision => "6d719362535ada9a07d655b65f8bd5dfd818fe33"
     end
   end
 
@@ -25,25 +25,26 @@ class Gauge < Formula
 
     go_resource "github.com/getgauge/common" do
       url "https://github.com/getgauge/common.git",
-          :revision => "581c7b4383ac47872c364a1848fc2e627b4c92cf"
+          :revision => "6d719362535ada9a07d655b65f8bd5dfd818fe33"
     end
 
-    go_resource "github.com/gosuri/uilive" do
-      url "https://github.com/gosuri/uilive.git",
-        :revision => "eb9a944a94f38ebcfa43d48bed49e47050c1aa73"
-    end
-
-    go_resource "github.com/daviddengcn/go-colortext" do
-      url "https://github.com/daviddengcn/go-colortext.git",
-        :revision => "3b18c8575a432453d41fdafb340099fff5bba2f7"
-    end
   end
 
   depends_on "go" => :build
 
+  go_resource "github.com/daviddengcn/go-colortext" do
+    url "https://github.com/daviddengcn/go-colortext.git",
+      :revision => "3b18c8575a432453d41fdafb340099fff5bba2f7"
+  end
+
   go_resource "github.com/golang/protobuf" do
     url "https://github.com/golang/protobuf.git",
-        :revision => "7f07925444bb51fa4cf9dfe6f7661876f8852275"
+        :revision => "68415e7123da32b07eab49c96d2c4d6158360e9b"
+  end
+
+  go_resource "github.com/mattn/go-isatty" do
+    url "https://github.com/mattn/go-isatty.git",
+        :revision => "56b76bdf51f7708750eac80fa38b952bb9f32639"
   end
 
   go_resource "github.com/getgauge/mflag" do
@@ -73,9 +74,9 @@ class Gauge < Formula
         :revision => "7cbffbaada472bc302cbaca51c1d5ed2682eb509"
   end
 
-  go_resource "github.com/wsxiaoys/terminal" do
-    url "https://github.com/wsxiaoys/terminal.git",
-        :revision => "9dcaf1d63119a8ac00eef82270eaef08b6aa2328"
+  go_resource "github.com/apoorvam/goterminal" do
+    url "https://github.com/apoorvam/goterminal.git",
+        :revision => "4d296b6c70d14de84a3ddbddb11a2fba3babd5e6"
   end
 
   go_resource "gopkg.in/fsnotify.v1" do
