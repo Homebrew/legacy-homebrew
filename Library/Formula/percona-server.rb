@@ -1,9 +1,9 @@
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
-  url "https://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-5.6.25-73.1/source/tarball/percona-server-5.6.25-73.1.tar.gz"
-  version "5.6.25-73.1"
-  sha256 "5a0d88465e4bb081e621b06bc943fafadb4c67a2cca50839b44fcd94ae793b50"
+  url "https://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-5.6.28-76.1/source/tarball/percona-server-5.6.28-76.1.tar.gz"
+  version "5.6.28-76.1"
+  sha256 "ab8ab794a58a82132645ae84b74de91c7f9a5bcf81f2162628ce8976a00a4fd4"
 
   bottle do
     sha256 "6cb0507097b26b45397a762a473614635fd354817cc906a02d28ec1ea97ac150" => :el_capitan
@@ -77,6 +77,7 @@ class PerconaServer < Formula
       -DCOMPILATION_COMMENT=Homebrew
       -DWITH_EDITLINE=system
       -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      -DWITHOUT_TOKUDB=1
     ]
 
     # PAM plugin is Linux-only at the moment
