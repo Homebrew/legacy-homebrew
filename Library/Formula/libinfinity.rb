@@ -6,10 +6,9 @@ class Libinfinity < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "07e6ddb3637ebf634a64af6dae46cde353fc5fa8e89bf0fd5958eb38a305c877" => :yosemite
-    sha256 "c74520bb5b208f9e43390c69682745edeef0ffd8b8d30ec84805a2300e1dce4a" => :mavericks
-    sha256 "75561e4d4ad9a8e35c624442e420a53e4dc521437e985a9531580b2797d24124" => :mountain_lion
+    sha256 "43aed53c6130683c7a2cbc75f72f640ac4a8890f0a4d0d5324802722fb9e595a" => :el_capitan
+    sha256 "f8814b4172c821d45b26edd01fd19ead1e1e3c54b53ebb199b851761dbd9c429" => :yosemite
+    sha256 "a657d5cb68e8dec8efee285e1dc1bb69e9d7753593c49876aaffe2825a136b91" => :mavericks
   end
 
   depends_on "pkg-config" => :build
