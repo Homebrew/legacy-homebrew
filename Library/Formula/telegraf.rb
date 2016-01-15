@@ -313,7 +313,7 @@ class Telegraf < Formula
   end
 
   test do
-    (testpath/"config.toml").write shell_output("telegraf -sample-config")
+    (testpath/"config.toml").write shell_output("#{bin}/telegraf -sample-config")
     system "telegraf", "-config", testpath/"config.toml", "-test",
            "-filter", "cpu:mem"
   end
