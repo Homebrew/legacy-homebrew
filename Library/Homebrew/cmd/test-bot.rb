@@ -287,12 +287,6 @@ module Homebrew
         end.compact
       end
 
-      def brew_update
-        return unless current_branch == "master"
-        success = quiet_system "brew", "update"
-        success ||= quiet_system "brew", "update"
-      end
-
       @category = __method__
       @start_branch = current_branch
 
