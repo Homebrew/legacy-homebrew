@@ -1,18 +1,21 @@
 class Proftpd < Formula
   desc "Highly configurable GPL-licensed FTP server software"
   homepage "http://www.proftpd.org/"
-  url "ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.4d.tar.gz"
-  sha256 "c198b53991ce641eae6b3237e856e59f0bfe8330794145b49cae33f85b6f5370"
-
-  # fixes unknown group 'nogroup'
-  patch :DATA
+  url "ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.5a.tar.gz"
+  sha256 "a1f48df8539c414ec56e0cea63dcf4b8e16e606c05f10156f030a4a67fae5696"
 
   def install
+    # fixes unknown group 'nogroup'
+    # http://www.proftpd.org/docs/faq/linked/faq-ch4.html#AEN434
+    inreplace "sample-configurations/basic.conf", "nogroup", "nobody"
+
     system "./configure", "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}",
                           "--localstatedir=#{var}"
     ENV.j1
-    system "make", "INSTALL_USER=`whoami`", "INSTALL_GROUP=admin", "install"
+    install_user = ENV["USER"]
+    install_group = `groups`.split[0]
+    system "make", "INSTALL_USER=#{install_user}", "INSTALL_GROUP=#{install_group}", "install"
   end
 
   def plist; <<-EOS.undent
@@ -28,7 +31,7 @@ class Proftpd < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-          <string>#{opt_bin}/proftpd</string>
+          <string>#{opt_sbin}/proftpd</string>
         </array>
         <key>UserName</key>
         <string>root</string>
@@ -51,16 +54,3 @@ class Proftpd < Formula
     EOS
   end
 end
-
-__END__
---- a/sample-configurations/basic.conf
-+++ b/sample-configurations/basic.conf
-@@ -27,7 +27,7 @@
-
- # Set the user and group under which the server will run.
- User				nobody
--Group				nogroup
-+Group				nobody
-
- # To cause every FTP user to be "jailed" (chrooted) into their home
- # directory, uncomment this line.
