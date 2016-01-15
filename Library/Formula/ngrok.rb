@@ -12,10 +12,9 @@ class Ngrok < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "17bafe69834679e699086c4193d14f2ecfd09b67faa7689e313599d11f837860" => :el_capitan
-    sha256 "d626cc4d60628236e13c4a7e4e9f66f73b9a9d865178006fc16327c29ead2bbf" => :yosemite
-    sha256 "a4c522524765cdb27fe6b531c0694cad70bdf21bf42f4ded4a95e8822f2a482c" => :mavericks
-    sha256 "ede711ae53e7a26d249657461101a1cfb9c5cd7c3dc602e3091a2579a87b59aa" => :mountain_lion
+    sha256 "d8f9bdc6d070a69446eda8a0851192171e9f498a23d30f1bca8f5dc0582ad774" => :el_capitan
+    sha256 "4badc8538de923967d34ef0548ec9539b10efc65b07edf4ace1a1ccbe8a94d4a" => :yosemite
+    sha256 "b93d622f31fab29567c6fa1f26d2c2d2ba50b3d443fcaa94b02bea7194a4764e" => :mavericks
   end
 
   depends_on "go" => :build
