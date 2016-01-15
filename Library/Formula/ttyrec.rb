@@ -24,7 +24,7 @@ class Ttyrec < Formula
 
   test do
     resource("matrix.tty").stage do
-      assert_equal "9\tmatrix.tty", shell_output("ttytime matrix.tty").strip
+      assert_equal "9\tmatrix.tty", shell_output("#{bin}/ttytime matrix.tty").strip
     end
   end
 end
