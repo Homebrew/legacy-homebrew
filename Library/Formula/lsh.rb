@@ -7,10 +7,9 @@ class Lsh < Formula
   revision 1
 
   bottle do
-    revision 1
-    sha256 "5ade7c67942a35410f130ef1fb76548161e3be2dc22307d2ddc77d21fa24b2ef" => :el_capitan
-    sha256 "ef1ee7f5b0cc58ef8820924f46f2a82f6c72c373317cbca4ff3567499a86e59b" => :yosemite
-    sha256 "620b97949d1fb024fcf5019455e1cb4d28b9ad498aadcf2d1aac4fa67735fd40" => :mavericks
+    sha256 "0fdcabfd979222e6156220f78077e404da9e43b4ce958c606b6b7bd52bb612d4" => :el_capitan
+    sha256 "7250d308a5d19b50d44ff99c1863aac5e8123ca0733bfadd2c57c702a294cef7" => :yosemite
+    sha256 "1ee5aa4a3fde1b0a5bbb30f31fed756b7de931f0ff39f559070d9eb02380e955" => :mavericks
   end
 
   depends_on "autoconf" => :build
