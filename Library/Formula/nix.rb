@@ -38,8 +38,7 @@ class Nix < Formula
       system "make", "install"
     end
 
-    mkdir elisp
-    mv share/"emacs/site-lisp/nix-mode.el", elisp
+    elisp.install share/"emacs/site-lisp/nix-mode.el"
 
     bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
