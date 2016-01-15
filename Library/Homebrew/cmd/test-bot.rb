@@ -217,8 +217,8 @@ module Homebrew
         @hash = argument
       elsif url_match = argument.match(HOMEBREW_PULL_OR_COMMIT_URL_REGEX)
         @url = url_match[0]
-      elsif safe_formulary(argument)
-        @formulae = [argument]
+      elsif canonical_formula_name = safe_formula_canonical_name(argument)
+        @formulae = [canonical_formula_name]
       else
         raise ArgumentError.new("#{argument} is not a pull request URL, commit URL or formula name.")
       end
@@ -232,8 +232,8 @@ module Homebrew
       @hash == "HEAD"
     end
 
-    def safe_formulary(formula)
-      Formulary.factory formula
+    def safe_formula_canonical_name(formula_name)
+      Formulary.factory(formula_name).full_name
     rescue TapFormulaUnavailableError => e
       test "brew", "tap", e.tap.name
       retry unless steps.last.failed?
@@ -266,9 +266,9 @@ module Homebrew
           "diff-tree", "-r", "--name-only", "--diff-filter=#{filter}",
           start_revision, end_revision, "--", path
         ).lines.map do |line|
-          file = line.chomp
-          next unless File.extname(file) == ".rb"
-          File.basename(file, ".rb")
+          file = Pathname.new line.chomp
+          next unless file.extname == ".rb"
+          @tap.formula_file_to_name(file)
         end.compact
       end
 
