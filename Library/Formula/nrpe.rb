@@ -25,7 +25,7 @@ class Nrpe < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--libexecdir=#{sbin}",
+                          "--libexecdir=#{HOMEBREW_PREFIX}/sbin",
                           "--sysconfdir=#{etc}",
                           "--with-nrpe-user=#{user}",
                           "--with-nrpe-group=#{group}",
@@ -36,6 +36,11 @@ class Nrpe < Formula
                           "--with-ssl-lib=#{Formula["openssl"].opt_lib}",
                           "--enable-ssl",
                           "--enable-command-args"
+
+    inreplace "src/Makefile" do |s|
+      s.gsub! "$(LIBEXECDIR)", "$(SBINDIR)"
+    end
+
     system "make", "all"
     system "make", "install"
     system "make", "install-daemon-config"
