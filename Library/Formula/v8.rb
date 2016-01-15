@@ -3,8 +3,8 @@
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.7.80.25.tar.gz"
-  sha256 "8db572565d599ef2fe9c639920cc0f1969facc4986c2d54eaa0700aa62486aa6"
+  url "https://github.com/v8/v8-git-mirror/archive/4.7.80.31.tar.gz"
+  sha256 "de89c9c51b5063f174bf6f6ae32ab53206a633056dd082f7bb9843db98b5de45"
 
   bottle do
     cellar :any
