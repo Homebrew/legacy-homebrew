@@ -1,7 +1,7 @@
 class Nix < Formula
   desc "The purely functional package manager"
   homepage "https://nixos.org/nix/"
-  url "http://nixos.org/releases/nix/nix-1.10/nix-1.10.tar.xz"
+  url "https://nixos.org/releases/nix/nix-1.10/nix-1.10.tar.xz"
   sha256 "5612ca7a549dd1ee20b208123e041aaa95a414a0e8f650ea88c672dc023d10f6"
   head "https://github.com/NixOS/nix.git"
 
