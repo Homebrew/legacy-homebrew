@@ -106,6 +106,11 @@ class IntegrationCommandTests < Homebrew::TestCase
                  cmd("help")
   end
 
+  def test_config
+    assert_match "HOMEBREW_VERSION: #{HOMEBREW_VERSION}",
+                 cmd("config")
+  end
+
   def test_install
     assert_match "#{HOMEBREW_CELLAR}/testball/0.1", cmd("install", testball)
   ensure
@@ -217,6 +222,66 @@ class IntegrationCommandTests < Homebrew::TestCase
   def test_doctor
     assert_match "This is an integration test",
                  cmd_fail("doctor", "check_integration_test")
+  end
+
+  def test_command
+    assert_equal "#{HOMEBREW_LIBRARY_PATH}/cmd/info.rb",
+                 cmd("command", "info")
+
+    assert_match "Unknown command",
+                 cmd_fail("command", "I-don't-exist")
+  end
+
+  def test_commands
+    assert_match "Built-in commands",
+                 cmd("commands")
+  end
+
+  def test_cat
+    formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
+    content = <<-EOS.undent
+      class Testball < Formula
+        url "https://example.com/testball-0.1.tar.gz"
+      end
+    EOS
+    formula_file.write content
+
+    assert_equal content.chomp, cmd("cat", "testball")
+  ensure
+    formula_file.unlink
+  end
+
+  def test_desc
+    formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
+    content = <<-EOS.undent
+      class Testball < Formula
+        desc "Some test"
+        url "https://example.com/testball-0.1.tar.gz"
+      end
+    EOS
+    formula_file.write content
+
+    assert_equal "testball: Some test", cmd("desc", "testball")
+  ensure
+    formula_file.unlink
+  end
+
+  def test_edit
+    (HOMEBREW_REPOSITORY/".git").mkpath
+    formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
+    content = <<-EOS.undent
+      class Testball < Formula
+        url "https://example.com/testball-0.1.tar.gz"
+        # something here
+      end
+    EOS
+    formula_file.write content
+
+    assert_match "# something here",
+                 cmd("edit", "testball", {"EDITOR" => "/bin/cat"})
+  ensure
+    formula_file.unlink
+    (HOMEBREW_REPOSITORY/".git").unlink
   end
 
   def test_custom_command
