@@ -5,6 +5,7 @@ class Cryptopp < Formula
   mirror "https://www.cryptopp.com/cryptopp563.zip"
   version "5.6.3"
   sha256 "9390670a14170dd0f48a6b6b06f74269ef4b056d4718a1a329f6f6069dc957c9"
+  revision 1
 
   # https://cryptopp.com/wiki/Config.h#Options_and_Defines
   bottle :disable, "Library and clients must be built on the same microarchitecture"
