@@ -366,12 +366,12 @@ class Tap
     map(&:name)
   end
 
-  private
-
+  # @private
   def formula_file_to_name(file)
     "#{name}/#{file.basename(".rb")}"
   end
 
+  # @private
   def alias_file_to_name(file)
     "#{name}/#{file.basename}"
   end
