@@ -2,8 +2,9 @@ class Keybase < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io/"
   url "https://github.com/keybase/client/archive/v1.0.8-0.tar.gz"
-  sha256 "b43fc29e9ec6d06fb7371a597ad7a2f28ee8e125ae8b9c9c34d1c4d176b6a76d"
   version "1.0.8-0"
+  sha256 "b43fc29e9ec6d06fb7371a597ad7a2f28ee8e125ae8b9c9c34d1c4d176b6a76d"
+  revision 1
 
   head "https://github.com/keybase/client.git"
 
@@ -23,7 +24,6 @@ class Keybase < Formula
     (buildpath/"src/github.com/keybase/client/").install "go"
 
     system "go", "build", "-a", "-tags", "production brew", "github.com/keybase/client/go/keybase"
-
     bin.install "keybase"
   end
 
