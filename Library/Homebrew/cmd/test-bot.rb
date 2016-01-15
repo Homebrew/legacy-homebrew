@@ -241,22 +241,7 @@ module Homebrew
     end
 
     def git(*args)
-      rd, wr = IO.pipe
-
-      pid = fork do
-        rd.close
-        STDERR.reopen("/dev/null")
-        STDOUT.reopen(wr)
-        wr.close
-        Dir.chdir @repository
-        exec("git", *args)
-      end
-      wr.close
-      Process.wait(pid)
-
-      rd.read
-    ensure
-      rd.close
+      @repository.cd { Utils.popen_read("git", *args) }
     end
 
     def download
