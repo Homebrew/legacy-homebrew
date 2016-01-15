@@ -77,6 +77,7 @@ class PerconaServer < Formula
       -DCOMPILATION_COMMENT=Homebrew
       -DWITH_EDITLINE=system
       -DCMAKE_BUILD_TYPE=RelWithDebInfo
+      -DWITHOUT_TOKUDB=1
     ]
 
     # PAM plugin is Linux-only at the moment
