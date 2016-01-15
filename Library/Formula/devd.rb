@@ -9,9 +9,9 @@ class Devd < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "24300e18e3291b229c950f2e9712df430e09e15fd57895041d3e29fa26086b39" => :el_capitan
-    sha256 "249f1d803e732f1a1a91973d610f56ba129338b52831a11cfe08e1d519ac0116" => :yosemite
-    sha256 "613460e6d2368b1c35930eb78d24656a906db92d6a0ed2ad6e8b5764e42d7806" => :mavericks
+    sha256 "3b7c357c44ec47b77d5ad89ff929b38447cb87b1b5698e0efa1d558cb22c7b26" => :el_capitan
+    sha256 "3a91f99b6136a401cd5551d0ed2c06e100bb80e7a844478096fff9ee944934b3" => :yosemite
+    sha256 "6e160b2d36c713c3dce3342f30c7ea2e81b6ec449719e01781c4ca5b21bf3e9e" => :mavericks
   end
 
   depends_on "go" => :build
