@@ -8,9 +8,9 @@ class Gwenhywfar < Formula
   head "http://git.aqbanking.de/git/gwenhywfar.git"
 
   bottle do
-    sha256 "46680498dc76f514f537dfd8881df82ad8bb41c48eca6c0133cf10aea3839506" => :el_capitan
-    sha256 "04f45fcee06842a6e767b10e1a003a3f232486de5ac39104b4f98d9488a56078" => :yosemite
-    sha256 "0969c806c101ab0fe17652bbb3727ef57f276216e8a645247185b15d30c76d87" => :mavericks
+    sha256 "a862274810765ea8012c59b3277b4f2ac82981aa8817070f885872c7074784f4" => :el_capitan
+    sha256 "fc2fe0818ae3bb051544dd9587473529d2c4f17af60052ce349076650263b916" => :yosemite
+    sha256 "6066462c7dc97f8ccb8f4f89f5cc149faf11404a7f6c57a5a24c28d0034d5e3f" => :mavericks
   end
 
   option "without-cocoa", "Build without cocoa support"
