@@ -584,7 +584,7 @@ class FormulaAuditor
     return unless formula.tap # skip formula not from core or any taps
     return unless formula.tap.git? # git log is required
 
-    fv = FormulaVersions.new(formula)
+    fv = FormulaVersions.new(formula, :max_depth => 10)
     revision_map = fv.revision_map("origin/master")
     if (revisions = revision_map[formula.version]).any?
       problem "revision should not decrease" if formula.revision < revisions.max
