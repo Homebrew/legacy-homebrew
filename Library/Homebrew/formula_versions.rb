@@ -9,17 +9,19 @@ class FormulaVersions
 
   attr_reader :name, :path, :repository, :entry_name
 
-  def initialize(formula)
+  def initialize(formula, options = {})
     @name = formula.name
     @path = formula.path
     @repository = formula.tap.path
     @entry_name = @path.relative_path_from(repository).to_s
+    @max_depth = options[:max_depth]
   end
 
   def rev_list(branch)
     repository.cd do
+      depth = 0
       Utils.popen_read("git", "rev-list", "--abbrev-commit", "--remove-empty", branch, "--", entry_name) do |io|
-        yield io.readline.chomp until io.eof?
+        yield io.readline.chomp until io.eof? || (@max_depth && (depth += 1) > @max_depth)
       end
     end
   end
