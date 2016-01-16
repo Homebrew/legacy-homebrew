@@ -12,6 +12,13 @@ class Rcs < Formula
     sha256 "9581dbb7719c35db41b3d198185b798b08e1d4bca92b4c4ab32e53deb8207f7e" => :mountain_lion
   end
 
+  # Fixes use of _Noreturn attribute
+  # This patch is a commit from the upstream git repo; will be in the next release.
+  patch do
+    url "https://raw.githubusercontent.com/Homebrew/patches/3fff7c990b8df4174045834b9c1210e7736ff5a4/rcs/noreturn.patch"
+    sha256 "ac2f5ad1df932361e19c6184d2dfddfbe7664184ac4c24a3224c85707cd4da9f"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
