@@ -151,7 +151,7 @@ class Cmd
       args << arg unless tool =~ /^clang/
     when "-Wno-deprecated-register"
       # older gccs don't support these flags
-      args << arg unless tool =~ /^gcc-4.[02]/
+      args << arg unless tool =~ /^g..-4.[02]/
     when /^-W[alp],/, /^-Wno-/
       args << arg
     when /^-W.*/
