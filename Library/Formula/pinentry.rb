@@ -16,15 +16,21 @@ class Pinentry < Formula
   depends_on "pkg-config" => :build
   depends_on "libgpg-error"
   depends_on "libassuan"
+  depends_on "gtk+" => :optional
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--disable-silent-rules",
-                          "--prefix=#{prefix}",
-                          "--disable-pinentry-qt",
-                          "--disable-pinentry-qt5",
-                          "--disable-pinentry-gtk2",
-                          "--disable-pinentry-gnome3"
+    args = %W[
+      --disable-dependency-tracking
+      --disable-silent-rules
+      --prefix=#{prefix}
+      --disable-pinentry-qt
+      --disable-pinentry-qt5
+      --disable-pinentry-gnome3
+    ]
+
+    args << "--disable-pinentry-gtk2" if build.without? "gtk+"
+
+    system "./configure", *args
     system "make", "install"
   end
 
