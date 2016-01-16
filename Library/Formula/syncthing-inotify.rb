@@ -3,9 +3,8 @@ require "language/go"
 class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
-  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.7.tar.gz"
-  sha256 "33f51b34906548fe69b4aab2dbbb24397b523b357d4c9137324c1fddda9022b0"
-  revision 1
+  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.8.tar.gz"
+  sha256 "14e0684e51c40d5b62d0faef9a59e3a7c6a2ad97583cfbcdbc1684ffac5e3b7b"
 
   head "https://github.com/syncthing/syncthing-inotify.git"
 
