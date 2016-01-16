@@ -21,9 +21,10 @@ class Vifm < Formula
   end
 
   bottle do
-    sha256 "bbd822c0eb5c57e044d256ca2e45a8a8511ef2a500a99b293975e99e36e9da8e" => :yosemite
-    sha256 "ef3ee7dcece9fd892e284cff8887ab050b08bc976d8131cd5c511957724d2fc5" => :mavericks
-    sha256 "4adfb953326729dbcd921343719c833483340012da18760e4d3951dc6a758758" => :mountain_lion
+    revision 1
+    sha256 "57d2224f685ad01c2cded9a3840c6999a75e3544111c501822412ac6bac9f460" => :el_capitan
+    sha256 "d875cfb97b83552d78ff3ed9d1c2ec8faa35ed2b4bd27dabbeb48eca7af820f0" => :yosemite
+    sha256 "032ed7e7c2256a7e352322b65e68fd220ce35d59ea9a558d2112df86275fbe45" => :mavericks
   end
 
   def install
