@@ -88,8 +88,7 @@ class Kafka < Formula
     ohai "Checking that the correct JAR (kafka_2.10.0-0.9.0.0.jar) is being loaded by kafka-run-class.sh"
 
     require 'open3'
-    Open3.popen3({ "LOG_DIR" => "#{testpath}/kafkalog" },
-                "kafka-server-start.sh #{etc}/kafka/server.properties --override zookeeper.connect=localhost:-1") do |_, stdout, _, _|
+    Open3.popen3("LOG_DIR=#{testpath}/kafkalog kafka-server-start.sh #{etc}/kafka/server.properties --override zookeeper.connect=localhost:-1") do |_, stdout, _, _|
       assert_match /.*environment:java\.class\.path.*kafka_2\.10-0\.9\.0\.0\.jar.*/, stdout.read
     end
   end
