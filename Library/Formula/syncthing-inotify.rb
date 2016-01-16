@@ -3,9 +3,8 @@ require "language/go"
 class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
-  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.7.tar.gz"
-  sha256 "33f51b34906548fe69b4aab2dbbb24397b523b357d4c9137324c1fddda9022b0"
-  revision 1
+  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.8.tar.gz"
+  sha256 "14e0684e51c40d5b62d0faef9a59e3a7c6a2ad97583cfbcdbc1684ffac5e3b7b"
 
   head "https://github.com/syncthing/syncthing-inotify.git"
 
@@ -25,7 +24,7 @@ class SyncthingInotify < Formula
 
   go_resource "github.com/zillode/notify" do
     url "https://github.com/Zillode/notify.git",
-      :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"
+      :revision => "7a61ff497e40ce25d1c49bfe8402fdfb3be6a88c"
   end
 
   def install
