@@ -24,7 +24,7 @@ class SyncthingInotify < Formula
 
   go_resource "github.com/zillode/notify" do
     url "https://github.com/Zillode/notify.git",
-      :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"
+      :revision => "7a61ff497e40ce25d1c49bfe8402fdfb3be6a88c"
   end
 
   def install
