@@ -30,7 +30,7 @@ class Swift < Formula
   end
 
   head do
-    url "https://github.com/apple/swift"
+    url "https://github.com/apple/swift.git"
 
     resource "cmark" do
       url "https://github.com/apple/swift-cmark.git"
