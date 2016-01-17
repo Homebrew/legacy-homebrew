@@ -1,7 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 chdir() {
-  cd "$@" >/dev/null
+  cd "$@" >/dev/null || {
+    echo "Error: failed to cd to " "$@" "!" >&2
+    exit 1
+  }
 }
 
 # Force UTF-8 to avoid encoding issues for users with broken locale settings.
@@ -21,7 +24,39 @@ then
                          chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)"
 fi
 
-BREW_LIBRARY_DIRECTORY="$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)"
+HOMEBREW_PREFIX="$(chdir "$(dirname "$(dirname "$HOMEBREW_BREW_FILE")")" && pwd -P)"
+HOMEBREW_REPOSITORY="$(chdir "$BREW_FILE_DIRECTORY"/../ && pwd -P)"
+HOMEBREW_LIBRARY="$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)"
+
+# Where we store built products; /usr/local/Cellar if it exists,
+# otherwise a Cellar relative to the Repository.
+if [ -d "$HOMEBREW_PREFIX/Cellar" ]
+then
+  HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+else
+  HOMEBREW_CELLAR="$HOMEBREW_REPOSITORY/Cellar"
+fi
+
+if [ "$*" = "--prefix" ]
+then
+  echo "$HOMEBREW_PREFIX"
+  exit 0
+elif [ "$*" = "--cellar" ]
+then
+  echo "$HOMEBREW_CELLAR"
+  exit 0
+elif [ "$*" = "--repository" ] || [ "$*" = "--repo" ]
+then
+  echo "$HOMEBREW_REPOSITORY"
+  exit 0
+fi
+
+if [ "$HOMEBREW_PREFIX" = "/" ] || [ "$HOMEBREW_PREFIX" = "/usr" ]
+then
+  # it may work, but I only see pain this route and don't want to support it
+  echo "Cowardly refusing to continue at this prefix: $HOMEBREW_PREFIX" >&2
+  exit 1
+fi
 
 # Users may have these set, pointing the system Ruby
 # at non-system gem paths
@@ -33,9 +68,14 @@ then
   unset HOMEBREW_RUBY_PATH
 fi
 
+if [ "$(uname -s)" = "Darwin" ]
+then
+  HOMEBREW_OSX="1"
+fi
+
 if [ -z "$HOMEBREW_RUBY_PATH" ]
 then
-  if [ "$(uname -s)" = "Darwin" ]
+  if [ -n "$HOMEBREW_OSX" ]
   then
     HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
   else
@@ -45,5 +85,77 @@ fi
 
 export HOMEBREW_BREW_FILE
 export HOMEBREW_RUBY_PATH
+export HOMEBREW_PREFIX
+export HOMEBREW_REPOSITORY
+export HOMEBREW_LIBRARY
+export HOMEBREW_CELLAR
 
-exec "$HOMEBREW_RUBY_PATH" -W0 "$BREW_LIBRARY_DIRECTORY/brew.rb" "$@"
+if [ -n "$HOMEBREW_OSX" ]
+then
+  if [ "$(xcode-\select --print-path)" = "/" ]
+  then
+    cat >&2 <<EOS
+Your xcode-select path is currently set to '/'.
+This causes the 'xcrun' tool to hang, and can render Homebrew unusable.
+If you are using Xcode, you should:
+  sudo xcode-select -switch /Applications/Xcode.app
+Otherwise, you should:
+  sudo rm -rf /usr/share/xcode-select
+EOS
+    exit 1
+  fi
+
+  XCRUN_OUTPUT="$(/usr/bin/xcrun clang 2>&1)"
+  XCRUN_STATUS="$?"
+
+  if [ "$XCRUN_STATUS" != "0" ] && [[ "$XCRUN_OUTPUT" =~ license ]]
+  then
+    cat >&2 <<EOS
+You have not agreed to the Xcode license. Please resolve this by running:
+  sudo xcodebuild -license
+EOS
+    exit 1
+  fi
+fi
+
+# Many Pathname operations use getwd when they shouldn't, and then throw
+# odd exceptions. Reduce our support burden by showing a user-friendly error.
+if ! [ -d "$(pwd)" ]
+then
+  echo "The current working directory doesn't exist, cannot proceed."
+  exit 1
+fi
+
+for i in "$@"
+do
+  [[ "$i" =~ ^- ]] && continue
+  HOMEBREW_COMMAND="$i"
+  HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$i.sh"
+  break
+done
+
+if [ "$(id -u)" = "0" ] && [ "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]
+then
+  for cmd in install reinstall postinstall link pin unpin update update-bash upgrade create migrate tap switch
+  do
+    [ "$HOMEBREW_COMMAND" != "$cmd" ] && continue
+    cat >&2 <<EOS
+Cowardly refusing to 'sudo brew $i'
+You can use brew with sudo, but only if the brew executable is owned by root.
+However, this is both not recommended and completely unsupported so do so at
+your own risk.
+EOS
+    exit 1
+  done
+fi
+
+if [ -n "$HOMEBREW_BASH_COMMAND" ] && [ -x "$HOMEBREW_BASH_COMMAND" ]
+then
+  # eval rather than executing directly to ensure the entire file is read into
+  # memory before it is run. This makes running a Bash script behave more like
+  # a Ruby script and avoids hard-to-debug issues if the Bash script is updated
+  # at the same time as being run.
+  eval "$(cat "$HOMEBREW_BASH_COMMAND")" "$@"
+else
+  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$@"
+fi
