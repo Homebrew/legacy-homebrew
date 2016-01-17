@@ -11,9 +11,9 @@ class DockerMachineParallels < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "141555897d6e1bc6f25457fffaccc68f0cd6f7ddfb986372b49a85c7e2576899" => :el_capitan
-    sha256 "0659e5dec66733dfbd5b049e5314f2608255027c0a1047633bb708e69d740ae4" => :yosemite
-    sha256 "2e800a8a40674c9b9c1662df34209dbaea6a77001689293106dbecc33a28b1c5" => :mavericks
+    sha256 "63084d2b1a2bca8902568c4d74b59c0f00cfd600866ad77c6ce2a425e52b8e8d" => :el_capitan
+    sha256 "601c3193820144ab576dcf67db83fcf31bfd683e920467b562d4c927576f4de9" => :yosemite
+    sha256 "9239330937d11b2ca3ebe8bd6a209827b47d091b6cb6725652899bdeb82a29ea" => :mavericks
   end
 
   depends_on "go" => :build
