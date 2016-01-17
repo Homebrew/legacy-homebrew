@@ -10,15 +10,15 @@ class Antiword < Formula
   end
 
   def install
-    inreplace "antiword.h", "/usr/share/antiword", "#{share}/antiword"
+    inreplace "antiword.h", "/usr/share/antiword", pkgshare
 
     system "make", "CC=#{ENV.cc}",
                    "LD=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags} -DNDEBUG",
                    "GLOBAL_INSTALL_DIR=#{bin}",
-                   "GLOBAL_RESOURCES_DIR=#{share}/antiword"
+                   "GLOBAL_RESOURCES_DIR=#{pkgshare}"
     bin.install "antiword"
-    (share/"antiword").install Dir["Resources/*"]
+    pkgshare.install Dir["Resources/*"]
     man1.install "Docs/antiword.1"
   end
 
