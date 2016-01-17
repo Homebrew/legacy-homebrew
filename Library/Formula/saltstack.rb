@@ -33,8 +33,8 @@ class Saltstack < Formula
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.0.tar.gz"
-    sha256 "4881966532b5a36c552244fd909de66d1b8c4a26086f56fd5837cfcde63f8eb8"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
   end
 
   resource "futures" do
@@ -63,8 +63,8 @@ class Saltstack < Formula
   end
 
   resource "pyzmq" do
-    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.1.0.tar.gz"
-    sha256 "bd5b279998538bb197baf59c81584550d713b1b17761e8a638bb6fbda9e5d08d"
+    url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.2.0.tar.gz"
+    sha256 "2dafa322670a94e20283aba2a44b92134d425bd326419b68ad4db8d0831a26ec"
   end
 
   resource "msgpack-python" do
@@ -80,8 +80,8 @@ class Saltstack < Formula
 
   # Required by tornado
   resource "backports.ssl_match_hostname" do
-    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.4.0.2.tar.gz"
-    sha256 "07410e7fb09aab7bdaf5e618de66c3dac84e2e3d628352814dc4c37de321d6ae"
+    url "https://pypi.python.org/packages/source/b/backports.ssl_match_hostname/backports.ssl_match_hostname-3.5.0.1.tar.gz"
+    sha256 "502ad98707319f4a51fa2ca1c677bd659008d27ded9f6380c79e8932e38dcdf2"
   end
 
   # Required by tornado
