@@ -213,7 +213,7 @@ module Homebrew
       @repository = @tap.path
       @skip_homebrew = options.fetch(:skip_homebrew, false)
 
-      if quiet_system "git", "rev-parse", "--verify", "-q", argument
+      if quiet_system "git", "-C", @repository.to_s, "rev-parse", "--verify", "-q", argument
         @hash = argument
       elsif url_match = argument.match(HOMEBREW_PULL_OR_COMMIT_URL_REGEX)
         @url = url_match[0]
