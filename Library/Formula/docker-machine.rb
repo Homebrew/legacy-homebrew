@@ -6,6 +6,8 @@ class DockerMachine < Formula
   url "https://github.com/docker/machine.git",
     :tag => "v0.5.6",
     :revision => "61388e98540321b34f4a27f88df9e7a4443b9ac8"
+  revision 1
+
   head "https://github.com/docker/machine.git"
 
   bottle do
