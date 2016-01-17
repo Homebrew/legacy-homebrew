@@ -7,9 +7,10 @@ class Findutils < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e6120861e27d3fabc684f47a848269b959c8353b071bcacca2cb21298abae543" => :el_capitan
-    sha256 "3f6ba384bb5f22e14c5474f21940154a289d075c3aac4e8299d8dc9112ac87c3" => :yosemite
-    sha256 "2869b60125ff5b945131d2654f5245967d5887d8f1003bccb02270369ad8550c" => :mavericks
+    revision 1
+    sha256 "fc0efb414966dda5544279320c8b7505a7a292bcf38164b7afcc5fdfcf666aa5" => :el_capitan
+    sha256 "e7fb30feeb8f5adb37e29c298d24da06a172d778a0d1373ed47c02bb3735419d" => :yosemite
+    sha256 "4dffec36d2f9b22e67c75aecba9391af95408426bcae16e270ae42e53305909a" => :mavericks
   end
 
   deprecated_option "default-names" => "with-default-names"
