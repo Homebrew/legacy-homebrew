@@ -8,7 +8,7 @@ A formula is a package definition written in Ruby. It can be created with `brew 
   * [An Introduction](#an-introduction)
 * [Basic Instructions](#basic-instructions)
   * [Grab the URL](#grab-the-url)
-  * [Fill in the <a href="http://www\.rubydoc\.info/github/Homebrew/homebrew/master/Formula\#homepage%3D\-class\_method">homepage</a>](#fill-in-the-homepage)
+  * [Fill in the homepage](#fill-in-the-homepage)
   * [Check the build system](#check-the-build-system)
   * [Check for dependencies](#check-for-dependencies)
   * [Specifying other formulae as dependencies](#specifying-other-formulae-as-dependencies)
@@ -26,7 +26,7 @@ A formula is a package definition written in Ruby. It can be created with `brew 
 * [Convenience Tools](#convenience-tools)
   * [Messaging](#messaging)
   * [bin\.install "foo"](#bininstall-foo)
-  * [<a href="http://www\.rubydoc\.info/github/Homebrew/homebrew/master/Utils/Inreplace">inreplace</a>](#inreplace)
+  * [inreplace](#inreplace)
   * [Patches](#patches)
   * [Creating the diff](#creating-the-diff)
 * [Advanced Formula Tricks](#advanced-formula-tricks)
@@ -119,7 +119,7 @@ If `brew` said `Warning: Version cannot be determined from URL` when doing the `
 Homebrew will try to guess the formula’s name from its URL. If it fails to do
 so you can override this with `brew create <url> --set-name <name>`.
 
-## Fill in the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)
+## Fill in the `homepage`
 
 **We don’t accept formulae without [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)s!**
 
@@ -402,9 +402,9 @@ system "make", "install"
 
 You’ll see stuff like that in other formulae. This moves the file `foo` into the Formula’s `bin` directory (`/usr/local/Cellar/pkg/0.1/bin`) and makes it executable (`chmod 0555 foo`).
 
-## [`inreplace`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Utils/Inreplace)
+## `inreplace`
 
-A convenience function that can edit files in-place. For example:
+[`inreplace`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Utils/Inreplace) is a convenience function that can edit files in-place. For example:
 
 `inreplace "path", before, after`
 
