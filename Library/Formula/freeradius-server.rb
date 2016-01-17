@@ -1,6 +1,7 @@
 class FreeradiusServer < Formula
   desc "High-performance and highly configurable RADIUS server"
   homepage "http://freeradius.org/"
+  head "https://github.com/FreeRADIUS/freeradius-server.git"
   url "ftp://ftp.freeradius.org/pub/freeradius/freeradius-server-3.0.9.tar.bz2"
   mirror "http://ftp.cc.uoc.gr/mirrors/ftp.freeradius.org/freeradius-server-3.0.9.tar.bz2"
   sha256 "030d9bfe5ef42d0fd4be94a1fe03a60af9dff35b7ee89e50b0a73ff78606f7e9"
