@@ -1,8 +1,13 @@
 class Libvoikko < Formula
-  desc "Linguistic software for Finnish"
+  desc "Linguistic software for Finnish and other languages and Finnish dictionary"
   homepage "http://voikko.puimula.org/"
-  url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-3.8.tar.gz"
-  sha256 "1df2f4a47217d1de5978e1586c1bbf61a1454cef6aadadbda6aec45738e69cff"
+  url "http://www.puimula.org/voikko-sources/libvoikko/libvoikko-4.0.tar.gz"
+  sha256 "24c6e3625eb5a8550512f7ad2f708c5392b9a0b164c04fb3659592048555e291"
+
+  resource "voikko-fi" do
+    url "http://www.puimula.org/voikko-sources/voikko-fi/voikko-fi-2.0.tar.gz"
+    sha256 "02f7595dd7e3cee188184417d6a7365f9dc653b020913f5ad75d1f14b548fafd"
+  end
 
   bottle do
     cellar :any
@@ -12,7 +17,9 @@ class Libvoikko < Formula
   end
 
   depends_on "pkg-config" => :build
-  depends_on "suomi-malaga-voikko"
+  depends_on :python3 => :build
+  depends_on "foma" => :build
+  depends_on "hfstospell"
 
   def install
     system "./configure", "--disable-debug",
@@ -21,5 +28,16 @@ class Libvoikko < Formula
                           "--prefix=#{prefix}",
                           "--with-dictionary-path=#{HOMEBREW_PREFIX}/lib/voikko"
     system "make", "install"
+
+    resource("voikko-fi").stage do
+      ENV.append_path "PATH", "#{bin}"
+      system "make", "vvfst"
+      system "make", "vvfst-install", "DESTDIR=#{lib}/voikko"
+      lib.install_symlink "voikko"
+    end
+  end
+
+  test do
+    pipe_output("#{bin}/voikkospell -m", "onkohan\n")
   end
 end
