@@ -6,7 +6,7 @@ class Binkd < Formula
 
   def install
     cp Dir["mkfls/unix/*"].select { |f| File.file? f }, "."
-    inreplace "binkd.conf", "/var/", "#{var}/var/"
+    inreplace "binkd.conf", "/var/", "#{var}/"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
