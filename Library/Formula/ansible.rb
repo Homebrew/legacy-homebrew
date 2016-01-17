@@ -1,6 +1,6 @@
 class Ansible < Formula
   desc "Automate deployment, configuration, and upgrading"
-  homepage "https://www.ansible.com/home"
+  homepage "http://www.ansible.com"
   url "https://releases.ansible.com/ansible/ansible-2.0.0.2.tar.gz"
   sha256 "27db0b99113fab85b1430c361c7790a0aa7f5c614c9af13362e2adbba07e5828"
 
@@ -557,7 +557,7 @@ class Ansible < Formula
     touch vendor_site_packages/"ndg/__init__.py"
 
     inreplace "lib/ansible/constants.py" do |s|
-      s.gsub! "/usr/share/ansible", share/"ansible"
+      s.gsub! "/usr/share/ansible", pkgshare
       s.gsub! "/etc/ansible", etc/"ansible"
     end
 
