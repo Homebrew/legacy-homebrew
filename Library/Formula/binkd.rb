@@ -5,8 +5,8 @@ class Binkd < Formula
   sha256 "917e45c379bbd1a140d1fe43179a591f1b2ec4004b236d6e0c4680be8f1a0dc0"
 
   def install
-    cp Pathname.glob("mkfls/unix/*").select(&:file?), "."
-    inreplace "binkd.conf", "/var/", "/usr/local/var/"
+    cp Dir["mkfls/unix/*"].select { |f| File.file? f }, "."
+    inreplace "binkd.conf", "/var/", "#{var}/var/"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
