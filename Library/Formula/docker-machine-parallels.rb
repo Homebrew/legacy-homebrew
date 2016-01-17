@@ -5,6 +5,8 @@ class DockerMachineParallels < Formula
   homepage "https://github.com/Parallels/docker-machine-parallels"
   url "https://github.com/Parallels/docker-machine-parallels/archive/v1.1.1.tar.gz"
   sha256 "a085bbc8c231f4629d3404677f73b49bff2414f7002f0e9acf9aee8cdae15829"
+  revision 1
+
   head "https://github.com/Parallels/docker-machine-parallels.git"
 
   bottle do
