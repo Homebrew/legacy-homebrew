@@ -5,6 +5,7 @@ class DockerSwarm < Formula
   homepage "https://github.com/docker/swarm"
   url "https://github.com/docker/swarm/archive/v1.0.0.tar.gz"
   sha256 "85951f91a2e3b6b82ac775bafce3fc76dd29aa2cdeb6a3ad84a97116fd72d2d8"
+  revision 1
 
   head "https://github.com/docker/swarm.git"
 
@@ -26,7 +27,6 @@ class DockerSwarm < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     system "go", "build", "-o", "docker-swarm"
-
     bin.install "docker-swarm"
   end
 
