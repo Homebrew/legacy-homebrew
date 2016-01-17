@@ -278,7 +278,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     formula_file.write content
 
     assert_match "# something here",
-                 cmd("edit", "testball", {"EDITOR" => "/bin/cat"})
+                 cmd("edit", "testball", {"HOMEBREW_EDITOR" => "/bin/cat"})
   ensure
     formula_file.unlink
     (HOMEBREW_REPOSITORY/".git").unlink
