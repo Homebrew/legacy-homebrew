@@ -8,9 +8,10 @@ class Pushpin < Formula
 
   bottle do
     cellar :any
-    sha256 "b3db3ceec6249d9c7f2a759d02290909dd71c07dfd6693d3f59842d04264d4e3" => :el_capitan
-    sha256 "1ed980f1db9942934c7faf6ba993bbfa9b6052182a5803a2a2bd6c6247f320a5" => :yosemite
-    sha256 "33920a5a880cc622d945e6785154ed022f798b45515d34e485da8136bb0fd1f7" => :mavericks
+    revision 1
+    sha256 "c749f9052715ac5b625736726caff94a82584bcd453f8e601c95c3b419bc6c66" => :el_capitan
+    sha256 "507da5b282dcd2ee0a37bee2773aebf91afb487dbc2e4ac5bdc509e7ce7d6e5d" => :yosemite
+    sha256 "a8b70f8b64ed196b2d3159b8c0f62b93a8a7c3967e217776680c401ba7b313c0" => :mavericks
   end
 
   depends_on "pkg-config" => :build
