@@ -7,6 +7,13 @@ class Jump < Formula
   sha256 "6546efc8e8c63bd64e2b2fd8ff785c80e43d094014765c55b94a0fc1e811c6f2"
   head "https://github.com/gsamokovarov/jump.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "2d5b97c26acbbd81972b134069b45194f9272163757a2cf09d7209cfdc17fd53" => :el_capitan
+    sha256 "9265569729daefb9f0c9b8d048524655bdef0fd6ae855df93caa10a1161325af" => :yosemite
+    sha256 "9334ca6737eb0964a6329ba1a7016da04bda78384c927771e674426872070269" => :mavericks
+  end
+
   depends_on "go" => :build
 
   def install
