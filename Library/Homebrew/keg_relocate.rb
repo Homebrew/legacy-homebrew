@@ -70,16 +70,6 @@ class Keg
     end
   end
 
-  def change_dylib_id(id, file)
-    puts "Changing dylib ID of #{file}\n  from #{file.dylib_id}\n    to #{id}" if ARGV.debug?
-    install_name_tool("-id", id, file)
-  end
-
-  def change_install_name(old, new, file)
-    puts "Changing install name in #{file}\n  from #{old}\n    to #{new}" if ARGV.debug?
-    install_name_tool("-change", old, new, file)
-  end
-
   # Detects the C++ dynamic libraries in place, scanning the dynamic links
   # of the files within the keg.
   # Note that this doesn't attempt to distinguish between libstdc++ versions,
@@ -108,82 +98,6 @@ class Keg
         yield file if hardlinks.add? file.stat.ino
       end
     end
-  end
-
-  def install_name_tool(*args)
-    @require_install_name_tool = true
-    tool = MacOS.install_name_tool
-    system(tool, *args) || raise(ErrorDuringExecution.new(tool, args))
-  end
-
-  def require_install_name_tool?
-    !!@require_install_name_tool
-  end
-
-  # If file is a dylib or bundle itself, look for the dylib named by
-  # bad_name relative to the lib directory, so that we can skip the more
-  # expensive recursive search if possible.
-  def fixed_name(file, bad_name)
-    if bad_name.start_with? PREFIX_PLACEHOLDER
-      bad_name.sub(PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s)
-    elsif bad_name.start_with? CELLAR_PLACEHOLDER
-      bad_name.sub(CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s)
-    elsif (file.dylib? || file.mach_o_bundle?) && (file.parent + bad_name).exist?
-      "@loader_path/#{bad_name}"
-    elsif file.mach_o_executable? && (lib + bad_name).exist?
-      "#{lib}/#{bad_name}"
-    elsif (abs_name = find_dylib(bad_name)) && abs_name.exist?
-      abs_name.to_s
-    else
-      opoo "Could not fix #{bad_name} in #{file}"
-      bad_name
-    end
-  end
-
-  def lib
-    path.join("lib")
-  end
-
-  def each_install_name_for(file, &block)
-    dylibs = file.dynamically_linked_libraries
-    dylibs.reject! { |fn| fn =~ /^@(loader_|executable_|r)path/ }
-    dylibs.each(&block)
-  end
-
-  def dylib_id_for(file)
-    # The new dylib ID should have the same basename as the old dylib ID, not
-    # the basename of the file itself.
-    basename = File.basename(file.dylib_id)
-    relative_dirname = file.dirname.relative_path_from(path)
-    opt_record.join(relative_dirname, basename).to_s
-  end
-
-  # Matches framework references like `XXX.framework/Versions/YYY/XXX` and
-  # `XXX.framework/XXX`, both with or without a slash-delimited prefix.
-  FRAMEWORK_RX = %r{(?:^|/)(([^/]+)\.framework/(?:Versions/[^/]+/)?\2)$}.freeze
-
-  def find_dylib_suffix_from(bad_name)
-    if (framework = bad_name.match(FRAMEWORK_RX))
-      framework[1]
-    else
-      File.basename(bad_name)
-    end
-  end
-
-  def find_dylib(bad_name)
-    return unless lib.directory?
-    suffix = "/#{find_dylib_suffix_from(bad_name)}"
-    lib.find { |pn| break pn if pn.to_s.end_with?(suffix) }
-  end
-
-  def mach_o_files
-    mach_o_files = []
-    path.find do |pn|
-      next if pn.symlink? || pn.directory?
-      mach_o_files << pn if pn.dylib? || pn.mach_o_bundle? || pn.mach_o_executable?
-    end
-
-    mach_o_files
   end
 
   def text_files
@@ -218,5 +132,35 @@ class Keg
     end
 
     symlink_files
+  end
+
+  private
+
+  # If file is a dylib or bundle itself, look for the dylib named by
+  # bad_name relative to the lib directory, so that we can skip the more
+  # expensive recursive search if possible.
+  def fixed_name(file, bad_name)
+    if bad_name.start_with? PREFIX_PLACEHOLDER
+      bad_name.sub(PREFIX_PLACEHOLDER, HOMEBREW_PREFIX.to_s)
+    elsif bad_name.start_with? CELLAR_PLACEHOLDER
+      bad_name.sub(CELLAR_PLACEHOLDER, HOMEBREW_CELLAR.to_s)
+    elsif (file.dylib? || file.mach_o_bundle?) && (file.parent + bad_name).exist?
+      "@loader_path/#{bad_name}"
+    elsif file.mach_o_executable? && (lib + bad_name).exist?
+      "#{lib}/#{bad_name}"
+    elsif (abs_name = find_dylib(bad_name)) && abs_name.exist?
+      abs_name.to_s
+    else
+      opoo "Could not fix #{bad_name} in #{file}"
+      bad_name
+    end
+  end
+
+  def dylib_id_for(file)
+    # The new dylib ID should have the same basename as the old dylib ID, not
+    # the basename of the file itself.
+    basename = File.basename(file.dylib_id)
+    relative_dirname = file.dirname.relative_path_from(path)
+    opt_record.join(relative_dirname, basename).to_s
   end
 end

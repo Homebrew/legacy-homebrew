@@ -174,6 +174,10 @@ class Keg
     path.rename(*args)
   end
 
+  def lib
+    path.join("lib")
+  end
+
   def linked?
     linked_keg_record.symlink? &&
       linked_keg_record.directory? &&

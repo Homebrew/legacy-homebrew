@@ -3,6 +3,7 @@ require "os/mac/version"
 require "os/mac/xcode"
 require "os/mac/xquartz"
 require "os/mac/pathname"
+require "os/mac/keg"
 require "os/mac/sdk"
 
 module OS
