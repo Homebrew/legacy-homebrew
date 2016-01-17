@@ -1,19 +1,12 @@
 class Scala < Formula
-  desc "Scala programming language"
+  desc "JVM-based programming language"
   homepage "http://www.scala-lang.org/"
 
-  depends_on :java => "1.6+"
-
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "dcc350cf8dcc527b283b52d81ce27f0ee19403f1b805c6de74cbbd1c00571483" => :el_capitan
-    sha256 "abe3bdb7c49c2d8542731b5bff8ddd2b64b361e5fbc104217ca2f2423b73fbb9" => :yosemite
-    sha256 "87619ccc086a0636f89fec974759ae952dc1979948567f7e7d6200b7be64dffc" => :mavericks
-    sha256 "44c9502a3195a7cd25699162948b4eb80676547a24ed0a001520320d6a54aac7" => :mountain_lion
+  if build.devel?
+    depends_on :java => "1.8+"
+  else
+    depends_on :java => "1.6+"
   end
-
-  option "with-docs", "Also install library documentation"
-  option "with-src", "Also install sources for IDE support"
 
   stable do
     url "http://www.scala-lang.org/files/archive/scala-2.11.7.tgz"
@@ -30,28 +23,39 @@ class Scala < Formula
     end
   end
 
-  devel do
-    url "http://www.scala-lang.org/files/archive/scala-2.12.0-M1.tgz"
-    sha256 "e48971939fa0f82ff3190ecafd22ad98d9d00eb4aef09cd2197265dc44f72eee"
-    version "2.12.0-M1"
-
-    resource "docs" do
-      url "http://www.scala-lang.org/files/archive/scala-docs-2.12.0-M1.zip"
-      sha256 "36683ec16e30b69e3abf424c8cff1d49ebfd5f07b4cd3a015ced767a1ca81221"
-      version "2.12.0-M1"
-    end
-
-    resource "src" do
-      url "https://github.com/scala/scala/archive/v2.12.0-M1.tar.gz"
-      sha256 "0c129529b8dbafa89782c997904705dc59d5b9abf01f97218f86f1c602fca339"
-      version "2.12.0-M1"
-    end
-  end
-
   resource "completion" do
     url "https://raw.githubusercontent.com/scala/scala-dist/v2.11.4/bash-completion/src/main/resources/completion.d/2.9.1/scala"
     sha256 "95aeba51165ce2c0e36e9bf006f2904a90031470ab8d10b456e7611413d7d3fd"
   end
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "dcc350cf8dcc527b283b52d81ce27f0ee19403f1b805c6de74cbbd1c00571483" => :el_capitan
+    sha256 "abe3bdb7c49c2d8542731b5bff8ddd2b64b361e5fbc104217ca2f2423b73fbb9" => :yosemite
+    sha256 "87619ccc086a0636f89fec974759ae952dc1979948567f7e7d6200b7be64dffc" => :mavericks
+    sha256 "44c9502a3195a7cd25699162948b4eb80676547a24ed0a001520320d6a54aac7" => :mountain_lion
+  end
+
+  devel do
+    url "http://www.scala-lang.org/files/archive/scala-2.12.0-M3.tgz"
+    sha256 "67ee3394ff5f9a98f9579accc9e20e0c9911d6f0bce96d70cf63cbb676643802"
+    version "2.12.0-M3"
+
+    resource "docs" do
+      url "http://www.scala-lang.org/files/archive/scala-docs-2.12.0-M3.zip"
+      sha256 "f5c5bc3635c08dde2e938b8051974404bb7126c27039753de337f7e3fa4e5844"
+      version "2.12.0-M3"
+    end
+
+    resource "src" do
+      url "https://github.com/scala/scala/archive/v2.12.0-M3.tar.gz"
+      sha256 "104a5ec973bfc40bfd1cd1bbaeec43b767555367c65fa7880a615f2285550d70"
+      version "2.12.0-M3"
+    end
+  end
+
+  option "with-docs", "Also install library documentation"
+  option "with-src", "Also install sources for IDE support"
 
   def install
     rm_f Dir["bin/*.bat"]
@@ -76,14 +80,19 @@ class Scala < Formula
   end
 
   test do
-    file = testpath/"hello.scala"
+    file = testpath/"Test.scala"
     file.write <<-EOS.undent
-      object Computer {
+      object Test {
         def main(args: Array[String]) {
           println(s"${2 + 2}")
         }
       }
     EOS
-    assert_equal "4", shell_output("#{bin}/scala #{file}").strip
+
+    out = shell_output("#{bin}/scala #{file}").strip
+    # Shut down the compile server so as not to break Travis
+    system bin/"fsc", "-shutdown"
+
+    assert_equal "4", out
   end
 end
