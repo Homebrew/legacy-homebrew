@@ -35,3 +35,16 @@ To make changes based on feedback:
 Once all feedback has been addressed and if it's a change we want to include (we include most changes) then we'll add your commit to Homebrew. Note it will not show up as "Merged" because of the way we include contributions.
 
 Well done, you are now a Homebrew contributor!
+
+Tips:
+
+* `pushd /usr/local` before doing any of the following; `popd` afterward.
+
+* If `brew update` doesn't seem to work, you left your branch checked out. If you're still working on it, `git rebase origin/master` after each `brew update`. To restore normality, `git checkout master`.
+
+* If `brew update` outputs tips on how to "restore the stashed changes", you had edited some files but not committed the changes. Follow the `git stash pop` advice to recover.
+
+* To keep the `master` branch in your fork repository in sync:
+
+    - `git fetch`
+    - `git push YOUR_USERNAME master`
