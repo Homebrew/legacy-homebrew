@@ -71,6 +71,37 @@ making changes to inline patches—make sure they still apply.
   and passes them.
 - Thank people for contributing.
 
+### Testing
+Unlike most formulae changes, code that ends up in core immediately affects all
+our users. Testing and improving our test coverage is therefore vital to avoid
+breaking users’ installations.
+(See [#46994](https://github.com/Homebrew/homebrew/issues/46994) for the
+original discussion.)
+
+Use `brew tests --coverage` to run tests and generate a coverage report, then
+`open $(brew --repo)/Library/Homebrew/test/coverage/index.html` for inspection.
+
+Bug fixes (can be omitted/postponed for urgent fixes):
+
+1. Create a (failing) test that exposes the bug.
+2. Fix the bug.
+3. Check that the test now succeeds and none of the preexisting tests fail.
+
+New features and major changes:
+
+1. Look at the coverage of the code you wish to modify and see if it’s covered
+   by existing tests.
+2. If necessary, add new (passing) tests to cover the code you wish to modify.
+3. Add/modify the code.
+4. Ensure all tests still pass and write new tests to cover added code.
+
+Code refactorings:
+
+1. Treat them like new features and major changes.
+2. Additionally, consider reviewing existing tests and making better testability
+   another goal of the refactoring (avoid global state, separate concerns,
+   decouple user-input handling from functionality, etc.).
+
 ## Formulae and Formula PRs
 
 ### Quick Checklist
