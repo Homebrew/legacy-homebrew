@@ -34,6 +34,7 @@ class Bazel < Formula
     (etc/"bazel").install prefix/"etc/bazel.bazelrc"
 
     bash_completion.install "bazel-bin/scripts/bazel-complete.bash"
+    zsh_completion.install "scripts/zsh_completion/_bazel"
   end
 
   test do
