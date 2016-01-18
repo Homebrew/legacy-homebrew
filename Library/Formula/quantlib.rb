@@ -24,6 +24,7 @@ class Quantlib < Formula
 
   # fix for quantlib 1.7 linking conflicts with the boost thread library
   # this patch must be removed when quantlib 1.8 is released, because quantlib maintainers fixed the bug
+  # (see https://github.com/lballabio/QuantLib/commit/d1909593d9f36c6703966460fb48773792facd7e)
   patch :p0 do
     url "https://gist.githubusercontent.com/enricodetoma/7d7b137b69726815f070/raw/aa952c28854df8bf3e95069ba1beb3ec76924644/patch-FRA"
     sha256 "cd5814785b3850bfd88559e94331ac3ae907868c36bfa23dbba41e2ef87cd9d9"
