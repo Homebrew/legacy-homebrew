@@ -106,8 +106,7 @@ Code refactorings:
 
 ### Quick Checklist
 This is all that really matters for a new formula:
-- Ensure the name is correct. This cannot be changed later, so it must
-  be right the first time!
+- Ensure the name is correct.
 - Add aliases.
 - Ensure it is not a duplicate of anything that comes with OS X.
 - Ensure it is not a library that can be installed with
@@ -133,10 +132,12 @@ Homebrew is about Unix software. Stuff that builds to an `.app` should
 probably be in Homebrew Cask instead.
 
 ### Naming
-The name is the strictest item, because we can’t change it afterwards.
+The name is important as it helps users find what they are looking for. It can
+be changed afterwards, but getting it right from the start should be the goal.
 
 Choose a name that’s the most common name for the project.
 For example, we chose `objective-caml`, but we should have chosen `ocaml`.
+(This has been rectified nowadays thanks to formula renames.)
 Choose what people say to each other when talking about the project.
 
 Add other names as aliases as symlinks in `Library/Aliases`. Ensure the name
