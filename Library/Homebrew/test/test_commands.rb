@@ -1,8 +1,9 @@
 require "testing_env"
+require "cmd/command"
 require "cmd/commands"
 require "fileutils"
 
-class CommandsCommandTests < Homebrew::TestCase
+class CommandsTests < Homebrew::TestCase
   def setup
     @cmds = [
       # internal commands
@@ -58,5 +59,24 @@ class CommandsCommandTests < Homebrew::TestCase
     end
   ensure
     ENV.replace(env)
+  end
+
+  def test_internal_command_path
+    assert_equal HOMEBREW_LIBRARY_PATH/"cmd/rbcmd.rb",
+                 Homebrew.send(:internal_command_path, "rbcmd")
+    assert_equal HOMEBREW_LIBRARY_PATH/"cmd/shcmd.sh",
+                 Homebrew.send(:internal_command_path, "shcmd")
+    assert_nil Homebrew.send(:internal_command_path, "idontexist1234")
+  end
+
+  def test_internal_dev_command_path
+    ARGV.stubs(:homebrew_developer?).returns false
+    assert_nil Homebrew.send(:internal_command_path, "rbdevcmd")
+
+    ARGV.stubs(:homebrew_developer?).returns true
+    assert_equal HOMEBREW_LIBRARY_PATH/"dev-cmd/rbdevcmd.rb",
+                 Homebrew.send(:internal_command_path, "rbdevcmd")
+    assert_equal HOMEBREW_LIBRARY_PATH/"dev-cmd/shdevcmd.sh",
+                 Homebrew.send(:internal_command_path, "shdevcmd")
   end
 end
