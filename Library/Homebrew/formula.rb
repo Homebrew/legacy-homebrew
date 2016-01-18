@@ -1244,6 +1244,8 @@ class Formula
       "outdated" => outdated?,
       "keg_only" => keg_only?,
       "dependencies" => deps.map(&:name).uniq,
+      "recommended_dependencies" => deps.select(&:recommended?).map(&:name).uniq,
+      "optional_dependencies" => deps.select(&:optional?).map(&:name).uniq,
       "conflicts_with" => conflicts.map(&:name),
       "caveats" => caveats
     }
