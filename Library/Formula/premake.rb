@@ -28,7 +28,7 @@ class Premake < Formula
   end
   
   test do
-    system "premake5", "test" if build.devel? or build.head?
-    system "premake4", "test" if build.stable?
+    system "premake5", "--version" if build.devel? or build.head?
+    system "premake4", "--version" if build.stable?
   end
 end
