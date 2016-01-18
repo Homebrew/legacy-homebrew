@@ -5,10 +5,10 @@ class Bibclean < Formula
   sha256 "d79b191fda9658fa83cb43f638321ae98b4acec5bef23a029ef2fd695639ff24"
 
   bottle do
-    cellar :any
-    sha256 "825009ac0bf781d29eedf23461d0032c1e57658fb53a4568931bd8e11bbec4bb" => :mavericks
-    sha256 "8bf50caf3f23d51de83e0805597bb1ca4f6aeb9e8a28bd03514f5345bdff7cc1" => :mountain_lion
-    sha256 "fb6023f2320a019d6bc0a46376f636e2b330776a22510469fc00715f10203044" => :lion
+    cellar :any_skip_relocation
+    sha256 "1e09e98ec9528bbe6386fc12274bf56fcdc69ddccdef119b0dd3381cebefc8c0" => :el_capitan
+    sha256 "6cba0c4e4d59324ed70a64718c6541dddba994c8cc509db1d7914a1e7f584dcb" => :yosemite
+    sha256 "8e72af36765c47807c07faec8d56d811e0b2cd2ca511adbefad95fbd65aa72cd" => :mavericks
   end
 
   def install
