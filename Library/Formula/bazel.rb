@@ -21,6 +21,7 @@ class Bazel < Formula
     ENV["EMBED_LABEL"] = "#{version}-homebrew"
 
     system "./compile.sh"
+    system "./output/bazel", "build", "scripts:bash_completion"
 
     (prefix/"base_workspace").mkdir
     cp_r Dir["base_workspace/*"], (prefix/"base_workspace"), :dereference_root => true
@@ -31,6 +32,9 @@ class Bazel < Formula
       fetch --package_path=%workspace%:#{prefix}/base_workspace
     EOS
     (etc/"bazel").install prefix/"etc/bazel.bazelrc"
+
+    bash_completion.install "bazel-bin/scripts/bazel-complete.bash"
+    zsh_completion.install "scripts/zsh_completion/_bazel"
   end
 
   test do
