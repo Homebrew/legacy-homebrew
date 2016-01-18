@@ -140,7 +140,7 @@ HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$1.sh"
 if [[ "$(id -u)" = "0" && "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
   case "$HOMEBREW_COMMAND" in
-    install|reinstall|postinstall|link|pin|unpin|update|update-bash|upgrade|create|migrate|tap|switch)
+    instal|install|reinstall|postinstall|ln|link|pin|unpin|update|update-bash|upgrade|create|migrate|tap|switch)
       odie <<EOS
 Cowardly refusing to 'sudo brew $HOMEBREW_COMMAND'
 You can use brew with sudo, but only if the brew executable is owned by root.
