@@ -3,7 +3,7 @@ class Profanity < Formula
   homepage "http://www.profanity.im/"
   url "http://www.profanity.im/profanity-0.4.7.tar.gz"
   sha256 "b02c4e029fe84941050ccab6c8cdf5f15df23de5d1384b4d1ec66da6faee11dd"
-  revision 1
+  revision 2
 
   head "https://github.com/boothj5/profanity.git"
 
@@ -23,6 +23,7 @@ class Profanity < Formula
   depends_on "openssl"
   depends_on "gnutls"
   depends_on "libotr" => :recommended
+  depends_on "gpgme" => :recommended
   depends_on "terminal-notifier" => :optional
 
   def install
