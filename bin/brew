@@ -1,10 +1,23 @@
 #!/bin/bash
 
+odie() {
+  if [[ -t 2 ]] # check whether stderr is a tty.
+  then
+    echo -ne "\033[4;31mError\033[0m: " >&2 # highlight Error with underline and red color
+  else
+    echo -n "Error: " >&2
+  fi
+  if [[ $# -eq 0 ]]
+  then
+    /bin/cat >&2
+  else
+    echo "$*" >&2
+  fi
+  exit 1
+}
+
 chdir() {
-  cd "$@" >/dev/null || {
-    echo "Error: failed to cd to " "$@" "!" >&2
-    exit 1
-  }
+  cd "$@" >/dev/null || odie "Error: failed to cd to $*!"
 }
 
 # Force UTF-8 to avoid encoding issues for users with broken locale settings.
@@ -46,8 +59,7 @@ esac
 if [[ "$HOMEBREW_PREFIX" = "/" || "$HOMEBREW_PREFIX" = "/usr" ]]
 then
   # it may work, but I only see pain this route and don't want to support it
-  echo "Cowardly refusing to continue at this prefix: $HOMEBREW_PREFIX" >&2
-  exit 1
+  odie "Cowardly refusing to continue at this prefix: $HOMEBREW_PREFIX"
 fi
 
 # Users may have these set, pointing the system Ruby
@@ -86,7 +98,7 @@ if [[ -n "$HOMEBREW_OSX" ]]
 then
   if [[ "$('xcode-select' --print-path)" = "/" ]]
   then
-    cat >&2 <<EOS
+    odie <<EOS
 Your xcode-select path is currently set to '/'.
 This causes the 'xcrun' tool to hang, and can render Homebrew unusable.
 If you are using Xcode, you should:
@@ -94,7 +106,6 @@ If you are using Xcode, you should:
 Otherwise, you should:
   sudo rm -rf /usr/share/xcode-select
 EOS
-    exit 1
   fi
 
   XCRUN_OUTPUT="$(/usr/bin/xcrun clang 2>&1)"
@@ -102,11 +113,10 @@ EOS
 
   if [[ "$XCRUN_STATUS" -ne 0 && "$XCRUN_OUTPUT" = *license* ]]
   then
-    cat >&2 <<EOS
+    odie <<EOS
 You have not agreed to the Xcode license. Please resolve this by running:
   sudo xcodebuild -license
 EOS
-    exit 1
   fi
 fi
 
@@ -114,8 +124,7 @@ fi
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
 if ! [[ -d "$(pwd)" ]]
 then
-  echo "The current working directory doesn't exist, cannot proceed." >&2
-  exit 1
+  odie "The current working directory doesn't exist, cannot proceed."
 fi
 
 if [[ "$1" = -v ]]
@@ -132,13 +141,12 @@ if [[ "$(id -u)" = "0" && "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
   case "$HOMEBREW_COMMAND" in
     install|reinstall|postinstall|link|pin|unpin|update|update-bash|upgrade|create|migrate|tap|switch)
-      cat >&2 <<EOS
+      odie <<EOS
 Cowardly refusing to 'sudo brew $HOMEBREW_COMMAND'
 You can use brew with sudo, but only if the brew executable is owned by root.
 However, this is both not recommended and completely unsupported so do so at
 your own risk.
 EOS
-      exit 1
       ;;
   esac
 fi
