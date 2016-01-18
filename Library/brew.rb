@@ -33,7 +33,7 @@ begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
   empty_argv = ARGV.empty?
-  help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
+  help_flag_list = %w[-h --help --usage -? help]
   help_flag = false
   internal_cmd = true
   cmd = nil
@@ -41,7 +41,7 @@ begin
   ARGV.dup.each_with_index do |arg, i|
     if help_flag && cmd
       break
-    elsif arg =~ help_regex
+    elsif help_flag_list.include? arg
       help_flag = true
     elsif !cmd
       cmd = ARGV.delete_at(i)
