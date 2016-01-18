@@ -6,8 +6,6 @@ class Libtbox < Formula
   sha256 "0bd5f88482cb96de5e1a488f1dc20fd759b5a00e992762915f4c8432276462ef"
   head "https://github.com/waruqi/tbox.git"
 
-  option "with-debug", "Build with debug support"
-
   depends_on "xmake" => :build
 
   def install
@@ -19,7 +17,6 @@ class Libtbox < Formula
     args << "--sqlite3=false"
     args << "--openssl=false"
     args << "--polarssl=false"
-    args << "--mode=debug" if build.with? "debug"
 
     system "xmake", "config", *args
     system "xmake", "install", "-o", prefix
