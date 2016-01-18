@@ -10,7 +10,7 @@ class PatchingTests < Homebrew::TestCase
   def formula(*args, &block)
     super do
       url "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
-      sha1 "482e737739d946b7c8cbaf127d9ee9c148b999f5"
+      sha1 TESTBALL_SHA1
       class_eval(&block)
     end
   end
