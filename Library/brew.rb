@@ -12,9 +12,6 @@ require "global"
 if ARGV == %w[--version] || ARGV == %w[-v]
   puts "Homebrew #{Homebrew.homebrew_version_string}"
   exit 0
-elsif ARGV.first == "-v"
-  # Shift the -v to the end of the parameter list
-  ARGV << ARGV.shift
 end
 
 if OS.mac? && MacOS.version < "10.6"
