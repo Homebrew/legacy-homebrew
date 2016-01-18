@@ -49,12 +49,8 @@ connection are run. This should be used when creating for new formulae.</p>
 <p><code>audit</code> exits with a non-zero status if any errors are found. This is useful,
 for instance, for implementing pre-commit hooks.</p></dd>
 <dt><code>cat</code> <var>formula</var></dt><dd><p>Display the source to <var>formula</var>.</p></dd>
-<dt><code>cleanup</code> [<code>--force</code>] [<code>--prune=</code><var>days</var>] [<code>--dry-run</code>] [<code>-s</code>] [<var>formulae</var>]</dt><dd><p>For all installed or specific formulae, remove any older versions from the
-cellar. By default, does not remove out-of-date keg-only brews, as other
-software may link directly to specific versions. In addition, old downloads from
-the Homebrew download-cache are deleted.</p>
-
-<p>If <code>--force</code> is passed, remove out-of-date keg-only brews as well.</p>
+<dt><code>cleanup</code> [<code>--prune=</code><var>days</var>] [<code>--dry-run</code>] [<code>-s</code>] [<var>formulae</var>]</dt><dd><p>For all installed or specific formulae, remove any older versions from the
+cellar. In addition, old downloads from the Homebrew download-cache are deleted.</p>
 
 <p>If <code>--prune=</code><var>days</var> is specified, remove all cache files older than <var>days</var>.</p>
 

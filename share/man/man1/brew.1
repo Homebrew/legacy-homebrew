@@ -64,11 +64,8 @@ If \fB\-\-online\fR is passed, additional slower checks that require a network c
 Display the source to \fIformula\fR\.
 .
 .TP
-\fBcleanup\fR [\fB\-\-force\fR] [\fB\-\-prune=\fR\fIdays\fR] [\fB\-\-dry\-run\fR] [\fB\-s\fR] [\fIformulae\fR]
-For all installed or specific formulae, remove any older versions from the cellar\. By default, does not remove out\-of\-date keg\-only brews, as other software may link directly to specific versions\. In addition, old downloads from the Homebrew download\-cache are deleted\.
-.
-.IP
-If \fB\-\-force\fR is passed, remove out\-of\-date keg\-only brews as well\.
+\fBcleanup\fR [\fB\-\-prune=\fR\fIdays\fR] [\fB\-\-dry\-run\fR] [\fB\-s\fR] [\fIformulae\fR]
+For all installed or specific formulae, remove any older versions from the cellar\. In addition, old downloads from the Homebrew download\-cache are deleted\.
 .
 .IP
 If \fB\-\-prune=\fR\fIdays\fR is specified, remove all cache files older than \fIdays\fR\.
