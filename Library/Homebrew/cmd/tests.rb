@@ -1,9 +1,14 @@
+require "fileutils"
+
 module Homebrew
   def tests
     (HOMEBREW_LIBRARY/"Homebrew/test").cd do
       ENV["TESTOPTS"] = "-v" if ARGV.verbose?
-      ENV["HOMEBREW_TESTS_COVERAGE"] = "1" if ARGV.include? "--coverage"
       ENV["HOMEBREW_NO_COMPAT"] = "1" if ARGV.include? "--no-compat"
+      if ARGV.include? "--coverage"
+        ENV["HOMEBREW_TESTS_COVERAGE"] = "1"
+        FileUtils.rm_f "coverage/.resultset.json"
+      end
 
       # Override author/committer as global settings might be invalid and thus
       # will cause silent failure during the setup of dummy Git repositories.
