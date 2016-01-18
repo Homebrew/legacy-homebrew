@@ -10,5 +10,6 @@ class Testball < Formula
   def install
     prefix.install "bin"
     prefix.install "libexec"
+    Dir.chdir "doc"
   end
 end
