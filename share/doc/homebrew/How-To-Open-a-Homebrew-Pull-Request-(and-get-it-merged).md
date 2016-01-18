@@ -38,7 +38,7 @@ Well done, you are now a Homebrew contributor!
 
 Tips:
 
-* `pushd /usr/local` before doing any of the following; `popd` afterward.
+* `pushd $(brew --prefix)` before doing any of the following; `popd` afterward.
 
 * If `brew update` doesn't seem to work, you left your branch checked out. If you're still working on it, `git rebase origin/master` after each `brew update`. To restore normality, `git checkout master`.
 
