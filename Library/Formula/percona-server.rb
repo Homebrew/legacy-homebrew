@@ -152,8 +152,8 @@ class PerconaServer < Formula
 
     bin.install_symlink prefix/"support-files/mysql.server"
 
-    # mysqlaccess deprecated on 5.6.17, 5.7.4. See:
-    # https://bugs.mysql.com/bug.php?id=69012
+    # mysqlaccess deprecated on 5.6.17, and removed in 5.7.4.
+    # See: https://bugs.mysql.com/bug.php?id=69012
     if build.stable?
       # Move mysqlaccess to libexec
       libexec.mkpath
