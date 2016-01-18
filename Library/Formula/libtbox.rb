@@ -11,7 +11,14 @@ class Libtbox < Formula
   depends_on "xmake" => :build
 
   def install
-    args = ["--demo=false", "--polarssl=false", "--pcre=false", "--pcre2=false", "--mysql=false", "--sqlite3=false", "--zlib=false", "--openssl=false"]
+    args = ["--demo=false"]
+    args << "--zlib=false"
+    args << "--pcre=false"
+    args << "--pcre2=false"
+    args << "--mysql=false"
+    args << "--sqlite3=false"
+    args << "--openssl=false"
+    args << "--polarssl=false"
     args << "--mode=debug" if build.with? "debug"
 
     system "xmake", "config", *args
