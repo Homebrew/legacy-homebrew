@@ -21,7 +21,7 @@ class Bazel < Formula
     ENV["EMBED_LABEL"] = "#{version}-homebrew"
 
     system "./compile.sh"
-    system "./output/bazel" "build" "scripts:bash_completion"
+    system "./output/bazel", "build", "scripts:bash_completion"
 
     (prefix/"base_workspace").mkdir
     cp_r Dir["base_workspace/*"], (prefix/"base_workspace"), :dereference_root => true
