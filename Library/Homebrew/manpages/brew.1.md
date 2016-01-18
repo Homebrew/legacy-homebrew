@@ -55,13 +55,9 @@ With `--verbose` or `-v`, many commands print extra debugging information. Note 
   * `cat` <formula>:
     Display the source to <formula>.
 
-  * `cleanup` [`--force`] [`--prune=`<days>] [`--dry-run`] [`-s`] [<formulae>]:
+  * `cleanup` [`--prune=`<days>] [`--dry-run`] [`-s`] [<formulae>]:
     For all installed or specific formulae, remove any older versions from the
-    cellar. By default, does not remove out-of-date keg-only brews, as other
-    software may link directly to specific versions. In addition, old downloads from
-    the Homebrew download-cache are deleted.
-
-    If `--force` is passed, remove out-of-date keg-only brews as well.
+    cellar. In addition, old downloads from the Homebrew download-cache are deleted.
 
     If `--prune=`<days> is specified, remove all cache files older than <days>.
 
