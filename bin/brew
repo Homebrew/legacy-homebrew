@@ -118,18 +118,15 @@ then
   exit 1
 fi
 
-for i in "$@"
-do
-  if [[ "$1" = -v ]]
-  then
-    shift
-    set -- "$@" -v
-  fi
-  [[ "$i" =~ ^- ]] && continue
-  HOMEBREW_COMMAND="$i"
-  HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$i.sh"
-  break
-done
+if [[ "$1" = -v ]]
+then
+  # Shift the -v to the end of the parameter list
+  shift
+  set -- "$@" -v
+fi
+
+HOMEBREW_COMMAND="$1"
+HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$1.sh"
 
 if [ "$(id -u)" = "0" ] && [ "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]
 then
