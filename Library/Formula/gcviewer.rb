@@ -15,6 +15,6 @@ class Gcviewer < Formula
   end
 
   test do
-    assert(File.exist?("/usr/local/Cellar/gcviewer/1.34.1/libexec/target/gcviewer-1.34.1.jar"))
+    assert(File.exist?(libexec/"target/gcviewer-#{version}.jar"))
   end
 end
