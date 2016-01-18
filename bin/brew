@@ -8,7 +8,7 @@ chdir() {
 }
 
 # Force UTF-8 to avoid encoding issues for users with broken locale settings.
-if [ "$(locale charmap 2> /dev/null)" != "UTF-8" ]
+if [[ "$(locale charmap 2> /dev/null)" != "UTF-8" ]]
 then
   export LC_ALL="en_US.UTF-8"
 fi
@@ -16,7 +16,7 @@ fi
 BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
 HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
-if [ -L "$HOMEBREW_BREW_FILE" ]
+if [[ -L "$HOMEBREW_BREW_FILE" ]]
 then
   BREW_SYMLINK="$(readlink "$HOMEBREW_BREW_FILE")"
   BREW_SYMLINK_DIRECTORY="$(dirname "$BREW_SYMLINK")"
@@ -30,7 +30,7 @@ HOMEBREW_LIBRARY="$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)"
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
-if [ -d "$HOMEBREW_PREFIX/Cellar" ]
+if [[ -d "$HOMEBREW_PREFIX/Cellar" ]]
 then
   HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
 else
@@ -43,7 +43,7 @@ case "$*" in
   --repository|--repo) echo "$HOMEBREW_REPOSITORY"; exit 0 ;;
 esac
 
-if [ "$HOMEBREW_PREFIX" = "/" ] || [ "$HOMEBREW_PREFIX" = "/usr" ]
+if [[ "$HOMEBREW_PREFIX" = "/" || "$HOMEBREW_PREFIX" = "/usr" ]]
 then
   # it may work, but I only see pain this route and don't want to support it
   echo "Cowardly refusing to continue at this prefix: $HOMEBREW_PREFIX" >&2
@@ -55,19 +55,19 @@ fi
 unset GEM_HOME
 unset GEM_PATH
 
-if [ -z "$HOMEBREW_DEVELOPER" ]
+if [[ -z "$HOMEBREW_DEVELOPER" ]]
 then
   unset HOMEBREW_RUBY_PATH
 fi
 
-if [ "$(uname -s)" = "Darwin" ]
+if [[ "$(uname -s)" = "Darwin" ]]
 then
   HOMEBREW_OSX="1"
 fi
 
-if [ -z "$HOMEBREW_RUBY_PATH" ]
+if [[ -z "$HOMEBREW_RUBY_PATH" ]]
 then
-  if [ -n "$HOMEBREW_OSX" ]
+  if [[ -n "$HOMEBREW_OSX" ]]
   then
     HOMEBREW_RUBY_PATH="/System/Library/Frameworks/Ruby.framework/Versions/Current/usr/bin/ruby"
   else
@@ -82,9 +82,9 @@ export HOMEBREW_REPOSITORY
 export HOMEBREW_LIBRARY
 export HOMEBREW_CELLAR
 
-if [ -n "$HOMEBREW_OSX" ]
+if [[ -n "$HOMEBREW_OSX" ]]
 then
-  if [ "$('xcode-select' --print-path)" = "/" ]
+  if [[ "$('xcode-select' --print-path)" = "/" ]]
   then
     cat >&2 <<EOS
 Your xcode-select path is currently set to '/'.
@@ -100,7 +100,7 @@ EOS
   XCRUN_OUTPUT="$(/usr/bin/xcrun clang 2>&1)"
   XCRUN_STATUS="$?"
 
-  if [ "$XCRUN_STATUS" -ne 0 ] && [[ "$XCRUN_OUTPUT" = *license* ]]
+  if [[ "$XCRUN_STATUS" -ne 0 && "$XCRUN_OUTPUT" = *license* ]]
   then
     cat >&2 <<EOS
 You have not agreed to the Xcode license. Please resolve this by running:
@@ -112,7 +112,7 @@ fi
 
 # Many Pathname operations use getwd when they shouldn't, and then throw
 # odd exceptions. Reduce our support burden by showing a user-friendly error.
-if ! [ -d "$(pwd)" ]
+if ! [[ -d "$(pwd)" ]]
 then
   echo "The current working directory doesn't exist, cannot proceed." >&2
   exit 1
@@ -128,7 +128,7 @@ fi
 HOMEBREW_COMMAND="$1"
 HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$1.sh"
 
-if [ "$(id -u)" = "0" ] && [ "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]
+if [[ "$(id -u)" = "0" && "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
   case "$HOMEBREW_COMMAND" in
     install|reinstall|postinstall|link|pin|unpin|update|update-bash|upgrade|create|migrate|tap|switch)
@@ -143,7 +143,7 @@ EOS
   esac
 fi
 
-if [ -x "$HOMEBREW_BASH_COMMAND" ]
+if [[ -x "$HOMEBREW_BASH_COMMAND" ]]
 then
   # source rather than executing directly to ensure the entire file is read into
   # memory before it is run. This makes running a Bash script behave more like
