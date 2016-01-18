@@ -9,6 +9,7 @@ class Bazel < Formula
     sha256 "fe665d9ff99da2a40531106ad78cbe9ac41bfeacc17822280960aa86eea23a01" => :el_capitan
     sha256 "e1cefe27d4eaa65a42578d0872b6936bb0670d03f013e790da4dbda27449c6b1" => :yosemite
     sha256 "333a3699765ced173ece8d9f355d9cba8b9007de4a67c5dacb88511ec3bc7774" => :mavericks
+    revision 1
   end
 
   depends_on :java => "1.8+"
@@ -21,6 +22,7 @@ class Bazel < Formula
     ENV["EMBED_LABEL"] = "#{version}-homebrew"
 
     system "./compile.sh"
+    system "./output/bazel build scripts:bash_completion"
 
     (prefix/"base_workspace").mkdir
     cp_r Dir["base_workspace/*"], (prefix/"base_workspace"), :dereference_root => true
@@ -31,6 +33,8 @@ class Bazel < Formula
       fetch --package_path=%workspace%:#{prefix}/base_workspace
     EOS
     (etc/"bazel").install prefix/"etc/bazel.bazelrc"
+
+    bash_completion.install "bazel-bin/scripts/bazel-complete.bash"
   end
 
   test do
