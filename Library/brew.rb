@@ -82,7 +82,7 @@ begin
   end
 
   if internal_cmd
-    Homebrew.send cmd.to_s.gsub("-", "_").downcase
+    Homebrew.send cmd.to_s.tr("-", "_").downcase
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
@@ -93,7 +93,7 @@ begin
   else
     require "tap"
     possible_tap = case cmd
-    when *%w[brewdle brewdler bundle bundler]
+    when "brewdle", "brewdler", "bundle", "bundler"
       Tap.fetch("Homebrew", "bundle")
     when "cask"
       Tap.fetch("caskroom", "cask")
