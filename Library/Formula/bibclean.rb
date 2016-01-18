@@ -1,8 +1,8 @@
 class Bibclean < Formula
   desc "BibTeX bibliography file pretty printer and syntax checker"
   homepage "http://www.math.utah.edu/~beebe/software/bibclean/bibclean-03.html#HDR.3"
-  url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.16.tar.gz"
-  sha256 "b8e7f89219e04a2b130d9d506b79265e9981b065ad32652a912211a6057428df"
+  url "http://ftp.math.utah.edu/pub/bibclean/bibclean-2.17.tar.gz"
+  sha256 "d79b191fda9658fa83cb43f638321ae98b4acec5bef23a029ef2fd695639ff24"
 
   bottle do
     cellar :any
@@ -32,21 +32,21 @@ class Bibclean < Formula
       # Place all initialization files in $(prefix)/bibclean/share/ instead of
       # ./bin/ to comply with standard Unix practice.
       s.gsub! /install-ini.*uninstall-ini/,
-              "install-ini:  uninstall-ini\n\tmkdir -p #{share}/bibclean"
+              "install-ini:  uninstall-ini\n\tmkdir -p #{pkgshare}"
       s.gsub! /[$][(]bindir[)].*bibcleanrc/,
-              "#{share}/bibclean/.bibcleanrc"
+              "#{pkgshare}/.bibcleanrc"
       s.gsub! /[$][(]bindir[)].*bibclean.key/,
-              "#{share}/bibclean/.bibclean.key"
+              "#{pkgshare}/.bibclean.key"
       s.gsub! /[$][(]bindir[)].*bibclean.isbn/,
-              "#{share}/bibclean/.bibclean.isbn"
+              "#{pkgshare}/.bibclean.isbn"
     end
 
     system "make", "all"
     system "make", "check"
     system "make", "install"
 
-    ENV.prepend_path "PATH", share+"bibclean"
-    bin.env_script_all_files(share+"bibclean", :PATH => ENV["PATH"])
+    ENV.prepend_path "PATH", pkgshare
+    bin.env_script_all_files(pkgshare, :PATH => ENV["PATH"])
   end
 
   test do
