@@ -8,9 +8,9 @@ class Profanity < Formula
   head "https://github.com/boothj5/profanity.git"
 
   bottle do
-    sha256 "60f8f25246037c9f6cdcb84cbe43af759f0b6cf51ab4e620d4afe395b5539646" => :el_capitan
-    sha256 "784dfd72d38ba8d73757d1e78879a808cb2fdae83353bf0d82b65f15c4764c24" => :yosemite
-    sha256 "899c799143a688220ff58f1cc4321223bd0ce68b26743460ea21cf73d632d724" => :mavericks
+    sha256 "e42d99f8e15de670c0d5d0d3bd90cc946759c6d55697ecf0f20928f8ac63c062" => :el_capitan
+    sha256 "01807fbbe872b9921ca8c9af55fc0843ae57bbdeeed565ed929f254523d6f758" => :yosemite
+    sha256 "f1e8e071263d364cf86b0adcaf475ef3dabb2cd6eededa8aa1f7e7d4e6fe0c2b" => :mavericks
   end
 
   depends_on "autoconf" => :build
