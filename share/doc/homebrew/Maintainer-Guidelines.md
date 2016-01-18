@@ -10,6 +10,7 @@ Maybe you were looking for the [Formula Cookbook](Formula-Cookbook.md)?
 
 Quick links:
   [General Guidelines](#general-guidelines) •
+  [Core and Core PRs](#core-and-core-prs) •
   [Formulae and Formula PRs](#formulae-and-formula-prs)
 
 ## General Guidelines
@@ -53,6 +54,22 @@ Whitespace corrections (to Ruby standard etc.) are allowed (in fact this
 is a good opportunity to do it) provided the line itself has some kind
 of modification that is not whitespace in it. But be careful about
 making changes to inline patches—make sure they still apply.
+
+## Core and Core PRs
+
+### Quick Checklist
+- Bug fixes:
+  - Make sure to use the “Fixes \#1337” syntax to close the bug report and
+    link to the commit.
+  - If not urgent, consider creating a PR to facilitate feedback and enable testing via CI.
+- New features and major changes:
+  - Always create a PR.
+  - Try to motivate your changes (the **why**, the **what** is usually evident from
+    the code).
+  - Facilitate feedback by labeling the PR with “[maintainer feedback](https://github.com/Homebrew/homebrew/labels/maintainer%20feedback)” and/or mentioning domain experts in a “cc” line.
+- Ensure the added/changed code is covered by tests (`brew tests --coverage`)
+  and passes them.
+- Thank people for contributing.
 
 ## Formulae and Formula PRs
 
