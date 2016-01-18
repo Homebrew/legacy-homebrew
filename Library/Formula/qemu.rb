@@ -17,6 +17,7 @@ class Qemu < Formula
   depends_on "pkg-config" => :build
   depends_on "libtool" => :build
   depends_on "jpeg"
+  depends_on "libpng" => :recommended
   depends_on "gnutls"
   depends_on "glib"
   depends_on "pixman"
@@ -66,6 +67,7 @@ class Qemu < Formula
   end
 
   test do
+    system "#{bin}/qemu-system-i386", "--version"
     resource("armtest").stage testpath
     assert_match "file format: raw", shell_output("#{bin}/qemu-img info arm_root.img")
   end
