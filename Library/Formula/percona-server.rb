@@ -10,7 +10,7 @@ class PerconaServer < Formula
     version "5.7.10-1rc1"
     sha256 "68de79af4a761522f436b89eeb5bbb43a56dccc2bc352d38c79b6e6be0c4106c"
 
-    depends_on "zlib" => :build
+    depends_on "homebrew/dupes/zlib" => :build
 
     resource "boost" do
       url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
