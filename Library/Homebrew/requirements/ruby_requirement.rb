@@ -9,14 +9,11 @@ class RubyRequirement < Requirement
   end
 
   satisfy :build_env => false do
-    next unless which "ruby"
-    version = /\d\.\d/.match Utils.popen_read("ruby", "--version")
-    next unless version
-    Version.new(version.to_s) >= Version.new(@version)
-  end
-
-  env do
-    ENV.prepend_path "PATH", which("ruby").dirname
+    which_all("ruby").detect do |ruby|
+      version = /\d\.\d/.match Utils.popen_read(ruby, "--version")
+      next unless version
+      Version.new(version.to_s) >= Version.new(@version)
+    end
   end
 
   def message

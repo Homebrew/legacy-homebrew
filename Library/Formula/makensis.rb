@@ -1,8 +1,15 @@
 class Makensis < Formula
   desc "System to create Windows installers"
   homepage "http://nsis.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-src.tar.bz2"
-  sha256 "f5f9e5e22505e44b25aea14fe17871c1ed324c1f3cc7a753ef591f76c9e8a1ae"
+  url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.49/nsis-2.49-src.tar.bz2"
+  sha256 "b9777b376e4fc7aae05e89aa6c52a1137fe443952931e15cf0382b3a5d198512"
+
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "e36c941a8f16e7175b4d1c6de1ec711cf2fec8b91d6c3aecc68e7e5c4f6d091a" => :el_capitan
+    sha256 "f0f495b5e44e5be40584ef37b9af44b262106fa23ad2ec7cdcc582010ebeb8f9" => :yosemite
+    sha256 "dba4c47a074f8a6c3aa137a8f2117816314e53d1234852ddbfd70b296ec589e2" => :mavericks
+  end
 
   depends_on "scons" => :build
 
@@ -12,8 +19,8 @@ class Makensis < Formula
   patch :DATA
 
   resource "nsis" do
-    url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46.zip"
-    sha256 "ced6561f8aed81c8f3d6bc5a33684e03ca36a618110c0a849880c703337f26cc"
+    url "https://downloads.sourceforge.net/project/nsis/NSIS%202/2.49/nsis-2.49.zip"
+    sha256 "b7416935d0db6c27b9dfe33e5110456569bbf65ca33cc105fb46ad36226c2eb9"
   end
 
   def install

@@ -1,4 +1,7 @@
 require "testing_env"
+require "formula"
+require "formula_installer"
+require "bottles"
 
 class FormularyTest < Homebrew::TestCase
   def test_class_naming
@@ -69,7 +72,7 @@ class FormularyFactoryTest < Homebrew::TestCase
   end
 
   def test_factory_from_alias
-    alias_dir = HOMEBREW_LIBRARY/"Aliases"
+    alias_dir = CoreFormulaRepository.instance.alias_dir
     alias_dir.mkpath
     FileUtils.ln_s @path, alias_dir/"foo"
     assert_kind_of Formula, Formulary.factory("foo")

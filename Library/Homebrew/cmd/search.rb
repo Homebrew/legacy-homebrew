@@ -42,8 +42,7 @@ module Homebrew
       query = ARGV.first
       rx = query_regexp(query)
       local_results = search_formulae(rx)
-      local_results_installed = local_results.select { |f| f.end_with? "(installed)" }
-      puts_columns(local_results, local_results_installed)
+      puts_columns(local_results)
       tap_results = search_taps(rx)
       puts_columns(tap_results)
 
@@ -85,7 +84,8 @@ module Homebrew
   end
 
   SEARCHABLE_TAPS = OFFICIAL_TAPS.map { |tap| ["Homebrew", tap] } + [
-    %w[Caskroom cask]
+    %w[Caskroom cask],
+    %w[Caskroom versions]
   ]
 
   def query_regexp(query)
@@ -105,7 +105,7 @@ module Homebrew
 
   def search_tap(user, repo, rx)
     if (HOMEBREW_LIBRARY/"Taps/#{user.downcase}/homebrew-#{repo.downcase}").directory? && \
-       "#{user}/#{repo}" != "Caskroom/cask"
+       user != "Caskroom"
       return []
     end
 
@@ -157,7 +157,7 @@ module Homebrew
       if aliases.include?(name) && results.include?(canonical_full_name)
         next
       elsif (HOMEBREW_CELLAR/canonical_name).directory?
-        "#{name} (installed)"
+        pretty_installed(name)
       else
         name
       end

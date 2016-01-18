@@ -3,14 +3,13 @@ class Lua < Formula
   homepage "http://www.lua.org/"
   url "http://www.lua.org/ftp/lua-5.2.4.tar.gz"
   sha256 "b9e2e4aad6789b3b63a056d442f7b39f0ecfca3ae0f1fc0ae4e9614401b69f4b"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "b8ab4306d8c3c5ff2a5289986238af1e0090d3793f73987c9c8beb07826b2e64" => :el_capitan
-    sha256 "ad2fceaf391771c9e4120f00ac78c5e634aa3c6cd911566e38d016fec4d6c315" => :yosemite
-    sha256 "997e8eb591ea1e44dc9cf0910cac61137e0e231d228953b61826ff37a452a8dc" => :mavericks
-    sha256 "519abb38296981baf49dd00ac80a2ac742f8e278b0b616d88d7fab8702ad430d" => :mountain_lion
+    sha256 "bcfe6e55b145affbeff3aea1bfcee8fbdad6106805830567b0a206ab2d79c7a0" => :el_capitan
+    sha256 "def867c35c0c88c5b339b861e57ddbc4febcd475172650b1e035bfe12a9683f3" => :yosemite
+    sha256 "10f937e562674a0e07e676f11ea5baaeeb08b2883680d65031eb282fe91406fa" => :mavericks
   end
 
   def pour_bottle?
@@ -51,12 +50,15 @@ class Lua < Formula
   end
 
   resource "luarocks" do
-    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.2.2.tar.gz"
-    sha256 "4f0427706873f30d898aeb1dfb6001b8a3478e46a5249d015c061fe675a1f022"
+    url "https://keplerproject.github.io/luarocks/releases/luarocks-2.3.0.tar.gz"
+    sha256 "68e38feeb66052e29ad1935a71b875194ed8b9c67c2223af5f4d4e3e2464ed97"
   end
 
   def install
     ENV.universal_binary if build.universal?
+
+    # Subtitute formula prefix in `src/Makefile` for install name (dylib ID).
+    inreplace "src/Makefile", "@LUA_PREFIX@", prefix
 
     # Use our CC/CFLAGS to compile.
     inreplace "src/Makefile" do |s|
@@ -78,7 +80,7 @@ class Lua < Formula
     bin.install_symlink "lua" => "lua-5.2"
     bin.install_symlink "luac" => "luac5.2"
     bin.install_symlink "luac" => "luac-5.2"
-    include.install_symlink include => "#{include}/lua5.2"
+    (include/"lua5.2").install_symlink include.children
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua5.2.pc"
     (lib/"pkgconfig").install_symlink "lua.pc" => "lua-5.2.pc"
 
@@ -114,7 +116,7 @@ class Lua < Formula
   def pc_file; <<-EOS.undent
     V= 5.2
     R= 5.2.4
-    prefix=#{HOMEBREW_PREFIX}
+    prefix=#{prefix}
     INSTALL_BIN= ${prefix}/bin
     INSTALL_INC= ${prefix}/include
     INSTALL_LIB= ${prefix}/lib
@@ -197,7 +199,7 @@ index 8c9ee67..7f92407 100644
  $(LUA_A): $(BASE_O)
 -	$(AR) $@ $(BASE_O)
 -	$(RANLIB) $@
-+	$(CC) -dynamiclib -install_name HOMEBREW_PREFIX/lib/liblua.5.2.dylib \
++	$(CC) -dynamiclib -install_name @LUA_PREFIX@/lib/liblua.5.2.dylib \
 +		-compatibility_version 5.2 -current_version 5.2.4 \
 +		-o liblua.5.2.4.dylib $^
 

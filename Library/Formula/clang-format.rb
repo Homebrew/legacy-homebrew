@@ -1,27 +1,28 @@
 class ClangFormat < Formula
   desc "Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript"
   homepage "http://clang.llvm.org/docs/ClangFormat.html"
-  version "2015-07-31"
+  version "2016-01-05"
 
   stable do
-    url "http://llvm.org/svn/llvm-project/llvm/tags/google/testing/2015-07-31/", :using => :svn
+    url "http://llvm.org/releases/3.7.1/llvm-3.7.1.src.tar.xz"
+    sha256 "be7794ed0cec42d6c682ca8e3517535b54555a3defabec83554dbc74db545ad5"
 
     resource "clang" do
-      url "http://llvm.org/svn/llvm-project/cfe/tags/google/testing/2015-07-31/", :using => :svn
+      url "http://llvm.org/releases/3.7.1/cfe-3.7.1.src.tar.xz"
+      sha256 "56e2164c7c2a1772d5ed2a3e57485ff73ff06c97dff12edbeea1acc4412b0674"
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
+      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
     end
   end
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "1d96606c434cbf92807f5e1b33d4bd5b7eababb680e9a373f2445b37c1214010" => :el_capitan
-    sha256 "5e808795acb2acc436d80066e717431e0a1b01ef3a3d56b10aa897ada6c8d45e" => :yosemite
-    sha256 "ced2d7917db53c229b14d4744a39e02657ffc15dc54bd032b2d3010527f7e214" => :mavericks
+    sha256 "54dbe7695d83c9dcc08cce26f400f5d348d94d91076d70f795c0e11fbfe8df36" => :el_capitan
+    sha256 "f908cd465f5d9dc1f1732986967480ffa15473d7c83bdfbbdb3e9e9442750f15" => :yosemite
+    sha256 "cb8537c2d51fb29caf8f11b35adcd14362fbf575dcb1c7fbab2879884e5ca1b3" => :mavericks
   end
 
   head do
@@ -32,8 +33,8 @@ class ClangFormat < Formula
     end
 
     resource "libcxx" do
-      url "http://llvm.org/releases/3.6.2/libcxx-3.6.2.src.tar.xz"
-      sha256 "52f3d452f48209c9df1792158fdbd7f3e98ed9bca8ebb51fcd524f67437c8b81"
+      url "http://llvm.org/releases/3.7.1/libcxx-3.7.1.src.tar.xz"
+      sha256 "357fbd4288ce99733ba06ae2bec6f503413d258aeebaab8b6a791201e6f7f144"
     end
   end
 

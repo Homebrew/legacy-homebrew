@@ -7,9 +7,9 @@ class Libgsm < Formula
   bottle do
     cellar :any
     revision 1
-    sha1 "832cbeb382112a042221bdef53980c1432d9acb5" => :yosemite
-    sha1 "90ebcfff95c504b5e3b0a1dca09164a4342239ae" => :mavericks
-    sha1 "45ce069c68066f2a93148379ec1539f5bf398280" => :mountain_lion
+    sha256 "c67758c5298dc6d36a5bb201eb42821862647aa79df0ee2824df708ac388db48" => :yosemite
+    sha256 "c25d6ffc2bf063c8c824093ca83b6de17ebbca52c062c4344cddbb8b8286169c" => :mavericks
+    sha256 "8b9054832ecbd7a4e41b1b3e7f8ef7a4aa4e0006a5332a19d176119c6b4121f3" => :mountain_lion
   end
 
   option :universal

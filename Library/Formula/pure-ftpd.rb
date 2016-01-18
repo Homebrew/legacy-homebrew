@@ -1,16 +1,15 @@
 class PureFtpd < Formula
   desc "Secure and efficient FTP server"
   homepage "https://www.pureftpd.org/"
-  url "https://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.41.tar.gz"
-  mirror "ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.41.tar.gz"
-  sha256 "a877c689ae1b982c968a767631740a84f164ac2ae6312a4a2f9f93ba79a348e8"
+  url "https://download.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.42.tar.gz"
+  mirror "ftp://ftp.pureftpd.org/pub/pure-ftpd/releases/pure-ftpd-1.0.42.tar.gz"
+  sha256 "7be73a8e58b190a7054d2ae00c5e650cb9e091980420082d02ec3c3b68d8e7f9"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "fbd04555e96661f04440ce349e04a7a4bf6fb5fddfe7dccea37916ef581d8b36" => :el_capitan
-    sha256 "3fa9170128020e89f3dee1821dcfba81e641da3547382490a4d9c0d96345a1e0" => :yosemite
-    sha256 "9d9b93ea06dc763761835a8cff7673670b9d57b28677a308683e4f9f67572126" => :mavericks
+    sha256 "c4c87894367f61c7d0ac221cef3c39c1e57b52b8844b6c3bbef997963f5bdda1" => :el_capitan
+    sha256 "00bbca99a4a622ec8342a1e554ec9cbc018537bde79b0de54f392d3189ad0068" => :yosemite
+    sha256 "cbb8ac81c98ebba08a6be8dd93ce7cfbca91fd2dc53f4a4388b46a2901dccefd" => :mavericks
   end
 
   depends_on "openssl"

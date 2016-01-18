@@ -29,7 +29,7 @@ class Autocode < Formula
       author:
         name: Test User
         email: test@example.com
-        url: http://example.com
+        url: https://example.com
       copyright: 2015 Test
     EOS
     system bin/"autocode", "build"

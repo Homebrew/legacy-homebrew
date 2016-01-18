@@ -1,18 +1,15 @@
 class Nettle < Formula
   desc "Low-level cryptographic library"
   homepage "https://www.lysator.liu.se/~nisse/nettle/"
-  url "https://www.lysator.liu.se/~nisse/archive/nettle-2.7.1.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/nettle/nettle-2.7.1.tar.gz"
-  sha256 "bc71ebd43435537d767799e414fce88e521b7278d48c860651216e1fc6555b40"
+  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.1.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.1.tar.gz"
+  sha256 "f6859d4ec88e70805590af9862b4b8c43a2d1fc7991df0a7a711b1e7ca9fc9d3"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "c4d9262d13cae53467788b50eeebdc39b9adbba0367070b1d21d059c99159590" => :el_capitan
-    sha1 "41d80787422ed29f084c147b49e2f7c3a223eded" => :yosemite
-    sha1 "89238f83e4f3f18145553d3c442fe022680cbd7b" => :mavericks
-    sha1 "8f2a4c261926f2f62e9d8f197a8466a2489b37e0" => :mountain_lion
-    sha1 "6c56084887da5b7e99d7c730bf22a68c9af360e9" => :lion
+    sha256 "c16f1f4ecbca92d491fbf215c8b6bafc4e7bfa3f632247dea04b40fd2bea0741" => :el_capitan
+    sha256 "cbf6e6de707b1bf396cba2014f7ff73d079013cb877ecdc96f5ea29a3da66ec4" => :yosemite
+    sha256 "9e93805f902033bb1c70bda4900c35b1a530409ac2743a810e21fdc14820e3a8" => :mavericks
   end
 
   depends_on "gmp"

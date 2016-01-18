@@ -19,4 +19,10 @@ class Libpuzzle < Formula
                           "--prefix=#{prefix}"
     system "make", "install"
   end
+
+  test do
+    test_image = test_fixtures("test.jpg")
+    assert_equal "0",
+      shell_output("#{bin}/puzzle-diff #{test_image} #{test_image}").chomp
+  end
 end

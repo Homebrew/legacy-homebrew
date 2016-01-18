@@ -19,9 +19,21 @@ module Homebrew
     bucket.each do |f|
       f.print_tap_action :verb => "Fetching"
 
+      fetched_bottle = false
       if fetch_bottle?(f)
-        fetch_formula(f.bottle)
-      else
+        begin
+          fetch_formula(f.bottle)
+        rescue Exception => e
+          raise if ARGV.homebrew_developer? || e.is_a?(Interrupt)
+          fetched_bottle = false
+          onoe e.message
+          opoo "Bottle fetch failed: fetching the source."
+        else
+          fetched_bottle = true
+        end
+      end
+
+      unless fetched_bottle
         fetch_formula(f)
         f.resources.each { |r| fetch_resource(r) }
         f.patchlist.each { |p| fetch_patch(p) if p.external? }
@@ -30,9 +42,15 @@ module Homebrew
   end
 
   def fetch_bottle?(f)
-    return true if ARGV.force_bottle? && f.bottle
-    return false unless f.bottle && f.pour_bottle?
-    return false if ARGV.build_from_source? || ARGV.build_bottle?
+    return false unless f.bottle
+    return true if ARGV.force_bottle?
+    return false unless f.pour_bottle?
+    # We want to behave different with `--build-from-source` and
+    # ENV["HOMEBREW_BUILD_FROM_SOURCE"] because the latter implies you want
+    # everything built from source and the prior that you want just the
+    # formulae you've requested built from source.
+    return false if ENV["HOMEBREW_BUILD_FROM_SOURCE"]
+    return false if ARGV.build_bottle?
     return false unless f.bottle.compatible_cellar?
     true
   end

@@ -22,7 +22,7 @@ class Gnuplot < Formula
 
   option "with-cairo",  "Build the Cairo based terminals"
   option "without-lua",  "Build without the lua/TikZ terminal"
-  option "with-tests",  "Verify the build with make check"
+  option "with-test",  "Verify the build with make check"
   option "without-emacs", "Do not build Emacs lisp files"
   option "with-wxmac", "Build wxmac support. Need with-cairo to build wxt terminal"
   option "with-latex",  "Build with LaTeX support"
@@ -35,7 +35,8 @@ class Gnuplot < Formula
   deprecated_option "nogd" => "without-gd"
   deprecated_option "cairo" => "with-cairo"
   deprecated_option "nolua" => "without-lua"
-  deprecated_option "tests" => "with-tests"
+  deprecated_option "tests" => "with-test"
+  deprecated_option "with-tests" => "with-test"
   deprecated_option "latex" => "with-latex"
 
   depends_on "pkg-config" => :build
@@ -46,7 +47,7 @@ class Gnuplot < Formula
   depends_on "libpng"
   depends_on "libtiff"
   depends_on "readline"
-  depends_on "pango" if (build.with? "cairo") || (build.with? "wxmac")
+  depends_on "pango" if build.with?("cairo") || build.with?("wxmac")
   depends_on "pdflib-lite" => :optional
   depends_on "qt" => :optional
   depends_on "wxmac" => :optional
@@ -104,7 +105,7 @@ class Gnuplot < Formula
     system "./configure", *args
     ENV.j1 # or else emacs tries to edit the same file with two threads
     system "make"
-    system "make", "check" if build.with?("tests") || build.bottle?
+    system "make", "check" if build.with?("test") || build.bottle?
     system "make", "install"
   end
 

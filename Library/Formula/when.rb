@@ -1,8 +1,8 @@
 class When < Formula
   desc "Tiny personal calendar"
   homepage "http://www.lightandmatter.com/when/when.html"
-  url "https://mirrors.kernel.org/debian/pool/main/w/when/when_1.1.35.orig.tar.gz"
-  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/w/when/when_1.1.35.orig.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/w/when/when_1.1.35.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/w/when/when_1.1.35.orig.tar.gz"
   sha256 "f880c0d80b1023a05df99690e36be133c46071657b9921fc9e8d16115fb13ae6"
   head "https://github.com/bcrowell/when.git"
 

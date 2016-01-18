@@ -25,7 +25,9 @@ class MobileShell < Formula
     depends_on "automake" => :build
   end
 
-  option "without-check", "Run build-time tests"
+  option "without-test", "Run build-time tests"
+
+  deprecated_option "without-check" => "without-test"
 
   depends_on "pkg-config" => :build
   depends_on "protobuf"
@@ -40,7 +42,7 @@ class MobileShell < Formula
     ENV.O2
     system "./autogen.sh" if build.head?
     system "./configure", "--prefix=#{prefix}", "--enable-completion"
-    system "make", "check" if build.with?("check") || build.bottle?
+    system "make", "check" if build.with?("test") || build.bottle?
     system "make", "install"
   end
 

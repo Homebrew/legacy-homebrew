@@ -125,5 +125,7 @@ Style/DotPosition:
   EnforcedStyle: trailing
 
 # makes diffs nicer
-Style/TrailingComma:
-  EnforcedStyleForMultiline: consistent_comma
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma

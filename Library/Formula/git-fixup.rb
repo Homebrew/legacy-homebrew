@@ -1,16 +1,16 @@
 class GitFixup < Formula
   desc "Alias for git commit --fixup <ref>"
   homepage "https://github.com/keis/git-fixup"
-  url "https://github.com/keis/git-fixup/archive/v1.0.1.tar.gz"
-  sha256 "6e08eb0af39ca3327642ffecbd36a706fd7544d07ac71b8f58b437df33f152cf"
+  url "https://github.com/keis/git-fixup/archive/v1.0.2.tar.gz"
+  sha256 "e43bef5697927c8efa5f2b562ff8057bb30be828ec7327acba8d593f332eb4f8"
 
   head "https://github.com/keis/git-fixup.git", :branch => "master"
 
   bottle do
-    cellar :any
-    sha1 "51111ec8f5f517ea73a5c465dd5ce1b066bbc1f0" => :yosemite
-    sha1 "3d018cad30af595c34cb2a9eaa5457d6665abf09" => :mavericks
-    sha1 "324a7f422f26e2a84cb587b2005a0da36c3d08f7" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0a5e3f65dc07ee3aa2746068edf3cf6256acb0ef0bd44f37509ec35648a9d25c" => :el_capitan
+    sha256 "77474bc651194209e99b061bf6b6753f36c8ce88b40870679023c0eedabf2c9e" => :yosemite
+    sha256 "5e7a1711adbb5b2b46a426a50b103e8c145b34f5c585c75d0b728183fa8abe54" => :mavericks
   end
 
   def install
@@ -19,8 +19,12 @@ class GitFixup < Formula
   end
 
   test do
+    (testpath/".gitconfig").write <<-EOS.undent
+      [user]
+        name = Real Person
+        email = notacat@hotmail.cat
+      EOS
     system "git", "init"
-
     (testpath/"test").write "foo"
     system "git", "add", "test"
     system "git", "commit", "--message", "Initial commit"

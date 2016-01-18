@@ -1,14 +1,14 @@
 class Glibmm < Formula
   desc "C++ interface to glib"
   homepage "http://www.gtkmm.org/"
-  url "https://download.gnome.org/sources/glibmm/2.46/glibmm-2.46.1.tar.xz"
-  sha256 "9647e596c1081d2ea202bd3da2824ec2ea359498fa86eb59a55b1b307dd8c4aa"
+  url "https://download.gnome.org/sources/glibmm/2.46/glibmm-2.46.3.tar.xz"
+  sha256 "c78654addeb27a1213bedd7cd21904a45bbb98a5ba2f2f0de2b2f1a5682d86cf"
 
   bottle do
     cellar :any
-    sha256 "906327e1af5daccc547fc0a256d6f13bd524604e7769dd8c3a3dd0b74d23c851" => :el_capitan
-    sha256 "0b253dbccc04c0f2fb1eebb99f2fc3a343782d0de92dbc403c17f14737968c07" => :yosemite
-    sha256 "e6a2de7475d7d0fd494511a9eebcc5046caa3aa31f15c4941df5624ff977a74f" => :mavericks
+    sha256 "0c39a5270515d17e6e888430b62f2b83c3d62c86ed018e7c65887e4622d7ac89" => :el_capitan
+    sha256 "11895238b1e7f85f362f1ac3fe08e4c06a31fca21209f329f5a62976a2bc3a87" => :yosemite
+    sha256 "c6e5d4a644e74f96d90bfe77041e9b78166b772f2c664075528b8c888242adf7" => :mavericks
   end
 
   depends_on "pkg-config" => :build

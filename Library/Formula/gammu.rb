@@ -1,6 +1,6 @@
 class Gammu < Formula
   desc "Command-line utility to control a phone"
-  homepage "http://wammu.eu/gammu/"
+  homepage "https://wammu.eu/gammu/"
   head "https://github.com/gammu/gammu.git"
 
   stable do

@@ -6,9 +6,9 @@ class Mp3val < Formula
 
   bottle do
     cellar :any
-    sha1 "a6fbb7ba9e3138c0badf0f4c8448193b4136b5a0" => :yosemite
-    sha1 "0b07e20f77de64a0071899f49e329bf11fb29367" => :mavericks
-    sha1 "997a608c91946b239e878c830a4be6336dbc5cb9" => :mountain_lion
+    sha256 "298b6b2835de5f1aa3cef2f9435da3935ffbcfa49468511676661e8eaff8ca70" => :yosemite
+    sha256 "0828eb9f4e02af5014e1b8d82be9ad54797b0de6a299b05a1ef0daa86bc5dbe2" => :mavericks
+    sha256 "d90878cb83b0154dabc0cc03e61c3c972dec3ca66b63272716299f3b6dd791f7" => :mountain_lion
   end
 
   def install

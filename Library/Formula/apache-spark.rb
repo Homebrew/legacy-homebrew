@@ -1,9 +1,9 @@
 class ApacheSpark < Formula
   desc "Engine for large-scale data processing"
   homepage "https://spark.apache.org/"
-  url "https://www.apache.org/dyn/closer.lua?path=spark/spark-1.5.1/spark-1.5.1-bin-hadoop2.6.tgz"
-  version "1.5.1"
-  sha256 "41ab59b28581b7952e3b0cfd8182980f033d2bf22d0f6a088ee6d120ddf24953"
+  url "https://www.apache.org/dyn/closer.lua?path=spark/spark-1.6.0/spark-1.6.0-bin-hadoop2.6.tgz"
+  version "1.6.0"
+  sha256 "439fe7793e0725492d3d36448adcd1db38f438dd1392bffd556b58bb9a3a2601"
   head "https://github.com/apache/spark.git"
 
   bottle :unneeded

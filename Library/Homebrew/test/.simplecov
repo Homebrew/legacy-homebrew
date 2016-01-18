@@ -3,7 +3,7 @@
 SimpleCov.start do
   tests_path = File.dirname(__FILE__)
 
-  minimum_coverage 50
+  minimum_coverage 60
   coverage_dir File.expand_path("#{tests_path}/coverage")
   root File.expand_path("#{tests_path}/../../")
 
@@ -22,4 +22,9 @@ if name = ENV["HOMEBREW_INTEGRATION_TEST"]
     SimpleCov.result.format!
     exit! exit_code
   end
+end
+
+if RUBY_VERSION.split(".").first.to_i >= 2 && !ENV["HOMEBREW_INTEGRATION_TEST"]
+  require "coveralls"
+  Coveralls.wear!
 end

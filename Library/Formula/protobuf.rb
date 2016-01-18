@@ -11,16 +11,6 @@ class Protobuf < Formula
     patch :p1, :DATA
   end
 
-  devel do
-    url "https://github.com/google/protobuf/archive/v3.0.0-alpha-3.1.tar.gz"
-    sha256 "ce19f7a48f3d83073feb5506c2018098fdedb0e1b8cd80e5b29d156faded3f2a"
-    version "3.0.0-alpha-3.1"
-
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
-  end
-
   bottle do
     revision 3
     sha256 "37b136dbe120923bbdccc4131d52b7a4738a9b776bb676e4fc75c908f9ad6e20" => :el_capitan
@@ -29,8 +19,19 @@ class Protobuf < Formula
     sha256 "2861639d01fdf0cb8fc70194bde36fd0f16010022c1f2c72e6236aad48fdf522" => :mountain_lion
   end
 
+  devel do
+    url "https://github.com/google/protobuf/archive/v3.0.0-beta-1-bzl-fix.tar.gz"
+    sha256 "1b364aff3557c98087969befffd2c8479e6fe70ab3a85009dc260ab65232357a"
+    version "3.0.0-beta-1-bzl-fix"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
   # this will double the build time approximately if enabled
-  option "with-check", "Run build-time check"
+  option "with-test", "Run build-time check"
+  deprecated_option "with-check" => "with-test"
 
   option :universal
   option :cxx11
@@ -70,7 +71,7 @@ class Protobuf < Formula
   def install
     # Don't build in debug mode. See:
     # https://github.com/Homebrew/homebrew/issues/9279
-    # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
+    # https://github.com/google/protobuf/blob/5c24564811c08772d090305be36fae82d8f12bbe/configure.ac#L61
     ENV.prepend "CXXFLAGS", "-DNDEBUG"
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
@@ -80,7 +81,7 @@ class Protobuf < Formula
                           "--prefix=#{prefix}",
                           "--with-zlib"
     system "make"
-    system "make", "check" if build.with? "check" || build.bottle?
+    system "make", "check" if build.with?("test") || build.bottle?
     system "make", "install"
 
     # Install editor support and examples
@@ -110,6 +111,12 @@ class Protobuf < Formula
     end
   end
 
+  def caveats; <<-EOS.undent
+    Editor support and examples have been installed to:
+      #{doc}
+    EOS
+  end
+
   test do
     testdata = if devel?
       <<-EOS.undent
@@ -133,15 +140,9 @@ class Protobuf < Formula
         }
         EOS
     end
-    (testpath/"test.proto").write(testdata)
+    (testpath/"test.proto").write testdata
     system bin/"protoc", "test.proto", "--cpp_out=."
     system "python", "-c", "import google.protobuf" if build.with? "python"
-  end
-
-  def caveats; <<-EOS.undent
-    Editor support and examples have been installed to:
-      #{doc}
-    EOS
   end
 end
 

@@ -1,7 +1,7 @@
 class Libswiften < Formula
   desc "C++ library for implementing XMPP applications"
   homepage "https://swift.im/swiften"
-  revision 1
+  revision 2
 
   stable do
     url "https://swift.im/downloads/releases/swift-2.0/swift-2.0.tar.gz"
@@ -22,10 +22,9 @@ class Libswiften < Formula
   end
 
   bottle do
-    revision 3
-    sha256 "b9c79e101fa96c7e53b505ee7afaa511ab3f81735d2440b6b810a85ec4b36614" => :yosemite
-    sha256 "1d69b8e63b9e41280d24c23d3f611e03c5798bb165abeed4bc0bf06acbf027a5" => :mavericks
-    sha256 "6981efb6cbb1db7fc011ea12f05d4bb1593f04b49128cd406f2cd69ae869d273" => :mountain_lion
+    sha256 "b6f7b332a5b37a0923ef0dbd5a31575637971c269f3b0361ce3f246cd5b7234f" => :el_capitan
+    sha256 "9c261c398d124474d4d574caebf3de90d2fed5d6d5efbd9dd85285e259225e4d" => :yosemite
+    sha256 "057cf8764fa8688615b8e925519c1155b1bdb8ba3c3c8dc18a38a060e4847b33" => :mavericks
   end
 
   head do

@@ -1,16 +1,14 @@
 class Unrar < Formula
   desc "Extract, view, and test RAR archives"
   homepage "http://www.rarlab.com"
-  url "http://www.rarlab.com/rar/unrarsrc-5.2.7.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/non-free/u/unrar-nonfree/unrar-nonfree_5.2.7.orig.tar.gz"
-  sha256 "ef14757e943787b439fedf2c564c1f38d0db315528a928e0de170860717e2fac"
+  url "http://www.rarlab.com/rar/unrarsrc-5.3.9.tar.gz"
+  sha256 "ff593728aed0ac865908b8ea52cff449a4c298f095db2f3d27438ffbc3e35d5b"
 
   bottle do
     cellar :any
-    sha256 "e64f77eb7e612172703a4773dec7de3bec7712d48b1d7380aa1ede98490ff80c" => :el_capitan
-    sha256 "ffdc5094556410978817f2dbfded4549f777f900a4272c751e353af05785ee7a" => :yosemite
-    sha256 "24e2ad74e328286726c3a89d5434373a3e3774d4b6e11df66a0e55ec43477642" => :mavericks
-    sha256 "0490cda2a8226db2513a4e98bf1fa975d707b37fae09b8069c6b335bcb84d365" => :mountain_lion
+    sha256 "748dbb261915df5589affb34106ebcff8ebce98de2af8c1cb3fe96508b223677" => :el_capitan
+    sha256 "dc16b6b2559cd742496943630515e680015a528a2d778387645da3e199da9ef6" => :yosemite
+    sha256 "f8a1e6b77b084149c499d06c3782cf7e1ee9f7c0b452ed6fedbdbb172ab8cc2c" => :mavericks
   end
 
   def install

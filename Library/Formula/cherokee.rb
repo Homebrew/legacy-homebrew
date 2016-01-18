@@ -1,5 +1,5 @@
 class Cherokee < Formula
-  desc "Cherokee web server"
+  desc "Modern, user friendly web server"
   homepage "http://cherokee-project.com/"
 
   stable do

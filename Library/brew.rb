@@ -4,57 +4,17 @@ std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
 HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
 
-if ARGV == %w[--prefix]
-  puts File.dirname(File.dirname(HOMEBREW_BREW_FILE))
-  exit 0
-end
-
 require "pathname"
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)
 require "global"
 
-if ARGV.first == "--version"
-  puts Homebrew.homebrew_version_string
+if ARGV == %w[--version] || ARGV == %w[-v]
+  puts "Homebrew #{Homebrew.homebrew_version_string}"
   exit 0
 elsif ARGV.first == "-v"
-  puts "Homebrew #{Homebrew.homebrew_version_string}"
   # Shift the -v to the end of the parameter list
   ARGV << ARGV.shift
-  # If no other arguments, just quit here.
-  exit 0 if ARGV.length == 1
-end
-
-if OS.mac?
-  # Check for bad xcode-select before other checks, because `doctor` and
-  # many other things will hang. Note that this bug was fixed in 10.9
-  if MacOS.version < :mavericks && MacOS.active_developer_dir == "/"
-    odie <<-EOS.undent
-      Your xcode-select path is currently set to '/'.
-      This causes the `xcrun` tool to hang, and can render Homebrew unusable.
-      If you are using Xcode, you should:
-        sudo xcode-select -switch /Applications/Xcode.app
-      Otherwise, you should:
-        sudo rm -rf /usr/share/xcode-select
-    EOS
-  end
-
-  # Check for user agreement of the Xcode license before permitting
-  # any other brew usage to continue. This prevents the situation where
-  # people are instructed to "please re-run as root via sudo" on brew commands.
-  # The check can only fail when Xcode is installed & the active developer dir.
-  if MacOS::Xcode.installed? && `/usr/bin/xcrun clang 2>&1` =~ /license/ && !$?.success?
-    odie <<-EOS.undent
-      You have not agreed to the Xcode license. Please resolve this by running:
-        sudo xcodebuild -license
-    EOS
-  end
-end
-
-case HOMEBREW_PREFIX.to_s
-when "/", "/usr"
-  # it may work, but I only see pain this route and don't want to support it
-  abort "Cowardly refusing to continue at this prefix: #{HOMEBREW_PREFIX}"
 end
 
 if OS.mac? && MacOS.version < "10.6"
@@ -63,10 +23,6 @@ if OS.mac? && MacOS.version < "10.6"
     https://github.com/mistydemeo/tigerbrew
   EOABORT
 end
-
-# Many Pathname operations use getwd when they shouldn't, and then throw
-# odd exceptions. Reduce our support burden by showing a user-friendly error.
-Dir.getwd rescue abort "The current working directory doesn't exist, cannot proceed."
 
 def require?(path)
   require path
@@ -96,20 +52,6 @@ begin
   end
 
   cmd = HOMEBREW_INTERNAL_COMMAND_ALIASES.fetch(cmd, cmd)
-
-  sudo_check = %w[ install reinstall postinstall link pin unpin
-                   update upgrade create migrate tap switch ]
-
-  if sudo_check.include? cmd
-    if Process.uid.zero? && !File.stat(HOMEBREW_BREW_FILE).uid.zero?
-      raise <<-EOS.undent
-        Cowardly refusing to `sudo brew #{cmd}`
-        You can use brew with sudo, but only if the brew executable is owned by root.
-        However, this is both not recommended and completely unsupported so do so at
-        your own risk.
-      EOS
-    end
-  end
 
   # Add contributed commands to PATH before checking.
   Dir["#{HOMEBREW_LIBRARY}/Taps/*/*/cmd"].each do |tap_cmd_dir|
@@ -152,8 +94,29 @@ begin
   elsif (path = which("brew-#{cmd}.rb")) && require?(path)
     exit Homebrew.failed? ? 1 : 0
   else
-    onoe "Unknown command: #{cmd}"
-    exit 1
+    require "tap"
+    possible_tap = case cmd
+    when *%w[brewdle brewdler bundle bundler]
+      Tap.fetch("Homebrew", "bundle")
+    when "cask"
+      Tap.fetch("caskroom", "cask")
+    when "services"
+      Tap.fetch("Homebrew", "services")
+    end
+
+    if possible_tap && !possible_tap.installed?
+      brew_uid = File.stat(HOMEBREW_BREW_FILE).uid
+      tap_commands = []
+      if Process.uid.zero? && !brew_uid.zero?
+        tap_commands += %W[/usr/bin/sudo -u ##{brew_uid}]
+      end
+      tap_commands += %W[#{HOMEBREW_BREW_FILE} tap #{possible_tap}]
+      safe_system *tap_commands
+      exec HOMEBREW_BREW_FILE, cmd, *ARGV
+    else
+      onoe "Unknown command: #{cmd}"
+      exit 1
+    end
   end
 
 rescue FormulaUnspecifiedError
@@ -163,8 +126,9 @@ rescue KegUnspecifiedError
 rescue UsageError
   onoe "Invalid usage"
   abort ARGV.usage
-rescue SystemExit
-  puts "Kernel.exit" if ARGV.verbose?
+rescue SystemExit => e
+  onoe "Kernel.exit" if ARGV.verbose? && !e.success?
+  puts e.backtrace if ARGV.debug?
   raise
 rescue Interrupt => e
   puts # seemingly a newline is typical

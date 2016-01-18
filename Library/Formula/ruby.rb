@@ -1,14 +1,27 @@
 class Ruby < Formula
   desc "Powerful, clean, object-oriented scripting language"
   homepage "https://www.ruby-lang.org/"
-  url "https://cache.ruby-lang.org/pub/ruby/2.2/ruby-2.2.3.tar.bz2"
-  sha256 "c745cb98b29127d7f19f1bf9e0a63c384736f4d303b83c4f4bda3c2ee3c5e41f"
+
+  stable do
+    url "https://cache.ruby-lang.org/pub/ruby/2.3/ruby-2.3.0.tar.bz2"
+    sha256 "ec7579eaba2e4c402a089dbc86c98e5f1f62507880fd800b9b34ca30166bfa5e"
+
+    # Reverts an upstream commit which incorrectly tries to install headers
+    # into SDKROOT, if defined
+    # See https://bugs.ruby-lang.org/issues/11881
+    # The issue has been fixed on HEAD as of 1 Jan 2016, but there has not been
+    # a release since then, so the patch is still required for release builds
+    patch do
+      url "https://raw.githubusercontent.com/Homebrew/patches/ba8cc6b88e6b7153ac37739e5a1a6bbbd8f43817/ruby/mkconfig.patch"
+      sha256 "929c618f74e89a5e42d899a962d7d2e4af75716523193af42626884eaba1d765"
+    end
+  end
 
   bottle do
-    sha256 "13b2a0096f65a74b31a6055bf421332930b2c41101ed2c507d5d0c6a5b9b5770" => :el_capitan
-    sha256 "45f8ba8eb5cb90ba89e0bf950148be4f50a88d3d1daf496b954d288543025735" => :yosemite
-    sha256 "40b34f18f354dc2bb55fdae3082c1004483f44141628c473a5fe0c0882fdee80" => :mavericks
-    sha256 "ae3460dc786fd5ad45d984a700ccb134cdab445da3c6c2fa8053136d2a9ff1f3" => :mountain_lion
+    revision 2
+    sha256 "a6dca59ac0c5f65b0855d556210d1e1ac3458e39a4350793daeadaa6ab83f037" => :el_capitan
+    sha256 "67fc5ce859ff0ee81c802e2a16081fb61af870987958c78a4c9847739e056dba" => :yosemite
+    sha256 "7a22a019656c870c3749f32cece8fe743cf2ecee51979f6a358a026fbc27fa20" => :mavericks
   end
 
   head do
@@ -17,7 +30,7 @@ class Ruby < Formula
   end
 
   option :universal
-  option "with-suffix", "Suffix commands with '22'"
+  option "with-suffix", "Suffix commands with '23'"
   option "with-doc", "Install documentation"
   option "with-tcltk", "Install with Tcl/Tk support"
 
@@ -38,7 +51,9 @@ class Ruby < Formula
     system "autoconf" if build.head?
 
     args = %W[
-      --prefix=#{prefix} --enable-shared --disable-silent-rules
+      --prefix=#{prefix}
+      --enable-shared
+      --disable-silent-rules
       --with-sitedir=#{HOMEBREW_PREFIX}/lib/ruby/site_ruby
       --with-vendordir=#{HOMEBREW_PREFIX}/lib/ruby/vendor_ruby
     ]
@@ -48,7 +63,7 @@ class Ruby < Formula
       args << "--with-arch=#{Hardware::CPU.universal_archs.join(",")}"
     end
 
-    args << "--program-suffix=22" if build.with? "suffix"
+    args << "--program-suffix=#{program_suffix}" if build.with? "suffix"
     args << "--with-out-ext=tk" if build.without? "tcltk"
     args << "--disable-install-doc" if build.without? "doc"
     args << "--disable-dtrace" unless MacOS::CLT.installed?
@@ -59,7 +74,7 @@ class Ruby < Formula
 
     paths = [
       Formula["libyaml"].opt_prefix,
-      Formula["openssl"].opt_prefix
+      Formula["openssl"].opt_prefix,
     ]
 
     %w[readline gdbm gmp libffi].each do |dep|
@@ -85,6 +100,9 @@ class Ruby < Formula
 
     system "make"
     system "make", "install"
+
+    # A newer version of ruby-mode.el is shipped with Emacs
+    elisp.install Dir["misc/*.el"].reject { |f| f == "misc/ruby-mode.el" }
   end
 
   def post_install
@@ -95,12 +113,22 @@ class Ruby < Formula
     config_file.write rubygems_config
 
     # Create the sitedir and vendordir that were skipped during install
-    mkdir_p `#{bin}/ruby -e 'require "rbconfig"; print RbConfig::CONFIG["sitearchdir"]'`
-    mkdir_p `#{bin}/ruby -e 'require "rbconfig"; print RbConfig::CONFIG["vendorarchdir"]'`
+    ruby="#{bin}/ruby#{program_suffix}"
+    %w[sitearchdir vendorarchdir].each do |dir|
+      mkdir_p `#{ruby} -rrbconfig -e 'print RbConfig::CONFIG["#{dir}"]'`
+    end
   end
 
   def abi_version
-    "2.2.0"
+    "2.3.0"
+  end
+
+  def program_suffix
+    build.with?("suffix") ? "23" : ""
+  end
+
+  def rubygems_bindir
+    "#{HOMEBREW_PREFIX}/bin"
   end
 
   def rubygems_config; <<-EOS.undent
@@ -158,19 +186,19 @@ class Ruby < Formula
       end
 
       def self.default_bindir
-        "#{HOMEBREW_PREFIX}/bin"
+        "#{rubygems_bindir}"
       end
 
       def self.ruby
-        "#{opt_bin}/ruby#{"22" if build.with? "suffix"}"
+        "#{opt_bin}/ruby#{program_suffix}"
       end
     end
     EOS
   end
 
   test do
-    output = `#{bin}/ruby -e "puts 'hello'"`
-    assert_equal "hello\n", output
-    assert_equal 0, $?.exitstatus
+    hello_text = shell_output("#{bin}/ruby#{program_suffix} -e 'puts :hello'")
+    assert_equal "hello\n", hello_text
+    system "#{bin}/gem#{program_suffix}", "list", "--local"
   end
 end

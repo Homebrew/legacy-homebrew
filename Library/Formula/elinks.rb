@@ -7,9 +7,9 @@ class Elinks < Formula
 
   bottle do
     revision 1
-    sha1 "97954464d63684d343152aa3dbb7bd5384d8e56d" => :mavericks
-    sha1 "882e21d742e1f373b9403ef932bddc855430948e" => :mountain_lion
-    sha1 "ce8f6c3521d89ed3c0e3f09813934154ec6b4bcb" => :lion
+    sha256 "4a4ba514c46b18fa2925bb28cb83eebe085ad6795ed84bdd411a2bedae2ee4d0" => :mavericks
+    sha256 "06842f124db95b48c26f071419bd12f88a25c5b08ae519d22453971d5d4feea4" => :mountain_lion
+    sha256 "f54731731b2422afc2ecb1021f7e9d5b152479480fb93856aae8510091210ebb" => :lion
   end
 
   devel do

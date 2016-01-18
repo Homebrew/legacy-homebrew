@@ -1,8 +1,8 @@
 class AppEnginePython < Formula
   desc "Google App Engine"
   homepage "https://cloud.google.com/appengine/docs"
-  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.27.zip"
-  sha256 "6192f295969dabf8659ce9a698450154f7c8c35b89c6e3cb52908c8f50d7c1f4"
+  url "https://storage.googleapis.com/appengine-sdks/featured/google_appengine_1.9.30.zip"
+  sha256 "d908f031672f8a95da0cc9230253a9985cfd57f6721d89606ccea21c8e00b471"
 
   bottle :unneeded
 
@@ -19,6 +19,7 @@ class AppEnginePython < Formula
       _php_runtime.py
       api_server.py
       appcfg.py
+      backends_conversion.py
       bulkload_client.py
       bulkloader.py
       dev_appserver.py
@@ -26,7 +27,10 @@ class AppEnginePython < Formula
       endpointscfg.py
       gen_protorpc.py
       google_sql.py
+      php_cli.py
       remote_api_shell.py
+      run_tests.py
+      wrapper_util.py
     ].each do |fn|
       bin.install_symlink share/name/fn
     end

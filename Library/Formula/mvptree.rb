@@ -6,9 +6,9 @@ class Mvptree < Formula
 
   bottle do
     cellar :any
-    sha1 "3dce2cad2eacd0ce04dbb4707734d665e64d2fd9" => :mavericks
-    sha1 "eded94da7a783b5d0f0d59459c76f6ad639f08e5" => :mountain_lion
-    sha1 "4cfffe6141a3f2f7e3a2a01fb966580ecaa5b6d1" => :lion
+    sha256 "962ab5237770110598fd758bdd8319693652e71a02209c810b246045fd33f44a" => :mavericks
+    sha256 "232ea50b963e944b6ddc5b287927230dd6bec1b7da5fba300b4949c941870e6c" => :mountain_lion
+    sha256 "2f4e35ba655125f7a5cda6d5b16d52267255cc8340808df577eb28f6be1ddaf4" => :lion
   end
 
   # Patch submitted to upstream by mail

@@ -46,7 +46,7 @@ class Coq < Formula
   end
 
   def caveats; <<-EOS.undent
-    To use the Coq Emacs mode, add the the following to your init file:
+    To use the Coq Emacs mode, add the following to your init file:
       (setq auto-mode-alist (cons '("\\\\.v$" . coq-mode) auto-mode-alist))
       (autoload 'coq-mode "coq" "Major mode for editing Coq vernacular." t)
     EOS

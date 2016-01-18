@@ -18,8 +18,8 @@ class Botan < Formula
   end
 
   devel do
-    url "http://botan.randombit.net/releases/Botan-1.11.24.tgz"
-    sha256 "9e01b170c4ad46f2765aa58ccc67bcb1417ec489f4e420a909be87972c1577dd"
+    url "http://botan.randombit.net/releases/Botan-1.11.26.tgz"
+    sha256 "c94cec8a7a293a813ee30f53aff7ac6670cbc4d42fa38833ae41eaf860fe8511"
   end
 
   option "with-debug", "Enable debug build of Botan"
@@ -58,9 +58,8 @@ class Botan < Formula
     if !File.exist? bin/"botan"
       assert_match "lcrypto", shell_output("#{bin}/botan-config-1.10 --libs")
     else
-      system bin/"botan", "keygen"
-      File.exist? "public.pem"
-      File.exist? "private.pem"
+      assert_match /\A-----BEGIN PRIVATE KEY-----/,
+       shell_output("#{bin}/botan keygen")
     end
   end
 end

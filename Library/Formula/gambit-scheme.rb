@@ -13,12 +13,19 @@ class GambitScheme < Formula
   conflicts_with "ghostscript", :because => "both install `gsc` binaries"
   conflicts_with "scheme48", :because => "both install `scheme-r5rs` binaries"
 
-  deprecated_option "enable-shared" => "with-shared"
-  option "with-check", 'Execute "make check" before installing'
+  option "with-test", 'Execute "make check" before installing'
   option "with-shared", "Build Gambit Scheme runtime as shared library"
+
+  deprecated_option "with-check" => "with-test"
+  deprecated_option "enable-shared" => "with-shared"
 
   fails_with :llvm
   fails_with :clang
+  # According to the docs, gambit-scheme requires absurd amounts of RAM
+  # to build using GCC 4.2 or 4.3; see
+  # https://github.com/mistydemeo/tigerbrew/issues/389
+  fails_with :gcc
+  fails_with :gcc => "4.3"
 
   def install
     args = %W[
@@ -33,7 +40,7 @@ class GambitScheme < Formula
     args << "--enable-shared" if build.with? "shared"
 
     system "./configure", *args
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
 
     system "make"
     system "make", "install", "emacsdir=#{share}/emacs/site-lisp/#{name}"

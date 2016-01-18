@@ -3,12 +3,14 @@ class Uwsgi < Formula
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
   url "https://projects.unbit.it/downloads/uwsgi-2.0.11.2.tar.gz"
   sha256 "0b889b0b4d2dd3f6625df28cb0b86ec44a68d074ede2d0dfad0b91e88914885c"
+  revision 1
+
   head "https://github.com/unbit/uwsgi.git"
 
   bottle do
-    sha256 "b761923ea5a00c55509b14770714b9bc728463e8b985dd131731b50da8bb1c20" => :el_capitan
-    sha256 "fca347e8b730b652fd2d98b89d65f17f146c89393f3264d706e247e9fca89723" => :yosemite
-    sha256 "d4132453a8c210a32452a1b49cdb5d032e38da6b2027f09df38f17200735a455" => :mavericks
+    sha256 "558709cfcdbb5d9a552753276e35ddd223315cc42fdb2144eea1c8e1af523257" => :el_capitan
+    sha256 "5007d96dd0c8eb687a0137460042a5178943b754880fc6ded9dc33608bd0d1f2" => :yosemite
+    sha256 "9cc48b037ae97dab7c026a0c6af3021f984de4446d0e8ac089f38c62a06a97ff" => :mavericks
   end
 
   option "with-java", "Compile with Java support"
@@ -16,11 +18,9 @@ class Uwsgi < Formula
   option "with-ruby", "Compile with Ruby support"
 
   depends_on "pkg-config" => :build
+  depends_on "pcre"
   depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
-
-  depends_on "pcre"
-  depends_on "yajl" if build.without? "jansson"
 
   depends_on "geoip" => :optional
   depends_on "gloox" => :optional
@@ -43,6 +43,7 @@ class Uwsgi < Formula
   depends_on "tcc" => :optional
   depends_on "v8" => :optional
   depends_on "zeromq" => :optional
+  depends_on "yajl" if build.without? "jansson"
 
   def install
     ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
@@ -53,8 +54,14 @@ class Uwsgi < Formula
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
+    # Fix build on case-sensitive filesystems
+    # https://github.com/Homebrew/homebrew/issues/45560
+    # https://github.com/unbit/uwsgi/pull/1128
+    inreplace "plugins/alarm_speech/uwsgiplugin.py", "'-framework appkit'", "'-framework AppKit'"
+
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
+      ssl = true
       json = #{json}
       yaml = #{yaml}
       inherit = base
@@ -79,7 +86,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper", "ugreen", "webdav", "zergpool",]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"
@@ -111,13 +118,13 @@ class Uwsgi < Formula
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/#{plugin}", "brew"
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/#{plugin}", "brew"
     end
 
     python_versions = ["python", "python2"]
     python_versions << "python3" if build.with? "python3"
     python_versions.each do |v|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/python", "brew", v
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/python", "brew", v
     end
 
     bin.install "uwsgi"
@@ -138,7 +145,7 @@ class Uwsgi < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{bin}/uwsgi</string>
+            <string>#{opt_bin}/uwsgi</string>
             <string>--uid</string>
             <string>_www</string>
             <string>--gid</string>
@@ -171,7 +178,7 @@ class Uwsgi < Formula
     sleep 2
 
     begin
-      assert_match /Hello World/, shell_output("curl localhost:8080")
+      assert_match "Hello World", shell_output("curl localhost:8080")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)

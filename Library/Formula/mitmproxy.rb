@@ -1,15 +1,16 @@
 class Mitmproxy < Formula
   desc "Intercept, modify, replay, save HTTP/S traffic"
   homepage "https://mitmproxy.org"
-  url "https://mitmproxy.org/download/mitmproxy-0.13.tar.gz"
-  sha256 "f35b90d836693dbb02a589ddee056bb4fdb7b679a1dfe230b0492216a8e3dcfa"
+  url "https://mitmproxy.org/download/mitmproxy-0.14.0.tar.gz"
+  sha256 "cefcdc514b46b29c73a10a9e5b967c7716cb98e2d2abbfa74ebba8d4511d6d55"
   head "https://github.com/mitmproxy/mitmproxy.git"
 
   bottle do
     cellar :any
-    sha256 "b6f1e94bb7c2b6f78903c7223781d1956a27e841ac5b2602b7753be4093fd74c" => :el_capitan
-    sha256 "6c98cac287bf19f150bdab659c532af1f9a45152eeb749650be51a95914cf2d1" => :yosemite
-    sha256 "e9547ab49fa877da7e5e559cc4a4940a54a87cdd24f34694dbb12c266f2c4431" => :mavericks
+    revision 1
+    sha256 "58c50450515bc3a3299bf047b7f0ca2271e4ae77a963ff2fd0cc9ce3d3db0b4f" => :el_capitan
+    sha256 "1c2a1581063a02f7ea8f3c759c8556c10f5bf26089250dbf32116d055671db06" => :yosemite
+    sha256 "5d1e31f02b7c7b7c1578d42ddd6f3539f37312405119ed4be63540a6a08a85e1" => :mavericks
   end
 
   option "with-pyamf", "Enable action message format (AMF) support for python"
@@ -81,8 +82,8 @@ class Mitmproxy < Formula
   end
 
   resource "netlib" do
-    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.13.1.tar.gz"
-    sha256 "f2b986ed2fa0125a88975d3f904a111c95b2925c3f553f7b1fc991f25bf4915b"
+    url "https://pypi.python.org/packages/source/n/netlib/netlib-0.14.0.tar.gz"
+    sha256 "cf12b0a71a493eee46fb2da284122ac363179fe0a0bc71c5c8920374aa978e75"
   end
 
   resource "passlib" do
@@ -131,8 +132,18 @@ class Mitmproxy < Formula
   end
 
   resource "urwid" do
-    url "https://pypi.python.org/packages/source/u/urwid/urwid-1.3.0.tar.gz"
-    sha256 "29f04fad3bf0a79c5491f7ebec2d50fa086e9d16359896c9204c6a92bc07aba2"
+    url "https://pypi.python.org/packages/source/u/urwid/urwid-1.3.1.tar.gz"
+    sha256 "cfcec03e36de25a1073e2e35c2c7b0cc6969b85745715c3a025a31d9786896a1"
+  end
+
+  resource "construct" do
+    url "https://pypi.python.org/packages/source/c/construct/construct-2.5.2.tar.gz"
+    sha256 "665b6271eeadf15219c726b180c8d7a641d026784d72ca3dad90a20aae009020"
+  end
+
+  resource "click" do
+    url "https://pypi.python.org/packages/source/c/click/click-5.1.tar.gz"
+    sha256 "678c98275431fad324275dec63791e4a17558b40e5a110e20a82866139a85a5a"
   end
 
   # Optional resources
@@ -157,7 +168,8 @@ class Mitmproxy < Formula
 
     res = %w[backports.ssl_match_hostname blinker certifi cffi ConfigArgParse
              cryptography enum34 hpack html2text idna ipaddress lxml netlib passlib
-             pyasn1 pycparser pyOpenSSL pyparsing pyperclip six tornado urwid]
+             pyasn1 pycparser pyOpenSSL pyparsing pyperclip six tornado urwid
+             construct click]
 
     res << "pyamf" if build.with? "pyamf"
     res << "cssutils" if build.with? "cssutils"

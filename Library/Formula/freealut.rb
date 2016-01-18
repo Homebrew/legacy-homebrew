@@ -1,6 +1,6 @@
 class Freealut < Formula
   desc "Implementation of OpenAL's ALUT standard"
-  homepage "http://connect.creativelabs.com/openal/Documentation/The%20OpenAL%20Utility%20Toolkit.htm"
+  homepage "https://github.com/vancegroup/freealut"
   url "http://connect.creativelabs.com/openal/Downloads/ALUT/freealut-1.1.0.tar.gz"
   mirror "http://ftp.de.debian.org/debian/pool/main/f/freealut/freealut_1.1.0.orig.tar.gz"
   sha256 "60d1ea8779471bb851b89b49ce44eecb78e46265be1a6e9320a28b100c8df44f"
@@ -33,6 +33,6 @@ index 2b26d6d..4001db1 100644
 -AC_SEARCH_LIBS([alGetError], [openal32 openal])
 +# Use Mac OS X frameworks
 +LIBS="$LIBS -framework IOKit -framework OpenAL"
- 
+
  ################################################################################
  # Checks for header files.

@@ -1,22 +1,23 @@
 class Burp < Formula
   desc "Network backup and restore"
   homepage "http://burp.grke.org/"
-  url "http://burp.grke.org/downloads/burp-1.4.28/burp-1.4.28.tar.bz2"
-  sha256 "01c41c07805ebe8c882d7cb9f294e779b6decbe2eb2c81fd65d8fb2b174e18f0"
+  url "https://github.com/grke/burp/archive/1.4.40.tar.gz"
+  sha256 "2e6a9a28453a11f3e36d0beefa185e72e7781a8718b55d3101144c9900752d6f"
   head "https://github.com/grke/burp.git"
+  revision 1
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "bb6cf41c1f0dbbfd0a443fe3a01d5ab76ba3197625761d7fbd3c1ea1ec8a0102" => :el_capitan
-    sha256 "e6a66d5a6253fd41f93e8396f9ef0b569dfa71260e23a5a021ecc775b28898ac" => :yosemite
-    sha256 "c65c1af00781bd8f8b2cd2f4dbe04998b2397437c53c3a7135e3f3f2ad9f1489" => :mavericks
+    sha256 "2342aea1a1ac623c8154c1d64a7b583eae62a6177136173d73adada6fd58380e" => :el_capitan
+    sha256 "a892287dbaf7a4d5557a471b16d6ce09a5dc0faab004635bc0c90b79d07e92b3" => :yosemite
+    sha256 "d3b8cc95839835dd9ba9574444d5cf7394d398376fe2a06fcd3ba9a00b395476" => :mavericks
   end
 
   depends_on "librsync"
   depends_on "openssl"
 
-  # patches to change directories to brew conventions in Makefile and config files
+  # patches to change directories to brew conventions in Makefile and config
+  # files
   patch :DATA
 
   def install
@@ -29,7 +30,7 @@ class Burp < Formula
 
   def caveats; <<-EOS.undent
     Before installing the launchd entry you should configure your burp client in
-    #{etc}/burp/burp.conf
+      #{etc}/burp/burp.conf
     EOS
   end
 

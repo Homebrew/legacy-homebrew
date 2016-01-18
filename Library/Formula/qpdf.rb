@@ -1,15 +1,14 @@
 class Qpdf < Formula
   desc "Tools for and transforming and inspecting PDF files"
   homepage "http://qpdf.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/qpdf/qpdf/5.1.3/qpdf-5.1.3.tar.gz"
-  sha256 "d5164bdad3afc381568dbe8e1509a4a6a911d4d077f1fc20b9866ef8fad901d3"
+  url "https://downloads.sourceforge.net/project/qpdf/qpdf/6.0.0/qpdf-6.0.0.tar.gz"
+  sha256 "a9fdc7e94d38fcd3831f37b6e0fe36492bf79aa6d54f8f66062cf7f9c4155233"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "639b932db33ce4c284c3f3af0dd2d6d8c71a1715308bfe5a0ba47ea2cca92760" => :el_capitan
-    sha256 "607067e2cc684611fe344a1d1bfb29f5d30aed55c8462968e98591fe19e02f78" => :yosemite
-    sha256 "927c353822d0ae21b0d822931121c4ff36a2a0e2905dd04075c60de4d0b023bf" => :mavericks
+    sha256 "de523886e15f79209dbe270043dc252ebd2856649ac94f98141f37c3436ed20e" => :el_capitan
+    sha256 "d352cf417a9ee038157343f138ff3f341e5aa5d9e91757c3ce88950b4509aba3" => :yosemite
+    sha256 "f7059fb9d944230b06ad8ddb34528e4090161ee0a3ddee7068a86046c61d4b04" => :mavericks
   end
 
   depends_on "pcre"

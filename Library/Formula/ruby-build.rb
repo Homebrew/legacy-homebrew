@@ -1,12 +1,12 @@
 class RubyBuild < Formula
   desc "Install various Ruby versions and implementations"
-  homepage "https://github.com/sstephenson/ruby-build"
-  url "https://github.com/sstephenson/ruby-build/archive/v20151028.tar.gz"
-  sha256 "3c83ae35c48869404884603b784927a8bd1d3e041c555996afb1286fc20aa708"
+  homepage "https://github.com/rbenv/ruby-build"
+  url "https://github.com/rbenv/ruby-build/archive/v20160111.tar.gz"
+  sha256 "13cfd535e3a3fdcc87756e3f2f71989ea9f668aa3a474b4640170b4a248c2a37"
 
   bottle :unneeded
 
-  head "https://github.com/sstephenson/ruby-build.git"
+  head "https://github.com/rbenv/ruby-build.git"
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]

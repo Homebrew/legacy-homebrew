@@ -1,7 +1,7 @@
 class Libksba < Formula
   desc "X.509 and CMS library"
-  homepage "https://www.gnupg.org/related_software/libksba/index.en.html"
-  url "ftp://ftp.gnupg.org/gcrypt/libksba/libksba-1.3.3.tar.bz2"
+  homepage "https://www.gnupg.org/related_software/libksba/"
+  url "https://gnupg.org/ftp/gcrypt/libksba/libksba-1.3.3.tar.bz2"
   mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libksba/libksba-1.3.3.tar.bz2"
   sha256 "0c7f5ffe34d0414f6951d9880a46fcc2985c487f7c36369b9f11ad41131c7786"
 
@@ -16,8 +16,9 @@ class Libksba < Formula
   depends_on "libgpg-error"
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
-                          "--disable-silent-rules"
+    system "./configure", "--disable-dependency-tracking",
+                          "--disable-silent-rules",
+                          "--prefix=#{prefix}"
     system "make", "install"
   end
 

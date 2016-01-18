@@ -14,7 +14,8 @@ class Pmd < Formula
   depends_on "maven" => :build
 
   def install
-    ENV["_JAVA_OPTIONS"] = "-Duser.home=#{ENV["HOME"]}"
+    ENV.java_cache
+
     system "mvn", "clean", "package"
 
     doc.install "LICENSE", "NOTICE", "README.md"

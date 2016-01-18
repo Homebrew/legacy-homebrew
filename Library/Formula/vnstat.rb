@@ -3,14 +3,14 @@ class Vnstat < Formula
   homepage "http://humdi.net/vnstat/"
   url "http://humdi.net/vnstat/vnstat-1.14.tar.gz"
   sha256 "f8462a47d85d0890493dc9eaeafbc725ae631aa5b103fb7f8af4ddb2314e8386"
-
   head "https://github.com/vergoh/vnstat.git"
 
   bottle do
     cellar :any
-    sha256 "e35e04ae895a0abdd11198ea4e313f4103c52b7f8e4356eb2b9d7dae8cebc254" => :yosemite
-    sha256 "995fa5a0cba75a852526b9bfe5dde9ab1d5ff168e6298175e607d7bd6dc9f47e" => :mavericks
-    sha256 "e1ad44a67cc8a6cb7cf5bb716473a42285226e0dca4f719f9e4d2be66f7f1e2b" => :mountain_lion
+    revision 1
+    sha256 "649f48180888b9dc1cb3fd60fac3d1dcdf56ff5a0f2b57a831c08fcad201b0ab" => :el_capitan
+    sha256 "ef27ae97c7a698631fef3f78cbe334d7347d40e06e697f012ab9fa925b7daf93" => :yosemite
+    sha256 "80d5c778de2d86d77761abf2a2eaa53707989287ce157085f11cad350d7ef0e1" => :mavericks
   end
 
   depends_on "gd"
@@ -44,10 +44,10 @@ class Vnstat < Formula
       c.gsub! 'PidFile "/var/run/vnstat/vnstat.pid"', %(PidFile "#{var}/run/vnstat/vnstat.pid")
     end
 
-    (var+"db/vnstat").mkpath
+    (var/"db/vnstat").mkpath
 
     system "make", "all", "-C", "src", "CFLAGS=#{ENV.cflags}", "CC=#{ENV.cc}"
-    (prefix+"etc").install "cfg/vnstat.conf"
+    etc.install "cfg/vnstat.conf"
     bin.install "src/vnstat", "src/vnstatd", "src/vnstati"
     man1.install "man/vnstat.1", "man/vnstatd.1", "man/vnstati.1"
     man5.install "man/vnstat.conf.5"
@@ -74,7 +74,7 @@ class Vnstat < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>UserName</key>
-        <string>#{`whoami`.chomp}</string>
+        <string>$USER</string>
         <key>GroupName</key>
         <string>staff</string>
         <key>WorkingDirectory</key>
@@ -86,14 +86,22 @@ class Vnstat < Formula
     EOS
   end
 
+  def post_install
+    inreplace prefix/"homebrew.mxcl.vnstat.plist", "$USER", ENV["USER"]
+  end
+
   def caveats; <<-EOS.undent
     To monitor interfaces other than "en0" edit #{etc}/vnstat.conf
     EOS
   end
 
   test do
+    cp etc/"vnstat.conf", testpath
+    inreplace "vnstat.conf", "/usr/local/var", testpath/"var"
+    (testpath/"var/db/vnstat").mkpath
+
     begin
-      stat = IO.popen("#{bin}/vnstatd --nodaemon --config #{etc}/vnstat.conf")
+      stat = IO.popen("#{bin}/vnstatd --nodaemon --config vnstat.conf")
       sleep 1
     ensure
       Process.kill "SIGINT", stat.pid

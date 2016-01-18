@@ -25,7 +25,7 @@ class SoftwareSpec
   attr_reader :bottle_specification
   attr_reader :compiler_failures
 
-  def_delegators :@resource, :stage, :fetch, :verify_download_integrity
+  def_delegators :@resource, :stage, :fetch, :verify_download_integrity, :source_modified_time
   def_delegators :@resource, :cached_download, :clear_cache
   def_delegators :@resource, :checksum, :mirrors, :specs, :using
   def_delegators :@resource, :version, :mirror, *Checksum::TYPES
@@ -185,12 +185,12 @@ class SoftwareSpec
   end
 
   def add_dep_option(dep)
-    name = dep.option_name
-
-    if dep.optional? && !option_defined?("with-#{name}")
-      options << Option.new("with-#{name}", "Build with #{name} support")
-    elsif dep.recommended? && !option_defined?("without-#{name}")
-      options << Option.new("without-#{name}", "Build without #{name} support")
+    dep.option_names.each do |name|
+      if dep.optional? && !option_defined?("with-#{name}")
+        options << Option.new("with-#{name}", "Build with #{name} support")
+      elsif dep.recommended? && !option_defined?("without-#{name}")
+        options << Option.new("without-#{name}", "Build without #{name} support")
+      end
     end
   end
 end

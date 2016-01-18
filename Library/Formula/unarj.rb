@@ -6,9 +6,9 @@ class Unarj < Formula
 
   bottle do
     cellar :any
-    sha1 "4cbe4d541f6261ea2da9c7551b9596375a42ff24" => :yosemite
-    sha1 "4ff0b52967309059305f41c49ca9028469d46cce" => :mavericks
-    sha1 "e3fb406acd8fc83d2fa890e82126cf74c225da80" => :mountain_lion
+    sha256 "95794638930505f1d4a23553571d62de07dd3f62da7687ef571c6f7e893bba42" => :yosemite
+    sha256 "d81c8d0e7799847d65e8059eee61bb29f9e33ea3ea501465dee0cc7c68f425ff" => :mavericks
+    sha256 "ec371113bda90ac0f08a58822a6131934f358a10c9bf2a7e09b066827bbe9c62" => :mountain_lion
   end
 
   resource "testfile" do

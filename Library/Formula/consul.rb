@@ -4,28 +4,32 @@ class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
   url "https://github.com/hashicorp/consul.git",
-    :tag => "v0.5.2", :revision => "9a9cc9341bb487651a0399e3fc5e1e8a42e62dd9"
+    :tag => "v0.6.1", :revision => "68969ce5f4499cbe3a4f946917be2e580f1b1936"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "202a4b756ed7e56a67505e1ea924ee83c7fc12969f1b27f1af16d2cf0dbfe997" => :yosemite
-    sha256 "6378dbdd6bf1e16b2a7b21b12f9e5f2ea2656229d1a376e69653f290736566a1" => :mavericks
-    sha256 "3e4c6a01071652f3012ce25744925ab773231a5762f6f574e4100728736b5817" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0abdcdd292c5f1442ed9bb7168e38c253f71e2483c934789af3b07f664b9aa8f" => :el_capitan
+    sha256 "6520f0768fd61278883b11be4392aa0b4eb1bc56ac5f8ebdcd526e7b6ca2b7dc" => :yosemite
+    sha256 "b0eff40c21bbc43fb36fabba01916403aa7524ca7afdaad0444f365a3d834ecf" => :mavericks
   end
 
   option "with-web-ui", "Installs the consul web ui"
 
   depends_on "go" => :build
 
+  go_resource "github.com/DataDog/datadog-go" do
+    url "https://github.com/DataDog/datadog-go.git",
+      :revision => "bc97e0770ad4edae1c9dc14beb40b79b2dde32f8"
+  end
+
   go_resource "github.com/armon/circbuf" do
     url "https://github.com/armon/circbuf.git",
-      :revision => "f092b4f207b6e5cce0569056fba9e1a2735cb6cf"
+      :revision => "bbbad097214e2918d8543d5201d12bfd7bca254d"
   end
 
   go_resource "github.com/armon/go-metrics" do
     url "https://github.com/armon/go-metrics.git",
-      :revision => "b2d95e5291cdbc26997d1301a5e467ecbb240e25"
+      :revision => "345426c77237ece5dab0e1605c3e4b35c3f54757"
   end
 
   go_resource "github.com/armon/go-radix" do
@@ -33,24 +37,39 @@ class Consul < Formula
       :revision => "fbd82e84e2b13651f3abc5ffd26b65ba71bc8f93"
   end
 
-  go_resource "github.com/armon/gomdb" do
-    url "https://github.com/armon/gomdb.git",
-      :revision => "151f2e08ef45cb0e57d694b2562f351955dff572"
-  end
-
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-      :revision => "04a3e85793043e76d41164037d0d7f9d53eecae3"
+      :revision => "25b28102db2053fa885b2a4798d5dfa94745f4b6"
   end
 
-  go_resource "github.com/hashicorp/consul-migrate" do
-    url "https://github.com/hashicorp/consul-migrate.git",
-      :revision => "678fb10cdeae25ab309e99e655148f0bf65f9710"
+  go_resource "github.com/fsouza/go-dockerclient" do
+    url "https://github.com/fsouza/go-dockerclient.git",
+      :revision => "175e1df973274f04e9b459a62cffc49808f1a649"
+  end
+
+  go_resource "github.com/hashicorp/errwrap" do
+    url "https://github.com/hashicorp/errwrap.git",
+      :revision => "7554cd9344cec97297fa6649b055a8c98c2a1e55"
   end
 
   go_resource "github.com/hashicorp/go-checkpoint" do
     url "https://github.com/hashicorp/go-checkpoint.git",
-      :revision => "88326f6851319068e7b34981032128c0b1a6524d"
+      :revision => "e4b2dc34c0f698ee04750bf2035d8b9384233e1b"
+  end
+
+  go_resource "github.com/hashicorp/go-cleanhttp" do
+    url "https://github.com/hashicorp/go-cleanhttp.git",
+      :revision => "ce617e79981a8fff618bb643d155133a8f38db96"
+  end
+
+  go_resource "github.com/hashicorp/go-immutable-radix" do
+    url "https://github.com/hashicorp/go-immutable-radix.git",
+      :revision => "12e90058b2897552deea141eff51bb7a07a09e63"
+  end
+
+  go_resource "github.com/hashicorp/go-memdb" do
+    url "https://github.com/hashicorp/go-memdb.git",
+      :revision => "31949d523ade8a236956c6f1761e9dcf902d1638"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -60,7 +79,7 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/go-multierror" do
     url "https://github.com/hashicorp/go-multierror.git",
-      :revision => "56912fb08d85084aa318edcf2bba735b97cf35c5"
+      :revision => "d30f09973e19c1dfcd120b2d9c4f168e68d6b5d5"
   end
 
   go_resource "github.com/hashicorp/go-syslog" do
@@ -70,12 +89,12 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/golang-lru" do
     url "https://github.com/hashicorp/golang-lru.git",
-      :revision => "7f9ef20a0256f494e24126014135cf893ab71e9e"
+      :revision => "5c7531c003d8bf158b0fe5063649a2f41a822146"
   end
 
   go_resource "github.com/hashicorp/hcl" do
     url "https://github.com/hashicorp/hcl.git",
-      :revision => "54864211433d45cb780682431585b3e573b49e4a"
+      :revision => "197e8d3cf42199cfd53cd775deb37f3637234635"
   end
 
   go_resource "github.com/hashicorp/logutils" do
@@ -85,17 +104,17 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/memberlist" do
     url "https://github.com/hashicorp/memberlist.git",
-      :revision => "3636f9694d601b5f68da11676d59cdf8a4c9dfe3"
+      :revision => "9888dc523910e5d22c5be4f6e34520943df21809"
   end
 
   go_resource "github.com/hashicorp/net-rpc-msgpackrpc" do
     url "https://github.com/hashicorp/net-rpc-msgpackrpc.git",
-      :revision => "d377902b7aba83dd3895837b902f6cf3f71edcb2"
+      :revision => "a14192a58a694c123d8fe5481d4a4727d6ae82f3"
   end
 
   go_resource "github.com/hashicorp/raft" do
     url "https://github.com/hashicorp/raft.git",
-      :revision => "53ca2ec750f09e888a0c051e7c68c98246176be2"
+      :revision => "d136cd15dfb7876fd7c89cad1995bc4f19ceb294"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
@@ -103,24 +122,19 @@ class Consul < Formula
       :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
   end
 
-  go_resource "github.com/hashicorp/raft-mdb" do
-    url "https://github.com/hashicorp/raft-mdb.git",
-      :revision => "4ec3694ffbc74d34f7532e70ef2e9c3546a0c0b0"
-  end
-
   go_resource "github.com/hashicorp/scada-client" do
     url "https://github.com/hashicorp/scada-client.git",
-      :revision => "c26580cfe35393f6f4bf1b9ba55e6afe33176bae"
+      :revision => "84989fd23ad4cc0e7ad44d6a871fd793eb9beb0a"
   end
 
   go_resource "github.com/hashicorp/serf" do
     url "https://github.com/hashicorp/serf.git",
-      :revision => "932865ce77ba6ab0ebf5978040f8b23825762d44"
+      :revision => "39c7c06298b480560202bec00c2c77e974e88792"
   end
 
   go_resource "github.com/hashicorp/yamux" do
     url "https://github.com/hashicorp/yamux.git",
-      :revision => "8e00b30457b1486b012f204b82ec92ae6b547de8"
+      :revision => "df949784da9ed028ee76df44652e42d37a09d7e4"
   end
 
   go_resource "github.com/inconshreveable/muxado" do
@@ -130,47 +144,45 @@ class Consul < Formula
 
   go_resource "github.com/miekg/dns" do
     url "https://github.com/miekg/dns.git",
-      :revision => "3e549e2f6fd420cdffa528144b925305401bf55c"
+      :revision => "1756430e42a7b2ecded216a9fdd37d002c116df5"
   end
 
   go_resource "github.com/mitchellh/cli" do
     url "https://github.com/mitchellh/cli.git",
-      :revision => "8102d0ed5ea2709ade1243798785888175f6e415"
+      :revision => "cb6853d606ea4a12a15ac83cc43503df99fd28fb"
   end
 
   go_resource "github.com/mitchellh/mapstructure" do
     url "https://github.com/mitchellh/mapstructure.git",
-      :revision => "2caf8efc93669b6c43e0441cdc6aed17546c96f3"
+      :revision => "281073eb9eb092240d33ef253c404f1cca550309"
   end
 
   go_resource "github.com/ryanuber/columnize" do
     url "https://github.com/ryanuber/columnize.git",
-      :revision => "44cb4788b2ec3c3d158dd3d1b50aba7d66f4b59a"
+      :revision => "983d3a5fab1bf04d1b412465d2d9f8430e2e917e"
   end
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "f6a608df624ae17d57958a8a294c66da81730577"
+      :revision => "803f01ea27e23d998825ec085f0d153cac01c828"
   end
 
   resource "web-ui" do
-    url "https://dl.bintray.com/mitchellh/consul/0.5.2_web_ui.zip"
-    sha256 "ad883aa52e1c0136ab1492bbcedad1210235f26d59719fb6de3ef6464f1ff3b1"
+    url "https://releases.hashicorp.com/consul/0.6.1/consul_0.6.1_web_ui.zip"
+    sha256 "afccdd540b166b778c7c0483becc5e282bbbb1ee52335bfe94bf757df8c55efc"
   end
 
   def install
-    ENV["GOPATH"] = buildpath
+    contents = Dir["{*,.git,.gitignore}"]
+    gopath = buildpath/"gopath"
+    (gopath/"src/github.com/hashicorp/consul").install contents
 
-    consulpath = buildpath/"src/github.com/hashicorp/consul"
-    consulpath.install Dir["{*,.git}"]
-    Language::Go.stage_deps resources, buildpath/"src"
+    ENV["GOPATH"] = gopath
+    ENV.prepend_create_path "PATH", gopath/"bin"
 
-    # build gomdb separately to avoid linker errors
-    cd "src/github.com/armon/gomdb" do
-      system "go", "install"
-    end
+    Language::Go.stage_deps resources, gopath/"src"
 
-    cd "src/github.com/hashicorp/consul" do
+    cd gopath/"src/github.com/hashicorp/consul" do
       system "make"
       bin.install "bin/consul"
     end

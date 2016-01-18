@@ -1,3 +1,6 @@
+# Note that odd release numbers indicate unstable releases.
+# Please only submit PRs for [x.x.even] version numbers:
+# https://github.com/djcb/mu/commit/23f4a64bdcdee3f9956a39b9a5a4fd0c5c2370ba
 class Mu < Formula
   desc "Tool for searching e-mail messages stored in the maildir-format"
   homepage "http://www.djcbsoftware.nl/code/mu/"
@@ -6,9 +9,10 @@ class Mu < Formula
   head "https://github.com/djcb/mu.git"
 
   bottle do
-    sha256 "58843a9fa75b7ab59618b99b98cb5106393b81c377f88541fee23b341d987702" => :el_capitan
-    sha256 "2f85daec392f24260d7d87ba4c67ecb9223c89751665b60762cbb46ac21b2a7a" => :yosemite
-    sha256 "1e355cb0ce355ba7b78debbaec8830d083c0c7332448189945acd62b0a0f2b43" => :mavericks
+    revision 1
+    sha256 "ca0ff4ed1bc8c4022a3cba4884ae20a00fc6e183232d0ce4461c8a6fb2d3bf9b" => :el_capitan
+    sha256 "fd571e0672ca15c95a1a7017d98658e6a8e97edb4d2e562444a8c420e17d3543" => :yosemite
+    sha256 "52a08b0cc552480f5edce440aa827464c5ed715f981b83528479b4223702518c" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -32,7 +36,8 @@ class Mu < Formula
 
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{elisp}"
     system "make"
     system "make", "install"
   end

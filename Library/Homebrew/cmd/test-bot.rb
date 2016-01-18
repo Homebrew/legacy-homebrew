@@ -9,7 +9,7 @@
 # --skip-setup:    Don't check the local system is setup correctly.
 # --skip-homebrew: Don't check Homebrew's files and tests are all valid.
 # --junit:         Generate a JUnit XML test results file.
-# --email:         Generate an email subject file.
+# --no-bottle:     Run brew install without --build-bottle
 # --keep-old:      Run brew bottle --keep-old to build new bottles for a single platform.
 # --HEAD:          Run brew install with --HEAD
 # --local:         Ask Homebrew to write verbose logs under ./logs/ and set HOME to ./home/
@@ -23,7 +23,6 @@
 # --ci-pr:               Shortcut for Homebrew pull request CI options.
 # --ci-testing:          Shortcut for Homebrew testing CI options.
 # --ci-upload:           Homebrew CI bottle upload.
-# --ci-reset-and-update: Homebrew CI repository and tap reset and update.
 
 require "formula"
 require "utils"
@@ -31,39 +30,39 @@ require "date"
 require "rexml/document"
 require "rexml/xmldecl"
 require "rexml/cdata"
-require "cmd/tap"
+require "tap"
+require "core_formula_repository"
 
 module Homebrew
-  EMAIL_SUBJECT_FILE = "brew-test-bot.#{MacOS.cat}.email.txt"
   BYTES_IN_1_MEGABYTE = 1024*1024
 
   def resolve_test_tap
-    tap = ARGV.value("tap")
-    return Tap.fetch(*tap_args(tap)) if tap
+    if tap = ARGV.value("tap")
+      return Tap.fetch(tap)
+    end
+
+    if tap = ENV["TRAVIS_REPO_SLUG"]
+      return Tap.fetch(tap)
+    end
 
     if ENV["UPSTREAM_BOT_PARAMS"]
       bot_argv = ENV["UPSTREAM_BOT_PARAMS"].split " "
       bot_argv.extend HomebrewArgvExtension
-      tap = bot_argv.value("tap")
-      return Tap.fetch(*tap_args(tap)) if tap
+      if tap = bot_argv.value("tap")
+        return Tap.fetch(tap)
+      end
     end
 
     if git_url = ENV["UPSTREAM_GIT_URL"] || ENV["GIT_URL"]
       # Also can get tap from Jenkins GIT_URL.
-      url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/")
-      HOMEBREW_TAP_ARGS_REGEX =~ url_path
-      return Tap.fetch($1, $3) if $1 && $3 && $3 != "homebrew"
+      url_path = git_url.sub(%r{^https?://github\.com/}, "").chomp("/").sub(%r{\.git$}, "")
+      begin
+        return Tap.fetch(url_path)
+      rescue
+      end
     end
 
-    # return nil means we are testing core repo.
-  end
-
-  def homebrew_git_repo(tap = nil)
-    if tap
-      tap.path
-    else
-      HOMEBREW_REPOSITORY
-    end
+    CoreFormulaRepository.instance
   end
 
   class Step
@@ -210,19 +209,16 @@ module Homebrew
       @added_formulae = []
       @modified_formula = []
       @steps = []
-      @tap = options[:tap]
-      @repository = Homebrew.homebrew_git_repo @tap
-      @skip_homebrew = options[:skip_homebrew]
+      @tap = options.fetch(:tap,  CoreFormulaRepository.instance)
+      @repository = @tap.path
+      @skip_homebrew = options.fetch(:skip_homebrew, false)
 
-      url_match = argument.match HOMEBREW_PULL_OR_COMMIT_URL_REGEX
-
-      git "rev-parse", "--verify", "-q", argument
-      if $?.success?
+      if quiet_system "git", "-C", @repository.to_s, "rev-parse", "--verify", "-q", argument
         @hash = argument
-      elsif url_match
+      elsif url_match = argument.match(HOMEBREW_PULL_OR_COMMIT_URL_REGEX)
         @url = url_match[0]
-      elsif safe_formulary(argument)
-        @formulae = [argument]
+      elsif canonical_formula_name = safe_formula_canonical_name(argument)
+        @formulae = [canonical_formula_name]
       else
         raise ArgumentError.new("#{argument} is not a pull request URL, commit URL or formula name.")
       end
@@ -236,28 +232,16 @@ module Homebrew
       @hash == "HEAD"
     end
 
-    def safe_formulary(formula)
-      Formulary.factory formula
+    def safe_formula_canonical_name(formula_name)
+      Formulary.factory(formula_name).full_name
+    rescue TapFormulaUnavailableError => e
+      test "brew", "tap", e.tap.name
+      retry unless steps.last.failed?
     rescue FormulaUnavailableError, TapFormulaAmbiguityError, TapFormulaWithOldnameAmbiguityError
     end
 
     def git(*args)
-      rd, wr = IO.pipe
-
-      pid = fork do
-        rd.close
-        STDERR.reopen("/dev/null")
-        STDOUT.reopen(wr)
-        wr.close
-        Dir.chdir @repository
-        exec("git", *args)
-      end
-      wr.close
-      Process.wait(pid)
-
-      rd.read
-    ensure
-      rd.close
+      @repository.cd { Utils.popen_read("git", *args) }
     end
 
     def download
@@ -282,16 +266,10 @@ module Homebrew
           "diff-tree", "-r", "--name-only", "--diff-filter=#{filter}",
           start_revision, end_revision, "--", path
         ).lines.map do |line|
-          file = line.chomp
-          next unless File.extname(file) == ".rb"
-          File.basename(file, ".rb")
+          file = Pathname.new line.chomp
+          next unless file.extname == ".rb"
+          @tap.formula_file_to_name(file)
         end.compact
-      end
-
-      def brew_update
-        return unless current_branch == "master"
-        success = quiet_system "brew", "update"
-        success ||= quiet_system "brew", "update"
       end
 
       @category = __method__
@@ -366,26 +344,13 @@ module Homebrew
         raise "Cannot set @name: invalid command-line arguments!"
       end
 
-      if ENV["TRAVIS"]
-        puts "name: #{@name}"
-        puts "url: #{@url}"
-        puts "hash: #{@hash}"
-        puts "diff_start_sha1: #{diff_start_sha1}"
-        puts "diff_end_sha1: #{diff_end_sha1}"
-      end
-
       @log_root = @brewbot_root + @name
       FileUtils.mkdir_p @log_root
 
       return unless diff_start_sha1 != diff_end_sha1
       return if @url && steps.last && !steps.last.passed?
 
-      if @tap
-        formula_path = %w[Formula HomebrewFormula].find { |dir| (@repository/dir).directory? } || ""
-      else
-        formula_path = "Library/Formula"
-      end
-
+      formula_path = @tap.formula_dir.to_s
       @added_formulae += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "A")
       @modified_formula += diff_formulae(diff_start_sha1, diff_end_sha1, formula_path, "M")
       @formulae += @added_formulae + @modified_formula
@@ -424,7 +389,7 @@ module Homebrew
     def setup
       @category = __method__
       return if ARGV.include? "--skip-setup"
-      test "brew", "doctor" unless ENV["TRAVIS"]
+      test "brew", "doctor" if !ENV["TRAVIS"] && ENV["HOMEBREW_RUBY"] != "1.8.7"
       test "brew", "--env"
       test "brew", "config"
     end
@@ -432,28 +397,37 @@ module Homebrew
     def formula(formula_name)
       @category = "#{__method__}.#{formula_name}"
 
-      canonical_formula_name = if @tap
-        "#{@tap}/#{formula_name}"
-      else
-        formula_name
-      end
+      test "brew", "uses", "--recursive", formula_name
 
-      test "brew", "uses", canonical_formula_name
-
-      formula = Formulary.factory(canonical_formula_name)
+      formula = Formulary.factory(formula_name)
 
       installed_gcc = false
 
       deps = []
       reqs = []
 
+      fetch_args = [formula_name]
+      fetch_args << "--build-bottle" if !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
+      fetch_args << "--force" if ARGV.include? "--cleanup"
+
+      audit_args = [formula_name]
+      audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
+
       if formula.stable
-        return unless satisfied_requirements?(formula, :stable)
+        unless satisfied_requirements?(formula, :stable)
+          test "brew", "fetch", "--retry", *fetch_args
+          test "brew", "audit", *audit_args
+          return
+        end
 
         deps |= formula.stable.deps.to_a.reject(&:optional?)
         reqs |= formula.stable.requirements.to_a.reject(&:optional?)
       elsif formula.devel
-        return unless satisfied_requirements?(formula, :devel)
+        unless satisfied_requirements?(formula, :devel)
+          test "brew", "fetch", "--retry", "--devel", *fetch_args
+          test "brew", "audit", "--devel", *audit_args
+          return
+        end
       end
 
       if formula.devel && !ARGV.include?("--HEAD")
@@ -481,7 +455,7 @@ module Homebrew
           OS::Mac.clear_version_cache
           retry
         end
-        skip canonical_formula_name
+        skip formula_name
         puts e.message
         return
       end
@@ -500,8 +474,7 @@ module Homebrew
       end
 
       installed = Utils.popen_read("brew", "list").split("\n")
-      dependencies = Utils.popen_read("brew", "deps", "--skip-optional",
-                                      canonical_formula_name).split("\n")
+      dependencies = Utils.popen_read("brew", "deps", "--skip-optional", formula_name).split("\n")
 
       (installed & dependencies).each do |installed_dependency|
         installed_dependency_formula = Formulary.factory(installed_dependency)
@@ -518,11 +491,11 @@ module Homebrew
 
       runtime_dependencies = Utils.popen_read("brew", "deps",
                                               "--skip-build", "--skip-optional",
-                                              canonical_formula_name).split("\n")
+                                              formula_name).split("\n")
       build_dependencies = dependencies - runtime_dependencies
       unchanged_build_dependencies = build_dependencies - @formulae
 
-      dependents = Utils.popen_read("brew", "uses", "--skip-build", "--skip-optional", canonical_formula_name).split("\n")
+      dependents = Utils.popen_read("brew", "uses", "--recursive", "--skip-build", "--skip-optional", formula_name).split("\n")
       dependents -= @formulae
       dependents = dependents.map { |d| Formulary.factory(d) }
 
@@ -536,20 +509,18 @@ module Homebrew
 
       unless changed_dependences.empty?
         test "brew", "fetch", "--retry", "--build-bottle", *changed_dependences
-        # Install changed dependencies as new bottles so we don't have checksum problems.
-        test "brew", "install", "--build-bottle", *changed_dependences
-        # Run postinstall on them because the tested formula might depend on
-        # this step
-        test "brew", "postinstall", *changed_dependences
+        unless ARGV.include?("--fast")
+          # Install changed dependencies as new bottles so we don't have checksum problems.
+          test "brew", "install", "--build-bottle", *changed_dependences
+          # Run postinstall on them because the tested formula might depend on
+          # this step
+          test "brew", "postinstall", *changed_dependences
+        end
       end
-      formula_fetch_options = []
-      formula_fetch_options << "--build-bottle" if !ARGV.include?("--fast") && !formula.bottle_disabled?
-      formula_fetch_options << "--force" if ARGV.include? "--cleanup"
-      formula_fetch_options << canonical_formula_name
-      test "brew", "fetch", "--retry", *formula_fetch_options
-      test "brew", "uninstall", "--force", canonical_formula_name if formula.installed?
+      test "brew", "fetch", "--retry", *fetch_args
+      test "brew", "uninstall", "--force", formula_name if formula.installed?
       install_args = ["--verbose"]
-      install_args << "--build-bottle" if !ARGV.include?("--fast") && !formula.bottle_disabled?
+      install_args << "--build-bottle" if !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
       install_args << "--HEAD" if ARGV.include? "--HEAD"
 
       # Pass --devel or --HEAD to install in the event formulae lack stable. Supports devel-only/head-only.
@@ -564,7 +535,7 @@ module Homebrew
         formula_bottled = formula.bottled?
       end
 
-      install_args << canonical_formula_name
+      install_args << formula_name
       # Don't care about e.g. bottle failures for dependencies.
       install_passed = false
       run_as_not_developer do
@@ -574,12 +545,10 @@ module Homebrew
           install_passed = steps.last.passed?
         end
       end
-      audit_args = [canonical_formula_name]
-      audit_args << "--strict" << "--online" if @added_formulae.include? formula_name
       test "brew", "audit", *audit_args
       if install_passed
-        if formula.stable? && !ARGV.include?("--fast") && !formula.bottle_disabled?
-          bottle_args = ["--verbose", "--rb", canonical_formula_name]
+        if formula.stable? && !ARGV.include?("--fast") && !ARGV.include?("--no-bottle") && !formula.bottle_disabled?
+          bottle_args = ["--verbose", "--rb", formula_name]
           bottle_args << "--keep-old" if ARGV.include? "--keep-old"
           test "brew", "bottle", *bottle_args
           bottle_step = steps.last
@@ -590,8 +559,9 @@ module Homebrew
             bottle_merge_args = ["--merge", "--write", "--no-commit", bottle_rb_filename]
             bottle_merge_args << "--keep-old" if ARGV.include? "--keep-old"
             test "brew", "bottle", *bottle_merge_args
-            test "brew", "uninstall", "--force", canonical_formula_name
+            test "brew", "uninstall", "--force", formula_name
             FileUtils.ln bottle_filename, HOMEBREW_CACHE/bottle_filename, :force => true
+            @formulae.delete(formula_name)
             if unchanged_build_dependencies.any?
               test "brew", "uninstall", "--force", *unchanged_build_dependencies
               unchanged_dependencies -= unchanged_build_dependencies
@@ -599,7 +569,7 @@ module Homebrew
             test "brew", "install", bottle_filename
           end
         end
-        test "brew", "test", "--verbose", canonical_formula_name if formula.test_defined?
+        test "brew", "test", "--verbose", formula_name if formula.test_defined?
         testable_dependents.each do |dependent|
           unless dependent.installed?
             test "brew", "fetch", "--retry", dependent.name
@@ -608,26 +578,28 @@ module Homebrew
             conflicts.each do |conflict|
               test "brew", "unlink", conflict.name
             end
-            run_as_not_developer { test "brew", "install", dependent.name }
-            next if steps.last.failed?
+            unless ARGV.include?("--fast")
+              run_as_not_developer { test "brew", "install", dependent.name }
+              next if steps.last.failed?
+            end
           end
           if dependent.installed?
             test "brew", "test", "--verbose", dependent.name
           end
         end
-        test "brew", "uninstall", "--force", canonical_formula_name
+        test "brew", "uninstall", "--force", formula_name
       end
 
       if formula.devel && formula.stable? \
          && !ARGV.include?("--HEAD") && !ARGV.include?("--fast") \
          && satisfied_requirements?(formula, :devel)
-        test "brew", "fetch", "--retry", "--devel", *formula_fetch_options
-        run_as_not_developer { test "brew", "install", "--devel", "--verbose", canonical_formula_name }
+        test "brew", "fetch", "--retry", "--devel", *fetch_args
+        run_as_not_developer { test "brew", "install", "--devel", "--verbose", formula_name }
         devel_install_passed = steps.last.passed?
         test "brew", "audit", "--devel", *audit_args
         if devel_install_passed
-          test "brew", "test", "--devel", "--verbose", canonical_formula_name if formula.test_defined?
-          test "brew", "uninstall", "--devel", "--force", canonical_formula_name
+          test "brew", "test", "--devel", "--verbose", formula_name if formula.test_defined?
+          test "brew", "uninstall", "--devel", "--force", formula_name
         end
       end
       test "brew", "uninstall", "--force", *unchanged_dependencies if unchanged_dependencies.any?
@@ -637,14 +609,18 @@ module Homebrew
       @category = __method__
       return if @skip_homebrew
       test "brew", "tests"
-      if @tap
-        test "brew", "readall", @tap.name
-      else
-        test "brew", "tests", "--no-compat"
+      if @tap.core_formula_repository?
+        tests_args = ["--no-compat"]
         readall_args = ["--aliases"]
-        readall_args << "--syntax" if MacOS.version >= :mavericks
+        if RUBY_VERSION.split(".").first.to_i >= 2
+          tests_args << "--coverage" if ENV["TRAVIS"]
+          readall_args << "--syntax"
+        end
+        test "brew", "tests", *tests_args
         test "brew", "readall", *readall_args
         test "brew", "update-test"
+      else
+        test "brew", "readall", @tap.name
       end
     end
 
@@ -657,7 +633,7 @@ module Homebrew
       git "rebase", "--abort"
       git "reset", "--hard"
       git "checkout", "-f", "master"
-      git "clean", "-ffdx"
+      git "clean", "-ffdx" unless ENV["HOMEBREW_RUBY"] == "1.8.7"
       pr_locks = "#{HOMEBREW_REPOSITORY}/.git/refs/remotes/*/pr/*/*.lock"
       Dir.glob(pr_locks) { |lock| FileUtils.rm_rf lock }
     end
@@ -665,16 +641,10 @@ module Homebrew
     def cleanup_after
       @category = __method__
 
-      checkout_args = []
-      if ARGV.include? "--cleanup"
-        test "git", "clean", "-ffdx"
-        checkout_args << "-f"
-      end
-
-      checkout_args << @start_branch
-
       if @start_branch && !@start_branch.empty? && \
          (ARGV.include?("--cleanup") || @url || @hash)
+        checkout_args = [@start_branch]
+        checkout_args << "-f" if ARGV.include? "--cleanup"
         test "git", "checkout", *checkout_args
       end
 
@@ -683,6 +653,7 @@ module Homebrew
         git "stash", "pop"
         test "brew", "cleanup", "--prune=7"
         git "gc", "--auto"
+        test "git", "clean", "-ffdx"
         if ARGV.include? "--local"
           FileUtils.rm_rf ENV["HOMEBREW_HOME"]
           FileUtils.rm_rf ENV["HOMEBREW_LOGS"]
@@ -715,7 +686,7 @@ module Homebrew
       changed_formulae_dependents = {}
 
       @formulae.each do |formula|
-        formula_dependencies = Utils.popen_read("brew", "deps", formula).split("\n")
+        formula_dependencies = Utils.popen_read("brew", "deps", "--skip-optional", formula).split("\n")
         unchanged_dependencies = formula_dependencies - @formulae
         changed_dependences = formula_dependencies - unchanged_dependencies
         changed_dependences.each do |changed_formula|
@@ -756,20 +727,6 @@ module Homebrew
     end
   end
 
-  def test_bot_ci_reset_and_update
-    Tap.each do |tap|
-      next unless tap.git?
-      cd tap.path do
-        quiet_system "git", "am", "--abort"
-        quiet_system "git", "rebase", "--abort"
-        safe_system "git", "checkout", "-f", "master"
-        safe_system "git", "reset", "--hard", "origin/master"
-      end
-    end
-
-    exec "brew", "update"
-  end
-
   def test_ci_upload(tap)
     jenkins = ENV["JENKINS_HOME"]
     job = ENV["UPSTREAM_JOB_NAME"]
@@ -797,7 +754,7 @@ module Homebrew
 
     ENV["GIT_AUTHOR_NAME"] = ENV["GIT_COMMITTER_NAME"] = "BrewTestBot"
     ENV["GIT_AUTHOR_EMAIL"] = ENV["GIT_COMMITTER_EMAIL"] = "brew-test-bot@googlegroups.com"
-    ENV["GIT_WORK_TREE"] = Homebrew.homebrew_git_repo(tap)
+    ENV["GIT_WORK_TREE"] = tap.path
     ENV["GIT_DIR"] = "#{ENV["GIT_WORK_TREE"]}/.git"
 
     pr = ENV["UPSTREAM_PULL_REQUEST"]
@@ -810,10 +767,10 @@ module Homebrew
     safe_system "brew", "update"
 
     if pr
-      pull_pr = if tap
-        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
-      else
+      pull_pr = if tap.core_formula_repository?
         pr
+      else
+        "https://github.com/#{tap.user}/homebrew-#{tap.repo}/pull/#{pr}"
       end
       safe_system "brew", "pull", "--clean", pull_pr
     end
@@ -822,16 +779,12 @@ module Homebrew
     bottle_args << "--keep-old" if ARGV.include? "--keep-old"
     system "brew", "bottle", *bottle_args
 
-    remote_repo = tap ? "homebrew-#{tap.repo}" : "homebrew"
+    remote_repo = tap.core_formula_repository? ? "homebrew" : "homebrew-#{tap.repo}"
     remote = "git@github.com:BrewTestBot/#{remote_repo}.git"
     tag = pr ? "pr-#{pr}" : "testing-#{number}"
     safe_system "git", "push", "--force", remote, "master:master", ":refs/tags/#{tag}"
 
-    bintray_repo = if tap.nil?
-      Bintray.repository(tap)
-    else
-      Bintray.repository(tap.name)
-    end
+    bintray_repo = Bintray.repository(tap)
     bintray_repo_url = "https://api.bintray.com/packages/homebrew/#{bintray_repo}"
     formula_packaged = {}
 
@@ -890,11 +843,11 @@ module Homebrew
 
     if ARGV.include?("--ci-master") || ARGV.include?("--ci-pr") \
        || ARGV.include?("--ci-testing")
-      ARGV << "--cleanup" if ENV["JENKINS_HOME"] || ENV["TRAVIS"]
+      ARGV << "--cleanup" if ENV["JENKINS_HOME"]
       ARGV << "--junit" << "--local"
     end
     if ARGV.include? "--ci-master"
-      ARGV << "--email" << "--fast"
+      ARGV << "--fast"
     end
 
     if ARGV.include? "--local"
@@ -902,29 +855,18 @@ module Homebrew
       mkdir_p ENV["HOME"]
       ENV["HOMEBREW_LOGS"] = "#{Dir.pwd}/logs"
     end
-
-    if ARGV.include? "--email"
-      File.open EMAIL_SUBJECT_FILE, "w" do |file|
-        # The file should be written at the end but in case we don't get to that
-        # point ensure that we have something valid.
-        file.write "#{MacOS.version}: internal error."
-      end
-    end
   end
 
   def test_bot
     sanitize_ARGV_and_ENV
+    p ARGV
 
     tap = resolve_test_tap
     # Tap repository if required, this is done before everything else
     # because Formula parsing and/or git commit hash lookup depends on it.
-    if tap && !tap.installed?
-      safe_system "brew", "tap", tap.name
-    end
+    safe_system "brew", "tap", tap.name unless tap.installed?
 
-    if ARGV.include? "--ci-reset-and-update"
-      return test_bot_ci_reset_and_update
-    elsif ARGV.include? "--ci-upload"
+    if ARGV.include? "--ci-upload"
       return test_ci_upload(tap)
     end
 
@@ -995,26 +937,6 @@ module Homebrew
       open("brew-test-bot.xml", "w") do |xml_file|
         pretty_print_indent = 2
         xml_document.write(xml_file, pretty_print_indent)
-      end
-    end
-
-    if ARGV.include? "--email"
-      failed_steps = []
-      tests.each do |test|
-        test.steps.each do |step|
-          next if step.passed?
-          failed_steps << step.command_short
-        end
-      end
-
-      if failed_steps.empty?
-        email_subject = ""
-      else
-        email_subject = "#{MacOS.version}: #{failed_steps.join ", "}."
-      end
-
-      File.open EMAIL_SUBJECT_FILE, "w" do |file|
-        file.write email_subject
       end
     end
   ensure

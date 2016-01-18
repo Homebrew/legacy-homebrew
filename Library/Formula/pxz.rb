@@ -12,31 +12,82 @@ class Pxz < Formula
     sha256 "aa8d6ad7fb7e1ee38e26e97cd9fcbc23dcf40cc44dea5cece306bf0556322c1a" => :mavericks
   end
 
+  head do
+    url "https://github.com/jnovy/pxz.git"
+
+    # Rebased version of an upstream PR to fix the build on OS X
+    # https://github.com/jnovy/pxz/pull/5
+    patch :DATA
+  end
+
+  depends_on "gcc"
   depends_on "xz"
 
   fails_with :clang do
     cause "pxz requires OpenMP support"
   end
 
-  patch :DATA # Fixes usage of MAP_POPULATE for mmap (linux only)
-
   def install
+    # Fixes usage of MAP_POPULATE for mmap (linux only). Fixed upstream.
+    inreplace "pxz.c", "MAP_SHARED|MAP_POPULATE", "MAP_SHARED" if build.stable?
     system "make", "CC=#{ENV.cc}"
-    bin.install "pxz"
+    system "make", "install", "BINDIR=#{bin}", "MANDIR=#{man}"
+  end
+
+  test do
+    (testpath/"test").write "foo bar"
+    system "#{bin}/pxz", "test"
+    assert File.exist? "test.xz"
   end
 end
 
 __END__
 diff --git a/pxz.c b/pxz.c
-index b54f3fc..3e7e86a 100644
+index 153f28c..d76f94a 100644
 --- a/pxz.c
 +++ b/pxz.c
-@@ -259,7 +259,7 @@ int main( int argc, char **argv ) {
- 			exit(EXIT_FAILURE);
- 		}
- 		
--		m = mmap(NULL, s.st_size, PROT_READ, MAP_SHARED|MAP_POPULATE, fileno(f), 0);
-+		m = mmap(NULL, s.st_size, PROT_READ, MAP_SHARED, fileno(f), 0);
- 		if (m == MAP_FAILED) {
- 			perror("mmap failed");
- 			exit(EXIT_FAILURE);
+@@ -23,11 +23,36 @@
+
+ #include <string.h>
+ #include <stdio.h>
++#ifdef HAVE_STDIO_EXT_H
+ #include <stdio_ext.h>
++#else
++#include <sys/param.h>
++#ifdef BSD
++#define __fpending(fp) ((fp)->_p - (fp)->_bf._base)
++#endif
++#endif
+ #include <stdlib.h>
+ #include <inttypes.h>
+ #include <unistd.h>
++#ifdef HAVE_ERROR_H
+ #include <error.h>
++#else
++#include <stdarg.h>
++/* Emulate the error() function from GLIBC */
++char* program_name;
++void error(int status, int errnum, const char *format, ...) {
++	va_list argp;
++	fprintf(stderr, "%s: ", program_name);
++	va_start(argp, format);
++	vfprintf(stderr, format, argp);
++	va_end(argp);
++	if (errnum != 0)
++		fprintf(stderr, ": error code %d", errnum);
++	fprintf(stderr, "\n");
++	if (status != 0)
++		exit(status);
++}
++#endif
+ #include <errno.h>
+ #include <sys/stat.h>
+ #include <sys/mman.h>
+@@ -258,6 +283,7 @@ int main( int argc, char **argv ) {
+	lzma_filter filters[LZMA_FILTERS_MAX + 1];
+	lzma_options_lzma lzma_options;
+
++	program_name = argv[0];
+	xzcmd_max = sysconf(_SC_ARG_MAX);
+	page_size = sysconf(_SC_PAGE_SIZE);
+	xzcmd = malloc(xzcmd_max);

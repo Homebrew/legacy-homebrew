@@ -3,34 +3,35 @@ require "language/go"
 class SyncthingInotify < Formula
   desc "File watcher intended for use with Syncthing"
   homepage "https://github.com/syncthing/syncthing-inotify"
-  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.5.tar.gz"
-  sha256 "430297896bb05396268fd29cc555eba6542b42263489784c9843f4daf625ac5c"
+  url "https://github.com/syncthing/syncthing-inotify/archive/v0.6.8.tar.gz"
+  sha256 "14e0684e51c40d5b62d0faef9a59e3a7c6a2ad97583cfbcdbc1684ffac5e3b7b"
+
+  head "https://github.com/syncthing/syncthing-inotify.git"
 
   bottle do
-    cellar :any
-    sha256 "30c9a5de4a72ccf8046aa58c70eb3d010575b675940c2251d34e3c1c01e28ff4" => :yosemite
-    sha256 "0d15a5a3157c4afe71fcecad6fa4dae504abf183036863d8e65f470414010edb" => :mavericks
-    sha256 "6ca9ddd5a10e9efd9c193abced9bbfc03e29c5305f6dd4b98ba0d1da3f6905cf" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "b2c0a33dceee99bf0e7a3902b2a9b9a0f43a99f94c2c3e57c6c326bd6bd0661b" => :el_capitan
+    sha256 "ac5c17fd02da576b0006bff8dba8badff7c057ab78e4d11751686736441c6ce7" => :yosemite
+    sha256 "0befaf1bae9111d89f9862a6a44256b311ed09aeedfdf1d616273d03ea9674d6" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/cenkalti/backoff" do
     url "https://github.com/cenkalti/backoff.git",
-        :revision => "6c45d6bc1e78d94431dff8fc28a99f20bafa355a" # not sure !
+      :revision => "4dc77674aceaabba2c7e3da25d4c823edfb73f99"
   end
 
   go_resource "github.com/zillode/notify" do
     url "https://github.com/Zillode/notify.git",
-      :revision => "f06b1e3b795091f2e1414067b08e5f07332cdb05"   # not sure !
+      :revision => "7a61ff497e40ce25d1c49bfe8402fdfb3be6a88c"
   end
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV.append_path "PATH", buildpath
     bin_name = "syncthing-inotify"
     Language::Go.stage_deps resources, buildpath/"src"
-    system "go", "build", "-o", bin_name
+    system "go", "build", "-ldflags", "-w -X main.Version #{version}", "-o", bin_name
     bin.install bin_name
   end
 

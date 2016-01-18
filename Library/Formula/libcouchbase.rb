@@ -1,15 +1,14 @@
 class Libcouchbase < Formula
   desc "C library for Couchbase"
   homepage "http://docs.couchbase.com/developer/c-2.4/c-intro.html"
-  url "https://s3.amazonaws.com/packages.couchbase.com/clients/c/libcouchbase-2.5.3.tar.gz"
-  sha256 "90bdb48d2f1344429c0d14384b7680a33c786eefb5485e0d1e98cf0e8d7baa16"
+  url "https://s3.amazonaws.com/packages.couchbase.com/clients/c/libcouchbase-2.5.5.tar.gz"
+  sha256 "cc2fb1844107f20e7276b071d87a275b08d1813e229ab144016edfd13b4df5a9"
   head "https://github.com/couchbase/libcouchbase.git"
 
   bottle do
-    sha256 "41f26c4f71d0575c29d029c61f1aed2250ebd4f9702229ee797b6c86bb73eafb" => :el_capitan
-    sha256 "f0a01d9800cbb456371b67f70b955d45232d3175eb9a99db986e530149156288" => :yosemite
-    sha256 "36953780faca4da1186a20689a10be198cce674b98e461b3f972a607c4e82ced" => :mavericks
-    sha256 "caf7e281e2959aca8395f948a43acc6a784854802d34ec239def94fb4bbf13f9" => :mountain_lion
+    sha256 "cfd89ba55951629a3b8b54340c48ecbacc6ea3a2447b4cefceccbfb0bd78a2b9" => :el_capitan
+    sha256 "5d74a182a2129427bc2281b22be0b83289976d72cf62fba91976ea7e42d284d4" => :yosemite
+    sha256 "14496e839c28a369ad5328428331052431580a007fc18f83e74cfab9ee62832c" => :mavericks
   end
 
   option :universal

@@ -48,15 +48,15 @@ class DependencyExpansionTests < Homebrew::TestCase
   end
 
   def test_expand_skips_optionals_by_default
-    @foo.expects(:optional?).returns(true)
-    @f = stub(:deps => @deps, :build => stub(:with? => false), :name => "f")
-    assert_equal [@bar, @baz, @qux], Dependency.expand(@f)
+    deps = [build_dep(:foo, [:optional]), @bar, @baz, @qux]
+    f = stub(:deps => deps, :build => stub(:with? => false), :name => "f")
+    assert_equal [@bar, @baz, @qux], Dependency.expand(f)
   end
 
   def test_expand_keeps_recommendeds_by_default
-    @foo.expects(:recommended?).returns(true)
-    @f = stub(:deps => @deps, :build => stub(:with? => true), :name => "f")
-    assert_equal @deps, Dependency.expand(@f)
+    deps = [build_dep(:foo, [:recommended]), @bar, @baz, @qux]
+    f = stub(:deps => deps, :build => stub(:with? => true), :name => "f")
+    assert_equal deps, Dependency.expand(f)
   end
 
   def test_merges_repeated_deps_with_differing_options
@@ -73,7 +73,7 @@ class DependencyExpansionTests < Homebrew::TestCase
   def test_merger_preserves_env_proc
     env_proc = stub
     dep = Dependency.new("foo", [], env_proc)
-    dep.stubs(:to_formula).returns(stub(:deps => []))
+    dep.stubs(:to_formula).returns(stub(:deps => [], :name => "foo"))
     @deps.replace [dep]
     assert_equal env_proc, Dependency.expand(@f).first.env_proc
   end

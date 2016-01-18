@@ -3,14 +3,14 @@ class Osquery < Formula
   homepage "https://osquery.io"
   # pull from git tag to get submodules
   url "https://github.com/facebook/osquery.git",
-      :tag => "1.5.3",
-      :revision => "2a71162b0cfb040a3606538857f512ea8894b9e7"
-  revision 2
+    :tag => "1.6.2",
+    :revision => "5a66d5b8383fa6b5b2164b98a7c415279178bdc4"
 
   bottle do
-    sha256 "e126a3c8df2915f900480e1ea06329bd480000cc3a39c7a179e06ee45badcf99" => :el_capitan
-    sha256 "13151ea0753c9093cf94cc06c912f99fcf5d4035daf36bb250cc1ecfeccfd6e0" => :yosemite
-    sha256 "89807433f886d43471e20ce91400aed1ddfd5146de028608cba1c9e80cf7e654" => :mavericks
+    cellar :any
+    sha256 "6b7e6e4fe991cbf97303c8a365b061279cc5fff37903cbb712cc983a15599641" => :el_capitan
+    sha256 "ea2e2bd9df104970b40d4b7bda9258da74493efe0b8a75bf184882a8dda49b6a" => :yosemite
+    sha256 "3ca9e59d9eaedc9fa7d7c8a48adf15ae882194871ec9600bfbdcf64e58743be8" => :mavericks
   end
 
   # osquery only supports OS X 10.9 and above. Do not remove this.
@@ -27,6 +27,7 @@ class Osquery < Formula
   depends_on "glog"
   depends_on "libmagic"
   depends_on "cpp-netlib"
+  depends_on "sleuthkit"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
@@ -81,7 +82,7 @@ class Osquery < Formula
       class ExampleTablePlugin : public TablePlugin {
        private:
         TableColumns columns() const {
-          return {{"example_text", "TEXT"}, {"example_integer", "INTEGER"}};
+          return {{"example_text", TEXT_TYPE}, {"example_integer", INTEGER_TYPE}};
         }
 
         QueryData generate(QueryContext& request) {

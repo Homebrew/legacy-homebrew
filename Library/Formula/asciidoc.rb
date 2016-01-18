@@ -8,9 +8,9 @@ class Asciidoc < Formula
     cellar :any_skip_relocation
     revision 1
     sha256 "345affbf8e5c86ecb679580c5a0e5f8e97fc732557cb75e7b2ba94d8ecfc2a70" => :el_capitan
-    sha1 "14ff65fa337658acf5011b24a728a2f6f413fd3c" => :yosemite
-    sha1 "84793575a498025283f81295feeee74103386b70" => :mavericks
-    sha1 "7c932bea7c4d3e56072a7adb5cd4914cd5972414" => :mountain_lion
+    sha256 "6d868af1ee68431d2f17e86cb30839efed396a963c5b7be5df435c0db4ca48c3" => :yosemite
+    sha256 "631dd27e65bb68697bda0b6641b753c0a8b6544c32c061ff15a2026b831eddbb" => :mavericks
+    sha256 "57187b6cdece57060271040ba69ec08cc772a97287ffccbbff3ea089afd4110a" => :mountain_lion
   end
 
   head do

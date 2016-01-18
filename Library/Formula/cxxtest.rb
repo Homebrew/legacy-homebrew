@@ -1,5 +1,5 @@
 class Cxxtest < Formula
-  desc "CxxTest Unit Testing Framework"
+  desc "xUnit-style unit testing framework for C++"
   homepage "http://cxxtest.com"
   url "https://github.com/CxxTest/cxxtest/releases/download/4.4/cxxtest-4.4.tar.gz"
   mirror "https://mirrors.kernel.org/debian/pool/main/c/cxxtest/cxxtest_4.4.orig.tar.gz"

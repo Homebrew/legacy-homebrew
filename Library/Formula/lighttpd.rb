@@ -1,14 +1,13 @@
 class Lighttpd < Formula
   desc "Small memory footprint, flexible web-server"
-  homepage "http://www.lighttpd.net/"
-  url "http://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.37.tar.xz"
-  sha256 "804e6f60567ca1da2b3927f92b7e9332b93aca9560f282ca135b86b7558979bd"
+  homepage "https://www.lighttpd.net/"
+  url "https://download.lighttpd.net/lighttpd/releases-1.4.x/lighttpd-1.4.39.tar.xz"
+  sha256 "7eb9a1853c3d6dd5851682b0733a729ba4158d6bdff80974d5ef5f1f6887365b"
 
   bottle do
-    sha256 "5ccc450f4e552726c108b00955c835c8b4c82ae844eb944f588cedc590f3ea43" => :el_capitan
-    sha256 "31ad0f53176a0509c51b52082868a847751be055b2d0c11f16974cdb18bdfa51" => :yosemite
-    sha256 "c2900f5ea5bc9cc6ebdf7e2e86724f21b2f4fed923912f2904f5466b9a040109" => :mavericks
-    sha256 "0b4fd109bba1b5ad7c2ff7299fe495fe646f8bd767ddea78e6fccefeeb095347" => :mountain_lion
+    sha256 "980a717148dd248f4577af9918c402b531bbb0eccc8e446584d9a0145024d6d7" => :el_capitan
+    sha256 "b07856b57079ea6e83a19c7f653c607214bfe8a35e8b43623cb6469936ac2c35" => :yosemite
+    sha256 "3a9497a510e6a002295deb6a98ccff5cc3ad12fde75193c61d783df10c611477" => :mavericks
   end
 
   option "with-lua51", "Include Lua scripting support for mod_magnet"
@@ -86,7 +85,7 @@ class Lighttpd < Formula
         s.sub!(/^server\.network-backend\s*=\s*"sendfile"$/, 'server.network-backend = "writev"')
 
         # "max-connections == max-fds/2",
-        # http://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
+        # https://redmine.lighttpd.net/projects/1/wiki/Server_max-connectionsDetails
         s.sub!(/^server\.max-connections = .+$/, "server.max-connections = " + (MAX_FDS / 2).to_s)
       end
     end

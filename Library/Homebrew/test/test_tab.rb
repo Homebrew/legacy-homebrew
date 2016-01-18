@@ -7,15 +7,16 @@ class TabTests < Homebrew::TestCase
     @used = Options.create(%w[--with-foo --without-bar])
     @unused = Options.create(%w[--with-baz --without-qux])
 
-    @tab = Tab.new("used_options"       => @used.as_flags,
-                   "unused_options"     => @unused.as_flags,
-                   "built_as_bottle"    => false,
-                   "poured_from_bottle" => true,
-                   "time"               => nil,
-                   "HEAD"               => TEST_SHA1,
-                   "compiler"           => "clang",
-                   "stdlib"             => "libcxx",
-                   "source"             => {
+    @tab = Tab.new("used_options"         => @used.as_flags,
+                   "unused_options"       => @unused.as_flags,
+                   "built_as_bottle"      => false,
+                   "poured_from_bottle"   => true,
+                   "time"                 => nil,
+                   "source_modified_time" => 0,
+                   "HEAD"                 => TEST_SHA1,
+                   "compiler"             => "clang",
+                   "stdlib"               => "libcxx",
+                   "source"               => {
                      "tap" => "Homebrew/homebrew",
                      "path" => nil,
                      "spec" => "stable"
@@ -59,7 +60,7 @@ class TabTests < Homebrew::TestCase
 
   def test_other_attributes
     assert_equal TEST_SHA1, @tab.HEAD
-    assert_equal "Homebrew/homebrew", @tab.tap
+    assert_equal "Homebrew/homebrew", @tab.tap.name
     assert_nil @tab.time
     refute_predicate @tab, :built_as_bottle
     assert_predicate @tab, :poured_from_bottle
@@ -73,7 +74,7 @@ class TabTests < Homebrew::TestCase
     assert_equal @unused.sort, tab.unused_options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
-    assert_equal "Homebrew/homebrew", tab.tap
+    assert_equal "Homebrew/homebrew", tab.tap.name
     assert_equal :stable, tab.spec
     refute_nil tab.time
     assert_equal TEST_SHA1, tab.HEAD
@@ -89,7 +90,7 @@ class TabTests < Homebrew::TestCase
     assert_equal @unused.sort, tab.unused_options.sort
     refute_predicate tab, :built_as_bottle
     assert_predicate tab, :poured_from_bottle
-    assert_equal "Homebrew/homebrew", tab.tap
+    assert_equal "Homebrew/homebrew", tab.tap.name
     assert_equal :stable, tab.spec
     refute_nil tab.time
     assert_equal TEST_SHA1, tab.HEAD
@@ -158,7 +159,7 @@ class TabLoadingTests < Homebrew::TestCase
     f2.prefix.mkpath
 
     assert_equal @f.rack, f2.rack
-    assert_equal 2, @f.rack.subdirs.length
+    assert_equal 2, @f.installed_prefixes.length
 
     tab = Tab.for_formula(@f)
     assert_equal @path, tab.tabfile
@@ -168,7 +169,7 @@ class TabLoadingTests < Homebrew::TestCase
     f2 = formula { url "foo-2.0" }
 
     assert_equal @f.rack, f2.rack
-    assert_equal 1, @f.rack.subdirs.length
+    assert_equal 1, @f.installed_prefixes.length
 
     tab = Tab.for_formula(f2)
     assert_equal @path, tab.tabfile

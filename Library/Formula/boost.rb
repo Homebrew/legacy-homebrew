@@ -1,16 +1,16 @@
 class Boost < Formula
   desc "Collection of portable C++ source libraries"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
-  sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2"
+  sha256 "686affff989ac2488f79a97b9479efb9f2abae035b5ed4d8226de6857933fd3b"
 
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha256 "3de506a451ec8dcd4db992ac20f49575458dba2f8b4934389257e925f2eeefae" => :el_capitan
-    sha256 "edf46e1ab66ad2ad9862099d69f445f63d623d91a3de27cc5c21732c56bc17b6" => :yosemite
-    sha256 "01e10a3b17cf7302773be3baf4477ca7570c1530c8924d9203d63815bd257a40" => :mavericks
+    sha256 "9af12c105ac8f561340bf6bfb69c1f071912203a8fb6f197a184408bc4c4000f" => :el_capitan
+    sha256 "149c31c8bdb7b4f47bed445e3c5985f63dd41ba32cefc08358b873699c7d6f5d" => :yosemite
+    sha256 "dae5d86bbcedd981d353e812770477fe104e349e5cfb253a735bbe1c6c32cc0a" => :mavericks
   end
 
   env :userpaths
@@ -30,17 +30,6 @@ class Boost < Formula
   else
     depends_on "icu4c" => :optional
     depends_on :mpi => [:cc, :cxx, :optional]
-  end
-
-  stable do
-    # Fixed compilation of operator<< into a record ostream, when
-    # the operator right hand argument is not directly supported by
-    # formatting_ostream. Fixed https://svn.boost.org/trac/boost/ticket/11549
-    # from https://github.com/boostorg/log/commit/7da193f.patch
-    patch do
-      url "https://gist.githubusercontent.com/tdsmith/bc76ddea1e2bdb2a3a18/raw/03d125b12a4b03c28ee011a2d6d42a8137061a3b/boost-log.patch"
-      sha256 "a49fd7461d9f3b478d2bddac19adca93fe0fabab71ee67e8f140cbd7d42d6870"
-    end
   end
 
   fails_with :llvm do

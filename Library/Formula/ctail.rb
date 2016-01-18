@@ -6,9 +6,9 @@ class Ctail < Formula
 
   bottle do
     cellar :any
-    sha1 "bab0a267f8cf937a80d7d13582d298ecca925e53" => :yosemite
-    sha1 "ed024b77815bf8676f3d0842541b077a9950b79a" => :mavericks
-    sha1 "58dbf4d30c8fb951a6c86c892098082627b9e3ee" => :mountain_lion
+    sha256 "c054af9816f833035b8922abf3e935bbe563cc841b098569239f7f9e7b5ff499" => :yosemite
+    sha256 "dd29c6d94e2ded11aef266f5d50bdb840e8b0b3b23841d41e68aad777754d23b" => :mavericks
+    sha256 "dfab40d65950327c679bde97a335779526c58e99f5679f32f95e517a7249e332" => :mountain_lion
   end
 
   conflicts_with "byobu", :because => "both install `ctail` binaries"

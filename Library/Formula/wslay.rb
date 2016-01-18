@@ -6,9 +6,10 @@ class Wslay < Formula
 
   bottle do
     cellar :any
-    sha1 "d5996cbcaefa8fb31052257c83eccb1121721a35" => :yosemite
-    sha1 "0352cd0da3febe6bfc917f620acd3b694899bcd4" => :mavericks
-    sha1 "04cfebe7140b51febd90b99e2a398bca966759dc" => :mountain_lion
+    revision 1
+    sha256 "30939fd620cff4702d15d61a75774b71e1b226fb7b2b3fab8a3acdf96bdd9b7d" => :el_capitan
+    sha256 "294d4646dcf7d352368de8b422a5354e72b3027a8678e993d68ea8d55646388e" => :yosemite
+    sha256 "410634e15d5ce6f680ccd5d96b97fc2226aad9530aebe42690d3ceb4d7011e69" => :mavericks
   end
 
   option "without-docs", "Don't generate or install documentation"
@@ -21,46 +22,11 @@ class Wslay < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
+  depends_on "sphinx-doc" => :build if build.with? "docs"
   depends_on "cunit" => :build
   depends_on "pkg-config" => :build
 
-  resource "sphinx" do
-    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
-    sha256 "94933b64e2fe0807da0612c574a021c0dac28c7bd3c4a23723ae5a39ea8f3d04"
-  end
-
-  resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
-    sha256 "c7db717810ab6965f66c8cf0398a98c9d8df982da39b4cd7f162911eb89596fa"
-  end
-
-  resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
-  end
-
-  resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
-  end
-
-  resource "markupsafe" do
-    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
-  end
-
   def install
-    if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
-      resources.each do |r|
-        r.stage do
-          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
-        end
-      end
-      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
-    end
-
     system "autoreconf", "-fvi" if build.head?
     system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--disable-silent-rules"
     system "make", "check"

@@ -31,12 +31,14 @@ class Collectd < Formula
 
   # Will fail against Java 1.7
   option "with-java", "Enable Java 1.6 support"
+  option "with-protobuf-c", "Enable write_riemann via protobuf-c support"
   option "with-debug", "Enable debug support"
 
   deprecated_option "java" => "with-java"
   deprecated_option "debug" => "with-debug"
 
   depends_on "pkg-config" => :build
+  depends_on "protobuf-c" => :optional
   depends_on :java => ["1.6", :optional]
   depends_on "openssl"
 
@@ -62,6 +64,7 @@ class Collectd < Formula
 
     args << "--disable-embedded-perl" if MacOS.version <= :leopard
     args << "--disable-java" if build.without? "java"
+    args << "--enable-write_riemann" if build.with? "protobuf-c"
     args << "--enable-debug" if build.with? "debug"
 
     system "./build.sh" if build.head?

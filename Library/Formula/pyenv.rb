@@ -1,42 +1,30 @@
 class Pyenv < Formula
   desc "Python version management"
   homepage "https://github.com/yyuu/pyenv"
-  url "https://github.com/yyuu/pyenv/archive/v20151105.tar.gz"
-  sha256 "3b35b1b3de2cd601679e28d6e6c411b22786e5d54e9777e9cf7c8f1b30c9ea72"
+  url "https://github.com/yyuu/pyenv/archive/v20151222.tar.gz"
+  sha256 "1fbb3d5dfabe876fd364a6b1be4166645150f105af41c6fd761ba32be88d0775"
   head "https://github.com/yyuu/pyenv.git"
 
   bottle :unneeded
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
+  depends_on "openssl" => :recommended
 
   def install
     inreplace "libexec/pyenv", "/usr/local", HOMEBREW_PREFIX
-    prefix.install "bin", "completions", "libexec"
-    prefix.install "plugins" => "default-plugins"
-
+    prefix.install Dir["*"]
     %w[pyenv-install pyenv-uninstall python-build].each do |cmd|
-      bin.install_symlink "#{prefix}/default-plugins/python-build/bin/#{cmd}"
+      bin.install_symlink "#{prefix}/plugins/python-build/bin/#{cmd}"
     end
-  end
-
-  def post_install
-    var_lib = HOMEBREW_PREFIX/"var/lib/pyenv"
-    %w[plugins versions].each do |dir|
-      var_dir = "#{var_lib}/#{dir}"
-      mkdir_p var_dir
-      ln_sf var_dir, "#{prefix}/#{dir}"
-    end
-
-    (var_lib/"plugins").install_symlink "#{prefix}/default-plugins/python-build"
   end
 
   def caveats; <<-EOS.undent
-    To enable shims and autocompletion add to your profile:
-      if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
     To use Homebrew's directories rather than ~/.pyenv add to your profile:
       export PYENV_ROOT=#{var}/pyenv
+
+    To enable shims and autocompletion add to your profile:
+      if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
     EOS
   end
 
