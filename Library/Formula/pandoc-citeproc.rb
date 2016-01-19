@@ -19,7 +19,9 @@ class PandocCiteproc < Formula
   depends_on "pandoc"
 
   def install
-    install_cabal_package
+    args = []
+    args << "--constraint=cryptonite -support_aesni" if MacOS.version <= :lion
+    install_cabal_package *args
   end
 
   test do
