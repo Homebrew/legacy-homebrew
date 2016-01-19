@@ -6,10 +6,10 @@ class Jigdo < Formula
   revision 2
 
   bottle do
-    revision 1
-    sha256 "a5ba35413d5395a286b39d9ad3f9b3bfc3a4095d3537f7d3b227d86825c23f43" => :yosemite
-    sha256 "a9c0ede0039a384a3fa4b268765d683d72980d94d092417c55274a072ea60d73" => :mavericks
-    sha256 "1243645dd9eaf663aed268faa133596cb96b75ea8c2a8c6867d9110b538aa736" => :mountain_lion
+    revision 2
+    sha256 "8128ebe3947194e46c94ee9f141c1000ce0a8a0281522a4a858e341bae011bf9" => :el_capitan
+    sha256 "1a8a7505c33fc6ee08c23effc8776b4a575947fab9b8e1ea08c03df0c1d83d65" => :yosemite
+    sha256 "78483d046c8deea235b333401dc959d7e928dc65728519a789ba09488546cced" => :mavericks
   end
 
   depends_on "pkg-config" => :build
