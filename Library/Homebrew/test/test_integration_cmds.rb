@@ -284,6 +284,11 @@ class IntegrationCommandTests < Homebrew::TestCase
     (HOMEBREW_REPOSITORY/".git").unlink
   end
 
+  def test_sh
+    assert_match "Your shell has been configured",
+                 cmd("sh", {"SHELL" => "/usr/bin/true"})
+  end
+
   def test_custom_command
     mktmpdir do |path|
       cmd = "int-test-#{rand}"
