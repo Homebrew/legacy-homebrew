@@ -2,7 +2,6 @@ class TeensyLoaderCli < Formula
   desc "Command-line integration for Teensy USB development boards"
   homepage "https://www.pjrc.com/teensy/loader_cli.html"
   url "https://www.pjrc.com/teensy/teensy_loader_cli.2.1.zip"
-  sha256 "dafd040d6748b52e0d4a01846d4136f3354ca27ddc36a55ed00d0a0af0902d46"
   head "https://github.com/PaulStoffregen/teensy_loader_cli.git"
 
   bottle do
@@ -12,9 +11,27 @@ class TeensyLoaderCli < Formula
     sha256 "dcd10140babb4d2937ce376c89e9c24a2e8046d2cabdad2cfdbc2542afa14471" => :mavericks
   end
 
+  devel do
+    url "https://github.com/PaulStoffregen/teensy_loader_cli.git", :revision => "0cca2087afb54173ce03109cabb1e29658703fc8"
+    version "2.1.x"
+  end
+
+  option "with-libusb-compat", "Uses libusb instead od OS X HID api to connect with teensy boards. Available only for --devel and upwards."
+  depends_on "libusb-compat"  => :optional
+
+  def pour_bottle?
+      build.without? "libusb-compat"
+  end
+
   def install
     ENV["OS"] = "MACOSX"
-    ENV["SDK"] = MacOS.sdk_path || "/"
+
+    if build.with? "libusb-compat"
+      ENV["USE_LIBUSB"] = "YES"
+    else
+      ENV["SDK"] = MacOS.sdk_path || "/"
+    end
+
     system "make"
     bin.install "teensy_loader_cli"
   end
