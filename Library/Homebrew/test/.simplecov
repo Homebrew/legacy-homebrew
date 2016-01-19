@@ -23,7 +23,9 @@ if ENV["HOMEBREW_INTEGRATION_TEST"]
   end
 end
 
-if RUBY_VERSION.split(".").first.to_i >= 2 && !ENV["HOMEBREW_INTEGRATION_TEST"]
+# Don't use Coveralls outside of CI, as it will override SimpleCov's default
+# formatter causing the `index.html` not to be written once all tests finish.
+if RUBY_VERSION.split(".").first.to_i >= 2 && !ENV["HOMEBREW_INTEGRATION_TEST"] && ENV["CI"]
   require "coveralls"
   Coveralls.wear!
 end
