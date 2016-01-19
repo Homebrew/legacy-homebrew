@@ -1,10 +1,11 @@
-require "formula"
-
 class Distribution < Formula
+  desc "Create ASCII graphical histograms in the terminal"
   homepage "https://github.com/philovivero/distribution"
-  url "https://github.com/philovivero/distribution/archive/v1.2.1.tar.gz"
-  sha1 "4a67c601a0250ab33a227abc648866ddcfbae8b9"
+  url "https://github.com/philovivero/distribution/archive/v1.2.2.tar.gz"
+  sha256 "b6bfca0b2a802c179f0a9b3dc12290ac0331f10f7472230e1e664aeff16ebd63"
   head "https://github.com/philovivero/distribution.git"
+
+  bottle :unneeded
 
   def install
     bin.install "distribution.py" => "distribution"

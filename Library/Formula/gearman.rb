@@ -1,14 +1,14 @@
-require "formula"
-
 class Gearman < Formula
+  desc "Application framework to farm out work to other machines or processes"
   homepage "http://gearman.org/"
   url "https://launchpad.net/gearmand/1.2/1.1.12/+download/gearmand-1.1.12.tar.gz"
-  sha1 "85b5271ea3ac919d96fff9500993b73c9dc80c6c"
+  sha256 "973d7a3523141a84c7b757c6f243febbc89a3631e919b532c056c814d8738acb"
 
   bottle do
-    sha1 "99393fa57c7c2ff6c4b52d3639e80c77b099edc3" => :yosemite
-    sha1 "efc68a7e0880ad8c63f557ee335ef2a29f50a076" => :mavericks
-    sha1 "3efaaacefd8dc65954e3195637149ff43e4d12d6" => :mountain_lion
+    revision 2
+    sha256 "4977f65c0c52786302c488161a924c489974b477c53f9bd5232382aa9fce753d" => :el_capitan
+    sha256 "2e9369c68765bf5db8350a0e985ee97489c7a6920f34e85011b20a12ac8c1d49" => :yosemite
+    sha256 "3d5297489058f3817c9ac02d57dd6325db751240c030dc7ffffa4dda22af4841" => :mavericks
   end
 
   option "with-mysql", "Compile with MySQL persistent queue enabled"
@@ -28,7 +28,7 @@ class Gearman < Formula
   depends_on "hiredis" => :optional
   depends_on "libmemcached" => :optional
   depends_on "openssl" => :optional
-  depends_on "cyassl" => :optional
+  depends_on "wolfssl" => :optional
   depends_on "tokyo-cabinet" => :optional
 
   def install
@@ -40,17 +40,18 @@ class Gearman < Formula
 
     args = [
       "--prefix=#{prefix}",
+      "--localstatedir=#{var}",
       "--disable-silent-rules",
       "--disable-dependency-tracking",
       "--disable-libdrizzle",
-      "--with-boost=#{Formula["boost"].prefix}",
+      "--with-boost=#{Formula["boost"].opt_prefix}",
       "--with-sqlite3"
     ]
 
     if build.with? "cyassl"
       args << "--enable-ssl" << "--enable-cyassl"
     elsif build.with? "openssl"
-      args << "--enable-ssl" << "--with-openssl=#{Formula["openssl"].prefix}" << "--disable-cyassl"
+      args << "--enable-ssl" << "--with-openssl=#{Formula["openssl"].opt_prefix}" << "--disable-cyassl"
     else
       args << "--disable-ssl" << "--disable-cyassl"
     end
@@ -67,14 +68,14 @@ class Gearman < Formula
       args << "--disable-libmemcached" << "--without-memcached"
     end
 
-    if build.without? "tokyo-cabinet"
-      args << "--disable-libtokyocabinet"
-    end
+    args << "--disable-libtokyocabinet" if build.without? "tokyo-cabinet"
 
     args << (build.with?("mysql") ? "--with-mysql=#{Formula["mysql"].opt_bin}/mysql_config" : "--without-mysql")
     args << (build.with?("hiredis") ? "--enable-hiredis" : "--disable-hiredis")
 
     ENV.append_to_cflags "-DHAVE_HTONLL"
+
+    (var/"log").mkpath
     system "./configure", *args
     system "make", "install"
   end

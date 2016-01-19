@@ -1,32 +1,39 @@
-require "formula"
-
 class GobjectIntrospection < Formula
-  homepage "http://live.gnome.org/GObjectIntrospection"
-  url "http://ftp.gnome.org/pub/GNOME/sources/gobject-introspection/1.42/gobject-introspection-1.42.0.tar.xz"
-  sha256 "3ba2edfad4f71d4f0de16960b5d5f2511335fa646b2c49bbb93ce5942b3f95f7"
+  desc "Generate introspection data for GObject libraries"
+  homepage "https://live.gnome.org/GObjectIntrospection"
+  url "https://download.gnome.org/sources/gobject-introspection/1.46/gobject-introspection-1.46.0.tar.xz"
+  sha256 "6658bd3c2b8813eb3e2511ee153238d09ace9d309e4574af27443d87423e4233"
+  revision 1
 
   bottle do
     revision 1
-    sha1 "9d87f1faa5296c6d49a6dfc14945b05278a0a6fb" => :yosemite
-    sha1 "e1ed56b4ff510fa7316309f61fcfa8229aeb2e3b" => :mavericks
-    sha1 "00d3c7bf606caf63b901ceae35b446318dd7b35e" => :mountain_lion
+    sha256 "f74299d5504653f479d86f29239def40bcc790bfcf9a3df4ecd4ab95e2a13aab" => :el_capitan
+    sha256 "e1d5345ae31ba57ccffdfb12e8499e3cfe3c69e29387c4d0765c9872f1117baa" => :yosemite
+    sha256 "e3468554dddb9d16af1a15741f2734ce0aa9d87e7c81cd6a1c7161b6ef57d93c" => :mavericks
   end
 
   option :universal
-  option "with-tests", "Run tests in addition to the build (requires cairo)"
 
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
   depends_on "glib"
+  depends_on "cairo"
   depends_on "libffi"
-  # To avoid: ImportError: dlopen(./.libs/_giscanner.so, 2): Symbol not found: _PyList_Check
-  depends_on :python
-  depends_on "cairo" => :build if build.with? "tests"
+  # System python in Mavericks or below has bug in distutils/sysconfig.py, which breaks the install.
+  #    Caught exception: <type 'exceptions.AttributeError'> AttributeError("'NoneType' object has no attribute 'get'",)
+  #    > /System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/distutils/sysconfig.py(171)customize_compiler()
+  depends_on "python" if MacOS.version <= :mavericks
 
-  # Allow tests to execute on OS X (.so => .dylib)
+  # see https://bugzilla.gnome.org/show_bug.cgi?id=625195
+  # to be removed when 1.48.0 is released
   patch do
-    url "https://gist.githubusercontent.com/krrk/6958869/raw/de8d83009d58eefa680a590f5839e61a6e76ff76/gobject-introspection-tests.patch"
-    sha1 "1f57849db76cd2ca26ddb35dc36c373606414dfc"
-  end if build.with? "tests"
+    url "https://github.com/GNOME/gobject-introspection/commit/4a724ac699f0c34fba2fb452cfadea11540325e8.patch"
+    sha256 "047c350bad2d222f1037c3ce1889444ebc1095df76120188037c4eb2900848c4"
+  end
+
+  resource "tutorial" do
+    url "https://gist.github.com/7a0023656ccfe309337a.git",
+        :revision => "499ac89f8a9ad17d250e907f74912159ea216416"
+  end
 
   def install
     ENV["GI_SCANNER_DISABLE_CACHE"] = "true"
@@ -36,12 +43,15 @@ class GobjectIntrospection < Formula
       s.change_make_var! "GOBJECT_INTROSPECTION_LIBDIR", "#{HOMEBREW_PREFIX}/lib"
     end
 
-    args = %W[--disable-dependency-tracking --prefix=#{prefix}]
-    args << "--with-cairo" if build.with? "tests"
-
-    system "./configure", *args
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}", "PYTHON=python"
     system "make"
-    system "make", "check" if build.with? "tests"
     system "make", "install"
+  end
+
+  test do
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["libffi"].opt_lib/"pkgconfig"
+    resource("tutorial").stage testpath
+    system "make"
+    assert (testpath/"Tut-0.1.typelib").exist?
   end
 end

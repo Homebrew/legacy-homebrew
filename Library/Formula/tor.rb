@@ -1,29 +1,21 @@
 class Tor < Formula
+  desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.5.11.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.5.11.tar.gz"
-  sha256 "aee0faee9c3f1bb265ee8e94b4bb93967413f3c56e65f954db16b09451546769"
+  url "https://dist.torproject.org/tor-0.2.7.6.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.7.6.tar.gz"
+  sha256 "493a8679f904503048114aca6467faef56861206bab8283d858f37141d95105d"
 
   bottle do
-    sha256 "bc5670c7be67d074c927fe55fa41d1acf3fa7d64b6d9da5c9b8c74361fd48d60" => :yosemite
-    sha256 "cc9c18ae2604a7c5d55d60a99c59a46d6280bb3f08832bb1fba61fad0fe035a1" => :mavericks
-    sha256 "267107884383f309e0dd1a0b3f137dc226c58c58c183592c4efd7a7b38e26ef3" => :mountain_lion
-  end
-
-  devel do
-    url "https://dist.torproject.org/tor-0.2.6.5-rc.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.6.5-rc.tar.gz"
-    sha256 "1a78bc971078c8aee1d0927bf6629610efef2cce31219580b2a73cc268d4103e"
-    version "0.2.6.5-rc"
-
-    # Move this to the main block when current devel = stable release.
-    depends_on "libscrypt" => :optional
+    sha256 "32bb77890419cef8b2152e9a6cd554b71021baa64d3dac8fc8d48d7d24d51e99" => :el_capitan
+    sha256 "a3edf9af56c01b70f582ca4d4ddb552274b876db7922c0494407804f3877975b" => :yosemite
+    sha256 "595d64e121de2417e647d5c8a1d0051d5a3e3de9c0e15429134c5dd494459573" => :mavericks
   end
 
   depends_on "libevent"
   depends_on "openssl"
   depends_on "libnatpmp" => :optional
   depends_on "miniupnpc" => :optional
+  depends_on "libscrypt" => :optional
 
   def install
     args = %W[
@@ -36,14 +28,26 @@ class Tor < Formula
 
     args << "--with-libnatpmp-dir=#{Formula["libnatpmp"].opt_prefix}" if build.with? "libnatpmp"
     args << "--with-libminiupnpc-dir=#{Formula["miniupnpc"].opt_prefix}" if build.with? "miniupnpc"
-    args << "--disable-libscrypt" if build.devel? && build.without?("libscrypt")
+    args << "--disable-libscrypt" if build.without? "libscrypt"
 
     system "./configure", *args
     system "make", "install"
   end
 
+  def caveats; <<-EOS.undent
+    You will find a sample `torrc` file in #{etc}/tor.
+    It is advisable to edit the sample `torrc` to suit
+    your own security needs:
+      https://www.torproject.org/docs/faq#torrc
+    After editing the `torrc` you need to restart tor.
+    EOS
+  end
+
   test do
-    system bin/"tor", "--version"
+    pipe_output("script -q /dev/null #{bin}/tor-gencert --create-identity-key", "passwd\npasswd\n")
+    assert (testpath/"authority_certificate").exist?
+    assert (testpath/"authority_signing_key").exist?
+    assert (testpath/"authority_identity_key").exist?
   end
 
   def plist; <<-EOS.undent
@@ -63,17 +67,12 @@ class Tor < Formula
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/tor.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/tor.log</string>
       </dict>
     </plist>
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-    You will find a sample `torrc` file in #{etc}/tor.
-    It is advisable to edit the sample `torrc` to suit
-    your own security needs:
-      https://www.torproject.org/docs/faq#torrc
-    After editing the `torrc` you need to restart tor.
     EOS
   end
 end

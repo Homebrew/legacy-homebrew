@@ -1,25 +1,26 @@
 class Sip < Formula
-  homepage "http://www.riverbankcomputing.co.uk/software/sip"
-  url "https://downloads.sf.net/project/pyqt/sip/sip-4.16.5/sip-4.16.5.tar.gz"
-  sha1 "d5d7b6765de8634eccf48a250dbd915f01b2a771"
+  desc "Tool to create Python bindings for C and C++ libraries"
+  homepage "https://www.riverbankcomputing.com/software/sip/intro"
+  url "https://downloads.sourceforge.net/project/pyqt/sip/sip-4.17/sip-4.17.tar.gz"
+  sha256 "603026822adf8673fca6e0ea20b02c3c4a2dccb309647656f7269adc8de89060"
+  head "https://www.riverbankcomputing.com/hg/sip", :using => :hg
 
   bottle do
-    revision 1
-    sha1 "ac110e13e8b0f3f3c908fe4e9b4f6a010d483b64" => :yosemite
-    sha1 "d7cbfc32de5096fd1aa20a9123fba628ce546bf0" => :mavericks
-    sha1 "c67e51ac70a5258c16d6694010f2b9fd2363f346" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3a1a439ede6e13c687a73a138c833e3e2f133fea45b7b5abdd8fa6892f768a2a" => :el_capitan
+    sha256 "917a0f628640a22f54ff22ddf46f32940bf020c5b4e6796a23aad1cded650011" => :yosemite
+    sha256 "bdd779c811d454c8efa73f8d2ab6bf129dbbf8aa44497d78cfccffdc6f33141c" => :mavericks
   end
 
-  head "http://www.riverbankcomputing.co.uk/hg/sip", :using => :hg
-
-  depends_on :python => :recommended
+  option "without-python", "Build without python2 support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
   depends_on :python3 => :optional
 
-  if build.without?("python3") && build.without?("python")
-    odie "sip: --with-python3 must be specified when using --without-python"
-  end
-
   def install
+    if build.without?("python3") && build.without?("python")
+      odie "sip: --with-python3 must be specified when using --without-python"
+    end
+
     if build.head?
       # Link the Mercurial repository into the download directory so
       # build.py can use it to figure out a version number.
@@ -91,7 +92,8 @@ class Sip < Formula
       t = Test()
       t.test()
     EOS
-    system ENV.cxx, "-shared", "-o", "libtest.dylib", "test.cpp"
+    system ENV.cxx, "-shared", "-Wl,-install_name,#{testpath}/libtest.dylib",
+                    "-o", "libtest.dylib", "test.cpp"
     system "#{bin}/sip", "-b", "test.build", "-c", ".", "test.sip"
     Language::Python.each_python(build) do |python, version|
       ENV["PYTHONPATH"] = lib/"python#{version}/site-packages"

@@ -1,14 +1,15 @@
 class Mdp < Formula
+  desc "Command-line based markdown presentation tool"
   homepage "https://github.com/visit1985/mdp"
-  url "https://github.com/visit1985/mdp/archive/0.93.0.tar.gz"
-  sha1 "5e267c8d9d3c2b30bd1951e854f1d4ad7c8679cf"
+  url "https://github.com/visit1985/mdp/archive/1.0.1.tar.gz"
+  sha256 "be912e2201fae57d92797dafa3045a202147a633db26fd9407251b80ab07b96e"
   head "https://github.com/visit1985/mdp.git"
 
   bottle do
-    cellar :any
-    sha1 "0df708dbbf816fe3d2430047e3e98908044b9ead" => :yosemite
-    sha1 "63260949aeaa48d1e41dfb3d682e7c894b5d26a6" => :mavericks
-    sha1 "72f8255820f988a26be93b40a9f8256ace349892" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "08baaf77c3a11bbcf1193956fc004f437b01ec10721f649059ad2bcab9acd44c" => :el_capitan
+    sha256 "1e1b20c31624cf8c21c6ac41ae1b4acfd1eb8c602bb2e5b459d1c8151dc16ac5" => :yosemite
+    sha256 "640381a2570d9ad833d26fd955240a6e5024e1c8b0309e748adafbb0ff56b643" => :mavericks
   end
 
   def install

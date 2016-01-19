@@ -1,22 +1,21 @@
-require "formula"
-
 class Libetonyek < Formula
+  desc "Interpret and import Apple Keynote presentations"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libetonyek"
-  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.1.tar.xz"
-  sha1 "024fd730b062d1df54de0352323d03d011e59277"
+  url "http://dev-www.libreoffice.org/src/libetonyek/libetonyek-0.1.5.tar.xz"
+  sha256 "29f8097f77a193511e940f7a70dfc6ac7fad57fbfc6e60b81fa1ee011daea903"
 
   bottle do
     cellar :any
-    revision 2
-    sha1 "979c95b08b3675fbf4de2a545a7e5215d1b27fc4" => :yosemite
-    sha1 "2b8c5ba7fb1a0f8b810e0e73184430258d14defb" => :mavericks
-    sha1 "39814df03e02f6e583817ea57e5bf6352a7f655b" => :mountain_lion
+    sha256 "62cccdece5d76f43ac0fd55eaccbd7a186848b962967140e322dbcba54909ce0" => :el_capitan
+    sha256 "f2d6be638e76f14060ff49ae65a5082e9538353e4688e04688129337b64815ae" => :yosemite
+    sha256 "73a38f30705c97a32aade008ac09e26ed51c74bb6146794d07cae0af607e427d" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
-  depends_on "libwpd"
   depends_on "librevenge"
+  depends_on "glm"
+  depends_on "mdds"
 
   def install
     system "./configure", "--without-docs",

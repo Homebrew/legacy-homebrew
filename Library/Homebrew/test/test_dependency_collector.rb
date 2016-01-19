@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'dependency_collector'
+require "testing_env"
+require "dependency_collector"
 
 class DependencyCollectorTests < Homebrew::TestCase
   def find_dependency(name)
@@ -19,27 +19,27 @@ class DependencyCollectorTests < Homebrew::TestCase
   end
 
   def test_dependency_creation
-    @d.add 'foo' => :build
-    @d.add 'bar' => ['--universal', :optional]
+    @d.add "foo" => :build
+    @d.add "bar" => ["--universal", :optional]
     assert_instance_of Dependency, find_dependency("foo")
     assert_equal 2, find_dependency("bar").tags.length
   end
 
   def test_add_returns_created_dep
-    ret = @d.add 'foo'
-    assert_equal Dependency.new('foo'), ret
+    ret = @d.add "foo"
+    assert_equal Dependency.new("foo"), ret
   end
 
   def test_dependency_tags
-    assert_predicate Dependency.new('foo', [:build]), :build?
-    assert_predicate Dependency.new('foo', [:build, :optional]), :optional?
-    assert_includes Dependency.new('foo', ["universal"]).options, "--universal"
-    assert_empty Dependency.new('foo').tags
+    assert_predicate Dependency.new("foo", [:build]), :build?
+    assert_predicate Dependency.new("foo", [:build, :optional]), :optional?
+    assert_includes Dependency.new("foo", ["universal"]).options, "--universal"
+    assert_empty Dependency.new("foo").tags
   end
 
   def test_requirement_creation
     @d.add :x11
-    assert_instance_of X11Dependency, find_requirement(X11Dependency)
+    assert_instance_of X11Requirement, find_requirement(X11Requirement)
   end
 
   def test_no_duplicate_requirements
@@ -48,31 +48,31 @@ class DependencyCollectorTests < Homebrew::TestCase
   end
 
   def test_requirement_tags
-    @d.add :x11 => '2.5.1'
+    @d.add :x11 => "2.5.1"
     @d.add :xcode => :build
-    assert_empty find_requirement(X11Dependency).tags
-    assert_predicate find_requirement(XcodeDependency), :build?
+    assert_empty find_requirement(X11Requirement).tags
+    assert_predicate find_requirement(XcodeRequirement), :build?
   end
 
   def test_x11_no_tag
     @d.add :x11
-    assert_empty find_requirement(X11Dependency).tags
+    assert_empty find_requirement(X11Requirement).tags
   end
 
   def test_x11_min_version
-    @d.add :x11 => '2.5.1'
-    assert_equal "2.5.1", find_requirement(X11Dependency).min_version.to_s
+    @d.add :x11 => "2.5.1"
+    assert_equal "2.5.1", find_requirement(X11Requirement).min_version.to_s
   end
 
   def test_x11_tag
     @d.add :x11 => :optional
-    assert_predicate find_requirement(X11Dependency), :optional?
+    assert_predicate find_requirement(X11Requirement), :optional?
   end
 
   def test_x11_min_version_and_tag
-    @d.add :x11 => ['2.5.1', :optional]
-    dep = find_requirement(X11Dependency)
-    assert_equal '2.5.1', dep.min_version.to_s
+    @d.add :x11 => ["2.5.1", :optional]
+    dep = find_requirement(X11Requirement)
+    assert_equal "2.5.1", dep.min_version.to_s
     assert_predicate dep, :optional?
   end
 
@@ -95,7 +95,7 @@ class DependencyCollectorTests < Homebrew::TestCase
   end
 
   def test_does_not_mutate_dependency_spec
-    spec = { 'foo' => :optional }
+    spec = { "foo" => :optional }
     copy = spec.dup
     @d.add(spec)
     assert_equal copy, spec
@@ -104,7 +104,13 @@ class DependencyCollectorTests < Homebrew::TestCase
   def test_resource_dep_git_url
     resource = Resource.new
     resource.url("git://example.com/foo/bar.git")
-    assert_instance_of GitDependency, @d.add(resource)
+    assert_instance_of GitRequirement, @d.add(resource)
+  end
+
+  def test_resource_dep_7z_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.7z")
+    assert_equal Dependency.new("p7zip", [:build]), @d.add(resource)
   end
 
   def test_resource_dep_gzip_url
@@ -117,6 +123,30 @@ class DependencyCollectorTests < Homebrew::TestCase
     resource = Resource.new
     resource.url("http://example.com/foo.tar.xz")
     assert_equal Dependency.new("xz", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_lz_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.lz")
+    assert_equal Dependency.new("lzip", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_lha_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.lha")
+    assert_equal Dependency.new("lha", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_lzh_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.lzh")
+    assert_equal Dependency.new("lha", [:build]), @d.add(resource)
+  end
+
+  def test_resource_dep_rar_url
+    resource = Resource.new
+    resource.url("http://example.com/foo.rar")
+    assert_equal Dependency.new("unrar", [:build]), @d.add(resource)
   end
 
   def test_resource_dep_raises_for_unknown_classes

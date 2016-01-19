@@ -1,4 +1,5 @@
 class Psutils < Formula
+  desc "Collection of PostScript document handling utilities"
   homepage "http://knackered.org/angus/psutils/"
   url "ftp://ftp.knackered.org/pub/psutils/psutils-p17.tar.gz"
   version "p17"

@@ -1,4 +1,5 @@
 class Ledit < Formula
+  desc "Line editor for interactive commands"
   homepage "http://pauillac.inria.fr/~ddr/ledit/"
   url "http://pauillac.inria.fr/~ddr/ledit/distrib/src/ledit-2.03.tgz"
   sha256 "ce08a8568c964009ccb0cbba45ae78b9a96c823f42a4fd61431a5b0c2c7a19ce"
@@ -10,7 +11,7 @@ class Ledit < Formula
     sha256 "338e160cde4ece1c167ec07e8b202f599ba0267ac5c3b6ca896b569067cb2e20" => :mountain_lion
   end
 
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "camlp5"
 
   def install

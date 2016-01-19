@@ -1,19 +1,19 @@
-require "formula"
-
 class Notmuch < Formula
-  homepage "http://notmuchmail.org"
-  url "http://notmuchmail.org/releases/notmuch-0.19.tar.gz"
-  sha1 "df023988f67e329357a5e8d00c4f6fc71249b89f"
+  desc "Thread-based email index, search, and tagging"
+  homepage "https://notmuchmail.org"
+  url "https://notmuchmail.org/releases/notmuch-0.21.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/n/notmuch/notmuch_0.21.orig.tar.gz"
+  sha256 "d06f8ffed168c7d53ffc449dd611038b5fa90f7ee22d58f3bec3b379571e25b3"
 
   bottle do
     cellar :any
-    sha1 "000f3f7ab9e2a78db874ba95f2a7e73d96cbdcd9" => :yosemite
-    sha1 "43d716940b5b99923ef14dd207fab1c9eb9e591f" => :mavericks
-    sha1 "c5bcffd7d593c4c5dffb85d42b33bdfff26ff113" => :mountain_lion
+    sha256 "a54c75c58070d551d5dc5e4e4cee00ada55c889266eb0217921c233d5a1f2e6b" => :el_capitan
+    sha256 "a9679f7a870e10d12633dab987223d96b50bc6cf40ae705741c7f99413d302bd" => :yosemite
+    sha256 "cf83e129e4624002ca6c3e9942f67cd3acfc40f868d5c0ce2a49b62af1872793" => :mavericks
   end
 
   depends_on "pkg-config" => :build
-  depends_on "emacs" => :optional
+  depends_on :emacs => ["21.1", :optional]
   depends_on :python => :optional
   depends_on :python3 => :optional
   depends_on "xapian"
@@ -23,7 +23,7 @@ class Notmuch < Formula
   # Requires zlib >= 1.2.5.2
   resource "zlib" do
     url "http://zlib.net/zlib-1.2.8.tar.gz"
-    sha1 "a4d316c404ff54ca545ea71a27af7dbc29817088"
+    sha256 "36658cb768a54c1d4dec43c3116c27ed893e88b02ecfcb44f2166f9c0b7f2a0d"
   end
 
   def install
@@ -36,7 +36,7 @@ class Notmuch < Formula
     args = ["--prefix=#{prefix}"]
     if build.with? "emacs"
       ENV.deparallelize # Emacs and parallel builds aren't friends
-      args << "--with-emacs"
+      args << "--with-emacs" << "--emacslispdir=#{elisp}"
     else
       args << "--without-emacs"
     end
@@ -44,11 +44,14 @@ class Notmuch < Formula
     system "./configure", *args
     system "make", "V=1", "install"
 
-    Language::Python.each_python(build) do |python, version|
+    Language::Python.each_python(build) do |python, _version|
       cd "bindings/python" do
         system python, *Language::Python.setup_install_args(prefix)
       end
     end
+  end
 
+  test do
+    system "#{bin}/notmuch", "help"
   end
 end

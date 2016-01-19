@@ -1,13 +1,15 @@
 class LibjsonRpcCpp < Formula
+  desc "C++ framework for json-rpc"
   homepage "https://github.com/cinemast/libjson-rpc-cpp"
-  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.4.2.tar.gz"
-  sha1 "a9e00bfdb1b6843897fb644caa114577c349e18c"
+  url "https://github.com/cinemast/libjson-rpc-cpp/archive/v0.5.0.tar.gz"
+  sha256 "e6d8d6c20517bb38eba9dba7f372e0a95432c4cbf55ec9b136ba841faa0a6d99"
 
   bottle do
     cellar :any
-    sha1 "f91d44d59eb889473db7d99eef593317f9f1c244" => :yosemite
-    sha1 "4857b90795ae4cf8ee239139030356bc677a02e3" => :mavericks
-    sha1 "5adfd6855401bb04f0db8191e339d7d2891f4a5b" => :mountain_lion
+    revision 2
+    sha256 "a9d7883a0a265f75495fe23c7414eab1201c49869e76f742437820f64bf7af77" => :el_capitan
+    sha256 "5d951749422146185149e7e0d57a6ab11dd92d6b55f3bce21b7bd90617e33039" => :yosemite
+    sha256 "07afaeb45d0cb55fe1cc1770498700046f238c2e01ba39544eb697b72965cd32" => :mavericks
   end
 
   depends_on "cmake" => :build

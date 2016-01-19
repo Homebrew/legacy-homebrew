@@ -1,7 +1,7 @@
 # External Commands
 Homebrew, like Git, supports *external commands*. This lets you create new commands that can be run like:
 
-```
+```shell
 $ brew mycommand --option1 --option3 formula
 ```
 
@@ -31,7 +31,7 @@ A shell script for an command named `extcmd` should be named `brew-extcmd`. This
 	</tr>
   <tr>
     <td>HOMEBREW_CELLAR</td>
-		<td>The location of the Homebrew Cellar, where software is staged, by default <code>/usr/local/Cellar</code>.</td>
+		<td>The location of the Homebrew Cellar, where software is staged. This will be <code>$HOMEBREW_PREFIX/Cellar</code> if that directory exists, or <code>$HOMEBREW_REPOSITORY/Cellar</code> otherwise.</td>
   </tr>
   <tr>
     <td>HOMEBREW_LIBRARY_PATH</td>
@@ -39,7 +39,7 @@ A shell script for an command named `extcmd` should be named `brew-extcmd`. This
 	</tr>
   <tr>
     <td>HOMEBREW_PREFIX</td>
-		<td>Where Homebrew installs software to, by default <code>/usr/local</code>.</td>
+		<td>Where Homebrew installs software. This is always the grandparent directory of the `brew` executable, <code>/usr/local</code> by default.</td>
 	</tr>
   <tr>
     <td>HOMEBREW_REPOSITORY</td>
@@ -64,19 +64,6 @@ These commands have been contributed by Homebrew users but are not included in t
 > $ brew tap youtux/livecheck
 > ```
 
-### brew-any-tap
-
-> Like `brew tap` but works on *any* git repository, whether public or private, on GitHub or not.
->
-> Install using (ironically enough) `brew tap`:
->
-> ```
-> brew tap telemachus/anytap
-> brew install brew-any-tap
-> ```
->
-> See the  [`README`](https://github.com/telemachus/homebrew-anytap/blob/master/README.md) for further explanation and examples of use.
-
 ### brew-cask
 
 >Install .app and other "Drag to install" packages from Homebrew.
@@ -86,15 +73,6 @@ These commands have been contributed by Homebrew users but are not included in t
 > Install using:
 > ```
   $ brew tap caskroom/cask
-  $ brew install brew-cask
-> ```
-
-### brew-desc
->Get short descriptions for Homebrew formulae or search formulae by description: [https://github.com/telemachus/brew-desc](https://github.com/telemachus/homebrew-desc)
-
->You can install manually or using `brew tap`:
-> ```
-> $ brew tap telemachus/desc
 > ```
 
 ### brew-gem

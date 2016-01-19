@@ -1,17 +1,18 @@
 class Pidgin < Formula
+  desc "Multi-protocol chat client"
   homepage "https://pidgin.im/"
-  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.11/pidgin-2.10.11.tar.bz2"
-  sha256 "f2ae211341fc77efb9945d40e9932aa535cdf3a6c8993fe7919fca8cc1c04007"
+  url "https://downloads.sourceforge.net/project/pidgin/Pidgin/2.10.12/pidgin-2.10.12.tar.bz2"
+  sha256 "2c7523f0fefe89749c03b2b738ab9f7bd186da435be4762f1487eee31e77ffdd"
+  revision 1
 
   bottle do
-    revision 3
-    sha256 "7f19887890554a229bb5420cd711efd804185f77e2ade0abba3aca35e6496d9e" => :yosemite
-    sha256 "407a6b5d8084607f93c223007809812cabfaf71ad8c5916f4c2e428bdee62af6" => :mavericks
-    sha256 "9e83c9d5dede335dbf51e03ba9df1af06e98851c54440465dacf96653f3546ce" => :mountain_lion
+    sha256 "a010b4baeb0d28eb3c22ddb45ce85c0dc73ee1c32e01f1f42d55f52718e8aaf9" => :el_capitan
+    sha256 "48128e5a37ed28e61d616f25b55b85424817a2d4421f8133bd46a1514f2b9ea3" => :yosemite
+    sha256 "f78352ef4891c3d84a1d5ae3a1eae001a526163f8586c7b4ecaf23b3004bd45f" => :mavericks
   end
 
   option "with-perl", "Build Pidgin with Perl support"
-  option "without-gui", "Build Finch instead of Pidgin"
+  option "without-gui", "Build only Finch, the command-line client"
 
   deprecated_option "perl" => "with-perl"
   deprecated_option "without-GUI" => "without-gui"
@@ -22,16 +23,14 @@ class Pidgin < Formula
   depends_on "gsasl" => :optional
   depends_on "gnutls"
   depends_on "libgcrypt"
+  depends_on "libidn"
+  depends_on "glib"
 
   if build.with? "gui"
-    depends_on :x11 => :optional
     depends_on "gtk+"
     depends_on "cairo"
     depends_on "pango"
     depends_on "libotr"
-  else
-    depends_on "glib"
-    depends_on "libidn"
   end
 
   # Finch has an equal port called purple-otr but it is a NIGHTMARE to compile
@@ -56,19 +55,16 @@ class Pidgin < Formula
       --disable-gtkspell
       --disable-meanwhile
       --disable-vv
+      --without-x
     ]
 
     args << "--disable-perl" if build.without? "perl"
     args << "--enable-cyrus-sasl" if build.with? "gsasl"
 
+    args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
+    args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
     if build.without? "gui"
-      args << "--with-tclconfig=#{MacOS.sdk_path}/usr/lib"
-      args << "--with-tkconfig=#{MacOS.sdk_path}/usr/lib"
-      args << "--without-x"
       args << "--disable-gtkui"
-    else
-      args << "--with-x"
-      args << "--disable-idn"
     end
 
     system "./configure", *args

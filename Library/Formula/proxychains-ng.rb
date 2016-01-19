@@ -1,16 +1,16 @@
-require "formula"
-
 class ProxychainsNg < Formula
-  homepage "https://sourceforge.net/projects/proxychains-ng"
-  url "https://downloads.sourceforge.net/project/proxychains-ng/proxychains-4.7.tar.bz2"
-  sha1 "5e5b10009f785434ebdbd7ede5a79efee4e59c5a"
+  desc "Hook preloader"
+  homepage "https://sourceforge.net/projects/proxychains-ng/"
+  url "https://downloads.sourceforge.net/project/proxychains-ng/proxychains-4.10.tar.bz2"
+  sha256 "3784eef241f022a68a1a0c41a0c225f6edcf4c3ce3bee1cea99ba342084e1f8a"
 
   head "https://github.com/rofl0r/proxychains-ng.git"
 
   bottle do
-    sha1 "2dec4dda5f1ee8656133141ee50a0a1bcf616c7d" => :mavericks
-    sha1 "ff402165a6ad4edde426615ef64513f0bb3ce92a" => :mountain_lion
-    sha1 "5f26998480a6c040cf016f0c1521299c052c24b3" => :lion
+    sha256 "dc6af4fa724352b42370b04e9c15cb2071436a0381d36c90a82173f930309112" => :el_capitan
+    sha256 "2bfb53e389b9a3222fb50632e72b7da85262ff9abf69bb477355fff55661c51b" => :yosemite
+    sha256 "5f88b3f9d16fd08c182b0c8c9490dc6328e84e597c9ccc2d80fe44fc252512ae" => :mavericks
+    sha256 "ec8067e606f210e88b501a8e3e8951a1f7082fb8f86356d1179ec791c02aa621" => :mountain_lion
   end
 
   option :universal
@@ -19,11 +19,15 @@ class ProxychainsNg < Formula
     args = ["--prefix=#{prefix}", "--sysconfdir=#{prefix}/etc"]
     if build.universal?
       ENV.universal_binary
-      args.unshift "--fat-binary"
+      args << "--fat-binary"
     end
     system "./configure", *args
     system "make"
     system "make", "install"
     system "make", "install-config"
+  end
+
+  test do
+    assert_match "config file found", shell_output("#{bin}/proxychains4 test 2>&1", 1)
   end
 end

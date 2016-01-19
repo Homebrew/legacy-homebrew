@@ -1,4 +1,5 @@
 class OneMl < Formula
+  desc "Reboot of ML, unifying its core and (now first-class) module layers"
   homepage "https://www.mpi-sws.org/~rossberg/1ml/"
   url "https://www.mpi-sws.org/~rossberg/1ml/1ml-0.1.zip"
   sha256 "64c40c497f48355811fc198a2f515d46c1bb5031957b87f6a297822b07bb9c9a"
@@ -11,7 +12,7 @@ class OneMl < Formula
     sha256 "d9cc9f66611ddf1d255a3090886d84f76ecd90c82fc1b6833a9c736f372dc484" => :mountain_lion
   end
 
-  depends_on "objective-caml" => :build
+  depends_on "ocaml" => :build
 
   def install
     system "make"

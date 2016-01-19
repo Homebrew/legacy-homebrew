@@ -1,32 +1,35 @@
-require 'formula'
-
 class GribApi < Formula
-  homepage 'https://software.ecmwf.int/wiki/display/GRIB/Home'
-  url 'https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.12.3.tar.gz'
-  sha1 '2764b262c8f081fefb81112f7f7463a3a34b6e66'
-  revision 1
+  desc "Encode and decode grib messages (editions 1 and 2)"
+  homepage "https://software.ecmwf.int/wiki/display/GRIB/Home"
+  url "https://software.ecmwf.int/wiki/download/attachments/3473437/grib_api-1.14.3-Source.tar.gz"
+  sha256 "da29650a5d58d27509a055db3685f28789b06d94fafb2527fd1ddacad8eae4a7"
 
   bottle do
-    sha1 "08dc51f4cdba79970fe8637fec16cfe47a9bb471" => :yosemite
-    sha1 "07779d6c8cc95a7dee2479b43c6f148f91f92b10" => :mavericks
-    sha1 "4b023028c85935df0891c6fdec3249ac439454ab" => :mountain_lion
+    sha256 "7b95c615906d92606038ac56c65672f4028de4d1333cf02ea9cc9ca3c04f3a16" => :el_capitan
+    sha256 "f152472b23c9708ac5dd5a5e6cdcbaeadc79d9888b0b384d850a2f40ce4f0da9" => :yosemite
+    sha256 "3a72bb44150630fff2eadcdf07dfb6c8e71812934701634222958921f44ee6ab" => :mavericks
   end
 
   depends_on :fortran
-  depends_on 'jasper' => :recommended
-  depends_on 'openjpeg' => :optional
+  depends_on "cmake" => :build
+  depends_on "jasper" => :recommended
+  depends_on "openjpeg" => :optional
 
   # Fixes build errors in Lion
   # https://software.ecmwf.int/wiki/plugins/viewsource/viewpagesrc.action?pageId=12648475
   patch :DATA
 
   def install
-    ENV.deparallelize
-    ENV.no_optimization
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "install"
+    end
+  end
 
-    system "./configure", "--prefix=#{prefix}"
-    system "make"
-    system "make install"
+  test do
+    grib_samples_path = shell_output("#{bin}/grib_info -t").strip
+    system "#{bin}/grib_ls", "#{grib_samples_path}/GRIB1.tmpl"
+    system "#{bin}/grib_ls", "#{grib_samples_path}/GRIB2.tmpl"
   end
 end
 

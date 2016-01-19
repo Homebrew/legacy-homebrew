@@ -1,10 +1,17 @@
-require "formula"
-
 class GnuTypist < Formula
+  desc "GNU typing tutor"
   homepage "https://www.gnu.org/software/gtypist/"
-  url "http://ftpmirror.gnu.org/gtypist/gtypist-2.9.4.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/gtypist/gtypist-2.9.4.tar.xz"
-  sha256 "18e71d0663af58bee156a749115fb6ead5791068a9f531f9db0ec2782025c5a1"
+  url "http://ftpmirror.gnu.org/gtypist/gtypist-2.9.5.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gtypist/gtypist-2.9.5.tar.xz"
+  sha256 "c13af40b12479f8219ffa6c66020618c0ce305ad305590fde02d2c20eb9cf977"
+
+  bottle do
+    revision 1
+    sha256 "7354c4eaf20f8c710b6921fcfa51e77f3959ee2240338a6657fdfff9c59de60e" => :el_capitan
+    sha256 "38fbd18da939021fe2ba02f505109a68df569d5e89629b97bfb52366be917dae" => :yosemite
+    sha256 "e6242d04086f6519b7d1e8150e03c28e83ade7e34162132010d1dc68abb80420" => :mavericks
+    sha256 "14030bc96288152a37b885d74c351be91ba18c03d48430ad95b9294d46ff0544" => :mountain_lion
+  end
 
   depends_on "gettext"
 
@@ -17,9 +24,18 @@ class GnuTypist < Formula
     ENV.append "LDFLAGS", "-liconv"
 
     system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+                          "--prefix=#{prefix}",
+                          "--with-lispdir=#{share}/emacs/site-lisp/gnu-typist"
     system "make"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    session = fork do
+      exec bin/"gtypist", "-t", "-q", "-l", "DEMO_0", share/"gtypist/demo.typ"
+    end
+    sleep 2
+    Process.kill("TERM", session)
   end
 end
 
@@ -48,10 +64,10 @@ index 2207b09..915a664 100755
 +LIBS="-lncurses  $LIBS"
  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
  /* end confdefs.h.  */
- 
+
 @@ -6350,7 +6350,7 @@ if test "x$ac_cv_lib_ncursesw_add_wch" = xyes; then :
  fi
- 
+
  if test -n "$HAVE_NCURSESW_H" -a -n "$HAVE_LIBNCURSESW";  then
 -   LIBS="-lncursesw $LIBS"
 +   LIBS="-lncurses $LIBS"
@@ -74,7 +90,7 @@ index 1c3990e..f0fc21a 100644
 -#include <ncursesw/ncurses.h>
 +#include <ncurses.h>
  #endif
- 
+
  #include "error.h"
 diff --git a/src/error.c b/src/error.c
 index 2022f2b..4ab6741 100644
@@ -100,7 +116,7 @@ index bd5af8d..b634325 100644
 -#include <ncursesw/ncurses.h>
 +#include <ncurses.h>
  #endif
- 
+
  #include <time.h>
 diff --git a/src/script.c b/src/script.c
 index ce04d68..f4032e2 100644
@@ -113,7 +129,7 @@ index ce04d68..f4032e2 100644
 -#include <ncursesw/ncurses.h>
 +#include <ncurses.h>
  #endif
- 
+
  #include "error.h"
 diff --git a/src/utf8.c b/src/utf8.c
 index 8eab3d3..e3194df 100644
@@ -126,5 +142,5 @@ index 8eab3d3..e3194df 100644
 -#include <ncursesw/ncurses.h>
 +#include <ncurses.h>
  #endif
- 
+
  #include <stdlib.h>

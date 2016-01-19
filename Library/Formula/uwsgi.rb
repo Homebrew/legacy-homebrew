@@ -1,26 +1,26 @@
-require "formula"
-
 class Uwsgi < Formula
+  desc "Full stack for building hosting services"
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
+  url "https://projects.unbit.it/downloads/uwsgi-2.0.11.2.tar.gz"
+  sha256 "0b889b0b4d2dd3f6625df28cb0b86ec44a68d074ede2d0dfad0b91e88914885c"
+  revision 1
+
   head "https://github.com/unbit/uwsgi.git"
 
-  stable do
-    url "http://projects.unbit.it/downloads/uwsgi-2.0.9.tar.gz"
-    sha1 "318d1d6d4bb57eb48b58361201cdc1cc7feedcbb"
+  bottle do
+    sha256 "558709cfcdbb5d9a552753276e35ddd223315cc42fdb2144eea1c8e1af523257" => :el_capitan
+    sha256 "5007d96dd0c8eb687a0137460042a5178943b754880fc6ded9dc33608bd0d1f2" => :yosemite
+    sha256 "9cc48b037ae97dab7c026a0c6af3021f984de4446d0e8ac089f38c62a06a97ff" => :mavericks
   end
 
-  bottle do
-    sha1 "952881effe96067637a123d7f552b58f793fcca3" => :yosemite
-    sha1 "4f0c25cf3b2f5859563803e16607c50c2350cce1" => :mavericks
-    sha1 "0bf33a67f2f6329f9d0aa9819129cd30ec35d36c" => :mountain_lion
-  end
+  option "with-java", "Compile with Java support"
+  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
+  option "with-ruby", "Compile with Ruby support"
 
   depends_on "pkg-config" => :build
+  depends_on "pcre"
   depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
-
-  depends_on "pcre"
-  depends_on "yajl" if build.without? "jansson"
 
   depends_on "geoip" => :optional
   depends_on "gloox" => :optional
@@ -32,6 +32,7 @@ class Uwsgi < Formula
   depends_on "lua51" => :optional
   depends_on "mongodb" => :optional
   depends_on "mongrel2" => :optional
+  depends_on "mono" => :optional
   depends_on "nagios" => :optional
   depends_on "postgresql" => :optional
   depends_on "pypy" => :optional
@@ -42,19 +43,25 @@ class Uwsgi < Formula
   depends_on "tcc" => :optional
   depends_on "v8" => :optional
   depends_on "zeromq" => :optional
-
-  option "with-java", "Compile with Java support"
-  option "with-php", "Compile with PHP support (PHP must be built for embedding)"
-  option "with-ruby", "Compile with Ruby support"
+  depends_on "yajl" if build.without? "jansson"
 
   def install
-    ENV.append %w{CFLAGS LDFLAGS}, "-arch #{MacOS.preferred_arch}"
+    ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
+    openssl = Formula["openssl"]
+    ENV.prepend "CFLAGS", "-I#{openssl.opt_include}"
+    ENV.prepend "LDFLAGS", "-L#{openssl.opt_lib}"
 
     json = build.with?("jansson") ? "jansson" : "yajl"
     yaml = build.with?("libyaml") ? "libyaml" : "embedded"
 
+    # Fix build on case-sensitive filesystems
+    # https://github.com/Homebrew/homebrew/issues/45560
+    # https://github.com/unbit/uwsgi/pull/1128
+    inreplace "plugins/alarm_speech/uwsgiplugin.py", "'-framework appkit'", "'-framework AppKit'"
+
     (buildpath/"buildconf/brew.ini").write <<-EOS.undent
       [uwsgi]
+      ssl = true
       json = #{json}
       yaml = #{yaml}
       inherit = base
@@ -62,7 +69,7 @@ class Uwsgi < Formula
       embedded_plugins = null
     EOS
 
-    system "python", "uwsgiconfig.py", "--build", "brew"
+    system "python", "uwsgiconfig.py", "--verbose", "--build", "brew"
 
     plugins = ["airbrake", "alarm_curl", "alarm_speech", "asyncio", "cache",
                "carbon", "cgi", "cheaper_backlog2", "cheaper_busyness",
@@ -79,7 +86,7 @@ class Uwsgi < Formula
                "stats_pusher_socket", "symcall", "syslog",
                "transformation_chunked", "transformation_gzip",
                "transformation_offload", "transformation_tofile",
-               "transformation_toupper","ugreen", "webdav", "zergpool"]
+               "transformation_toupper", "ugreen", "webdav", "zergpool"]
 
     plugins << "alarm_xmpp" if build.with? "gloox"
     plugins << "emperor_mongodb" if build.with? "mongodb"
@@ -95,6 +102,7 @@ class Uwsgi < Formula
     plugins << "mongodb" if build.with? "mongodb"
     plugins << "mongodblog" if build.with? "mongodb"
     plugins << "mongrel2" if build.with? "mongrel2"
+    plugins << "mono" if build.with? "mono"
     plugins << "nagios" if build.with? "nagios"
     plugins << "pypy" if build.with? "pypy"
     plugins << "php" if build.with? "php"
@@ -110,13 +118,13 @@ class Uwsgi < Formula
 
     (libexec/"uwsgi").mkpath
     plugins.each do |plugin|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/#{plugin}", "brew"
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/#{plugin}", "brew"
     end
 
     python_versions = ["python", "python2"]
     python_versions << "python3" if build.with? "python3"
     python_versions.each do |v|
-      system "python", "uwsgiconfig.py", "--plugin", "plugins/python", "brew", v
+      system "python", "uwsgiconfig.py", "--verbose", "--plugin", "plugins/python", "brew", v
     end
 
     bin.install "uwsgi"
@@ -137,7 +145,7 @@ class Uwsgi < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{bin}/uwsgi</string>
+            <string>#{opt_bin}/uwsgi</string>
             <string>--uid</string>
             <string>_www</string>
             <string>--gid</string>
@@ -155,5 +163,25 @@ class Uwsgi < Formula
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (testpath/"helloworld.py").write <<-EOS.undent
+      def application(env, start_response):
+        start_response('200 OK', [('Content-Type','text/html')])
+        return [b"Hello World"]
+    EOS
+
+    pid = fork do
+      exec "#{bin}/uwsgi --http-socket 127.0.0.1:8080 --protocol=http --plugin python -w helloworld"
+    end
+    sleep 2
+
+    begin
+      assert_match "Hello World", shell_output("curl localhost:8080")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

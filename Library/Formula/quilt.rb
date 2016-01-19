@@ -1,13 +1,16 @@
 class Quilt < Formula
-  homepage "http://savannah.nongnu.org/projects/quilt"
-  url "http://download.savannah.gnu.org/releases/quilt/quilt-0.63.tar.gz"
-  sha1 "19f2ba0384521eb3d8269b8a1097b16b07339be5"
+  desc "Work with series of patches"
+  homepage "https://savannah.nongnu.org/projects/quilt"
+  url "http://download.savannah.gnu.org/releases/quilt/quilt-0.64.tar.gz"
+  sha256 "c4bfd3282214a288e8d3e921ae4d52e73e24c4fead72b5446752adee99a7affd"
+
+  head "http://git.savannah.gnu.org/r/quilt.git"
 
   bottle do
     revision 1
-    sha1 "035ec6126a3b82e8ea86cf1804bf1da650f48cd4" => :yosemite
-    sha1 "369aee1a032fb132b1177aa6b51254e8d1751d5a" => :mavericks
-    sha1 "5e323ed88f03a34f4d290a2341fc09cc6c63c1c1" => :mountain_lion
+    sha256 "8f4e75281279df9d503c160a83dda1611483bada421115ec2c5af82ec0a3b9b2" => :yosemite
+    sha256 "1d69453caf8f13e9ecd5a3310e872b3fdd562bd89b6b6335ce9874f613b59ff2" => :mavericks
+    sha256 "452546bfd83c8ace6c95764a19c86d6d2eecdddcd3a289135a5a50648ecd494d" => :mountain_lion
   end
 
   depends_on "gnu-sed"
@@ -18,7 +21,7 @@ class Quilt < Formula
                           "--with-sed=#{HOMEBREW_PREFIX}/bin/gsed",
                           "--without-getopt"
     system "make"
-    system "make", "install"
+    system "make", "install", "emacsdir=#{share}/emacs/site-lisp/quilt"
   end
 
   test do

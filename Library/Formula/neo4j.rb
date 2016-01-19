@@ -1,23 +1,17 @@
-require "formula"
-
 class Neo4j < Formula
-  homepage "http://neo4j.org"
-  url "http://dist.neo4j.org/neo4j-community-2.1.7-unix.tar.gz"
-  sha1 "1827c318c019042c3ca2da89481f717f711d9aed"
-  version "2.1.7"
-
-  option "with-neo4j-shell-tools", "Add neo4j-shell-tools to the standard neo4j-shell"
-
-  resource "neo4j-shell-tools" do
-    url "http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.1.zip"
-    sha1 "83011a6dcf1cb49ee609e973fdb61f32f765b224"
-  end
+  desc "Robust (fully ACID) transactional property graph database"
+  homepage "http://neo4j.com"
+  url "http://dist.neo4j.org/neo4j-community-2.3.2-unix.tar.gz"
+  version "2.3.2"
+  sha256 "37e24d95c914c54d5cbbe99473d4beef89da78adb2db04eb87258a489225932a"
 
   devel do
-    url "http://dist.neo4j.org/neo4j-community-2.2.0-RC01-unix.tar.gz"
-    sha1 "65165b83ee2ba91e9ba99cb2acce9ebcf7ad5434"
-    version "2.2.0-RC01"
+    url "http://dist.neo4j.org/neo4j-community-3.0.0-M02-unix.tar.gz"
+    sha256 "2a20f420e94fe4189363ce8ab327c0e5e054df3fc74a0249e9e2c7fe0455a0d6"
+    version "3.0.0-M02"
   end
+
+  bottle :unneeded
 
   def install
     # Remove windows files
@@ -27,24 +21,14 @@ class Neo4j < Formula
     libexec.install Dir["*"]
 
     # Symlink binaries
-    bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell}"]
-
-    bin.install_symlink libexec/"bin/neo4j-import" if build.devel?
-
-    # Eventually, install neo4j-shell-tools
-    # omiting "opencsv-2.3.jar" because it already comes with neo4j (see libexec/lib)
-    if build.with? "neo4j-shell-tools"
-      resource("neo4j-shell-tools").stage {
-        (libexec/"lib").install "geoff-0.5.0.jar", "import-tools-2.1-SNAPSHOT.jar", "mapdb-0.9.3.jar"
-      }
-    end
+    bin.install_symlink Dir["#{libexec}/bin/neo4j{,-shell,-import}"]
 
     # Adjust UDC props
-    open("#{libexec}/conf/neo4j-wrapper.conf", "a") { |f|
+    open("#{libexec}/conf/neo4j-wrapper.conf", "a") do |f|
       f.puts "wrapper.java.additional.4=-Dneo4j.ext.udc.source=homebrew"
 
       # suppress the empty, focus-stealing java gui
       f.puts "wrapper.java.additional=-Djava.awt.headless=true"
-    }
+    end
   end
 end

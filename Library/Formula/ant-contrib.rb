@@ -1,15 +1,16 @@
-require "formula"
-
 class AntContrib < Formula
+  desc "Collection of tasks for Apache Ant"
   homepage "http://ant-contrib.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ant-contrib/ant-contrib/1.0b3/ant-contrib-1.0b3-bin.tar.gz"
-  sha1 "05b74808d51f501a993457fb9b7871484acba901"
   version "1.0b3"
+  sha256 "6e58c2ee65e1f4df031796d512427ea213a92ae40c5fc0b38d8ac82701f42a3c"
+
+  bottle :unneeded
 
   depends_on "ant"
 
   def install
-    libexec.install "lib", "ant-contrib-1.0b3.jar"
+    (share+"ant").install "ant-contrib-1.0b3.jar"
     share.install "docs"
   end
 
@@ -27,6 +28,6 @@ class AntContrib < Formula
         </target>
       </project>
     EOS
-    system Formula["ant"].opt_bin/"ant", "-lib", libexec
+    system Formula["ant"].opt_bin/"ant"
   end
 end

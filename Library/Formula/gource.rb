@@ -1,9 +1,15 @@
-require "formula"
-
 class Gource < Formula
-  homepage "http://code.google.com/p/gource/"
+  desc "Version Control Visualization Tool"
+  homepage "https://github.com/acaudwell/Gource"
   url "https://github.com/acaudwell/Gource/releases/download/gource-0.43/gource-0.43.tar.gz"
-  sha1 "dda56952f9cc19821ae7c146736b00556ef51edf"
+  sha256 "85a40ac8e4f5c277764216465c248d6b76589ceac012541c4cc03883a24abde4"
+  revision 2
+
+  bottle do
+    sha256 "d062abff352d5a192cbe73840c8790e8f608ea62c7438aceb346273384c24559" => :el_capitan
+    sha256 "c06d9b4f2e1498a2c6b058ff4218004c0dd56aa64123ba0add3d5d744d699167" => :yosemite
+    sha256 "910e7a041667ab60ba79590356617fb5934ad4b43ba57f1783d37632953eeb26" => :mavericks
+  end
 
   head do
     url "https://github.com/acaudwell/Gource.git"
@@ -41,14 +47,16 @@ class Gource < Formula
     # despite -std=gnu++0x
     ENV.libcxx
 
-    # For non-/usr/local installs
-    ENV.append "CXXFLAGS", "-I#{HOMEBREW_PREFIX}/include"
-
-    system "autoreconf -f -i" if build.head?
+    system "autoreconf", "-f", "-i" if build.head?
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
+                          "--with-boost=#{Formula["boost"].opt_prefix}",
                           "--without-x"
-    system "make install"
+    system "make", "install"
+  end
+
+  test do
+    system "#{bin}/gource", "--help"
   end
 end

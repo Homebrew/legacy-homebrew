@@ -1,26 +1,28 @@
-require "formula"
-
 class Autossh < Formula
+  desc "Automatically restart SSH sessions and tunnels"
   homepage "http://www.harding.motd.ca/autossh/"
-  url "http://www.harding.motd.ca/autossh/autossh-1.4d.tgz"
-  mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4d.orig.tar.gz"
-  sha1 "27da23c357f8d263aba6ecf3e8792a3552d90e50"
+  url "http://www.harding.motd.ca/autossh/autossh-1.4e.tgz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/a/autossh/autossh_1.4e.orig.tar.gz"
+  sha256 "9e8e10a59d7619176f4b986e256f776097a364d1be012781ea52e08d04679156"
 
   bottle do
-    cellar :any
-    sha1 "4233a7ced33f61621bbfe993a38b1f341b50fa37" => :yosemite
-    sha1 "5438d61bc2751a0f7225882199f9e25cdc61863f" => :mavericks
-    sha1 "3dc121773b268bb858d65e2824be58dee8495289" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "9eb45f4246ed8db8cf639772bb252cedca944b480e7b8bedeeff4e96635a7a97" => :el_capitan
+    sha256 "5926ad9cc35738f1fc5eebc8dd68770a0cc62f8a1c5344cc01547c246821e7c1" => :yosemite
+    sha256 "4c86bc07f832f9ffeffc6542ecd102925fdebb363cfc354903cba2e9faa7900c" => :mavericks
   end
 
   patch :DATA
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "make", "install"
     bin.install "rscreen"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/autossh -V")
   end
 end
 

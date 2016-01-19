@@ -1,14 +1,15 @@
 class Sqlite < Formula
+  desc "Command-line interface for SQLite"
   homepage "https://sqlite.org/"
-  url "https://sqlite.org/2015/sqlite-autoconf-3080803.tar.gz"
-  sha1 "2fe3f6226a2a08a2e814b97cd53e36bb3c597112"
-  version "3.8.8.3"
+  url "https://sqlite.org/2016/sqlite-autoconf-3100100.tar.gz"
+  version "3.10.1"
+  sha256 "3cb4e17137f7422554c8e8906b5a7274c7a0d362872e8aa25233c3f1246bda98"
 
   bottle do
     cellar :any
-    sha1 "c45e71983696f5b343d3204fefb95a85dd3eb472" => :yosemite
-    sha1 "705a5f243fc7b973af132defe93ec9354e8ce2c1" => :mavericks
-    sha1 "aac4adc32246444714f0deeb1262682b7fdd4a19" => :mountain_lion
+    sha256 "4076b6a94885493b02d52b9e122cc4b00d2fe064a6104d234c9eed4e31f730be" => :el_capitan
+    sha256 "7468e6f09180b4bfd716adfd278c8195c3ce1bc744fb942ba33356ea72e04fc0" => :yosemite
+    sha256 "6f69c3d772c0b13a9001cc75a12797ad88295a902fb50ae82a4d35236f641a67" => :mavericks
   end
 
   keg_only :provided_by_osx, "OS X provides an older sqlite3."
@@ -16,33 +17,39 @@ class Sqlite < Formula
   option :universal
   option "with-docs", "Install HTML documentation"
   option "without-rtree", "Disable the R*Tree index module"
-  option "with-fts", "Enable the FTS module"
+  option "with-fts", "Enable the FTS3 module"
+  option "with-fts5", "Enable the FTS5 module (experimental)"
   option "with-secure-delete", "Defaults secure_delete to on"
   option "with-unlock-notify", "Enable the unlock notification feature"
   option "with-icu4c", "Enable the ICU module"
   option "with-functions", "Enable more math and string functions for SQL queries"
+  option "with-dbstat", "Enable the 'dbstat' virtual table"
+  option "with-json1", "Enable the JSON1 extension"
 
   depends_on "readline" => :recommended
   depends_on "icu4c" => :optional
 
   resource "functions" do
-    url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using  => :nounzip
+    url "https://www.sqlite.org/contrib/download/extension-functions.c?get=25", :using => :nounzip
     version "2010-01-06"
-    sha1 "c68fa706d6d9ff98608044c00212473f9c14892f"
+    sha256 "991b40fe8b2799edc215f7260b890f14a833512c9d9896aa080891330ffe4052"
   end
 
   resource "docs" do
-    url "https://sqlite.org/2015/sqlite-doc-3080803.zip"
-    version "3.8.8.3"
-    sha1 "27c2cada8e663f694c0469bcae09eb0d8c55dd7c"
+    url "https://sqlite.org/2016/sqlite-doc-3100100.zip"
+    version "3.10.1"
+    sha256 "a3bd7b5de156dac38cea07e3229bd4f03905ff84b591339925f26f5ea4b1830e"
   end
 
   def install
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE" if build.with? "rtree"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3 -DSQLITE_ENABLE_FTS3_PARENTHESIS" if build.with? "fts"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA"
-    ENV.append "CPPFLAGS", "-DSQLITE_SECURE_DELETE" if build.with? "secure-delete"
-    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_UNLOCK_NOTIFY" if build.with? "unlock-notify"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_COLUMN_METADATA=1"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_RTREE=1" if build.with? "rtree"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS3=1 -DSQLITE_ENABLE_FTS3_PARENTHESIS=1" if build.with? "fts"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_FTS5=1" if build.with? "fts5"
+    ENV.append "CPPFLAGS", "-DSQLITE_SECURE_DELETE=1" if build.with? "secure-delete"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_UNLOCK_NOTIFY=1" if build.with? "unlock-notify"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_DBSTAT_VTAB=1" if build.with? "dbstat"
+    ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_JSON1=1" if build.with? "json1"
 
     if build.with? "icu4c"
       icu4c = Formula["icu4c"]
@@ -50,12 +57,14 @@ class Sqlite < Formula
       icu4ccppflags = `#{icu4c.opt_bin}/icu-config --cppflags`.tr("\n", " ")
       ENV.append "LDFLAGS", icu4cldflags
       ENV.append "CPPFLAGS", icu4ccppflags
-      ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_ICU"
+      ENV.append "CPPFLAGS", "-DSQLITE_ENABLE_ICU=1"
     end
 
     ENV.universal_binary if build.universal?
 
-    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking", "--enable-dynamic-extensions"
+    system "./configure", "--prefix=#{prefix}",
+                          "--disable-dependency-tracking",
+                          "--enable-dynamic-extensions"
     system "make", "install"
 
     if build.with? "functions"
@@ -77,7 +86,7 @@ class Sqlite < Formula
         In your application, call sqlite3_enable_load_extension(db,1) to
         allow loading external libraries.  Then load the library libsqlitefunctions
         using sqlite3_load_extension; the third argument should be 0.
-        See https://www.sqlite.org/cvstrac/wiki?p=LoadableExtensions.
+        See https://www.sqlite.org/loadext.html.
         Select statements may now use these functions, as in
         SELECT cos(radians(inclination)) FROM satsum WHERE satnum = 25544;
 
@@ -102,8 +111,7 @@ class Sqlite < Formula
       select name from students order by age asc;
     EOS
 
-    names = `#{bin}/sqlite3 < #{path}`.strip.split("\n")
+    names = shell_output("#{bin}/sqlite3 < #{path}").strip.split("\n")
     assert_equal %w[Sue Tim Bob], names
-    assert_equal 0, $?.exitstatus
   end
 end

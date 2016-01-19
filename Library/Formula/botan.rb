@@ -1,12 +1,25 @@
 class Botan < Formula
+  desc "Cryptographic algorithms and formats library in C++"
   homepage "http://botan.randombit.net/"
-  url "http://botan.randombit.net/releases/Botan-1.10.9.tgz"
-  sha1 "e1c8e97b214b23931f7dc8aba44306fbeca9055c"
+
+  stable do
+    url "http://botan.randombit.net/releases/Botan-1.10.10.tgz"
+    sha256 "6b67b14746410461fe4a8ce6a625e7eef789243454fe30eab7329d5984be4163"
+    # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
+    patch :DATA
+  end
 
   bottle do
-    sha1 "3f9096cdf4156db3af972765fe9b8bb58a7b7261" => :yosemite
-    sha1 "d2f2f165eccbd6db984b83149a1f1df1b66dadbb" => :mavericks
-    sha1 "26196739a9584d6b3a129e32d3a2358484d6d8ed" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "3d9ac88803bf21b0b05873d7ed3a9bec621f2d3f2a173df627c9f1cf9ea1c34c" => :el_capitan
+    sha256 "7773f8464a8a9f07f3f8f0e7038a0ef9d5b991d96d5664db950f3c3f6f307c3b" => :yosemite
+    sha256 "635c7292d3c14242563d0cb6cd585a5de91fb0b23af8737121d9131778740c0e" => :mavericks
+  end
+
+  devel do
+    url "http://botan.randombit.net/releases/Botan-1.11.26.tgz"
+    sha256 "c94cec8a7a293a813ee30f53aff7ac6670cbc4d42fa38833ae41eaf860fe8511"
   end
 
   option "with-debug", "Enable debug build of Botan"
@@ -16,13 +29,14 @@ class Botan < Formula
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
-  # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
-  patch :DATA
+  needs :cxx11 if build.devel?
 
   def install
+    ENV.cxx11 if build.devel?
+
     args = %W[
       --prefix=#{prefix}
-      --docdir=#{share}/doc
+      --docdir=share/doc
       --cpu=#{MacOS.preferred_arch}
       --cc=#{ENV.compiler}
       --os=darwin
@@ -40,7 +54,13 @@ class Botan < Formula
   end
 
   test do
-    assert_match /lcrypto/, shell_output("#{bin}/botan-config-1.10 --libs")
+    # stable version doesn't have `botan` executable
+    if !File.exist? bin/"botan"
+      assert_match "lcrypto", shell_output("#{bin}/botan-config-1.10 --libs")
+    else
+      assert_match /\A-----BEGIN PRIVATE KEY-----/,
+       shell_output("#{bin}/botan keygen")
+    end
   end
 end
 

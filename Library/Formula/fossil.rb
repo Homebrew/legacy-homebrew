@@ -1,26 +1,43 @@
 class Fossil < Formula
+  desc "Distributed software configuration management"
   homepage "https://www.fossil-scm.org/"
+  url "https://www.fossil-scm.org/download/fossil-src-1.34.tar.gz"
+  sha256 "53a6b83e878feced9ac7705f87e5b6ea82727314e3e19202ae1c46c7e4dba49f"
+
   head "https://www.fossil-scm.org/", :using => :fossil
-  url "https://www.fossil-scm.org/download/fossil-src-20150223162734.tar.gz"
-  sha256 "c00f9e1487530adb921df730baf57e1aa23767a0afb60b865e5842bb50782942"
-  version "1.31"
 
   bottle do
     cellar :any
-    sha256 "0008984514cf0956aca9371492c8ff779ab224378d620f9a97e204516b899f0c" => :yosemite
-    sha256 "ac24fa102938c7f533e9d9a28c1d622fafb2ddc54e3e2a28d2fe630a95fa9a3b" => :mavericks
-    sha256 "0e136626581d82192245d1373aeaeaa5a4a71369f08ecf8d008713e7ad5ae529" => :mountain_lion
+    sha256 "c63a8f0c159ca20bfd2808c1bd56d2a0e599fa316c56e731285bb2adc68389b2" => :el_capitan
+    sha256 "032e30a35f52aa80a409ae62194b412132bd2fb16399e64593594d3e60f77388" => :yosemite
+    sha256 "7ed7555f4240cdc6366e40810c57285e2402f7637483a69befeec52dd2693d65" => :mavericks
   end
 
   option "without-json", "Build without 'json' command support"
   option "without-tcl", "Build without the tcl-th1 command bridge"
 
   depends_on "openssl"
+  depends_on :osxfuse => :optional
 
   def install
-    args = []
+    args = [
+      # fix a build issue, recommended by upstream on the mailing-list:
+      # http://comments.gmane.org/gmane.comp.version-control.fossil-scm.user/22444
+      "--with-tcl-private-stubs=1"
+    ]
     args << "--json" if build.with? "json"
-    args << "--with-tcl" if build.with? "tcl"
+
+    if MacOS::CLT.installed? && build.with?("tcl")
+      args << "--with-tcl"
+    else
+      args << "--with-tcl-stubs"
+    end
+
+    if build.with? "osxfuse"
+      ENV.prepend "CFLAGS", "-I#{HOMEBREW_PREFIX}/include/osxfuse"
+    else
+      args << "--disable-fusefs"
+    end
 
     system "./configure", *args
     system "make"

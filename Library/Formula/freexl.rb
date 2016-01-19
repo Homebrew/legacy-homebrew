@@ -1,20 +1,33 @@
-require 'formula'
-
 class Freexl < Formula
-  homepage 'https://www.gaia-gis.it/fossil/freexl/index'
-  url 'http://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-1.0.0g.tar.gz'
-  sha1 '2a5b1d3ebbaf217c7bda15b5b3f1e0222c6c1502'
+  desc "Library to extract data from Excel .xls files"
+  homepage "https://www.gaia-gis.it/fossil/freexl/index"
+  url "https://www.gaia-gis.it/gaia-sins/freexl-sources/freexl-1.0.2.tar.gz"
+  sha256 "b39a4814a0f53f5e09a9192c41e3e51bd658843f770399023a963eb064f6409d"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "0158f6a76dcf1fd8ab569f2689a745fefc61fc90" => :yosemite
-    sha1 "7a90c3a51e61ebbc1a5f46eae6483bbb3dc4517f" => :mavericks
-    sha1 "effe1c8fda7ae09b761e3388962cb59e676459b5" => :mountain_lion
+    sha256 "5c6edd364f1c97cca352eba13ea5c594ec5bb4a1a2878b1ea187ec6728d72f31" => :el_capitan
+    sha256 "8e7233c0b1c33adad45ef88a52e1e797aa677933b5348fe46cc99085a6975a7c" => :yosemite
+    sha256 "04495f65384391622533b8fbe4c23579a3704ce4da491e3b7c53cb171c50c8c6" => :mavericks
+    sha256 "ae6d78c69b399ea733ff6ef346d83499408c0c510fe40484072c423b9552925b" => :mountain_lion
   end
 
+  option "without-test", "Skip compile-time make checks"
+
+  deprecated_option "without-check" => "without-test"
+
+  depends_on "doxygen" => [:optional, :build]
+
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--disable-silent-rules"
+
+    system "make", "check" if build.with? "test"
+    system "make", "install"
+
+    if build.with? "doxygen"
+      system "doxygen"
+      doc.install "html"
+    end
   end
 end

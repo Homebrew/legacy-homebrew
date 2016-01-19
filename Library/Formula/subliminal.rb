@@ -1,46 +1,32 @@
 class Subliminal < Formula
+  desc "Library to search and download subtitles"
   homepage "https://subliminal.readthedocs.org"
-  url "https://github.com/Diaoul/subliminal/archive/0.7.5.tar.gz"
-  sha256 "ade34adc8085feba51cf056410e38bea0042e5956732e430baa5295e6522daa1"
+  url "https://github.com/Diaoul/subliminal/archive/1.1.tar.gz"
+  sha256 "eeb9812c6c7fcb7cdeb051f95d06e336bf776c2c720649f272fa187594ab8b4e"
+  head "https://github.com/Diaoul/subliminal.git"
 
   bottle do
-    cellar :any
-    revision 2
-    sha256 "ef1e4c15582b72494950ceb7e28f03b558a54118b7177ced0c570bbe4d3d500a" => :yosemite
-    sha256 "33f6267686fd0df0983dd7b0f1e795a190ad3a910fef1035f14f6bc4d42d1d3a" => :mavericks
-    sha256 "b46b60fab3d228c3b36cf8ec653a8ede286e81534f87fa757b819df3f9979ba3" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0ec68d1cd09ac608821fe5b704ebd2810105fa9f95d2161f5f900e562af0d179" => :el_capitan
+    sha256 "70d8df7eb8955895f5f5dbdff1695079a69e00492514ff4f6f4a4ac388578de4" => :yosemite
+    sha256 "9c55db8673cab35f3205832bd72cbef4d16187cb711be6cdf80bd84e8e168e81" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
-  resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
-    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
-  end
-
-  resource "argparse" do
-    url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
-    sha256 "b3a79a23d37b5a02faa550b92cbbbebeb4aa1d77e649c3eb39c19abf5262da04"
+  resource "pip" do
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
+    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
   resource "babelfish" do
-    url "https://pypi.python.org/packages/source/b/babelfish/babelfish-0.5.4.tar.gz"
-    sha256 "6e4f41f185b30b81232589c10b059546f3320cc440c5987f182ee82ab1778b47"
+    url "https://pypi.python.org/packages/source/b/babelfish/babelfish-0.5.5.tar.gz"
+    sha256 "8380879fa51164ac54a3e393f83c4551a275f03617f54a99d70151358e444104"
   end
 
-  resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha256 "0d58487a1b7f5be2e5e965c11afbea1dc44ecec8069de03491a4d0d6c85f4551"
-  end
-
-  resource "pbr" do
-    url "https://pypi.python.org/packages/source/p/pbr/pbr-0.10.8.tar.gz"
-    sha256 "a741650c697abe9dd3da00039a57a45a15a6eed017a16f6b7e4c0161fae2b4b2"
-  end
-
-  resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+  resource "beautifulsoup4" do
+    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.4.1.tar.gz"
+    sha256 "87d4013d0625d4789a4f56b8d79a04d5ce6db1152bb65f1d39744f7709a366b4"
   end
 
   resource "chardet" do
@@ -48,9 +34,14 @@ class Subliminal < Formula
     sha256 "e53e38b3a4afe6d1132de62b7400a4ac363452dc5dfcf8d88e8e0cce663c68aa"
   end
 
-  resource "pysrt" do
-    url "https://pypi.python.org/packages/source/p/pysrt/pysrt-1.0.1.tar.gz"
-    sha256 "5300a1584c8d15a1c49ef8880fa1ef7a4274ce3f24dde83ad581d12d875f6784"
+  resource "click" do
+    url "https://pypi.python.org/packages/source/c/click/click-6.2.tar.gz"
+    sha256 "fba0ff70f5ebb4cebbf64c40a8fbc222fb7cf825237241e548354dabe3da6a82"
+  end
+
+  resource "dogpile.cache" do
+    url "https://pypi.python.org/packages/source/d/dogpile.cache/dogpile.cache-0.5.7.tar.gz"
+    sha256 "dcf99b09ddf3d8216b1b4378100eb0235619612fb0e6300ba5d74f10962d0956"
   end
 
   resource "dogpile.core" do
@@ -58,19 +49,9 @@ class Subliminal < Formula
     sha256 "be652fb11a8eaf66f7e5c94d418d2eaa60a2fe81dae500f3743a863cc9dbed76"
   end
 
-  resource "dogpile.cache" do
-    url "https://pypi.python.org/packages/source/d/dogpile.cache/dogpile.cache-0.5.6.tar.gz"
-    sha256 "f80544c5555f66cf7b5fc99f15431f3b35f78009bc6b03b58fe1724236bbc57b"
-  end
-
-  resource "charade" do
-    url "https://pypi.python.org/packages/source/c/charade/charade-1.0.3.tar.gz"
-    sha256 "a607146d151005904f3fd8335e3dc89af214453f0d3a29580e1eb0e67e6c3d7f"
-  end
-
-  resource "beautifulsoup4" do
-    url "https://pypi.python.org/packages/source/b/beautifulsoup4/beautifulsoup4-4.3.2.tar.gz"
-    sha256 "a2b29bd048ca2fe54a046b29770964738872a9747003a371344a93eedf7ad58e"
+  resource "argparse" do
+    url "https://pypi.python.org/packages/source/a/argparse/argparse-1.4.0.tar.gz"
+    sha256 "62b089a55be1d8949cd2bc7e0df0bddb9e028faefc8c32038cc84862aefdd6e4"
   end
 
   resource "enzyme" do
@@ -78,24 +59,39 @@ class Subliminal < Formula
     sha256 "f2167fa97c24d1103a94d4bf4eb20f00ca76c38a37499821049253b2059c62bb"
   end
 
-  resource "html5lib" do
-    url "https://pypi.python.org/packages/source/h/html5lib/html5lib-0.999.tar.gz"
-    sha256 "c3887f7e2875d7666107fa8bee761ff95b9391acdcc7cd1b5fd57a23b5fbc49e"
+  resource "guessit" do
+    url "https://pypi.python.org/packages/source/g/guessit/guessit-1.0.2.tar.gz"
+    sha256 "118ca3e2df5adf1f0b87841924227fbb51b4465fb13407099c7c07588a20eccc"
   end
 
-  resource "stevedore" do
-    url "https://pypi.python.org/packages/source/s/stevedore/stevedore-1.3.0.tar.gz"
-    sha256 "beab2b7f91966d259796392c39ed6f260b32851861561dd9f3b9be2fd0c426a5"
+  resource "pbr" do
+    url "https://pypi.python.org/packages/source/p/pbr/pbr-1.8.1.tar.gz"
+    sha256 "e2127626a91e6c885db89668976db31020f0af2da728924b56480fc7ccf09649"
+  end
+
+  resource "pysrt" do
+    url "https://pypi.python.org/packages/source/p/pysrt/pysrt-1.0.1.tar.gz"
+    sha256 "5300a1584c8d15a1c49ef8880fa1ef7a4274ce3f24dde83ad581d12d875f6784"
   end
 
   resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.tar.gz"
-    sha256 "23fd0a7c228d9c298c562245290a3f82999586c87aae71250f95f9894cb22c7c"
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.2.tar.gz"
+    sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
   end
 
-  resource "guessit" do
-    url "https://pypi.python.org/packages/source/g/guessit/guessit-0.9.4.tar.gz"
-    sha256 "88689713946faad4ae12467dff40a8f3daa629200328fbc5256093e96b1b0d19"
+  resource "requests" do
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
+  end
+
+  resource "six" do
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
+  end
+
+  resource "stevedore" do
+    url "https://pypi.python.org/packages/source/s/stevedore/stevedore-1.10.0.tar.gz"
+    sha256 "f5d689ef38e0ca532d57a03d1ab95e89b17c57f97b58d10c92da94699973779f"
   end
 
   # not required by install_requires but provides additional UI when available
@@ -123,7 +119,9 @@ class Subliminal < Formula
   end
 
   test do
-    mkdir_p "#{ENV["HOME"]}/.config"
-    system "#{bin}/subliminal", "-l", "en", "--", "The.Big.Bang.Theory.S05E18.HDTV.x264-LOL.mp4"
+    (testpath/".config").mkpath
+    system "#{bin}/subliminal", "download", "-l", "en",
+           "The.Big.Bang.Theory.S05E18.HDTV.x264-LOL.mp4"
+    assert File.exist?("The.Big.Bang.Theory.S05E18.HDTV.x264-LOL.en.srt")
   end
 end

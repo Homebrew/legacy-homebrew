@@ -3,44 +3,40 @@ require "language/haskell"
 class GitAnnex < Formula
   include Language::Haskell::Cabal
 
+  desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-5.20150205/git-annex-5.20150205.tar.gz"
-  sha1 "5df6114cb029531e429e2b423f5ae7f755ffa390"
+  url "https://hackage.haskell.org/package/git-annex-5.20151218/git-annex-5.20151218.tar.gz"
+  sha256 "d8aed73cbc1d1eefcbe6de7790c83f1d6458b4ac1e910d9a34b22782d16142ca"
+  revision 1
+
+  head "git://git-annex.branchable.com/"
 
   bottle do
-    cellar :any
-    sha1 "fa9fa816e728479b6d4b3e058a6ea3544db4acc2" => :yosemite
-    sha1 "be634c33bc9f4aa337404e0f5cf78ec989b45e3b" => :mavericks
-    sha1 "bf687c017b26ac5694e466afd8fe996c7ea2c22b" => :mountain_lion
+    sha256 "81e4037f30a0e4d087f401c228fe727f47764f9d981cbc56d8f7df2268988ba1" => :el_capitan
+    sha256 "dd93fb0a3958e2b757f7465c1c72462057a90995ddf0b4df022625eded820e87" => :yosemite
+    sha256 "a1848964b1239644d917d250dbbda42d73100ec5a1b5e69e66e27e0a4f179f61" => :mavericks
   end
 
-  depends_on "gcc" => :build
+  option "with-git-union-merge", "Build the git-union-merge tool"
+
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "pkg-config" => :build
-  # wget is workaround for http://git-annex.branchable.com/bugs/Build_fails_when_no_wget_avalible/
-  depends_on "wget" => :build
   depends_on "gsasl"
   depends_on "libidn"
   depends_on "gnutls"
-  depends_on "gmp"
   depends_on "quvi"
 
-  fails_with(:clang) { build 425 } # clang segfaults on Lion
-
   def install
-    cabal_sandbox do
-      cabal_install_tools "alex", "happy", "c2hs"
-      # gcc required to build gnuidn
-      gcc = Formula["gcc"]
-      cabal_install "--with-gcc=#{gcc.bin}/gcc-#{gcc.version_suffix}",
-                    "--only-dependencies",
-                    "--constraint=utf8-string==0.3.8" # use older utf8-string until 'feed' is updated
-      cabal_install "--prefix=#{prefix}"
+    install_cabal_package :using => ["alex", "happy", "c2hs"] do
+      # this can be made the default behavior again once git-union-merge builds properly when bottling
+      if build.with? "git-union-merge"
+        system "make", "git-union-merge", "PREFIX=#{prefix}"
+        bin.install "git-union-merge"
+        system "make", "git-union-merge.1", "PREFIX=#{prefix}"
+      end
     end
     bin.install_symlink "git-annex" => "git-annex-shell"
-    system "make", "git-annex.1", "git-annex-shell.1", "git-union-merge.1"
-    man1.install "git-annex.1", "git-annex-shell.1", "git-union-merge.1"
   end
 
   test do

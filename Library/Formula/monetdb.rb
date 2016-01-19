@@ -1,9 +1,7 @@
-require "formula"
-
 class RRequirement < Requirement
   fatal true
 
-  satisfy { which('r') }
+  satisfy { which("r") }
 
   def message; <<-EOS.undent
     R not found. The R integration module requires R.
@@ -16,14 +14,15 @@ class RRequirement < Requirement
 end
 
 class Monetdb < Formula
+  desc "Column-store database"
   homepage "https://www.monetdb.org/"
-  url "https://dev.monetdb.org/downloads/sources/Oct2014-SP2/MonetDB-11.19.9.zip"
-  sha1 "dde2cad29d2f5bbdd2e2845ee0663969eb0aeb3f"
+  url "https://www.monetdb.org/downloads/sources/Jul2015-SP2/MonetDB-11.21.13.zip"
+  sha256 "1638d74fbfbccc61e7e72e470114e24f6b31f3449e28b14febeffa8bd380ef69"
 
   bottle do
-    sha1 "a277df350c7758eee0dd9082f5b369da4aeb67b3" => :yosemite
-    sha1 "360ce097dd63e8af6caf94f0a1c422491d965c9b" => :mavericks
-    sha1 "d63d44cbc488f5f4d40d5ed169e92d2ece4964d6" => :mountain_lion
+    sha256 "131544e89f4bab795fdfd3b0a5e6ea15f96e77978a4994bb91ebab84b232cdc3" => :el_capitan
+    sha256 "f76d2f0f1af2fa543cf6d71f54469a61ef7caa3ae111b3fff60d16ccfb759d92" => :yosemite
+    sha256 "9b4a4c12b180443488d7bd780b4c18490d87f34e87a3374fe29f2b1055927e09" => :mavericks
   end
 
   head do
@@ -35,8 +34,9 @@ class Monetdb < Formula
     depends_on "autoconf" => :build
   end
 
-  option "with-java", 'Build the JDBC dirver'
-  option "with-r", 'Build the R integration module'
+  option "with-java", "Build the JDBC driver"
+  option "with-ruby", "Build the Ruby driver"
+  option "with-r", "Build the R integration module"
 
   depends_on RRequirement => :optional
 
@@ -62,13 +62,13 @@ class Monetdb < Formula
             "--enable-assert=no",
             "--enable-optimize=yes",
             "--enable-testing=no",
-            "--with-readline=#{Formula["readline"].opt_prefix}", # Use the correct readline
-            "--without-rubygem"] # Installing the RubyGems requires root permissions
+            "--with-readline=#{Formula["readline"].opt_prefix}"]
 
     args << "--with-java=no" if build.without? "java"
+    args << "--with-rubygem=no" if build.without? "ruby"
     args << "--disable-rintegration" if build.without? "r"
 
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

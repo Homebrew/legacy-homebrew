@@ -1,19 +1,20 @@
 class Bear < Formula
+  desc "Generate compilation database for clang tooling"
   homepage "https://github.com/rizsotto/Bear"
-  url "https://github.com/rizsotto/Bear/archive/2.0.1.tar.gz"
-  sha1 "31cf2b82a44f6eb5a3740c9f8aa9f2cd662e9a68"
+  url "https://github.com/rizsotto/Bear/archive/2.1.2.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/b/bear/bear_2.1.2.orig.tar.gz"
+  sha256 "e321df1e8ff8d0b1203613e0bc5642736b4f1b1a71fd95d96b11b1e38bdbfcfc"
   head "https://github.com/rizsotto/Bear.git"
 
   bottle do
-    sha1 "6d868313f7e4afa2ac5e5a8979f47299e776a439" => :yosemite
-    sha1 "1aa1d89fe02160069fb32c666e982c4b0fdd5841" => :mavericks
-    sha1 "a576d3a8ab01c8bbdb1c387d314736d6d3c7cae7" => :mountain_lion
+    cellar :any
+    sha256 "d6c3a7ea4c3c03521e0ecf3fee3ac34ffe4a876d16e3976e86ed385ce1a1a6d6" => :el_capitan
+    sha256 "223a11d51726424160f4615d3d13722d6051fa95ee2bf6dbd1fd8d6597a16ef0" => :yosemite
+    sha256 "7acdd424b85c64d32de2ad0b3f4ad9fe93f25be215e13ba203a55204675589ad" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
-  depends_on "libconfig"
 
   def install
     mkdir "build" do

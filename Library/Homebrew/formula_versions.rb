@@ -4,44 +4,24 @@ class FormulaVersions
   IGNORED_EXCEPTIONS = [
     ArgumentError, NameError, SyntaxError, TypeError,
     FormulaSpecificationError, FormulaValidationError,
-    ErrorDuringExecution, LoadError,
+    ErrorDuringExecution, LoadError
   ]
 
-  attr_reader :f
+  attr_reader :name, :path, :repository, :entry_name
 
-  def initialize(f)
-    @f = f
+  def initialize(formula, options = {})
+    @name = formula.name
+    @path = formula.path
+    @repository = formula.tap.path
+    @entry_name = @path.relative_path_from(repository).to_s
+    @max_depth = options[:max_depth]
   end
 
-  def repository
-    @repository ||= if f.tap?
-      HOMEBREW_LIBRARY.join("Taps", f.tap)
-    else
-      HOMEBREW_REPOSITORY
-    end
-  end
-
-  def entry_name
-    @entry_name ||= f.path.relative_path_from(repository).to_s
-  end
-
-  def each
-    versions = Set.new
-    rev_list do |rev|
-      version = version_at_revision(rev)
-      next if version.nil?
-      yield version, rev if versions.add?(version)
-    end
-  end
-
-  def repository_path
-    Pathname.pwd == repository ? entry_name : f.path
-  end
-
-  def rev_list(branch="HEAD")
+  def rev_list(branch)
     repository.cd do
+      depth = 0
       Utils.popen_read("git", "rev-list", "--abbrev-commit", "--remove-empty", branch, "--", entry_name) do |io|
-        yield io.readline.chomp until io.eof?
+        yield io.readline.chomp until io.eof? || (@max_depth && (depth += 1) > @max_depth)
       end
     end
   end
@@ -50,31 +30,21 @@ class FormulaVersions
     repository.cd { Utils.popen_read("git", "cat-file", "blob", "#{rev}:#{entry_name}") }
   end
 
-  def version_at_revision(rev)
-    formula_at_revision(rev) { |f| f.version }
-  end
-
   def formula_at_revision(rev)
-    FileUtils.mktemp(f.name) do
-      path = Pathname.pwd.join("#{f.name}.rb")
-      path.write file_contents_at_revision(rev)
+    contents = file_contents_at_revision(rev)
 
-      begin
-        old_const = Formulary.unload_formula(f.name)
-        nostdout { yield Formulary.factory(path.to_s) }
-      rescue *IGNORED_EXCEPTIONS => e
-        # We rescue these so that we can skip bad versions and
-        # continue walking the history
-        ohai "#{e} in #{f.name} at revision #{rev}", e.backtrace if ARGV.debug?
-      rescue FormulaUnavailableError
-        # Suppress this error
-      ensure
-        Formulary.restore_formula(f.name, old_const)
-      end
+    begin
+      nostdout { yield Formulary.from_contents(name, path, contents) }
+    rescue *IGNORED_EXCEPTIONS => e
+      # We rescue these so that we can skip bad versions and
+      # continue walking the history
+      ohai "#{e} in #{name} at revision #{rev}", e.backtrace if ARGV.debug?
+    rescue FormulaUnavailableError
+      # Suppress this error
     end
   end
 
-  def bottle_version_map(branch="HEAD")
+  def bottle_version_map(branch)
     map = Hash.new { |h, k| h[k] = [] }
     rev_list(branch) do |rev|
       formula_at_revision(rev) do |f|
@@ -82,6 +52,17 @@ class FormulaVersions
         unless bottle.checksums.empty?
           map[f.pkg_version] << bottle.revision
         end
+      end
+    end
+    map
+  end
+
+  def revision_map(branch)
+    map = Hash.new { |h, k| h[k] = [] }
+    rev_list(branch) do |rev|
+      formula_at_revision(rev) do |f|
+        map[f.stable.version] << f.revision if f.stable
+        map[f.devel.version] << f.revision if f.devel
       end
     end
     map

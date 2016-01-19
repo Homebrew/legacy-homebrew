@@ -1,22 +1,23 @@
-require "formula"
-
 class Freeling < Formula
+  desc "Suite of language analyzers"
   homepage "http://nlp.lsi.upc.edu/freeling/"
   url "http://devel.cpl.upc.edu/freeling/downloads/32"
   version "3.1"
-  sha1 "42dbf7eec6e5c609e10ccc60768652f220d24771"
-  revision 2
+  sha256 "e98471ceb3f58afbe70369584d8d316323d13fcc51d09b2fd7f431a3220982ba"
+  revision 7
 
   bottle do
     cellar :any
-    sha1 "9972b1420a2a0cd2ed4f033ee907dad45ca4e63e" => :mavericks
-    sha1 "b8450df079deb28b27db17f5da97f7c53d39bbd0" => :mountain_lion
-    sha1 "5e853bc28cf164fb78350f69af5ee15da2acc4e9" => :lion
+    sha256 "29ba46b151743d03cc88faf1fe3387b54bedef5b0fd0d6c48716b149d114b84c" => :el_capitan
+    sha256 "9df578994e9f84c9bf74b87991a79ba6fbaf11994fc2d01ceee1d869e7de9417" => :yosemite
+    sha256 "974af8b21553bb39459b4dcf166aabcd28f05956b69a82ef0d44db5aad8ae82b" => :mavericks
   end
 
-  depends_on "icu4c"
-  depends_on "boost" => "with-icu4c"
   depends_on "libtool" => :build
+  depends_on "boost" => "with-icu4c"
+  depends_on "icu4c"
+
+  conflicts_with "hunspell", :because => "both install 'analyze' binary"
 
   def install
     icu4c = Formula["icu4c"]
@@ -27,7 +28,6 @@ class Freeling < Formula
     ENV.append "CPPFLAGS", "-I#{icu4c.include}"
 
     system "./configure", "--prefix=#{prefix}", "--enable-boost-locale"
-
     system "make", "install"
 
     libexec.install "#{bin}/fl_initialize"
@@ -37,6 +37,10 @@ class Freeling < Formula
   end
 
   test do
-    system "echo 'Hello world' | #{bin}/analyze -f #{share}/freeling/config/en.cfg | grep -c 'world world NN 1'"
+    expected = <<-EOS.undent
+      Hello hello NN 1
+      world world NN 1
+    EOS
+    assert_equal expected, pipe_output("#{bin}/analyze -f #{share}/freeling/config/en.cfg", "Hello world").chomp
   end
 end

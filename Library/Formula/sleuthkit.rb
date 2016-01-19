@@ -1,50 +1,56 @@
-require 'formula'
-
 class Sleuthkit < Formula
-  homepage 'http://www.sleuthkit.org/'
+  desc "Forensic toolkit"
+  homepage "http://www.sleuthkit.org/"
+  url "https://github.com/sleuthkit/sleuthkit/archive/sleuthkit-4.2.0.tar.gz"
+  sha256 "d71414134c9f8ce8e193150dd478c063173ee7f3b01f8a2a5b18c09aaa956ba7"
+  head "https://github.com/sleuthkit/sleuthkit.git"
 
-  stable do
-    url "https://downloads.sourceforge.net/project/sleuthkit/sleuthkit/4.1.3/sleuthkit-4.1.3.tar.gz"
-    sha1 "9350bb59bb5fbe41d6e29a8d0494460b937749ef"
-
-    # Upstream fix for https://github.com/sleuthkit/sleuthkit/issues/345
-    patch do
-      url "https://github.com/sleuthkit/sleuthkit/commit/39c62d6d169f8723c821ca7decdb8e124e126782.diff"
-      sha1 "9da053e839ef8c4a454ac2f4f80b368884ff959c"
-    end
+  bottle do
+    cellar :any
+    sha256 "9be1ac084cd2ca38dfcf8d74357954051f8253d2e9fdf2118d4539bd41697f2b" => :el_capitan
+    sha256 "a57e48483c05b733a9f67fba5759173b08fd89edd13ff5c83f504935ad556646" => :yosemite
+    sha256 "c548ffdfbd4f20693ca708a09355b47dd0d049e1ce249cac3aefe96148270b0f" => :mavericks
   end
 
-  head do
-    url "https://github.com/sleuthkit/sleuthkit.git"
+  conflicts_with "irods", :because => "both install `ils`"
 
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
-    depends_on "libtool" => :build
+  option "with-jni", "Build Sleuthkit with JNI bindings"
+  option "with-debug", "Build debug version"
+
+  if build.with? "jni"
+    depends_on :java
+    depends_on :ant => :build
   end
 
-  conflicts_with 'irods', :because => 'both install `ils`'
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "afflib" => :optional
+  depends_on "libewf" => :optional
 
-  option 'with-jni', "Build Sleuthkit with JNI bindings"
-
-  depends_on :ant => :build
-  depends_on 'afflib' => :optional
-  depends_on 'libewf' => :optional
-
-  conflicts_with 'ffind',
+  conflicts_with "ffind",
     :because => "both install a 'ffind' executable."
 
   def install
-    system "./bootstrap" if build.head?
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
+    ENV.append_to_cflags "-DNDEBUG" if build.without? "debug"
+    ENV.java_cache if build.with? "jni"
+
+    system "./bootstrap"
+    system "./configure", "--disable-dependency-tracking",
+                          if build.without? "jni" then "--disable-java" end,
                           "--prefix=#{prefix}"
     system "make"
-    system "make install"
+    system "make", "install"
 
-    if build.with? 'jni'
-      cd 'bindings/java' do
-        system 'ant'
+    if build.with? "jni"
+      cd "bindings/java" do
+        system "ant"
       end
-      prefix.install 'bindings'
+      prefix.install "bindings"
     end
+  end
+
+  test do
+    system "#{bin}/tsk_loaddb", "-V"
   end
 end

@@ -1,25 +1,24 @@
-require 'formula'
-
 class Sqlitebrowser < Formula
-  homepage 'http://sqlitebrowser.org'
-  url 'https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.5.1.tar.gz'
-  sha1 '2c915ccb1e869e98c9e4133ecef1ba003a304d87'
+  desc "Visual tool to create, design, and edit SQLite databases"
+  homepage "http://sqlitebrowser.org"
+  url "https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.8.0.tar.gz"
+  sha256 "f638a751bccde4bf0305a75685e2a72d26fc3e3a69d7e15fd84573f88c1a4d92"
 
-  head 'https://github.com/sqlitebrowser/sqlitebrowser.git'
+  head "https://github.com/sqlitebrowser/sqlitebrowser.git"
 
   bottle do
     cellar :any
-    sha1 "34109839c79ae06a811db806782433c193ba99f6" => :yosemite
-    sha1 "82ae0afbb0fac9c67e25b6d8d55007dc7371bdf1" => :mavericks
-    sha1 "c4af5c9aa9fd484beabc8726eeab13ae1dd15f72" => :mountain_lion
+    sha256 "deca3c30ab2c07621adec645a8161afc3ffbe47efc45fd3ad1df7fa44818cda3" => :el_capitan
+    sha256 "b7f615da030c8a03474c1bf1dbe4fa04608e8bcb893eb8deed9e21c325e7d338" => :yosemite
+    sha256 "bdb49155b98d84480159b291c51ae01f47c0626ca56f66fc5f0d45756d36846f" => :mavericks
   end
 
-  depends_on 'qt'
-  depends_on 'cmake' => :build
-  depends_on 'sqlite' => 'with-functions'
+  depends_on "qt"
+  depends_on "cmake" => :build
+  depends_on "sqlite" => "with-functions"
 
   def install
     system "cmake", ".", *std_cmake_args
-    system 'make install'
+    system "make", "install"
   end
 end

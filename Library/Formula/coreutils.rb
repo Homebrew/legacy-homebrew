@@ -1,26 +1,20 @@
 class Coreutils < Formula
+  desc "GNU File, Shell, and Text utilities"
   homepage "https://www.gnu.org/software/coreutils"
-  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.23.tar.xz"
-  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.23.tar.xz"
-  sha256 "ec43ca5bcfc62242accb46b7f121f6b684ee21ecd7d075059bf650ff9e37b82d"
-  revision 1
+  url "http://ftpmirror.gnu.org/coreutils/coreutils-8.24.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/coreutils/coreutils-8.24.tar.xz"
+  sha256 "a2d75286a4b9ef3a13039c2da3868a61be4ee9f17d8ae380a35a97e506972170"
 
   bottle do
     revision 1
-    sha1 "380f3f5fbd0da33e69d19edba4ae30b7e7cf899c" => :yosemite
-    sha1 "edf8d1fc1ac7104b570bd72003e10ca3599302f5" => :mavericks
-    sha1 "fe7525c7ef751f07f1f7dd7b37d4f584d2891210" => :mountain_lion
+    sha256 "b7bfca75eb3155763f2646fcc68e735da8e3c256378ea77b5145b8b05ab98487" => :el_capitan
+    sha256 "2a8a58876cba90cd2c12b95e082566007eade29fbed15508463457cd7647cfcf" => :yosemite
+    sha256 "adbc19369319460f5e7e088c2ffdec20b8ab92d4aa8fd4bdd4c81d5f0fc340c3" => :mavericks
   end
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
   conflicts_with "idutils", :because => "both install `gid` and `gid.1`"
-
-  # Patch adapted from upstream commits:
-  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=6f9b018
-  # http://git.savannah.gnu.org/gitweb/?p=coreutils.git;a=commitdiff;h=3cf19b5
-  stable do
-    patch :DATA
-  end
+  conflicts_with "aardvark_shell_utils", :because => "both install `realpath` binaries"
 
   head do
     url "git://git.sv.gnu.org/coreutils"
@@ -31,22 +25,29 @@ class Coreutils < Formula
     depends_on "gettext" => :build
     depends_on "texinfo" => :build
     depends_on "xz" => :build
-
-    resource "gnulib" do
-      url "http://git.savannah.gnu.org/cgit/gnulib.git/snapshot/gnulib-0.1.tar.gz"
-      sha1 "b29e165bf276ce0a0c12ec8ec1128189bd786155"
-    end
+    depends_on "wget" => :build
   end
 
+  depends_on "gmp" => :optional
+
   def install
-    if build.head?
-      resource("gnulib").stage "gnulib"
-      ENV["GNULIB_SRCDIR"] = "gnulib"
-      system "./bootstrap"
+    # Work around unremovable, nested dirs bug that affects lots of
+    # GNU projects. See:
+    # https://github.com/Homebrew/homebrew/issues/45273
+    # https://github.com/Homebrew/homebrew/issues/44993
+    # This is thought to be an el_capitan bug:
+    # http://lists.gnu.org/archive/html/bug-tar/2015-10/msg00017.html
+    if MacOS.version == :el_capitan
+      ENV["gl_cv_func_getcwd_abort_bug"] = "no"
     end
-    system "./configure", "--prefix=#{prefix}",
-                          "--program-prefix=g",
-                          "--without-gmp"
+
+    system "./bootstrap" if build.head?
+    args = %W[
+      --prefix=#{prefix}
+      --program-prefix=g
+    ]
+    args << "--without-gmp" if build.without? "gmp"
+    system "./configure", *args
     system "make", "install"
 
     # Symlink all commands into libexec/gnubin without the 'g' prefix
@@ -57,6 +58,10 @@ class Coreutils < Formula
     coreutils_filenames(man1).each do |cmd|
       (libexec/"gnuman"/"man1").install_symlink man1/"g#{cmd}" => cmd
     end
+
+    # Symlink non-conflicting binaries
+    bin.install_symlink "grealpath" => "realpath"
+    man1.install_symlink "grealpath.1" => "realpath.1"
   end
 
   def caveats; <<-EOS.undent
@@ -90,18 +95,3 @@ class Coreutils < Formula
     system "#{bin}/gsha1sum", "-c", "test.sha1"
   end
 end
-
-__END__
-diff --git a/Makefile.in b/Makefile.in
-index 140a428..bae3163 100644
---- a/Makefile.in
-+++ b/Makefile.in
-@@ -2566,7 +2566,7 @@ pkglibexecdir = @pkglibexecdir@
- # Use 'ginstall' in the definition of PROGRAMS and in dependencies to avoid
- # confusion with the 'install' target.  The install rule transforms 'ginstall'
- # to install before applying any user-specified name transformations.
--transform = s/ginstall/install/; $(program_transform_name)
-+transform = s/ginstall/install/;/libstdbuf/!$(program_transform_name)
- ACLOCAL = @ACLOCAL@
- ALLOCA = @ALLOCA@
- ALLOCA_H = @ALLOCA_H@

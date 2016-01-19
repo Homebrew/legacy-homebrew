@@ -1,24 +1,22 @@
-require "formula"
 require "language/go"
 
 class Nsq < Formula
-  homepage "https://bitly.github.io/nsq"
-  url "https://github.com/bitly/nsq/archive/v0.3.2.tar.gz"
-  sha1 "3df203637e9b669486747e5ac18c93e7dd2d33bd"
+  desc "Realtime distributed messaging platform"
+  homepage "http://nsq.io"
+  url "https://github.com/nsqio/nsq/archive/v0.3.6.tar.gz"
+  sha256 "2cf00ddfd63508ab98d052cb36ac7ec5b591abe1896b92d158c04964e2c6cb97"
+  revision 1
+
+  head "https://github.com/nsqio/nsq.git"
 
   bottle do
-    cellar :any
-    sha1 "4eca017db1de9f3992da92a3eed95f6343393c74" => :yosemite
-    sha1 "0fcd44d0fc5bc26ad364b2e5c943160f06bffcbe" => :mavericks
-    sha1 "e3ce46fcb14aa4557a68ef7197b8a5889e556823" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "2b74e0f20554251ea1060d4f306770fa658378a9dad34851675f12c15226fb0e" => :el_capitan
+    sha256 "686768ca33222259e4eae655de601119da6621fc10c8a8d30ffa27d7736298f8" => :yosemite
+    sha256 "6829fc7d9d4de5a5ff5ef5629e7f9e41919193436ce9f82159f34e33d4983c59" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "code.google.com/p/snappy-go" do
-    url "https://code.google.com/p/snappy-go/", :using => :hg,
-      :revision => "12e4b4183793ac4b061921e7980845e750679fd0"
-  end
 
   go_resource "github.com/BurntSushi/toml" do
     url "https://github.com/BurntSushi/toml.git",
@@ -30,9 +28,9 @@ class Nsq < Formula
       :revision => "58b95b10d6ca26723a7f46017b348653b825a8d6"
   end
 
-  go_resource "github.com/bitly/go-nsq" do
-    url "https://github.com/bitly/go-nsq.git",
-      :revision => "5a2abdba46a853a75ccdeeead30ad34eabc4d72a"
+  go_resource "github.com/nsqio/go-nsq" do
+    url "https://github.com/nsqio/go-nsq.git",
+      :revision => "cef6982c1150617a77539847950ca63774f0e48c"
   end
 
   go_resource "github.com/bitly/go-simplejson" do
@@ -52,7 +50,7 @@ class Nsq < Formula
 
   go_resource "github.com/mreiferson/go-snappystream" do
     url "https://github.com/mreiferson/go-snappystream.git",
-      :revision => "307a466b220aaf34bcee2d19c605ed9e96b4bcdb"
+      :revision => "028eae7ab5c4c9e2d1cb4c4ca1e53259bbe7e504"
   end
 
   go_resource "github.com/bitly/timer_metrics" do
@@ -60,19 +58,62 @@ class Nsq < Formula
       :revision => "afad1794bb13e2a094720aeb27c088aa64564895"
   end
 
+  go_resource "github.com/blang/semver" do
+    url "https://github.com/blang/semver.git",
+      :revision => "9bf7bff48b0388cb75991e58c6df7d13e982f1f2"
+  end
+
+  go_resource "github.com/julienschmidt/httprouter" do
+    url "https://github.com/julienschmidt/httprouter.git",
+      :revision => "6aacfd5ab513e34f7e64ea9627ab9670371b34e7"
+  end
+
   def install
     # build a proper GOPATH tree for local dependencies
-    (buildpath + "src/github.com/bitly/nsq").install "util", "nsqlookupd", "nsqd"
-    (buildpath + "src/github.com/bitly/nsq/nsqadmin").install "nsqadmin/templates" => "templates"
+    (buildpath + "src/github.com/nsqio/nsq").install "Makefile", "apps", "internal", "nsqlookupd", "nsqd", "nsqadmin"
 
     ENV["GOPATH"] = buildpath
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "make"
-    system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
+    cd buildpath/"src/github.com/nsqio/nsq" do
+      system "make"
+      system "make", "DESTDIR=#{prefix}", "PREFIX=", "install"
+    end
   end
 
   test do
-    system "#{bin}/nsqd", "--version"
+    begin
+      lookupd = fork do
+        exec bin/"nsqlookupd"
+      end
+      sleep 2
+      d = fork do
+        exec bin/"nsqd", "--lookupd-tcp-address=127.0.0.1:4160"
+      end
+      sleep 2
+      admin = fork do
+        exec bin/"nsqadmin", "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      to_file = fork do
+        exec bin/"nsq_to_file", "--topic=test", "--output-dir=#{testpath}",
+               "--lookupd-http-address=127.0.0.1:4161"
+      end
+      sleep 2
+      system "curl", "-d", "hello", "http://127.0.0.1:4151/put?topic=test"
+
+      dat = File.read(Dir["*.dat"].first)
+      assert_match "test", dat
+      assert_match version.to_s, dat
+    ensure
+      Process.kill(9, lookupd)
+      Process.kill(9, d)
+      Process.kill(9, admin)
+      Process.kill(9, to_file)
+      Process.wait lookupd
+      Process.wait d
+      Process.wait admin
+      Process.wait to_file
+    end
   end
 end

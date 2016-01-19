@@ -1,28 +1,28 @@
 class Httpie < Formula
-  homepage "https://github.com/jakubroztocil/httpie"
-  url "https://github.com/jakubroztocil/httpie/archive/0.9.2.tar.gz"
-  sha1 "39e9aab7f6f27973098c22c81fe5b9e7a5866a8b"
-  revision 1
+  desc "User-friendly cURL replacement (command-line HTTP client)"
+  homepage "http://httpie.org/"
+  url "https://github.com/jkbrzt/httpie/archive/0.9.3.tar.gz"
+  sha256 "2a0c7cf6a6914620eebc2d7700e8e7a57aabde62bd62cd7fa68f8b216c0b2340"
 
-  head "https://github.com/jakubroztocil/httpie.git"
+  head "https://github.com/jkbrzt/httpie.git"
 
   bottle do
-    cellar :any
-    sha256 "b8fc458dec0f25a47998302c0bdb1c1914a415e023dbd7f3f0cb90dbbd9ca208" => :yosemite
-    sha256 "24d33a99c527f2e8353d1a913106ec9fa78dd422aabecfa7289a7d324dfb9076" => :mavericks
-    sha256 "b8489da61c51c9cdca81dbedbb39f2c36f7f50d532c0cea4520d3751ac47a06a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "df67a9af5d1421a855ce6bfb39f2a6d4a140cd56db85d4daad4b34359178a3a2" => :el_capitan
+    sha256 "1efd7954a3ee5b2298e0a615c0c7a115ac427518cff44bc1e6f51049d03f16db" => :yosemite
+    sha256 "3e0cca65df7252673a65c8848ee9f780c39ddfbfabfd1f7e5202c4379cb6d929" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "pygments" do
     url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
+    sha256 "7320919084e6dac8f4540638a46447a3bd730fca172afc17d2c03eed22cf4f51"
   end
 
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.6.0.tar.gz"
-    sha256 "1cdbed1f0e236f35ef54e919982c7a338e4fea3786310933d3a7887a04b74d75"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
   end
 
   def install
@@ -41,7 +41,7 @@ class Httpie < Formula
   end
 
   test do
-    output = shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
-    assert output.include?("PYTHONPATH")
+    assert_match "PYTHONPATH",
+      shell_output("#{bin}/http https://raw.githubusercontent.com/Homebrew/homebrew/master/Library/Formula/httpie.rb")
   end
 end

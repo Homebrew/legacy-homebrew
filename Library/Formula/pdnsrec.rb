@@ -1,27 +1,19 @@
-require "formula"
-
 class Pdnsrec < Formula
-  homepage "http://wiki.powerdns.com"
-  url "http://downloads.powerdns.com/releases/pdns-recursor-3.7.1.tar.bz2"
-  sha1 "1651bb2ba4414c4276d18b281c0156576c37f741"
+  desc "Non-authoritative/recursing DNS server"
+  homepage "https://www.powerdns.com/recursor.html"
+  url "https://downloads.powerdns.com/releases/pdns-recursor-3.7.3.tar.bz2"
+  sha256 "859ca6071147dd2e2ac1b2a5c3d5c2cbff0f5cbc501660db4259e7cbf27fea11"
 
   bottle do
     cellar :any
-    sha1 "7c84aefdff297bdd00e2777c9dbb2215e0fdf377" => :yosemite
-    sha1 "54f15f6c13ab46aed85caeadcb115dcc02abecbe" => :mavericks
-    sha1 "1f90d87f999b6c0ff3f9fc847cc1b2e1373566fc" => :mountain_lion
+    sha256 "68e80d6dd093d9ab1c986d9f68c97dfe9d8b46b228c4b27d64ce4bcd47105250" => :yosemite
+    sha256 "afc4630468ea74d4a7aec183f5f5f3c4872b3bcca1aac7a58c9a579aa7d0cbcc" => :mavericks
+    sha256 "a9faf9edf0e71de5e9ec9fa70d27811f353a8451b41746208fbdc0d592aa5910" => :mountain_lion
   end
 
   depends_on :macos => :lion
   depends_on "boost"
   depends_on "lua" => :optional
-
-  # Upstream patch for bug in 3.7.1 release (will be in next release)
-  # http://bert-hubert.blogspot.nl/2015/02/some-notes-on-sendmsg.html
-  patch :p1 do
-    url "https://gist.github.com/Habbie/107a297695dcac9efe9b/raw/78be11c907cf88ed41a725e97c8f5f1e2290309d/gistfile1.diff"
-    sha1 "63140c8a38dc9593f72ad80af9d87ca80764aebd"
-  end
 
   def install
     # Set overrides using environment variables

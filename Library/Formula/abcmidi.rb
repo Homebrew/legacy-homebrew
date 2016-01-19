@@ -1,14 +1,15 @@
 class Abcmidi < Formula
+  desc "Converts abc music notation files to MIDI files"
   homepage "http://www.ifdo.ca/~seymour/runabc/top.html"
-  url "http://www.ifdo.ca/~seymour/runabc/abcMIDI-2014-12-25.zip"
-  version "2014-12-25"
-  sha1 "a8d9509b32131015f38e0a31432b6c8990607888"
+  url "http://ifdo.ca/~seymour/runabc/abcMIDI-2015-08-06.zip"
+  version "2015-08-06"
+  sha256 "6ada64028344b5d778714bca02e41ed98a97c656aa45ea0e4a21de926502304e"
 
   bottle do
     cellar :any
-    sha1 "63b792b7623b9706183a9ea6513b53a536899403" => :yosemite
-    sha1 "d75b566f2cef9f3614b04d36847f95a162ae9341" => :mavericks
-    sha1 "1fdd827245c315ab25d8eb8a65e00d02d518e174" => :mountain_lion
+    sha256 "e427b95a6b3a7d1ee12b5cd2d30bdd87f41bc77a8834fc9f15bfe4d77f22e1db" => :yosemite
+    sha256 "211c580f9941f3e3c6189c57ebb902e33bcfc54d24292de4e08f7a146d2c85e1" => :mavericks
+    sha256 "09c43c49c3a7dae429429acc2a31b0942ba540636fa598a648576e007cde988f" => :mountain_lion
   end
 
   def install
@@ -17,11 +18,12 @@ class Abcmidi < Formula
     # be overridden and will be chosen over the "Makefile" file.
     rm "makefile"
 
-    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--mandir=#{man}"
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--mandir=#{man}"
     # The Makefile is broken when using --prefix (value is added to path twice).
     # abcmidi author is notified (2012-06-20). In the meantime, here's a fix.
     inreplace "Makefile", "$(DESTDIR)${prefix}", "$(DESTDIR)"
-
     system "make", "install"
   end
 

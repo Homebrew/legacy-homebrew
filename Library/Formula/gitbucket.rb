@@ -1,12 +1,15 @@
 class Gitbucket < Formula
-  homepage "https://github.com/takezoe/gitbucket"
-  url "https://github.com/takezoe/gitbucket/releases/download/2.7/gitbucket.war"
-  sha256 "23ce9310232129c5c48c0d5c269ce869e24c5d30ff4c59f0682f1b39f8712e80"
+  desc "GitHub clone"
+  homepage "https://github.com/gitbucket/gitbucket"
+  url "https://github.com/gitbucket/gitbucket/releases/download/3.10.1/gitbucket.war"
+  sha256 "a689d8fd221db8e0fc437127bf0ce82ccef98c1acc9bc83067496ed286b5326f"
 
   head do
-    url "https://github.com/takezoe/gitbucket.git"
+    url "https://github.com/gitbucket/gitbucket.git"
     depends_on :ant => :build
   end
+
+  bottle :unneeded
 
   def install
     if build.head?

@@ -1,14 +1,15 @@
 class Sbcl < Formula
+  desc "Steel Bank Common Lisp system"
   homepage "http://www.sbcl.org/"
-  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.2.9/sbcl-1.2.9-source.tar.bz2"
-  sha1 "788e38d4c64fa1f99a5297dce72e87f3958e98a1"
+  url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.3.1/sbcl-1.3.1-source.tar.bz2"
+  sha256 "a2e547e471a368349a43b1feee78ca6139aae0c60b8fcaa6ab0fd0e5b8e0ed3d"
 
   head "git://sbcl.git.sourceforge.net/gitroot/sbcl/sbcl.git"
 
   bottle do
-    sha256 "4b455f19a7c9508dab431f3f317a94afe96b4e8f5dda8ec33caad5112f904319" => :yosemite
-    sha256 "472e3b47c30712e7d1b09b92eaae561cde95c9a754eeed53a10c9a0f67cedcc8" => :mavericks
-    sha256 "7440077b7b6bec6de8775a0dc1fc5ce4d173d255094dc208304441d2cdb669be" => :mountain_lion
+    sha256 "c9d82a01b3fa2d8f7bfae4ff96860069b337a99c0d4043025e0682f77d2324fd" => :el_capitan
+    sha256 "d258f7700c22811f9caca782a7b5d984d8a3b589ba6b4c122b789e6d64a378d6" => :yosemite
+    sha256 "9674a5aa13561816db3a6f564393837af0e55e1dc36729b373e763381bdd8680" => :mavericks
   end
 
   fails_with :llvm do
@@ -23,40 +24,35 @@ class Sbcl < Formula
   option "with-internal-xref", "Include XREF information for SBCL internals (increases core size by 5-6MB)"
 
   # Current binary versions are listed at http://sbcl.sourceforge.net/platform-table.html
-
   resource "bootstrap64" do
     url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.8/sbcl-1.1.8-x86-64-darwin-binary.tar.bz2"
-    sha1 "cffd8c568588f48bd0c69295a385b662d27983cf"
+    sha256 "729054dc27d6b53bd734eac4dffeaa9e231e97bdbe4927d7a68c8f0210cad700"
   end
 
   resource "bootstrap32" do
     url "https://downloads.sourceforge.net/project/sbcl/sbcl/1.1.6/sbcl-1.1.6-x86-darwin-binary.tar.bz2"
-    sha1 "35a76b93f8714bc34ba127df4aaf69aacfc08164"
+    sha256 "5801c60e2a875d263fccde446308b613c0253a84a61ab63569be62eb086718b3"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-base-target-features.diff"
-    sha1 "49cf79e8d687e0a90db0fdc022a5f73181629d6e"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-base-target-features.diff"
+    sha256 "e101d7dc015ea71c15a58a5c54777283c89070bf7801a13cd3b3a1969a6d8b75"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-make-doc.diff"
-    sha1 "65d0beec43707ff5bf3262b8f12ca4514e58ce15"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-make-doc.diff"
+    sha256 "7c21c89fd6ec022d4f17670c3253bd33a4ac2784744e4c899c32fbe27203d87e"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-posix-tests.diff"
-    sha1 "cde8db247d153c6272cc96a6716721fd623010cb"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-posix-tests.diff"
+    sha256 "06908aaa94ba82447d64cf15eb8e011ac4c2ae4c3050b19b36316f64992ee21d"
   end
 
   patch :p0 do
-    url "https://trac.macports.org/export/88830/trunk/dports/lang/sbcl/files/patch-use-mach-exception-handler.diff"
-    sha1 "4d08e56e7e261db47ffdfef044149b001e6cd7c1"
+    url "https://raw.githubusercontent.com/Homebrew/patches/c5ffdb11/sbcl/patch-use-mach-exception-handler.diff"
+    sha256 "089b8fdc576a9a32da0b2cdf2b7b2d8bfebf3d542ac567f1cb06f19c03eaf57d"
   end
-
-  # Restore parallel build support.
-  # See: https://bugs.launchpad.net/sbcl/+bug/1434768
-  patch :DATA
 
   def write_features
     features = []
@@ -80,7 +76,9 @@ class Sbcl < Formula
     # Remove non-ASCII values from environment as they cause build failures
     # More information: http://bugs.gentoo.org/show_bug.cgi?id=174702
     ENV.delete_if do |_, value|
-      value =~ /[\x80-\xff]/n
+      ascii_val = value.dup
+      ascii_val.force_encoding("ASCII-8BIT") if ascii_val.respond_to? :force_encoding
+      ascii_val =~ /[\x80-\xff]/n
     end
 
     bootstrap = (build.build_32_bit? || !MacOS.prefer_64_bit?) ? "bootstrap32" : "bootstrap64"
@@ -109,15 +107,3 @@ class Sbcl < Formula
     assert_equal "4", output.strip
   end
 end
-__END__
---- a/contrib/asdf/Makefile
-+++ b/contrib/asdf/Makefile
-@@ -8,7 +8,7 @@ $(UIOP_FASL):: uiop.lisp ../../output/sbcl.core
-	mkdir -p $(DEST)
-	$(SBCL) --eval '(compile-file #p"SYS:CONTRIB;ASDF;UIOP.LISP" :output-file (parse-native-namestring "$@"))' </dev/null
-
--$(ASDF_FASL):: asdf.lisp ../../output/sbcl.core
-+$(ASDF_FASL):: asdf.lisp ../../output/sbcl.core $(UIOP_FASL)
-	if [ -d asdf-upstream ] ; then rm -rf asdf-upstream ; fi
-	mkdir -p $(DEST)
-	$(SBCL) --eval '(compile-file #p"SYS:CONTRIB;ASDF;ASDF.LISP" :output-file (parse-native-namestring "$@"))' </dev/null

@@ -1,13 +1,17 @@
 class Redis < Formula
+  desc "Persistent key-value database, with built-in net interface"
   homepage "http://redis.io/"
-  url "http://download.redis.io/releases/redis-2.8.19.tar.gz"
-  sha1 "3e362f4770ac2fdbdce58a5aa951c1967e0facc8"
+  url "http://download.redis.io/releases/redis-3.0.6.tar.gz"
+  sha256 "6f1e1523194558480c3782d84d88c2decf08a8e4b930c56d4df038e565b75624"
 
   bottle do
-    sha1 "ba238ce5e71f5c0c3cb997ebda0cf594f75e8069" => :yosemite
-    sha1 "0902233ed41683e22a1ecd8010f2875c9b0b9dba" => :mavericks
-    sha1 "4b8100b40edd0e6ef695e28bf4fd30360939c3f3" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "ed090c79fc9985af30a1eb09ded13b21fc8b1296e75c531c935a3d21781773eb" => :el_capitan
+    sha256 "7fd6324784970a7be7ac64b89aca156b987023b28b92ea1ab1404b58a80e5d92" => :yosemite
+    sha256 "df74ebb0e27b14e2d2d3caa4d8cb125010de2bc67a230d8a4c550817158a066e" => :mavericks
   end
+
+  option "with-jemalloc", "Select jemalloc as memory allocator when building Redis"
 
   head "https://github.com/antirez/redis.git", :branch => "unstable"
 
@@ -20,7 +24,12 @@ class Redis < Formula
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
 
-    system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"
+    args = %W[
+      PREFIX=#{prefix}
+      CC=#{ENV.cc}
+    ]
+    args << "MALLOC=jemalloc" if build.with? "jemalloc"
+    system "make", "install", *args
 
     %w[run db/redis log].each { |p| (var+p).mkpath }
 

@@ -1,17 +1,16 @@
-require "formula"
-
 class BoostBcp < Formula
+  desc "Utility for extracting subsets of the Boost library"
   homepage "http://www.boost.org/doc/tools/bcp/"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.57.0/boost_1_57_0.tar.bz2"
-  sha1 "e151557ae47afd1b43dc3fac46f8b04a8fe51c12"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2"
+  sha256 "686affff989ac2488f79a97b9479efb9f2abae035b5ed4d8226de6857933fd3b"
 
-  head "http://svn.boost.org/svn/boost/trunk/"
+  head "https://github.com/boostorg/boost.git"
 
   bottle do
-    cellar :any
-    sha1 "a43b921395070e10dd093ea1dcdced6013479a0c" => :yosemite
-    sha1 "9ce5c7870fdf63caa0677e7cfd666755707bb9bf" => :mavericks
-    sha1 "eb29007192552cd6149a8e1fecaf28d49edf6d5f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "b04e4f16118f1f9c1c955e1cd9cfbd70a7223d3cfe9d4eeb821231a9b62b44ce" => :el_capitan
+    sha256 "1dafec2ea159151006a5615ad710c61760bf3daad8f98d4fed905e198073e0fc" => :yosemite
+    sha256 "56e649ee9c17b6defb825e6577c009493ed7c463110c43ee0127bc1643c37c13" => :mavericks
   end
 
   depends_on "boost-build" => :build
@@ -21,5 +20,9 @@ class BoostBcp < Formula
       system "b2"
       prefix.install "../../dist/bin"
     end
+  end
+
+  test do
+    system bin/"bcp", "--help"
   end
 end

@@ -1,35 +1,39 @@
 require "language/go"
 
 class Vegeta < Formula
+  desc "HTTP load testing tool and library"
   homepage "https://github.com/tsenart/vegeta"
-  url "https://github.com/tsenart/vegeta/archive/v5.6.1.tar.gz"
-  sha1 "9b1455423c0b87fcf6e3ea65b3e6ba89c687700d"
+  url "https://github.com/tsenart/vegeta/archive/v6.0.0.tar.gz"
+  sha256 "7933a77eaae1e5269f6490842527a646221d91515eb8e863e831df608e7a0d48"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "2f1c99d31c3180395d1303fe86e731e11b72b86bc5ead5230e60ef8976f9e0d5" => :yosemite
-    sha256 "05030e85e6aad70e4b995fb69c43502ee910d4031a91d6a7593d5816605f435a" => :mavericks
-    sha256 "ceab3a9212a6e1175e0b0221233cf13ee55b6ffadde0e3605ed858208f86548b" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "ad80d784b86ca30afa3ac8c0dd899d9166953be009ceb4cf784b07c64bf21701" => :el_capitan
+    sha256 "9dea781e263dd683a17651fa3c18b91fed068510c189a0dbf0820d9eb04b9634" => :yosemite
+    sha256 "b0ab8a3f5fe221bf139e45aa44cbf1d483c2a5b24590a9a3e0b1ca68eb735f4a" => :mavericks
   end
 
   depends_on "go" => :build
 
-  go_resource "github.com/bmizerany/perks" do
-    url "https://github.com/bmizerany/perks.git",
-      :revision => "6cb9d9d729303ee2628580d9aec5db968da3a607"
+  go_resource "github.com/streadway/quantile" do
+    url "https://github.com/streadway/quantile.git",
+      :revision => "b0c588724d25ae13f5afb3d90efec0edc636432b"
   end
 
   def install
     mkdir_p buildpath/"src/github.com/tsenart/"
     ln_s buildpath, buildpath/"src/github.com/tsenart/vegeta"
     ENV["GOPATH"] = buildpath
+    ENV["CGO_ENABLED"] = "0"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-o", "vegeta"
+    system "go", "build", "-ldflags", "-X main.Version=#{version}", "-o", "vegeta"
     bin.install "vegeta"
   end
 
   test do
-    pipe_output("#{bin}/vegeta attack -duration=1s -rate=1", "GET http://localhost/")
+    output = pipe_output("#{bin}/vegeta attack -duration=1s -rate=1", "GET http://localhost/")
+    pipe_output("#{bin}/vegeta report", output)
   end
 end

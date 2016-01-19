@@ -1,48 +1,51 @@
-require 'formula'
-
 class Freediameter < Formula
-  homepage 'http://www.freediameter.net'
-  url 'http://www.freediameter.net/hg/freeDiameter/archive/1.2.0.tar.gz'
-  sha1 '687bd9d551eb4261c3600fcbe35ea519b711e9f7'
-  revision 2
+  desc "Open source Diameter (Authentication) protocol implementation"
+  homepage "http://www.freediameter.net"
+  url "http://www.freediameter.net/hg/freeDiameter/archive/1.2.0.tar.gz"
+  sha256 "0601a7f559af6596dff8e18f5c9b17bc66de50d8e05640aa64a3403a841cb228"
+  revision 3
 
-  head 'http://www.freediameter.net/hg/freeDiameter', :using => :hg
+  head "http://www.freediameter.net/hg/freeDiameter", :using => :hg
 
-  option 'with-all-extensions', 'Enable all extensions'
+  bottle do
+    sha256 "aa6f29018beafbe23e475334ed5be3718ba428e88b0741ef199d66cdaa988d08" => :el_capitan
+    sha256 "786f9873dbf0e85e8a54272697404d99fa60f6872fc8fdad54d66e8184c4dc28" => :yosemite
+    sha256 "c031628f3bbd387bdea44364fc6e99065216b68f2d2bf61abf516055e69f6620" => :mavericks
+  end
 
-  depends_on 'cmake' => :build
-  depends_on 'gnutls'
-  depends_on 'libgcrypt'
-  depends_on 'libidn'
+  option "with-all-extensions", "Enable all extensions"
+
+  depends_on "cmake" => :build
+  depends_on "gnutls"
+  depends_on "libgcrypt"
+  depends_on "libidn"
 
   if build.with? "all-extensions"
     depends_on :postgresql
     depends_on :mysql
-    depends_on 'swig' => :build
+    depends_on "swig" => :build
   end
 
   def install
-
     args = std_cmake_args + %W[
       -DDEFAULT_CONF_PATH=#{etc}
       -DDISABLE_SCTP=ON
     ]
 
-    args << '-DALL_EXTENSIONS=ON' if build.with? "all-extensions"
-    args << '..'
+    args << "-DALL_EXTENSIONS=ON" if build.with? "all-extensions"
+    args << ".."
 
-    mkdir 'build' do
-      system 'cmake', *args
-      system 'make'
-      system 'make install'
+    mkdir "build" do
+      system "cmake", *args
+      system "make"
+      system "make", "install"
     end
 
-    prefix.install 'doc', 'contrib'
+    prefix.install "doc", "contrib"
 
-    unless File.exist?(etc/'freeDiameter.conf')
-      cp prefix/'doc/freediameter.conf.sample', etc/'freeDiameter.conf'
+    unless File.exist?(etc/"freeDiameter.conf")
+      cp prefix/"doc/freediameter.conf.sample", etc/"freeDiameter.conf"
     end
-
   end
 
   def caveats; <<-EOS.undent

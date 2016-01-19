@@ -1,15 +1,16 @@
 class Boost < Formula
+  desc "Collection of portable C++ source libraries"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.57.0/boost_1_57_0.tar.bz2"
-  sha1 "e151557ae47afd1b43dc3fac46f8b04a8fe51c12"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2"
+  sha256 "686affff989ac2488f79a97b9479efb9f2abae035b5ed4d8226de6857933fd3b"
 
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    sha1 "5eaa834239277ba3fabdf0f6664400e4e2ff29b4" => :yosemite
-    sha1 "4475c631c1107d50a4da54db5d5cbf938b890a9a" => :mavericks
-    sha1 "4ba6d875fe24548b8af3c0b6631ded562d2da40f" => :mountain_lion
+    sha256 "9af12c105ac8f561340bf6bfb69c1f071912203a8fb6f197a184408bc4c4000f" => :el_capitan
+    sha256 "149c31c8bdb7b4f47bed445e3c5985f63dd41ba32cefc08358b873699c7d6f5d" => :yosemite
+    sha256 "dae5d86bbcedd981d353e812770477fe104e349e5cfb253a735bbe1c6c32cc0a" => :mavericks
   end
 
   env :userpaths
@@ -36,9 +37,11 @@ class Boost < Formula
     cause "Dropped arguments to functions when linking with boost"
   end
 
+  needs :cxx11 if build.cxx11?
+
   def install
     # https://svn.boost.org/trac/boost/ticket/8841
-    if build.with? "mpi" and build.with? "single"
+    if build.with?("mpi") && build.with?("single")
       raise <<-EOS.undent
         Building MPI support for both single and multi-threaded flavors
         is not supported.  Please use "--with-mpi" together with
@@ -116,6 +119,7 @@ class Boost < Formula
     end
 
     system "./bootstrap.sh", *bootstrap_args
+    system "./b2", "headers"
     system "./b2", *args
   end
 

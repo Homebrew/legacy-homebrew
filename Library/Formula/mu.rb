@@ -1,31 +1,19 @@
-require "formula"
-
-class Emacs23Installed < Requirement
-  fatal true
-  env :userpaths
-  default_formula "emacs"
-
-  satisfy do
-    `emacs --version 2>/dev/null` =~ /^GNU Emacs (\d{2})/
-    $1.to_i >= 23
-  end
-end
-
+# Note that odd release numbers indicate unstable releases.
+# Please only submit PRs for [x.x.even] version numbers:
+# https://github.com/djcb/mu/commit/23f4a64bdcdee3f9956a39b9a5a4fd0c5c2370ba
 class Mu < Formula
+  desc "Tool for searching e-mail messages stored in the maildir-format"
   homepage "http://www.djcbsoftware.nl/code/mu/"
-  url "https://github.com/djcb/mu/archive/v0.9.11.tar.gz"
-  sha1 "080b69bfb4876cb683acb961e8b71d6ebba90fa0"
-
+  url "https://github.com/djcb/mu/archive/0.9.15.tar.gz"
+  sha256 "60c63fdf1b726696cb0028b86eaee2aa72e171493b2d5626ea173b912ff25d4c"
   head "https://github.com/djcb/mu.git"
 
   bottle do
     revision 1
-    sha1 "fa5412706e677fcc042e3e461e97cdc7e960185e" => :yosemite
-    sha1 "42cc5427d5de000729c51f627bb00927606c2be9" => :mavericks
-    sha1 "b7dda439293d64bdba9173318eeb381524cbdddb" => :mountain_lion
+    sha256 "ca0ff4ed1bc8c4022a3cba4884ae20a00fc6e183232d0ce4461c8a6fb2d3bf9b" => :el_capitan
+    sha256 "fd571e0672ca15c95a1a7017d98658e6a8e97edb4d2e562444a8c420e17d3543" => :yosemite
+    sha256 "52a08b0cc552480f5edce440aa827464c5ed715f981b83528479b4223702518c" => :mavericks
   end
-
-  option "with-emacs", "Build with emacs support"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -35,9 +23,7 @@ class Mu < Formula
   depends_on "glib"
   depends_on "gmime"
   depends_on "xapian"
-  depends_on Emacs23Installed if build.with? "emacs"
-
-  env :std if build.with? "emacs"
+  depends_on :emacs => ["23", :optional]
 
   def install
     # Explicitly tell the build not to include emacs support as the version
@@ -51,9 +37,9 @@ class Mu < Formula
     system "autoreconf", "-ivf"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
-                          "--with-gui=none"
+                          "--with-lispdir=#{elisp}"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent

@@ -1,7 +1,10 @@
 class Abcl < Formula
+  desc "Armed Bear Common Lisp: a full implementation of Common Lisp"
   homepage "http://abcl.org"
-  url "http://abcl.org/releases/1.3.1/abcl-bin-1.3.1.tar.gz"
-  sha1 "7abb22130acfbca9d01c413da9c98a6aa078c78b"
+  url "http://abcl.org/releases/1.3.3/abcl-bin-1.3.3.tar.gz"
+  sha256 "01e1d05b14eca802c727dea8be9350e22dfddf8a8637ec9fbd8323c4f7f2a954"
+
+  bottle :unneeded
 
   depends_on :java => "1.5+"
   depends_on "rlwrap"

@@ -1,25 +1,33 @@
-require 'formula'
-
 class Urlview < Formula
-  homepage 'http://packages.debian.org/unstable/misc/urlview'
-  url 'http://mirrors.kernel.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
-  mirror 'http://ftp.us.debian.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz'
-  sha1 '323af9ba30ba87ec600531629f5dd84c720984b6'
+  desc "URL extractor/launcher"
+  homepage "https://packages.debian.org/sid/misc/urlview"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/u/urlview/urlview_0.9.orig.tar.gz"
+  sha256 "746ff540ccf601645f500ee7743f443caf987d6380e61e5249fc15f7a455ed42"
+
+  bottle do
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "9dbd6e280b74de72eecfab8d51728bfe46fc6a02f22a5c2e6b1639b904680ebb" => :el_capitan
+    sha256 "dfbc0ddbb5705383fda6175930cb57bbc5b124c31e9b4ec879d86b6211efe3d0" => :yosemite
+    sha256 "5ece2167d692912f75c743425a9b0dc50d63863335b38c6ecb72175ab1bc7eb8" => :mavericks
+  end
 
   patch do
-    url "http://ftp.aarnet.edu.au/debian/pool/main/u/urlview/urlview_0.9-19.diff.gz"
-    sha1 "96bd07bbb7cfc3416dc0ce8fa914160356f95c41"
+    url "https://mirrors.ocf.berkeley.edu/debian/pool/main/u/urlview/urlview_0.9-19.diff.gz"
+    mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/u/urlview/urlview_0.9-19.diff.gz"
+    sha256 "056883c17756f849fb9235596d274fbc5bc0d944fcc072bdbb13d1e828301585"
   end
 
   def install
-    inreplace 'urlview.man', '/etc/urlview/url_handler.sh', 'open'
-    inreplace 'urlview.c',
+    inreplace "urlview.man", "/etc/urlview/url_handler.sh", "open"
+    inreplace "urlview.c",
       '#define DEFAULT_COMMAND "/etc/urlview/url_handler.sh %s"',
       '#define DEFAULT_COMMAND "open %s"'
 
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
     man1.mkpath
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}",
+                          "--sysconfdir=#{etc}"
+    system "make", "install"
   end
 end

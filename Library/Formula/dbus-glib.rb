@@ -1,23 +1,28 @@
-require 'formula'
-
 class DbusGlib < Formula
-  homepage 'http://www.freedesktop.org/Software/dbus'
-  url 'http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.102.tar.gz'
-  sha1 '58a8955972f6c221461a49f9c541c22e838a5776'
+  desc "GLib bindings for the D-Bus message bus system"
+  homepage "https://wiki.freedesktop.org/www/Software/DBusBindings/"
+  url "http://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.106.tar.gz"
+  sha256 "b38952706dcf68bad9c302999ef0f420b8cf1a2428227123f0ac4764b689c046"
 
   bottle do
-    revision 1
-    sha1 "51b2423a45fd72b5476a2b3c7f8c7d3716c38976" => :yosemite
-    sha1 "a3ed176614007538b3fd7e788e0a72e4710b3762" => :mavericks
+    cellar :any
+    sha256 "621550837f7ee93fab562120edc5852e5af03f671dca773de3a8ea44008e5ad6" => :el_capitan
+    sha256 "0fc755aa6af5b706275d82a782ce99188050084e504f7b865413db482ab1ed67" => :yosemite
+    sha256 "fcac3d3c20ccb4a114b736dab4fb952e44d6f3ccecd5d2b69495d3474a0f24db" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'glib'
-  depends_on 'd-bus'
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "glib"
+  depends_on "d-bus"
 
   def install
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking",
+                          "--prefix=#{prefix}"
+    system "make", "install"
+  end
+
+  test do
+    system bin/"dbus-binding-tool", "--help"
   end
 end

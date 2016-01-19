@@ -1,19 +1,19 @@
-require 'formula'
-
 class Smartmontools < Formula
-  homepage 'http://sourceforge.net/apps/trac/smartmontools/'
-  url 'https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.3/smartmontools-6.3.tar.gz'
-  sha1 '716c5dc339d408d628c55dbe69028b1561df4c7e'
+  desc "SMART hard drive monitoring"
+  homepage "https://www.smartmontools.org/"
+  url "https://downloads.sourceforge.net/project/smartmontools/smartmontools/6.4/smartmontools-6.4.tar.gz"
+  sha256 "eab75600c1eda9c34b13097db71138ab376f3dad8a6a4667fb4d1d081feb7a85"
 
   bottle do
-    sha1 "cf2bcaf04682dbc444735b73a0cbc719871e1951" => :mavericks
-    sha1 "4190a244560811958321f66d8b2544d2f1b9b5a8" => :mountain_lion
-    sha1 "0e13fe2610864bba50fd3fa540656fb8bbaf506b" => :lion
+    sha256 "7688aed939c30a6fe5390005579be0a9fa1a02ef699ea0990c708d49da2e3462" => :el_capitan
+    sha256 "2a653de9d0f41210a9b139f1e70ae561a72fa87727704f944f32dec6356a0fee" => :yosemite
+    sha256 "1b74b913314ede83f0597bf6df2b2cb763a1fd03490b07a529892cd36c2720c6" => :mavericks
+    sha256 "2b6dadf59bf77a6e711c547405d682b9f0e8af37329fe01d9abdefb3ce41fd7e" => :mountain_lion
   end
 
   def install
-    (var/'run').mkpath
-    (var/'lib/smartmontools').mkpath
+    (var/"run").mkpath
+    (var/"lib/smartmontools").mkpath
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
@@ -23,6 +23,6 @@ class Smartmontools < Formula
                           "--enable-drivedb",
                           "--enable-savestates",
                           "--enable-attributelog"
-    system "make install"
+    system "make", "install"
   end
 end

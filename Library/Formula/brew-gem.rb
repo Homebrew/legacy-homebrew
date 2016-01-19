@@ -1,9 +1,10 @@
-require "formula"
-
 class BrewGem < Formula
+  desc "Install rubygems as homebrew formulae"
   homepage "https://github.com/sportngin/brew-gem"
-  url "https://github.com/sportngin/brew-gem/archive/0.5.1.tar.gz"
-  sha1 "37b77607119f9ca95a7d28c231bb4f3bb3fe1c3f"
+  url "https://github.com/sportngin/brew-gem/archive/v0.6.1.tar.gz"
+  sha256 "b3dd161d5fa6a643d97b08cad514f0c8fdba8b8f44ff80a70f6a5090cf02cdfd"
+
+  bottle :unneeded
 
   def install
     bin.install "bin/brew-gem"

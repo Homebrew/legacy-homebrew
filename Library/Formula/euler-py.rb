@@ -1,22 +1,23 @@
-require "formula"
-
 class EulerPy < Formula
+  desc "Project Euler command-line tool written in Python"
   homepage "https://github.com/iKevinY/EulerPy"
   url "https://github.com/iKevinY/EulerPy/archive/v1.2.3.tar.gz"
-  sha1 "88d97d7807f6b06ebfe475eee31ebd021b4ef275"
+  sha256 "d751d561caf6296ecc59bc77ec2fb0c81af1b045a117b8ea3334b6a948230bbb"
+
+  head "https://github.com/iKevinY/EulerPy.git"
 
   bottle do
     cellar :any
-    sha1 "0118e4251a9a41adfca4c5f4fce135540a26b201" => :yosemite
-    sha1 "f6a07bb235eebadc38e3474bbaf025704ee2236d" => :mavericks
-    sha1 "962c5651ae11c6a981b43c9fdb01c3a99d2f127e" => :mountain_lion
+    sha256 "cb5678aba9536bbc64c2a2cc6c6a0808b19d00f8f228099f415f6e4bdb7f4de6" => :yosemite
+    sha256 "429bf72a785e8d4d7fd50d76364806998ef63e0ec4dd5df8352fb2b52db9eb83" => :mavericks
+    sha256 "0751ec60117c432ce0cfd264442d3f8f9394ea876fb8f5b08c26fe8ffe831168" => :mountain_lion
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "click" do
-    url "https://pypi.python.org/packages/source/c/click/click-3.3.tar.gz"
-    sha1 "d716a932b930d71059e49465b6b42e833808369a"
+    url "https://pypi.python.org/packages/source/c/click/click-4.0.tar.gz"
+    sha256 "f49e03611f5f2557788ceeb80710b1c67110f97c5e6740b97edf70245eea2409"
   end
 
   def install

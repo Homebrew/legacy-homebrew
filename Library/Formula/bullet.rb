@@ -1,30 +1,42 @@
-require 'formula'
-
 class Bullet < Formula
-  homepage 'http://bulletphysics.org/wordpress/'
-  url 'https://bullet.googlecode.com/files/bullet-2.82-r2704.tgz'
-  version '2.82'
-  sha1 'a0867257b9b18e9829bbeb4c6c5872a5b29d1d33'
-  head 'http://bullet.googlecode.com/svn/trunk/'
+  desc "Physics SDK"
+  homepage "http://bulletphysics.org/wordpress/"
+  url "https://github.com/bulletphysics/bullet3/archive/2.83.6.tar.gz"
+  sha256 "dcd5448f31ded71c7bd22fddd7d816ac590ae7b97e1fdda8d1253f8ff3655571"
+  head "https://github.com/bulletphysics/bullet3.git"
 
-  depends_on 'cmake' => :build
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "1d9119bc35c1349dd67776d358abd8f62ffd4cb2a8ada2f3dbd045ee5cfc8e22" => :el_capitan
+    sha256 "79e79f3dcc6dbe62ca2422df12469a545be28ee150eaba3d67fa66826da7c730" => :yosemite
+    sha256 "bc42f536182a138dc1007df0ab7188a9c8fbaa6e6c9ac27d1ed550ab1372816f" => :mavericks
+    sha256 "f63b943a84faa74f80756ba3aae7b3c12f6a934a50953fcf367a7f088c769615" => :mountain_lion
+  end
+
+  deprecated_option "framework" => "with-framework"
+  deprecated_option "shared" => "with-shared"
+  deprecated_option "build-demo" => "with-demo"
+  deprecated_option "build-extra" => "with-extra"
+  deprecated_option "double-precision" => "with-double-precision"
 
   option :universal
-  option 'framework',        'Build Frameworks'
-  option 'shared',           'Build shared libraries'
-  option 'build-demo',       'Build demo applications'
-  option 'build-extra',      'Build extra library'
-  option 'double-precision', 'Use double precision'
+  option "with-framework",        "Build Frameworks"
+  option "with-shared",           "Build shared libraries"
+  option "with-demo",             "Build demo applications"
+  option "with-extra",            "Build extra library"
+  option "with-double-precision", "Use double precision"
+
+  depends_on "cmake" => :build
 
   def install
     args = []
 
-    if build.include? "framework"
+    if build.with? "framework"
       args << "-DBUILD_SHARED_LIBS=ON" << "-DFRAMEWORK=ON"
       args << "-DCMAKE_INSTALL_PREFIX=#{frameworks}"
       args << "-DCMAKE_INSTALL_NAME_DIR=#{frameworks}"
     else
-      args << "-DBUILD_SHARED_LIBS=ON" if build.include? "shared"
+      args << "-DBUILD_SHARED_LIBS=ON" if build.with? "shared"
       args << "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     end
 
@@ -33,13 +45,17 @@ class Bullet < Formula
       args << "-DCMAKE_OSX_ARCHITECTURES=#{Hardware::CPU.universal_archs.as_cmake_arch_flags}"
     end
 
-    args << "-DUSE_DOUBLE_PRECISION=ON" if build.include? "double-precision"
+    args << "-DUSE_DOUBLE_PRECISION=ON" if build.with? "double-precision"
 
-    args << "-DBUILD_DEMOS=OFF" unless build.include? "build-demo"
+    # Related to the following warnings when building --with-shared --with-demo
+    # https://gist.github.com/scpeters/6afc44f0cf916b11a226
+    if build.with?("demo") && (build.with?("shared") || build.with?("framework"))
+      raise "Demos cannot be installed with shared libraries or framework."
+    end
 
-    # Demos require extras, see:
-    # https://code.google.com/p/bullet/issues/detail?id=767&thanks=767&ts=1384333052
-    if build.include? "build-extra" or build.include? "build-demo"
+    args << "-DBUILD_BULLET2_DEMOS=OFF" if build.without? "demo"
+
+    if build.with?("extra")
       args << "-DINSTALL_EXTRA_LIBS=ON"
     else
       args << "-DBUILD_EXTRAS=OFF"
@@ -47,9 +63,23 @@ class Bullet < Formula
 
     system "cmake", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
-    prefix.install 'Demos' if build.include? "build-demo"
-    prefix.install 'Extras' if build.include? "build-extra"
+    prefix.install "examples" if build.with? "demo"
+    prefix.install "Extras" if build.with? "extra"
+  end
+
+  test do
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include "bullet/LinearMath/btPolarDecomposition.h"
+      int main() {
+        btMatrix3x3 I = btMatrix3x3::getIdentity();
+        btMatrix3x3 u, h;
+        polarDecompose(I, u, h);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.cpp", "-L#{lib}", "-lLinearMath", "-lc++", "-o", "test"
+    system "./test"
   end
 end

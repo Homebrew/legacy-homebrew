@@ -1,17 +1,15 @@
-require 'formula'
-
 class Qd < Formula
-  homepage 'http://crd.lbl.gov/~dhbailey/mpdist/'
-  url 'http://crd.lbl.gov/~dhbailey/mpdist/qd-2.3.14.tar.gz'
-  sha1 'bda1048feed8c3a52957e5e63592163aa0a15da4'
+  desc "C++/Fortran-90 double-double and quad-double package"
+  homepage "http://crd.lbl.gov/~dhbailey/mpdist/"
+  url "http://crd.lbl.gov/~dhbailey/mpdist/qd-2.3.15.tar.gz"
+  sha256 "17d7ed554613e4c17ac18670ef49d114ba706a63d735d72032b63a8833771ff7"
+
   bottle do
     cellar :any
-    sha1 "0b419d709130b3a5ca2e2bb6d770113c3ea16b9c" => :yosemite
-    sha1 "0cedfdd4df839ff311c7cb9add9ab242fa31e66f" => :mavericks
-    sha1 "a8ad0c971cf98952cf8f56c714b87ebaf4db7828" => :mountain_lion
+    sha256 "b1257ee410b078479bbdcb863cd8bf8a865c67190992c19606433ff29e77852f" => :yosemite
+    sha256 "2014943651c31b17c8f1463fe4f68175b2c3065a9533d7cc09c7b07a9621c51b" => :mavericks
+    sha256 "380ce7cce036b99f6d203cf1f2e7d2b8ae27a78f668d933a4579ba4c887e69d8" => :mountain_lion
   end
-
-  revision 1
 
   depends_on :fortran => :recommended
 
@@ -20,7 +18,11 @@ class Qd < Formula
     args << "--enable-fortran=no" if build.without? :fortran
     system "./configure", *args
     system "make"
-    system "make check"
-    system "make install"
+    system "make", "check"
+    system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/qd-config --configure-args")
   end
 end

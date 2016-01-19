@@ -1,24 +1,31 @@
-require 'formula'
-
 class Pgbouncer < Formula
-  homepage 'http://wiki.postgresql.org/wiki/PgBouncer'
-  url 'http://pgfoundry.org/frs/download.php/3393/pgbouncer-1.5.4.tar.gz'
-  sha1 '87c3dd7fc70cbbae93ce8865953891f0aabffd2d'
+  desc "Lightweight connection pooler for PostgreSQL"
+  homepage "https://wiki.postgresql.org/wiki/PgBouncer"
+  url "https://pgbouncer.github.io/downloads/files/1.6.1/pgbouncer-1.6.1.tar.gz"
+  mirror "https://github.com/pgbouncer/pgbouncer/archive/pgbouncer_1_6_1.tar.gz"
+  sha256 "40ff5cd84399b4da3ba864ad654fe155a0ed085261e68f3e31b1117812b17056"
 
-  depends_on 'asciidoc' => :build
-  depends_on 'xmlto' => :build
-  depends_on 'libevent'
+  bottle do
+    cellar :any
+    sha256 "f4002665b424ad1a17fbeb6823b9ebc5dcb7ba1e46b508275de9ffdea9bf05f1" => :el_capitan
+    sha256 "d74eb1920c6b93d10f9143e89170a57850a1e07b95988dc84216951d8ebf70dd" => :yosemite
+    sha256 "041022098c72050bbeea9b3af992287e24453e590b549bb81c396cfff2b7f5c7" => :mavericks
+  end
+
+  depends_on "asciidoc" => :build
+  depends_on "xmlto" => :build
+  depends_on "libevent"
 
   def install
-    ENV['XML_CATALOG_FILES'] = "#{etc}/xml/catalog"
+    ENV["XML_CATALOG_FILES"] = "#{etc}/xml/catalog"
 
     system "./configure", "--disable-debug",
                           "--with-libevent=#{HOMEBREW_PREFIX}",
                           "--prefix=#{prefix}"
     ln_s "../install-sh", "doc/install-sh"
-    system "make install"
+    system "make", "install"
     bin.install "etc/mkauth.py"
-    etc.install %w(etc/pgbouncer.ini etc/userlist.txt)
+    etc.install %w[etc/pgbouncer.ini etc/userlist.txt]
   end
 
   def caveats; <<-EOS.undent
@@ -56,5 +63,9 @@ class Pgbouncer < Formula
       </dict>
       </plist>
     EOS
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/pgbouncer -V")
   end
 end

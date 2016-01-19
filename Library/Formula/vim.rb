@@ -1,11 +1,12 @@
-require "formula"
-
 class Vim < Formula
+  desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
-  head "https://vim.googlecode.com/hg/"
-  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url "http://ftp.debian.org/debian/pool/main/v/vim/vim_7.4.488.orig.tar.gz"
-  sha1 "6edad8cf9a08acb6a6e415b89bb13ccbd887d7c3"
+  # *** Vim should be updated no more than once every 7 days ***
+  url "https://github.com/vim/vim/archive/v7.4.1090.tar.gz"
+  sha256 "3d8afe1bf0ace9a16a3acd9f3085f4196d6538b4a21fd2d24564d5ddd14fb52e"
+  head "https://github.com/vim/vim.git"
+
+  bottle :disable, "To use the user's Python."
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -16,8 +17,8 @@ class Vim < Formula
   option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  LANGUAGES_OPTIONAL = %w(lua mzscheme python3 tcl)
-  LANGUAGES_DEFAULT  = %w(perl python ruby)
+  LANGUAGES_OPTIONAL = %w[lua mzscheme python3 tcl]
+  LANGUAGES_DEFAULT  = %w[perl python ruby]
 
   option "with-python3", "Build vim with python3 instead of python[2] support"
   LANGUAGES_OPTIONAL.each do |language|
@@ -31,7 +32,7 @@ class Vim < Formula
   depends_on :python3 => :optional
   depends_on "lua" => :optional
   depends_on "luajit" => :optional
-  depends_on "gtk+" if build.with? "client-server"
+  depends_on :x11 if build.with? "client-server"
 
   conflicts_with "ex-vi",
     :because => "vim and ex-vi both install bin/ex and bin/view"
@@ -42,26 +43,31 @@ class Vim < Formula
     # vim doesn't require any Python package, unset PYTHONPATH.
     ENV.delete("PYTHONPATH")
 
+    if build.with?("python") && which("python").to_s == "/usr/bin/python" && !MacOS.clt_installed?
+      # break -syslibpath jail
+      ln_s "/System/Library/Frameworks", buildpath
+      ENV.append "LDFLAGS", "-F#{buildpath}/Frameworks"
+    end
+
     opts = []
-    opts += LANGUAGES_OPTIONAL.map do |language|
-      "--enable-#{language}interp" if build.with? language
+
+    (LANGUAGES_OPTIONAL + LANGUAGES_DEFAULT).each do |language|
+      opts << "--enable-#{language}interp" if build.with? language
     end
-    opts += LANGUAGES_DEFAULT.map do |language|
-      "--enable-#{language}interp" if build.with? language
-    end
-    if opts.include? "--enable-pythoninterp" and opts.include? "--enable-python3interp"
+
+    if opts.include?("--enable-pythoninterp") && opts.include?("--enable-python3interp")
       # only compile with either python or python3 support, but not both
       # (if vim74 is compiled with +python3/dyn, the Python[3] library lookup segfaults
       # in other words, a command like ":py3 import sys" leads to a SEGV)
-      opts = opts - %W[--enable-pythoninterp]
+      opts -= %W[--enable-pythoninterp]
     end
 
     opts << "--disable-nls" if build.include? "disable-nls"
+    opts << "--enable-gui=no"
 
     if build.with? "client-server"
-      opts << "--enable-gui=gtk2"
+      opts << "--with-x"
     else
-      opts << "--enable-gui=no"
       opts << "--without-x"
     end
 
@@ -87,11 +93,10 @@ class Vim < Formula
                           "--with-features=huge",
                           "--with-compiledby=Homebrew",
                           *opts
-
     system "make"
-    # If stripping the binaries is not enabled, vim will segfault with
+    # If stripping the binaries is enabled, vim will segfault with
     # statically-linked interpreters like ruby
-    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    # https://github.com/vim/vim/issues/114
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end

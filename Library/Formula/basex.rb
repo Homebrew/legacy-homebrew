@@ -1,18 +1,19 @@
-require 'formula'
-
 class Basex < Formula
-  homepage 'http://basex.org'
-  url 'http://files.basex.org/releases/8.0.2/BaseX802.zip'
-  version '8.0.2'
-  sha1 'a02238639d3b5d66ea415fdabe6b46737f3aee2d'
+  desc "Light-weight XML database and XPath/XQuery processor"
+  homepage "http://basex.org"
+  url "http://files.basex.org/releases/8.3.1/BaseX831.zip"
+  version "8.3.1"
+  sha256 "e0bdf96c61736fe15ed4bae5240d91ed516d7cc2515be021302528e536066a21"
+
+  bottle :unneeded
 
   def install
-    rm Dir['bin/*.bat']
+    rm Dir["bin/*.bat"]
     rm_rf "repo"
     rm_rf "data"
     rm_rf "etc"
     prefix.install_metafiles
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

@@ -1,29 +1,36 @@
-require 'formula'
-
 class Byobu < Formula
-  homepage 'http://byobu.co'
-  url 'https://launchpad.net/byobu/trunk/5.90/+download/byobu_5.90.orig.tar.gz'
-  sha1 'eea1d07673bc62ac1f5464111106fffd4bc22230'
+  desc "Text-based window manager and terminal multiplexer"
+  homepage "http://byobu.co"
+  url "https://launchpad.net/byobu/trunk/5.94/+download/byobu_5.94.orig.tar.gz"
+  sha256 "4917013f590110d25b18293a51af02bd1ebcd1c665474f62e2566fb9b8f62916"
 
   bottle do
-    sha1 "26ae7ad8f711402f1f203353723e30531a4a3e71" => :yosemite
-    sha1 "73239a933c04b230527b4164fc009090c0782007" => :mavericks
-    sha1 "1da7ebe7174704d91b39cfb15f1d88290a5c876e" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "210e6c1e3e682f64decac62c00f07729f700b22e3aaa4fea115d3276136b4cee" => :el_capitan
+    sha256 "5b9cd209e5607b1a24f000172bbe750906f5ec25c1f653f123332c0d7f314704" => :yosemite
+    sha256 "e554b1b2db2ae5008bff7fadf2ca98e6269c4b68374da80d103379d6b22b68a5" => :mavericks
   end
 
-  depends_on 'coreutils'
-  depends_on 'gnu-sed' # fails with BSD sed
-  depends_on 'tmux'
-  depends_on 'newt' => 'with-python'
+  conflicts_with "ctail", :because => "both install `ctail` binaries"
+
+  depends_on "coreutils"
+  depends_on "gnu-sed" # fails with BSD sed
+  depends_on "tmux"
+  depends_on "newt" => "with-python"
 
   def install
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
     Add the following to your shell configuration file:
       export BYOBU_PREFIX=$(brew --prefix)
     EOS
+  end
+
+  test do
+    system bin/"byobu-status"
   end
 end

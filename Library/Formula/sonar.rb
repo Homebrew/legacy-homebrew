@@ -1,7 +1,10 @@
 class Sonar < Formula
+  desc "Manage code quality"
   homepage "http://www.sonarqube.org/"
-  url "http://dist.sonar.codehaus.org/sonarqube-5.0.1.zip"
-  sha1 "c8893e1223592bff34986d142062e06f501f1a13"
+  url "https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-5.3.zip"
+  sha256 "4e61ee3a01d5e447bcd64357df77e0377325c4a2bb5ceb2cdeb5a5d193443ba5"
+
+  bottle :unneeded
 
   def install
     # Delete native bin directories for other systems

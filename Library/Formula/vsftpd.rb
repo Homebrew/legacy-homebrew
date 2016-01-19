@@ -1,23 +1,22 @@
-require 'formula'
-
 class Vsftpd < Formula
-  homepage 'https://security.appspot.com/vsftpd.html'
-  url 'https://security.appspot.com/downloads/vsftpd-3.0.2.tar.gz'
-  sha1 'f36976bb1c5df25ac236d8a29e965ba2b825ccd0'
-  revision 1
+  desc "Secure FTP server for UNIX"
+  homepage "https://security.appspot.com/vsftpd.html"
+  url "https://security.appspot.com/downloads/vsftpd-3.0.3.tar.gz"
+  mirror "https://fossies.org/linux/misc/vsftpd-3.0.3.tar.gz"
+  sha256 "9d4d2bf6e6e2884852ba4e69e157a2cecd68c5a7635d66a3a8cf8d898c955ef7"
 
   bottle do
-    cellar :any
+    cellar :any_skip_relocation
     revision 1
-    sha1 "1a64152c081dfafa1d02e5736931d7ccdd0f9aa0" => :mavericks
-    sha1 "58c43be3dce1228728894eb1767235a50e63589e" => :mountain_lion
-    sha1 "cfd7597d2a41a4704488c5754a3bb2d03e8cde5e" => :lion
+    sha256 "3227e7afcd2af84901a16d675bd1a7566002c4eacffa2313d89fbc3b7e594f76" => :el_capitan
+    sha256 "aba9772d903374b3d3de5ce8c96a5f02badbc7676735c5ee42571ad0170dbb7f" => :yosemite
+    sha256 "3bd82ae896d375342b6444f3c6be2eb5987df5da5084ee3c5f8dc073e001a5c2" => :mavericks
   end
 
-  depends_on 'openssl' => :optional
+  depends_on "openssl" => :optional
 
   # Patch to remove UTMPX dependency, locate OS X's PAM library, and
-  #   remove incompatible LDFLAGS. (reported to developer via email)
+  # remove incompatible LDFLAGS. (reported to developer via email)
   patch :DATA
 
   def install
@@ -32,18 +31,22 @@ class Vsftpd < Formula
 
     # make install has all the paths hardcoded; this is easier:
     sbin.install "vsftpd"
-    etc.install  "vsftpd.conf"
+    etc.install "vsftpd.conf"
     man5.install "vsftpd.conf.5"
     man8.install "vsftpd.8"
   end
 
   def caveats
-    if build.include? "openssl"
-      return <<-EOD.undent
+    s = ""
+
+    if build.with? "openssl"
+      s += <<-EOS.undent
         vsftpd was compiled with SSL support. To use it you must generate a SSL
         certificate and set 'enable_ssl=YES' in your config file.
-      EOD
+      EOS
     end
+
+    s
   end
 end
 

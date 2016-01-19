@@ -1,24 +1,28 @@
-require "formula"
-
 class UserspaceRcu < Formula
-  homepage "http://lttng.org/urcu"
-  url "http://lttng.org/files/urcu/userspace-rcu-0.8.4.tar.bz2"
-  sha1 "4b3bf1b76e6ea50d9a56d9e5e00df2cc7c4d610f"
+  desc "Library for userspace RCU (read-copy-update)"
+  homepage "https://lttng.org/urcu"
+  url "https://www.lttng.org/files/urcu/userspace-rcu-0.9.1.tar.bz2"
+  sha256 "f8d278e9d95bec97c9ba954fc4c3fb584936bc0010713a8fe358b916bafd8715"
 
   bottle do
-    cellar :any
-    sha1 "16c1a7476c1f43cfdee4b3410dc2a91b7c84ba5c" => :mavericks
-    sha1 "e914e384c50f1fcde334f4ea059c62305b5e60ca" => :mountain_lion
-    sha1 "be83fc32071b02e3881a67119e3944166d8f81ad" => :lion
+    cellar :any_skip_relocation
+    sha256 "d0b393a777b07767cef195b897777e9b65d9186e4307a2ce5a20989082a97976" => :el_capitan
+    sha256 "2842341210131cff185ace17b10599eaa002fc60407267322749191ae5fa1fdc" => :yosemite
+    sha256 "03e24c928b31060eecb8de113be45f0ae8d70ee20073d481a2244d10ae4d1825" => :mavericks
   end
 
   def install
-    args = ["--disable-dependency-tracking", "--disable-silent-rules",
-            "--disable-rpath", "--prefix=#{prefix}"]
+    args = ["--disable-dependency-tracking",
+            "--disable-silent-rules",
+            "--prefix=#{prefix}"]
     # workaround broken upstream detection of build platform
+    # marked as wontfix: http://bugs.lttng.org/issues/578#note-1
     if MacOS.prefer_64_bit?
       args << "--build=#{Hardware::CPU.arch_64_bit}"
     end
+
+    # workaround broken syscall.h detection
+    inreplace "urcu/syscall-compat.h", "defined(__sun__)", "defined(__APPLE__)"
 
     system "./configure", *args
     system "make"
@@ -26,7 +30,7 @@ class UserspaceRcu < Formula
   end
 
   test do
-    system "cp", "-a", "#{doc}/examples", "."
+    cp_r "#{doc}/examples", testpath
     system "make", "-C", "examples"
   end
 end

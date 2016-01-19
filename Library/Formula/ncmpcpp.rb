@@ -1,13 +1,15 @@
 class Ncmpcpp < Formula
-  homepage "http://ncmpcpp.rybczak.net/"
-  url "http://ncmpcpp.rybczak.net/stable/ncmpcpp-0.6.2.tar.bz2"
-  sha1 "0e7e60d61af42f9fa543e16f06bac8d6c42d5fe9"
+  desc "Ncurses-based client for the Music Player Daemon"
+  homepage "http://rybczak.net/ncmpcpp/"
+  url "http://rybczak.net/ncmpcpp/stable/ncmpcpp-0.6.7.tar.bz2"
+  sha256 "08807dc515b4e093154a6e91cdd17ba64ebedcfcd7aa34d0d6eb4d4cc28a217b"
+  revision 2
 
   bottle do
     cellar :any
-    sha1 "d83fa7fec86b69363f352f7b88d5ae26b90a6bdc" => :yosemite
-    sha1 "efd63c4b5afec557ec43202a545ab03bbf6ac488" => :mavericks
-    sha1 "8223ccaed03a7f77b7f287e49c8ea4eb1584e1d9" => :mountain_lion
+    sha256 "1e893ddcf65e3982d726960d98b87c84f175830d15ee6613600cf238d938bd03" => :el_capitan
+    sha256 "b1a16416a352a76ddf5ecab88b3fe48bc4c25dcd9d6f1c4fc32e6689e826d264" => :yosemite
+    sha256 "68a25530d82af8e2ebdb602b9a7409a3049f967f8864960f18f113ebee241479" => :mavericks
   end
 
   head do
@@ -18,9 +20,18 @@ class Ncmpcpp < Formula
     depends_on "libtool" => :build
   end
 
+  deprecated_option "outputs" => "with-outputs"
+  deprecated_option "visualizer" => "with-visualizer"
+  deprecated_option "clock" => "with-clock"
+
+  option "with-outputs", "Compile with mpd outputs control"
+  option "with-visualizer", "Compile with built-in visualizer"
+  option "with-clock", "Compile with optional clock tab"
+
   depends_on "pkg-config" => :build
   depends_on "libmpdclient"
   depends_on "readline"
+  depends_on "fftw" if build.with? "visualizer"
 
   if MacOS.version < :mavericks
     depends_on "boost" => "c++11"
@@ -30,27 +41,23 @@ class Ncmpcpp < Formula
     depends_on "taglib"
   end
 
-  depends_on "fftw" if build.include? "visualizer"
-
-  option "outputs", "Compile with mpd outputs control"
-  option "visualizer", "Compile with built-in visualizer"
-  option "clock", "Compile with optional clock tab"
-
   needs :cxx11
 
   def install
     ENV.cxx11
     ENV.append "LDFLAGS", "-liconv"
 
-    args = ["--disable-dependency-tracking",
-            "--prefix=#{prefix}",
-            "--with-taglib",
-            "--with-curl",
-            "--enable-unicode"]
+    args = [
+      "--disable-dependency-tracking",
+      "--prefix=#{prefix}",
+      "--with-taglib",
+      "--with-curl",
+      "--enable-unicode",
+    ]
 
-    args << "--enable-outputs" if build.include? "outputs"
-    args << "--enable-visualizer" if build.include? "visualizer"
-    args << "--enable-clock" if build.include? "clock"
+    args << "--enable-outputs" if build.with? "outputs"
+    args << "--enable-visualizer" if build.with? "visualizer"
+    args << "--enable-clock" if build.with? "clock"
 
     if build.head?
       # Also runs configure
@@ -59,5 +66,9 @@ class Ncmpcpp < Formula
       system "./configure", *args
     end
     system "make", "install"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/ncmpcpp --version")
   end
 end

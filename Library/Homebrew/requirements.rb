@@ -1,18 +1,20 @@
-require 'requirement'
-require 'requirements/apr_dependency'
-require 'requirements/fortran_dependency'
-require 'requirements/language_module_dependency'
-require 'requirements/minimum_macos_requirement'
-require 'requirements/maximum_macos_requirement'
-require 'requirements/mpi_dependency'
-require 'requirements/osxfuse_dependency'
-require 'requirements/python_dependency'
-require 'requirements/java_dependency'
-require 'requirements/tuntap_dependency'
-require 'requirements/unsigned_kext_requirement'
-require 'requirements/x11_dependency'
+require "requirement"
+require "requirements/apr_requirement"
+require "requirements/fortran_requirement"
+require "requirements/language_module_requirement"
+require "requirements/minimum_macos_requirement"
+require "requirements/maximum_macos_requirement"
+require "requirements/mpi_requirement"
+require "requirements/osxfuse_requirement"
+require "requirements/python_requirement"
+require "requirements/java_requirement"
+require "requirements/ruby_requirement"
+require "requirements/tuntap_requirement"
+require "requirements/unsigned_kext_requirement"
+require "requirements/x11_requirement"
+require "requirements/emacs_requirement"
 
-class XcodeDependency < Requirement
+class XcodeRequirement < Requirement
   fatal true
 
   satisfy(:build_env => false) { xcode_installed_version }
@@ -40,7 +42,7 @@ class XcodeDependency < Requirement
       EOS
     else
       message += <<-EOS.undent
-        Xcode can be installed from https://developer.apple.com/downloads/
+        Xcode can be installed from https://developer.apple.com/xcode/downloads/
       EOS
     end
   end
@@ -50,33 +52,40 @@ class XcodeDependency < Requirement
   end
 end
 
-class MysqlDependency < Requirement
+class MysqlRequirement < Requirement
   fatal true
-  default_formula 'mysql'
+  default_formula "mysql"
 
-  satisfy { which 'mysql_config' }
+  satisfy { which "mysql_config" }
 end
 
-class PostgresqlDependency < Requirement
+class PostgresqlRequirement < Requirement
   fatal true
-  default_formula 'postgresql'
+  default_formula "postgresql"
 
-  satisfy { which 'pg_config' }
+  satisfy { which "pg_config" }
 end
 
-class GPGDependency < Requirement
+class RbenvRequirement < Requirement
+  fatal true
+  default_formula "rbenv"
+
+  satisfy { which "rbenv" }
+end
+
+class GPGRequirement < Requirement
   fatal true
   default_formula "gpg"
 
   satisfy { which("gpg") || which("gpg2") }
 end
 
-class TeXDependency < Requirement
+class TeXRequirement < Requirement
   fatal true
   cask "mactex"
   download "https://www.tug.org/mactex/"
 
-  satisfy { which('tex') || which('latex') }
+  satisfy { which("tex") || which("latex") }
 
   def message
     s = <<-EOS.undent
@@ -98,7 +107,7 @@ class ArchRequirement < Requirement
     super
   end
 
-  satisfy do
+  satisfy(:build_env => false) do
     case @arch
     when :x86_64 then MacOS.prefer_64_bit?
     when :intel, :ppc then Hardware::CPU.type == @arch
@@ -110,16 +119,15 @@ class ArchRequirement < Requirement
   end
 end
 
-class MercurialDependency < Requirement
+class MercurialRequirement < Requirement
   fatal true
-  default_formula 'mercurial'
+  default_formula "mercurial"
 
-  satisfy { which('hg') }
+  satisfy { which("hg") }
 end
 
-class GitDependency < Requirement
+class GitRequirement < Requirement
   fatal true
-  default_formula 'git'
-  satisfy { !!which('git') }
+  default_formula "git"
+  satisfy { Utils.git_available? }
 end
-

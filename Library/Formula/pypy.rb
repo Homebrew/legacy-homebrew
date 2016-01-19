@@ -1,17 +1,20 @@
 class Pypy < Formula
+  desc "Implementation of Python 2 in Python"
   homepage "http://pypy.org/"
-  url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-src.tar.bz2"
-  sha1 "1d215a22ea16581de338700d556b21a8c02b4eff"
+  url "https://bitbucket.org/pypy/pypy/downloads/pypy-4.0.1-src.tar.bz2"
+  sha256 "29f5aa6ba17b34fd980e85172dfeb4086fdc373ad392b1feff2677d2d8aea23c"
 
   bottle do
     cellar :any
-    sha1 "54b80dd6f11ba20f01223473ec195d8a8b6afc6c" => :yosemite
-    sha1 "9db7e2918b8bbcef2e83b2f86a6574e50bf34d33" => :mavericks
-    sha1 "eee3b924556b45ca3128608b8ae02d367172fb53" => :mountain_lion
+    sha256 "fc1f5dde107fd9887c49bfbbe6207db6623e162acae98786c4dc37d4c661753d" => :el_capitan
+    sha256 "a299cfdc148e56f982b4573482e589c62c7ae6630538db2d024c8076f0d9252a" => :yosemite
+    sha256 "80225ff2367f678288e2790cc0c265570209f41a2d2fc8f60655d7d5463a08fb" => :mavericks
   end
 
   depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
+  depends_on "gdbm" => :recommended
+  depends_on "sqlite" => :recommended
   depends_on "openssl"
 
   option "without-bootstrap", "Translate Pypy with system Python instead of " \
@@ -21,17 +24,17 @@ class Pypy < Formula
 
   resource "bootstrap" do
     url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-osx64.tar.bz2"
-    sha1 "ad47285526b1b3c14f4eecc874bb82a133a8e551"
+    sha256 "30b392b969b54cde281b07f5c10865a7f2e11a229c46b8af384ca1d3fe8d4e6e"
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-12.0.5.tar.gz"
-    sha1 "cd49661e090a397d77c690f7f2d06852b7086be9"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.4.tar.gz"
+    sha256 "cdea5098e60b4ad83453d58723a61dc481ca8e2df251fe4ccbea9afa5a7d111f"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.8.tar.gz"
-    sha1 "bd59a468f21b3882a6c9d3e189d40c7ba1e1b9bd"
+    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
+    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -50,18 +53,22 @@ class Pypy < Formula
       python = buildpath/"bootstrap/bin/pypy"
     end
 
-    Dir.chdir "pypy/goal" do
+    cd "pypy/goal" do
       system python, buildpath/"rpython/bin/rpython",
              "-Ojit", "--shared", "--cc", ENV.cc, "--verbose",
              "--make-jobs", ENV.make_jobs, "targetpypystandalone.py"
-      system "install_name_tool", "-change", "@rpath/libpypy-c.dylib", libexec/"lib/libpypy-c.dylib", "pypy-c"
-      system "install_name_tool", "-id", opt_libexec/"lib/libpypy-c.dylib", "libpypy-c.dylib"
-      (libexec/"bin").install "pypy-c" => "pypy"
-      (libexec/"lib").install "libpypy-c.dylib"
     end
 
-    (libexec/"lib-python").install "lib-python/2.7"
-    libexec.install %w[include lib_pypy]
+    libexec.mkpath
+    cd "pypy/tool/release" do
+      package_args = %w[--archive-name pypy --targetdir . --nostrip]
+      package_args << "--without-gdbm" if build.without? "gdbm"
+      system python, "package.py", *package_args
+      system *%W[tar -C #{libexec} --strip-components 1 -xzf pypy.tar.bz2]
+    end
+
+    (libexec/"lib").install libexec/"bin/libpypy-c.dylib"
+    system *%W[install_name_tool -change @rpath/libpypy-c.dylib #{libexec}/lib/libpypy-c.dylib #{libexec}/bin/pypy]
 
     # The PyPy binary install instructions suggest installing somewhere
     # (like /opt) and symlinking in binaries as needed. Specifically,
@@ -76,12 +83,6 @@ class Pypy < Formula
   end
 
   def post_install
-    # Precompile cffi extensions in lib_pypy
-    # list from create_cffi_import_libraries in pypy/tool/release/package.py
-    %w[_sqlite3 _curses syslog gdbm _tkinter].each do |module_name|
-      quiet_system bin/"pypy", "-c", "import #{module_name}"
-    end
-
     # Post-install, fix up the site-packages and install-scripts folders
     # so that user-installed Python software survives minor updates, such
     # as going from 1.7.0 to 1.7.1.

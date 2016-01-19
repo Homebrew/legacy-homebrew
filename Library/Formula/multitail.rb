@@ -1,24 +1,18 @@
 class Multitail < Formula
-  homepage "http://vanheusden.com/multitail/"
-  url "http://www.vanheusden.com/multitail/multitail-6.4.1.tgz"
-  sha1 "9191b807f8d727810b2824a9bc8aafa17cb0d10e"
+  desc "Tail multiple files in one terminal simultaneously"
+  homepage "https://vanheusden.com/multitail/"
+  url "https://vanheusden.com/multitail/multitail-6.4.2.tgz"
+  sha256 "af1d5458a78ad3b747c5eeb135b19bdca281ce414cefdc6ea0cff6d913caa1fd"
 
   bottle do
-    cellar :any
-    sha1 "a6911971f13cac78f86e31643c7eb5746092c553" => :yosemite
-    sha1 "69576c39aab13d2ce6451db33dbcf46b68e20596" => :mavericks
-    sha1 "81473772c2a8b55e79299c17d1a595496da7c1ff" => :mountain_lion
-  end
-
-  # Upstream pull request to fix compilation issues on OS X
-  # https://github.com/flok99/multitail/pull/13
-  patch do
-    url "https://github.com/flok99/multitail/pull/13.diff"
-    sha1 "cf1c457ecfc2fbe76f60050829af30c8a6698d5c"
+    cellar :any_skip_relocation
+    sha256 "01ac7f53386a8099b4dd9e80bcc14dcb8097676199819ed8e2dc2a0893aba930" => :el_capitan
+    sha256 "60c748bbcac5188c00b1f0033bb46491623061cf08dfc5e6f5514d9b6042b5f4" => :yosemite
+    sha256 "5d2219191236e2209bb4642ecb865716390e9984b27ce145f391fb2280e9f906" => :mavericks
   end
 
   def install
-    system "make", "-f", "makefile.macosx", "multitail"
+    system "make", "-f", "makefile.macosx", "multitail", "DESTDIR=#{HOMEBREW_PREFIX}"
 
     bin.install "multitail"
     man1.install gzip("multitail.1")

@@ -1,42 +1,35 @@
 class Emacs < Formula
+  desc "GNU Emacs text editor"
   homepage "https://www.gnu.org/software/emacs/"
-
-  stable do
-    url "http://ftpmirror.gnu.org/emacs/emacs-24.4.tar.xz"
-    mirror "https://ftp.gnu.org/pub/gnu/emacs/emacs-24.4.tar.xz"
-    sha256 "47e391170db4ca0a3c724530c7050655f6d573a711956b4cd84693c194a9d4fd"
-
-    # Fix ns-antialias-text, broken in 24.4, from upstream:
-    # https://github.com/emacs-mirror/emacs/commit/604a4d21ead40691afe3efe13f0ba1000b2cd61a
-    # https://debbugs.gnu.org/cgi/bugreport.cgi?bug=18876
-    patch do
-      url "https://gist.githubusercontent.com/scotchi/66edaf426d7375c0f061/raw/4c5229a8a719f81fa6bd2e1e0c85d10b6f635765/emacs-fix-ns-antialias-text-mac-os.patch"
-      sha256 "fab5cf538ade6afa949640b0f81bdea26cb23b6d64ca714b687dee6f33ff270e"
-    end
-  end
+  url "http://ftpmirror.gnu.org/emacs/emacs-24.5.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/emacs/emacs-24.5.tar.xz"
+  sha256 "dd47d71dd2a526cf6b47cb49af793ec2e26af69a0951cc40e43ae290eacfc34e"
 
   bottle do
-    revision 4
-    sha256 "8ad572c583820fca6d09027ecad92160c3bfd56ae52244f09677ff86744d3148" => :yosemite
-    sha256 "b3b02b8fbb257a498ca4a163e36e40bcd0c77cd3a04001f0d1c85e661e11743c" => :mavericks
-    sha256 "d8fbe58416741960502f22e908c4e56356e8b09937ac47596bbf65379ef27b0d" => :mountain_lion
+    revision 2
+    sha256 "2442a949678d9b3cbe99e9b504917a641de57258d2a40dc85e8a70efae82bb38" => :el_capitan
+    sha256 "751b8b481b30870273243eae77ea08eb2b0b5a2fbcbc62453b7cf7632ac69445" => :yosemite
+    sha256 "3889a7cbda704f604b3a6187c8683ea1e6e4e600e1e7a0b8b59f33533e8f3023" => :mavericks
   end
 
   devel do
-    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-24"
-    version "24.4-dev"
+    # Savannah doesn't support HTTPS clones so prefer the Github mirror to
+    # http://git.sv.gnu.org/r/emacs.git
+    url "https://github.com/emacs-mirror/emacs.git", :branch => "emacs-25"
+    version "25.0-dev"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
   head do
-    url "http://git.sv.gnu.org/r/emacs.git"
+    url "https://github.com/emacs-mirror/emacs.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
   option "with-cocoa", "Build a Cocoa version of emacs"
   option "with-ctags", "Don't remove the ctags executable that emacs provides"
+  option "without-libxml2", "Don't build with libxml2 support"
 
   deprecated_option "cocoa" => "with-cocoa"
   deprecated_option "keep-ctags" => "with-ctags"
@@ -65,9 +58,16 @@ class Emacs < Formula
   def install
     args = ["--prefix=#{prefix}",
             "--enable-locallisppath=#{HOMEBREW_PREFIX}/share/emacs/site-lisp",
-            "--infodir=#{info}/emacs"]
+            "--infodir=#{info}/emacs",
+           ]
 
     args << "--with-file-notification=gfile" if build.with? "glib"
+
+    if build.with? "libxml2"
+      args << "--with-xml2"
+    else
+      args << "--without-xml2"
+    end
 
     if build.with? "d-bus"
       args << "--with-dbus"
@@ -92,13 +92,21 @@ class Emacs < Formula
       system "./configure", *args
       system "make"
       system "make", "install"
+
+      # Remove when 25.1 is released
+      if build.stable?
+        chmod 0644, %w[nextstep/Emacs.app/Contents/PkgInfo
+                       nextstep/Emacs.app/Contents/Resources/Credits.html
+                       nextstep/Emacs.app/Contents/Resources/document.icns
+                       nextstep/Emacs.app/Contents/Resources/Emacs.icns]
+      end
       prefix.install "nextstep/Emacs.app"
 
       # Replace the symlink with one that avoids starting Cocoa.
       (bin/"emacs").unlink # Kill the existing symlink
       (bin/"emacs").write <<-EOS.undent
         #!/bin/bash
-        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs -nw  "$@"
+        exec #{prefix}/Emacs.app/Contents/MacOS/Emacs "$@"
       EOS
     else
       if build.with? "x11"
@@ -111,6 +119,7 @@ class Emacs < Formula
       else
         args << "--without-x"
       end
+      args << "--without-ns"
 
       system "./configure", *args
       system "make"

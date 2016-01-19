@@ -1,21 +1,20 @@
-require "formula"
-
 class Primesieve < Formula
+  desc "Fast C/C++ prime number generator"
   homepage "http://primesieve.org/"
-  url "http://dl.bintray.com/kimwalisch/primesieve/primesieve-5.4.tar.gz"
-  sha1 "1309e444bde3822cdc3e953757b46750d384cc00"
+  url "https://dl.bintray.com/kimwalisch/primesieve/primesieve-5.6.0.tar.gz"
+  sha256 "dc4dc76288cd8b48f530153d8f56b0e095212d0f6c83a2b4e4ab1b8538456de0"
 
   bottle do
     cellar :any
-    sha1 "1cbc4ac0815279c64fa9028d25bdb22eaa8225ab" => :mavericks
-    sha1 "92bdf25f8205ec5c7b192eef4c5206690ace20c8" => :mountain_lion
-    sha1 "fca6af102d5594e03cc2cfd8472a2955e6778f99" => :lion
+    sha256 "b7b5b03ab3c266646c5204390c9bb87dcf277a80853d6e69d5416f77722386f5" => :el_capitan
+    sha256 "37807685a64d9f3ff6ec39769b8609db24c63a6ad3584ba825cd5fa9934647ab" => :yosemite
+    sha256 "a9c2ffee2b6c72bb1ee0ffc9bd81b40e45227b4e57950923635e65e8f5f24c72" => :mavericks
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}", "CXX=#{ENV.cxx}",
-                          "CXXFLAGS=#{ENV.cflags}"
-    system "make install"
+    system "./configure", "--disable-dependency-tracking", "--disable-silent-rules",
+           "--prefix=#{prefix}"
+    system "make", "install"
   end
 
   test do

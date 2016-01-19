@@ -1,12 +1,13 @@
 class Baresip < Formula
-  homepage "http://www.creytiv.com/"
-  url "http://www.creytiv.com/pub/baresip-0.4.12.tar.gz"
-  sha1 "03f72e93ddf2f896568b092ee63203b1c6a19679"
+  desc "Modular SIP useragent"
+  homepage "http://www.creytiv.com/baresip.html"
+  url "http://www.creytiv.com/pub/baresip-0.4.16.tar.gz"
+  sha256 "e6a0b93fc51a974b738ff3a12e1fbc508c8d307880aa03b19b61a541e3694911"
 
   bottle do
-    sha1 "bbbd13065696d79cb97d346ef5df38f0f8ad5c81" => :yosemite
-    sha1 "2805c3ab5c7bac73d7eaf54884832cfd5b0dd15b" => :mavericks
-    sha1 "aca67e94e7b6aa4fd8de6e6433332a968290b58b" => :mountain_lion
+    sha256 "890831b7eab558c0b3233c2292c1665248a843b9d184e5c41cc1dc4720afe910" => :el_capitan
+    sha256 "83bcbead6f69384cae76d042f674b7cf20cab898500317c117d44364503cede1" => :yosemite
+    sha256 "52f74561840429dc2d44b2f38bb943a1c51b15016172f8a10c49acfaa1f1e7e6" => :mavericks
   end
 
   depends_on "librem"
@@ -28,6 +29,6 @@ class Baresip < Formula
   end
 
   test do
-    system "#{bin}/baresip", "-t"
+    system "#{bin}/baresip", "-f", "#{ENV["HOME"]}/.baresip", "-t"
   end
 end

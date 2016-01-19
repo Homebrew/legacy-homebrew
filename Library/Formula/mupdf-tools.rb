@@ -1,14 +1,16 @@
 class MupdfTools < Formula
+  desc "Lightweight PDF and XPS viewer"
   homepage "http://mupdf.com"
-  url "http://mupdf.com/downloads/mupdf-1.6-source.tar.gz"
-  sha1 "491d7a3b131589791c7df6dd8161c6bfe41ce74a"
+  url "http://mupdf.com/downloads/archive/mupdf-1.8-source.tar.gz"
+  sha256 "a2a3c64d8b24920f87cf4ea9339a25abf7388496440f13b37482d1403c33c206"
   head "git://git.ghostscript.com/mupdf.git"
 
   bottle do
     cellar :any
-    sha1 "e1166cfdfd12e55f1e6181b6ef773018288ebd23" => :yosemite
-    sha1 "2c1e660770d70d04ab1a637d7f50c0991e16ea9f" => :mavericks
-    sha1 "924ea1f07a4dc79daba2a6233d4c5ac93c691662" => :mountain_lion
+    revision 1
+    sha256 "7ef90b7f58164276f38a6fa90324b352960c41bfc19b57b883386add52cf0148" => :el_capitan
+    sha256 "2d94022c4922f42bdc64576f5893750c5ee2e0c8c545f305d4a4ac5634073ed0" => :yosemite
+    sha256 "d442f5e49898025714b9664ea70304ca433ca07589e360c528915efc81298f34" => :mavericks
   end
 
   depends_on :macos => :snow_leopard
@@ -25,6 +27,6 @@ class MupdfTools < Formula
 
   test do
     pdf = test_fixtures("test.pdf")
-    assert_match /Homebrew test/, shell_output("#{bin}/mudraw -t #{pdf} 2>/dev/null")
+    assert_match /Homebrew test/, shell_output("#{bin}/mutool draw -F txt #{pdf}")
   end
 end

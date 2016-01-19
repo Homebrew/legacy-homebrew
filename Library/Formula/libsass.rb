@@ -1,14 +1,14 @@
 class Libsass < Formula
+  desc "C implementation of a Sass compiler"
   homepage "https://github.com/sass/libsass"
-  url "https://github.com/sass/libsass/archive/3.1.0.tar.gz"
-  sha1 "858c41405f5ff8b4186c7111e08f29893f4e51a1"
+  url "https://github.com/sass/libsass.git", :tag => "3.3.2", :revision => "f47645c2ebb98c9e0c970f59820b239ab417dda3"
   head "https://github.com/sass/libsass.git"
 
   bottle do
     cellar :any
-    sha1 "af2bbeb2d2221df2fece3eaa054a65270768bb92" => :yosemite
-    sha1 "c626b584ef3e650e3ea3e05db123958c8a00d947" => :mavericks
-    sha1 "9c7460ce74317a03c996f215a890e0ab88b6c73d" => :mountain_lion
+    sha256 "7e43803be0e3e866c0cbf87ce50dd4c02878f6164f960c976b35baf97bf06b4a" => :el_capitan
+    sha256 "3435bc11f568053f485dc5643e5f0f2d8b2d7db864fc9b8832016c3dc0b057fa" => :yosemite
+    sha256 "57e44d8146a1ee1e4b985c8da1f4b5f2ae033602538ad0eb7286522fadb97853" => :mavericks
   end
 
   depends_on "autoconf" => :build
@@ -18,30 +18,26 @@ class Libsass < Formula
 
   def install
     ENV.cxx11
-    ENV["LIBSASS_VERSION"] = "HEAD" if build.head?
     system "autoreconf", "-fvi"
     system "./configure", "--prefix=#{prefix}", "--disable-silent-rules",
                           "--disable-dependency-tracking"
     system "make", "install"
-    # The header below is deprecated and should not be used outside of test do.
-    # We only install it here for backward compatibility and so brew test works.
-    # https://github.com/sass/libsass/wiki/API-Documentation
-    include.install "sass_interface.h" if build.devel?
   end
 
   test do
     # This will need to be updated when devel = stable due to API changes.
     (testpath/"test.c").write <<-EOS.undent
-      #include <sass_context.h>
+      #include <sass/context.h>
       #include <string.h>
 
       int main()
       {
-        char* source_string = "a { color:blue; &:hover { color:red; } }";
-        struct Sass_Data_Context* data_ctx = sass_make_data_context(source_string);
+        const char* source_string = "a { color:blue; &:hover { color:red; } }";
+        struct Sass_Data_Context* data_ctx = sass_make_data_context(strdup(source_string));
         struct Sass_Options* options = sass_data_context_get_options(data_ctx);
-        sass_option_set_precision(options, SASS_STYLE_NESTED);
-        sass_option_set_source_comments(options, 0);
+        sass_option_set_precision(options, 1);
+        sass_option_set_source_comments(options, false);
+        sass_data_context_set_options(data_ctx, options);
         sass_compile_data_context(data_ctx);
         struct Sass_Context* ctx = sass_data_context_get_context(data_ctx);
         int err = sass_context_get_error_status(ctx);

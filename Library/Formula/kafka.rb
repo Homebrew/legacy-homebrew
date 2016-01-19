@@ -1,15 +1,17 @@
 class Kafka < Formula
+  desc "Publish-subscribe messaging rethought as a distributed commit log"
   homepage "https://kafka.apache.org"
-  head "https://git-wip-us.apache.org/repos/asf/kafka.git"
-  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  mirror "https://archive.apache.org/dist/kafka/0.8.2.1/kafka-0.8.2.1-src.tgz"
-  sha1 "99d61c6e23cb2694112f844afedb6f13d711c356"
+  url "http://mirrors.ibiblio.org/apache/kafka/0.8.2.2/kafka-0.8.2.2-src.tgz"
+  mirror "https://archive.apache.org/dist/kafka/0.8.2.2/kafka-0.8.2.2-src.tgz"
+  sha256 "77e9ed27c25650c07d00f380bd7c04d6345cbb984d70ddc52bbb4cb512d8b03c"
+
+  head "https://git-wip-us.apache.org/repos/asf/kafka.git", :branch => "trunk"
 
   bottle do
-    cellar :any
-    sha256 "60bfdd340ab233ebff0a3237fe40233c8a3be01592e2ba55af3706df2b4384f5" => :yosemite
-    sha256 "1f8445794584363b89829b4d416e97f3489ddac6e276f920a624ec4c2245582f" => :mavericks
-    sha256 "9034bdbbb31fdfe62b8fa9f898ad827cfdd18d72a2b9830b67867b419a210914" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "881db94838f291a09fef3d7070c4e99865eccb16f84e8447777a65cc14e0a180" => :el_capitan
+    sha256 "e07789b42a964353d49fdd4402f502c9803044e0477fcd0da6dad14b26b4c20d" => :yosemite
+    sha256 "1e57ab9774f8adee9f08c941eabdc029955b6ea43c4bc109b6420e74a515f08c" => :mavericks
   end
 
   depends_on "gradle"
@@ -24,6 +26,8 @@ class Kafka < Formula
   end
 
   def install
+    ENV.java_cache
+
     system "gradle"
     system "gradle", "jar"
 
@@ -52,6 +56,9 @@ class Kafka < Formula
     mv "config", "kafka"
     etc.install "kafka"
     libexec.install_symlink etc/"kafka" => "config"
+
+    # create directory for kafka stdout+stderr output logs when run by launchd
+    (var+"log/kafka").mkpath
   end
 
   def caveats; <<-EOS.undent
@@ -76,5 +83,32 @@ class Kafka < Formula
       end
       system "./run_sanity.sh"
     end
+  end
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_bin}/kafka-server-start.sh</string>
+            <string>#{etc}/kafka/server.properties</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+        <key>StandardErrorPath</key>
+        <string>#{var}/log/kafka/kafka_output.log</string>
+        <key>StandardOutPath</key>
+        <string>#{var}/log/kafka/kafka_output.log</string>
+    </dict>
+    </plist>
+    EOS
   end
 end

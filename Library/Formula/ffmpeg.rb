@@ -1,14 +1,14 @@
 class Ffmpeg < Formula
+  desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.6.1.tar.bz2"
-  sha256 "a4f6388706ee2daba9d35d2aa018ae5feeb450efa716555e011a6543d43ec7c1"
-
-  head "https://git.videolan.org/ffmpeg.git"
+  url "https://ffmpeg.org/releases/ffmpeg-2.8.5.tar.bz2"
+  sha256 "3b6d9951533323ee64a21d0aa7667a780b3470bfe4e0fb7c1b33307ce290615a"
+  head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
-    sha256 "8bc0cb43f99a7004aada9969875e551a24ebe2e57b8c620aa77b70372ba7fa0f" => :yosemite
-    sha256 "2ab2f322d8a1ce26af77b7f86e45e8af1c1cf6f01a51d05e460a1282ab84cbec" => :mavericks
-    sha256 "dd2629269914f801e5c16b5c8ba3abebbc48ab7417a54852f1cb74aee8c04875" => :mountain_lion
+    sha256 "a58816e45b3be8e590c783ad2877ced54e2ea098b7b12a66c94e195378eaa68b" => :el_capitan
+    sha256 "07b7a497298256558859d2a9866a63da6e2a95376b105f86af83847b3a564e07" => :yosemite
+    sha256 "4c2b87210647541342fb3ef0942a1b404c90385d0a15320cbf290bf0e75b5b30" => :mavericks
   end
 
   option "without-x264", "Disable H.264 encoder"
@@ -31,6 +31,9 @@ class Ffmpeg < Formula
   option "with-x265", "Enable x265 encoder"
   option "with-libsoxr", "Enable the soxr resample library"
   option "with-webp", "Enable using libwebp to encode WEBP images"
+  option "with-zeromq", "Enable using libzeromq to receive commands sent through a libzeromq client"
+  option "with-snappy", "Enable Snappy library"
+  option "with-dcadec", "Enable dcadec library"
 
   depends_on "pkg-config" => :build
 
@@ -54,6 +57,7 @@ class Ffmpeg < Formula
   depends_on "libass" => :optional
   depends_on "openjpeg" => :optional
   depends_on "sdl" if build.with? "ffplay"
+  depends_on "snappy" => :optional
   depends_on "speex" => :optional
   depends_on "schroedinger" => :optional
   depends_on "fdk-aac" => :optional
@@ -68,6 +72,9 @@ class Ffmpeg < Formula
   depends_on "openssl" => :optional
   depends_on "libssh" => :optional
   depends_on "webp" => :optional
+  depends_on "zeromq" => :optional
+  depends_on "libbs2b" => :optional
+  depends_on "dcadec" => :optional
 
   def install
     args = ["--prefix=#{prefix}",
@@ -82,10 +89,13 @@ class Ffmpeg < Formula
             "--host-ldflags=#{ENV.ldflags}",
            ]
 
+    args << "--enable-opencl" if MacOS.version > :lion
+
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libmp3lame" if build.with? "lame"
     args << "--enable-libvo-aacenc" if build.with? "libvo-aacenc"
     args << "--enable-libxvid" if build.with? "xvid"
+    args << "--enable-libsnappy" if build.with? "snappy"
 
     args << "--enable-libfontconfig" if build.with? "fontconfig"
     args << "--enable-libfreetype" if build.with? "freetype"
@@ -110,12 +120,15 @@ class Ffmpeg < Formula
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
+    args << "--enable-libzmq" if build.with? "zeromq"
+    args << "--enable-libbs2b" if build.with? "libbs2b"
+    args << "--enable-libdcadec" if build.with? "dcadec"
     args << "--disable-indev=qtkit" if build.without? "qtkit"
 
     if build.with? "openjpeg"
       args << "--enable-libopenjpeg"
       args << "--disable-decoder=jpeg2000"
-      args << "--extra-cflags=" + %x(pkg-config --cflags libopenjpeg).chomp
+      args << "--extra-cflags=" + `pkg-config --cflags libopenjpeg`.chomp
     end
 
     # These librares are GPL-incompatible, and require ffmpeg be built with

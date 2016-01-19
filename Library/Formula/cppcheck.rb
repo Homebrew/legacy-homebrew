@@ -1,23 +1,14 @@
 class Cppcheck < Formula
-  homepage "http://sourceforge.net/apps/mediawiki/cppcheck/index.php?title=Main_Page"
-
-  stable do
-    url "https://github.com/danmar/cppcheck/archive/1.68.tar.gz"
-    sha1 "f08ef07f750f92fafe4f960166072e9d1088d74e"
-
-    # Upstream patches for OS X + Clang compilation
-    patch do
-      url "https://github.com/danmar/cppcheck/commit/141a071.diff"
-      sha1 "4ccc8d814709d0e221c533a5556da4b1aa5fbead"
-    end
-  end
-
+  desc "Static analysis of C and C++ code"
+  homepage "https://sourceforge.net/projects/cppcheck/"
+  url "https://github.com/danmar/cppcheck/archive/1.72.tar.gz"
+  sha256 "c718949e1ec22a8a0dca7e2953a55c502ef65e53ff9922fb91759388618faa7f"
   head "https://github.com/danmar/cppcheck.git"
 
   bottle do
-    revision 1
-    sha256 "fd979cd455c04c543bdb81be9c98d265cdab3a451302f1b506a5225c4b5d4bef" => :yosemite
-    sha256 "aa2e66721ab0f605c706c6366c0e92d50b6d1281c2f1656f0f25301b6db29d66" => :mavericks
+    sha256 "95395daf0154293fba7b6254c278a128aad26fc3c9f0a73ac02200be7329eb60" => :el_capitan
+    sha256 "ea7ca38db3bb2e08a9cffd9f003df61d865dad098a140dbec5d5458f085be9d5" => :yosemite
+    sha256 "0e46747db20c2cb9fe2a505901db7f70be154a4326da528740e8cb1e3c1281a3" => :mavericks
   end
 
   option "without-rules", "Build without rules (no pcre dependency)"
@@ -28,8 +19,11 @@ class Cppcheck < Formula
   depends_on "pcre" if build.with? "rules"
   depends_on "qt" if build.with? "gui"
 
+  needs :cxx11
 
   def install
+    ENV.cxx11
+
     # Man pages aren't installed as they require docbook schemas.
 
     # Pass to make variables.
@@ -39,10 +33,8 @@ class Cppcheck < Formula
       system "make", "HAVE_RULES=no", "CFGDIR=#{prefix}/cfg"
     end
 
-    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=#{prefix}/cfg", "install"
-
-    # make sure cppcheck can find its configure directory, #26194
-    prefix.install "cfg"
+    # CFGDIR is relative to the prefix for install, don't add #{prefix}.
+    system "make", "DESTDIR=#{prefix}", "BIN=#{bin}", "CFGDIR=/cfg", "install"
 
     if build.with? "gui"
       cd "gui" do

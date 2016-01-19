@@ -1,15 +1,15 @@
-require "formula"
-
 class AescryptPacketizer < Formula
+  desc "Encrypt and decrypt using 256-bit AES encryption"
   homepage "https://www.aescrypt.com"
-  url "https://www.aescrypt.com/download/v3/linux/aescrypt-3.0.9.tgz"
-  sha256 "3f3590f9b7e50039611ba9c0cf1cae1b188a44bd39cfc41553db7ec5709c0882"
+  url "https://www.aescrypt.com/download/v3/linux/aescrypt-3.10.tgz"
+  sha256 "153da7971cc3084610943dba44e0284848af72c06d019a3c913656f8c0ad48f1"
 
   bottle do
-    cellar :any
-    sha1 "9332b85915d37899948db1d69c2703baba61e50e" => :yosemite
-    sha1 "a0bff6bff8e0476badc312dabdb6a936f8ed6507" => :mavericks
-    sha1 "2b9d8e775d1abf5bdf5ad0ba9a948deb498bdcf2" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "05a0796ee03ed56290803d95fb9454f684135e0131f1bbe88fc598d0475c4fee" => :el_capitan
+    sha256 "8b0d92ccb6e13b80fda4ebdde82fd92bb7cdf9d2b1b990e0b39fe072fbe83d62" => :yosemite
+    sha256 "c6beb469c3cc5b9b6ce40036430a4e41538409457483d86f3dd3b8ce1e5032b9" => :mavericks
   end
 
   head do
@@ -20,9 +20,9 @@ class AescryptPacketizer < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on :xcode => :build
-
   option "with-default-names", "Build with the binaries named as expected upstream"
+
+  depends_on :xcode => :build
 
   def install
     if build.head?
@@ -31,16 +31,16 @@ class AescryptPacketizer < Formula
       system "./configure", "prefix=#{prefix}", "--enable-iconv",
               "--disable-gui"
       system "make", "install"
-    end
+    else
+      cd "src" do
+        # https://www.aescrypt.com/mac_aes_crypt.html
+        inreplace "Makefile", "#LIBS=-liconv", "LIBS=-liconv"
+        system "make"
 
-    if build.stable?
-      cd "src"
-      # https://www.aescrypt.com/mac_aes_crypt.html
-      inreplace "Makefile", "#LIBS=-liconv", "LIBS=-liconv"
-      system "make", "prefix=#{prefix}"
-
-      bin.install "aescrypt"
-      bin.install "aescrypt_keygen"
+        bin.install "aescrypt"
+        bin.install "aescrypt_keygen"
+      end
+      man1.install "man/aescrypt.1"
     end
 
     # To prevent conflict with our other aescrypt, rename the binaries.
@@ -50,11 +50,17 @@ class AescryptPacketizer < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
-    To avoid conflicting with our other AESCrypt package the binaries
-    have been renamed paescrypt and paescrypt_keygen, unless you chose
-    to exercise the default-names option.
-    EOS
+  def caveats
+    s = ""
+
+    if build.without? "default-names"
+      s += <<-EOS.undent
+        To avoid conflicting with our other AESCrypt package the binaries
+        have been renamed paescrypt and paescrypt_keygen.
+      EOS
+    end
+
+    s
   end
 
   test do

@@ -1,23 +1,32 @@
-require "formula"
-
 class Knot < Formula
+  desc "High-performance authoritative-only DNS server"
   homepage "https://www.knot-dns.cz/"
-  url "https://secure.nic.cz/files/knot-dns/knot-1.5.3.tar.gz"
-  sha1 "4692c5001472443d07ac088592b349793a968706"
+  url "https://secure.nic.cz/files/knot-dns/knot-2.0.2.tar.xz"
+  sha256 "0418a22f9e801503993b3c872f2403bf73eab5ef7266128789b0531b41ea0c7e"
+  revision 1
 
   head "https://gitlab.labs.nic.cz/labs/knot.git"
 
   bottle do
-    sha1 "d28c63873e0ee6b98a01c4da1537d81f45dd468a" => :mavericks
-    sha1 "f81216eda0543ae546215b8739631db65594e7af" => :mountain_lion
-    sha1 "c6647467cfe8a3f84a3bedcfd93e6d2cb71f7436" => :lion
+    cellar :any
+    sha256 "d50cdf56ab983378103904777db2561f26735b5dd54cec6a8e42b0aca4fd0c40" => :el_capitan
+    sha256 "f33daf162fb1f7d48eed000c855312a0c5890a13b83bfd91ae4e7b3272e64a5f" => :yosemite
+    sha256 "f0ad7de6798ae89ce64618345265ea345c404868c869fbaccb9d6060c4329465" => :mavericks
   end
 
-  depends_on "userspace-rcu"
-  depends_on "openssl"
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "gnutls"
+  depends_on "jansson"
   depends_on "libidn"
+  depends_on "nettle"
+  depends_on "openssl"
+  depends_on "userspace-rcu"
 
   def install
+    system "autoreconf", "-i", "-f" if build.head?
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--disable-silent-rules",
@@ -26,52 +35,37 @@ class Knot < Formula
                           "--with-rundir=#{var}/knot",
                           "--prefix=#{prefix}"
 
-    inreplace 'samples/Makefile', 'install-data-local:', 'disable-install-data-local:'
+    inreplace "samples/Makefile", "install-data-local:", "disable-install-data-local:"
 
     system "make"
     system "make", "install"
 
-    (buildpath + 'knot.conf').write(knot_conf)
-    etc.install 'knot.conf'
+    (buildpath/"knot.conf").write(knot_conf)
+    etc.install "knot.conf"
 
-    (var + 'knot').mkpath
+    (var/"knot").mkpath
   end
 
   def knot_conf; <<-EOS.undent
-    system {
-      identity on;
-      version on;
-      rundir "#{var}/knot";
-    }
-    interfaces {
-      all_ipv4 {
-        address 0.0.0.0;
-        port 53;
-      }
-      all_ipv6 {
-        address [::];
-        port 53;
-      }
-    }
-    control {
-      listen-on "knot.sock";
-    }
-    zones {
-      storage "#{var}/knot";
-    #  example.com {
-    #    file "#{var}/knot/example.com.zone";
-    #  }
-    }
-    log {
-      syslog {
-        any error;
-        zone warning, notice;
-        server info;
-      }
-      stderr {
-        any error, warning;
-      }
-    }
+    server:
+      rundir: "#{var}/knot"
+      listen: [ "0.0.0.0@53", "::@53" ]
+
+    log:
+      - target: "stderr"
+        any: "error"
+
+      - target: "syslog"
+        server: "info"
+        zone: "warning"
+        any: "error"
+
+    control:
+      listen: "knot.sock"
+
+    template:
+      - id: "default"
+        storage: "#{var}/knot"
     EOS
   end
 

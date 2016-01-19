@@ -1,23 +1,24 @@
-require "formula"
-
 class Csfml < Formula
+  # Don't update CSFML until there's a corresponding SFML release
+  desc "SMFL bindings for C"
   homepage "http://www.sfml-dev.org/"
-  url "http://www.sfml-dev.org/download/csfml/CSFML-2.0-sources.zip"
-  sha1 "6d831634a558593580296209af278322523f1e43"
+  url "https://github.com/SFML/CSFML/archive/2.3.tar.gz"
+  sha256 "ba8f5529fd264c2778844a8b1bb71ede7e902bbd6841275c344dc488ce7054cd"
+
+  head "https://github.com/SFML/CSFML.git"
 
   bottle do
     cellar :any
-    sha1 "cd9aa7a1b25776c479b28d590a47faeef3d9c998" => :mavericks
-    sha1 "bbebd99be16cf18fb2d4c298148fd6b4a49d2d99" => :mountain_lion
-    sha1 "5671fb2cd53398283e45761a101099dcbbe81a17" => :lion
+    sha256 "0f080fd2c809a1c22ba10aee92ccc34b201458e98de3b8c973cdf9fa99d8cf3e" => :yosemite
+    sha256 "32e3cd01b497a73fb7d918841e4df0e980811270d92626d6399e47fae8291ea6" => :mavericks
+    sha256 "afbda33ded196a5dd39ecc68627e6fb6db156ec7a67f71fb16a6d6cb4cd40531" => :mountain_lion
   end
 
   depends_on "cmake" => :build
   depends_on "sfml"
 
   def install
-    cp_r "#{Formula["sfml"].share}/SFML/cmake/Modules/", "cmake"
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", "-DCMAKE_MODULE_PATH=#{Formula["sfml"].share}/SFML/cmake/Modules/", *std_cmake_args
     system "make", "install"
   end
 

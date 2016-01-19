@@ -1,30 +1,28 @@
 class Capnp < Formula
+  desc "Data interchange format and capability-based RPC system"
   homepage "https://capnproto.org/"
-  url "https://capnproto.org/capnproto-c++-0.5.1.2.tar.gz"
-  sha256 "a23f462bb863ee867783ff33e4c2c9e3ece684c6b33410e34ed2eb17b5d90929"
+  url "https://capnproto.org/capnproto-c++-0.5.3.tar.gz"
+  sha256 "cdb17c792493bdcd4a24bcd196eb09f70ee64c83a3eccb0bc6534ff560536afb"
 
   bottle do
-    sha256 "94295e6275fab85b54d334a9994538fe92be8422e2230982a568fe707a4bd17f" => :yosemite
-    sha256 "fca129dbeefeea03b0deaa149bc8f1cae8f0b657a13f6ca838398db3a54fc800" => :mavericks
-    sha256 "3771b3a8a7be9a1b3e9c872ff632a37f23eea8aab1d4b4725a0e82fb58453141" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d614f361c80a3218d4f5bed478f98a97f00d816dbd53730bd17cbc5ccb517166" => :el_capitan
+    sha256 "bd5a6b2c7961bad80928fdcf612619495e0c9208fe69ba5c207b797cd9fc8bb2" => :yosemite
+    sha256 "f99f439becc2eb9bf12e60cb8af0245fffee9aecf9ed07dc460196fe3f2d5f6e" => :mavericks
+    sha256 "9c11b6174a97e022be4ebe5e05435818234dedc11c194afe09bce81fbf8f9a50" => :mountain_lion
   end
 
   needs :cxx11
-  option "without-shared", "Disable building shared library variant"
+  depends_on "cmake" => :build
 
   def install
-    args = %W[
-      --disable-debug
-      --disable-dependency-tracking
-      --disable-silent-rules
-      --prefix=#{prefix}
-    ]
+    ENV.cxx11
 
-    args << "--disable-shared" if build.without? "shared"
-
-    system "./configure", *args
-    system "make", "check"
-    system "make", "install"
+    mkdir "build" do
+      system "cmake", "..", *std_cmake_args
+      system "make", "check"
+      system "make", "install"
+    end
   end
 
   test do

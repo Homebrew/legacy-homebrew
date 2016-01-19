@@ -1,7 +1,10 @@
 class SeleniumServerStandalone < Formula
+  desc "Browser automation for testing purposes"
   homepage "http://seleniumhq.org/"
-  url "http://selenium-release.storage.googleapis.com/2.45/selenium-server-standalone-2.45.0.jar"
-  sha1 "9bc872d1f364a3104257b1f8e055a342228259c3"
+  url "https://selenium-release.storage.googleapis.com/2.49/selenium-server-standalone-2.49.0.jar"
+  sha256 "e085ece95c77655d8f33289e82691f9b06896032078d158a570378aeef8846f0"
+
+  bottle :unneeded
 
   def install
     libexec.install "selenium-server-standalone-#{version}.jar"

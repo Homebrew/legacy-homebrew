@@ -1,5 +1,5 @@
-require 'testing_env'
-require 'formula'
+require "testing_env"
+require "formula"
 
 class FormulaSpecSelectionTests < Homebrew::TestCase
   def test_selects_stable_by_default

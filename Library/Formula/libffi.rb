@@ -1,21 +1,21 @@
-require 'formula'
-
 class Libffi < Formula
-  homepage 'http://sourceware.org/libffi/'
-  url 'http://mirrors.kernel.org/sources.redhat.com/libffi/libffi-3.0.13.tar.gz'
-  mirror 'ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz'
-  sha1 'f5230890dc0be42fb5c58fbf793da253155de106'
+  desc "Portable Foreign Function Interface library"
+  homepage "https://sourceware.org/libffi/"
+  url "https://mirrorservice.org/sites/sources.redhat.com/pub/libffi/libffi-3.0.13.tar.gz"
+  mirror "ftp://sourceware.org/pub/libffi/libffi-3.0.13.tar.gz"
+  sha256 "1dddde1400c3bcb7749d398071af88c3e4754058d2d4c0b3696c2f82dc5cf11c"
 
   bottle do
     cellar :any
-    sha1 "ab596256bb0dcd2c56ebde303dd163b58f00aa3a" => :yosemite
-    sha1 "b6a9696c2a58f34f37cf2bca5a652ee6982c3c14" => :mavericks
-    sha1 "421a0108078e79a1e32ccebea8eeadce0d0533db" => :mountain_lion
-    sha1 "c2ad5c7f63e06566494d92baa1e31c0c2190ea05" => :lion
+    sha256 "d512d7c3258d61e088097f1f9a1fd010bd1a197e760e0b3abc08a3f767624745" => :el_capitan
+    sha256 "f75c1beb848231ed3e2275c867620da91dd16be9dc7c4b88f86675ac62159323" => :yosemite
+    sha256 "aa60d56351d36a45f2e7f16114fc17f9bd8fe805931f36d744c6ccb5fa5df238" => :mavericks
+    sha256 "fad1fe049554d37471408fe451ef2e46628177c94eaafb23a3af56336603baad" => :mountain_lion
+    sha256 "dc4718ebb77ff384386e0ef1782d8418c821637044b5dff7c08f21c401d0668d" => :lion
   end
 
   head do
-    url 'https://github.com/atgreen/libffi.git'
+    url "https://github.com/atgreen/libffi.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
@@ -29,11 +29,11 @@ class Libffi < Formula
     system "./autogen.sh" if build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    (testpath/'closure.c').write <<-TEST_SCRIPT.undent
+    (testpath/"closure.c").write <<-TEST_SCRIPT.undent
      #include <stdio.h>
      #include <ffi.h>
 

@@ -1,12 +1,14 @@
 class Udunits < Formula
-  homepage "http://www.unidata.ucar.edu/software/udunits/"
-  url "ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.18.tar.gz"
-  sha256 "f542ed81140db2dae862a0018c8cddaf3b9ded1886e3755489b9329c7ecf8de0"
+  desc "Unidata unit conversion library"
+  homepage "https://www.unidata.ucar.edu/software/udunits/"
+  url "ftp://ftp.unidata.ucar.edu/pub/udunits/udunits-2.2.20.tar.gz"
+  sha256 "f10a02014bc6a200d50d8719997bb3a6b3d364de688469d2f7d599688dd9d195"
 
   bottle do
-    sha256 "ba540f03f0fb0b4de7d8c9e415a75c0365c5d86387eea9b48582bd6951f1649e" => :yosemite
-    sha256 "2b050af349aa4d8a697fd891d93432dda6b7f679c8aef7841e9a0294a915ae7e" => :mavericks
-    sha256 "d6127ced32f43233385e01325c3793c26a9ae9278143197d9318083037293157" => :mountain_lion
+    revision 1
+    sha256 "c003427289ee6b0354219f394b028531f401a80fe385887dc5fdd5f4d3c7c55a" => :el_capitan
+    sha256 "81dd936309a2e580e45f2adc9b36974669e03bb9b975b97f67435ac1aa49ba6f" => :yosemite
+    sha256 "05dfd1ad2d4dbca918c4d5980594c1689dcf62063e3c06da0c7175599fad4976" => :mavericks
   end
 
   option "with-html-docs", "Installs html documentation"
@@ -19,10 +21,10 @@ class Udunits < Formula
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    targets = ["install"]
-    targets << "install-html" if build.include? "html-docs"
-    targets << "install-pdf" if build.include? "pdf-docs"
-    system "make", *targets
+    args = %w[install]
+    args << "install-html" if build.with? "html-docs"
+    args << "install-pdf" if build.with? "pdf-docs"
+    system "make", *args
   end
 
   test do

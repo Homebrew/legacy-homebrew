@@ -1,25 +1,32 @@
 class H2o < Formula
+  desc "HTTP server with support for HTTP/1.x and HTTP/2"
   homepage "https://github.com/h2o/h2o/"
-  url "https://github.com/h2o/h2o/archive/v1.1.0.tar.gz"
-  sha256 "01f86bd81c5428c033bbe342c0f8ec43ff111a6aaae7d5c91fb7e619c0c65c07"
+  url "https://github.com/h2o/h2o/archive/v1.6.2.tar.gz"
+  sha256 "84602a50aec62c30af46996922db7bbfc4a3fe74779dc074d5ff32313d27d03c"
   head "https://github.com/h2o/h2o.git"
 
   bottle do
-    sha256 "f696a00cd5b37e0e636c7eaebdf302ce36e96ad85a750abea0e95edebfaec03b" => :yosemite
-    sha256 "9472f7c2b13ccd9f8a4a33855692cbddc410a84dee3ee72790ad9801f29b34b6" => :mavericks
-    sha256 "c52f71d13c56d0cf77e130e400359fb1214157ce76920516ccd04deab1083779" => :mountain_lion
+    sha256 "047143e18cde06323bd3ce59f0494aeb04ffd3a4b29ff863fb7a7f898ffb7b2b" => :el_capitan
+    sha256 "4de073f0cb2159f2ca38eac8cc6f6d2c5908458d81d1694f9ed4546d88edcc7e" => :yosemite
+    sha256 "0921098077f61525a1084b60ea3984a50782cdf6c5b8f57ea08f7b0a8ff7c091" => :mavericks
   end
 
-  option "with-libuv", "Build the H2O library in addition to the executable."
+  option "with-libuv", "Build the H2O library in addition to the executable"
+  option "without-mruby", "Don't build the bundled statically-linked mruby"
 
   depends_on "cmake" => :build
-  depends_on "libyaml"
-  depends_on "openssl"
+  depends_on "pkg-config" => :build
+  depends_on "openssl" => :recommended
+  depends_on "libressl" => :optional
   depends_on "libuv" => :optional
   depends_on "wslay" => :optional
 
   def install
-    system "cmake", ".", *std_cmake_args
+    args = std_cmake_args
+    args << "-DWITH_BUNDLED_SSL=OFF"
+    args << "-DWITH_MRUBY=OFF" if build.without? "mruby"
+
+    system "cmake", *args
 
     if build.with? "libuv"
       system "make", "libh2o"
@@ -28,12 +35,11 @@ class H2o < Formula
 
     system "make", "install"
 
-    mkdir_p etc/"h2o"
-    mkdir_p var/"h2o"
-    (var+"h2o").install "examples/doc_root/index.html"
+    (etc/"h2o").mkpath
+    (var/"h2o").install "examples/doc_root/index.html"
     # Write up a basic example conf for testing.
-    (buildpath+"brew/h2o.conf").write conf_example
-    (etc+"h2o").install buildpath/"brew/h2o.conf"
+    (buildpath/"brew/h2o.conf").write conf_example
+    (etc/"h2o").install buildpath/"brew/h2o.conf"
   end
 
   # This is simplified from examples/h2o/h2o.conf upstream.
@@ -79,6 +85,16 @@ class H2o < Formula
   end
 
   test do
-    system bin/"h2o", "--version"
+    pid = fork do
+      exec "#{bin}/h2o -c #{etc}/h2o/h2o.conf"
+    end
+    sleep 2
+
+    begin
+      assert_match /Welcome to H2O/, shell_output("curl localhost:8080")
+    ensure
+      Process.kill("SIGINT", pid)
+      Process.wait(pid)
+    end
   end
 end

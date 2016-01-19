@@ -3,21 +3,22 @@ require "language/haskell"
 class Purescript < Formula
   include Language::Haskell::Cabal
 
+  desc "Strongly typed programming language that compiles to JavaScript"
   homepage "http://www.purescript.org"
-  url "https://hackage.haskell.org/package/purescript-0.6.8/purescript-0.6.8.tar.gz"
-  sha1 "70fd4d3109d61c34c8898a30d222c4b1ad8fd7a5"
+  url "https://github.com/purescript/purescript/archive/v0.7.6.1.tar.gz"
+  sha256 "408fe21a9b7664e218ec6a68bd0b145ea14ad20b5d1a6b314e8ca378c5421ddc"
 
   bottle do
-    sha1 "b5628dbaabd07215c54979156b2d2f66fb6034c0" => :yosemite
-    sha1 "0d082d33a31bae337188e0866180120a8b38c66d" => :mavericks
-    sha1 "e9bbad2add5f0961926a0df8adbd8a3848781747" => :mountain_lion
+    sha256 "16049cc723f853a748ddec257ba2326d7a7aefdf3c8fc30052289ac3a1568242" => :el_capitan
+    sha256 "a24c414bd02fd646d5c430a09e48ce8ed17eaa7f0b7ab68f21084a046d00062d" => :yosemite
+    sha256 "64ab9e1da4c55d9a1170bfe5ce80c22ab6162bfd2bba34e8377b9cdc9216d237" => :mavericks
   end
 
+  depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "ghc"
 
   def install
-    install_cabal_package
+    install_cabal_package :using => ["alex", "happy"]
   end
 
   test do
@@ -25,9 +26,9 @@ class Purescript < Formula
     test_target_path = testpath/"test-module.js"
     test_module_path.write <<-EOS.undent
       module Test where
-      import Control.Monad.Eff
-      main :: forall e. Eff e Unit
-      main = return unit
+
+      main :: Int
+      main = 1
     EOS
     system bin/"psc", test_module_path, "-o", test_target_path
     assert File.exist?(test_target_path)

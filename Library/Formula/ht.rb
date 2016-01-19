@@ -1,13 +1,14 @@
 class Ht < Formula
+  desc "Viewer/editor/analyzer for executables"
   homepage "http://hte.sf.net/"
   url "https://downloads.sourceforge.net/project/hte/ht-source/ht-2.1.0.tar.bz2"
   sha256 "31f5e8e2ca7f85d40bb18ef518bf1a105a6f602918a0755bc649f3f407b75d70"
 
   bottle do
     cellar :any
-    sha1 "0091273a3a0bcdeddc2a4604ffd274db4d8a6e0d" => :yosemite
-    sha1 "60349a8bb48c045ef6d9a9056ac2d975af1917cf" => :mavericks
-    sha1 "1e862ab300b0e5a417d96d628a7d2163865bcce9" => :mountain_lion
+    sha256 "7705bf13e35efb021252aaf509e82a88f8996ad65199440eb46f2271bf77a570" => :yosemite
+    sha256 "f41ba188255f61cd07be25969bce0a9667e81dfde9079ba17e7e329898cafed5" => :mavericks
+    sha256 "dac5a797ccbeb46b89c7677997a3640b5ba5ce274c5f928bde9be91dbcbdd88a" => :mountain_lion
   end
 
   depends_on "lzo"

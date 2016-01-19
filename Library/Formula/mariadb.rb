@@ -1,22 +1,14 @@
 class Mariadb < Formula
+  desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.0.17/source/mariadb-10.0.17.tar.gz"
-  sha1 "240253b3ee21dea5e2f501778e8ee72b32a5d052"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.9/source/mariadb-10.1.9.tar.gz"
+  sha256 "8e9c5826722cedb4209bf06ae61069664513149479a6634e3d8115961edfe110"
 
   bottle do
-    sha1 "30bb3e16ab50ced951a582b30b3609b799a3c236" => :yosemite
-    sha1 "7f7a3cc62d684820b12970239bbcf0566816e770" => :mavericks
-    sha1 "68e5b41c2c33d8ac237470f6b55318c7fe31815f" => :mountain_lion
+    sha256 "b650d5ba130641a2bdb00f4816f2b2f909ba31eeb45b03c494e3d028ed101f09" => :el_capitan
+    sha256 "31125ce124c1090d10204db37f9960961df40dd414525f3b33e73540f2fd5e54" => :yosemite
+    sha256 "cbe67bbf8a185203d0cbf2c1d333e07edc62b9c389f31bedcf415ea16ebdd9ad" => :mavericks
   end
-
-  devel do
-    url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.3/source/mariadb-10.1.3.tar.gz"
-    sha1 "95a4e2640b40e79c58f22662ff76eb3f76f892e9"
-  end
-
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
-  depends_on "openssl"
 
   option :universal
   option "with-tests", "Keep test when installing"
@@ -29,10 +21,15 @@ class Mariadb < Formula
 
   deprecated_option "enable-local-infile" => "with-local-infile"
 
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
+
   conflicts_with "mysql", "mysql-cluster", "percona-server",
     :because => "mariadb, mysql, and percona install the same binaries."
   conflicts_with "mysql-connector-c",
     :because => "both install MySQL client libraries"
+  conflicts_with "mytop", :because => "both install `mytop` binaries"
 
   def install
     # Don't hard-code the libtool path. See:
@@ -73,11 +70,7 @@ class Mariadb < Formula
     ]
 
     # disable TokuDB, which is currently not supported on Mac OS X
-    if build.stable?
-      args << "-DWITHOUT_TOKUDB=1"
-    else
-      args << "-DPLUGIN_TOKUDB=NO"
-    end
+    args << "-DPLUGIN_TOKUDB=NO"
 
     args << "-DWITH_UNIT_TESTS=OFF" if build.without? "tests"
 
@@ -88,22 +81,10 @@ class Mariadb < Formula
     args << "-DWITH_READLINE=yes" if build.without? "libedit"
 
     # Compile with ARCHIVE engine enabled if chosen
-    if build.with? "archive-storage-engine"
-      if build.stable?
-        args << "-DWITH_ARCHIVE_STORAGE_ENGINE=1"
-      else
-        args << "-DPLUGIN_ARCHIVE=YES"
-      end
-    end
+    args << "-DPLUGIN_ARCHIVE=YES" if build.with? "archive-storage-engine"
 
     # Compile with BLACKHOLE engine enabled if chosen
-    if build.with? "blackhole-storage-engine"
-      if build.stable?
-        args << "-DWITH_BLACKHOLE_STORAGE_ENGINE=1"
-      else
-        args << "-DPLUGIN_BLACKHOLE=YES"
-      end
-    end
+    args << "-DPLUGIN_BLACKHOLE=YES" if build.with? "blackhole-storage-engine"
 
     # Make universal for binding to universal applications
     if build.universal?
@@ -123,6 +104,7 @@ class Mariadb < Formula
     inreplace "#{etc}/my.cnf" do |s|
       s.gsub!("!includedir /etc/my.cnf.d", "!includedir #{etc}/my.cnf.d")
     end
+    touch etc/"my.cnf.d/.homebrew_dont_prune_me"
 
     # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
@@ -143,20 +125,18 @@ class Mariadb < Formula
 
     bin.install_symlink prefix/"support-files/mysql.server"
 
-    if build.devel?
-      # Move sourced non-executable out of bin into libexec
-      libexec.mkpath
-      libexec.install "#{bin}/wsrep_sst_common"
-      # Fix up references to wsrep_sst_common
-      %W[
-        wsrep_sst_mysqldump
-        wsrep_sst_rsync
-        wsrep_sst_xtrabackup
-        wsrep_sst_xtrabackup-v2
-      ].each do |f|
-        inreplace "#{bin}/#{f}" do |s|
-          s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
-        end
+    # Move sourced non-executable out of bin into libexec
+    libexec.mkpath
+    libexec.install "#{bin}/wsrep_sst_common"
+    # Fix up references to wsrep_sst_common
+    %W[
+      wsrep_sst_mysqldump
+      wsrep_sst_rsync
+      wsrep_sst_xtrabackup
+      wsrep_sst_xtrabackup-v2
+    ].each do |f|
+      inreplace "#{bin}/#{f}" do |s|
+        s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
       end
     end
   end

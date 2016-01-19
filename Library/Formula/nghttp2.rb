@@ -1,12 +1,13 @@
 class Nghttp2 < Formula
-  homepage "https://nghttp2.org"
-  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v0.7.7/nghttp2-0.7.7.tar.xz"
-  sha1 "df96ac092ea209723ee0bd840ecbebe9be247b97"
+  desc "HTTP/2 C Library"
+  homepage "https://nghttp2.org/"
+  url "https://github.com/tatsuhiro-t/nghttp2/releases/download/v1.6.0/nghttp2-1.6.0.tar.xz"
+  sha256 "cc569501d243c934ea980a1f68fadb8ccc4f133ae8a5b15dcd29f0de76f9bac3"
 
   bottle do
-    sha256 "ea188a850b088445ad685719eccb9a2d996215f079af102ce477dc99deefd325" => :yosemite
-    sha256 "6dfe3eb5a62986374131db7ff915a25dc54d57262b17afe408512000492381dd" => :mavericks
-    sha256 "a522c73bcd3f7734a3b9f35c99fd3b39998e7c662ec9b199add8317a3337a722" => :mountain_lion
+    sha256 "6484e0d00d22782244e16c26fdf8e2a106a5d34ce6e4c17d8684b9b29365433d" => :el_capitan
+    sha256 "acd400bf5051d07bc72dff75f4f8a6266aa5863011e8be12e5e5e669b82e3537" => :yosemite
+    sha256 "91fbae494958220154dc006c1d7bfc03699b73ed8ed40312329c9222a0e01343" => :mavericks
   end
 
   head do
@@ -20,8 +21,10 @@ class Nghttp2 < Formula
 
   option "with-examples", "Compile and install example programs"
   option "without-docs", "Don't build man pages"
+  option "with-python3", "Build python3 bindings"
 
-  depends_on :python => :build if MacOS.version <= :snow_leopard && build.with?("docs")
+  depends_on :python3 => :optional
+  depends_on "sphinx-doc" => :build if build.with? "docs"
   depends_on "libxml2" if MacOS.version <= :lion
   depends_on "pkg-config" => :build
   depends_on "cunit" => :build
@@ -32,29 +35,9 @@ class Nghttp2 < Formula
   depends_on "boost"
   depends_on "spdylay" => :recommended
 
-  resource "sphinx" do
-    url "https://pypi.python.org/packages/source/S/Sphinx/Sphinx-1.2.3.tar.gz"
-    sha1 "3a11f130c63b057532ca37fe49c8967d0cbae1d5"
-  end
-
-  resource "docutils" do
-    url "https://pypi.python.org/packages/source/d/docutils/docutils-0.12.tar.gz"
-    sha1 "002450621b33c5690060345b0aac25bc2426d675"
-  end
-
-  resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.0.2.tar.gz"
-    sha1 "fe2c8178a039b6820a7a86b2132a2626df99c7f8"
-  end
-
-  resource "jinja2" do
-    url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
-  end
-
-  resource "markupsafe" do
-    url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+  resource "Cython" do
+    url "https://pypi.python.org/packages/source/C/Cython/Cython-0.23.1.tar.gz"
+    sha256 "bdfd12d6a2a2e34b9a1bbc1af5a772cabdeedc3851703d249a52dcda8378018a"
   end
 
   # https://github.com/tatsuhiro-t/nghttp2/issues/125
@@ -65,27 +48,17 @@ class Nghttp2 < Formula
   def install
     ENV.cxx11
 
-    if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath+"sphinx/lib/python2.7/site-packages"
-      resources.each do |r|
-        r.stage do
-          system "python", *Language::Python.setup_install_args(buildpath/"sphinx")
-        end
-      end
-      ENV.prepend_path "PATH", (buildpath/"sphinx/bin")
-    end
-
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
       --enable-app
       --with-boost=#{Formula["boost"].opt_prefix}
       --enable-asio-lib
-      --disable-python-bindings
     ]
 
     args << "--enable-examples" if build.with? "examples"
     args << "--with-spdylay" if build.with? "spdylay"
+    args << "--disable-python-bindings"
 
     system "autoreconf", "-ivf" if build.head?
     system "./configure", *args
@@ -100,6 +73,22 @@ class Nghttp2 < Formula
 
     system "make", "install"
     libexec.install "examples" if build.with? "examples"
+
+    if build.with? "python3"
+      pyver = Language::Python.major_minor_version "python3"
+      ENV["PYTHONPATH"] = cythonpath = buildpath/"cython/lib/python#{pyver}/site-packages"
+      cythonpath.mkpath
+      ENV.prepend_create_path "PYTHONPATH", lib/"python#{pyver}/site-packages"
+
+      resource("Cython").stage do
+        system "python3", *Language::Python.setup_install_args(buildpath/"cython")
+      end
+
+      cd "python" do
+        system buildpath/"cython/bin/cython", "nghttp2.pyx"
+        system "python3", *Language::Python.setup_install_args(prefix)
+      end
+    end
   end
 
   test do

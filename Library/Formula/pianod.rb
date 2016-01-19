@@ -1,14 +1,19 @@
-require "formula"
-
 class Pianod < Formula
+  desc "Pandora client with multiple control interfaces"
   homepage "http://deviousfish.com/pianod/"
-  url "http://deviousfish.com/Downloads/pianod/pianod-165.tar.gz"
-  sha1 "765efcf31f0e868538c81d03ae789df617d4c621"
+  url "http://deviousfish.com/Downloads/pianod/pianod-173.tar.gz"
+  sha256 "d91a890561037ee3faf5d4d1d4de546c8ff8c828eced91eea6be026c4fcf16fd"
+  revision 1
+
+  devel do
+    url "http://deviousfish.com/Downloads/pianod/pianod-174.tar.gz"
+    sha256 "8b46cf57a785256bb9d5543022c1b630a5d45580800b6eb6c170712c6c78d879"
+  end
 
   bottle do
-    sha1 "f2630bf3374fff4bd2f9361dc6b6a9dbdb8e91b2" => :mavericks
-    sha1 "8edad71c88e41febb6a948389359e9b3f8f8d043" => :mountain_lion
-    sha1 "9675d746fb9ee4d1e66cd0b62a1563d683850a4d" => :lion
+    sha256 "575f57442be94b8a182549015d58ea8066dde351f15ac91116647d5f6ef9425d" => :el_capitan
+    sha256 "5537abdb08e7b78dce2d5b1d3cfa93bb2e525c9878214102cb34adea61f12ad8" => :yosemite
+    sha256 "fd027eecd50b1ba82e048b2eb289219cddf068a93b849950fe690e44151c9540" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -29,6 +34,6 @@ class Pianod < Formula
   end
 
   test do
-    system "#{bin}/pianod", '-v'
+    system "#{bin}/pianod", "-v"
   end
 end

@@ -3,39 +3,38 @@ require "language/haskell"
 class Cgrep < Formula
   include Language::Haskell::Cabal
 
+  desc "Context-aware grep for source code"
   homepage "https://github.com/awgn/cgrep"
-  url "https://github.com/awgn/cgrep/archive/v6.4.12.tar.gz"
-  sha1 "4933c1ae055d5c04f567c9405339ce4f972ef62b"
+  url "https://github.com/awgn/cgrep/archive/v6.5.10.tar.gz"
+  sha256 "a83b099e4fcccc886dcbbd4e9400f68c04ad0385f3b24b1a454e2fbf4bba5e41"
   head "https://github.com/awgn/cgrep.git"
 
   bottle do
-    cellar :any
-    sha1 "f3879496816cd421a874c0c13f11749c2816bccc" => :yosemite
-    sha1 "935e68c7447007ddcffe49f48c4ceb9bab69a362" => :mavericks
-    sha1 "a446389f7b1977bf49b7ede278e731934659a647" => :mountain_lion
+    sha256 "1191b0ff23a78058a6b85c66c1f0d0715c8894e242d7e760d49c9e146324e974" => :el_capitan
+    sha256 "54ffbd47e3f17bcc14910d66104e843f532cd982767e9005c5542e2fbaa4936b" => :yosemite
+    sha256 "2463d1e60d5f57a4d141eae5ca204a2c844096f79b5fc1a434a081bdbb4713c8" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
-  depends_on "gmp"
+  depends_on "pcre"
 
   def install
     install_cabal_package
   end
 
   test do
-    test_string = "String in"
     path = testpath/"test.rb"
     path.write <<-EOS.undent
-      # puts #{test_string} comment.
-      puts "#{test_string} literal."
+      # puts test comment.
+      puts "test literal."
     EOS
 
-    comment = `cgrep --comment "#{test_string}" #{path}`
-    assert_equal 1, comment.lines.count
-    literal = `cgrep --literal "#{test_string}" #{path}`
-    assert_equal 1, literal.lines.count
-    code = `cgrep --code puts #{path}`
-    assert_equal 1, code.lines.count
+    assert_match ":1",
+      shell_output("script -q /dev/null #{bin}/cgrep --count --comment test #{path}")
+    assert_match ":1",
+      shell_output("script -q /dev/null #{bin}/cgrep --count --literal test #{path}")
+    assert_match ":1",
+      shell_output("script -q /dev/null #{bin}/cgrep --count --code puts #{path}")
   end
 end

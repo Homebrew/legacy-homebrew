@@ -1,22 +1,26 @@
 class Ghostscript < Formula
+  desc "Interpreter for PostScript and PDF"
   homepage "http://www.ghostscript.com/"
 
   stable do
-    url "http://downloads.ghostscript.com/public/ghostscript-9.15.tar.gz"
-    sha1 "f53bcc47e912c7bffc2ced62ed9311376fb18bab"
+    url "http://downloads.ghostscript.com/public/ghostscript-9.18.tar.gz"
+    sha256 "5fc93079749a250be5404c465943850e3ed5ffbc0d5c07e10c7c5ee8afbbdb1b"
 
-    patch :DATA # Uncomment OS X-specific make vars
+    patch do
+      url "https://github.com/Homebrew/patches/raw/master/ghostscript/bug-696301_gserrors.h.patch"
+      sha256 "1639d20605693dd473399dc2ebc838442175a8f7e6eb7701fbe08e12b57bee18"
+    end
   end
 
   bottle do
-    revision 3
-    sha1 "64527567402bb0e06bd3cd2bd1999d3bd3ea09ad" => :yosemite
-    sha1 "bd885778fee5126a4f2b7bc27ea70e312668c430" => :mavericks
-    sha1 "41d1130888b464aa27cf46ae4266a517d17d64cb" => :mountain_lion
+    sha256 "79f767cdf9e5eea94e0e9d0e88099ac2da1cf628baec948365456339d29cba25" => :el_capitan
+    sha256 "cf505ec93d681055aa97a08fb868c59d2344067feec457721b8b9d2d4c6ebe5a" => :yosemite
+    sha256 "1eb83d2677c5d33098223571fae553e6ccd5ef47c5b1a7bb7cc093906e2ac5d2" => :mavericks
   end
 
   head do
-    url "git://git.ghostscript.com/ghostpdl.git"
+    # Can't use shallow clone. Doing so = fatal errors.
+    url "git://git.ghostscript.com/ghostpdl.git", :shallow => false
 
     resource "djvu" do
       url "git://git.code.sf.net/p/djvu/gsdjvu-git"
@@ -25,91 +29,69 @@ class Ghostscript < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-
-    # Uncomment OS X-specific make vars
-    patch do
-      url "https://gist.githubusercontent.com/jacknagel/9559501/raw/9709b3234cc888d29f717838650d29e7062da917/gs.patch"
-      sha1 "65c99df4f0d57368a086154d34722f5c4b9c84cc"
-    end
   end
+
+  patch :DATA # Uncomment OS X-specific make vars
 
   option "with-djvu", "Build drivers for DjVU file format"
 
   depends_on "pkg-config" => :build
-  depends_on "jpeg"
-  depends_on "libtiff"
-  depends_on "jbig2dec"
-  depends_on "little-cms2"
-  depends_on "libpng"
-  depends_on :x11 => ["2.7.2", :optional]
   depends_on "djvulibre" if build.with? "djvu"
-  depends_on "freetype"
+  depends_on "little-cms2"
+  depends_on :x11 => :optional
 
   conflicts_with "gambit-scheme", :because => "both install `gsc` binaries"
 
   # http://sourceforge.net/projects/gs-fonts/
   resource "fonts" do
     url "https://downloads.sourceforge.net/project/gs-fonts/gs-fonts/8.11%20%28base%2035%2C%20GPL%29/ghostscript-fonts-std-8.11.tar.gz"
-    sha1 "2a7198e8178b2e7dba87cb5794da515200b568f5"
+    sha256 "0eb6f356119f2e49b2563210852e17f57f9dcc5755f350a69a46a0d641a0c401"
   end
 
   # http://djvu.sourceforge.net/gsdjvu.html
+  # Can't get 1.8 to compile, but feel free to open PR if you can.
   resource "djvu" do
     url "https://downloads.sourceforge.net/project/djvu/GSDjVu/1.6/gsdjvu-1.6.tar.gz"
-    sha1 "a8c5520d698d8be558a1957b4e5108cba68822ef"
-  end
-
-  def move_included_source_copies
-    # If the install version of any of these doesn't match
-    # the version included in ghostscript, we get errors
-    # Taken from the MacPorts portfile - http://bit.ly/ghostscript-portfile
-    renames = %w[freetype jbig2dec jpeg libpng tiff]
-    renames.each { |lib| mv lib, "#{lib}_local" }
+    sha256 "6236b14b79345eda87cce9ba22387e166e7614cca2ca86b1c6f0d611c26005df"
   end
 
   def install
-    src_dir = build.head? ? "gs" : "."
-
-    resource("djvu").stage do
-      inreplace "gsdjvu.mak", "$(GL", "$(DEV"
-      (buildpath+"devices").install "gdevdjvu.c"
-      (buildpath+"lib").install "ps2utf8.ps"
-      ENV["EXTRA_INIT_FILES"] = "ps2utf8.ps"
-      (buildpath/"devices/contrib.mak").open("a") { |f| f.write(File.read("gsdjvu.mak")) }
-    end if build.with? "djvu"
-
-    cd src_dir do
-      move_included_source_copies
-      args = %W[
-        --prefix=#{prefix}
-        --disable-cups
-        --disable-compile-inits
-        --disable-gtk
-        --with-system-libtiff
-      ]
-      args << "--without-x" if build.without? "x11"
-
-      if build.head?
-        system "./autogen.sh", *args
-      else
-        system "./configure", *args
+    if build.with? "djvu"
+      resource("djvu").stage do
+        inreplace "gsdjvu.mak", "$(GL", "$(DEV"
+        (buildpath+"devices").install "gdevdjvu.c"
+        (buildpath+"lib").install "ps2utf8.ps"
+        ENV["EXTRA_INIT_FILES"] = "ps2utf8.ps"
+        (buildpath/"devices/contrib.mak").open("a") { |f| f.write(File.read("gsdjvu.mak")) }
       end
-
-      # versioned stuff in main tree is pointless for us
-      inreplace "Makefile", "/$(GS_DOT_VERSION)", ""
-
-      inreplace "Makefile" do |s|
-        s.change_make_var!("DEVICE_DEVS17", "$(DD)djvumask.dev $(DD)djvusep.dev")
-      end if build.with? "djvu"
-
-      # Install binaries and libraries
-      system "make", "install"
-      system "make", "install-so"
     end
 
-    (share+"ghostscript/fonts").install resource("fonts")
+    args = %W[
+      --prefix=#{prefix}
+      --disable-cups
+      --disable-compile-inits
+      --disable-gtk
+    ]
+    args << "--without-x" if build.without? "x11"
 
-    (man+"de").rmtree
+    if build.head?
+      system "./autogen.sh", *args
+    else
+      system "./configure", *args
+    end
+
+    if build.with? "djvu"
+      inreplace "Makefile" do |s|
+        s.change_make_var!("DEVICE_DEVS17", "$(DD)djvumask.dev $(DD)djvusep.dev")
+      end
+    end
+
+    # Install binaries and libraries
+    system "make", "install"
+    system "make", "install-so"
+
+    (share/"ghostscript/fonts").install resource("fonts")
+    (man/"de").rmtree
   end
 
   test do

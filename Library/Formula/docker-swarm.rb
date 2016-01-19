@@ -1,49 +1,37 @@
 require "language/go"
 
 class DockerSwarm < Formula
+  desc "Turn a pool of Docker hosts into a single, virtual host"
   homepage "https://github.com/docker/swarm"
-  url "https://github.com/docker/swarm/archive/v0.1.0.tar.gz"
-  sha256 "a9e1f68138b2e93030e4e283345b5c850c9c41eab95b6ad645ac2cc735270c32"
+  url "https://github.com/docker/swarm/archive/v1.0.0.tar.gz"
+  sha256 "85951f91a2e3b6b82ac775bafce3fc76dd29aa2cdeb6a3ad84a97116fd72d2d8"
+  revision 1
+
+  head "https://github.com/docker/swarm.git"
 
   bottle do
-    cellar :any
-    sha256 "3f67608ae690346300ca8fd91fb6d669915e3d83019e26911eef6932eb915dee" => :yosemite
-    sha256 "aebf5eb365027a12691fba02f53cae0e13f43102813e5b371b7ba17ae4ab8ed9" => :mavericks
-    sha256 "4b7ae391c7a88fc6e20c93ce10648015d24e5ef1a0e7e25d34fc44642427afe3" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "10b1cea4a97d95d2c7ca82f450e30be10b624e078b87486a6ab633239879ea83" => :el_capitan
+    sha256 "0d8c81a702652bc8182e10c58789db71217da8a649ef45db3219f402f2c2c0b6" => :yosemite
+    sha256 "530afec739c621c8cd792079741d157117efde7933e03fd344622b590cdeda92" => :mavericks
   end
 
   depends_on "go" => :build
 
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git", :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
-  end
-
-  go_resource "github.com/kr/fs" do
-    url "https://github.com/kr/fs.git", :revision => "2788f0dbd16903de03cb8186e5c7d97b69ad387b"
-  end
-
-  go_resource "golang.org/x/tools" do
-    url "https://github.com/golang/tools.git", :revision => "473fd854f8276c0b22f17fb458aa8f1a0e2cf5f5"
-  end
-
-  go_resource "github.com/docker/swarm" do
-    url "https://github.com/docker/swarm.git", :revision => "2acbea1149842e2b577c752b6c3eee17e0a0489e"
-  end
-
   def install
-    ENV["GOPATH"] = buildpath
+    mkdir_p buildpath/"src/github.com/docker"
+    ln_s buildpath, buildpath/"src/github.com/docker/swarm"
+
+    ENV["GOPATH"] = "#{buildpath}/Godeps/_workspace:#{buildpath}"
+
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
-    system "./bin/godep", "go", "build", "-o", "docker-swarm", "."
+    system "go", "build", "-o", "docker-swarm"
     bin.install "docker-swarm"
   end
 
   test do
-    output = shell_output("#{bin}/docker-swarm --version")
-    assert output.include? "swarm version 0.1.0 (HEAD)"
+    output = shell_output(bin/"docker-swarm --version")
+    assert_match "swarm version #{version} (HEAD)", output
   end
 end

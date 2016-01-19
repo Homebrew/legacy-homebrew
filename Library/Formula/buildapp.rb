@@ -1,17 +1,17 @@
-require 'formula'
-
 class Buildapp < Formula
-  homepage 'http://www.xach.com/lisp/buildapp/'
-  url 'https://github.com/xach/buildapp/archive/release-1.5.3.tar.gz'
-  sha1 'a0601d144ee72719bd92298ca90e155234de26d0'
+  desc "Creates executables with SBCL"
+  homepage "http://www.xach.com/lisp/buildapp/"
+  url "https://github.com/xach/buildapp/archive/release-1.5.5.tar.gz"
+  sha256 "dbe5dd4e0d35eb36f1f6870fa820c841db9cbbef4090d4b4e5bb10f4ea37882c"
+  head "https://github.com/xach/buildapp.git"
 
   bottle do
-    sha1 "b5c93a13dea8b09844376e285fbc531ae24ab608" => :yosemite
-    sha1 "023440a32a3f053d4eba20534a73d4cc6ed9a8f7" => :mavericks
-    sha1 "eeb8f81c772672fbffdeca7e659cd8f57039dc1c" => :mountain_lion
+    sha256 "71e3f67dd4b480bc565933f8afa20b0e8164a02527beb4df97a639fb4673022c" => :yosemite
+    sha256 "d489a1979f0c262d2e104e4a69afacb2bdd18fecd261ad182d95867225ca3d10" => :mavericks
+    sha256 "e457be5e4a396afa7b748913cd52dac9935b911c8b68e6ede8745b56509a76be" => :mountain_lion
   end
 
-  depends_on 'sbcl'
+  depends_on "sbcl"
 
   def install
     bin.mkpath

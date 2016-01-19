@@ -2,30 +2,31 @@
 # Homebrew-versions, and only be merged to master when things like couchdb and
 # elixir are compatible.
 class Erlang < Formula
+  desc "Programming language for highly scalable real-time systems"
   homepage "http://www.erlang.org"
+  head "https://github.com/erlang/otp.git"
 
   stable do
     # Download tarball from GitHub; it is served faster than the official tarball.
-    url "https://github.com/erlang/otp/archive/OTP-17.4.1.tar.gz"
-    sha256 "3ff545f086c541d1d5fefc9777ed5ddc93f3a20bf30d93f38399fba417ccf58e"
+    url "https://github.com/erlang/otp/archive/OTP-18.2.1.tar.gz"
+    sha256 "2207d7f62605937560cb15c54d183f9b262b82867df6c944887763d1fcbb3280"
   end
 
-  head "https://github.com/erlang/otp.git"
-
   bottle do
-    sha1 "6194f633e00ffb805b514ace20ba4d12f51a4e33" => :yosemite
-    sha1 "a6a667c269d067717465de2cc7a3e0cf0901202f" => :mavericks
-    sha1 "cbea1cc87f07cc262cde7ae06ebe55963db8baec" => :mountain_lion
+    cellar :any
+    sha256 "b0b6f0d6dd03f5c45388481940f169c335c4a1b5803e96cb2d46830df285a861" => :el_capitan
+    sha256 "3c49f6e032111938e6a2093a3952a5461bbacd78d38b9eda9fcce7f729409b49" => :yosemite
+    sha256 "5cc9d9e1f16d8e7d9fa1dcd6788b9c8ebb9abcfb033c3a003448fbd5da0649aa" => :mavericks
   end
 
   resource "man" do
-    url "http://www.erlang.org/download/otp_doc_man_17.4.tar.gz"
-    sha256 "6c1cdb8e9d367c7b6dc6b20706de9fd0a0f0b7dffd66532663b2a24ed7679a58"
+    url "http://www.erlang.org/download/otp_doc_man_18.2.1.tar.gz"
+    sha256 "a58005ccd64853e8c79631a3c4c057dd6f92f581d97d00845a0aea817c33afa0"
   end
 
   resource "html" do
-    url "http://www.erlang.org/download/otp_doc_html_17.4.tar.gz"
-    sha256 "dd42b0104418de18e2247608a337bcd3bb24c59bbc36294deb5fae73ab6c90d6"
+    url "http://www.erlang.org/download/otp_doc_html_18.2.1.tar.gz"
+    sha256 "3576c567b30400fec2b456897d54ba79933ee0f83f6ec57816417b5417ea9723"
   end
 
   option "without-hipe", "Disable building hipe; fails on various OS X systems"
@@ -54,7 +55,7 @@ class Erlang < Formula
     ENV["FOP"] = "#{HOMEBREW_PREFIX}/bin/fop" if build.with? "fop"
 
     # Do this if building from a checkout to generate configure
-    system "./otp_build autoconf" if File.exist? "otp_build"
+    system "./otp_build", "autoconf" if File.exist? "otp_build"
 
     args = %W[
       --disable-debug

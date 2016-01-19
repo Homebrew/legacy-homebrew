@@ -1,15 +1,17 @@
-require "formula"
-
 class Stlink < Formula
+  desc "stm32 discovery line Linux programmer"
   homepage "https://github.com/texane/stlink"
-  url "https://github.com/texane/stlink/archive/1.0.0.tar.gz"
-  sha1 "d55bbdd8c4c907be15b28d089fddc86e7a167766"
+  url "https://github.com/texane/stlink/archive/1.1.0.tar.gz"
+  sha256 "3ac4dfcf1da0da40a1b71a8789ff0f1e7d978ea0222158bebd2de916c550682c"
+
+  head "https://github.com/texane/stlink.git"
 
   bottle do
     cellar :any
-    sha1 "6c0fa936a2fbf20fb05c2a9503cbd8b7b3b6a8d6" => :yosemite
-    sha1 "3aa833eca3455df534e2b1f484543f9e5e09f1ac" => :mavericks
-    sha1 "9516c50fc08774b01d8893b8fc0cd5d11ebae017" => :mountain_lion
+    revision 1
+    sha256 "ab03c755109f6fb00dc5ba0b667c91b1b06887098b5e7ca9b4ff95407f7e6dfd" => :el_capitan
+    sha256 "68217df89dd719dc8345ec065f16a5c48a909fb1dbe4f6d638707110e6526e3f" => :yosemite
+    sha256 "36ad00988ff74f08da8be3653ed7070b206ac53c9720e5c6e2a5476b2d1fa7cf" => :mavericks
   end
 
   depends_on "libusb"
@@ -26,6 +28,6 @@ class Stlink < Formula
   end
 
   test do
-    system "st-util", "-h"
+    system bin/"st-util", "-h"
   end
 end

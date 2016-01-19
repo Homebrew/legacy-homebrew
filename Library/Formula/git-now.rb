@@ -1,37 +1,35 @@
-require 'formula'
-
 class GitNow < Formula
-  homepage 'https://github.com/iwata/git-now'
-  url 'https://github.com/iwata/git-now.git', :tag => 'v0.1.0.9'
+  desc "Light, temporary commits for git"
+  homepage "https://github.com/iwata/git-now"
+  url "https://github.com/iwata/git-now.git",
+      :tag => "v0.1.1.0",
+      :revision => "a07a05893b9ddf784833b3d4b410c843633d0f71"
 
-  head 'https://github.com/iwata/git-now.git', :branch => 'develop'
+  head "https://github.com/iwata/git-now.git"
 
-  depends_on 'gnu-getopt'
-
-  patch :DATA
+  depends_on "gnu-getopt"
 
   def install
     system "make", "prefix=#{libexec}", "install"
-    bin.write_exec_script libexec/'bin/git-now'
-    zsh_completion.install 'etc/_git-now'
+
+    (bin/"git-now").write <<-EOS.undent
+      #!/bin/sh
+      PATH=#{Formula["gnu-getopt"].opt_bin}:$PATH #{libexec}/bin/git-now "$@"
+    EOS
+
+    zsh_completion.install "etc/_git-now"
+  end
+
+  test do
+    (testpath/".gitconfig").write <<-EOS.undent
+      [user]
+        name = Real Person
+        email = notacat@hotmail.cat
+    EOS
+    touch "file1"
+    system "git", "init"
+    system "git", "add", "file1"
+    system bin/"git-now"
+    assert_match "from now", shell_output("git log -1")
   end
 end
-
-# This patch makes sure GNUtools are used on OSX.
-# gnu-getopt is keg-only hence the backtick expansion.
-# These aliases only exist for the duration of git-now,
-# inside the git-now shells. Normal operation of bash is
-# unaffected - getopt will still find the version supplied
-# by OSX in other shells, for example.
-__END__
---- a/git-now
-+++ b/git-now
-@@ -1,5 +1,7 @@
- #!/bin/sh
-
-+alias getopt='`brew --prefix gnu-getopt`/bin/getopt'
-+
- # enable debug mode
- if [ "$DEBUG" = "yes" ]; then
-   set -x
-

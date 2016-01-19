@@ -1,14 +1,17 @@
 class Lz4 < Formula
-  homepage "https://code.google.com/p/lz4/"
-  url "https://github.com/Cyan4973/lz4/archive/r127.tar.gz"
-  sha1 "1aa7d4bb62eb79f88b33f86f9890dc9f96797af5"
-  version "r127"
+  desc "Lossless compression algorithm"
+  homepage "http://www.lz4.info/"
+  url "https://github.com/Cyan4973/lz4/archive/r131.tar.gz"
+  version "r131"
+  sha256 "9d4d00614d6b9dec3114b33d1224b6262b99ace24434c53487a0c8fd0b18cfed"
+  head "https://github.com/Cyan4973/lz4.git"
 
   bottle do
     cellar :any
-    sha1 "2d3b5ecafed3be8c54a6f87d4f2b7d5d84ebea2b" => :yosemite
-    sha1 "9fb811e3c5c485c36cc4dbea9e4d8884587e0f48" => :mavericks
-    sha1 "15e183eef77fd47f9fbfe94fda34a43b9f68f12b" => :mountain_lion
+    sha256 "cc8e425ec43dc5dd3132af0d9138f75510c2e15c612dff8d6276f8e701e44c66" => :el_capitan
+    sha256 "246808b1662baa862812fb15923f997e40329bcb0c0ebd4595af5eb90d9c5ff9" => :yosemite
+    sha256 "c38d6b8d0d0c65580e422b3baa3f19cb051e9c02f05ee02ea1fbb5721959a764" => :mavericks
+    sha256 "549d8bdae519e3315ecfab95ffd3a657d6991f72571c9720dc7d976d7445bd24" => :mountain_lion
   end
 
   def install

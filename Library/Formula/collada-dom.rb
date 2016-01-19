@@ -1,20 +1,29 @@
-require 'formula'
-
 class ColladaDom < Formula
-  homepage 'http://www.collada.org/mediawiki/index.php/Portal:COLLADA_DOM'
-  url 'https://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.4/collada-dom-2.4.0.tgz'
-  sha1 '74e28d670497abc897c06a41df7d28eea2bac836'
+  desc "C++ library for loading and saving COLLADA data"
+  homepage "https://www.khronos.org/collada/wiki/Portal:COLLADA_DOM"
+  url "https://downloads.sourceforge.net/project/collada-dom/Collada%20DOM/Collada%20DOM%202.4/collada-dom-2.4.0.tgz"
+  sha256 "5ca2d12f744bdceff0066ed3067b3b23d6859581fb0d657f98ba4487d8fa3896"
+  head "https://github.com/rdiankov/collada-dom.git"
 
-  depends_on 'cmake' => :build
-  depends_on 'pcre'
-  depends_on 'boost'
+  stable do
+    # Fix build of minizip: quoting arguments to cmake's add_definitions doesn't work the way they thought it did.
+    # Fixed in 2.4.2; remove this when version gets bumped
+    # https://github.com/rdiankov/collada-dom/issues/3
+    patch :DATA
+  end
 
-  # Fix build of minizip: quoting arguments to cmake's add_definitions doesn't work the way they thought it did.
-  patch :DATA
+  devel do
+    url "https://github.com/rdiankov/collada-dom/archive/v2.4.4.tar.gz"
+    sha256 "0dfa494827faa971310c871535b319cadbd0c2d6958ee11b303c61a55a5a437a"
+  end
+
+  depends_on "cmake" => :build
+  depends_on "pcre"
+  depends_on "boost"
 
   def install
     system "cmake", ".", *std_cmake_args
-    system "make install"
+    system "make", "install"
   end
 end
 

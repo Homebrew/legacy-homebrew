@@ -1,12 +1,14 @@
-require "formula"
-
 class Rtorrent < Formula
-  homepage "http://libtorrent.rakshasa.no/"
-  url "http://libtorrent.rakshasa.no/downloads/rtorrent-0.9.4.tar.gz"
-  sha1 "e997822e9b0d53cf8ecfb6b836e380065890e10d"
-  revision 1
+  desc "Console-based BitTorrent client"
+  homepage "https://github.com/rakshasa/rtorrent"
+  url "http://rtorrent.net/downloads/rtorrent-0.9.6.tar.gz"
+  sha256 "1e69c24f1f26f8f07d58d673480dc392bfc4317818c1115265b08a7813ff5b0e"
 
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "pkg-config" => :build
+  depends_on "cppunit" => :build
   depends_on "libtorrent"
   depends_on "xmlrpc-c" => :optional
 
@@ -27,6 +29,7 @@ class Rtorrent < Formula
           '  pkg_cv_libcurl_LIBS=`$PKG_CONFIG --libs "libcurl >= 7.15.4" | sed -e "s/-arch [^-]*/-arch $(uname -m) /" 2>/dev/null`'
       end
     end
+    system "sh", "autogen.sh"
     system "./configure", *args
     system "make"
     system "make", "install"

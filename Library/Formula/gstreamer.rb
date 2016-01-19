@@ -1,16 +1,13 @@
-require "formula"
-
 class Gstreamer < Formula
+  desc "GStreamer is a development framework for multimedia applications"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gstreamer/gstreamer-1.4.5.tar.xz"
-  mirror "http://ftp.osuosl.org/pub/blfs/svn/g/gstreamer-1.4.5.tar.xz"
-  sha256 "40801aa7f979024526258a0e94707ba42b8ab6f7d2206e56adbc4433155cb0ae"
+  url "https://download.gnome.org/sources/gstreamer/1.6/gstreamer-1.6.2.tar.xz"
+  sha256 "5896716bd8e089dba452932a2eff2bb6f6c9d58ff64a96635d157f1ffaf8feb2"
 
   bottle do
-    revision 1
-    sha1 "6dc46c6ae68a1edf24ec3d92fac5512cd6c6014f" => :yosemite
-    sha1 "2c4db754eab30e5a4a6674ba73b2236e2254757f" => :mavericks
-    sha1 "9c0cdab28d02577b949dacbf838bbb1065daa0ef" => :mountain_lion
+    sha256 "685890cb9c1b4e4063d9ba9bd77f4a73dd22d97d5b7dca0bc416000dab80964b" => :el_capitan
+    sha256 "b43979ee2f9b68a1cc95dd9a1bf32ae11e36c5324543f5d26d2b63ecf5b6327f" => :yosemite
+    sha256 "3a650e5b242c7d33bb2c0fd66e9ab5954587769986bc455d0a3a3455402547ec" => :mavericks
   end
 
   head do
@@ -39,6 +36,10 @@ class Gstreamer < Formula
     if build.head?
       ENV["NOCONFIGURE"] = "yes"
       system "./autogen.sh"
+
+      # Ban trying to chown to root.
+      # https://bugzilla.gnome.org/show_bug.cgi?id=750367
+      args << "--with-ptp-helper-permissions=none"
     end
 
     # Look for plugins in HOMEBREW_PREFIX/lib/gstreamer-1.0 instead of
@@ -51,5 +52,9 @@ class Gstreamer < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
+  end
+
+  test do
+    system bin/"gst-inspect-1.0"
   end
 end

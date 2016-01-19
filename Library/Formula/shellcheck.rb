@@ -1,23 +1,23 @@
-require "formula"
 require "language/haskell"
 
 class Shellcheck < Formula
   include Language::Haskell::Cabal
 
+  desc "Static analysis and lint tool, for (ba)sh scripts"
   homepage "http://www.shellcheck.net"
-  url "https://github.com/koalaman/shellcheck/archive/v0.3.5.tar.gz"
-  sha1 "e2907df9a28b955bde122c4ddf144c6039c0b85d"
+  url "https://github.com/koalaman/shellcheck/archive/v0.4.2.tar.gz"
+  sha256 "ea3eca5f2cce13ab6b4332b3cb5fb419c7ebf3f2e3d4d01c52b6cf5938aa96cf"
+  head "https://github.com/koalaman/shellcheck.git"
 
   bottle do
-    sha1 "487e94b0a1efe6953b4eb8163fbe3431f80f526b" => :yosemite
-    sha1 "1aa013ebd2eeb72e61f9cde87e41271abe13511e" => :mavericks
-    sha1 "af81f345a1ad58bdf1c7a742a945aba9eb3819ed" => :mountain_lion
+    sha256 "662dc25a63c76e74d5138f7163dbec440568bc5fd458103724bbb7c90a378a66" => :el_capitan
+    sha256 "1ae6443452b39ff65b80c1f783b8b01069d58fa169bae7759c9eb463ca6044d7" => :yosemite
+    sha256 "8a2f8d95c16dfcb2879eea5f31381620aff4f6bec812ffbb6dfb2adc7769fdfb" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
   depends_on "pandoc" => :build
-  depends_on "gmp"
 
   def install
     install_cabal_package
@@ -33,6 +33,6 @@ class Shellcheck < Formula
         echo "$f"
       done
     EOS
-    assert `shellcheck -f gcc #{sh}`.include? "[SC2045]"
+    assert_match "[SC2045]", shell_output("shellcheck -f gcc #{sh}", 1)
   end
 end

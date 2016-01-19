@@ -1,13 +1,15 @@
 class Passenger < Formula
+  desc "Server for Ruby, Python, and Node.js apps via Apache/NGINX"
   homepage "https://www.phusionpassenger.com/"
-  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.5.tar.gz"
-  sha256 '4a0d696cf6a702a97dd74aa9a377a637f547887b4afc6ee574329d87326bfcdc'
+  url "https://s3.amazonaws.com/phusion-passenger/releases/passenger-5.0.23.tar.gz"
+  sha256 "c659fe84ce95635a8561dd5580455f94a431411a61493ab9aa447b881e23dacf"
   head "https://github.com/phusion/passenger.git"
 
   bottle do
-    sha256 "d99765112723d03551c047763a65aec30a513c6db0b6727e3bf68882b2dbf183" => :yosemite
-    sha256 "fcd5ab6f4afb63df0187ebb2875e75909d9159745f793614e222a4d9c0ae2d1e" => :mavericks
-    sha256 "1adfa4fbdad3ce5eb6b4959e6bf2d2ff280f7f44c2da479db2497b5c0b59d656" => :mountain_lion
+    cellar :any
+    sha256 "adeb9cd3be758562b041bba2f240f722ebd2283895676b532db9400b62fff7b2" => :el_capitan
+    sha256 "ac0f20c545898e65546d1a8b06a340a131e406495d757e033279ece6188693e2" => :yosemite
+    sha256 "3260a97dec5dbac5c374cad19db60b3b56340dc44872a14eebc6c0963e71eabe" => :mavericks
   end
 
   depends_on "pcre"
@@ -19,19 +21,20 @@ class Passenger < Formula
   def install
     rake "apache2" if build.with? "apache2-module"
     rake "nginx"
-    rake "webhelper"
+
+    system("/usr/bin/ruby ./bin/passenger-config compile-nginx-engine")
 
     (libexec/"download_cache").mkpath
 
     # Fixes https://github.com/phusion/passenger/issues/1288
     rm_rf "buildout/libev"
-    rm_rf "buildout/libeio"
+    rm_rf "buildout/libuv"
     rm_rf "buildout/cache"
 
     necessary_files = Dir[".editorconfig", "configure", "Rakefile", "README.md", "CONTRIBUTORS",
       "CONTRIBUTING.md", "LICENSE", "CHANGELOG", "INSTALL.md",
-      "passenger.gemspec", "build", "lib", "node_lib", "bin", "doc", "man",
-      "dev", "helper-scripts", "ext", "resources", "buildout"]
+      "passenger.gemspec", "build", "bin", "doc", "man", "dev", "src",
+      "resources", "buildout"]
     libexec.mkpath
     cp_r necessary_files, libexec, :preserve => true
 
@@ -40,13 +43,20 @@ class Passenger < Formula
 
     # Ensure that the Phusion Passenger commands can always find their library
     # files.
+
     locations_ini = `/usr/bin/ruby ./bin/passenger-config --make-locations-ini --for-native-packaging-method=homebrew`
     locations_ini.gsub!(/=#{Regexp.escape Dir.pwd}/, "=#{libexec}")
-    (libexec/"lib/phusion_passenger/locations.ini").write(locations_ini)
+    (libexec/"src/ruby_supportlib/phusion_passenger/locations.ini").write(locations_ini)
+
+    ruby_libdir = `/usr/bin/ruby ./bin/passenger-config about ruby-libdir`.strip
+    ruby_libdir.gsub!(/^#{Regexp.escape Dir.pwd}/, libexec)
     system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
-      "--ruby", libexec/"lib", *Dir[libexec/"bin/*"]
+      "--ruby", ruby_libdir, *Dir[libexec/"bin/*"]
+
+    nginx_addon_dir = `/usr/bin/ruby ./bin/passenger-config about nginx-addon-dir`.strip
+    nginx_addon_dir.gsub!(/^#{Regexp.escape Dir.pwd}/, libexec)
     system "/usr/bin/ruby", "./dev/install_scripts_bootstrap_code.rb",
-      "--nginx-module-config", libexec/"bin", libexec/"ext/nginx/config"
+      "--nginx-module-config", libexec/"bin", "#{nginx_addon_dir}/config"
 
     mv libexec/"man", share
   end
@@ -61,7 +71,7 @@ class Passenger < Formula
     s += <<-EOS.undent if build.with? "apache2-module"
       To activate Phusion Passenger for Apache, create /etc/apache2/other/passenger.conf:
         LoadModule passenger_module #{opt_libexec}/buildout/apache2/mod_passenger.so
-        PassengerRoot #{opt_libexec}/lib/phusion_passenger/locations.ini
+        PassengerRoot #{opt_libexec}/src/ruby_supportlib/phusion_passenger/locations.ini
         PassengerDefaultRuby /usr/bin/ruby
 
       EOS
@@ -70,8 +80,6 @@ class Passenger < Formula
 
   test do
     ruby_libdir = `#{HOMEBREW_PREFIX}/bin/passenger-config --ruby-libdir`.strip
-    if ruby_libdir != (libexec/"lib").to_s
-      fail "Invalid installation"
-    end
+    assert_equal "#{libexec}/src/ruby_supportlib", ruby_libdir
   end
 end

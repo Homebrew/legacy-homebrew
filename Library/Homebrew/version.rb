@@ -24,7 +24,7 @@ class Version
   end
 
   class NullToken < Token
-    def initialize(value=nil)
+    def initialize(value = nil)
       super
     end
 
@@ -172,7 +172,7 @@ class Version
   end
 
   def self.detect(url, specs)
-    if specs.has_key?(:tag)
+    if specs.key?(:tag)
       FromURL.new(specs[:tag][/((?:\d+\.)*\d+)/, 1])
     else
       FromURL.parse(url)
@@ -201,8 +201,33 @@ class Version
     return 1 if head? && !other.head?
     return -1 if !head? && other.head?
 
-    max = [tokens.length, other.tokens.length].max
-    pad_to(max) <=> other.pad_to(max)
+    ltokens = tokens
+    rtokens = other.tokens
+    max = max(ltokens.length, rtokens.length)
+    l = r = 0
+
+    while l < max
+      a = ltokens[l] || NULL_TOKEN
+      b = rtokens[r] || NULL_TOKEN
+
+      if a == b
+        l += 1
+        r += 1
+        next
+      elsif a.numeric? && b.numeric?
+        return a <=> b
+      elsif a.numeric?
+        return 1 if a > NULL_TOKEN
+        l += 1
+      elsif b.numeric?
+        return -1 if b > NULL_TOKEN
+        r += 1
+      else
+        return a <=> b
+      end
+    end
+
+    0
   end
   alias_method :eql?, :==
 
@@ -219,22 +244,14 @@ class Version
 
   attr_reader :version
 
-  def begins_with_numeric?
-    tokens.first.numeric?
-  end
-
-  def pad_to(length)
-    if begins_with_numeric?
-      nums, rest = tokens.partition(&:numeric?)
-      nums.fill(NULL_TOKEN, nums.length, length - tokens.length)
-      nums.concat(rest)
-    else
-      tokens.dup.fill(NULL_TOKEN, tokens.length, length - tokens.length)
-    end
-  end
-
   def tokens
     @tokens ||= tokenize
+  end
+
+  private
+
+  def max(a, b)
+    a > b ? a : b
   end
 
   def tokenize
@@ -250,19 +267,19 @@ class Version
     end
   end
 
-  def self.parse spec
+  def self.parse(spec)
     version = _parse(spec)
     new(version) unless version.nil?
   end
 
-  def self._parse spec
+  def self._parse(spec)
     spec = Pathname.new(spec) unless spec.is_a? Pathname
 
     spec_s = spec.to_s
 
     stem = if spec.directory?
       spec.basename.to_s
-    elsif %r[((?:sourceforge.net|sf.net)/.*)/download$].match(spec_s)
+    elsif %r{((?:sourceforge.net|sf.net)/.*)/download$}.match(spec_s)
       Pathname.new(spec.dirname).stem
     else
       spec.stem
@@ -273,7 +290,7 @@ class Version
     # e.g. https://github.com/sam-github/libnet/tarball/libnet-1.1.4
     # e.g. https://github.com/isaacs/npm/tarball/v0.2.5-1
     # e.g. https://github.com/petdance/ack/tarball/1.93_02
-    m = %r[github.com/.+/(?:zip|tar)ball/(?:v|\w+-)?((?:\d+[-._])+\d*)$].match(spec_s)
+    m = %r{github.com/.+/(?:zip|tar)ball/(?:v|\w+-)?((?:\d+[-._])+\d*)$}.match(spec_s)
     return m.captures.first unless m.nil?
 
     # e.g. https://github.com/erlang/otp/tarball/OTP_R15B01 (erlang style)
@@ -282,7 +299,7 @@ class Version
 
     # e.g. boost_1_39_0
     m = /((?:\d+_)+\d+)$/.match(stem)
-    return m.captures.first.gsub('_', '.') unless m.nil?
+    return m.captures.first.tr("_", ".") unless m.nil?
 
     # e.g. foobar-4.5.1-1
     # e.g. unrtf_0.20.4-1
@@ -290,8 +307,12 @@ class Version
     m = /[-_]((?:\d+\.)*\d\.\d+-(?:p|rc|RC)?\d+)(?:[-._](?:bin|dist|stable|src|sources))?$/.match(stem)
     return m.captures.first unless m.nil?
 
+    # URL with no extension e.g. https://waf.io/waf-1.8.12
+    m = /-((?:\d+\.)*\d+)$/.match(spec_s)
+    return m.captures.first unless m.nil?
+
     # e.g. lame-398-1
-    m = /-((?:\d)+-\d)/.match(stem)
+    m = /-((?:\d)+-\d+)/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. foobar-4.5.1
@@ -309,6 +330,13 @@ class Version
     # e.g. http://ftpmirror.gnu.org/libidn/libidn-1.29-win64.zip
     # e.g. http://ftpmirror.gnu.org/libmicrohttpd/libmicrohttpd-0.9.17-w32.zip
     m = /-(\d+\.\d+(?:\.\d+)?)-w(?:in)?(?:32|64)$/.match(stem)
+    return m.captures.first unless m.nil?
+
+    # Opam packages
+    # e.g. https://opam.ocaml.org/archives/sha.1.9+opam.tar.gz
+    # e.g. https://opam.ocaml.org/archives/lablgtk.2.18.3+opam.tar.gz
+    # e.g. https://opam.ocaml.org/archives/easy-format.1.0.2+opam.tar.gz
+    m = /\.(\d+\.\d+(?:\.\d+)?)\+opam$/.match(stem)
     return m.captures.first unless m.nil?
 
     # e.g. http://ftpmirror.gnu.org/mtools/mtools-4.0.18-1.i686.rpm

@@ -1,16 +1,18 @@
 class Czmq < Formula
+  desc "High-level C binding for ZeroMQ"
   homepage "http://czmq.zeromq.org/"
-  url "http://download.zeromq.org/czmq-2.2.0.tar.gz"
-  sha1 "2f4fd8de4cf04a68a8f6e88ea7657d8068f472d2"
-  revision 1
+  url "http://download.zeromq.org/czmq-3.0.2.tar.gz"
+  sha256 "8bca39ab69375fa4e981daf87b3feae85384d5b40cef6adbe9d5eb063357699a"
+  revision 3
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "798cef5fd0d7c79123fe60be9db628e8db5fe351" => :yosemite
-    sha1 "c1361edaea2bbea8f30937741b5346e419c3909c" => :mavericks
-    sha1 "9a8556182c8599cf1a32f0cec8e6dc8eed151035" => :mountain_lion
+    sha256 "9bbf6566cd74644ae22f5dd9338c1123bf3ecdf7a920dcaabf166aeb3902e3f7" => :el_capitan
+    sha256 "4a569da4e60f3b8252b4ef9a998e50153ac119108135ce832f2494b0edf7e87a" => :yosemite
+    sha256 "ae42e5b89ed47c00a3a45d9c3a4759a2f0a772c787f62b34cb024f489790efff" => :mavericks
   end
+
+  conflicts_with "mono", :because => "both install `makecert` binaries"
 
   head do
     url "https://github.com/zeromq/czmq.git"
@@ -23,10 +25,10 @@ class Czmq < Formula
   option :universal
 
   depends_on "pkg-config" => :build
-  depends_on "libsodium" => :optional
+  depends_on "libsodium" => :recommended
 
-  if build.with? "libsodium"
-    depends_on "zeromq" => "with-libsodium"
+  if build.without? "libsodium"
+    depends_on "zeromq" => "without-libsodium"
   else
     depends_on "zeromq"
   end
@@ -35,20 +37,13 @@ class Czmq < Formula
     ENV.universal_binary if build.universal?
 
     args = ["--disable-dependency-tracking", "--prefix=#{prefix}"]
-
-    if build.stable?
-      args << "--with-libsodium" if build.with? "libsodium"
-    end
+    args << "--with-libsodium" if build.with? "libsodium"
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
+    system "make"
+    system "make", "check"
     system "make", "install"
     rm Dir["#{bin}/*.gsl"]
-  end
-
-  test do
-    bin.cd do
-      system "#{bin}/czmq_selftest"
-    end
   end
 end

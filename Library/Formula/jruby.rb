@@ -1,9 +1,12 @@
-require "formula"
-
 class Jruby < Formula
+  desc "Ruby implementation in pure Java"
   homepage "http://www.jruby.org"
-  url "https://s3.amazonaws.com/jruby.org/downloads/1.7.19/jruby-bin-1.7.19.tar.gz"
-  sha1 "a3296d1ae9b9aa78825b8d65a0d2498b449eaa3d"
+  url "https://s3.amazonaws.com/jruby.org/downloads/9.0.4.0/jruby-bin-9.0.4.0.tar.gz"
+  sha256 "fcf828c4ad5b92430a349f1e873c067a15e0952d167d07368135c513fe0d18fb"
+
+  bottle :unneeded
+
+  depends_on :java => "1.7+"
 
   def install
     # Remove Windows files
@@ -11,7 +14,7 @@ class Jruby < Formula
 
     cd "bin" do
       # Prefix a 'j' on some commands to avoid clashing with other rubies
-      %w{ast rake rdoc ri testrb}.each { |f| mv f, "j#{f}" }
+      %w[ast rake rdoc ri testrb].each { |f| mv f, "j#{f}" }
       # Delete some unnecessary commands
       rm "gem" # gem is a wrapper script for jgem
       rm "irb" # irb is an identical copy of jirb
@@ -19,7 +22,7 @@ class Jruby < Formula
 
     # Only keep the OS X native libraries
     rm_rf Dir["lib/jni/*"] - ["lib/jni/Darwin"]
-    libexec.install Dir['*']
+    libexec.install Dir["*"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
   end
 

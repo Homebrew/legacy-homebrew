@@ -1,56 +1,54 @@
-require 'formula'
-
 class GstPluginsGood < Formula
-  homepage 'http://gstreamer.freedesktop.org/'
+  desc "GStreamer plugins (well-supported, under the LGPL)"
+  homepage "http://gstreamer.freedesktop.org/"
 
   stable do
-    url 'http://gstreamer.freedesktop.org/src/gst-plugins-good/gst-plugins-good-1.4.5.tar.xz'
-    mirror 'http://ftp.osuosl.org/pub/blfs/svn/g/gst-plugins-good-1.4.5.tar.xz'
-    sha256 "79b1b5f3f7bcaa8a615202eb5e176121eeb8336960f70687e536ad78dbc7e641"
+    url "https://download.gnome.org/sources/gst-plugins-good/1.6/gst-plugins-good-1.6.2.tar.xz"
+    sha256 "876e54dfce93274b98e024f353258d35fa4d49d1f9010069e676c530f6eb6a92"
 
-    depends_on 'check' => :optional
+    depends_on "check" => :optional
   end
 
   bottle do
-    sha1 "184f6be9e300566f37e7b014cca49f78018c36d4" => :yosemite
-    sha1 "a05a8f0dc08ea2626623f30dcb2cc458bd973b7e" => :mavericks
-    sha1 "7ce582ddab67b58d87469d112745144a0cf0edd2" => :mountain_lion
+    sha256 "2b270292dd58a8b0a703ee00f80f50100eeb48617cfbf024eb4d3beeb25c40d5" => :el_capitan
+    sha256 "5d76d76b1914d9a1f589a32a6795f3e17870ca68820ddce07ab23554e2bd42a9" => :yosemite
+    sha256 "4990905eb444d443e8488858c3cf362da11e66d9c886e25f5fd0f9245d7a5de4" => :mavericks
   end
 
   head do
-    url 'git://anongit.freedesktop.org/gstreamer/gst-plugins-good'
+    url "git://anongit.freedesktop.org/gstreamer/gst-plugins-good"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-    depends_on 'check'
+    depends_on "check"
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'gettext'
-  depends_on 'gst-plugins-base'
-  depends_on 'libsoup'
+  depends_on "pkg-config" => :build
+  depends_on "gettext"
+  depends_on "gst-plugins-base"
+  depends_on "libsoup"
 
   depends_on :x11 => :optional
 
   # The set of optional dependencies is based on the intersection of
   # gst-plugins-good-0.10.30/REQUIREMENTS and Homebrew formulae
-  depends_on 'orc' => :optional
-  depends_on 'gtk+' => :optional
-  depends_on 'aalib' => :optional
-  depends_on 'libcdio' => :optional
-  depends_on 'esound' => :optional
-  depends_on 'flac' => [:optional, 'with-libogg']
-  depends_on 'jpeg' => :optional
-  depends_on 'libcaca' => :optional
-  depends_on 'libdv' => :optional
-  depends_on 'libshout' => :optional
-  depends_on 'speex' => :optional
-  depends_on 'taglib' => :optional
-  depends_on 'libpng' => :optional
-  depends_on 'libvpx' => :optional
+  depends_on "orc" => :optional
+  depends_on "gtk+" => :optional
+  depends_on "aalib" => :optional
+  depends_on "libcdio" => :optional
+  depends_on "esound" => :optional
+  depends_on "flac" => [:optional, "with-libogg"]
+  depends_on "jpeg" => :optional
+  depends_on "libcaca" => :optional
+  depends_on "libdv" => :optional
+  depends_on "libshout" => :optional
+  depends_on "speex" => :optional
+  depends_on "taglib" => :optional
+  depends_on "libpng" => :optional
+  depends_on "libvpx" => :optional
 
-  depends_on 'libogg' if build.with? 'flac'
+  depends_on "libogg" if build.with? "flac"
 
   def install
     args = %W[
@@ -68,6 +66,12 @@ class GstPluginsGood < Formula
     else
       args << "--disable-x"
     end
+
+    # This plugin causes hangs on Snow Leopard (and possibly other versions?)
+    # Upstream says it hasn't "been actively tested in a long time";
+    # successor is glimagesink (in gst-plugins-bad).
+    # https://bugzilla.gnome.org/show_bug.cgi?id=756918
+    args << "--disable-osx_video" if MacOS.version == :snow_leopard
 
     if build.head?
       ENV["NOCONFIGURE"] = "yes"

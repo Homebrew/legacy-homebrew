@@ -1,16 +1,14 @@
 class Gmp < Formula
-  homepage "http://gmplib.org/"
-  url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-  mirror "ftp://ftp.gmplib.org/pub/gmp/gmp-6.0.0a.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-  sha1 "360802e3541a3da08ab4b55268c80f799939fddc"
+  desc "GNU multiple precision arithmetic library"
+  homepage "https://gmplib.org/"
+  url "https://gmplib.org/download/gmp/gmp-6.1.0.tar.xz"
+  sha256 "68dadacce515b0f8a54f510edf07c1b636492bcdb8e8d54c56eb216225d16989"
 
   bottle do
     cellar :any
-    sha1 "93ad3c1a012806518e9a128d6eb5b565b4a1771d" => :yosemite
-    sha1 "bfaab8c533af804d4317730f62164b9c80f84f24" => :mavericks
-    sha1 "99dc6539860a9a8d3eb1ac68d5b9434acfb2d846" => :mountain_lion
-    sha1 "466b7549553bf0e8f14ab018bd89c48cbd29a379" => :lion
+    sha256 "1d236d4debd6880259e58a51a28f0c2d67fc57c4882f9a690ebc222c8264605b" => :el_capitan
+    sha256 "f86f185327ee1f6dc44c816229f332eb262616a648afd5d1caf55c407e72035d" => :yosemite
+    sha256 "2ad0982b8c33432ad9c71b0e5517171aee5bc73d2207d7bda3c306e0cf42dcc1" => :mavericks
   end
 
   option "32-bit"
@@ -25,15 +23,12 @@ class Gmp < Formula
       args << "ABI=32"
     end
 
-    if build.build_32_bit? || build.bottle?
-      # https://github.com/Homebrew/homebrew/issues/20693
-      args << "--disable-assembly"
-    end
+    # https://github.com/Homebrew/homebrew/issues/20693
+    args << "--disable-assembly" if build.build_32_bit? || build.bottle?
 
     system "./configure", *args
     system "make"
     system "make", "check"
-    ENV.deparallelize
     system "make", "install"
   end
 

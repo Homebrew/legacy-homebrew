@@ -1,9 +1,8 @@
-require 'formula'
-
 class Podiff < Formula
-  homepage 'http://puszcza.gnu.org.ua/software/podiff/'
-  url 'http://download.gnu.org.ua/pub/release/podiff/podiff-1.1.tar.gz'
-  sha1 'c354a42c215d0b7768b30c1db13729177cec4c7a'
+  desc "Compare textual information in two PO files"
+  homepage "http://puszcza.gnu.org.ua/software/podiff/"
+  url "http://download.gnu.org.ua/pub/release/podiff/podiff-1.1.tar.gz"
+  sha256 "a97480109c26837ffa868ff629a32205622a44d8b89c83b398fb17352b5be6ff"
 
   def install
     system "make"

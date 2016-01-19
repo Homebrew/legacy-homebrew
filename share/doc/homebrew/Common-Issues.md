@@ -109,7 +109,7 @@ underworld of C.
 To solve this, you should remove the problematic formula with those python
 bindings and all of its dependencies.
 
-  - `brew rm $(brew deps <problematic_formula>)`
+  - `brew rm $(brew deps --installed <problematic_formula>)`
   - `brew rm <problematic_formula>`
   - Also check the `$(brew --prefix)/lib/python2.7/site-packages` directory and
     delete all remains of the corresponding python modules if they were not
@@ -160,3 +160,17 @@ To list all files that would be deleted:
 Don't follow the advice here but fix by using
 `Language::Python.setup_install_args` in the formula as described in
 [Python for Formula Authors](Python-for-Formula-Authors.md).
+
+### Upgrading OS X
+
+Upgrading OS X can cause errors like the following:
+
+- `dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicui18n.54.dylib`
+- `configure: error: Cannot find libz`
+
+Following an OS X upgrade it may be necessary to reinstall the Xcode Command Line Tools and `brew upgrade` all installed formula:
+
+```bash
+xcode-select --install
+brew upgrade
+```

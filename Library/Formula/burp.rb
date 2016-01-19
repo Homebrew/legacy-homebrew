@@ -1,21 +1,23 @@
-require "formula"
-
 class Burp < Formula
+  desc "Network backup and restore"
   homepage "http://burp.grke.org/"
-  url "https://downloads.sourceforge.net/project/burp/burp-1.4.28/burp-1.4.28.tar.bz2"
-  sha1 "ddd5340db6aac1fa2e58c1e66c89730d8fd9bfb5"
+  url "https://github.com/grke/burp/archive/1.4.40.tar.gz"
+  sha256 "2e6a9a28453a11f3e36d0beefa185e72e7781a8718b55d3101144c9900752d6f"
   head "https://github.com/grke/burp.git"
+  revision 1
 
   bottle do
-    sha1 "d27f35a6552777084aac22adadb989d3bd6fab90" => :yosemite
-    sha1 "48e9795082e84df84155bd0d23f4613aecd5b278" => :mavericks
-    sha1 "9ef6db0acae148b70d4fc266db84b7174904aa52" => :mountain_lion
+    cellar :any
+    sha256 "2342aea1a1ac623c8154c1d64a7b583eae62a6177136173d73adada6fd58380e" => :el_capitan
+    sha256 "a892287dbaf7a4d5557a471b16d6ce09a5dc0faab004635bc0c90b79d07e92b3" => :yosemite
+    sha256 "d3b8cc95839835dd9ba9574444d5cf7394d398376fe2a06fcd3ba9a00b395476" => :mavericks
   end
 
   depends_on "librsync"
   depends_on "openssl"
 
-  # patches to change directories to brew conventions in Makefile and config files
+  # patches to change directories to brew conventions in Makefile and config
+  # files
   patch :DATA
 
   def install
@@ -24,6 +26,12 @@ class Burp < Formula
                           "--sbindir=#{bin}",
                           "--localstatedir=#{var}/burp"
     system "make", "install"
+  end
+
+  def caveats; <<-EOS.undent
+    Before installing the launchd entry you should configure your burp client in
+      #{etc}/burp/burp.conf
+    EOS
   end
 
   test do
@@ -57,13 +65,6 @@ class Burp < Formula
     </plist>
     EOS
   end
-
-  def caveats; <<-EOS.undent
-    Before installing the launchd entry you should configure your burp client in
-    #{etc}/burp/burp.conf
-    EOS
-  end
-
 end
 
 __END__

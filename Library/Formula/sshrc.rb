@@ -1,9 +1,10 @@
-require "formula"
-
 class Sshrc < Formula
+  desc "Bring your .bashrc, .vimrc, etc. with you when you SSH"
   homepage "https://github.com/Russell91/sshrc"
-  url "https://github.com/Russell91/sshrc/archive/0.4.tar.gz"
-  sha1 "9e9426323d6b2cb118275b2d5836510dbd87a75a"
+  url "https://github.com/Russell91/sshrc/archive/0.5.tar.gz"
+  sha256 "4592df6fc2987adbbce84dbe305d9b769f7177a545122295629ce2fb61ecbba3"
+
+  bottle :unneeded
 
   def install
     bin.install "sshrc"

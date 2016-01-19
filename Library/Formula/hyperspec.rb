@@ -1,8 +1,11 @@
 class Hyperspec < Formula
+  desc "Common Lisp ANSI-standard Hyperspec"
   homepage "http://www.lispworks.com/documentation/common-lisp.html"
   url "ftp://ftp.lispworks.com/pub/software_tools/reference/HyperSpec-7-0.tar.gz"
   version "7.0"
   sha256 "1ac1666a9dc697dbd8881262cad4371bcd2e9843108b643e2ea93472ba85d7c3"
+
+  bottle :unneeded
 
   def install
     doc.install Dir["*"]

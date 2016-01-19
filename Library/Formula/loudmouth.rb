@@ -1,49 +1,29 @@
-require "formula"
-
 class Loudmouth < Formula
-  homepage "http://mcabber.com"
-  url "http://mcabber.com/files/loudmouth-1.5.0-20121201.tar.bz2"
-  version "1.5.0.20121201"
-  sha1 "502963c3068f7033bb21d788918c1e5cd14f386e"
+  desc "Lightweight C library for the Jabber protocol"
+  homepage "https://mcabber.com"
+  url "https://mcabber.com/files/loudmouth/loudmouth-1.5.1.tar.bz2"
+  sha256 "ffb493b085c1d40176ecbe1c478f05932f265e0e5ba93444b87d3cd076267939"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "036bfd7eb2c9b064596bdbbf241bcd91247fbdb5" => :yosemite
-    sha1 "ea2c830197162a650c5b24b6e86b78f1ef9e878f" => :mavericks
-    sha1 "0b77821cecfa2ea9e3cd9789c21b2e8857f43be0" => :mountain_lion
+    sha256 "b1cc2d6af15d37cb3317a52d8a82422cd071c3ae4efe93353f75cdba83a20723" => :el_capitan
+    sha256 "1f5d182146487152aa2b20b7cf998b1ed57da9f0c5f9830fb2a316afcbaa48f7" => :yosemite
+    sha256 "50967fd422f40a3b911205cb4dfdac27038120c1e860646621dc7343f07c231b" => :mavericks
   end
 
-  head "https://github.com/mcabber/loudmouth.git"
-
   head do
+    url "https://github.com/mcabber/loudmouth.git"
+
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
-
-    # Fixes configure.ac subdir-objects for recent autoconf version
-    # Remove this once the following pull request has been applied to master
-    # https://github.com/mcabber/loudmouth/pull/11
-    patch do
-      url "https://github.com/languitar/loudmouth/commit/f22dd6.diff"
-      sha1 "776f6c20259579e542ef588570956f26d71a46e5"
-    end
   end
 
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "libidn"
   depends_on "gnutls"
-
-  # Fix compilation on 10.9. Sent upstream:
-  # https://github.com/mcabber/loudmouth/pull/9
-  # Has been merged and will be in next release, if there is one.
-  stable do
-    patch do
-      url "https://github.com/mcabber/loudmouth/commit/369844a0fc.diff"
-      sha1 "e52ee2e24a06ebea52b90866a347daf1f1d28382"
-    end
-  end
 
   def install
     system "./autogen.sh", "-n" if build.head?

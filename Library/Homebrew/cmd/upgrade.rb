@@ -1,22 +1,25 @@
-require 'cmd/install'
-require 'cmd/outdated'
+require "cmd/install"
+require "cleanup"
 
 module Homebrew
   def upgrade
+    FormulaInstaller.prevent_build_flags unless MacOS.has_apple_developer_tools?
+
     Homebrew.perform_preinstall_checks
 
     if ARGV.named.empty?
-      outdated = Homebrew.outdated_brews(Formula.installed)
+      outdated = Formula.installed.select(&:outdated?)
       exit 0 if outdated.empty?
-    else
-      outdated = Homebrew.outdated_brews(ARGV.formulae)
+    elsif ARGV.named.any?
+      outdated = ARGV.resolved_formulae.select(&:outdated?)
 
-      (ARGV.formulae - outdated).each do |f|
-        if f.rack.directory?
-          version = f.rack.subdirs.map { |d| Keg.new(d).version }.max
-          onoe "#{f.name} #{version} already installed"
+      (ARGV.resolved_formulae - outdated).each do |f|
+        versions = f.installed_kegs.map { |keg| keg.version }
+        if versions.any?
+          version = versions.max
+          onoe "#{f.full_name} #{version} already installed"
         else
-          onoe "#{f.name} not installed"
+          onoe "#{f.full_name} not installed"
         end
       end
       exit 1 if outdated.empty?
@@ -29,24 +32,29 @@ module Homebrew
 
     unless outdated.empty?
       oh1 "Upgrading #{outdated.length} outdated package#{plural(outdated.length)}, with result:"
-      puts outdated.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts outdated.map { |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     else
       oh1 "No packages to upgrade"
     end
 
     unless upgrade_pinned? || pinned.empty?
       oh1 "Not upgrading #{pinned.length} pinned package#{plural(pinned.length)}:"
-      puts pinned.map{ |f| "#{f.name} #{f.pkg_version}" } * ", "
+      puts pinned.map { |f| "#{f.full_name} #{f.pkg_version}" } * ", "
     end
 
-    outdated.each { |f| upgrade_formula(f) }
+    outdated.each do |f|
+      upgrade_formula(f)
+      next unless ARGV.include?("--cleanup")
+      next unless f.installed?
+      Homebrew::Cleanup.cleanup_formula f
+    end
   end
 
   def upgrade_pinned?
-    not ARGV.named.empty?
+    !ARGV.named.empty?
   end
 
-  def upgrade_formula f
+  def upgrade_formula(f)
     outdated_keg = Keg.new(f.linked_keg.resolved_path) if f.linked_keg.directory?
     tab = Tab.for_formula(f)
 
@@ -59,7 +67,7 @@ module Homebrew
     fi.debug               = ARGV.debug?
     fi.prelude
 
-    oh1 "Upgrading #{f.name}"
+    oh1 "Upgrading #{f.full_name}"
 
     # first we unlink the currently active keg for this formula otherwise it is
     # possible for the existing build to interfere with the build we are about to
@@ -67,7 +75,6 @@ module Homebrew
     outdated_keg.unlink if outdated_keg
 
     fi.install
-    fi.caveats
     fi.finish
 
     # If the formula was pinned, and we were force-upgrading it, unpin and
@@ -89,7 +96,6 @@ module Homebrew
     ofail e
   ensure
     # restore previous installation state if build failed
-    outdated_keg.link if outdated_keg and not f.installed? rescue nil
+    outdated_keg.link if outdated_keg && !f.installed? rescue nil
   end
-
 end

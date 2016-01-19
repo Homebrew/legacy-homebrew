@@ -1,10 +1,17 @@
-require "formula"
-
 class Libtorrent < Formula
-  homepage "http://libtorrent.rakshasa.no/"
-  url "http://libtorrent.rakshasa.no/downloads/libtorrent-0.13.4.tar.gz"
-  sha1 "3a3ca87054d020bc376abe2c1ea15bbbaef31131"
+  desc "BitTorrent library"
+  homepage "https://github.com/rakshasa/libtorrent"
+  url "http://rtorrent.net/downloads/libtorrent-0.13.6.tar.gz"
+  sha256 "2838a08c96edfd936aff8fbf99ecbb930c2bfca3337dd1482eb5fccdb80d5a04"
 
+  bottle :disable,
+    "Cannot be built with Clang so bottle depends on GCC at runtime."
+
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "libtool" => :build
+  depends_on "pkg-config" => :build
+  depends_on "cppunit" => :build
   depends_on "pkg-config" => :build
   depends_on "openssl"
 
@@ -15,16 +22,17 @@ class Libtorrent < Formula
 
   def install
     # Currently can't build against libc++; see:
-    # https://github.com/mxcl/homebrew/issues/23483
+    # https://github.com/homebrew/homebrew/issues/23483
     # https://github.com/rakshasa/libtorrent/issues/47
     ENV.libstdcxx if ENV.compiler == :clang
 
+    system "sh", "autogen.sh"
     system "./configure", "--prefix=#{prefix}",
                           "--disable-debug",
                           "--disable-dependency-tracking",
                           "--with-kqueue",
                           "--enable-ipv6"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 end

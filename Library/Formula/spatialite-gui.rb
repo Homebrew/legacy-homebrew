@@ -1,16 +1,15 @@
-require "formula"
-
 class SpatialiteGui < Formula
+  desc "GUI tool supporting SpatiaLite"
   homepage "https://www.gaia-gis.it/fossil/spatialite_gui/index"
-  url "http://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
-  sha1 "3b9d88e84ffa5a4f913cf74b098532c2cd15398f"
+  url "https://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-1.7.1.tar.gz"
+  sha256 "cb9cb1ede7f83a5fc5f52c83437e556ab9cb54d6ace3c545d31b317fd36f05e4"
+  revision 2
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "54ee1f62973a5711be12125ff0237c715d925427" => :mavericks
-    sha1 "e9a4a406a5d5cae055316136a28c7f15063fd923" => :mountain_lion
-    sha1 "5cf52fd35bdb73e7a7c18227212e2b4ccbd7f646" => :lion
+    sha256 "0fbfaee7dd9c4793b7e11469528c992e54c3bac3cf5fd584fc808a9774a5bc89" => :el_capitan
+    sha256 "081e91c0e60c56ec3d50141b3082f7fea46d567cd326745022e1dd85e4f7e7d5" => :yosemite
+    sha256 "7b628fb9a2b719794e22518572b1a65828bbd2a029f617d0450e0261b60a207f" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -25,6 +24,13 @@ class SpatialiteGui < Formula
   patch :DATA
 
   def install
+    # Link flags for sqlite don't seem to get passed to make, which
+    # causes builds to fatally error out on linking.
+    # https://github.com/Homebrew/homebrew/issues/44003
+    sqlite = Formula["sqlite"]
+    ENV.prepend "LDFLAGS", "-L#{sqlite.opt_lib} -lsqlite3"
+    ENV.prepend "CFLAGS", "-I#{sqlite.opt_include}"
+
     # Add aui library; reported upstream multiple times:
     # https://groups.google.com/forum/#!searchin/spatialite-users/aui/spatialite-users/wnkjK9pde2E/hVCpcndUP_wJ
     inreplace "configure", "WX_LIBS=\"$(wx-config --libs)\"", "WX_LIBS=\"$(wx-config --libs std,aui)\""
@@ -34,7 +40,6 @@ class SpatialiteGui < Formula
 end
 
 __END__
-
 For some strange reason, wxWidgets does not take the required steps to register
 programs as GUI apps like other toolkits do. This necessitates the creation of
 an app bundle on OS X.

@@ -1,15 +1,16 @@
-require 'formula'
-
 class Z < Formula
-  homepage 'https://github.com/rupa/z'
-  url 'https://github.com/rupa/z/archive/v1.8.tar.gz'
-  sha1 '7906929c23743ae954df758f3828cb225a517c51'
+  desc "Tracks most-used directories to make cd smarter"
+  homepage "https://github.com/rupa/z"
+  url "https://github.com/rupa/z/archive/v1.9.tar.gz"
+  sha256 "e2860e4f65770e02297ca4ca08ec1ee623a658bd9cc1acddbbe5ad22e1de70a7"
 
-  head 'https://github.com/rupa/z.git'
+  head "https://github.com/rupa/z.git"
+
+  bottle :unneeded
 
   def install
-    (prefix/'etc/profile.d').install 'z.sh'
-    man1.install 'z.1'
+    (prefix/"etc/profile.d").install "z.sh"
+    man1.install "z.1"
   end
 
   def caveats; <<-EOS.undent

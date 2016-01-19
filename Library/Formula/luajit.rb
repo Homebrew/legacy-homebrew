@@ -1,24 +1,22 @@
-require "formula"
-
 class Luajit < Formula
+  desc "Just-In-Time Compiler (JIT) for the Lua programming language"
   homepage "http://luajit.org/luajit.html"
-  url "http://luajit.org/download/LuaJIT-2.0.3.tar.gz"
-  sha1 "2db39e7d1264918c2266b0436c313fbd12da4ceb"
-  head "http://luajit.org/git/luajit-2.0.git"
+  url "http://luajit.org/download/LuaJIT-2.0.4.tar.gz"
+  sha256 "620fa4eb12375021bef6e4f237cbd2dd5d49e56beb414bee052c746beef1807d"
   revision 1
+
+  head "http://luajit.org/git/luajit-2.0.git"
+
+  bottle do
+    sha256 "38b21090f297f25d5ff011aebc4dd1b91f1ca8660c9cdbcb61abc9d42c63dd58" => :el_capitan
+    sha256 "56302fd3162c220a4ebdc64481e07665fa76035d0b0fab29eb9375ccb505fc28" => :yosemite
+    sha256 "cdef95c2178de6852d295a596c85f01733e67e54b1e026021b136586a185ad0d" => :mavericks
+  end
 
   devel do
     url "http://luajit.org/git/luajit-2.0.git", :branch => "v2.1"
     version "2.1"
   end
-
-  bottle do
-    sha1 "9a6fc01ed0659ecc07a1e34daecdcf82cd150ca4" => :yosemite
-    sha1 "7ed3346a644ca5cd73c51131c54060b13038208e" => :mavericks
-    sha1 "0363e0a9c7ff2580d35363622b228fba7bb8f770" => :mountain_lion
-  end
-
-  skip_clean "lib/lua/5.1", "share/lua/5.1"
 
   deprecated_option "enable-debug" => "with-debug"
 
@@ -48,9 +46,15 @@ class Luajit < Formula
 
     system "make", "amalg", *args
     system "make", "install", *args
-    # Having an empty Lua dir in Lib can screw with the new Lua setup.
-    rm_rf prefix/"lib/lua"
-    rm_rf prefix/"share/lua"
+
+    # LuaJIT doesn't automatically symlink unversioned libraries:
+    # https://github.com/Homebrew/homebrew/issues/45854.
+    lib.install_symlink lib/"libluajit-5.1.2.0.4.dylib" => "libluajit.dylib"
+    lib.install_symlink lib/"libluajit-5.1.a" => "libluajit.a"
+
+    # Having an empty Lua dir in Lib/share can screw with other Homebrew Luas.
+    rm_rf lib/"lua"
+    rm_rf share/"lua"
   end
 
   test do

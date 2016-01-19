@@ -1,45 +1,55 @@
-require 'formula'
-
 class Tmux < Formula
-  homepage 'http://tmux.sourceforge.net'
-  url 'https://downloads.sourceforge.net/project/tmux/tmux/tmux-1.9/tmux-1.9a.tar.gz'
-  sha1 '815264268e63c6c85fe8784e06a840883fcfc6a2'
+  desc "Terminal multiplexer"
+  homepage "https://tmux.github.io/"
+
+  stable do
+    url "https://github.com/tmux/tmux/releases/download/2.1/tmux-2.1.tar.gz"
+    sha256 "31564e7bf4bcef2defb3cb34b9e596bd43a3937cad9e5438701a81a5a9af6176"
+
+    patch do
+      # This fixes the Tmux 2.1 update that broke the ability to use select-pane [-LDUR]
+      # to switch panes when in a maximized pane https://github.com/tmux/tmux/issues/150#issuecomment-149466158
+      url "https://github.com/tmux/tmux/commit/a05c27a7e1c4d43709817d6746a510f16c960b4b.diff"
+      sha256 "2a60a63f0477f2e3056d9f76207d4ed905de8a9ce0645de6c29cf3f445bace12"
+    end
+  end
 
   bottle do
     cellar :any
     revision 1
-    sha1 "5a5e180e33339671bc8c82ed58c26862da037f30" => :yosemite
-    sha1 "6092f92f5cd7eeb6ddf3b555cd4e655c4c85e826" => :mavericks
-    sha1 "981c8c199a2ea3df18b6651205b4616459ae1f8c" => :mountain_lion
+    sha256 "671875e204c40cfdd202ab734bce872c2089eb69d6f8ba9e0e42e08f76d534a1" => :el_capitan
+    sha256 "bf0b9f1d072017cba16945d6b1777edafe6f5b737d3aa43657a3f041af6503ae" => :yosemite
+    sha256 "0f8cad0fd30933e9ce863a7db647ca197535f79f623ff19b054fb4b03b1c0613" => :mavericks
   end
 
   head do
-    url 'git://git.code.sf.net/p/tmux/tmux-code'
+    url "https://github.com/tmux/tmux.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'libevent'
+  depends_on "pkg-config" => :build
+  depends_on "libevent"
 
   def install
     system "sh", "autogen.sh" if build.head?
 
-    ENV.append "LDFLAGS", '-lresolv'
+    ENV.append "LDFLAGS", "-lresolv"
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--sysconfdir=#{etc}"
-    system "make install"
 
-    bash_completion.install "examples/bash_completion_tmux.sh" => 'tmux'
-    (share/'tmux').install "examples"
+    system "make", "install"
+
+    bash_completion.install "examples/bash_completion_tmux.sh" => "tmux"
+    pkgshare.install "examples"
   end
 
   def caveats; <<-EOS.undent
     Example configurations have been installed to:
-      #{share}/tmux/examples
+      #{opt_pkgshare}/examples
     EOS
   end
 

@@ -1,17 +1,15 @@
-require "formula"
-
 class Libmspub < Formula
+  desc "Interpret and import Microsoft Publisher content"
   homepage "https://wiki.documentfoundation.org/DLP/Libraries/libmspub"
-  url "http://dev-www.libreoffice.org/src/libmspub/libmspub-0.1.1.tar.bz2"
-  sha1 "0a6743a07ee3393bd4437a8bbee12fa62c9cd0f4"
+  url "http://dev-www.libreoffice.org/src/libmspub/libmspub-0.1.2.tar.xz"
+  sha256 "b0baabf82d20c08ad000e80fa02154ce2f2ffde1ee60240d6e3a917c3b35560f"
   revision 1
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "33d70492c8466fdefc361d85d7b9a0e2767ba2fa" => :yosemite
-    sha1 "e9693dff8761210d2f3855374451aad5106464cd" => :mavericks
-    sha1 "3ab66b5c8dd911d46d9796d63659dfe8ae76e3c9" => :mountain_lion
+    sha256 "1071c3b83b68a2e5a67f70151e5f53139b679ffe9d6614de5f25dc297f6720e3" => :el_capitan
+    sha256 "288aa9b5089d530db3ad439e547257d74f9bdaf6c504d11bd732781c0eeb599e" => :yosemite
+    sha256 "610e745c2616ee42fd767ffc02d5df19f02ab05212bf520007e0b821f14869d4" => :mavericks
   end
 
   depends_on "pkg-config" => :build

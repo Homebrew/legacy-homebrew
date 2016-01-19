@@ -1,13 +1,14 @@
 class Libraw < Formula
+  desc "Library for reading RAW files from digital photo cameras"
   homepage "http://www.libraw.org/"
-  url "http://www.libraw.org/data/LibRaw-0.16.0.tar.gz"
-  sha1 "492239aa209b1ddd1f030da4fc2978498c32a29b"
+  url "http://www.libraw.org/data/LibRaw-0.17.1.tar.gz"
+  sha256 "e599651a4cc37e00cfc2d2b56be87c3a4e4dae2c360b680fe9ab3f93d07cdea1"
 
   bottle do
     cellar :any
-    sha1 "49b78411b56fbf825d5170fadb9e81cc0473ab11" => :yosemite
-    sha1 "af54b03cb2b500969ede436f0c15e282b89e8968" => :mavericks
-    sha1 "d527170bd8c1e2bc8b0d755ba69938c4f0cec335" => :mountain_lion
+    sha256 "69f893329b5740b50b5c9c1f06dc56ad5626d1d8ffb44cb1d2c6f8bf823e3dc7" => :el_capitan
+    sha256 "431a9035a872fc91a52eccb1a4d382223065ac0bbfbd2d8b3b2ec5bef5d5de78" => :yosemite
+    sha256 "664d0bc81586f6a1e68b441fbd5e2754f9ebf915630fb3ccb7142c054514f3f6" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -17,21 +18,21 @@ class Libraw < Formula
   resource "librawtestfile" do
     url "http://www.rawsamples.ch/raws/nikon/d1/RAW_NIKON_D1.NEF",
       :using => :nounzip
-    sha1 "d84d47caeb8275576b1c7c4550263de21855cf42"
+    sha256 "7886d8b0e1257897faa7404b98fe1086ee2d95606531b6285aed83a0939b768f"
   end
 
   resource "gpl2" do
-    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.16.0.tar.gz"
-    sha1 "af4959b111e8cd927c3a23cca5ad697521fae3d2"
+    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL2-0.17.0.tar.gz"
+    sha256 "3c5982772f55f0b70c3c7604bc73e8b55f1de7b040e8f144cb220ee88e8bc346"
   end
 
   resource "gpl3" do
-    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.16.0.tar.gz"
-    sha1 "8a709ae35e7a040b78ffb6b9d21faab25f7146cb"
+    url "http://www.libraw.org/data/LibRaw-demosaic-pack-GPL3-0.17.0.tar.gz"
+    sha256 "deca57ed524ab4f9915060360d74c5748e6fe8065fd60ca5e969fe9f578a8a0a"
   end
 
   def install
-    %w(gpl2 gpl3).each {|f| (buildpath/f).install resource(f)}
+    %w[gpl2 gpl3].each { |f| (buildpath/f).install resource(f) }
     system "./configure", "--prefix=#{prefix}",
                           "--disable-dependency-tracking",
                           "--enable-demosaic-pack-gpl2=#{buildpath}/gpl2",

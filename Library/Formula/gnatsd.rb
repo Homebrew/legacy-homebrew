@@ -1,27 +1,25 @@
-require "formula"
-
 class Gnatsd < Formula
-  homepage "http://nats.io"
-  url "https://github.com/apcera/gnatsd/archive/v0.5.6.tar.gz"
+  desc "Lightweight cloud messaging system"
+  homepage "https://nats.io"
+  url "https://github.com/nats-io/gnatsd/archive/v0.6.8.tar.gz"
+  sha256 "13dfc0ef51feaa52fc347d12a972ed800ff1f2a6a816e988ce38bf1dfce1d8eb"
   head "https://github.com/apcera/gnatsd.git"
-  sha1 "b22a0252b838cff91586fb02d9efe31b428e5be2"
 
   bottle do
-    sha1 "f430b3bae19808ceaa007a681b9b5fe9704ff6e3" => :yosemite
-    sha1 "a17cccfd22645af9f895a23a1adc1a65a6bd6852" => :mavericks
-    sha1 "5699c0b45fd4f38d3a24555eef856435cd6e257b" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0f535cf9e5a9f76b148f937da21ab66fa8998fd2b1efeebe57a927dbe6d54049" => :el_capitan
+    sha256 "09d43712f376ea345183662c585a5334cc23e8933aa83bf1862a1d6dac4784f3" => :yosemite
+    sha256 "3fda8657a9758ebbbb305236e9b04fdfbfec556b8c6924e58caa17a4513debbc" => :mavericks
   end
 
   depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
-    mkdir_p "src/github.com/apcera"
-    ln_s buildpath, "src/github.com/apcera/gnatsd"
-    system "go", "install", "github.com/apcera/gnatsd"
-    system "go", "build", "gnatsd.go"
-
-    bin.install "gnatsd"
+    mkdir_p "src/github.com/nats-io"
+    ln_s buildpath, "src/github.com/nats-io/gnatsd"
+    system "go", "install", "github.com/nats-io/gnatsd"
+    system "go", "build", "-o", bin/"gnatsd", "gnatsd.go"
   end
 
   def plist; <<-EOS.undent

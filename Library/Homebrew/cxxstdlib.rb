@@ -6,7 +6,7 @@ class CxxStdlib
   class CompatibilityError < StandardError
     def initialize(formula, dep, stdlib)
       super <<-EOS.undent
-        #{formula.name} dependency #{dep.name} was built with a different C++ standard
+        #{formula.full_name} dependency #{dep.name} was built with a different C++ standard
         library (#{stdlib.type_string} from #{stdlib.compiler}). This may cause problems at runtime.
         EOS
     end
@@ -59,14 +59,14 @@ class CxxStdlib
       next if dep.build?
 
       dep_stdlib = Tab.for_formula(dep.to_formula).cxxstdlib
-      if !compatible_with? dep_stdlib
+      unless compatible_with? dep_stdlib
         raise CompatibilityError.new(formula, dep, dep_stdlib)
       end
     end
   end
 
   def type_string
-    type.to_s.gsub(/cxx$/, 'c++')
+    type.to_s.gsub(/cxx$/, "c++")
   end
 
   def inspect

@@ -1,16 +1,15 @@
-require "formula"
-
 class Xplanetfx < Formula
+  desc "Configure, run or daemonize xplanet for HQ Earth wallpapers"
   homepage "http://mein-neues-blog.de/xplanetFX/"
-  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.5_all.tar.gz"
-  sha256 "12a36f07ab41fcf2b860904f6958c2efc925e3d6eaf20f713cddcce39fb0f250"
-  version "2.6.5"
+  url "http://repository.mein-neues-blog.de:9000/archive/xplanetfx-2.6.7_all.tar.gz"
+  sha256 "c3bbe4c195263688400d527dddf5ac2e0e12e2ad21b762f34f7ee98dc635c7e3"
+  version "2.6.7"
 
   bottle do
-    cellar :any
-    sha256 "67af906a0435ae77661c6aa1d61ec7db8d18cc312c0b687f943d1ab545911b81" => :yosemite
-    sha256 "59702f286c81cbc1a6303f3e39a96989b845c066a1702034ade37fcb345b97cc" => :mavericks
-    sha256 "6a448172bf334bd3bb86e448cd52bb7c41b0057328ccd411de31eda0ecaa4053" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0d43356b923e88fca925c4cae243d730835aa8ca00360db2ac483ab116114b20" => :el_capitan
+    sha256 "8a12d9d88771811cd0afd8d6960e7d4460b79d094864bae869f360952868fe90" => :yosemite
+    sha256 "af47289f8c21bcf51fc7c1394a6e575650f13a1f039025b8c268ee9052befb7c" => :mavericks
   end
 
   option "without-gui", "Build to run xplanetFX from the command-line only"
@@ -40,7 +39,7 @@ class Xplanetfx < Formula
       ENV.prepend_create_path "PYTHONPATH", "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages/gtk-2.0"
       ENV.prepend_create_path "GDK_PIXBUF_MODULEDIR", "#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
     end
-    bin.env_script_all_files(libexec+'bin', :PATH => "#{path}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"])
+    bin.env_script_all_files(libexec+"bin", :PATH => "#{path}:$PATH", :PYTHONPATH => ENV["PYTHONPATH"], :GDK_PIXBUF_MODULEDIR => ENV["GDK_PIXBUF_MODULEDIR"])
   end
 
   def post_install
@@ -49,5 +48,9 @@ class Xplanetfx < Formula
       ENV["GDK_PIXBUF_MODULEDIR"]="#{HOMEBREW_PREFIX}/lib/gdk-pixbuf-2.0/2.10.0/loaders"
       system "#{HOMEBREW_PREFIX}/bin/gdk-pixbuf-query-loaders", "--update-cache"
     end
+  end
+
+  test do
+    system "#{bin}/xplanetFX", "--help"
   end
 end

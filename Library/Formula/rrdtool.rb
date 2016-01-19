@@ -1,21 +1,26 @@
-require 'formula'
-
 class Rrdtool < Formula
-  homepage 'http://oss.oetiker.ch/rrdtool/index.en.html'
-  url 'http://oss.oetiker.ch/rrdtool/pub/rrdtool-1.4.8.tar.gz'
-  sha1 '56d68857f39e70bfa32360947614d8220702ed02'
-  revision 1
+  desc "Round Robin Database"
+  homepage "https://oss.oetiker.ch/rrdtool/index.en.html"
+  url "https://github.com/oetiker/rrdtool-1.x/releases/download/v1.5.5/rrdtool-1.5.5.tar.gz"
+  sha256 "aeb5e58799b6c02e1046e409ceed1b9ed8b3238241d952e0267c7e9be1525a54"
 
   bottle do
-    sha1 "66e4c7cb71218b8071a0e08e6fc76e3d54bd5509" => :yosemite
-    sha1 "f58c34f5e7ca96af0a36f8e11d9c5612d915ba30" => :mavericks
-    sha1 "17793a75d33fb5173fbe97dc01f687a47a56a54e" => :mountain_lion
+    sha256 "40ef7a5538670895456321c7f34e359a88556532be110fe1f5c9b75912678e98" => :el_capitan
+    sha256 "05faf9477d73dcc9880622199f170255db8f7b050502e5e0f6b2685b5c76125f" => :yosemite
+    sha256 "4ad881432a19f31f917a14d793f8838e0fbba140efeca9eb6efe7fbbf60ebdfa" => :mavericks
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'glib'
-  depends_on 'pango'
-  depends_on 'lua' => :optional
+  head do
+    url "https://github.com/oetiker/rrdtool-1.x.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
+  end
+
+  depends_on "pkg-config" => :build
+  depends_on "glib"
+  depends_on "pango"
+  depends_on "lua" => :optional
 
   env :userpaths # For perl, ruby
 
@@ -34,6 +39,7 @@ class Rrdtool < Formula
       --disable-ruby-site-install
     ]
 
+    system "./bootstrap" if build.head?
     system "./configure", *args
 
     # Needed to build proper Ruby bundle

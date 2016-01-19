@@ -1,35 +1,31 @@
-require "formula"
-
 class Phantomjs < Formula
-  homepage "http://www.phantomjs.org/"
-
-  stable do
-    url "https://github.com/ariya/phantomjs/archive/2.0.0.tar.gz"
-    sha256 "0a1338464ca37314037d139b3e0f7368325f5d8810628d9d9f2df9f9f535d407"
-  end
+  desc "Headless WebKit scriptable with a JavaScript API"
+  homepage "http://phantomjs.org/"
+  head "https://github.com/ariya/phantomjs.git"
+  # Temporarily use Vitallium's fork (who is a maintainer) until 2.1.0.
+  url "https://github.com/Vitallium/phantomjs.git",
+      :tag => "2.0.1",
+      :revision => "33aaaff64a197b20076faab1b08b8757516aa976"
 
   bottle do
     cellar :any
-    sha1 "f9dd71edb662479e0f832379368d4cd4878f940e" => :yosemite
-    sha1 "817ab92d4bfcd5496cf1c59173d48976610e5f70" => :mavericks
-    sha1 "887a96e55f67a3d350bc40f910926286c6cea240" => :mountain_lion
+    sha256 "8c1e531d9d6f06a1c8cfd1a8b58de013c67311a63b7ef7527a74c94c96bd1a5b" => :el_capitan
+    sha256 "6d70d6aa35b60f8ae26ac7a40c41ab0cb7e70a55b07abac6d236545116b83822" => :yosemite
+    sha256 "8712122649fa42ca342fa98a4588dac3402f7038e11540e541e6dc80193cbe82" => :mavericks
   end
 
-  # Qt Yosemite build fix. Upstream commit/PR:
-  # https://qt.gitorious.org/qt/qtbase/commit/70e442
-  # https://github.com/ariya/phantomjs/pull/12934
-  patch do
-    url "https://gist.githubusercontent.com/mikemcquaid/db645f7cbeec4f3b1b2e/raw/e664ecc5c259344d5a73a84b52e472bf8ad3733e/phantomjs-yosemite.patch"
-    sha1 "1e723f055ef5df9a2945cbce3e70322105313f47"
-  end
-
-  head "https://github.com/ariya/phantomjs.git"
+  depends_on "openssl"
 
   def install
-    system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
-      "--qt-config", "-openssl-linked"
+    if build.stable?
+      system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
+             "--qt-config", "-I #{Formula["openssl"].opt_include} -L #{Formula["openssl"].opt_lib}"
+    else
+      inreplace "build.py", "/usr/local", HOMEBREW_PREFIX
+      system "./build.py", "--confirm", "--jobs", ENV.make_jobs
+    end
     bin.install "bin/phantomjs"
-    (share+"phantomjs").install "examples"
+    (share/"phantomjs").install "examples"
   end
 
   test do

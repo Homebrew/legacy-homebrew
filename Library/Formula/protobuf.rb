@@ -1,33 +1,43 @@
 class Protobuf < Formula
+  desc "Protocol buffers (Google's data interchange format)"
   homepage "https://github.com/google/protobuf/"
-  url 'https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.bz2'
-  sha1 '6421ee86d8fb4e39f21f56991daa892a3e8d314b'
+
+  stable do
+    url "https://github.com/google/protobuf/releases/download/v2.6.1/protobuf-2.6.1.tar.bz2"
+    sha256 "ee445612d544d885ae240ffbcbf9267faa9f593b7b101f21d58beceb92661910"
+
+    # Fixes the unexpected identifier error when compiling software against protobuf:
+    # https://github.com/google/protobuf/issues/549
+    patch :p1, :DATA
+  end
+
+  bottle do
+    revision 3
+    sha256 "37b136dbe120923bbdccc4131d52b7a4738a9b776bb676e4fc75c908f9ad6e20" => :el_capitan
+    sha256 "79242567bd4febd993338c2203a2734217b18ecf7803d998da1a20660eac15a6" => :yosemite
+    sha256 "8404ff6169a09b622535d47b18993ed0ea90819e9434d169545db5d9442381bd" => :mavericks
+    sha256 "2861639d01fdf0cb8fc70194bde36fd0f16010022c1f2c72e6236aad48fdf522" => :mountain_lion
+  end
 
   devel do
-    url "https://github.com/google/protobuf/archive/v3.0.0-alpha-2.tar.gz"
-    sha256 "46df8649e2a0ce736e37f8f347f92b32a9b8b54d672bf60bd8f6f4d24d283390"
-    version "3.0.0-alpha-2"
+    url "https://github.com/google/protobuf/archive/v3.0.0-beta-1-bzl-fix.tar.gz"
+    sha256 "1b364aff3557c98087969befffd2c8479e6fe70ab3a85009dc260ab65232357a"
+    version "3.0.0-beta-1-bzl-fix"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
   end
 
-  bottle do
-    cellar :any
-    revision 1
-    sha1 "fa7019a4ee16a4bdf0c653dc3fd932dc5a7e1e3b" => :yosemite
-    sha1 "f3ba19bdabe4994c7c69d05897a52be8b13117bf" => :mavericks
-    sha1 "9239ad264a7327cc90d1d3ddb26a27a4de10527f" => :mountain_lion
-  end
-
   # this will double the build time approximately if enabled
-  option "with-check", "Run build-time check"
+  option "with-test", "Run build-time check"
+  deprecated_option "with-check" => "with-test"
 
   option :universal
   option :cxx11
 
-  depends_on :python => :optional
+  option "without-python", "Build without python support"
+  depends_on :python => :recommended if MacOS.version <= :snow_leopard
 
   fails_with :llvm do
     build 2334
@@ -39,8 +49,8 @@ class Protobuf < Formula
   end
 
   resource "python-dateutil" do
-    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.tar.gz"
-    sha256 "23fd0a7c228d9c298c562245290a3f82999586c87aae71250f95f9894cb22c7c"
+    url "https://pypi.python.org/packages/source/p/python-dateutil/python-dateutil-2.4.1.tar.bz2"
+    sha256 "a9f62b12e28f11c732ad8e255721a9c7ab905f9479759491bc1f1e91de548d0f"
   end
 
   resource "pytz" do
@@ -61,7 +71,7 @@ class Protobuf < Formula
   def install
     # Don't build in debug mode. See:
     # https://github.com/Homebrew/homebrew/issues/9279
-    # http://code.google.com/p/protobuf/source/browse/trunk/configure.ac#61
+    # https://github.com/google/protobuf/blob/5c24564811c08772d090305be36fae82d8f12bbe/configure.ac#L61
     ENV.prepend "CXXFLAGS", "-DNDEBUG"
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
@@ -71,7 +81,7 @@ class Protobuf < Formula
                           "--prefix=#{prefix}",
                           "--with-zlib"
     system "make"
-    system "make", "check" if build.with? "check" || build.bottle?
+    system "make", "check" if build.with?("test") || build.bottle?
     system "make", "install"
 
     # Install editor support and examples
@@ -91,11 +101,20 @@ class Protobuf < Formula
       chdir "python" do
         ENV.append_to_cflags "-I#{include}"
         ENV.append_to_cflags "-L#{lib}"
-        args = Language::Python.setup_install_args prefix
+        args = Language::Python.setup_install_args libexec
         args << "--cpp_implementation"
         system "python", *args
       end
+      site_packages = "lib/python2.7/site-packages"
+      pth_contents = "import site; site.addsitedir('#{libexec/site_packages}')\n"
+      (prefix/site_packages/"homebrew-protobuf.pth").write pth_contents
     end
+  end
+
+  def caveats; <<-EOS.undent
+    Editor support and examples have been installed to:
+      #{doc}
+    EOS
   end
 
   test do
@@ -104,7 +123,7 @@ class Protobuf < Formula
         syntax = "proto3";
         package test;
         message TestCase {
-          optional string name = 4;
+          string name = 4;
         }
         message Test {
           repeated TestCase case = 1;
@@ -121,13 +140,24 @@ class Protobuf < Formula
         }
         EOS
     end
-    (testpath/"test.proto").write(testdata)
+    (testpath/"test.proto").write testdata
     system bin/"protoc", "test.proto", "--cpp_out=."
-  end
-
-  def caveats; <<-EOS.undent
-    Editor support and examples have been installed to:
-      #{doc}
-    EOS
+    system "python", "-c", "import google.protobuf" if build.with? "python"
   end
 end
+
+__END__
+diff --git a/src/google/protobuf/descriptor.h b/src/google/protobuf/descriptor.h
+index 67afc77..504d5fe 100644
+--- a/src/google/protobuf/descriptor.h
++++ b/src/google/protobuf/descriptor.h
+@@ -59,6 +59,9 @@
+ #include <vector>
+ #include <google/protobuf/stubs/common.h>
+
++#ifdef TYPE_BOOL
++#undef TYPE_BOOL
++#endif
+
+ namespace google {
+ namespace protobuf {

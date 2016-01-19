@@ -1,13 +1,21 @@
 class Etcd < Formula
+  desc "Key value store for shared configuration and service discovery"
   homepage "https://github.com/coreos/etcd"
-  url "https://github.com/coreos/etcd/archive/v2.0.5.tar.gz"
-  sha256 "ded57e8aac39c8ea7badb9785fbca564b3d768c2482c2d9c40bff83a3dc32ad8"
+  url "https://github.com/coreos/etcd/archive/v2.2.4.tar.gz"
+  sha256 "42a90cad608cf9bc5152abf06b00d7383efc569c35f0c7e88dac378caf5532f4"
   head "https://github.com/coreos/etcd.git"
 
   bottle do
-    sha256 "41f81923a5c7c2fafb2ec1f6c95d354daea8986cf32c4fca56735180fd130a03" => :yosemite
-    sha256 "e3ca3ccf596d76b9a60060e80edc691928617b39df93c5a7dac1bf41895c4554" => :mavericks
-    sha256 "d2ca6ebfe34d406deed30968f491def63c1e06b1239f605203c6ce1990a4d564" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "0318a7cadc81304d8f9ec46daacbd52c240418afb1313db3030d13ff0fdb7c7f" => :el_capitan
+    sha256 "e495f8599b5c4cecc2b25d2747fcb084f3db1f9f06da8e80f135a911c3b960c7" => :yosemite
+    sha256 "96fcdb5e45e6e40c2a57d3a05b54d5d145ff8ebf3b36871b16fcc6b6b3e76a76" => :mavericks
+  end
+
+  devel do
+    url "https://github.com/coreos/etcd/archive/v2.3.0-alpha.0.tar.gz"
+    version "2.3.0-alpha.0"
+    sha256 "6603684824a650c472c791fc7c4cdf6811920f473e01bcfe8b1d95b0fd1f25c6"
   end
 
   depends_on "go" => :build
@@ -17,6 +25,26 @@ class Etcd < Formula
     system "./build"
     bin.install "bin/etcd"
     bin.install "bin/etcdctl"
+  end
+
+  test do
+    begin
+      require "utils/json"
+      test_string = "Hello from brew test!"
+      etcd_pid = fork do
+        exec "etcd", "--force-new-cluster", "--data-dir=#{testpath}"
+      end
+      # sleep to let etcd get its wits about it
+      sleep 10
+      etcd_uri = "http://127.0.0.1:4001/v2/keys/brew_test"
+      system "curl", "--silent", "-L", etcd_uri, "-XPUT", "-d", "value=#{test_string}"
+      curl_output = shell_output "curl --silent -L #{etcd_uri}"
+      response_hash = Utils::JSON.load(curl_output)
+      assert_match(test_string, response_hash.fetch("node").fetch("value"))
+    ensure
+      # clean up the etcd process before we leave
+      Process.kill("HUP", etcd_pid)
+    end
   end
 
   def plist; <<-EOS.undent

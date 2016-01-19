@@ -1,20 +1,19 @@
-require 'formula'
-
 class Dialog < Formula
-  homepage 'http://invisible-island.net/dialog/'
-  url 'ftp://invisible-island.net/dialog/dialog-1.2-20130928.tgz'
-  sha1 '204d852856754817f5590f60ffaa1c07a8ed35ca'
+  desc "Display user-friendly dialog boxes from shell scripts"
+  homepage "http://invisible-island.net/dialog/"
+  url "ftp://invisible-island.net/dialog/dialog-1.2-20150920.tgz"
+  mirror "https://fossies.org/linux/misc/dialog-1.2-20150920.tgz"
+  sha256 "c4e61ec5768701683dd4b5b2ebd8a31e6289fa6a1f5801e4b481085650698c05"
 
   bottle do
-    cellar :any
-    sha1 "ed04a10d2cbe61af48b5a0c5232f9612efb2b6a6" => :yosemite
-    sha1 "bd04f2988844a9be9aed5796aff53365ff635a76" => :mavericks
-    sha1 "4ef77c2932c8a75f79170a98e9434201744e0193" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "55b3ceefe3e40753bef32aa50eeb017a548fbd686f104bda43fdd9319a4b26f5" => :el_capitan
+    sha256 "6fb28b3fb4dad7eb14a3106018d49c0f2e8041b3959be4e1ed2d479fc68fd7eb" => :yosemite
+    sha256 "5b4054f6c85a7a166a6b251a8fa6f2ce83d78fbd32d651fe024ed847af461714" => :mavericks
   end
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make install"
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install-full"
   end
 end

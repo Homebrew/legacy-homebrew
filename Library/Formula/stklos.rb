@@ -1,4 +1,5 @@
 class Stklos < Formula
+  desc "Scheme system compliant with the features defined in R5RS"
   homepage "http://www.stklos.net/"
   url "http://www.stklos.net/download/stklos-1.10.tar.gz"
   sha256 "215e6e6ffcf7751be5f0c114f83286f99e556e089ca1b0ee66f54dd1be080de4"

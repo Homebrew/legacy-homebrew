@@ -1,13 +1,12 @@
-require 'formula'
-
 class Weighttp < Formula
-  homepage 'http://redmine.lighttpd.net/projects/weighttp/wiki'
-  url 'https://github.com/lighttpd/weighttp/archive/weighttp-0.3.tar.gz'
-  sha1 '170b359abd989fe1db26c71e89dc07c3a7caaf05'
+  desc "Webserver benchmarking tool that supports multithreading"
+  homepage "https://redmine.lighttpd.net/projects/weighttp/wiki"
+  url "https://github.com/lighttpd/weighttp/archive/weighttp-0.3.tar.gz"
+  sha256 "376e2311af2decb8f6051e4f968d7c0ba92ca60cd563d768beb4868eb9679f45"
 
-  head 'git://git.lighttpd.net/weighttp'
+  head "git://git.lighttpd.net/weighttp"
 
-  depends_on 'libev'
+  depends_on "libev"
 
   def install
     system "./waf", "configure"
@@ -16,6 +15,6 @@ class Weighttp < Formula
   end
 
   test do
-    system "#{bin}/weighttp", "-n", "1", "http://redmine.lighttpd.net/projects/weighttp/wiki"
+    system "#{bin}/weighttp", "-n", "1", "https://redmine.lighttpd.net/projects/weighttp/wiki"
   end
 end

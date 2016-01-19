@@ -1,4 +1,4 @@
-require 'requirement'
+require "requirement"
 
 class MaximumMacOSRequirement < Requirement
   fatal true
@@ -8,11 +8,12 @@ class MaximumMacOSRequirement < Requirement
     super
   end
 
-  satisfy { MacOS.version <= @version }
+  satisfy(:build_env => false) { MacOS.version <= @version }
 
   def message
     <<-EOS.undent
-      OS X #{@version.pretty_name} or older is required.
+      This formula either does not compile or function as expected on OS X
+      versions newer than #{@version.pretty_name} due to an upstream incompatibility.
     EOS
   end
 end

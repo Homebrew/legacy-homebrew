@@ -1,14 +1,21 @@
 class Entr < Formula
+  desc "Run arbitrary commands when files change"
   homepage "http://entrproject.org/"
-  url "http://entrproject.org/code/entr-3.1.tar.gz"
-  mirror "https://bitbucket.org/eradman/entr/get/entr-3.1.tar.gz"
-  sha256 "f0f27e8fc610936f5ec72891687fc77e0df0b21172f14e85ff381d2fe5e3aadd"
+  url "http://entrproject.org/code/entr-3.3.tar.gz"
+  mirror "https://bitbucket.org/eradman/entr/get/entr-3.3.tar.gz"
+  sha256 "701cb7b0a72b6c9ba794ad7cc15b6ebcc2e0c978bb6906c8ae407567a044461f"
 
   bottle do
-    cellar :any
-    sha256 "542fb9bb0afac1abf0cf0ab2453f2306dae13c16f49acfd4f0b9d0bfbb3d4fdd" => :yosemite
-    sha256 "63067a6f69ff0f08e11051122d90c3aa6e6725546541149015d905b14296812f" => :mavericks
-    sha256 "1e5079627fddee8edb06f74153ad6de06d507032467b8ecfc241c28a943b740e" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "8bd2c5ee9826218a7b6ed66398a40f8f4516ce6cf64bf39d78a88fbb6f82c71a" => :el_capitan
+    sha256 "a1ba1bce58f151292922500142e7166120a2cb572d0b7fb08a81ee501e841698" => :yosemite
+    sha256 "5284c5f631a02c76411453667f401793292fee0304e3727422fcc8efdedd2f85" => :mavericks
+  end
+
+  head do
+    url "https://bitbucket.org/eradman/entr", :using => :hg
+    depends_on :hg => :build
   end
 
   def install
@@ -25,6 +32,6 @@ class Entr < Formula
       sleep 0.5
       touch testpath/"test.2"
     end
-    assert_equal "New File", pipe_output("#{bin}/entr -d echo 'New File'", testpath).strip
+    assert_equal "New File", pipe_output("#{bin}/entr -p -d echo 'New File'", testpath).strip
   end
 end

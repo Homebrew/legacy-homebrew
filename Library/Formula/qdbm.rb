@@ -1,4 +1,5 @@
 class Qdbm < Formula
+  desc "QDBM is a library of routines for managing a database"
   homepage "http://fallabs.com/qdbm"
   url "http://fallabs.com/qdbm/qdbm-1.8.78.tar.gz"
   sha256 "b466fe730d751e4bfc5900d1f37b0fb955f2826ac456e70012785e012cdcb73e"

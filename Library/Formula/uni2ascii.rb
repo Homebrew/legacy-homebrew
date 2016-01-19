@@ -1,7 +1,10 @@
-# encoding: UTF-8
 class Uni2ascii < Formula
+  desc "Bi-directional conversion between UTF-8 and various ASCII flavors"
+  # homepage/url: "the website you are looking for is suspended"
+  # Switched to Debian mirrors June 2015.
   homepage "http://billposer.org/Software/uni2ascii.html"
-  url "http://billposer.org/Software/Downloads/uni2ascii-4.18.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/u/uni2ascii/uni2ascii_4.18.orig.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/u/uni2ascii/uni2ascii_4.18.orig.tar.gz"
   sha256 "9e24bb6eb2ced0a2945e2dabed5e20c419229a8bf9281c3127fa5993bfa5930e"
 
   bottle do
@@ -19,9 +22,9 @@ class Uni2ascii < Formula
 
   test do
     # uni2ascii
-    assert_equal "0x00E9", shell_output("printf é | #{bin}/uni2ascii -q")
+    assert_equal "0x00E9", pipe_output("#{bin}/uni2ascii -q", "é")
 
     # ascii2uni
-    assert_equal "e\n", shell_output("printf 0x65 | #{bin}/ascii2uni -q")
+    assert_equal "e\n", pipe_output("#{bin}/ascii2uni -q", "0x65")
   end
 end

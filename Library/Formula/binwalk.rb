@@ -1,71 +1,62 @@
-require 'formula'
-
 class Binwalk < Formula
-  homepage 'http://binwalk.org/'
-  revision 1
-  stable do
-    url "https://github.com/devttys0/binwalk/archive/v2.0.1.tar.gz"
-    sha1 "b0ec783cbf72db358c5118a3052fc1ccf446d8f3"
-  end
+  desc "Searches a binary image for embedded files and executable code"
+  homepage "http://binwalk.org/"
+  url "https://github.com/devttys0/binwalk/archive/v2.1.1.tar.gz"
+  sha256 "1b70a5b03489d29f60fef18008a2164974234874faab48a4f47ec53d461d284a"
+  head "https://github.com/devttys0/binwalk.git"
 
   bottle do
-    sha1 "1e362f93da17ea847a8c530ad974997924b56e21" => :yosemite
-    sha1 "b3609a7247efb277db829f8c1e0957a438d3ac56" => :mavericks
-    sha1 "bf116d4f9ffe7ef055e1e04691e63167ecfbaf71" => :mountain_lion
+    sha256 "7c45d823c2fc4eae924ebda88a59fa1ea793bbc43346816a48da9f87931a13ec" => :el_capitan
+    sha256 "764a4275eb3ffa1317cdb9d38a9af75490717fb5eb0efd84b3968a11443a1a1e" => :yosemite
+    sha256 "8b5210a335b36d32040061b611ad122828877a7df8138dc544c566b16542fcee" => :mavericks
   end
 
-  head do
-    url 'https://github.com/devttys0/binwalk.git'
-    depends_on "automake" => :build
-    depends_on "autoconf" => :build
+  option "with-matplotlib", "Check for presence of matplotlib, which is required for entropy graphing support"
+  option "with-capstone", "Enable disasm options via capstone"
 
-    patch do
-      url "https://gist.github.com/balr0g/a917b31318016c63a72d/raw/d434c3ceaa57438d39344e760990e9268893ce5f/binwalk-head-201140712.patch"
-      sha1 "2e000654968d2c8ad17b7fc46924300cf01bbfed"
-    end
-  end
-
-  option 'with-matplotlib', 'Check for presence of matplotlib, which is required for entropy graphing support'
-
-  depends_on 'swig' => :build
+  depends_on "swig" => :build
   depends_on :fortran
-  depends_on 'libmagic' => 'with-python'
-  depends_on 'matplotlib' => :python if build.with? 'matplotlib'
-  depends_on 'pyside'
+  depends_on "matplotlib" => :python if build.with? "matplotlib"
+  depends_on "pyside"
   depends_on :python if MacOS.version <= :snow_leopard
-  depends_on 'p7zip'
-  depends_on 'ssdeep'
-  depends_on 'xz'
+  depends_on "p7zip"
+  depends_on "ssdeep"
+  depends_on "xz"
 
-  resource 'pyqtgraph' do
-    url 'http://www.pyqtgraph.org/downloads/pyqtgraph-0.9.8.tar.gz'
-    sha1 '4ea6891f562c09ff13555ccb33fe05c315a70cf1'
+  resource "pyqtgraph" do
+    url "http://www.pyqtgraph.org/downloads/pyqtgraph-0.9.10.tar.gz"
+    sha256 "4c0589774e3c8b0c374931397cf6356b9cc99a790215d1917bb7f015c6f0729a"
   end
 
-  resource 'numpy' do
-    url "http://downloads.sourceforge.net/project/numpy/NumPy/1.8.1/numpy-1.8.1.tar.gz"
-    sha1 "8fe1d5f36bab3f1669520b4c7d8ab59a21a984da"
+  resource "numpy" do
+    url "https://pypi.python.org/packages/source/n/numpy/numpy-1.10.2.tar.gz"
+    sha256 "23a3befdf955db4d616f8bb77b324680a80a323e0c42a7e8d7388ef578d8ffa9"
   end
 
-  resource 'scipy' do
-    url "http://downloads.sourceforge.net/project/scipy/scipy/0.14.0/scipy-0.14.0.tar.gz"
-    sha1 "faf16ddf307eb45ead62a92ffadc5288a710feb8"
+  resource "scipy" do
+    url "https://downloads.sourceforge.net/project/scipy/scipy/0.16.1/scipy-0.16.1.tar.gz"
+    sha256 "ecd1efbb1c038accb0516151d1e6679809c6010288765eb5da6051550bf52260"
+  end
+
+  resource "capstone" do
+    url "https://pypi.python.org/packages/source/c/capstone/capstone-3.0.4.tar.gz"
+    sha256 "945d3b8c3646a1c3914824c416439e2cf2df8969dd722c8979cdcc23b40ad225"
   end
 
   def install
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
-    numpy_args = [ "build", "--fcompiler=gnu95",
-                   "install", "--prefix=#{libexec}" ]
-    resource('numpy').stage { system "python", "setup.py", *numpy_args }
-    scipy_args = [ "build", "--fcompiler=gnu95",
-                   "install", "--prefix=#{libexec}" ]
-    resource('scipy').stage { system "python", "setup.py", *scipy_args }
-    pyqtgraph_args = [ "setup.py", "install", "--prefix=#{libexec}" ]
-    resource('pyqtgraph').stage { system "python", *pyqtgraph_args }
+    ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
+    res = %w[numpy scipy pyqtgraph]
+    res += %w[capstone] if build.with? "capstone"
+    res.each do |r|
+      resource(r).stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
 
-    system "autoreconf -f" if build.head?
-    system "./configure", "--prefix=#{prefix}", "--disable-bundles"
-    system "make install"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    system "python", *Language::Python.setup_install_args(libexec)
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

@@ -1,18 +1,17 @@
-require "formula"
-
 class RakudoStar < Formula
+  desc "Perl 6 compiler"
   homepage "http://rakudo.org/"
-  url "http://rakudo.org/downloads/star/rakudo-star-2015.02.tar.gz"
-  sha256 "e54309b0d79afc1491767110ec39a1aa7d9314d93e29dbaab082014cfb055611"
+  url "http://rakudo.org/downloads/star/rakudo-star-2015.11.tar.gz"
+  sha256 "714aed706706f02efeadc0d7e4c7ad216de5ded80d4a1b2879c275d5d05beae7"
 
   bottle do
-    sha1 "317094904815718655392b889726bea877c1be4b" => :yosemite
-    sha1 "16287a574e0281a0469083226c377ccbfd4ef7ee" => :mavericks
-    sha1 "61f4e27a76d371d8c7721f0d7a70df02fe4e97d8" => :mountain_lion
+    revision 1
+    sha256 "ad1afb2118e92cdb8346a44d79bce84402a97f1684200e196d60f992c77ef761" => :el_capitan
+    sha256 "ef13d148a2c29823396c802df05d5660599e625bbe8986459a1e0831ff31922e" => :yosemite
+    sha256 "5859e7ac8ea70001bedd2eb636084fac81a37a208c067661a4fdd003aa9e3759" => :mavericks
   end
 
   option "with-jvm", "Build also for jvm as an alternate backend."
-  option "with-parrot", "Build also for parrot as an alternate backend."
 
   conflicts_with "parrot"
 
@@ -31,16 +30,11 @@ class RakudoStar < Formula
     backends = ["moar"]
     generate = ["--gen-moar"]
 
-    if build.with? "jvm"
-      backends << "jvm"
-    end
-    if build.with? "parrot"
-      backends << "parrot"
-      generate << "--gen-parrot"
-    end
+    backends << "jvm" if build.with? "jvm"
+
     system "perl", "Configure.pl", "--prefix=#{prefix}", "--backends=" + backends.join(","), *generate
     system "make"
-    system "make install"
+    system "make", "install"
 
     # Move the man pages out of the top level into share.
     # Not all backends seem to generate man pages at this point (moar does not, parrot does),

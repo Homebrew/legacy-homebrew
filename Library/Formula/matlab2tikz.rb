@@ -1,11 +1,11 @@
-require "formula"
-
 class Matlab2tikz < Formula
-  homepage "https://github.com/nschloe/matlab2tikz"
-  url "https://github.com/nschloe/matlab2tikz/archive/0.5.0.tar.gz"
-  sha1 "1c53d378be87fc9ca43c921ab7193257ea416864"
+  desc "Convert MATLAB(R) figures into TikZ/Pgfplots figures"
+  homepage "https://github.com/matlab2tikz/matlab2tikz"
+  url "https://github.com/matlab2tikz/matlab2tikz/archive/1.0.0.tar.gz"
+  sha256 "16d212f333afa100f2ec307c85957532ceb8163aebc7021770dfc68f6f2f8f1a"
+  head "https://github.com/matlab2tikz/matlab2tikz.git"
 
-  head "https://github.com/nschloe/matlab2tikz.git"
+  bottle :unneeded
 
   def install
     (share/"matlab2tikz").install Dir["src/*"]

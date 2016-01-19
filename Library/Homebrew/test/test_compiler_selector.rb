@@ -1,6 +1,6 @@
-require 'testing_env'
-require 'compilers'
-require 'software_spec'
+require "testing_env"
+require "compilers"
+require "software_spec"
 
 class CompilerSelectorTests < Homebrew::TestCase
   class Double < SoftwareSpec

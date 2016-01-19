@@ -1,19 +1,19 @@
-require "formula"
-
 class Lv2 < Formula
+  desc "Portable plugin standard for audio systems"
   homepage "http://lv2plug.in"
-  url "http://lv2plug.in/spec/lv2-1.10.0.tar.bz2"
-  sha1 "182f8358808719edfcad535ff9c53d3e1dbce3f4"
+  url "http://lv2plug.in/spec/lv2-1.12.0.tar.bz2"
+  sha256 "7a4a53138f10ed997174c8bc5a8573d5f5a5d8441aaac2de6cf2178ff90658e9"
 
   bottle do
-    cellar :any
-    sha1 "df2e95bc5e66e21910b24296e7abf5bf38f521ed" => :yosemite
-    sha1 "f61a2ea63098cbcebe6747bd855aa45c8c1cdbde" => :mavericks
-    sha1 "e435c12326408f004e3bcda8506a1093b8bf8d09" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "8ad6c88d4ea316fc2e1e15504b3cc88e634e072508932e4278da6824471ac539" => :el_capitan
+    sha256 "a4a75ab0aca13e96c7fe10568ddd905bd511909e3a1cb84d1f640cce6e90acc6" => :yosemite
+    sha256 "ce29adad60e4b904f15e15cfde2cd07f5a2490e7053279a605db0b87a0e7bdd1" => :mavericks
   end
 
   def install
-    system "./waf", "configure", "--prefix=#{prefix}", "--lv2dir=#{share}/lv2", "--no-plugins"
+    system "./waf", "configure", "--prefix=#{prefix}", "--no-plugins"
     system "./waf", "build"
     system "./waf", "install"
   end

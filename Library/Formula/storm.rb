@@ -1,10 +1,19 @@
 class Storm < Formula
-  homepage "http://storm.apache.org"
-  url "http://www.apache.org/dyn/closer.cgi?path=storm/apache-storm-0.9.3/apache-storm-0.9.3.tar.gz"
-  sha1 "33545afc72281d6e8b497fcbdf2b9944eebb83aa"
+  desc "Distributed realtime computation system to process data streams"
+  homepage "https://storm.apache.org"
+  url "https://www.apache.org/dyn/closer.cgi?path=storm/apache-storm-0.10.0/apache-storm-0.10.0.tar.gz"
+  sha256 "066d1f5343333efd9187d7b850047cf9b3f63d885811e9fdd6e50f949b432f62"
+
+  bottle :unneeded
+
+  conflicts_with "stormssh", :because => "both install 'storm' binary"
 
   def install
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/storm"
+  end
+
+  test do
+    system bin/"storm", "version"
   end
 end

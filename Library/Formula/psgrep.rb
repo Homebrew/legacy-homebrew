@@ -1,11 +1,12 @@
-require 'formula'
-
 class Psgrep < Formula
-  homepage 'http://code.google.com/p/psgrep/'
-  url 'https://psgrep.googlecode.com/files/psgrep-1.0.6.tar.bz2'
-  sha1 'fe1102546971358a5eff2cff613d70ee63395444'
+  desc "Shortcut for the 'ps aux | grep' idiom"
+  homepage "https://github.com/jvz/psgrep"
+  # might be dead soon: https://github.com/jvz/psgrep/issues/2
+  url "https://psgrep.googlecode.com/files/psgrep-1.0.6.tar.bz2"
+  sha256 "6da723575c768e5a2a61f67eb7fdf57ca942b897496ede524d19ea75e2c4ddac"
+  head "https://github.com/jvz/psgrep.git"
 
-  head 'http://psgrep.googlecode.com/hg/'
+  bottle :unneeded
 
   def install
     bin.install "psgrep"
@@ -13,8 +14,6 @@ class Psgrep < Formula
   end
 
   test do
-    output = `#{bin}/psgrep #{Process.pid}`
-    assert output.include?($0)
-    assert_equal 0, $?.exitstatus
+    assert_match $0, shell_output("#{bin}/psgrep #{Process.pid}")
   end
 end

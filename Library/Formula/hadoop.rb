@@ -1,8 +1,11 @@
 class Hadoop < Formula
+  desc "Framework for distributed processing of large data sets"
   homepage "https://hadoop.apache.org/"
-  url "http://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
-  mirror "https://archive.apache.org/dist/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz"
-  sha1 "5b5fb72445d2e964acaa62c60307168c009d57c5"
+  url "https://www.apache.org/dyn/closer.cgi?path=hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
+  mirror "https://archive.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
+  sha256 "991dc34ea42a80b236ca46ff5d207107bcc844174df0441777248fdb6d8c9aa0"
+
+  bottle :unneeded
 
   depends_on :java
 

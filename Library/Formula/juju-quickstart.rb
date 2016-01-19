@@ -1,25 +1,24 @@
-require "formula"
-
 class JujuQuickstart < Formula
+  desc "Opinionated command-line tool for quickly starting Juju"
   homepage "https://launchpad.net/juju-quickstart"
-  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.0.1.tar.gz"
-  sha1 "603cf03a47e91d83f3d6032b99e0e7fdf07ecfcd"
+  url "https://pypi.python.org/packages/source/j/juju-quickstart/juju-quickstart-2.2.4.tar.gz"
+  sha256 "fb01c8b48fe8b1e5d75ad3bc29527e78f5b4aadbe464b96e06ba15662a1edaac"
 
   bottle do
-    cellar :any
-    sha256 "419bab189ed2bb0fdeb9af6968a7cb16372b7380c221f80c3f1419f2c6cbb090" => :yosemite
-    sha256 "77192413d3fd484e0c53b294e5051b813e9654d6eca1ea6443dde8c0600b577a" => :mavericks
-    sha256 "5b1cf409c5d3491d12f8c9ef2c4f0c40db93604e29048c0a29a803e36bcc8ac2" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "a6dd9cb553b399995f36a076ffdb949f429a46a312bd9d8580ba28d3fe172b2a" => :el_capitan
+    sha256 "55994b277c93c19b9534f56ac23c183ec0f27e7441609107e510f892e2e98c86" => :yosemite
+    sha256 "b4c3a7b5d42d808bd96ec8b1a398e4d2950e1f5e3c0d1e00cfd259069e1191f5" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "juju"
 
   def install
-    ENV.prepend_create_path 'PYTHONPATH', libexec+'lib/python2.7/site-packages'
+    ENV.prepend_create_path "PYTHONPATH", libexec+"lib/python2.7/site-packages"
     system "python", "setup.py", "install", "--prefix=#{libexec}"
-    bin.install Dir[libexec/'bin/juju-quickstart']
-    bin.env_script_all_files(libexec+'bin', :PYTHONPATH => ENV['PYTHONPATH'])
+    bin.install Dir[libexec/"bin/juju-quickstart"]
+    bin.env_script_all_files(libexec+"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
   test do

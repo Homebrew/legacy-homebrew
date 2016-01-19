@@ -1,34 +1,20 @@
-require "formula"
-
 class Platypus < Formula
+  desc "Create OS X applications from {Perl,Ruby,sh,Python} scripts"
   homepage "http://sveinbjorn.org/platypus"
-  url "https://raw.githubusercontent.com/sveinbjornt/Platypus/4.8/Releases/platypus4.8.src.zip"
-  sha1 "39d165b9579600cef637b45c70c82307697bb7be"
+  url "http://sveinbjorn.org/files/software/platypus/platypus5.0.src.zip"
+  version "5.0"
+  sha256 "53efa052920a0f8a0fcc6a5d5806447be1270279aa98961cb5cea34447a79706"
   head "https://github.com/sveinbjornt/Platypus.git"
 
   bottle do
-    cellar :any
-    revision 1
-    sha1 "5a139598aec4a7e83d3c3ce662b3ab16f9503e0c" => :yosemite
-    sha1 "dcd15ab5fb3068899164c7be0fb2c7690383b788" => :mavericks
-    sha1 "502dd32f63eff7c2028a5197636335a43665c226" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "c48c2b021df9de8b3e14e6b662eda5e1d8952820a50e05297e4cc51998b15980" => :el_capitan
+    sha256 "bee357b4dfb3ae25bb2ae31ffe61e5fd0d29076426f587f45096480c998500e6" => :yosemite
   end
 
-  depends_on :xcode => :build
+  depends_on :xcode => ["7.0", :build]
 
   def install
-    # 4.8 tarball has extra __MACOSX folder, so go to the right one
-    # The head tarball only has a single folder in it
-    cd "Platypus 4.8 Source" if build.stable?
-
-    if build.stable? and MacOS.version >= :mountain_lion
-      # Platypus wants to use a compiler that isn't shipped with recent versions of XCode.
-      # See https://github.com/Homebrew/homebrew/pull/22618#issuecomment-24898050
-      # and https://github.com/sveinbjornt/Platypus/issues/22
-
-      inreplace "Platypus.xcodeproj/project.pbxproj", "GCC_VERSION", "//GCC_VERSION"
-    end
-
     xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
                "-project", "Platypus.xcodeproj",
                "-target", "platypus",
@@ -42,10 +28,9 @@ class Platypus < Formula
 
     bin.install "platypus_clt" => "platypus"
 
-    cd "ScriptExec.app/Contents" do
+    cd "build/UninstalledProducts/macosx/ScriptExec.app/Contents" do
       (share/"platypus").install "Resources/MainMenu.nib", "MacOS/ScriptExec"
     end
-
   end
 
   test do

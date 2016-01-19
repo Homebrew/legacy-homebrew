@@ -1,9 +1,10 @@
-require "formula"
-
 class Duply < Formula
+  desc "Frontend to the duplicity backup system"
   homepage "http://duply.net"
-  url "https://downloads.sourceforge.net/project/ftplicity/duply%20(simple%20duplicity)/1.9.x/duply_1.9.1.tgz"
-  sha1 "b4a53f6ebc207185ae5c0b5f98bf46cf961def1a"
+  url "https://downloads.sourceforge.net/project/ftplicity/duply%20\(simple%20duplicity\)/1.11.x/duply_1.11.1.tgz"
+  sha256 "128792962bbd1509e875bd91e613be3aa1263e6edb57815957e07d54346bc02d"
+
+  bottle :unneeded
 
   depends_on "duplicity"
 

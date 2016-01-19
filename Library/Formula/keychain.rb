@@ -1,10 +1,11 @@
-require 'formula'
-
 class Keychain < Formula
-  homepage 'http://www.funtoo.org/wiki/Keychain'
-  url 'http://ftp.heanet.ie/mirrors/funtoo/distfiles/keychain/keychain-2.7.1.tar.bz2'
-  mirror 'http://www.funtoo.org/archive/keychain/keychain-2.7.1.tar.bz2'
-  sha1 'e7ad7da374ba81e57792bb2695eb6c352f769de7'
+  desc "User-friendly front-end to ssh-agent(1)"
+  homepage "http://www.funtoo.org/Keychain"
+  url "http://build.funtoo.org/distfiles/keychain/keychain-2.8.1.tar.bz2"
+  mirror "https://distfiles.macports.org/keychain/keychain-2.8.1.tar.bz2"
+  sha256 "1568c0946db3638fe081d5a7ba3df022b533dbeb8aa67cd07dc8276e87598809"
+
+  bottle :unneeded
 
   def install
     bin.install "keychain"

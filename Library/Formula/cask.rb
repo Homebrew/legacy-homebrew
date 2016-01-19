@@ -1,35 +1,32 @@
-require "formula"
-
-class NewEnoughEmacs < Requirement
-  fatal true
-  default_formula "emacs"
-
-  def satisfied?
-    major_version = `emacs --batch --eval "(princ emacs-major-version)"`.to_i
-    major_version >= 23
-  end
-
-  def message
-    "Emacs 23 or later is required to run cask."
-  end
-end
-
 class Cask < Formula
-  homepage "http://cask.readthedocs.org/"
-  url "https://github.com/cask/cask/archive/v0.7.2.tar.gz"
-  sha1 "2c8012487f06c6b4f47ce56bd021bb71753f1bd0"
+  desc "Emacs dependency management"
+  homepage "https://cask.readthedocs.org/"
+  url "https://github.com/cask/cask/archive/v0.7.4.tar.gz"
+  sha256 "b183ea1c50fc215c9040f402b758ecc335901fbc2c3afd4a7302386c888d437d"
   head "https://github.com/cask/cask.git"
 
-  depends_on NewEnoughEmacs
+  bottle :unneeded
+
+  depends_on :emacs => ["24", :run]
 
   def install
-    zsh_completion.install "etc/cask_completion.zsh"
     bin.install "bin/cask"
-    prefix.install Dir["*.el"]
     prefix.install "templates"
-    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask-bootstrap.el"
-    (share/"emacs/site-lisp").install_symlink "#{prefix}/cask.el"
+    # Lisp files must stay here: https://github.com/cask/cask/issues/305
+    prefix.install Dir["*.el"]
+    elisp.install_symlink "#{prefix}/cask.el"
+    elisp.install_symlink "#{prefix}/cask-bootstrap.el"
+
     # Stop cask performing self-upgrades.
     touch prefix/".no-upgrade"
+  end
+
+  test do
+    (testpath/"Cask").write <<-EOS.undent
+      (source gnu)
+      (depends-on "chess")
+    EOS
+    system bin/"cask", "install"
+    (testpath/".cask").directory?
   end
 end

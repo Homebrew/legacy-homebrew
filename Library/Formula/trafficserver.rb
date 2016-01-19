@@ -1,94 +1,89 @@
 class Trafficserver < Formula
+  desc "HTTP/1.1 compliant caching proxy server"
   homepage "https://trafficserver.apache.org/"
-  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-5.2.0.tar.bz2"
-  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-5.2.0.tar.bz2"
-  sha256 "e3a265dd3188edaa7b8ad2bb54b0030c23588b48abb02890363db1374aac68d3"
-  revision 1
+  url "https://www.apache.org/dyn/closer.cgi?path=trafficserver/trafficserver-6.0.0.tar.bz2"
+  mirror "https://archive.apache.org/dist/trafficserver/trafficserver-6.0.0.tar.bz2"
+  sha256 "1ef6a9ed1d53532bbe2c294d86d4103a0140e3f23a27970936366f1bc8feb3d1"
+
+  bottle do
+    revision 2
+    sha256 "b815aa4c085ee9ea10064260fe58e0d46264d283915ceaac3f48ce96b1e94ac6" => :el_capitan
+    sha256 "ab5d00a893335cc2cd763819b617d20b7c4675b4276bd665d2db6695d382f28c" => :yosemite
+    sha256 "70f63d966cfbe960218fe8cc12b8fe5644a4d619642446ba45ec5a81fc99752c" => :mavericks
+  end
 
   head do
     url "https://github.com/apache/trafficserver.git"
-
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool"  => :build
   end
 
-  bottle do
-    sha256 "26c2989bc8abffcb704dfec98738bfe64788bd857f4e33f1559d843d585d19fb" => :yosemite
-    sha256 "720cf540ae6d4088a463cd57ed2d683b3641ac96615d5b97fcd89102595ceb48" => :mavericks
-    sha256 "cef715a09849d0ce15a0cb446e3ed2a471f822361c82c4d7b04e3420d75e7373" => :mountain_lion
-  end
-
   option "with-spdy", "Build with SPDY protocol support"
+  option "with-experimental-plugins", "Enable experimental plugins"
 
   depends_on "openssl"
   depends_on "pcre"
+
   if build.with? "spdy"
     depends_on "spdylay"
     depends_on "pkg-config" => :build
   end
 
-  # patch openssl 1.0.2 tls1.h detection, remove on 5.3.0 (upstream bug TS-3443)
-  patch :DATA if build.stable?
+  needs :cxx11
 
   def install
+    ENV.cxx11
     # Needed for correct ./configure detections.
     ENV.enable_warnings
     # Needed for OpenSSL headers on Lion.
     ENV.append_to_cflags "-Wno-deprecated-declarations"
-    system "autoreconf", "-fvi" if build.head?
-    args = [
-      "--prefix=#{prefix}",
-      "--mandir=#{man}",
-      "--with-openssl=#{Formula["openssl"].opt_prefix}",
-      "--with-user=#{ENV["USER"]}",
-      "--with-group=admin"
+    # Fix lib/perl/Makefile.pl failing with:
+    # Only one of PREFIX or INSTALL_BASE can be given.  Not both.
+    ENV.delete "PERL_MM_OPT"
+
+    (var/"log/trafficserver").mkpath
+    (var/"trafficserver").mkpath
+
+    args = %W[
+      --prefix=#{prefix}
+      --mandir=#{man}
+      --localstatedir=#{var}
+      --sysconfdir=#{etc}/trafficserver
+      --with-openssl=#{Formula["openssl"].opt_prefix}
+      --with-group=admin
+      --disable-silent-rules
     ]
+
     args << "--enable-spdy" if build.with? "spdy"
+    args << "--enable-experimental-plugins" if build.with? "experimental-plugins"
+
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
+
     # Fix wrong username in the generated startup script for bottles.
-    inreplace "rc/trafficserver.in", "@pkgsysuser@", '$USER'
+    inreplace "rc/trafficserver.in", "@pkgsysuser@", "$USER"
+    if build.with? "experimental-plugins"
+      # Disable mysql_remap plugin due to missing symbol compile error:
+      # https://issues.apache.org/jira/browse/TS-3490
+      inreplace "plugins/experimental/Makefile", " mysql_remap", ""
+    end
+
     system "make" if build.head?
     system "make", "install"
   end
 
+  def post_install
+    config = etc/"trafficserver/records.config"
+    return unless File.exist?(config)
+    return if File.read(config).include?("proxy.config.admin.user_id STRING #{ENV["USER"]}")
+
+    File.open("#{config}", "a") do |f|
+      f.puts "CONFIG proxy.config.admin.user_id STRING #{ENV["USER"]}"
+    end
+  end
+
   test do
-    system "#{bin}/trafficserver", "status"
+    assert_match "Apache Traffic Server is not running.", shell_output("#{bin}/trafficserver status").chomp
   end
 end
-
-__END__
---- a/configure	2015-03-15 05:01:02.000000000 +0100
-+++ b/configure	2015-03-15 05:08:09.000000000 +0100
-@@ -22608,7 +22608,7 @@
-     done
-   fi
-
--  for ac_header in openssl/tls1.h openssl/ssl.h openssl/ts.h
-+  for ac_header in openssl/ssl.h openssl/ts.h
- do :
-   as_ac_Header=`$as_echo "ac_cv_header_$ac_header" | $as_tr_sh`
- ac_fn_c_check_header_mongrel "$LINENO" "$ac_header" "$as_ac_Header" "$ac_includes_default"
-@@ -22621,6 +22621,22 @@
-
- done
-
-+  for ac_header in openssl/tls1.h
-+do :
-+  ac_fn_c_check_header_compile "$LINENO" "openssl/tls1.h" "ac_cv_header_openssl_tls1_h" " #if HAVE_OPENSSL_SSL_H
-+#include <openssl/ssl.h>
-+#include <openssl/tls1.h>
-+#endif
-+"
-+if test "x$ac_cv_header_openssl_tls1_h" = xyes; then :
-+  cat >>confdefs.h <<_ACEOF
-+#define HAVE_OPENSSL_TLS1_H 1
-+_ACEOF
-+
-+fi
-+
-+done
-+
-   # We are looking for SSL_CTX_set_tlsext_servername_callback, but it's a
-   # macro, so AC_CHECK_FUNCS is not going to do the business.
-   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for SSL_CTX_set_tlsext_servername_callback" >&5

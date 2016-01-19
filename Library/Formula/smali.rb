@@ -1,37 +1,36 @@
-require "formula"
-
 class Smali < Formula
-  homepage "http://smali.googlecode.com/"
-  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.3.jar", :using => :nounzip
-  sha1 "42774f5d949add1739299785feb83f3dec32f240"
+  desc "Assembler/disassembler for Android's Java VM implementation"
+  homepage "https://github.com/JesusFreke/smali"
+  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.1.1.jar"
+  sha256 "593f084064f8e3b77b0a211f9b94227fe31e3bfde2af558cc31382e0e3c68cc7"
 
   bottle do
-    cellar :any
-    sha1 "042f4692b35ab5d483aa291e3a4924565fe1510f" => :yosemite
-    sha1 "a9e5893ba2cc5bdd4b0b1e9ab489cf8863a48dfb" => :mavericks
-    sha1 "f6829e47d12e951c4ea37784496bed1b79cebf0d" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "83d913e81a4da0bad0d803e40ff3e8ae2f5fc8d174b9f4ea11d76cf6ab6bdcd1" => :el_capitan
+    sha256 "e1bce048795f686efcd868e8c9f120166c89d8586144cc2c3069dc8cc04d8359" => :yosemite
+    sha256 "4b9b1e490a60b0a8845753c20b75432277163a1aa6fc3dd33146490dcdbce05a" => :mavericks
   end
 
   resource "baksmali-jar" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.0.3.jar", :using => :nounzip
-    sha1 "39d860bc2539753c8575f39879cf8d515e1c1cb9"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.1.1.jar"
+    sha256 "085a84923745af8878d81f8c97b7fd046309e74c4ce97ebcdb218aaaf5256770"
   end
 
   resource "baksmali" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali", :using => :nounzip
-    sha1 "9f7a87ee158b89f9d376ba7de09e0bea39e0cad0"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali"
+    sha256 "5d4b79776d401f2cbdb66c7c88e23cca773b9a939520fef4bf42e2856bbbfed4"
   end
 
   resource "smali" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/smali", :using => :nounzip
-    sha1 "26423d6a1d882d3feac0fd0b93ddae0ab134551f"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/smali"
+    sha256 "910297fbeefb4590e6bffd185726c878382a0960fb6a7f0733f045b6faf60a30"
   end
 
   def install
-    resource("baksmali-jar").stage {
-      libexec.install "baksmali-2.0.3.jar" => "baksmali.jar"
-    }
-    libexec.install resource("smali"), resource("baksmali"), "smali-2.0.3.jar" => "smali.jar"
+    resource("baksmali-jar").stage do
+      libexec.install "baksmali-#{version}.jar" => "baksmali.jar"
+    end
+    libexec.install resource("smali"), resource("baksmali"), "smali-#{version}.jar" => "smali.jar"
 
     inreplace "#{libexec}/smali" do |s|
       s.gsub! /^libdir=.*$/, "libdir=\"#{libexec}\""
@@ -65,6 +64,6 @@ class Smali < Formula
 
     system "#{bin}/smali", "-o", "classes.dex", "input.smali"
     system "#{bin}/baksmali", "-o", pwd, "classes.dex"
-    assert File.read("HelloWorld.smali").include?("Hello World!")
+    assert_match "Hello World!", File.read("HelloWorld.smali")
   end
 end

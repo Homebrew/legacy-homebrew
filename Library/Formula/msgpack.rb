@@ -1,16 +1,21 @@
-require 'formula'
-
 class Msgpack < Formula
-  homepage 'http://msgpack.org/'
-  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-0.5.9/msgpack-0.5.9.tar.gz"
-  sha256 "6139614b4142df3773d74e9d9a4dbb6dd0430103cfa7b083e723cde0ec1e7fdd"
+  desc "Library for a binary-based efficient data interchange format"
+  homepage "https://msgpack.org/"
+  url "https://github.com/msgpack/msgpack-c/releases/download/cpp-1.3.0/msgpack-1.3.0.tar.gz"
+  sha256 "b539c9aa1bbe728b9c43bfae7120353461793fa007363aae8e4bb8297948b4b7"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "2db320f8fbaacf5498ed272bbd4b3aefc0549441" => :yosemite
-    sha1 "ad96cca40edebefeb5594147c4476840ad9b3d3c" => :mavericks
-    sha1 "463ffe2e1df919f83adb3050ab2623b1c34b6ce6" => :mountain_lion
+    sha256 "fe84050181a04546212fbfd270340b5cccf37267ed612820d048f43dfa0f646f" => :el_capitan
+    sha256 "ffc401b8c943bb0702e2f0e4ed5851921cbfc0afa3d6608e3f9b889e91e574ea" => :yosemite
+    sha256 "7bed7c201a147f3b275d79fdd8364c7a18b8e7f732e7da6a331df40ca79b15dd" => :mavericks
+  end
+
+  head do
+    url "https://github.com/msgpack/msgpack-c.git"
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "libtool" => :build
   end
 
   fails_with :llvm do
@@ -18,13 +23,14 @@ class Msgpack < Formula
   end
 
   def install
+    system "./bootstrap" if build.head?
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 
   test do
     # Reference: http://wiki.msgpack.org/display/MSGPACK/QuickStart+for+C+Language
-    (testpath/'test.c').write <<-EOS.undent
+    (testpath/"test.c").write <<-EOS.undent
       #include <msgpack.h>
       #include <stdio.h>
 

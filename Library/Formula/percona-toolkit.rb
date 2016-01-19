@@ -1,33 +1,34 @@
-require "formula"
-
 class PerconaToolkit < Formula
+  desc "Percona Toolkit for MySQL"
   homepage "https://www.percona.com/software/percona-toolkit/"
-  url "https://www.percona.com/redir/downloads/percona-toolkit/2.2.13/tarball/percona-toolkit-2.2.13.tar.gz"
-  sha1 "f3e0e59e6036bfabbd5db881848022e1e4881ab9"
+  url "https://www.percona.com/downloads/percona-toolkit/2.2.14/tarball/percona-toolkit-2.2.14.tar.gz"
+  mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/p/percona-toolkit/percona-toolkit_2.2.14.orig.tar.gz"
+  sha256 "dd02bedef65536321af6ad3fc6fd8f088e60830267daa613189a14c10ad3a0d0"
+  revision 1
 
-  bottle do
-    sha1 "93a5ad98d2b802f54a63d25af0b47756dcdd182b" => :yosemite
-    sha1 "6db69533613496f4f42a1384e4e58275b9ef5df5" => :mavericks
-    sha1 "fdd28988814bb4151bc2308147a881cb00e589c9" => :mountain_lion
-  end
+  head "lp:percona-toolkit", :using => :bzr
+
+  bottle :disable, "To use the user's database of choice."
 
   depends_on :mysql
   depends_on "openssl"
 
+  conflicts_with "mytop", :because => "both install `perllocal.pod`"
+
   resource "DBD::mysql" do
-    url "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.027.tar.gz"
-    sha1 "3bf1edd6f0b4f6144b2aaa715c80df3fb1cd2119"
+    url "https://cpan.metacpan.org/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/C/CA/CAPTTOFU/DBD-mysql-4.033.tar.gz"
+    sha256 "cc98bbcc33581fbc55b42ae681c6946b70a26f549b3c64466740dfe9a7eac91c"
   end
 
   resource "JSON" do
-    url "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
-    mirror "http://search.mcpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
-    sha1 "8f0ffe72cbe9e6287d7ecafcf19b31cc297364c2"
+    url "https://cpan.metacpan.org/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
+    mirror "http://search.cpan.org/CPAN/authors/id/M/MA/MAKAMAKA/JSON-2.90.tar.gz"
+    sha256 "4ddbb3cb985a79f69a34e7c26cde1c81120d03487e87366f9a119f90f7bdfe88"
   end
 
   def install
-    ENV.prepend_create_path "PERL5LIB", libexec+"lib/perl5"
+    ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
 
     resource("JSON").stage do
       system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
@@ -39,8 +40,13 @@ class PerconaToolkit < Formula
       system "make", "install"
     end
 
-    system "perl", "Makefile.PL", "PREFIX=#{prefix}"
+    system "perl", "Makefile.PL", "INSTALL_BASE=#{prefix}"
     system "make", "test", "install"
-    bin.env_script_all_files(libexec+"bin", :PERL5LIB => ENV["PERL5LIB"])
+    share.install prefix/"man"
+    bin.env_script_all_files(libexec/"bin", :PERL5LIB => ENV["PERL5LIB"])
+  end
+
+  test do
+    system bin/"pt-summary"
   end
 end

@@ -1,13 +1,18 @@
+# This formula tracks GnuPG stable. You can find GnuPG Modern via:
+# brew install homebrew/versions/gnupg21
+# At the moment GnuPG Modern causes too many incompatibilities to be in core.
 class GpgAgent < Formula
+  desc "GPG key agent"
   homepage "https://www.gnupg.org/"
-  url "ftp://ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  mirror "ftp://ftp.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.27.tar.bz2"
-  sha1 "d065be185f5bac8ea07b210ab7756e79b83b63d4"
+  url "https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/gnupg/gnupg-2.0.29.tar.bz2"
+  sha256 "68ed6b386ba78425b05a60e8ee22785ff0fef190bdc6f1c612f19a58819d4ac9"
 
   bottle do
-    sha256 "1e516200de1786beeb5de9dbc14e18db0794914a8d931ecc7af0e6c37a4545ed" => :yosemite
-    sha256 "5e2619d61dbe587c0a457937887a8555ed87b6e52abe17ef55af454a5ce5ca72" => :mavericks
-    sha256 "3897518fdb9d4b9a159a9e29d64fef1a515ebac83c3b5fce1a45ab3bb5e534dc" => :mountain_lion
+    sha256 "9bebbc754c440be3ac5eada58600a2843d7922aed2a3c68a3329b5a94fbf6871" => :el_capitan
+    sha256 "adf4ef470b329e18679ebd06efdb918b9e0220c7f5ab53937b476b48e11b37cd" => :yosemite
+    sha256 "e9ada5047c3138066c28722dc281ea525bc78c3b368adf719541862c27192026" => :mavericks
+    sha256 "65647148cf2989c7869f13d91f07441549e38cb4c13187df14134ce2fdbaf7b4" => :mountain_lion
   end
 
   depends_on "libgpg-error"
@@ -34,39 +39,13 @@ class GpgAgent < Formula
   end
 
   def caveats; <<-EOS.undent
-      Remember to set a graphical pinentry program (such as pinentry-mac) in your
-      ~/.gnupg/gpg-agent.conf if you configure launchd to start gpg-agent at login.
+      Remember to add "use-standard-socket" to your ~/.gnupg/gpg-agent.conf
+      file.
     EOS
   end
 
   test do
     system "#{bin}/gpg-agent", "--help"
-  end
-
-  def plist; <<-EOS.undent
-    <?xml version="1.0" encoding="UTF-8"?>
-    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-    <plist version="1.0">
-    <dict>
-        <key>Label</key>
-        <string>#{plist_name}</string>
-        <key>ProgramArguments</key>
-        <array>
-            <string>/bin/sh</string>
-            <string>-c</string>
-            <string>#{opt_prefix}/bin/gpg-agent -c --daemon | /bin/launchctl</string>
-        </array>
-        <key>RunAtLoad</key>
-        <true/>
-        <key>StandardErrorPath</key>
-        <string>/dev/null</string>
-        <key>StandardOutPath</key>
-        <string>/dev/null</string>
-        <key>ServiceDescription</key>
-        <string>Run gpg-agent at login</string>
-    </dict>
-    </plist>
-    EOS
   end
 end
 
@@ -83,6 +62,6 @@ index c022805..96ea7ed 100755
 -PACKAGE_TARNAME='gnupg'
 +PACKAGE_NAME='gpg-agent'
 +PACKAGE_TARNAME='gpg-agent'
- PACKAGE_VERSION='2.0.27'
- PACKAGE_STRING='gnupg 2.0.27'
+ PACKAGE_VERSION='2.0.29'
+ PACKAGE_STRING='gnupg 2.0.29'
  PACKAGE_BUGREPORT='http://bugs.gnupg.org'

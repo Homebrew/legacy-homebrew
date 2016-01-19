@@ -1,28 +1,44 @@
-require "formula"
-
 class Dos2unix < Formula
+  desc "Convert text between DOS, UNIX, and Mac formats"
   homepage "http://waterlan.home.xs4all.nl/dos2unix.html"
-  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.2.tar.gz"
-  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.2/dos2unix-7.2.tar.gz"
-  sha1 "a8f3d048859acb5483c8e15a1dfd0a01a2bcabe0"
+  url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.2.tar.gz"
+  mirror "https://downloads.sourceforge.net/project/dos2unix/dos2unix/7.3.2/dos2unix-7.3.2.tar.gz"
+  sha256 "c7e8ee0bb3e001cc25a4a908d9a81ac52d124133d6a524a59f995bc90d438689"
 
   bottle do
-    sha1 "cf86c34ea9d8f2fefae59967deed0fd7364a04ae" => :yosemite
-    sha1 "a11ddbb12f414bd017aa53957f255fad58677878" => :mavericks
-    sha1 "3a7e49a6b78bffda1ead127b185e9a24ee14655e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "7168cf225befc0bb1bd4a435e3311444407ce1f37be4d42059d694e7cf9230ab" => :el_capitan
+    sha256 "e278bc37bfc17d64b269fab313f8d9ed2a2af3361b8204c7ca2bd2d55404d15f" => :yosemite
+    sha256 "61ef99b643f822bd8644124d4225ce46e39ee9912787737b1d1efe42170d11ab" => :mavericks
   end
 
-  depends_on "gettext"
+  devel do
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.3-beta2.tar.gz"
+    sha256 "abd12dff242b904eee1ce8141c0cf5664e6164248bf91f58f551ab7455d4d5e2"
+  end
+
+  option "with-gettext", "Build with Native Language Support"
+
+  depends_on "gettext" => :optional
 
   def install
-    gettext = Formula["gettext"]
-    system "make", "prefix=#{prefix}",
-                   "CC=#{ENV.cc}",
-                   "CPP=#{ENV.cc}",
-                   "CFLAGS=#{ENV.cflags}",
-                   "CFLAGS_OS=-I#{gettext.include}",
-                   "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl",
-                   "install"
+    args = %W[
+      prefix=#{prefix}
+      CC=#{ENV.cc}
+      CPP=#{ENV.cc}
+      CFLAGS=#{ENV.cflags}
+      install
+    ]
+
+    if build.without? "gettext"
+      args << "ENABLE_NLS="
+    else
+      gettext = Formula["gettext"]
+      args << "CFLAGS_OS=-I#{gettext.include}"
+      args << "LDFLAGS_EXTRA=-L#{gettext.lib} -lintl"
+    end
+
+    system "make", *args
   end
 
   test do

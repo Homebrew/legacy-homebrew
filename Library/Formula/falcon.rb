@@ -1,4 +1,5 @@
 class Falcon < Formula
+  desc "Multi-paradigm programming language and scripting engine"
   homepage "http://www.falconpl.org/"
   url "http://falconpl.org/project_dl/_official_rel/Falcon-0.9.6.8.tgz"
   sha256 "f4b00983e7f91a806675d906afd2d51dcee048f12ad3af4b1dadd92059fa44b9"
@@ -6,9 +7,10 @@ class Falcon < Formula
   head "http://git.falconpl.org/falcon.git"
 
   bottle do
-    sha256 "b02169f29483d69cae65e365619a136696da26f035289628a5de0772e35dd580" => :yosemite
-    sha256 "cad1d4cdd1d2704e6cc5741f39e0ce198ef9eb33c2b59dd56ca0617e88c12ecb" => :mavericks
-    sha256 "c656eb21170196437124520c99ac71ace9ba7a8485553b27b147a1f17ab0ad2c" => :mountain_lion
+    revision 1
+    sha256 "e5dc11f9529c43c216dc304df212eab022ce654fc551ad244a291a6b861931b8" => :yosemite
+    sha256 "bf2a677c2d6777b577bffc22d3c75a65525700bef6478035dececa002e5e11ec" => :mavericks
+    sha256 "9730e050c70ad2803afdf9cd03b108b8c4bb57b797bd92595523ad0731639b81" => :mountain_lion
   end
 
   option "with-editline", "Use editline instead of readline"
@@ -25,20 +27,19 @@ class Falcon < Formula
 
   def install
     args = std_cmake_args + %W[
-      -DCMAKE_INSTALL_PREFIX=#{prefix}
       -DFALCON_BIN_DIR=#{bin}
       -DFALCON_LIB_DIR=#{lib}
       -DFALCON_MAN_DIR=#{man1}
       -DFALCON_WITH_INTERNAL_PCRE=OFF
       -DFALCON_WITH_MANPAGES=ON]
 
-    if build.include? "editline"
+    if build.with? "editline"
       args << "-DFALCON_WITH_EDITLINE=ON"
     else
       args << "-DFALCON_WITH_EDITLINE=OFF"
     end
 
-    if build.include? "feathers"
+    if build.with? "feathers"
       args << "-DFALCON_WITH_FEATHERS=feathers"
     else
       args << "-DFALCON_WITH_FEATHERS=NO"

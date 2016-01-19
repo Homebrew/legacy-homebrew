@@ -1,15 +1,18 @@
 class Colordiff < Formula
+  desc "Color-highlighted diff(1) output"
   homepage "http://www.colordiff.org/"
-  url "http://www.colordiff.org/colordiff-1.0.13.tar.gz"
-  sha1 "64e369aed2230f3aa5f1510b231fcac270793c09"
+  url "http://www.colordiff.org/colordiff-1.0.16.tar.gz"
+  sha256 "eaf1cfe17dd0e820d38a0b24b0a402eba68b32e9bf9e7791ca2d1831029f138b"
 
   bottle do
-    cellar :any
-    sha1 "b4715b46336a19e8580a1978be0efa815f4f0f3d" => :yosemite
-    sha1 "724512050ef11d4b0f99eb46b2fa98a44520e5a6" => :mavericks
-    sha1 "7cf723ad9a524e8b7159c57e7a7d97687c3df067" => :mountain_lion
-    sha1 "37447591b2cea0958f2f695ad9a56012cc4cba9b" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "745965f6a9e37d91242b421a17697ce67328d390d2d94dd5b449d5c0dbae9e65" => :el_capitan
+    sha256 "e0e8a697a98972c3f336a867d4da2124b5b997bfd9c77a2fdca84d0cd1de541f" => :yosemite
+    sha256 "add0c4af1ad602b31f674b921435aa826951e125480220b6f66b8de406123345" => :mavericks
   end
+
+  conflicts_with "cdiff", :because => "both install `cdiff` binaries"
 
   patch :DATA
 
@@ -33,14 +36,6 @@ diff --git a/Makefile b/Makefile
 index 6ccbfc7..e5d64e7 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -8,6 +8,7 @@ DIST_FILES=COPYING INSTALL Makefile README \
- TMPDIR=colordiff-${VERSION}
- TARBALL=${TMPDIR}.tar.gz
-
-+.PHONY: install
-
- doc: colordiff.xml cdiff.xml
- 	xmlto -vv man colordiff.xml
 @@ -28,8 +29,8 @@ install:
  	if [ ! -f ${DESTDIR}${INSTALL_DIR}/cdiff ] ; then \
  	  install cdiff.sh ${DESTDIR}${INSTALL_DIR}/cdiff; \

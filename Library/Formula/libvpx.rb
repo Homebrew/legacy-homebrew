@@ -1,42 +1,46 @@
-require 'formula'
-
 class Libvpx < Formula
-  homepage 'http://www.webmproject.org/code/'
-  url 'https://webm.googlecode.com/files/libvpx-v1.3.0.tar.bz2'
-  sha1 '191b95817aede8c136cc3f3745fb1b8c50e6d5dc'
-  revision 1
-
+  desc "VP8 video codec"
+  homepage "http://www.webmproject.org/code/"
+  url "https://github.com/webmproject/libvpx/archive/v1.5.0.tar.gz"
+  sha256 "f199b03b67042e8d94a3ae8bc841fb82b6a8430bdf3965aeeaafe8245bcfa699"
   head "https://chromium.googlesource.com/webm/libvpx", :using => :git
 
   bottle do
-    revision 1
-    sha1 "9ce8fe3ae1d8fa737bc3d900b289da0838c2500a" => :yosemite
-    sha1 "65a8b42abf0c83ed0e9faec7791150b68836f862" => :mavericks
+    sha256 "662f6f2cb3fab1a9fa74ecd100a9266d86d10a60e179a11b0c80594f4bd7e347" => :el_capitan
+    sha256 "0209b85c32d4c08e23db9afa56bd4c9c0535ebbd1af1f36488b6e34ec1d6e8a1" => :yosemite
+    sha256 "423d1ecee05d00a68d04e390d368c0a03f1597a28d02793cdad3c1219abf4a03" => :mavericks
   end
 
-  depends_on 'yasm' => :build
-
-  option 'gcov', 'Enable code coverage'
-  option 'mem-tracker', 'Enable tracking memory usage'
-  option 'visualizer', 'Enable post processing visualizer'
+  option "with-gcov", "Enable code coverage"
+  option "with-visualizer", "Enable post processing visualizer"
   option "with-examples", "Build examples (vpxdec/vpxenc)"
 
+  deprecated_option "gcov" => "with-gcov"
+  deprecated_option "visualizer" => "with-visualizer"
+
+  depends_on "yasm" => :build
+
   def install
-    args = ["--prefix=#{prefix}", "--enable-pic", "--disable-unit-tests"]
+    args = %W[
+      --prefix=#{prefix}
+      --disable-dependency-tracking
+      --enable-pic
+      --disable-unit-tests
+    ]
+
     args << (build.with?("examples") ? "--enable-examples" : "--disable-examples")
-    args << "--enable-gcov" if build.include? "gcov" and not ENV.compiler == :clang
-    args << "--enable-mem-tracker" if build.include? "mem-tracker"
-    args << "--enable-postproc-visualizer" if build.include? "visualizer"
+    args << "--enable-gcov" if !ENV.compiler == :clang && build.with?("gcov")
+    args << "--enable-postproc" << "--enable-postproc-visualizer" if build.with? "visualizer"
 
     # configure misdetects 32-bit 10.6
-    # http://code.google.com/p/webm/issues/detail?id=401
+    # https://code.google.com/p/webm/issues/detail?id=401
     if MacOS.version == "10.6" && Hardware.is_32_bit?
       args << "--target=x86-darwin10-gcc"
     end
 
-    mkdir 'macbuild' do
+    mkdir "macbuild" do
       system "../configure", *args
-      system "make install"
+      system "make", "install"
     end
   end
 end

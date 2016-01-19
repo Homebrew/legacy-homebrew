@@ -1,29 +1,32 @@
-require 'formula'
-
 class Ecl < Formula
-  homepage 'http://ecls.sourceforge.net/'
-  url 'https://downloads.sourceforge.net/project/ecls/ecls/15.2/ecl-15.2.21.tgz'
-  sha1 'fcf70c11ddb1602e88972f0c1596037df229f473'
+  desc "Embeddable Common Lisp"
+  homepage "https://common-lisp.net/project/ecl/"
+  url "https://common-lisp.net/project/ecl/files/ecl-16.0.0.tgz"
+  sha256 "343ed4c3e4906562757a6039b85ce16d33dd5e8001d74004936795983e3af033"
+
+  head "https://gitlab.com/embeddable-common-lisp/ecl.git"
 
   bottle do
-    sha1 "1f5441b4a7cd4f62be787b771060655ec92b0642" => :yosemite
-    sha1 "c042f476840561458d016a980b45fbd2547f98b4" => :mavericks
-    sha1 "ab1ac89fe3e324fc0cf4f74acd058af6a22b235a" => :mountain_lion
+    sha256 "b9e11c5853de9c20aed0979da6e2a63afca3ee1f2ab925d62d5d192557af62df" => :yosemite
+    sha256 "f7ae77f595ab08425fb6789018f67b40461656d146a16e6add510f7418f4a8ee" => :mavericks
+    sha256 "7a460060b7220667124bc09483fc5ee84e8dd63a167ce0d1aea617832621d052" => :mountain_lion
   end
 
-  depends_on 'gmp'
+  depends_on "gmp"
 
   def install
-    ENV.deparallelize
-    system "./configure", "--prefix=#{prefix}", "--enable-unicode=yes", "--enable-threads=yes", "--with-system-gmp=yes"
+    system "./configure", "--prefix=#{prefix}",
+                          "--enable-unicode=yes",
+                          "--enable-threads=yes",
+                          "--with-system-gmp=yes"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do
-    (testpath/'simple.cl').write <<-EOS.undent
+    (testpath/"simple.cl").write <<-EOS.undent
       (write-line (write-to-string (+ 2 2)))
     EOS
-    assert_equal "4\n", shell_output("#{bin}/ecl -shell #{testpath}/simple.cl")
+    assert_equal "4", shell_output("#{bin}/ecl -shell #{testpath}/simple.cl").chomp
   end
 end
