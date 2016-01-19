@@ -2,7 +2,7 @@ class Autossh < Formula
   desc "Automatically restart SSH sessions and tunnels"
   homepage "http://www.harding.motd.ca/autossh/"
   url "http://www.harding.motd.ca/autossh/autossh-1.4e.tgz"
-  mirror "http://ftp.de.debian.org/debian/pool/main/a/autossh/autossh_1.4e.orig.tar.gz"
+  mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/a/autossh/autossh_1.4e.orig.tar.gz"
   sha256 "9e8e10a59d7619176f4b986e256f776097a364d1be012781ea52e08d04679156"
 
   bottle do
@@ -16,11 +16,13 @@ class Autossh < Formula
   patch :DATA
 
   def install
-    system "./configure", "--disable-debug", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--mandir=#{man}"
+    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make", "install"
     bin.install "rscreen"
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/autossh -V")
   end
 end
 
