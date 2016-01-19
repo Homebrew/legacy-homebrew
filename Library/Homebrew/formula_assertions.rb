@@ -21,7 +21,7 @@ module Homebrew
       FailedAssertion = Test::Unit::AssertionFailedError
     end
 
-    include Test::Unit::Assertions
+    include ::Test::Unit::Assertions
 
     # Returns the output of running cmd, and asserts the exit status
     def shell_output(cmd, result = 0)
