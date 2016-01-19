@@ -287,6 +287,20 @@ class IntegrationCommandTests < Homebrew::TestCase
   def test_sh
     assert_match "Your shell has been configured",
                  cmd("sh", {"SHELL" => "/usr/bin/true"})
+
+  def test_info
+    formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
+    content = <<-EOS.undent
+      class Testball < Formula
+        url "https://example.com/testball-0.1.tar.gz"
+      end
+    EOS
+    formula_file.write content
+
+    assert_match "testball: stable 0.1",
+                 cmd("info", "testball")
+  ensure
+    formula_file.unlink
   end
 
   def test_custom_command
