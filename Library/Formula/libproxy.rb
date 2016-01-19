@@ -13,6 +13,12 @@ class Libproxy < Formula
       sha256 "ac714f2cc010a5428556b4b66a42f4df043a6f42540269bba7da11a773f7529c"
     end
   end
+  bottle do
+    sha256 "edcea19bf07732eb6d5bac30e590b7873efabc1658a0442d08870ab6ae671b9d" => :el_capitan
+    sha256 "4b4c5c12c05d6c4eb47d8c49e42517c10374b0bb1cef3fcdd3d3b5109eb4a4c1" => :yosemite
+    sha256 "8c9f98bc758a346c76816c91d396987e6aa1b0e11ed404eefa2c27f1cbec82d3" => :mavericks
+  end
+
 
   depends_on "cmake" => :build
 
