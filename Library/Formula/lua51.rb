@@ -6,7 +6,7 @@ class Lua51 < Formula
   url "http://www.lua.org/ftp/lua-5.1.5.tar.gz"
   mirror "https://mirrors.ocf.berkeley.edu/debian/pool/main/l/lua5.1/lua5.1_5.1.5.orig.tar.gz"
   sha256 "2640fc56a795f29d28ef15e13c34a47e223960b0240e8cb0a82d9b0738695333"
-  revision 3
+  revision 4
 
   bottle do
     cellar :any
