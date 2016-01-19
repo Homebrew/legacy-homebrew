@@ -5,6 +5,11 @@ class Fastd < Formula
   sha256 "26d4a8bf2f8cc52872f836f6dba55f3b759f8c723699b4e4decaa9340d3e5a2d"
   head "git://git.universe-factory.net/fastd/"
 
+  bottle do
+    cellar :any
+    sha256 "5a43b388d80c8e5abb0d7ddf2e9f0a75737acff4640766b70f2f9d3c0c65683a" => :mavericks
+  end
+
   depends_on "cmake" => :build
   depends_on "libuecc"
   depends_on "libsodium"
