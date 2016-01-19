@@ -208,6 +208,12 @@ update-bash() {
     esac
   done
 
+  if ! curl -I --connect-timeout 2 https://github.com &> /dev/null
+  then
+    echo "Cannot connect to github.com; please ensure you have Internet connection!"
+    exit 1
+  fi
+
   if [ -n "$HOMEBREW_DEBUG" ]
   then
     set -x
