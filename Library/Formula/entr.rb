@@ -7,10 +7,9 @@ class Entr < Formula
 
   bottle do
     cellar :any_skip_relocation
-    revision 1
-    sha256 "8bd2c5ee9826218a7b6ed66398a40f8f4516ce6cf64bf39d78a88fbb6f82c71a" => :el_capitan
-    sha256 "a1ba1bce58f151292922500142e7166120a2cb572d0b7fb08a81ee501e841698" => :yosemite
-    sha256 "5284c5f631a02c76411453667f401793292fee0304e3727422fcc8efdedd2f85" => :mavericks
+    sha256 "611108cae6c65bc9de49af576b75df2b7208292f7e90ecc57b95737ac56b0729" => :el_capitan
+    sha256 "26c226b9f35e33ead67ad1318e88583d0ba8cabed58e945a266750e34f967c0f" => :yosemite
+    sha256 "143ed2772f5f62a56a0066c4cbf41af5b1b5cdd89e2900f4a867b0e039cfe943" => :mavericks
   end
 
   head do
