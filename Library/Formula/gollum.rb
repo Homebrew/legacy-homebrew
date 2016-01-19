@@ -5,6 +5,8 @@ class Gollum < Formula
   homepage "https://github.com/trivago/gollum"
   url "https://github.com/trivago/gollum/archive/v0.4.1.tar.gz"
   sha256 "73b5d4f7fa600d4d6182a80f5cea29f84296d2acf1fb9dd841beafd2620e66b6"
+  revision 1
+
   head "https://github.com/trivago/gollum.git"
 
   bottle do
@@ -151,6 +153,6 @@ class Gollum < Formula
         Stream: "profile"
     EOS
 
-    assert_match /parsed as ok/, shell_output("#{bin}/gollum -tc #{testpath}/test.conf")
+    assert_match "parsed as ok", shell_output("#{bin}/gollum -tc #{testpath}/test.conf")
   end
 end
