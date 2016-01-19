@@ -22,4 +22,10 @@ class Httrack < Formula
     # Don't need Gnome integration
     rm_rf Dir["#{share}/{applications,pixmaps}"]
   end
+
+  test do
+    download = "https://raw.githubusercontent.com/Homebrew/homebrew/65c59dedea31/.yardopts"
+    system bin/"httrack", download, "-O", testpath
+    assert File.exist?("raw.githubusercontent.com")
+  end
 end
