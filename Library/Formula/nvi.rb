@@ -4,6 +4,13 @@ class Nvi < Formula
   url "https://mirrors.ocf.berkeley.edu/debian/pool/main/n/nvi/nvi_1.81.6.orig.tar.gz"
   sha256 "8bc348889159a34cf268f80720b26f459dbd723b5616107d36739d007e4c978d"
 
+  bottle do
+    cellar :any
+    sha256 "75ea5ae632a340cd15118c9fa9134ef750e3e2b0d5dae54f7725e9786ed9f924" => :el_capitan
+    sha256 "81c395ade5bad8e89edd06ba70bde4075801b3bd4f67a79df4719628f788d8a0" => :yosemite
+    sha256 "ff4b8ae7f70172d31e7f2983cb91d5e4ea946ce66dbca50ae5af30158de70862" => :mavericks
+  end
+
   depends_on "berkeley-db"
 
   # Patches per MacPorts
