@@ -4,6 +4,13 @@ class Pyvim < Formula
   url "https://pypi.python.org/packages/source/p/pyvim/pyvim-0.0.13.tar.gz"
   sha256 "efc4054d2fae78df13182ad78e018d479963833a990d7e99d58ee4fe2db2c1cd"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "fcea9e888f429a9a73f9dc6bb2ff32c7cc7611472917e4772c7c00b905d0b601" => :el_capitan
+    sha256 "d0304e69bae47a478f4d67d8f956a86b75a26514be8a32d8db8493462d5b8f5e" => :yosemite
+    sha256 "cb336a0de0525d41c388683d8274b2ecfdee007729dc854ca80abc18926089c3" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "ptpython" do
