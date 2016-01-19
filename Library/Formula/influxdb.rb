@@ -15,6 +15,11 @@ class Influxdb < Formula
     sha256 "f356125427c3fa3bdc90485d2af6f7399da185b925c9542842b788890c977d1d" => :mavericks
   end
 
+  devel do
+    url "https://github.com/influxdata/influxdb/archive/v0.10.0-beta1.tar.gz"
+    sha256 "f671e9f96c9c1385504a9a6bd9ac56769eb61dd36e39f0da91293a5267536756"
+  end
+
   depends_on "go" => :build
 
   go_resource "collectd.org" do
@@ -132,6 +137,8 @@ class Influxdb < Formula
     cd influxdb_path do
       if build.head?
         system "go", "install", "-ldflags", "-X main.version=0.10.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
+      elsif build.devel?
+        system "go", "install", "-ldflags", "-X main.version=0.10.0-beta1 -X main.branch=master -X main.commit=ba7fc7d54802a777f345a583e1e3306947cf447b", "./..."
       else
         system "go", "install", "-ldflags", "-X main.version=0.9.6.1 -X main.branch=0.9.6 -X main.commit=6d3a8603cfdaf1a141779ed88b093dcc5c528e5e", "./..."
       end
@@ -204,10 +211,10 @@ class Influxdb < Formula
   test do
     (testpath/"config.toml").write shell_output("influxd config")
     inreplace testpath/"config.toml" do |s|
-      s.gsub! /\/.*\/\.influxdb\/data/, "#{testpath}/influxdb/data"
-      s.gsub! /\/.*\/\.influxdb\/meta/, "#{testpath}/influxdb/meta"
-      s.gsub! /\/.*\/\.influxdb\/hh/, "#{testpath}/influxdb/hh"
-      s.gsub! /\/.*\/\.influxdb\/wal/, "#{testpath}/influxdb/wal"
+      s.gsub! %r{/.*/.influxdb/data}, "#{testpath}/influxdb/data"
+      s.gsub! %r{/.*/.influxdb/meta}, "#{testpath}/influxdb/meta"
+      s.gsub! %r{/.*/.influxdb/hh}, "#{testpath}/influxdb/hh"
+      s.gsub! %r{/.*/.influxdb/wal}, "#{testpath}/influxdb/wal"
     end
 
     pid = fork do
