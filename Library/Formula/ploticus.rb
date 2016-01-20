@@ -18,10 +18,16 @@ class Ploticus < Formula
     # Use alternate name because "pl" conflicts with OS X "pl" utility
     args=["INSTALLBIN=#{bin}",
           "EXE=ploticus"]
+    inreplace "src/pl.h", /#define\s+PREFABS_DIR\s+""/, "#define PREFABS_DIR \"#{pkgshare}\""
     system "make", "-C", "src", *args
     # Required because the Makefile assumes INSTALLBIN dir exists
     bin.mkdir
     system "make", "-C", "src", "install", *args
+    pkgshare.install Dir["prefabs/*"]
+  end
+
+  def caveats
+    "Ploticus prefabs have been installed to #{pkgshare}"
   end
 
   test do
