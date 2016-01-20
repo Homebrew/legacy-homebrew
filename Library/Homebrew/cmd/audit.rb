@@ -224,17 +224,12 @@ class FormulaAuditor
       end
     end
 
-    if Object.const_defined?("GithubGistFormula") && formula.class < GithubGistFormula
-      problem "GithubGistFormula is deprecated, use Formula instead"
+    classes = %w[GithubGistFormula ScriptFileFormula AmazonWebServicesFormula]
+    klass = classes.find do |c|
+      Object.const_defined?(c) && formula.class < Object.const_get(c)
     end
 
-    if Object.const_defined?("ScriptFileFormula") && formula.class < ScriptFileFormula
-      problem "ScriptFileFormula is deprecated, use Formula instead"
-    end
-
-    if Object.const_defined?("AmazonWebServicesFormula") && formula.class < AmazonWebServicesFormula
-      problem "AmazonWebServicesFormula is deprecated, use Formula instead"
-    end
+    problem "#{klass} is deprecated, use Formula instead" if klass
   end
 
   # core aliases + tap alias names + tap alias full name
