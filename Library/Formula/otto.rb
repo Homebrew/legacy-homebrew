@@ -6,6 +6,7 @@ class Otto < Formula
   url "https://github.com/hashicorp/otto.git",
       :tag => "v0.2.0",
       :revision => "d3d825bb135a2fa27a604e82e40f60151a5e2118"
+  revision 1
 
   head "https://github.com/hashicorp/otto.git"
 
