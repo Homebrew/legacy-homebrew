@@ -3,6 +3,7 @@ class Arangodb < Formula
   homepage "https://www.arangodb.com/"
   url "https://www.arangodb.com/repositories/Source/ArangoDB-2.7.3.tar.gz"
   sha256 "cda5f897dd8f51ad7a7fc2e4b4383bad8e2a378a8114c1531cb8e7e977b620d4"
+  revision 1
 
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
@@ -40,12 +41,12 @@ class Arangodb < Formula
 
     system "./configure", *args
     system "make", "install"
-
-    (var/"arangodb").mkpath
-    (var/"log/arangodb").mkpath
   end
 
   def post_install
+    (var/"arangodb").mkpath
+    (var/"log/arangodb").mkpath
+
     system "#{sbin}/arangod" + (build.head? ? "-unstable" : ""), "--upgrade", "--log.file", "-"
   end
 
