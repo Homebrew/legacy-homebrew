@@ -7,6 +7,13 @@ class OpenshiftCli < Formula
 
   head "https://github.com/openshift/origin.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "fbbdc3abc10d12dda8e1db85f9b140e337ba925151fd32c4a93a4af52d48997b" => :el_capitan
+    sha256 "60f65184cd48a58dd0afbac64a64aba7b795b64a38b682b40edea3b653d0c6bb" => :yosemite
+    sha256 "3ab7e60d60b20530e37ea3c7a468857a66e7b33dd974eaace646de7d628efe29" => :mavericks
+  end
+
   depends_on "go" => :build
 
   def install
