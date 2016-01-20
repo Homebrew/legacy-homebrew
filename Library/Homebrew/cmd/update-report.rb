@@ -151,11 +151,14 @@ class Reporter
   attr_reader :initial_revision, :current_revision, :repository
 
   def self.repository_variable(repository)
-    repository.to_s.
-      gsub("#{HOMEBREW_PREFIX}", "").
-      gsub("Library/Taps/", "").
-      gsub(/[^a-z0-9]/, "_").
-      upcase
+    if repository == HOMEBREW_REPOSITORY
+      ""
+    else
+      repository.to_s.
+        strip_prefix(Tap::TAP_DIRECTORY.to_s).
+        tr("^A-Za-z0-9", "_").
+        upcase
+    end
   end
 
   def initialize(repository)
