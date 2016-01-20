@@ -1,20 +1,13 @@
 class MysqlCluster < Formula
   desc "Shared-nothing clustering and auto-sharding for MySQL"
   homepage "https://www.mysql.com/products/cluster/"
-  url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.3/mysql-cluster-gpl-7.3.8.tar.gz"
-  sha256 "eddcc2954ff7fbbc72b1266bd64a9548e9b9d7a4115d42b54c13257c226248ca"
+  url "https://dev.mysql.com/get/Downloads/MySQL-Cluster-7.4/mysql-cluster-gpl-7.4.9.tar.gz"
+  sha256 "c577817a9c378f0e968b7d851c03e37a0101a4713c9f1ad762ac739f17d359bc"
 
   bottle do
     sha256 "a7f77a5b3dc5023fa63846f07c9b0d104376934331e62a9716222bd5efca2e98" => :mavericks
     sha256 "fdec2e4159e9b021f4555f7348bf55f7aba79b6e4d85c20270bbc160e4c30706" => :mountain_lion
   end
-
-  # Fix me: if you can get this to build on Yosemite, send a pull request!
-  depends_on MaximumMacOSRequirement => :mavericks
-
-  depends_on :java => "1.7+"
-  depends_on "cmake" => :build
-  depends_on "pidof" unless MacOS.version >= :mountain_lion
 
   option :universal
   option "with-test", "Build with unit tests"
@@ -22,10 +15,17 @@ class MysqlCluster < Formula
   option "with-libedit", "Compile with editline wrapper instead of readline"
   option "with-archive-storage-engine", "Compile with the ARCHIVE storage engine enabled"
   option "with-blackhole-storage-engine", "Compile with the BLACKHOLE storage engine enabled"
-  option "enable-local-infile", "Build with local infile loading support"
-  option "enable-debug", "Build with debug support"
+  option "with-local-infile", "Build with local infile loading support"
+  option "with-debug", "Build with debug support"
 
   deprecated_option "with-tests" => "with-test"
+  deprecated_option "enable-local-infile" => "with-local-infile"
+  deprecated_option "enable-debug" => "with-debug"
+
+  depends_on :java => "1.7+"
+  depends_on "cmake" => :build
+  depends_on "pidof" unless MacOS.version >= :mountain_lion
+  depends_on "openssl"
 
   conflicts_with "memcached", :because => "both install `bin/memcached`"
   conflicts_with "mysql", "mariadb", "percona-server",
@@ -83,10 +83,10 @@ class MysqlCluster < Formula
     end
 
     # Build with local infile loading support
-    args << "-DENABLED_LOCAL_INFILE=1" if build.include? "enable-local-infile"
+    args << "-DENABLED_LOCAL_INFILE=1" if build.with? "local-infile"
 
     # Build with debug support
-    args << "-DWITH_DEBUG=1" if build.include? "enable-debug"
+    args << "-DWITH_DEBUG=1" if build.with? "debug"
 
     system "cmake", *args
     system "make"
@@ -106,7 +106,7 @@ class MysqlCluster < Formula
     plist_path("mysqld").write mysqld_startup_plist("mysqld")
     plist_path("mysqld").chmod 0644
 
-    # Don"t create databases inside of the prefix!
+    # Don't create databases inside of the prefix!
     # See: https://github.com/Homebrew/homebrew/issues/4975
     rm_rf prefix+"data"
 
@@ -128,7 +128,7 @@ class MysqlCluster < Formula
 
   def caveats; <<-EOS.undent
     To get started with MySQL Cluster, read MySQL Cluster Quick Start at
-      http://dev.mysql.com/downloads/cluster/
+      https://dev.mysql.com/downloads/cluster/
 
     Default configuration files have been created inside:
       #{var}/mysql-cluster
@@ -195,12 +195,12 @@ class MysqlCluster < Formula
 
   # Override Formula#plist_name
   def plist_name(extra = nil)
-    (extra) ? super()+"-"+extra : super()+"-ndb_mgmd"
+    extra ? super()+"-"+extra : super()+"-ndb_mgmd"
   end
 
   # Override Formula#plist_path
   def plist_path(extra = nil)
-    (extra) ? super().dirname+(plist_name(extra)+".plist") : super()
+    extra ? super().dirname+(plist_name(extra)+".plist") : super()
   end
 
   def mysqld_startup_plist(name); <<-EOS.undent
@@ -280,5 +280,12 @@ class MysqlCluster < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system "/bin/sh", "-n", "#{bin}/mysqld_safe"
+    (prefix/"mysql-test").cd do
+      system "./mysql-test-run.pl", "status", "--vardir=#{testpath}"
+    end
   end
 end
