@@ -4,6 +4,13 @@ class Libmwaw < Formula
   url "https://downloads.sourceforge.net/project/libmwaw/libmwaw/libmwaw-0.3.7/libmwaw-0.3.7.tar.xz"
   sha256 "057611e871c279a28fcbede78dda11e500b9d5b341ab7064d6dce470f6fee8f9"
 
+  bottle do
+    cellar :any
+    sha256 "0496f833b2205e5a6c4f84482b9f1ecae59745a6efdcbb2b30f75f5c959a921e" => :el_capitan
+    sha256 "5431a412a8cc01b35d23c2743ea6449fa2d7e081c56837fb7d5f8d9db911f4ac" => :yosemite
+    sha256 "ac4a80c75b3617b86cc72fecc7db1559edfd5717b1493ccdcd24d676c4e2b987" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "librevenge"
 
