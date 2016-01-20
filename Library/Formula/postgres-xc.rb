@@ -5,10 +5,9 @@ class PostgresXc < Formula
   sha256 "b467cbb7d562a8545645182958efd1608799ed4e04a9c3906211878d477b29c1"
 
   bottle do
-    revision 1
-    sha256 "fd135afdee2713911606dfae877ee8d219d595590b6d5a145a12a258304ead55" => :mavericks
-    sha256 "27c61d8b927b03c356700d5115358f5aa3f429d05b398dcb3c014504c2a6f1d0" => :mountain_lion
-    sha256 "a23ac1d0746207ccc5548b93156b0bbea6c633897842d323b4dd470c687f0ec1" => :lion
+    sha256 "1a8e8d86ffbdce0287ed016a8fe98ab166097356c25db0796defb346d7bd77a6" => :el_capitan
+    sha256 "6a96a35995306b0f3f32a5d3f3b4527d9bced585f828cc9dbec1ef8c29eb8790" => :yosemite
+    sha256 "1f05cbe6cb40097c0e5fb7d3b62d32b5305dce2c364f018c830069e7ad1adcd9" => :mavericks
   end
 
   option "with-dtrace", "Build with DTrace support"
