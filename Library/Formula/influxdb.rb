@@ -21,6 +21,11 @@ class Influxdb < Formula
     sha256 "f671e9f96c9c1385504a9a6bd9ac56769eb61dd36e39f0da91293a5267536756"
   end
 
+  devel do
+    url "https://github.com/influxdata/influxdb/archive/v0.10.0-beta1.tar.gz"
+    sha256 "f671e9f96c9c1385504a9a6bd9ac56769eb61dd36e39f0da91293a5267536756"
+  end
+
   depends_on "go" => :build
 
   go_resource "collectd.org" do
