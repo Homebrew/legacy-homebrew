@@ -18,7 +18,7 @@ if ENV["HOMEBREW_INTEGRATION_TEST"]
   SimpleCov.at_exit do
     exit_code = $!.nil? ? 0 : $!.status
     $stdout.reopen("/dev/null")
-    SimpleCov.result.format!
+    SimpleCov.result # Just save result, but don't write formatted output.
     exit! exit_code
   end
 end
