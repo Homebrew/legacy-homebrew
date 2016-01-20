@@ -24,12 +24,14 @@ class Tesseract < Formula
     end
   end
 
-  option "all-languages", "Install recognition data for all languages"
+  option "with-all-languages", "Install recognition data for all languages"
   option "with-training-tools", "Install OCR training tools"
   option "with-opencl", "Enable OpenCL support"
 
-  depends_on "libtiff" => :recommended
+  deprecated_option "all-languages" => "with-all-languages"
+
   depends_on "leptonica"
+  depends_on "libtiff" => :recommended
 
   if build.with? "training-tools"
     depends_on "libtool" => :build
@@ -85,11 +87,15 @@ class Tesseract < Formula
     end
     if build.head?
       resource("tessdata-head").stage { mv Dir["*"], share/"tessdata" }
-    elsif build.include? "all-languages"
+    elsif build.with? "all-languages"
       resource("tessdata").stage { mv Dir["*"], share/"tessdata" }
     else
       resource("eng").stage { mv "eng.traineddata", share/"tessdata" }
       resource("osd").stage { mv "osd.traineddata", share/"tessdata" }
     end
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/tesseract -v 2>&1")
   end
 end
