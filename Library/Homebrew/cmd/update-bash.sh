@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z "$HOMEBREW_BREW_FILE" ]
+if [[ -z "$HOMEBREW_BREW_FILE" ]]
 then
   echo "Error: $(basename "$0") must be called from brew!" >&2
   exit 1
@@ -13,11 +13,11 @@ brew() {
 which_git() {
   local which_git
   which_git="$(which git 2>/dev/null)"
-  if [ -n "$which_git" ] && [ "/usr/bin/git" = "$which_git" ]
+  if [[ -n "$which_git" && "/usr/bin/git" = "$which_git" ]]
   then
     local active_developer_dir
     active_developer_dir="$('/usr/bin/xcode-select' -print-path 2>/dev/null)"
-    if [ -n "$active_developer_dir" ] && [ -x "$active_developer_dir/usr/bin/git" ]
+    if [[ -n "$active_developer_dir" && -x "$active_developer_dir/usr/bin/git" ]]
     then
       which_git="$active_developer_dir/usr/bin/git"
     else
@@ -28,7 +28,7 @@ which_git() {
 }
 
 git_init_if_necessary() {
-  if ! [ -d ".git" ]
+  if [[ ! -d ".git" ]]
   then
     git init -q
     git config --bool core.autocrlf false
@@ -36,7 +36,7 @@ git_init_if_necessary() {
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
   fi
 
-  if git remote show origin -n | grep -q "mxcl/homebrew"
+  if [[ "$(git remote show origin -n)" = *"mxcl/homebrew"* ]]
   then
     git remote set-url origin https://github.com/Homebrew/homebrew.git
     git remote set-url --delete origin ".*mxcl\/homebrew.*"
@@ -55,7 +55,7 @@ upstream_branch() {
   local upstream_branch
   upstream_branch="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null |
                      sed -e 's|refs/remotes/origin/||' )"
-  [ -z "$upstream_branch" ] && upstream_branch="master"
+  [[ -z "$upstream_branch" ]] && upstream_branch="master"
   echo "$upstream_branch"
 }
 
@@ -66,9 +66,9 @@ read_current_revision() {
 # Don't warn about QUIET_ARGS; they need to be unquoted.
 # shellcheck disable=SC2086
 pop_stash() {
-  [ -z "$STASHED" ] && return
+  [[ -z "$STASHED" ]] && return
   git stash pop $QUIET_ARGS
-  if [ -n "$HOMEBREW_VERBOSE" ]
+  if [[ -n "$HOMEBREW_VERBOSE" ]]
   then
     echo "Restoring your stashed changes to $DIR:"
     git status --short --untracked-files
@@ -77,7 +77,7 @@ pop_stash() {
 }
 
 pop_stash_message() {
-  [ -z "$STASHED" ] && return
+  [[ -z "$STASHED" ]] && return
   echo "To restore the stashed changes to $DIR run:"
   echo "  'cd $DIR && git stash pop'"
   unset STASHED
@@ -86,9 +86,9 @@ pop_stash_message() {
 # Don't warn about QUIET_ARGS; they need to be unquoted.
 # shellcheck disable=SC2086
 reset_on_interrupt() {
-  [ -z "$INITIAL_BRANCH" ] || git checkout "$INITIAL_BRANCH"
+  [[ -z "$INITIAL_BRANCH" ]] || git checkout "$INITIAL_BRANCH"
   git reset --hard "$INITIAL_REVISION" $QUIET_ARGS
-  if [ -n "$INITIAL_BRANCH" ]
+  if [[ -n "$INITIAL_BRANCH" ]]
   then
     pop_stash
   else
@@ -110,9 +110,9 @@ pull() {
   INITIAL_BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null)"
   UPSTREAM_BRANCH="$(upstream_branch)"
 
-  if [ -n "$(git status --untracked-files=all --porcelain 2>/dev/null)" ]
+  if [[ -n "$(git status --untracked-files=all --porcelain 2>/dev/null)" ]]
   then
-    if [ -n "$HOMEBREW_VERBOSE" ]
+    if [[ -n "$HOMEBREW_VERBOSE" ]]
     then
       echo "Stashing uncommitted changes to $DIR."
       git status --short --untracked-files=all
@@ -127,7 +127,7 @@ pull() {
   # Used for testing purposes, e.g., for testing formula migration after
   # renaming it in the currently checked-out branch. To test run
   # "brew update --simulate-from-current-branch"
-  if [ -n "$HOMEBREW_SIMULATE_FROM_CURRENT_BRANCH" ]
+  if [[ -n "$HOMEBREW_SIMULATE_FROM_CURRENT_BRANCH" ]]
   then
     INITIAL_REVISION="$(git rev-parse -q --verify "$(upstream_branch)")"
     CURRENT_REVISION="$(read_current_revision)"
@@ -140,7 +140,7 @@ pull() {
     return
   fi
 
-  if [ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" ] && [ -n "$INITIAL_BRANCH" ]
+  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
   then
     # Recreate and check out `#{upstream_branch}` if unable to fast-forward
     # it to `origin/#{@upstream_branch}`. Otherwise, just check it out.
@@ -159,7 +159,7 @@ pull() {
 
   trap reset_on_interrupt SIGINT
 
-  if [ -n "$HOMEBREW_REBASE" ]
+  if [[ -n "$HOMEBREW_REBASE" ]]
   then
     git rebase $QUIET_ARGS "origin/$UPSTREAM_BRANCH"
   else
@@ -171,7 +171,7 @@ pull() {
   CURRENT_REVISION="$(read_current_revision)"
   export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(git rev-parse "$UPSTREAM_BRANCH")"
 
-  if [ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" ] && [ -n "$INITIAL_BRANCH" ]
+  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
   then
     git checkout "$INITIAL_BRANCH" $QUIET_ARGS
     pop_stash
@@ -181,7 +181,7 @@ pull() {
 }
 
 update-bash() {
-  if [ -z "$HOMEBREW_DEVELOPER" ]
+  if [[ -z "$HOMEBREW_DEVELOPER" ]]
   then
     echo "This command is currently only for Homebrew developers' use." >&2
     exit 1
@@ -208,35 +208,35 @@ update-bash() {
     esac
   done
 
-  if [ -n "$HOMEBREW_DEBUG" ]
+  if [[ -n "$HOMEBREW_DEBUG" ]]
   then
     set -x
   fi
 
   # check permissions
-  if [ "$HOMEBREW_PREFIX" = "/usr/local" ] && ! test -w /usr/local
+  if [[ "$HOMEBREW_PREFIX" = "/usr/local" && ! -w /usr/local ]]
   then
     echo "Error: /usr/local must be writable!" >&2
     exit 1
   fi
 
-  if ! test -w "$HOMEBREW_REPOSITORY"
+  if [[ ! -w "$HOMEBREW_REPOSITORY" ]]
   then
     echo "Error: $HOMEBREW_REPOSITORY must be writable!" >&2
     exit 1
   fi
 
-  if [ -z "$(which_git)" ]
+  if [[ -z "$(which_git)" ]]
   then
     brew install git
-    if [ -z "$(which_git)" ]
+    if [[ -z "$(which_git)" ]]
     then
       echo "Error: Git must be installed and in your PATH!" >&2
       exit 1
     fi
   fi
 
-  if [ -z "$HOMEBREW_VERBOSE" ]
+  if [[ -z "$HOMEBREW_VERBOSE" ]]
   then
     QUIET_ARGS="-q"
   fi
@@ -252,7 +252,7 @@ update-bash() {
 
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
   do
-    [ -d "$DIR/.git" ] || continue
+    [[ -d "$DIR/.git" ]] || continue
     cd "$DIR" || continue
     TAP_VAR=$(repo_var "$DIR")
     export HOMEBREW_UPDATE_BEFORE"$TAP_VAR"="$(git rev-parse "$(upstream_branch)")"
@@ -266,7 +266,7 @@ update-bash() {
 
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
   do
-    [ -d "$DIR/.git" ] || continue
+    [[ -d "$DIR/.git" ]] || continue
     pull "$DIR"
   done
 
