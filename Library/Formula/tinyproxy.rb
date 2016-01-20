@@ -83,7 +83,7 @@ class Tinyproxy < Formula
         <false/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{opt_sbin}/tinyproxy</string>
+            <string>#{opt_sbin}/tinyproxy -d</string>
         </array>
         <key>WorkingDirectory</key>
         <string>#{HOMEBREW_PREFIX}</string>
