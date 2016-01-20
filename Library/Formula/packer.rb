@@ -3,10 +3,10 @@ require "language/go"
 class Packer < Formula
   desc "Tool for creating identical machine images for multiple platforms"
   homepage "https://packer.io"
-
-  # buildscript requires the .git directory be present
   url "https://github.com/mitchellh/packer.git",
-    :tag => "v0.8.6", :revision => "f8f7b7a34c1be06058f5aca23a51247db12cdbc5"
+      :tag => "v0.8.6",
+      :revision => "f8f7b7a34c1be06058f5aca23a51247db12cdbc5"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -91,7 +91,8 @@ class Packer < Formula
 
   go_resource "code.google.com/p/go.crypto" do
     url "https://code.google.com/p/go.crypto/",
-      :using => :hg, :revision => "69e2a90ed92d03812364aeb947b7068dc42e561e"
+        :using => :hg,
+        :revision => "69e2a90ed92d03812364aeb947b7068dc42e561e"
   end
 
   go_resource "github.com/mitchellh/go-fs" do
@@ -111,7 +112,8 @@ class Packer < Formula
 
   go_resource "code.google.com/p/gosshold" do
     url "https://code.google.com/p/gosshold/",
-      :using => :hg, :revision => "9dd3b6b6e7b3e1b7f30c2b58c5ec5fff6bf9feff"
+        :using => :hg,
+        :revision => "9dd3b6b6e7b3e1b7f30c2b58c5ec5fff6bf9feff"
   end
 
   go_resource "github.com/ActiveState/tail" do
