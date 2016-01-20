@@ -7,10 +7,9 @@ class Camlistore < Formula
   head "https://camlistore.googlesource.com/camlistore", :using => :git
 
   bottle do
-    revision 1
-    sha256 "c2b76a901e3b55b59665099acb35d72ed7e4710add538238fa6fef149e536d4a" => :yosemite
-    sha256 "ed1b23e31324d8c3d6b50f080c37e9357acfb4fd52517057c29b9a75cf2de179" => :mavericks
-    sha256 "b180cf6c719435db63e82ba60483c443b002e9f2cbb93fa812d57ce5d9176bf8" => :mountain_lion
+    sha256 "62564ebc8af7078716c921f5e8b6dd1b6570d731ffc12a008facc8a927c6d0d3" => :el_capitan
+    sha256 "e36f8753cd172aed1cb7c538739b7cb20bae6add3b54d9bcf09a6973fa0c7e21" => :yosemite
+    sha256 "00e43ede2522c4d4469eb0e01229b3706525b054cd7afe3e97f21fd23d9ab6a2" => :mavericks
   end
 
   conflicts_with "hello", :because => "both install `hello` binaries"
