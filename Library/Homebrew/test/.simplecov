@@ -13,8 +13,8 @@ SimpleCov.start do
   add_filter "Homebrew/vendor/"
 end
 
-if name = ENV["HOMEBREW_INTEGRATION_TEST"]
-  SimpleCov.command_name "brew #{name}"
+if ENV["HOMEBREW_INTEGRATION_TEST"]
+  SimpleCov.command_name ENV["HOMEBREW_INTEGRATION_TEST"]
   SimpleCov.at_exit do
     exit_code = $!.nil? ? 0 : $!.status
     $stdout.reopen("/dev/null")
