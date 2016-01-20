@@ -1,4 +1,4 @@
-class LibQxt < Formula
+class Libqxt < Formula
   desc "LibQxt is an extension library for Qt"
   homepage "https://bitbucket.org/libqxt/libqxt/wiki/Home"
 
@@ -40,16 +40,6 @@ EOS
 
     system "./configure", *args
     system "make", "install"
-  end
-
-  def caveats
-    s = ""
-
-    if build.head?
-      s += "Note: QxtWindowSystem::windowTitle is currently unsupported and will return QString()"
-    end
-
-    s
   end
 
   test do
