@@ -4,6 +4,7 @@ class Ploticus < Formula
   url "https://downloads.sourceforge.net/project/ploticus/ploticus/2.42/ploticus242_src.tar.gz"
   version "2.42"
   sha256 "3f29e4b9f405203a93efec900e5816d9e1b4381821881e241c08cab7dd66e0b0"
+  revision 1
 
   bottle do
     cellar :any
@@ -18,10 +19,17 @@ class Ploticus < Formula
     # Use alternate name because "pl" conflicts with OS X "pl" utility
     args=["INSTALLBIN=#{bin}",
           "EXE=ploticus"]
+    inreplace "src/pl.h", /#define\s+PREFABS_DIR\s+""/, "#define PREFABS_DIR \"#{pkgshare}\""
     system "make", "-C", "src", *args
     # Required because the Makefile assumes INSTALLBIN dir exists
     bin.mkdir
     system "make", "-C", "src", "install", *args
+    pkgshare.install Dir["prefabs/*"]
+  end
+
+  def caveats; <<-EOS.undent
+    Ploticus prefabs have been installed to #{opt_pkgshare}
+  EOS
   end
 
   test do
