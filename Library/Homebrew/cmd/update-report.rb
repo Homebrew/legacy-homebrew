@@ -23,10 +23,6 @@ module Homebrew
     end
     report.update(master_updater.report)
 
-    # rename Taps directories
-    # this procedure will be removed in the future if it seems unnecessasry
-    rename_taps_dir_if_necessary
-
     updated_taps = []
     Tap.each do |tap|
       next unless tap.git?
@@ -104,34 +100,6 @@ module Homebrew
 
   def shorten_revision(revision)
     `git rev-parse --short #{revision}`.chomp
-  end
-
-  def rename_taps_dir_if_necessary
-    Dir.glob("#{HOMEBREW_LIBRARY}/Taps/*/") do |tapd|
-      begin
-        if File.directory?(tapd + "/.git")
-          tapd_basename = File.basename(tapd)
-          if tapd_basename.include?("-")
-            # only replace the *last* dash: yes, tap filenames suck
-            user, repo = tapd_basename.reverse.sub("-", "/").reverse.split("/")
-
-            FileUtils.mkdir_p("#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}")
-            FileUtils.mv(tapd, "#{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase}")
-
-            if tapd_basename.count("-") >= 2
-              opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
-                + "So you may need to rename #{HOMEBREW_LIBRARY}/Taps/#{user.downcase}/homebrew-#{repo.downcase} manually."
-            end
-          else
-            opoo "Homebrew changed the structure of Taps like <someuser>/<sometap>. "\
-              "#{tapd} is incorrect name format. You may need to rename it like <someuser>/<sometap> manually."
-          end
-        end
-      rescue => ex
-        onoe ex.message
-        next # next tap directory
-      end
-    end
   end
 
   def load_tap_migrations
