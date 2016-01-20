@@ -2,6 +2,7 @@
 
 if [[ -z "$HOMEBREW_BREW_FILE" ]]
 then
+  # we don't use odie here, because it's only available when this script is called from brew.
   echo "Error: $(basename "$0") must be called from brew!" >&2
   exit 1
 fi
@@ -134,8 +135,7 @@ pull() {
     export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(git rev-parse "$UPSTREAM_BRANCH")"
     if ! git merge-base --is-ancestor "$INITIAL_REVISION" "$CURRENT_REVISION"
     then
-      echo "Your HEAD is not a descendant of $UPSTREAM_BRANCH!" >&2
-      exit 1
+      odie "Your HEAD is not a descendant of $UPSTREAM_BRANCH!"
     fi
     return
   fi
@@ -183,8 +183,7 @@ pull() {
 update-bash() {
   if [[ -z "$HOMEBREW_DEVELOPER" ]]
   then
-    echo "This command is currently only for Homebrew developers' use." >&2
-    exit 1
+    odie "This command is currently only for Homebrew developers' use."
   fi
 
   for i in "$@"
@@ -201,9 +200,10 @@ update-bash() {
       -*d*) HOMEBREW_DEBUG=1 ;;
       -*) ;;
       *)
-        echo "This command updates brew itself, and does not take formula names." >&2
-        echo "Use 'brew upgrade <formula>'." >&2
-        exit 1
+        odie <<-EOS
+This command updates brew itself, and does not take formula names.
+Use 'brew upgrade <formula>'.
+EOS
         ;;
     esac
   done
@@ -216,14 +216,12 @@ update-bash() {
   # check permissions
   if [[ "$HOMEBREW_PREFIX" = "/usr/local" && ! -w /usr/local ]]
   then
-    echo "Error: /usr/local must be writable!" >&2
-    exit 1
+    odie "/usr/local must be writable!"
   fi
 
   if [[ ! -w "$HOMEBREW_REPOSITORY" ]]
   then
-    echo "Error: $HOMEBREW_REPOSITORY must be writable!" >&2
-    exit 1
+    odie "$HOMEBREW_REPOSITORY must be writable!"
   fi
 
   if [[ -z "$(which_git)" ]]
@@ -231,8 +229,7 @@ update-bash() {
     brew install git
     if [[ -z "$(which_git)" ]]
     then
-      echo "Error: Git must be installed and in your PATH!" >&2
-      exit 1
+      odie "Git must be installed and in your PATH!"
     fi
   fi
 
@@ -244,10 +241,7 @@ update-bash() {
   # ensure GIT_CONFIG is unset as we need to operate on .git/config
   unset GIT_CONFIG
 
-  cd "$HOMEBREW_REPOSITORY" || {
-    echo "Error: failed to cd to $HOMEBREW_REPOSITORY!" >&2
-    exit 1
-  }
+  chdir "$HOMEBREW_REPOSITORY"
   git_init_if_necessary
 
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
@@ -270,11 +264,7 @@ update-bash() {
     pull "$DIR"
   done
 
-  cd "$HOMEBREW_REPOSITORY" || {
-    echo "Error: failed to cd to $HOMEBREW_REPOSITORY!" >&2
-    exit 1
-  }
-
+  chdir "$HOMEBREW_REPOSITORY"
   brew update-report "$@"
   return $?
 }
