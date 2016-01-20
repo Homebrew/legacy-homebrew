@@ -54,8 +54,8 @@ repo_var() {
 
 upstream_branch() {
   local upstream_branch
-  upstream_branch="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null |
-                     sed -e 's|refs/remotes/origin/||' )"
+  upstream_branch="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)"
+  upstream_branch="${upstream_branch#refs/remotes/origin/}"
   [[ -z "$upstream_branch" ]] && upstream_branch="master"
   echo "$upstream_branch"
 }
