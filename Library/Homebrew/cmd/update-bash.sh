@@ -121,14 +121,24 @@ pop_stash_message() {
 # Don't warn about QUIET_ARGS; they need to be unquoted.
 # shellcheck disable=SC2086
 reset_on_interrupt() {
-  [[ -z "$INITIAL_BRANCH" ]] || git checkout "$INITIAL_BRANCH"
-  git reset --hard "$INITIAL_REVISION" $QUIET_ARGS
-  if [[ -n "$INITIAL_BRANCH" ]]
+  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
+  then
+    git checkout "$INITIAL_BRANCH"
+  fi
+
+  if [[ -n "$INITIAL_REVISION" ]]
+  then
+    git reset --hard "$INITIAL_REVISION" $QUIET_ARGS
+  fi
+
+  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
   then
     pop_stash
   else
     pop_stash_message
   fi
+
+  exit 130
 }
 
 # Don't warn about QUIET_ARGS; they need to be unquoted.
@@ -144,6 +154,8 @@ pull() {
   # origin branch name is, and use that. If not set, fall back to "master".
   INITIAL_BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null)"
   UPSTREAM_BRANCH="$(upstream_branch)"
+
+  trap reset_on_interrupt SIGINT
 
   if [[ -n "$(git status --untracked-files=all --porcelain 2>/dev/null)" ]]
   then
@@ -191,8 +203,6 @@ pull() {
   # ensure we don't munge line endings on checkout
   git config core.autocrlf false
 
-  trap reset_on_interrupt SIGINT
-
   if [[ -n "$HOMEBREW_REBASE" ]]
   then
     git rebase $QUIET_ARGS "origin/$UPSTREAM_BRANCH"
@@ -200,10 +210,10 @@ pull() {
     git merge --no-edit --ff $QUIET_ARGS "origin/$UPSTREAM_BRANCH"
   fi
 
-  trap - SIGINT
-
   CURRENT_REVISION="$(read_current_revision)"
   export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(git rev-parse "$UPSTREAM_BRANCH")"
+
+  trap '' SIGINT
 
   if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
   then
@@ -212,6 +222,8 @@ pull() {
   else
     pop_stash_message
   fi
+
+  trap - SIGINT
 }
 
 update-bash() {
