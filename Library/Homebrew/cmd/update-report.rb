@@ -29,6 +29,7 @@ module Homebrew
 
     updated_taps = []
     Tap.each do |tap|
+      next unless tap.git?
       tap.path.cd do
         updater = Reporter.new(tap.path)
         updated_taps << tap.name if updater.updated?
