@@ -22,9 +22,12 @@ module Homebrew
         system "bundle", "install", "--path", "vendor/bundle"
       end
 
+      # Make it easier to reproduce test runs.
+      ENV["SEED"] = ARGV.next if ARGV.include? "--seed"
+
       args = []
       args << "--trace" if ARGV.include? "--trace"
-      args += ARGV.named
+      args += ARGV.named.select { |v| v[/^TEST(OPTS)?=/] }
       system "bundle", "exec", "rake", "test", *args
 
       Homebrew.failed = !$?.success?
