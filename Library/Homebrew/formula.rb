@@ -1455,16 +1455,6 @@ class Formula
       $stdout.flush
 
       unless $?.success?
-        log_lines = ENV["HOMEBREW_FAIL_LOG_LINES"]
-        log_lines ||= "15"
-
-        log.flush
-        if !verbose || verbose_using_dots
-          puts "Last #{log_lines} lines from #{logfn}:"
-          Kernel.system "/usr/bin/tail", "-n", log_lines, logfn
-        end
-        log.puts
-
         require "cmd/config"
         require "build_environment"
 

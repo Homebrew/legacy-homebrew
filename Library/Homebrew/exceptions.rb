@@ -227,6 +227,8 @@ class BuildError < RuntimeError
 
   def dump
     if !ARGV.verbose?
+      onoe "#{@formula.full_name} #{@formula.version} did not build"
+      puts "View logs in #{@formula.logs}"
       puts
       puts "#{Tty.red}READ THIS#{Tty.reset}: #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
       if formula.tap?
