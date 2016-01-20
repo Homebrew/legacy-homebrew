@@ -1,9 +1,8 @@
 class PostgresXc < Formula
   desc "PostgreSQL cluster based on shared-nothing architecture"
   homepage "http://postgres-xc.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.3.tar.gz"
-  sha256 "60ae1e42e977f78785090743161867dc838e3c8e1db0ac836dcfa23c8f1db8dd"
-  revision 1
+  url "https://downloads.sourceforge.net/project/postgres-xc/Version_1.0/pgxc-v1.0.4.tar.gz"
+  sha256 "b467cbb7d562a8545645182958efd1608799ed4e04a9c3906211878d477b29c1"
 
   bottle do
     revision 1
@@ -12,18 +11,21 @@ class PostgresXc < Formula
     sha256 "a23ac1d0746207ccc5548b93156b0bbea6c633897842d323b4dd470c687f0ec1" => :lion
   end
 
+  option "with-dtrace", "Build with DTrace support"
+  option "without-perl", "Build without Perl support"
+
+  deprecated_option "no-perl" => "without-perl"
+  deprecated_option "enable-dtrace" => "with-dtrace"
+
   depends_on :arch => :x86_64
-  depends_on :python => :optional
   depends_on "openssl"
   depends_on "readline"
   depends_on "libxml2" if MacOS.version <= :leopard # Leopard libxml is too old
   depends_on "ossp-uuid" => :recommended
+  depends_on :python => :optional
 
   conflicts_with "postgresql",
     :because => "postgres-xc and postgresql install the same binaries."
-
-  option "no-perl", "Build without Perl support"
-  option "enable-dtrace", "Build with DTrace support"
 
   fails_with :clang do
     build 211
@@ -31,31 +33,36 @@ class PostgresXc < Formula
   end
 
   # Fix PL/Python build: https://github.com/Homebrew/homebrew/issues/11162
-  # Fix uuid-ossp build issues: http://archives.postgresql.org/pgsql-general/2012-07/msg00654.php
+  # Fix uuid-ossp build issues: http://www.postgresql.org/message-id/05843630-E25D-442A-A6B0-5CA63622A400@likeness.com
   patch :DATA
 
   def install
     ENV.libxml2 if MacOS.version >= :snow_leopard
 
-    # See http://sourceforge.net/mailarchive/forum.php?thread_name=82E44F89-543A-44F2-8AF8-F6909B5DC561%40uniud.it&forum_name=postgres-xc-bugs
+    # See https://sourceforge.net/mailarchive/forum.php?thread_name=82E44F89-543A-44F2-8AF8-F6909B5DC561%40uniud.it&forum_name=postgres-xc-bugs
     ENV.append "CFLAGS", "-D_FORTIFY_SOURCE=0 -O2" if MacOS.version >= :mavericks
 
-    args = ["--disable-debug",
-            "--prefix=#{prefix}",
-            "--datadir=#{share}/#{name}",
-            "--docdir=#{doc}",
-            "--enable-thread-safety",
-            "--with-bonjour",
-            "--with-gssapi",
-            "--with-krb5",
-            "--with-openssl",
-            "--with-libxml",
-            "--with-libxslt"]
+    ENV.prepend "LDFLAGS", "-L#{Formula["openssl"].opt_lib} -L#{Formula["readline"].opt_lib}"
+    ENV.prepend "CPPFLAGS", "-I#{Formula["openssl"].opt_include} -I#{Formula["readline"].opt_include}"
+
+    args = %W[
+      --disable-debug
+      --prefix=#{prefix}
+      --datadir=#{pkgshare}
+      --docdir=#{doc}
+      --enable-thread-safety
+      --with-bonjour
+      --with-gssapi
+      --with-krb5
+      --with-openssl
+      --with-libxml
+      --with-libxslt
+    ]
 
     args << "--with-ossp-uuid" if build.with? "ossp-uuid"
     args << "--with-python" if build.with? "python"
-    args << "--with-perl" unless build.include? "no-perl"
-    args << "--enable-dtrace" if build.include? "enable-dtrace"
+    args << "--with-perl" if build.with? "perl"
+    args << "--enable-dtrace" if build.with? "dtrace"
     args << "ARCHFLAGS='-arch x86_64'"
 
     if build.with? "ossp-uuid"
@@ -67,7 +74,11 @@ class PostgresXc < Formula
     check_python_arch if build.with? "python"
 
     system "./configure", *args
-    system "make install-world"
+
+    # Building the documentation looks for Jade or OpenJade, neither of which exist on OS X
+    # or are supplied by Homebrew at this point in time. Disable for now, since error fatal.
+    inreplace "GNUmakefile", "recurse,install-world,doc-xc src", "recurse,install-world,src"
+    system "make", "install-world"
 
     plist_path("gtm").write gtm_startup_plist("gtm")
     plist_path("gtm").chmod 0644
@@ -77,8 +88,10 @@ class PostgresXc < Formula
     plist_path("coord").chmod 0644
     plist_path("datanode").write datanode_startup_plist("datanode")
     plist_path("datanode").chmod 0644
+  end
 
-    mkpath var+"postgres-xc" # Create data directory
+  def post_install
+    (var/"postgres-xc").mkpath
   end
 
   def check_python_arch
@@ -154,12 +167,12 @@ class PostgresXc < Formula
 
   # Override Formula#plist_name
   def plist_name(extra = nil)
-    (extra) ? super()+"-"+extra : super()+"-gtm"
+    extra ? super()+"-"+extra : super()+"-gtm"
   end
 
   # Override Formula#plist_path
   def plist_path(extra = nil)
-    (extra) ? super().dirname+(plist_name(extra)+".plist") : super()
+    extra ? super().dirname+(plist_name(extra)+".plist") : super()
   end
 
   def gtm_startup_plist(name); <<-EOPLIST.undent
@@ -282,6 +295,11 @@ class PostgresXc < Formula
     </dict>
     </plist>
     EOPLIST
+  end
+
+  test do
+    system "#{bin}/initdb", "--nodename=brew", testpath/"test"
+    assert File.exist?("test")
   end
 end
 
