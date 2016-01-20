@@ -6,10 +6,9 @@ class Coreutils < Formula
   sha256 "31e67c057a5b32a582f26408c789e11c2e8d676593324849dcf5779296cdce87"
 
   bottle do
-    revision 1
-    sha256 "b7bfca75eb3155763f2646fcc68e735da8e3c256378ea77b5145b8b05ab98487" => :el_capitan
-    sha256 "2a8a58876cba90cd2c12b95e082566007eade29fbed15508463457cd7647cfcf" => :yosemite
-    sha256 "adbc19369319460f5e7e088c2ffdec20b8ab92d4aa8fd4bdd4c81d5f0fc340c3" => :mavericks
+    sha256 "3b278ce91252784e43d2f16fc813e72a7bd04e637627bf2916c9f847ef600d89" => :el_capitan
+    sha256 "dadb2d672a6b412d03b2470459d0ccb229bf7aa1c587b04809e7f19a439a640e" => :yosemite
+    sha256 "1b68974d496006908a2f538a6a7e35b3bee7eba2247afec4e1568b28d0d83c5c" => :mavericks
   end
 
   conflicts_with "ganglia", :because => "both install `gstat` binaries"
