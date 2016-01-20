@@ -287,6 +287,7 @@ class IntegrationCommandTests < Homebrew::TestCase
   def test_sh
     assert_match "Your shell has been configured",
                  cmd("sh", {"SHELL" => "/usr/bin/true"})
+  end
 
   def test_info
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
@@ -301,6 +302,16 @@ class IntegrationCommandTests < Homebrew::TestCase
                  cmd("info", "testball")
   ensure
     formula_file.unlink
+  end
+
+  def test_tap_readme
+    (HOMEBREW_LIBRARY/"Taps").mkpath
+    assert_match "brew install homebrew/foo/<formula>",
+                 cmd("tap-readme", "foo", "--verbose")
+    readme = HOMEBREW_LIBRARY/"Taps/homebrew/homebrew-foo/README.md"
+    assert readme.exist?, "The README should be created"
+  ensure
+    (HOMEBREW_LIBRARY/"Taps").rmtree
   end
 
   def test_custom_command
