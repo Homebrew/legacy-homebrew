@@ -205,6 +205,7 @@ class DiagnosticChecksTest < Homebrew::TestCase
   end
 
   def test_check_for_autoconf
+    MacOS::Xcode.stubs(:installed?).returns true
     MacOS::Xcode.stubs(:provides_autotools?).returns true
     mktmpdir do |path|
       file = "#{path}/autoconf"
