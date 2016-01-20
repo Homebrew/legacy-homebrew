@@ -198,7 +198,7 @@ update-bash() {
       --simulate-from-current-branch) HOMEBREW_SIMULATE_FROM_CURRENT_BRANCH=1 ;;
       --*) ;;
       -*v*) HOMEBREW_VERBOSE=1 ;;
-      -*v*) HOMEBREW_DEBUG=1 ;;
+      -*d*) HOMEBREW_DEBUG=1 ;;
       -*) ;;
       *)
         echo "This command updates brew itself, and does not take formula names." >&2
