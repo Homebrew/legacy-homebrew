@@ -45,11 +45,15 @@ git_init_if_necessary() {
 }
 
 repo_var() {
-  echo "$1" |
-    sed -e "s|$HOMEBREW_PREFIX||g" \
-        -e 's|Library/Taps/||g' \
-        -e 's|[^a-z0-9]|_|g' |
-    tr "[:lower:]" "[:upper:]"
+  local repo_var="$1"
+  if [[ "$repo_var" = "$HOMEBREW_REPOSITORY" ]]
+  then
+    repo_var=""
+  else
+    repo_var="${repo_var#"$HOMEBREW_LIBRARY/Taps"}"
+    repo_var="$(echo -n "$repo_var" | tr -C "A-Za-z0-9" "_" | tr "[:lower:]" "[:upper:]")"
+  fi
+  echo "$repo_var"
 }
 
 upstream_branch() {
