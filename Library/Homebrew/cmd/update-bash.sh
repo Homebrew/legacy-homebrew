@@ -1,12 +1,3 @@
-#!/bin/bash
-
-if [[ -z "$HOMEBREW_BREW_FILE" ]]
-then
-  # we don't use odie here, because it's only available when this script is called from brew.
-  echo "Error: $(basename "$0") must be called from brew!" >&2
-  exit 1
-fi
-
 brew() {
   "$HOMEBREW_BREW_FILE" "$@"
 }
