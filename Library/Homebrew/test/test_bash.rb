@@ -11,6 +11,10 @@ class BashTests < Homebrew::TestCase
   end
 
   def test_bash_cmds
-    assert_valid_bash_syntax "#{HOMEBREW_LIBRARY_PATH}/cmd/*.sh"
+    %w[cmd dev-cmd].each do |dir|
+      Dir["#{HOMEBREW_LIBRARY_PATH}/#{dir}/*.sh"].each do |cmd|
+        assert_valid_bash_syntax cmd
+      end
+    end
   end
 end
