@@ -125,7 +125,7 @@ module HomebrewArgvExtension
   end
 
   def homebrew_developer?
-    include?("--homebrew-developer") || !ENV["HOMEBREW_DEVELOPER"].nil?
+    !ENV["HOMEBREW_DEVELOPER"].nil?
   end
 
   def sandbox?
