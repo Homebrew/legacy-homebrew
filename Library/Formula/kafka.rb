@@ -90,8 +90,8 @@ class Kafka < Formula
     # set a few environment variables that kafka-run-class.sh uses for things like figuring out where
     # to save logs. We need to do this so that Kafka doesnt try to write log files into
     # /usr/local/Cellar/kafka/version/blahblah and instead into the sandbox's temporary directory, because otherwise
-    # otherwise instead of lovely ZooKeeper client debug messages, we just get a bunch of "operation not permitted" IO
-    # errors and Kafka will crash (or worse, livelock) before the ZK client has a chance to start and work its magic.
+    # instead of lovely ZooKeeper client debug messages, we just get a bunch of "operation not permitted" IO errors
+    # and Kafka will crash (or worse, livelock) before the ZK client has a chance to start and work its magic.
     #
     # ohai "Checking that the correct JAR (kafka_2.10.0-0.9.0.0.jar) is being loaded by kafka-run-class.sh"
     #
