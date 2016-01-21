@@ -153,6 +153,9 @@ fi
 
 if [[ -f "$HOMEBREW_BASH_COMMAND" ]]
 then
+  # Bash commands don't need the first argument, which is just the command name.
+  shift
+
   # source rather than executing directly to ensure the entire file is read into
   # memory before it is run. This makes running a Bash script behave more like
   # a Ruby script and avoids hard-to-debug issues if the Bash script is updated
