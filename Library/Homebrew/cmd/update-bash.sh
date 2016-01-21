@@ -155,22 +155,6 @@ pull() {
   INITIAL_BRANCH="$(git symbolic-ref --short HEAD 2>/dev/null)"
   UPSTREAM_BRANCH="$(upstream_branch)"
 
-  trap reset_on_interrupt SIGINT
-
-  if [[ -n "$(git status --untracked-files=all --porcelain 2>/dev/null)" ]]
-  then
-    if [[ -n "$HOMEBREW_VERBOSE" ]]
-    then
-      echo "Stashing uncommitted changes to $DIR."
-      git status --short --untracked-files=all
-    fi
-    git -c "user.email=brew-update@localhost" \
-        -c "user.name=brew update" \
-        stash save --include-untracked $QUIET_ARGS
-    git reset --hard $QUIET_ARGS
-    STASHED="1"
-  fi
-
   # Used for testing purposes, e.g., for testing formula migration after
   # renaming it in the currently checked-out branch. To test run
   # "brew update --simulate-from-current-branch"
@@ -185,6 +169,22 @@ pull() {
       odie "Your HEAD is not a descendant of $UPSTREAM_BRANCH!"
     fi
     return
+  fi
+
+  trap reset_on_interrupt SIGINT
+
+  if [[ -n "$(git status --untracked-files=all --porcelain 2>/dev/null)" ]]
+  then
+    if [[ -n "$HOMEBREW_VERBOSE" ]]
+    then
+      echo "Stashing uncommitted changes to $DIR."
+      git status --short --untracked-files=all
+    fi
+    git -c "user.email=brew-update@localhost" \
+        -c "user.name=brew update" \
+        stash save --include-untracked $QUIET_ARGS
+    git reset --hard $QUIET_ARGS
+    STASHED="1"
   fi
 
   if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
