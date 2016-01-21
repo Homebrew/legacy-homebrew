@@ -11,6 +11,12 @@ class ColladaDom < Formula
     # https://github.com/rdiankov/collada-dom/issues/3
     patch :DATA
   end
+  bottle do
+    sha256 "98e726f47020580acc1a10be5366394fb137fc4729e3446e5e0130a69b2d38da" => :el_capitan
+    sha256 "2be8761c8bd277b4cc720c900fff84cedbc2736a55329a9d107ded2712e97d75" => :yosemite
+    sha256 "5ddb31dec3a705e99ca17ec2c6ef1bafb101eac16167d451c3e6eda2dc9c0761" => :mavericks
+  end
+
 
   devel do
     url "https://github.com/rdiankov/collada-dom/archive/v2.4.4.tar.gz"
