@@ -1,8 +1,8 @@
 class AnsibleCmdb < Formula
   desc "Generates static HTML overview page from Ansible facts"
   homepage "https://github.com/fboender/ansible-cmdb"
-  url "https://github.com/fboender/ansible-cmdb/releases/download/1.10/ansible-cmdb-1.10.zip"
-  sha256 "9234f77624ba174721ef8d0ecd2717d73fc3a1e9393a65289be29f08ec4b370e"
+  url "https://github.com/fboender/ansible-cmdb/releases/download/1.11/ansible-cmdb-1.11.zip"
+  sha256 "6651792bf168fdfadb0e9f0e0404854f10f22ec23fe7b6c2032bc3a3bf846d0f"
 
   bottle do
     cellar :any_skip_relocation
@@ -20,8 +20,7 @@ class AnsibleCmdb < Formula
     inreplace "Makefile" do |s|
       s.gsub! "/usr/local/lib/${PROG}", prefix
       s.gsub! "/usr/local/bin", bin
-      s.gsub! "/usr/local/share/man/man1/", man1 + 'ansible-cmdb.1'
-      s.gsub! "mandb", "#mandb"
+      s.gsub! "/usr/local/share/man/man1", man1
     end
     system "make", "install"
   end
