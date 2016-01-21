@@ -121,7 +121,7 @@ class DnscryptProxy < Formula
         <array>
           <string>#{opt_sbin}/dnscrypt-proxy</string>
           <string>--ephemeral-keys</string>
-          <string>--resolvers-list=#{share}/dnscrypt-proxy/dnscrypt-resolvers.csv</string>
+          <string>--resolvers-list=#{opt_pkgshare}/dnscrypt-resolvers.csv</string>
           <string>--resolver-name=dnscrypt.eu-dk</string>
           <string>--user=nobody</string>
         </array>
