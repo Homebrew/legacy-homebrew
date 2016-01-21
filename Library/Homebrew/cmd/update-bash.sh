@@ -243,9 +243,10 @@ update-bash() {
       --rebase) HOMEBREW_REBASE=1 ;;
       --simulate-from-current-branch) HOMEBREW_SIMULATE_FROM_CURRENT_BRANCH=1 ;;
       --*) ;;
-      -*v*) HOMEBREW_VERBOSE=1 ;;
-      -*d*) HOMEBREW_DEBUG=1 ;;
-      -*) ;;
+      -*)
+        [[ "$i" = *v* ]] && HOMEBREW_VERBOSE=1;
+        [[ "$i" = *d* ]] && HOMEBREW_DEBUG=1;
+        ;;
       *)
         odie <<-EOS
 This command updates brew itself, and does not take formula names.
