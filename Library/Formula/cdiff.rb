@@ -1,10 +1,9 @@
 class Cdiff < Formula
   desc "View colored diff with side by side and auto pager support"
   homepage "https://github.com/ymattw/cdiff"
-  url "https://github.com/ymattw/cdiff/archive/0.9.7.tar.gz"
-  sha256 "41eff442efc34e545d89b94f47da22ffc5edb4224476728746841b64b69f3512"
+  url "https://github.com/ymattw/cdiff/archive/0.9.8.tar.gz"
+  sha256 "676f025b385c40bdf784aabf8381b2006f5e3befc2768c4d454a276f759221f1"
   head "https://github.com/ymattw/cdiff.git"
-  revision 1
 
   bottle :unneeded
 
