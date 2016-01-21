@@ -216,6 +216,9 @@ class FormulaAuditorTests < Homebrew::TestCase
   end
 
   def test_audit_class_github_gist_formula
+    needs_compat
+    require "compat/formula_specialties"
+
     fa = formula_auditor "foo", <<-EOS.undent
       class Foo < GithubGistFormula
         url "http://example.com/foo-1.0.tgz"
@@ -227,6 +230,9 @@ class FormulaAuditorTests < Homebrew::TestCase
   end
 
   def test_audit_class_script_file_formula
+    needs_compat
+    require "compat/formula_specialties"
+
     fa = formula_auditor "foo", <<-EOS.undent
       class Foo < ScriptFileFormula
         url "http://example.com/foo-1.0.tgz"
@@ -238,6 +244,9 @@ class FormulaAuditorTests < Homebrew::TestCase
   end
 
   def test_audit_class_aws_formula
+    needs_compat
+    require "compat/formula_specialties"
+
     fa = formula_auditor "foo", <<-EOS.undent
       class Foo < AmazonWebServicesFormula
         url "http://example.com/foo-1.0.tgz"
