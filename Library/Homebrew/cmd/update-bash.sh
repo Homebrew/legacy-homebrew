@@ -13,10 +13,11 @@ brew() {
 
 which_git() {
   local which_git
+  local active_developer_dir
+
   which_git="$(which git 2>/dev/null)"
   if [[ -n "$which_git" && "/usr/bin/git" = "$which_git" ]]
   then
-    local active_developer_dir
     active_developer_dir="$('/usr/bin/xcode-select' -print-path 2>/dev/null)"
     if [[ -n "$active_developer_dir" && -x "$active_developer_dir/usr/bin/git" ]]
     then
@@ -46,16 +47,17 @@ git_init_if_necessary() {
 
 rename_taps_dir_if_necessary() {
   local tap_dir
+  local tap_dir_basename
+  local user
+  local repo
+
   for tap_dir in "$HOMEBREW_LIBRARY"/Taps/*
   do
     [[ -d "$tap_dir/.git" ]] || continue
-    local tap_dir_basename
     tap_dir_basename="${tap_dir##*/}"
     if [[ "$tap_dir_basename" = *"-"* ]]
     then
       # only replace the *last* dash: yes, tap filenames suck
-      local user
-      local repo
       user="$(echo "${tap_dir_basename%-*}" | tr "[:upper:]" "[:lower:]")"
       repo="$(echo "${tap_dir_basename:${#user}+1}" | tr "[:upper:]" "[:lower:]")"
       mkdir -p "$HOMEBREW_LIBRARY/Taps/$user"
@@ -75,7 +77,9 @@ rename_taps_dir_if_necessary() {
 }
 
 repo_var() {
-  local repo_var="$1"
+  local repo_var
+
+  repo_var="$1"
   if [[ "$repo_var" = "$HOMEBREW_REPOSITORY" ]]
   then
     repo_var=""
@@ -88,6 +92,7 @@ repo_var() {
 
 upstream_branch() {
   local upstream_branch
+
   upstream_branch="$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null)"
   upstream_branch="${upstream_branch#refs/remotes/origin/}"
   [[ -z "$upstream_branch" ]] && upstream_branch="master"
@@ -144,7 +149,10 @@ reset_on_interrupt() {
 # Don't warn about QUIET_ARGS; they need to be unquoted.
 # shellcheck disable=SC2086
 pull() {
-  local DIR="$1"
+  local DIR
+  local TAP_VAR
+
+  DIR="$1"
   cd "$DIR" || return
   TAP_VAR=$(repo_var "$DIR")
   unset STASHED
@@ -228,14 +236,18 @@ pull() {
 }
 
 update-bash() {
+  local option
+  local DIR
+  local UPSTREAM_BRANCH
+
   if [[ -z "$HOMEBREW_DEVELOPER" ]]
   then
     odie "This command is currently only for Homebrew developers' use."
   fi
 
-  for i in "$@"
+  for option in "$@"
   do
-    case "$i" in
+    case "$option" in
       update|update-bash) shift ;;
       --help) brew update --help; exit $? ;;
       --verbose) HOMEBREW_VERBOSE=1 ;;
@@ -244,8 +256,8 @@ update-bash() {
       --simulate-from-current-branch) HOMEBREW_SIMULATE_FROM_CURRENT_BRANCH=1 ;;
       --*) ;;
       -*)
-        [[ "$i" = *v* ]] && HOMEBREW_VERBOSE=1;
-        [[ "$i" = *d* ]] && HOMEBREW_DEBUG=1;
+        [[ "$option" = *v* ]] && HOMEBREW_VERBOSE=1;
+        [[ "$option" = *d* ]] && HOMEBREW_DEBUG=1;
         ;;
       *)
         odie <<-EOS
