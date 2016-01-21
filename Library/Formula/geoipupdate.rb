@@ -1,8 +1,8 @@
 class Geoipupdate < Formula
   desc "Automatic updates of GeoIP2 and GeoIP Legacy databases"
   homepage "https://github.com/maxmind/geoipupdate"
-  url "https://github.com/maxmind/geoipupdate/releases/download/v2.2.1/geoipupdate-2.2.1.tar.gz"
-  sha256 "9547c42cc8620b2c3040fd8df95e8ee45c8b6ebcca7737d641f9526104d5f446"
+  url "https://github.com/maxmind/geoipupdate/releases/download/v2.2.2/geoipupdate-2.2.2.tar.gz"
+  sha256 "156ab7604255a9c62c4a442c76d48d024ac813c6542639bffa93b28e2a781621"
 
   bottle do
     sha256 "a3313c0df356e2fbc6eea2a46862c34efb88206931d2452ca45b1bba471a284b" => :el_capitan
@@ -43,6 +43,6 @@ class Geoipupdate < Formula
   end
 
   test do
-    system "#{bin}/geoipupdate", "-v"
+    system "#{bin}/geoipupdate", "-V"
   end
 end
