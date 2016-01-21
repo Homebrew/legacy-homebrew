@@ -1,9 +1,9 @@
 class Planck < Formula
   desc "A command-line ClojureScript REPL for OS X."
-  homepage "http://planck.fikesfarm.com/"
+  homepage "http://planck-repl.org/"
   head "https://github.com/mfikes/planck.git"
-  url "https://github.com/mfikes/planck/archive/1.8.tar.gz"
-  sha256 "dba34141820d86adc5425d448d6cc51d47bbb992153a129e37c730dcfff6381a"
+  url "https://github.com/mfikes/planck/archive/1.9.tar.gz"
+  sha256 "3a12e740feda792ccad85e9d1f33798e1af4a6bf2131b41f3be27d3f3489f4be"
 
   bottle do
     cellar :any_skip_relocation
