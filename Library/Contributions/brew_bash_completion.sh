@@ -475,7 +475,7 @@ _brew_style ()
     local cur="${COMP_WORDS[COMP_CWORD]}"
     case "$cur" in
     --*)
-        __brewcomp "--fix --homebrew-developer"
+        __brewcomp "--fix"
         return
         ;;
     esac
