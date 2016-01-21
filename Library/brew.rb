@@ -84,7 +84,7 @@ begin
   if internal_cmd
     Homebrew.send cmd.to_s.tr("-", "_").downcase
   elsif which "brew-#{cmd}"
-    %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
+    %w[CACHE LIBRARY_PATH].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
     end
     exec "brew-#{cmd}", *ARGV
