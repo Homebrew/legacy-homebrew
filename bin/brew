@@ -135,7 +135,11 @@ then
 fi
 
 HOMEBREW_COMMAND="$1"
-HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$1.sh"
+if [[ -f "$HOMEBREW_LIBRARY/Homebrew/cmd/$HOMEBREW_COMMAND.sh" ]] ; then
+  HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$HOMEBREW_COMMAND.sh"
+elif [[ -n "$HOMEBREW_DEVELOPER" && -f "$HOMEBREW_LIBRARY/Homebrew/dev-cmd/$HOMEBREW_COMMAND.sh" ]] ; then
+  HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/dev-cmd/$HOMEBREW_COMMAND.sh"
+fi
 
 if [[ "$(id -u)" = "0" && "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
@@ -151,7 +155,7 @@ EOS
   esac
 fi
 
-if [[ -f "$HOMEBREW_BASH_COMMAND" ]]
+if [[ -n "$HOMEBREW_BASH_COMMAND" ]]
 then
   # Bash commands don't need the first argument, which is just the command name.
   shift
