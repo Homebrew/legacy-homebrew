@@ -5,13 +5,7 @@ class Gauge < Formula
   homepage "http://getgauge.io"
   url "https://github.com/getgauge/gauge/archive/v0.3.1.tar.gz"
   sha256 "a78fca79b562f39cc97a9aedf8e7029e6ed1298342930c6074496a1398ee52c6"
-
-  stable do
-    go_resource "github.com/getgauge/common" do
-      url "https://github.com/getgauge/common.git",
-          :revision => "6d719362535ada9a07d655b65f8bd5dfd818fe33"
-    end
-  end
+  head "https://github.com/getgauge/gauge.git"
 
   bottle do
     cellar :any_skip_relocation
@@ -20,17 +14,12 @@ class Gauge < Formula
     sha256 "f6950f13c3603e3f5bbabc747e61e3ac6d3a6421a23e6b96b6c523dafa3b45ee" => :mavericks
   end
 
-  head do
-    url "https://github.com/getgauge/gauge.git"
-
-    go_resource "github.com/getgauge/common" do
-      url "https://github.com/getgauge/common.git",
-          :revision => "6d719362535ada9a07d655b65f8bd5dfd818fe33"
-    end
-
-  end
-
   depends_on "go" => :build
+
+  go_resource "github.com/getgauge/common" do
+    url "https://github.com/getgauge/common.git",
+        :revision => "6d719362535ada9a07d655b65f8bd5dfd818fe33"
+  end
 
   go_resource "github.com/daviddengcn/go-colortext" do
     url "https://github.com/daviddengcn/go-colortext.git",
