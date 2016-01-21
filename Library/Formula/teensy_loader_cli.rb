@@ -13,7 +13,7 @@ class TeensyLoaderCli < Formula
 
   devel do
     url "https://github.com/PaulStoffregen/teensy_loader_cli.git", :revision => "0cca2087afb54173ce03109cabb1e29658703fc8"
-    version "2.1.x"
+    version "2.1.devel"
   end
 
   option "with-libusb-compat", "Uses libusb instead od OS X HID api to connect with teensy boards. Available only for --devel and upwards."
@@ -38,6 +38,7 @@ class TeensyLoaderCli < Formula
 
   test do
     output = shell_output("#{bin}/teensy_loader_cli 2>&1", 1)
-    assert_match /<MCU> = atmega32u4 | at90usb162 | at90usb646 | at90usb1286/, output
+    assert_match /Filename must be specified/, output
+    # system "#{bin}/teensy_loader_cli --list-mcus"
   end
 end
