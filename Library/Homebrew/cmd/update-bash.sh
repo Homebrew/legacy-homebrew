@@ -293,6 +293,9 @@ EOS
   # this procedure will be removed in the future if it seems unnecessary
   rename_taps_dir_if_necessary
 
+  # kill all of subprocess on interrupt
+  trap '{ pkill -P $$; wait; exit 130; }' SIGINT
+
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
   do
     [[ -d "$DIR/.git" ]] || continue
@@ -306,6 +309,7 @@ EOS
   done
 
   wait
+  trap - SIGINT
 
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
   do
