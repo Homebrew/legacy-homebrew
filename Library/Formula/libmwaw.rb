@@ -1,6 +1,6 @@
 class Libmwaw < Formula
   desc "Library for converting legacy Mac document formats"
-  homepage "http://sourceforge.net/p/libmwaw/wiki/Home/"
+  homepage "https://sourceforge.net/p/libmwaw/wiki/Home/"
   url "https://downloads.sourceforge.net/project/libmwaw/libmwaw/libmwaw-0.3.7/libmwaw-0.3.7.tar.xz"
   sha256 "057611e871c279a28fcbede78dda11e500b9d5b341ab7064d6dce470f6fee8f9"
 
