@@ -176,9 +176,10 @@ pull() {
   # "brew update --simulate-from-current-branch"
   if [[ -n "$HOMEBREW_SIMULATE_FROM_CURRENT_BRANCH" ]]
   then
-    INITIAL_REVISION="$(git rev-parse -q --verify "$(upstream_branch)")"
+    INITIAL_REVISION="$(git rev-parse -q --verify "$UPSTREAM_BRANCH")"
     CURRENT_REVISION="$(read_current_revision)"
-    export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(git rev-parse "$UPSTREAM_BRANCH")"
+    export HOMEBREW_UPDATE_BEFORE"$TAP_VAR"="$INITIAL_REVISION"
+    export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$CURRENT_REVISION"
     if ! git merge-base --is-ancestor "$INITIAL_REVISION" "$CURRENT_REVISION"
     then
       odie "Your HEAD is not a descendant of $UPSTREAM_BRANCH!"
@@ -199,6 +200,7 @@ pull() {
   fi
 
   INITIAL_REVISION="$(read_current_revision)"
+  export HOMEBREW_UPDATE_BEFORE"$TAP_VAR"="$INITIAL_REVISION"
 
   # ensure we don't munge line endings on checkout
   git config core.autocrlf false
@@ -210,8 +212,7 @@ pull() {
     git merge --no-edit --ff $QUIET_ARGS "origin/$UPSTREAM_BRANCH"
   fi
 
-  CURRENT_REVISION="$(read_current_revision)"
-  export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(git rev-parse "$UPSTREAM_BRANCH")"
+  export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(read_current_revision)"
 
   trap '' SIGINT
 
@@ -300,8 +301,6 @@ EOS
   do
     [[ -d "$DIR/.git" ]] || continue
     cd "$DIR" || continue
-    TAP_VAR=$(repo_var "$DIR")
-    export HOMEBREW_UPDATE_BEFORE"$TAP_VAR"="$(git rev-parse "$(upstream_branch)")"
     UPSTREAM_BRANCH="$(upstream_branch)"
     # the refspec ensures that the default upstream branch gets updated
     git fetch $QUIET_ARGS origin \
