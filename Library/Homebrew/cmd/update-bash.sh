@@ -103,11 +103,9 @@ read_current_revision() {
   git rev-parse -q --verify HEAD
 }
 
-# Don't warn about QUIET_ARGS; they need to be unquoted.
-# shellcheck disable=SC2086
 pop_stash() {
   [[ -z "$STASHED" ]] && return
-  git stash pop $QUIET_ARGS
+  git stash pop "${QUIET_ARGS[@]}"
   if [[ -n "$HOMEBREW_VERBOSE" ]]
   then
     echo "Restoring your stashed changes to $DIR:"
@@ -123,8 +121,6 @@ pop_stash_message() {
   unset STASHED
 }
 
-# Don't warn about QUIET_ARGS; they need to be unquoted.
-# shellcheck disable=SC2086
 reset_on_interrupt() {
   if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
   then
@@ -133,7 +129,7 @@ reset_on_interrupt() {
 
   if [[ -n "$INITIAL_REVISION" ]]
   then
-    git reset --hard "$INITIAL_REVISION" $QUIET_ARGS
+    git reset --hard "$INITIAL_REVISION" "${QUIET_ARGS[@]}"
   fi
 
   if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
@@ -146,8 +142,6 @@ reset_on_interrupt() {
   exit 130
 }
 
-# Don't warn about QUIET_ARGS; they need to be unquoted.
-# shellcheck disable=SC2086
 pull() {
   local DIR
   local TAP_VAR
@@ -190,8 +184,8 @@ pull() {
     fi
     git -c "user.email=brew-update@localhost" \
         -c "user.name=brew update" \
-        stash save --include-untracked $QUIET_ARGS
-    git reset --hard $QUIET_ARGS
+        stash save --include-untracked "${QUIET_ARGS[@]}"
+    git reset --hard "${QUIET_ARGS[@]}"
     STASHED="1"
   fi
 
@@ -201,9 +195,9 @@ pull() {
     # it to `origin/#{@upstream_branch}`. Otherwise, just check it out.
     if git merge-base --is-ancestor "$UPSTREAM_BRANCH" "origin/$UPSTREAM_BRANCH" &>/dev/null
     then
-      git checkout --force "$UPSTREAM_BRANCH" $QUIET_ARGS
+      git checkout --force "$UPSTREAM_BRANCH" "${QUIET_ARGS[@]}"
     else
-      git checkout --force -B "$UPSTREAM_BRANCH" "origin/$UPSTREAM_BRANCH" $QUIET_ARGS
+      git checkout --force -B "$UPSTREAM_BRANCH" "origin/$UPSTREAM_BRANCH" "${QUIET_ARGS[@]}"
     fi
   fi
 
@@ -215,9 +209,9 @@ pull() {
 
   if [[ -n "$HOMEBREW_REBASE" ]]
   then
-    git rebase $QUIET_ARGS "origin/$UPSTREAM_BRANCH"
+    git rebase "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH"
   else
-    git merge --no-edit --ff $QUIET_ARGS "origin/$UPSTREAM_BRANCH"
+    git merge --no-edit --ff "${QUIET_ARGS[@]}" "origin/$UPSTREAM_BRANCH"
   fi
 
   export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$(read_current_revision)"
@@ -226,7 +220,7 @@ pull() {
 
   if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
   then
-    git checkout "$INITIAL_BRANCH" $QUIET_ARGS
+    git checkout "$INITIAL_BRANCH" "${QUIET_ARGS[@]}"
     pop_stash
   else
     pop_stash_message
@@ -295,7 +289,9 @@ EOS
 
   if [[ -z "$HOMEBREW_VERBOSE" ]]
   then
-    QUIET_ARGS="-q"
+    QUIET_ARGS=(-q)
+  else
+    QUIET_ARGS=()
   fi
 
   # ensure GIT_CONFIG is unset as we need to operate on .git/config
@@ -316,7 +312,7 @@ EOS
     cd "$DIR" || continue
     UPSTREAM_BRANCH="$(upstream_branch)"
     # the refspec ensures that the default upstream branch gets updated
-    git fetch $QUIET_ARGS origin \
+    git fetch "${QUIET_ARGS[@]}" origin \
       "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" &
   done
 
