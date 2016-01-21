@@ -44,7 +44,7 @@ class Clamav < Formula
     args << "--disable-yara" if build.without? "yara"
     args << "--without-pcre" if build.without? "pcre"
 
-    (share/"clamav").mkpath
+    pkgshare.mkpath
     system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
     system "make", "install"
