@@ -6,7 +6,7 @@ class Rswift < Formula
   depends_on :xcode => "7.0"
 
   def install
-    xcodebuild, "-configuration", "Release", "-scheme", "rswift", "SYMROOT=symroot", "OBJROOT=objroot"
+    xcodebuild "-configuration", "Release", "-scheme", "rswift", "SYMROOT=symroot", "OBJROOT=objroot"
     bin.install "symroot/Release/rswift"
   end
 
