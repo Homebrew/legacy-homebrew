@@ -1,8 +1,8 @@
 class GstPluginsBad < Formula
   desc "GStreamer plugins (less supported, missing docs, not fully tested)"
   homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.6.2.tar.xz"
-  sha256 "650855e39ff56a8bb6cb0c192109c5926ce12f536d06e19ebf829de71ef396fe"
+  url "http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-1.6.3.tar.xz"
+  sha256 "971b29101d6a9c5e3fe94d99d977a227f58f0b2d29b6ca2c7f292052542b3a61"
 
   bottle do
     sha256 "62fe5bada427937462a1f987a51610238dc2a93ebdcd49125f32f0d6c12aadbd" => :el_capitan
