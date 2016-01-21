@@ -151,7 +151,7 @@ EOS
   esac
 fi
 
-if [[ -x "$HOMEBREW_BASH_COMMAND" ]]
+if [[ -f "$HOMEBREW_BASH_COMMAND" ]]
 then
   # source rather than executing directly to ensure the entire file is read into
   # memory before it is run. This makes running a Bash script behave more like
