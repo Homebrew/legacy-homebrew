@@ -26,9 +26,9 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "5aeabcbbf97d221a9391d971215de2db2704f6a1f7f10d91d33b89ef4aff6d20" => :el_capitan
-    sha256 "d6a6d90a90590bfb211608dc99dbaa5ceebe6ed9be9d52c0fd7d60069141e7e8" => :yosemite
-    sha256 "d4239efd38e9312e67782cbefc223bde3b37ee5709107a437575d11cc0f93df0" => :mavericks
+    sha256 "8106b9f787d3f5079de03b6cae43cc5cf03ef3bf9e4782fbb117d4a1ad489075" => :el_capitan
+    sha256 "21355f678c6c265630f8028495efe3d248429f0b038c18e5ba2cd24bd5bf17de" => :yosemite
+    sha256 "0f238aa5d836cdba1846e50696f3fb1c5d1a6a3d1b107a39489226014d86ee93" => :mavericks
   end
 
   option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
