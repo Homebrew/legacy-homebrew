@@ -1,7 +1,7 @@
 class Rswift < Formula
   desc "Get strong typed, autocompleted resources like images, fonts and segues in Swift projects"
   homepage "https://github.com/mac-cain13/R.swift"
-  head "https://github.com/mac-cain13/R.swift.git", :tag => "v1.1.0"
+  url "https://github.com/mac-cain13/R.swift.git", :tag => "v1.1.0"
 
   depends_on :xcode => "7.0"
 
