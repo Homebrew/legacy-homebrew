@@ -23,8 +23,8 @@ class Pypy3 < Formula
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
-    sha256 "3a14091299dcdb9bab9e9004ae67ac401f2b1b14a7c98de074ca74fdddf4bfa0"
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.0.tar.gz"
+    sha256 "90112b296152f270cb8dddcd19b7b87488d9e002e8cf622e14c4da9c2f6319b1"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391

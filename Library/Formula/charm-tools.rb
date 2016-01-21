@@ -16,8 +16,8 @@ class CharmTools < Formula
   depends_on :hg
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
-    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.0.tar.gz"
+    sha256 "90112b296152f270cb8dddcd19b7b87488d9e002e8cf622e14c4da9c2f6319b1"
   end
 
   resource "blessings" do
