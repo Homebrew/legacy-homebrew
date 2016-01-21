@@ -1,8 +1,8 @@
 class GitSecrets < Formula
   desc "Prevents you from committing sensitive information to a git repo"
   homepage "https://github.com/awslabs/git-secrets"
-  url "https://github.com/awslabs/git-secrets/archive/1.0.0.tar.gz"
-  sha256 "3fac12be9e1cd0f67daf801db17ebd9b1b302c2cc22e3b9c52aca7e55fdcd84f"
+  url "https://github.com/awslabs/git-secrets/archive/1.0.1.tar.gz"
+  sha256 "887cf60afb886a969af87ef807a32eca56c84869a002ef617efd7961af3b8f77"
 
   head "https://github.com/awslabs/git-secrets.git"
 
