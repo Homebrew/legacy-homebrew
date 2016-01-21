@@ -15,9 +15,9 @@ class Gauge < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3587e6306ee011c4f6ee01ba76664b3b673aca88ae5cb2f2f6b793980cffba1b" => :el_capitan
-    sha256 "862fc41efac1237c57d6b159fdc78c36801c37365baacc00c6d154122b3c7df8" => :yosemite
-    sha256 "47c8ef203126bee57144594c0dc3b1a8e271407ecf92ef4114af70501eaa691f" => :mavericks
+    sha256 "a0644ffac4b61510575a92517dc43029e875b74b7997266fa18a6b25cbd07e07" => :el_capitan
+    sha256 "da7039db25462b39f8292dad2085765dd01f28a46848bedfc915513704c9ffe1" => :yosemite
+    sha256 "f6950f13c3603e3f5bbabc747e61e3ac6d3a6421a23e6b96b6c523dafa3b45ee" => :mavericks
   end
 
   head do
