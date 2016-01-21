@@ -233,7 +233,6 @@ update-bash() {
   for option in "$@"
   do
     case "$option" in
-      update|update-bash) shift ;;
       --help) brew update --help; exit $? ;;
       --verbose) HOMEBREW_VERBOSE=1 ;;
       --debug) HOMEBREW_DEBUG=1;;
