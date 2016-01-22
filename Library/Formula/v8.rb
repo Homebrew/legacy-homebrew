@@ -21,6 +21,7 @@ class V8 < Formula
 
   depends_on :python => :build # gyp doesn't run under 2.6 or lower
   depends_on "readline" => :optional
+  depends_on "icu4c" => :optional
 
   needs :cxx11
 
@@ -67,6 +68,13 @@ class V8 < Formula
     # https://code.google.com/p/v8/issues/detail?id=4511#c3
     ENV.append "GYP_DEFINES", "v8_use_external_startup_data=0"
 
+    if build.with? "icu4c"
+      ENV.append "GYP_DEFINES", "use_system_icu=1"
+      i18nsupport = "i18nsupport=on"
+    else
+      i18nsupport = "i18nsupport=off"
+    end
+
     # fix up libv8.dylib install_name
     # https://github.com/Homebrew/homebrew/issues/36571
     # https://code.google.com/p/v8/issues/detail?id=3871
@@ -83,7 +91,7 @@ class V8 < Formula
     (buildpath/"tools/swarming_client").install resource("swarming_client")
 
     system "make", "native", "library=shared", "snapshot=on",
-                   "console=readline", "i18nsupport=off",
+                   "console=readline", i18nsupport,
                    "strictaliasing=off"
 
     include.install Dir["include/*"]
