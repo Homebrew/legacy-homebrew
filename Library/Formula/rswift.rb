@@ -12,6 +12,6 @@ class Rswift < Formula
   end
 
   test do
-    system "rswift", "-h"
+    system "#{bin}/rswift", "-h"
   end
 end
