@@ -7,9 +7,9 @@ class Highlight < Formula
   head "svn://svn.code.sf.net/p/syntaxhighlight/code/highlight/"
 
   bottle do
-    sha256 "81f6d8f62984b80c247050f87e4fc657cfd717e80fd9706c3b836d562b6ffdc7" => :el_capitan
-    sha256 "d4c1fd1c8930626bd0af285317f10489120537aabee028e02092ae7345c926b0" => :yosemite
-    sha256 "0ebefcb90b66f26f650afdc6e65f7f5af0f5a9a8e9595ef136ce00ce54094984" => :mavericks
+    sha256 "44c3628be09894287d4a9043bc0ed537d2b1fa5e4b12c5ed6980fad3bed97872" => :el_capitan
+    sha256 "972af95b13ba615ee7850103fce0ceea8c807e60ef5392f7815d0045a1eba0fb" => :yosemite
+    sha256 "4395a99b800e387fdfd7779a7bd71fc5de67b6af1b0f439f01909daa720a8ca1" => :mavericks
   end
 
   depends_on "pkg-config" => :build
