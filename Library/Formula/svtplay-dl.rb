@@ -69,11 +69,13 @@ class SvtplayDl < Formula
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     resources.each do |r|
-       r.stage do
-         system "python", *Language::Python.setup_install_args(libexec/"vendor")
-       end
-     end
+      r.stage do
+        system "python", *Language::Python.setup_install_args(libexec/"vendor")
+      end
+    end
 
+    # ndg is a namespace package and .pth files aren't read from our
+    # vendor site-packages
     touch libexec/"vendor/lib/python2.7/site-packages/ndg/__init__.py"
 
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
