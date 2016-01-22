@@ -70,7 +70,7 @@ so you can override this with `brew create <url> --set-name <name>`.
 
 ## Fill in the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)
 
-**We don’t accept formulae without [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)s!**
+**We don’t accept formulae without a [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)!**
 
 A SSL/TLS (https) [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) is preferred, if one is available.
 
