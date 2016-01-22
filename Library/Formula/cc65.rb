@@ -33,7 +33,7 @@ class Cc65 < Formula
 
   def caveats; <<-EOS.undent
     Library files have been installed to:
-      #{share}/cc65
+      #{pkgshare}
     EOS
   end
 

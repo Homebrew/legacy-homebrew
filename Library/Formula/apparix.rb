@@ -2,14 +2,14 @@ class Apparix < Formula
   desc "File system navigation via bookmarking directories"
   homepage "http://micans.org/apparix/"
   url "http://micans.org/apparix/src/apparix-11-062.tar.gz"
-  version "11-062"
   sha256 "211bb5f67b32ba7c3e044a13e4e79eb998ca017538e9f4b06bc92d5953615235"
 
   bottle do
-    cellar :any
-    sha256 "b0750263f230328b5012bcc470c16ea4f4825642c8c73dca4e1da4b1b2c7f94d" => :yosemite
-    sha256 "ebe99c489265dc7076b179c54d294f0289c8b1c5192bfdb0e59a999b8990491e" => :mavericks
-    sha256 "b2ff9be040fe3c62354f583f3aa9fa5def715f0a01a4214d575bbc5f7d589f87" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "89d7d52f9f2e76f1dd6b91075f407fa71000be0b09bd4548c11a6fd820b87ab3" => :el_capitan
+    sha256 "9ff5a4568499ba2ca67b7c1bae689ab25576409da76798642b3c4caee489c878" => :yosemite
+    sha256 "537fac6c0755ea6ef4ac4a6da2840de49c2c125015afaee6cf691ac33937c380" => :mavericks
   end
 
   def install

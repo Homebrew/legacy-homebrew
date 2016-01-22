@@ -98,13 +98,8 @@ class FormulaInstaller
 
   def install_bottle_for?(dep, build)
     return pour_bottle? if dep == formula
-    # We want to behave different with `--build-from-source` and
-    # ENV["HOMEBREW_BUILD_FROM_SOURCE"] because the latter implies you want
-    # everything built from source and the prior that you want just the
-    # formulae you've requested built from source.
-    return false if ENV["HOMEBREW_BUILD_FROM_SOURCE"]
-    return false unless dep.bottle
-    return false unless dep.pour_bottle?
+    return false if build_from_source?
+    return false unless dep.bottle && dep.pour_bottle?
     return false unless build.used_options.empty?
     return false unless dep.bottle.compatible_cellar?
     true

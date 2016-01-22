@@ -12,9 +12,6 @@ require "global"
 if ARGV == %w[--version] || ARGV == %w[-v]
   puts "Homebrew #{Homebrew.homebrew_version_string}"
   exit 0
-elsif ARGV.first == "-v"
-  # Shift the -v to the end of the parameter list
-  ARGV << ARGV.shift
 end
 
 if OS.mac? && MacOS.version < "10.6"
@@ -36,7 +33,7 @@ begin
   trap("INT", std_trap) # restore default CTRL-C handler
 
   empty_argv = ARGV.empty?
-  help_regex = /(-h$|--help$|--usage$|-\?$|^help$)/
+  help_flag_list = %w[-h --help --usage -? help]
   help_flag = false
   internal_cmd = true
   cmd = nil
@@ -44,7 +41,7 @@ begin
   ARGV.dup.each_with_index do |arg, i|
     if help_flag && cmd
       break
-    elsif arg =~ help_regex
+    elsif help_flag_list.include? arg
       help_flag = true
     elsif !cmd
       cmd = ARGV.delete_at(i)
@@ -85,7 +82,7 @@ begin
   end
 
   if internal_cmd
-    Homebrew.send cmd.to_s.gsub("-", "_").downcase
+    Homebrew.send cmd.to_s.tr("-", "_").downcase
   elsif which "brew-#{cmd}"
     %w[CACHE CELLAR LIBRARY_PATH PREFIX REPOSITORY].each do |e|
       ENV["HOMEBREW_#{e}"] = Object.const_get("HOMEBREW_#{e}").to_s
@@ -96,7 +93,7 @@ begin
   else
     require "tap"
     possible_tap = case cmd
-    when *%w[brewdle brewdler bundle bundler]
+    when "brewdle", "brewdler", "bundle", "bundler"
       Tap.fetch("Homebrew", "bundle")
     when "cask"
       Tap.fetch("caskroom", "cask")

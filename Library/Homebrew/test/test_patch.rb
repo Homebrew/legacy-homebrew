@@ -122,4 +122,9 @@ class ExternalPatchTests < Homebrew::TestCase
   def test_inspect
     assert_equal %(#<ExternalPatch: :p1 "file:///my.patch">), @p.inspect
   end
+
+  def test_cached_download
+    @p.resource.stubs(:cached_download).returns "/tmp/foo.tar.gz"
+    assert_equal "/tmp/foo.tar.gz", @p.cached_download
+  end
 end

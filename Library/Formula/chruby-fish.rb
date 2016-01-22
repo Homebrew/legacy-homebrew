@@ -1,15 +1,15 @@
 class ChrubyFish < Formula
   desc "Thin wrapper around chruby to make it work with the Fish shell"
   homepage "https://github.com/JeanMertz/chruby-fish#readme"
-  url "https://github.com/JeanMertz/chruby-fish/archive/v0.7.1.tar.gz"
-  sha256 "bb2159c37ec77eae76314630c0feb48bde5c4ce1fefa8f1460a7c8ffaacf7bc2"
+  url "https://github.com/JeanMertz/chruby-fish/archive/v0.7.2.tar.gz"
+  sha256 "d64248ce9b80dfdb327b69f4db3cfd0901957a745fd8b3b0f8c2a31fd0840297"
   head "https://github.com/JeanMertz/chruby-fish.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "a18b22f5cd83f3528ae627721d63eb498bd67955a61817a5f86805920c16722a" => :el_capitan
-    sha256 "e3ad932ac1564930f353dde84164b4e48a0e7aa058739059406d6875700b35a0" => :yosemite
-    sha256 "a37383d26a65e3b131290556c7a3825ea8613770bf9d41df044050594d6cbff6" => :mavericks
+    sha256 "c787e0ccf157727bd9013f056484b09bdd698ffbe5e417d9b1b3979844bfb0cf" => :el_capitan
+    sha256 "88ab2a3351b19ae8d7f625de2faa39c261a3c43ba6c8940c61f172e937e62651" => :yosemite
+    sha256 "d56f48b0a49d0c381bffc28ffe320019b89a87a708ec51f24218a0911104bd78" => :mavericks
   end
 
   depends_on "chruby" => :recommended
