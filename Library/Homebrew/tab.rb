@@ -15,7 +15,7 @@ class Tab < OpenStruct
     CACHE.clear
   end
 
-  def self.create(formula, compiler, stdlib, build)
+  def self.create(formula, compiler, stdlib, build, source_modified_time)
     attributes = {
       "used_options" => build.used_options.as_flags,
       "unused_options" => build.unused_options.as_flags,
@@ -23,6 +23,7 @@ class Tab < OpenStruct
       "built_as_bottle" => build.bottle?,
       "poured_from_bottle" => false,
       "time" => Time.now.to_i,
+      "source_modified_time" => source_modified_time.to_i,
       "HEAD" => Homebrew.git_head,
       "compiler" => compiler,
       "stdlib" => stdlib,
@@ -43,6 +44,7 @@ class Tab < OpenStruct
   def self.from_file_content(content, path)
     attributes = Utils::JSON.load(content)
     attributes["tabfile"] = path
+    attributes["source_modified_time"] ||= 0
     attributes["source"] ||= {}
 
     tapped_from = attributes["tapped_from"]
@@ -133,6 +135,7 @@ class Tab < OpenStruct
       "built_as_bottle" => false,
       "poured_from_bottle" => false,
       "time" => nil,
+      "source_modified_time" => 0,
       "HEAD" => nil,
       "stdlib" => nil,
       "compiler" => "clang",
@@ -214,6 +217,10 @@ class Tab < OpenStruct
     source["spec"].to_sym
   end
 
+  def source_modified_time
+    Time.at(super)
+  end
+
   def to_json
     attributes = {
       "used_options" => used_options.as_flags,
@@ -221,6 +228,7 @@ class Tab < OpenStruct
       "built_as_bottle" => built_as_bottle,
       "poured_from_bottle" => poured_from_bottle,
       "time" => time,
+      "source_modified_time" => source_modified_time.to_i,
       "HEAD" => self.HEAD,
       "stdlib" => (stdlib.to_s if stdlib),
       "compiler" => (compiler.to_s if compiler),

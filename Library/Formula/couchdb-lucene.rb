@@ -5,9 +5,11 @@ class CouchdbLucene < Formula
   sha256 "c3f33890670160b14515fd1e26aa30df89f6101f36148639f213c40a6fff8e7d"
 
   bottle do
-    sha256 "a61aa5bbafe98def521d75097d34d9cbb9c183f38e2e604959b2dfd238a5dcd5" => :yosemite
-    sha256 "245c177ba0cd8acb5b8fe697579e4eeee04fe5e2c4aa2de3ef2841fbb6c6b40d" => :mavericks
-    sha256 "0e2530ddfc29118744534d00d45ef1989c63d9de803ee4140cd7ca62cdeb84f3" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "38f8b7946415fadd1ed0d0bae55a2b4a07b887b68a6513436bb33347fe25b59f" => :el_capitan
+    sha256 "9da083783bddfdff05e89511006eddc7a4e382b04b897741a7418f48f6b6dff0" => :yosemite
+    sha256 "41fdbc137d3a24139de0fd0ae4111ae7d6f14d20fb9aaba25b5ef0b5bb21085d" => :mavericks
   end
 
   depends_on "couchdb"
@@ -15,6 +17,8 @@ class CouchdbLucene < Formula
   depends_on :java
 
   def install
+    ENV.java_cache
+
     system "mvn"
     system "tar", "-xzf", "target/couchdb-lucene-#{version}-dist.tar.gz", "--strip", "1"
 
@@ -92,7 +96,13 @@ class CouchdbLucene < Formula
   end
 
   test do
-    io = IO.popen("#{bin}/cl_run")
+    # This seems to be the easiest way to make the test play nicely in our
+    # sandbox. If it works here, it'll work in the normal location though.
+    cp_r Dir[opt_prefix/"*"], testpath
+    inreplace "bin/cl_run", "CL_BASEDIR=#{libexec}/bin",
+                            "CL_BASEDIR=#{testpath}/libexec/bin"
+
+    io = IO.popen("#{testpath}/bin/cl_run")
     sleep 2
     Process.kill("SIGINT", io.pid)
     Process.wait(io.pid)

@@ -70,7 +70,7 @@ so you can override this with `brew create <url> --set-name <name>`.
 
 ## Fill in the [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)
 
-**We don’t accept formulae without [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)s!**
+**We don’t accept formulae without a [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method)!**
 
 A SSL/TLS (https) [`homepage`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#homepage%3D-class_method) is preferred, if one is available.
 
@@ -338,7 +338,7 @@ Three commands are provided for displaying informational messages to the user:
 *   `opoo` for warning messages
 *   `odie` for error messages and immediately exiting
 
-In particular, when a test needs to be performed before installation use `onoe` to bail out gracefully. For example:
+In particular, when a test needs to be performed before installation use `odie` to bail out gracefully. For example:
 
 ```ruby
 if build.with?("qt") && build.with("qt5")
@@ -676,7 +676,7 @@ Generally we'd rather you were specific about what files or directories need to 
     </tr>
     <tr>
       <th><code>buildpath</code></th>
-      <td>A temporary dir somewhere on your system</td>
+      <td>A temporary directory somewhere on your system</td>
       <td><code>/private/tmp/[formula-name]-0q2b/[formula-name]</code></td>
     </tr>
   </tbody>
@@ -769,7 +769,7 @@ Check if the formula you are updating is a dependency for any other formulae by 
 
 Homebrew wants to maintain a consistent Ruby style across all formulae based on [Ruby Style Guide](https://github.com/styleguide/ruby). Other formulae may not have been updated to match this guide yet but all new ones should. Also:
 
-* The order of methods in a formula should be consistent with other formulae (e.g.: `def patches` goes before `def install`)
+* The order of methods in a formula should be consistent with other formulae (e.g.: `def install` goes before `def post_install`)
 * An empty line is required before the `__END__` line
 
 # Troubleshooting for people writing new formulae

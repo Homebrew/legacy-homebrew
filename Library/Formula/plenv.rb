@@ -1,10 +1,11 @@
 class Plenv < Formula
   desc "Perl binary manager"
   homepage "https://github.com/tokuhirom/plenv"
-  url "https://github.com/tokuhirom/plenv/archive/2.1.1.tar.gz"
-  sha256 "2753944511093cb6cb3ed5e8c105bfb1b100c621c1e6669c2ef48a0532b3f475"
-
+  url "https://github.com/tokuhirom/plenv/archive/2.2.0.tar.gz"
+  sha256 "248c5d8196077d217f98d566bd235cbe3332583851737782852bb2fccf840111"
   head "https://github.com/tokuhirom/plenv.git"
+
+  bottle :unneeded
 
   def install
     prefix.install "bin", "plenv.d", "completions", "libexec"
@@ -18,6 +19,8 @@ class Plenv < Formula
       if which plenv > /dev/null; then eval "$(plenv init -)"; fi
     With zsh, add to your .zshrc:
       if which plenv > /dev/null; then eval "$(plenv init - zsh)"; fi
+    With fish, add to your config.fish
+      if plenv > /dev/null; plenv init - | source ; end
     EOS
   end
 end

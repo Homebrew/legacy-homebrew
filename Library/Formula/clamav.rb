@@ -40,10 +40,11 @@ class Clamav < Formula
     ]
 
     args << "--with-libjson=#{Formula["json-c"].opt_prefix}" if build.with? "json-c"
+    args << "--with-pcre=#{Formula["pcre"].opt_prefix}" if build.with? "pcre"
     args << "--disable-yara" if build.without? "yara"
     args << "--without-pcre" if build.without? "pcre"
 
-    (share/"clamav").mkpath
+    pkgshare.mkpath
     system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
     system "make", "install"

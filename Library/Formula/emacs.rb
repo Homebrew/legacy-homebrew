@@ -13,14 +13,16 @@ class Emacs < Formula
   end
 
   devel do
-    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-25"
+    # Savannah doesn't support HTTPS clones so prefer the Github mirror to
+    # http://git.sv.gnu.org/r/emacs.git
+    url "https://github.com/emacs-mirror/emacs.git", :branch => "emacs-25"
     version "25.0-dev"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
   head do
-    url "http://git.sv.gnu.org/r/emacs.git"
+    url "https://github.com/emacs-mirror/emacs.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end

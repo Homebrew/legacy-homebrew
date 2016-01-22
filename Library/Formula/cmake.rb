@@ -1,15 +1,15 @@
 class Cmake < Formula
   desc "Cross-platform make"
   homepage "https://www.cmake.org/"
-  url "https://cmake.org/files/v3.4/cmake-3.4.1.tar.gz"
-  sha256 "d41462bdd80dc37f0d5608167b354bb3af8c068eee640be04c907154c5c113e2"
+  url "https://cmake.org/files/v3.4/cmake-3.4.2.tar.gz"
+  sha256 "da7cc34e1ce1d82e67a32ab081c02c2845534cd8bf2e09d88077a1b282e97392"
   head "https://cmake.org/cmake.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "34257a08a944ecdf27fa15b7a12a59a3d6f844eee1612b139cb8d98f15025d7d" => :el_capitan
-    sha256 "5ff7e68c06ad6556b3f1440f992ea37af457ff7a998e59e2cf83cdda9119c0a4" => :yosemite
-    sha256 "f507463c578d2b34713e28d843b530f7787631bdd009084db6cbdef8ea9cc6f9" => :mavericks
+    sha256 "94ee520c3ce327ed25d28107aad84afce47cbb853c4d18f643234544084fc188" => :el_capitan
+    sha256 "910db06295e604f546592f2a0236ed47a343eb7986bb4d583145b7af644bb708" => :yosemite
+    sha256 "a8f145e6701e2e119565a93f6da6a158a36e69f32f92fadd8596d41615a6cf98" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"

@@ -16,6 +16,8 @@ class Mahout < Formula
 
   def install
     if build.head?
+      ENV.java_cache
+
       chmod 755, "./bin"
       system "mvn", "-DskipTests", "clean", "install"
     end
@@ -41,6 +43,6 @@ class Mahout < Formula
       0.1234567,0.101201201
     EOS
 
-    assert_match /0.101201201/, pipe_output("#{bin}/mahout cat #{testpath}/test.csv")
+    assert_match "0.101201201", pipe_output("#{bin}/mahout cat #{testpath}/test.csv")
   end
 end

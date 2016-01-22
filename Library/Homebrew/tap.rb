@@ -1,3 +1,5 @@
+require "extend/string"
+
 # a {Tap} is used to extend the formulae provided by Homebrew core.
 # Usually, it's synced with a remote git repository. And it's likely
 # a Github repository with the name of `user/homebrew-repo`. In such
@@ -364,12 +366,12 @@ class Tap
     map(&:name)
   end
 
-  private
-
+  # @private
   def formula_file_to_name(file)
     "#{name}/#{file.basename(".rb")}"
   end
 
+  # @private
   def alias_file_to_name(file)
     "#{name}/#{file.basename}"
   end

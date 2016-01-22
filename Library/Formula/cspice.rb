@@ -23,7 +23,7 @@ class Cspice < Formula
     rm_f Dir["exe/*"]
     system "csh", "makeall.csh"
     mv "exe", "bin"
-    (share/"cspice").install "doc", "data"
+    pkgshare.install "doc", "data"
     prefix.install "bin", "include", "lib"
 
     lib.install_symlink "cspice.a" => "libcspice.a"
@@ -31,6 +31,6 @@ class Cspice < Formula
   end
 
   test do
-    system "#{bin}/tobin", "#{share}/cspice/data/cook_01.tsp", "DELME"
+    system "#{bin}/tobin", "#{pkgshare}/data/cook_01.tsp", "DELME"
   end
 end

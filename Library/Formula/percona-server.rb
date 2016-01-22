@@ -1,15 +1,25 @@
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
-  url "https://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-5.6.25-73.1/source/tarball/percona-server-5.6.25-73.1.tar.gz"
-  version "5.6.25-73.1"
-  sha256 "5a0d88465e4bb081e621b06bc943fafadb4c67a2cca50839b44fcd94ae793b50"
+  url "https://www.percona.com/downloads/Percona-Server-5.6/Percona-Server-5.6.28-76.1/source/tarball/percona-server-5.6.28-76.1.tar.gz"
+  version "5.6.28-76.1"
+  sha256 "ab8ab794a58a82132645ae84b74de91c7f9a5bcf81f2162628ce8976a00a4fd4"
+
+  devel do
+    url "https://www.percona.com/downloads/Percona-Server-5.7/Percona-Server-5.7.10-1rc1/source/tarball/percona-server-5.7.10-1rc1.tar.gz"
+    version "5.7.10-1rc1"
+    sha256 "68de79af4a761522f436b89eeb5bbb43a56dccc2bc352d38c79b6e6be0c4106c"
+
+    resource "boost" do
+      url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
+      sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
+    end
+  end
 
   bottle do
-    sha256 "6cb0507097b26b45397a762a473614635fd354817cc906a02d28ec1ea97ac150" => :el_capitan
-    sha256 "f1ecbe431098b4618e448634dba41a75f8ed0fada773344b469e9c9e3db653df" => :yosemite
-    sha256 "5f2e8564ea19bdca58b522fb0ca2c24835fd27a3d1b0c5aaf64641f69c62c474" => :mavericks
-    sha256 "8bb2a50aedda323875f2955bd7cafe75e5e63b24596dfb8b090e88814b85befa" => :mountain_lion
+    sha256 "9ecb4fd01c4e6915f43aea950371cbea98ee483276f8e67a6d8a3e14e1d7a0d9" => :el_capitan
+    sha256 "edadb9ce8663d7324bcb5b88419f940445e6e8672b01dca1695e9b9c2bcf645d" => :yosemite
+    sha256 "fa5eb750936ad85fab7247dbd77308bf53aecd30aa709260f1d3b9cd2e21e3fc" => :mavericks
   end
 
   option :universal
@@ -86,6 +96,18 @@ class PerconaServer < Formula
       -DWITHOUT_DIALOG=1
     ]
 
+    # TokuDB is broken on MacOsX
+    # https://bugs.launchpad.net/percona-server/+bug/1531446
+    args.concat %W[-DWITHOUT_TOKUDB=1]
+
+    if build.devel?
+      # MySQL >5.7.x mandates Boost as a requirement to build & has a strict
+      # version check in place to ensure it only builds against expected release.
+      # This is problematic when Boost releases don't align with MySQL releases.
+      (buildpath/"boost_1_59_0").install resource("boost")
+      args << "-DWITH_BOOST=#{buildpath}/boost_1_59_0"
+    end
+
     # To enable unit testing at build, we need to download the unit testing suite
     if build.with? "test"
       args << "-DENABLE_DOWNLOADS=ON"
@@ -128,10 +150,14 @@ class PerconaServer < Formula
 
     bin.install_symlink prefix/"support-files/mysql.server"
 
-    # Move mysqlaccess to libexec
-    libexec.mkpath
-    mv "#{bin}/mysqlaccess", libexec
-    mv "#{bin}/mysqlaccess.conf", libexec
+    # mysqlaccess deprecated on 5.6.17, and removed in 5.7.4.
+    # See: https://bugs.mysql.com/bug.php?id=69012
+    if build.stable?
+      # Move mysqlaccess to libexec
+      libexec.mkpath
+      mv "#{bin}/mysqlaccess", libexec
+      mv "#{bin}/mysqlaccess.conf", libexec
+    end
   end
 
   def post_install

@@ -1,3 +1,6 @@
+# This formula tracks GnuPG stable. You can find GnuPG Modern via:
+# brew install homebrew/versions/gnupg21
+# At the moment GnuPG Modern causes too many incompatibilities to be in core.
 class GpgAgent < Formula
   desc "GPG key agent"
   homepage "https://www.gnupg.org/"

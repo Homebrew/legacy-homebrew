@@ -1,20 +1,19 @@
 class Smali < Formula
   desc "Assembler/disassembler for Android's Java VM implementation"
   homepage "https://github.com/JesusFreke/smali"
-  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.0.6.jar"
-  sha256 "fcadc564a35b121361930223a4e6431e000b24b3cc992ca63dd2e35f7b28746d"
-  revision 1
+  url "https://bitbucket.org/JesusFreke/smali/downloads/smali-2.1.1.jar"
+  sha256 "593f084064f8e3b77b0a211f9b94227fe31e3bfde2af558cc31382e0e3c68cc7"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "48eefb1d2ad76ccdaed3201af6bf2db59d160df687b9f4aafcfddac90037ca71" => :el_capitan
-    sha256 "8f0e302e316b2854cab3a410eb48b59039a7b19818c0f30dfa1c441a03142737" => :yosemite
-    sha256 "a0cedabdb27dc89526183ecab69efd986b569ef320d77fcd5530bb3e43250779" => :mavericks
+    sha256 "83d913e81a4da0bad0d803e40ff3e8ae2f5fc8d174b9f4ea11d76cf6ab6bdcd1" => :el_capitan
+    sha256 "e1bce048795f686efcd868e8c9f120166c89d8586144cc2c3069dc8cc04d8359" => :yosemite
+    sha256 "4b9b1e490a60b0a8845753c20b75432277163a1aa6fc3dd33146490dcdbce05a" => :mavericks
   end
 
   resource "baksmali-jar" do
-    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.0.6.jar"
-    sha256 "73c62f32ff53f43a0e551959d5ef1ce4adcc900e44035063b7a360c199912652"
+    url "https://bitbucket.org/JesusFreke/smali/downloads/baksmali-2.1.1.jar"
+    sha256 "085a84923745af8878d81f8c97b7fd046309e74c4ce97ebcdb218aaaf5256770"
   end
 
   resource "baksmali" do

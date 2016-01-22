@@ -12,6 +12,11 @@ class Dos2unix < Formula
     sha256 "61ef99b643f822bd8644124d4225ce46e39ee9912787737b1d1efe42170d11ab" => :mavericks
   end
 
+  devel do
+    url "http://waterlan.home.xs4all.nl/dos2unix/dos2unix-7.3.3-beta2.tar.gz"
+    sha256 "abd12dff242b904eee1ce8141c0cf5664e6164248bf91f58f551ab7455d4d5e2"
+  end
+
   option "with-gettext", "Build with Native Language Support"
 
   depends_on "gettext" => :optional

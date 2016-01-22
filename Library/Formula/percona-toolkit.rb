@@ -8,13 +8,7 @@ class PerconaToolkit < Formula
 
   head "lp:percona-toolkit", :using => :bzr
 
-  bottle do
-    cellar :any
-    revision 1
-    sha256 "d371749d14ea3cac95262bbbe0566081b801573b7778039d62778b5273d4ed81" => :el_capitan
-    sha256 "ae886b3bf78c6bcb37724e1bc569d76a6f9159701848c050619f96c29f45bb9c" => :yosemite
-    sha256 "735e791e9f13df2a8f800dbf95fab147f0de458e9c32337ada5f01420ae05daf" => :mavericks
-  end
+  bottle :disable, "To use the user's database of choice."
 
   depends_on :mysql
   depends_on "openssl"

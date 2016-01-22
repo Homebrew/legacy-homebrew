@@ -28,6 +28,11 @@ module OS
       version >= "10.12"
     end
 
+    def outdated_release?
+      # TODO: bump version when new OS is released
+      version < "10.9"
+    end
+
     def cat
       version.to_sym
     end
@@ -136,7 +141,7 @@ module OS
       @gcc_42_build_version ||=
         begin
           gcc = MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2")
-          if gcc.exist? && gcc.realpath.basename.to_s !~ /^llvm/
+          if gcc.exist? && !gcc.realpath.basename.to_s.start_with?("llvm")
             `#{gcc} --version`[/build (\d{4,})/, 1].to_i
           end
         end
@@ -145,7 +150,7 @@ module OS
 
     def llvm_build_version
       @llvm_build_version ||=
-        if (path = locate("llvm-gcc")) && path.realpath.basename.to_s !~ /^clang/
+        if (path = locate("llvm-gcc")) && !path.realpath.basename.to_s.start_with?("clang")
           `#{path} --version`[/LLVM build (\d{4,})/, 1].to_i
         end
     end

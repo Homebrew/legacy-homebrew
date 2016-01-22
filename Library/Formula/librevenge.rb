@@ -1,15 +1,15 @@
 class Librevenge < Formula
   desc "Base library for writing document import filters"
   homepage "https://sourceforge.net/p/libwpd/wiki/librevenge/"
-  url "http://dev-www.libreoffice.org/src/librevenge-0.0.3.tar.bz2"
-  mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.3/librevenge-0.0.3.tar.bz2"
-  sha256 "8cac287a4f3f37833a7b98304e2d3631d01cf577cb99b9311d5d5cd70680df55"
+  url "http://dev-www.libreoffice.org/src/librevenge-0.0.4.tar.bz2"
+  mirror "https://downloads.sourceforge.net/project/libwpd/librevenge/librevenge-0.0.4/librevenge-0.0.4.tar.bz2"
+  sha256 "c51601cd08320b75702812c64aae0653409164da7825fd0f451ac2c5dbe77cbf"
 
   bottle do
     cellar :any
-    sha256 "3e16d90cf5e0bacbc83e410a154455e241b50a12fbc844565ca6c565bf569db8" => :el_capitan
-    sha256 "1f021b70ff8591078386937b29dd419c53660b6ea3628a9c8f916ae37498d5c6" => :yosemite
-    sha256 "cf4c15ade5beab757a4d6b3ba7ce4a3eac9e67c7835a2b53639dc6222fc3769f" => :mavericks
+    sha256 "827a37488cc92f16ba8f4d7343e7944c7faed4b8cf9d930f49d93e4104784c94" => :el_capitan
+    sha256 "a95c4fc2b7832e226d21a209811a2f149b8fde4962d07d354e3a6cb80b7f0a01" => :yosemite
+    sha256 "45c4df842b9cf38554efeb4d04f2c2abf2ed8341e0fb4bc0d80830e02e1fbfeb" => :mavericks
   end
 
   depends_on "pkg-config" => :build

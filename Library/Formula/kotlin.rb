@@ -1,4 +1,4 @@
-class KotlinCompiler < Formula
+class Kotlin < Formula
   desc "Statically typed programming language for the JVM"
   homepage "https://kotlinlang.org/"
   url "https://github.com/JetBrains/kotlin/releases/download/build-1.0.0-beta-4584/kotlin-compiler-1.0.0-beta-4584.zip"

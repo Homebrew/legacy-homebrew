@@ -1,13 +1,13 @@
 class Ghc < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3a-src.tar.bz2"
-  sha256 "877899988b64d13a86148f4db29b26d5adddef9207f718b726dc5c202d8efd8e"
+  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3b-src.tar.bz2"
+  sha256 "b0bb177b8095de6074e5a3538e55fd1fc187dae6eb6ae36b05582c55f7d2db6f"
 
   bottle do
-    sha256 "a6999a2e17980f7837f73206648939d09042715020ef2b32be47546a74ce5178" => :el_capitan
-    sha256 "866d8163ef9fed8ccc99164a6025d6a63e836e8c9ac9d8c2eeca7d96ecb9d135" => :yosemite
-    sha256 "44e78381ae36594fdc6d59f03ccce4414db60372a5830403d2b8b5795924f25a" => :mavericks
+    sha256 "72c6c729ea385aaebfa22b55fe31b85f46e423a510c83d2f76c8f57336f9bf2c" => :el_capitan
+    sha256 "3914b0875845c0e419c440c1b5833631ea709e6e8d5d9bf546422852c4c96ea8" => :yosemite
+    sha256 "3ca8542ed077871a9da2e7af1a2362eb6ddc52501e6625fa5b06e9fda288e980" => :mavericks
   end
 
   option "with-test", "Verify the build using the testsuite"
@@ -15,10 +15,10 @@ class Ghc < Formula
   deprecated_option "with-tests" => "with-test"
 
   resource "gmp" do
-    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://gmplib.org/download/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.1.0.tar.bz2"
+    sha256 "498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8"
   end
 
   if MacOS.version <= :lion

@@ -7,7 +7,7 @@ class RbenvCtags < Formula
 
   bottle :unneeded
 
-  depends_on "rbenv"
+  depends_on :rbenv
   depends_on "ctags"
 
   def install

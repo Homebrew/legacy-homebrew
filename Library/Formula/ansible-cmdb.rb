@@ -1,14 +1,14 @@
 class AnsibleCmdb < Formula
   desc "Generates static HTML overview page from Ansible facts"
   homepage "https://github.com/fboender/ansible-cmdb"
-  url "https://github.com/fboender/ansible-cmdb/releases/download/1.6/ansible-cmdb-1.6.zip"
-  sha256 "a201207d1a8b8929f07bd28be0ca3f1224e9ecf296756b73d938b6a41bdde80e"
+  url "https://github.com/fboender/ansible-cmdb/releases/download/1.11/ansible-cmdb-1.11.zip"
+  sha256 "6651792bf168fdfadb0e9f0e0404854f10f22ec23fe7b6c2032bc3a3bf846d0f"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "dd538aa11b1da2d7964f77be287b9fda56598c350f7554591d6f87a51757e12b" => :el_capitan
-    sha256 "22c377a50ae1a605e8065a6d143a1161e7d9eb765a706502e1b0913cd1730826" => :yosemite
-    sha256 "2329fc84c3705bde7664138dafc116f5bcc4816cab5d10ba8cdbb501edd140ed" => :mavericks
+    sha256 "9c6651a0472fd94a4ad51a92e774f0a847cb485c079aa00585652b91566f0cb5" => :el_capitan
+    sha256 "d3109325562f0ec28d87a121f6973be17fb82c6fce9d02ea56eea88a67159a45" => :yosemite
+    sha256 "eac9c9547d13b240e225cad6582a111f150cf9a81b2ab7cb42c03dddc9dc2af7" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -16,11 +16,12 @@ class AnsibleCmdb < Formula
 
   def install
     bin.mkpath
+    man1.mkpath
     inreplace "Makefile" do |s|
       s.gsub! "/usr/local/lib/${PROG}", prefix
       s.gsub! "/usr/local/bin", bin
+      s.gsub! "/usr/local/share/man/man1", man1
     end
-    inreplace "ansible-cmdb", "(bin_dir, '..', 'lib', 'ansible-cmdb')", "(bin_dir, '..')"
     system "make", "install"
   end
 

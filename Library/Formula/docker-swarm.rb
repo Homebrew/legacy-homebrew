@@ -5,14 +5,15 @@ class DockerSwarm < Formula
   homepage "https://github.com/docker/swarm"
   url "https://github.com/docker/swarm/archive/v1.0.0.tar.gz"
   sha256 "85951f91a2e3b6b82ac775bafce3fc76dd29aa2cdeb6a3ad84a97116fd72d2d8"
+  revision 1
 
   head "https://github.com/docker/swarm.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "82c2d64fcc9893f077244eaee10cc76d27fad5f7ae250d6e2cd4d9ac73b85dc4" => :el_capitan
-    sha256 "652c451d30e33987c2607d86b62387a1373ec4d48b1861e5c34ff0d17d96ff3d" => :yosemite
-    sha256 "77401660d38f872dd0f2abc548fb67f927f49e8233f3651dfd6b0568bb508838" => :mavericks
+    sha256 "10b1cea4a97d95d2c7ca82f450e30be10b624e078b87486a6ab633239879ea83" => :el_capitan
+    sha256 "0d8c81a702652bc8182e10c58789db71217da8a649ef45db3219f402f2c2c0b6" => :yosemite
+    sha256 "530afec739c621c8cd792079741d157117efde7933e03fd344622b590cdeda92" => :mavericks
   end
 
   depends_on "go" => :build
@@ -26,7 +27,6 @@ class DockerSwarm < Formula
     Language::Go.stage_deps resources, buildpath/"src"
 
     system "go", "build", "-o", "docker-swarm"
-
     bin.install "docker-swarm"
   end
 

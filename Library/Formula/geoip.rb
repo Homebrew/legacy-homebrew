@@ -1,16 +1,16 @@
 class Geoip < Formula
   desc "GeoIP databases in a number of formats"
   homepage "https://github.com/maxmind/geoip-api-c"
-  url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.7/GeoIP-1.6.7.tar.gz"
-  sha256 "18f3713146b6196f85b57a92bcfdc9aea3345e2d836531a6ac4a630ffc7fa559"
+  url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.9/GeoIP-1.6.9.tar.gz"
+  sha256 "4b446491843de67c1af9b887da17a3e5939e0aeed4826923a5f4bf09d845096f"
 
   head "https://github.com/maxmind/geoip-api-c.git"
 
   bottle do
     cellar :any
-    sha256 "5007ba7a919e80d07e574d7e3d6b386b9961cbe048a00cdca83d98eb14e4678b" => :el_capitan
-    sha256 "2969446d080958c831a017fc5343a126cdd76fde9695cfd012733f8ba4e84aaa" => :yosemite
-    sha256 "c17cecf7bc7064fe2bbb30168824f6383314668def98b325b16830cca29eeb1a" => :mavericks
+    sha256 "dc7c79eef8500456198b3ba981c13498c049b2f8c4398fe885534c386dfbf283" => :el_capitan
+    sha256 "0525ae799027334cafb551a349c7837c8b17853660797dff430b035ca0eedc65" => :yosemite
+    sha256 "5ee66187d1b4510fd463ebb8bf360c2d78a4252467a0e10e905a2a3502f9bcaa" => :mavericks
   end
 
   depends_on "geoipupdate" => :optional

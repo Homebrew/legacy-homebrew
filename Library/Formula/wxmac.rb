@@ -3,13 +3,13 @@ class Wxmac < Formula
   homepage "https://www.wxwidgets.org"
   url "https://downloads.sourceforge.net/project/wxwindows/3.0.2/wxWidgets-3.0.2.tar.bz2"
   sha256 "346879dc554f3ab8d6da2704f651ecb504a22e9d31c17ef5449b129ed711585d"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any
-    sha256 "a234b56319de1f2ade00334883b3455f832fb64e540abb9e85e55c6f15bc5bb0" => :el_capitan
-    sha256 "73e8ae2765b69a0c5023bbc001b2b026eb739e32548c044743e8862ad802be76" => :yosemite
-    sha256 "8d980f0b81406a4116a43d086971b927f614716317a678fcbb3ab0eff39d0bc7" => :mavericks
+    sha256 "3cc5a1c0a2c3a94fdc8ba9fc7664d55f936b95964227ab90a5ea19b904b91418" => :el_capitan
+    sha256 "61d719f4a7bd53e3105b8bd41bcf291cec122fe7fb2ab5991bbe462fca2b6d43" => :yosemite
+    sha256 "9b137f0338358bdce6afc21e94226a09aa32432563a95173f6f050709e5c8f37" => :mavericks
   end
 
   option :universal
@@ -76,6 +76,12 @@ class Wxmac < Formula
 
     system "./configure", *args
     system "make", "install"
+
+    # wx-config should reference the public prefix, not wxmac's keg
+    # this ensures that Python software trying to locate wxpython headers
+    # using wx-config can find both wxmac and wxpython headers,
+    # which are linked to the same place
+    inreplace "#{bin}/wx-config", prefix, HOMEBREW_PREFIX
   end
 
   test do

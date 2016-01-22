@@ -3,13 +3,13 @@ class Itstool < Formula
   homepage "http://itstool.org/"
   url "http://files.itstool.org/itstool/itstool-2.0.2.tar.bz2"
   sha256 "bf909fb59b11a646681a8534d5700fec99be83bb2c57badf8c1844512227033a"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "31ee8604a8a59c9257c221639361eb943a75946b373d6e9ebf03d94671eb53b1" => :el_capitan
-    sha256 "89c6a74cb5e584aada110adaaa68d24738f463100541578268b1c44bc2f70bb0" => :yosemite
-    sha256 "1cc3a9e1da7b5a35ea9e4592f6ccbc1371b48c7fca40fe242dfabb1b1ef98e34" => :mavericks
+    sha256 "4bbeea37b4f8f887458ffae502c74306a931ffbda43c34ae0f05eb5011dffd28" => :el_capitan
+    sha256 "22b1b0163b35b35fefbea27321cea0359dba726b832cf892729825ff718add6e" => :yosemite
+    sha256 "e8e0dbf50b44a058553bc63d039809cc1d96efb8c8a8c73b5e6f9f10b568d644" => :mavericks
   end
 
   head do
@@ -24,8 +24,22 @@ class Itstool < Formula
 
   def install
     ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
+
     system "./autogen.sh" if build.head?
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{libexec}"
     system "make", "install"
+
+    bin.install Dir["#{libexec}/bin/*"]
+    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    pkgshare.install_symlink libexec/"share/itstool/its"
+    man1.install_symlink libexec/"share/man/man1/itstool.1"
+  end
+
+  test do
+    (testpath/"test.xml").write <<-EOS.undent
+      <tag>Homebrew</tag>
+    EOS
+    system bin/"itstool", "-o", "test.pot", "test.xml"
+    assert_match "msgid \"Homebrew\"", File.read("test.pot")
   end
 end

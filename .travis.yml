@@ -31,7 +31,6 @@ before_install:
 install:
   - if [ "$HOMEBREW_RUBY" = "1.8.7" ]; then
       brew install homebrew/versions/ruby187;
-      export PATH="/usr/local/opt/ruby187/bin:$PATH";
       export HOMEBREW_RUBY_PATH="/usr/local/opt/ruby187/bin/ruby";
       brew untap homebrew/versions;
     fi

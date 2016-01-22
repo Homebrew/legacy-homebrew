@@ -1,13 +1,14 @@
 class Cloc < Formula
   desc "Statistics utility to count lines of code"
   homepage "https://github.com/AlDanial/cloc/"
-  url "https://github.com/AlDanial/cloc/releases/download/1.64/cloc-1.64.pl"
-  sha256 "79edea7ea1f442b1632001e23418193ae4571810e60de8bd25e491036d60eb3d"
+  url "https://github.com/AlDanial/cloc/archive/1.64.tar.gz"
+  sha256 "4ebac0ee3124df0c5394410f6803ed2b4f82de9035f62a0b89d8ce54e0726709"
+  head "https://github.com/AlDanial/cloc.git"
 
   bottle :unneeded
 
   def install
-    bin.install "cloc-#{version}.pl" => "cloc"
+    bin.install "cloc"
   end
 
   test do

@@ -1,19 +1,19 @@
 class GitSubrepo < Formula
   desc "Git Submodule Alternative"
   homepage "https://github.com/ingydotnet/git-subrepo"
-  url "https://github.com/ingydotnet/git-subrepo/archive/0.2.3.tar.gz"
-  sha256 "c0db888e841e06ae6f5c74dc9bde4e7ef33ce31b46caeb504885d5b85df1ceef"
+  url "https://github.com/ingydotnet/git-subrepo/archive/0.3.0.tar.gz"
+  sha256 "7a844302cebdc525e18ddef14f2f0b0359bcd11cb15d89ca83bbef01460d56f7"
   head "https://github.com/ingydotnet/git-subrepo.git"
 
   bottle do
-    cellar :any
-    sha256 "36f76d5672fa97915a9836f7cf1c505bbfe6e5a7b81d980f23257f91b1d07aa9" => :yosemite
-    sha256 "ef0d2e945a72c4e191e62ec7a423bc032f98ad7831a3dc5b72c3d8108e34ab8c" => :mavericks
-    sha256 "e6bbfc45133c83005afbc55e5f8618eb4c6e0cacf2ed76e9e1ea179c0b1c1265" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "e42d73137d06bc594ac917e7e8fc35810083461c26d541eed49e0a459dc31e21" => :el_capitan
+    sha256 "f1415cb1ec64de2a854511c5a5aed5b4574222e4c2b795f3c1603011c661a24b" => :yosemite
+    sha256 "a818994ecab1ca578f715dff0d7bb11018e1e724d98d4bb21234e2575210fca8" => :mavericks
   end
 
   def install
-    mkdir_p libexec
+    libexec.mkpath
     system "make", "PREFIX=#{prefix}", "INSTALL_LIB=#{libexec}", "install"
     bin.install_symlink libexec/"git-subrepo"
   end

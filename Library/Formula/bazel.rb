@@ -1,14 +1,15 @@
 class Bazel < Formula
   desc "Google's own build tool"
   homepage "http://bazel.io/"
-  url "https://github.com/bazelbuild/bazel/archive/0.1.2.tar.gz"
-  sha256 "e527db85d788e1ada244b2e530ce77a2b25784b361377b5e2ea679b5d341bd3a"
+  url "https://github.com/bazelbuild/bazel/archive/0.1.3.tar.gz"
+  sha256 "5ba3e69b0867e00c3c765b499a5e836db791e3f2f5112f5684782eef5bab0218"
 
   bottle do
-    cellar :any
-    sha256 "90e36fc1e45c91a49e4b8cdf2491e635d0883192872f95e06a29493c45a361a2" => :el_capitan
-    sha256 "630d1aff9b2cde2e53eaba4b5589ed5948ae5af492a11bf95e479cffe44d013f" => :yosemite
-    sha256 "1084f2351cb2724d2e66b07839e9df5a6cdd3eae8fd6a6cf22ee850a1500f9db" => :mavericks
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "ad4cf72bdba2f232c774ef82e3d92301fe5643b9ccc0fc4fbf1403af47550953" => :el_capitan
+    sha256 "9baaf779a175f09dbfc280411c18a9ecfa903efa431bfbfe40ec72cec42f8b6b" => :yosemite
+    sha256 "45ce34d6790be4334b90943e94c3771227556c8a59fb8c4375f77aad462c045f" => :mavericks
   end
 
   depends_on :java => "1.8+"
@@ -21,6 +22,7 @@ class Bazel < Formula
     ENV["EMBED_LABEL"] = "#{version}-homebrew"
 
     system "./compile.sh"
+    system "./output/bazel", "build", "scripts:bash_completion"
 
     (prefix/"base_workspace").mkdir
     cp_r Dir["base_workspace/*"], (prefix/"base_workspace"), :dereference_root => true
@@ -31,6 +33,9 @@ class Bazel < Formula
       fetch --package_path=%workspace%:#{prefix}/base_workspace
     EOS
     (etc/"bazel").install prefix/"etc/bazel.bazelrc"
+
+    bash_completion.install "bazel-bin/scripts/bazel-complete.bash"
+    zsh_completion.install "scripts/zsh_completion/_bazel"
   end
 
   test do

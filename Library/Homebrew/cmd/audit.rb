@@ -1,4 +1,5 @@
 require "formula"
+require "formula_versions"
 require "utils"
 require "extend/ENV"
 require "formula_cellar_checks"
@@ -201,6 +202,13 @@ class FormulaAuditor
       end
     end
     present.map!(&:last)
+    if present.include?("stable block")
+      %w[url checksum mirror].each do |component|
+        if present.include?(component)
+          problem "`#{component}` should be put inside `stable block`"
+        end
+      end
+    end
     if present.include?("head") && present.include?("head block")
       problem "Should not have both `head` and `head do`"
     end
@@ -302,7 +310,7 @@ class FormulaAuditor
         end
 
         if dep_f.oldname && dep.name.split("/").last == dep_f.oldname
-          problem "Dependency '#{dep.name}' was renamed; use newname '#{dep_f.name}'."
+          problem "Dependency '#{dep.name}' was renamed; use new name '#{dep_f.name}'."
         end
 
         if @@aliases.include?(dep.name)
@@ -568,6 +576,25 @@ class FormulaAuditor
         if minor_version.odd?
           problem "#{stable.version} is a development release"
         end
+      end
+    end
+  end
+
+  def audit_revision
+    return unless formula.tap # skip formula not from core or any taps
+    return unless formula.tap.git? # git log is required
+
+    fv = FormulaVersions.new(formula, :max_depth => 10)
+    revision_map = fv.revision_map("origin/master")
+    if (revisions = revision_map[formula.version]).any?
+      problem "revision should not decrease" if formula.revision < revisions.max
+    elsif formula.revision != 0
+      if formula.stable
+        if revision_map[formula.stable.version].empty? # check stable spec
+          problem "revision should be removed"
+        end
+      else # head/devel-only formula
+        problem "revision should be removed"
       end
     end
   end
@@ -855,6 +882,14 @@ class FormulaAuditor
       if line =~ /(require ["']formula["'])/
         problem "`#{$1}` is now unnecessary"
       end
+
+      if line =~ /#\{share\}\/#{formula.name}/
+        problem "Use \#{pkgshare} instead of \#{share}/#{formula.name}"
+      end
+
+      if line =~ /share\/"#{formula.name}"/
+        problem "Use pkgshare instead of (share/\"#{formula.name}\")"
+      end
     end
   end
 
@@ -883,19 +918,13 @@ class FormulaAuditor
   def audit_prefix_has_contents
     return unless formula.prefix.directory?
 
-    Pathname.glob("#{formula.prefix}/**/*") do |file|
-      next if file.directory?
-      basename = file.basename.to_s
-      next if Metafiles.copy?(basename)
-      next if %w[.DS_Store INSTALL_RECEIPT.json].include?(basename)
-      return
+    if Keg.new(formula.prefix).empty_installation?
+      problem <<-EOS.undent
+        The installation seems to be empty. Please ensure the prefix
+        is set correctly and expected files are installed.
+        The prefix configure/make argument may be case-sensitive.
+      EOS
     end
-
-    problem <<-EOS.undent
-      The installation seems to be empty. Please ensure the prefix
-      is set correctly and expected files are installed.
-      The prefix configure/make argument may be case-sensitive.
-    EOS
   end
 
   def audit_conditional_dep(dep, condition, line)
@@ -923,6 +952,7 @@ class FormulaAuditor
     audit_formula_name
     audit_class
     audit_specs
+    audit_revision
     audit_desc
     audit_homepage
     audit_bottle_spec

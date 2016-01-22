@@ -1,14 +1,14 @@
 class Ffe < Formula
   desc "Parse flat file structures and print them in different formats"
   homepage "http://ff-extractor.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/ff-extractor/ff-extractor/0.3.5/ffe-0.3.5.tar.gz"
-  sha256 "5ed5b4bf04bd8e2e438d8c37d3cec8ec681844b5318da8ac14565838c19c41da"
+  url "https://downloads.sourceforge.net/project/ff-extractor/ff-extractor/0.3.6/ffe-0.3.6.tar.gz"
+  sha256 "f508a0698d9ebdfefd41f150634ee97b2c4b3831577dd27d0156893d0c5f0b3c"
 
   bottle do
-    cellar :any
-    sha256 "82a0a0253d6a099960568fd911ef50f12dca2c5dca8a0798ae92858b4f0f65a4" => :yosemite
-    sha256 "65f6f6b4c6facbb2adbe08519835273451ea374150d75aad7a60572886b828e9" => :mavericks
-    sha256 "b97b84f0cbdcbee2266728434b5edbdacd54dc1b8d65095327e06a32c05e1799" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "3aa23ef80b9b7585ae611958c0554aedf0551c2a145350c82684fc2e84542eda" => :el_capitan
+    sha256 "3ad5ef87fbf6d04ab007ec9417ba4dbca488209ae746bc614187db07229b3183" => :yosemite
+    sha256 "7fef4388c75c233b12ba2a850dd6bbd3b843032b63e13455d442cb8211ca921e" => :mavericks
   end
 
   def install

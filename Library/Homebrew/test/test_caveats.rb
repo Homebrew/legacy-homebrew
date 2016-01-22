@@ -1,4 +1,6 @@
 require "testing_env"
+require "formula"
+require "caveats"
 
 class CaveatsTests < Homebrew::TestCase
   def setup

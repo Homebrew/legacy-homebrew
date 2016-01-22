@@ -140,10 +140,6 @@ module Homebrew
     erb.result(bottle.instance_eval { binding }).gsub(/^\s*$\n/, "")
   end
 
-  def most_recent_mtime(pathname)
-    pathname.to_enum(:find).select(&:exist?).map(&:mtime).max
-  end
-
   def bottle_formula(f)
     unless f.installed?
       return ofail "Formula not installed or up-to-date: #{f.full_name}"
@@ -194,10 +190,6 @@ module Homebrew
     relocatable = false
     skip_relocation = false
 
-    formula_source_time = f.stable.stage do
-      most_recent_mtime(Pathname.pwd)
-    end
-
     keg.lock do
       original_tab = nil
 
@@ -216,11 +208,11 @@ module Homebrew
         tab.time = nil
         tab.write
 
-        keg.find {|k| File.utime(File.atime(k), formula_source_time, k) }
+        keg.find {|k| File.utime(File.atime(k), tab.source_modified_time, k) }
 
         cd cellar do
           safe_system "tar", "cf", tar_path, "#{f.name}/#{f.pkg_version}"
-          File.utime(File.atime(tar_path), formula_source_time, tar_path)
+          File.utime(File.atime(tar_path), tab.source_modified_time, tar_path)
           relocatable_tar_path = "#{f}-bottle.tar"
           mv tar_path, relocatable_tar_path
           # Use gzip, faster to compress than bzip2, faster to uncompress than bzip2
@@ -371,15 +363,15 @@ module Homebrew
             else
               string = s.sub!(
                 /(
-                  \ {2}(                                                              # two spaces at the beginning
-                    url\ ['"][\S\ ]+['"]                                              # url with a string
+                  \ {2}(                                                         # two spaces at the beginning
+                    (url|head)\ ['"][\S\ ]+['"]                                  # url or head with a string
                     (
-                      ,[\S\ ]*$                                                       # url may have options
-                      (\n^\ {3}[\S\ ]+$)*                                             # options can be in multiple lines
+                      ,[\S\ ]*$                                                  # url may have options
+                      (\n^\ {3}[\S\ ]+$)*                                        # options can be in multiple lines
                     )?|
-                    (homepage|desc|sha1|sha256|head|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
-                    revision\ \d+                                                     # revision with a number
-                  )\n+                                                                # multiple empty lines
+                    (homepage|desc|sha1|sha256|version|mirror)\ ['"][\S\ ]+['"]| # specs with a string
+                    revision\ \d+                                                # revision with a number
+                  )\n+                                                           # multiple empty lines
                  )+
                /mx, '\0' + output + "\n")
             end
