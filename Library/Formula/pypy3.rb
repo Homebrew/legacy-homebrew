@@ -130,4 +130,9 @@ class Pypy3 < Formula
   def distutils
     libexec+"lib-python/3/distutils"
   end
+
+  test do
+    system bin/"pypy3", "-c", "print('Hello, world!')"
+    system scripts_folder/"pip", "list"
+  end
 end
