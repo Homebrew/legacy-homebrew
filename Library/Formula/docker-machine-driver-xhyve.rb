@@ -3,8 +3,8 @@ require "language/go"
 class DockerMachineDriverXhyve < Formula
   desc "Docker Machine driver for xhyve"
   homepage "https://github.com/zchee/docker-machine-driver-xhyve"
-  url "https://github.com/zchee/docker-machine-driver-xhyve/archive/v0.2.1.tar.gz"
-  sha256 "11ed10c4ea45249e06c9efad0abf1c91b0ec9c4c2a0818ade78f19f41a17794c"
+  url "https://github.com/zchee/docker-machine-driver-xhyve/archive/v0.2.2.tar.gz"
+  sha256 "bdf43f7657c08974a752bceec69840d3025d6f6442a79ebbd3ff4c3453fef04e"
 
   head "https://github.com/zchee/docker-machine-driver-xhyve.git"
 
