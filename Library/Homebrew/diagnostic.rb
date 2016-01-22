@@ -1347,6 +1347,31 @@ module Homebrew
         s
       end
 
+      def check_for_orphaned_python_site_packages
+        mayberemove = []
+        Dir["#{HOMEBREW_PREFIX}/lib/python?.?/site-packages"].each do |x|
+          pos = "#{HOMEBREW_PREFIX}/lib/python".length
+          ver = x[pos..(pos + 2)]
+          major = ver[0]
+          if major == '2'
+            if Dir["#{HOMEBREW_CELLAR}/python/#{ver}.*"].empty?
+              mayberemove.push(x)
+            end
+          elsif major == '3'
+            if Dir["#{HOMEBREW_CELLAR}/python3/#{ver}.*"].empty?
+              mayberemove.push(x)
+            end
+          end
+        end
+        return if mayberemove.empty?
+        inject_file_list mayberemove, <<-EOS.undent
+          You have python directories which do not have corresponding homebrew
+          versions of them. If you've previously installed those python
+          versions via homebrew and removed them, you might want to manually
+          delete these directories:
+        EOS
+      end
+
       def all
         methods.map(&:to_s).grep(/^check_/)
       end
