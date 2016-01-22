@@ -1,8 +1,9 @@
 class Byobu < Formula
   desc "Text-based window manager and terminal multiplexer"
   homepage "http://byobu.co"
-  url "https://launchpad.net/byobu/trunk/5.94/+download/byobu_5.94.orig.tar.gz"
-  sha256 "4917013f590110d25b18293a51af02bd1ebcd1c665474f62e2566fb9b8f62916"
+  head "https://github.com/dustinkirkland/byobu"
+  url "https://launchpad.net/byobu/trunk/5.101/+download/byobu_5.101.orig.tar.gz"
+  sha256 "15972e7a6fc877fbc4e281f75ea23c04393d99764c8f6fe129dc91d614f5c8ce"
 
   bottle do
     cellar :any_skip_relocation
@@ -18,6 +19,9 @@ class Byobu < Formula
   depends_on "gnu-sed" # fails with BSD sed
   depends_on "tmux"
   depends_on "newt" => "with-python"
+
+  depends_on "automake" => :build
+  depends_on "autoconf" => :build
 
   def install
     system "./configure", "--prefix=#{prefix}"
