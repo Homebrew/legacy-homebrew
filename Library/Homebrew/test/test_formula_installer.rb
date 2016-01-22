@@ -40,8 +40,6 @@ class InstallTests < Homebrew::TestCase
   def test_a_basic_install
     temporary_install(Testball.new) do |f|
       # Test that things made it into the Keg
-      assert_predicate f.prefix+"readme", :exist?
-
       assert_predicate f.bin, :directory?
       assert_equal 3, f.bin.children.length
 
@@ -49,8 +47,6 @@ class InstallTests < Homebrew::TestCase
       assert_equal 1, f.libexec.children.length
 
       refute_predicate f.prefix+"main.c", :exist?
-
-      refute_predicate f.prefix+"license", :exist?
 
       # Test that things make it into the Cellar
       keg = Keg.new f.prefix

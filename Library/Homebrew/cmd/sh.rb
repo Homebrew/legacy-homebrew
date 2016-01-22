@@ -24,7 +24,6 @@ module Homebrew
          ignore our configuration.
          When done, type `exit'.
          EOS
-    $stdout.flush
     exec ENV["SHELL"]
   end
 end

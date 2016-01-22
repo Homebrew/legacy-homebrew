@@ -14,7 +14,6 @@ class Writerperfect < Formula
 
   depends_on "pkg-config" => :build
   depends_on "boost" => :build
-  depends_on "libmwaw" => :optional
   depends_on "libodfgen"
   depends_on "libwps"
   depends_on "libwpg"
