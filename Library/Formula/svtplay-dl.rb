@@ -5,10 +5,10 @@ class SvtplayDl < Formula
   sha256 "0f043c83f8e1619d5d37ca44283416c3839df622e638872ce98db75ba9fb0ab6"
 
   bottle do
-    cellar :any_skip_relocation
-    sha256 "3b26888e8aedd32827e2caa6ffcdeb2c115261662409dc0daf7ef2d6b4a842dc" => :el_capitan
-    sha256 "dc6e349be3fc0dd8ff7a396b0e7e2c480613af46a8c1643cff5a0bd5bfea59c8" => :yosemite
-    sha256 "1be2a31d2ce11561b486129ba2a2d6cf087d7126f02a91bb350c4d7a790c57b6" => :mavericks
+    cellar :any
+    sha256 "cb19a87fe1f10921c4a5d687730df31a5573d411db21b687e5429055ce241f11" => :el_capitan
+    sha256 "ee0f3cd942da6daada70ee615aa7ac9e122f94317b7dadf634685992c20e1525" => :yosemite
+    sha256 "715638ac542ce6f7e240b79b86493d2fa78864d624e23c02346e1cd849b69366" => :mavericks
   end
 
   # for request security
