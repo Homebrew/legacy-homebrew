@@ -7,9 +7,9 @@ class Cmake < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "34257a08a944ecdf27fa15b7a12a59a3d6f844eee1612b139cb8d98f15025d7d" => :el_capitan
-    sha256 "5ff7e68c06ad6556b3f1440f992ea37af457ff7a998e59e2cf83cdda9119c0a4" => :yosemite
-    sha256 "f507463c578d2b34713e28d843b530f7787631bdd009084db6cbdef8ea9cc6f9" => :mavericks
+    sha256 "94ee520c3ce327ed25d28107aad84afce47cbb853c4d18f643234544084fc188" => :el_capitan
+    sha256 "910db06295e604f546592f2a0236ed47a343eb7986bb4d583145b7af644bb708" => :yosemite
+    sha256 "a8f145e6701e2e119565a93f6da6a158a36e69f32f92fadd8596d41615a6cf98" => :mavericks
   end
 
   option "without-docs", "Don't build man pages"
