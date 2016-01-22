@@ -25,7 +25,7 @@ Read [CONTRIBUTING.md](/CONTRIBUTING.md).
 
 ### Community Forums
 -  [@MacHomebrew](https://twitter.com/MacHomebrew)
--  [homebrew-discuss@googlegroups.com](mailto:homebrew-discuss@googlegroups.com) ([archive](https://groups.google.com/forum/#!forum/homebrew-discuss))
+-  [homebrew-discuss@googlegroups.com](mailto:homebrew-discuss@googlegroups.com) ([archive](https://groups.google.com/forum/#!forum/homebrew-discuss)) - subscribe by sending a mail to  [homebrew-discuss+subscribe@googlegroups.com](mailto:homebrew-discuss+subscribe@googlegroups.com)
 -  [freenode.net\#machomebrew](irc://irc.freenode.net/#machomebrew)
 
 ## Supporters
