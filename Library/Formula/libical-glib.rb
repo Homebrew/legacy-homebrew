@@ -1,8 +1,8 @@
 class LibicalGlib < Formula
   desc "Wrapper of libical with support of GObject Introspection"
   homepage "https://wiki.gnome.org/Projects/libical-glib"
-  url "https://download.gnome.org/sources/libical-glib/1.0/libical-glib-1.0.3.tar.xz"
-  sha256 "75373fb778352656c6368ffa7b371afa2fd2e2579874b0ec653a443da7a72d36"
+  url "https://download.gnome.org/sources/libical-glib/1.0/libical-glib-1.0.4.tar.xz"
+  sha256 "3e47c7c19a403e77a598cfa8fc82c8e9ea0b3625e2f28bdcec096aeba37fb0cd"
 
   bottle do
     sha256 "11888d4f8706743ac2e6413071e48685c15ca90f9dead726fdce5e7d67fcd605" => :yosemite
