@@ -10,6 +10,12 @@ class EmacsClangCompleteAsync < Formula
     # https://github.com/Golevka/emacs-clang-complete-async/issues/65
     patch :DATA
   end
+  bottle do
+    sha256 "8894c3c470540b6aa11e4974fb84732ec978bd413a4f0c17a556027e7a06bf44" => :el_capitan
+    sha256 "14b47071e8545caf0961bd8dfa122b8b9156b8ef1a7fd575e9188d3a8c40f4d3" => :yosemite
+    sha256 "bebabd1b45745ce17712f0f2536a8abe85b52b1fb4e5e6fcbced0cda13a3d06d" => :mavericks
+  end
+
 
   option "with-elisp", "Include Emacs lisp package"
 
