@@ -1,8 +1,8 @@
 class Bazel < Formula
   desc "Google's own build tool"
   homepage "http://bazel.io/"
-  url "https://github.com/bazelbuild/bazel/archive/0.1.3.tar.gz"
-  sha256 "5ba3e69b0867e00c3c765b499a5e836db791e3f2f5112f5684782eef5bab0218"
+  url "https://github.com/bazelbuild/bazel/archive/0.1.4.tar.gz"
+  sha256 "7668dea0e3455cb10d0ac7b59e81de533edabea875fde77deb8d7a7bf24feaf4"
 
   bottle do
     cellar :any_skip_relocation
@@ -13,6 +13,7 @@ class Bazel < Formula
   end
 
   depends_on :java => "1.8+"
+  depends_on :macos => :yosemite
 
   def install
     inreplace "src/main/cpp/blaze_startup_options.cc",
