@@ -1,8 +1,8 @@
 class Privoxy < Formula
   desc "Advanced filtering web proxy"
   homepage "http://www.privoxy.org"
-  url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.23%20%28stable%29/privoxy-3.0.23-stable-src.tar.gz"
-  sha256 "80b1a172d0518a9f95cde83d18dc62b9c7f117b9ada77bdcd3d310107f28f964"
+  url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.24%20%28stable%29/privoxy-3.0.24-stable-src.tar.gz"
+  sha256 "a381f6dc78f08de0d4a2342d47a5949a6608073ada34b933137184f3ca9fb012"
 
   bottle do
     cellar :any
