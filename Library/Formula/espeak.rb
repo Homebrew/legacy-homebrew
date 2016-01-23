@@ -17,7 +17,7 @@ class Espeak < Formula
     share.install "espeak-data"
     cd "src" do
       rm "portaudio.h"
-      system "make", "speak", "DATADIR=#{share}/espeak-data", "PREFIX=#{prefix}"
+      system "make", "speak", "DATADIR=#{pkgshare}-data", "PREFIX=#{prefix}"
       bin.install "speak" => "espeak"
     end
   end
