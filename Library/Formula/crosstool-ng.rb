@@ -1,8 +1,8 @@
 class CrosstoolNg < Formula
   desc "Tool for building toolchains"
   homepage "http://crosstool-ng.org"
-  url "http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.21.0.tar.bz2"
-  sha256 "67122ba42657da258f23de4a639bc49c6ca7fe2173b5efba60ce729c6cce7a41"
+  url "http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-1.22.0.tar.xz"
+  sha256 "a8b50ddb6e651c3eec990de54bd191f7b8eb88cd4f88be9338f7ae01639b3fba"
 
   bottle do
     cellar :any_skip_relocation
@@ -16,6 +16,7 @@ class CrosstoolNg < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
   depends_on "coreutils" => :build
+  depends_on "help2man" => :build
   depends_on "wget"
   depends_on "gnu-sed"
   depends_on "gawk"
