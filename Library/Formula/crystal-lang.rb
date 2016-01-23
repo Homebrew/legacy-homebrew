@@ -1,8 +1,8 @@
 class CrystalLang < Formula
   desc "Fast and statically typed, compiled language with Ruby-like syntax"
   homepage "http://crystal-lang.org/"
-  url "https://github.com/manastech/crystal/archive/0.10.2.tar.gz"
-  sha256 "05e1af0c50438c33f2912598eac684a12b1c7193e16a19f9870de50552cede5b"
+  url "https://github.com/manastech/crystal/archive/0.11.0.tar.gz"
+  sha256 "2aab021f344c28a7f2bb51fb33d273f8c9c95b6adfdae6f578405f891e10236b"
   head "https://github.com/manastech/crystal.git"
 
   bottle do
@@ -12,20 +12,19 @@ class CrystalLang < Formula
   end
 
   resource "boot" do
-    url "https://github.com/manastech/crystal/releases/download/0.10.0/crystal-0.10.0-1-darwin-x86_64.tar.gz"
-    sha256 "a94562c2e683a6149accb6ec52f30e96ff2cd5a4cdbf3d0785181c9ec561f003"
+    url "https://github.com/manastech/crystal/releases/download/0.10.2/crystal-0.10.2-1-darwin-x86_64.tar.gz"
+    sha256 "6b1ffdbb662a27b2da2bccb358aff7c7d01d6ae1b1636fd5a99a3d73de4b8f4b"
   end
 
   resource "shards" do
-    url "https://github.com/ysbaddaden/shards/archive/v0.5.4.tar.gz"
-    sha256 "759a925347fa69a9fbd070e0ba7d9be2d5fe409a9bc9a6d1d29090f2045e63c1"
+    url "https://github.com/ysbaddaden/shards/archive/v0.6.0.tar.gz"
+    sha256 "cbaaa6f9d9d140ec410623b97cb86fb44640125495f1e48fb8a1875ccedc4cc5"
   end
 
   option "without-release", "Do not build the compiler in release mode"
   option "without-shards", "Do not include `shards` dependency manager"
 
   depends_on "libevent"
-  depends_on "libpcl"
   depends_on "bdw-gc"
   depends_on "llvm" => :build
   depends_on "libyaml" if build.with?("shards")
