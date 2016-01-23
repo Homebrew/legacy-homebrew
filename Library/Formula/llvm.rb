@@ -116,10 +116,8 @@ class Llvm < Formula
   option "with-lldb", "Build LLDB debugger"
   option "with-python", "Build Python bindings against Homebrew Python"
   option "with-rtti", "Build with C++ RTTI"
-  option "with-assertions", "Provides more debug information, but slows down LLVM"
 
   deprecated_option "rtti" => "with-rtti"
-  deprecated_option "disable-assertions" => "without-assertions"
 
   if MacOS.version <= :snow_leopard
     depends_on :python
