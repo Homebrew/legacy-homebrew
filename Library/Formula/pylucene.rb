@@ -7,7 +7,7 @@ class Pylucene < Formula
   option "with-shared", "build jcc as a shared library"
 
   depends_on :ant => :build
-  depends_on :java => "1.7"
+  depends_on :java => "1.7+"
   depends_on :python
 
   def install
@@ -26,7 +26,7 @@ class Pylucene < Formula
       system "python", "setup.py", "install", "--prefix=#{prefix}", "--single-version-externally-managed", "--record=install.txt"
     end
     ENV.deparallelize  # the jars must be built serially
-    system "make", "all", "install", opt, jcc, "ANT=ant", "PYTHON=python", "NUM_FILES=8"
+    system "make", "all", "install", opt, jcc, "ANT=ant -Divy_install_path=#{buildpath} -Divy.default.ivy.user.dir=#{buildpath} -lib #{buildpath}", "PYTHON=python", "NUM_FILES=8"
   end
 
   test do
