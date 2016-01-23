@@ -6,7 +6,7 @@ class Packer < Formula
   url "https://github.com/mitchellh/packer.git",
       :tag => "v0.8.6",
       :revision => "f8f7b7a34c1be06058f5aca23a51247db12cdbc5"
-  revision 1
+  revision 2
 
   bottle do
     cellar :any_skip_relocation
@@ -21,6 +21,122 @@ class Packer < Formula
   go_resource "github.com/mitchellh/gox" do
     url "https://github.com/mitchellh/gox.git",
       :revision => "ef1967b9f538fe467e6a82fc42ec5dff966ad4ea"
+  end
+
+  go_resource "github.com/aws/aws-sdk-go" do
+    url "https://github.com/aws/aws-sdk-go.git",
+      :revision => "a11ddd7a070196035bc94b6c04a2a0114c06a395"
+  end
+
+  go_resource "github.com/jmespath/go-jmespath" do
+    url "https://github.com/jmespath/go-jmespath.git",
+      :revision => "769e1c1b866562e1f513d2d1f8e10bbebd765a08"
+  end
+
+  go_resource "github.com/dylanmei/winrmtest" do
+    url "https://github.com/dylanmei/winrmtest.git",
+      :revision => "025617847eb2cf9bd1d851bc3b22ed28e6245ce5"
+  end
+
+  go_resource "github.com/masterzen/winrm" do
+    url "https://github.com/masterzen/winrm.git",
+      :revision => "27e0cc83c289bfdafe049dedd54f9fd7805927ea"
+  end
+
+  go_resource "github.com/masterzen/simplexml" do
+    url "https://github.com/masterzen/simplexml.git",
+      :revision => "95ba30457eb1121fa27753627c774c7cd4e90083"
+  end
+
+  go_resource "github.com/satori/go.uuid" do
+    url "https://github.com/satori/go.uuid.git",
+      :revision => "6b8e5b55d20d01ad47ecfe98e5171688397c61e9"
+  end
+
+  go_resource "github.com/nu7hatch/gouuid" do
+    url "https://github.com/nu7hatch/gouuid.git",
+      :revision => "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
+  end
+
+  go_resource "github.com/packer-community/winrmcp" do
+    url "https://github.com/packer-community/winrmcp.git",
+      :revision => "743b1afe5ee3f6d5ba71a0d50673fa0ba2123d6b"
+  end
+
+  go_resource "github.com/dylanmei/iso8601" do
+    url "https://github.com/dylanmei/iso8601.git",
+      :revision => "2075bf119b58e5576c6ed9f867b8f3d17f2e54d4"
+  end
+
+  go_resource "github.com/digitalocean/godo" do
+    url "https://github.com/digitalocean/godo.git",
+      :revision => "0d77b009a8e77c302d978200d37f410a48c938b4"
+  end
+
+  go_resource "github.com/google/go-querystring" do
+    url "https://github.com/google/go-querystring.git",
+      :revision => "547ef5ac979778feb2f760cdb5f4eae1a2207b86"
+  end
+
+  go_resource "github.com/tent/http-link-go" do
+    url "https://github.com/tent/http-link-go.git",
+      :revision => "ac974c61c2f990f4115b119354b5e0b47550e888"
+  end
+
+  go_resource "github.com/go-ini/ini" do
+    url "https://github.com/go-ini/ini.git",
+      :revision => "45bf59e51e747b1d61b3108a97549497a6efd3bc"
+  end
+
+  go_resource "gopkg.in/fsnotify.v0" do
+    url "https://github.com/go-fsnotify/fsnotify.git",
+      :branch => "v0",
+      :revision => "ea925a0a47d225b2ca7f9932b01d2ed4f3ec74f6"
+  end
+
+  go_resource "gopkg.in/fsnotify.v1" do
+    url "https://github.com/go-fsnotify/fsnotify.git",
+      :revision => "6549b98005f3e4026ad9f50ef7d5011f40ba1397"
+  end
+
+  go_resource "github.com/rackspace/gophercloud" do
+    url "https://github.com/rackspace/gophercloud.git",
+      :revision => "99eced5e19804f19b330fa383c2341c00494f4b7"
+  end
+
+  go_resource "github.com/klauspost/pgzip" do
+    url "https://github.com/klauspost/pgzip.git",
+      :revision => "eef48e26d9ea34e54914d640e7f4ba4383862f78"
+  end
+
+  go_resource "github.com/klauspost/compress" do
+    url "https://github.com/klauspost/compress.git",
+      :revision => "472994a292cb3a23a011a238cbd857a85e67dc3f"
+  end
+
+  go_resource "github.com/klauspost/cpuid" do
+    url "https://github.com/klauspost/cpuid.git",
+      :revision => "3b0816bb6cb682eea8e1973f4168b6c86880efe1"
+  end
+
+  go_resource "github.com/klauspost/crc32" do
+    url "https://github.com/klauspost/crc32.git",
+      :revision => "d7104f5ae105f017bc05710e9ecba7384e625e05"
+  end
+
+  go_resource "github.com/pierrec/lz4" do
+    url "https://github.com/pierrec/lz4.git",
+      :revision => "4bdd4b0658f3a896d17b5364b94565df0cf55948"
+  end
+
+  go_resource "github.com/pierrec/xxHash" do
+    url "https://github.com/pierrec/xxHash.git",
+      :revision => "284d0fce1d182611739b90eb4fe4eff58e13d420"
+  end
+
+  go_resource "github.com/masterzen/xmlpath" do
+    url "https://github.com/masterzen/xmlpath.git",
+      :revision => "13f4951698adc0fa9c1dda3e275d489a24201161"
   end
 
   go_resource "github.com/mitchellh/iochan" do
