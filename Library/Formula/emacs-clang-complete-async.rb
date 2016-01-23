@@ -1,12 +1,12 @@
 class EmacsClangCompleteAsync < Formula
   desc "Emacs plugin using libclang to complete C/C++ code"
   homepage "https://github.com/Golevka/emacs-clang-complete-async"
-  url "https://github.com/Golevka/emacs-clang-complete-async/archive/v0.5.tar.gz"
-  sha256 "151a81ae8dd9181116e564abafdef8e81d1e0085a1e85e81158d722a14f55c76"
-
   head "https://github.com/Golevka/emacs-clang-complete-async.git"
 
   stable do
+    url "https://github.com/Golevka/emacs-clang-complete-async/archive/v0.5.tar.gz"
+    sha256 "151a81ae8dd9181116e564abafdef8e81d1e0085a1e85e81158d722a14f55c76"
+
     # https://github.com/Golevka/emacs-clang-complete-async/issues/65
     patch :DATA
   end
