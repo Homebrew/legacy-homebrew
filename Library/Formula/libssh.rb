@@ -1,10 +1,8 @@
 class Libssh < Formula
   desc "C library SSHv1/SSHv2 client and server protocols"
   homepage "https://www.libssh.org/"
-  url "https://red.libssh.org/attachments/download/154/libssh-0.7.1.tar.xz"
-  mirror "http://sources.buildroot.net/libssh-0.7.1.tar.xz"
-  sha256 "2fc7ccf96d3263cbd8ab520118cb94d9a2e11714c61e22b3f761fc5352fd046d"
-
+  url "https://red.libssh.org/attachments/download/177/libssh-0.7.2.tar.xz"
+  sha256 "a32c45b9674141cab4bde84ded7d53e931076c6b0f10b8fd627f3584faebae62"
   head "git://git.libssh.org/projects/libssh.git"
 
   bottle do
