@@ -1,5 +1,5 @@
 class Fonttools < Formula
-  desc "FontTools is a library for manipulating fonts"
+  desc "Library for manipulating fonts"
   homepage "https://github.com/behdad/fonttools"
   url "https://github.com/behdad/fonttools/archive/3.0.tar.gz"
   sha256 "3bc9141d608603faac3f800482feec78a550d0a94c29ff3850471dbe4ad9e941"
