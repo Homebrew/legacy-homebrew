@@ -26,7 +26,7 @@ class StashCli < Formula
   test do
     Dir.glob(bin/"*") do |f|
       cmd = File.basename(f, ".sh")
-      assert shell_output(bin/"#{cmd} --help 2>&1 | head").include?("Usage:") unless cmd == "atlassian"
+      assert_match "Usage:", shell_output(bin/"#{cmd} --help 2>&1 | head") unless cmd == "atlassian"
     end
   end
 end
