@@ -19,6 +19,8 @@ class GitExtras < Formula
     sha256 "1b0d3064c639782265ed8180c3136e86cfc65e8fa607a3b347113320888e85fe" => :mavericks
   end
 
+  conflicts_with "git-town", :because => "git-extras also ships a git-sync binary"
+
   def install
     system "make", "PREFIX=#{prefix}", "install"
   end
