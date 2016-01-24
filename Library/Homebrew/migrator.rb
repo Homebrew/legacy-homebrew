@@ -4,6 +4,7 @@ require "keg"
 require "tab"
 require "tap_migrations"
 
+# TODO: reimplement according to new renames sturcture
 class Migrator
   class MigrationNeededError < RuntimeError
     def initialize(formula)

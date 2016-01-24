@@ -292,13 +292,6 @@ class Formulary
       return FormulaLoader.new(name, path)
     end
 
-    # TODO add FormulaResolver here
-    # probably need to rename FormulaResolver to FormulaNameResolver
-    # We'll try to resolve it firstly among core formulae
-    # NOTE: the resolution depends on from what commit we want to resolve
-    # the formula. do we need to use the commit sha right here or leave
-    # this work for FormulaResolver?
-
     # resolve installed formula newname if there is one
     if newref = FormulaResolver.new(ref).resolved_name
       formula_with_that_oldname = core_path(newref)
@@ -315,14 +308,21 @@ class Formulary
       end
     end
 
+    # TODO add FormulaResolver here
+    # probably need to rename FormulaResolver to FormulaNameResolver
+    # We'll try to resolve it firstly among core formulae
+    # NOTE: resolution depends on what commit we want to resolve
+    # the formula from. do we need to use the commit sha right here or leave
+    # it for FormulaResolver as it is now?
+
     # TODO the same as for core formula renames.
     # try to resolve as tap formula renames.
     #
     # When we tap a tap repository we download not the whole commit
-    # history unless we path --depth option. However, the renames file
+    # history unless we pass --depth option. However, the renames file
     # can have some of the commits that were before the last one and
     # we should handle this case i.e. we should treat these commits
-    # as if they are bofore the last one.
+    # as if they are before the last one.
 
     possible_tap_newname_formulae = []
     Tap.each do |tap|

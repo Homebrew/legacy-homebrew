@@ -4,7 +4,7 @@ require "pathname"
 
 class FormulaResolver
 
-  # {Entry} is used to store one entry in from renames file
+  # {Entry} is used to store one entry from renames file
   # entry in file is a string `newname, commit`
   class Entry
     include Comparable
@@ -16,9 +16,15 @@ class FormulaResolver
       @commit = commit
     end
 
-    # TODO add smart comparator and add exception handling
     def <=> (entry)
-      commit <=> entry.commit
+      `git merge-base #{commit} #{entry.commit}`.chomp
+      if $?.success?
+        puts "success"
+        return -1
+      else
+        puts "not okay"
+        return 1
+      end
     end
 
     # TODO what if str has bad format? can check using regex
@@ -44,7 +50,7 @@ class FormulaResolver
     def initialize(name)
       @name = name
       @entries = []
-      entry_file = HOMEBREW_LIBRARY/"Homebrew/Renames/#{name}"
+      entry_file = HOMEBREW_LIBRARY.join("Renames/#{name}")
       if entry_file.file?
         File.open(entry_file).each do |line|
           entries << Entry.new(*line.chomp.split(',').map(&:lstrip))
@@ -70,25 +76,32 @@ class FormulaResolver
   # formula renames hashes for resolving current name of the formula
   attr_reader :sheets
 
-  def initialize(formula_name)
+  # first commit we resolve formula after
+  attr_reader :start_point_commit
+
+  def initialize(formula_name, start_point_commit=nil)
     @sheets = Hash.new
     @formula_name = formula_name
+    @start_point_commit = start_point_commit || get_installed_commit
     @sheets[formula_name] = Sheet.new(formula_name)
   end
 
+  # returns nil if there are no renames for this formula after start_point_commit
   def resolved_name
-    previous_entry = Entry.new(formula_name, get_installed_commit)
-    puts "previous_entry #{previous_entry}"
-    while (current_entry = sheets[previous_entry.name].entry_after(previous_entry))
-      puts current_entry.name
-      previous_entry = current_entry
-      sheets[previous_entry.name] ||= Sheet.new(previous_entry.name)
+    if start_point_commit
+      previous_entry = Entry.new(formula_name, start_point_commit)
+      while (sheets[previous_entry.name] &&
+          current_entry = sheets[previous_entry.name].entry_after(previous_entry))
+        puts current_entry.name
+        previous_entry = current_entry
+        sheets[previous_entry.name] ||= Sheet.new(previous_entry.name)
+      end
+      previous_entry.name
     end
-    previous_entry.name
   end
 
   # get the commit of installed formula with that name, which will be stored
-  # in INSTALLED_RECEIPT or some othe file
+  # in INSTALL_RECEIPT or some othe file
   # `git rev-list -1 origin/master path/to/formula`
   # TODO specify where to store that commit
   # TODO write the commit for the formula, when we install it
@@ -100,8 +113,6 @@ class FormulaResolver
     last_commit_file = HOMEBREW_CELLAR.join("#{formula_name}/LAST_COMMIT")
     if last_commit_file.exist?
       last_commit_file.read.chomp
-    else
-      0
     end
   end
 

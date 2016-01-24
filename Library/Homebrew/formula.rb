@@ -308,11 +308,16 @@ class Formula
   end
 
   # An old name for the formula
+  # TODO: reimplement according to new renames sturcture
   def oldname
     @oldname ||= if tap
-      formula_renames = tap.formula_renames
-      if formula_renames.value?(name)
-        formula_renames.to_a.rassoc(name).first
+      if core_formula?
+        nil
+      else
+        formula_renames = tap.formula_renames
+        if formula_renames.value?(name)
+          formula_renames.to_a.rassoc(name).first
+        end
       end
     end
   end

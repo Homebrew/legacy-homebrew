@@ -98,6 +98,7 @@ module Homebrew
     report.update_renamed
 
     # Migrate installed renamed formulae from core and taps.
+    # TODO: reimplement according to new renames sturcture
     report.select_formula(:R).each do |oldname, newname|
       if oldname.include?("/")
         user, repo, oldname = oldname.split("/", 3)
@@ -329,6 +330,15 @@ class Updater
         dst = paths.last
 
         next unless File.extname(dst) == ".rb"
+
+        # TODO add HOMEBREW_FORMULA_RENAMES constant
+        # TODO fix HOMEBREW_LIBRARY.join("Renames") for taps
+        if paths.any? { |p| File.dirname(p) == HOMEBREW_LIBRARY.join("Renames") }
+          formula_file = formula_directory.join(File.basename(p) + ".rb")
+          map[:D] << formula_file
+          map[:A] << formula_file if formula_file.exist?
+        end
+
         next unless paths.any? { |p| File.dirname(p) == formula_directory }
 
         case status
@@ -426,7 +436,8 @@ class Report
     dump_formula_report :D, "Deleted Formulae"
   end
 
-  def update_renamed
+  # TODO: implement according to new structure of the renames
+  def update_renamed(initial_revision)
     renamed_formulae = []
 
     fetch(:D, []).each do |path|
@@ -436,7 +447,9 @@ class Report
         next unless newname = Tap.fetch($1, $2).formula_renames[oldname]
       else
         oldname = path.basename(".rb").to_s
-        next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
+        # get first rename after oldname
+        next unless newname = FormulaResolver.new(oldname, initial_revision)
+        # next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
       end
 
       if fetch(:A, []).include?(newpath = path.dirname.join("#{newname}.rb"))
