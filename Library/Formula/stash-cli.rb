@@ -5,6 +5,13 @@ class StashCli < Formula
   version "4.5.0"
   sha256 "79fc81d3b383348702cb6d24983fe002aefe4a9b859380bcdd1f19e78ac6f046"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "3038b2e790d2bcdcc13fffa7009dc9597e02c0acd4299de38cb86829db66eb3f" => :el_capitan
+    sha256 "9408dc3d097f408438541e4cfe1b78a338a63a9c001d4ae470092ae66736a14c" => :yosemite
+    sha256 "8c792a3010db1e0a5432699da4ee2e7a24fdb921e930db713ac48876d2eafb02" => :mavericks
+  end
+
   depends_on :java => "1.7+"
 
   def install
