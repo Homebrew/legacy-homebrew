@@ -17,8 +17,7 @@ class Sox < Formula
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
-                          "--prefix=#{prefix}",
-                          "--disable-gomp"
+                          "--prefix=#{prefix}"
     system "make", "install"
   end
 end
