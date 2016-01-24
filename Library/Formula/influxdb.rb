@@ -17,8 +17,8 @@ class Influxdb < Formula
   end
 
   devel do
-    url "https://github.com/influxdata/influxdb/archive/v0.10.0-beta1.tar.gz"
-    sha256 "f671e9f96c9c1385504a9a6bd9ac56769eb61dd36e39f0da91293a5267536756"
+    url "https://github.com/influxdata/influxdb/archive/v0.10.0-beta2.tar.gz"
+    sha256 "2223cfd7975e578291b74c34dbd6216ccb98114c8fd98a6f94c2ebf0c221501a"
   end
 
   depends_on "go" => :build
@@ -139,7 +139,7 @@ class Influxdb < Formula
       if build.head?
         system "go", "install", "-ldflags", "-X main.version=0.10.0-HEAD -X main.branch=master -X main.commit=#{`git rev-parse HEAD`.strip}", "./..."
       elsif build.devel?
-        system "go", "install", "-ldflags", "-X main.version=0.10.0-beta1 -X main.branch=master -X main.commit=ba7fc7d54802a777f345a583e1e3306947cf447b", "./..."
+        system "go", "install", "-ldflags", "-X main.version=0.10.0-beta2 -X main.branch=master -X main.commit=58e0eed9cb166e0b004e6b41a4d64c39d24b40f4", "./..."
       else
         system "go", "install", "-ldflags", "-X main.version=0.9.6.1 -X main.branch=0.9.6 -X main.commit=6d3a8603cfdaf1a141779ed88b093dcc5c528e5e", "./..."
       end
