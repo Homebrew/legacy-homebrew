@@ -1,11 +1,10 @@
 class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://phantomjs.org/"
+  url "https://github.com/ariya/phantomjs.git",
+      :tag => "2.1.0",
+      :revision => "292358499e1ac66503a2639a76aeb155aa44ef73"
   head "https://github.com/ariya/phantomjs.git"
-  # Temporarily use Vitallium's fork (who is a maintainer) until 2.1.0.
-  url "https://github.com/Vitallium/phantomjs.git",
-      :tag => "2.0.1",
-      :revision => "33aaaff64a197b20076faab1b08b8757516aa976"
 
   bottle do
     cellar :any
@@ -17,15 +16,10 @@ class Phantomjs < Formula
   depends_on "openssl"
 
   def install
-    if build.stable?
-      system "./build.sh", "--confirm", "--jobs", ENV.make_jobs,
-             "--qt-config", "-I #{Formula["openssl"].opt_include} -L #{Formula["openssl"].opt_lib}"
-    else
-      inreplace "build.py", "/usr/local", HOMEBREW_PREFIX
-      system "./build.py", "--confirm", "--jobs", ENV.make_jobs
-    end
+    inreplace "build.py", "/usr/local", HOMEBREW_PREFIX
+    system "./build.py", "--confirm", "--jobs", ENV.make_jobs
     bin.install "bin/phantomjs"
-    (share/"phantomjs").install "examples"
+    pkgshare.install "examples"
   end
 
   test do
