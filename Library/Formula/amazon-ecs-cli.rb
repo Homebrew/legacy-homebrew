@@ -3,8 +3,8 @@ require "language/go"
 class AmazonEcsCli < Formula
   desc "CLI for Amazon ECS to manage clusters and tasks for development."
   homepage "https://aws.amazon.com/ecs"
-  url "https://github.com/aws/amazon-ecs-cli/archive/v0.1.0.tar.gz"
-  sha256 "4e86e38677da12b235b14e5b2add9cea422f17a3cd14cd7358a262cdc8794a52"
+  url "https://github.com/aws/amazon-ecs-cli/archive/v0.2.0.tar.gz"
+  sha256 "7690b835b7e394ba37c93ef48af3f9ac81834e94129e8ea64c91020d404bb6c2"
 
   bottle do
     cellar :any_skip_relocation
