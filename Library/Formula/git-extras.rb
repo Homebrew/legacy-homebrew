@@ -1,22 +1,22 @@
 class GitExtras < Formula
   desc "Small git utilities"
   homepage "https://github.com/tj/git-extras"
-  url "https://github.com/tj/git-extras/archive/4.0.0.tar.gz"
-  sha256 "4adaadc1f22f3240ae9607963ede29a5c010ae14b877b90c27d17d6b0c06f430"
   head "https://github.com/tj/git-extras.git"
+
+  stable do
+    url "https://github.com/tj/git-extras/archive/4.1.0.tar.gz"
+    sha256 "d4c028e2fe78abde8f3e640b70f431318fb28d82894dde22772efe8ba3563f85"
+    # Disable "git extras update", which will produce a broken install under Homebrew
+    # https://github.com/Homebrew/homebrew/issues/44520
+    # https://github.com/tj/git-extras/pull/491
+    patch :DATA
+  end
 
   bottle do
     cellar :any_skip_relocation
     sha256 "63f77e06b416f08bc7a55056d03cda28fbc35ef4cfd1c7934c8d261a03893c0c" => :el_capitan
     sha256 "2136bb696bc80dc637da2f97ccd83d5c8b55494d639386b7c661b092955a9a1c" => :yosemite
     sha256 "04ffdb7d30d88977a15585638fc869a7719bc2cb740cb052dc580893558f22ef" => :mavericks
-  end
-
-  stable do
-    # Disable "git extras update", which will produce a broken install under Homebrew
-    # https://github.com/Homebrew/homebrew/issues/44520
-    # https://github.com/tj/git-extras/pull/491
-    patch :DATA
   end
 
   def install
