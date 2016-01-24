@@ -31,7 +31,7 @@ class Pulseaudio < Formula
   depends_on "libtool" => :run
   depends_on "json-c"
   depends_on "libsndfile"
-  depends_on "libsamplerate"
+  depends_on "libsoxr"
   depends_on "openssl"
 
   depends_on :x11 => :optional
