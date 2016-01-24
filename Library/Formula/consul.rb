@@ -4,7 +4,7 @@ class Consul < Formula
   desc "Tool for service discovery, monitoring and configuration"
   homepage "https://www.consul.io"
   url "https://github.com/hashicorp/consul.git",
-    :tag => "v0.6.1", :revision => "68969ce5f4499cbe3a4f946917be2e580f1b1936"
+    :tag => "v0.6.3", :revision => "c933efde50d25395c7b5a42167578fda603d43d8"
 
   bottle do
     cellar :any_skip_relocation
@@ -34,17 +34,17 @@ class Consul < Formula
 
   go_resource "github.com/armon/go-radix" do
     url "https://github.com/armon/go-radix.git",
-      :revision => "fbd82e84e2b13651f3abc5ffd26b65ba71bc8f93"
+      :revision => "4239b77079c7b5d1243b7b4736304ce8ddb6f0f2"
   end
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-      :revision => "25b28102db2053fa885b2a4798d5dfa94745f4b6"
+      :revision => "ee4a0888a9abe7eefe5a0992ca4cb06864839873"
   end
 
   go_resource "github.com/fsouza/go-dockerclient" do
     url "https://github.com/fsouza/go-dockerclient.git",
-      :revision => "175e1df973274f04e9b459a62cffc49808f1a649"
+      :revision => "25bc220b299845ae5489fd19bf89c5278864b050"
   end
 
   go_resource "github.com/hashicorp/errwrap" do
@@ -94,7 +94,7 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/hcl" do
     url "https://github.com/hashicorp/hcl.git",
-      :revision => "197e8d3cf42199cfd53cd775deb37f3637234635"
+      :revision => "578dd9746824a54637686b51a41bad457a56bcef"
   end
 
   go_resource "github.com/hashicorp/logutils" do
@@ -114,7 +114,7 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/raft" do
     url "https://github.com/hashicorp/raft.git",
-      :revision => "d136cd15dfb7876fd7c89cad1995bc4f19ceb294"
+      :revision => "057b893fd996696719e98b6c44649ea14968c811"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
@@ -129,7 +129,7 @@ class Consul < Formula
 
   go_resource "github.com/hashicorp/serf" do
     url "https://github.com/hashicorp/serf.git",
-      :revision => "39c7c06298b480560202bec00c2c77e974e88792"
+      :revision => "64d10e9428bd70dbcd831ad087573b66731c014b"
   end
 
   go_resource "github.com/hashicorp/yamux" do
@@ -144,7 +144,7 @@ class Consul < Formula
 
   go_resource "github.com/miekg/dns" do
     url "https://github.com/miekg/dns.git",
-      :revision => "1756430e42a7b2ecded216a9fdd37d002c116df5"
+      :revision => "c144371d31e35dc0588755ada496462c102c90a6"
   end
 
   go_resource "github.com/mitchellh/cli" do
@@ -164,12 +164,12 @@ class Consul < Formula
 
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-      :revision => "803f01ea27e23d998825ec085f0d153cac01c828"
+      :revision => "3760e016850398b85094c4c99e955b8c3dea5711"
   end
 
   resource "web-ui" do
-    url "https://releases.hashicorp.com/consul/0.6.1/consul_0.6.1_web_ui.zip"
-    sha256 "afccdd540b166b778c7c0483becc5e282bbbb1ee52335bfe94bf757df8c55efc"
+    url "https://releases.hashicorp.com/consul/0.6.3/consul_0.6.3_web_ui.zip"
+    sha256 "93bbb300cacfe8de90fb3bd5ede7d37ae6ce014898edc520b9c96a676b2bbb72"
   end
 
   def install
