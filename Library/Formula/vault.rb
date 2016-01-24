@@ -4,9 +4,8 @@ class Vault < Formula
   desc "Secures, stores, and tightly controls access to secrets"
   homepage "https://vaultproject.io/"
   url "https://github.com/hashicorp/vault.git",
-      :tag => "v0.4.0",
-      :revision => "b3da917b2305b23693cf2594f9d29e52acc514cf"
-  revision 1
+      :tag => "v0.4.1",
+      :revision => "1a807d58cb4e87808a27d53bede3fa252b876871"
 
   head "https://github.com/hashicorp/vault.git"
 
@@ -28,12 +27,12 @@ class Vault < Formula
 
   go_resource "golang.org/x/tools" do
     url "https://go.googlesource.com/tools.git",
-        :revision => "997b3545fd86c3a2d8e5fe6366174d7786e71278"
+        :revision => "f3a63969dd29f8cfa913fdaea22f30c1ed537cb3"
   end
 
   go_resource "github.com/mitchellh/gox" do
     url "https://github.com/mitchellh/gox.git",
-        :revision => "a5a468f84d74eb51ece602cb113edeb37167912f"
+        :revision => "39862d88e853ecc97f45e91c1cdcb1b312c51eaa"
   end
 
   # gox dependency
