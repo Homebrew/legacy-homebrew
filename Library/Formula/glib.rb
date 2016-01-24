@@ -2,6 +2,7 @@ class Glib < Formula
   desc "Core application library for C"
   homepage "https://developer.gnome.org/glib/"
   url "https://download.gnome.org/sources/glib/2.46/glib-2.46.2.tar.xz"
+  mirror "http://ftp.tuwien.ac.at/hci/gnome.org/sources/glib/2.46/glib-2.46.2.tar.xz"
   sha256 "5031722e37036719c1a09163cc6cf7c326e4c4f1f1e074b433c156862bd733db"
 
   bottle do
