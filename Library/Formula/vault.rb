@@ -6,7 +6,6 @@ class Vault < Formula
   url "https://github.com/hashicorp/vault.git",
       :tag => "v0.4.1",
       :revision => "1a807d58cb4e87808a27d53bede3fa252b876871"
-  revision 1
 
   head "https://github.com/hashicorp/vault.git"
 
