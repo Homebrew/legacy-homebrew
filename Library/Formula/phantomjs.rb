@@ -8,9 +8,9 @@ class Phantomjs < Formula
 
   bottle do
     cellar :any
-    sha256 "8c1e531d9d6f06a1c8cfd1a8b58de013c67311a63b7ef7527a74c94c96bd1a5b" => :el_capitan
-    sha256 "6d70d6aa35b60f8ae26ac7a40c41ab0cb7e70a55b07abac6d236545116b83822" => :yosemite
-    sha256 "8712122649fa42ca342fa98a4588dac3402f7038e11540e541e6dc80193cbe82" => :mavericks
+    sha256 "49f74d6b91ec5e08b26b796f9bfb93c5f024d9c7178f1f3d2d9ef2bf213b3074" => :el_capitan
+    sha256 "a0a1d7a0ead24f93f76a9f5ac67f361fc7ee98f258cbb9ecb5ec9c70b29e77b2" => :yosemite
+    sha256 "154d86c1cffdf51c4bc121592b47da3e15a6a34e5f71053820a67238822a5cde" => :mavericks
   end
 
   depends_on "openssl"
