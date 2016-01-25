@@ -1,3 +1,5 @@
+require "base64"
+
 # Track Chrome stable.
 # https://omahaproxy.appspot.com/
 class V8 < Formula
@@ -20,6 +22,8 @@ class V8 < Formula
   depends_on :macos => :lion
 
   depends_on :python => :build # gyp doesn't run under 2.6 or lower
+  depends_on "pkg-config" => :build
+  depends_on "icu4c"
   depends_on "readline" => :optional
 
   needs :cxx11
@@ -60,12 +64,20 @@ class V8 < Formula
         :revision => "9855a87157778d39b95eccfb201a9dc90f6d61c6"
   end
 
+  # Borrow the unbundled icu.gyp from the chromium project so we can build against icu4c
+  # See https://groups.google.com/a/chromium.org/forum/#!topic/chromium-packagers/pNpOJ0wh5c8
+  resource "icu-unbundle" do
+    url "https://chromium.googlesource.com/chromium/src/build/+/05db126cc0a2dddb5d3b60b3e8e8b560eb32e419/linux/unbundle/icu.gyp?format=TEXT"
+    sha256 "55bc6d3235e8a8bb8485011136a68ebdb31674490edc5dfb89913ae3dc0a3bb0"
+  end
+
   def install
     # Bully GYP into correctly linking with c++11
     ENV.cxx11
     ENV["GYP_DEFINES"] = "clang=1 mac_deployment_target=#{MacOS.version}"
     # https://code.google.com/p/v8/issues/detail?id=4511#c3
     ENV.append "GYP_DEFINES", "v8_use_external_startup_data=0"
+    ENV.append "GYP_DEFINES", "use_system_icu=1"
 
     # fix up libv8.dylib install_name
     # https://github.com/Homebrew/homebrew/issues/36571
@@ -82,8 +94,16 @@ class V8 < Formula
     (buildpath/"tools/clang").install resource("clang")
     (buildpath/"tools/swarming_client").install resource("swarming_client")
 
+    resource("icu-unbundle").stage do
+      # googlesource.com only serves up the file in base64-encoded format; we
+      # need to decode it before overwriting the icu.gyp installed above
+      unbundle_file = buildpath/"third_party/icu/icu.gyp"
+      rm unbundle_file
+      unbundle_file.write Base64.decode64(File.read("icu.gyp"))
+    end
+
     system "make", "native", "library=shared", "snapshot=on",
-                   "console=readline", "i18nsupport=off",
+                   "console=readline", "i18nsupport=on",
                    "strictaliasing=off"
 
     include.install Dir["include/*"]
