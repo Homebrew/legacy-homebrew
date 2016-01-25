@@ -878,11 +878,11 @@ class FormulaAuditor
         problem "`#{$1}` is now unnecessary"
       end
 
-      if line =~ /#\{share\}\/#{formula.name}/
+      if line =~ %r{#\{share\}/#{formula.name}[/'"]}
         problem "Use \#{pkgshare} instead of \#{share}/#{formula.name}"
       end
 
-      if line =~ /share\/"#{formula.name}"/
+      if line =~ %r{share/"#{formula.name}[/'"]}
         problem "Use pkgshare instead of (share/\"#{formula.name}\")"
       end
     end
