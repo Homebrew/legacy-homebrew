@@ -42,39 +42,11 @@ class Mingw < Formula
   #option "without-multilib", "Build without multilib support" if MacOS.prefer_64_bit?
 
   depends_on "gmp4"
-  depends_on "gcc48"
+  depends_on "gcc48" => ["with-all-languages"]
   depends_on "binutils"
   depends_on "isl011"
   depends_on "isl012"
   depends_on "cloog018"
-
-  #depends_on "ecj" if build.with?("java") || build.with?("all-languages")
-
-  # if MacOS.version < :leopard
-  #   # The as that comes with Tiger isn't capable of dealing with the
-  #   # PPC asm that comes in libitm
-  #   depends_on "cctools" => :build
-  # end
-
-  # fails_with :gcc_4_0
-  # fails_with :llvm
-
-  # GCC bootstraps itself, so it is OK to have an incompatible C++ stdlib
-  # cxxstdlib_check :skip
-
-  # The bottles are built on systems with the CLT installed, and do not work
-  # out of the box on Xcode-only systems due to an incorrect sysroot.
-  # def pour_bottle?
-  #   MacOS::CLT.installed?
-  # end
-
-  # def version_suffix
-  #   version.to_s.slice(/\d/)
-  # end
-
-  # Fix for libgccjit.so linkage on Darwin
-  # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64089
-  # patch :DATA
 
   def install
     args = [
@@ -121,37 +93,12 @@ class Mingw < Formula
       #system "make", "install-strip"
       system "find", "#{buildpath}"
 
-      resource("gcc48").stage {
-        system "pwd"
-        system "exit", "0"
-        #../../src/gcc/configure --prefix=/RosBE64 --host=i686-w64-mingw32 --build=i686-w64-mingw32 --target=x86_64-w64-mingw32 --with-gmp=/support --with-mpfr=/support --with-mpc=/support --with-pkgversion="RosBE-Windows" --enable-languages=c,c++ --enable-checking=release --disable-win32-registry --disable-shared --disable-nls --disable-werror --disable-multilib --with-sysroot=/RosBE64 --enable-version-specific-runtime-libs --with-host-libstdcxx="-lstdc++ -lsupc++"
-
-        system "./configure" , "--disable-nls",
-               "--target=i686-w64-mingw32",
-               "--enable-languages=c,c++", "--with-system-zlib",
-               "--enable-multilib",
-               "--enable-version-specific-runtime-libs",
-               "--enable-shared", "--enable-fully-dynamic-string",
-               "--prefix=#{buildpath}"
-        system "make", "all-gcc"
-        system "make", "install-gcc"
-        system "find", "#{buildpath}/gcc"
-      }
-      system "echo", "we got here"
-      system "find", "#{buildpath}/gcc"
-
       mkdir "mingw-w64-crt32" do
         system "../mingw-w64-crt/configure", "--host=i686-w64-mingw32",
                "--prefix=#{buildpath}/i686-w64-mingw32"
         system "make"
         system "make", "install"
       end
-
-      cd "gcc-4.8.5" do
-        system "make"
-        system "make", "install"
-      end
-
 
       # unless MacOS::CLT.installed?
       #   # For Xcode-only systems, we need to tell the sysroot path.
