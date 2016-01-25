@@ -1,8 +1,8 @@
 class Saldl < Formula
   desc "CLI downloader optimized for speed and early preview."
   homepage "https://saldl.github.io"
-  url "https://github.com/saldl/saldl/archive/v33.tar.gz"
-  sha256 "61b7eb795e158cb6cf7f97fd1b69958b1a43ccbe2688e70354be65f0805d0bf6"
+  url "https://github.com/saldl/saldl/archive/v34.tar.gz"
+  sha256 "12053f306306023e5bbdc6bb8594cc83f8793da0ce99dab1981179cdeccea4da"
   head "https://github.com/saldl/saldl.git", :shallow => false
 
   bottle do
