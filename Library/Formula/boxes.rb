@@ -17,7 +17,7 @@ class Boxes < Formula
 
     # distro uses /usr/share/boxes change to prefix
     system "make",
-      "GLOBALCONF=#{share}/boxes-config",
+      "GLOBALCONF=#{pkgshare}/boxes-config",
       "CC=#{ENV.cc}",
       # Force 32 bit compile
       "CFLAGS_ADDTL=-m32",
@@ -25,7 +25,7 @@ class Boxes < Formula
 
     bin.install "src/boxes"
     man1.install "doc/boxes.1"
-    share.install "boxes-config"
+    pkgshare.install "boxes-config"
   end
 
   test do
