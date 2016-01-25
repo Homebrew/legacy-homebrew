@@ -1,5 +1,5 @@
 class Libqxt < Formula
-  desc "LibQxt is an extension library for Qt"
+  desc "Extension library for Qt providing a suite of utility classes"
   homepage "https://bitbucket.org/libqxt/libqxt/wiki/Home"
 
   stable do
