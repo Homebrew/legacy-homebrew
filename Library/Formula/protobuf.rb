@@ -20,9 +20,17 @@ class Protobuf < Formula
   end
 
   devel do
-    url "https://github.com/google/protobuf/archive/v3.0.0-beta-1-bzl-fix.tar.gz"
-    sha256 "1b364aff3557c98087969befffd2c8479e6fe70ab3a85009dc260ab65232357a"
-    version "3.0.0-beta-1-bzl-fix"
+    url "https://github.com/google/protobuf/archive/v3.0.0-beta-2.tar.gz"
+    sha256 "be224d07ce87f12e362cff3df02851107bf92a4e4604349b1d7a4b1f0c3bfd86"
+    version "3.0.0-beta-2"
+
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  head do
+    url "https://github.com/google/protobuf.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -76,7 +84,7 @@ class Protobuf < Formula
     ENV.universal_binary if build.universal?
     ENV.cxx11 if build.cxx11?
 
-    system "./autogen.sh" if build.devel?
+    system "./autogen.sh" if build.devel? || build.head?
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--with-zlib"
