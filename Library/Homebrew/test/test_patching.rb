@@ -2,15 +2,20 @@ require "testing_env"
 require "formula"
 
 class PatchingTests < Homebrew::TestCase
+  TESTBALL_URL = "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
+  TESTBALL_PATCHES_URL = "file://#{TEST_DIRECTORY}/tarballs/testball-0.1-patches.tgz"
   PATCH_URL_A = "file://#{TEST_DIRECTORY}/patches/noop-a.diff"
   PATCH_URL_B = "file://#{TEST_DIRECTORY}/patches/noop-b.diff"
   PATCH_A_CONTENTS = File.read "#{TEST_DIRECTORY}/patches/noop-a.diff"
   PATCH_B_CONTENTS = File.read "#{TEST_DIRECTORY}/patches/noop-b.diff"
+  APPLY_A = "noop-a.diff"
+  APPLY_B = "noop-b.diff"
+  APPLY_C = "noop-c.diff"
 
   def formula(*args, &block)
     super do
-      url "file://#{TEST_DIRECTORY}/tarballs/testball-0.1.tbz"
-      sha1 TESTBALL_SHA1
+      url TESTBALL_URL
+      sha256 TESTBALL_SHA256
       class_eval(&block)
     end
   end
@@ -31,6 +36,28 @@ class PatchingTests < Homebrew::TestCase
     end
   end
 
+  def assert_sequentially_patched(formula)
+    shutup do
+      formula.brew do
+        formula.patch
+        s = File.read("libexec/NOOP")
+        refute_includes s, "NOOP", "libexec/NOOP was not patched as expected"
+        refute_includes s, "ABCD", "libexec/NOOP was not patched as expected"
+        assert_includes s, "1234", "libexec/NOOP was not patched as expected"
+      end
+    end
+  end
+
+  def assert_missing_apply_fail(formula)
+    assert_raises(MissingApplyError) do
+      shutup do
+        formula.brew do
+          formula.patch
+        end
+      end
+    end
+  end
+
   def test_single_patch
     assert_patched formula {
       def patches
@@ -43,7 +70,27 @@ class PatchingTests < Homebrew::TestCase
     assert_patched formula {
       patch do
         url PATCH_URL_A
-        sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
+        sha256 PATCH_A_SHA256
+      end
+    }
+  end
+
+  def test_single_patch_dsl_with_apply
+    assert_patched formula {
+      patch do
+        url TESTBALL_PATCHES_URL
+        sha256 TESTBALL_PATCHES_SHA256
+        apply APPLY_A
+      end
+    }
+  end
+
+  def test_single_patch_dsl_with_sequential_apply
+    assert_sequentially_patched formula {
+      patch do
+        url TESTBALL_PATCHES_URL
+        sha256 TESTBALL_PATCHES_SHA256
+        apply APPLY_A, APPLY_C
       end
     }
   end
@@ -52,7 +99,17 @@ class PatchingTests < Homebrew::TestCase
     assert_patched formula {
       patch :p1 do
         url PATCH_URL_A
-        sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
+        sha256 PATCH_A_SHA256
+      end
+    }
+  end
+
+  def test_single_patch_dsl_with_strip_with_apply
+    assert_patched formula {
+      patch :p1 do
+        url TESTBALL_PATCHES_URL
+        sha256 TESTBALL_PATCHES_SHA256
+        apply APPLY_A
       end
     }
   end
@@ -63,7 +120,21 @@ class PatchingTests < Homebrew::TestCase
         formula do
           patch :p0 do
             url PATCH_URL_A
-            sha1 "fa8af2e803892e523fdedc6b758117c45e5749a2"
+            sha256 PATCH_A_SHA256
+          end
+        end.brew(&:patch)
+      end
+    end
+  end
+
+  def test_single_patch_dsl_with_incorrect_strip_with_apply
+    assert_raises(ErrorDuringExecution) do
+      shutup do
+        formula do
+          patch :p0 do
+            url TESTBALL_PATCHES_URL
+            sha256 TESTBALL_PATCHES_SHA256
+            apply APPLY_A
           end
         end.brew(&:patch)
       end
@@ -74,9 +145,19 @@ class PatchingTests < Homebrew::TestCase
     assert_patched formula {
       patch :p0 do
         url PATCH_URL_B
-        sha1 "3b54bd576f998ef6d6623705ee023b55062b9504"
+        sha256 PATCH_B_SHA256
       end
     }
+  end
+
+  def test_patch_p0_dsl_with_apply
+    assert_patched formula {
+      patch :p0 do
+        url TESTBALL_PATCHES_URL
+        sha256 TESTBALL_PATCHES_SHA256
+        apply APPLY_B
+      end
+   }
   end
 
   def test_patch_p0
@@ -125,6 +206,37 @@ class PatchingTests < Homebrew::TestCase
         :DATA
       end
     }
+  end
+
+  def test_single_patch_missing_apply_fail
+    assert_missing_apply_fail formula {
+      def patches
+        TESTBALL_PATCHES_URL
+      end
+    }
+  end
+
+  def test_single_patch_dsl_missing_apply_fail
+    assert_missing_apply_fail formula {
+      patch do
+        url TESTBALL_PATCHES_URL
+        sha256 TESTBALL_PATCHES_SHA256
+      end
+    }
+  end
+
+  def test_single_patch_dsl_with_apply_enoent_fail
+    assert_raises(ErrorDuringExecution) do
+      shutup do
+        formula do
+          patch do
+            url TESTBALL_PATCHES_URL
+            sha256 TESTBALL_PATCHES_SHA256
+            apply "patches/#{APPLY_A}"
+          end
+        end.brew(&:patch)
+      end
+    end
   end
 end
 

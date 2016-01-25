@@ -112,7 +112,7 @@ class ExternalPatch
 
   def initialize(strip, &block)
     @strip    = strip
-    @resource = Resource.new("patch", &block)
+    @resource = Resource::Patch.new(&block)
   end
 
   def external?
@@ -127,9 +127,25 @@ class ExternalPatch
   def apply
     dir = Pathname.pwd
     resource.unpack do
-      # Assumption: the only file in the staging directory is the patch
-      patchfile = Pathname.pwd.children.first
-      dir.cd { safe_system "/usr/bin/patch", "-g", "0", "-f", "-#{strip}", "-i", patchfile }
+      patch_dir = Pathname.pwd
+      if patch_files.empty?
+        children = patch_dir.children
+        if (children.count == 1 && children.first.file?)
+          patch_files << children.first.basename
+        else
+          raise MissingApplyError, <<-EOS.undent
+            There should be exactly one patch file in the staging directory unless
+            the "apply" method was used one or more times in the patch-do block.
+          EOS
+        end
+      end
+      dir.cd do
+        patch_files.each do |patch_file|
+          ohai "Applying #{patch_file}"
+          patch_file = patch_dir/patch_file
+          safe_system "/usr/bin/patch", "-g", "0", "-f", "-#{strip}", "-i", patch_file
+        end
+      end
     end
   end
 
@@ -139,6 +155,10 @@ class ExternalPatch
 
   def fetch
     resource.fetch
+  end
+
+  def patch_files
+    resource.patch_files
   end
 
   def verify_download_integrity(fn)
