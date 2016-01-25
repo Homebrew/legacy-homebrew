@@ -9,4 +9,9 @@ class Crfxx < Formula
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "CXXFLAGS=#{ENV.cflags}", "install"
   end
+
+  test do
+    # Using "; true" because crf_test -v and -h exit nonzero under normal operation
+    assert_match "CRF++: Yet Another CRF Tool Kit", shell_output("crf_test --help; true")
+  end
 end
