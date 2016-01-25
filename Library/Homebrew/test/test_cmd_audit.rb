@@ -256,4 +256,30 @@ class FormulaAuditorTests < Homebrew::TestCase
     assert_equal ["AmazonWebServicesFormula is deprecated, use Formula instead"],
       fa.problems
   end
+
+  def test_audit_line_pkgshare
+    fa = formula_auditor "foo", <<-EOS.undent, :strict => true
+      class Foo < Formula
+        url "http://example.com/foo-1.0.tgz"
+      end
+    EOS
+    fa.audit_line 'ohai "#{share}/foo"', 3
+    assert_equal "Use \#{pkgshare} instead of \#{share}/foo", fa.problems.shift
+
+    fa.audit_line 'ohai "#{share}/foo/bar"', 3
+    assert_equal "Use \#{pkgshare} instead of \#{share}/foo", fa.problems.shift
+
+    fa.audit_line 'ohai share/"foo"', 3
+    assert_equal 'Use pkgshare instead of (share/"foo")', fa.problems.shift
+
+    fa.audit_line 'ohai share/"foo/bar"', 3
+    assert_equal 'Use pkgshare instead of (share/"foo")', fa.problems.shift
+
+    fa.audit_line 'ohai "#{share}/foo-bar"', 3
+    assert_equal [], fa.problems
+    fa.audit_line 'ohai share/"foo-bar"', 3
+    assert_equal [], fa.problems
+    fa.audit_line 'ohai share/"bar"', 3
+    assert_equal [], fa.problems
+  end
 end
