@@ -20,6 +20,7 @@ end
 class Llvm < Formula
   desc "Next-gen compiler infrastructure"
   homepage "http://llvm.org/"
+  revision 1
 
   stable do
     url "http://llvm.org/releases/3.6.2/llvm-3.6.2.src.tar.xz"
@@ -108,14 +109,14 @@ class Llvm < Formula
   keg_only :provided_by_osx
 
   option :universal
-  option "with-clang", "Build the Clang compiler and support libraries"
   option "with-clang-extra-tools", "Build extra tools for Clang"
   option "with-compiler-rt", "Build Clang runtime support libraries for code sanitizers, builtins, and profiling"
   option "with-libcxx", "Build the libc++ standard library"
   option "with-lld", "Build LLD linker"
   option "with-lldb", "Build LLDB debugger"
   option "with-python", "Build Python bindings against Homebrew Python"
-  option "with-rtti", "Build with C++ RTTI"
+  option "without-clang", "Do not build the Clang compiler and support libraries"
+  option "without-rtti", "Build without C++ RTTI"
 
   deprecated_option "rtti" => "with-rtti"
 

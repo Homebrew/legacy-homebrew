@@ -22,7 +22,7 @@ class Doxygen < Formula
   depends_on "cmake" => :build
   depends_on "graphviz" => :optional
   depends_on "qt" if build.with? "doxywizard"
-  depends_on "llvm" => "with-clang" if build.with? "libclang"
+  depends_on "llvm" if build.with? "libclang"
 
   def install
     args = std_cmake_args

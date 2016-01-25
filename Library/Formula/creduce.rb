@@ -15,7 +15,7 @@ class Creduce < Formula
 
   depends_on "astyle"
   depends_on "delta"
-  depends_on "llvm" => "with-clang"
+  depends_on "llvm"
 
   depends_on :macos => :mavericks
 
