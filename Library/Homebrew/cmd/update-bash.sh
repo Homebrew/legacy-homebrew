@@ -234,11 +234,6 @@ update-bash() {
   local DIR
   local UPSTREAM_BRANCH
 
-  if [[ -z "$HOMEBREW_DEVELOPER" ]]
-  then
-    odie "This command is currently only for Homebrew developers' use."
-  fi
-
   for option in "$@"
   do
     case "$option" in
