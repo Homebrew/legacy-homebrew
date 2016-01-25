@@ -1,3 +1,4 @@
+
 class Libsamplerate < Formula
   desc "Library for sample rate conversion of audio data"
   homepage "http://www.mega-nerd.com/SRC"
@@ -26,6 +27,22 @@ class Libsamplerate < Formula
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
     system "make", "install"
+
+    # https://github.com/Homebrew/homebrew/issues/47133
+    # unless this formula is built with libsndfile, the example program
+    # is broken and hence, removed from installation.
+    rm_f "#{bin}/sndfile-resample" if build.without? "libsndfile"
+  end
+
+  def caveats
+    s = ""
+    if build.without? "libsndfile"
+      s += <<-EOS.undent
+      Unless this formula is built with libsndfile, the example program,
+      "sndfile-resample", is broken and hence, removed from installation.
+      EOS
+    end
+    s
   end
 end
 
