@@ -132,7 +132,7 @@ module OS
     def gcc_40_build_version
       @gcc_40_build_version ||=
         if (path = locate("gcc-4.0"))
-          `#{path} --version`[/build (\d{4,})/, 1].to_i
+          `#{path} --version 2>/dev/null`[/build (\d{4,})/, 1].to_i
         end
     end
     alias_method :gcc_4_0_build_version, :gcc_40_build_version
@@ -142,7 +142,7 @@ module OS
         begin
           gcc = MacOS.locate("gcc-4.2") || HOMEBREW_PREFIX.join("opt/apple-gcc42/bin/gcc-4.2")
           if gcc.exist? && !gcc.realpath.basename.to_s.start_with?("llvm")
-            `#{gcc} --version`[/build (\d{4,})/, 1].to_i
+            `#{gcc} --version 2>/dev/null`[/build (\d{4,})/, 1].to_i
           end
         end
     end
