@@ -3,8 +3,8 @@
 class V8 < Formula
   desc "Google's JavaScript engine"
   homepage "https://code.google.com/p/v8/"
-  url "https://github.com/v8/v8-git-mirror/archive/4.7.80.31.tar.gz"
-  sha256 "de89c9c51b5063f174bf6f6ae32ab53206a633056dd082f7bb9843db98b5de45"
+  url "https://github.com/v8/v8-git-mirror/archive/4.8.271.17.tar.gz"
+  sha256 "825217b40e6730ed2d2c52ffdaefee861795687c240dd39670f3e0ecc6f25dfb"
 
   bottle do
     cellar :any
@@ -26,29 +26,30 @@ class V8 < Formula
   needs :cxx11
 
   # Update from "DEPS" file in tarball.
+  # Note that we don't require the "test" DEPS because we don't run the tests.
   resource "gyp" do
     url "https://chromium.googlesource.com/external/gyp.git",
-        :revision => "01528c7244837168a1c80f06ff60fa5a9793c824"
+        :revision => "2c1e6cced23554ce84806e570acea637f6473afc"
   end
 
   resource "icu" do
     url "https://chromium.googlesource.com/chromium/deps/icu.git",
-        :revision => "423fc7e1107fb08ccf007c4aeb76dcab8b2747c1"
+        :revision => "42c58d4e49f2250039f0e98d43e0b76e8f5ca024"
   end
 
   resource "buildtools" do
     url "https://chromium.googlesource.com/chromium/buildtools.git",
-        :revision => "e7111440c07a883b82ffbbe6d26c744dfc6c9673"
+        :revision => "4a95614772d9bcbd8bc197e1d9bd034e088fc740"
   end
 
   resource "swarming_client" do
     url "https://chromium.googlesource.com/external/swarming.client.git",
-        :revision => "6e5d2b21f0ac98396cd736097a985346feed1328"
+        :revision => "8fce79620b04bbe5415ace1103db27505bdc4c06"
   end
 
-  resource "clang" do
-    url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
-        :revision => "0150e39a3112dbc7e4c7a3ab25276b8d7781f3b6"
+  resource "gtest" do
+    url "https://chromium.googlesource.com/external/github.com/google/googletest.git",
+        :revision => "6f8a66431cb592dad629028a50b3dd418a408c87"
   end
 
   resource "gmock" do
@@ -56,9 +57,9 @@ class V8 < Formula
         :revision => "0421b6f358139f02e102c9c332ce19a33faf75be"
   end
 
-  resource "gtest" do
-    url "https://chromium.googlesource.com/external/googletest.git",
-        :revision => "9855a87157778d39b95eccfb201a9dc90f6d61c6"
+  resource "clang" do
+    url "https://chromium.googlesource.com/chromium/src/tools/clang.git",
+        :revision => "66f5328417331216569e8beb244fd887f62e8997"
   end
 
   def install
@@ -82,13 +83,13 @@ class V8 < Formula
               "'OTHER_LDFLAGS': ['-dynamiclib', '-all_load']",
               "\\0, 'DYLIB_INSTALL_NAME_BASE': '#{opt_lib}'"
 
-    (buildpath/"buildtools").install resource("buildtools")
     (buildpath/"build/gyp").install resource("gyp")
     (buildpath/"third_party/icu").install resource("icu")
-    (buildpath/"testing/gmock").install resource("gmock")
-    (buildpath/"testing/gtest").install resource("gtest")
-    (buildpath/"tools/clang").install resource("clang")
+    (buildpath/"buildtools").install resource("buildtools")
     (buildpath/"tools/swarming_client").install resource("swarming_client")
+    (buildpath/"testing/gtest").install resource("gtest")
+    (buildpath/"testing/gmock").install resource("gmock")
+    (buildpath/"tools/clang").install resource("clang")
 
     system "make", "native", "library=shared", "snapshot=on",
                    "console=readline", i18nsupport,
