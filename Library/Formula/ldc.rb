@@ -3,6 +3,7 @@ class Ldc < Formula
   homepage "http://wiki.dlang.org/LDC"
   url "https://github.com/ldc-developers/ldc/releases/download/v0.16.1/ldc-0.16.1-src.tar.gz"
   sha256 "e66cea99f0b1406bbd265ad5fe6aa1412bae31ac86d8a678eb6751f304b6f95b"
+  revision 1
 
   head "https://github.com/ldc-developers/ldc.git", :shallow => false
 
