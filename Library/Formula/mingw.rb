@@ -80,26 +80,27 @@ class Mingw < Formula
     #   system "find", "."
     # end
 
-    mkdir "build" do
-
+    mkdir "build-headers64" do
       # install headers
       system "../mingw-w64-headers/configure",
-             "--host=i686-w64-mingw32",
-             "--target=i686-w64-mingw32",
-             "--enable-targets=x86_64-w64-mingw32,i686-w64-mingw32",
-             "--prefix=#{buildpath}/i686-w64-mingw32"
+             "--host=x86_64-w64-mingw32",
+             "--prefix=#{buildpath}/x86_64-w64-mingw32"
       system "make", "-j4"
-      system "make", "install"
-      #system "make", "install-strip"
+      system "make", "install-strip"
+      #system "make", "install"
       system "find", "#{buildpath}"
+    end
 
-      mkdir "mingw-w64-crt32" do
-        system "../mingw-w64-crt/configure", "--host=i686-w64-mingw32",
-               "--prefix=#{buildpath}/i686-w64-mingw32"
-        system "make"
-        system "make", "install"
-      end
+    mkdir "build-crt64" do
+      system "../mingw-w64-crt/configure",
+             "--host=x86_64-w64-mingw32",
+             "--prefix=#{buildpath}/x86_64-w64-mingw32",
+             "--with-sysroot=#{buildpath}"
+      system "make"
+      system "make", "install"
+    end
 
+    mkdir "build64" do
       # unless MacOS::CLT.installed?
       #   # For Xcode-only systems, we need to tell the sysroot path.
       #   # "native-system-headers" will be appended
@@ -109,14 +110,12 @@ class Mingw < Formula
 
       # Might need to rebuild binutils first...
 
-      system "../configure", *args,
+      system "../configure",
+             "--host=x86_64-w64-mingw32",
              "--prefix=#{buildpath}/x86_64-w64-mingw32"
-      system "make", "all-gcc", "-j4"
-      system "make", "install-gcc"
+      system "make"
+      system "make", "install-strip"
 
-      if build.with?("fortran") || build.with?("all-languages")
-        bin.install_symlink bin/"gfortran-#{version_suffix}" => "gfortran"
-      end
     end
 
     # Handle conflicts between GCC formulae and avoid interfering
