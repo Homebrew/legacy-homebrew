@@ -1,4 +1,3 @@
-
 class Libsamplerate < Formula
   desc "Library for sample rate conversion of audio data"
   homepage "http://www.mega-nerd.com/SRC"
@@ -28,8 +27,7 @@ class Libsamplerate < Formula
     system "make", "install"
 
     # https://github.com/Homebrew/homebrew/issues/47133
-    # unless this formula is built with libsndfile, the example program
-    # is broken and hence, removed from installation.
+    # Unless formula is built with libsndfile, the example program is broken.
     rm_f "#{bin}/sndfile-resample" if build.without? "libsndfile"
   end
 
