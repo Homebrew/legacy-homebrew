@@ -6,10 +6,6 @@ require "descriptions"
 
 module Homebrew
   def update_report
-    unless ENV["HOMEBREW_DEVELOPER"]
-      odie "This command is currently only for Homebrew developers' use."
-    end
-
     # migrate to new directories based tap structure
     migrate_taps
 
