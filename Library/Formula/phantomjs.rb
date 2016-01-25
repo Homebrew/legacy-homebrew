@@ -2,8 +2,8 @@ class Phantomjs < Formula
   desc "Headless WebKit scriptable with a JavaScript API"
   homepage "http://phantomjs.org/"
   url "https://github.com/ariya/phantomjs.git",
-      :tag => "2.1.0",
-      :revision => "292358499e1ac66503a2639a76aeb155aa44ef73"
+      :tag => "2.1.1",
+      :revision => "d9cda3dcd26b0e463533c5cc96e39c0f39fc32c1"
   head "https://github.com/ariya/phantomjs.git"
 
   bottle do
