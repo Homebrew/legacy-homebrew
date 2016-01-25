@@ -12,5 +12,6 @@ class CrystalIcr < Formula
   end
 
   test do
+    assert_equal "=> 4", pipe_output("#{bin}/icr", "2+2").strip
   end
 end
