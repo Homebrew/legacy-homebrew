@@ -1,8 +1,8 @@
 class Ford < Formula
   desc "Automatic documentation generator for modern Fortran programs"
   homepage "https://github.com/cmacmackin/ford/"
-  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.5.0.tar.gz"
-  sha256 "90d350e8891a74043420447b2980b1edac44f2654990309afd9349a7fbcd3509"
+  url "https://pypi.python.org/packages/source/F/FORD/FORD-4.5.1.tar.gz"
+  sha256 "50e7625a9c9ecd39ead16cf8f141a68d42977e76f6564e798b7b14fc4a89eefd"
 
   head "https://github.com/cmacmackin/ford.git"
 
