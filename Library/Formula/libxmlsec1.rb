@@ -7,10 +7,9 @@ class Libxmlsec1 < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "b98f9b1317679104e80fda88cc0a5da4ec0686f08386839999c29dc1608ebc1f" => :el_capitan
-    sha256 "7381ad6025f574148ed52eb26ddde32d4a033b298e0ec8fe7fc13eba6953fb6d" => :yosemite
-    sha256 "0b3751ff6f6ca7b4e2899d5d0f29c2b1c17b980805da5748c3abbb060d4e630d" => :mavericks
+    sha256 "e16e54d26f7ce2a7ae5fd7025cb421bba71252a9e9c47df251593fdb3d8400a6" => :el_capitan
+    sha256 "49cb24946eac37fc2e0f39f55376463b52ae0b702cdd06877ba3bb4e95476f15" => :yosemite
+    sha256 "ab08e6b9d0e6a781704d51a876518b340cec25b2593beb7c126a9ffa38768db3" => :mavericks
   end
 
   depends_on "pkg-config" => :build
