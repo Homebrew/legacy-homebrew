@@ -18,11 +18,11 @@ class Voms < Formula
     system "mvn", "package"
     system "tar", "-xf", "target/voms-clients.tar.gz"
     share.install "voms-clients/share/java"
-    man.mkpath
     man5.install Dir["voms-clients/share/man/man5/*.5"]
     man1.install Dir["voms-clients/share/man/man1/*.1"]
     bin.install Dir["voms-clients/bin/*"]
   end
+  
   test do
     system "#{bin}/voms-proxy-info", "--version"
   end
