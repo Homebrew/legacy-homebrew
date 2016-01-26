@@ -201,6 +201,7 @@ module Homebrew
 
         keg.delete_pyc_files!
 
+        Tab.clear_cache
         tab = Tab.for_keg(keg)
         original_tab = tab.dup
         tab.poured_from_bottle = false
