@@ -221,16 +221,7 @@ class FormulaInstaller
 
     build_bottle_postinstall if build_bottle?
 
-    # update LAST_COMMIT file for the formula
-    if formula.installed?
-      update_last_commit
-    end
-
     opoo "Nothing was installed to #{formula.prefix}" unless formula.installed?
-  end
-
-  def update_last_commit
-    formula.rack.join("LAST_COMMIT").atomic_write(formula.last_commit + "\n")
   end
 
   def check_conflicts

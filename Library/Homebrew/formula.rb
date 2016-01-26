@@ -294,9 +294,13 @@ class Formula
     PkgVersion.new(version, revision)
   end
 
+  # TODO what if default branch is not master
   def last_commit
+    puts "in last commit"
     # TODO raise if can't use git
-    @commit ||= Utils.popen_read("git", "rev-list", "-1", "origin/master", "#{path}").chomp
+    @commit ||= path.parent.cd do
+      Utils.popen_read("git", "rev-list", "-1", "origin/master", "#{path}").chomp
+    end
   end
 
   # A named Resource for the currently active {SoftwareSpec}.
