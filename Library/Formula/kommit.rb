@@ -7,10 +7,13 @@ class Kommit < Formula
   def install
     bin.install "bin/kommit"
   end
+
   def caveats; <<-EOS.undent
     If you like to combine with git, create a symlink;
       ln -s #{bin}/kommit #{bin}/git-kommit
     EOS
+  end
+
   test do
     system "git", "init"
     system "#{bin}/kommit", "-m", "Hello"
