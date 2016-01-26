@@ -4,6 +4,8 @@ class Sonar < Formula
   url "https://sonarsource.bintray.com/Distribution/sonarqube/sonarqube-5.3.zip"
   sha256 "4e61ee3a01d5e447bcd64357df77e0377325c4a2bb5ceb2cdeb5a5d193443ba5"
 
+  depends_on :java => "1.7+"
+
   bottle :unneeded
 
   def install
