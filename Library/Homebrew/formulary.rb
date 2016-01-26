@@ -294,6 +294,7 @@ class Formulary
 
     # resolve installed formula newname if there is one
     if newref = FormulaResolver.new(ref).resolved_name
+      puts "loader_for's newref is #{newref}"
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
         return FormulaLoader.new(newref, formula_with_that_oldname)
@@ -301,12 +302,12 @@ class Formulary
     end
 
   # TODO remove this part
-    if newref = CoreFormulaRepository.instance.formula_renames[ref]
-      formula_with_that_oldname = core_path(newref)
-      if formula_with_that_oldname.file?
-        return FormulaLoader.new(newref, formula_with_that_oldname)
-      end
-    end
+  #  if newref = CoreFormulaRepository.instance.formula_renames[ref]
+  #    formula_with_that_oldname = core_path(newref)
+  #    if formula_with_that_oldname.file?
+  #      return FormulaLoader.new(newref, formula_with_that_oldname)
+  #    end
+  #  end
 
     # TODO add FormulaResolver here
     # probably need to rename FormulaResolver to FormulaNameResolver

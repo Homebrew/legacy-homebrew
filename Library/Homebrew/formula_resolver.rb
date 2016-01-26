@@ -12,18 +12,27 @@ class FormulaResolver
     attr_reader :name, :commit
 
     def initialize(name, commit)
+      puts "Entry initialized with #{name}, #{commit}"
       @name = name
       @commit = commit
     end
 
     def <=> (entry)
-      `git merge-base #{commit} #{entry.commit}`.chomp
-      if $?.success?
-        puts "success"
+      puts "compare #{commit} and #{entry.commit}"
+      return 0 if commit == entry.commit
+      if commit == 0
         return -1
-      else
-        puts "not okay"
+      elsif entry.commit == 0
         return 1
+      else
+        `git merge-base --is-ancestor #{commit} #{entry.commit}`.chomp
+        if $?.success?
+          puts "success"
+          return -1
+        else
+          puts "not okay"
+          return 1
+        end
       end
     end
 
@@ -48,6 +57,7 @@ class FormulaResolver
     attr_reader :last_sarched_index
 
     def initialize(name)
+      puts "Starting initializing Sheet..."
       @name = name
       @entries = []
       entry_file = HOMEBREW_LIBRARY.join("Renames/#{name}")
@@ -56,6 +66,8 @@ class FormulaResolver
           entries << Entry.new(*line.chomp.split(',').map(&:lstrip))
         end
       end
+      puts "Sheet initialize #{name}"
+      puts "entries are #{entries}"
     end
 
     # get the first entry after another entry
@@ -80,6 +92,7 @@ class FormulaResolver
   attr_reader :start_point_commit
 
   def initialize(formula_name, start_point_commit=nil)
+    puts "initialize FormulaResolver #{formula_name}, #{start_point_commit}"
     @sheets = Hash.new
     @formula_name = formula_name
     @start_point_commit = start_point_commit || get_installed_commit
@@ -88,11 +101,12 @@ class FormulaResolver
 
   # returns nil if there are no renames for this formula after start_point_commit
   def resolved_name
+    puts "in resolved name"
     if start_point_commit
       previous_entry = Entry.new(formula_name, start_point_commit)
       while (sheets[previous_entry.name] &&
           current_entry = sheets[previous_entry.name].entry_after(previous_entry))
-        puts current_entry.name
+        puts "current_entry.name is #{current_entry.name}"
         previous_entry = current_entry
         sheets[previous_entry.name] ||= Sheet.new(previous_entry.name)
       end
@@ -110,10 +124,7 @@ class FormulaResolver
   # TODO implement method
 
   def get_installed_commit
-    last_commit_file = HOMEBREW_CELLAR.join("#{formula_name}/LAST_COMMIT")
-    if last_commit_file.exist?
-      last_commit_file.read.chomp
-    end
+    Tab.for_keg(Keg.new(HOMEBREW_CELLAR.join(formula_name).subdirs.first)).last_commit
   end
 
   def self.for_name(formula_name)
