@@ -248,6 +248,8 @@ module Homebrew
           original_tab.write
           keg.relocate_install_names Keg::PREFIX_PLACEHOLDER, prefix,
             Keg::CELLAR_PLACEHOLDER, cellar
+          keg.relocate_text_files Keg::PREFIX_PLACEHOLDER, prefix,
+            Keg::CELLAR_PLACEHOLDER, cellar
         end
       end
     end
