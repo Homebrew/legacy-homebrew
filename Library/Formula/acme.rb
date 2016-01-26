@@ -1,9 +1,9 @@
 class Acme < Formula
   desc "Crossassembler for multiple environments"
   homepage "https://web.archive.org/web/20150520143433/https://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/"
-  url "https://www.mirrorservice.org/sites/ftp.cs.vu.nl/pub/minix/distfiles/backup/acme091src.tar.gz"
-  mirror "http://ftp.lip6.fr/pub/minix/distfiles/backup/acme091src.tar.gz"
-  version "0.91"
+  url "https://www.mirrorservice.org/sites/ftp.cs.vu.nl/pub/minix/distfiles/backup/acme096src.tar.gz"
+  mirror "http://ftp.lip6.fr/pub/minix/distfiles/backup/acme096src.tar.gz"
+  version "0.96"
   sha256 "31ed7f9be5cd27100b13d6c3e2faec35d15285542cbe168ec5e1b5236125decb"
 
   bottle do
@@ -15,9 +15,9 @@ class Acme < Formula
   end
 
   devel do
-    url "https://web.archive.org/web/20150501011451/https://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/current/acme093testing.tar.bz2"
+    url "https://web.archive.org/web/20150501011451/https://www.esw-heim.tu-clausthal.de/~marco/smorbrod/acme/current/acme099testing.tar.bz2"
     sha256 "cf374869265981437181609483bdb6c43f7313f81cfe57357b0ac88578038c02"
-    version "0.93"
+    version "0.99"
   end
 
   def install
