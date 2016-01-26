@@ -1198,20 +1198,28 @@ module Homebrew
       end
 
       def check_for_non_prefixed_coreutils
-        gnubin = "#{Formulary.factory("coreutils").prefix}/libexec/gnubin"
-        if paths.include? gnubin then <<-EOS.undent
+        coreutils = Formula["coreutils"]
+        return unless coreutils.any_version_installed?
+
+        gnubin = %W[#{coreutils.opt_libexec}/gnubin #{coreutils.libexec}/gnubin]
+        return if (paths & gnubin).empty?
+
+        <<-EOS.undent
           Putting non-prefixed coreutils in your path can cause gmp builds to fail.
-          EOS
-        end
+        EOS
       end
 
       def check_for_non_prefixed_findutils
-        gnubin = "#{Formulary.factory("findutils").prefix}/libexec/gnubin"
+        findutils = Formula["findutils"]
+        return unless findutils.any_version_installed?
+
+        gnubin = %W[#{findutils.opt_libexec}/gnubin #{findutils.libexec}/gnubin]
         default_names = Tab.for_name("findutils").with? "default-names"
-        if paths.include?(gnubin) || default_names then <<-EOS.undent
+        return if !default_names && (paths & gnubin).empty?
+
+        <<-EOS.undent
           Putting non-prefixed findutils in your path can cause python builds to fail.
-          EOS
-        end
+        EOS
       end
 
       def check_for_pydistutils_cfg_in_home
