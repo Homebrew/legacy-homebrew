@@ -16,11 +16,16 @@ class Folly < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
 
+  depends_on "boost"
   depends_on "double-conversion"
   depends_on "glog"
   depends_on "gflags"
-  depends_on "boost"
+  depends_on "jemalloc"
   depends_on "libevent"
+  depends_on "lz4"
+  depends_on "openssl"
+  depends_on "snappy"
+  depends_on "xz"
 
   needs :cxx11
   depends_on :macos => :mavericks
