@@ -13,6 +13,7 @@ class Phantomjs < Formula
     sha256 "908cacf9af85893f54c5330987099896448c2699a7f3712de3e2232348c433b2" => :mavericks
   end
 
+  depends_on :xcode => :build
   depends_on "openssl"
 
   def install
