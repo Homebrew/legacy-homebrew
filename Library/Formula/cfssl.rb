@@ -1,5 +1,4 @@
 require "language/go"
-require "json"
 
 class Cfssl < Formula
   desc "CloudFlare's PKI toolkit"
@@ -68,34 +67,37 @@ class Cfssl < Formula
   end
 
   test do
-    File.open(testpath/"request.json", "w") do |file|
-      file.write(
-        JSON.generate(
-          :CN => "Your Certificate Authority",
-          :hosts => [],
-          :key => {
-            :algo => "rsa",
-            :size => 4096,
-          },
-          :names => [
-            {
-              :C => "US",
-              :ST => "Your State",
-              :L => "Your City",
-              :O => "Your Organization",
-              :OU => "Your Certificate Authority",
+    begin
+      require "utils/json"
+      File.open(testpath/"request.json", "w") do |file|
+        file.write(
+          Utils::JSON.dump(
+            :CN => "Your Certificate Authority",
+            :hosts => [],
+            :key => {
+              :algo => "rsa",
+              :size => 4096,
             },
-          ]
+            :names => [
+              {
+                :C => "US",
+                :ST => "Your State",
+                :L => "Your City",
+                :O => "Your Organization",
+                :OU => "Your Certificate Authority",
+              },
+            ]
+          )
         )
-      )
+      end
+      shell_output("#{bin}/cfssl genkey -initca request.json > response.json")
+      response = Utils::JSON.load(File.read(testpath/"response.json"))
+      assert_match /^-----BEGIN CERTIFICATE-----.*/, response["cert"]
+      assert_match /.*-----END CERTIFICATE-----$/, response["cert"]
+      assert_match /^-----BEGIN RSA PRIVATE KEY-----.*/, response["key"]
+      assert_match /.*-----END RSA PRIVATE KEY-----$/, response["key"]
+      File.delete(testpath/"request.json")
+      File.delete(testpath/"response.json")
     end
-    shell_output("#{bin}/cfssl genkey -initca request.json > response.json")
-    response = JSON.parse(File.read(testpath/"response.json"))
-    assert_match /^-----BEGIN CERTIFICATE-----.*/, response["cert"]
-    assert_match /.*-----END CERTIFICATE-----$/, response["cert"]
-    assert_match /^-----BEGIN RSA PRIVATE KEY-----.*/, response["key"]
-    assert_match /.*-----END RSA PRIVATE KEY-----$/, response["key"]
-    File.delete(testpath/"request.json")
-    File.delete(testpath/"response.json")
   end
 end
