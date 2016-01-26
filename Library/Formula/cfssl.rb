@@ -12,6 +12,8 @@ class Cfssl < Formula
     cellar :any_skip_relocation
   end
 
+  option "with-pkcs11", "Enables PKCS11 support and adds dependency on libtool"
+
   go_resource "golang.org/x/crypto" do
     url "https://github.com/golang/crypto.git",
       :revision => "3760e016850398b85094c4c99e955b8c3dea5711"
@@ -46,7 +48,7 @@ class Cfssl < Formula
   end
 
   depends_on "go" => :build
-  depends_on "libtool" => :build
+  depends_on "libtool" => :run if build.with? "pkcs11"
 
   def install
     ENV["GOPATH"] = buildpath
@@ -54,7 +56,11 @@ class Cfssl < Formula
     cfsslpath.install Dir["{*,.git}"]
     Language::Go.stage_deps resources, buildpath/"src"
     cd "src/github.com/cloudflare/cfssl" do
-      system "go", "build", "-o", "build/cfssl", "cmd/cfssl/cfssl.go"
+      if build.with? "pkcs11"
+        system "go", "build", "-o", "build/cfssl", "cmd/cfssl/cfssl.go"
+      else
+        system "go", "build", "-tags", "nopkcs11", "-o", "build/cfssl", "cmd/cfssl/cfssl.go"
+      end
       system "go", "build", "-o", "build/cfssljson", "cmd/cfssljson/cfssljson.go"
       system "go", "build", "-o", "build/mkbundle", "cmd/mkbundle/mkbundle.go"
       bin.install "build/cfssl", "build/cfssljson", "build/mkbundle"
