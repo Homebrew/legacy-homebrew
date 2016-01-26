@@ -133,9 +133,13 @@ module Homebrew
         if ARGV.include? "--bump"
           odie "Can only bump one changed formula" unless changed_formulae.length == 1
           formula = changed_formulae.first
-          subject = "#{formula.name} #{formula.version}"
+          if ARGV.include? "--devel"
+            subject = "#{formula.name} #{formula.devel.version} (devel)"
+          else
+            subject = "#{formula.name} #{formula.stable.version}"
+          end
           ohai "New bump commit subject: #{subject}"
-          system "/bin/echo -n #{subject} | pbcopy"
+          system "/bin/echo -n \"#{subject}\" | pbcopy"
           message = "#{subject}\n\n#{message}"
         end
 
