@@ -95,7 +95,7 @@ module Homebrew
     end if load_tap_migrations
 
     load_formula_renames
-    report.update_renamed
+    report.update_renamed(master_updater.initial_revision)
 
     # Migrate installed renamed formulae from core and taps.
     # TODO: reimplement according to new renames sturcture
@@ -119,7 +119,7 @@ module Homebrew
       next unless f
 
       begin
-        migrator = Migrator.new(f)
+        migrator = Migrator.new(f, oldname)
         migrator.migrate
       rescue Migrator::MigratorDifferentTapsError
       end
