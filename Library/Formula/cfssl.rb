@@ -1,5 +1,5 @@
 require "language/go"
-require 'json'
+require "json"
 
 class Cfssl < Formula
   desc "CloudFlare's PKI toolkit"
@@ -61,14 +61,14 @@ class Cfssl < Formula
   end
 
   test do
-    File.open(testpath/"request.json", 'w') { |file|
-      file.write(JSON.generate(
-        {
+    File.open(testpath/"request.json", "w") do |file|
+      file.write(
+        JSON.generate(
           :CN => "Your Certificate Authority",
           :hosts => [],
           :key => {
             :algo => "rsa",
-            :size => 4096
+            :size => 4096,
           },
           :names => [
             {
@@ -76,12 +76,12 @@ class Cfssl < Formula
               :ST => "Your State",
               :L => "Your City",
               :O => "Your Organization",
-              :OU => "Your Certificate Authority"
-            }
+              :OU => "Your Certificate Authority",
+            },
           ]
-        })
+        )
       )
-    }
+    end
     shell_output("#{bin}/cfssl genkey -initca request.json > response.json")
     response = JSON.parse(File.read(testpath/"response.json"))
     assert_match /^-----BEGIN CERTIFICATE-----.*/, response["cert"]
