@@ -34,7 +34,10 @@ module Homebrew
       puts "Updated #{updated_taps.size} tap#{plural(updated_taps.size)} " \
            "(#{updated_taps.join(", ")})."
     end
-    puts "Already up-to-date." unless master_updated || !updated_taps.empty?
+
+    if !master_updated && updated_taps.empty? && !ARGV.verbose?
+      puts "Already up-to-date."
+    end
 
     Tap.clear_cache
     Tap.each(&:link_manpages)
