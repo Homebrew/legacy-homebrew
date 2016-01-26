@@ -271,6 +271,7 @@ EOS
       odie "Git must be installed and in your PATH!"
     fi
   fi
+  hash -p "$(cd "$(dirname "$(which_git)")" && pwd -P)/git" git
 
   if [[ -z "$HOMEBREW_VERBOSE" ]]
   then
