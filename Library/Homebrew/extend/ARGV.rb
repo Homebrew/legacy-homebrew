@@ -39,6 +39,18 @@ module HomebrewArgvExtension
     end
   end
 
+  # TODO handle taps
+  def resolved_formulae_with_oldnames
+    require "formula"
+    @resolved_formulae ||= (downcased_unique_named - casks).map do |name|
+      if name.include?("/")
+        [nil, name]
+      else
+        [Formulary.factory(name), name]
+      end
+    end
+  end
+
   def casks
     @casks ||= downcased_unique_named.grep HOMEBREW_CASK_TAP_FORMULA_REGEX
   end

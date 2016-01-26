@@ -85,13 +85,13 @@ class Migrator
   # path to newname keg that will be linked if old_linked_keg isn't nil
   attr_reader :new_linked_keg_record
 
-  def initialize(formula)
-    @oldname = formula.oldname
+  def initialize(formula, oldname)
+    @oldname = oldname
     @newname = formula.name
     raise MigratorNoOldnameError.new(formula) unless oldname
 
     @formula = formula
-    @old_cellar = HOMEBREW_CELLAR/formula.oldname
+    @old_cellar = HOMEBREW_CELLAR/oldname
     raise MigratorNoOldpathError.new(formula) unless old_cellar.exist?
 
     @old_tabs = old_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
