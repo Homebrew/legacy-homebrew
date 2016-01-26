@@ -11,11 +11,22 @@ class Kafkacat < Formula
     sha256 "a66d6d312498e117d485d7eea58e412da287be1dc08a1be0cd621d6a77763c7f" => :mavericks
   end
 
+  option "with-json", "Adds JSON support to kafkacat"
+
   depends_on "librdkafka"
+  depends_on "yajl" if build.with?("json")
 
   def install
-    system "./configure", "--disable-dependency-tracking",
-                          "--prefix=#{prefix}"
+    args = %W[
+      --disable-dependency-tracking
+      --prefix=#{prefix}
+    ]
+
+    if build.with?("json")
+      args << "--enable-json"
+    end
+
+    system "./configure", *args
     system "make"
     system "make", "install"
   end
