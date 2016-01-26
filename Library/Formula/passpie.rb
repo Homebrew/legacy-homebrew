@@ -6,10 +6,10 @@ class Passpie < Formula
   head "https://github.com/marcwebbie/passpie.git"
 
   bottle do
-    cellar :any
-    sha256 "f5ffd9c8c4b070b92ad3afdbf80dfc010d8727c566a39bcbdb75240e2e70e9bc" => :yosemite
-    sha256 "e04a03cfdb64217b25dcca0b264b9300424927ea121bdef2f828a642961f9e2a" => :mavericks
-    sha256 "ff7df4fa886c818b08c19175b1bbef4bca1d1dff32b5c6c8169340a10c97c292" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "f3c66f47996b246dbb5bc60f4bb693cddc485ba58c57caf638f4ff18d11e52a5" => :el_capitan
+    sha256 "2fe458fea7698d0708f8d4aff710fd743b002fff6318a9194a95c74e393faf52" => :yosemite
+    sha256 "0db495bdc44644d8142c79275414e7e4f44061b461dcaaeb0fee4161405a5139" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
