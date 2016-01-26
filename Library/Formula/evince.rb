@@ -3,7 +3,7 @@ class Evince < Formula
   homepage "https://wiki.gnome.org/Apps/Evince"
   url "https://download.gnome.org/sources/evince/3.18/evince-3.18.2.tar.xz"
   sha256 "42ad6c7354d881a9ecab136ea84ff867acb942605bcfac48b6c12e1c2d8ecb17"
-  revision 1
+  revision 2
 
   bottle do
     sha256 "75191edc36670312d866c3aea88d9d47c233e3c8e4c662a2fcc793c26810b2a7" => :el_capitan
@@ -23,6 +23,7 @@ class Evince < Formula
   depends_on "libspectre"
   depends_on "gobject-introspection"
   depends_on "shared-mime-info"
+  depends_on "djvulibre"
   depends_on :python if MacOS.version <= :snow_leopard
 
   def install
@@ -37,6 +38,7 @@ class Evince < Formula
                           "--disable-nautilus",
                           "--disable-schemas-compile",
                           "--enable-introspection",
+                          "--enable-djvu",
                           "--disable-browser-plugin"
     ENV.append_path "PYTHONPATH", "#{Formula["libxml2"].opt_lib}/python2.7/site-packages"
     system "make", "install"
