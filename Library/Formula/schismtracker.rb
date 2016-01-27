@@ -4,6 +4,13 @@ class Schismtracker < Formula
   url "http://schismtracker.org/dl/schismtracker-20120105.tar.bz2"
   sha256 "31cef23e6806027618aef03675a5e4681043a99afa6e9e92d82ad4cec5e6c7db"
 
+  bottle do
+    cellar :any
+    sha256 "98dc9ae978d7fb1edcfe16565099c1bd1aca7da559d39a11e29efc1df94a8bac" => :el_capitan
+    sha256 "1eee656439ae0fc622c441ddb850ead5c5d361326b556e16f9ce00437988a86a" => :yosemite
+    sha256 "f892d60e3e74f352d7d9efbbf84b6470e4e751ffafe55c9b6ab9913bd611dba2" => :mavericks
+  end
+
   head do
     url "http://schismtracker.org/hg/", :using => :hg
 
