@@ -1361,7 +1361,7 @@ class Formula
     user_site_packages.mkpath
     (user_site_packages/"homebrew.pth").write <<-EOS.undent
       import site; site.addsitedir("#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
-      import sys; sys.path.insert(0, "#{HOMEBREW_PREFIX}/lib/python2.7/site-packages")
+      import sys, os; sys.path = (os.environ["PYTHONPATH"].split(os.pathsep) if "PYTHONPATH" in os.environ else []) + ["#{HOMEBREW_PREFIX}/lib/python2.7/site-packages"] + sys.path
     EOS
   end
 
