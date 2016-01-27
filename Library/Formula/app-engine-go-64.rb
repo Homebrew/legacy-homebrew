@@ -1,5 +1,5 @@
 class AppEngineGo64 < Formula
-  desc "Google App Engine SDK for Go!"
+  desc "Google App Engine SDK for Go (AMD64)"
   homepage "https://cloud.google.com/appengine/docs/go/"
   url "https://storage.googleapis.com/appengine-sdks/featured/go_appengine_sdk_darwin_amd64-1.9.30.zip"
   sha256 "6e7df46f09a2ed7cb6c77ef267600959e904adbe3c37a38912249268097aa9ae"
@@ -21,6 +21,6 @@ class AppEngineGo64 < Formula
   end
 
   test do
-    assert_match /^usage: goapp serve/, shell_output("#{bin}/goapp help serve").strip
+    assert_match(/^usage: goapp serve/, shell_output("#{bin}/goapp help serve").strip)
   end
 end
