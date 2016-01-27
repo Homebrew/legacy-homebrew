@@ -48,8 +48,8 @@ class Migrator
       msg = "#{newpath} is a #{newpath.symlink? ? "symlink" : "directory"}"
 
       super <<-EOS.undent
-      "Can't migrate #{oldname} to #{formula.name}:
-        #{newpath_msg}
+      Can't migrate #{oldname} to #{formula.name}:
+      #{msg}
       EOS
     end
   end
@@ -115,7 +115,7 @@ class Migrator
     @new_cellar = HOMEBREW_CELLAR/formula.name
 
     if new_cellar.exist?
-      raise MigratorNewpathExistsError(formula, oldname, new_cellar)
+      raise MigratorNewpathExistsError.new(formula, oldname, new_cellar)
     end
 
     if @old_linked_keg = get_linked_old_linked_keg
