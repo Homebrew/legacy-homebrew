@@ -3,8 +3,8 @@ require "language/go"
 class Telegraf < Formula
   desc "Server-level metric gathering agent for InfluxDB"
   homepage "https://influxdata.com"
-  url "https://github.com/influxdata/telegraf/archive/v0.10.0.tar.gz"
-  sha256 "d3bc044f28a73326682afe4e6103658c9fd54269a01b0a41744ada437760bc7f"
+  url "https://github.com/influxdata/telegraf/archive/v0.10.1.tar.gz"
+  sha256 "e322798dd88f6d3cbb514b492b3e0f81e902dedbdba07dac34320df7ddfb5524"
 
   bottle do
     cellar :any_skip_relocation
@@ -27,7 +27,7 @@ class Telegraf < Formula
 
   go_resource "github.com/Sirupsen/logrus" do
     url "https://github.com/Sirupsen/logrus.git",
-    :revision => "446d1c146faa8ed3f4218f056fcd165f6bcfda81"
+    :revision => "f7f79f729e0fbe2fcc061db48a9ba0263f588252"
   end
 
   go_resource "github.com/amir/raidman" do
@@ -42,7 +42,7 @@ class Telegraf < Formula
 
   go_resource "github.com/aws/aws-sdk-go" do
     url "https://github.com/aws/aws-sdk-go.git",
-    :revision => "c4c1a1a2a076858fe18b2be674d833c796c45b09"
+    :revision => "87b1e60a50b09e4812dee560b33a238f67305804"
   end
 
   go_resource "github.com/beorn7/perks" do
@@ -52,7 +52,7 @@ class Telegraf < Formula
 
   go_resource "github.com/boltdb/bolt" do
     url "https://github.com/boltdb/bolt.git",
-    :revision => "6465994716bf6400605746e79224cf1e7ed68725"
+    :revision => "ee4a0888a9abe7eefe5a0992ca4cb06864839873"
   end
 
   go_resource "github.com/cenkalti/backoff" do
@@ -62,7 +62,7 @@ class Telegraf < Formula
 
   go_resource "github.com/dancannon/gorethink" do
     url "https://github.com/dancannon/gorethink.git",
-    :revision => "ff457cac6a529d9749d841a733d76e8305cba3c8"
+    :revision => "6f088135ff288deb9d5546f4c71919207f891a70"
   end
 
   go_resource "github.com/davecgh/go-spew" do
@@ -82,7 +82,7 @@ class Telegraf < Formula
 
   go_resource "github.com/fsouza/go-dockerclient" do
     url "https://github.com/fsouza/go-dockerclient.git",
-    :revision => "2fb7694010aa553998ed513dc8805ab00708077a"
+    :revision => "7b651349f9479f5114913eefbfd3c4eeddd79ab4"
   end
 
   go_resource "github.com/go-ini/ini" do
@@ -92,17 +92,17 @@ class Telegraf < Formula
 
   go_resource "github.com/go-sql-driver/mysql" do
     url "https://github.com/go-sql-driver/mysql.git",
-    :revision => "6fd058ce0d6b7ee43174e80d5a3e7f483c4dfbe5"
+    :revision => "7c7f556282622f94213bc028b4d0a7b6151ba239"
   end
 
   go_resource "github.com/gogo/protobuf" do
     url "https://github.com/gogo/protobuf.git",
-    :revision => "c57e439bad574c2e0877ff18d514badcfced004d"
+    :revision => "e8904f58e872a473a5b91bc9bf3377d223555263"
   end
 
   go_resource "github.com/golang/protobuf" do
     url "https://github.com/golang/protobuf.git",
-    :revision => "2402d76f3d41f928c7902a765dfc872356dd3aad"
+    :revision => "6aaa8d47701fa6cf07e914ec01fde3d4a1fe79c3"
   end
 
   go_resource "github.com/golang/snappy" do
@@ -115,9 +115,19 @@ class Telegraf < Formula
     :revision => "e842a11b24c6abfb3dd27af69a17f482e4b483c2"
   end
 
+  go_resource "github.com/gorilla/context" do
+    url "https://github.com/gorilla/context.git",
+    :revision => "1c83b3eabd45b6d76072b66b746c20815fb2872d"
+  end
+
+  go_resource "github.com/gorilla/mux" do
+    url "https://github.com/gorilla/mux.git",
+    :revision => "26a6070f849969ba72b72256e9f14cf519751690"
+  end
+
   go_resource "github.com/hailocab/go-hostpool" do
     url "https://github.com/hailocab/go-hostpool.git",
-    :revision => "50839ee41f32bfca8d03a183031aa634b2dc1c64"
+    :revision => "e80d13ce29ede4452c43dea11e79b9bc8a15b478"
   end
 
   go_resource "github.com/hashicorp/go-msgpack" do
@@ -127,7 +137,7 @@ class Telegraf < Formula
 
   go_resource "github.com/hashicorp/raft" do
     url "https://github.com/hashicorp/raft.git",
-    :revision => "d136cd15dfb7876fd7c89cad1995bc4f19ceb294"
+    :revision => "057b893fd996696719e98b6c44649ea14968c811"
   end
 
   go_resource "github.com/hashicorp/raft-boltdb" do
@@ -135,9 +145,19 @@ class Telegraf < Formula
     :revision => "d1e82c1ec3f15ee991f7cc7ffd5b67ff6f5bbaee"
   end
 
+  go_resource "github.com/influxdata/config" do
+    url "https://github.com/influxdata/config.git",
+    :revision => "bae7cb98197d842374d3b8403905924094930f24"
+  end
+
+  go_resource "github.com/influxdata/influxdb" do
+    url "https://github.com/influxdata/influxdb.git",
+    :revision => "697f48b4e62e514e701ffec39978b864a3c666e6"
+  end
+
   go_resource "github.com/influxdb/influxdb" do
     url "https://github.com/influxdb/influxdb.git",
-    :revision => "db84a6ed76353905432ff8bd91527c68b3ea1be6"
+    :revision => "697f48b4e62e514e701ffec39978b864a3c666e6"
   end
 
   go_resource "github.com/jmespath/go-jmespath" do
@@ -202,7 +222,7 @@ class Telegraf < Formula
 
   go_resource "github.com/prometheus/common" do
     url "https://github.com/prometheus/common.git",
-    :revision => "0a3005bb37bc411040083a55372e77c405f6464c"
+    :revision => "14ca1097bbe21584194c15e391a9dab95ad42a59"
   end
 
   go_resource "github.com/prometheus/procfs" do
@@ -217,7 +237,12 @@ class Telegraf < Formula
 
   go_resource "github.com/shirou/gopsutil" do
     url "https://github.com/shirou/gopsutil.git",
-    :revision => "8850f58d7035653e1ab90711481954c8ca1b9813"
+    :revision => "85bf0974ed06e4e668595ae2b4de02e772a2819b"
+  end
+
+  go_resource "github.com/soniah/gosnmp" do
+    url "https://github.com/soniah/gosnmp.git",
+    :revision => "b1b4f885b12c5dcbd021c5cee1c904110de6db7d"
   end
 
   go_resource "github.com/streadway/amqp" do
@@ -245,19 +270,29 @@ class Telegraf < Formula
     :revision => "0f768712ae6f76454f987c3356177e138df258f8"
   end
 
+  go_resource "github.com/zensqlmonitor/go-mssqldb" do
+    url "https://github.com/zensqlmonitor/go-mssqldb.git",
+    :revision => "ffe5510c6fa5e15e6d983210ab501c815b56b363"
+  end
+
   go_resource "golang.org/x/crypto" do
     url "https://go.googlesource.com/crypto.git",
-    :revision => "3760e016850398b85094c4c99e955b8c3dea5711"
+    :revision => "1f22c0103821b9390939b6776727195525381532"
   end
 
   go_resource "golang.org/x/net" do
     url "https://go.googlesource.com/net.git",
-    :revision => "99ca920b6037ef77af8a11297150f7f0d8f4ef80"
+    :revision => "04b9de9b512f58addf28c9853d50ebef61c3953e"
+  end
+
+  go_resource "golang.org/x/text" do
+    url "https://go.googlesource.com/text.git",
+    :revision => "6d3c22c4525a4da167968fa2479be5524d2e8bd0"
   end
 
   go_resource "gopkg.in/dancannon/gorethink.v1" do
     url "https://gopkg.in/dancannon/gorethink.v1.git",
-    :revision => "e2cef022d0495329dfb0635991de76efcab5cf50"
+    :revision => "6f088135ff288deb9d5546f4c71919207f891a70"
   end
 
   go_resource "gopkg.in/fatih/pool.v2" do
@@ -267,7 +302,7 @@ class Telegraf < Formula
 
   go_resource "gopkg.in/mgo.v2" do
     url "https://gopkg.in/mgo.v2.git",
-    :revision => "e30de8ac9ae3b30df7065f766c71f88bba7d4e49"
+    :revision => "03c9f3ee4c14c8e51ee521a6a7d0425658dd6f64"
   end
 
   go_resource "gopkg.in/yaml.v2" do
@@ -278,7 +313,7 @@ class Telegraf < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    telegraf_path = buildpath/"src/github.com/influxdb/telegraf"
+    telegraf_path = buildpath/"src/github.com/influxdata/telegraf"
     telegraf_path.install Dir["*"]
 
     Language::Go.stage_deps resources, buildpath/"src"
