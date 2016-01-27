@@ -1,8 +1,8 @@
 class GambitScheme < Formula
   desc "Complete, portable implementation of Scheme"
   homepage "http://dynamo.iro.umontreal.ca/~gambit/wiki/index.php/Main_Page"
-  url "https://www.iro.umontreal.ca/~gambit/download/gambit/v4.7/source/gambc-v4_7_9.tgz"
-  sha256 "17e4a2eebbd0f5ebd807b4ad79a98b89b2a5eef00199c318a885db4ef950f14f"
+  url "https://www.iro.umontreal.ca/~gambit/download/gambit/v4.8/source/gambit-v4_8_4.tgz"
+  sha256 "b3153649440bde0f613c09b5038e2cc887784277e078cdea3e6703e4a582a0bf"
 
   bottle do
     sha256 "d1d2cf026e85f5c62ebe7373c1eed03cd84c590ef3f588cba447fc912f9287d6" => :yosemite
