@@ -2,8 +2,6 @@
 
 std_trap = trap("INT") { exit! 130 } # no backtrace thanks
 
-HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
-
 require "pathname"
 HOMEBREW_LIBRARY_PATH = Pathname.new(__FILE__).realpath.parent.join("Homebrew")
 $:.unshift(HOMEBREW_LIBRARY_PATH.to_s)

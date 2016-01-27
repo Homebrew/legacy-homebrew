@@ -26,8 +26,9 @@ undef cache
 # Where brews installed via URL are cached
 HOMEBREW_CACHE_FORMULA = HOMEBREW_CACHE+"Formula"
 
-unless defined? HOMEBREW_BREW_FILE
-  HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"] || which("brew").to_s
+HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
+unless HOMEBREW_BREW_FILE
+  odie "HOMEBREW_BREW_FILE was not exported! Please call bin/brew directly!"
 end
 
 # Where we link under
