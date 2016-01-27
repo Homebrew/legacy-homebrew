@@ -104,8 +104,10 @@ class FormulaResolver
   # TODO specify what to do when this happens
   def resolved_name
     puts "in resolved name"
+    puts start_point_commit
     if start_point_commit
       previous_entry = Entry.new(formula_name, start_point_commit)
+      puts previous_entry
       while (sheets[previous_entry.name] &&
           current_entry = sheets[previous_entry.name].entry_after(previous_entry))
         puts "current_entry.name is #{current_entry.name}"
