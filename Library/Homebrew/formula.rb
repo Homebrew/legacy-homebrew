@@ -298,6 +298,7 @@ class Formula
   def last_commit
     puts "in last commit"
     # TODO raise if can't use git
+    # NOTE works differently if shallow copy is used
     @commit ||= path.parent.cd do
       Utils.popen_read("git", "rev-list", "-1", "HEAD", "#{path}").chomp
     end

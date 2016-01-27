@@ -448,6 +448,7 @@ class Report
       else
         oldname = path.basename(".rb").to_s
         # get first rename after oldname
+        # TODO initial_revision -- is that correct???
         newname = FormulaResolver.new(oldname, initial_revision).resolved_name
         next unless newname
         # next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
