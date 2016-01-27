@@ -11,6 +11,13 @@ SimpleCov.start do
   add_filter "Homebrew/compat/"
   add_filter "Homebrew/test/"
   add_filter "Homebrew/vendor/"
+  add_filter "Taps/"
+
+  # Not using this during integration tests makes the tests 4x times faster
+  # without changing the coverage.
+  unless ENV["HOMEBREW_INTEGRATION_TEST"]
+    track_files "#{SimpleCov.root}/**/*.rb"
+  end
 end
 
 if ENV["HOMEBREW_INTEGRATION_TEST"]
