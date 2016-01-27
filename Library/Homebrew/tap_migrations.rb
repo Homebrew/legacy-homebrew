@@ -189,6 +189,7 @@ TAP_MIGRATIONS = {
   "rdesktop" => "homebrew/x11",
   "rocket" => "homebrew/boneyard",
   "rofs-filtered" => "homebrew/fuse",
+  "rtags" => "homebrew/boneyard",
   "rxvt-unicode" => "homebrew/x11",
   "s3-backer" => "homebrew/fuse",
   "s3fs" => "homebrew/fuse",
