@@ -50,6 +50,11 @@ class Protobuf < Formula
     build 2334
   end
 
+  resource "setuptools" do
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.7.1.tar.gz"
+    sha256 "aff36c95035e0b311eacb1434e3f7e85f5ccaad477773847e582978f8f45bd74"
+  end
+
   resource "six" do
     url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
     sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
@@ -97,7 +102,7 @@ class Protobuf < Formula
     if build.with? "python"
       # google-apputils is a build-time dependency
       ENV.prepend_create_path "PYTHONPATH", buildpath/"homebrew/lib/python2.7/site-packages"
-      %w[six python-dateutil pytz python-gflags google-apputils].each do |package|
+      %w[setuptools six python-dateutil pytz python-gflags google-apputils].each do |package|
         resource(package).stage do
           system "python", *Language::Python.setup_install_args(buildpath/"homebrew")
         end
