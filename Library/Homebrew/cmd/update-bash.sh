@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 brew() {
   "$HOMEBREW_BREW_FILE" "$@"
 }
