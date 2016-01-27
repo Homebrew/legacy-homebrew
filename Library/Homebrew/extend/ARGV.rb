@@ -51,7 +51,7 @@ module HomebrewArgvExtension
 
       raise NoSuchKegError.new(rack.basename) if dirs.empty?
 
-      newname = FormulaResolver.new(name, Tab.for_keg(dirs.first).last_commit)
+      newname = FormulaResolver.new(name, Tab.for_keg(dirs.first).last_commit).resolved_name
       [Formulary.factory(newname), name]
     end
   end
