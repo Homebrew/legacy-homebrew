@@ -100,6 +100,8 @@ class FormulaResolver
   end
 
   # returns nil if there are no renames for this formula after start_point_commit
+  # NOTE if formula renamed from X to X we don't treat it like renamed formula
+  # TODO specify what to do when this happens
   def resolved_name
     puts "in resolved name"
     if start_point_commit

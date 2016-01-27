@@ -43,6 +43,17 @@ class Migrator
     end
   end
 
+  class MigratorNewpathExistsError < RuntimeError
+    def initialize(formula, oldname, newpath)
+      msg = "#{newpath} is a #{newpath.symlink? ? "symlink" : "directory"}"
+
+      super <<-EOS.undent
+      "Can't migrate #{oldname} to #{formula.name}:
+        #{newpath_msg}
+      EOS
+    end
+  end
+
   # instance of new name formula
   attr_reader :formula
 
@@ -102,6 +113,10 @@ class Migrator
     end
 
     @new_cellar = HOMEBREW_CELLAR/formula.name
+
+    if new_cellar.exist?
+      raise MigratorNewpathExistsError(formula, oldname, new_cellar)
+    end
 
     if @old_linked_keg = get_linked_old_linked_keg
       @old_linked_keg_record = old_linked_keg.linked_keg_record if old_linked_keg.linked?
