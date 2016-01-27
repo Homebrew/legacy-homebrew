@@ -299,7 +299,7 @@ class Formula
     puts "in last commit"
     # TODO raise if can't use git
     @commit ||= path.parent.cd do
-      Utils.popen_read("git", "rev-list", "-1", "origin/master", "#{path}").chomp
+      Utils.popen_read("git", "rev-list", "-1", "HEAD", "#{path}").chomp
     end
   end
 
