@@ -56,11 +56,20 @@ class FormulaResolver
     # TODO remove or implement
     attr_reader :last_sarched_index
 
-    def initialize(name)
+    attr_reader :user, :repo
+
+    def initialize(name, user="homebrew", repo="homebrew")
       puts "Starting initializing Sheet..."
       @name = name
+      @user = user
+      @repo = repo
       @entries = []
-      entry_file = HOMEBREW_LIBRARY.join("Renames/#{name}")
+      entry_file = if user == "homebrew" && repo == "homebrew"
+        HOMEBREW_LIBRARY.join("Renames/#{name}")
+      else
+        HOMEBREW_LIBRARY.join("Taps/#{user}/homebrew-#{repo}/Renames/#{name}")
+      end
+
       if entry_file.file?
         File.open(entry_file).each do |line|
           entries << Entry.new(*line.chomp.split(',').map(&:lstrip))
@@ -83,7 +92,7 @@ class FormulaResolver
   end
 
   # name of the formula to be resolved
-  attr_reader :formula_name
+  attr_reader :name
 
   # formula renames hashes for resolving current name of the formula
   attr_reader :sheets
@@ -91,12 +100,21 @@ class FormulaResolver
   # first commit we resolve formula after
   attr_reader :start_point_commit
 
-  def initialize(formula_name, start_point_commit=nil)
-    puts "initialize FormulaResolver #{formula_name}, #{start_point_commit}"
+  # user and repository for formula
+  attr_reader :user, :repo
+
+  def initialize(name, start_point_commit=nil)
+    puts "initialize FormulaResolver #{name}, #{start_point_commit}"
     @sheets = Hash.new
-    @formula_name = formula_name
+
+    if name.include?("/")
+      @user, @repo, @name = name.split("/", 3).map(&:downcase)
+    else
+      @user, @repo, @name = "homebrew", "homebrew", name
+    end
+
     @start_point_commit = start_point_commit || get_installed_commit
-    @sheets[formula_name] = Sheet.new(formula_name)
+    @sheets[name] = Sheet.new(name, user, repo)
   end
 
   # returns nil if there are no renames for this formula after start_point_commit
@@ -106,13 +124,13 @@ class FormulaResolver
     puts "in resolved name"
     puts start_point_commit
     if start_point_commit
-      previous_entry = Entry.new(formula_name, start_point_commit)
+      previous_entry = Entry.new(name, start_point_commit)
       puts previous_entry
       while (sheets[previous_entry.name] &&
           current_entry = sheets[previous_entry.name].entry_after(previous_entry))
         puts "current_entry.name is #{current_entry.name}"
         previous_entry = current_entry
-        sheets[previous_entry.name] ||= Sheet.new(previous_entry.name)
+        sheets[previous_entry.name] ||= Sheet.new(previous_entry.name, user, repo)
       end
       previous_entry.name
     end
@@ -128,10 +146,10 @@ class FormulaResolver
   # TODO implement method
 
   def get_installed_commit
-    Tab.for_keg(Keg.new(HOMEBREW_CELLAR.join(formula_name).subdirs.first)).last_commit
+    Tab.for_keg(Keg.new(HOMEBREW_CELLAR.join(name).subdirs.first)).last_commit
   end
 
-  def self.for_name(formula_name)
-    FormulaResolver.new(formula_name)
+  def self.for_name(name)
+    FormulaResolver.new(name)
   end
 end
