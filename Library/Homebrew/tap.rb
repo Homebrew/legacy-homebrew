@@ -336,6 +336,7 @@ class Tap
   end
 
   # Hash with tap formula renames
+  # TODO remove
   def formula_renames
     require "utils/json"
 

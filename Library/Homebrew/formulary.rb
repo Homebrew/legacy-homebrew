@@ -149,7 +149,8 @@ class Formulary
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.fetch user, repo
-      name = @tap.formula_renames.fetch(name, name)
+      name = FormulaResolver.new(tapped_name).resolved_name
+      puts "name is #{name}"
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
 
       unless path
@@ -327,7 +328,7 @@ class Formulary
 
     possible_tap_newname_formulae = []
     Tap.each do |tap|
-      if newref = tap.formula_renames[ref]
+      if newref = FormulaResolver.new("#{tap.user}/#{tap.repo}/#{tap.name}").resolved_name != ref
         possible_tap_newname_formulae << "#{tap.name}/#{newref}"
       end
     end

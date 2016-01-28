@@ -333,7 +333,14 @@ class Updater
 
         # TODO add HOMEBREW_FORMULA_RENAMES constant
         # TODO fix HOMEBREW_LIBRARY.join("Renames") for taps
-        if paths.any? { |p| File.dirname(p) == HOMEBREW_LIBRARY.join("Renames") }
+
+        rename_dir = if repository.join("Renames").directory?
+          repository.join("Renames")
+        else
+          HOMEBREW_LIBRARY.join("Renames")
+        end
+
+        if paths.any? { |p| File.dirname(p) == rename_dir }
           formula_file = formula_directory.join(File.basename(p) + ".rb")
           map[:D] << formula_file
           map[:A] << formula_file if formula_file.exist?
@@ -448,8 +455,11 @@ class Report
       else
         oldname = path.basename(".rb").to_s
         # get first rename after oldname
-        # TODO initial_revision -- is that correct???
-        newname = FormulaResolver.new(oldname, initial_revision).resolved_name
+        # TODO what if dirs empty?
+        rack = HOMEBREW_CELLAR.join(name)
+        dirs = rack.directory? ? rack.subdirs : []
+        last_commit = Tab.for_keg(dirs.first).last_commit)
+        newname = FormulaResolver.new(oldname, last_commit).resolved_name
         next unless newname
         # next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
       end

@@ -313,7 +313,8 @@ class Formula
   end
 
   # An old name for the formula
-  # TODO: reimplement according to new renames sturcture
+  # TODO reimplement according to new renames sturcture
+  # TODO remove?
   def oldname
     @oldname ||= if tap
       if core_formula?
