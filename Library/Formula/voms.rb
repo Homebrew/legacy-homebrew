@@ -16,7 +16,7 @@ class Voms < Formula
   depends_on "openssl"
 
   def install
-    system "mvn", "package", "-Dmaven.repo.local=$(pwd)/m2repo/"
+    system "mvn", "package", "-Dmaven.repo.local=$(pwd)/m2repo/", "-Dmaven.javadoc.skip=true"
     system "tar", "-xf", "target/voms-clients.tar.gz"
     share.install "voms-clients/share/java"
     man5.install Dir["voms-clients/share/man/man5/*.5"]
