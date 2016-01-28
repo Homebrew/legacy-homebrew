@@ -3,8 +3,8 @@ require "language/go"
 class Exercism < Formula
   desc "command-line tool to interact with exercism.io"
   homepage "http://cli.exercism.io"
-  url "https://github.com/exercism/cli/archive/v2.2.3.tar.gz"
-  sha256 "ec04288438d8c7db89c430a2e7ca81c95a22a9826d024f25b31e09181db9c84d"
+  url "https://github.com/exercism/cli/archive/v2.2.4.tar.gz"
+  sha256 "730d5ab21d7497c223f113f98829d56b9309d165b95bb666b0afc9148bffe2b1"
   head "https://github.com/exercism.git"
 
   bottle do
