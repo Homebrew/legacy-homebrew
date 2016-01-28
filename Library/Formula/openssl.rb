@@ -1,16 +1,35 @@
 class Openssl < Formula
   desc "SSL/TLS cryptography library"
   homepage "https://openssl.org/"
-  url "https://www.openssl.org/source/openssl-1.0.2e.tar.gz"
-  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2e.tar.gz"
-  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2e.tar.gz"
-  sha256 "e23ccafdb75cfcde782da0151731aa2185195ac745eea3846133f2e05c0e0bff"
-  revision 1
+  url "https://www.openssl.org/source/openssl-1.0.2f.tar.gz"
+  mirror "https://dl.bintray.com/homebrew/mirror/openssl-1.0.2f.tar.gz"
+  mirror "https://www.mirrorservice.org/sites/ftp.openssl.org/source/openssl-1.0.2f.tar.gz"
+  sha256 "932b4ee4def2b434f85435d9e3e19ca8ba99ce9a065a61524b429a9d5e9b2e9c"
 
   bottle do
     sha256 "ed8aab358427f6456f99b59dc04667fd5dada7a4bd60eb0a2ce40c20ed6c125c" => :el_capitan
     sha256 "23a4c64aef59d211a4de12cd72c6109d96822065b1743f6db3cb45d623891989" => :yosemite
     sha256 "a46133fb0a514504984083e34b3c65c9b770ce2ceb543e013e55be891ac68434" => :mavericks
+  end
+
+  # 1.0.2f: fix typo in macro BIO_get_conn_int_port()
+  # https://github.com/openssl/openssl/issues/595
+  # https://github.com/openssl/openssl/pull/596
+  patch do
+    url "https://github.com/openssl/openssl/commit/da7947e8c6915d86616425ecbc4906f079ef122f.diff"
+    sha256 "00bc58f9949baf592fb0caf63cd754f5407453cc4b61a1accb89040fa17b05b9"
+  end
+
+  # 1.0.2f: fix a typo in constant value DH_CHECK_PUBKEY_INVALID
+  patch do
+    url "https://github.com/openssl/openssl/commit/7107798ae6c5e19f581915928a69073d17cc21ab.diff"
+    sha256 "a13d63f0e5b5bcebe27eca7c20286843e105bc794e9b2bfa5f6e162174a0e135"
+  end
+
+  # 1.0.2f: add required checks in DH_check_pub_key()
+  patch do
+    url "https://github.com/openssl/openssl/commit/83ab6e55a1f8de9b3e45d13dcc78eb739dc66dea.diff"
+    sha256 "98443034f57e5c4fd1bd89dbf64e9b150184522d10b6a6f7bb7e67cc397615c2"
   end
 
   keg_only :provided_by_osx,
