@@ -1,8 +1,8 @@
 class Log4cplus < Formula
   desc "Logging Framework for C++"
   homepage "http://log4cplus.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable/1.1.2/log4cplus-1.1.2.tar.bz2"
-  sha256 "c46d56c96873dcb525791b5ea639d1415e74b1de99d51b657336cb6ebb72ed93"
+  url "https://downloads.sourceforge.net/project/log4cplus/log4cplus-stable/1.2.0/log4cplus-1.2.0.tar.xz"
+  sha256 "93aa5b26425f0b1596c5e5b3d58916988fdd83b359a02ca59878eb5c7c2ec6c2"
 
   option :cxx11
 
