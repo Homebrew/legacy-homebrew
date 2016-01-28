@@ -1,8 +1,8 @@
 class Webkitgtk < Formula
   desc "Full-featured Gtk+ port of the WebKit rendering engine"
   homepage "http://webkitgtk.org"
-  url "http://webkitgtk.org/releases/webkitgtk-2.10.5.tar.xz"
-  sha256 "785d5e98eaf07be15fb8891b7d5b13a2df7072c609b3ee631ca07d5dea1d79fa"
+  url "http://webkitgtk.org/releases/webkitgtk-2.10.6.tar.xz"
+  sha256 "0b77abcc72a274e8f11e9d9f0f6b116dadeeb8b9d5f22b17b6604ed9ae3fe83c"
 
   bottle do
     sha256 "af382310ed8ac60a44ea51835112d4593173d520c37769977f0646f081998abe" => :el_capitan
