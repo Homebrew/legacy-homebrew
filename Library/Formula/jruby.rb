@@ -27,6 +27,6 @@ class Jruby < Formula
   end
 
   test do
-    system "#{bin}/jruby", "-e", "puts 'hello'"
+    system "#{bin}/jruby", "-e", %q['puts("hello")']
   end
 end
