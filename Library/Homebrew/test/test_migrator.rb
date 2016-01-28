@@ -1,28 +1,20 @@
 require "testing_env"
 require "migrator"
 require "testball"
+require "formula_resolver"
 require "tab"
 require "keg"
-
-class Formula
-  def set_oldname(oldname)
-    @oldname = oldname
-  end
-end
 
 class MigratorErrorsTests < Homebrew::TestCase
   def setup
     @new_f = Testball.new("newname")
-    @new_f.set_oldname "oldname"
     @old_f = Testball.new("oldname")
   end
 
-  def test_no_oldname
-    assert_raises(Migrator::MigratorNoOldnameError) { Migrator.new(@old_f) }
-  end
+  # TODO test MigratorDifferentFormulaeError
 
   def test_no_oldpath
-    assert_raises(Migrator::MigratorNoOldpathError) { Migrator.new(@new_f) }
+    assert_raises(Migrator::MigratorNoOldpathError) { Migrator.new(@new_f, "oldname") }
   end
 
   def test_different_taps
@@ -32,7 +24,7 @@ class MigratorErrorsTests < Homebrew::TestCase
     tab.tabfile = HOMEBREW_CELLAR/"oldname/0.1/INSTALL_RECEIPT.json"
     tab.source["tap"] = "Homebrew/homebrew"
     tab.write
-    assert_raises(Migrator::MigratorDifferentTapsError) { Migrator.new(@new_f) }
+    assert_raises(Migrator::MigratorDifferentTapsError) { Migrator.new(@new_f, "oldname") }
   ensure
     keg.parent.rmtree
   end
@@ -43,8 +35,6 @@ class MigratorTests < Homebrew::TestCase
 
   def setup
     @new_f = Testball.new("newname")
-    @new_f.set_oldname "oldname"
-
     @old_f = Testball.new("oldname")
 
     @old_keg_record = HOMEBREW_CELLAR/"oldname/0.1"
@@ -65,7 +55,7 @@ class MigratorTests < Homebrew::TestCase
     @old_pin = HOMEBREW_LIBRARY/"PinnedKegs/oldname"
     @old_pin.make_relative_symlink @old_keg_record
 
-    @migrator = Migrator.new(@new_f)
+    @migrator = Migrator.new(@new_f, "oldname")
 
     mkpath HOMEBREW_PREFIX/"bin"
   end
@@ -224,7 +214,7 @@ class MigratorTests < Homebrew::TestCase
     tab.tabfile = HOMEBREW_CELLAR/"oldname/0.1/INSTALL_RECEIPT.json"
     tab.source["path"] = "/should/be/the/same"
     tab.write
-    migrator = Migrator.new(@new_f)
+    migrator = Migrator.new(@new_f, "oldname")
     tab.tabfile.delete
     migrator.backup_old_tabs
     assert_equal "/should/be/the/same", Tab.for_keg(@old_keg_record).source["path"]

@@ -15,15 +15,9 @@ class Migrator
     end
   end
 
-  class MigratorNoOldnameError < RuntimeError
-    def initialize(formula)
-      super "#{formula.name} doesn't replace any formula."
-    end
-  end
-
   class MigratorNoOldpathError < RuntimeError
-    def initialize(formula)
-      super "#{HOMEBREW_CELLAR/formula.oldname} doesn't exist."
+    def initialize(oldname)
+      super "#{HOMEBREW_CELLAR/oldname} doesn't exist."
     end
   end
 
@@ -43,13 +37,14 @@ class Migrator
     end
   end
 
-  class MigratorNewpathExistsError < RuntimeError
-    def initialize(formula, oldname, newpath)
-      msg = "#{newpath} is a #{newpath.symlink? ? "symlink" : "directory"}"
-
+  class MigratorDifferentFormulaeError < RuntimeError
+    def initialize(formula, oldname)
       super <<-EOS.undent
-      Can't migrate #{oldname} to #{formula.name}:
-      #{msg}
+      #{oldname} can't be migrated to #{formula.name} because installed version
+      of #{formula.name} is a renamed package with the same name.
+
+      Please, migrate #{formula.name} before migrating #{formula.name} and
+      try again.
       EOS
     end
   end
@@ -84,6 +79,9 @@ class Migrator
   # resolved path to oldname pin
   attr_reader :old_pin_link_record
 
+  # old cellar subdirectories to be able to restore old_cellar if error occurs
+  attr_reader :old_cellar_subdirs
+
   # new name of the formula
   attr_reader :newname
 
@@ -96,14 +94,17 @@ class Migrator
   # path to newname keg that will be linked if old_linked_keg isn't nil
   attr_reader :new_linked_keg_record
 
+  attr_reader :unique_old_cellar_subdirs
+
   def initialize(formula, oldname)
     @oldname = oldname
     @newname = formula.name
-    raise MigratorNoOldnameError.new(formula) unless oldname
 
     @formula = formula
-    @old_cellar = HOMEBREW_CELLAR/oldname
-    raise MigratorNoOldpathError.new(formula) unless old_cellar.exist?
+    @old_cellar = HOMEBREW_CELLAR.join(oldname)
+    raise MigratorNoOldpathError.new(oldname) unless old_cellar.exist?
+
+    @old_cellar_subdirs = old_cellar.subdirs
 
     @old_tabs = old_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
     @old_tap = old_tabs.first.tap
@@ -112,10 +113,20 @@ class Migrator
       raise MigratorDifferentTapsError.new(formula, old_tap)
     end
 
-    @new_cellar = HOMEBREW_CELLAR/formula.name
+    @new_cellar = HOMEBREW_CELLAR.join(newname)
 
+    @unique_old_cellar_subdirs = []
+
+    old_cellar_subdirs.each do |subdir|
+      new_subdir = new_cellar.join(subdir.basename)
+      @unique_old_cellar_subdirs << subdir unless new_subdir.exist?
+    end
+
+    # check whether new_cellar is an installation of @{formula}
     if new_cellar.exist?
-      raise MigratorNewpathExistsError.new(formula, oldname, new_cellar)
+      if FormulaResolver.new(formula.name).resolved_name != formula.name
+        raise MigratorDifferentFormulaeError.new(formula, oldname)
+      end
     end
 
     if @old_linked_keg = get_linked_old_linked_keg
@@ -147,7 +158,7 @@ class Migrator
     # we check if there is an entry about oldname migrated to tap and if
     # newname's tap is the same as tap to which oldname migrated, then we
     # can perform migrations and the taps for oldname and newname are the same.
-    elsif TAP_MIGRATIONS && (rec = TAP_MIGRATIONS[formula.oldname]) \
+    elsif TAP_MIGRATIONS && (rec = TAP_MIGRATIONS[oldname]) \
         && formula.tap == rec && old_tap == "Homebrew/homebrew"
       fix_tabs
       true
@@ -157,7 +168,12 @@ class Migrator
   end
 
   def get_linked_old_linked_keg
-    kegs = old_cellar.subdirs.map { |d| Keg.new(d) }
+    kegs = old_cellar_subdirs.map { |d| Keg.new(d) }
+    kegs.detect(&:linked?) || kegs.detect(&:optlinked?)
+  end
+
+  def get_linked_new_linked_keg
+    kegs = new_cellar_subdirs.map { |d| Keg.new(d) }
     kegs.detect(&:linked?) || kegs.detect(&:optlinked?)
   end
 
@@ -166,19 +182,16 @@ class Migrator
   end
 
   def migrate
-    if new_cellar.exist?
-      onoe "#{new_cellar} already exists; remove it manually and run brew migrate #{oldname}."
-      return
-    end
-
     begin
       oh1 "Migrating #{Tty.green}#{oldname}#{Tty.white} to #{Tty.green}#{newname}#{Tty.reset}"
       lock
       unlink_oldname
+      unlink_newname if new_cellar.exist?
       move_to_new_directory
       repin
       link_oldname_cellar
       link_oldname_opt
+      # TODO update for the case when we merge installations
       link_newname unless old_linked_keg.nil?
       update_tabs
     rescue Interrupt
@@ -196,8 +209,14 @@ class Migrator
 
   # move everything from Cellar/oldname to Cellar/newname
   def move_to_new_directory
-    puts "Moving to: #{new_cellar}"
-    FileUtils.mv(old_cellar, new_cellar)
+    puts "#{new_cellar.exist? ? "Merging with" : "Moving to"} #{new_cellar}"
+
+    new_cellar.mkpath unless new_cellar.exist?
+
+    unique_old_cellar_subdirs.each do |subdir|
+      new_subdir = new_cellar.join(subdir.basename)
+      FileUtils.mv(subdir, new_subdir)
+    end
   end
 
   def repin
@@ -227,6 +246,15 @@ class Migrator
     end
   end
 
+  def unlink_newname
+    oh1 "Unlinking #{Tty.green}#{newname}#{Tty.reset}"
+    new_cellar.subdirs.each do |d|
+      keg = Keg.new(d)
+      keg.unlink
+    end
+  end
+
+  # TODO update for the case when we merge installations
   def link_newname
     oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
     new_keg = Keg.new(new_linked_keg_record)
@@ -281,6 +309,7 @@ class Migrator
 
   # After migtaion every INSTALL_RECEIPT.json has wrong path to the formula
   # so we must update INSTALL_RECEIPTs
+  # TODO ? update last_commit
   def update_tabs
     new_tabs = new_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
     new_tabs.each do |tab|
@@ -357,7 +386,17 @@ class Migrator
 
   def backup_oldname_cellar
     unless old_cellar.exist?
-      FileUtils.mv(new_cellar, old_cellar)
+      old_cellar.mkpath
+
+      unique_old_cellar_subdirs.each do |subdir|
+        new_subdir = new_cellar.join(subdir.basename)
+        FileUtils.mv(new_subdir, subdir)
+      end
+
+      (old_cellar_subdirs - unique_old_cellar_subdirs).each do |subdir|
+        new_subdir = new_cellar.join(subdir.basename)
+        FileUtils.cp(new_subdir, subdir)
+      end
     end
   end
 
