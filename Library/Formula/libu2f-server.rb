@@ -4,6 +4,13 @@ class Libu2fServer < Formula
   url "https://developers.yubico.com/libu2f-server/Releases/libu2f-server-1.0.1.tar.xz"
   sha256 "a618f59051209d6d70c24cf42d64c9b67bd7dd5946b6dbd2c649181d7e8f1f6e"
 
+  bottle do
+    cellar :any
+    sha256 "9a5704c78fa45d5e72e6fdb55656cdc49cda37fe56fc6c3a3669390dd6ef883e" => :el_capitan
+    sha256 "b6e45ad28814759b052657a14884f5754e65decdcd8fa185fe59382ca30d5e75" => :yosemite
+    sha256 "53cf2a8cb039a27cc4b36605245b15aee85f8d1044f3ba49cb12868ccf0b0cdf" => :mavericks
+  end
+
   depends_on "check" => :build
   depends_on "pkg-config" => :build
   depends_on "json-c"
