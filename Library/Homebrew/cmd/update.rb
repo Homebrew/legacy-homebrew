@@ -458,7 +458,7 @@ class Report
         # TODO what if dirs empty?
         rack = HOMEBREW_CELLAR.join(name)
         dirs = rack.directory? ? rack.subdirs : []
-        last_commit = Tab.for_keg(dirs.first).last_commit)
+        last_commit = Tab.for_keg(dirs.first).last_commit
         newname = FormulaResolver.new(oldname, last_commit).resolved_name
         next unless newname
         # next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
