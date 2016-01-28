@@ -47,7 +47,7 @@ git_init_if_necessary() {
 
   if [[ ! -d ".git" ]]
   then
-    git init -q
+    git init
     git config --bool core.autocrlf false
     git config remote.origin.url https://github.com/Homebrew/homebrew.git
     git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
