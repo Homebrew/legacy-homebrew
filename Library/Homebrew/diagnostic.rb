@@ -1,6 +1,7 @@
 require "keg"
 require "language/python"
 require "formula"
+require "tempfile"
 require "version"
 
 module Homebrew
@@ -1109,6 +1110,22 @@ module Homebrew
       def check_tmpdir
         tmpdir = ENV["TMPDIR"]
         "TMPDIR #{tmpdir.inspect} doesn't exist." unless tmpdir.nil? || File.directory?(tmpdir)
+      end
+
+      def check_tmpdir_executable
+        Tempfile.open("homebrew_check_tmpdir_executable", HOMEBREW_TEMP) do |f|
+          f.write "#!/bin/sh\necho hi\n"
+          f.chmod 0700
+          unless system f.path
+            <<-EOS.undent
+              The directory #{HOMEBREW_TEMP} does not permit executing
+              programs. It is likely mounted "noexec". Please set HOMEBREW_TEMP
+              in your #{shell_profile} to a different directory.
+                export HOMEBREW_TEMP=~/tmp
+                echo 'export HOMEBREW_TEMP=~/tmp' >> #{shell_profile}
+            EOS
+          end
+        end
       end
 
       def check_missing_deps
