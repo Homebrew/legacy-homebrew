@@ -7,6 +7,9 @@ class Cfssl < Formula
   sha256 "589222d922aa4ebae2039a54c46b9a7c2df4c95d78026ab35768a6cf62836ca9"
   head "https://github.com/cloudflare/cfssl.git"
 
+  depends_on "go" => :build
+  depends_on "libtool" => :run
+
   go_resource "golang.org/x/crypto" do
     url "https://github.com/golang/crypto.git",
       :revision => "3760e016850398b85094c4c99e955b8c3dea5711"
@@ -46,9 +49,6 @@ class Cfssl < Formula
     url "github.com/coreos/go-systemd.git",
     :revision => "2ed5b5012ccde5f057c197890a2c801295941149"
   end
-
-  depends_on "go" => :build
-  depends_on "libtool" => :run
 
   def install
     ENV["GOPATH"] = buildpath
