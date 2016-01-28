@@ -17,7 +17,7 @@ class FormulaResolver
       @commit = commit
     end
 
-    def <=> (entry)
+    def <=>(entry)
       puts "compare #{commit} and #{entry.commit}"
       return 0 if commit == entry.commit
       if commit == 0
@@ -58,13 +58,13 @@ class FormulaResolver
 
     attr_reader :user, :repo
 
-    def initialize(name, user="homebrew", repo="homebrew")
+    def initialize(name, user="Homebrew", repo="homebrew")
       puts "Starting initializing Sheet..."
       @name = name
       @user = user
       @repo = repo
       @entries = []
-      entry_file = if user == "homebrew" && repo == "homebrew"
+      entry_file = if user == "Homebrew" && repo == "homebrew"
         HOMEBREW_LIBRARY.join("Renames/#{name}")
       else
         HOMEBREW_LIBRARY.join("Taps/#{user}/homebrew-#{repo}/Renames/#{name}")
@@ -110,7 +110,7 @@ class FormulaResolver
     if name.include?("/")
       @user, @repo, @name = name.split("/", 3).map(&:downcase)
     else
-      @user, @repo, @name = "homebrew", "homebrew", name
+      @user, @repo, @name = "Homebrew", "homebrew", name
     end
 
     @start_point_commit = start_point_commit || get_installed_commit
@@ -133,6 +133,8 @@ class FormulaResolver
         sheets[previous_entry.name] ||= Sheet.new(previous_entry.name, user, repo)
       end
       previous_entry.name
+    else
+      name
     end
   end
 
@@ -146,7 +148,10 @@ class FormulaResolver
   # TODO implement method
 
   def get_installed_commit
-    Tab.for_keg(Keg.new(HOMEBREW_CELLAR.join(name).subdirs.first)).last_commit
+    if (dir = HOMEBREW_CELLAR.join(name)).exist? && keg_dir = dir.subdirs.first
+      tab = Tab.for_keg(Keg.new(keg_dir))
+      tab.last_commit if tab.source["tap"].downcase == "#{user}/#{repo}".downcase
+    end
   end
 
   def self.for_name(name)
