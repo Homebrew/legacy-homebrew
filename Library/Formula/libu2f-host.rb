@@ -4,6 +4,13 @@ class Libu2fHost < Formula
   url "https://developers.yubico.com/libu2f-host/Releases/libu2f-host-1.0.0.tar.xz"
   sha256 "18c56b9b5cfea2566925bba45b25a4e20b3ef8696905d8f2a06116316e164374"
 
+  bottle do
+    cellar :any
+    sha256 "33457975094b80d0ac9e9cf60eccdeb5e2170a9eba4c674eb407790c47cc18b4" => :el_capitan
+    sha256 "e8cc07fa0e0b54804e92e49cb077d4eb0f95eb449abd4364c1acf90a94b609ce" => :yosemite
+    sha256 "5c3c790e88e08cabe8ab23d0e32765e961ada219c3c5185d6d7d2bd0c10c3a85" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "hidapi"
   depends_on "json-c"
