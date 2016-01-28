@@ -12,11 +12,11 @@ class AppEngineGo64 < Formula
     :because => "both install the same binaries"
 
   def install
-    share.install Dir["*"]
+    pkgshare.install Dir["*"]
     %w[
       api_server.py appcfg.py bulkloader.py bulkload_client.py dev_appserver.py download_appstats.py goapp
     ].each do |fn|
-      bin.install_symlink share/fn
+      bin.install_symlink pkgshare/fn
     end
   end
 
