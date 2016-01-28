@@ -5,11 +5,11 @@ class Sha2 < Formula
   sha256 "67bc662955c6ca2fa6a0ce372c4794ec3d0cd2c1e50b124e7a75af7e23dd1d0c"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "e087ba4357e2ed9d75bd2d25253c0982ac742db854d1c7c6792671d58e05bdc8" => :yosemite
-    sha256 "7bb393c6de372210c1343a76094063a344f59f7bfeed67210abc749e9dfb93aa" => :mavericks
-    sha256 "dc28fabf8cd4680b5ff534de7ef19ad95c4b839f6b891f80292e6ac9bd0952ad" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "721c7f6b1f503e76394f6bd63f6305f45e310a94c245e3f53c82d64c44004c13" => :el_capitan
+    sha256 "6609d4da8235a23b7e777d93b6e3db097c706daff289219ac3137635d7e9445f" => :yosemite
+    sha256 "3f6742fa3405ab5fb30ddbe09007965dc9836f95ff9e02508f3fef610ad0a29d" => :mavericks
   end
 
   option "without-test", "Skip compile-time tests"
