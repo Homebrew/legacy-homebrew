@@ -14,8 +14,8 @@ class Opam < Formula
     sha256 "fab436947193e2e0b402320e520daa2826af8c80d0ddb4f9cf37d11ebd009ddf" => :mountain_lion
   end
 
-  depends_on "ocaml"
-  depends_on "camlp4" => :recommended
+  depends_on "ocaml" => :recommended
+  depends_on "camlp4" => :recommended if build.with? "ocaml"
 
   # aspcud has a fairly large buildtime dep tree, and uses gringo,
   # which requires C++11 and is inconvenient to install pre-10.8
@@ -72,18 +72,23 @@ class Opam < Formula
   def install
     ENV.deparallelize
 
-    # We put the compressed external libraries where the build
-    # expects to find them, thus tricking it into believing that it
-    # already downloaded the necessary files.
-    resources.each do |r|
-      r.verify_download_integrity(r.fetch)
-      original_name = r.cached_download.basename.sub(/^#{Regexp.escape(name)}--/, "")
-      cp r.cached_download, buildpath/"src_ext/#{original_name}"
-    end
+    if build.without? "ocaml"
+      system "make", "cold", "CONFIGURE_ARGS=--prefix #{prefix} --mandir #{man}"
+      ENV.prepend_path "PATH", "#{buildpath}/bootstrap/ocaml/bin"
+    else
+      # We put the compressed external libraries where the build
+      # expects to find them, thus tricking it into believing that it
+      # already downloaded the necessary files.
+      resources.each do |r|
+        r.verify_download_integrity(r.fetch)
+        original_name = r.cached_download.basename.sub(/^#{Regexp.escape(name)}--/, "")
+        cp r.cached_download, buildpath/"src_ext/#{original_name}"
+      end
 
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make", "lib-ext"
-    system "make"
+      system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+      system "make", "lib-ext"
+      system "make"
+    end
     system "make", "man"
     system "make", "install"
 
