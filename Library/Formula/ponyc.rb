@@ -17,7 +17,7 @@ class Ponyc < Formula
 
   def install
     ENV.cxx11
-    system "make", "install", "config=release", "destdir=#{prefix}"
+    system "make", "install", "config=release", "destdir=#{prefix}", "verbose=1"
   end
 
   test do
