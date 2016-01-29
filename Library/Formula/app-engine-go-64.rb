@@ -18,6 +18,7 @@ class AppEngineGo64 < Formula
     ].each do |fn|
       bin.install_symlink pkgshare/fn
     end
+    (pkgshare/"goroot/pkg").install_symlink pkgshare/"goroot/pkg/darwin_amd64_appengine" => "darwin_amd64"
   end
 
   test do
