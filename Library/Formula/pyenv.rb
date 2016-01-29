@@ -10,6 +10,7 @@ class Pyenv < Formula
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
   depends_on "openssl" => :recommended
+  depends_on "readline" => [:recommended, :run]
 
   def install
     inreplace "libexec/pyenv", "/usr/local", HOMEBREW_PREFIX
