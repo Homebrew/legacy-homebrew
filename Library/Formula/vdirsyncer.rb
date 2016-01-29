@@ -1,8 +1,8 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.5.tar.gz"
-  sha256 "3f51c1fabac7f231327deb098998185cbd77564dc1bfc29f4bc8d89226c96a37"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.8.0.tar.gz"
+  sha256 "249b04cd102cb89406da31b20624b8a65ddeb68c1246adc8d3a69237a65d01fa"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
@@ -12,13 +12,13 @@ class Vdirsyncer < Formula
     sha256 "d0ad5bd159acdfeaf28aec0abda9f34d35750c4377624a365180c24798a8059c" => :mavericks
   end
 
-  option "without-keyring", "Build without python-keyring support"
+  option "with-remotestorage", "Build with support for remote-storage"
 
   depends_on :python3
 
-  resource "keyring" do
-    url "https://pypi.python.org/packages/source/k/keyring/keyring-5.4.tar.gz"
-    sha256 "45891cd0af4c4af70fbed7ec6e3964d0261c14188de9ab31030c9d02272e22d2"
+  resource "requests_oauthlib" do
+    url "https://pypi.python.org/packages/source/r/requests-oauthlib/requests-oauthlib-0.6.0.tar.gz"
+    sha256 "2a0ca56031940e917983aa1584b9d1311769ff9fc9bbf01e06c7f75ade7c7724"
   end
 
   resource "click" do
@@ -60,7 +60,7 @@ class Vdirsyncer < Formula
     version = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{version}/site-packages"
     rs = %w[click click_threading click_log requests lxml requests-toolbelt atomicwrites]
-    rs << "keyring" if build.with? "keyring"
+    rs << "requests_oauthlib" if build.with? "remotestorage"
     rs.each do |r|
       resource(r).stage do
         system "python3", *Language::Python.setup_install_args(libexec/"vendor")
