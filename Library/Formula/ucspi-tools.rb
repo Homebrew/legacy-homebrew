@@ -25,9 +25,9 @@ class UcspiTools < Formula
   end
 
   bottle do
-    sha256 "d271b18626a2ac4cc998136c556a9749b798689a597d964d0964f847e850cce0" => :el_capitan
-    sha256 "6b653a80ec8359106c38339dc528525cf25168176272cd0cb9864c88da30c135" => :yosemite
-    sha256 "b358cf2d0ae16aae4321760f358e59f14ff2e31ebb3d1f931c246842cdf7e4c0" => :mavericks
+    sha256 "322251b7175bedac948f15b4c98efbd3d609fbd1ad9c17cf75b8ebc5f1a1f3f3" => :el_capitan
+    sha256 "d2f09ec3533244d6b627ed3c1dcb8cdb28ff65614c3aaff0990906921878c352" => :yosemite
+    sha256 "4de9eecb0450e6f2f017af6129ddd31f3a428fcfefef33b676df891fd9f30dfd" => :mavericks
   end
 
   head do
