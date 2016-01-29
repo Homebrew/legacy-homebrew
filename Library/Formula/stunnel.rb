@@ -1,7 +1,7 @@
 class Stunnel < Formula
   desc "SSL tunneling program"
   homepage "https://www.stunnel.org/"
-  url "https://www.stunnel.org/downloads/stunnel-5.29.tar.gz"
+  url "ftp://ftp.stunnel.org/stunnel/archive/5.x/stunnel-5.29.tar.gz"
   mirror "https://www.usenix.org.uk/mirrors/stunnel/stunnel-5.29.tar.gz"
   sha256 "43909625403ea634fa7cb8399d58faf8e7f11c1b7b29097491469951f56df551"
 
