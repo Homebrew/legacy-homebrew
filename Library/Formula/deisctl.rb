@@ -3,8 +3,8 @@ require "language/go"
 class Deisctl < Formula
   desc "Deis Control Utility"
   homepage "http://deis.io/"
-  url "https://github.com/deis/deis/archive/v1.11.1.tar.gz"
-  sha256 "0d5434dbcfcbeaf07e071898ee1d2592cde21422c551a6c87e169474123f6d74"
+  url "https://github.com/deis/deis/archive/v1.12.2.tar.gz"
+  sha256 "48aa8f81697b213bd25e95bc2065f7c0dc75e824d7420e71856e102cc16a5229"
 
   bottle do
     cellar :any_skip_relocation
