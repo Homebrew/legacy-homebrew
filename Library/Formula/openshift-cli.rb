@@ -2,8 +2,8 @@ class OpenshiftCli < Formula
   desc "OpenShift command-line interface tools"
   homepage "https://www.openshift.com/"
   url "https://github.com/openshift/origin.git",
-    :tag => "v1.1.1",
-    :revision => "e1d9873c1d5711b83fd3dd7eefe83a88ceb92c08"
+    :tag => "v1.1.1.1",
+    :revision => "940be513e42def2fdb3b83283d830d2c63abbad4"
 
   head "https://github.com/openshift/origin.git"
 
