@@ -12,6 +12,14 @@ class CrystalLang < Formula
     sha256 "15728ee8445c863b9f9f1b78c99ea6cd8bfbee0516a92a787960d2db3775920d" => :mavericks
   end
 
+  option "without-release", "Do not build the compiler in release mode"
+  option "without-shards", "Do not include `shards` dependency manager"
+
+  depends_on "libevent"
+  depends_on "bdw-gc"
+  depends_on "llvm" => :build
+  depends_on "libyaml" if build.with?("shards")
+
   resource "boot" do
     url "https://github.com/manastech/crystal/releases/download/0.10.2/crystal-0.10.2-1-darwin-x86_64.tar.gz"
     sha256 "6b1ffdbb662a27b2da2bccb358aff7c7d01d6ae1b1636fd5a99a3d73de4b8f4b"
@@ -21,14 +29,6 @@ class CrystalLang < Formula
     url "https://github.com/ysbaddaden/shards/archive/v0.6.0.tar.gz"
     sha256 "cbaaa6f9d9d140ec410623b97cb86fb44640125495f1e48fb8a1875ccedc4cc5"
   end
-
-  option "without-release", "Do not build the compiler in release mode"
-  option "without-shards", "Do not include `shards` dependency manager"
-
-  depends_on "libevent"
-  depends_on "bdw-gc"
-  depends_on "llvm" => :build
-  depends_on "libyaml" if build.with?("shards")
 
   def install
     (buildpath/"boot").install resource("boot")
