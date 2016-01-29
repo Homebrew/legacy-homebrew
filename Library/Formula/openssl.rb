@@ -7,9 +7,9 @@ class Openssl < Formula
   sha256 "932b4ee4def2b434f85435d9e3e19ca8ba99ce9a065a61524b429a9d5e9b2e9c"
 
   bottle do
-    sha256 "ed8aab358427f6456f99b59dc04667fd5dada7a4bd60eb0a2ce40c20ed6c125c" => :el_capitan
-    sha256 "23a4c64aef59d211a4de12cd72c6109d96822065b1743f6db3cb45d623891989" => :yosemite
-    sha256 "a46133fb0a514504984083e34b3c65c9b770ce2ceb543e013e55be891ac68434" => :mavericks
+    sha256 "24ed49675f690666749444306357dff828bf9770a89b044a0653b7d7dccc92f3" => :el_capitan
+    sha256 "76e6b88a0294a99876ad58930833a33085142cbde958c87bb9c2b0a2052a6d75" => :yosemite
+    sha256 "136b65d7d4496c1277a39d30c44c38226ec776fef3a3ecbe9ce3888e68bc343e" => :mavericks
   end
 
   # 1.0.2f: fix typo in macro BIO_get_conn_int_port()
