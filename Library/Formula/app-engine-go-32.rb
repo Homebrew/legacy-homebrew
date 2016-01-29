@@ -18,6 +18,7 @@ class AppEngineGo32 < Formula
     ].each do |fn|
       bin.install_symlink pkgshare/fn
     end
+    (pkgshare/"goroot/pkg").install_symlink pkgshare/"goroot/pkg/darwin_386_appengine" => "darwin_386"
   end
 
   test do
