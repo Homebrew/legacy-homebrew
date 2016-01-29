@@ -30,7 +30,7 @@ class PamU2f < Formula
 
   def caveats; <<-EOS.undent
     To use a U2F key for PAM authentication, specify the full path to the
-    module (#{lib}pam/pam_u2f.so) in a PAM
+    module (#{lib}/pam/pam_u2f.so) in a PAM
     configuration. You can find all PAM configurations in /etc/pam.d.
 
     For further installation instructions, please visit
