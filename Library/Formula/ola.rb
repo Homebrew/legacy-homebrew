@@ -20,20 +20,27 @@ class Ola < Formula
 
   option :universal
   option "with-ftdi", "Install FTDI USB plugin for OLA."
+  # RDM tests require protobuf-c --with-python to work
+  option "with-rdm-tests", "Install RDM Tests for OLA."
 
   depends_on "pkg-config" => :build
   depends_on "cppunit"
   depends_on "protobuf-c"
   depends_on "libmicrohttpd"
-  depends_on "libusb"
-  depends_on "liblo"
   depends_on "ossp-uuid"
-  depends_on :python => :optional
+  depends_on "libusb" => :recommended
+  depends_on "liblo" => :recommended
   depends_on "doxygen" => :optional
 
   if build.with? "ftdi"
     depends_on "libftdi"
     depends_on "libftdi0"
+  end
+
+  if build.with? "rdm-tests"
+    depends_on :python if MacOS.version <= :snow_leopard
+  else
+    depends_on :python => :optional
   end
 
   def install
@@ -47,6 +54,7 @@ class Ola < Formula
     ]
 
     args << "--enable-python-libs" if build.with? "python"
+    args << "--enable-rdm-tests" if build.with? "rdm-tests"
     args << "--enable-doxygen-man" if build.with? "doxygen"
 
     system "autoreconf", "-fvi" if build.head?
