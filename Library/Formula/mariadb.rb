@@ -1,8 +1,8 @@
 class Mariadb < Formula
   desc "Drop-in replacement for MySQL"
   homepage "https://mariadb.org/"
-  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.10/source/mariadb-10.1.10.tar.gz"
-  sha256 "d2c26fc76ff7397bdf25924161174c30a2b7fbd59893048f50145fc0a8278f76"
+  url "http://ftp.osuosl.org/pub/mariadb/mariadb-10.1.11/source/mariadb-10.1.11.tar.gz"
+  sha256 "cd32927370343b4f14bcc6073bca163623c27843ae7bc59c8c6a9ebeda0325ce"
 
   bottle do
     revision 1
@@ -33,13 +33,6 @@ class Mariadb < Formula
   conflicts_with "mytop", :because => "both install `mytop` binaries"
   conflicts_with "mariadb-connector-c",
     :because => "both install plugins"
-
-  patch do
-    # fix compilation error https://mariadb.atlassian.net/browse/MDEV-9322
-    # fixed in 10.1.11
-    url "https://github.com/Buggynours/MariaDB/commit/3e76d54b98e328768b1999344c0affc7a8f04b69.patch"
-    sha256 "78b32a1628ed7b2ea30c4a7fdf876d3e05db2cfe7bfa5a286aa213afda4b37b2"
-  end
 
   def install
     # Don't hard-code the libtool path. See:
@@ -149,6 +142,8 @@ class Mariadb < Formula
         s.gsub!("$(dirname $0)/wsrep_sst_common", "#{libexec}/wsrep_sst_common")
       end
     end
+    # remove non-executable from bin
+    rm bin+"maria_add_gis_sp.sql"
   end
 
   def post_install
