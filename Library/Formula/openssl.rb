@@ -12,26 +12,6 @@ class Openssl < Formula
     sha256 "136b65d7d4496c1277a39d30c44c38226ec776fef3a3ecbe9ce3888e68bc343e" => :mavericks
   end
 
-  # 1.0.2f: fix typo in macro BIO_get_conn_int_port()
-  # https://github.com/openssl/openssl/issues/595
-  # https://github.com/openssl/openssl/pull/596
-  patch do
-    url "https://github.com/openssl/openssl/commit/da7947e8c6915d86616425ecbc4906f079ef122f.diff"
-    sha256 "00bc58f9949baf592fb0caf63cd754f5407453cc4b61a1accb89040fa17b05b9"
-  end
-
-  # 1.0.2f: fix a typo in constant value DH_CHECK_PUBKEY_INVALID
-  patch do
-    url "https://github.com/openssl/openssl/commit/7107798ae6c5e19f581915928a69073d17cc21ab.diff"
-    sha256 "a13d63f0e5b5bcebe27eca7c20286843e105bc794e9b2bfa5f6e162174a0e135"
-  end
-
-  # 1.0.2f: add required checks in DH_check_pub_key()
-  patch do
-    url "https://github.com/openssl/openssl/commit/83ab6e55a1f8de9b3e45d13dcc78eb739dc66dea.diff"
-    sha256 "98443034f57e5c4fd1bd89dbf64e9b150184522d10b6a6f7bb7e67cc397615c2"
-  end
-
   keg_only :provided_by_osx,
     "Apple has deprecated use of OpenSSL in favor of its own TLS and crypto libraries"
 
@@ -51,6 +31,26 @@ class Openssl < Formula
       url "https://raw.githubusercontent.com/Homebrew/patches/312f6228/openssl/fix-Apple-clang-version-detection.patch"
       sha256 "a3e0e13e6c70d85d916bb88cbddc134952794d6292fbab4f2740ac9a07759606"
     end
+  end
+
+  # 1.0.2f: fix typo in macro BIO_get_conn_int_port()
+  # https://github.com/openssl/openssl/issues/595
+  # https://github.com/openssl/openssl/pull/596
+  patch do
+    url "https://github.com/openssl/openssl/commit/da7947e8c6915d86616425ecbc4906f079ef122f.diff"
+    sha256 "00bc58f9949baf592fb0caf63cd754f5407453cc4b61a1accb89040fa17b05b9"
+  end
+
+  # 1.0.2f: fix a typo in constant value DH_CHECK_PUBKEY_INVALID
+  patch do
+    url "https://github.com/openssl/openssl/commit/7107798ae6c5e19f581915928a69073d17cc21ab.diff"
+    sha256 "a13d63f0e5b5bcebe27eca7c20286843e105bc794e9b2bfa5f6e162174a0e135"
+  end
+
+  # 1.0.2f: add required checks in DH_check_pub_key()
+  patch do
+    url "https://github.com/openssl/openssl/commit/83ab6e55a1f8de9b3e45d13dcc78eb739dc66dea.diff"
+    sha256 "98443034f57e5c4fd1bd89dbf64e9b150184522d10b6a6f7bb7e67cc397615c2"
   end
 
   def arch_args
