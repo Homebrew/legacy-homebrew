@@ -322,8 +322,9 @@ class Migrator
   # so we must update INSTALL_RECEIPTs
   # TODO ? update last_commit
   def update_tabs
-    new_tabs = new_cellar.subdirs.map { |d| Tab.for_keg(Keg.new(d)) }
-    new_tabs.each do |tab|
+    unique_old_cellar_subdirs.each do |d|
+      d = d.parent.parent.join("#{newname}/#{d.basename}")
+      tab = Tab.for_keg(Keg.new(d))
       tab.source["path"] = formula.path.to_s if tab.source["path"]
       tab.write
     end
