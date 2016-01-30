@@ -9,6 +9,13 @@ class Serf < Formula
 
   head "https://github.com/hashicorp/serf.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "c99e19fe8612c47714fb4708786257e18a37ef4b9f1292d696d64a68f799fb71" => :el_capitan
+    sha256 "d3c23ca2f9fb755253ac6fb2f084852fd2d63c93ddca4a0aef43b09325ce65f9" => :yosemite
+    sha256 "838e49a15d4ffad8f4e2b302e6da1454a470031b4f433a65d465878b477fc0f4" => :mavericks
+  end
+
   depends_on "go" => :build
 
   go_resource "github.com/mitchellh/iochan" do
