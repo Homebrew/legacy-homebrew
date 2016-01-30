@@ -30,6 +30,8 @@ class Mariadb < Formula
   conflicts_with "mysql-connector-c",
     :because => "both install MySQL client libraries"
   conflicts_with "mytop", :because => "both install `mytop` binaries"
+  conflicts_with "mariadb-connector-c",
+    :because => "both install plugins"
 
   patch do
     # fix compilation error https://mariadb.atlassian.net/browse/MDEV-9322
