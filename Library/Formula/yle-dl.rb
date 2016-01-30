@@ -15,6 +15,19 @@ class YleDl < Formula
 
   depends_on "rtmpdump"
   depends_on :python if MacOS.version <= :snow_leopard
+  if Formula["homebrew/php/php70"].installed?
+    depends_on "homebrew/php/php70-mcrypt"
+  elsif Formula["homebrew/php/php56"].installed?
+    depends_on "homebrew/php/php56-mcrypt"
+  elsif Formula["homebrew/php/php55"].installed?
+    depends_on "homebrew/php/php55-mcrypt"
+  elsif Formula["homebrew/php/php54"].installed?
+    depends_on "homebrew/php/php54-mcrypt"
+  elsif Formula["homebrew/php/php53"].installed?
+    depends_on "homebrew/php/php53-mcrypt"
+  else
+    depends_on "homebrew/php/php55-mcrypt"
+  end
 
   resource "AdobeHDS.php" do
     # NOTE: yle-dl always installs the HEAD version of AdobeHDS.php. We use a specific commit.
