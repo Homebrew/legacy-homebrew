@@ -1,12 +1,10 @@
-# Use a newer version instead of the upstream tarball:
-# http://livestreamer.tanuki.se/en/latest/issues.html#installed-rtmpdump-does-not-support-jtv-argument
 class Rtmpdump < Formula
   desc "Tool for downloading RTMP streaming media"
   homepage "https://rtmpdump.mplayerhq.hu"
-  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/r/rtmpdump/rtmpdump_2.4+20150115.gita107cef.orig.tar.gz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/r/rtmpdump/rtmpdump_2.4%2b20150115.gita107cef.orig.tar.gz"
-  version "2.4+20150115"
-  sha256 "d47ef3a07815079bf73eb5d053001c4341407fcbebf39f34e6213c4b772cb29a"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/r/rtmpdump/rtmpdump_2.4+20151223.gitfa8646d.orig.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/r/rtmpdump/rtmpdump_2.4%2b20151223.gitfa8646d.orig.tar.gz"
+  version "2.4+20151223"
+  sha256 "f8eb8d0c8ed085c90666ba0e8fbe0e960e0cf0c2a58604fda3ed85a28f2ef5f6"
 
   head "git://git.ffmpeg.org/rtmpdump", :shallow => false
 
