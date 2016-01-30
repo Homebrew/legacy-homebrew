@@ -30,7 +30,7 @@ class Terraform < Formula
     github.com/dgrijalva/jwt-go afef698c326bfd906b11659432544e5aae441d44
     github.com/digitalocean/godo f75d769b07edce8a73682dcf325b4404f366ab3d
     github.com/dylanmei/iso8601 2075bf119b58e5576c6ed9f867b8f3d17f2e54d4
-    github.com/dylanmei/winrmtest 025617847eb2cf9bd1d851bc3b22ed28e6245ce5  
+    github.com/dylanmei/winrmtest 025617847eb2cf9bd1d851bc3b22ed28e6245ce5
     github.com/fsouza/go-dockerclient 504b650c495df17b7f246b94fe2a2239a85bc73e
     github.com/go-chef/chef ea196660dd8700ad18911681b223fe6bfc29cd69
     github.com/go-ini/ini afbd495e5aaea13597b5e14fe514ddeaa4d76fc3
