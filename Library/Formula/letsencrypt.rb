@@ -1,9 +1,8 @@
 class Letsencrypt < Formula
   desc "Tool to automatically receive and install X.509 certificates"
   homepage "https://letsencrypt.org/"
-  url "https://github.com/letsencrypt/letsencrypt/archive/v0.1.1-corrected.tar.gz"
-  version "0.1.1"
-  sha256 "d9efa11a90cd38bf38218e51c541978ebb836f00ede0c9c8155301ca30a55774"
+  url "https://github.com/letsencrypt/letsencrypt/archive/v0.3.0.tar.gz"
+  sha256 "a21e496ab130cf9fcaeef69019a4eef7aaf86dad84131d601db531add4f98e1a"
 
   depends_on "augeas"
   depends_on "dialog"
@@ -11,13 +10,13 @@ class Letsencrypt < Formula
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.7.1.tar.gz"
-    sha256 "aff36c95035e0b311eacb1434e3f7e85f5ccaad477773847e582978f8f45bd74"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-19.4.tar.gz"
+    sha256 "214bf29933f47cf25e6faa569f710731728a07a19cae91ea64f826051f68a8cf"
   end
 
   resource "cffi" do
-    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.3.1.tar.gz"
-    sha256 "d45dd39a770b4afb591c82555f6a8bbc1ac7eb019eda9b621eee1a0a72201220"
+    url "https://pypi.python.org/packages/source/c/cffi/cffi-1.5.0.tar.gz"
+    sha256 "44f76f6c3fc654860821785192eca29bd66531af57d09b681e6d52584604a7e7"
   end
 
   resource "ConfigArgParse" do
@@ -31,13 +30,13 @@ class Letsencrypt < Formula
   end
 
   resource "cryptography" do
-    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.1.1.tar.gz"
-    sha256 "2912923af7455fb2d2439a037242507c12caece7dd6659d62fa82a61edb2bae0"
+    url "https://pypi.python.org/packages/source/c/cryptography/cryptography-1.2.2.tar.gz"
+    sha256 "3f219cb9106d9b737ea9c332c4d15d70ac328f91b59fd9d79f78bdea8f826a67"
   end
 
   resource "enum34" do
-    url "https://pypi.python.org/packages/source/e/enum34/enum34-1.1.1.tar.gz"
-    sha256 "9d4a9220e4ebabd7ff60d853e69c3dd89debad5ddeb9ac5e768af811ece7708e"
+    url "https://pypi.python.org/packages/source/e/enum34/enum34-1.1.2.tar.gz"
+    sha256 "2475d7fcddf5951e92ff546972758802de5260bf409319a9f1934e6bbc8b1dc7"
   end
 
   resource "funcsigs" do
@@ -51,8 +50,8 @@ class Letsencrypt < Formula
   end
 
   resource "ipaddress" do
-    url "https://pypi.python.org/packages/source/i/ipaddress/ipaddress-1.0.15.tar.gz"
-    sha256 "af6c85cfc9cdb12b861655e6b9f2f59618bf3088cbde858727b2c0a98e9f6636"
+    url "https://pypi.python.org/packages/source/i/ipaddress/ipaddress-1.0.16.tar.gz"
+    sha256 "5a3182b322a706525c46282ca6f064d27a02cffbd449f9f47416f1dc96aa71b0"
   end
 
   resource "mock" do
@@ -76,8 +75,8 @@ class Letsencrypt < Formula
   end
 
   resource "psutil" do
-    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.3.0.tar.gz"
-    sha256 "421b6591d16b509aaa8d8c15821d66bb94cb4a8dc4385cad5c51b85d4a096d85"
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-3.4.2.tar.gz"
+    sha256 "b17fa01aa766daa388362d0eda5c215d77e03a8d37676b68971f37bf3913b725"
   end
 
   resource "pyasn1" do
@@ -100,11 +99,6 @@ class Letsencrypt < Formula
     sha256 "8dfbc6c458b8daba1c0f3620a8c78008b323a268b27b7359e92a4ae41325f535"
   end
 
-  resource "python-augeas" do
-    url "https://pypi.python.org/packages/source/p/python-augeas/python-augeas-0.5.0.tar.gz"
-    sha256 "67d59d66cdba8d624e0389b87b2a83a176f21f16a87553b50f5703b23f29bac2"
-  end
-
   resource "python2-pythondialog" do
     url "https://pypi.python.org/packages/source/p/python2-pythondialog/python2-pythondialog-3.3.0.tar.bz2"
     sha256 "04e93f24995c43dd90f338d5d865ca72ce3fb5a5358d4daa4965571db35fc3ec"
@@ -115,9 +109,14 @@ class Letsencrypt < Formula
     sha256 "fbd26746772c24cb93c8b97cbdad5cb9e46c86bbdb1b9d8a743ee00e2fb1fc5d"
   end
 
+  resource "python-augeas" do
+    url "https://pypi.python.org/packages/source/p/python-augeas/python-augeas-0.5.0.tar.gz"
+    sha256 "67d59d66cdba8d624e0389b87b2a83a176f21f16a87553b50f5703b23f29bac2"
+  end
+
   resource "requests" do
-    url "https://pypi.python.org/packages/source/r/requests/requests-2.7.0.tar.gz"
-    sha256 "398a3db6d61899d25fd4a06c6ca12051b0ce171d705decd7ed5511517b4bb93d"
+    url "https://pypi.python.org/packages/source/r/requests/requests-2.9.1.tar.gz"
+    sha256 "c577815dd00f1394203fc44eb979724b098f88264a9ef898ee45b8e5e9cf587f"
   end
 
   resource "six" do
@@ -126,8 +125,8 @@ class Letsencrypt < Formula
   end
 
   resource "Werkzeug" do
-    url "https://pypi.python.org/packages/source/W/Werkzeug/Werkzeug-0.11.2.tar.gz"
-    sha256 "eb4f98994b40a8e2edce289e811c9a38880ae53eb9ff6f031d0e243a69b0fcbf"
+    url "https://pypi.python.org/packages/source/W/Werkzeug/Werkzeug-0.11.3.tar.gz"
+    sha256 "eb5f700a9bfc96420b055635af9002d3662e43d80c3ffd31f224c25bc0d5f462"
   end
 
   resource "zope.component" do
@@ -147,31 +146,28 @@ class Letsencrypt < Formula
 
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-
-    # First install setuptools because mock requires setuptools>=17.1
-    resource("setuptools").stage do
-      system "python", *Language::Python.setup_install_args(libexec/"vendor")
-    end
-
-    # Then install all the rest
     resources.each do |r|
-      next if r.name == "setuptools"
       r.stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end
     end
 
+    # Namespace packages and .pth files aren't processed from PYTHONPATH.
     touch libexec/"vendor/lib/python2.7/site-packages/zope/__init__.py"
-
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
+    touch libexec/"vendor/lib/python2.7/site-packages/ndg/__init__.py"
 
     cd "acme" do
       system "python", *Language::Python.setup_install_args(libexec)
     end
 
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
     cd "letsencrypt-apache" do
+      system "python", *Language::Python.setup_install_args(libexec)
+    end
+
+    cd "letsencrypt-nginx" do
       system "python", *Language::Python.setup_install_args(libexec)
     end
 
@@ -180,6 +176,6 @@ class Letsencrypt < Formula
   end
 
   test do
-    assert_match "#{version}", shell_output("#{bin}/letsencrypt --version 2>&1")
+    assert_match version.to_s, shell_output("#{bin}/letsencrypt --version 2>&1")
   end
 end
