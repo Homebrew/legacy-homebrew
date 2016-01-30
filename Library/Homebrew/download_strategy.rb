@@ -262,6 +262,7 @@ end
 
 class CurlDownloadStrategy < AbstractFileDownloadStrategy
   attr_reader :mirrors, :tarball_path, :temporary_path
+  attr_accessor :tap
 
   def initialize(name, resource)
     super
@@ -271,6 +272,16 @@ class CurlDownloadStrategy < AbstractFileDownloadStrategy
   end
 
   def fetch
+    if ARGV.force_domain?
+      unless (ENV["HOMEBREW_ARTIFACT_DOMAIN"].nil?)
+        if (!(@url.include? ENV["HOMEBREW_ARTIFACT_DOMAIN"]) && !(@url.include? "https://homebrew.bintray.com"))
+          @url = @url.sub(/^((ht|f)tps?:\/\/)?/, ENV["HOMEBREW_ARTIFACT_DOMAIN"]+"/#{Bintray.repository(tap)}/")
+        end
+      else
+        odie "Set value for HOMEBREW_ARTIFACT_DOMAIN"
+      end
+    end
+    
     ohai "Downloading #{@url}"
 
     unless cached_location.exist?
