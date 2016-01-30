@@ -17,8 +17,10 @@ class Newlisp < Formula
     ENV.append_to_cflags "-DNEWCONFIG -c"
 
     # fix the prefix in a source file
-    inreplace "guiserver/newlisp-edit.lsp", "#!/usr/local/bin/newlisp", "#!/usr/bin/env newlisp"
-    inreplace "guiserver/newlisp-edit.lsp", "/usr/local/bin/newlisp", "#{opt_bin}/newlisp"
+    inreplace "guiserver/newlisp-edit.lsp" do |s|
+      s.gsub! "#!/usr/local/bin/newlisp", "#!/usr/bin/env newlisp"
+      s.gsub! "/usr/local/bin/newlisp", "#{opt_bin}/newlisp"
+    end
 
     system "./configure-alt", "--prefix=#{prefix}", "--mandir=#{man}"
     system "make"
