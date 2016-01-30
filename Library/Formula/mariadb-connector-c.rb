@@ -23,7 +23,5 @@ class MariadbConnectorC < Formula
 
   test do
     system "#{bin}/mariadb_config", "--cflags"
-    system "#{bin}/mariadb_config", "--include"
-    system "#{bin}/mariadb_config", "--libs"
   end
 end
