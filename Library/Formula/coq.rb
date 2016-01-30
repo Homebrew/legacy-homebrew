@@ -34,7 +34,7 @@ class Coq < Formula
                           "-mandir", man,
                           "-camlp5dir", camlp5_lib,
                           "-emacslib", "#{share}/emacs/site-lisp/coq",
-                          "-coqdocdir", "#{share}/coq/latex",
+                          "-coqdocdir", "#{pkgshare}/latex",
                           "-coqide", "no",
                           "-with-doc", "no"
     ENV.j1 # Otherwise "mkdir bin" can be attempted by more than one job
