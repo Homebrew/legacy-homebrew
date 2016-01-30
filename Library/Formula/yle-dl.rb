@@ -1,8 +1,8 @@
 class YleDl < Formula
   desc "Download Yle videos from the command-line"
   homepage "https://aajanki.github.io/yle-dl/index-en.html"
-  url "https://github.com/aajanki/yle-dl/archive/2.9.0.tar.gz"
-  sha256 "085d0fd58d2f04447d2ecf0c1dc49fdc373b819b8bf18cd7185a67956981c8b2"
+  url "https://github.com/aajanki/yle-dl/archive/2.10.0.tar.gz"
+  sha256 "90d7286a4609ec200a059360faba0557000c82957399fda7db04d8860982ff4e"
 
   head "https://github.com/aajanki/yle-dl.git"
 
@@ -19,8 +19,8 @@ class YleDl < Formula
   resource "AdobeHDS.php" do
     # NOTE: yle-dl always installs the HEAD version of AdobeHDS.php. We use a specific commit.
     # Check if there are bugfixes at https://github.com/K-S-V/Scripts/commits/master/AdobeHDS.php
-    url "https://raw.githubusercontent.com/K-S-V/Scripts/4a2f5199c815d8df71fb68a948ea475b9755e85c/AdobeHDS.php"
-    sha256 "510418a1f4f925aabcef5400c77ee49ecbc9aacadd01016bd8f48edd592e511c"
+    url "https://raw.githubusercontent.com/K-S-V/Scripts/7e1c8d844e9907ea6407d74bc1d784e71ccb3ca3/AdobeHDS.php"
+    sha256 "61a012547a97ebee3342ba37f9d01c2eed9cdd08674fc9d59cc1b266ce80494e"
   end
 
   resource "pycrypto" do
@@ -34,7 +34,7 @@ class YleDl < Formula
       system "python", *Language::Python.setup_install_args(libexec/"vendor")
     end
 
-    resource("AdobeHDS.php").stage(share/"yle-dl")
+    resource("AdobeHDS.php").stage(pkgshare)
     system "make", "install", "SYS=darwin", "prefix=#{prefix}", "mandir=#{man}"
 
     # change shebang to plain python (python2 is not guaranteed to exist)
