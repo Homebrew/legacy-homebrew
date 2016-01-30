@@ -22,16 +22,6 @@ class Swift < Formula
       url "https://github.com/apple/swift-llvm/archive/#{swift_tag}.tar.gz"
       sha256 "7b07af901b6fe42793e4f25a470db8d61c60c16b92e434de17fc151861e00172"
     end
-
-    resource "swiftpm" do
-      url "https://github.com/apple/swift-package-manager/archive/swift-DEVELOPMENT-SNAPSHOT-2016-01-25-a.tar.gz"
-      sha256 "84105f264f16755e27a0ebc8d25de51c1d72a33007b61ad68eb0ea185f15b0a8"
-    end
-
-    resource "llbuild" do
-      url "https://github.com/apple/swift-llbuild/archive/swift-DEVELOPMENT-SNAPSHOT-2016-01-25-a.tar.gz"
-      sha256 "dbf0aa2b04d04cce2281b452008506ffbe140d47c3a4d933ad715e6ee1ccdf06"
-    end
   end
 
   bottle do
@@ -53,14 +43,6 @@ class Swift < Formula
     resource "llvm" do
       url "https://github.com/apple/swift-llvm.git", :branch => "stable"
     end
-
-    resource "swiftpm" do
-      url "https://github.com/apple/swift-package-manager.git"
-    end
-
-    resource "llbuild" do
-      url "https://github.com/apple/swift-llbuild.git"
-    end
   end
 
   keg_only :provided_by_osx, "Apple's CLT package contains Swift."
@@ -79,8 +61,6 @@ class Swift < Formula
     mkdir build do
       system "#{buildpath}/utils/build-script",
         "-R",
-        "--swiftpm",
-        "--llbuild",
         "--build-subdir=",
         "--no-llvm-assertions",
         "--no-swift-assertions",
