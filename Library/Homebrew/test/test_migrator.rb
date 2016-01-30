@@ -170,6 +170,18 @@ class MigratorTests < Homebrew::TestCase
     refute_predicate @migrator.old_pin_record, :exist?
   end
 
+  def test_repin_newname_pinned
+    @new_keg_record.join("bin").mkpath
+    @new_f.pin
+    expected_relative = @new_keg_record.relative_path_from HOMEBREW_LIBRARY/"PinnedKegs"
+
+    @migrator.repin
+
+    assert_predicate @migrator.new_pin_record, :symlink?
+    assert_equal expected_relative, @migrator.new_pin_record.readlink
+    refute_predicate @migrator.old_pin_record, :exist?
+  end
+
   def test_unlink_oldname
     assert_equal 1, HOMEBREW_LIBRARY.join("LinkedKegs").children.size
     assert_equal 1, HOMEBREW_PREFIX.join("opt").children.size
@@ -361,6 +373,16 @@ class MigratorTests < Homebrew::TestCase
     @keg.uninstall
     @migrator.backup_oldname
     check_after_backup
+  end
+
+  def test_backup_cellar_removed_newname_pinned
+    @new_keg_record.join("bin").mkpath
+    @new_f.pin
+    @keg.unlink
+    @keg.uninstall
+    @migrator.backup_oldname
+    check_after_backup
+    assert_predicate HOMEBREW_LIBRARY/"PinnedKegs/newname", :symlink?
   end
 
   def test_backup_cellar_linked
