@@ -1,8 +1,8 @@
 class Autocode < Formula
   desc "Code automation for every language, library and framework"
   homepage "https://autocode.run"
-  url "https://github.com/crystal/autocode/archive/v0.21.2.tar.gz"
-  sha256 "64eccf7cfcfb361919f2eced326e5dd1fc3545dc6d56465e41e878e029130308"
+  url "https://github.com/ctate/autocode/archive/v1.1.4.tar.gz"
+  sha256 "a86dffccf34503d06d9b6d8f0562eff26616a1b7899bd26a24a06c7d424d2ac2"
 
   bottle do
     cellar :any_skip_relocation
@@ -15,7 +15,6 @@ class Autocode < Formula
 
   def install
     ENV.prepend_path "PATH", "#{Formula["node"].opt_libexec}/npm/bin"
-
     system "npm", "install"
     libexec.install Dir["*", ".autocode"]
     bin.install_symlink Dir["#{libexec}/bin/*"]
