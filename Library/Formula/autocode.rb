@@ -6,9 +6,9 @@ class Autocode < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "2e6b1f8e8d8253fe64b765f4a013865dc0c1af9078f2a508aef38ed02c568d25" => :el_capitan
-    sha256 "59aa8cb817d505efcd4e5301e07a7cac10bf93bc6a21e212088791d3ab4d7815" => :yosemite
-    sha256 "9f6432067e34a866daee23079f2a5be6f5bbb6f917792f65027feb8d58ea92f0" => :mavericks
+    sha256 "014e7875b0366e7ba2236b5ddee21e1bb70a4455194b812983c253e7aef8850d" => :el_capitan
+    sha256 "53706c84cd49daee1da97474559990f4b73c8ddee62967d59e435d8e6f94321b" => :yosemite
+    sha256 "b30ad165254fda87c034be334a42dd6c13fac15243a86f04adc48d9f4ce63965" => :mavericks
   end
 
   depends_on "node"
