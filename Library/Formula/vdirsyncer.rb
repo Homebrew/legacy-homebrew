@@ -7,9 +7,9 @@ class Vdirsyncer < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e223ccf3faa9163a4667f332e9820644e20186faa80c601332a0511e2ed3452b" => :el_capitan
-    sha256 "e8cad2147490a517c46f3d7bb9ef6733769a41cf475bc57ee78973a09d6bd89a" => :yosemite
-    sha256 "d0ad5bd159acdfeaf28aec0abda9f34d35750c4377624a365180c24798a8059c" => :mavericks
+    sha256 "5c3c344568bb705b53f2f3ab99d6ad8d91bc485c23b9e3e9f8d82c2a342c690a" => :el_capitan
+    sha256 "70a109a6fa25846807b12d67f213da5359b94304b149c5671a782c3e38574629" => :yosemite
+    sha256 "2f4267ddbfb7a48cac0155aa6de00e93bcbf485e2c957911bb77c6d845b69a58" => :mavericks
   end
 
   option "with-remotestorage", "Build with support for remote-storage"
