@@ -25,7 +25,7 @@ class BulkExtractor < Formula
     system "make", "install"
 
     # Install documentation
-    (share/"bulk_extractor/doc").install Dir["doc/*.{html,txt,pdf}"]
+    (pkgshare/"doc").install Dir["doc/*.{html,txt,pdf}"]
 
     (lib/"python2.7/site-packages").install Dir["python/*.py"]
 
