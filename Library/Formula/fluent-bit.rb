@@ -23,7 +23,7 @@ class FluentBit < Formula
   end
 
   test do
-    io = IO.popen("#{bin}/fluent-bit --input stdin --output stdout")
+    io = IO.popen("#{bin}/fluent-bit --input stdin --output stdout --daemon")
     sleep 1
     Process.kill("SIGINT", io.pid)
     Process.wait(io.pid)
