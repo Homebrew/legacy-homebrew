@@ -146,11 +146,11 @@ class FormulaResolver
   # TODO write a corresponding comment in install/updgrade and commands that
   # reinstalls package
   # TODO implement method
-
+  # TODO what if different taps???
   def get_installed_commit
     if (dir = HOMEBREW_CELLAR.join(name)).exist? && keg_dir = dir.subdirs.first
       tab = Tab.for_keg(Keg.new(keg_dir))
-      tab.last_commit if tab.source["tap"].downcase == "#{user}/#{repo}".downcase
+      tab.last_commit if (tap = tab.source["tap"]) && tap.downcase == "#{user}/#{repo}".downcase
     end
   end
 

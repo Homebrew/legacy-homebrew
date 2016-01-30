@@ -94,6 +94,12 @@ class Migrator
   # path to newname keg that will be linked if old_linked_keg isn't nil
   attr_reader :new_linked_keg_record
 
+  attr_reader :new_keg_record
+
+  attr_reader :new_linked_keg
+
+  attr_reader :new_opt_record
+
   attr_reader :unique_old_cellar_subdirs
 
   def initialize(formula, oldname)
@@ -129,10 +135,16 @@ class Migrator
       end
     end
 
-    if @old_linked_keg = get_linked_old_linked_keg
+    if @old_linked_keg = get_old_linked_keg
       @old_linked_keg_record = old_linked_keg.linked_keg_record if old_linked_keg.linked?
       @old_opt_record = old_linked_keg.opt_record if old_linked_keg.optlinked?
-      @new_linked_keg_record = HOMEBREW_CELLAR/"#{newname}/#{File.basename(old_linked_keg)}"
+      @new_keg_record = HOMEBREW_CELLAR/"#{newname}/#{File.basename(old_linked_keg)}"
+    end
+
+    if new_cellar.exist? && @new_linked_keg = get_new_linked_keg
+      @new_linked_keg_record = new_linked_keg.linked_keg_record if new_linked_keg.linked?
+      @new_opt_record = old_linked_keg.opt_record if old_linked_keg.optlinked?
+      @new_keg_record = HOMEBREW_CELLAR/"#{newname}/#{File.basename(new_linked_keg)}"
     end
 
     @old_pin_record = HOMEBREW_LIBRARY/"PinnedKegs"/oldname
@@ -167,13 +179,13 @@ class Migrator
     end
   end
 
-  def get_linked_old_linked_keg
+  def get_old_linked_keg
     kegs = old_cellar_subdirs.map { |d| Keg.new(d) }
     kegs.detect(&:linked?) || kegs.detect(&:optlinked?)
   end
 
-  def get_linked_new_linked_keg
-    kegs = new_cellar_subdirs.map { |d| Keg.new(d) }
+  def get_new_linked_keg
+    kegs = new_cellar.subdirs.map { |d| Keg.new(d) }
     kegs.detect(&:linked?) || kegs.detect(&:optlinked?)
   end
 
@@ -186,7 +198,6 @@ class Migrator
       oh1 "Migrating #{Tty.green}#{oldname}#{Tty.white} to #{Tty.green}#{newname}#{Tty.reset}"
       lock
       unlink_oldname
-      unlink_newname if new_cellar.exist?
       move_to_new_directory
       repin
       link_oldname_cellar
@@ -217,6 +228,8 @@ class Migrator
       new_subdir = new_cellar.join(subdir.basename)
       FileUtils.mv(subdir, new_subdir)
     end
+
+    old_cellar.rmtree
   end
 
   def repin
@@ -246,23 +259,21 @@ class Migrator
     end
   end
 
-  def unlink_newname
-    oh1 "Unlinking #{Tty.green}#{newname}#{Tty.reset}"
-    new_cellar.subdirs.each do |d|
-      keg = Keg.new(d)
-      keg.unlink
-    end
-  end
-
   # TODO update for the case when we merge installations
+  # oldname was linked or optlinked or both linked and optlinked
   def link_newname
-    oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
-    new_keg = Keg.new(new_linked_keg_record)
+    return if new_linked_keg_record && new_opt_record
 
-    # If old_keg wasn't linked then we just optlink a keg.
-    # If old keg wasn't optlinked and linked, we don't call this method at all.
-    # If formula is keg-only we also optlink it.
-    if formula.keg_only? || !old_linked_keg_record
+    oh1 "Linking #{Tty.green}#{newname}#{Tty.reset}"
+
+    new_keg = Keg.new(new_keg_record)
+
+    # * optlink even if there was no optlink before, but either oldname or
+    #   newname was linked
+    # * if old_keg wasn't linked then we just optlink a keg unless new_keg is optlinked
+    # * if old keg wasn't optlinked and linked then this method can't be called
+    if ((formula.keg_only? || !old_linked_keg_record) || new_linked_keg_record) \
+        && !new_opt_record
       begin
         new_keg.optlink
       rescue Keg::LinkError => e
@@ -303,7 +314,7 @@ class Migrator
   def link_oldname_opt
     if old_opt_record
       old_opt_record.delete if old_opt_record.symlink?
-      old_opt_record.make_relative_symlink(new_linked_keg_record)
+      old_opt_record.make_relative_symlink(new_keg_record)
     end
   end
 
@@ -322,8 +333,8 @@ class Migrator
   def unlink_oldname_opt
     return unless old_opt_record
     if old_opt_record.symlink? && old_opt_record.exist? \
-        && new_linked_keg_record.exist? \
-        && new_linked_keg_record.realpath == old_opt_record.realpath
+        && new_keg_record.exist? \
+        && new_keg_record.realpath == old_opt_record.realpath
       old_opt_record.unlink
       old_opt_record.parent.rmdir_if_possible
     end
@@ -395,7 +406,7 @@ class Migrator
 
       (old_cellar_subdirs - unique_old_cellar_subdirs).each do |subdir|
         new_subdir = new_cellar.join(subdir.basename)
-        FileUtils.cp(new_subdir, subdir)
+        FileUtils.cp_r(new_subdir, subdir)
       end
     end
   end
