@@ -23,9 +23,9 @@ class Cdrtools < Formula
   end
 
   devel do
-    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.02a05.tar.bz2"
-    mirror "https://fossies.org/linux/misc/cdrtools-3.02a05.tar.bz2"
-    sha256 "4c79ae080c334854ee8ea04a2e36e15f15709d8c3da2df22e818ab91639b6bba"
+    url "https://downloads.sourceforge.net/project/cdrtools/alpha/cdrtools-3.02a06.tar.bz2"
+    mirror "https://fossies.org/linux/misc/cdrtools-3.02a06.tar.bz2"
+    sha256 "ed79ab99414352ea9305163660b52b6a82394466bae03aebdbe2150997835eb1"
   end
 
   depends_on "smake" => :build
