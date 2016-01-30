@@ -8,16 +8,12 @@ class MariadbConnectorC < Formula
   depends_on "openssl"
 
   def install
-    args = %W[
-      .
-      -DCMAKE_INSTALL_PREFIX=#{prefix}
-      -DCMAKE_VERBOSE_MAKEFILE=ON
-      -DOPENSSL_INCLUDE_DIR=#{Formula["openssl"].opt_include}
-      -DWITH_OPENSSL=On
-      -DCOMPILATION_COMMENT=Homebrew
-    ]
+    args = std_cmake_args
+    args << "-DWITH_OPENSSL=On"
+    args << "-DOPENSSL_INCLUDE_DIR=#{Formula["openssl"].opt_include}"
+    args << "-DCOMPILATION_COMMENT=Homebrew"
 
-    system "cmake", ".", *std_cmake_args
+    system "cmake", ".", *args
     system "make", "install"
   end
 
