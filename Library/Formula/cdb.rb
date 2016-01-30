@@ -1,7 +1,7 @@
 class Cdb < Formula
   desc "Create and read constant databases"
-  homepage "http://cr.yp.to/cdb.html"
-  url "http://cr.yp.to/cdb/cdb-0.75.tar.gz"
+  homepage "https://cr.yp.to/cdb.html"
+  url "https://cr.yp.to/cdb/cdb-0.75.tar.gz"
   sha256 "1919577799a50c080a8a05a1cbfa5fa7e7abc823d8d7df2eeb181e624b7952c5"
 
   bottle do
