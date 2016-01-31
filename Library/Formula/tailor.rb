@@ -1,8 +1,8 @@
 class Tailor < Formula
-  desc "Static analyzer for Swift"
+  desc "Cross-platform static analyzer and linter for Swift"
   homepage "https://tailor.sh"
-  url "https://github.com/sleekbyte/tailor/releases/download/v0.4.0/tailor-0.4.0.tar"
-  sha256 "c85481043d58c5b17bf560bcccebf1bf2b3009d84c9df66819ca10da20c61255"
+  url "https://github.com/sleekbyte/tailor/releases/download/v0.5.0/tailor-0.5.0.tar"
+  sha256 "556def0b2f364a825e552e4dd8f92c00bd4a17ee216332f85c1503e37fbc4b86"
 
   bottle :unneeded
 
@@ -11,6 +11,7 @@ class Tailor < Formula
   def install
     libexec.install Dir["*"]
     bin.install_symlink libexec/"bin/tailor"
+    man1.install libexec/"tailor.1"
   end
 
   test do
