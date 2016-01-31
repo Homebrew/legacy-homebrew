@@ -1,9 +1,8 @@
 class Puddletag < Formula
   desc "Powerful, simple, audio tag editor."
   homepage "http://puddletag.sf.net"
-  url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
-  sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
-  revision 1
+  url "https://github.com/keithgg/puddletag/archive/1.1.0.tar.gz"
+  sha256 "a8e3cb93799a44a48cfedc66842c9857511c19d20cd2c40418d833b68acf1f03"
 
   head "https://github.com/keithgg/puddletag.git"
 
@@ -33,12 +32,6 @@ class Puddletag < Formula
     sha256 "766eff273f2cbb007a3ea8aa69429ee9b1553aa96fe282c6ace3769b9ac47b08"
   end
 
-  # Upstream commit to fix an issue with PyQT 4.11.4. Remove on next version.
-  patch do
-    url "https://github.com/keithgg/puddletag/commit/489acd2ee62eb5fbff95f8220dc8958c14871931.patch"
-    sha256 "fce0cfce4d4477cde4827a0a4d3ef74fbabf630ada2d0cf035cf155a17c37a68"
-  end
-
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     %w[pyparsing mutagen configobj].each do |r|
@@ -55,6 +48,7 @@ class Puddletag < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
   end
 
   test do
