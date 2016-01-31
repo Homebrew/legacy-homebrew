@@ -19,6 +19,10 @@ class DockerMachineDriverXhyve < Formula
   depends_on "docker-machine" => :recommended
 
   def install
+    unless build.with?("docker-machine")
+      opoo "You have disabled automatic installation of docker-machine; you are responsible for installing Machine yourself (e.g. via Docker Toolbox)."
+    end
+
     (buildpath/"gopath/src/github.com/zchee/docker-machine-driver-xhyve").install Dir["{*,.git,.gitignore}"]
 
     ENV["GOPATH"] = "#{buildpath}/gopath"
