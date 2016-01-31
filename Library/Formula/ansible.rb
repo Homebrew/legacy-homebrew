@@ -12,6 +12,12 @@ class Ansible < Formula
     sha256 "d556b7e2a0fcd0a58d3b1f86ed299fc052199c0de541bbef23007c3ddb93c6b3" => :mavericks
   end
 
+  devel do
+    url "https://releases.ansible.com/ansible/ansible-2.0.1.0-0.1.rc1.tar.gz"
+    sha256 "ab2230f22d742e1379c72a3a59b18779a6aad2b4db69e87e073478028f51b24b"
+    version "2.0.1.0-0.1.rc1"
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
   depends_on "openssl"
