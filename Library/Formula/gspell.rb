@@ -4,6 +4,12 @@ class Gspell < Formula
   url "https://download.gnome.org/sources/gspell/0.2/gspell-0.2.3.tar.xz"
   sha256 "e3bfa90a04f660efb1e5bcb182ee8d07d13f78817cccd006992534261b633510"
 
+  bottle do
+    sha256 "c6633e8f395f042c59dfe19841413261a3735f8ce7eba52b6aac48c542ea01ed" => :el_capitan
+    sha256 "84f887139c54fafe37e41324a8573ee986ad053cc03bed3fa26f89e4951a8443" => :yosemite
+    sha256 "69443dbcf313c29058029163bfaa9fa1c2f10cf803ed7f1675919b063a765bb7" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "gtk-mac-integration"
   depends_on "enchant"
