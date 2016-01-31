@@ -51,7 +51,7 @@ class Puddletag < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     system "sh create_macos_app_bundle.sh --name Puddletag --icon puddletag.png --script #{bin}/puddletag"
-    prefix.install Dir["Puddletag.app"]
+    prefix.install "Puddletag.app"
   end
 
   test do
