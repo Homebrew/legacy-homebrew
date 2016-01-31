@@ -1,11 +1,8 @@
 class Mplayer < Formula
   desc "UNIX movie player"
   homepage "https://www.mplayerhq.hu/"
-
-  stable do
-    url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.1.tar.xz"
-    sha256 "831baf097d899bdfcdad0cb80f33cc8dff77fa52cb306bee5dee6843b5c52b5f"
-  end
+  url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.1.tar.xz"
+  sha256 "831baf097d899bdfcdad0cb80f33cc8dff77fa52cb306bee5dee6843b5c52b5f"
 
   bottle do
     sha256 "aaece9087e83b8ead9644510288513f27978d920f9917ef1b013b0c566b24cb0" => :el_capitan
@@ -25,10 +22,12 @@ class Mplayer < Formula
   depends_on "yasm" => :build
   depends_on "libcaca" => :optional
 
-  fails_with :clang do
-    build 211
-    cause "Inline asm errors during compile on 32bit Snow Leopard."
-  end unless MacOS.prefer_64_bit?
+  unless MacOS.prefer_64_bit?
+    fails_with :clang do
+      build 211
+      cause "Inline asm errors during compile on 32bit Snow Leopard."
+    end
+  end
 
   # ld fails with: Unknown instruction for architecture x86_64
   fails_with :llvm
