@@ -34,6 +34,13 @@ class Mplayer < Formula
   # ld fails with: Unknown instruction for architecture x86_64
   fails_with :llvm
 
+  # Other than the path, same as patch used in ffmpeg.rb as of 2016-01-30
+  # Fix build with libvpx 1.5.0, see https://trac.ffmpeg.org/ticket/4956
+  patch do
+    url "https://raw.githubusercontent.com/ilovezfs/patches/2a1e6668fd6b467cd8c1e792764b6be31145309e/mplayer/libvpx-1.5.0.patch"
+    sha256 "7b4658398aba07a0aa33ece7dc445bd16edddeb5a744725e0e1cbc636168de9e"
+  end
+
   def install
     # It turns out that ENV.O1 fixes link errors with llvm.
     ENV.O1 if ENV.compiler == :llvm
