@@ -1,8 +1,8 @@
 class Puddletag < Formula
   desc "Powerful, simple, audio tag editor."
   homepage "http://puddletag.sf.net"
-  url "https://github.com/keithgg/puddletag/archive/1.1.0.tar.gz"
-  sha256 "a8e3cb93799a44a48cfedc66842c9857511c19d20cd2c40418d833b68acf1f03"
+  url "https://github.com/keithgg/puddletag/archive/1.1.1.tar.gz"
+  sha256 "550680abf9c2cf082861dfb3b61fd308f87f9ed304065582cddadcc8bdd947cc"
 
   head "https://github.com/keithgg/puddletag.git"
 
@@ -41,6 +41,7 @@ class Puddletag < Formula
     end
 
     cp_r buildpath/"source/.", buildpath
+
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
@@ -49,6 +50,8 @@ class Puddletag < Formula
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
+    system "sh create_macos_app_bundle.sh --name Puddletag --icon puddletag.png --script #{bin}/puddletag"
+    prefix.install Dir["Puddletag.app"]
   end
 
   test do
