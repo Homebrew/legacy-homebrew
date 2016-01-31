@@ -7,8 +7,8 @@ class Arm < Formula
   bottle :unneeded
 
   def install
-    (share+"arm").install Dir["*"]
-    bin.write_exec_script share/"arm/arm"
+    pkgshare.install Dir["*"]
+    bin.write_exec_script pkgshare/"arm"
   end
 
   def caveats; <<-EOS.undent
@@ -16,7 +16,7 @@ class Arm < Formula
     See here for details: https://www.torproject.org/tor-manual.html.en
 
     To configure Arm, copy the sample configuration from
-    #{share}/arm/armrc.sample
+    #{opt_pkgshare}/armrc.sample
     to ~/.arm/armrc, adjusting as needed.
     EOS
   end
