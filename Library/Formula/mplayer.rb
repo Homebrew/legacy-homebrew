@@ -1,11 +1,10 @@
 class Mplayer < Formula
   desc "UNIX movie player"
   homepage "https://www.mplayerhq.hu/"
-  revision 1
 
   stable do
-    url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.tar.xz"
-    sha256 "ffe7f6f10adf2920707e8d6c04f0d3ed34c307efc6cd90ac46593ee8fba2e2b6"
+    url "https://www.mplayerhq.hu/MPlayer/releases/MPlayer-1.2.1.tar.xz"
+    sha256 "831baf097d899bdfcdad0cb80f33cc8dff77fa52cb306bee5dee6843b5c52b5f"
   end
 
   bottle do
@@ -63,9 +62,11 @@ class Mplayer < Formula
 end
 
 __END__
+diff --git a/configure b/configure
+index addc461..3b871aa 100755
 --- a/configure
 +++ b/configure
-@@ -1532,8 +1532,6 @@
+@@ -1517,8 +1517,6 @@ if test -e ffmpeg/mp_auto_pull ; then
  fi
  
  if test "$ffmpeg_a" != "no" && ! test -e ffmpeg ; then
