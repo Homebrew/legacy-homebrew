@@ -9,4 +9,9 @@ class MysqldumpSecure < Formula
     system "make"
     system "make", "reinstall"
   end
+  
+  test do
+    system bin/"mysqldump-secure 2>&1 | grep ''"
+  end
+
 end
