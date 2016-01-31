@@ -1,8 +1,8 @@
 class Libdvdread < Formula
   desc "C library for reading DVD-video images"
   homepage "https://dvdnav.mplayerhq.hu/"
-  url "https://download.videolan.org/pub/videolan/libdvdread/5.0.2/libdvdread-5.0.2.tar.bz2"
-  sha256 "82cbe693f2a3971671e7428790b5498392db32185b8dc8622f7b9cd307d3cfbf"
+  url "https://download.videolan.org/pub/videolan/libdvdread/5.0.3/libdvdread-5.0.3.tar.bz2"
+  sha256 "321cdf2dbdc83c96572bc583cd27d8c660ddb540ff16672ecb28607d018ed82b"
 
   head do
     url "git://git.videolan.org/libdvdread.git"
