@@ -3,6 +3,7 @@ class Nspr < Formula
   homepage "https://developer.mozilla.org/docs/Mozilla/Projects/NSPR"
   url "https://archive.mozilla.org/pub/mozilla.org/nspr/releases/v4.11/src/nspr-4.11.tar.gz"
   sha256 "cb320a9eee7028275ac0fce7adc39dee36f14f02fd8432fce1b7e1aa5e3685c2"
+  revision 1
 
   bottle do
     cellar :any
@@ -30,7 +31,7 @@ class Nspr < Formula
         --disable-debug
         --prefix=#{prefix}
         --enable-strip
-        --enable-pthreads
+        --with-pthreads
         --enable-ipv6
         --enable-macos-target=#{MacOS.version}
       ]
