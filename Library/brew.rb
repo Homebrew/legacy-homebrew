@@ -75,7 +75,11 @@ begin
   if empty_argv || (help_flag && (cmd.nil? || internal_cmd))
     # TODO: - `brew help cmd` should display subcommand help
     require "cmd/help"
-    puts ARGV.usage
+    if empty_argv
+      $stderr.puts ARGV.usage
+    else
+      puts ARGV.usage
+    end
     exit ARGV.any? ? 0 : 1
   end
 
@@ -123,10 +127,10 @@ rescue UsageError
   abort ARGV.usage
 rescue SystemExit => e
   onoe "Kernel.exit" if ARGV.verbose? && !e.success?
-  puts e.backtrace if ARGV.debug?
+  $stderr.puts e.backtrace if ARGV.debug?
   raise
 rescue Interrupt => e
-  puts # seemingly a newline is typical
+  $stderr.puts # seemingly a newline is typical
   exit 130
 rescue BuildError => e
   e.dump
@@ -134,15 +138,15 @@ rescue BuildError => e
 rescue RuntimeError, SystemCallError => e
   raise if e.message.empty?
   onoe e
-  puts e.backtrace if ARGV.debug?
+  $stderr.puts e.backtrace if ARGV.debug?
   exit 1
 rescue Exception => e
   onoe e
   if internal_cmd
-    puts "#{Tty.white}Please report this bug:"
-    puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
+    $stderr.puts "#{Tty.white}Please report this bug:"
+    $stderr.puts "    #{Tty.em}#{OS::ISSUES_URL}#{Tty.reset}"
   end
-  puts e.backtrace
+  $stderr.puts e.backtrace
   exit 1
 else
   exit 1 if Homebrew.failed?
