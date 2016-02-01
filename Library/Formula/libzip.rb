@@ -6,9 +6,9 @@ class Libzip < Formula
 
   bottle do
     cellar :any
-    sha256 "a247edc8d20ee2472c9f94040595088c124c02bcd024fe3980b7c751fd98d9bb" => :el_capitan
-    sha256 "4cb430d47617578511643326a4ca95c32416f6a698a826a33938aa444b6cfcf2" => :yosemite
-    sha256 "71298db872b42939f13c862c246ee1d1dc2925534551f8de2ba06d9dc37c560b" => :mavericks
+    sha256 "544666849b04c846203c55c6b70a4412cd49e10ae7b7250f01fb1fd78b7ce1e9" => :el_capitan
+    sha256 "2fb035f82a334d4d712a1597200796a9e84f7bc3192f2405df4f20542f47eb3c" => :yosemite
+    sha256 "7947355b5093939e74f689075942060bf77ffdbb33f60753aa1c7081684e68ec" => :mavericks
   end
 
   option :universal
