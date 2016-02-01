@@ -15,3 +15,4 @@ class Pb < Formula
     system "#{bin}/pb"
   end
 end
+
