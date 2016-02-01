@@ -4,6 +4,12 @@ class Gitg < Formula
   url "https://download.gnome.org/sources/gitg/3.18/gitg-3.18.0.tar.xz"
   sha256 "fa4b7b9c492f13f5f1d864af1281ea377ac8c7619c856e05f533b18989edf421"
 
+  bottle do
+    sha256 "5da83eb431d2bac44657f9be88a3e227d112754bd520215a7d590a62a243f08d" => :el_capitan
+    sha256 "ee6f8558b43e01274c102da3437a53b6bc27171722e9daf38768ea9605c0e8dc" => :yosemite
+    sha256 "42a8be25a6674a2c09ae5b4d7b52e6cef909c2af2973359db1ed41edf0497fce" => :mavericks
+  end
+
   depends_on "pkg-config" => :build
   depends_on "vala" => :build
   depends_on "intltool" => :build
