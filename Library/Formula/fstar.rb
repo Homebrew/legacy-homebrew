@@ -2,8 +2,8 @@ class Fstar < Formula
   desc "Language with a type system for program verification"
   homepage "https://www.fstar-lang.org/"
   url "https://github.com/FStarLang/FStar.git",
-    :tag => "v0.9.1.1",
-    :revision => "c41ea17778ff2fef4e75d56604ce1804e1985f33"
+    :tag => "0.9.2.0",
+    :revision => "658799a67706b635c5c42498fb42c21cf126e56e"
   head "https://github.com/FStarLang/FStar.git"
 
   bottle do
@@ -24,8 +24,8 @@ class Fstar < Formula
   end
 
   resource "batteries" do
-    url "https://github.com/ocaml-batteries-team/batteries-included/archive/v2.3.1.tar.gz"
-    sha256 "df778b90fcdb26288d9d92a86e51dd75d6bb7c6e41888c748c7508e8ea58b1d4"
+    url "https://github.com/ocaml-batteries-team/batteries-included/archive/v2.4.0.tar.gz"
+    sha256 "f13ff15efa35c272e1e63a2604f92c1823d5685cd73d3d6cf00f25f80178439f"
   end
 
   def install
@@ -87,12 +87,11 @@ class Fstar < Formula
     system "#{bin}/fstar.exe",
     "--include", "#{prefix}/stdlib",
     "--include", "#{prefix}/examples/unit-tests",
-    "--prims", "prims.fst",
     "--admit_fsi", "FStar.Set",
-    "set.fsi", "heap.fst",
-    "st.fst", "all.fst",
-    "list.fst", "string.fst",
-    "int32.fst", "unit1.fst",
+    "FStar.Set.fsi", "FStar.Heap.fst",
+    "FStar.ST.fst", "FStar.All.fst",
+    "FStar.List.fst", "FStar.String.fst",
+    "FStar.Int32.fst", "unit1.fst",
     "unit2.fst", "testset.fst"
   end
 end
