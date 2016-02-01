@@ -8,10 +8,10 @@ require "tap_migrations"
 class Migrator
   class MigrationNeededError < RuntimeError
     def initialize(formula)
-      super <<-EOS.undent
-        #{formula.oldname} was renamed to #{formula.name} and needs to be migrated.
-        Please run `brew migrate #{formula.oldname}`
-      EOS
+      # super <<-EOS.undent
+      #   #{formula.oldname} was renamed to #{formula.name} and needs to be migrated.
+      #   Please run `brew migrate #{formula.oldname}`
+      # EOS
     end
   end
 
@@ -22,17 +22,17 @@ class Migrator
   end
 
   class MigratorDifferentTapsError < RuntimeError
-    def initialize(formula, tap)
+    def initialize(formula, tap, oldname)
       msg = if tap == "Homebrew/homebrew"
-        "Please try to use #{formula.oldname} to refer the formula.\n"
+        "Please try to use #{oldname} to refer the formula.\n"
       elsif tap
-        "Please try to use fully-qualified #{tap}/#{formula.oldname} to refer the formula.\n"
+        "Please try to use fully-qualified #{tap}/#{oldname} to refer the formula.\n"
       end
 
       super <<-EOS.undent
-      #{formula.name} from #{formula.tap} is given, but old name #{formula.oldname} was installed from #{tap ? tap : "path or url"}.
+      #{formula.name} from #{formula.tap} is given, but old name #{oldname} was installed from #{tap ? tap : "path or url"}.
 
-      #{msg}To force migrate use `brew migrate --force #{formula.oldname}`.
+      #{msg}To force migrate use `brew migrate --force #{oldname}`.
       EOS
     end
   end
@@ -116,7 +116,7 @@ class Migrator
     @old_tap = old_tabs.first.tap
 
     if !ARGV.force? && !from_same_taps?
-      raise MigratorDifferentTapsError.new(formula, old_tap)
+      raise MigratorDifferentTapsError.new(formula, old_tap, oldname)
     end
 
     @new_cellar = HOMEBREW_CELLAR.join(newname)
@@ -130,7 +130,7 @@ class Migrator
 
     # check whether new_cellar is an installation of @{formula}
     if new_cellar.exist?
-      if FormulaResolver.new(formula.name).resolved_name != formula.name
+      if FormulaResolver.new(newname).resolved_name != newname
         raise MigratorDifferentFormulaeError.new(formula, oldname)
       end
     end

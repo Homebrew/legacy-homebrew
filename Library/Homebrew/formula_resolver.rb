@@ -4,6 +4,11 @@ require "pathname"
 
 class FormulaResolver
 
+  # TODO
+  # class FormulaResolverDifferentTapsError < RuntimeError
+  #   def initialize(name, )
+  # end
+
   # {Entry} is used to store one entry from renames file
   # entry in file is a string `newname, commit`
   class Entry
@@ -20,9 +25,9 @@ class FormulaResolver
     def <=>(entry)
       puts "compare #{commit} and #{entry.commit}"
       return 0 if commit == entry.commit
-      if commit == 0
+      if commit.nil?
         return -1
-      elsif entry.commit == 0
+      elsif entry.commit.nil?
         return 1
       else
         `git merge-base --is-ancestor #{commit} #{entry.commit}`.chomp
@@ -58,13 +63,13 @@ class FormulaResolver
 
     attr_reader :user, :repo
 
-    def initialize(name, user="Homebrew", repo="homebrew")
+    def initialize(name, user="homebrew", repo="homebrew")
       puts "Starting initializing Sheet..."
       @name = name
       @user = user
       @repo = repo
       @entries = []
-      entry_file = if user == "Homebrew" && repo == "homebrew"
+      entry_file = if user == "homebrew" && repo == "homebrew"
         HOMEBREW_LIBRARY.join("Renames/#{name}")
       else
         HOMEBREW_LIBRARY.join("Taps/#{user}/homebrew-#{repo}/Renames/#{name}")
@@ -110,7 +115,7 @@ class FormulaResolver
     if name.include?("/")
       @user, @repo, @name = name.split("/", 3).map(&:downcase)
     else
-      @user, @repo, @name = "Homebrew", "homebrew", name
+      @user, @repo, @name = "homebrew", "homebrew", name
     end
 
     @start_point_commit = start_point_commit || get_installed_commit
@@ -132,7 +137,11 @@ class FormulaResolver
         previous_entry = current_entry
         sheets[previous_entry.name] ||= Sheet.new(previous_entry.name, user, repo)
       end
-      previous_entry.name
+      if user == "homebrew" && repo == "homebrew"
+        previous_entry.name
+      else
+        "#{user}#{repo}#{previous_entry.name}"
+      end
     else
       name
     end
@@ -150,7 +159,7 @@ class FormulaResolver
   def get_installed_commit
     if (dir = HOMEBREW_CELLAR.join(name)).exist? && keg_dir = dir.subdirs.first
       tab = Tab.for_keg(Keg.new(keg_dir))
-      tab.last_commit if (tap = tab.source["tap"]) && tap.downcase == "#{user}/#{repo}".downcase
+      tab.last_commit if (tap = tab.tap) && tap.name.downcase == "#{user}/#{repo}"
     end
   end
 
