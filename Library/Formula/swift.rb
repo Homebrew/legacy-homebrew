@@ -1,26 +1,26 @@
 class Swift < Formula
   desc "High-performance system programming language"
   homepage "https://github.com/apple/swift"
-  url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2015-12-31-a.tar.gz"
-  version "2.2-SNAPSHOT-2015-12-31-a"
-  sha256 "d899e995c9cfa8987e470f0ad799f311ba9d8ae54ca889c4a22e60ac44bea26a"
+  url "https://github.com/apple/swift/archive/swift-2.2-SNAPSHOT-2016-01-25-a.tar.gz"
+  version "2.2-SNAPSHOT-2016-01-25-a"
+  sha256 "616cf1cfaa407ffb22cd60f9c5a95dc3227665c72dd5c8d044b31174430af3b6"
 
   stable do
     swift_tag = "swift-#{version}"
 
     resource "cmark" do
-      url "https://github.com/apple/swift-cmark/archive/0.22.0.tar.gz"
-      sha256 "7fa11223b9a29a411fbc440aba2a756ccc8b6228d8c2b367e8f568968e3eb569"
+      url "https://github.com/apple/swift-cmark/archive/#{swift_tag}.tar.gz"
+      sha256 "063469a810855a622bb05846b3f74fb0f0f92585e46c5ec16618188a71d21f24"
     end
 
     resource "clang" do
       url "https://github.com/apple/swift-clang/archive/#{swift_tag}.tar.gz"
-      sha256 "9660637e380472e3c30244d43f0d56499483a10dd960a8ae5323a0ba374152a2"
+      sha256 "eec56334ffcec1cefaca5758031c722a0cf12eb0d3fac30f9d30c1bded16eeea"
     end
 
     resource "llvm" do
       url "https://github.com/apple/swift-llvm/archive/#{swift_tag}.tar.gz"
-      sha256 "4730fb75898110ed892d4cc35f2f58b457879c51283b19cccf797c443b3bc05e"
+      sha256 "7b07af901b6fe42793e4f25a470db8d61c60c16b92e434de17fc151861e00172"
     end
   end
 
