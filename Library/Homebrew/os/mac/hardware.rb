@@ -1,4 +1,4 @@
-require "os/mac/mach"
+require "os/mac/pathname"
 
 module MacCPUs
   OPTIMIZATION_FLAGS = {
