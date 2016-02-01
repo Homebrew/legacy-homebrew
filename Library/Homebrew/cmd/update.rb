@@ -52,6 +52,7 @@ module Homebrew
     rename_taps_dir_if_necessary
 
     updated_taps = []
+    tap_initial_revisions = {}
     Tap.each do |tap|
       next unless tap.git?
 
@@ -63,7 +64,10 @@ module Homebrew
         rescue
           onoe "Failed to update tap: #{tap}"
         else
-          updated_taps << tap.name if updater.updated?
+          if updater.updated?
+            updated_taps << tap.name
+            tap_initial_revisions[tap.name] = updater.initial_revision
+          end
           report.update(updater.report) do |_key, oldval, newval|
             oldval.concat(newval)
           end
@@ -75,6 +79,7 @@ module Homebrew
            "(#{updated_taps.join(", ")})."
     end
     puts "Already up-to-date." unless master_updated || !updated_taps.empty?
+
 
     Tap.clear_cache
     Tap.each(&:link_manpages)
@@ -95,7 +100,7 @@ module Homebrew
     end if load_tap_migrations
 
     load_formula_renames
-    report.update_renamed(master_updater.initial_revision)
+    report.update_renamed(master_updater.initial_revision, tap_initial_revisions)
 
     # Migrate installed renamed formulae from core and taps.
     # TODO: reimplement according to new renames sturcture
@@ -122,9 +127,11 @@ module Homebrew
         migrator = Migrator.new(f, oldname)
         migrator.migrate
       rescue Migrator::MigratorDifferentTapsError
+      rescue Migrator::MigratorDifferentFormulaeError
       end
     end
 
+    # TODO add migratior report
     if report.empty?
       puts "No changes to formulae." if master_updated || !updated_taps.empty?
     else
@@ -241,7 +248,7 @@ class Updater
     # Used for testing purposes, e.g., for testing formula migration after
     # renaming it in the currently checked-out branch. To test run
     # "brew update --simulate-from-current-branch"
-    if ARGV.include?("--simulate-from-current-branch")
+    if ARGV.include?("--simulate-from-current-branch") && repository == HOMEBREW_REPOSITORY
       @initial_revision = `git rev-parse -q --verify #{@upstream_branch}`.chomp
       @current_revision = read_current_revision
       begin
@@ -249,6 +256,7 @@ class Updater
       rescue ErrorDuringExecution
         odie "Your HEAD is not a descendant of '#{@upstream_branch}'."
       end
+      pop_stash
       return
     end
 
@@ -329,8 +337,6 @@ class Updater
         src = paths.first
         dst = paths.last
 
-        next unless File.extname(dst) == ".rb"
-
         # TODO add HOMEBREW_FORMULA_RENAMES constant
         # TODO fix HOMEBREW_LIBRARY.join("Renames") for taps
 
@@ -340,12 +346,15 @@ class Updater
           HOMEBREW_LIBRARY.join("Renames")
         end
 
-        if paths.any? { |p| File.dirname(p) == rename_dir }
-          formula_file = formula_directory.join(File.basename(p) + ".rb")
+        # detect formula renames by inspecting rename files
+        if repository.join(File.dirname(src)) == rename_dir
+          formula_file = repository.join(formula_directory).join(File.basename(src) + ".rb")
           map[:D] << formula_file
+          # TODO check
           map[:A] << formula_file if formula_file.exist?
         end
 
+        next unless File.extname(dst) == ".rb"
         next unless paths.any? { |p| File.dirname(p) == formula_directory }
 
         case status
@@ -374,6 +383,7 @@ class Updater
       end
     end
 
+    map[:D].uniq!
     map
   end
 
@@ -443,28 +453,27 @@ class Report
     dump_formula_report :D, "Deleted Formulae"
   end
 
-  # TODO: implement according to new structure of the renames
-  def update_renamed(initial_revision)
+  # TODO implement according to new structure of the renames
+  # TODO fix for taps
+  # TODO fix next unless newname: newname can be the same as oldname
+  def update_renamed(core_initial_revision, tap_initial_revisions)
     renamed_formulae = []
 
+    # newname is nil if formula gets deleted
     fetch(:D, []).each do |path|
       case path.to_s
       when HOMEBREW_TAP_PATH_REGEX
-        oldname = path.basename(".rb").to_s
-        next unless newname = Tap.fetch($1, $2).formula_renames[oldname]
+        tap = Tap.fetch($1, $2)
+        oldname = "#{tap.name}/#{path.basename(".rb").to_s}"
+        newname = FormulaResolver.new(oldname, tap_initial_revisions[tap.name]).resolved_name
+        next if oldname == newname || !newname
       else
-        oldname = path.basename(".rb").to_s
-        # get first rename after oldname
-        # TODO what if dirs empty?
-        rack = HOMEBREW_CELLAR.join(name)
-        dirs = rack.directory? ? rack.subdirs : []
-        last_commit = Tab.for_keg(dirs.first).last_commit
-        newname = FormulaResolver.new(oldname, last_commit).resolved_name
-        next unless newname
-        # next unless newname = CoreFormulaRepository.instance.formula_renames[oldname]
+        oldname = "#{path.basename(".rb").to_s}"
+        newname = FormulaResolver.new(oldname, core_initial_revision).resolved_name
+        next if oldname == newname || !newname
       end
 
-      if fetch(:A, []).include?(newpath = path.dirname.join("#{newname}.rb"))
+      if fetch(:A, []).include?(newpath = path.dirname.join("#{newname.split("/").last}.rb"))
         renamed_formulae << [path, newpath]
       end
     end

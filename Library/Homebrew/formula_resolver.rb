@@ -64,7 +64,7 @@ class FormulaResolver
     attr_reader :user, :repo
 
     def initialize(name, user="homebrew", repo="homebrew")
-      puts "Starting initializing Sheet..."
+      puts "Initializing Sheet for #{name}, #{user}, #{repo}..."
       @name = name
       @user = user
       @repo = repo
@@ -80,14 +80,14 @@ class FormulaResolver
           entries << Entry.new(*line.chomp.split(',').map(&:lstrip))
         end
       end
-      puts "Sheet initialize #{name}"
+      puts "Sheet initialized #{name}"
       puts "entries are #{entries}"
     end
 
     # get the first entry after another entry
     def entry_after(other)
       # TODO change linear search to binary
-      entries.detect { |e| e > other }
+      entries.detect { |e| e >= other }
     end
 
     # get the first name after given entry
@@ -119,7 +119,7 @@ class FormulaResolver
     end
 
     @start_point_commit = start_point_commit || get_installed_commit
-    @sheets[name] = Sheet.new(name, user, repo)
+    @sheets[@name] = Sheet.new(@name, user, repo)
   end
 
   # returns nil if there are no renames for this formula after start_point_commit
@@ -140,7 +140,7 @@ class FormulaResolver
       if user == "homebrew" && repo == "homebrew"
         previous_entry.name
       else
-        "#{user}#{repo}#{previous_entry.name}"
+        "#{user}/#{repo}/#{previous_entry.name}"
       end
     else
       name

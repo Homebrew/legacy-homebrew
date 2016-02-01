@@ -130,7 +130,8 @@ class Migrator
 
     # check whether new_cellar is an installation of @{formula}
     if new_cellar.exist?
-      if FormulaResolver.new(newname).resolved_name != newname
+      tap = formula.tap
+      if FormulaResolver.new("#{tap}/#{newname}").resolved_name != newname
         raise MigratorDifferentFormulaeError.new(formula, oldname)
       end
     end
