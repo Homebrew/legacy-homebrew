@@ -4,6 +4,7 @@ class SigningParty < Formula
   url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/signing-party/signing-party_2.2.orig.tar.gz"
   mirror "https://mirrorservice.org/sites/ftp.debian.org/debian/pool/main/s/signing-party/signing-party_2.2.orig.tar.gz"
   sha256 "ad5d06c6c58de17aee104b9cf2f3a954cd9b854e5a77c1a8b62cf0a67c63168f"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -201,3 +202,15 @@ index aaf97bb..7a6bd38 100755
  # Organiser contact
  printf "%80s\n\n\n" "$org"
  # Title
+
+--- a/caff/caff	2016-02-01 21:59:58.000000000 +0100
++++ b/caff/caff	2016-02-01 22:00:42.000000000 +0100
+@@ -773,7 +773,7 @@
+     # ignore direct and dup handles
+     my @infhs  = grep {defined $opts{$_}      and !$handles->options($_)->{direct} and $handles->{$_} !~ /^[<>]&/} qw/stdin passphrase command/;
+     my @outfhs = grep {defined $handles->{$_} and !$handles->options($_)->{direct} and $handles->{$_} !~ /^[<>]&/} qw/stdout stderr status logger/;
+-    my %fh = reverse %$handles{@infhs, @outfhs};
++    my %fh = map { $$handles{$_} => $_ } (@infhs, @outfhs);
+ 
+     my %offset = map {$_ => 0}  @infhs;
+     my %output = map {$_ => ''} @outfhs;
