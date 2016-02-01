@@ -24,8 +24,8 @@ class Fstar < Formula
   end
 
   resource "batteries" do
-    url "https://github.com/ocaml-batteries-team/batteries-included/archive/v2.3.1.tar.gz"
-    sha256 "df778b90fcdb26288d9d92a86e51dd75d6bb7c6e41888c748c7508e8ea58b1d4"
+    url "https://github.com/ocaml-batteries-team/batteries-included/archive/v2.4.0.tar.gz"
+    sha256 "f13ff15efa35c272e1e63a2604f92c1823d5685cd73d3d6cf00f25f80178439f"
   end
 
   def install
