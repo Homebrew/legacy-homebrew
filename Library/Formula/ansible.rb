@@ -204,6 +204,14 @@ class Ansible < Formula
     sha256 "3e95445c1db500a344079a47b171c45ef18f57d188dffdb0e4165c71bea8eb3d"
   end
 
+	#
+	# apache libcloud (for Google GCE cupport)
+	#
+  resource "apache-libcloud" do
+    url "https://pypi.python.org/packages/source/a/apache-libcloud/apache-libcloud-0.20.1.tar.gz"
+    sha256 "f36dcf8e6a4270c86b521ab4868fd762a7ec217195e126a8ccb028a82cf55466"
+  end
+
   #
   # pyrax (for Rackspace support)
   #
