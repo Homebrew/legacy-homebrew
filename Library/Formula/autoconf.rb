@@ -5,6 +5,8 @@ class Autoconf < Formula
   mirror "https://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz"
   sha256 "954bd69b391edc12d6a4a51a2dd1476543da5c6bbf05a95b59dc0dd6fd4c2969"
 
+  depends_on "libtool"
+
   bottle do
     cellar :any_skip_relocation
     revision 4
