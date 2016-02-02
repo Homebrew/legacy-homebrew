@@ -49,7 +49,9 @@ class Nuxeo < Formula
     cp "#{etc}/nuxeo.conf", "#{testpath}/nuxeo.conf"
     inreplace "#{testpath}/nuxeo.conf" do |s|
       s.gsub! /#{var}/, testpath
+      s.gsub! /#nuxeo\.tmp\.dir.*/, "nuxeo.tmp.dir=#{testpath}/tmp"
     end
+
     ENV["NUXEO_CONF"] = "#{testpath}/nuxeo.conf"
 
     assert_match %r{#{testpath}/nuxeo\.conf}, shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.conf")
