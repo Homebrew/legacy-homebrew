@@ -116,7 +116,8 @@ class Elasticsearch < Formula
     system "#{libexec}/bin/plugin", "list"
     pid = "#{testpath}/pid"
     begin
-      system "#{bin}/elasticsearch", "-d", "-p", pid, "--path.data", testpath
+      mkdir testpath/"config"
+      system "#{bin}/elasticsearch", "-d", "-p", pid, "--path.home", testpath
       sleep 10
       system "curl", "-XGET", "localhost:9200/"
     ensure
