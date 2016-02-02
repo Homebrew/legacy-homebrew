@@ -411,7 +411,7 @@ class FormulaAuditor
       problem "Description shouldn't start with an indefinite article (#{$1})"
     end
 
-    if desc =~ /^#{formula.name}\s/i
+    if desc.downcase.start_with? "#{formula.name} "
       problem "Description shouldn't include the formula name"
     end
   end
