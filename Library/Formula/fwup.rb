@@ -1,9 +1,8 @@
 class Fwup < Formula
   desc "Configurable embedded Linux firmware update creator and runner"
   homepage "https://github.com/fhunleth/fwup"
-  url "https://github.com/fhunleth/fwup/archive/v0.4.2.tar.gz"
-  sha256 "1c444d52dded8f69de127f71346d53ebee16fae7cfde23f6a324336b2b6940bb"
-  revision 1
+  url "https://github.com/fhunleth/fwup/archive/v0.5.2.tar.gz"
+  sha256 "e7735e503f894f19b5a3717c085aa9f6f18702696de91f17bd5405f95f8d6f98"
 
   bottle do
     cellar :any
@@ -14,6 +13,7 @@ class Fwup < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "libtool" => :build
   depends_on "confuse"
   depends_on "libarchive"
   depends_on "libsodium"
