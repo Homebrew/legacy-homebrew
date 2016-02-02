@@ -3,6 +3,7 @@ class Icmake < Formula
   homepage "https://fbb-git.github.io/icmake/"
   url "https://github.com/fbb-git/icmake/archive/7.23.02.tar.gz"
   sha256 "f030086d0630c2c1755519556b9cf88b8495bc8debf36b257e0c69d3b199c46b"
+  revision 1
 
   bottle do
     sha256 "a8d78a2d192e97d98abc4c02b6ef4411ea47f17056591f44c3bc755bd695fecb" => :el_capitan
@@ -19,7 +20,7 @@ class Icmake < Formula
     (buildpath/"icmake/INSTALL.im").open("w") do |f|
       f.write <<-EOS.undent
         #define BINDIR      "#{bin}"
-        #define SKELDIR     "#{share}"
+        #define SKELDIR     "#{pkgshare}"
         #define MANDIR      "#{man}"
         // not a typo; the install script puts binaries under LIBDIR/
         #define LIBDIR      "#{bin}"
