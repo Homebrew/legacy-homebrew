@@ -23,7 +23,6 @@ class Nuxeo < Formula
     inreplace "#{libexec}/bin/nuxeo.conf" do |s|
       s.gsub! /#nuxeo\.log\.dir.*/, "nuxeo.log.dir=#{var}/log/nuxeo"
       s.gsub! /#nuxeo\.data\.dir.*/, "nuxeo.data.dir=#{var}/lib/nuxeo/data"
-      s.gsub! /#nuxeo\.tmp\.dir.*/, "nuxeo.tmp.dir=/tmp/nuxeo"
       s.gsub! /#nuxeo\.pid\.dir.*/, "nuxeo.pid.dir=#{var}/run/nuxeo"
     end
     etc.install "#{libexec}/bin/nuxeo.conf"
@@ -54,7 +53,7 @@ class Nuxeo < Formula
     ENV["NUXEO_CONF"] = "#{testpath}/nuxeo.conf"
 
     # TODO: Remove grep as soon as warn are correctly written on stderr (https://jira.nuxeo.com/browse/NXP-18724)
-    assert_match %r{#{testpath}\/nuxeo\.conf}, shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.conf")
-    assert_match %r{#{libexec}}, shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.home")
+    assert_match %r{#{testpath}/nuxeo\.conf}, shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.conf")
+    assert_match /#{libexec}/, shell_output("#{libexec}/bin/nuxeoctl config -q --get nuxeo.home")
   end
 end
