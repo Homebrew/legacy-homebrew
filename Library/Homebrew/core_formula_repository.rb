@@ -63,9 +63,8 @@ class CoreFormulaRepository < Tap
   end
 
   # @private
-  def formula_renames
-    require "formula_renames"
-    FORMULA_RENAMES
+  def formula_renames_dir
+    HOMEBREW_LIBRARY.join("Renames")
   end
 
   # @private

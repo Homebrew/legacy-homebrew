@@ -337,14 +337,8 @@ class Tap
 
   # Hash with tap formula renames
   # TODO remove
-  def formula_renames
-    require "utils/json"
-
-    @formula_renames ||= if (rename_file = path/"formula_renames.json").file?
-      Utils::JSON.load(rename_file.read)
-    else
-      {}
-    end
+  def formula_renames_dir
+    path.join("Renames")
   end
 
   def ==(other)
