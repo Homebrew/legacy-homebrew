@@ -3,8 +3,8 @@ class Botan < Formula
   homepage "http://botan.randombit.net/"
 
   stable do
-    url "http://botan.randombit.net/releases/Botan-1.10.10.tgz"
-    sha256 "6b67b14746410461fe4a8ce6a625e7eef789243454fe30eab7329d5984be4163"
+    url "http://botan.randombit.net/releases/Botan-1.10.11.tgz"
+    sha256 "88c82dd280ee6f12cbe4689d8fb9122169b4021bd37ad4cdb405724856c9a0dc"
     # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
     patch :DATA
   end
@@ -18,8 +18,8 @@ class Botan < Formula
   end
 
   devel do
-    url "http://botan.randombit.net/releases/Botan-1.11.26.tgz"
-    sha256 "c94cec8a7a293a813ee30f53aff7ac6670cbc4d42fa38833ae41eaf860fe8511"
+    url "http://botan.randombit.net/releases/Botan-1.11.28.tgz"
+    sha256 "a414c96f45b2707d4750d299ca03ec3fce5ada62ada1ba5cd012a9ace61f5932"
   end
 
   option "with-debug", "Enable debug build of Botan"
