@@ -24,11 +24,10 @@ class FormulaResolver
 
     def <=>(entry)
       puts "compare #{commit} and #{entry.commit}"
-      return 0 if commit == entry.commit
       if commit.nil?
         return -1
-      elsif entry.commit.nil?
-        return 1
+      elsif commit == entry.commit
+        return 0
       else
         `git merge-base --is-ancestor #{commit} #{entry.commit}`.chomp
         if $?.success?

@@ -114,6 +114,7 @@ module Homebrew
       end
 
       next unless (dir = HOMEBREW_CELLAR/oldname).directory? && !dir.subdirs.empty?
+      next if HOMEBREW_CELLAR.join(newname).exist?
 
       begin
         f = Formulary.factory("#{user}/#{repo}/#{newname}")
