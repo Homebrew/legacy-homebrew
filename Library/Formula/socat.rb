@@ -1,8 +1,8 @@
 class Socat < Formula
   desc "netcat on steroids"
   homepage "http://www.dest-unreach.org/socat/"
-  url "http://www.dest-unreach.org/socat/download/socat-1.7.3.0.tar.gz"
-  sha256 "f8de4a2aaadb406a2e475d18cf3b9f29e322d4e5803d8106716a01fd4e64b186"
+  url "http://www.dest-unreach.org/socat/download/socat-1.7.3.1.tar.gz"
+  sha256 "a8cb07b12bcd04c98f4ffc1c68b79547f5dd4e23ddccb132940f6d55565c7f79"
 
   bottle do
     cellar :any
@@ -14,9 +14,9 @@ class Socat < Formula
   end
 
   devel do
-    url "http://www.dest-unreach.org/socat/download/socat-2.0.0-b8.tar.bz2"
-    sha256 "c804579db998fb697431c82829ae03e6a50f342bd41b8810332a5d0661d893ea"
-    version "2.0.0-b8"
+    url "http://www.dest-unreach.org/socat/download/socat-2.0.0-b9.tar.gz"
+    version "2.0.0-b9"
+    sha256 "f9496ea44898d7707507a728f1ff16b887c80ada63f6d9abb0b727e96d5c281a"
   end
 
   depends_on "readline"
@@ -29,6 +29,7 @@ class Socat < Formula
   end
 
   test do
-    assert_match "HTTP/1.0", pipe_output("#{bin}/socat - tcp:www.google.com:80", "GET / HTTP/1.0\r\n\r\n")
+    output = pipe_output("#{bin}/socat - tcp:www.google.com:80", "GET / HTTP/1.0\r\n\r\n")
+    assert_match "HTTP/1.0", output
   end
 end
