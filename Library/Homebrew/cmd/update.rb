@@ -465,12 +465,12 @@ class Report
       case path.to_s
       when HOMEBREW_TAP_PATH_REGEX
         tap = Tap.fetch($1, $2)
-        oldname = "#{tap.name}/#{path.basename(".rb").to_s}"
-        newname = FormulaResolver.new(oldname, tap_initial_revisions[tap.name]).resolved_name
+        oldname = "#{tap}/#{path.basename(".rb").to_s}"
+        newname = FormulaResolver.resolve_from_commit(oldname, tap_initial_revisions[tap.name])
         next if oldname == newname || !newname
       else
         oldname = "#{path.basename(".rb").to_s}"
-        newname = FormulaResolver.new(oldname, core_initial_revision).resolved_name
+        newname = FormulaResolver.resolve_from_commit(oldname, core_initial_revision)
         next if oldname == newname || !newname
       end
 

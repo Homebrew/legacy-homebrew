@@ -149,7 +149,7 @@ class Formulary
     def initialize(tapped_name)
       user, repo, name = tapped_name.split("/", 3).map(&:downcase)
       @tap = Tap.fetch user, repo
-      name = FormulaResolver.new(tapped_name).resolved_name
+      user, repo, name = FormulaResolver.resolve_for_name(tapped_name).split("/")
       puts "name is #{name}"
       path = @tap.formula_files.detect { |file| file.basename(".rb").to_s == name }
 
@@ -294,7 +294,7 @@ class Formulary
     end
 
     # resolve installed formula newname if there is one
-    if newref = FormulaResolver.new(ref).resolved_name
+    if newref = FormulaResolver.resolve_for_name(ref)
       puts "loader_for's newref is #{newref}"
       formula_with_that_oldname = core_path(newref)
       if formula_with_that_oldname.file?
@@ -328,8 +328,8 @@ class Formulary
 
     possible_tap_newname_formulae = []
     Tap.each do |tap|
-      if newref = FormulaResolver.new("#{tap.user}/#{tap.repo}/#{tap.name}").resolved_name != ref
-        possible_tap_newname_formulae << "#{tap.name}/#{newref}"
+      if newref = FormulaResolver.resolve_for_name("#{tap}/#{ref}").resolved_name != ref
+        possible_tap_newname_formulae << newref
       end
     end
 

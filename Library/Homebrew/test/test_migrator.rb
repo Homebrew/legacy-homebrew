@@ -214,8 +214,13 @@ class MigratorTests < Homebrew::TestCase
     tab = Tab.empty
     tab.tabfile = new_keg_record.join("INSTALL_RECEIPT.json")
     tab.source["path"] = @new_f.path.to_s
+    tab.source["tap"] = "Homebrew/homebrew"
     tab.write
 
+    @old_tab.source["tap"] = "Homebrew/homebrew"
+    @old_tab.write
+
+    @new_f.set_tap(CoreFormulaRepository.instance)
     migrator = Migrator.new(@new_f, "oldname")
     @keg.unlink
     @keg.uninstall

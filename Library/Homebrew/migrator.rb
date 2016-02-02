@@ -40,11 +40,9 @@ class Migrator
   class MigratorDifferentFormulaeError < RuntimeError
     def initialize(formula, oldname)
       super <<-EOS.undent
-      #{oldname} can't be migrated to #{formula.name} because installed version
-      of #{formula.name} is a renamed package with the same name.
+      #{oldname} can't be migrated to #{formula.name} because installed version of #{formula.name} is a renamed package with the same name.
 
-      Please, migrate #{formula.name} before migrating #{formula.name} and
-      try again.
+      Please, migrate #{formula.name} before migrating #{oldname} and try again.
       EOS
     end
   end
@@ -131,8 +129,14 @@ class Migrator
     # check whether new_cellar is an installation of @{formula}
     if new_cellar.exist?
       tap = formula.tap
-      if FormulaResolver.new("#{tap}/#{newname}").resolved_name != newname
+      if tap.nil?
         raise MigratorDifferentFormulaeError.new(formula, oldname)
+      else
+        resolved_name = FormulaResolver.resolve_from_rack("#{tap}/#{newname}")
+        if tap.to_s == "Homebrew/homebrew" && resolved_name != newname \
+            || tap.to_s != "Homebrew/homebrew" && resolved_name != "#{tap}/#{newname}"
+          raise MigratorDifferentFormulaeError.new(formula, oldname)
+        end
       end
     end
 
