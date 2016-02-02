@@ -18,10 +18,11 @@ class Hyperscan < Formula
 
   test do
     (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
       #include <hs/hs.h>
       int main()
       {
-        sprintf("hyperscan v%s", hs_version());
+        printf("hyperscan v%s", hs_version());
         return 0;
       }
     EOS
