@@ -7,6 +7,7 @@ OFFICIAL_TAPS = %w[
   emacs
   fuse
   games
+  gui
   nginx
   php
   python
