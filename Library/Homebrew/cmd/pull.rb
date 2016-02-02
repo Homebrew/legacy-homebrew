@@ -100,7 +100,7 @@ module Homebrew
         "git", "diff-tree", "-r", "--name-only",
         "--diff-filter=AM", revision, "HEAD", "--", tap.formula_dir.to_s
       ).each_line do |line|
-        name = File.basename(line.chomp, ".rb")
+        name = "#{tap.name}/#{File.basename(line.chomp, ".rb")}"
 
         begin
           changed_formulae << Formula[name]
