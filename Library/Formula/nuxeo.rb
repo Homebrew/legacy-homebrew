@@ -27,12 +27,15 @@ class Nuxeo < Formula
       s.gsub! /#nuxeo\.pid\.dir.*/, "nuxeo.pid.dir=#{var}/run/nuxeo"
     end
     etc.install "#{libexec}/bin/nuxeo.conf"
+
+    libexec.install_symlink var/"cache/nuxeo/packages"
+  end
+
+  def post_install
     (var/"log/nuxeo").mkpath
     (var/"lib/nuxeo/data").mkpath
     (var/"run/nuxeo").mkpath
     (var/"cache/nuxeo/packages").mkpath
-
-    libexec.install_symlink var/"cache/nuxeo/packages"
   end
 
   def caveats; <<-EOS.undent
