@@ -1,8 +1,8 @@
 class Wires < Formula
   desc "WebDriver <-> Marionette proxy"
   homepage "https://github.com/jgraham/wires"
-  url "https://github.com/jgraham/wires/archive/v0.4.2.tar.gz"
-  sha256 "f86fdac8f69f94bd57dc9fdb45851585a24790b069605d033288e419653c9efe"
+  url "https://github.com/jgraham/wires/archive/v0.6.2.tar.gz"
+  sha256 "bbc73c1014dd218b424a82da6e656f638aa672fd0990229eff8c1a005166db07"
 
   bottle do
     cellar :any_skip_relocation
