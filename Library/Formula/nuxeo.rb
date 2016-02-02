@@ -18,7 +18,7 @@ class Nuxeo < Formula
     libexec.install Dir["#{buildpath}/*"]
 
     (bin/"nuxeoctl").write_env_script "#{libexec}/bin/nuxeoctl",
-      :NUXEO_HOME => "#{libexec}", :NUXEO_CONF => "#{etc}/nuxeo.conf"
+      :NUXEO_HOME => libexec.to_s, :NUXEO_CONF => "#{etc}/nuxeo.conf"
 
     inreplace "#{libexec}/bin/nuxeo.conf" do |s|
       s.gsub! /#nuxeo\.log\.dir.*/, "nuxeo.log.dir=#{var}/log/nuxeo"
@@ -26,8 +26,6 @@ class Nuxeo < Formula
       s.gsub! /#nuxeo\.pid\.dir.*/, "nuxeo.pid.dir=#{var}/run/nuxeo"
     end
     etc.install "#{libexec}/bin/nuxeo.conf"
-
-    libexec.install_symlink var/"cache/nuxeo/packages"
   end
 
   def post_install
@@ -35,6 +33,8 @@ class Nuxeo < Formula
     (var/"lib/nuxeo/data").mkpath
     (var/"run/nuxeo").mkpath
     (var/"cache/nuxeo/packages").mkpath
+
+    libexec.install_symlink var/"cache/nuxeo/packages"
   end
 
   def caveats; <<-EOS.undent
