@@ -11,8 +11,8 @@ class Hyperscan < Formula
     sha256 "c7bfbbec66aacc4a8a79af7c6edb45cd09873d7e6ed8fc39cca0b15a6b1805cc" => :mavericks
   end
 
+  depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "boost" => :build
-  depends_on "python" => :build
   depends_on "ragel" => :build
   depends_on "cmake" => :build
 
