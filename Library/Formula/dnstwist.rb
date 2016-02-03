@@ -6,9 +6,9 @@ class Dnstwist < Formula
 
   bottle do
     cellar :any
-    sha256 "6d9fba8db2440ebd7f942fe60e0dc9d418697acf5226968b2c57170c2343f3d4" => :el_capitan
-    sha256 "1aee3219cb6f784486d9630c73b1ca39aaeb9e6df0dc27949a4c90d974ac5eb4" => :yosemite
-    sha256 "f7de05a469c237b2305d1ef7fb937d75dc4a7ec98905c8520b78f8b86bd72147" => :mavericks
+    sha256 "c4a4ede766163bf4dc8acc41f968198b574f6527d687a547ece0c227845488c1" => :el_capitan
+    sha256 "6ec5b4eded505da0cbc5a37ea12c720293510ba5f05f12a2e0067d4257bbb8c5" => :yosemite
+    sha256 "22426190a5dad132035572a609f3f612716837b050f7ec68707bd5aee87b7418" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
