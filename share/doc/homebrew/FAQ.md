@@ -120,7 +120,7 @@ Or:
 
 Or:
 
-`brew pull https://github.com/Homebrew/homebrew/pulls/1234`
+`brew pull https://github.com/Homebrew/homebrew/pull/1234`
 
 ### Why does Homebrew insist I install to `/usr/local`?
 <a name="usrlocal"></a>
