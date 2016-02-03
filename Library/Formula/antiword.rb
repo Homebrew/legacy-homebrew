@@ -29,10 +29,7 @@ class Antiword < Formula
   end
 
   def caveats; <<-EOS.undent
-    You can install mapping files globally to:
-      #{HOMEBREW_PREFIX}/share/antiword
-    or locally to:
-      ~/.antiword
+    You can install mapping files in ~/.antiword
     EOS
   end
 
