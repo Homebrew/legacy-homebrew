@@ -4,9 +4,9 @@ class RubyBuild < Formula
   url "https://github.com/rbenv/ruby-build/archive/v20160130.tar.gz"
   sha256 "9f64d81252a08ad95a6e3a66c07e0f3be127a70a742da526bdf42b501304b547"
 
-  bottle :unneeded
-
   head "https://github.com/rbenv/ruby-build.git"
+
+  bottle :unneeded
 
   depends_on "autoconf" => [:recommended, :run]
   depends_on "pkg-config" => [:recommended, :run]
