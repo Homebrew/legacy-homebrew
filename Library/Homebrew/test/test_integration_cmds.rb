@@ -7,6 +7,12 @@ require "pathname"
 class IntegrationCommandTests < Homebrew::TestCase
   def setup
     @cmd_id_index = 0 # Assign unique IDs to invocations of `cmd_output`.
+    (HOMEBREW_PREFIX/"bin").mkpath
+    FileUtils.touch HOMEBREW_PREFIX/"bin/brew"
+  end
+
+  def teardown
+    (HOMEBREW_PREFIX/"bin").rmtree
   end
 
   def cmd_id_from_args(args)
