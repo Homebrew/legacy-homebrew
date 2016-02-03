@@ -1,9 +1,10 @@
 class Nettle < Formula
   desc "Low-level cryptographic library"
   homepage "https://www.lysator.liu.se/~nisse/nettle/"
-  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.1.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.1.tar.gz"
-  sha256 "f6859d4ec88e70805590af9862b4b8c43a2d1fc7991df0a7a711b1e7ca9fc9d3"
+  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.2.tar.gz"
+  sha256 "ea4283def236413edab5a4cf9cf32adf540c8df1b9b67641cfc2302fca849d97"
+  patch :DATA
 
   bottle do
     cellar :any
@@ -51,3 +52,16 @@ class Nettle < Formula
     system "./test"
   end
 end
+
+__END__
+--- nettle-3.2.orig/testsuite/dlopen-test.c	2016-01-28 20:02:21.000000000 +0000
++++ nettle-3.2/testsuite/dlopen-test.c
+@@ -9,7 +9,7 @@ int
+ main (int argc UNUSED, char **argv UNUSED)
+ {
+ #if HAVE_LIBDL
+-  void *handle = dlopen ("../libnettle.so", RTLD_NOW);
++  void *handle = dlopen ("../libnettle.dylib", RTLD_NOW);
+   int (*get_version)(void);
+   if (!handle)
+     {
