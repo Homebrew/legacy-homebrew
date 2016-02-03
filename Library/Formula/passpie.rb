@@ -1,15 +1,15 @@
 class Passpie < Formula
   desc "Manage login credentials from the terminal"
   homepage "https://github.com/marcwebbie/passpie"
-  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.2.0.tar.gz"
-  sha256 "d769fd20454a8cd7802ac145d95e144d4f61b4f467999d19c50349766956d51d"
+  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.3.0.tar.gz"
+  sha256 "de3de4439dcbb90eddd9f5df3e21aa8a0bc9c539cb6c43fccb4cae07303854ff"
   head "https://github.com/marcwebbie/passpie.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "bb97d90f195935368be486424f8e19165d64c2aed5497d9c51c34e860eb82dd8" => :el_capitan
-    sha256 "916f2da581e3575a31ec9d6b8c533a2b6351756d537ef19651769d256b7c069d" => :yosemite
-    sha256 "588af60dec0c750c393e4c5eeac0913fe712a3fc02ea9b569bb05990536e0d56" => :mavericks
+    sha256 "6c916faedd52c2421b7ef4407c5e036ad653ead17620b04ee47305cc745310f3" => :el_capitan
+    sha256 "9bd1106249dc25a0566e9963e00f0ff725653cf5fb58fe02d88fe9b92e66df93" => :yosemite
+    sha256 "35f63abfb770a087312aa1dc517fd87ab42be4f4e6ea17cda6adac262d013eb1" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -57,19 +57,50 @@ class Passpie < Formula
   end
 
   test do
-    system bin/"passpie", "-D", "temp_db", "init", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "add", "foo@bar", "--random"
-    system bin/"passpie", "-D", "temp_db", "add", "spam@egg", "--random"
-    system bin/"passpie", "-D", "temp_db", "update", "foo@bar", "--comment", "'dummy comment'"
-    system bin/"passpie", "-D", "temp_db", "export", "passwords.db", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "remove", "-y", "foo@bar"
-    system bin/"passpie", "-D", "temp_db", "remove", "-y", "spam@egg"
-    system bin/"passpie", "-D", "temp_db", "import", "passwords.db"
-    system bin/"passpie", "-D", "temp_db", "copy", "foo@bar", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "init", "--force", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "add", "foo@bar", "--password", "'sup3r p4ssw0rd'"
-    system bin/"passpie", "-D", "temp_db", "add", "foo@bar", "--force", "--random"
-    system bin/"passpie", "-D", "temp_db", "add", "foo2@bar2", "--random", "--pattern", "'[a-z]{10} [A-Z]{10} [0-9]{10} [\!\@\#\$\%\^\&\*]{10}'"
-    system bin/"passpie", "-D", "temp_db", "status", "--passphrase", "s3cr3t"
+    system bin/"passpie", "-D", "passpiedb", "init", "--force", "--passphrase", "s3cr3t"
+
+    # adding
+    system bin/"passpie", "-D", "passpiedb", "add", "foo@example.com", "--random"
+    system bin/"passpie", "-D", "passpiedb", "add", "foo2@example.com", "--random"
+    system bin/"passpie", "-D", "passpiedb", "add", "bar@example.com", "--pattern", "[a-z]{30}"
+    system bin/"passpie", "-D", "passpiedb", "add", "spam@example.com", "--copy", "--pattern", "[a-z]{30}"
+
+    # updating
+    system bin/"passpie", "-D", "passpiedb", "update", "foo@example.com", "--comment", "something"
+    system bin/"passpie", "-D", "passpiedb", "update", "foo2@example.com", "--name", "example.org"
+    system bin/"passpie", "-D", "passpiedb", "update", "foo2@example.org", "--login", "foo"
+    system bin/"passpie", "-D", "passpiedb", "update", "spam@example.com", "--password", "p4ssw0rd"
+
+    # copying
+    system bin/"passpie", "-D", "passpiedb", "copy", "foo@example.com", "--passphrase", "s3cr3t"
+    system bin/"passpie", "-D", "passpiedb", "copy", "bar@example.com", "--passphrase", "s3cr3t"
+    system bin/"passpie", "-D", "passpiedb", "copy", "spam@example.com", "--passphrase", "s3cr3t", "--to=stdout"
+
+    # exporting
+    system bin/"passpie", "-D", "passpiedb", "export", "--passphrase", "s3cr3t", "passwords.txt"
+
+    # removing
+    system bin/"passpie", "-D", "passpiedb", "remove", "-y", "foo@example.com"
+
+    # status
+    system bin/"passpie", "-D", "passpiedb", "status", "--passphrase", "s3cr3t"
+
+    # purging and importing
+    system bin/"passpie", "-D", "passpiedb", "purge", "-y"
+    system bin/"passpie", "-D", "passpiedb", "import", "passwords.txt"
+    system bin/"passpie", "-D", "passpiedb"
+
+    # logging
+    system bin/"passpie", "-D", "passpiedb", "log"
+
+    # completion
+    system bin/"passpie", "-D", "passpiedb", "complete", "bash"
+    system bin/"passpie", "-D", "passpiedb", "complete", "fish"
+    system bin/"passpie", "-D", "passpiedb", "complete", "zsh"
+
+    # config
+    system bin/"passpie", "config", "global"
+    system bin/"passpie", "config", "local"
+    system bin/"passpie", "config", "current"
   end
 end
