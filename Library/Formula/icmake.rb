@@ -6,9 +6,9 @@ class Icmake < Formula
   revision 1
 
   bottle do
-    sha256 "a8d78a2d192e97d98abc4c02b6ef4411ea47f17056591f44c3bc755bd695fecb" => :el_capitan
-    sha256 "cbc0de675413c996b4988fe061c2c15b774ea63cd230fc363858ae3e0e04c089" => :yosemite
-    sha256 "8e25ce4cb2d564ef4ed938b69b1b0566520383dd9d754af77a4271ab6281784e" => :mavericks
+    sha256 "49ab9282e271c7ef224d96bc8275ee514c947db502776875214836d26adca07e" => :el_capitan
+    sha256 "a3c2bb91444af1316fea3bece3998b43b668617b1718d9565059c844d073ecb1" => :yosemite
+    sha256 "14f7c58f5b4704762da013b6daf811f38c68a57400c3a4c00d89460a571f0a4b" => :mavericks
   end
 
   depends_on "gnu-sed"
