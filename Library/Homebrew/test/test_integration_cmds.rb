@@ -53,7 +53,6 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def cmd(*args)
     output = cmd_output(*args)
-    $stderr.write output unless $?.success?
     assert_equal 0, $?.exitstatus
     output
   end
@@ -549,6 +548,98 @@ class IntegrationCommandTests < Homebrew::TestCase
   ensure
     formula_file.unlink
     cmd("cleanup", "--force", "--prune=all")
+  end
+
+  def test_deps
+    formula_dir = CoreFormulaRepository.new.formula_dir
+    formula_file1 = formula_dir/"testball1.rb"
+    formula_file2 = formula_dir/"testball2.rb"
+    formula_file3 = formula_dir/"testball3.rb"
+    formula_file1.write <<-EOS.undent
+      class Testball1 < Formula
+        url "https://example.com/testball1-0.1.tar.gz"
+        depends_on "testball2"
+      end
+    EOS
+    formula_file2.write <<-EOS.undent
+      class Testball2 < Formula
+        url "https://example.com/testball2-0.1.tar.gz"
+        depends_on "testball3"
+      end
+    EOS
+    formula_file3.write <<-EOS.undent
+      class Testball3 < Formula
+        url "https://example.com/testball3-0.1.tar.gz"
+      end
+    EOS
+
+    assert_equal "testball2\ntestball3", cmd("deps", "testball1")
+    assert_equal "testball3", cmd("deps", "testball2")
+    assert_equal "", cmd("deps", "testball3")
+
+  ensure
+    formula_file1.unlink
+    formula_file2.unlink
+    formula_file3.unlink
+  end
+
+  def test_uses
+    formula_dir = CoreFormulaRepository.new.formula_dir
+    formula_file1 = formula_dir/"testball1.rb"
+    formula_file2 = formula_dir/"testball2.rb"
+    formula_file3 = formula_dir/"testball3.rb"
+    formula_file1.write <<-EOS.undent
+      class Testball1 < Formula
+        url "https://example.com/testball1-0.1.tar.gz"
+        depends_on "testball2"
+      end
+    EOS
+    formula_file2.write <<-EOS.undent
+      class Testball2 < Formula
+        url "https://example.com/testball2-0.1.tar.gz"
+        depends_on "testball3"
+      end
+    EOS
+    formula_file3.write <<-EOS.undent
+      class Testball3 < Formula
+        url "https://example.com/testball3-0.1.tar.gz"
+      end
+    EOS
+
+    assert_equal "testball1\ntestball2", cmd("uses", "--recursive", "testball3")
+    assert_equal "testball2", cmd("uses", "testball3")
+    assert_equal "", cmd("uses", "testball1")
+  ensure
+    formula_file1.unlink
+    formula_file2.unlink
+    formula_file3.unlink
+  end
+
+  def test_log
+    FileUtils.cd HOMEBREW_REPOSITORY do
+      shutup do
+        system "git", "init"
+        system "git", "commit", "--allow-empty", "-m", "This is a test commit"
+      end
+    end
+    assert_match "This is a test commit", cmd("log")
+  ensure
+    (HOMEBREW_REPOSITORY/".git").rmtree
+  end
+
+  def test_test_bot
+    formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
+    formula_file.write <<-EOS.undent
+      class Testball < Formula
+        url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
+        sha256 "#{TESTBALL_SHA256}"
+      end
+    EOS
+
+    assert_match "==> brew install --verbose --build-bottle testball",
+      cmd("test-bot", "--dry-run", "testball")
+  ensure
+    formula_file.unlink
   end
 
   def test_custom_command
