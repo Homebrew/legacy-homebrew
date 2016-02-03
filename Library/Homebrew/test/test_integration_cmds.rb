@@ -338,7 +338,7 @@ class IntegrationCommandTests < Homebrew::TestCase
         "The tarball should be unpacked"
     end
   ensure
-    FileUtils.rm_f (HOMEBREW_CACHE/"testball-0.1.tbz")
+    FileUtils.rm_f HOMEBREW_CACHE/"testball-0.1.tbz"
     formula_file.unlink
   end
 
