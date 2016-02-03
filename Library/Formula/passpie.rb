@@ -1,8 +1,8 @@
 class Passpie < Formula
   desc "Manage login credentials from the terminal"
   homepage "https://github.com/marcwebbie/passpie"
-  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.2.0.tar.gz"
-  sha256 "d769fd20454a8cd7802ac145d95e144d4f61b4f467999d19c50349766956d51d"
+  url "https://pypi.python.org/packages/source/p/passpie/passpie-1.3.1.tar.gz"
+  sha256 "90106e09b1d2609bcf6476157cafd42cfd639cd718a26a55674d87ccb9303b29"
   head "https://github.com/marcwebbie/passpie.git"
 
   bottle do
@@ -57,19 +57,6 @@ class Passpie < Formula
   end
 
   test do
-    system bin/"passpie", "-D", "temp_db", "init", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "add", "foo@bar", "--random"
-    system bin/"passpie", "-D", "temp_db", "add", "spam@egg", "--random"
-    system bin/"passpie", "-D", "temp_db", "update", "foo@bar", "--comment", "'dummy comment'"
-    system bin/"passpie", "-D", "temp_db", "export", "passwords.db", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "remove", "-y", "foo@bar"
-    system bin/"passpie", "-D", "temp_db", "remove", "-y", "spam@egg"
-    system bin/"passpie", "-D", "temp_db", "import", "passwords.db"
-    system bin/"passpie", "-D", "temp_db", "copy", "foo@bar", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "init", "--force", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "temp_db", "add", "foo@bar", "--password", "'sup3r p4ssw0rd'"
-    system bin/"passpie", "-D", "temp_db", "add", "foo@bar", "--force", "--random"
-    system bin/"passpie", "-D", "temp_db", "add", "foo2@bar2", "--random", "--pattern", "'[a-z]{10} [A-Z]{10} [0-9]{10} [\!\@\#\$\%\^\&\*]{10}'"
-    system bin/"passpie", "-D", "temp_db", "status", "--passphrase", "s3cr3t"
+    system bin/"passpie", "-D", "passpiedb", "init", "--force", "--passphrase", "s3cr3t"
   end
 end
