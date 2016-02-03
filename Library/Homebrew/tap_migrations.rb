@@ -225,6 +225,7 @@ TAP_MIGRATIONS = {
   "vobcopy" => "homebrew/boneyard",
   "wdfs" => "homebrew/fuse",
   "whereami" => "homebrew/boneyard",
+  "why3" => "homebrew/tex",
   "wkhtmltopdf" => "homebrew/boneyard",
   "wmctrl" => "homebrew/x11",
   "wopr" => "homebrew/science",
