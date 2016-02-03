@@ -5,8 +5,8 @@ class Saltstack < Formula
   # (URLs starting with https://github.com/saltstack/salt/releases/download)
   # github tag archives will report wrong version number
   # https://github.com/Homebrew/homebrew/issues/43493
-  url "https://github.com/saltstack/salt/releases/download/v2015.8.3/salt-2015.8.3.tar.gz"
-  sha256 "4cda3a49d9dc57e849ec93014d31a1983a191c0a88c8ee4d7162e975b67a6b56"
+  url "https://github.com/saltstack/salt/releases/download/v2015.8.4/salt-2015.8.4.tar.gz"
+  sha256 "8a21a02e53a6ef9b6dad4145c70225b7ff17bbb4a436a131c7e32d42b428cf48"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
@@ -29,8 +29,8 @@ class Saltstack < Formula
   end
 
   resource "m2crypto" do
-    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.6rc4.tar.gz"
-    sha256 "466c6058bcdf504e6e83c731bbb69490cf73a314459fb4c183e5aee29d066f81"
+    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.23.0.tar.gz"
+    sha256 "1ac3b6eafa5ff7e2a0796675316d7569b28aada45a7ab74042ad089d15a9567f"
   end
 
   resource "requests" do
