@@ -267,13 +267,12 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_desc
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         desc "Some test"
         url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
-    formula_file.write content
 
     assert_equal "testball: Some test", cmd("desc", "testball")
   ensure
@@ -283,13 +282,12 @@ class IntegrationCommandTests < Homebrew::TestCase
   def test_edit
     (HOMEBREW_REPOSITORY/".git").mkpath
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "https://example.com/testball-0.1.tar.gz"
         # something here
       end
     EOS
-    formula_file.write content
 
     assert_match "# something here",
                  cmd("edit", "testball", {"HOMEBREW_EDITOR" => "/bin/cat"})
@@ -305,12 +303,11 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_info
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
-    formula_file.write content
 
     assert_match "testball: stable 0.1",
                  cmd("info", "testball")
@@ -330,12 +327,11 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_unpack
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
       end
     EOS
-    formula_file.write content
 
     mktmpdir do |path|
       cmd "unpack", "testball", "--destdir=#{path}"
@@ -349,14 +345,13 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_options
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
         option "with-foo", "foobar"
         depends_on "bar" => :recommended
       end
     EOS
-    formula_file.write content
 
     assert_equal "--with-foo\n\tfoobar\n--without-bar\n\tBuild without bar support",
       cmd_output("options", "testball").chomp
@@ -366,13 +361,11 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_outdated
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
       end
     EOS
-    formula_file.write content
-
     (HOMEBREW_CELLAR/"testball/0.0.1/foo").mkpath
 
     assert_equal "testball", cmd("outdated")
@@ -383,7 +376,7 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_upgrade
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
         sha256 "#{TESTBALL_SHA256}"
@@ -393,7 +386,6 @@ class IntegrationCommandTests < Homebrew::TestCase
         end
       end
     EOS
-    formula_file.write content
 
     (HOMEBREW_CELLAR/"testball/0.0.1/foo").mkpath
 
@@ -412,12 +404,11 @@ class IntegrationCommandTests < Homebrew::TestCase
     apps_dir.mkpath
 
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
-    formula_file.write content
 
     source_dir = HOMEBREW_CELLAR/"testball/0.1/TestBall.app"
     source_dir.mkpath
@@ -435,12 +426,11 @@ class IntegrationCommandTests < Homebrew::TestCase
     apps_dir.mkpath
 
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
-    formula_file.write content
 
     source_app = (HOMEBREW_CELLAR/"testball/0.1/TestBall.app")
     source_app.mkpath
@@ -457,7 +447,7 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_pin_unpin
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
         sha256 "#{TESTBALL_SHA256}"
@@ -467,8 +457,6 @@ class IntegrationCommandTests < Homebrew::TestCase
         end
       end
     EOS
-    formula_file.write content
-
     (HOMEBREW_CELLAR/"testball/0.0.1/foo").mkpath
 
     cmd("pin", "testball")
@@ -488,7 +476,7 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_reinstall
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
         sha256 "#{TESTBALL_SHA256}"
@@ -501,7 +489,6 @@ class IntegrationCommandTests < Homebrew::TestCase
         end
       end
     EOS
-    formula_file.write content
 
     cmd("install", "testball", "--with-foo")
     foo_dir = HOMEBREW_CELLAR/"testball/0.1/foo"
@@ -549,13 +536,12 @@ class IntegrationCommandTests < Homebrew::TestCase
 
   def test_fetch
     formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    content = <<-EOS.undent
+    formula_file.write <<-EOS.undent
       class Testball < Formula
         url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
         sha256 "#{TESTBALL_SHA256}"
       end
     EOS
-    formula_file.write content
 
     cmd("fetch", "testball")
     assert (HOMEBREW_CACHE/"testball-0.1.tbz").exist?,
