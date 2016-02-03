@@ -627,21 +627,6 @@ class IntegrationCommandTests < Homebrew::TestCase
     (HOMEBREW_REPOSITORY/".git").rmtree
   end
 
-  def test_test_bot
-    formula_file = CoreFormulaRepository.new.formula_dir/"testball.rb"
-    formula_file.write <<-EOS.undent
-      class Testball < Formula
-        url "file://#{File.expand_path("..", __FILE__)}/tarballs/testball-0.1.tbz"
-        sha256 "#{TESTBALL_SHA256}"
-      end
-    EOS
-
-    assert_match "==> brew install --verbose --build-bottle testball",
-      cmd("test-bot", "--dry-run", "testball")
-  ensure
-    formula_file.unlink
-  end
-
   def test_custom_command
     mktmpdir do |path|
       cmd = "int-test-#{rand}"
