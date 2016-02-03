@@ -10,4 +10,9 @@ class ContactsPhonetic < Formula
     system "make"
     bin.install "contacts-phonetic"
   end
+
+  test do
+    output = shell_output("contacts-phonetic -v")
+    assert_equal "contacts-phonetic version #{version} Copyright (c) 2016 Elethom Hunter\n", output
+  end
 end
