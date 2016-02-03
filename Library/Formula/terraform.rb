@@ -61,8 +61,7 @@ class Terraform < Formula
       system "go", "build"
       buildpath.install "stringer"
     end
-
-    # https://github.com/golang/go/issues/11659
+    
     cd terrapath do
       system "go test $(go list ./... | grep -v /vendor/)"
       mkdir "bin"
