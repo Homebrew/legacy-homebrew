@@ -24,13 +24,13 @@ class Casperjs < Formula
   end
 
   devel do
-    url "https://github.com/n1k0/casperjs/archive/1.1-beta3.tar.gz"
-    sha256 "bc286424fb52df6cf16cb9b8ef6534ee830bb8ab0b87d2625910d8c1824152dc"
-    version "1.1-beta3"
+    url "https://github.com/n1k0/casperjs/archive/1.1-beta4.tar.gz"
+    sha256 "144e9a32d8ca677419924f6183aad26e0061d2c08d79abdb998796c010553654"
+    version "1.1-beta4"
 
     resource "phantomjs" do
-      url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-macosx.zip"
-      sha256 "8f15043ae3031815dc5f884ea6ffa053d365491b1bc0dc3a0862d5ff1ac20a48"
+      url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.0.0-macosx.zip"
+      sha256 "9ae74da20e8831c4d48105004993fecee3e7e66f5d3381f879de366d82f9215c"
     end
   end
 
@@ -38,8 +38,8 @@ class Casperjs < Formula
     url "https://github.com/n1k0/casperjs.git"
 
     resource "phantomjs" do
-      url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.8-macosx.zip"
-      sha256 "8f15043ae3031815dc5f884ea6ffa053d365491b1bc0dc3a0862d5ff1ac20a48"
+      url "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.0.0-macosx.zip"
+      sha256 "9ae74da20e8831c4d48105004993fecee3e7e66f5d3381f879de366d82f9215c"
     end
   end
 
