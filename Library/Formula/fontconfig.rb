@@ -14,6 +14,12 @@ class Fontconfig < Formula
     sha256 "40c1882bd1fd1da8ce4e24ff677604aa1a09dcae9ecbe3e131a1c4f8eb3822dd" => :mavericks
   end
 
+  def pour_bottle?
+    # c.f. the identical hack in lua
+    # https://github.com/Homebrew/homebrew/issues/47173
+    HOMEBREW_PREFIX.to_s == "/usr/local"
+  end
+
   keg_only :provided_pre_mountain_lion
 
   option :universal
