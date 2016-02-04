@@ -6,9 +6,9 @@ class Unrar < Formula
 
   bottle do
     cellar :any
-    sha256 "748dbb261915df5589affb34106ebcff8ebce98de2af8c1cb3fe96508b223677" => :el_capitan
-    sha256 "dc16b6b2559cd742496943630515e680015a528a2d778387645da3e199da9ef6" => :yosemite
-    sha256 "f8a1e6b77b084149c499d06c3782cf7e1ee9f7c0b452ed6fedbdbb172ab8cc2c" => :mavericks
+    sha256 "f2bab013d43e716f85a72afc331ad82fe7b3020172bbe50472d1426b0ccbd690" => :el_capitan
+    sha256 "1fcdf66c7022f413f353d6ba8c75c1b06855b93382fcf90501209b0ca6801800" => :yosemite
+    sha256 "27137dda9520c0d7418ca3cb63f054e7ae486a86ba85bc9c60024257ea92f014" => :mavericks
   end
 
   def install
