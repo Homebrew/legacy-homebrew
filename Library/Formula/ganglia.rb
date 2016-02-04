@@ -1,5 +1,5 @@
 class Ganglia < Formula
-  desc "Ganglia monitoring client"
+  desc "Scalable distributed monitoring system"
   homepage "http://ganglia.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ganglia/ganglia%20monitoring%20core/3.7.1/ganglia-3.7.1.tar.gz"
   sha256 "e735a6218986a0ff77c737e5888426b103196c12dc2d679494ca9a4269ca69a3"
