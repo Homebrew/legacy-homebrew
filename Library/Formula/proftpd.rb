@@ -4,6 +4,12 @@ class Proftpd < Formula
   url "ftp://ftp.proftpd.org/distrib/source/proftpd-1.3.5a.tar.gz"
   sha256 "a1f48df8539c414ec56e0cea63dcf4b8e16e606c05f10156f030a4a67fae5696"
 
+  bottle do
+    sha256 "68a6173bda2128b5b349939493a479a99c87f2efc7d1942b2059c70428cb9bec" => :el_capitan
+    sha256 "b7b8db826dee70ea773819aeeddf1138552b46086c9ee0d158184c53f09df328" => :yosemite
+    sha256 "12d79b90719529f9ddf2581b334108665bd5193fb127c6dc78cec290f44343ad" => :mavericks
+  end
+
   def install
     # fixes unknown group 'nogroup'
     # http://www.proftpd.org/docs/faq/linked/faq-ch4.html#AEN434
