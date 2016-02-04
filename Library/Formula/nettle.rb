@@ -1,9 +1,9 @@
 class Nettle < Formula
   desc "Low-level cryptographic library"
   homepage "https://www.lysator.liu.se/~nisse/nettle/"
-  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.1.tar.gz"
-  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.1.tar.gz"
-  sha256 "f6859d4ec88e70805590af9862b4b8c43a2d1fc7991df0a7a711b1e7ca9fc9d3"
+  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.2.tar.gz"
+  sha256 "ea4283def236413edab5a4cf9cf32adf540c8df1b9b67641cfc2302fca849d97"
 
   bottle do
     cellar :any
@@ -15,6 +15,9 @@ class Nettle < Formula
   depends_on "gmp"
 
   def install
+    # OS X doesn't use .so libs. Emailed upstream 04/02/2016.
+    inreplace "testsuite/dlopen-test.c", "libnettle.so", "libnettle.dylib"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-shared"
