@@ -15,9 +15,9 @@ class Go < Formula
   end
 
   devel do
-    url "https://storage.googleapis.com/golang/go1.6rc1.src.tar.gz"
-    version "1.6rc1"
-    sha256 "2d1a6756f24227dcee955add4af7d194eb4a8c3656b2c4ce778994e21a533a83"
+    url "https://storage.googleapis.com/golang/go1.6rc2.src.tar.gz"
+    version "1.6rc2"
+    sha256 "92914a23cde7e34e1d017175d785e5850fbb28f323a145028e2e26053ef1a598"
   end
 
   option "without-cgo", "Build without cgo"
