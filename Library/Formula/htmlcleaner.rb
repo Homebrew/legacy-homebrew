@@ -1,8 +1,8 @@
 class Htmlcleaner < Formula
   desc "HTML parser written in Java"
   homepage "http://htmlcleaner.sourceforge.net/index.php"
-  url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.15/htmlcleaner-2.15-src.zip"
-  sha256 "ef53982c3bc40c48931f4ea46e3dfa615b525d91afc1bfb3ed1727eca7168403"
+  url "https://downloads.sourceforge.net/project/htmlcleaner/htmlcleaner/htmlcleaner%20v2.16/htmlcleaner-2.16-src.zip"
+  sha256 "8b9066ebdaff85b15b3cb29208549227ca49351b4bd01779ea8cb3de6f4aac7e"
 
   bottle do
     cellar :any_skip_relocation
@@ -18,8 +18,8 @@ class Htmlcleaner < Formula
     ENV.java_cache
 
     system "mvn", "clean", "package"
-    libexec.install Dir["target/htmlcleaner-*-SNAPSHOT.jar"]
-    bin.write_jar_script Dir["#{libexec}/htmlcleaner-*-SNAPSHOT.jar"].first, "htmlcleaner"
+    libexec.install Dir["target/htmlcleaner-*.jar"]
+    bin.write_jar_script "#{libexec}/htmlcleaner-#{version}.jar", "htmlcleaner"
   end
 
   test do
