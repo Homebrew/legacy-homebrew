@@ -64,11 +64,11 @@ class Terraform < Formula
 
     cd terrapath do
       terraform_files = `go list ./... | grep -v /vendor/`.strip.gsub("\n", " ")
-      system "go", "test", terraform_files
+      system "go test #{terraform_files}"
 
       mkdir "bin"
       arch = MacOS.prefer_64_bit? ? "amd64" : "386"
-      system "gox", "-arch", arch, "-os", "darwin", "-output", "bin/terraform-{{.Dir}}", terraform_files
+      system "gox -arch #{arch} -os darwin -output bin/terraform-{{.Dir}} #{terraform_files}"
       bin.install "bin/terraform-terraform" => "terraform"
       bin.install Dir["bin/*"]
     end
