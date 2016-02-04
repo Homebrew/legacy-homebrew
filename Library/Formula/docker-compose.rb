@@ -3,8 +3,8 @@ class DockerCompose < Formula
   homepage "https://docs.docker.com/compose/"
 
   stable do
-    url "https://github.com/docker/compose/archive/1.5.2.tar.gz"
-    sha256 "8f0851b417d89bc5023e72918233449a0fa72d9952ac66494c1b37434516583d"
+    url "https://github.com/docker/compose/archive/1.6.0.tar.gz"
+    sha256 "7616e561cc986073c0ac163e6d64cdf63b0817052560beaa737e1c8fb3886528"
   end
 
   bottle do
@@ -27,8 +27,8 @@ class DockerCompose < Formula
   depends_on "docker-machine" => :recommended
 
   resource "docker-py" do
-    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.5.0.tar.gz"
-    sha256 "6924128fac46afef0de16ebdffc30a8c071246312260f289d895129f4e00f8d0"
+    url "https://pypi.python.org/packages/source/d/docker-py/docker-py-1.7.0.tar.gz"
+    sha256 "f25335ad9ddd6a257d0948ab3f1cae3dba9156d2df372b7ebd738c1b755985de"
   end
 
   resource "requests" do
@@ -62,8 +62,8 @@ class DockerCompose < Formula
   end
 
   resource "dockerpty" do
-    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.3.4.tar.gz"
-    sha256 "a51044cc49089a2408fdf6769a63eebe0b16d91f34716ecee681984446ce467d"
+    url "https://pypi.python.org/packages/source/d/dockerpty/dockerpty-0.4.1.tar.gz"
+    sha256 "69a9d69d573a0daa31bcd1c0774eeed5c15c295fe719c61aca550ed1393156ce"
   end
 
   resource "texttable" do
@@ -79,6 +79,11 @@ class DockerCompose < Formula
   resource "websocket-client" do
     url "https://github.com/liris/websocket-client/archive/v0.32.0.tar.gz"
     sha256 "255d07ffa677f571b5f51c11703f2f4bd5f331b58442677bcb4395dfa1809a5f"
+  end
+
+  resource "cached-property" do
+    url "https://pypi.python.org/packages/source/c/cached-property/cached-property-1.2.0.tar.gz"
+    sha256 "e3081a8182d3d4b7283eeade76c382bcfd4dfd644ca800598229c2ef798abb53"
   end
 
   resource "backports.ssl_match_hostname" do
