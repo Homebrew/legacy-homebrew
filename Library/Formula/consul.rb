@@ -6,6 +6,8 @@ class Consul < Formula
   url "https://github.com/hashicorp/consul.git",
     :tag => "v0.6.3", :revision => "c933efde50d25395c7b5a42167578fda603d43d8"
 
+  head "https://github.com/hashicorp/consul.git", :shallow => false
+
   bottle do
     cellar :any_skip_relocation
     sha256 "68f49f7a77ecf9008e2d07e957b530392c57f5c0765c0caf3e2b5b623f6c291a" => :el_capitan
