@@ -58,49 +58,5 @@ class Passpie < Formula
 
   test do
     system bin/"passpie", "-D", "passpiedb", "init", "--force", "--passphrase", "s3cr3t"
-
-    # adding
-    system bin/"passpie", "-D", "passpiedb", "add", "foo@example.com", "--random"
-    system bin/"passpie", "-D", "passpiedb", "add", "foo2@example.com", "--random"
-    system bin/"passpie", "-D", "passpiedb", "add", "bar@example.com", "--pattern", "[a-z]{30}"
-    system bin/"passpie", "-D", "passpiedb", "add", "spam@example.com", "--copy", "--pattern", "[a-z]{30}"
-
-    # updating
-    system bin/"passpie", "-D", "passpiedb", "update", "foo@example.com", "--comment", "something"
-    system bin/"passpie", "-D", "passpiedb", "update", "foo2@example.com", "--name", "example.org"
-    system bin/"passpie", "-D", "passpiedb", "update", "foo2@example.org", "--login", "foo"
-    system bin/"passpie", "-D", "passpiedb", "update", "spam@example.com", "--password", "p4ssw0rd"
-
-    # copying
-    system bin/"passpie", "-D", "passpiedb", "copy", "foo@example.com", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "passpiedb", "copy", "bar@example.com", "--passphrase", "s3cr3t"
-    system bin/"passpie", "-D", "passpiedb", "copy", "spam@example.com", "--passphrase", "s3cr3t", "--to=stdout"
-
-    # exporting
-    system bin/"passpie", "-D", "passpiedb", "export", "--passphrase", "s3cr3t", "passwords.txt"
-
-    # removing
-    system bin/"passpie", "-D", "passpiedb", "remove", "-y", "foo@example.com"
-
-    # status
-    system bin/"passpie", "-D", "passpiedb", "status", "--passphrase", "s3cr3t"
-
-    # purging and importing
-    system bin/"passpie", "-D", "passpiedb", "purge", "-y"
-    system bin/"passpie", "-D", "passpiedb", "import", "passwords.txt"
-    system bin/"passpie", "-D", "passpiedb"
-
-    # logging
-    system bin/"passpie", "-D", "passpiedb", "log"
-
-    # completion
-    system bin/"passpie", "-D", "passpiedb", "complete", "bash"
-    system bin/"passpie", "-D", "passpiedb", "complete", "fish"
-    system bin/"passpie", "-D", "passpiedb", "complete", "zsh"
-
-    # config
-    system bin/"passpie", "config", "global"
-    system bin/"passpie", "config", "local"
-    system bin/"passpie", "config", "current"
   end
 end
