@@ -1,5 +1,6 @@
 require "fileutils"
 require "tmpdir"
+require "etc"
 
 # Homebrew extends Ruby's `FileUtils` to make our code more readable.
 # @see http://ruby-doc.org/stdlib-1.8.7/libdoc/fileutils/rdoc/FileUtils.html Ruby's FileUtils API
@@ -9,6 +10,23 @@ module FileUtils
   def mktemp(prefix = name)
     prev = pwd
     tmp  = Dir.mktmpdir(prefix, HOMEBREW_TEMP)
+
+    # Make sure files inside the temporary directory have the same group as the
+    # brew instance.
+    #
+    # Reference from `man 2 open`
+    # > When a new file is created, it is given the group of the directory which
+    # contains it.
+    group_id = if File.grpowned? HOMEBREW_BREW_FILE
+      File.stat(HOMEBREW_BREW_FILE).gid
+    else
+      Process.gid
+    end
+    begin
+      chown(nil, group_id, tmp)
+    rescue Errno::EPERM
+      opoo "Failed setting group \"#{Etc.getgrgid(group_id).name}\" on #{tmp}"
+    end
 
     begin
       cd(tmp)
