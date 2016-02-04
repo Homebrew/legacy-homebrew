@@ -35,6 +35,9 @@ class RakudoStar < Formula
     system "make"
     system "make", "install"
 
+    # Panda is now in share/perl6/site/bin, so we need to symlink it too.
+    bin.install_symlink Dir[share/"perl6/site/bin/*"]
+
     # Move the man pages out of the top level into share.
     # Not all backends seem to generate man pages at this point (moar does not, parrot does),
     # so we need to check if the directory exists first.
