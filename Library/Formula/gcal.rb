@@ -1,5 +1,5 @@
 class Gcal < Formula
-  desc "Gcal is a program for calculating and printing calendars"
+  desc "Program for calculating and printing calendars"
   homepage "https://www.gnu.org/software/gcal/"
   url "http://ftpmirror.gnu.org/gcal/gcal-4.tar.xz"
   mirror "https://ftp.gnu.org/gnu/gcal/gcal-4.tar.xz"
