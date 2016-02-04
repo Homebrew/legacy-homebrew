@@ -141,7 +141,7 @@ elif [[ -n "$HOMEBREW_DEVELOPER" && -f "$HOMEBREW_LIBRARY/Homebrew/dev-cmd/$HOME
   HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/dev-cmd/$HOMEBREW_COMMAND.sh"
 fi
 
-if [[ "$(id -u)" = "0" && "$(stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
+if [[ "$(id -u)" = "0" && "$(/usr/bin/stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
   case "$HOMEBREW_COMMAND" in
     instal|install|reinstall|postinstall|ln|link|pin|update|update-bash|upgrade|create|migrate|tap|switch)
