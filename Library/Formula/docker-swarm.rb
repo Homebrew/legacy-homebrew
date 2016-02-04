@@ -3,9 +3,8 @@ require "language/go"
 class DockerSwarm < Formula
   desc "Turn a pool of Docker hosts into a single, virtual host"
   homepage "https://github.com/docker/swarm"
-  url "https://github.com/docker/swarm/archive/v1.0.0.tar.gz"
-  sha256 "85951f91a2e3b6b82ac775bafce3fc76dd29aa2cdeb6a3ad84a97116fd72d2d8"
-  revision 1
+  url "https://github.com/docker/swarm/archive/v1.1.0.tar.gz"
+  sha256 "463aa579a0c43f2874bb14f37bac0ce4ae233672f84360d398a206d18e706cf5"
 
   head "https://github.com/docker/swarm.git"
 
