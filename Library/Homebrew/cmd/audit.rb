@@ -1126,6 +1126,7 @@ class ResourceAuditor
            %r{^http://www\.mirrorservice\.org/},
            %r{^http://launchpad\.net/},
            %r{^http://bitbucket\.org/},
+           %r{^http://hackage\.haskell\.org/},
            %r{^http://(?:[^/]*\.)?archive\.org}
         problem "Please use https:// for #{p}"
       when %r{^http://search\.mcpan\.org/CPAN/(.*)}i
