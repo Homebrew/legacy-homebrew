@@ -11,13 +11,6 @@ class TeensyLoaderCli < Formula
     sha256 "dcd10140babb4d2937ce376c89e9c24a2e8046d2cabdad2cfdbc2542afa14471" => :mavericks
   end
 
-  devel do
-    url "https://github.com/PaulStoffregen/teensy_loader_cli.git", :revision => "a5b2c6fdc14c3a1ce9f614c767d9c758b0a1ce96"
-    version "2.1.devel"
-
-    depends_on "libusb-compat"  => :optional
-  end
-
   head do
     url "https://github.com/PaulStoffregen/teensy_loader_cli.git"
 
