@@ -3,6 +3,7 @@ class Elasticsearch < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.2.0/elasticsearch-2.2.0.tar.gz"
   sha256 "ed70cc81e1f55cd5f0032beea2907227b6ad8e7457dcb75ddc97a2cc6e054d30"
+  revision 1
 
   head do
     url "https://github.com/elasticsearch/elasticsearch.git"
@@ -32,7 +33,7 @@ class Elasticsearch < Formula
     rm_f Dir["bin/*.exe"]
 
     # Install everything else into package directory
-    libexec.install "bin", "config", "lib"
+    libexec.install "bin", "config", "lib", "modules"
 
     # Set up Elasticsearch for local development:
     inreplace "#{libexec}/config/elasticsearch.yml" do |s|
