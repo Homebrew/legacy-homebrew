@@ -55,7 +55,7 @@ source $(brew --repository)/Library/Contributions/brew_bash_completion.sh
 Run in terminal (may require `sudo`):
 
 ```zsh
-ln -s "$(brew --prefix)/Library/Contributions/brew_zsh_completion.zsh" /usr/local/share/zsh/site-functions
+ln -s "$(brew --prefix)/Library/Contributions/brew_zsh_completion.zsh" /usr/local/share/zsh/site-functions/_brew
 ```
 
 ## Pre-downloading a file for a formula
