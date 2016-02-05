@@ -10,9 +10,9 @@ class DockerSwarm < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "10b1cea4a97d95d2c7ca82f450e30be10b624e078b87486a6ab633239879ea83" => :el_capitan
-    sha256 "0d8c81a702652bc8182e10c58789db71217da8a649ef45db3219f402f2c2c0b6" => :yosemite
-    sha256 "530afec739c621c8cd792079741d157117efde7933e03fd344622b590cdeda92" => :mavericks
+    sha256 "6cf0f7d3ee5421369fa855affe55aaf745c874a79050d689c51bc8a3d24dca62" => :el_capitan
+    sha256 "bdafde632054ee4cea15ed48206f672a28a915a299749529f387a20e82888420" => :yosemite
+    sha256 "b4059a738384817cf61af5e352a448c10ca0a8533642581dfae24390f9eeb448" => :mavericks
   end
 
   depends_on "go" => :build
