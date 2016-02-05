@@ -220,6 +220,13 @@ module Homebrew
     HOMEBREW_REPOSITORY.cd { `git show -s --format="%cd" --date=short HEAD 2>/dev/null`.chuzzle }
   end
 
+  def self.git_branch
+    return unless Utils.git_available?
+#    HOMEBREW_REPOSITORY.cd { `git status -b --porcelain 2>/dev/null`.lines.first.chuzzle }[3..-1]
+#    HOMEBREW_REPOSITORY.cd { `git status 2>/dev/null`.lines.first.chuzzle }
+    HOMEBREW_REPOSITORY.cd { `git branch 2>/dev/null | grep '*'`.lines.first.chuzzle }[2..-1]
+  end
+
   def self.homebrew_version_string
     if pretty_revision = git_short_head
       last_commit = git_last_commit_date

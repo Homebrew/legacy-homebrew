@@ -57,6 +57,10 @@ module Homebrew
     Homebrew.git_origin || "(none)"
   end
 
+  def git_branch
+    Homebrew.git_branch || "(none)"
+  end
+
   def describe_path(path)
     return "N/A" if path.nil?
     realpath = path.realpath
@@ -144,6 +148,7 @@ module Homebrew
     f.puts "ORIGIN: #{origin}"
     f.puts "HEAD: #{head}"
     f.puts "Last commit: #{last_commit}"
+    f.puts "Branch: #{git_branch}"
     f.puts "HOMEBREW_PREFIX: #{HOMEBREW_PREFIX}"
     f.puts "HOMEBREW_REPOSITORY: #{HOMEBREW_REPOSITORY}"
     f.puts "HOMEBREW_CELLAR: #{HOMEBREW_CELLAR}"
