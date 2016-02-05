@@ -24,7 +24,7 @@ class Bazaar < Formula
     ENV.prepend_path "PATH", "/System/Library/Frameworks/Python.framework/Versions/Current/bin"
 
     system "make"
-    inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python"
+    inreplace "bzr", "#! /usr/bin/env python", "#!#{which "python"}"
     libexec.install "bzr", "bzrlib"
 
     (bin/"bzr").write_env_script(libexec/"bzr", :BZR_PLUGIN_PATH => "+user:#{HOMEBREW_PREFIX}/share/bazaar/plugins")
