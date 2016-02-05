@@ -64,7 +64,8 @@ class Tty
     end
 
     def truncate(str)
-      str.to_s[0, width - 4]
+      w = width
+      w > 10 ? str.to_s[0, w - 4] : str
     end
 
     private
