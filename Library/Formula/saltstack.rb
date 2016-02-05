@@ -5,8 +5,8 @@ class Saltstack < Formula
   # (URLs starting with https://github.com/saltstack/salt/releases/download)
   # github tag archives will report wrong version number
   # https://github.com/Homebrew/homebrew/issues/43493
-  url "https://github.com/saltstack/salt/releases/download/v2015.8.4/salt-2015.8.4.tar.gz"
-  sha256 "8a21a02e53a6ef9b6dad4145c70225b7ff17bbb4a436a131c7e32d42b428cf48"
+  url "https://github.com/saltstack/salt/releases/download/v2015.8.5/salt-2015.8.5.tar.gz"
+  sha256 "db395702f048ea384ccc440201c24d7044685977ae6a8588d0d0933246f0c673"
   head "https://github.com/saltstack/salt.git", :branch => "develop", :shallow => false
 
   bottle do
