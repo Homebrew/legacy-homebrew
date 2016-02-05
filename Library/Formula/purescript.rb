@@ -5,22 +5,20 @@ class Purescript < Formula
 
   desc "Strongly typed programming language that compiles to JavaScript"
   homepage "http://www.purescript.org"
-  url "https://github.com/purescript/purescript/archive/v0.6.9.5.tar.gz"
-  sha256 "b7d24ce85c65a9d2adb178d2e9b628f8d4f5a33103c3da6f3312c63a1048ff80"
+  url "https://github.com/purescript/purescript/archive/v0.8.0.tar.gz"
+  sha256 "fb5332191c9021e62222c6da8505aed02838276b988a5233dffc5e8f3114b167"
 
   bottle do
-    sha256 "1f7e753da5fee42ed983254d5c8914e9c5cca3f876d219ca538726ae76aee68d" => :yosemite
-    sha256 "df653749f0b80a3f406d2e23b870775e651a5f264701d879386dbd5fe86083cc" => :mavericks
-    sha256 "dbab26a1e995dd5b64fed38bd9d287c2d33e519cedc5165ecdd2780429df82dc" => :mountain_lion
+    sha256 "b18991a70fb90babdd6860bbc638afd0e57328cb4b58702287cbc6673d0d60b7" => :el_capitan
+    sha256 "ca0da69c04c715b48b734ad0158c26da38a608a1db2d6186dadc7673b43d4c26" => :yosemite
+    sha256 "dc2e83104a0454951fa0890079225038934fd0775ef9f2e483c15e55636c1e74" => :mavericks
   end
 
   depends_on "ghc" => :build
   depends_on "cabal-install" => :build
 
-  setup_ghc_compilers
-
   def install
-    install_cabal_package
+    install_cabal_package :using => ["alex", "happy"]
   end
 
   test do
@@ -28,9 +26,9 @@ class Purescript < Formula
     test_target_path = testpath/"test-module.js"
     test_module_path.write <<-EOS.undent
       module Test where
-      import Control.Monad.Eff
-      main :: forall e. Eff e Unit
-      main = return unit
+
+      main :: Int
+      main = 1
     EOS
     system bin/"psc", test_module_path, "-o", test_target_path
     assert File.exist?(test_target_path)

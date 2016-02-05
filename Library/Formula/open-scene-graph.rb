@@ -1,16 +1,16 @@
 class OpenSceneGraph < Formula
   desc "3D graphics toolkit"
   homepage "http://www.openscenegraph.org/projects/osg"
-  url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.3.3.zip"
-  sha1 "98697c3e3b3c6e7e2ec7a6a75ece8f790b709cd7"
-
-  bottle do
-    sha1 "2f7f0292cf0d66cc37f94ff9d769c7d397e4a19c" => :yosemite
-    sha1 "eb231106f731af9f9803e38a2aa152276d99bb79" => :mavericks
-    sha1 "f613127ed57c7fba5a8de44f65ea49501c9b1d83" => :mountain_lion
-  end
+  url "http://trac.openscenegraph.org/downloads/developer_releases/OpenSceneGraph-3.4.0.zip"
+  sha256 "5c727d84755da276adf8c4a4a3a8ba9c9570fc4b4969f06f1d2e9f89b1e3040e"
 
   head "http://www.openscenegraph.org/svn/osg/OpenSceneGraph/trunk/"
+
+  bottle do
+    sha256 "d24a9ba62fdd3d700e8c326e0ac8786229a4d84ca9786fac58b1ff8d785148ff" => :yosemite
+    sha256 "a2bb83a0e02b1f5a75e802053cba6c81b6928c716fb805caf7d53becc9e0ee8e" => :mavericks
+    sha256 "86e946339bf8293c784e4ceb78b2ff5f203bf7166427d2e66abb462d6f03e406" => :mountain_lion
+  end
 
   option :cxx11
   option "with-docs", "Build the documentation with Doxygen and Graphviz"
@@ -32,6 +32,10 @@ class OpenSceneGraph < Formula
   depends_on "ffmpeg" => :optional
   depends_on "qt5" => :optional
   depends_on "qt" => :optional
+
+  # patch necessary to ensure support for gtkglext-quartz
+  # filed as an issue to the developers https://github.com/openscenegraph/osg/issues/34
+  patch :DATA
 
   if build.with? "docs"
     depends_on "doxygen" => :build
@@ -91,3 +95,17 @@ class OpenSceneGraph < Formula
     assert_equal `./test`.chomp, version.to_s
   end
 end
+__END__
+diff --git a/CMakeModules/FindGtkGl.cmake b/CMakeModules/FindGtkGl.cmake
+index 321cede..6497589 100644
+--- a/CMakeModules/FindGtkGl.cmake
++++ b/CMakeModules/FindGtkGl.cmake
+@@ -10,7 +10,7 @@ IF(PKG_CONFIG_FOUND)
+     IF(WIN32)
+         PKG_CHECK_MODULES(GTKGL gtkglext-win32-1.0)
+     ELSE()
+-        PKG_CHECK_MODULES(GTKGL gtkglext-x11-1.0)
++        PKG_CHECK_MODULES(GTKGL gtkglext-quartz-1.0)
+     ENDIF()
+
+ ENDIF()

@@ -4,16 +4,21 @@ class Multirust < Formula
 
   # Use the tag instead of the tarball to get submodules
   url "https://github.com/brson/multirust.git",
-    :tag => "0.0.6",
-    :revision => "6b18101d0b878669bdba94b9e37c31308dc12d34"
+    :tag => "0.7.0",
+    :revision => "b222fcd277898c7e364cbe7dfa0cf7edb5d922d5"
+
+  head "https://github.com/brson/multirust.git"
 
   bottle do
-    sha256 "a44637f895f33c6bc220ca9716055ebafadcef4d4d80e766e073d06a09ee008f" => :yosemite
-    sha256 "ace5fdd7fa1088ce685dd3d05fb3c765d1fef19af3ecdae4264f35d8bd440f42" => :mavericks
-    sha256 "fda4e8a56c51643e5b3edea4e714c311287e53038dfe7acf955776e6c881bf94" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "835c85c711bc3df23da5eadb11eaaa715e3dba989cb32a52bd9ec37f1a33c7f3" => :el_capitan
+    sha256 "a931aa36e3264b5b73a61171b8615428bd79dac7322c0dff5192140f9a340335" => :yosemite
+    sha256 "14310f6110a75f9888a2ddb16be8371b1ad72601a1486984fdeaf8a673bc2f4a" => :mavericks
   end
 
   depends_on :gpg => [:recommended, :run]
+
+  conflicts_with "rust", :because => "both install rustc, rustdoc, cargo, rust-lldb, rust-gdb"
 
   def install
     system "./build.sh"

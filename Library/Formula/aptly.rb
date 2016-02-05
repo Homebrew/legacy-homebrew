@@ -1,19 +1,19 @@
-require "formula"
 require "language/go"
 
 class Aptly < Formula
   desc "Swiss army knife for Debian repository management"
   homepage "https://www.aptly.info/"
-  url "https://github.com/smira/aptly/archive/v0.9.1.tar.gz"
-  sha1 "d38a20f04ba70c67a86a3e04b2cd2641674371d2"
+  url "https://github.com/smira/aptly/archive/v0.9.5.tar.gz"
+  sha256 "43de181dd8770e5c0ffeb4de9f862c22c59381df5d9220a54c680bd2468ff831"
 
   head "https://github.com/smira/aptly.git"
 
   bottle do
-    cellar :any
-    sha256 "ae41cab3740f582c5be6486c220f92387371f94b6bf014c4915f6cb5f554893d" => :yosemite
-    sha256 "b6032c35e8793255acd7c38a16601e7757670d5ed1ba150829f1aeb59a3dc562" => :mavericks
-    sha256 "c4fa5584fd59586544f7741e8fd1a37a8eea4e3af347fdd77a7959655f2cc569" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "50233a52a6021e47b50a0280263984fda75bfe8811a384f31fc1975e579646a1" => :yosemite
+    sha256 "c12651d38a4145136c2d8441c0a1a77e4f4da14697ff9983482b4ce95a728683" => :mavericks
+    sha256 "9d3780503b8d9416435f4e8bfd85673e9caf4745657bfaba889ba7000c7e1bb0" => :mountain_lion
   end
 
   depends_on :hg => :build
@@ -119,6 +119,26 @@ class Aptly < Formula
     url "https://go.googlesource.com/crypto.git", :revision => "a7ead6ddf06233883deca151dffaef2effbf498f"
   end
 
+  go_resource "github.com/golang/snappy" do
+    url "https://github.com/golang/snappy.git", :revision => "723cc1e459b8eea2dea4583200fd60757d40097a"
+  end
+
+  go_resource "github.com/manucorporat/sse" do
+    url "https://github.com/manucorporat/sse.git", :revision => "fe6ea2c8e398672518ef204bf0fbd9af858d0e15"
+  end
+
+  go_resource "github.com/mattn/go-colorable" do
+    url "https://github.com/mattn/go-colorable.git", :revision => "40e4aedc8fabf8c23e040057540867186712faa5"
+  end
+
+  go_resource "golang.org/x/net" do
+    url "https://github.com/golang/net.git", :revision => "db8e4de5b2d6653f66aea53094624468caad15d2"
+  end
+
+  go_resource "gopkg.in/bluesuncorp/validator.v5" do
+    url "https://github.com/bluesuncorp/validator.git", :revision => "8324129b028239a2d26c4221165e7d4d512ea697"
+  end
+
   def install
     mkdir_p "#{buildpath}/src/github.com/smira/"
     ln_s buildpath, "#{buildpath}/src/github.com/smira/aptly"
@@ -136,9 +156,9 @@ class Aptly < Formula
   end
 
   test do
-    assert shell_output("aptly version").include?("aptly version:")
+    assert_match "aptly version:", shell_output("aptly version")
     (testpath/".aptly.conf").write("{}")
     result = shell_output("aptly -config='#{testpath}/.aptly.conf' mirror list")
-    assert result.include? "No mirrors found, create one with"
+    assert_match "No mirrors found, create one with", result
   end
 end

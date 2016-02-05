@@ -2,13 +2,13 @@ class RiemannClient < Formula
   desc "C client library for the Riemann monitoring system"
   homepage "https://github.com/algernon/riemann-c-client"
   url "https://github.com/algernon/riemann-c-client/archive/riemann-c-client-1.3.0.tar.gz"
-  sha1 "0b360e12839683a3a89caf2cd58a8fb1e337e19e"
+  sha256 "64bb7ccdb6d7267110932feddcd8c3149588baf3227b05c330bfef97347be995"
 
   bottle do
     cellar :any
-    sha1 "348a16b5fb7d400481de3109f147cfe198cf2717" => :yosemite
-    sha1 "12cd20d92512f4fb1f8b559da06fa88f78e267e5" => :mavericks
-    sha1 "9c3e0cf990883eec78f9cc51f42407cc80f832cc" => :mountain_lion
+    sha256 "5eac36dbc72334c21da605445504f87bf4c81fae69870df44548749a71d804a8" => :yosemite
+    sha256 "7e265d3c44bfde8103f85027fe851e2bdfc30d48074701520143f7b1348eed94" => :mavericks
+    sha256 "957c3694c364c71358ac0fdcc3aa39bd7ba5b6afd0d8a8ad7c19cbde45e975be" => :mountain_lion
   end
 
   depends_on "autoconf" => :build

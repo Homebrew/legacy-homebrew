@@ -1,10 +1,8 @@
-require 'formula'
-
 class Sratom < Formula
   desc "Library for serializing LV2 atoms to/from RDF"
-  homepage 'http://drobilla.net/software/sratom/'
-  url 'http://download.drobilla.net/sratom-0.4.6.tar.bz2'
-  sha1 '5f7d18e4917e5a2fee6eedc6ae06aa72d47fa52a'
+  homepage "http://drobilla.net/software/sratom/"
+  url "http://download.drobilla.net/sratom-0.4.6.tar.bz2"
+  sha256 "a4b9beaeaedc4f651beb15cd1cfedff905b0726a9010548483475ad97d941220"
 
   bottle do
     cellar :any
@@ -13,10 +11,10 @@ class Sratom < Formula
     sha256 "4b2acde2a46119ac0d6ae10a0d161b5f644e507296f44defc036ab311d93cf27" => :mountain_lion
   end
 
-  depends_on 'pkg-config' => :build
-  depends_on 'lv2'
-  depends_on 'serd'
-  depends_on 'sord'
+  depends_on "pkg-config" => :build
+  depends_on "lv2"
+  depends_on "serd"
+  depends_on "sord"
 
   def install
     system "./waf", "configure", "--prefix=#{prefix}"

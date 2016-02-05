@@ -1,20 +1,18 @@
-require 'formula'
-
 # Use a sha1 instead of a tag, as the author has not provided a tag for
 # this release. In fact, the author no longer uses this software, so it
 # is a candidate for removal if no new maintainer is found.
 class Contacts < Formula
   desc "Command-line tool to access OS X's Contacts (formerly 'Address Book')"
-  homepage 'http://www.gnufoo.org/contacts/contacts.html'
-  url 'https://github.com/dhess/contacts/archive/4092a3c6615d7a22852a3bafc44e4aeeb698aa8f.tar.gz'
-  version '1.1a-3'
-  sha1 '79526dd96e5b5297daaae6327c79de9366f94c87'
+  homepage "http://www.gnufoo.org/contacts/contacts.html"
+  url "https://github.com/dhess/contacts/archive/4092a3c6615d7a22852a3bafc44e4aeeb698aa8f.tar.gz"
+  version "1.1a-3"
+  sha256 "e3dd7e592af0016b28e9215d8ac0fe1a94c360eca5bfbdafc2b0e5d76c60b871"
 
   bottle do
     cellar :any
-    sha1 "ab0a67bacf53d9f1e6320b34cbaf33cc50ffa8ed" => :mavericks
-    sha1 "b6dcc58b8cc4d849a81718a72372a3571d8c48b6" => :mountain_lion
-    sha1 "68aa40140ff5abed8464415a8d45cead2782a998" => :lion
+    sha256 "9a9c89e40f9ccf4ec45cf63414eaf31266dfc9b71dc96d8c02f7ab2b38e8f346" => :mavericks
+    sha256 "548051ca4c3209a63dda33a6c17103b8cd3ea817bc4090963dbb12ee1763dcc6" => :mountain_lion
+    sha256 "842a3ef87a54aab40009788d034f6095f3c10223867d1b8d5b6e3c933b5e4800" => :lion
   end
 
   depends_on :xcode => :build

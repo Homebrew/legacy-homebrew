@@ -1,17 +1,16 @@
-require "formula"
-
 class Pypy3 < Formula
   desc "Implementation of Python 3 in Python"
   homepage "http://pypy.org/"
   url "https://bitbucket.org/pypy/pypy/downloads/pypy3-2.4.0-src.tar.bz2"
-  sha1 "438572443ae6f54eb6122d807f104787c5247e01"
+  sha256 "d9ba207d6eecf8a0dc4414e9f4e92db1abd143e8cc6ec4a6bdcac75b29f104f3"
 
   bottle do
     cellar :any
     revision 6
-    sha1 "b9a9d4093dba9fbd89be33a1b28039f43098860d" => :yosemite
-    sha1 "4b0a2a9633ebbf8749eb1c5980add2447d74ee11" => :mavericks
-    sha1 "e9c63d780fb3df53fe657d656dd9d0ccbe454f20" => :mountain_lion
+    sha256 "7fb0a8af405c03fda611ca3c30c9fda4da2fa727a4c37450fde428c5cb469471" => :el_capitan
+    sha256 "91733ffc891b16074fc06b0cdb3446070acf12cdf81475dca8afd2d2decbb4f0" => :yosemite
+    sha256 "fc8586a9aea45c5da1a899978cbc3d8b7a359801671caad55dd5c2255fcb538a" => :mavericks
+    sha256 "71d8d4319969feb8969e62a4ed4592e7779058c1cb7bcf9c3d506ea39d135ebf" => :mountain_lion
   end
 
   depends_on :arch => :x86_64
@@ -19,13 +18,13 @@ class Pypy3 < Formula
   depends_on "openssl"
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-11.3.1.tar.gz"
-    sha1 "88e43ad9c2c759a33c8c44d742b6d18125ccca16"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-19.4.tar.gz"
+    sha256 "214bf29933f47cf25e6faa569f710731728a07a19cae91ea64f826051f68a8cf"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-6.0.6.tar.gz"
-    sha1 "7b9eeff2e8f76098f32d32f114ea93c0ce200a3b"
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.2.tar.gz"
+    sha256 "46f4bd0d8dfd51125a554568d646fe4200a3c2c6c36b9f2d06d2212148439521"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -57,10 +56,6 @@ class Pypy3 < Formula
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy" => "pypy3"
     lib.install_symlink libexec/"lib/libpypy3-c.dylib"
-
-    %w[setuptools pip].each do |r|
-      (libexec/r).install resource(r)
-    end
   end
 
   def post_install
@@ -88,7 +83,7 @@ class Pypy3 < Formula
     EOF
 
     %w[setuptools pip].each do |pkg|
-      (libexec/pkg).cd do
+      resource(pkg).stage do
         system bin/"pypy3", "-s", "setup.py", "install", "--force", "--verbose"
       end
     end
@@ -98,7 +93,7 @@ class Pypy3 < Formula
     bin.install_symlink scripts_folder/"pip" => "pip_pypy3"
 
     # post_install happens after linking
-    %w[easy_install_pypy3 pip_pypy3].each{ |e| (HOMEBREW_PREFIX/"bin").install_symlink bin/e }
+    %w[easy_install_pypy3 pip_pypy3].each { |e| (HOMEBREW_PREFIX/"bin").install_symlink bin/e }
   end
 
   def caveats; <<-EOS.undent
@@ -134,5 +129,10 @@ class Pypy3 < Formula
   # The Cellar location of distutils
   def distutils
     libexec+"lib-python/3/distutils"
+  end
+
+  test do
+    system bin/"pypy3", "-c", "print('Hello, world!')"
+    system scripts_folder/"pip", "list"
   end
 end

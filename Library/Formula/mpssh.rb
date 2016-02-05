@@ -6,10 +6,11 @@ class Mpssh < Formula
   head "https://github.com/ndenev/mpssh.git"
 
   bottle do
-    cellar :any
-    sha1 "3f673d4d3e00110be048b3a18c876ec8e9ccab2f" => :yosemite
-    sha1 "5ad290e9a62712e43a2b624c2d9e73b1b2d445e7" => :mavericks
-    sha1 "86902eb4b59dbf70f41fc8a7c9dabc3b30e5e140" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "e5ac485861dfca0be2bb1ca2eb5826b5ca5977c0d2abb12dc58de011c18046f1" => :el_capitan
+    sha256 "2b91c9a9dbae19e99b8b8735bb3292cc056dcf8e06472c0b2d354f64896a4186" => :yosemite
+    sha256 "60d489a872cb7ed8855c0f95913af4fffe3082b6bee8669b0080c3d30d73249d" => :mavericks
+    sha256 "a528ce8c03771e3366f5380b18e2a43aba6283e09bb8945234c42dc25116cf41" => :mountain_lion
   end
 
   stable do

@@ -1,19 +1,21 @@
 class Qscintilla2 < Formula
   desc "Port to Qt of the Scintilla editing component"
-  homepage "http://www.riverbankcomputing.co.uk/software/qscintilla/intro"
+  homepage "https://www.riverbankcomputing.com/software/qscintilla/intro"
   url "https://downloads.sf.net/project/pyqt/QScintilla2/QScintilla-2.8.4/QScintilla-gpl-2.8.4.tar.gz"
   sha256 "9b7b2d7440cc39736bbe937b853506b3bd218af3b79095d4f710cccb0fabe80f"
 
   bottle do
-    sha256 "57dffa7ac659217580352a4da1d323457bad735a7761237b923c0fda5363c33c" => :yosemite
-    sha256 "1c5482dc22059dfecf734268c6f1626f51055c242e8be9759854bc88c323dd13" => :mavericks
-    sha256 "d487010da4ab0eee416ae7dcd1f22e2be2ed60984dda8da1b579094351e173f4" => :mountain_lion
+    cellar :any
+    revision 1
+    sha256 "4f277db7d148508ed19c15deb5be481a259fb9484f8228b8beef8d5deb62e3e8" => :el_capitan
+    sha256 "c671e7416f6cb55f7eaf3fabeed866dc0abefe7921470dc592ff515fb1c90bef" => :yosemite
+    sha256 "372eb0774903e20c4e3bcf67fbebb9ae7b880e5d12729c50e9eca264b2b7c96e" => :mavericks
   end
+
+  option "without-plugin", "Skip building the Qt Designer plugin"
 
   depends_on :python => :recommended
   depends_on :python3 => :optional
-
-  option "without-plugin", "Skip building the Qt Designer plugin"
 
   if build.with? "python3"
     depends_on "pyqt" => "with-python3"
@@ -70,16 +72,13 @@ class Qscintilla2 < Formula
       mkpath prefix/"plugins/designer"
       cd "designer-Qt4Qt5" do
         inreplace "designer.pro" do |s|
-          s.sub! "$$[QT_INSTALL_PLUGINS]", "#{prefix}/plugins"
+          s.sub! "$$[QT_INSTALL_PLUGINS]", "#{lib}/qt4/plugins"
           s.sub! "$$[QT_INSTALL_LIBS]", "#{lib}"
         end
         system "qmake", "designer.pro", *args
         system "make"
         system "make", "install"
       end
-      # symlink Qt Designer plugin (note: not removed on qscintilla2 formula uninstall)
-      ln_sf prefix/"plugins/designer/libqscintillaplugin.dylib",
-            Formula["qt"].opt_prefix/"plugins/designer/"
     end
   end
 

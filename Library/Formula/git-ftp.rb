@@ -1,16 +1,16 @@
 class GitFtp < Formula
   desc "Git-powered FTP client"
   homepage "https://git-ftp.github.io/git-ftp"
-  url "https://github.com/git-ftp/git-ftp/archive/1.0.2.tar.gz"
-  sha256 "f488c39bf7784923201c61ece41f40f8e18682e18b13918b0730ad196a11f1f7"
+  url "https://github.com/git-ftp/git-ftp/archive/1.1.0.tar.gz"
+  sha256 "b0de6dc36db506ac25a6fda21cb33d37b6a0b205fc72b0bd96de87359defc837"
 
   head "https://github.com/git-ftp/git-ftp.git", :branch => "develop"
 
   bottle do
-    cellar :any
-    sha256 "28f1121cf94519c15eca06c48851c5385c8093bbd501162157a7adc0ed9eae57" => :yosemite
-    sha256 "777c74d53098f88ca5a4b4202a7645e11361b567cace63b365b159660d5513de" => :mavericks
-    sha256 "5a0ae43f9f07ce414c01a84862bc0b3eb9c508062c40b12a268d4fab2823d07a" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "ab3dc523583810d2163ee293fed6f7af568367a8126130501df628a4b26072b7" => :el_capitan
+    sha256 "578da024d360e191ad43bfeec951a05cf4d288f2ef98db3414149826c5c6728f" => :yosemite
+    sha256 "586bdeba53fddbc4d708a315c5ad5f56356972b4250a964aaa8af79b3b619091" => :mavericks
   end
 
   option "with-manpage", "build and install the manpage (depends on pandoc)"

@@ -1,9 +1,11 @@
 class V < Formula
-  desc "Node version management"
+  desc "Z for vim"
   homepage "https://github.com/rupa/v"
-  head "https://github.com/rupa/v.git"
   url "https://github.com/rupa/v/archive/v1.0.tar.gz"
   sha256 "fc25860c29a2d02908f4c2b6ecf0499e0121393a0ec13ec1c047f7a6ead100f1"
+  head "https://github.com/rupa/v.git"
+
+  bottle :unneeded
 
   def install
     bin.install "v"

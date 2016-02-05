@@ -1,14 +1,21 @@
 class Getmail < Formula
   desc "Extensible mail retrieval system with POP3, IMAP4, SSL support"
   homepage "http://pyropus.ca/software/getmail/"
-  url "http://pyropus.ca/software/getmail/old-versions/getmail-4.47.0.tar.gz"
-  mirror "https://fossies.org/linux/misc/getmail-4.47.0.tar.gz"
-  sha256 "4b5accd3d0d79e1a84c0aed850ac8717b7f6e9ad72cfab7ba22abf58638e4540"
+  url "http://pyropus.ca/software/getmail/old-versions/getmail-4.48.0.tar.gz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/getmail4/getmail4_4.48.0.orig.tar.gz"
+  sha256 "49441e92eed577127331caf9b97f2ddaea14e97e8a49259efd9184a766a9b94c"
+
+  bottle do
+    cellar :any
+    sha256 "d419e3a1ef926b9f9883497b58b0adf5e4d2abab5568028f180689405b6f8044" => :yosemite
+    sha256 "525b3e87f0e39be465de58a425755800dc8c0cd00383c879008caa9ec4edc347" => :mavericks
+    sha256 "3549cc78fb6723551dd3c69bff5ccc8f8830bb2fa5d6261a8218fb24435dbcaf" => :mountain_lion
+  end
 
   # See: https://github.com/Homebrew/homebrew/pull/28739
   patch do
     url "https://gist.githubusercontent.com/sigma/11295734/raw/5a7f39d600fc20d7605d3c9e438257285700b32b/ssl_timeout.patch"
-    sha1 "d7242a07c0d4de1890bb8ebd51b55e01e859b302"
+    sha256 "cd5efe16c848c14b8db91780bf4e08a5920f6576cc68628b0941aa81857f4e2f"
   end
 
   def install

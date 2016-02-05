@@ -1,22 +1,20 @@
-require 'formula'
-
 class Opus < Formula
   desc "Audio codec"
-  homepage 'http://www.opus-codec.org'
-  url 'http://downloads.xiph.org/releases/opus/opus-1.1.tar.gz'
-  sha1 '35005f5549e2583f5770590135984dcfce6f3d58'
+  homepage "https://www.opus-codec.org"
+  url "http://downloads.xiph.org/releases/opus/opus-1.1.2.tar.gz"
+  sha256 "0e290078e31211baa7b5886bcc8ab6bc048b9fc83882532da4a1a45e58e907fd"
 
   bottle do
     cellar :any
-    sha1 "5fb89890cfc8c254a6f13f9657a66da385887b2b" => :yosemite
-    sha1 "8ac2e93276b0df2f69c01d0b727fbff57a637e9e" => :mavericks
-    sha1 "a7e6ed2455861c41e021fec280b6fa28462341a2" => :mountain_lion
+    sha256 "bf658ab20eb10724c16b619eaac1c10f1f746e7656b03be5ae1ef408178f405b" => :el_capitan
+    sha256 "252c20e9dfcfee3b628cf4344bb3586b5adf83d5772b493b853f0968e5ebf698" => :yosemite
+    sha256 "8a43607dcf83bc516b823893d3c7f80d2ec9a5a2a7802d314f026858360c9303" => :mavericks
   end
 
-  option "with-custom-modes", "Enable custom-modes for opus see http://www.opus-codec.org/docs/html_api-1.1.0/group__opus__custom.html"
+  option "with-custom-modes", "Enable custom-modes for opus see https://www.opus-codec.org/docs/opus_api-1.1.2/group__opus__custom.html"
 
   head do
-    url 'https://git.xiph.org/opus.git'
+    url "https://git.xiph.org/opus.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -29,6 +27,6 @@ class Opus < Formula
 
     system "./autogen.sh" if build.head?
     system "./configure", *args
-    system "make install"
+    system "make", "install"
   end
 end

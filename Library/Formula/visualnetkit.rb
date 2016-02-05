@@ -1,13 +1,11 @@
-require 'formula'
-
 class Visualnetkit < Formula
   desc "Graphical environment to configure and manage Netkit lab"
-  homepage 'http://code.google.com/p/visual-netkit/'
-  url 'https://visual-netkit.googlecode.com/files/visualnetkit-1.4.tar.bz'
-  version '1.4'
-  sha1 '17dbc3a6b7e62b1b2183f2a4426b9021781e4ec4'
+  homepage "https://code.google.com/p/visual-netkit/"
+  url "https://visual-netkit.googlecode.com/files/visualnetkit-1.4.tar.bz"
+  version "1.4"
+  sha256 "d1b02b253520a337ced5c450a0cd68e76aef289fa9d2777470455c0edfec5ce7"
 
-  depends_on 'qt'
+  depends_on "qt"
 
   # We're maintaining a patch to allow this software to compile against newer
   # versions of Qt. Since the upstream project hasn't had activity in a while,
@@ -17,10 +15,10 @@ class Visualnetkit < Formula
 
   def install
     system "/bin/sh", "./build.sh", "-r"
-    inreplace 'bin/visualnetkit.sh', /^APP=.*$/, "APP=#{prefix}"
-    prefix.install 'bin/VisualNetkit.app'
-    bin.install 'bin/visualnetkit.sh' => 'visualnetkit'
-    prefix.install 'bin/plugins'
+    inreplace "bin/visualnetkit.sh", /^APP=.*$/, "APP=#{prefix}"
+    prefix.install "bin/VisualNetkit.app"
+    bin.install "bin/visualnetkit.sh" => "visualnetkit"
+    prefix.install "bin/plugins"
   end
 end
 

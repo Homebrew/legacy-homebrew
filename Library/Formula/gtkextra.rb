@@ -1,14 +1,14 @@
 class Gtkextra < Formula
   desc "Widgets for creating GUIs for GTK+"
   homepage "http://gtkextra.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/gtkextra/3.1/gtkextra-3.1.3.tar.gz"
-  sha256 "eb8bbfd31ec5d73face8939d19f9951293dd99183050aab4f781549964c2692f"
+  url "https://downloads.sourceforge.net/project/gtkextra/3.2/gtkextra-3.2.0.tar.gz"
+  sha256 "f24478ae8b863864708827f18ad7d72fac99ad013ef1396f9f1c277e9be0953b"
 
   bottle do
     cellar :any
-    sha256 "f1e6a2c4332d92aa7925819190e73a0f417d6008c37630e8da39d4f27e8395a7" => :yosemite
-    sha256 "3a91c1036c587221be42d4c1af63d32603289b2fa61924ef7d373c65f90df16d" => :mavericks
-    sha256 "881ebe456bcf55aa3a643b984bee9e41a8b5eb696e20d3bf21911521b9aafeb8" => :mountain_lion
+    sha256 "449307366e46d2469cc288ce8e1e5ef2c503a6bc041ba15a053da82325ef9198" => :el_capitan
+    sha256 "469ece3a0105502f94476e622732a2c7bc8d6bd6d43450038b0000af99aee859" => :yosemite
+    sha256 "c6e281521f79d1cd1a216f7b74c7cbe6ce7b4397e52f0aec83e8f7146cb3cb6f" => :mavericks
   end
 
   depends_on "gtk+"
@@ -41,7 +41,6 @@ class Gtkextra < Formula
     gettext = Formula["gettext"]
     glib = Formula["glib"]
     gtkx = Formula["gtk+"]
-    harfbuzz = Formula["harfbuzz"]
     libpng = Formula["libpng"]
     pango = Formula["pango"]
     pixman = Formula["pixman"]
@@ -57,7 +56,6 @@ class Gtkextra < Formula
       -I#{glib.opt_lib}/glib-2.0/include
       -I#{gtkx.opt_include}/gtk-2.0
       -I#{gtkx.opt_lib}/gtk-2.0/include
-      -I#{harfbuzz.opt_include}/harfbuzz
       -I#{include}/gtkextra-3.0
       -I#{libpng.opt_include}/libpng16
       -I#{pango.opt_include}/pango-1.0
@@ -65,8 +63,6 @@ class Gtkextra < Formula
       -D_REENTRANT
       -L#{atk.opt_lib}
       -L#{cairo.opt_lib}
-      -L#{fontconfig.opt_lib}
-      -L#{freetype.opt_lib}
       -L#{gdk_pixbuf.opt_lib}
       -L#{gettext.opt_lib}
       -L#{glib.opt_lib}
@@ -75,19 +71,16 @@ class Gtkextra < Formula
       -L#{pango.opt_lib}
       -latk-1.0
       -lcairo
-      -lfontconfig
-      -lfreetype
-      -lgdk-x11-2.0
+      -lgdk-quartz-2.0
       -lgdk_pixbuf-2.0
       -lgio-2.0
       -lglib-2.0
       -lgobject-2.0
-      -lgtk-x11-2.0
-      -lgtkextra-x11-3.0
+      -lgtk-quartz-2.0
+      -lgtkextra-quartz-3.0
       -lintl
       -lpango-1.0
       -lpangocairo-1.0
-      -lpangoft2-1.0
     ]
     system ENV.cc, "test.c", "-o", "test", *flags
     system "./test"

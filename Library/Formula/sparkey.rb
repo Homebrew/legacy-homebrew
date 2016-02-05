@@ -1,16 +1,14 @@
-require "formula"
-
 class Sparkey < Formula
   desc "Constant key-value store, best for frequent read/infrequent write uses"
   homepage "https://github.com/spotify/sparkey/"
   url "https://github.com/spotify/sparkey/archive/sparkey-0.2.0.tar.gz"
-  sha1 "1b7dca2410dffb55d96b8e6eef384830b7d96553"
+  sha256 "a06caf23c64e7ebae5b8b67272b21ab4c57f21a66d190bfe0a95f5af1dc69154"
 
   bottle do
     cellar :any
-    sha1 "5dfa39af0fe70769f77637c7fdbfffd67f273621" => :mavericks
-    sha1 "49276b9522232bdcfef1d0b4f43fb3c314b1a98d" => :mountain_lion
-    sha1 "6ae3cff3918cd0f4fbdcecc830a89118eaf4e453" => :lion
+    sha256 "b98eb670ea094ed0657f213fe83bf0f67ee4fea26a2bb5cd50f4eadfbea8bffb" => :mavericks
+    sha256 "45463695180f13b78db4ad0e1c7f901636799eaaa59a16678ec1baabdecb4bb9" => :mountain_lion
+    sha256 "3197c9a2871ae2d9674ffc1321b3e66d66eac860b237498699c19a3920b8748d" => :lion
   end
 
   depends_on "autoconf" => :build

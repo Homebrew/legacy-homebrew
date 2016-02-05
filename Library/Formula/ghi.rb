@@ -1,11 +1,11 @@
-require 'formula'
-
 class Ghi < Formula
   desc "Work on GitHub issues on the command-line"
-  homepage 'https://github.com/stephencelis/ghi'
-  url 'https://github.com/stephencelis/ghi/archive/0.9.3.tar.gz'
-  head 'https://github.com/stephencelis/ghi.git'
-  sha1 '59512443c778cacc8c0488e6ab64965f18b3a279'
+  homepage "https://github.com/stephencelis/ghi"
+  url "https://github.com/stephencelis/ghi/archive/1.1.0.tar.gz"
+  sha256 "90ee10cefe9b83514eadb185b339a7147627c54c508e28f292e56719af6bfcb6"
+  head "https://github.com/stephencelis/ghi.git"
+
+  bottle :unneeded
 
   def install
     bin.install "ghi"

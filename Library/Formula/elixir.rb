@@ -1,19 +1,17 @@
-require 'formula'
-
-class ErlangInstalled < Requirement
+class Erlang18Requirement < Requirement
   fatal true
   env :userpaths
   default_formula "erlang"
 
-  satisfy {
-    erl = which('erl') and begin
-      `#{erl} -noshell -eval 'io:fwrite("~s~n", [erlang:system_info(otp_release)]).' -s erlang halt | grep -q '^1[789]'`
-      $?.exitstatus == 0
-    end
-  }
+  satisfy do
+    erl = which("erl")
+    next unless erl
+    `#{erl} -noshell -eval 'io:fwrite("~s", [erlang:system_info(otp_release) >= "18"])' -s erlang halt | grep -q '^true'`
+    $?.exitstatus == 0
+  end
 
   def message; <<-EOS.undent
-    Erlang 17 is required to install.
+    Erlang 18+ is required to install.
 
     You can install this with:
       brew install erlang
@@ -26,23 +24,23 @@ end
 
 class Elixir < Formula
   desc "Functional metaprogramming aware language built on Erlang VM"
-  homepage 'http://elixir-lang.org/'
-  url  'https://github.com/elixir-lang/elixir/archive/v1.0.4.tar.gz'
-  sha1 '6a2513aeb45f3e79782ec2900cfdc3a1d48fdb3d'
+  homepage "http://elixir-lang.org/"
+  url "https://github.com/elixir-lang/elixir/archive/v1.2.2.tar.gz"
+  sha256 "09a51fe2680070e67c0b3ef1aeb6c409f383fc69da155020466bc54203d58056"
 
-  head 'https://github.com/elixir-lang/elixir.git'
+  head "https://github.com/elixir-lang/elixir.git"
 
   bottle do
-    sha256 "537d5760fbd780fef37a27872f1ee4d93b073a9a466a03c1f5834a804ece0275" => :yosemite
-    sha256 "5aa31b974c75e1d97db4be2e88ee2a34f0518ef183471f18b0225604b362b39a" => :mavericks
-    sha256 "3021ac2b3fe0aae5dfb7bb03d057ccd7df5bb9b733de35399ff7a431cae622ee" => :mountain_lion
+    sha256 "2630f21033c41006cf150ceaccb81f8e3cc693a6d73d3e4949ea2cf0c0689830" => :el_capitan
+    sha256 "cee92b5c7a7aff15621d05afe3f47cbd969a22704b8a9bde18088e71ec8011c6" => :yosemite
+    sha256 "b8bb90251593e9ce0e8d18716b50bb0096822aec31722a1f991450e6516fcd7e" => :mavericks
   end
 
-  depends_on ErlangInstalled
+  depends_on Erlang18Requirement
 
   def install
     system "make"
-    bin.install Dir['bin/*'] - Dir['bin/*.{bat,ps1}']
+    bin.install Dir["bin/*"] - Dir["bin/*.{bat,ps1}"]
 
     Dir.glob("lib/*/ebin") do |path|
       app = File.basename(File.dirname(path))

@@ -1,13 +1,14 @@
 class Efl < Formula
   desc "Libraries for the Enlightenment window manager"
   homepage "https://www.enlightenment.org"
-  url "https://download.enlightenment.org/rel/libs/efl/efl-1.14.0.tar.gz"
-  sha256 "30a8a239449e0d068a39787b5a4769dd26ddf0476f58f094c85e65b108086269"
+  url "https://download.enlightenment.org/rel/libs/efl/efl-1.14.2.tar.gz"
+  sha256 "e5699d8183c1540fe45dddaf692254632f9131335e97a09cc313e866a150b42c"
+  revision 1
 
   bottle do
-    sha256 "6fc05ee275321d4d2c883a4f7b19b6144d4e02e545d35a88ec8ebbae3ba8f5d2" => :yosemite
-    sha256 "b8dbeab7156541c3f5538d8af78bff8d4fa96e372985e9ecc9e081f469fa2d48" => :mavericks
-    sha256 "c1f2f8cdfe2414f9248d1992edc7d9cfa3c78b51ffdaaaec44c109cd2ba0a982" => :mountain_lion
+    sha256 "7e97f7173a21a18e7da2ac673eaf9e44fe14b6455e173ae10166154795385355" => :el_capitan
+    sha256 "dd6dfce0cab67849f5c51697be0610ee385984710b05a8311955df1829e33ac1" => :yosemite
+    sha256 "a516bca511ea00851a41d3294fbfce0352b28eb64239bf499c359fddf37295ec" => :mavericks
   end
 
   conflicts_with "eina", :because => "efl aggregates formerly distinct libs, one of which is eina"
@@ -44,7 +45,8 @@ class Efl < Formula
             "--disable-silent-rules",
             "--enable-cocoa",
             "--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-aba", # There's currently (1.14) no clean profile for Mac OS, so we need to force passing configure
-            "--prefix=#{prefix}"]
+            "--prefix=#{prefix}",
+           ]
     args << "--with-x11=none" if build.without? "x11"
 
     system "./configure", *args

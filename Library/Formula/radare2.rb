@@ -1,23 +1,29 @@
-require "formula"
-
 class Radare2 < Formula
   desc "Reverse engineering framework"
   homepage "http://radare.org"
 
   stable do
-    url "http://radare.org/get/radare2-0.9.8.tar.xz"
-    sha256 "8e72caaebdac10300fd7ec86a5d06b1cbecfc6914e5fea4007c6e06e667bfa5a"
+    url "http://radare.org/get/radare2-0.9.9.tar.xz"
+    sha256 "024adba5255f12e58c2c1a5e2263fada75aad6e71b082461dea4a2b94b29df32"
 
     resource "bindings" do
-      url "http://radare.org/get/radare2-bindings-0.9.8.tar.xz"
-      sha256 "28326effb7d1eda9f6df2ef08954774c16617046a33046501bd0332324519f39"
+      url "http://radare.org/get/radare2-bindings-0.9.9.tar.xz"
+      sha256 "817939698cc4534498226c28938288b7b4a7b6216dc6d7ddde72b0f94d987b14"
+    end
+
+    # https://github.com/radare/radare2/issues/3019
+    # Also fixes dylib naming issue with https://github.com/radare/radare2/commit/a497a6cf5b19da8bb857803e582a3afb3d4af673
+    patch do
+      url "https://gist.githubusercontent.com/sparkhom/d4584cfefb58243995e8/raw/cb62b0e45d62832efb0db037de5a63cfa895bfa0/radare2-0.9.9-homebrew.patch"
+      sha256 "9b032de6e31ffeb302384a3fed284fee8a14b7b452405789419e78a15cb83145"
     end
   end
 
   bottle do
-    sha256 "98747f4956734786ab429187042f2371b6c0b13d29c79af71c465a800e45e60b" => :yosemite
-    sha256 "f1896970ded3c078f49c17b674565992a9a9eb291318d1d0ec4003cb17d97433" => :mavericks
-    sha256 "939af3b23d3918860ff985156f2a42ad2bff56cd48b8545e9c73bb8cf96a0038" => :mountain_lion
+    revision 1
+    sha256 "c4a3cbed5b9aaf4d6b1970aec1e7b167f64ad4f0d92139f38892fcb0d5daae6c" => :el_capitan
+    sha256 "2d812da8bb6b00e1cf74fbf475b8709d9b01c22a1e1af547ff5b4adbabf7fef4" => :yosemite
+    sha256 "d482c0080aa58f7254e93527a498122810367bceefb2eeebb88539aad6a3f407" => :mavericks
   end
 
   head do

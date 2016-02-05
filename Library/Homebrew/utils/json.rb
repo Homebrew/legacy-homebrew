@@ -1,4 +1,4 @@
-require 'vendor/okjson'
+require "vendor/okjson"
 
 module Utils
   module JSON

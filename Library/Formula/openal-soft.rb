@@ -1,15 +1,15 @@
 class OpenalSoft < Formula
   desc "Implementation of the OpenAL 3D audio API"
   homepage "http://kcat.strangesoft.net/openal.html"
-  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.16.0.tar.bz2"
-  sha256 "2f3dcd313fe26391284fbf8596863723f99c65d6c6846dccb48e79cadaf40d5f"
+  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.17.0.tar.bz2"
+  sha256 "5e93336de2e7c50f3a01beba51861d6f61c3e4045a896191dc806591e46264d1"
+  head "http://repo.or.cz/openal-soft.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "4f31acb42ba76c79984e7ef0c5be5cbc63a6bff524516b3f67d2fb363363ec64" => :yosemite
-    sha256 "e0378ccb0dee6eca4d505ba313512ed12b44f6a58525418a544bce681fa3ad1b" => :mavericks
-    sha256 "b190c7c847f976b7d4938ea84356baa7225b63748c890af151150089f145ec6a" => :mountain_lion
+    sha256 "81d1fd4cf4e709f04071d6586c3961aed84cc98727a30b397315cf63ecc5be66" => :el_capitan
+    sha256 "f6bf71249e4b2d909e0a7240b9c4529b6abe94cb637738c339a0ea357e9166ae" => :yosemite
+    sha256 "da9897a08329506de8767b3681a2683bccea4d385c98243f79e056615603dfd8" => :mavericks
   end
 
   option :universal
@@ -25,6 +25,8 @@ class OpenalSoft < Formula
   # clang 4.2's support for alignas is incomplete
   fails_with :llvm
   fails_with(:clang) { build 425 }
+
+  keg_only :provided_by_osx, "OS X provides OpenAL.framework."
 
   def install
     ENV.universal_binary if build.universal?
@@ -53,6 +55,6 @@ class OpenalSoft < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lopenal"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lopenal"
   end
 end

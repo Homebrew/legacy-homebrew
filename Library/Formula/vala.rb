@@ -1,20 +1,13 @@
-require "formula"
-
 class Vala < Formula
   desc "Compiler for the GObject type system"
   homepage "https://live.gnome.org/Vala"
-  url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.26/vala-0.26.1.tar.xz"
-  sha256 "8407abb19ab3a58bbfc0d288abb47666ef81f76d0540258c03965e7545f59e6b"
+  url "https://download.gnome.org/sources/vala/0.30/vala-0.30.1.tar.xz"
+  sha256 "23add78e5c6a5e6df019d4a885c9c79814c9e0b957519ec8a4f4d826c4e5df2c"
 
   bottle do
-    sha1 "9e829527c2662e38375a04116802f8975109fc5b" => :yosemite
-    sha1 "22d08887de342be1704472063003caa6c3a33f03" => :mavericks
-    sha1 "0ad74c02e196ac61098dddc8b8c4caec7d91a044" => :mountain_lion
-  end
-
-  devel do
-    url "http://ftp.gnome.org/pub/GNOME/sources/vala/0.27/vala-0.27.1.tar.xz"
-    sha256 "0bce939c011c34478da840f869b3c24d02e8f1c92691c587c1fe289a5533cd77"
+    sha256 "b68681f676381035cdd85e944aa234f0566137bda514ec105477fbeed246a365" => :el_capitan
+    sha256 "752fe91460002b335c35084f073d6e3f3666017f6b7dea9f728a828a0dde911e" => :yosemite
+    sha256 "bf422cf5802d09413482943afac7cd0b7d19e2defa1955330acb11d644d61299" => :mavericks
   end
 
   depends_on "pkg-config" => :run
@@ -37,14 +30,14 @@ class Vala < Formula
         print ("#{test_string}");
       }
     EOS
-    valac_args = [# Build with debugging symbols.
-                  "-g",
-                  # Use Homebrew's default C compiler.
-                  "--cc=#{ENV.cc}",
-                  # Save generated C source code.
-                  "--save-temps",
-                  # Vala source code path.
-                  "#{path}"]
+    valac_args = [ # Build with debugging symbols.
+      "-g",
+      # Use Homebrew's default C compiler.
+      "--cc=#{ENV.cc}",
+      # Save generated C source code.
+      "--save-temps",
+      # Vala source code path.
+      "#{path}",]
     system "#{bin}/valac", *valac_args
     assert File.exist?(testpath/"hello.c")
 

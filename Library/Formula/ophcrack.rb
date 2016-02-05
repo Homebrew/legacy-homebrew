@@ -1,18 +1,16 @@
-require "formula"
-
 class Ophcrack < Formula
   desc "Microsoft Windows password cracker using rainbow tables"
   homepage "http://ophcrack.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/ophcrack/ophcrack/3.6.0/ophcrack-3.6.0.tar.bz2"
   mirror "https://mirrors.kernel.org/debian/pool/main/o/ophcrack/ophcrack_3.6.0.orig.tar.bz2"
-  sha1 "8e39b8c013b3f2144b23e33abeeadbb81e4120ca"
+  sha256 "79219baa03afd7e52bc6d365dd5a445bc73dfac2e88216e7b050ad7749191893"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "708bc9a7d0d55c7bc40c658193b7f8c132a4b03a" => :mavericks
-    sha1 "dada805fde40ab311f1819bc51b1280cdc224bfe" => :mountain_lion
-    sha1 "4c4e177a30674d11e10fd825d3567d41773d952b" => :lion
+    sha256 "12b73c51c2f72e98037761d47cc42077d03d2aacfb9e58ec2325ae8a621bf423" => :mavericks
+    sha256 "3921cfce1b5df8eb56f38465b141aca8a314246e78c4245dd9a4b2a63219106e" => :mountain_lion
+    sha256 "bd22912ade4629ed93d34dc0431804db298184784ed981b6d028243e8563136f" => :lion
   end
 
   depends_on "openssl"

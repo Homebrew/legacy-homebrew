@@ -47,10 +47,6 @@ class Frescobaldi < Formula
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
   end
 
-  test do
-    system bin/"frescobaldi", "--version"
-  end
-
   def caveats; <<-EOS.undent
     By default, a splash screen is shown on startup; this causes the main
     window not to show until the application icon on the dock is clicked
@@ -60,5 +56,9 @@ class Frescobaldi < Formula
     solve this issue. See:
       https://github.com/wbsoft/frescobaldi/issues/428
   EOS
+  end
+
+  test do
+    system bin/"frescobaldi", "--version"
   end
 end

@@ -1,34 +1,54 @@
 class ClangOmp < Formula
   desc "OpenMP C/C++ language extensions in Clang/LLVM compiler"
   homepage "https://clang-omp.github.io/"
-  url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
-  version "2015-04-01"
-  sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
+
+  stable do
+    url "https://github.com/clang-omp/llvm/archive/2015-04-01.tar.gz"
+    version "2015-04-01"
+    sha256 "37f990ad99b3213507ec88f86702c5a057ce397cc16638eeee5c88906572daec"
+
+    resource "compiler-rt" do
+      url "https://github.com/clang-omp/compiler-rt/archive/2015-04-01.tar.gz"
+      sha256 "5a8d39ff6ce524e23fae32870f85b18d43f2795da2011d3cbb6b29d471bb27b7"
+    end
+
+    resource "clang" do
+      url "https://github.com/clang-omp/clang/archive/2015-04-01.tar.gz"
+      sha256 "2717115e5ba491e3b8119311f0d792420ba41be34a89733b9880eb3d3c09fbe5"
+    end
+
+    resource "libcxx" do
+      url "https://github.com/llvm-mirror/libcxx/archive/release_35.tar.gz"
+      sha256 "df23b356ae1953de671d1dc9093568330e074bbe48cd6d93d16173a793550c71"
+    end
+  end
 
   bottle do
     revision 2
+    sha256 "9db72fb0f069d564f9ad509922ebabda30008587924b4af33b8b80c5795e7fdd" => :el_capitan
     sha256 "2d29cc7bcde757610a325e57c0ea0162cee97c2cf04ea424f8e4010c57ae2295" => :yosemite
     sha256 "3989eb56c26ca2903ea1bde7aaf0b02c05a5dbfc1eae59056860abca9c6d5fec" => :mavericks
     sha256 "2a848d5efa46b5cc6e906f2c71608c8098238a397e6979912dcef2b5b1d2807c" => :mountain_lion
   end
 
+  head do
+    url "https://github.com/clang-omp/llvm_trunk.git"
+
+    resource "compiler-rt" do
+      url "https://github.com/clang-omp/compiler-rt_trunk.git"
+    end
+
+    resource "clang" do
+      url "https://github.com/clang-omp/clang_trunk.git"
+    end
+
+    resource "libcxx" do
+      url "https://github.com/llvm-mirror/libcxx.git"
+    end
+  end
+
   depends_on "libiomp"
   depends_on "cmake" => :build
-
-  resource "compiler-rt" do
-    url "https://github.com/clang-omp/compiler-rt/archive/2015-04-01.tar.gz"
-    sha256 "5a8d39ff6ce524e23fae32870f85b18d43f2795da2011d3cbb6b29d471bb27b7"
-  end
-
-  resource "clang" do
-    url "https://github.com/clang-omp/clang/archive/2015-04-01.tar.gz"
-    sha256 "2717115e5ba491e3b8119311f0d792420ba41be34a89733b9880eb3d3c09fbe5"
-  end
-
-  resource "libcxx" do
-    url "https://github.com/llvm-mirror/libcxx/archive/release_35.tar.gz"
-    sha256 "df23b356ae1953de671d1dc9093568330e074bbe48cd6d93d16173a793550c71"
-  end
 
   needs :cxx11
 

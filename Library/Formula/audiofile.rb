@@ -2,13 +2,13 @@ class Audiofile < Formula
   desc "Reads and writes many common audio file formats"
   homepage "http://www.68k.org/~michael/audiofile/"
   url "http://audiofile.68k.org/audiofile-0.3.6.tar.gz"
-  sha1 "3aba3ef724b1b5f88cfc20ab9f8ce098e6c35a0e"
+  sha256 "cdc60df19ab08bfe55344395739bb08f50fc15c92da3962fac334d3bff116965"
 
   bottle do
     cellar :any
-    sha1 "3ee5b808776b2ee6269aad02db795e8da61fa181" => :yosemite
-    sha1 "a15e1ae96b15c18c62cfd19e387eb5d21f0992f2" => :mavericks
-    sha1 "9994dc853442647fee82bf7291df0a2d35b93d16" => :mountain_lion
+    sha256 "0b7f9bd2023f2b52e4b3f7c03ddd822b0866874325adacfa10b582740e070cdc" => :yosemite
+    sha256 "a03ebac03c59a9a65482cfa420b54f6be76bfae546ceaa1e70340ef0d02d42a7" => :mavericks
+    sha256 "b68287cea599e95d784529b79a2b17fea366bc756d9a84ee8a77c06fcffda773" => :mountain_lion
   end
 
   head do
@@ -20,7 +20,9 @@ class Audiofile < Formula
   end
 
   option "with-lcov", "Enable Code Coverage support using lcov"
-  option "with-check", "Run the test suite during install ~30sec"
+  option "with-test", "Run the test suite during install (~30sec)"
+
+  deprecated_option "with-check" => "with-test"
 
   depends_on "lcov" => :optional
 
@@ -35,7 +37,7 @@ class Audiofile < Formula
     args << "--enable-coverage" if build.with? "lcov"
     system configure, *args
     system "make"
-    system "make", "check" if build.with? "check"
+    system "make", "check" if build.with? "test"
     system "make", "install"
   end
 
@@ -45,7 +47,7 @@ class Audiofile < Formula
     conv_bin = "#{bin}/sfconvert"
     info_bin = "#{bin}/sfinfo"
 
-    unless File.exist?(conv_bin) and File.exist?(inn) and File.exist?(info_bin)
+    unless File.exist?(conv_bin) && File.exist?(inn) && File.exist?(info_bin)
       opoo <<-EOS.undent
         One of the following files could not be located, and so
         the test was not executed:

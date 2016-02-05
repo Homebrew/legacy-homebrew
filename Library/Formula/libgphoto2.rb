@@ -1,13 +1,21 @@
 class Libgphoto2 < Formula
   desc "Gphoto2 digital camera library"
   homepage "http://www.gphoto.org/proj/libgphoto2/"
-  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.7/libgphoto2-2.5.7.tar.bz2"
-  sha1 "0f0ebe1c953eab598c6a53477b81be762ab9047f"
+  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.9/libgphoto2-2.5.9.tar.bz2"
+  sha256 "cdb0e8e3a93417eb25892c4b03e64c07e93488ce05072edb62e1b70ff3291f32"
 
   bottle do
-    sha1 "e3daec0e8f32cd4314560abc4a582832278c92b7" => :yosemite
-    sha1 "d4f9d264941a44585b17e288a5b91b0c53eb08f4" => :mavericks
-    sha1 "619ef05556816f98e84cfc900e74cf1ee8fd95f7" => :mountain_lion
+    sha256 "e2d8ad91607270b43671899448beb926b98e639f4a61892eb2756743a5d74d0e" => :el_capitan
+    sha256 "7ffab7c5114e341807a93656bca4909dba424ed847ebb939be5d1eb46bdeb6eb" => :yosemite
+    sha256 "2e444b4547330228c78e30112692d79d54f3786c99a015328ba9b039dfcc79c2" => :mavericks
+  end
+
+  head do
+    url "https://github.com/gphoto/libgphoto2.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+    depends_on "gettext" => :build
   end
 
   option :universal
@@ -20,9 +28,11 @@ class Libgphoto2 < Formula
 
   def install
     ENV.universal_binary if build.universal?
+
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

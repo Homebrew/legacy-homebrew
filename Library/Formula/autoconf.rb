@@ -6,11 +6,12 @@ class Autoconf < Formula
   sha256 "954bd69b391edc12d6a4a51a2dd1476543da5c6bbf05a95b59dc0dd6fd4c2969"
 
   bottle do
-    revision 1
-    sha1 "3f83cb206720445748c0c4851152607bfabaa926" => :yosemite
-    sha1 "319a4ac05d83b5b3db37dcc629a46a412ec1989b" => :mavericks
-    sha1 "83184a596d69f3a868e6780c1c8fba309ea28fb2" => :mountain_lion
-    sha1 "7d31f63e5ddd1bbbf0397b0b70df1ff9e70f998b" => :lion
+    cellar :any_skip_relocation
+    revision 4
+    sha256 "ded69c7dac4bc8747e52dca37d6d561e55e3162649d3805572db0dc2f940a4b8" => :el_capitan
+    sha256 "daf70656aa9ff8b2fb612324222aa6b5e900e2705c9f555198bcd8cd798d7dd0" => :yosemite
+    sha256 "d153b3318754731ff5e91b45b2518c75880993fa9d1f312a03696e2c1de0c9d5" => :mavericks
+    sha256 "37e77a2e7ca6d479f0a471d5f5d828efff621bd051c1884ff1363d77c5c4675e" => :mountain_lion
   end
 
   keg_only :provided_until_xcode43
@@ -22,8 +23,11 @@ class Autoconf < Formula
     inreplace "bin/autoreconf.in", "libtoolize", "glibtoolize"
     # also touch the man page so that it isn't rebuilt
     inreplace "man/autoreconf.1", "libtoolize", "glibtoolize"
-    system "./configure", "--prefix=#{prefix}"
+
+    system "./configure", "--prefix=#{prefix}",
+           "--with-lispdir=#{share}/emacs/site-lisp/autoconf"
     system "make", "install"
+
     rm_f info/"standards.info"
   end
 

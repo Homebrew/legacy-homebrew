@@ -1,14 +1,14 @@
 class Libpst < Formula
   desc "Utilities for the PST file format"
   homepage "http://www.five-ten-sg.com/libpst/"
-  url "http://www.five-ten-sg.com/libpst/packages/libpst-0.6.63.tar.gz"
-  sha256 "5f522606fb7b97d6e31bc2490dcce77b89ec77e12ade4af4551290f953483062"
+  url "http://www.five-ten-sg.com/libpst/packages/libpst-0.6.66.tar.gz"
+  sha256 "92b49939d821091d9d25e27e17c78dbb867f3f9ab5b8f43e2b01ace0677e1f72"
 
   bottle do
     cellar :any
-    sha1 "9c4d9e444577b05d8fd6fe9759840f29776639de" => :yosemite
-    sha1 "0b7150bc158799b80cdaf6b5cfdfae740214ee96" => :mavericks
-    sha1 "f604465213aae3bc5711fa8633cf25e910dd4799" => :mountain_lion
+    sha256 "85e5b6e462c43360ba320bfd0ff8f1df5651071d084204f83c28390a42ee3e8e" => :el_capitan
+    sha256 "8c8a952ce7f839a074bd7948ba90b14598d3e3979e821d9122fb612ddd059d04" => :yosemite
+    sha256 "2fcd9b451d14f8cec5960acc2ac1fa22f9b6f7ce943ab694ece78f52f5a29161" => :mavericks
   end
 
   option "with-pst2dii", "Build pst2dii using gd"

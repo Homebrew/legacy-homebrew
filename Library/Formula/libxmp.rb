@@ -1,14 +1,14 @@
 class Libxmp < Formula
   desc "C library for playback of module music (MOD, S3M, IT, etc)"
   homepage "http://xmp.sourceforge.net"
-  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.8/libxmp-4.3.8.tar.gz"
-  sha256 "de9a25b5f28e5f82010ade423bb63adc6ad235c2aeca4b7433ec5d0a43020640"
+  url "https://downloads.sourceforge.net/project/xmp/libxmp/4.3.10/libxmp-4.3.10.tar.gz"
+  sha256 "c11c0bf27f3ba97051cd5e3e04d9b487febdc31cb2ce35e462d71fc580eaa5be"
 
   bottle do
     cellar :any
-    sha256 "6667ec2fe01c9907bb496aedca3fb28a3b9e4640ab6d35a08a39e41820d84a5c" => :yosemite
-    sha256 "94d3c9fd92050aa08d3b56631d68e3ca0f9ad537fbc2dc5ac096f339f57bb9b6" => :mavericks
-    sha256 "570deab3ca3accf745115d103e88dcb185d1b1ca3523d8ca643cdf623a92d361" => :mountain_lion
+    sha256 "95a29a2efd115f4bebb9589c0e777f4cee8b0847ebceb4103f11f4f6bfa609d2" => :el_capitan
+    sha256 "22ee915a58a14bedf819c307533f1d67d471db3a07a7494ad6b8cfd65b7bd37e" => :yosemite
+    sha256 "11fb81b1cf895ef247d38313c0f1385e9d93a3b0d478a2186b83ad19816c8e7f" => :mavericks
   end
 
   # CC BY-NC-ND licensed set of five mods by Keith Baylis/Vim! for testing purposes
@@ -26,7 +26,7 @@ class Libxmp < Formula
   def install
     system "autoconf" if build.head?
     system "./configure", "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
 
     (share/"libxmp").install resource("demo_mods")
   end

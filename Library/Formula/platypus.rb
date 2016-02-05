@@ -1,25 +1,20 @@
 class Platypus < Formula
   desc "Create OS X applications from {Perl,Ruby,sh,Python} scripts"
   homepage "http://sveinbjorn.org/platypus"
-  url "https://github.com/sveinbjornt/Platypus/raw/master/Releases/platypus4.9.src.zip"
-  version "4.9"
-  sha256 "11b32fc5c68b4e73abeeabd22e1547c2c9b53bafe86cf04474c1f78863d2c1ae"
+  url "http://sveinbjorn.org/files/software/platypus/platypus5.0.src.zip"
+  version "5.0"
+  sha256 "53efa052920a0f8a0fcc6a5d5806447be1270279aa98961cb5cea34447a79706"
   head "https://github.com/sveinbjornt/Platypus.git"
 
   bottle do
-    cellar :any
-    sha256 "398efe2d6afe358e13dc881be58ae8e27c73bd1538ca954e7067c055d25adf75" => :yosemite
-    sha256 "99a07275ad62b9d26bf2e31ce5f4e0d9e35525a18c1414ef7d655c11a92510f9" => :mavericks
-    sha256 "d33acad77bacbbec3c602541b3e0410576efda95679760314b7e5ba737154871" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "c48c2b021df9de8b3e14e6b662eda5e1d8952820a50e05297e4cc51998b15980" => :el_capitan
+    sha256 "bee357b4dfb3ae25bb2ae31ffe61e5fd0d29076426f587f45096480c998500e6" => :yosemite
   end
 
-  depends_on :xcode => :build
+  depends_on :xcode => ["7.0", :build]
 
   def install
-    # 4.9 stable tarball has unexpected unpacked name, so go to the right
-    # place.
-    cd "platypus" if build.stable?
-
     xcodebuild "SYMROOT=build", "DSTROOT=#{buildpath}",
                "-project", "Platypus.xcodeproj",
                "-target", "platypus",
@@ -33,10 +28,9 @@ class Platypus < Formula
 
     bin.install "platypus_clt" => "platypus"
 
-    cd "ScriptExec.app/Contents" do
+    cd "build/UninstalledProducts/macosx/ScriptExec.app/Contents" do
       (share/"platypus").install "Resources/MainMenu.nib", "MacOS/ScriptExec"
     end
-
   end
 
   test do

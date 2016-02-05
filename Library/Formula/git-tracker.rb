@@ -1,15 +1,13 @@
-require 'formula'
-
 class GitTracker < Formula
   desc "Integrate Pivotal Tracker into git use"
-  homepage 'https://github.com/stevenharman/git_tracker'
-  url 'https://github.com/stevenharman/git_tracker/archive/v1.6.3.tar.gz'
-  sha1 'c748e564f176165dba2498637e0b99f27647b88a'
+  homepage "https://github.com/stevenharman/git_tracker"
+  url "https://github.com/stevenharman/git_tracker/archive/v1.6.3.tar.gz"
+  sha256 "8864f4a3699c32ff56b3131bfe809a81b7446b2610cf0896015ac49a39b039c9"
 
-  head 'https://github.com/stevenharman/git_tracker.git'
+  head "https://github.com/stevenharman/git_tracker.git"
 
   def install
-    rake 'standalone:install', "prefix=#{prefix}"
+    rake "standalone:install", "prefix=#{prefix}"
   end
 
   test do

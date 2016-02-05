@@ -1,18 +1,17 @@
 class FbClient < Formula
   desc "Shell-script client for http://paste.xinu.at"
   homepage "https://paste.xinu.at"
-  url "https://paste.xinu.at/data/client/fb-1.4.2.tar.gz"
-  sha256 "a0479725a370d884a0fdbcd0380028ba9682bd48115142141e17f82930fb66f0"
+  url "https://paste.xinu.at/data/client/fb-1.5.0.tar.gz"
+  sha256 "205514e7ae6d2ce687c05a5f581248d0f06c29c4e8e004f768ba0b54a39ed2f3"
+
+  head "https://git.server-speed.net/users/flo/fb", :using => :git
 
   bottle do
     cellar :any
-    sha256 "7ad33c8cc5aa7ce3f7112af36f1faac14dd9a99c67d84979a5316ab83231cdcf" => :yosemite
-    sha256 "d82dd808f067414d5ed32f9d6b84407122b73779fc01b60bb57a39ad38c42556" => :mavericks
-    sha256 "4fbad8cedd1aec6a69a38037dbda61fdd1745693c9508a744fedd61e24621ae5" => :mountain_lion
+    sha256 "bb16ff29baa1d2dbbf51a04b9cf0aa0bb5b7690e2fecd3be880b3138b0d21069" => :yosemite
+    sha256 "281f3a5eb5092dcf59ae63f96cb011fe2283c6c94ff421b2ce2d42aa311836ce" => :mavericks
+    sha256 "2d16d3c1edfb3544a3eb0ff9e4ddc8ccc93c4532d7adab83dc6f21dcae8706bf" => :mountain_lion
   end
-
-  head "https://git.server-speed.net/users/flo/fb",
-       :using => :git
 
   conflicts_with "findbugs",
     :because => "findbugs and fb-client both install a `fb` binary"

@@ -1,5 +1,3 @@
-require "formula"
-
 class Mkvdts2ac3 < Formula
   desc "Convert DTS audio to AC3 within a matroska file"
   homepage "https://github.com/JakeWharton/mkvdts2ac3"
@@ -7,7 +5,7 @@ class Mkvdts2ac3 < Formula
 
   stable do
     url "https://github.com/JakeWharton/mkvdts2ac3/archive/1.6.0.tar.gz"
-    sha1 "e427eb6875d935dc228c42e99c3cd19c7ceaa322"
+    sha256 "f9f070c00648c1ea062ac772b160c61d1b222ad2b7d30574145bf230e9288982"
 
     # patch with upstream fix for newer mkvtoolnix compatibility
     # https://github.com/JakeWharton/mkvdts2ac3/commit/f5008860e7ec2cbd950a0628c979f06387bf76d0
@@ -16,8 +14,8 @@ class Mkvdts2ac3 < Formula
 
   bottle do
     cellar :any
-    sha1 "375129c89ce29fe5135b45d5f9a046b2372f39a4" => :mavericks
-    sha1 "dc7850a65fd6d181396a69deb0713b9ae7dad7a6" => :mountain_lion
+    sha256 "2dd48305bd115dbbb8a40319440b238540d5fe307b49c0300c7fcd64a875cb5e" => :mavericks
+    sha256 "47235c60299b61c5ba6fcb5e63a5d0004d0d877b441b6a64e78d432d3e7cfbce" => :mountain_lion
   end
 
   head "https://github.com/JakeWharton/mkvdts2ac3.git"

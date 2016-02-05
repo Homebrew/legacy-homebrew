@@ -70,18 +70,19 @@ class Build
   end
 
   def install
-    keg_only_deps = deps.map(&:to_formula).select(&:keg_only?)
+    formula_deps = deps.map(&:to_formula)
+    keg_only_deps = formula_deps.select(&:keg_only?)
 
-    deps.map(&:to_formula).each do |dep|
+    formula_deps.each do |dep|
       fixopt(dep) unless dep.opt_prefix.directory?
     end
 
     ENV.activate_extensions!
 
     if superenv?
-      ENV.keg_only_deps = keg_only_deps.map(&:name)
-      ENV.deps = deps.map { |d| d.to_formula.name }
-      ENV.x11 = reqs.any? { |rq| rq.kind_of?(X11Dependency) }
+      ENV.keg_only_deps = keg_only_deps
+      ENV.deps = formula_deps
+      ENV.x11 = reqs.any? { |rq| rq.is_a?(X11Requirement) }
       ENV.setup_build_environment(formula)
       post_superenv_hacks
       reqs.each(&:modify_build_environment)
@@ -128,19 +129,19 @@ class Build
 
         formula.install
 
-        stdlibs = detect_stdlibs
-        Tab.create(formula, ENV.compiler, stdlibs.first, formula.build).write
+        stdlibs = detect_stdlibs(ENV.compiler)
+        Tab.create(formula, ENV.compiler, stdlibs.first, formula.build, formula.source_modified_time).write
 
         # Find and link metafiles
-        formula.prefix.install_metafiles Pathname.pwd
+        formula.prefix.install_metafiles formula.buildpath
         formula.prefix.install_metafiles formula.libexec if formula.libexec.exist?
       end
     end
   end
 
-  def detect_stdlibs
+  def detect_stdlibs(compiler)
     keg = Keg.new(formula.prefix)
-    CxxStdlib.check_compatibility(formula, deps, keg, ENV.compiler)
+    CxxStdlib.check_compatibility(formula, deps, keg, compiler)
 
     # The stdlib recorded in the install receipt is used during dependency
     # compatibility checks, so we only care about the stdlib that libraries
@@ -148,12 +149,12 @@ class Build
     keg.detect_cxx_stdlibs(:skip_executables => true)
   end
 
-  def fixopt f
-    path = if f.linked_keg.directory? and f.linked_keg.symlink?
+  def fixopt(f)
+    path = if f.linked_keg.directory? && f.linked_keg.symlink?
       f.linked_keg.resolved_path
     elsif f.prefix.directory?
       f.prefix
-    elsif (kids = f.rack.children).size == 1 and kids.first.directory?
+    elsif (kids = f.rack.children).size == 1 && kids.first.directory?
       kids.first
     else
       raise
@@ -167,9 +168,6 @@ end
 begin
   error_pipe = UNIXSocket.open(ENV["HOMEBREW_ERROR_PIPE"], &:recv_io)
   error_pipe.fcntl(Fcntl::F_SETFD, Fcntl::FD_CLOEXEC)
-
-  # Invalidate the current sudo timestamp in case a build script calls sudo
-  system "/usr/bin/sudo", "-k"
 
   trap("INT", old_trap)
 

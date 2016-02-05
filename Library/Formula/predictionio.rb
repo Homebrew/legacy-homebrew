@@ -1,8 +1,10 @@
 class Predictionio < Formula
   desc "Source machine learning server"
   homepage "https://prediction.io/"
-  url "http://download.prediction.io/PredictionIO-0.9.2.tar.gz"
-  sha256 "e4da196a1d67f545d6667f8368a7c6a64ff5c6de5135b085a12e9251b6076991"
+  url "http://download.prediction.io/PredictionIO-0.9.5.tar.gz"
+  sha256 "6af81c03ac5d74fc331ab2248d2cacc752a6c2a54e0a55d63b57f7f17eae2fb0"
+
+  bottle :unneeded
 
   depends_on "elasticsearch"
   depends_on "hadoop"

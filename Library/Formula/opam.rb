@@ -4,16 +4,18 @@ class Opam < Formula
   url "https://github.com/ocaml/opam/archive/1.2.2.tar.gz"
   sha256 "3e4a05df6ff8deecba019d885ebe902eb933acb6e2fc7784ffee1ee14871e36a"
   head "https://github.com/ocaml/opam.git"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "ad11048ca70e2548f7b825f94ac4885da0f5448a7e2d2dd9eec99889d4858b0e" => :yosemite
-    sha256 "81f126dcb52b514f0e06d4e93465ca1ff8d3260d3ad0abe99950a90112872d71" => :mavericks
-    sha256 "49b51771003bde6912d7563dd8f4bff805691f2c5298d814b62abf845d6b6e2e" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2be7ee48f1102131153515736589e8766112cb86c45a7e0b2cc4ed424ad063ec" => :el_capitan
+    sha256 "28ac4e9f4aa5d36b654d4dcefc0f33105eb84583b4ae542d709de79c14883f04" => :yosemite
+    sha256 "71d0c0fb91faef76d207078c354c8ef8a64a8cb2959126358669378a209bda53" => :mavericks
   end
 
-  depends_on "objective-caml"
-  depends_on "camlp4" => :recommended
+  depends_on "ocaml" => :recommended
+  depends_on "camlp4" => :recommended if build.with? "ocaml"
 
   # aspcud has a fairly large buildtime dep tree, and uses gringo,
   # which requires C++11 and is inconvenient to install pre-10.8
@@ -70,18 +72,23 @@ class Opam < Formula
   def install
     ENV.deparallelize
 
-    # We put the compressed external libraries where the build
-    # expects to find them, thus tricking it into believing that it
-    # already downloaded the necessary files.
-    resources.each do |r|
-      r.verify_download_integrity(r.fetch)
-      original_name = r.cached_download.basename.sub(/^#{Regexp.escape(name)}--/, "")
-      cp r.cached_download, buildpath/"src_ext/#{original_name}"
-    end
+    if build.without? "ocaml"
+      system "make", "cold", "CONFIGURE_ARGS=--prefix #{prefix} --mandir #{man}"
+      ENV.prepend_path "PATH", "#{buildpath}/bootstrap/ocaml/bin"
+    else
+      # We put the compressed external libraries where the build
+      # expects to find them, thus tricking it into believing that it
+      # already downloaded the necessary files.
+      resources.each do |r|
+        r.verify_download_integrity(r.fetch)
+        original_name = r.cached_download.basename.sub(/^#{Regexp.escape(name)}--/, "")
+        cp r.cached_download, buildpath/"src_ext/#{original_name}"
+      end
 
-    system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
-    system "make", "lib-ext"
-    system "make"
+      system "./configure", "--prefix=#{prefix}", "--mandir=#{man}"
+      system "make", "lib-ext"
+      system "make"
+    end
     system "make", "man"
     system "make", "install"
 

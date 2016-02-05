@@ -8,9 +8,9 @@ class Aha < Formula
 
   bottle do
     cellar :any
-    sha1 "93856bbcf2cd6b169f7a21d9b1a242c0bc031c7e" => :yosemite
-    sha1 "80a16f10a5c7417916f64e0df12b072baf29ba03" => :mavericks
-    sha1 "d756f3be34861bc510e3182cc406e099d857bdf9" => :mountain_lion
+    sha256 "f780f9cb0af36a42b38791bca79cef0cf1d24d9ba833fbb0e56f0a82edb21997" => :yosemite
+    sha256 "42d625a5da619d93696d84ac01cd40c752bf56e0f72c71d2e500339691b1637f" => :mavericks
+    sha256 "a64ce01547378269c54d0baeb39ec787e88bc9c161040586763f534a78bef5f6" => :mountain_lion
   end
 
   def install

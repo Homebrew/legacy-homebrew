@@ -1,18 +1,18 @@
-require "formula"
-
 class Lensfun < Formula
   desc "Remove defects from digital images"
   homepage "http://lensfun.sourceforge.net/"
-  head "git://git.code.sf.net/p/lensfun/code"
-  url "https://downloads.sourceforge.net/project/lensfun/0.3.0/lensfun-0.3.0.tar.bz2"
-  sha1 "60e2bf3a6a2f495076db1d88778a00d358cf0b69"
+  url "https://downloads.sourceforge.net/project/lensfun/0.3.1/lensfun-0.3.1.tar.gz"
+  sha256 "216c23754212e051c8b834437e46af3812533bd770c09714e8c06c9d91cdb535"
+  head "http://git.code.sf.net/p/lensfun/code"
+  revision 1
 
   bottle do
-    sha1 "3d14bc917c95bda7eb6f9e98f83c18b22fb048f1" => :yosemite
-    sha1 "f75c7915e5701e605275e6d48a8c5c12ec981948" => :mavericks
-    sha1 "b6b0966f02558cb8304a1206536a1d1e16afcb05" => :mountain_lion
+    sha256 "d267b6318b37f43153033958ed487732b14ef0362576673334baa9d0bce596b2" => :yosemite
+    sha256 "f5e5e2e1af79de22e5b08ef98e8d66335de6b30e4a6d0391d1ae00ccf8ee3868" => :mavericks
+    sha256 "c50bcbf69c3839a44d0bb988ea016dcabb259be866ae10dd9b3a04d3de87a487" => :mountain_lion
   end
 
+  depends_on :python3
   depends_on "pkg-config" => :build
   depends_on "cmake" => :build
   depends_on "glib"
@@ -23,5 +23,10 @@ class Lensfun < Formula
   def install
     system "cmake", ".", *std_cmake_args
     system "make", "install"
+  end
+
+  test do
+    ENV["LC_ALL"] = "en_US.UTF-8"
+    system bin/"lensfun-update-data"
   end
 end

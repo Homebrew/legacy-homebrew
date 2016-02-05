@@ -1,17 +1,27 @@
 class StashCli < Formula
-  desc "Access Atlassian Stash on the command-line using REST APIs"
-  homepage "https://bobswift.atlassian.net/wiki/display/SCLI/Stash+Command+Line+Interface"
-  url "https://bobswift.atlassian.net/wiki/download/attachments/16285777/stash-cli-3.9.0-distribution.zip?api=v2"
-  version "3.9.0"
-  sha1 "f615519894b194959754b9a7b5fb9bc03855dbcd"
+  desc "Command-line interface clients for Atlassian products"
+  homepage "https://bobswift.atlassian.net/wiki/pages/viewpage.action?pageId=1966101"
+  url "https://bobswift.atlassian.net/wiki/download/attachments/16285777/atlassian-cli-4.5.0-distribution.zip"
+  version "4.5.0"
+  sha256 "79fc81d3b383348702cb6d24983fe002aefe4a9b859380bcdd1f19e78ac6f046"
+
+  bottle :unneeded
+
+  depends_on :java => "1.7+"
 
   def install
-    inreplace "stash.sh", "`dirname $0`", share
+    Dir.glob("*.sh") do |f|
+      cmd = File.basename(f, ".sh")
+      inreplace cmd + ".sh", "`dirname $0`", share
+      bin.install cmd + ".sh" => cmd
+    end
     share.install "lib", "license"
-    bin.install "stash.sh" => "stash"
   end
 
   test do
-    assert shell_output(bin/"stash --help 2>&1 | head").include?("Usage:")
+    Dir.glob(bin/"*") do |f|
+      cmd = File.basename(f, ".sh")
+      assert_match "Usage:", shell_output(bin/"#{cmd} --help 2>&1 | head") unless cmd == "atlassian"
+    end
   end
 end

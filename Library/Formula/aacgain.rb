@@ -6,13 +6,13 @@ class Aacgain < Formula
   # sure 1.9 is actually out before updating.
   # See: https://github.com/Homebrew/homebrew/issues/16838
   url "http://aacgain.altosdesign.com/alvarez/aacgain-1.8.tar.bz2"
-  sha1 "331039c4231e4d85ae878795ce3095dd96dcbfdb"
+  sha256 "2bb8e27aa8f8434a4861fdbc70adb9cb4b47e1dfe472910d62d6042cb80a2ee1"
 
   bottle do
     cellar :any
-    sha1 "a90e244d0c89d787d1687ef2adb482624f6d2bb8" => :yosemite
-    sha1 "0a5c772e3ca281678d468dec7757df7517f9ae1e" => :mavericks
-    sha1 "98f1d3415005700417fc8116d0428a0df975b2e4" => :mountain_lion
+    sha256 "72ceb23c5d6c6a474470873eb42c7adabc8b723d4e828a6408a9c5f9ea915d70" => :yosemite
+    sha256 "29b50db18863bba43907eeabac5221005cc1b2c733ef0f73efa2ff6264ff6bc0" => :mavericks
+    sha256 "b4004c239d2443b4278b09222685ff19b8ca1b0dc8a39903db85966f4d57c1ab" => :mountain_lion
   end
 
   def install

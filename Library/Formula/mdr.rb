@@ -2,13 +2,13 @@ class Mdr < Formula
   desc "Make diffs readable"
   homepage "https://github.com/halffullheart/mdr"
   url "https://github.com/halffullheart/mdr/archive/v1.0.1.tar.gz"
-  sha1 "dbadda07e8ee7baaa1a3d6c82cbae8434b8327d5"
+  sha256 "103d52c47133a43cc7a6cb8a21bfabe2d6e35e222d5b675bc0c868699a127c67"
 
   bottle do
     cellar :any
-    sha1 "d1a11e01a31b003c5f6ccb817af9299d176465f3" => :yosemite
-    sha1 "55ccdc1bff014dcea22853c8a3ad9cbaf0da6aa3" => :mavericks
-    sha1 "8a249a030c0a5139d8eb0f5a488dac8faf7705c0" => :mountain_lion
+    sha256 "7048e71ef8f9a1d5c1712dce6cb33df08029038d771789021a1b8bc1e5f4ad10" => :yosemite
+    sha256 "b80b64d56e7e77e9b53dd8c308dd50450552b782a72204cb710adf2de28c4f9e" => :mavericks
+    sha256 "6280aee9902aabfcfdf6fb6ae094badc94ee1ad83d6caac4ca9b23f94803ec49" => :mountain_lion
   end
 
   def install

@@ -1,20 +1,19 @@
-require 'formula'
-
 class Dash < Formula
   desc "POSIX-compliant descendant of NetBSD's ash (the Almquist SHell)"
-  homepage 'http://gondor.apana.org.au/~herbert/dash/'
+  homepage "http://gondor.apana.org.au/~herbert/dash/"
   url "http://gondor.apana.org.au/~herbert/dash/files/dash-0.5.8.tar.gz"
-  sha1 "cd058935bba545427caa375337afe8a6309477d2"
+  sha256 "c6db3a237747b02d20382a761397563d813b306c020ae28ce25a1c3915fac60f"
 
   bottle do
-    cellar :any
-    sha1 "c1ac235981ac608abb8cdf5649676ac3f40afb2d" => :yosemite
-    sha1 "b626fcc3d0a9482b32d2c62b6faa99159324ea82" => :mavericks
-    sha1 "6f4795d3a2d23d1010b637b4212c664ac9e5055b" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "1d08e01233adc37f077c6d27bfc78851846ebeca0ec7e01ec92d67c9eac3d229" => :el_capitan
+    sha256 "247132088e1b1e3b3b63ef2c063e9e90eff4830cc5d0bb136f9ee8ae7e5713a0" => :yosemite
+    sha256 "06cf9f55f34065fce33b245dfb5166f642325ae52dc94005c2565e991b81c0d9" => :mavericks
+    sha256 "34a644c17e05c1506e5ae7d77c60a522c6f7eaf677dd3dd4c00c1b4a769bfda0" => :mountain_lion
   end
 
   head do
-    url 'https://git.kernel.org/pub/scm/utils/dash/dash.git'
+    url "https://git.kernel.org/pub/scm/utils/dash/dash.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
@@ -28,7 +27,7 @@ class Dash < Formula
                           "--enable-fnmatch",
                           "--enable-glob"
     system "make"
-    system "make install"
+    system "make", "install"
   end
 
   test do

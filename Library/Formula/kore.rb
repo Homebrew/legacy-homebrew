@@ -1,5 +1,3 @@
-require "formula"
-
 class Kore < Formula
   desc "Web application framework for writing web APIs in C"
   homepage "https://kore.io/"

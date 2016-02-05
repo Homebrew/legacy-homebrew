@@ -1,50 +1,63 @@
-# Note that x.even are stable releases, x.odd are devel releases
 class Node < Formula
-  desc "Platform built on Chrome's JavaScript runtime to build network applications"
+  desc "Platform built on the V8 JavaScript runtime to build network applications"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v0.12.4/node-v0.12.4.tar.gz"
-  sha256 "3298d0997613a04ac64343e8316da134d04588132554ae402eb344e3369ec912"
-  head "https://github.com/joyent/node.git", :branch => "v0.12"
+  url "https://nodejs.org/dist/v5.5.0/node-v5.5.0.tar.gz"
+  sha256 "d69b18cc20699a35434858fb853997616762280610a510ec4b4ff1a94798b432"
+  head "https://github.com/nodejs/node.git"
 
   bottle do
-    sha256 "851eedc0bcfb26ce2c7decc16d97522090c662498d703a51ed1c82dd4392f273" => :yosemite
-    sha256 "dac805242be62d05eb8e5451e9a9a4a1fd8bbaee6b048e7547157e19b3ff1a2d" => :mavericks
-    sha256 "cdee3b33f5b1f54916f456d88d4470c967898214beba5fe5ef23b4f899d74f44" => :mountain_lion
+    sha256 "880f846487b1f2085d53c2a2819aaeaaf6f1b095534c82e248f81879faadba65" => :el_capitan
+    sha256 "90facf8a5d40b0d89670e2a6f4f9ce1da3447f067c2d6df077c35df199608f97" => :yosemite
+    sha256 "991ebc6035ef3d96e1fa9389580113805e93a3a96336c61ace1382197d49f03c" => :mavericks
   end
 
   option "with-debug", "Build with debugger hooks"
   option "without-npm", "npm will not be installed"
   option "without-completion", "npm bash completion will not be installed"
+  option "with-full-icu", "Build with full-icu (all locales) instead of small-icu (English only)"
 
   deprecated_option "enable-debug" => "with-debug"
+  deprecated_option "with-icu4c" => "with-full-icu"
 
-  depends_on :python => :build
+  depends_on :python => :build if MacOS.version <= :snow_leopard
   depends_on "pkg-config" => :build
   depends_on "openssl" => :optional
 
-  # https://github.com/joyent/node/issues/7919
-  # https://github.com/Homebrew/homebrew/issues/36681
-  depends_on "icu4c" => :optional
-
-  fails_with :llvm do
-    build 2326
+  # Per upstream - "Need g++ 4.8 or clang++ 3.4".
+  fails_with :clang if MacOS.version <= :snow_leopard
+  fails_with :llvm
+  fails_with :gcc_4_0
+  fails_with :gcc
+  ("4.3".."4.7").each do |n|
+    fails_with :gcc => n
   end
 
+  # We track major/minor from upstream Node releases.
+  # We will accept *important* npm patch releases when necessary.
+  # https://github.com/Homebrew/homebrew/pull/46098#issuecomment-157802319
   resource "npm" do
-    url "https://registry.npmjs.org/npm/-/npm-2.10.1.tgz"
-    sha256 "5b57c177bcaba628b04aba22f1112f409a0344c74653eb8c9185df24a97ac01b"
+    url "https://registry.npmjs.org/npm/-/npm-3.5.3.tgz"
+    sha256 "a6f62a53d8f8ce856c2b2b7908c466fe8a6cc44f7af915b56b70d8039f9414f6"
+  end
+
+  resource "icu4c" do
+    url "https://ssl.icu-project.org/files/icu4c/56.1/icu4c-56_1-src.tgz"
+    mirror "https://ftp.mirrorservice.org/sites/download.qt-project.org/development_releases/prebuilt/icu/src/icu4c-56_1-src.tgz"
+    version "56.1"
+    sha256 "3a64e9105c734dcf631c0b3ed60404531bce6c0f5a64bfe1a6402a4cc2314816"
   end
 
   def install
     args = %W[--prefix=#{prefix} --without-npm]
     args << "--debug" if build.with? "debug"
-    args << "--with-intl=system-icu" if build.with? "icu4c"
-
-    if build.with? "openssl"
-      args << "--shared-openssl"
+    args << "--shared-openssl" if build.with? "openssl"
+    if build.with? "full-icu"
+      args << "--with-intl=full-icu"
     else
-      args << "--without-ssl2" << "--without-ssl3"
+      args << "--with-intl=small-icu"
     end
+
+    resource("icu4c").stage buildpath/"deps/icu"
 
     system "./configure", *args
     system "make", "install"
@@ -54,14 +67,20 @@ class Node < Formula
 
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
-      # make sure user prefix settings in $HOME are ignored
-      ENV["HOME"] = buildpath/"home"
       # set log level temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
 
       cd buildpath/"npm_install" do
         system "./configure", "--prefix=#{libexec}/npm"
         system "make", "install"
+        # `package.json` has relative paths to the npm_install directory.
+        # This copies back over the vanilla `package.json` that is expected.
+        # https://github.com/Homebrew/homebrew/issues/46131#issuecomment-157845008
+        cp buildpath/"npm_install/package.json", libexec/"npm/lib/node_modules/npm"
+        # Remove manpage symlinks from the buildpath, they are breaking bottle
+        # creation. The real manpages are living in libexec/npm/lib/node_modules/npm/man/
+        # https://github.com/Homebrew/homebrew/pull/47081#issuecomment-165280470
+        rm_rf libexec/"npm/share/"
       end
 
       if build.with? "completion"
@@ -113,15 +132,11 @@ class Node < Formula
       EOS
     end
 
-    if build.with? "icu4c"
+    if build.without? "full-icu"
       s += <<-EOS.undent
-
-        Please note `icu4c` is built with a newer deployment target than Node and
-        this may cause issues in certain usage. Node itself is built against the
-        outdated `libstdc++` target, which is the root cause. For more information see:
-          https://github.com/joyent/node/issues/7919
-
-        If this is an issue for you, do `brew install node --without-icu4c`.
+        Please note by default only English locale support is provided. If you need
+        full locale support you should:
+          `brew reinstall node --with-full-icu`
       EOS
     end
 
@@ -132,9 +147,10 @@ class Node < Formula
     path = testpath/"test.js"
     path.write "console.log('hello');"
 
-    output = `#{bin}/node #{path}`.strip
+    output = shell_output("#{bin}/node #{path}").strip
     assert_equal "hello", output
-    assert_equal 0, $?.exitstatus
+    output = shell_output("#{bin}/node -e 'console.log(new Intl.NumberFormat().format(1234.56))'").strip
+    assert_equal "1,234.56", output
 
     if build.with? "npm"
       # make sure npm can find node
@@ -143,6 +159,7 @@ class Node < Formula
       assert (HOMEBREW_PREFIX/"bin/npm").exist?, "npm must exist"
       assert (HOMEBREW_PREFIX/"bin/npm").executable?, "npm must be executable"
       system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "npm@latest"
+      system "#{HOMEBREW_PREFIX}/bin/npm", "--verbose", "install", "bignum"
     end
   end
 end

@@ -1,10 +1,8 @@
-require 'formula'
-
 class Cdecl < Formula
   desc "Turn English phrases to C or C++ declarations"
-  homepage 'http://cdecl.org/'
-  url 'http://cdecl.org/files/cdecl-blocks-2.5.tar.gz'
-  sha1 '3fb349970859dfd32a7fb502cecbd3c6d8656af1'
+  homepage "http://cdecl.org/"
+  url "http://cdecl.org/files/cdecl-blocks-2.5.tar.gz"
+  sha256 "9ee6402be7e4f5bb5e6ee60c6b9ea3862935bf070e6cecd0ab0842305406f3ac"
 
   def install
     # Fix namespace clash with Lion's getline
@@ -13,7 +11,7 @@ class Cdecl < Formula
     bin.mkpath
     man1.mkpath
 
-    ENV.append 'CFLAGS', '-DBSD -DUSE_READLINE -std=gnu89'
+    ENV.append "CFLAGS", "-DBSD -DUSE_READLINE -std=gnu89"
 
     system "make", "CC=#{ENV.cc}",
                    "CFLAGS=#{ENV.cflags}",

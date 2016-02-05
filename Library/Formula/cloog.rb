@@ -1,15 +1,14 @@
 class Cloog < Formula
   desc "Generate code for scanning Z-polyhedra"
   homepage "http://www.cloog.org/"
-  url "http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.3.tar.gz"
-  sha256 "460c6c740acb8cdfbfbb387156b627cf731b3837605f2ec0001d079d89c69734"
+  url "http://www.bastoul.net/cloog/pages/download/count.php3?url=./cloog-0.18.4.tar.gz"
+  sha256 "325adf3710ce2229b7eeb9e84d3b539556d093ae860027185e7af8a8b00a750e"
 
   bottle do
     cellar :any
-    revision 3
-    sha256 "969fb3f488c9efb95cf1d631f6f2e577fa60f09c858b6cda5a477aec9f3552b3" => :yosemite
-    sha256 "63786794ea49b86abd2c0e0168b36ff3489779f1de2b3dfd4ede509dcf6a5bfa" => :mavericks
-    sha256 "00248fca2b492a7a32e9170e2875db55391b4881656cce3f4990f38ca04ec110" => :mountain_lion
+    sha256 "c7407a2e1aa5139f8a43a71dc78e0900ce9e11c6b4cdc2617ee607dc24fa1ae4" => :el_capitan
+    sha256 "1ce90177c211a155780eda3122dcdf1862febacd2d71531f37256c209f490068" => :yosemite
+    sha256 "40fc8851316d8f531abb4b8746bd9644452e64513fb3ff33dd8ae4a188808546" => :mavericks
   end
 
   head do
@@ -33,7 +32,7 @@ class Cloog < Formula
       "--with-gmp=system",
       "--with-gmp-prefix=#{Formula["gmp"].opt_prefix}",
       "--with-isl=system",
-      "--with-isl-prefix=#{Formula["isl"].opt_prefix}"
+      "--with-isl-prefix=#{Formula["isl"].opt_prefix}",
     ]
 
     args << "--with-osl=bundled" if build.head?

@@ -1,6 +1,6 @@
 class String
   def undent
-    gsub(/^.{#{(slice(/^ +/) || '').length}}/, '')
+    gsub(/^[ \t]{#{(slice(/^[ \t]+/) || '').length}}/, "")
   end
 
   # eg:
@@ -15,38 +15,15 @@ class String
   #               EOS
   alias_method :undent_________________________________________________________72, :undent
 
-  def start_with?(*prefixes)
-    prefixes.any? do |prefix|
-      if prefix.respond_to?(:to_str)
-        prefix = prefix.to_str
-        self[0, prefix.length] == prefix
-      end
-    end
-  end unless method_defined?(:start_with?)
-
-  def end_with?(*suffixes)
-    suffixes.any? do |suffix|
-      if suffix.respond_to?(:to_str)
-        suffix = suffix.to_str
-        self[-suffix.length, suffix.length] == suffix
-      end
-    end
-  end unless method_defined?(:end_with?)
-
-  # 1.8.7 or later; used in bottle code
-  def rpartition(separator)
-    if ind = rindex(separator)
-      [slice(0, ind), separator, slice(ind+1, -1) || '']
-    else
-      ['', '', dup]
-    end
-  end unless method_defined?(:rpartition)
-
   # String.chomp, but if result is empty: returns nil instead.
   # Allows `chuzzle || foo` short-circuits.
   def chuzzle
     s = chomp
     s unless s.empty?
+  end
+
+  def strip_prefix(prefix)
+    start_with?(prefix) ? self[prefix.length..-1] : self
   end
 end
 
@@ -62,7 +39,7 @@ module StringInreplaceExtension
     str.errors = []
   end
 
-  def sub! before, after
+  def sub!(before, after)
     result = super
     unless result
       errors << "expected replacement of #{before.inspect} with #{after.inspect}"
@@ -71,7 +48,7 @@ module StringInreplaceExtension
   end
 
   # Warn if nothing was replaced
-  def gsub! before, after, audit_result=true
+  def gsub!(before, after, audit_result = true)
     result = super(before, after)
     if audit_result && result.nil?
       errors << "expected replacement of #{before.inspect} with #{after.inspect}"
@@ -81,14 +58,14 @@ module StringInreplaceExtension
 
   # Looks for Makefile style variable defintions and replaces the
   # value with "new_value", or removes the definition entirely.
-  def change_make_var! flag, new_value
+  def change_make_var!(flag, new_value)
     unless gsub!(/^#{Regexp.escape(flag)}[ \t]*=[ \t]*(.*)$/, "#{flag}=#{new_value}", false)
       errors << "expected to change #{flag.inspect} to #{new_value.inspect}"
     end
   end
 
   # Removes variable assignments completely.
-  def remove_make_var! flags
+  def remove_make_var!(flags)
     Array(flags).each do |flag|
       # Also remove trailing \n, if present.
       unless gsub!(/^#{Regexp.escape(flag)}[ \t]*=.*$\n?/, "", false)
@@ -98,7 +75,7 @@ module StringInreplaceExtension
   end
 
   # Finds the specified variable
-  def get_make_var flag
+  def get_make_var(flag)
     self[/^#{Regexp.escape(flag)}[ \t]*=[ \t]*(.*)$/, 1]
   end
 end

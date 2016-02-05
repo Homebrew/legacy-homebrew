@@ -1,16 +1,13 @@
-require "formula"
-
 class TelepathyGlib < Formula
   desc "Telepathy GLib library for clients and connection managers"
-  homepage "http://telepathy.freedesktop.org/wiki/"
-  url "http://telepathy.freedesktop.org/releases/telepathy-glib/telepathy-glib-0.24.0.tar.gz"
-  sha1 "43a3e9f3e08725b689aba3baa487c9711d436888"
+  homepage "https://wiki.freedesktop.org/telepathy/"
+  url "http://telepathy.freedesktop.org/releases/telepathy-glib/telepathy-glib-0.99.11.tar.gz"
+  sha256 "268cbf0199804ecb6001c7c11e5596bc3cea40a600091c144d14f837ac90cd97"
 
   bottle do
-    revision 1
-    sha1 "a98475645190b7d9253cc950b828d0ac05b72124" => :yosemite
-    sha1 "f49fed685755aca7c829a779fae1f31855d0195c" => :mavericks
-    sha1 "f01c372f200a12a9e573683a58c3a514a89c0aa9" => :mountain_lion
+    sha256 "314bbd7e9108b39854b0000aa9dd40bf8cef1036dfd95ba48e11de76298f5cc5" => :el_capitan
+    sha256 "d7e9d404465e2b7790a8529d3b1d0a581672e04c2d6d4fe5c5e6e4bee0505029" => :yosemite
+    sha256 "20584cfe56059ea7ad227141a56b118304c3c56f8dff8fdcba18b4dbf505fe61" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -19,16 +16,12 @@ class TelepathyGlib < Formula
   depends_on "dbus-glib"
 
   def install
-    args = %W[
-      --disable-debug
-      --prefix=#{prefix}
-      --enable-introspection=yes
-      --disable-installed-tests
-      --disable-installed-examples
-      --disable-gtk-doc-html
-    ]
-
-    system "./configure", *args
-    system "make install"
+    system "./configure", "--disable-debug",
+                          "--prefix=#{prefix}",
+                          "--enable-introspection=yes",
+                          "--disable-installed-tests",
+                          "--disable-installed-examples",
+                          "--disable-gtk-doc-html"
+    system "make", "install"
   end
 end

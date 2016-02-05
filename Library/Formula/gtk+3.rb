@@ -1,16 +1,17 @@
 class Gtkx3 < Formula
   desc "Toolkit for creating graphical user interfaces"
   homepage "http://gtk.org/"
-  url "https://download.gnome.org/sources/gtk+/3.16/gtk+-3.16.4.tar.xz"
-  sha256 "1ee5dbd7a4cb81a91eaa1b7ae64ba5a3eab6a3c0a764155583ab96524590fc8e"
+  url "https://download.gnome.org/sources/gtk+/3.18/gtk+-3.18.7.tar.xz"
+  sha256 "a76e1cb0ac45ce5c2734f6778f2731a5c6a23d1ff6bd4db357774f014ee68820"
 
   bottle do
-    sha256 "6c32e525805e77f5c98566e913202004c4008a14eafbaf3ec6030857bfe22d8e" => :yosemite
-    sha256 "29a0ff441dda9e47c264db0a9c8848c9585018806ac6b2b051d04761b2124775" => :mavericks
-    sha256 "a3d3e375dca6a73346a73946b8e6bf43fe570ac17c0df5f04051eecc1caaa019" => :mountain_lion
+    sha256 "d938661ed85cca23feba465da1f8bedb16fdc0962bee2b90c9f81216d8be914f" => :el_capitan
+    sha256 "271f7accb9f53f2e2fe8e25fadcf7cbf7e5b82be5018c30abee776467af56ee8" => :yosemite
+    sha256 "791a36915ed00ff99bd7e72392427a15eaf6fc596a174fb4323adf2b6b48f2e5" => :mavericks
   end
 
   option :universal
+  option "with-quartz-relocation", "Build with quartz relocation support"
 
   depends_on "pkg-config" => :build
   depends_on "gdk-pixbuf"
@@ -21,6 +22,16 @@ class Gtkx3 < Formula
   depends_on "gsettings-desktop-schemas" => :recommended
   depends_on "pango"
   depends_on "glib"
+  depends_on "hicolor-icon-theme"
+
+  # Replace a keyword not supported by Snow Leopard's Objective-C compiler.
+  # https://bugzilla.gnome.org/show_bug.cgi?id=756770
+  if MacOS.version <= :snow_leopard
+    patch do
+      url "https://bugzilla.gnome.org/attachment.cgi?id=313599&format=raw"
+      sha256 "a090b19d3c15364914917d9893be292225e8b8a016f2833a5b8354f079475a73"
+    end
+  end
 
   def install
     ENV.universal_binary if build.universal?
@@ -33,9 +44,10 @@ class Gtkx3 < Formula
       --enable-introspection=yes
       --disable-schemas-compile
       --enable-quartz-backend
-      --enable-quartz-relocation
       --disable-x11-backend
     ]
+
+    args << "--enable-quartz-relocation" if build.with?("quartz-relocation")
 
     system "./configure", *args
     # necessary to avoid gtk-update-icon-cache not being found during make install

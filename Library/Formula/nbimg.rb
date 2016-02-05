@@ -1,13 +1,11 @@
-require 'formula'
-
 class Nbimg < Formula
   desc "Smartphone boot splash screen converter for Android and winCE"
-  homepage 'https://github.com/poliva/nbimg'
-  url 'https://github.com/poliva/nbimg/archive/v1.2.1.tar.gz'
-  sha1 '21a12e2451eefb5296e682744614b3f46e1f427a'
+  homepage "https://github.com/poliva/nbimg"
+  url "https://github.com/poliva/nbimg/archive/v1.2.1.tar.gz"
+  sha256 "f72846656bb8371564c245ab34550063bd5ca357fe8a22a34b82b93b7e277680"
 
   def install
-    inreplace 'Makefile', 'all: nbimg win32', 'all: nbimg'
+    inreplace "Makefile", "all: nbimg win32", "all: nbimg"
     system "make", "prefix=#{prefix}",
                    "bindir=#{bin}",
                    "docdir=#{doc}",

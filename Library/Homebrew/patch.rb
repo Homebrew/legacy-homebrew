@@ -1,5 +1,5 @@
-require 'resource'
-require 'erb'
+require "resource"
+require "erb"
 
 module Patch
   def self.create(strip, src, &block)
@@ -65,7 +65,8 @@ class EmbeddedPatch
 
   def apply
     data = contents.gsub("HOMEBREW_PREFIX", HOMEBREW_PREFIX)
-    cmd, args = "/usr/bin/patch", %W[-g 0 -f -#{strip}]
+    cmd = "/usr/bin/patch"
+    args = %W[-g 0 -f -#{strip}]
     IO.popen("#{cmd} #{args.join(" ")}", "w") { |p| p.write(data) }
     raise ErrorDuringExecution.new(cmd, args) unless $?.success?
   end
@@ -111,14 +112,14 @@ class ExternalPatch
 
   def initialize(strip, &block)
     @strip    = strip
-    @resource = Resource.new("patch", &block)
+    @resource = Resource::Patch.new(&block)
   end
 
   def external?
     true
   end
 
-  def owner= owner
+  def owner=(owner)
     resource.owner   = owner
     resource.version = resource.checksum || ERB::Util.url_encode(resource.url)
   end
@@ -126,9 +127,25 @@ class ExternalPatch
   def apply
     dir = Pathname.pwd
     resource.unpack do
-      # Assumption: the only file in the staging directory is the patch
-      patchfile = Pathname.pwd.children.first
-      dir.cd { safe_system "/usr/bin/patch", "-g", "0", "-f", "-#{strip}", "-i", patchfile }
+      patch_dir = Pathname.pwd
+      if patch_files.empty?
+        children = patch_dir.children
+        if (children.count == 1 && children.first.file?)
+          patch_files << children.first.basename
+        else
+          raise MissingApplyError, <<-EOS.undent
+            There should be exactly one patch file in the staging directory unless
+            the "apply" method was used one or more times in the patch-do block.
+          EOS
+        end
+      end
+      dir.cd do
+        patch_files.each do |patch_file|
+          ohai "Applying #{patch_file}"
+          patch_file = patch_dir/patch_file
+          safe_system "/usr/bin/patch", "-g", "0", "-f", "-#{strip}", "-i", patch_file
+        end
+      end
     end
   end
 
@@ -138,6 +155,10 @@ class ExternalPatch
 
   def fetch
     resource.fetch
+  end
+
+  def patch_files
+    resource.patch_files
   end
 
   def verify_download_integrity(fn)
@@ -170,7 +191,7 @@ class LegacyPatch < ExternalPatch
     super
   end
 
-  def verify_download_integrity(fn)
+  def verify_download_integrity(_fn)
     # no-op
   end
 

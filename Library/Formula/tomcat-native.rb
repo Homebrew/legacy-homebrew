@@ -1,16 +1,15 @@
 class TomcatNative < Formula
   desc "Lets Tomcat use some native resources for performance"
   homepage "https://tomcat.apache.org/native-doc/"
-  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz"
-  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.1.33/source/tomcat-native-1.1.33-src.tar.gz"
-  sha256 "523dde7393c57307eedf4972ebbe19a9e9af6f7699e3b1ef6dabd7a11677866e"
+  url "https://www.apache.org/dyn/closer.cgi?path=tomcat/tomcat-connectors/native/1.2.4/source/tomcat-native-1.2.4-src.tar.gz"
+  mirror "https://archive.apache.org/dist/tomcat/tomcat-connectors/native/1.2.4/source/tomcat-native-1.2.4-src.tar.gz"
+  sha256 "29d53d4646229a839ccb71b7b3caa25c256aab1965c33cc9d140247213b9b171"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "8bf7506bff79aba8825481af4587bc0eebc2595b1993672806a0494fff0b39d3" => :yosemite
-    sha256 "d5b76b3e6ae4a144a7553ae2533500ce9f4d1810d42a834336e8c10dcb4f97f8" => :mavericks
-    sha256 "04ec93175cdc5da0d6b7459eab624e82fb5af54ec1f017409c0b1b08d45d5007" => :mountain_lion
+    sha256 "8ce2e7b4ad961da4867cce166945df037c8d76e826d43a93c3d8cfb0f8d68f89" => :el_capitan
+    sha256 "2352fe2f08e07aad55be01da7be1652817e3edc81868bca9356a7fde000b16af" => :yosemite
+    sha256 "3446580b48a5591bed7366a81003a1e0f8fccbfdb4687a023acc953f5efffb92" => :mavericks
   end
 
   option "with-apr", "Include APR support via Homebrew"
@@ -22,7 +21,7 @@ class TomcatNative < Formula
   depends_on "apr" => :optional
 
   def install
-    cd "jni/native" do
+    cd "native" do
       if build.with? "apr"
         apr_path = Formula["apr"].opt_prefix
       else

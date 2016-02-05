@@ -1,20 +1,18 @@
-require "formula"
-
 class Assimp < Formula
   desc "Portable library for importing many well-known 3D model formats"
   homepage "http://assimp.sourceforge.net/"
   url "https://downloads.sourceforge.net/project/assimp/assimp-3.1/assimp-3.1.1_no_test_models.zip"
-  sha1 "d7bc1d12b01d5c7908d85ec9ff6b2d972e565e2d"
   version "3.1.1"
+  sha256 "da9827876f10a8b447270368753392cfd502e70a2e9d1361554e5dfcb1fede9e"
 
   head "https://github.com/assimp/assimp.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "147bc1b92a31526950262c123b2d78d78b092005" => :yosemite
-    sha1 "a44ef2d43ab074beb0b03196e65df3bf1a8e406b" => :mavericks
-    sha1 "31bb541f50c5ff22055ce2f608ae88ab4997407c" => :mountain_lion
+    revision 2
+    sha256 "368ba868e7715635a06d8d677d61f48249df892cf34b9ca71401d91e39e5ac19" => :el_capitan
+    sha256 "8b60177099c612ae291c0509900bb73ec6bfeb5024ac3927e3902e31ed7edc25" => :yosemite
+    sha256 "a4d31ecdae6b3b7bf8c8d8db35d2406e53f9fca8896fcae1efc706f94e3049f0" => :mavericks
   end
 
   option "without-boost", "Compile without thread safe logging or multithreaded computation if boost isn't installed"
@@ -29,7 +27,7 @@ class Assimp < Formula
 
   test do
     # Library test.
-    (testpath/'test.cpp').write <<-EOS.undent
+    (testpath/"test.cpp").write <<-EOS.undent
       #include <assimp/Importer.hpp>
       int main() {
         Assimp::Importer importer;

@@ -2,14 +2,14 @@ class Tth < Formula
   desc "TeX/LaTeX to HTML converter"
   homepage "http://hutchinson.belmont.ma.us/tth/"
   url "http://hutchinson.belmont.ma.us/tth/tth_distribution/tth_4.06.tgz"
-  sha1 "ba3c653bf05d25ac8a907fb1d51184da1ac42721"
+  sha256 "8e750f7532d87d97d0df380c688214885925f5c2032dc0c9d555af7f816416d1"
   revision 1
 
   bottle do
     cellar :any
-    sha1 "694f5f4dea4af1acfcec5b53d949ec58dec75459" => :yosemite
-    sha1 "ea2b08272a5cc8f5e890d36624f1f94b003c0a0b" => :mavericks
-    sha1 "5be595e24438680c3c06f1812ff1e1e9a03c1732" => :mountain_lion
+    sha256 "d4f98342a0ad8edbbe8e740e2184626e32e88121ab68884c0e2902041257ce70" => :yosemite
+    sha256 "fc85ad1d9985b45fbfbae6d2016c985ac9531a7a88c41f199c8386be414d5519" => :mavericks
+    sha256 "81727008272c27d31ab334641f47049b07a9be6240efd9d5e02fa386e515008b" => :mountain_lion
   end
 
   def install

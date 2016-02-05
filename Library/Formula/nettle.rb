@@ -1,21 +1,23 @@
 class Nettle < Formula
   desc "Low-level cryptographic library"
   homepage "https://www.lysator.liu.se/~nisse/nettle/"
-  url "https://www.lysator.liu.se/~nisse/archive/nettle-2.7.1.tar.gz"
-  sha1 "e7477df5f66e650c4c4738ec8e01c2efdb5d1211"
+  url "https://www.lysator.liu.se/~nisse/archive/nettle-3.2.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/nettle/nettle-3.2.tar.gz"
+  sha256 "ea4283def236413edab5a4cf9cf32adf540c8df1b9b67641cfc2302fca849d97"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "41d80787422ed29f084c147b49e2f7c3a223eded" => :yosemite
-    sha1 "89238f83e4f3f18145553d3c442fe022680cbd7b" => :mavericks
-    sha1 "8f2a4c261926f2f62e9d8f197a8466a2489b37e0" => :mountain_lion
-    sha1 "6c56084887da5b7e99d7c730bf22a68c9af360e9" => :lion
+    sha256 "149db1957c10656b05dd887d70ec699dc5e3776790fd2208a37b3a6fafa47f66" => :el_capitan
+    sha256 "9d26a23ec1699a09d84dba677eba18944f9c7480e2061b36bb4c8ec2bca13a9e" => :yosemite
+    sha256 "f86d2cf88360585545fb7309c8d631717801d90ecdfd9fdaf094aff32f4829f5" => :mavericks
   end
 
   depends_on "gmp"
 
   def install
+    # OS X doesn't use .so libs. Emailed upstream 04/02/2016.
+    inreplace "testsuite/dlopen-test.c", "libnettle.so", "libnettle.dylib"
+
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}",
                           "--enable-shared"

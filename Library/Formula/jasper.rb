@@ -1,23 +1,22 @@
-require 'formula'
-
 class Jasper < Formula
   desc "Library for manipulating JPEG-2000 images"
-  homepage 'http://www.ece.uvic.ca/~frodo/jasper/'
-  url 'http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz'
-  sha1 'bbf30168ceae74d78e28039972657a90799e68d3'
-  version '1.900.1'
+  homepage "https://www.ece.uvic.ca/~frodo/jasper/"
+  url "http://download.osgeo.org/gdal/jasper-1.900.1.uuid.tar.gz"
+  sha256 "0021684d909de1eb2f7f5a4d608af69000ce37773d51d1fb898e03b8d488087d"
+  version "1.900.1"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "7fd9acebd672cdb1bda21c709d3e59a7ff350a4f" => :yosemite
-    sha1 "4ea4b6abe67ccd2727b33b545de6537d196f8253" => :mavericks
-    sha1 "34fb2f4888da21b43ecb7fd8e190e4b66e42a3a1" => :mountain_lion
+    sha256 "c70ac7c5c48f01d60d8ef07f8d951cc6ffc4da507bc2218950fed542a2fd5902" => :el_capitan
+    sha256 "7a996d9e2a97fd46aceda93413c3e55a4e46be3afae16f4631743cb6ce2602d6" => :yosemite
+    sha256 "f3deabb9253d2a32eeb5f4848613e7f18bd3af5e5e44b0c467059f5477b60e31" => :mavericks
+    sha256 "b6c2560da91773d9b39a9b77064edeb0a19bf32ada3ae057b38c28025a900975" => :mountain_lion
   end
 
   option :universal
 
-  depends_on 'jpeg'
+  depends_on "jpeg"
 
   fails_with :llvm do
     build 2326
@@ -37,7 +36,7 @@ class Jasper < Formula
                           "--enable-shared",
                           "--prefix=#{prefix}",
                           "--mandir=#{man}"
-    system "make install"
+    system "make", "install"
   end
 end
 

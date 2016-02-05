@@ -21,15 +21,16 @@ class Gcc < Formula
 
   desc "GNU compiler collection"
   homepage "https://gcc.gnu.org"
-  url "http://ftpmirror.gnu.org/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
-  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.1.0/gcc-5.1.0.tar.bz2"
-  sha256 "b7dafdf89cbb0e20333dbf5b5349319ae06e3d1a30bf3515b5488f7e89dca5ad"
+  url "http://ftpmirror.gnu.org/gcc/gcc-5.3.0/gcc-5.3.0.tar.bz2"
+  mirror "https://ftp.gnu.org/gnu/gcc/gcc-5.3.0/gcc-5.3.0.tar.bz2"
+  sha256 "b84f5592e9218b73dbae612b5253035a7b34a9a1f7688d2e1bfaaf7267d5c4db"
+
+  head "svn://gcc.gnu.org/svn/gcc/trunk"
 
   bottle do
-    revision 2
-    sha256 "77f780600830699d4bfb9e6f14e3befd7a5511a7a4937d57ef665a58934972f8" => :yosemite
-    sha256 "8c156f6588eb4e83837635b42daa1b5e5d1b88097f0dbd679b0332874113cc97" => :mavericks
-    sha256 "77bce635f78bc26bd01010b5ece480251af223bf2dba6d48c29af6b29b441296" => :mountain_lion
+    sha256 "90ad519442f0336b0beee3cf2be305ea495fb2e2ad82c2a96c5b0c3bcef8f268" => :el_capitan
+    sha256 "334bd7afbec85740ec7c49eedf52858209c31ed1f284ad10ccab7c50a41bcd35" => :yosemite
+    sha256 "679c9bfc2082f8ab4320c89082b08c4eab9523dd72bfed27fe4b712de7013a1f" => :mavericks
   end
 
   option "with-java", "Build the gcj compiler"
@@ -122,9 +123,10 @@ class Gcc < Formula
     # -fPIC, -shared, -ldl and -rdynamic."
     args << "--enable-plugin" if MacOS.version > :tiger
 
-    # Otherwise make fails during comparison at stage 3
-    # See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
-    args << "--with-dwarf2" if MacOS.version < :leopard
+    # The pre-Mavericks toolchain requires the older DWARF-2 debugging data
+    # format to avoid failure during the stage 3 comparison of object files.
+    # See: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=45248
+    args << "--with-dwarf2" if MacOS.version <= :mountain_lion
 
     args << "--disable-nls" if build.without? "nls"
 
@@ -258,3 +260,22 @@ index 44d0750..4df2a9c 100644
 
  $(LIBGCCJIT_SONAME_SYMLINK): $(LIBGCCJIT_FILENAME)
 	ln -sf $(LIBGCCJIT_FILENAME) $(LIBGCCJIT_SONAME_SYMLINK)
+diff --git a/gcc/jit/jit-playback.c b/gcc/jit/jit-playback.c
+index 925fa86..01cfd4b 100644
+--- a/gcc/jit/jit-playback.c
++++ b/gcc/jit/jit-playback.c
+@@ -2416,6 +2416,15 @@ invoke_driver (const char *ctxt_progname,
+      time.  */
+   ADD_ARG ("-fno-use-linker-plugin");
+
++#if defined (DARWIN_X86) || defined (DARWIN_PPC)
++  /* OS X's linker defaults to treating undefined symbols as errors.
++     If the context has any imported functions or globals they will be
++     undefined until the .so is dynamically-linked into the process.
++     Ensure that the driver passes in "-undefined dynamic_lookup" to the
++     linker.  */
++  ADD_ARG ("-Wl,-undefined,dynamic_lookup");
++#endif
++
+   /* pex argv arrays are NULL-terminated.  */
+   argvec.safe_push (NULL);

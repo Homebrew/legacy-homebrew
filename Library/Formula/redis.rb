@@ -1,15 +1,18 @@
 class Redis < Formula
   desc "Persistent key-value database, with built-in net interface"
   homepage "http://redis.io/"
-  url "http://download.redis.io/releases/redis-3.0.2.tar.gz"
-  sha256 "93e422c0d584623601f89b956045be158889ebe594478a2c24e1bf218495633f"
+  url "http://download.redis.io/releases/redis-3.0.7.tar.gz"
+  sha256 "b2a791c4ea3bb7268795c45c6321ea5abcc24457178373e6a6e3be6372737f23"
 
   bottle do
-    cellar :any
-    sha256 "4a004f8f829c0c79634db75a8889e305990110934afba8bb27b48e0aaaecf53b" => :yosemite
-    sha256 "77958c3e65e2579181846464de2b777fc8d6ffdf524988866a4c78fbc376f76b" => :mavericks
-    sha256 "54bda6925b7258c6dbcd8134fbb64a3feae09d1c0de1fedae7925a524ee1befe" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "56aa3ed148606d6f4d0fa7a4f2efec2263f4d166949d5732836a133be589493b" => :el_capitan
+    sha256 "931dbc56104eced22a13c9f6ac314fd808132295984bcf9973c9f6dafda0f245" => :yosemite
+    sha256 "4be758b78e35b4a30b3d6e97255774f928de19332520447429afc64b7ec8cf41" => :mavericks
   end
+
+  option "with-jemalloc", "Select jemalloc as memory allocator when building Redis"
 
   head "https://github.com/antirez/redis.git", :branch => "unstable"
 
@@ -22,7 +25,12 @@ class Redis < Formula
     # Architecture isn't detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = "-arch #{MacOS.preferred_arch}"
 
-    system "make", "install", "PREFIX=#{prefix}", "CC=#{ENV.cc}"
+    args = %W[
+      PREFIX=#{prefix}
+      CC=#{ENV.cc}
+    ]
+    args << "MALLOC=jemalloc" if build.with? "jemalloc"
+    system "make", "install", *args
 
     %w[run db/redis log].each { |p| (var+p).mkpath }
 

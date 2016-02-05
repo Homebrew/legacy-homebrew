@@ -1,30 +1,32 @@
-require "formula"
-
 class Bind < Formula
   desc "Implementation of the DNS protocols"
   homepage "https://www.isc.org/downloads/bind/"
-  url "http://ftp.isc.org/isc/bind9/9.10.2/bind-9.10.2.tar.gz"
-  sha1 "4ddb2670976c06af7e86352616383958d82c51ce"
-
-  bottle do
-    sha1 "901a4706d23607927fadb78d5495d49f715fdde4" => :yosemite
-    sha1 "ce2cfdc2ebaab7cccc001f9fdefd2d55d6b9fa11" => :mavericks
-    sha1 "b9f513f74bb0ec23af29057fc0eb1e2c410c9769" => :mountain_lion
-  end
-
+  url "https://ftp.isc.org/isc/bind9/9.10.3-P3/bind-9.10.3-P3.tar.gz"
+  mirror "https://fossies.org/linux/misc/dns/bind9/9.10.3-P3/bind-9.10.3-P3.tar.gz"
+  version "9.10.3-P3"
+  sha256 "690810d1fbb72afa629e74638d19cd44e28d2b2e5eb63f55c705ad85d1a4cb83"
   head "https://source.isc.org/git/bind9.git"
 
+  bottle do
+    sha256 "89f2f8ed6ffdd693ee1b0289222adafae15b7092d65147c41d41a1b623fd20a0" => :el_capitan
+    sha256 "698d3518bab3d0324ba1621cb4478538ecc7c08b2fee4e30ea5971746f7bc7d7" => :yosemite
+    sha256 "3693f848704404b9a6fa086a0d5c1b9096026f3ad083512a499b5a4f91f69dad" => :mavericks
+  end
+
   depends_on "openssl"
+  depends_on "json-c" => :optional
 
   def install
     ENV.libxml2
     # libxml2 appends one inc dir to CPPFLAGS but bind ignores CPPFLAGS
     ENV.append "CFLAGS", ENV.cppflags
 
+    json = build.with?("json-c") ? "yes" : "no"
     system "./configure", "--prefix=#{prefix}",
                           "--enable-threads",
                           "--enable-ipv6",
-                          "--with-openssl=#{Formula["openssl"].opt_prefix}"
+                          "--with-openssl=#{Formula["openssl"].opt_prefix}",
+                          "--with-libjson=#{json}"
 
     # From the bind9 README: "Do not use a parallel "make"."
     ENV.deparallelize
@@ -162,5 +164,10 @@ class Bind < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    system bin/"dig", "-v"
+    system bin/"dig", "brew.sh"
   end
 end

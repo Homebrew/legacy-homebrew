@@ -3,15 +3,17 @@ class Boot2docker < Formula
   homepage "https://github.com/boot2docker/boot2docker-cli"
   # Boot2docker and docker are generally updated at the same time.
   # Please update the version of docker too
-  url "https://github.com/boot2docker/boot2docker-cli.git", :tag => "v1.6.2",
-    :revision => "cb2c3bcc890d8ee67bb76cc91ecf5b63927c97f9"
+  url "https://github.com/boot2docker/boot2docker-cli.git",
+    :tag => "v1.8.0", :revision => "9a2606673efcfa282fb64a5a5c9e1b2f89d86fb4"
+  revision 1
+
   head "https://github.com/boot2docker/boot2docker-cli.git"
 
   bottle do
-    cellar :any
-    sha256 "819b26b7e1fd2e14cece31244b9b3a481ad06dbeb4f6658d58be7ae5c1e2105f" => :yosemite
-    sha256 "a6aff45bff1875366e6a307105c48b44bfb8ba1f5fda13099125a274bdedf73c" => :mavericks
-    sha256 "1bbae6d9d9815ced2953df1f2749cb1d194b0fcc7a4e7574a8d91dfb2346d135" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "40ee29e8a44e50bdacdbe81e9bcebb6b9ed01dc7045d5c7178a1e4d97ba3f8e6" => :el_capitan
+    sha256 "abb90647cee5070ec8f627ccf5c1742f4178af44aa457269c397cc0a0bcf7fe3" => :yosemite
+    sha256 "df535640233157d16e153391019bd2dc2ed3448be77dbf77dde4586b071cd407" => :mavericks
   end
 
   depends_on "docker" => :recommended
@@ -27,6 +29,12 @@ class Boot2docker < Formula
     end
 
     bin.install "bin/boot2docker-cli" => "boot2docker"
+  end
+
+  def caveats; <<-EOF.undent
+      Rebuild the VM after an upgrade with:
+        boot2docker destroy && boot2docker upgrade
+    EOF
   end
 
   def plist; <<-EOS.undent

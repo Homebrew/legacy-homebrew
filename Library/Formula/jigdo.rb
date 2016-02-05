@@ -2,24 +2,25 @@ class Jigdo < Formula
   desc "Tool to distribute very large files over the internet"
   homepage "http://atterer.org/jigdo/"
   url "http://atterer.org/sites/atterer/files/2009-08/jigdo/jigdo-0.7.3.tar.bz2"
-  sha1 "7b83c35af71f908b31b9aa55b0dda9dfb4d224f0"
-  revision 1
+  sha256 "875c069abad67ce67d032a9479228acdb37c8162236c0e768369505f264827f0"
+  revision 2
 
   bottle do
-    sha1 "082410ddb96160d7dad904396e54c628e395efd6" => :yosemite
-    sha1 "3728075c968660a34393a2c8657d2e3f18fb0017" => :mavericks
-    sha1 "f059fdafb3d3891c27e86ef0d31ef20d14bf7c2c" => :mountain_lion
+    revision 2
+    sha256 "8128ebe3947194e46c94ee9f141c1000ce0a8a0281522a4a858e341bae011bf9" => :el_capitan
+    sha256 "1a8a7505c33fc6ee08c23effc8776b4a575947fab9b8e1ea08c03df0c1d83d65" => :yosemite
+    sha256 "78483d046c8deea235b333401dc959d7e928dc65728519a789ba09488546cced" => :mavericks
   end
 
   depends_on "pkg-config" => :build
   depends_on "wget" => :recommended
-  depends_on "berkeley-db4"
+  depends_on "berkeley-db"
   depends_on "gtk+"
 
   # Use MacPorts patch for compilation on 10.9; this software is no longer developed.
   patch :p0 do
-    url "http://trac.macports.org/export/113020/trunk/dports/net/jigdo/files/patch-src-compat.hh.diff"
-    sha1 "3318ecbe8b2bb20e8e36c70dc10ff366df2009f3"
+    url "https://raw.githubusercontent.com/Homebrew/patches/e101570/jigdo/patch-src-compat.hh.diff"
+    sha256 "a21aa8bcc5a03a6daf47e0ab4e04f16e611e787a7ada7a6a87c8def738585646"
   end
 
   def install
@@ -32,6 +33,6 @@ class Jigdo < Formula
   end
 
   test do
-    system "#{bin}/jigdo-file", "-h"
+    assert_match "version #{version}", shell_output("#{bin}/jigdo-file -v")
   end
 end

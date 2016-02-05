@@ -1,25 +1,20 @@
 class Rust < Formula
   desc "Safe, concurrent, practical language"
-  homepage 'http://www.rust-lang.org/'
+  homepage "https://www.rust-lang.org/"
 
   stable do
-    url 'https://static.rust-lang.org/dist/rustc-1.0.0-src.tar.gz'
-    sha256 'c304cbd4f7b25d116b73c249f66bdb5c9da8645855ce195a41bda5077b995eba'
+    url "https://static.rust-lang.org/dist/rustc-1.6.0-src.tar.gz"
+    sha256 "3002a4a00004b0727709abeefe1ab1b2731845e4dab74566f363861801bb3326"
 
     resource "cargo" do
-      url "https://github.com/rust-lang/cargo.git", :revision => "a48358155c90467ed9c897930dd0da4614605dac"
+      # git required because of submodules
+      url "https://github.com/rust-lang/cargo.git", :tag => "0.8.0", :revision => "28a0cbb2212c295264a7a3031a4be0113a17aa91"
     end
 
     # name includes date to satisfy cache
-    resource "cargo-nightly-2015-05-14" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-05-14/cargo-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "46403af9abb0dd0d9e3c31c20aa2508878ae1e8d0f1e7913addbfc08605b9733"
-    end
-
-    # name includes date to satisfy cache
-    resource "rustc-nightly-2015-05-14" do
-      url "https://static-rust-lang-org.s3.amazonaws.com/dist/2015-05-14/rustc-nightly-x86_64-apple-darwin.tar.gz"
-      sha256 "1f7f447e369190d4d0d3f8c516e6c4d07e458f258f71737422b3f542b6d4da1e"
+    resource "cargo-nightly-2015-09-17" do
+      url "https://static-rust-lang-org.s3.amazonaws.com/cargo-dist/2015-09-17/cargo-nightly-x86_64-apple-darwin.tar.gz"
+      sha256 "02ba744f8d29bad84c5e698c0f316f9e428962b974877f7f582cd198fdd807a8"
     end
   end
 
@@ -31,14 +26,20 @@ class Rust < Formula
   end
 
   bottle do
-    sha256 "a4768e9bf0fb5ddc3860854c9be392e270627208b18fc3f0d5440b0d07338e7e" => :yosemite
-    sha256 "e6a43e8d0870793a12f6981facf6614d51965f48b52b90061f660c31b99bb826" => :mavericks
-    sha256 "dc1c3864cfb62b884857d3c9b20c81bd7e2289098aaa6adc3f87034add9b721b" => :mountain_lion
+    sha256 "8106b9f787d3f5079de03b6cae43cc5cf03ef3bf9e4782fbb117d4a1ad489075" => :el_capitan
+    sha256 "21355f678c6c265630f8028495efe3d248429f0b038c18e5ba2cd24bd5bf17de" => :yosemite
+    sha256 "0f238aa5d836cdba1846e50696f3fb1c5d1a6a3d1b107a39489226014d86ee93" => :mavericks
   end
 
-  depends_on "openssl"
+  option "with-llvm", "Build with brewed LLVM. By default, Rust's LLVM will be used."
+
   depends_on "cmake" => :build
-  depends_on "pkg-config" => :build
+  depends_on "pkg-config" => :run
+  depends_on "llvm" => :optional
+  depends_on "openssl"
+  depends_on "libssh2"
+
+  conflicts_with "multirust", :because => "both install rustc, rustdoc, cargo, rust-lldb, rust-gdb"
 
   # According to the official readme, GCC 4.7+ is required
   fails_with :gcc_4_0
@@ -51,6 +52,7 @@ class Rust < Formula
     args = ["--prefix=#{prefix}"]
     args << "--disable-rpath" if build.head?
     args << "--enable-clang" if ENV.compiler == :clang
+    args << "--llvm-root=#{Formula["llvm"].opt_prefix}" if build.with? "llvm"
     if build.head?
       args << "--release-channel=nightly"
     else
@@ -58,32 +60,20 @@ class Rust < Formula
     end
     system "./configure", *args
     system "make"
-    system "make install"
+    system "make", "install"
 
     resource("cargo").stage do
       cargo_stage_path = pwd
 
       if build.stable?
-        resource("rustc-nightly-2015-05-14").stage do
-          system "./install.sh", "--prefix=#{cargo_stage_path}/rustc"
-        end
-
-        resource("cargo-nightly-2015-05-14").stage do
+        resource("cargo-nightly-2015-09-17").stage do
           system "./install.sh", "--prefix=#{cargo_stage_path}/target/snapshot/cargo"
           # satisfy make target to skip download
           touch "#{cargo_stage_path}/target/snapshot/cargo/bin/cargo"
         end
       end
 
-      args = ["--prefix=#{prefix}"]
-
-      if build.head?
-        args << "--local-rust-root=#{prefix}"
-      else
-        args << "--local-rust-root=#{cargo_stage_path}/rustc"
-      end
-
-      system "./configure", *args
+      system "./configure", "--prefix=#{prefix}", "--local-rust-root=#{prefix}", "--enable-optimize"
       system "make"
       system "make", "install"
     end
