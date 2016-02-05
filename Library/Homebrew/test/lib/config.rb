@@ -1,7 +1,7 @@
 require "tmpdir"
 require "pathname"
 
-HOMEBREW_BREW_FILE = ENV["HOMEBREW_BREW_FILE"]
+HOMEBREW_BREW_FILE = Pathname.new(ENV["HOMEBREW_BREW_FILE"])
 HOMEBREW_TEMP = Pathname.new(ENV["HOMEBREW_TEMP"] || Dir.tmpdir)
 
 TEST_TMPDIR = ENV.fetch("HOMEBREW_TEST_TMPDIR") { |k|
