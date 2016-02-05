@@ -7,9 +7,9 @@ class Leiningen < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d9ae85b9043633b6a556b3772d6ee94f07560121f0d8bf5b5c71256aa44a31fc" => :el_capitan
-    sha256 "eda66e38c1a262def28404faa43012b99dc0d0bb7271bfce34d592d9b4819a97" => :yosemite
-    sha256 "466006f676de0d2bad06139b7048484e0e681143f211188c80d82f5ffe17cbbc" => :mavericks
+    sha256 "9a37c69a352a48ac72a5d2843bc183634c24e78a582619f428d0452fbdbc865f" => :el_capitan
+    sha256 "c98df35c777b8fae26acfb52ed24282328a0423ed57cce4c8f7c3c9c43c51ecc" => :yosemite
+    sha256 "49b571649e3f70e928392a2588a37df6797592250592e60dee43f53b836b8fa8" => :mavericks
   end
 
   resource "jar" do
