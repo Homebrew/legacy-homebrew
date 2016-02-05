@@ -1,5 +1,5 @@
 class Geoip < Formula
-  desc "GeoIP databases in a number of formats"
+  desc "This library is for the GeoIP Legacy format (dat)"
   homepage "https://github.com/maxmind/geoip-api-c"
   url "https://github.com/maxmind/geoip-api-c/releases/download/v1.6.9/GeoIP-1.6.9.tar.gz"
   sha256 "4b446491843de67c1af9b887da17a3e5939e0aeed4826923a5f4bf09d845096f"
@@ -13,9 +13,9 @@ class Geoip < Formula
     sha256 "5ee66187d1b4510fd463ebb8bf360c2d78a4252467a0e10e905a2a3502f9bcaa" => :mavericks
   end
 
-  depends_on "geoipupdate" => :optional
-
   option :universal
+
+  depends_on "geoipupdate" => :optional
 
   def install
     ENV.universal_binary if build.universal?
