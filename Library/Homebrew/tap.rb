@@ -65,6 +65,19 @@ class Tap
     @path = TAP_DIRECTORY/"#{@user}/homebrew-#{@repo}".downcase
   end
 
+  # clear internal cache
+  def clear_cache
+    @remote = nil
+    @formula_dir = nil
+    @formula_files = nil
+    @alias_files = nil
+    @aliases = nil
+    @alias_table = nil
+    @alias_reverse_table = nil
+    @command_files = nil
+    @formula_renames = nil
+  end
+
   # The remote path to this {Tap}.
   # e.g. `https://github.com/user/homebrew-repo`
   def remote
@@ -129,6 +142,7 @@ class Tap
   def install(options = {})
     require "descriptions"
     raise TapAlreadyTappedError, name if installed?
+    clear_cache
 
     # ensure git is installed
     Utils.ensure_git_installed!
@@ -200,6 +214,7 @@ class Tap
     path.rmtree
     path.parent.rmdir_if_possible
     puts "Untapped #{formula_count} formula#{plural(formula_count, "e")}"
+    clear_cache
   end
 
   def unlink_manpages
