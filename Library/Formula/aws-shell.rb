@@ -1,5 +1,5 @@
 class AwsShell < Formula
-  desc "An integrated shell for working with the AWS CLI."
+  desc "Integrated shell for working with the AWS CLI."
   homepage "https://github.com/awslabs/aws-shell"
   url "https://pypi.python.org/packages/source/a/aws-shell/aws-shell-0.1.0.tar.gz"
   sha256 "2d89e3c51e6cf7da74c8bca8b8a986cc8edcad27ccd6c15678cd84b970f63a16"
