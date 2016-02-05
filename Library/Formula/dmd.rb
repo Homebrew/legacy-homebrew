@@ -1,6 +1,7 @@
 class Dmd < Formula
   desc "D programming language compiler for OS X"
   homepage "https://dlang.org/"
+  revision 1
 
   stable do
     url "https://github.com/D-Programming-Language/dmd/archive/v2.070.0.tar.gz"
@@ -59,7 +60,7 @@ class Dmd < Formula
     # linked into opt by the time this build runs:
     conf.write <<-EOS.undent
         [Environment]
-        DFLAGS=-I#{include}/d2 -L-L#{lib}
+        DFLAGS=-I#{include}/dlang/dmd -L-L#{lib}
         EOS
     etc.install conf
     install_new_dmd_conf
@@ -72,8 +73,8 @@ class Dmd < Formula
     system "make", "-C", "druntime", *make_args
     system "make", "-C", "phobos", "VERSION=#{buildpath}/VERSION", *make_args
 
-    (include/"d2").install Dir["druntime/import/*"]
-    cp_r ["phobos/std", "phobos/etc"], include/"d2"
+    (include/"dlang/dmd").install Dir["druntime/import/*"]
+    cp_r ["phobos/std", "phobos/etc"], include/"dlang/dmd"
     lib.install Dir["druntime/lib/*", "phobos/**/libphobos2.a"]
 
     resource("tools").stage do

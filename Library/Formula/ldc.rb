@@ -2,6 +2,7 @@ class Ldc < Formula
   desc "Portable D programming language compiler"
   homepage "http://wiki.dlang.org/LDC"
   head "https://github.com/ldc-developers/ldc.git", :shallow => false
+  revision 1
 
   stable do
     url "https://github.com/ldc-developers/ldc/releases/download/v0.16.1/ldc-0.16.1-src.tar.gz"
@@ -34,7 +35,7 @@ class Ldc < Formula
     ENV.cxx11
     mkdir "build"
     cd "build" do
-      system "cmake", "..", *std_cmake_args
+      system "cmake", "..", "-DINCLUDE_INSTALL_DIR=#{include}/dlang/ldc", *std_cmake_args
       system "make"
       system "make", "install"
     end
@@ -43,7 +44,6 @@ class Ldc < Formula
   test do
     (testpath/"test.d").write <<-EOS.undent
       import std.stdio;
-
       void main() {
         writeln("Hello, world!");
       }
