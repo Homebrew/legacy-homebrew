@@ -2,9 +2,8 @@ class SquidDebProxy < Formula
   desc "APT repo caching proxy based on Squid."
   homepage "https://launchpad.net/squid-deb-proxy"
 
-  url "http://bazaar.launchpad.net/~squid-deb-proxy-developers/squid-deb-proxy/trunk/tarball/139"
-  version "0.8.13"
-  sha256 "90e9d749b4d9ed1373199f89cc853a205fa521d84e8dcbf55db0a5b5036bdf05"
+  url "http://archive.ubuntu.com/ubuntu/pool/universe/s/squid-deb-proxy/squid-deb-proxy_0.8.14.tar.gz"
+  sha256 "d30aa9d8185c1e424608deb307f8e92aee8270acccc3c0b26af1d03a2feae92b"
 
   depends_on "squid"
 
@@ -12,8 +11,6 @@ class SquidDebProxy < Formula
   patch :DATA
 
   def install
-    cd "squid-deb-proxy/trunk"
-
     # fix up issues specific to Homebrew
     inreplace "squid-deb-proxy.conf" do |s|
       # fix paths with the HOMEBREW_PREFIX
@@ -139,8 +136,8 @@ class SquidDebProxy < Formula
   end
 end
 __END__
---- a/squid-deb-proxy/trunk/squid-deb-proxy.conf	2016-02-04 17:22:07.000000000 -0800
-+++ b/squid-deb-proxy/trunk/squid-deb-proxy.conf	2016-02-04 18:52:52.000000000 -0800
+--- a/squid-deb-proxy.conf	2016-02-04 17:22:07.000000000 -0800
++++ b/squid-deb-proxy.conf	2016-02-04 18:52:52.000000000 -0800
 # fix "Invalid regular expression ... empty (sub)expression" error
 @@ -58,10 +58,10 @@
  refresh_pattern tar.bz2$  129600 100% 129600
@@ -156,8 +153,8 @@ __END__
 
  # handle meta-release and changelogs.ubuntu.com special
  # (fine to have this on debian too)
---- a/squid-deb-proxy/trunk/squid-deb-proxy.conf	2016-02-04 17:22:07.000000000 -0800
-+++ b/squid-deb-proxy/trunk/squid-deb-proxy.conf	2016-02-04 18:52:52.000000000 -0800
+--- a/squid-deb-proxy.conf	2016-02-04 17:22:07.000000000 -0800
++++ b/squid-deb-proxy.conf	2016-02-04 18:52:52.000000000 -0800
 # allow dumping extra configuration in a directory
 @@ -71,6 +71,12 @@
  acl Safe_ports port 80
