@@ -1,5 +1,5 @@
 class Geos < Formula
-  desc "GEOS Geometry Engine"
+  desc "Geometry Engine"
   homepage "https://trac.osgeo.org/geos"
   url "http://download.osgeo.org/geos/geos-3.5.0.tar.bz2"
   sha256 "49982b23bcfa64a53333dab136b82e25354edeb806e5a2e2f5b8aa98b1d0ae02"
