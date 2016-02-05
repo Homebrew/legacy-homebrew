@@ -63,7 +63,7 @@ class Terraform < Formula
     end
 
     cd terrapath do
-      terraform_files = `go list ./... | grep -v /vendor/`.strip.split("\n")
+      terraform_files = `go list ./...`.lines.map {|f| f.strip unless f.include? "/vendor/" }.compact
       system "go", "test", *terraform_files
 
       mkdir "bin"
