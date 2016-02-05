@@ -5,7 +5,6 @@ class AwsShell < Formula
   sha256 "2d89e3c51e6cf7da74c8bca8b8a986cc8edcad27ccd6c15678cd84b970f63a16"
 
   head do
-
     url "https://github.com/awslabs/aws-shell.git"
 
     resource "awscli" do
@@ -21,7 +20,7 @@ class AwsShell < Formula
     end
 
     resource "colorama" do
-    url "https://github.com/tartley/colorama.git", :tag => "v0.3.3", :revision => "5906b2604223f3a3bdf4497244fc8861b89dbda6"
+      url "https://github.com/tartley/colorama.git", :tag => "v0.3.3", :revision => "5906b2604223f3a3bdf4497244fc8861b89dbda6"
     end
 
     resource "configobj" do
@@ -167,5 +166,4 @@ class AwsShell < Formula
   test do
     system "#{bin}/aws-shell", "--help"
   end
-
 end
