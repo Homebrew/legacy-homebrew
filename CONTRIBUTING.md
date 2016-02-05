@@ -7,6 +7,8 @@ To report a bug:
 
 Submit a `1.2.3` version upgrade for the `foo` formula:
 
+- First check if someone else has already submitted the same upgrade, since it can take time to be tested and incorporated. Look at the open [Pull Requests](https://github.com/Homebrew/homebrew/pulls) and add the formula name to the filter box at the top of the list, so it looks like `is:pr is:open foo`. If something shows up, check to see if it accomplishes what you were about to work on. If nothing matched, then proceed.
+
 - `brew edit foo`, edit [`url`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#url-class_method) and [`sha256`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#sha256%3D-class_method)/[`tag`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#url-class_method), leave the [`bottle`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#bottle-class_method) as-is, `brew install foo`, `git commit` with commit subject `foo 1.2.3`, [open a pull request](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged).md#how-to-open-a-homebrew-pull-request-and-get-it-merged) and fix any failing tests.
 
 To add a new formula for `foo` version `2.3.4` from `$URL`:
@@ -15,7 +17,7 @@ To add a new formula for `foo` version `2.3.4` from `$URL`:
 
 To contribute a fix to the `foo` formula:
 
-- First check if someone else has already submitted the same fix, since it can take time to be tested and incorporated. Look at the open [Pull Requests](https://github.com/Homebrew/homebrew/pulls) and add the formula name to the filter box at the top of the list, so it looks like `is:pr is:open foo`. If something shows up, check to see if it accomplishes what you were about to work on. If nothing matched, then proceed.
+- You might want to check to see if someone has already contributed the same fix, since it can take time to be tested and incorporated. Look at the open [Pull Requests](https://github.com/Homebrew/homebrew/pulls) and add the formula name to the filter box at the top of the list, so it looks like `is:pr is:open foo`. If something shows up, check to see if it accomplishes what you were about to work on. If nothing matched, then proceed.
 
 - `brew edit foo` and make edits, leave the [`bottle`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#bottle-class_method) as-is, `brew install foo`, `git commit` with message formatted `foo: fix <insert details>.`, [open a pull request](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged).md#how-to-open-a-homebrew-pull-request-and-get-it-merged) and fix any failing tests.
 
