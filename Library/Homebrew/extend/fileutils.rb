@@ -17,8 +17,8 @@ module FileUtils
     # Reference from `man 2 open`
     # > When a new file is created, it is given the group of the directory which
     # contains it.
-    group_id = if File.grpowned? HOMEBREW_BREW_FILE
-      File.stat(HOMEBREW_BREW_FILE).gid
+    group_id = if HOMEBREW_BREW_FILE.grpowned?
+      HOMEBREW_BREW_FILE.stat.gid
     else
       Process.gid
     end

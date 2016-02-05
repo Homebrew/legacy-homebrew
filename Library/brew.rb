@@ -104,7 +104,7 @@ begin
     end
 
     if possible_tap && !possible_tap.installed?
-      brew_uid = File.stat(HOMEBREW_BREW_FILE).uid
+      brew_uid = HOMEBREW_BREW_FILE.stat.uid
       tap_commands = []
       if Process.uid.zero? && !brew_uid.zero?
         tap_commands += %W[/usr/bin/sudo -u ##{brew_uid}]
