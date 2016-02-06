@@ -3,6 +3,7 @@ class Gnuradio < Formula
   homepage "http://gnuradio.squarespace.com/"
   url "http://gnuradio.org/releases/gnuradio/gnuradio-3.7.8.1.tar.gz"
   sha256 "8406f49d085fdc2ef5d8ea90f3e19ad8782d2a2f5154bbe4f076591ddf7ae5aa"
+  revision 1
 
   bottle do
     sha256 "52fd896b1aaf65dddb90d4cc81e637c07ff5b5b96fb506cbafc1f0fe3d00b9f0" => :el_capitan
