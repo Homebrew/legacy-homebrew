@@ -152,10 +152,8 @@ class IntegrationCommandTests < Homebrew::TestCase
         url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
-    HOMEBREW_CACHE.cd do
-      assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
-                   cmd_output("bottle", "--no-revision", "testball"))
-    end
+    assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
+                  cmd_output("bottle", "--no-revision", "testball"))
   ensure
     cmd("uninstall", "--force", "testball")
     cmd("cleanup", "--force", "--prune=all")
