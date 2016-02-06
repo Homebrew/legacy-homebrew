@@ -6,6 +6,10 @@ class Libuv < Formula
   head "https://github.com/libuv/libuv.git", :branch => "v1.x"
 
   bottle do
+    cellar :any
+    sha256 "a34b88cfbbe193271251130ea7a3b20469dbe3f83c3ba3f911c1447d5499348b" => :el_capitan
+    sha256 "60b8e218282f2e054964037e23fb8beeef20fb2475c03d40cf07050688e5f0fd" => :yosemite
+    sha256 "c24fb05674c293a89b7855ba045a3094edb6a3acee5527acd11564e2e4499ed9" => :mavericks
   end
 
   option "without-docs", "Don't build and install documentation"
