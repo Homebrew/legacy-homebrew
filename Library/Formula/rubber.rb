@@ -23,6 +23,11 @@ class Rubber < Formula
 
     # Don't need to peg to a specific Python version
     inreplace Dir["#{bin}/*"], %r{^#!.*\/python.*$}, "#!/usr/bin/env python"
+
+    bin.env_script_all_files(
+      libexec/"bin",
+      :PYTHONPATH => lib/"python2.7/site-packages"
+    )
   end
 
   test do
