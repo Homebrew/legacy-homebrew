@@ -6,9 +6,11 @@ class Rubber < Formula
   version "20150624-1.2"
 
   bottle do
-    sha256 "928de907e2ff3961c72ff71380fd7db0fc072ae526dc77068718b618ce80f5e6" => :yosemite
-    sha256 "33e93b904403bccb9a139ac963cbec128d3a23422e3bb69bd31bbe03191a464a" => :mavericks
-    sha256 "e7480ca80262718ac62b26c3573c1b7e3091a2ed1766d7f33967f2620911fbc4" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "45ccf5bf5077477f2352a4264fde561b8fdeb804f8b85185bb278998907cc551" => :el_capitan
+    sha256 "b634e0a8fe7fc06182c4931cee9e752c160007dcdf1953a0188f40fe8afe629e" => :yosemite
+    sha256 "326ecaa0ef4892714161be2d9bd918d9a8d51bd5c7f9563eb5a77f3853727007" => :mavericks
   end
 
   head "lp:rubber", :using => :bzr
