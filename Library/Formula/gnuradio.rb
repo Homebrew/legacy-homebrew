@@ -1,14 +1,10 @@
 class Gnuradio < Formula
   desc "SDK providing the signal processing runtime and processing blocks"
   homepage "http://gnuradio.squarespace.com/"
-  url "http://gnuradio.org/releases/gnuradio/gnuradio-3.7.8.1.tar.gz"
-  sha256 "8406f49d085fdc2ef5d8ea90f3e19ad8782d2a2f5154bbe4f076591ddf7ae5aa"
-  revision 1
+  url "http://gnuradio.org/releases/gnuradio/gnuradio-3.7.9.1.tar.gz"
+  sha256 "9c06f0f1ec14113203e0486fd526dd46ecef216dfe42f12d78d9b781b1ef967e"
 
   bottle do
-    sha256 "aff72ccf607587455a6475d6a9805505378dabe527786016af2c910e949283df" => :el_capitan
-    sha256 "60918684a9f864a4ee8a7d232fb990c3dd047c32b8577fa3a26b844c88721565" => :yosemite
-    sha256 "38ccf78625bdadb532dc6e99aa5f2a9f3e81a74386483352fd82d74f4dfeb5a3" => :mavericks
   end
 
   # These python extension modules were linked directly to a Python
