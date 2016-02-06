@@ -67,8 +67,9 @@ class Node < Formula
 
       # make sure npm can find node
       ENV.prepend_path "PATH", bin
-      # set log level temporarily for npm's `make install`
+      # set log level and prefix temporarily for npm's `make install`
       ENV["NPM_CONFIG_LOGLEVEL"] = "verbose"
+      ENV["NPM_CONFIG_PREFIX"] = ""
 
       cd buildpath/"npm_install" do
         system "./configure", "--prefix=#{libexec}/npm"
