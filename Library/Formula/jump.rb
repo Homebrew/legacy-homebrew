@@ -3,8 +3,8 @@ require "language/go"
 class Jump < Formula
   desc "Quick and fuzzy directory jumper."
   homepage "https://github.com/gsamokovarov/jump"
-  url "https://codeload.github.com/gsamokovarov/jump/tar.gz/v0.6.0"
-  sha256 "75fb5a56747a3e26b50390eae9218851f42cf9649e18ab363810d65f78932c83"
+  url "https://codeload.github.com/gsamokovarov/jump/tar.gz/v0.6.1"
+  sha256 "773ae036c6759d304438476c8301ed4f02270535bc2d16d860f48cd7443f4350"
   head "https://github.com/gsamokovarov/jump.git"
 
   bottle do
