@@ -49,7 +49,7 @@ class Puddletag < Formula
     ENV.prepend_create_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python2.7/site-packages"
 
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PATH => "/usr/local/bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", :PATH => "#{HOMEBREW_PREFIX}/bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     system "sh", "create_macos_app_bundle.sh", "--name", "Puddletag",
                  "--icon", "puddletag.png", "--script", "#{bin}/puddletag"
