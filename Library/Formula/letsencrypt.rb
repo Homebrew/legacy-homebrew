@@ -1,8 +1,8 @@
 class Letsencrypt < Formula
   desc "Tool to automatically receive and install X.509 certificates"
   homepage "https://letsencrypt.org/"
-  url "https://github.com/letsencrypt/letsencrypt/archive/v0.3.0.tar.gz"
-  sha256 "a21e496ab130cf9fcaeef69019a4eef7aaf86dad84131d601db531add4f98e1a"
+  url "https://github.com/letsencrypt/letsencrypt/archive/v0.4.0.tar.gz"
+  sha256 "d7df1faedd6f5c1ffc26fd855350fc3a107dd9fe5c1c2aa4c340024fe807a0f3"
 
   depends_on "augeas"
   depends_on "dialog"
@@ -94,6 +94,11 @@ class Letsencrypt < Formula
     sha256 "f0a26070d6db0881de8bcc7846934b7c3c930d8f9c79d45883ee48984bc0d672"
   end
 
+  resource "pyparsing" do
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.1.0.tar.gz"
+    sha256 "f6cb2bc85a491347c3c699db47f7ecc02903959156b4f92669ebf82395982901"
+  end
+
   resource "pyRFC3339" do
     url "https://pypi.python.org/packages/source/p/pyRFC3339/pyRFC3339-1.0.tar.gz"
     sha256 "8dfbc6c458b8daba1c0f3620a8c78008b323a268b27b7359e92a4ae41325f535"
@@ -176,6 +181,6 @@ class Letsencrypt < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/letsencrypt --version 2>&1")
+    assert_match version.to_s, pipe_output("#{bin}/letsencrypt --version 2>&1")
   end
 end
