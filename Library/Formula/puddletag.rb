@@ -3,6 +3,7 @@ class Puddletag < Formula
   homepage "http://puddletag.sf.net"
   url "https://github.com/keithgg/puddletag/archive/1.1.1.tar.gz"
   sha256 "550680abf9c2cf082861dfb3b61fd308f87f9ed304065582cddadcc8bdd947cc"
+  revision 1
 
   head "https://github.com/keithgg/puddletag.git"
 
@@ -48,7 +49,7 @@ class Puddletag < Formula
     ENV.prepend_create_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python2.7/site-packages"
 
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", :PATH => "#{HOMEBREW_PREFIX}/bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     system "sh", "create_macos_app_bundle.sh", "--name", "Puddletag",
                  "--icon", "puddletag.png", "--script", "#{bin}/puddletag"
