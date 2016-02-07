@@ -14,9 +14,9 @@ class Gh < Formula
     sha256 "dcb570e67b71ead8d4783186e34b04277cda000e94520f4fb1c0c1b85abe0265" => :lion
   end
 
-  depends_on "go" => :build
-
   option "without-completions", "Disable bash/zsh completions"
+
+  depends_on "go" => :build
 
   def install
     system "script/make", "--no-update"
