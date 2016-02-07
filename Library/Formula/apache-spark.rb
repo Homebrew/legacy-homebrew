@@ -5,7 +5,7 @@ class ApacheSpark < Formula
   head "https://github.com/apache/spark.git"
   bottle :unneeded
 
-  option "without-hadoop", "Use the -without-hadoop distribution of Spark (assumes you have a local installation of hadoop)"  
+  option "without-hadoop", "Use the -without-hadoop distribution of Spark (assumes you have a local installation of hadoop)"
 
   if build.without? "hadoop"
     url "https://www.apache.org/dyn/closer.lua?path=spark/spark-1.6.0/spark-1.6.0-bin-without-hadoop.tgz"
@@ -25,7 +25,7 @@ class ApacheSpark < Formula
   end
 
   test do
-    # spark-shell has a REPL-history type of thing but it needs to write 
+    # spark-shell has a REPL-history type of thing but it needs to write
     # to ~/.spark_history... not necessarily sandbox-friendly! But --driver-java-options
     # lets us pass JVM flags like -D to let us override Java/Scala system properties!
     system "#{bin}/spark-shell --driver-java-options '-Duser.home=/tmp/' <<<'sc.parallelize(1 to 1000).count()'"
