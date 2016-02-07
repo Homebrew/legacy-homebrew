@@ -6,12 +6,11 @@ class Gh < Formula
   head "https://github.com/jingweno/gh.git"
 
   bottle do
-    cellar :any
-    revision 1
-    sha256 "6e5a16713a79ff6c3d968fa87bc7aee977592fb72e3a1b8f9a47e444a49fa683" => :yosemite
-    sha256 "922948d5e01dac8dc05ccdb632b4e5057b9344793bfb23d84c92c9d8d02eaeb9" => :mavericks
-    sha256 "2806a27164b797b3707f326c4cb991dea35b6ebfa248abba7c5a87882afc3837" => :mountain_lion
-    sha256 "dcb570e67b71ead8d4783186e34b04277cda000e94520f4fb1c0c1b85abe0265" => :lion
+    cellar :any_skip_relocation
+    revision 2
+    sha256 "e2d0bc29c2f4b7eaf706955002ba1e88634aa4f2c0e0461b9d22b00e66da2734" => :el_capitan
+    sha256 "553daabe8b4a839ce8f6403e78770d2fcb7773da9ac6b617a64e34bb52c3f70b" => :yosemite
+    sha256 "541e522a0ccc06c007bed65b12ac60cd3db1e84c284aa878daecc24d628c17bf" => :mavericks
   end
 
   option "without-completions", "Disable bash/zsh completions"
