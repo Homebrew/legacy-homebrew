@@ -6,9 +6,9 @@ class MmCommon < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e2930e83c4fcfbb96e3c377f82839b3b8e6b07987b4febfaaac7345e1d031361" => :el_capitan
-    sha256 "d16a5244363b156877d47c4b1cdc4d95727d2713ca73ab42ff56552cfd6f293b" => :yosemite
-    sha256 "76fb9a4e73abdd1be67f13ea5685acaf91ed8218045fd29dfa069639f991c9d9" => :mavericks
+    sha256 "8f34165d9e854d0d3cf261775c53191115537c343d65771a458ed827357f05a2" => :el_capitan
+    sha256 "8b131b53a8ace806b0b6a3c75be145312377b0f25d92ea578ba07e27809fa852" => :yosemite
+    sha256 "d04a14c639c497aea15e39ab5c70fb6753d3a7983528cb8b18a7e309babedbde" => :mavericks
   end
 
   def install
