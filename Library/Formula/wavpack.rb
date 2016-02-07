@@ -1,11 +1,8 @@
 class Wavpack < Formula
   desc "Hybrid lossless audio compression"
   homepage "http://www.wavpack.com/"
-
-  stable do
-    url "http://www.wavpack.com/wavpack-4.75.2.tar.bz2"
-    sha256 "7d31b34166c33c3109b45c6e4579b472fd05e3ee8ec6d728352961c5cdd1d6b0"
-  end
+  url "http://www.wavpack.com/wavpack-4.75.2.tar.bz2"
+  sha256 "7d31b34166c33c3109b45c6e4579b472fd05e3ee8ec6d728352961c5cdd1d6b0"
 
   bottle do
     cellar :any
@@ -22,15 +19,14 @@ class Wavpack < Formula
   end
 
   def install
-    args = [
-      "--prefix=#{prefix}",
-      "--disable-dependency-tracking"
-    ]
+    args = %W[--prefix=#{prefix} --disable-dependency-tracking]
+
     if build.head?
       system "./autogen.sh", *args
     else
       system "./configure", *args
     end
+
     system "make", "install"
   end
 
