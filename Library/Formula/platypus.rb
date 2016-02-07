@@ -1,9 +1,9 @@
 class Platypus < Formula
   desc "Create OS X applications from {Perl,Ruby,sh,Python} scripts"
   homepage "http://sveinbjorn.org/platypus"
-  url "http://sveinbjorn.org/files/software/platypus/platypus5.0.src.zip"
-  version "5.0"
-  sha256 "53efa052920a0f8a0fcc6a5d5806447be1270279aa98961cb5cea34447a79706"
+  url "http://sveinbjorn.org/files/software/platypus/platypus5.1.src.zip"
+  version "5.1"
+  sha256 "7ff3a5e7c5a01603855e3294763d5603b90f8cfa100670771abc1097fd85fc7a"
   head "https://github.com/sveinbjornt/Platypus.git"
 
   bottle do
@@ -22,7 +22,7 @@ class Platypus < Formula
                "clean",
                "install"
 
-    man1.install "CommandLineTool/platypus.1"
+    man1.install "CommandLineTool/man/platypus.1"
 
     cd buildpath
 
