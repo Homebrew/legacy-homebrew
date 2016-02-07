@@ -30,19 +30,37 @@ class Xmlto < Formula
     ENV.deparallelize
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
     system "make", "install"
+    doc.install "doc/xmlto.xml", "doc/xmlif.xml"
+  end
+
+  test do
+    system bin/"xmlto", "man", doc/"xmlto.xml", "-o", testpath
   end
 end
 
 
 __END__
---- xmlto-0.0.25/xmlto.in.orig
-+++ xmlto-0.0.25/xmlto.in
-@@ -209,7 +209,7 @@
+--- xmlto-0.0.28/xmlto.in
++++ xmlto-0.0.28-patched/xmlto.in
+@@ -225,7 +225,7 @@
  export VERBOSE
- 
+
  # Disable network entities
 -XSLTOPTS="$XSLTOPTS --nonet"
 +#XSLTOPTS="$XSLTOPTS --nonet"
- 
+
  # The names parameter for the XSLT stylesheet
  XSLTPARAMS=""
+@@ -542,10 +542,10 @@
+
+     [ "$VERBOSE" -ge 1 ] && \
+     echo >&2 \
+-	"\"${XMLLINT_PATH}\" --noout --nonet --xinclude --postvalid --noent ${SEARCHPATH_FORMATTED} \"${INPUT_FILE}\""
++	"\"${XMLLINT_PATH}\" --noout --xinclude --postvalid --noent ${SEARCHPATH_FORMATTED} \"${INPUT_FILE}\""
+     # eval is for SEARCHPATH_FORMATTED's proper expansion
+     # make sure expansions are protected from eval
+-    eval "\"${XMLLINT_PATH}\" --noout --nonet --xinclude --postvalid --noent ${SEARCHPATH_FORMATTED} \"${INPUT_FILE}\"" 2>"${VALIDATION}"
++    eval "\"${XMLLINT_PATH}\" --noout --xinclude --postvalid --noent ${SEARCHPATH_FORMATTED} \"${INPUT_FILE}\"" 2>"${VALIDATION}"
+     xmllint_status=$?
+
+     if [ $xmllint_status -ne 0 ]
