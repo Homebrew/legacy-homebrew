@@ -6,10 +6,11 @@ class Truecrack < Formula
   sha256 "25bf270fa3bc3591c3d795e5a4b0842f6581f76c0b5d17c0aef260246fe726b3"
 
   bottle do
-    cellar :any
-    sha256 "f89b74c141f59211a8e77f9d09288f3e5bfa8452074ddd41154bf54d4380146b" => :mavericks
-    sha256 "17be4dcefbf2274f24ced0b3772632ae67df962db59685fbf2f95aeb48b9fbcf" => :mountain_lion
-    sha256 "3f07f5450ab1106604b09d63ae32275bc55e42bc881aba5f1145023e91ad81e5" => :lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "2905997955799043b8f07c7cb28854d0a0acd3a84131b92b6c49780570dd198f" => :el_capitan
+    sha256 "d7d6879b7132093ebcc716ffe115dc20974c68e7e629f7f7cc3bce5030d153d3" => :yosemite
+    sha256 "8357dddf047bdd2180f241edb5848e49a48083300484143a245f41e5def1888d" => :mavericks
   end
 
   # Fix missing return value compilation issue
