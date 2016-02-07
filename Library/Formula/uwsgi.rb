@@ -3,13 +3,14 @@ class Uwsgi < Formula
   homepage "https://uwsgi-docs.readthedocs.org/en/latest/"
   url "https://projects.unbit.it/downloads/uwsgi-2.0.11.2.tar.gz"
   sha256 "0b889b0b4d2dd3f6625df28cb0b86ec44a68d074ede2d0dfad0b91e88914885c"
+  revision 1
+
   head "https://github.com/unbit/uwsgi.git"
 
   bottle do
-    revision 2
-    sha256 "63766f3efb450c4241154da60181c542abc2c7141c535ee1e1c10983c7ee9b4d" => :el_capitan
-    sha256 "4ad53a8a16b8ba2c0543def66315e30ba8f374fc9c8d67790e11d6fc577ea0a1" => :yosemite
-    sha256 "b3b341d72bfd762b88dbe26f406b510d89187ca8702344158bb346688dbc25f0" => :mavericks
+    sha256 "558709cfcdbb5d9a552753276e35ddd223315cc42fdb2144eea1c8e1af523257" => :el_capitan
+    sha256 "5007d96dd0c8eb687a0137460042a5178943b754880fc6ded9dc33608bd0d1f2" => :yosemite
+    sha256 "9cc48b037ae97dab7c026a0c6af3021f984de4446d0e8ac089f38c62a06a97ff" => :mavericks
   end
 
   option "with-java", "Compile with Java support"
@@ -17,11 +18,9 @@ class Uwsgi < Formula
   option "with-ruby", "Compile with Ruby support"
 
   depends_on "pkg-config" => :build
+  depends_on "pcre"
   depends_on "openssl"
   depends_on :python if MacOS.version <= :snow_leopard
-
-  depends_on "pcre"
-  depends_on "yajl" if build.without? "jansson"
 
   depends_on "geoip" => :optional
   depends_on "gloox" => :optional
@@ -44,6 +43,7 @@ class Uwsgi < Formula
   depends_on "tcc" => :optional
   depends_on "v8" => :optional
   depends_on "zeromq" => :optional
+  depends_on "yajl" if build.without? "jansson"
 
   def install
     ENV.append %w[CFLAGS LDFLAGS], "-arch #{MacOS.preferred_arch}"
@@ -145,7 +145,7 @@ class Uwsgi < Formula
         <true/>
         <key>ProgramArguments</key>
         <array>
-            <string>#{bin}/uwsgi</string>
+            <string>#{opt_bin}/uwsgi</string>
             <string>--uid</string>
             <string>_www</string>
             <string>--gid</string>
@@ -178,7 +178,7 @@ class Uwsgi < Formula
     sleep 2
 
     begin
-      assert_match /Hello World/, shell_output("curl localhost:8080")
+      assert_match "Hello World", shell_output("curl localhost:8080")
     ensure
       Process.kill("SIGINT", pid)
       Process.wait(pid)

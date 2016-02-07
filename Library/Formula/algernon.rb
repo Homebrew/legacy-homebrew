@@ -5,16 +5,18 @@ class Algernon < Formula
   homepage "http://algernon.roboticoverlords.org/"
   url "https://github.com/xyproto/algernon/archive/0.86.tar.gz"
   sha256 "f7d283a40b0f71c209d854570214f9b96f3e8e7036402e770e2aa8e93a40ffe3"
+  revision 1
+
   head "https://github.com/xyproto/algernon.git"
 
   bottle do
-    sha256 "bd007774ba8e384f8b54b09e6d6c3a861c9352faca1f253396f7ad7314b0e3f4" => :el_capitan
-    sha256 "b9b1517b3893291c8c297001de78f78d2740b6d9e7b8c0cb53ac61db331bce12" => :yosemite
-    sha256 "dc143a065845bb2a027b2198241629629251921b0943ff55777326bededfa7c1" => :mavericks
+    sha256 "aa1219f964811b531af0242258c162b6f6079de787caad3445cae3995b96f865" => :el_capitan
+    sha256 "c7482a0fc6ee1f2c4f5a711495451e035b9204c43466af5e0698cb1d600e68ae" => :yosemite
+    sha256 "b110de259d2b89dc635073ec4810e312c04fc6969ed21d6ae5d3efe834dc2b79" => :mavericks
   end
 
-  depends_on "readline"
   depends_on "go" => :build
+  depends_on "readline"
 
   # List of Go dependencies and hashes.
   # Generated using: https://github.com/samertm/homebrew-go-resources

@@ -1,16 +1,15 @@
 class Curl < Formula
   desc "Get a file from an HTTP, HTTPS or FTP server"
-  homepage "http://curl.haxx.se/"
-  url "https://github.com/bagder/curl/releases/download/curl-7_46_0/curl-7.46.0.tar.bz2"
-  mirror "http://curl.haxx.se/download/curl-7.46.0.tar.bz2"
-  sha256 "b7d726cdd8ed4b6db0fa1b474a3c59ebbbe4dcd4c61ac5e7ade0e0270d3195ad"
+  homepage "https://curl.haxx.se/"
+  url "https://github.com/curl/curl/releases/download/curl-7_47_0/curl-7.47.0.tar.bz2"
+  mirror "https://curl.haxx.se/download/curl-7.47.0.tar.bz2"
+  sha256 "2b096f9387fb9b2be08d17e518c62b6537b1f4d4bb59111d5b4fa0272f383f66"
 
   bottle do
     cellar :any
-    sha256 "2c307a334fd93b8776054d327e387bc34291f3a8fef5db5de8ec5d227a220b45" => :el_capitan
-    sha256 "cbc2ffc4a6c771f024a59edd27fb2d2f38763abe7da94b52070f0242b9ab0017" => :yosemite
-    sha256 "f0140e5c3e797a5853d5068655de659effa1c486ae9545ba20052d2ae5d43c68" => :mavericks
-    sha256 "4890e0a09d0dc45f8345ec3a60f1ae5a1f22007e7473aed9a2525f13b2702a3e" => :mountain_lion
+    sha256 "ffbf992f0e79101e0e1d5e2d76d151413fba10b00a7ae7a7c99ac1c3b7ee1b42" => :el_capitan
+    sha256 "897e527dbae60e115b00cf69d79c99885d889c2cdac5fa3418a18881b005a656" => :yosemite
+    sha256 "c8ec3c3361ae23b58b6305aee76088ff2e79a4408bc711e9bddaa43c411f8e27" => :mavericks
   end
 
   keg_only :provided_by_osx

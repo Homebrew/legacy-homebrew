@@ -1,22 +1,17 @@
 class JenkinsJobBuilder < Formula
   desc "Configure Jenkins jobs with YAML files stored in Git"
   homepage "http://ci.openstack.org/jjb.html"
-  url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.3.0.tar.gz"
-  sha256 "dd74dc9673c1f18e41ccd83d6d78b21409375bc84981881bab62fd0f8dbb3b84"
+  url "https://pypi.python.org/packages/source/j/jenkins-job-builder/jenkins-job-builder-1.4.0.tar.gz"
+  sha256 "0b3bfdb53a2771d510142f72a8a2d60eac03fcfce04ccff2e6d079df06bef183"
 
   bottle do
-    cellar :any
-    sha256 "9e9619dbd6123e278cb939649ec874b7b6784c6c2a6e921367e2bb0d140c24cb" => :yosemite
-    sha256 "0ebaeea8fe2d464b9f26fe7b6064e62a2d5e81d39e22a1090c4a317ff6fb5477" => :mavericks
-    sha256 "e6a4404578fb17990d288758013e50e64e31306c74091eb7f79a3d1a4cd2b893" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "7e0499eac469059136549b7023d138d905251f3c9ea7aa2b6433b20a4c8428b7" => :el_capitan
+    sha256 "d539a2a47a6fff54dfe6ebd5bb71a3baa98565440e6193478267b2e9073ec2a3" => :yosemite
+    sha256 "fb4e9595407e97956ec5630477464a7a3909e1c5f161164b3ecd762642bf1c2d" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
-
-  resource "argparse" do
-    url "https://pypi.python.org/packages/source/a/argparse/argparse-1.3.0.tar.gz"
-    sha256 "b3a79a23d37b5a02faa550b92cbbbebeb4aa1d77e649c3eb39c19abf5262da04"
-  end
 
   resource "pyyaml" do
     url "https://pypi.python.org/packages/source/P/PyYAML/PyYAML-3.11.tar.gz"
@@ -29,18 +24,18 @@ class JenkinsJobBuilder < Formula
   end
 
   resource "python-jenkins" do
-    url "https://pypi.python.org/packages/source/p/python-jenkins/python-jenkins-0.4.8.tar.gz"
-    sha256 "ec33a1b6d1b74350d84ccff05cf41d4fb2677fc63bac8a471db5038c67fcdd93"
+    url "https://pypi.python.org/packages/source/p/python-jenkins/python-jenkins-0.4.12.tar.gz"
+    sha256 "673868980f4b2312447843a86b61e18777a16a1adf5eb9cdfd56cbbfa3e50ee4"
   end
 
   resource "pbr" do
-    url "https://pypi.python.org/packages/source/p/pbr/pbr-1.6.0.tar.gz"
-    sha256 "4eaee8ff5544703edd1951ed1dc0b283da99a74f740d9f9055eeefcf329de1d1"
+    url "https://pypi.python.org/packages/source/p/pbr/pbr-0.11.1.tar.gz"
+     sha256 "701ab2922c29ca6004e3a4aab968728f33224968de9b51e432be2ee3340c2309"
   end
 
   resource "six" do
-    url "https://pypi.python.org/packages/source/s/six/six-1.9.0.tar.gz"
-    sha256 "e24052411fc4fbd1f672635537c3fc2330d9481b18c0317695b46259512c91d5"
+    url "https://pypi.python.org/packages/source/s/six/six-1.10.0.tar.gz"
+    sha256 "105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a"
   end
 
   resource "pip" do
@@ -48,9 +43,14 @@ class JenkinsJobBuilder < Formula
     sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
   end
 
+  resource "multi_key_dict" do
+    url "https://pypi.python.org/packages/source/m/multi_key_dict/multi_key_dict-2.0.3.tar.gz"
+    sha256 "deebdec17aa30a1c432cb3f437e81f8621e1c0542a0c0617a74f71e232e9939e"
+  end
+
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
-    %w[argparse pyyaml ordereddict python-jenkins pbr six pip].each do |r|
+    %w[pyyaml ordereddict python-jenkins pbr six pip multi_key_dict].each do |r|
       resource(r).stage do
         system "python", *Language::Python.setup_install_args(libexec/"vendor")
       end

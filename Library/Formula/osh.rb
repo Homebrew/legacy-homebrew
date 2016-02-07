@@ -1,21 +1,21 @@
 class Osh < Formula
   desc "Two ports of /bin/sh from V6 UNIX (circa 1975)"
   homepage "http://v6shell.org"
-  url "http://v6shell.org/src/osh-20150115.tar.gz"
-  sha256 "711151f222a7f3e7cb9500d11ded7bb19a66f94641f352e0ccb316dd9665aa1d"
+  url "http://v6shell.org/src/osh-20160108.tar.gz"
+  sha256 "51980473429cd1f8dad255c30749b8588278caf42b28185e22b9455e8f381bf7"
   head "https://github.com/JNeitzel/v6shell.git"
+
+  bottle do
+    sha256 "abcfe34bbddad2d1dea4da6e8a852a9cd63df92fcdc67de01e77c6b0173922be" => :el_capitan
+    sha256 "9cdf662f481f3d5903dc44bfe1b8085074d3053a4612a59f830e1c4c58fd7409" => :yosemite
+    sha256 "1ca3cd79dc33ec932357ceb64ad5f05c002d7c6d19f6603c98d15415255efacb" => :mavericks
+  end
 
   option "with-examples", "Build with shell examples"
 
   resource "examples" do
     url "http://v6shell.org/v6scripts/v6scripts-20150201.tar.gz"
     sha256 "411184449da48c59c9f341de748b1b6ea2a1c898848bf3bbf2b523e33ef62518"
-  end
-
-  bottle do
-    sha256 "554a72a3c717bf1f29df8d7d15be31aed86d9538b4924bb242545b5c0891739b" => :yosemite
-    sha256 "6f70c00a27888c8c9b12ba28d872942a062aefd85180253d928afb50fa06a506" => :mavericks
-    sha256 "5a7d41cd9a354d647faff4021a7601b756af0255f906354bb3f79a33639e3ffc" => :mountain_lion
   end
 
   def install

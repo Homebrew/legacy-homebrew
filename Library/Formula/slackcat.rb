@@ -3,21 +3,21 @@ require "language/go"
 class Slackcat < Formula
   desc "Command-line utility for posting snippets to Slack"
   homepage "https://github.com/vektorlab/slackcat"
-  url "https://github.com/vektorlab/slackcat/archive/v0.7.tar.gz"
-  sha256 "b51ab794af2a0014b5372944699d7ff9c88af4e1860206abee3a0f9bbc70d147"
+  url "https://github.com/vektorlab/slackcat/archive/v0.9.tar.gz"
+  sha256 "f537373080e184209e7e44288d0b10bcd827dc96b03acb0f3ec6fb94bb6fd851"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "d060276dad87e703b9c43cd31e6cfcdf1ab105ba0f41a8d81bd18e5306777dab" => :el_capitan
-    sha256 "af05bb5d4a831de18d09ba88b342c4a9aca051a1c3fe6836103fca4b6e923537" => :yosemite
-    sha256 "7d5ffabf0caaef172e90a7ed001e5440d23ee445f5d9020e0afaf6b31756b914" => :mavericks
+    sha256 "f3f53517f7bfb732a460517f6cc72e602ea3eac6f3f0602492c7340dd4b15341" => :el_capitan
+    sha256 "cefe6ec588114404f715c964969f47dcd8cdbbcd088958c3019a3cc0631da014" => :yosemite
+    sha256 "1d2451eb61b5bc2d79ed265abf208a56b9423d8c7a4c4676f32ef076ac7b548c" => :mavericks
   end
 
   depends_on "go" => :build
 
   go_resource "github.com/bluele/slack" do
     url "https://github.com/bluele/slack.git",
-      :revision => "97c70c3d5d5d7a30e336180e1a8b4b768a9b6857"
+      :revision => "6d00f93158acefc3a0f605c171d1baa80ba86b73"
   end
 
   go_resource "github.com/codegangsta/cli" do
@@ -54,7 +54,7 @@ class Slackcat < Formula
     ln_sf buildpath, buildpath/"src/github.com/vektorlab/slackcat"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    system "go", "build", "-ldflags", "-s -X main.version=#{version}", "-o", bin/"slackcat", "slackcat.go"
+    system "go", "build", "-ldflags", "-s -X main.version=#{version}", "-o", bin/"slackcat"
   end
 
   test do

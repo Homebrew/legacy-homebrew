@@ -3,13 +3,13 @@ class Ncdc < Formula
   homepage "https://dev.yorhel.nl/ncdc"
   url "https://dev.yorhel.nl/download/ncdc-1.19.1.tar.gz"
   sha256 "a6b23381434a47f7134d9ebdf5658fd06768f9b5de498c43e0fa00d1c7229d47"
+  revision 1
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "7cc72689567f3cee75a51f3b9b5a969252ff2ed87c94bf11fa761bee5519a8d0" => :el_capitan
-    sha256 "fe636cd7cab6c7222bbbe05e499fdf2e0918bf55eeb96d64a070d13c7e5e7bd9" => :yosemite
-    sha256 "903e7a502efff29bb8c5beac6dd249b99306fce915d66c0306fde008fc655b64" => :mavericks
+    sha256 "7005cc775a8d1aeeaab80561459b2ef228496bd563f731b0e320ecdeaaca2345" => :el_capitan
+    sha256 "f4a58fb7b8300463979e6548a6483956b791dd9bd1d9293b9a629e6942563ccd" => :yosemite
+    sha256 "65441ec1a2911ca9d362288a9ba9c21257597ef1c1d8bc4c0f00a2790b0ec2e5" => :mavericks
   end
 
   head do

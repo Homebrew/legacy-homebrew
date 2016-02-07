@@ -3,23 +3,22 @@ class Botan < Formula
   homepage "http://botan.randombit.net/"
 
   stable do
-    url "http://botan.randombit.net/releases/Botan-1.10.10.tgz"
-    sha256 "6b67b14746410461fe4a8ce6a625e7eef789243454fe30eab7329d5984be4163"
+    url "http://botan.randombit.net/releases/Botan-1.10.12.tgz"
+    sha256 "affc3a79919577943f896e64d3e4a4dcc4970c5bf80cc98c7f3a3144745eac27"
     # upstream ticket: https://bugs.randombit.net/show_bug.cgi?id=267
     patch :DATA
   end
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "3d9ac88803bf21b0b05873d7ed3a9bec621f2d3f2a173df627c9f1cf9ea1c34c" => :el_capitan
-    sha256 "7773f8464a8a9f07f3f8f0e7038a0ef9d5b991d96d5664db950f3c3f6f307c3b" => :yosemite
-    sha256 "635c7292d3c14242563d0cb6cd585a5de91fb0b23af8737121d9131778740c0e" => :mavericks
+    sha256 "b7d45a848fead326d2e0a1dfbcacfd3c73bf0ad4b2ab62611cf78912db4053a7" => :el_capitan
+    sha256 "8dad1bfd83f841d095102056e3b4b769041b4abcb7bd126528f75259cd24f5ff" => :yosemite
+    sha256 "521e1f6578e799f5738c28bfd635cba3f210d777d019a240092bbf912ef83699" => :mavericks
   end
 
   devel do
-    url "http://botan.randombit.net/releases/Botan-1.11.26.tgz"
-    sha256 "c94cec8a7a293a813ee30f53aff7ac6670cbc4d42fa38833ae41eaf860fe8511"
+    url "http://botan.randombit.net/releases/Botan-1.11.28.tgz"
+    sha256 "a414c96f45b2707d4750d299ca03ec3fce5ada62ada1ba5cd012a9ace61f5932"
   end
 
   option "with-debug", "Enable debug build of Botan"

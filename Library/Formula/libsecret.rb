@@ -1,14 +1,13 @@
 class Libsecret < Formula
   desc "Library for storing/retrieving passwords and other secrets"
   homepage "https://wiki.gnome.org/Projects/Libsecret"
-  url "https://download.gnome.org/sources/libsecret/0.18/libsecret-0.18.3.tar.xz"
-  sha256 "f2bf1d0c5ab4640664f3e3c7ef6b086c180e50ff415720b5e22f96750dbf84c9"
+  url "https://download.gnome.org/sources/libsecret/0.18/libsecret-0.18.4.tar.xz"
+  sha256 "0f29b51698198e6999c91f4adce3119c8c457f546b133a85baea5ea9010a19ed"
 
   bottle do
-    revision 1
-    sha256 "2d2521a8f0e7140e29fab70a32018e0d6232b1d3ed6df780a07afc11038e4591" => :el_capitan
-    sha256 "b10c996994f24dc95865a9d7d603b9ced6831f5db00458657eb411258a160d30" => :yosemite
-    sha256 "5acf286a422831b5fed6f2aef86497f9ff3f8ea048b5635d0c21ce7523e6e0ac" => :mavericks
+    sha256 "4d726f0a13c77ba0db1be9a8e6a033af5908e0dea0733ac20ec19bbf34d621b2" => :el_capitan
+    sha256 "9888c18e94b2e13588c5ff0d63890e2a9ae2ad3f301e92ca9a430da122d39a1b" => :yosemite
+    sha256 "73af85f9feaf25353d04347b047e9335bcdca4c165a19a001815213e27b68cb3" => :mavericks
   end
 
   depends_on "pkg-config" => :build

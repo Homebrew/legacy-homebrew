@@ -322,6 +322,8 @@ class Keg
       when /^icons\// then :mkpath
       when /^zsh/ then :mkpath
       when /^fish/ then :mkpath
+      # Lua, Lua51, Lua53 all need the same handling.
+      when /^lua\// then :mkpath
       else :link
       end
     end

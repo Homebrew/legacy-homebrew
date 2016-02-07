@@ -13,14 +13,14 @@ class Emacs < Formula
   end
 
   devel do
-    url "http://git.sv.gnu.org/r/emacs.git", :branch => "emacs-25"
-    version "25.0-dev"
+    url "ftp://alpha.gnu.org/gnu/emacs/pretest/emacs-25.0.90.tar.xz"
+    sha256 "325f275b64eee106ad9aaadb42243619822e5e59bee35645f15e015176adb626"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end
 
   head do
-    url "http://git.sv.gnu.org/r/emacs.git"
+    url "https://github.com/emacs-mirror/emacs.git"
     depends_on "autoconf" => :build
     depends_on "automake" => :build
   end

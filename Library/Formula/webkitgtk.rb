@@ -1,13 +1,13 @@
 class Webkitgtk < Formula
   desc "Full-featured Gtk+ port of the WebKit rendering engine"
   homepage "http://webkitgtk.org"
-  url "http://webkitgtk.org/releases/webkitgtk-2.10.4.tar.xz"
-  sha256 "dbf8260da5cac0c74de2d3cce1fe7c519da3cd816a2c769cb6c6d56addd2f055"
+  url "http://webkitgtk.org/releases/webkitgtk-2.10.7.tar.xz"
+  sha256 "990d62c82ed6dede31a6ff0a82d847f16b812842ff3e1093d17113627652864e"
 
   bottle do
-    sha256 "a1d3ad20a44da0a303f957a2259be0311a730e94c2f3d716d2f9c300c173adbe" => :el_capitan
-    sha256 "500f31ae4c8ebbc19d0a85a8bd2573e8102804ec7f7d9e172e3a01ea689a0865" => :yosemite
-    sha256 "0c66a6ad12c4ced2741332a0e6e60510ef2e0a9f739597e9fb2b5117e31454ea" => :mavericks
+    sha256 "687a3e3ab605fbd8246680a6200c77d01c36b8f4721134dd6b517eaca917cc14" => :el_capitan
+    sha256 "2140d701b9e53822d9cae0211ff626327875bbd3bc866cf299bfd37cbac02372" => :yosemite
+    sha256 "e796ff4c40b0dc9224c966d2daefcc6322c0d798d2a087b59f184c2c3b219bb7" => :mavericks
   end
 
   depends_on "cmake" => :build

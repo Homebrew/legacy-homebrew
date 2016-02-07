@@ -3,15 +3,21 @@ class Fontconfig < Formula
   homepage "http://fontconfig.org/"
   url "http://fontconfig.org/release/fontconfig-2.11.1.tar.bz2"
   sha256 "dc62447533bca844463a3c3fd4083b57c90f18a70506e7a9f4936b5a1e516a99"
+  revision 1
 
   # The bottle tooling is too lenient and thinks fontconfig
   # is relocatable, but it has hardcoded paths in the executables.
   bottle do
     cellar :any
-    revision 4
-    sha256 "ebf34b370ba91f92df903e7b080135f3cc6e0492156002ee3fdd899128f60aa8" => :el_capitan
-    sha256 "5b27c11fd4dc7ccc4c37484775efa581f5c6cb3b447ea744a8d14573800ae516" => :yosemite
-    sha256 "bd0b9ce3d85d4767ac326d1ec58eb99825a6218e20d32ca20508f399867be700" => :mavericks
+    sha256 "dc55bbc7fb428939a0a0c54d581752112061a6f60cb4ca4166be8cbf4463c903" => :el_capitan
+    sha256 "16409ed563d66f9b61a2a26affbd9fc2334381e036b56b64b950dba67c9d9719" => :yosemite
+    sha256 "40c1882bd1fd1da8ce4e24ff677604aa1a09dcae9ecbe3e131a1c4f8eb3822dd" => :mavericks
+  end
+
+  def pour_bottle?
+    # c.f. the identical hack in lua
+    # https://github.com/Homebrew/homebrew/issues/47173
+    HOMEBREW_PREFIX.to_s == "/usr/local"
   end
 
   keg_only :provided_pre_mountain_lion

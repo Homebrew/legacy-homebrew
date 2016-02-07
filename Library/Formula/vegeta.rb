@@ -5,12 +5,13 @@ class Vegeta < Formula
   homepage "https://github.com/tsenart/vegeta"
   url "https://github.com/tsenart/vegeta/archive/v6.0.0.tar.gz"
   sha256 "7933a77eaae1e5269f6490842527a646221d91515eb8e863e831df608e7a0d48"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "aa1dad859e7a526987077503af902edb4772da5aecb6f62ae26562a11b5f066c" => :el_capitan
-    sha256 "0ee0bf6596ed1ae7f7b9fac7301ed55419e94b45b67ed471d7ae1e9cec635756" => :yosemite
-    sha256 "ca72b348421fabb4604b85cbd9d4105c126789986d22a479cdba2be9e5323d0e" => :mavericks
+    sha256 "ad80d784b86ca30afa3ac8c0dd899d9166953be009ceb4cf784b07c64bf21701" => :el_capitan
+    sha256 "9dea781e263dd683a17651fa3c18b91fed068510c189a0dbf0820d9eb04b9634" => :yosemite
+    sha256 "b0ab8a3f5fe221bf139e45aa44cbf1d483c2a5b24590a9a3e0b1ca68eb735f4a" => :mavericks
   end
 
   depends_on "go" => :build

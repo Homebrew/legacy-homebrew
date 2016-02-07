@@ -6,9 +6,10 @@ class Dovecot < Formula
   sha256 "7ab7139e59e1f0353bf9c24251f13c893cf1a6ef4bcc47e2d44de437108d0b20"
 
   bottle do
-    sha256 "e21b7c37c57abddc4d85f64669e80ea0c0c09bc7abcb2a78aba04a9f79c490c2" => :el_capitan
-    sha256 "58587837e148f035bce2efbf7aeda42565a3857f478bf7b327740e5a30a88134" => :yosemite
-    sha256 "1cb51fc47506ddf25e4887d88f5aebbec894cdf4f26b3d903a561ec8d57eda1a" => :mavericks
+    revision 1
+    sha256 "092c14278b0312c4e245f3e9c185b98b15ba224da347cd4f82aca7c9ba2d575b" => :el_capitan
+    sha256 "7af1f6cfd6dfa6072123ccac3226f27bef2c96ca4adea520521268537d57529f" => :yosemite
+    sha256 "a5de0175355213f91aac5201d00c5b341aeb6baacfb30c5218cc8b17a767cee0" => :mavericks
   end
 
   option "with-pam", "Build with PAM support"
@@ -20,13 +21,13 @@ class Dovecot < Formula
   depends_on "clucene" => :optional
 
   resource "pigeonhole" do
-    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.9.tar.gz"
-    sha256 "82892f876d26008a076973dfddf1cffaf5a0451825fd44e06287e94b89078649"
+    url "http://pigeonhole.dovecot.org/releases/2.2/dovecot-2.2-pigeonhole-0.4.11.tar.gz"
+    sha256 "5168b4ac4e173b563dd71f4024452da5a578aa8d5d047d98903489ab4d84ad72"
   end
 
   resource "stemmer" do
     url "https://github.com/snowballstem/snowball.git",
-      :revision => "9b58e92c965cd7e3208247ace3cc00d173397f3c"
+      :revision => "3b1f4c2ac4b924bb429f929d9decd3f50662a6e0"
   end
 
   def install

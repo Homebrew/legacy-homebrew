@@ -28,13 +28,13 @@ class Pypy < Formula
   end
 
   resource "setuptools" do
-    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-18.4.tar.gz"
-    sha256 "cdea5098e60b4ad83453d58723a61dc481ca8e2df251fe4ccbea9afa5a7d111f"
+    url "https://pypi.python.org/packages/source/s/setuptools/setuptools-19.4.tar.gz"
+    sha256 "214bf29933f47cf25e6faa569f710731728a07a19cae91ea64f826051f68a8cf"
   end
 
   resource "pip" do
-    url "https://pypi.python.org/packages/source/p/pip/pip-7.1.2.tar.gz"
-    sha256 "ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477"
+    url "https://pypi.python.org/packages/source/p/pip/pip-8.0.2.tar.gz"
+    sha256 "46f4bd0d8dfd51125a554568d646fe4200a3c2c6c36b9f2d06d2212148439521"
   end
 
   # https://bugs.launchpad.net/ubuntu/+source/gcc-4.2/+bug/187391
@@ -76,10 +76,6 @@ class Pypy < Formula
     # scripts will find it.
     bin.install_symlink libexec/"bin/pypy"
     lib.install_symlink libexec/"lib/libpypy-c.dylib"
-
-    %w[setuptools pip].each do |r|
-      (libexec/r).install resource(r)
-    end
   end
 
   def post_install
@@ -91,6 +87,12 @@ class Pypy < Formula
     prefix_site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
+    if !(libexec/"site-packages").symlink?
+      # fix the case where libexec/site-packages/site-packages was installed
+      rm_rf libexec/"site-packages/site-packages"
+      mv Dir[libexec/"site-packages/*"], prefix_site_packages
+      rm_rf libexec/"site-packages"
+    end
     libexec.install_symlink prefix_site_packages
 
     # Tell distutils-based installers where to put scripts
@@ -101,7 +103,7 @@ class Pypy < Formula
     EOF
 
     %w[setuptools pip].each do |pkg|
-      (libexec/pkg).cd do
+      resource(pkg).stage do
         system bin/"pypy", "-s", "setup.py", "--no-user-cfg", "install",
                "--force", "--verbose"
       end

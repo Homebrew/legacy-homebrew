@@ -1,16 +1,15 @@
 class Libtins < Formula
   desc "C++ network packet sniffing and crafting library"
   homepage "https://libtins.github.io/"
-  url "https://github.com/mfontanini/libtins/archive/v3.1.tar.gz"
-  sha256 "20662ed75699358078aacaf36f38cbd25a9b2bd9ae2c77b7193733c917aab651"
-  revision 1
+  url "https://github.com/mfontanini/libtins/archive/v3.3.tar.gz"
+  sha256 "7e498cb1acb12779b2e6e3404c9e3792b068fbfc905775750c521d6845815a15"
   head "https://github.com/mfontanini/libtins.git"
 
   bottle do
     cellar :any
-    sha256 "b3ac13ab31ddea15e2301d06ffd574fa60c50dadad0280a16f2205da60996de0" => :yosemite
-    sha256 "1bb3d6c1054cb1220dc1391cb24ae5f6945a43ecfe23f9a83591070ccdff3d0a" => :mavericks
-    sha256 "47c40947daec2e61f06e18d763803377cbed148fb4b32a93ee3a052e6b0d62ef" => :mountain_lion
+    sha256 "3171b46d86b4eabf9b9d4e18a5338dccc0439947a21e655d8acc8f318d193c09" => :el_capitan
+    sha256 "6474be2414fe6ae78939b5b21ac7e547f67b7717c58085e1cdd5945c369b872f" => :yosemite
+    sha256 "af9051d11be6d28d95270a80e718a4651d39e32f51e7ba633e0917b410fc1e60" => :mavericks
   end
 
   option :cxx11

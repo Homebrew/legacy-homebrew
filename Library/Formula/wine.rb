@@ -5,6 +5,7 @@
 class Wine < Formula
   desc "Wine Is Not an Emulator"
   homepage "https://www.winehq.org/"
+  head "git://source.winehq.org/git/wine.git"
 
   stable do
     url "https://dl.winehq.org/wine/source/1.8/wine-1.8.tar.bz2"
@@ -13,19 +14,16 @@ class Wine < Formula
   end
 
   bottle do
-    sha256 "b5b42f4d790649416562ef0b1b36f96a976c20879d0a0c9e7899f367112dcf47" => :el_capitan
-    sha256 "2567f21a96a1dded04659c2f4d583eb254d8eed2ed2df52ecd44620a987b4c73" => :yosemite
-    sha256 "2a48bfc22f9a90db8505ba5d6dcd572c8841f679e284a6b0a26b1ce9c52a0dab" => :mavericks
+    revision 1
+    sha256 "53e26919518160d16b0a8df3772a67afc0ca67cfc925add2bc64f91c4a6cdac7" => :el_capitan
+    sha256 "19bf33a8d93a20d55ea7906eb523f232beeb52dda7212bcc16c07db95c6eae98" => :yosemite
+    sha256 "7a674fb6ce534c1ace457eec2040e9430ca4e831aaa0f18824972aa94a1355cf" => :mavericks
   end
 
   devel do
-    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.1.tar.bz2"
-    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.1.tar.bz2"
-    sha256 "0b3265fb9ae82ddf1b3629bac61bd2340b7b4cfa7210f696c679e8e4a5b80bb6"
-  end
-
-  head do
-    url "git://source.winehq.org/git/wine.git"
+    url "https://dl.winehq.org/wine/source/1.9/wine-1.9.3.tar.bz2"
+    mirror "https://downloads.sourceforge.net/project/wine/Source/wine-1.9.3.tar.bz2"
+    sha256 "475f54855534c8ec45bb4be70d84fb98e7fe8467fb1a35f66b3c0e92f4ea090d"
   end
 
   # note that all wine dependencies should declare a --universal option in their formula,
@@ -45,9 +43,9 @@ class Wine < Formula
   depends_on "libicns"
   depends_on "libtiff"
   depends_on "sane-backends"
+  depends_on "gnutls"
   depends_on "libgsm" => :optional
   depends_on "samba" => :optional
-  depends_on "gnutls"
 
   # Patch to fix screen-flickering issues. Still relevant on 1.8.
   # https://bugs.winehq.org/show_bug.cgi?id=34166
@@ -147,8 +145,8 @@ class Wine < Formula
     end
 
     system "make", "install"
-    (share/"wine/gecko").install resource("gecko")
-    (share/"wine/mono").install resource("mono")
+    (pkgshare/"gecko").install resource("gecko")
+    (pkgshare/"mono").install resource("mono")
 
     # Use a wrapper script, so rename wine to wine.bin
     # and name our startup script wine

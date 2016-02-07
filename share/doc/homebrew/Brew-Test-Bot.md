@@ -17,21 +17,21 @@ For example, a job which has been queued but not yet started will have a
 section in the pull-request that looks like this:
 
 
-![Triggered Pull Request](brew-test-bot-triggered-pr.png)
+![Triggered Pull Request](images/brew-test-bot-triggered-pr.png)
 
 ---
 
 A failed build looks like this:
 
 
-![Failed Pull Request](brew-test-bot-failed-pr.png)
+![Failed Pull Request](images/brew-test-bot-failed-pr.png)
 
 ---
 
 A passed build looks like this:
 
 
-![Passed Pull Request](brew-test-bot-passed-pr.png)
+![Passed Pull Request](images/brew-test-bot-passed-pr.png)
 
 ---
 
@@ -43,14 +43,14 @@ When you click this you'll see the results.
 A passed build looks like this:
 
 
-![Passed Jenkins Build](brew-test-bot-passed-jenkins.png)
+![Passed Jenkins Build](images/brew-test-bot-passed-jenkins.png)
 
 ---
 
 A failed build looks like this:
 
 
-![Failed Jenkins Build](brew-test-bot-failed-jenkins.png)
+![Failed Jenkins Build](images/brew-test-bot-failed-jenkins.png)
 
 ---
 
@@ -58,6 +58,6 @@ You can click the test results link
 (e.g. `brew-test-bot.Homebrew/homebrew/pull/22183-3c17deb.install embree`) to
 view the failed test output:
 
-![Failed Test](brew-test-bot-failed-test.png)
+![Failed Test](images/brew-test-bot-failed-test.png)
 
 ---

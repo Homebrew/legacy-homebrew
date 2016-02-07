@@ -1,16 +1,15 @@
 class BoostPython < Formula
   desc "C++ library for C++/Python interoperability"
   homepage "http://www.boost.org"
-  url "https://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2"
-  sha256 "727a932322d94287b62abb1bd2d41723eec4356a7728909e38adb65ca25241ca"
+  url "https://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.bz2"
+  sha256 "686affff989ac2488f79a97b9479efb9f2abae035b5ed4d8226de6857933fd3b"
   head "https://github.com/boostorg/boost.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "4b16817f7f19f1b4ee2ffc4e0fc4593a5d404ddad2703f3be688ab6498f24f3e" => :el_capitan
-    sha256 "df627b338b9b42510eb5670d6e65856164d11714cfd436a19fd36c7ba0775259" => :yosemite
-    sha256 "2f5a292bddc892d6660179dab8b67261b3db93311f2a4b230256da5010f5c5d3" => :mavericks
+    sha256 "c3d8a80d9bb7783ef7e8b3018ed5feaaa8d1f32a306ba4b75bd3a45629f57872" => :el_capitan
+    sha256 "37e1c31ebae10162368b496fbe377b3b36fa007d1dbf14325686df717c6ce339" => :yosemite
+    sha256 "aaba8bc94797a6f4d79ad7b07c8abc23fd915aa6699eb7a6948aa189cc8e6d78" => :mavericks
   end
 
   option :universal
@@ -32,14 +31,6 @@ class BoostPython < Formula
 
   def install
     ENV.universal_binary if build.universal?
-
-    if stable?
-      # fix make_setter regression
-      # https://github.com/boostorg/python/pull/40
-      inreplace "boost/python/data_members.hpp",
-                "# if BOOST_WORKAROUND(__EDG_VERSION__, <= 238)",
-                "# if !BOOST_WORKAROUND(__EDG_VERSION__, <= 238)"
-    end
 
     # "layout" should be synchronized with boost
     args = ["--prefix=#{prefix}",

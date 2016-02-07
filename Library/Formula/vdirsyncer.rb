@@ -1,24 +1,24 @@
 class Vdirsyncer < Formula
   desc "Synchronize calendars and contacts"
   homepage "https://github.com/untitaker/vdirsyncer"
-  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.7.5.tar.gz"
-  sha256 "3f51c1fabac7f231327deb098998185cbd77564dc1bfc29f4bc8d89226c96a37"
+  url "https://pypi.python.org/packages/source/v/vdirsyncer/vdirsyncer-0.8.1.tar.gz"
+  sha256 "e8602a5df862124351dec92515019b2875616cc90c15499b681d8c6e38a66ea9"
   head "https://github.com/untitaker/vdirsyncer.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "e223ccf3faa9163a4667f332e9820644e20186faa80c601332a0511e2ed3452b" => :el_capitan
-    sha256 "e8cad2147490a517c46f3d7bb9ef6733769a41cf475bc57ee78973a09d6bd89a" => :yosemite
-    sha256 "d0ad5bd159acdfeaf28aec0abda9f34d35750c4377624a365180c24798a8059c" => :mavericks
+    sha256 "3e3c80133837612fa01f67ad2aa9e31a223cdce1b9bda5a86e38eb3ff990eb91" => :el_capitan
+    sha256 "d122eba87dd4803ea2bede1e14fd6a2e8b0948304e7ab0fbbaa3e1fa13b9e6d3" => :yosemite
+    sha256 "f86595a99ca075a69a1acaccab1adfb0475bcfa1be1b6a53428b6505d4b154f3" => :mavericks
   end
 
-  option "without-keyring", "Build without python-keyring support"
+  option "with-remotestorage", "Build with support for remote-storage"
 
   depends_on :python3
 
-  resource "keyring" do
-    url "https://pypi.python.org/packages/source/k/keyring/keyring-5.4.tar.gz"
-    sha256 "45891cd0af4c4af70fbed7ec6e3964d0261c14188de9ab31030c9d02272e22d2"
+  resource "requests_oauthlib" do
+    url "https://pypi.python.org/packages/source/r/requests-oauthlib/requests-oauthlib-0.6.0.tar.gz"
+    sha256 "2a0ca56031940e917983aa1584b9d1311769ff9fc9bbf01e06c7f75ade7c7724"
   end
 
   resource "click" do
@@ -60,7 +60,7 @@ class Vdirsyncer < Formula
     version = Language::Python.major_minor_version "python3"
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{version}/site-packages"
     rs = %w[click click_threading click_log requests lxml requests-toolbelt atomicwrites]
-    rs << "keyring" if build.with? "keyring"
+    rs << "requests_oauthlib" if build.with? "remotestorage"
     rs.each do |r|
       resource(r).stage do
         system "python3", *Language::Python.setup_install_args(libexec/"vendor")

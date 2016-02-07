@@ -4,16 +4,16 @@ class Vault < Formula
   desc "Secures, stores, and tightly controls access to secrets"
   homepage "https://vaultproject.io/"
   url "https://github.com/hashicorp/vault.git",
-      :tag => "v0.4.0",
-      :revision => "b3da917b2305b23693cf2594f9d29e52acc514cf"
+      :tag => "v0.4.1",
+      :revision => "1a807d58cb4e87808a27d53bede3fa252b876871"
 
   head "https://github.com/hashicorp/vault.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "76763b87046c6f87dbbaa12de54be683e7ba0d455007bb5566f6132bc6311153" => :el_capitan
-    sha256 "387468527a49e69c825c67779f64c206ee756f8b1e42fdd08d1a6c5c2a0a5734" => :yosemite
-    sha256 "6c57a4dadb000510cdad4046c85a1572a94e130f21d80b478842621d3f55d3f1" => :mavericks
+    sha256 "fd61a56f03a3a8870a1f86b4370ca820d8659a6811a9e18e8ceb23347d533021" => :el_capitan
+    sha256 "8f04a8464775d0ba0bbce8b3a2697d58ee2bb004f220507de0dbe64d763ca5e7" => :yosemite
+    sha256 "f4e78dfa2fdc52870846cfe690aec36fa6af579b8758b30e40de6f87ac8bb95b" => :mavericks
   end
 
   depends_on "go" => :build
@@ -27,12 +27,12 @@ class Vault < Formula
 
   go_resource "golang.org/x/tools" do
     url "https://go.googlesource.com/tools.git",
-        :revision => "997b3545fd86c3a2d8e5fe6366174d7786e71278"
+        :revision => "f3a63969dd29f8cfa913fdaea22f30c1ed537cb3"
   end
 
   go_resource "github.com/mitchellh/gox" do
     url "https://github.com/mitchellh/gox.git",
-        :revision => "a5a468f84d74eb51ece602cb113edeb37167912f"
+        :revision => "39862d88e853ecc97f45e91c1cdcb1b312c51eaa"
   end
 
   # gox dependency

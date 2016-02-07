@@ -1,15 +1,14 @@
 class Privoxy < Formula
   desc "Advanced filtering web proxy"
   homepage "http://www.privoxy.org"
-  url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.23%20%28stable%29/privoxy-3.0.23-stable-src.tar.gz"
-  sha256 "80b1a172d0518a9f95cde83d18dc62b9c7f117b9ada77bdcd3d310107f28f964"
+  url "https://downloads.sourceforge.net/project/ijbswa/Sources/3.0.24%20%28stable%29/privoxy-3.0.24-stable-src.tar.gz"
+  sha256 "a381f6dc78f08de0d4a2342d47a5949a6608073ada34b933137184f3ca9fb012"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "e4e52b0fb31ad33bfdc9a1e158a482272fb4c02e2c0062a28cf19fa7b0df7c8d" => :el_capitan
-    sha256 "247b9897907a8cd13bc0af980a7a4251695632b359ec61ec95bf6f153bd4eab3" => :yosemite
-    sha256 "5722d1d6f520f2b86f98010d1c70c9cd5da15ecd5700d0482570d0a1c15143b8" => :mavericks
+    sha256 "edb1d08efa2d25658a2d4d1d2643233529c6228fe6289536e7c48f5829c6e9ad" => :el_capitan
+    sha256 "0764f6e68913ea279c29a84dae2292eadcf542eacda5c21e26addd5497524cd1" => :yosemite
+    sha256 "fd48bf5bee38bbca0124d7e2dc39e52f97f99536f1f04d4fcff1ba3716ebdfa2" => :mavericks
   end
 
   depends_on "autoconf" => :build

@@ -3,24 +3,21 @@ require "language/go"
 class DockerMachine < Formula
   desc "Create Docker hosts locally and on cloud providers"
   homepage "https://docs.docker.com/machine"
-  url "https://github.com/docker/machine/archive/v0.5.5.tar.gz"
-  sha256 "106a804491120bfc9da8a2229b4ce33b4d99210ada0b4ad4f6e1590f81eef8d8"
+  url "https://github.com/docker/machine.git",
+    :tag => "v0.6.0",
+    :revision => "e27fb87286cb8e7454183ce46a6e1e84b31965e9"
+
   head "https://github.com/docker/machine.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "07415b59f32d1784860ea71840ec2c3f1a6bb5280f9a08bb5cd54bebd87b8a35" => :el_capitan
-    sha256 "f0d003873e2c231bef1d5342b3d70bac8e356a0cfbe3055372ff221b63157a14" => :yosemite
-    sha256 "2ab934dad9b01dd80f6ee6a5ea2c22b82461815b29b69425e04486483d457789" => :mavericks
+    sha256 "d8f5419d5b9fdf3632e546190755d63df852fa89125b8bb68d932c3c30650286" => :el_capitan
+    sha256 "b5b2a08a5295290799e7d352cb177659a64823ccea5ddc3246c04ece2c16e8d1" => :yosemite
+    sha256 "ef3a096090e2abf7cae56f52b9d4f5aed14cc79ae534d4fd21ff5b11be159cd5" => :mavericks
   end
 
   depends_on "go" => :build
   depends_on "automake" => :build
-
-  go_resource "github.com/codegangsta/cli" do
-    url "https://github.com/codegangsta/cli.git",
-      :revision => "bca61c476e3c752594983e4c9bcd5f62fb09f157"
-  end
 
   def install
     ENV["GOBIN"] = bin
@@ -40,6 +37,6 @@ class DockerMachine < Formula
   end
 
   test do
-    system bin/"docker-machine", "ls"
+    assert_match /#{version}/, shell_output(bin/"docker-machine --version")
   end
 end

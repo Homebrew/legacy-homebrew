@@ -1,11 +1,12 @@
 class Ctags < Formula
   desc "Reimplementation of ctags(1)"
   homepage "http://ctags.sourceforge.net/"
-  url "https://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz"
-  sha256 "0e44b45dcabe969e0bbbb11e30c246f81abe5d32012db37395eb57d66e9e99c7"
   revision 1
 
   stable do
+    url "https://downloads.sourceforge.net/ctags/ctags-5.8.tar.gz"
+    sha256 "0e44b45dcabe969e0bbbb11e30c246f81abe5d32012db37395eb57d66e9e99c7"
+
     # also fixes http://sourceforge.net/tracker/?func=detail&aid=3247256&group_id=6556&atid=106556
     # merged upstream but not yet in stable
     patch :p2 do

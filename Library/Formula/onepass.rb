@@ -8,10 +8,10 @@ class Onepass < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "674b5076bd4b061fe31ca33c3d41d173372e44deaf5f1df5ed208df3a27d3d18" => :el_capitan
-    sha256 "ca6e34b4139a5301e563f2abef77c3fce2094df6ad63f5088222be5465aef20b" => :yosemite
-    sha256 "7d7b84ff5bfb361bab536f561883c8105a46c54127d028e57b352e2359f04320" => :mavericks
+    revision 2
+    sha256 "8410258ade7f471629235368ba63f11d124335a8af394a6b16493622b3aac825" => :el_capitan
+    sha256 "2172e0aee7c33b6b2f5b2ff8fd7e92064d5bfc3fe03dfcbce6aac9881f08e263" => :yosemite
+    sha256 "beb5a20a0642cff5f9e43b6ce1ce9a9c45589ba748150f333e81a0c70090b7f2" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -19,8 +19,8 @@ class Onepass < Formula
   depends_on "openssl" # For M2Crypto
 
   resource "m2crypto" do
-    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.22.6rc4.tar.gz"
-    sha256 "466c6058bcdf504e6e83c731bbb69490cf73a314459fb4c183e5aee29d066f81"
+    url "https://pypi.python.org/packages/source/M/M2Crypto/M2Crypto-0.23.0.tar.gz"
+    sha256 "1ac3b6eafa5ff7e2a0796675316d7569b28aada45a7ab74042ad089d15a9567f"
   end
 
   resource "fuzzywuzzy" do

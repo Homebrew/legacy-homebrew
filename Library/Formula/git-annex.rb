@@ -5,14 +5,16 @@ class GitAnnex < Formula
 
   desc "Manage files with git without checking in file contents"
   homepage "https://git-annex.branchable.com/"
-  url "https://hackage.haskell.org/package/git-annex-5.20151218/git-annex-5.20151218.tar.gz"
-  sha256 "d8aed73cbc1d1eefcbe6de7790c83f1d6458b4ac1e910d9a34b22782d16142ca"
+  url "https://hackage.haskell.org/package/git-annex-6.20160126/git-annex-6.20160126.tar.gz"
+  sha256 "dc59f670a3d0bdb90db8fc6cadba8003708219bb0dc3d56867a9246d825c0d11"
+
   head "git://git-annex.branchable.com/"
 
   bottle do
-    sha256 "58ef006e4281a2568bcecd8fe94f1089b5e24e3aec0c4eac9571c2f229ff33b6" => :el_capitan
-    sha256 "86890f5859ff91d808f5525318684216d86520664981df41be87b3e90fa2fa6d" => :yosemite
-    sha256 "ad9bb74370d9aba151d60549b27b81c4509de573e5c483a1581c6e8bfe1f08eb" => :mavericks
+    revision 1
+    sha256 "cae47a07807195ea29aad622784872207c1b8af3868ac25bb1fcd63835c620ef" => :el_capitan
+    sha256 "d68da09d6f22ec0aef7912ffa32f3f57c6ab46687192559c41d3a5cd5f81bd71" => :yosemite
+    sha256 "03597faf2810cf06d5b2f59c2f72d68c62087ca0ffd500c5c723d233883bc13b" => :mavericks
   end
 
   option "with-git-union-merge", "Build the git-union-merge tool"
@@ -40,6 +42,24 @@ class GitAnnex < Formula
   test do
     # make sure git can find git-annex
     ENV.prepend_path "PATH", bin
-    system "git", "annex", "test"
+    # We don't want this here or it gets "caught" by git-annex.
+    rm_r "Library/Python/2.7/lib/python/site-packages/homebrew.pth"
+
+    system "git", "init"
+    system "git", "annex", "init"
+    (testpath/"Hello.txt").write "Hello!"
+    assert !File.symlink?("Hello.txt")
+    assert_match "add Hello.txt ok", shell_output("git annex add .")
+    system "git", "commit", "-a", "-m", "Initial Commit"
+    assert File.symlink?("Hello.txt")
+
+    # The steps below are necessary to ensure the directory cleanly deletes.
+    # git-annex guards files in a way that isn't entirely friendly of automatically
+    # wiping temporary directories in the way `brew test` does at end of execution.
+    system "git", "rm", "Hello.txt", "-f"
+    system "git", "commit", "-a", "-m", "Farewell!"
+    system "git", "annex", "unused"
+    assert_match "dropunused 1 ok", shell_output("git annex dropunused 1 --force")
+    system "git", "annex", "uninit"
   end
 end

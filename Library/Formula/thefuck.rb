@@ -1,16 +1,16 @@
 class Thefuck < Formula
   desc "Programatically correct mistyped console commands"
   homepage "https://github.com/nvbn/thefuck"
-  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.2.tar.gz"
-  sha256 "14fc211beff811b4bbc481e0653b5c2a65be21ced116c1faeda57414d30777ac"
+  url "https://pypi.python.org/packages/source/t/thefuck/thefuck-3.3.tar.gz"
+  sha256 "f2e720d3147b259de2bb763f0854fbd2d12da70669bb3958f0dffffd34f95e81"
 
   head "https://github.com/nvbn/thefuck.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "f822502249ce6cfa2fa384188e39a3fee8d53fe39ee5364305dc6675052ae525" => :el_capitan
-    sha256 "0a606a770b8499f4c21f50383da3d9f9d509d7d0ac6647e995a945c60bf5562c" => :yosemite
-    sha256 "27502a738902f3c56fe69088d477c35a1fcf3b584b022e0243d21c67ad6b25d1" => :mavericks
+    sha256 "9c21b012d0cca0b469fef8d45f487c5d30643095fe56beae8cdb031a5ad323f8" => :el_capitan
+    sha256 "0af3c42bc8cbbdb9810e013f611f4c2b1a2877d07deef3425631c8c69b79d672" => :yosemite
+    sha256 "4d5cea822835b513032699396bd39b174824c709ce353532e78302c731826c02" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard

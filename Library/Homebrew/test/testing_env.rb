@@ -93,6 +93,10 @@ module Homebrew
       Dir.mktmpdir(prefix_suffix, HOMEBREW_TEMP, &block)
     end
 
+    def needs_compat
+      skip "Requires compat/ code" if ENV["HOMEBREW_NO_COMPAT"]
+    end
+
     def assert_nothing_raised
       yield
     end

@@ -1,17 +1,16 @@
 class Puddletag < Formula
   desc "Powerful, simple, audio tag editor."
   homepage "http://puddletag.sf.net"
-  url "https://github.com/keithgg/puddletag/archive/v1.0.5.tar.gz"
-  sha256 "f94ebcc4ed31389574c187197b99256bec1f96e1e7d4dd61730e88f79deeaba2"
-  revision 1
+  url "https://github.com/keithgg/puddletag/archive/1.1.1.tar.gz"
+  sha256 "550680abf9c2cf082861dfb3b61fd308f87f9ed304065582cddadcc8bdd947cc"
 
   head "https://github.com/keithgg/puddletag.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3ae286958269cf2bdc8e529226489910a05a64f1f8cfe6bc3d4884cd53d9b65e" => :el_capitan
-    sha256 "6f54a307e0b0bf717b622c6f33cb4b7b82fa7f3ce9b8e90f1065500c360783cd" => :yosemite
-    sha256 "402eb5c665befc57cf7eb2566d53ce99e0b16dcae0321c6b70bec3aad3032667" => :mavericks
+    sha256 "c2d91ff12bef60fd87a560132c962164939dbb08aa518efaaf8f5b974c869ef0" => :el_capitan
+    sha256 "ca24eaa710ec6422ae3998b7496be25cf36f8c750686cc0ecbb2d3787ec6fa4f" => :yosemite
+    sha256 "4501e1d867b8f889da17b8f6e4ad8155c436b7ee54bf9510c16a5a3f78866765" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -33,12 +32,6 @@ class Puddletag < Formula
     sha256 "766eff273f2cbb007a3ea8aa69429ee9b1553aa96fe282c6ace3769b9ac47b08"
   end
 
-  # Upstream commit to fix an issue with PyQT 4.11.4. Remove on next version.
-  patch do
-    url "https://github.com/keithgg/puddletag/commit/489acd2ee62eb5fbff95f8220dc8958c14871931.patch"
-    sha256 "fce0cfce4d4477cde4827a0a4d3ef74fbabf630ada2d0cf035cf155a17c37a68"
-  end
-
   def install
     ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python2.7/site-packages"
     %w[pyparsing mutagen configobj].each do |r|
@@ -48,6 +41,7 @@ class Puddletag < Formula
     end
 
     cp_r buildpath/"source/.", buildpath
+
     ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python2.7/site-packages"
     system "python", *Language::Python.setup_install_args(libexec)
 
@@ -55,6 +49,10 @@ class Puddletag < Formula
 
     bin.install Dir[libexec/"bin/*"]
     bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+
+    system "sh", "create_macos_app_bundle.sh", "--name", "Puddletag",
+                 "--icon", "puddletag.png", "--script", "#{bin}/puddletag"
+    prefix.install "Puddletag.app"
   end
 
   test do

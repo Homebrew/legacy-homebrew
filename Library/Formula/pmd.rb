@@ -1,6 +1,6 @@
 class Pmd < Formula
   desc "Source code analyzer for Java, JavaScript, and more"
-  homepage "http://pmd.sourceforge.net/"
+  homepage "https://pmd.github.io"
   url "https://github.com/pmd/pmd/releases/download/pmd_releases/5.3.3/pmd-src-5.3.3.zip"
   sha256 "38004ea3274d2f71701f438606a4c4095b7a86110e8d7f2a8940170c9bd5ddbb"
 
