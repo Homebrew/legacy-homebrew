@@ -47,6 +47,7 @@ class GstPluginsGood < Formula
   depends_on "taglib" => :optional
   depends_on "libpng" => :optional
   depends_on "libvpx" => :optional
+  depends_on "pulseaudio" => :optional
 
   depends_on "libogg" if build.with? "flac"
 
