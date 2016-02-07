@@ -158,6 +158,7 @@ class IntegrationCommandTests < Homebrew::TestCase
     cmd("uninstall", "--force", "testball")
     cmd("cleanup", "--force", "--prune=all")
     formula_file.unlink unless formula_file.nil?
+    FileUtils.rm_f Dir["testball-0.1*.bottle.tar.gz"]
   end
 
   def test_uninstall
