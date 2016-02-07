@@ -435,7 +435,7 @@ class IntegrationCommandTests < Homebrew::TestCase
 
     source_dir = HOMEBREW_CELLAR/"testball/0.1/TestBall.app"
     source_dir.mkpath
-    assert_match "Linking #{source_dir} to",
+    assert_match "Linking: #{source_dir}",
       cmd("linkapps", "--local", {"HOME" => home})
   ensure
     formula_file.unlink
@@ -460,7 +460,7 @@ class IntegrationCommandTests < Homebrew::TestCase
 
     FileUtils.ln_s source_app, "#{apps_dir}/TestBall.app"
 
-    assert_match "Unlinking #{apps_dir}/TestBall.app",
+    assert_match "Unlinking: #{apps_dir}/TestBall.app",
       cmd("unlinkapps", "--local", {"HOME" => home})
   ensure
     formula_file.unlink
