@@ -1,8 +1,8 @@
 class MmCommon < Formula
   desc "C++ interfaces for GTK+ and GNOME"
   homepage "http://www.gtkmm.org"
-  url "https://download.gnome.org/sources/mm-common/0.9/mm-common-0.9.9.tar.xz"
-  sha256 "9d00bc77e77794e0bd2ae68132c4b4136aa115d255e34b310f7449b29db50b7a"
+  url "https://download.gnome.org/sources/mm-common/0.9/mm-common-0.9.10.tar.xz"
+  sha256 "16c0e2bc196b67fbc145edaecb5dbe5818386504fe5703de27002d77140fa217"
 
   bottle do
     cellar :any_skip_relocation
