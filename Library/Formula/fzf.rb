@@ -9,9 +9,9 @@ class Fzf < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "3f4acd3e9b268100deda79bf286ffef3839314927272f1ea73fdff30d556ff8a" => :el_capitan
-    sha256 "46f2587c1dc90fb4445a3428faa61e5d525adf04dd6db8958dfd73364edeeafb" => :yosemite
-    sha256 "c9b84eb38e60327195dbb17d54fa28a5def0c349d8421ba7fe493049744900a3" => :mavericks
+    sha256 "55875d799fc454c3df44667b3c2c96eefc6edb481436f19247c4602393fb513f" => :el_capitan
+    sha256 "f0ccd4bec08f0a3d3f3003d1e018c33a63ff0e1e3917c8bc1adc93f414c0674b" => :yosemite
+    sha256 "ca590adfde8e15208ce96b23a881171773bd5eec63460c2a975ba9b1638f4fe1" => :mavericks
   end
 
   depends_on "go" => :build
