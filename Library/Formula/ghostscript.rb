@@ -90,7 +90,7 @@ class Ghostscript < Formula
     system "make", "install"
     system "make", "install-so"
 
-    (share/"ghostscript/fonts").install resource("fonts")
+    (pkgshare/"fonts").install resource("fonts")
     (man/"de").rmtree
   end
 
