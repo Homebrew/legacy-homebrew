@@ -26,7 +26,12 @@ then
   export LC_ALL="en_US.UTF-8"
 fi
 
-BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
+# Don't expand path if it's already absolute, so as not to accidentally expand symlinks
+if [[ -n "${0%%/*}" ]]; then
+    BREW_FILE_DIRECTORY="$(chdir "${0%/*}" && pwd -P)"
+else
+    BREW_FILE_DIRECTORY=${0%/*}
+fi
 HOMEBREW_BREW_FILE="$BREW_FILE_DIRECTORY/${0##*/}"
 
 if [[ -L "$HOMEBREW_BREW_FILE" ]]
@@ -37,9 +42,9 @@ then
                          chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)"
 fi
 
-HOMEBREW_PREFIX="$(chdir "$(dirname "$(dirname "$HOMEBREW_BREW_FILE")")" && pwd -P)"
-HOMEBREW_REPOSITORY="$(chdir "$BREW_FILE_DIRECTORY"/../ && pwd -P)"
-HOMEBREW_LIBRARY="$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)"
+HOMEBREW_PREFIX=${HOMEBREW_BREW_FILE%/*/*}
+HOMEBREW_REPOSITORY=${BREW_FILE_DIRECTORY%/*}
+HOMEBREW_LIBRARY=${BREW_FILE_DIRECTORY%/*}/Library
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
