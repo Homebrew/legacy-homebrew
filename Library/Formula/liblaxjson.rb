@@ -14,11 +14,15 @@ class Liblaxjson < Formula
   end
 
   test do
-    system "mkdir", "build"
-    cd "build" do
-      system "echo", "`pwd`"
-      system "cmake", *testpath, *std_cmake_args
-      system "make", "test"
-    end
+    (testpath/"test.c").write <<-EOS.undent
+      #include <laxjson.h>
+      static struct LaxJsonContext *json;
+      int main() {
+        json = lax_json_create();
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-llaxjson", "-o", "test"
+    system "./test"
   end
 end
