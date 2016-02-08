@@ -4,7 +4,7 @@ class Blackbox < Formula
   url "https://github.com/StackExchange/blackbox/archive/v1.20160122.tar.gz"
   sha256 "ac5de1d74fdbe88604b34949f3949e53cb72e55e148e46b8c2be98806c888a10"
 
-  depends_on "gpg"
+  depends_on :gpg
 
   def install
     bin.install "bin/_blackbox_common.sh"
@@ -30,7 +30,7 @@ class Blackbox < Formula
   end
 
   test do
-    system "/usr/local/Cellar/yourformula/version/bin/git", "init"
+    system "git", "init"
     system "#{bin}/blackbox_initialize", "yes"
   end
 end
