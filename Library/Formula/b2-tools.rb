@@ -12,4 +12,3 @@ class B2Tools < Formula
     system "b2 authorize_account BOGUSACCTID BOGUSAPPKEY | grep bad_auth_token"
   end
 end
-
