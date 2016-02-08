@@ -1,8 +1,8 @@
 class Pugixml < Formula
   desc "Pugixml is a light-weight C++ XML processing library"
   homepage "http://pugixml.org"
-  url "https://github.com/zeux/pugixml/releases/download/v1.6/pugixml-1.6.tar.gz"
-  sha256 "473705c496d45ee6a74f73622b175dfb5dde0de372c4dc61a5acb964516cd9de"
+  url "https://github.com/zeux/pugixml/releases/download/v1.7/pugixml-1.7.tar.gz"
+  sha256 "fbe10d46f61d769f7d92a296102e4e2bd3ee16130f11c5b10a1aae590ea1f5ca"
 
   bottle do
     cellar :any
@@ -37,7 +37,7 @@ class Pugixml < Formula
 
     Name: pugixml
     Description: Pugixml is a light-weight C++ XML processing library
-    Version: 1.6
+    Version: 1.7
     Libs: -L${libdir} -lpugixml
     Cflags: -I${includedir}
     EOS
