@@ -1,5 +1,5 @@
 class Spin < Formula
-  desc "Spin model checker"
+  desc "The efficient verification tool of multi-threaded software"
   homepage "https://spinroot.com/spin/whatispin.html"
   url "https://spinroot.com/spin/Src/spin645.tar.gz"
   version "6.4.5"
