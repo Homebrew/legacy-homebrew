@@ -1,15 +1,15 @@
 class B2Tools < Formula
   desc "B2 Cloud Storage Command-Line Tools"
-  homepage "https://www.backblaze.com/b2/docs/quick_command_line.html"
-  url "https://docs.backblaze.com/public/b2_src_code_bundles/b2"
-  version "0.3.12"
-  sha256 "b50576006739c592333d13cbde9a21cbb3b7e2ba3b99bfedbd70a7adbe097aa8"
+  homepage "https://github.com/Backblaze/B2_Command_Line_Tool"
+  url "https://github.com/Backblaze/B2_Command_Line_Tool/archive/v0.3.12.tar.gz"
+  sha256 "6c382d211c5df09477d5df468e43fe5b9691e44edfb5df9694e9b747a488d362"
 
   def install
     bin.install "b2"
   end
 
   test do
-    system "b2", "version"
+    system "b2 authorize_account BOGUSACCTID BOGUSAPPKEY | grep bad_auth_token"
   end
 end
+
