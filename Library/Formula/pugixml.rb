@@ -5,10 +5,10 @@ class Pugixml < Formula
   sha256 "fbe10d46f61d769f7d92a296102e4e2bd3ee16130f11c5b10a1aae590ea1f5ca"
 
   bottle do
-    cellar :any
-    sha256 "27a9b98dde133f5871b13af86d5e9eee120681c3e3f3522bb3ed8469a5057191" => :yosemite
-    sha256 "a8e856b317d735c1c6f6d6d0f10827c2f093235daa678e3bc67055195989fe19" => :mavericks
-    sha256 "abefae3200fb57a4ef0d6a3b6f8d3bf85a6d46170ecedf383068de9c049d76ca" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "c21e9b8750463c6b5e232c40e695095327fc8afe855d8b8e149d4ea0eccc204d" => :el_capitan
+    sha256 "400c5afde63177b4a7c40d665a3a052d1e10ddfdc69c5d5ee97c2542fc1117b5" => :yosemite
+    sha256 "6d0abed138bda13d447f4f800f4d0154efb5d34315bbe6f2d49193bac410409c" => :mavericks
   end
 
   option "with-shared", "Build shared instead of static library"
