@@ -6,9 +6,9 @@ class Fwup < Formula
 
   bottle do
     cellar :any
-    sha256 "62f51e99e6fa6febfa1f1eb713e2e60c9b11c7572b69fb54b0e1442f70db0763" => :el_capitan
-    sha256 "c26a38d9ed03cd903839b22d3f86d9f6e23443092d7a75c5f4fd149815d9c8c3" => :yosemite
-    sha256 "18972917d65e578a7b2bf2d2a37fb9723e0bc7fce3f90b26f4c5435c50cdce50" => :mavericks
+    sha256 "b57b46b4de20e58ad04c8e161c238767322fedd80aaba6ec27efded4d6c69ef6" => :el_capitan
+    sha256 "25dcd45f7f0e399504dc90e9640f3dd28fb7cccbe702eaa24b169e02ca596a9d" => :yosemite
+    sha256 "cca8882d53b591b5b0555f5830cc3702d2bb878de44be271d8f566ddd8400b81" => :mavericks
   end
 
   depends_on "confuse"
