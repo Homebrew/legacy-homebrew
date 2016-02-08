@@ -1,8 +1,7 @@
 class SquidDebProxy < Formula
   desc "APT repo caching proxy based on Squid."
   homepage "https://launchpad.net/squid-deb-proxy"
-
-  url "http://archive.ubuntu.com/ubuntu/pool/universe/s/squid-deb-proxy/squid-deb-proxy_0.8.14.tar.gz"
+  url "https://mirrors.ocf.berkeley.edu/debian/pool/main/s/squid-deb-proxy/squid-deb-proxy_0.8.14.tar.gz"
   sha256 "d30aa9d8185c1e424608deb307f8e92aee8270acccc3c0b26af1d03a2feae92b"
 
   depends_on "squid"
@@ -23,19 +22,19 @@ class SquidDebProxy < Formula
       s.gsub! /(\binstall\b.*?)(\s+-[og]\s*\S+)+/, "\\1"
 
       # fix paths with the HOMEBREW_PREFIX
-      s.gsub! "/usr/sbin/squid", "#{HOMEBREW_PREFIX}/opt/squid/sbin/squid"
+      s.gsub! "/usr/sbin/squid", "#{sbin}/squid"
       s.gsub! %r{([\s='"])/etc/}, "\\1#{etc}/"
       s.gsub! %r{([\s='"])/var/}, "\\1#{var}/"
     end
 
     # pre-installation from debian/rules
     # we take both sets because we're not either distro
-    Pathname("mirror-dstdomain.acl").write(
-      Pathname("mirror-dstdomain.acl.Debian").binread +
-        Pathname("mirror-dstdomain.acl.Ubuntu").binread
+    IO.write(
+      "mirror-dstdomain.acl",
+      IO.read("mirror-dstdomain.acl.Debian") +
+        IO.read("mirror-dstdomain.acl.Ubuntu")
     )
 
-    # normal installation called by debian/rules
     system "make", "install", "DESTDIR=#{prefix}"
 
     # additional installation from debian/squid-deb-proxy.install
@@ -43,7 +42,8 @@ class SquidDebProxy < Formula
     cp "init-common.sh", "#{prefix}/usr/share/squid-deb-proxy/"
 
     # produce execution wrapper script
-    Pathname("#{sbin}/squid-deb-proxy").write(<<-EOS.undent
+    Pathname.new("#{sbin}/squid-deb-proxy").write(
+      <<-EOS.undent
       #!/bin/bash
 
       . '#{opt_prefix}/usr/share/squid-deb-proxy/init-common.sh'
@@ -59,13 +59,15 @@ class SquidDebProxy < Formula
     user_networks  = "#{etc}/squid-deb-proxy/allowed-networks-src.acl.d/10-default"
     user_dests     = "#{etc}/squid-deb-proxy/mirror-dstdomain.acl.d/10-default"
     user_blacklist = "#{etc}/squid-deb-proxy/pkg-blacklist.d/10-default"
-    Pathname(user_conf).write(<<-EOS.undent
+    Pathname.new(user_conf).write(
+      <<-EOS.undent
       # #{user_conf}
       #
       # additional Squid configuration
       EOS
     )
-    Pathname(user_networks).write(<<-EOS.undent
+    Pathname.new(user_networks).write(
+      <<-EOS.undent
       # #{user_networks}
       #
       # additional network sources that you want to allow access to the cache
@@ -74,7 +76,8 @@ class SquidDebProxy < Formula
       #136.199.8.0/24
       EOS
     )
-    Pathname(user_dests).write(<<-EOS.undent
+    Pathname.new(user_dests).write(
+      <<-EOS.undent
       # #{user_dests}
       #
       # network destinations that are allowed by this cache
@@ -92,7 +95,8 @@ class SquidDebProxy < Formula
       #repo.steampowered.com
       EOS
     )
-    Pathname(user_blacklist).write(<<-EOS.undent
+    Pathname.new(user_blacklist).write(
+      <<-EOS.undent
       # #{user_blacklist}
       #
       # packages that should be not allowed for download, one binary packagename
