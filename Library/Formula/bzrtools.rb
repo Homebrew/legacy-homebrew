@@ -1,7 +1,8 @@
 class Bzrtools < Formula
   desc "Bazaar plugin that supplies useful additional utilities"
   homepage "https://launchpad.net/bzrtools"
-  url "lp:bzrtools", :using => :bzr, :tag => "release-2.3.0"
+  url "https://launchpad.net/bzrtools/trunk/2.3.0/+download/bzrtools-2.3.0.tar.gz"
+  sha256 "706270db274cdb4897eda1b8bb412383c71f6d1b3fac6ae3db587ac249ad5b79"
 
   depends_on "bazaar"
 

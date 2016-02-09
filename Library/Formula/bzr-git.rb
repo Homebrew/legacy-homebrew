@@ -1,7 +1,8 @@
 class BzrGit < Formula
   desc "Git repository support for Bazaar"
   homepage "https://launchpad.net/bzr-git"
-  url "lp:bzr-git", :using => :bzr, :tag => "release-0.6.10"
+  url "https://launchpad.net/bzr-git/trunk/0.6.8/+download/bzr-git-0.6.8.tar.gz"
+  sha256 "b157db228717900d109990df349c656d2297803a20f88edb8280f2e9d73bfc27"
 
   depends_on 'bazaar'
 
@@ -27,6 +28,6 @@ class BzrGit < Formula
   end
 
   test do
-    assert_match /Find an asds commit using asds binary search/, shell_output("bzr help bisect")
+    assert_match /git 0\.6\.8/, shell_output("bzr plugins")
   end
 end
