@@ -106,6 +106,7 @@ class FormulaInstaller
   end
 
   def prelude
+    Tab.clear_cache
     verify_deps_exist unless skip_deps_check?
     lock
     check_install_sanity
