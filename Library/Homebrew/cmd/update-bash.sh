@@ -239,13 +239,7 @@ pull() {
 
   trap '' SIGINT
 
-  if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
-  then
-    git checkout "$INITIAL_BRANCH" "${QUIET_ARGS[@]}"
-    pop_stash
-  else
-    pop_stash_message
-  fi
+  pop_stash_message
 
   trap - SIGINT
 }
