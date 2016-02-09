@@ -4,6 +4,13 @@ class DockerCloud < Formula
   url "https://pypi.python.org/packages/source/d/docker-cloud/docker-cloud-1.0.1.tar.gz"
   sha256 "e86246002168e1e1a8e91e8a816d7091042d362fdf8f72a9358da0ce4e7da02c"
 
+  bottle do
+    cellar :any
+    sha256 "fb95c84be9381c2127a5ad087cb1b5883c00643d20983f784410ef4c3fbda2c0" => :el_capitan
+    sha256 "8291bcedcfc58c050dfb4ea0091d16c907ae7ecbaca1325fd112dc3e6e68093b" => :yosemite
+    sha256 "7ed4ae91d2185c181fc9ad6a8b38931db8c42610864d96a245a5049cae168fbf" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "libyaml"
 
