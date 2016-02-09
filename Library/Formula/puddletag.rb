@@ -9,9 +9,9 @@ class Puddletag < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c2d91ff12bef60fd87a560132c962164939dbb08aa518efaaf8f5b974c869ef0" => :el_capitan
-    sha256 "ca24eaa710ec6422ae3998b7496be25cf36f8c750686cc0ecbb2d3787ec6fa4f" => :yosemite
-    sha256 "4501e1d867b8f889da17b8f6e4ad8155c436b7ee54bf9510c16a5a3f78866765" => :mavericks
+    sha256 "66b9869de0ed08574b572ec748a9d60818793dc89786b8881186b1b9f7c49271" => :el_capitan
+    sha256 "a71ba99dda619b47191d6491a4af6985db4ea8b8553a9a0a058162f5c0f4be82" => :yosemite
+    sha256 "d68cf36675cb2a2ed03630d01d418199cef90fcda6d39e733d5754acb6255e51" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
