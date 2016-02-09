@@ -1,9 +1,9 @@
 class Bazaar < Formula
   desc "Human-friendly source code management (or 'version control')"
   homepage "http://bazaar.canonical.com/"
-  url "https://launchpad.net/bzr/2.7/2.7.0/+download/bzr-2.7.0.tar.gz"
-  sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-  revision 3
+  url "https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz"
+  sha256 "0994797182eb828867eee81cccc79480bd2946c99304266bc427b902cf91dab0"
+  revision 2
 
   bottle do
     cellar :any_skip_relocation
