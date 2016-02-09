@@ -1,17 +1,8 @@
 class Bazaar < Formula
-  desc "Human-friendly source code management (or 'version control')"
+  desc "Friendly powerful distributed version control system"
   homepage "http://bazaar.canonical.com/"
-  url "https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz"
-  sha256 "0994797182eb828867eee81cccc79480bd2946c99304266bc427b902cf91dab0"
-  revision 2
-
-  bottle do
-    cellar :any_skip_relocation
-    sha256 "ad25ac7aae3262bb674c9e2261415daecfaaf9b5d5f57ff14428be9409b895b8" => :el_capitan
-    sha256 "29ff8d9c8fe3eee3a2a2172d5247970a68fa8d24c7516ae06bed9b3849259f2c" => :yosemite
-    sha256 "cfda2b2e1b18687428c407155cb2e497563279d861120d0aa3f5a9e886cabf76" => :mavericks
-    sha256 "7aa76616196f64b7a979708bb67703d9e70d4fe74bae55f204c9c844dfe71611" => :mountain_lion
-  end
+  url "https://launchpad.net/bzr/2.7/2.7.0/+download/bzr-2.7.0.tar.gz"
+  sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
   def install
     ENV.j1 # Builds aren't parallel-safe
