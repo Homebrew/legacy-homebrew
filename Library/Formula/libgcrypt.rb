@@ -1,10 +1,9 @@
 class Libgcrypt < Formula
   desc "Cryptographic library based on the code from GnuPG"
   homepage "https://directory.fsf.org/wiki/Libgcrypt"
-  url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.6.4.tar.bz2"
-  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.4.tar.bz2"
-  sha256 "c9bc2c7fe2e5f4ea13b0c74f9d24bcbb1ad889bb39297d8082aebf23f4336026"
-  revision 1
+  url "https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.6.5.tar.bz2"
+  mirror "https://www.mirrorservice.org/sites/ftp.gnupg.org/gcrypt/libgcrypt/libgcrypt-1.6.5.tar.bz2"
+  sha256 "f49ebc5842d455ae7019def33eb5a014a0f07a2a8353dc3aa50a76fd1dafa924"
 
   bottle do
     cellar :any
@@ -30,7 +29,7 @@ class Libgcrypt < Formula
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
                           "--disable-asm",
-                          "--with-gpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}"
+                          "--with-libgpg-error-prefix=#{Formula["libgpg-error"].opt_prefix}"
 
     if build.universal?
       buildpath.install resource("config.h.ed")
@@ -50,6 +49,6 @@ class Libgcrypt < Formula
   test do
     touch "testing"
     output = shell_output("#{bin}/hmac256 \"testing\" testing")
-    assert_match /0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6/, output
+    assert_match "0e824ce7c056c82ba63cc40cffa60d3195b5bb5feccc999a47724cc19211aef6", output
   end
 end
