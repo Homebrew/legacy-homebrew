@@ -23,6 +23,7 @@ class Bazel < Formula
     system "./compile.sh"
     system "./output/bazel", "build", "scripts:bash_completion"
 
+    bin.install "output/bazel" => "bazel"
     (prefix/"etc/bazel.bazelrc").write <<-EOS.undent
     EOS
     (etc/"bazel").install prefix/"etc/bazel.bazelrc"
