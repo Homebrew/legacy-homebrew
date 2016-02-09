@@ -22,7 +22,7 @@ class SquidDebProxy < Formula
       s.gsub! /(\binstall\b.*?)(\s+-[og]\s*\S+)+/, "\\1"
 
       # fix paths with the HOMEBREW_PREFIX
-      s.gsub! "/usr/sbin/squid", "#{sbin}/squid"
+      s.gsub! "/usr/sbin/squid", "#{HOMEBREW_PREFIX}/opt/squid/sbin/squid"
       s.gsub! %r{([\s='"])/etc/}, "\\1#{etc}/"
       s.gsub! %r{([\s='"])/var/}, "\\1#{var}/"
     end
