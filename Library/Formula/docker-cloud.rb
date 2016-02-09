@@ -1,5 +1,5 @@
 class DockerCloud < Formula
-  desc "Docker Cloud - BUILD SHIP & RUN, ANY APP, ANYWHERE"
+  desc "SaaS to build, deploy and manage Docker-based applications"
   homepage "https://cloud.docker.com/"
   url "https://pypi.python.org/packages/source/d/docker-cloud/docker-cloud-1.0.1.tar.gz"
   sha256 "e86246002168e1e1a8e91e8a816d7091042d362fdf8f72a9358da0ce4e7da02c"
