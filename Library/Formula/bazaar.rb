@@ -4,6 +4,11 @@ class Bazaar < Formula
   url "https://launchpad.net/bzr/2.7/2.7.0/+download/bzr-2.7.0.tar.gz"
   sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "5a4a0979f70e18b606ef04b1cecbd32cbb4633d75c07b6980b2543cbcad5e7bf" => :el_capitan
+  end
+
   def install
     ENV.j1 # Builds aren't parallel-safe
 
