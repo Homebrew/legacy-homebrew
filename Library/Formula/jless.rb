@@ -9,16 +9,16 @@ class Jless < Formula
   sha256 "d33cc51f220647d015fd526b3782cde03c5d8b18c5233e6388a0047a70446fe7"
 
   [
-    %w[258       961275c26c6f6ec2e04821d9d9d1b10505214b1f],
-    %w[258-259   7256998c59f9743e61e83e9e5ebc5183e8eeb269],
-    %w[259-260   56e5537fae516ee738b1512eed303f43ed0d4575],
-    %w[260-261   3a889e178a32c3a273b89fd396976362a975f627],
-    %w[261-262   d5cc92e5dcbfde26257eec5f126df5bf73779a89],
-    %w[262.ext03 dc35204274ecf02da5f7ffb583da680ea6f4356c]
+    %w[258       ecbbbf7a06d221021dae9f74862e2c41c91ded118c215687c13f5cb95d22f975],
+    %w[258-259   378c35f56fc40236994a869b9ffe18935611bd2ee6be0087f152c782214c4eb1],
+    %w[259-260   d3fab30dcb15a0b2d6d491222ca405ff23a73f7076e865fe64a01ab0ed3b6a8a],
+    %w[260-261   e79da33e7756e5b5e9eddf7a39d22f149f52e74d7b06a8ef3b6ac094ed3c6e71],
+    %w[261-262   4e79964da0bad15a5b8178b4ddab684cfdc3a7616ad140931e9ca7fca0d693c8],
+    %w[262.ext03 5fb573a21db13bd4e1fd8b08163064f93a7f12d037a651503d2e55ef1ffc9672]
   ].each do |name, sha|
     patch do
       url "http://ftp.netbsd.org/pub/pkgsrc/distfiles/less-382-iso#{name}.patch.gz"
-      sha1 sha
+      sha256 sha
     end
   end
 
