@@ -1,8 +1,7 @@
 class Qbzr < Formula
   desc "Simple Qt cross-platform frontend for some of Bazaar commands"
   homepage "https://launchpad.net/qbzr"
-  url "lp:qbzr", :using => :bzr
-  version '0.23.1'
+  url "lp:qbzr", :using => :bzr, :tag => "release-0.23.1"
 
   depends_on "bazaar"
   depends_on "pyqt"

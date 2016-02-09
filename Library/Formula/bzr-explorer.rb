@@ -1,8 +1,7 @@
 class BzrExplorer < Formula
   desc "Desktop application for using the Bazaar Version Control System"
   homepage "https://launchpad.net/bzr-explorer"
-  url "lp:bzr-explorer", :using => :bzr
-  version '1.3.0'
+  url "lp:bzr-explorer", :using => :bzr, :tag => "release-1.3.0"
 
   depends_on "bazaar"
   depends_on "qbzr"

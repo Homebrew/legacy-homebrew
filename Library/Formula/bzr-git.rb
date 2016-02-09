@@ -1,8 +1,7 @@
 class BzrGit < Formula
   desc "Git repository support for Bazaar"
   homepage "https://launchpad.net/bzr-git"
-  url "lp:bzr-git", :using => :bzr
-  version '0.6.10'
+  url "lp:bzr-git", :using => :bzr, :tag => "release-0.6.10"
 
   depends_on 'bazaar'
 
