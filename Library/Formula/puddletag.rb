@@ -19,18 +19,18 @@ class Puddletag < Formula
   depends_on "chromaprint" => :recommended
 
   resource "pyparsing" do
-    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-1.5.7.tar.gz"
-    sha256 "646e14f90b3689b005c19ac9b6b390c9a39bf976481849993e277d7380e6e79f"
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.1.0.tar.gz"
+    sha256 "f6cb2bc85a491347c3c699db47f7ecc02903959156b4f92669ebf82395982901"
   end
 
   resource "mutagen" do
-    url "https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.21.tar.gz"
-    sha256 "4dd30af3a291c0a152838f2bbf1d592bf6ede752b11a159cbf84e75815bcc2b5"
+    url "https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.31.tar.gz"
+    sha256 "0aa011707785fe30935d8655380052a20ba8b972aa738d4f144c457b35b4d699"
   end
 
   resource "configobj" do
-    url "https://pypi.python.org/packages/source/c/configobj/configobj-5.0.5.tar.gz"
-    sha256 "766eff273f2cbb007a3ea8aa69429ee9b1553aa96fe282c6ace3769b9ac47b08"
+    url "https://pypi.python.org/packages/source/c/configobj/configobj-5.0.6.tar.gz"
+    sha256 "a2f5650770e1c87fb335af19a9b7eb73fc05ccf22144eb68db7d00cd2bcb0902"
   end
 
   def install
