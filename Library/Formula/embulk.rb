@@ -1,8 +1,8 @@
 class Embulk < Formula
   desc "Data transfer between various databases, file formats and services"
   homepage "http://www.embulk.org/"
-  url "https://bintray.com/artifact/download/embulk/maven/embulk-0.8.1.jar"
-  sha256 "3cb907015d952e9cf2d61d9b55faae99f7ccae3c2e9d4fbf1b393099333c910f"
+  url "https://bintray.com/artifact/download/embulk/maven/embulk-0.8.3.jar"
+  sha256 "7302019e524d13bda92233a5dbd72a6d3624cd25ff091fe83a0c76b71d800d21"
 
   bottle :unneeded
 
@@ -18,7 +18,7 @@ class Embulk < Formula
 
   test do
     system bin/"embulk", "example", "./try1"
-    system bin/"embulk", "guess", "./try1/example.yml", "-o", "config.yml"
+    system bin/"embulk", "guess", "./try1/seed.yml", "-o", "config.yml"
     system bin/"embulk", "preview", "config.yml"
     system bin/"embulk", "run", "config.yml"
   end
