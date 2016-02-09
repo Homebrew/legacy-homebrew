@@ -1,8 +1,8 @@
 class BzrBisect < Formula
   desc "Binary search for Bazaar"
   homepage "https://launchpad.net/bzr-bisect"
-  url "https://github.com/fmccann/bzr-bisect/archive/1.0.tar.gz"
-  sha256 "5f35a19415c95f857614dab7761afcdb0103fe0535c4399082932c195deae36c"
+  url "lp:bzr-bisect", :using => :bzr
+  version '0.0.1'
 
   depends_on "bazaar"
 
