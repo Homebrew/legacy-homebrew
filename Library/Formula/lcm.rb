@@ -4,6 +4,12 @@ class Lcm < Formula
   url "https://github.com/lcm-proj/lcm/releases/download/v1.3.0/lcm-1.3.0.zip"
   sha256 "23bce19a4a6dc5df444d811f57796e14b4b0d1886cb3c219f90b72f328f2184e"
 
+  bottle do
+    sha256 "245403933bda8f5ec66767b8f56c1cf862d19e76dd73ea08dbf70d3843caa638" => :el_capitan
+    sha256 "8f544f4ad83b284e891a47664fe95023af32eac34144ba4900f6848ef26e664c" => :yosemite
+    sha256 "15c0bb59f7e4e729e0f8e7e09e7e9ddcf8a03ce35bf4d86b9bcfa7307604bb49" => :mavericks
+  end
+
   head do
     url "https://github.com/lcm-proj/lcm.git"
 
