@@ -12,20 +12,6 @@ class DiffSoFancy < Formula
     bin.install_symlink "#{prefix}/diff-so-fancy"
   end
 
-  def caveats; <<-EOS.undent
-    You probably now want to configure git to fancify all your diffs. Run:
-      git config --global core.pager "diff-so-fancy | less --tabs=1,5 -R"
-
-    so that `git diff` will use it. You can still bypass with `git --no-pager diff`.
-
-    You may also want some fancier colours. Consider trying:
-      git config --global color.diff-highlight.oldNormal "red bold"
-      git config --global color.diff-highlight.oldHighlight "red bold 52"
-      git config --global color.diff-highlight.newNormal "green bold"
-      git config --global color.diff-highlight.newHighlight "green bold 22"
-    EOS
-  end
-
   test do
     system bin/"diff-so-fancy"
   end
