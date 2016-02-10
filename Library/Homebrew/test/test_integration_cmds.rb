@@ -152,6 +152,11 @@ class IntegrationCommandTests < Homebrew::TestCase
         url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
+    # `brew bottle` should not fail with dead symlink
+    # https://github.com/Homebrew/homebrew/issues/49007
+    (HOMEBREW_CELLAR/"testball/0.1").cd do
+      FileUtils.ln_s "not-exist", "symlink"
+    end
     assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
                   cmd_output("bottle", "--no-revision", "testball"))
   ensure
