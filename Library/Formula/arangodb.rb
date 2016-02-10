@@ -39,6 +39,10 @@ class Arangodb < Formula
 
     args << "--program-suffix=-unstable" if build.head?
 
+    if ENV.compiler != :clang
+      ENV.append "LDFLAGS", "-static-libgcc -static-libstdc++"
+    end
+
     system "./configure", *args
     system "make", "install"
   end
@@ -48,6 +52,13 @@ class Arangodb < Formula
     (var/"log/arangodb").mkpath
 
     system "#{sbin}/arangod" + (build.head? ? "-unstable" : ""), "--upgrade", "--log.file", "-"
+  end
+
+  def caveats; <<-EOS.undent
+    Please note that clang and/or its standard library 7.0.0 has a severe
+    performance issue. Please consider using '--cc=gcc-5' when installing
+    if you are running on such a system.
+    EOS
   end
 
   plist_options :manual => "#{HOMEBREW_PREFIX}/opt/arangodb/sbin/arangod" + (build.head? ? "-unstable" : "") + " --log.file -"
