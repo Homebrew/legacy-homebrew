@@ -7,7 +7,7 @@ class Imagemagick < Formula
   url "https://dl.bintray.com/homebrew/mirror/ImageMagick-6.9.3-0.tar.xz"
   mirror "http://www.imagemagick.org/download/releases/ImageMagick-6.9.3-0.tar.xz"
   sha256 "2ba0656eb03d72d8a44e741ead524e8c34097418c0bb5487a5c4f4fe5eca9656"
-  revision 1
+  revision 2
 
   head "http://git.imagemagick.org/repos/ImageMagick.git"
 

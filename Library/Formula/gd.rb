@@ -3,7 +3,7 @@ class Gd < Formula
   homepage "https://libgd.github.io/"
   url "https://bitbucket.org/libgd/gd-libgd/downloads/libgd-2.1.1.tar.xz"
   sha256 "9ada1ed45594abc998ebc942cef12b032fbad672e73efc22bc9ff54f5df2b285"
-  revision 1
+  revision 2
 
   head do
     url "https://bitbucket.org/libgd/gd-libgd.git"
