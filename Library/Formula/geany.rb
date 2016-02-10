@@ -1,5 +1,5 @@
 class Geany < Formula
-  desc "A basic text editor with IDE support"
+  desc "Basic text editor with IDE support"
   homepage "http://geany.org/"
   url "http://download.geany.org/geany-1.24.1.tar.gz"
   sha256 "8aa5dbf94b5252fce2ba504b47addb047a076fe44f11a08be45dc59e7ac318ba"
