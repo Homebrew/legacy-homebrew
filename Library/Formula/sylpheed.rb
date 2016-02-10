@@ -6,9 +6,9 @@ class Sylpheed < Formula
   revision 1
 
   bottle do
-    sha256 "b6a927472d5bd384cf91452a75dcb0557ec2abeed89e979416d21907526a601b" => :yosemite
-    sha256 "8bc89499181ff389fd5df487ec24586e07e4675c046e2b4c4946fc257fe04dff" => :mavericks
-    sha256 "7d8619462ea45f715347951aaec3ac6bcdb793897a625bf6a6c8ec7455fae5b5" => :mountain_lion
+    sha256 "b59386d9e5153d9bcd8f68410196de3d8715d227dda7321513c10893bf517773" => :el_capitan
+    sha256 "f2fb3d3d1ef07736d61389f2c645d8b0c4e163f46330f432090a71577059207d" => :yosemite
+    sha256 "f530d16dae124a799ec458456c62499801a3f150848602783a994466fb62c087" => :mavericks
   end
 
   depends_on "pkg-config" => :build
