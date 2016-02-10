@@ -1,8 +1,8 @@
 class Hoedown < Formula
   desc "Secure Markdown processing (a revived fork of Sundown)"
   homepage "https://github.com/hoedown/hoedown"
-  url "https://github.com/hoedown/hoedown/archive/3.0.6.tar.gz"
-  sha256 "eb1576d187df9e426c61343fd74652cf06875aba50028347e3dfb5eb062ff43a"
+  url "https://github.com/hoedown/hoedown/archive/3.0.7.tar.gz"
+  sha256 "01b6021b1ec329b70687c0d240b12edcaf09c4aa28423ddf344d2bd9056ba920"
 
   bottle do
     cellar :any_skip_relocation
