@@ -7,9 +7,9 @@ class DiffSoFancy < Formula
   depends_on "gnu-sed"
 
   def install
-    prefix.install Dir["*"]
-    inreplace "#{prefix}/diff-so-fancy", "sed", "gsed"
-    bin.install_symlink "#{prefix}/diff-so-fancy"
+    inreplace "diff-so-fancy", "sed", "gsed"
+    libexec.install Dir["*"]
+    bin.install_symlink libexec/"diff-so-fancy"
   end
 
   test do
