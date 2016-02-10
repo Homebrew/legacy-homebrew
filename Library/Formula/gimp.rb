@@ -9,9 +9,9 @@ class Gimp < Formula
   end
 
   bottle do
-    sha256 "8021bf2728b7189d2922cca68a40f53773e4d079053fc3357bc1750cf9875c8c" => :yosemite
-    sha256 "52a2938d2e67222d7f6ff972dfc8715e68d5e505b80d4b9e5ce3fc70668d74da" => :mavericks
-    sha256 "29551de7ab55f5ecdec2b19edc9c9a329b10160eaca25fc1368bb0824aaeda7c" => :mountain_lion
+    sha256 "f40f01ad2a8e276da71d95d4ea1435bd898e5a9bd6db8e1771e9bc32e411f3f5" => :el_capitan
+    sha256 "06d11375198cd177456e3dcabe7d4599646b0f57a93e506ae339fa4690a0c10a" => :yosemite
+    sha256 "697709f45c71405f3b98b0e21d0dbe2575beeac8c375ff96dd506aee86b0d0a9" => :mavericks
   end
 
   head do
