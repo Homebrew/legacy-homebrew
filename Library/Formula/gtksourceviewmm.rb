@@ -7,9 +7,9 @@ class Gtksourceviewmm < Formula
 
   bottle do
     cellar :any
-    sha256 "3f8b3676b7432e7d81fbcc732230b8d039eed8d775089175ad3f202443a32582" => :el_capitan
-    sha256 "dc10b1e822c7ed5bfbb8d9f56ff24535ea0fda6ffd340f91f5ec669c1fbe1012" => :yosemite
-    sha256 "e115f182d9ea58c4801652d59f441dbf16b6f138e18b8122894ec285021296c3" => :mavericks
+    sha256 "2bffb5ab482a1eca492c9387d41f746a1c370668e2073b724bb5ef24598e7744" => :el_capitan
+    sha256 "29185d65e548dd917072a5f8223e47179997041eb24dd3e08b7924355c66bded" => :yosemite
+    sha256 "c44d2190e30615b94272f06dd06412d36dd60b4f0d09f42026ef1bbedd87d1c4" => :mavericks
   end
 
   depends_on "gtksourceview"
