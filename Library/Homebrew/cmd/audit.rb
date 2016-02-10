@@ -647,10 +647,6 @@ class FormulaAuditor
        Please add ENV.prepend_path \"PATH\", \"#{need_npm}"\ to def install
       EOS
     end
-
-    if text =~ /=>.*[^,\n]\n[^\n].*/
-      problem "Please add an extra enter after i.e. :revision => \"example\"\ndepends_on :xcode"
-    end
   end
 
   def audit_line(line, lineno)
@@ -872,10 +868,6 @@ class FormulaAuditor
 
     if line =~ /assert [^!]+\.include?/
       problem "Use `assert_match` instead of `assert ...include?`"
-    end
-
-    if line =~ /,[ \t]*:/
-      problem "Please do every symbol (i.e. :tag => \"example\", :revision => \"example\") on a different line"
     end
 
     if @strict
