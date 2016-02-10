@@ -1,6 +1,6 @@
 class Ltsa < Formula
   desc "LTS Analyser"
-  homepage "http://www.doc.ic.ac.uk/~jnm/book/ltsa/LTSA_applet.html"
+  homepage "http://www.doc.ic.ac.uk/ltsa"
   url "http://www.doc.ic.ac.uk/~jnm/book/ltsa/ltsa.jar"
   version "3.0"
   sha256 "2068bfd818f2ea3558ceb78f33ec127a8fc0869c944ee98eacf1ab6d762347de"
