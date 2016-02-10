@@ -6,6 +6,13 @@ class Autojump < Formula
 
   head "https://github.com/wting/autojump.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "b1d061456b911c1a36216ee3e6569a73aad5e1e9994fb0ba515715a43675811e" => :el_capitan
+    sha256 "08e603c2689a7ac96839cdd6b02f1c1b1803e50598dcd5eaef73d5b7d9275bc6" => :yosemite
+    sha256 "374c3703dab50849119b2d511eeca5fa7523df903fa2ae34acf334c229343182" => :mavericks
+  end
+
   def install
     system "./install.py", "-d", prefix, "-z", zsh_completion
 
