@@ -4,6 +4,10 @@ class Whatever < Formula
   url "http://www.example.com/nonexistent-apps/whatever/downloads/whatever-1.2.3.tgz"
   sha256 "eaf18aee18fe69d37eb8594aa3d7018a1dd7fda2fad1618f0b68a6cbb39544d1"
 
+  devel do
+    url "http://www.example.com/nonexistent-apps/whatever/downloads/whatever-1.3.1-preeeerelease.tgz"
+  end
+
   def install
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
