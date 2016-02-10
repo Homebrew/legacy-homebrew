@@ -6,9 +6,10 @@ class Colorsvn < Formula
   revision 1
 
   bottle do
-    sha256 "30d9da7a1ce1c1cdb42dd6e83cd51e8dfd7b1706ee1ce5752207a28b97306e1f" => :yosemite
-    sha256 "94330b9473fc8f615bb3244a767ed44409e8e80b58500b7c85b4cca8f0cdaafe" => :mavericks
-    sha256 "9e81200ceb3a34f741eb7faadf1616cb0d9878599fdfb2d6b01b2e09d9b33c9f" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "bf4048c281332c5cfcae4fc74c0fa233ad84c3fe2c111e633101d593284fe601" => :el_capitan
+    sha256 "88c79f8a9bc43d118449ce9d97061af4633f15f942a0a48caef5e1b327aea0e5" => :yosemite
+    sha256 "2711d058fa4c892f350b6309a82f7eeb85455bc1b336afc75587c467121a553d" => :mavericks
   end
 
   patch :DATA
