@@ -4,6 +4,7 @@ class Rswift < Formula
   url "https://github.com/mac-cain13/R.swift.git",
     :tag => "v1.1.1",
     :revision => "3a6db62164d8f50ccdf43e59894fffb672fd5e3f"
+
   depends_on :xcode => "7.0"
 
   def install
