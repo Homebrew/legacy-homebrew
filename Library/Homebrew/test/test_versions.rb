@@ -12,6 +12,32 @@ class VersionTests < Homebrew::TestCase
     assert_raises(TypeError) { Version.new(1) }
     assert_raises(TypeError) { Version.new(:symbol) }
   end
+
+  def test_detected_from_url?
+    refute Version.new("1.0").detected_from_url?
+    assert Version::FromURL.new("1.0").detected_from_url?
+  end
+end
+
+class VersionTokenTests < Homebrew::TestCase
+  def test_inspect
+    assert_equal '#<Version::Token "foo">',
+      Version::Token.new("foo").inspect
+  end
+
+  def test_to_s
+    assert_equal "foo", Version::Token.new("foo").to_s
+  end
+end
+
+class VersionNullTokenTests < Homebrew::TestCase
+  def test_inspect
+    assert_equal "#<Version::NullToken>", Version::NullToken.new.inspect
+  end
+
+  def test_comparing_null
+    assert_operator Version::NullToken.new, :==, Version::NullToken.new
+  end
 end
 
 class VersionComparisonTests < Homebrew::TestCase
@@ -403,5 +429,10 @@ class VersionParsingTests < Homebrew::TestCase
 
   def test_dash_separated_version
     assert_version_detected "6-20151227", "ftp://gcc.gnu.org/pub/gcc/snapshots/6-20151227/gcc-6-20151227.tar.bz2"
+  end
+
+  def test_from_url
+    assert_version_detected "1.2.3",
+      "http://github.com/foo/bar.git", {:tag => "v1.2.3"}
   end
 end
