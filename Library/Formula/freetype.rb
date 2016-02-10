@@ -1,9 +1,9 @@
 class Freetype < Formula
   desc "Software library to render fonts"
   homepage "http://www.freetype.org"
-  url "https://downloads.sf.net/project/freetype/freetype2/2.6.2/freetype-2.6.2.tar.bz2"
-  mirror "http://download.savannah.gnu.org/releases/freetype/freetype-2.6.2.tar.bz2"
-  sha256 "baf6bdef7cdcc12ac270583f76ef245efe936267dbecef835f02a3409fcbb892"
+  url "https://downloads.sf.net/project/freetype/freetype2/2.6.3/freetype-2.6.3.tar.bz2"
+  mirror "http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2"
+  sha256 "371e707aa522acf5b15ce93f11183c725b8ed1ee8546d7b3af549863045863a2"
 
   # Note: when bumping freetype's version, you must also bump revisions of formula with
   # "full path" references to freetype in their pkgconfig.
