@@ -1,5 +1,5 @@
 class Sylpheed < Formula
-  desc "A simple, lightweight email-client"
+  desc "Simple, lightweight email-client"
   homepage "http://sylpheed.sraoss.jp/en/"
   url "http://sylpheed.sraoss.jp/sylpheed/v3.4/sylpheed-3.4.2.tar.gz"
   sha256 "a4c47b570a5b565d14ff9933cf2e03fcb895034c1f072f9cd2c4a9867a2f2263"
