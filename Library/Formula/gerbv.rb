@@ -7,9 +7,9 @@ class Gerbv < Formula
   revision 1
 
   bottle do
-    sha256 "fa685c99327d11fb397e1618cdcd0d819018f6cbabc2e839a7bb780d99f2b11c" => :yosemite
-    sha256 "6b1fcdc62f5a072b1387d5e7f82ae0bdba07e59ab65c2de6b7bc6b4ff46c8f6a" => :mavericks
-    sha256 "b560626fe6ef8999e1099fa9550cc68cd2964edad28ffef282621eccb5020a6f" => :mountain_lion
+    sha256 "b828ca8be50c14e4e74df39d991f3e85b5f49972e5abd2928fe1f34f7b02f93a" => :el_capitan
+    sha256 "1cbe69c65340619dfbf311db69087f114c1958c93e3a4b4a1e91b2e8485bd679" => :yosemite
+    sha256 "0f6b404bb3a7334413c40f05f42d23d8c4e962c3030287937cf5a0586dcb2c9c" => :mavericks
   end
 
   depends_on "pkg-config" => :build
