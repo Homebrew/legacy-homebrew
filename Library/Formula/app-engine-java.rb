@@ -1,8 +1,8 @@
 class AppEngineJava < Formula
   desc "Google App Engine for Java"
   homepage "https://cloud.google.com/appengine/docs/java/gettingstarted/introduction"
-  url "https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.30.zip"
-  sha256 "7571b8620f958ad7c6bd2ecb30bb1482faa4c2868fe99eade6a450488ada9054"
+  url "https://storage.googleapis.com/appengine-sdks/featured/appengine-java-sdk-1.9.32.zip"
+  sha256 "1e757250acb1ecb61a09854bd07ee82a781cdb1fa76c44ed056b4de73a4cff79"
 
   bottle :unneeded
 
