@@ -5,7 +5,11 @@ class Gimp < Formula
   stable do
     url "http://download.gimp.org/pub/gimp/v2.8/gimp-2.8.16.tar.bz2"
     sha256 "95e3857bd0b5162cf8d1eda8c78b741eef968c3e3ac6c1195aaac2a4e2574fb7"
-    depends_on "homebrew/versions/gegl02"
+
+    resource "gegl02" do
+      url "http://download.gimp.org/pub/gegl/0.2/gegl-0.2.0.tar.bz2"
+      sha256 "df2e6a0d9499afcbc4f9029c18d9d1e0dd5e8710a75e17c9b1d9a6480dd8d426"
+    end
   end
 
   bottle do
@@ -44,6 +48,17 @@ class Gimp < Formula
   depends_on "libexif" => :optional
 
   def install
+    if build.stable?
+      resource("gegl02").stage do
+        ENV.no_optimization if ENV.compiler == :llvm
+        system "./configure", "--disable-debug", "--disable-dependency-tracking",
+                              "--prefix=#{libexec}/gegl02", "--disable-docs"
+        system "make", "install"
+      end
+      ENV.prepend_path "PATH", libexec/"gegl02/bin"
+      ENV.prepend_path "PKG_CONFIG_PATH", libexec/"gegl02/lib/pkgconfig"
+    end
+
     args = %W[
       --prefix=#{prefix}
       --disable-silent-rules
