@@ -2,7 +2,7 @@ class Bazaar < Formula
   desc "Friendly powerful distributed version control system"
   homepage "http://bazaar.canonical.com/"
   url "https://launchpad.net/bzr/2.7/2.7.0/+download/bzr-2.7.0.tar.gz"
-  sha256 "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  sha256 "0d451227b705a0dd21d8408353fe7e44d3a5069e6c4c26e5f146f1314b8fdab3"
 
   bottle do
     cellar :any_skip_relocation
