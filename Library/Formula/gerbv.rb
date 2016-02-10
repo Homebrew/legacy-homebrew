@@ -1,5 +1,5 @@
 class Gerbv < Formula
-  desc "A Gerber (RS-274X) viewer"
+  desc "Gerber (RS-274X) viewer"
   homepage "http://gerbv.gpleda.org/"
   # 2.6.1 is the latest official stable release but it is very buggy and incomplete
   url "https://downloads.sourceforge.net/project/gerbv/gerbv/gerbv-2.6.0/gerbv-2.6.0.tar.gz"
