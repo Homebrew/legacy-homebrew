@@ -3,7 +3,6 @@ class Mono < Formula
   homepage "http://www.mono-project.com/"
   url "http://download.mono-project.com/sources/mono/mono-4.2.2.30.tar.bz2"
   sha256 "57858cd033be9915d7abdc5158c1faae8fa05757c3b7117cab3d703aa696c56b"
-  revision 1
 
   # xbuild requires the .exe files inside the runtime directories to
   # be executable
