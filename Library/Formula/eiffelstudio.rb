@@ -1,5 +1,5 @@
 class Eiffelstudio < Formula
-  desc "A development environment for the Eiffel language"
+  desc "Development environment for the Eiffel language"
   homepage "https://www.eiffel.com"
   url "https://ftp.eiffel.com/pub/download/15.08/eiffelstudio-15.08.tar"
   sha256 "e18a85759b0085c94b03c04e75b1cd53998b6672ac5e23d47cf7ee784c63c0b8"
