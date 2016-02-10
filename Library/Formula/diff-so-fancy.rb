@@ -27,6 +27,6 @@ class DiffSoFancy < Formula
   end
 
   test do
-    system "diff-so-fancy"
+    system bin/"diff-so-fancy"
   end
 end
