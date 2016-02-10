@@ -14,20 +14,12 @@ class Bazel < Formula
   depends_on :macos => :yosemite
 
   def install
-    inreplace "src/main/cpp/blaze_startup_options.cc",
-      "/etc/bazel.bazelrc",
-      "#{etc}/bazel/bazel.bazelrc"
-
     ENV["EMBED_LABEL"] = "#{version}-homebrew"
 
     system "./compile.sh"
     system "./output/bazel", "build", "scripts:bash_completion"
 
     bin.install "output/bazel" => "bazel"
-    (prefix/"etc/bazel.bazelrc").write <<-EOS.undent
-    EOS
-    (etc/"bazel").install prefix/"etc/bazel.bazelrc"
-
     bash_completion.install "bazel-bin/scripts/bazel-complete.bash"
     zsh_completion.install "scripts/zsh_completion/_bazel"
   end
