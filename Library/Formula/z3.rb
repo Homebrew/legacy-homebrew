@@ -24,7 +24,7 @@ class Z3 < Formula
     inreplace "scripts/mk_util.py", "dist-packages", "site-packages"
 
     Language::Python.each_python(build) do |python, version|
-      system python, "scripts/mk_make.py", "--prefix=#{prefix}"
+      system python, "scripts/mk_make.py", "--prefix=#{prefix}", "--staticlib"
       cd "build" do
         system "make"
         system "make", "install"
