@@ -512,9 +512,9 @@ class FormulaAuditor
     end
 
     problem "GitHub fork (not canonical repository)" if metadata["fork"]
-    if (metadata["forks_count"] < 10) && (metadata["subscribers_count"] < 10) &&
-       (metadata["stargazers_count"] < 20)
-      problem "GitHub repository not notable enough (<10 forks, <10 watchers and <20 stars)"
+    if (metadata["forks_count"] < 50) && (metadata["subscribers_count"] < 50) &&
+       (metadata["stargazers_count"] < 100)
+      problem "GitHub repository not notable enough (<50 forks, <50 watchers and <100 stars)"
     end
 
     if Date.parse(metadata["created_at"]) > (Date.today - 30)
