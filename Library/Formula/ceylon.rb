@@ -1,8 +1,8 @@
 class Ceylon < Formula
   desc "Programming language for writing large programs in teams"
   homepage "http://ceylon-lang.org/"
-  url "http://ceylon-lang.org/download/dist/1_2_0"
-  sha256 "2e3b50e3e80ea3a356d0d62a2cff5b59104c591aa06387e55cd34a10d52c2919"
+  url "http://ceylon-lang.org/download/dist/1_2_1"
+  sha256 "08379f76e5ce2db01f015efbfde05ecc7c8a8244441459eb7c4ea830eabaa1bb"
 
   bottle :unneeded
 
