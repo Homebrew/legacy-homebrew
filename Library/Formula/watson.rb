@@ -1,5 +1,5 @@
 class Watson < Formula
-  desc "Command-line too to track (your) time"
+  desc "Command-line tool to track (your) time"
   homepage "https://tailordev.github.io/Watson/"
   url "https://github.com/TailorDev/Watson/archive/1.3.1.tar.gz"
   sha256 "de7190f8cb304004b096be1b5992eb826306da75cbaa04fd588ab113c08e0250"
