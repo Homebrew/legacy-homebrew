@@ -1,11 +1,10 @@
 class Muparser < Formula
   desc "C++ math expression parser library"
   homepage "http://muparser.beltoforion.de/"
-  url "https://docs.google.com/uc?export=download&id=0BzuB-ydOOoduejdwdTQwcF9JLTA"
-  version "2.2.4"
-  sha256 "fe4e207b9b5ee0e8ba155c3a7cc22ea6085313e0a17b7568a8a86eaa0d441431"
+  url "https://github.com/beltoforion/muparser/archive/v2.2.5.tar.gz"
+  sha256 "0666ef55da72c3e356ca85b6a0084d56b05dd740c3c21d26d372085aa2c6e708"
 
-  head "http://muparser.googlecode.com/svn/trunk/"
+  head "https://github.com/beltoforion/muparser.git"
 
   bottle do
     cellar :any
@@ -14,8 +13,11 @@ class Muparser < Formula
     sha256 "b3ca223c600162789f56a26d73db8b086234a16923d0db6c346f2accef30d829" => :mountain_lion
   end
 
+  option :universal
+
   def install
-    chmod 0755, "./configure"
+    ENV.universal_binary if build.universal?
+
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
