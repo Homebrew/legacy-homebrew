@@ -8,9 +8,9 @@ class Muparser < Formula
 
   bottle do
     cellar :any
-    sha256 "3d580042b67b5f23bb7c255baaf6c079e030516afc7f0bb25d3978259628f098" => :yosemite
-    sha256 "6e4a1373a02ff289d474514fdffc77a80cebf30e37fb5fe51f2dd9c659163bf4" => :mavericks
-    sha256 "b3ca223c600162789f56a26d73db8b086234a16923d0db6c346f2accef30d829" => :mountain_lion
+    sha256 "126f7a337787b326f4727d12bbd4e9758609a41127e4145fecc69db131be4e80" => :el_capitan
+    sha256 "43a9e242f7abf60709e4b8fe8d629ddeb88d693af400d0e1aa894267b9d5b646" => :yosemite
+    sha256 "e6945023b6e8e758c0fd3ec69d66119a60b3179881b4dedd18bdfbddeb75eb53" => :mavericks
   end
 
   option :universal
