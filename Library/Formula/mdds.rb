@@ -6,9 +6,9 @@ class Mdds < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "fac0ca8a8b5fd716123480278668ff6e91a2f9c8550e1566fa4d77d364dca7a3" => :el_capitan
-    sha256 "b5f47377a54114b6145bd613fd827626506264c5febe8a6cf7a52619415e8505" => :yosemite
-    sha256 "9b85733acd96f6cf98db27e6b19aeb03fa83f63d5522dd3684933a1a1bd95523" => :mavericks
+    sha256 "47a1316524f2717d7dbac84c1c060dac8e2297ef61dd86e9350d202e30f19a74" => :el_capitan
+    sha256 "e03dfcf7ba2f4d84226b8cb53745d7aa52d5413ce3f55e937b42975bc475bbee" => :yosemite
+    sha256 "defd1f5bddfd8666b53e295e98f7d184005230adec3e6cd67ff964217eca36eb" => :mavericks
   end
 
   depends_on "boost"
