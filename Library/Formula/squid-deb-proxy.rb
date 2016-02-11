@@ -22,7 +22,7 @@ class SquidDebProxy < Formula
       s.gsub! /(\binstall\b.*?)(\s+-[og]\s*\S+)+/, "\\1"
 
       # fix paths with the HOMEBREW_PREFIX
-      s.gsub! "/usr/sbin/squid", "#{HOMEBREW_PREFIX}/opt/squid/sbin/squid"
+      s.gsub! "/usr/sbin/squid", "#{Formula["squid"].opt_sbin}/squid"
       s.gsub! %r{([\s='"])/etc/}, "\\1#{etc}/"
       s.gsub! %r{([\s='"])/var/}, "\\1#{var}/"
     end
@@ -38,46 +38,41 @@ class SquidDebProxy < Formula
     system "make", "install", "DESTDIR=#{prefix}"
 
     # additional installation from debian/squid-deb-proxy.install
-    mkdir_p "#{prefix}/usr/share/squid-deb-proxy"
-    cp "init-common.sh", "#{prefix}/usr/share/squid-deb-proxy/"
+    (prefix/"usr/share/squid-deb-proxy").install "init-common.sh"
 
     # produce execution wrapper script
-    Pathname.new("#{sbin}/squid-deb-proxy").write(
-      <<-EOS.undent
+    (sbin/"squid-deb-proxy").write <<-EOS.undent
       #!/bin/bash
 
       . '#{opt_prefix}/usr/share/squid-deb-proxy/init-common.sh'
       pre_start
 
       exec "$SQUID" -f '#{etc}/squid-deb-proxy/squid-deb-proxy.conf' "$@"
-      EOS
-    )
+    EOS
 
     # produce placeholder files from debian/squid-deb-proxy.postinst
     # these also serve to prevent the directories from being removed
-    user_conf      = "#{etc}/squid-deb-proxy/squid.conf.d/10-default.conf"
-    user_networks  = "#{etc}/squid-deb-proxy/allowed-networks-src.acl.d/10-default"
-    user_dests     = "#{etc}/squid-deb-proxy/mirror-dstdomain.acl.d/10-default"
-    user_blacklist = "#{etc}/squid-deb-proxy/pkg-blacklist.d/10-default"
-    Pathname.new(user_conf).write(
-      <<-EOS.undent
+    user_conf      = etc/"squid-deb-proxy/squid.conf.d/10-default.conf"
+    user_networks  = etc/"squid-deb-proxy/allowed-networks-src.acl.d/10-default"
+    user_dests     = etc/"squid-deb-proxy/mirror-dstdomain.acl.d/10-default"
+    user_blacklist = etc/"squid-deb-proxy/pkg-blacklist.d/10-default"
+
+    user_conf.write <<-EOS.undent
       # #{user_conf}
       #
       # additional Squid configuration
-      EOS
-    )
-    Pathname.new(user_networks).write(
-      <<-EOS.undent
+    EOS
+
+    user_networks.write <<-EOS.undent
       # #{user_networks}
       #
       # additional network sources that you want to allow access to the cache
 
       # example net
       #136.199.8.0/24
-      EOS
-    )
-    Pathname.new(user_dests).write(
-      <<-EOS.undent
+    EOS
+
+    user_dests.write <<-EOS.undent
       # #{user_dests}
       #
       # network destinations that are allowed by this cache
@@ -93,26 +88,16 @@ class SquidDebProxy < Formula
       #packages.medibuntu.org
       #dl.google.com
       #repo.steampowered.com
-      EOS
-    )
-    Pathname.new(user_blacklist).write(
-      <<-EOS.undent
+    EOS
+
+    user_blacklist.write <<-EOS.undent
       # #{user_blacklist}
       #
       # packages that should be not allowed for download, one binary packagename
       # per line
       #
       #skype
-      EOS
-    )
-  end
-
-  test do
-    # This test should start squid and then check it runs correctly.
-    # However, anything further would involve starting the daemon, which is
-    # problematic. See the comments in `test do` in the `squid` formula.
-    # This *does* at least test the wrapper script.
-    system "#{opt_sbin}/squid-deb-proxy", "-v"
+    EOS
   end
 
   def plist; <<-EOS.undent
@@ -137,6 +122,14 @@ class SquidDebProxy < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    # This test should start squid and then check it runs correctly.
+    # However, anything further would involve starting the daemon, which is
+    # problematic. See the comments in `test do` in the `squid` formula.
+    # This *does* at least test the wrapper script.
+    system "#{opt_sbin}/squid-deb-proxy", "-v"
   end
 end
 __END__
