@@ -1,7 +1,7 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
-  homepage "http://poppler.freedesktop.org"
-  url "http://poppler.freedesktop.org/poppler-0.40.0.tar.xz"
+  homepage "https://poppler.freedesktop.org/"
+  url "https://poppler.freedesktop.org/poppler-0.40.0.tar.xz"
   sha256 "bc0da278d6038ffc9cd2b8c1bba530a6ec7c072a593219a48f0a52a600ee6ead"
 
   bottle do
@@ -36,7 +36,7 @@ class Poppler < Formula
   conflicts_with "pdftohtml", :because => "both install `pdftohtml` binaries"
 
   resource "font-data" do
-    url "http://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz"
+    url "https://poppler.freedesktop.org/poppler-data-0.4.7.tar.gz"
     sha256 "e752b0d88a7aba54574152143e7bf76436a7ef51977c55d6bd9a48dccde3a7de"
   end
 
