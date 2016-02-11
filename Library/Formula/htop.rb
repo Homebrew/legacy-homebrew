@@ -25,7 +25,6 @@ class Htop < Formula
 
   test do
     ENV["TERM"] = "xterm"
-    pipe_output("#{bin}/htop", "q")
-    assert $?.success?
+    pipe_output("#{bin}/htop", "q", 0)
   end
 end
