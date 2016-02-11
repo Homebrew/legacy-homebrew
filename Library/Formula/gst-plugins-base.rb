@@ -1,7 +1,7 @@
 class GstPluginsBase < Formula
   desc "GStreamer plugins (well-supported, basic set)"
-  homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.6.3.tar.xz"
+  homepage "https://gstreamer.freedesktop.org/"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-base/gst-plugins-base-1.6.3.tar.xz"
   sha256 "b6154f8fdba4877e95efd94610ef0ada4f0171cd12eb829a3c3c97345d9c7a75"
 
   bottle do
@@ -11,7 +11,7 @@ class GstPluginsBase < Formula
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-plugins-base"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-plugins-base.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
