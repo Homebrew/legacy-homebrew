@@ -11,6 +11,12 @@ class Netperf < Formula
     sha256 "4e0aa192670d1de341e77e0bd3af4b2cccc6a5b12a734e922e92c7b7d50f281d" => :mountain_lion
   end
 
+  # patch fixes demo mode which is required by a lot of software that depends on netperf
+  patch :p2 do
+    url "https://raw.githubusercontent.com/trelane/netperf-brew-patch/master/netlib.diff"
+    sha256 "a0bfadd5c1ba8edee10b02703bd42a3f8fb8fc13f765d65b4b10add29a78567c"
+  end
+
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
