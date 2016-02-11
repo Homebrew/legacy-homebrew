@@ -6,6 +6,13 @@ class Watson < Formula
 
   head "https://github.com/TailorDev/Watson.git"
 
+  bottle do
+    cellar :any_skip_relocation
+    sha256 "1e339ad5addbd5db13e77aafb488a548de1f0ce59bd4a8b3e4ab8b9563ee2c88" => :el_capitan
+    sha256 "6d322b05eeb5d37129e8ffe5b91747a3de1d7300bd69dd1a21ca2744f5fdd521" => :yosemite
+    sha256 "6ade33b986db02b3f33f459b68ab0fd59b1536510a4ccb269fb8e3a6ff02b119" => :mavericks
+  end
+
   depends_on :python if MacOS.version <= :snow_leopard
 
   resource "arrow" do
