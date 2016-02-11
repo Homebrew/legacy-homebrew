@@ -1,7 +1,7 @@
 class DesktopFileUtils < Formula
   desc "Command-line utilities for working with desktop entries"
   homepage "https://wiki.freedesktop.org/www/Software/desktop-file-utils/"
-  url "http://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.22.tar.xz"
+  url "https://www.freedesktop.org/software/desktop-file-utils/releases/desktop-file-utils-0.22.tar.xz"
   sha256 "843532672692f98e9b2d6ae6cc8658da562dfde1606c7f33d9d227a344de56c5"
 
   bottle do
@@ -14,11 +14,10 @@ class DesktopFileUtils < Formula
   depends_on "glib"
 
   def install
-    system "./configure", "--disable-debug",
-                          "--disable-dependency-tracking",
+    system "./configure", "--disable-dependency-tracking",
                           "--disable-silent-rules",
                           "--prefix=#{prefix}",
-                          "--with-lispdir=#{share}/emacs/site-lisp/desktop-file-utils"
+                          "--with-lispdir=#{elisp}"
     system "make", "install"
   end
 
