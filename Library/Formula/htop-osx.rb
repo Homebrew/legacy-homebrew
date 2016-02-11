@@ -14,6 +14,8 @@ class HtopOsx < Formula
   depends_on "automake" => :build
   depends_on "libtool" => :build
 
+  conflicts_with "htop", :because => "both install an `htop` binary"
+
   def install
     # Otherwise htop will segfault when resizing the terminal
     ENV.no_optimization if ENV.compiler == :clang
@@ -24,7 +26,7 @@ class HtopOsx < Formula
   end
 
   def caveats; <<-EOS.undent
-    htop-osx requires root privileges to correctly display all running processes.
+    htop-osx requires root privileges to correctly display all running processes,
     so you will need to run `sudo htop`.
     You should be certain that you trust any software you grant root privileges.
     EOS
@@ -32,7 +34,6 @@ class HtopOsx < Formula
 
   test do
     ENV["TERM"] = "xterm"
-    pipe_output("#{bin}/htop", "q")
-    assert $?.success?
+    pipe_output("#{bin}/htop", "q", 0)
   end
 end
