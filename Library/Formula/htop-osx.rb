@@ -1,8 +1,8 @@
 class HtopOsx < Formula
   desc "Improved top (interactive process viewer) for OS X"
-  homepage "https://github.com/max-horvath/htop-osx"
-  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.8.tar.gz"
-  sha256 "3d8614a3be5f5ba76a96b22c14a456dc66242c5ef1ef8660a60bb6b766543458"
+  homepage "http://hisham.hm/htop"
+  url "https://github.com/hishamhm/htop/archive/2.0.0.zip"
+  sha256 "52cef3d9928ba83c73cec15de0598a8205950646c746a9395a04bdb0a4baa6c5"
 
   bottle do
     sha256 "cbb0df837038f53f489d00cb89ed676463e341a9f1520735137f42a5bbd3c799" => :el_capitan
@@ -20,11 +20,11 @@ class HtopOsx < Formula
 
     system "./autogen.sh"
     system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install", "DEFAULT_INCLUDES='-iquote .'"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
-    htop-osx requires root privileges to correctly display all running processes.
+    htop requires root privileges to correctly display all running processes.
     so you will need to run `sudo htop`.
     You should be certain that you trust any software you grant root privileges.
     EOS
