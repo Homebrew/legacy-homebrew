@@ -5,6 +5,8 @@ class GerritTools < Formula
   sha256 "c3a84af2ddb0f17b7a384e5dbc797329fb94d2499a75b6d8f4c8ed06a4a482dd"
   head "https://github.com/indirect/gerrit-tools.git"
 
+  bottle :unneeded
+
   def install
     prefix.install "bin"
   end
