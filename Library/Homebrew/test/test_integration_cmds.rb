@@ -28,9 +28,16 @@ class IntegrationCommandTests < Homebrew::TestCase
       -W0
       -I#{HOMEBREW_LIBRARY_PATH}/test/lib
       -rconfig
-      -rintegration_mocks
     ]
-    cmd_args << "-rsimplecov" if ENV["HOMEBREW_TESTS_COVERAGE"]
+    if ENV["HOMEBREW_TESTS_COVERAGE"]
+      # This is needed only because we currently use a patched version of
+      # simplecov, and gems installed through git are not available without
+      # requiring bundler/setup first. See also the comment in test/Gemfile.
+      # Remove this line when we'll switch back to a stable simplecov release.
+      cmd_args << "-rbundler/setup"
+      cmd_args << "-rsimplecov"
+    end
+    cmd_args << "-rintegration_mocks"
     cmd_args << (HOMEBREW_LIBRARY_PATH/"../brew.rb").resolved_path.to_s
     cmd_args += args
     Bundler.with_original_env do
@@ -145,14 +152,18 @@ class IntegrationCommandTests < Homebrew::TestCase
         url "https://example.com/testball-0.1.tar.gz"
       end
     EOS
-    HOMEBREW_CACHE.cd do
-      assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
-                   cmd_output("bottle", "--no-revision", "testball"))
+    # `brew bottle` should not fail with dead symlink
+    # https://github.com/Homebrew/homebrew/issues/49007
+    (HOMEBREW_CELLAR/"testball/0.1").cd do
+      FileUtils.ln_s "not-exist", "symlink"
     end
+    assert_match(/testball-0\.1.*\.bottle\.tar\.gz/,
+                  cmd_output("bottle", "--no-revision", "testball"))
   ensure
     cmd("uninstall", "--force", "testball")
     cmd("cleanup", "--force", "--prune=all")
     formula_file.unlink unless formula_file.nil?
+    FileUtils.rm_f Dir["testball-0.1*.bottle.tar.gz"]
   end
 
   def test_uninstall
@@ -631,6 +642,56 @@ class IntegrationCommandTests < Homebrew::TestCase
     assert_match "This is a test commit", cmd("log")
   ensure
     (HOMEBREW_REPOSITORY/".git").rmtree
+  end
+
+  def test_leaves
+    formula_dir = CoreFormulaRepository.new.formula_dir
+    formula_file1 = formula_dir/"testball1.rb"
+    formula_file2 = formula_dir/"testball2.rb"
+    formula_file1.write <<-EOS.undent
+      class Testball1 < Formula
+        url "https://example.com/testball1-0.1.tar.gz"
+      end
+    EOS
+    formula_file2.write <<-EOS.undent
+      class Testball2 < Formula
+        url "https://example.com/testball2-0.1.tar.gz"
+        depends_on "testball1"
+      end
+    EOS
+    assert_equal "", cmd("leaves")
+
+    (HOMEBREW_CELLAR/"testball1/0.1/somedir").mkpath
+    assert_equal "testball1", cmd("leaves")
+
+    (HOMEBREW_CELLAR/"testball2/0.1/somedir").mkpath
+    assert_equal "testball2", cmd("leaves")
+  ensure
+    (HOMEBREW_CELLAR/"testball1").rmtree
+    (HOMEBREW_CELLAR/"testball2").rmtree
+    formula_file1.unlink
+    formula_file2.unlink
+  end
+
+  def test_prune
+    share = (HOMEBREW_PREFIX/"share")
+
+    (share/"pruneable/directory/here").mkpath
+    (share/"notpruneable/file").write "I'm here"
+    FileUtils.ln_s "/i/dont/exist/no/really/i/dont", share/"pruneable_symlink"
+
+    assert_match %r{Would remove \(empty directory\): .*/pruneable/directory/here},
+      cmd("prune", "--dry-run")
+    assert_match "Pruned 1 symbolic links and 3 directories",
+      cmd("prune")
+    refute (share/"pruneable").directory?
+    assert (share/"notpruneable").directory?
+    refute (share/"pruneable_symlink").symlink?
+
+    assert_equal "Nothing pruned",
+      cmd("prune", "--verbose")
+  ensure
+    share.rmtree
   end
 
   def test_custom_command

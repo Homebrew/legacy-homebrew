@@ -1,14 +1,13 @@
 class Libgsf < Formula
   desc "I/O abstraction library for dealing with structured file formats"
   homepage "https://developer.gnome.org/gsf/"
-  url "https://download.gnome.org/sources/libgsf/1.14/libgsf-1.14.34.tar.xz"
-  sha256 "f0fea447e0374a73df45b498fd1701393f8e6acb39746119f8a292fb4a0cb528"
+  url "https://download.gnome.org/sources/libgsf/1.14/libgsf-1.14.35.tar.xz"
+  sha256 "8fad55e6782bf72466c6335c6bdcb2552d9da10c655486c699b6464bac2ff847"
 
   bottle do
-    sha256 "45ae9585c41b9cd05beb392226e2ce4faa3af1adb56bfca45ee2c7a0b2b4b1f4" => :el_capitan
-    sha256 "359010b22bffe86b2050b5ac7070135c0aba002e82e6859ac08e4591e34e8e8d" => :yosemite
-    sha256 "b2ba99018e027a52cf5ab35adfa2b61cb8c48d311260a20afb39967ac3acac7f" => :mavericks
-    sha256 "81569d95a4947a5c022cad55c974ffbb47588720c6b97693e0e4fff62c9fbee9" => :mountain_lion
+    sha256 "775e4b30af0be717cdec1cbd2d17947813307716c1cc459b8f52606809590550" => :el_capitan
+    sha256 "0279898c84119cc5099aa38dbaeb4c4d53083f6a0ea83d2dd6ec4ca8c2eaed14" => :yosemite
+    sha256 "b810c50c6792546d7e870c3eeedbfe205a95f94365bf82fff78be8dc704423c9" => :mavericks
   end
 
   head do

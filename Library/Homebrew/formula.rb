@@ -871,7 +871,7 @@ class Formula
   # @private
   def link_overwrite?(path)
     # Don't overwrite files not created by Homebrew.
-    return false unless path.stat.uid == File.stat(HOMEBREW_BREW_FILE).uid
+    return false unless path.stat.uid == HOMEBREW_BREW_FILE.stat.uid
     # Don't overwrite files belong to other keg except when that
     # keg's formula is deleted.
     begin

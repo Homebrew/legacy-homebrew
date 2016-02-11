@@ -13,6 +13,13 @@ class JpegTurbo < Formula
 
   option "without-test", "Skip build-time checks (Not Recommended)"
 
+  head do
+    url "https://github.com/libjpeg-turbo/libjpeg-turbo.git"
+
+    depends_on "automake" => :build
+    depends_on "autoconf" => :build
+  end
+
   depends_on "libtool" => :build
 
   keg_only "libjpeg-turbo is not linked to prevent conflicts with the standard libjpeg."
@@ -39,6 +46,7 @@ class JpegTurbo < Formula
       args << "NASM=#{buildpath}/nasm/bin/nasm"
     end
 
+    system "autoreconf", "-fvi" if build.head?
     system "./configure", *args
     system "make"
     system "make", "test" if build.with? "test"

@@ -1,14 +1,14 @@
 class Zimg < Formula
   desc "Scaling, colorspace conversion, and dithering library"
   homepage "https://github.com/sekrit-twc/zimg"
-  url "https://github.com/sekrit-twc/zimg/archive/release-2.0.2.tar.gz"
-  sha256 "b9c7bac9e6ad53dfa94215c28440167d72d41109df10278673789f8e531f2142"
+  url "https://github.com/sekrit-twc/zimg/archive/release-2.0.4.tar.gz"
+  sha256 "e3b1f5b9f8ce750f96b9bc9801ff5d6aa931d35300d67711826e397df43c5245"
 
   bottle do
     cellar :any
-    sha256 "22c9bdbc35f215f8ddf524ff5b3d0cb2cd8295f29f96c5e9c6179b8267b692b9" => :el_capitan
-    sha256 "8c1816bd05d9e16b4ba287c60089d84d6e02fe5d99cb0d005076fb99e22c58c3" => :yosemite
-    sha256 "3e608f7eeaa6c76e31a26209aa1e4ad4136cab30bd49192e663cb4f2df06bff3" => :mavericks
+    sha256 "3be1b41723e243ddbe287921f24bc8390281a0d2e642beffd70356ae208db7bf" => :el_capitan
+    sha256 "76d9e9579b6aec4cca6c3d5b5472ae2800389b01f1cc2c90998088c7e9a85f14" => :yosemite
+    sha256 "7768866e683f5e05098f560fbe2ce44779a88d2ab719fd5af49f9d92a05057e8" => :mavericks
   end
 
   depends_on "autoconf" => :build

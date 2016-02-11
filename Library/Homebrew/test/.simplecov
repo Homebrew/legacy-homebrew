@@ -3,7 +3,7 @@
 SimpleCov.start do
   tests_path = File.dirname(__FILE__)
 
-  minimum_coverage 60
+  minimum_coverage 40
   coverage_dir File.expand_path("#{tests_path}/coverage")
   root File.expand_path("#{tests_path}/../../")
 
@@ -11,6 +11,13 @@ SimpleCov.start do
   add_filter "Homebrew/compat/"
   add_filter "Homebrew/test/"
   add_filter "Homebrew/vendor/"
+  add_filter "Taps/"
+
+  # Not using this during integration tests makes the tests 4x times faster
+  # without changing the coverage.
+  unless ENV["HOMEBREW_INTEGRATION_TEST"]
+    track_files "#{SimpleCov.root}/**/*.rb"
+  end
 end
 
 if ENV["HOMEBREW_INTEGRATION_TEST"]
@@ -23,7 +30,9 @@ if ENV["HOMEBREW_INTEGRATION_TEST"]
   end
 end
 
-if RUBY_VERSION.split(".").first.to_i >= 2 && !ENV["HOMEBREW_INTEGRATION_TEST"]
+# Don't use Coveralls outside of CI, as it will override SimpleCov's default
+# formatter causing the `index.html` not to be written once all tests finish.
+if RUBY_VERSION.split(".").first.to_i >= 2 && !ENV["HOMEBREW_INTEGRATION_TEST"] && ENV["CI"]
   require "coveralls"
   Coveralls.wear!
 end

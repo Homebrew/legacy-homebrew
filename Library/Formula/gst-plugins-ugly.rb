@@ -1,7 +1,7 @@
 class GstPluginsUgly < Formula
   desc "GStreamer plugins (well-supported, possibly problematic for distributors)"
-  homepage "http://gstreamer.freedesktop.org/"
-  url "http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.6.3.tar.xz"
+  homepage "https://gstreamer.freedesktop.org/"
+  url "https://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-1.6.3.tar.xz"
   sha256 "2fecf7b7c7882f8f62f1900048f4013f98c214fb3d3303d8d812245bb41fd064"
 
   bottle do
@@ -11,7 +11,7 @@ class GstPluginsUgly < Formula
   end
 
   head do
-    url "git://anongit.freedesktop.org/gstreamer/gst-plugins-ugly"
+    url "https://anongit.freedesktop.org/git/gstreamer/gst-plugins-ugly.git"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build

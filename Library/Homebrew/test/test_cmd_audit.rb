@@ -301,10 +301,9 @@ class FormulaAuditorTests < Homebrew::TestCase
   end
 
   # Regression test for https://github.com/Homebrew/homebrew/pull/48744
-  # Formulae with "++" in their name would break the name check because of a
-  # regexp error:
+  # Formulae with "++" in their name would break various audit regexps:
   #   Error: nested *?+ in regexp: /^libxml++3\s/
-  def test_audit_desc_plus_plus_name
+  def test_audit_plus_plus_name
     fa = formula_auditor "foolibc++", <<-EOS.undent, :strict => true
       class Foolibcxx < Formula
         desc "foolibc++ is a test"
@@ -315,5 +314,11 @@ class FormulaAuditorTests < Homebrew::TestCase
     fa.audit_desc
     assert_equal "Description shouldn't include the formula name",
       fa.problems.shift
+
+    fa.audit_line 'ohai "#{share}/foolibc++"', 3
+    assert_equal "Use \#{pkgshare} instead of \#{share}/foolibc++", fa.problems.shift
+
+    fa.audit_line 'ohai share/"foolibc++"', 3
+    assert_equal 'Use pkgshare instead of (share/"foolibc++")', fa.problems.shift
   end
 end

@@ -1,6 +1,7 @@
 class Dmd < Formula
   desc "D programming language compiler for OS X"
   homepage "https://dlang.org/"
+  revision 1
 
   stable do
     url "https://github.com/D-Programming-Language/dmd/archive/v2.070.0.tar.gz"
@@ -23,9 +24,9 @@ class Dmd < Formula
   end
 
   bottle do
-    sha256 "793b9a504c6df3e7f1a1dbeec00fbd20d660a07faee731a303b3c71a07a1ff0f" => :el_capitan
-    sha256 "b3809e8463025fec4174e8e694a2ec8ae5fe3763bae2036cab425a35b0332496" => :yosemite
-    sha256 "a64e72d53b6a0452769cce6010fa185a2283030804bfb20ffbce13f55b8be415" => :mavericks
+    sha256 "ee1163af3c5090e2e397a80bf97d5360b1a9da061690632124336b0a986cff32" => :el_capitan
+    sha256 "355a7466679114275ff57cea14aba902f2a947653c883f177e61efa093b38694" => :yosemite
+    sha256 "963c68712d2fbdb1b1e6ef67ead28cc44a4949dd660a1e121c2c20efcdc7c1ca" => :mavericks
   end
 
   head do
@@ -59,7 +60,7 @@ class Dmd < Formula
     # linked into opt by the time this build runs:
     conf.write <<-EOS.undent
         [Environment]
-        DFLAGS=-I#{include}/d2 -L-L#{lib}
+        DFLAGS=-I#{include}/dlang/dmd -L-L#{lib}
         EOS
     etc.install conf
     install_new_dmd_conf
@@ -72,8 +73,8 @@ class Dmd < Formula
     system "make", "-C", "druntime", *make_args
     system "make", "-C", "phobos", "VERSION=#{buildpath}/VERSION", *make_args
 
-    (include/"d2").install Dir["druntime/import/*"]
-    cp_r ["phobos/std", "phobos/etc"], include/"d2"
+    (include/"dlang/dmd").install Dir["druntime/import/*"]
+    cp_r ["phobos/std", "phobos/etc"], include/"dlang/dmd"
     lib.install Dir["druntime/lib/*", "phobos/**/libphobos2.a"]
 
     resource("tools").stage do

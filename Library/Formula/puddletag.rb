@@ -3,14 +3,15 @@ class Puddletag < Formula
   homepage "http://puddletag.sf.net"
   url "https://github.com/keithgg/puddletag/archive/1.1.1.tar.gz"
   sha256 "550680abf9c2cf082861dfb3b61fd308f87f9ed304065582cddadcc8bdd947cc"
+  revision 1
 
   head "https://github.com/keithgg/puddletag.git"
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "c2d91ff12bef60fd87a560132c962164939dbb08aa518efaaf8f5b974c869ef0" => :el_capitan
-    sha256 "ca24eaa710ec6422ae3998b7496be25cf36f8c750686cc0ecbb2d3787ec6fa4f" => :yosemite
-    sha256 "4501e1d867b8f889da17b8f6e4ad8155c436b7ee54bf9510c16a5a3f78866765" => :mavericks
+    sha256 "66b9869de0ed08574b572ec748a9d60818793dc89786b8881186b1b9f7c49271" => :el_capitan
+    sha256 "a71ba99dda619b47191d6491a4af6985db4ea8b8553a9a0a058162f5c0f4be82" => :yosemite
+    sha256 "d68cf36675cb2a2ed03630d01d418199cef90fcda6d39e733d5754acb6255e51" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
@@ -18,18 +19,18 @@ class Puddletag < Formula
   depends_on "chromaprint" => :recommended
 
   resource "pyparsing" do
-    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-1.5.7.tar.gz"
-    sha256 "646e14f90b3689b005c19ac9b6b390c9a39bf976481849993e277d7380e6e79f"
+    url "https://pypi.python.org/packages/source/p/pyparsing/pyparsing-2.1.0.tar.gz"
+    sha256 "f6cb2bc85a491347c3c699db47f7ecc02903959156b4f92669ebf82395982901"
   end
 
   resource "mutagen" do
-    url "https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.21.tar.gz"
-    sha256 "4dd30af3a291c0a152838f2bbf1d592bf6ede752b11a159cbf84e75815bcc2b5"
+    url "https://bitbucket.org/lazka/mutagen/downloads/mutagen-1.31.tar.gz"
+    sha256 "0aa011707785fe30935d8655380052a20ba8b972aa738d4f144c457b35b4d699"
   end
 
   resource "configobj" do
-    url "https://pypi.python.org/packages/source/c/configobj/configobj-5.0.5.tar.gz"
-    sha256 "766eff273f2cbb007a3ea8aa69429ee9b1553aa96fe282c6ace3769b9ac47b08"
+    url "https://pypi.python.org/packages/source/c/configobj/configobj-5.0.6.tar.gz"
+    sha256 "a2f5650770e1c87fb335af19a9b7eb73fc05ccf22144eb68db7d00cd2bcb0902"
   end
 
   def install
@@ -48,7 +49,7 @@ class Puddletag < Formula
     ENV.prepend_create_path "PYTHONPATH", HOMEBREW_PREFIX/"lib/python2.7/site-packages"
 
     bin.install Dir[libexec/"bin/*"]
-    bin.env_script_all_files(libexec/"bin", :PYTHONPATH => ENV["PYTHONPATH"])
+    bin.env_script_all_files(libexec/"bin", :PATH => "#{HOMEBREW_PREFIX}/bin", :PYTHONPATH => ENV["PYTHONPATH"])
 
     system "sh", "create_macos_app_bundle.sh", "--name", "Puddletag",
                  "--icon", "puddletag.png", "--script", "#{bin}/puddletag"

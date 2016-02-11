@@ -1,14 +1,14 @@
 class SvtplayDl < Formula
   desc "Download videos from http://svtplay.se"
   homepage "https://svtplay-dl.se"
-  url "https://pypi.python.org/packages/source/s/svtplay-dl/svtplay-dl-0.30.2016.1.10.tar.gz"
-  sha256 "0f043c83f8e1619d5d37ca44283416c3839df622e638872ce98db75ba9fb0ab6"
+  url "https://pypi.python.org/packages/source/s/svtplay-dl/svtplay-dl-0.30.2016.2.8.tar.gz"
+  sha256 "ca541a5ce2ef5f8fc7587b5d3bc899d7ff0e86f0fc9cb3cb4f9daaef7632f7f1"
 
   bottle do
     cellar :any
-    sha256 "cb19a87fe1f10921c4a5d687730df31a5573d411db21b687e5429055ce241f11" => :el_capitan
-    sha256 "ee0f3cd942da6daada70ee615aa7ac9e122f94317b7dadf634685992c20e1525" => :yosemite
-    sha256 "715638ac542ce6f7e240b79b86493d2fa78864d624e23c02346e1cd849b69366" => :mavericks
+    sha256 "50347d409e3f966d5e9e049072019b8b1f063fc9184ee47fc254e4871849ec7b" => :el_capitan
+    sha256 "bffc5ca6120c48da4017ed805feff961ecf1fbf65a86f7fed4694f4ad88f411e" => :yosemite
+    sha256 "2cd0ad1d70ad9ac73857b323021c1d1a205cbb60cd7b805d161bfb6fd72af584" => :mavericks
   end
 
   # for request security

@@ -1,7 +1,7 @@
 class Pulseaudio < Formula
   desc "Sound system for POSIX OSes"
-  homepage "http://pulseaudio.org"
-  url "http://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-8.0.tar.xz"
+  homepage "https://wiki.freedesktop.org/www/Software/PulseAudio/"
+  url "https://www.freedesktop.org/software/pulseaudio/releases/pulseaudio-8.0.tar.xz"
   sha256 "690eefe28633466cfd1ab9d85ebfa9376f6b622deec6bfee5091ac9737cd1989"
 
   bottle do
@@ -12,7 +12,7 @@ class Pulseaudio < Formula
   end
 
   head do
-    url "http://anongit.freedesktop.org/git/pulseaudio/pulseaudio.git"
+    url "https://anongit.freedesktop.org/git/pulseaudio/pulseaudio.git"
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "intltool" => :build
