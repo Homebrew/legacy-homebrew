@@ -6,10 +6,10 @@ class Libnice < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "3a14bfa7c0252d38aeb166fce93f8baace5f3ed51728e432838fe2c0f4486746" => :yosemite
-    sha256 "fb43d403aa966cb0dacd28e089a6b02ad376ff4b144393b33bc91f530909786b" => :mavericks
-    sha256 "659391e379d1fe736cc95aff8414a2328cfb424bb9bd962eb35347257688dd3b" => :mountain_lion
+    revision 2
+    sha256 "fbad262bc1c5ebea09031d33d1c67efedee1a24b3b6fe36f18b1f74a86ad1304" => :el_capitan
+    sha256 "d2fae18378a7d83f0e4f0068f07afa6cdc54a8a25f2aa84990cf1a5a18e9788f" => :yosemite
+    sha256 "9d0b9a844dbeeb8d5ef58710d0dac485af94a9dc010edc585a9e73464a12e596" => :mavericks
   end
 
   depends_on "pkg-config" => :build
