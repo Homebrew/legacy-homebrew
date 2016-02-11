@@ -11,16 +11,16 @@ class Pypy < Formula
     sha256 "80225ff2367f678288e2790cc0c265570209f41a2d2fc8f60655d7d5463a08fb" => :mavericks
   end
 
+  option "without-bootstrap", "Translate Pypy with system Python instead of " \
+                              "downloading a Pypy binary distribution to " \
+                              "perform the translation (adds 30-60 minutes " \
+                              "to build)"
+
   depends_on :arch => :x86_64
   depends_on "pkg-config" => :build
   depends_on "gdbm" => :recommended
   depends_on "sqlite" => :recommended
   depends_on "openssl"
-
-  option "without-bootstrap", "Translate Pypy with system Python instead of " \
-                              "downloading a Pypy binary distribution to " \
-                              "perform the translation (adds 30-60 minutes " \
-                              "to build)"
 
   resource "bootstrap" do
     url "https://bitbucket.org/pypy/pypy/downloads/pypy-2.5.0-osx64.tar.bz2"
@@ -87,7 +87,7 @@ class Pypy < Formula
     prefix_site_packages.mkpath
 
     # Symlink the prefix site-packages into the cellar.
-    if !(libexec/"site-packages").symlink?
+    unless (libexec/"site-packages").symlink?
       # fix the case where libexec/site-packages/site-packages was installed
       rm_rf libexec/"site-packages/site-packages"
       mv Dir[libexec/"site-packages/*"], prefix_site_packages
