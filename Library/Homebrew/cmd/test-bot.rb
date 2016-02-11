@@ -832,6 +832,7 @@ module Homebrew
 
     ENV["HOMEBREW_DEVELOPER"] = "1"
     ENV["HOMEBREW_SANDBOX"] = "1"
+    ENV["HOMEBREW_RUBY_MACHO"] = "1"
     ENV["HOMEBREW_NO_EMOJI"] = "1"
     ENV["HOMEBREW_FAIL_LOG_LINES"] = "150"
 
