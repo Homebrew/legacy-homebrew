@@ -1,8 +1,8 @@
 class HtopOsx < Formula
   desc "Improved top (interactive process viewer) for OS X"
-  homepage "https://github.com/max-horvath/htop-osx"
-  url "https://github.com/max-horvath/htop-osx/archive/0.8.2.8.tar.gz"
-  sha256 "3d8614a3be5f5ba76a96b22c14a456dc66242c5ef1ef8660a60bb6b766543458"
+  homepage "https://github.com/hishamhm/htop"
+  url "http://hisham.hm/htop/releases/2.0.0/htop-2.0.0.tar.gz"
+  sha256 "d15ca2a0abd6d91d6d17fd685043929cfe7aa91199a9f4b3ebbb370a2c2424b5"
 
   bottle do
     sha256 "cbb0df837038f53f489d00cb89ed676463e341a9f1520735137f42a5bbd3c799" => :el_capitan
@@ -19,8 +19,8 @@ class HtopOsx < Formula
     ENV.no_optimization if ENV.compiler == :clang
 
     system "./autogen.sh"
-    system "./configure", "--disable-dependency-tracking", "--prefix=#{prefix}"
-    system "make", "install", "DEFAULT_INCLUDES='-iquote .'"
+    system "./configure", "--prefix=#{prefix}"
+    system "make", "install"
   end
 
   def caveats; <<-EOS.undent
