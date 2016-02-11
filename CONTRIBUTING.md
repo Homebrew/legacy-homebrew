@@ -7,7 +7,7 @@ To report a bug:
 
 Submit a `1.2.3` version upgrade for the `foo` formula:
 
-- First check if someone else has already submitted the same upgrade, since it can take time to be tested and incorporated. Search the open Pull Requests for `foo` [like this](https://github.com/Homebrew/homebrew/pulls?utf8=✓&q=is%3Apr+is%3Aopen+foo). If nothing relevant shows up, proceed.
+- Check if the same upgrade has been already submitted by [searching the open pull requests for `foo`](https://github.com/Homebrew/homebrew/pulls?utf8=✓&q=is%3Apr+is%3Aopen+foo).
 
 - `brew edit foo`, edit [`url`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#url-class_method) and [`sha256`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#sha256%3D-class_method)/[`tag`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#url-class_method), leave the [`bottle`](http://www.rubydoc.info/github/Homebrew/homebrew/master/Formula#bottle-class_method) as-is, `brew install foo`, `git commit` with commit subject `foo 1.2.3`, [open a pull request](https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/How-To-Open-a-Homebrew-Pull-Request-(and-get-it-merged).md#how-to-open-a-homebrew-pull-request-and-get-it-merged) and fix any failing tests.
 
