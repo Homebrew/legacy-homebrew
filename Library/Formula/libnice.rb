@@ -1,7 +1,7 @@
 class Libnice < Formula
   desc "GLib ICE implementation"
-  homepage "http://nice.freedesktop.org/wiki/"
-  url "http://nice.freedesktop.org/releases/libnice-0.1.7.tar.gz"
+  homepage "https://wiki.freedesktop.org/nice/"
+  url "https://nice.freedesktop.org/releases/libnice-0.1.7.tar.gz"
   sha256 "4ed165aa2203136dce548c7cef735d8becf5d9869793f96b99dcbbaa9acf78d8"
 
   bottle do
@@ -17,14 +17,8 @@ class Libnice < Formula
   depends_on "gstreamer"
 
   def install
-    args = %W[
-      --prefix=#{prefix}
-      --disable-debug
-      --disable-dependency-tracking
-      --disable-silent-rules
-    ]
-
-    system "./configure",  *args
+    system "./configure", "--prefix=#{prefix}", "--disable-dependency-tracking",
+                          "--disable-silent-rules"
     system "make", "install"
   end
 end
