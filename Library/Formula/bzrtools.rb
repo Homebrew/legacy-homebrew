@@ -22,5 +22,4 @@ class Bzrtools < Formula
       assert_match msg, shell_output("bzr heads")
     end
   end
-
 end
