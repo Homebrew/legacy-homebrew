@@ -5,9 +5,9 @@ class Kibana < Formula
   head "https://github.com/elastic/kibana.git"
 
   bottle do
-    sha256 "f6fd5b4923cc1f8ca41ec27048c5ac4a13d379315a5920ee0e1a938d6489868d" => :el_capitan
-    sha256 "f83fdee5a0218092c9592ee1c47aae4588d9cd49ab49946323a15c542c5d2f38" => :yosemite
-    sha256 "234466f181d855643864d2bfd400226c4bde8c7a0976cabbfbfb878c9fe0115e" => :mavericks
+    sha256 "b1574e0304b8ef6dda8bc05d5a9a60b67eceb44c0a3e4af14234a42f4fbe427f" => :el_capitan
+    sha256 "8ff1628b114f30af4e407ba7710e3eda76323ddd857ff71f09f89e6c01eda2f3" => :yosemite
+    sha256 "8467ffb8a12a06fef5d2414f874f0c557f8457f1fab0f8ab0e07bd2aff344a97" => :mavericks
   end
 
   resource "node" do
