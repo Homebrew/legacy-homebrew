@@ -61,6 +61,13 @@ class Wine < Formula
     sha256 "30766403f5064a115f61de8cacba1defddffe2dd898b59557956400470adc699"
   end
 
+  # Patch to fix MSI creation issues.
+  # https://bugs.winehq.org/show_bug.cgi?id=40129
+  patch do
+    url "https://bugs.winehq.org/attachment.cgi?id=53632"
+    sha256 "b9f98711cfe62228f5d84ab394394008ee10127bebcea7ef966d24127b466e0a"
+  end
+
   # This option is currently disabled because Apple clang currently doesn't
   # support a required feature: http://reviews.llvm.org/D1623
   # It builds fine with GCC, however.
