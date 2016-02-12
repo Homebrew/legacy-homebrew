@@ -208,6 +208,7 @@ TAP_MIGRATIONS = {
   "tabbed" => "homebrew/x11",
   "telepathy-gabble" => "homebrew/boneyard",
   "telepathy-idle" => "homebrew/boneyard",
+  "telepathy-mission-control" => "homebrew/boneyard",
   "terminator" => "homebrew/gui",
   "tetgen" => "homebrew/science",
   "texmacs" => "homebrew/boneyard",
