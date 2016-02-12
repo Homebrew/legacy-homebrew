@@ -1,9 +1,9 @@
 class Vifm < Formula
   desc "Ncurses based file manager with vi like keybindings"
   homepage "https://vifm.info/"
-  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.8.1.tar.bz2"
-  mirror "https://github.com/vifm/vifm/releases/download/v0.8.1/vifm-0.8.1.tar.bz2"
-  sha256 "9918ac96290f9bb2da0fdbd6e579af19de32d9eca41d0ceb5e2cb7cf08ebc379"
+  url "https://downloads.sourceforge.net/project/vifm/vifm/vifm-0.8.1a.tar.bz2"
+  mirror "https://github.com/vifm/vifm/releases/download/v0.8.1a/vifm-0.8.1a.tar.bz2"
+  sha256 "974fb2aa5e32d2c729ceff678c595070c701bd30a6ccc5cb6ca64807a9dd4422"
 
   bottle do
     sha256 "88710cadc4638de655ad4e6522261a3af830c12284456f8915131dbb7b26f756" => :el_capitan
