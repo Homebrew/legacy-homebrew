@@ -1,8 +1,8 @@
 class PreCommit < Formula
   desc "Framework for managing multi-language pre-commit hooks"
   homepage "http://pre-commit.com/"
-  url "https://github.com/pre-commit/pre-commit/archive/v0.6.2.tar.gz"
-  sha256 "e659d79d7703442250e0a1795309f42578ac887e92bf33f69ff19da4cc00bb51"
+  url "https://github.com/pre-commit/pre-commit/archive/v0.7.6.tar.gz"
+  sha256 "817e794d62189e649f219491ca529f2208b3e331d06eddb1b4c4118e580c1235"
 
   bottle do
     cellar :any_skip_relocation
@@ -54,8 +54,8 @@ class PreCommit < Formula
   end
 
   resource "virtualenv" do
-    url "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-13.1.2.tar.gz"
-    sha256 "aabc8ef18cddbd8a2a9c7f92bc43e2fea54b1147330d65db920ef3ce9812e3dc"
+    url "https://pypi.python.org/packages/source/v/virtualenv/virtualenv-14.0.6.tar.gz"
+    sha256 "1ffb6a02d8999e9c97ad8f04b1d2ba44421dfb8f8a98b54aea5c6fdfb53bc526"
   end
 
   resource "functools32" do
