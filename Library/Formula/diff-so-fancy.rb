@@ -7,7 +7,6 @@ class DiffSoFancy < Formula
   depends_on "gnu-sed"
 
   def install
-    inreplace "diff-so-fancy", "sed", "gsed"
     libexec.install Dir["*"]
     bin.install_symlink libexec/"diff-so-fancy"
   end
