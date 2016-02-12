@@ -97,6 +97,19 @@ rename_taps_dir_if_necessary() {
   done
 }
 
+reset_on_interrupt_fetch() {
+  # kill all subprocesses on interrupt
+  pkill -P $$
+  wait
+
+  if [[ -n "$HOMEBREW_SSH_AGENT_PID" ]]
+  then
+    kill "$HOMEBREW_SSH_AGENT_PID"
+  fi
+
+  exit 130
+}
+
 repo_var() {
   local repo_var
 
@@ -142,7 +155,7 @@ pop_stash_message() {
   unset STASHED
 }
 
-reset_on_interrupt() {
+reset_on_interrupt_pull() {
   if [[ "$INITIAL_BRANCH" != "$UPSTREAM_BRANCH" && -n "$INITIAL_BRANCH" ]]
   then
     git checkout "$INITIAL_BRANCH"
@@ -194,7 +207,7 @@ pull() {
     return
   fi
 
-  trap reset_on_interrupt SIGINT
+  trap reset_on_interrupt_pull SIGINT
 
   if [[ -n "$(git status --untracked-files=all --porcelain 2>/dev/null)" ]]
   then
@@ -320,8 +333,24 @@ EOS
   # this procedure will be removed in the future if it seems unnecessary
   rename_taps_dir_if_necessary
 
-  # kill all of subprocess on interrupt
-  trap '{ pkill -P $$; wait; exit 130; }' SIGINT
+  # Spawn ssh-agent if it's not running and at least one of repos is using ssh
+  # https://github.com/Homebrew/homebrew/issues/48267
+  for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
+  do
+    [[ -d "$DIR/.git" ]] || continue
+    cd "$DIR" || continue
+    remote="$(git config --get remote.origin.url 2>/dev/null)"
+    [[ "$remote" =~ ^.+:// && ! "$remote" =~ ^ssh:// ]] && continue
+    if ! [[ -n "$SSH_AUTH_SOCK" && -e "$SSH_AUTH_SOCK" ]]
+    then
+      echo "starting ssh-agent..."
+      eval "$(/usr/bin/env ssh-agent)"
+      HOMEBREW_SSH_AGENT_PID="$SSH_AGENT_PID"
+    fi
+    break
+  done
+
+  trap reset_on_interrupt_fetch SIGINT
 
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
   do
@@ -335,6 +364,15 @@ EOS
   done
 
   wait
+
+  trap '' SIGINT
+
+  # kill ssh-agent if it's spawned by us
+  if [[ -n "$HOMEBREW_SSH_AGENT_PID" ]]
+  then
+    kill "$HOMEBREW_SSH_AGENT_PID"
+  fi
+
   trap - SIGINT
 
   for DIR in "$HOMEBREW_REPOSITORY" "$HOMEBREW_LIBRARY"/Taps/*/*
