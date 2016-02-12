@@ -4,6 +4,13 @@ class Fdroidserver < Formula
   url "https://pypi.python.org/packages/source/f/fdroidserver/fdroidserver-0.4.0.tar.gz"
   sha256 "89742f2e03e082c9d185835dbb4f166dade19a0e257b247a6e0bca3b4fd9b523"
 
+  bottle do
+    cellar :any
+    sha256 "ee2b8c9ce88c44da4949297dbf02e1d8a959626ae04ec35ac27a213fc6f14cff" => :el_capitan
+    sha256 "c022c4b821fc08ebc7bcdf0dd55f393bffff60fc8d9124d1f3bbedfda2b1b476" => :yosemite
+    sha256 "b82b7afb81d63e8a734111d9ebf86079cdcd9c60903c03f0057b281709af7aef" => :mavericks
+  end
+
   depends_on :java => "1.7+"
   depends_on :python if MacOS.version <= :snow_leopard
   depends_on "freetype"
