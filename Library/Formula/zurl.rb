@@ -1,8 +1,14 @@
 class Zurl < Formula
   desc "HTTP and WebSocket client worker with ZeroMQ interface"
   homepage "https://github.com/fanout/zurl"
-  url "https://dl.bintray.com/fanout/source/zurl-1.4.10.tar.bz2"
-  sha256 "4e430166171edff18c2557b26365e97ca7f4f56447afb3580e044919016ff788"
+  url "https://dl.bintray.com/fanout/source/zurl-1.5.0.tar.bz2"
+  sha256 "102456174569d882c77dde80669c51bee4a418c5ed81a27ea15d7a0810d1a555"
+
+  # ensure unit tests don't install on 1.5.0. remove after next release
+  patch do
+    url "https://github.com/fanout/zurl/commit/6f727e9e26054889ced261993e91f11dea3a1b5c.patch"
+    sha256 "7fff340cec94d6c4883aacbf991ac97ee963e8628cda0ad3c67daddb759a26a9"
+  end
 
   bottle do
     cellar :any
@@ -14,9 +20,8 @@ class Zurl < Formula
 
   depends_on "pkg-config" => :build
   depends_on "curl" if MacOS.version < :lion
-  depends_on "qt"
+  depends_on "qt5"
   depends_on "zeromq"
-  depends_on "qjson"
 
   resource "pyzmq" do
     url "https://pypi.python.org/packages/source/p/pyzmq/pyzmq-15.2.0.tar.gz"
