@@ -206,6 +206,7 @@ TAP_MIGRATIONS = {
   "sxiv" => "homebrew/x11",
   "syslog-ng" => "homebrew/boneyard",
   "tabbed" => "homebrew/x11",
+  "telepathy-gabble" => "homebrew/boneyard",
   "terminator" => "homebrew/gui",
   "tetgen" => "homebrew/science",
   "texmacs" => "homebrew/boneyard",
