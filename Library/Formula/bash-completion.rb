@@ -6,6 +6,7 @@ class BashCompletion < Formula
   url "https://bash-completion.alioth.debian.org/files/bash-completion-1.3.tar.bz2"
   mirror "http://pkgs.fedoraproject.org/repo/pkgs/bash-completion/bash-completion-1.3.tar.bz2/a1262659b4bbf44dc9e59d034de505ec/bash-completion-1.3.tar.bz2"
   sha256 "8ebe30579f0f3e1a521013bcdd183193605dab353d7a244ff2582fb3a36f7bec"
+  revision 1
 
   bottle do
     cellar :any_skip_relocation
@@ -32,10 +33,22 @@ class BashCompletion < Formula
 
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
+  end
 
-    unless (compdir/"brew_bash_completion.sh").exist?
-      compdir.install_symlink HOMEBREW_CONTRIB/"brew_bash_completion.sh"
-    end
+  def post_install
+    brew_completion = compdir/"brew_bash_completion.sh"
+
+    # Don't touch an existing symlink, assuming it points at the correct file.
+    return if brew_completion.symlink?
+
+    # Unfortunately, due to an oversight, the symlink that is created below was
+    # originally created in `install` and because of a bottling bug a copy of
+    # the referenced file would end up in the bottle, giving all bottle users a
+    # stale copy instead of completion for `brew` that would stay up-to-date
+    # with Homebrew. Make sure to remove the stale copy. (In very rare cases,
+    # this could remove a copy that was customized by the user.)
+    brew_completion.unlink if brew_completion.file?
+    compdir.install_symlink HOMEBREW_CONTRIB/"brew_bash_completion.sh"
   end
 
   def caveats; <<-EOS.undent
