@@ -250,7 +250,7 @@ pull() {
   trap - SIGINT
 }
 
-homebrew-update-bash() {
+homebrew-update() {
   local option
   local DIR
   local UPSTREAM_BRANCH
