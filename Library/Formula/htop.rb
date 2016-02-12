@@ -10,9 +10,12 @@ class Htop < Formula
     sha256 "9518a50b960bb36910c0df40a68f91261578dad53fbaff34f694b93150abf2be" => :mavericks
   end
 
+  option "with-ncurses", "Build using homebrew ncurses (enables mouse scroll)"
+
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "libtool" => :build
+  depends_on "homebrew/dupes/ncurses" => :optional
 
   conflicts_with "htop-osx", :because => "both install an `htop` binary"
 
