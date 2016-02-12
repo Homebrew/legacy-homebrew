@@ -6,7 +6,7 @@ require "formulary"
 require "descriptions"
 
 module Homebrew
-  def update
+  def update_ruby
     unless ARGV.named.empty?
       abort <<-EOS.undent
         This command updates brew itself, and does not take formula names.
