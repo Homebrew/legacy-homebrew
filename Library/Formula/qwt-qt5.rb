@@ -56,6 +56,43 @@ class QwtQt5 < Formula
 
     s
   end
+
+  test do
+    (testpath/"hello.pro").write <<-EOS.undent
+      QT       += core
+      QT       -= gui
+      TARGET = hello
+      CONFIG   += console
+      include ( #{Formula["qwt-qt5"].bin}/../features/qwt.prf )
+      CONFIG   += qwt
+      CONFIG   -= app_bundle
+      TEMPLATE = app
+      SOURCES += main.cpp
+    EOS
+
+    (testpath/"main.cpp").write <<-EOS.undent
+      #include <QCoreApplication>
+      #include <QDebug>
+      #include <QDateTime>
+      #include <qwt_date.h>
+
+      int main(int argc, char *argv[])
+      {
+        QCoreApplication a(argc, argv);
+        QDateTime now = QDateTime::currentDateTime();
+        QString week = QwtDate::toString(now, "w", QwtDate::FirstDay);
+        qDebug() << "Current week number is"
+                 << week.toStdString().c_str();
+        return 0;
+      }
+    EOS
+
+    system "#{Formula["qt5"].bin}/qmake", testpath/"hello.pro"
+    system "make"
+    assert File.exist?("hello")
+    assert File.exist?("main.o")
+    system "./hello"
+  end
 end
 
 __END__
