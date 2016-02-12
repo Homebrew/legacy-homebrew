@@ -13,6 +13,8 @@ class Pygtk < Formula
     sha256 "760447005d79b08046da88b23a9af552bf1a9d039de8a38401e22ef8ed743f49" => :mountain_lion
   end
 
+  option :universal
+
   depends_on "pkg-config" => :build
   depends_on "glib"
   depends_on "gtk+"
@@ -20,8 +22,6 @@ class Pygtk < Formula
   depends_on "pygobject"
   depends_on "py2cairo"
   depends_on "libglade" => :optional
-
-  option :universal
 
   def install
     ENV.append "CFLAGS", "-ObjC"
