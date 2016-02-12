@@ -189,7 +189,7 @@ pull() {
     export HOMEBREW_UPDATE_AFTER"$TAP_VAR"="$CURRENT_REVISION"
     if ! git merge-base --is-ancestor "$INITIAL_REVISION" "$CURRENT_REVISION"
     then
-      odie "Your HEAD is not a descendant of $UPSTREAM_BRANCH!"
+      odie "Your $DIR HEAD is not a descendant of $UPSTREAM_BRANCH!"
     fi
     return
   fi
@@ -333,8 +333,11 @@ EOS
     cd "$DIR" || continue
     UPSTREAM_BRANCH="$(upstream_branch)"
     # the refspec ensures that the default upstream branch gets updated
-    git fetch "${QUIET_ARGS[@]}" origin \
-      "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" &
+    (
+      git fetch "${QUIET_ARGS[@]}" origin \
+        "refs/heads/$UPSTREAM_BRANCH:refs/remotes/origin/$UPSTREAM_BRANCH" || \
+          odie "Fetching $DIR failed!"
+    ) &
   done
 
   wait
