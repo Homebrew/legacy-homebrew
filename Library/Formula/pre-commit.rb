@@ -6,9 +6,9 @@ class PreCommit < Formula
 
   bottle do
     cellar :any_skip_relocation
-    sha256 "9c9b2f2f1c6fd451f007268dee19054f398887a77aebf6d91118b0bf4a371372" => :el_capitan
-    sha256 "ddcd423efc7da2b205a018fdc19e9a3b4a977396eb9ef011a7920f88488f631b" => :yosemite
-    sha256 "a32865409a696ce9f78982eec1eec97d19ec0ed6f35eea4c63fbdda163b7858e" => :mavericks
+    sha256 "cdc345075a911bbb5cc57c28430875d0f62be10d506e4fffa58b3670f19014bc" => :el_capitan
+    sha256 "b6ff194988cab87c37b384e7c58af0b18e0e4e12f6dc7cb00ff747ae23cd99be" => :yosemite
+    sha256 "87a38186329e7e659c61779eb03b03d194293b9c13da7f19a2d24aa4cde5cfe5" => :mavericks
   end
 
   depends_on :python if MacOS.version <= :snow_leopard
