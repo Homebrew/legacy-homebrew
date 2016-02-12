@@ -207,6 +207,7 @@ TAP_MIGRATIONS = {
   "syslog-ng" => "homebrew/boneyard",
   "tabbed" => "homebrew/x11",
   "telepathy-gabble" => "homebrew/boneyard",
+  "telepathy-idle" => "homebrew/boneyard",
   "terminator" => "homebrew/gui",
   "tetgen" => "homebrew/science",
   "texmacs" => "homebrew/boneyard",
