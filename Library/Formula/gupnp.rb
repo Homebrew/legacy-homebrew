@@ -4,19 +4,20 @@ class Gupnp < Formula
   url "https://download.gnome.org/sources/gupnp/0.20/gupnp-0.20.16.tar.xz"
   sha256 "ff1119eff12529c46837e03c742f69dc4fae48d59097d79582d38a383b832602"
 
+  bottle do
+    sha256 "1795f4230bf9473c0efbb6b8e2a2623d94d3df0f2517c3da3d6a712ecd016594" => :el_capitan
+    sha256 "9155fdd46f4a19b558a74007eb10eec648c91c24dbe51c14b9146e7c19d45be7" => :yosemite
+    sha256 "38f16ce2e0d5a52a00444f4c45b99537fe45764ed9bfa33c321fa40820119476" => :mavericks
+  end
+
   head do
     url "https://github.com/GNOME/gupnp.git"
+
     depends_on "automake" => :build
     depends_on "autoconf" => :build
     depends_on "gnome-common" => :build
     depends_on "gtk-doc" => :build
     depends_on "libtool" => :build
-  end
-
-  bottle do
-    sha256 "1795f4230bf9473c0efbb6b8e2a2623d94d3df0f2517c3da3d6a712ecd016594" => :el_capitan
-    sha256 "9155fdd46f4a19b558a74007eb10eec648c91c24dbe51c14b9146e7c19d45be7" => :yosemite
-    sha256 "38f16ce2e0d5a52a00444f4c45b99537fe45764ed9bfa33c321fa40820119476" => :mavericks
   end
 
   depends_on "pkg-config" => :build
