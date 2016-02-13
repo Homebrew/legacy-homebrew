@@ -15,7 +15,10 @@ class Physfs < Formula
 
   depends_on "cmake" => :build
 
+  option :universal
+
   def install
+    ENV.universal_binary if build.universal?
     mkdir "macbuild" do
       args = std_cmake_args
       args << "-DPHYSFS_BUILD_TEST=TRUE"
