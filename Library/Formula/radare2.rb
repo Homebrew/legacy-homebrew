@@ -29,6 +29,10 @@ class Radare2 < Formula
     resource "bindings" do
       url "https://github.com/radare/radare2-bindings.git"
     end
+
+    resource "extras" do
+      url "https://github.com/radare/radare2-extras.git"
+    end
   end
 
   depends_on "pkg-config" => :build
