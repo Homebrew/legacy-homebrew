@@ -15,7 +15,7 @@ module Language
     def self.each_python(build, &block)
       original_pythonpath = ENV["PYTHONPATH"]
       ["python", "python3"].each do |python|
-        next if build.without? python
+        next if ((build.without? python) && ((python == "python" && MacOS.version <= :snow_leopard) || python == "python3"))
         version = major_minor_version python
         ENV["PYTHONPATH"] = if Formulary.factory(python).installed?
           nil
