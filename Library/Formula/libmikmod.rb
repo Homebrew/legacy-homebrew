@@ -1,8 +1,8 @@
 class Libmikmod < Formula
   desc "Portable sound library"
   homepage "http://mikmod.shlomifish.org"
-  url "https://downloads.sourceforge.net/project/mikmod/libmikmod/3.3.7/libmikmod-3.3.7.tar.gz"
-  sha256 "4cf41040a9af99cb960580210ba900c0a519f73ab97b503c780e82428b9bd9a2"
+  url "https://downloads.sourceforge.net/project/mikmod/libmikmod/3.3.8/libmikmod-3.3.8.tar.gz"
+  sha256 "4acf6634a477d8b95f18b55a3e2e76052c149e690d202484e8b0ac7589cf37a2"
 
   bottle do
     cellar :any
@@ -14,9 +14,11 @@ class Libmikmod < Formula
   end
 
   option "with-debug", "Enable debugging symbols"
+  option :universal
 
   def install
     ENV.O2 if build.with? "debug"
+    ENV.universal_binary if build.universal?
 
     # OSX has CoreAudio, but ALSA is not for this OS nor is SAM9407 nor ULTRA.
     args = %W[
