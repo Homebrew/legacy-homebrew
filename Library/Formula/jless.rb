@@ -9,9 +9,10 @@ class Jless < Formula
   sha256 "d33cc51f220647d015fd526b3782cde03c5d8b18c5233e6388a0047a70446fe7"
 
   bottle do
+    revision 1
     sha256 "00d5e6a985a6692c51f9c3b81e9ab954a2a2e8adc75861423e7830c6d46575d8" => :el_capitan
     sha256 "a7a470e7de19322dd2d4fb3e8b2be38cbc340936771aa00864a800f79e107b54" => :yosemite
-    sha256 "7a0cf0289ca803948a4af78b253dcab701974f499e41fa0b5a1125a1d761334b" => :mavericks
+    sha256 "614093a58873090cc70f51e5e0ff0fb7b3ee76214c619879258679502c9ee750" => :mavericks
   end
 
   [
