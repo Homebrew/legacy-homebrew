@@ -17,8 +17,8 @@ class Volatility < Formula
   depends_on "freetype"
 
   resource "yara-python" do
-    url "https://github.com/plusvic/yara/archive/v3.2.0.tar.gz"
-    sha256 "4a062ac3b44a3cb1487240e32d3dcbdb4e4d2e742174d87e36a95f18a3963507"
+    url "https://github.com/plusvic/yara/archive/v3.4.0.tar.gz"
+    sha256 "528571ff721364229f34f6d1ff0eedc3cd5a2a75bb94727dc6578c6efe3d618b"
   end
 
   resource "distorm3" do
@@ -32,18 +32,18 @@ class Volatility < Formula
   end
 
   resource "pillow" do
-    url "https://pypi.python.org/packages/source/P/Pillow/Pillow-3.0.0.tar.gz"
-    sha256 "ad50bef540fe5518a4653c3820452a881b6a042cb0f8bb7657c491c6bd3654bb"
+    url "https://pypi.python.org/packages/source/P/Pillow/Pillow-3.1.1.tar.gz"
+    sha256 "486f4ccddee09429cb1c63ea56c02894aecf9d69acdcaf006c53835df2549fff"
   end
 
   resource "openpyxl" do
-    url "https://pypi.python.org/packages/source/o/openpyxl/openpyxl-2.0.5.tar.gz"
-    sha256 "874c2f1180b0b6c84173abac1b9de87f4cb4eef59b83b3095ef345f77c824a93"
+    url "https://pypi.python.org/packages/source/o/openpyxl/openpyxl-2.3.3.tar.gz"
+    sha256 "93d64157d8cab5c7040bc025f0a7a9ad3c05e2d3f11518329c3f1682f5f62ffe"
   end
 
   resource "ipython" do
-    url "https://pypi.python.org/packages/source/i/ipython/ipython-2.2.0.tar.gz"
-    sha256 "b7ca77ba54a02f032055b73f5f62b01431f818ae00f63716b78f881c2b2564e2"
+    url "https://pypi.python.org/packages/source/i/ipython/ipython-2.4.1.tar.gz"
+    sha256 "6d350b5c2d3e925b0ff6167658812d720b891e476238d924504e2f7f483e9217"
   end
 
   resource "readline" do
@@ -52,8 +52,8 @@ class Volatility < Formula
   end
 
   resource "pytz" do
-    url "https://pypi.python.org/packages/source/p/pytz/pytz-2014.4.tar.gz"
-    sha256 "fddc081b9aead4d4ec09685c6e9ed6c7d3f5cace1ff7d39c76ba770f2c8d1049"
+    url "https://pypi.python.org/packages/source/p/pytz/pytz-2015.7.tar.gz"
+    sha256 "99266ef30a37e43932deec2b7ca73e83c8dbc3b9ff703ec73eca6b1dae6befea"
   end
 
   def install
