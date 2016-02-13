@@ -1,8 +1,8 @@
 class OpenalSoft < Formula
   desc "Implementation of the OpenAL 3D audio API"
   homepage "http://kcat.strangesoft.net/openal.html"
-  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.17.0.tar.bz2"
-  sha256 "5e93336de2e7c50f3a01beba51861d6f61c3e4045a896191dc806591e46264d1"
+  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.17.2.tar.bz2"
+  sha256 "a341f8542f1f0b8c65241a17da13d073f18ec06658e1a1606a8ecc8bbc2b3314"
   head "http://repo.or.cz/openal-soft.git"
 
   bottle do
@@ -11,6 +11,8 @@ class OpenalSoft < Formula
     sha256 "f6bf71249e4b2d909e0a7240b9c4529b6abe94cb637738c339a0ea357e9166ae" => :yosemite
     sha256 "da9897a08329506de8767b3681a2683bccea4d385c98243f79e056615603dfd8" => :mavericks
   end
+
+  keg_only :provided_by_osx, "OS X provides OpenAL.framework."
 
   option :universal
 
@@ -25,8 +27,6 @@ class OpenalSoft < Formula
   # clang 4.2's support for alignas is incomplete
   fails_with :llvm
   fails_with(:clang) { build 425 }
-
-  keg_only :provided_by_osx, "OS X provides OpenAL.framework."
 
   def install
     ENV.universal_binary if build.universal?
