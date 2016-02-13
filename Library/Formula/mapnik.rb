@@ -3,7 +3,7 @@ class Mapnik < Formula
   homepage "http://www.mapnik.org/"
   url "https://s3.amazonaws.com/mapnik/dist/v3.0.5/mapnik-v3.0.5.tar.bz2"
   sha256 "d8f771d45b236d987aab44819a517f4c1ed6d7ff2c42c2e51160e37d28c89cc3"
-  revision 1
+  revision 2
 
   head "https://github.com/mapnik/mapnik.git"
 
