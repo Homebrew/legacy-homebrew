@@ -6,11 +6,9 @@ class Libmikmod < Formula
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "e67080feaae93927e28c2bf9858e0fc1fb46c255cfa83b63a5f1502dcb1c06f7" => :el_capitan
-    sha256 "248fd8f4c14cb6b26f5af74d64768dc4814f3314a8ee28afde508ae5a5b56bdf" => :yosemite
-    sha256 "5b8181c542d780090a3ba51a2d41b5b36faa64ceb794735aeab088f1610cd899" => :mavericks
-    sha256 "cccac33725e09722e0c501fc25cf1b63548a502e98171b826a30ee01d844266a" => :mountain_lion
+    sha256 "1c6f5b600d2910d383f63f4f8c0b2ff66f98993bf19973a9459d6c2bdb9acdb7" => :el_capitan
+    sha256 "e2e4471fb83ce3b4f9507f83873a6e99650cc81683030eaef912017a9eadec1a" => :yosemite
+    sha256 "5ecca18000c9e113385929e5618b644f81f33da059c0b280e22e55545d30825f" => :mavericks
   end
 
   option "with-debug", "Enable debugging symbols"
