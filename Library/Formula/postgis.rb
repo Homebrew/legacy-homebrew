@@ -35,6 +35,7 @@ class Postgis < Formula
   # For GeoJSON and raster handling
   depends_on "json-c"
   depends_on "gdal" => :recommended
+  depends_on "pcre" => :build if build.with? "gdal"
 
   # For advanced 2D/3D functions
   depends_on "sfcgal" => :recommended
