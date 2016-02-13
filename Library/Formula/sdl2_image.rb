@@ -3,6 +3,7 @@ class Sdl2Image < Formula
   homepage "https://www.libsdl.org/projects/SDL_image/"
   url "https://www.libsdl.org/projects/SDL_image/release/SDL2_image-2.0.1.tar.gz"
   sha256 "3a3eafbceea5125c04be585373bfd8b3a18f259bd7eae3efc4e6d8e60e0d7f64"
+  revision 1
 
   bottle do
     cellar :any
