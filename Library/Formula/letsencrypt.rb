@@ -4,6 +4,13 @@ class Letsencrypt < Formula
   url "https://github.com/letsencrypt/letsencrypt/archive/v0.4.0.tar.gz"
   sha256 "d7df1faedd6f5c1ffc26fd855350fc3a107dd9fe5c1c2aa4c340024fe807a0f3"
 
+  bottle do
+    cellar :any
+    sha256 "975e90185b63d420673326d0990cc8d3d65f0be66d1f990c12af4626833f827b" => :el_capitan
+    sha256 "6b84865731582d7408bf0a77d6a8a0777fcf5440defc75e155a012cf2805faf1" => :yosemite
+    sha256 "e78e48a50149936613c4a996b17d773c91a1ffdc45b4b1f7fff305f5290fbadf" => :mavericks
+  end
+
   depends_on "augeas"
   depends_on "dialog"
   depends_on "openssl"
