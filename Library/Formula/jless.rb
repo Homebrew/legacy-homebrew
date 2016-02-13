@@ -23,7 +23,7 @@ class Jless < Formula
     %w[262.ext03 82fb77f21ea1f3281224fcbfad073aeab12fb40d6623c9b40698be952401f821]
   ].each do |name, sha|
     patch do
-      url "http://ftp.netbsd.org/pub/pkgsrc/distfiles/less-382-iso#{name}.patch.gz"
+      url "https://ftp.netbsd.org/pub/pkgsrc/distfiles/less-382-iso#{name}.patch.gz"
       sha256 sha
     end
   end
