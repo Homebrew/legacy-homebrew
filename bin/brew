@@ -39,7 +39,7 @@ fi
 
 HOMEBREW_PREFIX=${HOMEBREW_BREW_FILE%/*/*}
 HOMEBREW_REPOSITORY=${BREW_FILE_DIRECTORY%/*}
-HOMEBREW_LIBRARY=${BREW_FILE_DIRECTORY%/*}/Library
+HOMEBREW_LIBRARY=$HOMEBREW_REPOSITORY/Library
 
 # Where we store built products; /usr/local/Cellar if it exists,
 # otherwise a Cellar relative to the Repository.
