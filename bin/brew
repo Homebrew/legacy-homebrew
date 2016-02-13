@@ -14,8 +14,8 @@ then
                          chdir "$BREW_SYMLINK_DIRECTORY" && pwd -P)"
 fi
 
-HOMEBREW_PREFIX="$(chdir "$(dirname "$(dirname "$HOMEBREW_BREW_FILE")")" && pwd -P)"
-HOMEBREW_REPOSITORY="$(chdir "$BREW_FILE_DIRECTORY"/../ && pwd -P)"
-HOMEBREW_LIBRARY="$(chdir "$BREW_FILE_DIRECTORY"/../Library && pwd -P)"
+HOMEBREW_PREFIX="${HOMEBREW_BREW_FILE%/*/*}"
+HOMEBREW_REPOSITORY="${BREW_FILE_DIRECTORY%/*}"
+HOMEBREW_LIBRARY="${BREW_FILE_DIRECTORY%/*}/Library"
 
 source "$HOMEBREW_LIBRARY/brew.sh"
