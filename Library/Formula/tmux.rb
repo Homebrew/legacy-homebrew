@@ -12,6 +12,13 @@ class Tmux < Formula
       url "https://github.com/tmux/tmux/commit/a05c27a7e1c4d43709817d6746a510f16c960b4b.diff"
       sha256 "2a60a63f0477f2e3056d9f76207d4ed905de8a9ce0645de6c29cf3f445bace12"
     end
+
+    patch do
+      # This fixes the Tmux 2.1 update that breaks "tmux killw\; detach"
+      # https://github.com/tmux/tmux/issues/153#issuecomment-150184957
+      url "https://github.com/tmux/tmux/commit/3ebcf25149d75977ea97e9d4f786e0508d1a0d5e.diff"
+      sha256 "65a8bc0b2f6a8b41ad27605fd99419fff36314499969adc9d17dd3940a173508"
+    end
   end
 
   bottle do
