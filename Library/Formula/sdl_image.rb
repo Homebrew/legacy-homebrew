@@ -14,10 +14,10 @@ class SdlImage < Formula
 
   depends_on "pkg-config" => :build
   depends_on "sdl"
-  depends_on "jpeg"    => :recommended
-  depends_on "libpng"  => :recommended
+  depends_on "jpeg" => :recommended
+  depends_on "libpng" => :recommended
   depends_on "libtiff" => :recommended
-  depends_on "webp"    => :recommended
+  depends_on "webp" => :recommended
 
   option :universal
 
