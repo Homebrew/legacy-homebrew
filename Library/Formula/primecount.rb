@@ -1,8 +1,7 @@
 class Primecount < Formula
   desc "Fast C++ program for counting primes"
   homepage "https://github.com/kimwalisch/primecount"
-  url "http://dl.bintray.com/kimwalisch/primecount/primecount-2.6.tar.gz"
-  version "2.6"
+  url "https://dl.bintray.com/kimwalisch/primecount/primecount-2.6.tar.gz"
   sha256 "ab5790e1fef22b21d50748795b1502d18e969fa9b1cd443305b08534c96430ec"
 
   # Always build from source for maximum performance.
