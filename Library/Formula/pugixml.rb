@@ -1,5 +1,5 @@
 class Pugixml < Formula
-  desc "Pugixml is a light-weight C++ XML processing library"
+  desc "Light-weight C++ XML processing library"
   homepage "http://pugixml.org"
   url "https://github.com/zeux/pugixml/releases/download/v1.7/pugixml-1.7.tar.gz"
   sha256 "fbe10d46f61d769f7d92a296102e4e2bd3ee16130f11c5b10a1aae590ea1f5ca"
