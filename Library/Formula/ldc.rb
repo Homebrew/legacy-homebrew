@@ -7,9 +7,9 @@ class Ldc < Formula
   head "https://github.com/ldc-developers/ldc.git", :shallow => false
 
   bottle do
-    sha256 "61f7c63543741ef4cbadbd5ca293c94e2fcd7432dcf80bfe9d86bf4af0681525" => :el_capitan
-    sha256 "40b0e843810f13dd9e712c4f2720db1ac5cfdd546e23f394cad9e266a5552829" => :yosemite
-    sha256 "abe6b024e237061510b6b9f68508177803f162849a8e950cb3a8832da3ac8593" => :mavericks
+    sha256 "c2ff6360645d4deb2ec135b262d257e85228df95e7765adb9e3a625b76250923" => :el_capitan
+    sha256 "551a58a74107f93620af10964ef3128642ae4575ad2be31c618935ced420cd47" => :yosemite
+    sha256 "6d9d60e0a1711a12e03729f273459363873286ce77977801cfbbfc517fc7af1a" => :mavericks
   end
 
   needs :cxx11
