@@ -6,8 +6,8 @@ class Postgrest < Formula
 
   desc "Serves a fully RESTful API from any existing PostgreSQL database."
   homepage "https://github.com/begriffs/postgrest"
-  url "https://github.com/begriffs/postgrest/archive/v0.3.0.3.tar.gz"
-  sha256 "a89eed9ed9386a701b50bdcceb3018521c2c00b7c7921c9839126f04b9c6cc6b"
+  url "https://github.com/begriffs/postgrest/archive/v0.3.0.4.tar.gz"
+  sha256 "2afbb8735a157e0b6afbec7da57cc70396cdbecb0670d96e2b006c0a1625f2f0"
 
   bottle do
     sha256 "74aa915078bc50f199f2368818aba331690e12fcbc090eba09957d1659f827b0" => :el_capitan
@@ -20,7 +20,7 @@ class Postgrest < Formula
   depends_on "postgresql"
 
   def install
-    install_cabal_package
+    install_cabal_package :using => ["happy"]
   end
 
   test do
