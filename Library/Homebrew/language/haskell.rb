@@ -45,7 +45,13 @@ module Language
       end
 
       def cabal_install(*args)
-        system "cabal", "install", "--jobs=#{ENV.make_jobs}", *args
+        # cabal-install's dependency-resolution backtracking strategy can easily
+        # need more than the default 2,000 maximum number of "backjumps," since
+        # Hackage is a fast-moving, rolling-release target. The highest known
+        # needed value by a formula at this time (February 2016) was 43,478 for
+        # git-annex, so 100,000 should be enough to avoid most gratuitous
+        # backjumps build failures.
+        system "cabal", "install", "--jobs=#{ENV.make_jobs}", "--max-backjumps=100000", *args
       end
 
       def cabal_install_tools(*tools)
