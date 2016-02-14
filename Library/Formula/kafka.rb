@@ -21,8 +21,9 @@ class Kafka < Formula
   # Related to https://issues.apache.org/jira/browse/KAFKA-2034
   # Since Kafka does not currently set the source or target compability version inside build.gradle
   # if you do not have Java 1.8 installed you cannot used the bottled version of Kafka
-  def pour_bottle?
-    quiet_system("/usr/libexec/java_home --version 1.8 --failfast")
+  pour_bottle? do
+    reason "The bottle requires Java 1.8."
+    satisfy { quiet_system("/usr/libexec/java_home --version 1.8 --failfast") }
   end
 
   def install
