@@ -9,12 +9,13 @@ class Shocco < Formula
   homepage "https://rtomayko.github.io/shocco/"
   url "https://github.com/rtomayko/shocco/archive/1.0.tar.gz"
   sha256 "b3454ca818329955043b166a9808847368fd48dbe94c4b819a9f0c02cf57ce2e"
+  revision 1
 
   depends_on MarkdownRequirement
 
   resource "pygments" do
-    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-1.5.tar.gz"
-    sha256 "fe183e3886f597e41f8c88d0e53c796cefddc879bfdf45f2915a383060436740"
+    url "https://pypi.python.org/packages/source/P/Pygments/Pygments-2.1.1.tar.gz"
+    sha256 "2df7d9a85b56e54c7c021dc98fc877bd216ead652c10da170779c004fb59c01b"
   end
 
   # Upstream, but not in a release
