@@ -95,6 +95,10 @@ class TapTest < Homebrew::TestCase
     assert_equal @tap.formula_renames, "oldname" => "foo"
     assert_equal [@cmd_file], @tap.command_files
     assert_kind_of Hash, @tap.to_hash
+    assert_equal true, @tap.formula_file?(@formula_file)
+    assert_equal true, @tap.formula_file?("Formula/foo.rb")
+    assert_equal false, @tap.formula_file?("bar.rb")
+    assert_equal false, @tap.formula_file?("Formula/baz.sh")
   end
 
   def test_remote
