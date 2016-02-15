@@ -135,6 +135,24 @@ then
 fi
 
 HOMEBREW_COMMAND="$1"
+shift
+case "$HOMEBREW_COMMAND" in
+  ls)          HOMEBREW_COMMAND="list";;
+  homepage)    HOMEBREW_COMMAND="home";;
+  -S)          HOMEBREW_COMMAND="search";;
+  up)          HOMEBREW_COMMAND="update";;
+  ln)          HOMEBREW_COMMAND="link";;
+  instal)      HOMEBREW_COMMAND="install";; # gem does the same
+  rm)          HOMEBREW_COMMAND="uninstall";;
+  remove)      HOMEBREW_COMMAND="uninstall";;
+  configure)   HOMEBREW_COMMAND="diy";;
+  abv)         HOMEBREW_COMMAND="info";;
+  dr)          HOMEBREW_COMMAND="doctor";;
+  --repo)      HOMEBREW_COMMAND="--repository";;
+  environment) HOMEBREW_COMMAND="--env";;
+  --config)    HOMEBREW_COMMAND="config";;
+esac
+
 if [[ -f "$HOMEBREW_LIBRARY/Homebrew/cmd/$HOMEBREW_COMMAND.sh" ]] ; then
   HOMEBREW_BASH_COMMAND="$HOMEBREW_LIBRARY/Homebrew/cmd/$HOMEBREW_COMMAND.sh"
 elif [[ -n "$HOMEBREW_DEVELOPER" && -f "$HOMEBREW_LIBRARY/Homebrew/dev-cmd/$HOMEBREW_COMMAND.sh" ]] ; then
@@ -144,7 +162,7 @@ fi
 if [[ "$(id -u)" = "0" && "$(/usr/bin/stat -f%u "$HOMEBREW_BREW_FILE")" != "0" ]]
 then
   case "$HOMEBREW_COMMAND" in
-    instal|install|reinstall|postinstall|ln|link|pin|update|update-ruby|upgrade|create|migrate|tap|switch)
+    install|reinstall|postinstall|ln|link|pin|update|update-ruby|upgrade|create|migrate|tap|switch)
       odie <<EOS
 Cowardly refusing to 'sudo brew $HOMEBREW_COMMAND'
 You can use brew with sudo, but only if the brew executable is owned by root.
@@ -157,9 +175,6 @@ fi
 
 if [[ -n "$HOMEBREW_BASH_COMMAND" ]]
 then
-  # Bash commands don't need the first argument, which is just the command name.
-  shift
-
   # source rather than executing directly to ensure the entire file is read into
   # memory before it is run. This makes running a Bash script behave more like
   # a Ruby script and avoids hard-to-debug issues if the Bash script is updated
@@ -170,5 +185,5 @@ then
   source "$HOMEBREW_BASH_COMMAND"
   { "homebrew-$HOMEBREW_COMMAND" "$@"; exit $?; }
 else
-  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$@"
+  exec "$HOMEBREW_RUBY_PATH" -W0 "$HOMEBREW_LIBRARY/brew.rb" "$HOMEBREW_COMMAND" "$@"
 fi
