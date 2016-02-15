@@ -1,5 +1,3 @@
-require "formula"
-
 class CommandboxBe < Formula
   homepage "http://www.ortussolutions.com/products/commandbox"
   url "http://integration.stg.ortussolutions.com/artifacts/ortussolutions/commandbox/3.1.0/commandbox-bin-3.1.0.zip"
