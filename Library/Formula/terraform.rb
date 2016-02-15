@@ -67,10 +67,16 @@ class Terraform < Formula
       system "go", "test", *terraform_files
 
       mkdir "bin"
-      arch = MacOS.prefer_64_bit? ? "amd64" : "386"
+      if OS.mac? then
+        os = "darwin"
+        arch = MacOS.prefer_64_bit? ? "amd64" : "386"
+      else
+        os = "linux"
+        arch = "amd64"
+      end
       system "gox",
         "-arch", arch,
-        "-os", "darwin",
+        "-os", os,
         "-output", "bin/terraform-{{.Dir}}", *terraform_files
       bin.install "bin/terraform-terraform" => "terraform"
       bin.install Dir["bin/*"]
