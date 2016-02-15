@@ -1,17 +1,19 @@
 class Tracebox < Formula
   desc "Middlebox detection tool"
   homepage "http://www.tracebox.org/"
-  url "https://github.com/tracebox/tracebox.git", :tag => "v0.3",
-      :revision => "63e89e92164d5f527a8e2bbec08797179b2dacb1"
+  url "https://github.com/tracebox/tracebox.git", :tag => "v0.3.1",
+                                                  :revision => "aec062dcf7198c8b8f3b90ee4216e929ebf0ffcb"
 
   bottle do
     cellar :any
-    sha256 "c730306d9053f007178149525392d736b238faf45e85f88f9d1c8e8a098daaad" => :yosemite
-    sha256 "a952db97c0d9629820ab495f0276a00877b13e1c7f39af230970417a9b5691a9" => :mavericks
-    sha256 "89f944d8fde6f621d5f2ec817b91c349e0a34ade67a0600e98b905d92b50e013" => :mountain_lion
+    sha256 "4a8348264f1b28160c41f8d2f723c3a866ba2d430d9ee0388e61d6b15599ce64" => :yosemite
+    sha256 "3cf26c9f63b463048eea103b7eac1faeea873dd85391673f590161f4dc0e9416" => :mavericks
+    sha256 "03ce10b37ac2bcb7cad32594899fe650fc49cf47ed2f4336e300a18e6f30f12d" => :mountain_lion
   end
 
   head "https://github.com/tracebox/tracebox.git"
+
+  needs :cxx11
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -20,6 +22,7 @@ class Tracebox < Formula
   depends_on "json-c"
 
   def install
+    ENV.libcxx
     system "autoreconf", "--install"
     system "./configure", "--disable-debug",
                           "--disable-dependency-tracking",

@@ -1,14 +1,14 @@
 class Webp < Formula
   desc "Image format providing lossless and lossy compression for web images"
   homepage "https://developers.google.com/speed/webp/"
-  url "http://downloads.webmproject.org/releases/webp/libwebp-0.4.3.tar.gz"
-  sha256 "efbe0d58fda936f2ed99d0b837ed7087d064d6838931f282c4618d2a3f7390c4"
+  url "http://downloads.webmproject.org/releases/webp/libwebp-0.5.0.tar.gz"
+  sha256 "5cd3bb7b623aff1f4e70bd611dc8dbabbf7688fd5eb225b32e02e09e37dfb274"
 
   bottle do
     cellar :any
-    sha256 "5aaf06ba6c36b7877b19629f704918708d32d2a5a9b3e100b7fc2f033223e0cb" => :yosemite
-    sha256 "3a44d990fd058d594b46a5d24b579e0f5da10c1a2779e992a980c6bd946be41f" => :mavericks
-    sha256 "a96249caa1541d335ab594fdd0af221109be00baa94d82429048deb56ed88008" => :mountain_lion
+    sha256 "529d1728871778a8c9f1a698077d074d264aedce93bf6e7e0c7d197a931e46aa" => :el_capitan
+    sha256 "d2df3e42efcb574601a4ced6f9a4174014aa20696a453a4ce76b2877d5a74594" => :yosemite
+    sha256 "1ace7ca51265fcb6c3490ded7e209678b3648eb87d06473533b6435a8b71f543" => :mavericks
   end
 
   head do

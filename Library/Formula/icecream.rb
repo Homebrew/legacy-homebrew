@@ -13,36 +13,36 @@ class Icecream < Formula
 
   stable do
     url "https://github.com/icecc/icecream/archive/1.0.1.tar.gz"
-    sha1 "2c3e43d34e4cbe8da5fa49e0518fd4db4c665f81"
+    sha256 "10f85e172c5c435d81e7c05595c5ae9a9ffa83490dded7eefa95f9ad401fb31b"
 
     # fixes --without-man
     patch do
       url "https://github.com/icecc/icecream/commit/641b039ecaa126fbb3bdfa716ce3060f624bb68e.diff"
-      sha1 "8ef0123a15380602b86dd9b0075b63848c4df7ff"
+      sha256 "f92bf6b619f6322a030e17b3561f0fb33a87cf2b0b60a6ca55777a4237ad886a"
     end
 
     # these fix docbook2X detection
     patch do
       url "https://github.com/icecc/icecream/commit/df212c10336b6369ab244d9c888263774c9087dc.diff"
-      sha1 "f4a2bd77714fa189e4da3df6ab4837abc517f9cb"
+      sha256 "0df0ea51f9435faaa51924037979c714663f3e8bfd87122850483a72b5743344"
     end
 
     patch do
       url "https://github.com/icecc/icecream/commit/a40bae096bd51f328d6ff299077c5530729b0580.diff"
-      sha1 "c15c3fb20cd73662675284556bf635c24a4a82bf"
+      sha256 "968ec139f87deb410a75d9287ba1a6fb289a5c86648775eb0aebe998e06c1fcb"
     end
   end
 
   bottle do
-    sha1 "df2ce444f943ca2e5f9850f934e1098c043f6888" => :yosemite
-    sha1 "cfc146ad19cec4a60a10e8e68399f413b0f41bd7" => :mavericks
-    sha1 "f44f687d335131f79cbb70abe69235f880de48e8" => :mountain_lion
+    sha256 "9767c0d31cce91446873f3f4baa8068f73909e575f6a8f81f1ccfa33d17ec2b4" => :yosemite
+    sha256 "7dbedeb6418bd830e33818c95bb6339e193f37e664452a1ffc5af514b2778921" => :mavericks
+    sha256 "67891ddbf7f15b7e2f66f5e9ef5f12dc719317c2d0503d52aaad23527770affb" => :mountain_lion
   end
 
   devel do
     url "https://github.com/icecc/icecream/archive/1.1rc1.tar.gz"
     version "1.1rc1"
-    sha1 "ccde08f67297122710270b440492a528df042f52"
+    sha256 "95bdb66228cc8f5d97a829f1ee4e3f2d32caf064e9614919e8af0f708a13c654"
 
     depends_on "lzo"
   end

@@ -3,14 +3,14 @@ class Ettercap < Formula
   homepage "https://ettercap.github.io/ettercap/"
   url "https://github.com/Ettercap/ettercap/archive/v0.8.2.tar.gz"
   sha256 "f38514f35bea58bfe6ef1902bfd4761de0379942a9aa3e175fc9348f4eef2c81"
+  head "https://github.com/Ettercap/ettercap.git"
 
   bottle do
-    sha256 "1c6bc00b1f7dc226fb6378669c4704de9a190439ba1edef083fb9178d09faac0" => :yosemite
-    sha256 "b51137d64a04f49737a639f097dc725e2ffc36ec7dd52295bdafd7db9ea4dff7" => :mavericks
-    sha256 "4a2f65a3d3606b465f0bab5cb1c27a5599815a23bb59a4ba126f8ed9fdf60a9f" => :mountain_lion
+    revision 1
+    sha256 "05e3c0fe0da148df590f32a71d6265ef92028a031814c1f34d87a028dc7ee598" => :el_capitan
+    sha256 "6bdead34623676c9b61f134985bab01f59a58f19848fdc93c51ac512a65685c5" => :yosemite
+    sha256 "c01dfad3aa45e307c633dbf87069bd39f6ac99761342e21c364ac412fa4513bf" => :mavericks
   end
-
-  head "https://github.com/Ettercap/ettercap.git"
 
   option "without-curses", "Install without curses interface"
   option "without-plugins", "Install without plugins support"

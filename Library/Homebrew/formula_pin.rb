@@ -18,7 +18,7 @@ class FormulaPin
   end
 
   def pin
-    pin_at(@f.rack.subdirs.map { |d| Keg.new(d).version }.first)
+    pin_at(@f.installed_kegs.map { |keg| keg.version }.max)
   end
 
   def unpin
@@ -31,6 +31,10 @@ class FormulaPin
   end
 
   def pinnable?
-    @f.rack.exist? && @f.rack.subdirs.length > 0
+    @f.installed_prefixes.any?
+  end
+
+  def pinned_version
+    Keg.new(path.resolved_path).version if pinned?
   end
 end

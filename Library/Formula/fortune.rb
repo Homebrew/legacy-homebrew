@@ -5,9 +5,10 @@ class Fortune < Formula
   sha256 "1a98a6fd42ef23c8aec9e4a368afb40b6b0ddfb67b5b383ad82a7b78d8e0602a"
 
   bottle do
-    sha256 "bfae1a94a0de8d9d53f28b5cfdea3b04190420dde0b83c862d6ef536c03d59ef" => :yosemite
-    sha256 "90e758b8875a309116e89f475d7c88da5e7e1417601705eb45abf20a5be11a8a" => :mavericks
-    sha256 "25958474483a88a12bf8585f21864d190179547271527af8c292bd7ecf6d5677" => :mountain_lion
+    revision 2
+    sha256 "fe681ea371ce058faeebbd459ac9b5f492b7b523652da937ed8cb7d9bbf0eaf8" => :el_capitan
+    sha256 "97c35357e5becf525ddaede462e40283872d0b5d2cebfeeb7d509cb0ef06fc7c" => :yosemite
+    sha256 "61792a39fce2c81cf7a47a9230884d0bc19ff7c5f84bc7264f2bc0aa705f8eb1" => :mavericks
   end
 
   option "without-offensive", "Don't install potentially offensive fortune files"
@@ -30,7 +31,7 @@ class Fortune < Formula
       # OS X only supports POSIX regexes
       s.change_make_var! "REGEXDEFS", "-DHAVE_REGEX_H -DPOSIX_REGEX"
       # Don't install offensive fortunes
-      s.change_make_var! "OFFENSIVE", "0" if build.include? "no-offensive"
+      s.change_make_var! "OFFENSIVE", "0" if build.without? "offensive"
     end
 
     system "make", "install"

@@ -1,14 +1,14 @@
 class Ortp < Formula
   desc "Real-time transport protocol (RTP, RFC3550) library"
   homepage "https://www.linphone.org/technical-corner/ortp/overview"
-  url "http://nongnu.askapache.com/linphone/ortp/sources/ortp-0.24.1.tar.gz"
-  sha256 "d1ecce20bed145186f727914f10f500d0594e30c2a234a276e7e12dcd8814cd5"
+  url "http://nongnu.askapache.com/linphone/ortp/sources/ortp-0.24.2.tar.gz"
+  sha256 "cb37c76985b3703157f0ed06d900d662b903ad3c5b772e2d1ea36478ad8a6616"
 
   bottle do
     cellar :any
-    sha256 "a44c617d0bc51a7433243544b255e75fb4afe32ae939d6088450921633a4d19c" => :yosemite
-    sha256 "7505c45e98f762b1ba0a51c3285ef23eefa68fad32aaded8a7b5aa719f5ca153" => :mavericks
-    sha256 "2b6b871251f5ddd895fe3d680c975129dcf5d317de09752e343624bd372befa6" => :mountain_lion
+    sha256 "38b9d28c30675e6cba3889386982153baf96e2375d97bcea9de10b39ff88149a" => :yosemite
+    sha256 "3aeb452ad1f254803db24c96826755188820dd144bffa842dabda4d576d08595" => :mavericks
+    sha256 "5b0f1247ca43018aa4473d5e887d62f3ae9c317dbd3f6962faafae028bd28fba" => :mountain_lion
   end
 
   def install

@@ -1,10 +1,10 @@
 class Ffmpeg2theora < Formula
   desc "Convert video files to Ogg Theora format"
-  homepage "http://v2v.cc/~j/ffmpeg2theora/"
+  homepage "https://v2v.cc/~j/ffmpeg2theora/"
   revision 1
 
   stable do
-    url "http://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.29.tar.bz2"
+    url "https://v2v.cc/~j/ffmpeg2theora/downloads/ffmpeg2theora-0.29.tar.bz2"
     sha256 "214110e2a5afdd8ff8e0be18152e893dbff5dabc1ae1d1124e64d9f93eae946d"
 
     # Fixes build with ffmpeg 2.x by removing use of deprecated constant
@@ -18,10 +18,10 @@ class Ffmpeg2theora < Formula
 
   bottle do
     cellar :any
-    revision 2
-    sha256 "9b5c5a894bbb3988a4b6d9039eb107f3e46021d944eba03c666c3cbdfa20ec3a" => :yosemite
-    sha256 "ae5c9ad2515591001a8e759c67bc23d2580ed429266c6fba4c8ddb4923dd9c89" => :mavericks
-    sha256 "0fd532c961a5b677ff4975ed60d5c950d34e9fc079f493b45c7a0f30bda8f322" => :mountain_lion
+    revision 3
+    sha256 "2f53a6eee671251c96d62f4e73b8aecf4d5fc6abc6379633031edc8d6fe1b46c" => :el_capitan
+    sha256 "1144caff1384628e84aafe3c90d74cb08d90bb1f98b2e1cfe0a2eecdebbc5692" => :yosemite
+    sha256 "f5da61547028805ff495616a97328832a21ea798aaa9eb9363e220ed9fa2ef4d" => :mavericks
   end
 
   head do

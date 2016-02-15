@@ -1,17 +1,18 @@
 require "language/go"
 
 class Srclib < Formula
-  desc "Polyglot code analysis library, build for hackability"
+  desc "Polyglot code analysis library, built for hackability"
   homepage "https://srclib.org"
   url "https://github.com/sourcegraph/srclib/archive/v0.0.42.tar.gz"
   sha256 "de9af74ec0805b0ef4f1c7ddf26c5aef43f84668b12c001f2f413ff20a19ebee"
+  revision 1
   head "https://github.com/sourcegraph/srclib.git"
 
   bottle do
-    cellar :any
-    sha256 "75be0b0fad9f56cd33f7736dc8a5b663a7bf7ace7833ef2c5c00b40ec97b4e84" => :yosemite
-    sha256 "017a2522e99e6e8f56c39bc9b3fee10ec6622a7d73c2b973a6f7c0b56e6d40ad" => :mavericks
-    sha256 "00c130e9b76a25e872bcf79b4dc1b83e9679c2dd1f2396f138e2fc24538c57b0" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "e5a28e6c6995cd33047bf326d514fd0fd48656df2a8d2ade91f1adb9c0f65c73" => :el_capitan
+    sha256 "76de11463b863eb4e2ccc31478aacc258de1449ebd237675312864e8db596c41" => :yosemite
+    sha256 "2e8c68f8948ae220448400680108083931ca78273fd1f320b084879d14a567bb" => :mavericks
   end
 
   conflicts_with "src", :because => "both install a 'src' binary"
@@ -141,7 +142,7 @@ class Srclib < Formula
 
   go_resource "sourcegraph.com/sourcegraph/go-flags" do
     url "https://github.com/sourcegraph/go-flags",
-        :revision => "f819544216a8b66157184f0976948f92a8144fe7", :using => :git
+        :revision => "f59c328da6215a0b6acf0441ef19e361660ff405", :using => :git
   end
 
   go_resource "sourcegraph.com/sourcegraph/go-nnz" do
@@ -190,16 +191,18 @@ class Srclib < Formula
 
   # For test
   resource "srclib-sample" do
-    url "https://github.com/sourcegraph/srclib-sample/archive/0.1.tar.gz"
-    sha256 "7699eea46992c41331daacbff9df05f7aeec841582783ce3ac7e8eef790f1f1d"
+    url "https://github.com/sourcegraph/srclib-sample.git",
+      :revision => "e753b113784bf383f627394e86e4936629a3b588"
   end
 
   test do
     resource("srclib-sample").stage do
+      # Avoid automatic writing to $HOME/.srclib
+      ENV["SRCLIBPATH"] = testpath
       ENV.prepend_path "PATH", bin
       system "#{bin}/src", "toolchain", "add", "--force", "sourcegraph.com/sourcegraph/srclib-sample"
       result = pipe_output("#{bin}/src api units")
-      assert result.include?('"Type":"sample"')
+      assert_match '"Type":"sample"', result
     end
   end
 end

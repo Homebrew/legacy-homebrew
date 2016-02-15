@@ -1,17 +1,17 @@
 class PcapDnsproxy < Formula
-  desc "A powerful DNS proxy designed to anti DNS spoofing"
+  desc "Powerful DNS proxy designed to anti DNS spoofing"
   homepage "https://github.com/chengr28/Pcap_DNSProxy"
-  url "https://github.com/chengr28/Pcap_DNSProxy/archive/v0.4.2.tar.gz"
-  sha256 "0737b16283e84bc94f63066f448ba84416141b8d5a86b5e01f1f97164d9d44f2"
+  url "https://github.com/chengr28/Pcap_DNSProxy/archive/v0.4.5.tar.gz"
+  sha256 "22861dba30b90d43b8623b71e5d02300968f1ef9f4fc341a6a0ce6dd315e8004"
   head "https://github.com/chengr28/Pcap_DNSProxy.git"
 
   bottle do
-    cellar :any
-    sha256 "5e618117b29e420fb1726ed1c4ef493a7bcd7610c1431445c879d4032c608f68" => :yosemite
-    sha256 "8b814cd69b3af060da528aebd4bc4dca49fbb1977ed472df3a3d25277f91d635" => :mavericks
-    sha256 "32d4fcc6f22ba124a3a9ded9322cc645aa8ca5bdb1bcd0a5abf6b458afe775e0" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "09f35f2540a8d1c5c40a63739eb1d7756e41ff18e523e790d2ec2b644849385f" => :el_capitan
+    sha256 "d7e4f07ff78f4d846e5394279822edb6ece1b37fe4a0e9d266914919f64ca114" => :yosemite
   end
 
+  depends_on :macos => :yosemite
   depends_on :xcode => :build
   depends_on "libsodium" => :build
 
@@ -20,27 +20,13 @@ class PcapDnsproxy < Formula
     ln_s "#{Formula["libsodium"].opt_lib}/libsodium.a", "#{buildpath}/Source/LibSodium/LibSodium_Mac.a"
     ln_s Dir[Formula["libsodium"].opt_include/"*"], "#{buildpath}/Source/LibSodium/"
     xcodebuild "-project", "./Source/KeyPairGenerator.xcodeproj", "-target", "KeyPairGenerator", "-configuration", "Release", "SYMROOT=build"
+    xcodebuild "-project", "./Source/FileHash.xcodeproj", "-target", "FileHash", "-configuration", "Release", "SYMROOT=build"
     xcodebuild "-project", "./Source/Pcap_DNSProxy.xcodeproj", "-target", "Pcap_DNSProxy", "-configuration", "Release", "SYMROOT=build"
 
     bin.install "Source/build/Release/KeyPairGenerator"
+    bin.install "Source/build/Release/FileHash"
     bin.install "Source/build/Release/Pcap_DNSProxy"
     (etc/"pcap_DNSproxy").install Dir["Source/ExampleConfig/*.{ini,txt}"]
-  end
-
-  test do
-    mkdir testpath/"pcap_dnsproxy"
-    cp Dir[etc/"pcap_dnsproxy/*"], testpath/"pcap_dnsproxy/"
-    inreplace testpath/"pcap_dnsproxy/Config.ini" do |s|
-      s.gsub! /^Hosts Only.*/, "Hosts Only = 1"
-      s.gsub! /^Listen Port.*/, "Listen Port = 9999"
-    end
-    pid = fork { exec bin/"Pcap_DNSProxy", "-c", testpath/"pcap_dnsproxy/" }
-    begin
-      system "dig", "google.com", "@127.0.0.1", "-p", "9999", "+short"
-    ensure
-      Process.kill 9, pid
-      Process.wait pid
-    end
   end
 
   plist_options :startup => true, :manual => "sudo #{HOMEBREW_PREFIX}/opt/pcap_dnsproxy/bin/Pcap_DNSProxy -c #{HOMEBREW_PREFIX}/etc/pcap_dnsproxy/"
@@ -61,12 +47,28 @@ class PcapDnsproxy < Formula
         <key>RunAtLoad</key>
         <true/>
         <key>KeepAlive</key>
-        <dict>
-          <key>SuccessfulExit</key>
-          <false/>
-        </dict>
+        <true/>
       </dict>
     </plist>
     EOS
+  end
+
+  test do
+    (testpath/"pcap_dnsproxy").mkpath
+    cp Dir[etc/"pcap_dnsproxy/*"], testpath/"pcap_dnsproxy/"
+
+    inreplace testpath/"pcap_dnsproxy/Config.ini" do |s|
+      s.gsub! /^Direct Request.*/, "Direct Request = IPv4 + IPv6"
+      s.gsub! /^Operation Mode.*/, "Operation Mode = Proxy"
+      s.gsub! /^Listen Port.*/, "Listen Port = 9999"
+    end
+
+    pid = fork { exec bin/"Pcap_DNSProxy", "-c", testpath/"pcap_dnsproxy/" }
+    begin
+      system "dig", "google.com", "@127.0.0.1", "-p", "9999", "+short"
+    ensure
+      Process.kill 9, pid
+      Process.wait pid
+    end
   end
 end

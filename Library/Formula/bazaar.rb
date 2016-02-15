@@ -1,23 +1,21 @@
-require 'formula'
-
 class Bazaar < Formula
-  desc "Human-friendly source code management (or 'version control')"
-  homepage 'http://bazaar.canonical.com/'
-  url 'https://launchpad.net/bzr/2.6/2.6.0/+download/bzr-2.6.0.tar.gz'
-  sha1 '5eb4d0367c6d83396250165da5bb2c8a9f378293'
+  desc "Friendly powerful distributed version control system"
+  homepage "http://bazaar.canonical.com/"
+  url "https://launchpad.net/bzr/2.7/2.7.0/+download/bzr-2.7.0.tar.gz"
+  sha256 "0d451227b705a0dd21d8408353fe7e44d3a5069e6c4c26e5f146f1314b8fdab3"
 
   bottle do
-    cellar :any
-    sha1 "13eb87ddde4c81d02a54ba014712fa5d152b3f3c" => :yosemite
-    sha1 "79a3661c5a85e6041cbabb12fb237263dee1eaa9" => :mavericks
-    sha1 "d13db375fa4c2edf0119ffefbb995e4da59c7681" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "75e4a4aa57887371b783839667da3a142805c60f13197d599f6c8ef95c104707" => :el_capitan
+    sha256 "7919335ffdd76bd54a3b58da3e7d9499f8bc6dd895b1d117390bb19ceaf08818" => :yosemite
+    sha256 "51a058a4ff6b070a62ce30d01a673bba74d65d4eab6a13a9d53696f24cceb80d" => :mavericks
   end
 
   def install
     ENV.j1 # Builds aren't parallel-safe
 
     # Make and install man page first
-    system "make man1/bzr.1"
+    system "make", "man1/bzr.1"
     man1.install "man1/bzr.1"
 
     # Put system Python first in path
@@ -25,8 +23,22 @@ class Bazaar < Formula
 
     system "make"
     inreplace "bzr", "#! /usr/bin/env python", "#!/usr/bin/python"
-    libexec.install 'bzr', 'bzrlib'
+    libexec.install "bzr", "bzrlib"
 
-    bin.install_symlink libexec+'bzr'
+    (bin/"bzr").write_env_script(libexec/"bzr", :BZR_PLUGIN_PATH => "+user:#{HOMEBREW_PREFIX}/share/bazaar/plugins")
+  end
+
+  test do
+    bzr = "#{bin}/bzr"
+    whoami = "Homebrew"
+    system bzr, "whoami", whoami
+    assert_match whoami, shell_output("#{bin}/bzr whoami")
+    system bzr, "init-repo", "sample"
+    system bzr, "init", "sample/trunk"
+    touch testpath/"sample/trunk/test.txt"
+    cd "sample/trunk" do
+      system bzr, "add", "test.txt"
+      system bzr, "commit", "-m", "test"
+    end
   end
 end

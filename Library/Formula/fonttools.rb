@@ -1,15 +1,16 @@
 class Fonttools < Formula
-  desc "FontTools is a library for manipulating fonts"
+  desc "Library for manipulating fonts"
   homepage "https://github.com/behdad/fonttools"
-  url "https://github.com/behdad/fonttools/archive/2.5.tar.gz"
-  sha256 "c89603f9f3346f48f4a24f786422e935423554e0a9172dcd3ec8ffbd556d2159"
+  url "https://github.com/behdad/fonttools/archive/3.0.tar.gz"
+  sha256 "3bc9141d608603faac3f800482feec78a550d0a94c29ff3850471dbe4ad9e941"
   head "https://github.com/behdad/fonttools.git"
 
   bottle do
-    cellar :any
-    sha256 "ec7dafb8a42f26a326f2569fd9c9ac20586202ade9869d0558e21362eda42058" => :yosemite
-    sha256 "eacf6abd99b4a9038d5635a2d5427e1bb65d5040dc71caf46b9c68950395d702" => :mavericks
-    sha256 "ddfe6802322d603209ecd08f64cf65ee3ebaff5a7ff27782a4a79671e8af821c" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "d2aca5663043850875bd16bb04af383eaee14b4b205c8595fbda20ae0867429e" => :el_capitan
+    sha256 "2639039f72920032e0dc6ce6faf15b837487c8561936412c437497c23bd248d0" => :yosemite
+    sha256 "eaa0a7decad7e731eae45b93364d18bdadbfadcf39f9a14a6f4e78d55f0b757f" => :mavericks
   end
 
   option "with-pygtk", "Build with pygtk support for pyftinspect"

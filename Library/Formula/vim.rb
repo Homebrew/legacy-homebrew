@@ -1,11 +1,12 @@
 class Vim < Formula
   desc "Vi \"workalike\" with many additional features"
   homepage "http://www.vim.org/"
-  head "https://vim.googlecode.com/hg/"
-  # This package tracks debian-unstable: http://packages.debian.org/unstable/vim
-  url "https://mirrors.kernel.org/debian/pool/main/v/vim/vim_7.4.712.orig.tar.gz"
-  sha256 "b334ba9f6682c605d29fcf45e7fe246b88061736b86c3e7cdfa309404a66b55c"
-  revision 1
+  # *** Vim should be updated no more than once every 7 days ***
+  url "https://github.com/vim/vim/archive/v7.4.1301.tar.gz"
+  sha256 "7158c668f9de047d1f2f6cd996fff3d09c201bd1cf7d2c565fe5c6f6a4d5178d"
+  head "https://github.com/vim/vim.git"
+
+  bottle :disable, "To use the user's Python."
 
   # We only have special support for finding depends_on :python, but not yet for
   # :ruby, :perl etc., so we use the standard environment that leaves the
@@ -16,8 +17,8 @@ class Vim < Formula
   option "disable-nls", "Build vim without National Language Support (translated messages, keymaps)"
   option "with-client-server", "Enable client/server mode"
 
-  LANGUAGES_OPTIONAL = %w(lua mzscheme python3 tcl)
-  LANGUAGES_DEFAULT  = %w(perl python ruby)
+  LANGUAGES_OPTIONAL = %w[lua mzscheme python3 tcl]
+  LANGUAGES_DEFAULT  = %w[perl python ruby]
 
   option "with-python3", "Build vim with python3 instead of python[2] support"
   LANGUAGES_OPTIONAL.each do |language|
@@ -54,11 +55,11 @@ class Vim < Formula
       opts << "--enable-#{language}interp" if build.with? language
     end
 
-    if opts.include? "--enable-pythoninterp" and opts.include? "--enable-python3interp"
+    if opts.include?("--enable-pythoninterp") && opts.include?("--enable-python3interp")
       # only compile with either python or python3 support, but not both
       # (if vim74 is compiled with +python3/dyn, the Python[3] library lookup segfaults
       # in other words, a command like ":py3 import sys" leads to a SEGV)
-      opts = opts - %W[--enable-pythoninterp]
+      opts -= %W[--enable-pythoninterp]
     end
 
     opts << "--disable-nls" if build.include? "disable-nls"
@@ -89,13 +90,12 @@ class Vim < Formula
                           "--enable-multibyte",
                           "--with-tlib=ncurses",
                           "--enable-cscope",
-                          "--with-features=huge",
                           "--with-compiledby=Homebrew",
                           *opts
     system "make"
     # If stripping the binaries is enabled, vim will segfault with
     # statically-linked interpreters like ruby
-    # http://code.google.com/p/vim/issues/detail?id=114&thanks=114&ts=1361483471
+    # https://github.com/vim/vim/issues/114
     system "make", "install", "prefix=#{prefix}", "STRIP=true"
     bin.install_symlink "vim" => "vi" if build.include? "override-system-vi"
   end

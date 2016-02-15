@@ -1,10 +1,8 @@
-require 'formula'
-
 class X11vnc < Formula
   desc "VNC server for real X displays"
-  homepage 'http://www.karlrunge.com/x11vnc/'
-  url 'https://downloads.sourceforge.net/project/libvncserver/x11vnc/0.9.13/x11vnc-0.9.13.tar.gz'
-  sha1 'f011d81488ac94dc8dce2d88739c23bd85a976fa'
+  homepage "http://www.karlrunge.com/x11vnc/"
+  url "https://downloads.sourceforge.net/project/libvncserver/x11vnc/0.9.13/x11vnc-0.9.13.tar.gz"
+  sha256 "f6829f2e629667a5284de62b080b13126a0736499fe47cdb447aedb07a59f13b"
 
   bottle do
     cellar :any
@@ -14,8 +12,8 @@ class X11vnc < Formula
   end
 
   depends_on :x11 => :optional
-  depends_on 'openssl'
-  depends_on 'jpeg'
+  depends_on "openssl"
+  depends_on "jpeg"
 
   # Patch solid.c so a non-void function returns a NULL instead of a void.
   # An email has been sent to the maintainers about this issue.
@@ -29,7 +27,7 @@ class X11vnc < Formula
       "--mandir=#{man}"
     ]
 
-    if build.with? 'x11'
+    if build.with? "x11"
       args << "--with-x"
     else
       args << "--without-x"

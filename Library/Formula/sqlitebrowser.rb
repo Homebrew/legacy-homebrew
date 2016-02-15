@@ -1,16 +1,16 @@
 class Sqlitebrowser < Formula
   desc "Visual tool to create, design, and edit SQLite databases"
   homepage "http://sqlitebrowser.org"
-  url "https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.6.0.tar.gz"
-  sha256 "221a410a3ec8512a766ed8bc4cade1f3b1cde94e41e52743d5a6d2a33acb3a56"
+  url "https://github.com/sqlitebrowser/sqlitebrowser/archive/v3.8.0.tar.gz"
+  sha256 "f638a751bccde4bf0305a75685e2a72d26fc3e3a69d7e15fd84573f88c1a4d92"
 
   head "https://github.com/sqlitebrowser/sqlitebrowser.git"
 
   bottle do
     cellar :any
-    sha256 "79e48a66a338264831c56c7354eda5d6f67c2133d05e5ca0c018db5502299f5c" => :yosemite
-    sha256 "7fdd7a3c34bb74e22c120fa005a29c6bd738a2de7d4a0986c8043a1ada8857eb" => :mavericks
-    sha256 "ad1ab29c1449a4deed65abaf6e6a612124fad67b13da13fbdae252fc3e72152f" => :mountain_lion
+    sha256 "deca3c30ab2c07621adec645a8161afc3ffbe47efc45fd3ad1df7fa44818cda3" => :el_capitan
+    sha256 "b7f615da030c8a03474c1bf1dbe4fa04608e8bcb893eb8deed9e21c325e7d338" => :yosemite
+    sha256 "bdb49155b98d84480159b291c51ae01f47c0626ca56f66fc5f0d45756d36846f" => :mavericks
   end
 
   depends_on "qt"

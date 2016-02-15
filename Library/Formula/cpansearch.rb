@@ -1,10 +1,8 @@
-require "formula"
-
 class Cpansearch < Formula
   desc "CPAN module search written in C"
   homepage "https://github.com/c9s/cpansearch"
   url "https://github.com/c9s/cpansearch/archive/0.2.tar.gz"
-  sha1 "302638f78f2b09630cabd3975c38d5fc591c43e7"
+  sha256 "09e631f361766fcacd608a0f5b3effe7b66b3a9e0970a458d418d58b8f3f2a74"
 
   head "https://github.com/c9s/cpansearch.git"
 

@@ -1,17 +1,17 @@
 class Docker < Formula
   desc "Pack, ship and run any application as a lightweight container"
   homepage "https://www.docker.com/"
-  # Boot2docker and docker are generally updated at the same time.
-  # Please update the version of boot2docker too
-  url "https://github.com/docker/docker.git", :tag => "v1.7.0",
-    :revision => "0baf60984522744eed290348f33f396c046b2f3a"
+  url "https://github.com/docker/docker.git",
+      :tag => "v1.10.1",
+      :revision => "9e83765d0f5089689f829dfbb28de24305395d2f"
+
   head "https://github.com/docker/docker.git"
 
   bottle do
-    cellar :any
-    sha256 "8c19fe17fc2fc8a9759b80aa1dd85e300336c123842fffedf768b22215c2b2bb" => :yosemite
-    sha256 "ee5333ba2e6d67438d76c954503bb957790bff3dd0ba51e7645c5b8363de6313" => :mavericks
-    sha256 "ca4e419285a250598f05d658fda3dac97c9b0bae4c3361086a9f13a41b40bfc7" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "58521365298091423da2bb8db809241f6e48992e934e3272226c2bbc7ba6c0cc" => :el_capitan
+    sha256 "b80066d6ccfac6d16227857d60ad00f6e96752cdb52e549a7a7e7d8a0f7e5dce" => :yosemite
+    sha256 "d4700c8c1dbaf7531824db3e3537a75ee0b0d7d3389eae42a0f4222e54b26ad1" => :mavericks
   end
 
   option "with-experimental", "Enable experimental features"
@@ -31,6 +31,7 @@ class Docker < Formula
 
     if build.with? "completions"
       bash_completion.install "contrib/completion/bash/docker"
+      fish_completion.install "contrib/completion/fish/docker.fish"
       zsh_completion.install "contrib/completion/zsh/_docker"
     end
   end

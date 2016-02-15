@@ -1,3 +1,8 @@
+AllCops:
+  Exclude:
+    - 'Homebrew/vendor/**/*'
+    - 'Homebrew/test/vendor/**/*'
+
 # 1.8-style hash keys
 Style/HashSyntax:
     EnforcedStyle: hash_rockets
@@ -17,6 +22,11 @@ Style/CommandLiteral:
 # paths abound, easy escape
 Style/RegexpLiteral:
     EnforcedStyle: slashes
+
+# our current conditional style is established, clear and
+# requiring users to change that now would be confusing.
+Style/ConditionalAssignment:
+    Enabled: false
 
 # no metrics for formulas
 Metrics/AbcSize:
@@ -69,10 +79,6 @@ Style/PercentLiteralDelimiters:
         '%W': '[]'
         '%x': '()'
 
-# comma on last element is editor friendly
-Style/TrailingComma:
-    EnforcedStyleForMultiline: comma
-
 # conflicts with DSL-style path concatenation with `/`
 Style/SpaceAroundOperators:
     Enabled: false
@@ -105,19 +111,26 @@ Style/WordArray:
 Style/UnneededCapitalW:
     Enabled: false
 
-# TODO: rubocop bug regarding __END__
-# see https://github.com/bbatsov/rubocop/issues/1541
-Style/TrailingWhitespace:
-    Enabled: false
-Style/Tab:
-    Enabled: false
-Style/TrailingBlankLines:
-    Enabled: false
-
 # we use raise, not fail
 Style/SignalException:
   EnforcedStyle: only_raise
 
-# trailing commas in method argument lists are a syntax error in 1.8
-Style/TrailingComma:
+# we prefer compact if-else-end/case-when-end alignment
+Lint/EndAlignment:
+  AlignWith: variable
+Style/CaseIndentation:
+  IndentWhenRelativeTo: end
+
+# we prefer Perl-style regex back references
+Style/PerlBackrefs:
   Enabled: false
+
+# this is required for Ruby 1.8
+Style/DotPosition:
+  EnforcedStyle: trailing
+
+# makes diffs nicer
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: no_comma
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma

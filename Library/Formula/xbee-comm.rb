@@ -1,15 +1,13 @@
-require 'formula'
-
 # This fork contains OS X patches.
 # Original project: https://github.com/roysjosh/xbee-comm
 
 class XbeeComm < Formula
   desc "XBee communication libraries and utilities"
-  homepage 'https://github.com/guyzmo/xbee-comm.git'
-  url 'https://github.com/guyzmo/xbee-comm/archive/v1.5.tar.gz'
-  sha1 '1eefd2818fcffb2da9e217c7df48b1ff4f72ef3a'
+  homepage "https://github.com/guyzmo/xbee-comm.git"
+  url "https://github.com/guyzmo/xbee-comm/archive/v1.5.tar.gz"
+  sha256 "c474d22feae5d9c05b3ec167b839c8fded512587da0f020ca682d60db174f24a"
 
-  head 'https://github.com/guyzmo/xbee-comm.git'
+  head "https://github.com/guyzmo/xbee-comm.git"
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
@@ -22,6 +20,6 @@ class XbeeComm < Formula
 
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

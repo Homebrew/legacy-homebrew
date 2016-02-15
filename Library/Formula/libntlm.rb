@@ -1,22 +1,20 @@
-require 'formula'
-
 class Libntlm < Formula
   desc "Implements Microsoft's NTLM authentication"
-  homepage 'http://www.nongnu.org/libntlm/'
-  url 'http://www.nongnu.org/libntlm/releases/libntlm-1.4.tar.gz'
-  sha1 'b15c9ccbd3829154647b3f9d6594b1ffe4491b6f'
+  homepage "http://www.nongnu.org/libntlm/"
+  url "http://www.nongnu.org/libntlm/releases/libntlm-1.4.tar.gz"
+  sha256 "8415d75e31d3135dc7062787eaf4119b984d50f86f0d004b964cdc18a3182589"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "7c5f98bf311289a1aa49c08a5d2fa23ffb3fcc30" => :yosemite
-    sha1 "550250645169374bf9275ff3e8c8f805560f3416" => :mavericks
-    sha1 "a417f1bd4b1403094dddc8406d1f390832dabf53" => :mountain_lion
+    sha256 "605133351d91c2a3f0f2899deef01b6536143ffe804495fb19b6e134511e2a8c" => :yosemite
+    sha256 "800b5d2108aa693a47f6559797ef1c6fb3c906ecd35607e57eb96ad10cd7c78b" => :mavericks
+    sha256 "9f44dc14df7fdcb4657bb9ccae97c2df5e23977025ee202cfe2f615ed7ee9597" => :mountain_lion
   end
 
   def install
     system "./configure", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

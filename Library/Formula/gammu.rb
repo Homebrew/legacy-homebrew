@@ -1,16 +1,15 @@
 class Gammu < Formula
   desc "Command-line utility to control a phone"
-  homepage "http://wammu.eu/gammu/"
-  url "https://dl.cihar.com/gammu/releases/gammu-1.36.0.tar.xz"
-  mirror "https://mirrors.kernel.org/debian/pool/main/g/gammu/gammu_1.36.0.orig.tar.xz"
-  sha256 "9c89fd204e190db5b301d28b793e8d0f2b05069a5b2b91fde451a6dae7f7d633"
-
+  homepage "https://wammu.eu/gammu/"
+  url "https://dl.cihar.com/gammu/releases/gammu-1.37.0.tar.xz"
+  mirror "https://mirrors.kernel.org/debian/pool/main/g/gammu/gammu_1.37.0.orig.tar.xz"
+  sha256 "f0a597be5c5138691606b78a82a17c76769c6ed445b4b541fcc06520f3bea61f"
   head "https://github.com/gammu/gammu.git"
 
   bottle do
-    sha256 "c5e3744176b3609902070f07ced499d02570a8dc0d5aa72e02383b8e9bcce5a4" => :yosemite
-    sha256 "106312958bcfb95929178a716ca5cd458ee37ba9e6ad6ca80ba3dbb0ac8c8b40" => :mavericks
-    sha256 "d1f54aae239138586fbc5693120a28b58eb709811461478b8dc976345b3de3df" => :mountain_lion
+    sha256 "d58b0d51e5994f6560376a05e2ccb66ffa0d14728ca6a305d5936bf83ecd2aa6" => :el_capitan
+    sha256 "8b9c699089f4545d3c18a7bb30a408f06e3677bfbe4b216ee8db6a48677c425e" => :yosemite
+    sha256 "9357d5c1785ec7670bb3e935b30d1ac5bc732ec0f5f9e20647f6a0b61a066e52" => :mavericks
   end
 
   depends_on "cmake" => :build
@@ -19,12 +18,8 @@ class Gammu < Formula
   depends_on "openssl"
 
   def install
-    args = std_cmake_args
-    args << "-DINSTALL_BASH_COMPLETION=OFF"
-    args << "-DWITH_PYTHON=OFF"
-
     mkdir "build" do
-      system "cmake", "..", *args
+      system "cmake", "..", "-DBASH_COMPLETION_COMPLETIONSDIR:PATH=#{bash_completion}", *std_cmake_args
       system "make", "install"
     end
   end

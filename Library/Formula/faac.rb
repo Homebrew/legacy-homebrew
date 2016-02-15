@@ -2,14 +2,15 @@ class Faac < Formula
   desc "ISO AAC audio encoder"
   homepage "http://www.audiocoding.com/faac.html"
   url "https://downloads.sourceforge.net/project/faac/faac-src/faac-1.28/faac-1.28.tar.gz"
-  sha1 "d00b023a3642f81bb1fb13d962a65079121396ee"
+  sha256 "c5141199f4cfb17d749c36ba8cfe4b25f838da67c22f0fec40228b6b9c3d19df"
 
   bottle do
     cellar :any
     revision 1
-    sha1 "46a8facbfd103d787d198e6fb802d6f0948222e0" => :yosemite
-    sha1 "2a1e8a1decd52fcdf6498edd7f8437536d05d453" => :mavericks
-    sha1 "9ea199f750c83887bb9e3d66759a60872672865f" => :mountain_lion
+    sha256 "4607ea16f33aec6dabefe6ace66c41cb7ee487b03fff8c7b2d050cbc6340422f" => :el_capitan
+    sha256 "c3fad36cecb8f5d4fc17ad5912d90ee9dffafeb2c5c60b21d27d9ea8bfeb351d" => :yosemite
+    sha256 "1b97bdfb9334decc5d51c9d57788fa23ccf77c56d74a53fcfe6f21a4495ba463" => :mavericks
+    sha256 "e2cf2e63defd76653bc96443956f28bb9e0388a76cda5d0c8c463528d68a191a" => :mountain_lion
   end
 
   def install

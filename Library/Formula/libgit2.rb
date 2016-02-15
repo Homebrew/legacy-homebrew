@@ -1,26 +1,30 @@
 class Libgit2 < Formula
   desc "C library of Git core methods that is re-entrant and linkable"
   homepage "https://libgit2.github.com/"
-  url "https://github.com/libgit2/libgit2/archive/v0.22.3.tar.gz"
-  sha256 "511fe60e7c12c3525b4e0489861e5c1fe0e331d604bee9a3dfb8420c2f288f60"
+  url "https://github.com/libgit2/libgit2/archive/v0.23.4.tar.gz"
+  sha256 "c7f5e2d7381dbc4d7e878013d14f9993ae8a41bd23f032718e39ffba57894029"
   head "https://github.com/libgit2/libgit2.git"
 
   bottle do
     cellar :any
-    sha256 "603830401517418d626a040d7d1494aa80c46b820347b3c8400b83829263efad" => :yosemite
-    sha256 "515d821769fab481787e1163d178e15c983ed138d1db26ddf07b99dbe640582e" => :mavericks
-    sha256 "6dcaefed58204b8893876c8feb68614ef822f601282d54fad456553f41fc7528" => :mountain_lion
+    revision 1
+    sha256 "76ab9cf0de803820f9009475bb1646ae584a496aacbe5fa77480379af4adff15" => :el_capitan
+    sha256 "479dfc903eb7f90d6ddf9d2e197afc1eaa359116de4ab5ca0c81a6cda2fef165" => :yosemite
+    sha256 "6e0e3c7d27cdba4579bbda4a88bfdad8e49e8e3ce19502778d2c9e646fa24f15" => :mavericks
   end
 
   option :universal
 
+  depends_on "pkg-config" => :build
   depends_on "cmake" => :build
   depends_on "libssh2" => :optional
-  depends_on "openssl"
+  depends_on "openssl" if MacOS.version <= :lion # Uses SecureTransport on >10.7
 
   def install
     args = std_cmake_args
+    args << "-DBUILD_EXAMPLES=YES"
     args << "-DBUILD_CLAR=NO" # Don't build tests.
+    args << "-DUSE_SSH=NO" if build.without? "libssh2"
 
     if build.universal?
       ENV.universal_binary
@@ -30,6 +34,13 @@ class Libgit2 < Formula
     mkdir "build" do
       system "cmake", "..", *args
       system "make", "install"
+      cd "examples" do
+        (pkgshare/"examples").install "add", "blame", "cat-file", "cgit2",
+                                      "describe", "diff", "for-each-ref",
+                                      "general", "init", "log", "remote",
+                                      "rev-list", "rev-parse", "showindex",
+                                      "status", "tag"
+      end
     end
   end
 

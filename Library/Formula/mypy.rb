@@ -4,12 +4,13 @@ class Mypy < Formula
   url "https://github.com/JukkaL/mypy/archive/v0.2.0.tar.gz"
   sha256 "0c24f50509bdf3e0d9bd386a08ef4f11ee0114e1f5a9b2afeacbf9561cf022c1"
   head "https://github.com/JukkaL/mypy.git"
+  revision 1
 
   bottle do
-    cellar :any
-    sha256 "6497207e2801737ab861c432fbba890dbfb0b8d85a6b4f809dcc4e3df0699b5f" => :yosemite
-    sha256 "50267f741ceadcf49dfa4115a38e820995d0174cbeb88264b431f5ea93179dea" => :mavericks
-    sha256 "dca4b115dda17d0ea86a1904c59447664fce86b407c3d054483d4c708a5ca54e" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "cc2780459f9cbb98805a0873ca7c5e6286bfad54545ba8d6898c663658867fea" => :yosemite
+    sha256 "2c5872aed4f6c1fe965bb6962f448e47d412930bc270e4fbfc50427a094b3a23" => :mavericks
+    sha256 "6a67aefdf446d5600f06aa0f7e9de8c79a7165cb73edfbd6e2dd73aba072ff73" => :mountain_lion
   end
 
   option "without-docs", "Don't build documentation"
@@ -47,15 +48,16 @@ class Mypy < Formula
   end
 
   def install
+    pyver = Language::Python.major_minor_version "python3"
     if build.with? "docs"
-      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python3.4/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", buildpath/"sphinx/lib/python#{pyver}/site-packages"
       %w[docutils pygments jinja2 markupsafe sphinx].each do |r|
         resource(r).stage do
           system "python3", *Language::Python.setup_install_args(buildpath/"sphinx")
         end
       end
 
-      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python3.4/site-packages"
+      ENV.prepend_create_path "PYTHONPATH", libexec/"vendor/lib/python#{pyver}/site-packages"
       %w[rtd_theme].each do |r|
         resource(r).stage do
           system "python3", *Language::Python.setup_install_args(libexec/"vendor")
@@ -69,7 +71,7 @@ class Mypy < Formula
       end
     end
 
-    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python3.4/site-packages"
+    ENV.prepend_create_path "PYTHONPATH", libexec/"lib/python#{pyver}/site-packages"
     system "python3", *Language::Python.setup_install_args(libexec)
 
     bin.install Dir["#{libexec}/bin/*"]
@@ -77,7 +79,8 @@ class Mypy < Formula
   end
 
   test do
-    ENV["PYTHONPATH"] = libexec/"lib/python3.4/site-packages"
+    pyver = Language::Python.major_minor_version "python3"
+    ENV["PYTHONPATH"] = libexec/"lib/python#{pyver}/site-packages"
 
     (testpath/"broken.py").write <<-EOS.undent
       def p() -> None:

@@ -1,14 +1,14 @@
 class Gtkextra < Formula
   desc "Widgets for creating GUIs for GTK+"
   homepage "http://gtkextra.sourceforge.net/"
-  url "https://downloads.sourceforge.net/project/gtkextra/3.1/gtkextra-3.1.4.tar.gz"
-  sha256 "cfc61cf76dbce36bede5cbfd967a2cdea49be869f671a9619c85ce4b4cfb5037"
+  url "https://downloads.sourceforge.net/project/gtkextra/3.2/gtkextra-3.2.0.tar.gz"
+  sha256 "f24478ae8b863864708827f18ad7d72fac99ad013ef1396f9f1c277e9be0953b"
 
   bottle do
     cellar :any
-    sha256 "344d4928075c709f5bdb0799c6b01b28a5ce16b5b93b41e58bd5c61fb441615f" => :yosemite
-    sha256 "cbf7a0b80d1627880b09994c4b8a24a9e3de89d7d77d44d1fbc2cf250fb43221" => :mavericks
-    sha256 "14bd7612815970eb2f4f7e9aa69163a1a5958e2b21e627f5f086368bb9acd504" => :mountain_lion
+    sha256 "449307366e46d2469cc288ce8e1e5ef2c503a6bc041ba15a053da82325ef9198" => :el_capitan
+    sha256 "469ece3a0105502f94476e622732a2c7bc8d6bd6d43450038b0000af99aee859" => :yosemite
+    sha256 "c6e281521f79d1cd1a216f7b74c7cbe6ce7b4397e52f0aec83e8f7146cb3cb6f" => :mavericks
   end
 
   depends_on "gtk+"

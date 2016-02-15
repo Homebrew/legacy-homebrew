@@ -1,21 +1,14 @@
 class Tor < Formula
   desc "Anonymizing overlay network for TCP"
   homepage "https://www.torproject.org/"
-  url "https://dist.torproject.org/tor-0.2.6.9.tar.gz"
-  mirror "https://tor.eff.org/dist/tor-0.2.6.9.tar.gz"
-  sha256 "4a6c29ad89a98d7832c599d9480d6d8e55355fb3b8f4b506c5df557f15942f9c"
+  url "https://dist.torproject.org/tor-0.2.7.6.tar.gz"
+  mirror "https://tor.eff.org/dist/tor-0.2.7.6.tar.gz"
+  sha256 "493a8679f904503048114aca6467faef56861206bab8283d858f37141d95105d"
 
   bottle do
-    sha256 "9ba6b14b210770a7ad1ff11ef85fb1ec7dab3ba23ce999cf0f5123d6dd71659a" => :yosemite
-    sha256 "c6986384324ee9c145b1e33041c033f00bb949ddd99b9c6a5d26556598461ba8" => :mavericks
-    sha256 "c1ee6861812064687b9c32b61070e26a15a8bf10594b06577fe00083b88dc265" => :mountain_lion
-  end
-
-  devel do
-    url "https://dist.torproject.org/tor-0.2.7.1-alpha.tar.gz"
-    mirror "https://tor.eff.org/dist/tor-0.2.7.1-alpha.tar.gz"
-    sha256 "9afc770a5a795e752f053ae7c2c1ee3a560145adc0aea377c83e602c2cbbed9b"
-    version "0.2.7.1-alpha"
+    sha256 "32bb77890419cef8b2152e9a6cd554b71021baa64d3dac8fc8d48d7d24d51e99" => :el_capitan
+    sha256 "a3edf9af56c01b70f582ca4d4ddb552274b876db7922c0494407804f3877975b" => :yosemite
+    sha256 "595d64e121de2417e647d5c8a1d0051d5a3e3de9c0e15429134c5dd494459573" => :mavericks
   end
 
   depends_on "libevent"
@@ -51,7 +44,10 @@ class Tor < Formula
   end
 
   test do
-    system bin/"tor", "--version"
+    pipe_output("script -q /dev/null #{bin}/tor-gencert --create-identity-key", "passwd\npasswd\n")
+    assert (testpath/"authority_certificate").exist?
+    assert (testpath/"authority_signing_key").exist?
+    assert (testpath/"authority_identity_key").exist?
   end
 
   def plist; <<-EOS.undent

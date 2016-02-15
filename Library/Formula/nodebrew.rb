@@ -1,9 +1,11 @@
 class Nodebrew < Formula
   desc "Node.js version manager"
   homepage "https://github.com/hokaccha/nodebrew"
-  url "https://github.com/hokaccha/nodebrew/archive/v0.8.1.tar.gz"
-  sha256 "c976a879954dfb5dd657f1e93934ec182ffe4aa4e91ee2be0f7ece91cd25af6f"
+  url "https://github.com/hokaccha/nodebrew/archive/v0.9.2.tar.gz"
+  sha256 "ebd9df28fd9a65bec3cbab6e115300f63a012cba80a27cc8d34ab8ccf9c1d7c1"
   head "https://github.com/hokaccha/nodebrew.git"
+
+  bottle :unneeded
 
   def install
     bin.install "nodebrew"
@@ -22,6 +24,6 @@ class Nodebrew < Formula
   end
 
   test do
-    assert shell_output("#{bin}/nodebrew ls-remote").include?("v0.10.0")
+    assert_match /v0.10.0/, shell_output("#{bin}/nodebrew ls-remote")
   end
 end

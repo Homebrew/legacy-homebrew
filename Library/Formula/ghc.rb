@@ -1,25 +1,24 @@
 class Ghc < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-src.tar.xz"
-  sha256 "92f3e3d67a637c587c49b61c704a670953509eb4b17a93c0c2ac153da4cd3aa0"
-
-  revision 1
+  url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3b-src.tar.bz2"
+  sha256 "b0bb177b8095de6074e5a3538e55fd1fc187dae6eb6ae36b05582c55f7d2db6f"
 
   bottle do
-    sha256 "969cc9bfd6574070982d1bd6678f1eeee430940d00d10b70204528cc9ce84c07" => :yosemite
-    sha256 "bb82b24644330273d5e8b02b5c3ced76cbde1b388a45047327db3cfd5f07fe1f" => :mavericks
-    sha256 "8b7900d0f6a72312969494b70ace58ed03ef8624b52d5db63ecccc00cf056e98" => :mountain_lion
+    sha256 "72c6c729ea385aaebfa22b55fe31b85f46e423a510c83d2f76c8f57336f9bf2c" => :el_capitan
+    sha256 "3914b0875845c0e419c440c1b5833631ea709e6e8d5d9bf546422852c4c96ea8" => :yosemite
+    sha256 "3ca8542ed077871a9da2e7af1a2362eb6ddc52501e6625fa5b06e9fda288e980" => :mavericks
   end
 
-  option "with-tests", "Verify the build using the testsuite."
-  deprecated_option "tests" => "with-tests"
+  option "with-test", "Verify the build using the testsuite"
+  deprecated_option "tests" => "with-test"
+  deprecated_option "with-tests" => "with-test"
 
   resource "gmp" do
-    url "http://ftpmirror.gnu.org/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://gmplib.org/download/gmp/gmp-6.0.0a.tar.bz2"
-    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.0.0a.tar.bz2"
-    sha256 "7f8e9a804b9c6d07164cf754207be838ece1219425d64e28cfa3e70d5c759aaf"
+    url "http://ftpmirror.gnu.org/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://gmplib.org/download/gmp/gmp-6.1.0.tar.bz2"
+    mirror "https://ftp.gnu.org/gnu/gmp/gmp-6.1.0.tar.bz2"
+    sha256 "498449a994efeba527885c10405993427995d3f86b8768d8cdf8d9dd7c6b73e8"
   end
 
   if MacOS.version <= :lion
@@ -38,14 +37,14 @@ class Ghc < Formula
       url "https://downloads.haskell.org/~ghc/7.6.3/ghc-7.6.3-x86_64-apple-darwin.tar.bz2"
       sha256 "f7a35bea69b6cae798c5f603471a53b43c4cc5feeeeb71733815db6e0a280945"
     else
-      url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-x86_64-apple-darwin.tar.xz"
-      sha256 "bc45de19efc831f7d5a3fe608ba4ebcd24cc0f414cac4bc40ef88a04640583f6"
+      url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3-x86_64-apple-darwin.tar.xz"
+      sha256 "852781d43d41cd55d02f818fe798bb4d1f7e52f488408167f413f7948cf1e7df"
     end
   end
 
   resource "testsuite" do
-    url "https://downloads.haskell.org/~ghc/7.10.1/ghc-7.10.1-testsuite.tar.xz"
-    sha256 "33bbdfcfa50363526ea9671c8c1f01b7c5dec01372604d45cbb53bb2515298cb"
+    url "https://downloads.haskell.org/~ghc/7.10.3/ghc-7.10.3-testsuite.tar.xz"
+    sha256 "50c151695c8099901334a8478713ee3bb895a90132e2b75d1493961eb8ec643a"
   end
 
   def install
@@ -68,8 +67,6 @@ class Ghc < Formula
     args = ["--with-gmp-includes=#{gmp}/include",
             "--with-gmp-libraries=#{gmp}/lib",
             "--with-ld=ld", # Avoid hardcoding superenv's ld.
-            # The offending -Wno-[unicode] flags get appended here, so set:
-            "--with-hs-cpp-flags=-E -undef -traditional",
             "--with-gcc=#{ENV.cc}"] # Always.
 
     if ENV.compiler == :clang
@@ -90,7 +87,7 @@ class Ghc < Formula
     system "./configure", "--prefix=#{prefix}", *args
     system "make"
 
-    if build.with? "tests"
+    if build.with? "test"
       resource("testsuite").stage { buildpath.install Dir["*"] }
       cd "testsuite" do
         system "make", "clean"
@@ -103,6 +100,6 @@ class Ghc < Formula
 
   test do
     (testpath/"hello.hs").write('main = putStrLn "Hello Homebrew"')
-    system "runghc", testpath/"hello.hs"
+    system "#{bin}/runghc", testpath/"hello.hs"
   end
 end

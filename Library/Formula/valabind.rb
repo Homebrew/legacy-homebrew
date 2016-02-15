@@ -1,15 +1,16 @@
 class Valabind < Formula
   desc "Vala bindings for radare, reverse engineering framework"
   homepage "http://radare.org/"
+  url "http://www.radare.org/get/valabind-0.10.0.tar.gz"
+  sha256 "35517455b4869138328513aa24518b46debca67cf969f227336af264b8811c19"
+
   head "https://github.com/radare/valabind.git"
-  url "https://github.com/radare/valabind/archive/0.9.2.tar.gz"
-  sha256 "84cc2be21acb671e737dab50945b3717f1c68917faf23af443d3911774f5e578"
 
   bottle do
     cellar :any
-    sha256 "8aab7c9f2004e9e2378ed9320b3e3aca5b226a921fe097aa878077e58c1aac6c" => :yosemite
-    sha256 "45a23247c6eaf72c3a5e5fcfb5542d29eded403c3a1e72e80979a72625a454f8" => :mavericks
-    sha256 "74553dd4ddef8e5e2ceeda4a77d2c154de6388e224b23d94d04e37dbc6bf17f6" => :mountain_lion
+    sha256 "e0af18d13747e8451b5628117733cd819156e1793ad8e6b4c71f77dff8d56650" => :el_capitan
+    sha256 "92b98eb2b715f5009c64af83ffb530f227cfc8df19d98e0891803600edd13580" => :yosemite
+    sha256 "b27947900e32ee045737b010acf93dfc75a6a317840ea762dd293ff83e39606b" => :mavericks
   end
 
   depends_on "pkg-config" => :build
@@ -19,5 +20,9 @@ class Valabind < Formula
   def install
     system "make"
     system "make", "install", "PREFIX=#{prefix}"
+  end
+
+  test do
+    system bin/"valabind", "--help"
   end
 end

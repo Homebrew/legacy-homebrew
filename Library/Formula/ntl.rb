@@ -1,21 +1,21 @@
 class Ntl < Formula
   desc "C++ number theory library"
   homepage "http://www.shoup.net/ntl"
-  url "http://www.shoup.net/ntl/ntl-9.2.0.tar.gz"
-  sha256 "2bca70534b133904dd814a1d2a111f787a7506fa6f08f2e7f3fc9288b3bfd101"
-
-  depends_on "gmp" => :optional
+  url "http://www.shoup.net/ntl/ntl-9.6.4.tar.gz"
+  sha256 "c4a1f015a879b4a20f6b76a98eb6033a7936b0ff3b3f3ca6159d7e7b2afd89eb"
 
   bottle do
-    cellar :any
-    sha256 "94dab837c3632f589bf4389cd1ef1a723ac5ae85259c252528e4dab3954bde74" => :yosemite
-    sha256 "8b512a1d4ed2463a6bc22ddfac29efca343de35163a856c299eec396ebe031ea" => :mavericks
-    sha256 "8547e62f4569969797dcbc4eba941ef8733d7e07173852364577d7d7f77e9045" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "6c80f485b943143a51bcc9a4e0a07c856f9e144a7eb9e0283f77234302a9d95f" => :el_capitan
+    sha256 "5d79a7cbe3f93fb8d0eb1cf64c13d26db61c99cbff98034b0828eca51dfcb49a" => :yosemite
+    sha256 "68c86d6e81d649ee2a91ff0c17e431f9c1a5aefca2e51288c6847581e24cadb4" => :mavericks
   end
+
+  depends_on "gmp"
 
   def install
     args = ["PREFIX=#{prefix}"]
-    args << "NTL_GMP_LIP=on" if build.with? "gmp"
+
     cd "src" do
       system "./configure", *args
       system "make"

@@ -3,15 +3,15 @@
 class Xz < Formula
   desc "General-purpose data compression with high compression ratio"
   homepage "http://tukaani.org/xz/"
-  url "https://fossies.org/linux/misc/xz-5.2.1.tar.gz"
-  mirror "http://tukaani.org/xz/xz-5.2.1.tar.gz"
-  sha256 "b918b6648076e74f8d7ae19db5ee663df800049e187259faf5eb997a7b974681"
+  url "https://fossies.org/linux/misc/xz-5.2.2.tar.gz"
+  mirror "http://tukaani.org/xz/xz-5.2.2.tar.gz"
+  sha256 "73df4d5d34f0468bd57d09f2d8af363e95ed6cc3a4a86129d2f2c366259902a2"
 
   bottle do
     cellar :any
-    sha1 "fedcee4af6aae52f4ee471fad0071aefa442887b" => :yosemite
-    sha1 "42f6a1501db4f6a298ba037bbd50ebfb7aa79d39" => :mavericks
-    sha1 "8f9bb2675c7e967e2adc1679cb7190f697689075" => :mountain_lion
+    sha256 "7cfefbef7669a6959eb019ffba2d06b2c8f041fb826e89126c1ced23f03e2029" => :el_capitan
+    sha256 "cd13b4dea278b179eceebed9f07b79c95e7416d7cac0ba095173cc463149df46" => :yosemite
+    sha256 "9a5b520ae6a4cc728a7f5c4a15deb1dc2f150e3665d5afbc802b07f2a4fbd6e6" => :mavericks
   end
 
   option :universal

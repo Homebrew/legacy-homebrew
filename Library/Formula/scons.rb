@@ -1,20 +1,17 @@
-require "formula"
-
 class Scons < Formula
   desc "Substitute for classic 'make' tool with autoconf/automake functionality"
   homepage "http://www.scons.org"
-  url "https://downloads.sourceforge.net/scons/scons-2.3.5.tar.gz"
-  sha256 "5b72f959cafbef81f408b503bc8e8d5cfc39f41fb5b629e9ff13bdf20a3eefe2"
+  url "https://downloads.sourceforge.net/project/scons/scons/2.4.1/scons-2.4.1.tar.gz"
+  sha256 "8fc4f42928c69bcbb33e1be94b646f2c700b659693fabc778c192d4d22f753a7"
 
   bottle do
-    cellar :any
-    sha256 "1f99ce6c3eeb9df4b503c470c982e00f394be3f813729e800ad4ca249b4c4e6d" => :yosemite
-    sha256 "b2e5ffe24de2dd6d62da181c03b968d4f9c3eae41096e6d4bd0a2c480fb1ada1" => :mavericks
-    sha256 "308d20365203d26f64c56187c3e4d7b8bec3a4c160dd1005d96544b07a03cdbd" => :mountain_lion
+    cellar :any_skip_relocation
+    sha256 "d3660e9012706af7146bc9fbc6f49a24b2c4d3464bda7e616863fa1f74b474a5" => :el_capitan
+    sha256 "ec8f843e6f368527556500a81af539884b8dc502a352742e9fcd94a36b4caf16" => :yosemite
+    sha256 "af5e2c2014667d651be904091590cb8f9c65dc15651e84f531d523370f567ddb" => :mavericks
   end
 
   def install
-    bin.mkpath # Script won't create this if it doesn't already exist
     man1.install gzip("scons-time.1", "scons.1", "sconsign.1")
     system "/usr/bin/python", "setup.py", "install",
              "--prefix=#{prefix}",
@@ -32,5 +29,18 @@ class Scons < Formula
       mv p, "#{libexec}/#{p.basename}.py"
       bin.install_symlink "#{libexec}/#{p.basename}.py" => p.basename
     end
+  end
+
+  test do
+    (testpath/"test.c").write <<-EOS.undent
+      #include <stdio.h>
+      int main()
+      {
+        printf("Homebrew");
+      }
+    EOS
+    (testpath/"SConstruct").write "Program('test.c')"
+    system bin/"scons"
+    assert_equal "Homebrew", shell_output("#{testpath}/test")
   end
 end

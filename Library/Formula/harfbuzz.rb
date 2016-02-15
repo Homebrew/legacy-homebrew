@@ -1,22 +1,33 @@
 class Harfbuzz < Formula
   desc "OpenType text shaping engine"
   homepage "https://wiki.freedesktop.org/www/Software/HarfBuzz/"
-  url "http://www.freedesktop.org/software/harfbuzz/release/harfbuzz-0.9.41.tar.bz2"
-  sha256 "d81aa53d0c02b437beeaac159d7fc16394d676bbce0860fb6f6a10b587dc057c"
+  url "https://www.freedesktop.org/software/harfbuzz/release/harfbuzz-1.1.3.tar.bz2"
+  sha256 "d93d7cb7979c32672e902fdfa884599e63f07f2fa5b06c66147d20c516d4b8f7"
 
   bottle do
-    sha256 "127226ca79eb2225b2e96a2919541466b4f93a7ead04dbbbf6b605ac2e7deb43" => :yosemite
-    sha256 "0ee1b49cbb64c20dfd4ac5822a89e0e85168e249fe24ca7c35b8f8814899682c" => :mavericks
-    sha256 "06116bc1ac3ac010211f2c56193e144b242ca4a45988f38637e215be3670e956" => :mountain_lion
+    sha256 "e429b2ba600e9d1057209f925ecf65f3e639faeda26d09907079c601512605e4" => :el_capitan
+    sha256 "6bd2fee790b5977125fff2021fe03b116dbbdd17ffee8e7e02f3759d10c7ce23" => :yosemite
+    sha256 "6ae682173761631a7ab74a23fd879451ccb94293845d0c4ce40da79823c74291" => :mavericks
   end
+
+  head do
+    url "https://github.com/behdad/harfbuzz.git"
+
+    depends_on "ragel" => :build
+    depends_on "autoconf" => :build
+    depends_on "automake" => :build
+    depends_on "libtool" => :build
+  end
+
+  option "with-cairo", "Build command-line utilities that depend on Cairo"
 
   depends_on "pkg-config" => :build
   depends_on "glib"
-  depends_on "cairo"
-  depends_on "icu4c" => :recommended
-  depends_on "graphite2" => :optional
   depends_on "freetype"
   depends_on "gobject-introspection"
+  depends_on "icu4c" => :recommended
+  depends_on "cairo" => :optional
+  depends_on "graphite2" => :optional
 
   resource "ttf" do
     url "https://github.com/behdad/harfbuzz/raw/fc0daafab0336b847ac14682e581a8838f36a0bf/test/shaping/fonts/sha1sum/270b89df543a7e48e206a2d830c0e10e5265c630.ttf"
@@ -29,10 +40,15 @@ class Harfbuzz < Formula
       --prefix=#{prefix}
       --enable-introspection=yes
       --with-gobject=yes
+      --with-coretext=yes
+      --enable-static
     ]
 
     args << "--with-icu" if build.with? "icu4c"
     args << "--with-graphite2" if build.with? "graphite2"
+    args << "--with-cairo" if build.with? "cairo"
+
+    system "./autogen.sh" if build.head?
     system "./configure", *args
     system "make", "install"
   end

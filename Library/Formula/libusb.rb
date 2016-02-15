@@ -1,15 +1,14 @@
 class Libusb < Formula
   desc "Library for USB device access"
   homepage "http://libusb.info"
-  url "https://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.19/libusb-1.0.19.tar.bz2"
-  sha256 "6c502c816002f90d4f76050a6429c3a7e0d84204222cbff2dce95dd773ba6840"
+  url "https://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-1.0.20/libusb-1.0.20.tar.bz2"
+  sha256 "cb057190ba0a961768224e4dc6883104c6f945b2bf2ef90d7da39e7c1834f7ff"
 
   bottle do
     cellar :any
-    revision 1
-    sha1 "8e65bc4484e61141abc1ec0e16617713e4239ce8" => :yosemite
-    sha1 "34ed99c7bd26ba888e0884be004ae93e567db595" => :mavericks
-    sha1 "4558475bbe84d5ccdfc8ce342926715519d73f9b" => :mountain_lion
+    sha256 "f04c366717f0ddeef3871f767242f50cf07aefc16f260e11e2f916fe7c17d6fd" => :el_capitan
+    sha256 "f041c11fe5402b585f2617640cd374b032fb314bebeadc2ad0202bf306bc4532" => :yosemite
+    sha256 "a156b5968853363f5465d7a281cdc536d03d77f26fd98ed7196363b0af41bbb0" => :mavericks
   end
 
   head do

@@ -2,13 +2,13 @@ class Bcpp < Formula
   desc "C(++) beautifier"
   homepage "http://invisible-island.net/bcpp/"
   url "ftp://invisible-island.net/bcpp/bcpp-20131209.tgz"
-  sha1 "5b38e0ae532ed5fc9ee8d5fc8bf84511d55080a8"
+  sha256 "4732d606c9b5857d0ea2cee2f2b54eb3b8928f547f8a0c6b89096b674c6bd7f7"
 
   bottle do
     cellar :any
-    sha1 "cfb51c877c07ca763570481f7aaa8266090892ee" => :yosemite
-    sha1 "8bb51fb15c993112d0fac70baf694f1682a69456" => :mavericks
-    sha1 "45b5a1f149bb2cbca9b0c24bb066c82a8e92a6d1" => :mountain_lion
+    sha256 "55695704fc182a79be6761a720b18c0be3f416ef2602ea0048c8f2a00422bfa9" => :yosemite
+    sha256 "5a8b1bf857e52ca6b30c4ef31547b23d807364075aec50a47c7ce16fdfc8b59d" => :mavericks
+    sha256 "5cbc5e640e0c8ebcfeee4091364855bd0f67a54663a819a9f875f648e7cb48b9" => :mountain_lion
   end
 
   def install

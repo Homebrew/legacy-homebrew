@@ -1,14 +1,15 @@
 class Daq < Formula
   desc "Network intrusion prevention and detection system"
   homepage "https://www.snort.org/"
-  url "https://www.snort.org/downloads/snort/daq-2.0.5.tar.gz"
-  sha256 "7704b5db858732142586f5043deb0733e2c396535c83081e918fb6993258bc6d"
+  url "https://www.snort.org/downloads/snort/daq-2.0.6.tar.gz"
+  sha256 "b40e1d1273e08aaeaa86e69d4f28d535b7e53bdb3898adf539266b63137be7cb"
 
   bottle do
     cellar :any
-    sha256 "04ee508c881d80e6d115a3f7fcd8c45ec7405c90a9a2a60cfa2e06f75030ee2a" => :yosemite
-    sha256 "49b01b6adb0cd5757a919afb84d25c0ba2644df35178c5024f31f9ca9f676821" => :mavericks
-    sha256 "1fad31d21b32ad21c18ed686e8043d65e629a9af16e5cc72774ef7677199b7a6" => :mountain_lion
+    sha256 "9c2720bd46954e9f2631801d8f8283974436a82827f01c9e954e319f0b9f7e88" => :el_capitan
+    sha256 "02d198f42f56471feaf127824230d7ea752490b3c7f5a34f8b50ff0a85062f01" => :yosemite
+    sha256 "8ce4fbbbb9f6189f6ee51d3223a81ebc7ea76069353bd284822989d6ccc364a5" => :mavericks
+    sha256 "bced15005e13eaa11ec6d47afbb1137f61231a191fb05a295e2762cc6cc8ef29" => :mountain_lion
   end
 
   def install
@@ -19,6 +20,19 @@ class Daq < Formula
   end
 
   test do
-    assert File.exist? "#{include}/daq.h"
+    (testpath/"test.c").write <<-EOS.undent
+      #include <daq.h>
+      #include <stdio.h>
+
+      int main()
+      {
+        DAQ_Module_Info_t* list;
+        int size = daq_get_module_list(&list);
+        daq_free_module_list(list, size);
+        return 0;
+      }
+    EOS
+    system ENV.cc, "test.c", "-L#{lib}", "-ldaq", "-o", "test"
+    system "./test"
   end
 end

@@ -9,18 +9,15 @@ class Forego < Formula
   head "https://github.com/ddollar/forego.git"
 
   bottle do
-    cellar :any
-    sha256 "d868a7568c0c80b6af1cb8582b5c7341c1aa42b7aa1f7dc384f20ccca6bb1497" => :yosemite
-    sha256 "f0a098da6534c7a2f13e05ef129ab33a6a738251ffaaffe9792d28f300a992f2" => :mavericks
-    sha256 "8b544fd274c115758cf3ecec09e5c2f66e9f54663bc28b86d55bb310c94e57a2" => :mountain_lion
+    cellar :any_skip_relocation
+    revision 1
+    sha256 "43023b8d7dced63e30b15df1381d08ea0c3da8dada801c1e74ad733785333ec1" => :el_capitan
+    sha256 "b5250bbca85972af704278f539b5b95fe0b2f1f17e3174299353ad79e8955e02" => :yosemite
+    sha256 "39be1155c04fe129cc63c3b131ba4e302daaf09cf6faa76c79461f2c75d7c725" => :mavericks
   end
 
   depends_on "go" => :build
-
-  go_resource "github.com/tools/godep" do
-    url "https://github.com/tools/godep.git",
-        :revision => "58d90f262c13357d3203e67a33c6f7a9382f9223"
-  end
+  depends_on "godep" => :build
 
   go_resource "github.com/kr/fs" do
     url "https://github.com/kr/fs.git",
@@ -39,17 +36,13 @@ class Forego < Formula
     ln_sf buildpath, buildpath/"src/github.com/ddollar/forego"
     Language::Go.stage_deps resources, buildpath/"src"
 
-    cd "src/github.com/tools/godep" do
-      system "go", "install"
-    end
-
     ldflags = "-X main.Version #{version} -X main.allowUpdate false"
-    system "./bin/godep", "go", "build", "-ldflags", ldflags, "-o", "forego"
+    system "godep", "go", "build", "-ldflags", ldflags, "-o", "forego"
     bin.install "forego"
   end
 
   test do
-    (testpath/"Procfile").write("web: echo \"it works!\"")
-    assert `#{bin}/forego start` =~ /it works!/
+    (testpath/"Procfile").write "web: echo \"it works!\""
+    assert_match "it works", shell_output("#{bin}/forego start")
   end
 end

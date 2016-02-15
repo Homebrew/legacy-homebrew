@@ -1,9 +1,9 @@
-require 'set'
+require "set"
 
 class Option
   attr_reader :name, :description, :flag
 
-  def initialize(name, description="")
+  def initialize(name, description = "")
     @name = name
     @flag = "--#{name}"
     @description = description
@@ -110,5 +110,15 @@ class Options
 
   def inspect
     "#<#{self.class.name}: #{to_a.inspect}>"
+  end
+end
+
+module Homebrew
+  def dump_options_for_formula(f)
+    f.options.sort_by(&:flag).each do |opt|
+      puts "#{opt.flag}\n\t#{opt.description}"
+    end
+    puts "--devel\n\tInstall development version #{f.devel.version}" if f.devel
+    puts "--HEAD\n\tInstall HEAD version" if f.head
   end
 end

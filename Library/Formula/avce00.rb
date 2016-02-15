@@ -15,7 +15,7 @@ class Avce00 < Formula
 
   def install
     system "make", "CC=#{ENV.cc}"
-    bin.install "avcimport",  "avcexport", "avcdelete", "avctest"
+    bin.install "avcimport", "avcexport", "avcdelete", "avctest"
     lib.install "avc.a"
     include.install Dir["*.h"]
   end

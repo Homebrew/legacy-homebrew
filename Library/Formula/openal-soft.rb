@@ -1,16 +1,18 @@
 class OpenalSoft < Formula
   desc "Implementation of the OpenAL 3D audio API"
   homepage "http://kcat.strangesoft.net/openal.html"
-  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.16.0.tar.bz2"
-  sha256 "2f3dcd313fe26391284fbf8596863723f99c65d6c6846dccb48e79cadaf40d5f"
+  url "http://kcat.strangesoft.net/openal-releases/openal-soft-1.17.2.tar.bz2"
+  sha256 "a341f8542f1f0b8c65241a17da13d073f18ec06658e1a1606a8ecc8bbc2b3314"
+  head "http://repo.or.cz/openal-soft.git"
 
   bottle do
     cellar :any
-    revision 1
-    sha256 "4f31acb42ba76c79984e7ef0c5be5cbc63a6bff524516b3f67d2fb363363ec64" => :yosemite
-    sha256 "e0378ccb0dee6eca4d505ba313512ed12b44f6a58525418a544bce681fa3ad1b" => :mavericks
-    sha256 "b190c7c847f976b7d4938ea84356baa7225b63748c890af151150089f145ec6a" => :mountain_lion
+    sha256 "915bd92597553f3f005071fa85e08e2947fd545a4af4b5dcf514ea79320d7a99" => :el_capitan
+    sha256 "643cd46bc9aa8fdf9c85aaa374d71d2dd6d18abeb674445f49d829f61dc82c4e" => :yosemite
+    sha256 "819886eab2909ebcff2edb16c39ede1800ec987e193b0fdfce8d4047636fff17" => :mavericks
   end
+
+  keg_only :provided_by_osx, "OS X provides OpenAL.framework."
 
   option :universal
 
@@ -53,6 +55,6 @@ class OpenalSoft < Formula
         return 0;
       }
     EOS
-    system ENV.cc, "test.c", "-lopenal"
+    system ENV.cc, "test.c", "-I#{include}", "-L#{lib}", "-lopenal"
   end
 end

@@ -1,24 +1,29 @@
 class Profanity < Formula
   desc "Console based XMPP client"
   homepage "http://www.profanity.im/"
-  url "http://www.profanity.im/profanity-0.4.6.tar.gz"
-  sha256 "9672667e419958dd75d40cc0f253087ba1ae7df0c3c855eaa780831ad8282a9f"
+  url "http://www.profanity.im/profanity-0.4.7.tar.gz"
+  sha256 "b02c4e029fe84941050ccab6c8cdf5f15df23de5d1384b4d1ec66da6faee11dd"
+  revision 2
+
   head "https://github.com/boothj5/profanity.git"
 
   bottle do
-    sha256 "94039c7e967b2db27b9b0ea7b57ecf394b571c5facbf38cc754f9076c86b5f86" => :yosemite
-    sha256 "6e137ddb29e94142d988738f491a994137992680b5322f8593656ae87159cc84" => :mavericks
-    sha256 "5399f746ca2c82a279ef696ccd3bf7a3e08b8de2f9758668a0c4342132df8b9b" => :mountain_lion
+    sha256 "e42d99f8e15de670c0d5d0d3bd90cc946759c6d55697ecf0f20928f8ac63c062" => :el_capitan
+    sha256 "01807fbbe872b9921ca8c9af55fc0843ae57bbdeeed565ed929f254523d6f758" => :yosemite
+    sha256 "f1e8e071263d364cf86b0adcaf475ef3dabb2cd6eededa8aa1f7e7d4e6fe0c2b" => :mavericks
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
+  depends_on "ossp-uuid"
   depends_on "libstrophe"
+  depends_on "readline"
   depends_on "glib"
   depends_on "openssl"
   depends_on "gnutls"
   depends_on "libotr" => :recommended
+  depends_on "gpgme" => :recommended
   depends_on "terminal-notifier" => :optional
 
   def install

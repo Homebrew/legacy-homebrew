@@ -1,16 +1,19 @@
 class Freetype < Formula
   desc "Software library to render fonts"
   homepage "http://www.freetype.org"
-  url "https://downloads.sf.net/project/freetype/freetype2/2.6/freetype-2.6.tar.bz2"
-  mirror "http://download.savannah.gnu.org/releases/freetype/freetype-2.6.tar.bz2"
-  sha256 "8469fb8124764f85029cc8247c31e132a2c5e51084ddce2a44ea32ee4ae8347e"
-  revision 1
+  url "https://downloads.sf.net/project/freetype/freetype2/2.6.3/freetype-2.6.3.tar.bz2"
+  mirror "http://download.savannah.gnu.org/releases/freetype/freetype-2.6.3.tar.bz2"
+  sha256 "371e707aa522acf5b15ce93f11183c725b8ed1ee8546d7b3af549863045863a2"
+
+  # Note: when bumping freetype's version, you must also bump revisions of formula with
+  # "full path" references to freetype in their pkgconfig.
+  # See https://github.com/Homebrew/homebrew/pull/44587
 
   bottle do
     cellar :any
-    sha256 "79aa27a0e5416cde4d866a5283fa5b8a9ff1b5c920128edc20ac2f482900d083" => :yosemite
-    sha256 "da9a3df9c363f2b27d7a3a823e39fe54e37f8a0090a4377967b0dbe965b2475f" => :mavericks
-    sha256 "40c36d3383dcc14e27cea0d80b5020d252e7ac9c3e100b725ac3649ef04fe57c" => :mountain_lion
+    sha256 "03d81469f42b34176ad9b7a382a2ab613445541a57e3db02e80121508cc43309" => :el_capitan
+    sha256 "ff8df778e420e76ac823fb5d31b3bfd1d89be87aa664bb1140bb44508f4d5e23" => :yosemite
+    sha256 "ecfb1b9f4dcce361d4c40367dc205842411cbcbb6628238da571aff84caf05c3" => :mavericks
   end
 
   keg_only :provided_pre_mountain_lion
@@ -20,17 +23,9 @@ class Freetype < Formula
 
   depends_on "libpng"
 
-  # Don't define a TYPEOF macro in ftconfig.h
-  # https://savannah.nongnu.org/bugs/index.php?45376
-  # http://git.savannah.gnu.org/cgit/freetype/freetype2.git/commit/?id=5931268eecaeda3e05580bdc8885348fecc43fa8
-  patch do
-    url "https://gist.githubusercontent.com/anonymous/b47d77c41a6801879fd2/raw/fc21c3516b465095da7ed13f98bea491a7d18bbd/patch"
-    sha256 "5b21575d0384c9e502b51b0ba4be0ff453a34bcf9deba52b6baa38c3ffcde063"
-  end
-
   def install
     if build.with? "subpixel"
-      inreplace "include/config/ftoption.h",
+      inreplace "include/freetype/config/ftoption.h",
           "/* #define FT_CONFIG_OPTION_SUBPIXEL_RENDERING */",
           "#define FT_CONFIG_OPTION_SUBPIXEL_RENDERING"
     end

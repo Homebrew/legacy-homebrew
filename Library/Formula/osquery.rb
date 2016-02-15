@@ -1,45 +1,69 @@
-require "formula"
-
 class Osquery < Formula
   desc "SQL powered operating system instrumentation and analytics"
   homepage "https://osquery.io"
   # pull from git tag to get submodules
-  url "https://github.com/facebook/osquery.git", :tag => "1.4.7", :revision => "9d783fee002196c73c4b2622cc7e410d6ce4a4b3"
+  url "https://github.com/facebook/osquery.git",
+    :tag => "1.7.0",
+    :revision => "62b3c89a7ee1ef21cbc7bc218b9098a489f5bca1"
 
   bottle do
-    sha256 "e6f20336f26db2aaeba7a400f1e2b18e6b385e3b9a17a951b8c5a7c57f815ec1" => :yosemite
+    cellar :any
+    sha256 "7aa636c386be91f3d466135c007b1c2189bc236c049e4333d943ad59ced3a6b9" => :el_capitan
+    sha256 "11730333c41091e1b5040059854de64a44781db055ba8d3bb13ee03f00ac3b9f" => :yosemite
+    sha256 "cf37dde059d3e2479e79cc0490c90433737f5efcc81aa484e6c1d7d46814477d" => :mavericks
   end
 
-  # osquery only support OS X Yosemite and above. Do not remove this.
-  depends_on :macos => :yosemite
+  # osquery only supports OS X 10.9 and above. Do not remove this.
+  depends_on :macos => :mavericks
 
   depends_on "cmake" => :build
-  depends_on "boost" => :build
   depends_on "doxygen" => :build
-  depends_on "gflags" => :build
-  depends_on "rocksdb" => :build
-  depends_on "thrift" => :build
-  depends_on "yara" => :build
-  depends_on "openssl"
+  depends_on "boost"
+  depends_on "rocksdb"
+  depends_on "thrift"
+  depends_on "yara"
+  depends_on "libressl"
+  depends_on "gflags"
+  depends_on "glog"
+  depends_on "libmagic"
+  depends_on "cpp-netlib"
+  depends_on "sleuthkit"
 
   resource "markupsafe" do
     url "https://pypi.python.org/packages/source/M/MarkupSafe/MarkupSafe-0.23.tar.gz"
-    sha1 "cd5c22acf6dd69046d6cb6a3920d84ea66bdf62a"
+    sha256 "a4ec1aff59b95a14b45eb2e23761a0179e98319da5a7eb76b56ea8cdc7b871c3"
   end
 
   resource "jinja2" do
     url "https://pypi.python.org/packages/source/J/Jinja2/Jinja2-2.7.3.tar.gz"
-    sha1 "25ab3881f0c1adfcf79053b58de829c5ae65d3ac"
+    sha256 "2e24ac5d004db5714976a04ac0e80c6df6e47e98c354cb2c0d82f8879d4f8fdb"
+  end
+
+  resource "psutil" do
+    url "https://pypi.python.org/packages/source/p/psutil/psutil-2.2.1.tar.gz"
+    sha256 "a0e9b96f1946975064724e242ac159f3260db24ffa591c3da0a355361a3a337f"
   end
 
   def install
-    ENV.prepend_create_path "PYTHONPATH", buildpath+"third-party/python/lib/python2.7/site-packages"
+    # Link dynamically against brew-installed libraries.
+    ENV["BUILD_LINK_SHARED"] = "1"
+
+    # Use LibreSSL instead of the system provided OpenSSL.
+    ENV["BUILD_USE_LIBRESSL"] = "1"
+
+    # Skip test and benchmarking.
+    ENV["SKIP_TESTS"] = "1"
+
+    ENV.prepend_create_path "PYTHONPATH", buildpath/"third-party/python/lib/python2.7/site-packages"
+    ENV["THRIFT_HOME"] = Formula["thrift"].opt_prefix
 
     resources.each do |r|
-      r.stage { system "python", "setup.py", "install",
+      r.stage do
+        system "python", "setup.py", "install",
                                  "--prefix=#{buildpath}/third-party/python/",
                                  "--single-version-externally-managed",
-                                 "--record=installed.txt"}
+                                 "--record=installed.txt"
+      end
     end
 
     system "cmake", ".", *std_cmake_args
@@ -50,11 +74,40 @@ class Osquery < Formula
   plist_options :startup => true, :manual => "osqueryd"
 
   test do
-    require 'open3'
-    Open3.popen3("#{bin}/osqueryi") do |stdin, stdout, _|
-      stdin.write(".mode line\nSELECT count(version) as lines FROM osquery_info;")
-      stdin.close
-      assert_equal "lines = 1\n", stdout.read
-    end
+    (testpath/"test.cpp").write <<-EOS.undent
+      #include <osquery/sdk.h>
+
+      using namespace osquery;
+
+      class ExampleTablePlugin : public TablePlugin {
+       private:
+        TableColumns columns() const {
+          return {{"example_text", TEXT_TYPE}, {"example_integer", INTEGER_TYPE}};
+        }
+
+        QueryData generate(QueryContext& request) {
+          QueryData results;
+          Row r;
+
+          r["example_text"] = "example";
+          r["example_integer"] = INTEGER(1);
+          results.push_back(r);
+          return results;
+        }
+      };
+
+      REGISTER_EXTERNAL(ExampleTablePlugin, "table", "example");
+
+      int main(int argc, char* argv[]) {
+        Initializer runner(argc, argv, OSQUERY_EXTENSION);
+        runner.shutdown();
+        return 0;
+      }
+    EOS
+
+    system ENV.cxx, "test.cpp", "-o", "test", "-v", "-std=c++11",
+      "-losquery", "-lthrift", "-lboost_system", "-lboost_thread-mt",
+      "-lboost_filesystem", "-lglog", "-lgflags", "-lrocksdb"
+    system "./test"
   end
 end

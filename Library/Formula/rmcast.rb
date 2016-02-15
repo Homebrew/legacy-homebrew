@@ -1,14 +1,12 @@
-require 'formula'
-
 class Rmcast < Formula
   desc "IP Multicast library"
-  homepage 'http://www.land.ufrj.br/tools/rmcast/rmcast.html'
-  url 'http://www.land.ufrj.br/tools/rmcast/download/rmcast-2.0.0.tar.gz'
-  sha1 '43146066d3199fc811b207e427135d2a14b8e971'
+  homepage "http://www.land.ufrj.br/tools/rmcast/rmcast.html"
+  url "http://www.land.ufrj.br/tools/rmcast/download/rmcast-2.0.0.tar.gz"
+  sha256 "79ccbdbe4a299fd122521574eaf9b3e2d524dd5e074d9bc3eb521f1d934a59b1"
 
   def install
     system "./configure", "--disable-debug", "--disable-dependency-tracking",
                           "--prefix=#{prefix}"
-    system "make install"
+    system "make", "install"
   end
 end

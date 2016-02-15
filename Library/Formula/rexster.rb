@@ -4,6 +4,8 @@ class Rexster < Formula
   url "http://tinkerpop.com/downloads/rexster/rexster-server-2.6.0.zip"
   sha256 "e0cfeb9d8dc6be6f472a17eee06618cb1a41f6a981c15c465786a23bbdb2b149"
 
+  bottle :unneeded
+
   depends_on :java
 
   def install

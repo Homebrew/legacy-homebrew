@@ -1,7 +1,8 @@
 class Libssh2 < Formula
   desc "C library implementing the SSH2 protocol"
   homepage "http://www.libssh2.org/"
-  url "http://www.libssh2.org/download/libssh2-1.6.0.tar.gz"
+  url "https://github.com/libssh2/libssh2/releases/download/libssh2-1.6.0/libssh2-1.6.0.tar.gz"
+  mirror "http://www.libssh2.org/download/libssh2-1.6.0.tar.gz"
   sha256 "5a202943a34a1d82a1c31f74094f2453c207bf9936093867f41414968c8e8215"
 
   option "with-libressl", "build with LibreSSL instead of OpenSSL"
@@ -16,6 +17,7 @@ class Libssh2 < Formula
 
   bottle do
     cellar :any
+    sha256 "bc688cb19311bbe1a5dd5ab79f15864b77e1aadc0b042a61c2ac2662481536ac" => :el_capitan
     sha256 "ef02bf38e976c9f786d7bfc743c7bf39ecc2cf634324a2a03dd3767c96f3c44a" => :yosemite
     sha256 "0dfd55ea524c2eea19e2f1baf34cdd609830be488e8dc05787dce353d83765ab" => :mavericks
     sha256 "dca69057eb05d5951ddc11af3078cc4418d81e087fd728f96b989c2b5e5eeba9" => :mountain_lion
