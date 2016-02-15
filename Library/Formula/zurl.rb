@@ -4,6 +4,8 @@ class Zurl < Formula
   url "https://dl.bintray.com/fanout/source/zurl-1.5.0.tar.bz2"
   sha256 "102456174569d882c77dde80669c51bee4a418c5ed81a27ea15d7a0810d1a555"
 
+  revision 1
+
   # ensure unit tests don't install on 1.5.0. remove after next release
   patch do
     url "https://github.com/fanout/zurl/commit/6f727e9e26054889ced261993e91f11dea3a1b5c.patch"
@@ -28,7 +30,7 @@ class Zurl < Formula
   end
 
   def install
-    system "./configure", "--prefix=#{prefix}"
+    system "./configure", "--prefix=#{prefix}", "--extraconf=QMAKE_MACOSX_DEPLOYMENT_TARGET=#{MacOS.version}"
     system "make"
     system "make", "install"
   end
