@@ -1,8 +1,8 @@
 class Ffmpeg < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-2.8.6.tar.bz2"
-  sha256 "40611e329bc354592c6f8f1deb033c31b91f80e91f5707ca4f9afceca78d8e62"
+  url "https://ffmpeg.org/releases/ffmpeg-3.0.tar.bz2"
+  sha256 "f19ff77a2f7f736a41dd1499eef4784bf3cb7461f07c13a268164823590113c0"
   head "https://github.com/FFmpeg/FFmpeg.git"
 
   bottle do
@@ -13,7 +13,6 @@ class Ffmpeg < Formula
 
   option "without-x264", "Disable H.264 encoder"
   option "without-lame", "Disable MP3 encoder"
-  option "without-libvo-aacenc", "Disable VisualOn AAC encoder"
   option "without-xvid", "Disable Xvid MPEG-4 video encoder"
   option "without-qtkit", "Disable deprecated QuickTime framework"
 
@@ -43,7 +42,6 @@ class Ffmpeg < Formula
 
   depends_on "x264" => :recommended
   depends_on "lame" => :recommended
-  depends_on "libvo-aacenc" => :recommended
   depends_on "xvid" => :recommended
 
   depends_on "faac" => :optional
@@ -66,7 +64,6 @@ class Ffmpeg < Formula
   depends_on "libcaca" => :optional
   depends_on "libbluray" => :optional
   depends_on "libsoxr" => :optional
-  depends_on "libquvi" => :optional
   depends_on "libvidstab" => :optional
   depends_on "x265" => :optional
   depends_on "openssl" => :optional
@@ -93,7 +90,6 @@ class Ffmpeg < Formula
 
     args << "--enable-libx264" if build.with? "x264"
     args << "--enable-libmp3lame" if build.with? "lame"
-    args << "--enable-libvo-aacenc" if build.with? "libvo-aacenc"
     args << "--enable-libxvid" if build.with? "xvid"
     args << "--enable-libsnappy" if build.with? "snappy"
 
@@ -116,7 +112,6 @@ class Ffmpeg < Formula
     args << "--enable-frei0r" if build.with? "frei0r"
     args << "--enable-libcaca" if build.with? "libcaca"
     args << "--enable-libsoxr" if build.with? "libsoxr"
-    args << "--enable-libquvi" if build.with? "libquvi"
     args << "--enable-libvidstab" if build.with? "libvidstab"
     args << "--enable-libx265" if build.with? "x265"
     args << "--enable-libwebp" if build.with? "webp"
@@ -172,17 +167,17 @@ class Ffmpeg < Formula
 
   def caveats
     if build.without? "faac" then <<-EOS.undent
-      FFmpeg has been built without libfaac for licensing reasons;
-      libvo-aacenc is used by default.
-      To install with libfaac, you can:
-        brew reinstall ffmpeg --with-faac
+      The native FFmpeg AAC encoder has been stable since FFmpeg 3.0. If you
+      were using libvo-aacenc or libaacplus, both of which have been dropped in
+      FFmpeg 3.0, please consider switching to the native encoder (-c:a aac),
+      fdk-aac (-c:a libfdk_aac, ffmpeg needs to be installed with the
+      --with-fdk-aac option), or faac (-c:a libfaac, ffmpeg needs to be
+      installed with the --with-faac option).
 
-      You can also use the experimental FFmpeg encoder, libfdk-aac, or
-      libvo_aacenc to encode AAC audio:
-        ffmpeg -i input.wav -c:a aac -strict experimental output.m4a
-      Or:
-        brew reinstall ffmpeg --with-fdk-aac
-        ffmpeg -i input.wav -c:a libfdk_aac output.m4a
+      See the announcement
+      https://ffmpeg.org/index.html#removing_external_aac_encoders for details,
+      and https://trac.ffmpeg.org/wiki/Encode/AAC on best practices of encoding
+      AAC with FFmpeg.
       EOS
     end
   end
