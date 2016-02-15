@@ -13,6 +13,13 @@ class Dfmt < Formula
     sha256 "d306278e22b46e60b6474593e1107db753c4fefc907e66bd1f348cc29af0fc95" => :mavericks
   end
 
+  devel do
+    url "https://github.com/Hackerpilot/dfmt.git",
+        :tag => "v0.5.0-beta3",
+        :revision => "845358bb61603031b0817aed03097064c8f2553f"
+    version "0.5.0-beta3"
+  end
+
   depends_on "dmd" => :build
 
   def install
