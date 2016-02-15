@@ -1,8 +1,8 @@
 class Arangodb < Formula
   desc "Universal open-source database with a flexible data model"
   homepage "https://www.arangodb.com/"
-  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.8.2.tar.gz"
-  sha256 "70a546e1e0f5a56d74af0cedbfe6b2c53b04ca09ca1982f9713231112490c1de"
+  url "https://www.arangodb.com/repositories/Source/ArangoDB-2.8.1.tar.gz"
+  sha256 "c5ddfcd33aa935d51085ecd5a52df6872d06fc5c09f645526992a7ba7d5ba985"
 
   head "https://github.com/arangodb/arangodb.git", :branch => "unstable"
 
@@ -20,11 +20,6 @@ class Arangodb < Formula
   fails_with :clang do
     build 600
     cause "Fails with compile errors"
-  end
-
-  fails_with :clang do
-    build 702
-    cause "clang and/or stdlibc++ is 7x slower than in other versions"
   end
 
   def install
