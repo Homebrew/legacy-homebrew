@@ -1,4 +1,6 @@
 require "language/go"
+require "socket"
+require "timeout"
 
 class Fabio < Formula
   desc "Zero-conf load balancing HTTP(S) router."
@@ -9,6 +11,7 @@ class Fabio < Formula
   head "https://github.com/eBay/fabio.git"
 
   depends_on "go" => :build
+  depends_on "consul" => :recommended
 
   def install
     mkdir_p buildpath/"src/github.com/ebay"
@@ -23,7 +26,38 @@ class Fabio < Formula
   end
 
   test do
-    output = shell_output("#{bin}/fabio -v")
-    assert_match version.to_s, output
+    #check if Consul is reachable
+    CONSUL_DEFAULT_PORT=8500
+    FABIO_DEFAULT_PORT=9999
+    LOCALHOST_IP="127.0.0.1"
+
+    if Fabio.port_open?(LOCALHOST_IP, CONSUL_DEFAULT_PORT) and !Fabio.port_open?(LOCALHOST_IP, FABIO_DEFAULT_PORT)
+      #Consul is there..
+      fork do
+        exec "#{bin}/fabio &>fabio-start.out&"
+      end
+      sleep 10
+      assert_equal Fabio.port_open?(LOCALHOST_IP,FABIO_DEFAULT_PORT), true
+      exec "killall fabio" #fabio forks off from the fork... 
+    else
+      #consul not running or fabio already running (or something else on that port), fallback to version test
+      puts "Falling back to version test, Consul is not running or Fabio is already running or something occupies the port #{FABIO_DEFAULT_PORT}"
+      output = shell_output("#{bin}/fabio -v")
+      assert_match version.to_s, output
+    end
+  end
+
+  def Fabio.port_open?(ip, port, seconds=1)
+    Timeout::timeout(seconds) do
+      begin
+        TCPSocket.new(ip, port).close
+        true
+      rescue Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+        false
+      end
+    end
+  rescue Timeout::Error
+    false
   end
 end
+
